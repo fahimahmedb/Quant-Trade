@@ -250,18 +250,18 @@ def dsr(sr_hat_daily: float, T: int, var_trials: float, n_trials: int,
 # 5. Backtest walk-forward avec purge + embargo
 # ----------------------------------------------------------------------------
 
-def walk_forward_signals(X: pd.DataFrame, y: pd.Series, r_fwd: pd.Series,
-                         model_factory, t0: int, refit_every: int,
-                         embargo: int, standardize: bool) -> np.ndarray:
-    """Genere des positions OOS {-1,0,+1} par walk-forward expansif.
+def walk_forward_proba(X: pd.DataFrame, y: pd.Series, model_factory, t0: int,
+                       refit_every: int, embargo: int, standardize: bool) -> np.ndarray:
+    """Genere p_up (proba OOS de la classe "hausse") par walk-forward expansif.
 
     Purge : on retire de l'entrainement les `embargo` derniers evenements (leurs
     labels chevauchent la periode de test). Standardisation eventuelle calee sur
     la fenetre d'entrainement uniquement (jamais l'echantillon complet).
     model_factory() -> estimateur sklearn a chaque re-estimation.
+    NaN la ou aucun modele n'est encore entraine (warmup) ou feature manquante.
     """
     n = len(X)
-    pos = np.zeros(n)
+    proba = np.full(n, np.nan)
     Xv, yv = X.values, y.values
     for tr in range(t0, n, refit_every):
         tr_end = tr - embargo  # purge des labels chevauchants
@@ -282,9 +282,20 @@ def walk_forward_signals(X: pd.DataFrame, y: pd.Series, r_fwd: pd.Series,
             if not np.all(np.isfinite(xt)):
                 continue
             xt = (xt - mu) / sd if standardize else xt
-            p_up = clf.predict_proba(xt.reshape(1, -1))[0, 1]
-            pos[t] = 1.0 if p_up > 0.5 else -1.0
-    return pos
+            proba[t] = clf.predict_proba(xt.reshape(1, -1))[0, 1]
+    return proba
+
+
+def walk_forward_signals(X: pd.DataFrame, y: pd.Series, r_fwd: pd.Series,
+                         model_factory, t0: int, refit_every: int,
+                         embargo: int, standardize: bool) -> np.ndarray:
+    """Genere des positions OOS {-1,0,+1} par walk-forward expansif.
+
+    Fine couche au-dessus de walk_forward_proba : signe(p_up - 0.5), 0 pendant
+    le warmup (pas encore de modele entraine).
+    """
+    proba = walk_forward_proba(X, y, model_factory, t0, refit_every, embargo, standardize)
+    return np.where(np.isfinite(proba), np.where(proba > 0.5, 1.0, -1.0), 0.0)
 
 
 def backtest(pos: np.ndarray, r_fwd: np.ndarray, cost_bps: float,
