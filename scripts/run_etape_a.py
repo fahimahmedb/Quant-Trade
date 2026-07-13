@@ -17,7 +17,10 @@ from diagnostics import (  # noqa: E402
     summary_stats,
 )
 
-df = load_ohlc(str(ROOT / "data" / "nasdaq_composite_daily.txt"))
+DATA = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "nasdaq_composite_daily.txt")
+OUT = sys.argv[2] if len(sys.argv) > 2 else str(ROOT / "results" / "etape_A_diagnostics.md")
+
+df = load_ohlc(DATA)
 qr = quality_report(df)
 r = log_returns_pct(df).values
 rv_p = parkinson_var_pct(df).values
@@ -100,6 +103,6 @@ w(f"- Ratio E[ε²] / E[RV_Parkinson] = **{ratio:.3f}** → la variance intra-s�
   "Toute utilisation de la RV Parkinson (HAR) est ré-échelonnée par ce ratio, "
   "estimé sur fenêtre d'entraînement uniquement.\n")
 
-out = ROOT / "results" / "etape_A_diagnostics.md"
+out = Path(OUT)
 out.write_text("\n".join(lines))
 print("\n".join(lines))

@@ -36,13 +36,19 @@ from volatility import (  # noqa: E402
     spa_test,
 )
 
-df = load_ohlc(str(ROOT / "data" / "nasdaq_composite_daily.txt"))
-r = log_returns_pct(df).values          # 1250 rendements, en %
+import os  # noqa: E402
+
+DATA = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "nasdaq_composite_daily.txt")
+OUT = sys.argv[2] if len(sys.argv) > 2 else str(ROOT / "results" / "etape_C_volatilite.md")
+
+df = load_ohlc(DATA)
+r = log_returns_pct(df).values          # rendements log quotidiens, en %
 rv = parkinson_var_pct(df).values       # variance Parkinson alignee, en %^2
 dates = log_returns_pct(df).index
 T = len(r)
 
-T0, REFIT_EVERY, H = 750, 5, 5
+# REFIT_EVERY : surchargeable pour les longs historiques (coût ∝ nb de ré-estim.)
+T0, REFIT_EVERY, H = 750, int(os.environ.get("REFIT_EVERY", 5)), 5
 MODELS = ["EWMA", "GARCH-n", "GARCH-t", "GJR-t", "GJR-skewt", "HAR-P"]
 BENCH = "GARCH-n"
 
@@ -50,7 +56,7 @@ BENCH = "GARCH-n"
 lines = []
 w = lines.append
 w("# Étape C — Modèles de volatilité : estimation et évaluation walk-forward\n")
-w("## 1. Estimation in-sample (échantillon complet, 1250 obs)\n")
+w(f"## 1. Estimation in-sample (échantillon complet, {T} obs)\n")
 w("| Modèle | ω | α | γ (levier) | β | ν | λ(skew) | persistance | demi-vie (j) | LogL | BIC |")
 w("|---|---|---|---|---|---|---|---|---|---|---|")
 insample = {}
@@ -172,10 +178,12 @@ w("## 5. Test SPA de Hansen (2005) — correction du data-snooping\n")
 w("H₀ : le benchmark GARCH(1,1)-n n'est battu par AUCUN des 5 modèles de "
   "l'univers (bootstrap stationnaire Politis-Romano, bloc moyen 20 j, "
   "5000 réplications, recentrage consistant).\n")
+spa_res = {}
 for hname, idx, real, fc, in (("1 jour", idx1, eps2[idx1], fc1),
                               ("5 jours", idx5, real5, {m: fc5[m] for m in MODELS})):
     losses = {m: qlike(real, fc[m][idx]) for m in MODELS}
     spa = spa_test(losses, BENCH)
+    spa_res[hname] = spa
     w(f"- **Horizon {hname}** : t_SPA = {spa['t_spa']:.2f}, **p = {spa['p_value']:.4f}** "
       f"(meilleur modèle : {spa['best_model']}) → "
       + ("H₀ rejetée : la surperformance survit à la correction du data-snooping."
@@ -195,22 +203,39 @@ for m, dm in dm1.items():
     w(f"  - {m} : {verdict} (p={dm['p_one_sided_model_better']:.3f})")
 w("")
 w("### Lecture honnête des deux niveaux d'inférence\n")
+p1 = dm1["GJR-t"]["p_one_sided_model_better"]
+p5 = dm5["GJR-t"]["p_one_sided_model_better"]
 w("1. **Hypothèse primaire pré-enregistrée** (GJR-t vs GARCH-n, choisie AVANT "
   "de voir les données sur la base de Hansen-Lunde 2005 / Liu-Hung 2010) : "
-  "DM unilatéral p=0.014 (h=1) et p=0.030 (h=5), amélioration QLIKE ~3 %, "
-  "cohérente sur les deux proxys et les deux horizons → **validée**.")
-w("2. **Correction famille entière** (SPA sur les 5 modèles) : p≈0.11-0.15 → "
-  "la significativité ne survit PAS à la correction du data-snooping au seuil "
-  "de 10 %. Avec 500 obs OOS, la puissance est limitée ; c'est une limite de "
-  "l'ÉCHANTILLON (5 ans, un seul cycle), pas un feu vert pour élargir "
-  "l'univers de modèles jusqu'à ce que ça passe.")
+  f"DM unilatéral p={p1:.3f} (h=1) et p={p5:.3f} (h=5), "
+  + ("cohérente sur les deux horizons → **validée**."
+     if max(p1, p5) < 0.10 else "→ à interpréter avec prudence."))
+spa1, spa5 = spa_res["1 jour"]["p_value"], spa_res["5 jours"]["p_value"]
+n_years = (dates[idx1[-1]] - dates[idx1[0]]).days / 365.25
+if max(spa1, spa5) < 0.10:
+    w(f"2. **Correction famille entière** (SPA sur les 5 modèles) : p={spa1:.4f} "
+      f"(h=1) et p={spa5:.4f} (h=5) → la surperformance **survit** à la correction "
+      f"du data-snooping. Sur {len(idx1)} obs OOS (~{n_years:.0f} ans, plusieurs "
+      "cycles), le signal est statistiquement robuste — ce que l'échantillon court "
+      "ne permettait pas de trancher.")
+else:
+    w(f"2. **Correction famille entière** (SPA sur les 5 modèles) : p={spa1:.4f} "
+      f"(h=1) et p={spa5:.4f} (h=5) → la significativité **ne survit PAS** à la "
+      f"correction au seuil de 10 %. Avec {len(idx1)} obs OOS (~{n_years:.0f} ans), "
+      "la puissance est limitée : c'est une limite de l'ÉCHANTILLON, pas un feu "
+      "vert pour élargir l'univers de modèles jusqu'à ce que ça passe.")
 w("")
 w("**Conclusion opérationnelle** : GJR-GARCH(1,1)-t est adopté comme moteur de "
   "volatilité v1 (direction conforme à la littérature, gain régulier, benchmark "
-  "battu partout où il doit l'être). Le renforcement statistique passe par PLUS "
-  "DE DONNÉES (historique ≥ 2000, incluant 2008 et la bulle dot-com), pas par "
-  "plus d'itérations de modèles sur ce même échantillon.")
+  "battu partout où il doit l'être)."
+  + (" Sur l'historique long, la robustesse statistique est confirmée (SPA) : "
+     "la voie de progrès devient la finesse des données (RV intraday) et non le "
+     "volume d'historique."
+     if max(spa1, spa5) < 0.10 else
+     " Le renforcement statistique passe par PLUS DE DONNÉES (historique ≥ 2000, "
+     "incluant 2008 et la bulle dot-com), pas par plus d'itérations de modèles "
+     "sur ce même échantillon."))
 
-out = ROOT / "results" / "etape_C_volatilite.md"
+out = Path(OUT)
 out.write_text("\n".join(lines))
 print("\n".join(lines))

@@ -46,7 +46,10 @@ VOL_SPAN, BARRIER_MULT = 20, 1.5
 COST_BPS = 5.0
 SEED = 42
 
-df = load_ohlc(str(ROOT / "data" / "nasdaq_composite_daily.txt")).set_index("date")
+DATA = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "nasdaq_composite_daily.txt")
+OUT = sys.argv[2] if len(sys.argv) > 2 else str(ROOT / "results" / "etape_B_prediction.md")
+
+df = load_ohlc(DATA).set_index("date")
 close = df["close"].astype(float)
 logp = np.log(close)
 # rendement futur t->t+1 (la position decidee en t le capture)
@@ -208,17 +211,28 @@ w("")
 
 w("## 8. Verdict honnête\n")
 best_dsr = max(MODELS, key=lambda m: dsr_out[m]["dsr"])
+active = ("Momentum", "LogitL2", "HistGB")
+best_active = max(active, key=lambda m: metr[m]["sharpe_ann"])
 any_credible = any(dsr_out[m]["dsr"] > 0.95 and metr[m]["sharpe_ann"] > metr["BuyHold"]["sharpe_ann"]
-                   for m in ("Momentum", "LogitL2", "HistGB"))
-w(f"- Meilleur DSR : **{best_dsr}** ({dsr_out[best_dsr]['dsr']:.3f}).")
+                   for m in active)
+n_years = (dates[oos[-1]] - dates[oos[0]]).days / 365.25
+w(f"- Échantillon OOS : {T_oos} jours (~{n_years:.0f} ans, "
+  f"{dates[oos[0]]:%m/%Y}→{dates[oos[-1]]:%m/%Y}). Meilleur DSR : "
+  f"**{best_dsr}** ({dsr_out[best_dsr]['dsr']:.3f}).")
 if any_credible:
-    w("- Au moins un signal actif bat le Buy & Hold avec un **DSR > 0.95** : edge "
-      "directionnel crédible sur cet échantillon, à confirmer sur historique long.")
+    w(f"- **{best_active} bat le Buy & Hold avec un DSR > 0.95** : edge "
+      "directionnel crédible sur cet échantillon, à confirmer en live (haircut).")
 else:
-    w("- **Aucun signal actif ne bat le Buy & Hold avec un DSR > 0.95.** Résultat "
-      "**cohérent avec l'Étape A** : sur le NASDAQ Composite quotidien (5 ans, un "
-      "seul cycle), il n'y a pas d'edge directionnel robuste net de coûts. Le "
-      "R²/accuracy proche de 50 % le confirme.")
+    ba = metr[best_active]
+    profitable = ba["sharpe_ann"] > 0 and be[best_active] > COST_BPS
+    w("- **Aucun signal actif ne bat le Buy & Hold avec un DSR > 0.95.** "
+      + (f"Le meilleur signal actif ({best_active}) est cependant **rentable net de "
+         f"coûts** (Sharpe {ba['sharpe_ann']:+.2f}, break-even {be[best_active]:.0f} bps "
+         f"> {COST_BPS:.0f} bps réels) mais reste **en-dessous du simple achat-conservation** "
+         "sur base ajustée du risque et déflatée."
+         if profitable else
+         "Pas d'edge directionnel robuste net de coûts ; accuracy ≈ 50 % le confirme.")
+      + " Cohérent avec l'Étape A (efficience à court terme).")
 w("- **Discipline** : l'univers (N=4) et le protocole sont figés dans ce script "
   "AVANT évaluation. On n'élargit pas l'univers jusqu'à obtenir un chiffre "
   "plaisant : le renforcement passe par **plus de données** (historique ≥ 2000, "
@@ -228,6 +242,6 @@ w("- Rappel litt. : dégradation médiane backtest→live de **73 %** (Suhonen e
   "tout Sharpe backtest > 3 est un **red flag**. Les attentes sont calibrées en "
   "conséquence.\n")
 
-out = ROOT / "results" / "etape_B_prediction.md"
+out = Path(OUT)
 out.write_text("\n".join(lines))
 print("\n".join(lines))

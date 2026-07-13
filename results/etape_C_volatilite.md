@@ -66,7 +66,7 @@ H₀ : le benchmark GARCH(1,1)-n n'est battu par AUCUN des 5 modèles de l'unive
 
 ### Lecture honnête des deux niveaux d'inférence
 
-1. **Hypothèse primaire pré-enregistrée** (GJR-t vs GARCH-n, choisie AVANT de voir les données sur la base de Hansen-Lunde 2005 / Liu-Hung 2010) : DM unilatéral p=0.014 (h=1) et p=0.030 (h=5), amélioration QLIKE ~3 %, cohérente sur les deux proxys et les deux horizons → **validée**.
-2. **Correction famille entière** (SPA sur les 5 modèles) : p≈0.11-0.15 → la significativité ne survit PAS à la correction du data-snooping au seuil de 10 %. Avec 500 obs OOS, la puissance est limitée ; c'est une limite de l'ÉCHANTILLON (5 ans, un seul cycle), pas un feu vert pour élargir l'univers de modèles jusqu'à ce que ça passe.
+1. **Hypothèse primaire pré-enregistrée** (GJR-t vs GARCH-n, choisie AVANT de voir les données sur la base de Hansen-Lunde 2005 / Liu-Hung 2010) : DM unilatéral p=0.014 (h=1) et p=0.030 (h=5), cohérente sur les deux horizons → **validée**.
+2. **Correction famille entière** (SPA sur les 5 modèles) : p=0.1100 (h=1) et p=0.1500 (h=5) → la significativité **ne survit PAS** à la correction au seuil de 10 %. Avec 500 obs OOS (~2 ans), la puissance est limitée : c'est une limite de l'ÉCHANTILLON, pas un feu vert pour élargir l'univers de modèles jusqu'à ce que ça passe.
 
 **Conclusion opérationnelle** : GJR-GARCH(1,1)-t est adopté comme moteur de volatilité v1 (direction conforme à la littérature, gain régulier, benchmark battu partout où il doit l'être). Le renforcement statistique passe par PLUS DE DONNÉES (historique ≥ 2000, incluant 2008 et la bulle dot-com), pas par plus d'itérations de modèles sur ce même échantillon.
