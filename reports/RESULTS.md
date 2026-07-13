@@ -83,30 +83,70 @@ L'itération v1→v2 illustre le protocole : le PIT a diagnostiqué le skew
 manquant (masse excédentaire déciles 8-9, queue gauche sous-estimée), le
 skew-t l'a corrigé, les tests sont repassés.
 
-## 6. Limites honnêtes (à ne pas enterrer)
+## 6. Réplique tradeable : straddle ATM delta-hedgé (le test qui tue ou sauve)
+
+Vente mensuelle d'un straddle ATM NDX 21j, delta-hedgé quotidiennement à la
+clôture (futures, 1,5 bp), tenu à échéance, taux DTB3 réels, dividendes 0,7 %.
+IV d'entrée = VXN × haircut (l'ATM cote sous l'indice de variance qui inclut
+le skew). Tenu à échéance, le P&L total ne dépend pas de la trajectoire d'IV
+supposée (elle n'affecte que les deltas). Sizing `prop` réutilisé tel quel —
+aucun paramètre nouveau.
+
+**Résultat central (haircut 0,95, coût 0,5 pt de vol/entrée) :**
+
+| Règle | Expo | Sharpe net | Pire mois | SR 04-14 | SR 15-26 | DSR (N=13) |
+|---|---|---|---|---|---|---|
+| Straddle inconditionnel | 1,00 | 0,62 | −53 | 0,85 | 0,46 | 0,85 |
+| **Straddle prop (HAR-X)** | 0,29 | **0,78** | **−7,2** | 0,90 | 0,64 | **0,967** |
+| Straddle prop + filtre tendance | 0,24 | 0,38 | −7,2 | 0,63 | 0,05 | 0,53 |
+
+- **Le straddle bat largement le swap de variance idéalisé** (0,62 vs 0,36
+  inconditionnel ; pire mois −53 vs −187). Mécanisme sain, pas un artefact :
+  le dollar-gamma du straddle s'éteint quand le spot s'éloigne du strike —
+  on ne vend pas les ailes. Le swap de variance (log-contract) garde son
+  gamma dans la chute : c'est lui qui prend les −187.
+- **prop + straddle franchit le Sharpe déflaté : DSR 0,967 > 0,95** (N=13
+  essais comptés sur tout le projet). Diff de Sharpe vs inconditionnel :
+  +0,33, IC90 bootstrap stationnaire [+0,04 ; +0,55], P(≤0)=2,7 %.
+- Crises (net/mois, tranche 0, haircut 0,97) : COVID −0,4 (vs −11,3 uncond),
+  2008 −0,7 (vs −2,5), 2022 −0,3 (vs −1,5).
+- Sensibilité (Sharpe prop) : haircut 0,97 → 1,02/0,73 à coûts 0,5/1,0 ;
+  haircut 0,95 → 0,78/0,48. Breakeven coûts ≈ 1,9 pt de vol.
+- Capital : à 2-3 unités de vega par 100 $ de capital, ≈ 12-18 %/an,
+  pire mois historique −13 à −20 %.
+- **Échec compté** : le filtre « couper si la VRP réalisée 252j < 0 » détruit
+  la performance récente (SR 2015-26 : 0,05). La compression de prime ne se
+  time pas avec cet outil.
+
+## 7. Limites honnêtes (à ne pas enterrer)
 
 1. **La prime se comprime** : Sharpe ~0,9 (2004-14) → ~0,4 (2015-26) sur
    toutes les variantes. Extrapoler 0,58 vers l'avant est optimiste ;
    0,3-0,45 net est l'attente raisonnable.
 2. **VaR 1 % à la limite** (5 violations vs 2,3 attendues, Christoffersen
    p=0,08) : le clustering des violations extrêmes n'est pas exclu.
-3. **Implémentabilité** : les swaps de variance ne sont pas accessibles en
-   retail ; la réplique delta-hedgée en options QQQ a des coûts ~2× et un
-   tracking error non modélisé ici. Les futures VXN n'existent plus.
+3. **Réplique straddle simulée, pas mesurée** : marks Black-Scholes, IV
+   d'entrée approchée par VXN×[0,95-0,97] faute de chaînes d'options
+   historiques, hedge à la clôture quotidienne seulement (les gaps intraday
+   de 2020 auraient coûté plus), dividendes constants. La fourchette de
+   sensibilité (haircut × coûts) encadre cette incertitude mais ne la
+   supprime pas — la validation finale exige des données d'options réelles
+   (OptionMetrics/ORATS ou CBOE DataShop).
 4. **Une seule histoire** : 269 mois, 4 crises. Le bootstrap n'invente pas
    les crises absentes de l'échantillon.
-5. P&L en points de vol par vega, pas en % de capital : le passage à un
-   portefeuille exige une politique de collatéral/marge (les appels de marge
-   en crise sont le vrai risque de ruine du vendeur de variance).
-6. Comptage des essais : 10 configurations testées dans ce projet,
-   documentées dans les scripts ; aucune grille d'hyperparamètres balayée.
+5. Le passage en % de capital suppose une marge toujours disponible ; en
+   crise, les appels de marge et l'élargissement des spreads arrivent
+   ensemble. Prévoir ≥ 3× la marge initiale en collatéral.
+6. Comptage des essais : 13 configurations testées dans ce projet (dont 2
+   échecs documentés : filtre spike, filtre tendance) ; aucune grille
+   d'hyperparamètres balayée.
 
-## 7. Prochaines itérations candidates
+## 8. Prochaines itérations candidates
 
-- CPCV (Lopez de Prado) en plus du walk-forward ; test SPA de Hansen sur
-  l'ensemble des 8 modèles de vol.
+- **Valider la réplique sur données d'options réelles** (chaînes historiques
+  QQQ/NDX) — c'est la seule limite majeure restante avant un paper-trading.
 - Expected Shortfall + test Acerbi-Székely (la VaR seule ne suffit pas pour
   un book short-vol).
-- Réplique réaliste en options QQQ (delta-hedge quotidien, coûts mesurés).
+- CPCV (Lopez de Prado) et SPA de Hansen sur l'ensemble des modèles de vol.
 - Terme VIX/VXN (pente du terme) comme covariable du sizing.
 - Politique de collatéral et sizing en % de capital (Kelly fractionnaire).
