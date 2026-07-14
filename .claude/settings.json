@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "preCommit": ".claude/hooks/pre-commit-lookahead-check.sh"
+  },
+  "description": "Quant-Trade: NASDAQ probability model with anti-lookahead enforcement"
+}
