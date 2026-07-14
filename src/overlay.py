@@ -35,7 +35,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from volatility import ANNUALIZE, fit_arch, garch_path, params_dict
+from volatility import ANNUALIZE, fit_arch, garch_path, garch_path_fold_only, params_dict
 
 # Regle a priori, fixee AVANT evaluation (anti data-snooping) : seuil de coupe
 # = 95e percentile in-sample de la vol GJR-t annualisee ; coupe totale (0).
@@ -87,9 +87,10 @@ def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int,
     `refit_every` jours, reutilise fit_arch/garch_path/ARCH_SPECS["GJR-t"]).
     A chaque re-estimation sur r[:tr] (passe uniquement, aucune fuite) :
       - vol_fcst[t]   : vol GJR-t annualisee prevue pour r[t] (info t-1)
-      - vol_target[t] : vol annualisee REALISEE de r[:tr] (cible Buy & Hold,
-                        recalculee a chaque refit, jamais une constante figee
-                        a la main)
+      - vol_target[t] : vol annualisee REALISEE de r[:t0] (cible Buy & Hold,
+                        FIXE une fois a t0, jamais recalculee pour eviter
+                        l'introduction d'une fuite information : vol_target
+                        ne doit pas reflechir les rendements apres t0)
       - vol_thresh[t] : extreme_pctl-eme percentile in-sample de la vol GJR-t
                         annualisee sur r[:tr] (seuil de coupe, passe uniquement)
 
@@ -99,22 +100,37 @@ def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int,
     script appelant pour la liste exacte des valeurs testees).
     Retourne des tableaux de taille len(r), NaN avant t0 (periode de burn-in,
     hors evaluation - meme convention que l'Etape C).
+
+    BUGFIX (2026-07-14): vol_target etait recalculee a chaque refit (ligne 114
+    anciennement). Cela creait une fuite information : vol_target montait avec
+    la volatilite realisee apres t0, faussant l'effet du vol-targeting en krach.
+    Fix: Pre-calculer vol_target UNE FOIS sur r[:t0], puis le fixer pour tout
+    le walk-forward (aucune fuite, fidelite a l'intention du vol-targeting).
     """
     T = len(r)
     vol_fcst = np.full(T, np.nan)
     vol_target = np.full(T, np.nan)
     vol_thresh = np.full(T, np.nan)
+
+    # PRE-COMPUTE vol_target ONCE on the initial in-sample period [0:t0]
+    # This is the "target volatility" of Buy & Hold on the pre-OOS window.
+    # It should NEVER change during walk-forward (fix for Issue #1).
+    vol_target_const = realized_ann_vol_pct(r[:t0])
+
     for tr in range(t0, T, refit_every):
         block = range(tr, min(tr + refit_every, T))
         res = fit_arch(r[:tr], "GJR-t")
         p = params_dict(res)
-        path = garch_path(r, p, gjr=True)  # taille T+1 ; path[t] = var(r[t] | info t-1)
+        # BUGFIX (Issue #2): Use garch_path_fold_only() to compute ONLY fold [tr, T)
+        # This prevents retroactive recalculation of path[t] when params are re-estimated
+        # in subsequent refits. Params are locked at their r[:tr] values for the entire fold.
+        path = garch_path_fold_only(r, p, tr, gjr=True)
+        # vol_ann_in: use only in-sample (pre-OOS) part for threshold percentile
         vol_ann_in = ANNUALIZE * np.sqrt(path[:tr])  # distribution in-sample (passe uniquement)
         thresh = float(np.percentile(vol_ann_in, extreme_pctl))
-        vtar = realized_ann_vol_pct(r[:tr])
         for t in block:
             vol_fcst[t] = ANNUALIZE * np.sqrt(path[t])
-            vol_target[t] = vtar
+            vol_target[t] = vol_target_const  # ← Use PRE-COMPUTED constant, not recalculated vtar
             vol_thresh[t] = thresh
     return {"vol_fcst": vol_fcst, "vol_target": vol_target, "vol_thresh": vol_thresh}
 
@@ -128,23 +144,32 @@ def walk_forward_vol_forecast_multi(r: np.ndarray, t0: int, refit_every: int,
     nouveau fit). Utilise par le grid-search (scripts/run_etape_d_optimize.py)
     pour eviter de refitter le meme GJR-t une fois par combo.
 
+    BUGFIX (2026-07-14): vol_target was recalculated at each refit.
+    Now: Pre-compute vol_target ONCE on r[:t0], then hold it constant.
+    This prevents information leakage (realized vol after t0 should not
+    affect the "target" vol that's supposed to be a pre-OOS baseline).
+
     Retourne {"vol_fcst":..., "vol_target":..., "vol_thresh": {pctl: array}}.
     """
     T = len(r)
     vol_fcst = np.full(T, np.nan)
     vol_target = np.full(T, np.nan)
     vol_thresh = {pc: np.full(T, np.nan) for pc in extreme_pctls}
+
+    # PRE-COMPUTE vol_target ONCE on the initial in-sample period [0:t0]
+    vol_target_const = realized_ann_vol_pct(r[:t0])
+
     for tr in range(t0, T, refit_every):
         block = range(tr, min(tr + refit_every, T))
         res = fit_arch(r[:tr], "GJR-t")
         p = params_dict(res)
-        path = garch_path(r, p, gjr=True)
+        # BUGFIX (Issue #2): Use garch_path_fold_only() for strict walk-forward
+        path = garch_path_fold_only(r, p, tr, gjr=True)
         vol_ann_in = ANNUALIZE * np.sqrt(path[:tr])
         threshes = {pc: float(np.percentile(vol_ann_in, pc)) for pc in extreme_pctls}
-        vtar = realized_ann_vol_pct(r[:tr])
         for t in block:
             vol_fcst[t] = ANNUALIZE * np.sqrt(path[t])
-            vol_target[t] = vtar
+            vol_target[t] = vol_target_const  # ← Use PRE-COMPUTED constant
             for pc in extreme_pctls:
                 vol_thresh[pc][t] = threshes[pc]
     return {"vol_fcst": vol_fcst, "vol_target": vol_target, "vol_thresh": vol_thresh}

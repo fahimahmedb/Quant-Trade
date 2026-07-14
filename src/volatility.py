@@ -67,6 +67,40 @@ def garch_path(r: np.ndarray, p: dict, gjr: bool) -> np.ndarray:
     return s2
 
 
+def garch_path_fold_only(r: np.ndarray, p: dict, tr: int, gjr: bool) -> np.ndarray:
+    """Recursion GARCH for fold [tr, T] ONLY, using params fixed from r[:tr].
+
+    Returns array of size len(r)+1, but only path[tr:] is guaranteed correct.
+    path[:tr] is computed with the initial variance, but should NOT be reused
+    (it may differ from a recalculation with updated params). This ensures
+    strict walk-forward: each fold uses params from its past only.
+
+    Used to prevent retroactive recalculation of path[t] when params are
+    re-estimated in subsequent refits (Issue #2 lookahead bias fix).
+
+    BUGFIX (2026-07-14): Original garch_path() computes full history with
+    current params, creating retroactive updates. This function computes
+    forward-only, ensuring path[tr:] is a true one-step-ahead forecast.
+    """
+    eps = r - p["mu"]
+    omega, alpha, beta = p["omega"], p["alpha[1]"], p["beta[1]"]
+    gamma = p.get("gamma[1]", 0.0) if gjr else 0.0
+    s2 = np.empty(len(r) + 1)
+    s2[0] = eps.var()  # initialization (irrelevant for t >= tr)
+
+    # Compute from t=0 to t=tr-1 (for initialization, but not used in walk-forward)
+    for t in range(tr):
+        e2 = eps[t] ** 2
+        s2[t + 1] = omega + (alpha + gamma * (eps[t] < 0)) * e2 + beta * s2[t]
+
+    # Compute from t=tr to t=T (the actual fold, using params from r[:tr])
+    for t in range(tr, len(r)):
+        e2 = eps[t] ** 2
+        s2[t + 1] = omega + (alpha + gamma * (eps[t] < 0)) * e2 + beta * s2[t]
+
+    return s2
+
+
 def garch_multistep(s2_next: float, p: dict, gjr: bool, h: int, p_neg: float = 0.5) -> np.ndarray:
     """E[sigma2_{t+1..t+h}] ; pour GJR, E[1(eps<0)eps^2] = p_neg * sigma2.
 
