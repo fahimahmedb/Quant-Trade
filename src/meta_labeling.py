@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 
 from prediction import walk_forward_proba
 
@@ -23,7 +25,37 @@ __all__ = [
     "build_secondary_features",
     "meta_size",
     "meta_labeled_position",
+    "SECONDARY_MODELS",
 ]
+
+
+def _logit_l2():
+    return LogisticRegression(C=0.5, max_iter=1000)
+
+
+def _random_forest():
+    # defaults sklearn (n_estimators=100), seul random_state fixe pour la
+    # reproductibilite - pas de tuning (discipline anti data-snooping).
+    return RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+
+
+def _xgboost():
+    # import tardif : xgboost n'est pas une dependance du coeur du projet,
+    # seulement utilise pour cette variante du secondaire. Defaults xgboost
+    # (n_estimators=100 faute d'early stopping) - pas de tuning.
+    from xgboost import XGBClassifier
+    return XGBClassifier(n_estimators=100, random_state=42, eval_metric="logloss",
+                         n_jobs=-1, verbosity=0)
+
+
+# Univers FIGE des 3 variantes de modele secondaire, declare avant evaluation
+# (cf. CLAUDE.md, discipline anti data-snooping). Le primaire (LogitL2) ne
+# change pas entre les variantes.
+SECONDARY_MODELS = {
+    "LogitL2": _logit_l2,
+    "RandomForest": _random_forest,
+    "XGBoost": _xgboost,
+}
 
 
 def primary_signal(X: pd.DataFrame, y: pd.Series, model_factory, t0: int,

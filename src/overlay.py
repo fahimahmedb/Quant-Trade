@@ -79,7 +79,8 @@ def extreme_cut(exposure: np.ndarray, vol_fcst_ann_pct: np.ndarray,
     return exposure
 
 
-def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int) -> dict:
+def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int,
+                              extreme_pctl: float = EXTREME_PCTL) -> dict:
     """Previsions GJR-t walk-forward (1 pas) + calibration in-sample de l'overlay.
 
     Meme cadence que l'Etape C (fenetre expansive, re-estimation tous les
@@ -89,8 +90,13 @@ def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int) -> dict:
       - vol_target[t] : vol annualisee REALISEE de r[:tr] (cible Buy & Hold,
                         recalculee a chaque refit, jamais une constante figee
                         a la main)
-      - vol_thresh[t] : EXTREME_PCTL-eme percentile in-sample de la vol GJR-t
+      - vol_thresh[t] : extreme_pctl-eme percentile in-sample de la vol GJR-t
                         annualisee sur r[:tr] (seuil de coupe, passe uniquement)
+
+    `extreme_pctl` : percentile in-sample utilise pour le seuil de coupe
+    extreme (parametre, defaut = EXTREME_PCTL = 95e, cf. module docstring;
+    fait partie de l'univers de variantes FIGE avant evaluation - cf. le
+    script appelant pour la liste exacte des valeurs testees).
     Retourne des tableaux de taille len(r), NaN avant t0 (periode de burn-in,
     hors evaluation - meme convention que l'Etape C).
     """
@@ -104,7 +110,7 @@ def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int) -> dict:
         p = params_dict(res)
         path = garch_path(r, p, gjr=True)  # taille T+1 ; path[t] = var(r[t] | info t-1)
         vol_ann_in = ANNUALIZE * np.sqrt(path[:tr])  # distribution in-sample (passe uniquement)
-        thresh = float(np.percentile(vol_ann_in, EXTREME_PCTL))
+        thresh = float(np.percentile(vol_ann_in, extreme_pctl))
         vtar = realized_ann_vol_pct(r[:tr])
         for t in block:
             vol_fcst[t] = ANNUALIZE * np.sqrt(path[t])
@@ -113,17 +119,58 @@ def walk_forward_vol_forecast(r: np.ndarray, t0: int, refit_every: int) -> dict:
     return {"vol_fcst": vol_fcst, "vol_target": vol_target, "vol_thresh": vol_thresh}
 
 
+def walk_forward_vol_forecast_multi(r: np.ndarray, t0: int, refit_every: int,
+                                    extreme_pctls: list) -> dict:
+    """Comme walk_forward_vol_forecast, mais calcule vol_thresh pour PLUSIEURS
+    percentiles en un seul passage (un seul fit GJR-t par fenetre de refit,
+    reutilise pour toutes les valeurs de extreme_pctls - le percentile
+    in-sample est un simple quantile de la meme distribution passee, pas un
+    nouveau fit). Utilise par le grid-search (scripts/run_etape_d_optimize.py)
+    pour eviter de refitter le meme GJR-t une fois par combo.
+
+    Retourne {"vol_fcst":..., "vol_target":..., "vol_thresh": {pctl: array}}.
+    """
+    T = len(r)
+    vol_fcst = np.full(T, np.nan)
+    vol_target = np.full(T, np.nan)
+    vol_thresh = {pc: np.full(T, np.nan) for pc in extreme_pctls}
+    for tr in range(t0, T, refit_every):
+        block = range(tr, min(tr + refit_every, T))
+        res = fit_arch(r[:tr], "GJR-t")
+        p = params_dict(res)
+        path = garch_path(r, p, gjr=True)
+        vol_ann_in = ANNUALIZE * np.sqrt(path[:tr])
+        threshes = {pc: float(np.percentile(vol_ann_in, pc)) for pc in extreme_pctls}
+        vtar = realized_ann_vol_pct(r[:tr])
+        for t in block:
+            vol_fcst[t] = ANNUALIZE * np.sqrt(path[t])
+            vol_target[t] = vtar
+            for pc in extreme_pctls:
+                vol_thresh[pc][t] = threshes[pc]
+    return {"vol_fcst": vol_fcst, "vol_target": vol_target, "vol_thresh": vol_thresh}
+
+
 def build_overlay_positions(r: np.ndarray, t0: int, refit_every: int, cap: float,
-                            with_extreme_cut: bool) -> dict:
+                            with_extreme_cut: bool, extreme_pctl: float = EXTREME_PCTL,
+                            cut_frac: float = EXTREME_CUT_FRAC,
+                            vol_fc: dict | None = None) -> dict:
     """Construit les positions (exposition Buy & Hold, toujours long) walk-forward.
 
+    `cap`, `extreme_pctl`, `cut_frac` sont parametrables (grid-search figee,
+    cf. scripts/run_etape_d_optimize.py) sans toucher au moteur GARCH.
+    `vol_fc` : previsions walk-forward deja calculees (dict de
+    walk_forward_vol_forecast) - permet de reutiliser le meme fit GJR-t pour
+    plusieurs valeurs de extreme_pctl (le percentile ne depend que de la
+    distribution in-sample de vol_fcst, pas d'un nouveau fit). Si None,
+    recalcule (comportement d'origine, compatible ascendant).
     Retourne {"pos": array, "vol_fcst":..., "vol_target":..., "vol_thresh":...}.
     pos = NaN -> 0 avant t0 (periode de burn-in, hors evaluation).
     """
-    fc = walk_forward_vol_forecast(r, t0, refit_every)
+    fc = walk_forward_vol_forecast(r, t0, refit_every, extreme_pctl) if vol_fc is None else vol_fc
     expo = vol_target_exposure(fc["vol_fcst"], fc["vol_target"], cap)
     if with_extreme_cut:
-        expo = extreme_cut(expo, fc["vol_fcst"], fc["vol_thresh"], EXTREME_CUT_FRAC)
+        expo = extreme_cut(expo, fc["vol_fcst"], fc["vol_thresh"], cut_frac)
     pos = np.nan_to_num(expo, nan=0.0)
-    fc["pos"] = pos
-    return fc
+    out = dict(fc)
+    out["pos"] = pos
+    return out
