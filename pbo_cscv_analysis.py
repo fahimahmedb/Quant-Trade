@@ -29,8 +29,8 @@ from prediction import backtest, trading_metrics, dsr
 
 T0 = 750
 REFIT_EVERY = 21
-CAP_GRID = [1.00, 1.25, 1.50, 2.00]
-PCTL_GRID = [90, 95, 99]
+CAP_GRID = [1.50]                            # Phase 1 fix: Pre-registered single combo
+PCTL_GRID = [95]                              # Phase 1 fix: Pre-registered single combo
 COST_BPS = 5.0
 EXTREME_CUT_FRAC = 0.0
 DATA_PATH = ROOT / "data" / "nasdaq100_daily.txt"
@@ -45,7 +45,7 @@ print(f"Dataset: {T} obs, {T - T0} OOS")
 print(f"T0={T0}, REFIT_EVERY={REFIT_EVERY}, refits={len(range(T0, T, REFIT_EVERY))}")
 
 # ============================================================================
-# STEP 1 : Compute vol forecasts (shared across all 12 combos)
+# STEP 1 : Compute vol forecasts (shared across combo)
 # ============================================================================
 
 print("\n[1/3] Computing vol forecasts (walk-forward)...")
@@ -58,7 +58,7 @@ vol_thresh = fc["vol_thresh"]
 # STEP 2 : Evaluate all 12 combos, compute IS/OOS split for each fold
 # ============================================================================
 
-print("[2/3] Evaluating 12 combos with IS/OOS decomposition...")
+print("[2/3] Evaluating combo(s) with IS/OOS decomposition...")
 
 refits = list(range(T0, T, REFIT_EVERY))
 n_folds = len(refits) - 1  # Each fold is from refit[i] to refit[i+1]
@@ -140,7 +140,8 @@ df_pbo = pd.DataFrame([
 ]).sort_values("OOS_Sharpe", ascending=False)
 
 print("=" * 90)
-print("PBO SUMMARY (12 combos ranked by OOS Sharpe)")
+n_combos = len(CAP_GRID) * len(PCTL_GRID)
+print(f"PBO SUMMARY ({n_combos} combo(s) ranked by OOS Sharpe)")
 print("=" * 90)
 print(df_pbo.to_string(index=False))
 print()
@@ -148,7 +149,7 @@ print()
 # Overfitting detection
 df_pbo["OVERFIT_FLAG"] = (df_pbo["OOS/IS_ratio"] < 0.7) | (df_pbo["Decay"] < -0.3)
 overfit_count = df_pbo["OVERFIT_FLAG"].sum()
-print(f"\n⚠️  OVERFITTING DETECTED: {overfit_count}/12 combos (OOS < 70% of IS or decay > -30%)")
+print(f"\n⚠️  OVERFITTING DETECTED: {overfit_count}/{n_combos} combos (OOS < 70% of IS or decay > -30%)")
 
 # Best combo
 best_combo = results_combos[0]
@@ -193,7 +194,7 @@ print(f"  (threshold: std < 50% of mean)")
 # ============================================================================
 
 print("\n" + "=" * 90)
-print("FOLD-BY-FOLD DECAY (all 12 combos)")
+print(f"FOLD-BY-FOLD DECAY (all {n_combos} combo(s))")
 print("=" * 90)
 print("\nFold index → OOS Sharpe decline:")
 
@@ -208,7 +209,7 @@ n_folds_actual = all_fold_sharpes_arr.shape[1]
 # Plot fold-wise decay
 for fold_idx in range(n_folds_actual):
     fold_sharpes_across_combos = all_fold_sharpes_arr[:, fold_idx]
-    print(f"  Fold {fold_idx:2d}: mean Sharpe across 12 combos = {np.mean(fold_sharpes_across_combos):+.4f} "
+    print(f"  Fold {fold_idx:2d}: mean Sharpe across {n_combos} combo(s) = {np.mean(fold_sharpes_across_combos):+.4f} "
           f"(std={np.std(fold_sharpes_across_combos):.4f}, range [{np.min(fold_sharpes_across_combos):+.4f}, "
           f"{np.max(fold_sharpes_across_combos):+.4f}])")
 

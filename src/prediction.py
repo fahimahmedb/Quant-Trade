@@ -147,13 +147,21 @@ def triple_barrier_labels(df: pd.DataFrame, horizon: int = 5, vol_span: int = 20
       - barriere basse (stop-loss)   a -mult*sigma_t  -> -1 si touchee en premier
       - barriere verticale (H jours)                  -> signe du rendement final
     sigma_t = volatilite locale (ewm) connue en t : les barrieres s'adaptent au
-    regime. Aucun lookahead pour les FEATURES (le label est la cible, connu
+    regime. FIXE (Phase 1): sigma calculee STRICTEMENT sur [0:t], jamais sur la serie complete.
+    Aucun lookahead pour les FEATURES (le label est la cible, connu
     seulement H jours plus tard ; c'est precisement ce que la purge protege).
     """
     close = df["close"].astype(float).values
     logp = np.log(close)
     r = np.diff(logp, prepend=logp[0])
-    sigma = pd.Series(r).ewm(span=vol_span).std().values
+    # FIXED: compute sigma walk-forward (only past data, no future)
+    sigma = np.full(len(r), np.nan)
+    for t in range(vol_span, len(r)):
+        # Only use returns up to t (strict walk-forward)
+        sigma[t] = np.std(r[max(0, t - vol_span):t], ddof=1)
+    # Fill early periods with first valid sigma
+    if not np.isnan(sigma[vol_span]):
+        sigma[:vol_span] = sigma[vol_span]
     n = len(close)
     labels = np.full(n, np.nan)
     for t in range(n - 1):
