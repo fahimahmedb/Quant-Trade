@@ -41,7 +41,7 @@ from prediction import (  # noqa: E402
 )
 
 # ------------------------------------------------------------------ protocole
-T0, REFIT_EVERY, EMBARGO, H = 750, 21, 5, 5
+T0, REFIT_EVERY, EMBARGO, H = 750, 21, 21, 5  # Phase 1 fix: embargo increased to match refit_every
 VOL_SPAN, BARRIER_MULT = 20, 1.5
 COST_BPS = 5.0
 SEED = 42

@@ -70,8 +70,8 @@ from prediction import backtest, dsr, trading_metrics  # noqa: E402
 # ------------------------------------------------------------------ protocole
 T0 = 750
 COST_BPS = 5.0
-CAP_GRID = [1.00, 1.25, 1.50, 2.00]          # fige AVANT evaluation
-PCTL_GRID = [90, 95, 99]                      # fige AVANT evaluation
+CAP_GRID = [1.50]                             # Pre-registered (Phase 1 fix: single combo)
+PCTL_GRID = [95]                              # Pre-registered (Phase 1 fix: single combo)
 DATA_PATH = ROOT / "data" / "nasdaq100_daily.txt"
 DEFAULT_REFIT = 21
 REFIT_EVERY = int(os.environ.get("REFIT_EVERY", DEFAULT_REFIT))
