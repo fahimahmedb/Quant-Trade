@@ -66,15 +66,18 @@ src/    pp_types.py   contrat commun (Source.fit/predict, SourceSignal, Posterio
 scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
          run_etape_P6_pred2027.py → results/etape_P6_pred2027.md  (prévision FORWARD 2027)
          run_etape_P7_circonscriptions.py → results/etape_P7_circonscriptions.md
-data/    fr_pres2022_circo.csv — présidentielle 2022 1er tour par circonscription
-         × parti (RÉEL, ministère de l'Intérieur / data.gouv.fr)
+         run_etape_P8_second_tour.py → results/etape_P8_second_tour.md (reports T2)
+data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × parti
+         fr_pres2022_t2_circo.csv — 2nd tour (Macron/Le Pen) par circo
+         (RÉEL, ministère de l'Intérieur / data.gouv.fr)
 ```
 
 ## Reproduire
 
 ```bash
 pip install numpy scipy pandas scikit-learn xgboost
-for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 P7_circonscriptions; do
+for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 \
+         P7_circonscriptions P8_second_tour; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```
@@ -94,12 +97,22 @@ seuls 3 candidats sur 544 étaient codés « FI » en 2024).
   **divise l'erreur locale par ~2** vs la moyenne nationale plate. Base d'une
   projection en sièges / de reports par circonscription pour 2027.
 
-**Méthodes sourcées** (documentées dans le rapport) : régression de Dirichlet sur
-données compositionnelles multipartis et procédure correction-combinaison au
-niveau circonscription — Hanretty (2021), *International Journal of Forecasting* ;
-approche bayésienne polls + fondamentaux en systèmes multipartis (Stoetzer et al.,
-*Political Analysis* 2019). La *baseline* de référence à battre est le **swing
-national uniforme**.
+**Skill temporelle** (2017→2022, données réelles des deux années) : une
+régression de circonscription **bat le swing national uniforme** pour les 9
+partis appariés (MAE moyenne 1,19 vs 1,78). Cas LFI : le swing uniforme fait
+*pire* que la persistance car la poussée Mélenchon fut géographiquement inégale.
+
+**Second tour (P8)** — reports de voix, données réelles 2022 T2 par circo :
+la part Le Pen T2 est très bien prédite par la composition T1 (R² 0,95), **mais
+les taux de report individuels ne sont pas identifiables** depuis des agrégats
+(*sophisme écologique*, King 1997 — illustré par le paradoxe Zemmour : corrélation
+spatiale ~0 malgré un report individuel massif). On ne rapporte que le robuste :
+corrélations et comptabilité du réservoir (+9,2 pts au-delà du bloc droite radicale).
+
+**Méthodes sourcées** : régression de Dirichlet compositionnelle multipartis —
+Hanretty (2021), *Int. J. of Forecasting* ; approche bayésienne polls +
+fondamentaux — Stoetzer et al. (*Political Analysis* 2019) ; inférence écologique
+— King (1997). *Baseline* de référence : le **swing national uniforme**.
 
 ## Prévision 2027 (P6) — forward, honnêtement vérifiable
 
