@@ -2,7 +2,7 @@
   "_meta": {
     "description": "Registre des elections presidentielles francaises (Ve Republique, suffrage universel direct 1965->2022). Contexte + verite terrain pour le backtest OOS.",
     "source": "Resultats officiels 1er/2nd tour (domaine public, Conseil constitutionnel / ministere de l'Interieur). Parts exprimees en fraction des suffrages exprimes (0..1).",
-    "reference_id": "Finaliste de continuite / camp sortant (axe scored: continuite vs challenger). NaN de score 2nd tour si le camp sortant est elimine au 1er tour.",
+    "reference_id": "Candidat PRINCIPAL DU CAMP SORTANT (president sortant, ou son parti/camp presidentiel a defaut). Choix conforme a la litterature (Jerome-Speziari, Lewis-Beck-Nadeau) : les modeles fondamentaux predisent le sort du camp au pouvoir. En 2017 la reference est Hamon (PS = camp de Hollande), elimine au 1er tour : le camp sortant s'est effondre, ce que les fondamentaux (approbation Hollande ~20) predisent correctement. La part 2nd tour du camp sortant vaut alors NaN (non finaliste) mais l'ISSUE (le camp sortant n'a pas gagne) reste scorable.",
     "incumbent_running": "true si un president sortant figure sur le bulletin; false pour un siege ouvert (demission/deces/retrait)."
   },
   "elections": [
@@ -125,7 +125,7 @@
       "winner_id": "hollande_2012"
     },
     {
-      "election_id": "FR_pres_2017", "year": 2017, "reference_id": "macron_2017", "incumbent_running": false,
+      "election_id": "FR_pres_2017", "year": 2017, "reference_id": "hamon_2017", "incumbent_running": false,
       "candidates": [
         {"id": "macron_2017", "name": "Emmanuel Macron", "camp": "centre", "incumbent": false},
         {"id": "lepen_2017", "name": "Marine Le Pen", "camp": "RN", "incumbent": false},

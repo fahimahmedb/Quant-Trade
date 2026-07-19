@@ -20,12 +20,19 @@ sources. Il est traité comme tel dans le mapping (voir §2) et dans l'incertitu
 
 **Couverture temporelle** : Google Trends n'existe (au sens exploitable) que depuis
 ~2004. Les présidentielles antérieures (1965 → 2002) sont donc
-**structurellement indisponibles** pour cette source -> `SourceSignal(available=False)`,
-traitées comme un pli non scorable par le backtest OOS (attendu, pas une anomalie).
+**structurellement indisponibles** pour cette source -> `SourceSignal(available=False)`.
+
+**Correction d'audit — source forward-only** : un premier jet backtestait le NLP sur des
+features 2007-2022 **rédigées en connaissant l'issue** (hindsight), ce qui gonflait les
+scores (cf. `results/AUDIT.md`). Ces lignes ont été **supprimées** du snapshot. Un proxy
+comportemental ne peut être honnêtement backtesté que s'il est **horodaté avant le scrutin**
+par une collecte vérifiable. La source NLP est donc désormais **réservée à la prévision
+d'élections à venir** (2027) : sur tout l'historique elle se déclare indisponible.
 
 ## 2. Features et mapping vers la part 2nd tour
 
-Snapshot `data/fr_nlp_snapshot.csv` (valeurs illustratives, voir en-tête du fichier) :
+Schéma des features attendues (`data/fr_nlp_snapshot.csv`, désormais vide de données
+historiques — à alimenter en live pour un scrutin à venir) :
 
 
 | Colonne | Sens |
@@ -64,36 +71,33 @@ instantané sur le snapshot offline `data/fr_nlp_snapshot.csv`.
 
 - Pour prédire l'élection T, `NlpSource` est entraînée UNIQUEMENT sur les élections
   d'année < T (recalibration de `scale` seulement, voir §2)
-- Les élections 1965 → 2002 n'ont pas de donnée NLP : plis marqués « indisponible »,
-  seules 2007 → 2022 sont effectivement scorées (n=4 au maximum)
+- Données historiques rétrospectives **supprimées** (cf. §1) : **0 pli scoré**. La valeur
+  de cette source ne pourra être mesurée que sur un scrutin futur (2027), sans hindsight.
 
 | Annee | Election | Reference | Part prevue | P(victoire) | Part reelle | Issue |
 |---|---|---|---|---|---|---|
 | 1988 | FR_pres_1988 | mitterrand_1988 | — | — | 0.540 | (source indispo.) |
 | 1995 | FR_pres_1995 | jospin_1995 | — | — | 0.474 | (source indispo.) |
 | 2002 | FR_pres_2002 | chirac_2002 | — | — | 0.822 | (source indispo.) |
-| 2007 | FR_pres_2007 | sarkozy_2007 | 0.521 | 0.61 | 0.531 | ✓ gagne |
-| 2012 | FR_pres_2012 | sarkozy_2012 | 0.357 | 0.03 | 0.484 | ✗ perd |
-| 2017 | FR_pres_2017 | macron_2017 | 0.558 | 0.78 | 0.661 | ✓ gagne |
-| 2022 | FR_pres_2022 | macron_2022 | 0.556 | 0.77 | 0.586 | ✓ gagne |
+| 2007 | FR_pres_2007 | sarkozy_2007 | — | — | 0.531 | (source indispo.) |
+| 2012 | FR_pres_2012 | sarkozy_2012 | — | — | 0.484 | (source indispo.) |
+| 2017 | FR_pres_2017 | hamon_2017 | — | — | — (élim. T1) | (source indispo.) |
+| 2022 | FR_pres_2022 | macron_2022 | — | — | 0.586 | (source indispo.) |
 
-**OOS (n=4)** — Brier 0.063 | log-loss 0.257 | MAE part 0.067 | taux de bonne issue 100%
-
-*4/7 plis disponibles (les autres sont antérieurs à ~2004, indisponibilité attendue, pas un échec).*
+*0/7 plis disponibles (les autres sont antérieurs à ~2004, indisponibilité attendue, pas un échec).*
 
 ## 4. Limitations honnêtes
 
 ⚠️ Cet exercice est à vocation **méthodologique**. Avant toute application réelle :
 
 
-1. **Snapshot illustratif** : les valeurs de `data/fr_nlp_snapshot.csv` sont construites
-   à dire d'expert (ordre de grandeur plausible), PAS extraites d'un export réel Google
-   Trends ni d'un moteur de sentiment calibré. À remplacer avant toute publication.
+1. **Aucune validation historique (n=0)** : les features rétrospectives ayant été
+   supprimées, aucun pli n'est scoré. Le mapping et ses poids `w1`/`w2` restent des choix
+   a priori **non validés** sur données réelles dans ce dépôt.
 
-2. **Échantillon minuscule** : au mieux 4 élections avec donnée NLP (2007-2022), dont 2
-   seulement disponibles pour la calibration du dernier pli testé. Aucune conclusion
-   statistique robuste ne peut être tirée d'un backtest à si peu de points ; les
-   métriques OOS ci-dessus sont indicatives, pas une preuve de valeur ajoutée.
+2. **Validation reportée au futur** : la seule mesure honnête de cette source passe par une
+   collecte Google Trends / presse **horodatée avant** un scrutin à venir (2027). Toute
+   reconstruction a posteriori serait du hindsight — l'erreur corrigée ici.
 
 3. **Proxy bruité et manipulable** : volume de recherche et tonalité agrégée peuvent être
    gonflés ou orientés par des campagnes coordonnées (bots, brigading), un scandale

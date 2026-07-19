@@ -8,18 +8,18 @@ On applique une famille ML (régression logistique, forêt aléatoire, gradient 
 
 | Prédicteur | n | Brier | Log-loss | MAE part | Bonne issue |
 |---|---|---|---|---|---|
-| ML — régression logistique | 7 | 0.356 | 1.736 | 0.133 | 57% |
-| ML — random forest | 7 | 0.235 | 0.745 | 0.101 | 71% |
-| ML — gradient boosting | 7 | 0.319 | 3.464 | 0.135 | 57% |
-| ML — XGBoost | 7 | 0.328 | 3.475 | 0.130 | 57% |
-| Structurel (P1) | 7 | 0.368 | 1.114 | 0.130 | 57% |
-| Fusion (P4) | 7 | 0.139 | 0.409 | 0.071 | 86% |
+| ML — régression logistique | 7 | 0.215 | 0.910 | 0.095 | 71% |
+| ML — random forest | 7 | 0.291 | 0.864 | 0.105 | 57% |
+| ML — gradient boosting | 7 | 0.279 | 3.381 | 0.126 | 71% |
+| ML — XGBoost | 7 | 0.450 | 3.894 | 0.137 | 43% |
+| Structurel (P1) | 7 | 0.295 | 0.909 | 0.120 | 57% |
+| Fusion (P4) | 7 | 0.294 | 0.892 | 0.118 | 57% |
 
 ## 3. Lecture (biais-variance)
 
-- Meilleur Brier ML = **0.235** ; structurel parcimonieux = **0.368** ; fusion multi-source = **0.139**.
+- Meilleur Brier ML = **0.215** ; structurel parcimonieux = **0.295** ; fusion multi-source = **0.294**.
 - L'un des modèles ML devance légèrement le structurel, mais l'écart n'est PAS significatif à cet effectif (7 plis) : à traiter comme du bruit, pas comme une preuve de supériorité.
-- La **fusion** reste la meilleure approche : elle gagne en information (marchés, NLP) plutôt qu'en capacité de modèle.
+- **Correction d'audit** : marchés et NLP étant désormais *forward-only* (données rétrospectives supprimées, cf. `results/AUDIT.md`), la fusion historique se **réduit au modèle structurel** — elle n'ajoute plus aucune information sur le passé. Tout écart entre ML, structurel et fusion à 7 plis est du **bruit d'échantillonnage**, pas une hiérarchie fiable. Le gain réel d'une fusion multi-source ne pourra se mesurer que sur un scrutin futur (2027), avec de vraies données de marché/Trends horodatées.
 
 ## 4. Où le ML paierait vraiment : la maille circonscription
 

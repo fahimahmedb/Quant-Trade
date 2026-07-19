@@ -3,8 +3,9 @@
 ## 1. Description du modèle
 
 Modèle structurel d'inspiration **Lewis-Beck & Nadeau** (1988) et **Jérôme-Speziari** (2000) :
-la part du candidat de **continuité** (camp sortant ou héritier) au **2nd tour** de
-l'élection présidentielle française dépend de quatre variables fondamentales :
+conformément à cette littérature, on prédit le **sort du camp sortant** — la part au
+**2nd tour** du **principal candidat du camp présidentiel sortant** (président sortant, ou
+son parti à défaut). Elle dépend de variables fondamentales connues *avant* le scrutin :
 
 | Variable | Source | Interprétation politique |
 |---|---|---|
@@ -31,23 +32,23 @@ l'élection présidentielle française dépend de quatre variables fondamentales
 
 Variables standardisées. Les coefficients attendus (théorie économique politique) :
 
-1. **Croissance PIB** (gdp_growth) : -0.0865
+1. **Croissance PIB** (gdp_growth) : -0.0967
    Théorie : + → part sortant ↑ (succès économique). Observé : ✗
 
-2. **Chômage** (unemployment) : -0.0119
-   Théorie : + → part sortant ↓ (malaise économique). Observé : ✓
+2. **Chômage** (unemployment) : +0.0022
+   Théorie : + → part sortant ↓ (malaise économique). Observé : ✗
 
-3. **Approbation du camp sortant** (approval) : +0.0817
+3. **Approbation du camp sortant** (approval) : +0.1122
    Théorie : + → part sortant ↑ (satisfaction électorale). Observé : ✓
 
-4. **Ancienneté du pouvoir** (tenure_years) : -0.0542
+4. **Ancienneté du pouvoir** (tenure_years) : -0.0315
    Théorie : + → part sortant ↓ (usure du pouvoir). Observé : ✓
 
-5. **Sortant concourt** (incumbent_running) : -0.0517
+5. **Sortant concourt** (incumbent_running) : -0.0513
    Théorie : + → part sortant ↑ (avantage du sortant). Observé : ✗
 
-Intercept (prior) : 0.5656
-Écart-type des résidus (historique) : 0.0787
+Intercept (prior) : 0.5560
+Écart-type des résidus (historique) : 0.0681
 
 ## 4. Backtest hors-échantillon (OOS)
 
@@ -63,12 +64,33 @@ Intercept (prior) : 0.5656
 | 2002 | FR_pres_2002 | chirac_2002 | 0.465 | 0.24 | 0.822 | ✓ gagne |
 | 2007 | FR_pres_2007 | sarkozy_2007 | 0.567 | 0.75 | 0.531 | ✓ gagne |
 | 2012 | FR_pres_2012 | sarkozy_2012 | 0.655 | 0.95 | 0.484 | ✗ perd |
-| 2017 | FR_pres_2017 | macron_2017 | 0.388 | 0.13 | 0.661 | ✓ gagne |
-| 2022 | FR_pres_2022 | macron_2022 | 0.564 | 0.70 | 0.586 | ✓ gagne |
+| 2017 | FR_pres_2017 | hamon_2017 | 0.388 | 0.13 | nan | ✗ perd |
+| 2022 | FR_pres_2022 | macron_2022 | 0.482 | 0.43 | 0.586 | ✓ gagne |
 
-**OOS (n=7)** — Brier 0.368 | log-loss 1.114 | MAE part 0.130 | taux de bonne issue 57%
+**OOS (n=7)** — Brier 0.295 | log-loss 0.909 | MAE part 0.120 (n=6) | taux de bonne issue 57%
 
-## 5. Limitations honnêtes
+*Note : en 2017 le camp sortant (PS, référence = Hamon) est éliminé au 1er tour ; sa part
+ 2nd tour est indéfinie (NaN, exclue de la MAE) mais l'**issue** reste scorée — les
+ fondamentaux (approbation Hollande ≈ 20) prédisent correctement que le PS ne l'emporte pas.*
+
+## 5. Le modèle bat-il le trivial ? (baselines)
+
+Un modèle fondamental n'a de valeur que s'il **bat des règles sans information économique**
+(exigence standard de la littérature). Comparaison OOS à effectif égal (mêmes 7 plis) :
+
+| Prédicteur | Brier | Log-loss | Bonne issue |
+|---|---|---|---|
+| Pile ou face (p=0.5) | 0.250 | 0.693 | 43% |
+| Camp sortant gagne toujours | 0.318 | 0.888 | 57% |
+| Avantage sortant si concourt | 0.216 | 0.623 | 71% |
+| **Fondamentaux (ce modèle)** | 0.295 | 0.909 | 57% |
+
+*Lecture honnête : sur 7 élections, les écarts de Brier < ~0.1 ne sont **pas**
+statistiquement significatifs. Si les fondamentaux ne dominent pas nettement les baselines,
+c'est le résultat réel — l'économie politique n'explique qu'une part modeste du 2nd tour,
+et n≈11 interdit toute conclusion forte.*
+
+## 6. Limitations honnêtes
 
 ⚠️ Cet exercice est à vocation **méthodologique**. Avant toute application réelle :
 
@@ -76,9 +98,10 @@ Intercept (prior) : 0.5656
 1. **Faiblesse du dataset** : n=11 élections seulement. Estimation Ridge (α=0.1) nécessaire pour
    régulariser, mais amplifie aussi le biais. Intervalle de confiance large.
 
-2. **2017 = réalignement partisan** : le modèle échoue à capturer le basculement 2016-2017
-   (Macron émergent hors champ politique classique). Les fondamentaux seuls ne suffisent pas
-   en cas de rupture systémique.
+2. **2017 = réalignement partisan** : les fondamentaux prédisent correctement l'effondrement
+   du camp sortant (PS, approbation Hollande ≈ 20), mais sont par nature **incapables de
+   désigner le vainqueur émergent** (Macron, hors champ partisan classique). C'est la limite
+   intrinsèque des modèles structurels : ils lisent le sort du sortant, pas les recompositions.
 
 3. **Variables macroéconomiques approximatives** : croissance/chômage/approbation sont des
    agrégations publiques, non des séries mensuelles rigoureuses. À remplacer par sources

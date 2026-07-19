@@ -74,22 +74,27 @@ for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml; do
 done
 ```
 
-## Résultat clé (backtest OOS, 7 plis) — à lire avec l'audit
+## Résultat clé (backtest OOS, 7 plis) — honnête, après correction d'audit
 
-⚠️ **Métriques à interpréter avec prudence.** La seule source reposant sur des
-données **exogènes** (macro/popularité indépendantes du scrutin) est les
-**fondamentaux** : Brier **0.37**, 57 % de bonnes issues — soit, à n=7, un
-résultat **non distinguable du hasard**. C'est le seul chiffre de compétence
-défendable, et il est faible : prédire une présidentielle avec un modèle
-structurel sur n≈11 est intrinsèquement peu fiable.
+Un premier jet gonflait les scores (fusion « Brier 0.14 / 86 % ») en backtestant
+des données marchés/NLP **rédigées en connaissant l'issue** (hindsight). Ces
+données ont été **supprimées** ; marchés et NLP sont désormais **forward-only**
+(0 pli historique). Reste la base honnête :
 
-La fusion « toutes sources » affiche Brier 0.14 / 86 %, **mais ce chiffre
-surestime la compétence réelle** : les instantanés marchés et NLP ont été
-construits *a posteriori*, en connaissant les résultats (hindsight). Le backtest
-expansif est correct, mais il ne peut pas laver des données qui encodent déjà le
-futur. La thèse « fusion multi-source > source seule » reste plausible avec de
-**vraies** données de marché horodatées ; ces métriques-ci ne la démontrent pas.
-Le ML à forte capacité (GB/XGBoost) **sur-ajuste** à n≈11 (log-loss > 3).
+| Prédicteur (OOS, 7 plis) | Brier | Bonne issue |
+|---|---|---|
+| « Avantage sortant si concourt » (règle 1 ligne) | **0.216** | **71 %** |
+| Fondamentaux (régression structurelle) | 0.295 | 57 % |
+| Pile ou face | 0.250 | 43 % |
+
+**La régression structurelle ne bat pas une heuristique d'une ligne.** À n=7,
+rien n'est significatif. C'est le vrai visage de la prévision présidentielle sans
+sondages : l'économie politique n'explique qu'une part modeste du 2nd tour. Le ML
+à forte capacité (GB/XGBoost) **sur-ajuste** à n≈11 (log-loss > 3).
+
+La thèse « fusion multi-source > source seule » (littérature : les marchés de
+prédiction battent souvent les fondamentaux) reste **plausible mais non démontrée
+ici** — elle ne pourra l'être que sur un scrutin **futur** (2027), sans hindsight.
 
 👉 **Audit complet et honnête : [`results/AUDIT.md`](results/AUDIT.md).**
 

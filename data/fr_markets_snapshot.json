@@ -1,26 +1,17 @@
 {
   "_meta": {
-    "description": "Instantane hors-ligne des probabilites implicites de marche (prediction markets type Polymarket / PredictIt / Betfair Exchange) de victoire au 2nd tour du candidat de reference, pour les presidentielles francaises.",
-    "avertissement": "VALEURS APPROXIMATIVES / ILLUSTRATIVES. Elles reconstituent l'ordre de grandeur des prix observes en fin de campagne d'entre-deux-tours (pas un releve tick-by-tick horodate et audite). A ne PAS traiter comme des cours exacts. Objectif : demontrer le pipeline (fetch/fallback + calibration favori-outsider), pas produire une base de donnees de marche certifiee.",
-    "couverture": "Les marches de prediction grand public sur la presidentielle francaise n'existent (volumes significatifs) qu'a partir de 2017 (essor Polymarket/PredictIt/Betfair sur les elections). Aucune donnee pour 1965-2012 : la source doit s'y declarer indisponible (available=False), ce qui est le comportement attendu, pas un bug.",
-    "champ_p_reference_wins": "Probabilite implicite BRUTE de marche (avant debiaisage favori-outsider) que le candidat de reference (voir reference_id du registre) l'emporte au 2nd tour. Dans [0,1].",
-    "champ_n_trades_or_volume": "Ordre de grandeur indicatif du volume/nombre de contrats echanges sur la periode d'entre-deux-tours (unite non homogene entre plateformes, purement indicatif de la liquidite, PAS une donnee financiere auditee)."
+    "description": "Instantane hors-ligne des probabilites implicites de marche (Polymarket / PredictIt / Betfair) de victoire au 2nd tour du candidat de reference.",
+    "correction_audit": "Les entrees historiques 2017/2022 ont ete SUPPRIMEES : leurs valeurs avaient ete redigees en connaissant l'issue (hindsight), ce qui contaminait le backtest OOS (cf. results/AUDIT.md). Un prix de marche ne peut etre honnetement backteste que s'il a ete HORODATE avant le scrutin par une source externe verifiable. Faute d'archives fiables hors-ligne, la source marches est desormais RESERVEE A LA PREVISION LIVE (elections a venir), ou aucun hindsight n'est possible par construction.",
+    "usage": "Pour une election a venir (ex. 2027), remplir p_reference_wins par un vrai releve de marche date, OU laisser _fetch_live (src/pp_markets.py) le recuperer. Toute election du registre historique (1965-2022) doit rester ABSENTE de ce fichier -> la source s'y declare indisponible (available=False), ce qui est le comportement honnete attendu.",
+    "champ_p_reference_wins": "Probabilite implicite BRUTE de marche (avant debiaisage favori-outsider) que le candidat de reference l'emporte au 2nd tour. Dans [0,1].",
+    "champ_as_of": "Date de releve du prix (ISO 8601). OBLIGATOIRE pour tout prix honnete : atteste que le prix precede le scrutin."
   },
   "markets": {
-    "FR_pres_2017": {
-      "p_reference_wins": 0.87,
-      "n_trades_or_volume": 45000,
-      "note": "Macron nettement favori des marches entre les deux tours (debat du 3 mai 2017 n'a pas renverse la tendance). Ordre de grandeur coherent avec les cotes Betfair/PredictIt de l'epoque (~85-92%)."
-    },
-    "FR_pres_2022": {
-      "p_reference_wins": 0.74,
-      "n_trades_or_volume": 90000,
-      "note": "Macron favori mais ecart resserre par rapport a 2017 (Le Pen plus competitive). Ordre de grandeur coherent avec les prix PredictIt/Betfair d'avril 2022 (~70-78%)."
-    },
     "FR_pres_2027": {
-      "p_reference_wins": 0.50,
-      "n_trades_or_volume": 500,
-      "note": "ENTREE D'EXEMPLE (illustration de l'usage live), PAS une prevision. Election future : marche embryonnaire, prix a plat par defaut faute de campagne engagee. A remplacer par un vrai fetch live le moment venu."
+      "p_reference_wins": null,
+      "as_of": null,
+      "n_trades_or_volume": 0,
+      "note": "PLACEHOLDER. Aucun prix encore releve. p_reference_wins=null => la source se declare indisponible tant qu'un vrai releve date n'est pas fourni (manuellement ou via _fetch_live). NE PAS inventer de valeur."
     }
   }
 }

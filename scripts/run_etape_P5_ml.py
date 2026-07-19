@@ -76,8 +76,13 @@ else:
     w("- L'un des modèles ML devance légèrement le structurel, mais l'écart n'est "
       "PAS significatif à cet effectif (7 plis) : à traiter comme du bruit, pas "
       "comme une preuve de supériorité.")
-w("- La **fusion** reste la meilleure approche : elle gagne en information "
-  "(marchés, NLP) plutôt qu'en capacité de modèle.\n")
+w("- **Correction d'audit** : marchés et NLP étant désormais *forward-only* "
+  "(données rétrospectives supprimées, cf. `results/AUDIT.md`), la fusion "
+  "historique se **réduit au modèle structurel** — elle n'ajoute plus aucune "
+  "information sur le passé. Tout écart entre ML, structurel et fusion à 7 plis "
+  "est du **bruit d'échantillonnage**, pas une hiérarchie fiable. Le gain réel "
+  "d'une fusion multi-source ne pourra se mesurer que sur un scrutin futur "
+  "(2027), avec de vraies données de marché/Trends horodatées.\n")
 
 w("## 4. Où le ML paierait vraiment : la maille circonscription\n")
 w("Le ML a besoin d'effectifs. Les **législatives** offrent ~577 circonscriptions "

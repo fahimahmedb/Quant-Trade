@@ -190,14 +190,17 @@ class MarketsSource:
         la presidentielle (en pratique : avant 2017 dans ce depot).
         """
         data = load_market_prob(ctx.election_id, snapshot_path=self.snapshot_path)
-        if not data or "p_reference_wins" not in data:
+        # Indisponible si : aucune entree, champ absent, ou valeur nulle
+        # (placeholder sans releve date). Un prix null n'est JAMAIS traite comme
+        # 0.5 : l'absence d'information n'est pas une information (cf. audit).
+        if not data or data.get("p_reference_wins") is None:
             return SourceSignal(
                 source=self.name,
                 election_id=ctx.election_id,
                 r2_share_mean=0.5,
                 r2_share_sd=1.0,
                 available=False,
-                meta={"reason": "aucun_marche_pour_cette_election"},
+                meta={"reason": "aucun_prix_de_marche_date_pour_cette_election"},
             )
 
         p_raw = float(data["p_reference_wins"])

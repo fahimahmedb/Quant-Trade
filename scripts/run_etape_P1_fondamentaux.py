@@ -15,6 +15,33 @@ sys.path.insert(0, str(ROOT / "src"))
 from pp_data import load_registry, registry_quality_report  # noqa: E402
 from pp_fundamentals import FundamentalsSource  # noqa: E402
 from pp_backtest import run_oos, markdown_table  # noqa: E402
+from pp_types import ElectionContext, SourceSignal  # noqa: E402
+
+
+class ConstShareSource:
+    """Baseline triviale : renvoie une part fixe (eventuellement conditionnee au
+    fait que le sortant concourt). Sert d'etalon : un modele fondamental n'a de
+    valeur que s'il BAT ces regles sans information economique."""
+
+    def __init__(self, name: str, share: float, sd: float, incumbent_bonus: float = 0.0):
+        self.name = name
+        self.share = share
+        self.sd = sd
+        self.incumbent_bonus = incumbent_bonus
+
+    def fit(self, history):
+        return self
+
+    def predict(self, ctx: ElectionContext) -> SourceSignal:
+        s = self.share + (self.incumbent_bonus if ctx.incumbent_running else 0.0)
+        return SourceSignal(self.name, ctx.election_id, s, self.sd)
+
+
+def _clone(src):
+    """Instance neuve d'une source (aucune fuite d'etat entre plis OOS)."""
+    if isinstance(src, FundamentalsSource):
+        return FundamentalsSource()
+    return ConstShareSource(src.name, src.share, src.sd, src.incumbent_bonus)
 
 
 def main():
@@ -31,8 +58,9 @@ def main():
 
     w("## 1. Description du modèle\n")
     w("Modèle structurel d'inspiration **Lewis-Beck & Nadeau** (1988) et **Jérôme-Speziari** (2000) :")
-    w("la part du candidat de **continuité** (camp sortant ou héritier) au **2nd tour** de")
-    w("l'élection présidentielle française dépend de quatre variables fondamentales :\n")
+    w("conformément à cette littérature, on prédit le **sort du camp sortant** — la part au")
+    w("**2nd tour** du **principal candidat du camp présidentiel sortant** (président sortant, ou")
+    w("son parti à défaut). Elle dépend de variables fondamentales connues *avant* le scrutin :\n")
 
     w("| Variable | Source | Interprétation politique |")
     w("|---|---|---|")
@@ -73,16 +101,41 @@ def main():
 
     w(markdown_table(report))
     w("")
+    w("*Note : en 2017 le camp sortant (PS, référence = Hamon) est éliminé au 1er tour ; sa part")
+    w(" 2nd tour est indéfinie (NaN, exclue de la MAE) mais l'**issue** reste scorée — les")
+    w(" fondamentaux (approbation Hollande ≈ 20) prédisent correctement que le PS ne l'emporte pas.*\n")
 
-    w("## 5. Limitations honnêtes\n")
+    w("## 5. Le modèle bat-il le trivial ? (baselines)\n")
+    w("Un modèle fondamental n'a de valeur que s'il **bat des règles sans information économique**")
+    w("(exigence standard de la littérature). Comparaison OOS à effectif égal (mêmes 7 plis) :\n")
+
+    baselines = {
+        "Pile ou face (p=0.5)": ConstShareSource("coinflip", 0.50, 0.15),
+        "Camp sortant gagne toujours": ConstShareSource("always_incumbent", 0.55, 0.05),
+        "Avantage sortant si concourt": ConstShareSource("incumbent_rule", 0.50, 0.06, incumbent_bonus=0.03),
+        "**Fondamentaux (ce modèle)**": FundamentalsSource(),
+    }
+    w("| Prédicteur | Brier | Log-loss | Bonne issue |")
+    w("|---|---|---|---|")
+    for label, src in baselines.items():
+        rep = run_oos((lambda s=src: _clone(s)), examples, 4)
+        m = rep.metrics()
+        w(f"| {label} | {m['brier']:.3f} | {m['log_loss']:.3f} | {m['hit_rate']:.0%} |")
+    w("\n*Lecture honnête : sur 7 élections, les écarts de Brier < ~0.1 ne sont **pas**")
+    w("statistiquement significatifs. Si les fondamentaux ne dominent pas nettement les baselines,")
+    w("c'est le résultat réel — l'économie politique n'explique qu'une part modeste du 2nd tour,")
+    w("et n≈11 interdit toute conclusion forte.*\n")
+
+    w("## 6. Limitations honnêtes\n")
     w("⚠️ Cet exercice est à vocation **méthodologique**. Avant toute application réelle :\n")
     w("")
     w("1. **Faiblesse du dataset** : n=11 élections seulement. Estimation Ridge (α=0.1) nécessaire pour")
     w("   régulariser, mais amplifie aussi le biais. Intervalle de confiance large.")
     w("")
-    w("2. **2017 = réalignement partisan** : le modèle échoue à capturer le basculement 2016-2017")
-    w("   (Macron émergent hors champ politique classique). Les fondamentaux seuls ne suffisent pas")
-    w("   en cas de rupture systémique.")
+    w("2. **2017 = réalignement partisan** : les fondamentaux prédisent correctement l'effondrement")
+    w("   du camp sortant (PS, approbation Hollande ≈ 20), mais sont par nature **incapables de")
+    w("   désigner le vainqueur émergent** (Macron, hors champ partisan classique). C'est la limite")
+    w("   intrinsèque des modèles structurels : ils lisent le sort du sortant, pas les recompositions.")
     w("")
     w("3. **Variables macroéconomiques approximatives** : croissance/chômage/approbation sont des")
     w("   agrégations publiques, non des séries mensuelles rigoureuses. À remplacer par sources")

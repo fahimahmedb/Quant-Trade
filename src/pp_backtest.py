@@ -76,26 +76,43 @@ class BacktestReport:
     source_name: str
     folds: list[FoldRecord]
 
-    def scored(self) -> list[FoldRecord]:
-        """Plis effectivement scorables (source disponible + part reelle finie)."""
+    def scored_win(self) -> list[FoldRecord]:
+        """Plis scorables sur l'ISSUE : il suffit que la source soit disponible.
+
+        Le vainqueur est toujours connu, meme quand le camp de reference est
+        elimine au 1er tour (part 2nd tour = NaN, ex. PS/Hamon 2017) : dans ce
+        cas actual_win = 0 et P(victoire) reste evaluable. On ne jette donc
+        plus ces plis — on y evalue la capacite du modele a dire « le camp
+        sortant ne gagne pas ».
+        """
+        return [f for f in self.folds if f.available]
+
+    def scored_share(self) -> list[FoldRecord]:
+        """Plis scorables sur la PART 2nd tour : requiert une part reelle finie."""
         return [f for f in self.folds if f.available and np.isfinite(f.actual_share)]
 
+    # Retro-compat : d'anciens appels utilisaient .scored() (part finie).
+    def scored(self) -> list[FoldRecord]:
+        return self.scored_share()
+
     def metrics(self) -> dict[str, float]:
-        s = self.scored()
-        if not s:
+        win = self.scored_win()
+        if not win:
             return {"n": 0}
-        probs = [f.pred_win_prob for f in s]
-        wins = [f.actual_win for f in s]
-        preds = [f.pred_share for f in s]
-        acts = [f.actual_share for f in s]
+        probs = [f.pred_win_prob for f in win]
+        wins = [f.actual_win for f in win]
         acc = float(np.mean([(p > 0.5) == bool(w) for p, w in zip(probs, wins)]))
-        return {
-            "n": len(s),
+        out = {
+            "n": len(win),
             "brier": brier_score(probs, wins),
             "log_loss": log_loss_binary(probs, wins),
-            "share_mae": mae(preds, acts),
             "hit_rate": acc,
         }
+        share = self.scored_share()
+        if share:
+            out["n_share"] = len(share)
+            out["share_mae"] = mae([f.pred_share for f in share], [f.actual_share for f in share])
+        return out
 
 
 def run_oos(
@@ -149,9 +166,10 @@ def markdown_table(report: BacktestReport) -> str:
     lines = ["| Annee | Election | Reference | Part prevue | P(victoire) | Part reelle | Issue |",
              "|---|---|---|---|---|---|---|"]
     for f in report.folds:
+        act_txt = f"{f.actual_share:.3f}" if np.isfinite(f.actual_share) else "— (élim. T1)"
         if not f.available:
             lines.append(f"| {f.year} | {f.election_id} | {f.reference_id} | — | — | "
-                         f"{f.actual_share:.3f} | (source indispo.) |")
+                         f"{act_txt} | (source indispo.) |")
             continue
         issue = "✓ gagne" if f.actual_win else "✗ perd"
         lines.append(f"| {f.year} | {f.election_id} | {f.reference_id} | {f.pred_share:.3f} "
@@ -159,7 +177,8 @@ def markdown_table(report: BacktestReport) -> str:
     m = report.metrics()
     if m.get("n"):
         lines.append("")
+        mae_txt = f"MAE part {m['share_mae']:.3f} (n={m['n_share']}) | " if "share_mae" in m else ""
         lines.append(f"**OOS (n={m['n']})** — Brier {m['brier']:.3f} | log-loss "
-                     f"{m['log_loss']:.3f} | MAE part {m['share_mae']:.3f} | "
+                     f"{m['log_loss']:.3f} | {mae_txt}"
                      f"taux de bonne issue {m['hit_rate']:.0%}")
     return "\n".join(lines)

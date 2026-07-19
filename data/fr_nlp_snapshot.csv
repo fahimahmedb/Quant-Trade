@@ -1,41 +1,19 @@
 # Instantane (snapshot) NLP / sentiment par presidentielle FR (candidat de reference vs
-#   principal adversaire au 2nd tour). ATTENTION : valeurs ILLUSTRATIVES / APPROXIMATIVES,
-#   construites a dire d'expert a partir de l'ordre de grandeur connu de la couverture
-#   mediatique et de la notoriete relative des candidats -- ce ne sont PAS des exports reels
-#   de l'API Google Trends ni d'un moteur de sentiment calibre. Destinees a la DEMONSTRATION
-#   METHODOLOGIQUE de la brique NLP (Etape P3), pas a une publication. A remplacer par des
-#   series sourcees (pytrends, presse ecrite indexee) avant tout usage reel. Lire avec
-#   pandas.read_csv(comment='#').
+#   principal adversaire au 2nd tour).
 #
-# Portee temporelle : Google Trends n'existe que depuis 2004 -> aucune ligne avant 2007
-#   (premiere presidentielle entierement couverte par le service). Les elections 1965-2002
-#   sont donc structurellement indisponibles pour cette source (cf. NLP_DATA_START_YEAR
-#   dans src/pp_nlp.py) et renverront SourceSignal(available=False).
+# CORRECTION AUDIT : les lignes historiques (2007, 2012, 2017, 2022) ont ete SUPPRIMEES.
+#   Leurs valeurs (part de recherche, tonalite) avaient ete redigees a dire d'expert EN
+#   CONNAISSANT l'issue des scrutins (hindsight), ce qui contaminait le backtest OOS
+#   (cf. results/AUDIT.md). Un proxy comportemental (Google Trends, tonalite presse) ne peut
+#   etre honnetement backteste que s'il est HORODATE avant le scrutin par une collecte
+#   verifiable. Faute d'exports dates fiables hors-ligne, la source NLP est desormais
+#   RESERVEE A LA PREVISION LIVE (elections a venir), ou aucun hindsight n'est possible.
 #
-# Colonnes :
-#   election_id        : identifiant de l'election (cf. data/fr_presidentielles.json)
-#   ref_trends_share    : part du volume de recherche Google Trends du candidat de reference
-#                         parmi {reference, principal adversaire au 2nd tour} (0..1 ;
-#                         ref_trends_share + opp_trends_share = 1 par construction)
-#   opp_trends_share    : part symetrique de l'adversaire principal (0..1)
-#   ref_mention_volume  : indice de volume de mentions (presse + reseaux) du candidat de
-#                         reference sur la campagne, base 100 = campagne "moyenne"
-#   ref_tonality        : tonalite moyenne (sentiment) des mentions du candidat de reference,
-#                         dans [-1, 1] (-1 tres negatif, 0 neutre, +1 tres positif)
-#   opp_tonality        : tonalite moyenne des mentions de l'adversaire principal, dans [-1, 1]
+# Consequence : toute election du registre historique (1965-2022) est ABSENTE de ce fichier
+#   -> NlpSource s'y declare indisponible (available=False), comportement honnete attendu.
+#   Pour une election a venir, remplir une ligne datee (ou laisser _fetch_live la collecter).
 #
-# Note methodologique : ces variables sont un proxy COMPORTEMENTAL (volume de recherche
-#   revele un interet/une inquietude, pas forcement une intention de vote) et un proxy de
-#   tonalite AGREGE (mediatique + reseaux, pas une declaration d'intention). Elles ne se
-#   substituent pas a un sondage declaratif et sont, par nature, bruyantes et manipulables
-#   (bots, campagnes de denigrement coordonnees, buzz negatif qui gonfle le volume sans
-#   indiquer un rejet).
+# Colonnes (cf. src/pp_nlp.py) :
+#   election_id, ref_trends_share, opp_trends_share, ref_mention_volume, ref_tonality, opp_tonality
+#   ref_trends_share + opp_trends_share = 1 ; tonalites dans [-1,1] ; volume base 100.
 election_id,ref_trends_share,opp_trends_share,ref_mention_volume,ref_tonality,opp_tonality
-FR_pres_2007,0.55,0.45,105,-0.05,0.08
-FR_pres_2012,0.47,0.53,112,-0.18,0.04
-FR_pres_2017,0.58,0.42,135,0.06,-0.12
-FR_pres_2022,0.52,0.48,88,-0.02,-0.06
-# Ligne d'exemple future (illustrative uniquement -- l'election n'a pas encore eu lieu a la
-#   date de redaction de ce fichier, aucune "reponse" n'est encodee ; sert a demontrer que
-#   load_nlp_features() fonctionne aussi hors du registre historique fige) :
-FR_pres_2027,0.50,0.50,100,0.00,0.00

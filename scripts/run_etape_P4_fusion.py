@@ -71,20 +71,24 @@ w("La fusion combine leurs estimations gaussiennes de la part 2nd tour par "
   "que sa meilleure source unique). Voir `src/pp_fusion.py`.\n")
 
 w("## 2. Comparaison OOS — sources seules vs fusion\n")
-w("*Fenêtre expansive, entraînement sur le passé strict. Marchés (2017/2022) et "
-  "NLP (2007+) ne sont scorés que là où ils existent ; la fusion, elle, exploite "
-  "ce qui est disponible à chaque date.*\n")
-w("| Prédicteur | n | Brier | Log-loss | MAE part | Bonne issue |")
-w("|---|---|---|---|---|---|")
+w("*Fenêtre expansive, entraînement sur le passé strict. **Correction d'audit** : "
+  "les snapshots marchés/NLP rétrospectifs ont été SUPPRIMÉS (ils encodaient "
+  "l'issue connue — cf. `results/AUDIT.md`). Ces deux sources sont désormais "
+  "**réservées à la prévision live** (élections à venir) : sur tout l'historique "
+  "1965-2022 elles se déclarent indisponibles (n=0), ce qui est le comportement "
+  "honnête attendu. La fusion historique se réduit donc au **prior fondamental**.*\n")
+w("| Prédicteur | n plis | Brier | Log-loss | Bonne issue |")
+w("|---|---|---|---|---|")
 for name, rep in runs.items():
     m = rep.metrics()
     if m.get("n"):
         w(f"| {name} | {m['n']} | {m['brier']:.3f} | {m['log_loss']:.3f} "
-          f"| {m['share_mae']:.3f} | {m['hit_rate']:.0%} |")
+          f"| {m['hit_rate']:.0%} |")
     else:
-        w(f"| {name} | 0 | — | — | — | — |")
-w("\n*Brier : 0 = parfait, 0.25 = pile ou face. Comparer à effectif égal : la "
-  "fusion et les fondamentaux couvrent les 7 plis ; marchés/NLP moins.*\n")
+        w(f"| {name} | 0 | indisponible (forward-only) | — | — |")
+w("\n*Brier : 0 = parfait, 0.25 = pile ou face. Marchés/NLP n'ayant plus de "
+  "donnée historique honnête, leur valeur ne pourra être mesurée que sur des "
+  "scrutins **futurs** (2027), où aucun hindsight n'est possible par construction.*\n")
 
 w("## 3. Détail de la fusion, élection par élection\n")
 w("| Année | Référence | Part prévue | P(victoire) | Part réelle | Issue | Poids dominant |")
@@ -95,8 +99,9 @@ for ctx, post, actual, won in detail:
     dom_w = post.contributions.get(dom, 0.0)
     issue = "✓ gagne" if won else "✗ perd"
     ok = "✓" if (post.p_reference_wins > 0.5) == bool(won) else "✗"
+    actual_txt = f"{actual:.3f}" if np.isfinite(actual) else "— (éliminé T1)"
     w(f"| {ctx.year} | {ctx.reference_id} | {post.r2_share_mean:.3f} "
-      f"| {post.p_reference_wins:.2f} | {actual:.3f} | {issue} {ok} "
+      f"| {post.p_reference_wins:.2f} | {actual_txt} | {issue} {ok} "
       f"| {dom} {dom_w:.0%} |")
 w("")
 
@@ -107,21 +112,19 @@ for ctx, post, actual, won in detail:
     w(f"- **{ctx.year}** : {parts}")
 w("")
 
-w("## 5. Audit de provenance des données (lecture critique OBLIGATOIRE)\n")
-w("⚠️ **Les scores de cette page surestiment la compétence prédictive réelle.** "
-  "Les instantanés marchés (`fr_markets_snapshot.json`) et NLP "
-  "(`fr_nlp_snapshot.csv`) ont été rédigés en CONNAISSANT l'issue des élections "
-  "(hindsight). Le backtest expansif n'entraîne jamais sur le futur, mais il ne "
-  "peut pas laver une donnée qui encode déjà le résultat dans sa valeur.\n")
-w("- Marchés (Brier 0.000) et NLP (0.063) mesurent un **ajustement rétrospectif**, "
-  "pas une prévision. Les deux calls confiants (2017/2022) sont exactement ceux "
-  "où les marchés — donnée rétrospective — dominent la pondération.")
-w("- La **seule source exogène** (macro/popularité indépendantes du scrutin) est "
-  "les **fondamentaux** : Brier **0.368**, bonne issue **57 %** — non "
-  "distinguable du hasard à n=7. C'est le seul chiffre de compétence défendable.")
-w("- La thèse (fusion multi-source > source seule) reste plausible avec de VRAIES "
-  "données de marché ; ces métriques-ci ne la démontrent simplement pas. "
-  "Voir `results/AUDIT.md`.\n")
+w("## 5. Provenance des données — correction d'audit appliquée\n")
+w("✅ **Correction effectuée** (cf. `results/AUDIT.md`). Un premier jet avait "
+  "backtesté marchés et NLP sur des snapshots **rédigés en connaissant l'issue** "
+  "(hindsight), gonflant artificiellement la fusion (Brier apparent 0.14). Ces "
+  "données rétrospectives ont été **supprimées** :\n")
+w("- Marchés/NLP ne portent plus AUCUNE donnée historique → indisponibles sur "
+  "les 7 plis (forward-only). La fusion historique = prior fondamental, dont le "
+  "score honnête est **Brier ≈ 0.30, bonne issue ≈ 57 %** — et qui, à n=7, ne "
+  "bat même pas nettement une heuristique « avantage sortant » (cf. Étape P1).")
+w("- La thèse « fusion multi-source > source seule » (littérature : marchés de "
+  "prédiction souvent > fondamentaux) reste **plausible mais NON démontrée ici** ; "
+  "elle ne pourra l'être que sur des scrutins futurs avec de vraies données "
+  "horodatées (prévision 2027).\n")
 
 w("## 6. Limites (honnêteté méthodologique)\n")
 w("- **Échantillon minuscule** : 11 présidentielles, 7 plis OOS. Aucun chiffre "

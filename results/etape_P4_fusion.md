@@ -12,16 +12,16 @@ La fusion combine leurs estimations gaussiennes de la part 2nd tour par **pondé
 
 ## 2. Comparaison OOS — sources seules vs fusion
 
-*Fenêtre expansive, entraînement sur le passé strict. Marchés (2017/2022) et NLP (2007+) ne sont scorés que là où ils existent ; la fusion, elle, exploite ce qui est disponible à chaque date.*
+*Fenêtre expansive, entraînement sur le passé strict. **Correction d'audit** : les snapshots marchés/NLP rétrospectifs ont été SUPPRIMÉS (ils encodaient l'issue connue — cf. `results/AUDIT.md`). Ces deux sources sont désormais **réservées à la prévision live** (élections à venir) : sur tout l'historique 1965-2022 elles se déclarent indisponibles (n=0), ce qui est le comportement honnête attendu. La fusion historique se réduit donc au **prior fondamental**.*
 
-| Prédicteur | n | Brier | Log-loss | MAE part | Bonne issue |
-|---|---|---|---|---|---|
-| Fondamentaux | 7 | 0.368 | 1.114 | 0.130 | 57% |
-| Marchés | 2 | 0.000 | 0.005 | 0.015 | 100% |
-| NLP | 4 | 0.063 | 0.257 | 0.067 | 100% |
-| Fusion | 7 | 0.139 | 0.409 | 0.071 | 86% |
+| Prédicteur | n plis | Brier | Log-loss | Bonne issue |
+|---|---|---|---|---|
+| Fondamentaux | 7 | 0.295 | 0.909 | 57% |
+| Marchés | 0 | indisponible (forward-only) | — | — |
+| NLP | 0 | indisponible (forward-only) | — | — |
+| Fusion | 7 | 0.294 | 0.892 | 57% |
 
-*Brier : 0 = parfait, 0.25 = pile ou face. Comparer à effectif égal : la fusion et les fondamentaux couvrent les 7 plis ; marchés/NLP moins.*
+*Brier : 0 = parfait, 0.25 = pile ou face. Marchés/NLP n'ayant plus de donnée historique honnête, leur valeur ne pourra être mesurée que sur des scrutins **futurs** (2027), où aucun hindsight n'est possible par construction.*
 
 ## 3. Détail de la fusion, élection par élection
 
@@ -30,28 +30,27 @@ La fusion combine leurs estimations gaussiennes de la part 2nd tour par **pondé
 | 1988 | mitterrand_1988 | 0.576 | 0.94 | 0.540 | ✓ gagne ✓ | fundamentals 99% |
 | 1995 | jospin_1995 | 0.490 | 0.42 | 0.474 | ✗ perd ✓ | fundamentals 99% |
 | 2002 | chirac_2002 | 0.466 | 0.25 | 0.822 | ✓ gagne ✗ | fundamentals 99% |
-| 2007 | sarkozy_2007 | 0.537 | 0.69 | 0.531 | ✓ gagne ✓ | nlp 63% |
-| 2012 | sarkozy_2012 | 0.473 | 0.36 | 0.484 | ✗ perd ✓ | nlp 60% |
-| 2017 | macron_2017 | 0.593 | 0.99 | 0.661 | ✓ gagne ✓ | markets 66% |
-| 2022 | macron_2022 | 0.583 | 0.98 | 0.586 | ✓ gagne ✓ | markets 71% |
+| 2007 | sarkozy_2007 | 0.564 | 0.74 | 0.531 | ✓ gagne ✓ | fundamentals 96% |
+| 2012 | sarkozy_2012 | 0.649 | 0.95 | 0.484 | ✗ perd ✗ | fundamentals 96% |
+| 2017 | hamon_2017 | 0.392 | 0.14 | — (éliminé T1) | ✗ perd ✓ | fundamentals 96% |
+| 2022 | macron_2022 | 0.483 | 0.43 | 0.586 | ✓ gagne ✗ | fundamentals 96% |
 
 ## 4. Lecture des contributions
 
 - **1988** : fundamentals 99%, prior 1%
 - **1995** : fundamentals 99%, prior 1%
 - **2002** : fundamentals 99%, prior 1%
-- **2007** : nlp 63%, fundamentals 36%, prior 1%
-- **2012** : nlp 60%, fundamentals 38%, prior 2%
-- **2017** : markets 66%, nlp 22%, fundamentals 12%, prior 0%
-- **2022** : markets 71%, nlp 21%, fundamentals 8%, prior 0%
+- **2007** : fundamentals 96%, prior 4%
+- **2012** : fundamentals 96%, prior 4%
+- **2017** : fundamentals 96%, prior 4%
+- **2022** : fundamentals 96%, prior 4%
 
-## 5. Audit de provenance des données (lecture critique OBLIGATOIRE)
+## 5. Provenance des données — correction d'audit appliquée
 
-⚠️ **Les scores de cette page surestiment la compétence prédictive réelle.** Les instantanés marchés (`fr_markets_snapshot.json`) et NLP (`fr_nlp_snapshot.csv`) ont été rédigés en CONNAISSANT l'issue des élections (hindsight). Le backtest expansif n'entraîne jamais sur le futur, mais il ne peut pas laver une donnée qui encode déjà le résultat dans sa valeur.
+✅ **Correction effectuée** (cf. `results/AUDIT.md`). Un premier jet avait backtesté marchés et NLP sur des snapshots **rédigés en connaissant l'issue** (hindsight), gonflant artificiellement la fusion (Brier apparent 0.14). Ces données rétrospectives ont été **supprimées** :
 
-- Marchés (Brier 0.000) et NLP (0.063) mesurent un **ajustement rétrospectif**, pas une prévision. Les deux calls confiants (2017/2022) sont exactement ceux où les marchés — donnée rétrospective — dominent la pondération.
-- La **seule source exogène** (macro/popularité indépendantes du scrutin) est les **fondamentaux** : Brier **0.368**, bonne issue **57 %** — non distinguable du hasard à n=7. C'est le seul chiffre de compétence défendable.
-- La thèse (fusion multi-source > source seule) reste plausible avec de VRAIES données de marché ; ces métriques-ci ne la démontrent simplement pas. Voir `results/AUDIT.md`.
+- Marchés/NLP ne portent plus AUCUNE donnée historique → indisponibles sur les 7 plis (forward-only). La fusion historique = prior fondamental, dont le score honnête est **Brier ≈ 0.30, bonne issue ≈ 57 %** — et qui, à n=7, ne bat même pas nettement une heuristique « avantage sortant » (cf. Étape P1).
+- La thèse « fusion multi-source > source seule » (littérature : marchés de prédiction souvent > fondamentaux) reste **plausible mais NON démontrée ici** ; elle ne pourra l'être que sur des scrutins futurs avec de vraies données horodatées (prévision 2027).
 
 ## 6. Limites (honnêteté méthodologique)
 

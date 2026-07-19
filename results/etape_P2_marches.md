@@ -16,13 +16,14 @@ l'information disponible plus vite et plus largement qu'un sondage ponctuel.
 3. Si l'élection n'a ni prix live ni entrée snapshot → aucune tentative de deviner :
    `SourceSignal(available=False)`.
 
-**Couverture réelle** : les marchés de prédiction grand public sur la présidentielle
-française n'existent avec un volume significatif que depuis 2017 (essor Polymarket /
-PredictIt / Betfair sur les élections). Le snapshot ne couvre donc que **FR_pres_2017** et
-**FR_pres_2022**, plus une entrée d'exemple `FR_pres_2027` illustrant l'usage live pour une
-élection à venir. Les prix du snapshot sont **approximatifs/illustratifs** (ordre de
-grandeur des cotes de fin de campagne d'entre-deux-tours), pas un relevé tick-by-tick
-audité — voir `_meta.avertissement` dans le fichier.
+**Correction d'audit — source forward-only** : un premier jet backtestait cette source sur
+des prix 2017/2022 **rédigés en connaissant l'issue** (hindsight), ce qui gonflait
+artificiellement les scores (cf. `results/AUDIT.md`). Ces prix ont été **supprimés**. Un prix
+de marché ne peut être honnêtement backtesté que s'il a été **horodaté avant le scrutin** par
+une source vérifiable. Faute d'archives fiables hors-ligne, la source marchés est désormais
+**réservée à la prévision d'élections à venir** (2027) : sur tout l'historique 1965-2022 elle
+se déclare indisponible. Seule reste une entrée `FR_pres_2027` **vide** (`p=null`), à remplir
+par un vrai relevé daté (ou via `_fetch_live`) le moment venu.
 
 ## 2. Calibration du biais favori-outsider (favorite-longshot bias)
 
@@ -50,14 +51,22 @@ r2_share_mean = clamp_share(0.5 + K * (p_debiaisee - 0.5)),   K = SHARE_SLOPE_K
 avec **K = 0.35**, et un écart-type fixe **sd = 0.04** (marché jugé plutôt
 fiable, moins incertain que le prior "sans information" à 0.08 des fondamentaux).
 
-### Avant / après sur les deux élections où un prix de marché est connu
+### Démonstration de la transformation (grille HYPOTHÉTIQUE, pas des élections réelles)
 
-| Élection | Référence | p marché brut | p débiaisé (k=1.15) | Part prévue | Part réelle |
-|---|---|---|---|---|---|
-| FR_pres_2017 | macron_2017 | 0.87 | 0.90 | 0.640 | 0.661 |
-| FR_pres_2022 | macron_2022 | 0.74 | 0.77 | 0.594 | 0.586 |
+Pour illustrer la mécanique sans aucune donnée rétrospective, on applique la calibration à
+une grille de prix de marché fictifs :
 
-Le débiaisage accentue l'écart à 0.5 : par exemple un prix brut de 0.87 devient ≈ 0.90 avant conversion en part de vote.
+| p marché brut | p débiaisé (k=1.15) | Part 2nd tour prévue (K=0.35) |
+|---|---|---|
+| 0.55 | 0.56 | 0.520 |
+| 0.65 | 0.67 | 0.560 |
+| 0.75 | 0.78 | 0.598 |
+| 0.85 | 0.88 | 0.633 |
+| 0.95 | 0.97 | 0.664 |
+
+Le débiaisage accentue l'écart à 0.5 (favori renforcé) ; la conversion en part reste amortie
+(une quasi-certitude de marché ne devient pas un score plébiscitaire). Ces lignes sont de la
+**pure arithmétique de démonstration**, sans lien avec un scrutin passé.
 
 ## 3. Backtest hors-échantillon (OOS)
 
@@ -67,11 +76,10 @@ Le débiaisage accentue l'écart à 0.5 : par exemple un prix brut de 0.87 devie
   cette source (un prix de marché ne s'entraîne pas sur le passé électoral ; le facteur de
   débiaisage `k` et la pente `K` sont des priors fixes, choisis avant de lire les scores,
   pas ajustés élection par élection).
-- Seules **FR_pres_2017** et **FR_pres_2022** ont un prix de marché disponible : toutes les
-  élections antérieures sont marquées **indisponibles** par construction (pas de marché
-  électoral liquide avant l'essor de ces plateformes). C'est le comportement attendu du
-  contrat (`SourceSignal(available=False)`), pas un défaut du modèle — le tableau ci-dessous
-  l'illustre par la colonne « (source indispo.) ».
+- **Aucune** élection historique n'a de prix de marché honnête (données rétrospectives
+  supprimées) : toutes sont marquées **indisponibles** (`available=False`). Le backtest ne
+  score donc **0 pli** — c'est voulu. Cette source n'apportera de valeur mesurable que sur
+  un scrutin futur (2027), où un prix live est capté sans hindsight possible.
 
 | Annee | Election | Reference | Part prevue | P(victoire) | Part reelle | Issue |
 |---|---|---|---|---|---|---|
@@ -80,24 +88,22 @@ Le débiaisage accentue l'écart à 0.5 : par exemple un prix brut de 0.87 devie
 | 2002 | FR_pres_2002 | chirac_2002 | — | — | 0.822 | (source indispo.) |
 | 2007 | FR_pres_2007 | sarkozy_2007 | — | — | 0.531 | (source indispo.) |
 | 2012 | FR_pres_2012 | sarkozy_2012 | — | — | 0.484 | (source indispo.) |
-| 2017 | FR_pres_2017 | macron_2017 | 0.640 | 1.00 | 0.661 | ✓ gagne |
-| 2022 | FR_pres_2022 | macron_2022 | 0.594 | 0.99 | 0.586 | ✓ gagne |
-
-**OOS (n=2)** — Brier 0.000 | log-loss 0.005 | MAE part 0.015 | taux de bonne issue 100%
+| 2017 | FR_pres_2017 | hamon_2017 | — | — | — (élim. T1) | (source indispo.) |
+| 2022 | FR_pres_2022 | macron_2022 | — | — | 0.586 | (source indispo.) |
 
 ## 4. Limitations honnêtes
 
 ⚠️ Cet exercice est à vocation **méthodologique**. Avant toute application réelle :
 
 
-1. **Couverture minimale (n=2)** : le backtest OOS ne score que 2017 et 2022 — bien trop peu
-   pour valider statistiquement le facteur de débiaisage `k` ou la pente `K`. Ils restent des
-   priors motivés par la littérature, pas des paramètres estimés sur ce dépôt.
+1. **Couverture historique nulle (n=0)** : après suppression des prix rétrospectifs, aucun
+   pli n'est scoré. Le facteur de débiaisage `k` et la pente `K` restent des priors motivés
+   par la littérature, **non validés** sur données réelles dans ce dépôt.
 
-2. **Snapshot illustratif** : les prix de `data/fr_markets_snapshot.json` reconstituent un
-   ordre de grandeur plausible de fin de campagne, pas un relevé horodaté et audité d'un
-   flux réel. À remplacer par des données primaires (archives Polymarket/PredictIt/Betfair)
-   avant toute publication.
+2. **Validation reportée au futur** : la seule façon honnête de mesurer cette source est de
+   capter un prix live **avant** un scrutin à venir (2027) et de comparer après coup. Tout
+   prix historique reconstitué a posteriori serait du hindsight — précisément l'erreur
+   corrigée ici (cf. `results/AUDIT.md`).
 
 3. **Live non câblé** : `_fetch_live` est un point d'extension qui lève systématiquement
    `NotImplementedError` — le fallback snapshot est donc la voie d'exécution normale de ce
