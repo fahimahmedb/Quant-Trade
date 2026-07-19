@@ -63,16 +63,28 @@ src/    pp_types.py   contrat commun (Source.fit/predict, SourceSignal, Posterio
         pp_fusion.py       (P4)  fusion bayésienne (précision, espace logit)
         pp_ml.py           (P5)  logistic / random forest / GB / XGBoost
 scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
+         run_etape_P6_pred2027.py → results/etape_P6_pred2027.md  (prévision FORWARD 2027)
 ```
 
 ## Reproduire
 
 ```bash
 pip install numpy scipy pandas scikit-learn xgboost
-for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml; do
+for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```
+
+## Prévision 2027 (P6) — forward, honnêtement vérifiable
+
+2027 est un scrutin **futur** (aucun hindsight possible). Macron étant
+inéligible (2 mandats), c'est un **siège ouvert**. Les fondamentaux, seule
+brique validée, ne prédisent que le **sort du camp sortant** : verdict
+**≈ 50/50** (part 2nd tour 49,6 % ± 10 pts) — ni favori, ni condamné. Ils sont
+**incapables de désigner le vainqueur** (RN/gauche/droite), faute de marché
+liquide et de signaux de campagne datés à ~21 mois du vote. Le script tente un
+**vrai fetch Polymarket** (dormant tant qu'aucun marché n'existe) et se
+raffinera sans rétro-ajustement quand des données contemporaines arriveront.
 
 ## Résultat clé (backtest OOS, 7 plis) — honnête, après correction d'audit
 

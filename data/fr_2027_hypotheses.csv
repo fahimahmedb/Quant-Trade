@@ -1,0 +1,15 @@
+# Hypotheses fondamentales pour la presidentielle 2027 (prevision FORWARD, sans hindsight
+#   possible : le scrutin est futur). Ces valeurs sont des CHIFFRES PUBLICS reels, connus a la
+#   date de prevision (mi-2026), pas des donnees derivees d'un resultat inconnu. A METTRE A JOUR
+#   quand de nouvelles publications sortent (le modele relit ce fichier). Sources indicatives :
+#     gdp_growth   ~0.9  : croissance reelle France, projections Banque de France / INSEE 2026
+#                          (2025 ~1.1%, 2026 revise autour de 0.7-1.0%).
+#     unemployment ~7.5  : taux de chomage BIT, INSEE debut 2026 (~7.4-7.6%).
+#     approval     ~26   : cote de satisfaction du camp presidentiel sortant (Macron/gouvernement),
+#                          niveau bas et durable depuis 2024 (fourchette publique ~22-30%).
+#     tenure_years 10    : camp presidentiel (Macronie) au pouvoir depuis 2017 -> 10 ans en 2027.
+#   incumbent_running = 0 : Emmanuel Macron NE PEUT PAS se representer (limite de deux mandats
+#     consecutifs, art. 6 de la Constitution) -> siege ouvert, comme 2017 pour le PS.
+#   Lire avec pandas.read_csv(comment='#').
+election_id,gdp_growth,unemployment,approval,tenure_years
+FR_pres_2027,0.9,7.5,26,10

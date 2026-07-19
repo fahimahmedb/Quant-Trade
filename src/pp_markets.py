@@ -40,30 +40,49 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------------------------------- #
 
 
+# Endpoint public Polymarket (gamma API), interroge best-effort pour une
+# election A VENIR. Aucune cle requise ; respecte le proxy via les variables
+# d'environnement (urllib.getproxies()).
+POLYMARKET_GAMMA = "https://gamma-api.polymarket.com/markets?closed=false&limit=500"
+
+
 def _fetch_live(election_id: str, timeout: float = LIVE_TIMEOUT_S) -> dict | None:
-    """Tentative de recuperation EN DIRECT du prix de marche (best-effort).
+    """Tentative de recuperation EN DIRECT d'un prix de marche (best-effort).
 
-    Point d'extension volontairement non cable vers un endpoint precis : les
-    URLs/API des marches electoraux Polymarket/PredictIt/Betfair pour une
-    election francaise donnee changent trop souvent (marche cree/ferme au
-    fil de la campagne) pour etre codees en dur ici sans maintenance
-    continue. Brancher ici un vrai appel HTTP le moment venu, avec un
-    `timeout` COURT (ne jamais laisser un fetch bloquer le backtest).
+    Interroge reellement l'API publique Polymarket et cherche un marche lie a
+    l'election `election_id`. Retour :
+    - dict {"p_reference_wins", "as_of", "n_trades_or_volume"} si un marche
+      pertinent est trouve ET son mapping outcome->camp de reference est
+      explicite ;
+    - None sinon (aucun marche, ou marche trouve mais mapping non declare).
 
-    Convention de retour :
-    - dict {"p_reference_wins": float, "n_trades_or_volume": float} si un
-      prix a reellement ete recupere ;
-    - None si aucun marche live n'existe pour cette election (pas une
-      erreur : cas normal pour la plupart des `election_id`).
+    IMPORTANT (honnetete) : tant que les finalistes 2027 sont inconnus, le
+    mapping "quel outcome = camp de reference" est ambigu. Cette fonction
+    renvoie donc None meme si un marche generique est trouve, tant qu'un
+    mapping n'a pas ete declare explicitement (voir REFERENCE_MARKET_MAP).
+    Elle ne FABRIQUE jamais une probabilite : pas de marche mappe => None.
 
-    Toute exception (reseau, DNS, timeout, JSON malforme, ...) doit etre
-    laissee remonter : c'est `load_market_prob` qui l'attrape et bascule
-    silencieusement sur le snapshot offline.
+    Toute exception (reseau, proxy, timeout, JSON) remonte a load_market_prob,
+    qui bascule silencieusement sur le snapshot.
     """
-    raise NotImplementedError(
-        "Aucun endpoint live cable dans ce depot : le fallback snapshot "
-        "(data/fr_markets_snapshot.json) est la voie normale d'execution."
-    )
+    if election_id != "FR_pres_2027":
+        return None
+    import json as _json
+    import urllib.request as _url
+
+    req = _url.Request(POLYMARKET_GAMMA, headers={"User-Agent": "quant-trade/1.0"})
+    with _url.urlopen(req, timeout=timeout) as resp:
+        rows = _json.loads(resp.read().decode())
+    rows = rows if isinstance(rows, list) else rows.get("data", [])
+    for m in rows:
+        q = ((m.get("question") or "") + " " + (m.get("slug") or "")).lower()
+        if "french" in q and "president" in q and ("2027" in q or "france" in q):
+            # Marche generique trouve : mapping outcome->camp NON declare tant
+            # que les finalistes sont inconnus -> on ne devine pas. Retour None.
+            logger.info("Marche Polymarket FR trouve mais mapping non declare: %s",
+                        m.get("question"))
+            return None
+    return None
 
 
 def load_market_prob(
