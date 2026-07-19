@@ -62,18 +62,44 @@ src/    pp_types.py   contrat commun (Source.fit/predict, SourceSignal, Posterio
         pp_nlp.py          (P3)  proxy notoriété/tonalité (Trends, mentions)
         pp_fusion.py       (P4)  fusion bayésienne (précision, espace logit)
         pp_ml.py           (P5)  logistic / random forest / GB / XGBoost
+        pp_circo.py        (P7)  analyse circonscription × PARTI (LFI explicite)
 scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
          run_etape_P6_pred2027.py → results/etape_P6_pred2027.md  (prévision FORWARD 2027)
+         run_etape_P7_circonscriptions.py → results/etape_P7_circonscriptions.md
+data/    fr_pres2022_circo.csv — présidentielle 2022 1er tour par circonscription
+         × parti (RÉEL, ministère de l'Intérieur / data.gouv.fr)
 ```
 
 ## Reproduire
 
 ```bash
 pip install numpy scipy pandas scikit-learn xgboost
-for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027; do
+for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 P7_circonscriptions; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```
+
+## Étape 4 (P7) — circonscription × parti, LFI explicite, données réelles
+
+Sur données **réelles** (présidentielle 2022 par circonscription, ministère de
+l'Intérieur), au niveau **parti** (Mélenchon = **LFI**, distinct de PS/EELV —
+pas le bloc « NFP/UG » qu'imposent les nuances législatives officielles, où
+seuls 3 candidats sur 544 étaient codés « FI » en 2024).
+
+**Est-ce que ça aide ?** Oui, mais pas là où on croit :
+- Ça **n'améliore pas** le chiffre national (agréger les circos le reproduit
+  exactement).
+- Ça **ajoute** ce que le national ne peut pas voir : LFI arrive **en tête dans
+  105 circonscriptions** (et dans le duo de tête de 260), et un modèle spatial
+  **divise l'erreur locale par ~2** vs la moyenne nationale plate. Base d'une
+  projection en sièges / de reports par circonscription pour 2027.
+
+**Méthodes sourcées** (documentées dans le rapport) : régression de Dirichlet sur
+données compositionnelles multipartis et procédure correction-combinaison au
+niveau circonscription — Hanretty (2021), *International Journal of Forecasting* ;
+approche bayésienne polls + fondamentaux en systèmes multipartis (Stoetzer et al.,
+*Political Analysis* 2019). La *baseline* de référence à battre est le **swing
+national uniforme**.
 
 ## Prévision 2027 (P6) — forward, honnêtement vérifiable
 
