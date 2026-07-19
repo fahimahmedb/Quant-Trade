@@ -74,16 +74,24 @@ for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml; do
 done
 ```
 
-## Résultat clé (backtest OOS, 7 plis)
+## Résultat clé (backtest OOS, 7 plis) — à lire avec l'audit
 
-La **fusion multi-source** (Brier 0.14, log-loss 0.41, 86 % de bonnes issues)
-bat nettement chaque source seule — en particulier les fondamentaux seuls
-(Brier 0.37, 57 %). Les contributions migrent dans le temps selon la
-disponibilité : fondamentaux → NLP (2007+) → marchés (2017+). Le ML à forte
-capacité (GB/XGBoost) **sur-ajuste** à n≈11 (log-loss > 3) : le gain vient de
-l'**information** ajoutée (marchés, NLP), pas de la capacité du modèle. Le vrai
-terrain ML est la maille circonscription (législatives), documentée en tête de
-`scripts/run_etape_P5_ml.py`.
+⚠️ **Métriques à interpréter avec prudence.** La seule source reposant sur des
+données **exogènes** (macro/popularité indépendantes du scrutin) est les
+**fondamentaux** : Brier **0.37**, 57 % de bonnes issues — soit, à n=7, un
+résultat **non distinguable du hasard**. C'est le seul chiffre de compétence
+défendable, et il est faible : prédire une présidentielle avec un modèle
+structurel sur n≈11 est intrinsèquement peu fiable.
+
+La fusion « toutes sources » affiche Brier 0.14 / 86 %, **mais ce chiffre
+surestime la compétence réelle** : les instantanés marchés et NLP ont été
+construits *a posteriori*, en connaissant les résultats (hindsight). Le backtest
+expansif est correct, mais il ne peut pas laver des données qui encodent déjà le
+futur. La thèse « fusion multi-source > source seule » reste plausible avec de
+**vraies** données de marché horodatées ; ces métriques-ci ne la démontrent pas.
+Le ML à forte capacité (GB/XGBoost) **sur-ajuste** à n≈11 (log-loss > 3).
+
+👉 **Audit complet et honnête : [`results/AUDIT.md`](results/AUDIT.md).**
 
 ### Orchestration (économie de tokens)
 

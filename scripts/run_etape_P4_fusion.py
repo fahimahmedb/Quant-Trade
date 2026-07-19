@@ -107,7 +107,23 @@ for ctx, post, actual, won in detail:
     w(f"- **{ctx.year}** : {parts}")
 w("")
 
-w("## 5. Limites (honnêteté méthodologique)\n")
+w("## 5. Audit de provenance des données (lecture critique OBLIGATOIRE)\n")
+w("⚠️ **Les scores de cette page surestiment la compétence prédictive réelle.** "
+  "Les instantanés marchés (`fr_markets_snapshot.json`) et NLP "
+  "(`fr_nlp_snapshot.csv`) ont été rédigés en CONNAISSANT l'issue des élections "
+  "(hindsight). Le backtest expansif n'entraîne jamais sur le futur, mais il ne "
+  "peut pas laver une donnée qui encode déjà le résultat dans sa valeur.\n")
+w("- Marchés (Brier 0.000) et NLP (0.063) mesurent un **ajustement rétrospectif**, "
+  "pas une prévision. Les deux calls confiants (2017/2022) sont exactement ceux "
+  "où les marchés — donnée rétrospective — dominent la pondération.")
+w("- La **seule source exogène** (macro/popularité indépendantes du scrutin) est "
+  "les **fondamentaux** : Brier **0.368**, bonne issue **57 %** — non "
+  "distinguable du hasard à n=7. C'est le seul chiffre de compétence défendable.")
+w("- La thèse (fusion multi-source > source seule) reste plausible avec de VRAIES "
+  "données de marché ; ces métriques-ci ne la démontrent simplement pas. "
+  "Voir `results/AUDIT.md`.\n")
+
+w("## 6. Limites (honnêteté méthodologique)\n")
 w("- **Échantillon minuscule** : 11 présidentielles, 7 plis OOS. Aucun chiffre "
   "n'est significatif au sens statistique ; ce sont des ordres de grandeur.")
 w("- **Données approximatives** : macro agrégées, prix de marché et features NLP "

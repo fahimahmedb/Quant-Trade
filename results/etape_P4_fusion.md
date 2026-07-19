@@ -45,7 +45,15 @@ La fusion combine leurs estimations gaussiennes de la part 2nd tour par **pondé
 - **2017** : markets 66%, nlp 22%, fundamentals 12%, prior 0%
 - **2022** : markets 71%, nlp 21%, fundamentals 8%, prior 0%
 
-## 5. Limites (honnêteté méthodologique)
+## 5. Audit de provenance des données (lecture critique OBLIGATOIRE)
+
+⚠️ **Les scores de cette page surestiment la compétence prédictive réelle.** Les instantanés marchés (`fr_markets_snapshot.json`) et NLP (`fr_nlp_snapshot.csv`) ont été rédigés en CONNAISSANT l'issue des élections (hindsight). Le backtest expansif n'entraîne jamais sur le futur, mais il ne peut pas laver une donnée qui encode déjà le résultat dans sa valeur.
+
+- Marchés (Brier 0.000) et NLP (0.063) mesurent un **ajustement rétrospectif**, pas une prévision. Les deux calls confiants (2017/2022) sont exactement ceux où les marchés — donnée rétrospective — dominent la pondération.
+- La **seule source exogène** (macro/popularité indépendantes du scrutin) est les **fondamentaux** : Brier **0.368**, bonne issue **57 %** — non distinguable du hasard à n=7. C'est le seul chiffre de compétence défendable.
+- La thèse (fusion multi-source > source seule) reste plausible avec de VRAIES données de marché ; ces métriques-ci ne la démontrent simplement pas. Voir `results/AUDIT.md`.
+
+## 6. Limites (honnêteté méthodologique)
 
 - **Échantillon minuscule** : 11 présidentielles, 7 plis OOS. Aucun chiffre n'est significatif au sens statistique ; ce sont des ordres de grandeur.
 - **Données approximatives** : macro agrégées, prix de marché et features NLP illustratifs (2017/2022 pour les marchés, 2007+ pour le NLP). À remplacer par des séries primaires sourcées avant tout usage réel.
