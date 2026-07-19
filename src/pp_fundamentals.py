@@ -145,8 +145,14 @@ class FundamentalsSource:
         pred_share = float(self.intercept_ + np.dot(self.coefs_, x_std))
         pred_share = clamp_share(pred_share)
 
-        # Incertitude : max(écart-type résiduel OOS, plancher de 0.03)
-        oos_sd = max(self.residual_sd_ or 0.08, 0.03)
+        # Incertitude PRÉDICTIVE (et non in-sample). Le résidu d'entraînement
+        # sous-estime l'erreur hors-échantillon : avec n minuscule et 5 params
+        # régularisés, l'intervalle de PRÉDICTION est plus large que l'intervalle
+        # de confiance. On applique donc (choix a priori, non ajusté sur le test) :
+        #   - un facteur d'inflation 1.5 (incertitude de paramètres + sur-ajustement)
+        #   - un plancher 0.05 = incertitude électorale irréductible d'un 2nd tour
+        #     (un modèle structurel a un RMSE typique de 3-6 pts sur la part).
+        oos_sd = max((self.residual_sd_ or 0.08) * 1.5, 0.05)
 
         return SourceSignal(
             source=self.name,

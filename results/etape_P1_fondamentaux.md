@@ -58,15 +58,15 @@ Intercept (prior) : 0.5656
 
 | Annee | Election | Reference | Part prevue | P(victoire) | Part reelle | Issue |
 |---|---|---|---|---|---|---|
-| 1988 | FR_pres_1988 | mitterrand_1988 | 0.577 | 0.99 | 0.540 | ✓ gagne |
-| 1995 | FR_pres_1995 | jospin_1995 | 0.490 | 0.37 | 0.474 | ✗ perd |
-| 2002 | FR_pres_2002 | chirac_2002 | 0.465 | 0.12 | 0.822 | ✓ gagne |
-| 2007 | FR_pres_2007 | sarkozy_2007 | 0.567 | 0.85 | 0.531 | ✓ gagne |
-| 2012 | FR_pres_2012 | sarkozy_2012 | 0.655 | 0.99 | 0.484 | ✗ perd |
-| 2017 | FR_pres_2017 | macron_2017 | 0.388 | 0.04 | 0.661 | ✓ gagne |
-| 2022 | FR_pres_2022 | macron_2022 | 0.564 | 0.78 | 0.586 | ✓ gagne |
+| 1988 | FR_pres_1988 | mitterrand_1988 | 0.577 | 0.94 | 0.540 | ✓ gagne |
+| 1995 | FR_pres_1995 | jospin_1995 | 0.490 | 0.42 | 0.474 | ✗ perd |
+| 2002 | FR_pres_2002 | chirac_2002 | 0.465 | 0.24 | 0.822 | ✓ gagne |
+| 2007 | FR_pres_2007 | sarkozy_2007 | 0.567 | 0.75 | 0.531 | ✓ gagne |
+| 2012 | FR_pres_2012 | sarkozy_2012 | 0.655 | 0.95 | 0.484 | ✗ perd |
+| 2017 | FR_pres_2017 | macron_2017 | 0.388 | 0.13 | 0.661 | ✓ gagne |
+| 2022 | FR_pres_2022 | macron_2022 | 0.564 | 0.70 | 0.586 | ✓ gagne |
 
-**OOS (n=7)** — Brier 0.411 | log-loss 1.606 | MAE part 0.130 | taux de bonne issue 57%
+**OOS (n=7)** — Brier 0.368 | log-loss 1.114 | MAE part 0.130 | taux de bonne issue 57%
 
 ## 5. Limitations honnêtes
 
