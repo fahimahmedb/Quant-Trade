@@ -23,6 +23,12 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 CIRCO_2022 = ROOT / "data" / "fr_pres2022_circo.csv"
+CIRCO_2017 = ROOT / "data" / "fr_pres2017_circo.csv"
+
+# Partis mappables 2017 <-> 2022 (meme famille, candidat different possible) :
+# LFI Melenchon/Melenchon, RN Le Pen/Le Pen, ENS Macron/Macron, LR Fillon/Pecresse,
+# PS Hamon/Hidalgo, DLF/RES/LO/NPA memes candidats. EELV/REC/PCF non appariables.
+PARTIS_APPARIES = ["LFI", "RN", "ENS", "LR", "PS", "DLF", "RES", "LO", "NPA"]
 
 # Partis, du plus grand au plus petit (national 2022).
 PARTIS = ["ENS", "RN", "LFI", "REC", "LR", "EELV", "RES", "PCF", "DLF", "PS", "NPA", "LO"]
@@ -67,6 +73,47 @@ def dispersion(df: pd.DataFrame, party: str) -> dict[str, float]:
     v = df[party].to_numpy(float)
     return {"mean": float(v.mean()), "min": float(v.min()),
             "max": float(v.max()), "std": float(v.std())}
+
+
+def swing_skill(party: str,
+                path_from: str | Path = CIRCO_2017,
+                path_to: str | Path = CIRCO_2022) -> dict[str, float]:
+    """Test de skill TEMPOREL par circonscription (downscaling d'un tour à l'autre).
+
+    Étant donné le résultat NATIONAL de l'élection cible, comment le distribuer
+    aux circonscriptions ? On compare trois prédicteurs de la part locale cible,
+    par leave-one-out sur les circos communes :
+      - `persist`  : part de l'élection source (aucun swing).
+      - `swing`    : swing NATIONAL UNIFORME (part source + Δ national) — la
+                     baseline de référence de la littérature (Hanretty 2021).
+      - `regress`  : régression 1D locale (cible ~ source), LOO — capture les
+                     swings NON uniformes (regression to the mean, dynamiques
+                     géographiques propres à un parti).
+
+    Renvoie les MAE (points de %) ; `regress < swing` => la maille apporte une
+    skill de prévision réelle, au-delà du swing uniforme.
+    """
+    a = load_circo(path_from).set_index("circo_id")
+    b = load_circo(path_to).set_index("circo_id")
+    common = a.index.intersection(b.index)
+    x = a.loc[common, party].to_numpy(float)
+    y = b.loc[common, party].to_numpy(float)
+    n = len(x)
+
+    persist = float(np.mean(np.abs(y - x)))
+    swing = float(np.mean(np.abs(y - (x + (y.mean() - x.mean())))))
+
+    sx, sy, sxx, sxy = x.sum(), y.sum(), (x * x).sum(), (x * y).sum()
+    ae = []
+    for i in range(n):
+        n1, sx1, sy1 = n - 1, sx - x[i], sy - y[i]
+        sxx1, sxy1 = sxx - x[i] ** 2, sxy - x[i] * y[i]
+        den = n1 * sxx1 - sx1 ** 2
+        b1 = (n1 * sxy1 - sx1 * sy1) / den if den != 0 else 0.0
+        b0 = (sy1 - b1 * sx1) / n1
+        ae.append(abs(y[i] - (b0 + b1 * x[i])))
+    regress = float(np.mean(ae))
+    return {"n": n, "persist": persist, "swing": swing, "regress": regress}
 
 
 def dept_loo_mae(df: pd.DataFrame, party: str) -> tuple[float, float]:

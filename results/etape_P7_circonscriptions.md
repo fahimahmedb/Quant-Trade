@@ -70,7 +70,29 @@ Question testable : la **structure spatiale** (départementale) prédit-elle mie
 
 → **Oui, ça aide — nettement.** La maille départementale/circonscription **divise l'erreur par ~2** vs le chiffre national. La géographie électorale porte un signal réel et fort, que le modèle national ignore par construction.
 
-## 4. Verdict honnête : ce que la circonscription apporte (et n'apporte pas)
+## 4. Test de SKILL temporel : battre le swing national uniforme (2017 → 2022)
+
+Question de la littérature (Hanretty 2021) : étant donné le résultat NATIONAL d'une élection, comment le **distribuer aux circonscriptions** ? La baseline de référence est le **swing national uniforme** (appliquer le même Δ national partout). Un modèle de circonscription n'a de valeur que s'il la bat. On prédit les parts 2022 par circo à partir de 2017 (données réelles des deux années, 566 circos communes), en leave-one-out :
+
+| Parti | Persistance (=2017) | Swing national uniforme | Régression locale | Skill ? |
+|---|---|---|---|---|
+| Mélenchon (LFI) | 4.02 | 4.23 | **3.69** | ✅ bat le swing |
+| Le Pen (RN) | 2.44 | 1.87 | **1.86** | ✅ bat le swing |
+| Macron (Ensemble) | 4.62 | 3.28 | **3.20** | ✅ bat le swing |
+| Pécresse (LR) | 15.03 | 3.32 | **0.66** | ✅ bat le swing |
+| Hidalgo (PS) | 4.72 | 1.42 | **0.34** | ✅ bat le swing |
+| Dupont-Aignan (DLF) | 2.60 | 0.81 | **0.29** | ✅ bat le swing |
+| Lassalle (Résistons) | 1.87 | 0.79 | **0.50** | ✅ bat le swing |
+| Arthaud (LO) | 0.11 | 0.10 | **0.07** | ✅ bat le swing |
+| Poutou (NPA) | 0.36 | 0.16 | **0.09** | ✅ bat le swing |
+
+**Moyenne (9 partis) — MAE en points** : persistance 3.97 → swing uniforme 1.78 → **régression locale 1.19**. La régression de circonscription bat le swing uniforme pour **tous** les partis.
+
+*Cas LFI, révélateur : le swing uniforme (4.23) fait même **pire** que la persistance (4.02) — la poussée de Mélenchon 2017→2022 fut **géographiquement inégale**, donc mal rendue par un Δ national uniforme ; seule la régression locale (3.69) la capture. C'est précisément l'argument de la régression de Dirichlet compositionnelle.*
+
+*Cadre honnête : ce test mesure la skill de **downscaling** (répartir un résultat national connu/prévu vers les circos), pas la prévision du national lui-même — qui reste le rôle de P1–P6 (ou de sondages). Les deux baselines utilisent le même agrégat national ; seule la répartition diffère.*
+
+## 5. Verdict honnête : ce que la circonscription apporte (et n'apporte pas)
 
 **Ce que ça N'apporte PAS** : le chiffre **national** (part R1, issue R2). Agréger les circos **reproduit exactement** le national — aucun gain sur la grandeur que prédisent P1–P6.
 
@@ -80,4 +102,6 @@ Question testable : la **structure spatiale** (départementale) prédit-elle mie
 - **Résolution spatiale à signal réel** : erreur locale divisée par ~2 vs le national. Base d'une projection en **sièges** (législatives) ou d'un scénario de **report** entre deux tours par circonscription.
 - **Substrat pour 2027** : appliquer un swing national à cette carte réelle 2022 donne une projection territoriale/sièges — capacité que P6 (national) n'a pas.
 
-**Limite honnête** : une seule élection (2022). Un vrai test de PRÉVISION temporelle (prédire 2022 depuis 2017 par circo, et battre le *swing national uniforme* — la baseline de référence de la littérature : Hanretty 2021, regression de Dirichlet) demande les données 2017 par circonscription, à brancher ensuite. Ici on démontre le **signal spatial**, pas encore la **skill de prévision** inter-élections.
+**Skill temporel démontrée** (§4) : sur 2017→2022, la régression de circonscription **bat le swing national uniforme** pour les 9 partis appariés (MAE moyenne 1.19 vs 1.78), LFI compris. Ce n'est plus seulement du signal spatial statique : c'est une skill de **downscaling** inter-élections réelle.
+
+**Limites restantes** : deux élections seulement (2017, 2022) ; skill de *downscaling* (le national doit être connu/prévu ailleurs) et non de prévision du national ; régression 1D par parti (une vraie Dirichlet compositionnelle multipartis + covariables socio-éco par circonscription ferait mieux). Le 2017 est provisoire (~9h30) et couvre 566 circos.
