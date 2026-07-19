@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "description": "Instantane hors-ligne des probabilites implicites de marche (prediction markets type Polymarket / PredictIt / Betfair Exchange) de victoire au 2nd tour du candidat de reference, pour les presidentielles francaises.",
+    "avertissement": "VALEURS APPROXIMATIVES / ILLUSTRATIVES. Elles reconstituent l'ordre de grandeur des prix observes en fin de campagne d'entre-deux-tours (pas un releve tick-by-tick horodate et audite). A ne PAS traiter comme des cours exacts. Objectif : demontrer le pipeline (fetch/fallback + calibration favori-outsider), pas produire une base de donnees de marche certifiee.",
+    "couverture": "Les marches de prediction grand public sur la presidentielle francaise n'existent (volumes significatifs) qu'a partir de 2017 (essor Polymarket/PredictIt/Betfair sur les elections). Aucune donnee pour 1965-2012 : la source doit s'y declarer indisponible (available=False), ce qui est le comportement attendu, pas un bug.",
+    "champ_p_reference_wins": "Probabilite implicite BRUTE de marche (avant debiaisage favori-outsider) que le candidat de reference (voir reference_id du registre) l'emporte au 2nd tour. Dans [0,1].",
+    "champ_n_trades_or_volume": "Ordre de grandeur indicatif du volume/nombre de contrats echanges sur la periode d'entre-deux-tours (unite non homogene entre plateformes, purement indicatif de la liquidite, PAS une donnee financiere auditee)."
+  },
+  "markets": {
+    "FR_pres_2017": {
+      "p_reference_wins": 0.87,
+      "n_trades_or_volume": 45000,
+      "note": "Macron nettement favori des marches entre les deux tours (debat du 3 mai 2017 n'a pas renverse la tendance). Ordre de grandeur coherent avec les cotes Betfair/PredictIt de l'epoque (~85-92%)."
+    },
+    "FR_pres_2022": {
+      "p_reference_wins": 0.74,
+      "n_trades_or_volume": 90000,
+      "note": "Macron favori mais ecart resserre par rapport a 2017 (Le Pen plus competitive). Ordre de grandeur coherent avec les prix PredictIt/Betfair d'avril 2022 (~70-78%)."
+    },
+    "FR_pres_2027": {
+      "p_reference_wins": 0.50,
+      "n_trades_or_volume": 500,
+      "note": "ENTREE D'EXEMPLE (illustration de l'usage live), PAS une prevision. Election future : marche embryonnaire, prix a plat par defaut faute de campagne engagee. A remplacer par un vrai fetch live le moment venu."
+    }
+  }
+}
