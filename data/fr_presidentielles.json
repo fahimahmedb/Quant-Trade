@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "description": "Registre des elections presidentielles francaises (Ve Republique, suffrage universel direct 1965->2022). Contexte + verite terrain pour le backtest OOS.",
+    "source": "Resultats officiels 1er/2nd tour (domaine public, Conseil constitutionnel / ministere de l'Interieur). Parts exprimees en fraction des suffrages exprimes (0..1).",
+    "reference_id": "Finaliste de continuite / camp sortant (axe scored: continuite vs challenger). NaN de score 2nd tour si le camp sortant est elimine au 1er tour.",
+    "incumbent_running": "true si un president sortant figure sur le bulletin; false pour un siege ouvert (demission/deces/retrait)."
+  },
+  "elections": [
+    {
+      "election_id": "FR_pres_1965", "year": 1965, "reference_id": "degaulle_1965", "incumbent_running": true,
+      "candidates": [
+        {"id": "degaulle_1965", "name": "Charles de Gaulle", "camp": "gaulliste", "incumbent": true},
+        {"id": "mitterrand_1965", "name": "Francois Mitterrand", "camp": "gauche", "incumbent": false},
+        {"id": "lecanuet_1965", "name": "Jean Lecanuet", "camp": "centre", "incumbent": false},
+        {"id": "tixier_1965", "name": "Jean-Louis Tixier-Vignancour", "camp": "droite", "incumbent": false}
+      ],
+      "r1_shares": {"degaulle_1965": 0.4465, "mitterrand_1965": 0.3172, "lecanuet_1965": 0.1557, "tixier_1965": 0.0520},
+      "r2_finalists": ["degaulle_1965", "mitterrand_1965"],
+      "r2_shares": {"degaulle_1965": 0.5520, "mitterrand_1965": 0.4480},
+      "winner_id": "degaulle_1965"
+    },
+    {
+      "election_id": "FR_pres_1969", "year": 1969, "reference_id": "pompidou_1969", "incumbent_running": false,
+      "candidates": [
+        {"id": "pompidou_1969", "name": "Georges Pompidou", "camp": "gaulliste", "incumbent": true},
+        {"id": "poher_1969", "name": "Alain Poher", "camp": "centre", "incumbent": false},
+        {"id": "duclos_1969", "name": "Jacques Duclos", "camp": "gauche", "incumbent": false},
+        {"id": "defferre_1969", "name": "Gaston Defferre", "camp": "gauche", "incumbent": false}
+      ],
+      "r1_shares": {"pompidou_1969": 0.4447, "poher_1969": 0.2331, "duclos_1969": 0.2127, "defferre_1969": 0.0501},
+      "r2_finalists": ["pompidou_1969", "poher_1969"],
+      "r2_shares": {"pompidou_1969": 0.5821, "poher_1969": 0.4179},
+      "winner_id": "pompidou_1969"
+    },
+    {
+      "election_id": "FR_pres_1974", "year": 1974, "reference_id": "giscard_1974", "incumbent_running": false,
+      "candidates": [
+        {"id": "mitterrand_1974", "name": "Francois Mitterrand", "camp": "gauche", "incumbent": false},
+        {"id": "giscard_1974", "name": "Valery Giscard d'Estaing", "camp": "droite", "incumbent": true},
+        {"id": "chaban_1974", "name": "Jacques Chaban-Delmas", "camp": "gaulliste", "incumbent": true},
+        {"id": "royer_1974", "name": "Jean Royer", "camp": "droite", "incumbent": false}
+      ],
+      "r1_shares": {"mitterrand_1974": 0.4325, "giscard_1974": 0.3260, "chaban_1974": 0.1511, "royer_1974": 0.0317},
+      "r2_finalists": ["giscard_1974", "mitterrand_1974"],
+      "r2_shares": {"giscard_1974": 0.5081, "mitterrand_1974": 0.4919},
+      "winner_id": "giscard_1974"
+    },
+    {
+      "election_id": "FR_pres_1981", "year": 1981, "reference_id": "giscard_1981", "incumbent_running": true,
+      "candidates": [
+        {"id": "giscard_1981", "name": "Valery Giscard d'Estaing", "camp": "droite", "incumbent": true},
+        {"id": "mitterrand_1981", "name": "Francois Mitterrand", "camp": "gauche", "incumbent": false},
+        {"id": "chirac_1981", "name": "Jacques Chirac", "camp": "droite", "incumbent": false},
+        {"id": "marchais_1981", "name": "Georges Marchais", "camp": "gauche", "incumbent": false}
+      ],
+      "r1_shares": {"giscard_1981": 0.2832, "mitterrand_1981": 0.2585, "chirac_1981": 0.1800, "marchais_1981": 0.1535},
+      "r2_finalists": ["mitterrand_1981", "giscard_1981"],
+      "r2_shares": {"mitterrand_1981": 0.5176, "giscard_1981": 0.4824},
+      "winner_id": "mitterrand_1981"
+    },
+    {
+      "election_id": "FR_pres_1988", "year": 1988, "reference_id": "mitterrand_1988", "incumbent_running": true,
+      "candidates": [
+        {"id": "mitterrand_1988", "name": "Francois Mitterrand", "camp": "gauche", "incumbent": true},
+        {"id": "chirac_1988", "name": "Jacques Chirac", "camp": "droite", "incumbent": false},
+        {"id": "barre_1988", "name": "Raymond Barre", "camp": "centre", "incumbent": false},
+        {"id": "lepen_1988", "name": "Jean-Marie Le Pen", "camp": "RN", "incumbent": false}
+      ],
+      "r1_shares": {"mitterrand_1988": 0.3411, "chirac_1988": 0.1996, "barre_1988": 0.1654, "lepen_1988": 0.1438},
+      "r2_finalists": ["mitterrand_1988", "chirac_1988"],
+      "r2_shares": {"mitterrand_1988": 0.5402, "chirac_1988": 0.4598},
+      "winner_id": "mitterrand_1988"
+    },
+    {
+      "election_id": "FR_pres_1995", "year": 1995, "reference_id": "jospin_1995", "incumbent_running": false,
+      "candidates": [
+        {"id": "jospin_1995", "name": "Lionel Jospin", "camp": "gauche", "incumbent": true},
+        {"id": "chirac_1995", "name": "Jacques Chirac", "camp": "droite", "incumbent": false},
+        {"id": "balladur_1995", "name": "Edouard Balladur", "camp": "droite", "incumbent": false},
+        {"id": "lepen_1995", "name": "Jean-Marie Le Pen", "camp": "RN", "incumbent": false}
+      ],
+      "r1_shares": {"jospin_1995": 0.2330, "chirac_1995": 0.2084, "balladur_1995": 0.1858, "lepen_1995": 0.1500},
+      "r2_finalists": ["chirac_1995", "jospin_1995"],
+      "r2_shares": {"chirac_1995": 0.5264, "jospin_1995": 0.4736},
+      "winner_id": "chirac_1995"
+    },
+    {
+      "election_id": "FR_pres_2002", "year": 2002, "reference_id": "chirac_2002", "incumbent_running": true,
+      "candidates": [
+        {"id": "chirac_2002", "name": "Jacques Chirac", "camp": "droite", "incumbent": true},
+        {"id": "lepen_2002", "name": "Jean-Marie Le Pen", "camp": "RN", "incumbent": false},
+        {"id": "jospin_2002", "name": "Lionel Jospin", "camp": "gauche", "incumbent": false},
+        {"id": "bayrou_2002", "name": "Francois Bayrou", "camp": "centre", "incumbent": false}
+      ],
+      "r1_shares": {"chirac_2002": 0.1988, "lepen_2002": 0.1686, "jospin_2002": 0.1618, "bayrou_2002": 0.0684},
+      "r2_finalists": ["chirac_2002", "lepen_2002"],
+      "r2_shares": {"chirac_2002": 0.8221, "lepen_2002": 0.1779},
+      "winner_id": "chirac_2002"
+    },
+    {
+      "election_id": "FR_pres_2007", "year": 2007, "reference_id": "sarkozy_2007", "incumbent_running": false,
+      "candidates": [
+        {"id": "sarkozy_2007", "name": "Nicolas Sarkozy", "camp": "droite", "incumbent": true},
+        {"id": "royal_2007", "name": "Segolene Royal", "camp": "gauche", "incumbent": false},
+        {"id": "bayrou_2007", "name": "Francois Bayrou", "camp": "centre", "incumbent": false},
+        {"id": "lepen_2007", "name": "Jean-Marie Le Pen", "camp": "RN", "incumbent": false}
+      ],
+      "r1_shares": {"sarkozy_2007": 0.3118, "royal_2007": 0.2587, "bayrou_2007": 0.1857, "lepen_2007": 0.1044},
+      "r2_finalists": ["sarkozy_2007", "royal_2007"],
+      "r2_shares": {"sarkozy_2007": 0.5306, "royal_2007": 0.4694},
+      "winner_id": "sarkozy_2007"
+    },
+    {
+      "election_id": "FR_pres_2012", "year": 2012, "reference_id": "sarkozy_2012", "incumbent_running": true,
+      "candidates": [
+        {"id": "hollande_2012", "name": "Francois Hollande", "camp": "gauche", "incumbent": false},
+        {"id": "sarkozy_2012", "name": "Nicolas Sarkozy", "camp": "droite", "incumbent": true},
+        {"id": "lepen_2012", "name": "Marine Le Pen", "camp": "RN", "incumbent": false},
+        {"id": "melenchon_2012", "name": "Jean-Luc Melenchon", "camp": "gauche", "incumbent": false},
+        {"id": "bayrou_2012", "name": "Francois Bayrou", "camp": "centre", "incumbent": false}
+      ],
+      "r1_shares": {"hollande_2012": 0.2863, "sarkozy_2012": 0.2718, "lepen_2012": 0.1790, "melenchon_2012": 0.1110, "bayrou_2012": 0.0913},
+      "r2_finalists": ["hollande_2012", "sarkozy_2012"],
+      "r2_shares": {"hollande_2012": 0.5164, "sarkozy_2012": 0.4836},
+      "winner_id": "hollande_2012"
+    },
+    {
+      "election_id": "FR_pres_2017", "year": 2017, "reference_id": "macron_2017", "incumbent_running": false,
+      "candidates": [
+        {"id": "macron_2017", "name": "Emmanuel Macron", "camp": "centre", "incumbent": false},
+        {"id": "lepen_2017", "name": "Marine Le Pen", "camp": "RN", "incumbent": false},
+        {"id": "fillon_2017", "name": "Francois Fillon", "camp": "droite", "incumbent": false},
+        {"id": "melenchon_2017", "name": "Jean-Luc Melenchon", "camp": "gauche", "incumbent": false},
+        {"id": "hamon_2017", "name": "Benoit Hamon", "camp": "gauche", "incumbent": true}
+      ],
+      "r1_shares": {"macron_2017": 0.2401, "lepen_2017": 0.2130, "fillon_2017": 0.2001, "melenchon_2017": 0.1958, "hamon_2017": 0.0636},
+      "r2_finalists": ["macron_2017", "lepen_2017"],
+      "r2_shares": {"macron_2017": 0.6610, "lepen_2017": 0.3390},
+      "winner_id": "macron_2017"
+    },
+    {
+      "election_id": "FR_pres_2022", "year": 2022, "reference_id": "macron_2022", "incumbent_running": true,
+      "candidates": [
+        {"id": "macron_2022", "name": "Emmanuel Macron", "camp": "centre", "incumbent": true},
+        {"id": "lepen_2022", "name": "Marine Le Pen", "camp": "RN", "incumbent": false},
+        {"id": "melenchon_2022", "name": "Jean-Luc Melenchon", "camp": "gauche", "incumbent": false},
+        {"id": "zemmour_2022", "name": "Eric Zemmour", "camp": "droite", "incumbent": false},
+        {"id": "pecresse_2022", "name": "Valerie Pecresse", "camp": "droite", "incumbent": false}
+      ],
+      "r1_shares": {"macron_2022": 0.2785, "lepen_2022": 0.2315, "melenchon_2022": 0.2195, "zemmour_2022": 0.0707, "pecresse_2022": 0.0478},
+      "r2_finalists": ["macron_2022", "lepen_2022"],
+      "r2_shares": {"macron_2022": 0.5855, "lepen_2022": 0.4145},
+      "winner_id": "macron_2022"
+    }
+  ]
+}

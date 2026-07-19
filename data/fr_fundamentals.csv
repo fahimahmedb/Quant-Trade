@@ -1,0 +1,22 @@
+# Variables fondamentales (macro/politiques) par presidentielle FR, a la date de prevision.
+# ATTENTION : valeurs APPROXIMATIVES issues de chiffres publics agreges (INSEE croissance/chomage,
+#   moyennes de cote de popularite du sortant). Destinees a la DEMONSTRATION METHODOLOGIQUE du modele
+#   structurel (style Jerome-Speziari / Lewis-Beck-Nadeau), pas a une publication. A remplacer par des
+#   series sourcees exactes avant tout usage reel. Lire avec pandas.read_csv(comment='#').
+# Colonnes :
+#   gdp_growth    : croissance reelle du PIB (% annuel) sur la periode pre-electorale
+#   unemployment  : taux de chomage (%) au sens BIT a la date de prevision
+#   approval      : cote de popularite du camp sortant (% de satisfaits, 0..100)
+#   tenure_years  : nombre d'annees de detention de la presidence par le camp de reference
+election_id,gdp_growth,unemployment,approval,tenure_years
+FR_pres_1965,4.8,1.5,55,6
+FR_pres_1969,7.0,2.1,50,10
+FR_pres_1974,4.3,2.8,48,15
+FR_pres_1981,1.6,6.3,40,23
+FR_pres_1988,4.7,10.0,55,7
+FR_pres_1995,2.1,11.1,30,14
+FR_pres_2002,1.1,8.7,50,7
+FR_pres_2007,2.4,8.4,35,12
+FR_pres_2012,0.2,9.8,35,5
+FR_pres_2017,1.1,9.5,20,5
+FR_pres_2022,2.5,7.4,40,5
