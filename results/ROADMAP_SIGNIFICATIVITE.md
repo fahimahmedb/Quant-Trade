@@ -93,6 +93,26 @@ proportionnel une élection inédite — la complexité ML **sur-apprend**. Donc
 Autrement dit : le modèle est aussi significatif qu'il peut l'être *localement* ;
 le gain restant est **national**, pas spatial.
 
+## E. Plafond de données VÉRIFIÉ (pourquoi « plus de scrutins » est bloqué)
+
+La limite n°1 (2 transitions seulement → prévision et calibration fragiles) a été
+attaquée frontalement : tentative d'ajouter la présidentielle **2007** par
+circonscription. **Échec vérifié, pour raison de fond** :
+- Les résultats 2007 officiels ne sont publiés qu'**au niveau COMMUNE** (~36 000),
+  pas circonscription.
+- Surtout, le **redécoupage de 2010** a changé les limites des circonscriptions :
+  un 2007-par-circo (anciennes limites) serait **non comparable** aux circos
+  2012/2017/2022. Aucun mapping ne répare ça proprement.
+
+⇒ Au niveau circonscription *moderne*, on est **structurellement plafonné à 3
+scrutins (2012, 2017, 2022) = 2 transitions**. Ce n'est pas un manque d'effort
+mais une contrainte de données. Les seules extensions honnêtes possibles sont
+d'un **autre type d'élection** (législatives 2022/2024, mêmes limites — mais
+dynamique différente et gauche codée en bloc) ou d'attendre **2027**. La
+conclusion tient : la significativité restante se gagne au **national** et par la
+**calibration** (elle-même bornée par ce plafond), pas par plus de modélisation
+spatiale.
+
 *Sources : Hummel & Rothschild (fundamentals) ; Graefe et al. (combinaison) ;
 Gelman/Morris (Economist, incertitude) ; Hanretty 2021 (Dirichlet) ; étude ML
 sièges australiens, IJF 2025 (vote précédent > socio-éco) ; MRP (Wikipedia/Langer).*
