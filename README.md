@@ -69,7 +69,8 @@ scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
          run_etape_P8_second_tour.py → results/etape_P8_second_tour.md (reports T2)
          run_etape_P9_ml_circonscription.py → .../etape_P9_ml_circonscription.md
          run_etape_P10_prevision_temporelle.py → .../etape_P10_prevision_temporelle.md
-         pp_circo_ml.py — GB par circo, CV, significativité, désagrégation, prévision
+         run_etape_P11_pipeline_calibre.py → .../etape_P11_pipeline_calibre.md
+         pp_circo_ml.py — GB par circo, CV, significativité, prévision, conformal, MC sièges
 data/    fr_pres2012/2017_circo.csv — présidentielles 2012/2017 par circo (RÉEL)
 data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × parti
          fr_pres2022_t2_circo.csv — 2nd tour (Macron/Le Pen) par circo
@@ -82,7 +83,7 @@ data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × 
 pip install numpy scipy pandas scikit-learn xgboost
 for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 \
          P7_circonscriptions P8_second_tour P9_ml_circonscription \
-         P10_prevision_temporelle; do
+         P10_prevision_temporelle P11_pipeline_calibre; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```

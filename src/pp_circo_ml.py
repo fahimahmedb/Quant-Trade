@@ -149,6 +149,94 @@ def _stack_transition(src: pd.DataFrame, tgt: pd.DataFrame) -> pd.DataFrame:
                         + [f"is_{q}" for q in PARTIS_TRI] + ["y"])
 
 
+def conformal_coverage(alpha: float = 0.20) -> dict:
+    """Calibre des intervalles conformes par parti sur 2012->2017, vérifie la
+    couverture sur 2017->2022. Renvoie Q (demi-largeur) et couverture par parti.
+
+    Honnêteté : la garantie conforme suppose l'échangeabilité entre transitions,
+    VIOLÉE ici (chaque scrutin a sa propre volatilité). On MESURE donc la
+    couverture réelle plutôt que de la supposer — et elle est inégale (les partis
+    en mutation, ex. LFI, sont sous-couverts).
+    """
+    d12 = load_circo(CIRCO_2012).set_index("circo_id")
+    d17 = load_circo(CIRCO_2017).set_index("circo_id")
+    d22 = load_circo(CIRCO_2022).set_index("circo_id")
+    cal = sorted(set(d12.index) & set(d17.index))
+    test = sorted(set(d17.index) & set(d22.index))
+
+    def prop(src, tgt, p, idx):
+        x = src.loc[idx, p].to_numpy(float)
+        return x * (tgt.loc[idx, p].mean() / src.loc[idx, p].mean())
+
+    out = {}
+    for p in PARTIS_TRI:
+        res = np.abs(d17.loc[cal, p].to_numpy(float) - prop(d12, d17, p, cal))
+        q = float(np.quantile(res, 1 - alpha))
+        err = np.abs(d22.loc[test, p].to_numpy(float) - prop(d17, d22, p, test))
+        out[p] = {"q": q, "coverage": float(np.mean(err <= q))}
+    out["_mean_coverage"] = float(np.mean([out[p]["coverage"] for p in PARTIS_TRI]))
+    out["_target"] = 1 - alpha
+    return out
+
+
+def deployment_halfwidths(alpha: float = 0.20) -> dict[str, float]:
+    """Demi-largeurs conformes par parti, calibrées sur la transition la plus
+    RÉCENTE (2017->2022) — pour un déploiement type 2027. Best-effort assumé."""
+    d17 = load_circo(CIRCO_2017).set_index("circo_id")
+    d22 = load_circo(CIRCO_2022).set_index("circo_id")
+    idx = sorted(set(d17.index) & set(d22.index))
+    hw = {}
+    for p in PARTIS_TRI:
+        x = d17.loc[idx, p].to_numpy(float)
+        pred = x * (d22.loc[idx, p].mean() / x.mean())
+        hw[p] = float(np.quantile(np.abs(d22.loc[idx, p].to_numpy(float) - pred), 1 - alpha))
+    return hw
+
+
+def monte_carlo_seats(national_mean: dict[str, float], national_rel_sd: float = 0.10,
+                      n_sims: int = 2000, alpha: float = 0.20, seed: int = 0) -> dict:
+    """Projection de sièges avec INCERTITUDE (E4 + calibration).
+
+    Pipeline honnête : (1) une prévision NATIONALE incertaine en entrée
+    (`national_mean` ± `national_rel_sd` en relatif) ; (2) désagrégation par swing
+    proportionnel sur la carte réelle 2022 ; (3) bruit résiduel par circo tiré de
+    l'échelle conforme ; (4) on compte le parti en tête par circo à chaque
+    simulation. Renvoie, par parti, la médiane et l'intervalle du nombre de
+    circonscriptions en tête. Le national est le maillon incertain — c'est
+    volontaire (c'est LUI le vrai levier, pas le spatial).
+    """
+    rng = np.random.default_rng(seed)
+    base = load_circo(CIRCO_2022).set_index("circo_id")
+    parties = [p for p in national_mean if p in base.columns]
+    base_nat = {p: float(base[p].mean()) for p in parties}
+    hw = deployment_halfwidths(alpha)
+    # sigma résiduel par parti ~ demi-largeur conforme / z(1-alpha/2)
+    from scipy.stats import norm as _norm
+    z = _norm.ppf(1 - alpha / 2)
+    sigma = {p: hw.get(p, 1.0) / z for p in parties}
+
+    counts = {p: np.zeros(n_sims) for p in parties}
+    B = {p: base[p].to_numpy(float) for p in parties}
+    n_circos = len(base)
+    for s in range(n_sims):
+        # (1) national perturbé, (2) swing proportionnel, (3) bruit résiduel
+        mat = np.zeros((n_circos, len(parties)))
+        for j, p in enumerate(parties):
+            nat = national_mean[p] * (1 + rng.normal(0, national_rel_sd))
+            factor = nat / base_nat[p] if base_nat[p] > 0 else 1.0
+            mat[:, j] = np.clip(B[p] * factor + rng.normal(0, sigma[p], n_circos), 0, None)
+        win = mat.argmax(axis=1)
+        for j, p in enumerate(parties):
+            counts[p][s] = int(np.sum(win == j))
+    res = {}
+    for p in parties:
+        c = counts[p]
+        res[p] = {"median": float(np.median(c)),
+                  "lo": float(np.quantile(c, alpha / 2)),
+                  "hi": float(np.quantile(c, 1 - alpha / 2))}
+    return res
+
+
 def temporal_forecast() -> dict:
     """VRAIE prevision : apprendre la transition 2012->2017, predire 2017->2022 (inedit).
 
