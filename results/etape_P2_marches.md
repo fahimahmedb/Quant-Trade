@@ -9,9 +9,13 @@ l'information disponible plus vite et plus largement qu'un sondage ponctuel.
 
 **Loader hybride** (`pp_markets.load_market_prob`) :
 
-1. Tentative **live** (`_fetch_live`, timeout court de 2 s) — non câblée vers un endpoint précis dans
-   ce dépôt (les URLs des marchés électoraux changent au fil des campagnes) ; lève
-   `NotImplementedError` par construction, capturée silencieusement.
+1. Tentative **live** (`_fetch_live`, timeout court de 2 s) — RÉELLEMENT câblée : une requête HTTP est
+   effectivement envoyée à l'API publique Polymarket (gamma API). Mais elle renvoie
+   systématiquement `None` à ce jour, faute de marché mappable : soit aucun marché FR 2027
+   n'est encore listé, soit un marché générique existe mais le mapping outcome→camp de
+   référence n'est pas déclaré (finalistes 2027 inconnus). Ce n'est donc PAS un stub, mais
+   ce n'est pas non plus une source opérationnelle : aucun appel réel n'a encore produit de
+   prix exploitable.
 2. **Fallback** systématique sur `data/fr_markets_snapshot.json` (instantané offline).
 3. Si l'élection n'a ni prix live ni entrée snapshot → aucune tentative de deviner :
    `SourceSignal(available=False)`.
@@ -105,14 +109,17 @@ Le débiaisage accentue l'écart à 0.5 (favori renforcé) ; la conversion en pa
    prix historique reconstitué a posteriori serait du hindsight — précisément l'erreur
    corrigée ici (cf. `results/AUDIT.md`).
 
-3. **Live non câblé** : `_fetch_live` est un point d'extension qui lève systématiquement
-   `NotImplementedError` — le fallback snapshot est donc la voie d'exécution normale de ce
-   dépôt, pas un filet de sécurité occasionnel.
+3. **Live réellement câblé mais sans résultat exploitable** : `_fetch_live` interroge pour
+   de vrai l'API Polymarket, mais renvoie toujours `None` (aucun marché mappable outcome→
+   camp de référence à ce jour) — le fallback snapshot reste donc la voie d'exécution
+   normale de ce dépôt, pas un filet de sécurité occasionnel.
 
 4. **Biais favori-outsider potentiellement variable dans le temps/plateforme** : le facteur
    `k` unique appliqué ici ne distingue pas Polymarket de PredictIt, ni les régimes de forte
    vs faible liquidité, alors que l'intensité du biais en dépend empiriquement.
 
-**Conclusion** : ce modèle est un **composant d'un ensemble** (fusion avec fondamentaux,
-NLP). Sa faible couverture historique en fait un signal complémentaire tardif (utile
-surtout à partir de 2017), pas un substitut aux autres sources.
+**Conclusion** : à ce stade, cette source est un **échafaudage 2027-live**, pas une brique
+opérationnelle démontrée — elle n'a **aucune skill mesurée** sur données réelles (0 pli
+scoré, n=0). Le débiaisage favori-outsider et la pente de conversion en part de vote sont
+des priors motivés par la littérature, non validés dans ce dépôt. Son seul test honnête
+possible est un scrutin futur (2027) avec un prix effectivement horodaté avant le vote.

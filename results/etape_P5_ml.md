@@ -21,17 +21,11 @@ On applique une famille ML (régression logistique, forêt aléatoire, gradient 
 - L'un des modèles ML devance légèrement le structurel, mais l'écart n'est PAS significatif à cet effectif (7 plis) : à traiter comme du bruit, pas comme une preuve de supériorité.
 - **Correction d'audit** : marchés et NLP étant désormais *forward-only* (données rétrospectives supprimées, cf. `results/AUDIT.md`), la fusion historique se **réduit au modèle structurel** — elle n'ajoute plus aucune information sur le passé. Tout écart entre ML, structurel et fusion à 7 plis est du **bruit d'échantillonnage**, pas une hiérarchie fiable. Le gain réel d'une fusion multi-source ne pourra se mesurer que sur un scrutin futur (2027), avec de vraies données de marché/Trends horodatées.
 
-## 4. Où le ML paierait vraiment : la maille circonscription
+## 4. Où le ML paie vraiment : la maille circonscription → voir **Étape P9**
 
-Le ML a besoin d'effectifs. Les **législatives** offrent ~577 circonscriptions × plusieurs cycles = plusieurs milliers d'observations, avec des features riches par circonscription. Schéma de données cible (à collecter, NON fourni ici — aucune donnée synthétique n'est présentée comme réelle) :
+Le ML a besoin d'effectifs. À n=11 élections nationales, aucun écart n'est significatif (ci-dessus). Le vrai terrain est la **circonscription** : **c'est désormais fait, sur données réelles**, dans `scripts/run_etape_P9_ml_circonscription.py` (données ministère de l'Intérieur, présidentielle 2017→2022 par circonscription et par parti, LFI explicite).
 
-```
-data/fr_circonscriptions.csv  (une ligne = une circonscription × une élection)
-  circo_id, annee, sortant_camp, resultat_precedent_pct, 
-  taux_chomage_local, revenu_median, part_diplomes_sup, part_65plus,
-  densite_urbaine, participation_prec, resultat (cible : camp gagnant / part)
-```
-Sur cette maille, `MlSource` (ou un XGBoost dédié par circonscription) s'entraîne sur les cycles passés et prédit le cycle courant, toujours via le même protocole OOS expansif de `src/pp_backtest.py`. La brique se branche sans changer le contrat `pp_types` : seul le loader de données change.
+Résultat P9 : un Gradient Boosting prédit la part 2022 par circonscription et **bat la baseline du swing national uniforme de façon massivement significative** — MAE 1.78 → 0.56 sur 5094 prédictions hors-échantillon, Wilcoxon p ≈ 0, significatif pour les 9 partis. Là où le national ne pouvait rien prouver (n=11), la circonscription le peut (n=5094). Voir `results/etape_P9_ml_circonscription.md`.
 
 ## 5. Limites
 

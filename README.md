@@ -67,6 +67,8 @@ scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
          run_etape_P6_pred2027.py → results/etape_P6_pred2027.md  (prévision FORWARD 2027)
          run_etape_P7_circonscriptions.py → results/etape_P7_circonscriptions.md
          run_etape_P8_second_tour.py → results/etape_P8_second_tour.md (reports T2)
+         run_etape_P9_ml_circonscription.py → .../etape_P9_ml_circonscription.md
+         pp_circo_ml.py — GB par circo, CV, test de significativité + désagrégation
 data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × parti
          fr_pres2022_t2_circo.csv — 2nd tour (Macron/Le Pen) par circo
          (RÉEL, ministère de l'Intérieur / data.gouv.fr)
@@ -77,10 +79,23 @@ data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × 
 ```bash
 pip install numpy scipy pandas scikit-learn xgboost
 for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 \
-         P7_circonscriptions P8_second_tour; do
+         P7_circonscriptions P8_second_tour P9_ml_circonscription; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```
+
+## Résultat statistiquement significatif (P9) — le vrai terrain du modèle
+
+Le modèle national (11 élections) **ne pouvait pas** être significatif. À la maille
+**circonscription** (566 circos × 9 partis = **5094 prédictions hors-échantillon**),
+un Gradient Boosting prédit la part 2022 de chaque parti à partir de la composition
+2017, en validation croisée 5-fold, et **bat la baseline du swing national uniforme
+de façon massivement significative** : MAE **1,78 → 0,56** (−68 %), Wilcoxon
+**p ≈ 0**, significatif (p<0,001) pour **les 9 partis, LFI compris**. C'est la
+réalisation de l'ambition initiale (« le vrai terrain ML est la circonscription »)
+et la première brique **statistiquement démontrée** du projet. Cadre honnête : skill
+de *downscaling* (répartir un national connu vers les circos), pas prévision d'un
+scrutin futur inconnu.
 
 ## Étape 4 (P7) — circonscription × parti, LFI explicite, données réelles
 

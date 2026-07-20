@@ -59,11 +59,13 @@ fondamentaux ou aux marchés.
 
 ### Chargeur hybride
 
-`load_nlp_features(election_id)` tente d'abord une collecte **live** (`_fetch_live`,
-Google Trends via `pytrends`), protégée par `try/except` et un timeout court ; dans cet
-environnement `pytrends` n'est pas une dépendance du projet, l'import échoue donc
-immédiatement et **aucune requête réseau n'est jamais émise** -- repli systématique et
-instantané sur le snapshot offline `data/fr_nlp_snapshot.csv`.
+`load_nlp_features(election_id)` tente d'abord une collecte **live** (`_fetch_live`),
+mais celle-ci est à ce jour un **STUB NON CÂBLÉ** -- pas un vrai appel réseau comme pour
+les marchés (`pp_markets._fetch_live`, qui interroge réellement Polymarket). `pytrends`
+n'est pas une dépendance du projet, l'import échoue donc immédiatement et **aucune requête
+réseau n'est jamais émise** -- repli systématique et instantané sur le snapshot offline
+`data/fr_nlp_snapshot.csv`. Le mapping mot-clé → candidat et le moteur de tonalité restent
+à écrire avant qu'une collecte live soit seulement possible.
 
 ## 3. Backtest hors-échantillon (OOS)
 
@@ -112,7 +114,10 @@ instantané sur le snapshot offline `data/fr_nlp_snapshot.csv`.
    un troisième facteur (actualité, contexte macro) sans lien causal direct entre les
    deux -- cette source capture une corrélation contemporaine, pas un mécanisme causal.
 
-**Conclusion** : ce module est un **composant bruité d'un ensemble** (fusion avec
-fondamentaux, marchés). Sa valeur attendue est de capter des signaux de dernière minute
-(dynamique de campagne) que les fondamentaux structurels ne voient pas -- pas de remplacer
-un sondage, et certainement pas de faire une prévision autonome.
+**Conclusion** : à ce stade, cette source est un **échafaudage 2027-live**, pas une brique
+opérationnelle démontrée — elle n'a **aucune skill mesurée** sur données réelles (0 pli
+scoré, n=0), et sa collecte live (`_fetch_live`) est un stub non câblé, pas une intégration
+fonctionnelle. Les poids `w1`/`w2` restent des choix a priori. Son seul test honnête
+possible est un scrutin futur (2027), avec pytrends effectivement branché et des features
+collectées avant le vote -- pas de remplacer un sondage, et certainement pas de faire une
+prévision autonome.

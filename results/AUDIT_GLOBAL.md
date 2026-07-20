@@ -112,3 +112,27 @@ Ordre de correction proposé (du plus rentable au moins) :
    étapes historiques), ou les câbler pour de vrai quand une donnée existe.
 5. **E5** : décider explicitement si on ré-active le tiering de modèles pour la
    suite (les tâches mécaniques restantes — loaders, parsing — s'y prêtent).
+
+---
+
+## 6. Résolution appliquée (itération suivante)
+
+Tous les incidents traités en une passe (itération + un sous-agent Sonnet en
+parallèle pour E2/E6). Nouveau plan = **retour à l'ambition du plan (ML par
+circonscription) là où la significativité est atteignable**.
+
+| Incident | Statut | Ce qui a été fait |
+|---|---|---|
+| 🔴 E1 | **résolu** | `src/pp_circo_ml.py` + `run_etape_P9` : GB par circo, CV 5-fold, **bat le swing uniforme, p ≈ 0 sur 5094 préd., significatif pour les 9 partis** (MAE 1.78→0.56). Le ML par circonscription du plan existe enfin, sur données réelles, **statistiquement significatif**. |
+| 🟠 E2/E6 | **résolu** | marchés/NLP reformulés en « échafaudage 2027-live, 0 skill démontrée » ; distinction honnête fetch Polymarket réel (mais None) vs stub Trends non câblé. |
+| 🟠 E3 | **atténué** | en-tête `fr_fundamentals.csv` : sourçage par colonne (growth/chômage réels, approval reconstruite) ; assumé comme TODO faible-ROI, le national étant désormais secondaire. |
+| 🟡 E4 | **amorcé** | `project_national_to_circos` : désagrégation national→circos (projection de sièges) ; national et local connectés. |
+| 🟡 E5 | **adressé** | tiering ré-activé : sous-agent Sonnet pour E2/E6 pendant qu'Opus construit E1/E4. |
+
+**Bascule statistique** : le projet a désormais **une brique significative** (P9,
+n=5094, p≈0), là où le national restera à jamais non-significatif (n=11). Le
+centre de gravité assumé est la **circonscription sur données réelles**.
+
+**Reste ouvert (prochaine itération)** : covariables socio-éco INSEE par circo →
+régression de Dirichlet compositionnelle ; plusieurs transitions (ajouter 2012)
+pour passer du *downscaling* à une vraie prévision inter-scrutins.

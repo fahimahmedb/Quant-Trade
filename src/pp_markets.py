@@ -13,6 +13,15 @@ Discipline anti-data-snooping : `fit()` est un no-op (voir docstring de
 en pratique a partir de 2017) : `predict()` renvoie alors
 `SourceSignal(..., available=False)`, ce qui est un cas ATTENDU du backtest
 OOS (cf. run_etape_P2_marches.py), pas une erreur.
+
+ECHAFAUDAGE 2027-LIVE -- cette source ne produit AUCUN resultat sur
+l'historique : les prix retrospectifs (2017/2022) etaient en realite
+reconstitues en connaissant l'issue (hindsight) et ont ete supprimes du
+depot. Sur tout l'historique 1965-2022, `predict()` se declare donc
+systematiquement indisponible (0 pli score). Cette source n'est PAS une
+brique operationnelle demontree : sa valeur ne pourra etre mesuree que sur
+un scrutin futur (2027), avec un prix de marche reellement horodate avant
+le vote (soit via `_fetch_live`, soit via un releve manuel verifiable).
 """
 from __future__ import annotations
 
@@ -48,6 +57,16 @@ POLYMARKET_GAMMA = "https://gamma-api.polymarket.com/markets?closed=false&limit=
 
 def _fetch_live(election_id: str, timeout: float = LIVE_TIMEOUT_S) -> dict | None:
     """Tentative de recuperation EN DIRECT d'un prix de marche (best-effort).
+
+    HONNETETE (fetch reellement cable, mais sans resultat exploitable a ce
+    jour) : cette fonction interroge REELLEMENT l'API publique Polymarket
+    (requete HTTP GET vers POLYMARKET_GAMMA) -- ce n'est pas un stub. Mais
+    elle renvoie systematiquement None tant qu'aucun marche mappable
+    outcome->camp de reference n'existe : soit aucun marche FR 2027 n'est
+    encore liste, soit un marche generique est trouve mais le mapping
+    "quel outcome = camp de reference" n'est pas declare (finalistes 2027
+    inconnus). Ce comportement n'est donc PAS une preuve de fonctionnement :
+    aucun appel reel n'a encore produit de prix exploitable.
 
     Interroge reellement l'API publique Polymarket et cherche un marche lie a
     l'election `election_id`. Retour :

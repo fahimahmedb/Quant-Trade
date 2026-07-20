@@ -16,6 +16,16 @@ comme un pli non scorable (cf. `pp_backtest.markdown_table`).
 Discipline anti-data-snooping : `fit()` ne recalibre qu'un facteur d'échelle
 global (pas les poids des features, n trop petit) sur l'historique STRICT
 passé, jamais sur l'élection à prédire ni sur le futur.
+
+ÉCHAFAUDAGE 2027-LIVE — cette source ne produit AUCUN résultat sur
+l'historique : les lignes rétrospectives (2007-2022) étaient en réalité
+rédigées en connaissant l'issue (hindsight) et ont été supprimées du
+snapshot. `predict()` se déclare donc systématiquement indisponible sur
+tout l'historique de ce dépôt (0 pli scoré). Ce n'est PAS une brique
+opérationnelle démontrée : sa valeur ne pourra être mesurée que sur un
+scrutin futur (2027), avec de vraies données horodatées avant le vote —
+ce qui suppose de câbler `_fetch_live` (actuellement un stub, voir sa
+docstring) ou d'alimenter le snapshot par une collecte vérifiable.
 """
 from __future__ import annotations
 
@@ -47,6 +57,16 @@ FEATURE_COLS = [
 
 def _fetch_live(election_id: str, timeout: float = 2.5) -> dict[str, float] | None:
     """Tentative OPTIONNELLE de collecte live (Google Trends + presse en ligne).
+
+    HONNÊTETÉ : contrairement à `pp_markets._fetch_live` (qui interroge
+    réellement une API), cette fonction est un STUB NON CÂBLÉ. `pytrends`
+    n'est volontairement pas une dépendance du projet, donc l'import échoue
+    systématiquement avant toute tentative réseau : AUCUNE requête HTTP
+    n'est jamais émise ici, ni vers Google Trends ni vers une presse en
+    ligne. Le mapping mot-clé → candidat et le moteur de tonalité ne sont
+    pas implémentés. Cette fonction renvoie donc toujours `None` dans cet
+    environnement -- elle documente un point d'extension futur, pas une
+    collecte live opérationnelle.
 
     Contrat : toute exception -- import manquant, timeout réseau, panne API,
     format inattendu -- déclenche un repli IMMÉDIAT sur le snapshot offline,

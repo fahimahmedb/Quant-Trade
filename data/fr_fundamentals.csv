@@ -1,8 +1,14 @@
 # Variables fondamentales (macro/politiques) par presidentielle FR, a la date de prevision.
-# ATTENTION : valeurs APPROXIMATIVES issues de chiffres publics agreges (INSEE croissance/chomage,
-#   moyennes de cote de popularite du sortant). Destinees a la DEMONSTRATION METHODOLOGIQUE du modele
-#   structurel (style Jerome-Speziari / Lewis-Beck-Nadeau), pas a une publication. A remplacer par des
-#   series sourcees exactes avant tout usage reel. Lire avec pandas.read_csv(comment='#').
+# STATUT DE SOURCAGE (audit E3), par colonne :
+#   - gdp_growth, unemployment : ordres de grandeur REELS de series publiques (INSEE croissance/
+#     chomage BIT), fiables a ~0.5 pt pour les elections recentes, plus approximatifs avant 1990.
+#   - approval : RECONSTRUITE (moyennes de cote de satisfaction du sortant, sources sondagieres
+#     heterogenes ; la plus incertaine, surtout avant 2002). C'est la colonne la moins sourcee.
+# Ces variables n'alimentent QUE le modele national (P1/P6), devenu la brique SECONDAIRE du projet :
+#   a n=11 il ne bat pas une heuristique triviale et n'est pas significatif (cf. results/AUDIT.md).
+#   La brique significative est desormais le ML PAR CIRCONSCRIPTION sur donnees reelles (P9). Le
+#   sourcage exact ligne a ligne de `approval` reste un TODO a faible ROI tant que le national est
+#   secondaire. Ne PAS traiter ces chiffres comme une base publiable. Lire avec read_csv(comment='#').
 # Colonnes :
 #   gdp_growth    : croissance reelle du PIB (% annuel) sur la periode pre-electorale
 #   unemployment  : taux de chomage (%) au sens BIT a la date de prevision
