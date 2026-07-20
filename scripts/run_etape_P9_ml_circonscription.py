@@ -48,24 +48,27 @@ w("- **Baselines** : persistance (= 2017) et **swing national uniforme** "
   "(2017 + Δ national) — la référence de la littérature (Hanretty 2021).")
 w("- **Test** : Wilcoxon apparié sur les erreurs absolues par circo (GB vs swing).\n")
 
-w("## 2. Résultat : le modèle bat le swing uniforme, significativement\n")
-w("| Parti | MAE persistance | MAE swing | MAE **GB** | Gain vs swing | p-value | Signif. |")
+w("## 2. Résultat : le modèle bat le swing (DOWNSCALING), significativement\n")
+w("⚠️ **Baseline corrigée (audit)** : on compare au **swing PROPORTIONNEL** "
+  "(part 2017 × ratio national), nettement plus fort que le swing additif — c'est "
+  "la vraie référence à battre. Le GB la bat quand même, pour les 9 partis.\n")
+w("| Parti | Persist. | Swing additif | **Swing proportionnel** | MAE **GB** | Gain vs prop. | p-value |")
 w("|---|---|---|---|---|---|---|")
 for s in skills:
     w(f"| {LIB[s.party]} | {s.mae_persist:.2f} | {s.mae_swing:.2f} | "
-      f"**{s.mae_gb:.2f}** | −{s.gain_pct:.0f} % | {s.pval_gb_vs_swing:.1e} | "
-      f"{'✅ p<0.001' if s.significant else 'ns'} |")
+      f"{s.mae_prop:.2f} | **{s.mae_gb:.2f}** | −{s.gain_pct:.0f} % | "
+      f"{s.pval_gb_vs_prop:.1e} {'✅' if s.significant else ''} |")
 w("")
-w(f"**Global poolé** (n = {pool['n']} prédictions) : MAE swing **{pool['mae_swing']:.3f}** "
-  f"→ GB **{pool['mae_gb']:.3f}** (−{100*(pool['mae_swing']-pool['mae_gb'])/pool['mae_swing']:.0f} %), "
-  f"Wilcoxon **p = {pool['pval']:.1e}**. Le modèle de circonscription capture la "
-  "transition électorale 2017→2022 bien mieux qu'un swing uniforme, pour **tous** "
-  "les partis, LFI compris.\n")
-w("*Cadre honnête : c'est une skill de **downscaling** (répartir un résultat "
-  "national vers les circos), testée sur circos held-out — pas une prévision d'un "
-  "scrutin futur inconnu. Les deux prédicteurs comparés utilisent le même agrégat "
-  "national ; seule la répartition diffère. La significativité porte sur « le "
-  "modèle répartit mieux que le swing uniforme », ce qui est solidement établi.*\n")
+w(f"**Global poolé** (n = {pool['n']}) : swing proportionnel **{pool['mae_prop']:.3f}** "
+  f"→ GB **{pool['mae_gb']:.3f}** (−{100*(pool['mae_prop']-pool['mae_gb'])/pool['mae_prop']:.0f} %), "
+  f"Wilcoxon **p = {pool['pval']:.1e}**. Significatif pour **tous** les partis, LFI compris.\n")
+w("> 🔴 **MAIS ce n'est PAS de la prévision — c'est du DOWNSCALING.** Le modèle "
+  "voit la transition 2017→2022 pendant l'entraînement (CV spatiale *dans* la "
+  "même transition) : il apprend à répartir un résultat 2022 **déjà connu** vers "
+  "les circos. Testé en **vraie prévision** (apprendre 2012→2017, prédire "
+  "2017→2022 inédit), il **SUR-APPREND et PERD contre le swing proportionnel** "
+  "— voir **Étape P10**. La significativité ci-dessus vaut pour le downscaling, "
+  "pas pour la prévision d'un scrutin futur.\n")
 
 w("## 3. Connexion national ↔ circonscription (E4) : projection de sièges\n")
 w("La carte réelle par circonscription devient le **substrat de désagrégation** "

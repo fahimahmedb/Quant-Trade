@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wilcoxon
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import KFold
 
 from pp_circo import CIRCO_2017, CIRCO_2022, LIB, PARTIS_APPARIES, load_circo
@@ -50,17 +51,19 @@ class PartySkill:
     party: str
     n: int
     mae_persist: float
-    mae_swing: float
+    mae_swing: float          # swing ADDITIF (baseline faible, historique)
+    mae_prop: float           # swing PROPORTIONNEL (baseline FORTE, la vraie référence)
     mae_gb: float
-    pval_gb_vs_swing: float
+    pval_gb_vs_prop: float     # test vs la baseline forte
 
     @property
     def gain_pct(self) -> float:
-        return 100 * (self.mae_swing - self.mae_gb) / self.mae_swing
+        """Gain vs la baseline FORTE (swing proportionnel)."""
+        return 100 * (self.mae_prop - self.mae_gb) / self.mae_prop
 
     @property
     def significant(self) -> bool:
-        return self.pval_gb_vs_swing < 0.001
+        return self.pval_gb_vs_prop < 0.001
 
 
 def cv_skill(party: str, n_splits: int = 5, seed: int = 0,
@@ -87,11 +90,13 @@ def cv_skill(party: str, n_splits: int = 5, seed: int = 0,
         pred_gb[te] = m.predict(np.column_stack([X17[te], fe(te)]))
 
     e_persist = np.abs(y - x2017)
-    e_swing = np.abs(y - (x2017 + (y.mean() - x2017.mean())))
+    e_swing = np.abs(y - (x2017 + (y.mean() - x2017.mean())))                 # additif
+    ratio = y.mean() / x2017.mean() if x2017.mean() > 0 else 1.0
+    e_prop = np.abs(y - x2017 * ratio)                                        # proportionnel
     e_gb = np.abs(y - pred_gb)
-    _, pval = wilcoxon(e_gb, e_swing)
-    return PartySkill(party, len(y), float(e_persist.mean()),
-                      float(e_swing.mean()), float(e_gb.mean()), float(pval))
+    _, pval = wilcoxon(e_gb, e_prop)
+    return PartySkill(party, len(y), float(e_persist.mean()), float(e_swing.mean()),
+                      float(e_prop.mean()), float(e_gb.mean()), float(pval))
 
 
 def all_skills(parties=PARTIS_APPARIES) -> list[PartySkill]:
@@ -115,11 +120,63 @@ def pooled_significance(skills: list[PartySkill]) -> dict[str, float]:
             m = _gb().fit(np.column_stack([X17[tr], fe(tr)]), y[tr])
             pg[te] = m.predict(np.column_stack([X17[te], fe(te)]))
         E_gb.append(np.abs(y - pg))
-        E_sw.append(np.abs(y - (x + (y.mean() - x.mean()))))
+        ratio = y.mean() / x.mean() if x.mean() > 0 else 1.0
+        E_sw.append(np.abs(y - x * ratio))   # baseline FORTE (proportionnelle)
     E_gb = np.concatenate(E_gb); E_sw = np.concatenate(E_sw)
     _, pval = wilcoxon(E_gb, E_sw)
-    return {"n": int(len(E_gb)), "mae_swing": float(E_sw.mean()),
+    return {"n": int(len(E_gb)), "mae_prop": float(E_sw.mean()),
             "mae_gb": float(E_gb.mean()), "pval": float(pval)}
+
+
+# --------------------------------------------------------------------------- #
+# VRAIE prevision inter-scrutins : train sur une transition, test sur une autre #
+# --------------------------------------------------------------------------- #
+
+# Partis presents comme candidats aux TROIS presidentielles (2012, 2017, 2022).
+PARTIS_TRI = ["RN", "LFI", "PS", "LR", "DLF", "LO", "NPA"]
+CIRCO_2012 = Path(__file__).resolve().parents[1] / "data" / "fr_pres2012_circo.csv"
+
+
+def _stack_transition(src: pd.DataFrame, tgt: pd.DataFrame) -> pd.DataFrame:
+    common = sorted(set(src.index) & set(tgt.index))
+    rows = []
+    for j, p in enumerate(PARTIS_TRI):
+        ns, nt = src.loc[common, p].mean(), tgt.loc[common, p].mean()
+        for cid in common:
+            oh = [0] * len(PARTIS_TRI); oh[j] = 1
+            rows.append((src.loc[cid, p], nt, ns, *oh, tgt.loc[cid, p]))
+    return pd.DataFrame(rows, columns=["prev", "nat_tgt", "nat_src"]
+                        + [f"is_{q}" for q in PARTIS_TRI] + ["y"])
+
+
+def temporal_forecast() -> dict:
+    """VRAIE prevision : apprendre la transition 2012->2017, predire 2017->2022 (inedit).
+
+    Compare, sur la transition JAMAIS VUE 2017->2022, quatre predicteurs de la
+    part 2022 par circo : persistance, swing additif, swing PROPORTIONNEL, et un
+    Gradient Boosting (+ regression lineaire) appris sur 2012->2017. Renvoie les
+    MAE globales. Verite honnete attendue : le GB SUR-APPREND la transition
+    d'entrainement et ne generalise pas ; le swing proportionnel gagne.
+    """
+    d12 = load_circo(CIRCO_2012).set_index("circo_id")
+    d17 = load_circo(CIRCO_2017).set_index("circo_id")
+    d22 = load_circo(CIRCO_2022).set_index("circo_id")
+    feat = ["prev", "nat_tgt", "nat_src"] + [f"is_{q}" for q in PARTIS_TRI]
+    tr = _stack_transition(d12, d17)
+    te = _stack_transition(d17, d22)
+
+    gb = _gb().fit(tr[feat], tr["y"])
+    ols = LinearRegression().fit(tr[feat], tr["y"])
+    ratio = (te["nat_tgt"] / te["nat_src"]).replace([np.inf, -np.inf], 1.0)
+    out = {
+        "n": int(len(te)),
+        "persist": float((te["y"] - te["prev"]).abs().mean()),
+        "swing_add": float((te["y"] - (te["prev"] + (te["nat_tgt"] - te["nat_src"]))).abs().mean()),
+        "swing_prop": float((te["y"] - te["prev"] * ratio).abs().mean()),
+        "gb": float((te["y"] - gb.predict(te[feat])).abs().mean()),
+        "ols": float((te["y"] - ols.predict(te[feat])).abs().mean()),
+    }
+    return out
 
 
 # --------------------------------------------------------------------------- #

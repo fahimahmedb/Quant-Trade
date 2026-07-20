@@ -41,12 +41,15 @@ d'une skill de *downscaling* significative à une **vraie prévision** robuste.
 
 ## C. Feuille de route, par impact prouvé
 
-### Tier 1 — fort impact, à faire (en cours / prioritaire)
-1. **Vraie prévision temporelle** *(en cours — données 2012 par circo en
-   récupération)*. Entraîner sur 2012→2017, tester sur 2017→2022 : convertit le
-   *downscaling* en **prévision inter-scrutins** sur des circos ET une transition
-   jamais vues. C'est LE chaînon qui rend la significativité *prédictive* et pas
-   seulement descriptive.
+### Tier 1 — fort impact
+1. **Vraie prévision temporelle** ✅ *FAIT (Étape P10) — résultat capital et
+   contre-intuitif*. En entraînant sur 2012→2017 et en testant sur 2017→2022
+   (transition inédite), **aucun ML ne bat le swing proportionnel** (MAE 1.05) :
+   le Gradient Boosting **sur-apprend** (2.41). La skill de P9 était du
+   *downscaling* (résultat 2022 vu à l'entraînement), elle **ne se transfère pas**
+   à la prévision. **Conséquence directe : le levier de significativité N'EST PAS
+   un modèle spatial plus complexe** — le vote précédent + swing proportionnel est
+   une baseline quasi imbattable localement (conforme à l'étude ML australienne).
 2. **Hybride national × spatial** : brancher réellement le modèle spatial de
    circonscription sous une prévision nationale (fondamentaux/marchés/sondages).
    Le national donne le **niveau**, le modèle de circo donne la **distribution**.
@@ -69,14 +72,26 @@ d'une skill de *downscaling* significative à une **vraie prévision** robuste.
 7. **Sondages/marchés live** intégrés à l'approche du scrutin (le signal
    s'améliore avec le temps) — et effets-maison / erreurs corrélées si sondages.
 
-## D. Réponse courte à « que faudrait-il encore »
+## D. Réponse courte à « que faudrait-il encore » (mise à jour après P10)
 
-Le modèle est **déjà maximalement significatif au sens statistique** sur sa tâche
-actuelle (downscaling, p≈0). Pour le rendre le plus **prédictivement** significatif :
-il faut surtout **(1) une vraie validation multi-scrutins**, **(2) l'hybridation
-national×spatial**, **(3) une incertitude calibrée** — dans cet ordre. Les
-covariables socio-éco, contre-intuitivement, sont **secondaires** : le vote
-précédent fait déjà l'essentiel du travail.
+Vérification faite (P10), la réponse change de nature. Le modèle spatial est
+**significatif en downscaling** (p≈0) mais **ne prévoit pas** mieux qu'un swing
+proportionnel une élection inédite — la complexité ML **sur-apprend**. Donc :
+
+- **Ce qu'il NE faut PAS faire** : empiler de la complexité spatiale (ML plus
+  riche, plus de covariables socio-éco). P10 + littérature convergent : ça
+  n'améliore pas la prévision, ça la dégrade.
+- **Ce qui reste le vrai levier**, dans l'ordre :
+  1. **La qualité de la prévision NATIONALE** (fondamentaux + sondages + marchés,
+     hybridés) — c'est là que se joue 90 % de la significativité prédictive, et
+     c'est le maillon faible actuel (fondamentaux seuls, non significatifs).
+  2. **Descente aux circos par swing proportionnel** (simple, robuste, champion).
+  3. **Incertitude calibrée** (quantiles + couverture vérifiée) — encore à faire.
+  4. **Plus de scrutins** (législatives, européennes) pour moyenner la skill de
+     prévision et, éventuellement, une **régression de Dirichlet** compositionnelle.
+
+Autrement dit : le modèle est aussi significatif qu'il peut l'être *localement* ;
+le gain restant est **national**, pas spatial.
 
 *Sources : Hummel & Rothschild (fundamentals) ; Graefe et al. (combinaison) ;
 Gelman/Morris (Economist, incertitude) ; Hanretty 2021 (Dirichlet) ; étude ML

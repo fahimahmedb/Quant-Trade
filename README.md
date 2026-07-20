@@ -68,7 +68,9 @@ scripts/ run_etape_P1..P5_*.py → results/etape_P1..P5_*.md
          run_etape_P7_circonscriptions.py → results/etape_P7_circonscriptions.md
          run_etape_P8_second_tour.py → results/etape_P8_second_tour.md (reports T2)
          run_etape_P9_ml_circonscription.py → .../etape_P9_ml_circonscription.md
-         pp_circo_ml.py — GB par circo, CV, test de significativité + désagrégation
+         run_etape_P10_prevision_temporelle.py → .../etape_P10_prevision_temporelle.md
+         pp_circo_ml.py — GB par circo, CV, significativité, désagrégation, prévision
+data/    fr_pres2012/2017_circo.csv — présidentielles 2012/2017 par circo (RÉEL)
 data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × parti
          fr_pres2022_t2_circo.csv — 2nd tour (Macron/Le Pen) par circo
          (RÉEL, ministère de l'Intérieur / data.gouv.fr)
@@ -79,23 +81,30 @@ data/    fr_pres2017_circo.csv, fr_pres2022_circo.csv — 1er tour par circo × 
 ```bash
 pip install numpy scipy pandas scikit-learn xgboost
 for e in P1_fondamentaux P2_marches P3_nlp P4_fusion P5_ml P6_pred2027 \
-         P7_circonscriptions P8_second_tour P9_ml_circonscription; do
+         P7_circonscriptions P8_second_tour P9_ml_circonscription \
+         P10_prevision_temporelle; do
   PYTHONPATH=src python3 scripts/run_etape_${e}*.py
 done
 ```
 
-## Résultat statistiquement significatif (P9) — le vrai terrain du modèle
+## Significativité : ce qui est démontré, et ce qui ne l'est pas (P9 vs P10)
 
-Le modèle national (11 élections) **ne pouvait pas** être significatif. À la maille
-**circonscription** (566 circos × 9 partis = **5094 prédictions hors-échantillon**),
-un Gradient Boosting prédit la part 2022 de chaque parti à partir de la composition
-2017, en validation croisée 5-fold, et **bat la baseline du swing national uniforme
-de façon massivement significative** : MAE **1,78 → 0,56** (−68 %), Wilcoxon
-**p ≈ 0**, significatif (p<0,001) pour **les 9 partis, LFI compris**. C'est la
-réalisation de l'ambition initiale (« le vrai terrain ML est la circonscription »)
-et la première brique **statistiquement démontrée** du projet. Cadre honnête : skill
-de *downscaling* (répartir un national connu vers les circos), pas prévision d'un
-scrutin futur inconnu.
+**P9 — downscaling (VRAI, significatif).** À la maille circonscription (566 circos ×
+9 partis), un Gradient Boosting répartit un résultat 2022 connu vers les circos
+bien mieux que le swing proportionnel (baseline forte) : MAE **1,26 → 0,56**,
+Wilcoxon **p ≈ 0**, significatif pour les 9 partis (LFI compris). Le national
+(n=11) ne pouvait rien prouver ; la circonscription (n=5094) le peut.
+
+**P10 — prévision (le ML NE gagne PAS).** Testé en vraie prévision inter-scrutins
+(appris sur 2012→2017, appliqué à 2017→2022 inédit), **aucun ML ne bat le swing
+proportionnel** (MAE **1,05**) ; le Gradient Boosting **sur-apprend** (2,41). La
+skill de P9 était du downscaling et **ne se transfère pas** à la prévision.
+
+**Conclusion honnête** : le modèle est aussi significatif qu'il peut l'être
+*localement* ; le vote précédent + swing proportionnel est une baseline quasi
+imbattable (conforme à la littérature). Le levier de significativité restant est
+**national** (meilleure prévision nationale + incertitude calibrée), **pas** une
+complexité spatiale accrue. Voir `results/ROADMAP_SIGNIFICATIVITE.md`.
 
 ## Étape 4 (P7) — circonscription × parti, LFI explicite, données réelles
 

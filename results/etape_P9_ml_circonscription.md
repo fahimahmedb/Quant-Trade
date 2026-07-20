@@ -12,23 +12,25 @@ Le plan initial visait un **ML par circonscription** (« le vrai terrain ML »).
 - **Baselines** : persistance (= 2017) et **swing national uniforme** (2017 + Δ national) — la référence de la littérature (Hanretty 2021).
 - **Test** : Wilcoxon apparié sur les erreurs absolues par circo (GB vs swing).
 
-## 2. Résultat : le modèle bat le swing uniforme, significativement
+## 2. Résultat : le modèle bat le swing (DOWNSCALING), significativement
 
-| Parti | MAE persistance | MAE swing | MAE **GB** | Gain vs swing | p-value | Signif. |
+⚠️ **Baseline corrigée (audit)** : on compare au **swing PROPORTIONNEL** (part 2017 × ratio national), nettement plus fort que le swing additif — c'est la vraie référence à battre. Le GB la bat quand même, pour les 9 partis.
+
+| Parti | Persist. | Swing additif | **Swing proportionnel** | MAE **GB** | Gain vs prop. | p-value |
 |---|---|---|---|---|---|---|
-| Mélenchon (LFI) | 4.02 | 4.23 | **1.47** | −65 % | 5.7e-67 | ✅ p<0.001 |
-| Le Pen (RN) | 2.44 | 1.87 | **1.03** | −45 % | 1.0e-42 | ✅ p<0.001 |
-| Macron (Ensemble) | 4.62 | 3.28 | **1.35** | −59 % | 9.9e-52 | ✅ p<0.001 |
-| Pécresse (LR) | 15.03 | 3.32 | **0.47** | −86 % | 1.2e-88 | ✅ p<0.001 |
-| Hidalgo (PS) | 4.72 | 1.42 | **0.17** | −88 % | 1.9e-88 | ✅ p<0.001 |
-| Dupont-Aignan (DLF) | 2.60 | 0.81 | **0.18** | −78 % | 1.3e-81 | ✅ p<0.001 |
-| Lassalle (Résistons) | 1.87 | 0.79 | **0.27** | −66 % | 5.9e-64 | ✅ p<0.001 |
-| Arthaud (LO) | 0.11 | 0.10 | **0.05** | −45 % | 4.4e-27 | ✅ p<0.001 |
-| Poutou (NPA) | 0.36 | 0.16 | **0.06** | −61 % | 6.4e-46 | ✅ p<0.001 |
+| Mélenchon (LFI) | 4.02 | 4.23 | 3.99 | **1.47** | −63 % | 9.3e-64 ✅ |
+| Le Pen (RN) | 2.44 | 1.87 | 1.85 | **1.03** | −44 % | 2.3e-36 ✅ |
+| Macron (Ensemble) | 4.62 | 3.28 | 3.49 | **1.35** | −61 % | 2.8e-56 ✅ |
+| Pécresse (LR) | 15.03 | 3.32 | 0.66 | **0.47** | −29 % | 8.8e-17 ✅ |
+| Hidalgo (PS) | 4.72 | 1.42 | 0.37 | **0.17** | −54 % | 2.8e-39 ✅ |
+| Dupont-Aignan (DLF) | 2.60 | 0.81 | 0.31 | **0.18** | −42 % | 1.1e-31 ✅ |
+| Lassalle (Résistons) | 1.87 | 0.79 | 0.48 | **0.27** | −45 % | 4.6e-25 ✅ |
+| Arthaud (LO) | 0.11 | 0.10 | 0.07 | **0.05** | −29 % | 9.6e-09 ✅ |
+| Poutou (NPA) | 0.36 | 0.16 | 0.10 | **0.06** | −38 % | 1.6e-12 ✅ |
 
-**Global poolé** (n = 5094 prédictions) : MAE swing **1.776** → GB **0.561** (−68 %), Wilcoxon **p = 0.0e+00**. Le modèle de circonscription capture la transition électorale 2017→2022 bien mieux qu'un swing uniforme, pour **tous** les partis, LFI compris.
+**Global poolé** (n = 5094) : swing proportionnel **1.259** → GB **0.561** (−55 %), Wilcoxon **p = 7.0e-249**. Significatif pour **tous** les partis, LFI compris.
 
-*Cadre honnête : c'est une skill de **downscaling** (répartir un résultat national vers les circos), testée sur circos held-out — pas une prévision d'un scrutin futur inconnu. Les deux prédicteurs comparés utilisent le même agrégat national ; seule la répartition diffère. La significativité porte sur « le modèle répartit mieux que le swing uniforme », ce qui est solidement établi.*
+> 🔴 **MAIS ce n'est PAS de la prévision — c'est du DOWNSCALING.** Le modèle voit la transition 2017→2022 pendant l'entraînement (CV spatiale *dans* la même transition) : il apprend à répartir un résultat 2022 **déjà connu** vers les circos. Testé en **vraie prévision** (apprendre 2012→2017, prédire 2017→2022 inédit), il **SUR-APPREND et PERD contre le swing proportionnel** — voir **Étape P10**. La significativité ci-dessus vaut pour le downscaling, pas pour la prévision d'un scrutin futur.
 
 ## 3. Connexion national ↔ circonscription (E4) : projection de sièges
 
