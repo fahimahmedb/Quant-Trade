@@ -15,6 +15,8 @@ from pathlib import Path
 
 import numpy as np
 
+np.random.seed(42)  # Reproducible SPA bootstrap (Politis-Romano)
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 warnings.filterwarnings("ignore")
@@ -29,6 +31,7 @@ from volatility import (  # noqa: E402
     fit_har,
     garch_multistep,
     garch_path,
+    garch_path_fold_only,
     har_forecast,
     mse,
     params_dict,
@@ -46,6 +49,9 @@ r = log_returns_pct(df).values          # rendements log quotidiens, en %
 rv = parkinson_var_pct(df).values       # variance Parkinson alignee, en %^2
 dates = log_returns_pct(df).index
 T = len(r)
+
+# Validation: both functions drop first obs, so r and rv should be aligned
+assert len(rv) == len(r), f"Length mismatch: r={len(r)} obs, rv={len(rv)} obs (should be equal)."
 
 # REFIT_EVERY : surchargeable pour les longs historiques (coût ∝ nb de ré-estim.)
 T0, REFIT_EVERY, H = 750, int(os.environ.get("REFIT_EVERY", 5)), 5
@@ -101,7 +107,9 @@ for tr in range(T0, T, REFIT_EVERY):
         res = fit_arch(r[:tr], name)
         p = params_dict(res)
         pars[name] = p
-        paths[name] = garch_path(r, p, gjr=("GJR" in name))
+        # Use fold_only to prevent retroactive updates: params fit on r[:tr]
+        # are applied forward only from index tr, ensuring strict walk-forward.
+        paths[name] = garch_path_fold_only(r, p, tr, gjr=("GJR" in name))
     paths["EWMA"] = ewma_path(r - mu_tr + 0.0)  # eps construit avec mu du train
     pars["EWMA"] = None
     har_mod = fit_har(rv[:tr], r[:tr])
@@ -122,9 +130,17 @@ for tr in range(T0, T, REFIT_EVERY):
         if t + H <= T:
             fc5["HAR-P"][t] = hf.sum()
 
-# proxies de variance realisee
-mu_exp = np.array([r[:max(t, 1)].mean() for t in range(T)])  # moyenne expansive (info t-1... approx t)
-eps2 = (r - r[:T0].mean()) ** 2                               # proxy primaire, mu fige au train initial
+# Validation: check that fc1 and fc5 are fully filled in their respective ranges
+for m in MODELS:
+    nan_count_fc1 = np.isnan(fc1[m][T0:]).sum()
+    nan_count_fc5 = np.isnan(fc5[m][T0:T-H+1]).sum()
+    assert nan_count_fc1 == 0, f"fc1[{m}] has {nan_count_fc1} NaN values in [T0, T)"
+    assert nan_count_fc5 == 0, f"fc5[{m}] has {nan_count_fc5} NaN values in [T0, T-H+1)"
+
+# proxies de variance realisee — aligned with evolving parameters in loop
+# Use expanding mean (info t-1) to match garch_path_fold_only walk-forward semantics
+mu_exp = np.array([r[:max(t, 1)].mean() for t in range(T)])  # moyenne expansive
+eps2 = (r - mu_exp) ** 2                                      # proxy primaire, mu evolue avec refits
 rvs = rv * (eps2[:T0].mean() / rv[:T0].mean())               # Parkinson re-echelonne (echelle du train)
 idx1 = np.arange(T0, T)
 idx5 = np.arange(T0, T - H + 1)
