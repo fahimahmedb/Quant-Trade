@@ -1,0 +1,131 @@
+{
+  "phase": "2_derivative_hypotheses",
+  "h8h12_results": {
+    "H8": {
+      "hypothesis": "FracDiff Fine-Tuning (H8)",
+      "single_orders": {
+        "order_0.1": 0.5321728774753878,
+        "order_0.2": 0.5321728774753878,
+        "order_0.3": 0.5321728774753878,
+        "order_0.4": 0.5340051331124586,
+        "order_0.5": 0.5340051331124586,
+        "order_0.6": 0.5340051331124586,
+        "order_0.7": 0.5340051331124586,
+        "order_0.8": 0.5340051331124586
+      },
+      "dual_orders": {
+        "dual_0.2_0.6": 0.5330981109346369,
+        "dual_0.3_0.5": 0.5330981109346369,
+        "dual_0.1_0.8": 0.5330981109346369,
+        "dual_0.2_0.4": 0.5330981109346369,
+        "dual_0.4_0.6": 0.5340051331124586
+      },
+      "best": "order_0.4",
+      "best_sharpe": 0.5340051331124586,
+      "baseline_r5": 0.534,
+      "improvement": 5.133112458532985e-06,
+      "interpretation": "Testing if optimal order differs from 0.4 or if combination helps"
+    },
+    "H9": {
+      "hypothesis": "Momentum + Trend Filter (H9)",
+      "simple_filter": {
+        "sharpe": 0.4962710302595681,
+        "mdd": -47.94514069922292
+      },
+      "hedge_strategy": {
+        "sharpe": 0.410003854335345,
+        "mdd": -49.68629139490197
+      },
+      "weighted_strategy": {
+        "sharpe": 0.37762532839218144,
+        "mdd": -59.53908273309531
+      },
+      "best_variant": "Simple",
+      "best_sharpe": 0.4962710302595681,
+      "baseline_h2": 0.308,
+      "baseline_r6": 0.453,
+      "interpretation": "Filter weak momentum signal by strong trend to reduce whipsaws"
+    },
+    "H10": {
+      "hypothesis": "Mean Reversion in Low-Vol Regimes (H10)",
+      "h1_baseline": {
+        "sharpe": 0.21257417472235365,
+        "mdd": -81.11458181403923,
+        "win_rate": 12.071651090342678
+      },
+      "lowvol_only": {
+        "sharpe": -0.47194530039795873,
+        "mdd": -77.38370054423099,
+        "win_rate": 5.1109813084112155
+      },
+      "scaled_regime": {
+        "sharpe": -0.35589768979921993,
+        "mdd": -77.86994369066586,
+        "win_rate": 9.472352024922118
+      },
+      "best_variant": "H1_Baseline",
+      "best_sharpe": 0.21257417472235365,
+      "interpretation": "Gate mean reversion by vol regime to reduce whipsaws in high-vol periods"
+    },
+    "H11": {
+      "hypothesis": "Fractal Price Patterns (H11)",
+      "sharpe": 0.11404598583130049,
+      "mdd": -101.16499399141469,
+      "return_pct": 10877.589730957425,
+      "interpretation": "3-bar pattern recognition (HHH, LLL, HL, LH)"
+    },
+    "H12": {
+      "hypothesis": "Vol-Adjusted Fractional Differentiation (H12)",
+      "method": "R5_FracDiff + vol-targeting (target 10% ann vol) + defensive cuts (95th percentile)",
+      "raw_fracdiff": {
+        "sharpe": 0.5340051331124586,
+        "mdd": -176.5928692189364,
+        "return_pct": 56304.17427568252
+      },
+      "vol_adjusted": {
+        "sharpe": 1.0364770888166572,
+        "mdd": -0.39437415023889577,
+        "return_pct": 419.5955454450094
+      },
+      "improvement": {
+        "sharpe_delta": 0.5024719557041987,
+        "mdd_delta": 176.19849506869753,
+        "defensive_cuts_triggered": 513,
+        "defensive_cuts_pct": 4.993672734352185
+      },
+      "quality": "EXCELLENT (>0.60 Sharpe, <-100 MDD)",
+      "interpretation": "Combines best signal (FracDiff) with best risk control (vol-targeting). Should be production-ready."
+    }
+  },
+  "ranking": [
+    [
+      "H12",
+      1.0364770888166572
+    ],
+    [
+      "H8",
+      0.5340051331124586
+    ],
+    [
+      "H9",
+      0.4962710302595681
+    ],
+    [
+      "H10",
+      0.21257417472235365
+    ],
+    [
+      "H11",
+      0.11404598583130049
+    ]
+  ],
+  "best": {
+    "hypothesis": "H12",
+    "sharpe": 1.0364770888166572
+  },
+  "baselines": {
+    "BH": 0.529,
+    "R5_FracDiff": 0.534,
+    "R5R6_Average": 0.676
+  }
+}

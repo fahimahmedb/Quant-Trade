@@ -1,0 +1,21 @@
+{
+  "hypothesis": "Mean Reversion in Low-Vol Regimes (H10)",
+  "h1_baseline": {
+    "sharpe": 0.21257417472235365,
+    "mdd": -81.11458181403923,
+    "win_rate": 12.071651090342678
+  },
+  "lowvol_only": {
+    "sharpe": -0.47194530039795873,
+    "mdd": -77.38370054423099,
+    "win_rate": 5.1109813084112155
+  },
+  "scaled_regime": {
+    "sharpe": -0.35589768979921993,
+    "mdd": -77.86994369066586,
+    "win_rate": 9.472352024922118
+  },
+  "best_variant": "H1_Baseline",
+  "best_sharpe": 0.21257417472235365,
+  "interpretation": "Gate mean reversion by vol regime to reduce whipsaws in high-vol periods"
+}

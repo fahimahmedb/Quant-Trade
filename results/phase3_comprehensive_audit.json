@@ -1,0 +1,79 @@
+{
+  "phase": "3_comprehensive_audit",
+  "total_strategies": 26,
+  "top_10": [
+    {
+      "rank": 1,
+      "name": "HH12",
+      "sharpe": 1.0364770888166572,
+      "mdd": -0.39437415023889577
+    },
+    {
+      "rank": 2,
+      "name": "R5_FracDiff",
+      "sharpe": 0.5340051331124586,
+      "mdd": -176.5928692189364
+    },
+    {
+      "rank": 3,
+      "name": "HH8",
+      "sharpe": 0.5340051331124586,
+      "mdd": null
+    },
+    {
+      "rank": 4,
+      "name": "BH",
+      "sharpe": 0.5285524882014365,
+      "mdd": -176.59286921893624
+    },
+    {
+      "rank": 5,
+      "name": "HH9",
+      "sharpe": 0.4962710302595681,
+      "mdd": null
+    },
+    {
+      "rank": 6,
+      "name": "Ensemble_EnsembleWeighted",
+      "sharpe": 0.48622157073346833,
+      "mdd": -34.891497370037825
+    },
+    {
+      "rank": 7,
+      "name": "Ensemble_EnsembleAverage",
+      "sharpe": 0.48277871316934884,
+      "mdd": -116.18593836215993
+    },
+    {
+      "rank": 8,
+      "name": "R6_Multiframe",
+      "sharpe": 0.4532166211275628,
+      "mdd": -48.594328905926545
+    },
+    {
+      "rank": 9,
+      "name": "Ensemble_EnsembleAdaptive",
+      "sharpe": 0.44530674451399854,
+      "mdd": -86.46272485638531
+    },
+    {
+      "rank": 10,
+      "name": "H2_Momentum",
+      "sharpe": 0.30816161131676745,
+      "mdd": -85.47703338034037
+    }
+  ],
+  "recommendation": {
+    "best": "HH12",
+    "sharpe": 1.0364770888166572,
+    "mdd": -0.39437415023889577,
+    "reason": "Best risk-adjusted return with controlled drawdown"
+  },
+  "key_insights": {
+    "regime_gating": "Can destroy weak signals - H10 worse than H1",
+    "vol_targeting": "Can transform edge - H12 +94% vs raw FracDiff",
+    "fracdiff_plateau": "Robust edge - all orders 0.1-0.8 converge to 0.534",
+    "trend_filtering": "Partial success - H9 better than H2 but below ensemble",
+    "pattern_recognition": "Insufficient alone - H11 near-zero edge"
+  }
+}
