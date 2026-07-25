@@ -2,21 +2,21 @@
   "hypothesis": "Vol-Adjusted Fractional Differentiation (H12)",
   "method": "R5_FracDiff + vol-targeting (target 10% ann vol) + defensive cuts (95th percentile)",
   "raw_fracdiff": {
-    "sharpe": 0.5340051331124586,
-    "mdd": -176.5928692189364,
-    "return_pct": 56304.17427568252
+    "sharpe": -0.24308164520751432,
+    "mdd": -98.94952221369941,
+    "return_pct": -25641.435873087154
   },
   "vol_adjusted": {
-    "sharpe": 1.0364770888166572,
-    "mdd": -0.39437415023889577,
-    "return_pct": 419.5955454450094
+    "sharpe": -0.4191404641952969,
+    "mdd": -3.0619380914432726,
+    "return_pct": -169.9819475566709
   },
   "improvement": {
-    "sharpe_delta": 0.5024719557041987,
-    "mdd_delta": 176.19849506869753,
+    "sharpe_delta": -0.17605881898778256,
+    "mdd_delta": 95.88758412225614,
     "defensive_cuts_triggered": 513,
     "defensive_cuts_pct": 4.993672734352185
   },
-  "quality": "EXCELLENT (>0.60 Sharpe, <-100 MDD)",
+  "quality": "NEEDS REFINEMENT (not beating baseline)",
   "interpretation": "Combines best signal (FracDiff) with best risk control (vol-targeting). Should be production-ready."
 }

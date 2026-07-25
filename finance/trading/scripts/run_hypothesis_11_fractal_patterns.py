@@ -35,11 +35,20 @@ def calc_sharpe(returns, ann=252):
         return 0.0
     return float(mu / sigma * np.sqrt(ann))
 
-def calc_mdd(returns):
-    cumsum = np.cumsum(returns)
-    peak = np.maximum.accumulate(cumsum)
-    dd = cumsum - peak
-    return float(np.min(dd))
+def calc_mdd(returns_pct):
+    """Calculate maximum drawdown as percentage.
+
+    returns_pct: daily returns in percentage points (e.g., 0.5 for 0.5%)
+    Returns: MDD in percentage (e.g., -35.5 for -35.5% drawdown)
+    """
+    # Convert to equity curve: equity[t] = exp(cumsum(returns) / 100)
+    cumsum_pct = np.cumsum(returns_pct)
+    equity = np.exp(cumsum_pct / 100.0)
+    peak = np.maximum.accumulate(equity)
+
+    # Calculate drawdown as percentage
+    drawdown_pct = ((equity - peak) / peak).min() * 100
+    return float(drawdown_pct)
 
 def calc_metrics(returns):
     sharpe = calc_sharpe(returns)
