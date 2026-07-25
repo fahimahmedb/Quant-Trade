@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-07-25T23:59:12.372467",
+  "strategy": "O5 (Vol-of-Vol Mean-Reversion)",
+  "ndx_results": {
+    "o5_sharpe": 0.577,
+    "o5_mdd": -30.1,
+    "o5_return": 311.1,
+    "bh_sharpe": 0.529,
+    "bh_mdd": -82.9,
+    "period": "NDX 40 years (1985-2026)"
+  },
+  "composite_results": {
+    "o5_sharpe": 0.3205207309229968,
+    "o5_sortino": 0.44824308116971545,
+    "o5_mdd": -20.27486818116369,
+    "o5_return_pct": 18.571272790444365,
+    "o5_calmar": 0.9159750201334456,
+    "o5_hit_rate": 52.32,
+    "bh_sharpe": 0.5187893990293198,
+    "bh_sortino": 0.7333704073330496,
+    "bh_mdd": -36.395279022424354,
+    "bh_return_pct": 58.253813975853305,
+    "bh_hit_rate": 54.72,
+    "period": "Composite 2021-2026"
+  },
+  "verdict": "NDX-SPECIFIC, NOT GENERALIZABLE",
+  "is_robust": false
+}
