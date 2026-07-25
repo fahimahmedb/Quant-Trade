@@ -1,0 +1,28 @@
+{
+  "test_type": "Walk-Forward + Parameter Sensitivity",
+  "full_period": {
+    "sharpe": 0.5340051331124586,
+    "mdd": -176.5928692189364,
+    "return_pct": 56304.17427568252,
+    "calmar": 318.8360579037747
+  },
+  "walk_forward": {
+    "mean_oos_sharpe": 1.1437029801237018,
+    "std_oos_sharpe": 3.3736674104734705,
+    "min_oos_sharpe": -6.985926027599483,
+    "max_oos_sharpe": 11.607064385734523,
+    "n_folds": 453
+  },
+  "parameter_sensitivity": {
+    "0.2": 0.5321728774753878,
+    "0.3": 0.5321728774753878,
+    "0.4": 0.5340051331124586,
+    "0.5": 0.5340051331124586,
+    "0.6": 0.5340051331124586
+  },
+  "comparison_to_bh": {
+    "fracdiff_sharpe": 0.5340051331124586,
+    "bh_sharpe": 0.5285524882014365,
+    "outperformance": 0.005452644911022042
+  }
+}
