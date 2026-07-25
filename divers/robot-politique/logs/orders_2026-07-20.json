@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-07-20T00:08:05.357284",
+    "symbol": "NDX",
+    "type": "BUY",
+    "quantity": 100,
+    "price": 5000.0,
+    "status": "TEST",
+    "strategy": "Buy & Hold",
+    "pnl_pct": 0.0
+  }
+]
