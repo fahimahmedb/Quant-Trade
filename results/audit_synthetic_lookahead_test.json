@@ -1,0 +1,55 @@
+{
+  "strategy_file": "synthetic_lookahead_test.json",
+  "timestamp": "2026-07-26T23:03:58.644574",
+  "checks": {
+    "temporal_alignment": {
+      "check": "Temporal Alignment",
+      "status": "PASS",
+      "details": [
+        "\u26a0\ufe0f Feature 'lookahead_feature' not in data"
+      ],
+      "risk_score": 0.0
+    },
+    "forward_correlation": {
+      "check": "Forward-Return Correlation",
+      "status": "PASS",
+      "details": [],
+      "risk_score": 0.0,
+      "high_correlation_features": []
+    },
+    "feature_audit_trail": {
+      "check": "Feature Audit Trail",
+      "status": "FAIL",
+      "details": [
+        "\ud83d\udea8 lookahead_feature: RISKY NAME (suggests lookahead)"
+      ],
+      "safe_features": [],
+      "risky_features": [
+        "lookahead_feature"
+      ],
+      "risk_score": 0.3
+    },
+    "perturbation": {
+      "check": "Perturbation Test",
+      "status": "SKIP",
+      "details": [
+        "Model factory not provided"
+      ],
+      "risk_score": 0.0
+    },
+    "walkforward_sanity": {
+      "check": "Walk-Forward Sanity",
+      "status": "PASS",
+      "details": [
+        "\u2713 Design Sharpe 0.8500 reasonable",
+        "\u2713 Test Sharpe 0.8400 positive OOS",
+        "\u2713 Degradation 0.0100 low",
+        "\u2713 DSR 0.9800 > 0.95 (statistically sound)"
+      ],
+      "risk_score": 0.0
+    }
+  },
+  "overall_status": "FAIL",
+  "overall_risk_score": 0.3,
+  "recommendation": "\ud83d\udea8 REJECTED: This strategy shows signs of lookahead bias. Do not deploy. Debug the indicated features before retesting."
+}

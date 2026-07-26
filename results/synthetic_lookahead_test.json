@@ -1,0 +1,12 @@
+{
+  "id": "synthetic_lookahead_test",
+  "model": "SyntheticLookahead",
+  "features": [
+    "lookahead_feature"
+  ],
+  "design_sharpe": 0.85,
+  "test_sharpe": 0.84,
+  "degradation": 0.01,
+  "dsr": 0.98,
+  "result": "PASS"
+}
