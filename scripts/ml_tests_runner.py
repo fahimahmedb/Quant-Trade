@@ -221,7 +221,7 @@ for test_num in sorted(TESTS.keys()):
     )
 
     pos_design = np.where(np.isfinite(proba), np.where(proba > 0.5, 1.0, -1.0), 0.0)
-    pnl_design = backtest(pos_design, r_fwd_values, COST_BPS)
+    pnl_design = backtest(pos_design, r_fwd_values[:design_n], COST_BPS)
     pnl_design_oos = pnl_design[design_oos]
     metr_design = trading_metrics(pnl_design_oos)
     design_sharpe = metr_design["sharpe_daily"]
