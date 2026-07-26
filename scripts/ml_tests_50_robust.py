@@ -55,130 +55,130 @@ SEED = 42
 
 # 50 Strategy Definitions (Fixed a priori)
 STRATEGIES = {
-    1: ("RandomForest_d3_n100", ["mom_5d", "vol_20d", "rsi_14"],
+    1: ("RandomForest_d3_n100", ["mom_10", "vol_20", "rsi_14"],
         lambda: RandomForestClassifier(n_estimators=100, max_depth=3, random_state=SEED, n_jobs=-1)),
-    2: ("RandomForest_d5_n100", ["mom_5d", "vol_20d", "rsi_14"],
+    2: ("RandomForest_d5_n100", ["mom_10", "vol_20", "rsi_14"],
         lambda: RandomForestClassifier(n_estimators=100, max_depth=5, random_state=SEED, n_jobs=-1)),
-    3: ("RandomForest_d7_n100", ["mom_5d", "vol_20d", "rsi_14"],
+    3: ("RandomForest_d7_n100", ["mom_10", "vol_20", "rsi_14"],
         lambda: RandomForestClassifier(n_estimators=100, max_depth=7, random_state=SEED, n_jobs=-1)),
-    4: ("XGB_eta01_d3", ["mom_5d", "vol_ratio", "vol_20d", "atr_rel"],
+    4: ("XGB_eta01_d3", ["mom_10", "vol_ratio", "vol_20", "atr_rel"],
         lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.1,
                                                 l2_regularization=1.0, random_state=SEED)),
-    5: ("XGB_eta05_d3", ["mom_5d", "vol_ratio", "vol_20d", "atr_rel"],
+    5: ("XGB_eta05_d3", ["mom_10", "vol_ratio", "vol_20", "atr_rel"],
         lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.05,
                                                 l2_regularization=1.0, random_state=SEED)),
-    6: ("XGB_eta1_d3", ["mom_5d", "vol_ratio", "vol_20d", "atr_rel"],
+    6: ("XGB_eta1_d3", ["mom_10", "vol_ratio", "vol_20", "atr_rel"],
         lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.01,
                                                 l2_regularization=1.0, random_state=SEED)),
-    7: ("LGB_leaves15", ["mom_5d", "vol_ratio", "rsi_14"],
+    7: ("LGB_leaves15", ["mom_10", "vol_ratio", "rsi_14"],
         lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=150, learning_rate=0.05,
                                                 l2_regularization=0.5, min_samples_leaf=15, random_state=SEED)),
-    8: ("LGB_leaves31", ["mom_5d", "vol_ratio", "rsi_14"],
+    8: ("LGB_leaves31", ["mom_10", "vol_ratio", "rsi_14"],
         lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=150, learning_rate=0.05,
                                                 l2_regularization=0.5, min_samples_leaf=31, random_state=SEED)),
-    9: ("LGB_leaves63", ["mom_5d", "vol_ratio", "rsi_14"],
+    9: ("LGB_leaves63", ["mom_10", "vol_ratio", "rsi_14"],
         lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=150, learning_rate=0.05,
                                                 l2_regularization=0.5, min_samples_leaf=63, random_state=SEED)),
-    10: ("NN_deep_5", ["mom_5d", "vol_20d", "rsi_14", "macd_rel", "bb_pctb", "ret_1", "ret_2", "ret_3", "ret_5", "ret_10"],
+    10: ("NN_deep_5", ["mom_10", "vol_20", "rsi_14", "macd_rel", "bb_pctb", "ret_1", "ret_2", "ret_3", "ret_5", "ret_10"],
          lambda: HistGradientBoostingClassifier(max_depth=5, max_iter=200, learning_rate=0.05,
                                                  l2_regularization=0.5, random_state=SEED)),
-    11: ("LogReg_C05", ["mom_5d", "vol_20d", "rsi_14"],
+    11: ("LogReg_C05", ["mom_10", "vol_20", "rsi_14"],
          lambda: LogisticRegression(C=0.5, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    12: ("LogReg_C1", ["mom_5d", "vol_20d", "rsi_14"],
+    12: ("LogReg_C1", ["mom_10", "vol_20", "rsi_14"],
          lambda: LogisticRegression(C=1.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    13: ("LogReg_C10", ["mom_5d", "vol_20d", "rsi_14"],
+    13: ("LogReg_C10", ["mom_10", "vol_20", "rsi_14"],
          lambda: LogisticRegression(C=10.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    14: ("GB_interact", ["mom_5d", "vol_20d", "rsi_14", "ma_ratio_20"],
+    14: ("GB_interact", ["mom_10", "vol_20", "rsi_14", "ma_ratio_20"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.1,
                                                  l2_regularization=1.0, random_state=SEED)),
-    15: ("SVM_rbf_C1", ["mom_5d", "vol_20d", "rsi_14", "ma_ratio_20", "ret_1", "ret_2", "ret_3", "ret_5", "ret_10", "macd_rel"],
+    15: ("SVM_rbf_C1", ["mom_10", "vol_20", "rsi_14", "ma_ratio_20", "ret_1", "ret_2", "ret_3", "ret_5", "ret_10", "macd_rel"],
          lambda: SVC(C=1.0, gamma='scale', probability=True, random_state=SEED, max_iter=5000)),
     # Tests 16-50: Additional variants for diversity
-    16: ("GB_d2_it80", ["mom_5d", "vol_20d", "rsi_14", "ret_5", "parkinson_5"],
+    16: ("GB_d2_it80", ["mom_10", "vol_20", "rsi_14", "ret_5", "parkinson_5"],
          lambda: HistGradientBoostingClassifier(max_depth=2, max_iter=80, learning_rate=0.1,
                                                  l2_regularization=1.5, min_samples_leaf=50, random_state=SEED)),
-    17: ("GB_d4_it120", ["mom_5d", "vol_20d", "rsi_14", "ma_ratio_20"],
+    17: ("GB_d4_it120", ["mom_10", "vol_20", "rsi_14", "ma_ratio_20"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=120, learning_rate=0.08,
                                                  l2_regularization=0.8, random_state=SEED)),
-    18: ("RF_d6_n150", ["mom_5d", "vol_20d", "rsi_14", "macd_rel"],
+    18: ("RF_d6_n150", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: RandomForestClassifier(n_estimators=150, max_depth=6, random_state=SEED, n_jobs=-1)),
-    19: ("LogReg_C02", ["mom_5d", "vol_20d"],
+    19: ("LogReg_C02", ["mom_10", "vol_20"],
          lambda: LogisticRegression(C=0.2, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    20: ("XGB_eta008_d2", ["mom_5d", "vol_ratio"],
+    20: ("XGB_eta008_d2", ["mom_10", "vol_ratio"],
          lambda: HistGradientBoostingClassifier(max_depth=2, max_iter=150, learning_rate=0.008,
                                                  l2_regularization=2.0, random_state=SEED)),
     # Tests 21-50: More variants
-    21: ("GB_mean_rev", ["mom_3d", "vol_ratio", "rsi_extremes", "ret_1", "ret_2"],
+    21: ("GB_mean_rev", ["mom_10", "vol_ratio", "rsi_14", "ret_1", "ret_2"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.05,
                                                  l2_regularization=1.0, random_state=SEED)),
-    22: ("RF_d4_n80", ["mom_5d", "vol_20d", "atr_rel", "bb_pctb"],
+    22: ("RF_d4_n80", ["mom_10", "vol_20", "atr_rel", "bb_pctb"],
          lambda: RandomForestClassifier(n_estimators=80, max_depth=4, random_state=SEED, n_jobs=-1)),
-    23: ("LogReg_C20", ["mom_5d", "vol_20d", "rsi_14", "macd_rel"],
+    23: ("LogReg_C20", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: LogisticRegression(C=20.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    24: ("SVM_poly_C05", ["mom_5d", "vol_20d", "rsi_14"],
+    24: ("SVM_poly_C05", ["mom_10", "vol_20", "rsi_14"],
          lambda: SVC(C=0.5, kernel='poly', probability=True, random_state=SEED, max_iter=5000)),
-    25: ("GB_deep_d6", ["mom_5d", "vol_20d", "rsi_14", "ret_1", "ret_2", "ret_3", "ret_5", "macd_rel", "bb_pctb", "atr_rel"],
+    25: ("GB_deep_d6", ["mom_10", "vol_20", "rsi_14", "ret_1", "ret_2", "ret_3", "ret_5", "macd_rel", "bb_pctb", "atr_rel"],
          lambda: HistGradientBoostingClassifier(max_depth=6, max_iter=150, learning_rate=0.02,
                                                  l2_regularization=1.0, random_state=SEED)),
-    26: ("RF_d5_n120", ["vol_20d", "rsi_14", "macd_rel"],
+    26: ("RF_d5_n120", ["vol_20", "rsi_14", "macd_rel"],
          lambda: RandomForestClassifier(n_estimators=120, max_depth=5, random_state=SEED, n_jobs=-1)),
-    27: ("XGB_eta02_d4", ["mom_5d", "vol_ratio", "atr_rel", "ret_5"],
+    27: ("XGB_eta02_d4", ["mom_10", "vol_ratio", "atr_rel", "ret_5"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=80, learning_rate=0.02,
                                                  l2_regularization=0.5, random_state=SEED)),
-    28: ("LogReg_C50", ["mom_5d", "vol_20d", "rsi_14", "ret_5"],
+    28: ("LogReg_C50", ["mom_10", "vol_20", "rsi_14", "ret_5"],
          lambda: LogisticRegression(C=50.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    29: ("GB_interaction_v2", ["mom_5d", "vol_20d", "rsi_14"],
+    29: ("GB_interaction_v2", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=5, max_iter=100, learning_rate=0.05,
                                                  l2_regularization=0.5, random_state=SEED)),
-    30: ("SVM_rbf_C05", ["mom_5d", "vol_20d", "rsi_14"],
+    30: ("SVM_rbf_C05", ["mom_10", "vol_20", "rsi_14"],
          lambda: SVC(C=0.5, gamma='scale', probability=True, random_state=SEED, max_iter=5000)),
-    31: ("RF_d3_n200", ["mom_5d", "vol_20d", "rsi_14", "macd_rel", "bb_pctb"],
+    31: ("RF_d3_n200", ["mom_10", "vol_20", "rsi_14", "macd_rel", "bb_pctb"],
          lambda: RandomForestClassifier(n_estimators=200, max_depth=3, random_state=SEED, n_jobs=-1)),
-    32: ("GB_min_samp_30", ["mom_5d", "vol_20d", "rsi_14"],
+    32: ("GB_min_samp_30", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.1,
                                                  l2_regularization=1.0, min_samples_leaf=30, random_state=SEED)),
-    33: ("LogReg_L1", ["mom_5d", "vol_20d", "rsi_14"],
+    33: ("LogReg_L1", ["mom_10", "vol_20", "rsi_14"],
          lambda: LogisticRegression(C=1.0, max_iter=1000, solver='saga', penalty='l1', random_state=SEED)),
-    34: ("XGB_eta005_d5", ["mom_5d", "vol_ratio", "vol_20d", "atr_rel", "ret_5"],
+    34: ("XGB_eta005_d5", ["mom_10", "vol_ratio", "vol_20", "atr_rel", "ret_5"],
          lambda: HistGradientBoostingClassifier(max_depth=5, max_iter=100, learning_rate=0.005,
                                                  l2_regularization=2.0, random_state=SEED)),
-    35: ("RF_d8_n100", ["mom_5d", "vol_20d", "rsi_14"],
+    35: ("RF_d8_n100", ["mom_10", "vol_20", "rsi_14"],
          lambda: RandomForestClassifier(n_estimators=100, max_depth=8, random_state=SEED, n_jobs=-1)),
-    36: ("GB_mean_rev_v2", ["mom_3d", "vol_ratio", "rsi_14"],
+    36: ("GB_mean_rev_v2", ["mom_10", "vol_ratio", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=150, learning_rate=0.05,
                                                  l2_regularization=0.5, min_samples_leaf=20, random_state=SEED)),
-    37: ("SVM_rbf_C10", ["mom_5d", "vol_20d", "rsi_14", "macd_rel", "bb_pctb"],
+    37: ("SVM_rbf_C10", ["mom_10", "vol_20", "rsi_14", "macd_rel", "bb_pctb"],
          lambda: SVC(C=10.0, gamma='scale', probability=True, random_state=SEED, max_iter=5000)),
-    38: ("LogReg_C100", ["mom_5d", "vol_20d", "rsi_14", "macd_rel"],
+    38: ("LogReg_C100", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: LogisticRegression(C=100.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    39: ("GB_d3_it200", ["mom_5d", "vol_ratio", "rsi_14", "ret_1", "ret_5"],
+    39: ("GB_d3_it200", ["mom_10", "vol_ratio", "rsi_14", "ret_1", "ret_5"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=200, learning_rate=0.05,
                                                  l2_regularization=0.5, random_state=SEED)),
-    40: ("RF_d4_n250", ["mom_5d", "vol_20d", "rsi_14", "ret_1", "ret_5"],
+    40: ("RF_d4_n250", ["mom_10", "vol_20", "rsi_14", "ret_1", "ret_5"],
          lambda: RandomForestClassifier(n_estimators=250, max_depth=4, random_state=SEED, n_jobs=-1)),
-    41: ("XGB_eta015_d3", ["mom_5d", "vol_ratio", "vol_20d"],
+    41: ("XGB_eta015_d3", ["mom_10", "vol_ratio", "vol_20"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=120, learning_rate=0.015,
                                                  l2_regularization=1.0, random_state=SEED)),
-    42: ("GB_robust_shrinkage", ["mom_5d", "vol_20d", "rsi_14"],
+    42: ("GB_robust_shrinkage", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=100, learning_rate=0.01,
                                                  l2_regularization=2.0, random_state=SEED)),
-    43: ("SVM_poly_C1", ["mom_5d", "vol_20d", "rsi_14", "macd_rel"],
+    43: ("SVM_poly_C1", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: SVC(C=1.0, kernel='poly', degree=2, probability=True, random_state=SEED, max_iter=5000)),
-    44: ("LogReg_C05_elasticnet", ["mom_5d", "vol_20d"],
+    44: ("LogReg_C05_elasticnet", ["mom_10", "vol_20"],
          lambda: LogisticRegression(C=0.5, max_iter=1000, solver='saga', penalty='elasticnet', l1_ratio=0.5, random_state=SEED)),
-    45: ("GB_d2_it150", ["mom_5d", "vol_ratio"],
+    45: ("GB_d2_it150", ["mom_10", "vol_ratio"],
          lambda: HistGradientBoostingClassifier(max_depth=2, max_iter=150, learning_rate=0.05,
                                                  l2_regularization=2.0, random_state=SEED)),
-    46: ("RF_d5_n180", ["vol_20d", "rsi_14", "macd_rel", "bb_pctb"],
+    46: ("RF_d5_n180", ["vol_20", "rsi_14", "macd_rel", "bb_pctb"],
          lambda: RandomForestClassifier(n_estimators=180, max_depth=5, random_state=SEED, n_jobs=-1)),
-    47: ("XGB_balance", ["mom_5d", "vol_20d", "rsi_14"],
+    47: ("XGB_balance", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.05,
                                                  l2_regularization=1.0, random_state=SEED)),
-    48: ("LogReg_regularized", ["mom_5d", "vol_20d", "rsi_14"],
+    48: ("LogReg_regularized", ["mom_10", "vol_20", "rsi_14"],
          lambda: LogisticRegression(C=0.1, max_iter=1000, solver='lbfgs', random_state=SEED)),
-    49: ("SVM_linear", ["mom_5d", "vol_20d"],
+    49: ("SVM_linear", ["mom_10", "vol_20"],
          lambda: SVC(C=1.0, kernel='linear', probability=True, random_state=SEED, max_iter=5000)),
-    50: ("GB_final", ["mom_5d", "vol_20d", "rsi_14", "macd_rel"],
+    50: ("GB_final", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.08,
                                                  l2_regularization=1.0, random_state=SEED)),
 }
@@ -252,8 +252,11 @@ for test_num in sorted(STRATEGIES.keys()):
         assert design_n > T0, f"Design set too small: {design_n} <= {T0}"
         assert len(test_idx) > 0, "Test set empty"
 
-        # Select features (only those available)
-        available_features = [f for f in features if f in X.columns]
+        # Select features (verify all requested features exist)
+        missing_features = [f for f in features if f not in X.columns]
+        assert not missing_features, \
+            f"Strategy {test_num} ({name}): Missing features {missing_features}. Available: {list(X.columns)}"
+        available_features = features
         X_subset = X[available_features].copy()
 
         # SHAPE VALIDATION #4: Feature subset aligned
@@ -323,22 +326,25 @@ for test_num in sorted(STRATEGIES.keys()):
 
         degradation = design_sharpe - test_sharpe if np.isfinite(test_sharpe) else np.nan
 
-        # DSR
+        # DSR (n_trials=50 for this iteration; cumulative = 50+10+50 = 110 across all)
         var_trials = np.var(sharpe_trials, ddof=1) if len(sharpe_trials) > 1 else 1.0
         dsr_result = dsr(
             design_sharpe,
             len(design_oos),
             var_trials=var_trials,
-            n_trials=10,
+            n_trials=110,  # CRITICAL: Iter1(50) + Iter2(10) + Iter3(50) = 110 cumulative hypotheses
             skew=metr_design.get("skew", 0.0),
             kurt_excess=metr_design.get("excess_kurt", 0.0),
         )
         dsr_value = dsr_result["dsr"]
 
-        # Pass criterion
+        # Pass criterion (convert daily Sharpe to annualized: ×√252)
+        design_sharpe_ann = design_sharpe * np.sqrt(252)
+        test_sharpe_ann = test_sharpe * np.sqrt(252) if np.isfinite(test_sharpe) else test_sharpe
+
         passes = (
-            design_sharpe > 0.55 and
-            np.isfinite(test_sharpe) and test_sharpe > 0.55 and
+            design_sharpe_ann > 0.55 and
+            np.isfinite(test_sharpe_ann) and test_sharpe_ann > 0.55 and
             degradation < 0.5 and
             dsr_value > 0.95
         )
@@ -357,6 +363,9 @@ for test_num in sorted(STRATEGIES.keys()):
         result["result"] = "ERROR"
         result["reason"] = str(e)
         print(f"  ❌ ERROR: {str(e)[:80]}")
+
+    # Store result in dict for summary
+    results[test_num] = result
 
     # Save result atomically
     result_path = ROOT / "results" / f"strategy_{test_num:03d}.json"
