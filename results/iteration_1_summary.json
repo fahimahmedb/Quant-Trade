@@ -1,0 +1,310 @@
+{
+  "total": 50,
+  "passed": 0,
+  "failed": 50,
+  "pass_list": [],
+  "fail_list": [
+    {
+      "file": "strategy_001.json",
+      "model": "RandomForest_d3_n50",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_002.json",
+      "model": "RandomForest_d5_n100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_003.json",
+      "model": "RandomForest_d7_n150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_004.json",
+      "model": "XGBoost_eta01_d2_r100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_005.json",
+      "model": "XGBoost_eta05_d3_r150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_006.json",
+      "model": "XGBoost_eta1_d4_r200",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_007.json",
+      "model": "LightGBM_l15_lr01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_008.json",
+      "model": "LightGBM_l31_lr05",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_009.json",
+      "model": "LightGBM_l63_lr1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_010.json",
+      "model": "NeuralNet_s10_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_011.json",
+      "model": "NeuralNet_s10_64_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_012.json",
+      "model": "NeuralNet_s10_128_64",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_013.json",
+      "model": "LogisticRegression_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_014.json",
+      "model": "SVM_rbf_C01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_015.json",
+      "model": "SVM_poly_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_016.json",
+      "model": "RandomForest_d3_n50",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_017.json",
+      "model": "RandomForest_d5_n100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_018.json",
+      "model": "RandomForest_d7_n150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_019.json",
+      "model": "XGBoost_eta01_d2_r100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_020.json",
+      "model": "XGBoost_eta05_d3_r150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_021.json",
+      "model": "XGBoost_eta1_d4_r200",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_022.json",
+      "model": "LightGBM_l15_lr01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_023.json",
+      "model": "LightGBM_l31_lr05",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_024.json",
+      "model": "LightGBM_l63_lr1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_025.json",
+      "model": "NeuralNet_s10_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_026.json",
+      "model": "NeuralNet_s10_64_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_027.json",
+      "model": "NeuralNet_s10_128_64",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_028.json",
+      "model": "LogisticRegression_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_029.json",
+      "model": "SVM_rbf_C01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_030.json",
+      "model": "SVM_poly_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_031.json",
+      "model": "RandomForest_d3_n50",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_032.json",
+      "model": "RandomForest_d5_n100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_033.json",
+      "model": "RandomForest_d7_n150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_034.json",
+      "model": "XGBoost_eta01_d2_r100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_035.json",
+      "model": "XGBoost_eta05_d3_r150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_036.json",
+      "model": "XGBoost_eta1_d4_r200",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_037.json",
+      "model": "LightGBM_l15_lr01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_038.json",
+      "model": "LightGBM_l31_lr05",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_039.json",
+      "model": "LightGBM_l63_lr1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_040.json",
+      "model": "NeuralNet_s10_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_041.json",
+      "model": "NeuralNet_s10_64_32_16",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_042.json",
+      "model": "NeuralNet_s10_128_64",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_043.json",
+      "model": "LogisticRegression_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_044.json",
+      "model": "SVM_rbf_C01",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_045.json",
+      "model": "SVM_poly_C1",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_046.json",
+      "model": "RandomForest_d3_n50",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_047.json",
+      "model": "RandomForest_d5_n100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_048.json",
+      "model": "RandomForest_d7_n150",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_049.json",
+      "model": "XGBoost_eta01_d2_r100",
+      "test_sharpe": null,
+      "dsr": null
+    },
+    {
+      "file": "strategy_050.json",
+      "model": "XGBoost_eta05_d3_r150",
+      "test_sharpe": null,
+      "dsr": null
+    }
+  ],
+  "top_oos_sharpe": [],
+  "tokens_estimate": null
+}

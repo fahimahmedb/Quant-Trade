@@ -1,0 +1,11 @@
+{
+  "id": 37,
+  "model": "LightGBM_l15_lr01",
+  "features": "C",
+  "design_sharpe": null,
+  "test_sharpe": null,
+  "degradation": null,
+  "dsr": null,
+  "result": "ERROR",
+  "reason": "operands could not be broadcast together with shapes (6118,) (6117,) "
+}

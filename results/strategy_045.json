@@ -1,0 +1,11 @@
+{
+  "id": 45,
+  "model": "SVM_poly_C1",
+  "features": "C",
+  "design_sharpe": null,
+  "test_sharpe": null,
+  "degradation": null,
+  "dsr": null,
+  "result": "ERROR",
+  "reason": "operands could not be broadcast together with shapes (6118,) (6117,) "
+}

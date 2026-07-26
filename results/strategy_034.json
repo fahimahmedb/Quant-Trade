@@ -1,0 +1,11 @@
+{
+  "id": 34,
+  "model": "XGBoost_eta01_d2_r100",
+  "features": "C",
+  "design_sharpe": null,
+  "test_sharpe": null,
+  "degradation": null,
+  "dsr": null,
+  "result": "ERROR",
+  "reason": "operands could not be broadcast together with shapes (6118,) (6117,) "
+}

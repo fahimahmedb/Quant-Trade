@@ -1,0 +1,11 @@
+{
+  "id": 26,
+  "model": "NeuralNet_s10_64_32_16",
+  "features": "B",
+  "design_sharpe": null,
+  "test_sharpe": null,
+  "degradation": null,
+  "dsr": null,
+  "result": "ERROR",
+  "reason": "operands could not be broadcast together with shapes (6118,) (6117,) "
+}
