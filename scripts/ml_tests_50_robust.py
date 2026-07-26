@@ -245,7 +245,7 @@ for test_num in sorted(STRATEGIES.keys()):
         design_idx = np.where(design_mask)[0]
         test_idx = np.where(test_mask)[0]
 
-        design_n = design_idx[-1] if len(design_idx) > 0 else 0
+        design_n = len(design_idx)  # Total count of design observations
         test_start_idx = test_idx[0] if len(test_idx) > 0 else n
 
         # SHAPE VALIDATION #3: Design/test split valid
