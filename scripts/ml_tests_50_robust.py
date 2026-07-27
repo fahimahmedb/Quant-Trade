@@ -184,14 +184,18 @@ STRATEGIES = {
 }
 
 # ============================================================================
-# Main Loop: Run each strategy independently
+# PASS 1: Run each strategy independently, collect design_sharpe (no DSR yet)
 # ============================================================================
+# Two-pass design (fixes DSR order-dependence bug found by Opus audit):
+# variance of trial Sharpes must be computed over the FULL completed set,
+# not incrementally, or test #1 always hits a fake var_trials=1.0 fallback
+# and gets DSR=0.0 by construction regardless of its actual quality.
 
 results = {}
-sharpe_trials = []
+phase1 = {}  # test_num -> dict with design_sharpe, test_sharpe, metr_design, etc.
 
 print("=" * 80)
-print("50 ML STRATEGY TESTS — STRICT CAUSAL PROTOCOL")
+print("50 ML STRATEGY TESTS — STRICT CAUSAL PROTOCOL (Pass 1/2: fit + score)")
 print("=" * 80)
 
 for test_num in sorted(STRATEGIES.keys()):
@@ -285,8 +289,6 @@ for test_num in sorted(STRATEGIES.keys()):
         metr_design = trading_metrics(pnl_design_oos)
         design_sharpe = metr_design["sharpe_daily"]
 
-        sharpe_trials.append(design_sharpe)
-
         # Test set: retrain on full design set
         X_design = X_subset.iloc[:design_n]
         y_design = y.iloc[:design_n]
@@ -324,68 +326,102 @@ for test_num in sorted(STRATEGIES.keys()):
             test_sharpe = np.nan
             metr_test = {}
 
-        degradation = design_sharpe - test_sharpe if np.isfinite(test_sharpe) else np.nan
-
-        # DSR (n_trials=50 for this iteration; cumulative = 50+10+50 = 110 across all)
-        var_trials = np.var(sharpe_trials, ddof=1) if len(sharpe_trials) > 1 else 1.0
-        dsr_result = dsr(
-            design_sharpe,
-            len(design_oos),
-            var_trials=var_trials,
-            n_trials=110,  # CRITICAL: Iter1(50) + Iter2(10) + Iter3(50) = 110 cumulative hypotheses
-            skew=metr_design.get("skew", 0.0),
-            kurt_excess=metr_design.get("excess_kurt", 0.0),
-        )
-        dsr_value = dsr_result["dsr"]
-
-        # Pass criterion (convert daily Sharpe to annualized: ×√252)
-        design_sharpe_ann = design_sharpe * np.sqrt(252)
-        test_sharpe_ann = test_sharpe * np.sqrt(252) if np.isfinite(test_sharpe) else test_sharpe
-
-        passes = (
-            design_sharpe_ann > 0.55 and
-            np.isfinite(test_sharpe_ann) and test_sharpe_ann > 0.55 and
-            degradation < 0.5 and
-            dsr_value > 0.95
-        )
+        degradation_ann = (design_sharpe - test_sharpe) * np.sqrt(252) if np.isfinite(test_sharpe) else np.nan
 
         result["design_sharpe"] = float(design_sharpe)
         result["test_sharpe"] = float(test_sharpe) if np.isfinite(test_sharpe) else None
-        result["degradation"] = float(degradation) if np.isfinite(degradation) else None
-        result["dsr"] = float(dsr_value)
-        result["pass"] = bool(passes)
-        result["result"] = "PASS" if passes else "FAIL"
+        result["degradation"] = float(degradation_ann) if np.isfinite(degradation_ann) else None
+        result["_n_design_oos"] = int(len(design_oos))
+        result["_skew"] = float(metr_design.get("skew", 0.0))
+        result["_kurt_excess"] = float(metr_design.get("excess_kurt", 0.0))
+        result["result"] = "PENDING_DSR"
 
-        status = "✅" if passes else "❌"
-        print(f"  {status} Design: {design_sharpe:.4f} | Test: {test_sharpe:.4f} | DSR: {dsr_value:.4f}")
+        print(f"  Design: {design_sharpe:.4f} daily ({design_sharpe*np.sqrt(252):.3f} ann) | "
+              f"Test: {test_sharpe:.4f} daily ({test_sharpe*np.sqrt(252) if np.isfinite(test_sharpe) else float('nan'):.3f} ann)")
 
     except Exception as e:
         result["result"] = "ERROR"
         result["reason"] = str(e)
         print(f"  ❌ ERROR: {str(e)[:80]}")
 
-    # Store result in dict for summary
     results[test_num] = result
+    elapsed = time.time() - start_time
+    print(f"  Time: {elapsed:.1f}s")
 
-    # Save result atomically
+# ============================================================================
+# PASS 2: Compute DSR over the FULL pooled trial set, then pass/fail
+# ============================================================================
+print("\n" + "=" * 80)
+print("PASS 2/2: DSR over pooled trials + pass/fail")
+print("=" * 80)
+
+# Pool design Sharpes across this run AND prior valid iterations for the
+# variance estimate (avoids the n=1 / var=1.0 fallback that made test #1
+# fail by construction in earlier runs).
+pooled_sharpes = [r["design_sharpe"] for r in results.values() if r.get("design_sharpe") is not None]
+
+prior_results_path = ROOT / "results" / "ml_tests_results.json"
+if prior_results_path.exists():
+    with open(prior_results_path) as f:
+        prior = json.load(f)
+    pooled_sharpes += [v["design_sharpe"] for v in prior.values() if v.get("design_sharpe") is not None]
+
+var_trials = np.var(pooled_sharpes, ddof=1) if len(pooled_sharpes) > 1 else np.nan
+n_trials = 110  # Iter1(50, errored but attempted) + Iter2(10) + Iter3(50) cumulative hypotheses tried on NDX
+print(f"Pooled trials for variance estimate: {len(pooled_sharpes)} (var={var_trials:.6e})")
+
+for test_num in sorted(STRATEGIES.keys()):
+    result = results[test_num]
+    if result["result"] != "PENDING_DSR":
+        continue  # ERROR results skip DSR
+
+    design_sharpe = result["design_sharpe"]
+    dsr_result = dsr(
+        design_sharpe,
+        result["_n_design_oos"],
+        var_trials=var_trials,
+        n_trials=n_trials,
+        skew=result["_skew"],
+        kurt_excess=result["_kurt_excess"],
+    )
+    dsr_value = dsr_result["dsr"]
+
+    design_sharpe_ann = design_sharpe * np.sqrt(252)
+    test_sharpe = result["test_sharpe"]
+    test_sharpe_ann = test_sharpe * np.sqrt(252) if test_sharpe is not None else float("nan")
+    degradation_ann = result["degradation"]
+
+    passes = (
+        design_sharpe_ann > 0.55 and
+        test_sharpe is not None and test_sharpe_ann > 0.55 and
+        degradation_ann is not None and degradation_ann < 0.5 and
+        dsr_value > 0.95
+    )
+
+    result["dsr"] = float(dsr_value)
+    result["pass"] = bool(passes)
+    result["result"] = "PASS" if passes else "FAIL"
+    for k in ("_n_design_oos", "_skew", "_kurt_excess"):
+        result.pop(k, None)
+
+    status = "✅" if passes else "❌"
+    print(f"  [{test_num:2d}] {status} Design_ann: {design_sharpe_ann:.3f} | "
+          f"Test_ann: {test_sharpe_ann:.3f} | DSR: {dsr_value:.4f}")
+
     result_path = ROOT / "results" / f"strategy_{test_num:03d}.json"
     with open(result_path, "w") as f:
         json.dump(result, f, indent=2)
-
-    elapsed = time.time() - start_time
-    print(f"  Time: {elapsed:.1f}s")
 
 # ============================================================================
 # Summary
 # ============================================================================
 
-passed = sum(1 for r in results.values() if r.get("result") == "PASS") if results else 0
+passed = sum(1 for r in results.values() if r.get("result") == "PASS")
 
 print(f"\n" + "=" * 80)
-print(f"RESULTS: {passed} PASS / {len(STRATEGIES) - passed} FAIL")
+print(f"RESULTS: {passed} PASS / {len(STRATEGIES) - passed} FAIL/ERROR")
 print(f"=" * 80)
 
-# Save summary
 summary_path = ROOT / "results" / "iteration_3_summary.json"
 with open(summary_path, "w") as f:
     json.dump({"total": len(STRATEGIES), "passed": passed, "timestamp": pd.Timestamp.now().isoformat()}, f)
