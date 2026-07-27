@@ -200,6 +200,19 @@ print("=" * 80)
 
 for test_num in sorted(STRATEGIES.keys()):
     model_name, features, factory = STRATEGIES[test_num]
+
+    # RESUME: skip strategies whose Pass-1 fit already completed in a prior
+    # (crashed) run of this script — process gets killed unpredictably in
+    # this environment, so re-doing 300s+ of training per test is wasteful.
+    result_path = ROOT / "results" / f"strategy_{test_num:03d}.json"
+    if result_path.exists():
+        with open(result_path) as f:
+            existing = json.load(f)
+        if existing.get("design_sharpe") is not None:
+            results[test_num] = existing
+            print(f"\n[Test {test_num:2d}/50] {model_name} — SKIP (already computed, resuming)")
+            continue
+
     print(f"\n[Test {test_num:2d}/50] {model_name}")
 
     start_time = time.time()
@@ -348,6 +361,12 @@ for test_num in sorted(STRATEGIES.keys()):
     elapsed = time.time() - start_time
     print(f"  Time: {elapsed:.1f}s")
 
+    # Save immediately (crash-resilience: process gets killed unpredictably
+    # in this environment; losing 5+ min of training per test is wasteful).
+    # DSR/pass fields stay null until Pass 2 runs.
+    with open(result_path, "w") as f:
+        json.dump(result, f, indent=2)
+
 # ============================================================================
 # PASS 2: Compute DSR over the FULL pooled trial set, then pass/fail
 # ============================================================================
@@ -372,8 +391,8 @@ print(f"Pooled trials for variance estimate: {len(pooled_sharpes)} (var={var_tri
 
 for test_num in sorted(STRATEGIES.keys()):
     result = results[test_num]
-    if result["result"] != "PENDING_DSR":
-        continue  # ERROR results skip DSR
+    if result.get("design_sharpe") is None or "_n_design_oos" not in result:
+        continue  # ERROR results, or already-finalized results from a prior full run, skip DSR
 
     design_sharpe = result["design_sharpe"]
     dsr_result = dsr(
