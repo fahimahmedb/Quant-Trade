@@ -41,8 +41,15 @@ def api(method, timeout=35, **params):
 
 
 def send(text):
+    # Les noms de strategies/modeles contiennent des underscores non apparies
+    # (ex. "QuantNormal_Log_H_C1") qui cassent le parse_mode Markdown de
+    # Telegram (italique non ferme -> HTTP 400 "can't parse entities").
+    # On retente en texte brut plutot que de perdre la notification.
     chat_id = CHAT_ID_FILE.read_text().strip()
-    api("sendMessage", chat_id=chat_id, text=text, parse_mode="Markdown")
+    try:
+        api("sendMessage", chat_id=chat_id, text=text, parse_mode="Markdown")
+    except urllib.error.HTTPError:
+        api("sendMessage", chat_id=chat_id, text=text)
 
 
 def main():
