@@ -76,3 +76,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 15, id 5 — AdaBoost_ExtraTree_E_lr05
+Testé le 2026-07-27T18:18:57.697079+00:00
+Features: ['ret_1', 'ret_2', 'drawdown_60']
+NDX (référence, design/test): design_ann=0.6197997842387163, test_ann=0.657660396569257, degradation=-0.03786061233054073, dsr=0.6124064401998373
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.304
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.405
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.381
+
+---
+
