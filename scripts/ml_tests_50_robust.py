@@ -19,6 +19,16 @@ import os
 from pathlib import Path
 import warnings
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+# Parallel workers (2-3) each run one full strategy; cap BLAS/OpenMP threads
+# per process to 1 so N_WORKERS processes don't oversubscribe the 4 physical
+# cores fighting each other for the same threads.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
 
 import numpy as np
 import pandas as pd
@@ -56,11 +66,11 @@ SEED = 42
 # 50 Strategy Definitions (Fixed a priori)
 STRATEGIES = {
     1: ("RandomForest_d3_n100", ["mom_10", "vol_20", "rsi_14"],
-        lambda: RandomForestClassifier(n_estimators=100, max_depth=3, random_state=SEED, n_jobs=-1)),
+        lambda: RandomForestClassifier(n_estimators=100, max_depth=3, random_state=SEED, n_jobs=1)),
     2: ("RandomForest_d5_n100", ["mom_10", "vol_20", "rsi_14"],
-        lambda: RandomForestClassifier(n_estimators=100, max_depth=5, random_state=SEED, n_jobs=-1)),
+        lambda: RandomForestClassifier(n_estimators=100, max_depth=5, random_state=SEED, n_jobs=1)),
     3: ("RandomForest_d7_n100", ["mom_10", "vol_20", "rsi_14"],
-        lambda: RandomForestClassifier(n_estimators=100, max_depth=7, random_state=SEED, n_jobs=-1)),
+        lambda: RandomForestClassifier(n_estimators=100, max_depth=7, random_state=SEED, n_jobs=1)),
     4: ("XGB_eta01_d3", ["mom_10", "vol_ratio", "vol_20", "atr_rel"],
         lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.1,
                                                 l2_regularization=1.0, random_state=SEED)),
@@ -101,7 +111,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=120, learning_rate=0.08,
                                                  l2_regularization=0.8, random_state=SEED)),
     18: ("RF_d6_n150", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
-         lambda: RandomForestClassifier(n_estimators=150, max_depth=6, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=150, max_depth=6, random_state=SEED, n_jobs=1)),
     19: ("LogReg_C02", ["mom_10", "vol_20"],
          lambda: LogisticRegression(C=0.2, max_iter=1000, solver='lbfgs', random_state=SEED)),
     20: ("XGB_eta008_d2", ["mom_10", "vol_ratio"],
@@ -112,7 +122,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.05,
                                                  l2_regularization=1.0, random_state=SEED)),
     22: ("RF_d4_n80", ["mom_10", "vol_20", "atr_rel", "bb_pctb"],
-         lambda: RandomForestClassifier(n_estimators=80, max_depth=4, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=80, max_depth=4, random_state=SEED, n_jobs=1)),
     23: ("LogReg_C20", ["mom_10", "vol_20", "rsi_14", "macd_rel"],
          lambda: LogisticRegression(C=20.0, max_iter=1000, solver='lbfgs', random_state=SEED)),
     24: ("SVM_poly_C05", ["mom_10", "vol_20", "rsi_14"],
@@ -121,7 +131,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=6, max_iter=150, learning_rate=0.02,
                                                  l2_regularization=1.0, random_state=SEED)),
     26: ("RF_d5_n120", ["vol_20", "rsi_14", "macd_rel"],
-         lambda: RandomForestClassifier(n_estimators=120, max_depth=5, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=120, max_depth=5, random_state=SEED, n_jobs=1)),
     27: ("XGB_eta02_d4", ["mom_10", "vol_ratio", "atr_rel", "ret_5"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=80, learning_rate=0.02,
                                                  l2_regularization=0.5, random_state=SEED)),
@@ -133,7 +143,7 @@ STRATEGIES = {
     30: ("SVM_rbf_C05", ["mom_10", "vol_20", "rsi_14"],
          lambda: SVC(C=0.5, gamma='scale', probability=True, random_state=SEED, max_iter=5000)),
     31: ("RF_d3_n200", ["mom_10", "vol_20", "rsi_14", "macd_rel", "bb_pctb"],
-         lambda: RandomForestClassifier(n_estimators=200, max_depth=3, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=200, max_depth=3, random_state=SEED, n_jobs=1)),
     32: ("GB_min_samp_30", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.1,
                                                  l2_regularization=1.0, min_samples_leaf=30, random_state=SEED)),
@@ -143,7 +153,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=5, max_iter=100, learning_rate=0.005,
                                                  l2_regularization=2.0, random_state=SEED)),
     35: ("RF_d8_n100", ["mom_10", "vol_20", "rsi_14"],
-         lambda: RandomForestClassifier(n_estimators=100, max_depth=8, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=100, max_depth=8, random_state=SEED, n_jobs=1)),
     36: ("GB_mean_rev_v2", ["mom_10", "vol_ratio", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=4, max_iter=150, learning_rate=0.05,
                                                  l2_regularization=0.5, min_samples_leaf=20, random_state=SEED)),
@@ -155,7 +165,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=200, learning_rate=0.05,
                                                  l2_regularization=0.5, random_state=SEED)),
     40: ("RF_d4_n250", ["mom_10", "vol_20", "rsi_14", "ret_1", "ret_5"],
-         lambda: RandomForestClassifier(n_estimators=250, max_depth=4, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=250, max_depth=4, random_state=SEED, n_jobs=1)),
     41: ("XGB_eta015_d3", ["mom_10", "vol_ratio", "vol_20"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=120, learning_rate=0.015,
                                                  l2_regularization=1.0, random_state=SEED)),
@@ -170,7 +180,7 @@ STRATEGIES = {
          lambda: HistGradientBoostingClassifier(max_depth=2, max_iter=150, learning_rate=0.05,
                                                  l2_regularization=2.0, random_state=SEED)),
     46: ("RF_d5_n180", ["vol_20", "rsi_14", "macd_rel", "bb_pctb"],
-         lambda: RandomForestClassifier(n_estimators=180, max_depth=5, random_state=SEED, n_jobs=-1)),
+         lambda: RandomForestClassifier(n_estimators=180, max_depth=5, random_state=SEED, n_jobs=1)),
     47: ("XGB_balance", ["mom_10", "vol_20", "rsi_14"],
          lambda: HistGradientBoostingClassifier(max_depth=3, max_iter=100, learning_rate=0.05,
                                                  l2_regularization=1.0, random_state=SEED)),
@@ -190,30 +200,21 @@ STRATEGIES = {
 # variance of trial Sharpes must be computed over the FULL completed set,
 # not incrementally, or test #1 always hits a fake var_trials=1.0 fallback
 # and gets DSR=0.0 by construction regardless of its actual quality.
+#
+# Strategies run in a small pool of parallel worker processes (N_WORKERS,
+# default 3) instead of one at a time. Each worker still checkpoints its own
+# results/strategy_XXX.json the instant it finishes, so a mid-batch process
+# kill (this environment restarts unpredictably) only loses the 2-3
+# strategies in flight at that moment, not the whole run — same resume
+# contract as before, just fewer strategies lost per crash instead of one.
 
-results = {}
-phase1 = {}  # test_num -> dict with design_sharpe, test_sharpe, metr_design, etc.
+N_WORKERS = int(os.environ.get("N_WORKERS", "3"))
 
-print("=" * 80)
-print("50 ML STRATEGY TESTS — STRICT CAUSAL PROTOCOL (Pass 1/2: fit + score)")
-print("=" * 80)
 
-for test_num in sorted(STRATEGIES.keys()):
+def run_strategy(test_num):
     model_name, features, factory = STRATEGIES[test_num]
-
-    # RESUME: skip strategies whose Pass-1 fit already completed in a prior
-    # (crashed) run of this script — process gets killed unpredictably in
-    # this environment, so re-doing 300s+ of training per test is wasteful.
     result_path = ROOT / "results" / f"strategy_{test_num:03d}.json"
-    if result_path.exists():
-        with open(result_path) as f:
-            existing = json.load(f)
-        if existing.get("design_sharpe") is not None:
-            results[test_num] = existing
-            print(f"\n[Test {test_num:2d}/50] {model_name} — SKIP (already computed, resuming)")
-            continue
-
-    print(f"\n[Test {test_num:2d}/50] {model_name}")
+    print(f"\n[Test {test_num:2d}/50] {model_name}", flush=True)
 
     start_time = time.time()
     result = {
@@ -272,7 +273,7 @@ for test_num in sorted(STRATEGIES.keys()):
         # Select features (verify all requested features exist)
         missing_features = [f for f in features if f not in X.columns]
         assert not missing_features, \
-            f"Strategy {test_num} ({name}): Missing features {missing_features}. Available: {list(X.columns)}"
+            f"Strategy {test_num} ({model_name}): Missing features {missing_features}. Available: {list(X.columns)}"
         available_features = features
         X_subset = X[available_features].copy()
 
@@ -349,23 +350,56 @@ for test_num in sorted(STRATEGIES.keys()):
         result["_kurt_excess"] = float(metr_design.get("excess_kurt", 0.0))
         result["result"] = "PENDING_DSR"
 
-        print(f"  Design: {design_sharpe:.4f} daily ({design_sharpe*np.sqrt(252):.3f} ann) | "
-              f"Test: {test_sharpe:.4f} daily ({test_sharpe*np.sqrt(252) if np.isfinite(test_sharpe) else float('nan'):.3f} ann)")
+        print(f"  [{test_num:2d}] Design: {design_sharpe:.4f} daily ({design_sharpe*np.sqrt(252):.3f} ann) | "
+              f"Test: {test_sharpe:.4f} daily ({test_sharpe*np.sqrt(252) if np.isfinite(test_sharpe) else float('nan'):.3f} ann)", flush=True)
 
     except Exception as e:
         result["result"] = "ERROR"
         result["reason"] = str(e)
-        print(f"  ❌ ERROR: {str(e)[:80]}")
+        print(f"  ❌ [{test_num:2d}] ERROR: {str(e)[:80]}", flush=True)
 
-    results[test_num] = result
     elapsed = time.time() - start_time
-    print(f"  Time: {elapsed:.1f}s")
+    print(f"  [{test_num:2d}] Time: {elapsed:.1f}s", flush=True)
 
     # Save immediately (crash-resilience: process gets killed unpredictably
     # in this environment; losing 5+ min of training per test is wasteful).
     # DSR/pass fields stay null until Pass 2 runs.
     with open(result_path, "w") as f:
         json.dump(result, f, indent=2)
+
+    return test_num, result
+
+
+results = {}
+
+print("=" * 80)
+print("50 ML STRATEGY TESTS — STRICT CAUSAL PROTOCOL (Pass 1/2: fit + score)")
+print(f"Parallel workers: {N_WORKERS}")
+print("=" * 80)
+
+todo = []
+for test_num in sorted(STRATEGIES.keys()):
+    # RESUME: skip strategies whose Pass-1 fit already completed in a prior
+    # (crashed) run of this script — process gets killed unpredictably in
+    # this environment, so re-doing 300s+ of training per test is wasteful.
+    result_path = ROOT / "results" / f"strategy_{test_num:03d}.json"
+    if result_path.exists():
+        with open(result_path) as f:
+            existing = json.load(f)
+        if existing.get("design_sharpe") is not None:
+            results[test_num] = existing
+            print(f"[Test {test_num:2d}/50] {STRATEGIES[test_num][0]} — SKIP (already computed, resuming)")
+            continue
+    todo.append(test_num)
+
+print(f"{len(todo)} strategies remaining, {N_WORKERS} in parallel")
+
+if todo:
+    with ProcessPoolExecutor(max_workers=N_WORKERS) as executor:
+        futures = {executor.submit(run_strategy, tn): tn for tn in todo}
+        for future in as_completed(futures):
+            tn, result = future.result()
+            results[tn] = result
 
 # ============================================================================
 # PASS 2: Compute DSR over the FULL pooled trial set, then pass/fail
