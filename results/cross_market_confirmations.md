@@ -124,3 +124,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 20, id 12 — Spline_Log_wide_K_k4
+Testé le 2026-07-27T19:12:01.219040+00:00
+Features: ['mom_10', 'mom_20', 'vol_10', 'vol_20', 'rsi_14', 'macd_rel', 'bb_pctb', 'atr_rel', 'stoch_k', 'ma_ratio_20']
+NDX (référence, design/test): design_ann=0.5775523040395075, test_ann=0.6911413032248928, degradation=-0.11358899918538513, dsr=0.44197008721629966
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.310
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.150
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.302
+
+---
+
