@@ -172,3 +172,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 21, id 19 — VotingSpline_RF_NB_wide_K
+Testé le 2026-07-27T19:41:05.387760+00:00
+Features: ['mom_10', 'mom_20', 'vol_10', 'vol_20', 'rsi_14', 'macd_rel', 'bb_pctb', 'atr_rel', 'stoch_k', 'ma_ratio_20']
+NDX (référence, design/test): design_ann=0.5698786581349033, test_ann=0.692143640492012, degradation=-0.12226498235710868, dsr=0.41590665987033193
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.197
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.270
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.318
+
+---
+
