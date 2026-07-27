@@ -64,3 +64,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 12, id 25 — FeatAgg_RF_E
+Testé le 2026-07-27T17:38:54.419985+00:00
+Features: ['ret_1', 'ret_2', 'drawdown_60']
+NDX (référence, design/test): design_ann=0.613728044812006, test_ann=0.743816001415767, degradation=-0.13008795660376088, dsr=0.6348826674954036
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.462
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.445
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.334
+
+---
+
