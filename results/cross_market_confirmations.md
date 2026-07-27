@@ -40,3 +40,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 10, id 11 — AdaBoost_NB_A
+Testé le 2026-07-27T16:46:05.744659+00:00
+Features: ['mom_10', 'vol_20', 'rsi_14']
+NDX (référence, design/test): design_ann=0.5544522596561617, test_ann=0.678500548082332, degradation=-0.12404828842617022, dsr=0.6224429437216422
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.266
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.276
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.104
+
+---
+
