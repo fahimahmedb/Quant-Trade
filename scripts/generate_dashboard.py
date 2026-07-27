@@ -32,16 +32,18 @@ def read_json(path):
 
 
 def process_status():
-    pid_file = Path("/tmp/iter3.pid")
+    # pgrep by command name, not a remembered PID: setsid/nohup chains can
+    # exec-replace into a different PID than the one $! captured, making a
+    # stored PID file unreliable (looked "dead" while actually still running).
     start_file = Path("/tmp/iter3_start_ts.txt")
-    if not pid_file.exists():
-        return {"running": False}
-    pid = pid_file.read_text().strip()
     try:
-        os.kill(int(pid), 0)
-        running = True
-    except (OSError, ValueError):
+        out = subprocess.run(["pgrep", "-f", "ml_tests_50_robust.py"],
+                              capture_output=True, text=True).stdout.strip()
+        pids = [p for p in out.splitlines() if p]
+        running = len(pids) > 0
+    except Exception:
         running = False
+        pids = []
     start_ts = None
     if start_file.exists():
         try:
@@ -49,7 +51,7 @@ def process_status():
         except ValueError:
             pass
     elapsed = (datetime.now(timezone.utc).timestamp() - start_ts) if start_ts else None
-    return {"running": running, "pid": pid, "start_ts": start_ts, "elapsed_s": elapsed}
+    return {"running": running, "pid": ",".join(pids) if pids else None, "start_ts": start_ts, "elapsed_s": elapsed}
 
 
 def iteration3_results():
