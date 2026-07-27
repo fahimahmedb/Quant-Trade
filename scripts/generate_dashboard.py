@@ -64,7 +64,9 @@ def iteration3_results():
     passed = sum(1 for t in tests if t.get("result") == "PASS")
     failed = sum(1 for t in tests if t.get("result") == "FAIL")
     errored = sum(1 for t in tests if t.get("result") == "ERROR")
-    return {"tests": tests, "total_done": len(tests), "passed": passed, "failed": failed, "errored": errored}
+    pending = sum(1 for t in tests if t.get("result") == "PENDING_DSR")
+    return {"tests": tests, "total_done": len(tests), "passed": passed, "failed": failed,
+            "errored": errored, "pending": pending}
 
 
 def iteration2_results():
@@ -351,8 +353,9 @@ footer {{ color: var(--muted); font-size: 0.75rem; text-align: center; margin-to
     </div>
     <div class="card">
       <h2>Iteration 3 — 50 tests (en cours)</h2>
-      <div class="stat"><span class="stat-label">PASS</span><span class="stat-value mono">{it3['passed']}/50</span></div>
-      <div class="stat"><span class="stat-label">FAIL</span><span class="stat-value mono">{it3['failed']}/50</span></div>
+      <div class="stat"><span class="stat-label">En attente du DSR final</span><span class="stat-value mono">{it3['pending']}/50</span></div>
+      <div class="stat"><span class="stat-label">PASS (final)</span><span class="stat-value mono">{it3['passed']}/50</span></div>
+      <div class="stat"><span class="stat-label">FAIL (final)</span><span class="stat-value mono">{it3['failed']}/50</span></div>
       <div class="stat"><span class="stat-label">ERROR</span><span class="stat-value mono">{it3['errored']}/50</span></div>
     </div>
   </div>

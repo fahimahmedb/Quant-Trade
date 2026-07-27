@@ -56,7 +56,7 @@ def build_status_message():
                                    capture_output=True).stdout.strip())
     n_done = len(list((ROOT / "results").glob("strategy_*.json")))
 
-    passed = failed = 0
+    passed = failed = pending = 0
     for f in (ROOT / "results").glob("strategy_*.json"):
         try:
             d = json.loads(f.read_text())
@@ -64,6 +64,8 @@ def build_status_message():
                 passed += 1
             elif d.get("result") == "FAIL":
                 failed += 1
+            elif d.get("result") == "PENDING_DSR":
+                pending += 1
         except Exception:
             pass
 
@@ -82,7 +84,8 @@ def build_status_message():
     status_emoji = "🟢" if running else "🔴"
     lines = [
         f"{status_emoji} Iteration 3 — {'EN COURS' if running else 'ARRÊTÉE'}",
-        f"Tests: {n_done}/50 ({passed} PASS, {failed} FAIL)",
+        f"Tests: {n_done}/50 fait(s) — {pending} en attente du DSR final",
+        f"Résultat final (calculé seulement à 50/50): {passed} PASS, {failed} FAIL",
         f"Écoulé: {fmt_duration(elapsed)} | Restant estimé: {fmt_duration(remaining)}",
         f"Généré: {datetime.now(timezone.utc).strftime('%H:%M:%S UTC')}",
     ]
