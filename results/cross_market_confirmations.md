@@ -28,3 +28,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 8, id 30 — KMeans4_Log_H
+Testé le 2026-07-27T14:56:23.494909+00:00
+Features: ['ret_1', 'ret_2', 'ret_3', 'drawdown_60', 'vol_10']
+NDX (référence, design/test): design_ann=0.5769518889752009, test_ann=0.6743154319583491, degradation=-0.09736354298314816, dsr=0.7239694663353409
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.451
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.609
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.306
+
+---
+
