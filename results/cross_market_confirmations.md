@@ -220,3 +220,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 26, id 49 — RF_newfeat_T
+Testé le 2026-07-27T21:00:09.328415+00:00
+Features: ['mom_20', 'rsi_14', 'drawdown_60', 'ma_ratio_20', 'vol_ratio']
+NDX (référence, design/test): design_ann=0.7511359026913574, test_ann=0.8840473553035885, degradation=-0.13291145261223108, dsr=0.5727801710440693
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.274
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.308
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.225
+
+---
+
