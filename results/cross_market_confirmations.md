@@ -88,3 +88,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 16, id 45 — QDA_reg_E_01
+Testé le 2026-07-27T18:26:34.871241+00:00
+Features: ['ret_1', 'ret_2', 'drawdown_60']
+NDX (référence, design/test): design_ann=0.6880947117844516, test_ann=0.8178694686016672, degradation=-0.1297747568172156, dsr=0.6773579447026421
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.281
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.177
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.071
+
+---
+
