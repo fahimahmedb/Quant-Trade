@@ -208,3 +208,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 25, id 50 — Spline_MLP_wide_K
+Testé le 2026-07-27T20:31:11.480985+00:00
+Features: ['mom_10', 'mom_20', 'vol_10', 'vol_20', 'rsi_14', 'macd_rel', 'bb_pctb', 'atr_rel', 'stoch_k', 'ma_ratio_20']
+NDX (référence, design/test): design_ann=0.8574249111999491, test_ann=0.757404938273234, degradation=0.10001997292671524, dsr=0.7633332585894888
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.294
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.322
+- DAX: n=6777, OOS obs=6027, Sharpe ann = -0.128
+
+---
+
