@@ -16,3 +16,15 @@ positif (qui montrerait des signes incohérents ou des Sharpes proches de zéro
 sur des marchés non liés).
 ---
 
+## Itération 8, id 8 — QuantNormal_Log_H_C1
+Testé le 2026-07-27T14:53:14.843572+00:00
+Features: ['ret_1', 'ret_2', 'ret_3', 'drawdown_60', 'vol_10']
+NDX (référence, design/test): design_ann=0.5668365731266053, test_ann=0.6634780567393965, degradation=-0.09664148361279123, dsr=0.7083168582954891
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.415
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.358
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.254
+
+---
+
