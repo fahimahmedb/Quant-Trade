@@ -136,3 +136,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 21, id 30 — Spline_HistGB_wide_K
+Testé le 2026-07-27T19:31:23.925775+00:00
+Features: ['mom_10', 'mom_20', 'vol_10', 'vol_20', 'rsi_14', 'macd_rel', 'bb_pctb', 'atr_rel', 'stoch_k', 'ma_ratio_20']
+NDX (référence, design/test): design_ann=0.746178139503473, test_ann=0.672316598883673, degradation=0.07386154061979998, dsr=0.7276152052459088
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = -0.001
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.435
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.062
+
+---
+
