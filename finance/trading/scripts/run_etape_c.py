@@ -18,7 +18,7 @@ import numpy as np
 np.random.seed(42)  # Reproducible SPA bootstrap (Politis-Romano)
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT.parent / "src"))
 warnings.filterwarnings("ignore")
 
 from data_loader import load_ohlc, log_returns_pct, parkinson_var_pct  # noqa: E402

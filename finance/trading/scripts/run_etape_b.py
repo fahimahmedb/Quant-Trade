@@ -27,7 +27,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT.parent / "src"))
 warnings.filterwarnings("ignore")
 
 from data_loader import load_ohlc  # noqa: E402
