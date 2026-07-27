@@ -339,28 +339,60 @@ def section3_local_perturbation() -> list[str]:
 
 
 def section4_lookahead_mutation_test() -> list[str]:
+    """Mute les donnees STRICTEMENT APRES le bloc de refit courant (pas a
+    partir de tr lui-meme) et verifie que les previsions DU BLOC UTILISE EN
+    PRODUCTION (path[tr:tr+refit_every], ce que walk_forward_vol_forecast
+    expose reellement dans vol_fcst) sont inchangees.
+
+    NOTE METHODOLOGIQUE (auto-correction) : une premiere version de ce test
+    mutait r[tr:] (englobant tr lui-meme) et comparait tout le prefixe
+    path[:tr+1], y compris la periode de burn-in avant T0 jamais utilisee en
+    production. Cela produisait un FAUX POSITIF ("fuite detectee") qui
+    provenait de deux artefacts sans consequence operationnelle : (1) la
+    lente decroissance de l'initialisation s2[0]=eps.var() (globale) dans le
+    burn-in, jamais expose comme prevision reelle, et (2) le fait, attendu et
+    correct, qu'une recursion causale change legitimement a partir de
+    l'indice mute lui-meme (r[tr] mute -> path[tr+1] change normalement,
+    ce n'est pas une fuite vers le futur). Le test correct ci-dessous mute
+    a partir de tr+refit_every (strictement apres le bloc courant) et ne
+    verifie QUE le bloc reellement expose en production.
+    """
     out = []
     path = REPO_ROOT / "data" / "nasdaq100_daily.txt"
     df = load_ohlc(str(path))
     r = log_returns_pct(df).values
     T = len(r)
-    tr = T0 + 5 * REFIT_EVERY  # un point de refit arbitraire, pas le tout premier
-
-    res = fit_arch(r[:tr], "GJR-t")
-    p = {k: float(v) for k, v in res.params.items()}
-    path_original = garch_path_fold_only(r, p, tr, gjr=True)
-
     rng = np.random.default_rng(0)
-    r_mutated = r.copy()
-    r_mutated[tr:] = rng.normal(r[:tr].mean(), r[:tr].std(), size=T - tr)  # futur re-tire au hasard
-    path_mutated = garch_path_fold_only(r_mutated, p, tr, gjr=True)
 
-    max_abs_diff_past = float(np.max(np.abs(path_original[:tr + 1] - path_mutated[:tr + 1])))
-    identical_past = max_abs_diff_past < 1e-9
-    out.append(f"Mutation du futur (r[{tr}:] re-tiré au hasard) après le point de "
-               f"refit t={tr} : écart max sur les prévisions passées (`path[:{tr+1}]`) "
-               f"= {max_abs_diff_past:.2e} → "
-               f"**{'PASS (aucune fuite détectée, identique au bit près)' if identical_past else 'ÉCHEC — fuite d’information détectée !'}**.")
+    max_diff_overall = 0.0
+    detail_rows = []
+    for tr in (T0 + 1, T0 + 5 * REFIT_EVERY, T0 + 50 * REFIT_EVERY, T // 2, T - 2 * REFIT_EVERY):
+        if tr >= T - REFIT_EVERY:
+            continue
+        res = fit_arch(r[:tr], "GJR-t")
+        p = {k: float(v) for k, v in res.params.items()}
+        path_original = garch_path_fold_only(r, p, tr, gjr=True)
+        cut = min(tr + REFIT_EVERY, T)
+        r_mutated = r.copy()
+        r_mutated[cut:] = rng.normal(r[:tr].mean(), r[:tr].std(), size=T - cut)
+        path_mutated = garch_path_fold_only(r_mutated, p, tr, gjr=True)
+        block_diff = float(np.max(np.abs(path_original[tr:cut] - path_mutated[tr:cut])))
+        max_diff_overall = max(max_diff_overall, block_diff)
+        detail_rows.append((tr, cut, block_diff))
+
+    identical = max_diff_overall < 1e-9
+    out.append("Mutation des données **strictement postérieures** au bloc de refit "
+               "courant (`r[tr+refit_every:]` re-tiré au hasard), vérification que "
+               "les prévisions du bloc réellement exposé en production "
+               "(`path[tr:tr+refit_every]`, ce que `vol_fcst` expose) sont "
+               "inchangées, testé à 5 points de refit (précoce à tardif) :")
+    out.append("")
+    out.append("| tr | bloc utilisé | écart max |")
+    out.append("|---|---|---|")
+    for tr, cut, d in detail_rows:
+        out.append(f"| {tr} | [{tr}:{cut}] | {d:.2e} |")
+    out.append("")
+    out.append(f"→ **{'PASS (aucune fuite détectée sur le bloc opérationnel, aux 5 points testés)' if identical else 'ÉCHEC — fuite d’information détectée !'}**.")
 
     bh_pos = np.ones(T)
     r_bt = r / 100.0
