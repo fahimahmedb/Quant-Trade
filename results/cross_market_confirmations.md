@@ -112,3 +112,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 20, id 10 — Spline_Log_J_k4
+Testé le 2026-07-27T19:10:36.513362+00:00
+Features: ['parkinson_5', 'drawdown_60', 'ma_ratio_20']
+NDX (référence, design/test): design_ann=0.6842936633240476, test_ann=0.6921421224923241, degradation=-0.007848459168276457, dsr=0.6360145817548242
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.316
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.354
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.272
+
+---
+
