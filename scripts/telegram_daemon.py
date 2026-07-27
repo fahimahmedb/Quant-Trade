@@ -13,7 +13,6 @@ Launch (detached, survives the launching shell exiting):
       > /tmp/telegram_daemon.log 2>&1 & disown
 """
 import json
-import subprocess
 import sys
 import time
 import urllib.request
@@ -22,6 +21,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[0].parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from telegram_report import build_full_report
+
 SECRETS_DIR = Path("/tmp/claude-0/-home-user-Quant-Trade/d40e7f44-8dba-572d-ba27-6c7a61ed28ed/secrets")
 TOKEN_FILE = SECRETS_DIR / "telegram_token.txt"
 CHAT_ID_FILE = SECRETS_DIR / "telegram_chat_id.txt"
@@ -40,56 +42,7 @@ def api(method, timeout=35, **params):
 
 def send(text):
     chat_id = CHAT_ID_FILE.read_text().strip()
-    api("sendMessage", chat_id=chat_id, text=text)
-
-
-def fmt_duration(seconds):
-    if seconds is None:
-        return "—"
-    m, s = divmod(int(seconds), 60)
-    h, m = divmod(m, 60)
-    return f"{h}h{m:02d}m" if h else f"{m}m{s:02d}s"
-
-
-def build_status_message():
-    running = bool(subprocess.run(["pgrep", "-f", "ml_tests_50_robust.py"],
-                                   capture_output=True).stdout.strip())
-    n_done = len(list((ROOT / "results").glob("strategy_*.json")))
-
-    passed = failed = pending = 0
-    for f in (ROOT / "results").glob("strategy_*.json"):
-        try:
-            d = json.loads(f.read_text())
-            if d.get("result") == "PASS":
-                passed += 1
-            elif d.get("result") == "FAIL":
-                failed += 1
-            elif d.get("result") == "PENDING_DSR":
-                pending += 1
-        except Exception:
-            pass
-
-    start_file = Path("/tmp/iter3_start_ts.txt")
-    elapsed = None
-    remaining = None
-    if start_file.exists():
-        try:
-            start_ts = int(start_file.read_text().strip())
-            elapsed = time.time() - start_ts
-            if n_done > 0:
-                remaining = (elapsed / n_done) * (50 - n_done)
-        except ValueError:
-            pass
-
-    status_emoji = "🟢" if running else "🔴"
-    lines = [
-        f"{status_emoji} Iteration 3 — {'EN COURS' if running else 'ARRÊTÉE'}",
-        f"Tests: {n_done}/50 fait(s) — {pending} en attente du DSR final",
-        f"Résultat final (calculé seulement à 50/50): {passed} PASS, {failed} FAIL",
-        f"Écoulé: {fmt_duration(elapsed)} | Restant estimé: {fmt_duration(remaining)}",
-        f"Généré: {datetime.now(timezone.utc).strftime('%H:%M:%S UTC')}",
-    ]
-    return "\n".join(lines)
+    api("sendMessage", chat_id=chat_id, text=text, parse_mode="Markdown")
 
 
 def main():
@@ -121,7 +74,8 @@ def main():
             if any(kw in text for kw in REFRESH_KEYWORDS):
                 print(f"[{datetime.now(timezone.utc)}] Refresh requested: {text!r}", flush=True)
                 try:
-                    send(build_status_message())
+                    for chunk in build_full_report():
+                        send(chunk)
                 except Exception as e:
                     print(f"[{datetime.now(timezone.utc)}] Send error: {e}", flush=True)
 
