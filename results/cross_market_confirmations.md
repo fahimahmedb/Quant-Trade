@@ -160,3 +160,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 21, id 1 — Bagging_SplineLog_A
+Testé le 2026-07-27T19:37:08.865965+00:00
+Features: ['mom_10', 'vol_10', 'rsi_14']
+NDX (référence, design/test): design_ann=0.5963264428707835, test_ann=0.8759881892310772, degradation=-0.2796617463602937, dsr=0.46410926684137044
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.465
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.403
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.321
+
+---
+
