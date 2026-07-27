@@ -184,3 +184,15 @@ Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en p
 
 ---
 
+## Itération 21, id 45 — RobustScaler_Spline_Log_E
+Testé le 2026-07-27T19:50:29.414010+00:00
+Features: ['ret_1', 'ret_2', 'drawdown_60']
+NDX (référence, design/test): design_ann=0.6670307663057312, test_ann=0.5589102078174775, degradation=0.10812055848825375, dsr=0.5938018457560927
+
+Confirmation hors-échantillon (zéro tuning, définition figée, 3 indices en parallèle) :
+- Russell 2000: n=9782, OOS obs=9032, Sharpe ann = 0.456
+- S&P 500: n=14252, OOS obs=13502, Sharpe ann = 0.265
+- DAX: n=6777, OOS obs=6027, Sharpe ann = 0.258
+
+---
+
