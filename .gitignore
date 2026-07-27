@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 results/iter3_execution.log
+results/strategy_*.json
+results/iteration_*.json
+results/audit_*.json
+results/*_summary.json
