@@ -1,3 +1,12 @@
+> ⚠️ **SUPERSEDED (27/07/2026)** — voir `ADVERSARIAL_AUDIT_v2.md`. Ce rapport
+> cite un combo Étape D (cap=2,0×/90e) que le code ne produit plus depuis le
+> fix `ee8a2fd` (15/07/2026), calcule son DSR à tort (n_trials=1 au lieu de
+> 12), et sa "cross-market consistency" (Composite vs NDX) ne teste pas des
+> marchés indépendants. La validation cross-marché réelle (Russell 2000/S&P
+> 500/DAX) montre que l'overlay Étape D pré-enregistré NE remplit le critère
+> de succès sur AUCUN des 3 marchés indépendants — conserver ce document
+> comme trace historique, ne plus le citer comme verdict à jour.
+
 # FINAL AUDIT REPORT
 ## Canonical Statistical Framework for Paper-Trading Readiness
 ### Quant-Trade Multi-Phase Volatility + Overlay Model

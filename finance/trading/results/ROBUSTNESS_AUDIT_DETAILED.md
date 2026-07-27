@@ -1,3 +1,9 @@
+> ⚠️ **SUPERSEDED (27/07/2026)** — voir `ADVERSARIAL_AUDIT_v2.md`. La
+> "cross-market consistency" ci-dessous (Composite vs NDX) ne teste pas des
+> marchés indépendants (NDX-100 ⊂ Composite). La vraie validation
+> cross-marché (Russell 2000/S&P 500/DAX) montre que l'overlay Étape D
+> échoue le critère de succès sur les 3 — conserver comme trace historique.
+
 # Robustness Audit — Detailed Evidence
 **Date**: 24 July 2026  
 **Status**: Final consolidation from framework audit phases A–D
