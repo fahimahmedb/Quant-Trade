@@ -62,7 +62,7 @@ ajoutées ci-dessus (#14-16).
 
 5 PASS sur 20 hypothèses testées (#4, #8, #11, #14, #17).
 
-| 20 | Combiner Halloween (#17, PASS) + Leaders 52w (#4, PASS) : CAP sur le portefeuille leaders nov-avril au lieu de Buy&Hold | prix NDX-100 déjà récupérés | à faire |
+| 20 | Combiner Halloween (#17) + Leaders 52w (#4) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe +0,78→+0,71, MDD -25,7%→-38,1%), voir `results/nonml_leaders_halloween_overlay_result.md` |
 | 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | à faire |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | à faire |
 
