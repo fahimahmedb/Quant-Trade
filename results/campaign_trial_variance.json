@@ -1,0 +1,10 @@
+{
+  "_description": "Variance empirique des Sharpe (test, non annualise, quotidien) sur les essais de brute-force ML deja executes, utilisee comme var_trials pour recalculer un DSR corrige sur les candidats cross-marche. NE PAS regenerer/retoucher a la main -- provenance tracee ci-dessous.",
+  "_provenance": "Calcule sur results/iter{4..10}/strategy_*.json (349/350 fichiers presents, 1 manquant) le 2026-07-28. Les fichiers bruts des iterations 11-27 ont ete perdus (results/iter[0-9]*/ est dans .gitignore, artefacts ephemeres non committes, perdus a la reinitialisation du conteneur) -- CETTE VARIANCE EST UN PROXY PARTIEL (349/~1200 essais), PAS LA VRAIE POPULATION COMPLETE. Limite assumee et signalee, pas masquee.",
+  "n_pooled": 349,
+  "var_trials_daily": 0.0003901068735706863,
+  "mean_test_sharpe_daily": 0.03847622772001799,
+  "source_iterations": [4, 5, 6, 7, 8, 9, 10],
+  "n_trials_campaign_estimate": 1200,
+  "n_trials_campaign_note": "24 iterations automatisees (iter4..iter27) x 50 strategies/iteration = 1200, comptage exact via scripts/iterations/iterN.py. Les iterations 1-3 (manuelles, pre-automatisation) ajoutent un nombre non precisement quantifie de tentatives supplementaires, non comptees ici -- 1200 est donc une estimation legerement CONSERVATRICE (sous-estimee) du nombre reel d'essais."
+}
