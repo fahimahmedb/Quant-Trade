@@ -63,8 +63,12 @@ ajoutées ci-dessus (#14-16).
 5 PASS sur 20 hypothèses testées (#4, #8, #11, #14, #17).
 
 | 20 | Combiner Halloween (#17) + Leaders 52w (#4) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe +0,78→+0,71, MDD -25,7%→-38,1%), voir `results/nonml_leaders_halloween_overlay_result.md` |
-| 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | à faire |
+| 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | **FAIT — PASS (4/5)**, robuste sur toute la grille CAP 1.5x-3.0x (constant 4/5), sim 300€ NDX : 412,24€ vs 349,93€ BH (+37,4% vs +16,6%), Sharpe +4,11 vs +2,74. MDD dégradé partout (levier ~66% du temps) — signalé honnêtement. Voir `results/nonml_tom_halloween_union_overlay_result.md` |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | à faire |
+
+## Backlog #0-21 complet (28/07/2026)
+
+6 PASS sur 21 hypothèses testées (#4, #8, #11, #14, #17, #21).
 
 ## Règles du cycle
 
