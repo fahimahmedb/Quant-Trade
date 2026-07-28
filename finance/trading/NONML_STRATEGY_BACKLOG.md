@@ -66,13 +66,17 @@ ajoutées ci-dessus (#14-16).
 | 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | **FAIT — PASS (4/5)**, robuste sur toute la grille CAP 1.5x-3.0x (constant 4/5), sim 300€ NDX : 412,24€ vs 349,93€ BH (+37,4% vs +16,6%), Sharpe +4,11 vs +2,74. MDD dégradé partout (levier ~66% du temps) — signalé honnêtement. Voir `results/nonml_tom_halloween_union_overlay_result.md` |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | **FAIT — FAIL** (0/5, catastrophique : rendement jusqu'à -99% sur NDX/Russell/S&P 500 — le repli court terme indice est souvent le DÉBUT d'un krach prolongé, pas un signal de rebond ; confirmé par recalcul indépendant du déclencheur et de la position, aucun bug), voir `results/nonml_short_pullback_rebound_result.md` et `results/nonml_short_pullback_rebound_audit.md` |
 
-## Backlog #0-24 complet (28/07/2026)
+## Backlog #0-25 complet (28/07/2026), 3 nouvelles idées (#26-28)
 
-7 PASS sur 24 hypothèses testées (#4, #8, #11, #14, #17, #21, #23).
+7 PASS sur 25 hypothèses testées (#4, #8, #11, #14, #17, #21, #23).
+
+| 26 | "Triple witching" (3e vendredi de mars/juin/sept/déc, expiration options/futures trimestrielle — volatilité/volume documentés) : overlay levé ce jour-là + le suivant, détection data-driven (rang du vendredi dans le mois, pas de calendrier codé en dur) | OHLC déjà en local | à faire |
+| 27 | Pré/post jour férié EN OVERLAY (reprise du #7, qui était flat hors fenêtre et structurellement désavantagé en rendement absolu comme #2/#6 — même détection data-driven que #7, mais design overlay comme #8) | OHLC déjà en local | à faire |
+| 28 | Combiner low-volatility tilt (#15, FAIL mais MDD bien meilleur) + overlay union ToM∪Halloween (#21, PASS) : teste si l'overlay calendaire aide aussi un portefeuille défensif (vol faible), pas seulement momentum (#11/#23) | prix NDX-100 déjà récupérés | à faire |
 
 | 23 | Combiner momentum 52-semaines (#4, PASS) + overlay Halloween∪ToM (#21, PASS) : 3e combinaison de calendrier sur le portefeuille Leaders, variante différente du #11 (ToM seul) et du #20 (Halloween seul, FAIL) | prix NDX-100 déjà récupérés | **FAIT — PASS** (Sharpe +0,78→+0,85, rendement +81,6%→+178,7%, MDD -25,7%→-38,1%), robuste et croissant sur toute la grille CAP 1.5x-3.0x, sim 300€ : 351,96€ vs 330,31€ référence. Confirme que l'union porte bien la totalité du gain de #21 même combinée à la sélection Leaders (contrairement à Halloween seul, #20, FAIL) — voir `results/nonml_leaders_tom_halloween_union_overlay_result.md` |
 | 24 | Overlay levé sur rebond APRÈS jour de forte baisse (ampleur ≥5% en 1 seule séance, pas 3j comme #22) — horizon encore différent, teste si un choc plus brutal mais ponctuel (1 jour) change la conclusion du #22 | OHLC déjà en local | **FAIT — FAIL** (0/5, confirme le #22 : un choc ponctuel de ≥5% reste plus souvent annonciateur d'une poursuite de la baisse qu'un point bas isolé), voir `results/nonml_single_day_shock_rebound_result.md` |
-| 25 | Effet fin de semaine élargi (vendredi + lundi combinés en fenêtre, variante du #3 day-of-week qui testait chaque jour séparément et avait FAIL) — overlay levé sur la fenêtre vendredi-lundi | OHLC déjà en local | à faire |
+| 25 | Effet fin de semaine élargi (vendredi + lundi combinés en fenêtre, variante du #3 day-of-week qui testait chaque jour séparément et avait FAIL) — overlay levé sur la fenêtre vendredi-lundi | OHLC déjà en local | **FAIT — FAIL** (0/5, même sous design overlay et fenêtre élargie, confirme #3 : pas d'edge week-end exploitable net de coûts), voir `results/nonml_friday_monday_overlay_result.md` |
 
 ## Règles du cycle
 
