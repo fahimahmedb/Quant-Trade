@@ -29,7 +29,17 @@ ajustement statistique sur nos données.
 | 7 | Effet pré/post jour férié US | OHLC déjà en local, détection data-driven (pas de calendrier codé en dur) | **FAIT — FAIL** (0/5, structurel : ~7% du temps investi), voir `results/nonml_holiday_effect_result.md` |
 | 8 | Turn-of-month EN OVERLAY (reste investi 1x en permanence comme Buy&Hold, ajoute un levier supplémentaire SEULEMENT pendant la fenêtre ToM déjà identifiée au lieu d'être flat hors fenêtre) | OHLC déjà en local | **FAIT — PASS (4/5)**, plateau robuste CAP 1.5x-3.0x, voir `results/nonml_tom_overlay_result.md` |
 | 9 | Barbell structuré : overlay levé sur régime de vol calme (variante réalisée, pas ToM déjà couvert au #8) | OHLC déjà en local | **FAIT — FAIL** (2/5), voir `results/nonml_vol_regime_overlay_result.md` |
-| 10 | Buy&Hold levé en continu (x2/x3 fixe, rebalancement quotidien) vs Buy&Hold 1x, test formel avec critère Sharpe+rendement sur les 5 marchés | OHLC déjà en local | à faire |
+| 10 | Buy&Hold levé en continu (x2/x3 fixe, rebalancement quotidien) vs Buy&Hold 1x, test formel avec critère Sharpe+rendement sur les 5 marchés | OHLC déjà en local | **FAIT — FAIL** (0/5, invariance mathématique du Sharpe confirmée), voir `results/nonml_leveraged_bh_result.md` |
+| 11 | Combiner momentum 52-semaines (#4, PASS) + overlay levé (#8, PASS) : levier CAP=2.0x sur le portefeuille leaders déjà validé, au lieu de l'équipondéré simple | prix NDX-100 déjà récupérés | à faire — teste si combiner deux effets déjà validés amplifie le résultat |
+| 12 | Effet janvier small-cap (Rozeff & Kinney 1976) : rendement janvier Russell 2000 (small-cap) vs autres indices (large-cap), comparaison relative | OHLC déjà en local | à faire |
+| 13 | Rebond post-drawdown extrême (mean-reversion après choc >X%, horizon différent du reversal hebdomadaire déjà testé au #5) | OHLC déjà en local | à faire |
+
+## Nouvelles idées ajoutées (backlog initial #0-10 épuisé, 28/07/2026)
+
+Après un premier passage complet (2 PASS sur 11 hypothèses testées :
+#4 momentum 52-semaines, #8 ToM overlay levé), 3 nouvelles pistes
+ajoutées ci-dessus (#11-13), dans le même esprit (anomalie documentée ou
+combinaison d'effets déjà validés, données déjà accessibles, hors ML).
 
 ## Règles du cycle
 
