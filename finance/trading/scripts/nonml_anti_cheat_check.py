@@ -35,8 +35,14 @@ def main():
     prereg_rel = str(prereg.relative_to(REPO_ROOT))
     result_rel = str(result_file.relative_to(REPO_ROOT))
 
-    prereg_commits = git("log", "--format=%H %ct", "--follow", "--", prereg_rel).splitlines()
-    result_commits = git("log", "--format=%H %ct", "--follow", "--", result_rel).splitlines()
+    # PAS de --follow : chaque cycle cree des fichiers reellement NOUVEAUX (jamais des
+    # renommages) -- bug trouve au cycle #20 ou --follow a faussement rattache
+    # nonml_leaders_halloween_overlay_result.md a un ANCIEN commit du cycle #11
+    # (nonml_leaders_tom_overlay_result.md, structurellement tres similaire -> faux
+    # positif de detection de renommage par similarite de contenu), faisant croire a
+    # tort que le resultat precedait le pre-enregistrement.
+    prereg_commits = git("log", "--format=%H %ct", "--", prereg_rel).splitlines()
+    result_commits = git("log", "--format=%H %ct", "--", result_rel).splitlines()
 
     if not prereg_commits:
         checks.append(("FAIL", f"Pré-enregistrement {prereg_rel} non trouvé dans l'historique git."))
