@@ -41,6 +41,15 @@ Après un premier passage complet (2 PASS sur 11 hypothèses testées :
 ajoutées ci-dessus (#11-13), dans le même esprit (anomalie documentée ou
 combinaison d'effets déjà validés, données déjà accessibles, hors ML).
 
+| 14 | Momentum court terme titre (acheter les WINNERS de la semaine, PAS les losers — hypothèse inverse du cycle #5, qui a montré empiriquement que le momentum domine à cet horizon sur cet univers 2021-2026) | prix NDX-100 déjà récupérés | à faire |
+| 15 | Low-volatility tilt : portefeuille équipondéré du tercile inférieur de volatilité réalisée 60j (NDX-100) vs univers complet (anomalie low-vol documentée, distincte de tout ce qui a été testé) | prix NDX-100 déjà récupérés | à faire |
+| 16 | Overlay levé déclenché par accélération du signal momentum 52-semaines (delta du ratio prix/plus-haut entre 2 rebalancements consécutifs), pas le calendrier — 3e variante de combinaison avec #4 | prix NDX-100 déjà récupérés | à faire |
+
+## Backlog #0-13 complet (28/07/2026, suite du rattrapage)
+
+3 PASS sur 14 hypothèses testées (#4, #8, #11). 3 nouvelles pistes
+ajoutées ci-dessus (#14-16).
+
 ## Règles du cycle
 
 1. Prendre la PREMIÈRE ligne "à faire" du tableau (ordre = déjà trié par
