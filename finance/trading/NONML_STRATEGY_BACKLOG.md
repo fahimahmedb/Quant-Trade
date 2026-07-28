@@ -21,12 +21,15 @@ ajustement statistique sur nos données.
 |---|---|---|---|
 | 0 | PEAD (surprise de résultats, NDX-100) | api.nasdaq.com + Yahoo (déjà récupérées) | **FAIT — FAIL** (t-stat 1.16 < 2), voir `results/pead_backtest_result.md` |
 | 1 | Overnight vs intraday (close→open vs open→close) | OHLC déjà en local (`data/*.txt`) | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_overnight_intraday_result.md` |
-| 2 | Effet tournant de mois (turn-of-month, J-1 à J+3) | OHLC déjà en local | **FAIT — PASS** (4/5 marchés), robustesse modérée (3/5,4/5,3/5), voir `results/nonml_turn_of_month_result.md` |
+| 2 | Effet tournant de mois (turn-of-month, J-1 à J+3) | OHLC déjà en local | **FAIT — PASS Sharpe (4/5)** mais **rendement absolu < Buy&Hold** sur la simulation 300€ (326,62€ vs 349,93€) → **RECLASSÉ FAIL sous la règle renforcée du 28/07** (voir ci-dessous). Voir `results/nonml_turn_of_month_result.md` |
 | 3 | Effet jour-de-semaine (lundi/vendredi) | OHLC déjà en local | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_day_of_week_result.md` |
 | 4 | Momentum 52-semaines (proximité du plus haut annuel, George & Hwang 2004) | prix NDX-100 déjà récupérés (`data/pead/prices/`) | à faire |
 | 5 | Reversal court terme (1 semaine, niveau titre) | prix NDX-100 déjà récupérés | à faire |
 | 6 | Rallye de fin d'année ("Santa Claus rally", 5 derniers j. déc. + 2 premiers j. janv.) | OHLC déjà en local | à faire |
 | 7 | Effet pré/post jour férié US | OHLC déjà en local + calendrier férié US (à coder en dur, dates connues) | à faire |
+| 8 | Turn-of-month EN OVERLAY (reste investi 1x en permanence comme Buy&Hold, ajoute un levier supplémentaire SEULEMENT pendant la fenêtre ToM déjà identifiée au lieu d'être flat hors fenêtre) | OHLC déjà en local | à faire — adresse directement le déficit de rendement absolu du cycle #2 |
+| 9 | Barbell structuré (simulation) : cœur Buy&Hold + overlay levé (x2/x3) sur la fenêtre ToM ou sur les régimes de vol extrême déjà identifiés (Étape C) | OHLC déjà en local | à faire — profil façon note structurée, pas besoin de données d'options |
+| 10 | Buy&Hold levé en continu (x2/x3 fixe, rebalancement quotidien) vs Buy&Hold 1x, test formel avec critère Sharpe+rendement sur les 5 marchés | OHLC déjà en local | à faire |
 
 ## Règles du cycle
 
@@ -42,3 +45,29 @@ ajustement statistique sur nos données.
 6. Si le tableau est épuisé, proposer 2-3 nouvelles idées non-ML (même
    esprit : anomalie documentée, données déjà accessibles ou facilement
    récupérables gratuitement) et les ajouter avant de clore le cycle.
+
+## Règle de succès RENFORCÉE (instruction utilisateur, 28/07/2026)
+
+Une stratégie n'est un vrai succès QUE si elle bat Buy & Hold **à la fois**
+en Sharpe **et** en rendement total net de coûts — un Sharpe supérieur
+avec un rendement absolu inférieur (ex. cycle #2) ne compte plus comme
+PASS, même si le critère pré-enregistré d'origine (Sharpe seul) était
+formellement atteint. **Tout nouveau pré-enregistrement à partir de
+maintenant doit inclure cette double condition explicitement dans son
+critère de succès chiffré** (ex. "Sharpe > BH ET rendement total ≥ BH sur
+≥4/5 marchés"). Les cycles #0 à #3 restent documentés avec leur verdict
+d'origine (traçabilité), mais le cycle #2 est explicitement reclassé
+FAIL sous cette règle (voir tableau ci-dessus) — pas de retuning caché,
+juste une barre plus stricte assumée à partir de maintenant.
+
+## Levier autorisé (instruction utilisateur, 28/07/2026)
+
+Les stratégies futures peuvent inclure des variantes à effet de levier —
+ne pas exclure le levier par défaut comme c'était implicitement le cas
+jusqu'ici (toutes les stratégies testées étaient ≤1x). Toujours fixer un
+CAP de levier a priori dans le pré-enregistrement (même logique que les
+analyses Kelly/vol-targeting déjà faites, ex. CAP=2.0 ou 3.0, jamais
+« illimité ») et ne jamais retoucher ce CAP après avoir vu un résultat.
+Le risque plus élevé est explicitement accepté par l'utilisateur — mais
+reste signalé honnêtement dans chaque rapport (MDD, pas seulement
+Sharpe/rendement).
