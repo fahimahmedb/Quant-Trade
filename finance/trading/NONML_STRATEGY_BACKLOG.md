@@ -24,7 +24,7 @@ ajustement statistique sur nos données.
 | 2 | Effet tournant de mois (turn-of-month, J-1 à J+3) | OHLC déjà en local | **FAIT — PASS Sharpe (4/5)** mais **rendement absolu < Buy&Hold** sur la simulation 300€ (326,62€ vs 349,93€) → **RECLASSÉ FAIL sous la règle renforcée du 28/07** (voir ci-dessous). Voir `results/nonml_turn_of_month_result.md` |
 | 3 | Effet jour-de-semaine (lundi/vendredi) | OHLC déjà en local | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_day_of_week_result.md` |
 | 4 | Momentum 52-semaines (proximité du plus haut annuel, George & Hwang 2004) | prix NDX-100 déjà récupérés (`data/pead/prices/`) | **FAIT — PASS (Sharpe ET rendement)**, plateau robuste 5/5, voir `results/nonml_momentum_52w_high_result.md` |
-| 5 | Reversal court terme (1 semaine, niveau titre) | prix NDX-100 déjà récupérés | à faire |
+| 5 | Reversal court terme (1 semaine, niveau titre) | prix NDX-100 déjà récupérés | **FAIT — FAIL catastrophique** (-83,6% de rendement, Sharpe -1,02), voir `results/nonml_short_term_reversal_result.md` |
 | 6 | Rallye de fin d'année ("Santa Claus rally", 5 derniers j. déc. + 2 premiers j. janv.) | OHLC déjà en local | à faire |
 | 7 | Effet pré/post jour férié US | OHLC déjà en local + calendrier férié US (à coder en dur, dates connues) | à faire |
 | 8 | Turn-of-month EN OVERLAY (reste investi 1x en permanence comme Buy&Hold, ajoute un levier supplémentaire SEULEMENT pendant la fenêtre ToM déjà identifiée au lieu d'être flat hors fenêtre) | OHLC déjà en local | à faire — adresse directement le déficit de rendement absolu du cycle #2 |
