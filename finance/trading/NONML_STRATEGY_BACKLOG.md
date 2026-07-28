@@ -56,7 +56,15 @@ ajoutées ci-dessus (#14-16).
 
 | 17 | "Sell in May" / effet Halloween, overlay levé nov-avril | OHLC déjà en local | **FAIT — PASS (4/5)**, plateau 4,4,3,3 selon CAP, voir `results/nonml_halloween_effect_result.md` |
 | 18 | Combiner winners momentum (#14) + overlay ToM (#8) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe +2,35→+2,22, MDD -22,4%→-29,2%), voir `results/nonml_winners_tom_overlay_result.md` |
-| 19 | Window dressing de fin de trimestre (3 derniers jours de bourse de chaque trimestre, overlay levé) | OHLC déjà en local | à faire |
+| 19 | Window dressing de fin de trimestre (overlay levé) | OHLC déjà en local | **FAIT — FAIL** (2/5), voir `results/nonml_quarter_end_window_dressing_result.md` |
+
+## Backlog #0-19 complet (28/07/2026), 3 nouvelles idées (#20-22)
+
+5 PASS sur 20 hypothèses testées (#4, #8, #11, #14, #17).
+
+| 20 | Combiner Halloween (#17, PASS) + Leaders 52w (#4, PASS) : CAP sur le portefeuille leaders nov-avril au lieu de Buy&Hold | prix NDX-100 déjà récupérés | à faire |
+| 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | à faire |
+| 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | à faire |
 
 ## Règles du cycle
 
