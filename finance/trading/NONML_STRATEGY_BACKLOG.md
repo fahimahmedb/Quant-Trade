@@ -55,7 +55,7 @@ ajoutées ci-dessus (#14-16).
 4 PASS sur 17 hypothèses testées (#4, #8, #11, #14).
 
 | 17 | "Sell in May" / effet Halloween, overlay levé nov-avril | OHLC déjà en local | **FAIT — PASS (4/5)**, plateau 4,4,3,3 selon CAP, voir `results/nonml_halloween_effect_result.md` |
-| 18 | Combiner momentum court terme winners (#14, PASS extrême) + overlay levé ToM (#8) — 4e variante de combinaison, cette fois sur le portefeuille le plus performant du backlog | prix NDX-100 déjà récupérés | à faire |
+| 18 | Combiner winners momentum (#14) + overlay ToM (#8) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe +2,35→+2,22, MDD -22,4%→-29,2%), voir `results/nonml_winners_tom_overlay_result.md` |
 | 19 | Window dressing de fin de trimestre (3 derniers jours de bourse de chaque trimestre, overlay levé) | OHLC déjà en local | à faire |
 
 ## Règles du cycle
