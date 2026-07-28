@@ -20,7 +20,7 @@ ajustement statistique sur nos données.
 | # | Stratégie | Données nécessaires | Statut |
 |---|---|---|---|
 | 0 | PEAD (surprise de résultats, NDX-100) | api.nasdaq.com + Yahoo (déjà récupérées) | **FAIT — FAIL** (t-stat 1.16 < 2), voir `results/pead_backtest_result.md` |
-| 1 | Overnight vs intraday (close→open vs open→close) | OHLC déjà en local (`data/*.txt`) | à faire |
+| 1 | Overnight vs intraday (close→open vs open→close) | OHLC déjà en local (`data/*.txt`) | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_overnight_intraday_result.md` |
 | 2 | Effet tournant de mois (turn-of-month, J-1 à J+3) | OHLC déjà en local | à faire |
 | 3 | Effet jour-de-semaine (lundi/vendredi) | OHLC déjà en local | à faire |
 | 4 | Momentum 52-semaines (proximité du plus haut annuel, George & Hwang 2004) | prix NDX-100 déjà récupérés (`data/pead/prices/`) | à faire |
