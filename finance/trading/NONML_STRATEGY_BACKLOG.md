@@ -41,7 +41,7 @@ Après un premier passage complet (2 PASS sur 11 hypothèses testées :
 ajoutées ci-dessus (#11-13), dans le même esprit (anomalie documentée ou
 combinaison d'effets déjà validés, données déjà accessibles, hors ML).
 
-| 14 | Momentum court terme titre (acheter les WINNERS de la semaine, PAS les losers — hypothèse inverse du cycle #5, qui a montré empiriquement que le momentum domine à cet horizon sur cet univers 2021-2026) | prix NDX-100 déjà récupérés | à faire |
+| 14 | Momentum court terme titre (winners, inverse du #5) | prix NDX-100 déjà récupérés | **FAIT — PASS extrême** (Sharpe +2,35 à +3,75 selon variante — **prudence forte** : reflète un marché haussier concentré IA/semi 2021-2026, pas forcément généralisable), voir `results/nonml_short_term_momentum_result.md` |
 | 15 | Low-volatility tilt : portefeuille équipondéré du tercile inférieur de volatilité réalisée 60j (NDX-100) vs univers complet (anomalie low-vol documentée, distincte de tout ce qui a été testé) | prix NDX-100 déjà récupérés | à faire |
 | 16 | Overlay levé déclenché par accélération du signal momentum 52-semaines (delta du ratio prix/plus-haut entre 2 rebalancements consécutifs), pas le calendrier — 3e variante de combinaison avec #4 | prix NDX-100 déjà récupérés | à faire |
 
