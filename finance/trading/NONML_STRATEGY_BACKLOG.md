@@ -43,12 +43,20 @@ combinaison d'effets déjà validés, données déjà accessibles, hors ML).
 
 | 14 | Momentum court terme titre (winners, inverse du #5) | prix NDX-100 déjà récupérés | **FAIT — PASS extrême** (Sharpe +2,35 à +3,75 selon variante — **prudence forte** : reflète un marché haussier concentré IA/semi 2021-2026, pas forcément généralisable), voir `results/nonml_short_term_momentum_result.md` |
 | 15 | Low-volatility tilt (tercile inf. vol réalisée 60j, NDX-100) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe 0,54 vs 0,65, rendement 40,2% vs 86,1%, mais MDD bien meilleur -18,9% vs -35,2%), voir `results/nonml_low_vol_tilt_result.md` |
-| 16 | Overlay levé déclenché par accélération du signal momentum 52-semaines (delta du ratio prix/plus-haut entre 2 rebalancements consécutifs), pas le calendrier — 3e variante de combinaison avec #4 | prix NDX-100 déjà récupérés | à faire |
+| 16 | Overlay levé déclenché par accélération du signal momentum 52-semaines — 3e variante de combinaison avec #4 | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe quasi identique +0,78 vs +0,78, MDD pire -33,9% vs -25,7%), voir `results/nonml_leaders_accel_overlay_result.md` |
 
 ## Backlog #0-13 complet (28/07/2026, suite du rattrapage)
 
 3 PASS sur 14 hypothèses testées (#4, #8, #11). 3 nouvelles pistes
 ajoutées ci-dessus (#14-16).
+
+## Backlog #0-16 complet (28/07/2026), 3 nouvelles idées (#17-19)
+
+4 PASS sur 17 hypothèses testées (#4, #8, #11, #14).
+
+| 17 | "Sell in May and go away" / effet Halloween (Bouman & Jacobsen 2002) : overlay levé nov-avril, 1.0x mai-oct | OHLC déjà en local | à faire |
+| 18 | Combiner momentum court terme winners (#14, PASS extrême) + overlay levé ToM (#8) — 4e variante de combinaison, cette fois sur le portefeuille le plus performant du backlog | prix NDX-100 déjà récupérés | à faire |
+| 19 | Window dressing de fin de trimestre (3 derniers jours de bourse de chaque trimestre, overlay levé) | OHLC déjà en local | à faire |
 
 ## Règles du cycle
 
