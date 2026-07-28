@@ -1,18 +1,18 @@
-"""Simulation — Buy & Hold levier max (3.0x) sur les 2 derniers mois, NDX.
+"""Simulation — Buy & Hold levier max (3.0x) sur les N derniers mois, NDX.
 
 Question posée : à quoi ressemblerait 300 EUR de mise investis en Buy & Hold
-sur les ~2 derniers mois de donnees disponibles (NDX, dataset le plus a jour
+sur les N derniers mois de donnees disponibles (NDX, dataset le plus a jour
 et le plus robuste du projet), au levier le plus fort deja utilise dans les
 analyses (CAP=3.0, meme plafond que `analysis_kelly_criterion.py` et
 `analysis_diversified_leverage.py` — pas un nouveau parametre invente pour
-cette simulation).
+cette simulation). N (nombre de mois) passe en argument CLI, defaut 2.
 
 CE N'EST PAS un test d'hypothese ni une selection parmi plusieurs variantes
 (donc hors perimetre DSR/anti-snooping) : simple application retrospective
-d'un parametre deja fixe a priori sur une fenetre recente fixe (les 42
-dernieres seances disponibles, ~2 mois), a titre illustratif. Ne constitue
-pas une prevision — resultat purement historique, sur UNE seule fenetre
-recente (pas de moyenne sur plusieurs fenetres de 2 mois glissantes).
+d'un parametre deja fixe a priori sur une fenetre recente fixe, a titre
+illustratif. Ne constitue pas une prevision — resultat purement historique,
+sur UNE seule fenetre recente se terminant a la derniere seance disponible
+(pas une moyenne sur plusieurs fenetres glissantes).
 
 Mecanique : `backtest()` applique le levier chaque jour (equivalent a un
 produit leve a rebalancement quotidien, comme un ETF x3) — pas un simple
@@ -36,13 +36,16 @@ sys.path.insert(0, str(FINANCE_ROOT / "src"))
 from data_loader import load_ohlc, log_returns_pct  # noqa: E402
 from prediction import backtest, trading_metrics  # noqa: E402
 
-WINDOW_DAYS = 42            # ~2 mois de seances boursieres
+SESSIONS_PER_MONTH = 21     # ~21 seances boursieres / mois calendaire
 CAP = 3.0                   # levier max deja utilise (Kelly / diversification)
 COST_BPS = 5.0
 CAPITAL0 = 300.0
 
 
 def main():
+    n_months = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+    WINDOW_DAYS = n_months * SESSIONS_PER_MONTH
+
     df = load_ohlc(str(REPO_ROOT / "data" / "nasdaq100_daily.txt"))
     r = log_returns_pct(df) / 100.0
     dates = df["date"].iloc[-WINDOW_DAYS:].reset_index(drop=True)
@@ -62,7 +65,7 @@ def main():
     me_lev = trading_metrics(pnl_lev)
 
     lines = [
-        "# Simulation — Buy & Hold NDX, levier max 3.0x, 2 derniers mois (300 EUR)",
+        f"# Simulation — Buy & Hold NDX, levier max 3.0x, {n_months} derniers mois (300 EUR)",
         "",
         f"Fenetre : {dates.iloc[0].date()} -> {dates.iloc[-1].date()} "
         f"({T} seances, NDX). Levier CAP={CAP:.1f}x = plafond deja utilise "
@@ -99,10 +102,10 @@ def main():
         f"{me_lev['max_drawdown_pct']:.1f}% (x{CAP:.1f}). Une baisse de marche sur "
         "cette fenetre aurait produit une perte x3 amplifiee, pas un gain — "
         "le sens du resultat ci-dessus depend entierement de la direction prise "
-        "par le marche sur CES 2 mois precis, pas d'une competence de timing."
+        f"par le marche sur CES {n_months} mois precis, pas d'une competence de timing."
     )
 
-    out = ROOT / "results" / "sim_bh_2mo_leverage_x3.md"
+    out = ROOT / "results" / f"sim_bh_{n_months}mo_leverage_x3.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     print(f"\nEcrit dans {out}")
