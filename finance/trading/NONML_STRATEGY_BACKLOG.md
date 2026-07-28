@@ -66,12 +66,12 @@ ajoutées ci-dessus (#14-16).
 | 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | **FAIT — PASS (4/5)**, robuste sur toute la grille CAP 1.5x-3.0x (constant 4/5), sim 300€ NDX : 412,24€ vs 349,93€ BH (+37,4% vs +16,6%), Sharpe +4,11 vs +2,74. MDD dégradé partout (levier ~66% du temps) — signalé honnêtement. Voir `results/nonml_tom_halloween_union_overlay_result.md` |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | **FAIT — FAIL** (0/5, catastrophique : rendement jusqu'à -99% sur NDX/Russell/S&P 500 — le repli court terme indice est souvent le DÉBUT d'un krach prolongé, pas un signal de rebond ; confirmé par recalcul indépendant du déclencheur et de la position, aucun bug), voir `results/nonml_short_pullback_rebound_result.md` et `results/nonml_short_pullback_rebound_audit.md` |
 
-## Backlog #0-23 complet (28/07/2026)
+## Backlog #0-24 complet (28/07/2026)
 
-7 PASS sur 23 hypothèses testées (#4, #8, #11, #14, #17, #21, #23).
+7 PASS sur 24 hypothèses testées (#4, #8, #11, #14, #17, #21, #23).
 
 | 23 | Combiner momentum 52-semaines (#4, PASS) + overlay Halloween∪ToM (#21, PASS) : 3e combinaison de calendrier sur le portefeuille Leaders, variante différente du #11 (ToM seul) et du #20 (Halloween seul, FAIL) | prix NDX-100 déjà récupérés | **FAIT — PASS** (Sharpe +0,78→+0,85, rendement +81,6%→+178,7%, MDD -25,7%→-38,1%), robuste et croissant sur toute la grille CAP 1.5x-3.0x, sim 300€ : 351,96€ vs 330,31€ référence. Confirme que l'union porte bien la totalité du gain de #21 même combinée à la sélection Leaders (contrairement à Halloween seul, #20, FAIL) — voir `results/nonml_leaders_tom_halloween_union_overlay_result.md` |
-| 24 | Overlay levé sur rebond APRÈS jour de forte baisse (ampleur ≥5% en 1 seule séance, pas 3j comme #22) — horizon encore différent, teste si un choc plus brutal mais ponctuel (1 jour) change la conclusion du #22 | OHLC déjà en local | à faire |
+| 24 | Overlay levé sur rebond APRÈS jour de forte baisse (ampleur ≥5% en 1 seule séance, pas 3j comme #22) — horizon encore différent, teste si un choc plus brutal mais ponctuel (1 jour) change la conclusion du #22 | OHLC déjà en local | **FAIT — FAIL** (0/5, confirme le #22 : un choc ponctuel de ≥5% reste plus souvent annonciateur d'une poursuite de la baisse qu'un point bas isolé), voir `results/nonml_single_day_shock_rebound_result.md` |
 | 25 | Effet fin de semaine élargi (vendredi + lundi combinés en fenêtre, variante du #3 day-of-week qui testait chaque jour séparément et avait FAIL) — overlay levé sur la fenêtre vendredi-lundi | OHLC déjà en local | à faire |
 
 ## Règles du cycle
