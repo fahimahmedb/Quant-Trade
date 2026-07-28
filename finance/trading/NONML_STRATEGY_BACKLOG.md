@@ -22,7 +22,7 @@ ajustement statistique sur nos données.
 | 0 | PEAD (surprise de résultats, NDX-100) | api.nasdaq.com + Yahoo (déjà récupérées) | **FAIT — FAIL** (t-stat 1.16 < 2), voir `results/pead_backtest_result.md` |
 | 1 | Overnight vs intraday (close→open vs open→close) | OHLC déjà en local (`data/*.txt`) | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_overnight_intraday_result.md` |
 | 2 | Effet tournant de mois (turn-of-month, J-1 à J+3) | OHLC déjà en local | **FAIT — PASS** (4/5 marchés), robustesse modérée (3/5,4/5,3/5), voir `results/nonml_turn_of_month_result.md` |
-| 3 | Effet jour-de-semaine (lundi/vendredi) | OHLC déjà en local | à faire |
+| 3 | Effet jour-de-semaine (lundi/vendredi) | OHLC déjà en local | **FAIT — FAIL** (0/5 marchés), voir `results/nonml_day_of_week_result.md` |
 | 4 | Momentum 52-semaines (proximité du plus haut annuel, George & Hwang 2004) | prix NDX-100 déjà récupérés (`data/pead/prices/`) | à faire |
 | 5 | Reversal court terme (1 semaine, niveau titre) | prix NDX-100 déjà récupérés | à faire |
 | 6 | Rallye de fin d'année ("Santa Claus rally", 5 derniers j. déc. + 2 premiers j. janv.) | OHLC déjà en local | à faire |
