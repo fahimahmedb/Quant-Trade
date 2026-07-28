@@ -31,7 +31,7 @@ ajustement statistique sur nos données.
 | 9 | Barbell structuré : overlay levé sur régime de vol calme (variante réalisée, pas ToM déjà couvert au #8) | OHLC déjà en local | **FAIT — FAIL** (2/5), voir `results/nonml_vol_regime_overlay_result.md` |
 | 10 | Buy&Hold levé en continu (x2/x3 fixe, rebalancement quotidien) vs Buy&Hold 1x, test formel avec critère Sharpe+rendement sur les 5 marchés | OHLC déjà en local | **FAIT — FAIL** (0/5, invariance mathématique du Sharpe confirmée), voir `results/nonml_leveraged_bh_result.md` |
 | 11 | Combiner momentum 52-semaines (#4, PASS) + overlay levé ToM (#8, PASS) | prix NDX-100 déjà récupérés | **FAIT — PASS**, plateau robuste et croissant CAP 1.5x-3.0x, voir `results/nonml_leaders_tom_overlay_result.md` |
-| 12 | Effet janvier small-cap (Rozeff & Kinney 1976) : rendement janvier Russell 2000 (small-cap) vs autres indices (large-cap), comparaison relative | OHLC déjà en local | à faire |
+| 12 | Effet janvier small-cap (Rozeff & Kinney 1976), overlay levé Russell 2000 | OHLC déjà en local | **FAIT — FAIL** (marginal, aucun effet janvier brut détecté), voir `results/nonml_january_smallcap_result.md` |
 | 13 | Rebond post-drawdown extrême (mean-reversion après choc >X%, horizon différent du reversal hebdomadaire déjà testé au #5) | OHLC déjà en local | à faire |
 
 ## Nouvelles idées ajoutées (backlog initial #0-10 épuisé, 28/07/2026)
