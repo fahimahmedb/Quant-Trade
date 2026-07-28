@@ -42,7 +42,7 @@ ajoutées ci-dessus (#11-13), dans le même esprit (anomalie documentée ou
 combinaison d'effets déjà validés, données déjà accessibles, hors ML).
 
 | 14 | Momentum court terme titre (winners, inverse du #5) | prix NDX-100 déjà récupérés | **FAIT — PASS extrême** (Sharpe +2,35 à +3,75 selon variante — **prudence forte** : reflète un marché haussier concentré IA/semi 2021-2026, pas forcément généralisable), voir `results/nonml_short_term_momentum_result.md` |
-| 15 | Low-volatility tilt : portefeuille équipondéré du tercile inférieur de volatilité réalisée 60j (NDX-100) vs univers complet (anomalie low-vol documentée, distincte de tout ce qui a été testé) | prix NDX-100 déjà récupérés | à faire |
+| 15 | Low-volatility tilt (tercile inf. vol réalisée 60j, NDX-100) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe 0,54 vs 0,65, rendement 40,2% vs 86,1%, mais MDD bien meilleur -18,9% vs -35,2%), voir `results/nonml_low_vol_tilt_result.md` |
 | 16 | Overlay levé déclenché par accélération du signal momentum 52-semaines (delta du ratio prix/plus-haut entre 2 rebalancements consécutifs), pas le calendrier — 3e variante de combinaison avec #4 | prix NDX-100 déjà récupérés | à faire |
 
 ## Backlog #0-13 complet (28/07/2026, suite du rattrapage)
