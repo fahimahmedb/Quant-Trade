@@ -66,11 +66,11 @@ ajoutées ci-dessus (#14-16).
 | 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | **FAIT — PASS (4/5)**, robuste sur toute la grille CAP 1.5x-3.0x (constant 4/5), sim 300€ NDX : 412,24€ vs 349,93€ BH (+37,4% vs +16,6%), Sharpe +4,11 vs +2,74. MDD dégradé partout (levier ~66% du temps) — signalé honnêtement. Voir `results/nonml_tom_halloween_union_overlay_result.md` |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | **FAIT — FAIL** (0/5, catastrophique : rendement jusqu'à -99% sur NDX/Russell/S&P 500 — le repli court terme indice est souvent le DÉBUT d'un krach prolongé, pas un signal de rebond ; confirmé par recalcul indépendant du déclencheur et de la position, aucun bug), voir `results/nonml_short_pullback_rebound_result.md` et `results/nonml_short_pullback_rebound_audit.md` |
 
-## Backlog #0-28 complet (28/07/2026), 3 nouvelles idées (#29-31)
+## Backlog #0-29 complet (28/07/2026)
 
-7 PASS sur 28 hypothèses testées (#4, #8, #11, #14, #17, #21, #23).
+8 PASS sur 29 hypothèses testées (#4, #8, #11, #14, #17, #21, #23, #29).
 
-| 29 | Filtre de tendance SMA200 (Faber 2007) : overlay levé quand le prix de clôture est AU-DESSUS de sa moyenne mobile 200j (régime haussier structurel), 1.0x sinon — jamais testé jusqu'ici (différent des effets calendaires #2/#8/#17/#21 et des chocs #13/#22/#24) | OHLC déjà en local | à faire |
+| 29 | Filtre de tendance SMA200 (Faber 2007) : overlay levé quand le prix de clôture est AU-DESSUS de sa moyenne mobile 200j (régime haussier structurel), 1.0x sinon — jamais testé jusqu'ici (différent des effets calendaires #2/#8/#17/#21 et des chocs #13/#22/#24) | OHLC déjà en local | **FAIT — PASS (5/5)**, le meilleur résultat du backlog à ce stade (Sharpe et rendement supérieurs sur tous les marchés, ex. NDX 40 ans : Sharpe +0,51→+0,59, rendement +5004%→+50026%), plateau parfait 5/5 sur toute la grille CAP 1.5x-3.0x, sim 300€ NDX : 402,66€ vs 349,93€ BH. MDD dégradé partout (levier ~70-75% du temps) — signalé honnêtement, et l'audit montre que le filtre ne coupe pas toujours vite pendant les krachs prolongés (61,6% de jours encore levés pendant les drawdowns NDX ≥40%). Voir `results/nonml_sma200_trend_overlay_result.md` |
 | 30 | Cycle électoral américain (presidential cycle, 3e année de mandat historiquement la plus forte, Hirsch 1986) : overlay levé pendant l'année pré-électorale — testable sur NDX 40 ans (~10 cycles complets) | OHLC déjà en local (NDX 40 ans) | à faire |
 | 31 | Overlay levé en régime de vol ÉLEVÉE (inverse du #9 qui testait la vol calme, FAIL 2/5) — capture le vol clustering (vol élevée persiste, ARCH massif déjà documenté à l'Étape A) plutôt qu'un simple rebond de prix (#13/#22/#24) | OHLC déjà en local | à faire |
 
