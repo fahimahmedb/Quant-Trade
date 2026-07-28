@@ -66,11 +66,11 @@ ajoutées ci-dessus (#14-16).
 | 21 | Combiner ToM (#8) + Halloween (#17) : overlay levé quand L'UNE OU L'AUTRE fenêtre est active (union), sur Buy&Hold | OHLC déjà en local | **FAIT — PASS (4/5)**, robuste sur toute la grille CAP 1.5x-3.0x (constant 4/5), sim 300€ NDX : 412,24€ vs 349,93€ BH (+37,4% vs +16,6%), Sharpe +4,11 vs +2,74. MDD dégradé partout (levier ~66% du temps) — signalé honnêtement. Voir `results/nonml_tom_halloween_union_overlay_result.md` |
 | 22 | Pullback court terme au niveau INDICE (pas titre) : repli 2-3j de quelques % (pas un choc extrême comme #13) → overlay levé sur le rebond, horizon différent de #13 | OHLC déjà en local | **FAIT — FAIL** (0/5, catastrophique : rendement jusqu'à -99% sur NDX/Russell/S&P 500 — le repli court terme indice est souvent le DÉBUT d'un krach prolongé, pas un signal de rebond ; confirmé par recalcul indépendant du déclencheur et de la position, aucun bug), voir `results/nonml_short_pullback_rebound_result.md` et `results/nonml_short_pullback_rebound_audit.md` |
 
-## Backlog #0-31 complet (28/07/2026), 3 nouvelles idées (#32-34)
+## Backlog #0-32 complet (28/07/2026)
 
-9 PASS sur 31 hypothèses testées (#4, #8, #11, #14, #17, #21, #23, #29, #30 — #14 et #30 sous prudence forte).
+10 PASS sur 32 hypothèses testées (#4, #8, #11, #14, #17, #21, #23, #29, #30, #32 — #14 et #30 sous prudence forte, #32 avec robustesse partielle).
 
-| 32 | Combiner filtre de tendance SMA200 (#29, meilleur PASS du backlog) + overlay union ToM∪Halloween (#21) sur Buy&Hold : union des deux signaux (levé si tendance haussière OU fenêtre calendaire) | OHLC déjà en local | à faire |
+| 32 | Combiner filtre de tendance SMA200 (#29, meilleur PASS du backlog) + overlay union ToM∪Halloween (#21) sur Buy&Hold : union des deux signaux (levé si tendance haussière OU fenêtre calendaire) | OHLC déjà en local | **FAIT — PASS (5/5)** au CAP pré-enregistré, mais robustesse **moins solide que le #29 seul** : 5/5 à 1.5x/2.0x, dégradé à 4/5 (2.5x) puis 3/5 (3.0x) — l'union à 3 signaux atteint ~90% de jours levés (quasi-permanent), ce qui amplifie le volatility drag à fort levier. Gain de rendement énorme mais surtout mécanique (effet multiplicatif du levier, cf. #10), MDD très dégradé partout. Voir `results/nonml_sma200_tom_halloween_union_overlay_result.md` |
 | 33 | Combiner filtre de tendance SMA200 (#29) + portefeuille Leaders 52-semaines (#4) : overlay levé quand l'indice NDX est en tendance haussière (SMA200), appliqué au portefeuille Leaders | prix NDX-100 déjà récupérés | à faire |
 | 34 | "Golden cross" (SMA50 > SMA200, signal de tendance alternatif à la comparaison prix/SMA200 du #29) : overlay levé quand la moyenne mobile courte est au-dessus de la longue | OHLC déjà en local | à faire |
 
