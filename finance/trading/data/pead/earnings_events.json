@@ -448,5 +448,430 @@
     "date": "2021-10-12",
     "symbol": "FAST",
     "surprise_pct": 2.44
+  },
+  {
+    "date": "2021-10-19",
+    "symbol": "NFLX",
+    "surprise_pct": 24.61
+  },
+  {
+    "date": "2021-10-19",
+    "symbol": "ISRG",
+    "surprise_pct": 0.97
+  },
+  {
+    "date": "2021-10-20",
+    "symbol": "TSLA",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2021-10-20",
+    "symbol": "ASML",
+    "surprise_pct": 7.04
+  },
+  {
+    "date": "2021-10-20",
+    "symbol": "LRCX",
+    "surprise_pct": 2.83
+  },
+  {
+    "date": "2021-10-20",
+    "symbol": "CSX",
+    "surprise_pct": 13.16
+  },
+  {
+    "date": "2021-10-20",
+    "symbol": "BKR",
+    "surprise_pct": -27.27
+  },
+  {
+    "date": "2021-10-21",
+    "symbol": "INTC",
+    "surprise_pct": 54.05
+  },
+  {
+    "date": "2021-10-22",
+    "symbol": "STX",
+    "surprise_pct": 9.66
+  },
+  {
+    "date": "2021-10-22",
+    "symbol": "HON",
+    "surprise_pct": 0.5
+  },
+  {
+    "date": "2021-10-22",
+    "symbol": "ROP",
+    "surprise_pct": 1.3
+  },
+  {
+    "date": "2021-10-25",
+    "symbol": "META",
+    "surprise_pct": 0.62
+  },
+  {
+    "date": "2021-10-25",
+    "symbol": "CDNS",
+    "surprise_pct": 12.07
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "GOOG",
+    "surprise_pct": 21.01
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "GOOGL",
+    "surprise_pct": 21.01
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "MSFT",
+    "surprise_pct": 10.19
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "AMD",
+    "surprise_pct": 8.2
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "TXN",
+    "surprise_pct": 0.49
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "PCAR",
+    "surprise_pct": -10.74
+  },
+  {
+    "date": "2021-10-26",
+    "symbol": "TER",
+    "surprise_pct": 9.66
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "KLAC",
+    "surprise_pct": 4.27
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "ADP",
+    "surprise_pct": 10.74
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "ORLY",
+    "surprise_pct": 15.45
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "ODFL",
+    "surprise_pct": 4.22
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "NBIS",
+    "surprise_pct": 25.0
+  },
+  {
+    "date": "2021-10-27",
+    "symbol": "KHC",
+    "surprise_pct": 12.07
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "AMZN",
+    "surprise_pct": -32.75
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "LIN",
+    "surprise_pct": 1.87
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "WDC",
+    "surprise_pct": 0.45
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "GILD",
+    "surprise_pct": 54.07
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "SHOP",
+    "surprise_pct": -70.21
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "CMCSA",
+    "surprise_pct": 16.0
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "AEP",
+    "surprise_pct": -0.69
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "MPWR",
+    "surprise_pct": 2.13
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "XEL",
+    "surprise_pct": -5.04
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "ALNY",
+    "surprise_pct": -13.91
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "MSTR",
+    "surprise_pct": 66.07
+  },
+  {
+    "date": "2021-10-28",
+    "symbol": "DXCM",
+    "surprise_pct": 43.55
+  },
+  {
+    "date": "2021-11-01",
+    "symbol": "NXPI",
+    "surprise_pct": 4.12
+  },
+  {
+    "date": "2021-11-01",
+    "symbol": "FANG",
+    "surprise_pct": 4.63
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "AMGN",
+    "surprise_pct": 10.66
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "TMUS",
+    "surprise_pct": 1.85
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "VRTX",
+    "surprise_pct": 18.61
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "MDLZ",
+    "surprise_pct": 1.43
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "IDXX",
+    "surprise_pct": 7.98
+  },
+  {
+    "date": "2021-11-02",
+    "symbol": "TRI",
+    "surprise_pct": 17.95
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "QCOM",
+    "surprise_pct": 8.74
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "BKNG",
+    "surprise_pct": 19.46
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "MAR",
+    "surprise_pct": 2.06
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "EA",
+    "surprise_pct": 63.16
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "EXC",
+    "surprise_pct": -0.91
+  },
+  {
+    "date": "2021-11-03",
+    "symbol": "TTWO",
+    "surprise_pct": 20.39
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "FTNT",
+    "surprise_pct": 12.31
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "MNST",
+    "surprise_pct": -3.08
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "MELI",
+    "surprise_pct": 51.18
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "DDOG",
+    "surprise_pct": 66.67
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "ABNB",
+    "surprise_pct": 45.24
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "REGN",
+    "surprise_pct": 56.68
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "LITE",
+    "surprise_pct": 22.4
+  },
+  {
+    "date": "2021-11-04",
+    "symbol": "MCHP",
+    "surprise_pct": -1.02
+  },
+  {
+    "date": "2021-11-08",
+    "symbol": "PYPL",
+    "surprise_pct": 13.92
+  },
+  {
+    "date": "2021-11-09",
+    "symbol": "PLTR",
+    "surprise_pct": 33.33
+  },
+  {
+    "date": "2021-11-09",
+    "symbol": "DASH",
+    "surprise_pct": -11.11
+  },
+  {
+    "date": "2021-11-10",
+    "symbol": "APP",
+    "surprise_pct": -100.0
+  },
+  {
+    "date": "2021-11-15",
+    "symbol": "AXON",
+    "surprise_pct": 1057.14
+  },
+  {
+    "date": "2021-11-15",
+    "symbol": "RKLB",
+    "surprise_pct": -100.0
+  },
+  {
+    "date": "2021-11-16",
+    "symbol": "WMT",
+    "surprise_pct": 4.32
+  },
+  {
+    "date": "2021-11-17",
+    "symbol": "NVDA",
+    "surprise_pct": 6.32
+  },
+  {
+    "date": "2021-11-17",
+    "symbol": "CSCO",
+    "surprise_pct": 1.39
+  },
+  {
+    "date": "2021-11-17",
+    "symbol": "CPRT",
+    "surprise_pct": 8.08
+  },
+  {
+    "date": "2021-11-18",
+    "symbol": "PANW",
+    "surprise_pct": -180.0
+  },
+  {
+    "date": "2021-11-18",
+    "symbol": "INTU",
+    "surprise_pct": 378.95
+  },
+  {
+    "date": "2021-11-18",
+    "symbol": "ROST",
+    "surprise_pct": 37.97
+  },
+  {
+    "date": "2021-11-18",
+    "symbol": "WDAY",
+    "surprise_pct": 100.0
+  },
+  {
+    "date": "2021-11-23",
+    "symbol": "ADI",
+    "surprise_pct": 2.37
+  },
+  {
+    "date": "2021-11-26",
+    "symbol": "PDD",
+    "surprise_pct": 1000.0
+  },
+  {
+    "date": "2021-12-01",
+    "symbol": "CRWD",
+    "surprise_pct": -46.15
+  },
+  {
+    "date": "2021-12-01",
+    "symbol": "SNPS",
+    "surprise_pct": 14.29
+  },
+  {
+    "date": "2021-12-02",
+    "symbol": "MRVL",
+    "surprise_pct": 28.0
+  },
+  {
+    "date": "2021-12-09",
+    "symbol": "AVGO",
+    "surprise_pct": 3.55
+  },
+  {
+    "date": "2021-12-09",
+    "symbol": "COST",
+    "surprise_pct": 14.67
+  },
+  {
+    "date": "2021-12-16",
+    "symbol": "ADBE",
+    "surprise_pct": 2.59
+  },
+  {
+    "date": "2021-12-20",
+    "symbol": "MU",
+    "surprise_pct": 2.99
+  },
+  {
+    "date": "2021-12-22",
+    "symbol": "CTAS",
+    "surprise_pct": 5.34
+  },
+  {
+    "date": "2021-12-22",
+    "symbol": "PAYX",
+    "surprise_pct": 15.19
   }
 ]
