@@ -3028,5 +3028,5935 @@
     "date": "2023-03-20",
     "symbol": "PDD",
     "surprise_pct": -3.0
+  },
+  {
+    "date": "2023-03-28",
+    "symbol": "MU",
+    "surprise_pct": -160.26
+  },
+  {
+    "date": "2023-03-29",
+    "symbol": "CTAS",
+    "surprise_pct": 4.32
+  },
+  {
+    "date": "2023-03-29",
+    "symbol": "PAYX",
+    "surprise_pct": 4.03
+  },
+  {
+    "date": "2023-04-13",
+    "symbol": "FAST",
+    "surprise_pct": 6.12
+  },
+  {
+    "date": "2023-04-18",
+    "symbol": "NFLX",
+    "surprise_pct": 1.77
+  },
+  {
+    "date": "2023-04-18",
+    "symbol": "ISRG",
+    "surprise_pct": 6.38
+  },
+  {
+    "date": "2023-04-19",
+    "symbol": "TSLA",
+    "surprise_pct": -1.35
+  },
+  {
+    "date": "2023-04-19",
+    "symbol": "ASML",
+    "surprise_pct": 15.69
+  },
+  {
+    "date": "2023-04-19",
+    "symbol": "LRCX",
+    "surprise_pct": 7.04
+  },
+  {
+    "date": "2023-04-19",
+    "symbol": "BKR",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2023-04-20",
+    "symbol": "STX",
+    "surprise_pct": -714.29
+  },
+  {
+    "date": "2023-04-20",
+    "symbol": "CSX",
+    "surprise_pct": 14.29
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "GOOG",
+    "surprise_pct": 10.38
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "GOOGL",
+    "surprise_pct": 10.38
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "MSFT",
+    "surprise_pct": 10.36
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "TXN",
+    "surprise_pct": 5.11
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "PEP",
+    "surprise_pct": 9.49
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "PCAR",
+    "surprise_pct": 23.63
+  },
+  {
+    "date": "2023-04-25",
+    "symbol": "GEHC",
+    "surprise_pct": 7.59
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "META",
+    "surprise_pct": 34.69
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "KLAC",
+    "surprise_pct": 3.58
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "ADP",
+    "surprise_pct": 4.13
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "ORLY",
+    "surprise_pct": 3.5
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "TER",
+    "surprise_pct": 30.95
+  },
+  {
+    "date": "2023-04-26",
+    "symbol": "ODFL",
+    "surprise_pct": -4.09
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "AMZN",
+    "surprise_pct": 47.62
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "INTC",
+    "surprise_pct": -31.25
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "LIN",
+    "surprise_pct": 9.62
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "AMGN",
+    "surprise_pct": 3.65
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "TMUS",
+    "surprise_pct": 4.64
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "GILD",
+    "surprise_pct": -15.95
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "CMCSA",
+    "surprise_pct": 15.0
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "MDLZ",
+    "surprise_pct": 11.25
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "HON",
+    "surprise_pct": 7.25
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "XEL",
+    "surprise_pct": 2.7
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "KDP",
+    "surprise_pct": 3.03
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "ROP",
+    "surprise_pct": 1.3
+  },
+  {
+    "date": "2023-04-27",
+    "symbol": "DXCM",
+    "surprise_pct": 13.33
+  },
+  {
+    "date": "2023-05-01",
+    "symbol": "VRTX",
+    "surprise_pct": 6.37
+  },
+  {
+    "date": "2023-05-01",
+    "symbol": "NXPI",
+    "surprise_pct": 6.04
+  },
+  {
+    "date": "2023-05-01",
+    "symbol": "FANG",
+    "surprise_pct": -5.96
+  },
+  {
+    "date": "2023-05-01",
+    "symbol": "MSTR",
+    "surprise_pct": 6142.86
+  },
+  {
+    "date": "2023-05-02",
+    "symbol": "AMD",
+    "surprise_pct": 2.38
+  },
+  {
+    "date": "2023-05-02",
+    "symbol": "SBUX",
+    "surprise_pct": 15.63
+  },
+  {
+    "date": "2023-05-02",
+    "symbol": "MAR",
+    "surprise_pct": 12.37
+  },
+  {
+    "date": "2023-05-02",
+    "symbol": "IDXX",
+    "surprise_pct": 7.14
+  },
+  {
+    "date": "2023-05-02",
+    "symbol": "TRI",
+    "surprise_pct": 5.13
+  },
+  {
+    "date": "2023-05-03",
+    "symbol": "QCOM",
+    "surprise_pct": -7.65
+  },
+  {
+    "date": "2023-05-03",
+    "symbol": "MELI",
+    "surprise_pct": 30.59
+  },
+  {
+    "date": "2023-05-03",
+    "symbol": "EXC",
+    "surprise_pct": 6.06
+  },
+  {
+    "date": "2023-05-03",
+    "symbol": "KHC",
+    "surprise_pct": 13.33
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "AAPL",
+    "surprise_pct": 5.56
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "SHOP",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "BKNG",
+    "surprise_pct": 10.69
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "FTNT",
+    "surprise_pct": 31.82
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "CEG",
+    "surprise_pct": -66.28
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "MNST",
+    "surprise_pct": 11.76
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "DDOG",
+    "surprise_pct": -250.0
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "DASH",
+    "surprise_pct": 26.79
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "AEP",
+    "surprise_pct": -2.63
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "REGN",
+    "surprise_pct": 9.47
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "MPWR",
+    "surprise_pct": 0.89
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "MCHP",
+    "surprise_pct": 0.65
+  },
+  {
+    "date": "2023-05-04",
+    "symbol": "ALNY",
+    "surprise_pct": 28.93
+  },
+  {
+    "date": "2023-05-05",
+    "symbol": "WBD",
+    "surprise_pct": -14.29
+  },
+  {
+    "date": "2023-05-08",
+    "symbol": "WDC",
+    "surprise_pct": 12.78
+  },
+  {
+    "date": "2023-05-08",
+    "symbol": "PYPL",
+    "surprise_pct": 3.61
+  },
+  {
+    "date": "2023-05-09",
+    "symbol": "ABNB",
+    "surprise_pct": 80.0
+  },
+  {
+    "date": "2023-05-09",
+    "symbol": "EA",
+    "surprise_pct": 52.81
+  },
+  {
+    "date": "2023-05-09",
+    "symbol": "AXON",
+    "surprise_pct": 1600.0
+  },
+  {
+    "date": "2023-05-10",
+    "symbol": "APP",
+    "surprise_pct": -120.0
+  },
+  {
+    "date": "2023-05-17",
+    "symbol": "CSCO",
+    "surprise_pct": 1.15
+  },
+  {
+    "date": "2023-05-17",
+    "symbol": "SNPS",
+    "surprise_pct": 6.02
+  },
+  {
+    "date": "2023-05-17",
+    "symbol": "TTWO",
+    "surprise_pct": 147.37
+  },
+  {
+    "date": "2023-05-17",
+    "symbol": "CPRT",
+    "surprise_pct": 16.13
+  },
+  {
+    "date": "2023-05-18",
+    "symbol": "WMT",
+    "surprise_pct": 11.36
+  },
+  {
+    "date": "2023-05-18",
+    "symbol": "AMAT",
+    "surprise_pct": 8.7
+  },
+  {
+    "date": "2023-05-18",
+    "symbol": "ROST",
+    "surprise_pct": 2.83
+  },
+  {
+    "date": "2023-05-23",
+    "symbol": "PANW",
+    "surprise_pct": 65.22
+  },
+  {
+    "date": "2023-05-23",
+    "symbol": "INTU",
+    "surprise_pct": 6.85
+  },
+  {
+    "date": "2023-05-24",
+    "symbol": "NVDA",
+    "surprise_pct": 44.26
+  },
+  {
+    "date": "2023-05-24",
+    "symbol": "ADI",
+    "surprise_pct": 2.91
+  },
+  {
+    "date": "2023-05-25",
+    "symbol": "COST",
+    "surprise_pct": 3.31
+  },
+  {
+    "date": "2023-05-25",
+    "symbol": "MRVL",
+    "surprise_pct": 21.43
+  },
+  {
+    "date": "2023-05-25",
+    "symbol": "ADSK",
+    "surprise_pct": 2.15
+  },
+  {
+    "date": "2023-05-25",
+    "symbol": "WDAY",
+    "surprise_pct": 900.0
+  },
+  {
+    "date": "2023-05-26",
+    "symbol": "PDD",
+    "surprise_pct": 75.51
+  },
+  {
+    "date": "2023-05-31",
+    "symbol": "CRWD",
+    "surprise_pct": 130.0
+  },
+  {
+    "date": "2023-06-01",
+    "symbol": "AVGO",
+    "surprise_pct": 1.71
+  },
+  {
+    "date": "2023-06-15",
+    "symbol": "ADBE",
+    "surprise_pct": 1.33
+  },
+  {
+    "date": "2023-06-28",
+    "symbol": "MU",
+    "surprise_pct": 8.72
+  },
+  {
+    "date": "2023-06-29",
+    "symbol": "PAYX",
+    "surprise_pct": -1.02
+  },
+  {
+    "date": "2023-07-13",
+    "symbol": "PEP",
+    "surprise_pct": 7.18
+  },
+  {
+    "date": "2023-07-13",
+    "symbol": "CTAS",
+    "surprise_pct": 4.39
+  },
+  {
+    "date": "2023-07-19",
+    "symbol": "TSLA",
+    "surprise_pct": 13.04
+  },
+  {
+    "date": "2023-07-19",
+    "symbol": "ASML",
+    "surprise_pct": 7.83
+  },
+  {
+    "date": "2023-07-19",
+    "symbol": "NFLX",
+    "surprise_pct": 16.25
+  },
+  {
+    "date": "2023-07-19",
+    "symbol": "BKR",
+    "surprise_pct": 21.88
+  },
+  {
+    "date": "2023-07-20",
+    "symbol": "ISRG",
+    "surprise_pct": 15.69
+  },
+  {
+    "date": "2023-07-21",
+    "symbol": "ROP",
+    "surprise_pct": 3.0
+  },
+  {
+    "date": "2023-07-24",
+    "symbol": "CDNS",
+    "surprise_pct": 1.08
+  },
+  {
+    "date": "2023-07-24",
+    "symbol": "NXPI",
+    "surprise_pct": 4.83
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "GOOG",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "GOOGL",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "MSFT",
+    "surprise_pct": 5.91
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "TXN",
+    "surprise_pct": 6.25
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "PCAR",
+    "surprise_pct": 8.88
+  },
+  {
+    "date": "2023-07-25",
+    "symbol": "GEHC",
+    "surprise_pct": 6.98
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "META",
+    "surprise_pct": 12.54
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "LRCX",
+    "surprise_pct": 18.89
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "STX",
+    "surprise_pct": 23.68
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "ADP",
+    "surprise_pct": 3.28
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "ORLY",
+    "surprise_pct": 1.69
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "TER",
+    "surprise_pct": 19.7
+  },
+  {
+    "date": "2023-07-26",
+    "symbol": "ODFL",
+    "surprise_pct": 0.76
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "INTC",
+    "surprise_pct": 73.68
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "KLAC",
+    "surprise_pct": 12.03
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "LIN",
+    "surprise_pct": 2.88
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "TMUS",
+    "surprise_pct": 8.77
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "CMCSA",
+    "surprise_pct": 15.31
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "MDLZ",
+    "surprise_pct": 10.14
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "HON",
+    "surprise_pct": 1.36
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "AEP",
+    "surprise_pct": -0.88
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "XEL",
+    "surprise_pct": -5.45
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "KDP",
+    "surprise_pct": 5.0
+  },
+  {
+    "date": "2023-07-27",
+    "symbol": "DXCM",
+    "surprise_pct": 54.55
+  },
+  {
+    "date": "2023-07-31",
+    "symbol": "WDC",
+    "surprise_pct": 6.09
+  },
+  {
+    "date": "2023-07-31",
+    "symbol": "MPWR",
+    "surprise_pct": -5.09
+  },
+  {
+    "date": "2023-07-31",
+    "symbol": "FANG",
+    "surprise_pct": -6.12
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "VRTX",
+    "surprise_pct": 1.73
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "SBUX",
+    "surprise_pct": 5.26
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "MAR",
+    "surprise_pct": 3.2
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "EA",
+    "surprise_pct": 22.95
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "IDXX",
+    "surprise_pct": 9.88
+  },
+  {
+    "date": "2023-08-01",
+    "symbol": "MSTR",
+    "surprise_pct": 226.39
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "QCOM",
+    "surprise_pct": 3.7
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "SHOP",
+    "surprise_pct": -33.33
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "MELI",
+    "surprise_pct": 24.94
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "DASH",
+    "surprise_pct": -4.76
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "PYPL",
+    "surprise_pct": -7.78
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "EXC",
+    "surprise_pct": 2.5
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "TRI",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2023-08-02",
+    "symbol": "KHC",
+    "surprise_pct": 6.76
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "AAPL",
+    "surprise_pct": 5.88
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "AMZN",
+    "surprise_pct": 85.29
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "AMGN",
+    "surprise_pct": 12.61
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "GILD",
+    "surprise_pct": -16.25
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "BKNG",
+    "surprise_pct": 30.44
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "FTNT",
+    "surprise_pct": 14.81
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "CEG",
+    "surprise_pct": 228.21
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "ABNB",
+    "surprise_pct": 27.27
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "REGN",
+    "surprise_pct": 3.66
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "WBD",
+    "surprise_pct": -30.77
+  },
+  {
+    "date": "2023-08-03",
+    "symbol": "ALNY",
+    "surprise_pct": -28.49
+  },
+  {
+    "date": "2023-08-08",
+    "symbol": "DDOG",
+    "surprise_pct": 100.0
+  },
+  {
+    "date": "2023-08-08",
+    "symbol": "TTWO",
+    "surprise_pct": 71.43
+  },
+  {
+    "date": "2023-08-08",
+    "symbol": "AXON",
+    "surprise_pct": 142.42
+  },
+  {
+    "date": "2023-08-09",
+    "symbol": "APP",
+    "surprise_pct": 175.0
+  },
+  {
+    "date": "2023-08-16",
+    "symbol": "CSCO",
+    "surprise_pct": 6.32
+  },
+  {
+    "date": "2023-08-16",
+    "symbol": "SNPS",
+    "surprise_pct": 13.02
+  },
+  {
+    "date": "2023-08-17",
+    "symbol": "WMT",
+    "surprise_pct": 8.88
+  },
+  {
+    "date": "2023-08-17",
+    "symbol": "AMAT",
+    "surprise_pct": 9.83
+  },
+  {
+    "date": "2023-08-17",
+    "symbol": "ROST",
+    "surprise_pct": 12.82
+  },
+  {
+    "date": "2023-08-17",
+    "symbol": "LITE",
+    "surprise_pct": -14.29
+  },
+  {
+    "date": "2023-08-18",
+    "symbol": "PANW",
+    "surprise_pct": 48.15
+  },
+  {
+    "date": "2023-08-23",
+    "symbol": "NVDA",
+    "surprise_pct": 38.89
+  },
+  {
+    "date": "2023-08-23",
+    "symbol": "ADI",
+    "surprise_pct": -1.58
+  },
+  {
+    "date": "2023-08-23",
+    "symbol": "ADSK",
+    "surprise_pct": 9.8
+  },
+  {
+    "date": "2023-08-24",
+    "symbol": "MRVL",
+    "surprise_pct": 12.5
+  },
+  {
+    "date": "2023-08-24",
+    "symbol": "INTU",
+    "surprise_pct": 300.0
+  },
+  {
+    "date": "2023-08-24",
+    "symbol": "WDAY",
+    "surprise_pct": 233.33
+  },
+  {
+    "date": "2023-08-29",
+    "symbol": "PDD",
+    "surprise_pct": 39.56
+  },
+  {
+    "date": "2023-08-30",
+    "symbol": "CRWD",
+    "surprise_pct": 700.0
+  },
+  {
+    "date": "2023-08-31",
+    "symbol": "AVGO",
+    "surprise_pct": 0.53
+  },
+  {
+    "date": "2023-09-14",
+    "symbol": "ADBE",
+    "surprise_pct": 2.84
+  },
+  {
+    "date": "2023-09-14",
+    "symbol": "CPRT",
+    "surprise_pct": 9.68
+  },
+  {
+    "date": "2023-09-26",
+    "symbol": "COST",
+    "surprise_pct": 3.18
+  },
+  {
+    "date": "2023-09-26",
+    "symbol": "CTAS",
+    "surprise_pct": 1.37
+  },
+  {
+    "date": "2023-09-27",
+    "symbol": "MU",
+    "surprise_pct": 8.33
+  },
+  {
+    "date": "2023-09-27",
+    "symbol": "PAYX",
+    "surprise_pct": 1.79
+  },
+  {
+    "date": "2023-10-10",
+    "symbol": "PEP",
+    "surprise_pct": 3.69
+  },
+  {
+    "date": "2023-10-12",
+    "symbol": "FAST",
+    "surprise_pct": 1.96
+  },
+  {
+    "date": "2023-10-18",
+    "symbol": "TSLA",
+    "surprise_pct": -17.19
+  },
+  {
+    "date": "2023-10-18",
+    "symbol": "ASML",
+    "surprise_pct": 4.6
+  },
+  {
+    "date": "2023-10-18",
+    "symbol": "LRCX",
+    "surprise_pct": 12.85
+  },
+  {
+    "date": "2023-10-18",
+    "symbol": "NFLX",
+    "surprise_pct": 7.8
+  },
+  {
+    "date": "2023-10-19",
+    "symbol": "ISRG",
+    "surprise_pct": 2.65
+  },
+  {
+    "date": "2023-10-23",
+    "symbol": "CDNS",
+    "surprise_pct": 6.32
+  },
+  {
+    "date": "2023-10-24",
+    "symbol": "GOOG",
+    "surprise_pct": 6.9
+  },
+  {
+    "date": "2023-10-24",
+    "symbol": "GOOGL",
+    "surprise_pct": 6.9
+  },
+  {
+    "date": "2023-10-24",
+    "symbol": "MSFT",
+    "surprise_pct": 12.83
+  },
+  {
+    "date": "2023-10-24",
+    "symbol": "TXN",
+    "surprise_pct": -0.55
+  },
+  {
+    "date": "2023-10-24",
+    "symbol": "PCAR",
+    "surprise_pct": 13.04
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "META",
+    "surprise_pct": 21.27
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "KLAC",
+    "surprise_pct": 6.49
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "TMUS",
+    "surprise_pct": 4.0
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "ADP",
+    "surprise_pct": 2.46
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "ORLY",
+    "surprise_pct": 3.47
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "BKR",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "TER",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "ODFL",
+    "surprise_pct": 6.92
+  },
+  {
+    "date": "2023-10-25",
+    "symbol": "ROP",
+    "surprise_pct": 2.61
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "AMZN",
+    "surprise_pct": 46.55
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "INTC",
+    "surprise_pct": 833.33
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "LIN",
+    "surprise_pct": 1.68
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "CMCSA",
+    "surprise_pct": 14.89
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "HON",
+    "surprise_pct": 2.25
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "KDP",
+    "surprise_pct": 2.13
+  },
+  {
+    "date": "2023-10-26",
+    "symbol": "DXCM",
+    "surprise_pct": 47.06
+  },
+  {
+    "date": "2023-10-27",
+    "symbol": "XEL",
+    "surprise_pct": -3.15
+  },
+  {
+    "date": "2023-10-30",
+    "symbol": "WDC",
+    "surprise_pct": 6.19
+  },
+  {
+    "date": "2023-10-30",
+    "symbol": "MPWR",
+    "surprise_pct": 3.32
+  },
+  {
+    "date": "2023-10-31",
+    "symbol": "AMD",
+    "surprise_pct": 8.16
+  },
+  {
+    "date": "2023-10-31",
+    "symbol": "AMGN",
+    "surprise_pct": 6.67
+  },
+  {
+    "date": "2023-10-31",
+    "symbol": "GEHC",
+    "surprise_pct": 11.24
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "QCOM",
+    "surprise_pct": 9.66
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "MELI",
+    "surprise_pct": 22.39
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "ABNB",
+    "surprise_pct": 14.9
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "MDLZ",
+    "surprise_pct": 5.13
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "DASH",
+    "surprise_pct": 57.78
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "EA",
+    "surprise_pct": 21.95
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "PYPL",
+    "surprise_pct": 5.43
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "IDXX",
+    "surprise_pct": 6.75
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "TRI",
+    "surprise_pct": 20.59
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "MSTR",
+    "surprise_pct": -1313.51
+  },
+  {
+    "date": "2023-11-01",
+    "symbol": "KHC",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "AAPL",
+    "surprise_pct": 5.04
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "PLTR",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "SHOP",
+    "surprise_pct": 183.33
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "BKNG",
+    "surprise_pct": 6.57
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "SBUX",
+    "surprise_pct": 9.28
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "FTNT",
+    "surprise_pct": 16.67
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "MAR",
+    "surprise_pct": 0.48
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "MNST",
+    "surprise_pct": 2.5
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "AEP",
+    "surprise_pct": 2.31
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "REGN",
+    "surprise_pct": 8.31
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "EXC",
+    "surprise_pct": -1.47
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "MCHP",
+    "surprise_pct": -0.65
+  },
+  {
+    "date": "2023-11-02",
+    "symbol": "ALNY",
+    "surprise_pct": 171.43
+  },
+  {
+    "date": "2023-11-06",
+    "symbol": "VRTX",
+    "surprise_pct": 3.97
+  },
+  {
+    "date": "2023-11-06",
+    "symbol": "CEG",
+    "surprise_pct": 64.96
+  },
+  {
+    "date": "2023-11-06",
+    "symbol": "NXPI",
+    "surprise_pct": 1.53
+  },
+  {
+    "date": "2023-11-06",
+    "symbol": "FANG",
+    "surprise_pct": 12.04
+  },
+  {
+    "date": "2023-11-07",
+    "symbol": "GILD",
+    "surprise_pct": 19.9
+  },
+  {
+    "date": "2023-11-07",
+    "symbol": "DDOG",
+    "surprise_pct": 600.0
+  },
+  {
+    "date": "2023-11-07",
+    "symbol": "AXON",
+    "surprise_pct": 77.5
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "ARM",
+    "surprise_pct": 38.46
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "APP",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "WBD",
+    "surprise_pct": -30.77
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "LITE",
+    "surprise_pct": 28.57
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "TTWO",
+    "surprise_pct": 29.03
+  },
+  {
+    "date": "2023-11-08",
+    "symbol": "RKLB",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2023-11-15",
+    "symbol": "CSCO",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2023-11-15",
+    "symbol": "PANW",
+    "surprise_pct": 31.25
+  },
+  {
+    "date": "2023-11-16",
+    "symbol": "AMAT",
+    "surprise_pct": 7.07
+  },
+  {
+    "date": "2023-11-16",
+    "symbol": "ROST",
+    "surprise_pct": 9.02
+  },
+  {
+    "date": "2023-11-16",
+    "symbol": "CPRT",
+    "surprise_pct": 6.25
+  },
+  {
+    "date": "2023-11-21",
+    "symbol": "NVDA",
+    "surprise_pct": 24.42
+  },
+  {
+    "date": "2023-11-21",
+    "symbol": "ADSK",
+    "surprise_pct": 3.91
+  },
+  {
+    "date": "2023-11-28",
+    "symbol": "CRWD",
+    "surprise_pct": 77.78
+  },
+  {
+    "date": "2023-11-28",
+    "symbol": "PDD",
+    "surprise_pct": 46.46
+  },
+  {
+    "date": "2023-11-28",
+    "symbol": "INTU",
+    "surprise_pct": 62.86
+  },
+  {
+    "date": "2023-11-28",
+    "symbol": "WDAY",
+    "surprise_pct": 46.88
+  },
+  {
+    "date": "2023-11-29",
+    "symbol": "SNPS",
+    "surprise_pct": 3.2
+  },
+  {
+    "date": "2023-12-07",
+    "symbol": "AVGO",
+    "surprise_pct": 0.93
+  },
+  {
+    "date": "2023-12-13",
+    "symbol": "ADBE",
+    "surprise_pct": 6.02
+  },
+  {
+    "date": "2023-12-14",
+    "symbol": "COST",
+    "surprise_pct": 0.87
+  },
+  {
+    "date": "2023-12-20",
+    "symbol": "MU",
+    "surprise_pct": 1.75
+  },
+  {
+    "date": "2023-12-21",
+    "symbol": "CTAS",
+    "surprise_pct": 3.74
+  },
+  {
+    "date": "2023-12-21",
+    "symbol": "PAYX",
+    "surprise_pct": 0.93
+  },
+  {
+    "date": "2024-01-18",
+    "symbol": "FAST",
+    "surprise_pct": 2.22
+  },
+  {
+    "date": "2024-01-23",
+    "symbol": "NFLX",
+    "surprise_pct": -4.09
+  },
+  {
+    "date": "2024-01-23",
+    "symbol": "TXN",
+    "surprise_pct": 2.05
+  },
+  {
+    "date": "2024-01-23",
+    "symbol": "PCAR",
+    "surprise_pct": 22.73
+  },
+  {
+    "date": "2024-01-23",
+    "symbol": "BKR",
+    "surprise_pct": 8.51
+  },
+  {
+    "date": "2024-01-24",
+    "symbol": "TSLA",
+    "surprise_pct": -5.0
+  },
+  {
+    "date": "2024-01-24",
+    "symbol": "ASML",
+    "surprise_pct": 9.38
+  },
+  {
+    "date": "2024-01-24",
+    "symbol": "LRCX",
+    "surprise_pct": 6.52
+  },
+  {
+    "date": "2024-01-24",
+    "symbol": "STX",
+    "surprise_pct": 90.48
+  },
+  {
+    "date": "2024-01-24",
+    "symbol": "CSX",
+    "surprise_pct": 2.27
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "INTC",
+    "surprise_pct": 40.74
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "KLAC",
+    "surprise_pct": 4.76
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "TMUS",
+    "surprise_pct": -12.11
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "WDC",
+    "surprise_pct": 30.0
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "CMCSA",
+    "surprise_pct": 5.0
+  },
+  {
+    "date": "2024-01-25",
+    "symbol": "XEL",
+    "surprise_pct": -2.35
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "GOOG",
+    "surprise_pct": 2.5
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "GOOGL",
+    "surprise_pct": 2.5
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "MSFT",
+    "surprise_pct": 6.16
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "AMD",
+    "surprise_pct": 1.72
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "SBUX",
+    "surprise_pct": -2.17
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "MDLZ",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "TER",
+    "surprise_pct": 9.72
+  },
+  {
+    "date": "2024-01-30",
+    "symbol": "EA",
+    "surprise_pct": 1.62
+  },
+  {
+    "date": "2024-01-31",
+    "symbol": "QCOM",
+    "surprise_pct": 22.63
+  },
+  {
+    "date": "2024-01-31",
+    "symbol": "ADP",
+    "surprise_pct": 1.43
+  },
+  {
+    "date": "2024-01-31",
+    "symbol": "ODFL",
+    "surprise_pct": 2.8
+  },
+  {
+    "date": "2024-01-31",
+    "symbol": "ROP",
+    "surprise_pct": 0.92
+  },
+  {
+    "date": "2024-02-01",
+    "symbol": "AAPL",
+    "surprise_pct": 4.31
+  },
+  {
+    "date": "2024-02-01",
+    "symbol": "AMZN",
+    "surprise_pct": 24.69
+  },
+  {
+    "date": "2024-02-01",
+    "symbol": "META",
+    "surprise_pct": 10.35
+  },
+  {
+    "date": "2024-02-01",
+    "symbol": "MCHP",
+    "surprise_pct": 2.02
+  },
+  {
+    "date": "2024-02-02",
+    "symbol": "REGN",
+    "surprise_pct": 11.87
+  },
+  {
+    "date": "2024-02-05",
+    "symbol": "PLTR",
+    "surprise_pct": -25.0
+  },
+  {
+    "date": "2024-02-05",
+    "symbol": "VRTX",
+    "surprise_pct": -7.75
+  },
+  {
+    "date": "2024-02-05",
+    "symbol": "NXPI",
+    "surprise_pct": 1.2
+  },
+  {
+    "date": "2024-02-05",
+    "symbol": "IDXX",
+    "surprise_pct": 9.43
+  },
+  {
+    "date": "2024-02-06",
+    "symbol": "LIN",
+    "surprise_pct": 2.57
+  },
+  {
+    "date": "2024-02-06",
+    "symbol": "AMGN",
+    "surprise_pct": 1.07
+  },
+  {
+    "date": "2024-02-06",
+    "symbol": "GILD",
+    "surprise_pct": -2.27
+  },
+  {
+    "date": "2024-02-06",
+    "symbol": "FTNT",
+    "surprise_pct": 13.51
+  },
+  {
+    "date": "2024-02-06",
+    "symbol": "GEHC",
+    "surprise_pct": 10.28
+  },
+  {
+    "date": "2024-02-07",
+    "symbol": "ARM",
+    "surprise_pct": 16.0
+  },
+  {
+    "date": "2024-02-07",
+    "symbol": "ORLY",
+    "surprise_pct": 2.09
+  },
+  {
+    "date": "2024-02-07",
+    "symbol": "MPWR",
+    "surprise_pct": -7.69
+  },
+  {
+    "date": "2024-02-07",
+    "symbol": "PYPL",
+    "surprise_pct": 4.76
+  },
+  {
+    "date": "2024-02-08",
+    "symbol": "LITE",
+    "surprise_pct": -70.0
+  },
+  {
+    "date": "2024-02-08",
+    "symbol": "TTWO",
+    "surprise_pct": -6.25
+  },
+  {
+    "date": "2024-02-08",
+    "symbol": "TRI",
+    "surprise_pct": 6.52
+  },
+  {
+    "date": "2024-02-08",
+    "symbol": "DXCM",
+    "surprise_pct": 16.28
+  },
+  {
+    "date": "2024-02-09",
+    "symbol": "PEP",
+    "surprise_pct": 3.49
+  },
+  {
+    "date": "2024-02-12",
+    "symbol": "CDNS",
+    "surprise_pct": -2.75
+  },
+  {
+    "date": "2024-02-13",
+    "symbol": "SHOP",
+    "surprise_pct": 18.18
+  },
+  {
+    "date": "2024-02-13",
+    "symbol": "MAR",
+    "surprise_pct": 68.4
+  },
+  {
+    "date": "2024-02-13",
+    "symbol": "DDOG",
+    "surprise_pct": 142.86
+  },
+  {
+    "date": "2024-02-13",
+    "symbol": "ABNB",
+    "surprise_pct": 13.43
+  },
+  {
+    "date": "2024-02-14",
+    "symbol": "CSCO",
+    "surprise_pct": 1.41
+  },
+  {
+    "date": "2024-02-14",
+    "symbol": "APP",
+    "surprise_pct": 40.0
+  },
+  {
+    "date": "2024-02-14",
+    "symbol": "KHC",
+    "surprise_pct": 1.3
+  },
+  {
+    "date": "2024-02-15",
+    "symbol": "AMAT",
+    "surprise_pct": 12.11
+  },
+  {
+    "date": "2024-02-15",
+    "symbol": "DASH",
+    "surprise_pct": -160.0
+  },
+  {
+    "date": "2024-02-15",
+    "symbol": "ALNY",
+    "surprise_pct": 8.33
+  },
+  {
+    "date": "2024-02-20",
+    "symbol": "WMT",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2024-02-20",
+    "symbol": "PANW",
+    "surprise_pct": 37.93
+  },
+  {
+    "date": "2024-02-20",
+    "symbol": "FANG",
+    "surprise_pct": 2.82
+  },
+  {
+    "date": "2024-02-21",
+    "symbol": "NVDA",
+    "surprise_pct": 16.63
+  },
+  {
+    "date": "2024-02-21",
+    "symbol": "ADI",
+    "surprise_pct": 1.17
+  },
+  {
+    "date": "2024-02-21",
+    "symbol": "SNPS",
+    "surprise_pct": 19.83
+  },
+  {
+    "date": "2024-02-21",
+    "symbol": "EXC",
+    "surprise_pct": 3.45
+  },
+  {
+    "date": "2024-02-22",
+    "symbol": "BKNG",
+    "surprise_pct": 7.67
+  },
+  {
+    "date": "2024-02-22",
+    "symbol": "MELI",
+    "surprise_pct": -51.2
+  },
+  {
+    "date": "2024-02-22",
+    "symbol": "INTU",
+    "surprise_pct": 22.43
+  },
+  {
+    "date": "2024-02-22",
+    "symbol": "KDP",
+    "surprise_pct": 1.85
+  },
+  {
+    "date": "2024-02-22",
+    "symbol": "CPRT",
+    "surprise_pct": -5.71
+  },
+  {
+    "date": "2024-02-23",
+    "symbol": "WBD",
+    "surprise_pct": -45.45
+  },
+  {
+    "date": "2024-02-26",
+    "symbol": "AEP",
+    "surprise_pct": -3.15
+  },
+  {
+    "date": "2024-02-26",
+    "symbol": "WDAY",
+    "surprise_pct": -34.38
+  },
+  {
+    "date": "2024-02-27",
+    "symbol": "CEG",
+    "surprise_pct": -106.47
+  },
+  {
+    "date": "2024-02-27",
+    "symbol": "AXON",
+    "surprise_pct": 60.42
+  },
+  {
+    "date": "2024-02-27",
+    "symbol": "RKLB",
+    "surprise_pct": -11.11
+  },
+  {
+    "date": "2024-02-28",
+    "symbol": "MNST",
+    "surprise_pct": -2.56
+  },
+  {
+    "date": "2024-02-29",
+    "symbol": "ADSK",
+    "surprise_pct": 3.85
+  },
+  {
+    "date": "2024-03-05",
+    "symbol": "CRWD",
+    "surprise_pct": 33.33
+  },
+  {
+    "date": "2024-03-05",
+    "symbol": "ROST",
+    "surprise_pct": 11.66
+  },
+  {
+    "date": "2024-03-07",
+    "symbol": "AVGO",
+    "surprise_pct": -4.47
+  },
+  {
+    "date": "2024-03-07",
+    "symbol": "COST",
+    "surprise_pct": 3.06
+  },
+  {
+    "date": "2024-03-07",
+    "symbol": "MRVL",
+    "surprise_pct": -3.45
+  },
+  {
+    "date": "2024-03-14",
+    "symbol": "ADBE",
+    "surprise_pct": -1.12
+  },
+  {
+    "date": "2024-03-20",
+    "symbol": "MU",
+    "surprise_pct": 164.29
+  },
+  {
+    "date": "2024-03-20",
+    "symbol": "PDD",
+    "surprise_pct": 57.04
+  },
+  {
+    "date": "2024-03-27",
+    "symbol": "CTAS",
+    "surprise_pct": 7.87
+  },
+  {
+    "date": "2024-04-02",
+    "symbol": "PAYX",
+    "surprise_pct": 1.47
+  },
+  {
+    "date": "2024-04-11",
+    "symbol": "FAST",
+    "surprise_pct": -1.89
+  },
+  {
+    "date": "2024-04-17",
+    "symbol": "ASML",
+    "surprise_pct": 19.01
+  },
+  {
+    "date": "2024-04-17",
+    "symbol": "CSX",
+    "surprise_pct": 2.22
+  },
+  {
+    "date": "2024-04-18",
+    "symbol": "NFLX",
+    "surprise_pct": 17.07
+  },
+  {
+    "date": "2024-04-18",
+    "symbol": "ISRG",
+    "surprise_pct": 6.42
+  },
+  {
+    "date": "2024-04-22",
+    "symbol": "CDNS",
+    "surprise_pct": -1.16
+  },
+  {
+    "date": "2024-04-23",
+    "symbol": "TXN",
+    "surprise_pct": 13.21
+  },
+  {
+    "date": "2024-04-23",
+    "symbol": "STX",
+    "surprise_pct": 70.0
+  },
+  {
+    "date": "2024-04-23",
+    "symbol": "PEP",
+    "surprise_pct": 5.92
+  },
+  {
+    "date": "2024-04-23",
+    "symbol": "BKR",
+    "surprise_pct": 7.5
+  },
+  {
+    "date": "2024-04-24",
+    "symbol": "META",
+    "surprise_pct": 9.03
+  },
+  {
+    "date": "2024-04-24",
+    "symbol": "LRCX",
+    "surprise_pct": 7.3
+  },
+  {
+    "date": "2024-04-24",
+    "symbol": "ORLY",
+    "surprise_pct": 0.22
+  },
+  {
+    "date": "2024-04-24",
+    "symbol": "TER",
+    "surprise_pct": 54.55
+  },
+  {
+    "date": "2024-04-24",
+    "symbol": "ODFL",
+    "surprise_pct": 0.75
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "GOOG",
+    "surprise_pct": 26.85
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "GOOGL",
+    "surprise_pct": 26.85
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "MSFT",
+    "surprise_pct": 4.63
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "INTC",
+    "surprise_pct": -100.0
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "KLAC",
+    "surprise_pct": 6.48
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "TMUS",
+    "surprise_pct": 9.29
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "WDC",
+    "surprise_pct": 950.0
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "GILD",
+    "surprise_pct": 11.41
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "CMCSA",
+    "surprise_pct": 6.12
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "HON",
+    "surprise_pct": 3.21
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "XEL",
+    "surprise_pct": 10.0
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "KDP",
+    "surprise_pct": 11.76
+  },
+  {
+    "date": "2024-04-25",
+    "symbol": "DXCM",
+    "surprise_pct": 18.52
+  },
+  {
+    "date": "2024-04-26",
+    "symbol": "ROP",
+    "surprise_pct": 1.61
+  },
+  {
+    "date": "2024-04-29",
+    "symbol": "NXPI",
+    "surprise_pct": 2.52
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "AMZN",
+    "surprise_pct": 36.14
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "AMD",
+    "surprise_pct": 4.88
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "SBUX",
+    "surprise_pct": -13.92
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "MDLZ",
+    "surprise_pct": 7.95
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "AEP",
+    "surprise_pct": -2.31
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "PCAR",
+    "surprise_pct": 4.61
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "FANG",
+    "surprise_pct": 4.9
+  },
+  {
+    "date": "2024-04-30",
+    "symbol": "PYPL",
+    "surprise_pct": 18.48
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "QCOM",
+    "surprise_pct": 6.04
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "ADP",
+    "surprise_pct": 4.35
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "MAR",
+    "surprise_pct": -1.84
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "DASH",
+    "surprise_pct": 14.29
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "MPWR",
+    "surprise_pct": 1.03
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "IDXX",
+    "surprise_pct": 4.85
+  },
+  {
+    "date": "2024-05-01",
+    "symbol": "KHC",
+    "surprise_pct": 1.47
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "AAPL",
+    "surprise_pct": 1.32
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "LIN",
+    "surprise_pct": 1.9
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "AMGN",
+    "surprise_pct": 5.32
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "BKNG",
+    "surprise_pct": 45.33
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "FTNT",
+    "surprise_pct": 25.81
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "MNST",
+    "surprise_pct": -4.55
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "MELI",
+    "surprise_pct": 2.11
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "REGN",
+    "surprise_pct": -5.79
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "EXC",
+    "surprise_pct": -1.43
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "TRI",
+    "surprise_pct": 18.09
+  },
+  {
+    "date": "2024-05-02",
+    "symbol": "ALNY",
+    "surprise_pct": 58.73
+  },
+  {
+    "date": "2024-05-06",
+    "symbol": "VRTX",
+    "surprise_pct": 17.21
+  },
+  {
+    "date": "2024-05-06",
+    "symbol": "AXON",
+    "surprise_pct": -58.14
+  },
+  {
+    "date": "2024-05-06",
+    "symbol": "RKLB",
+    "surprise_pct": 18.18
+  },
+  {
+    "date": "2024-05-07",
+    "symbol": "DDOG",
+    "surprise_pct": 500.0
+  },
+  {
+    "date": "2024-05-07",
+    "symbol": "EA",
+    "surprise_pct": -15.6
+  },
+  {
+    "date": "2024-05-07",
+    "symbol": "ALAB",
+    "surprise_pct": -1157.14
+  },
+  {
+    "date": "2024-05-08",
+    "symbol": "ARM",
+    "surprise_pct": -81.25
+  },
+  {
+    "date": "2024-05-08",
+    "symbol": "SHOP",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2024-05-08",
+    "symbol": "APP",
+    "surprise_pct": 17.54
+  },
+  {
+    "date": "2024-05-08",
+    "symbol": "ABNB",
+    "surprise_pct": 78.26
+  },
+  {
+    "date": "2024-05-09",
+    "symbol": "CEG",
+    "surprise_pct": 10.98
+  },
+  {
+    "date": "2024-05-09",
+    "symbol": "WBD",
+    "surprise_pct": -66.67
+  },
+  {
+    "date": "2024-05-15",
+    "symbol": "CSCO",
+    "surprise_pct": 2.86
+  },
+  {
+    "date": "2024-05-16",
+    "symbol": "WMT",
+    "surprise_pct": 15.38
+  },
+  {
+    "date": "2024-05-16",
+    "symbol": "AMAT",
+    "surprise_pct": 6.09
+  },
+  {
+    "date": "2024-05-16",
+    "symbol": "TTWO",
+    "surprise_pct": 79.41
+  },
+  {
+    "date": "2024-05-16",
+    "symbol": "CPRT",
+    "surprise_pct": 2.63
+  },
+  {
+    "date": "2024-05-20",
+    "symbol": "PANW",
+    "surprise_pct": 56.14
+  },
+  {
+    "date": "2024-05-22",
+    "symbol": "NVDA",
+    "surprise_pct": 12.84
+  },
+  {
+    "date": "2024-05-22",
+    "symbol": "ADI",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2024-05-22",
+    "symbol": "PDD",
+    "surprise_pct": 82.64
+  },
+  {
+    "date": "2024-05-22",
+    "symbol": "SNPS",
+    "surprise_pct": 1.42
+  },
+  {
+    "date": "2024-05-23",
+    "symbol": "INTU",
+    "surprise_pct": 6.28
+  },
+  {
+    "date": "2024-05-23",
+    "symbol": "ROST",
+    "surprise_pct": 8.96
+  },
+  {
+    "date": "2024-05-23",
+    "symbol": "WDAY",
+    "surprise_pct": 64.52
+  },
+  {
+    "date": "2024-05-30",
+    "symbol": "MRVL",
+    "surprise_pct": 14.29
+  },
+  {
+    "date": "2024-06-04",
+    "symbol": "CRWD",
+    "surprise_pct": -4.76
+  },
+  {
+    "date": "2024-06-11",
+    "symbol": "ADSK",
+    "surprise_pct": 8.4
+  },
+  {
+    "date": "2024-06-12",
+    "symbol": "AVGO",
+    "surprise_pct": 6.5
+  },
+  {
+    "date": "2024-06-13",
+    "symbol": "ADBE",
+    "surprise_pct": 2.54
+  },
+  {
+    "date": "2024-06-26",
+    "symbol": "MU",
+    "surprise_pct": 13.16
+  },
+  {
+    "date": "2024-06-26",
+    "symbol": "PAYX",
+    "surprise_pct": 1.82
+  },
+  {
+    "date": "2024-07-11",
+    "symbol": "PEP",
+    "surprise_pct": 6.05
+  },
+  {
+    "date": "2024-07-17",
+    "symbol": "ASML",
+    "surprise_pct": 11.63
+  },
+  {
+    "date": "2024-07-18",
+    "symbol": "NFLX",
+    "surprise_pct": 3.83
+  },
+  {
+    "date": "2024-07-18",
+    "symbol": "ISRG",
+    "surprise_pct": 24.58
+  },
+  {
+    "date": "2024-07-18",
+    "symbol": "CTAS",
+    "surprise_pct": 5.0
+  },
+  {
+    "date": "2024-07-22",
+    "symbol": "CDNS",
+    "surprise_pct": 1.05
+  },
+  {
+    "date": "2024-07-22",
+    "symbol": "NXPI",
+    "surprise_pct": -0.71
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "GOOG",
+    "surprise_pct": 2.16
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "GOOGL",
+    "surprise_pct": 2.16
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "TSLA",
+    "surprise_pct": -8.7
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "TXN",
+    "surprise_pct": 5.17
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "STX",
+    "surprise_pct": 45.0
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "CMCSA",
+    "surprise_pct": 9.01
+  },
+  {
+    "date": "2024-07-23",
+    "symbol": "PCAR",
+    "surprise_pct": -0.93
+  },
+  {
+    "date": "2024-07-24",
+    "symbol": "KLAC",
+    "surprise_pct": 8.55
+  },
+  {
+    "date": "2024-07-24",
+    "symbol": "ORLY",
+    "surprise_pct": -3.65
+  },
+  {
+    "date": "2024-07-24",
+    "symbol": "TER",
+    "surprise_pct": 13.16
+  },
+  {
+    "date": "2024-07-24",
+    "symbol": "ODFL",
+    "surprise_pct": 2.07
+  },
+  {
+    "date": "2024-07-24",
+    "symbol": "ROP",
+    "surprise_pct": 0.45
+  },
+  {
+    "date": "2024-07-25",
+    "symbol": "HON",
+    "surprise_pct": 2.89
+  },
+  {
+    "date": "2024-07-25",
+    "symbol": "BKR",
+    "surprise_pct": 16.33
+  },
+  {
+    "date": "2024-07-25",
+    "symbol": "DXCM",
+    "surprise_pct": 10.26
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "MSFT",
+    "surprise_pct": 1.72
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "AMD",
+    "surprise_pct": 6.38
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "MDLZ",
+    "surprise_pct": 10.26
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "AEP",
+    "surprise_pct": 1.63
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "EA",
+    "surprise_pct": 200.0
+  },
+  {
+    "date": "2024-07-30",
+    "symbol": "PYPL",
+    "surprise_pct": 23.96
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "META",
+    "surprise_pct": 9.79
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "LRCX",
+    "surprise_pct": 8.24
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "ARM",
+    "surprise_pct": 52.94
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "TMUS",
+    "surprise_pct": 9.69
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "WDC",
+    "surprise_pct": 15.74
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "QCOM",
+    "surprise_pct": 12.21
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "ADP",
+    "surprise_pct": 0.97
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "MAR",
+    "surprise_pct": 0.4
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "KHC",
+    "surprise_pct": 6.85
+  },
+  {
+    "date": "2024-07-31",
+    "symbol": "GEHC",
+    "surprise_pct": 2.04
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "AAPL",
+    "surprise_pct": 4.48
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "AMZN",
+    "surprise_pct": 17.14
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "INTC",
+    "surprise_pct": -27.27
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "BKNG",
+    "surprise_pct": 6.37
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "VRTX",
+    "surprise_pct": -5.82
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "MELI",
+    "surprise_pct": 20.18
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "DASH",
+    "surprise_pct": -280.0
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "REGN",
+    "surprise_pct": 13.1
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "MPWR",
+    "surprise_pct": -8.33
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "XEL",
+    "surprise_pct": -1.82
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "EXC",
+    "surprise_pct": 17.5
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "MCHP",
+    "surprise_pct": 2.17
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "TRI",
+    "surprise_pct": 6.25
+  },
+  {
+    "date": "2024-08-01",
+    "symbol": "ALNY",
+    "surprise_pct": 89.08
+  },
+  {
+    "date": "2024-08-02",
+    "symbol": "LIN",
+    "surprise_pct": 1.58
+  },
+  {
+    "date": "2024-08-05",
+    "symbol": "PLTR",
+    "surprise_pct": -25.0
+  },
+  {
+    "date": "2024-08-05",
+    "symbol": "CSX",
+    "surprise_pct": 2.08
+  },
+  {
+    "date": "2024-08-05",
+    "symbol": "FANG",
+    "surprise_pct": 1.35
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "AMGN",
+    "surprise_pct": 0.81
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "FTNT",
+    "surprise_pct": 51.52
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "CEG",
+    "surprise_pct": 17.48
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "ABNB",
+    "surprise_pct": -6.52
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "ALAB",
+    "surprise_pct": -133.33
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "IDXX",
+    "surprise_pct": -14.98
+  },
+  {
+    "date": "2024-08-06",
+    "symbol": "AXON",
+    "surprise_pct": -20.0
+  },
+  {
+    "date": "2024-08-07",
+    "symbol": "SHOP",
+    "surprise_pct": 63.64
+  },
+  {
+    "date": "2024-08-07",
+    "symbol": "APP",
+    "surprise_pct": 15.58
+  },
+  {
+    "date": "2024-08-07",
+    "symbol": "MNST",
+    "surprise_pct": -8.89
+  },
+  {
+    "date": "2024-08-07",
+    "symbol": "WBD",
+    "surprise_pct": -2161.11
+  },
+  {
+    "date": "2024-08-08",
+    "symbol": "GILD",
+    "surprise_pct": 24.84
+  },
+  {
+    "date": "2024-08-08",
+    "symbol": "DDOG",
+    "surprise_pct": 160.0
+  },
+  {
+    "date": "2024-08-08",
+    "symbol": "TTWO",
+    "surprise_pct": 23.08
+  },
+  {
+    "date": "2024-08-08",
+    "symbol": "RKLB",
+    "surprise_pct": 20.0
+  },
+  {
+    "date": "2024-08-14",
+    "symbol": "CSCO",
+    "surprise_pct": 1.43
+  },
+  {
+    "date": "2024-08-14",
+    "symbol": "LITE",
+    "surprise_pct": -25.81
+  },
+  {
+    "date": "2024-08-15",
+    "symbol": "WMT",
+    "surprise_pct": 3.08
+  },
+  {
+    "date": "2024-08-15",
+    "symbol": "AMAT",
+    "surprise_pct": 5.47
+  },
+  {
+    "date": "2024-08-19",
+    "symbol": "PANW",
+    "surprise_pct": 10.39
+  },
+  {
+    "date": "2024-08-21",
+    "symbol": "ADI",
+    "surprise_pct": 5.33
+  },
+  {
+    "date": "2024-08-21",
+    "symbol": "SNPS",
+    "surprise_pct": 7.17
+  },
+  {
+    "date": "2024-08-22",
+    "symbol": "INTU",
+    "surprise_pct": 12.96
+  },
+  {
+    "date": "2024-08-22",
+    "symbol": "ROST",
+    "surprise_pct": 6.71
+  },
+  {
+    "date": "2024-08-22",
+    "symbol": "WDAY",
+    "surprise_pct": -17.78
+  },
+  {
+    "date": "2024-08-26",
+    "symbol": "PDD",
+    "surprise_pct": 11.24
+  },
+  {
+    "date": "2024-08-28",
+    "symbol": "NVDA",
+    "surprise_pct": 8.33
+  },
+  {
+    "date": "2024-08-28",
+    "symbol": "CRWD",
+    "surprise_pct": 4.35
+  },
+  {
+    "date": "2024-08-29",
+    "symbol": "MRVL",
+    "surprise_pct": -7.69
+  },
+  {
+    "date": "2024-08-29",
+    "symbol": "ADSK",
+    "surprise_pct": 11.85
+  },
+  {
+    "date": "2024-09-04",
+    "symbol": "CPRT",
+    "surprise_pct": -10.81
+  },
+  {
+    "date": "2024-09-05",
+    "symbol": "AVGO",
+    "surprise_pct": 7.37
+  },
+  {
+    "date": "2024-09-12",
+    "symbol": "ADBE",
+    "surprise_pct": 4.96
+  },
+  {
+    "date": "2024-09-25",
+    "symbol": "MU",
+    "surprise_pct": 2.06
+  },
+  {
+    "date": "2024-09-25",
+    "symbol": "CTAS",
+    "surprise_pct": 10.0
+  },
+  {
+    "date": "2024-09-26",
+    "symbol": "COST",
+    "surprise_pct": 1.98
+  },
+  {
+    "date": "2024-10-01",
+    "symbol": "PAYX",
+    "surprise_pct": 1.75
+  },
+  {
+    "date": "2024-10-08",
+    "symbol": "PEP",
+    "surprise_pct": 0.43
+  },
+  {
+    "date": "2024-10-15",
+    "symbol": "ASML",
+    "surprise_pct": 10.69
+  },
+  {
+    "date": "2024-10-16",
+    "symbol": "CSX",
+    "surprise_pct": -4.17
+  },
+  {
+    "date": "2024-10-17",
+    "symbol": "NFLX",
+    "surprise_pct": 6.09
+  },
+  {
+    "date": "2024-10-17",
+    "symbol": "ISRG",
+    "surprise_pct": 25.81
+  },
+  {
+    "date": "2024-10-22",
+    "symbol": "TXN",
+    "surprise_pct": 8.09
+  },
+  {
+    "date": "2024-10-22",
+    "symbol": "STX",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2024-10-22",
+    "symbol": "PCAR",
+    "surprise_pct": 1.65
+  },
+  {
+    "date": "2024-10-22",
+    "symbol": "BKR",
+    "surprise_pct": 11.67
+  },
+  {
+    "date": "2024-10-23",
+    "symbol": "TSLA",
+    "surprise_pct": 34.78
+  },
+  {
+    "date": "2024-10-23",
+    "symbol": "LRCX",
+    "surprise_pct": 7.5
+  },
+  {
+    "date": "2024-10-23",
+    "symbol": "TMUS",
+    "surprise_pct": 10.13
+  },
+  {
+    "date": "2024-10-23",
+    "symbol": "ORLY",
+    "surprise_pct": -1.04
+  },
+  {
+    "date": "2024-10-23",
+    "symbol": "ROP",
+    "surprise_pct": 1.99
+  },
+  {
+    "date": "2024-10-24",
+    "symbol": "HON",
+    "surprise_pct": 3.2
+  },
+  {
+    "date": "2024-10-24",
+    "symbol": "DXCM",
+    "surprise_pct": 4.65
+  },
+  {
+    "date": "2024-10-28",
+    "symbol": "CDNS",
+    "surprise_pct": 9.65
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "GOOG",
+    "surprise_pct": 15.85
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "GOOGL",
+    "surprise_pct": 15.85
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "AMD",
+    "surprise_pct": 7.04
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "MDLZ",
+    "surprise_pct": 16.47
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "EA",
+    "surprise_pct": 5.88
+  },
+  {
+    "date": "2024-10-29",
+    "symbol": "PYPL",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "MSFT",
+    "surprise_pct": 7.14
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "META",
+    "surprise_pct": 16.18
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "KLAC",
+    "surprise_pct": 4.27
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "AMGN",
+    "surprise_pct": 9.2
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "BKNG",
+    "surprise_pct": 7.63
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "ADP",
+    "surprise_pct": 5.91
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "DASH",
+    "surprise_pct": 80.95
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "MPWR",
+    "surprise_pct": -1.64
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "EXC",
+    "surprise_pct": 5.97
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "KHC",
+    "surprise_pct": 1.35
+  },
+  {
+    "date": "2024-10-30",
+    "symbol": "GEHC",
+    "surprise_pct": 7.55
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "AAPL",
+    "surprise_pct": 10.07
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "AMZN",
+    "surprise_pct": 25.44
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "INTC",
+    "surprise_pct": -215.0
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "LIN",
+    "surprise_pct": 1.29
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "CMCSA",
+    "surprise_pct": 5.66
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "REGN",
+    "surprise_pct": 16.6
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "XEL",
+    "surprise_pct": -3.1
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "IDXX",
+    "surprise_pct": 4.09
+  },
+  {
+    "date": "2024-10-31",
+    "symbol": "ALNY",
+    "surprise_pct": 14.71
+  },
+  {
+    "date": "2024-11-04",
+    "symbol": "PLTR",
+    "surprise_pct": 20.0
+  },
+  {
+    "date": "2024-11-04",
+    "symbol": "VRTX",
+    "surprise_pct": 11.91
+  },
+  {
+    "date": "2024-11-04",
+    "symbol": "CEG",
+    "surprise_pct": 0.74
+  },
+  {
+    "date": "2024-11-04",
+    "symbol": "MAR",
+    "surprise_pct": -2.16
+  },
+  {
+    "date": "2024-11-04",
+    "symbol": "FANG",
+    "surprise_pct": -11.05
+  },
+  {
+    "date": "2024-11-05",
+    "symbol": "MCHP",
+    "surprise_pct": 2.7
+  },
+  {
+    "date": "2024-11-05",
+    "symbol": "TRI",
+    "surprise_pct": 2.56
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "ARM",
+    "surprise_pct": 75.0
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "QCOM",
+    "surprise_pct": 12.44
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "GILD",
+    "surprise_pct": 27.85
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "APP",
+    "surprise_pct": 31.58
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "MELI",
+    "surprise_pct": -30.52
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "AEP",
+    "surprise_pct": 3.93
+  },
+  {
+    "date": "2024-11-06",
+    "symbol": "TTWO",
+    "surprise_pct": 420.0
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "FTNT",
+    "surprise_pct": 30.23
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "MNST",
+    "surprise_pct": -4.76
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "DDOG",
+    "surprise_pct": 87.5
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "ABNB",
+    "surprise_pct": -1.84
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "WBD",
+    "surprise_pct": 171.43
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "LITE",
+    "surprise_pct": -40.0
+  },
+  {
+    "date": "2024-11-07",
+    "symbol": "AXON",
+    "surprise_pct": -12.5
+  },
+  {
+    "date": "2024-11-12",
+    "symbol": "SHOP",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2024-11-12",
+    "symbol": "RKLB",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2024-11-13",
+    "symbol": "CSCO",
+    "surprise_pct": 5.63
+  },
+  {
+    "date": "2024-11-14",
+    "symbol": "AMAT",
+    "surprise_pct": 6.42
+  },
+  {
+    "date": "2024-11-19",
+    "symbol": "WMT",
+    "surprise_pct": 9.43
+  },
+  {
+    "date": "2024-11-20",
+    "symbol": "NVDA",
+    "surprise_pct": 11.43
+  },
+  {
+    "date": "2024-11-21",
+    "symbol": "PDD",
+    "surprise_pct": -8.02
+  },
+  {
+    "date": "2024-11-21",
+    "symbol": "INTU",
+    "surprise_pct": 1.9
+  },
+  {
+    "date": "2024-11-21",
+    "symbol": "ROST",
+    "surprise_pct": 6.47
+  },
+  {
+    "date": "2024-11-26",
+    "symbol": "CRWD",
+    "surprise_pct": 700.0
+  },
+  {
+    "date": "2024-11-26",
+    "symbol": "ADI",
+    "surprise_pct": 1.83
+  },
+  {
+    "date": "2024-11-26",
+    "symbol": "ADSK",
+    "surprise_pct": 4.86
+  },
+  {
+    "date": "2024-11-26",
+    "symbol": "WDAY",
+    "surprise_pct": 42.11
+  },
+  {
+    "date": "2024-12-03",
+    "symbol": "MRVL",
+    "surprise_pct": 13.04
+  },
+  {
+    "date": "2024-12-04",
+    "symbol": "SNPS",
+    "surprise_pct": 2.07
+  },
+  {
+    "date": "2024-12-11",
+    "symbol": "ADBE",
+    "surprise_pct": 7.96
+  },
+  {
+    "date": "2024-12-12",
+    "symbol": "AVGO",
+    "surprise_pct": 10.62
+  },
+  {
+    "date": "2024-12-12",
+    "symbol": "COST",
+    "surprise_pct": 0.79
+  },
+  {
+    "date": "2024-12-18",
+    "symbol": "MU",
+    "surprise_pct": 1.25
+  },
+  {
+    "date": "2024-12-19",
+    "symbol": "CTAS",
+    "surprise_pct": 7.92
+  },
+  {
+    "date": "2024-12-19",
+    "symbol": "PAYX",
+    "surprise_pct": 1.79
+  },
+  {
+    "date": "2025-01-17",
+    "symbol": "FAST",
+    "surprise_pct": -4.17
+  },
+  {
+    "date": "2025-01-21",
+    "symbol": "NFLX",
+    "surprise_pct": 1.67
+  },
+  {
+    "date": "2025-01-21",
+    "symbol": "STX",
+    "surprise_pct": 8.98
+  },
+  {
+    "date": "2025-01-23",
+    "symbol": "TXN",
+    "surprise_pct": 9.24
+  },
+  {
+    "date": "2025-01-23",
+    "symbol": "ISRG",
+    "surprise_pct": 36.88
+  },
+  {
+    "date": "2025-01-23",
+    "symbol": "CSX",
+    "surprise_pct": -2.33
+  },
+  {
+    "date": "2025-01-28",
+    "symbol": "SBUX",
+    "surprise_pct": 4.55
+  },
+  {
+    "date": "2025-01-28",
+    "symbol": "PCAR",
+    "surprise_pct": -1.19
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "MSFT",
+    "surprise_pct": 3.86
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "META",
+    "surprise_pct": 20.06
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "TSLA",
+    "surprise_pct": 6.45
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "ASML",
+    "surprise_pct": 1.67
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "LRCX",
+    "surprise_pct": 4.6
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "TMUS",
+    "surprise_pct": 18.43
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "WDC",
+    "surprise_pct": -0.64
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "ADP",
+    "surprise_pct": 3.52
+  },
+  {
+    "date": "2025-01-29",
+    "symbol": "TER",
+    "surprise_pct": 5.56
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "AAPL",
+    "surprise_pct": 1.69
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "INTC",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "KLAC",
+    "surprise_pct": 6.08
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "CMCSA",
+    "surprise_pct": 9.09
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "BKR",
+    "surprise_pct": 11.11
+  },
+  {
+    "date": "2025-01-30",
+    "symbol": "ROP",
+    "surprise_pct": 1.91
+  },
+  {
+    "date": "2025-02-03",
+    "symbol": "PLTR",
+    "surprise_pct": -120.0
+  },
+  {
+    "date": "2025-02-03",
+    "symbol": "NXPI",
+    "surprise_pct": 8.02
+  },
+  {
+    "date": "2025-02-03",
+    "symbol": "IDXX",
+    "surprise_pct": 9.17
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "GOOG",
+    "surprise_pct": 1.42
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "GOOGL",
+    "surprise_pct": 1.42
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "AMGN",
+    "surprise_pct": 5.57
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "PEP",
+    "surprise_pct": 0.51
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "MDLZ",
+    "surprise_pct": -1.52
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "REGN",
+    "surprise_pct": 2.91
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "EA",
+    "surprise_pct": -5.65
+  },
+  {
+    "date": "2025-02-04",
+    "symbol": "PYPL",
+    "surprise_pct": 5.31
+  },
+  {
+    "date": "2025-02-05",
+    "symbol": "ARM",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2025-02-05",
+    "symbol": "QCOM",
+    "surprise_pct": 18.18
+  },
+  {
+    "date": "2025-02-05",
+    "symbol": "ORLY",
+    "surprise_pct": 2.57
+  },
+  {
+    "date": "2025-02-05",
+    "symbol": "ODFL",
+    "surprise_pct": 5.13
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "AMZN",
+    "surprise_pct": 22.37
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "LIN",
+    "surprise_pct": 1.02
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "FTNT",
+    "surprise_pct": 28.85
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "HON",
+    "surprise_pct": 6.93
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "MPWR",
+    "surprise_pct": 1.28
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "LITE",
+    "surprise_pct": -133.33
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "XEL",
+    "surprise_pct": -6.9
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "TTWO",
+    "surprise_pct": 78.95
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "MCHP",
+    "surprise_pct": -38.1
+  },
+  {
+    "date": "2025-02-06",
+    "symbol": "TRI",
+    "surprise_pct": 5.21
+  },
+  {
+    "date": "2025-02-10",
+    "symbol": "VRTX",
+    "surprise_pct": 4.73
+  },
+  {
+    "date": "2025-02-10",
+    "symbol": "ALAB",
+    "surprise_pct": 233.33
+  },
+  {
+    "date": "2025-02-11",
+    "symbol": "GILD",
+    "surprise_pct": 13.77
+  },
+  {
+    "date": "2025-02-11",
+    "symbol": "SHOP",
+    "surprise_pct": -2.86
+  },
+  {
+    "date": "2025-02-11",
+    "symbol": "MAR",
+    "surprise_pct": 2.94
+  },
+  {
+    "date": "2025-02-11",
+    "symbol": "DASH",
+    "surprise_pct": -2.94
+  },
+  {
+    "date": "2025-02-12",
+    "symbol": "CSCO",
+    "surprise_pct": 4.05
+  },
+  {
+    "date": "2025-02-12",
+    "symbol": "APP",
+    "surprise_pct": 35.16
+  },
+  {
+    "date": "2025-02-12",
+    "symbol": "EXC",
+    "surprise_pct": 8.47
+  },
+  {
+    "date": "2025-02-12",
+    "symbol": "KHC",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "AMAT",
+    "surprise_pct": 4.39
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "PANW",
+    "surprise_pct": 2.38
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "DDOG",
+    "surprise_pct": 30.0
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "ABNB",
+    "surprise_pct": 25.86
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "ALNY",
+    "surprise_pct": 4.41
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "DXCM",
+    "surprise_pct": -10.0
+  },
+  {
+    "date": "2025-02-13",
+    "symbol": "GEHC",
+    "surprise_pct": 15.08
+  },
+  {
+    "date": "2025-02-18",
+    "symbol": "CEG",
+    "surprise_pct": 11.42
+  },
+  {
+    "date": "2025-02-18",
+    "symbol": "CDNS",
+    "surprise_pct": -1.32
+  },
+  {
+    "date": "2025-02-19",
+    "symbol": "ADI",
+    "surprise_pct": 5.84
+  },
+  {
+    "date": "2025-02-20",
+    "symbol": "WMT",
+    "surprise_pct": 1.54
+  },
+  {
+    "date": "2025-02-20",
+    "symbol": "BKNG",
+    "surprise_pct": 16.58
+  },
+  {
+    "date": "2025-02-20",
+    "symbol": "MELI",
+    "surprise_pct": 73.69
+  },
+  {
+    "date": "2025-02-20",
+    "symbol": "CPRT",
+    "surprise_pct": 5.26
+  },
+  {
+    "date": "2025-02-24",
+    "symbol": "FANG",
+    "surprise_pct": 11.66
+  },
+  {
+    "date": "2025-02-25",
+    "symbol": "INTU",
+    "surprise_pct": 62.99
+  },
+  {
+    "date": "2025-02-25",
+    "symbol": "AXON",
+    "surprise_pct": 134.21
+  },
+  {
+    "date": "2025-02-25",
+    "symbol": "KDP",
+    "surprise_pct": 1.75
+  },
+  {
+    "date": "2025-02-25",
+    "symbol": "WDAY",
+    "surprise_pct": -18.64
+  },
+  {
+    "date": "2025-02-26",
+    "symbol": "NVDA",
+    "surprise_pct": 7.59
+  },
+  {
+    "date": "2025-02-26",
+    "symbol": "SNPS",
+    "surprise_pct": 20.97
+  },
+  {
+    "date": "2025-02-27",
+    "symbol": "MNST",
+    "surprise_pct": -5.0
+  },
+  {
+    "date": "2025-02-27",
+    "symbol": "WBD",
+    "surprise_pct": -600.0
+  },
+  {
+    "date": "2025-02-27",
+    "symbol": "ADSK",
+    "surprise_pct": 8.22
+  },
+  {
+    "date": "2025-02-27",
+    "symbol": "RKLB",
+    "surprise_pct": -11.11
+  },
+  {
+    "date": "2025-03-04",
+    "symbol": "CRWD",
+    "surprise_pct": -600.0
+  },
+  {
+    "date": "2025-03-04",
+    "symbol": "ROST",
+    "surprise_pct": 8.48
+  },
+  {
+    "date": "2025-03-05",
+    "symbol": "MRVL",
+    "surprise_pct": 9.52
+  },
+  {
+    "date": "2025-03-06",
+    "symbol": "AVGO",
+    "surprise_pct": 10.24
+  },
+  {
+    "date": "2025-03-06",
+    "symbol": "COST",
+    "surprise_pct": -1.71
+  },
+  {
+    "date": "2025-03-12",
+    "symbol": "ADBE",
+    "surprise_pct": 5.16
+  },
+  {
+    "date": "2025-03-20",
+    "symbol": "MU",
+    "surprise_pct": 9.3
+  },
+  {
+    "date": "2025-03-20",
+    "symbol": "PDD",
+    "surprise_pct": 9.96
+  },
+  {
+    "date": "2025-03-26",
+    "symbol": "CTAS",
+    "surprise_pct": 7.62
+  },
+  {
+    "date": "2025-03-26",
+    "symbol": "PAYX",
+    "surprise_pct": 0.68
+  },
+  {
+    "date": "2025-04-16",
+    "symbol": "ASML",
+    "surprise_pct": 3.1
+  },
+  {
+    "date": "2025-04-16",
+    "symbol": "CSX",
+    "surprise_pct": -8.11
+  },
+  {
+    "date": "2025-04-17",
+    "symbol": "NFLX",
+    "surprise_pct": 16.17
+  },
+  {
+    "date": "2025-04-22",
+    "symbol": "TSLA",
+    "surprise_pct": -57.14
+  },
+  {
+    "date": "2025-04-22",
+    "symbol": "ISRG",
+    "surprise_pct": 3.68
+  },
+  {
+    "date": "2025-04-22",
+    "symbol": "BKR",
+    "surprise_pct": 8.51
+  },
+  {
+    "date": "2025-04-23",
+    "symbol": "LRCX",
+    "surprise_pct": 4.0
+  },
+  {
+    "date": "2025-04-23",
+    "symbol": "TXN",
+    "surprise_pct": 20.75
+  },
+  {
+    "date": "2025-04-23",
+    "symbol": "ORLY",
+    "surprise_pct": -4.88
+  },
+  {
+    "date": "2025-04-23",
+    "symbol": "ODFL",
+    "surprise_pct": 3.48
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "GOOG",
+    "surprise_pct": 39.11
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "GOOGL",
+    "surprise_pct": 39.11
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "INTC",
+    "surprise_pct": 85.71
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "TMUS",
+    "surprise_pct": 5.31
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "PEP",
+    "surprise_pct": -1.33
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "GILD",
+    "surprise_pct": -0.55
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "CMCSA",
+    "surprise_pct": 11.22
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "XEL",
+    "surprise_pct": -9.68
+  },
+  {
+    "date": "2025-04-24",
+    "symbol": "KDP",
+    "surprise_pct": 10.53
+  },
+  {
+    "date": "2025-04-28",
+    "symbol": "CDNS",
+    "surprise_pct": 1.71
+  },
+  {
+    "date": "2025-04-28",
+    "symbol": "NXPI",
+    "surprise_pct": -0.46
+  },
+  {
+    "date": "2025-04-28",
+    "symbol": "TER",
+    "surprise_pct": 22.95
+  },
+  {
+    "date": "2025-04-28",
+    "symbol": "ROP",
+    "surprise_pct": 1.06
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "STX",
+    "surprise_pct": 11.33
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "BKNG",
+    "surprise_pct": 43.83
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "SBUX",
+    "surprise_pct": -16.33
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "MDLZ",
+    "surprise_pct": 13.85
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "HON",
+    "surprise_pct": 13.57
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "PCAR",
+    "surprise_pct": -7.01
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "REGN",
+    "surprise_pct": -2.72
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "PYPL",
+    "surprise_pct": 15.65
+  },
+  {
+    "date": "2025-04-29",
+    "symbol": "KHC",
+    "surprise_pct": 3.33
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "MSFT",
+    "surprise_pct": 8.13
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "META",
+    "surprise_pct": 23.18
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "KLAC",
+    "surprise_pct": 4.34
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "WDC",
+    "surprise_pct": 19.63
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "QCOM",
+    "surprise_pct": 2.62
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "ADP",
+    "surprise_pct": 3.38
+  },
+  {
+    "date": "2025-04-30",
+    "symbol": "GEHC",
+    "surprise_pct": 10.99
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "AAPL",
+    "surprise_pct": 2.48
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "AMZN",
+    "surprise_pct": 17.78
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "LIN",
+    "surprise_pct": 0.51
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "AMGN",
+    "surprise_pct": 17.79
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "ABNB",
+    "surprise_pct": -4.0
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "MPWR",
+    "surprise_pct": -3.31
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "EXC",
+    "surprise_pct": 8.24
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "IDXX",
+    "surprise_pct": 1.37
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "TRI",
+    "surprise_pct": 5.66
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "ALNY",
+    "surprise_pct": 56.0
+  },
+  {
+    "date": "2025-05-01",
+    "symbol": "DXCM",
+    "surprise_pct": -3.03
+  },
+  {
+    "date": "2025-05-05",
+    "symbol": "PLTR",
+    "surprise_pct": -50.0
+  },
+  {
+    "date": "2025-05-05",
+    "symbol": "VRTX",
+    "surprise_pct": -3.79
+  },
+  {
+    "date": "2025-05-05",
+    "symbol": "FANG",
+    "surprise_pct": 11.0
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "AMD",
+    "surprise_pct": 4.0
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "MAR",
+    "surprise_pct": 2.2
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "DASH",
+    "surprise_pct": 10.0
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "AEP",
+    "surprise_pct": 10.79
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "LITE",
+    "surprise_pct": -600.0
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "EA",
+    "surprise_pct": 68.85
+  },
+  {
+    "date": "2025-05-06",
+    "symbol": "ALAB",
+    "surprise_pct": 200.0
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "ARM",
+    "surprise_pct": 23.53
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "SNDK",
+    "surprise_pct": -53.85
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "APP",
+    "surprise_pct": 15.17
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "FTNT",
+    "surprise_pct": 13.33
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "MELI",
+    "surprise_pct": 26.99
+  },
+  {
+    "date": "2025-05-07",
+    "symbol": "AXON",
+    "surprise_pct": -200.0
+  },
+  {
+    "date": "2025-05-08",
+    "symbol": "SHOP",
+    "surprise_pct": 5.88
+  },
+  {
+    "date": "2025-05-08",
+    "symbol": "MNST",
+    "surprise_pct": 2.17
+  },
+  {
+    "date": "2025-05-08",
+    "symbol": "WBD",
+    "surprise_pct": -50.0
+  },
+  {
+    "date": "2025-05-08",
+    "symbol": "MCHP",
+    "surprise_pct": 33.33
+  },
+  {
+    "date": "2025-05-08",
+    "symbol": "RKLB",
+    "surprise_pct": -20.0
+  },
+  {
+    "date": "2025-05-14",
+    "symbol": "CSCO",
+    "surprise_pct": 4.0
+  },
+  {
+    "date": "2025-05-14",
+    "symbol": "CRWV",
+    "surprise_pct": -328.57
+  },
+  {
+    "date": "2025-05-15",
+    "symbol": "WMT",
+    "surprise_pct": 7.02
+  },
+  {
+    "date": "2025-05-15",
+    "symbol": "AMAT",
+    "surprise_pct": 3.46
+  },
+  {
+    "date": "2025-05-15",
+    "symbol": "TTWO",
+    "surprise_pct": 5.8
+  },
+  {
+    "date": "2025-05-20",
+    "symbol": "PANW",
+    "surprise_pct": 4.88
+  },
+  {
+    "date": "2025-05-22",
+    "symbol": "ADI",
+    "surprise_pct": 9.47
+  },
+  {
+    "date": "2025-05-22",
+    "symbol": "INTU",
+    "surprise_pct": 8.41
+  },
+  {
+    "date": "2025-05-22",
+    "symbol": "ROST",
+    "surprise_pct": 2.8
+  },
+  {
+    "date": "2025-05-22",
+    "symbol": "ADSK",
+    "surprise_pct": -3.33
+  },
+  {
+    "date": "2025-05-22",
+    "symbol": "WDAY",
+    "surprise_pct": 34.78
+  },
+  {
+    "date": "2025-05-27",
+    "symbol": "PDD",
+    "surprise_pct": -39.11
+  },
+  {
+    "date": "2025-05-28",
+    "symbol": "NVDA",
+    "surprise_pct": -3.75
+  },
+  {
+    "date": "2025-05-28",
+    "symbol": "SNPS",
+    "surprise_pct": 7.92
+  },
+  {
+    "date": "2025-05-29",
+    "symbol": "COST",
+    "surprise_pct": 0.71
+  },
+  {
+    "date": "2025-05-29",
+    "symbol": "MRVL",
+    "surprise_pct": 6.82
+  },
+  {
+    "date": "2025-06-03",
+    "symbol": "CRWD",
+    "surprise_pct": 17.86
+  },
+  {
+    "date": "2025-06-05",
+    "symbol": "AVGO",
+    "surprise_pct": -1.48
+  },
+  {
+    "date": "2025-06-12",
+    "symbol": "ADBE",
+    "surprise_pct": 2.24
+  },
+  {
+    "date": "2025-06-25",
+    "symbol": "MU",
+    "surprise_pct": 20.98
+  },
+  {
+    "date": "2025-06-25",
+    "symbol": "PAYX",
+    "surprise_pct": 0.85
+  },
+  {
+    "date": "2025-07-14",
+    "symbol": "FAST",
+    "surprise_pct": 3.57
+  },
+  {
+    "date": "2025-07-16",
+    "symbol": "ASML",
+    "surprise_pct": -23.4
+  },
+  {
+    "date": "2025-07-17",
+    "symbol": "NFLX",
+    "surprise_pct": 1.7
+  },
+  {
+    "date": "2025-07-17",
+    "symbol": "PEP",
+    "surprise_pct": 4.43
+  },
+  {
+    "date": "2025-07-17",
+    "symbol": "CTAS",
+    "surprise_pct": 1.87
+  },
+  {
+    "date": "2025-07-21",
+    "symbol": "NXPI",
+    "surprise_pct": 0.87
+  },
+  {
+    "date": "2025-07-21",
+    "symbol": "ROP",
+    "surprise_pct": 1.04
+  },
+  {
+    "date": "2025-07-22",
+    "symbol": "TXN",
+    "surprise_pct": 6.82
+  },
+  {
+    "date": "2025-07-22",
+    "symbol": "ISRG",
+    "surprise_pct": 20.39
+  },
+  {
+    "date": "2025-07-22",
+    "symbol": "PCAR",
+    "surprise_pct": 7.03
+  },
+  {
+    "date": "2025-07-22",
+    "symbol": "BKR",
+    "surprise_pct": 14.55
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "GOOG",
+    "surprise_pct": 7.44
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "GOOGL",
+    "surprise_pct": 7.44
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "TSLA",
+    "surprise_pct": -6.9
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "TMUS",
+    "surprise_pct": 5.58
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "CSX",
+    "surprise_pct": 4.76
+  },
+  {
+    "date": "2025-07-23",
+    "symbol": "ORLY",
+    "surprise_pct": 1.3
+  },
+  {
+    "date": "2025-07-24",
+    "symbol": "INTC",
+    "surprise_pct": -85.71
+  },
+  {
+    "date": "2025-07-24",
+    "symbol": "HON",
+    "surprise_pct": 4.17
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "STX",
+    "surprise_pct": 7.34
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "BKNG",
+    "surprise_pct": 8.82
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "SBUX",
+    "surprise_pct": -23.08
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "MDLZ",
+    "surprise_pct": 7.35
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "TER",
+    "surprise_pct": 5.56
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "EA",
+    "surprise_pct": 39.47
+  },
+  {
+    "date": "2025-07-29",
+    "symbol": "PYPL",
+    "surprise_pct": 7.69
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "MSFT",
+    "surprise_pct": 8.96
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "META",
+    "surprise_pct": 22.47
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "LRCX",
+    "surprise_pct": 10.83
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "WDC",
+    "surprise_pct": 11.85
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "QCOM",
+    "surprise_pct": 5.05
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "ADP",
+    "surprise_pct": 1.8
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "AEP",
+    "surprise_pct": 11.72
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "ODFL",
+    "surprise_pct": -1.55
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "KHC",
+    "surprise_pct": 7.81
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "DXCM",
+    "surprise_pct": 6.67
+  },
+  {
+    "date": "2025-07-30",
+    "symbol": "GEHC",
+    "surprise_pct": 16.48
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "AAPL",
+    "surprise_pct": 10.56
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "AMZN",
+    "surprise_pct": 26.32
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "KLAC",
+    "surprise_pct": 9.96
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "CMCSA",
+    "surprise_pct": 6.84
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "MPWR",
+    "surprise_pct": -3.91
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "XEL",
+    "surprise_pct": 19.05
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "EXC",
+    "surprise_pct": 5.41
+  },
+  {
+    "date": "2025-07-31",
+    "symbol": "ALNY",
+    "surprise_pct": 10.34
+  },
+  {
+    "date": "2025-08-01",
+    "symbol": "LIN",
+    "surprise_pct": 1.49
+  },
+  {
+    "date": "2025-08-01",
+    "symbol": "REGN",
+    "surprise_pct": 76.03
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "PLTR",
+    "surprise_pct": 62.5
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "VRTX",
+    "surprise_pct": 6.95
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "MELI",
+    "surprise_pct": -14.15
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "FANG",
+    "surprise_pct": 1.52
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "IDXX",
+    "surprise_pct": 9.67
+  },
+  {
+    "date": "2025-08-04",
+    "symbol": "AXON",
+    "surprise_pct": 962.5
+  },
+  {
+    "date": "2025-08-05",
+    "symbol": "AMD",
+    "surprise_pct": -3.57
+  },
+  {
+    "date": "2025-08-05",
+    "symbol": "AMGN",
+    "surprise_pct": 14.45
+  },
+  {
+    "date": "2025-08-05",
+    "symbol": "MAR",
+    "surprise_pct": 0.38
+  },
+  {
+    "date": "2025-08-05",
+    "symbol": "ALAB",
+    "surprise_pct": 163.64
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "SHOP",
+    "surprise_pct": 25.0
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "APP",
+    "surprise_pct": 13.57
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "FTNT",
+    "surprise_pct": 13.73
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "ABNB",
+    "surprise_pct": 10.75
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "DASH",
+    "surprise_pct": 54.76
+  },
+  {
+    "date": "2025-08-06",
+    "symbol": "TRI",
+    "surprise_pct": 4.82
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "GILD",
+    "surprise_pct": 3.08
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "CEG",
+    "surprise_pct": 4.37
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "MNST",
+    "surprise_pct": 8.33
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "DDOG",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "WBD",
+    "surprise_pct": 493.75
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "TTWO",
+    "surprise_pct": 490.91
+  },
+  {
+    "date": "2025-08-07",
+    "symbol": "RKLB",
+    "surprise_pct": -18.18
+  },
+  {
+    "date": "2025-08-12",
+    "symbol": "LITE",
+    "surprise_pct": 220.0
+  },
+  {
+    "date": "2025-08-12",
+    "symbol": "CRWV",
+    "surprise_pct": -10.2
+  },
+  {
+    "date": "2025-08-13",
+    "symbol": "CSCO",
+    "surprise_pct": 1.25
+  },
+  {
+    "date": "2025-08-14",
+    "symbol": "AMAT",
+    "surprise_pct": 5.98
+  },
+  {
+    "date": "2025-08-14",
+    "symbol": "SNDK",
+    "surprise_pct": 105.88
+  },
+  {
+    "date": "2025-08-18",
+    "symbol": "PANW",
+    "surprise_pct": -16.0
+  },
+  {
+    "date": "2025-08-20",
+    "symbol": "ADI",
+    "surprise_pct": 6.22
+  },
+  {
+    "date": "2025-08-21",
+    "symbol": "WMT",
+    "surprise_pct": -6.85
+  },
+  {
+    "date": "2025-08-21",
+    "symbol": "INTU",
+    "surprise_pct": 30.77
+  },
+  {
+    "date": "2025-08-21",
+    "symbol": "ROST",
+    "surprise_pct": 2.63
+  },
+  {
+    "date": "2025-08-21",
+    "symbol": "WDAY",
+    "surprise_pct": 25.0
+  },
+  {
+    "date": "2025-08-25",
+    "symbol": "PDD",
+    "surprise_pct": 71.6
+  },
+  {
+    "date": "2025-08-27",
+    "symbol": "NVDA",
+    "surprise_pct": 5.32
+  },
+  {
+    "date": "2025-08-27",
+    "symbol": "CRWD",
+    "surprise_pct": 89.47
+  },
+  {
+    "date": "2025-08-28",
+    "symbol": "MRVL",
+    "surprise_pct": -1.96
+  },
+  {
+    "date": "2025-08-28",
+    "symbol": "ADSK",
+    "surprise_pct": 0.58
+  },
+  {
+    "date": "2025-09-04",
+    "symbol": "AVGO",
+    "surprise_pct": -6.67
+  },
+  {
+    "date": "2025-09-04",
+    "symbol": "CPRT",
+    "surprise_pct": 10.81
+  },
+  {
+    "date": "2025-09-09",
+    "symbol": "SNPS",
+    "surprise_pct": -16.67
+  },
+  {
+    "date": "2025-09-11",
+    "symbol": "ADBE",
+    "surprise_pct": 1.9
+  },
+  {
+    "date": "2025-09-23",
+    "symbol": "MU",
+    "surprise_pct": 7.12
+  },
+  {
+    "date": "2025-09-24",
+    "symbol": "CTAS",
+    "surprise_pct": 0.84
+  },
+  {
+    "date": "2025-09-25",
+    "symbol": "COST",
+    "surprise_pct": 1.03
+  },
+  {
+    "date": "2025-09-30",
+    "symbol": "PAYX",
+    "surprise_pct": 0.83
+  },
+  {
+    "date": "2025-10-09",
+    "symbol": "PEP",
+    "surprise_pct": 0.88
+  },
+  {
+    "date": "2025-10-13",
+    "symbol": "FAST",
+    "surprise_pct": -3.33
+  },
+  {
+    "date": "2025-10-15",
+    "symbol": "ASML",
+    "surprise_pct": 2.23
+  },
+  {
+    "date": "2025-10-16",
+    "symbol": "CSX",
+    "surprise_pct": 4.76
+  },
+  {
+    "date": "2025-10-21",
+    "symbol": "NFLX",
+    "surprise_pct": -14.8
+  },
+  {
+    "date": "2025-10-21",
+    "symbol": "TXN",
+    "surprise_pct": 0.68
+  },
+  {
+    "date": "2025-10-21",
+    "symbol": "ISRG",
+    "surprise_pct": 24.05
+  },
+  {
+    "date": "2025-10-22",
+    "symbol": "TSLA",
+    "surprise_pct": -9.76
+  },
+  {
+    "date": "2025-10-22",
+    "symbol": "LRCX",
+    "surprise_pct": 4.13
+  },
+  {
+    "date": "2025-10-22",
+    "symbol": "ORLY",
+    "surprise_pct": 2.41
+  },
+  {
+    "date": "2025-10-23",
+    "symbol": "INTC",
+    "surprise_pct": 200.0
+  },
+  {
+    "date": "2025-10-23",
+    "symbol": "TMUS",
+    "surprise_pct": 7.02
+  },
+  {
+    "date": "2025-10-23",
+    "symbol": "HON",
+    "surprise_pct": 10.16
+  },
+  {
+    "date": "2025-10-23",
+    "symbol": "BKR",
+    "surprise_pct": 11.48
+  },
+  {
+    "date": "2025-10-23",
+    "symbol": "ROP",
+    "surprise_pct": 0.59
+  },
+  {
+    "date": "2025-10-27",
+    "symbol": "CDNS",
+    "surprise_pct": 5.59
+  },
+  {
+    "date": "2025-10-27",
+    "symbol": "NXPI",
+    "surprise_pct": 0.36
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "STX",
+    "surprise_pct": 18.96
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "BKNG",
+    "surprise_pct": 3.6
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "MDLZ",
+    "surprise_pct": 1.39
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "REGN",
+    "surprise_pct": 28.06
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "TER",
+    "surprise_pct": 8.97
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "EA",
+    "surprise_pct": -9.72
+  },
+  {
+    "date": "2025-10-28",
+    "symbol": "PYPL",
+    "surprise_pct": 12.61
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "GOOG",
+    "surprise_pct": 26.99
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "GOOGL",
+    "surprise_pct": 26.99
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "MSFT",
+    "surprise_pct": 13.15
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "META",
+    "surprise_pct": 9.68
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "KLAC",
+    "surprise_pct": 3.04
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "SBUX",
+    "surprise_pct": -5.45
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "ADP",
+    "surprise_pct": 2.05
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "MELI",
+    "surprise_pct": -11.77
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "AEP",
+    "surprise_pct": -0.55
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "ODFL",
+    "surprise_pct": 4.92
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "KHC",
+    "surprise_pct": 7.02
+  },
+  {
+    "date": "2025-10-29",
+    "symbol": "GEHC",
+    "surprise_pct": 1.9
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "AAPL",
+    "surprise_pct": 6.94
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "AMZN",
+    "surprise_pct": 23.42
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "WDC",
+    "surprise_pct": 11.56
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "GILD",
+    "surprise_pct": 14.88
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "CMCSA",
+    "surprise_pct": 1.82
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "MPWR",
+    "surprise_pct": 5.08
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "XEL",
+    "surprise_pct": -5.34
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "ALNY",
+    "surprise_pct": 300.0
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "MSTR",
+    "surprise_pct": 7754.55
+  },
+  {
+    "date": "2025-10-30",
+    "symbol": "DXCM",
+    "surprise_pct": 7.02
+  },
+  {
+    "date": "2025-10-31",
+    "symbol": "LIN",
+    "surprise_pct": 0.72
+  },
+  {
+    "date": "2025-11-03",
+    "symbol": "PLTR",
+    "surprise_pct": 50.0
+  },
+  {
+    "date": "2025-11-03",
+    "symbol": "VRTX",
+    "surprise_pct": 5.5
+  },
+  {
+    "date": "2025-11-03",
+    "symbol": "FANG",
+    "surprise_pct": 8.07
+  },
+  {
+    "date": "2025-11-03",
+    "symbol": "IDXX",
+    "surprise_pct": 8.28
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "AMGN",
+    "surprise_pct": 12.8
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "SHOP",
+    "surprise_pct": 12.5
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "MAR",
+    "surprise_pct": 2.49
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "LITE",
+    "surprise_pct": 1.69
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "ALAB",
+    "surprise_pct": 18.18
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "EXC",
+    "surprise_pct": 13.16
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "AXON",
+    "surprise_pct": -387.5
+  },
+  {
+    "date": "2025-11-04",
+    "symbol": "TRI",
+    "surprise_pct": 4.94
+  },
+  {
+    "date": "2025-11-05",
+    "symbol": "QCOM",
+    "surprise_pct": 9.4
+  },
+  {
+    "date": "2025-11-05",
+    "symbol": "APP",
+    "surprise_pct": 3.38
+  },
+  {
+    "date": "2025-11-05",
+    "symbol": "FTNT",
+    "surprise_pct": 18.18
+  },
+  {
+    "date": "2025-11-05",
+    "symbol": "DASH",
+    "surprise_pct": -19.12
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "SNDK",
+    "surprise_pct": 55.17
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "MNST",
+    "surprise_pct": 16.67
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "DDOG",
+    "surprise_pct": 57.14
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "ABNB",
+    "surprise_pct": -3.49
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "WBD",
+    "surprise_pct": -50.0
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "TTWO",
+    "surprise_pct": 121.28
+  },
+  {
+    "date": "2025-11-06",
+    "symbol": "MCHP",
+    "surprise_pct": -3.7
+  },
+  {
+    "date": "2025-11-07",
+    "symbol": "CEG",
+    "surprise_pct": -2.88
+  },
+  {
+    "date": "2025-11-10",
+    "symbol": "CRWV",
+    "surprise_pct": 42.59
+  },
+  {
+    "date": "2025-11-10",
+    "symbol": "RKLB",
+    "surprise_pct": 88.89
+  },
+  {
+    "date": "2025-11-11",
+    "symbol": "NBIS",
+    "surprise_pct": 25.0
+  },
+  {
+    "date": "2025-11-12",
+    "symbol": "CSCO",
+    "surprise_pct": 1.25
+  },
+  {
+    "date": "2025-11-13",
+    "symbol": "AMAT",
+    "surprise_pct": 2.84
+  },
+  {
+    "date": "2025-11-18",
+    "symbol": "PDD",
+    "surprise_pct": 39.2
+  },
+  {
+    "date": "2025-11-19",
+    "symbol": "NVDA",
+    "surprise_pct": 5.08
+  },
+  {
+    "date": "2025-11-19",
+    "symbol": "PANW",
+    "surprise_pct": 6.0
+  },
+  {
+    "date": "2025-11-20",
+    "symbol": "WMT",
+    "surprise_pct": 1.64
+  },
+  {
+    "date": "2025-11-20",
+    "symbol": "INTU",
+    "surprise_pct": 15.34
+  },
+  {
+    "date": "2025-11-20",
+    "symbol": "ROST",
+    "surprise_pct": 12.86
+  },
+  {
+    "date": "2025-11-20",
+    "symbol": "CPRT",
+    "surprise_pct": 2.5
+  },
+  {
+    "date": "2025-11-25",
+    "symbol": "ADI",
+    "surprise_pct": 1.8
+  },
+  {
+    "date": "2025-11-25",
+    "symbol": "ADSK",
+    "surprise_pct": 1.12
+  },
+  {
+    "date": "2025-11-25",
+    "symbol": "WDAY",
+    "surprise_pct": 18.48
+  },
+  {
+    "date": "2025-12-02",
+    "symbol": "CRWD",
+    "surprise_pct": -128.57
+  },
+  {
+    "date": "2025-12-02",
+    "symbol": "MRVL",
+    "surprise_pct": 6.9
+  },
+  {
+    "date": "2025-12-10",
+    "symbol": "ADBE",
+    "surprise_pct": 3.64
+  },
+  {
+    "date": "2025-12-10",
+    "symbol": "SNPS",
+    "surprise_pct": 31.94
+  },
+  {
+    "date": "2025-12-11",
+    "symbol": "AVGO",
+    "surprise_pct": 8.05
+  },
+  {
+    "date": "2025-12-11",
+    "symbol": "COST",
+    "surprise_pct": 1.88
+  },
+  {
+    "date": "2025-12-17",
+    "symbol": "MU",
+    "surprise_pct": 25.61
+  },
+  {
+    "date": "2025-12-18",
+    "symbol": "CTAS",
+    "surprise_pct": 1.68
+  },
+  {
+    "date": "2025-12-19",
+    "symbol": "PAYX",
+    "surprise_pct": 1.61
+  },
+  {
+    "date": "2026-01-22",
+    "symbol": "INTC",
+    "surprise_pct": 300.0
+  },
+  {
+    "date": "2026-01-22",
+    "symbol": "ISRG",
+    "surprise_pct": 14.75
+  },
+  {
+    "date": "2026-01-22",
+    "symbol": "CSX",
+    "surprise_pct": -7.14
+  },
+  {
+    "date": "2026-01-27",
+    "symbol": "TXN",
+    "surprise_pct": -2.31
+  },
+  {
+    "date": "2026-01-27",
+    "symbol": "STX",
+    "surprise_pct": 10.69
+  },
+  {
+    "date": "2026-01-27",
+    "symbol": "ROP",
+    "surprise_pct": 1.36
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "MSFT",
+    "surprise_pct": 6.7
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "META",
+    "surprise_pct": 8.16
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "TSLA",
+    "surprise_pct": -8.82
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "ASML",
+    "surprise_pct": -5.11
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "LRCX",
+    "surprise_pct": 8.55
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "SBUX",
+    "surprise_pct": -3.45
+  },
+  {
+    "date": "2026-01-28",
+    "symbol": "ADP",
+    "surprise_pct": 1.55
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "AAPL",
+    "surprise_pct": 7.17
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "KLAC",
+    "surprise_pct": 0.34
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "SNDK",
+    "surprise_pct": 76.13
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "WDC",
+    "surprise_pct": 8.74
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "CMCSA",
+    "surprise_pct": 12.0
+  },
+  {
+    "date": "2026-01-29",
+    "symbol": "HON",
+    "surprise_pct": 2.37
+  },
+  {
+    "date": "2026-02-02",
+    "symbol": "PLTR",
+    "surprise_pct": 41.18
+  },
+  {
+    "date": "2026-02-02",
+    "symbol": "NXPI",
+    "surprise_pct": 2.73
+  },
+  {
+    "date": "2026-02-02",
+    "symbol": "TER",
+    "surprise_pct": 32.35
+  },
+  {
+    "date": "2026-02-02",
+    "symbol": "IDXX",
+    "surprise_pct": 5.12
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "AMD",
+    "surprise_pct": 11.71
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "AMGN",
+    "surprise_pct": 11.13
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "PEP",
+    "surprise_pct": 0.89
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "MDLZ",
+    "surprise_pct": 2.86
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "LITE",
+    "surprise_pct": 27.84
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "EA",
+    "surprise_pct": 0.71
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "PYPL",
+    "surprise_pct": -4.65
+  },
+  {
+    "date": "2026-02-03",
+    "symbol": "TTWO",
+    "surprise_pct": 107.5
+  },
+  {
+    "date": "2026-02-04",
+    "symbol": "GOOG",
+    "surprise_pct": 9.73
+  },
+  {
+    "date": "2026-02-04",
+    "symbol": "GOOGL",
+    "surprise_pct": 9.73
+  },
+  {
+    "date": "2026-02-04",
+    "symbol": "ORLY",
+    "surprise_pct": -1.39
+  },
+  {
+    "date": "2026-02-04",
+    "symbol": "ODFL",
+    "surprise_pct": 2.83
+  },
+  {
+    "date": "2026-02-04",
+    "symbol": "GEHC",
+    "surprise_pct": 0.7
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "AMZN",
+    "surprise_pct": -1.52
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "LIN",
+    "surprise_pct": 0.48
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "FTNT",
+    "surprise_pct": 7.58
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "MPWR",
+    "surprise_pct": -4.68
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "XEL",
+    "surprise_pct": -1.03
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "TRI",
+    "surprise_pct": 0.94
+  },
+  {
+    "date": "2026-02-05",
+    "symbol": "MSTR",
+    "surprise_pct": -193.29
+  },
+  {
+    "date": "2026-02-11",
+    "symbol": "CSCO",
+    "surprise_pct": 7.32
+  },
+  {
+    "date": "2026-02-11",
+    "symbol": "TMUS",
+    "surprise_pct": 5.42
+  },
+  {
+    "date": "2026-02-11",
+    "symbol": "SHOP",
+    "surprise_pct": -7.32
+  },
+  {
+    "date": "2026-02-11",
+    "symbol": "APP",
+    "surprise_pct": 12.11
+  },
+  {
+    "date": "2026-02-11",
+    "symbol": "KHC",
+    "surprise_pct": 9.84
+  },
+  {
+    "date": "2026-02-18",
+    "symbol": "ADI",
+    "surprise_pct": 6.96
+  },
+  {
+    "date": "2026-02-18",
+    "symbol": "BKNG",
+    "surprise_pct": 1.18
+  },
+  {
+    "date": "2026-02-18",
+    "symbol": "DASH",
+    "surprise_pct": -17.24
+  },
+  {
+    "date": "2026-02-23",
+    "symbol": "FANG",
+    "surprise_pct": -7.45
+  },
+  {
+    "date": "2026-02-24",
+    "symbol": "CEG",
+    "surprise_pct": 4.55
+  },
+  {
+    "date": "2026-02-24",
+    "symbol": "MELI",
+    "surprise_pct": -6.29
+  },
+  {
+    "date": "2026-02-24",
+    "symbol": "AXON",
+    "surprise_pct": 366.67
+  },
+  {
+    "date": "2026-02-24",
+    "symbol": "KDP",
+    "surprise_pct": 1.69
+  },
+  {
+    "date": "2026-02-24",
+    "symbol": "WDAY",
+    "surprise_pct": 30.69
+  },
+  {
+    "date": "2026-02-25",
+    "symbol": "NVDA",
+    "surprise_pct": 8.28
+  },
+  {
+    "date": "2026-02-25",
+    "symbol": "SNPS",
+    "surprise_pct": 10.7
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "MNST",
+    "surprise_pct": 4.08
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "INTU",
+    "surprise_pct": 26.91
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "WBD",
+    "surprise_pct": -600.0
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "ADSK",
+    "surprise_pct": 5.7
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "CRWV",
+    "surprise_pct": -37.7
+  },
+  {
+    "date": "2026-02-26",
+    "symbol": "RKLB",
+    "surprise_pct": -25.0
+  },
+  {
+    "date": "2026-03-03",
+    "symbol": "CRWD",
+    "surprise_pct": 15.0
+  },
+  {
+    "date": "2026-03-03",
+    "symbol": "ROST",
+    "surprise_pct": 6.38
+  },
+  {
+    "date": "2026-03-04",
+    "symbol": "AVGO",
+    "surprise_pct": 5.39
+  },
+  {
+    "date": "2026-03-05",
+    "symbol": "COST",
+    "surprise_pct": 0.66
+  },
+  {
+    "date": "2026-03-05",
+    "symbol": "MRVL",
+    "surprise_pct": 6.45
+  },
+  {
+    "date": "2026-03-12",
+    "symbol": "ADBE",
+    "surprise_pct": -0.41
+  },
+  {
+    "date": "2026-03-18",
+    "symbol": "MU",
+    "surprise_pct": 39.81
+  },
+  {
+    "date": "2026-03-25",
+    "symbol": "PDD",
+    "surprise_pct": -26.48
+  },
+  {
+    "date": "2026-03-25",
+    "symbol": "CTAS",
+    "surprise_pct": 0.81
+  },
+  {
+    "date": "2026-03-25",
+    "symbol": "PAYX",
+    "surprise_pct": 1.79
+  },
+  {
+    "date": "2026-04-15",
+    "symbol": "ASML",
+    "surprise_pct": 8.42
+  },
+  {
+    "date": "2026-04-16",
+    "symbol": "NFLX",
+    "surprise_pct": -7.89
+  },
+  {
+    "date": "2026-04-16",
+    "symbol": "PEP",
+    "surprise_pct": 3.87
+  },
+  {
+    "date": "2026-04-21",
+    "symbol": "ISRG",
+    "surprise_pct": 17.79
+  },
+  {
+    "date": "2026-04-22",
+    "symbol": "TSLA",
+    "surprise_pct": -14.29
+  },
+  {
+    "date": "2026-04-22",
+    "symbol": "LRCX",
+    "surprise_pct": 8.09
+  },
+  {
+    "date": "2026-04-22",
+    "symbol": "TXN",
+    "surprise_pct": 22.63
+  },
+  {
+    "date": "2026-04-22",
+    "symbol": "CSX",
+    "surprise_pct": 10.26
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "INTC",
+    "surprise_pct": 270.0
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "CMCSA",
+    "surprise_pct": 8.22
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "HON",
+    "surprise_pct": 6.06
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "BKR",
+    "surprise_pct": 16.0
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "KDP",
+    "surprise_pct": 5.41
+  },
+  {
+    "date": "2026-04-23",
+    "symbol": "ROP",
+    "surprise_pct": 3.82
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "TMUS",
+    "surprise_pct": 31.07
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "STX",
+    "surprise_pct": 20.25
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "BKNG",
+    "surprise_pct": 3.64
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "SBUX",
+    "surprise_pct": 13.64
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "MDLZ",
+    "surprise_pct": 9.84
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "PCAR",
+    "surprise_pct": 1.77
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "NXPI",
+    "surprise_pct": 0.38
+  },
+  {
+    "date": "2026-04-28",
+    "symbol": "TER",
+    "surprise_pct": 21.33
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "GOOG",
+    "surprise_pct": 93.56
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "GOOGL",
+    "surprise_pct": 93.56
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "MSFT",
+    "surprise_pct": 4.91
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "AMZN",
+    "surprise_pct": -2.5
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "META",
+    "surprise_pct": 8.94
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "KLAC",
+    "surprise_pct": 2.62
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "QCOM",
+    "surprise_pct": 2.63
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "ADP",
+    "surprise_pct": 2.74
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "ORLY",
+    "surprise_pct": 4.35
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "REGN",
+    "surprise_pct": 19.43
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "ODFL",
+    "surprise_pct": 8.57
+  },
+  {
+    "date": "2026-04-29",
+    "symbol": "GEHC",
+    "surprise_pct": -7.48
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "AAPL",
+    "surprise_pct": 4.69
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "SNDK",
+    "surprise_pct": 63.87
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "AMGN",
+    "surprise_pct": 8.88
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "WDC",
+    "surprise_pct": 14.91
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "MPWR",
+    "surprise_pct": 7.87
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "ALNY",
+    "surprise_pct": 65.93
+  },
+  {
+    "date": "2026-04-30",
+    "symbol": "DXCM",
+    "surprise_pct": 19.15
+  },
+  {
+    "date": "2026-05-01",
+    "symbol": "LIN",
+    "surprise_pct": 1.41
+  },
+  {
+    "date": "2026-05-04",
+    "symbol": "PLTR",
+    "surprise_pct": 13.64
+  },
+  {
+    "date": "2026-05-04",
+    "symbol": "VRTX",
+    "surprise_pct": 7.05
+  },
+  {
+    "date": "2026-05-04",
+    "symbol": "FANG",
+    "surprise_pct": 19.15
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "AMD",
+    "surprise_pct": 4.72
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "SHOP",
+    "surprise_pct": 22.73
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "AEP",
+    "surprise_pct": 5.81
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "LITE",
+    "surprise_pct": 3.87
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "EA",
+    "surprise_pct": -33.13
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "ALAB",
+    "surprise_pct": 40.63
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "PYPL",
+    "surprise_pct": 5.51
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "IDXX",
+    "surprise_pct": 1.46
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "TRI",
+    "surprise_pct": 1.65
+  },
+  {
+    "date": "2026-05-05",
+    "symbol": "MSTR",
+    "surprise_pct": -1021.7
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "ARM",
+    "surprise_pct": -5.26
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "APP",
+    "surprise_pct": 4.71
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "FTNT",
+    "surprise_pct": 37.74
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "MAR",
+    "surprise_pct": 5.43
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "DASH",
+    "surprise_pct": 13.51
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "WBD",
+    "surprise_pct": -1070.0
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "EXC",
+    "surprise_pct": 2.25
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "AXON",
+    "surprise_pct": 1000.0
+  },
+  {
+    "date": "2026-05-06",
+    "symbol": "KHC",
+    "surprise_pct": 16.0
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "GILD",
+    "surprise_pct": 7.41
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "MNST",
+    "surprise_pct": 9.43
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "MELI",
+    "surprise_pct": -6.26
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "DDOG",
+    "surprise_pct": 183.33
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "ABNB",
+    "surprise_pct": -16.13
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "MCHP",
+    "surprise_pct": 12.82
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "CRWV",
+    "surprise_pct": -17.95
+  },
+  {
+    "date": "2026-05-07",
+    "symbol": "RKLB",
+    "surprise_pct": 14.29
+  },
+  {
+    "date": "2026-05-11",
+    "symbol": "CEG",
+    "surprise_pct": 7.03
+  },
+  {
+    "date": "2026-05-13",
+    "symbol": "CSCO",
+    "surprise_pct": 4.65
+  },
+  {
+    "date": "2026-05-13",
+    "symbol": "NBIS",
+    "surprise_pct": 71.6
+  },
+  {
+    "date": "2026-05-14",
+    "symbol": "AMAT",
+    "surprise_pct": 6.72
+  },
+  {
+    "date": "2026-05-20",
+    "symbol": "NVDA",
+    "surprise_pct": 10.0
+  },
+  {
+    "date": "2026-05-20",
+    "symbol": "ADI",
+    "surprise_pct": 6.92
+  },
+  {
+    "date": "2026-05-20",
+    "symbol": "INTU",
+    "surprise_pct": 2.7
+  },
+  {
+    "date": "2026-05-21",
+    "symbol": "WMT",
+    "surprise_pct": 1.54
+  },
+  {
+    "date": "2026-05-21",
+    "symbol": "ROST",
+    "surprise_pct": 18.82
+  },
+  {
+    "date": "2026-05-21",
+    "symbol": "TTWO",
+    "surprise_pct": 142.11
+  },
+  {
+    "date": "2026-05-21",
+    "symbol": "WDAY",
+    "surprise_pct": -3.42
+  },
+  {
+    "date": "2026-05-21",
+    "symbol": "CPRT",
+    "surprise_pct": 4.88
+  },
+  {
+    "date": "2026-05-27",
+    "symbol": "MRVL",
+    "surprise_pct": -3.28
+  },
+  {
+    "date": "2026-05-27",
+    "symbol": "PDD",
+    "surprise_pct": -39.41
+  },
+  {
+    "date": "2026-05-27",
+    "symbol": "SNPS",
+    "surprise_pct": 7.14
+  },
+  {
+    "date": "2026-05-28",
+    "symbol": "ADSK",
+    "surprise_pct": 10.85
+  },
+  {
+    "date": "2026-06-02",
+    "symbol": "PANW",
+    "surprise_pct": -25.58
+  },
+  {
+    "date": "2026-06-03",
+    "symbol": "AVGO",
+    "surprise_pct": 7.43
+  },
+  {
+    "date": "2026-06-03",
+    "symbol": "CRWD",
+    "surprise_pct": 30.77
+  },
+  {
+    "date": "2026-06-11",
+    "symbol": "ADBE",
+    "surprise_pct": -3.38
+  },
+  {
+    "date": "2026-06-24",
+    "symbol": "MU",
+    "surprise_pct": 18.64
+  },
+  {
+    "date": "2026-06-24",
+    "symbol": "PAYX",
+    "surprise_pct": 0.76
+  },
+  {
+    "date": "2026-07-09",
+    "symbol": "PEP",
+    "surprise_pct": 0.46
+  },
+  {
+    "date": "2026-07-15",
+    "symbol": "ASML",
+    "surprise_pct": 10.4
+  },
+  {
+    "date": "2026-07-15",
+    "symbol": "CTAS",
+    "surprise_pct": 4.03
+  },
+  {
+    "date": "2026-07-16",
+    "symbol": "NFLX",
+    "surprise_pct": 1.27
+  },
+  {
+    "date": "2026-07-16",
+    "symbol": "ISRG",
+    "surprise_pct": 17.33
+  },
+  {
+    "date": "2026-07-22",
+    "symbol": "GOOG",
+    "surprise_pct": 216.32
+  },
+  {
+    "date": "2026-07-22",
+    "symbol": "GOOGL",
+    "surprise_pct": 216.32
+  },
+  {
+    "date": "2026-07-22",
+    "symbol": "TSLA",
+    "surprise_pct": -87.5
+  },
+  {
+    "date": "2026-07-22",
+    "symbol": "TXN",
+    "surprise_pct": 12.04
+  },
+  {
+    "date": "2026-07-22",
+    "symbol": "CSX",
+    "surprise_pct": 8.0
+  },
+  {
+    "date": "2026-07-23",
+    "symbol": "INTC",
+    "surprise_pct": 200.0
+  },
+  {
+    "date": "2026-07-23",
+    "symbol": "TMUS",
+    "surprise_pct": 25.7
+  },
+  {
+    "date": "2026-07-23",
+    "symbol": "CMCSA",
+    "surprise_pct": 7.22
+  },
+  {
+    "date": "2026-07-23",
+    "symbol": "HON",
+    "surprise_pct": 8.33
+  },
+  {
+    "date": "2026-07-23",
+    "symbol": "ROP",
+    "surprise_pct": 1.7
   }
 ]
