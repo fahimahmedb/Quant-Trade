@@ -312,6 +312,38 @@ File "à faire" épuisée après le #109 — 3 nouvelles pistes ajoutées ci-des
 | 111 | Fraction de titres NDX-100 en drawdown PROFOND (≥20% sous leur plus haut glissant 252j, seuil ABSOLU en pourcentage) comme porte contrarian — distincte du #89 (proximité RELATIVE au minimum glissant, ≤105% du plus bas) : mesure un seuil de douleur fixe plutôt qu'une position relative dans le range | prix NDX-100 déjà récupérés | à faire |
 | 112 | Spread de rendement décile supérieur moins décile inférieur de momentum (écart entre gagnants et perdants EXTRÊMES, mesure de QUEUE de distribution) comme porte du mécanisme hiérarchique — distinct de l'écart-type global de dispersion du momentum (#100) qui pondère tous les titres également, pas seulement les extrêmes | prix NDX-100 déjà récupérés | à faire |
 
+## Validation SPA + DSR de la famille (29/07/2026, demande explicite utilisateur)
+
+Chaque hypothèse ci-dessus a été testée individuellement (n_trials=1 par cycle, honnête),
+mais la FAMILLE des 13 overlays "vol-targeting hiérarchique gaté" (#78, #89, #90, #94, #96,
+#97, #98, #99, #100, #104, #106, #109, breadth interne) partage un mécanisme strictement
+identique (CAP=2.0x/VOL_WINDOW=20j/TARGET_VOL_ANNUAL=20%, même actif NDX, mêmes coûts) et
+n'avait jamais été corrigée conjointement pour les essais multiples — contrairement à
+l'Étape C qui applique déjà SPA à sa famille GARCH. Pré-enregistré dans
+`PREREG_backlog_spa_dsr_validation.md`, exécuté par
+`scripts/nonml_backlog_spa_dsr_validation.py` (réimporte fidèlement les fonctions déjà
+committées de chacun des 13 scripts, aucune réimplémentation divergente).
+
+**Résultat, sur la fenêtre commune (1133 séances, intersection des 13 périodes testables) :**
+- **SPA (Hansen) : p=0,1924 — H0 NON REJETÉE.** Aucun des 13 membres ne bat significativement
+  Buy&Hold une fois corrigé pour les essais multiples.
+- **DSR (meilleur membre = momentum_dispersion, Sharpe ann. +0,62) : DSR=0,8883 < 0,95.** Le
+  Sharpe du meilleur membre de la famille n'est PAS statistiquement distinguable du hasard une
+  fois corrigé pour n_trials=13.
+- DSR secondaire approximatif sur les 43/110 entrées du backlog au Sharpe extractible
+  (n_trials≈43, indicatif seulement, univers hétérogène) : confirme la même conclusion à plus
+  large échelle — l'inflation du seuil de sélection (Sharpe max attendu sous H0) est encore
+  plus sévère.
+
+**Conclusion honnête : les PASS individuels de cette famille, bien que chacun rigoureusement
+pré-enregistré et testé à n_trials=1, ne survivent PAS à une correction jointe pour les essais
+multiples.** Ce résultat est cohérent avec l'Étape C (SPA échoue aussi sur le Composite,
+échantillon insuffisant) et l'Étape B (aucun signal ne bat Buy&Hold à DSR>0,95). Il ne
+contredit pas l'honnêteté du protocole individuel (chaque cycle a bien respecté n_trials=1,
+aucun retuning, rapportage complet y compris FAIL) mais quantifie explicitement le risque de
+data-snooping accumulé au niveau de la famille — l'avertissement même que
+PROTOCOLE_ANTI_SNOOPING.md anticipait. Voir `results/nonml_backlog_spa_dsr_validation.md`.
+
 | 44 | Vol-targeting DÉFENSIF uniquement (position = min(1.0, vol_cible/vol_réalisée), JAMAIS de levier au-dessus de 1.0x) — teste si limiter le mécanisme du #43 à la seule réduction d'exposition (pas d'amplification) rapproche mieux du compromis rendement/MDD visé par l'Étape D du projet | OHLC déjà en local | **FAIT — FAIL** (0/5, Sharpe amélioré sur 5/5 et MDD massivement réduit partout mais rendement systématiquement inférieur à Buy&Hold — même écueil structurel qu'un design sans jamais d'amplification, déjà identifié aux tout premiers cycles #2/#6/#8), voir `results/nonml_defensive_vol_targeting_overlay_result.md` |
 | 45 | Vol-targeting continu (#43) appliqué au portefeuille Leaders (#4, edge positif) plutôt qu'à Buy&Hold — teste si scaler un portefeuille à edge positif change la conclusion (le #43 scalait un indice sans edge propre) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe quasi inchangé +0,91→+0,92, rendement +98,7%→+83,0%, MDD amélioré -21,3%→-17,7% mais insuffisant selon la règle renforcée — l'exposition moyenne reste sous 1.0x (0,91x) même appliquée à un portefeuille à edge positif, même écueil que le #43/#44), voir `results/nonml_leaders_vol_targeting_overlay_result.md` |
 | 46 | Vol-targeting continu (#43) avec cible de vol plus élevée (20% au lieu de 15%) — hypothèse distincte et nouvellement pré-enregistrée (pas un retuning du #43) : teste si le sous-dimensionnement moyen observé (position souvent <1x) explique le manque de rendement, sans changer le mécanisme | OHLC déjà en local | **FAIT — PASS (4/5)** : confirme l'hypothèse, exposition moyenne relevée à 1,10x-1,51x (4/5 marchés), ferme l'écart de rendement du #43 tout en conservant une réduction substantielle du MDD partout (même sur DAX, seul échec : MDD -72,7%→-67,1%). Plateau robuste 4-5/5 sur les grilles CAP 1.5x-3.0x et fenêtre 15j-30j. Voir `results/nonml_vol_targeting_20_overlay_result.md` |
