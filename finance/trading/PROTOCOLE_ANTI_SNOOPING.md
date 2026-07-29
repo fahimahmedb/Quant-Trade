@@ -112,6 +112,62 @@ semblent cohérents.
 - Si le prospectif déçoit : le modèle est abandonné, jamais retouché puis
   re-testé sur la même fenêtre (ce serait à nouveau du data snooping).
 
+## 9. Batterie de validation renforcée pour tout PASS du backlog non-ML
+   (ajoutée le 29/07/2026, suite à la validation SPA/DSR + audit adversarial
+   de la famille des 13 overlays vol-targeting — `results/nonml_backlog_
+   spa_dsr_validation.md` et `..._audit.md` — qui a montré que des PASS
+   individuels honnêtes (n_trials=1 chacun) ne survivaient PAS à une
+   correction jointe pour essais multiples : SPA p=0,19, DSR=0,89<0,95,
+   meilleur membre instable d'une sous-période à l'autre. Demande explicite
+   utilisateur : appliquer systématiquement cette rigueur à CHAQUE futur PASS,
+   pas seulement à une famille homogène ex post, pour éviter les "fausses
+   joies".)
+
+Un résultat individuel PASS (Sharpe ET rendement > référence, n_trials=1,
+règle renforcée habituelle) n'est **jamais** un verdict final. Avant de le
+déclarer validé, `scripts/nonml_pass_validation_battery.py <nom>` doit
+tourner et passer TOUS les contrôles suivants :
+
+a. **Stress de coûts** : le PASS doit tenir à 3x et 5x le coût
+   pré-enregistré (5 bps → 15 bps et 25 bps), pas seulement au coût nominal.
+b. **Stress de crise** : sur les fenêtres 2000-2002, 2007-2009, 02-04/2020,
+   2022 (quand couvertes par l'historique dispo), le MDD de l'overlay ne
+   doit pas être PIRE que celui de Buy&Hold sur la même fenêtre — un
+   mécanisme qui amplifie les pertes en crash est disqualifié même s'il
+   gagne en moyenne.
+c. **Stabilité temporelle** : découpage en folds non chevauchants + embargo
+   5j (analogue au walk-forward d'Étape B, adapté puisqu'aucun paramètre
+   n'est ajusté sur un train set ici — voir note méthodologique dans
+   `results/nonml_backlog_spa_dsr_validation_audit.md`). Le candidat doit
+   battre le benchmark sur une MAJORITÉ des folds, pas seulement en moyenne
+   pleine période.
+d. **SPA à 1 candidat** contre le benchmark (`spa_test`, bootstrap
+   stationnaire) — teste CE candidat spécifiquement, distinct du SPA
+   famille-entière (qui reste le test le plus sévère dès qu'un groupe de
+   PASS structurellement apparentés s'accumule, comme pour la famille
+   vol-targeting).
+e. **DSR avec `n_trials` = nombre total d'hypothèses testées dans le
+   backlog à cette date** (lu automatiquement dans
+   `NONML_STRATEGY_BACKLOG.md`, ligne "X PASS sur Y hypothèses testées"),
+   **jamais 1** — extension directe de la Règle 2 au niveau du backlog
+   entier plutôt qu'à une seule grille locale. `var_trials` estimé à partir
+   des Sharpe déjà extractibles de l'historique du backlog.
+
+**Seulement si TOUS les contrôles a-e tiennent** : notifier l'utilisateur
+via le bot Telegram (`scripts/notify_telegram.py`) — CE résultat mérite une
+alerte immédiate, contrairement aux rapports périodiques de routine — PUIS,
+seulement après cette notification, lancer un audit adversarial fin
+(recalcul indépendant par seconde implémentation, test anti-lookahead par
+mutation, calibration des outils sur données synthétiques sans edge — même
+gabarit que `nonml_backlog_spa_dsr_validation_audit.py`) pour chercher
+activement les failles restantes.
+
+**Si l'audit révèle un bug de code** (pas seulement un résultat
+défavorable) : corriger le bug ET RELANCER tous les tests de cette
+batterie sur ce PASS avant toute nouvelle déclaration de statut — ne
+jamais laisser un verdict PASS reposer sur un calcul dont un bug a déjà
+été trouvé ailleurs dans la même batterie.
+
 ---
 
 ## Application immédiate
