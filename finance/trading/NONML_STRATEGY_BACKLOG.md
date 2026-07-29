@@ -84,9 +84,9 @@ ajoutées ci-dessus (#14-16).
 
 ## Backlog #56-58 (29/07/2026)
 
-27 PASS sur 55 hypothèses testées (ajout : #55 FAIL). File "à faire" épuisée après le #55 — 3 nouvelles pistes ajoutées ci-dessous, aucune encore testée.
+27 PASS sur 56 hypothèses testées (ajout : #55 FAIL, #56 FAIL).
 
-| 56 | Effet jour-de-semaine (Monday effect / faiblesse du lundi, French 1980) : overlay levé pendant les jours de semaine historiquement les plus forts (à déterminer sur les données déjà en local, PAS un retuning — seuil fixé a priori sur littérature), jamais testé malgré ToM/Halloween/cycle présidentiel déjà couverts | OHLC déjà en local | à faire |
+| 56 | Effet jour-de-semaine (Monday effect / faiblesse du lundi, French 1980) : overlay levé pendant les jours de semaine historiquement les plus forts (à déterminer sur les données déjà en local, PAS un retuning — seuil fixé a priori sur littérature), jamais testé malgré ToM/Halloween/cycle présidentiel déjà couverts | OHLC déjà en local | **FAIT — FAIL (0/5)** : CAP=2,0x mardi-vendredi (littérature Monday effect), 1,0x lundi. La fenêtre "forte" couvre ~80-81% des séances sur les 5 marchés — équivaut à un levier quasi permanent, MDD massivement dégradé partout (ex. DAX -72,7%→-92,4%). Même quand le rendement dépasse Buy&Hold par effet multiplicatif du levier (NDX, S&P 500), le Sharpe reste inférieur → FAIL au critère renforcé. Audit confirme 0 écart par recalcul indépendant (datetime.weekday()) et distribution des jours homogène, pas un bug. Voir `results/nonml_day_of_week_overlay_result.md` et `results/nonml_day_of_week_overlay_audit.md` |
 | 57 | Combiner confirmation multi-marché (breadth, #52, PASS marginal/fragile en overlay binaire) avec le mécanisme hiérarchique vol-targeting (style #47/#51/#53/#54) au lieu du simple CAP fixe déjà testé — teste si le signal de breadth, faible en overlay binaire, devient plus robuste comme porte du vol-targeting | OHLC déjà en local (NDX + Russell 2000) | à faire |
 | 58 | Régime de volatilité réalisée FAIBLE (vol 20j sous sa propre médiane glissante) comme TROISIÈME type de signal de porte pour le mécanisme hiérarchique vol-targeting, distinct de la tendance (#47) et du calendrier (#54) — motivé par le clustering de volatilité déjà documenté dans l'Étape A/C de ce projet ("le calme appelle le calme") | OHLC déjà en local | à faire |
 
