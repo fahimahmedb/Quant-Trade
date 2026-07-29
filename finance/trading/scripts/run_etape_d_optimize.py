@@ -2,6 +2,18 @@
 vol-targeting (GJR-GARCH(1,1)-t) sur NDX (historique long).
 Produit results/etape_D_overlay_optimized.md.
 
+CORRECTION (cycle #118 du backlog non-ML, 29/07/2026) : ce script etait
+CASSE depuis la reorganisation du repo (chemin ROOT/data au lieu de
+REPO_ROOT/data, cf. Regle 4 de PROTOCOLE_ANTI_SNOOPING.md) -- corrige.
+Le fichier de resultat committe etait donc OBSOLETE, produit AVANT le
+commit ee8a2fd (grille reduite de 12 combinaisons a 1 seule combinaison
+pre-enregistree, cap=1.50x/pctl=95e, pour eliminer le biais de selection
+documente en Regle 2 de PROTOCOLE_ANTI_SNOOPING.md) -- re-execute avec
+le chemin corrige et la grille CORRECTE (1 combinaison). Le texte du
+docstring ci-dessous decrit le design ORIGINAL a 12 combinaisons pour
+tracabilite historique ; CAP_GRID/PCTL_GRID ci-dessous refletent le
+design ACTUEL (1 combinaison, deja fixe par ee8a2fd).
+
 Contexte (cf. CLAUDE.md, resultats etablis A/B/C, reutilises tels quels) :
 Etape C - GJR-GARCH(1,1)-t est le modele de volatilite le plus robuste (SPA
 valide sur NDX, p=0.0000 a h=1). Etape D (premiere passe, resultats/
@@ -54,8 +66,10 @@ from pathlib import Path
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT.parent / "src"))
+ROOT = Path(__file__).resolve().parents[1]          # finance/trading
+FINANCE_ROOT = ROOT.parent                          # finance
+REPO_ROOT = FINANCE_ROOT.parent                     # Quant-Trade
+sys.path.insert(0, str(FINANCE_ROOT / "src"))
 warnings.filterwarnings("ignore")
 
 from data_loader import load_ohlc, log_returns_pct  # noqa: E402
@@ -72,7 +86,7 @@ T0 = 750
 COST_BPS = 5.0
 CAP_GRID = [1.50]                             # Pre-registered (Phase 1 fix: single combo)
 PCTL_GRID = [95]                              # Pre-registered (Phase 1 fix: single combo)
-DATA_PATH = ROOT / "data" / "nasdaq100_daily.txt"
+DATA_PATH = REPO_ROOT / "data" / "nasdaq100_daily.txt"
 DEFAULT_REFIT = 21
 REFIT_EVERY = int(os.environ.get("REFIT_EVERY", DEFAULT_REFIT))
 OUT = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "results" / "etape_D_overlay_optimized.md")
@@ -158,14 +172,14 @@ w(f"**Protocole figé** : NDX (`{DATA_PATH.name}`), fenêtre initiale {T0} obs "
   f"OOS : {dates[T0]:%d/%m/%Y} → {dates[-1]:%d/%m/%Y} ({T_oos} obs, "
   f"~{n_years:.1f} ans). Grille : `vol_target_cap` ∈ {CAP_GRID} × "
   f"`extreme_cut_percentile` ∈ {PCTL_GRID} = **{n_trials} combinaisons "
-  "exactement**, aucun ajout a posteriori (N=12 pour le DSR).\n")
+  f"exactement**, aucun ajout a posteriori (N={n_trials} pour le DSR).\n")
 w(f"**Référence Buy & Hold** : Sharpe ann. {metr_bh['sharpe_ann']:+.2f}, "
   f"Calmar {metr_bh['calmar']:+.2f}, MDD {metr_bh['max_drawdown_pct']:.1f}%, "
   f"rendement ann. {metr_bh['ann_return_pct']:+.1f}%.\n")
 
-w("## Grille des 12 combinaisons (triée par MDD, priorité absolue)\n")
+w(f"## Grille des {n_trials} combinaison(s) (triée par MDD, priorité absolue)\n")
 w("| cap | pctl coupe | Sharpe ann. | Sortino ann. | **Calmar** | **MDD %** | "
-  "Rdt ann. % | Turnover | DSR (N=12) | ΔMDD rel. | Rdt/BH | Critère |")
+  f"Rdt ann. % | Turnover | DSR (N={n_trials}) | ΔMDD rel. | Rdt/BH | Critère |")
 w("|---|---|---|---|---|---|---|---|---|---|---|---|")
 for row in rows_sorted:
     me = row["metrics"]
@@ -184,8 +198,8 @@ w("")
 
 w("## Verdict — meilleure combinaison et critère de succès\n")
 w("Succès = réduction du MDD >25% (relatif) **et** rendement annualisé "
-  "conservé ≥80% de Buy & Hold. Vérifié, pas supposé, sur les 12 "
-  "combinaisons de la grille figée ci-dessus.\n")
+  f"conservé ≥80% de Buy & Hold. Vérifié, pas supposé, sur les {n_trials} "
+  "combinaison(s) de la grille figée ci-dessus.\n")
 w(f"**Meilleure combinaison** (critère de succès atteint en priorité, puis "
   f"réduction de MDD, puis Calmar comme départage entre ex-aequo) : cap "
   f"**{best['cap']:.2f}×**, coupe au "
@@ -197,17 +211,17 @@ w(f"**Meilleure combinaison** (critère de succès atteint en priorité, puis "
 
 if any_success:
     n_ok = sum(1 for row in rows if row["ok"])
-    w(f"**Verdict honnête** : {n_ok}/12 combinaison(s) de la grille atteignent "
+    w(f"**Verdict honnête** : {n_ok}/{n_trials} combinaison(s) de la grille atteignent "
       "le critère de succès explicite (>25% réduction MDD, ≥80% rendement "
       "conservé) sur NDX. Le réglage optimal ci-dessus apporte un bénéfice "
       "matériel de réduction du drawdown sans sacrifier l'essentiel du "
       "rendement Buy & Hold. Rappel anti-data-snooping : ce résultat provient "
-      "d'une grille fixée a priori (12 combinaisons, DSR déflaté sur cette "
+      f"d'une grille fixée a priori ({n_trials} combinaison(s), DSR déflaté sur cette "
       "famille), pas d'un balayage libre a posteriori — mais il reste "
       "spécifique à ce jeu de données (NDX) et n'a pas été re-vérifié sur le "
       "Composite (5 ans) dans cette passe.")
 else:
-    w("**Verdict honnête : aucune des 12 combinaisons de la grille n'atteint "
+    w(f"**Verdict honnête : aucune des {n_trials} combinaison(s) de la grille n'atteint "
       "le critère de succès complet** (>25% réduction MDD relatif ET ≥80% "
       "du rendement annualisé Buy & Hold conservé) sur NDX. La meilleure "
       "combinaison ci-dessus s'en rapproche mais ne le remplit pas "
@@ -220,3 +234,17 @@ else:
 out = Path(OUT)
 out.write_text("\n".join(lines))
 print("\n".join(lines))
+
+if best["ok"]:
+    # artefact pour la batterie de validation renforcee Regle 9
+    # (PROTOCOLE_ANTI_SNOOPING.md, meme convention que le backlog non-ML) --
+    # ce candidat GJR-GARCH n'est pas issu du backlog non-ML lui-meme, mais
+    # merite la meme rigueur avant toute declaration de succes (cycle #118).
+    results_dir = ROOT / "results"
+    pos_best = best["pos"][idx]
+    r_best = r_bt[idx]
+    dates_best = dates[idx].values
+    np.savez(
+        results_dir / "etape_D_overlay_optimized_pnl.npz",
+        pos=pos_best, r_asset=r_best, dates=dates_best, cost_bps=COST_BPS,
+    )

@@ -37,8 +37,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT.parent / "src"))
+ROOT = Path(__file__).resolve().parents[1]          # finance/trading
+FINANCE_ROOT = ROOT.parent                          # finance
+REPO_ROOT = FINANCE_ROOT.parent                     # Quant-Trade
+sys.path.insert(0, str(FINANCE_ROOT / "src"))
 warnings.filterwarnings("ignore")
 
 from sklearn.linear_model import LogisticRegression  # noqa: E402
@@ -65,8 +67,8 @@ SEED = 42
 MODELS = ["BuyHold", "VolTarget", "VolTarget×LogitL2", "VolTarget+Cut×LogitL2"]
 
 DATASETS = [
-    ("Composite (5 ans)", ROOT / "data" / "nasdaq_composite_daily.txt", 5, 21),
-    ("NDX (40 ans)", ROOT / "data" / "nasdaq100_daily.txt", 21, 21),
+    ("Composite (5 ans)", REPO_ROOT / "data" / "nasdaq_composite_daily.txt", 5, 21),
+    ("NDX (40 ans)", REPO_ROOT / "data" / "nasdaq100_daily.txt", 21, 21),
 ]
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "results" / "etape_D_combined_audit.md")

@@ -36,8 +36,10 @@ from pathlib import Path
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT.parent / "src"))
+ROOT = Path(__file__).resolve().parents[1]          # finance/trading
+FINANCE_ROOT = ROOT.parent                          # finance
+REPO_ROOT = FINANCE_ROOT.parent                     # Quant-Trade
+sys.path.insert(0, str(FINANCE_ROOT / "src"))
 warnings.filterwarnings("ignore")
 
 from data_loader import load_ohlc, log_returns_pct  # noqa: E402
@@ -58,8 +60,8 @@ MODELS = ["BuyHold", "VolTarget", "VolTarget+Cut"]
 # l'historique long NDX, sinon des milliers de re-estimations GARCH - cf.
 # CLAUDE.md). Surchargeable globalement par la variable d'env REFIT_EVERY.
 DATASETS = [
-    ("Composite (5 ans)", ROOT / "data" / "nasdaq_composite_daily.txt", 5),
-    ("NDX (40 ans)", ROOT / "data" / "nasdaq100_daily.txt", 21),
+    ("Composite (5 ans)", REPO_ROOT / "data" / "nasdaq_composite_daily.txt", 5),
+    ("NDX (40 ans)", REPO_ROOT / "data" / "nasdaq100_daily.txt", 21),
 ]
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "results" / "etape_D_overlay.md")
