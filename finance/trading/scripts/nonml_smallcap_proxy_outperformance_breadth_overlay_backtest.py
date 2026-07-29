@@ -67,8 +67,14 @@ def compute_smallcap_breadth_series() -> pd.Series:
     idio_vol = np.full((T, n_tickers), np.nan)
     for i in range(IDIO_VOL_WINDOW, T):
         window = log_ret[i - IDIO_VOL_WINDOW + 1:i + 1]
+        # fenetre PLEINE requise (pre-enregistre) -- bug trouve par l'audit
+        # adversarial : nanstd() acceptait des fenetres partielles (calculait
+        # sur les valeurs non-NaN disponibles), violant le PREREG. Corrige
+        # AVANT tout usage en aval de ce resultat.
+        has_full = np.isfinite(window).all(axis=0)
         with np.errstate(all="ignore"):
-            idio_vol[i] = np.nanstd(window, axis=0, ddof=1)
+            vol_partial = np.nanstd(window, axis=0, ddof=1)
+        idio_vol[i] = np.where(has_full, vol_partial, np.nan)
 
     mom = np.full((T, n_tickers), np.nan)
     c_lag = np.full((T, n_tickers), np.nan)

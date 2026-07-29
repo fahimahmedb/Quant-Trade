@@ -4,14 +4,14 @@
 
 Position(t) = clip(20% / vol_réalisée_20j(t-1), 1.0, 2.0x) si Breadth_Small(t) (fraction du groupe proxy petite cap surperformant la médiane du marché sur 21j) ≥ sa médiane glissante 252j, sinon 1.0x. 1385 séances testables (échantillon restreint à la période où le signal titre-par-titre est disponible).
 
-%j porte surperformance petites caps active : 28.5%
-Position moyenne : 1.11x
-Breadth surperformance moyenne (toute la période) : 50.8%
+%j porte surperformance petites caps active : 28.1%
+Position moyenne : 1.10x
+Breadth surperformance moyenne (toute la période) : 50.7%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
 | Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté surperformance petites caps** | **+0.70** | **+116.7%** | -35.6% |
+| **Overlay vol-targeting gaté surperformance petites caps** | **+0.70** | **+114.4%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI
