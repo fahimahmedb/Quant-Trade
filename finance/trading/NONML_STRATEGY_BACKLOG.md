@@ -344,6 +344,28 @@ aucun retuning, rapportage complet y compris FAIL) mais quantifie explicitement 
 data-snooping accumulé au niveau de la famille — l'avertissement même que
 PROTOCOLE_ANTI_SNOOPING.md anticipait. Voir `results/nonml_backlog_spa_dsr_validation.md`.
 
+**Audit adversarial de cette validation** (demande explicite utilisateur : "audit tes résultats
+finaux, plus tu détruit le travail plus on pourra observer les failles"),
+`scripts/nonml_backlog_spa_dsr_validation_audit.py` → `results/nonml_backlog_spa_dsr_validation_audit.md` :
+1. Recalcul indépendant (weakness_breadth) : un écart de ~1-3% détecté au premier essai, tracé
+   à un bug dans le recalcul indépendant lui-même (dénominateur trop restrictif), PAS dans le
+   script de validation — corrigé, écart final 0,00e+00.
+2. Anti-lookahead sur l'infrastructure partagée (mutation NDX) : OK, écart 0,00e+00.
+3. Stabilité temporelle (3 sous-périodes + embargo 5j — le purge/embargo classique d'Étape B ne
+   s'applique pas littéralement ici, aucun paramètre n'est ajusté sur un train set ; contrôle de
+   robustesse temporelle qualitatif à la place) : **le "meilleur membre" change à chaque fold**
+   (dispersion / momentum_breadth / momentum_dispersion) — signature classique de sélection sur
+   bruit, pas d'edge stable.
+4. Sensibilité à n_trials : n_trials=13 est probablement une SOUS-estimation du nombre réel
+   d'essais informés sur cet historique (~110 cycles adaptatifs) — le DSR=0,8883 déjà rapporté
+   est donc un plafond optimiste, pas un plancher (DSR≈0,878 à n_trials=110).
+5. Calibration spa_test()/dsr() sur 300 réplications bruit pur (K=13, aucun edge par
+   construction) : taux de rejet SPA(p<0,05)=8,0%, DSR>0,95=0,0% — outils correctement
+   conservateurs, pas de biais de sur-rejet.
+
+**Conclusion de l'audit : chaque angle d'attaque testé renforce la conclusion H0 non rejetée
+plutôt que de la contredire — le edge de cette famille n'a PAS résisté à un examen adversarial.**
+
 | 44 | Vol-targeting DÉFENSIF uniquement (position = min(1.0, vol_cible/vol_réalisée), JAMAIS de levier au-dessus de 1.0x) — teste si limiter le mécanisme du #43 à la seule réduction d'exposition (pas d'amplification) rapproche mieux du compromis rendement/MDD visé par l'Étape D du projet | OHLC déjà en local | **FAIT — FAIL** (0/5, Sharpe amélioré sur 5/5 et MDD massivement réduit partout mais rendement systématiquement inférieur à Buy&Hold — même écueil structurel qu'un design sans jamais d'amplification, déjà identifié aux tout premiers cycles #2/#6/#8), voir `results/nonml_defensive_vol_targeting_overlay_result.md` |
 | 45 | Vol-targeting continu (#43) appliqué au portefeuille Leaders (#4, edge positif) plutôt qu'à Buy&Hold — teste si scaler un portefeuille à edge positif change la conclusion (le #43 scalait un indice sans edge propre) | prix NDX-100 déjà récupérés | **FAIT — FAIL** (Sharpe quasi inchangé +0,91→+0,92, rendement +98,7%→+83,0%, MDD amélioré -21,3%→-17,7% mais insuffisant selon la règle renforcée — l'exposition moyenne reste sous 1.0x (0,91x) même appliquée à un portefeuille à edge positif, même écueil que le #43/#44), voir `results/nonml_leaders_vol_targeting_overlay_result.md` |
 | 46 | Vol-targeting continu (#43) avec cible de vol plus élevée (20% au lieu de 15%) — hypothèse distincte et nouvellement pré-enregistrée (pas un retuning du #43) : teste si le sous-dimensionnement moyen observé (position souvent <1x) explique le manque de rendement, sans changer le mécanisme | OHLC déjà en local | **FAIT — PASS (4/5)** : confirme l'hypothèse, exposition moyenne relevée à 1,10x-1,51x (4/5 marchés), ferme l'écart de rendement du #43 tout en conservant une réduction substantielle du MDD partout (même sur DAX, seul échec : MDD -72,7%→-67,1%). Plateau robuste 4-5/5 sur les grilles CAP 1.5x-3.0x et fenêtre 15j-30j. Voir `results/nonml_vol_targeting_20_overlay_result.md` |
