@@ -2,6 +2,24 @@
 
 **Committé AVANT tout calcul.** Cycle #110 du backlog non-ML.
 
+## CORRECTION (avant tout calcul committé, bug de fuseau horaire trouvé au premier essai)
+
+La version initiale de ce fichier affirmait que "le DAX clôture avant
+l'ouverture NDX du même jour calendaire", ce qui est **factuellement
+FAUX** : le Xetra (DAX) ouvre ~09:00 CET et clôture ~17:30 CET ; le
+Nasdaq (NDX) ouvre 09:30 ET, soit ~15:30 CET — le DAX est donc ENCORE
+OUVERT quand NDX ouvre, sa clôture du jour t tombe PENDANT la séance
+NDX du jour t, pas avant. Utiliser `dax_ret(t)` pour gater le rendement
+NDX du MÊME jour t constituait donc une fuite partielle (chevauchement
+horaire), détectée dès la première exécution (résultat aberrant :
+rendement de l'ordre de 10¹¹%, bien au-delà de tout résultat plausible
+de ce backlog — signal d'alerte immédiat). **Aucun résultat n'a été
+committé avec la version buguée.** Correction : le signal utilisé est
+désormais le rendement DAX du jour **t-1** (jour de bourse précédent,
+strictement antérieur, sans ambiguïté de fuseau horaire possible) pour
+gater le rendement NDX du jour t — définition ci-dessous mise à jour en
+conséquence.
+
 ## Hypothèse
 
 Toutes les confirmations multi-marché déjà testées (#52, #57, #103)
@@ -12,27 +30,27 @@ DÉCALÉE, jamais exploitée dans ce backlog : la Bourse de Francfort
 l'ouverture de la séance américaine (NDX) du même jour calendaire. Le
 rendement du DAX au jour t est donc entièrement connu avant que la
 séance NDX du jour t ne commence — une information disponible ex ante,
-pas une fuite. L'hypothèse est qu'un rendement DAX positif au jour t
-signale un momentum global favorable qui se propage à l'ouverture/la
-séance américaine du même jour.
+pas une fuite. L'hypothèse est qu'un rendement DAX positif à la clôture de la veille
+signale un momentum global favorable qui se propage à la séance
+américaine du lendemain.
 
-## Définition (fixée ici, avant tout résultat)
+## Définition (fixée ici, avant tout résultat — CORRIGÉE, voir note ci-dessus)
 
 - Marchés : NDX (`nasdaq100_daily.txt`, marché piloté) et DAX
   (`dax_daily.txt`, signal leading), les deux déjà en local.
-- Alignement causal explicite : `dax_ret(t) = close_DAX(t) /
-  close_DAX(t-1) - 1` est connu à la clôture européenne du jour
-  calendaire t, AVANT l'ouverture de la séance NDX du même jour t (pas
-  de décalage `[:-1]` nécessaire ici — c'est la séquence Europe-avant-
-  US qui rend le signal causal, pas un lag artificiel).
+- Alignement causal explicite : `dax_ret(t-1) = close_DAX(t-1) /
+  close_DAX(t-2) - 1` (rendement du jour de bourse PRÉCÉDENT, connu
+  sans ambiguïté avant l'ouverture NDX du jour t, quel que soit le
+  fuseau horaire).
 - Alignement calendaire : dates communes aux deux séries (intersection
   stricte des jours de bourse NDX et DAX, pas de `ffill` — un jour sans
   séance DAX correspondante laisse la porte à son état par défaut
   1.0x).
-- Porte active si `dax_ret(t) > 0` (rendement DAX strictement positif
-  le jour calendaire t).
+- Porte active si `dax_ret(t-1) > 0` (rendement DAX strictement positif
+  la séance de bourse précédente).
 - Position : **CAP=2.0x** les jours de porte active (appliqué au
-  rendement NDX du MÊME jour calendaire t), **1.0x** sinon.
+  rendement NDX du jour t, décidé sur la base du DAX de t-1), **1.0x**
+  sinon.
 - **Coûts** : 5 bps par unité de turnover.
 - **Référence** : Buy & Hold sur NDX.
 
