@@ -92,7 +92,7 @@ def main():
         )
 
         if name == "NDX (40 ans)":
-            best_pos, best_r, best_start = pos, r, start
+            best_pos, best_r, best_start = pos, r_t, start
 
     verdict = n_success >= 4
     lines.append("")
