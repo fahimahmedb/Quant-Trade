@@ -19,7 +19,6 @@ REPO_ROOT = FINANCE_ROOT.parent
 sys.path.insert(0, str(FINANCE_ROOT / "src"))
 
 from data_loader import load_ohlc, quality_report  # noqa: E402
-from volatility import ewma_path  # noqa: E402
 from prediction import trading_metrics  # noqa: E402
 
 T0 = 750
@@ -33,16 +32,29 @@ ANNUALIZATION2 = 252  # facteur de variance (pas l'ecart-type)
 
 def ewma_walkforward_position(r: np.ndarray) -> np.ndarray:
     """r = rendements log naturels quotidiens NDX. Walk-forward EWMA,
-    meme convention que run_etape_c.py (mu_tr train-only, refit tous
-    les REFIT_EVERY jours, seule la portion [tr, tr+REFIT_EVERY) de
-    chaque chemin est retenue -- aucune mise a jour retroactive)."""
+    meme cadence que run_etape_c.py (refit tous les REFIT_EVERY jours,
+    seule la portion [tr, tr+REFIT_EVERY) de chaque chemin est retenue).
+
+    N'appelle PAS volatility.ewma_path() directement : cette fonction
+    re-demean son argument en interne (`eps = r - r.mean()`), ce qui
+    ANNULE tout decalage mu_tr passe en amont (r_arg.mean() = mean(r) -
+    mu_tr, donc eps = (r-mu_tr) - (mean(r)-mu_tr) = r - mean(r), le
+    mu_tr disparait completement) -- bug de fuite trouve par l'audit
+    adversarial de ce cycle (deja present, sans consequence pratique
+    notable, dans l'usage de reference run_etape_c.py). Recursion
+    reimplementee ici directement avec un demeanage TRAIN-ONLY reellement
+    causal (mu_tr fixe, pas re-demean)."""
     T = len(r)
     s2_path = np.full(T, np.nan)
     for tr in range(T0, T, REFIT_EVERY):
         block_end = min(tr + REFIT_EVERY, T)
         mu_tr = r[:tr].mean()
-        full_path = ewma_path(r - mu_tr, lam=LAM)  # longueur T+1, s2[t] pour r[t]
-        s2_path[tr:block_end] = full_path[tr:block_end]
+        eps = r - mu_tr
+        s2 = np.empty(T + 1)
+        s2[0] = float(np.var(r[:tr] - mu_tr))  # variance IN-SAMPLE (train) uniquement
+        for t in range(T):
+            s2[t + 1] = LAM * s2[t] + (1 - LAM) * eps[t] ** 2
+        s2_path[tr:block_end] = s2[tr:block_end]
 
     vol_ann = np.sqrt(np.maximum(s2_path, 0.0) * ANNUALIZATION2)
     vol_lagged = np.roll(vol_ann, 1)

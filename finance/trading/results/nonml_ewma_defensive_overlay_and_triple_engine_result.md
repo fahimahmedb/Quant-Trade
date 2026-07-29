@@ -7,7 +7,7 @@
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
 | Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 0.077 |
-| **Overlay EWMA défensif** | **+0.70** | **+6223.4%** | -56.5% | **0.151** |
+| **Overlay EWMA défensif** | **+0.70** | **+6221.4%** | -56.5% | **0.151** |
 
 Critère standard : PASS. Critère Calmar : PASS.
 
@@ -16,7 +16,7 @@ Critère standard : PASS. Critère Calmar : PASS.
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
 | Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 0.077 |
-| **Overlay 3 moteurs** | **+0.70** | **+7719.4%** | -56.9% | **0.159** |
+| **Overlay 3 moteurs** | **+0.70** | **+7718.4%** | -56.9% | **0.159** |
 
 Critère standard : PASS. Critère Calmar : PASS.
 
