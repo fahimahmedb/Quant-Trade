@@ -44,19 +44,27 @@ CRISIS_WINDOWS = [
 ]
 
 
-def pnl_at_cost(pos: np.ndarray, r: np.ndarray, cost_bps: float):
+def pnl_at_cost(pos: np.ndarray, r: np.ndarray, cost_bps: float, r_alt: np.ndarray = None):
+    """r_alt : rendement de l'actif alternatif recevant la fraction
+    (1-pos) du capital, au lieu du cash (0%) par defaut -- generalisation
+    retrocompatible pour les mecanismes de DIVERSIFICATION (cycle #134),
+    n'affecte aucun verdict anterieur (r_alt=None <=> cash, comportement
+    original inchange)."""
     turn = np.abs(np.diff(pos, prepend=1.0))
-    pnl_ov = pos * r - turn * (cost_bps / 1e4)
+    if r_alt is None:
+        pnl_ov = pos * r - turn * (cost_bps / 1e4)
+    else:
+        pnl_ov = pos * r + (1.0 - pos) * r_alt - turn * (cost_bps / 1e4)
     pnl_bh = r.copy()
     pnl_bh[0] -= cost_bps / 1e4
     return pnl_ov, pnl_bh
 
 
-def check_a_cost_stress(pos, r, cost_baseline):
+def check_a_cost_stress(pos, r, cost_baseline, r_alt=None):
     rows = []
     for mult in (1, 3, 5):
         cost = cost_baseline * mult
-        pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost)
+        pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost, r_alt)
         me_ov, me_bh = trading_metrics(pnl_ov), trading_metrics(pnl_bh)
         ret_ov = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
         ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
@@ -66,7 +74,7 @@ def check_a_cost_stress(pos, r, cost_baseline):
     return all_ok, rows
 
 
-def check_b_crisis_stress(pos, r, dates, cost_baseline):
+def check_b_crisis_stress(pos, r, dates, cost_baseline, r_alt=None):
     rows = []
     any_window = False
     all_ok = True
@@ -78,7 +86,8 @@ def check_b_crisis_stress(pos, r, dates, cost_baseline):
             continue
         any_window = True
         pos_w, r_w = pos[mask], r[mask]
-        pnl_ov, pnl_bh = pnl_at_cost(pos_w, r_w, cost_baseline)
+        r_alt_w = r_alt[mask] if r_alt is not None else None
+        pnl_ov, pnl_bh = pnl_at_cost(pos_w, r_w, cost_baseline, r_alt_w)
         mdd_ov = trading_metrics(pnl_ov)["max_drawdown_pct"]
         mdd_bh = trading_metrics(pnl_bh)["max_drawdown_pct"]
         ok = mdd_ov >= mdd_bh - 1.0  # tolerance 1pt (arrondis)
@@ -87,7 +96,7 @@ def check_b_crisis_stress(pos, r, dates, cost_baseline):
     return (all_ok and any_window), rows, any_window
 
 
-def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4):
+def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4, r_alt=None):
     T = len(r)
     fold_len = T // n_folds
     rows = []
@@ -101,7 +110,8 @@ def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4):
         if f1 - f0 < 30:
             continue
         pos_f, r_f = pos[f0:f1], r[f0:f1]
-        pnl_ov, pnl_bh = pnl_at_cost(pos_f, r_f, cost_baseline)
+        r_alt_f = r_alt[f0:f1] if r_alt is not None else None
+        pnl_ov, pnl_bh = pnl_at_cost(pos_f, r_f, cost_baseline, r_alt_f)
         s_ov = trading_metrics(pnl_ov)["sharpe_ann"]
         s_bh = trading_metrics(pnl_bh)["sharpe_ann"]
         beat = s_ov > s_bh
@@ -112,8 +122,8 @@ def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4):
     return majority_ok, rows, n_beat, n_scored
 
 
-def check_d_spa(pos, r, cost_baseline):
-    pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost_baseline)
+def check_d_spa(pos, r, cost_baseline, r_alt=None):
+    pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost_baseline, r_alt)
     losses = {"candidat": -pnl_ov, "BuyHold": -pnl_bh}
     res = spa_test(losses, bench="BuyHold")
     return res["p_value"] < 0.05, res["p_value"]
@@ -141,8 +151,8 @@ def approx_var_trials():
     return float(np.var(np.array(vals), ddof=1)), len(vals)
 
 
-def check_e_dsr(pos, r, cost_baseline):
-    pnl_ov, _ = pnl_at_cost(pos, r, cost_baseline)
+def check_e_dsr(pos, r, cost_baseline, r_alt=None):
+    pnl_ov, _ = pnl_at_cost(pos, r, cost_baseline, r_alt)
     me = trading_metrics(pnl_ov)
     n_trials = parse_backlog_n_trials()
     var_trials_annual, n_extracted = approx_var_trials()
@@ -175,6 +185,7 @@ def main():
     data = np.load(npz_path, allow_pickle=True)
     pos, r, cost_bps = data["pos"], data["r_asset"], float(data["cost_bps"])
     dates = pd.to_datetime(data["dates"])
+    r_alt = data["r_alt"] if "r_alt" in data.files else None
 
     lines = [f"# Batterie de validation renforcée — {name}",
              "",
@@ -185,7 +196,7 @@ def main():
     lines.append("")
     lines.append("| Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |")
     lines.append("|---|---|---|---|---|---|")
-    ok_a, rows_a = check_a_cost_stress(pos, r, cost_bps)
+    ok_a, rows_a = check_a_cost_stress(pos, r, cost_bps, r_alt)
     for cost, s_ov, s_bh, r_ov, r_bh, ok in rows_a:
         lines.append(f"| {cost:.1f} | {s_ov:+.2f} | {s_bh:+.2f} | {100*r_ov:+.1f}% | {100*r_bh:+.1f}% | {'OUI' if ok else 'non'} |")
     lines.append("")
@@ -196,7 +207,7 @@ def main():
     lines.append("")
     lines.append("| Fenêtre | Séances dispo | MDD overlay | MDD BH | Pas pire que BH |")
     lines.append("|---|---|---|---|---|")
-    ok_b, rows_b, any_window = check_b_crisis_stress(pos, r, dates, cost_bps)
+    ok_b, rows_b, any_window = check_b_crisis_stress(pos, r, dates, cost_bps, r_alt)
     for label, n, mdd_ov, mdd_bh, ok in rows_b:
         if mdd_ov is None:
             lines.append(f"| {label} | {n} | -- | -- | hors couverture (<20 séances) |")
@@ -215,7 +226,7 @@ def main():
     lines.append("")
     lines.append("| Fold | Séances | Sharpe overlay | Sharpe BH | Bat BH |")
     lines.append("|---|---|---|---|---|")
-    ok_c, rows_c, n_beat, n_scored = check_c_temporal_stability(pos, r, cost_bps)
+    ok_c, rows_c, n_beat, n_scored = check_c_temporal_stability(pos, r, cost_bps, r_alt=r_alt)
     for k, n, s_ov, s_bh, beat in rows_c:
         lines.append(f"| {k} | {n} | {s_ov:+.2f} | {s_bh:+.2f} | {'OUI' if beat else 'non'} |")
     lines.append("")
@@ -225,14 +236,14 @@ def main():
 
     lines.append("## d. SPA à 1 candidat contre Buy&Hold")
     lines.append("")
-    ok_d, p_spa = check_d_spa(pos, r, cost_bps)
+    ok_d, p_spa = check_d_spa(pos, r, cost_bps, r_alt)
     lines.append(f"p-value SPA : {p_spa:.4f}")
     lines.append(f"**{'OK' if ok_d else 'ÉCHEC'} — significatif à 5% : {'oui' if ok_d else 'NON'}.**")
     lines.append("")
 
     lines.append("## e. DSR avec n_trials = taille totale du backlog (jamais 1)")
     lines.append("")
-    e_res = check_e_dsr(pos, r, cost_bps)
+    e_res = check_e_dsr(pos, r, cost_bps, r_alt)
     if e_res is None:
         lines.append("**PENDING — n_trials/var_trials non extractibles du backlog, contrôle non exécuté "
                      "(ne pas absorber silencieusement en OK, Règle 5).**")
