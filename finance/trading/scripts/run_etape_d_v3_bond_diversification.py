@@ -59,6 +59,8 @@ MODELS = [
 DATASETS = [
     ("Composite (5 ans)", REPO_ROOT / "data" / "nasdaq_composite_daily.txt"),
     ("NDX (40 ans)", REPO_ROOT / "data" / "nasdaq100_daily.txt"),
+    ("S&P 500", REPO_ROOT / "data" / "sp500_daily.txt"),
+    ("Russell 2000", REPO_ROOT / "data" / "russell2000_daily.txt"),
 ]
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "results" / "etape_D_v3_bond_diversification.md")
