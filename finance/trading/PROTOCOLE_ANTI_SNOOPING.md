@@ -170,6 +170,47 @@ jamais laisser un verdict PASS reposer sur un calcul dont un bug a déjà
 
 ---
 
+## 10. Rémunération explicite de la fraction "hors-marché" des mécanismes défensifs
+    (ajoutée le 30/07/2026, suite au cycle #142 du backlog non-ML — la
+    décomposition du meilleur candidat du backlog (#134, diversification
+    obligataire) a montré que 86-89% de son gain venait d'une correction
+    implicite d'une hypothèse de backtest irréaliste (0% de taux sans
+    risque sur la fraction "hors-marché" du mécanisme défensif sous-jacent
+    #115), pas d'un edge de couverture actions/obligations authentique.
+    Le cycle #146 a ensuite montré que cette correction ne sauve PAS un
+    signal structurellement mauvais et ne s'applique pas à la majorité des
+    overlays du backlog, construits pour rester ≥1,0x en permanence —
+    l'effet est réel mais spécifique, pas une variable universelle à
+    exploiter systématiquement.)
+
+Tout NOUVEAU mécanisme qui réduit l'exposition sous 1,0x (donc détient
+implicitement une fraction du capital "hors-marché") doit être
+pré-enregistré avec une hypothèse EXPLICITE sur la rémunération de
+cette fraction :
+
+a. Soit 0% (cash), hypothèse à justifier explicitement dans le PREREG
+   si retenue — ce n'est plus une valeur implicite non déclarée.
+b. Soit un proxy de taux sans risque réaliste (ex. `data/dgs3mo_daily.csv`,
+   `data/dgs10_daily.csv`, déjà disponibles), avec la maturité choisie
+   et la formule de calcul du rendement (ex. duration modifiée) fixées
+   AVANT tout calcul.
+
+Si un mécanisme défensif rapporté avec l'hypothèse 0% s'avère PASS ou
+proche du seuil de la Règle 9, la décomposition portage/effet-prix
+(méthode du #142 : construire un proxy "portage seul" en retirant le
+terme d'effet-prix, comparer sa contribution à celle du mécanisme
+complet) doit être appliquée AVANT de communiquer le résultat comme une
+découverte de diversification ou de couverture — pour ne jamais
+confondre une correction de biais de backtest avec un edge authentique.
+
+**Règle pratique** : cette règle ne s'applique PAS rétroactivement à
+tous les mécanismes déjà committés (une nouvelle campagne systématique
+n'est pas justifiée, cf. #146) — elle s'applique aux mécanismes
+FUTURS. Le #134 (backlog non-ML, `finance/trading/`) reste la
+référence documentée du phénomène et de sa décomposition.
+
+---
+
 ## Application immédiate
 
 Ces règles s'appliquent rétroactivement à la relecture des Étapes C et D
