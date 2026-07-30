@@ -398,6 +398,7 @@ une 16e variante corrélée :
 73 PASS niveau 1 sur 154 hypothèses testées (2 PASS niveau 1 comptés séparément par marché — #154 confirme que le rebalancement hebdomadaire corrige la fissure coûts du #151 sur Russell 2000 (2/5→3/5) sans dégrader le NDX (maintient 4/5) — correction ciblée réussie).
 73 PASS niveau 1 sur 155 hypothèses testées (#155 = analyse informative, pas un nouveau backtest — le #149 réduit le risque de queue (VaR/ES) plus que le #134 sur toutes les mesures, meilleur outil de risk management du backlog à ce jour).
 73 PASS niveau 1 sur 156 hypothèses testées (#156 = synthèse consolidée v3, pas un nouveau backtest — constat honnête que les pistes réellement neuves s'épuisent après 155 cycles ; deux voies non tranchées proposées explicitement à l'utilisateur pour décision).
+74 PASS niveau 1 sur 157 hypothèses testées (0 PASS RENFORCÉ Règle 9 sur 19 candidats — #157 complète la vérification du rebalancement hebdomadaire sur S&P 500, maintient 4/5 sans régression, aucune surprise).
 
 ## Backlog #157-158 (30/07/2026) — compléments mineurs, pas de nouvelle direction
 
@@ -406,7 +407,7 @@ Constat de la synthèse v3 (#156) : les pistes véritablement neuves sont
 travail déjà en cours (pas de nouvelle exploration), en attendant une
 décision de l'utilisateur sur les deux voies proposées au #156 :
 
-| 157 | Appliquer le rebalancement hebdomadaire (#154) au #149 sur S&P 500 (3e marché déjà généralisé au #151, non couvert par la correction ciblée du #154 qui n'a testé que NDX et Russell 2000) — complète la vérification, pas une nouvelle piste | Aucune nouvelle donnée (recalcul sur artefact déjà committé) | à faire |
+| 157 | Appliquer le rebalancement hebdomadaire (#154) au #149 sur S&P 500 (3e marché déjà généralisé au #151, non couvert par la correction ciblée du #154 qui n'a testé que NDX et Russell 2000) — complète la vérification, pas une nouvelle piste | Aucune nouvelle donnée (recalcul sur artefact déjà committé) | **FAIT — PASS niveau 1, S&P 500 MAINTIENT 4/5 sans régression.** Turnover réduit de 40,3%, Sharpe même légèrement amélioré (+0,60→+0,61), MDD amélioré (-45,0%→-44,2%). Plateau de robustesse parfait 5/5. Sous la Règle 9 : coûts/crise/stabilité 4/4 folds tous OK (identique au résultat quotidien du #151), SPA (p=0,46) et DSR toujours en échec. **Complète le tableau : les 3 marchés généralisés du #149 (NDX 4/5, S&P 500 4/5, Russell 2000 3/5 après correction #154) tiennent tous au rebalancement hebdomadaire sans aucune régression.** Voir `results/nonml_cash_rate_correction_44_weekly_rebalance_sp500_result.md`, `..._audit.md`, `..._robustness.md`, `..._sim_300e.md` et `..._pass_validation_battery.md` |
 | 158 | Verrou temporel (Règle 8) sur le #149 généralisé S&P 500/Russell 2000 (#151) — seule la version NDX du #149 a reçu ce test au #153 | Aucune nouvelle donnée (sous-période des données déjà en local) | à faire |
 
 ## Backlog #154-156 (30/07/2026) — nouvelles pistes après le verrou temporel du #149
