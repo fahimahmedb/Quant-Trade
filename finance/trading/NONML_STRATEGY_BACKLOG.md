@@ -400,6 +400,7 @@ une 16e variante corrélée :
 73 PASS niveau 1 sur 156 hypothèses testées (#156 = synthèse consolidée v3, pas un nouveau backtest — constat honnête que les pistes réellement neuves s'épuisent après 155 cycles ; deux voies non tranchées proposées explicitement à l'utilisateur pour décision).
 74 PASS niveau 1 sur 157 hypothèses testées (0 PASS RENFORCÉ Règle 9 sur 19 candidats — #157 complète la vérification du rebalancement hebdomadaire sur S&P 500, maintient 4/5 sans régression, aucune surprise).
 74 PASS niveau 1 sur 158 hypothèses testées (#158 = verrou temporel Règle 8, pas un nouveau backtest — le #149 NE TIENT PAS sur les 12 derniers mois, sur les 3 marchés généralisés (NDX, S&P 500, Russell 2000), cohérence totale du profil de couverture. Backlog "à faire" épuisé — voir recommandation du #156 pour la suite.)
+74 PASS niveau 1 sur 159 hypothèses testées (#159 = analyse complémentaire, pas un nouveau backtest — SPA famille #149 non significatif sur les 2 marchés testés séparément, cohérent avec les DSR individuels).
 
 ## Backlog #159-160 (30/07/2026) — dernières complétions mineures avant point de décision
 
@@ -411,7 +412,7 @@ décision de l'utilisateur entre (a) formaliser/déployer prudemment
 #134/#149 comme outils de risk management documentés, ou (b) rouvrir
 l'angle ML avec les leçons de rigueur accumulées ici.
 
-| 159 | Étendre le test SPA famille-entière (#150, limité à 5 membres NDX de la famille #134) pour inclure aussi les variantes du #149 (NDX quotidien/hebdomadaire, S&P 500) partageant un horizon comparable — complète la portée du #150, ne remplace aucun verdict individuel | Aucune nouvelle donnée (recalcul sur artefacts déjà committés) | à faire |
+| 159 | Étendre le test SPA famille-entière (#150, limité à 5 membres NDX de la famille #134) pour inclure aussi les variantes du #149 (NDX quotidien/hebdomadaire, S&P 500) partageant un horizon comparable — complète la portée du #150, ne remplace aucun verdict individuel | Aucune nouvelle donnée (recalcul sur artefacts déjà committés) | **FAIT — LIMITE MÉCANIQUE RECONNUE AVANT CALCUL (même que le #150) : impossible de mélanger NDX et S&P 500 dans un seul test (benchmarks différents).** Portée corrigée : 2 tests séparés. Famille NDX (#149+#154) : p=1,00, non significatif. Famille S&P 500 (#151+#157) : p=0,49, non significatif. Cohérent avec les DSR individuels déjà calculés. Voir `results/nonml_family_spa_cash_rate_correction_44.md` |
 | 160 | Ajouter les versions S&P 500 et Russell 2000 du #149 au script Étape D officiel (`run_etape_d_v3_bond_diversification.py`, actuellement limité aux jeux de données Composite/NDX) — complète l'infrastructure déjà en place, aucun nouveau calcul de fond | Aucune nouvelle donnée (recalcul sur mécanismes déjà validés) | à faire |
 
 ## Backlog #157-158 (30/07/2026) — compléments mineurs, pas de nouvelle direction
