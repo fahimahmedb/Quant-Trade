@@ -33,13 +33,22 @@ def load_dgs10() -> pd.Series:
 def bond_return_proxy(yield_pct: pd.Series, maturity_years: int = MATURITY_YEARS) -> pd.Series:
     """Rendement quotidien approché d'une obligation au pair de maturité
     `maturity_years`, duration modifiee calculee en formule fermee a
-    partir du taux lui-meme (aucun parametre libre)."""
+    partir du taux lui-meme (aucun parametre libre).
+
+    Cas limite y->0 : la formule fermee de la duration de Macaulay d'une
+    obligation au pair est singuliere (division par y). Developpement de
+    Taylor : D_mac=(1+y)/y*(1-(1+y)^-n) -> n quand y->0, donc D_mod -> n
+    (limite mathematique standard, pas un parametre ajuste) -- trouve et
+    corrige lors du cycle #141 (proxy DGS3MO, 21 seances a exactement
+    0,00% pendant la crise 2008 et 2011, produisant un NaN qui se
+    propageait ensuite via cumprod sur toute la suite de la serie)."""
     y = yield_pct.values / 100.0
     y_lag = np.roll(y, 1)
     y_lag[0] = np.nan
     with np.errstate(divide="ignore", invalid="ignore"):
         d_mac = (1 + y_lag) / y_lag * (1 - 1 / (1 + y_lag) ** maturity_years)
     d_mod = d_mac / (1 + y_lag)
+    d_mod = np.where(y_lag == 0.0, float(maturity_years), d_mod)
     r_bond = y_lag / 252.0 - d_mod * (y - y_lag)
     return pd.Series(r_bond, index=yield_pct.index)
 
