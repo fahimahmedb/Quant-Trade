@@ -84,13 +84,96 @@ def _atr(df: pd.DataFrame, n: int = 14) -> pd.Series:
     return tr.ewm(alpha=1 / n, adjust=False).mean()
 
 
-def build_features(df: pd.DataFrame) -> pd.DataFrame:
+def _asof_prev(obs_dates: np.ndarray, obs_vals: np.ndarray,
+               target_dates: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Valeurs aux deux dernieres observations STRICTEMENT anterieures a chaque cible.
+
+    Pour chaque date cible t, retourne (v1, v2) ou v1 = valeur a tau_1(t) =
+    derniere observation avec obs_date < t, et v2 = valeur a tau_2(t) =
+    observation immediatement precedente. NaN si elles n'existent pas.
+
+    Comparaison STRICTE (`side="left"`) : l'observation du jour t lui-meme n'est
+    jamais utilisee. Aucun ffill d'une observation future, aucune interpolation.
+    C'est la brique d'alignement causal des features exogenes (cf. cycles non-ML
+    #110/#140 : la cloture DAX du jour t tombe PENDANT la seance NDX du jour t).
+    """
+    obs_dates = np.asarray(obs_dates, dtype="datetime64[ns]")
+    obs_vals = np.asarray(obs_vals, dtype=float)
+    target_dates = np.asarray(target_dates, dtype="datetime64[ns]")
+    idx = np.searchsorted(obs_dates, target_dates, side="left") - 1
+    safe1 = np.clip(idx, 0, len(obs_vals) - 1)
+    safe2 = np.clip(idx - 1, 0, len(obs_vals) - 1)
+    v1 = np.where(idx >= 0, obs_vals[safe1], np.nan)
+    v2 = np.where(idx >= 1, obs_vals[safe2], np.nan)
+    return v1, v2
+
+
+def _load_fred_series(path: str) -> tuple[np.ndarray, np.ndarray]:
+    """Serie FRED quotidienne (observation_date, valeur). Les '.' (feries) sautent."""
+    d = pd.read_csv(path)
+    date_col, val_col = d.columns[0], d.columns[1]
+    d[val_col] = pd.to_numeric(d[val_col], errors="coerce")
+    d[date_col] = pd.to_datetime(d[date_col])
+    d = d.dropna(subset=[val_col]).sort_values(date_col)
+    return d[date_col].values, d[val_col].values
+
+
+def build_exogenous_features(dates, dgs10_path: str, dgs3mo_path: str,
+                             dax_path: str) -> pd.DataFrame:
+    """5 features exogenes taux / cross-marche, alignees de facon CAUSALE.
+
+    Definition FIGEE au PREREG ML-2
+    (`finance/trading/PREREG_ml_exogenous_features_rates_crossmarket.md`) :
+
+      exog_dgs10_level   = DGS10(tau_1)
+      exog_slope_10y_3mo = DGS10(tau_1) - DGS3MO(tau_1)
+      exog_dgs10_chg     = DGS10(tau_1) - DGS10(tau_2)
+      exog_dgs3mo_chg    = DGS3MO(tau_1) - DGS3MO(tau_2)
+      exog_dax_ret_lag1  = log(close_DAX(tau_1) / close_DAX(tau_2))
+
+    tau_1/tau_2 = deux dernieres observations strictement anterieures a t,
+    calculees INDEPENDAMMENT pour chaque serie (calendriers de publication et
+    jours feries distincts). NaN tant que l'historique exogene ne couvre pas t.
+    """
+    from data_loader import load_ohlc  # import local : evite tout cycle d'import
+
+    idx = pd.DatetimeIndex(pd.to_datetime(pd.Index(dates)))
+    tgt = idx.values
+
+    d10_d, d10_v = _load_fred_series(dgs10_path)
+    d3m_d, d3m_v = _load_fred_series(dgs3mo_path)
+    dax = load_ohlc(dax_path)
+    dax_d, dax_c = dax["date"].values, dax["close"].astype(float).values
+
+    l10_1, l10_2 = _asof_prev(d10_d, d10_v, tgt)
+    l3m_1, l3m_2 = _asof_prev(d3m_d, d3m_v, tgt)
+    dx_1, dx_2 = _asof_prev(dax_d, dax_c, tgt)
+
+    ok = np.isfinite(dx_1) & np.isfinite(dx_2) & (dx_2 > 0)
+    dax_ret = np.where(ok, np.log(np.where(ok, dx_1, 1.0) / np.where(ok, dx_2, 1.0)), np.nan)
+
+    f = pd.DataFrame(index=idx)
+    f["exog_dgs10_level"] = l10_1
+    f["exog_slope_10y_3mo"] = l10_1 - l3m_1
+    f["exog_dgs10_chg"] = l10_1 - l10_2
+    f["exog_dgs3mo_chg"] = l3m_1 - l3m_2
+    f["exog_dax_ret_lag1"] = dax_ret
+    return f
+
+
+def build_features(df: pd.DataFrame, exog: pd.DataFrame | None = None) -> pd.DataFrame:
     """Construit la matrice de features CAUSALES indexee par date.
 
     Regle d'or : une feature au temps t n'utilise que l'information disponible a
     la cloture du jour t. Aucune normalisation sur l'echantillon complet (le
     z-score global est un lookahead classique) - la standardisation eventuelle
     est faite dans le pipeline, sur la fenetre d'entrainement seulement.
+
+    `exog` (optionnel, cycle ML-2) : colonnes exogenes deja alignees LIGNE A
+    LIGNE sur `df` (meme longueur, meme ordre chronologique), typiquement issues
+    de `build_exogenous_features(df.index, ...)`. Quand `exog is None` (defaut),
+    la sortie est strictement identique a la version historique : aucun script
+    existant (Etapes B/C/D, ML-1) n'est affecte.
     """
     close = df["close"].astype(float)
     logp = np.log(close)
@@ -131,6 +214,13 @@ def build_features(df: pd.DataFrame) -> pd.DataFrame:
     f["stoch_k"] = (close - low14) / (high14 - low14)
     # differenciation fractionnaire du log-prix (memoire + stationnarite)
     f["fracdiff_04"] = frac_diff(logp.values, d=0.4)
+    if exog is not None:
+        ex = pd.DataFrame(exog)
+        if len(ex) != len(f):
+            raise ValueError(
+                f"exog mal aligne : {len(ex)} lignes vs {len(f)} lignes de features")
+        for c in ex.columns:
+            f[c] = np.asarray(ex[c].values, dtype=float)
     return f
 
 
