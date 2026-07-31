@@ -44,13 +44,14 @@ opérationnelle), état réel vérifié le 31/07/2026 par inspection directe de
 |---|---|---|
 | Itérations brute-force 1-10 (closes) | ~400 (voir `n_trials_pooled` par itération) | 0 |
 | Étape B officielle (N=4, univers figé) | 4 (déjà comptés dans son propre DSR, ne s'ajoute pas au pool brute-force — protocole distinct) | 0 (aucun signal actif ne bat BuyHold à DSR>0,95) |
-| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **1** (ML-1 : 1 essai local) | 0 |
+| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **2** (ML-1 et ML-2 : 1 essai local chacun) | 0 |
 
-**Total actuel pour tout DSR futur sur cette campagne : n_trials = 405**
-= 400 (brute-force ML 1-10, closes) + 4 (univers figé Étape B) + 1 (ML-1).
-Ce total est mis à jour à chaque cycle et cité dans chaque calcul DSR —
-jamais réduit. Valeur effectivement utilisée dans
-`results/ml_meta_labeling_logitl2_ndx.md` §4.
+**Total actuel pour tout DSR futur sur cette campagne : n_trials = 406**
+= 400 (brute-force ML 1-10, closes) + 4 (univers figé Étape B) + 1 (ML-1)
++ 1 (ML-2). Ce total est mis à jour à chaque cycle et cité dans chaque calcul
+DSR — jamais réduit. Valeurs effectivement utilisées dans
+`results/ml_meta_labeling_logitl2_ndx.md` §4 (405) et
+`results/ml_exogenous_features_rates_crossmarket.md` §4 (406).
 
 ## 2. Discipline appliquée (réutilisée du backlog non-ML)
 
@@ -115,9 +116,24 @@ avoir vu un résultat (Règle 1).
 |---|---|---|---|---|
 | ML-0 | Clôture honnête campagne brute-force 1-27 | fait | 10 itérations exécutées, 0 PASS ; 17 abandonnées sans exécution | ~400 |
 | ML-1 | Meta-labeling sur LogitL2 (NDX) | fait | **FAIL niveau 1** — Meta Sharpe +0,28 / rdt +1,4 %/an / Calmar +0,06 contre BuyHold +0,52 / +14,5 % / +0,08 : aucune branche du critère satisfaite. Le méta-modèle informe réellement (accuracy 54,20 %→55,81 %, turnover 0,268→0,039/j, MDD −59,6 %→−19,2 %) mais ses p_win restent serrées autour de 0,5 (médiane 0,562) → exposition moyenne 0,10, rendement écrasé sans gain de Sharpe. Batterie renforcée non déclenchée. Composite (lecture secondaire, Règle 3) : FAIL aussi. | **405** |
+| ML-2 | Features exogènes taux/cross-marché (NDX) | fait | **FAIL niveau 1** — `LogitL2Exog` (21 features endogènes + 5 exogènes : `exog_dgs10_level`, `exog_slope_10y_3mo`, `exog_dgs10_chg`, `exog_dgs3mo_chg`, `exog_dax_ret_lag1`) : Sharpe +0,32 / rdt +7,4 %/an / Calmar +0,07 contre BuyHold +0,52 / +14,5 % / +0,08 — aucune branche du critère satisfaite. Les features exogènes **informent réellement** le modèle (accuracy 54,20 %→55,08 %, break-even 18,4→23,0 bps/trade, turnover 0,268→0,157/j) mais le candidat est **à plat sur 30,7 % de l'OOS** faute d'historique DAX avant le 01/11/1999, ce qui écrase son rendement annualisé (+9,5 %→+7,4 %) ; à Sharpe quasi inchangé (+0,35→+0,32), il ne peut pas franchir BuyHold. **Lecture secondaire déclarée AVANT calcul (aucun effet sur le verdict)** : sur la fenêtre restreinte où il est opérationnel (06/04/2000→10/07/2026), il bat BuyHold sur les deux branches (Sharpe +0,38 vs +0,28 ; rdt +10,8 % vs +7,8 % ; Calmar +0,10 vs +0,05) — mais cette fenêtre **affaiblit aussi le benchmark** (BuyHold −0,24 de Sharpe, elle s'ouvre juste avant le krach dot-com), biais explicitement documenté au §5.1 du rapport ; le PREREG lui refusait d'avance tout effet sur le verdict, et ce refus est maintenu. Batterie renforcée non déclenchée, aucune notification. Composite (lecture secondaire, Règle 3) : FAIL nettement (candidat −1,24 de Sharpe, les exogènes y **dégradent** le modèle, accuracy 52,0 %→48,0 %). | **406** |
 
-*(à faire : ML-2, ML-3, ML-4 — dans cet ordre, un cycle par firing de la
+*(à faire : ML-3, ML-4 — dans cet ordre, un cycle par firing de la
 boucle autonome dédiée)*
+
+**Enseignement ML-2 à reporter sur les cycles suivants** : une feature exogène
+peut améliorer la *qualité* des paris (accuracy, break-even, turnover) sans
+améliorer la performance, dès lors que sa **disponibilité historique** est plus
+courte que la fenêtre d'évaluation — le modèle reste alors à plat sur une part
+importante de l'échantillon et son rendement annualisé est mécaniquement
+amputé. Corollaire de discipline : la fenêtre de verdict doit être fixée AVANT
+de constater cet effet (ici elle l'a été, avec la lecture restreinte déclarée
+d'avance comme informative), sinon la tentation de « recadrer » la fenêtre sur
+la période opérationnelle transformerait un FAIL en PASS apparent — d'autant
+plus dangereusement que ce recadrage déplace *aussi* le benchmark. Pour ML-4
+(cross-market pooling), privilégier des marchés dont l'historique couvre la
+fenêtre complète, ou pré-enregistrer explicitement une fenêtre commune ET son
+benchmark recalculé.
 
 **Enseignement ML-1 à reporter sur les cycles suivants** : sur ce signal, le
 filtrage améliore la *qualité* des paris mais pas le Sharpe, parce que le
@@ -133,3 +149,14 @@ constaté une exposition trop faible, ce qui serait du snooping.
 applicable faute de PASS niveau 1),
 `results/ml_meta_labeling_logitl2_ndx.md`,
 `results/ml_meta_labeling_logitl2_composite.md`.
+
+**PREREG et artefacts du cycle ML-2** :
+`PREREG_ml_exogenous_features_rates_crossmarket.md`,
+`scripts/ml_exogenous_features_rates_crossmarket_backtest.py`,
+`results/ml_exogenous_features_rates_crossmarket.md` (NDX, verdict),
+`results/ml_exogenous_features_rates_crossmarket_composite.md` (Règle 3),
+`results/ml_exogenous_features_rates_crossmarket_pnl.npz` (positions OOS pour
+audit). Extension de code réutilisable : `build_exogenous_features()` et
+`build_features(df, exog=None)` dans `finance/src/prediction.py` — alignement
+causal strict `obs_date < t` via `_asof_prev()`, non-régression du chemin
+`exog=None` prouvée bit à bit (hash des features identique avant/après).
