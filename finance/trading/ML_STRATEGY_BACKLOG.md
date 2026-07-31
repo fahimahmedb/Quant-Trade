@@ -44,14 +44,15 @@ opérationnelle), état réel vérifié le 31/07/2026 par inspection directe de
 |---|---|---|
 | Itérations brute-force 1-10 (closes) | ~400 (voir `n_trials_pooled` par itération) | 0 |
 | Étape B officielle (N=4, univers figé) | 4 (déjà comptés dans son propre DSR, ne s'ajoute pas au pool brute-force — protocole distinct) | 0 (aucun signal actif ne bat BuyHold à DSR>0,95) |
-| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **2** (ML-1 et ML-2 : 1 essai local chacun) | 0 |
+| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **3** (ML-1, ML-2 et ML-3 : 1 essai local chacun) | 0 |
 
-**Total actuel pour tout DSR futur sur cette campagne : n_trials = 406**
+**Total actuel pour tout DSR futur sur cette campagne : n_trials = 407**
 = 400 (brute-force ML 1-10, closes) + 4 (univers figé Étape B) + 1 (ML-1)
-+ 1 (ML-2). Ce total est mis à jour à chaque cycle et cité dans chaque calcul
-DSR — jamais réduit. Valeurs effectivement utilisées dans
-`results/ml_meta_labeling_logitl2_ndx.md` §4 (405) et
-`results/ml_exogenous_features_rates_crossmarket.md` §4 (406).
++ 1 (ML-2) + 1 (ML-3). Ce total est mis à jour à chaque cycle et cité dans
+chaque calcul DSR — jamais réduit. Valeurs effectivement utilisées dans
+`results/ml_meta_labeling_logitl2_ndx.md` §4 (405),
+`results/ml_exogenous_features_rates_crossmarket.md` §4 (406) et
+`results/ml_regularized_architecture.md` §5 (407).
 
 ## 2. Discipline appliquée (réutilisée du backlog non-ML)
 
@@ -118,8 +119,27 @@ avoir vu un résultat (Règle 1).
 | ML-1 | Meta-labeling sur LogitL2 (NDX) | fait | **FAIL niveau 1** — Meta Sharpe +0,28 / rdt +1,4 %/an / Calmar +0,06 contre BuyHold +0,52 / +14,5 % / +0,08 : aucune branche du critère satisfaite. Le méta-modèle informe réellement (accuracy 54,20 %→55,81 %, turnover 0,268→0,039/j, MDD −59,6 %→−19,2 %) mais ses p_win restent serrées autour de 0,5 (médiane 0,562) → exposition moyenne 0,10, rendement écrasé sans gain de Sharpe. Batterie renforcée non déclenchée. Composite (lecture secondaire, Règle 3) : FAIL aussi. | **405** |
 | ML-2 | Features exogènes taux/cross-marché (NDX) | fait | **FAIL niveau 1** — `LogitL2Exog` (21 features endogènes + 5 exogènes : `exog_dgs10_level`, `exog_slope_10y_3mo`, `exog_dgs10_chg`, `exog_dgs3mo_chg`, `exog_dax_ret_lag1`) : Sharpe +0,32 / rdt +7,4 %/an / Calmar +0,07 contre BuyHold +0,52 / +14,5 % / +0,08 — aucune branche du critère satisfaite. Les features exogènes **informent réellement** le modèle (accuracy 54,20 %→55,08 %, break-even 18,4→23,0 bps/trade, turnover 0,268→0,157/j) mais le candidat est **à plat sur 30,7 % de l'OOS** faute d'historique DAX avant le 01/11/1999, ce qui écrase son rendement annualisé (+9,5 %→+7,4 %) ; à Sharpe quasi inchangé (+0,35→+0,32), il ne peut pas franchir BuyHold. **Lecture secondaire déclarée AVANT calcul (aucun effet sur le verdict)** : sur la fenêtre restreinte où il est opérationnel (06/04/2000→10/07/2026), il bat BuyHold sur les deux branches (Sharpe +0,38 vs +0,28 ; rdt +10,8 % vs +7,8 % ; Calmar +0,10 vs +0,05) — mais cette fenêtre **affaiblit aussi le benchmark** (BuyHold −0,24 de Sharpe, elle s'ouvre juste avant le krach dot-com), biais explicitement documenté au §5.1 du rapport ; le PREREG lui refusait d'avance tout effet sur le verdict, et ce refus est maintenu. Batterie renforcée non déclenchée, aucune notification. Composite (lecture secondaire, Règle 3) : FAIL nettement (candidat −1,24 de Sharpe, les exogènes y **dégradent** le modèle, accuracy 52,0 %→48,0 %). | **406** |
 
-*(à faire : ML-3, ML-4 — dans cet ordre, un cycle par firing de la
-boucle autonome dédiée)*
+| ML-3 | Architecture unique bien régularisée — GB à early stopping purgé (NDX) | fait | **FAIL niveau 1** — `HistGB-ES` (`HistGradientBoostingClassifier`, hyperparamètres de l'Étape B repris tels quels, seul `max_iter` passant d'une valeur fixe de 150 à un plafond 400 dont la valeur effective `k*` est choisie par early stopping **chronologique purgé** : validation = 20 % les plus récents, purge interne de 5 j = H, `k*` = argmin de la log-loss de validation, ré-ajustement final sur la fenêtre d'entraînement complète) : Sharpe +0,43 / rdt +11,8 %/an / Calmar +0,06 contre BuyHold +0,52 / +14,5 % / +0,08 — aucune branche du critère satisfaite. L'early stopping régularise **très** fortement : `k*` médian = **11 itérations** (min 10, max 231, plafond 400 jamais atteint), soit une capacité inférieure à celle de l'Étape B sur **99,1 %** des 454 ré-estimations. Il améliore nettement la **qualité** des paris — accuracy 53,44 %→**55,49 %** (la meilleure de tout l'univers, LogitL2 compris), turnover 0,376→**0,081**/j, break-even 17,6→**59,6** bps/trade — mais **pas la performance** : Sharpe +0,46→+0,43 (−0,03) et MDD **dégradé** −66,9 %→−83,2 %. Mécanisme : à si faible capacité le signal devient quasi-permanent et converge vers un Buy & Hold bruité (MDD −83,2 % ≈ celui de BuyHold, −82,9 %) sans en capter tout le rendement, puisqu'il reste ±1 et perd sur ses rares passages short. Batterie renforcée non déclenchée, aucune notification. Contrôle « à plat » du PREREG §4 : 0,00 % hors warmup (l'artefact de ML-2 n'est pas reproduit). Composite (lecture secondaire, Règle 3) : **FAIL aussi**, mais l'effet de l'early stopping y est spectaculaire (Sharpe +0,03→+0,39, accuracy 49,80 %→53,60 %, MDD −28,6 %→−20,4 %, `k*` médian 11) — sans jamais approcher BuyHold (+0,78 / +18,9 % / Calmar +0,62). | **407** |
+
+*(à faire : ML-4 — un cycle par firing de la boucle autonome dédiée)*
+
+**Enseignement ML-3 à reporter sur les cycles suivants** : la régularisation
+de capacité fonctionne — et c'est précisément ce qui la rend trompeuse. Bien
+réglée (early stopping purgé), elle produit **la meilleure accuracy et le
+meilleur break-even de toute la campagne** (55,49 % et 59,6 bps/trade sur NDX)
+et divise le turnover par 4,6 ; sur Composite elle transforme un modèle inutile
+(Sharpe +0,03) en modèle honorable (+0,39). Et pourtant le Sharpe NDX **baisse**
+et le MDD **empire**. Raison : un modèle très régularisé devient très persistant,
+donc son P&L tend vers celui du Buy & Hold — mais en version dégradée, puisqu'il
+reste ±1 et paie ses rares retournements. Corollaire de discipline, à appliquer
+à ML-4 : **ne jamais lire l'accuracy, le turnover ou le break-even comme des
+indices de succès** ; sur ce projet, trois cycles consécutifs (ML-1 filtrage,
+ML-2 features, ML-3 architecture) ont amélioré la qualité des paris sans jamais
+franchir Buy & Hold. Corollaire de modélisation : tant que le candidat est
+contraint à ±1, améliorer sa précision le rapproche asymptotiquement d'un
+Buy & Hold bruité, jamais au-dessus — le levier restant n'est pas la précision
+directionnelle mais l'**exposition** (ce que teste l'Étape D côté non-ML), et
+ML-1 a déjà montré qu'un sizing naïf par probabilité non calibrée la détruit.
 
 **Enseignement ML-2 à reporter sur les cycles suivants** : une feature exogène
 peut améliorer la *qualité* des paris (accuracy, break-even, turnover) sans
@@ -160,3 +180,19 @@ audit). Extension de code réutilisable : `build_exogenous_features()` et
 `build_features(df, exog=None)` dans `finance/src/prediction.py` — alignement
 causal strict `obs_date < t` via `_asof_prev()`, non-régression du chemin
 `exog=None` prouvée bit à bit (hash des features identique avant/après).
+
+**PREREG et artefacts du cycle ML-3** :
+`PREREG_ml_regularized_architecture.md` (commit `5fa9761`, antérieur à tout
+calcul — il fixe le choix de l'architecture unique : gradient boosting, **pas**
+MLP, avec justification écrite d'avance et interdiction explicite de basculer
+sur le MLP après résultat),
+`scripts/ml_regularized_architecture_backtest.py` (classe
+`PurgedEarlyStoppingHGB` : découpe chronologique + purge interne de H lignes,
+sélection de `k*` par `staged_predict_proba` sur la log-loss de validation,
+**aucun** `GridSearchCV` / `RandomizedSearchCV`),
+`scripts/ml_regularized_architecture_battery.py` (prêt, smoke-testé, non
+applicable faute de PASS niveau 1),
+`results/ml_regularized_architecture.md` (NDX, verdict),
+`results/ml_regularized_architecture_composite.md` (Règle 3),
+`results/ml_regularized_architecture_pnl.npz` et `..._composite_pnl.npz`
+(positions OOS + série des `k*` pour audit).
