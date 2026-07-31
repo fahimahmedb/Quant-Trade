@@ -67,6 +67,16 @@ comme une "stratégie alpha validée". Concrètement :
   production, en un seul essai pré-enregistré (n_trials=1 pour cette
   question précise), pas après avoir vu s'il gagne.**
 
+  **Fait** (`PREREG_static_blend_comparator_149.md`,
+  `results/nonml_static_blend_comparator_149.md`) : blend statique au même
+  poids moyen que #149 (0,761) → Sharpe +0,60, MDD -71,9% ; #149 dynamique →
+  Sharpe +0,84, MDD -37,9% (BH : Sharpe +0,53, MDD -82,9%). Écart de Sharpe
+  -0,239, largement sous le seuil -0,05 pré-enregistré. **Conclusion :
+  NE PAS simplifier vers le statique — la réduction de MDD dynamique
+  (vol-targeting réactif) apporte une valeur mesurable au-delà du simple
+  portage moyen, même si cette valeur ne clarifie pas le SPA/DSR (§1).**
+  Le shadow-trading (§5) porte donc bien sur le mécanisme dynamique.
+
 ## 3. Kill-switch — 3 déclencheurs indépendants
 
 ### 3.1 Kill-switch niveau de taux
