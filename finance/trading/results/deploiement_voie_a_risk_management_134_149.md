@@ -95,8 +95,23 @@ négative en crise, l'effet "flight-to-quality" marginal mesuré au #142). Si
 la corrélation glissante 60 séances entre rendements NDX et rendements du
 proxy obligataire **dépasse +0,3 pendant plus de 20 séances consécutives**
 (régime de corrélation positive prolongé — ex. choc de taux généralisé,
-inflation non ancrée), désactiver le switch : le bénéfice de diversification
-implicite du portage n'est plus garanti si les deux jambes chutent ensemble.
+inflation non ancrée), c'était initialement défini comme désactivation
+immédiate du switch.
+
+**Révision du 31/07/2026 (décision utilisateur, sourcée par
+`results/nonml_correlation_regime_episodes_149.md`)** : l'analyse des 21
+épisodes historiques (1985-2026) où cette condition s'est produite montre
+un MDD overlay jamais pire que Buy&Hold (0/21) et un Sharpe overlay-BH
+médian quasi nul (-0,04) — le portage protège indépendamment du régime de
+corrélation. **Ce kill-switch passe donc de "arrêt dur" à "signal de
+vigilance"** : il reste calculé et rapporté chaque semaine
+(`scripts/monitoring_correlation_kill_switches_149.py`), mais ne bloque
+plus le démarrage ou la poursuite du shadow-trading. Limite explicite de
+cette révision : 21 épisodes ne couvrent pas tous les régimes futurs
+possibles (ex. taux durablement négatifs, choc jamais vu dans
+l'historique) — à revoir si un futur épisode diffère qualitativement des
+21 précédents (ex. MDD overlay effectivement pire que BH pour la première
+fois).
 
 ### 3.3 Kill-switch performance
 
@@ -115,17 +130,13 @@ revenir au comparateur statique — pas de tuning, abandon direct.
 
 ## 5. Protocole de shadow-trading avant capital réel
 
-**⚠ État courant (13/07/2026, dernière séance disponible,
-`results/monitoring/monitoring_149_2026-07-13.md`) : le kill-switch
-corrélation (§3.2) est DÉCLENCHÉ** — corrélation glissante 60j NDX/proxy
-obligataire à +0,495 (seuil +0,30) depuis 48 séances consécutives (seuil
-20). Le kill-switch taux (§3.1) est OK (DGS10=4,62%). **Ne pas démarrer le
-shadow-trading tant que ce déclenchement persiste** — démarrer une
-validation prospective sur un mécanisme dont sa propre condition de
-sécurité est active reviendrait à ignorer le garde-fou qu'on vient de
-construire. Revérifier via
-`python3 finance/trading/scripts/monitoring_correlation_kill_switches_149.py`
-avant toute décision de lancement.
+**État au 31/07/2026** : le kill-switch corrélation (§3.2) est actif
+(corrélation glissante 60j à +0,495, 48 séances consécutives) mais a été
+révisé en signal de vigilance (§3.2) suite à l'analyse des 21 épisodes
+historiques — **ne bloque plus le démarrage**. Le kill-switch taux (§3.1)
+est OK (DGS10=4,62%). **Décision : démarrage du shadow-trading autorisé.**
+Voir `results/shadow_trading_149_journal.md` pour le journal officiel
+(date de départ, paramètres figés, positions).
 
 - Durée minimale **6 mois** (Règle 8 du protocole, déjà en vigueur),
   paramètres strictement figés à ceux de #149 (le meilleur des deux sur la
