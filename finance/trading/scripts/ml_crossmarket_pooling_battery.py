@@ -104,7 +104,7 @@ for TAG in TAGS:
             w(f"| {label} | {nw} | — | — | hors couverture (<20 séances) |")
             continue
         any_window = True
-        mc, mb = pair(pos[m.values], bh[m.values], r[m.values], COST)
+        mc, mb = pair(pos[m], bh[m], r[m], COST)
         ok = mc["max_drawdown_pct"] >= mb["max_drawdown_pct"] - 1.0  # tolérance 1 pt
         ok_b &= ok
         w(f"| {label} | {nw} | {mc['max_drawdown_pct']:.1f} % | "
