@@ -44,11 +44,13 @@ opérationnelle), état réel vérifié le 31/07/2026 par inspection directe de
 |---|---|---|
 | Itérations brute-force 1-10 (closes) | ~400 (voir `n_trials_pooled` par itération) | 0 |
 | Étape B officielle (N=4, univers figé) | 4 (déjà comptés dans son propre DSR, ne s'ajoute pas au pool brute-force — protocole distinct) | 0 (aucun signal actif ne bat BuyHold à DSR>0,95) |
-| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **0 au départ, incrémenté à chaque cycle** | 0 |
+| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **1** (ML-1 : 1 essai local) | 0 |
 
-**Total actuel pour tout DSR futur sur cette campagne : n_trials ≥ 404**
-(400 brute-force + 4 cycles à venir minimum). Ce total sera mis à jour à
-chaque cycle et cité dans chaque calcul DSR — jamais réduit.
+**Total actuel pour tout DSR futur sur cette campagne : n_trials = 405**
+= 400 (brute-force ML 1-10, closes) + 4 (univers figé Étape B) + 1 (ML-1).
+Ce total est mis à jour à chaque cycle et cité dans chaque calcul DSR —
+jamais réduit. Valeur effectivement utilisée dans
+`results/ml_meta_labeling_logitl2_ndx.md` §4.
 
 ## 2. Discipline appliquée (réutilisée du backlog non-ML)
 
@@ -112,6 +114,22 @@ avoir vu un résultat (Règle 1).
 | # | Nom | Statut | Verdict | n_trials cumulé après ce cycle |
 |---|---|---|---|---|
 | ML-0 | Clôture honnête campagne brute-force 1-27 | fait | 10 itérations exécutées, 0 PASS ; 17 abandonnées sans exécution | ~400 |
+| ML-1 | Meta-labeling sur LogitL2 (NDX) | fait | **FAIL niveau 1** — Meta Sharpe +0,28 / rdt +1,4 %/an / Calmar +0,06 contre BuyHold +0,52 / +14,5 % / +0,08 : aucune branche du critère satisfaite. Le méta-modèle informe réellement (accuracy 54,20 %→55,81 %, turnover 0,268→0,039/j, MDD −59,6 %→−19,2 %) mais ses p_win restent serrées autour de 0,5 (médiane 0,562) → exposition moyenne 0,10, rendement écrasé sans gain de Sharpe. Batterie renforcée non déclenchée. Composite (lecture secondaire, Règle 3) : FAIL aussi. | **405** |
 
-*(à faire : ML-1, ML-2, ML-3, ML-4 — dans cet ordre, un cycle par firing de
-la boucle autonome dédiée)*
+*(à faire : ML-2, ML-3, ML-4 — dans cet ordre, un cycle par firing de la
+boucle autonome dédiée)*
+
+**Enseignement ML-1 à reporter sur les cycles suivants** : sur ce signal, le
+filtrage améliore la *qualité* des paris mais pas le Sharpe, parce que le
+dimensionnement proportionnel à une probabilité mal calibrée détruit
+l'exposition. Tout futur mécanisme de sizing devra pré-enregistrer sa
+calibration (ou une normalisation d'échelle) AVANT calcul — pas après avoir
+constaté une exposition trop faible, ce qui serait du snooping.
+
+**PREREG et artefacts du cycle ML-1** :
+`PREREG_ml_meta_labeling_logitl2_ndx.md`,
+`scripts/ml_meta_labeling_logitl2_ndx_backtest.py`,
+`scripts/ml_meta_labeling_logitl2_ndx_battery.py` (prêt, smoke-testé, non
+applicable faute de PASS niveau 1),
+`results/ml_meta_labeling_logitl2_ndx.md`,
+`results/ml_meta_labeling_logitl2_composite.md`.
