@@ -115,6 +115,18 @@ revenir au comparateur statique — pas de tuning, abandon direct.
 
 ## 5. Protocole de shadow-trading avant capital réel
 
+**⚠ État courant (13/07/2026, dernière séance disponible,
+`results/monitoring/monitoring_149_2026-07-13.md`) : le kill-switch
+corrélation (§3.2) est DÉCLENCHÉ** — corrélation glissante 60j NDX/proxy
+obligataire à +0,495 (seuil +0,30) depuis 48 séances consécutives (seuil
+20). Le kill-switch taux (§3.1) est OK (DGS10=4,62%). **Ne pas démarrer le
+shadow-trading tant que ce déclenchement persiste** — démarrer une
+validation prospective sur un mécanisme dont sa propre condition de
+sécurité est active reviendrait à ignorer le garde-fou qu'on vient de
+construire. Revérifier via
+`python3 finance/trading/scripts/monitoring_correlation_kill_switches_149.py`
+avant toute décision de lancement.
+
 - Durée minimale **6 mois** (Règle 8 du protocole, déjà en vigueur),
   paramètres strictement figés à ceux de #149 (le meilleur des deux sur la
   batterie renforcée reste marginal — utiliser #149 par défaut, #134 comme
