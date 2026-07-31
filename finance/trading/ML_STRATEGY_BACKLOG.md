@@ -44,15 +44,16 @@ opérationnelle), état réel vérifié le 31/07/2026 par inspection directe de
 |---|---|---|
 | Itérations brute-force 1-10 (closes) | ~400 (voir `n_trials_pooled` par itération) | 0 |
 | Étape B officielle (N=4, univers figé) | 4 (déjà comptés dans son propre DSR, ne s'ajoute pas au pool brute-force — protocole distinct) | 0 (aucun signal actif ne bat BuyHold à DSR>0,95) |
-| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **3** (ML-1, ML-2 et ML-3 : 1 essai local chacun) | 0 |
+| **Nouvelle campagne (ce fichier, à partir du cycle ML-1)** | **4** (ML-1, ML-2, ML-3 et ML-4 : 1 essai local chacun) | 0 |
 
-**Total actuel pour tout DSR futur sur cette campagne : n_trials = 407**
+**Total actuel pour tout DSR futur sur cette campagne : n_trials = 408**
 = 400 (brute-force ML 1-10, closes) + 4 (univers figé Étape B) + 1 (ML-1)
-+ 1 (ML-2) + 1 (ML-3). Ce total est mis à jour à chaque cycle et cité dans
-chaque calcul DSR — jamais réduit. Valeurs effectivement utilisées dans
-`results/ml_meta_labeling_logitl2_ndx.md` §4 (405),
-`results/ml_exogenous_features_rates_crossmarket.md` §4 (406) et
-`results/ml_regularized_architecture.md` §5 (407).
++ 1 (ML-2) + 1 (ML-3) + 1 (ML-4). Ce total est mis à jour à chaque cycle et
+cité dans chaque calcul DSR — jamais réduit. Valeurs effectivement
+utilisées dans `results/ml_meta_labeling_logitl2_ndx.md` §4 (405),
+`results/ml_exogenous_features_rates_crossmarket.md` §4 (406),
+`results/ml_regularized_architecture.md` §5 (407) et
+`results/ml_crossmarket_pooling.md` §10 / `results/ml_crossmarket_pooling_{sp500,dax}_battery.md` (408).
 
 ## 2. Discipline appliquée (réutilisée du backlog non-ML)
 
@@ -121,7 +122,36 @@ avoir vu un résultat (Règle 1).
 
 | ML-3 | Architecture unique bien régularisée — GB à early stopping purgé (NDX) | fait | **FAIL niveau 1** — `HistGB-ES` (`HistGradientBoostingClassifier`, hyperparamètres de l'Étape B repris tels quels, seul `max_iter` passant d'une valeur fixe de 150 à un plafond 400 dont la valeur effective `k*` est choisie par early stopping **chronologique purgé** : validation = 20 % les plus récents, purge interne de 5 j = H, `k*` = argmin de la log-loss de validation, ré-ajustement final sur la fenêtre d'entraînement complète) : Sharpe +0,43 / rdt +11,8 %/an / Calmar +0,06 contre BuyHold +0,52 / +14,5 % / +0,08 — aucune branche du critère satisfaite. L'early stopping régularise **très** fortement : `k*` médian = **11 itérations** (min 10, max 231, plafond 400 jamais atteint), soit une capacité inférieure à celle de l'Étape B sur **99,1 %** des 454 ré-estimations. Il améliore nettement la **qualité** des paris — accuracy 53,44 %→**55,49 %** (la meilleure de tout l'univers, LogitL2 compris), turnover 0,376→**0,081**/j, break-even 17,6→**59,6** bps/trade — mais **pas la performance** : Sharpe +0,46→+0,43 (−0,03) et MDD **dégradé** −66,9 %→−83,2 %. Mécanisme : à si faible capacité le signal devient quasi-permanent et converge vers un Buy & Hold bruité (MDD −83,2 % ≈ celui de BuyHold, −82,9 %) sans en capter tout le rendement, puisqu'il reste ±1 et perd sur ses rares passages short. Batterie renforcée non déclenchée, aucune notification. Contrôle « à plat » du PREREG §4 : 0,00 % hors warmup (l'artefact de ML-2 n'est pas reproduit). Composite (lecture secondaire, Règle 3) : **FAIL aussi**, mais l'effet de l'early stopping y est spectaculaire (Sharpe +0,03→+0,39, accuracy 49,80 %→53,60 %, MDD −28,6 %→−20,4 %, `k*` médian 11) — sans jamais approcher BuyHold (+0,78 / +18,9 % / Calmar +0,62). | **407** |
 
-*(à faire : ML-4 — un cycle par firing de la boucle autonome dédiée)*
+| ML-4 | Cross-market pooling — Russell 2000 / S&P 500 / DAX | fait | **PASS niveau 1 (2/3 marchés), mais AUCUN PASS RENFORCÉ** — `LogitL2Pooled` (hyperparamètres de l'Étape B repris tels quels, seul l'échantillon d'entraînement change : pooling causal cross-marché, purge en dates calendaires). Contraste interne au même run (LogitL2Solo = même modèle entraîné sur le seul marché évalué) : Russell 2000 Sharpe +0,17→−0,01 (**FAIL**, pooling nuit) ; S&P 500 +0,44→**+0,50** et Calmar +0,09→**+0,10** (**PASS niveau 1**) ; DAX +0,03→**+0,43** et Calmar +0,11→**+0,12** (**PASS niveau 1**, l'effet le plus spectaculaire — DAX profite le plus du pooling, cohérent avec son historique le plus court : ×6,04 la taille d'échantillon d'entraînement médiane). Règle d'agrégation fixée au PREREG avant calcul (≥2/3 marchés) : **2/3 → PASS niveau 1 global**, premier PASS niveau 1 de toute la campagne ML relancée. Test de non-régression du pooling prouvé bit à bit (max\|Δp_up\|=0 sur les 3 marchés en pooling restreint au marché seul) ; couverture 100 % par marché, aucun artefact "à plat" (enseignement ML-2 non reproduit). **Batterie renforcée exécutée séparément sur S&P 500 et DAX (les 2 PASS niveau 1) : 0/5 sur les deux marchés** — stress de coûts (échoue dès ×3), stress de crise (échoue sur le Resserrement 2022 pour S&P 500, sur Dot-com et 2022 pour DAX), stabilité temporelle (2/4 folds seulement sur les deux), SPA (p=0,32 S&P 500, p=0,49 DAX), DSR à n_trials=408 (0,000 et 0,001). **Aucun PASS RENFORCÉ, aucune notification.** Un bug trivial du script de batterie (`.values` sur un ndarray déjà dépouillé de son wrapper pandas) a été corrigé avant tout résultat de batterie. Ce cycle a été interrompu en cours de calcul par la limite de dépense mensuelle du compte (API) juste avant que l'agent ne committe son propre résultat ; l'orchestrateur a repris la main directement (vérification d'intégrité du travail déjà produit, commit, exécution et correction de la batterie) plutôt que de relancer un nouvel agent, pour ne pas re-déclencher la même limite. | **408** |
+
+*(Fin de la première vague fixée a priori — ML-1 à ML-4, section 3.
+Bilan : 4/4 cycles avec au moins un résultat exploitable, 1/4 a atteint le
+PASS niveau 1 [ML-4, 2/3 marchés], 0/4 PASS RENFORCÉ. Aucun nouvel axe
+ML-5+ n'est ajouté à ce stade : la section 3 avait fixé 4 axes précis et
+motivés a priori, et en fabriquer un 5e maintenant — sans motivation aussi
+solide que les 4 premiers — serait exactement la dérive que la discipline
+« petit N, grande rigueur » de ce backlog cherche à éviter. Décision en
+attente de l'utilisateur, comme pour le backlog non-ML au cycle #160.)*
+
+**Enseignement ML-4 à reporter sur toute extension future** : le pooling
+cross-marché est le SEUL des 4 axes à avoir produit un PASS niveau 1 — et il
+le fait en changeant la composition de l'échantillon d'entraînement, pas la
+précision directionnelle du modèle (corollaire de ML-3 respecté : ce cycle
+ne cherchait pas à améliorer l'accuracy). Mais le PASS niveau 1 ne résiste à
+AUCUN des 5 contrôles renforcés sur les deux marchés où il apparaît — la
+stabilité temporelle (2/4 folds) et le stress de coûts (échec dès ×3) sont
+les premiers signes qu'il s'agit probablement d'une amélioration locale à
+une portion de l'échantillon, pas d'un edge structurel. Le contraste par
+marché est aussi instructif : le marché qui bénéficie le plus du pooling
+(DAX, +0,40 de Sharpe) est celui dont l'historique SOLO est le plus court et
+le plus pauvre — cohérent avec l'hypothèse du cycle (plus de données
+d'entraînement aide), mais aussi avec une lecture plus prudente : un DAX
+solo mal entraîné est un adversaire facile à battre, ce qui gonfle
+mécaniquement le gain apparent du pooling sans forcément indiquer un signal
+transférable. Toute extension future de cet axe (pooling avec pondération,
+pooling sur plus de marchés, pooling asymétrique) doit pré-enregistrer
+comment elle traite cette asymétrie AVANT de regarder si elle change le
+verdict.
 
 **Enseignement ML-3 à reporter sur les cycles suivants** : la régularisation
 de capacité fonctionne — et c'est précisément ce qui la rend trompeuse. Bien
