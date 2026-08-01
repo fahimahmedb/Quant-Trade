@@ -24,22 +24,26 @@ COST_BPS = 5.0
 TERCILE = 1.0 / 3.0
 
 
-def load_prices():
+def load_prices(prices_dir=None, panel_start=None):
+    """`prices_dir` / `panel_start` (cycle #164) : sources optionnelles. `None`
+    par defaut = comportement d'origine (#14) strictement inchange."""
     series = {}
-    for path in sorted(PRICES_DIR.glob("*.json")):
+    for path in sorted((prices_dir or PRICES_DIR).glob("*.json")):
         payload = json.loads(path.read_text())
         if "error" in payload:
             continue
         ts = pd.to_datetime(payload["ts"], unit="s").normalize()
         close = pd.Series(payload["close"], index=ts, dtype=float).dropna()
         close = close[~close.index.duplicated(keep="first")].sort_index()
+        if panel_start is not None:
+            close = close[close.index >= pd.Timestamp(panel_start)]
         if len(close) > SIGNAL_WINDOW + REBAL_EVERY + 10:
             series[path.stem] = close
     return series
 
 
-def build_universe():
-    series = load_prices()
+def build_universe(prices_dir=None, panel_start=None):
+    series = load_prices(prices_dir, panel_start)
     tickers = sorted(series.keys())
     ref_idx = None
     for t in tickers:
@@ -49,8 +53,15 @@ def build_universe():
     return P
 
 
-def main():
-    P = build_universe()
+def main(prices_dir=None, panel_start=None, membership_fn=None,
+         rebal_anchor=None, out_suffix="", header_note=None):
+    """Arguments optionnels (cycle #164, pre-enregistres dans
+    PREREG_short_term_momentum_pit_universe.md) : univers POINT-IN-TIME.
+    `membership_fn(timestamp) -> set[str]` restreint, a CHAQUE date de
+    rebalancement, les titres eligibles ET la reference equiponderee aux
+    membres reels de l'indice ce jour-la. Tous `None` = comportement
+    d'origine (#14) strictement inchange."""
+    P = build_universe(prices_dir, panel_start)
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
@@ -64,22 +75,35 @@ def main():
             signal[i] = close[i] / close[i - SIGNAL_WINDOW] - 1.0
         signal[i, ~(exists[i] & exists[i - SIGNAL_WINDOW])] = np.nan
 
-    n_top = max(1, int(round(n_tickers * TERCILE)))
+    tickers = list(P.columns)
     weights_winners = np.zeros((T, n_tickers))
     weights_bh = np.zeros((T, n_tickers))
     start = SIGNAL_WINDOW
+    if rebal_anchor is not None:
+        start = max(start, int(P.index.searchsorted(pd.Timestamp(rebal_anchor))))
     rebal_dates = list(range(start, T, REBAL_EVERY))
+    coverage = []
     for k, t in enumerate(rebal_dates):
         end = rebal_dates[k + 1] if k + 1 < len(rebal_dates) else T
         s = signal[t]
         elig = np.where(np.isfinite(s))[0]
+        listed = exists[t]
+        if membership_fn is not None:
+            members = membership_fn(P.index[t])
+            in_index = np.array([tk in members for tk in tickers])
+            elig = np.array([j for j in elig if in_index[j]], dtype=int)
+            listed = listed & in_index
+            coverage.append((P.index[t], len(members), int(listed.sum())))
+        # TERCILE s'applique au nombre de titres REELLEMENT dans l'univers a
+        # cette date (identique a l'origine quand membership_fn is None).
+        n_ref = n_tickers if membership_fn is None else len(elig)
+        n_top = max(1, int(round(n_ref * TERCILE)))
         n_top_t = min(n_top, len(elig))
         if n_top_t > 0:
             top_idx = elig[np.argsort(-s[elig])[:n_top_t]]  # les PLUS HAUTS rendements (winners)
             w = np.zeros(n_tickers)
             w[top_idx] = 1.0 / n_top_t
             weights_winners[t:end] = w
-        listed = exists[t]
         if listed.sum() > 0:
             weights_bh[t:end] = listed.astype(float) / listed.sum()
 
@@ -106,6 +130,7 @@ def main():
         f"({P.index[start].date()} → {P.index[-1].date()}), signal = rendement 5j, "
         f"rebalancement hebdomadaire, tercile SUPÉRIEUR ({n_top} titres).",
         "",
+        *( [header_note, ""] if header_note else [] ),
         "| | Sharpe ann. | Rendement total net | MDD |",
         "|---|---|---|---|",
         f"| Buy&Hold équipondéré (univers) | {me_b['sharpe_ann']:+.2f} | {100*ret_b:+.1f}% | "
@@ -124,11 +149,49 @@ def main():
         "(losers : Sharpe -1.02, rendement -83.6%).",
     ]
 
-    out = ROOT / "results" / "nonml_short_term_momentum_result.md"
+    if coverage:
+        cov = pd.DataFrame(coverage, columns=["date", "membres", "investissables"])
+        cov["couverture"] = cov["investissables"] / cov["membres"]
+        cov["annee"] = pd.to_datetime(cov["date"]).dt.year
+        lines += ["", "## Biais résiduel de l'univers point-in-time (mesuré, non estimé)", "",
+                  "| Année | Rebal. | Membres réels (moy.) | Investissables (moy.) | Couverture moy. |",
+                  "|---|---|---|---|---|"]
+        for year, g in cov.groupby("annee"):
+            lines.append(f"| {year} | {len(g)} | {g['membres'].mean():.0f} | "
+                         f"{g['investissables'].mean():.1f} | {100*g['couverture'].mean():.1f}% |")
+        lines += ["", f"**Couverture moyenne : {100*cov['couverture'].mean():.1f}% "
+                  f"(minimum {100*cov['couverture'].min():.1f}%)**, contre 42-68 % pour la liste "
+                  "de 2026 appliquée rétroactivement (cf. `results/nonml_ndx100_universe_census.md`). "
+                  "Le résidu correspond aux sociétés retirées de la cote dont la série de prix "
+                  "n'est plus exposée par la source — biais restant orienté à la hausse, mais "
+                  "réduit d'un ordre de grandeur et mesuré.", ""]
+
+    out = ROOT / "results" / f"nonml_short_term_momentum_result{out_suffix}.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
 
 
+PIT_NOTE = (
+    "**Univers POINT-IN-TIME (cycle #164)** — à chaque rebalancement, seuls les titres "
+    "réellement membres du NDX-100 ce jour-là sont éligibles, **et la référence "
+    "équipondérée est construite sur ce même univers réel**. Corrige le biais du "
+    "survivant qui affectait le #14 d'origine (liste des membres de 2026 appliquée "
+    "rétroactivement, couverture 68 % en 2022 / 42 % en 2015 — cf. "
+    "`results/nonml_ndx100_universe_census.md`). Aucun paramètre du #14 ne change "
+    "(SIGNAL_WINDOW=5, REBAL_EVERY=5, TERCILE=1/3, coût 5 bps). Pré-enregistré dans "
+    "`PREREG_short_term_momentum_pit_universe.md`."
+)
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "--pit":
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from ndx100_membership import tickers_as_of_date  # noqa: E402
+        main(prices_dir=ROOT / "data" / "pead" / "prices_pit",
+             panel_start="2014-01-01",
+             membership_fn=tickers_as_of_date,
+             rebal_anchor="2015-01-01",
+             out_suffix="_pit_universe",
+             header_note=PIT_NOTE)
+    else:
+        main()
