@@ -56,7 +56,13 @@ def index_trend_series() -> pd.Series:
     return pd.Series(near_high, index=dates)
 
 
-def main():
+def build_weights():
+    """Reconstruit exactement les poids Leaders et Leaders+overlay (T x
+    n_tickers), les rendements bruts par titre R, les dates alignées et
+    l'indice `start` (fin du lookback). Extraction non-comportementale de
+    l'ancien corps de `main()` -- réutilisée par
+    `nonml_leaders_index52w_high_overlay_pass_validation_battery.py`
+    (cycle #161) pour éviter toute réimplémentation divergente (Règle 7)."""
     series = load_prices()
     tickers = sorted(series.keys())
     ref_idx = None
@@ -98,7 +104,12 @@ def main():
 
     weights_base = weights_leaders
     weights_lev = weights_leaders * exposure[:, None]
+    return P.index, weights_base, weights_lev, R, trend_aligned
 
+
+def main():
+    dates_full, weights_base, weights_lev, R, trend_aligned = build_weights()
+    T = R.shape[0]
     start = LOOKBACK
     pnl_base = (weights_base[start:] * R[start:]).sum(axis=1)
     pnl_lev = (weights_lev[start:] * R[start:]).sum(axis=1)
@@ -121,7 +132,7 @@ def main():
         "# Résultat — Leaders 52-semaines + overlay levé proximité plus haut 52-semaines indice (pré-enregistré, combinaison #4+#37)",
         "",
         f"Référence = portefeuille leaders 1.0x (cycle #4), PAS Buy&Hold. "
-        f"{T - start} séances testables ({P.index[start].date()} → {P.index[-1].date()}). "
+        f"{T - start} séances testables ({dates_full[start].date()} → {dates_full[-1].date()}). "
         f"Overlay actif {100*trend_aligned[start:].mean():.1f}% du temps "
         f"(indice NDX-100 ≥ {100*INDEX_THRESHOLD:.0f}% de son plus haut {INDEX_LOOKBACK}j).",
         "",
