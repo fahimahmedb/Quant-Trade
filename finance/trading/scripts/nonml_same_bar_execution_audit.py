@@ -87,7 +87,10 @@ def block_38(prices_dir, pit):
     if pit:
         kw = dict(panel_start="2013-01-01", membership_fn=tickers_as_of_date,
                   rebal_anchor="2015-01-01")
-    dates, wb, wl, R, _ = build_weights(prices_dir, **kw)
+    # `causal=False` reproduit explicitement le comportement fautif d'origine
+    # (la correction du 01/08/2026 a fait de `causal=True` le défaut) : ce
+    # script doit pouvoir chiffrer l'écart entre les deux conventions.
+    dates, wb, wl, R, _ = build_weights(prices_dir, causal=False, **kw)
     nz = np.where(wb.sum(axis=1) > 0)[0]
     s = int(nz[0])
     return (pd.to_datetime(dates[s:]), wb[s:], wl[s:], lag1(wb)[s:], lag1(wl)[s:],

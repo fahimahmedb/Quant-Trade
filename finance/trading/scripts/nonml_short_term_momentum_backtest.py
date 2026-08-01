@@ -53,14 +53,28 @@ def build_universe(prices_dir=None, panel_start=None):
     return P
 
 
+def lag_one_day(W):
+    """Convention d'execution CAUSALE : le poids decide a la cloture de t-1 est
+    celui detenu pendant la seance t. Correction de la fuite « meme barre »
+    documentee dans `results/nonml_same_bar_execution_audit.md` (01/08/2026)."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
 def main(prices_dir=None, panel_start=None, membership_fn=None,
-         rebal_anchor=None, out_suffix="", header_note=None):
+         rebal_anchor=None, out_suffix="", header_note=None, causal=True):
     """Arguments optionnels (cycle #164, pre-enregistres dans
     PREREG_short_term_momentum_pit_universe.md) : univers POINT-IN-TIME.
     `membership_fn(timestamp) -> set[str]` restreint, a CHAQUE date de
     rebalancement, les titres eligibles ET la reference equiponderee aux
-    membres reels de l'indice ce jour-la. Tous `None` = comportement
-    d'origine (#14) strictement inchange."""
+    membres reels de l'indice ce jour-la.
+
+    CORRECTION 01/08/2026 -- fuite d'execution « meme barre » : le signal
+    close(t)/close(t-5)-1 servait a selectionner des titres qui encaissaient
+    ensuite le rendement DU JOUR t, deja contenu dans ce signal. `causal=True`
+    (defaut) decale l'execution d'un jour ; `causal=False` reproduit le
+    comportement fautif d'origine, uniquement pour l'audit qui le chiffre."""
     P = build_universe(prices_dir, panel_start)
     T, n_tickers = P.shape
     close = P.values
@@ -106,6 +120,10 @@ def main(prices_dir=None, panel_start=None, membership_fn=None,
             weights_winners[t:end] = w
         if listed.sum() > 0:
             weights_bh[t:end] = listed.astype(float) / listed.sum()
+
+    if causal:
+        weights_winners = lag_one_day(weights_winners)
+        weights_bh = lag_one_day(weights_bh)
 
     pnl_w = (weights_winners[start:] * R_safe[start:]).sum(axis=1)
     pnl_b = (weights_bh[start:] * R_safe[start:]).sum(axis=1)

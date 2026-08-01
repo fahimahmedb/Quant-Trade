@@ -3,6 +3,14 @@
 PREREG_leaders_index52w_high_overlay.md, committée avant ce script).
 Combine les cycles #4 et #37. n_trials=1, aucune dépendance ML. Règle de
 succès renforcée -- référence = leaders 1.0x (cycle #4), pas Buy&Hold.
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : les poids décidés sur la
+clôture du jour t étaient appliqués au rendement DU JOUR t, alors que
+R[t] = log(close[t]/close[t-1]) est antérieur à la décision. `build_weights`
+décale désormais les poids d'un jour par défaut (`causal=True` : décider à la
+clôture de t-1, détenir pendant t). `causal=False` reproduit exactement le
+comportement fautif d'origine, uniquement pour l'audit qui le chiffre.
 """
 import json
 import sys
@@ -62,8 +70,17 @@ def index_trend_series() -> pd.Series:
     return pd.Series(near_high, index=dates)
 
 
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
 def build_weights(prices_dir=None, panel_start=None, membership_fn=None,
-                  rebal_anchor=None, membership_log=None):
+                  rebal_anchor=None, membership_log=None, causal=True):
     """Reconstruit exactement les poids Leaders et Leaders+overlay (T x
     n_tickers), les rendements bruts par titre R, les dates alignées et
     l'indice `start` (fin du lookback). Extraction non-comportementale de
@@ -141,6 +158,13 @@ def build_weights(prices_dir=None, panel_start=None, membership_fn=None,
 
     weights_base = weights_leaders
     weights_lev = weights_leaders * exposure[:, None]
+    if causal:
+        # Correction 01/08/2026 : décider à la clôture de t-1, détenir pendant
+        # t. Décaler le PRODUIT corrige simultanément la sélection titre et la
+        # bascule de l'overlay, qui souffraient tous deux de la même fuite.
+        weights_base = lag_one_day(weights_base)
+        weights_lev = lag_one_day(weights_lev)
+        trend_aligned = np.concatenate(([False], trend_aligned[:-1]))
     return P.index, weights_base, weights_lev, R, trend_aligned
 
 
