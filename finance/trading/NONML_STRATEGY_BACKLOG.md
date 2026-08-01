@@ -402,6 +402,34 @@ une 16e variante corrélée :
 74 PASS niveau 1 sur 158 hypothèses testées (#158 = verrou temporel Règle 8, pas un nouveau backtest — le #149 NE TIENT PAS sur les 12 derniers mois, sur les 3 marchés généralisés (NDX, S&P 500, Russell 2000), cohérence totale du profil de couverture. Backlog "à faire" épuisé — voir recommandation du #156 pour la suite.)
 74 PASS niveau 1 sur 159 hypothèses testées (#159 = analyse complémentaire, pas un nouveau backtest — SPA famille #149 non significatif sur les 2 marchés testés séparément, cohérent avec les DSR individuels).
 74 PASS niveau 1 sur 160 hypothèses testées (#160 = formalisation infrastructure, pas un nouveau backtest — script Étape D étendu à 4 marchés, révèle que le critère Étape D (MDD -25%) est plus strict et divergent du critère Règle 9 niveau 1 sur Composite/S&P 500. Backlog "à faire" définitivement épuisé — voir recommandation du #156.).
+74 PASS niveau 1 sur 161 hypothèses testées (#161 = batterie Règle 9 appliquée au #38, PAS un nouveau backtest indépendant — le #38 [Sharpe brut +0,78→+1,50, meilleur résultat du backlog] a été committé le 28/07 AVANT l'introduction de la Règle 9 le lendemain et n'avait jamais été réévalué à cette barre. **4/5 — MEILLEUR SCORE JAMAIS OBTENU** (coûts ×5 OK, crise OK sur 1/4 fenêtre couverte, stabilité 4/4 folds, **SPA p=0,0000** — 1ère fois qu'un candidat individuel passe le SPA) ; seul DSR échoue mais à **0,730**, le plus proche de 0,95 jamais atteint par un candidat isolé du backlog (vs 0,0001-0,09 pour tous les autres). Bug découvert et corrigé en amont : `parse_backlog_n_trials()` était figé à n_trials=125 depuis le cycle #126 (regex ne matchait pas la formulation "PASS niveau 1 sur" adoptée à partir de ce cycle) — sans impact sur les verdicts déjà rendus (tous très loin du seuil côté FAIL), mais corrigé avant ce calcul où l'exactitude de n_trials=160 comptait réellement. 1 nouvelle piste #162 proposée ci-dessous, motivée directement par ce résultat.).
+
+## Backlog #161 (01/08/2026) — le #38 réévalué sous la Règle 9 : 4/5, le score le plus proche jamais obtenu
+
+Suite à la relance de la recherche non-ML avec l'utilisateur (échange du
+01/08/2026 sur la stratégie de performance) : le candidat le plus brut du
+backlog (#38) n'avait jamais reçu la batterie renforcée, introduite un
+jour après son commit. Corriger ce trou de couverture, PAS une nouvelle
+hypothèse spéculative — outil déjà committé, aucune grille testée.
+
+| 161 | Appliquer `nonml_pass_validation_battery.py` (Règle 9, 5 contrôles a-e) au #38 (Leaders 52-semaines + overlay 52w-high indice, meilleur résultat brut du backlog, jamais évalué à cette barre car committé avant l'introduction de la Règle 9) — référence = portefeuille Leaders 1.0x (#4), identique au PREREG original du #38, pas Buy&Hold | Aucune nouvelle donnée (recalcul sur poids déjà committés, réutilisés via un refactor non-comportemental vérifié bit-identique) | **FAIT — 4/5, MEILLEUR SCORE DE BATTERIE JAMAIS OBTENU.** a. coûts ×1/×3/×5 : OK partout (Sharpe et rendement candidat > référence même à 25 bps). b. crise : OK sur la seule fenêtre couverte par l'historique titre-par-titre (resserrement 2022, 251 séances) — dot-com/2008/COVID hors couverture (prix NDX-100 disponibles seulement depuis 2022-01-03), donc 1/4 fenêtres seulement, pas une confirmation à 4 fenêtres indépendantes. c. stabilité temporelle : **4/4 folds battus** (2e candidat après le #134 à atteindre ce score, mais ici avec un edge brut sans commune mesure : Sharpe +1,38 à +2,64 par fold contre la référence). d. **SPA de Hansen : p = 0,0000** — 1ère fois qu'un candidat individuel du backlog passe ce contrôle avec une marge aussi nette (t_SPA=4,515). e. DSR à n_trials=160 (backlog avant ce cycle) : **DSR=0,730** — ÉCHOUE le seuil 0,95 mais de très loin le plus proche jamais obtenu (z=+0,61 vs un SR₀ de 0,076/j). **Verdict : PASS niveau 1 SEULEMENT, batterie renforcée non validée** — la barre DSR>0,95 reste non atteinte, donc aucune notification Telegram, aucun changement de statut au-delà de "PASS niveau 1" déjà attribué au #38. Mais ce résultat est qualitativement différent de tous les FAIL précédents à ce contrôle : le SPA (généralement le contrôle le plus dur à passer, jusqu'ici 2/19 candidats seulement) passe nettement, et le DSR est à portée d'un gain de puissance statistique plausible (échantillon actuel limité à 2022-2026, ~4,5 ans, à cause de la disponibilité des prix NDX-100 titre-par-titre) plutôt que structurellement hors d'atteinte comme pour les 18 autres candidats testés à cette barre. **Bug corrigé en amont** (voir tally ci-dessus) : `parse_backlog_n_trials()` était figé à n_trials=125 depuis 34 cycles (#126-160) — recalculé et vérifié à 160 avant ce cycle précisément parce qu'un edge aussi élevé rendait l'exactitude de n_trials déterminante (un DSR à 0,730 avec n_trials=125 aurait pu être trompeusement plus haut). Voir `results/nonml_leaders_index52w_high_overlay_pass_validation_battery.md` et `..._anti_cheat.md` |
+
+**Piste #162 proposée, directement motivée par ce résultat** (pas une
+nouvelle idée générique ajoutée pour combler un vide, mais une réponse
+ciblée à ce qui borne spécifiquement le #161) : étendre l'historique des
+prix NDX-100 titre-par-titre au-delà de 2022 (actuellement ~4,5 ans,
+`data/pead/prices/*.json`) si une source gratuite le permet, pour
+ré-exécuter EXACTEMENT la même batterie Règle 9 sur le #38 avec (a) une
+couverture de crise réelle (dot-com/2008/COVID actuellement hors
+échantillon) et (b) une puissance statistique DSR accrue (n plus grand
+réduit mécaniquement l'incertitude sur le Sharpe estimé, ce qui est
+précisément ce qui sépare le DSR=0,730 du seuil 0,95 ici — contrairement
+aux 18 autres candidats du backlog, structurellement hors de portée quel
+que soit n). Pas un retuning : même mécanisme, même CAP, même seuil,
+aucun paramètre changé — seulement plus de données pour le MÊME test
+déjà pré-enregistré. À exécuter par le prochain cycle (fetch réseau
+potentiellement long pour ~100 titres, à lancer en tâche de fond si
+nécessaire).
 
 ## Backlog #159-160 (30/07/2026) — dernières complétions mineures avant point de décision
 
