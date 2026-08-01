@@ -47,8 +47,8 @@ def total_return(pnl):
     return float(np.cumprod(1.0 + pnl)[-1] - 1.0)
 
 
-def main():
-    dates_full, weights_base, weights_lev, R, _ = build_weights()
+def main(prices_dir=None, out_suffix="", title_suffix=""):
+    dates_full, weights_base, weights_lev, R, _ = build_weights(prices_dir)
     # start = premier indice avec poids non nuls (fin du lookback 252j)
     nz = np.where(weights_base.sum(axis=1) > 0)[0]
     start = int(nz[0])
@@ -56,13 +56,41 @@ def main():
     R_s = R[start:]
     dates = pd.to_datetime(dates_full[start:])
 
-    lines = ["# Batterie de validation renforcée (Règle 9) — leaders_index52w_high_overlay (cycle #38)",
+    lines = [f"# Batterie de validation renforcée (Règle 9) — leaders_index52w_high_overlay (cycle #38){title_suffix}",
              "",
              f"Candidat : Leaders + overlay 52w-high indice ×2.0. Référence : portefeuille "
              f"Leaders 1.0x (cycle #4), **PAS Buy&Hold** — même convention que le PREREG "
              f"original du #38. Coût pré-enregistré {COST_BPS:.0f} bps. {len(R_s)} séances "
              f"({dates[0].date()} → {dates[-1].date()}). Les 5 contrôles doivent TOUS passer "
              "pour un PASS RENFORCÉ.", ""]
+
+    if prices_dir is not None:
+        lines.append(
+            "**LIMITE MÉTHODOLOGIQUE MAJEURE, à lire avant toute interprétation** : l'univers "
+            "de titres utilisé ici est la liste des membres du NDX-100 **de 2026** "
+            "(`data/pead/ndx100_constituents.json`), appliquée telle quelle à un historique "
+            "remontant jusqu'à 1970 pour les titres qui en disposent. Sur les décennies "
+            "anciennes, ceci introduit un **biais du survivant sévère** : seuls les titres "
+            "qui (a) existaient déjà ET (b) sont restés assez grands pour rester dans le "
+            "NDX-100 en 2026 sont inclus — le portefeuille des années 1970-1990 ne peut "
+            "matériellement contenir QUE de futurs géants technologiques déjà connus "
+            "aujourd'hui, jamais les entreprises qui ont existé puis disparu/reculé. Ce biais "
+            "s'atténue à mesure qu'on se rapproche de 2026 (univers de plus en plus complet et "
+            "réaliste) mais reste présent à un degré inconnu sur toute la période. **Les "
+            "rendements totaux astronomiques ci-dessous (§a) en sont la signature typique** "
+            "— ce n'est PAS un résultat économiquement interprétable en niveau absolu. Les "
+            "métriques les MOINS affectées par ce biais sont le SPA (teste un ordre relatif "
+            "candidat/référence sur le MÊME univers biaisé des deux côtés) et le score par "
+            "fold (qui montre COMMENT l'edge évolue dans le temps) ; le DSR reste, lui, "
+            "informatif sur la significativité mais ne corrige PAS ce biais de sélection de "
+            "l'univers. **Conclusion à ce cycle : ce test ne peut PAS confirmer ni réfuter "
+            "proprement l'hypothèse du #162 (édge borné par l'échantillon vs favorable par "
+            "chance) tant que l'univers n'est pas reconstruit avec la composition HISTORIQUE "
+            "réelle du NDX-100 à chaque date (donnée non triviale à obtenir gratuitement, "
+            "hors scope de ce cycle) — rapporté ici pour traçabilité complète (Règle 6), "
+            "PAS comme un verdict fiable.**"
+        )
+        lines.append("")
 
     # ------------------------------------------------------------- a. couts
     lines.append("## a. Stress de coûts (1x, 3x, 5x)")
@@ -114,10 +142,7 @@ def main():
                       "être exécuté, il ne doit PAS être compté comme un OK silencieux (Règle 5).**")
     else:
         lines.append(f"**{'OK' if ok_b else 'ÉCHEC'} — {n_covered}/4 fenêtres de crise couvertes "
-                      "par l'historique de prix titre-par-titre disponible (2022-2026, même limite "
-                      "que #111/#112/#134 : dot-com/2008/COVID hors couverture) ; jugé sur la seule "
-                      "fenêtre disponible (resserrement 2022), pas une confirmation à 4 fenêtres "
-                      "indépendantes.**")
+                      "par l'historique de prix titre-par-titre disponible.**")
     lines.append("")
 
     # --------------------------------------------------- c. stabilite temp.
@@ -198,11 +223,16 @@ def main():
         lines.append("")
         lines.append("Aucune notification Telegram n'est émise (réservée au PASS RENFORCÉ complet).")
 
-    out = ROOT / "results" / "nonml_leaders_index52w_high_overlay_pass_validation_battery.md"
+    out = ROOT / "results" / f"nonml_leaders_index52w_high_overlay_pass_validation_battery{out_suffix}.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "--extended":
+        main(prices_dir=ROOT / "data" / "pead" / "prices_extended",
+             out_suffix="_extended_history",
+             title_suffix=" — historique étendu (cycle #162)")
+    else:
+        main()
