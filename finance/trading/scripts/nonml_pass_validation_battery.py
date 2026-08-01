@@ -130,8 +130,21 @@ def check_d_spa(pos, r, cost_baseline, r_alt=None):
 
 
 def parse_backlog_n_trials():
+    """Lit le dernier total "X PASS [niveau 1] sur Y hypothèses testées" du
+    backlog. Bug trouvé au cycle #161 (leaders_index52w_high_overlay) : la
+    regex d'origine ne matchait QUE l'ancien format "X PASS sur Y..." (sans
+    "niveau 1"), donc figée sur la dernière occurrence de cette forme
+    (n_trials=125, cycle #125) depuis le changement de formulation au
+    cycle #126 -- toutes les batteries #126-#160 ont donc calculé leur DSR
+    avec un n_trials TROP BAS (125 au lieu de la vraie taille du backlog à
+    chaque date, jusqu'à 160). Corrigé pour matcher les deux formulations.
+    Sans impact sur les verdicts déjà rendus : tous les DSR concernés
+    étaient très loin du seuil (0,95) dans le sens du FAIL, et un n_trials
+    plus élevé ne peut que les enfoncer davantage (seuil SR0 plus sévère),
+    jamais les faire basculer en PASS -- mais le calcul DOIT être exact
+    pour tout nouveau candidat, notamment un edge brut élevé comme le #38."""
     backlog = (ROOT / "NONML_STRATEGY_BACKLOG.md").read_text()
-    matches = re.findall(r"(\d+) PASS sur (\d+) hypoth[eè]ses test[eé]es", backlog)
+    matches = re.findall(r"(\d+) PASS(?: niveau 1)? sur (\d+) hypoth[eè]ses test[eé]es", backlog)
     if not matches:
         return None
     return int(matches[-1][1])
