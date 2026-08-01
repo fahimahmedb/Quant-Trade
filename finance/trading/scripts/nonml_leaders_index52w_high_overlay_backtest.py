@@ -29,9 +29,9 @@ INDEX_LOOKBACK = 252
 INDEX_THRESHOLD = 0.95
 
 
-def load_prices():
+def load_prices(prices_dir=None):
     series = {}
-    for path in sorted(PRICES_DIR.glob("*.json")):
+    for path in sorted((prices_dir or PRICES_DIR).glob("*.json")):
         payload = json.loads(path.read_text())
         if "error" in payload:
             continue
@@ -56,14 +56,16 @@ def index_trend_series() -> pd.Series:
     return pd.Series(near_high, index=dates)
 
 
-def build_weights():
+def build_weights(prices_dir=None):
     """Reconstruit exactement les poids Leaders et Leaders+overlay (T x
     n_tickers), les rendements bruts par titre R, les dates alignées et
     l'indice `start` (fin du lookback). Extraction non-comportementale de
     l'ancien corps de `main()` -- réutilisée par
     `nonml_leaders_index52w_high_overlay_pass_validation_battery.py`
-    (cycle #161) pour éviter toute réimplémentation divergente (Règle 7)."""
-    series = load_prices()
+    (cycle #161) pour éviter toute réimplémentation divergente (Règle 7).
+    `prices_dir` optionnel (cycle #162, historique étendu) : n'affecte
+    aucun calcul, seulement la source des prix."""
+    series = load_prices(prices_dir)
     tickers = sorted(series.keys())
     ref_idx = None
     for t in tickers:
