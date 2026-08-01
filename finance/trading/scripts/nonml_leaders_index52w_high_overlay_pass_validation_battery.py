@@ -97,13 +97,15 @@ def main():
             lines.append(f"| {label} | {n} | -- | -- | hors couverture (<20 séances) |")
             continue
         any_window = True
-        pnl_b = portfolio_pnl(w_base, R_s, COST_BPS, mask.values)
-        pnl_l = portfolio_pnl(w_lev, R_s, COST_BPS, mask.values)
+        pnl_b = portfolio_pnl(w_base, R_s, COST_BPS, mask)
+        pnl_l = portfolio_pnl(w_lev, R_s, COST_BPS, mask)
         mdd_b = trading_metrics(pnl_b)["max_drawdown_pct"]
         mdd_l = trading_metrics(pnl_l)["max_drawdown_pct"]
         ok = mdd_l >= mdd_b - 1.0
         ok_b &= ok
         lines.append(f"| {label} | {n} | {mdd_l:.1f}% | {mdd_b:.1f}% | {'OUI' if ok else 'non'} |")
+    n_covered = sum(1 for label, d0, d1 in CRISIS_WINDOWS
+                     if int(((dates >= pd.Timestamp(d0)) & (dates <= pd.Timestamp(d1))).sum()) >= 20)
     ok_b = ok_b and any_window
     lines.append("")
     if not any_window:
@@ -111,7 +113,11 @@ def main():
                       "pour ce candidat (échantillon récent, 2022-2026) : ce contrôle ne peut pas "
                       "être exécuté, il ne doit PAS être compté comme un OK silencieux (Règle 5).**")
     else:
-        lines.append(f"**{'OK' if ok_b else 'ÉCHEC'}.**")
+        lines.append(f"**{'OK' if ok_b else 'ÉCHEC'} — {n_covered}/4 fenêtres de crise couvertes "
+                      "par l'historique de prix titre-par-titre disponible (2022-2026, même limite "
+                      "que #111/#112/#134 : dot-com/2008/COVID hors couverture) ; jugé sur la seule "
+                      "fenêtre disponible (resserrement 2022), pas une confirmation à 4 fenêtres "
+                      "indépendantes.**")
     lines.append("")
 
     # --------------------------------------------------- c. stabilite temp.
@@ -136,7 +142,7 @@ def main():
         beat = s_l > s_b
         n_beat += int(beat)
         n_scored += 1
-        lines.append(f"| {k+1} | {f1-f0} | {dates.iloc[f0].strftime('%m/%Y')}→{dates.iloc[f1-1].strftime('%m/%Y')} | "
+        lines.append(f"| {k+1} | {f1-f0} | {dates[f0].strftime('%m/%Y')}→{dates[f1-1].strftime('%m/%Y')} | "
                       f"{s_l:+.2f} | {s_b:+.2f} | {'OUI' if beat else 'non'} |")
     ok_c = n_scored > 0 and n_beat > n_scored / 2
     lines.append("")
