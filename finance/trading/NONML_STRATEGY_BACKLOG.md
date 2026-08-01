@@ -406,6 +406,74 @@ une 16e variante corrélée :
 74 PASS niveau 1 sur 162 hypothèses testées (#162 = ré-exécution du #38 sur historique étendu, PAS un nouveau candidat indépendant — hypothèse du #161 [DSR borné par la taille d'échantillon] testée directement, RÉSULTAT INSTRUCTIF MAIS NON CONCLUANT : DSR **régresse** à 0,612 (vs 0,730) et le stress de crise échoue désormais (2/4 fenêtres, dot-com et COVID) sur l'historique 1970-2026, MAIS un **biais du survivant sévère** a été détecté en cours de route (univers = NDX-100 de 2026 appliqué rétroactivement à 1970 — ne peut contenir QUE les futurs géants déjà connus) qui invalide toute interprétation propre du résultat en niveau absolu. Score brut 3/5 (perd le critère crise), SPA toujours OK (p=0,0000). **Conclusion honnête : ni confirmation ni réfutation fiable de l'hypothèse — le #161 [4/5, DSR=0,730, univers 2022-2026 plus proche de la réalité contemporaine] reste la meilleure preuve disponible sur ce candidat.** Aucune nouvelle piste ajoutée : la correction propre (composition historique réelle du NDX-100 par date) demande une source de données non triviale, hors scope d'un cycle mécanique.).
 74 PASS niveau 1 sur 163 hypothèses testées (#163 = ré-exécution du #38 sur l'univers POINT-IN-TIME réel du NDX-100, PAS un nouveau candidat indépendant — la « source de données non triviale » déclarée hors scope au #162 a finalement été trouvée (`nasdaq-100-ticker-history`, licence MIT, composition réelle 2015-2026) et vendorée. **Le biais du survivant est désormais CORRIGÉ et non plus estimé** : couverture de l'univers portée de 42-68 % (cycles #161/#162) à **87,6 % en moyenne, mesurée date par date**. Score **3/5** sur 2907 séances (2015-2026, 2,5× le #161) : coûts ×5 OK, stabilité **4/4 folds**, **SPA p=0,0000 (t=7,637, la marge la plus nette jamais obtenue)**, **DSR = 0,754 — NOUVEAU RECORD du backlog, au-dessus du 0,730 du #161** ; échecs sur le stress de crise (2/4 fenêtres couvertes, le krach COVID est perdu de 2,1 pts de MDD, -30,9 % vs -28,8 %) et sur le DSR (0,754 < 0,95). **Conclusion principale : l'edge du #38 n'est PAS un artefact de biais du survivant** — l'hypothèse la plus inquiétante après le #162 est réfutée, et la dégradation observée au #162 est confirmée comme un artefact de son univers non défendable. **Conclusion secondaire, moins agréable : le contrôle de crise échoue pour une raison ÉCONOMIQUE réelle** (l'overlay double l'exposition tant que l'indice est à ≥95 % de son plus haut — exactement la configuration de février 2020) et non par défaut de mesure ; le 4/5 du #161 avait été obtenu sur une unique fenêtre de crise, la plus favorable. Le #163 est donc une meilleure évaluation qui rend un chiffre moins flatteur, pas une dégradation de la stratégie. Il **SUPERSEDE le #162** et **complète le #161**, et devient la référence d'évaluation du #38.).
 
+74 PASS niveau 1 sur 164 hypothèses testées (#164 = ré-exécution du #14 (momentum court terme « Winners ») sur l'univers point-in-time réel, PAS un nouveau candidat indépendant — application directe de l'infrastructure du #163 au cycle le plus exposé au biais du survivant de tout le backlog. **PASS MAINTENU sur les deux jambes**, mais **edge réduit de ~21 %** : Sharpe +2,35 → **+1,85** (référence équipondérée, elle aussi corrigée : +0,63 → +0,37), rendement +8303 % sur 11,5 ans, MDD -22,4 % → **-28,4 %**. Couverture d'univers mesurée : 88,3 % en moyenne (68,6 % au minimum, en 2015) contre 42-68 % pour la liste de 2026 appliquée rétroactivement. **Conclusion honnête, dans les deux sens : le #14 n'est PAS un artefact de survivorship** (le mécanisme survit largement à la correction sur un échantillon 2× plus long) **mais son ampleur était bel et bien surestimée** — le flag « prudence forte » posé dès sa création est confirmé a posteriori, avec pour la première fois un chiffre à mettre dessus. Inclut également un **complément de puissance statistique clôturant l'axe #161→#164** (voir section ci-dessous) : il faudrait ~67 ans de données pour que le #38 franchisse le seuil DSR de la Règle 9 par accumulation d'historique — limite structurelle, pas un problème d'échantillon.).
+
+## Complément au #163/#164 — analyse de puissance : l'axe rétrospectif est clos
+
+Question posée par l'utilisateur après le #163 : vaut-il la peine de
+continuer à chercher de l'historique pour franchir le DSR > 0,95 ?
+Réponse calculée, pas devinée (`scripts/nonml_dsr_power_analysis_38.py` →
+`results/nonml_dsr_power_analysis_38.md`, toutes les entrées recalculées
+depuis les poids réels, aucun nouveau backtest, aucun paramètre touché).
+
+Le DSR vaut `Phi(z)` et, à edge journalier constant, `z` croît exactement
+en `sqrt(n-1)` (le seuil de sélection `SR0` ne dépend que de `n_trials` et
+`var_trials`, pas de `n`). La trajectoire observée est parfaitement
+conforme à cette loi :
+
+| Cycle | Univers | Séances | z | DSR |
+|---|---|---|---|---|
+| #161 | liste 2026, 2022-2026 | 1144 | +0,61 | 0,730 |
+| #163 | point-in-time réel, 2015-2026 | 2907 | +0,68 | 0,753 |
+
+Multiplier l'échantillon par 2,5 a rapporté **+0,023 de DSR**. Résoudre
+pour `z = 1,645` donne **n ≈ 16 865 séances, soit ~67 ans** de données
+quotidiennes. Matériellement impossible : le NDX-100 n'existe que depuis
+1985 (~41 ans), aucune source libre de composition point-in-time
+antérieure à 2015 n'a été trouvée (recherche menée et bornée au cycle
+#163 : le paquet `nasdaq-100-ticker-history` est le seul jeu fiable et
+gratuit, et il commence en 2015 ; les dépôts alternatifs recensés
+(`rasodu/IndexesConstituents`, `Gary-Strauss/NASDAQ100_Constituents`) ne
+fournissent que la composition COURANTE, sans historique daté), et
+`n_trials` **augmente** à chaque cycle, ce qui relève `SR0` et éloigne la
+cible plutôt que de la rapprocher.
+
+**Conclusion : la contrainte qui bloque le #38 n'est PAS la taille
+d'échantillon** — hypothèse formulée au #161, ici quantitativement
+infirmée — **mais le niveau de son Sharpe quotidien (+0,0892) face au
+seuil de sélection (`SR0` = 0,0763) imposé par 163 hypothèses testées.**
+Un edge de cette taille n'est pas distinguable du meilleur d'un tel nombre
+d'essais, quel que soit l'historique disponible.
+
+**Recommandation, et clôture de l'axe #161→#164 : la seule voie de
+confirmation restante pour le #38 est un test PROSPECTIF** (Règle 8 :
+validation en avant sur définition figée, plusieurs mois, sans aucune
+modification en cours de route), **pas une nouvelle tentative d'extension
+de données historiques**. Le #163 (DSR = 0,753 à n_trials=163, univers
+point-in-time réel, biais du survivant corrigé ET mesuré) est la
+**meilleure preuve rétrospective** obtenue sur ce candidat et le verdict
+final de cet axe, sauf donnée nouvelle qui changerait la donne.
+
+*(Note de traçabilité : le DSR du #163 est rapporté à 0,754 dans son
+rapport de batterie, calculé avec `n_trials=162` — la taille du backlog
+AVANT ce cycle, comme le veut la Règle 9e — et à 0,753 dans l'analyse de
+puissance, recalculée après mise à jour du backlog à `n_trials=163`.
+L'écart de 0,001 est entièrement dû à cette incrémentation, pas à un
+recalcul divergent.)*
+
+## Backlog #164 (01/08/2026) — le #14 (« Winners ») sur l'univers point-in-time : PASS maintenu, edge surestimé de ~21 %
+
+Application directe de l'infrastructure du #163 au cycle le plus exposé de
+tout le backlog. Le #14 est le résultat brut le plus spectaculaire jamais
+obtenu (Sharpe +2,35, rendement +1813 %) et il est flaggé « prudence
+forte » depuis sa création. Sélectionner chaque semaine le tercile des
+plus fortes hausses récentes **dans un univers composé uniquement de
+titres dont on sait a posteriori qu'ils sont restés dans l'indice jusqu'en
+2026** est très proche d'une tautologie : c'était le candidat pour lequel
+le risque d'artefact était le plus élevé.
+
+| 164 | Ré-exécuter le #14 (momentum court terme « Winners », signal 5j, rebalancement hebdomadaire, tercile supérieur) sur l'univers **point-in-time réel** du NDX-100 (2015-2026), la référence équipondérée étant construite sur ce même univers réel — teste si le PASS de niveau 1 du #14 survit à la correction du biais du survivant, comme celui du #38 au #163 | Aucune nouvelle donnée (prix `data/pead/prices_pit/` et composition `data/ndx100_history/` déjà committés au #163) | **FAIT — PASS MAINTENU sur les deux jambes, mais edge réduit de ~21 %.** Sur 2907 séances (2015-01-02 → 2026-07-27, 2× la fenêtre d'origine) : Sharpe Winners **+1,85** contre **+0,37** pour la référence équipondérée (contre +2,35 vs +0,63 sur l'univers biaisé), rendement **+8303 %** contre +88,5 %, MDD **-28,4 %** (contre -22,4 % à l'origine, donc **dégradé**). Couverture d'univers mesurée à chaque rebalancement : **88,3 % en moyenne**, 68,6 % au minimum (2015), 100 % en 2026 — contre 42-68 % pour la liste de 2026 appliquée rétroactivement. **Lecture honnête, dans les deux sens.** (1) Le mécanisme **n'est pas un artefact de survivorship** : il survit largement à la correction, sur un échantillon deux fois plus long, et l'écart au benchmark reste énorme (+1,48 de Sharpe contre +1,72 avant). (2) Mais **son ampleur était bel et bien surestimée** : le Sharpe perd 0,50 point et le MDD se dégrade de 6 points. Le flag « prudence forte » posé dès la création du #14 est **confirmé a posteriori**, et pour la première fois avec un chiffre dessus plutôt qu'un pressentiment. (3) La référence elle-même perd beaucoup (+0,63 → +0,37), ce qui est exactement attendu : l'équipondéré des vrais membres du NDX-100 est nettement moins flatteur que l'équipondéré des survivants de 2026 — **toute comparaison publiée dans les 52 cycles fondés sur `data/pead/prices/` doit être lue avec ce décalage en tête, des deux côtés de la comparaison.** Ce cycle ne lance PAS la batterie Règle 9 (pré-enregistré ainsi : le #14 n'a jamais passé cette barre, l'objet était le PASS de niveau 1). Non-régression vérifiée : le mode par défaut de `scripts/nonml_short_term_momentum_backtest.py` reproduit le résultat d'origine du #14 **bit-identique**. Voir `PREREG_short_term_momentum_pit_universe.md`, `results/nonml_short_term_momentum_result_pit_universe.md` et `..._pit_universe_anti_cheat.md` |
+
 ## Backlog #163 (01/08/2026) — le #38 sur l'univers POINT-IN-TIME réel : biais du survivant corrigé, DSR record (0,754), stress de crise perdu
 
 Correction du défaut méthodologique qui affectait les cycles #161 ET #162,
