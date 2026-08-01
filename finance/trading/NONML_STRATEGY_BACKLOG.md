@@ -407,6 +407,7 @@ une 16e variante corrélée :
 74 PASS niveau 1 sur 163 hypothèses testées (#163 = ré-exécution du #38 sur l'univers POINT-IN-TIME réel du NDX-100, PAS un nouveau candidat indépendant — la « source de données non triviale » déclarée hors scope au #162 a finalement été trouvée (`nasdaq-100-ticker-history`, licence MIT, composition réelle 2015-2026) et vendorée. **Le biais du survivant est désormais CORRIGÉ et non plus estimé** : couverture de l'univers portée de 42-68 % (cycles #161/#162) à **87,6 % en moyenne, mesurée date par date**. Score **3/5** sur 2907 séances (2015-2026, 2,5× le #161) : coûts ×5 OK, stabilité **4/4 folds**, **SPA p=0,0000 (t=7,637, la marge la plus nette jamais obtenue)**, **DSR = 0,754 — NOUVEAU RECORD du backlog, au-dessus du 0,730 du #161** ; échecs sur le stress de crise (2/4 fenêtres couvertes, le krach COVID est perdu de 2,1 pts de MDD, -30,9 % vs -28,8 %) et sur le DSR (0,754 < 0,95). **Conclusion principale : l'edge du #38 n'est PAS un artefact de biais du survivant** — l'hypothèse la plus inquiétante après le #162 est réfutée, et la dégradation observée au #162 est confirmée comme un artefact de son univers non défendable. **Conclusion secondaire, moins agréable : le contrôle de crise échoue pour une raison ÉCONOMIQUE réelle** (l'overlay double l'exposition tant que l'indice est à ≥95 % de son plus haut — exactement la configuration de février 2020) et non par défaut de mesure ; le 4/5 du #161 avait été obtenu sur une unique fenêtre de crise, la plus favorable. Le #163 est donc une meilleure évaluation qui rend un chiffre moins flatteur, pas une dégradation de la stratégie. Il **SUPERSEDE le #162** et **complète le #161**, et devient la référence d'évaluation du #38.).
 
 74 PASS niveau 1 sur 164 hypothèses testées (#164 = ré-exécution du #14 (momentum court terme « Winners ») sur l'univers point-in-time réel, PAS un nouveau candidat indépendant — application directe de l'infrastructure du #163 au cycle le plus exposé au biais du survivant de tout le backlog. **PASS MAINTENU sur les deux jambes**, mais **edge réduit de ~21 %** : Sharpe +2,35 → **+1,85** (référence équipondérée, elle aussi corrigée : +0,63 → +0,37), rendement +8303 % sur 11,5 ans, MDD -22,4 % → **-28,4 %**. Couverture d'univers mesurée : 88,3 % en moyenne (68,6 % au minimum, en 2015) contre 42-68 % pour la liste de 2026 appliquée rétroactivement. **Conclusion honnête, dans les deux sens : le #14 n'est PAS un artefact de survivorship** (le mécanisme survit largement à la correction sur un échantillon 2× plus long) **mais son ampleur était bel et bien surestimée** — le flag « prudence forte » posé dès sa création est confirmé a posteriori, avec pour la première fois un chiffre à mettre dessus. Inclut également un **complément de puissance statistique clôturant l'axe #161→#164** (voir section ci-dessous) : il faudrait ~67 ans de données pour que le #38 franchisse le seuil DSR de la Règle 9 par accumulation d'historique — limite structurelle, pas un problème d'échantillon.).
+75 PASS niveau 1 sur 165 hypothèses testées (0 PASS RENFORCÉ Règle 9 sur 20 candidats — #165 PASS niveau 1, **première monétisation de l'edge de VOLATILITÉ de l'Étape C en edge de RENDEMENT** : portefeuille « volatility-managed » de Moreira & Muir piloté par la volatilité PRÉVUE du GJR-GARCH-t (et non par une vol réalisée glissante comme toute la famille #43/#46/#78→#149). Sharpe +0,52→+0,67, MDD -82,9 %→-59,9 %, **stress de crise OK sur 4/4 fenêtres avec les marges les plus larges du backlog**, mais score Règle 9 de **2/5 seulement** — échecs sur les coûts à 25 bps, sur le SPA (p=1,0000, même signature que le #115 : edge concentré sur les crises) et sur le DSR (0,0004). La marge de la jambe rendement fond en outre de +58 % à +4,7 % sous l'arithmétique de capitalisation exacte, nuance publiée dans le cycle.)
 
 ## Complément au #163/#164 — analyse de puissance : l'axe rétrospectif est clos
 
@@ -460,6 +461,69 @@ AVANT ce cycle, comme le veut la Règle 9e — et à 0,753 dans l'analyse de
 puissance, recalculée après mise à jour du backlog à `n_trials=163`.
 L'écart de 0,001 est entièrement dû à cette incrémentation, pas à un
 recalcul divergent.)*
+
+## Backlog #165 (01/08/2026) — l'edge de VOLATILITÉ de l'Étape C monétisé en edge de RENDEMENT : PASS de niveau 1, Règle 9 à 2/5
+
+Premier cycle du backlog à partir d'ailleurs que d'un signal de prix, de
+calendrier ou de sélection de titres. Constat de départ : après ~164 cycles,
+aucune stratégie de TIMING ou de SÉLECTION n'a atteint le PASS renforcé,
+alors que le seul résultat statistiquement solide de tout le projet vient de
+l'**Étape C** — le GJR-GARCH(1,1)-t prévoit la variance future mieux que le
+benchmark GARCH-normal et **passe le SPA de Hansen sur famille entière**
+(NDX, 9522 obs OOS, t_SPA = 6,07, p = 0,0000 à h=1). Cet edge de PRÉVISION
+n'avait jamais servi qu'à du risk management passif (#43/#46/#115/#118,
+Étape D). La question de ce cycle : peut-on le monétiser en RENDEMENT ?
+
+Le mécanisme testé n'est pas improvisé : c'est celui des **volatility-managed
+portfolios** de Moreira & Muir (2017, *Journal of Finance*) — exposition
+inversement proportionnelle à la volatilité **PRÉVUE**. La nuance est
+exactement celle qui n'avait jamais été explorée ici : toute la famille
+#43/#46/#50/#115 et les 30+ cycles de vol-targeting hiérarchique gaté
+(#78→#149) utilisent la volatilité **RÉALISÉE** glissante, un lissage
+rétrospectif toujours en retard sur le régime ; le #118 utilisait bien la
+prévision GJR-t mais en mode purement défensif (cap ≤ 1,0-1,5x + coupe au 95e
+percentile), avec un objectif de MDD, jamais de rendement.
+
+| 165 | Portefeuille « volatility-managed » (Moreira & Muir 2017) : `position(t) = clip(20 % / vol_PRÉVUE_GJR-t(t), 0, 2.0x)`, la prévision venant du walk-forward GJR-GARCH-t déjà validé au SPA à l'Étape C (T0=750, refit tous les 21 j, `src/overlay.py::walk_forward_vol_forecast` réutilisé tel quel) — teste si l'edge de PRÉVISION DE VOLATILITÉ du projet, jusqu'ici cantonné au risk management, produit un gain de RENDEMENT sous le critère renforcé | Aucune nouvelle donnée (`data/nasdaq100_daily.txt` + `data/dgs3mo_daily.csv` pour la Règle 10) | **FAIT — PASS de niveau 1 sur les deux jambes, batterie Règle 9 à 2/5.** Sur 9522 séances OOS (20/09/1988 → 13/07/2026, exactement la fenêtre OOS de l'Étape C) : Sharpe **+0,67** contre +0,52 pour Buy & Hold, rendement total **+7179 %** contre +4553 %, **MDD -59,9 % contre -82,9 %** alors que le MDD n'était même pas dans le critère. Exposition moyenne 1,04x, au-dessus de 1,0x 54,5 % du temps, au plafond seulement 0,6 % du temps (le CAP est quasi inopérant). **Batterie Règle 9 : 2/5.** (a) coûts : tient à 15 bps (+4801 % contre +4549 %), **ÉCHEC à 25 bps** (+3200 %) — le rebalancement quotidien d'une position continue paie beaucoup plus de turnover que les overlays binaires du backlog. (b) crise : **OK sur 4/4 fenêtres, avec les marges les plus larges jamais obtenues** (dot-com -59,9 % contre -82,9 %, 2008 -38,7 % contre -53,7 %, COVID -17,8 % contre -28,0 %, 2022 -29,0 % contre -35,3 %). (c) stabilité : OK, 3/4 folds (seul le fold 1988-1997 échoue). (d) SPA : **ÉCHEC, p = 1,0000** — même signature que le #115 : l'edge est concentré sur quelques épisodes de crise, la moyenne quotidienne du candidat est même très légèrement SOUS celle de Buy & Hold (5,307e-4 contre 5,378e-4), tout son avantage vient de la réduction de volatilité (1,27 % contre 1,64 % par jour). (e) DSR : ÉCHEC, 0,0004 à n_trials=164. **Robustesse ±20 % (grille pré-annoncée, perturbation et non retuning) : 6/9 — mais la lecture importante est la dissociation des deux jambes.** La jambe Sharpe est un **plateau parfait 9/9** (+0,66 à +0,68 partout, toujours au-dessus de +0,52) : le gain de ratio rendement/risque ne dépend pas du calibrage. La jambe rendement, elle, dépend **entièrement** de l'exposition moyenne induite par la cible (0,83x à 16 % → sous BH ; 1,04x à 20 % ; 1,19-1,25x à 24 %) — c'est le mécanisme déjà connu entre le #43 (15 %, FAIL rendement) et le #46 (20 %, PASS), et l'invariance du Sharpe au levier constant du #10. **Règle 10 (engagement pré-enregistré, exécuté) : le résultat ne doit RIEN au portage** — sous taux DGS3MO appliqué des deux côtés (le cash rapporte, le levier paie) le terme de portage vaut **-0,4 %** du résultat, il est donc légèrement DÉFAVORABLE au candidat (exposition moyenne > 1x), l'inverse exact du #134 où 86-89 % du gain venait du portage (#142) ; les deux jambes tiennent sous les trois comptabilisations testées. **Nuance majeure publiée honnêtement** (`..._compounding_check.md`) : sous l'arithmétique de capitalisation EXACTE (`pos·(e^r−1)` au lieu de la convention `cumprod(1+pos·r_log)` du backlog), le verdict tient toujours (×175,4 contre ×167,5, Sharpe +0,78 contre +0,65, MDD -56,5 % contre -82,9 %) mais **la marge de la jambe rendement fond de +58 % à +4,7 %** — c'est ce chiffre-là qu'il faut retenir. Audit indépendant CONFORME sur 6 contrôles (réconciliation exacte avec l'artefact déjà committé de l'Étape C, recalcul par la boucle de l'Étape C, recalcul par la librairie `arch` elle-même, récursion GJR réécrite de zéro bornée à `r[:t]`, mutation du futur, recalcul manuel du verdict), anti-cheat CONFORME 4/4. Sim 300 € : 349,86 € contre 349,93 € BH (match nul sur une fenêtre illustrative de 63 séances). Pas de notification Telegram (pas de PASS RENFORCÉ). Voir `PREREG_volatility_managed_portfolio_gjr.md`, `results/nonml_volatility_managed_portfolio_gjr_result.md`, `..._audit.md`, `..._pass_validation_battery.md`, `..._robustness.md`, `..._rule10_decomposition.md`, `..._compounding_check.md`, `..._sim_300e.md`, `..._anti_cheat.md` |
+
+**Ce que ce cycle apprend, au-delà de son score.**
+
+1. **La distinction prévue/réalisée est réelle et mesurable.** Le même
+   mécanisme de vol-targeting, à cible et CAP identiques (20 %, 2,0x),
+   donne 2/5 à la Règle 9 avec la volatilité prévue (ce cycle) contre 3/5
+   au #115 avec la volatilité réalisée sous critère Calmar — mais surtout,
+   ici, il **passe le stress de crise avec les marges les plus larges de
+   tout le backlog** et améliore le MDD de 23 points sans que ce soit dans
+   le critère. Le moteur GJR-t coupe l'exposition AVANT la matérialisation
+   du choc, là où un écart-type 20 j ne la coupe qu'après.
+2. **Mais un meilleur prédicteur de variance ne suffit pas à produire un
+   edge de rendement.** Le point 3 des « raisons plausibles de FAIL »
+   écrites dans le PREREG avant tout calcul est celui qui se vérifie : la
+   moyenne quotidienne du candidat est légèrement INFÉRIEURE à celle de
+   Buy & Hold ; tout le gain vient de la réduction de variance (et donc du
+   frein de volatilité), pas d'une capacité à être investi au bon moment.
+   C'est cohérent avec le SPA à p=1,0000 et avec la conclusion déjà posée à
+   l'Étape C : **cet edge est un outil de gestion du risque, pas un
+   générateur de rendement** — le mérite de ce cycle est de l'avoir mesuré
+   au lieu de le supposer.
+3. **Le turnover est la contrainte binding sur les coûts.** Première fois
+   qu'un candidat échoue le stress de coûts *après* avoir tenu à 15 bps :
+   une position continue rebalancée quotidiennement est structurellement
+   plus chère que les overlays binaires du backlog.
+4. **Observation de portée générale, signalée sans campagne de révision** :
+   la convention de rendement total du backlog (`cumprod(1 + r_log)`)
+   avantage mécaniquement toute stratégie moins volatile que son benchmark
+   (l'écart avec l'arithmétique exacte croît avec la variance). Elle est
+   appliquée identiquement au candidat et au benchmark dans les 165 cycles,
+   donc aucun verdict passé n'est réécrit — mais la marge affichée sur la
+   jambe rendement peut être nettement plus étroite qu'elle n'en a l'air,
+   comme ici (+58 % affiché, +4,7 % réel).
+
+**Pistes proposées (non exécutées — discipline « un cycle à la fois »).**
+
+| 166 | Généraliser le #165 aux marchés indépendants (S&P 500, Russell 2000, DAX) : le moteur GJR-t n'y a jamais été validé au SPA, ce cycle testerait donc conjointement la prévision et le mécanisme — à pré-enregistrer comme tel, avec ré-exécution préalable de l'Étape C sur chaque marché pour ne pas mélanger les deux questions | OHLC déjà en local | à faire |
+| 167 | Réduire le turnover du #165 sans toucher au signal : rebalancement hebdomadaire ou bande morte (ne rebalancer que si `|pos_cible − pos_courante| > seuil` fixé a priori) — attaque directe du seul contrôle de la Règle 9 qui a échoué de peu (coûts à 25 bps), même correction ciblée que le #154 sur le #151 | Aucune nouvelle donnée | à faire |
+| 168 | Combiner la prévision GJR-t (#165, qui coupe AVANT le choc) avec la porte directionnelle la plus robuste du backlog (52w-high indice, #37/#47) : teste si le mécanisme hiérarchique gaté, qui a systématiquement amélioré les signaux de vol RÉALISÉE, fait de même avec une vol PRÉVUE | OHLC déjà en local | à faire |
 
 ## Backlog #164 (01/08/2026) — le #14 (« Winners ») sur l'univers point-in-time : PASS maintenu, edge surestimé de ~21 %
 
