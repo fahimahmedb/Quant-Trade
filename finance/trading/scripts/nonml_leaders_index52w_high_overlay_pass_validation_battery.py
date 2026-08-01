@@ -47,8 +47,77 @@ def total_return(pnl):
     return float(np.cumprod(1.0 + pnl)[-1] - 1.0)
 
 
-def main(prices_dir=None, out_suffix="", title_suffix=""):
-    dates_full, weights_base, weights_lev, R, _ = build_weights(prices_dir)
+EXTENDED_PREAMBLE = (
+    "**LIMITE MÉTHODOLOGIQUE MAJEURE, à lire avant toute interprétation** : l'univers "
+    "de titres utilisé ici est la liste des membres du NDX-100 **de 2026** "
+    "(`data/pead/ndx100_constituents.json`), appliquée telle quelle à un historique "
+    "remontant jusqu'à 1970 pour les titres qui en disposent. Sur les décennies "
+    "anciennes, ceci introduit un **biais du survivant sévère** : seuls les titres "
+    "qui (a) existaient déjà ET (b) sont restés assez grands pour rester dans le "
+    "NDX-100 en 2026 sont inclus — le portefeuille des années 1970-1990 ne peut "
+    "matériellement contenir QUE de futurs géants technologiques déjà connus "
+    "aujourd'hui, jamais les entreprises qui ont existé puis disparu/reculé. Ce biais "
+    "s'atténue à mesure qu'on se rapproche de 2026 (univers de plus en plus complet et "
+    "réaliste) mais reste présent à un degré inconnu sur toute la période. **Les "
+    "rendements totaux astronomiques ci-dessous (§a) en sont la signature typique** "
+    "— ce n'est PAS un résultat économiquement interprétable en niveau absolu. Les "
+    "métriques les MOINS affectées par ce biais sont le SPA (teste un ordre relatif "
+    "candidat/référence sur le MÊME univers biaisé des deux côtés) et le score par "
+    "fold (qui montre COMMENT l'edge évolue dans le temps) ; le DSR reste, lui, "
+    "informatif sur la significativité mais ne corrige PAS ce biais de sélection de "
+    "l'univers. **Conclusion à ce cycle : ce test ne peut PAS confirmer ni réfuter "
+    "proprement l'hypothèse du #162 (édge borné par l'échantillon vs favorable par "
+    "chance) tant que l'univers n'est pas reconstruit avec la composition HISTORIQUE "
+    "réelle du NDX-100 à chaque date (donnée non triviale à obtenir gratuitement, "
+    "hors scope de ce cycle) — rapporté ici pour traçabilité complète (Règle 6), "
+    "PAS comme un verdict fiable.** *(Corrigé au cycle #163 : la composition "
+    "point-in-time réelle a finalement été trouvée et utilisée — voir "
+    "`..._pit_universe.md`.)*"
+)
+
+
+def bias_section(mlog):
+    """Quantifie le biais RÉSIDUEL de l'univers point-in-time : à chaque date
+    de rebalancement, part des membres RÉELS de l'indice effectivement
+    investissables (prix disponibles + 252 séances d'historique). Le
+    complément est le biais restant, mesuré et non estimé."""
+    df = pd.DataFrame(mlog, columns=["date", "membres", "investissables"])
+    df["couverture"] = df["investissables"] / df["membres"]
+    out = ["## Biais résiduel de l'univers point-in-time (mesuré, non estimé)",
+           "",
+           "À chaque date de rebalancement : nombre de membres RÉELS du NDX-100 "
+           "(composition point-in-time) et nombre d'entre eux réellement investissables "
+           "(prix disponibles ET 252 séances d'historique). Le complément est le biais "
+           "restant — titres retirés de la cote dont la série de prix n'est plus exposée "
+           "par la source, ou titres entrés à l'indice avant d'avoir un an de cotation.",
+           "",
+           "| Année | Rebal. | Membres réels (moy.) | Investissables (moy.) | Couverture moy. | Couverture min. |",
+           "|---|---|---|---|---|---|"]
+    df["annee"] = pd.to_datetime(df["date"]).dt.year
+    for year, g in df.groupby("annee"):
+        out.append(f"| {year} | {len(g)} | {g['membres'].mean():.0f} | "
+                   f"{g['investissables'].mean():.1f} | {100*g['couverture'].mean():.1f}% | "
+                   f"{100*g['couverture'].min():.1f}% |")
+    out += ["",
+            f"**Couverture moyenne sur toute la période : {100*df['couverture'].mean():.1f}% "
+            f"(minimum {100*df['couverture'].min():.1f}%).** À comparer aux 42 % (2015) à "
+            f"68 % (2022) de couverture des cycles #161/#162, mesurés dans "
+            f"`results/nonml_ndx100_universe_census.md` — le biais n'est pas totalement nul "
+            "ici, mais il est réduit d'un ordre de grandeur ET, surtout, il est désormais "
+            "MESURÉ.",
+            "",
+            "Nature du résidu, à ne pas sous-estimer : les titres encore manquants sont "
+            "exclusivement des sociétés **retirées de la cote** (faillite, rachat, passage "
+            "en non coté), donc en moyenne des sous-performants — le biais résiduel reste "
+            "orienté dans le même sens (à la hausse), simplement beaucoup plus petit.",
+            ""]
+    return out
+
+
+def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
+         preamble=None, postamble=None):
+    kwargs = dict(build_kwargs or {})
+    dates_full, weights_base, weights_lev, R, _ = build_weights(prices_dir, **kwargs)
     # start = premier indice avec poids non nuls (fin du lookback 252j)
     nz = np.where(weights_base.sum(axis=1) > 0)[0]
     start = int(nz[0])
@@ -64,33 +133,15 @@ def main(prices_dir=None, out_suffix="", title_suffix=""):
              f"({dates[0].date()} → {dates[-1].date()}). Les 5 contrôles doivent TOUS passer "
              "pour un PASS RENFORCÉ.", ""]
 
-    if prices_dir is not None:
-        lines.append(
-            "**LIMITE MÉTHODOLOGIQUE MAJEURE, à lire avant toute interprétation** : l'univers "
-            "de titres utilisé ici est la liste des membres du NDX-100 **de 2026** "
-            "(`data/pead/ndx100_constituents.json`), appliquée telle quelle à un historique "
-            "remontant jusqu'à 1970 pour les titres qui en disposent. Sur les décennies "
-            "anciennes, ceci introduit un **biais du survivant sévère** : seuls les titres "
-            "qui (a) existaient déjà ET (b) sont restés assez grands pour rester dans le "
-            "NDX-100 en 2026 sont inclus — le portefeuille des années 1970-1990 ne peut "
-            "matériellement contenir QUE de futurs géants technologiques déjà connus "
-            "aujourd'hui, jamais les entreprises qui ont existé puis disparu/reculé. Ce biais "
-            "s'atténue à mesure qu'on se rapproche de 2026 (univers de plus en plus complet et "
-            "réaliste) mais reste présent à un degré inconnu sur toute la période. **Les "
-            "rendements totaux astronomiques ci-dessous (§a) en sont la signature typique** "
-            "— ce n'est PAS un résultat économiquement interprétable en niveau absolu. Les "
-            "métriques les MOINS affectées par ce biais sont le SPA (teste un ordre relatif "
-            "candidat/référence sur le MÊME univers biaisé des deux côtés) et le score par "
-            "fold (qui montre COMMENT l'edge évolue dans le temps) ; le DSR reste, lui, "
-            "informatif sur la significativité mais ne corrige PAS ce biais de sélection de "
-            "l'univers. **Conclusion à ce cycle : ce test ne peut PAS confirmer ni réfuter "
-            "proprement l'hypothèse du #162 (édge borné par l'échantillon vs favorable par "
-            "chance) tant que l'univers n'est pas reconstruit avec la composition HISTORIQUE "
-            "réelle du NDX-100 à chaque date (donnée non triviale à obtenir gratuitement, "
-            "hors scope de ce cycle) — rapporté ici pour traçabilité complète (Règle 6), "
-            "PAS comme un verdict fiable.**"
-        )
+    if preamble is None and prices_dir is not None and not kwargs:
+        preamble = EXTENDED_PREAMBLE
+    if preamble:
+        lines.append(preamble)
         lines.append("")
+
+    mlog = kwargs.get("membership_log")
+    if mlog:
+        lines += bias_section(mlog)
 
     # ------------------------------------------------------------- a. couts
     lines.append("## a. Stress de coûts (1x, 3x, 5x)")
@@ -223,16 +274,105 @@ def main(prices_dir=None, out_suffix="", title_suffix=""):
         lines.append("")
         lines.append("Aucune notification Telegram n'est émise (réservée au PASS RENFORCÉ complet).")
 
+    if postamble:
+        lines.append("")
+        lines.append(postamble)
+
     out = ROOT / "results" / f"nonml_leaders_index52w_high_overlay_pass_validation_battery{out_suffix}.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
 
 
+PIT_PREAMBLE = (
+    "**Univers POINT-IN-TIME (cycle #163)** — correction du défaut méthodologique qui "
+    "affectait les cycles #161 ET #162. À chaque date de rebalancement, seuls les titres "
+    "**réellement membres du NDX-100 ce jour-là** sont investissables (composition "
+    "historique issue de `nasdaq-100-ticker-history` v2026.7.0, licence MIT, vendorée dans "
+    "`data/ndx100_history/`). Les cycles précédents appliquaient rétroactivement la liste "
+    "des membres **de 2026**, qui ne couvre que 42 % des vrais membres de l'indice en 2015 "
+    "et 68 % en 2022 (mesuré dans `results/nonml_ndx100_universe_census.md`) — les absents "
+    "étant par construction les titres sortis de l'indice depuis, donc en moyenne des "
+    "sous-performants. Panneau de prix : 178 des 214 tickers ayant appartenu à l'indice "
+    "entre 2015 et 2026 (36 séries de titres retirés de la cote ne sont plus exposées par "
+    "la source — biais résiduel quantifié ci-dessous). **Aucun paramètre du #38 ne change** "
+    "(TERCILE 1/3, LOOKBACK 252, REBAL_EVERY 21, CAP 2.0, seuil indice 95 %, coût 5 bps) ; "
+    "seule la définition de l'univers investissable est corrigée, comme pré-enregistré "
+    "dans `PREREG_leaders_index52w_high_overlay_pit_universe.md`."
+)
+
+PIT_POSTAMBLE = """## Lecture du résultat, en regard des cycles #161 et #162
+
+| | #161 (liste 2026, 2022-2026) | #162 (liste 2026, 1970-2026) | **#163 (point-in-time, 2015-2026)** |
+|---|---|---|---|
+| Séances | 1144 | 14010 | **2907** |
+| Univers | liste de 2026 (couverture 68 % du vrai indice au départ) | liste de 2026 (couverture inconnue, très faible avant 2000) | **composition réelle à chaque date (couverture mesurée 87,6 % en moyenne)** |
+| a. coûts ×5 | OK | OK | **OK** |
+| b. crise | OK (1/4 fenêtre couverte) | ÉCHEC (2/4 fenêtres perdues) | **ÉCHEC (2/4 couvertes, COVID perdu de 2,1 pts de MDD)** |
+| c. stabilité | OK (4/4) | ÉCHEC (3/4) | **OK (4/4)** |
+| d. SPA | OK (p=0,0000, t=4,515) | OK (p=0,0000) | **OK (p=0,0000, t=7,637)** |
+| e. DSR | 0,730 | 0,612 | **0,754** |
+| Score | 4/5 | 3/5 | **3/5** |
+
+**Ce qu'il faut retenir, sans enjoliver :**
+
+1. **L'edge du #38 n'était PAS un artefact de biais du survivant.** C'était
+   l'hypothèse la plus inquiétante, et elle est réfutée : sur un univers
+   reconstruit date par date, sur un échantillon 2,5× plus long, le candidat
+   bat encore la référence largement (Sharpe +1,42 vs +0,79), bat 4/4 folds,
+   et le SPA passe encore plus nettement qu'au #161 (t=7,64 vs 4,52). Le DSR
+   **progresse** (0,754 vs 0,730), ce qui va dans le sens de l'hypothèse du
+   #161 (edge réel, borné par la puissance statistique) et contredit
+   l'interprétation pessimiste du #162 (dégradation attribuée au biais, ici
+   confirmée comme un artefact de ce biais).
+2. **Le DSR reste ÉCHOUÉ, et de loin (0,754 < 0,95).** Le gain de 2,5× en
+   taille d'échantillon rapporte +0,024 de DSR. Extrapoler naïvement suggère
+   qu'aucune extension d'historique réaliste ne franchira le seuil : la
+   contrainte n'est pas seulement le nombre d'observations, c'est le niveau
+   du Sharpe quotidien (+0,0892) face au seuil de sélection SR₀ (0,0763)
+   imposé par n_trials=162.
+3. **Le stress de crise révèle une vraie faiblesse, nouvelle.** Le #161 ne
+   couvrait qu'une fenêtre (2022) ; ici le krach COVID est couvert et le
+   candidat y fait PIRE que la référence (-30,9 % vs -28,8 %). Ce n'est pas
+   un artefact d'univers : c'est le comportement attendu d'un overlay qui
+   double l'exposition tant que l'indice reste à ≥95 % de son plus haut, et
+   le sommet de février 2020 précédait immédiatement le krach le plus rapide
+   de l'histoire. **Le contrôle b échoue donc pour une raison économique
+   réelle, pas pour un défaut de mesure** — c'est l'information la plus
+   utile de ce cycle après le point 1.
+4. **Le score global (3/5) est en retrait du 4/5 du #161, mais les deux ne
+   sont pas comparables terme à terme** : le #161 obtenait son OK sur le
+   contrôle b avec une seule fenêtre de crise couverte, la plus favorable au
+   mécanisme. Un score obtenu sur 2 fenêtres dont une défavorable est plus
+   informatif qu'un score obtenu sur 1 fenêtre favorable. Le #163 est donc
+   **une meilleure évaluation qui donne un chiffre moins flatteur**, pas une
+   dégradation de la stratégie.
+
+**Statut du #38 après ce cycle : PASS niveau 1, batterie renforcée toujours
+non validée.** Aucune notification Telegram. Ce cycle SUPERSEDE le #162 (dont
+l'univers était non défendable) et complète le #161 (dont l'univers était
+biaisé et la couverture de crise insuffisante) — c'est désormais la référence
+d'évaluation du #38.
+"""
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--extended":
         main(prices_dir=ROOT / "data" / "pead" / "prices_extended",
              out_suffix="_extended_history",
              title_suffix=" — historique étendu (cycle #162)")
+    elif len(sys.argv) > 1 and sys.argv[1] == "--pit":
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from ndx100_membership import tickers_as_of_date  # noqa: E402
+
+        mlog = []
+        main(prices_dir=ROOT / "data" / "pead" / "prices_pit",
+             out_suffix="_pit_universe",
+             title_suffix=" — univers point-in-time 2015-2026 (cycle #163)",
+             build_kwargs=dict(panel_start="2013-01-01",
+                               membership_fn=tickers_as_of_date,
+                               rebal_anchor="2015-01-01",
+                               membership_log=mlog),
+             preamble=PIT_PREAMBLE,
+             postamble=PIT_POSTAMBLE)
     else:
         main()

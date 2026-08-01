@@ -29,7 +29,11 @@ INDEX_LOOKBACK = 252
 INDEX_THRESHOLD = 0.95
 
 
-def load_prices(prices_dir=None):
+def load_prices(prices_dir=None, panel_start=None):
+    """`panel_start` (cycle #163) : tronque le panneau de prix à cette date.
+    Purement calculatoire (borne le coût du calcul sur un univers de 214
+    titres) -- aucune quantité évaluée après `panel_start + 252 séances`
+    n'en dépend. `None` par défaut = comportement d'origine inchangé."""
     series = {}
     for path in sorted((prices_dir or PRICES_DIR).glob("*.json")):
         payload = json.loads(path.read_text())
@@ -38,6 +42,8 @@ def load_prices(prices_dir=None):
         ts = pd.to_datetime(payload["ts"], unit="s").normalize()
         close = pd.Series(payload["close"], index=ts, dtype=float).dropna()
         close = close[~close.index.duplicated(keep="first")].sort_index()
+        if panel_start is not None:
+            close = close[close.index >= pd.Timestamp(panel_start)]
         if len(close) > LOOKBACK + REBAL_EVERY:
             series[path.stem] = close
     return series
@@ -56,7 +62,8 @@ def index_trend_series() -> pd.Series:
     return pd.Series(near_high, index=dates)
 
 
-def build_weights(prices_dir=None):
+def build_weights(prices_dir=None, panel_start=None, membership_fn=None,
+                  rebal_anchor=None, membership_log=None):
     """Reconstruit exactement les poids Leaders et Leaders+overlay (T x
     n_tickers), les rendements bruts par titre R, les dates alignées et
     l'indice `start` (fin du lookback). Extraction non-comportementale de
@@ -64,8 +71,23 @@ def build_weights(prices_dir=None):
     `nonml_leaders_index52w_high_overlay_pass_validation_battery.py`
     (cycle #161) pour éviter toute réimplémentation divergente (Règle 7).
     `prices_dir` optionnel (cycle #162, historique étendu) : n'affecte
-    aucun calcul, seulement la source des prix."""
-    series = load_prices(prices_dir)
+    aucun calcul, seulement la source des prix.
+
+    Cycle #163 (univers point-in-time, pré-enregistré dans
+    PREREG_leaders_index52w_high_overlay_pit_universe.md) :
+    - `membership_fn(timestamp) -> set[str]` restreint, à CHAQUE date de
+      rebalancement, les titres éligibles à ceux réellement membres de
+      l'indice ce jour-là. C'est le SEUL changement de logique du cycle,
+      déclaré comme tel dans le PREREG.
+    - `rebal_anchor` : première séance ≥ cette date sert d'ancrage à la
+      grille de rebalancement (première date couverte par la composition).
+    - `membership_log` : liste optionnelle remplie, à chaque rebalancement,
+      de (date, n_membres_réels, n_investissables) -- sert à quantifier le
+      biais résiduel, n'intervient dans aucun calcul.
+
+    Tous ces arguments valent `None` par défaut : le comportement d'origine
+    (#38/#161/#162) est alors strictement inchangé."""
+    series = load_prices(prices_dir, panel_start)
     tickers = sorted(series.keys())
     ref_idx = None
     for t in tickers:
@@ -86,13 +108,26 @@ def build_weights(prices_dir=None):
             rolling_max[i] = np.nanmax(window, axis=0)
     ratio = np.where(has_full, close / rolling_max, np.nan)
 
-    n_top = max(1, int(round(n_tickers * TERCILE)))
     weights_leaders = np.zeros((T, n_tickers))
-    rebal_dates = list(range(LOOKBACK, T, REBAL_EVERY))
+    first_rebal = LOOKBACK
+    if rebal_anchor is not None:
+        first_rebal = max(LOOKBACK,
+                          int(P.index.searchsorted(pd.Timestamp(rebal_anchor))))
+    rebal_dates = list(range(first_rebal, T, REBAL_EVERY))
     for k, t in enumerate(rebal_dates):
         end = rebal_dates[k + 1] if k + 1 < len(rebal_dates) else T
         r = ratio[t]
         elig = np.where(np.isfinite(r))[0]
+        if membership_fn is not None:
+            members = membership_fn(P.index[t])
+            elig = np.array([j for j in elig if tickers[j] in members], dtype=int)
+            if membership_log is not None:
+                membership_log.append((P.index[t], len(members), len(elig)))
+        # TERCILE s'applique au nombre de titres RÉELLEMENT dans l'univers à
+        # cette date (identique au comportement d'origine quand
+        # membership_fn is None : elig vaut alors tout le panneau éligible).
+        n_ref = n_tickers if membership_fn is None else len(elig)
+        n_top = max(1, int(round(n_ref * TERCILE)))
         n_top_t = min(n_top, len(elig))
         if n_top_t > 0:
             top_idx = elig[np.argsort(-r[elig])[:n_top_t]]

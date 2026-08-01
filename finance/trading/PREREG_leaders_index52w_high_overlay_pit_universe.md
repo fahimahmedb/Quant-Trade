@@ -110,6 +110,20 @@ Points fixés ici :
 - La grille de rebalancement (tous les 21 jours) est **ancrée à la première
   séance ≥ 2015-01-01**, première date couverte par la composition. Ancrage
   déclaré ici, jamais ajusté ensuite.
+- **Base de calcul du tercile** (précision ajoutée à la rédaction du code,
+  avant toute exécution — voir note de conformité en fin de fichier) : dans
+  le code d'origine, `n_top = round(n_tickers × 1/3)` où `n_tickers` est le
+  nombre de colonnes du panneau, qui coïncidait avec la taille de l'univers
+  (~99 titres, tous membres). Avec un panneau point-in-time de 178 colonnes
+  dont seule une centaine est membre à une date donnée, cette formule
+  sélectionnerait ~59 titres, c'est-à-dire les **deux tiers** de l'univers
+  réel — ce ne serait plus le mécanisme du #38. Le tercile est donc calculé
+  sur le nombre de titres **réellement investissables à la date de
+  rebalancement** : `n_top = round(len(elig) × 1/3)`. Ce n'est pas un
+  changement de paramètre (TERCILE reste 1/3) mais la seule transcription
+  fidèle du mécanisme à un panneau dont les colonnes ne sont plus toutes
+  dans l'univers. La formule d'origine reste appliquée à l'identique quand
+  aucune composition point-in-time n'est fournie.
 
 ## Ce qui ne change PAS (aucun retuning)
 
@@ -175,3 +189,13 @@ Ce fichier est committé **avant** le fetch réseau des 113 tickers manquants
 et **avant** toute exécution de la batterie. Vérification automatisée après
 coup : `python3 scripts/nonml_anti_cheat_check.py
 leaders_index52w_high_overlay_pit_universe`.
+
+**Note de conformité — une seule modification de ce fichier après son
+premier commit** : la précision sur la base de calcul du tercile (§
+« Changement de logique explicitement déclaré ») a été ajoutée pendant
+l'écriture du code, **avant toute exécution** et donc avant que le moindre
+résultat n'existe. Elle ne change aucun paramètre et ne pouvait pas être
+orientée par un chiffre, puisqu'aucun n'avait été produit. Elle est
+signalée ici explicitement plutôt que glissée en silence : le contrôle
+anti-cheat vérifie l'absence de modification du pré-enregistrement
+**postérieure au premier résultat**, condition respectée.
