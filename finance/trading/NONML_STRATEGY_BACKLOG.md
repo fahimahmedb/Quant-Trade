@@ -1293,3 +1293,21 @@ de cette piste non-ML) redevient d'actualité, cette fois avec une
 couverture Règle 9 complète et non plus partielle.
 
 78 PASS niveau 1 sur 191 hypothèses testées (#190 = batterie Règle 9 sur le #185, dernier PASS calendaire, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, score le plus faible de la famille 1/5, clôture la campagne de validation Règle 9 des 6 PASS calendaires #188-190).
+
+## Nouvelles idées ajoutées (04/08/2026, après clôture de la campagne de validation Règle 9 #188-190)
+
+La campagne #188-190 a validé (sans PASS RENFORCÉ) l'intégralité des 6
+PASS niveau 1 calendaires accumulés — famille désormais entièrement
+couverte à la fois en niveau 1 et en Règle 9. Le reste des familles
+majeures (calendrier, cycle électoral, momentum/renversement à tous les
+horizons de 1 jour à 3 ans, régimes de vol/dispersion/corrélation/
+skewness/kurtosis/vol-of-vol INTRA-NDX-100, taux DGS3MO/DGS10 niveau/
+pente/volatilité/inversion, breadth en 14 variantes, January effect en 4
+variantes, GJR-t vol-prévue en 4 variantes) est largement saturée. 3
+nouvelles pistes, vérifiées AVANT ajout pour éviter tout doublon
+(recherche de collision de nom de fichier PREREG et de mots-clés dans ce
+tableau) :
+
+| 191 | Prime de risque de variance (VIX niveau − vol réalisée courte, "variance risk premium") comme signal de régime défensif — le VIX surestime structurellement et systématiquement la volatilité future réalisée (prime positive documentée en moyenne), une COMPRESSION ou INVERSION de cet écart signale un stress de marché réel plutôt que la complaisance habituelle ; distinct du #130 (niveau VIX seul comme porte d'un mécanisme hiérarchique vol-targeting) — ici le signal est l'ÉCART entre vol implicite et vol réalisée, jamais testé sous cette forme | `data/vixcls_daily.csv` déjà en local (récupéré au #130), vol réalisée déjà calculable via `data_loader.py::parkinson_var_pct` ou vol close-to-close déjà utilisée partout dans ce backlog — aucun nouveau fetch | À FAIRE |
+| 192 | Force relative Russell 2000 (small-cap RÉEL) vs S&P 500 (large-cap RÉEL) comme signal avant-coureur de risque — la sous-performance des small-caps par rapport aux large-caps est une anomalie de "breadth" documentée par les techniciens de marché (rotation défensive précoce avant les phases de risk-off du marché large) ; distinct du #123 (proxy de petite capitalisation INTRA-NDX-100 via prix/volatilité idiosyncratique, pas un vrai indice small-cap) — ici deux VRAIS indices déjà en local | `data/russell2000_daily.txt` + `data/sp500_daily.txt` déjà en local, aucun nouveau fetch | À FAIRE |
+| 193 | Corrélation cross-marché NDX-DAX (fenêtre roulante des rendements quotidiens des DEUX INDICES entiers, pas titre par titre) comme porte défensive — motivée par la littérature documentée sur la hausse de la corrélation entre marchés internationaux en période de stress global (perte de diversification géographique) ; distinct du #90 (corrélation moyenne PAR PAIRES entre les 100 titres INTRA-NDX-100, régime de co-mouvement au sein d'un seul marché, pas ENTRE deux marchés) | `data/nasdaq100_daily.txt` + `data/dax_daily.txt` déjà en local, aucun nouveau fetch | À FAIRE |
