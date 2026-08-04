@@ -1493,3 +1493,35 @@ l'utilisateur ou par un firing futur — mais un constat honnête que la
 poursuite mécanique de nouvelles hypothèses par le seul jugement
 autonome n'apporterait plus une valeur marginale suffisante pour
 justifier la même cadence.
+
+## Recherche supplémentaire de nouvelles pistes (04/08/2026) — aucune retenue
+
+Suite à la recommandation du cycle précédent, une recherche
+supplémentaire de données macro librement disponibles a été menée avant
+de conclure qu'aucune nouvelle piste ne mérite d'être ajoutée ce cycle.
+Pistes explorées et explicitement écartées (déclaré avant tout calcul,
+Règle 2 — aucune n'a été testée) :
+
+- **Indicateur de confiance des affaires allemand (proxy OCDE
+  `BSCICP03DEM665S`, apparenté à l'IFO)** : série interrompue depuis
+  janvier 2024 (2,5 ans de retard par rapport à aujourd'hui) — inutilisable
+  pour un backtest couvrant l'historique récent.
+- **PIB réel allemand (FRED `CLVMEURSCAB1GQDE`)** : disponible et à jour,
+  mais fréquence TRIMESTRIELLE (encore plus rare que le mensuel déjà
+  utilisé aux #195/#203/#204/#205/#206) — beaucoup trop peu de points
+  indépendants sur l'historique DAX pour qu'un seuil de tercile expanding
+  soit informatif, et le PIB est un indicateur encore plus COÏNCIDENT/À
+  RETARD que le CFNAI (#206, déjà FAIL) ou les demandes de chômage (#204,
+  déjà FAIL) — probabilité de succès jugée trop faible pour justifier le
+  coût d'un nouvel essai (Règle 2).
+- **Prix à la consommation / production allemands** : séries trouvées
+  également arrêtées ou de fréquence trop grossière pour ce backlog.
+
+**Conclusion réaffirmée** : après cette recherche supplémentaire, aucune
+piste candidate de qualité comparable aux hypothèses déjà testées n'a
+été identifiée. La recommandation du cycle précédent est maintenue sans
+changement — clore la recherche systématique non-ML (Buy & Hold restant
+la meilleure stratégie confirmée après 207 hypothèses) ou rediriger
+l'effort, plutôt que d'ajouter une piste à faible probabilité de succès
+uniquement pour respecter un quota mécanique. Aucune nouvelle ligne
+ajoutée ce cycle.
