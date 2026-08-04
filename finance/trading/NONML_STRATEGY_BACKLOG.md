@@ -1419,3 +1419,25 @@ ajout pour éviter tout doublon :
 80 PASS niveau 1 sur 205 hypothèses testées (#204 = demandes initiales d'allocations chômage ICSA, FAIL net 0/5 — indicateur coïncident à retard plutôt qu'avant-coureur net, première série hebdomadaire testée ; audit CONFORME avec vérification dédiée du décalage de publication).
 
 80 PASS niveau 1 sur 206 hypothèses testées (#205 = indice de confiance des consommateurs UMCSENT, FAIL 2/5 — PASS sur Russell 2000/DAX mais sous le seuil renforcé multi-marché ; audit CONFORME avec vérification dédiée du décalage mensuel).
+
+## Nouvelle idée ajoutée (04/08/2026, après le FAIL du #205) — et constat honnête sur la difficulté croissante à trouver des angles neufs
+
+**Recherche effectuée avant d'ajouter une nouvelle piste** : l'indice
+PMI manufacturier ISM (`NAPM`, autrefois disponible librement sur FRED)
+n'est plus accessible (404, licence ISM retirée de la distribution FRED
+gratuite depuis plusieurs années) — piste explorée et abandonnée avant
+tout calcul, aucune substitution de dernière minute. 1 seule piste
+retenue ce cycle plutôt que 2-3, l'espace des angles macro GENUINEMENT
+distincts (pas une simple variante d'un signal déjà testé) devenant
+significativement plus étroit après 206 hypothèses :
+
+| 206 | Indice d'activité nationale de la Fed de Chicago (FRED `CFNAI`, mensuel) comme signal de régime — indicateur COMPOSITE agrégeant 85 séries mensuelles (production, emploi, consommation, ventes), utilisé par la Fed elle-même comme jauge de probabilité de récession en temps réel ; distinct de tout signal déjà testé car il combine PLUSIEURS dimensions économiques simultanément (pas un seul indicateur isolé comme les demandes de chômage #204 ou le sentiment #205) | **Nouvelle donnée à récupérer** : série FRED `CFNAI` (gratuite, mensuelle depuis 1967, disponibilité confirmée par fetch). **Limite à traiter dans le PREREG** : traitement causal mensuel identique au #195/#203/#204/#205 (décalage d'un mois avant ffill — le CFNAI est généralement publié ~3-4 semaines après la fin du mois qu'il résume) | À FAIRE |
+
+**Constat honnête pour la suite** : après cette piste, si elle échoue
+comme la quasi-totalité de la famille macro-externe défensive (2 PASS
+niveau 1 sur désormais 15 hypothèses, #193 et #200, aucun PASS
+RENFORCÉ), il deviendra raisonnable de proposer à l'utilisateur de
+réorienter l'effort (axe ML, ou clôture de la recherche non-ML
+systématique) plutôt que de continuer à générer des variantes de plus
+en plus marginales de la même famille de signaux macro — cohérent avec
+la discipline anti-p-hacking de ce projet (Règle 2).
