@@ -74,6 +74,7 @@ def main():
     quality_report(df_confirm)
 
     close = df_primary["close"].values
+    dates = pd.DatetimeIndex(df_primary["date"].values)
     bh_full = np.log(close[1:] / close[:-1])
     gate = breadth_gate(df_primary, df_confirm)
 
@@ -95,6 +96,10 @@ def main():
     sharpe_ok = me_ov["sharpe_ann"] > me_bh["sharpe_ann"]
     ret_ok = ret_ov > ret_bh
     verdict = sharpe_ok and ret_ok
+
+    dates_pnl = dates.values[1:][start:]
+    np.savez(ROOT / "results" / "nonml_breadth_vol_targeting_overlay_pnl.npz",
+             pos=pos, r_asset=bh_t, dates=dates_pnl, cost_bps=COST_BPS)
 
     lines = [
         "# Résultat — Overlay vol-targeting gaté par la confirmation multi-marché NDX+Russell2000 (pré-enregistré, règle renforcée)",
