@@ -1350,3 +1350,11 @@ Les 7 PASS niveau 1 calendaires et macro-externes accumulés depuis le
 79 PASS niveau 1 sur 196 hypothèses testées (#195 = différentiel de taux US-Allemagne, FAIL 1/5 — seul Composite bat BH, la divergence monétaire ne transfère pas au risque actions ; audit CONFORME avec vérification dédiée du décalage mensuel).
 
 79 PASS niveau 1 sur 197 hypothèses testées (#196 = corrélation cross-marché NDX-Russell 2000 domestique, FAIL 1/5 — clôture la sous-famille corrélation, seule la variante internationale porte un edge détectable ; audit CONFORME).
+
+## Nouvelles idées ajoutées (04/08/2026, après clôture de la sous-famille corrélation cross-marché)
+
+L'espace des idées reste étroit après 197 hypothèses testées. 2 pistes,
+vérifiées AVANT ajout pour éviter tout doublon :
+
+| 197 | Volatilité du GAP d'ouverture (composante overnight isolée) comme signal de régime défensif — `data_loader.parkinson_var_pct` (range-based haut/bas, capture uniquement la variance INTRA-séance) est déjà implémenté et utilisé au #50, mais jamais soustrait de la variance close-to-close totale pour isoler la composante OVERNIGHT (nuit + pré-ouverture, risque de nouvelles/résultats/marchés étrangers qu'aucune gestion intra-séance ne peut couvrir) ; distinct du #1 (décomposition du RENDEMENT overnight vs intraday, pas de la VARIANCE) et du #50 (vol Parkinson comme estimateur alternatif de la vol TOTALE, pas comme composante isolée) | OHLC déjà en local (colonnes high/low), aucun nouveau fetch | À FAIRE |
+| 198 | Force du dollar américain (indice pondéré des échanges commerciaux, FRED `DTWEXBGS`) comme signal de régime pour les indices actions US — un dollar fort est un frein documenté aux bénéfices des multinationales (compétitivité à l'export, conversion des revenus étrangers) et coïncide souvent avec des flux de capitaux vers la sécurité (risk-off) ; signal JAMAIS exploité dans ce backlog, angle macro distinct de tous les signaux de taux/vol/corrélation déjà testés | **Nouvelle donnée à récupérer** : série FRED `DTWEXBGS` (gratuite, quotidienne, même mécanisme de fetch que `vixcls_daily.csv`/`t10y2y_daily.csv` déjà utilisé aux #114/#130) — fetch réseau à faire au prochain cycle, en tâche de fond si nécessaire | À FAIRE |
