@@ -2,6 +2,16 @@
 PREREG_low_vol_tilt.md, committée avant ce script). n_trials=1, aucune
 dépendance ML. Réutilise la construction d'univers dynamique des cycles
 #4/#5/#14.
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : `vol.rolling(60).std()`
+inclut par défaut pandas le rendement du jour t dans sa fenêtre, et les
+poids qui en découlaient étaient appliqués au rendement `R[t]` déjà
+réalisé. `main` décale désormais les poids d'un jour par défaut
+(`causal=True`). `causal=False` reproduit le comportement fautif
+d'origine. Ce cycle était déjà un FAIL avant correction (le verdict
+n'était donc pas menacé par un excès de confiance) ; il est ré-exécuté
+ici par souci d'exhaustivité, dans la même famille que #39.
 """
 import json
 import sys
@@ -48,7 +58,16 @@ def build_universe():
     return P
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     P = build_universe()
     T, n_tickers = P.shape
     close = P.values
@@ -78,6 +97,10 @@ def main():
         listed = exists[t]
         if listed.sum() > 0:
             weights_bh[t:end] = listed.astype(float) / listed.sum()
+
+    if causal:
+        weights_lowvol = lag_one_day(weights_lowvol)
+        weights_bh = lag_one_day(weights_bh)
 
     pnl_lv = (weights_lowvol[start:] * R_safe[start:]).sum(axis=1)
     pnl_b = (weights_bh[start:] * R_safe[start:]).sum(axis=1)
