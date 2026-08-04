@@ -2,6 +2,14 @@
 (spécification pré-enregistrée dans PREREG_momentum_52w_high.md, committée
 avant ce script). n_trials=1, aucune dépendance ML. Soumis à la règle de
 succès renforcée (Sharpe ET rendement absolu).
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : les poids décidés sur la
+clôture du jour t (signal close(t)/max252(t), qui inclut le rendement du
+jour t) étaient appliqués au rendement DU JOUR t lui-même. `main` décale
+désormais les poids d'un jour par défaut (`causal=True` : décider à la
+clôture de t-1, détenir pendant t). `causal=False` reproduit exactement le
+comportement fautif d'origine.
 """
 import json
 import sys
@@ -38,7 +46,16 @@ def load_all_prices():
     return series
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_all_prices()
     tickers = sorted(series.keys())
 
@@ -98,6 +115,10 @@ def main():
         n_listed = listed.sum()
         if n_listed > 0:
             weights_bh[t:end] = listed.astype(float) / n_listed
+
+    if causal:
+        weights_leaders = lag_one_day(weights_leaders)
+        weights_bh = lag_one_day(weights_bh)
 
     start = LOOKBACK
     R_safe = np.nan_to_num(R, nan=0.0)  # position=0 sur un titre absent -> contribution nulle, coherent
