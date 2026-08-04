@@ -23,9 +23,21 @@ aucun nouveau sourcing, Règle 7.
 
 - Réutilise `FOMC_DATES` de `nonml_pre_fomc_drift_overlay_backtest.py`
   (import direct, Règle 7 — aucune redéfinition de la liste).
-- Fenêtre : **jour de l'annonce lui-même ET le lendemain** (2 séances),
-  alignement causal data-driven identique au #171 (jour de bourse
-  correspondant à la date dans l'index du marché, `searchsorted`).
+- **Correction de convention, faite ICI avant tout calcul** (aucun résultat
+  n'existe encore à ce stade) : sous la convention causale déjà utilisée
+  au #171 (`bh_full[k] = log(close[k+1]/close[k])` est le rendement
+  RÉALISÉ le jour `k+1`, et `pos[k]` décide de l'exposition pour ce
+  rendement), le #171 positionnait `pos[jour précédant l'annonce] = CAP`
+  pour capter précisément le rendement réalisé LE JOUR DE L'ANNONCE
+  elle-même (close(veille)→close(annonce)). Pour tester un mécanisme
+  RÉELLEMENT distinct (résolution APRÈS que l'information soit publique,
+  pas une redite du signal du #171), la fenêtre retenue ici est donc :
+  **le jour de bourse suivant l'annonce (J+1) ET le jour suivant celui-ci
+  (J+2)** — c'est-à-dire `pos[jour de l'annonce] = CAP` et
+  `pos[jour de l'annonce + 1] = CAP`, qui captent les rendements réalisés
+  respectivement le lendemain et le surlendemain de l'annonce. Ce choix
+  évite tout chevauchement avec le signal déjà testé (et FAIL) au #171.
+  Alignement causal data-driven identique au #171 (`searchsorted`).
 - `position(t) = 2.0x` sur cette fenêtre, `1.0x` sinon. CAP=2.0x réutilisé
   tel quel. Coûts 5 bps.
 
