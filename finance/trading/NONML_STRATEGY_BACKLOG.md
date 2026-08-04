@@ -1394,3 +1394,10 @@ hypothèses testées dans ce backlog, sans exception. **Buy & Hold reste
 la meilleure stratégie confirmée.**
 
 80 PASS niveau 1 sur 202 hypothèses testées (#201 = batterie Règle 9 sur le #200, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, mais meilleur score (3/5) et meilleur DSR (0,0210) de toute la famille macro-externe défensive).
+
+## Nouvelles idées ajoutées (04/08/2026, après la batterie Règle 9 du #200)
+
+2 pistes, vérifiées AVANT ajout pour éviter tout doublon :
+
+| 202 | Taux réel TIPS 10 ans (FRED `DFII10` — rendement des Treasury Inflation-Protected Securities, net de l'inflation) comme signal de régime — mesure le COÛT DU CAPITAL RÉEL, distinct du taux nominal (niveau/pente/inversion déjà testés et clos aux #175/#178/#186/#187, FAIL) et de l'inflation implicite (#200, PASS — l'écart nominal-réel, pas le taux réel lui-même) : une hausse rapide des taux réels resserre les conditions financières indépendamment de l'inflation, signal jamais exploité dans ce backlog | **Nouvelle donnée à récupérer** : série FRED `DFII10` (gratuite, quotidienne depuis 2003, même mécanisme de fetch), déjà vérifiée disponible | À FAIRE |
+| 203 | Croissance de la masse monétaire M2 (FRED `M2SL`, glissement annuel) comme signal de régime — anomalie monétariste documentée (une croissance de M2 anormalement faible ou négative a précédé plusieurs resserrements de liquidité et corrections de marché, notamment 2022) ; angle macro DISTINCT de tous les signaux de taux/crédit/inflation déjà testés (mesure la LIQUIDITÉ, pas le prix du risque ou du capital) | **Nouvelle donnée à récupérer** : série FRED `M2SL` (gratuite, mensuelle depuis 1959, même mécanisme de fetch que #195/DE10Y). **Limite déclarée à l'avance** : série MENSUELLE, publiée avec un délai (~1 mois) — même traitement causal (décalage d'un mois calendaire avant ffill) que le #195 requis dans le PREREG | À FAIRE |
