@@ -521,7 +521,7 @@ percentile), avec un objectif de MDD, jamais de rendement.
 
 **Pistes proposées (non exécutées — discipline « un cycle à la fois »).**
 
-| 166 | Généraliser le #165 aux marchés indépendants (S&P 500, Russell 2000, DAX) : le moteur GJR-t n'y a jamais été validé au SPA, ce cycle testerait donc conjointement la prévision et le mécanisme — à pré-enregistrer comme tel, avec ré-exécution préalable de l'Étape C sur chaque marché pour ne pas mélanger les deux questions | OHLC déjà en local | à faire |
+| 166 | Généraliser le #165 aux marchés indépendants (S&P 500, Russell 2000, DAX) : le moteur GJR-t n'y a jamais été validé au SPA, ce cycle testerait donc conjointement la prévision et le mécanisme — à pré-enregistrer comme tel, avec ré-exécution préalable de l'Étape C sur chaque marché pour ne pas mélanger les deux questions | OHLC déjà en local | **FAIT — Q1 validée partout, Q2 ne généralise PAS une fois le financement réaliste appliqué.** **Q1** (Étape C ré-exécutée) : GJR-t bat GARCH-n et passe le SPA sur les 3 marchés (DM p=0,000, SPA p=0,0000 h=1 partout — DAX, Russell 2000, S&P 500). **Q2** (mécanisme #165, paramètres 20%/2.0x identiques, aucun retuning) sous l'hypothèse pré-enregistrée 0%/0% : PASS niveau 1 sur Russell 2000 (Sharpe +0,44 vs BH +0,39, rendement +1032,0% vs +791,2%, robustesse 8/9) et S&P 500 (Sharpe +0,49 vs BH +0,44, rendement +6468,3% vs +2714,7%, robustesse 9/9), **FAIL sur DAX** (Sharpe +0,40 vs BH +0,43). **Mais la décomposition Règle 10 (financement réaliste DGS3MO) fait ÉCHOUER les deux PASS** : Russell 2000 échoue sur les deux jambes (Sharpe +0,385 vs BH +0,388, rendement +684,1% vs +788,1%), S&P 500 échoue sur la jambe Sharpe (+0,487 vs BH +0,509) — le portage représente -11,5% (Russell) et -16,1% (S&P500) du résultat brut, contre seulement -0,4% pour le #165 original sur NDX (qui, lui, SURVIT à cette même correction). **Conclusion honnête : l'edge du #165 ne généralise pas — il semble spécifique à NDX (ou à son historique), pas un phénomène universel de la volatilité prévue GJR-t.** Voir `PREREG_gjr_vol_managed_crossmarket.md`, `results/etape_C_{sp500,russell2000,dax}.md`, `results/nonml_gjr_vol_managed_{sp500,russell2000,dax}_{result,robustness,sim_300e,rule10_decomposition}.md`, `results/nonml_gjr_vol_managed_crossmarket_anti_cheat.md` |
 | 167 | Réduire le turnover du #165 sans toucher au signal : rebalancement hebdomadaire ou bande morte (ne rebalancer que si `|pos_cible − pos_courante| > seuil` fixé a priori) — attaque directe du seul contrôle de la Règle 9 qui a échoué de peu (coûts à 25 bps), même correction ciblée que le #154 sur le #151 | Aucune nouvelle donnée | à faire |
 | 168 | Combiner la prévision GJR-t (#165, qui coupe AVANT le choc) avec la porte directionnelle la plus robuste du backlog (52w-high indice, #37/#47) : teste si le mécanisme hiérarchique gaté, qui a systématiquement amélioré les signaux de vol RÉALISÉE, fait de même avec une vol PRÉVUE | OHLC déjà en local | à faire |
 
@@ -1032,3 +1032,49 @@ modestes (Sharpe +0,03 à +0,44 au-dessus de leur référence), jamais soumis
 sur un univers point-in-time plus rigoureux. Rien dans ce travail de
 correction ne fait émerger un nouveau candidat capable de menacer cette
 conclusion.
+
+## Backlog #168 (01/08/2026) — cycle #166 : le mécanisme volatility-managed GJR-t (#165) ne généralise PAS hors NDX
+
+**n_trials = 3** ajoutés au compteur cumulé du backlog (168 hypothèses au
+total désormais) — un essai par marché (S&P 500, Russell 2000, DAX), aucun
+balayage de paramètre (20%/2.0x copiés du #165 à l'identique).
+
+**Q1 (le GJR-t prévoit-il mieux la vol sur ces 3 marchés ?) : validée
+partout.** Étape C ré-exécutée (`REFIT_EVERY=21`) : DM unilatéral p=0,000
+et SPA famille entière p=0,0000 (h=1) sur les 3 marchés, meilleur modèle
+GJR-t partout — cohérent avec NDX. La prévision de volatilité GJR-t est
+donc un edge robuste et généralisable, confirmé une 4e fois.
+
+**Q2 (le mécanisme de #165 bat-il Buy&Hold sur ces marchés ?) : PASS
+apparent sur 2/3, mais aucun ne survit à un financement réaliste.**
+Sous l'hypothèse pré-enregistrée 0%/0% (identique au #165) : PASS sur
+Russell 2000 (robustesse 8/9) et S&P 500 (robustesse 9/9), FAIL sur DAX.
+Mais la décomposition Règle 10 (engagement pré-enregistré, taux DGS3MO
+réel des deux côtés) fait **échouer les deux PASS** :
+
+| Marché | A (0%/0%) | B (DGS3MO réel) | Portage (part de A) |
+|---|---|---|---|
+| Russell 2000 | PASS (2/2 jambes) | **FAIL (0/2 jambes)** | -11,5 % |
+| S&P 500 | PASS (2/2 jambes) | **FAIL (1/2 jambes, Sharpe)** | -16,1 % |
+| NDX (#165, rappel) | PASS (2/2 jambes) | **PASS (2/2 jambes, survit)** | -0,4 % |
+
+La différence n'est pas anecdotique : sur NDX l'exposition moyenne est
+plus équilibrée et le portage est quasi nul (-0,4 %) ; sur Russell 2000 et
+S&P 500 la stratégie emprunte structurellement plus (exposition moyenne
+1,25x et 1,45x), ce qui suffit à faire basculer le verdict une fois le
+coût de financement réel appliqué — exactement le mécanisme qui avait
+invalidé le #134 au #142, en moins extrême (11-16 % ici contre 86-89 %
+au #134) mais suffisant.
+
+**Conclusion honnête, sans enjoliver.** L'edge de PRÉVISION (Q1, GJR-t vs
+GARCH-n) est authentique et généralise à 4 marchés indépendants — c'est
+le résultat le plus solide de tout le backlog, confirmé une fois de plus.
+L'edge de MÉCANISME (Q2, vol-targeting inversé sur la vol prévue) ne
+généralise PAS au-delà de NDX une fois le financement traité
+honnêtement : il ne s'agit donc probablement pas d'une loi universelle du
+type Moreira & Muir, mais d'un résultat spécifique à l'historique NDX
+(ou à un artefact de cet échantillon particulier). **Buy & Hold reste la
+meilleure stratégie confirmée sur les 3 nouveaux marchés testés ici**, ce
+qui renforce encore la conclusion déjà réaffirmée au #167 : rien dans ce
+cycle ne produit de candidat qui bat Buy&Hold de façon robuste au
+financement réaliste, hors NDX.
