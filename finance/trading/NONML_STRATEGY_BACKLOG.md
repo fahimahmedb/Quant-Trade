@@ -607,6 +607,44 @@ parallèle avec le #61 :
 
 | 185 | Intersection Halloween (#17, PASS SEUL) × année 1 post-électorale (#180, FAIL SEUL) : combine une porte calendaire qui fonctionne avec une porte calendaire qui ÉCHOUE seule — teste si le schéma du #61 (combiner un signal qui fonctionne avec un signal qui échoue dilue l'edge) se généralise aux paires purement calendaires, comme il a déjà été confirmé/infirmé pour les portes de régime aux #61/#81/#98 | Aucune nouvelle donnée (réutilise #17 et #180) | **FAIT — PASS MARGINAL (3/4 marchés), pas de plateau parfait (26/36 en robustesse).** NDX échoue sur la jambe Sharpe seule (+0,52 vs BH +0,53, marginal), les 3 autres marchés passent les deux jambes. **Contrairement au schéma du #61** (PASS+FAIL dilue systématiquement l'edge pour les portes de régime), la combinaison calendaire préserve un edge net globalement positif — la fréquence bien plus élevée de Halloween (~37% vs ~13%) domine. Mais le résultat est nettement MOINS robuste que les #182 (15/15) et #184 (36/36) : 10/36 cellules de la grille jointe CAP×CUT échouent, signe que ce PASS est plus fragile, à la limite du seuil. **Le schéma du #61 ne se généralise PAS automatiquement à l'inverse aux paires calendaires, mais le résultat est nettement plus marginal qu'avec deux signaux qui fonctionnent chacun séparément** — cohérence partielle avec le #61, pas une réfutation nette. Voir `PREREG_halloween_postelection_multiplicative_overlay.md`, `results/nonml_halloween_postelection_multiplicative_overlay_{result,anti_cheat,robustness,sim_300e,audit}.md` |
 
+## Backlog #0-185 épuisé — constat honnête de saturation (01/08/2026)
+
+187 hypothèses non-ML testées à ce stade. Les familles suivantes sont
+désormais couvertes de façon large et systématique : effets calendaires
+(mois, jour de semaine, trimestre, ToM, Halloween, jours fériés, FOMC
+pré/post/semaine entière, cycle électoral aux 4 années ET leurs
+combinaisons deux à deux — même/sens opposé/PASS+FAIL), momentum et
+renversement à tous les horizons testables (court terme titre, 12-1
+académique, constance, long terme indice 1 et 3 ans), régimes de
+volatilité/dispersion/corrélation/skewness/kurtosis/vol-of-vol comme
+porte du mécanisme hiérarchique (#87-#113), taux DGS3MO (niveau, pente,
+volatilité), spillover cross-marché, gap d'ouverture, overnight vs
+intraday, et la famille complète de mécanismes vol-prévue GJR-t
+(continue/gatée/discrète/direction, #165-#170).
+
+**La dernière piste testée (#185) confirme la tendance** : un PASS
+existe encore mais nettement plus marginal et moins robuste (26/36
+plutôt que 15/15 ou 36/36) que les résultats des cycles précédents — un
+signe cohérent de rendements décroissants dans la recherche de nouvelles
+combinaisons calendaires. La seule combinaison combinatoire restante non
+testée dans cette sous-famille (FAIL×FAIL, ex. #178×#177) n'apporterait
+selon toute probabilité aucune information nouvelle utile (les deux
+composantes étant déjà des échecs nets, leur combinaison ne peut
+raisonnablement produire qu'un échec ou un résultat non interprétable) —
+la proposer uniquement pour respecter le quota de "2-3 nouvelles idées"
+irait à l'encontre de la discipline anti-p-hacking de ce projet (Règle 2 :
+ne pas manufacturer des essais sans motivation économique réelle).
+
+**Recommandation honnête pour la suite** : plutôt que de continuer à
+générer des combinaisons calendaires de plus en plus marginales, il
+serait plus productif de (a) soumettre les meilleurs PASS accumulés
+(#176, #179, #182, #184) à la batterie Règle 9 complète (SPA, DSR à
+n_trials=187) pour savoir s'ils survivent à la correction pour tests
+multiples — aucun ne l'a encore été — ou (b) laisser l'utilisateur
+réorienter l'effort (axe ML, validation prospective, ou clôture de cette
+phase non-ML). Le backlog reste ouvert si de nouvelles idées motivées
+émergent, mais ce cycle s'arrête ici sans ajout forcé.
+
 ## Backlog #164 (01/08/2026) — le #14 (« Winners ») sur l'univers point-in-time : PASS maintenu, edge surestimé de ~21 %
 
 Application directe de l'infrastructure du #163 au cycle le plus exposé de
