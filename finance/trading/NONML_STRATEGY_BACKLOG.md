@@ -1317,3 +1317,20 @@ tableau) :
 78 PASS niveau 1 sur 193 hypothèses testées (#192 = force relative Russell 2000 vs S&P 500, FAIL 1/5 — seul DAX bat BH, signal breadth documenté mais non exploitable sur cette spécification ; audit CONFORME).
 
 79 PASS niveau 1 sur 194 hypothèses testées (#193 = corrélation cross-marché NDX-DAX, PASS 4/5, robustesse 27/45 pas de plateau parfait — premier PASS de la famille macro-externe défensive #175/#178/#186/#187/#191/#192/#193 ; audit CONFORME).
+
+## Backlog #194 (04/08/2026) — batterie Règle 9 sur le #193 (corrélation cross-marché NDX-DAX)
+
+| 194 | Appliquer la batterie de validation renforcée (Règle 9) au #193 (corrélation cross-marché NDX-DAX, PASS 4/5, premier PASS de la famille macro-externe défensive) — jamais soumis à cette barre | Aucune nouvelle donnée (recalcul sur le résultat déjà committé, NDX comme marché de référence pour la batterie) | **FAIT — 1/5, PAS de PASS RENFORCÉ, le score le plus faible possible hors #185 (1/5).** PREREG dédié committé avant tout calcul (`PREREG_cross_market_correlation_ndx_dax_overlay_pass_validation_battery.md`). **Seul le stress de crise passe** (4/4 fenêtres, MDD jamais pire que BH — dot-com -67,6% vs -82,9%, COVID -18,5% vs -28,0%, la marge la plus large des candidats testés à cette barre) — les 4 autres contrôles échouent : coûts (casse à 25 bps), stabilité (**1/4 folds seulement**, le fold 1 bat BH mais les folds 2-4 échouent tous), SPA (p=1,0000, la pire valeur possible), DSR (0,0000, comme les 193 autres hypothèses). **Confirme l'hypothèse posée au PREREG** : la robustesse imparfaite déjà observée au #193 (27/45, fenêtre 48j fragile) se traduit en un score Règle 9 faible, par le même schéma que le #185 (robustesse non parfaite → pire score Règle 9 de sa famille). **Lecture honnête** : le #193 avait le meilleur profil de MDD de toute la famille macro-externe défensive à ce jour, mais cet avantage se limite au contrôle de crise — l'edge n'est ni assez stable dans le temps (1/4 folds) ni assez significatif statistiquement (SPA p=1,0) pour survivre à la batterie complète. Anti-cheat CONFORME (0/4 échec). Pas de notification Telegram (aucun PASS RENFORCÉ). Voir `results/nonml_cross_market_correlation_ndx_dax_overlay_pass_validation_battery.md`, `..._anti_cheat.md` |
+
+**Bilan.** Sur les 7 PASS niveau 1 calendaires et macro-externes désormais
+soumis à la batterie Règle 9 (#30, #176, #179, #182, #184, #185, #193),
+aucun n'atteint le PASS RENFORCÉ. Seul le stress de crise (b) varie
+significativement d'un candidat à l'autre (le #193 obtient la meilleure
+marge jamais vue sur ce contrôle précis) ; le DSR (e) échoue
+systématiquement sans aucune exception sur 194 hypothèses testées,
+confirmant une fois de plus la conclusion structurelle du #116/#132 :
+à cette taille de backlog, aucun edge individuel isolé ne peut
+raisonnablement franchir le seuil de sélection DSR. **Buy & Hold reste
+la meilleure stratégie confirmée du backlog.**
+
+79 PASS niveau 1 sur 195 hypothèses testées (#194 = batterie Règle 9 sur le #193, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, score 1/5, meilleur stress de crise jamais obtenu mais échoue les 4 autres contrôles).
