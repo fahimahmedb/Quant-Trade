@@ -2,6 +2,15 @@
 PREREG_momentum_consistency.md, committée avant ce script). n_trials=1,
 aucune dépendance ML. Règle de succès renforcée (Sharpe ET rendement
 absolu).
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : `consistency_at` calcule la
+fraction de blocs positifs sur les BLOCK_LEN séances précédant ET
+INCLUANT le jour t (`end_idx = t`), donc le premier bloc contient le
+rendement du jour t lui-même ; les poids qui en découlaient étaient
+appliqués au rendement `R[t]` déjà réalisé. `main` décale désormais les
+poids finaux d'un jour par défaut (`causal=True`). `causal=False`
+reproduit le comportement fautif d'origine.
 """
 import json
 import sys
@@ -63,7 +72,16 @@ def consistency_at(close: np.ndarray, t: int) -> np.ndarray:
     return consistency
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_all_prices()
     tickers = sorted(series.keys())
 
@@ -107,6 +125,10 @@ def main():
         n_listed = listed.sum()
         if n_listed > 0:
             weights_bh[t:end] = listed.astype(float) / n_listed
+
+    if causal:
+        weights_consistency = lag_one_day(weights_consistency)
+        weights_bh = lag_one_day(weights_bh)
 
     start = LOOKBACK
     R_safe = np.nan_to_num(R, nan=0.0)
