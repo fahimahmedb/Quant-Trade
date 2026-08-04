@@ -1334,3 +1334,15 @@ raisonnablement franchir le seuil de sélection DSR. **Buy & Hold reste
 la meilleure stratégie confirmée du backlog.**
 
 79 PASS niveau 1 sur 195 hypothèses testées (#194 = batterie Règle 9 sur le #193, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, score 1/5, meilleur stress de crise jamais obtenu mais échoue les 4 autres contrôles).
+
+## Nouvelles idées ajoutées (04/08/2026, après clôture de la campagne Règle 9 #188-190+194)
+
+Les 7 PASS niveau 1 calendaires et macro-externes accumulés depuis le
+#30 ont maintenant tous été soumis à la batterie Règle 9 (#188-190,
+#194) — aucun PASS RENFORCÉ. L'espace des idées reste très étroit après
+195 hypothèses testées ; 2 pistes seulement, vérifiées AVANT ajout pour
+éviter tout doublon, plutôt que de forcer un troisième candidat marginal
+(Règle 2) :
+
+| 195 | Différentiel de taux long US-Allemagne (DGS10 − DE10Y) comme signal de régime — la divergence de politique monétaire entre la Fed et la BCE est un moteur documenté des flux de capitaux et de la performance relative des actifs risqués (spread qui s'élargit = resserrement relatif US = risque accru) ; exploite `data/de10y_monthly.csv` (taux 10 ans allemand, FRED, 1956-2026), **jamais utilisé dans ce backlog jusqu'ici** — distinct de tous les signaux de taux déjà testés (#44/#114/#134/#149 pente US, #175/#178/#186/#187 niveau/volatilité/inversion US seul) qui n'utilisaient que des séries américaines | `data/de10y_monthly.csv` déjà en local, aucun nouveau fetch. **Limite déclarée à l'avance** : série MENSUELLE (pas quotidienne comme DGS10/DGS3MO) — nécessite un ffill vers le calendrier quotidien, introduisant une staleness structurelle du signal jusqu'à 30 jours, à documenter explicitement dans le PREREG avant tout calcul | À FAIRE |
+| 196 | Corrélation cross-marché NDX-Russell 2000 (DOMESTIQUE, large-cap vs small-cap US) comme porte défensive — étend le SEUL mécanisme macro-externe qui a dépassé le seuil niveau 1 à ce jour (#193, corrélation internationale NDX-DAX) à une paire domestique avec une histoire économique DISTINCTE (santé interne du marché américain / rotation de capitalisation, plutôt que contagion internationale et perte de diversification géographique) ; **déclaré explicitement comme la DERNIÈRE extension de paire de corrélation testée dans ce backlog quel que soit le résultat** — pas le début d'une recherche systématique sur toutes les paires possibles (Règle 2) | OHLC déjà en local (NDX + Russell 2000) | À FAIRE |
