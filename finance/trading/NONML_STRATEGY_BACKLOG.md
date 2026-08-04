@@ -597,6 +597,16 @@ la recherche de nouveaux candidats) :
 
 | 184 | Intersection Halloween (#17, lève) × année mid-term (#176, coupe) : signaux CONFLICTUELS (sens opposés), contrairement au #182 où les deux allaient dans le même sens — combinaison MULTIPLICATIVE des deux multiplicateurs (`position = 2.0x si Halloween SEUL, 0.5x si mid-term SEUL, 2.0×0.5=1.0x si les deux coïncident (s'annulent), 1.0x sinon`), règle fixée avant tout calcul pour éviter tout choix arbitraire de priorité | Aucune nouvelle donnée (réutilise #17 et #176) | **FAIT — PASS (4/4 marchés), plateau parfait en robustesse jointe (36/36).** Malgré des signaux conflictuels qui s'annulent exactement à 1,0x au chevauchement (~12-13% du temps), Sharpe ET rendement > BH sur les 4 marchés (ex. NDX rendement +6599,5%→+30685,8%). Halloween domine en fréquence (~37% du temps vs ~13% pour mid-term seul), ce qui explique probablement pourquoi l'edge net reste largement positif malgré l'annulation partielle. MDD dégradé partout (levier plus fréquent). Grille jointe ±20% CAP×CUT (3×3) : 36/36 battent BH, plateau parfait. Audit indépendant confirme la combinaison multiplicative par recalcul avec méthode différente. Sim 300€ : sous-performe légèrement en absolu sur cette fenêtre précise (majoritairement mid-term seul, avril insuffisamment dans la saison Halloween) mais Sharpe et MDD meilleurs. **Troisième PASS de la sous-famille combinaisons calendaires (#179, #182, #184)** — même les signaux conflictuels finissent par produire un edge net positif dans ce backlog, tant que l'un des deux domine suffisamment en fréquence d'occurrence. Voir `PREREG_halloween_midterm_multiplicative_overlay.md`, `results/nonml_halloween_midterm_multiplicative_overlay_{result,anti_cheat,robustness,sim_300e,audit}.md` |
 
+## Nouvelles idées ajoutées (backlog #0-184 épuisé, 01/08/2026)
+
+1 nouvelle piste, vérifiée AVANT ajout pour éviter tout doublon — le
+#184 a montré que même des signaux calendaires CONFLICTUELS produisent
+un edge net (contrairement à l'intuition du #61 pour les portes de
+régime). Ce cycle teste le cas inverse pour confirmer/infirmer le
+parallèle avec le #61 :
+
+| 185 | Intersection Halloween (#17, PASS SEUL) × année 1 post-électorale (#180, FAIL SEUL) : combine une porte calendaire qui fonctionne avec une porte calendaire qui ÉCHOUE seule — teste si le schéma du #61 (combiner un signal qui fonctionne avec un signal qui échoue dilue l'edge) se généralise aux paires purement calendaires, comme il a déjà été confirmé/infirmé pour les portes de régime aux #61/#81/#98 | Aucune nouvelle donnée (réutilise #17 et #180) | à faire |
+
 ## Backlog #164 (01/08/2026) — le #14 (« Winners ») sur l'univers point-in-time : PASS maintenu, edge surestimé de ~21 %
 
 Application directe de l'infrastructure du #163 au cycle le plus exposé de
