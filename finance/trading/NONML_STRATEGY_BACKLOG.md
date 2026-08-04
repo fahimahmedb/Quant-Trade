@@ -965,3 +965,70 @@ conservé uniquement pour reproduire l'audit).
 le défaut, c'est la relecture de code exigée par la Règle 7. Le protocole a
 fonctionné exactement comme prévu — y compris contre son propre meilleur
 résultat.
+
+## Backlog #167 (01/08/2026) — les 6 cycles SUSPENDUS ré-exécutés en causal : bilan final du bug d'exécution « même barre »
+
+**Ce qui a été fait.** Les 6 cycles marqués « ⚠ SUSPENDU » au #166 (#4, #39,
+#42, #51, #82, #86) ont été ré-exécutés avec exactement le même correctif
+mécanique que #38/#14 (`bd5ef75`) : la matrice de poids finale décalée d'un
+jour (`causal=True` par défaut, `causal=False` conservé pour reproduire
+l'historique), aucun seuil ni fenêtre ni paramètre modifié. Le #15, déjà FAIL
+et non flaggé SUSPENDU (le sens du biais sur un FAIL n'était pas garanti
+favorable), a été ré-exécuté par souci d'exhaustivité puisque le #39 en
+hérite directement. Détail chiffré et verdict de chaque cycle dans son
+propre `results/nonml_*_result.md` (section « Correction 01/08/2026 »).
+
+**Verdict par cycle :**
+
+- **#4 (momentum 52w-high) : RECLASSÉ FAIL.** Sharpe reste marginalement
+  supérieur (+0,59 vs BH +0,55) mais le rendement total causal (+53,5%) tombe
+  sous Buy&Hold (+56,0%) — le critère renforcé exige les deux.
+- **#15 (low-vol tilt) : FAIL confirmé**, sans changement de verdict.
+- **#39 (low-vol + overlay 52w-high) : PASS confirmé**, marge très resserrée
+  (Sharpe +0,54→+0,95 devient +0,509→+0,513 causal ; rendement
+  +40,2%→+137,5% devient +37,1%→+52,8% causal).
+- **#42 (winners + overlay 52w-high) : PASS marginal confirmé**, mais
+  UNIQUEMENT sur l'univers d'origine 2021-2026 — hérite du #14, qui est FAIL
+  sur l'univers point-in-time 2015-2026 retenu comme référence depuis #164 ;
+  ce dérivé n'a pas été ré-exécuté sur cet univers PIT (hors périmètre de la
+  correction mécanique), donc à lire avec la même réserve que le #14
+  lui-même.
+- **#51 (winners + overlay tendance/vol-targeting) : PASS marginal confirmé**,
+  même réserve exacte que le #42 (hérite du #14, univers d'origine
+  uniquement).
+- **#82 (momentum de constance) : PASS confirmé**, marge réduite mais nette
+  (Sharpe +0,67→+0,64, rendement +81,7%→+74,8%) — signal peu sensible au
+  rendement d'un seul jour (1/21 d'un bloc parmi 12), contrairement aux
+  signaux #4/#14/#38 bâtis directement sur le rendement du jour t.
+- **#86 (January effect + tercile prix bas) : PASS confirmé.** Cas
+  particulier : la RÉFÉRENCE elle-même s'améliore légèrement après
+  correction (signal de niveau de prix, pas de rendement récent — la fuite
+  n'oriente donc pas mécaniquement vers le rendement du jour même comme un
+  signal de momentum). L'overlay conserve un edge comparable à l'origine.
+
+**Bilan chiffré pour le backlog dans son ensemble.** Sur les 8 cycles de
+cette famille qui étaient PASS avant correction (#4, #14, #38, #39, #42,
+#51, #82, #86 — le #15 était déjà FAIL), **3 basculent en FAIL** (#38, #14,
+#4) et **5 restent PASS** (#39, #42, #51, #82, #86), dont 2 (#42, #51) avec
+une réserve significative héritée du #14. Le compteur `n_trials` cumulé
+(165+ hypothèses) reste inchangé, conformément à la discipline anti-cheat —
+cette correction ne retire que des PASS de la colonne des succès, elle ne
+remet aucun compteur à zéro. Le total de PASS niveau 1 honnêtes du backlog,
+qui était de 75 sur 165 hypothèses au moment du #165 (avant que l'audit ne
+soit même mené), passe donc à **72** une fois les 3 reclassifications
+appliquées (75 − 3 : #38, #14, #4).
+
+**La conclusion du projet est réaffirmée, plus solidement qu'avant.**
+Aucun des PASS niveau 1 restants — dans cette famille ou ailleurs dans le
+backlog — n'a jamais atteint le seuil DSR>0,95 de la Règle 9 (le #38, qui en
+était le plus proche avec un DSR de 0,754, n'a en réalité aucun edge une
+fois l'exécution corrigée). **Buy & Hold reste, sans aucune ambiguïté
+nouvelle et avec une confiance accrue, la meilleure stratégie confirmée du
+backlog** — conclusion déjà posée à l'Étape B du projet (aucun signal ML
+actif ne bat Buy&Hold à DSR>0,95) et maintenant réaffirmée côté non-ML : les
+5 PASS niveau 1 qui survivent à cette correction sont tous des edges
+modestes (Sharpe +0,03 à +0,44 au-dessus de leur référence), jamais soumis
+à la batterie Règle 9 complète, et pour 2 d'entre eux probablement fragiles
+sur un univers point-in-time plus rigoureux. Rien dans ce travail de
+correction ne fait émerger un nouveau candidat capable de menacer cette
+conclusion.
