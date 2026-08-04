@@ -1405,3 +1405,13 @@ la meilleure stratégie confirmée.**
 80 PASS niveau 1 sur 203 hypothèses testées (#202 = taux réel TIPS 10 ans DFII10, FAIL net 0/5 — confirme que c'est la nature ÉCART (vs NIVEAU) qui détermine l'exploitabilité d'un signal de taux, pas le caractère nominal/réel ; artefact de tendance sur Composite documenté honnêtement, pas un bug ; audit CONFORME).
 
 80 PASS niveau 1 sur 204 hypothèses testées (#203 = croissance M2, FAIL 1/5 — angle liquidité distinct mais non exploitable, seul Composite bat BH ; audit CONFORME avec vérification dédiée du décalage mensuel).
+
+## Nouvelles idées ajoutées (04/08/2026, après le FAIL du #203)
+
+2 pistes utilisant des angles GENUINEMENT distincts de tout ce qui a
+été testé jusqu'ici (marché du travail et enquête de sentiment, plutôt
+que prix/taux/spreads dérivés des marchés financiers), vérifiées AVANT
+ajout pour éviter tout doublon :
+
+| 204 | Demandes initiales d'allocations chômage (FRED `ICSA`, hebdomadaire) comme signal avant-coureur de récession — indicateur du MARCHÉ DU TRAVAIL documenté comme l'un des plus réactifs en temps réel (fréquence hebdomadaire, contrairement aux données mensuelles d'emploi), jamais exploité dans ce backlog ; fréquence HEBDOMADAIRE jamais utilisée non plus (entre le quotidien des taux/vol et le mensuel de M2/DE10Y) | **Nouvelle donnée à récupérer** : série FRED `ICSA` (gratuite, hebdomadaire depuis 1967, disponibilité confirmée par fetch). **Limite à traiter dans le PREREG** : fréquence hebdomadaire, décalage causal de publication à définir avant tout calcul (données publiées le jeudi pour la semaine se terminant le samedi précédent) | À FAIRE |
+| 205 | Indice de confiance des consommateurs (Université du Michigan, FRED `UMCSENT`, mensuel) comme signal CONTRARIAN — anomalie comportementale documentée (un sentiment extrêmement bas coïncide souvent avec des points bas de marché déjà largement intégrés dans les prix, "be greedy when others are fearful") ; signal d'ENQUÊTE (perception), pas dérivé de prix/rendements/taux — angle qualitativement distinct de tout signal déjà testé dans ce backlog | **Nouvelle donnée à récupérer** : série FRED `UMCSENT` (gratuite, mensuelle depuis 1952, disponibilité confirmée par fetch, quelques valeurs manquantes ponctuelles à gérer). **Limite à traiter dans le PREREG** : traitement causal mensuel identique au #195/#203 (décalage d'un mois avant ffill) | À FAIRE |
