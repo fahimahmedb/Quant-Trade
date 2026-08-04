@@ -4,6 +4,14 @@ PREREG_winners_index52w_high_overlay.md, committée avant ce script).
 Combine les cycles #14 et #37. n_trials=1, aucune dépendance ML. Règle de
 succès renforcée -- référence = Winners 1.0x (cycle #14), pas Buy&Hold.
 **Prudence forte héritée du #14** (généralisabilité incertaine).
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : le signal
+close(i)/close(i-SIGNAL_WINDOW)-1 inclut le rendement du jour i, et les
+poids qui en découlaient étaient appliqués au rendement `R[i]` déjà
+réalisé -- même défaut confirmé sur le #14. `main` décale désormais les
+poids finaux d'un jour par défaut (`causal=True`). `causal=False`
+reproduit le comportement fautif d'origine.
 """
 import json
 import sys
@@ -54,7 +62,16 @@ def index_trend_series() -> pd.Series:
     return pd.Series(near_high, index=dates)
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_prices()
     tickers = sorted(series.keys())
     ref_idx = None
@@ -96,6 +113,10 @@ def main():
 
     weights_base = weights_winners
     weights_lev = weights_winners * exposure[:, None]
+    if causal:
+        weights_base = lag_one_day(weights_base)
+        weights_lev = lag_one_day(weights_lev)
+        trend_aligned = np.concatenate(([False], trend_aligned[:-1]))
 
     pnl_base = (weights_base[start:] * R_safe[start:]).sum(axis=1)
     pnl_lev = (weights_lev[start:] * R_safe[start:]).sum(axis=1)
