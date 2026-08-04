@@ -1443,3 +1443,53 @@ en plus marginales de la même famille de signaux macro — cohérent avec
 la discipline anti-p-hacking de ce projet (Règle 2).
 
 80 PASS niveau 1 sur 207 hypothèses testées (#206 = indice d'activité nationale Fed de Chicago CFNAI, FAIL 1/5 — même agrégé sur 85 séries, le signal composite ne généralise pas mieux qu'un indicateur isolé ; audit CONFORME avec vérification dédiée du décalage mensuel).
+
+## Backlog #0-206 épuisé — recommandation de réorientation (04/08/2026)
+
+**Suite directe du constat posé au #205/#206** : le #206 a échoué comme
+annoncé, ce qui déclenche la recommandation déjà formulée à l'avance.
+
+**Bilan de la famille macro-externe défensive** (#175-#206, 16
+hypothèses testées depuis le #175) : niveau/pente/inversion/
+différentiel de taux souverains (#175/#178/#186/#187/#195, tous FAIL),
+taux réel (#202, FAIL), spread de crédit (#199, FAIL), anticipations
+d'inflation (#200, **seul PASS net sur 5/5, mais FAIL Règle 9 au #201**),
+prime de risque de variance (#191, FAIL), force du dollar (#198, FAIL),
+croissance M2 (#203, FAIL), corrélation cross-marché internationale
+(#193, PASS niveau 1 mais FAIL Règle 9 au #194), corrélation domestique
+(#196, FAIL), demandes de chômage (#204, FAIL), sentiment consommateurs
+(#205, FAIL), indice composite d'activité (#206, FAIL). **2 PASS niveau
+1 sur 16, 0 PASS RENFORCÉ.**
+
+**Bilan du backlog dans son ensemble** : 207 hypothèses testées depuis
+le début, 80 PASS niveau 1, **0 PASS RENFORCÉ Règle 9** parmi les
+candidats évalués à cette barre (dont les meilleurs : #38 réfuté par
+biais d'exécution, #134/#149 DSR le plus proche jamais obtenu mais
+encore loin de 0,95, #163 DSR record 0,754 mais toujours sous le seuil,
+#200 DSR 0,0210 le meilleur de la famille macro-externe). **Buy & Hold
+reste, sans ambiguïté après 207 essais indépendants couvrant calendrier,
+momentum/renversement, volatilité, taux, crédit, corrélation, breadth,
+liquidité, marché du travail et sentiment, la meilleure stratégie
+non-ML confirmée de ce backlog.**
+
+**Recommandation honnête, comme annoncé au #206** : l'espace des
+hypothèses non-ML restant à tester sans dupliquer une famille déjà
+close est désormais très étroit — deux pistes de données libres
+supplémentaires ont été explorées et écartées ce cycle (PMI ISM
+`NAPM`, retiré de FRED) sans qu'une alternative de qualité équivalente
+ait été trouvée. Continuer à générer des variantes marginales de
+signaux déjà testés (nouvelle série de taux, nouvelle paire de
+corrélation, nouvel indicateur macro isolé) présenterait un risque
+réel de recherche de paramètres déguisée en hypothèses indépendantes
+(Règle 2), sans motivation économique nouvelle. **Il est recommandé à
+l'utilisateur de décider entre (a) clore la recherche systématique
+non-ML sur ce backlog, la conclusion "Buy & Hold" étant désormais
+établie avec une robustesse considérable, ou (b) rediriger l'effort
+vers un axe différent** (ex. l'axe ML déjà exploré séparément dans ce
+projet, ou une validation Règle 9 plus poussée des candidats déjà
+accumulés). Ce n'est pas une clôture unilatérale de la boucle — elle
+continuera de traiter toute nouvelle ligne "à faire" ajoutée par
+l'utilisateur ou par un firing futur — mais un constat honnête que la
+poursuite mécanique de nouvelles hypothèses par le seul jugement
+autonome n'apporterait plus une valeur marginale suffisante pour
+justifier la même cadence.
