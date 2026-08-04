@@ -1362,3 +1362,18 @@ vérifiées AVANT ajout pour éviter tout doublon :
 79 PASS niveau 1 sur 198 hypothèses testées (#197 = volatilité du gap d'ouverture, FAIL 1/5 — MDD amélioré partout mais edge insuffisant ; artefact de précision des données S&P 500 anciennes documenté honnêtement, pas une fuite ; audit CONFORME).
 
 79 PASS niveau 1 sur 199 hypothèses testées (#198 = force du dollar américain DTWEXBGS, FAIL 1/5 — Sharpe bat BH sur 4/5 mais rendement insuffisant, design purement défensif limite le rendement total ; audit CONFORME).
+
+## Nouvelles idées ajoutées (04/08/2026, après le FAIL du #198)
+
+L'espace des idées reste étroit après 199 hypothèses testées ; plusieurs
+angles envisagés ont été explicitement écartés pour éviter de
+manufacturer un essai à faible valeur (Règle 2) : une nouvelle paire de
+maturité de courbe des taux (DGS10-DGS1) redirait simplement le #175/
+#186/#187, déjà clos avec une conclusion économique claire ; un niveau
+de taux allemand isolé répéterait le même mécanisme déjà identifié comme
+structurellement défaillant. 2 pistes retenues, vérifiées AVANT ajout
+pour éviter tout doublon, utilisant des angles macro GENUINEMENT
+distincts de tout ce qui a été testé :
+
+| 199 | Spread de crédit high-yield (écart de rendement entre obligations d'entreprises risquées et Trésor, FRED `BAMLH0A0HYM2` — ICE BofA US High Yield Index Option-Adjusted Spread) comme signal de régime — anomalie très documentée en finance de marché (l'élargissement du spread de crédit précède ou accompagne systématiquement les phases de stress actions, capte le risque de DÉFAUT D'ENTREPRISE, distinct de la volatilité implicite/réalisée déjà testée et des taux SANS RISQUE souverains déjà testés) ; jamais exploité dans ce backlog | **Nouvelle donnée à récupérer** : série FRED `BAMLH0A0HYM2` (gratuite, quotidienne), même mécanisme de fetch que `dtwexbgs_daily.csv` au #198 — fetch réseau à faire au prochain cycle | À FAIRE |
+| 200 | Anticipations d'inflation implicites (breakeven 10 ans, FRED `T10YIE` — écart entre le taux nominal et le taux réel protégé de l'inflation TIPS) comme signal de régime — mesure les ANTICIPATIONS DU MARCHÉ, pas un taux observé : distinct de tous les signaux de taux NOMINAUX déjà testés (niveau/pente/inversion/différentiel #44/#134/#149/#175/#178/#186/#187/#195), jamais exploité dans ce backlog ; une hausse rapide des anticipations d'inflation est documentée comme un facteur de resserrement monétaire anticipé et de compression des multiples de valorisation | **Nouvelle donnée à récupérer** : série FRED `T10YIE` (gratuite, quotidienne depuis 2003), même mécanisme de fetch — fetch réseau à faire au prochain cycle | À FAIRE |
