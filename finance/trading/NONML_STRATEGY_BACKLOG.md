@@ -607,6 +607,18 @@ parallèle avec le #61 :
 
 | 185 | Intersection Halloween (#17, PASS SEUL) × année 1 post-électorale (#180, FAIL SEUL) : combine une porte calendaire qui fonctionne avec une porte calendaire qui ÉCHOUE seule — teste si le schéma du #61 (combiner un signal qui fonctionne avec un signal qui échoue dilue l'edge) se généralise aux paires purement calendaires, comme il a déjà été confirmé/infirmé pour les portes de régime aux #61/#81/#98 | Aucune nouvelle donnée (réutilise #17 et #180) | **FAIT — PASS MARGINAL (3/4 marchés), pas de plateau parfait (26/36 en robustesse).** NDX échoue sur la jambe Sharpe seule (+0,52 vs BH +0,53, marginal), les 3 autres marchés passent les deux jambes. **Contrairement au schéma du #61** (PASS+FAIL dilue systématiquement l'edge pour les portes de régime), la combinaison calendaire préserve un edge net globalement positif — la fréquence bien plus élevée de Halloween (~37% vs ~13%) domine. Mais le résultat est nettement MOINS robuste que les #182 (15/15) et #184 (36/36) : 10/36 cellules de la grille jointe CAP×CUT échouent, signe que ce PASS est plus fragile, à la limite du seuil. **Le schéma du #61 ne se généralise PAS automatiquement à l'inverse aux paires calendaires, mais le résultat est nettement plus marginal qu'avec deux signaux qui fonctionnent chacun séparément** — cohérence partielle avec le #61, pas une réfutation nette. Voir `PREREG_halloween_postelection_multiplicative_overlay.md`, `results/nonml_halloween_postelection_multiplicative_overlay_{result,anti_cheat,robustness,sim_300e,audit}.md` |
 
+## Nouvelles idées ajoutées (01/08/2026, après le constat de saturation) — angle taux longs jamais exploré comme signal directionnel
+
+Le constat de saturation ci-dessous concernait les combinaisons
+calendaires. Un angle distinct reste sous-exploité : DGS10 (taux 10 ans)
+n'a jamais été utilisé comme SIGNAL DIRECTIONNEL propre — seulement comme
+ACTIF de diversification (#134/#149) ou comme composante de la PENTE
+continue (#44/#134/#149). 2 pistes, vérifiées AVANT ajout pour éviter
+tout doublon :
+
+| 186 | Régime de NIVEAU du taux LONG (DGS10 en hausse vs en baisse sur fenêtre glissante 63j), même structure que le #175 (DGS3MO, FAIL net et contre-productif) mais sur le taux 10 ans — mécanisme économique différent (le taux long reflète les anticipations de croissance/inflation, pas seulement la politique monétaire Fed comme le taux court) : teste si un résultat différent émerge d'un signal économiquement distinct malgré la structure identique | `data/dgs10_daily.csv` déjà en local (vérifié), aucun nouveau fetch | à faire |
+| 187 | Inversion de la courbe des taux (DGS10-DGS3MO < 0) comme signal BINAIRE discret — distinct de la PENTE CONTINUE déjà utilisée comme facteur de dimensionnement dans les mécanismes vol-targeting (#44/#134/#149) : overlay défensif (coupé) quand la courbe est inversée, anomalie de prédiction de récession parmi les plus documentées en macro-finance, jamais testée sous forme de signal ON/OFF pur dans ce backlog | `data/dgs10_daily.csv` + `data/dgs3mo_daily.csv` déjà en local, aucun nouveau fetch | à faire |
+
 ## Backlog #0-185 épuisé — constat honnête de saturation (01/08/2026)
 
 187 hypothèses non-ML testées à ce stade. Les familles suivantes sont
