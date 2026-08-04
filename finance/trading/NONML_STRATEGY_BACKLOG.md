@@ -582,6 +582,21 @@ ajout pour éviter tout doublon (mots-clés + noms de fichiers existants) :
 | 182 | Intersection AND (pas union, contrairement au #21 ToM∪Halloween) entre Halloween (#17, PASS 4/5) ET année pré-électorale (#30, PASS 5/5) : overlay levé UNIQUEMENT quand les deux conditions coïncident — teste si combiner deux calendriers de fréquences différentes (annuel × 4 ans) qui fonctionnent CHACUN séparément préserve l'edge sur une fenêtre plus restrictive (schéma déjà confirmé pour d'autres paires de portes aux #81/#98, jamais testé pour une paire purement calendaire) | Aucune nouvelle donnée (réutilise #17 et #30) | **FAIT — PASS (5/5 marchés), plateau parfait en robustesse (15/15).** `position=2,0x` quand nov-avril (#17) ET année pré-électorale (#30) coïncident (~10-12% du temps selon le marché), 1,0x sinon. Sharpe ET rendement > BH sur les 5 marchés, gain net supérieur à chaque composante isolée (ex. NDX rendement +6599,5%→+38754,3%, S&P 500 +3369,2%→+19801,1%). Grille de robustesse ±20% sur le CAP (1.6x/2.0x/2.4x) : 15/15 combinaisons battent BH sur les deux jambes, plateau parfait. Audit indépendant confirme le masque combiné par recalcul avec méthode différente (boucle explicite mois/année) et l'absence structurelle de fuite. Sim 300€ : fenêtre non informative (2026 n'est pas une année pré-électorale, 0% de jours actifs sur la fenêtre, signalé honnêtement). **Confirme pour la première fois le schéma des #81/#98 (AND de deux portes qui fonctionnent séparément préserve l'edge) pour une paire PUREMENT CALENDAIRE de fréquences différentes.** Même prudence de non-indépendance que le #30. Voir `PREREG_halloween_preelection_and_overlay.md`, `results/nonml_halloween_preelection_and_overlay_{result,anti_cheat,robustness,sim_300e,audit}.md` |
 | 183 | Renversement à horizon 1 AN au niveau INDICE (distinct du renversement 3 ANS déjà testé et FAIL au #177, et du momentum 12-1 mois déjà PASS au #73 mais testé au niveau TITRE) : overlay sur tercile de rendement glissant 12 mois le plus faible AU NIVEAU INDICE — horizon intermédiaire jamais testé à ce niveau d'agrégation | OHLC déjà en local (NDX 40 ans) | **FAIT — FAIL (les deux jambes), PIRE que le #177 à 3 ans.** `position=2,0x` quand le retour glissant 1 an (252j) est dans son tercile expanding le plus faible (32,3% du temps), 1,0x sinon, testé sur NDX seul. Sharpe +0,36 vs BH +0,49, rendement +998,2% vs +3644,8%, **MDD dégradé** -95,5% vs -82,9% — écart encore plus marqué qu'au #177 (FAIL aussi, mais moins sévère à 3 ans). **Confirme que le problème est GÉNÉRAL à cette construction de renversement au niveau indice** (le tercile bas capture la poursuite d'un régime baissier/volatil, pas un rebond), pas spécifique à l'horizon long — et même plus marqué à horizon court, contrairement à l'hypothèse alternative testée. Voir `PREREG_index_1y_reversal_overlay.md`, `results/nonml_index_1y_reversal_overlay_{result,anti_cheat}.md` |
 
+## Nouvelles idées ajoutées (backlog #0-183 épuisé, 01/08/2026)
+
+**Constat honnête** : l'espace des idées non-ML devient très étroit après
+183 hypothèses testées. Les familles principales (calendrier, régime de
+vol/dispersion/corrélation/skewness/kurtosis, cycle électoral, momentum/
+renversement à tous les horizons testables, spillover cross-marché,
+taux DGS3MO niveau/pente/volatilité) sont désormais couvertes de façon
+large. 1 piste ajoutée, vérifiée AVANT ajout pour éviter tout doublon —
+si elle s'épuise aussi sans résultat nouveau, il devient raisonnable de
+proposer à l'utilisateur de réorienter l'effort (ex. vers l'axe ML,
+ou vers la validation Règle 9/DSR des PASS déjà accumulés plutôt que
+la recherche de nouveaux candidats) :
+
+| 184 | Intersection Halloween (#17, lève) × année mid-term (#176, coupe) : signaux CONFLICTUELS (sens opposés), contrairement au #182 où les deux allaient dans le même sens — combinaison MULTIPLICATIVE des deux multiplicateurs (`position = 2.0x si Halloween SEUL, 0.5x si mid-term SEUL, 2.0×0.5=1.0x si les deux coïncident (s'annulent), 1.0x sinon`), règle fixée avant tout calcul pour éviter tout choix arbitraire de priorité | Aucune nouvelle donnée (réutilise #17 et #176) | à faire |
+
 ## Backlog #164 (01/08/2026) — le #14 (« Winners ») sur l'univers point-in-time : PASS maintenu, edge surestimé de ~21 %
 
 Application directe de l'infrastructure du #163 au cycle le plus exposé de
