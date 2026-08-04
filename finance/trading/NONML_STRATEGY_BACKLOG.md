@@ -1381,3 +1381,16 @@ distincts de tout ce qui a été testé :
 79 PASS niveau 1 sur 200 hypothèses testées (#199 = spread de crédit corporate Baa-10 ans, FAIL 1/5 — Sharpe bat BH sur les 5 marchés mais rendement insuffisant sur 4/5, même schéma que #191/#195/#198 ; audit CONFORME).
 
 80 PASS niveau 1 sur 201 hypothèses testées (#200 = anticipations d'inflation implicites T10YIE, PASS 5/5, robustesse 15/15 plateau parfait — premier PASS propre sur les 5 marchés depuis le #182, seul de la famille macro-externe défensive à ne pas échouer le rendement ; audit CONFORME).
+
+## Backlog #201 (04/08/2026) — batterie Règle 9 sur le #200 (anticipations d'inflation implicites)
+
+| 201 | Appliquer la batterie de validation renforcée (Règle 9) au #200 (anticipations d'inflation implicites, PASS 5/5, robustesse 15/15 plateau parfait — le meilleur profil de la famille macro-externe défensive) — jamais soumis à cette barre | Aucune nouvelle donnée (recalcul sur le résultat déjà committé, NDX comme marché de référence pour la batterie) | **FAIT — 3/5, PAS de PASS RENFORCÉ, mais le MEILLEUR SCORE de toute la famille macro-externe défensive (#175-#200) à ce jour.** PREREG dédié committé avant tout calcul (`PREREG_inflation_breakeven_overlay_pass_validation_battery.md`). **Coûts OK** (tient à 25 bps), **crise OK** (2008/COVID/2022 couverts et passés, MDD jamais pire que BH — dot-com correctement signalé PENDING/hors-couverture, historique T10YIE ne débute qu'en 2003, pas silencieusement compté comme OK), **stabilité OK** (3/4 folds). **SPA ÉCHEC** (p=0,3568) et **DSR ÉCHEC** (0,0210 à n_trials=201) — mais ce DSR est le **plus élevé jamais obtenu par un candidat macro-externe défensif** (10× supérieur au meilleur score précédent de cette famille), bien qu'encore très loin du seuil 0,95. **Confirme l'hypothèse posée au PREREG** : le plateau de robustesse parfait et le PASS net sur 5 marchés se traduisent en un score Règle 9 nettement supérieur aux autres candidats de la famille (#193 à 1/5), même si cela reste insuffisant pour un PASS RENFORCÉ. Anti-cheat CONFORME (0/4 échec). Pas de notification Telegram (aucun PASS RENFORCÉ). Voir `results/nonml_inflation_breakeven_overlay_pass_validation_battery.md`, `..._anti_cheat.md` |
+
+**Conclusion réaffirmée.** Même le PASS le plus robuste jamais produit
+par la famille macro-externe défensive (#175-#200, 17 hypothèses
+testées, seulement 2 PASS niveau 1 : #193 et #200) ne franchit pas la
+barre Règle 9 — le DSR reste hors de portée pour la totalité des 201
+hypothèses testées dans ce backlog, sans exception. **Buy & Hold reste
+la meilleure stratégie confirmée.**
+
+80 PASS niveau 1 sur 202 hypothèses testées (#201 = batterie Règle 9 sur le #200, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, mais meilleur score (3/5) et meilleur DSR (0,0210) de toute la famille macro-externe défensive).
