@@ -3,6 +3,13 @@
 PREREG_january_effect_lowprice_overlay.md, committée avant ce script).
 n_trials=1, aucune dépendance ML. Règle de succès renforcée -- référence
 = portefeuille tercile "prix bas" 1.0x en permanence.
+
+CORRECTION 01/08/2026 -- fuite d'exécution « même barre » (voir
+`results/nonml_same_bar_execution_audit.md`) : le tercile "prix bas" est
+décidé sur `close[t]` puis les poids qui en découlent étaient appliqués
+au rendement `R[t]` déjà réalisé. `main` décale désormais les poids
+finaux d'un jour par défaut (`causal=True`). `causal=False` reproduit le
+comportement fautif d'origine.
 """
 import json
 import sys
@@ -38,7 +45,16 @@ def load_all_prices():
     return series
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_all_prices()
     tickers = sorted(series.keys())
     ref_idx = None
@@ -79,6 +95,10 @@ def main():
 
     weights_base = weights_lowprice
     weights_lev = weights_lowprice * exposure[:, None]
+    if causal:
+        weights_base = lag_one_day(weights_base)
+        weights_lev = lag_one_day(weights_lev)
+        is_january = np.concatenate(([False], is_january[:-1]))
 
     R_safe = np.nan_to_num(R.values, nan=0.0)
     pnl_base = (weights_base[start:] * R_safe[start:]).sum(axis=1)
