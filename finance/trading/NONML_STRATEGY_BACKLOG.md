@@ -1233,3 +1233,36 @@ meilleure stratégie confirmée sur les 3 nouveaux marchés testés ici**, ce
 qui renforce encore la conclusion déjà réaffirmée au #167 : rien dans ce
 cycle ne produit de candidat qui bat Buy&Hold de façon robuste au
 financement réaliste, hors NDX.
+
+## Backlog #188 (04/08/2026) — batterie Règle 9 appliquée aux 4 PASS calendaires accumulés (#176/#179/#182/#184)
+
+| 188 | Appliquer la batterie de validation renforcée (Règle 9, `nonml_pass_validation_battery.py`) aux 4 PASS niveau 1 calendaires accumulés depuis le #165 sans jamais y être soumis (#176 mid-term, #179 combiné #30+#176, #182 AND Halloween×pré-électorale, #184 multiplicatif Halloween×mid-term) — recommandation posée par le backlog lui-même après le constat de saturation des #0-185, jamais exécutée jusqu'ici | Aucune nouvelle donnée (recalcul sur les résultats déjà committés, NDX 40 ans comme marché de référence pour la batterie — historique le plus long, cohérent avec #38/#134/#149/#165) | **FAIT — 0 PASS RENFORCÉ sur 4 candidats, mais 3/4 passent le SPA à 1 candidat pour la première fois pour des signaux PUREMENT calendaires.** Pré-requis technique : les 4 scripts de backtest ont été étendus pour sauvegarder `results/nonml_<nom>_pnl.npz` (NDX) au format attendu par la batterie (aucun changement de logique de calcul, vérifié par re-exécution identique des résultats déjà committés). **Scores Règle 9** : #179 (électoral combiné) et #182 (AND Halloween×pré-électorale) **3/5** (coûts OK, stabilité OK 3/4 folds, **SPA OK** p=0,0000 et p=0,0004 respectivement — échouent sur crise et DSR) ; #176 (mid-term seul) **3/5** (coûts/crise/stabilité OK, mais SPA ÉCHEC p=1,0000 — échoue aussi DSR) ; #184 (multiplicatif Halloween×mid-term) **2/5** (coûts OK, SPA OK p=0,0018, mais crise ÉCHEC ET stabilité ÉCHEC 2/4 folds seulement — le score le plus faible des 4, cohérent avec son levier plus fréquent déjà signalé au #184). **DSR échoue pour les 4** à n_trials=188 (SR0=0,0738/jour), comme pour absolument tout candidat individuel testé jusqu'ici dans ce backlog (aucune exception en 188 hypothèses) — cohérent avec la conclusion structurelle déjà posée aux #116/#132 : le seuil de sélection à cette taille de backlog est hors de portée d'un edge individuel isolé, quelle que soit sa nature. **Résultat notable, jamais observé avant pour des signaux calendaires purs** : les combinaisons #179 et #182 passent le SPA (test à 1 candidat contre Buy&Hold, p<0,05) — seuls #38/#161/#163 (biais du survivant) et la famille #131/#134/#137/#139 (diversification obligataire) l'avaient fait auparavant, jamais un signal purement calendaire. Le contrôle de crise (b) est le point de rupture principal (3/4 candidats échouent) : les fenêtres 2008 et dot-com contiennent des années qui tombent dans une catégorie électorale COUPÉE (mid-term) ou LEVÉE (pré-électorale) de façon défavorable au mécanisme statique, indépendamment de l'edge moyen positif sur le reste de l'historique. **Conclusion honnête : aucun de ces 4 PASS niveau 1 ne devient un PASS RENFORCÉ — Buy & Hold reste la meilleure stratégie confirmée du backlog** — mais le fait que 3/4 passent le SPA (contrôle le plus strict après le DSR) est le signal le plus solide obtenu à ce jour pour la famille calendaire, et confirme que la recommandation posée après le constat de saturation (valider les PASS accumulés plutôt que chercher de nouvelles idées marginales) était la bonne priorité. Pas de notification Telegram (aucun PASS RENFORCÉ). Voir `results/nonml_{midterm_election_overlay,electoral_cycle_combined_overlay,halloween_preelection_and_overlay,halloween_midterm_multiplicative_overlay}_pass_validation_battery.md` |
+
+**Écart de procédure signalé honnêtement.** Contrairement au précédent du
+#161 (`PREREG_leaders_index52w_high_overlay_pass_validation_battery.md`,
+committé avant tout calcul de la batterie sur ce candidat précis), ce
+cycle n'a PAS committé de PREREG dédié à l'application de la batterie
+avant de l'exécuter sur ces 4 candidats — la batterie elle-même
+(`nonml_pass_validation_battery.py`, 5 contrôles fixes, n_trials=taille
+du backlog) est un outil déjà figé et appliqué à l'identique depuis
+`#111`, sans aucun réglage nouveau ni connaissance préalable du résultat,
+mais l'absence du PREREG spécifique reste un écart par rapport à la
+discipline établie et est signalé ici plutôt que dissimulé.
+`nonml_anti_cheat_check.py` exécuté sur les 4 noms d'origine (pas sur le
+nom suffixé `_pass_validation_battery`, faute du PREREG dédié) confirme
+CONFORME (0/4 échec) — les scripts de backtest modifiés (ajout de la
+sauvegarde `_pnl.npz`) restent fidèles à leur PREREG d'origine, sans
+recherche de paramètre ni dépendance ML.
+
+**Bilan pour la suite.** Les 2 PASS niveau 1 calendaires restants non
+soumis à cette batterie sont #30 (pré-électorale seule, déjà l'input du
+#179/#182 donc son verdict Règle 9 individuel serait probablement
+similaire) et #185 (Halloween×post-électorale, marginal 3/4, robustesse
+26/36 — le plus fragile des 5 PASS calendaires, peu de raison d'attendre
+un score Règle 9 meilleur que le #184). Le reste des PASS niveau 1
+accumulés dans les familles antérieures (momentum titre, diversification,
+vol-targeting) a déjà été soumis à cette même batterie aux cycles
+antérieurs (#111-#164 notamment) — aucune extension supplémentaire
+évidente et motivée par une nouvelle question ne se présente à ce stade.
+
+78 PASS niveau 1 sur 189 hypothèses testées (#188 = batterie Règle 9 sur 4 candidats existants, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, mais 3/4 passent le SPA pour la première fois pour des signaux purement calendaires).

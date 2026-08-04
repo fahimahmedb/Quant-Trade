@@ -83,6 +83,11 @@ def main():
             f"{'OUI' if sharpe_ok else 'non'} | {'OUI' if ret_ok else 'non'} |"
         )
 
+        if name == "NDX (40 ans)":
+            dates_pnl = pd.to_datetime(df["date"]).values[1:]
+            np.savez(ROOT / "results" / "nonml_electoral_cycle_combined_overlay_pnl.npz",
+                     pos=pos, r_asset=bh_full, dates=dates_pnl, cost_bps=COST_BPS)
+
     verdict = n_success >= 3
     lines.append("")
     lines.append(f"**{n_success}/{n_markets} marchés où l'overlay bat Buy&Hold en Sharpe ET rendement "
