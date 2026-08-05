@@ -1611,3 +1611,19 @@ dispersion cross-sectionnelle, le risque de gap et l'autocorrélation) :
 82 PASS niveau 1 sur 220 hypothèses testées (#219 = porte de kurtosis glissante pour le vol-targeting, PASS 4/5, seul DAX échoue — plateau de robustesse parfait 8/8, audit parfait (0 désaccord sur les 5 marchés) ; le 4e moment statistique généralise mieux que le 3e (skewness, #218, FAIL)).
 
 83 PASS niveau 1 sur 221 hypothèses testées (#220 = porte de vol-de-la-vol glissante pour le vol-targeting, PASS 4/5, seul Russell 2000 échoue — 3e audit parfait consécutif (0 désaccord) ; clôture la série #217-220 (moments statistiques et dynamique de la vol) à 3 PASS sur 4, seule la skewness a échoué). Backlog "à faire" de nouveau épuisé.
+
+## Backlog #221 (05/08/2026) — 3 nouvelles idées (#221-#223), estimateurs range-based restants et clustering de volatilité
+
+Le tableau est de nouveau épuisé. Après Parkinson (#50) et Garman-Klass
+(#215), deux estimateurs range-based classiques restent non testés dans
+le mécanisme #46, plus un signal de clustering de volatilité jamais
+exploité comme porte :
+
+| 222 | **Estimateur de volatilité Yang-Zhang (2000)** pour le mécanisme de vol-targeting — combine la composante overnight (gap clôture-veille→ouverture, ignorée par Parkinson ET Garman-Klass) avec l'estimateur Rogers-Satchell (#221) intra-séance : l'estimateur range-based le plus complet de la littérature classique, aucun nouveau fetch | OHLC déjà en local | **À FAIRE** |
+| 223 | **Porte de clustering ARCH** (autocorrélation glissante des rendements AU CARRÉ, signal de prévisibilité de la volatilité elle-même — distinct du VR #217 qui porte sur les rendements bruts, pas leurs carrés) pour le mécanisme hiérarchique — capture l'intensité de l'effet ARCH local, jamais exploité comme porte malgré sa détection systématique à l'Étape A (`engle_arch_lm`) | Aucune nouvelle donnée, rendements déjà disponibles | **À FAIRE** |
+
+Le #221 (estimateur Rogers-Satchell, 1991, drift-independent — corrige la
+limite documentée de Parkinson/Garman-Klass qui supposent un drift nul
+intra-séance) est exécuté immédiatement ce même cycle (PREREG dédié
+`PREREG_rogers_satchell_vol_targeting_overlay.md` committé avant tout
+calcul) — voir la ligne de résultat ci-dessous.
