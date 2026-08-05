@@ -1952,3 +1952,58 @@ jamais inclus dans l'audit "même barre" ni recorrigé.
 | 257 | Grep générique `weights_[a-z_]+\[t:end\] = w` sur tous les scripts `*_backtest.py` (au lieu du grep restreint `weights_leaders`/`weights_lowvol` des cycles #252-255) : révèle 29 scripts au total partageant le motif, dont 3 candidats PASS jamais vérifiés pour le bug même barre (#35, #74, #83, tous des overlays SMA200 construits sur le même `index_trend_series()` que #33) | Aucune nouvelle donnée, patch déjà validé (#166/#167/#253/#254/#255) | **FAIT — LES 3 PASS SURVIVENT** (marge réduite, comme #33). PREREG dédié committé avant tout calcul (`PREREG_sma200_overlays_same_bar_correction.md`), bug vérifié par lecture directe du code (`index_trend_series()` : `close > sma` inclut close(t), décision appliquée au rendement déjà réalisé de t — identique au #33). Non-régression vérifiée pour les 3 scripts (`causal=False` bit-identique aux résultats déjà committés). Résultats causaux : **#35** Low-Vol+SMA200 Sharpe +0,79→+0,59 (réf. +0,51), rendement +114,4%→+70,6%, MDD -19,9%→-27,9% ; **#74** Momentum12-1+SMA200 Sharpe +0,92→+0,73 (réf. +0,66), rendement +325,0%→+183,9%, MDD -36,4%→-45,6% ; **#83** Momentum constance+SMA200 Sharpe +0,90→+0,68 (réf. +0,64), rendement +256,4%→+137,7%, MDD -31,9%→-40,7%. Les 12 autres scripts identifiés par le grep élargi sont soit déjà corrigés (7, `causal=` présent), soit déjà FAIL et non prioritaires (12, dont #73 lui-même déjà vérifié non affecté le 01/08/2026), soit déjà traités aux cycles #252-255 (8). **Le balayage même barre est maintenant COMPLET sur l'intégralité des 29 scripts identifiés par le motif générique** — aucun candidat PASS non vérifié ne subsiste dans le backlog. Pas de reclassification, donc pas de décrément du compteur PASS niveau 1 ; +3 hypothèses testées (re-vérification, pas de nouvelle hypothèse). Anti-cheat CONFORME pour les 3 (fichiers de pré-enregistrement d'origine antérieurs, aucune modification post-résultat). Voir `PREREG_sma200_overlays_same_bar_correction.md`, `results/nonml_lowvol_sma200_overlay_result.md`, `results/nonml_momentum12_1_sma200_overlay_result.md`, `results/nonml_momentum_consistency_sma200_overlay_result.md` |
 
 86 PASS niveau 1 sur 264 hypothèses testées (#257 = balayage même barre élargi, 3 derniers candidats SMA200 #35/#74/#83, TOUS SURVIVENT avec marge réduite ; balayage désormais complet sur l'intégralité des 29 scripts identifiés par le motif générique `weights_[a-z_]+\[t:end\] = w`, aucun candidat PASS non vérifié ne subsiste). Backlog "à faire" de nouveau épuisé.
+
+## Constat de recherche d'idées fraîches (05/08/2026, après le #257)
+
+Recherche explicite de nouvelles pistes avant clôture de ce cycle, par
+grep systématique sur `NONML_STRATEGY_BACKLOG.md` pour éviter tout
+doublon (Règle 2). Catégories vérifiées comme déjà couvertes de façon
+dense, chacune avec au moins un PASS ET un FAIL documentés :
+
+- **Calendaire** : ToM, jour de semaine, Halloween, Santa Claus,
+  jours fériés, triple witching, January Barometer, sous-famille
+  FOMC complète (pré/post/semaine entière).
+- **Stock-selection / momentum-reversal-qualité** : 52w-high, 52w-low,
+  12-1 mois académique, constance, reversal court terme, low-vol tilt,
+  skewness, double-tri momentum×vol, taille proxy intra-NDX.
+- **Largeur de marché (breadth)** : niveau (force #77, faiblesse #89,
+  nette #97), momentum (#94), SMA200 (#98 AND), quotidienne
+  avance/déclin (#101) — 8 constructions distinctes.
+- **Dispersion/corrélation/concentration cross-sectionnelle** :
+  dispersion (#78), corrélation par paires intra-NDX (#90), corrélation
+  cross-marché international NDX-DAX (#193, seul PASS niveau 1 de la
+  famille macro-externe pré-Règle-9, déjà battu en Règle 9 au #194) et
+  domestique NDX-Russell (#196), concentration HHI (#99), force relative
+  small-cap/large-cap (#192).
+- **Macro externe (séries FRED)** : taux nominal niveau/pente/inversion/
+  différentiel US-Allemagne (#175/#178/#186/#187/#195), taux réel TIPS
+  (#202), inflation implicite breakeven (#200, PASS 5/5, déjà passé en
+  Règle 9 au #201, meilleur score de la famille à 3/5), spread de crédit,
+  VIX, force du dollar (#198), croissance M2 (#203), demandes chômage
+  hebdomadaires (#204), sentiment consommateur (#205), activité CFNAI.
+- **Volatilité de second ordre / estimateurs de régime** : niveau, vol-
+  of-vol (#102), range intra-séance (Parkinson #50, Rogers-Satchell,
+  Yang-Zhang), gap d'ouverture isolé (#197), clustering ARCH (#223),
+  kurtosis/ν Student-t (#237/#240), ACF lag-1 (#248), Ljung-Box (#242/
+  #249), largeur de Bollinger (#247), profondeur de drawdown (#250).
+
+**Constat honnête** : sur ces six catégories, aucun angle non-ML
+raisonnable identifié dans cette recherche n'est réellement nouveau —
+chaque piste envisagée (secteur/industrie GICS, volume, données
+d'options, spread implicite de volatilité) nécessiterait une **nouvelle
+catégorie de données non disponible dans ce repo** (pas de classification
+sectorielle, pas de volume dans `data/pead/prices/*.json` — clés `ts`/
+`close` uniquement, pas de chaîne d'options). Générer une variante
+supplémentaire d'un mécanisme déjà testé (ex. un 9e type de porte de
+breadth, un 16e signal macro-externe) risquerait de franchir la ligne
+vers la recherche de paramètres déguisée que la Règle 2 interdit
+explicitement, sans ajouter de catégorie réellement distincte. **Ce
+cycle clôt donc, sans forcer d'idée artificielle, le même constat déjà
+posé au #256** — désormais renforcé par la recherche explicite menée ici
+plutôt que simplement observé après coup. Prochaine action productive :
+soit une nouvelle catégorie de données apportée par l'utilisateur (ex.
+secteurs, options, volume titre par titre), soit un arbitrage explicite
+sur la suite (formaliser/déployer les meilleurs candidats existants —
+guide `results/nonml_meilleurs_candidats_guide_deploiement.md` — ou
+avancer l'Étape D définie dans `CLAUDE.md`, hors du périmètre de ce
+backlog non-ML).
