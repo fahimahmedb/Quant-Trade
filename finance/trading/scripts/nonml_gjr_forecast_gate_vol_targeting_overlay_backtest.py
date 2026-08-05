@@ -78,6 +78,9 @@ def main():
     pnl_bh = r_t.copy()
     pnl_bh[0] -= COST_BPS / 1e4
 
+    np.savez(ROOT / "results" / "nonml_gjr_forecast_gate_vol_targeting_overlay_pnl.npz",
+             pos=pos, r_asset=r_t, dates=dates_oos.values, cost_bps=COST_BPS)
+
     me_bh = trading_metrics(pnl_bh)
     me_ov = trading_metrics(pnl_ov)
     ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
