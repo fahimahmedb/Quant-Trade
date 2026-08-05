@@ -2156,3 +2156,25 @@ redondante identifiée à ce stade.
 | 273 | Documenter la découverte incidente faite en actant le nouveau DSR du #272 (0,1341) : le précédent "meilleur DSR de la lignée vol-targeting" (#214, 0,1427, dispersion cross-sectionnelle #78) a été calculé sur la spécification ORIGINALE du #78, jamais recalculé depuis que le #270 a démontré cette spécification FAIL sous univers point-in-time réel — même défaut de propagation que #161/#162/#258 | Aucune nouvelle donnée (synthèse des résultats déjà committés #214/#270-272) | **FAIT.** PREREG dédié committé avant toute rédaction (`PREREG_dispersion_battery_caduc_et_guide_v3.md`). Entrée #214 annotée dans le backlog (DSR caduc, ne plus le citer comme référence). Guide de déploiement mis à jour (v3) : section plafond structurel corrigée (n_trials 269→279, deux DSR "records" successifs reconnus caducs — 0,2731 au #264, désormais 0,1427 au #273 — le record authentique actuel étant 0,1341 du #271/#272). **Le #271/#272 n'est PAS promu au rang de nouveau "Candidat" du guide** : après les deux retraits successifs du Candidat C (v1 au #252, v2 au #264), la prudence impose de ne promouvoir un candidat que sur un profil Règle 9 global solide, pas sur un seul chiffre record — le #271/#272 échoue les coûts dès 15 bps et la stabilité (2/4 folds), un profil plus faible que les Candidats A et B malgré son meilleur DSR. Voir `PREREG_dispersion_battery_caduc_et_guide_v3.md`, `results/nonml_meilleurs_candidats_guide_deploiement.md` (mis à jour) |
 
 88 PASS niveau 1 sur 280 hypothèses testées (#273 = découverte incidente, DSR record du #214 reconnu caduc, guide v3 — pas un nouveau backtest ; nouveau record DSR authentique 0,1341 (#271/#272), non promu candidat par prudence méthodologique). Backlog "à faire" de nouveau épuisé.
+
+## Constat après la séquence #270-273
+
+Trois cycles substantiels consécutifs (balayage PIT des signaux de
+régime agrégés, découverte et correction d'un DSR caduc) ont émergé de
+la piste proposée après le #269. Cette piste précise est maintenant
+**explicitement en pause** (pas close définitivement) : 2 des 6 formes
+de breadth restantes (#94/#97/#98/#99/#101, plus #89/#90/#77 déjà
+FAIL ou non prioritaires) ont été vérifiées sous PIT (#78 dispersion
+FAIL, #96 breadth SMA200 PASS) — le schéma "dépend de la construction
+précise, pas de la catégorie" est déjà établi sur cet échantillon de 2 ;
+étendre systématiquement aux 5 signaux restants aurait une valeur
+informative marginale décroissante (même risque de dilution que déjà
+signalé pour #33/#41/#48/#23 à la synthèse v6), sauf découverte
+contraire lors d'un prochain firing. Aucune autre piste concrète non
+redondante identifiée à ce stade au-delà de ce qui est déjà documenté
+dans les synthèses v4/v5/v6 et le guide de déploiement v3 — les cycles
+suivants privilégieront soit une extension mesurée et déclarée à
+l'avance de ce balayage (un signal à la fois, jamais une vague
+systématique), soit un signal explicite de l'utilisateur pour changer
+d'axe (nouvelle catégorie de données, ou avancer l'Étape D définie dans
+`CLAUDE.md`, hors périmètre de ce backlog non-ML).
