@@ -1708,3 +1708,32 @@ dans la lignée non-ML vol-targeting, même esprit que la réutilisation de
 | 233 | **Estimateur ATR (Average True Range, Wilder 1978)** pour le mécanisme de vol-targeting — réutilise `_atr` déjà implémenté à l'Étape B (n=14, lissage de Wilder), 7e estimateur de la lignée #46/#50/#215/#221/#222/#231, mesure d'AMPLITUDE (pas de variance statistique) capturant le gap overnight via max(H-L, \|H-Cprev\|, \|L-Cprev\|) | Aucune nouvelle donnée, fonction déjà implémentée à l'Étape B | **FAIT — FAIL (3/5 marchés, seuil pré-enregistré ≥4/5).** PREREG dédié committé avant tout calcul (`PREREG_atr_vol_targeting_overlay.md`), limite méthodologique déclarée à l'avance (conversion ATR→vol annualisée = heuristique de gestion technique, pas une dérivation statistique rigoureuse comme les 4 estimateurs range-based déjà testés). **Sharpe s'améliore sur les 5 marchés**, mais **l'exposition moyenne tombe souvent sous 1,0x** (Composite 0,81x, NDX 0,82x, DAX 0,88x) — le lissage de Wilder (mémoire effective ~14j) produit une estimation de vol relativement plus élevée que les autres estimateurs sur ces marchés, limitant le rendement absolu malgré un meilleur profil risque-ajusté. Seuls Russell 2000 et S&P 500 passent les deux jambes. **Audit indépendant parfait** : recalcul du True Range et du lissage de Wilder par boucle explicite (sans `pandas.ewm`), **écart exactement 0,00e+00 sur les 5 marchés**. **Lecture honnête** : contrairement aux 6 autres estimateurs de la lignée (tous PASS), l'ATR est le premier à échouer le critère niveau 1 — cohérent avec le risque #1 anticipé au PREREG (nature heuristique de la conversion en vol annualisée, pas un estimateur non biaisé de variance). Anti-cheat CONFORME (0/4 échec). Voir `results/nonml_atr_vol_targeting_overlay_{result,audit,anti_cheat}.md` |
 
 87 PASS niveau 1 sur 234 hypothèses testées (#233 = estimateur ATR pour le vol-targeting, FAIL 3/5 — premier échec niveau 1 de la lignée des 7 estimateurs testés (#46/#50/#215/#221/#222/#231 tous PASS), Sharpe s'améliore partout mais exposition moyenne souvent sous 1,0x limite le rendement ; audit parfait, écart exactement 0).
+
+## Backlog #234 (05/08/2026) — prévision GJR-t walk-forward réutilisée comme PORTE (pas comme estimateur) du mécanisme #46
+
+Le tableau "à faire" et la file d'attente Règle 9 sont de nouveau vides
+après le #233. RSI/MACD/Bollinger/Stochastique rejetés (redondants avec la
+lignée tendance/momentum déjà très largement testée et majoritairement
+FAIL) ; `frac_diff` rejeté (rationnel économique faible comme signal de
+régime autonome, limite ML). Ce cycle réutilise `overlay.py::
+walk_forward_vol_forecast` (Étape C, GJR-t, déjà validé au SPA sur NDX,
+déjà réutilisé comme ESTIMATEUR au #165) mais cette fois comme **PORTE**
+du mécanisme #46 standard (vol réalisée close-to-close inchangée comme
+dénominateur) — hypothèse mécaniquement distincte du #165 (remplacement de
+l'estimateur) et du #166 (non-généralisation de ce remplacement, Règle 10).
+
+| 234 | **Porte = prévision GJR-t walk-forward** (`vol_prévue_GJR-t(t) <= médiane glissante 252j`) appliquée au mécanisme hiérarchique #46 standard (vol réalisée 20j inchangée comme dénominateur, CAP=2.0x, TARGET_VOL=20%) — teste si un régime de calme ANTICIPÉ par un modèle externe déjà validé au SPA est un meilleur filtre que les 12 types de porte déjà testés (tous construits sur statistiques PASSÉES) | Aucune nouvelle donnée (`data/nasdaq100_daily.txt`) | **FAIT — PASS de niveau 1 sur marché unique NDX (périmètre du #165), marge très marginale.** PREREG dédié committé avant tout calcul (`PREREG_gjr_forecast_gate_vol_targeting_overlay.md`), scope explicitement réduit à NDX seul (seul marché où GJR-t est validé au SPA à l'Étape C). Sur 9270 séances testables : porte active 39,1% du temps, position moyenne 1,20x. Sharpe overlay **+0,5066** contre **+0,5057** BH (écart +0,00089, vérifié en pleine précision, pas un artefact d'arrondi), rendement net **+4337,3%** contre **+3624,8%** BH, MDD identique -82,9% (le CAP=2,0x reste actif l'essentiel du temps, la porte ne fait qu'ouvrir/fermer l'accès à l'amplification, pas la limiter davantage que #46 seul). **Audit indépendant** : porte et position recalculées par tri manuel (médiane) et boucle explicite (écart-type), écart max 5,08e-14 — la prévision GJR-t elle-même n'est pas recalculée (déjà validée à l'Étape C, Règle 7), seul l'USAGE (porte+mécanisme) est audité. Test anti-lookahead OK (perturbation du futur sans effet sur les décisions passées). **Robustesse** : grille CAP 3/4 (seul 1,5x échoue), grille fenêtre de vol réalisée **1/4 — seule la valeur pré-enregistrée 20j réussit** (15/25/30j échouent tous), point relativement isolé sur cet axe, cohérent avec la marge très marginale du backtest. T0/REFIT_EVERY/MEDIAN_WINDOW (paramètres du modèle GJR-t et de la porte elle-même) non perturbés, comme pour toute la lignée de portes #47-#223. Sim 300€ (63 séances, illustrative) : 353,28€ contre 349,93€ BH. Anti-cheat CONFORME (0/4 échec). Règle 9 (batterie complète a-e) **non exécutée à ce stade** — à faire dans un cycle dédié si ce PASS est repris dans la file d'attente, comme pour le #231/#232. Voir `PREREG_gjr_forecast_gate_vol_targeting_overlay.md`, `results/nonml_gjr_forecast_gate_vol_targeting_overlay_{result,audit,robustness,sim_300e,anti_cheat}.md` |
+
+**Ce que ce cycle apprend.** La marge de Sharpe (+0,00089) est la plus
+petite de toute la lignée de portes du backlog, et la fragilité de la
+grille fenêtre de vol réalisée (1/4, seul le point pré-enregistré passe)
+va dans le même sens : contrairement au #165 (où la jambe Sharpe formait
+un plateau parfait 9/9), utiliser la même prévision GJR-t comme simple
+FILTRE binaire plutôt que comme dénominateur continu dilue presque
+totalement l'edge de prévision de volatilité déjà documenté comme fragile
+en rendement (SPA p=1,0000 au #165). Le MDD identique aux deux jambes
+confirme que cette porte ne change quasiment rien au profil de risque —
+tout l'effet, marginal, vient des quelques séances où elle bascule
+l'exposition entre 1,0x et le mécanisme #46 complet.
+
+88 PASS niveau 1 sur 235 hypothèses testées (#234 = porte GJR-t walk-forward sur le mécanisme #46, PASS niveau 1 sur NDX seul, marge la plus faible de toute la lignée de portes (+0,00089 de Sharpe), robustesse fragile sur l'axe fenêtre de vol (1/4) ; Règle 9 pas encore exécutée). Backlog "à faire" de nouveau épuisé.
