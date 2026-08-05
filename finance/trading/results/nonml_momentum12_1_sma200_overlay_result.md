@@ -4,8 +4,8 @@ Référence = portefeuille momentum 12-1 1.0x (cycle #73), PAS Buy&Hold. 1144 s�
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Momentum 12-1 1.0x (référence, cycle #73) | +0.67 | +96.2% | -31.1% |
-| **Momentum 12-1 + overlay SMA200 x2.0** | **+0.92** | **+325.0%** | -36.4% |
+| Momentum 12-1 1.0x (référence, cycle #73) | +0.66 | +93.8% | -31.8% |
+| **Momentum 12-1 + overlay SMA200 x2.0** | **+0.73** | **+183.9%** | -45.6% |
 
 1. Sharpe overlay > référence : OUI
 2. Rendement overlay > référence : OUI

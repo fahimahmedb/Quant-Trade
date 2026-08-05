@@ -3,6 +3,12 @@ SMA200 (spécification pré-enregistrée dans
 PREREG_lowvol_sma200_overlay.md, committée avant ce script). Combine les
 cycles #15 et #29. n_trials=1, aucune dépendance ML. Règle de succès
 renforcée -- référence = Low-Vol 1.0x (cycle #15), pas Buy&Hold.
+
+CORRECTION 05/08/2026 (cycle #257) -- fuite d'exécution « même barre »
+(voir `results/nonml_same_bar_execution_audit.md`, patch #166/#167/#253/
+#254/#255 appliqué ici, jamais fait avant). `main(causal=True)` décale
+désormais les poids d'un jour par défaut ; `causal=False` reproduit le
+comportement fautif d'origine, pour l'audit uniquement.
 """
 import json
 import sys
@@ -52,7 +58,16 @@ def index_trend_series() -> pd.Series:
     return pd.Series(above, index=dates)
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_prices()
     tickers = sorted(series.keys())
     ref_idx = None
@@ -88,6 +103,9 @@ def main():
 
     weights_base = weights_lowvol
     weights_lev = weights_lowvol * exposure[:, None]
+    if causal:
+        weights_base = lag_one_day(weights_base)
+        weights_lev = lag_one_day(weights_lev)
 
     pnl_base = (weights_base[start:] * R[start:]).sum(axis=1)
     pnl_lev = (weights_lev[start:] * R[start:]).sum(axis=1)
