@@ -1628,3 +1628,16 @@ exploité comme porte :
 85 PASS niveau 1 sur 223 hypothèses testées (#222 = estimateur Yang-Zhang pour le vol-targeting, PASS net 5/5, meilleur MDD de toute la lignée d'estimateurs (NDX -61,1%) — résultat qualitativement distinct des #215/#221 grâce à la composante overnight, premier accroc de robustesse de la lignée d'estimateurs (3/5 à fenêtre=15j) ; audit parfait, écart exactement 0).
 
 86 PASS niveau 1 sur 224 hypothèses testées (#223 = porte de clustering ARCH pour le vol-targeting, PASS 4/5, seul Composite échoue — 5e audit parfait consécutif (0 désaccord) ; clôture la série #221-223 (estimateurs range-based et clustering) à 3 PASS sur 3, aucun FAIL). Backlog "à faire" de nouveau épuisé.
+
+## Backlog #224 (05/08/2026) — batterie Règle 9 sur le #215 (vol-targeting estimateur Garman-Klass)
+
+Backlog "à faire" épuisé. Sept nouvelles hypothèses PASS niveau 1
+accumulées depuis le #215 (2 estimateurs + 5 portes) sans jamais avoir
+été soumises à la batterie Règle 9 — pivot vers leur validation
+systématique, un candidat à la fois, plutôt que de continuer à générer
+des hypothèses marginales supplémentaires (même logique que le pivot du
+#207).
+
+| 224 | Appliquer la batterie de validation renforcée (Règle 9) au #215 (estimateur Garman-Klass, PASS net 5/5, plateau parfait 8/8) — premier des 7 PASS niveau 1 accumulés depuis le #215 sans couverture Règle 9, choisi par ordre chronologique | Aucune nouvelle donnée (recalcul sur le résultat déjà committé, NDX comme marché de référence) | **FAIT — 4/5, PAS de PASS RENFORCÉ, ÉGALE LES MEILLEURS SCORES DE TOUTE LA LIGNÉE (#50/#54).** PREREG dédié committé avant tout calcul (`PREREG_garman_klass_vol_targeting_overlay_pass_validation_battery.md`). **Coûts OK** (tient à 25 bps), **stabilité OK — 4/4 folds, première fois pour un candidat de la série #215-223**, **SPA OK** (p=0,0010, très significatif). **Seul le stress de crise échoue**, exactement comme anticipé au PREREG : le resserrement 2022 (MDD -40,0% vs BH -35,3%) est raté, cohérent avec le biais d'exposition plus élevée du Garman-Klass (1,35x-1,59x, déjà documenté au #215 comme dégradant le MDD sur Composite/S&P 500) — dot-com/2008/COVID passent tous avec de larges marges (ex. dot-com -67,5% vs BH -82,9%). **DSR hors de portée** comme toujours. **Lecture honnête** : le Garman-Klass rejoint le #50 (Parkinson) et le #54 (calendrier) au sommet du classement Règle 9 de tout le backlog (4/5) — la composante ouverture→clôture ajoutée par cet estimateur améliore nettement la stabilité temporelle et la significativité statistique par rapport au #46/#47 (3/5), au prix d'une fragilité de crise ciblée sur 2022. Anti-cheat CONFORME (0/4 échec, inchangé). Pas de notification Telegram (aucun PASS RENFORCÉ). Voir `results/nonml_garman_klass_vol_targeting_overlay_pass_validation_battery.md`, `..._anti_cheat.md` |
+
+86 PASS niveau 1 sur 225 hypothèses testées (#224 = batterie Règle 9 sur le #215, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, 4/5 égale les meilleurs scores de la lignée (#50/#54), première fois qu'un candidat de la série #215-223 atteint 4/4 folds de stabilité, seul le stress de crise 2022 échoue). 6 PASS niveau 1 restent à couvrir par la Règle 9 (#217/#219/#220/#221/#222/#223).
