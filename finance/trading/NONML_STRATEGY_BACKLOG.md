@@ -1590,3 +1590,20 @@ accessibles localement (Règle 2 — proposées avant tout calcul) :
 80 PASS niveau 1 sur 217 hypothèses testées (#216 = porte de risque de gap pour le vol-targeting, FAIL 2/5 — edge cohérent sur NDX/S&P 500 mais insuffisant pour généraliser ; audit CONFORME, désaccords isolés de porte tracés à la sensibilité de bord flottante).
 
 81 PASS niveau 1 sur 218 hypothèses testées (#217 = porte VR de Lo-MacKinlay glissant pour le vol-targeting, PASS 4/5, seul DAX échoue — porte la plus rarement active de toute la famille (7,8%-38,2%) ; robustesse correcte mais pas parfaite (2/5 à fenêtre=15j) ; audit confirme l'absence de fuite, désaccords de porte tracés à la tolérance interne documentée de `lo_mackinlay_vr` (0,05), jamais un bug).
+
+## Backlog #218 (05/08/2026) — 3 nouvelles idées (#218-#220), moments statistiques d'ordre supérieur comme portes du mécanisme hiérarchique
+
+Le tableau est de nouveau épuisé de lignes "à faire" (#215-217 tous
+exécutés). Recherche de nouvelles idées non-ML, données déjà accessibles
+localement (Règle 2 — proposées avant tout calcul), thématiquement
+cohérentes : les moments statistiques d'ordre supérieur et de second
+ordre des rendements, jamais exploités comme porte jusqu'ici (la lignée
+a déjà couvert la moyenne/tendance, le calendrier, la breadth, la
+dispersion cross-sectionnelle, le risque de gap et l'autocorrélation) :
+
+| 219 | **Porte de kurtosis glissante** (aplatissement en excès des rendements sur fenêtre glissante 252j) pour le mécanisme hiérarchique — capture l'épaisseur des queues de distribution (risque de choc extrême), distinct de la volatilité (2e moment) et de l'asymétrie (#218) déjà proposée ; queues épaisses documentées comme signal de risque systémique élevé | Aucune nouvelle donnée, rendements déjà disponibles | **À FAIRE** |
+| 220 | **Porte de vol-de-la-vol** (écart-type glissant de la volatilité réalisée elle-même, signal de second ordre distinct du NIVEAU de volatilité déjà utilisé partout dans le mécanisme #46) pour le mécanisme hiérarchique — capture l'instabilité du RÉGIME de volatilité plutôt que son niveau : une vol-de-la-vol élevée signale une transition de régime incertaine, une vol-de-la-vol faible un régime stable | Aucune nouvelle donnée, rendements déjà disponibles | **À FAIRE** |
+
+Le #218 (asymétrie/skewness glissante) est exécuté immédiatement ce même
+cycle (PREREG dédié `PREREG_skewness_vol_targeting_overlay.md` committé
+avant tout calcul) — voir la ligne de résultat ci-dessous.
