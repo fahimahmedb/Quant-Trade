@@ -105,6 +105,7 @@ def main():
         df = load_ohlc(str(path))
         quality_report(df)
         close = df["close"].values
+        dates = pd.DatetimeIndex(df["date"].values)
         bh_full = np.log(close[1:] / close[:-1])
         if len(bh_full) <= start:
             continue
@@ -118,6 +119,11 @@ def main():
         pnl_ov = pos * bh_t - turn * (COST_BPS / 1e4)
         pnl_bh = bh_t.copy()
         pnl_bh[0] -= COST_BPS / 1e4
+
+        if name == "NDX (40 ans)":
+            dates_pnl = dates.values[1:][start:]
+            np.savez(ROOT / "results" / "nonml_student_t_tail_vol_targeting_overlay_pnl.npz",
+                     pos=pos, r_asset=bh_t, dates=dates_pnl, cost_bps=COST_BPS)
 
         me_bh = trading_metrics(pnl_bh)
         me_ov = trading_metrics(pnl_ov)
