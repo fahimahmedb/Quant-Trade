@@ -6,13 +6,13 @@ Univers : 178 tickers NDX-100, 2907 séances testables (2015-01-02 → 2026-07-2
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers) | +0.37 | +88.5% | -36.1% |
-| **Winners (tercile sup., momentum)** | **+1.85** | **+8303.4%** | -28.4% |
+| Buy&Hold équipondéré (univers) | +0.37 | +91.0% | -36.2% |
+| **Winners (tercile sup., momentum)** | **-0.01** | **-25.3%** | -44.6% |
 
-1. Sharpe winners > Buy&Hold : OUI
-2. Rendement total winners > Buy&Hold : OUI
+1. Sharpe winners > Buy&Hold : non
+2. Rendement total winners > Buy&Hold : non
 
-**PASS — critère renforcé (Sharpe ET rendement) atteint.**
+**FAIL — critère renforcé (Sharpe ET rendement) NON atteint.**
 
 **Comparaison directe avec le cycle #5** (même signal, même univers, tercile opposé) : à mettre en regard de `results/nonml_short_term_reversal_result.md` (losers : Sharpe -1.02, rendement -83.6%).
 

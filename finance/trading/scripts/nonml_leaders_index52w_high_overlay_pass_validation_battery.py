@@ -301,60 +301,6 @@ PIT_PREAMBLE = (
     "dans `PREREG_leaders_index52w_high_overlay_pit_universe.md`."
 )
 
-PIT_POSTAMBLE = """## Lecture du résultat, en regard des cycles #161 et #162
-
-| | #161 (liste 2026, 2022-2026) | #162 (liste 2026, 1970-2026) | **#163 (point-in-time, 2015-2026)** |
-|---|---|---|---|
-| Séances | 1144 | 14010 | **2907** |
-| Univers | liste de 2026 (couverture 68 % du vrai indice au départ) | liste de 2026 (couverture inconnue, très faible avant 2000) | **composition réelle à chaque date (couverture mesurée 87,6 % en moyenne)** |
-| a. coûts ×5 | OK | OK | **OK** |
-| b. crise | OK (1/4 fenêtre couverte) | ÉCHEC (2/4 fenêtres perdues) | **ÉCHEC (2/4 couvertes, COVID perdu de 2,1 pts de MDD)** |
-| c. stabilité | OK (4/4) | ÉCHEC (3/4) | **OK (4/4)** |
-| d. SPA | OK (p=0,0000, t=4,515) | OK (p=0,0000) | **OK (p=0,0000, t=7,637)** |
-| e. DSR | 0,730 | 0,612 | **0,754** |
-| Score | 4/5 | 3/5 | **3/5** |
-
-**Ce qu'il faut retenir, sans enjoliver :**
-
-1. **L'edge du #38 n'était PAS un artefact de biais du survivant.** C'était
-   l'hypothèse la plus inquiétante, et elle est réfutée : sur un univers
-   reconstruit date par date, sur un échantillon 2,5× plus long, le candidat
-   bat encore la référence largement (Sharpe +1,42 vs +0,79), bat 4/4 folds,
-   et le SPA passe encore plus nettement qu'au #161 (t=7,64 vs 4,52). Le DSR
-   **progresse** (0,754 vs 0,730), ce qui va dans le sens de l'hypothèse du
-   #161 (edge réel, borné par la puissance statistique) et contredit
-   l'interprétation pessimiste du #162 (dégradation attribuée au biais, ici
-   confirmée comme un artefact de ce biais).
-2. **Le DSR reste ÉCHOUÉ, et de loin (0,754 < 0,95).** Le gain de 2,5× en
-   taille d'échantillon rapporte +0,024 de DSR. Extrapoler naïvement suggère
-   qu'aucune extension d'historique réaliste ne franchira le seuil : la
-   contrainte n'est pas seulement le nombre d'observations, c'est le niveau
-   du Sharpe quotidien (+0,0892) face au seuil de sélection SR₀ (0,0763)
-   imposé par n_trials=162.
-3. **Le stress de crise révèle une vraie faiblesse, nouvelle.** Le #161 ne
-   couvrait qu'une fenêtre (2022) ; ici le krach COVID est couvert et le
-   candidat y fait PIRE que la référence (-30,9 % vs -28,8 %). Ce n'est pas
-   un artefact d'univers : c'est le comportement attendu d'un overlay qui
-   double l'exposition tant que l'indice reste à ≥95 % de son plus haut, et
-   le sommet de février 2020 précédait immédiatement le krach le plus rapide
-   de l'histoire. **Le contrôle b échoue donc pour une raison économique
-   réelle, pas pour un défaut de mesure** — c'est l'information la plus
-   utile de ce cycle après le point 1.
-4. **Le score global (3/5) est en retrait du 4/5 du #161, mais les deux ne
-   sont pas comparables terme à terme** : le #161 obtenait son OK sur le
-   contrôle b avec une seule fenêtre de crise couverte, la plus favorable au
-   mécanisme. Un score obtenu sur 2 fenêtres dont une défavorable est plus
-   informatif qu'un score obtenu sur 1 fenêtre favorable. Le #163 est donc
-   **une meilleure évaluation qui donne un chiffre moins flatteur**, pas une
-   dégradation de la stratégie.
-
-**Statut du #38 après ce cycle : PASS niveau 1, batterie renforcée toujours
-non validée.** Aucune notification Telegram. Ce cycle SUPERSEDE le #162 (dont
-l'univers était non défendable) et complète le #161 (dont l'univers était
-biaisé et la couverture de crise insuffisante) — c'est désormais la référence
-d'évaluation du #38.
-"""
-
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--extended":
         main(prices_dir=ROOT / "data" / "pead" / "prices_extended",
@@ -372,7 +318,6 @@ if __name__ == "__main__":
                                membership_fn=tickers_as_of_date,
                                rebal_anchor="2015-01-01",
                                membership_log=mlog),
-             preamble=PIT_PREAMBLE,
-             postamble=PIT_POSTAMBLE)
+             preamble=PIT_PREAMBLE)
     else:
         main()
