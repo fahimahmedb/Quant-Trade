@@ -4,10 +4,10 @@ Référence = portefeuille Low-Vol 1.0x (cycle #15), PAS Buy&Hold. 1336 séances
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Low-Vol 1.0x (référence, cycle #15) | +0.54 | +40.2% | -18.9% |
-| **Low-Vol + overlay tendance+vol-targeting** | **+0.81** | **+100.3%** | -19.4% |
+| Low-Vol 1.0x (référence, cycle #15) | +0.51 | +37.1% | -19.0% |
+| **Low-Vol + overlay tendance+vol-targeting** | **+0.44** | **+40.0%** | -20.1% |
 
-1. Sharpe overlay > référence : OUI
+1. Sharpe overlay > référence : non
 2. Rendement overlay > référence : OUI
 
-**PASS — critère renforcé atteint.**
+**FAIL — critère renforcé NON atteint.**
