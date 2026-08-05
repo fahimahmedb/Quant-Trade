@@ -69,6 +69,7 @@ def main():
         df = load_ohlc(str(path))
         quality_report(df)
         close = df["close"].values
+        dates = pd.DatetimeIndex(df["date"].values)
         bh_full = np.log(close[1:] / close[:-1])  # longueur T-1, r[i] = close[i+1]/close[i]
 
         pos_full = garman_klass_vol_position(df)  # longueur T-1, aligne sur bh_full
@@ -96,6 +97,11 @@ def main():
             f"{me_ov['sharpe_ann']:+.2f} | {100*ret_ov:+.1f}% | {me_ov['max_drawdown_pct']:.1f}% | "
             f"{pos.mean():.2f}x | {'OUI' if sharpe_ok else 'non'} | {'OUI' if ret_ok else 'non'} |"
         )
+
+        if name == "NDX (40 ans)":
+            dates_pnl = dates.values[1:][start:]
+            np.savez(ROOT / "results" / "nonml_garman_klass_vol_targeting_overlay_pnl.npz",
+                     pos=pos, r_asset=bh_t, dates=dates_pnl, cost_bps=COST_BPS)
 
     verdict = n_success >= 4
     lines.append("")
