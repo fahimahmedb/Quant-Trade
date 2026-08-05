@@ -66,3 +66,18 @@ def parkinson_var_pct(df: pd.DataFrame) -> pd.Series:
     v = (100 * hl) ** 2 / (4 * np.log(2.0))
     v.index = df["date"]
     return v.iloc[1:]  # aligne sur les rendements (1re obs sans rendement)
+
+
+def garman_klass_var_pct(df: pd.DataFrame) -> pd.Series:
+    """Variance quotidienne range-based de Garman-Klass (1980), en %^2.
+
+    Combine le range haut/bas (comme Parkinson) et le mouvement
+    ouverture->cloture intra-seance (que Parkinson ignore). ATTENTION :
+    comme Parkinson, ne capture pas le saut de la cloture veille a
+    l'ouverture du jour (overnight gap entre deux seances distinctes).
+    """
+    hl = np.log(df["high"] / df["low"])
+    co = np.log(df["close"] / df["open"])
+    v = 0.5 * (100 * hl) ** 2 - (2 * np.log(2.0) - 1) * (100 * co) ** 2
+    v.index = df["date"]
+    return v.iloc[1:]  # aligne sur les rendements (1re obs sans rendement)
