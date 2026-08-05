@@ -7,6 +7,20 @@ backlog. Ce qui suit classe les MOINS mauvais candidats par usage, avec
 leurs limites explicites, pour éclairer une décision éventuelle plutôt
 que la prendre.
 
+**CORRECTION (cycle #252, committée le lendemain de la première version
+de ce document)** : le Candidat C ci-dessous (#38/#163) citait un DSR
+"record" de 0,754 comme le meilleur résultat du backlog. Le #252 a
+découvert que ce chiffre (et le Sharpe corrigé +1,42 qui l'accompagnait)
+provenait d'un calcul committé AVANT la correction du bug d'exécution
+"même barre" (#166/#167) — le même bug qui avait déjà fait basculer le
+#38 lui-même en FAIL sur son univers d'origine. Une fois recalculé avec
+l'exécution causale (aujourd'hui la valeur par défaut du script), le
+#38 sur univers point-in-time s'effondre à **0/5 sur toute la ligne**
+(DSR 0,011, SPA p=0,154). **Le Candidat C n'est PLUS un candidat valable
+— section conservée ci-dessous barrée, à titre d'archive honnête, et
+remplacée par le constat réel.** Voir la mise à jour du backlog, cycle
+#252.
+
 ## Candidat A — Risk management / réduction de drawdown : #149
 
 `position = clip(15% / vol_réalisée, 0, CAP)` avec correction du taux de
@@ -45,40 +59,49 @@ Porte `ν(t) glissant (MLE Student-t) >= médiane 252j` sur le mécanisme
   légèrement moins net) sans avantage net — pas recommandée comme
   substitut, seulement comme confirmation indépendante du signal.
 
-## Candidat C — Meilleur Sharpe historique corrigé (biais du survivant) : #38/#163
+## ~~Candidat C — Meilleur Sharpe historique corrigé (biais du survivant) : #38/#163~~ RETIRÉ (cycle #252)
 
-Momentum, univers **point-in-time réel** du NDX-100 (couverture 87,6%).
+~~Momentum, univers point-in-time réel du NDX-100 (couverture 87,6%).
+Sharpe corrigé le plus élevé du backlog, DSR record à 0,754, SPA le
+plus net jamais obtenu (t=7,637, p=0,0000).~~
 
-- Sharpe corrigé le plus élevé du backlog, **DSR record à 0,754**
-  (le plus proche jamais atteint du seuil 0,95), **SPA le plus net
-  jamais obtenu** (t=7,637, p=0,0000).
-- **Limite majeure documentée** (#163) : le contrôle de crise ÉCHOUE pour
-  une raison ÉCONOMIQUE réelle, pas une limite de mesure — le mécanisme
-  double l'exposition tant que l'indice est proche de son plus haut,
-  exactement la configuration de février 2020 (krach COVID, -30,9% de
-  MDD contre -28,8% pour la référence). **Ne pas déployer sans un
-  garde-fou de crise indépendant** — c'est précisément le risque que le
-  #250 (porte de drawdown relative) tentait de corriger et n'a pas
-  résolu (FAIL 2/5).
+**Ce chiffre était calculé avec l'exécution "même barre" (bug corrigé
+au #166/#167, mais jamais réappliqué à ce calcul spécifique avant le
+#252).** Recalculé avec l'exécution causale (script inchangé, simple
+ré-exécution) : Sharpe candidat +0,47 contre référence +0,54 (candidat
+SOUS la référence), **batterie Règle 9 0/5 sur toute la ligne** (coûts
+ÉCHEC, crise ÉCHEC, stabilité 1/4 folds, SPA p=0,154, **DSR 0,011** —
+au lieu du "record" 0,754). Un second bug a été trouvé et corrigé au
+passage : le script produisait un texte narratif figé (écrit au moment
+du #163) concaténé sans jamais être régénéré, créant un document
+contradictoire une fois les chiffres corrigés. **Aucun candidat de
+remplacement n'est proposé ici** pour cette catégorie ("meilleur Sharpe
+historique corrigé") — voir le backlog, cycle #252, pour le détail
+complet.
 
-## Ce que ces trois candidats n'ont PAS en commun (et pourquoi aucun n'est "le meilleur" absolu)
+## Ce que les deux candidats restants (A, B) n'ont PAS en commun
 
 Ils optimisent des objectifs différents et ne se combinent pas
 trivialement : A réduit la variance sans generer de rendement excédentaire
 significatif ; B a la meilleure significativité statistique mais un
-estimateur numériquement fragile ; C a le meilleur Sharpe brut mais un
-risque de crise structurel non corrigé. **Aucune tentative de
-combinaison n'a été testée dans ce cycle** (hors scope, nécessiterait
-son propre PREREG et backtest dédiés).
+estimateur numériquement fragile. **Aucune tentative de combinaison
+n'a été testée dans ce cycle** (hors scope, nécessiterait son propre
+PREREG et backtest dédiés). Le candidat C initialement proposé a été
+retiré au #252 (voir correction en tête de document) — aucun candidat
+de remplacement pour "meilleur Sharpe historique corrigé" n'est
+identifié à ce stade.
 
 ## Rappel du plafond structurel (déjà établi au #116, confirmé à la v4)
 
-À n_trials=251, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
-supérieur à tous les repères académiques standards. Aucun des trois
-candidats ci-dessus n'en est proche (0,0001 à 0,754) — le plafond n'a
-jamais été atteint sur l'ensemble du backlog. Ce document ne prétend pas
-que cette situation change : il identifie les candidats relativement les
-plus solides SOUS ce plafond, pour un usage prudent et documenté (avant
-tout risk management, jamais comme signal de rendement autonome sans
-garde-fous supplémentaires), pas des stratégies validées au sens plein
-de la Règle 9.
+À n_trials≈252, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
+supérieur à tous les repères académiques standards. Ni A (DSR 0,0122) ni
+B (DSR 0,0001) n'en est proche — le plafond n'a jamais été atteint sur
+l'ensemble du backlog, et le retrait du candidat C (dont le DSR 0,754
+était un artefact de bug, la vraie valeur étant 0,011) le confirme
+d'autant plus fermement : aucun candidat du backlog, une fois les bugs
+d'exécution correctement appliqués, ne s'approche du seuil. Ce document
+ne prétend pas que cette situation change : il identifie les candidats
+relativement les plus solides SOUS ce plafond, pour un usage prudent et
+documenté (avant tout risk management, jamais comme signal de rendement
+autonome sans garde-fous supplémentaires), pas des stratégies validées
+au sens plein de la Règle 9.
