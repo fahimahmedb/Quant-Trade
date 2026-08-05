@@ -131,6 +131,10 @@ def main():
     ret_ok = ret_ov > ret_bh
     verdict = sharpe_ok and ret_ok
 
+    dates_pnl = dates_idx.values[1:][start:]
+    np.savez(ROOT / "results" / "nonml_dispersion_vol_targeting_overlay_pnl.npz",
+             pos=pos, r_asset=bh_t, dates=dates_pnl, cost_bps=COST_BPS)
+
     gate_active = (pos > 1.0)
     lines = [
         "# Résultat — Overlay vol-targeting gaté par la dispersion cross-sectionnelle NDX-100 (pré-enregistré, règle renforcée)",
