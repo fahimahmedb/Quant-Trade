@@ -1,11 +1,19 @@
 # Guide de formalisation — meilleurs candidats du backlog pour un déploiement prudent
 
-Synthèse décisionnelle (pas un backtest). 251 hypothèses testées à ce
-jour, **0 PASS RENFORCÉ Règle 9 sans exception** — aucun candidat de ce
+Synthèse décisionnelle (pas un backtest). 269 hypothèses testées à ce
+jour (**mise à jour v2, cycle #263** — v1 au #251/#252 s'arrêtait à
+251), **0 PASS RENFORCÉ Règle 9 sans exception** — aucun candidat de ce
 document n'est un edge "prouvé" au sens strict des propres critères du
 backlog. Ce qui suit classe les MOINS mauvais candidats par usage, avec
 leurs limites explicites, pour éclairer une décision éventuelle plutôt
 que la prendre.
+
+**MISE À JOUR v2 (cycle #263)** : ajout du Candidat C (v2) — #261 (tilt
+Amihud illiquidité), obtenu depuis la v1 via une catégorie de données
+entièrement nouvelle (volume, #258-262). Sans lien avec l'ancien
+Candidat C retiré au #252 (mécanisme totalement différent : prime de
+liquidité, pas momentum/survivorship) — voir la correction déjà en place
+ci-dessous, conservée inchangée.
 
 **CORRECTION (cycle #252, committée le lendemain de la première version
 de ce document)** : le Candidat C ci-dessous (#38/#163) citait un DSR
@@ -79,28 +87,57 @@ remplacement n'est proposé ici** pour cette catégorie ("meilleur Sharpe
 historique corrigé") — voir le backlog, cycle #252, pour le détail
 complet.
 
-## Ce que les deux candidats restants (A, B) n'ont PAS en commun
+## Candidat C (v2, cycle #263) — Meilleur profil DSR/SPA du backlog : #261 (tilt Amihud illiquidité)
 
-Ils optimisent des objectifs différents et ne se combinent pas
-trivialement : A réduit la variance sans generer de rendement excédentaire
-significatif ; B a la meilleure significativité statistique mais un
-estimateur numériquement fragile. **Aucune tentative de combinaison
-n'a été testée dans ce cycle** (hors scope, nécessiterait son propre
-PREREG et backtest dédiés). Le candidat C initialement proposé a été
-retiré au #252 (voir correction en tête de document) — aucun candidat
-de remplacement pour "meilleur Sharpe historique corrigé" n'est
-identifié à ce stade.
+Tercile de titres NDX-100 LE PLUS illiquide (ILLIQ = |rendement|/volume-
+dollars, moyenne glissante 126j, Amihud 2002), rebalancé mensuellement.
+Première stratégie du guide construite sur une catégorie de données
+entièrement nouvelle pour ce backlog (volume, jamais exploitée avant le
+#258).
 
-## Rappel du plafond structurel (déjà établi au #116, confirmé à la v4)
+- PASS niveau 1 net : Sharpe +0,59→+0,84, rendement +70,0%→+142,8%,
+  robustesse 5/5 plateau parfait (référence = Buy&Hold équipondéré, pas
+  un mécanisme de vol-targeting comme A/B).
+- Règle 9 (#262) : **4/5, ÉGALE LE MEILLEUR SCORE DE TOUT LE BACKLOG**
+  (avec #209/#229) et **DSR=0,2731 — le plus élevé authentique de tout
+  le backlog** (22× le Candidat A, 2700× le Candidat B). SPA OK
+  (p=0,0034, meilleur que A à p=1,00, proche de B à p=0,0022). Coûts OK
+  à 25 bps, crise OK (2022), stabilité OK (3/4 folds). Seul le DSR
+  échoue, comme pour A et B.
+- **Lecture honnête** : le mécanisme économique (prime de risque de
+  liquidité) est distinct de A (vol-targeting défensif) et B (porte de
+  régime de queue) — la persistance temporelle de l'illiquidité au sein
+  d'un univers de grandes capitalisations explique à la fois la
+  résistance aux coûts et la solidité relative du score Règle 9. Limite
+  déclarée à l'avance (#261) : la variation d'illiquidité au sein du
+  NDX-100 reste structurellement faible comparée aux études originales
+  d'Amihud (univers complet, y compris micro-caps) — le mécanisme
+  fonctionne ici mais sur une plage de variation étroite.
 
-À n_trials≈252, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
-supérieur à tous les repères académiques standards. Ni A (DSR 0,0122) ni
-B (DSR 0,0001) n'en est proche — le plafond n'a jamais été atteint sur
-l'ensemble du backlog, et le retrait du candidat C (dont le DSR 0,754
-était un artefact de bug, la vraie valeur étant 0,011) le confirme
-d'autant plus fermement : aucun candidat du backlog, une fois les bugs
-d'exécution correctement appliqués, ne s'approche du seuil. Ce document
-ne prétend pas que cette situation change : il identifie les candidats
+## Ce que les trois candidats (A, B, C v2) n'ont PAS en commun
+
+Ils optimisent des objectifs différents et reposent sur des mécanismes
+non redondants : A réduit la variance sans générer de rendement
+excédentaire significatif (vol-targeting) ; B a une porte de régime de
+queue (kurtosis/ν) avec un estimateur numériquement fragile ; C (v2)
+est une prime de liquidité sur une catégorie de données inédite dans ce
+backlog. **Aucune tentative de combinaison n'a été testée** (hors
+scope, nécessiterait son propre PREREG et backtest dédiés). L'ancien
+candidat C (#38/#163, momentum/survivorship) reste retiré depuis le
+#252 (voir correction en tête de document) — le C (v2) n'a aucun lien
+mécanique avec lui.
+
+## Rappel du plafond structurel (déjà établi au #116, confirmé à la v4/v5)
+
+À n_trials=269, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
+supérieur à tous les repères académiques standards. Ni A (DSR 0,0122),
+ni B (DSR 0,0001), ni **C v2 (DSR 0,2731 — le plus proche jamais obtenu,
+mais encore à 3,5x sous le seuil)** n'en est proche — le plafond n'a
+jamais été atteint sur l'ensemble du backlog. Le C (v2) rapproche
+sensiblement la meilleure marge observée (précédent record authentique :
+0,0210 au #201) sans la franchir, confirmant que le plafond résiste même
+au meilleur candidat stock-selection découvert à ce jour. Ce document ne
+prétend pas que cette situation change : il identifie les candidats
 relativement les plus solides SOUS ce plafond, pour un usage prudent et
 documenté (avant tout risk management, jamais comme signal de rendement
 autonome sans garde-fous supplémentaires), pas des stratégies validées
