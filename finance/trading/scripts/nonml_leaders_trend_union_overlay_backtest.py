@@ -4,6 +4,12 @@ pré-enregistrée dans PREREG_leaders_trend_union_overlay.md, committée
 avant ce script). Combine les cycles #4, #29 et #37. n_trials=1, aucune
 dépendance ML. Règle de succès renforcée -- référence = leaders 1.0x
 (cycle #4), pas Buy&Hold.
+
+CORRECTION 05/08/2026 (cycle #253) -- fuite d'exécution « même barre »
+(voir `results/nonml_same_bar_execution_audit.md`, patch #166/#167
+appliqué ici, jamais fait avant). `main(causal=True)` décale désormais
+les poids d'un jour par défaut ; `causal=False` reproduit le
+comportement fautif d'origine, pour l'audit uniquement.
 """
 import json
 import sys
@@ -61,7 +67,16 @@ def index_trend_union_series() -> pd.Series:
     return pd.Series(union, index=dates)
 
 
-def main():
+def lag_one_day(W):
+    """Convention d'exécution CAUSALE : le poids décidé à la clôture de t-1 est
+    celui détenu pendant la séance t. Correction de la fuite « même barre »
+    documentée dans `results/nonml_same_bar_execution_audit.md`."""
+    out = np.zeros_like(W)
+    out[1:] = W[:-1]
+    return out
+
+
+def main(causal=True):
     series = load_prices()
     tickers = sorted(series.keys())
     ref_idx = None
@@ -103,6 +118,9 @@ def main():
 
     weights_base = weights_leaders
     weights_lev = weights_leaders * exposure[:, None]
+    if causal:
+        weights_base = lag_one_day(weights_base)
+        weights_lev = lag_one_day(weights_lev)
 
     start = LOOKBACK
     pnl_base = (weights_base[start:] * R[start:]).sum(axis=1)

@@ -4,8 +4,8 @@ Référence = portefeuille leaders 1.0x (cycle #4), PAS Buy&Hold. 1144 séances 
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Leaders 1.0x (référence, cycle #4) | +0.78 | +81.6% | -25.7% |
-| **Leaders + overlay union SMA200∪52w-high x2.0** | **+1.08** | **+287.6%** | -27.6% |
+| Leaders 1.0x (référence, cycle #4) | +0.59 | +53.5% | -27.6% |
+| **Leaders + overlay union SMA200∪52w-high x2.0** | **+0.69** | **+116.8%** | -37.4% |
 
 1. Sharpe overlay > référence : OUI
 2. Rendement overlay > référence : OUI
