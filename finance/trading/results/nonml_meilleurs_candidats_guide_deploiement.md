@@ -1,12 +1,26 @@
 # Guide de formalisation — meilleurs candidats du backlog pour un déploiement prudent
 
-Synthèse décisionnelle (pas un backtest). 269 hypothèses testées à ce
-jour (**mise à jour v2, cycle #263** — v1 au #251/#252 s'arrêtait à
-251), **0 PASS RENFORCÉ Règle 9 sans exception** — aucun candidat de ce
+Synthèse décisionnelle (pas un backtest). 279 hypothèses testées à ce
+jour (**mise à jour v3, cycle #273** — v2 au #263 s'arrêtait à 269),
+**0 PASS RENFORCÉ Règle 9 sans exception** — aucun candidat de ce
 document n'est un edge "prouvé" au sens strict des propres critères du
 backlog. Ce qui suit classe les MOINS mauvais candidats par usage, avec
 leurs limites explicites, pour éclairer une décision éventuelle plutôt
 que la prendre.
+
+**MISE À JOUR v3 (cycle #273)** : découverte incidente — le DSR "record"
+du #214 (0,1427, dispersion cross-sectionnelle #78) est **caduc** :
+calculé sur la spécification originale du #78, démontrée FAIL sous
+univers point-in-time réel au #270 (échantillon 2× plus long). Le
+nouveau record DSR authentique est **0,1341** (#271/#272, breadth
+SMA200 sous univers point-in-time). **Ce record n'est PAS ajouté comme
+nouveau "Candidat"** — après deux retraits successifs du Candidat C (v1
+au #252, v2 au #264), la prudence impose de ne promouvoir un candidat
+que sur un profil global solide, pas sur un seul chiffre record : le
+#271/#272 échoue les coûts dès 15 bps et la stabilité temporelle
+(2/4 folds), un profil Règle 9 plus faible que les Candidats A et B
+ci-dessous malgré son meilleur DSR. Mentionné ici pour traçabilité et
+mise à jour du repère de comparaison, pas comme recommandation.
 
 **MISE À JOUR v2 (cycle #263)** : ajout du Candidat C (v2) — #261 (tilt
 Amihud illiquidité), obtenu depuis la v1 via une catégorie de données
@@ -139,16 +153,19 @@ candidat de remplacement identifié pour cette catégorie à ce stade.
 
 ## Rappel du plafond structurel (déjà établi au #116, confirmé à la v4/v5)
 
-À n_trials=269, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
+À n_trials=279, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
 supérieur à tous les repères académiques standards. Ni A (DSR 0,0122)
 ni B (DSR 0,0001) n'en est proche — le plafond n'a jamais été atteint
-sur l'ensemble du backlog. **Le DSR=0,2731 du candidat C (v2, #261),
-un temps le record authentique du backlog, s'est révélé caduc au #264**
-(le candidat lui-même ne survit pas à la correction de l'univers
-point-in-time) — le précédent record authentique qui tient toujours est
-0,0210 (#201, famille macro-externe). Ce document ne prétend pas que
-cette situation change : il identifie les candidats relativement les
-plus solides SOUS ce plafond, pour un usage prudent et documenté (avant
-tout risk management, jamais comme signal de rendement autonome sans
-garde-fous supplémentaires), pas des stratégies validées au sens plein
-de la Règle 9.
+sur l'ensemble du backlog. **Deux DSR "records" successifs se sont
+révélés caducs** : 0,2731 (candidat C v2, #261, caduc au #264) et
+0,1427 (#214, dispersion #78, caduc au #273) — les deux calculés sur un
+univers depuis démontré biaisé par le survivant. **Le record authentique
+actuel est 0,1341** (#271/#272, breadth SMA200 sous univers point-in-
+time — un candidat qui, lui, a réellement survécu à cette correction),
+devant 0,0210 (#201, famille macro-externe, précédent record authentique
+avant le #271). Ce document ne prétend pas que cette situation change :
+il identifie les candidats relativement les plus solides SOUS ce
+plafond, pour un usage prudent et documenté (avant tout risk management,
+jamais comme signal de rendement autonome sans garde-fous
+supplémentaires), pas des stratégies validées au sens plein de la
+Règle 9.
