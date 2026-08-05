@@ -2095,3 +2095,40 @@ lui-même (jamais vérifié sous PIT) ou spécifiquement du second tri ?
 | 269 | Appliquer la batterie de validation renforcée (Règle 9) au #266 (momentum de constance, univers point-in-time, robustesse 5/5 la meilleure du trio) — complète la couverture Règle 9 du trio momentum PIT (#4/#38 déjà connu, #73/#265 fait au #268) | Aucune nouvelle donnée (recalcul sur le résultat déjà committé) | **FAIT — 2/5, PAS de PASS RENFORCÉ, MÊME SCHÉMA QUE LE #268.** PREREG dédié committé avant tout calcul (`PREREG_momentum_consistency_pit_universe_pass_validation_battery.md`). **Coûts OK** (tient à 25 bps). **Crise ÉCHEC** : la fenêtre COVID (62 séances, couverte par l'univers PIT 2015-2026) échoue à nouveau (-34,9% vs -32,8% référence), seul le resserrement 2022 passe. **Stabilité OK (3/4 folds)**. **SPA ÉCHEC** (p=0,1776). **DSR ÉCHEC** (0,0129 à n_trials=275). **La couverture Règle 9 du trio momentum PIT est désormais COMPLÈTE : #4/#38 (1/5→0/5 post-correction #260), #73/#265 (2/5, #268), #82/#266 (2/5, ce cycle)** — aucun des trois ne dépasse 2/5 une fois l'univers survivor-bias-corrigé, alors que les scores originaux sur l'univers 2026 atteignaient 4/5 (#161) ou 4/5 (#237/#238, autre famille). **Lecture honnête finale** : la meilleure robustesse de backtest du trio (5/5 pour #82, 4/5 pour #73) ne se traduit PAS en un meilleur score Règle 9 — les deux échouent de façon quasi identique (même fenêtre de crise, SPA/DSR du même ordre de grandeur), confirmant que la robustesse de backtest et la solidité Règle 9 sont deux dimensions largement indépendantes dans ce backlog. Anti-cheat CONFORME (0/3 échec). Pas de notification Telegram (aucun PASS RENFORCÉ). Voir `PREREG_momentum_consistency_pit_universe_pass_validation_battery.md`, `results/nonml_momentum_consistency_pit_universe_pass_validation_battery.md` |
 
 88 PASS niveau 1 sur 276 hypothèses testées (#269 = batterie Règle 9 sur le #266, pas un nouveau backtest indépendant — 0 PASS RENFORCÉ, 2/5, même schéma que le #268 ; couverture Règle 9 du trio momentum PIT désormais complète, aucun des trois ne dépasse 2/5 sous univers corrigé). Backlog "à faire" de nouveau épuisé.
+
+## Nouvelles pistes proposées (05/08/2026, après le #269)
+
+Recherche explicite avant clôture de ce cycle (grep systématique pour
+éviter tout doublon avec les 269 hypothèses déjà testées, Règle 2).
+Deux candidats stock-selection PASS restants (Low-Vol #15, skewness
+#84) sont déjà FAIL et non prioritaires pour un test PIT (valeur
+informative nulle à faible). Une piste concrète, distincte des
+269 hypothèses déjà testées, mérite son propre PREREG dans un cycle
+dédié plutôt qu'une exécution précipitée dans celui-ci :
+
+**Vérification point-in-time des signaux de régime dérivés du panier
+titre-par-titre** (dispersion cross-sectionnelle #78, corrélation par
+paires #90, breadth sous ses 6 formes #77/#89/#94/#96/#97/#98/#101) —
+contrairement aux candidats stock-SELECTION déjà vérifiés (#4/#73/#82,
+tous survivent au PIT ; #258/#261, échouent), ces signaux ne
+SÉLECTIONNENT pas de titres : ils calculent une STATISTIQUE AGRÉGÉE
+(écart-type, corrélation moyenne, fraction de titres proches d'un
+extrême) sur le panneau de 99 titres 2026 appliqué rétroactivement,
+puis l'utilisent comme porte binaire du mécanisme hiérarchique
+vol-targeting sur l'INDICE (pas sur un portefeuille de titres). Le sens
+du biais potentiel est moins évident a priori que pour la sélection de
+titres (un panier de survivants pourrait sous-estimer OU sur-estimer la
+dispersion/corrélation historique réelle, sans direction évidente) —
+raison pour laquelle cette piste n'a pas été exécutée directement dans
+ce cycle : elle mérite son propre PREREG énonçant explicitement
+l'hypothèse de sens AVANT tout calcul (Règle 2), pas une improvisation
+de dernière minute. Portée à définir précisément : un seul signal
+(probablement #78, le plus documenté et le PASS le plus net de la
+famille) avant toute extension aux 6 autres formes de breadth.
+
+**Recommandation honnête** : sans arbitrage explicite de l'utilisateur
+entre poursuivre cette piste précise ou élargir à une catégorie de
+données totalement nouvelle (secteurs, options — toujours indisponibles
+gratuitement dans ce repo), les cycles suivants privilégieront cette
+piste de vérification d'intégrité, seule direction concrète et non
+redondante identifiée à ce stade.
