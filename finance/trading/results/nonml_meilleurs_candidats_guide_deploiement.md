@@ -1,12 +1,23 @@
 # Guide de formalisation — meilleurs candidats du backlog pour un déploiement prudent
 
-Synthèse décisionnelle (pas un backtest). 279 hypothèses testées à ce
-jour (**mise à jour v3, cycle #273** — v2 au #263 s'arrêtait à 269),
+Synthèse décisionnelle (pas un backtest). 282 hypothèses testées à ce
+jour (**mise à jour v4, cycle #275** — v3 au #273 s'arrêtait à 279),
 **0 PASS RENFORCÉ Règle 9 sans exception** — aucun candidat de ce
 document n'est un edge "prouvé" au sens strict des propres critères du
 backlog. Ce qui suit classe les MOINS mauvais candidats par usage, avec
 leurs limites explicites, pour éclairer une décision éventuelle plutôt
 que la prendre.
+
+**MISE À JOUR v4 (cycle #275)** : nouveau record DSR authentique —
+**0,1404** (#274/#275, breadth de momentum sous univers point-in-time),
+légèrement supérieur au précédent 0,1341 (#271/#272, breadth SMA200).
+Écart marginal (+0,0063), même famille de mécanisme (breadth agrégée),
+même profil Règle 9 faible (coûts et stabilité en échec, seuls crise et
+SPA passent, 2/5). **Pas de changement de statut** : comme au #273, ce
+record n'est PAS ajouté comme nouveau "Candidat" — la prudence déjà
+établie après les deux retraits du Candidat C reste de mise, et l'écart
+est trop faible pour justifier une révision du classement ci-dessous.
+Mentionné pour traçabilité et mise à jour du repère de comparaison.
 
 **MISE À JOUR v3 (cycle #273)** : découverte incidente — le DSR "record"
 du #214 (0,1427, dispersion cross-sectionnelle #78) est **caduc** :
@@ -153,17 +164,18 @@ candidat de remplacement identifié pour cette catégorie à ce stade.
 
 ## Rappel du plafond structurel (déjà établi au #116, confirmé à la v4/v5)
 
-À n_trials=279, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
+À n_trials=281, le Sharpe annualisé nécessaire pour franchir DSR>0,95 est
 supérieur à tous les repères académiques standards. Ni A (DSR 0,0122)
 ni B (DSR 0,0001) n'en est proche — le plafond n'a jamais été atteint
 sur l'ensemble du backlog. **Deux DSR "records" successifs se sont
 révélés caducs** : 0,2731 (candidat C v2, #261, caduc au #264) et
 0,1427 (#214, dispersion #78, caduc au #273) — les deux calculés sur un
 univers depuis démontré biaisé par le survivant. **Le record authentique
-actuel est 0,1341** (#271/#272, breadth SMA200 sous univers point-in-
-time — un candidat qui, lui, a réellement survécu à cette correction),
-devant 0,0210 (#201, famille macro-externe, précédent record authentique
-avant le #271). Ce document ne prétend pas que cette situation change :
+actuel est 0,1404** (#274/#275, breadth de momentum sous univers
+point-in-time, écart marginal +0,0063 sur le précédent record 0,1341 du
+#271/#272, breadth SMA200 — même famille de mécanisme, même profil Règle
+9 faible), devant 0,0210 (#201, famille macro-externe, précédent record
+authentique avant le #271). Ce document ne prétend pas que cette situation change :
 il identifie les candidats relativement les plus solides SOUS ce
 plafond, pour un usage prudent et documenté (avant tout risk management,
 jamais comme signal de rendement autonome sans garde-fous
