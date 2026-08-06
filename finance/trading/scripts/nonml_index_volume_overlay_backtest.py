@@ -69,7 +69,8 @@ def main():
 
         vol_series = load_volume(str(path))
         vol_aligned = vol_series.reindex(dates).values
-        vol_lag = vol_aligned[1:]  # shift(1): volume connu a la cloture de t-1
+        vol_shifted = pd.Series(vol_aligned).shift(1).values  # decalage causal reel
+        vol_lag = vol_shifted[1:]  # vol_lag[k] = vol_aligned[k] = volume connu a la cloture de t
 
         gate = expanding_tercile_gate_high(vol_lag)
         valid = np.isfinite(vol_lag)

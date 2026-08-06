@@ -6,7 +6,7 @@
 
 | Marché | % actif | Dates échantillonnées | Désaccords |
 |---|---|---|---|
-| NDX (40 ans) | 83.3% | 42 | 0 |
+| NDX (40 ans) | 83.4% | 42 | 0 |
 | Russell 2000 | 89.0% | 40 | 0 |
 | S&P 500 | 93.1% | 58 | 0 |
 | DAX | 40.5% | 28 | 0 |

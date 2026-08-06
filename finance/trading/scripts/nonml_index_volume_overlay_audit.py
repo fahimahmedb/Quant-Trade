@@ -67,7 +67,8 @@ def main():
 
         vol_series = load_volume(str(path))
         vol_aligned = vol_series.reindex(dates).values
-        vol_lag = vol_aligned[1:]
+        vol_shifted = pd.Series(vol_aligned).shift(1).values  # decalage causal reel
+        vol_lag = vol_shifted[1:]
 
         gate = expanding_tercile_gate_high(vol_lag)
         valid = np.isfinite(vol_lag)
@@ -117,7 +118,8 @@ def main():
     quality_report(df_ndx)
     ndx_dates = pd.DatetimeIndex(df_ndx["date"].values)
     vol_series_ndx = load_volume(str(REPO_ROOT / "data" / "nasdaq100_daily.txt"))
-    vol_lag_full = vol_series_ndx.reindex(ndx_dates).values[1:]
+    vol_aligned_full = vol_series_ndx.reindex(ndx_dates).values
+    vol_lag_full = pd.Series(vol_aligned_full).shift(1).values[1:]
     gate_full = expanding_tercile_gate_high(vol_lag_full)
 
     N_CHECK = 2000
@@ -125,7 +127,8 @@ def main():
     all_trunc_ok = True
     for cut in TRUNC_POINTS:
         dates_trunc = ndx_dates[:cut]
-        vol_lag_trunc = vol_series_ndx.reindex(dates_trunc).values[1:]
+        vol_aligned_trunc = vol_series_ndx.reindex(dates_trunc).values
+        vol_lag_trunc = pd.Series(vol_aligned_trunc).shift(1).values[1:]
         gate_trunc = expanding_tercile_gate_high(vol_lag_trunc)
         n = min(N_CHECK, len(gate_trunc), cut - 1)
         match = np.array_equal(gate_full[:n], gate_trunc[:n])
