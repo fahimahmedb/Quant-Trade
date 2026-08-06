@@ -2463,3 +2463,38 @@ Après deux cycles consécutifs (#312-319 compliance sweep, puis vérification �
 | 322 | **Vitesse de circulation de M2** (FRED `M2V`, trimestrielle) comme signal de régime défensif — position réduite quand la vitesse de circulation est dans son tercile expanding le plus BAS (thésaurisation/aversion au risque), concept monétariste distinct de la croissance de M2 déjà testée (#203, FAIL) | **Nouvelle donnée à récupérer** : série FRED `M2V` (gratuite, trimestrielle depuis 1959, disponibilité déjà vérifiée par fetch de test) | **FAIT — FAIL 1/5, critère renforcé (≥4/5) NON atteint.** PREREG committé avant tout fetch/calcul (`PREREG_m2_velocity_overlay.md`). Réutilisation stricte Règle 7 (`COST_BPS`, `CUT`, `TERCILE_PCT`, `expanding_tercile_cut_low` importés directement du #203). Décalage de publication d'UN TRIMESTRE (3 mois calendaires avant ffill+shift(1)), même convention que les séries trimestrielles déjà testées. **Seul le DAX bat Buy&Hold en Sharpe ET rendement** (1/5) ; sur NDX/Russell/S&P500 le gate coupe 40-50% du temps mais ampute fortement le rendement composé (ex. NDX : Sharpe 0,53→0,42, rendement +6599%→+1509%) sans gain de Sharpe suffisant — même schéma que toute la famille macro-externe défensive pré-tunée sans amplification, conformément au risque déclaré à l'avance dans le PREREG. **Audit indépendant CONFORME** (recalcul par boucle explicite + searchsorted sans pandas.reindex/ffill/DateOffset/np.percentile, écart nul sur l'alignement causal et le tercile sur 5/5 marchés, désaccords de position uniquement de sensibilité de bord flottante déjà documentée ; vérification spécifique du décalage de 3 mois sur la transition réelle mars/avril 2026 où M2V change (1,409→1,412) — le premier choix de dates sondes juin/juillet était par coïncidence aveugle car M2V T4-2025 et T1-2026 partagent la même valeur arrondie 1,412, corrigé avant tout verdict ; anti-lookahead par troncature NDX : écart nul). **Anti-cheat CONFORME** (4/4). Pas de robustesse/simulation 300€/audit dédié (réservés aux PASS). Pas de notification Telegram (FAIL). Voir `PREREG_m2_velocity_overlay.md`, `results/nonml_m2_velocity_overlay_result.md`, `results/nonml_m2_velocity_overlay_audit.md`, `results/nonml_m2_velocity_overlay_anti_cheat.md` |
 
 95 PASS niveau 1 sur 326 hypothèses testées (#320 = vitesse de circulation de M2 (FRED M2V), FAIL 1/5 — seul le DAX bat Buy&Hold en Sharpe ET rendement, le gate coupe 40-50% du temps sur NDX/Russell/S&P500 sans gain de Sharpe suffisant pour compenser l'amputation du rendement composé, même schéma que toute la famille macro-externe défensive déjà testée ; audit CONFORME avec une leçon méthodologique honnêtement documentée — le premier choix de dates sondes pour vérifier le décalage de 3 mois était par coïncidence aveugle, corrigé avant tout verdict). **Backlog "à faire" de nouveau épuisé — aucune idée forcée cette fois** : la revue de conformité Règle 9 reste exhaustive (établie au #319) et aucune nouvelle catégorie de donnée économiquement distincte et non-redondante n'a été identifiée au-delà du canal "activité économique réelle" déjà clos (0/4, #204/#205/#206/#295) et du canal monétariste maintenant clos à 0/2 (#203 croissance M2, #320 vitesse M2). Conformément à la recommandation de la synthèse v9 (#311), le backlog reste vide en attendant soit une nouvelle catégorie de données utilisateur, soit une instruction de pivot vers l'Étape D (overlay défensif B+C, CLAUDE.md).
+
+## Backlog #321 (06/08/2026) — nouvelle recherche : 3 idées trouvées après vérification anti-doublon exhaustive
+
+Recherche systématique menée (grep de ~15 séries FRED candidates contre
+le backlog + fetch de test HTTP 200 avant toute proposition) au-delà du
+constat de vide du cycle précédent. Résultat : la quasi-totalité des
+canaux macro évidents sont déjà couverts ou explicitement indisponibles
+(or `GOLDAMGBD228NLBM` 404 depuis #134, PMI/ISM `NAPM` retiré de FRED
+depuis #204, TED spread discontinué en 2022 depuis #286, taux
+réel/nominal/pente/inversion/breakeven tous clos #175-#202, dollar
+`DTWEXBGS` déjà FAIL #198, VIX déjà FAIL #130, matières premières
+pétrole/cuivre déjà FAIL #283/#284, immobilier activité/valorisation
+déjà clos 0/2 #283/#294, endettement ménages clos 3/3 #284-#289,
+activité économique réelle clos 0/4 #204/#205/#206/#295, monétaire clos
+0/2 #203/#320). **3 idées trouvées, vérifiées disponibles (HTTP 200) et
+non-redondantes** :
+- **#323 — Profits des entreprises US** (FRED `CP`, trimestrielle,
+  NIPA) : premier canal FONDAMENTAL (rentabilité réelle des
+  entreprises) jamais testé — tous les signaux précédents mesurent le
+  stress des marchés/conditions macro, jamais la profitabilité
+  elle-même. Exécutée ce cycle (voir PREREG dédié).
+- **#324 — Demandes continues d'allocations chômage** (FRED `CCSA`,
+  hebdomadaire) : distinct des demandes initiales déjà FAIL (#204,
+  ICSA) — mesure le STOCK de chômeurs indemnisés (persistance) plutôt
+  que le FLUX de nouveaux licenciements.
+- **#325 — Nouvelles commandes de biens durables** (FRED `DGORDER`,
+  mensuel) : canal manufacturier/demande avancée jamais exploité,
+  substitut économiquement pertinent au PMI/ISM indisponible.
+
+Permis de construire (`PERMIT`) explicitement écarté (redondant avec le
+canal immobilier déjà clos 0/2, Règle 2).
+
+| 323 | **Profits des entreprises US** (FRED `CP`, trimestrielle NIPA) comme signal de régime défensif — position réduite quand la croissance annuelle des profits est dans son tercile expanding le plus BAS (earnings recession), premier canal FONDAMENTAL (rentabilité réelle) jamais testé dans ce backlog, distinct de tous les signaux de stress marché/crédit/taux déjà testés | **Nouvelle donnée à récupérer** : série FRED `CP` (gratuite, trimestrielle depuis 1947, disponibilité déjà vérifiée par fetch de test) | à faire |
+| 324 | Demandes continues d'allocations chômage (FRED `CCSA`, hebdomadaire) comme signal de régime — distinct des demandes initiales déjà testées et FAIL (#204, ICSA) : mesure le STOCK de chômeurs encore indemnisés (persistance/durée du chômage) plutôt que le FLUX de nouveaux licenciements | **Nouvelle donnée à récupérer** : série FRED `CCSA` (gratuite, hebdomadaire depuis 1967, disponibilité déjà vérifiée par fetch de test) | à faire |
+| 325 | Nouvelles commandes de biens durables US (FRED `DGORDER`, mensuel) comme signal de régime — canal manufacturier/demande avancée jamais exploité dans ce backlog, substitut économiquement pertinent au PMI/ISM (`NAPM`) indisponible sur FRED depuis #204 | **Nouvelle donnée à récupérer** : série FRED `DGORDER` (gratuite, mensuelle depuis 1992, disponibilité déjà vérifiée par fetch de test) | à faire |
