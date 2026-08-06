@@ -62,6 +62,7 @@ def main():
         df = load_ohlc(str(path))
         quality_report(df)
         close = df["close"].values
+        dates = pd.DatetimeIndex(df["date"].values)
         slope_up = sma_slope_positive_mask(close)
 
         start = SMA_WINDOW + SLOPE_LAG
@@ -90,6 +91,14 @@ def main():
             f"{me_ov['sharpe_ann']:+.2f} | {100*ret_ov:+.1f}% | {me_ov['max_drawdown_pct']:.1f}% | "
             f"{100*mask.mean():.1f}% | {'OUI' if sharpe_ok else 'non'} | {'OUI' if ret_ok else 'non'} |"
         )
+
+        if name == "NDX (40 ans)":
+            # Sauvegarde ajoutee retroactivement (cycle #314, batterie Regle 9) pour
+            # reutilisation par nonml_pass_validation_battery.py -- aucune modification
+            # de la logique de calcul ci-dessus, resultat verifie inchange avant commit.
+            dates_pnl = dates.values[start + 1:]
+            np.savez(ROOT / "results" / "nonml_sma200_slope_overlay_pnl.npz",
+                     pos=pos, r_asset=bh_full, dates=dates_pnl, cost_bps=COST_BPS)
 
     verdict = n_success >= 4
     lines.append("")
