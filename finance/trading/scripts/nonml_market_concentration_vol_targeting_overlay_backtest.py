@@ -174,6 +174,13 @@ def main():
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
 
+    # Sauvegarde ajoutee retroactivement (cycle #317, batterie Regle 9) pour
+    # reutilisation par nonml_pass_validation_battery.py -- aucune modification
+    # de la logique de calcul ci-dessus, resultat verifie inchange avant commit.
+    dates_pnl = dates_idx.values[1:][start:]
+    np.savez(ROOT / "results" / "nonml_market_concentration_vol_targeting_overlay_pnl.npz",
+             pos=pos, r_asset=bh_t, dates=dates_pnl, cost_bps=COST_BPS)
+
 
 if __name__ == "__main__":
     main()
