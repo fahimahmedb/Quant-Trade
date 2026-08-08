@@ -77,13 +77,29 @@ GJR-skewt, HAR-P). Perte QLIKE, test DM vs bench, test SPA famille entière.
 - **Le modèle de volatilité C est le plus robuste des trois — utile pour le
   risk management (position sizing, VaR), pas pour prédire une direction.**
 
-## Étape D (en cours / à construire)
+## Étape D (construite et validée — partiellement)
 
 Overlay défensif combinant B (direction, faible) + C (volatilité, robuste) :
-piloter l'exposition (vol-targeting et/ou coupe en régime de vol extrême)
-pour capter l'essentiel du rendement Buy & Hold tout en réduisant le max
-drawdown (NDX a connu −83 % en 2000-2002 dans l'historique long). Objectif :
-Sharpe/Calmar ≥ Buy & Hold avec MDD nettement inférieur.
+`finance/src/overlay.py` (vol-targeting GJR-t + coupe au 95e percentile
+in-sample, cap 1,5×) ; script `finance/trading/scripts/run_etape_d.py` ;
+résultat `finance/trading/results/etape_D_overlay.md`. Critère pré-enregistré :
+réduction MDD >25 % relatif ET rendement annualisé conservé ≥80 % de Buy&Hold.
+
+- **NDX (40 ans)** : VolTarget+Cut **ATTEINT** le critère — MDD −82,9 %→−57,2 %
+  (réduction relative 31,0 %), rendement annualisé conservé à 111,2 % de BH,
+  Calmar amélioré (+0,18 vs +0,08). **Résultat le plus solide de gestion du
+  risque de tout le projet.**
+- **Composite (5 ans)** : critère NON atteint (réduction MDD 17,4 % < seuil
+  25 %, rendement conservé 69,1 % < seuil 80 %).
+- **Généralisation cross-marché testée et documentée** (backlog #165-#170,
+  `PREREG_gjr_vol_managed_crossmarket.md`) : l'edge GJR-t vol-targeting
+  **NE généralise PAS** à S&P 500/Russell 2000/DAX — passe nominalement
+  mais échoue une fois les coûts de financement réalistes appliqués
+  (Règle 10, DGS3MO) ; DAX échoue net. Méga-famille vol-targeting déclarée
+  close (synthèse #256/#371).
+- **Conclusion honnête** : l'overlay défensif Étape D fonctionne
+  spécifiquement sur NDX (40 ans d'historique), pas ailleurs — à ne pas
+  généraliser au-delà de ce qui est montré dans `etape_D_overlay.md`.
 
 ## Discipline anti-data-snooping (NON NÉGOCIABLE)
 
