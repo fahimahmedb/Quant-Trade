@@ -43,7 +43,7 @@ def evaluate(pos, r_t, cost_bps):
     turn = np.abs(np.diff(pos, prepend=1.0))
     pnl = pos * r_t - turn * (cost_bps / 1e4)
     me = trading_metrics(pnl)
-    ret = float(np.cumprod(1.0 + pnl)[-1] - 1.0)
+    ret = float(np.exp(pnl.sum()) - 1.0)
     return me, ret
 
 
@@ -66,7 +66,7 @@ def main():
     pnl_bh = r_t.copy()
     pnl_bh[0] -= COST_BPS / 1e4
     me_bh = trading_metrics(pnl_bh)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
 
     me_daily, ret_daily = evaluate(pos_daily, r_t, COST_BPS)
     me_weekly, ret_weekly = evaluate(pos_weekly, r_t, COST_BPS)

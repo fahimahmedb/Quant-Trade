@@ -66,8 +66,8 @@ def main():
         me_bh = trading_metrics(pnl_bh)
         me_daily = trading_metrics(pnl_daily)
         me_weekly = trading_metrics(pnl_weekly)
-        ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
-        ret_weekly = float(np.cumprod(1.0 + pnl_weekly)[-1] - 1.0)
+        ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
+        ret_weekly = float(np.exp(pnl_weekly.sum()) - 1.0)
 
         sharpe_ok = me_weekly["sharpe_ann"] > me_bh["sharpe_ann"]
         ret_ok = ret_weekly > ret_bh

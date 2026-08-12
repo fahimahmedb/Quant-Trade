@@ -51,9 +51,9 @@ def main():
     pnl_daily, pnl_bh, me_daily, me_bh = pnl_and_metrics(pos_daily, r)
     pnl_weekly, _, me_weekly, _ = pnl_and_metrics(pos_weekly, r)
 
-    ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-    ret_daily = np.cumprod(1.0 + pnl_daily)[-1] - 1.0
-    ret_weekly = np.cumprod(1.0 + pnl_weekly)[-1] - 1.0
+    ret_bh = np.exp(pnl_bh.sum()) - 1.0
+    ret_daily = np.exp(pnl_daily.sum()) - 1.0
+    ret_weekly = np.exp(pnl_weekly.sum()) - 1.0
 
     turn_daily = np.abs(np.diff(pos_daily, prepend=1.0)).sum()
     turn_weekly = np.abs(np.diff(pos_weekly, prepend=1.0)).sum()

@@ -55,8 +55,8 @@ def main():
 
         me_bh = trading_metrics(pnl_bh)
         me_lev = trading_metrics(pnl_lev)
-        ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-        ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
+        ret_bh = np.exp(pnl_bh.sum()) - 1.0
+        ret_lev = np.exp(pnl_lev.sum()) - 1.0
 
         sharpe_ok = me_lev["sharpe_ann"] > me_bh["sharpe_ann"]
         ret_ok = ret_lev > ret_bh

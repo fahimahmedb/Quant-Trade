@@ -45,10 +45,10 @@ def main():
 
     me_base = trading_metrics(r_underlying)
     me_vt = trading_metrics(r_vt)
-    ret_base = float(np.cumprod(1.0 + r_underlying)[-1] - 1.0)
-    ret_vt = float(np.cumprod(1.0 + r_vt)[-1] - 1.0)
+    ret_base = float(np.exp(r_underlying.sum()) - 1.0)
+    ret_vt = float(np.exp(r_vt.sum()) - 1.0)
     me_ref = trading_metrics(ref_t)
-    ret_ref = float(np.cumprod(1.0 + ref_t)[-1] - 1.0)
+    ret_ref = float(np.exp(ref_t.sum()) - 1.0)
 
     sharpe_daily = r_vt.mean() / r_vt.std() if r_vt.std() > 0 else float("nan")
     tstat = sharpe_daily * np.sqrt(len(r_vt))

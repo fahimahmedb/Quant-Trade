@@ -72,8 +72,8 @@ def main():
 
         me_bh = trading_metrics(pnl_bh)
         me_night = trading_metrics(pnl_night)
-        ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-        ret_night = np.cumprod(1.0 + pnl_night)[-1] - 1.0
+        ret_bh = np.exp(pnl_bh.sum()) - 1.0
+        ret_night = np.exp(pnl_night.sum()) - 1.0
 
         r_nuit_sum = r_nuit.sum()
         r_bh_sum = r_bh.sum()
