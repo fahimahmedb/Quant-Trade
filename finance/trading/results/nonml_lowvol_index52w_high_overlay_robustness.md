@@ -6,16 +6,16 @@ CAP pré-enregistré = 2.0x, seuil pré-enregistré = 95%.
 
 | CAP | Sharpe>réf | Rdt>réf | Sharpe | Rendement total | MDD |
 |---|---|---|---|---|---|
-| 1.5x | OUI | OUI | +0.79 | +83.2% | -19.4% |
-| 2.0x | OUI | OUI | +0.95 | +137.5% | -19.9% ← CAP pré-enregistré |
-| 2.5x | OUI | OUI | +1.05 | +205.4% | -20.5% |
-| 3.0x | OUI | OUI | +1.12 | +289.5% | -21.0% |
+| 1.5x | OUI | OUI | +0.95 | +123.5% | -18.0% |
+| 2.0x | OUI | OUI | +1.09 | +201.9% | -18.5% ← CAP pré-enregistré |
+| 2.5x | OUI | OUI | +1.17 | +304.4% | -19.1% |
+| 3.0x | OUI | OUI | +1.22 | +437.4% | -19.6% |
 
 ## Grille seuil de proximité (CAP fixé à 2.0x)
 
 | Seuil | Sharpe>réf | Rdt>réf | Sharpe | Rendement total | MDD |
 |---|---|---|---|---|---|
-| 90% | OUI | OUI | +0.85 | +126.0% | -18.1% |
-| 93% | OUI | OUI | +0.87 | +126.3% | -21.5% |
-| 95% | OUI | OUI | +0.95 | +137.5% | -19.9% ← seuil pré-enregistré |
-| 97% | OUI | OUI | +1.00 | +131.7% | -19.5% |
+| 90% | OUI | OUI | +0.99 | +192.6% | -16.7% |
+| 93% | OUI | OUI | +1.01 | +190.5% | -20.0% |
+| 95% | OUI | OUI | +1.09 | +201.9% | -18.5% ← seuil pré-enregistré |
+| 97% | OUI | OUI | +1.15 | +188.3% | -18.1% |

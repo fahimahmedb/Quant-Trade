@@ -6,16 +6,16 @@ CAP pré-enregistré = 2.0x, fenêtre pré-enregistrée = 20j.
 
 | CAP | Sharpe>réf | Rdt>réf | Sharpe | Rendement total |
 |---|---|---|---|---|
-| 1.5x | non | OUI | +0.88 | +104.3% |
-| 2.0x | OUI | OUI | +0.91 | +116.4% ← CAP pré-enregistré |
-| 2.5x | OUI | OUI | +0.92 | +118.1% |
-| 3.0x | OUI | OUI | +0.92 | +118.0% |
+| 1.5x | non | OUI | +1.11 | +179.6% |
+| 2.0x | non | OUI | +1.14 | +199.7% ← CAP pré-enregistré |
+| 2.5x | non | OUI | +1.15 | +202.7% |
+| 3.0x | non | OUI | +1.15 | +202.5% |
 
 ## Grille fenêtre de vol (CAP fixé à 2.0x)
 
 | Fenêtre | Sharpe>réf | Rdt>réf | Sharpe | Rendement total |
 |---|---|---|---|---|
-| 15j | non | non | +0.81 | +99.0% |
-| 20j | OUI | OUI | +0.91 | +116.4% ← fenêtre pré-enregistrée |
-| 25j | OUI | OUI | +0.92 | +116.6% |
-| 30j | OUI | OUI | +0.98 | +128.1% |
+| 15j | non | OUI | +1.04 | +178.8% |
+| 20j | non | OUI | +1.14 | +199.7% ← fenêtre pré-enregistrée |
+| 25j | non | OUI | +1.15 | +199.0% |
+| 30j | OUI | OUI | +1.22 | +214.9% |

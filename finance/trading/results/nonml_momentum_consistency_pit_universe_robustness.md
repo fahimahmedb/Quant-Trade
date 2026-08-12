@@ -4,10 +4,10 @@ Grille réutilisée telle quelle du #82 original : N_BLOCKS {10,12,14}, REBAL_EV
 
 | N_BLOCKS | REBAL_EVERY | Sharpe>BH | Rendement>BH | Sharpe constance | Rendement total |
 |---|---|---|---|---|---|
-| 10 | 21 | OUI | OUI | +0.45 | +138.6% |
-| 12 | 21 | OUI | OUI | +0.45 | +139.9% ← pré-enregistré |
-| 14 | 21 | OUI | OUI | +0.45 | +142.0% |
-| 12 | 15 | OUI | OUI | +0.50 | +170.5% |
-| 12 | 27 | OUI | OUI | +0.54 | +195.0% |
+| 10 | 21 | non | OUI | +0.58 | +352.0% |
+| 12 | 21 | non | OUI | +0.61 | +403.8% ← pré-enregistré |
+| 14 | 21 | non | OUI | +0.60 | +388.9% |
+| 12 | 15 | OUI | OUI | +0.65 | +431.8% |
+| 12 | 27 | OUI | OUI | +0.71 | +504.4% |
 
-**5/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible, pas un pic isolé.
+**2/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible, pas un pic isolé.

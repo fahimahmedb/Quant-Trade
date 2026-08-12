@@ -4,10 +4,10 @@ Grille réutilisée telle quelle du #73 original : LOOKBACK {200,252,300}j, REBA
 
 | LOOKBACK | REBAL_EVERY | Sharpe>BH | Rendement>BH | Sharpe momentum | Rendement total |
 |---|---|---|---|---|---|
-| 200 | 21 | OUI | OUI | +0.45 | +149.2% |
-| 252 | 21 | OUI | OUI | +0.44 | +147.4% ← pré-enregistré |
-| 300 | 21 | OUI | OUI | +0.39 | +117.3% |
-| 252 | 15 | OUI | OUI | +0.43 | +137.4% |
-| 252 | 27 | non | OUI | +0.37 | +99.1% |
+| 200 | 21 | OUI | OUI | +0.64 | +509.6% |
+| 252 | 21 | OUI | OUI | +0.64 | +511.1% ← pré-enregistré |
+| 300 | 21 | non | OUI | +0.58 | +440.3% |
+| 252 | 15 | OUI | OUI | +0.62 | +489.0% |
+| 252 | 27 | non | OUI | +0.56 | +396.2% |
 
-**4/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible, pas un pic isolé.
+**3/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible, pas un pic isolé.

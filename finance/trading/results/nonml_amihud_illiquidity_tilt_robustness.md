@@ -4,10 +4,10 @@ Spécification pré-enregistrée : ILLIQ_WINDOW=126j (seul paramètre nouveau de
 
 | ILLIQ_WINDOW | Sharpe>BH | Rendement>BH | Sharpe tilt | Rendement total tilt |
 |---|---|---|---|---|
-| 90j | OUI | OUI | +0.94 | +181.4% |
-| 108j | OUI | OUI | +0.88 | +156.6% |
-| 126j | OUI | OUI | +0.84 | +142.8% ← pré-enregistré |
-| 144j | OUI | OUI | +0.74 | +113.9% |
-| 162j | OUI | OUI | +0.73 | +108.9% |
+| 90j | OUI | OUI | +1.29 | +406.7% |
+| 108j | OUI | OUI | +1.23 | +361.0% |
+| 126j | OUI | OUI | +1.19 | +334.1% ← pré-enregistré |
+| 144j | OUI | OUI | +1.10 | +283.3% |
+| 162j | OUI | OUI | +1.08 | +272.3% |
 
 **5/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible autour de 126j, pas un pic isolé.

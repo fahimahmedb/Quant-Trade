@@ -4,10 +4,10 @@ Spécification pré-enregistrée : LOOKBACK=252, REBAL_EVERY=21, SKIP=21 (fixe, 
 
 | LOOKBACK | REBAL_EVERY | Sharpe>BH | Rendement>BH | Sharpe momentum | Rendement total momentum |
 |---|---|---|---|---|---|
-| 200 | 21 | OUI | OUI | +0.74 | +120.5% |
-| 252 | 21 | OUI | OUI | +0.67 | +96.2% ← LOOKBACK pré-enregistré |
-| 300 | 21 | non | non | +0.67 | +87.2% |
-| 252 | 15 | OUI | OUI | +0.72 | +107.6% |
-| 252 | 27 | OUI | OUI | +0.74 | +111.9% |
+| 200 | 21 | OUI | OUI | +1.01 | +277.0% |
+| 252 | 21 | OUI | OUI | +0.94 | +227.4% ← LOOKBACK pré-enregistré |
+| 300 | 21 | non | OUI | +0.93 | +201.5% |
+| 252 | 15 | OUI | OUI | +0.99 | +245.3% |
+| 252 | 27 | OUI | OUI | +1.00 | +253.2% |
 
 **Lecture** : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible autour de la spécification 252j/21j, pas un pic isolé.

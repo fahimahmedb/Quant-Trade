@@ -4,7 +4,7 @@ CAP pré-enregistré = 2.0x.
 
 | CAP | Sharpe>réf | Rendement>réf | Sharpe | Rendement total |
 |---|---|---|---|---|
-| 1.5x | OUI | OUI | +0.83 | +196.9% |
-| 2.0x | OUI | OUI | +0.92 | +325.0% ← CAP pré-enregistré |
-| 2.5x | OUI | OUI | +0.96 | +475.4% |
-| 3.0x | OUI | OUI | +0.99 | +636.2% |
+| 1.5x | OUI | OUI | +1.07 | +498.9% |
+| 2.0x | OUI | OUI | +1.10 | +937.1% ← CAP pré-enregistré |
+| 2.5x | OUI | OUI | +1.09 | +1599.6% |
+| 3.0x | OUI | OUI | +1.06 | +2534.5% |

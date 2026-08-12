@@ -4,10 +4,10 @@ Spécification pré-enregistrée : TURNOVER_WINDOW=126j (seul paramètre nouveau
 
 | TURNOVER_WINDOW | Sharpe>référence | Rendement>référence | Sharpe double-tri | Rendement total double-tri |
 |---|---|---|---|---|
-| 90j | OUI | OUI | +0.97 | +158.1% |
-| 108j | OUI | OUI | +0.97 | +158.2% |
-| 126j | OUI | OUI | +1.04 | +178.3% ← pré-enregistré |
-| 144j | OUI | OUI | +1.01 | +174.4% |
-| 162j | OUI | OUI | +1.04 | +179.2% |
+| 90j | OUI | OUI | +1.23 | +298.3% |
+| 108j | OUI | OUI | +1.22 | +297.5% |
+| 126j | OUI | OUI | +1.30 | +328.8% ← pré-enregistré |
+| 144j | OUI | OUI | +1.27 | +326.8% |
+| 162j | OUI | OUI | +1.29 | +332.0% |
 
 **5/5 variantes OUI/OUI.** Lecture : si la majorité des variantes voisines restent OUI/OUI, l'effet est un plateau plausible autour de 126j, pas un pic isolé.
