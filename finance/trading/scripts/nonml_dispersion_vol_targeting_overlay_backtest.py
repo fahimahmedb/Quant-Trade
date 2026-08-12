@@ -60,7 +60,9 @@ def compute_dispersion_series() -> pd.Series:
         ref_idx = series[t].index if ref_idx is None else ref_idx.union(series[t].index)
     ref_idx = ref_idx.sort_values()
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
-    R = np.log(P / P.shift(1)).values
+    # .copy() : sous pandas >= 3 (copy-on-write) `.values` renvoie une vue en
+    # lecture seule, l'affectation ci-dessous echouerait sans copie explicite.
+    R = np.log(P / P.shift(1)).values.copy()
     R[0, :] = np.nan  # premier jour : pas de rendement defini
 
     n_listed = np.isfinite(R).sum(axis=1)

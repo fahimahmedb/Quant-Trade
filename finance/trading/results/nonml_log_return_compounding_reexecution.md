@@ -63,3 +63,28 @@ survit que d'un marché. À traiter comme fragile, pas comme un PASS solide.
   mais les chiffres publiés sont sous-estimés).
 - Les batteries Règle 9 déjà passées sur les stratégies reclassées sont caduques :
   elles validaient un résultat qui n'existe plus.
+
+## Contrôle : les versions de librairies ne sont pas en cause
+
+Le conteneur ayant été réinitialisé, toute la ré-exécution tourne sous
+numpy 2.4.6 / pandas 3.0.5 / scipy 1.17.1 / arch 8.0.0 — vraisemblablement plus
+récents que ceux ayant produit les résultats d'origine. Un écart de verdict
+pourrait donc, a priori, venir des versions plutôt que de la correction.
+
+Contrôle effectué : l'**ancienne** formule (`np.cumprod(1.0 + pnl)[-1] - 1.0`) a
+été restaurée puis ré-exécutée **sous les librairies actuelles**, sur deux
+stratégies dont le résultat avait changé (`acf_lag1_vol_targeting_overlay`,
+`atr_vol_targeting_overlay`). Dans les deux cas le fichier produit est
+**identique à l'octet près** au résultat committé d'origine.
+
+**Conclusion : les versions de librairies sont neutres ici.** Les changements de
+verdict rapportés sont imputables à la correction de la composition, et à elle
+seule.
+
+## Incompatibilité pandas ≥ 3 rencontrée (sans rapport avec le bug)
+
+`nonml_dispersion_vol_targeting_overlay_backtest.py` échouait sous pandas 3
+(`ValueError: assignment destination is read-only`) : avec le copy-on-write,
+`.values` renvoie une vue en lecture seule. Corrigé par un `.copy()` explicite.
+Défaut d'environnement préexistant, révélé par la réinstallation — sans lien avec
+la composition des rendements. Deux scripts en dépendaient et échouaient.
