@@ -6,9 +6,9 @@ Coût pré-enregistré : 5.0 bps. 1385 séances.
 
 | Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.70 | +0.68 | +114.4% | +101.6% | OUI |
-| 15.0 | +0.67 | +0.67 | +105.8% | +101.4% | non |
-| 25.0 | +0.63 | +0.67 | +97.5% | +101.2% | non |
+| 5.0 | +0.70 | +0.68 | +154.8% | +132.4% | OUI |
+| 15.0 | +0.67 | +0.67 | +145.0% | +132.2% | non |
+| 25.0 | +0.64 | +0.67 | +135.5% | +131.9% | non |
 
 **ÉCHEC — tient à 5x le coût nominal : NON.**
 
@@ -29,20 +29,20 @@ Coût pré-enregistré : 5.0 bps. 1385 séances.
 |---|---|---|---|---|
 | 1 | 346 | -0.19 | -0.19 | OUI |
 | 2 | 341 | +0.65 | +0.62 | OUI |
-| 3 | 341 | +1.36 | +1.45 | non |
-| 4 | 342 | +1.09 | +1.11 | non |
+| 3 | 341 | +1.43 | +1.45 | non |
+| 4 | 342 | +1.06 | +1.11 | non |
 
 **ÉCHEC — bat le benchmark sur 2/4 folds (majorité NON atteinte).**
 
 ## d. SPA à 1 candidat contre Buy&Hold
 
-p-value SPA : 0.1592
+p-value SPA : 0.1496
 **ÉCHEC — significatif à 5% : NON.**
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 122 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.001009 (estimée sur 50 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
-SR0 (seuil de sélection) = 0.0826 (journalier), DSR = 0.0758
+n_trials = 372 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
+SR0 (seuil de sélection) = 0.0717 (journalier), DSR = 0.1555
 **ÉCHEC — DSR>0,95 : NON.**
 
 ## Verdict de la batterie renforcée

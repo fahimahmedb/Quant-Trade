@@ -6,11 +6,11 @@ Coût pré-enregistré : 5.0 bps. 9522 séances.
 
 | Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.69 | +0.52 | +8357.7% | +4553.2% | OUI |
-| 15.0 | +0.66 | +0.52 | +6602.4% | +4548.6% | OUI |
-| 25.0 | +0.63 | +0.52 | +5211.2% | +4544.0% | OUI |
+| 5.0 | +0.69 | +0.52 | +17744.2% | +16652.5% | OUI |
+| 15.0 | +0.66 | +0.52 | +14039.6% | +16635.7% | non |
+| 25.0 | +0.63 | +0.52 | +11104.1% | +16619.0% | non |
 
-**OK — tient à 5x le coût nominal : oui.**
+**ÉCHEC — tient à 5x le coût nominal : NON.**
 
 ## b. Stress de crise (MDD overlay vs Buy&Hold sur fenêtres historiques connues)
 
@@ -41,13 +41,13 @@ p-value SPA : 0.4502
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 110 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.001028 (estimée sur 49 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
-SR0 (seuil de sélection) = 0.0822 (journalier), DSR = 0.0001
+n_trials = 372 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
+SR0 (seuil de sélection) = 0.0717 (journalier), DSR = 0.0033
 **ÉCHEC — DSR>0,95 : NON.**
 
 ## Verdict de la batterie renforcée
 
-a. Stress coûts : OK
+a. Stress coûts : ÉCHEC
 b. Stress crise : OK
 c. Stabilité temporelle : OK
 d. SPA 1-candidat : ÉCHEC

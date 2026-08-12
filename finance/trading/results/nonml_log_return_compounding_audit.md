@@ -215,3 +215,40 @@ L'ampleur reste modeste (2 % en moyenne) parce que la fenêtre est courte
 (63 séances) : le terme d'erreur croît avec l'horizon. Ces simulations étaient
 donc sous-estimées mais pas trompeuses sur l'ordre de grandeur, contrairement aux
 rendements de backtest sur 24 ans (+1542,9 % publié contre +2846,0 % réel).
+
+## Troisième foyer : l'outil de validation Règle 9 lui-même (#383)
+
+`nonml_pass_validation_battery.py` portait le même bug dans son contrôle **(a)
+stress coûts** : `ret = np.cumprod(1.0 + pnl)[-1] - 1.0` sur `r_asset`, qui est
+une série log. Un des cinq contrôles de la Règle 9 était donc faux sur les
+83 batteries produites. Les quatre autres (crise, stabilité temporelle, SPA, DSR)
+passent par `trading_metrics` et étaient corrects.
+
+Correction appliquée, puis **ré-exécution des 63 batteries encore adossées à un
+PASS** (les 12 caduques ne sont pas rejouées : elles portent sur des stratégies
+désormais FAIL).
+
+**Résultat : 54 fichiers réécrits, 0 score modifié.**
+
+Les rendements affichés changent énormément — par exemple
+`trend_vol_targeting_overlay` à 5 bps : **+9213,2 % → +44677,1 %** pour la
+stratégie, **+5429,9 % → +21358,1 %** pour Buy&Hold — mais **aucun verdict
+ligne par ligne ne bascule**, donc aucun score sur 5 ne bouge.
+
+**Pourquoi.** Le contrôle (a) exige que la stratégie batte Buy&Hold en Sharpe
+**ET** en rendement, à 1×, 3× et 5× les coûts. La jambe Sharpe n'était pas
+touchée par le bug, et c'est elle qui est contraignante : quand le contrôle
+échoue, il échoue déjà sur le Sharpe. Corriger la jambe rendement ne pouvait donc
+pas le sauver. Le bug était réel et les chiffres publiés très faux, mais il
+n'avait ici aucun pouvoir de décision.
+
+**0 batterie sur 63 atteint le PASS RENFORCÉ**, ce qui confirme l'état connu du
+projet (aucun PASS renforcé depuis l'origine) — mais sur une base désormais
+correcte.
+
+**7 batteries n'ont pas pu être rejouées** faute de `.npz` sauvegardé par leur
+backtest : `amihud_illiquidity_tilt`, `dollar_neutral_composite_vol_targeted`,
+`leaders_index52w_high_overlay`, `leaders_vol_targeting_20_overlay`,
+`momentum_12_1_pit_universe`, `momentum_turnover_doublesort`,
+`sma200_leaders_overlay`. Leurs batteries existantes restent donc calculées avec
+la formule buguée — signalé, non corrigé.

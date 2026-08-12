@@ -6,9 +6,9 @@ Coût pré-enregistré : 5.0 bps. 10052 séances.
 
 | Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.58 | +0.51 | +56384.0% | +4956.4% | OUI |
-| 15.0 | +0.58 | +0.51 | +53472.6% | +4951.4% | OUI |
-| 25.0 | +0.58 | +0.51 | +50708.5% | +4946.3% | OUI |
+| 5.0 | +0.58 | +0.51 | +2664862.9% | +19569.8% | OUI |
+| 15.0 | +0.58 | +0.51 | +2527297.5% | +19550.1% | OUI |
+| 25.0 | +0.58 | +0.51 | +2396833.3% | +19530.5% | OUI |
 
 **OK — tient à 5x le coût nominal : oui.**
 
@@ -41,8 +41,8 @@ p-value SPA : 0.0000
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 319 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 111 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
-SR0 (seuil de sélection) = 0.0705 (journalier), DSR = 0.0004
+n_trials = 372 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
+SR0 (seuil de sélection) = 0.0717 (journalier), DSR = 0.0003
 **ÉCHEC — DSR>0,95 : NON.**
 
 ## Verdict de la batterie renforcée

@@ -3091,3 +3091,25 @@ nouvelles hypothèses peut reprendre sur une base assainie — en gardant que le
 backlog « à faire » reste épuisé et que la prochaine action productive dépend
 d'une nouvelle catégorie de données ou d'un pivot Étape D, dont le meilleur
 candidat (#344 Bitcoin) est désormais FAIL.
+
+## Backlog #383 (12/08/2026) — le bug était AUSSI dans l'outil de validation
+
+La campagne déclarée close au #381 ne l'était pas. En vérifiant si les 63
+batteries encore adossées à un PASS étaient fiables, un **troisième foyer** du bug
+a été trouvé : dans l'outil de validation Règle 9 lui-même.
+
+| 383 | Corriger `nonml_pass_validation_battery.py` (contrôle (a) « stress coûts » composait `r_asset`, série log, avec `cumprod(1+·)`) et rejouer les 63 batteries encore vivantes | Aucune nouvelle donnée (`.npz` déjà sauvegardés) | **FAIT — 54 fichiers réécrits, 0 score modifié.** Un des cinq contrôles de la Règle 9 était faux sur les 83 batteries. Les rendements affichés changent massivement (`trend_vol_targeting_overlay` à 5 bps : +9213,2 % → **+44677,1 %** ; BH +5429,9 % → **+21358,1 %**) mais **aucun verdict ne bascule**. Raison : le contrôle (a) exige Sharpe **ET** rendement, et c'est la jambe Sharpe — non touchée — qui est contraignante. **0 batterie sur 63 atteint le PASS RENFORCÉ**, confirmant l'état connu du projet sur une base désormais correcte. **7 batteries non rejouables** faute de `.npz` (`amihud_illiquidity_tilt`, `dollar_neutral_composite_vol_targeted`, `leaders_index52w_high_overlay`, `leaders_vol_targeting_20_overlay`, `momentum_12_1_pit_universe`, `momentum_turnover_doublesort`, `sma200_leaders_overlay`) : leurs batteries restent calculées avec la formule buguée, signalé et non corrigé. |
+
+**Leçon de méthode.** J'avais déclaré la campagne close au #381 après avoir
+recensé les 12 batteries caduques — sans me demander si les 63 *survivantes*
+avaient été calculées avec le bon instrument. Elles ne l'étaient pas. Un bug de
+mesure ne se cantonne pas aux scripts qui produisent le résultat : il contamine
+aussi les outils qui le valident.
+
+**Le compteur de 93 PASS n'est pas affecté** : les batteries sont un niveau de
+validation au-dessus du verdict de niveau 1, elles ne le déterminent pas.
+
+**Bilan de toute la campagne (#375 → #383) : 20 PASS tombés, 0 gagné ;
+164 montants de simulation corrigés, tous à la hausse ; 54 batteries Règle 9
+recalculées, 0 verdict modifié ; 3 foyers du même bug (backtests, simulations,
+outil de validation).**
