@@ -4,8 +4,8 @@ Univers : 99 tickers NDX-100 avec prix ET volume disponibles (0 exclus faute de 
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Momentum 12-1 seul (référence, cycle #73, univers restreint) | +0.66 | +93.8% | -31.8% |
-| **Momentum 12-1 + double-tri turnover faible** | **+1.04** | **+178.3%** | -26.0% |
+| Momentum 12-1 seul (référence, cycle #73, univers restreint) | +0.93 | +222.6% | -29.9% |
+| **Momentum 12-1 + double-tri turnover faible** | **+1.30** | **+328.8%** | -24.9% |
 
 1. Sharpe double tri > référence : OUI
 2. Rendement double tri > référence : OUI

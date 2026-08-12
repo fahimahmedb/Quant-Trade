@@ -4,8 +4,8 @@ Univers : 99 tickers NDX-100, 1391 séances testables (2021-01-11 → 2026-07-27
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers) | +0.63 | +87.2% | -35.1% |
-| **Losers (tercile inf., reversal)** | **-1.02** | **-83.6%** | -79.5% |
+| Buy&Hold équipondéré (univers) | +0.94 | +211.2% | -30.8% |
+| **Losers (tercile inf., reversal)** | **-0.78** | **-70.2%** | -70.4% |
 
 1. Sharpe losers > Buy&Hold : non
 2. Rendement total losers > Buy&Hold : non

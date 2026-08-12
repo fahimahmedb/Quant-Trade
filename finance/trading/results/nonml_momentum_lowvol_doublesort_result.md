@@ -4,8 +4,8 @@ Univers : 99 tickers NDX-100, 1144 séances testables (2022-01-03 → 2026-07-27
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Momentum 12-1 seul (référence, cycle #73, univers restreint) | +0.67 | +96.2% | -31.1% |
-| **Momentum 12-1 + filtre Low-Vol (double tri)** | **+0.41** | **+31.4%** | -27.4% |
+| Momentum 12-1 seul (référence, cycle #73, univers restreint) | +0.94 | +227.4% | -29.2% |
+| **Momentum 12-1 + filtre Low-Vol (double tri)** | **+0.60** | **+66.4%** | -26.0% |
 
 1. Sharpe double tri > référence : non
 2. Rendement double tri > référence : non

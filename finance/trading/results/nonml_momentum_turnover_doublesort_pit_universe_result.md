@@ -4,8 +4,8 @@ Univers PIT : 178 tickers avec prix ET volume PIT disponibles (0 exclus faute de
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Momentum 12-1 seul (référence, univers PIT) | +0.44 | +147.3% | -36.1% |
-| **Momentum 12-1 + double-tri turnover faible (univers PIT)** | **+0.23** | **+36.6%** | -34.6% |
+| Momentum 12-1 seul (référence, univers PIT) | +0.64 | +511.0% | -34.1% |
+| **Momentum 12-1 + double-tri turnover faible (univers PIT)** | **+0.38** | **+165.3%** | -34.1% |
 
 1. Sharpe double tri > référence : non
 2. Rendement double tri > référence : non

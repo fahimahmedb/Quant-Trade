@@ -6,8 +6,8 @@ Référence = portefeuille winners 1.0x (cycle #14), PAS Buy&Hold. 1391 séances
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Winners 1.0x (référence, cycle #14) | +2.35 | +1813.4% | -22.4% |
-| **Winners + overlay ToM x2.0** | **+2.22** | **+4347.4%** | -29.2% |
+| Winners 1.0x (référence, cycle #14) | +2.63 | +3216.1% | -21.4% |
+| **Winners + overlay ToM x2.0** | **+2.44** | **+9090.9%** | -28.4% |
 
 1. Sharpe overlay > référence : non
 2. Rendement overlay > référence : OUI

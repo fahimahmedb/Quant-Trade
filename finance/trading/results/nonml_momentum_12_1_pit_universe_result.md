@@ -4,8 +4,8 @@ Univers PIT : 174 tickers avec prix PIT disponibles. Couverture moyenne de l'uni
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers PIT) | +0.39 | +99.6% | -36.4% |
-| **Momentum 12-1 (univers PIT)** | **+0.44** | **+147.4%** | -36.1% |
+| Buy&Hold équipondéré (univers PIT) | +0.62 | +352.1% | -32.4% |
+| **Momentum 12-1 (univers PIT)** | **+0.64** | **+511.1%** | -34.1% |
 
 1. Sharpe > Buy&Hold : OUI
 2. Rendement total > Buy&Hold : OUI

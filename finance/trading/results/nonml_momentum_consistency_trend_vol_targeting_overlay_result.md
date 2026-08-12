@@ -4,8 +4,8 @@ Référence = portefeuille momentum de constance 1.0x (cycle #82), PAS Buy&Hold.
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Momentum de constance 1.0x (référence, cycle #82) | +0.67 | +81.7% | -28.2% |
-| **Momentum de constance + overlay tendance+vol-targeting** | **+0.60** | **+75.5%** | -31.7% |
+| Momentum de constance 1.0x (référence, cycle #82) | +0.87 | +160.2% | -24.4% |
+| **Momentum de constance + overlay tendance+vol-targeting** | **+0.79** | **+158.8%** | -28.1% |
 
 1. Sharpe overlay > référence : non
 2. Rendement overlay > référence : non
