@@ -45,7 +45,7 @@ def evaluate(vol_fcst, r_t, target, cap):
     turn = np.abs(np.diff(pos, prepend=1.0))
     pnl_ov = pos * r_t - turn * (COST_BPS / 1e4)
     me = trading_metrics(pnl_ov)
-    ret = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
+    ret = float(np.exp(pnl_ov.sum()) - 1.0)
     return me, ret, pos
 
 
@@ -60,7 +60,7 @@ def main():
     pnl_bh = r_t.copy()
     pnl_bh[0] -= COST_BPS / 1e4
     me_bh = trading_metrics(pnl_bh)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
 
     lines = [
         "# Robustesse — portefeuille volatility-managed GJR-t (perturbation ±20 %)",

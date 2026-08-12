@@ -55,8 +55,8 @@ def main():
         pnl_bh = bh_t.copy()
         pnl_bh[0] -= COST_BPS / 1e4
         me_bh, me_ov = trading_metrics(pnl_bh), trading_metrics(pnl_ov)
-        ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-        ret_ov = np.cumprod(1.0 + pnl_ov)[-1] - 1.0
+        ret_bh = np.exp(pnl_bh.sum()) - 1.0
+        ret_ov = np.exp(pnl_ov.sum()) - 1.0
         sharpe_ok = me_ov["sharpe_ann"] > me_bh["sharpe_ann"]
         ret_ok = ret_ov > ret_bh
         marker = " ← CAP pré-enregistré" if cap == 2.0 else ""

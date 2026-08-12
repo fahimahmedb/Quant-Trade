@@ -28,7 +28,7 @@ def evaluate(pos, bh_full, cost_bps):
     turn = np.abs(np.diff(pos, prepend=1.0))
     pnl = pos * bh_full - turn * (cost_bps / 1e4)
     me = trading_metrics(pnl)
-    ret = float(np.cumprod(1.0 + pnl)[-1] - 1.0)
+    ret = float(np.exp(pnl.sum()) - 1.0)
     return me, ret
 
 

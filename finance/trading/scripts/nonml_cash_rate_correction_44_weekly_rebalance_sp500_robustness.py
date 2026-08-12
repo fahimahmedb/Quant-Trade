@@ -25,7 +25,7 @@ def main():
     pnl_bh = r_mkt.copy()
     pnl_bh[0] -= COST_BPS / 1e4
     me_bh = trading_metrics(pnl_bh)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
 
     lines = [
         "# Robustesse — Rebalancement hebdomadaire du #149 sur S&P 500 (#157), grille des fréquences (PAS un retuning)",
@@ -41,7 +41,7 @@ def main():
         turn = np.abs(np.diff(pos_f, prepend=1.0))
         pnl_ov = pos_f * r_mkt + (1.0 - pos_f) * r_bond - turn * (COST_BPS / 1e4)
         me_ov = trading_metrics(pnl_ov)
-        ret_ov = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
+        ret_ov = float(np.exp(pnl_ov.sum()) - 1.0)
         ok = (me_ov["sharpe_ann"] > me_bh["sharpe_ann"]) and (ret_ov > ret_bh)
         n_pass += int(ok)
         marker = " ← pré-enregistré" if freq == 5 else ""

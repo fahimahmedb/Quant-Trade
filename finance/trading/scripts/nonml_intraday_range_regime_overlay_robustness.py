@@ -40,8 +40,8 @@ def run_one(df, cap):
 
     pnl_ov, pnl_bh = pnl_ov_full[idx], pnl_bh_full[idx]
     me_bh, me_ov = trading_metrics(pnl_bh), trading_metrics(pnl_ov)
-    ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-    ret_ov = np.cumprod(1.0 + pnl_ov)[-1] - 1.0
+    ret_bh = np.exp(pnl_bh.sum()) - 1.0
+    ret_ov = np.exp(pnl_ov.sum()) - 1.0
     return (me_ov["sharpe_ann"] > me_bh["sharpe_ann"]) and (ret_ov > ret_bh)
 
 

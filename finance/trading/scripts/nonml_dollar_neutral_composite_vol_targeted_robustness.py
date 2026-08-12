@@ -62,7 +62,7 @@ def main():
             r_vt = pos * r_underlying - turn * (COST_BPS / 1e4)
 
             me = trading_metrics(r_vt)
-            ret = float(np.cumprod(1.0 + r_vt)[-1] - 1.0)
+            ret = float(np.exp(r_vt.sum()) - 1.0)
             sharpe_daily = r_vt.mean() / r_vt.std() if r_vt.std() > 0 else float("nan")
             tstat = sharpe_daily * np.sqrt(len(r_vt))
 

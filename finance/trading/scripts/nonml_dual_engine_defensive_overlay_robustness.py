@@ -37,7 +37,7 @@ def main():
     pnl_bh = r.copy()
     pnl_bh[0] -= COST_BPS / 1e4
     me_bh = trading_metrics(pnl_bh)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
     calmar_bh = me_bh["calmar"] if np.isfinite(me_bh["calmar"]) else -np.inf
 
     lines = [
@@ -53,7 +53,7 @@ def main():
         turn = np.abs(np.diff(pos_combined, prepend=1.0))
         pnl_ov = pos_combined * r - turn * (COST_BPS / 1e4)
         me_ov = trading_metrics(pnl_ov)
-        ret_ov = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
+        ret_ov = float(np.exp(pnl_ov.sum()) - 1.0)
         calmar_ov = me_ov["calmar"] if np.isfinite(me_ov["calmar"]) else -np.inf
         ok_std = (me_ov["sharpe_ann"] > me_bh["sharpe_ann"]) and (ret_ov > ret_bh)
         ok_calmar = calmar_ov > calmar_bh
