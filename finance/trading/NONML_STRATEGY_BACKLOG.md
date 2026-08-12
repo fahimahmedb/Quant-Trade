@@ -3357,3 +3357,40 @@ comparables entre eux et avec la batterie générique — ce qui n'était pas le
 jusqu'ici.
 
 **Aucun PASS RENFORCÉ. Bilan inchangé : 21 PASS niveau 1 tombés, 0 gagné.**
+
+## Backlog #389 (12/08/2026) — sixième foyer, et une boucle documentation → statistique
+
+| 389 | Corriger `nonml_backlog_spa_dsr_validation.py` (composition `cumprod(1+·)` sur du log) et le ré-exécuter | Aucune nouvelle donnée | **FAIT — 30 lignes de rendement corrigées, aucun verdict modifié.** Sixième foyer du bug de composition. Ici le P&L est indiciel (`pos * bh_common`), donc pas d'agrégation en cause : seule la colonne « rendement » était fausse. Le SPA passe par `losses = -pnl` (log, correct) et le DSR par `trading_metrics` (log, correct) — **p-value SPA inchangée à 0,1924**, conclusions inchangées. |
+
+### Effet de bord découvert : `n_trials` est extrait par regex du backlog lui-même
+
+En comparant l'avant/après, un chiffre a bougé sans rapport avec ma correction :
+`n_trials` passe de **43 à 112**, et `var_trials` de **0,2918 à 0,1475**.
+
+Cause : `approx_var_trials()` estime la dispersion des Sharpe du projet en
+**cherchant par expression régulière** le motif `Sharpe +a → +b` dans
+`NONML_STRATEGY_BACKLOG.md` — c'est-à-dire dans un document de prose que chaque
+cycle enrichit.
+
+**Conséquence méthodologique, à traiter comme une faiblesse de conception :**
+
+- écrire davantage de comptes rendus mentionnant des Sharpe **modifie un paramètre
+  statistique** (`var_trials`) qui entre dans le calcul du **DSR de toutes les
+  batteries** ;
+- le sens est défavorable à la rigueur : plus de motifs extraits → variance
+  estimée **plus faible** → seuil de sélection plus bas → **DSR plus permissif**.
+  La documentation rend donc mécaniquement le critère plus facile à passer.
+
+**Aucun verdict n'est affecté à ce stade** — les DSR observés (0,29 à 0,55)
+restent très loin du seuil de 0,95, et aucune valeur plausible de `var_trials` ne
+les en rapprocherait. Le problème est structurel, pas encore matériel.
+
+**Je ne modifie pas ce mécanisme de ma seule initiative** : il est inscrit dans le
+protocole et une estimation de `n_trials` est un choix de méthode, pas un bug de
+calcul. Signalé pour arbitrage. La correction naturelle serait de figer
+`n_trials` et `var_trials` dans un fichier de données dédié, versionné et non
+réécrit par les comptes rendus.
+
+**Bilan de la campagne : 6 foyers du même bug** — backtests indiciels,
+simulations 300 €, batterie générique, batterie dédiée `dollar_neutral`, les
+5 autres batteries dédiées, et la validation SPA/DSR du backlog.

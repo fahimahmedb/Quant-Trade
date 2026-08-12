@@ -267,7 +267,7 @@ def main():
     pnl_bh = bh_common.copy()
     pnl_bh[0] -= COST_BPS / 1e4
     me_bh = trading_metrics(pnl_bh)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
 
     losses = {}
     sharpes = {}
@@ -286,7 +286,7 @@ def main():
         sharpes_daily[name] = me["sharpe_daily"]
         skews[name] = me["skew"]
         kurts[name] = me["excess_kurt"]
-        rets[name] = float(np.cumprod(1.0 + pnl)[-1] - 1.0)
+        rets[name] = float(np.exp(pnl.sum()) - 1.0)
         mdds[name] = me["max_drawdown_pct"]
         losses[name] = -pnl
 

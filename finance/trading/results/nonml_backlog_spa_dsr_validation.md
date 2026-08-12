@@ -6,20 +6,20 @@ Fenêtre commune : 1133 séances (intersection des périodes testables des 13 me
 
 | Membre | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.55 | +57.8% | -34.4% |
-| dispersion | +0.60 | +70.0% | -34.4% |
-| weakness_breadth | +0.59 | +70.1% | -34.4% |
-| correlation_regime | +0.55 | +63.4% | -34.4% |
-| momentum_breadth | +0.60 | +73.6% | -34.4% |
-| sma200_breadth | +0.60 | +74.0% | -34.4% |
-| net_breadth | +0.60 | +73.6% | -34.4% |
-| sma200_momentum_and | +0.61 | +74.6% | -34.4% |
-| concentration | +0.59 | +69.0% | -34.4% |
-| momentum_dispersion | +0.62 | +76.4% | -34.4% |
-| range_position | +0.59 | +68.1% | -34.4% |
-| momentum_dispersion_trend_and | +0.62 | +74.4% | -34.4% |
-| beta_dispersion | +0.52 | +56.3% | -34.4% |
-| internal_breadth | +0.60 | +73.0% | -34.4% |
+| Buy&Hold (NDX) | +0.55 | +78.8% | -34.4% |
+| dispersion | +0.60 | +95.2% | -34.4% |
+| weakness_breadth | +0.59 | +97.7% | -34.4% |
+| correlation_regime | +0.55 | +89.6% | -34.4% |
+| momentum_breadth | +0.60 | +102.0% | -34.4% |
+| sma200_breadth | +0.60 | +102.4% | -34.4% |
+| net_breadth | +0.60 | +102.0% | -34.4% |
+| sma200_momentum_and | +0.61 | +103.1% | -34.4% |
+| concentration | +0.59 | +94.3% | -34.4% |
+| momentum_dispersion | +0.62 | +104.2% | -34.4% |
+| range_position | +0.59 | +93.1% | -34.4% |
+| momentum_dispersion_trend_and | +0.62 | +101.4% | -34.4% |
+| beta_dispersion | +0.52 | +80.8% | -34.4% |
+| internal_breadth | +0.60 | +101.3% | -34.4% |
 
 ## 2. Test SPA (Hansen 2005, bootstrap stationnaire, `src/volatility.py::spa_test`, mêmes paramètres qu'à l'Étape C, aucun retuning)
 
@@ -43,4 +43,4 @@ DSR ≤ 0.95 : le Sharpe du meilleur membre NE reste PAS statistiquement disting
 
 Univers hétérogène (mécanismes très différents, pas seulement vol-targeting) — ne respecte pas strictement l'hypothèse DSR de tests répétés de la MÊME métrique candidate. Reporté uniquement à titre de borne indicative, PAS comme résultat principal.
 
-n_trials≈43 (Sharpe extractibles par regex sur 43/110 entrées du backlog), var_trials≈0.2918, meilleur Sharpe extrait≈+3.00. Sharpe max attendu sous H0 (essais multiples) ≈ 1.1981 (échelle Sharpe annualisé, pas directement comparable au DSR journalier de la section 3 -- reporté ici uniquement pour illustrer l'ordre de grandeur de l'inflation du seuil de significativité quand n_trials passe de 13 à ~110).
+n_trials≈112 (Sharpe extractibles par regex sur 112/110 entrées du backlog), var_trials≈0.1475, meilleur Sharpe extrait≈+3.00. Sharpe max attendu sous H0 (essais multiples) ≈ 0.9872 (échelle Sharpe annualisé, pas directement comparable au DSR journalier de la section 3 -- reporté ici uniquement pour illustrer l'ordre de grandeur de l'inflation du seuil de significativité quand n_trials passe de 13 à ~110).
