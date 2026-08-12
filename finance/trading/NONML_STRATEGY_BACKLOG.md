@@ -3046,3 +3046,48 @@ sens conforme aux deux biais, l'un comme l'autre prédits avant mesure.
 
 **Le compteur de PASS reste à recalculer proprement** avant toute reprise de la
 recherche de nouvelles hypothèses.
+
+## Backlog #382 (12/08/2026) — recomptage des PASS et batteries caduques
+
+| 382 | Recompter les PASS après la campagne #375-#381 et identifier les batteries Règle 9 devenues caduques | Aucune nouvelle donnée (lecture des `results/*.md`) | **FAIT.** Inventaire mécanique par `scripts/nonml_pass_inventory.py`, reproductible. Sur **269 fichiers de résultat présents** : **93 PASS, 172 FAIL, 4 verdicts indéterminés** (comptés explicitement, jamais écartés en silence). Sur **83 batteries Règle 9** : **12 caduques** (elles valident une stratégie désormais FAIL), 63 encore adossées à un PASS, 8 sans résultat associé analysable. Voir `results/nonml_pass_inventory.md`. |
+
+### Le compteur officiel
+
+**« 101 PASS niveau 1 sur 372 hypothèses » est PÉRIMÉ et ne doit plus être cité.**
+Le chiffre courant est **93 PASS sur 265 verdicts lisibles** (269 fichiers moins
+4 indéterminés).
+
+**Contrôle de cohérence :** le décompte pris après la correction de composition
+mais avant celle d'agrégation (#377) donnait 101 PASS sur 265. On en compte 93.
+L'écart de 8 correspond **exactement** aux 8 reclassifications d'agrégation
+(`momentum_52w_high` au #378 + 7 au #379). Les 12 reclassifications dues au bug de
+composition étaient déjà intégrées dans le 101. Le nouveau chiffre n'est donc pas
+un comptage indépendant qui retomberait par chance, mais la conséquence
+arithmétique des reclassifications documentées.
+
+**Le dénominateur a changé de nature** : 265 verdicts lisibles ≠ 372 hypothèses.
+Certains cycles étaient des synthèses ou des batteries sans fichier de résultat
+propre, d'autres en produisent plusieurs. Le « 372 » reste le compteur
+d'hypothèses testées (utile pour le DSR cumulé, `n_trials`) ; le « 265 » est le
+nombre de verdicts effectivement relisibles aujourd'hui. **Ne pas confondre les
+deux.**
+
+### Les 12 batteries caduques
+
+`bitcoin_momentum_overlay`, `bond_market_volatility_overlay`,
+`cash_rate_correction_defensive_vol_targeting_44`,
+`credit_card_delinquency_overlay`, `cross_market_correlation_ndx_dax_overlay`,
+`delinquency_nfci_baa10y_graduated_overlay`,
+`delinquency_nfci_baa10y_majority_overlay`, `ewma_vol_targeting_overlay`,
+`financial_conditions_overlay`, `gjr_vol_managed_weekly_rebalance`,
+`momentum_consistency_pit_universe`, `volatility_managed_portfolio_gjr`.
+
+Elles ne sont **pas supprimées** (l'historique est conservé) mais **ne doivent
+plus être invoquées comme validation** : elles portent sur des résultats qui
+n'existent plus.
+
+**La campagne de correction et son inventaire sont clos.** La recherche de
+nouvelles hypothèses peut reprendre sur une base assainie — en gardant que le
+backlog « à faire » reste épuisé et que la prochaine action productive dépend
+d'une nouvelle catégorie de données ou d'un pivot Étape D, dont le meilleur
+candidat (#344 Bitcoin) est désormais FAIL.
