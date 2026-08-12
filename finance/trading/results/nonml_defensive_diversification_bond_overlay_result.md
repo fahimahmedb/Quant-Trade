@@ -6,8 +6,8 @@ Position équity moyenne (#115, inchangée) : 0.87x — position obligataire moy
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX 100%) | +0.53 | +6416.7% | -82.9% | 77.406 |
-| **#115 + proxy obligataire (au lieu de cash)** | **+0.77** | **+14405.6%** | -50.9% | 283.098 |
+| Buy&Hold (NDX 100%) | +0.53 | +25465.6% | -82.9% | 307.195 |
+| **#115 + proxy obligataire (au lieu de cash)** | **+0.77** | **+27764.4%** | -50.9% | 545.626 |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

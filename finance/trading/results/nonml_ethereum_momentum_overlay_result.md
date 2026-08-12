@@ -4,12 +4,12 @@
 
 | Marché | Séances test. | % temps coupé | BH Sharpe | BH Rdt total | BH MDD | Overlay Sharpe | Overlay Rdt total | Overlay MDD | Sharpe>BH | Rdt>BH |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Composite (5 ans) | 1229 | 38.0% | +0.52 | +56.8% | -36.4% | +0.76 | +76.6% | -30.6% | OUI | OUI |
-| NDX (40 ans) | 2529 | 32.2% | +0.84 | +420.1% | -35.6% | +0.97 | +391.7% | -31.5% | OUI | non |
-| Russell 2000 | 2529 | 32.2% | +0.40 | +94.7% | -43.1% | +0.46 | +102.3% | -34.4% | OUI | OUI |
-| S&P 500 | 2529 | 32.2% | +0.71 | +207.2% | -33.9% | +0.85 | +201.3% | -26.9% | OUI | non |
-| DAX | 2554 | 32.6% | +0.52 | +120.9% | -38.8% | +0.49 | +89.6% | -31.9% | non | non |
+| Composite (5 ans) | 1229 | 38.0% | +0.52 | +77.9% | -36.4% | +0.76 | +90.1% | -30.6% | OUI | OUI |
+| NDX (40 ans) | 2529 | 32.2% | +0.84 | +574.4% | -35.6% | +0.97 | +480.8% | -31.5% | OUI | non |
+| Russell 2000 | 2529 | 32.2% | +0.40 | +157.9% | -43.1% | +0.46 | +143.3% | -34.4% | OUI | non |
+| S&P 500 | 2529 | 32.2% | +0.71 | +262.7% | -33.9% | +0.85 | +233.4% | -26.9% | OUI | non |
+| DAX | 2554 | 32.6% | +0.52 | +162.3% | -38.8% | +0.49 | +113.1% | -31.9% | non | non |
 
-**2/5 marchés où l'overlay bat Buy&Hold en Sharpe ET rendement (critère renforcé : ≥4/5).**
+**1/5 marchés où l'overlay bat Buy&Hold en Sharpe ET rendement (critère renforcé : ≥4/5).**
 
 **FAIL — critère pré-enregistré NON atteint.**

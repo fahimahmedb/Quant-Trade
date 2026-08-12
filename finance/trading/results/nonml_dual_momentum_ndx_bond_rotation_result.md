@@ -6,8 +6,8 @@ Nombre de rotations complètes : 74 — % du temps en NDX : 70.9%
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX 100%) | +0.52 | +5429.9% | -82.9% | 65.501 |
-| **Momentum dual (rotation)** | **+0.49** | **+2205.7%** | -46.9% | 47.003 |
+| Buy&Hold (NDX 100%) | +0.52 | +21358.1% | -82.9% | 257.646 |
+| **Momentum dual (rotation)** | **+0.49** | **+5303.6%** | -46.9% | 113.018 |
 
 1. Sharpe overlay > BH : non
 2. Rendement overlay > BH : non

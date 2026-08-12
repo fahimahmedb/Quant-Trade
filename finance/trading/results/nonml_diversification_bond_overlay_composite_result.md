@@ -4,8 +4,8 @@
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (Composite 100%) | +0.52 | +56.5% | -36.4% | 1.553 |
-| **Diversification obligataire** | **+0.59** | **+56.2%** | -32.5% | 1.726 |
+| Buy&Hold (Composite 100%) | +0.52 | +77.6% | -36.4% | 2.133 |
+| **Diversification obligataire** | **+0.59** | **+69.9%** | -32.5% | 2.147 |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : non

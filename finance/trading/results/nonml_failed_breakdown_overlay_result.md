@@ -4,11 +4,11 @@ Breakdown = clôture ≤ plus bas glissant 20j. Faux breakdown confirmé si clô
 
 | Marché | BH Sharpe | BH Rdt total | BH MDD | Overlay Sharpe | Overlay Rdt total | Overlay MDD | %j levé | Sharpe>BH | Rdt>BH |
 |---|---|---|---|---|---|---|---|---|---|
-| Composite (5 ans) | +0.52 | +57.6% | -36.4% | +0.29 | +23.0% | -47.0% | 23.8% | non | non |
-| NDX (40 ans) | +0.53 | +6599.5% | -82.9% | +0.42 | +3556.5% | -94.2% | 20.3% | non | non |
-| Russell 2000 | +0.34 | +602.0% | -59.9% | +0.27 | +272.4% | -73.8% | 20.5% | non | non |
-| S&P 500 | +0.45 | +3369.2% | -56.8% | +0.44 | +8340.7% | -74.6% | 21.1% | non | OUI |
-| DAX | +0.25 | +130.5% | -72.7% | +0.22 | +65.8% | -85.7% | 22.3% | non | non |
+| Composite (5 ans) | +0.52 | +79.0% | -36.4% | +0.29 | +65.7% | -47.0% | 23.8% | non | non |
+| NDX (40 ans) | +0.53 | +26208.9% | -82.9% | +0.42 | +62001.3% | -94.2% | 20.3% | non | OUI |
+| Russell 2000 | +0.34 | +1646.9% | -59.9% | +0.27 | +2370.6% | -73.8% | 20.5% | non | OUI |
+| S&P 500 | +0.45 | +7977.0% | -56.8% | +0.44 | +53074.9% | -74.6% | 21.1% | non | OUI |
+| DAX | +0.25 | +353.5% | -72.7% | +0.22 | +557.4% | -85.7% | 22.3% | non | OUI |
 
 **0/5 marchés où l'overlay bat Buy&Hold en Sharpe ET rendement (critère renforcé : ≥4/5).**
 

@@ -6,9 +6,9 @@
 
 | | Sharpe ann. | Sharpe journalier | t-stat | Rendement total | MDD |
 |---|---|---|---|---|---|
-| Buy&Hold PIT (contexte, hérité du #349) | +0.40 | — | — | +104.8% | -36.4% |
-| Sleeve #349 SANS vol-targeting (référence directe) | +0.45 | — | — | +138.6% | -28.2% |
-| **Sleeve redimensionné par sa vol (Piste C)** | **+0.61** | +0.0387 | **+2.08** | +175.3% | -32.4% |
+| Buy&Hold PIT (contexte, hérité du #349) | +0.40 | — | — | +163.8% | -36.4% |
+| Sleeve #349 SANS vol-targeting (référence directe) | +0.45 | — | — | +217.7% | -28.2% |
+| **Sleeve redimensionné par sa vol (Piste C)** | **+0.61** | +0.0387 | **+2.08** | +222.6% | -32.4% |
 
 1. Sharpe annualisé > 0 : OUI
 2. t-stat > 2 : OUI

@@ -6,9 +6,9 @@ Fraction du temps avec levier (pos_eq>1,0x, donc allocation obligataire négativ
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX 100%) | +0.52 | +4553.2% | -82.9% | 54.926 |
+| Buy&Hold (NDX 100%) | +0.52 | +16652.5% | -82.9% | 200.881 |
 | #131 seul (déjà committé) | -- | -- | -57,2%→-55,3% (cf. résultat #131) | -- |
-| **#131 + diversification obligataire (#134)** | **+0.74** | **+12228.3%** | -46.5% | 262.830 |
+| **#131 + diversification obligataire (#134)** | **+0.74** | **+26382.0%** | -46.5% | 567.041 |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

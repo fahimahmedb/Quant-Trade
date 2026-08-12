@@ -8,8 +8,8 @@ Breadth drawdown profond moyenne (toute la période) : 26.7%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté drawdown profond** | **+0.69** | **+109.8%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté drawdown profond** | **+0.69** | **+145.2%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

@@ -6,12 +6,12 @@
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (DAX 100%) | +0.24 | +116.5% | -72.7% | 1.603 |
-| **Diversification obligataire (taux allemand)** | **+0.29** | **+152.6%** | -61.3% | 2.488 |
+| Buy&Hold (DAX 100%) | +0.24 | +325.5% | -72.7% | 4.478 |
+| **Diversification obligataire (taux allemand)** | **+0.29** | **+276.6%** | -61.3% | 4.511 |
 
 1. Sharpe overlay > BH : OUI
-2. Rendement overlay > BH : OUI
-3. Critère standard (1 ET 2) : PASS
+2. Rendement overlay > BH : non
+3. Critère standard (1 ET 2) : FAIL
 4. Critère Calmar (overlay > BH) : PASS
 
 **PASS (niveau 1, au moins un critère)**

@@ -4,8 +4,8 @@ Position 1.0x en permanence, CAP=2.0x les jours où le rendement DAX de la séan
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.53 | +6599.5% | -82.9% |
-| **Overlay spillover DAX→NDX** | **+0.31** | **+535.7%** | -95.7% |
+| Buy&Hold (NDX) | +0.53 | +26208.9% | -82.9% |
+| **Overlay spillover DAX→NDX** | **+0.31** | **+9392.6%** | -95.7% |
 
 1. Sharpe overlay > BH : non
 2. Rendement overlay > BH : non

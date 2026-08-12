@@ -7,8 +7,8 @@ Position moyenne : 1.20x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.51 | +3624.8% | -82.9% |
-| **Overlay vol-targeting gaté prévision GJR-t** | **+0.51** | **+4337.3%** | -82.9% |
+| Buy&Hold (NDX) | +0.51 | +13204.5% | -82.9% |
+| **Overlay vol-targeting gaté prévision GJR-t** | **+0.51** | **+19217.2%** | -82.9% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

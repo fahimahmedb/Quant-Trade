@@ -4,8 +4,8 @@ Position(t) = (Position_#115(t) + Position_GARCH(t)) / 2, fenêtre commune 9522 
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 0.077 |
-| **Overlay combiné (#115+GARCH)/2** | **+0.69** | **+8357.7%** | -57.2% | **0.162** |
+| Buy&Hold (NDX) | +0.52 | +16652.5% | -82.9% | 0.077 |
+| **Overlay combiné (#115+GARCH)/2** | **+0.69** | **+17744.2%** | -57.2% | **0.162** |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI
