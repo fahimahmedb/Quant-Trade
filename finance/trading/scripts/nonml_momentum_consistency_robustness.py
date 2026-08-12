@@ -64,7 +64,7 @@ def run_one(P: pd.DataFrame, n_blocks: int, rebal_every: int):
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
     lookback = n_blocks * BLOCK_LEN
 
@@ -94,7 +94,7 @@ def run_one(P: pd.DataFrame, n_blocks: int, rebal_every: int):
     pnl_c = pnl_c - turn_c * (COST_BPS / 1e4)
     pnl_b = pnl_b - turn_b * (COST_BPS / 1e4)
 
-    me_c, me_b = trading_metrics(pnl_c), trading_metrics(pnl_b)
+    me_c, me_b = trading_metrics(np.log1p(pnl_c)), trading_metrics(np.log1p(pnl_b))
     ret_c = np.cumprod(1.0 + pnl_c)[-1] - 1.0
     ret_b = np.cumprod(1.0 + pnl_b)[-1] - 1.0
     return me_c["sharpe_ann"] > me_b["sharpe_ann"], ret_c > ret_b, me_c["sharpe_ann"], ret_c

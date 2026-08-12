@@ -30,7 +30,7 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     n_top = max(1, int(round(n_tickers * TERCILE)))
@@ -54,7 +54,7 @@ def main():
     pnl_base = (weights_cons[start:] * R[start:]).sum(axis=1)
     turn_base = np.abs(np.diff(weights_cons[start:], axis=0, prepend=weights_cons[start:start+1])).sum(axis=1) / 2.0
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
-    me_base = trading_metrics(pnl_base)
+    me_base = trading_metrics(np.log1p(pnl_base))
     ret_base = np.cumprod(1.0 + pnl_base)[-1] - 1.0
 
     lines = [
@@ -71,7 +71,7 @@ def main():
         pnl_lev = (weights_lev[start:] * R[start:]).sum(axis=1)
         turn_lev = np.abs(np.diff(weights_lev[start:], axis=0, prepend=weights_lev[start:start+1])).sum(axis=1) / 2.0
         pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
-        me_lev = trading_metrics(pnl_lev)
+        me_lev = trading_metrics(np.log1p(pnl_lev))
         ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
         sharpe_ok = me_lev["sharpe_ann"] > me_base["sharpe_ann"]
         ret_ok = ret_lev > ret_base

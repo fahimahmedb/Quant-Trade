@@ -30,7 +30,12 @@ def run_one(P: pd.DataFrame, V: pd.DataFrame, illiq_window: int):
     exists = np.isfinite(P.values)
     R = np.log(P / P.shift(1))
     R.iloc[0, :] = 0.0
-    R_safe = np.nan_to_num(R.values, nan=0.0)
+    # R_simple : rendements SIMPLES reserves au P&L. R reste en LOG car il sert
+    # au SIGNAL (illiquidite d'Amihud), dont la definition pre-enregistree ne
+    # doit pas changer.
+    R_simple = (P / P.shift(1) - 1.0)
+    R_simple.iloc[0, :] = 0.0
+    R_safe = np.nan_to_num(R_simple.values, nan=0.0)
 
     dollar_volume = P.values * V.values
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -69,7 +74,7 @@ def run_one(P: pd.DataFrame, V: pd.DataFrame, illiq_window: int):
     pnl_illiq = pnl_illiq - turn_illiq * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_illiq, me_bh = trading_metrics(pnl_illiq), trading_metrics(pnl_bh)
+    me_illiq, me_bh = trading_metrics(np.log1p(pnl_illiq)), trading_metrics(np.log1p(pnl_bh))
     ret_illiq = np.cumprod(1.0 + pnl_illiq)[-1] - 1.0
     ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
     return (me_illiq["sharpe_ann"] > me_bh["sharpe_ann"], ret_illiq > ret_bh,

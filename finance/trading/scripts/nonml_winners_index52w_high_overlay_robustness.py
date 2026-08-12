@@ -45,7 +45,9 @@ def build_base():
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -80,7 +82,7 @@ def evaluate(P, R_safe, weights_winners, cap, threshold):
     pnl_base = (weights_winners[start:] * R_safe[start:]).sum(axis=1)
     turn_base = np.abs(np.diff(weights_winners[start:], axis=0, prepend=weights_winners[start:start+1])).sum(axis=1) / 2.0
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
-    me_base = trading_metrics(pnl_base)
+    me_base = trading_metrics(np.log1p(pnl_base))
     ret_base = np.cumprod(1.0 + pnl_base)[-1] - 1.0
 
     exposure = np.where(trend_aligned, cap, 1.0)
@@ -88,7 +90,7 @@ def evaluate(P, R_safe, weights_winners, cap, threshold):
     pnl_lev = (weights_lev[start:] * R_safe[start:]).sum(axis=1)
     turn_lev = np.abs(np.diff(weights_lev[start:], axis=0, prepend=weights_lev[start:start+1])).sum(axis=1) / 2.0
     pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
-    me_lev = trading_metrics(pnl_lev)
+    me_lev = trading_metrics(np.log1p(pnl_lev))
     ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
 
     sharpe_ok = me_lev["sharpe_ann"] > me_base["sharpe_ann"]

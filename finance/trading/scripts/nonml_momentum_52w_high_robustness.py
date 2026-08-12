@@ -44,7 +44,9 @@ def run_one(P: pd.DataFrame, lookback: int, rebal_every: int):
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -83,7 +85,7 @@ def run_one(P: pd.DataFrame, lookback: int, rebal_every: int):
     pnl_l = pnl_l - turn_l * (COST_BPS / 1e4)
     pnl_b = pnl_b - turn_b * (COST_BPS / 1e4)
 
-    me_l, me_b = trading_metrics(pnl_l), trading_metrics(pnl_b)
+    me_l, me_b = trading_metrics(np.log1p(pnl_l)), trading_metrics(np.log1p(pnl_b))
     ret_l = np.cumprod(1.0 + pnl_l)[-1] - 1.0
     ret_b = np.cumprod(1.0 + pnl_b)[-1] - 1.0
     return me_l["sharpe_ann"] > me_b["sharpe_ann"], ret_l > ret_b, me_l["sharpe_ann"], ret_l

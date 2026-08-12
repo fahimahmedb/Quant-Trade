@@ -30,7 +30,9 @@ TURNOVER_WINDOW_GRID = [90, 108, 126, 144, 162]  # base=126j, +-~30%
 def run_one(P: pd.DataFrame, V: pd.DataFrame, turnover_window: int):
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -82,7 +84,7 @@ def run_one(P: pd.DataFrame, V: pd.DataFrame, turnover_window: int):
     pnl_double = pnl_double - turn_double * (COST_BPS / 1e4)
     pnl_mom = pnl_mom - turn_mom * (COST_BPS / 1e4)
 
-    me_double, me_mom = trading_metrics(pnl_double), trading_metrics(pnl_mom)
+    me_double, me_mom = trading_metrics(np.log1p(pnl_double)), trading_metrics(np.log1p(pnl_mom))
     ret_double = np.cumprod(1.0 + pnl_double)[-1] - 1.0
     ret_mom = np.cumprod(1.0 + pnl_mom)[-1] - 1.0
     return (me_double["sharpe_ann"] > me_mom["sharpe_ann"], ret_double > ret_mom,

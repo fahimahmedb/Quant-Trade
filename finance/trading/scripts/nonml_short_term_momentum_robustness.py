@@ -38,7 +38,7 @@ def run_one(P, signal_window, rebal_every):
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     signal = np.full((T, n_tickers), np.nan)
@@ -72,7 +72,7 @@ def run_one(P, signal_window, rebal_every):
     turn_b = np.abs(np.diff(weights_b[start:], axis=0, prepend=weights_b[start:start+1])).sum(axis=1) / 2.0
     pnl_w = pnl_w - turn_w * (COST_BPS / 1e4)
     pnl_b = pnl_b - turn_b * (COST_BPS / 1e4)
-    me_w, me_b = trading_metrics(pnl_w), trading_metrics(pnl_b)
+    me_w, me_b = trading_metrics(np.log1p(pnl_w)), trading_metrics(np.log1p(pnl_b))
     ret_w = np.cumprod(1.0 + pnl_w)[-1] - 1.0
     ret_b = np.cumprod(1.0 + pnl_b)[-1] - 1.0
     return (me_w["sharpe_ann"] > me_b["sharpe_ann"]), (ret_w > ret_b), me_w["sharpe_ann"], ret_w
