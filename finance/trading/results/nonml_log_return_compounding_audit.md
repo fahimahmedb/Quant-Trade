@@ -113,3 +113,20 @@ Ce qui est établi en revanche :
 Les chiffres de rendement total publiés dans tous les résultats concernés sont
 par ailleurs **sous-estimés** (ex. NDX Buy&Hold : +1542,9 % publié contre
 +2846,0 % réel), y compris pour Buy&Hold lui-même.
+
+## Vérification anti-cheat : ÉCHEC ATTENDU, non corrigé
+
+`nonml_anti_cheat_check.py log_return_compounding_audit` rend **ÉCHEC (1/2)** :
+
+- **[FAIL]** pré-enregistrement `PREREG_log_return_compounding_audit.md` non trouvé ;
+- **[OK]** aucun motif de recherche de paramètres ni de dépendance ML détecté.
+
+Cet échec est **attendu et n'a pas été corrigé**. L'outil est conçu pour des
+backtests de stratégie, où le PREREG empêche de choisir seuils et univers après
+avoir vu les résultats. Un audit de code n'a ni seuil ni univers à choisir : le
+verdict est une propriété du code (`cumprod(1+·)` appliqué à du log), pas un
+résultat sensible à un calibrage. La seconde vérification — la seule qui porte
+ici — passe.
+
+**Aucun PREREG rétroactif n'a été écrit.** En antidater un pour faire passer le
+contrôle serait précisément la fraude que ce contrôle existe pour empêcher.

@@ -2870,3 +2870,10 @@ composition dans les scripts concernés et ré-exécuter, car une partie inconnu
 des 101 PASS repose sur une jambe « rendement » biaisée en leur faveur.** Cette
 tâche prime sur la recherche de nouvelles idées et sur le pivot Étape D — il est
 inutile d'évaluer de nouveaux candidats avec un instrument de mesure faussé.
+
+**Anti-cheat du #375 : ÉCHEC ATTENDU (1/2), laissé tel quel.** Le contrôle exige
+un PREREG ; un audit de code n'en a pas, par construction (aucun seuil ni univers
+à choisir, le verdict est une propriété du code). La vérification « aucune
+recherche de paramètres, aucune dépendance ML » passe. Aucun PREREG rétroactif
+n'a été écrit — en antidater un serait la fraude que ce contrôle existe pour
+empêcher.
