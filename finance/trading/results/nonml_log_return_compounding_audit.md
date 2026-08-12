@@ -1,0 +1,115 @@
+# Audit — composition de rendements log avec la formule des rendements simples
+
+**Ceci n'est pas un backtest de stratégie et n'incrémente pas le compteur
+d'hypothèses.** C'est un audit de code : aucun paramètre à calibrer, aucun
+seuil de succès à choisir, donc aucun degré de liberté exploitable. Il n'a
+pas fait l'objet d'un pré-enregistrement pour cette raison.
+
+## Le bug
+
+Les scripts construisent la série de l'actif en rendements **log** :
+
+```python
+bh_full = np.log(close[1:] / close[:-1])
+```
+
+puis composent le rendement total avec la formule des rendements **simples** :
+
+```python
+ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
+ret_ov = np.cumprod(1.0 + pnl_ov)[-1] - 1.0
+```
+
+La composition correcte de rendements log est `np.exp(pnl.sum()) - 1.0`.
+
+Le Sharpe et le MDD ne sont PAS touchés : `trading_metrics` traite bien sa
+série comme du log (`eq = np.cumsum(strat_ret)`, MDD converti par `exp(mdd)-1`).
+Seule la colonne « rendement total » — et donc la jambe « Rdt>BH » du critère
+renforcé — est affectée.
+
+## Pourquoi l'erreur n'est pas neutre
+
+`cumprod(1+x) = exp(Σ log(1+x_i))` et `log(1+x) ≈ x - x²/2`. La formule buguée
+retranche donc approximativement `Σ x_i²/2` : elle **pénalise les séries à forte
+variance**. Les overlays de ce backlog étant majoritairement défensifs (ils
+réduisent la variance), le bug les **avantage systématiquement** sur la jambe
+rendement. La direction du biais est prévisible avant même de mesurer, et les
+basculements observés ci-dessous la confirment.
+
+## Mesure
+
+- scripts de `finance/trading/scripts/` combinant rendements log et
+  composition `cumprod(1+·)` : **318** sur 837
+- idiome vérifié directement dans la source pour :
+  `nonml_delinquency_nfci_baa10y_corr_move_cpi_majority_overlay` (lignes 79 / 119-120),
+  `nonml_bitcoin_momentum_overlay` (94 / 115-116),
+  `nonml_dispersion_vol_targeting_overlay_pit_universe` (102 / 139-140),
+  `nonml_volatility_managed_portfolio_gjr` (78 / 90-91).
+- échelle des séries sauvegardées vérifiée : toutes en **fraction**, aucune en
+  pourcentage (le script GJR convertit bien via `r_pct / 100.0`) — le balayage
+  ci-dessous n'est donc pas faussé par un mélange d'unités.
+- `.npz` exploitables (schéma standard) : **151**
+- ignorés : 2
+- verdicts « Rdt>BH » inchangés : **131**
+- verdicts qui **basculent** : **20**
+  - dont OUI → non (le bug fabriquait un verdict favorable) : **17**
+  - dont non → OUI (le bug masquait un verdict favorable) : **3**
+
+### Verdicts qui basculent
+
+| Stratégie (marché sauvegardé dans le `.npz`) | Rdt BH (bugué) | Rdt overlay (bugué) | Rdt BH (corrigé) | Rdt overlay (corrigé) | Verdict bugué | Verdict corrigé |
+|---|---|---|---|---|---|---|
+| nonml_bitcoin_momentum_overlay | +424.3% | +445.3% | +596.4% | +551.0% | OUI | non |
+| nonml_credit_card_delinquency_overlay | +3129.3% | +3352.9% | +11049.9% | +8710.8% | OUI | non |
+| nonml_cross_market_correlation_ndx_dax_overlay | +225.5% | +279.3% | +756.1% | +604.2% | OUI | non |
+| nonml_defensive_calmar_vol_targeting_overlay | +6416.7% | +9256.6% | +25465.6% | +18048.2% | OUI | non |
+| nonml_defensive_diversification_bond_overlay | +6416.7% | +9256.6% | +25465.6% | +18048.2% | OUI | non |
+| nonml_delinquency_nfci_baa10y_corr_move_majority_overlay | +1542.1% | +1700.5% | +2844.6% | +2781.7% | OUI | non |
+| nonml_delinquency_nfci_baa10y_graduated_overlay | +3129.3% | +3227.1% | +11049.9% | +7189.9% | OUI | non |
+| nonml_delinquency_nfci_baa10y_majority_overlay | +3129.3% | +4142.3% | +11049.9% | +9319.3% | OUI | non |
+| nonml_delinquency_nfci_combined_overlay | +3129.3% | +3279.3% | +11049.9% | +10521.2% | OUI | non |
+| nonml_dispersion_vol_targeting_overlay_pit_universe | +391.3% | +380.5% | +542.3% | +556.4% | non | OUI |
+| nonml_diversification_bond_overlay_composite | +56.5% | +61.0% | +77.6% | +74.8% | OUI | non |
+| nonml_diversification_bond_overlay_crossmarket_russell2000 | +610.3% | +634.1% | +1666.8% | +1159.3% | OUI | non |
+| nonml_diversification_bond_triple_engine_stack | +4553.2% | +7718.4% | +16652.5% | +15539.7% | OUI | non |
+| nonml_ewma_defensive_overlay | +4553.2% | +6221.4% | +16652.5% | +11534.3% | OUI | non |
+| nonml_ewma_defensive_overlay_and_triple_engine | +4553.2% | +7718.4% | +16652.5% | +15539.7% | OUI | non |
+| nonml_gjr_calm_regime_overlay_russell2000 | +609.7% | +602.2% | +1570.1% | +1722.8% | non | OUI |
+| nonml_gjr_vol_forecast_momentum_overlay_russell2000 | +886.7% | +815.9% | +2239.3% | +6170.8% | non | OUI |
+| nonml_midterm_election_overlay | +6599.5% | +7339.6% | +26208.9% | +22786.1% | OUI | non |
+| nonml_stlfsi_financial_stress_overlay | +2118.1% | +2349.2% | +7188.6% | +4351.9% | OUI | non |
+| nonml_volatility_managed_portfolio_gjr | +4553.2% | +7178.8% | +16652.5% | +15557.5% | OUI | non |
+
+## Les simulations 300 € sont touchées aussi
+
+Les scripts `*_sim_300e.py` utilisent le même idiome
+(`CAPITAL0 * np.cumprod(1.0 + pnl)` sur des rendements log). L'ampleur y est
+faible parce que la fenêtre est courte (63 séances) et que le terme d'erreur
+croît avec l'horizon : sur la jambe Buy&Hold NDX, **349,93 € publié contre
+352,39 € corrigé** (+2,46 €, soit +0,7 %). À comparer au même bug sur 24 ans
+(+1542,9 % publié contre +2846,0 % réel). Le biais est donc négligeable à
+3 mois et massif à l'échelle du backtest complet.
+
+## Portée exacte de ce que ceci établit — et ce qu'il n'établit pas
+
+Chaque `.npz` ne contient qu'**un seul marché** (celui que le script a choisi de
+sauvegarder, en général NDX). Le critère du backlog est « ≥4/5 marchés ». Un
+basculement ci-dessus établit donc que le verdict de **ce marché-là** était un
+artefact de la formule ; il ne renverse pas mécaniquement le PASS global de la
+stratégie. Statuer exige de ré-exécuter les scripts concernés avec la
+composition corrigée, sur les 5 marchés. Cet audit ne le fait pas et ne
+reclasse aucune entrée du backlog.
+
+Ce qui est établi en revanche :
+
+1. Le bug est **réel et confirmé dans le code source**, pas une hypothèse.
+2. Il est **répandu** : l'idiome coexiste avec des rendements log dans une
+   large partie des scripts du backlog.
+3. Son biais est **directionnel et favorable aux overlays défensifs**, c'est-à-dire
+   favorable dans le sens qui produit des PASS.
+4. Sur les marchés mesurables ici, il a effectivement fabriqué des verdicts
+   favorables dans **17 cas sur 20 basculements**.
+
+Les chiffres de rendement total publiés dans tous les résultats concernés sont
+par ailleurs **sous-estimés** (ex. NDX Buy&Hold : +1542,9 % publié contre
++2846,0 % réel), y compris pour Buy&Hold lui-même.

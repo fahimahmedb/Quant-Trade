@@ -2837,3 +2837,36 @@ Aucune 3e idée forcée (put/call ratio CBOE testé, chemin CDN standard renvoie
 | 374 | Synthèse consolidée v15 : bilan des cycles #369-370 (initiés SEC Form 4 FAIL, clôture définitive de la méga-famille positionnement/flux) après 4 firings consécutifs sans nouvelle piste trouvée | Aucune nouvelle donnée (synthèse des résultats déjà committés) | **FAIT.** Synthèse v15 (2 cycles) : bilan complet des 4 constructions de la méga-famille "positionnement/flux" (CFTC futures ×2, FINRA volume court ×1, SEC initiés ×1), toutes FAIL malgré 3 sources indépendantes et des mécanismes économiquement distincts documentés dans la littérature académique respective (Wang ; Diether/Lee/Werner, Boehmer/Jones/Zhang ; Seyhun, Lakonishok & Lee). **Enseignement transversal proposé** : contrairement aux signaux de prix/rendement/volatilité implicite (qui ont produit plusieurs PASS — CPI, MOVE, Bitcoin, panels combinés), les signaux de POSITIONNEMENT/FLUX semblent mal se généraliser d'un actif spécifique vers une jauge de stress systémique large — hypothèse de lecture, non testée formellement. **Convergence de 4 recherches indépendantes** (cycles distincts, catégories de données différentes à chaque fois) confirmant l'épuisement du terrain non-ML librement disponible via FRED/Yahoo Finance/CFTC/FINRA/SEC EDGAR. **Recommandation mise à jour** : alléger la recherche exploratoire complète à chaque cycle vide (vérification légère suffit désormais), concentrer l'effort sur une nouvelle catégorie de données utilisateur ou un pivot explicite vers l'Étape D. Voir `PREREG_synthese_backlog_consolidee_v15.md`, `results/nonml_synthese_backlog_consolidee_v15.md` |
 
 101 PASS niveau 1 sur 372 hypothèses testées (synthèse v15 — pas un nouveau backtest, dénominateur inchangé, convention identique aux v9-v14 : bilan définitif de la méga-famille positionnement/flux (0/4), convergence de 4 recherches indépendantes confirmant l'épuisement du terrain non-ML librement disponible). **Backlog "à faire" épuisé — conformément à la recommandation v9-v15, la prochaine action productive dépend d'une nouvelle catégorie de données utilisateur ou d'un pivot explicite vers l'Étape D (panel à 6 signaux #365, CPI #338, MOVE #357 et Bitcoin #344 identifiés comme meilleurs candidats). Recherche exploratoire complète à alléger désormais à chaque cycle vide, une vérification légère suffit.**
+
+## Backlog #375 (12/08/2026) — AUDIT DE CODE : bug de composition des rendements log
+
+**Ce cycle n'est PAS un backtest de stratégie.** Le backlog "à faire" étant épuisé
+pour le 4e firing consécutif, le cycle a été engagé vers le pivot Étape D
+recommandé par les synthèses v9-v15. En inspectant le candidat (#365, panel à
+6 signaux), un **bug réel a été trouvé dans le code de mesure lui-même** et le
+cycle a été réorienté vers son audit.
+
+**Honnêteté de procédure — à lire avant d'interpréter :** les chiffres déjà
+committés du #365 ont été lus AVANT qu'un PREREG n'ait été écrit. L'évaluation
+du pivot Étape D ne peut donc pas être présentée comme pré-enregistrée et n'est
+PAS revendiquée comme telle ; elle n'est pas comptée. L'audit de bug qui a suivi
+n'a lui non plus pas fait l'objet d'un PREREG, pour une raison différente et
+légitime : un audit de code n'a aucun paramètre à calibrer ni seuil de succès à
+choisir, donc aucun degré de liberté exploitable.
+
+| 375 | Audit transversal : les backtests construisent les rendements en LOG (`np.log(close[1:]/close[:-1])`) puis composent le rendement total avec la formule des rendements SIMPLES (`np.cumprod(1.0 + pnl)`) au lieu de `np.exp(pnl.sum())` | Aucune nouvelle donnée (relecture du code + `.npz` déjà committés) | **FAIT — BUG CONFIRMÉ, matériel et directionnel.** Sharpe et MDD NON touchés (`trading_metrics` traite bien sa série comme du log). Seule la colonne « rendement total », donc la jambe « Rdt>BH » du critère renforcé, est affectée. **318 scripts sur 837** combinent les deux idiomes. Biais **prévisible a priori** : `cumprod(1+x)=exp(Σ log(1+x_i))` et `log(1+x)≈x−x²/2`, la formule buguée retranche ≈`Σx²/2` et **pénalise les séries à forte variance** — elle avantage donc systématiquement les overlays défensifs, c'est-à-dire dans le sens qui produit des PASS. Mesure sur les 151 `.npz` au format standard : **20 verdicts basculent, dont 17 de OUI vers non**. Touchés notamment : `nonml_bitcoin_momentum_overlay` (#344, candidat de pivot), `nonml_volatility_managed_portfolio_gjr` (cœur de l'Étape D), toute la famille `delinquency_nfci_*` et `diversification_bond_*`. Rendements publiés par ailleurs **sous-estimés** (NDX BH : +1542,9 % publié vs +2846,0 % réel). Simulations 300 € touchées aussi mais marginalement (349,93 € vs 352,39 € sur 63 séances — le biais croît avec l'horizon). Voir `results/nonml_log_return_compounding_audit.md` et `scripts/nonml_log_return_compounding_audit.py` (reproductible). |
+
+**Portée — ce qui n'est PAS établi :** chaque `.npz` ne contient qu'UN marché
+(en général NDX) alors que le critère est « ≥4/5 marchés ». Les basculements
+ci-dessus établissent que le verdict de CE marché était un artefact, **pas** que
+le PASS global de la stratégie tombe. **Aucune entrée du backlog n'est reclassée
+par ce cycle.** Statuer exige de ré-exécuter les 318 scripts concernés sur les
+5 marchés avec la composition corrigée.
+
+101 PASS niveau 1 sur 372 hypothèses testées (**dénominateur et numérateur
+inchangés** : ce cycle est un audit de code, pas une hypothèse de stratégie).
+**Priorité désormais recommandée, avant toute nouvelle hypothèse : corriger la
+composition dans les scripts concernés et ré-exécuter, car une partie inconnue
+des 101 PASS repose sur une jambe « rendement » biaisée en leur faveur.** Cette
+tâche prime sur la recherche de nouvelles idées et sur le pivot Étape D — il est
+inutile d'évaluer de nouveaux candidats avec un instrument de mesure faussé.
