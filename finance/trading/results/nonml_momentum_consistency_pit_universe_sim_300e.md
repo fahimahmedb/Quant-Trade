@@ -4,7 +4,7 @@ Période : 2026-04-27 → 2026-07-27 (63 séances). Référence = Buy&Hold équi
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Buy&Hold équipondéré (univers PIT) | 306.19 EUR | +2.1% | -5.5% | +0.62 |
-| **Momentum de constance (univers PIT)** | **304.97 EUR** | **+1.7%** | -13.7% | +0.36 |
+| Buy&Hold équipondéré (univers PIT) | 317.19 EUR | +5.7% | -4.5% | +1.50 |
+| **Momentum de constance (univers PIT)** | **320.94 EUR** | **+7.0%** | -12.6% | +0.75 |
 
 **Lecture honnête** : fenêtre de 3 mois illustrative uniquement (~3 rebalancements mensuels observés) — le verdict statistique réel reste celui du backtest complet (2015-2026, PASS Sharpe+rendement) et de la robustesse (5/5 variantes voisines OUI/OUI, plateau parfait).

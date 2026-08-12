@@ -4,8 +4,8 @@ Période : 2026-04-13 → 2026-07-13 (63 séances). Position hebdomadaire (REBAL
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Buy & Hold | 349.93 EUR | +16.6% | -7.2% | +2.74 |
-| **Volatility-managed GJR-t (hebdo)** | **349.81 EUR** | **+16.6%** | -9.1% | +2.61 |
+| Buy & Hold | 352.39 EUR | +17.5% | -7.0% | +2.74 |
+| **Volatility-managed GJR-t (hebdo)** | **352.56 EUR** | **+17.5%** | -8.8% | +2.61 |
 
 Exposition moyenne sur la fenêtre : 1.04x (min 0.61x, max 1.50x).
 

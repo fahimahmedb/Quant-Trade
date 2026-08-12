@@ -4,8 +4,8 @@ Période : 2026-04-13 → 2026-07-13 (63 séances). `position = clip(20 % / vol_
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Buy & Hold | 335.13 EUR | +11.7% | -4.9% | +2.45 |
-| **Volatility-managed GJR-t** | **326.06 EUR** | **+8.7%** | -5.7% | +1.75 |
+| Buy & Hold | 336.62 EUR | +12.2% | -4.8% | +2.45 |
+| **Volatility-managed GJR-t** | **327.72 EUR** | **+9.2%** | -5.6% | +1.75 |
 
 Exposition moyenne sur la fenêtre : 1.06x (min 0.72x, max 1.31x).
 

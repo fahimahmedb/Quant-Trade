@@ -34,7 +34,9 @@ def main():
     bh_full_all = np.log(close_full[1:] / close_full[:-1])
 
     breadth = compute_multimarket_breadth_series(dates_idx)
-    breadth_raw = breadth.values
+    # astype(float) : sous pandas >= 3 la serie peut ressortir en dtype object,
+    # que np.isnan refuse. Conversion explicite, aucun changement de valeur.
+    breadth_raw = breadth.values.astype(float)
     gate_aligned = np.where(np.isnan(breadth_raw), False, breadth_raw >= BREADTH_THRESHOLD)
 
     pos_full_all = combined_position(bh_full_all, gate_aligned)

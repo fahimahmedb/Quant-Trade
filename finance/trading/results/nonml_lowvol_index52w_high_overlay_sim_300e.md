@@ -4,7 +4,7 @@ Période : 2026-04-27 → 2026-07-27 (63 séances). Référence = Low-Vol 1.0x (
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Low-Vol 1.0x (référence) | 313.08 EUR | +4.4% | -2.7% | +1.35 |
-| **Low-Vol + overlay 52w-high indice x2.0** | **320.13 EUR** | **+6.7%** | -5.6% | +1.13 |
+| Low-Vol 1.0x (référence) | 316.74 EUR | +5.6% | -2.6% | +1.63 |
+| **Low-Vol + overlay 52w-high indice x2.0** | **327.44 EUR** | **+9.1%** | -5.1% | +1.34 |
 
 **Lecture honnête** : fenêtre courte (~3 mois) illustrative — le verdict statistique réel reste celui du backtest complet (2021-2026, PASS) et de la robustesse (plateau stable sur les deux grilles CAP 1.5x-3.0x et seuil 90-97%).

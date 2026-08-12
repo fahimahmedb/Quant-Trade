@@ -3026,3 +3026,23 @@ composition (`cumprod(1+·)` sur du log), 8 au bug d'agrégation de panier
 **Reste à faire :** les `*_sim_300e.py`, qui portent toujours le bug de
 composition (impact faible sur 63 séances : 349,93 € publié contre 352,39 €
 corrigé sur la jambe Buy&Hold NDX, mais les chiffres publiés sont sous-estimés).
+
+## Backlog #381 (12/08/2026) — correction des 115 simulations 300 €
+
+| 381 | Corriger les `*_sim_300e.py`, derniers scripts portant les deux bugs, et tout ré-exécuter | Aucune nouvelle donnée | **FAIT — 164 montants corrigés dans 82 fichiers, tous à la hausse.** 93 simulations à P&L log (`equity = CAPITAL0 * exp(cumsum(pnl))`), 21 de panier (`R` en simple + `log1p`), 1 cumulant les deux (`amihud`, `R_simple` dédié). **2 exclues et signalées** : `pead_sim_300e` (rendements déjà simples — `cumprod` correct, le corriger l'aurait cassé) et `dollar_neutral_composite_vol_targeted` (`.npz` amont non vérifié). Écart moyen **+7,00 € (+2,03 %)**, médian +2,73 €, maximum +53,11 €, **164/164 à la hausse**. Buy&Hold NDX : 349,93 € → 352,39 €, exactement la valeur annoncée au diagnostic du #375. Voir `results/nonml_log_return_compounding_audit.md`. |
+
+**CAMPAGNE DE CORRECTION TERMINÉE (#375 → #381).**
+
+Bilan définitif : **20 PASS tombés, 0 gagné** (12 dus au bug de composition,
+8 au bug d'agrégation de panier), plus 164 montants de simulation corrigés, tous
+sous-estimés. **Aucun verdict ne s'est amélioré sur aucun des cinq balayages** —
+sens conforme aux deux biais, l'un comme l'autre prédits avant mesure.
+
+**Restent explicitement non traités, et signalés comme tels :**
+- `pead_sim_300e` et `dollar_neutral_composite_vol_targeted` (conventions amont
+  à vérifier avant toute intervention) ;
+- les batteries Règle 9 déjà passées sur les 20 stratégies reclassées, désormais
+  **caduques** : elles validaient des résultats qui n'existent plus.
+
+**Le compteur de PASS reste à recalculer proprement** avant toute reprise de la
+recherche de nouvelles hypothèses.

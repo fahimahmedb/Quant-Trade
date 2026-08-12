@@ -6,7 +6,7 @@ Période : 2026-04-27 → 2026-07-27 (63 séances). Référence = tercile prix b
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Tercile prix bas 1.0x (référence) | 308.41 EUR | +2.8% | -5.5% | +0.93 |
-| **+ overlay janvier x2.0** | **308.41 EUR** | **+2.8%** | -5.5% | +0.93 |
+| Tercile prix bas 1.0x (référence) | 317.64 EUR | +5.9% | -4.2% | +1.77 |
+| **+ overlay janvier x2.0** | **317.64 EUR** | **+5.9%** | -4.2% | +1.77 |
 
 Jours de janvier dans cette fenêtre : 0/63.

@@ -4,7 +4,7 @@ Période : 2026-04-13 → 2026-07-13 (63 séances). Composition de la fenêtre :
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Buy & Hold | 349.93 EUR | +16.6% | -7.2% | +2.74 |
-| **Intersection Halloween x post-élection** | **381.29 EUR** | **+27.1%** | -7.2% | +3.66 |
+| Buy & Hold | 352.39 EUR | +17.5% | -7.0% | +2.74 |
+| **Intersection Halloween x post-élection** | **384.97 EUR** | **+28.3%** | -7.0% | +3.66 |
 
 **Lecture honnête** : fenêtre purement illustrative de 63 séances, sans valeur statistique — le verdict du cycle reste celui du backtest complet (3/4 marchés, PASS marginal) et de la grille de robustesse (26/36, pas un plateau parfait).

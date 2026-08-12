@@ -176,3 +176,42 @@ ici — passe.
 
 **Aucun PREREG rétroactif n'a été écrit.** En antidater un pour faire passer le
 contrôle serait précisément la fraude que ce contrôle existe pour empêcher.
+
+## Correction des 115 simulations 300 € (#381)
+
+Les scripts `*_sim_300e.py` portaient les deux bugs. Tri identique à celui des
+backtests :
+
+- **93 simulations à P&L log** (indice ou série chargée depuis un `.npz`) :
+  `equity = CAPITAL0 * np.exp(np.cumsum(pnl))` remplace
+  `CAPITAL0 * np.cumprod(1.0 + pnl)`.
+- **21 simulations de panier** : `R` passe en rendements simples, `cumprod(1+pnl)`
+  redevient donc correct, `trading_metrics` reçoit `np.log1p(pnl)`.
+- **1 simulation cumulant les deux cas** (`amihud_illiquidity_tilt`) : `R_simple`
+  dédié au P&L, `R` restant en log pour le signal d'illiquidité.
+- **2 exclues et signalées** : `pead_sim_300e` lit des rendements **déjà simples**
+  depuis un CSV — son `cumprod` est correct et le « corriger » l'aurait cassé ;
+  `dollar_neutral_composite_vol_targeted` consomme un `.npz` amont dont la
+  convention n'a pas été vérifiée.
+
+Deux échecs d'exécution rencontrés, tous deux de causes déjà connues et sans
+rapport avec la correction (argument de marché manquant, dtype `object` refusé
+par `np.isnan` sous pandas ≥ 3) ; corrigés.
+
+**Ampleur mesurée sur 164 montants publiés, dans 82 fichiers de résultat :**
+
+| | |
+|---|---|
+| écart moyen | **+7,00 € (+2,03 %)** |
+| écart médian | +2,73 € |
+| écart maximum | +53,11 € |
+| montants revus à la hausse | **164 / 164** |
+
+**Tous les montants publiés étaient sous-estimés, sans exception** — conforme au
+sens du biais établi au #375. La jambe Buy&Hold NDX passe de 349,93 € à
+352,39 €, exactement la valeur annoncée lors du diagnostic initial.
+
+L'ampleur reste modeste (2 % en moyenne) parce que la fenêtre est courte
+(63 séances) : le terme d'erreur croît avec l'horizon. Ces simulations étaient
+donc sous-estimées mais pas trompeuses sur l'ordre de grandeur, contrairement aux
+rendements de backtest sur 24 ans (+1542,9 % publié contre +2846,0 % réel).

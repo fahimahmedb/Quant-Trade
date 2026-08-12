@@ -4,7 +4,7 @@ Période : 2026-04-27 → 2026-07-27 (63 séances). Référence = momentum 12-1 
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Momentum 12-1 seul (référence) | 304.93 EUR | +1.6% | -19.2% | +0.37 |
-| **Momentum 12-1 + double-tri turnover faible** | **293.42 EUR** | **-2.2%** | -9.2% | -0.17 |
+| Momentum 12-1 seul (référence) | 327.06 EUR | +9.0% | -16.9% | +0.77 |
+| **Momentum 12-1 + double-tri turnover faible** | **305.42 EUR** | **+1.8%** | -7.7% | +0.25 |
 
 **Lecture honnête** : fenêtre de 3 mois illustrative uniquement (~3 rebalancements mensuels observés) — le verdict statistique réel reste celui du backtest complet (2022-2026, PASS Sharpe+rendement) et de la robustesse (5/5 variantes voisines de TURNOVER_WINDOW restent OUI/OUI, plateau parfait).
