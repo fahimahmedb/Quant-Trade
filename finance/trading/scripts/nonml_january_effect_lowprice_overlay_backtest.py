@@ -68,8 +68,10 @@ def main(causal=True):
     n_tickers = len(tickers)
     print(f"Univers exploitable : {n_tickers} tickers, {T} séances (calendrier UNION) "
           f"({P.index[0].date()} → {P.index[-1].date()})")
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
 
-    R = np.log(P / P.shift(1))
+    R = (P / P.shift(1) - 1.0)
     R.iloc[0, :] = 0.0
     close = P.values
     exists = np.isfinite(close)
@@ -109,8 +111,8 @@ def main(causal=True):
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
     pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
 
-    me_base = trading_metrics(pnl_base)
-    me_lev = trading_metrics(pnl_lev)
+    me_base = trading_metrics(np.log1p(pnl_base))
+    me_lev = trading_metrics(np.log1p(pnl_lev))
     ret_base = np.cumprod(1.0 + pnl_base)[-1] - 1.0
     ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
 

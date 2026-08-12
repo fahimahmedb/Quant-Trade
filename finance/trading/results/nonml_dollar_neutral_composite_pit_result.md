@@ -4,10 +4,10 @@ Univers PIT : 174 tickers avec prix PIT disponibles. Couverture moyenne éligibl
 
 | | Sharpe ann. | Sharpe journalier | t-stat | Rendement total net | MDD |
 |---|---|---|---|---|---|
-| Buy&Hold équipondéré (univers PIT, contexte) | +0.39 | — | — | +98.9% | -36.4% |
-| **Sleeve L/S dollar-neutre composite** | **+0.45** | +0.0281 | **+1.52** | +136.4% | -28.2% |
+| Buy&Hold équipondéré (univers PIT, contexte) | +0.62 | — | — | +350.6% | -32.4% |
+| **Sleeve L/S dollar-neutre composite** | **+0.07** | +0.0116 | **+0.63** | +20.3% | -39.7% |
 
-Corrélation quotidienne sleeve vs Buy&Hold PIT : -0.279 (proche de 0 attendu pour un portefeuille dollar-neutre).
+Corrélation quotidienne sleeve vs Buy&Hold PIT : -0.284 (proche de 0 attendu pour un portefeuille dollar-neutre).
 
 1. Sharpe annualisé > 0 : OUI
 2. t-stat > 2 : non

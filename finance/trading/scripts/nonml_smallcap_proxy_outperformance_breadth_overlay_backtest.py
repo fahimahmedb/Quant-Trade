@@ -62,7 +62,7 @@ def compute_smallcap_breadth_series() -> pd.Series:
     close = P.values
     T, n_tickers = P.shape
 
-    log_ret = np.log(P / P.shift(1)).values
+    log_ret = (P / P.shift(1) - 1.0).values
 
     idio_vol = np.full((T, n_tickers), np.nan)
     for i in range(IDIO_VOL_WINDOW, T):
@@ -147,8 +147,8 @@ def main():
     pnl_bh = bh_t.copy()
     pnl_bh[0] -= COST_BPS / 1e4
 
-    me_bh = trading_metrics(pnl_bh)
-    me_ov = trading_metrics(pnl_ov)
+    me_bh = trading_metrics(np.log1p(pnl_bh))
+    me_ov = trading_metrics(np.log1p(pnl_ov))
     ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
     ret_ov = np.cumprod(1.0 + pnl_ov)[-1] - 1.0
 

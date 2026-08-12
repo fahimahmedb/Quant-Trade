@@ -90,7 +90,9 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
     simple_ret = P.pct_change(fill_method=None).values
@@ -179,8 +181,8 @@ def main():
 
     dates_test = P.index[start:]
 
-    me_sleeve = trading_metrics(pnl_sleeve_net)
-    me_bh = trading_metrics(pnl_bh_net)
+    me_sleeve = trading_metrics(np.log1p(pnl_sleeve_net))
+    me_bh = trading_metrics(np.log1p(pnl_bh_net))
     ret_sleeve = float(np.cumprod(1.0 + pnl_sleeve_net)[-1] - 1.0)
     ret_bh = float(np.cumprod(1.0 + pnl_bh_net)[-1] - 1.0)
 

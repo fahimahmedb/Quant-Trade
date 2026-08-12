@@ -83,7 +83,7 @@ def main(causal=True):
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     rolling_max = np.full((T, n_tickers), np.nan)
@@ -129,8 +129,8 @@ def main(causal=True):
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
     pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
 
-    me_base = trading_metrics(pnl_base)
-    me_lev = trading_metrics(pnl_lev)
+    me_base = trading_metrics(np.log1p(pnl_base))
+    me_lev = trading_metrics(np.log1p(pnl_lev))
     ret_base = np.cumprod(1.0 + pnl_base)[-1] - 1.0
     ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
 

@@ -58,8 +58,10 @@ def main():
     print(f"Univers exploitable : {n_tickers} tickers, {T} séances (calendrier UNION, "
           f"chaque titre pondéré seulement depuis sa 1ère cotation) "
           f"({P.index[0].date()} → {P.index[-1].date()})")
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
 
-    R = np.log(P / P.shift(1)).values
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     close = P.values
     exists = np.isfinite(close)
@@ -108,8 +110,8 @@ def main():
     pnl_mom = pnl_mom - turn_mom * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_mom = trading_metrics(pnl_mom)
-    me_bh = trading_metrics(pnl_bh)
+    me_mom = trading_metrics(np.log1p(pnl_mom))
+    me_bh = trading_metrics(np.log1p(pnl_bh))
 
     equity_mom = np.cumprod(1.0 + pnl_mom)
     equity_bh = np.cumprod(1.0 + pnl_bh)

@@ -79,7 +79,9 @@ def main(prices_dir=None, panel_start=None, membership_fn=None,
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -132,7 +134,7 @@ def main(prices_dir=None, panel_start=None, membership_fn=None,
     pnl_w = pnl_w - turn_w * (COST_BPS / 1e4)
     pnl_b = pnl_b - turn_b * (COST_BPS / 1e4)
 
-    me_w, me_b = trading_metrics(pnl_w), trading_metrics(pnl_b)
+    me_w, me_b = trading_metrics(np.log1p(pnl_w)), trading_metrics(np.log1p(pnl_b))
     equity_w = np.cumprod(1.0 + pnl_w)
     equity_b = np.cumprod(1.0 + pnl_b)
     ret_w, ret_b = equity_w[-1] - 1.0, equity_b[-1] - 1.0

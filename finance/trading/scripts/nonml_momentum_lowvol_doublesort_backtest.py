@@ -50,7 +50,9 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -109,8 +111,8 @@ def main():
     pnl_double = pnl_double - turn_double * (COST_BPS / 1e4)
     pnl_mom = pnl_mom - turn_mom * (COST_BPS / 1e4)
 
-    me_double = trading_metrics(pnl_double)
-    me_mom = trading_metrics(pnl_mom)
+    me_double = trading_metrics(np.log1p(pnl_double))
+    me_mom = trading_metrics(np.log1p(pnl_mom))
 
     equity_double = np.cumprod(1.0 + pnl_double)
     equity_mom = np.cumprod(1.0 + pnl_mom)

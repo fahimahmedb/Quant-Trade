@@ -53,7 +53,7 @@ def main():
 
     close = P.values
     exists = np.isfinite(close)
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     dates = P.index
@@ -122,8 +122,8 @@ def main():
     pnl_strategy = pnl_strategy - turn_strategy * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_strategy = trading_metrics(pnl_strategy)
-    me_bh = trading_metrics(pnl_bh)
+    me_strategy = trading_metrics(np.log1p(pnl_strategy))
+    me_bh = trading_metrics(np.log1p(pnl_bh))
 
     equity_strategy = np.cumprod(1.0 + pnl_strategy)
     equity_bh = np.cumprod(1.0 + pnl_bh)
