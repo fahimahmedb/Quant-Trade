@@ -2988,3 +2988,22 @@ dispersion). Ils sont de structure hétérogène : une réécriture mécanique y
 risquée, chacun doit être corrigé et ré-exécuté avec vérification. **Tous leurs
 résultats sont suspects d'ici là**, et compte tenu du sens du biais, les
 reclassifications attendues vont dans le sens PASS → FAIL.
+
+## Backlog #379 (12/08/2026) — correction d'agrégation : 34 scripts, 7 PASS de plus tombent
+
+| 379 | Corriger l'agrégation de panier dans les scripts de portefeuille où `R` ne sert qu'au P&L, et tout ré-exécuter | Aucune nouvelle donnée | **FAIT — 7 PASS sur 18 deviennent FAIL, 0 gain.** Tri préalable par `tokenize` (deux classifieurs naïfs antérieurs étaient faux : ils comptaient les commentaires, puis le « R » de « Résultat » dans les chaînes de rapport) : **34 scripts où `R` ne sert qu'au P&L**, **8 où il sert aussi au signal**. Correction sur les 34 : `R` en rendements simples, `trading_metrics(np.log1p(pnl))`, `cumprod(1+pnl)` redevenu correct ; `.copy()` ajouté là où le script écrit dans `R` (`.values` en lecture seule sous pandas ≥ 3). Trois formes de la ligne `R` coexistaient, toutes couvertes. Tombent : `leaders_tom_halloween_union_overlay`, `lowvol_index52w_high_overlay`, `momentum12_1_sma200_overlay`, `momentum_consistency`, `momentum_consistency_pit_universe`, `momentum_consistency_sma200_overlay`, `winners_index52w_high_overlay`. |
+
+**Les 8 scripts couplés au signal sont délibérément exclus** (`amihud` ×2,
+`beta_dispersion`, `correlation_regime`, `dispersion` ×2, `skewness_tilt`,
+`leaders_index52w_high`) : y changer `R` modifierait la stratégie pré-enregistrée
+et non sa seule mesure. Ils recevront un `R_simple` réservé au P&L, le signal
+restant en log. **Leurs résultats restent suspects d'ici là.**
+
+**Bilan consolidé des deux bugs (#375 → #379) : 20 PASS tombés, 0 gagné.**
+12 dus au bug de composition, 8 au bug d'agrégation de panier
+(`momentum_52w_high` au #378 + 7 ici). Aucun verdict ne s'est amélioré dans aucun
+des trois balayages — sens conforme aux deux biais, tous deux prédits avant
+mesure.
+
+**Le compteur de PASS reste provisoire** tant que les 8 scripts restants et les
+`*_sim_300e.py` n'ont pas été traités.

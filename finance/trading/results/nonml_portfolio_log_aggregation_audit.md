@@ -46,3 +46,33 @@ que les titres sont volatils. Elle pénalise donc le plus le panier le plus
 large et le plus volatil — en pratique la référence Buy&Hold équipondérée,
 qui détient tout l'univers. Les stratégies sélectives étaient donc comparées
 à une référence artificiellement affaiblie.
+
+## Ré-exécution des 34 scripts où `R` ne sert qu'au P&L (#379)
+
+Correction appliquée : `R` passe en rendements simples, `Σ wᵢ·Rᵢ` devient le vrai
+rendement de panier, `cumprod(1+pnl)` redevient correct, et `trading_metrics`
+reçoit `np.log1p(pnl)` puisqu'il attend une série log. Aucun seuil, aucune
+fenêtre, aucun univers, aucun critère n'a été touché.
+
+**Tri préalable, indispensable.** Sur les 42 scripts portant le motif, `R` ne
+sert qu'au P&L dans 34 cas ; dans **8 autres il sert AUSSI à construire le
+signal** (`amihud_illiquidity_tilt` ×2, `beta_dispersion`, `correlation_regime`,
+`dispersion_vol_targeting` ×2, `skewness_tilt`, `leaders_index52w_high`). Y
+changer `R` modifierait la stratégie elle-même et non sa seule mesure — un
+retuning déguisé. Ces 8 sont **exclus** et recevront un `R_simple` distinct
+réservé au P&L, le signal restant calculé en log comme pré-enregistré.
+
+Résultat sur les 34 (18 PASS en jeu) :
+
+| | |
+|---|---|
+| PASS → FAIL | **7** |
+| FAIL → PASS | **0** |
+
+Tombent : `leaders_tom_halloween_union_overlay`, `lowvol_index52w_high_overlay`,
+`momentum12_1_sma200_overlay`, `momentum_consistency`,
+`momentum_consistency_pit_universe`, `momentum_consistency_sma200_overlay`,
+`winners_index52w_high_overlay`.
+
+Avec `momentum_52w_high` corrigé au cycle précédent : **8 reclassifications** dues
+à ce seul bug d'agrégation.
