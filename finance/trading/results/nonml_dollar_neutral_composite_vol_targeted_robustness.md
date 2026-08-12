@@ -6,14 +6,14 @@ Point pré-enregistré : TARGET_VOL_ANNUAL=15%, CAP=2.0x. Grille TARGET_VOL_ANNU
 
 | TARGET_VOL_ANNUAL | CAP | Sharpe ann. | t-stat | Rendement total | Sharpe>0 | t-stat>2 | Les deux |
 |---|---|---|---|---|---|---|---|
-| 12% | 1.6x | +0.61 | +2.08 | +130.6% | OUI | OUI | OUI |
-| 12% | 2.0x | +0.62 | +2.11 | +133.6% | OUI | OUI | OUI |
-| 12% | 2.4x | +0.62 | +2.11 | +133.6% | OUI | OUI | OUI |
-| 15% | 1.6x | +0.60 | +2.02 | +162.7% | OUI | OUI | OUI |
-| 15% (point pré-enregistré) | 2.0x | +0.61 | +2.08 | +175.3% | OUI | OUI | OUI |
-| 15% | 2.4x | +0.62 | +2.11 | +179.7% | OUI | OUI | OUI |
-| 18% | 1.6x | +0.58 | +1.96 | +189.9% | OUI | non | non |
-| 18% | 2.0x | +0.60 | +2.03 | +210.7% | OUI | OUI | OUI |
-| 18% | 2.4x | +0.61 | +2.08 | +224.4% | OUI | OUI | OUI |
+| 12% | 1.6x | +0.36 | +1.22 | +73.4% | OUI | non | non |
+| 12% | 2.0x | +0.37 | +1.24 | +75.0% | OUI | non | non |
+| 12% | 2.4x | +0.37 | +1.24 | +75.0% | OUI | non | non |
+| 15% | 1.6x | +0.34 | +1.15 | +89.5% | OUI | non | non |
+| 15% (point pré-enregistré) | 2.0x | +0.36 | +1.22 | +98.9% | OUI | non | non |
+| 15% | 2.4x | +0.37 | +1.24 | +101.3% | OUI | non | non |
+| 18% | 1.6x | +0.32 | +1.08 | +102.7% | OUI | non | non |
+| 18% | 2.0x | +0.34 | +1.16 | +118.5% | OUI | non | non |
+| 18% | 2.4x | +0.36 | +1.22 | +128.2% | OUI | non | non |
 
-**8/9 cellules de la grille passent le critère complet (Sharpe>0 ET t-stat>2).**
+**0/9 cellules de la grille passent le critère complet (Sharpe>0 ET t-stat>2).**

@@ -4,8 +4,8 @@ Maturité pré-enregistrée = 10 ans. Grille 5-20 ans (position équity #124 str
 
 | Maturité | Sharpe ann. | Rendement total | MDD | Calmar | PASS standard | PASS Calmar |
 |---|---|---|---|---|---|---|
-| 5 ans | +0.72 | +9111.6% | -50.3% | 181.284 | OUI | OUI |
-| 10 ans ← pré-enregistré | +0.73 | +9598.6% | -48.4% | 198.381 | OUI | OUI |
-| 20 ans | +0.74 | +10206.2% | -45.7% | 223.316 | OUI | OUI |
+| 5 ans | +0.72 | +18222.4% | -50.3% | 362.552 | OUI | OUI |
+| 10 ans ← pré-enregistré | +0.73 | +19201.3% | -48.4% | 396.844 | OUI | OUI |
+| 20 ans | +0.74 | +20617.9% | -45.7% | 451.131 | OUI | OUI |
 
 Plateau : 3/3 PASS standard, 3/3 PASS Calmar.

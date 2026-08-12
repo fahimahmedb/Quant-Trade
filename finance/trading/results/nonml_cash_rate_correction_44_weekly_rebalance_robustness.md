@@ -6,23 +6,23 @@ Fréquence pré-enregistrée = 5j. Grille 3-20j.
 
 | REBAL_FREQ | Sharpe ann. | Rendement total | MDD | PASS |
 |---|---|---|---|---|
-| 3j | +0.47 | +771.1% | -33.0% | OUI |
-| 5j ← pré-enregistré | +0.46 | +745.2% | -33.5% | OUI |
-| 10j | +0.47 | +847.5% | -32.8% | OUI |
-| 15j | +0.41 | +601.1% | -36.1% | non |
-| 20j | +0.43 | +699.3% | -36.1% | OUI |
+| 3j | +0.47 | +1184.7% | -33.0% | non |
+| 5j ← pré-enregistré | +0.46 | +1163.4% | -33.5% | non |
+| 10j | +0.47 | +1329.0% | -32.8% | non |
+| 15j | +0.41 | +984.6% | -36.1% | non |
+| 20j | +0.43 | +1146.5% | -36.1% | non |
 
-Plateau Russell 2000 : 4/5 fréquences PASS.
+Plateau Russell 2000 : 0/5 fréquences PASS.
 
 ## NDX
 
 | REBAL_FREQ | Sharpe ann. | Rendement total | MDD | PASS |
 |---|---|---|---|---|
-| 3j | +0.84 | +10726.5% | -37.3% | OUI |
-| 5j ← pré-enregistré | +0.83 | +11028.1% | -36.3% | OUI |
-| 10j | +0.81 | +9689.3% | -36.7% | OUI |
-| 15j | +0.79 | +9303.0% | -37.3% | OUI |
-| 20j | +0.77 | +8200.1% | -37.3% | OUI |
+| 3j | +0.84 | +17232.3% | -37.3% | non |
+| 5j ← pré-enregistré | +0.83 | +17853.9% | -36.3% | non |
+| 10j | +0.81 | +15892.1% | -36.7% | non |
+| 15j | +0.79 | +15491.0% | -37.3% | non |
+| 20j | +0.77 | +13732.6% | -37.3% | non |
 
-Plateau NDX : 5/5 fréquences PASS.
+Plateau NDX : 0/5 fréquences PASS.
 
