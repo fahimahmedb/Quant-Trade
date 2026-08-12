@@ -2950,3 +2950,41 @@ alors que le rendement d'un panier pondéré est `Σ wᵢ·r_simple,ᵢ`. Ils on
 délibérément exclus de la correction mécanique, qui n'y est pas valide. Leurs
 résultats restent suspects tant que ce point n'est pas traité. Priorité n°2 :
 les `*_sim_300e.py`, qui partagent le bug de composition.
+
+## Backlog #378 (12/08/2026) — SECOND BUG : agrégation de panier en rendements log
+
+Priorité n°1 identifiée au #377. Défaut **distinct** du bug de composition
+(#375-377) et bien plus grave sur les portefeuilles au niveau titre.
+
+| 378 | Les backtests de portefeuille calculent le P&L quotidien comme `Σ wᵢ·r_log,ᵢ` — une moyenne pondérée de rendements LOG. Le rendement d'un panier pondéré est `Σ wᵢ·r_simple,ᵢ` : l'agrégation ENTRE TITRES est additive en rendement simple, la composition DANS LE TEMPS est additive en log, et les deux opérations ne commutent pas | Aucune nouvelle donnée (prix titres déjà locaux) | **FAIT — BUG CONFIRMÉ par recalcul comptable indépendant.** Audit `nonml_portfolio_log_aggregation_audit.py` : simulation en **nombre de parts** (capital réparti, parts détenues, portefeuille revalorisé aux prix — aucune formule de rendement n'intervient). Sur l'univers 99 titres / 1396 séances, équipondéré, sans coûts : ancienne méthode **+94,1 %**, correction **+222,4 %**, référence en parts **+224,7 %**. Écart de l'ancienne méthode à la référence : **40,23 %**. Écart de la correction : **0,73 %** (dérive de rebalancement entre deux dates, attendue et sans rapport d'ordre de grandeur). Voir `results/nonml_portfolio_log_aggregation_audit.md`. |
+
+**Sens du biais :** `log(1+x) ≤ x`, donc l'ancienne méthode **sous-estime
+systématiquement** tout panier, d'autant plus que les titres sont volatils. Elle
+pénalisait donc le plus le panier le plus large — la **référence Buy&Hold
+équipondérée**, qui détient tout l'univers. Les stratégies sélectives étaient
+comparées à une référence artificiellement affaiblie.
+
+**Premier script corrigé et ré-exécuté — `momentum_52w_high` (#4), le résultat
+historiquement phare du backlog :**
+
+| | Sharpe | Rendement total | Verdict |
+|---|---|---|---|
+| Buy&Hold équipondéré — **avant** | +0,55 | +56,0 % | |
+| Leaders 52w — **avant** | +0,78 | +81,6 % | PASS |
+| Buy&Hold équipondéré — **après** | **+0,86** | **+142,3 %** | |
+| Leaders 52w — **après** | **+0,84** | **+108,0 %** | **FAIL** |
+
+La correction fait passer la référence de +56,0 % à +142,3 % et **inverse le
+verdict**. Le #4 était déjà reclassé FAIL le 01/08/2026 pour fuite d'exécution
+même-barre ; il l'est désormais aussi, indépendamment, sur l'agrégation.
+
+**Correction appliquée :** `R` passe en rendements simples (`P/P.shift(1) - 1`),
+`Σ wᵢ·Rᵢ` devient le vrai rendement de panier, `cumprod(1+pnl)` redevient
+correct, et `trading_metrics` — qui attend du log — reçoit `np.log1p(pnl)`.
+
+**Reste à faire :** **42 autres scripts** portent le même motif
+`R = np.log(P / P.shift(1))` (familles Leaders / Winners / Low-Vol / momentum /
+dispersion). Ils sont de structure hétérogène : une réécriture mécanique y serait
+risquée, chacun doit être corrigé et ré-exécuté avec vérification. **Tous leurs
+résultats sont suspects d'ici là**, et compte tenu du sens du biais, les
+reclassifications attendues vont dans le sens PASS → FAIL.

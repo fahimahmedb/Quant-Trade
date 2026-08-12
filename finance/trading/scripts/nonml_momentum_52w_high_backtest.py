@@ -78,7 +78,12 @@ def main(causal=True):
           f"chaque titre pondéré seulement depuis sa 1ère cotation) "
           f"({P.index[0].date()} → {P.index[-1].date()})")
 
-    R = np.log(P / P.shift(1)).values  # rendement quotidien [T, n], NaN si absent
+    # Rendements SIMPLES par titre. Le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i) ; une moyenne ponderee de rendements LOG n'est le
+    # rendement log de rien (l'agregation entre titres n'est pas additive en log).
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    # .copy() : sous pandas >= 3 (copy-on-write) `.values` peut etre en lecture seule.
+    R = (P / P.shift(1) - 1.0).values.copy()  # rendement quotidien [T, n], NaN si absent
     R[0, :] = 0.0
     close = P.values
     exists = np.isfinite(close)  # ticker cote ce jour-la
@@ -130,8 +135,12 @@ def main(causal=True):
     pnl_leaders = pnl_leaders - turn_leaders * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_leaders = trading_metrics(pnl_leaders)
-    me_bh = trading_metrics(pnl_bh)
+    # pnl_* sont desormais des rendements SIMPLES de portefeuille. trading_metrics
+    # attend une serie LOG (eq = cumsum, MDD converti par exp) : on convertit.
+    assert (pnl_leaders > -1.0).all() and (pnl_bh > -1.0).all(), \
+        "rendement simple <= -100% : log1p non defini"
+    me_leaders = trading_metrics(np.log1p(pnl_leaders))
+    me_bh = trading_metrics(np.log1p(pnl_bh))
 
     equity_leaders = np.cumprod(1.0 + pnl_leaders)
     equity_bh = np.cumprod(1.0 + pnl_bh)
