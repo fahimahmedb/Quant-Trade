@@ -153,7 +153,7 @@ def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
         cost = COST_BPS * mult
         pnl_b = portfolio_pnl(w_base, R_s, cost)
         pnl_l = portfolio_pnl(w_lev, R_s, cost)
-        me_b, me_l = trading_metrics(pnl_b), trading_metrics(pnl_l)
+        me_b, me_l = trading_metrics(np.log1p(pnl_b)), trading_metrics(np.log1p(pnl_l))
         ret_b, ret_l = total_return(pnl_b), total_return(pnl_l)
         ok = (me_l["sharpe_ann"] > me_b["sharpe_ann"]) and (ret_l > ret_b)
         ok_a &= ok
@@ -178,8 +178,8 @@ def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
         any_window = True
         pnl_b = portfolio_pnl(w_base, R_s, COST_BPS, mask)
         pnl_l = portfolio_pnl(w_lev, R_s, COST_BPS, mask)
-        mdd_b = trading_metrics(pnl_b)["max_drawdown_pct"]
-        mdd_l = trading_metrics(pnl_l)["max_drawdown_pct"]
+        mdd_b = trading_metrics(np.log1p(pnl_b))["max_drawdown_pct"]
+        mdd_l = trading_metrics(np.log1p(pnl_l))["max_drawdown_pct"]
         ok = mdd_l >= mdd_b - 1.0
         ok_b &= ok
         lines.append(f"| {label} | {n} | {mdd_l:.1f}% | {mdd_b:.1f}% | {'OUI' if ok else 'non'} |")
@@ -213,8 +213,8 @@ def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
         idx_mask[f0:f1] = True
         pnl_b = portfolio_pnl(w_base, R_s, COST_BPS, idx_mask)
         pnl_l = portfolio_pnl(w_lev, R_s, COST_BPS, idx_mask)
-        s_b = trading_metrics(pnl_b)["sharpe_ann"]
-        s_l = trading_metrics(pnl_l)["sharpe_ann"]
+        s_b = trading_metrics(np.log1p(pnl_b))["sharpe_ann"]
+        s_l = trading_metrics(np.log1p(pnl_l))["sharpe_ann"]
         beat = s_l > s_b
         n_beat += int(beat)
         n_scored += 1
@@ -243,7 +243,7 @@ def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
     lines.append("")
     n_trials = parse_backlog_n_trials()
     var_trials_annual, n_extracted = approx_var_trials()
-    me_l = trading_metrics(pnl_l_full)
+    me_l = trading_metrics(np.log1p(pnl_l_full))
     var_trials = var_trials_annual / 252.0
     de = dsr(me_l["sharpe_daily"], me_l["n"], var_trials, n_trials=n_trials,
              skew=me_l["skew"], kurt_excess=me_l["excess_kurt"])

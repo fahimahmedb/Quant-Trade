@@ -47,7 +47,10 @@ def build_raw_series():
     V = pd.DataFrame({t: vol_series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # `.copy()` : sous pandas >= 3, `.values` peut etre en lecture seule.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -108,7 +111,7 @@ def check_a_cost_stress(raw_c, turn_c, raw_r, turn_r, cost_baseline):
         cost = cost_baseline * mult
         pnl_c = pnl_at_cost(raw_c, turn_c, cost)
         pnl_r = pnl_at_cost(raw_r, turn_r, cost)
-        me_c, me_r = trading_metrics(pnl_c), trading_metrics(pnl_r)
+        me_c, me_r = trading_metrics(np.log1p(pnl_c)), trading_metrics(np.log1p(pnl_r))
         ret_c = float(np.cumprod(1.0 + pnl_c)[-1] - 1.0)
         ret_r = float(np.cumprod(1.0 + pnl_r)[-1] - 1.0)
         ok = (me_c["sharpe_ann"] > me_r["sharpe_ann"]) and (ret_c > ret_r)
@@ -129,8 +132,8 @@ def check_b_crisis_stress(raw_c, turn_c, raw_r, turn_r, dates, cost_baseline):
         any_window = True
         pnl_c = pnl_at_cost(raw_c[mask], turn_c[mask], cost_baseline)
         pnl_r = pnl_at_cost(raw_r[mask], turn_r[mask], cost_baseline)
-        mdd_c = trading_metrics(pnl_c)["max_drawdown_pct"]
-        mdd_r = trading_metrics(pnl_r)["max_drawdown_pct"]
+        mdd_c = trading_metrics(np.log1p(pnl_c))["max_drawdown_pct"]
+        mdd_r = trading_metrics(np.log1p(pnl_r))["max_drawdown_pct"]
         ok = mdd_c >= mdd_r - 1.0
         all_ok &= ok
         rows.append((label, n, mdd_c, mdd_r, ok))
@@ -151,8 +154,8 @@ def check_c_temporal_stability(raw_c, turn_c, raw_r, turn_r, cost_baseline, n_fo
             continue
         pnl_c = pnl_at_cost(raw_c[f0:f1], turn_c[f0:f1], cost_baseline)
         pnl_r = pnl_at_cost(raw_r[f0:f1], turn_r[f0:f1], cost_baseline)
-        s_c = trading_metrics(pnl_c)["sharpe_ann"]
-        s_r = trading_metrics(pnl_r)["sharpe_ann"]
+        s_c = trading_metrics(np.log1p(pnl_c))["sharpe_ann"]
+        s_r = trading_metrics(np.log1p(pnl_r))["sharpe_ann"]
         beat = s_c > s_r
         n_beat += int(beat)
         n_scored += 1
@@ -164,14 +167,14 @@ def check_c_temporal_stability(raw_c, turn_c, raw_r, turn_r, cost_baseline, n_fo
 def check_d_spa(raw_c, turn_c, raw_r, turn_r, cost_baseline):
     pnl_c = pnl_at_cost(raw_c, turn_c, cost_baseline)
     pnl_r = pnl_at_cost(raw_r, turn_r, cost_baseline)
-    losses = {"candidat": -pnl_c, "reference": -pnl_r}
+    losses = {"candidat": -np.log1p(pnl_c), "reference": -np.log1p(pnl_r)}
     res = spa_test(losses, bench="reference")
     return res["p_value"] < 0.05, res["p_value"]
 
 
 def check_e_dsr(raw_c, turn_c, cost_baseline):
     pnl_c = pnl_at_cost(raw_c, turn_c, cost_baseline)
-    me = trading_metrics(pnl_c)
+    me = trading_metrics(np.log1p(pnl_c))
     n_trials = parse_backlog_n_trials()
     var_trials_annual, n_extracted = approx_var_trials()
     if n_trials is None or var_trials_annual is None:

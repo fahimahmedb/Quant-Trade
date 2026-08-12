@@ -40,7 +40,10 @@ def build_raw_series():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # `.copy()` : sous pandas >= 3, `.values` peut etre en lecture seule.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 

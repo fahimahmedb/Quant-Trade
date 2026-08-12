@@ -8,9 +8,9 @@ Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre
 
 | Coût (bps) | Sharpe candidat | Sharpe référence | Rendement candidat | Rendement référence | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.36 | +0.74 | +69.6% | +362.1% | non |
-| 15.0 | +0.28 | +0.74 | +45.3% | +361.5% | non |
-| 25.0 | +0.20 | +0.74 | +24.4% | +360.9% | non |
+| 5.0 | +0.28 | +0.64 | +69.6% | +362.1% | non |
+| 15.0 | +0.20 | +0.64 | +45.3% | +361.5% | non |
+| 25.0 | +0.11 | +0.64 | +24.4% | +360.9% | non |
 
 **ÉCHEC — tient à 5x le coût nominal : NON.**
 
@@ -20,8 +20,8 @@ Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre
 |---|---|---|---|---|
 | Dot-com crash | 0 | -- | -- | hors couverture (<20 séances) |
 | Crise financière 2008 | 0 | -- | -- | hors couverture (<20 séances) |
-| Krach COVID | 62 | -5.1% | -29.7% | OUI |
-| Resserrement 2022 | 251 | -9.8% | -28.0% | OUI |
+| Krach COVID | 62 | -5.1% | -31.9% | OUI |
+| Resserrement 2022 | 251 | -10.0% | -30.9% | OUI |
 
 **OK — MDD jamais pire que la référence sur les fenêtres couvertes : oui.**
 
@@ -29,10 +29,10 @@ Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre
 
 | Fold | Séances | Sharpe candidat | Sharpe référence | Bat référence |
 |---|---|---|---|---|
-| 1 | 721 | +0.66 | +0.97 | non |
-| 2 | 716 | +0.18 | +0.76 | non |
-| 3 | 716 | -0.25 | +0.57 | non |
-| 4 | 719 | +0.79 | +0.92 | non |
+| 1 | 721 | +0.58 | +0.89 | non |
+| 2 | 716 | +0.10 | +0.62 | non |
+| 3 | 716 | -0.33 | +0.45 | non |
+| 4 | 719 | +0.70 | +0.84 | non |
 
 **ÉCHEC — bat la référence sur 0/4 folds (majorité NON atteinte).**
 
@@ -44,7 +44,7 @@ p-value SPA : 1.0000
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
 n_trials = 372 (taille du backlog), Var(Sharpe essais) estimée sur 112 Sharpe extraits du backlog = 0.000585 (échelle journalière).
-DSR = 0.0044
+DSR = 0.0018
 **ÉCHEC — DSR ≥ 0.95 : NON.**
 
 ## Verdict global : 1/5

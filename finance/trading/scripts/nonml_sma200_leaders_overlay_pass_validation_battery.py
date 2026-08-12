@@ -46,7 +46,7 @@ def build_raw_series():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     rolling_max = np.full((T, n_tickers), np.nan)
@@ -94,7 +94,7 @@ def pnl_at_cost(raw, turn, cost_bps):
 
 def check_e_dsr(raw_c, turn_c, cost_baseline):
     pnl_c = pnl_at_cost(raw_c, turn_c, cost_baseline)
-    me = trading_metrics(pnl_c)
+    me = trading_metrics(np.log1p(pnl_c))
     n_trials = parse_backlog_n_trials()
     var_trials_annual, n_extracted = approx_var_trials()
     if n_trials is None or var_trials_annual is None:

@@ -3266,3 +3266,52 @@ par un autre. Tous rejoués dans l'ordre topologique
 `cash_rate_correction_44_*`). **Aucun autre changement de verdict.**
 
 **Bilan cumulé : 21 PASS tombés, 0 gagné** (20 + le #350).
+
+## Backlog #387 (12/08/2026) — les 8 batteries dédiées portaient aussi le bug
+
+Suite directe du #386. Les batteries **dédiées** au format portefeuille — les
+instruments pré-enregistrés, donc ceux qui font foi — portaient elles aussi le bug
+d'agrégation : **6 sur 8** agrégeaient `Σ wᵢ·R_log`. C'est le **cinquième foyer**
+du même défaut (backtests, simulations, outil générique, batterie dédiée
+`dollar_neutral` au #386, et maintenant les 5 autres).
+
+| 387 | Corriger les 8 batteries dédiées et les ré-exécuter | Aucune nouvelle donnée | **FAIT — l'écart du #386 est résolu, 1 score supplémentaire tombe.** Corrections : `R` en rendements simples (6 fichiers), `trading_metrics(np.log1p(·))` puisque les séries deviennent simples, `.copy()` pandas ≥ 3, et alignement du SPA sur la même convention que la batterie générique. |
+
+### L'écart de `momentum_12_1_pit_universe` est expliqué et résolu
+
+| | Score |
+|---|---|
+| dédiée, **avant** correction | 2/5 |
+| générique (lit le `.npz` corrigé) | 1/5 |
+| dédiée, **après** correction | **1/5** |
+
+Le 2/5 était un **artefact du bug d'agrégation** : la référence Buy&Hold
+équipondérée était sous-estimée (+99,6 % contre +352,1 % après correction), ce
+qui faisait passer à tort le stress de coûts. Les deux instruments concordent
+désormais — ce qui valide au passage l'extension générique du #384.
+
+### Scores après correction des batteries dédiées
+
+| Stratégie | Avant | Après |
+|---|---|---|
+| `amihud_illiquidity_tilt` | 4/5 | **4/5** |
+| `momentum_turnover_doublesort` | 3/5 | 3/5 |
+| `sma200_leaders_overlay` | 2/5 | 2/5 |
+| `momentum_12_1_pit_universe` | 2/5 | **1/5** |
+| `momentum_consistency_pit_universe` | 2/5 | **0/5** |
+| `leaders_vol_targeting_20_overlay` | 1/5 | 1/5 |
+| `dollar_neutral_composite_vol_targeted` | 1/5 | 1/5 |
+| `leaders_index52w_high_overlay` | — | 1/5 |
+
+**Le 4/5 d'`amihud_illiquidity_tilt` survit à la correction** — c'est donc un
+résultat réel, et non un artefact comptable. Il reste néanmoins soumis aux trois
+réserves déjà énoncées au #385 : stress de crise sur **une seule fenêtre**
+(historique titres depuis 2021), DSR en échec, et niveaux entièrement recalculés
+par la correction d'agrégation.
+
+**Écart résiduel non résolu :** `leaders_index52w_high_overlay` donne 1/5 en
+version dédiée (SPA OK) contre 0/5 en générique. Différence limitée au seul SPA,
+signalée sans être tranchée.
+
+**Aucun PASS RENFORCÉ, sur aucune des 8.** L'état du projet est inchangé sur ce
+point depuis l'origine.
