@@ -3394,3 +3394,64 @@ réécrit par les comptes rendus.
 **Bilan de la campagne : 6 foyers du même bug** — backtests indiciels,
 simulations 300 €, batterie générique, batterie dédiée `dollar_neutral`, les
 5 autres batteries dédiées, et la validation SPA/DSR du backlog.
+
+## Backlog #390 (12/08/2026) — SEPTIÈME FOYER : toute la famille des scripts de robustesse
+
+Trouvé en faisant enfin un **balayage exhaustif du dépôt** (`src`, `scripts`,
+`finance/src`, `finance/trading/scripts`) au lieu de cibler des familles de
+fichiers, méthode qui avait laissé passer les six foyers précédents un par un.
+
+**La famille `*_robustness.py` n'avait jamais été couverte** : mes balayages
+visaient les backtests, les simulations, puis les batteries. **114 des 116**
+scripts de robustesse composaient du log avec `cumprod(1+·)`.
+
+C'est le foyer le plus dommageable, pour une raison structurelle : le verdict de
+chaque **cellule de grille** dépend des deux jambes
+(`sharpe_ok and ret_ok`). La jambe rendement buguée pouvait donc faire basculer
+des cellules individuelles — et ce sont ces comptages qui fondent toutes les
+affirmations de « plateau » du backlog.
+
+| 390 | Corriger et ré-exécuter les 92 scripts de robustesse indiciels | Aucune nouvelle donnée | **FAIT — 27 rapports sur 91 changent, dont 24 vers le bas.** 92 scripts corrigés (163 compositions) et ré-exécutés ; 2 échecs rencontrés et résolus (argument de marché manquant, dtype `object` refusé par `np.isnan` sous pandas ≥ 3 — causes déjà connues, sans rapport avec le bug). |
+
+### Ampleur
+
+| | |
+|---|---|
+| rapports comparés | 91 |
+| comptages de grille modifiés | **27** |
+| dont plateau **rétréci** | **24** |
+| dont plateau élargi | 3 |
+| cellules validées, sur les rapports modifiés | **386 → 271 (−29,8 %)** |
+
+### Les effondrements les plus nets
+
+| Stratégie | Avant | Après |
+|---|---|---|
+| `cross_market_correlation_ndx_dax_overlay` | 27/45 | **3/45** |
+| `dollar_neutral_composite_vol_targeted` | 8/9 | **0/9** |
+| `cash_rate_correction_defensive_vol_targeting_44` | 3/3 | **0/3** |
+| `delinquency_nfci_baa10y_graduated_overlay` | 12/15 | **3/15** |
+| `cash_rate_correction_44_weekly_rebalance` | 4/5, 5/5 | **0/5, 0/5** |
+| `volatility_managed_portfolio_gjr` | 6/9 | **3/9** |
+| `bitcoin_momentum_overlay` | 30/45 | **21/45** |
+
+Trois rapports s'améliorent légèrement (`january_barometer_overlay`,
+`sma200_tom_halloween_union_overlay`, `sma50_trend_overlay`), tous d'une seule
+cellule — cohérent avec un biais globalement défavorable mais pas strictement
+monotone cellule par cellule.
+
+### Ce que cela change dans la lecture du backlog
+
+**Les mentions de « plateau robuste » antérieures à ce cycle ne sont pas
+fiables.** Un « plateau parfait 15/15 » pouvait masquer un 12/15, et un
+« plateau net » un effondrement à 3/45. Les rapports sont désormais recalculés,
+mais **le texte des entrées de backlog écrites avant ce cycle n'a pas été
+réécrit** : en cas de divergence, le fichier `results/*_robustness.md` fait foi,
+pas le commentaire du backlog.
+
+**Reste à faire :** les **22 scripts de robustesse de type portefeuille**, qui
+demandent en plus la correction d'agrégation (un seul, `amihud_robustness`,
+couple `R` au signal et exige un `R_simple` dédié).
+
+**La campagne n'est PAS close.** Elle ne le sera que lorsqu'un balayage exhaustif
+du dépôt rendra zéro occurrence.
