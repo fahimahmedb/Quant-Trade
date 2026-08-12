@@ -230,7 +230,11 @@ def main(prices_dir=None, out_suffix="", title_suffix="", build_kwargs=None,
     lines.append("")
     pnl_b_full = portfolio_pnl(w_base, R_s, COST_BPS)
     pnl_l_full = portfolio_pnl(w_lev, R_s, COST_BPS)
-    spa = spa_test({"candidat": -pnl_l_full, "reference": -pnl_b_full}, bench="reference")
+    # SPA sur des rendements LOG, convention du projet (identique a
+    # nonml_pass_validation_battery.py). Sur des rendements simples le test
+    # rendait p=0.0314 contre p=0.0672 en log : le verdict depend de la
+    # convention, ce qui est en soi un signe de fragilite (voir le rapport).
+    spa = spa_test({"candidat": -np.log1p(pnl_l_full), "reference": -np.log1p(pnl_b_full)}, bench="reference")
     ok_d = spa["p_value"] < 0.05
     lines.append(f"t_SPA = {spa['t_spa']:.3f}, **p = {spa['p_value']:.4f}** (bootstrap stationnaire, "
                  "H0 : la référence Leaders 1.0x n'est battue par aucun candidat).")

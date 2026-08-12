@@ -36,9 +36,9 @@ Candidat : Leaders + overlay 52w-high indice ×2.0. Référence : portefeuille L
 
 ## d. SPA de Hansen à 1 candidat contre la référence
 
-t_SPA = 1.866, **p = 0.0314** (bootstrap stationnaire, H0 : la référence Leaders 1.0x n'est battue par aucun candidat).
+t_SPA = 1.495, **p = 0.0666** (bootstrap stationnaire, H0 : la référence Leaders 1.0x n'est battue par aucun candidat).
 
-**OK — seuil p < 0,05.**
+**ÉCHEC — seuil p < 0,05.**
 
 ## e. DSR avec n_trials = taille du backlog AVANT ce cycle (jamais 1)
 
@@ -53,7 +53,7 @@ n_trials=372 (backlog avant ce cycle), var(SR essais) extraite sur 112 Sharpe du
 | a. stress de coûts ×3/×5 | ÉCHEC |
 | b. stress de crise | ÉCHEC |
 | c. stabilité temporelle | ÉCHEC |
-| d. SPA 1 candidat | OK |
+| d. SPA 1 candidat | ÉCHEC |
 | e. DSR (n_trials=372) | ÉCHEC |
 
 ### PASS niveau 1 SEULEMENT — batterie renforcée ÉCHOUÉE

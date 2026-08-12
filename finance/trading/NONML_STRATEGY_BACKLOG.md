@@ -3315,3 +3315,45 @@ signalée sans être tranchée.
 
 **Aucun PASS RENFORCÉ, sur aucune des 8.** L'état du projet est inchangé sur ce
 point depuis l'origine.
+
+## Backlog #388 (12/08/2026) — écart résiduel tranché : une question de convention, et une fragilité
+
+| 388 | Résoudre l'écart `leaders_index52w_high_overlay` (dédiée 1/5 vs générique 0/5, différence limitée au SPA) | Aucune nouvelle donnée | **FAIT — les deux instruments concordent désormais à 0/5.** |
+
+### Diagnostic, en écartant deux fausses pistes
+
+**Fausse piste 1 — le bootstrap.** Le SPA de Hansen repose sur un bootstrap
+stationnaire, donc a priori aléatoire. Mais `spa_test` porte `seed=42` : le test
+est **déterministe**, l'écart ne pouvait pas venir de là.
+
+**Fausse piste 2 — la longueur d'échantillon.** Le `.npz` couvre 1144 séances,
+la batterie dédiée 1143. Mesuré directement : p = 0,0672 sur 1144 et p = 0,0668
+sur 1143. **La séance d'écart n'explique rien.**
+
+**Cause réelle — la convention de rendement.** Ce script définit son propre
+contrôle `d` (il n'importe pas le module partagé) et faisait le SPA sur des
+rendements **simples**, alors que la convention du projet — et celle de la
+batterie générique — est le **log** :
+
+| Convention | p-value | Verdict |
+|---|---|---|
+| rendements simples | **0,0314** | OK |
+| rendements log (convention du projet) | **0,0672** | ÉCHEC |
+
+Aligné sur le log. Les deux instruments donnent maintenant **0/5** l'un comme
+l'autre.
+
+### Ce que cet épisode révèle, au-delà de l'écart
+
+**Le SPA de cette stratégie enjambe le seuil de 5 %** : 0,0314 d'un côté,
+0,0672 de l'autre, pour un simple changement de convention de mesure sans
+incidence économique. Un résultat qui bascule sur ce genre de détail n'est pas un
+edge — c'est du bruit au voisinage du seuil. Le verdict 0/5 est donc le bon, mais
+même le 1/5 antérieur n'aurait rien démontré.
+
+**Toutes les batteries dédiées sont désormais alignées** sur la même convention
+(rendements log vers `trading_metrics` et vers le SPA), ce qui rend les 8 scores
+comparables entre eux et avec la batterie générique — ce qui n'était pas le cas
+jusqu'ici.
+
+**Aucun PASS RENFORCÉ. Bilan inchangé : 21 PASS niveau 1 tombés, 0 gagné.**
