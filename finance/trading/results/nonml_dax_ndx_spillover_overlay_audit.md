@@ -23,7 +23,7 @@
 
 ## 3. Confirmation du bug de fuseau horaire initial (dax_ret(t) vs dax_ret(t-1))
 
-Version buguée (dax_ret(t), chevauchement horaire) : rendement total = +161906258029.0% (aberrant, confirme la fuite détectée au premier essai).
-Version corrigée (dax_ret(t-1), committée comme résultat officiel) : rendement total = +535.7% (plausible, cohérent avec les autres résultats du backlog).
+Version buguée (dax_ret(t), chevauchement horaire) : rendement total = +2608267988002.0% (aberrant, confirme la fuite détectée au premier essai).
+Version corrigée (dax_ret(t-1), committée comme résultat officiel) : rendement total = +9392.6% (plausible, cohérent avec les autres résultats du backlog).
 
 **La version corrigée (t-1) est la seule utilisée pour le verdict PASS/FAIL officiel — cette section documente uniquement pourquoi la version initiale a été rejetée avant tout commit de résultat.**

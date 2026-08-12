@@ -41,7 +41,7 @@ def load_short_rate(dates: pd.DatetimeIndex) -> np.ndarray:
 
 def summarize(pnl):
     me = trading_metrics(pnl)
-    ret = float(np.cumprod(1.0 + pnl)[-1] - 1.0)
+    ret = float(np.exp(pnl.sum()) - 1.0)
     return me, ret
 
 

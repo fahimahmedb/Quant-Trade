@@ -4,9 +4,9 @@
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX 100%) | +0.53 | +6416.7% | -82.9% | 77.406 |
+| Buy&Hold (NDX 100%) | +0.53 | +25465.6% | -82.9% | 307.195 |
 | **#134 complet (portage + effet-prix, déjà committé)** | **+0,77** | **+14405,6%** | -50,9% | -- |
-| **Portage SEUL (sans effet-prix)** | **+0.74** | **+11932.4%** | -55.3% | 215.848 |
+| **Portage SEUL (sans effet-prix)** | **+0.74** | **+23238.3%** | -55.3% | 420.363 |
 
 Part du gain de Sharpe (#134 complet vs BH) expliquée par le portage seul : 89%
 Part de la réduction de MDD (#134 complet vs BH) expliquée par le portage seul : 86%

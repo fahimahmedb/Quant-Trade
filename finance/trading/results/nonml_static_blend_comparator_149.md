@@ -5,9 +5,9 @@ Poids statique = exposition moyenne réelle de #149 sur la période : 0.7614
 
 | Portefeuille | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold pur | +0.53 | +6416.7% | -82.9% | 0.077 |
-| Blend statique (poids=0.761) | +0.60 | +5204.1% | -71.9% | 0.092 |
-| #149 dynamique (vol-targeting + diversification) | +0.84 | +10425.6% | -37.9% | 0.264 |
+| Buy&Hold pur | +0.53 | +25465.6% | -82.9% | 0.077 |
+| Blend statique (poids=0.761) | +0.60 | +11473.0% | -71.9% | 0.092 |
+| #149 dynamique (vol-targeting + diversification) | +0.84 | +16620.2% | -37.9% | 0.264 |
 
 Critère pré-enregistré : blend statique préféré si Sharpe(statique) >= Sharpe(#149) - 0.05.
 Sharpe(statique) - Sharpe(#149) = -0.239

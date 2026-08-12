@@ -9,10 +9,10 @@ Taux 3 mois moyen sur la fenêtre : **2.99 %** annualisé. Exposition sous 1,0x 
 
 | Comptabilisation | Sharpe | Rendement total | MDD | Sharpe > BH | Rdt > BH |
 |---|---|---|---|---|---|
-| Buy & Hold (référence) | +0.520 | +4535.1% | -82.9% | — | — |
-| A. 0 % / 0 % (pré-enregistré, verdict committé) | +0.665 | +7140.4% | -59.9% | OUI | OUI |
-| B. DGS3MO des deux côtés (comptabilisation correcte) | +0.662 | +6984.0% | -57.6% | OUI | OUI |
-| C. DGS3MO côté cash seulement (borne haute) | +0.685 | +8307.0% | -57.6% | OUI | OUI |
+| Buy & Hold (référence) | +0.520 | +16587.1% | -82.9% | — | — |
+| A. 0 % / 0 % (pré-enregistré, verdict committé) | +0.665 | +15474.6% | -59.9% | OUI | non |
+| B. DGS3MO des deux côtés (comptabilisation correcte) | +0.662 | +15137.1% | -57.6% | OUI | non |
+| C. DGS3MO côté cash seulement (borne haute) | +0.685 | +17984.0% | -57.6% | OUI | OUI |
 
 ## Contribution du portage (part du résultat qui vient du taux, pas du signal)
 

@@ -48,8 +48,8 @@ def main():
     def stats_for(mask, label):
         pnl_ov_m, pnl_bh_m, diff_m = pnl_ov[mask], pnl_bh[mask], diff[mask]
         me_ov, me_bh = trading_metrics(pnl_ov_m), trading_metrics(pnl_bh_m)
-        ret_ov = float(np.cumprod(1.0 + pnl_ov_m)[-1] - 1.0)
-        ret_bh = float(np.cumprod(1.0 + pnl_bh_m)[-1] - 1.0)
+        ret_ov = float(np.exp(pnl_ov_m.sum()) - 1.0)
+        ret_bh = float(np.exp(pnl_bh_m.sum()) - 1.0)
         return {
             "label": label, "n": int(mask.sum()),
             "sharpe_ov": me_ov["sharpe_ann"], "sharpe_bh": me_bh["sharpe_ann"],

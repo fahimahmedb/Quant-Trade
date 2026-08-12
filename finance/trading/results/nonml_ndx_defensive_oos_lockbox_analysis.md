@@ -4,8 +4,8 @@ Fenêtre : 2025-07-11 → 2026-07-13 (252 séances), AUCUN paramètre du #115 mo
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX) | +1.39 | +27.0% | -12.1% | 1.984 |
-| **Overlay défensif #115** | **+1.35** | **+24.5%** | -12.4% | **1.773** |
+| Buy&Hold (NDX) | +1.39 | +29.2% | -12.1% | 1.984 |
+| **Overlay défensif #115** | **+1.35** | **+26.4%** | -12.4% | **1.773** |
 
 **NE TIENT PAS sur cette fenêtre OOS pure — Calmar overlay > Calmar BH : NON.**
 

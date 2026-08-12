@@ -58,8 +58,8 @@ def main():
     pnl_bh = backtest(pos_bh, r_win, COST_BPS)
     pnl_lev = backtest(pos_lev, r_win, COST_BPS)
 
-    equity_bh = CAPITAL0 * np.cumprod(1.0 + pnl_bh)
-    equity_lev = CAPITAL0 * np.cumprod(1.0 + pnl_lev)
+    equity_bh = CAPITAL0 * np.exp(np.cumsum(pnl_bh))
+    equity_lev = CAPITAL0 * np.exp(np.cumsum(pnl_lev))
 
     me_bh = trading_metrics(pnl_bh)
     me_lev = trading_metrics(pnl_lev)

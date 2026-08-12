@@ -45,8 +45,8 @@ def run(pos_eq_full, r_ndx_full, dates_full, r_bond_aligned):
     pnl_bh[0] -= COST_BPS / 1e4
 
     me_ov, me_bh = trading_metrics(pnl_ov), trading_metrics(pnl_bh)
-    ret_ov = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
-    ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+    ret_ov = float(np.exp(pnl_ov.sum()) - 1.0)
+    ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
     calmar_ov = ret_ov / abs(me_ov["max_drawdown_pct"] / 100)
     calmar_bh = ret_bh / abs(me_bh["max_drawdown_pct"] / 100)
     return me_ov, ret_ov, calmar_ov, me_bh, ret_bh, calmar_bh, len(r_ndx)

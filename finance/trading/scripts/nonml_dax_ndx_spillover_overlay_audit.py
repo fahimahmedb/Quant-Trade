@@ -105,13 +105,13 @@ def main():
     pos_buggy = np.where(mask_buggy, CAP, 1.0)
     turn_buggy = np.abs(np.diff(pos_buggy, prepend=1.0))
     pnl_buggy = pos_buggy * bh_full - turn_buggy * (COST_BPS / 1e4)
-    ret_buggy = np.cumprod(1.0 + pnl_buggy)[-1] - 1.0
+    ret_buggy = np.exp(pnl_buggy.sum()) - 1.0
 
     mask_correct = gate_full[1:]
     pos_correct = np.where(mask_correct, CAP, 1.0)
     turn_correct = np.abs(np.diff(pos_correct, prepend=1.0))
     pnl_correct = pos_correct * bh_full - turn_correct * (COST_BPS / 1e4)
-    ret_correct = np.cumprod(1.0 + pnl_correct)[-1] - 1.0
+    ret_correct = np.exp(pnl_correct.sum()) - 1.0
 
     lines.append(f"Version buguée (dax_ret(t), chevauchement horaire) : rendement total = {100*ret_buggy:+.1f}% "
                  f"(aberrant, confirme la fuite détectée au premier essai).")

@@ -48,18 +48,15 @@ def main():
     m_bh = trading_metrics(pnl_buyhold)
 
     def total_return_pct(pnl):
-        # Meme convention que scripts/nonml_pass_validation_battery.py
-        # (cumprod(1+r)-1) -- pas exp(cumsum(r))-1, pour rester directement
-        # comparable aux tableaux de batterie deja publies (#134/#149).
-        # Note methodologique : r etant un rendement LOG, exp(cumsum(r))-1
-        # serait la formule exacte ; cumprod(1+r)-1 est une approximation
-        # deja utilisee partout ailleurs dans le backlog non-ML. Ecart
-        # constate a la construction de ce script (exp(cumsum) donnait ici
-        # +25466% de rendement BH contre le chiffre cumprod ci-dessous) --
-        # n'affecte aucun verdict PASS/FAIL deja rendu (comparaison
-        # relative, meme formule des deux cotes a chaque fois), mais vaut
-        # un point de vigilance pour un futur audit du backlog non-ML.
-        return 100.0 * (np.cumprod(1.0 + pnl[np.isfinite(pnl)])[-1] - 1.0)
+        # r etant un rendement LOG, la composition correcte est exp(somme).
+        # Ce script portait auparavant `cumprod(1+r)-1`, choisi DELIBEREMENT
+        # pour rester comparable aux tableaux deja publies -- le defaut etait
+        # donc connu et documente ici des sa construction. La justification est
+        # caduque : tout le depot est passe a la convention correcte, et
+        # l'affirmation « n'affecte aucun verdict PASS/FAIL » s'est revelee
+        # fausse (21 PASS sont tombes). Voir
+        # results/nonml_log_return_compounding_audit.md.
+        return 100.0 * (np.exp(pnl[np.isfinite(pnl)].sum()) - 1.0)
 
     threshold_ok = m_stat["sharpe_ann"] >= m_dyn["sharpe_ann"] - 0.05
 

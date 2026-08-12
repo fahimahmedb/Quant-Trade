@@ -10,8 +10,8 @@ Breadth surperformance moyenne (toute la période) : 50.9%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.56 | +101.6% | -39.1% |
-| **Overlay vol-targeting gaté surperformance petites caps** | **+0.58** | **+116.9%** | -39.1% |
+| Buy&Hold (NDX) | +0.56 | +132.4% | -39.1% |
+| **Overlay vol-targeting gaté surperformance petites caps** | **+0.58** | **+154.8%** | -39.1% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

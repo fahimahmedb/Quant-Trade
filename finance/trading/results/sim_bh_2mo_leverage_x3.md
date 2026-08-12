@@ -4,34 +4,34 @@ Fenetre : 2026-05-12 -> 2026-07-13 (42 seances, NDX). Levier CAP=3.0x = plafond 
 
 | | Capital final | Rendement periode | MDD % (periode) | Sharpe ann. |
 |---|---|---|---|---|
-| BuyHold (1.0x) | 300.20 EUR | +0.1% | -7.0 | +0.14 |
-| **Leve x3.0** | **290.59 EUR** | **-3.1%** | -19.6 | +0.14 |
+| BuyHold (1.0x) | 301.86 EUR | +0.6% | -7.0 | +0.14 |
+| **Leve x3.0** | **305.62 EUR** | **+1.9%** | -19.6 | +0.14 |
 
 ## Courbe de capital journaliere (levier x3)
 
 | Date | Capital (EUR) |
 |---|---|
-| 2026-05-12 | 291.66 |
-| 2026-05-14 | 307.24 |
-| 2026-05-18 | 288.99 |
-| 2026-05-20 | 297.75 |
-| 2026-05-22 | 303.37 |
-| 2026-05-27 | 318.39 |
-| 2026-05-29 | 329.86 |
-| 2026-06-02 | 340.57 |
-| 2026-06-04 | 332.16 |
-| 2026-06-08 | 296.77 |
-| 2026-06-10 | 269.51 |
-| 2026-06-12 | 301.39 |
-| 2026-06-16 | 309.91 |
-| 2026-06-18 | 322.72 |
-| 2026-06-23 | 288.60 |
-| 2026-06-25 | 291.25 |
-| 2026-06-29 | 300.48 |
-| 2026-07-01 | 300.81 |
-| 2026-07-06 | 296.89 |
-| 2026-07-08 | 283.31 |
-| 2026-07-10 | 299.91 |
-| 2026-07-13 | 290.59 |
+| 2026-05-12 | 291.78 |
+| 2026-05-14 | 307.58 |
+| 2026-05-18 | 289.66 |
+| 2026-05-20 | 298.85 |
+| 2026-05-22 | 304.51 |
+| 2026-05-27 | 320.01 |
+| 2026-05-29 | 331.67 |
+| 2026-06-02 | 342.52 |
+| 2026-06-04 | 334.12 |
+| 2026-06-08 | 302.43 |
+| 2026-06-10 | 275.33 |
+| 2026-06-12 | 309.32 |
+| 2026-06-16 | 319.83 |
+| 2026-06-18 | 334.07 |
+| 2026-06-23 | 300.37 |
+| 2026-06-25 | 303.23 |
+| 2026-06-29 | 313.68 |
+| 2026-07-01 | 314.77 |
+| 2026-07-06 | 311.26 |
+| 2026-07-08 | 297.47 |
+| 2026-07-10 | 315.28 |
+| 2026-07-13 | 305.62 |
 
 **Lecture honnete** : resultat d'UNE seule fenetre historique recente (pas une moyenne sur plusieurs fenetres, pas une prevision). Le levier amplifie mecaniquement le rendement ET le risque dans les DEUX sens : le MDD de la periode passe de -7.0% (non leve) a -19.6% (x3.0). Une baisse de marche sur cette fenetre aurait produit une perte x3 amplifiee, pas un gain — le sens du resultat ci-dessus depend entierement de la direction prise par le marche sur CES 2 mois precis, pas d'une competence de timing.

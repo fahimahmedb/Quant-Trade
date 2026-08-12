@@ -30,7 +30,8 @@ EPISODES = [
 
 
 def total_return_pct(pnl):
-    return 100.0 * (np.cumprod(1.0 + pnl[np.isfinite(pnl)])[-1] - 1.0)
+    # pnl est en rendements LOG : composition par exp(somme).
+    return 100.0 * (np.exp(pnl[np.isfinite(pnl)].sum()) - 1.0)
 
 
 def main():

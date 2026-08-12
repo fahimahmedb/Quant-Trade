@@ -4,10 +4,10 @@ PAS un nouveau candidat indépendant (pas de batterie Règle 9 séparée) -- ext
 
 | Proxy | Séances | Sharpe ann. | Rendement total | MDD | Calmar | vs Buy&Hold (Sharpe/rdt) | vs Buy&Hold (Calmar) |
 |---|---|---|---|---|---|---|---|
-| 3 mois (DGS3MO, duration~0.25an) | 10252 | +0.74 | +11140.6% | -55.9% | 199.357 | PASS | PASS |
-| 1 an (DGS1, duration~1an) | 10252 | +0.74 | +11682.2% | -55.0% | 212.581 | PASS | PASS |
-| Buy&Hold (référence, fenêtre 3 mois) | 10252 | +0.53 | +6416.7% | -82.9% | 77.406 | -- | -- |
-| Buy&Hold (référence, fenêtre 1 an) | 10252 | +0.53 | +6416.7% | -82.9% | 77.406 | -- | -- |
+| 3 mois (DGS3MO, duration~0.25an) | 10252 | +0.74 | +21696.6% | -55.9% | 388.254 | FAIL | PASS |
+| 1 an (DGS1, duration~1an) | 10252 | +0.74 | +22717.0% | -55.0% | 413.380 | FAIL | PASS |
+| Buy&Hold (référence, fenêtre 3 mois) | 10252 | +0.53 | +25465.6% | -82.9% | 307.195 | -- | -- |
+| Buy&Hold (référence, fenêtre 1 an) | 10252 | +0.53 | +25465.6% | -82.9% | 307.195 | -- | -- |
 
 Rappel #134 (proxy DGS10, 10 ans, fenêtre plus longue car série DGS10 débute avant DGS3MO) : Sharpe +0,53→+0,77, MDD -82,9%→-50,9%.
 

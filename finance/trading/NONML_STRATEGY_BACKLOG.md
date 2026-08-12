@@ -3455,3 +3455,58 @@ couple `R` au signal et exige un `R_simple` dédié).
 
 **La campagne n'est PAS close.** Elle ne le sera que lorsqu'un balayage exhaustif
 du dépôt rendra zéro occurrence.
+
+## Backlog #392 (12/08/2026) — HUITIÈME foyer, et le bug était CONNU depuis le #149
+
+Balayage exhaustif du dépôt après le #391. Il restait **25 occurrences**, dont
+16 réelles : une **huitième famille** jamais couverte — les scripts d'**audit,
+de lockbox, de décomposition et de comparaison**.
+
+| 392 | Corriger la famille audit/lockbox/décomposition et ré-exécuter | Aucune nouvelle donnée | **FAIT — 16 scripts corrigés (24 compositions), 16 rapports réécrits, aucun verdict modifié.** Dont `smallcap_proxy_outperformance_breadth_overlay_backtest`, un **backtest** qui avait été attrapé par le revert de masse du #379 (il contient `np.log(P/P.shift(1))` pour son signal de breadth alors que son P&L est indiciel) et jamais recorrigé : Buy&Hold +101,6 % → **+132,4 %**, stratégie +116,9 % → **+154,8 %**, verdict inchangé. |
+
+### Le défaut était documenté dans le dépôt depuis le cycle #149
+
+`nonml_static_blend_comparator_149.py` portait ce commentaire, écrit à sa
+construction :
+
+> *« Note methodologique : r etant un rendement LOG, exp(cumsum(r))-1 serait la
+> formule exacte ; cumprod(1+r)-1 est une approximation deja utilisee partout
+> ailleurs dans le backlog non-ML. Ecart constate a la construction de ce script
+> (exp(cumsum) donnait ici +25466% de rendement BH contre le chiffre cumprod
+> ci-dessous) — n'affecte aucun verdict PASS/FAIL deja rendu (comparaison
+> relative, meme formule des deux cotes a chaque fois), mais vaut un point de
+> vigilance pour un futur audit du backlog non-ML. »*
+
+**Le bug avait donc été identifié, sa formule exacte connue, son ampleur mesurée
+(+25 466 % contre le chiffre publié) — et il a été délibérément conservé** au nom
+de la comparabilité avec les tableaux déjà publiés.
+
+**La justification était fausse sur son point central.** « N'affecte aucun verdict
+PASS/FAIL » : **21 PASS sont tombés** une fois la correction appliquée. Le
+raisonnement — « même formule des deux côtés, donc la comparaison relative tient »
+— ignore que la formule buguée retranche ≈ `Σx²/2`, un terme qui **dépend de la
+variance** et diffère donc entre une stratégie défensive et sa référence. Elle
+n'est pas neutre dans une comparaison entre deux séries de volatilités
+différentes.
+
+Formule corrigée et commentaire remplacé : la comparabilité invoquée est de toute
+façon caduque, tout le dépôt étant désormais sur la convention correcte.
+
+### Balayage exhaustif final : **0 résidu réel**
+
+| | |
+|---|---|
+| occurrences brutes de `cumprod(1+·)` avec P&L log | 2 |
+| dont faux positifs vérifiés (P&L en rendements **simples**, `cumprod` correct) | 2 |
+| **résidus réels** | **0** |
+
+Les 11 fichiers de portefeuille utilisant `cumprod` le font désormais légitimement
+sur des rendements simples (`R_simple` / branche portefeuille du `Book`).
+
+**La campagne est close — sur la foi du balayage, pas de ma conviction.** Je l'ai
+annoncée close trois fois à tort ; cette fois le critère est un décompte
+reproductible à zéro.
+
+**Bilan final : 8 foyers, 21 PASS niveau 1 tombés, 0 gagné, 27 plateaux de
+robustesse modifiés (24 rétrécis), 164 montants de simulation corrigés, 0 PASS
+RENFORCÉ avant comme après.**

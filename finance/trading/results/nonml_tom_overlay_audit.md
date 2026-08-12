@@ -3,13 +3,13 @@
 ## 1. Recalcul indépendant de l'équité finale (NDX, boucle explicite vs vectorisé)
 
 Équité finale (boucle) : 560.1686 (+55916.9%)
-Équité finale (vectorisé, backtest principal) : 560.1686 (+55916.9%)
-Écart : 0.00e+00
-**OK — concordance parfaite, le chiffre extrême est mathématiquement confirmé (composition à 40 ans avec levier partiel).**
+Équité finale (vectorisé, backtest principal) : 8497.4286 (+849642.9%)
+Écart : 7.94e+03
+**ÉCHEC — divergence.**
 
 ## 2. Valeurs de position (doivent être exactement {1.0, 2.0})
 
-Valeurs observées : [1.0, 2.0]
+Valeurs observées : [np.float64(1.0), np.float64(2.0)]
 **OK.**
 
 ## 3. Cohérence du masque ToM avec le cycle #2 (même fonction, pas de divergence)

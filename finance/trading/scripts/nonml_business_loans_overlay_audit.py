@@ -102,7 +102,7 @@ def main():
         pos = pos_full[start:]
         bh_t = bh_full[start:]
 
-        equity_bh = np.cumprod(1.0 + bh_t)
+        equity_bh = np.exp(np.cumsum(bh_t))
         running_max = np.maximum.accumulate(equity_bh)
         dd = equity_bh / running_max - 1.0
         worst_idx = int(np.argmin(dd))

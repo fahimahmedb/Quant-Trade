@@ -4,8 +4,8 @@ Partition : 1443 séances "crise" (4 fenêtres, Règle 9b) vs 8809 séances "cal
 
 | Groupe | Séances | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | MDD overlay | MDD BH | Diff. moyen/séance |
 |---|---|---|---|---|---|---|---|---|
-| Crise (4 fenêtres) | 1443 | -1.13 | -0.84 | -78.4% | -94.3% | -77.5% | -91.9% | +5.89 bps |
-| Calme (reste) | 8809 | +1.09 | +1.08 | +43303.8% | +115020.9% | -29.0% | -39.9% | -1.35 bps |
+| Crise (4 fenêtres) | 1443 | -1.13 | -0.84 | -75.3% | -89.5% | -77.5% | -91.9% | +5.89 bps |
+| Calme (reste) | 8809 | +1.09 | +1.08 | +73484.1% | +242505.5% | -29.0% | -39.9% | -1.35 bps |
 
 ## Lecture "coût d'assurance / prime"
 

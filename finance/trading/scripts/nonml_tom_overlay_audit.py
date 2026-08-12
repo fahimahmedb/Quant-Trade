@@ -40,7 +40,7 @@ def main():
     equity_loop = 1.0
     for r in pnl:
         equity_loop *= (1.0 + r)
-    equity_vectorized = np.cumprod(1.0 + pnl)[-1]
+    equity_vectorized = np.exp(pnl.sum())
     diff = abs(equity_loop - equity_vectorized)
 
     lines.append("## 1. Recalcul indépendant de l'équité finale (NDX, boucle explicite vs vectorisé)")
