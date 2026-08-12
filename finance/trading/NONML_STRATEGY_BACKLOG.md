@@ -2894,3 +2894,32 @@ défensifs — est **inchangé** ; son ampleur mesurée est revue à la baisse.
 
 L'erreur venait de mon propre audit, pas du code du backlog. Elle est consignée
 ici plutôt que corrigée silencieusement.
+
+## Backlog #376 (12/08/2026) — RÉ-EXÉCUTION après correction : 7 PASS tombent
+
+Suite directe du #375. Correction appliquée dans 12 scripts de backtest
+(`np.cumprod(1.0 + pnl)[-1] - 1.0` → `np.exp(pnl.sum()) - 1.0`), puis
+**ré-exécution intégrale sur les 5 marchés**. Aucun paramètre, seuil, univers ni
+critère n'a été touché : seule la formule de composition change, les verdicts
+sont donc directement comparables.
+
+| 376 | Correction de la composition des rendements log + ré-exécution des 12 backtests dont le verdict de marché avait basculé au #375 | Aucune nouvelle donnée (OHLC et séries FRED/Bitcoin déjà locales) | **FAIT — 7 PASS sur 11 ré-évalués deviennent FAIL.** Tombent : `bitcoin_momentum_overlay` (#344, 5/5→**3/5**), `credit_card_delinquency_overlay` (4/5→**3/5**), `cross_market_correlation_ndx_dax_overlay` (#193, 4/5→**0/5**), `delinquency_nfci_baa10y_graduated_overlay` (4/5→**1/5**), `delinquency_nfci_baa10y_majority_overlay` (5/5→**3/5**), `volatility_managed_portfolio_gjr` (2 jambes→**1**), `ewma_defensive_overlay_and_triple_engine` (critère standard PASS→**FAIL**, critère Calmar maintenu). Survivent : `defensive_calmar_vol_targeting_overlay` (4/5), `delinquency_nfci_baa10y_corr_move_majority_overlay` (5/5→4/5), `delinquency_nfci_combined_overlay` (5/5→4/5), `midterm_election_overlay` (4/4→**3/4, exactement au seuil ≥3/4 — fragile**). `stlfsi_financial_stress_overlay` reste FAIL (3/5→0/5). **Aucun verdict ne s'améliore** : le sens est celui prédit avant mesure. Voir `results/nonml_log_return_compounding_reexecution.md`. |
+
+**Le compteur « 101 PASS niveau 1 » est surévalué et ne peut plus être cité tel
+quel.** 7 reclassifications sont établies sur les 12 scripts ré-exécutés ; les
+~306 autres scripts portant le même idiome n'ont pas été ré-exécutés. Le nombre
+réel de PASS restants est **inconnu et strictement inférieur à 101**. Aucun
+chiffre de remplacement n'est avancé tant que la ré-exécution n'est pas complète.
+
+**Conséquence sur le pivot Étape D :** `bitcoin_momentum_overlay` (#344) était
+l'un des quatre candidats retenus par les synthèses v9-v15 — il est désormais
+FAIL et sort de la liste. C'est aussi la stratégie dont les chiffres de
+simulation 300 € avaient été communiqués.
+
+**Les batteries Règle 9 déjà passées sur les stratégies reclassées sont
+caduques** : elles validaient un résultat qui n'existe plus.
+
+**Reste à faire, par ordre de priorité :** (1) ré-exécuter les ~306 scripts
+restants ; (2) corriger les `*_sim_300e.py`, qui partagent le bug (impact faible
+sur 63 séances mais chiffres publiés sous-estimés) ; (3) seulement ensuite,
+reprendre la recherche de nouvelles hypothèses.

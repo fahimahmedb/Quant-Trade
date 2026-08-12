@@ -21,18 +21,16 @@ Spécification figée dans `PREREG_volatility_managed_portfolio_gjr.md` (committ
 
 | Stratégie | Sharpe ann. | Rendement total | Rendement ann. | MDD | Calmar | Sortino |
 |---|---|---|---|---|---|---|
-| Buy & Hold | +0.52 | +4553.2% | +14.5% | -82.9% | 0.077 | +0.69 |
-| **Volatility-managed GJR-t** | **+0.67** | **+7178.8%** | +14.3% | -59.9% | 0.146 | +0.94 |
+| Buy & Hold | +0.52 | +16652.5% | +14.5% | -82.9% | 0.077 | +0.69 |
+| **Volatility-managed GJR-t** | **+0.67** | **+15557.4%** | +14.3% | -59.9% | 0.146 | +0.94 |
 
 ## 4. Verdict contre le critère de succès RENFORCÉ pré-enregistré
 
 - Jambe Sharpe : +0.6656 vs +0.5209 → **OUI**
-- Jambe rendement total : +7178.8% vs +4553.2% → **OUI**
+- Jambe rendement total : +15557.4% vs +16652.5% → **NON**
 
-**PASS — les deux jambes sont atteintes (critère renforcé du 28/07/2026 : Sharpe ET rendement > Buy & Hold).**
+**FAIL — les deux jambes sont NON toutes atteintes (critère renforcé du 28/07/2026 : Sharpe ET rendement > Buy & Hold).**
 
 ## 5. Rappel Règle 10 (hypothèse de rémunération déclarée au PREREG)
 
 La fraction hors-marché `(1 - position)` est rémunérée à **0 %** et la fraction empruntée (position > 1.0x) est financée à **0 %**. Cette asymétrie est déclarée, pas neutre : elle pénalise la stratégie quand elle est sous-investie et l'avantage quand elle est levée. Elle est identique à la convention des cycles #43/#46/#44/#115/#118 auxquels ce résultat doit être comparé.
-
-**PASS de niveau 1 seulement — ce n'est PAS un verdict final.** La batterie renforcée de la Règle 9 (`scripts/nonml_pass_validation_battery.py volatility_managed_portfolio_gjr`), la grille de robustesse ±20 % et la décomposition Règle 10 doivent toutes être exécutées avant toute déclaration de validation.

@@ -76,8 +76,8 @@ def main():
 
         me_bh = trading_metrics(pnl_bh)
         me_ov = trading_metrics(pnl_ov)
-        ret_bh = np.cumprod(1.0 + pnl_bh)[-1] - 1.0
-        ret_ov = np.cumprod(1.0 + pnl_ov)[-1] - 1.0
+        ret_bh = np.exp(pnl_bh.sum()) - 1.0
+        ret_ov = np.exp(pnl_ov.sum()) - 1.0
 
         calmar_bh = me_bh["calmar"] if np.isfinite(me_bh["calmar"]) else -np.inf
         calmar_ov = me_ov["calmar"] if np.isfinite(me_ov["calmar"]) else -np.inf

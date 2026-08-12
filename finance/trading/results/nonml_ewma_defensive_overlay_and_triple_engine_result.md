@@ -6,19 +6,19 @@
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 0.077 |
-| **Overlay EWMA défensif** | **+0.70** | **+6221.4%** | -56.5% | **0.151** |
+| Buy&Hold (NDX) | +0.52 | +16652.5% | -82.9% | 0.077 |
+| **Overlay EWMA défensif** | **+0.70** | **+11534.3%** | -56.5% | **0.151** |
 
-Critère standard : PASS. Critère Calmar : PASS.
+Critère standard : FAIL. Critère Calmar : PASS.
 
 ## 2. Ensemble à 3 moteurs (#115 + GARCH#118 + EWMA)/3, fenêtre commune 9522 séances
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 0.077 |
-| **Overlay 3 moteurs** | **+0.70** | **+7718.4%** | -56.9% | **0.159** |
+| Buy&Hold (NDX) | +0.52 | +16652.5% | -82.9% | 0.077 |
+| **Overlay 3 moteurs** | **+0.70** | **+15539.7%** | -56.9% | **0.159** |
 
-Critère standard : PASS. Critère Calmar : PASS.
+Critère standard : FAIL. Critère Calmar : PASS.
 
 ## Comparaison au #121 (ensemble à 2 moteurs, déjà committé) : rendements décroissants ?
 
