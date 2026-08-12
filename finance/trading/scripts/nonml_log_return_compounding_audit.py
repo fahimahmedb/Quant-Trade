@@ -54,6 +54,16 @@ OUT = RESULTS / "nonml_log_return_compounding_audit.md"
 
 REQUIRED = {"pos", "r_asset", "cost_bps"}
 
+# Schéma pour lequel la reconstruction ci-dessous a été vérifiée ligne à ligne
+# dans les scripts sources. Tout fichier portant des clés SUPPLÉMENTAIRES décrit
+# un P&L que cette reconstruction ne modélise pas :
+#   - `r_alt`       : seconde jambe d'actif (obligations) — le P&L réel est
+#                     `pos_eq*r_asset + pos_bond*r_alt`, pas `pos*r_asset` ;
+#   - `pos_primary`/`pos_solo`/`var_trials`/`n_trials` : pipelines ML, hors du
+#                     périmètre de ce backlog non-ML.
+# Ces fichiers sont EXCLUS et listés tels quels plutôt que mesurés à tort.
+ALLOWED = {"pos", "r_asset", "dates", "cost_bps"}
+
 
 def reconstruct(npz):
     """Rejoue le P&L exactement comme les scripts du backlog.
@@ -111,6 +121,10 @@ def main() -> None:
             if not REQUIRED <= set(npz.files):
                 skipped.append((name, "schéma non standard"))
                 continue
+            extra = sorted(set(npz.files) - ALLOWED)
+            if extra:
+                skipped.append((name, f"schéma composite ({', '.join(extra)}) — P&L non modélisé ici"))
+                continue
             if np.asarray(npz["pos"]).shape != np.asarray(npz["r_asset"]).shape:
                 skipped.append((name, "pos et r_asset de tailles différentes"))
                 continue
@@ -144,6 +158,21 @@ def main() -> None:
     L.append("d'hypothèses.** C'est un audit de code : aucun paramètre à calibrer, aucun")
     L.append("seuil de succès à choisir, donc aucun degré de liberté exploitable. Il n'a")
     L.append("pas fait l'objet d'un pré-enregistrement pour cette raison.")
+    L.append("")
+    L.append("## Rectification d'une première version de cet audit")
+    L.append("")
+    L.append("Une première version (commit `0d0edd9`) annonçait **151 fichiers exploitables,")
+    L.append("20 basculements dont 17 dans le sens dangereux**. Ces chiffres étaient FAUX :")
+    L.append("la reconstruction du P&L y était appliquée à des fichiers de schéma composite")
+    L.append("qu'elle ne décrit pas — notamment la famille `diversification_bond_*`, dont le")
+    L.append("P&L combine deux jambes d'actif (`pos_eq*r_asset + pos_bond*r_alt`) alors que la")
+    L.append("reconstruction n'en modélisait qu'une. Quatre lignes du tableau publié en")
+    L.append("dépendaient et étaient donc erronées.")
+    L.append("")
+    L.append("Après exclusion de ces schémas : **129 exploitables, 16 basculements dont 13")
+    L.append("dans le sens dangereux**. Le constat de fond (bug réel, biais directionnel")
+    L.append("favorable aux overlays défensifs) est inchangé ; son ampleur mesurée est")
+    L.append("revue à la baisse.")
     L.append("")
     L.append("## Le bug")
     L.append("")
@@ -189,8 +218,22 @@ def main() -> None:
     L.append("- échelle des séries sauvegardées vérifiée : toutes en **fraction**, aucune en")
     L.append("  pourcentage (le script GJR convertit bien via `r_pct / 100.0`) — le balayage")
     L.append("  ci-dessous n'est donc pas faussé par un mélange d'unités.")
-    L.append(f"- `.npz` exploitables (schéma standard) : **{len(rows)}**")
-    L.append(f"- ignorés : {len(skipped)}")
+    L.append(f"- `.npz` exploitables (schéma standard `pos`/`r_asset`/`dates`/`cost_bps`) : **{len(rows)}**")
+    L.append(f"- **exclus** (schéma composite ou illisible) : **{len(skipped)}**")
+    L.append("")
+    L.append("Les fichiers exclus le sont parce que la reconstruction du P&L vérifiée dans")
+    L.append("la source ne les décrit pas : `r_alt` signale une seconde jambe d'actif")
+    L.append("(`pos_eq*r_asset + pos_bond*r_alt`), et `pos_primary`/`var_trials` des pipelines")
+    L.append("ML hors périmètre. Les mesurer avec `pos*r_asset` produirait un P&L faux.")
+    L.append("")
+    if skipped:
+        L.append("<details><summary>Liste des exclus</summary>")
+        L.append("")
+        for n, why in sorted(skipped):
+            L.append(f"- `{n}` — {why}")
+        L.append("")
+        L.append("</details>")
+        L.append("")
     L.append(f"- verdicts « Rdt>BH » inchangés : **{len(rows) - len(flips)}**")
     L.append(f"- verdicts qui **basculent** : **{len(flips)}**")
     L.append(f"  - dont OUI → non (le bug fabriquait un verdict favorable) : **{len(lost)}**")

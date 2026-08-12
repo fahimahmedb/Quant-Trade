@@ -2877,3 +2877,20 @@ un PREREG ; un audit de code n'en a pas, par construction (aucun seuil ni univer
 recherche de paramètres, aucune dépendance ML » passe. Aucun PREREG rétroactif
 n'a été écrit — en antidater un serait la fraude que ce contrôle existe pour
 empêcher.
+
+### Rectification du #375 (12/08/2026, même jour)
+
+Les chiffres publiés au commit `0d0edd9` (**151 exploitables, 20 basculements
+dont 17 OUI→non**) étaient **FAUX**. La reconstruction du P&L de l'audit était
+appliquée à des fichiers de schéma composite qu'elle ne décrit pas : la famille
+`diversification_bond_*` combine deux jambes d'actif
+(`pos_eq*r_asset + pos_bond*r_alt`) et les `.npz` ML portent `pos_primary`/
+`var_trials`. Quatre lignes du tableau en dépendaient.
+
+Après exclusion de ces schémas (désormais listés explicitement dans le rapport) :
+**129 exploitables, 16 basculements dont 13 OUI→non, 3 non→OUI.** Le constat de
+fond — bug réel, confirmé en source, biais directionnel favorable aux overlays
+défensifs — est **inchangé** ; son ampleur mesurée est revue à la baisse.
+
+L'erreur venait de mon propre audit, pas du code du backlog. Elle est consignée
+ici plutôt que corrigée silencieusement.

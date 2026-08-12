@@ -5,6 +5,21 @@ d'hypothèses.** C'est un audit de code : aucun paramètre à calibrer, aucun
 seuil de succès à choisir, donc aucun degré de liberté exploitable. Il n'a
 pas fait l'objet d'un pré-enregistrement pour cette raison.
 
+## Rectification d'une première version de cet audit
+
+Une première version (commit `0d0edd9`) annonçait **151 fichiers exploitables,
+20 basculements dont 17 dans le sens dangereux**. Ces chiffres étaient FAUX :
+la reconstruction du P&L y était appliquée à des fichiers de schéma composite
+qu'elle ne décrit pas — notamment la famille `diversification_bond_*`, dont le
+P&L combine deux jambes d'actif (`pos_eq*r_asset + pos_bond*r_alt`) alors que la
+reconstruction n'en modélisait qu'une. Quatre lignes du tableau publié en
+dépendaient et étaient donc erronées.
+
+Après exclusion de ces schémas : **129 exploitables, 16 basculements dont 13
+dans le sens dangereux**. Le constat de fond (bug réel, biais directionnel
+favorable aux overlays défensifs) est inchangé ; son ampleur mesurée est
+revue à la baisse.
+
 ## Le bug
 
 Les scripts construisent la série de l'actif en rendements **log** :
@@ -48,11 +63,46 @@ basculements observés ci-dessous la confirment.
 - échelle des séries sauvegardées vérifiée : toutes en **fraction**, aucune en
   pourcentage (le script GJR convertit bien via `r_pct / 100.0`) — le balayage
   ci-dessous n'est donc pas faussé par un mélange d'unités.
-- `.npz` exploitables (schéma standard) : **151**
-- ignorés : 2
-- verdicts « Rdt>BH » inchangés : **131**
-- verdicts qui **basculent** : **20**
-  - dont OUI → non (le bug fabriquait un verdict favorable) : **17**
+- `.npz` exploitables (schéma standard `pos`/`r_asset`/`dates`/`cost_bps`) : **129**
+- **exclus** (schéma composite ou illisible) : **24**
+
+Les fichiers exclus le sont parce que la reconstruction du P&L vérifiée dans
+la source ne les décrit pas : `r_alt` signale une seconde jambe d'actif
+(`pos_eq*r_asset + pos_bond*r_alt`), et `pos_primary`/`var_trials` des pipelines
+ML hors périmètre. Les mesurer avec `pos*r_asset` produirait un P&L faux.
+
+<details><summary>Liste des exclus</summary>
+
+- `ml_crossmarket_pooling_dax` — schéma composite (market, n_trials, pos_solo, var_trials) — P&L non modélisé ici
+- `ml_crossmarket_pooling_russell2000` — schéma composite (market, n_trials, pos_solo, var_trials) — P&L non modélisé ici
+- `ml_crossmarket_pooling_sp500` — schéma composite (market, n_trials, pos_solo, var_trials) — P&L non modélisé ici
+- `ml_exogenous_features_rates_crossmarket` — schéma composite (n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `ml_exogenous_features_rates_crossmarket_composite` — schéma composite (n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `ml_meta_labeling_logitl2_composite` — schéma composite (n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `ml_meta_labeling_logitl2_ndx` — schéma composite (n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `ml_regularized_architecture` — schéma composite (k_star, n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `ml_regularized_architecture_composite` — schéma composite (k_star, n_trials, pos_primary, var_trials) — P&L non modélisé ici
+- `nonml_cash_rate_correction_44_crossmarket_russell2000` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_cash_rate_correction_44_crossmarket_sp500` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_cash_rate_correction_44_weekly_rebalance_ndx` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_cash_rate_correction_44_weekly_rebalance_russell2000` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_cash_rate_correction_44_weekly_rebalance_sp500` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_cash_rate_correction_defensive_vol_targeting_44` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_defensive_diversification_bond_overlay` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_overlay_composite` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_overlay_crossmarket_russell2000` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_overlay_crossmarket_sp500` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_overlay_dax` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_triple_engine_stack` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_diversification_bond_weekly_rebalance_stack` — schéma composite (r_alt) — P&L non modélisé ici
+- `nonml_dollar_neutral_composite_pit` — schéma non standard
+- `nonml_dollar_neutral_composite_vol_targeted` — schéma non standard
+
+</details>
+
+- verdicts « Rdt>BH » inchangés : **113**
+- verdicts qui **basculent** : **16**
+  - dont OUI → non (le bug fabriquait un verdict favorable) : **13**
   - dont non → OUI (le bug masquait un verdict favorable) : **3**
 
 ### Verdicts qui basculent
@@ -63,15 +113,11 @@ basculements observés ci-dessous la confirment.
 | nonml_credit_card_delinquency_overlay | +3129.3% | +3352.9% | +11049.9% | +8710.8% | OUI | non |
 | nonml_cross_market_correlation_ndx_dax_overlay | +225.5% | +279.3% | +756.1% | +604.2% | OUI | non |
 | nonml_defensive_calmar_vol_targeting_overlay | +6416.7% | +9256.6% | +25465.6% | +18048.2% | OUI | non |
-| nonml_defensive_diversification_bond_overlay | +6416.7% | +9256.6% | +25465.6% | +18048.2% | OUI | non |
 | nonml_delinquency_nfci_baa10y_corr_move_majority_overlay | +1542.1% | +1700.5% | +2844.6% | +2781.7% | OUI | non |
 | nonml_delinquency_nfci_baa10y_graduated_overlay | +3129.3% | +3227.1% | +11049.9% | +7189.9% | OUI | non |
 | nonml_delinquency_nfci_baa10y_majority_overlay | +3129.3% | +4142.3% | +11049.9% | +9319.3% | OUI | non |
 | nonml_delinquency_nfci_combined_overlay | +3129.3% | +3279.3% | +11049.9% | +10521.2% | OUI | non |
 | nonml_dispersion_vol_targeting_overlay_pit_universe | +391.3% | +380.5% | +542.3% | +556.4% | non | OUI |
-| nonml_diversification_bond_overlay_composite | +56.5% | +61.0% | +77.6% | +74.8% | OUI | non |
-| nonml_diversification_bond_overlay_crossmarket_russell2000 | +610.3% | +634.1% | +1666.8% | +1159.3% | OUI | non |
-| nonml_diversification_bond_triple_engine_stack | +4553.2% | +7718.4% | +16652.5% | +15539.7% | OUI | non |
 | nonml_ewma_defensive_overlay | +4553.2% | +6221.4% | +16652.5% | +11534.3% | OUI | non |
 | nonml_ewma_defensive_overlay_and_triple_engine | +4553.2% | +7718.4% | +16652.5% | +15539.7% | OUI | non |
 | nonml_gjr_calm_regime_overlay_russell2000 | +609.7% | +602.2% | +1570.1% | +1722.8% | non | OUI |
@@ -108,7 +154,7 @@ Ce qui est établi en revanche :
 3. Son biais est **directionnel et favorable aux overlays défensifs**, c'est-à-dire
    favorable dans le sens qui produit des PASS.
 4. Sur les marchés mesurables ici, il a effectivement fabriqué des verdicts
-   favorables dans **17 cas sur 20 basculements**.
+   favorables dans **13 cas sur 16 basculements**.
 
 Les chiffres de rendement total publiés dans tous les résultats concernés sont
 par ailleurs **sous-estimés** (ex. NDX Buy&Hold : +1542,9 % publié contre
