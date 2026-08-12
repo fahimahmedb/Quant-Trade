@@ -60,24 +60,83 @@ def pnl_at_cost(pos: np.ndarray, r: np.ndarray, cost_bps: float, r_alt: np.ndarr
     return pnl_ov, pnl_bh
 
 
-def check_a_cost_stress(pos, r, cost_baseline, r_alt=None):
+
+class Book:
+    """Porte les series necessaires pour recalculer le P&L a n'importe quel cout.
+
+    Deux schemas de `.npz` sont acceptes :
+
+    * **exposition** (historique) : `pos`, `r_asset`, option `r_alt`. Le P&L est
+      `pos*r + (1-pos)*r_alt - turnover*cout`, le turnover etant derive de `pos`.
+      C'est le schema des strategies qui pilotent une exposition sur UN actif.
+
+    * **portefeuille** : `pnl_gross_ov`, `pnl_gross_bh`, `turn_ov`, `turn_bh`.
+      Le P&L brut et le turnover sont fournis directement, car pour un panier le
+      turnover vaut somme(|dw_i|)/2 et n'est pas derivable d'une exposition
+      scalaire. C'est le schema des strategies au niveau titre.
+
+    Les deux schemas produisent la meme interface (`slice`, `pnl`), de sorte que
+    les cinq controles de la Regle 9 sont rigoureusement identiques dans les deux
+    cas -- seule la facon de reconstituer le P&L differe.
+    """
+
+    def __init__(self, pos=None, r=None, r_alt=None,
+                 pnl_gross_ov=None, pnl_gross_bh=None, turn_ov=None, turn_bh=None):
+        self.pos, self.r, self.r_alt = pos, r, r_alt
+        self.pnl_gross_ov, self.pnl_gross_bh = pnl_gross_ov, pnl_gross_bh
+        self.turn_ov, self.turn_bh = turn_ov, turn_bh
+        self.is_portfolio = pos is None
+
+    def __len__(self):
+        return len(self.pnl_gross_ov) if self.is_portfolio else len(self.r)
+
+    def slice(self, sel):
+        if self.is_portfolio:
+            return Book(pnl_gross_ov=self.pnl_gross_ov[sel], pnl_gross_bh=self.pnl_gross_bh[sel],
+                        turn_ov=self.turn_ov[sel], turn_bh=self.turn_bh[sel])
+        return Book(pos=self.pos[sel], r=self.r[sel],
+                    r_alt=self.r_alt[sel] if self.r_alt is not None else None)
+
+    def pnl(self, cost_bps):
+        """Series de P&L dans leur unite NATIVE.
+
+        Schema exposition -> rendements LOG (heritees de `r_asset`).
+        Schema portefeuille -> rendements SIMPLES (somme(w_i * r_simple_i)).
+        Utiliser `to_log` et `total_return` plutot que de supposer l'unite.
+        """
+        if self.is_portfolio:
+            c = cost_bps / 1e4
+            return (self.pnl_gross_ov - self.turn_ov * c,
+                    self.pnl_gross_bh - self.turn_bh * c)
+        return pnl_at_cost(self.pos, self.r, cost_bps, self.r_alt)
+
+    def to_log(self, pnl):
+        """Serie en LOG, unite attendue par `trading_metrics` (Sharpe, MDD, DSR)."""
+        return np.log1p(pnl) if self.is_portfolio else pnl
+
+    def total_return(self, pnl):
+        """Rendement total compose, selon l'unite native de la serie."""
+        if self.is_portfolio:
+            return float(np.cumprod(1.0 + pnl)[-1] - 1.0)
+        return float(np.exp(pnl.sum()) - 1.0)
+
+
+def check_a_cost_stress(book, cost_baseline):
     rows = []
     for mult in (1, 3, 5):
         cost = cost_baseline * mult
-        pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost, r_alt)
-        me_ov, me_bh = trading_metrics(pnl_ov), trading_metrics(pnl_bh)
-        # `r_asset` est une serie de rendements LOG : la composition correcte est
-        # exp(somme), pas cumprod(1+.). Voir
-        # results/nonml_log_return_compounding_audit.md.
-        ret_ov = float(np.exp(pnl_ov.sum()) - 1.0)
-        ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
+        pnl_ov, pnl_bh = book.pnl(cost)
+        me_ov = trading_metrics(book.to_log(pnl_ov))
+        me_bh = trading_metrics(book.to_log(pnl_bh))
+        ret_ov = book.total_return(pnl_ov)
+        ret_bh = book.total_return(pnl_bh)
         ok = (me_ov["sharpe_ann"] > me_bh["sharpe_ann"]) and (ret_ov > ret_bh)
         rows.append((cost, me_ov["sharpe_ann"], me_bh["sharpe_ann"], ret_ov, ret_bh, ok))
     all_ok = all(r[-1] for r in rows)
     return all_ok, rows
 
 
-def check_b_crisis_stress(pos, r, dates, cost_baseline, r_alt=None):
+def check_b_crisis_stress(book, dates, cost_baseline):
     rows = []
     any_window = False
     all_ok = True
@@ -88,19 +147,17 @@ def check_b_crisis_stress(pos, r, dates, cost_baseline, r_alt=None):
             rows.append((label, n, None, None, None))
             continue
         any_window = True
-        pos_w, r_w = pos[mask], r[mask]
-        r_alt_w = r_alt[mask] if r_alt is not None else None
-        pnl_ov, pnl_bh = pnl_at_cost(pos_w, r_w, cost_baseline, r_alt_w)
-        mdd_ov = trading_metrics(pnl_ov)["max_drawdown_pct"]
-        mdd_bh = trading_metrics(pnl_bh)["max_drawdown_pct"]
+        pnl_ov, pnl_bh = book.slice(mask).pnl(cost_baseline)
+        mdd_ov = trading_metrics(book.to_log(pnl_ov))["max_drawdown_pct"]
+        mdd_bh = trading_metrics(book.to_log(pnl_bh))["max_drawdown_pct"]
         ok = mdd_ov >= mdd_bh - 1.0  # tolerance 1pt (arrondis)
         all_ok &= ok
         rows.append((label, n, mdd_ov, mdd_bh, ok))
     return (all_ok and any_window), rows, any_window
 
 
-def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4, r_alt=None):
-    T = len(r)
+def check_c_temporal_stability(book, cost_baseline, n_folds=4):
+    T = len(book)
     fold_len = T // n_folds
     rows = []
     n_beat = 0
@@ -112,11 +169,9 @@ def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4, r_alt=None):
             f0 += EMBARGO
         if f1 - f0 < 30:
             continue
-        pos_f, r_f = pos[f0:f1], r[f0:f1]
-        r_alt_f = r_alt[f0:f1] if r_alt is not None else None
-        pnl_ov, pnl_bh = pnl_at_cost(pos_f, r_f, cost_baseline, r_alt_f)
-        s_ov = trading_metrics(pnl_ov)["sharpe_ann"]
-        s_bh = trading_metrics(pnl_bh)["sharpe_ann"]
+        pnl_ov, pnl_bh = book.slice(slice(f0, f1)).pnl(cost_baseline)
+        s_ov = trading_metrics(book.to_log(pnl_ov))["sharpe_ann"]
+        s_bh = trading_metrics(book.to_log(pnl_bh))["sharpe_ann"]
         beat = s_ov > s_bh
         n_beat += int(beat)
         n_scored += 1
@@ -125,9 +180,9 @@ def check_c_temporal_stability(pos, r, cost_baseline, n_folds=4, r_alt=None):
     return majority_ok, rows, n_beat, n_scored
 
 
-def check_d_spa(pos, r, cost_baseline, r_alt=None):
-    pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost_baseline, r_alt)
-    losses = {"candidat": -pnl_ov, "BuyHold": -pnl_bh}
+def check_d_spa(book, cost_baseline):
+    pnl_ov, pnl_bh = book.pnl(cost_baseline)
+    losses = {"candidat": -book.to_log(pnl_ov), "BuyHold": -book.to_log(pnl_bh)}
     res = spa_test(losses, bench="BuyHold")
     return res["p_value"] < 0.05, res["p_value"]
 
@@ -167,9 +222,9 @@ def approx_var_trials():
     return float(np.var(np.array(vals), ddof=1)), len(vals)
 
 
-def check_e_dsr(pos, r, cost_baseline, r_alt=None):
-    pnl_ov, _ = pnl_at_cost(pos, r, cost_baseline, r_alt)
-    me = trading_metrics(pnl_ov)
+def check_e_dsr(book, cost_baseline):
+    pnl_ov, _ = book.pnl(cost_baseline)
+    me = trading_metrics(book.to_log(pnl_ov))
     n_trials = parse_backlog_n_trials()
     var_trials_annual, n_extracted = approx_var_trials()
     if n_trials is None or var_trials_annual is None:
@@ -199,20 +254,39 @@ def main():
         sys.exit(1)
 
     data = np.load(npz_path, allow_pickle=True)
-    pos, r, cost_bps = data["pos"], data["r_asset"], float(data["cost_bps"])
+    cost_bps = float(data["cost_bps"])
     dates = pd.to_datetime(data["dates"])
-    r_alt = data["r_alt"] if "r_alt" in data.files else None
+
+    if "pos" in data.files:
+        # Schema exposition : strategie pilotant une exposition sur UN actif.
+        book = Book(pos=data["pos"], r=data["r_asset"],
+                    r_alt=data["r_alt"] if "r_alt" in data.files else None)
+        schema = "exposition"
+    elif {"pnl_gross_ov", "pnl_gross_bh", "turn_ov", "turn_bh"} <= set(data.files):
+        # Schema portefeuille : strategie au niveau titre. Le turnover d'un panier
+        # vaut somme(|dw_i|)/2 et n'est pas derivable d'une exposition scalaire :
+        # il doit donc etre fourni pour que le stress de couts puisse recalculer
+        # le P&L a 3x et 5x.
+        book = Book(pnl_gross_ov=data["pnl_gross_ov"], pnl_gross_bh=data["pnl_gross_bh"],
+                    turn_ov=data["turn_ov"], turn_bh=data["turn_bh"])
+        schema = "portefeuille"
+    else:
+        print(f"SCHEMA NON RECONNU dans {npz_path} : {sorted(data.files)}.\n"
+              f"Attendu soit (pos, r_asset, dates, cost_bps), soit "
+              f"(pnl_gross_ov, pnl_gross_bh, turn_ov, turn_bh, dates, cost_bps).")
+        sys.exit(1)
 
     lines = [f"# Batterie de validation renforcée — {name}",
              "",
-             f"Coût pré-enregistré : {cost_bps:.1f} bps. {len(r)} séances.",
+             f"Coût pré-enregistré : {cost_bps:.1f} bps. {len(book)} séances. "
+             f"Schéma `.npz` : **{schema}**.",
              ""]
 
     lines.append("## a. Stress de coûts (1x, 3x, 5x)")
     lines.append("")
     lines.append("| Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |")
     lines.append("|---|---|---|---|---|---|")
-    ok_a, rows_a = check_a_cost_stress(pos, r, cost_bps, r_alt)
+    ok_a, rows_a = check_a_cost_stress(book, cost_bps)
     for cost, s_ov, s_bh, r_ov, r_bh, ok in rows_a:
         lines.append(f"| {cost:.1f} | {s_ov:+.2f} | {s_bh:+.2f} | {100*r_ov:+.1f}% | {100*r_bh:+.1f}% | {'OUI' if ok else 'non'} |")
     lines.append("")
@@ -223,7 +297,7 @@ def main():
     lines.append("")
     lines.append("| Fenêtre | Séances dispo | MDD overlay | MDD BH | Pas pire que BH |")
     lines.append("|---|---|---|---|---|")
-    ok_b, rows_b, any_window = check_b_crisis_stress(pos, r, dates, cost_bps, r_alt)
+    ok_b, rows_b, any_window = check_b_crisis_stress(book, dates, cost_bps)
     for label, n, mdd_ov, mdd_bh, ok in rows_b:
         if mdd_ov is None:
             lines.append(f"| {label} | {n} | -- | -- | hors couverture (<20 séances) |")
@@ -242,7 +316,7 @@ def main():
     lines.append("")
     lines.append("| Fold | Séances | Sharpe overlay | Sharpe BH | Bat BH |")
     lines.append("|---|---|---|---|---|")
-    ok_c, rows_c, n_beat, n_scored = check_c_temporal_stability(pos, r, cost_bps, r_alt=r_alt)
+    ok_c, rows_c, n_beat, n_scored = check_c_temporal_stability(book, cost_bps)
     for k, n, s_ov, s_bh, beat in rows_c:
         lines.append(f"| {k} | {n} | {s_ov:+.2f} | {s_bh:+.2f} | {'OUI' if beat else 'non'} |")
     lines.append("")
@@ -252,14 +326,14 @@ def main():
 
     lines.append("## d. SPA à 1 candidat contre Buy&Hold")
     lines.append("")
-    ok_d, p_spa = check_d_spa(pos, r, cost_bps, r_alt)
+    ok_d, p_spa = check_d_spa(book, cost_bps)
     lines.append(f"p-value SPA : {p_spa:.4f}")
     lines.append(f"**{'OK' if ok_d else 'ÉCHEC'} — significatif à 5% : {'oui' if ok_d else 'NON'}.**")
     lines.append("")
 
     lines.append("## e. DSR avec n_trials = taille totale du backlog (jamais 1)")
     lines.append("")
-    e_res = check_e_dsr(pos, r, cost_bps, r_alt)
+    e_res = check_e_dsr(book, cost_bps)
     if e_res is None:
         lines.append("**PENDING — n_trials/var_trials non extractibles du backlog, contrôle non exécuté "
                      "(ne pas absorber silencieusement en OK, Règle 5).**")

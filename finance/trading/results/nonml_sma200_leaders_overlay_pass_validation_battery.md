@@ -1,50 +1,56 @@
-# Batterie de validation renforcée — sma200_leaders_overlay (adaptée au format portefeuille)
+# Batterie de validation renforcée — sma200_leaders_overlay
 
-Coût pré-enregistré : 5.0 bps. 1144 séances. Candidat = Leaders 52-semaines + overlay SMA200 (#33). Référence = Leaders seul (#4), PAS Buy&Hold.
+Coût pré-enregistré : 5.0 bps. 1144 séances. Schéma `.npz` : **portefeuille**.
 
 ## a. Stress de coûts (1x, 3x, 5x)
 
-| Coût (bps) | Sharpe candidat | Sharpe référence | Rendement candidat | Rendement référence | PASS |
+| Coût (bps) | Sharpe overlay | Sharpe BH | Rendement overlay | Rendement BH | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.69 | +0.59 | +116.8% | +53.5% | OUI |
-| 15.0 | +0.66 | +0.57 | +108.3% | +50.8% | OUI |
-| 25.0 | +0.63 | +0.55 | +100.0% | +48.3% | OUI |
+| 5.0 | +0.88 | +0.84 | +270.7% | +108.0% | OUI |
+| 15.0 | +0.86 | +0.82 | +256.1% | +104.5% | OUI |
+| 25.0 | +0.83 | +0.80 | +242.0% | +101.0% | OUI |
 
 **OK — tient à 5x le coût nominal : oui.**
 
-## b. Stress de crise (MDD candidat vs référence sur fenêtres historiques connues)
+## b. Stress de crise (MDD overlay vs Buy&Hold sur fenêtres historiques connues)
 
-| Fenêtre | Séances dispo | MDD candidat | MDD référence | Pas pire que référence |
+| Fenêtre | Séances dispo | MDD overlay | MDD BH | Pas pire que BH |
 |---|---|---|---|---|
 | Dot-com crash | 0 | -- | -- | hors couverture (<20 séances) |
 | Crise financière 2008 | 0 | -- | -- | hors couverture (<20 séances) |
 | Krach COVID | 0 | -- | -- | hors couverture (<20 séances) |
-| Resserrement 2022 | 251 | -37.4% | -27.6% | non |
+| Resserrement 2022 | 251 | -35.8% | -25.7% | non |
 
-**ÉCHEC — MDD jamais pire que la référence sur les fenêtres couvertes : NON.**
+**ÉCHEC — MDD jamais pire que Buy&Hold sur les fenêtres de crise couvertes : NON.**
 
 ## c. Stabilité temporelle (folds non chevauchants + embargo 5j)
 
-| Fold | Séances | Sharpe candidat | Sharpe référence | Bat référence |
+| Fold | Séances | Sharpe overlay | Sharpe BH | Bat BH |
 |---|---|---|---|---|
-| 1 | 286 | -1.61 | -1.01 | non |
-| 2 | 281 | +1.51 | +1.51 | non |
-| 3 | 281 | +0.75 | +0.61 | OUI |
-| 4 | 281 | +1.65 | +1.74 | non |
+| 1 | 286 | -1.47 | -0.85 | non |
+| 2 | 281 | +1.64 | +1.72 | non |
+| 3 | 281 | +0.96 | +0.88 | OUI |
+| 4 | 281 | +1.93 | +2.12 | non |
 
-**ÉCHEC — bat la référence sur 1/4 folds (majorité NON atteinte).**
+**ÉCHEC — bat le benchmark sur 1/4 folds (majorité NON atteinte).**
 
-## d. SPA à 1 candidat contre la référence
+## d. SPA à 1 candidat contre Buy&Hold
 
-p-value SPA : 0.0538
-**ÉCHEC — significatif à 5% : NON.**
+p-value SPA : 0.0384
+**OK — significatif à 5% : oui.**
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 320 (taille du backlog après le #33), Var(Sharpe essais) estimée sur 111 Sharpe extraits du backlog = 0.000585 (échelle journalière).
-DSR = 0.1808
-**ÉCHEC — DSR ≥ 0.95 : NON.**
+n_trials = 372 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
+SR0 (seuil de sélection) = 0.0717 (journalier), DSR = 0.2966
+**ÉCHEC — DSR>0,95 : NON.**
 
-## Verdict global : 1/5
+## Verdict de la batterie renforcée
 
-**PAS de PASS RENFORCÉ (1/5).**
+a. Stress coûts : OK
+b. Stress crise : ÉCHEC
+c. Stabilité temporelle : ÉCHEC
+d. SPA 1-candidat : OK
+e. DSR (n_trials=backlog) : ÉCHEC
+
+**PAS de PASS RENFORCÉ — au moins un contrôle échoue, verdict initial insuffisant pour validation finale.**

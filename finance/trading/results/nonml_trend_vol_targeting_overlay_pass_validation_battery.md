@@ -1,6 +1,6 @@
 # Batterie de validation renforcée — trend_vol_targeting_overlay
 
-Coût pré-enregistré : 5.0 bps. 10020 séances.
+Coût pré-enregistré : 5.0 bps. 10020 séances. Schéma `.npz` : **exposition**.
 
 ## a. Stress de coûts (1x, 3x, 5x)
 

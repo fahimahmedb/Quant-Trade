@@ -3113,3 +3113,36 @@ validation au-dessus du verdict de niveau 1, elles ne le déterminent pas.
 164 montants de simulation corrigés, tous à la hausse ; 54 batteries Règle 9
 recalculées, 0 verdict modifié ; 3 foyers du même bug (backtests, simulations,
 outil de validation).**
+
+## Backlog #384 (12/08/2026) — la batterie Règle 9 était inapplicable aux portefeuilles
+
+Le #383 signalait « 7 batteries non rejouables faute de `.npz` ». L'examen montre
+que ce n'était **pas un oubli de sauvegarde mais une limite structurelle** de
+l'outil : 6 des 7 sont des stratégies de **portefeuille au niveau titre**
+(pondérations par titre), et la batterie n'acceptait qu'un schéma d'**exposition
+scalaire** `(pos, r_asset)`. Le 7ᵉ (`dollar_neutral_composite_vol_targeted`)
+sauvegardait un schéma P&L non reconnu. **7 PASS n'avaient donc jamais pu être
+soumis à la validation renforcée** — angle mort jamais signalé jusqu'ici.
+
+| 384 | Étendre la batterie Règle 9 à un schéma « portefeuille » et l'appliquer | Aucune nouvelle donnée | **FAIT — premier verdict Règle 9 jamais obtenu sur une stratégie de portefeuille.** Refactorisation de la batterie autour d'un objet `Book` exposant `slice`/`pnl`/`to_log`/`total_return`, de sorte que **les cinq contrôles sont rigoureusement identiques dans les deux schémas** — seule la reconstitution du P&L diffère. Nouveau schéma `(pnl_gross_ov, pnl_gross_bh, turn_ov, turn_bh, dates, cost_bps)` : le P&L **brut** et le turnover doivent être fournis, car pour un panier le turnover vaut `Σ|dwᵢ|/2` et n'est pas dérivable d'une exposition scalaire — sans lui, le stress de coûts ne peut pas recalculer le P&L à 3× et 5×. `sma200_leaders_overlay` équipé et évalué : **2/5, PAS de PASS RENFORCÉ** (a stress coûts OK, d SPA OK p=0,0142 ; b crise ÉCHEC, c stabilité ÉCHEC 1/4 folds, e DSR ÉCHEC 0,2966). |
+
+**Non-régression vérifiée** : le chemin « exposition » rend un résultat
+**identique au bit près** sur deux batteries témoins (`trend_vol_targeting_overlay`,
+`cpi_inflation_overlay`), à la seule mention du schéma près. Les 63 batteries
+existantes ne sont donc pas affectées par la refactorisation.
+
+**Un bug introduit puis corrigé dans le même cycle, avant tout commit de
+résultat.** La première version appliquait au schéma portefeuille la composition
+`exp(Σ)` et un `trading_metrics` direct — corrects pour du log, faux pour les
+rendements **simples** d'un panier. La batterie annonçait +372,3 % et un Sharpe
+de +1,05 là où le backtest calcule +270,7 % et +0,88. Détecté par confrontation
+au résultat du backtest lui-même, puis corrigé en rendant la convention explicite
+dans le `Book` (`to_log`, `total_return`). Après correction, la batterie
+reproduit exactement le backtest.
+
+**Reste à faire :** équiper les 5 autres scripts de portefeuille du schéma
+(`amihud_illiquidity_tilt`, `leaders_index52w_high_overlay`,
+`leaders_vol_targeting_20_overlay`, `momentum_12_1_pit_universe`,
+`momentum_turnover_doublesort`) — noms de variables différents dans chacun, une
+insertion par script. Puis `dollar_neutral_composite_vol_targeted`, dont le
+schéma actuel (`pnl_candidate`/`pnl_ref`) ne porte pas le turnover.

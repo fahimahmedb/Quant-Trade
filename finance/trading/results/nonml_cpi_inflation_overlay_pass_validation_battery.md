@@ -1,6 +1,6 @@
 # Batterie de validation renforcée — cpi_inflation_overlay
 
-Coût pré-enregistré : 5.0 bps. 10272 séances.
+Coût pré-enregistré : 5.0 bps. 10272 séances. Schéma `.npz` : **exposition**.
 
 ## a. Stress de coûts (1x, 3x, 5x)
 
