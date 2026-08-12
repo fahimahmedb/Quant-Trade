@@ -3199,3 +3199,70 @@ coûts à peine plus réalistes que ceux pré-enregistrés.
 **Reste :** `dollar_neutral_composite_vol_targeted`, dont le `.npz`
 (`pnl_candidate`/`pnl_ref`) ne porte pas le turnover et ne permet donc pas le
 stress de coûts.
+
+## Backlog #386 (12/08/2026) — CORRECTION D'UNE ERREUR DES #384-#385, et une reclassification
+
+### Ce que j'ai affirmé à tort aux #384-#385
+
+J'ai écrit que « 7 PASS n'avaient jamais pu être soumis à la validation renforcée »
+faute d'un schéma `.npz` compatible. **C'est faux.** Les 8 stratégies de
+portefeuille disposaient déjà chacune d'un **script de batterie DÉDIÉ et
+pré-enregistré**, adapté au format portefeuille :
+`nonml_{amihud_illiquidity_tilt, dollar_neutral_composite_vol_targeted,
+leaders_index52w_high_overlay, leaders_vol_targeting_20_overlay,
+momentum_12_1_pit_universe, momentum_consistency_pit_universe,
+momentum_turnover_doublesort, sma200_leaders_overlay}_pass_validation_battery.py`.
+
+Le problème que je croyais résoudre était déjà résolu, cycle par cycle, avec
+PREREG. En lançant la batterie **générique** sur ces stratégies au #385, j'ai
+**écrasé leurs résultats dédiés**.
+
+**Conséquence sur une affirmation publiée :** le « 4/5 d'`amihud_illiquidity_tilt`,
+meilleur score jamais obtenu » n'était **pas une découverte** — sa batterie dédiée
+enregistrait déjà 4/5. L'extension générique de la batterie (#384) reste utile
+pour de futurs cas, mais elle n'a rien débloqué.
+
+**Comparaison dédiée vs générique — 5 verdicts sur 6 identiques :**
+
+| Stratégie | Dédiée | Générique |
+|---|---|---|
+| `amihud_illiquidity_tilt` | 4/5 | 4/5 |
+| `momentum_turnover_doublesort` | 3/5 | 3/5 |
+| `sma200_leaders_overlay` | 2/5 | 2/5 |
+| `leaders_vol_targeting_20_overlay` | 1/5 | 1/5 |
+| `leaders_index52w_high_overlay` | 0/5 | 0/5 |
+| `momentum_12_1_pit_universe` | **2/5** | **1/5** |
+
+**Écart non résolu à ce stade** sur `momentum_12_1_pit_universe` — à investiguer
+avant de trancher lequel fait foi.
+
+### Quatrième foyer du bug d'agrégation
+
+| 386 | Corriger la batterie dédiée `dollar_neutral_composite_vol_targeted` et rejouer la chaîne de dépendances | Aucune nouvelle donnée | **FAIT — 1 reclassification PASS → FAIL.** La batterie dédiée agrégeait `Σ wᵢ·R_log` (lignes 118-119) : **quatrième foyer** du bug, jamais atteint par les balayages précédents, qui ciblaient les `*_backtest.py` et `*_sim_300e.py` mais pas les batteries dédiées. Corrigée (rendements simples + `log1p` + `.copy()` pandas ≥ 3). |
+
+### La vraie trouvaille : une dépendance périmée
+
+Le `#350` (`dollar_neutral_composite_vol_targeted`) consomme le `.npz` produit par
+le `#349` (`dollar_neutral_composite_pit`). Or le #350 a été rejoué lors du
+balayage des 208 scripts indiciels (#377), **avant** que le #349 ne soit corrigé
+au balayage des portefeuilles (#379). Son résultat committé reposait donc sur un
+amont périmé.
+
+Rejoué après correction de son amont, **le #350 bascule PASS → FAIL** :
+
+| | Sharpe ann. | t-stat | Rendement total |
+|---|---|---|---|
+| avant (amont périmé) | +0,61 | **+2,08** | +222,6 % |
+| après | **+0,36** | **+1,22** | +98,9 % |
+
+Le critère exige `t-stat > 2` : il n'est plus atteint.
+
+**Recherche systématique des mêmes cas :** 9 scripts consomment un `.npz` produit
+par un autre. Tous rejoués dans l'ordre topologique
+(`defensive_calmar` → `defensive_diversification_bond` / `dual_engine` /
+`ewma_triple_engine` → `weekly_rebalance_dual_engine` /
+`diversification_bond_triple_engine_stack` →
+`diversification_bond_weekly_rebalance_stack`, plus la chaîne
+`cash_rate_correction_44_*`). **Aucun autre changement de verdict.**
+
+**Bilan cumulé : 21 PASS tombés, 0 gagné** (20 + le #350).

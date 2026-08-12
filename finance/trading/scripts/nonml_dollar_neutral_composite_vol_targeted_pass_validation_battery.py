@@ -50,7 +50,10 @@ def build_raw_series():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES : le rendement d'un panier pondere est somme(w_i*r_simple_i).
+    # `.copy()` : sous pandas >= 3, `.values` peut etre en lecture seule.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
     simple_ret = P.pct_change(fill_method=None).values
@@ -145,7 +148,8 @@ def main():
     # Verification de regression : le pnl reconstruit a cost_bps=5.0
     # doit reproduire exactement le resultat deja committe du #350.
     pnl_check = raw_c - turn_c * (cost_bps / 1e4)
-    me_check = trading_metrics(pnl_check)
+    # pnl_check est en rendements SIMPLES ; trading_metrics attend du log.
+    me_check = trading_metrics(np.log1p(pnl_check))
     sharpe_daily_check = pnl_check.mean() / pnl_check.std() if pnl_check.std() > 0 else float("nan")
     tstat_check = sharpe_daily_check * np.sqrt(len(pnl_check))
 

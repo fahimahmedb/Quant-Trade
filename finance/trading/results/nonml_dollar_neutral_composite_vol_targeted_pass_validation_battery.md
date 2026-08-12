@@ -2,15 +2,15 @@
 
 Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre composite redimensionné par sa vol (#350). Référence = Buy&Hold équipondéré (univers PIT, #349).
 
-**Vérification de régression (doit reproduire le #350 déjà committé)** : Sharpe ann. reconstruit = +0.61 (#350 committé : +0.61), t-stat reconstruit = +2.08 (#350 committé : +2.08).
+**Vérification de régression (doit reproduire le #350 déjà committé)** : Sharpe ann. reconstruit = +0.28 (#350 committé : +0.61), t-stat reconstruit = +1.22 (#350 committé : +2.08).
 
 ## a. Stress de coûts (1x, 3x, 5x)
 
 | Coût (bps) | Sharpe candidat | Sharpe référence | Rendement candidat | Rendement référence | PASS |
 |---|---|---|---|---|---|
-| 5.0 | +0.61 | +0.40 | +175.3% | +104.8% | OUI |
-| 15.0 | +0.53 | +0.40 | +135.8% | +104.5% | OUI |
-| 25.0 | +0.45 | +0.40 | +102.0% | +104.3% | non |
+| 5.0 | +0.36 | +0.74 | +69.6% | +362.1% | non |
+| 15.0 | +0.28 | +0.74 | +45.3% | +361.5% | non |
+| 25.0 | +0.20 | +0.74 | +24.4% | +360.9% | non |
 
 **ÉCHEC — tient à 5x le coût nominal : NON.**
 
@@ -20,8 +20,8 @@ Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre
 |---|---|---|---|---|
 | Dot-com crash | 0 | -- | -- | hors couverture (<20 séances) |
 | Crise financière 2008 | 0 | -- | -- | hors couverture (<20 séances) |
-| Krach COVID | 62 | -4.5% | -32.8% | OUI |
-| Resserrement 2022 | 251 | -8.4% | -34.5% | OUI |
+| Krach COVID | 62 | -5.1% | -29.7% | OUI |
+| Resserrement 2022 | 251 | -9.8% | -28.0% | OUI |
 
 **OK — MDD jamais pire que la référence sur les fenêtres couvertes : oui.**
 
@@ -29,22 +29,22 @@ Coût pré-enregistré : 5.0 bps. 2887 séances. Candidat = sleeve dollar-neutre
 
 | Fold | Séances | Sharpe candidat | Sharpe référence | Bat référence |
 |---|---|---|---|---|
-| 1 | 721 | +0.88 | +0.68 | OUI |
-| 2 | 716 | +0.39 | +0.46 | non |
-| 3 | 716 | +0.10 | +0.21 | non |
-| 4 | 719 | +1.02 | +0.47 | OUI |
+| 1 | 721 | +0.66 | +0.97 | non |
+| 2 | 716 | +0.18 | +0.76 | non |
+| 3 | 716 | -0.25 | +0.57 | non |
+| 4 | 719 | +0.79 | +0.92 | non |
 
-**ÉCHEC — bat la référence sur 2/4 folds (majorité NON atteinte).**
+**ÉCHEC — bat la référence sur 0/4 folds (majorité NON atteinte).**
 
 ## d. SPA à 1 candidat contre la référence
 
-p-value SPA : 0.4136
+p-value SPA : 1.0000
 **ÉCHEC — significatif à 5% : NON.**
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 356 (taille du backlog), Var(Sharpe essais) estimée sur 111 Sharpe extraits du backlog = 0.000585 (échelle journalière).
-DSR = 0.0406
+n_trials = 372 (taille du backlog), Var(Sharpe essais) estimée sur 112 Sharpe extraits du backlog = 0.000585 (échelle journalière).
+DSR = 0.0044
 **ÉCHEC — DSR ≥ 0.95 : NON.**
 
 ## Verdict global : 1/5
