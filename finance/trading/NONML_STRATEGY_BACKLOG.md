@@ -2923,3 +2923,30 @@ caduques** : elles validaient un résultat qui n'existe plus.
 restants ; (2) corriger les `*_sim_300e.py`, qui partagent le bug (impact faible
 sur 63 séances mais chiffres publiés sous-estimés) ; (3) seulement ensuite,
 reprendre la recherche de nouvelles hypothèses.
+
+## Backlog #377 (12/08/2026) — balayage complet des 208 backtests indiciels
+
+| 377 | Appliquer la correction de composition aux 208 backtests **indiciels** restants et tout ré-exécuter | Aucune nouvelle donnée | **FAIT — 5 PASS supplémentaires tombent, 0 gain.** 208 scripts corrigés et ré-exécutés ; 4 échecs rencontrés et tous résolus (2 incompatibilités pandas ≥ 3 sans rapport avec le bug — `.values` en lecture seule sous copy-on-write, et dtype `object` refusé par `np.isnan` — 1 script exigeant un argument de marché, 1 dépendant du premier). Sur 269 résultats comparés : **42 fichiers modifiés, 5 PASS→FAIL, 0 FAIL→PASS**, 37 scores modifiés à verdict constant. Tombent : `bond_market_volatility_overlay` (4/5→2/5), `ewma_vol_targeting_overlay` (4/5→3/5), `financial_conditions_overlay` (4/5→3/5), `cash_rate_correction_defensive_vol_targeting_44`, `gjr_vol_managed_weekly_rebalance`. Voir `results/nonml_log_return_compounding_reexecution.md`. |
+
+**Contrôle de validité effectué :** le conteneur ayant été réinitialisé, tout
+tourne sous numpy 2.4.6 / pandas 3.0.5. L'ancienne formule rejouée **sous les
+librairies actuelles** reproduit les résultats d'origine **à l'octet près** sur
+deux stratégies testées. Les versions sont neutres ; les reclassifications sont
+imputables à la correction seule.
+
+**Bilan consolidé #375 → #377 : 12 PASS tombés, 0 gagné.** Aucun verdict ne
+s'améliore dans aucun des deux balayages — sens conforme au biais prédit avant
+mesure.
+
+**Le décompte brut est de 101 PASS sur 265 verdicts lisibles.** Ce chiffre ne
+doit PAS être lu comme une confirmation du « 101 PASS » antérieur : la population
+de fichiers diffère, et 12 PASS ont bel et bien été perdus. Il reste
+**provisoire**.
+
+**Reste à faire, priorité n°1 :** les **31 scripts de portefeuille au niveau
+titre** (familles Leaders / Winners / Low-Vol / momentum) portent un défaut
+DISTINCT et non corrigé — leur P&L est une moyenne pondérée de rendements log,
+alors que le rendement d'un panier pondéré est `Σ wᵢ·r_simple,ᵢ`. Ils ont été
+délibérément exclus de la correction mécanique, qui n'y est pas valide. Leurs
+résultats restent suspects tant que ce point n'est pas traité. Priorité n°2 :
+les `*_sim_300e.py`, qui partagent le bug de composition.

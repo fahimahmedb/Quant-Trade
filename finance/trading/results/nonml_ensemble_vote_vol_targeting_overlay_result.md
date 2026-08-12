@@ -7,8 +7,8 @@ Position moyenne : 1.13x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vote majoritaire (≥3/5)** | **+0.73** | **+126.3%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vote majoritaire (≥3/5)** | **+0.73** | **+166.8%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

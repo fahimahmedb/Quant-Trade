@@ -88,3 +88,54 @@ seule.
 `.values` renvoie une vue en lecture seule. Corrigé par un `.copy()` explicite.
 Défaut d'environnement préexistant, révélé par la réinstallation — sans lien avec
 la composition des rendements. Deux scripts en dépendaient et échouaient.
+
+## Balayage complet des 208 backtests indiciels (#377)
+
+La correction a été appliquée aux 208 scripts de backtest **indiciels** restants
+(P&L authentiquement en rendements log), puis chacun a été ré-exécuté.
+Les 31 scripts de **portefeuille au niveau titre** sont exclus : leur P&L est une
+moyenne pondérée de rendements log alors que le rendement d'un panier pondéré est
+`Σ wᵢ·r_simple,ᵢ` — défaut distinct, non traité ici.
+
+Résultat du balayage : 208 scripts exécutés, **4 échecs** tous résolus
+(2 incompatibilités pandas ≥ 3 sans rapport avec le bug, 1 script exigeant un
+argument de marché, 1 dépendant du premier).
+
+Comparaison sur les 269 résultats instantanés avant correction :
+
+- **42 fichiers de résultat modifiés**
+- **5 PASS deviennent FAIL** :
+  `bond_market_volatility_overlay` (4/5→2/5),
+  `ewma_vol_targeting_overlay` (4/5→3/5),
+  `financial_conditions_overlay` (4/5→3/5),
+  `cash_rate_correction_defensive_vol_targeting_44`,
+  `gjr_vol_managed_weekly_rebalance`
+- **0 FAIL ne devient PASS**
+- 37 résultats voient leur score bouger sans changer de verdict
+
+## Bilan consolidé #375 → #377
+
+| | |
+|---|---|
+| PASS reclassés en FAIL (cycle #376, 12 scripts) | **7** |
+| PASS reclassés en FAIL (cycle #377, 208 scripts) | **5** |
+| **Total PASS tombés** | **12** |
+| FAIL devenus PASS | **0** |
+
+**Aucun verdict ne s'améliore, dans aucun des deux balayages.** C'est exactement
+le sens prédit avant toute mesure : la formule buguée retranchait ≈ `Σx²/2` et
+avantageait donc les stratégies à variance réduite — les overlays défensifs, très
+majoritaires ici.
+
+## Où en est le compteur
+
+Le décompte brut sur les fichiers de résultat donne **101 PASS sur 265 verdicts
+lisibles**. Ce nombre ne doit PAS être lu comme une confirmation du « 101 PASS »
+d'avant : la population de fichiers n'est pas la même (269 instantanés, 265
+verdicts lisibles, plus des résultats sans verdict au format standard), et
+12 PASS ont bel et bien été perdus sur la période.
+
+**Ce compteur reste provisoire** tant que les 31 scripts de portefeuille au
+niveau titre n'ont pas été traités — famille Leaders / Winners / Low-Vol /
+momentum, qui porte un défaut de composition de panier encore non corrigé et
+dont les résultats sont donc toujours suspects.

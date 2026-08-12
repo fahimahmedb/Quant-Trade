@@ -21,13 +21,13 @@ Spécification figée dans `PREREG_gjr_vol_managed_crossmarket.md` (committé av
 
 | Stratégie | Sharpe ann. | Rendement total | Rendement ann. | MDD | Calmar | Sortino |
 |---|---|---|---|---|---|---|
-| Buy & Hold | +0.39 | +791.2% | +8.9% | -59.9% | 0.093 | +0.50 |
-| **Volatility-managed GJR-t** | **+0.44** | **+1032.0%** | +9.2% | -48.9% | 0.132 | +0.62 |
+| Buy & Hold | +0.39 | +2014.8% | +8.9% | -59.9% | 0.093 | +0.50 |
+| **Volatility-managed GJR-t** | **+0.44** | **+2276.6%** | +9.2% | -48.9% | 0.132 | +0.62 |
 
 ## 4. Verdict contre le critère de succès RENFORCÉ pré-enregistré
 
 - Jambe Sharpe : +0.4353 vs +0.3888 → **OUI**
-- Jambe rendement total : +1032.0% vs +791.2% → **OUI**
+- Jambe rendement total : +2276.6% vs +2014.8% → **OUI**
 
 **PASS — les deux jambes sont atteintes (critère renforcé du 28/07/2026 : Sharpe ET rendement > Buy & Hold).**
 

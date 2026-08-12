@@ -8,8 +8,8 @@ Breadth multi-marché moyenne (toute la période) : 70.7%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.60 | +74.0% | -35.6% |
-| **Overlay vol-targeting gaté breadth 5-marchés** | **+0.64** | **+91.9%** | -37.1% |
+| Buy&Hold (NDX) | +0.60 | +98.3% | -35.6% |
+| **Overlay vol-targeting gaté breadth 5-marchés** | **+0.64** | **+126.2%** | -37.1% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

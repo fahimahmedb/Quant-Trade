@@ -8,8 +8,8 @@ T10Y2Y moyen (toute la période testable) : 0.97 pts
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.53 | +6416.7% | -82.9% |
-| **Overlay vol-targeting gaté pente courbe des taux** | **+0.54** | **+8654.6%** | -82.9% |
+| Buy&Hold (NDX) | +0.53 | +25465.6% | -82.9% |
+| **Overlay vol-targeting gaté pente courbe des taux** | **+0.54** | **+38996.7%** | -82.9% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

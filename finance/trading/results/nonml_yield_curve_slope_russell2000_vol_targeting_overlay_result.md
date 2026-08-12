@@ -7,10 +7,10 @@ Position moyenne : 1.16x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (Russell 2000) | +0.34 | +610.3% | -59.9% |
-| **Overlay vol-targeting gaté pente courbe des taux** | **+0.33** | **+598.9%** | -61.4% |
+| Buy&Hold (Russell 2000) | +0.34 | +1666.8% | -59.9% |
+| **Overlay vol-targeting gaté pente courbe des taux** | **+0.33** | **+1908.7%** | -61.4% |
 
 1. Sharpe overlay > BH : non
-2. Rendement overlay > BH : non
+2. Rendement overlay > BH : OUI
 
 **FAIL — critère renforcé NON atteint.**

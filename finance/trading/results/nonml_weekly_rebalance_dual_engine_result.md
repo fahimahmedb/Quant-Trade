@@ -7,9 +7,9 @@ Turnover cumulé hebdomadaire : 121.0 (48.0% de réduction)
 
 | | Sharpe ann. | Rendement total net | MDD | Calmar |
 |---|---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +4553.2% | -82.9% | 54.926 |
-| #121 original (quotidien) | +0.69 | +8357.7% | -57.2% | -- |
-| **Rebalancement hebdomadaire** | **+0.72** | **+10666.3%** | -55.3% | 192.839 |
+| Buy&Hold (NDX) | +0.52 | +16652.5% | -82.9% | 200.881 |
+| #121 original (quotidien) | +0.69 | +17744.2% | -57.2% | -- |
+| **Rebalancement hebdomadaire** | **+0.72** | **+23039.9%** | -55.3% | 416.545 |
 
 1. Sharpe hebdo > BH : OUI
 2. Rendement hebdo > BH : OUI

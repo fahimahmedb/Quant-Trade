@@ -7,8 +7,8 @@ Position moyenne : 1.23x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (S&P 500) | +0.49 | +3370.4% | -56.8% |
-| **Overlay vol-targeting gaté pente courbe des taux** | **+0.50** | **+5451.9%** | -62.2% |
+| Buy&Hold (S&P 500) | +0.49 | +7422.9% | -56.8% |
+| **Overlay vol-targeting gaté pente courbe des taux** | **+0.50** | **+15364.0%** | -62.2% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI
