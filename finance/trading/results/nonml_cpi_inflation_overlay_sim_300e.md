@@ -4,7 +4,7 @@ Période : 2026-04-13 → 2026-07-13 (63 séances). 100% de la fenêtre est en r
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| Buy & Hold | 349.93 EUR | +16.6% | -7.2% | +2.74 |
-| **Overlay CPI** | **324.57 EUR** | **+8.2%** | -3.6% | +2.74 |
+| Buy & Hold | 352.39 EUR | +17.5% | -7.0% | +2.74 |
+| **Overlay CPI** | **325.14 EUR** | **+8.4%** | -3.6% | +2.74 |
 
 **Lecture honnête** : fenêtre purement illustrative de 63 séances, sans valeur statistique — le verdict du cycle reste celui du backtest complet (5/5 marchés) et de la grille de robustesse (15/15, plateau parfait).

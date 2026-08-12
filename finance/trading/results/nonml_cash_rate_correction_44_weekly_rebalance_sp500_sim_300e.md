@@ -4,7 +4,7 @@ Période : 2026-04-13 → 2026-07-13 (63 séances).
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| BuyHold | 329.86 EUR | +10.0% | -4.6% | +2.98 |
-| **Rebalancement hebdomadaire** | **325.66 EUR** | **+8.6%** | -4.6% | +2.68 |
+| BuyHold | 330.57 EUR | +10.2% | -4.5% | +2.98 |
+| **Rebalancement hebdomadaire** | **326.31 EUR** | **+8.8%** | -4.5% | +2.68 |
 
 **Lecture honnête** : fenêtre courte (~3 mois) illustrative uniquement — le verdict statistique réel reste celui du backtest complet et de la batterie Règle 9.

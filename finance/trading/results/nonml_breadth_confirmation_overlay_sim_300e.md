@@ -4,7 +4,7 @@ Période : 2026-04-13 → 2026-07-13 (63 séances). CAP=2.0x si NDX ET Russell 2
 
 | | Capital final | Rendement période | MDD | Sharpe ann. |
 |---|---|---|---|---|
-| BuyHold (NDX) | 349.93 EUR | +16.6% | -7.2% | +2.74 |
-| **Overlay confirmation multi-marché** | **382.99 EUR** | **+27.7%** | -15.5% | +2.43 |
+| BuyHold (NDX) | 352.39 EUR | +17.5% | -7.0% | +2.74 |
+| **Overlay confirmation multi-marché** | **392.65 EUR** | **+30.9%** | -14.2% | +2.43 |
 
 **Lecture honnête** : sur cette fenêtre de 63 séances, la position est levée 93.7% du temps — illustration seulement, le verdict statistique reste celui du backtest complet (PASS marginal, marge de Sharpe très fine +0,01) et de la robustesse (échoue déjà à CAP=3.0x sur le Sharpe — résultat fragile, à nuancer fortement par rapport aux plateaux parfaits d'autres cycles comme #37/#38).
