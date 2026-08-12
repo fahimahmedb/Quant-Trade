@@ -6,7 +6,7 @@ CAP pré-enregistré = 2.0x, fenêtre pré-enregistrée = 20j.
 
 | CAP | Nb marchés PASS /5 |
 |---|---|
-| 1.5x | 5/5 |
+| 1.5x | 4/5 |
 | 2.0x | 4/5 ← CAP pré-enregistré |
 | 2.5x | 4/5 |
 | 3.0x | 4/5 |
@@ -15,7 +15,7 @@ CAP pré-enregistré = 2.0x, fenêtre pré-enregistrée = 20j.
 
 | Fenêtre | Nb marchés PASS /5 |
 |---|---|
-| 15j | 5/5 |
+| 15j | 4/5 |
 | 20j | 4/5 ← fenêtre pré-enregistrée |
 | 25j | 4/5 |
-| 30j | 5/5 |
+| 30j | 4/5 |

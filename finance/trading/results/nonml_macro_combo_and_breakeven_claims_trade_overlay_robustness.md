@@ -6,21 +6,21 @@ Point pré-enregistré : CUT = 0.5x. Grille : {0.4x, 0.5x, 0.6x}. La porte ET el
 
 | Marché | CUT | Sharpe | Rendement total | MDD | Sharpe>BH | Rdt>BH | Les deux |
 |---|---|---|---|---|---|---|---|
-| Composite (5 ans) | 0.4x | +0.61 | +69.5% | -28.8% | OUI | OUI | OUI |
-| Composite (5 ans) (point pré-enregistré) | 0.5x | +0.60 | +67.6% | -30.0% | OUI | OUI | OUI |
-| Composite (5 ans) | 0.6x | +0.58 | +65.7% | -31.2% | OUI | OUI | OUI |
-| NDX (40 ans) | 0.4x | +0.67 | +1590.5% | -50.5% | OUI | OUI | OUI |
-| NDX (40 ans) (point pré-enregistré) | 0.5x | +0.66 | +1580.5% | -51.1% | OUI | OUI | OUI |
-| NDX (40 ans) | 0.6x | +0.66 | +1569.5% | -51.6% | OUI | OUI | OUI |
-| Russell 2000 | 0.4x | +0.41 | +392.4% | -57.5% | OUI | OUI | OUI |
-| Russell 2000 (point pré-enregistré) | 0.5x | +0.40 | +372.1% | -57.9% | OUI | OUI | OUI |
-| Russell 2000 | 0.6x | +0.39 | +352.2% | -58.3% | OUI | OUI | OUI |
-| S&P 500 | 0.4x | +0.50 | +486.6% | -52.7% | OUI | OUI | OUI |
-| S&P 500 (point pré-enregistré) | 0.5x | +0.50 | +480.2% | -53.4% | OUI | OUI | OUI |
-| S&P 500 | 0.6x | +0.50 | +473.8% | -54.1% | OUI | OUI | OUI |
-| DAX | 0.4x | +0.41 | +358.0% | -52.2% | non | non | non |
-| DAX (point pré-enregistré) | 0.5x | +0.42 | +362.1% | -52.6% | non | non | non |
-| DAX | 0.6x | +0.42 | +366.1% | -53.1% | non | non | non |
+| Composite (5 ans) | 0.4x | +0.61 | +89.2% | -28.8% | OUI | OUI | OUI |
+| Composite (5 ans) (point pré-enregistré) | 0.5x | +0.60 | +87.4% | -30.0% | OUI | OUI | OUI |
+| Composite (5 ans) | 0.6x | +0.58 | +85.7% | -31.2% | OUI | OUI | OUI |
+| NDX (40 ans) | 0.4x | +0.67 | +2828.9% | -50.5% | OUI | OUI | OUI |
+| NDX (40 ans) (point pré-enregistré) | 0.5x | +0.66 | +2819.3% | -51.1% | OUI | OUI | OUI |
+| NDX (40 ans) | 0.6x | +0.66 | +2809.7% | -51.6% | OUI | OUI | OUI |
+| Russell 2000 | 0.4x | +0.41 | +852.1% | -57.5% | OUI | OUI | OUI |
+| Russell 2000 (point pré-enregistré) | 0.5x | +0.40 | +815.5% | -57.9% | OUI | OUI | OUI |
+| Russell 2000 | 0.6x | +0.39 | +780.2% | -58.3% | OUI | OUI | OUI |
+| S&P 500 | 0.4x | +0.50 | +775.5% | -52.7% | OUI | OUI | OUI |
+| S&P 500 (point pré-enregistré) | 0.5x | +0.50 | +767.2% | -53.4% | OUI | OUI | OUI |
+| S&P 500 | 0.6x | +0.50 | +758.9% | -54.1% | OUI | OUI | OUI |
+| DAX | 0.4x | +0.41 | +658.8% | -52.2% | non | non | non |
+| DAX (point pré-enregistré) | 0.5x | +0.42 | +666.7% | -52.6% | non | non | non |
+| DAX | 0.6x | +0.42 | +674.6% | -53.1% | non | non | non |
 
 **12/15 cellules de la grille battent Buy&Hold sur les deux jambes (Sharpe ET rendement).**
 **Colonne CUT=0,5x (point pré-enregistré) seule : 4/5 marchés — doit reproduire exactement le résultat du #333 (4/5).**
