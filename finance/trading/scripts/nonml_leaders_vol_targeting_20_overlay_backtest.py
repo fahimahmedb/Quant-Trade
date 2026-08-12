@@ -123,8 +123,17 @@ def main(causal=True):
 
     turn_base = np.abs(np.diff(weights_base[start:], axis=0, prepend=weights_base[start:start+1])).sum(axis=1) / 2.0
     turn_lev = np.abs(np.diff(weights_lev[start:], axis=0, prepend=weights_lev[start:start+1])).sum(axis=1) / 2.0
+    # P&L BRUT conserve avant deduction des couts + turnover : la batterie
+    # Regle 9 (schema portefeuille) doit pouvoir recalculer le P&L a 3x et 5x.
+    # Pour un panier le turnover vaut somme(|dw_i|)/2, non derivable d'une
+    # exposition scalaire -- il doit donc etre sauvegarde explicitement.
+    pnl_gross_ov_, pnl_gross_bh_ = pnl_lev.copy(), pnl_base.copy()
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
     pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
+    np.savez(ROOT / "results" / "nonml_leaders_vol_targeting_20_overlay_pnl.npz",
+             pnl_gross_ov=pnl_gross_ov_, pnl_gross_bh=pnl_gross_bh_,
+             turn_ov=turn_lev, turn_bh=turn_base,
+             dates=P.index.values[start:], cost_bps=COST_BPS)
 
     me_base = trading_metrics(np.log1p(pnl_base))
     me_lev = trading_metrics(np.log1p(pnl_lev))

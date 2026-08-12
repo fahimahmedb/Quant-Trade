@@ -3146,3 +3146,56 @@ reproduit exactement le backtest.
 `momentum_turnover_doublesort`) — noms de variables différents dans chacun, une
 insertion par script. Puis `dollar_neutral_composite_vol_targeted`, dont le
 schéma actuel (`pnl_candidate`/`pnl_ref`) ne porte pas le turnover.
+
+## Backlog #385 (12/08/2026) — les 6 stratégies de portefeuille passent enfin la Règle 9
+
+Suite du #384. Les 5 scripts de portefeuille restants ont été équipés du schéma
+`.npz` portefeuille et leurs batteries exécutées. **Pour la première fois, les
+6 stratégies de portefeuille du backlog ont un verdict Règle 9.**
+
+| 385 | Équiper les 5 derniers scripts de portefeuille du schéma `.npz` et exécuter leurs batteries | Aucune nouvelle donnée | **FAIT — 6 verdicts Règle 9 obtenus, 0 PASS RENFORCÉ.** Contrôle de cohérence avant exécution : chaque `.npz` reconstruit reproduit **exactement** le rendement de référence publié par son propre backtest. |
+
+| Stratégie | Score Règle 9 | Contrôle(s) en échec |
+|---|---|---|
+| `amihud_illiquidity_tilt` | **4/5** | DSR seul (0,5475) |
+| `momentum_turnover_doublesort` | 3/5 | |
+| `sma200_leaders_overlay` | 2/5 | crise, stabilité, DSR |
+| `leaders_vol_targeting_20_overlay` | 1/5 | |
+| `momentum_12_1_pit_universe` | 1/5 | |
+| `leaders_index52w_high_overlay` | **0/5** | les cinq |
+
+### `amihud_illiquidity_tilt` : 4/5, meilleur score jamais obtenu — à nuancer fortement
+
+Le record précédent du projet était 3/5 (famille des portes combinées). Ce
+résultat est le premier 4/5, avec a/b/c/d tous OK et **seul le DSR en échec**
+(0,5475 pour un seuil à 0,95).
+
+**Trois réserves, à lire avant toute interprétation :**
+
+1. **Le stress de crise ne couvre qu'UNE fenêtre.** L'historique des prix titres
+   commence en 2021 : Dot-com, 2008 et le krach COVID sont tous « hors
+   couverture » (0 séance). Le « b OK » repose sur le seul resserrement 2022
+   (-29,1 % contre -30,0 % pour la référence, marge de 0,9 pt). C'est
+   incomparablement plus faible que pour les stratégies indicielles testées sur
+   40 ans et 4 fenêtres.
+2. **Le DSR échoue, et c'est le contrôle qui corrige pour les essais multiples.**
+   Avec `n_trials=372`, aucun candidat du projet ne l'a jamais passé. 4/5 sans le
+   DSR reste un échec au sens de la Règle 9.
+3. **Son résultat vient d'être corrigé au #380** (agrégation de panier) : la
+   référence est passée de +70,0 % à +171,6 % et la stratégie de +142,8 % à
+   +334,1 %. Le verdict PASS a survécu, mais sur des niveaux entièrement
+   recalculés.
+
+**Ce n'est donc pas une percée**, c'est le meilleur profil d'un ensemble qui
+échoue toujours au même endroit — la correction pour essais multiples.
+
+### `leaders_index52w_high_overlay` : 0/5
+
+Échec sur les cinq contrôles. Le stress de coûts est instructif : la stratégie
+bat la référence à 5 bps (+0,87 vs +0,84) mais **plus du tout à 15 bps** (+0,82
+vs +0,82) ni à 25 bps (+0,78 vs +0,80). L'edge est intégralement consommé par des
+coûts à peine plus réalistes que ceux pré-enregistrés.
+
+**Reste :** `dollar_neutral_composite_vol_targeted`, dont le `.npz`
+(`pnl_candidate`/`pnl_ref`) ne porte pas le turnover et ne permet donc pas le
+stress de coûts.

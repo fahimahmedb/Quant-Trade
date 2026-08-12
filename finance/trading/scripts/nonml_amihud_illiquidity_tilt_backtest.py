@@ -128,8 +128,17 @@ def main():
 
     turn_illiq = np.abs(np.diff(weights_illiq[start:], axis=0, prepend=weights_illiq[start:start+1])).sum(axis=1) / 2.0
     turn_bh = np.abs(np.diff(weights_bh[start:], axis=0, prepend=weights_bh[start:start+1])).sum(axis=1) / 2.0
+    # P&L BRUT conserve avant deduction des couts + turnover : la batterie
+    # Regle 9 (schema portefeuille) doit pouvoir recalculer le P&L a 3x et 5x.
+    # Pour un panier le turnover vaut somme(|dw_i|)/2, non derivable d'une
+    # exposition scalaire -- il doit donc etre sauvegarde explicitement.
+    pnl_gross_ov_, pnl_gross_bh_ = pnl_illiq.copy(), pnl_bh.copy()
     pnl_illiq = pnl_illiq - turn_illiq * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
+    np.savez(ROOT / "results" / "nonml_amihud_illiquidity_tilt_pnl.npz",
+             pnl_gross_ov=pnl_gross_ov_, pnl_gross_bh=pnl_gross_bh_,
+             turn_ov=turn_illiq, turn_bh=turn_bh,
+             dates=P.index.values[start:], cost_bps=COST_BPS)
 
     me_illiq = trading_metrics(np.log1p(pnl_illiq))
     me_bh = trading_metrics(np.log1p(pnl_bh))

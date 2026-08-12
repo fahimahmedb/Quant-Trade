@@ -141,8 +141,17 @@ def main():
 
     turn_double = np.abs(np.diff(weights_double[start:], axis=0, prepend=weights_double[start:start+1])).sum(axis=1) / 2.0
     turn_mom = np.abs(np.diff(weights_momentum_only[start:], axis=0, prepend=weights_momentum_only[start:start+1])).sum(axis=1) / 2.0
+    # P&L BRUT conserve avant deduction des couts + turnover : la batterie
+    # Regle 9 (schema portefeuille) doit pouvoir recalculer le P&L a 3x et 5x.
+    # Pour un panier le turnover vaut somme(|dw_i|)/2, non derivable d'une
+    # exposition scalaire -- il doit donc etre sauvegarde explicitement.
+    pnl_gross_ov_, pnl_gross_bh_ = pnl_double.copy(), pnl_mom.copy()
     pnl_double = pnl_double - turn_double * (COST_BPS / 1e4)
     pnl_mom = pnl_mom - turn_mom * (COST_BPS / 1e4)
+    np.savez(ROOT / "results" / "nonml_momentum_turnover_doublesort_pnl.npz",
+             pnl_gross_ov=pnl_gross_ov_, pnl_gross_bh=pnl_gross_bh_,
+             turn_ov=turn_double, turn_bh=turn_mom,
+             dates=P.index.values[start:], cost_bps=COST_BPS)
 
     me_double = trading_metrics(np.log1p(pnl_double))
     me_mom = trading_metrics(np.log1p(pnl_mom))
