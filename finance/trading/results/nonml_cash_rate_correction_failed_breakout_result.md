@@ -6,8 +6,8 @@ Position équity #55 STRICTEMENT INCHANGÉE (FLOOR=0,5x, DEFENSE_LEN=5j) ; fract
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX 100%) | +0.53 | +6599.5% | -82.9% |
-| **#55 + correction taux réaliste** | **+0.53** | **+5123.0%** | -77.3% |
+| Buy&Hold (NDX 100%) | +0.53 | +26208.9% | -82.9% |
+| **#55 + correction taux réaliste** | **+0.53** | **+16050.4%** | -77.3% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : non

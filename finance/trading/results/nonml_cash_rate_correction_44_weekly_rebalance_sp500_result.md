@@ -4,9 +4,9 @@
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (S&P 500 100%) | +0.46 | +3696.8% | -56.8% |
+| Buy&Hold (S&P 500 100%) | +0.46 | +8735.1% | -56.8% |
 | Overlay quotidien (#151, rappel) | +0.60 | -- | -- |
-| **Overlay hebdomadaire (#157)** | **+0.61** | **+5444.4%** | -44.2% |
+| **Overlay hebdomadaire (#157)** | **+0.61** | **+8988.7%** | -44.2% |
 
 1. Sharpe overlay hebdo > BH : OUI
 2. Rendement overlay hebdo > BH : OUI

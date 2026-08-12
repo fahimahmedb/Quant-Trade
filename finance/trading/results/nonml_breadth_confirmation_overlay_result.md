@@ -8,8 +8,8 @@ Position sur NDX = 1.0x en permanence, CAP=2.0x quand NDX ET Russell 2000 sont S
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +5429.9% | -82.9% |
-| **Overlay confirmation multi-marché x2.0** | **+0.53** | **+10207.8%** | -83.8% |
+| Buy&Hold (NDX) | +0.52 | +21358.1% | -82.9% |
+| **Overlay confirmation multi-marché x2.0** | **+0.53** | **+76614.6%** | -83.8% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

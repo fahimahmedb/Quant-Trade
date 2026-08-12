@@ -4,11 +4,11 @@ Position 1.0x en permanence, CAP=2.0x les jours en régime momentum (autocorrél
 
 | Marché | BH Sharpe | BH Rdt total | BH MDD | Overlay Sharpe | Overlay Rdt total | Overlay MDD | Sharpe>BH | Rdt>BH |
 |---|---|---|---|---|---|---|---|---|
-| Composite (5 ans) | +1.00 | +113.5% | -24.3% | +0.98 | +154.1% | -34.7% | non | OUI |
-| NDX (40 ans) | +0.52 | +5432.6% | -82.9% | +0.46 | +3785.8% | -84.2% | non | non |
-| Russell 2000 | +0.37 | +740.0% | -59.9% | +0.37 | +844.8% | -59.9% | OUI | OUI |
-| S&P 500 | +0.46 | +3438.5% | -56.8% | +0.41 | +2681.9% | -56.8% | non | non |
-| DAX | +0.23 | +93.2% | -69.1% | +0.11 | -33.9% | -79.6% | non | non |
+| Composite (5 ans) | +1.00 | +133.7% | -24.3% | +0.98 | +197.1% | -34.7% | non | OUI |
+| NDX (40 ans) | +0.52 | +21368.8% | -82.9% | +0.46 | +23101.0% | -84.2% | non | OUI |
+| Russell 2000 | +0.37 | +1913.8% | -59.9% | +0.37 | +2600.3% | -59.9% | OUI | OUI |
+| S&P 500 | +0.46 | +8044.9% | -56.8% | +0.41 | +8341.1% | -56.8% | non | OUI |
+| DAX | +0.23 | +270.4% | -69.1% | +0.11 | +154.5% | -79.6% | non | non |
 
 **1/5 marchés où l'overlay bat Buy&Hold en Sharpe ET rendement (critère renforcé : ≥4/5).**
 
