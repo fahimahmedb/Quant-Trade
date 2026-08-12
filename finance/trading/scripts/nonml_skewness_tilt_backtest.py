@@ -56,6 +56,12 @@ def main():
 
     R = np.log(P / P.shift(1))
     R.iloc[0, :] = 0.0
+    # R_simple : rendements SIMPLES, reserves au P&L (le rendement d'un panier
+    # pondere est somme(w_i * r_simple_i)). R reste en LOG car il sert a construire
+    # le SIGNAL, dont la definition pre-enregistree ne doit pas changer.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R_simple = (P / P.shift(1) - 1.0)
+    R_simple.iloc[0, :] = 0.0
     close = P.values
     exists = np.isfinite(close)
 
@@ -86,7 +92,7 @@ def main():
             weights_bh[t:end] = listed.astype(float) / n_listed
 
     start = SKEW_WINDOW
-    R_safe = np.nan_to_num(R.values, nan=0.0)
+    R_safe = np.nan_to_num(R_simple.values, nan=0.0)
     pnl_lowskew = (weights_lowskew[start:] * R_safe[start:]).sum(axis=1)
     pnl_bh = (weights_bh[start:] * R_safe[start:]).sum(axis=1)
 
@@ -95,8 +101,8 @@ def main():
     pnl_lowskew = pnl_lowskew - turn_lowskew * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_lowskew = trading_metrics(pnl_lowskew)
-    me_bh = trading_metrics(pnl_bh)
+    me_lowskew = trading_metrics(np.log1p(pnl_lowskew))
+    me_bh = trading_metrics(np.log1p(pnl_bh))
 
     equity_lowskew = np.cumprod(1.0 + pnl_lowskew)
     equity_bh = np.cumprod(1.0 + pnl_bh)

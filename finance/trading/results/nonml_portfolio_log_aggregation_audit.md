@@ -76,3 +76,40 @@ Tombent : `leaders_tom_halloween_union_overlay`, `lowvol_index52w_high_overlay`,
 
 Avec `momentum_52w_high` corrigé au cycle précédent : **8 reclassifications** dues
 à ce seul bug d'agrégation.
+
+## Traitement des 8 derniers scripts (#380)
+
+Les 8 scripts où `R` sert aussi au signal se répartissaient en réalité en deux
+catégories distinctes, ce que l'examen du P&L a révélé :
+
+**4 overlays sur INDICE** (`beta_dispersion`, `correlation_regime`,
+`dispersion_vol_targeting` ×2) : leur P&L est `pos * bh_full` où `bh_full` est le
+rendement log de l'INDICE. Aucune agrégation de panier n'y intervient — les titres
+ne servent qu'à construire le signal. Ils n'avaient donc pas besoin de la
+correction d'agrégation, **mais ils avaient été écartés à tort de la correction de
+composition du #377** : le revert de masse les avait attrapés parce qu'ils
+contiennent `np.log(P / P.shift(1))` pour leur signal. Trou comblé ici.
+
+**4 vrais portefeuilles** (`amihud_illiquidity_tilt` ×2, `leaders_index52w_high`,
+`skewness_tilt`) : un `R_simple` réservé au P&L a été introduit, `R` restant en
+log pour le signal — la définition pré-enregistrée du signal est donc inchangée.
+Dans `leaders_index52w_high`, `R_simple` était initialement hors portée (défini
+dans `build_weights`, utilisé dans `main`) : la valeur est désormais propagée par
+le retour de fonction.
+
+**Résultat : aucun changement de verdict sur les 8** (0 PASS→FAIL, 0 FAIL→PASS).
+Les 3 PASS concernés survivent (`amihud_illiquidity_tilt`,
+`leaders_index52w_high_overlay`, `dispersion_vol_targeting_overlay`).
+
+Les niveaux bougent pourtant beaucoup — par exemple `amihud_illiquidity_tilt` :
+
+| | Sharpe | Rendement total |
+|---|---|---|
+| Buy&Hold équipondéré — avant | +0,59 | +70,0 % |
+| Tilt illiquidité — avant | +0,84 | +142,8 % |
+| Buy&Hold équipondéré — après | **+0,90** | **+171,6 %** |
+| Tilt illiquidité — après | **+1,19** | **+334,1 %** |
+
+La référence et la stratégie montent ensemble, l'écart relatif se maintient : le
+biais d'agrégation frappait ici les deux jambes de façon comparable, contrairement
+aux cas du #379 où il favorisait nettement la stratégie sélective.

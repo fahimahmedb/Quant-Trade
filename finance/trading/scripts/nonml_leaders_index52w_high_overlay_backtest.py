@@ -115,6 +115,12 @@ def build_weights(prices_dir=None, panel_start=None, membership_fn=None,
     close = P.values
     R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
     R[0, :] = 0.0
+    # R_simple : rendements SIMPLES, reserves au P&L (le rendement d'un panier
+    # pondere est somme(w_i * r_simple_i)). R reste en LOG car il sert a construire
+    # le SIGNAL, dont la definition pre-enregistree ne doit pas changer.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R_simple = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0).copy()
+    R_simple[0, :] = 0.0
 
     rolling_max = np.full((T, n_tickers), np.nan)
     has_full = np.zeros((T, n_tickers), dtype=bool)
@@ -165,23 +171,25 @@ def build_weights(prices_dir=None, panel_start=None, membership_fn=None,
         weights_base = lag_one_day(weights_base)
         weights_lev = lag_one_day(weights_lev)
         trend_aligned = np.concatenate(([False], trend_aligned[:-1]))
-    return P.index, weights_base, weights_lev, R, trend_aligned
+    return P.index, weights_base, weights_lev, R_simple, trend_aligned
 
 
 def main():
-    dates_full, weights_base, weights_lev, R, trend_aligned = build_weights()
-    T = R.shape[0]
+    # R_simple : rendements simples, pour le P&L de panier (le signal, lui, reste
+    # construit sur les rendements log a l'interieur de build_weights).
+    dates_full, weights_base, weights_lev, R_simple, trend_aligned = build_weights()
+    T = R_simple.shape[0]
     start = LOOKBACK
-    pnl_base = (weights_base[start:] * R[start:]).sum(axis=1)
-    pnl_lev = (weights_lev[start:] * R[start:]).sum(axis=1)
+    pnl_base = (weights_base[start:] * R_simple[start:]).sum(axis=1)
+    pnl_lev = (weights_lev[start:] * R_simple[start:]).sum(axis=1)
 
     turn_base = np.abs(np.diff(weights_base[start:], axis=0, prepend=weights_base[start:start+1])).sum(axis=1) / 2.0
     turn_lev = np.abs(np.diff(weights_lev[start:], axis=0, prepend=weights_lev[start:start+1])).sum(axis=1) / 2.0
     pnl_base = pnl_base - turn_base * (COST_BPS / 1e4)
     pnl_lev = pnl_lev - turn_lev * (COST_BPS / 1e4)
 
-    me_base = trading_metrics(pnl_base)
-    me_lev = trading_metrics(pnl_lev)
+    me_base = trading_metrics(np.log1p(pnl_base))
+    me_lev = trading_metrics(np.log1p(pnl_lev))
     ret_base = np.cumprod(1.0 + pnl_base)[-1] - 1.0
     ret_lev = np.cumprod(1.0 + pnl_lev)[-1] - 1.0
 

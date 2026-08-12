@@ -8,10 +8,10 @@ Dispersion des betas moyenne observée : 0.624
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté dispersion betas** | **+0.64** | **+99.7%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté dispersion betas** | **+0.64** | **+135.1%** | -35.6% |
 
 1. Sharpe overlay > BH : non
-2. Rendement overlay > BH : non
+2. Rendement overlay > BH : OUI
 
 **FAIL — critère renforcé NON atteint.**

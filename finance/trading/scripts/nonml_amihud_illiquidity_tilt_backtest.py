@@ -83,7 +83,13 @@ def main():
     exists = np.isfinite(P.values)
     R = np.log(P / P.shift(1))
     R.iloc[0, :] = 0.0
-    R_safe = np.nan_to_num(R.values, nan=0.0)
+    # R_simple : rendements SIMPLES, reserves au P&L (le rendement d'un panier
+    # pondere est somme(w_i * r_simple_i)). R reste en LOG car il sert a construire
+    # le SIGNAL, dont la definition pre-enregistree ne doit pas changer.
+    # Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R_simple = (P / P.shift(1) - 1.0)
+    R_simple.iloc[0, :] = 0.0
+    R_safe = np.nan_to_num(R_simple.values, nan=0.0)
 
     dollar_volume = P.values * V.values
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -125,8 +131,8 @@ def main():
     pnl_illiq = pnl_illiq - turn_illiq * (COST_BPS / 1e4)
     pnl_bh = pnl_bh - turn_bh * (COST_BPS / 1e4)
 
-    me_illiq = trading_metrics(pnl_illiq)
-    me_bh = trading_metrics(pnl_bh)
+    me_illiq = trading_metrics(np.log1p(pnl_illiq))
+    me_bh = trading_metrics(np.log1p(pnl_bh))
     equity_illiq = np.cumprod(1.0 + pnl_illiq)
     equity_bh = np.cumprod(1.0 + pnl_bh)
     ret_illiq_total = equity_illiq[-1] - 1.0

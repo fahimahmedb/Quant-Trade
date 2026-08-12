@@ -4,8 +4,8 @@ Univers : 99 tickers NDX-100 avec prix ET volume disponibles (0 exclus faute de 
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers) | +0.59 | +70.0% | -35.2% |
-| **Tilt illiquidité (tercile le plus illiquide)** | **+0.84** | **+142.8%** | -36.0% |
+| Buy&Hold équipondéré (univers) | +0.90 | +171.6% | -31.0% |
+| **Tilt illiquidité (tercile le plus illiquide)** | **+1.19** | **+334.1%** | -31.2% |
 
 1. Sharpe > Buy&Hold : OUI
 2. Rendement total > Buy&Hold : OUI

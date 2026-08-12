@@ -3007,3 +3007,22 @@ mesure.
 
 **Le compteur de PASS reste provisoire** tant que les 8 scripts restants et les
 `*_sim_300e.py` n'ont pas été traités.
+
+## Backlog #380 (12/08/2026) — 8 derniers scripts : aucun verdict ne change
+
+| 380 | Traiter les 8 scripts où `R` sert aussi au signal, en préservant la définition pré-enregistrée du signal | Aucune nouvelle donnée | **FAIT — 0 PASS→FAIL, 0 FAIL→PASS.** Les 8 se répartissaient en deux catégories : **4 overlays sur indice** (`beta_dispersion`, `correlation_regime`, `dispersion_vol_targeting` ×2) dont le P&L est indiciel (`pos * bh_full`) et qui n'ont donc jamais eu de problème d'agrégation — mais qui avaient été **écartés à tort de la correction de composition du #377** par le revert de masse, trou comblé ici ; et **4 vrais portefeuilles** (`amihud` ×2, `leaders_index52w_high`, `skewness_tilt`) dotés d'un `R_simple` réservé au P&L, `R` restant en log pour le signal. Les 3 PASS concernés survivent. Deux `.copy()` supplémentaires ajoutés (pandas ≥ 3, tableau du signal en lecture seule). |
+
+**Les niveaux bougent fortement sans changer les verdicts** — `amihud` : référence
+Buy&Hold +70,0 % → +171,6 %, stratégie +142,8 % → +334,1 %. Ici le biais frappait
+les deux jambes de façon comparable, contrairement au #379 où il favorisait la
+stratégie sélective.
+
+**FIN DE LA CAMPAGNE DE CORRECTION DES DEUX BUGS.**
+
+Bilan définitif #375 → #380 : **20 PASS tombés, 0 gagné** — 12 dus au bug de
+composition (`cumprod(1+·)` sur du log), 8 au bug d'agrégation de panier
+(`Σ wᵢ·r_log,ᵢ`). Aucun verdict ne s'est amélioré sur aucun des quatre balayages.
+
+**Reste à faire :** les `*_sim_300e.py`, qui portent toujours le bug de
+composition (impact faible sur 63 séances : 349,93 € publié contre 352,39 €
+corrigé sur la jambe Buy&Hold NDX, mais les chiffres publiés sont sous-estimés).

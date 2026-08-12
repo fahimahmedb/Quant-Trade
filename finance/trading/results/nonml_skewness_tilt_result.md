@@ -4,8 +4,8 @@ Univers : 99 tickers NDX-100, 1336 séances testables (2021-03-31 → 2026-07-27
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers) | +0.65 | +86.1% | -35.2% |
-| **Asymétrie faible (tercile)** | **+0.42** | **+42.8%** | -27.5% |
+| Buy&Hold équipondéré (univers) | +0.96 | +201.5% | -30.9% |
+| **Asymétrie faible (tercile)** | **+0.69** | **+114.5%** | -24.7% |
 
 1. Sharpe > Buy&Hold : non
 2. Rendement total > Buy&Hold : non

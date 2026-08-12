@@ -7,10 +7,10 @@ Position moyenne : 1.14x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.79 | +391.3% | -35.6% |
-| **Overlay vol-targeting gaté dispersion (PIT)** | **+0.74** | **+380.5%** | -36.7% |
+| Buy&Hold (NDX) | +0.79 | +542.3% | -35.6% |
+| **Overlay vol-targeting gaté dispersion (PIT)** | **+0.74** | **+556.4%** | -36.7% |
 
 1. Sharpe overlay > BH : non
-2. Rendement overlay > BH : non
+2. Rendement overlay > BH : OUI
 
 **FAIL — critère renforcé NON atteint.**

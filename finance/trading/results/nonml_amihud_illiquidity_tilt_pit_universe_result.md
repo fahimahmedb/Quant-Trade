@@ -4,8 +4,8 @@ Univers PIT : 178 tickers avec prix ET volume PIT disponibles (0 exclus faute de
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold équipondéré (univers PIT) | +0.39 | +99.4% | -36.3% |
-| **Tilt illiquidité (univers PIT)** | **+0.18** | **+19.8%** | -39.2% |
+| Buy&Hold équipondéré (univers PIT) | +0.62 | +351.1% | -32.2% |
+| **Tilt illiquidité (univers PIT)** | **+0.41** | **+188.6%** | -34.3% |
 
 1. Sharpe > Buy&Hold : non
 2. Rendement total > Buy&Hold : non
