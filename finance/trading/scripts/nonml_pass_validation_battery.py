@@ -66,8 +66,11 @@ def check_a_cost_stress(pos, r, cost_baseline, r_alt=None):
         cost = cost_baseline * mult
         pnl_ov, pnl_bh = pnl_at_cost(pos, r, cost, r_alt)
         me_ov, me_bh = trading_metrics(pnl_ov), trading_metrics(pnl_bh)
-        ret_ov = float(np.cumprod(1.0 + pnl_ov)[-1] - 1.0)
-        ret_bh = float(np.cumprod(1.0 + pnl_bh)[-1] - 1.0)
+        # `r_asset` est une serie de rendements LOG : la composition correcte est
+        # exp(somme), pas cumprod(1+.). Voir
+        # results/nonml_log_return_compounding_audit.md.
+        ret_ov = float(np.exp(pnl_ov.sum()) - 1.0)
+        ret_bh = float(np.exp(pnl_bh.sum()) - 1.0)
         ok = (me_ov["sharpe_ann"] > me_bh["sharpe_ann"]) and (ret_ov > ret_bh)
         rows.append((cost, me_ov["sharpe_ann"], me_bh["sharpe_ann"], ret_ov, ret_bh, ok))
     all_ok = all(r[-1] for r in rows)
