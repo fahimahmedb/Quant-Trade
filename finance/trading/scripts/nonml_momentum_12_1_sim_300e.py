@@ -51,7 +51,7 @@ def main():
     T, n_tickers = P.shape
     close = P.values
     exists = np.isfinite(close)
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     momentum = np.full((T, n_tickers), np.nan)
@@ -99,7 +99,7 @@ def main():
         running_max = np.maximum.accumulate(equity)
         return (equity / running_max - 1.0).min() * 100
 
-    me_m, me_b = trading_metrics(pnl_m), trading_metrics(pnl_b)
+    me_m, me_b = trading_metrics(np.log1p(pnl_m)), trading_metrics(np.log1p(pnl_b))
 
     lines = [
         "# Simulation — 300 EUR, portefeuille Momentum 12-1 (NDX-100, ~3 derniers mois)",

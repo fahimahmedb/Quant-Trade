@@ -33,7 +33,7 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     rolling_max = np.full((T, n_tickers), np.nan)
@@ -82,7 +82,7 @@ def main():
         running_max = np.maximum.accumulate(equity)
         return (equity / running_max - 1.0).min() * 100
 
-    me_base, me_lev = trading_metrics(pnl_base), trading_metrics(pnl_lev)
+    me_base, me_lev = trading_metrics(np.log1p(pnl_base)), trading_metrics(np.log1p(pnl_lev))
 
     lines = [
         "# Simulation — 300 EUR, Leaders 52-semaines + overlay ToM levé (~3 derniers mois)",

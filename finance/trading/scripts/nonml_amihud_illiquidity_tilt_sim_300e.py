@@ -36,7 +36,12 @@ def main():
     exists = np.isfinite(P.values)
     R = np.log(P / P.shift(1))
     R.iloc[0, :] = 0.0
-    R_safe = np.nan_to_num(R.values, nan=0.0)
+    # R_simple : rendements SIMPLES reserves au P&L. R reste en LOG car il sert
+    # a construire le SIGNAL (illiquidite d'Amihud), dont la definition
+    # pre-enregistree ne doit pas changer.
+    R_simple = (P / P.shift(1) - 1.0)
+    R_simple.iloc[0, :] = 0.0
+    R_safe = np.nan_to_num(R_simple.values, nan=0.0)
 
     dollar_volume = P.values * V.values
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -85,7 +90,7 @@ def main():
         running_max = np.maximum.accumulate(equity)
         return (equity / running_max - 1.0).min() * 100
 
-    me_illiq, me_bh = trading_metrics(pnl_illiq), trading_metrics(pnl_bh)
+    me_illiq, me_bh = trading_metrics(np.log1p(pnl_illiq)), trading_metrics(np.log1p(pnl_bh))
 
     lines = [
         "# Simulation — 300 EUR, tilt Amihud illiquidité (NDX-100, ~3 derniers mois)",

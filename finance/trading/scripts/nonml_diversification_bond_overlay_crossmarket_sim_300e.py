@@ -44,8 +44,14 @@ def main():
         pnl_bh = r_mkt.copy()
         pnl_bh[0] -= COST_BPS / 1e4
 
-        equity_ov = CAPITAL0 * np.cumprod(1.0 + pnl_ov)
-        equity_bh = CAPITAL0 * np.cumprod(1.0 + pnl_bh)
+        # Equite composee en LOG : les series pnl_* sont des rendements log,
+
+        # donc equity = CAPITAL0 * exp(cumsum(pnl)), pas cumprod(1+pnl).
+
+        # Voir results/nonml_log_return_compounding_audit.md.
+
+        equity_ov = CAPITAL0 * np.exp(np.cumsum(pnl_ov))
+        equity_bh = CAPITAL0 * np.exp(np.cumsum(pnl_bh))
         me_ov, me_bh = trading_metrics(pnl_ov), trading_metrics(pnl_bh)
 
         lines.append(f"## {name}")

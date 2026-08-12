@@ -32,7 +32,7 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     exists = np.isfinite(P.values)
-    R = np.nan_to_num(np.log(P / P.shift(1)).values, nan=0.0)
+    R = np.nan_to_num((P / P.shift(1) - 1.0).values, nan=0.0)
     R[0, :] = 0.0
 
     vol = P.pct_change(fill_method=None).rolling(VOL_WINDOW).std().values
@@ -75,7 +75,7 @@ def main():
         running_max = np.maximum.accumulate(equity)
         return (equity / running_max - 1.0).min() * 100
 
-    me_base, me_lev = trading_metrics(pnl_base), trading_metrics(pnl_lev)
+    me_base, me_lev = trading_metrics(np.log1p(pnl_base)), trading_metrics(np.log1p(pnl_lev))
 
     lines = [
         "# Simulation — 300 EUR, Low-Vol Tilt + overlay SMA200 levé (~3 derniers mois)",

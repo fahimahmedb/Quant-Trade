@@ -51,8 +51,14 @@ def main():
     pnl_bh = bh_full.copy()
     pnl_bh[0] -= COST_BPS / 1e4
 
-    equity_tom = CAPITAL0 * np.cumprod(1.0 + pnl_tom)
-    equity_bh = CAPITAL0 * np.cumprod(1.0 + pnl_bh)
+    # Equite composee en LOG : les series pnl_* sont des rendements log,
+
+    # donc equity = CAPITAL0 * exp(cumsum(pnl)), pas cumprod(1+pnl).
+
+    # Voir results/nonml_log_return_compounding_audit.md.
+
+    equity_tom = CAPITAL0 * np.exp(np.cumsum(pnl_tom))
+    equity_bh = CAPITAL0 * np.exp(np.cumsum(pnl_bh))
 
     def mdd(equity):
         running_max = np.maximum.accumulate(equity)

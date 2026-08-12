@@ -32,7 +32,9 @@ def main():
     P = pd.DataFrame({t: series[t].reindex(ref_idx) for t in tickers})
     T, n_tickers = P.shape
     close = P.values
-    R = np.log(P / P.shift(1)).values
+    # Rendements SIMPLES par titre : le rendement d'un panier pondere est
+    # somme(w_i * r_simple_i). Voir results/nonml_portfolio_log_aggregation_audit.md.
+    R = (P / P.shift(1) - 1.0).values.copy()
     R[0, :] = 0.0
     R_safe = np.nan_to_num(R, nan=0.0)
 
@@ -77,7 +79,7 @@ def main():
         running_max = np.maximum.accumulate(equity)
         return (equity / running_max - 1.0).min() * 100
 
-    me_cons, me_bh = trading_metrics(pnl_cons), trading_metrics(pnl_bh)
+    me_cons, me_bh = trading_metrics(np.log1p(pnl_cons)), trading_metrics(np.log1p(pnl_bh))
 
     lines = [
         "# Simulation — 300 EUR, momentum de constance univers point-in-time (~3 derniers mois)",
