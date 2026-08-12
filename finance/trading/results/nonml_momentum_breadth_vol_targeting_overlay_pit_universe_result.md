@@ -8,8 +8,8 @@ Breadth de momentum PIT moyenne (toute la période post-2015) : 66.8%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.76 | +425.0% | -35.6% |
-| **Overlay vol-targeting gaté breadth de momentum (PIT)** | **+0.79** | **+595.9%** | -36.9% |
+| Buy&Hold (NDX) | +0.76 | +597.4% | -35.6% |
+| **Overlay vol-targeting gaté breadth de momentum (PIT)** | **+0.79** | **+913.0%** | -36.9% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

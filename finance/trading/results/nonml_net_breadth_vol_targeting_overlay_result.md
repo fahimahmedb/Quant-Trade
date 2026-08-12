@@ -8,8 +8,8 @@ Breadth nette moyenne (toute la période) : +13.6pts
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté breadth nette** | **+0.71** | **+121.8%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté breadth nette** | **+0.71** | **+162.6%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

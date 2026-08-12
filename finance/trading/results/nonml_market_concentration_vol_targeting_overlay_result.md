@@ -8,8 +8,8 @@ Concentration (HHI) moyenne observée : 0.0478
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté concentration** | **+0.71** | **+116.0%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté concentration** | **+0.71** | **+152.5%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

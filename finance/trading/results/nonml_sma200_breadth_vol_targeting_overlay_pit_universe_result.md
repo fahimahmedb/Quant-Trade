@@ -8,8 +8,8 @@ Breadth SMA200 PIT moyenne (toute la période post-2015) : 62.3%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.76 | +425.0% | -35.6% |
-| **Overlay vol-targeting gaté breadth SMA200 (PIT)** | **+0.78** | **+582.2%** | -36.9% |
+| Buy&Hold (NDX) | +0.76 | +597.4% | -35.6% |
+| **Overlay vol-targeting gaté breadth SMA200 (PIT)** | **+0.78** | **+897.9%** | -36.9% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

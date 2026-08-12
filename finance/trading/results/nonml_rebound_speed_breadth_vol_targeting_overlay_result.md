@@ -8,8 +8,8 @@ Breadth rebond rapide moyenne (toute la période) : 26.6%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté rebond rapide** | **+0.61** | **+89.9%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté rebond rapide** | **+0.61** | **+121.7%** | -35.6% |
 
 1. Sharpe overlay > BH : non
 2. Rendement overlay > BH : non

@@ -8,8 +8,8 @@ Position moyenne : 1.17x
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.55 | +57.8% | -34.4% |
-| **Overlay vol-targeting gaté AND SMA200∩momentum** | **+0.61** | **+74.6%** | -34.4% |
+| Buy&Hold (NDX) | +0.55 | +78.8% | -34.4% |
+| **Overlay vol-targeting gaté AND SMA200∩momentum** | **+0.61** | **+103.1%** | -34.4% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

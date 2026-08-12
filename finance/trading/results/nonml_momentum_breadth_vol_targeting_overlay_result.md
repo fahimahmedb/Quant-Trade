@@ -8,8 +8,8 @@ Breadth de momentum moyenne (toute la période) : 63.4%
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.55 | +57.8% | -34.4% |
-| **Overlay vol-targeting gaté breadth de momentum** | **+0.60** | **+73.6%** | -34.4% |
+| Buy&Hold (NDX) | +0.55 | +78.8% | -34.4% |
+| **Overlay vol-targeting gaté breadth de momentum** | **+0.60** | **+102.0%** | -34.4% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

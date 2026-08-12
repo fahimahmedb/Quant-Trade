@@ -8,8 +8,8 @@ Spread décile moyen (toute la période) : 203.9 pts de %
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.68 | +101.6% | -35.6% |
-| **Overlay vol-targeting gaté spread décile** | **+0.72** | **+123.4%** | -35.6% |
+| Buy&Hold (NDX) | +0.68 | +132.4% | -35.6% |
+| **Overlay vol-targeting gaté spread décile** | **+0.72** | **+163.1%** | -35.6% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

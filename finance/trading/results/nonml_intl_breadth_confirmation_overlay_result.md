@@ -8,8 +8,8 @@ Position sur NDX = 1.0x en permanence, CAP=2.0x quand NDX ET DAX sont SIMULTANÉ
 
 | | Sharpe ann. | Rendement total net | MDD |
 |---|---|---|---|
-| Buy&Hold (NDX) | +0.52 | +5429.9% | -82.9% |
-| **Overlay confirmation internationale x2.0** | **+0.53** | **+8823.1%** | -82.9% |
+| Buy&Hold (NDX) | +0.52 | +21358.1% | -82.9% |
+| **Overlay confirmation internationale x2.0** | **+0.53** | **+49252.0%** | -82.9% |
 
 1. Sharpe overlay > BH : OUI
 2. Rendement overlay > BH : OUI

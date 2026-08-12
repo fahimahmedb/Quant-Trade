@@ -7,10 +7,10 @@ Marché : **NDX (40 ans)** uniquement. `position(t) = 2.0x` si `retour_3ans(t) �
 
 | | Sharpe ann. | Rendement total | MDD |
 |---|---|---|---|
-| Buy & Hold | +0.50 | +3590.7% | -82.9% |
-| **Overlay renversement 3 ans** | **+0.44** | **+3198.8%** | -90.0% |
+| Buy & Hold | +0.50 | +13082.6% | -82.9% |
+| **Overlay renversement 3 ans** | **+0.44** | **+48994.3%** | -90.0% |
 
 - Sharpe overlay > BH : NON
-- Rendement overlay > BH : NON
+- Rendement overlay > BH : OUI
 
 **FAIL — critère pré-enregistré NON atteint.**
