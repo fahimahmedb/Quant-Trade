@@ -7379,3 +7379,91 @@ Anti-cheat **CONFORME** (4/4).
   sur l'ensemble des campagnes.
 - **10 rapports auto-référents**, divergents par construction — inchangé.
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+---
+
+## Backlog #439 (13/08/2026) — rapports dépendants du dépôt : signalés, pas appauvris
+
+Cycle de **modification déclarée**, régime des #428-#430, pré-enregistré dans
+`PREREG_selfref_reports_marking.md` (committé avant toute modification). Aucune
+stratégie évaluée, aucun verdict recalculé. `n_trials = 1`.
+
+### J'ai révisé ma propre entrée de file, avec le calcul
+
+Le #438 inscrivait « **rendre stables** » ces rapports, en invoquant un
+dénominateur de borne amputé. Mesure faite avant d'écrire le pré-enregistrement :
+
+- candidats dépendants du dépôt : **10** sur un vivier de **290** → **3,4 %**
+- perte moyenne sur un tirage de 24 : **0,8 tirage**
+
+« Rendre stable » signifiait **supprimer** de ces rapports les décomptes du
+dépôt — exactement l'information que le #428 y avait ajoutée à dessein. Je
+n'appauvris pas un diagnostic pour récupérer moins d'un tirage sur vingt-quatre.
+
+> **Un diagnostic qui décrit l'état du dépôt doit changer quand le dépôt
+> change.** Sa divergence est son fonctionnement ; le défaut serait qu'un lecteur
+> la prenne pour une péremption. D'où un **marqueur**, et non une amputation.
+
+### Résultat
+
+| | Nombre |
+|---|---|
+| candidats repérés par la syntaxe | **10** |
+| **confirmés** par le test → **marqués** | **6** |
+| **infirmés** (faux positif syntaxique) | **1** |
+| indéterminés (délai > 300 s) | **3** |
+| écarté pour interférence | **1** |
+
+**Prédiction 11/11 DÉMENTIE**, et utilement : `sameday_timestamp_resolution` est
+repéré par le motif mais **disculpé par le test**, donc **non marqué**. C'est
+exactement le cas que la méthode comportementale existe pour attraper — un
+argument de plus contre la confiance au motif seul.
+
+Les **3 indéterminés** ne sont pas marqués : le doute ne suffit pas à justifier
+la modification d'un rapport publié.
+
+**Régime tenu** : **4 lignes ajoutées, 0 supprimée** sur chacun des 6.
+Sentinelles subsistantes : **0**.
+
+### Trois défauts rencontrés en exécutant ce cycle
+
+1. **Interférence de sentinelles** — un candidat manipule des fichiers portant
+   les mêmes noms et supprimait les miennes dans son propre `finally`, vidant le
+   test de son sens. Écarté sur une raison **lisible dans son code, pas dans son
+   verdict**.
+2. **Processus orphelins survivant au délai** — `subprocess.run(timeout=…)` ne
+   tue que l'**enfant direct**. Les candidats qui relancent des backtests ont
+   laissé des petits-enfants qui ont **réécrit `nonml_reproducibility_sample_result.md`
+   après sa restauration**. Orphelins tués, rapport restauré, exécution désormais
+   en **groupe de processus isolé** (`os.killpg`).
+   **La garantie « aucun rapport publié modifié » n'a pas tenu dans cette
+   fenêtre** — écrit plutôt que présenté comme acquis.
+3. **Un nombre écrit en dur** — le rapport annonçait « Quatre candidats » là où
+   le compte calculé vaut 1 (défaut de dérivation, classe #412-#414). Le rapport
+   publié est le **troisième jet** : la prose dérive désormais des comptes réels.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Étendre l'échantillon v3** pour resserrer la borne de **12,2 %** (#438) —
+   24 tirages de plus la ramèneraient vers ~6 %. Les 6 rapports désormais marqués
+   restent des divergences structurelles : le marqueur documente, il ne les
+   supprime pas du tirage.
+2. **Les 3 candidats indéterminés** (`reproducibility_sample*`) dépassent 300 s
+   parce qu'ils ré-exécutent eux-mêmes des dizaines de backtests. Les classer
+   demanderait un délai bien plus long, à déclarer — ou de renoncer à les classer
+   et à l'écrire.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Reproductibilité** : borne **12,2 %** (#438), ~35 divergences substantielles
+  encore possibles. **Aucune divergence substantielle jamais observée.**
+- **10 rapports dépendants du dépôt**, dont **6 désormais marqués**, 1 disculpé,
+  3 indéterminés.
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
