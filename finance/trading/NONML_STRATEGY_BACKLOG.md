@@ -6904,3 +6904,101 @@ atteignable est très largement couvert.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
 - **273** rapports jamais ré-exécutés individuellement — dette **déclarée et
   chiffrée**, dont ce cycle a testé 12 par tirage aléatoire.
+
+---
+
+## Backlog #434 (13/08/2026) — reproductibilité des rapports publiés : 12/12 sur échantillon tiré au sort
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_sample.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**. `n_trials = 1`.
+
+### L'angle que les inventaires précédents n'avaient pas couvert
+
+Une question n'avait jamais été posée : **un rapport publié se reproduit-il
+encore à partir de son propre code ?** Les lots #416 → #427 avaient vérifié
+l'identité octet à octet pour **44** rapports — mais uniquement ceux dont le
+script venait d'être modifié. Le dépôt en compte **288** ; les autres n'avaient
+jamais été ré-exécutés, alors que le code partagé a évolué et que les corrections
+#375-#404 ont touché des fonctions communes.
+
+### Méthode — graine fixée avant le tirage
+
+**12** scripts tirés parmi **285** éligibles, graine **20260813** inscrite au
+pré-enregistrement **avant** tout tirage : impossible de retirer un échantillon
+qui donnerait un résultat déplaisant. Délai de 300 s par script ; au-delà,
+« non concluant », ni réussite ni échec.
+
+**Régime déclaré** : ré-exécuter réécrit le rapport, donc chacun est sauvegardé,
+comparé, puis **restauré**. `git status` doit finir vide de toute modification de
+`results/*_result.md` — vérifié, et vide.
+
+### Résultat
+
+| | Nombre |
+|---|---|
+| rapports **identiques** octet à octet | **12** |
+| rapports **divergents** | **0** |
+| **non concluants** | **0** |
+
+### La portée, bornée plutôt que suggérée — le vrai contenu du cycle
+
+Un sans-faute sur 12 tirages est tentant à lire comme « le dépôt est
+reproductible ». **Il ne le démontre pas.** Si le taux réel de divergence valait
+`p`, observer 12 succès d'affilée aurait la probabilité `(1−p)^12` ; en exigeant
+qu'elle dépasse 5 % :
+
+> **Borne supérieure à 95 % de confiance : p ≤ 22,1 %** — et **p ≤ 23,8 %** en ne
+> comptant que les **11** vérifications réellement neuves (`halloween_effect`
+> avait été chronométré avant le pré-enregistrement pour dimensionner le délai,
+> son résultat était donc connu ; il est resté dans le tirage, l'exclure l'aurait
+> biaisé).
+
+Ces 12 tirages restent donc compatibles avec **plusieurs dizaines** de rapports
+divergents parmi les 285. Le cycle écarte un problème **massif** — pas un
+problème fréquent, encore moins un problème rare.
+
+**La dette n'est pas soldée : elle est mesurée pour la première fois**, et son
+ampleur reste encadrée plutôt que connue. Je retiens la lecture la plus prudente.
+
+### Un défaut attrapé avant commit
+
+Le contrôle 1 de l'audit a d'abord conclu au **désaccord** entre l'échantillon
+publié et celui redérivé depuis la graine. Cause : **le vivier lui-même n'était
+plus le même**. Ce cycle produit un `nonml_reproducibility_sample_result.md`, ce
+qui ajoutait son propre nom aux éligibles (285 → 286) et décalait tout le tirage.
+
+> **Un tirage n'est reproductible que si son vivier l'est aussi.** Les artefacts
+> du cycle courant sont désormais exclus explicitement.
+
+### Contrôle secondaire — la règle « zéro ML », balayée pour la première fois
+
+Sur tous les `scripts/nonml_*.py`, **1 seul** fichier contient un motif ML — et
+c'est `nonml_anti_cheat_check.py`, le vérificateur lui-même, dont c'est le motif
+de détection. **0 violation réelle.** Un contrôle qui ne trouve rien reste une
+vérification faite.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Étendre l'échantillon de reproductibilité** — la borne de 22 % ne descendra
+   qu'en tirant davantage. Un second lot de 12 (graine différente, fixée
+   d'avance) la ramènerait vers ~12 % ; un lot de 50 vers ~6 %. C'est la seule
+   dette **actionnable sans décision humaine** actuellement identifiée, et elle
+   est quantifiée : chaque lot resserre une borne publiée.
+2. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement : figer `n_trials` (#421) ; le statut de
+   `log_return_compounding_audit` face au vérificateur anti-cheat (#431) ;
+   étendre ou non la batterie au schéma panier (#432).
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **Reproductibilité** : bornée à **p ≤ 23,8 %** sur 285 rapports — **nouvelle**,
+  et réductible par échantillonnage supplémentaire.
+- **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
