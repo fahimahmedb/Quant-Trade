@@ -3731,3 +3731,53 @@ qu'une fenêtre courte peut inverser le classement. Le verdict du cycle reste
 celui du backtest (2645 séances) et de la robustesse (8/8).
 
 **Prochain candidat de la liste des 14 restants :** `january_effect_lowprice_overlay`.
+
+## Backlog #398 (12/08/2026) — 2e des 15 PASS exposés : effet janvier survit aussi
+
+| 398 | Porter `january_effect_lowprice_overlay` sur l'univers point-in-time (2e des 15 exposés) | Aucune nouvelle donnée | **FAIT — PASS MAINTENU.** Sharpe +0,77 vs +0,73, rendement +660,3 % vs +482,3 %, sur **2900 séances (2015-2026)** contre 1375 pour l'original. PREREG committé avant tout calcul. Anti-cheat **CONFORME (4/4)**. |
+
+**Réutilisation stricte (Règle 7)** : `REBAL_EVERY=21`, `TERCILE=1/3`, `CAP=2,0`,
+`COST_BPS=5` inchangés. Seul l'univers change.
+
+**Ce candidat est un PORTEFEUILLE**, contrairement au #396 (P&L indiciel) : le
+biais du survivant agissait donc **directement sur la mesure de performance**,
+comme pour `amihud` (#394) qui était tombé. La prédiction avait été explicitement
+**non tranchée** dans le PREREG. Elle est ici démentie dans le sens favorable :
+un portefeuille peut survivre au retrait du biais.
+
+**Limite héritée, rappelée et non corrigée :** le prix de clôture sert de proxy de
+taille faute de capitalisation boursière. Un prix bas n'est pas une petite
+capitalisation — le portage ne corrige pas ce point et ne le prétend pas.
+
+### Audit — CONFORME sur 4 contrôles
+
+1. **Recalcul du P&L par simulation en nombre de parts** — chemin comptable pur
+   (capital réparti, parts détenues, revalorisation aux prix), ne partageant
+   aucune ligne avec le backtest : écart **0,12 %**, attribuable à la dérive des
+   poids entre rebalancements.
+2. **Anti-lookahead** : prix du futur ×5, poids antérieurs strictement inchangés.
+3. **Appartenance point-in-time** — voir ci-dessous.
+4. **Causalité du décalage** d'exactement un jour.
+
+**Contrôle 3 affiné après investigation.** Il signalait d'abord 9 « violations ».
+Vérification faite, ce sont des titres **sortis de l'indice entre deux
+rebalancements** et encore détenus jusqu'au suivant — comportement réaliste d'un
+portefeuille rebalancé tous les 21 jours, **pas une fuite**. Aux **139 dates de
+décision**, on compte **0 sélection d'un non-membre**. Le contrôle distingue
+désormais les deux cas et **rapporte les deux chiffres** plutôt que d'en masquer
+un : ce qui serait une fuite (sélectionner avant l'entrée dans l'indice) et ce qui
+n'en est pas une (détenir après la sortie).
+
+### Bilan de l'axe « biais du survivant »
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **8** |
+| dont **maintenus** | **5** |
+| dont **tombés** | 3 (`amihud`, `dispersion_vol_targeting`, `momentum_turnover_doublesort`) |
+| PASS restant exposés | **13** |
+
+**La distinction « P&L indiciel survit / P&L de panier tombe », suggérée au #396,
+est démentie** : ce candidat est un portefeuille et il survit. Elle est donc
+abandonnée comme grille de lecture — c'était bien une conjecture sur 7
+observations, pas une règle, et je l'avais signalée comme telle.
