@@ -66,16 +66,24 @@ def run(name):
 
 
 def candidates():
-    out = []
+    out, interferes = [], []
     for s in sorted(SCRIPTS.glob("nonml_*_backtest.py")):
         n = s.name.replace("nonml_", "").replace("_backtest.py", "")
         if "_sentinelle_tmp" in n or n == "selfref_reports_marking":
+            continue
+        # EXCLUSION DE CORRECTION (#439) : un candidat qui manipule lui-meme des
+        # fichiers portant les MEMES noms de sentinelles supprime les miennes
+        # dans son propre `finally`, ce qui vide le test de son sens. La raison
+        # est mecanique et connaissable sans voir aucun resultat -- elle se lit
+        # dans le code du candidat, pas dans son verdict.
+        if "nonml__sentinelle_tmp" in s.read_text(encoding="utf-8"):
+            interferes.append(n)
             continue
         if not (RESULTS / f"nonml_{n}_result.md").exists():
             continue
         if SYNTACTIC.search(s.read_text(encoding="utf-8")):
             out.append(n)
-    return out
+    return out, interferes
 
 
 def depends_on_repo(name, tmp):
@@ -107,7 +115,7 @@ def depends_on_repo(name, tmp):
 
 
 def main():
-    cands = candidates()
+    cands, interferes = candidates()
     tmp = Path(tempfile.mkdtemp(prefix="selfref_"))
     confirmed, refuted, undetermined = [], [], []
 
@@ -155,6 +163,29 @@ def main():
     L.append("pour une péremption. D'où un marqueur, et non une amputation.")
     L.append("")
 
+    L.append("## Une exclusion de correction, découverte en cours d'exécution")
+    L.append("")
+    L.append("Une première exécution a dû être **interrompue**. Quatre candidats manipulent")
+    L.append("eux-mêmes des fichiers portant **les mêmes noms de sentinelles** : lancés comme")
+    L.append("candidats, ils supprimaient les miennes dans leur propre `finally`, **vidant le")
+    L.append("test de son sens**. Deux d'entre eux ré-exécutent en outre 24 backtests chacun,")
+    L.append("deux fois.")
+    L.append("")
+    L.append(f"- candidats **écartés pour interférence** : **{len(interferes)}**")
+    L.append("")
+    for n in sorted(interferes):
+        L.append(f"- `{n}`")
+    L.append("")
+    L.append("La raison est **mécanique et connaissable sans voir aucun résultat** — elle se lit")
+    L.append("dans le code du candidat, pas dans son verdict. Ce n'est donc pas une exclusion")
+    L.append("de circonstance ; c'est la réparation d'un test qui ne pouvait pas fonctionner.")
+    L.append("")
+    L.append("**Ces quatre rapports dépendent bel et bien du dépôt** — ce sont des campagnes qui")
+    L.append("comptent le vivier. Mais mon propre test ne peut pas l'établir sur eux, donc ils")
+    L.append("**ne sont pas marqués**. La règle du pré-enregistrement — ne marquer que les")
+    L.append("candidats confirmés — est appliquée telle quelle, y compris quand elle me prive")
+    L.append("de cas que je crois connaître.")
+    L.append("")
     L.append("## Test comportemental — ce qui déclenche le marquage")
     L.append("")
     L.append("Le #437 a échoué en identifiant ces scripts par la **forme de leur code**. Ici")
