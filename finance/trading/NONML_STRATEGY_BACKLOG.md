@@ -4892,3 +4892,86 @@ contre-exemple de chaque côté — toujours pas une règle, toujours pas inscri
 2. `market_concentration_vol_targeting_overlay` — portage PIT.
 3. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
    (piste ouverte au #410).
+
+## Backlog #412 (13/08/2026) — `lowvol_sma200_overlay` sur univers point-in-time : TOMBE
+
+| 412 | Rejouer `lowvol_sma200_overlay` (#43) avec l'univers de sélection du panier Low-Vol résolu à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL, le PASS ne survit pas** |
+
+### Résultat
+
+2903 séances (2015-01-08 → 2026-07-27), 178 tickers, couverture 88,1 %, overlay
+actif 81,7 %.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Low-Vol 1,0× (référence) | +0,61 | +252,3 % | −31,5 % |
+| Low-Vol + overlay SMA200 2,0× | +0,58 | +557,8 % | −47,2 % |
+
+Sharpe : non, −0,03. → **FAIL.** Origine (#43) : +0,66 → +0,72, PASS.
+
+Même forme qu'aux #401, #402 et #411 : l'overlay levier double ou triple le
+rendement, mais ne paie plus son surcroît de volatilité sur l'univers réel
+(MDD −47,2 % contre −31,5 %).
+
+### Contrôle d'attribution — pré-enregistré cette fois
+
+Au #411, ce diagnostic avait dû être ajouté **après coup**. Il était ici déclaré
+au pré-enregistrement : un contrôle utile trouvé une fois doit devenir un
+contrôle déclaré la fois suivante, sinon il ne sert qu'à expliquer les résultats
+qui arrangent.
+
+| Low-Vol 1,0× | Sharpe ann. | Rendement total net |
+|---|---|---|
+| univers biaisé, 2021-2026 | +0,66 | +60,8 % |
+| **point-in-time, MÊME fenêtre** | **+0,45** | **+45,4 %** |
+| point-in-time, fenêtre complète 2015-2026 | +0,61 | +252,3 % |
+
+À fenêtre identique, la référence perd 0,21 de Sharpe et un quart de son
+rendement en passant à l'univers réel. **L'effet du survivant est donc réel mais
+bien plus faible qu'au #411**, où le panier Winners passait de +250,7 % à
++38,1 %.
+
+Un panier de faible volatilité paraît moins sensible au biais qu'un panier de
+momentum court terme. C'est une **observation, pas une règle** : deux paniers ne
+font pas une série, et l'axe entier a déjà montré que mes généralisations à
+quatre confirmations tombaient à la cinquième (#409).
+
+### Audit — 6 contrôles
+
+- **2.** Sélection Low-Vol recalculée par boucle NumPy explicite au lieu de
+  `pandas.rolling` : **0 divergence sur 14262 séances**. CONFORME.
+- **3.** Anti-lookahead (prix futurs ×5) : poids antérieurs inchangés. CONFORME.
+- **4.** Appartenance PIT : 0 sélection d'un non-membre sur 139 dates. CONFORME.
+- **5.** Causalité du décalage d'un jour : exacte. CONFORME.
+- **1.** Simulation en nombre de parts : écart **9,80 %**, au-dessus de la
+  tolérance de 5 %. **RÉSERVE** ; seuil non relâché, diagnostic 1b donne le même
+  ordre des deux jambes.
+- **6.** Attribution univers / période : ci-dessus.
+
+**Incident de dérivation, corrigé avant commit** : le script d'audit ayant été
+dérivé de celui du #411, un paragraphe portant les chiffres du panier Winners
+avait survécu aux substitutions (le caractère `×` de « 1,0× » ne correspondait
+pas au motif ASCII utilisé). Détecté par relecture du rapport produit, corrigé,
+vérifié à zéro occurrence résiduelle. Un rapport qui cite les chiffres d'un autre
+candidat est pire qu'un rapport absent.
+
+Anti-cheat **CONFORME** (4/4). Pas de robustesse ni de simulation 300 € : FAIL.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **18** |
+| dont maintenus | 9 (dont 1 non informatif) |
+| dont tombés | **9** |
+| PASS restant exposés, sans vérification | **2** |
+
+Exactement la moitié tombe. Les **six** candidats à panier de titres testés sont
+tous tombés ; les candidats à P&L indiciel sont 5 maintenus contre 1 tombé.
+
+### File des prochains cycles
+
+1. `market_concentration_vol_targeting_overlay` — portage PIT.
+2. `momentum_dispersion_vol_targeting_overlay` — portage PIT (dernier des 20).
+3. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
+   (piste ouverte au #410).
