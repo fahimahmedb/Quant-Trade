@@ -7550,3 +7550,91 @@ Anti-cheat **CONFORME** (4/4).
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439), 1 disculpé,
   3 indéterminés.
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+---
+
+## Backlog #441 (13/08/2026) — lot 3 : borne finale 4,2 %, campagne de reproductibilité CLOSE
+
+Cycle d'**inventaire**, pré-enregistré dans
+`PREREG_reproducibility_campaign_v3_lot3.md` (committé avant tout tirage). Aucune
+stratégie évaluée, aucun verdict recalculé, **aucun rapport publié modifié**.
+`n_trials = 1`.
+
+### Résultat
+
+24 tirages, graine **20260819**, disjoints des 48 des #438/#440 :
+**22 identiques**, **1 structurelle** (`protocol_inventory`), **0 SUBSTANTIELLE**,
+**1 non concluant** (`reproducibility_sample_lot2`, délai > 300 s).
+
+| | Dénominateur | Borne à 95 % | Divergents encore possibles |
+|---|---|---|---|
+| cumul #438 + #440 | 47 | 6,2 % | ~17 |
+| **cumul des trois lots** | **69** | **4,2 %** | **~12** |
+
+**Le chiffre bouge pour une raison arithmétique**, pas parce que le dépôt serait
+devenu plus reproductible : 2 des 24 tirages sortent du dénominateur.
+
+### Clôture — selon la règle fixée avant le tirage
+
+Le pré-enregistrement déclarait ce lot **dernier de la campagne sauf divergence
+substantielle**. Il n'y en a **aucune** → **campagne CLOSE à p ≤ 4,2 %**.
+
+La clôture **n'était pas conditionnée au chiffre obtenu** : elle valait pour
+4,1 % comme pour 4,5 %. C'est ce qui la distingue d'un arrêt décidé une fois le
+résultat connu.
+
+### Bilan des huit cycles (#434 → #441)
+
+| Cycle | Borne | Statut |
+|---|---|---|
+| #434 | 22,1 % | caduque (#436) |
+| #435 | 8,0 % | **caduque** (#436) |
+| #436 | — | divergence structurelle, borne annulée |
+| #437 | — | critère incomplet, borne non publiée |
+| #438 | 12,2 % | remplacée par le cumul |
+| #440 | 6,2 % | remplacée par le cumul |
+| **#441** | **4,2 %** | **finale** |
+
+**Ce que la campagne établit :**
+
+1. Sur **69** tirages retenus, **aucune divergence substantielle** — aucun
+   rapport de stratégie ne s'est révélé périmé par rapport à son code.
+2. Il reste place pour **~12** divergences non détectées sur 290 rapports.
+   « Jamais observée » n'est pas « inexistante ».
+3. **L'outillage de diagnostic**, lui, dérive **par construction** : les rapports
+   qui comptent le dépôt changent à chaque cycle. Six sont marqués (#439).
+
+**Ce qu'elle a coûté :** trois remises à zéro, deux critères écrits trop vite,
+une fuite de processus orphelins ayant réécrit un rapport publié. **Aucun de ces
+défauts n'a été trouvé par la mesure elle-même** — tous par une relecture ou une
+inspection de l'arbre. C'est la leçon à retenir plutôt que le 4,2 %.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement :
+   - figer `n_trials` dans un fichier versionné plutôt que de le lire par
+     expression régulière dans la prose du backlog (#421) ;
+   - statut de `log_return_compounding_audit` face au vérificateur anti-cheat, et
+     si une exception doit exister, l'énumérer dans un fichier versionné (#431) ;
+   - étendre ou non la batterie au **schéma panier** (#432).
+2. **Aucune dette actionnable sans décision humaine n'est identifiée.** La
+   campagne de reproductibilité est close ; l'axe Règle 9 l'était depuis le #433 ;
+   les cinq chantiers ouverts au #406 le sont depuis le #430.
+3. Le prochain cycle devra **chercher avant de conclure** (règle du #429) et
+   **ne pas s'arrêter à la première résolution disponible** (leçon du #433) — et
+   écrire « rien d'actionnable » si c'est la conclusion honnête.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **Reproductibilité** : borne **finale 4,2 %** sur 69 tirages retenus, ~12
+  divergences substantielles encore possibles, **aucune jamais observée**.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439), 1 disculpé,
+  3 indéterminés (délai).
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
