@@ -5829,3 +5829,69 @@ applicable, mais elle doit être posée script par script, pas déduite.
    future devra être inscrite **avec la trace de sa vérification**.
 3. **En attente d'arbitrage** : figer `n_trials` dans un fichier versionné plutôt
    que de le lire par expression régulière dans la prose du backlog.
+
+## Backlog #424 (13/08/2026) — persistance du P&L, lot 3 : les 12 différés traités
+
+| 424 | Doter d'un `.npz` les 12 candidats différés au #423, par décisions individuelles | Aucune nouvelle donnée | **FAIT — 12/12, non-régression 12/12** |
+
+### Conventions posées avant édition, pas déduites après
+
+Vérification faite avant d'écrire le pré-enregistrement : les 12 se répartissent
+en **deux structures**, comptées par lecture du code.
+
+| Structure | Nombre | Convention appliquée |
+|---|---|---|
+| boucle multi-marchés | 9 | marché **NDX** sauvegardé — convention tranchée au #416 pour `santa` |
+| panier de titres | 3 | schéma panier — convention du #419 |
+
+**Une décision individuelle a été nécessaire**, comme le pré-enregistrement le
+prévoyait : `parkinson_c2c_ratio` a été **rejeté par la garde** du gabarit
+multi-marchés (« expression `pnl_ov` attendue absente »), parce qu'il utilise
+`r_t` — rendements convertis depuis des pourcentages — et non `bh_t`. Traité à
+part, avec un commentaire expliquant pourquoi. La garde a de nouveau fonctionné,
+et je ne suis pas passé outre.
+
+### Non-régression — 12/12 identiques octet à octet
+
+Prédiction déductive du pré-enregistrement confirmée, comme aux #416 (10/10) et
+#423 (4/4). **Vingt-six résultats publiés ont désormais été testés contre leur
+propre code** par ces trois lots, dont beaucoup antérieurs aux corrections des
+#375-#404.
+
+### Mesures
+
+| | Avant | Après |
+|---|---|---|
+| balayage #415 — candidats mesurés | 46 / 62 | **55 / 62** |
+| balayage #415 — non mesurés | 16 | **7** |
+| candidats structurellement inactifs | 3 | 3 |
+| balayage doublons — P&L reconstruits | 188 | **200** |
+| groupes de doublons exacts | 3 | 3 |
+| quasi-doublons | 1 | 1 |
+
+**Aucun nouveau doublon, aucun nouvel inactif** — conforme à ce qui était annoncé
+avant de commencer : les 12 portent tous un FAIL, aucun verdict ne pouvait
+changer. Le gain est la **complétude des outils de diagnostic**.
+
+Anti-cheat **CONFORME**.
+
+### Dette restante
+
+Le lot des candidats détectés par le #415 est passé de 20 non mesurés à **7** :
+trois ont un `.npz` au schéma panier que le volet B ne sait pas lire (limite de
+l'outil, pas du dépôt), les autres dépendent de sources externes.
+
+Le reste du dépôt (~110 scripts à `savez` conditionnel, ~122 sans) demeure une
+dette **déclarée et sans conséquence connue** : aucun verdict n'en dépend, et le
+#421 a mesuré que `n_trials` est immatériel.
+
+### File des prochains cycles
+
+1. **Faire lire le schéma panier au volet B du balayage #415** — trois candidats
+   restent invisibles pour une raison d'outil, pas de données. Correction d'une
+   dizaine de lignes dans le balayage, avec non-régression sur son propre rapport.
+2. **Aucune nouvelle idée de stratégie** — le #420 a établi que l'espace
+   atteignable avec les données locales est très largement couvert ; toute idée
+   future devra être inscrite **avec la trace de sa vérification**.
+3. **En attente d'arbitrage** : figer `n_trials` dans un fichier versionné plutôt
+   que de le lire par expression régulière dans la prose du backlog.
