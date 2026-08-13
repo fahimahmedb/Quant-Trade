@@ -191,8 +191,29 @@ def main():
     L.append("")
     L.append(f"Les **{verdicts['FAIL']}** FAIL ne peuvent pas changer de verdict, mais un doublon")
     L.append("parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les")
-    L.append(f"**{verdicts['PASS']}** PASS sont les deux candidats écartés au #427 avec leur raison")
-    L.append("publiée (variantes multiples, et un diagnostic qui n'est pas une stratégie).")
+    # #446 : cette phrase affirmait « les deux candidats ecartes au #427 » alors
+    # que le compte etait calcule. La derive du depot l'a rendue fausse (4 vs
+    # « deux »), et l'identite affirmee ne pouvait de toute facon pas couvrir des
+    # scripts apparus depuis. Elle est desormais CALCULEE : elle nomme ce qu'elle
+    # compte, et ne peut plus se perimer.
+    # Recalcule DANS ce bloc : le regime de modification annonce au #446
+    # interdisait de toucher a la boucle de comptage, hors intervalle.
+    pass_names = []
+    for n in missing:
+        f = RESULTS / f"nonml_{n}_result.md"
+        if f.exists():
+            t = f.read_text(encoding="utf-8")
+            if "**PASS" in t or "PASS (niveau 1)" in t:
+                pass_names.append(n)
+    pass_names.sort()
+    if pass_names:
+        L.append(f"Les **{verdicts['PASS']}** PASS sans `.npz` sont nommés ici plutôt")
+        L.append("qu'affirmés — la version précédente les disait « les deux candidats écartés")
+        L.append("au #427 », phrase figée qu'un compte calculé a fini par démentir (#446) :")
+        L.append("")
+        for n in pass_names:
+            L.append(f"- `{n}`")
+        L.append("")
     L.append("")
     L.append(f"Le balayage lit `results/*_pnl.npz` **sans filtre de préfixe** : les {n_other} séries")
     L.append("ML / Étape D sont comparées aux candidats non-ML. C'est voulu — un doublon")
