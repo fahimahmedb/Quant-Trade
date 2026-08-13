@@ -161,6 +161,17 @@ def main(causal=True):
         f"{'atteint' if verdict else 'NON atteint'}.**",
     ]
 
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #419), schema PANIER identique a
+    # celui de son jumeau `sma200_leaders_overlay`. Son absence etait l'angle
+    # mort des balayages de doublons #406 et #418 : le #403 avait etabli que ces
+    # deux candidats sont la MEME strategie, mais aucun des deux balayages ne
+    # pouvait le voir faute de ce fichier.
+    np.savez(ROOT / "results" / "nonml_leaders_trend_union_overlay_pnl.npz",
+             pnl_gross_ov=pnl_lev + turn_lev * (COST_BPS / 1e4),
+             pnl_gross_bh=pnl_base + turn_base * (COST_BPS / 1e4),
+             turn_ov=turn_lev, turn_bh=turn_base,
+             dates=np.asarray(P.index)[start:], cost_bps=COST_BPS)
+
     out = ROOT / "results" / "nonml_leaders_trend_union_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
