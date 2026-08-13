@@ -8219,3 +8219,110 @@ modification sans stratégie ni position. Anti-cheat **CONFORME** (4/4).
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
+
+## Backlog #448 (13/08/2026) — la règle complète du détecteur : **PASS**, mais pas un plateau
+
+**Cycle de MODIFICATION**, quatrième après les #445, #446 et #447. Pré-enregistré
+dans `PREREG_verdict_detector_complete.md` (`c2d627c`), avant toute modification
+et toute mesure. `n_trials = 1`.
+
+### Ce qui change
+
+Deux changements, **tous deux déclarés avant d'écrire le code** :
+la décoration Markdown (titre, citation, puce, étiquette « Verdict : ») est
+retirée avant lecture ; le littéral `"PASS (niveau 1)"` devient **positionnel**.
+Précédence PASS > FAIL inchangée.
+
+### Verdict : PASS sur les cinq critères
+
+| | Critère | État |
+|---|---|---|
+| 1 | diff confiné aux **deux** régions annoncées | ✔ (4 hunks) |
+| 2 | chaque reclassement publié avec sa preuve | ✔ |
+| 3 | aucune relecture ne contredit | ✔ (0/3) |
+| 4 | les 2 faux négatifs du #447 récupérés | ✔ |
+| 5 | défaut résiduel disparu | ✔ |
+
+**PASS 2→1, FAIL 90→93, indéterminé 22→20** ; 3 rapports reclassés.
+
+La preuve la plus nette : le rapport du #447, que **son propre détecteur**
+classait PASS parce qu'il *citait* le littéral, est désormais classé **FAIL** —
+la classe qu'il porte réellement. Le défaut est corrigé **sur le cas même qui
+l'avait révélé**.
+
+### Conformité au régime, seconde fois de suite
+
+La règle est écrite en **opérations de chaînes**, pas avec `re` : un `import re`
+en tête de fichier aurait ouvert une **troisième région** non déclarée. Comme au
+#447, je me suis **conformé au régime plutôt que de le réinterpréter**.
+
+L'audit indépendant réimplémente la **forme déclarée** (expressions régulières)
+et la compare à l'écriture retenue sur **6 815 lignes de 303 rapports** :
+**0 divergence**, 0 verdict différent. L'équivalence est **contrôlée, pas
+affirmée**. Audit **CONFORME**.
+
+### Robustesse (7a) — la mesure dit l'inverse de ce que j'avais écrit
+
+| Variante | PASS | FAIL | indét. | Faux négatifs récupérés (/2) |
+|---|---|---|---|---|
+| V0 — aucune (règle #447) | 1 | 90 | 24 | **0** |
+| V1 — titres | 2 | 92 | 21 | **1** |
+| V2 — + citations | 2 | 92 | 21 | **1** |
+| V3 — + puces | 2 | 92 | 21 | **1** |
+| V4 — tout (#448) | 2 | 93 | 20 | **2** |
+
+**Ce n'est pas un plateau, c'est un escalier à deux marches**, et la seconde ne
+porte qu'un seul cas. J'avais rédigé d'avance un texte annonçant un plateau ; la
+mesure l'a contredit, et c'est la mesure qui est publiée.
+
+**La question posée franchement** : la couche « étiquette » a-t-elle été taillée
+pour le cas qu'elle devait rattraper ? **En partie, oui.** Elle a été déclarée
+avant mesure — l'anti-cheat le confirme — mais **en sachant** que le #444
+énonçait `## Verdict : **FAIL**`. Deux des quatre couches sont **inertes** sur le
+corpus actuel, une ne sert qu'**une fois**. Ce n'est pas du data-snooping au sens
+du protocole (aucun seuil balayé, aucune stratégie en jeu), mais c'est une règle
+**ajustée à des cas connus**, et le dire vaut mieux que laisser le tableau
+suggérer une robustesse qu'il ne montre pas. La couche reste : la retirer
+maintenant pour faire joli serait le vrai manquement.
+
+Simulation 300 € (7b) **sans objet** : correction d'instrument, aucune stratégie
+ni position. Anti-cheat **CONFORME** (4/4).
+
+### Bilan des quatre cycles d'instrument (#445 → #448)
+
+Le détecteur de verdict a été **faux de trois façons successives**, chacune
+révélée par la correction de la précédente :
+
+1. `"**PASS" in t` — confondait porter et mentionner (#446 le révèle) ;
+2. lecture en début de ligne brut — manquait les verdicts en **titre** (#447 le
+   mesure, 2 faux négatifs) ;
+3. littéral `"PASS (niveau 1)"` en sous-chaîne — classait PASS tout rapport qui
+   le **citait** (#447 le démontre sur lui-même).
+
+**Aucun de ces défauts n'a été trouvé par une mesure.** Tous par relecture d'une
+sortie, ou par une correction qui exposait la suivante.
+
+### File des prochains cycles
+
+1. **Les 8 autres scripts** portant l'ancien motif `"**PASS" in` — inventoriés au
+   #447, toujours non corrigés. La règle du #448 existe désormais ; reste à la
+   décliner, en déclarant les régions comme ici.
+2. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+3. **Les 20 `.npz` sans rapport publié** : inspection nom par nom.
+4. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Détecteur de verdict : corrigé** dans le balayage (#448), **8 scripts**
+  portent encore l'ancien motif.
+- **1 stratégie PASS invisible au balayage** (`tom_decomposition_overlay`).
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
