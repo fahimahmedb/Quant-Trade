@@ -4713,3 +4713,99 @@ prédit pas le résultat, comme ce cycle vient de le montrer.
 1. `weakness_breadth_vol_targeting_overlay` — portage PIT.
 2. `winners_trend_vol_targeting_overlay` — portage PIT.
 3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
+
+## Backlog #410 (13/08/2026) — `weakness_breadth_vol_targeting_overlay` : PASS formel, NON INFORMATIF, et on sait enfin pourquoi
+
+| 410 | Rejouer `weakness_breadth_vol_targeting_overlay` (#89) avec la breadth de faiblesse calculée sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS formel, étiqueté NON INFORMATIF ; cause structurelle identifiée** |
+
+### Résultat, et son étiquette fixée d'avance
+
+2896 séances (2015-01-05 → 2026-07-13), couverture 88,4 %.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,76 | +597,4 % | −35,6 % |
+| Overlay gaté breadth de faiblesse (PIT) | +0,76 | +597,8 % | −35,6 % |
+
+**PASS formel.** Mais le pré-enregistrement fixait, **avant tout calcul**, un
+critère d'informativité : porte brute active sur ≥ 2 % des séances. Mesure :
+**13 séances sur 2896, soit 0,45 %** → **VERDICT NON INFORMATIF**. Le cycle
+d'origine portait déjà cet avertissement (5 jours sur 1385, 0,36 %).
+
+### Ce que ce cycle apporte et qui n'était pas connu
+
+Le rapport d'origine constatait l'inactivité sans l'expliquer, la laissant
+imputable à un échantillon haussier. **L'audit établit que la cause est
+structurelle.**
+
+Contrôle 6 — les deux briques de la stratégie sont **anti-corrélées par
+construction**. La breadth de faiblesse culmine quand la volatilité est haute ;
+c'est exactement là que `20 % / vol` tombe sous 1,0 et se fait clipper au
+plancher. Mesure de l'exposition **avant clip** sur les séances à porte ouverte :
+
+| | |
+|---|---|
+| séances à porte brute ouverte | 13 |
+| dont exposition avant clip < 1,0 | **13 (toutes)** |
+| exposition médiane, porte ouverte | **0,521×** |
+| exposition médiane, toutes séances | 1,096× |
+
+Sur *toutes* les séances où la condition de capitulation est remplie, le
+vol-targeting demande déjà moins de 1,0×. **Les deux composantes s'annulent
+mutuellement.** Ce n'est pas un accident d'échantillon : cela vaut aussi pour le
+cycle d'origine, et pour **toute** variante combinant une porte de capitulation
+avec un vol-targeting à plancher 1,0×.
+
+Ce constat est lu sur les chiffres et vérifié directement — ce n'est pas un
+mécanisme pré-enregistré, et il est présenté comme tel.
+
+### Robustesse et simulation — exécutées pour montrer leur vacuité
+
+Normalement réservées aux PASS. Exécutées ici, avec dans chaque rapport ce
+qu'elles valent :
+
+- **Robustesse** : 4/4 et 4/4, et les **huit cellules** donnent exactement
+  +0,76 / +597,8 %. Faire varier un plafond que la stratégie n'atteint jamais ne
+  teste rien. L'avertissement est placé **avant** les tableaux, pour qu'on ne lise
+  pas « 8/8 » comme un plateau.
+- **Simulation 300 €** : 0 séance à porte active sur 63. L'écart de 0,18 € vient
+  du seul coût d'entrée compté différemment, pas d'une décision.
+- **Pas de batterie Règle 9** : elle mesurerait la significativité d'une
+  stratégie qui ne prend aucune position. Le `.npz` est en revanche sauvegardé,
+  pour que le balayage du #406 puisse le voir.
+
+### Tentation nommée au PREREG et non suivie
+
+Abaisser le seuil de 50 % aurait rendu la porte active et le cycle intéressant.
+C'est un retuning ; il était exclu par écrit avant calcul, et il l'est resté.
+
+### Audit — contrôles de validité
+
+1. Signal recalculé par un chemin de code disjoint : conforme.
+2. Anti-lookahead : conforme. 3. Filtre d'appartenance : effet réel, conforme.
+5. Causalité de la porte : conforme. 4. Décalage de niveau : mesure publiée sans
+interprétation (abstention motivée maintenue depuis le #409).
+
+Anti-cheat **CONFORME** (4/4).
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **16** |
+| dont maintenus | 9 (dont **1 non informatif**) |
+| dont tombés | 7 |
+| PASS restant exposés, sans vérification | **4** |
+
+Le décompte « maintenus » mérite désormais une nuance : celui-ci est maintenu
+parce qu'il ne fait rien. Compter un non-événement comme une survie serait
+trompeur — d'où la mention explicite dans le tableau.
+
+### File des prochains cycles
+
+1. `winners_trend_vol_targeting_overlay` — portage PIT.
+2. `lowvol_sma200_overlay` — portage PIT.
+3. **Balayer les autres candidats à porte de capitulation** : le contrôle 6 de ce
+   cycle montre qu'une porte « faiblesse » combinée à un vol-targeting à plancher
+   1,0× ne peut jamais s'activer. Combien d'entrées du backlog ont cette
+   structure, et combien de leurs PASS sont donc vides ?
