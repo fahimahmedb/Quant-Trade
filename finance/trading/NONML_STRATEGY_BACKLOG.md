@@ -4809,3 +4809,86 @@ trompeur — d'où la mention explicite dans le tableau.
    cycle montre qu'une porte « faiblesse » combinée à un vol-targeting à plancher
    1,0× ne peut jamais s'activer. Combien d'entrées du backlog ont cette
    structure, et combien de leurs PASS sont donc vides ?
+
+## Backlog #411 (13/08/2026) — `winners_trend_vol_targeting_overlay` : FAIL, et l'« edge extrême » du #14 était un artefact de survivant
+
+| 411 | Rejouer `winners_trend_vol_targeting_overlay` (#47) avec l'univers de sélection des Winners résolu à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL ; et la référence elle-même s'effondre** |
+
+### Résultat
+
+2886 séances (2015-02-03 → 2026-07-27), 178 tickers, couverture 88,3 %, overlay
+actif 67,0 %.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Winners 1,0× (référence) | +0,44 | +179,0 % | −34,7 % |
+| Winners + overlay tendance+vol-targeting | +0,38 | +181,7 % | −36,8 % |
+
+Sharpe : non, −0,06. → **FAIL.** Origine (#47) : +0,96 → +1,02, PASS.
+
+### Le résultat principal n'est pas le verdict
+
+Le pré-enregistrement rappelait l'avertissement du #14 — *« edge extrême
+potentiellement propre au bull market IA/semiconducteurs 2021-2026 »* — et
+précisait que ce portage teste l'**univers**, pas la **période**.
+
+La référence Winners passe de +0,96 à +0,44 de Sharpe. Mais la fenêtre a changé
+en même temps que l'univers (2886 séances depuis 2015 contre 1376 depuis 2021),
+et **attribuer la chute à l'univers aurait été une affirmation non étayée**.
+
+Diagnostic post-hoc du contrôle 6 — déclaré comme tel, non pré-enregistré, ne
+modifiant aucun verdict — restreignant le calcul point-in-time à la fenêtre
+d'origine :
+
+| Winners 1,0× | Sharpe ann. | Rendement total net |
+|---|---|---|
+| univers biaisé, 2021-2026 | +0,96 | +250,7 % |
+| **point-in-time, MÊME fenêtre 2021-2026** | **+0,29** | **+38,1 %** |
+| point-in-time, fenêtre complète 2015-2026 | +0,44 | +179,0 % |
+
+**À fenêtre identique, le rendement du panier Winners passe de +250,7 % à
++38,1 %.** L'effondrement est donc imputable à l'**univers**, pas à la période :
+l'« edge extrême » du #14 était pour l'essentiel un artefact du biais du
+survivant.
+
+C'est la première fois que ce projet **mesure séparément** les deux causes au
+lieu de les supposer. L'avertissement du #14 était justifié — mais pas pour la
+raison qu'il invoquait.
+
+### Audit — 6 contrôles
+
+- **2.** Sélection Winners recalculée par `pandas.pct_change(5)` au lieu de
+  l'indexation NumPy décalée : **0 divergence sur 14262 séances**. CONFORME.
+- **3.** Anti-lookahead (prix futurs ×5) : poids antérieurs inchangés. CONFORME.
+- **4.** Appartenance PIT : 0 sélection d'un non-membre sur **582** dates de
+  décision. CONFORME.
+- **5.** Causalité du décalage d'un jour : exacte. CONFORME.
+- **1.** Simulation en nombre de parts : écart de niveau **13,26 %**, au-dessus
+  de la tolérance de 5 %. **RÉSERVE** — le plus large écart de l'axe, cohérent
+  avec un panier rebalancé tous les **5** jours sur 11,5 ans. Seuil **non
+  relâché** ; le diagnostic 1b donne le même ordre des deux jambes par le chemin
+  en parts, le verdict ne bascule pas.
+- **6.** Attribution univers / période : ci-dessus.
+
+Anti-cheat **CONFORME** (4/4). Pas de robustesse ni de simulation 300 € : FAIL.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **17** |
+| dont maintenus | 9 (dont 1 non informatif) |
+| dont tombés | **8** |
+| PASS restant exposés, sans vérification | **3** |
+
+Les **cinq** candidats à panier de titres testés sont tombés (#163, #394, #401,
+#402, #411) ; les candidats à P&L indiciel sont 5 maintenus contre 1 tombé
+(#409). Le déséquilibre est net, mais il reste un comptage sur 17 essais avec un
+contre-exemple de chaque côté — toujours pas une règle, toujours pas inscrite.
+
+### File des prochains cycles
+
+1. `lowvol_sma200_overlay` — portage PIT.
+2. `market_concentration_vol_targeting_overlay` — portage PIT.
+3. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
+   (piste ouverte au #410).
