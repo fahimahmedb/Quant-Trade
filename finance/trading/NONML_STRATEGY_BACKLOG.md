@@ -7915,3 +7915,105 @@ Anti-cheat **CONFORME** (4/4).
 - **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+## Backlog #445 (13/08/2026) — correction de `net_pnl` : **PASS**, 1 série corrigée, 0 appariement déplacé
+
+**Cycle de MODIFICATION** — le premier depuis longtemps. Contrairement aux
+#442-#444 qui ne faisaient que lire, celui-ci **change du code** et **régénère un
+rapport publié**. Pré-enregistré dans `PREREG_net_pnl_correction.md` (`1e0f700`),
+avant toute modification et toute mesure. `n_trials = 1`.
+
+### La modification, et son régime déclaré
+
+Suppression des **lignes 40-42** de `nonml_pnl_duplicate_sweep_backtest.py` — la
+branche « candidat+turnover », qui soustrayait les coûts d'un `pnl_candidate`
+**déjà net** (défaut D établi au #444). La branche suivante le lit correctement :
+supprimer suffisait, sans rien réécrire.
+
+**`git diff` : 3 suppressions, 0 insertion**, toutes dans l'intervalle annoncé.
+Toute ligne touchée hors de cet intervalle valait échec du cycle.
+
+### Résultat
+
+| | Mesure |
+|---|---|
+| séries lues avant / après | 218 / 218 |
+| séries **modifiées** | **1** (`dollar_neutral_composite_pit`) |
+| écart à `pnl_candidate` après correction | **0.0e+00** (exact, pas « petit ») |
+| paires exactes / quasi / groupes | **inchangés** (3 / 1 / 3) |
+
+**Prédiction pré-enregistrée vérifiée** : une seule série change, aucun
+appariement ne bouge. C'était le résultat **ennuyeux** des deux annoncés ;
+l'autre — un doublon masqué par le défaut — aurait été plus important que la
+correction, et n'a pas eu lieu.
+
+**Audit indépendant CONFORME** : reconstruction réécrite sans importer `net_pnl`,
+partitions comparées **par ensembles de noms** et non par effectifs — identiques.
+
+### Le piège du cycle : 10 lignes changent, 1 seule est la mienne
+
+Régénérer le rapport du balayage modifie **10 lignes**. Une seule est imputable à
+la correction (la répartition par schéma). Les **9 autres** sont de la **dérive du
+dépôt** : 284 → 298 scripts, 99 → 113 sans `.npz`, verdicts 90/2/6 → 91/4/17. Le
+rapport était **périmé avant ce cycle** ; le régénérer l'a rafraîchi.
+
+**Les confondre aurait été facile et faux.** C'est le phénomène des rapports
+dépendants du dépôt (#436-#439), rencontré ici pour la première fois **au cours
+d'une modification**, où il brouille précisément la lecture de l'effet réel.
+
+### Une incohérence exposée, non corrigée
+
+Le rafraîchissement rend fausse une phrase du balayage : « **4** PASS sont les
+**deux** candidats écartés au #427 ». Le compte est calculé, la prose est figée.
+
+**Non corrigée ici** : le pré-enregistrement n'autorisait qu'une modification, aux
+lignes 40-42 d'un autre fichier. Y toucher aurait été une modification non
+déclarée. **Inscrite à la file.**
+
+### Un défaut de mon instrument, attrapé avant commit
+
+La référence « avant » lisait le **disque**. Une seconde exécution comparait donc
+le rapport corrigé à lui-même et publiait « **0 ligne modifiée** » — vrai pour un
+re-run, **faux comme description de la transition**, et il a bel et bien écrasé
+la vraie mesure une fois. La référence est désormais **épinglée au dernier commit
+ayant touché le rapport avant ce cycle**, ce qui rend le script idempotent.
+
+Cinquième fois de suite qu'un défaut est trouvé **en relisant une sortie**, pas
+par la mesure elle-même.
+
+### Robustesse (7a) — plateau, pas pic
+
+Grille de seuils de corrélation fixée avant exécution (±20 % n'a pas de sens sur
+une corrélation) : **0,9999 → 0,999 → 0,99 → 0,95 → 0,90**. Les appariements sont
+**identiques avant/après à chaque seuil**, jusqu'à 781 paires quasi appariées.
+Ce n'est pas un retuning : le seuil du balayage reste 0,9999.
+
+Simulation 300 € (7b) **sans objet** : correction de code, aucune stratégie ni
+position. Audit dédié (7c) : `results/nonml_net_pnl_correction_audit.md`.
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **La phrase incohérente du balayage** (« les deux » vs compte calculé) —
+   cycle de modification à déclarer, avec la même discipline qu'ici.
+2. **Les 20 `.npz` sans rapport publié** : variantes au rapport nommé autrement
+   (comme #431 contrôle B) ou orphelins réels. Inspection, pas balayage.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Défaut de formule `net_pnl` : CORRIGÉ** (#445). Le second D du #444
+  (`leaders_trend_union_pnl_persistence_audit`) est corrigé **par ricochet**,
+  son rapport n'étant pas régénéré ici.
+- **1 incohérence de prose** ouverte dans le rapport du balayage.
+- **3 consommateurs** laissent leur lecteur mal informé sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439) — le rapport du
+  balayage vient d'en fournir une démonstration en conditions réelles.
+- **1** PASS non évaluable par la batterie ; **113** scripts sans `.npz` (#428,
+  chiffre rafraîchi par ce cycle).
