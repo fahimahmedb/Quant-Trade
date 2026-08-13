@@ -5763,3 +5763,69 @@ Anti-cheat **CONFORME** (4/4).
 3. **En attente d'arbitrage** : figer `n_trials` dans un fichier de données
    versionné plutôt que de le lire par expression régulière dans la prose du
    backlog. Changement de protocole, pas décision d'exécution.
+
+## Backlog #423 (13/08/2026) — persistance du P&L, lot 2 : 4 scripts sur 16, portée réduite après lecture
+
+| 423 | Doter d'un `.npz` les candidats que le balayage du #415 ne peut pas mesurer | Aucune nouvelle donnée | **FAIT — 4/16, les 12 autres différés avec leur raison** |
+
+### La portée a été réduite après lecture, et c'est dit
+
+Le pré-enregistrement annonçait un lot de **16** candidats, vérifiés comme
+n'ayant aucun `np.savez` et ne dépendant d'aucune source externe. Mais il
+exigeait aussi de **lire chaque script avant édition** — et la lecture en a
+écarté **12** : ils bouclent sur plusieurs marchés ou construisent un panier,
+n'ont aucune variable de dates, et ne suivent pas la convention `pos` / `bh_t`
+du schéma indiciel simple.
+
+Le détecteur les a refusés **de lui-même** (gardes « variable de dates non
+identifiée », « convention `pos`/`bh_t` absente`»). La garde a fonctionné, et je
+ne suis pas passé outre. Leur appliquer un gabarit aurait été le geste mécanique
+des #392 et #404.
+
+### Ce qui a été fait
+
+4 scripts modifiés, exécutés, `.npz` produit : `beta_dispersion`,
+`correlation_regime`, `daily_advance_breadth`, `internal_breadth`.
+
+**Non-régression : 4/4 fichiers de résultat identiques octet à octet.** La
+prédiction du pré-enregistrement — déductive, comme au #416 — est confirmée.
+
+### Mesures
+
+| | Avant | Après |
+|---|---|---|
+| balayage #415 — candidats mesurés | 42 / 62 | **46 / 62** |
+| balayage #415 — non mesurés | 20 | **16** |
+| candidats structurellement inactifs | 3 | 3 |
+| balayage doublons — P&L reconstruits | 184 | **188** |
+| groupes de doublons exacts | 3 | 3 |
+| quasi-doublons | 1 | 1 |
+
+**Aucun nouveau doublon, aucun nouvel inactif.** Conforme à ce que le
+pré-enregistrement annonçait comme gain : la **complétude des outils de
+diagnostic**, pas une correction de résultat — les 4 portent tous un FAIL.
+
+Anti-cheat **CONFORME**.
+
+### Dette restante, re-chiffrée
+
+| | |
+|---|---|
+| candidats du lot 2 différés | **12** (structure multi-marchés ou panier) |
+| autres scripts à `savez` conditionnel | ~110 |
+| scripts sans `savez` | ~125 |
+
+Les 12 différés demandent une décision **individuelle** : sur un script qui
+boucle sur cinq marchés, lequel sauvegarder ? Le #416 avait tranché pour `santa`
+en choisissant le NDX, marché de référence du backlog ; la même convention est
+applicable, mais elle doit être posée script par script, pas déduite.
+
+### File des prochains cycles
+
+1. **Lot 3 de persistance** — les 12 différés, par décisions individuelles sur le
+   marché à sauvegarder. Aucun effet attendu sur un verdict ; gain = complétude.
+2. **Aucune nouvelle idée de stratégie** — le #420 a établi que l'espace
+   atteignable avec les données locales est très largement couvert. Toute idée
+   future devra être inscrite **avec la trace de sa vérification**.
+3. **En attente d'arbitrage** : figer `n_trials` dans un fichier versionné plutôt
+   que de le lire par expression régulière dans la prose du backlog.
