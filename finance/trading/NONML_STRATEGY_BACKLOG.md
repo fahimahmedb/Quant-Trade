@@ -7188,3 +7188,99 @@ Anti-cheat **CONFORME** (4/4).
 - **7 rapports auto-référents**, divergents par construction — **nouvelle**.
 - **1** PASS non évaluable par la batterie (schéma panier) ; **99** scripts sans
   `.npz` (#428) — inchangées.
+
+---
+
+## Backlog #437 (13/08/2026) — campagne v2 : le critère que j'avais pré-enregistré était incomplet
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_campaign_v2.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**. `n_trials = 1`.
+
+### Ce que le cycle a fait
+
+Critère d'auto-référence appliqué : **7** scripts exclus du vivier et listés
+(tous des diagnostics). Puis **24** tirages, graine **20260816**, dans le vivier
+nettoyé de **281** : **23 identiques**, **1 DIVERGENT** —
+`empty_pass_requalification`.
+
+```
+- - fichiers `nonml_*_pnl.npz` trouvés : **173**
++ - fichiers `nonml_*_pnl.npz` trouvés : **208**
+```
+
+### Le défaut est dans mon critère, pas dans la conclusion
+
+Le critère pré-enregistré énumérait **trois écritures exactes** :
+`glob("nonml_*_backtest.py")`, `glob("*_pnl.npz")`, `glob("nonml_*_result.md")`.
+
+Le script fautif écrit `RESULTS.glob("nonml_*_pnl.npz")`. **Le même concept, une
+orthographe différente** — le préfixe `nonml_` à l'intérieur des guillemets
+suffit à faire échouer la correspondance littérale.
+
+Le critère devait être *mécanique et complet*. Il était mécanique et
+**incomplet** : j'ai encodé **trois exemples** au lieu de la propriété qu'ils
+illustraient — « le script balaie un répertoire que les cycles alimentent ».
+
+| Formulation | Scripts capturés |
+|---|---|
+| **pré-enregistrée** (trois littéraux) | **8** |
+| **conceptuelle** (`glob` sur `results/` ou `scripts/`) | **10** |
+| **manqués** | **2** (`empty_pass_requalification`, `empty_pass_basket_extension`) |
+
+L'écart est petit — deux scripts — mais **un seul tirage divergent suffit à
+annuler la borne**.
+
+### Refus, pour la deuxième fois consécutive
+
+Élargir le critère maintenant et relancer serait **exactement le geste que le
+#436 avait refusé**, répété un cycle plus tard avec une justification plus
+sophistiquée. Le critère a été fixé *avant* ce tirage ; le corriger *après* avoir
+vu quel script lui échappait — et sachant que c'est celui qui annule la borne —
+n'est pas défendable.
+
+> Le critère conceptuel sera **pré-enregistré au prochain cycle**, et la campagne
+> repartira **encore** de zéro.
+
+**Borne v2 : NON PUBLIÉE.** Comme au #436.
+
+### Ce que ces quatre cycles ont réellement produit
+
+Aucune borne publiable, et deux constats qui valent mieux :
+
+1. **Mon outillage de diagnostic est instable par construction.** **10** scripts
+   embarquent un décompte du dépôt dans leur rapport et divergent à chaque cycle
+   qui ajoute un fichier. J'ai écrit la plupart, et introduit au #428 le compteur
+   qui a fait tomber le premier.
+2. **Un critère « mécanique » écrit trop vite reste faux.** Énumérer trois
+   littéraux n'est pas formaliser une propriété. **Le pré-enregistrement protège
+   de l'ajustement après coup ; il ne protège pas d'une spécification bâclée.**
+
+Sur les 84 tirages des #434-#437, **aucune divergence n'a touché un rapport de
+stratégie** — toutes portent sur des diagnostics auto-référents. Indication
+rassurante, **pas une borne**, et non présentée comme telle.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Pré-enregistrer le critère conceptuel** (`glob` sur `results/` ou
+   `scripts/`), formulation exacte fixée avant tout tirage, et relancer la
+   campagne de zéro. Troisième tentative.
+2. **Rendre stables les 10 rapports auto-référents** — ne compter que leurs
+   propres entrées — ou assumer explicitement qu'ils dérivent. Cycle de
+   modification déclarée, régime des #428-#430. **C'est la correction de fond** :
+   sans elle, chaque campagne future butera sur les mêmes scripts.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Reproductibilité** : aucune borne publiable après quatre cycles. **2
+  divergences connues**, toutes structurelles, restaurées et non corrigées.
+- **10 rapports auto-référents**, divergents par construction — chiffre corrigé
+  depuis les 7 du #436.
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
