@@ -7284,3 +7284,98 @@ Anti-cheat **CONFORME** (4/4).
 - **10 rapports auto-référents**, divergents par construction — chiffre corrigé
   depuis les 7 du #436.
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+---
+
+## Backlog #438 (13/08/2026) — campagne v3 : première borne publiable (12,2 %), par un test au lieu d'un motif
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_campaign_v3.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**, **aucune sentinelle laissée derrière**.
+`n_trials = 1`.
+
+### Le changement de méthode — et il a servi dès ce tirage
+
+Les campagnes v1 (#436) et v2 (#437) sont mortes sur le même écueil : **j'ai
+essayé de reconnaître une propriété en devinant comment elle serait écrite**.
+Une troisième énumération de motifs aurait échoué sur une quatrième orthographe.
+
+> La propriété est désormais **testée** : on ajoute au dépôt des fichiers
+> neutres, on ré-exécute le script divergent, et on regarde si son rapport bouge.
+> Rapport modifié ⇒ divergence **structurelle**. Inchangé ⇒ **substantielle**.
+
+**Résultat : 23 identiques, 1 structurelle, 0 substantielle.**
+
+La divergence détectée est `empty_pass_basket_extension` — **l'un des deux
+scripts que le critère syntaxique du #437 avait manqués**. Le test l'a classé
+sans dépendre d'aucune orthographe. Sans ce changement, ce tirage aurait produit
+une **troisième** campagne annulée par une divergence que j'aurais dû reclasser
+après coup.
+
+### La borne
+
+| | Borne | Statut |
+|---|---|---|
+| #435 | 8,0 % | **caduque** (#436) |
+| #437 | — | non publiée |
+| **#438** | **12,2 %** | **publiée** |
+
+Dénominateur **23** (les structurelles en sont exclues, règle **fixée au
+pré-enregistrement avant tout tirage** — ce n'est pas une reclassification de
+circonstance).
+
+**C'est la première borne publiable de la campagne, et elle est moins bonne que
+celle revendiquée au #435.** Normal : 23 tirages au lieu de 36, parce que les
+trois remises à zéro ont été assumées plutôt que contournées. Elle laisse place à
+**~35** divergences substantielles non détectées sur 289 : elle écarte un
+problème **massif** de péremption, **rien de plus**.
+
+### Garde-fous
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| 24 tirés et classés | 24 | **24** | ✔ |
+| divergents classés par le test | tous | **1** | ✔ |
+| sentinelles subsistantes | 0 | **0** (disque **et** `git status`) | ✔ |
+| borne publiée si 0 substantielle | oui | **12,2 %** | ✔ |
+
+### Un piège rattrapé avant commit — le même qu'au #434
+
+Le contrôle 1 de l'audit a d'abord **échoué** : ce cycle produit son propre
+`_result.md`, ce qui l'ajoutait au vivier (289 → 290) et décalait tout le tirage.
+**C'est exactement le défaut identifié au #434** — je l'y avais corrigé mais **ne
+l'avais pas reporté** dans ce nouveau script. Le contrôle l'a rattrapé en
+échouant, ce qui est son rôle.
+
+### Nuance sur la prédiction
+
+Le pré-enregistrement attendait que le test classe `pnl_duplicate_sweep` ou
+`empty_pass_requalification` comme structurels. **Ni l'un ni l'autre n'a été
+tiré.** La prédiction n'a donc pas été mise à l'épreuve sur les cas nommés, mais
+sur un troisième de la même famille — signalé plutôt que compté comme vérifié.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Rendre stables les 10 rapports auto-référents** — ne compter que leurs
+   propres entrées. **C'est la correction de fond** : sans elle, chaque tirage
+   futur continuera de rencontrer des divergences structurelles, et le
+   dénominateur de la borne restera amputé. Cycle de modification déclarée,
+   régime des #428-#430.
+2. **Étendre l'échantillon v3** pour resserrer la borne de 12,2 % — 24 tirages de
+   plus la ramèneraient vers ~6 %. À décider **après** la piste 1, qui rendra les
+   tirages plus productifs.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Reproductibilité** : borne **12,2 %** sur 23 tirages, ~35 divergences
+  substantielles encore possibles. **Aucune divergence substantielle observée**
+  sur l'ensemble des campagnes.
+- **10 rapports auto-référents**, divergents par construction — inchangé.
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
