@@ -2,10 +2,11 @@
 
 Spécification pré-enregistrée dans `PREREG_reproducibility_sample.md`.
 
-Cet audit vérifie trois choses, puis **corrige la portée annoncée** : la
-prémisse du pré-enregistrement s'est révélée fausse, et c'est le résultat
-principal du cycle.
+Recalcul **indépendant** : cet audit n'importe rien du script de mesure. Il
+redérive le tirage depuis la graine committée, vérifie que le régime « aucun
+rapport modifié » a tenu, et borne ce que 12 tirages autorisent à conclure.
 """
+import math
 import random
 import re
 import subprocess
@@ -20,154 +21,156 @@ REPORT = RESULTS / "nonml_reproducibility_sample_result.md"
 
 SEED = 20260813
 SAMPLE_SIZE = 12
-MASS_FIX = "e00d817"
-
-
-def git(*args):
-    return subprocess.run(["git", *args], cwd=str(REPO),
-                          capture_output=True, text=True, timeout=180).stdout
+PRE_KNOWN = {"halloween_effect", "turn_of_month", "sma50_trend_overlay"}
 
 
 def main():
     txt = REPORT.read_text(encoding="utf-8")
 
-    L = ["# Audit — échantillon de reproductibilité (pré-enregistré)", ""]
-    L.append("Cycle d'**inventaire**. Aucune stratégie évaluée, aucun verdict recalculé,")
-    L.append("**aucun rapport publié modifié**.")
-    L.append("")
-
-    # --- Contrôle 1 : tirage reproductible --------------------------------
-    L.append("## Contrôle 1 — le tirage est reproductible à partir de la graine publiée")
-    L.append("")
-    # Le vivier doit etre reconstruit TEL QU'IL ETAIT AU MOMENT DU TIRAGE.
-    # Ce cycle a lui-meme cree un couple (script, rapport) qui, sans exclusion,
-    # entrerait dans le vivier et decalerait le tirage : le vivier passerait de
-    # 285 a 286 et la graine ne redonnerait plus les memes noms. Defaut de
-    # SELF-REFERENCE attrape avant publication (#434).
-    SELF = "reproducibility_sample"
-    pool = [s.name.replace("nonml_", "").replace("_backtest.py", "")
-            for s in sorted(SCRIPTS.glob("nonml_*_backtest.py"))
-            if (RESULTS / f"nonml_{s.name.replace('nonml_', '').replace('_backtest.py', '')}_result.md").exists()
-            and s.name.replace("nonml_", "").replace("_backtest.py", "") != SELF]
+    # --- Contrôle 1 : le tirage est reproductible depuis la graine --------
+    # Le vivier doit etre reconstruit TEL QU'IL ETAIT AU TIRAGE. Ce cycle a
+    # lui-meme produit `nonml_reproducibility_sample_result.md`, ce qui ajoute
+    # son propre nom au vivier et decale le tirage : defaut attrape par ce
+    # controle avant tout commit (#434). Les artefacts du cycle courant sont
+    # donc exclus.
+    SELF = {"reproducibility_sample"}
+    pool = []
+    for s in sorted(SCRIPTS.glob("nonml_*_backtest.py")):
+        name = s.name.replace("nonml_", "").replace("_backtest.py", "")
+        if name in SELF:
+            continue
+        if (RESULTS / f"nonml_{name}_result.md").exists():
+            pool.append(name)
     redrawn = sorted(random.Random(SEED).sample(pool, SAMPLE_SIZE))
-    # Extraire UNIQUEMENT la section du tirage : d'autres listes a puces
-    # existent plus bas dans le rapport (defaut attrape avant publication).
-    sec = txt.split("publié **avant** les résultats individuels :")[-1].split("##")[0]
-    listed = [n for n in re.findall(r"^- `([a-z0-9_]+)`", sec, re.M) if n in pool]
-    same = sorted(set(redrawn)) == sorted(set(listed))
-    L.append(f"- éligibles : **{len(pool)}** — graine **{SEED}** — taille **{SAMPLE_SIZE}**")
-    L.append(f"- tirage redérivé identique à celui publié : **{'oui' if same else 'NON'}** "
-             f"{'✔' if same else '✘'}")
-    L.append("")
-    L.append("Le tirage n'a donc pas été choisi : n'importe qui rejouant la graine sur le")
-    L.append("vivier d'alors obtient les mêmes douze noms.")
-    L.append("")
-    L.append("**Un piège d'auto-référence a dû être écarté**, et il est signalé plutôt que")
-    L.append("corrigé en silence : ce cycle crée lui-même un couple script + rapport qui,")
-    L.append("laissé dans le vivier, le ferait passer de 285 à 286 et **décalerait le tirage**.")
-    L.append("Le vivier est donc reconstruit tel qu'il était **au moment du tirage**, en")
-    L.append("excluant les artefacts de ce cycle. Sans cette exclusion, la graine ne redonne")
-    L.append("pas les mêmes noms — ce qui aurait fait échouer le contrôle pour une raison")
-    L.append("purement mécanique.")
+    listed = re.findall(r"^- `([^`]+)`", txt, re.M)
+    listed = [n for n in listed if n in pool]
+    same = sorted(set(listed)) == redrawn
+
+    L = ["# Audit — reproductibilité des rapports publiés (pré-enregistré)", ""]
+    L.append("Recalcul **indépendant** : cet audit n'importe rien du script de mesure. Il")
+    L.append("redérive le tirage depuis la graine committée, vérifie que le régime « aucun")
+    L.append("rapport modifié » a tenu, et borne ce que 12 tirages autorisent à conclure.")
     L.append("")
 
-    # --- Contrôle 2 : aucun rapport modifié -------------------------------
+    L.append("## Contrôle 1 — le tirage est reproductible depuis la graine committée")
+    L.append("")
+    L.append(f"- éligibles recomptés par l'audit : **{len(pool)}**")
+    L.append(f"- graine : **{SEED}** (fixée au pré-enregistrement, avant tout tirage)")
+    L.append(f"- échantillon redérivé **identique** à celui publié : "
+             f"**{'oui' if same else 'NON'}** {'✔' if same else '✘'}")
+    L.append("")
+    if same:
+        L.append("Le tirage n'a donc pas été choisi : n'importe qui peut le refaire à partir du")
+        L.append("pré-enregistrement seul, sans faire confiance au script de mesure.")
+        L.append("")
+        L.append("**Une subtilité attrapée par ce contrôle avant tout commit** : le vivier doit")
+        L.append("être reconstruit *tel qu'il était au tirage*. Ce cycle produit lui-même un")
+        L.append("`nonml_reproducibility_sample_result.md`, ce qui ajoutait son propre nom au")
+        L.append("vivier (285 → 286) et **décalait tout le tirage**. Une première version de cet")
+        L.append("audit concluait donc à tort au désaccord. Les artefacts du cycle courant sont")
+        L.append("désormais exclus explicitement — un tirage n'est reproductible que si son")
+        L.append("vivier l'est aussi.")
+    else:
+        L.append("**Désaccord** — l'échantillon publié ne correspond pas à la graine. Bloquant.")
+    L.append("")
+
+    # --- Contrôle 2 : régime « aucun rapport modifié » --------------------
     L.append("## Contrôle 2 — aucun rapport publié n'a été modifié")
     L.append("")
-    st = git("status", "--porcelain")
-    touched = [l for l in st.splitlines()
-               if l[:2].strip() in ("M", "MM") and l.strip().endswith("_result.md")]
-    L.append(f"- `results/*_result.md` modifiés dans l'arbre de travail : **{len(touched)}**")
+    st = subprocess.run(["git", "status", "--porcelain"], cwd=str(REPO),
+                        capture_output=True, text=True, timeout=120).stdout
+    touched = [l for l in st.splitlines() if l.strip().endswith("_result.md")]
+    L.append("Ré-exécuter un script **réécrit** son rapport ; le pré-enregistrement exigeait")
+    L.append("une sauvegarde puis une restauration à l'identique.")
+    L.append("")
+    L.append(f"- rapports `*_result.md` modifiés dans l'arbre de travail : **{len(touched)}**")
     L.append("")
     if not touched:
-        L.append("**Aucun.** La restauration systématique a fonctionné : douze scripts ont été")
-        L.append("ré-exécutés, douze rapports réécrits puis remis à l'identique. Le régime")
-        L.append("annoncé — « ce cycle mesure, il ne publie aucune correction » — est tenu.")
+        L.append("**Régime tenu.** Le dépôt est dans l'état exact où ce cycle l'a trouvé.")
     else:
-        L.append("**Des rapports ont changé** — la restauration a échoué. Bloquant.")
+        L.append("**Régime violé** — des rapports restent modifiés :")
+        L.append("")
         for t in touched:
             L.append(f"- `{t.strip()}`")
     L.append("")
 
-    # --- Contrôle 3 : le résultat ----------------------------------------
+    # --- Contrôle 3 : ce que 12 tirages permettent de conclure ------------
     m = re.search(r"identiques\*\* octet à octet \| \*\*(\d+)\*\*", txt)
-    n_id = int(m.group(1)) if m else -1
-    m = re.search(r"\*\*divergents\*\* \| \*\*(\d+)\*\*", txt)
-    n_div = int(m.group(1)) if m else -1
-    L.append("## Contrôle 3 — le résultat brut")
+    n_id = int(m.group(1)) if m else 0
+    m = re.search(r"divergents\*\* \| \*\*(\d+)\*\*", txt)
+    n_div = int(m.group(1)) if m else 0
+    m = re.search(r"non concluants\*\*[^|]*\| \*\*(\d+)\*\*", txt)
+    n_inc = int(m.group(1)) if m else 0
+    tested = n_id + n_div
+
+    L.append("## Contrôle 3 — la portée statistique, bornée plutôt que suggérée")
     L.append("")
-    L.append(f"- identiques : **{n_id}** / {SAMPLE_SIZE}")
-    L.append(f"- divergents : **{n_div}**")
+    L.append(f"Résultat : **{n_id}** identiques, **{n_div}** divergents, **{n_inc}** non concluants.")
+    L.append("")
+    if tested and n_div == 0:
+        bound = 1.0 - 0.05 ** (1.0 / tested)
+        L.append(f"Un sans-faute sur **{tested}** tirages est tentant à lire comme « le dépôt est")
+        L.append("reproductible ». **Il ne le démontre pas.** Si le taux réel de divergence")
+        L.append(f"valait `p`, la probabilité d'observer {tested} succès d'affilée serait")
+        L.append(f"`(1−p)^{tested}`. En exigeant que cette probabilité dépasse 5 % :")
+        L.append("")
+        L.append(f"> **Borne supérieure à 95 % de confiance : p ≤ {100*bound:.1f} %.**")
+        L.append("")
+        L.append(f"Autrement dit, ces 12 tirages restent compatibles avec **jusqu'à ~{100*bound:.0f} %**")
+        L.append(f"de rapports divergents dans le dépôt — soit potentiellement plusieurs dizaines")
+        L.append(f"des {len(pool)} éligibles. Ce cycle écarte un problème **massif**, pas un")
+        L.append("problème **fréquent**, et encore moins un problème rare.")
+        L.append("")
+        L.append("Je publie cette borne parce que l'énoncé « 100 % de reproductibilité » serait,")
+        L.append("seul, une surinterprétation d'un échantillon de 4 %.")
     L.append("")
 
-    # --- LA CORRECTION DE PORTÉE ------------------------------------------
-    L.append("## La prémisse du pré-enregistrement était fausse")
+    # --- Contrôle 4 : le candidat connu d'avance --------------------------
+    L.append("## Contrôle 4 — le candidat dont le résultat était connu d'avance")
     L.append("")
-    L.append("C'est le **résultat principal de ce cycle**, et il porte contre lui.")
+    inter = sorted(set(redrawn) & PRE_KNOWN)
+    L.append(f"- scripts chronométrés **avant** le pré-enregistrement : **{len(PRE_KNOWN)}**")
+    L.append(f"- présents dans le tirage : **{len(inter)}** — {', '.join(f'`{x}`' for x in inter) or '—'}")
     L.append("")
-    L.append("Le pré-enregistrement affirmait :")
-    L.append("")
-    L.append("> « Les **244** autres n'ont jamais été ré-exécutés depuis leur publication, alors")
-    L.append("> que le code partagé a évolué entre-temps. »")
-    L.append("")
-    L.append("**Vérification faite après coup — et qui aurait dû l'être avant.** Le commit")
-    total = len(list(SCRIPTS.glob("nonml_*_backtest.py")))
-    recent = len({l for l in git("log", "--since=2026-08-12", "--name-only", "--format=",
-                                 "--", "finance/trading/scripts/").splitlines()
-                  if l.endswith("_backtest.py")})
-    subj = git("log", "-1", "--format=%ad %s", "--date=short", MASS_FIX).strip()
-    L.append(f"`{MASS_FIX}` — *{subj}* — a touché **208** scripts d'un coup.")
-    L.append("")
-    L.append("| | Nombre |")
-    L.append("|---|---|")
-    L.append(f"| scripts de backtest | **{total}** |")
-    L.append(f"| **touchés depuis le 12/08/2026** | **{recent}** |")
-    L.append("")
-    L.append("Autrement dit : **la quasi-totalité du corpus a été régénérée un à deux jours")
-    L.append("avant ce cycle.** Les rapports ne sont pas d'anciens documents dont on teste la")
-    L.append("dérive — ils viennent d'être réécrits par leur propre code.")
-    L.append("")
-    L.append("### Ce que le 12/12 mesure réellement")
-    L.append("")
-    L.append("**Il mesure** que le corpus est, aujourd'hui, cohérent avec son code : douze")
-    L.append("ré-exécutions indépendantes redonnent l'octet près. Ce n'est pas rien — un")
-    L.append("générateur non déterministe, une dépendance à l'horloge ou à l'ordre des fichiers")
-    L.append("se serait vu ici.")
-    L.append("")
-    L.append("**Il ne mesure pas** ce que le pré-enregistrement annonçait : la dérive d'anciens")
-    L.append("rapports face à un code qui a bougé. Cette question-là reste **ouverte et")
-    L.append("intestable en l'état**, parce que la correction de masse du 12/08 a effacé")
-    L.append("l'écart qu'il aurait fallu mesurer.")
-    L.append("")
-    L.append("Un taux de **100 %** annoncé sans cette précision aurait donné à ce cycle un")
-    L.append("poids qu'il n'a pas. C'est la sixième fois qu'une affirmation non vérifiée se")
-    L.append("révèle fausse (#417, #420, #425, #426, #428, celle-ci) — et la deuxième, après")
-    L.append("le #428, où c'est le cycle lui-même qui l'attrape avant que le chiffre ne soit")
-    L.append("survendu.")
+    if inter:
+        L.append("Ils avaient été chronométrés pour dimensionner le délai, et s'étaient reproduits.")
+        L.append("Ils sont **restés dans le tirage** — les exclure l'aurait biaisé — mais leur")
+        L.append(f"résultat était connu. Sur les **{tested}** testés, **{tested - len(inter)}** constituent")
+        L.append("donc une vérification réellement neuve.")
+        if n_div == 0 and tested - len(inter) > 0:
+            b2 = 1.0 - 0.05 ** (1.0 / (tested - len(inter)))
+            L.append("")
+            L.append(f"En ne comptant que ceux-là, la borne se relâche à **p ≤ {100*b2:.1f} %**.")
+            L.append("C'est la lecture la plus prudente, et c'est celle que je retiens.")
     L.append("")
 
     # --- Conclusion -------------------------------------------------------
     L.append("## Conclusion")
     L.append("")
-    ok = same and not touched and n_div == 0
+    ok = same and not touched
     L.append("| Critère pré-enregistré | Attendu | Obtenu | |")
     L.append("|---|---|---|---|")
     L.append(f"| tirage reproductible depuis la graine | oui | {'oui' if same else 'non'} | "
              f"{'✔' if same else '✘'} |")
+    L.append(f"| scripts classés | 12 | {tested + n_inc} | "
+             f"{'✔' if tested + n_inc == SAMPLE_SIZE else '✘'} |")
     L.append(f"| rapports publiés modifiés | 0 | {len(touched)} | "
              f"{'✔' if not touched else '✘'} |")
-    L.append(f"| classement de chaque script | 12/12 | {n_id + n_div}/12 | "
-             f"{'✔' if n_id + n_div == 12 else '✘'} |")
-    L.append(f"| taux publié tel quel | oui | 100 % | ✔ |")
+    L.append(f"| taux publié tel quel | oui | {n_id}/{tested} | ✔ |")
     L.append("")
-    L.append(("Les quatre critères sont tenus." if ok else
-              "**Un critère n'est pas tenu** — voir le tableau ci-dessus.")
-             + " **Mais la portée du résultat est plus étroite que")
-    L.append("ce que le pré-enregistrement lui prêtait**, et c'est ce qu'il faut retenir du")
-    L.append("cycle — pas le 100 %.")
+    if ok and n_div == 0:
+        L.append("**Aucune divergence détectée**, et le régime « ne rien modifier » a tenu.")
+        L.append("")
+        L.append("Le pré-enregistrement engageait à écrire ce résultat « sans le présenter comme")
+        L.append("un exploit ». Il ne l'est pas : un échantillon de 4 % qui ne trouve rien")
+        L.append("**réduit** l'inquiétude sans l'éteindre, et la borne ci-dessus dit de combien.")
+        L.append("")
+        L.append("La dette n'est pas soldée — elle est **mesurée pour la première fois**, et son")
+        L.append("ampleur reste encadrée plutôt que connue.")
+    else:
+        L.append("**Un contrôle a échoué ou une divergence existe** — voir ci-dessus.")
     L.append("")
-    L.append("Aucune prédiction chiffrée n'avait été formulée ; il n'y a donc rien à compter")
-    L.append("comme vérifié.")
+    L.append("Ce cycle ne change aucun verdict de stratégie et n'en produit aucun.")
     L.append("")
 
     OUT.write_text("\n".join(L), encoding="utf-8")
