@@ -7090,3 +7090,101 @@ atteignable est très largement couvert.
   soit ~22 divergents encore possibles — **resserrée** depuis le #434.
 - **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
+
+---
+
+## Backlog #436 (13/08/2026) — lot 3 : une divergence trouvée, et elle est de mon fait
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_sample_lot3.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**. `n_trials = 1`.
+
+### Le résultat
+
+24 tirages, graine **20260815**, disjoints des 36 des #434/#435 :
+**23 identiques**, **1 DIVERGENT** — `pnl_duplicate_sweep`, 8 lignes.
+
+```
+- | scripts de backtest non-ML du dépôt | **284** |
++ | scripts de backtest non-ML du dépôt | **289** |
+- | **couverture non-ML** | **73.2 %** |
++ | **couverture non-ML** | **72.0 %** |
+```
+
+### La cause — un chiffre que j'ai rendu instable au #428
+
+Le rapport du balayage de doublons embarque un décompte du **dépôt**, pas de ses
+seules entrées. Le dépôt comptait 284 scripts de backtest au #428, il en compte
+**289** — et **les cinq de plus sont les miens**, ceux des cycles #431 à #436,
+dont celui-ci.
+
+**C'est le #428 qui a introduit ce chiffre.** L'intention était bonne : empêcher
+le lecteur de surestimer la portée du balayage. La conséquence ne l'est pas —
+**un rapport qui embarque un compteur du dépôt cesse d'être stable dès que le
+dépôt bouge**, c'est-à-dire à chaque cycle qui ajoute un script. Ce rapport était
+**divergent par construction depuis le #428**, et aucun cycle ne l'avait vu : les
+deux premiers lots ne l'avaient simplement pas tiré.
+
+**7 rapports** partagent cette structure (`capitulation_gate_floor_sweep`,
+`pnl_duplicate_sweep`, `protocol_inventory`, `sameday_timestamp_resolution`, les
+trois `reproducibility_sample*`). Tous sont des **diagnostics, pas des
+stratégies** : aucun verdict PASS/FAIL n'en dépend. Mais je les ai presque tous
+écrits.
+
+### Ce que je refuse de faire
+
+Il serait tentant de distinguer divergence **structurelle** (compteur du dépôt,
+bougera toujours) et **substantielle** (résultat périmé, ce que la campagne
+cherchait), puis d'écarter le seul cas gênant et de republier une borne de 4,9 %.
+
+**La distinction est juste ; l'appliquer maintenant serait changer la règle après
+avoir vu le résultat.** Elle sera pré-enregistrée dans un cycle ultérieur, avec
+son critère fixé avant tout nouveau tirage, et la campagne repartira de là — sans
+reclasser les 60 tirages actuels selon une règle qui n'existait pas quand ils ont
+été faits.
+
+> **Borne : NON PUBLIÉE, caduque.** Les #434 (22,1 %) et #435 (8,0 %) restent
+> vrais pour ce qu'ils mesuraient. La campagne ne peut pas prétendre à 4,9 % en
+> écartant après coup le tirage qui la contredit.
+
+### Volet B — représentativité en âge : contrôle passé
+
+Indépendant de la divergence, et son verdict tient.
+
+| | Vivier | Testés |
+|---|---|---|
+| effectif | 285 | 60 |
+| date de publication médiane | 2026-08-04 | 2026-08-01 |
+
+Écart sur le tiers le plus ancien : **−3,2 points**, tolérance **±10** fixée
+avant mesure. **Tirage représentatif** : les rapports anciens — les plus exposés
+à la dérive du code partagé — sont couverts à la même fréquence que les récents.
+
+Ce contrôle valait d'être fait **avant** d'en connaître le résultat : s'il avait
+échoué, il aurait invalidé la lecture des deux lots précédents.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Pré-enregistrer la distinction structurelle / substantielle**, avec un
+   critère mécanique (« le rapport embarque-t-il un décompte du dépôt ? ») fixé
+   **avant** tout nouveau tirage. Puis relancer la campagne sur cette base. C'est
+   la suite directe et honnête de ce cycle.
+2. **Décider du sort des 7 rapports auto-référents** — les rendre stables (ne
+   compter que leurs propres entrées) ou assumer qu'ils dérivent. Cycle de
+   modification déclarée, régime des #428-#430.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Reproductibilité** : borne **caduque**, campagne à reprendre sur une
+  classification pré-enregistrée. **1 divergence connue**, structurelle,
+  restaurée et non corrigée.
+- **7 rapports auto-référents**, divergents par construction — **nouvelle**.
+- **1** PASS non évaluable par la batterie (schéma panier) ; **99** scripts sans
+  `.npz` (#428) — inchangées.
