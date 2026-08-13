@@ -113,6 +113,16 @@ def main():
         f"{'atteint' if verdict else 'NON atteint'}.**",
     ]
 
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #424, lot 3), schema PANIER :
+    # le turnover d'un panier vaut somme(|dw_i|)/2 et n'est pas derivable d'une
+    # exposition scalaire, il doit donc etre sauvegarde explicitement.
+    # Convention du #419. Aucune ligne de calcul n'est modifiee.
+    np.savez(ROOT / "results" / "nonml_momentum_consistency_trend_vol_targeting_overlay_pnl.npz",
+             pnl_gross_ov=pnl_lev + turn_lev * (COST_BPS / 1e4),
+             pnl_gross_bh=pnl_base + turn_base * (COST_BPS / 1e4),
+             turn_ov=turn_lev, turn_bh=turn_base,
+             dates=np.asarray(P.index)[start:], cost_bps=COST_BPS)
+
     out = ROOT / "results" / "nonml_momentum_consistency_trend_vol_targeting_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

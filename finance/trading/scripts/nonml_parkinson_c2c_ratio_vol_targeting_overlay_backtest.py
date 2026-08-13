@@ -115,6 +115,16 @@ def main():
         pos = pos_full[start:]
 
         turn = np.abs(np.diff(pos, prepend=1.0))
+        # Sauvegarde INCONDITIONNELLE du P&L (cycle #424, lot 3), traitee
+        # individuellement : ce script utilise `r_t` (rendements convertis
+        # depuis des pourcentages) et non `bh_t`, d'ou son rejet par la garde
+        # du gabarit multi-marches. Marche sauvegarde : NDX, convention du #416.
+        if fname == "nasdaq100_daily.txt":
+            np.savez(ROOT / "results" / "nonml_parkinson_c2c_ratio_vol_targeting_overlay_pnl.npz",
+                     pos=pos, r_asset=r_t,
+                     dates=pd.to_datetime(df["date"]).values[1:][start:],
+                     cost_bps=COST_BPS)
+
         pnl_ov = pos * r_t - turn * (COST_BPS / 1e4)
         pnl_bh = r_t.copy()
         pnl_bh[0] -= COST_BPS / 1e4

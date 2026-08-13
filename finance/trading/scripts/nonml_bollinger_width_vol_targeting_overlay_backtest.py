@@ -108,6 +108,16 @@ def main():
         pnl_bh = bh_t.copy()
         pnl_bh[0] -= COST_BPS / 1e4
 
+        # Sauvegarde INCONDITIONNELLE du P&L (cycle #424, lot 3). Ce script
+        # boucle sur cinq marches ; on sauvegarde le NDX, marche de reference
+        # du backlog -- convention tranchee au #416 pour `santa`. Aucune ligne
+        # de calcul n'est modifiee par cet ajout.
+        if fname == "nasdaq100_daily.txt":
+            np.savez(ROOT / "results" / "nonml_bollinger_width_vol_targeting_overlay_pnl.npz",
+                     pos=pos, r_asset=bh_t,
+                     dates=pd.to_datetime(df["date"]).values[1:][start:],
+                     cost_bps=COST_BPS)
+
         me_bh = trading_metrics(pnl_bh)
         me_ov = trading_metrics(pnl_ov)
         ret_bh = np.exp(pnl_bh.sum()) - 1.0
