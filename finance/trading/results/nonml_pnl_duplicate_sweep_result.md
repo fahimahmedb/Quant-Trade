@@ -25,29 +25,29 @@ des candidats non-ML. Les deux précisions manquaient jusqu'au cycle #428 :
 | séries lues (`results/*_pnl.npz`) | **218** |
 | dont candidats non-ML (`nonml_*`) | **208** |
 | dont séries **ML / Étape D** | **10** |
-| scripts de backtest non-ML du dépôt | **284** |
-| **couverture non-ML** | **73.2 %** |
+| scripts de backtest non-ML du dépôt | **298** |
+| **couverture non-ML** | **69.8 %** |
 
-**La soustraction 284 − 208 ne compte rien de réel** : les deux
+**La soustraction 298 − 208 ne compte rien de réel** : les deux
 ensembles ne se correspondent pas un à un. Certains `.npz` portent le nom d'une
 **variante** (`*_pit_universe`, `*_russell2000`…) sans script homonyme — il y en a
 **23**. La différence ensembliste est donc la seule mesure valide :
 
-> **99** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
+> **113** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
 > échappent à toute détection de doublon.
 
 Leur verdict publié, compté et non supposé :
 
 | Verdict des scripts sans `.npz` | Nombre |
 |---|---|
-| FAIL | **90** |
-| PASS | **2** |
-| indéterminé | **6** |
+| FAIL | **91** |
+| PASS | **4** |
+| indéterminé | **17** |
 | sans rapport | **1** |
 
-Les **90** FAIL ne peuvent pas changer de verdict, mais un doublon
+Les **91** FAIL ne peuvent pas changer de verdict, mais un doublon
 parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les
-**2** PASS sont les deux candidats écartés au #427 avec leur raison
+**4** PASS sont les deux candidats écartés au #427 avec leur raison
 publiée (variantes multiples, et un diagnostic qui n'est pas une stratégie).
 
 Le balayage lit `results/*_pnl.npz` **sans filtre de préfixe** : les 10 séries
@@ -55,7 +55,7 @@ ML / Étape D sont comparées aux candidats non-ML. C'est voulu — un doublon
 inter-familles est une information — mais il faut le savoir pour lire les groupes
 ci-dessous, dont l'un associe précisément une série d'Étape D à un candidat non-ML.
 
-Répartition par schéma : indiciel (182), panier (21), deux jambes (13), candidat+turnover (1), candidat seul (1).
+Répartition par schéma : indiciel (182), panier (21), deux jambes (13), candidat seul (2).
 
 ## Doublons exacts
 
@@ -90,7 +90,3 @@ pré-enregistrement : rejouer les batteries avec un `n_trials` corrigé après
 avoir vu quels candidats en bénéficieraient serait précisément ce que le
 protocole interdit. Le décompte corrigé est publié, son usage est un cycle
 distinct à déclarer.
-
-> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
-> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
-> et ce n'est pas une péremption de résultat (cycles #436-#438).

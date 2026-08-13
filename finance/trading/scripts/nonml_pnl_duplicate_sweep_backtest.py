@@ -37,9 +37,6 @@ def net_pnl(d):
 
     if {"pnl_gross_ov", "turn_ov"} <= files:
         return np.asarray(d["pnl_gross_ov"], dtype=float) - np.asarray(d["turn_ov"], dtype=float) * c, "panier"
-    if {"pnl_candidate", "turn_candidate"} <= files:
-        return (np.asarray(d["pnl_candidate"], dtype=float)
-                - np.asarray(d["turn_candidate"], dtype=float) * c), "candidat+turnover"
     if "pnl_candidate" in files:
         return np.asarray(d["pnl_candidate"], dtype=float), "candidat seul"
     if {"pos", "r_asset"} <= files:
