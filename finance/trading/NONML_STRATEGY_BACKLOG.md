@@ -7638,3 +7638,86 @@ atteignable est très largement couvert.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439), 1 disculpé,
   3 indéterminés (délai).
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+---
+
+## Backlog #442 (13/08/2026) — concordance `.npz` / rapport : 165/165, après correction d'un défaut de mon contrôle
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_npz_report_consistency.md`
+(committé avant toute mesure d'ensemble). Aucune stratégie évaluée, aucun verdict
+recalculé, **aucun rapport ni `.npz` modifié** — ce cycle ne fait que lire.
+`n_trials = 1`.
+
+### L'angle, et pourquoi il est neuf
+
+La campagne #434-#441 comparait le **rapport à son code**. Ce cycle pose une
+question **différente** : le `.npz` sauvegardé produit-il **les chiffres que le
+rapport annonce** ?
+
+Un script peut se reproduire parfaitement et sauvegarder une série qui ne
+correspond pas à la stratégie décrite — mauvaise branche de marché, décalage
+d'indice, série tronquée. Les balayages qui consomment ces `.npz` (doublons #406,
+activation #415, batterie Règle 9) seraient alors alimentés par des séries
+fausses **sans qu'aucun ne s'en aperçoive**, puisqu'aucun ne compare le `.npz` au
+texte du rapport.
+
+### Résultat
+
+| | Nombre |
+|---|---|
+| `.npz` trouvés | **208** |
+| **examinés** (position scalaire + rapport) | **165** |
+| **concordants** | **165** |
+| **discordants** | **0** |
+| écartés (23 paniers, 20 sans rapport) | **43** |
+
+**Taux de concordance : 100 %.** C'est une **absence, pas un exploit** : elle
+signifie que les séries consommées par les balayages correspondent bien aux
+stratégies décrites, sur le périmètre examiné.
+
+**5** des 165 avaient servi aux essais de faisabilité avant le
+pré-enregistrement : leur concordance était **connue d'avance**, ils restent
+comptés mais signalés. **160 vérifications neuves.**
+
+### Le défaut était dans mon contrôle, pas dans le dépôt
+
+Le premier passage donnait **7 discordants**. L'inspection individuelle —
+**pré-enregistrée** précisément parce que ce compte ne se conclut pas
+mécaniquement — a montré que mon filtre acceptait tout `.npz` portant `pos` et
+`r_asset`, **y compris ceux qui portent en plus `r_alt`**. Sur un schéma « deux
+jambes », la formule indicielle ignore la jambe alternative et produit un Sharpe
+qui n'est celui de personne.
+
+Les 7 étaient **tous** de ce type et redeviennent **concordants** avec la formule
+du #406. Chaque schéma est désormais reconstruit avec **sa** formule : 158
+indiciels + 7 deux jambes.
+
+> Le pré-enregistrement annonçait des faux positifs, et en attendait d'un rapport
+> **multi-marchés**. Il y en a eu — mais d'une **autre cause**. L'attente était
+> juste dans son principe et fausse dans son mécanisme ; je le note plutôt que de
+> la compter comme vérifiée.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Étendre la concordance aux schémas panier** — 23 `.npz` écartés faute de
+   position scalaire. Leur rapport publie un Sharpe de jambe candidate et de
+   jambe de référence ; la comparaison est possible avec la formule du #419, à
+   déclarer dans son pré-enregistrement.
+2. **Les 20 `.npz` sans rapport publié** : vérifier s'ils correspondent à des
+   variantes dont le rapport porte un autre nom (comme au #431, contrôle B) ou à
+   des orphelins réels. Inspection, pas balayage.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Concordance `.npz` / rapport** : **165/165** sur position scalaire ; **23**
+  paniers et **20** sans rapport restent non couverts — **nouvelle**, chiffrée.
+- **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
