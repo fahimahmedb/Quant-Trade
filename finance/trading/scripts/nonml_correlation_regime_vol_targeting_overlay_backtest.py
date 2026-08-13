@@ -178,6 +178,12 @@ def main():
         f"{'atteint' if verdict else 'NON atteint'}.**",
     ]
 
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #423, lot 2). Sans elle, ce
+    # candidat restait invisible pour les balayages des #415 et #418. Aucune
+    # ligne de calcul n'est modifiee par cet ajout.
+    np.savez(ROOT / "results" / "nonml_correlation_regime_vol_targeting_overlay_pnl.npz",
+             pos=pos, r_asset=bh_t, dates=dates_idx.values[1:][start:], cost_bps=COST_BPS)
+
     out = ROOT / "results" / "nonml_correlation_regime_vol_targeting_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

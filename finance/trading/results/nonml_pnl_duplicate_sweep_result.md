@@ -7,13 +7,13 @@ identiques. Critères fixés avant exécution : égalité exacte
 
 ## Couverture
 
-- fichiers `*_pnl.npz` trouvés : **184**
-- P&L reconstruits : **184**
+- fichiers `*_pnl.npz` trouvés : **188**
+- P&L reconstruits : **188**
 - schémas non reconnus ou séries inexploitables : **0**
 
 **Couverture 100 %** — critère 1 du pré-enregistrement atteint.
 
-Répartition par schéma : indiciel (155), panier (14), deux jambes (13), candidat+turnover (1), candidat seul (1).
+Répartition par schéma : indiciel (159), panier (14), deux jambes (13), candidat+turnover (1), candidat seul (1).
 
 ## Doublons exacts
 

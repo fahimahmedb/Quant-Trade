@@ -8,7 +8,7 @@ Seuil d'inactivité **repris tel quel du #410** : exposition > 1,0× sur moins d
 
 ## Volet A — détection statique
 
-- scripts `nonml_*_backtest.py` examinés : **282**
+- scripts `nonml_*_backtest.py` examinés : **284**
 - illisibles : **0**
 - portant la structure `clip(…, 1.0, …)` : **62**
 
@@ -16,8 +16,8 @@ Seuil d'inactivité **repris tel quel du #410** : exposition > 1,0× sur moins d
 
 ## Volet B — mesure empirique de l'activation
 
-- candidats mesurés (`.npz` au schéma `pos` disponible) : **42**
-- candidats détectés mais **non mesurés** faute de `.npz` : **20**
+- candidats mesurés (`.npz` au schéma `pos` disponible) : **46**
+- candidats détectés mais **non mesurés** faute de `.npz` : **16**
 
 Ce second chiffre est un **résultat du cycle**, pas une excuse : il quantifie
 exactement ce que la lacune mesurée au #406 coûte à ce diagnostic.
@@ -25,14 +25,10 @@ exactement ce que la lacune mesurée au #406 coûte à ce diagnostic.
 Non mesurés :
 
 - `acf_lag1_vol_targeting_overlay` (verdict au rapport : FAIL)
-- `beta_dispersion_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `bollinger_width_vol_targeting_overlay` (verdict au rapport : FAIL)
-- `correlation_regime_vol_targeting_overlay` (verdict au rapport : FAIL)
-- `daily_advance_breadth_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `drawdown_depth_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `gap_risk_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `goldencross_vol_targeting_overlay` (verdict au rapport : FAIL)
-- `internal_breadth_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `lowvol_regime_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `lowvol_trend_vol_targeting_overlay` (verdict au rapport : FAIL)
 - `momentum_consistency_trend_vol_targeting_15_overlay` (verdict au rapport : FAIL)
@@ -52,6 +48,7 @@ Non mesurés :
 | `weakness_breadth_vol_targeting_overlay` | 0.00 % ← **inactif** | PASS |
 | `weakness_breadth_vol_targeting_overlay_pit_universe` | 0.00 % ← **inactif** | PASS |
 | `santa_vol_targeting_overlay` | 1.70 % ← **inactif** | PASS |
+| `internal_breadth_vol_targeting_overlay` | 5.13 % | FAIL |
 | `variance_ratio_vol_targeting_overlay` | 19.57 % | PASS |
 | `kurtosis_nu_combined_vol_targeting_overlay` | 21.29 % | PASS |
 | `deep_drawdown_breadth_vol_targeting_overlay` | 21.52 % | PASS |
@@ -71,11 +68,14 @@ Non mesurés :
 | `vol_of_vol_vol_targeting_overlay` | 31.12 % | PASS |
 | `momentum_dispersion_vol_targeting_overlay_pit_universe` | 32.06 % | PASS |
 | `momentum_dispersion_trend_and_overlay` | 32.13 % | PASS |
+| `beta_dispersion_vol_targeting_overlay` | 34.37 % | FAIL |
 | `momentum_decile_spread_vol_targeting_overlay_pit_universe` | 34.82 % | PASS |
+| `daily_advance_breadth_vol_targeting_overlay` | 35.58 % | FAIL |
 | `smallcap_proxy_outperformance_breadth_overlay_pit_universe` | 36.07 % | PASS |
 | `market_concentration_vol_targeting_overlay_pit_universe` | 36.41 % | PASS |
 | `range_position_vol_targeting_overlay_pit_universe` | 36.82 % | FAIL |
 | `momentum_dispersion_vol_targeting_overlay` | 36.97 % | PASS |
+| `correlation_regime_vol_targeting_overlay` | 37.55 % | FAIL |
 | `calendar_vol_targeting_overlay` | 37.55 % | PASS |
 | `momentum_decile_spread_vol_targeting_overlay` | 37.98 % | PASS |
 | `gjr_forecast_gate_vol_targeting_overlay` | 39.13 % | PASS |
