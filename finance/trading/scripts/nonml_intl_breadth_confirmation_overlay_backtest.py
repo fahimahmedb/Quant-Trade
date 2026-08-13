@@ -95,6 +95,15 @@ def main():
 
     out = ROOT / "results" / "nonml_intl_breadth_confirmation_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
+
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #427, lot 5) : ce candidat porte
+    # un PASS et restait invisible au balayage de doublons. Schema indiciel du
+    # #416. Aucune ligne de calcul n'est modifiee.
+    np.savez(
+        ROOT / "results" / "nonml_intl_breadth_confirmation_overlay_pnl.npz",
+        pos=pos, r_asset=bh_t, dates=dates_primary.values[1:][start:], cost_bps=COST_BPS,
+    )
+
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
 

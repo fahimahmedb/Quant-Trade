@@ -91,6 +91,17 @@ def main():
 
         pnl_ov, pnl_bh = pnl_ov_full[idx], pnl_bh_full[idx]
 
+        # Sauvegarde INCONDITIONNELLE du P&L (cycle #427, lot 5) : ce candidat
+        # porte un PASS et restait invisible au balayage de doublons. Marche NDX,
+        # convention du #416. Ce script evalue une fenetre tronquee `idx` : on
+        # sauvegarde exactement la serie evaluee, pas la serie complete.
+        # Aucune ligne de calcul n'est modifiee.
+        if fname == "nasdaq100_daily.txt":
+            np.savez(ROOT / "results" / "nonml_intraday_range_regime_overlay_pnl.npz",
+                     pos=pos[idx], r_asset=bh_full[idx],
+                     dates=pd.to_datetime(df["date"]).values[1:][idx],
+                     cost_bps=COST_BPS)
+
         me_bh = trading_metrics(pnl_bh)
         me_ov = trading_metrics(pnl_ov)
         ret_bh = np.exp(pnl_bh.sum()) - 1.0

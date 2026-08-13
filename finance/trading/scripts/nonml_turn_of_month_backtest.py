@@ -81,6 +81,16 @@ def main():
         pnl_bh = bh_full.copy()
         pnl_bh[0] -= COST_BPS / 1e4
 
+        # Sauvegarde INCONDITIONNELLE du P&L (cycle #427, lot 5) : ce candidat
+        # porte un PASS et restait invisible au balayage de doublons. Ce script
+        # boucle sur plusieurs marches ; on sauvegarde celui du NDX, marche de
+        # reference du backlog (convention du #416). Aucun calcul n'est modifie.
+        if fname == "nasdaq100_daily.txt":
+            np.savez(ROOT / "results" / "nonml_turn_of_month_pnl.npz",
+                     pos=pos_tom, r_asset=bh_full,
+                     dates=pd.to_datetime(df["date"]).values[1:],
+                     cost_bps=COST_BPS)
+
         # cout : une transaction a chaque changement de position (entree/sortie de la fenetre)
         turn = np.abs(np.diff(pos_tom, prepend=0.0))
         pnl_tom = pos_tom * bh_full - turn * (COST_BPS / 1e4)

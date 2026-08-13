@@ -134,6 +134,16 @@ def main(prices_dir=None, panel_start=None, membership_fn=None,
     pnl_w = pnl_w - turn_w * (COST_BPS / 1e4)
     pnl_b = pnl_b - turn_b * (COST_BPS / 1e4)
 
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #427, lot 5) : ce candidat porte
+    # un PASS et restait invisible au balayage de doublons. Schema PANIER du #419
+    # (le turnover d'un panier n'est pas derivable d'une exposition scalaire).
+    # Les P&L stockes sont BRUTS. Aucune ligne de calcul n'est modifiee.
+    np.savez(ROOT / "results" / f"nonml_short_term_momentum{out_suffix}_pnl.npz",
+             pnl_gross_ov=pnl_w + turn_w * (COST_BPS / 1e4),
+             pnl_gross_bh=pnl_b + turn_b * (COST_BPS / 1e4),
+             turn_ov=turn_w, turn_bh=turn_b,
+             dates=np.asarray(P.index)[start:], cost_bps=COST_BPS)
+
     me_w, me_b = trading_metrics(np.log1p(pnl_w)), trading_metrics(np.log1p(pnl_b))
     equity_w = np.cumprod(1.0 + pnl_w)
     equity_b = np.cumprod(1.0 + pnl_b)
