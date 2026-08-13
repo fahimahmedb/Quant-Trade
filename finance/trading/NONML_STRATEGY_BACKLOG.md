@@ -5895,3 +5895,106 @@ dette **déclarée et sans conséquence connue** : aucun verdict n'en dépend, e
    future devra être inscrite **avec la trace de sa vérification**.
 3. **En attente d'arbitrage** : figer `n_trials` dans un fichier versionné plutôt
    que de le lire par expression régulière dans la prose du backlog.
+
+---
+
+## Backlog #425 (13/08/2026) — le volet B lit le schéma panier : couverture 55 → 60/62
+
+Cycle d'**outillage**, pré-enregistré dans `PREREG_sweep_basket_schema_support.md`
+(committé avant toute modification). Aucune stratégie évaluée, aucun verdict
+recalculé, aucun paramètre de stratégie touché. `n_trials = 1`.
+
+Premier point de la file du #424 : trois candidats — en réalité cinq — restaient
+invisibles au diagnostic pour une raison d'**outil**, pas de données.
+
+### Comment l'exposition d'un panier se récupère
+
+Le schéma panier ne stocke pas l'exposition. Mais la jambe candidate vaut
+`exposition × jambe de référence`, l'exposition étant un scalaire par date
+(identité établie et **vérifiée** au #402, contrôle 1b). Elle se récupère donc
+par division `pnl_gross_ov / pnl_gross_bh`, sur les P&L **bruts** — ceux dont le
+terme de coût, qui ne suit pas cette identité, est absent.
+
+Une séance à dénominateur quasi nul a été rencontrée (`lowvol_trend`) : **exclue
+et comptée**, jamais remplacée par une valeur par défaut.
+
+### Deux écarts au pré-enregistrement — publiés, pas corrigés en silence
+
+**1. Le décompte de départ était faux.** Le pré-enregistrement annonçait **3**
+candidats panier, chiffre repris du #424 sans re-vérification. Le décompte direct
+en donne **5**. La prédiction chiffrée « couverture 55 → 58 » était donc bâtie
+sur un décompte inexact — la couverture atteint 60 *parce que le point de départ
+était mal compté*, pas parce que la méthode a mieux marché.
+
+C'est la troisième fois qu'un chiffre repris d'un cycle antérieur sans
+re-vérification se révèle faux (#417, #420, celui-ci). **Règle** : un chiffre
+inscrit dans un pré-enregistrement doit être re-mesuré au moment de l'écrire, pas
+recopié du cycle précédent.
+
+**2. Le contrôle de validation visait la mauvaise grandeur.** Il devait comparer
+l'activation récupérée au chiffre publié « Overlay actif X % du temps ». Lecture
+des scripts : cette grandeur vaut `trend_aligned.mean()`, la fraction de séances
+où la **porte** est ouverte — pas la fraction où l'**exposition dépasse 1,0×**.
+Une porte ouverte laisse passer une exposition restée au plancher quand la
+volatilité est déjà à la cible.
+
+La tolérance de 1 point **n'a pas été modifiée**. Le contrôle a été appliqué au
+seul candidat publiant une grandeur comparable (`plancher 1,0× X % du temps`,
+complément exact de la mesure) ; les 4 autres sont **listés comme non
+contrôlables** plutôt que comparés à une grandeur qui ne leur correspond pas.
+Un seul candidat porte donc ce contrôle : il valide la **méthode**, pas chacun
+des résultats — et c'est écrit comme tel dans l'audit.
+
+### Les trois contrôles pré-enregistrés
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| validation contre un chiffre publié indépendamment | ≤ 1 pt | **0,02 pt** | ✔ |
+| non-régression sur les 55 activations déjà mesurées | 0 | **0** | ✔ |
+| couverture publiée avant / après | oui | **55 → 60 / 62** | ✔ |
+
+La validation est le cœur du cycle : la division retrouve à 0,02 point près un
+chiffre produit indépendamment par le script du candidat, depuis la variable
+`exposure` elle-même. L'identité `ov = exposition × bh` tient sur données réelles.
+
+### Effet sur le diagnostic — nul, et c'était l'issue annoncée
+
+| | Avant | Après |
+|---|---|---|
+| balayage #415 — candidats mesurés | 55 / 62 | **60 / 62** |
+| dont schéma panier | 0 | **5** |
+| non mesurés | 7 | **2** |
+| candidats structurellement inactifs | 3 | **3** |
+| PASS vides | 3 | **3** |
+
+Les 5 paniers activent entre **21 % et 61 %** des séances : aucun n'est
+structurellement inactif, aucun nouveau PASS vide. **Le cas isolé du #410 le
+reste**, désormais vérifié sur 60 candidats au lieu de 55.
+
+Observation **post-hoc**, signalée comme telle : trois des quatre chiffres
+« non comparables » s'écartent de la mesure de 6,9 à 28,0 points. Appliquer le
+contrôle tel que pré-enregistré aurait produit un échec de validation qui
+n'aurait rien dit de la méthode — seulement que deux grandeurs différentes
+diffèrent.
+
+Anti-cheat **CONFORME**.
+
+### Dette restante
+
+Les 2 candidats encore non mesurés (`rebound_speed_breadth`, `vix_regime`) le
+sont faute de `.npz`, **plus par limite d'outil** : la lacune du #424 est fermée.
+Ils dépendent de sources externes.
+
+Le reste du dépôt (~110 scripts à `savez` conditionnel, ~122 sans) demeure une
+dette **déclarée et sans conséquence connue**.
+
+### File des prochains cycles
+
+1. **Aucune nouvelle idée de stratégie** — le #420 a établi que l'espace
+   atteignable avec les données locales est très largement couvert ; toute idée
+   future devra être inscrite **avec la trace de sa vérification**.
+2. **En attente d'arbitrage** : figer `n_trials` dans un fichier versionné plutôt
+   que de le lire par expression régulière dans la prose du backlog.
+3. Doter d'un `.npz` les 2 derniers candidats du #415, si et seulement si leurs
+   sources externes redeviennent accessibles hors ligne — sinon les déclarer
+   définitivement hors portée.
