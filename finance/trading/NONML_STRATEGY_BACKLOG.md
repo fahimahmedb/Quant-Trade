@@ -6710,3 +6710,101 @@ atteignable est très largement couvert.
 - **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom, dette déclarée et
   chiffrée (#428) — inchangée.
+
+---
+
+## Backlog #433 (13/08/2026) — les 17 candidats « du jour même » tranchés par horodatage : 17/17 blanchis
+
+Cycle d'**infrastructure de protocole**, pré-enregistré dans
+`PREREG_sameday_timestamp_resolution.md` (committé avant toute mesure). Aucune
+stratégie nouvelle, aucun paramètre touché, **aucun verdict de niveau 1
+modifié**. `n_trials = 1`.
+
+### Un point que j'avais clos trop vite
+
+Le #431 classait les PASS sans batterie selon la **date** d'ajout et laissait
+**17** candidats ambigus. Le #432 écrivait « statut non tranchable **par la date
+seule**, laissés en l'état ».
+
+**C'était exact au mot près et prématuré comme conclusion.** La *date* ne tranche
+pas — mais git conserve l'horodatage **à la seconde**, et je ne l'avais pas
+utilisé. Compter à part était le bon réflexe ; s'arrêter à la première résolution
+disponible ne l'était pas. Le #429 avait pourtant posé la règle « chercher avant
+de conclure ».
+
+### Résultat
+
+La batterie a été ajoutée le **2026-07-29 à 17:56:16 UTC**.
+
+| Catégorie | Nombre |
+|---|---|
+| horodatage **antérieur** ⇒ antériorité, blanchi | **17** |
+| horodatage **postérieur** ⇒ dette réelle | **0** |
+| horodatage **exactement égal** ⇒ indécidable | **0** |
+
+Le plus tardif (`momentum_dispersion_trend_and_overlay`, 16:06:41) précède la
+règle de **1 h 49 min** ; le plus précoce de 16 h.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| candidats classés | 17/17 | **17/17** | ✔ |
+| concordance de deux lectures git indépendantes | totale | **17/17** | ✔ |
+| candidats en dette soumis à la batterie | tous | **0 en dette** | ✔ |
+| verdicts de niveau 1 modifiés | 0 | **0** | ✔ |
+
+L'audit redérive chaque horodatage par une invocation **différente**
+(`rev-list` au lieu de `log --diff-filter=A`) : le classement ne dépend pas de la
+commande utilisée. La marge du cas le plus serré dépassant l'heure, il ne tient
+ni à quelques secondes ni à un décalage de fuseau.
+
+### Une objection instruite plutôt qu'ignorée
+
+Un rapport ajouté avant la règle mais **révisé** après devrait-il compter comme
+dette ? Mesure faite : **17/17** ont été modifiés après. **Ce chiffre n'est pas
+une dette** — mes propres cycles #427 et #430 ont édité ces fichiers (ajout d'une
+sauvegarde de P&L, ajout d'une colonne). Retenir la dernière modification ferait
+apparaître comme « publiés après la règle » des rapports que j'ai moi-même
+touchés hier pour des raisons d'outillage. Le critère pré-enregistré est la
+**publication**, seul à répondre à la question posée.
+
+### La clause conditionnelle n'a pas été déclenchée
+
+Le pré-enregistrement engageait : « tout candidat en dette **et** de schéma
+indiciel est soumis à la batterie dans ce même cycle ». Zéro candidat en dette,
+donc **clause non déclenchée**. Elle avait été écrite **avant que les noms soient
+connus**, ce qui était précisément son objet : ne pas pouvoir en soustraire un
+après coup.
+
+La prédiction déductive sur le DSR n'a donc **pas été mise à l'épreuve** — ni
+vérifiée, ni démentie, et elle n'est comptée ni d'un côté ni de l'autre.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement :
+   - figer `n_trials` dans un fichier versionné plutôt que de le lire par
+     expression régulière dans la prose du backlog (#421) ;
+   - le statut de `log_return_compounding_audit` face au vérificateur anti-cheat,
+     et si une exception doit exister, l'énumérer dans un fichier versionné
+     (#431) ;
+   - étendre ou non la batterie au **schéma panier**, ce qui rendrait
+     `january_effect_lowprice_overlay_pit_universe` évaluable (#432).
+2. **Aucune dette actionnable sans décision humaine n'est identifiée.** L'axe
+   Règle 9 ouvert par l'inventaire du #431 est **entièrement soldé** : 6 candidats
+   traités au #432, 17 blanchis ici, 1 hors de portée de l'outil et listé.
+3. Le prochain cycle devra **chercher avant de conclure** (règle du #429) — et,
+   cette fois, vérifier qu'il ne s'arrête pas à la première résolution disponible,
+   comme ce cycle vient de le corriger.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
