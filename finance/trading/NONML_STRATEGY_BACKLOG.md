@@ -3888,3 +3888,99 @@ tâche déjà accomplie. **Avant de porter chacun des 12 restants, vérifier son
 historique dans le backlog**, pas seulement l'existence d'un fichier.
 
 **Prochain candidat réellement non vérifié :** `leaders_trend_union_overlay`.
+
+## Backlog #401 (13/08/2026) — `leaders_trend_union_overlay` sur univers point-in-time
+
+Troisième candidat **réellement** non vérifié des 12 exposés au biais du
+survivant (liste corrigée au #400). Vérification préalable faite selon la règle
+inscrite au #400 : recherche par fichier de résultat, PREREG, script **et
+historique du backlog**. Les seules entrées le mentionnant sont le #41 (cycle
+d'origine) et le #253 (correction du décalage causal) — aucun portage.
+
+| 401 | Rejouer `leaders_trend_union_overlay` (#41) avec l'appartenance NDX-100 résolue à chaque date de rebalancement au lieu de la liste 2026 appliquée rétroactivement | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL, le PASS ne survit pas** |
+
+### Résultat
+
+PREREG committé avant tout calcul (`PREREG_leaders_trend_union_overlay_pit_universe.md`),
+`n_trials = 1`, réutilisation stricte (Règle 7) : **aucun paramètre modifié**,
+seul l'univers de sélection change. Le signal de tendance sur l'indice (union
+SMA200 ∪ 52w-high) est inchangé — il ne dépend pas de l'univers titres.
+
+2900 séances (2015-01-13 → 2026-07-27), 174 tickers PIT, couverture moyenne
+87,7 % des membres réels, overlay actif 81,7 % du temps.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Leaders 1.0× (référence) | +0,70 | +393,0 % | −32,5 % |
+| Leaders + overlay union 2.0× | +0,66 | +1109,9 % | −48,3 % |
+
+Critère renforcé = battre la référence **en Sharpe ET en rendement**.
+Rendement : OUI, très largement. Sharpe : **non, −0,04**. → **FAIL.**
+
+### Ce que la comparaison avec l'origine montre
+
+Origine (#41, univers biaisé, 1144 séances) : référence +0,84 / +108,0 %,
+overlay +0,88 / +270,7 % → PASS.
+
+L'overlay levier **double le rendement dans les deux univers** — ce n'est pas
+là que le biais joue. Ce qui change, c'est qu'il ne paie plus son surcroît de
+volatilité : MDD −48,3 % contre −35,8 %. La marge de Sharpe (+0,04 à l'origine)
+change simplement de signe.
+
+**Point méthodologique** : le biais agit ici sur les **deux jambes** (candidat
+et référence sont tous deux des paniers Leaders), contrairement au #394
+(`amihud`) où la référence était l'univers équipondéré complet. La chute n'est
+donc pas un artefact de référence — c'est le panier Leaders lui-même qui, sur
+l'univers réel, ne supporte plus le levier.
+
+### Audit adversarial — 5 contrôles, dont une réserve rapportée telle quelle
+
+Un verdict négatif mérite le même contrôle qu'un positif, sans quoi on ne
+filtrerait que dans un sens. D'où un audit complet malgré le FAIL.
+
+- **2. Sélection recalculée par un chemin de code disjoint** — le backtest
+  calcule le plus-haut 252j par boucle NumPy, l'audit par `pandas.rolling(252).max()` :
+  **0 séance de divergence sur 14262**. CONFORME.
+- **3. Anti-lookahead** (prix futurs ×5) : poids antérieurs strictement
+  inchangés. CONFORME.
+- **4. Appartenance PIT** : 0 sélection d'un non-membre sur 139 dates de
+  décision. CONFORME. (5 positions détenues sur un titre sorti de l'indice entre
+  deux rebalancements — comportement réaliste, pas une fuite, compté à part.)
+- **5. Causalité du décalage** d'un jour : exacte. CONFORME.
+- **1. Simulation en nombre de parts** : écart de niveau **6,34 %**
+  (formule 4,9683 vs parts 4,6720), **au-dessus de la tolérance de 5 %** du
+  gabarit d'audit. **RÉSERVE.**
+
+**Le seuil de 5 % n'a pas été relâché après lecture du résultat.** L'écart
+vient de la dérive des poids sur 21 jours, que la formule `Σ wᵢ·rᵢ` ignore en
+rééquilibrant implicitement tous les jours ; sur 11,6 ans et un panier dispersé
+il atteint ~0,5 %/an et franchit le seuil. Les cycles précédents testaient des
+fenêtres plus courtes.
+
+**Diagnostic 1b ajouté** : l'écart de niveau peut-il retourner le *verdict* ?
+Le P&L de la jambe levier vaut exactement `exposure[t−1] × P&L de la jambe
+base`, on peut donc rejouer les deux jambes à partir des rendements du chemin
+en parts : **+0,67 vs +0,64** de Sharpe — même ordre, critère renforcé
+également MANQUÉ. Le verdict pré-enregistré serait resté FAIL de toute façon :
+le protocole fige la formule d'agrégation et on ne rejuge pas un résultat après
+l'avoir lu. Ce diagnostic est consigné pour que la limite soit connue, pas pour
+rouvrir la décision.
+
+Anti-cheat **CONFORME** (4/4). Pas de robustesse ni de simulation 300 € : le
+verdict est FAIL, ces étapes sont réservées aux PASS.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **10** |
+| dont maintenus | 5 |
+| dont tombés | **5** (`amihud`, `dispersion_vol_targeting`, `momentum_turnover_doublesort`, `leaders_index52w_high_overlay`, `leaders_trend_union_overlay`) |
+| PASS restant exposés, sans vérification | **11** |
+
+Un sur deux tombe. Aucune conjecture n'est formulée pour le suivant : celle du
+#396 (« le P&L indiciel survit, le panier tombe ») a été démentie au #398, et
+celle qu'on serait tenté de tirer d'ici le serait sur un échantillon de 10.
+
+**Prochain candidat des 11 restants :** `leaders_vol_targeting_20_overlay`
+(vérifier d'abord son historique dans le backlog, règle du #400).
