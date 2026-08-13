@@ -6117,3 +6117,112 @@ Le reste du dépôt (~110 scripts à `savez` conditionnel, ~122 sans) demeure un
 dette **déclarée**, mais elle n'est plus « sans conséquence connue » : la piste 1
 ci-dessus en identifie une conséquence **mesurée et chiffrée** — 18 PASS hors du
 champ du balayage de doublons.
+
+---
+
+## Backlog #427 (13/08/2026) — persistance du P&L, lot 5 : 16 PASS rendus visibles au balayage de doublons
+
+Cycle d'**infrastructure**, pré-enregistré dans `PREREG_pnl_persistence_lot5.md`
+(committé avant toute modification). Aucune stratégie évaluée, aucun verdict
+recalculé, aucun décompte d'hypothèses corrigé. `n_trials = 1`.
+
+### Pourquoi ce lot différait des quatre précédents
+
+Les #416, #423, #424 et #426 ne portaient que des **FAIL** : aucun verdict ne
+pouvait bouger, et je l'écrivais chaque fois pour ne pas survendre l'issue.
+**Celui-ci portait des PASS.** Un doublon exact entre deux d'entre eux
+signifierait que deux « hypothèses indépendantes » n'en sont qu'une — ce qui
+gonfle le décompte « X PASS sur Y hypothèses testées » et le `n_trials` du DSR.
+
+Aucune prédiction n'a été faite sur le nombre de doublons : c'était la question
+ouverte du cycle, et l'orienter d'avance aurait été malhonnête.
+
+### Périmètre — 16 traités, 2 écartés
+
+Sur **101** rapports PASS, **18** n'avaient pas de `.npz`. Deux sont écartés avec
+leur raison publiée :
+
+- `tom_decomposition_overlay` — boucle sur plusieurs **variantes** × marchés :
+  nommer un seul `.npz` obligerait à **élire une variante**, c'est-à-dire à
+  inventer une convention pour l'occasion.
+- `capitulation_gate_floor_sweep` — **diagnostic, pas une stratégie** (sa propre
+  docstring le dit) ; son PASS est un faux positif de détection.
+
+Le pré-enregistrement annonçait 17 traités. La lecture script par script en a
+écarté un second. **Je ne suis pas passé outre pour tenir un chiffre annoncé** —
+l'engagement le prévoyait explicitement.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| scripts traités ou écartés avec raison | 17 | 16 + 2 écartés | ✔ |
+| non-régression, octet à octet | 0 différence | **0** | ✔ |
+| cohérence `.npz` / rapport | **17/17** | **13/16** | **✘** |
+| mesures publiées | 3 | 3 | ✔ |
+
+**Le critère de cohérence n'est pas tenu tel qu'il était écrit**, et je le marque
+en échec. Le contrôle pré-enregistré (nombre de séances) ne s'appliquait qu'à 6
+des 16 : les rapports multi-marchés publient un tableau par marché sans total.
+J'ai ajouté un contrôle sur leur **ligne NDX** (« Séances test. », « %j levé »),
+**signalé comme ajout post-hoc**, avec une tolérance de 0,05 point *déduite du
+pas d'arrondi* et non ajustée — il en couvre 7 de plus, tous en accord.
+
+Écrire « 6/6 ✔ » aurait été exact au mot près et trompeur en pratique. Les **3**
+restants (`halloween_effect`, `intraday_range_regime_overlay`, `tom_overlay`)
+ne publient **ni** séances **ni** taux : leur `.npz` est produit et lisible, mais
+aucun chiffre déjà publié ne permet de le confronter. La lacune est dans le
+rapport d'origine et elle est notée, pas comblée par une valeur inventée ici.
+
+Le `diff` des 16 scripts ne comporte que des **insertions** — 159 lignes
+ajoutées, **0 supprimée** : aucune ligne de calcul n'est touchée.
+
+### Mesures
+
+| | #426 | #427 |
+|---|---|---|
+| séries de P&L reconstruites | 202 | **218** |
+| groupes de doublons exacts | 3 | **3** |
+| quasi-doublons | 1 | **1** |
+
+**Décompte inchangé — aucun des 16 n'apparaît dans un groupe de doublons.** La
+question « deux PASS sont-ils la même série ? » reçoit une réponse **négative
+pour les 16 testés**. Je ne présente pas cette absence comme une confirmation :
+aucune prédiction n'avait été faite, c'est une mesure désormais faite.
+
+**Couverture du balayage publiée** (piste 2 du #426, close) : les 218 séries lues
+sont **208** non-ML + **10** ML / Étape D, soit **73,2 %** des 284 scripts de
+backtest non-ML. Le rapport du balayage annonçait un total sans dire ni sa
+composition ni sa couverture.
+
+Quarante-quatre résultats publiés ont désormais été testés contre leur propre
+code par les cinq lots — ces 16-ci sont les premiers **PASS**.
+
+Anti-cheat **CONFORME**.
+
+### File des prochains cycles
+
+1. **Inscrire dans le rapport du balayage de doublons sa propre couverture** —
+   mesurée ici (208 non-ML + 10 ML, 73,2 %), elle n'y figure toujours pas. Une
+   dizaine de lignes, avec non-régression sur le rapport lui-même.
+2. **Les 3 rapports multi-marchés qui ne publient aucun chiffre vérifiable**
+   (`halloween_effect`, `intraday_range_regime_overlay`, `tom_overlay`) : leur
+   ajouter une colonne « Séances test. » comme en ont déjà `golden_cross_overlay`
+   et `sma50_trend_overlay`. **Attention** : cela **modifierait** leur rapport, ce
+   qui sort du régime « 0 différence octet à octet » tenu depuis le #416 — à
+   déclarer comme tel dans son pré-enregistrement, et non à glisser dans un lot
+   de persistance.
+3. **En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials` dans
+   un fichier versionné plutôt que de le lire par expression régulière dans la
+   prose du backlog. Signalé au #421, non tranché unilatéralement.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+Le lot des PASS sans `.npz` est **clos** à 2 exceptions listées. La couverture du
+balayage de doublons passe de 192 à **208** candidats non-ML sur 284 ; les ~76
+restants sont des scripts sans `savez` portant un FAIL, dette **déclarée** dont
+aucune conséquence sur un verdict n'est connue.
