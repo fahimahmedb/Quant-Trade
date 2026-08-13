@@ -5388,3 +5388,77 @@ règle du #400 ne vaut pas que pour les candidats de stratégie.
    référence.
 3. **Dette de persistance** : 114 scripts à `savez` conditionnel, 130 sans
    `savez`. À traiter par lots lus, jamais en masse.
+
+## Backlog #418 (13/08/2026) — second balayage des doublons : le décompte ne bouge pas, la lecture apporte
+
+| 418 | Rejouer le balayage de doublons du #406 avec les `.npz` ajoutés depuis | Aucune nouvelle donnée | **FAIT — décompte inchangé (1 essai surnuméraire), 1 paire emboîtée nouvelle, angle mort persistant** |
+
+Balayage du #406 **rejoué tel quel**, aucun seuil retouché. Couverture 100 % des
+**183** `.npz` (contre 165 au #406), 0 schéma non reconnu.
+
+### Le décompte ne change pas
+
+Deux groupes de doublons exacts, les mêmes qu'au #406. Après rejet par lecture de
+l'alias de nommage Étape D, le décompte reste **1 essai surnuméraire**. Le second
+passage ne modifie pas le chiffre — c'est un résultat de stabilité, pas un échec.
+
+### Ce que la lecture apporte
+
+**Une paire emboîtée nouvellement visible**, rendue mesurable par les `.npz`
+ajoutés au #416 :
+
+| | |
+|---|---|
+| paire | `momentum_breadth_vol_targeting_overlay` / `sma200_momentum_breadth_and_overlay` |
+| corrélation de P&L | **0,99990654** |
+| séances de différence | **17 sur 1133** |
+
+Lecture des scripts : le second **importe la fonction de signal du premier** et
+lui applique un **ET** avec une seconde condition (breadth SMA200). Ce n'est donc
+pas la même stratégie — un ET ne peut que restreindre — mais sur ces données la
+seconde condition ne mord presque jamais.
+
+**Rejetée comme doublon, signalée comme non indépendante** : ces deux PASS ne
+comptent pas pour deux confirmations. Le seuil de 0,9999 les laisse hors du
+décompte et **n'est pas ajusté** pour les y faire entrer — le modifier après
+avoir vu la donnée serait du retuning.
+
+C'est le troisième cas de non-indépendance identifié (#403 identité exacte, #414
+portes à 93,3 %, #418 emboîtement) : **le backlog compte des essais plus
+indépendants qu'ils ne le sont.**
+
+### Corrélation de P&L des paires du #414 — mesure annoncée d'avance
+
+| Paire | Corrélation de P&L |
+|---|---|
+| `momentum_decile_spread` / `momentum_dispersion` | 0,999740 |
+| idem, versions point-in-time | 0,996063 |
+
+Plus élevée que la corrélation de **portes** mesurée au #414 (0,8679), ce qui est
+attendu : les deux stratégies partagent la jambe Buy & Hold sauf quand les portes
+diffèrent. Restent sous le seuil, non comptées.
+
+### L'angle mort du #406 n'est pas levé
+
+`nonml_leaders_trend_union_overlay_pnl.npz` **n'existe toujours pas**. Le #416 a
+doté dix candidats d'un `.npz`, mais sa liste venait du #415, qui ciblait les
+portes de capitulation — pas les doublons connus.
+
+**Le résultat de ce balayage reste donc une borne inférieure**, au même titre que
+celui du #406. Je le redis explicitement plutôt que de le laisser à la mémoire du
+lecteur, comme le pré-enregistrement l'exigeait.
+
+Couverture : **183 `.npz` pour 428 entrées**, soit **43 %** contre 41 %. Le
+balayage voit toujours moins de la moitié du dépôt.
+
+Anti-cheat **CONFORME**. Aucune correction du DSR appliquée.
+
+### File des prochains cycles
+
+1. **Doter `leaders_trend_union_overlay` d'un `.npz`** — deux balayages
+   consécutifs (#406, #418) ont buté sur son absence ; c'est un script, une
+   ligne, et cela lève l'angle mort le plus documenté du dépôt.
+2. **Étendre le critère d'inactivité aux schémas panier** — 8 PASS restent hors
+   d'atteinte de la règle du #417.
+3. **Nouvelle piste de stratégie non-ML**, une fois ces dettes soldées : le
+   backlog n'a pas testé de nouvelle hypothèse depuis le #414.
