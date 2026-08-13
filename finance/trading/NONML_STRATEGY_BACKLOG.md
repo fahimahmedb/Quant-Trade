@@ -3682,3 +3682,52 @@ biais) survit, là où les trois chutes précédentes concernaient des stratégi
 dont le **portefeuille** était construit sur l'univers biaisé. L'échantillon
 reste trop mince (7 cas) pour ériger cette distinction en règle, mais elle est
 cohérente avec le mécanisme et mérite d'être suivie sur les 14 restants.
+
+## Backlog #397 (12/08/2026) — étapes 7a/7b du #396 : robustesse et simulation
+
+Le #396 s'est conclu sur un PASS mais sans exécuter les étapes 7a (robustesse) et
+7b (simulation 300 €) prévues par la routine. Complétées ici avant de passer au
+candidat suivant.
+
+| 397 | Robustesse + simulation 300 € pour `deep_drawdown_breadth_vol_targeting_overlay_pit_universe` | Aucune nouvelle donnée | **FAIT — plateau PARFAIT 8/8, meilleur que l'original.** |
+
+### Robustesse — 8/8, plateau parfait
+
+Grilles **reprises à l'identique** du cycle d'origine, donc fixées avant
+exécution. **Pas un retuning** : le seuil de drawdown (−20 %) et la fenêtre de
+médiane (252j), au cœur du critère, restent figés.
+
+| Grille CAP (fenêtre 20j) | Sharpe | Rendement | PASS |
+|---|---|---|---|
+| 1,5× | +0,81 | +644,0 % | OUI |
+| 2,0× ← pré-enregistré | +0,82 | +698,4 % | OUI |
+| 2,5× | +0,83 | +718,6 % | OUI |
+| 3,0× | +0,83 | +726,9 % | OUI |
+
+| Grille fenêtre (CAP 2,0×) | Sharpe | Rendement | PASS |
+|---|---|---|---|
+| 15j | +0,82 | +686,9 % | OUI |
+| 20j ← pré-enregistré | +0,82 | +698,4 % | OUI |
+| 25j | +0,81 | +669,1 % | OUI |
+| 30j | +0,81 | +651,3 % | OUI |
+
+**8/8 cellules PASS.** À comparer au cycle d'origine, qui échouait à CAP=1,5×
+(3/4 sur cette grille) : **le plateau est plus net sur univers point-in-time que
+sur l'univers biaisé**. Résultat rapporté tel quel, sans réajustement.
+
+### Simulation 300 € (illustration, 63 séances)
+
+| | Capital final | Rendement | MDD | Sharpe ann. |
+|---|---|---|---|---|
+| Buy & Hold (NDX) | 352,39 € | +17,5 % | −7,0 % | +2,74 |
+| **Overlay gaté breadth DD (PIT)** | **356,20 €** | **+18,7 %** | −8,8 % | +2,61 |
+
+Exposition moyenne 1,10×, porte active 42,9 % du temps.
+
+**Aucune valeur statistique** : 63 séances ne permettent de conclure sur rien, et
+le Sharpe y est d'ailleurs **inférieur** à celui de Buy & Hold (+2,61 vs +2,74)
+alors que le backtest complet le donne supérieur — illustration directe du fait
+qu'une fenêtre courte peut inverser le classement. Le verdict du cycle reste
+celui du backtest (2645 séances) et de la robustesse (8/8).
+
+**Prochain candidat de la liste des 14 restants :** `january_effect_lowprice_overlay`.
