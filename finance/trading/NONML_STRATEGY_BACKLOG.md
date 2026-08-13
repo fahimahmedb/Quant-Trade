@@ -4239,3 +4239,115 @@ que sur la liste attendue.
 2. **Balayage des doublons** : paires de candidats à P&L identique parmi les
    `.npz` de `results/`, pour corriger le décompte d'essais du backlog (#403).
 3. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
+
+## Backlog #405 (13/08/2026) — `smallcap_proxy_outperformance_breadth_overlay` sur univers point-in-time : MAINTENU
+
+| 405 | Rejouer `smallcap_proxy_outperformance_breadth_overlay` (#123) avec la breadth calculée sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS niveau 1, le candidat SURVIT au portage** |
+
+Portage entamé au #404 puis interrompu par la découverte d'un défaut dans le
+script d'origine ; repris ici sur un script propre.
+
+### Résultat
+
+PREREG committé avant tout calcul, `n_trials = 1`, réutilisation stricte
+(Règle 7). 2645 séances (2016-01-04 → 2026-07-13), couverture 88,2 % des membres
+réels, porte active 36,1 % du temps, position moyenne 1,18×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,79 | +542,3 % | −35,6 % |
+| Overlay gaté breadth petites caps (PIT) | **+0,82** | **+715,5 %** | −35,6 % |
+
+Les deux jambes atteintes → **PASS niveau 1**.
+
+### Ce que ce candidat a de structurellement différent
+
+Annoncé au PREREG **avant** calcul : contrairement aux quatre portages
+précédents, **le P&L n'est pas un panier de titres**. Les deux jambes sont
+l'indice NDX-100 lui-même ; l'univers titres n'alimente que le **signal**. Le
+biais du survivant ne peut agir que par ce seul canal.
+
+C'est la configuration du #396, dont j'avais tiré la conjecture « le P&L indiciel
+survit, le panier tombe » — démentie au #398. Le présent résultat va dans le sens
+de cette conjecture, mais **un cas de plus ne la rétablit pas** : elle a été
+démentie une fois, et deux confirmations ne compensent pas un contre-exemple.
+
+### Bug rencontré et corrigé AVANT tout commit de résultat
+
+**C'est le piège du #396, que le PREREG affirmait éviter.** Le pré-enregistrement
+disait que le mécanisme de masque du script d'origine suffisait. Il ne suffisait
+pas : `breadth >= median` rend `False` (et non `NaN`) là où la breadth est
+indéfinie. Le script d'origine s'en sortait par accident, son univers
+`data/pead/prices/` démarrant tard ; `prices_pit/` remonte à 1985, et la première
+exécution donnait **10252 séances à partir de 1985-10-30**, porte fermée par
+défaut pendant trente ans (Sharpe +0,53 vs +0,54).
+
+Masque explicite ajouté (`signal_defined = breadth.notna() & median.notna()`),
+fenêtre ramenée à 2645 séances. **Aucun résultat fautif n'a été committé** — mais
+le PREREG contenait une affirmation fausse, et c'est écrit ici plutôt que corrigé
+en silence.
+
+### Audit adversarial — 4 contrôles, tous conformes
+
+- **1.** Breadth recalculée par `pandas.rolling(60).std()` au lieu de la boucle
+  NumPy du backtest, médianes transversales refaites à la main, sur 6 dates
+  échantillonnées : écart maximal **0,00e+00**.
+- **2.** Anti-lookahead : prix postérieurs au 2020-10-09 multipliés par 7, breadth
+  à cette date strictement inchangée.
+- **3.** *Le filtre d'appartenance a-t-il un effet ?* Breadth recalculée sur
+  l'univers élargi à tous les tickers : elle **diffère sur 6 dates / 6**. Le
+  portage n'est pas cosmétique — contrôle ajouté parce qu'un filtre sans effet
+  produirait un « maintenu » vide de sens.
+- **4.** Causalité de la porte vérifiée sur une porte synthétique à un seul jour
+  actif : décalage d'exactement un jour.
+
+Anti-cheat **CONFORME** (4/4).
+
+### Robustesse — le plateau n'est pas plein
+
+Grilles reprises telles quelles de l'origine, donc fixées avant exécution ;
+`IDIO_VOL_WINDOW`, `MOM_WINDOW`, `MEDIAN_WINDOW` et le seuil médian restent figés.
+
+| Grille | Résultat |
+|---|---|
+| CAP (1,5 / 2,0 / 2,5 / 3,0×) | **4/4 PASS** |
+| Fenêtre de vol (15 / 20 / 25 / 30 j) | **2/4 PASS** (seules 20 j et 25 j passent) |
+
+La grille de fenêtre est **plus faible** que celle du cycle d'origine (3/4). Le
+PASS tient sur le CAP, pas sur la fenêtre de volatilité. Rapporté tel quel.
+
+### Simulation 300 € — 63 séances, aucune valeur statistique
+
+2026-04-13 → 2026-07-13, 28 séances à porte active : Buy & Hold 352,39 €
+(+17,5 %, MDD −7,0 %, Sharpe +2,74) contre overlay 356,79 € (+18,9 %,
+MDD −8,8 %, Sharpe +2,63). Illustration seulement.
+
+### Batterie Règle 9 — 2/5, toujours pas un verdict final
+
+| Contrôle | Origine | PIT |
+|---|---|---|
+| a. stress coûts | ÉCHEC | ÉCHEC |
+| b. stress crise | OK | OK |
+| c. stabilité temporelle | ÉCHEC | **OK** |
+| d. SPA 1-candidat | ÉCHEC (0,1592) | ÉCHEC (**0,0618**) |
+| e. DSR (n_trials = 372) | ÉCHEC (0,1513) | ÉCHEC (0,1539) |
+
+Un point de mieux que l'original, et un SPA qui se rapproche du seuil sans
+l'atteindre. **Cela reste très loin d'un PASS renforcé** : le candidat survit au
+portage point-in-time mais échoue toujours la validation finale.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **12** |
+| dont maintenus | **6** |
+| dont tombés | 6 |
+| PASS restant exposés, sans vérification | **8** |
+
+**File des prochains cycles :**
+
+1. **Balayage des doublons** : paires de candidats à P&L identique parmi les
+   `.npz` de `results/`, pour corriger le décompte d'essais du backlog (#403).
+2. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
+3. `net_breadth_vol_targeting_overlay` — portage PIT.
