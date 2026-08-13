@@ -4975,3 +4975,104 @@ tous tombés ; les candidats à P&L indiciel sont 5 maintenus contre 1 tombé.
 2. `momentum_dispersion_vol_targeting_overlay` — portage PIT (dernier des 20).
 3. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
    (piste ouverte au #410).
+
+## Backlog #413 (13/08/2026) — `market_concentration_vol_targeting_overlay` sur univers point-in-time : MAINTENU
+
+| 413 | Rejouer `market_concentration_vol_targeting_overlay` (#102) avec le HHI calculé sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS, le candidat SURVIT au portage** |
+
+### Résultat
+
+2645 séances (2016-01-04 → 2026-07-13), couverture 88,2 %, porte active 36,4 %,
+exposition moyenne 1,21×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,79 | +542,3 % | −35,6 % |
+| Overlay gaté concentration (PIT) | **+0,85** | **+793,0 %** | −35,6 % |
+
+→ **PASS.**
+
+### Le point arithmétique annoncé au PREREG, et ce que la mesure en dit
+
+Le pré-enregistrement signalait que le HHI dépend du **nombre** de titres retenus
+(son minimum vaut `1/n`), en précisant qu'il s'agit d'une propriété de la formule
+et non d'une hypothèse sur le marché, et qu'aucune prédiction n'en était tirée.
+
+| | Niveau moyen | Écart-type |
+|---|---|---|
+| Univers point-in-time (≈ 90 titres) | 0,0433 | 0,0370 |
+| Univers biaisé | 0,0478 | 0,0509 |
+
+L'univers point-in-time retient **moins** de titres, ce qui **relève** le
+plancher `1/n`. Le niveau mesuré est pourtant **plus bas** : l'effet de plancher
+ne domine pas. Constat factuel, sans interprétation économique proposée.
+
+### Contrôle d'attribution — pré-enregistré, deuxième cycle consécutif
+
+| | Sharpe ann. | Rendement total net |
+|---|---|---|
+| Overlay — origine, univers biaisé | +0,71 | +152,5 % |
+| Overlay — PIT, **fenêtre comparable** | +0,67 | +142,5 % |
+| Buy & Hold — même fenêtre | +0,66 | +129,0 % |
+
+La jambe Buy & Hold étant identique dans les deux univers, l'écart entre les deux
+premières lignes est imputable à l'univers du **signal** : −0,04 de Sharpe, effet
+réel mais faible. La marge sur Buy & Hold survit (+0,01 à fenêtre comparable,
++0,06 sur la fenêtre complète).
+
+### Robustesse — plateau plus large qu'à l'origine
+
+| Grille | Origine | PIT |
+|---|---|---|
+| CAP | 4/4 | **4/4** |
+| Fenêtre de vol | **2/4** (15 j et 30 j tombaient) | **4/4** |
+
+Deuxième cas de l'axe, après le #408, où le portage **élargit** le plateau.
+
+### Batterie Règle 9 — 2/5 contre 3/5, mais pas les mêmes
+
+| Contrôle | Origine | PIT |
+|---|---|---|
+| a. stress coûts | ÉCHEC | ÉCHEC |
+| b. stress crise | OK | OK |
+| c. stabilité temporelle | OK | **ÉCHEC** (2/4 folds) |
+| d. SPA 1-candidat | ÉCHEC (0,0916) | **OK (0,0202)** |
+| e. DSR (n_trials = 372) | ÉCHEC (0,1570) | ÉCHEC (0,1781) |
+
+Sur univers réel le candidat devient nettement significatif au SPA mais perd la
+stabilité temporelle. Même observation qu'au #407 : **un score de batterie ne se
+lit pas par son total.** Pas de PASS renforcé.
+
+Simulation 300 € : 353,77 € contre 352,39 € sur 63 séances, 1 seule à porte
+active — aucune valeur statistique. Anti-cheat **CONFORME** (4/4).
+
+### Trois incidents de dérivation consécutifs — le constat de méthode
+
+Ce cycle a produit **deux** rapports contenant des valeurs héritées d'un autre
+candidat (« moyenne transversale » au lieu du HHI ; « 3/4 sur la fenêtre » alors
+que la grille donne 4/4), après un premier au #412 (chiffres du panier Winners
+dans l'audit Low-Vol).
+
+La méthode « copier un script voisin puis substituer » est efficace pour le code
+et **dangereuse pour la prose** : les substitutions ratent les formulations qui
+ne contiennent pas le motif cherché, et le rapport publie alors des chiffres
+faux. Les trois ont été détectés par relecture des sorties **avant** commit —
+mais trois fois de suite, c'est un défaut de méthode, pas une série de hasards.
+Consigné ici ; la parade évidente (relire intégralement chaque rapport produit
+avant de le committer) est déjà appliquée, et c'est elle qui les a attrapés.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **19** |
+| dont maintenus | **10** (dont 1 non informatif) |
+| dont tombés | 9 |
+| PASS restant exposés, sans vérification | **1** |
+
+### File des prochains cycles
+
+1. `momentum_dispersion_vol_targeting_overlay` — **dernier** des 20 PASS exposés.
+2. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
+   (piste ouverte au #410).
+3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
