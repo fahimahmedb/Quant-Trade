@@ -4426,3 +4426,104 @@ l'une ni l'autre entreprise ici :
 2. `net_breadth_vol_targeting_overlay` — portage PIT.
 3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie 1 ci-dessus),
    pour rendre les balayages futurs concluants.
+
+## Backlog #407 (13/08/2026) — `momentum_decile_spread_vol_targeting_overlay` sur univers point-in-time : MAINTENU
+
+| 407 | Rejouer `momentum_decile_spread_vol_targeting_overlay` (#100) avec le spread décile calculé sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS niveau 1, le candidat SURVIT au portage** |
+
+### Résultat
+
+PREREG committé avant tout calcul, `n_trials = 1`, réutilisation stricte
+(Règle 7). 2645 séances (2016-01-04 → 2026-07-13), couverture 87,8 % des membres
+réels, porte active 34,8 % du temps, position moyenne 1,16×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,79 | +542,3 % | −35,6 % |
+| Overlay gaté spread décile (PIT) | **+0,84** | **+755,8 %** | −35,6 % |
+
+→ **PASS niveau 1.** Même architecture que le #405 (P&L indiciel, univers titres
+alimentant seulement la porte), même issue.
+
+### Le piège du #396 traité comme contrainte, pas comme incident
+
+Le masque explicite (`signal_defined = spread.notna() & median.notna()`) était
+présent **dès la première exécution**, comme le pré-enregistrement l'exigeait.
+Aucun incident : la fenêtre démarre correctement en 2016 du premier coup. C'est
+la troisième rencontre du même piège et la première où il ne coûte rien.
+
+### Le mécanisme que j'avais décrit est contredit par la mesure
+
+Le PREREG proposait un mécanisme — retirer rétroactivement les sociétés sorties
+de l'indice ampute surtout le décile **faible**, donc l'univers élargi devrait
+produire un spread **plus large**. Le contrôle 3 de l'audit mesure l'inverse :
+écart moyen **−0,3370**, l'univers élargi produit un spread plus **étroit**.
+
+Six dates ne font pas une mesure, mais le rapport le consigne au lieu de se
+taire. **Le commentaire de l'audit a d'ailleurs dû être corrigé** : sa première
+version ne commentait l'écart que s'il allait dans le sens de mon hypothèse — un
+rapport biaisé par construction. Il s'écrit maintenant dans les deux sens.
+
+### Audit adversarial — 4 contrôles, tous conformes
+
+- **1.** Spread recalculé par `pandas.shift` + `nlargest`/`nsmallest` au lieu du
+  décalage NumPy et du tri complet, sur 6 dates : écart maximal **3,55e-15**.
+- **2.** Anti-lookahead : prix postérieurs au 2020-10-09 multipliés par 7, spread
+  à cette date strictement inchangé.
+- **3.** Le filtre d'appartenance change le signal sur **6 dates / 6**. Portage
+  non cosmétique.
+- **4.** Causalité de la porte : décalage d'exactement un jour.
+
+Anti-cheat **CONFORME** (4/4).
+
+### Robustesse — plateau légèrement plus étroit qu'à l'origine
+
+| Grille | Origine | PIT |
+|---|---|---|
+| CAP (1,5 / 2,0 / 2,5 / 3,0×) | 4/4 | **4/4** |
+| Fenêtre de vol (15 / 20 / 25 / 30 j) | 4/4 | **3/4** (15 j tombe) |
+
+### Simulation 300 € — 63 séances, aucune valeur statistique
+
+Buy & Hold 352,39 € (+17,5 %, Sharpe +2,74) contre overlay 356,79 € (+18,9 %,
+Sharpe +2,63), 28 séances à porte active.
+
+### Batterie Règle 9 — 3/5 des deux côtés, mais pas les mêmes 3
+
+| Contrôle | Origine | PIT |
+|---|---|---|
+| a. stress coûts | OK | **ÉCHEC** |
+| b. stress crise | OK | OK |
+| c. stabilité temporelle | OK | OK |
+| d. SPA 1-candidat | ÉCHEC (0,0896) | **OK (0,0294)** |
+| e. DSR (n_trials = 372) | ÉCHEC (0,1657) | ÉCHEC (0,1717) |
+
+**Le score est identique, la composition ne l'est pas.** Sur univers réel le
+candidat devient significatif au SPA mais cesse de tenir à 5× le coût nominal :
+un total identique masque deux profils de fragilité différents. C'est un argument
+contre la lecture des batteries par leur seul score — noté ici parce que je m'y
+suis prêté moi-même dans les cycles précédents.
+
+Toujours **pas de PASS renforcé** : le DSR reste très loin du seuil des deux
+côtés.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **13** |
+| dont maintenus | **7** |
+| dont tombés | 6 |
+| PASS restant exposés, sans vérification | **7** |
+
+Les deux candidats à **P&L indiciel** testés jusqu'ici (#405, #407) sont
+maintenus ; les quatre candidats à **panier de titres** (#394, #401, #402, plus
+le #163) sont tombés. La conjecture du #396 disait cela — et a été démentie une
+fois (#398). Trois confirmations et un contre-exemple ne font toujours pas une
+règle ; aucune n'est inscrite.
+
+### File des prochains cycles
+
+1. `net_breadth_vol_targeting_overlay` — portage PIT.
+2. `range_position_vol_targeting_overlay` — portage PIT.
+3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
