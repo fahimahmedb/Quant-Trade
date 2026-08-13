@@ -8017,3 +8017,98 @@ Anti-cheat **CONFORME** (4/4).
   balayage vient d'en fournir une démonstration en conditions réelles.
 - **1** PASS non évaluable par la batterie ; **113** scripts sans `.npz` (#428,
   chiffre rafraîchi par ce cycle).
+
+## Backlog #446 (13/08/2026) — la phrase figée du balayage : **FAIL**, et un détecteur de verdict faux depuis le début
+
+**Cycle de MODIFICATION**, second après le #445, même discipline. Pré-enregistré
+dans `PREREG_sweep_pass_prose_fix.md` (`565bede`), avant toute modification et
+toute mesure. `n_trials = 1`.
+
+### Verdict : FAIL
+
+| | Critère pré-enregistré | État |
+|---|---|---|
+| 1 | diff confiné au bloc annoncé (194-195) | ✔ — 1 seul hunk, 2 suppressions / 23 insertions |
+| 2 | chaque nom vérifié indépendamment | ✔ — audit dédié, 4/4 sur trois conditions |
+| 3 | rapport **idempotent** | **NON** |
+| 4 | chaque différence attribuée | ✔ — 11 au bloc, 10 à la dérive |
+
+Le critère 3 échoue : une fois l'artefact de ce cycle versé au vivier, le rapport
+liste **5** noms au lieu de 4. Le pré-enregistrement en faisait un critère
+d'échec ; il l'est.
+
+### Ce que le FAIL a révélé — mieux qu'un PASS
+
+Le balayage détecte un PASS par `"**PASS" in t`, **n'importe où** dans le
+rapport. Le rapport de ce cycle contient « stratégie portant un **PASS** » à
+propos d'un *autre* candidat : il est donc compté comme candidat PASS.
+
+> **Le détecteur de verdict confond « porter un PASS » et « parler d'un PASS ».**
+> Tout rapport d'inventaire qui commente un PASS gonfle le compte.
+
+Défaut présent **depuis le début**, invisible tant que rien ne nommait ce qui
+était compté. La correction de prose est correcte — c'est elle qui l'a exposé.
+**Non corrigé ici** (hors du bloc annoncé), **en tête de file**.
+
+### Le résultat qui prime sur la correction, annoncé d'avance
+
+Le pré-enregistrement engageait : *si l'un de ces PASS est une **stratégie** et
+non un script d'inventaire, c'est plus important que la correction de prose et
+sera publié en tête.*
+
+**C'est le cas d'un sur quatre** : `tom_decomposition_overlay` est une
+décomposition du turn-of-month dont la **variante A est PASS**, et elle n'a
+**aucun `.npz`** — donc **invisible au balayage de doublons**. Le #8 (ToM
+complet) est PASS lui aussi et *possède* son `.npz` ; si les deux séries étaient
+proches, le décompte d'hypothèses indépendantes serait gonflé, et c'est
+précisément ce que le balayage existe pour détecter.
+
+**Prédiction partiellement réfutée** : j'attendais quatre scripts d'inventaire,
+trois le sont, un ne l'est pas.
+
+### Trois défauts d'instrument corrigés avant publication
+
+1. **Attribution par position** — le bloc insérant des lignes, tout ce qui suivait
+   était décalé : **44 fausses divergences**. Remplacé par un vrai diff.
+2. **Attribution ligne à ligne** — les noms insérés et les lignes vides du bloc,
+   ne portant aucun mot-clé, tombaient en « dérive ». L'attribution se fait
+   désormais par **groupe de diff contigu**.
+3. **Test d'auto-inclusion vidé par l'ordre d'exécution** — les deux exécutions
+   avaient lieu avant l'écriture du rapport du cycle, et une ré-exécution le
+   trouvait déjà présent. Le rapport du cycle est désormais **supprimé avant
+   mesure**, comme `BASE` est épinglé à un commit : la mesure ne doit pas
+   dépendre de l'ordre des exécutions.
+
+Aucun n'a été trouvé par la mesure : tous par relecture de la sortie.
+
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : verdict FAIL, cycle de
+modification sans stratégie ni position. Audit dédié :
+`results/nonml_sweep_pass_prose_fix_audit.md`. Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Le détecteur de verdict du balayage** (`"**PASS" in t`) — le corriger pour
+   qu'il distingue le verdict propre du rapport de ses mentions. Cycle de
+   modification à déclarer ; conséquence sur tous les comptes de verdicts déjà
+   publiés à mesurer.
+2. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+3. **Les 20 `.npz` sans rapport publié** : variantes au rapport nommé autrement
+   (comme #431 contrôle B) ou orphelins réels. Inspection, pas balayage.
+4. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Détecteur de verdict faux** dans le balayage — tous les comptes PASS / FAIL /
+  indéterminé qu'il publie sont suspects. **Nouveau, chiffré nulle part encore.**
+- **1 stratégie PASS invisible au balayage de doublons**
+  (`tom_decomposition_overlay`).
+- **3 consommateurs** laissent leur lecteur mal informé sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
