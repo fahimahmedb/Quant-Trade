@@ -164,7 +164,7 @@ def main():
         b = 1.0 - 0.05 ** (1.0 / total_ok)
         b_prud = 1.0 - 0.05 ** (1.0 / (total_ok - 1))   # halloween_effect connu d'avance
         L.append(f"| **#434 + #435** | **{total_ok}** | **{100*b:.1f} %** |")
-        L.append(f"| version prudente (−1 connu d'avance) | {total_ok - 1} | {100*b_prud:.1f} %")
+        L.append(f"| version prudente (−1 connu d'avance) | {total_ok - 1} | {100*b_prud:.1f} % |")
         L.append("")
         L.append("La borne annoncée **avant** de mesurer était de **8,0 %** (8,2 % en version")
         L.append("prudente), pour 24 tirages tous identiques.")
