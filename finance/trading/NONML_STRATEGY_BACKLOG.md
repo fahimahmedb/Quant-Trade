@@ -5462,3 +5462,73 @@ Anti-cheat **CONFORME**. Aucune correction du DSR appliquée.
    d'atteinte de la règle du #417.
 3. **Nouvelle piste de stratégie non-ML**, une fois ces dettes soldées : le
    backlog n'a pas testé de nouvelle hypothèse depuis le #414.
+
+## Backlog #419 (13/08/2026) — angle mort levé : le décompte de doublons passe de 1 à 2
+
+| 419 | Doter `leaders_trend_union_overlay` d'un `.npz` pour lever l'angle mort des balayages #406 et #418 | Aucune nouvelle donnée | **FAIT — prédiction pré-enregistrée confirmée, décompte corrigé 1 → 2** |
+
+Une ligne ajoutée (`np.savez` inconditionnel, schéma panier identique à celui de
+son jumeau), aucune ligne de calcul touchée. **Non-régression** : fichier de
+résultat identique octet à octet après ré-exécution.
+
+### La prédiction était pré-enregistrée, et elle se vérifie
+
+Le pré-enregistrement annonçait, **avant l'ajout** : « le balayage doit détecter
+la paire comme doublon exact, et le décompte corrigé passer de 1 à 2 ».
+
+| | |
+|---|---|
+| paire détectée comme doublon exact | **OUI** |
+| groupes de doublons | 3 |
+| surnuméraires bruts | 3 |
+| après rejet de l'alias Étape D (fait au #406) | **2** |
+
+**Le point n'est pas d'avoir eu raison** — la prédiction était *déductive*, pas
+risquée : si les deux signaux coïncident sur toute l'histoire (#403), les deux
+P&L coïncident. Le point est que **les balayages #406 et #418 avaient tort de
+conclure à 1, et le savaient** : tous deux ont écrit que leur résultat était une
+borne inférieure. Cette borne vient de monter d'un cran.
+
+C'est aussi la première fois de cette série que j'énonce une prédiction chiffrée
+avant calcul et qu'elle tient — après deux mécanismes démentis (#407, #408) et
+une abstention motivée (#409). La différence tient au type d'énoncé : une
+conséquence arithmétique d'une mesure déjà faite, pas une intuition sur le
+marché.
+
+### Contrôle indépendant du balayage
+
+Pour ne pas dépendre du seul outil dont on teste la portée, l'identité a été
+vérifiée directement : **P&L nets bit-à-bit identiques sur 1144 séances**, schéma
+panier des deux côtés.
+
+### Ce qui reste hors de portée
+
+L'angle mort **spécifique** documenté deux fois est levé. La limite **générale**
+ne l'est pas : le balayage ne voit que les candidats ayant sauvegardé un `.npz`,
+soit moins de la moitié du backlog. **Un doublon entre deux candidats dépourvus
+de `.npz` resterait invisible, et rien ne dit qu'il n'y en a pas.**
+
+Anti-cheat **CONFORME**. Aucune correction du DSR appliquée — opération distincte.
+
+### État des dettes méthodologiques
+
+| Dette | État |
+|---|---|
+| doublons connus non détectables | **soldée** (#419) |
+| 10 PASS sans `.npz` à structure risquée | **soldée** (#416) |
+| PASS obtenus par inactivité | **soldée** (#417, cas isolé) |
+| non-indépendance des essais | **3 cas identifiés** (#403, #414, #418), non corrigée dans le DSR |
+| persistance générale du P&L | 114 scripts à `savez` conditionnel, 130 sans |
+
+### File des prochains cycles
+
+1. **Nouvelle piste de stratégie non-ML** — le backlog n'a testé aucune hypothèse
+   neuve depuis le #414 ; les cinq derniers cycles étaient méthodologiques. Trois
+   idées à instruire, dans l'ordre : (a) effet de fin de trimestre sur le
+   rebalancement institutionnel (données déjà présentes) ; (b) asymétrie
+   gap d'ouverture / clôture sur le NDX (OHLC déjà présent) ; (c) persistance
+   du volume relatif comme filtre de tendance (volumes présents dans `prices_pit`).
+2. **Étendre le critère d'inactivité aux schémas panier** — 8 PASS hors d'atteinte
+   de la règle du #417.
+3. **Corriger `n_trials` de la non-indépendance mesurée** — opération déclarée
+   trois fois, jamais faite, et qui doit l'être avant tout nouveau calcul de DSR.
