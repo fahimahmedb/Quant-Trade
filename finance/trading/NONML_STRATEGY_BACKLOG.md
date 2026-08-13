@@ -8112,3 +8112,110 @@ modification sans stratégie ni position. Audit dédié :
 - **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
+
+## Backlog #447 (13/08/2026) — le détecteur de verdict : **FAIL**, une règle meilleure mais pas juste
+
+**Cycle de MODIFICATION**, troisième après les #445 et #446. Pré-enregistré dans
+`PREREG_verdict_detector_fix.md` (`3f33b20`), avant toute modification et toute
+mesure. `n_trials = 1`.
+
+### La règle changée, et ce qu'elle produit
+
+Avant : `"**PASS" in t` — n'importe où dans le texte. Après : le verdict se lit
+sur une **ligne qui commence** par le marqueur. Précédence et littéral
+`"PASS (niveau 1)"` **inchangés** — un seul changement à la fois.
+
+| Verdict | Avant | Après | Δ |
+|---|---|---|---|
+| PASS | 5 | 1 | **−4** |
+| FAIL | 91 | 90 | **−1** |
+| indéterminé | 17 | 22 | **+5** |
+
+**5 rapports reclassés**, chacun publié avec la ligne qui décide.
+
+### Verdict : FAIL sur deux critères, pour des raisons différentes
+
+| | Critère | État |
+|---|---|---|
+| 1 | diff confiné aux occurrences annoncées (156/158/206) | ✔ |
+| 2 | chaque reclassement publié avec sa preuve | ✔ |
+| 3 | aucune relecture ne contredit | **NON** |
+| 4 | comptes idempotents | **NON** |
+
+**Critère 3 — la règle rate les verdicts énoncés en titre.** Bilan honnête :
+elle **corrige 3 faux positifs** (rapports d'inventaire sans verdict, comptés
+PASS) et **introduit 2 faux négatifs** — le #444 (`## Verdict : **FAIL**`) et le
+#446 (`### **FAIL**`) portent bien un FAIL et deviennent *indéterminés*.
+**Non corrigée ici** : l'engagement 4 interdisait tout ajustement après avoir vu
+les comptes. La règle qui lirait aussi les titres est évidente à écrire — raison
+de plus pour la déclarer d'abord, dans son propre cycle.
+
+**Critère 4 — il était mal conçu.** Il exigeait l'idempotence d'un rapport qui
+se compte lui-même :
+
+> Un rapport qui compte les rapports ne peut pas être idempotent, puisqu'il en
+> est un.
+
+Le #446 avait imputé ce mur au détecteur. Le détecteur corrigé, le mur est
+toujours là : il ne venait donc pas de là. Acquis obtenu **en échouant**.
+
+### Le défaut résiduel se démontre sur ce rapport même
+
+Le littéral `"PASS (niveau 1)"`, laissé intact par décision explicite, est
+comparé **en sous-chaîne**. Le rapport de ce cycle contient la phrase qui
+*décrit* ce littéral : il est donc classé **PASS parce qu'il parle du
+détecteur**, alors que son verdict est FAIL.
+
+Le choix de ne changer qu'une chose à la fois a **isolé** le défaut résiduel au
+lieu de le masquer — visible, nommé, démontré par un cas réel.
+
+### Trois fois le même piège dans un seul cycle
+
+Une comparaison de texte a confondu **le code et le discours sur le code** :
+
+1. le détecteur lui-même (défaut corrigé) ;
+2. le littéral `"PASS (niveau 1)"` (défaut résiduel, isolé) ;
+3. **le contrôle 1 de mon propre audit**, qui cherchait `"**PASS" in t` en
+   sous-chaîne et la retrouvait dans le *commentaire* qui la cite. Corrigé pour
+   chercher la ligne exécutable.
+
+### Conformité au régime de modification
+
+J'ai d'abord écrit la règle dans une **fonction commune** — plus propre, mais un
+ajout **hors des deux occurrences annoncées**, ce que le critère 1 déclarait
+échec. Je me suis **conformé au critère** plutôt que de le réinterpréter : la
+règle est écrite en clair aux deux endroits, avec la redondance que cela impose.
+
+Audit indépendant **CONFORME** sur ce qu'il vérifie, et il **confirme le FAIL**
+par une méthode différente (2 contradictions retrouvées).
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : verdict FAIL, cycle de
+modification sans stratégie ni position. Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **La règle complète du détecteur** — lire aussi les verdicts en **titre**
+   (`## Verdict : **FAIL**`, `### **FAIL**`) et remplacer le littéral
+   `"PASS (niveau 1)"` par une forme positionnelle. À déclarer avant, avec la
+   mesure des reclassements attendus.
+2. **Les 8 autres scripts** portant le motif `"**PASS" in` — inventoriés au
+   #447, non corrigés. Même défaut, même correction à décliner.
+3. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+4. **Les 20 `.npz` sans rapport publié** : inspection nom par nom.
+5. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Détecteur de verdict : amélioré, pas juste.** 3 faux positifs corrigés,
+  2 faux négatifs introduits, 1 défaut résiduel isolé (`"PASS (niveau 1)"`).
+- **8 scripts** portent encore l'ancien motif.
+- **1 stratégie PASS invisible au balayage** (`tom_decomposition_overlay`).
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
