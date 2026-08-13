@@ -5599,3 +5599,84 @@ résultat.
 
 Si une piste de stratégie réellement neuve apparaît, elle sera inscrite **avec
 la trace de sa vérification**, conformément à la règle ci-dessus.
+
+## Backlog #421 (13/08/2026) — `n_trials` corrigé : la dette portée trois fois était immatérielle
+
+| 421 | Corriger `n_trials` de la non-indépendance mesurée (#403, #414, #418) | Aucune nouvelle donnée | **FAIT — 372 → 370, 0 verdict modifié** |
+
+### La correction va dans mon sens, donc elle a été bordée d'avance
+
+Réduire `n_trials` abaisse le seuil SR0, donc **augmente** le DSR : c'est la
+direction favorable aux candidats. Deux garde-fous fixés au pré-enregistrement,
+avant tout calcul.
+
+**Garde-fou 1 — seules les identités mesurées sont déduites.** Sont retirées les
+deux entrées dont le P&L est **bit-à-bit identique** à celui d'un jumeau
+(`leaders_trend_union_overlay` et sa version point-in-time). Les paires
+seulement **voisines** (#414, portes identiques à 93,3 %) ou **emboîtées** (#418,
+un ET de l'autre) **ne sont pas déduites** : ce sont des stratégies distinctes,
+et les déduire relèverait d'un jugement qui, par construction, m'arrange. L'audit
+vérifie qu'aucune ne l'a été.
+
+**Garde-fou 2 — l'ampleur annoncée avant d'être calculée** : −2 entrées, soit
+−0,5 %, effet attendu négligeable. Il l'est.
+
+### Effet mesuré
+
+| Candidat | DSR avant (372) | DSR après (370) | Δ | Verdict |
+|---|---|---|---|---|
+| `market_concentration_..._pit_universe` | 0,1781 | 0,1787 | +0,0006 | ÉCHEC |
+| `momentum_dispersion_..._pit_universe` | 0,1712 | 0,1718 | +0,0006 | ÉCHEC |
+| `momentum_decile_spread_..._pit_universe` | 0,1717 | 0,1722 | +0,0005 | ÉCHEC |
+
+**0 verdict modifié.** La dette portée trois fois était **immatérielle**. Il
+aurait été plus confortable de la laisser ouverte comme une réserve indéfinie sur
+la validité des DSR publiés ; elle est close, et elle ne changeait rien.
+
+### Le contrôle qui ferme la question pour de bon
+
+Pour le candidat au DSR le plus élevé (Sharpe journalier 0,0535 sur 2645
+observations), **il faudrait `n_trials ≤ 3`** pour atteindre le seuil de 0,95 —
+c'est-à-dire que ce candidat ne passerait que si le projet n'avait jamais testé
+plus de trois hypothèses.
+
+**Le compte d'essais n'est donc pas ce qui bloque ces candidats : c'est leur
+Sharpe.** Ce contrôle est écrit pour empêcher qu'on espère un jour sauver un
+candidat en jouant sur ce compte — moi compris.
+
+### État connu et quantifié
+
+Seules **3** batteries ont été rejouées (le pré-enregistrement en exigeait au
+moins 3). Les autres rapports portent encore `n_trials = 372` jusqu'à leur
+prochaine exécution ; l'écart mesuré de +0,0005 montre que cette incohérence est
+sans conséquence sur les verdicts.
+
+**Redit sans être corrigé** : `n_trials` est lu par expression régulière dans la
+**prose** du backlog, donc écrire un rapport modifie une statistique. Défaut
+structurel qui relève de l'arbitrage de l'utilisateur, pas d'une décision
+d'exécution.
+
+Anti-cheat **CONFORME**.
+
+### Bilan des dettes méthodologiques — toutes soldées ou quantifiées
+
+| Dette | État |
+|---|---|
+| doublons connus non détectables | soldée (#419) |
+| 10 PASS sans `.npz` à structure risquée | soldée (#416) |
+| PASS obtenus par inactivité | soldée (#417, cas isolé) |
+| non-indépendance des essais | **soldée (#421), effet nul mesuré** |
+| critère d'inactivité sur schémas panier | ouverte, 8 PASS concernés |
+| persistance générale du P&L | ouverte, 114 + 130 scripts |
+| `n_trials` lu dans la prose | **ouverte, arbitrage utilisateur** |
+
+### File des prochains cycles
+
+1. **Étendre le critère d'inactivité aux schémas panier** — 8 PASS hors
+   d'atteinte de la règle du #417 ; dernière dette technique actionnable sans
+   arbitrage.
+2. **Persistance générale du P&L** — par lots lus, jamais en masse.
+3. Aucune nouvelle idée de stratégie n'est proposée : le #420 a établi que les
+   trois dernières étaient des doublons et que l'espace atteignable avec les
+   données locales est très largement couvert. Toute idée future devra être
+   inscrite **avec la trace de sa vérification** (règle du #420).
