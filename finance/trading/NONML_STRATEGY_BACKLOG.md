@@ -6334,3 +6334,95 @@ avec raison, 6 indéterminés, 1 sans rapport) — dette **déclarée et désorm
 chiffrée exactement**, dont aucune conséquence sur un verdict n'est connue. Le
 chiffre figure maintenant dans le rapport du balayage lui-même, pas seulement
 dans l'audit d'un cycle.
+
+---
+
+## Backlog #429 (13/08/2026) — la ligne « Couverture 100 % » réécrite : la limite du #428 fermée
+
+Cycle d'**outillage documentaire**, pré-enregistré dans
+`PREREG_coverage_wording_fix.md` (committé avant toute modification). Aucune
+stratégie évaluée, aucun verdict recalculé, aucun seuil touché. `n_trials = 1`.
+
+**Premier cycle à modifier une ligne déjà publiée.**
+
+### Ce qui a été réécrit, et pourquoi le #428 ne l'avait pas fait
+
+Le #428 avait ajouté la section expliquant ce que le « 100 % » du balayage
+recouvre, mais avait dû **laisser la ligne elle-même** : la corriger aurait violé
+son propre contrôle « insertions seulement ». La limite avait été signalée plutôt
+que dissimulée, et inscrite en tête de file. C'est ce cycle.
+
+**Avant** — `**Couverture 100 %** — critère 1 du pré-enregistrement atteint.`
+
+**Après** — `**100 % des fichiers trouvés ont été relus** — critère 1 du
+pré-enregistrement atteint. Ce taux ne mesure pas la couverture du dépôt : voir
+juste en dessous.`
+
+Le mot « Couverture » disparaît parce que c'est lui qui induisait en erreur : il
+suggère une part du dépôt, alors que le dénominateur est l'ensemble des fichiers
+déjà présents. **Le texte de remplacement était fixé dans le pré-enregistrement**
+et n'a pas été retouché après avoir vu le rendu.
+
+### Le régime de modification, déclaré comme les deux précédents
+
+| Cycles | Régime | Tenu ? |
+|---|---|---|
+| #416 → #427 | **0 différence octet à octet** | oui (5 lots) |
+| #428 | **insertions seulement** | oui (41 insertions, 0 suppression) |
+| **#429** | **remplacement d'une ligne annoncée** | **oui (1 suppression)** |
+
+Chaque régime a été déclaré **avant** d'être appliqué, et **aucun n'a été élargi
+en cours de route**. C'est le point de méthode de ce cycle : le garde-fou n'est
+plus « ne rien changer » mais « ne changer *que* ce qui est annoncé, mot pour
+mot », ce qui reste vérifiable mécaniquement.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| suppressions dans le rapport | 1, la ligne annoncée | **1** | ✔ |
+| texte inséré | identique au pré-enregistrement | **conforme** | ✔ |
+| décomptes de doublons | 218 / 3 / 1 | **218 / 3 / 1** | ✔ |
+| rapport jumeau | 0 différence | **0** | ✔ |
+
+### Le cas jumeau — vérifié, et délibérément laissé intact
+
+Deux rapports portaient la même formule. Vérification faite **avant** le
+pré-enregistrement :
+
+- `nonml_pnl_duplicate_sweep_result.md` — dénominateur = fichiers `.npz`
+  existants → **ambigu, corrigé** ;
+- `nonml_capitulation_gate_floor_sweep_result.md` — dénominateur = les **284**
+  scripts `nonml_*_backtest.py` du dépôt, 0 illisible, et son volet B publie sa
+  couverture séparément (62/62 depuis le #427) → **exact, laissé tel quel**.
+
+Corriger une formulation exacte parce qu'elle **ressemble** à une formulation
+fautive serait du zèle, pas de la rigueur. Un contrôle dédié vérifie que le
+rapport jumeau n'a pas bougé d'un octet.
+
+Anti-cheat **CONFORME**.
+
+### File des prochains cycles
+
+1. **Les 3 rapports multi-marchés sans chiffre vérifiable** (`halloween_effect`,
+   `intraday_range_regime_overlay`, `tom_overlay`) : leur ajouter une colonne
+   « Séances test. » comme en ont déjà `golden_cross_overlay` et
+   `sma50_trend_overlay`, pour que le contrôle de cohérence du #427 (13/16)
+   puisse les atteindre. **Modifierait** leur rapport — régime déclaratif du #429,
+   avec le texte de la colonne fixé d'avance.
+2. **En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials` dans
+   un fichier versionné plutôt que de le lire par expression régulière dans la
+   prose du backlog. Signalé au #421, non tranché unilatéralement.
+3. Rien d'autre d'actionnable n'est identifié. Si la file se vide, le prochain
+   cycle devra **chercher une dette réelle plutôt qu'en inventer une** — et, s'il
+   n'en trouve pas, l'écrire.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+Inchangée depuis le #428 : **99** scripts de backtest non-ML sans `.npz` à leur
+nom (90 FAIL, 2 PASS écartés avec raison, 6 indéterminés, 1 sans rapport), dette
+**déclarée et chiffrée**, dont aucune conséquence sur un verdict n'est connue.
