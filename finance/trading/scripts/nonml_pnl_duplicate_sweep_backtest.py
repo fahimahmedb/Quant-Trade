@@ -153,9 +153,18 @@ def main():
             verdicts["sans rapport"] += 1
             continue
         t = f.read_text(encoding="utf-8")
-        if "**PASS" in t or "PASS (niveau 1)" in t:
+        # #447 : la regle precedente cherchait `"**PASS" in t` — n'importe OU
+        # dans le texte. Un rapport d'inventaire commentant le PASS d'un AUTRE
+        # candidat etait donc compte comme candidat PASS (defaut etabli au
+        # #446). Le verdict se lit desormais sur une ligne qui COMMENCE par le
+        # marqueur ; une mention en cours de phrase ne compte plus. La regle est
+        # ecrite en clair aux deux endroits plutot que factorisee : le regime de
+        # modification annonce interdisait de toucher une ligne hors de ces deux
+        # occurrences, et une fonction commune aurait ete un ajout ailleurs.
+        debuts = [ln.strip() for ln in t.splitlines()]
+        if any(ln.startswith("**PASS") for ln in debuts) or "PASS (niveau 1)" in t:
             verdicts["PASS"] += 1
-        elif "**FAIL" in t:
+        elif any(ln.startswith("**FAIL") for ln in debuts):
             verdicts["FAIL"] += 1
         else:
             verdicts["indéterminé"] += 1
@@ -203,7 +212,9 @@ def main():
         f = RESULTS / f"nonml_{n}_result.md"
         if f.exists():
             t = f.read_text(encoding="utf-8")
-            if "**PASS" in t or "PASS (niveau 1)" in t:
+            # Meme regle qu'au comptage ci-dessus (#447), ecrite en clair.
+            debuts = [ln.strip() for ln in t.splitlines()]
+            if any(ln.startswith("**PASS") for ln in debuts) or "PASS (niveau 1)" in t:
                 pass_names.append(n)
     pass_names.sort()
     if pass_names:
