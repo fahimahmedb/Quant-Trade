@@ -14,8 +14,8 @@ Il n'est plus utilisable et ne doit plus être cité.
 | | |
 |---|---|
 | fichiers `*_result.md` présents | **269** |
-| verdict **PASS** | **93** |
-| verdict **FAIL** | **172** |
+| verdict **PASS** | **92** |
+| verdict **FAIL** | **173** |
 | verdict **indéterminé** (non analysable) | **4** |
 
 Le dénominateur est le nombre de fichiers de résultat réellement présents, pas
@@ -37,9 +37,9 @@ ne porte pas de verdict en gras analysable :
 
 Le décompte pris **après** la correction de composition mais **avant** celle
 d'agrégation (cycle #377) donnait **101 PASS sur 265 verdicts lisibles**. On en
-compte ici **93 sur 265**.
+compte ici **92 sur 265**.
 
-Écart : **8**. La correction d'agrégation a fait tomber 8 PASS
+Écart : **9**. La correction d'agrégation a fait tomber 8 PASS
 (`momentum_52w_high` au #378, plus 7 au #379). Les deux chiffres se
 réconcilient exactement — le décompte n'est pas un comptage indépendant qui
 « retomberait » par chance, mais la conséquence arithmétique des
@@ -56,8 +56,8 @@ FAIL** ne valide plus rien : elle porte sur un résultat qui n'existe plus.
 | | |
 |---|---|
 | batteries présentes | **83** |
-| **caduques** (stratégie désormais FAIL) | **12** |
-| encore adossées à un PASS | 63 |
+| **caduques** (stratégie désormais FAIL) | **13** |
+| encore adossées à un PASS | 62 |
 | sans résultat associé analysable | 8 |
 
 ### Batteries caduques
@@ -69,6 +69,7 @@ FAIL** ne valide plus rien : elle porte sur un résultat qui n'existe plus.
 - `nonml_cross_market_correlation_ndx_dax_overlay`
 - `nonml_delinquency_nfci_baa10y_graduated_overlay`
 - `nonml_delinquency_nfci_baa10y_majority_overlay`
+- `nonml_dollar_neutral_composite_vol_targeted`
 - `nonml_ewma_vol_targeting_overlay`
 - `nonml_financial_conditions_overlay`
 - `nonml_gjr_vol_managed_weekly_rebalance`

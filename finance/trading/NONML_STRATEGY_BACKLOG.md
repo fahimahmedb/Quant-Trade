@@ -3510,3 +3510,51 @@ reproductible à zéro.
 **Bilan final : 8 foyers, 21 PASS niveau 1 tombés, 0 gagné, 27 plateaux de
 robustesse modifiés (24 rétrécis), 164 montants de simulation corrigés, 0 PASS
 RENFORCÉ avant comme après.**
+
+## Backlog #393 (12/08/2026) — clôture : inventaire actualisé et pistes restantes
+
+| 393 | Recalculer l'inventaire des PASS après la fin de la campagne (#383-#392) | Aucune nouvelle donnée | **FAIT.** **92 PASS, 173 FAIL, 4 indéterminés** sur 269 fichiers de résultat. **13 batteries Règle 9 caduques** (62 encore adossées à un PASS, 8 orphelines). |
+
+**Contrôle de cohérence :** l'inventaire du #382 donnait 93 PASS et 12 batteries
+caduques. L'écart est exactement d'une unité dans les deux cas, et la batterie
+nouvellement caduque est `dollar_neutral_composite_vol_targeted` — précisément la
+stratégie reclassée PASS → FAIL au #386 (dépendance périmée sur son amont #349).
+Les deux inventaires se réconcilient sans résidu.
+
+### Compteur officiel après campagne
+
+**92 PASS niveau 1 sur 265 verdicts lisibles. 0 PASS RENFORCÉ.**
+Le « 101 PASS sur 372 hypothèses » reste périmé et ne doit pas être cité.
+
+### Backlog « à faire » : épuisé. Pistes proposées avant clôture
+
+Le terrain non-ML librement accessible reste cartographié comme épuisé (constat
+convergent des synthèses v9-v15, confirmé par 4 recherches exploratoires
+indépendantes). Trois pistes restent néanmoins ouvertes, par ordre de valeur
+attendue décroissante :
+
+1. **Figer `n_trials` et `var_trials` dans un fichier de données versionné**
+   (signalé au #389, non traité car c'est un choix de méthode). Aujourd'hui ces
+   paramètres du DSR sont extraits **par regex du backlog en prose**, si bien que
+   rédiger des comptes rendus rend mécaniquement le critère plus permissif.
+   Aucun verdict n'est affecté à ce jour (DSR observés 0,29-0,55 contre un seuil
+   à 0,95), mais c'est le seul défaut structurel connu et non corrigé du
+   protocole.
+
+2. **Re-tester le PASS le plus solide sur un historique long.**
+   `amihud_illiquidity_tilt` obtient 4/5 — meilleur score du projet — mais son
+   stress de crise ne couvre **qu'une seule fenêtre** (prix titres depuis 2021).
+   Étendre l'univers de prix titres à 2000-2026 permettrait de tester ce
+   candidat sur Dot-com, 2008 et COVID. C'est la seule façon de savoir si ce 4/5
+   tient ou s'il est un artefact d'échantillon court.
+
+3. **Nouvelle catégorie de données utilisateur.** Les trois classes de
+   participants testées (CFTC, FINRA Reg SHO, SEC Form 4) ont toutes échoué, et
+   l'infrastructure ETL est en place. Une source qualitativement nouvelle —
+   pas une variante — reste le seul levier pour rouvrir la recherche.
+
+**Ce qui est acquis et ne dépend d'aucune de ces pistes :** Buy & Hold reste la
+meilleure stratégie testée, et l'edge de volatilité de l'Étape C (GJR-t, SPA
+p=0,0000 sur 9522 observations NDX) reste le résultat statistique le plus solide
+du projet — il n'a pas été touché par la campagne, portant sur la prévision de
+volatilité et non sur un rendement composé.
