@@ -6426,3 +6426,93 @@ atteignable est très largement couvert.
 Inchangée depuis le #428 : **99** scripts de backtest non-ML sans `.npz` à leur
 nom (90 FAIL, 2 PASS écartés avec raison, 6 indéterminés, 1 sans rapport), dette
 **déclarée et chiffrée**, dont aucune conséquence sur un verdict n'est connue.
+
+---
+
+## Backlog #430 (13/08/2026) — colonne « Séances test. » ajoutée : le contrôle du #427 passe à 16/16
+
+Cycle d'**outillage documentaire**, pré-enregistré dans
+`PREREG_sessions_column_backfill.md` (committé avant toute modification), sous le
+régime déclaratif du #429. Aucune stratégie évaluée, aucun verdict recalculé.
+`n_trials = 1`.
+
+### La lacune fermée
+
+Le contrôle de cohérence du #427 — le `.npz` doit reproduire un chiffre déjà
+publié par le rapport — atteignait **13/16**. Les 3 restants
+(`halloween_effect`, `intraday_range_regime_overlay`, `tom_overlay`) ne
+publiaient **ni** séances **ni** taux d'activation. J'avais écrit alors que la
+lacune était « notée plutôt que comblée par une valeur inventée ».
+
+Elle est comblée **sans rien inventer** : la colonne publie une grandeur que le
+script calculait déjà, au format exact de cinq rapports frères
+(`golden_cross_overlay`, `sma50_trend_overlay`, …), repris tel quel.
+
+### Un détail qui n'en est pas un
+
+La valeur est `len(pnl_bh)` — la série **évaluée** — et non `len(bh_full)`.
+`intraday_range_regime_overlay` évalue une fenêtre **tronquée**
+(`pnl_bh = pnl_bh_full[idx]`, `WARMUP = 252`), et c'est cette fenêtre-là que
+contient son `.npz`. Publier `len(bh_full)` y aurait affiché un nombre que rien
+ne vérifie, avec **252 séances** d'écart. Le choix était fixé au
+pré-enregistrement, avant de voir le résultat.
+
+### Régime de modification — élargi, donc borné autrement
+
+| Cycles | Régime | Garde-fou | Tenu ? |
+|---|---|---|---|
+| #416 → #427 | 0 différence octet à octet | comparaison binaire | oui (5 lots) |
+| #428 | insertions seulement | 41 insertions, 0 suppression | oui |
+| #429 | remplacement d'une ligne annoncée | 1 suppression, texte fixé | oui |
+| **#430** | **ajout d'une colonne** | **structurel** | **oui** |
+
+Ajouter une colonne réécrit **toutes** les lignes du tableau — en-tête,
+séparateur, une ligne par marché. Un contrôle « N suppressions » n'aurait rien
+dit. Le garde-fou devient donc : *colonne retirée du rapport produit ⇒ identité
+octet à octet avec la version d'avant*. La seule différence admise est
+l'insertion d'une cellule par ligne.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| structurel | 3/3 | **3/3** | ✔ |
+| cohérence colonne NDX ↔ `.npz` | 3/3, écart nul | **3/3** | ✔ |
+| verdicts inchangés | 3/3 | **3/3 PASS** | ✔ |
+| non-débordement | 3 rapports exactement | **aucun débordement** | ✔ |
+| **contrôle du #427 recalculé** | **16/16** | **16/16** | ✔ |
+
+Le non-débordement est vérifié **par `git status`**, pas affirmé : l'ensemble des
+rapports modifiés doit être exactement les 3 cibles.
+
+**Plus aucun candidat du lot 5 n'échappe au contrôle de cohérence** — et par une
+mesure, pas par un renoncement.
+
+Anti-cheat **CONFORME**.
+
+### File des prochains cycles
+
+1. **En attente d'arbitrage de l'utilisateur** : figer `n_trials` dans un fichier
+   versionné plutôt que de le lire par expression régulière dans la prose du
+   backlog. Signalé au #421, jamais tranché unilatéralement — c'est la seule
+   entrée qui demande une décision humaine.
+2. **Plus aucune dette d'outillage actionnable n'est identifiée.** Les cinq
+   chantiers ouverts depuis le #406 sont clos : persistance du P&L (5 lots),
+   couverture du balayage #415 (62/62), couverture du balayage de doublons
+   (publiée), formulation trompeuse (#429), cohérence du lot 5 (16/16).
+3. Le #429 prévoyait que, si la file se vide, le prochain cycle **cherche une
+   dette réelle plutôt que d'en inventer une, et l'écrive s'il n'en trouve pas**.
+   C'est exactement la situation. Le prochain cycle devra donc commencer par un
+   **inventaire vérifié** — et conclure honnêtement, y compris si la conclusion
+   est « rien d'actionnable ».
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable avec les données locales est très largement couvert.
+
+### Dette restante
+
+Inchangée : **99** scripts de backtest non-ML sans `.npz` à leur nom (90 FAIL,
+2 PASS écartés avec raison publiée, 6 indéterminés, 1 sans rapport). Dette
+**déclarée, chiffrée et publiée dans le rapport du balayage lui-même**, dont
+aucune conséquence sur un verdict n'est connue.
