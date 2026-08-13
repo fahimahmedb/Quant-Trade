@@ -181,6 +181,15 @@ def main(causal=True):
         f"{'atteint' if verdict else 'NON atteint'}.**",
     ]
 
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #416), schema PANIER : le
+    # turnover d'un panier vaut somme(|dw_i|)/2 et n'est pas derivable d'une
+    # exposition scalaire, il doit donc etre sauvegarde explicitement.
+    np.savez(ROOT / "results" / "nonml_winners_trend_vol_targeting_overlay_pnl.npz",
+             pnl_gross_ov=pnl_lev + turn_lev * (COST_BPS / 1e4),
+             pnl_gross_bh=pnl_base + turn_base * (COST_BPS / 1e4),
+             turn_ov=turn_lev, turn_bh=turn_base,
+             dates=np.asarray(P.index)[start2:], cost_bps=COST_BPS)
+
     out = ROOT / "results" / "nonml_winners_trend_vol_targeting_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

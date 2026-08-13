@@ -123,6 +123,15 @@ def main():
         n_markets += 1
         n_success += int(sharpe_ok and ret_ok)
 
+        # Sauvegarde INCONDITIONNELLE du P&L (cycle #416). Ce script boucle sur
+        # cinq marches ; on sauvegarde celui du NDX, marche de reference du
+        # backlog, pour que les balayages du #406 et du #415 puissent le voir.
+        if fname == "nasdaq100_daily.txt":
+            np.savez(ROOT / "results" / "nonml_santa_vol_targeting_overlay_pnl.npz",
+                     pos=pos_t, r_asset=bh_t,
+                     dates=pd.to_datetime(df["date"]).values[1:][start:],
+                     cost_bps=COST_BPS)
+
         gate_active = (pos_t > 1.0)
         lines.append(
             f"| {name} | {me_bh['sharpe_ann']:+.2f} | {100*ret_bh:+.1f}% | {me_bh['max_drawdown_pct']:.1f}% | "
