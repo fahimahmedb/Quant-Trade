@@ -3599,3 +3599,35 @@ plus être cité comme un résultat encourageant.
 n'apprendrait rien de plus sur ce candidat, la question étant déjà tranchée par
 une variante existante. Restent les pistes n°1 (figer `n_trials`/`var_trials`,
 seul défaut structurel non corrigé) et n°3 (nouvelle catégorie de données).
+
+## Backlog #395 (12/08/2026) — exposition du backlog au biais du survivant
+
+Prolongement direct du #394, qui avait montré qu'`amihud` bascule PASS → FAIL sur
+univers point-in-time. Question : **combien d'autres PASS reposent sur l'univers
+biaisé ?**
+
+| 395 | Confronter toutes les paires (univers 2026 / point-in-time) déjà committées et mesurer l'exposition résiduelle | Aucune nouvelle donnée | **FAIT — 3 PASS sur 6 testés tombent, 0 ne s'améliore ; 15 PASS restent exposés sans vérification.** |
+
+**Basculent PASS → FAIL sur univers point-in-time :** `amihud_illiquidity_tilt`,
+`dispersion_vol_targeting_overlay`, `momentum_turnover_doublesort`.
+**Inchangés :** `momentum_12_1`, `momentum_breadth_vol_targeting_overlay`,
+`sma200_breadth_vol_targeting_overlay` (PASS), `momentum_consistency` (FAIL).
+
+**Direction unanime** : aucune stratégie ne s'améliore une fois le biais retiré —
+même signature que les deux bugs de la campagne #375-#392.
+
+**Exposition résiduelle :** 45 stratégies au niveau titre sur l'univers 2026,
+dont **38 sans contrepartie point-in-time**, dont **15 sont des PASS**. Les
+données (`prices_pit`/`volume_pit`, 214 tickers depuis 2005) sont **déjà dans le
+dépôt** : chaque vérification est un portage de script, aucun téléchargement.
+
+**Prudence sur l'extrapolation :** le taux de 3/6 ne doit pas être transposé aux
+15 non testés — l'échantillon est trop mince. Ce qui est établi, c'est que le
+biais est réel, matériel, systématiquement défavorable, et que 15 PASS y sont
+exposés sans avoir été vérifiés.
+
+Voir `results/nonml_survivorship_exposure_audit.md`.
+
+**Nouvelle piste prioritaire, ajoutée au backlog :** porter les 15 PASS exposés
+sur l'univers point-in-time, un par cycle, en réutilisant le patron des
+7 variantes `*_pit_universe` existantes.
