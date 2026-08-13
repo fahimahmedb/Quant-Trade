@@ -60,8 +60,8 @@ def main():
         f"Position 1.0x en permanence, CAP={CAP}x les jours en régime calme "
         f"(range intra-séance moyen roulant {RANGE_WINDOW}j, tercile inférieur causal expansif).",
         "",
-        "| Marché | BH Sharpe | BH Rdt total | BH MDD | Overlay Sharpe | Overlay Rdt total | Overlay MDD | Sharpe>BH | Rdt>BH |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Marché | Séances test. | BH Sharpe | BH Rdt total | BH MDD | Overlay Sharpe | Overlay Rdt total | Overlay MDD | Sharpe>BH | Rdt>BH |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     n_markets, n_success = 0, 0
 
@@ -113,7 +113,7 @@ def main():
         n_success += int(sharpe_ok and ret_ok)
 
         lines.append(
-            f"| {name} | {me_bh['sharpe_ann']:+.2f} | {100*ret_bh:+.1f}% | {me_bh['max_drawdown_pct']:.1f}% | "
+            f"| {name} | {len(pnl_bh)} | {me_bh['sharpe_ann']:+.2f} | {100*ret_bh:+.1f}% | {me_bh['max_drawdown_pct']:.1f}% | "
             f"{me_ov['sharpe_ann']:+.2f} | {100*ret_ov:+.1f}% | {me_ov['max_drawdown_pct']:.1f}% | "
             f"{'OUI' if sharpe_ok else 'non'} | {'OUI' if ret_ok else 'non'} |"
         )
