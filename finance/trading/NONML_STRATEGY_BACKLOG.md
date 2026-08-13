@@ -5998,3 +5998,122 @@ dette **déclarée et sans conséquence connue**.
 3. Doter d'un `.npz` les 2 derniers candidats du #415, si et seulement si leurs
    sources externes redeviennent accessibles hors ligne — sinon les déclarer
    définitivement hors portée.
+
+---
+
+## Backlog #426 (13/08/2026) — persistance du P&L, lot 4 : la couverture du #415 atteint 62/62
+
+Cycle d'**infrastructure**, pré-enregistré dans `PREREG_pnl_persistence_lot4.md`
+(committé avant toute modification). Aucune stratégie évaluée, aucun verdict
+recalculé, aucun paramètre de stratégie touché. `n_trials = 1`.
+
+### Le motif inscrit à la file était faux — et c'est moi qui l'avais écrit
+
+La file du #425 conditionnait ce cycle au retour de « sources externes ».
+Vérification par lecture du code, faite **avant** le pré-enregistrement :
+
+| Candidat | Source réelle | Présente ? |
+|---|---|---|
+| `vix_regime_vol_targeting_overlay` | `data/vixcls_daily.csv` + `nasdaq100_daily.txt` | **oui**, locales |
+| `rebound_speed_breadth_vol_targeting_overlay` | `data/pead/prices/*.json` (99 fichiers) | **oui**, locales |
+
+Aucun appel réseau. Leur `.npz` manquait pour la raison banale des #416, #423 et
+#424 : la sauvegarde était placée sous **`if verdict:`**, et les deux portent un
+**FAIL**.
+
+C'est la **quatrième récidive** du défaut de chiffre repris sans re-vérification
+(#417, #420, #425, celui-ci). Aggravant : la phrase fautive a été écrite au #425,
+**dans le cycle même où j'énonçais la règle l'interdisant**. La règle était bonne
+et je ne me l'étais pas appliquée à la phrase que j'écrivais au même moment.
+Publié tel quel, sans atténuation.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| scripts modifiés, `.npz` produit | 2/2 | **2/2** | ✔ |
+| non-régression, octet à octet | 0 différence | **0** | ✔ |
+| cohérence `.npz` / rapport publié | — | **2/2** | ✔ |
+| couverture du volet B | publiée | **60 → 62/62** | ✔ |
+
+Le contrôle de cohérence est **ajouté par ce cycle** : le nombre de séances
+stocké dans le `.npz` doit coïncider avec celui que le rapport annonçait déjà.
+Un `.npz` produit sans être confronté à rien ne prouve rien. 1385 et 9197
+séances, accord exact dans les deux cas.
+
+Prédiction déductive « 0 différence, couverture 60 → 62/62 » **vérifiée, chiffre
+de départ compris** — celui-ci avait été re-mesuré au moment d'écrire le
+pré-enregistrement, précisément parce que ce cycle documente le défaut inverse.
+
+### Mesures
+
+| | Avant | Après |
+|---|---|---|
+| balayage #415 — candidats mesurés | 60 / 62 | **62 / 62** |
+| balayage #415 — non mesurés | 2 | **0** |
+| candidats structurellement inactifs | 3 | **3** |
+| PASS vides | 3 | **3** |
+| balayage doublons — P&L reconstruits | 200 | **202** |
+| groupes de doublons exacts | 3 | **3** |
+| quasi-doublons | 1 | **1** |
+
+Les 2 candidats activent **23,9 %** et **16,9 %** des séances : aucun inactif,
+aucun nouveau doublon. **La dette ouverte au #406 sur le diagnostic du #415 est
+soldée** — il ne repose plus sur aucun candidat manquant.
+
+Vingt-huit résultats publiés ont désormais été testés contre leur propre code par
+les lots #416, #423, #424 et #426.
+
+Anti-cheat **CONFORME**.
+
+### Trois pistes pour la suite — chacune avec sa trace de vérification (règle #420)
+
+Vérifications faites **avant** de les inscrire, et publiées avec elles :
+
+**Aucune idée de stratégie n'est proposée.** Contrôle fait ce cycle : les **66**
+fichiers de `data/` sont **tous** référencés par au moins un script — il n'existe
+aucune source locale inexploitée sur laquelle bâtir une hypothèse nouvelle. Cela
+confirme le constat du #420 par une mesure, et non par mémoire.
+
+1. **Lot 5 — les 18 rapports PASS sans `.npz`.** Mesuré ce cycle : sur 101
+   rapports portant un PASS, **18 n'ont pas de `.npz`** et sont donc invisibles
+   au balayage de doublons. Liste **complète**, inscrite ici pour que la trace
+   soit vérifiable sans rejouer le cycle :
+
+   `breadth_confirmation_overlay`, `capitulation_gate_floor_sweep`,
+   `golden_cross_overlay`, `halloween_effect`, `index_52w_high_overlay`,
+   `intl_breadth_confirmation_overlay`, `intraday_range_regime_overlay`,
+   `january_effect_lowprice_overlay`, `lowvol_sma200_overlay`, `momentum_12_1`,
+   `santa_claus_rally_overlay`, `short_term_momentum`,
+   `sma200_tom_halloween_union_overlay`, `sma50_trend_overlay`,
+   `tom_decomposition_overlay`, `tom_halloween_union_overlay`, `tom_overlay`,
+   `turn_of_month`.
+
+   **Ce lot n'est pas comme les trois précédents : les #423, #424 et #426 ne
+   portaient que des FAIL, donc aucun verdict ne pouvait changer. Ceux-ci portent
+   des PASS.** Un doublon exact entre deux d'entre eux
+   gonflerait le décompte « X PASS sur Y hypothèses » qui est une affirmation de
+   tête du backlog. Au moins un (`capitulation_gate_floor_sweep`) est un
+   diagnostic et non une stratégie : à écarter après lecture, pas d'office.
+2. **Publier la couverture réelle du balayage de doublons.** Mesuré ce cycle :
+   les **202** séries qu'il reconstruit se décomposent en **192** `.npz` non-ML
+   et **10** séries ML / Étape D (`etape_D_overlay_optimized`,
+   `ml_meta_labeling_*`, `ml_crossmarket_pooling_*`, …), le balayage lisant
+   `results/*_pnl.npz` sans filtre de préfixe. Rapportés aux **284** scripts de
+   backtest non-ML, ces 192 séries couvrent environ **deux tiers** du dépôt.
+   Ce ratio n'est écrit nulle part, et la composition non plus : le rapport
+   annonce « 202 P&L reconstruits » sans dire que 10 ne sont pas des candidats
+   non-ML. Les deux chiffres devraient figurer dans son propre rapport, comme le
+   volet B du #415 publie le sien.
+3. **En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials` dans
+   un fichier versionné plutôt que de le lire par expression régulière dans la
+   prose du backlog. Signalé au #421, non tranché unilatéralement.
+
+### Dette restante
+
+Le lot des candidats détectés par le #415 est **clos** (0 non mesuré).
+
+Le reste du dépôt (~110 scripts à `savez` conditionnel, ~122 sans) demeure une
+dette **déclarée**, mais elle n'est plus « sans conséquence connue » : la piste 1
+ci-dessus en identifie une conséquence **mesurée et chiffrée** — 18 PASS hors du
+champ du balayage de doublons.
