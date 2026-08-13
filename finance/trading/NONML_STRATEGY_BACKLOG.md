@@ -5163,3 +5163,83 @@ les attrape, mais elle ne les empêche pas.
 3. **Rejouer le balayage de doublons du #406** maintenant que 12 `.npz`
    point-in-time supplémentaires existent, dont les paires #407/#414 et
    #413/#414 dont la proximité est mesurée.
+
+## Backlog #415 (13/08/2026) — balayage des portes de capitulation : je corrige ma propre généralisation du #410
+
+| 415 | Chercher les candidats dont un vol-targeting à plancher 1,0× neutralise la porte, comme établi au #410 | Aucune nouvelle donnée | **FAIT — 1 seul cas, déjà connu ; et la formulation du #410 était trop large** |
+
+### Ce que le balayage trouve
+
+**Volet A — détection statique, exhaustive** : 282 scripts `*_backtest.py`
+examinés, 0 illisible, **62** portant la structure `clip(…, 1.0, …)`.
+
+**Volet B — mesure d'activation** : 33 mesurés via `.npz`, **29 non mesurables**.
+
+**Un seul candidat structurellement inactif** parmi les 33 mesurés :
+`weakness_breadth_vol_targeting_overlay_pit_universe`, activation **0,00 %** —
+c'est-à-dire le cas déjà établi au #410, dont le rapport porte l'étiquette
+« NON INFORMATIF » depuis ce cycle-là.
+
+Le balayage ne découvre donc rien de neuf. Il **retrouve le cas connu**, ce qui
+est précisément la condition pour que son silence sur les autres ait un sens —
+c'est ce que le #406 n'avait pas pu obtenir.
+
+### Ce que le cycle corrige dans ma propre formulation
+
+Au #410 j'écrivais que le défaut valait « pour **toute** variante combinant une
+porte de capitulation avec un vol-targeting à plancher 1,0× ».
+
+| | |
+|---|---|
+| candidats portant la structure | 62 |
+| parmi les 33 mesurés, activation normale | **32** |
+| activation médiane des mesurés | **31,1 %** |
+
+**La structure seule ne neutralise rien.** Le plancher à 1,0× est très répandu
+dans le dépôt et, dans la quasi-totalité des cas mesurés, l'overlay s'active
+normalement. Ce qui neutralise est la **conjonction** du plancher avec une porte
+qui s'ouvre précisément quand la volatilité est haute.
+
+Ma formulation laissait entendre qu'un montage fréquent était défectueux, alors
+que le défaut tient à un type de porte particulier. Correction consignée.
+
+### Exposition restante — chiffrée, pas éludée
+
+**29** candidats détectés mais non mesurables faute de `.npz`, **dont 10 portant
+un PASS** : `dispersion_trend_vol_targeting_overlay`,
+`momentum_breadth_vol_targeting_overlay`, `momentum_dispersion_trend_and_overlay`,
+`multimarket_breadth_vol_targeting_overlay`, `net_breadth_vol_targeting_overlay`,
+`santa_vol_targeting_overlay`, `sma200_breadth_vol_targeting_overlay`,
+`sma200_momentum_breadth_and_overlay`, `weakness_breadth_vol_targeting_overlay`,
+`winners_trend_vol_targeting_overlay`.
+
+Ces dix ont la structure à risque **et** un verdict positif ; le diagnostic les
+laisse en suspens. C'est le chiffrage exact de ce que la lacune du #406 coûte, et
+l'argument le plus concret en faveur de la sauvegarde systématique du P&L —
+désormais la première ligne de la file.
+
+Noter que `weakness_breadth_vol_targeting_overlay` (l'original du #410) est
+lui-même dans cette liste : son inactivité est connue par son rapport, pas par
+une mesure de ce balayage.
+
+### Audit — 4 contrôles
+
+1. **Positif et négatif** : le cas du #410 est bien détecté ; un overlay à
+   exposition constante n'est pas signalé. CONFORME.
+2. **Confirmation par lecture** du seul « PASS vide » : confirmé, et déjà
+   documenté.
+3. **Exposition restante** : ci-dessus.
+4. **Correction de la formulation du #410** : ci-dessus.
+
+Anti-cheat **CONFORME** (4/4). **Aucune correction du backlog appliquée**,
+conformément au pré-enregistrement.
+
+### File des prochains cycles
+
+1. **Sauvegarde systématique du P&L y compris en cas de FAIL** — deux cycles
+   consécutifs (#406, #415) ont buté sur la même lacune, et le #415 la chiffre :
+   10 PASS à structure risquée restent invérifiables.
+2. **Rejouer le balayage de doublons du #406** avec les 12 `.npz` point-in-time
+   ajoutés depuis, dont les paires #407/#414 et #413/#414.
+3. Nouvelle piste de stratégie non-ML, à choisir une fois les deux dettes
+   méthodologiques ci-dessus soldées.
