@@ -3558,3 +3558,44 @@ meilleure stratégie testée, et l'edge de volatilité de l'Étape C (GJR-t, SPA
 p=0,0000 sur 9522 observations NDX) reste le résultat statistique le plus solide
 du projet — il n'a pas été touché par la campagne, portant sur la prévision de
 volatilité et non sur un rendement composé.
+
+## Backlog #394 (12/08/2026) — le meilleur résultat du projet a déjà son contre-exemple dans le dépôt
+
+Piste n°2 du #393 (« étendre l'historique pour tester le 4/5 d'`amihud` sur de
+vraies fenêtres de crise »). **Aucun fetch n'est nécessaire : la réponse était
+déjà committée.**
+
+| 394 | Confronter `amihud_illiquidity_tilt` (4/5, meilleur score du projet) à sa variante univers point-in-time | Aucune nouvelle donnée (deux résultats déjà committés) | **FAIT — la variante méthodologiquement supérieure est FAIL, et la stratégie y sous-performe sa référence.** |
+
+| | `amihud_illiquidity_tilt` | `amihud_illiquidity_tilt_pit_universe` |
+|---|---|---|
+| période | 2021-07 → 2026-07 (**1270** séances) | 2015-01 → 2026-07 (**2907** séances) |
+| univers | 99 tickers, **liste NDX-100 de 2026** | 178 tickers, **point-in-time réel** |
+| Sharpe stratégie / référence | **+1,19** / +0,90 | **+0,41** / +0,62 |
+| rendement stratégie / référence | +334,1 % / +171,6 % | +188,6 % / +351,1 % |
+| verdict | **PASS** (4/5 en batterie) | **FAIL** |
+
+Sur l'univers point-in-time, la stratégie ne se contente pas d'échouer : elle
+**sous-performe sa référence sur les deux jambes**, Sharpe comme rendement.
+
+**Ce que la comparaison établit — et ce qu'elle confond.** Les deux versions
+diffèrent par **deux** facteurs à la fois : la longueur d'échantillon (1270 vs
+2907 séances) et la construction de l'univers (liste 2026 figée vs appartenance
+point-in-time). Le second introduit un **biais du survivant** dans la version
+courte : sélectionner aujourd'hui les titres du NDX-100 de 2026 puis remonter le
+temps revient à ne retenir que des sociétés qui ont prospéré. **On ne peut donc
+pas attribuer l'écart à la seule longueur d'échantillon.** Ce qu'on peut affirmer,
+en revanche, c'est que la version **méthodologiquement supérieure sur les deux
+plans** échoue nettement.
+
+**Conséquence sur la lecture du 4/5.** Ce score, présenté au #385 comme le
+meilleur du projet, porte sur la version courte **et** biaisée par le survivant.
+Les trois réserves déjà émises (crise sur une seule fenêtre, DSR en échec,
+niveaux recalculés par la campagne) doivent être complétées par une quatrième,
+plus lourde : **son homologue sans biais du survivant est FAIL**. Le 4/5 ne doit
+plus être cité comme un résultat encourageant.
+
+**La piste n°2 du #393 est close** sans fetch : l'extension d'historique
+n'apprendrait rien de plus sur ce candidat, la question étant déjà tranchée par
+une variante existante. Restent les pistes n°1 (figer `n_trials`/`var_trials`,
+seul défaut structurel non corrigé) et n°3 (nouvelle catégorie de données).
