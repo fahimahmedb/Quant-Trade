@@ -7,13 +7,13 @@ identiques. Critères fixés avant exécution : égalité exacte
 
 ## Couverture
 
-- fichiers `*_pnl.npz` trouvés : **165**
-- P&L reconstruits : **165**
+- fichiers `*_pnl.npz` trouvés : **183**
+- P&L reconstruits : **183**
 - schémas non reconnus ou séries inexploitables : **0**
 
 **Couverture 100 %** — critère 1 du pré-enregistrement atteint.
 
-Répartition par schéma : indiciel (140), deux jambes (13), panier (10), candidat+turnover (1), candidat seul (1).
+Répartition par schéma : indiciel (155), panier (13), deux jambes (13), candidat+turnover (1), candidat seul (1).
 
 ## Doublons exacts
 
@@ -26,9 +26,15 @@ Répartition par schéma : indiciel (140), deux jambes (13), panier (10), candid
 
 ## Quasi-doublons (corrélation ≥ seuil, non identiques)
 
-- paires signalées : **0**
+- paires signalées : **1**
 
-Aucune.
+| Candidat A | Candidat B | Corrélation |
+|---|---|---|
+| `nonml_momentum_breadth_vol_targeting_overlay` | `nonml_sma200_momentum_breadth_and_overlay` | 0.99990654 |
+
+Ces paires **ne sont pas comptées comme doublons** à ce stade : le critère 2
+du pré-enregistrement impose de les confirmer ou de les rejeter par lecture
+des deux scripts. Voir l'audit.
 
 ## Effet sur le décompte d'essais
 
