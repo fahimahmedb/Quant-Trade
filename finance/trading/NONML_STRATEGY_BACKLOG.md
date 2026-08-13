@@ -4082,3 +4082,73 @@ la seule régularité visible de l'axe, et elle sera vérifiée sur
 
 **Prochain candidat des 10 restants :** `sma200_leaders_overlay` (vérifier
 d'abord son historique dans le backlog, règle du #400).
+
+## Backlog #403 (13/08/2026) — `sma200_leaders_overlay` sur univers point-in-time : un doublon, annoncé avant calcul
+
+| 403 | Rejouer `sma200_leaders_overlay` (#33) avec l'appartenance NDX-100 résolue à chaque date de rebalancement | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL, mais DOUBLON exact du #401 : ne compte pas comme une observation** |
+
+### Le risque était déclaré au PREREG, avant tout calcul
+
+Le pré-enregistrement annonçait que ce cycle pouvait n'être qu'une identité
+arithmétique du #401, et fixait **d'avance** la règle de comptage : *si le
+nombre de séances où les deux signaux diffèrent est nul, ce cycle ne compte pas
+comme une observation nouvelle de l'axe.* Le calcul a tranché dans ce sens.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Leaders 1.0× (référence) | +0,70 | +393,0 % | −32,5 % |
+| Leaders + overlay SMA200 2.0× | +0,66 | +1109,9 % | −48,3 % |
+
+**FAIL** (Sharpe −0,04) — chiffres rigoureusement identiques au #401.
+
+### L'audit prouve l'identité au lieu de rejouer des contrôles déjà passés
+
+- **Identité bit-à-bit** des deux `.npz` (`np.array_equal`, pas une tolérance) :
+  `pnl_gross_ov`, `pnl_gross_bh`, `turn_ov`, `turn_bh`, `dates`, `cost_bps` —
+  identiques sur 2900 points. Les contrôles du #401 portent donc **littéralement
+  sur les mêmes nombres** ; les transférer n'est pas un raccourci. Sa réserve
+  (écart de niveau 6,34 % au contrôle en parts) se transfère aussi, et n'est pas
+  tue ici au motif qu'elle arrange.
+- **Inclusion des signaux élargie à tout l'historique** de l'indice (10273
+  séances, pas seulement la fenêtre testable) : **0** séance où le 52w-high est
+  actif sans la SMA200. L'inclusion n'est donc pas un accident de fenêtre.
+- **Causalité du décalage** et **appartenance PIT à la date de décision**
+  recalculées ici, pas héritées : conformes (0 violation sur 139 dates).
+
+Anti-cheat **CONFORME** (4/4).
+
+### Ce que ce cycle apporte réellement
+
+Il ne fait pas avancer l'axe du biais du survivant d'un candidat. Il établit en
+revanche que **les entrées #33 et #41, comptées séparément depuis leur création,
+désignent la même stratégie** — l'audit du #41 l'avait noté sur 2022-2026, on
+sait maintenant que c'est vrai sur les 10273 séances disponibles.
+
+Conséquence méthodologique : **le nombre d'essais indépendants du backlog est
+surestimé d'au moins une unité.** Cela compte pour les corrections de
+multiplicité (DSR, SPA), et va dans le sens **défavorable** aux candidats — donc
+dans le sens qu'on n'a aucune envie de trouver, ce qui est précisément pourquoi
+il faut l'inscrire.
+
+**Piste ouverte, non traitée ici** : rien ne garantit que #33/#41 soit le seul
+doublon du backlog. Un balayage systématique des paires de candidats à P&L
+identique serait le prolongement naturel — il est ajouté à la file plutôt que
+bricolé en fin de cycle.
+
+### Bilan de l'axe biais du survivant — inchangé
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **11** (inchangé : le #403 est un doublon) |
+| dont maintenus | 5 |
+| dont tombés | 6 |
+| PASS restant exposés, sans vérification | **9** |
+
+**File des prochains cycles :**
+
+1. `smallcap_proxy_outperformance_breadth_overlay` — portage PIT (vérifier
+   d'abord son historique, règle du #400).
+2. **Balayage des doublons** : chercher, parmi tous les `.npz` de `results/`, les
+   paires de candidats dont le P&L coïncide exactement ou à une transformation
+   triviale près. Corriger le décompte d'essais du backlog en conséquence.
+3. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
