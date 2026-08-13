@@ -4636,3 +4636,80 @@ contre-exemple (#398) — toujours pas une règle, toujours pas inscrite.
 3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au
    #406, dont ce cycle vient de montrer un coût concret : impossible de comparer
    les batteries).
+
+## Backlog #409 (13/08/2026) — `range_position_vol_targeting_overlay` sur univers point-in-time : TOMBE
+
+| 409 | Rejouer `range_position_vol_targeting_overlay` (#103) avec la position moyenne dans le range calculée sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL, le PASS ne survit pas** |
+
+### Résultat
+
+PREREG committé avant tout calcul, `n_trials = 1`, réutilisation stricte
+(Règle 7). 2645 séances (2016-01-04 → 2026-07-13), couverture 87,6 %, porte
+active 36,8 %, exposition moyenne 1,20×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,79 | +542,3 % | −35,6 % |
+| Overlay gaté position range (PIT) | +0,77 | +620,0 % | −35,6 % |
+
+Rendement : OUI. Sharpe : **non, −0,02**. → **FAIL.**
+Origine (#103, univers biaisé) : +0,68 → +0,70 et +132,4 % → +151,0 %, PASS.
+
+### C'est le premier candidat à P&L indiciel qui tombe
+
+Les trois portages précédents de cette architecture (#405, #407, #408) étaient
+tous maintenus. À chacun j'ai noté que la conjecture du #396 — « le P&L indiciel
+survit, le panier tombe » — accumulait des confirmations, et à chacun j'ai refusé
+de l'inscrire comme règle au motif qu'un contre-exemple (#398) subsistait.
+
+**Ce cycle fournit le second contre-exemple.** Ne pas avoir inscrit la règle
+évite d'avoir à la retirer aujourd'hui. Le décompte est désormais : quatre
+candidats à P&L indiciel maintenus, deux tombés — c'est-à-dire pas une règle.
+
+### Abstention sur les mécanismes, et son coût
+
+Le pré-enregistrement ne proposait **aucun mécanisme**, contrairement aux #407 et
+#408 dont les deux hypothèses avaient été contredites par la mesure. La raison est
+écrite au PREREG : une troisième n'aurait pas eu de meilleure base.
+
+Conséquence assumée : la mesure du contrôle 4 est **moins informative**, puisqu'il
+n'y a rien à confirmer ou infirmer. Elle est publiée telle quelle, sans
+interprétation :
+
+| | Signal moyen | Écart-type |
+|---|---|---|
+| Univers point-in-time | 0,5352 | 0,1342 |
+| Univers biaisé | 0,5718 | 0,1499 |
+
+(1144 dates communes ; décalage +0,0366.)
+
+### Audit — 5 contrôles
+
+- **1.** Signal recalculé par `pandas` au lieu des boucles NumPy, 6 dates : écart
+  maximal **0,00e+00**. CONFORME.
+- **2.** Anti-lookahead (prix futurs ×7) : signal inchangé. CONFORME.
+- **3.** Le filtre d'appartenance change le signal sur **6/6** dates. CONFORME.
+- **5.** Causalité de la porte : décalage d'un jour exact. CONFORME.
+- **4.** Mesure de niveau, ne conditionne aucun verdict.
+
+Garde exécutable du piège du #396 en place et franchie (fenêtre au 2016-01-04).
+Anti-cheat **CONFORME** (4/4). Pas de robustesse ni de simulation 300 € : FAIL.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **15** |
+| dont maintenus | 8 |
+| dont tombés | **7** |
+| PASS restant exposés, sans vérification | **5** |
+
+Presque exactement un sur deux tombe (7 sur 15). C'est le seul énoncé que
+l'échantillon autorise ; l'architecture du candidat (panier vs indiciel) ne
+prédit pas le résultat, comme ce cycle vient de le montrer.
+
+### File des prochains cycles
+
+1. `weakness_breadth_vol_targeting_overlay` — portage PIT.
+2. `winners_trend_vol_targeting_overlay` — portage PIT.
+3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
