@@ -7467,3 +7467,86 @@ Anti-cheat **CONFORME** (4/4).
 - **10 rapports dépendants du dépôt**, dont **6 désormais marqués**, 1 disculpé,
   3 indéterminés.
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+---
+
+## Backlog #440 (13/08/2026) — campagne v3, lot 2 : la borne tombe à 6,2 %
+
+Cycle d'**inventaire**, pré-enregistré dans
+`PREREG_reproducibility_campaign_v3_lot2.md` (committé avant tout tirage). Aucune
+stratégie évaluée, aucun verdict recalculé, **aucun rapport publié modifié**.
+`n_trials = 1`.
+
+### Résultat
+
+24 tirages, graine **20260818**, **disjoints** des 24 du #438 :
+**24 identiques**, **0 structurelle**, **0 substantielle**.
+
+| | Dénominateur | Borne à 95 % | Divergents encore possibles |
+|---|---|---|---|
+| #438 seul | 23 | 12,2 % | ~35 |
+| ce lot seul | 24 | 11,7 % | — |
+| **cumul #438 + #440** | **47** | **6,2 %** | **~17** |
+
+Le cumul est légitime : lots **disjoints par construction** et classés par la
+**même règle**, fixée au #438 avant tout tirage. Le pré-enregistrement annonçait
+≈ 6,3 % pour un lot à 1 structurelle ; il n'en a produit **aucune**, d'où un
+tirage retenu de plus au dénominateur.
+
+### La correction reportée — le seul point où ce cycle fait mieux
+
+Le #438 s'était fait prendre à ne pas avoir reporté dans un script neuf une
+correction faite au #434. Vérification faite **avant** d'écrire le
+pré-enregistrement : le script v3 portait encore le `subprocess.run` qui avait
+laissé, au #439, un **orphelin réécrire un rapport publié après sa restauration**.
+
+La correction (groupe de processus isolé, `os.killpg`) a été **reportée avant le
+tirage**, pas après en avoir vu les effets. L'arbre est propre en fin de cycle.
+
+> **Nuance publiée** : aucun candidat de ce lot n'a atteint le délai, donc le
+> chemin de code corrigé n'a peut-être **jamais été emprunté**. C'est un
+> **garde-fou en place, pas une victoire mesurée** — je ne m'en attribue pas le
+> mérite.
+
+### Ce que 6,2 % dit — et ne dit pas
+
+Sur **290** rapports, la borne laisse place à **~17** divergences substantielles
+non détectées. **Aucune n'a jamais été observée** sur l'ensemble des campagnes —
+mais « jamais observée » n'est pas « inexistante », et c'est exactement ce que la
+borne chiffre.
+
+| Étape | Borne | Statut |
+|---|---|---|
+| #434 | 22,1 % | caduque (#436) |
+| #435 | 8,0 % | **caduque** (#436) |
+| #437 | — | non publiée |
+| #438 | 12,2 % | remplacée par le cumul |
+| **#440** | **6,2 %** | **publiée** |
+
+La borne est enfin **meilleure** que le 8,0 % caduc revendiqué au #435 — par un
+chemin qui a coûté **trois remises à zéro**, et sur une règle de classification
+qui n'existait pas alors.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Lot 3 (24 tirages)** — porterait la borne de **6,2 %** à **~4,1 %**, soit de
+   ~17 à ~11 divergences possibles. **Le gain se tasse** : c'est le dernier lot
+   dont le bénéfice reste net, et la décision doit se prendre sur ce chiffre.
+2. **Les 3 candidats indéterminés du #439** (`reproducibility_sample*`) dépassent
+   300 s parce qu'ils ré-exécutent des dizaines de backtests. Les classer
+   demanderait un délai bien plus long, à déclarer — ou renoncer et l'écrire.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Reproductibilité** : borne **6,2 %** sur 47 tirages retenus, ~17 divergences
+  substantielles encore possibles. **Aucune jamais observée.**
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439), 1 disculpé,
+  3 indéterminés.
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
