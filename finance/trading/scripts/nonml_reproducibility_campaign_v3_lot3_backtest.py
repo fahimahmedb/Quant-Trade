@@ -255,7 +255,7 @@ def main():
         L.append(f"Sur un vivier de **{len(pool)}**, il reste de la place pour "
                  f"**~{int(b*len(pool))}** divergences substantielles non détectées.")
         L.append("")
-        L.append("Le cumul est légitime : les deux lots sont **disjoints par construction** et")
+        L.append("Le cumul est légitime : les **trois** lots sont **disjoints par construction** et")
         L.append("classés par la **même règle**, fixée au #438 avant tout tirage.")
     L.append("")
 
