@@ -6226,3 +6226,111 @@ Le lot des PASS sans `.npz` est **clos** à 2 exceptions listées. La couverture
 balayage de doublons passe de 192 à **208** candidats non-ML sur 284 ; les ~76
 restants sont des scripts sans `savez` portant un FAIL, dette **déclarée** dont
 aucune conséquence sur un verdict n'est connue.
+
+---
+
+## Backlog #428 (13/08/2026) — le balayage de doublons publie sa propre couverture (et une correction du #427)
+
+Cycle d'**outillage documentaire**, pré-enregistré dans
+`PREREG_duplicate_sweep_coverage.md` (committé avant toute modification). Aucune
+stratégie évaluée, aucun verdict recalculé, aucun seuil de détection touché.
+`n_trials = 1`.
+
+### Ce que le rapport laissait croire
+
+Il annonçait « **218** P&L reconstruits » et « **Couverture 100 %** ». Ce 100 %
+porte sur les fichiers **trouvés** — tous relus sans erreur — et non sur le
+dépôt. Isolé, il se lit comme une couverture complète.
+
+Le rapport publie désormais, **calculés par lui-même et non écrits en dur** :
+
+| | Nombre |
+|---|---|
+| séries lues (`results/*_pnl.npz`) | **218** |
+| dont candidats non-ML | **208** |
+| dont séries **ML / Étape D** | **10** |
+| scripts de backtest non-ML | **284** |
+| **couverture non-ML** | **73,2 %** |
+
+…ainsi que le fait qu'il lit `results/*_pnl.npz` **sans filtre de préfixe** : les
+10 séries ML / Étape D sont comparées aux candidats non-ML. C'est voulu, mais il
+fallait le savoir — l'un de ses trois groupes de doublons associe précisément une
+série d'Étape D (`etape_D_overlay_optimized`) à un candidat non-ML.
+
+### Contrôles pré-enregistrés
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| `diff` du rapport | 0 suppression | **41 insertions, 0 suppression** | ✔ |
+| décomptes de doublons | 218 / 3 / 1 | **218 / 3 / 1** | ✔ |
+| cohérence, recomptage indépendant | écart nul | **4/4 + somme** | ✔ |
+| couverture inscrite au rapport | oui | oui | ✔ |
+
+**Ce cycle sort délibérément du régime « 0 différence octet à octet »** tenu par
+les cinq lots de persistance (#416 → #427) : son objet même est d'ajouter des
+lignes à un rapport publié. Le pré-enregistrement le déclarait avant de
+commencer, plutôt que de laisser croire que le régime tenait encore. Le contrôle
+devient « insertions seulement » — le même critère qu'au #427 sur les scripts,
+transposé au rapport.
+
+### Un défaut attrapé avant publication — et la correction du #427
+
+La première rédaction de la section ajoutée écrivait : « **76** candidats non-ML
+n'ont aucun `.npz`… ils portent un FAIL **pour la plupart** ». **Deux fautes dans
+une phrase :**
+
+1. Le **76** venait de la soustraction `284 − 208`. Les deux ensembles **ne se
+   correspondent pas un à un** : **23** `.npz` portent le nom d'une variante
+   (`*_pit_universe`, `*_russell2000`…) sans script homonyme. Une soustraction
+   entre ensembles non alignés ne compte rien. La différence ensembliste réelle
+   est **99**.
+2. « portent un FAIL pour la plupart » était une **assertion non mesurée** —
+   exactement le geste que ces cycles corrigent ailleurs.
+
+Verdict des **99**, désormais **compté** et publié : **90** FAIL, **2** PASS (les
+deux écartés au #427 avec leur raison), **6** indéterminés, **1** sans rapport.
+
+> **Correction du #427.** Son entrée écrit « les ~76 restants sont des scripts
+> sans `savez` portant un FAIL ». Le chiffre est **99** et la répartition est
+> celle ci-dessus. Corrigé ici plutôt que réécrit dans une entrée déjà publiée.
+
+C'est la cinquième fois qu'un chiffre repris ou déduit sans vérification se
+révèle faux (#417, #420, #425, #426, celui-ci) — mais la première fois qu'il est
+attrapé **par le cycle qui l'écrivait**, avant tout commit de résultat. La règle
+du #425 commence à mordre là où il faut.
+
+### Limite assumée
+
+La ligne « **Couverture 100 %** » **subsiste telle quelle** : la modifier aurait
+violé le contrôle 1 de ce cycle. La clarification est ajoutée juste en dessous.
+Un lecteur qui s'arrête au gras avant la section ajoutée peut encore se
+méprendre — le compromis est signalé dans l'audit plutôt que passé sous silence.
+
+Anti-cheat **CONFORME**.
+
+### File des prochains cycles
+
+1. **Réécrire la ligne « Couverture 100 % »** en « 100 % des fichiers trouvés »,
+   dans un cycle qui **déclare la modification** d'une ligne publiée — comme
+   celui-ci a déclaré l'insertion. Petit, mais c'est le seul geste qui ferme
+   proprement la limite ci-dessus.
+2. **Les 3 rapports multi-marchés sans chiffre vérifiable** (`halloween_effect`,
+   `intraday_range_regime_overlay`, `tom_overlay`) : leur ajouter une colonne
+   « Séances test. » comme en ont déjà `golden_cross_overlay` et
+   `sma50_trend_overlay`. **Modifierait** leur rapport — même régime déclaratif
+   que la piste 1, et à ne pas glisser dans un lot de persistance.
+3. **En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials` dans
+   un fichier versionné plutôt que de le lire par expression régulière dans la
+   prose du backlog. Signalé au #421, non tranché unilatéralement.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+**99** scripts de backtest non-ML sans `.npz` à leur nom (90 FAIL, 2 PASS écartés
+avec raison, 6 indéterminés, 1 sans rapport) — dette **déclarée et désormais
+chiffrée exactement**, dont aucune conséquence sur un verdict n'est connue. Le
+chiffre figure maintenant dans le rapport du balayage lui-même, pas seulement
+dans l'audit d'un cycle.
