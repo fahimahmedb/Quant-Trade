@@ -6614,3 +6614,99 @@ atteignable est très largement couvert.
 - **5** PASS à soumettre à la batterie (contrôle C, ci-dessus) — **nouvelle**.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom, dette déclarée,
   chiffrée et publiée dans le rapport du balayage lui-même (#428) — inchangée.
+
+---
+
+## Backlog #432 (13/08/2026) — batterie appliquée aux PASS postérieurs à la Règle 9 : 0/4 validés
+
+Cycle d'**infrastructure de protocole**, pré-enregistré dans
+`PREREG_battery_backfill_lot.md` (committé avant toute exécution). Aucune
+stratégie nouvelle, aucun paramètre touché, **aucun verdict de niveau 1
+modifié**. `n_trials = 1` pour le cycle lui-même.
+
+Solde la dette identifiée par l'inventaire du #431.
+
+### Périmètre — 4 exécutés, 2 écartés avec leur raison
+
+Vérification faite **avant** le pré-enregistrement, en lisant les `.npz` :
+
+- `january_effect_lowprice_overlay_pit_universe` — schéma **panier**, hors de
+  portée de la batterie qui exige le schéma indiciel. **Écarté et listé, pas
+  forcé** : lui fabriquer une position scalaire serait inventer une donnée.
+- `capitulation_gate_floor_sweep` — **diagnostic et non stratégie**, écarté
+  d'office (faux positif établi au #427).
+
+### Résultat — les cinq contrôles
+
+| Candidat | a. Coûts | b. Crise | c. Stabilité | d. SPA | e. DSR | Verdict |
+|---|---|---|---|---|---|---|
+| `gjr_vol_managed_russell2000` | ÉCHEC | OK | ÉCHEC | ÉCHEC | ÉCHEC | non validé |
+| `gjr_vol_managed_sp500` | ÉCHEC | ÉCHEC | OK | OK | ÉCHEC | non validé |
+| `deep_drawdown_breadth_..._pit_universe` | ÉCHEC | OK | OK | OK | ÉCHEC | non validé |
+| `weakness_breadth_..._pit_universe` | OK | OK | OK | ÉCHEC | ÉCHEC | non validé |
+
+**0/4 PASS RENFORCÉ.** DSR en échec pour **4/4**, à `n_trials = 370`.
+
+### La prédiction — vérifiée, et sans mérite
+
+Le pré-enregistrement annonçait « **0 des 4**, l'échec venant au minimum du
+DSR ». Vérifiée sur les deux points.
+
+**Je ne la compte pas comme un succès** : elle découle d'un résultat déjà mesuré
+aux #111-#112 — à `n_trials = 110`, *aucune hypothèse individuelle du backlog
+n'avait de chance réaliste* de franchir le seuil. À 370, le constat ne pouvait
+que se répéter. C'est une déduction, pas une intuition, et l'audit le dit ainsi.
+
+### Le candidat inactif — pourquoi ses trois « OK » ne valent rien
+
+`weakness_breadth_..._pit_universe` passe **3 contrôles sur 5** (coûts, crise,
+stabilité). **C'est un artefact d'inactivité, pas une force** : il active son
+overlay **0,00 %** du temps, son P&L est *identique* à Buy & Hold (#415, #417,
+étiquette « PASS NON INFORMATIF » déjà portée). Une série identique au benchmark
+ne peut ni être dégradée par un stress de coûts, ni faire pire que lui en crise,
+ni être instable par rapport à elle-même.
+
+Le pré-enregistrement l'annonçait **avant** l'exécution. Publié avec sa lecture
+plutôt que présenté comme « 3/5 encourageants ».
+
+### Ce que le cycle établit — et ce qu'il ne découvre pas
+
+Aucun verdict de niveau 1 n'est annulé : chacun a bien atteint le critère qu'il
+s'était fixé. Ce que le lot établit, c'est qu'**aucun ne survit au filtre joint**
+que le backlog s'impose depuis le #111.
+
+Ce constat **figure déjà au backlog** (« 0 PASS RENFORCÉ » depuis les #111-#112).
+Le cycle ne le découvre pas : il **étend la couverture** du filtre aux candidats
+qui y avaient échappé.
+
+Anti-cheat **CONFORME**.
+
+### File des prochains cycles
+
+1. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement :
+   - figer `n_trials` dans un fichier versionné plutôt que de le lire par
+     expression régulière dans la prose du backlog (#421) — d'autant plus
+     saillant ici, où `n_trials = 370` détermine seul quatre échecs ;
+   - le statut de `log_return_compounding_audit` face au vérificateur anti-cheat,
+     et si une exception doit exister, l'énumérer dans un fichier versionné
+     (#431) ;
+   - étendre ou non la batterie au **schéma panier**, ce qui rendrait
+     `january_effect_lowprice_overlay_pit_universe` évaluable. Cycle distinct, à
+     déclarer — la batterie a été conçue pour une position scalaire.
+2. Les **17** candidats « du jour même » du contrôle C (#431) : statut non
+   tranchable par la date seule, laissés en l'état, comptés et publiés.
+3. **Aucune dette actionnable sans décision humaine n'est identifiée.** Le #431
+   avait cherché méthodiquement et trouvé celle-ci ; elle est soldée. Le prochain
+   cycle devra à nouveau chercher avant de conclure, et écrire « rien
+   d'actionnable » si c'est le cas.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom, dette déclarée et
+  chiffrée (#428) — inchangée.
