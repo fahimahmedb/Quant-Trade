@@ -5243,3 +5243,74 @@ conformément au pré-enregistrement.
    ajoutés depuis, dont les paires #407/#414 et #413/#414.
 3. Nouvelle piste de stratégie non-ML, à choisir une fois les deux dettes
    méthodologiques ci-dessus soldées.
+
+## Backlog #416 (13/08/2026) — sauvegarde du P&L des 10 PASS invérifiables : dette du #415 soldée
+
+| 416 | Sauvegarder le P&L des 10 candidats à PASS que le #415 ne pouvait pas mesurer, et remesurer | Aucune nouvelle donnée | **FAIT — 10/10 mesurés, non-régression parfaite, 1 porte neutralisée confirmée, 1 faux positif écarté** |
+
+### Portée tenue étroite, délibérément
+
+Le dépôt compte **114** scripts dont la sauvegarde `.npz` est conditionnée au
+verdict et **130** sans aucune sauvegarde. Les modifier tous aurait été le geste
+de masse qui a produit les défauts des #392 et #404. Ce cycle a traité **les 10
+candidats du #415 et eux seuls**, chaque script lu avant édition, aucune ligne de
+calcul touchée. Le reste est une **dette déclarée**, pas un oubli.
+
+### Contrôle de non-régression — le vrai contenu du cycle
+
+Les dix `results/*_result.md` sont **identiques octet à octet** avant et après
+ré-exécution : **10/10, 0 différence**. Dix résultats publiés à des dates
+diverses — dont certains antérieurs aux corrections des #375-#404 — se
+reproduisent exactement par leur propre code. C'est une vérification que le dépôt
+n'avait jamais faite sur ces candidats.
+
+### Couverture du balayage du #415
+
+| | Avant (#415) | Après (#416) |
+|---|---|---|
+| candidats mesurés | 33 | **42** |
+| détectés non mesurés | 29 | **20** |
+| **dont portant un PASS** | **10** | **0** |
+
+Les vingt candidats encore non mesurés portent tous un FAIL.
+
+### Ce que la mesure révèle
+
+- **`weakness_breadth_vol_targeting_overlay`** (l'original du #410) : porte
+  ouverte **0 séance sur 1385**, P&L strictement identique à Buy & Hold hors coût
+  d'entrée. **Porte neutralisée**, désormais établie par mesure et non plus
+  seulement par la lecture de son rapport.
+- **`santa_vol_targeting_overlay`** : signalé par le filtre (1,70 % d'activation)
+  puis **écarté** après mesure. Sa porte s'ouvre 174 séances sur 10252 et
+  l'overlay agit réellement alors — 203 séances de P&L différent, rendement
+  +27985,2 % contre +25465,6 %. **Porte rare par construction** (fenêtre
+  calendaire de quelques séances par an), pas neutralisée.
+
+### Ce que cela corrige dans le critère du #415
+
+Appliqué mécaniquement, le seuil de 2 % aurait requalifié en « PASS vide » une
+stratégie calendaire qui fonctionne. **Le seuil sert à sélectionner les cas à
+examiner, pas à les juger.** C'est exactement pourquoi le pré-enregistrement du
+#415 imposait une confirmation par lecture — et c'est ce qui a évité l'erreur.
+
+### Bug attrapé par la relecture avant commit
+
+La première version du contrôle 4 comptait comme « action de l'overlay » l'écart
+d'une séance dû à la convention de coût d'entrée (`pnl_bh[0] -= c`), ce qui
+classait `weakness_breadth` en « porte rare » alors que sa porte ne s'ouvre
+jamais. Comparaison désormais faite hors première séance. L'engagement de
+relecture pris au #414 a servi pour la deuxième fois consécutive.
+
+Anti-cheat **CONFORME**. **Aucune requalification appliquée**, conformément aux
+pré-enregistrements du #415 et du #416.
+
+### File des prochains cycles
+
+1. **Requalifier `weakness_breadth_vol_targeting_overlay`** (les deux versions) —
+   opération distincte, désormais adossée à une mesure et non à une lecture. Le
+   PASS doit porter l'étiquette « non informatif » comme sa version
+   point-in-time.
+2. **Rejouer le balayage de doublons du #406** avec les 22 `.npz` ajoutés depuis
+   (12 point-in-time + 10 de ce cycle), dont les paires #407/#414 et #413/#414.
+3. **Dette de persistance restante** : 114 scripts à `savez` conditionnel, 130
+   sans `savez`. À traiter par lots lus, jamais en masse.
