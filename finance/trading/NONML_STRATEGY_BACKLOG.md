@@ -5076,3 +5076,90 @@ avant de le committer) est déjà appliquée, et c'est elle qui les a attrapés.
 2. Balayage des candidats à porte de capitulation + vol-targeting plancher 1,0×
    (piste ouverte au #410).
 3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
+
+## Backlog #414 (13/08/2026) — `momentum_dispersion_vol_targeting_overlay` : MAINTENU, et l'axe du biais du survivant est CLOS
+
+| 414 | Rejouer `momentum_dispersion_vol_targeting_overlay` (#100) avec la dispersion calculée sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS. Vingtième et dernier candidat : l'axe est couvert** |
+
+### Résultat
+
+2645 séances (2016-01-04 → 2026-07-13), couverture 87,8 %, porte active 32,1 %.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,79 | +542,3 % | −35,6 % |
+| Overlay gaté dispersion (PIT) | **+0,84** | **+737,7 %** | −35,6 % |
+
+→ **PASS niveau 1.** Robustesse 4/4 et 4/4 (identique à l'origine). Batterie
+Règle 9 : **2/5** contre 3/5 à l'origine — le SPA devient significatif
+(0,0710 → 0,0264) tandis que le stress de coûts et la stabilité temporelle
+tombent. **Troisième cycle** (après #407 et #413) où le passage à l'univers réel
+fait monter la significativité en faisant baisser le score total : lire ces
+batteries par leur somme est trompeur, et c'est désormais un constat sur trois
+cas.
+
+### Les #407 et #414 ne sont pas deux confirmations indépendantes
+
+Mesure annoncée au pré-enregistrement **avant** calcul : les deux candidats sont
+bâtis sur la **même matrice de momentum 12-1**, agrégée autrement (écart-type
+transversal ici, écart entre déciles extrêmes au #407).
+
+| | |
+|---|---|
+| séances communes | 2656 |
+| mêmes décisions de porte | **93,3 %** |
+| corrélation des deux portes | **0,8679** |
+
+Portes **très proches mais distinctes** — pas interchangeables au sens du #403,
+qui exigeait l'identité. Mais leur voisinage signifie que ces deux PASS comptent
+pour moins de deux observations indépendantes dans le bilan ci-dessous. Le
+`.npz` est sauvegardé pour que le balayage du #406 compare les deux P&L.
+
+### Bilan final de l'axe biais du survivant (#393 → #414)
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **20** |
+| dont maintenus | **11** (dont 1 non informatif, et 2 non indépendants) |
+| dont tombés | **9** |
+
+**Ce que l'axe a établi :**
+
+1. **Environ la moitié des PASS du backlog ne survivent pas** au remplacement de
+   la liste NDX-100 de 2026 par l'appartenance réelle à chaque date.
+2. **Les six candidats à panier de titres testés sont tous tombés** ; les
+   candidats à P&L indiciel sont 5 maintenus contre 1 tombé (#409). Le
+   déséquilibre est net mais comporte un contre-exemple de chaque côté : je n'en
+   fais pas une règle, ayant vu au #409 une régularité à quatre confirmations se
+   briser à la cinquième.
+3. **L'« edge extrême » du #14 était un artefact de survivant** (#411) : à
+   fenêtre identique, le panier Winners passe de +250,7 % à +38,1 %. C'est le
+   résultat le plus net de l'axe, et il n'a été obtenu que parce qu'un contrôle
+   d'attribution séparait univers et période — contrôle improvisé au #411, puis
+   pré-enregistré à partir du #412.
+4. **Aucun candidat maintenu ne passe la batterie Règle 9.** Le meilleur atteint
+   3/5. Survivre au biais du survivant ne rend robuste aucune de ces stratégies :
+   cela élimine seulement une objection parmi plusieurs.
+
+**Ce que l'axe n'a pas établi** : que les 11 maintenus soient exploitables. Le
+DSR reste très loin du seuil pour tous, le stress de coûts échoue presque
+partout, et deux des maintenus mesurent la même chose.
+
+### Défaut de méthode, quatrième cycle consécutif
+
+L'engagement de relecture intégrale pris au pré-enregistrement a servi dès le
+premier rapport : quatre formulations héritées de la dérivation (« Recalcul du
+spread », accords fautifs) ont été corrigées avant commit. Quatre cycles de
+suite, la dérivation de scripts laisse des traces dans la prose ; la relecture
+les attrape, mais elle ne les empêche pas.
+
+### File des prochains cycles
+
+1. **Balayage des candidats à porte de capitulation + vol-targeting plancher
+   1,0×** — le #410 a montré qu'un tel montage ne peut jamais s'activer. Combien
+   d'entrées du backlog ont cette structure, et combien de leurs PASS sont vides ?
+2. **Sauvegarde systématique du P&L y compris en cas de FAIL** — le #406 a montré
+   que le balayage de doublons ne voit que 41 % du backlog.
+3. **Rejouer le balayage de doublons du #406** maintenant que 12 `.npz`
+   point-in-time supplémentaires existent, dont les paires #407/#414 et
+   #413/#414 dont la proximité est mesurée.
