@@ -126,7 +126,11 @@ def main():
         L.append("**Couverture incomplète — rapportée comme telle**, conformément au critère 1")
         L.append("du pré-enregistrement.")
     else:
-        L.append("**Couverture 100 %** — critère 1 du pré-enregistrement atteint.")
+        # Formulation reecrite au #429 (texte fixe dans son pre-enregistrement) :
+        # le mot << Couverture >> suggerait une part du depot, alors que le
+        # denominateur est l'ensemble des fichiers deja presents.
+        L.append("**100 % des fichiers trouvés ont été relus** — critère 1 du pré-enregistrement")
+        L.append("atteint. Ce taux ne mesure pas la couverture du dépôt : voir juste en dessous.")
     L.append("")
     # Decomposition et taux de couverture (cycle #428). Le chiffre ci-dessus
     # porte sur les fichiers TROUVES, pas sur le depot : sans les lignes qui

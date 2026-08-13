@@ -11,7 +11,8 @@ identiques. Critères fixés avant exécution : égalité exacte
 - P&L reconstruits : **218**
 - schémas non reconnus ou séries inexploitables : **0**
 
-**Couverture 100 %** — critère 1 du pré-enregistrement atteint.
+**100 % des fichiers trouvés ont été relus** — critère 1 du pré-enregistrement
+atteint. Ce taux ne mesure pas la couverture du dépôt : voir juste en dessous.
 
 ### Ce que « 100 % » recouvre — et ce qu'il ne recouvre pas
 
