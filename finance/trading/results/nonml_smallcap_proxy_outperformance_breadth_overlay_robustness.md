@@ -9,7 +9,7 @@ CAP pré-enregistré = 2.0x, fenêtre pré-enregistrée = 20j.
 | 1.5x | OUI |
 | 2.0x | OUI ← CAP pré-enregistré |
 | 2.5x | OUI |
-| 3.0x | OUI |
+| 3.0x | non |
 
 ## Grille fenêtre de vol (CAP fixé à 2.0x)
 

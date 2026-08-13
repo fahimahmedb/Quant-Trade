@@ -62,7 +62,11 @@ def compute_smallcap_breadth_series() -> pd.Series:
     close = P.values
     T, n_tickers = P.shape
 
-    log_ret = (P / P.shift(1) - 1.0).values
+    # RETABLI au #404 : cette serie alimente la volatilite idiosyncratique,
+    # donc le SIGNAL, pas le P&L. Le #392 l'avait passee en rendements simples
+    # par correction mecanique, changeant la strategie. Retour au log, conforme
+    # au PREREG d'origine.
+    log_ret = np.log(P / P.shift(1)).values
 
     idio_vol = np.full((T, n_tickers), np.nan)
     for i in range(IDIO_VOL_WINDOW, T):
@@ -147,8 +151,11 @@ def main():
     pnl_bh = bh_t.copy()
     pnl_bh[0] -= COST_BPS / 1e4
 
-    me_bh = trading_metrics(np.log1p(pnl_bh))
-    me_ov = trading_metrics(np.log1p(pnl_ov))
+    # RETABLI au #404 : pnl_bh/pnl_ov sont deja en unites LOG (le P&L est celui
+    # de l'indice). Les repasser par log1p convertissait une seconde fois, et
+    # contredisait le rendement total calcule par exp(somme)-1 juste dessous.
+    me_bh = trading_metrics(pnl_bh)
+    me_ov = trading_metrics(pnl_ov)
     ret_bh = np.exp(pnl_bh.sum()) - 1.0
     ret_ov = np.exp(pnl_ov.sum()) - 1.0
 

@@ -13,10 +13,9 @@ Critère : le script construit `np.log(close[1:] / close[:-1])` (rendements log
 de l'indice) **et** appelle `trading_metrics(np.log1p(...))`.
 
 - scripts examinés : **807**
-- scripts atteints : **2**
+- scripts atteints : **0**
 
-- `nonml_log1p_double_conversion_audit.py`
-- `nonml_smallcap_proxy_outperformance_breadth_overlay_backtest.py`
+Aucun.
 
 ## Défaut B — rendements simples alimentant un SIGNAL
 
@@ -26,8 +25,8 @@ Ce contrôle vérifie l'annonce plutôt que de la croire : détection des noms
 affectés depuis `(P / P.shift(1) - 1.0)` puis utilisés à l'intérieur d'une
 fonction de signal, par `tokenize` et non par regex.
 
-- scripts avec une série de rendements simples : **98**
-- dont la série entre dans une fonction de signal : **8**
+- scripts avec une série de rendements simples : **97**
+- dont la série entre dans une fonction de signal : **7**
 
 | Script | Nom | Ligne | Fonction |
 |---|---|---|---|
@@ -55,8 +54,12 @@ fonction de signal, par `tokenize` et non par regex.
 | `nonml_sma200_leaders_overlay_pass_validation_battery.py` | `R` | 50 | `build_raw_series()` |
 | `nonml_sma200_leaders_overlay_pass_validation_battery.py` | `R` | 83 | `build_raw_series()` |
 | `nonml_sma200_leaders_overlay_pass_validation_battery.py` | `R` | 84 | `build_raw_series()` |
-| `nonml_smallcap_proxy_outperformance_breadth_overlay_backtest.py` | `log_ret` | 65 | `compute_smallcap_breadth_series()` |
-| `nonml_smallcap_proxy_outperformance_breadth_overlay_backtest.py` | `log_ret` | 69 | `compute_smallcap_breadth_series()` |
+
+**Faux positifs identifiés par lecture** : les fichiers
+`*_pass_validation_battery.py` sont signalés parce que leur fonction
+`build_raw_series()` contient « series ». Lecture faite : cette fonction
+**reconstruit le P&L**, et le signal (`ratio = close / rolling_max`) est calculé
+depuis `close`, jamais depuis `R`. Ce ne sont donc pas des cas du défaut B.
 
 **Limite assumée de ce contrôle** : « fonction de signal » est reconnue par
 son nom (heuristique), pas par une analyse de flot de données. Il peut donc
