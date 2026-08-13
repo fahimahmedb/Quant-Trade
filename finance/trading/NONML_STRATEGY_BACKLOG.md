@@ -4527,3 +4527,112 @@ règle ; aucune n'est inscrite.
 1. `net_breadth_vol_targeting_overlay` — portage PIT.
 2. `range_position_vol_targeting_overlay` — portage PIT.
 3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au #406).
+
+## Backlog #408 (13/08/2026) — `net_breadth_vol_targeting_overlay` sur univers point-in-time : MAINTENU
+
+| 408 | Rejouer `net_breadth_vol_targeting_overlay` (#90) avec la breadth nette calculée sur l'appartenance NDX-100 résolue à chaque date | `data/pead/prices_pit/` déjà présent | **FAIT — PASS, le candidat SURVIT au portage** |
+
+### Résultat
+
+PREREG committé avant tout calcul, `n_trials = 1`, réutilisation stricte
+(Règle 7) — **seuil de porte compris (0,0)**. Le recalibrer sur le nouveau
+niveau de breadth aurait été un retuning, exclu explicitement au PREREG.
+
+2896 séances (2015-01-05 → 2026-07-13), couverture 88,4 %, porte active 62,9 %,
+position moyenne 1,32×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Buy&Hold (NDX) | +0,76 | +597,4 % | −35,6 % |
+| Overlay gaté breadth nette (PIT) | **+0,79** | **+930,4 %** | −36,9 % |
+
+→ **PASS.**
+
+### Le piège du #396 transformé en test exécutable
+
+Au #405 je l'avais *affirmé* évité (à tort) ; au #407 je l'avais *implémenté*
+correctement ; ici le script **lève une exception** si la fenêtre testable démarre
+avant 2015. Elle démarre au 2015-01-05 : garde franchie du premier coup. Une
+affirmation dans un PREREG ne vaut rien tant qu'elle n'est pas un test qui casse.
+
+### Mécanisme du PREREG contredit — deuxième cycle consécutif
+
+Ce candidat a une porte à **seuil absolu** (breadth > 0), donc non invariante par
+translation du signal — contrairement aux portes à médiane glissante des #405 et
+#407. J'en avais tiré, avant calcul, que l'univers biaisé (sociétés ayant survécu
+jusqu'en 2026) afficherait une breadth nette **plus haute**.
+
+Mesure sur les **1396 dates communes** aux deux univers — et non sur les moyennes
+des deux rapports, qui couvrent des fenêtres différentes et confondraient effet
+d'univers et effet de période :
+
+| | Breadth nette moyenne | Séances au-dessus du seuil |
+|---|---|---|
+| Univers point-in-time | **+16,70 pts** | 81,2 % |
+| Univers biaisé | **+13,55 pts** | 67,0 % |
+| Décalage (biaisé − PIT) | **−3,15 pts** | |
+
+L'univers biaisé affiche une breadth **plus basse**, l'inverse de ce que
+j'annonçais.
+
+**Deux mécanismes proposés en deux cycles (#407, #408), deux contredits par la
+mesure.** C'est un constat sur la qualité de mes intuitions mécanistes, pas sur
+les données — et il n'a pu être fait que parce que les deux étaient écrits
+**avant** le calcul et vérifiés **après**. Un mécanisme formulé après coup aurait
+été juste à tous les coups.
+
+### Audit — 5 contrôles
+
+- **1.** Breadth recalculée par `pandas` au lieu des boucles NumPy, 6 dates :
+  écart maximal **0,00e+00**. CONFORME.
+- **2.** Anti-lookahead (prix futurs ×7) : breadth inchangée. CONFORME.
+- **3.** Le filtre d'appartenance change le signal sur **6/6** dates. CONFORME.
+- **5.** Causalité de la porte : décalage d'un jour exact. CONFORME.
+- **4.** Décalage de niveau : **mesure** exigée par le PREREG, publiée quel que
+  soit son signe ; ne conditionne aucun verdict.
+
+Anti-cheat **CONFORME** (4/4).
+
+### Robustesse — premier portage de l'axe dont le plateau s'élargit
+
+| Grille | Origine | PIT |
+|---|---|---|
+| CAP (1,5 / 2,0 / 2,5 / 3,0×) | 4/4 | **4/4** |
+| Fenêtre de vol (15 / 20 / 25 / 30 j) | 3/4 | **4/4** |
+
+La cellule 15 j, qui tombait sur l'univers biaisé, passe sur l'univers réel.
+
+### Batterie Règle 9 — 2/5
+
+| Contrôle | PIT |
+|---|---|
+| a. stress coûts | ÉCHEC |
+| b. stress crise | OK |
+| c. stabilité temporelle | ÉCHEC (2/4 folds) |
+| d. SPA 1-candidat | OK (p = 0,0320) |
+| e. DSR (n_trials = 372) | ÉCHEC (0,1244) |
+
+**Aucune comparaison possible avec le cycle d'origine** : ce candidat n'avait
+jamais eu de batterie Règle 9, faute de `.npz` sauvegardé — exactement la lacune
+mesurée au #406. Pas de PASS renforcé.
+
+### Bilan de l'axe biais du survivant — les 20 PASS sont traités
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **14** |
+| dont maintenus | **8** |
+| dont tombés | 6 |
+| PASS restant exposés, sans vérification | **6** |
+
+Les trois candidats à **P&L indiciel** testés (#405, #407, #408) sont maintenus ;
+les quatre à **panier de titres** sont tombés. Quatre confirmations contre un
+contre-exemple (#398) — toujours pas une règle, toujours pas inscrite.
+
+### File des prochains cycles
+
+1. `range_position_vol_targeting_overlay` — portage PIT.
+2. `weakness_breadth_vol_targeting_overlay` — portage PIT.
+3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie ouverte au
+   #406, dont ce cycle vient de montrer un coût concret : impossible de comparer
+   les batteries).
