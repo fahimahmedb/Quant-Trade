@@ -74,8 +74,26 @@ def verdict_of(name: str):
     return "absent"
 
 
+# Denominateur juge trop proche de zero pour que la division soit informative.
+# Seuil FIXE AVANT CALCUL (#425). Les seances concernees sont exclues et
+# comptees, jamais remplacees par une valeur par defaut.
+BASKET_EPS = 1e-12
+
+
 def activation_of(name: str):
-    """Fraction de seances a exposition > 1,0x, depuis le .npz s'il existe."""
+    """Fraction de seances a exposition > 1,0x, depuis le .npz s'il existe.
+
+    Deux schemas lus (extension #425) :
+
+    - **indiciel** (`pos`) : l'exposition est stockee telle quelle ;
+    - **panier** (`pnl_gross_ov` / `pnl_gross_bh`) : l'exposition est un scalaire
+      par date et la jambe candidate vaut `exposure[t] x jambe de reference`
+      (identite etablie et verifiee au #402, controle 1b). Elle se recupere donc
+      par division. Les deux P&L stockes sont **bruts**, donc exempts du terme de
+      cout qui ne suit pas cette identite.
+
+    Retourne `(fraction, schema, n_exclues)` ou `None` si illisible.
+    """
     p = RESULTS / f"nonml_{name}_pnl.npz"
     if not p.exists():
         return None
@@ -83,12 +101,24 @@ def activation_of(name: str):
         d = np.load(p, allow_pickle=True)
     except Exception:  # noqa: BLE001
         return None
-    if "pos" not in d.files:
-        return None
-    pos = np.asarray(d["pos"], dtype=float)
-    if pos.size == 0:
-        return None
-    return float((pos > 1.0).mean())
+    f = set(d.files)
+    if "pos" in f:
+        pos = np.asarray(d["pos"], dtype=float)
+        if pos.size == 0:
+            return None
+        return float((pos > 1.0).mean()), "indiciel", 0
+    if {"pnl_gross_ov", "pnl_gross_bh"} <= f:
+        ov = np.asarray(d["pnl_gross_ov"], dtype=float)
+        bh = np.asarray(d["pnl_gross_bh"], dtype=float)
+        if ov.shape != bh.shape or ov.size == 0:
+            return None
+        usable = np.isfinite(ov) & np.isfinite(bh) & (np.abs(bh) > BASKET_EPS)
+        n_excl = int((~usable).sum())
+        if not usable.any():
+            return None
+        expo = ov[usable] / bh[usable]
+        return float((expo > 1.0 + 1e-9).mean()), "panier", n_excl
+    return None
 
 
 def main():
@@ -106,14 +136,16 @@ def main():
 
     measured, unmeasured = [], []
     for name in structured:
-        act = activation_of(name)
-        if act is None:
+        got = activation_of(name)
+        if got is None:
             unmeasured.append(name)
         else:
-            measured.append((name, act, verdict_of(name)))
+            act, schema, n_excl = got
+            measured.append((name, act, verdict_of(name), schema, n_excl))
 
-    inactive = [(n, a, v) for n, a, v in measured if a < INACTIVE_MAX]
-    empty_pass = [(n, a, v) for n, a, v in inactive if v == "PASS"]
+    inactive = [m for m in measured if m[1] < INACTIVE_MAX]
+    empty_pass = [m for m in inactive if m[2] == "PASS"]
+    n_basket = sum(1 for m in measured if m[3] == "panier")
 
     L = ["# Balayage des portes de capitulation neutralisées par le plancher 1,0× (pré-enregistré)", ""]
     L.append("Diagnostic, pas une stratégie. Cherche les candidats dont la structure interdit")
@@ -140,12 +172,25 @@ def main():
 
     L.append("## Volet B — mesure empirique de l'activation")
     L.append("")
-    L.append(f"- candidats mesurés (`.npz` au schéma `pos` disponible) : **{len(measured)}**")
+    L.append(f"- candidats mesurés : **{len(measured)}**, dont **{len(measured) - n_basket}** au "
+             f"schéma indiciel et **{n_basket}** au schéma **panier** (extension #425)")
     L.append(f"- candidats détectés mais **non mesurés** faute de `.npz` : **{len(unmeasured)}**")
     L.append("")
     L.append("Ce second chiffre est un **résultat du cycle**, pas une excuse : il quantifie")
     L.append("exactement ce que la lacune mesurée au #406 coûte à ce diagnostic.")
     L.append("")
+    L.append("Sur un panier, l'exposition n'est pas stockée : elle est **récupérée par division**")
+    L.append("`pnl_gross_ov / pnl_gross_bh`, la jambe candidate valant `exposition × jambe de")
+    L.append("référence` (identité établie et vérifiée au #402, contrôle 1b). Les séances à")
+    L.append("dénominateur quasi nul sont exclues et comptées, jamais remplacées par un défaut.")
+    L.append("")
+    if n_basket:
+        L.append("| Candidat panier | Exposition > 1,0× | Séances exclues (dénominateur nul) |")
+        L.append("|---|---|---|")
+        for n, a, v, s, e in sorted(measured, key=lambda t: t[0]):
+            if s == "panier":
+                L.append(f"| `{n}` | {100*a:.2f} % | {e} |")
+        L.append("")
     if unmeasured:
         L.append("Non mesurés :")
         L.append("")
@@ -155,11 +200,11 @@ def main():
 
     L.append("### Candidats mesurés, par activation croissante")
     L.append("")
-    L.append("| Candidat | Séances à exposition > 1,0× | Verdict au rapport |")
-    L.append("|---|---|---|")
-    for n, a, v in sorted(measured, key=lambda t: t[1]):
+    L.append("| Candidat | Séances à exposition > 1,0× | Schéma | Verdict au rapport |")
+    L.append("|---|---|---|---|")
+    for n, a, v, s, e in sorted(measured, key=lambda t: t[1]):
         mark = " ← **inactif**" if a < INACTIVE_MAX else ""
-        L.append(f"| `{n}` | {100*a:.2f} %{mark} | {v} |")
+        L.append(f"| `{n}` | {100*a:.2f} %{mark} | {s} | {v} |")
     L.append("")
 
     L.append("## Verdict du balayage")
@@ -169,7 +214,7 @@ def main():
     L.append(f"- dont **PASS vides** : **{len(empty_pass)}**")
     L.append("")
     if empty_pass:
-        for n, a, v in empty_pass:
+        for n, a, v, s, e in empty_pass:
             L.append(f"- `{n}` — activation {100*a:.2f} %, rapport : {v}")
         L.append("")
         L.append("Chacun doit être **confirmé par lecture** de son script et de son rapport")
