@@ -50,6 +50,56 @@ def net_pnl(d):
     return None, "schéma non reconnu"
 
 
+def _nu(ln):
+    """Retire la decoration Markdown d'une ligne, sans toucher a son sens.
+
+    #448 : un verdict enonce en titre (`## Verdict : **FAIL**`, `### **FAIL**`)
+    est un verdict. Le #447, qui lisait le debut de ligne brut, les manquait :
+    il corrigeait 3 faux positifs mais introduisait 2 faux negatifs.
+
+    Ecrit en operations de chaines et non avec `re` : le regime de modification
+    annonce ne prevoyait que DEUX regions, et un `import re` en tete de fichier
+    en aurait ouvert une troisieme. L'equivalence avec la forme declaree au
+    pre-enregistrement est verifiee par l'audit, ligne a ligne, sur tous les
+    rapports du depot.
+    """
+    s = ln.strip()
+    while s.startswith("#"):
+        s = s[1:]
+    s = s.lstrip()
+    while s.startswith(">"):
+        s = s[1:].lstrip()
+    if s[:2] in ("- ", "* "):
+        s = s[2:].lstrip()
+    tete = s[:2] == "**" and s[2:] or s
+    if tete[:7].lower() == "verdict":
+        reste = tete[7:]
+        if reste[:6].lower() == " final":
+            reste = reste[6:]
+        if reste[:2] == "**":
+            reste = reste[2:]
+        reste = reste.lstrip()
+        if reste[:1] in (":", "\u2014", "-", "\uff1a"):
+            s = reste[1:].lstrip()
+    return s
+
+
+def porte_verdict(t, m):
+    """Le rapport PORTE-t-il ce verdict, ou se contente-t-il d'en parler ?
+
+    #448 : le litteral historique `"PASS (niveau 1)"` devient positionnel comme
+    le reste. Compare en sous-chaine, il classait PASS tout rapport qui le
+    CITAIT — le rapport du #447 s'en etait trouve mal classe.
+    """
+    for ln in t.splitlines():
+        nu = _nu(ln)
+        if nu.startswith("**" + m):
+            return True
+        if m == "PASS" and nu.startswith("PASS (niveau 1)"):
+            return True
+    return False
+
+
 def main():
     paths = sorted(RESULTS.glob("*_pnl.npz"))
     series, schemas, unknown = {}, {}, []
@@ -161,10 +211,9 @@ def main():
         # ecrite en clair aux deux endroits plutot que factorisee : le regime de
         # modification annonce interdisait de toucher une ligne hors de ces deux
         # occurrences, et une fonction commune aurait ete un ajout ailleurs.
-        debuts = [ln.strip() for ln in t.splitlines()]
-        if any(ln.startswith("**PASS") for ln in debuts) or "PASS (niveau 1)" in t:
+        if porte_verdict(t, "PASS"):
             verdicts["PASS"] += 1
-        elif any(ln.startswith("**FAIL") for ln in debuts):
+        elif porte_verdict(t, "FAIL"):
             verdicts["FAIL"] += 1
         else:
             verdicts["indéterminé"] += 1
@@ -213,8 +262,7 @@ def main():
         if f.exists():
             t = f.read_text(encoding="utf-8")
             # Meme regle qu'au comptage ci-dessus (#447), ecrite en clair.
-            debuts = [ln.strip() for ln in t.splitlines()]
-            if any(ln.startswith("**PASS") for ln in debuts) or "PASS (niveau 1)" in t:
+            if porte_verdict(t, "PASS"):
                 pass_names.append(n)
     pass_names.sort()
     if pass_names:
