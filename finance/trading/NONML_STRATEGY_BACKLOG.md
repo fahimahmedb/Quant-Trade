@@ -3828,3 +3828,63 @@ C'est une illustration de plus de l'inutilité statistique de ces fenêtres de
 complet (2900 séances) et de la robustesse (4/4).
 
 **Prochain candidat des 13 restants :** `leaders_index52w_high_overlay`.
+
+## Backlog #400 (12/08/2026) — correction de mon audit d'exposition du #395
+
+En abordant le 3e candidat de la liste des « 15 PASS exposés », j'ai découvert que
+**son portage point-in-time existait déjà** — fait au cycle #163, avec PREREG
+dédié, infrastructure `membership_fn`, et batterie Règle 9 complète.
+
+| 400 | Vérifier lesquels des 15 « PASS exposés » du #395 avaient déjà un portage point-in-time | Aucune nouvelle donnée | **FAIT — mon audit du #395 surestimait l'exposition.** |
+
+### Le défaut de mon critère de détection
+
+Le #395 cherchait l'existence d'un fichier `nonml_<nom>_pit_universe_result.md`.
+Ce critère **manque les portages réalisés autrement** : au #163,
+`leaders_index52w_high_overlay` a été porté en **paramétrant** son
+`build_weights(membership_fn=...)` plutôt qu'en dupliquant le script, et son
+résultat vit dans un fichier de **batterie**
+(`..._pass_validation_battery_pit_universe.md`), pas dans un `_result.md`.
+
+Re-audit sur trois critères (fichier de résultat, PREREG, script) :
+
+| | |
+|---|---|
+| candidats listés comme exposés au #395 | 15 |
+| dont **portage déjà existant** | **3** |
+| exposition réelle restante | **12** |
+
+Les 3 : `deep_drawdown_breadth_vol_targeting_overlay` (#396, moi),
+`january_effect_lowprice_overlay` (#398, moi), et
+**`leaders_index52w_high_overlay` (#163, antérieur à cette session)**.
+
+### Ce que dit le portage #163, et ce qu'il est devenu
+
+Le #163 annonçait un score 3/5 avec **DSR = 0,754, « nouveau record du
+backlog »**, et concluait que « l'edge du #38 n'est PAS un artefact de biais du
+survivant ».
+
+**Ce résultat a déjà été invalidé au cycle #252**, sous exécution causale
+corrigée : le fichier actuel donne **DSR = 0,011**, stress de coûts ÉCHEC,
+stabilité 1/4 folds, SPA ÉCHEC. Le « record » de 0,754 n'existe plus.
+
+Le candidat n'était donc pas seulement déjà porté — **il est déjà tombé**, et
+pour une raison indépendante du biais du survivant.
+
+### Correction du bilan de l'axe
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **9** |
+| dont maintenus | 5 |
+| dont tombés | **4** (`amihud`, `dispersion_vol_targeting`, `momentum_turnover_doublesort`, `leaders_index52w_high_overlay`) |
+| PASS restant exposés, sans vérification | **12** |
+
+**Leçon de méthode, la même qu'au #390** : un critère de détection fondé sur une
+convention de nommage rate ce qui a été fait autrement. J'avais trouvé le
+septième foyer du bug de composition en passant d'un balayage par familles de
+fichiers à un balayage exhaustif ; ici le même travers m'a fait annoncer une
+tâche déjà accomplie. **Avant de porter chacun des 12 restants, vérifier son
+historique dans le backlog**, pas seulement l'existence d'un fichier.
+
+**Prochain candidat réellement non vérifié :** `leaders_trend_union_overlay`.
