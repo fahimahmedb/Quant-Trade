@@ -5314,3 +5314,77 @@ pré-enregistrements du #415 et du #416.
    (12 point-in-time + 10 de ce cycle), dont les paires #407/#414 et #413/#414.
 3. **Dette de persistance restante** : 114 scripts à `savez` conditionnel, 130
    sans `savez`. À traiter par lots lus, jamais en masse.
+
+## Backlog #417 (13/08/2026) — requalification des PASS vides : la tâche annoncée n'avait pas lieu d'être
+
+| 417 | Requalifier les PASS obtenus par inactivité, à commencer par `weakness_breadth_vol_targeting_overlay` | Aucune nouvelle donnée | **FAIT — 0 requalification : la tâche était déjà faite depuis le #89. Le balayage systématique, lui, apporte un résultat** |
+
+### L'erreur est la mienne, et elle est datée
+
+Le rapport de `weakness_breadth_vol_targeting_overlay` porte **depuis son cycle
+d'origine** (#89, commit `dfc2b3e`) un avertissement en toutes lettres : « PASS
+NON INFORMATIF […] l'overlay ne s'active essentiellement jamais […] ne constitue
+PAS une validation économique ». L'étiquette n'a jamais manqué.
+
+En rédigeant la file du #416, j'ai inscrit cette requalification **sans rouvrir
+le rapport concerné**. C'est exactement la règle du #400 — vérifier l'historique
+avant d'agir — que j'applique scrupuleusement aux candidats de stratégie et que
+j'ai oubliée pour une tâche de maintenance.
+
+### Ce que le cycle produit réellement
+
+Le pré-enregistrement imposait un balayage **systématique**, pas seulement le cas
+connu. C'est lui qui apporte l'information neuve :
+
+| | |
+|---|---|
+| fichiers `.npz` trouvés | 173 |
+| exploitables (schéma `pos` / `r_asset`) | **158** |
+| requalifiés par ce cycle | **0** |
+| déjà étiquetés | 2 |
+| **PASS dont l'overlay agit réellement** | **72** |
+
+**Le PASS obtenu par inactivité est un cas isolé, pas un travers répandu du
+backlog.** Résultat négatif, mais résultat.
+
+### Audit — le zéro est-il informatif ?
+
+Un balayage qui ne trouve rien peut signifier qu'il n'y a rien, ou qu'il ne sait
+pas chercher.
+
+1. **Contrôle positif** : la règle reconnaît bien l'inactivité établie au #416
+   (0 séance de différence sur 1385). CONFORME — le zéro est informatif.
+2. **Contrôle négatif** : `santa_vol_targeting_overlay`, à 1,70 % d'activation
+   mais 203 séances de P&L différent, n'est **pas** requalifié. Le critère
+   d'identité ne confond pas rareté et inactivité.
+3. **Vérification d'historique** : ci-dessus.
+4. **Portée non couverte** : **15** `.npz` inexploitables par la règle, **dont 8
+   portant un PASS** — schémas « panier » et « deux jambes », dont la référence
+   n'est pas Buy & Hold. Le critère d'identité ne s'y transpose pas : un overlay
+   de panier peut être inactif sans que son P&L égale celui d'un indice.
+   Étendre la règle demanderait de comparer chaque candidat à **sa propre**
+   référence — travail distinct, déclaré et non entrepris.
+
+Aucun rapport réécrit, aucun verdict modifié. Anti-cheat **CONFORME** (4/4).
+
+### Leçon de méthode
+
+Deux cycles de suite (#416, #417) ont produit leur valeur non par la tâche
+annoncée mais par le **contrôle qui l'accompagnait** : la non-régression au #416,
+le balayage systématique ici. Dans les deux cas, l'énoncé de la tâche était plus
+étroit — ou faux — que ce que le pré-enregistrement imposait de vérifier.
+
+**Règle à appliquer désormais aussi aux tâches de maintenance** : avant
+d'inscrire une tâche corrective dans la file, ouvrir le fichier concerné. La
+règle du #400 ne vaut pas que pour les candidats de stratégie.
+
+### File des prochains cycles
+
+1. **Rejouer le balayage de doublons du #406** avec les 22 `.npz` ajoutés depuis
+   (12 point-in-time + 10 du #416), dont les paires #407/#414 et #413/#414 dont
+   la proximité est déjà mesurée.
+2. **Étendre le critère d'inactivité aux schémas panier** — 8 PASS restent hors
+   d'atteinte de la règle du #417, faute d'une comparaison à leur propre
+   référence.
+3. **Dette de persistance** : 114 scripts à `savez` conditionnel, 130 sans
+   `savez`. À traiter par lots lus, jamais en masse.
