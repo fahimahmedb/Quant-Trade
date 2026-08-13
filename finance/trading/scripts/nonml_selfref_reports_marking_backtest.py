@@ -12,8 +12,10 @@ dont le #437 a montré qu'il ratait des cas.
 
 Régime : **insertions seulement**, repris tel quel du #428.
 """
+import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -61,8 +63,27 @@ def remove_sentinels():
 
 
 def run(name):
-    return subprocess.run([sys.executable, str(SCRIPTS / f"nonml_{name}_backtest.py")],
-                          capture_output=True, text=True, timeout=TIMEOUT_S)
+    """Execute un candidat en groupe de processus isole.
+
+    Au premier essai du #439, `subprocess.run(timeout=...)` ne tuait que
+    l'enfant direct : les petits-enfants (les backtests relances par un script
+    de campagne) survivaient et REECRIVAIENT des rapports apres la
+    restauration. On isole donc le groupe et on le tue entier.
+    """
+    proc = subprocess.Popen(
+        [sys.executable, str(SCRIPTS / f"nonml_{name}_backtest.py")],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        start_new_session=True)
+    try:
+        out, err = proc.communicate(timeout=TIMEOUT_S)
+        return subprocess.CompletedProcess(proc.args, proc.returncode, out, err)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except Exception:  # noqa: BLE001
+            proc.kill()
+        proc.wait(timeout=30)
+        raise
 
 
 def candidates():
@@ -163,13 +184,13 @@ def main():
     L.append("pour une péremption. D'où un marqueur, et non une amputation.")
     L.append("")
 
-    L.append("## Une exclusion de correction, découverte en cours d'exécution")
+    L.append("## Deux défauts de ce cycle, rencontrés en l'exécutant")
     L.append("")
-    L.append("Une première exécution a dû être **interrompue**. Quatre candidats manipulent")
-    L.append("eux-mêmes des fichiers portant **les mêmes noms de sentinelles** : lancés comme")
-    L.append("candidats, ils supprimaient les miennes dans leur propre `finally`, **vidant le")
-    L.append("test de son sens**. Deux d'entre eux ré-exécutent en outre 24 backtests chacun,")
-    L.append("deux fois.")
+    L.append("### 1. Interférence de sentinelles")
+    L.append("")
+    L.append("Une première exécution a dû être **interrompue**. Un candidat manipule lui-même")
+    L.append("des fichiers portant **les mêmes noms de sentinelles** : lancé comme candidat, il")
+    L.append("supprimait les miennes dans son propre `finally`, **vidant le test de son sens**.")
     L.append("")
     L.append(f"- candidats **écartés pour interférence** : **{len(interferes)}**")
     L.append("")
@@ -177,14 +198,21 @@ def main():
         L.append(f"- `{n}`")
     L.append("")
     L.append("La raison est **mécanique et connaissable sans voir aucun résultat** — elle se lit")
-    L.append("dans le code du candidat, pas dans son verdict. Ce n'est donc pas une exclusion")
-    L.append("de circonstance ; c'est la réparation d'un test qui ne pouvait pas fonctionner.")
+    L.append("dans le code du candidat, pas dans son verdict.")
     L.append("")
-    L.append("**Ces quatre rapports dépendent bel et bien du dépôt** — ce sont des campagnes qui")
-    L.append("comptent le vivier. Mais mon propre test ne peut pas l'établir sur eux, donc ils")
-    L.append("**ne sont pas marqués**. La règle du pré-enregistrement — ne marquer que les")
-    L.append("candidats confirmés — est appliquée telle quelle, y compris quand elle me prive")
-    L.append("de cas que je crois connaître.")
+    L.append("### 2. Processus orphelins survivant au délai")
+    L.append("")
+    L.append("Plus grave, et découvert en inspectant l'arbre après coup : `subprocess.run`")
+    L.append("avec `timeout` ne tuait que l'**enfant direct**. Les candidats qui relancent")
+    L.append("eux-mêmes des backtests laissaient des **petits-enfants orphelins** qui ont")
+    L.append("continué de tourner et **réécrit un rapport après sa restauration** —")
+    L.append("`nonml_reproducibility_sample_result.md` a été retrouvé modifié alors qu'il")
+    L.append("n'était pas marqué.")
+    L.append("")
+    L.append("Les orphelins ont été tués et le rapport restauré. Le script exécute désormais")
+    L.append("chaque candidat dans un **groupe de processus isolé**, tué entier au délai.")
+    L.append("**La garantie « aucun rapport publié modifié » ne tenait pas à ce moment-là**, et")
+    L.append("je l'écris plutôt que de la présenter comme acquise depuis le début.")
     L.append("")
     L.append("## Test comportemental — ce qui déclenche le marquage")
     L.append("")
