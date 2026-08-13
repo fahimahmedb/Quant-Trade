@@ -16,8 +16,8 @@ Seuil d'inactivité **repris tel quel du #410** : exposition > 1,0× sur moins d
 
 ## Volet B — mesure empirique de l'activation
 
-- candidats mesurés : **60**, dont **55** au schéma indiciel et **5** au schéma **panier** (extension #425)
-- candidats détectés mais **non mesurés** faute de `.npz` : **2**
+- candidats mesurés : **62**, dont **57** au schéma indiciel et **5** au schéma **panier** (extension #425)
+- candidats détectés mais **non mesurés** faute de `.npz` : **0**
 
 Ce second chiffre est un **résultat du cycle**, pas une excuse : il quantifie
 exactement ce que la lacune mesurée au #406 coûte à ce diagnostic.
@@ -35,11 +35,6 @@ dénominateur quasi nul sont exclues et comptées, jamais remplacées par un dé
 | `winners_trend_vol_targeting_overlay` | 35.25 % | 0 |
 | `winners_trend_vol_targeting_overlay_pit_universe` | 60.12 % | 0 |
 
-Non mesurés :
-
-- `rebound_speed_breadth_vol_targeting_overlay` (verdict au rapport : FAIL)
-- `vix_regime_vol_targeting_overlay` (verdict au rapport : FAIL)
-
 ### Candidats mesurés, par activation croissante
 
 | Candidat | Séances à exposition > 1,0× | Schéma | Verdict au rapport |
@@ -48,12 +43,14 @@ Non mesurés :
 | `weakness_breadth_vol_targeting_overlay_pit_universe` | 0.00 % ← **inactif** | indiciel | PASS |
 | `santa_vol_targeting_overlay` | 1.70 % ← **inactif** | indiciel | PASS |
 | `internal_breadth_vol_targeting_overlay` | 5.13 % | indiciel | FAIL |
+| `vix_regime_vol_targeting_overlay` | 16.88 % | indiciel | FAIL |
 | `variance_ratio_vol_targeting_overlay` | 19.57 % | indiciel | PASS |
 | `momentum_consistency_trend_vol_targeting_15_overlay` | 20.98 % | panier | FAIL |
 | `kurtosis_nu_combined_vol_targeting_overlay` | 21.29 % | indiciel | PASS |
 | `deep_drawdown_breadth_vol_targeting_overlay` | 21.52 % | indiciel | PASS |
 | `dispersion_trend_vol_targeting_overlay` | 22.38 % | indiciel | PASS |
 | `market_concentration_vol_targeting_overlay` | 23.32 % | indiciel | PASS |
+| `rebound_speed_breadth_vol_targeting_overlay` | 23.90 % | indiciel | FAIL |
 | `arch_clustering_vol_targeting_overlay` | 24.04 % | indiciel | PASS |
 | `dispersion_vol_targeting_overlay` | 24.77 % | indiciel | PASS |
 | `yield_curve_slope_vol_targeting_overlay` | 25.59 % | indiciel | PASS |

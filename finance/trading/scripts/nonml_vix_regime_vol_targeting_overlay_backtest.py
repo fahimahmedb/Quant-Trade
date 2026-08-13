@@ -120,12 +120,14 @@ def main():
     out = ROOT / "results" / "nonml_vix_regime_vol_targeting_overlay_result.md"
     out.write_text("\n".join(lines) + "\n")
 
-    if verdict:
-        dates_used = dates_idx.values[1:][start:]
-        np.savez(
-            ROOT / "results" / "nonml_vix_regime_vol_targeting_overlay_pnl.npz",
-            pos=pos, r_asset=bh_t, dates=dates_used, cost_bps=COST_BPS,
-        )
+    # Sauvegarde INCONDITIONNELLE du P&L (cycle #426, lot 4) : la condition
+    # `if verdict:` privait le diagnostic du #415 de ce candidat, qui porte un
+    # FAIL. Convention du #416. Aucune ligne de calcul n'est modifiee.
+    dates_used = dates_idx.values[1:][start:]
+    np.savez(
+        ROOT / "results" / "nonml_vix_regime_vol_targeting_overlay_pnl.npz",
+        pos=pos, r_asset=bh_t, dates=dates_used, cost_bps=COST_BPS,
+    )
 
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
