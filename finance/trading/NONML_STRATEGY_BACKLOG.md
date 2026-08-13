@@ -4152,3 +4152,90 @@ bricolé en fin de cycle.
    paires de candidats dont le P&L coïncide exactement ou à une transformation
    triviale près. Corriger le décompte d'essais du backlog en conséquence.
 3. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
+
+## Backlog #404 (13/08/2026) — je corrige un défaut que j'ai introduit au #392
+
+| 404 | Corriger la double conversion logarithmique et la contamination du signal introduites par ma propre correction d'agrégation du #392 | Aucune nouvelle donnée | **FAIT — 1 script atteint, corrigé, artefacts dérivés ré-exécutés** |
+
+### Comment il a été trouvé
+
+En lisant `nonml_smallcap_proxy_outperformance_breadth_overlay_backtest.py` pour
+préparer son portage point-in-time — donc par hasard, en faisant autre chose.
+`git log -L` sur les lignes suspectes attribue les deux anomalies au commit
+`da92778`, **ma correction d'agrégation de panier du #392**.
+
+Ce commit appliquait deux transformations à 34 scripts :
+
+1. `R = np.log(P / P.shift(1))` → `R = (P / P.shift(1) - 1.0)` ;
+2. `trading_metrics(pnl)` → `trading_metrics(np.log1p(pnl))`.
+
+Justes pour un panier — le P&L y vaut `Σ wᵢ·r_simple,ᵢ`, donc en unités simples.
+Fausses dès que le P&L reste en logarithmes. Ce script n'est pas un panier : son
+P&L est celui de l'indice, construit en log.
+
+- **Défaut A — double conversion.** `log1p` reconvertit une série déjà
+  logarithmique, tandis que le rendement total du même tableau utilise
+  `exp(Σ pnl) − 1`. Deux conventions dans un seul rapport.
+- **Défaut B — contamination du signal.** La transformation (1) a touché
+  `log_ret`, qui n'alimente pas le P&L mais la **volatilité idiosyncratique**
+  séparant le groupe « petite cap » proxy. Le signal avait changé. Le message du
+  #392 annonçait pourtant exclure les scripts « où `R` sert AUSSI à construire le
+  signal » — l'exclusion a manqué ce cas.
+
+**C'est le travers que j'avais moi-même décrit au #390 et au #395** : corriger
+par motif de fichier au lieu de lire. Je l'ai refait un cycle après l'avoir
+écrit.
+
+### Portée — mesurée avant correction
+
+Balayage exhaustif des **807** scripts du dépôt, pas de la seule liste des 34 du
+commit (restreindre le balayage est précisément ce qui avait fait manquer un
+foyer au #390) : **1 script atteint** par chacun des deux défauts, le même. Sept
+`*_pass_validation_battery.py` signalés par l'heuristique de nom sont des faux
+positifs vérifiés par lecture — leur signal vient de `close`, jamais de `R`.
+
+### Effet sur les chiffres publiés
+
+| | Avant (code fautif) | Après correction |
+|---|---|---|
+| Buy&Hold — Sharpe | +0,56 | **+0,68** |
+| Buy&Hold — MDD | −39,1 % | **−35,6 %** |
+| Overlay — Sharpe | +0,58 | **+0,70** |
+| Overlay — rendement | +154,8 % | **+151,7 %** |
+
+Verdict niveau 1 **inchangé : PASS**. L'écart de Sharpe (+0,12 sur les deux
+jambes) vient de ce que `log1p` appliquée à une série déjà log retranche ≈ x²/2 à
+chaque terme : la moyenne baisse plus que l'écart-type. Les deux jambes étant
+décalées dans le même sens, le verdict comparatif tenait — mais les chiffres
+publiés étaient faux.
+
+### Artefacts dérivés — ré-exécutés, pas laissés en place
+
+- **Robustesse** : la grille CAP passe de **4/4 à 3/4** (la cellule 3,0× tombe).
+  Le plateau est donc moins large qu'annoncé. Rapporté tel quel.
+- **Batterie Règle 9** : verdict inchangé, **1/5** (SPA 0,1496 → 0,1592,
+  DSR 0,1555 → 0,1513). Ce candidat reste très loin d'un PASS renforcé.
+- **Audit adversarial** et **simulation 300 €** : sorties inchangées.
+
+Balayage résiduel après correction : **0 résidu**, défaut A comme défaut B.
+Anti-cheat CONFORME.
+
+### Ce que ce cycle coûte et ce qu'il rapporte
+
+Il ne fait avancer aucun axe. Il corrige une erreur de ma main, dont l'effet
+était modéré (aucun verdict retourné) mais réel, et il rétrécit un plateau de
+robustesse que j'avais annoncé plus large qu'il n'est.
+
+**Leçon, écrite pour la troisième fois et manifestement pas encore acquise** :
+une correction appliquée en masse doit être *lue* fichier par fichier, ou pas
+appliquée. Les deux garde-fous qui ont fonctionné ici sont d'écrire le balayage
+de portée **avant** la correction, et de le passer sur **tout** le dépôt plutôt
+que sur la liste attendue.
+
+### File des prochains cycles — inchangée
+
+1. `smallcap_proxy_outperformance_breadth_overlay` — portage PIT (le script est
+   désormais propre ; c'est ce portage qui a été interrompu par la découverte).
+2. **Balayage des doublons** : paires de candidats à P&L identique parmi les
+   `.npz` de `results/`, pour corriger le décompte d'essais du backlog (#403).
+3. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
