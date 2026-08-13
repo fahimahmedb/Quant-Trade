@@ -13,6 +13,47 @@ identiques. Critères fixés avant exécution : égalité exacte
 
 **Couverture 100 %** — critère 1 du pré-enregistrement atteint.
 
+### Ce que « 100 % » recouvre — et ce qu'il ne recouvre pas
+
+Le taux ci-dessus dit que **tous les fichiers trouvés ont pu être relus**. Il ne
+dit pas que le balayage voit tout le dépôt, ni que toutes les séries lues sont
+des candidats non-ML. Les deux précisions manquaient jusqu'au cycle #428 :
+
+| | Nombre |
+|---|---|
+| séries lues (`results/*_pnl.npz`) | **218** |
+| dont candidats non-ML (`nonml_*`) | **208** |
+| dont séries **ML / Étape D** | **10** |
+| scripts de backtest non-ML du dépôt | **284** |
+| **couverture non-ML** | **73.2 %** |
+
+**La soustraction 284 − 208 ne compte rien de réel** : les deux
+ensembles ne se correspondent pas un à un. Certains `.npz` portent le nom d'une
+**variante** (`*_pit_universe`, `*_russell2000`…) sans script homonyme — il y en a
+**23**. La différence ensembliste est donc la seule mesure valide :
+
+> **99** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
+> échappent à toute détection de doublon.
+
+Leur verdict publié, compté et non supposé :
+
+| Verdict des scripts sans `.npz` | Nombre |
+|---|---|
+| FAIL | **90** |
+| PASS | **2** |
+| indéterminé | **6** |
+| sans rapport | **1** |
+
+Les **90** FAIL ne peuvent pas changer de verdict, mais un doublon
+parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les
+**2** PASS sont les deux candidats écartés au #427 avec leur raison
+publiée (variantes multiples, et un diagnostic qui n'est pas une stratégie).
+
+Le balayage lit `results/*_pnl.npz` **sans filtre de préfixe** : les 10 séries
+ML / Étape D sont comparées aux candidats non-ML. C'est voulu — un doublon
+inter-familles est une information — mais il faut le savoir pour lire les groupes
+ci-dessous, dont l'un associe précisément une série d'Étape D à un candidat non-ML.
+
 Répartition par schéma : indiciel (182), panier (21), deux jambes (13), candidat+turnover (1), candidat seul (1).
 
 ## Doublons exacts

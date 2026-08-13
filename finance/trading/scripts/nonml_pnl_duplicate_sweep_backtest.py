@@ -128,6 +128,76 @@ def main():
     else:
         L.append("**Couverture 100 %** — critère 1 du pré-enregistrement atteint.")
     L.append("")
+    # Decomposition et taux de couverture (cycle #428). Le chiffre ci-dessus
+    # porte sur les fichiers TROUVES, pas sur le depot : sans les lignes qui
+    # suivent, un lecteur surestime la portee du balayage. Rien n'est ecrit en
+    # dur, tout est recalcule ici. Aucun seuil de detection n'est touche.
+    n_nonml = sum(1 for n in series if n.startswith("nonml_"))
+    n_other = len(series) - n_nonml
+    n_scripts = len(list((ROOT / "scripts").glob("nonml_*_backtest.py")))
+    # Les deux ensembles ne se correspondent PAS un a un : certains .npz portent
+    # le nom d'une variante (`*_pit_universe`, `*_russell2000`) sans script
+    # homonyme. La difference `n_scripts - n_nonml` ne compte donc rien de reel
+    # (defaut attrape avant publication au #428) : on calcule la difference
+    # ensembliste des deux cotes, et on classe les manquants par verdict.
+    names_scripts = {p.name.replace("nonml_", "").replace("_backtest.py", "")
+                     for p in (ROOT / "scripts").glob("nonml_*_backtest.py")}
+    names_npz = {n[len("nonml_"):] for n in series if n.startswith("nonml_")}
+    missing = sorted(names_scripts - names_npz)
+    orphan = sorted(names_npz - names_scripts)
+    verdicts = {"PASS": 0, "FAIL": 0, "indéterminé": 0, "sans rapport": 0}
+    for n in missing:
+        f = RESULTS / f"nonml_{n}_result.md"
+        if not f.exists():
+            verdicts["sans rapport"] += 1
+            continue
+        t = f.read_text(encoding="utf-8")
+        if "**PASS" in t or "PASS (niveau 1)" in t:
+            verdicts["PASS"] += 1
+        elif "**FAIL" in t:
+            verdicts["FAIL"] += 1
+        else:
+            verdicts["indéterminé"] += 1
+    L.append("### Ce que « 100 % » recouvre — et ce qu'il ne recouvre pas")
+    L.append("")
+    L.append("Le taux ci-dessus dit que **tous les fichiers trouvés ont pu être relus**. Il ne")
+    L.append("dit pas que le balayage voit tout le dépôt, ni que toutes les séries lues sont")
+    L.append("des candidats non-ML. Les deux précisions manquaient jusqu'au cycle #428 :")
+    L.append("")
+    L.append("| | Nombre |")
+    L.append("|---|---|")
+    L.append(f"| séries lues (`results/*_pnl.npz`) | **{len(series)}** |")
+    L.append(f"| dont candidats non-ML (`nonml_*`) | **{n_nonml}** |")
+    L.append(f"| dont séries **ML / Étape D** | **{n_other}** |")
+    L.append(f"| scripts de backtest non-ML du dépôt | **{n_scripts}** |")
+    if n_scripts:
+        L.append(f"| **couverture non-ML** | **{100*n_nonml/n_scripts:.1f} %** |")
+    L.append("")
+    L.append(f"**La soustraction {n_scripts} − {n_nonml} ne compte rien de réel** : les deux")
+    L.append("ensembles ne se correspondent pas un à un. Certains `.npz` portent le nom d'une")
+    L.append(f"**variante** (`*_pit_universe`, `*_russell2000`…) sans script homonyme — il y en a")
+    L.append(f"**{len(orphan)}**. La différence ensembliste est donc la seule mesure valide :")
+    L.append("")
+    L.append(f"> **{len(missing)}** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et")
+    L.append("> échappent à toute détection de doublon.")
+    L.append("")
+    L.append("Leur verdict publié, compté et non supposé :")
+    L.append("")
+    L.append("| Verdict des scripts sans `.npz` | Nombre |")
+    L.append("|---|---|")
+    for k in ("FAIL", "PASS", "indéterminé", "sans rapport"):
+        L.append(f"| {k} | **{verdicts[k]}** |")
+    L.append("")
+    L.append(f"Les **{verdicts['FAIL']}** FAIL ne peuvent pas changer de verdict, mais un doublon")
+    L.append("parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les")
+    L.append(f"**{verdicts['PASS']}** PASS sont les deux candidats écartés au #427 avec leur raison")
+    L.append("publiée (variantes multiples, et un diagnostic qui n'est pas une stratégie).")
+    L.append("")
+    L.append(f"Le balayage lit `results/*_pnl.npz` **sans filtre de préfixe** : les {n_other} séries")
+    L.append("ML / Étape D sont comparées aux candidats non-ML. C'est voulu — un doublon")
+    L.append("inter-familles est une information — mais il faut le savoir pour lire les groupes")
+    L.append("ci-dessous, dont l'un associe précisément une série d'Étape D à un candidat non-ML.")
+    L.append("")
     counts = {}
     for tag in schemas.values():
         counts[tag] = counts.get(tag, 0) + 1
