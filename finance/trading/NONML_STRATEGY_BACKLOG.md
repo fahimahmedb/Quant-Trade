@@ -7721,3 +7721,97 @@ Anti-cheat **CONFORME** (4/4).
 - **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+## Backlog #443 (13/08/2026) — concordance panier : 21/21 sur les deux jambes, et une étiquette fausse corrigée
+
+Cycle d'**inventaire**, pré-enregistré dans
+`PREREG_npz_report_consistency_baskets.md` (committé `c84adb6`, avant toute
+mesure d'ensemble). Aucune stratégie évaluée, aucun verdict recalculé, **aucun
+rapport ni `.npz` modifié** — ce cycle ne fait que lire. `n_trials = 1`.
+
+### Résultat
+
+Extension du #442 (position scalaire, 165/165) au **schéma panier**, par la
+formule du #419 **avec `log1p`** — les P&L de panier sont des rendements
+*simples*, et l'omettre produirait un Sharpe qui n'est celui de personne.
+
+Critère **plus strict qu'au #442**, déclaré avant mesure : concordant seulement
+si **les deux jambes** — candidate et référence — se retrouvent dans le rapport.
+
+| | Nombre |
+|---|---|
+| `.npz` au schéma panier | **21** |
+| **examinés** (rapport publié) | **21** |
+| **concordants** (deux jambes) | **21** |
+| partiels (une jambe) | **0** |
+| discordants (aucune) | **0** |
+
+**6** connus d'avance (essais de faisabilité déclarés au pré-enregistrement) →
+**15 vérifications neuves**. Cumul des deux cycles : **186/186**.
+
+**C'est une absence, pas un exploit.** Elle signifie que les séries consommées
+par les balayages #406, #415 et #422 correspondent aux stratégies décrites, sur
+ce périmètre.
+
+### L'étiquette « 23 paniers » du #442 était fausse
+
+Le balayage n'a rien signalé — 21/21 du premier coup. Le défaut est apparu en
+**relisant** le chiffre du #442 : il annonçait 23 paniers écartés, ce cycle n'en
+trouve que 21.
+
+> Le lot de 23 était un **reste de soustraction**, pas une énumération. Il
+> contenait 21 paniers réels et **2 fichiers d'un troisième schéma**
+> (`pnl_candidate` / `pnl_ref`) **jamais catalogué**.
+
+Même défaut qu'au #428 (`284 − 208 = 76`, soustraction entre ensembles non
+alignés), reproduit quinze cycles plus tard.
+
+### Le sondage post-hoc, consigné mais non compté
+
+Sondage de ces 2 fichiers, **hors périmètre déclaré donc hors protocole** : la
+reconstruction naïve (`pnl_candidate − turn_candidate × coût`) donnait une jambe
+absente du rapport. Le pré-enregistrement engageait à me méfier **d'abord de ma
+reconstruction avant d'accuser un rapport**. Appliqué : `pnl_candidate` est
+sauvegardé **déjà net** (`pnl_sleeve_net`), `turn_candidate` n'étant stocké que
+pour information — je soustrayais les coûts **deux fois**.
+
+Ces 2 fichiers sont **en file, pas couverts**. Les inclure après avoir vu qu'ils
+passaient aurait été élargir un critère au vu de ce qu'il attrape : refus du
+#437, appliqué sans qu'il faille le redécouvrir.
+
+### Bilan de fiabilité de mon propre outillage
+
+| Cycle | Écart apparent | Cause réelle |
+|---|---|---|
+| #442 | 7 discordants | formule indicielle appliquée aux fichiers portant `r_alt` |
+| #443 | 1 jambe absente (post-hoc) | coûts soustraits deux fois sur un P&L déjà net |
+
+**Deux cycles, deux écarts, tous deux dans mon contrôle.** Le dépôt n'a jamais
+été pris en défaut sur cet axe ; mon outillage l'a été deux fois sur deux. C'est
+le résultat le plus utile du cycle, et il n'est pas dans le tableau de comptage.
+
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : cycle d'inventaire,
+aucune position, aucun P&L de stratégie. Audit dédié (7c) :
+`results/nonml_npz_report_consistency_baskets_audit.md`.
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Le troisième schéma** (`pnl_candidate` / `pnl_ref`, 2 fichiers) — hors
+   périmètre du #443, à traiter dans son propre pré-enregistrement, en
+   déclarant que `pnl_candidate` est déjà net.
+2. **Les 20 `.npz` sans rapport publié** : variantes au rapport nommé autrement
+   (comme #431 contrôle B) ou orphelins réels. Inspection, pas balayage.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Concordance `.npz` / rapport** : **186/186** (165 scalaires + 21 paniers) ;
+  restent **2** fichiers du troisième schéma et **20** sans rapport.
+- **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
