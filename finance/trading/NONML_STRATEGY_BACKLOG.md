@@ -7002,3 +7002,91 @@ atteignable est très largement couvert.
   et réductible par échantillonnage supplémentaire.
 - **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
+
+---
+
+## Backlog #435 (13/08/2026) — reproductibilité, lot 2 : 24/24 identiques, borne resserrée de 22 % à 8 %
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_sample_lot2.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**. `n_trials = 1`.
+
+### Résultat
+
+**24** scripts tirés avec la graine **20260814**, **disjoints** des 12 du #434 :
+**24 identiques** octet à octet, **0 divergent**, **0 non concluant**. Les 24 ont
+été ré-exécutés **deux fois** (mesure initiale, puis régénération après
+correction d'une ligne de tableau malformée) avec le même résultat.
+
+| | Sans divergence | Borne à 95 % | Annoncée d'avance |
+|---|---|---|---|
+| #434 seul | 12 | 22,1 % | — |
+| **#434 + #435** | **36** | **8,0 %** | **8,0 %** |
+| version prudente (−1 connu d'avance) | 35 | 8,2 % | 8,2 % |
+
+**La borne obtenue est exactement celle annoncée avant la mesure** — c'était
+l'objet de l'annonce : aucun chiffre trouvé après coup ne pouvait être présenté
+comme « une nette amélioration ».
+
+### Ce que la borne ne dit pas — et le rendement décroissant, chiffré
+
+À `p ≤ 8,0 %` sur **285** rapports, il reste de la place pour **~22** rapports
+divergents non détectés. La dette est **resserrée, pas fermée**.
+
+| Total testé sans divergence | Borne | Divergents encore possibles |
+|---|---|---|
+| 12 | 22,1 % | ~62 |
+| **36 (actuel)** | **8,0 %** | **~22** |
+| 60 | 4,9 % | ~13 |
+| 100 | 3,0 % | ~8 |
+| 150 | 2,0 % | ~5 |
+
+Les 24 tirages de ce lot ont divisé la borne par près de trois. Il en faudrait
+**24 de plus** pour atteindre ~5 %, et **249 de plus** pour la fermer
+entièrement. Je publie ce tableau pour qu'une décision de lot 3 se prenne sur un
+**gain chiffré**, pas sur l'impression qu'« encore un peu » suffirait.
+
+### Contrôles
+
+| Contrôle | Attendu | Obtenu | |
+|---|---|---|---|
+| tirage reproductible depuis la graine | oui | **oui** | ✔ |
+| lots disjoints | 0 commun | **0** | ✔ |
+| rapports publiés modifiés | 0 | **0** | ✔ |
+| borne cumulée | 8,0 % | **8,0 %** | ✔ |
+
+La réserve annoncée est **maintenue** : la borne binomiale suppose des tirages
+indépendants alors que l'échantillonnage est sans remise dans un vivier fini, ce
+qui la rend **conservatrice**. Elle n'a pas été raffinée après coup — une borne
+prudente qui se trompe du côté sévère vaut mieux qu'une borne optimisée.
+
+### Un défaut attrapé à la relecture
+
+Le rapport produit comportait une ligne de tableau sans son pipe fermant. Corrigé
+**dans le script**, puis rapport **régénéré** — pas corrigé à la main dans
+l'artefact dérivé. Un rapport doit rester le produit de son code ; c'est cette
+discipline qui a rendu détectables les artefacts de dérivation des #412-#414.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Lot 3 de reproductibilité — décision à prendre sur le tableau ci-dessus.**
+   24 tirages de plus amèneraient la borne de 8,0 % à ~4,9 %. C'est la seule
+   dette **actionnable sans décision humaine**, et son gain est désormais
+   quantifié plutôt que supposé.
+2. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement : figer `n_trials` (#421) ; le statut de
+   `log_return_compounding_audit` face au vérificateur anti-cheat (#431) ;
+   étendre ou non la batterie au schéma panier (#432).
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **Reproductibilité** : bornée à **p ≤ 8,0 %** (8,2 % prudent) sur 285 rapports,
+  soit ~22 divergents encore possibles — **resserrée** depuis le #434.
+- **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
