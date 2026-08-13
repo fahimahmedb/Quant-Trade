@@ -3781,3 +3781,50 @@ n'en est pas une (détenir après la sortie).
 est démentie** : ce candidat est un portefeuille et il survit. Elle est donc
 abandonnée comme grille de lecture — c'était bien une conjecture sur 7
 observations, pas une règle, et je l'avais signalée comme telle.
+
+## Backlog #399 (12/08/2026) — étapes 7a/7b du #398
+
+| 399 | Robustesse + simulation 300 € pour `january_effect_lowprice_overlay_pit_universe` | Aucune nouvelle donnée | **FAIT — plateau 4/4, meilleur que l'original (3/4).** |
+
+### Robustesse — 4/4
+
+Grille **reprise à l'identique** du cycle d'origine, donc fixée avant exécution.
+**Pas un retuning** : tercile (1/3), rebalancement (21j) et définition du signal
+(mois de janvier) restent figés.
+
+| CAP | Sharpe | Rendement total | MDD | PASS |
+|---|---|---|---|---|
+| 1,5× | +0,76 | +568,2 % | −32,6 % | OUI |
+| 2,0× ← pré-enregistré | +0,77 | +660,3 % | −32,8 % | OUI |
+| 2,5× | +0,77 | +757,6 % | −35,4 % | OUI |
+| 3,0× | +0,76 | +859,2 % | −38,0 % | OUI |
+
+**4/4 cellules PASS**, contre **3/4** pour le cycle d'origine sur univers biaisé
+(CAP=3,0× y échouait sur le Sharpe).
+
+**Deuxième occurrence du même phénomène** : au #397, `deep_drawdown_breadth`
+passait de 3/4 à 8/8 en retirant le biais. Retirer le biais du survivant ne se
+contente pas de préserver ces verdicts — il **stabilise** les plateaux. Deux
+observations ne font pas une règle, mais le sens est cohérent : une référence
+correctement construite est plus difficile à battre par accident, donc un edge qui
+subsiste est moins susceptible d'être un artefact de cellule.
+
+### Simulation 300 € — cas dégénéré, signalé comme tel
+
+| | Capital final | Rendement | MDD | Sharpe ann. |
+|---|---|---|---|---|
+| Tercile prix bas 1,0× (référence) | 320,61 € | +6,9 % | −3,7 % | +2,07 |
+| Tercile prix bas + overlay janvier | **320,61 €** | +6,9 % | −3,7 % | +2,07 |
+
+**Les deux lignes sont identiques, et c'est mécanique** : la fenêtre
+(27/04 → 27/07/2026) ne contient **aucun mois de janvier**, donc l'overlay n'est
+jamais actif et la stratégie se réduit exactement à sa référence. Ce n'est ni une
+performance ni une contre-performance — c'est **l'absence de signal**. Le script
+détecte et signale explicitement ce cas plutôt que d'afficher une égalité
+trompeuse.
+
+C'est une illustration de plus de l'inutilité statistique de ces fenêtres de
+63 séances pour une stratégie saisonnière : le verdict reste celui du backtest
+complet (2900 séances) et de la robustesse (4/4).
+
+**Prochain candidat des 13 restants :** `leaders_index52w_high_overlay`.
