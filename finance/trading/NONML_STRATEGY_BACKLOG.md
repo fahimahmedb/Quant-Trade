@@ -6516,3 +6516,101 @@ Inchangée : **99** scripts de backtest non-ML sans `.npz` à leur nom (90 FAIL,
 2 PASS écartés avec raison publiée, 6 indéterminés, 1 sans rapport). Dette
 **déclarée, chiffrée et publiée dans le rapport du balayage lui-même**, dont
 aucune conséquence sur un verdict n'est connue.
+
+---
+
+## Backlog #431 (13/08/2026) — inventaire de protocole : une dette réelle trouvée, deux abstentions tenues
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_protocol_inventory.md`
+(committé avant toute mesure). Aucune stratégie évaluée, aucun verdict
+recalculé, aucun paramètre touché. `n_trials = 1`.
+
+Le #430 avait constaté la file vide ; le #429 avait fixé la règle pour ce cas —
+**chercher une dette réelle plutôt que d'en inventer une, et l'écrire si l'on
+n'en trouve pas**. Ce cycle pouvait donc légitimement conclure « rien
+d'actionnable ». Il conclut l'inverse.
+
+### Cinq contrôles : compte brut, puis inspection
+
+| Contrôle | Brut | Après inspection |
+|---|---|---|
+| A — anti-cheat non CONFORME | 1 | **1**, porté à l'arbitrage |
+| B — résultat sans `PREREG` | 5 | **0** — variantes résolues |
+| C — PASS sans batterie (Règle 9) | 33 | **6** strictement postérieurs |
+| D — source `data/` absente | 0 | **0** |
+| E — `PREREG` sans artefact | 19 | **0** — 19/19 faux positifs |
+
+**B** : les 5 sont des variantes de marché (`_dax`, `_sp500`, `_russell2000`) ou
+d'univers (`_pit_universe`) couvertes par le pré-enregistrement de leur parent.
+La résolution est **automatique et listée**, pas décidée au cas par cas.
+
+**E** : le contrôle cherchait des cycles *déclarés puis abandonnés*. Il n'en
+trouve **aucun**. Les 19 sont des cycles menés à terme dont le rapport porte un
+autre nom, répartis en six catégories inspectées une par une (cycles ML, lockbox
+OOS, corrections « same-bar », documents de protocole, extensions d'Étape D, et
+ce cycle lui-même).
+
+### La dette réelle — contrôle C
+
+**6 PASS publiés strictement après l'introduction de la Règle 9** (2026-07-29,
+date d'ajout de `nonml_pass_validation_battery.py`) **sans avoir été soumis à la
+batterie de validation.** Dette de **protocole**, pas de calcul : leur verdict de
+niveau 1 est acquis, mais le second filtre que le backlog s'impose ne leur a pas
+été appliqué.
+
+Deux nuances, publiées plutôt que tues :
+
+1. **17 candidats supplémentaires** datent du **jour même** de l'introduction.
+   Rien ne dit s'ils l'ont précédée de quelques heures. Comptés à part, **ni
+   blanchis ni chargés**.
+2. L'un des 6, `capitulation_gate_floor_sweep`, est un **diagnostic et non une
+   stratégie** (faux positif de détection établi au #427). La dette porte donc
+   sur **5** candidats : `gjr_vol_managed_russell2000`, `gjr_vol_managed_sp500`,
+   `deep_drawdown_breadth_vol_targeting_overlay_pit_universe`,
+   `january_effect_lowprice_overlay_pit_universe`,
+   `weakness_breadth_vol_targeting_overlay_pit_universe` — à confirmer par
+   lecture avant toute exécution de batterie.
+
+### Les deux abstentions annoncées d'avance — et tenues
+
+**1. Aucun pré-enregistrement rétroactif.** Le contrôle B ne laissait rien à
+antidater, mais l'engagement tenait indépendamment du résultat.
+
+**2. Aucun assouplissement du vérificateur anti-cheat.**
+`log_return_compounding_audit` porte **ÉCHEC — protocole violé** faute de
+pré-enregistrement ; son script déclare être un audit de code « aucun degré de
+liberté de calibrage, aucun critère de succès à optimiser ». Deux lectures sont
+défendables — faux positif, ou violation réelle — et **je n'ai tranché ni l'une
+ni l'autre** : rendre le vérificateur tolérant créerait exactement la faille
+qu'il existe pour fermer, puisqu'un cycle pourrait s'auto-délivrer sa dispense
+dans sa propre docstring.
+
+Anti-cheat **CONFORME** (4/4, dont l'antériorité chronologique du
+pré-enregistrement).
+
+### File des prochains cycles
+
+1. **Soumettre à la batterie les 5 candidats du contrôle C** — un par cycle, ou
+   en un lot déclaré. Vérifier d'abord par lecture que chacun est bien une
+   stratégie et non un diagnostic. C'est la seule dette **actionnable sans
+   décision humaine** identifiée par l'inventaire.
+2. **En attente d'arbitrage de l'utilisateur — deux points**, aucun tranché
+   unilatéralement :
+   - figer `n_trials` dans un fichier versionné plutôt que de le lire par
+     expression régulière dans la prose du backlog (#421) ;
+   - le cas `log_return_compounding_audit` : accepter une exception au
+     pré-enregistrement pour les audits de code, et si oui **l'énumérer dans un
+     fichier versionné** — ajouter une entrée devient alors un acte visible et
+     relisible, pas une dispense auto-accordée (#431).
+3. Les 17 candidats « du jour même » du contrôle C : leur statut ne peut pas être
+   tranché par la date seule. À laisser en l'état, comptés et publiés.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **5** PASS à soumettre à la batterie (contrôle C, ci-dessus) — **nouvelle**.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom, dette déclarée,
+  chiffrée et publiée dans le rapport du balayage lui-même (#428) — inchangée.
