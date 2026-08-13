@@ -5680,3 +5680,86 @@ Anti-cheat **CONFORME**.
    trois dernières étaient des doublons et que l'espace atteignable avec les
    données locales est très largement couvert. Toute idée future devra être
    inscrite **avec la trace de sa vérification** (règle du #420).
+
+## Backlog #422 (13/08/2026) — critère d'inactivité étendu aux paniers : 0 requalification, comme annoncé
+
+| 422 | Étendre le critère d'inactivité du #417 aux schémas panier (8 PASS hors d'atteinte) | Aucune nouvelle donnée | **FAIT — 0 requalification, prédiction pré-enregistrée confirmée** |
+
+Règle du #417 transposée **sans assouplissement** : identité du P&L entre la
+jambe candidate et sa **propre** jambe de référence, hors première séance.
+
+### Couverture des 174 `.npz`
+
+| Schéma | Nombre | Traitement |
+|---|---|---|
+| panier | **14** | traités par ce cycle |
+| deux jambes | **13** | **exclus explicitement et listés** |
+| indiciel | 145 | déjà traités au #417 |
+| autres / inexploitables | 2 | — |
+
+Les 13 candidats « deux jambes » sont exclus **nommément** : leur référence n'est
+pas stockée dans le fichier, et définir ce que « ne rien faire » y signifie
+demanderait une convention inventée pour l'occasion. Ils sont comptés, pas
+dissous dans un total.
+
+### Résultat — 0 requalification
+
+Les **9** PASS panier agissent tous réellement, avec des écarts massifs entre
+jambes :
+
+| Candidat | Séances de P&L différent | Candidat | Référence |
+|---|---|---|---|
+| `amihud_illiquidity_tilt` | 1269 / 1270 | +334,1 % | +171,6 % |
+| `momentum_12_1_pit_universe` | 2906 / 2907 | +511,1 % | +352,1 % |
+| `leaders_vol_targeting_20_overlay` | 1123 / 1124 | +155,4 % | +127,6 % |
+| `momentum_turnover_doublesort` | 1143 / 1144 | +328,8 % | +222,6 % |
+| `leaders_trend_union_overlay` | 841 / 1144 | +270,7 % | +108,0 % |
+| `sma200_leaders_overlay` | 841 / 1144 | +270,7 % | +108,0 % |
+| `leaders_index52w_high_overlay` | 679 / 1144 | +220,9 % | +108,0 % |
+| `winners_trend_vol_targeting_overlay` | 531 / 1376 | +318,5 % | +250,7 % |
+| `january_effect_lowprice_..._pit_universe` | 247 / 2900 | +660,3 % | +482,3 % |
+
+### La prédiction était pré-enregistrée et déductive
+
+Le pré-enregistrement annonçait **0 requalification**, en s'appuyant sur les
+rendements **déjà publiés** : deux jambes affichant des rendements différents ne
+peuvent pas avoir des P&L identiques. C'est une déduction, pas une intuition —
+même nature que celle du #419, qui tenait aussi.
+
+Les deux prédictions chiffrées qui se sont vérifiées (#419, #422) sont
+**déductives** ; les deux qui ont été démenties (#407, #408) étaient des
+**mécanismes économiques**. La distinction est nette et vaut d'être retenue.
+
+### Ce que cela ferme
+
+**La dernière dette actionnable du protocole est fermée sans avoir rien trouvé.**
+C'était l'issue annoncée, et cela reste un résultat : le PASS obtenu par
+inactivité demeure un **cas isolé**, désormais vérifié sur **tous** les schémas
+où la question est décidable.
+
+Anti-cheat **CONFORME** (4/4).
+
+### Bilan final des dettes méthodologiques
+
+| Dette | État |
+|---|---|
+| doublons connus non détectables | soldée (#419) |
+| 10 PASS sans `.npz` à structure risquée | soldée (#416) |
+| PASS obtenus par inactivité, schémas indiciels | soldée (#417) |
+| non-indépendance des essais | soldée (#421), effet nul mesuré |
+| PASS obtenus par inactivité, schémas panier | **soldée (#422), 0 cas** |
+| persistance générale du P&L | ouverte, 114 + 130 scripts, sans conséquence connue |
+| `n_trials` lu dans la prose du backlog | **ouverte — arbitrage utilisateur** |
+
+### File des prochains cycles
+
+1. **Persistance générale du P&L** — 114 scripts à `savez` conditionnel, 130
+   sans. Aucune conséquence connue sur un verdict ; à traiter par lots lus,
+   jamais en masse. C'est la seule tâche technique restante.
+2. **Aucune nouvelle idée de stratégie** — le #420 a établi que les trois
+   dernières proposées étaient des doublons et que l'espace atteignable avec les
+   données locales est très largement couvert. Toute idée future devra être
+   inscrite **avec la trace de sa vérification** (règle du #420).
+3. **En attente d'arbitrage** : figer `n_trials` dans un fichier de données
+   versionné plutôt que de le lire par expression régulière dans la prose du
+   backlog. Changement de protocole, pas décision d'exécution.
