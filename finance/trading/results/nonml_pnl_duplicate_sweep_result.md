@@ -90,3 +90,7 @@ pré-enregistrement : rejouer les batteries avec un `n_trials` corrigé après
 avoir vu quels candidats en bénéficieraient serait précisément ce que le
 protocole interdit. Le décompte corrigé est publié, son usage est un cycle
 distinct à déclarer.
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).

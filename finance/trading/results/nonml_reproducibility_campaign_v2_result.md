@@ -133,3 +133,7 @@ et c'est elle le résultat du cycle.
 Ce lot couvre **24** scripts sur **281** du vivier v2,
 soit **8.5 %**. Tirage aléatoire à graine
 fixée d'avance, donc reproductible et non choisi.
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).

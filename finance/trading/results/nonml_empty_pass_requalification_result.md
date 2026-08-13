@@ -34,3 +34,7 @@ PASS dont l'overlay agit réellement. Le cas de l'inactivité totale est donc
 Le balayage a porté sur l'ensemble des `.npz` et non sur le seul cas connu du
 #416 — restreindre la recherche à ce qui est déjà su est ce qui avait fait
 manquer un foyer au #390, un portage au #395 et un doublon au #406.
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).

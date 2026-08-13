@@ -110,3 +110,7 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 
 Les comptes B et E sont **bruts et non conclusifs** — ils appellent une
 inspection, faite dans l'audit de ce cycle.
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).
