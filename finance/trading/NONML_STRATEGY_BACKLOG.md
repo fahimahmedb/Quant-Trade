@@ -5532,3 +5532,70 @@ Anti-cheat **CONFORME**. Aucune correction du DSR appliquée — opération dist
    de la règle du #417.
 3. **Corriger `n_trials` de la non-indépendance mesurée** — opération déclarée
    trois fois, jamais faite, et qui doit l'être avant tout nouveau calcul de DSR.
+
+## Backlog #420 (13/08/2026) — RETRAIT AVANT CALCUL des trois idées proposées au #419
+
+| 420 | Instruire la première des trois pistes non-ML inscrites au #419 (effet de fin de trimestre) | Aucune nouvelle donnée | **RETIRÉ AVANT TOUT CALCUL — les trois pistes étaient déjà testées. Aucun script écrit, aucun résultat produit** |
+
+### Ce que la vérification a trouvé
+
+Avant d'écrire le moindre pré-enregistrement, vérification de l'historique du
+backlog — règle du #400, étendue aux tâches de maintenance au #417. Les **trois**
+idées que j'avais inscrites en tête de file au #419 sont déjà tranchées :
+
+| Idée proposée au #419 | État réel |
+|---|---|
+| (a) effet de fin de trimestre | **#19** window dressing fin de trimestre → FAIL 2/5 ; **#65** turn-of-quarter overlay → FAIL 3/5 ; **#172** déjà retiré comme doublon involontaire du #65 |
+| (b) asymétrie gap ouverture/clôture | **#1** overnight vs intraday → FAIL 0/5 ; **#69** variante détention de nuit ; scripts `gap_overlay`, `overnight_gap_volatility_overlay`, `gap_risk_vol_targeting_overlay` |
+| (c) persistance du volume relatif | scripts `relative_index_volume_overlay`, `index_volume_overlay`, `short_volume_ratio_overlay` déjà présents |
+
+Les instruire aurait été **rejouer des hypothèses déjà rejetées** — précisément
+le motif que le #172 avait identifié et refusé le 01/08/2026, dans les mêmes
+termes et sur la même idée (a).
+
+### La faute est la mienne, et c'est la troisième fois
+
+Le #400 avait établi la règle : vérifier l'historique avant d'agir. Le #417 l'a
+étendue aux tâches de maintenance, après avoir inscrit une requalification déjà
+faite. Le #419 l'a enfreinte à nouveau, en proposant trois pistes **sans en
+vérifier aucune**.
+
+Le point commun des trois occurrences : la règle est appliquée avec rigueur au
+moment d'**exécuter** un cycle, et oubliée au moment d'**écrire la file**. La
+file est rédigée en fin de cycle, quand le travail semble fini.
+
+**Règle ajoutée** : une idée n'entre dans la file qu'accompagnée de la
+vérification qui l'a validée comme neuve — `grep` sur le backlog et sur
+`scripts/`, résultat consigné dans l'entrée. Une proposition sans cette trace
+est à traiter comme non vérifiée.
+
+### État réel de l'espace de recherche
+
+Recherche élargie, toutes vérifiées comme déjà couvertes : jour de semaine (#3,
+#56, #105, #25), jours fériés (#7, #70), triple witching (#26), expiration
+mensuelle (#277), FOMC (#171), Halloween, January Barometer, ToM (#8, #71),
+reversal court terme, séquences de hausses, dispersion de volume.
+
+Le backlog note lui-même la **méga-famille calendaire comme close**. Après 428
+entrées, l'espace des stratégies non-ML atteignables avec les données locales
+(OHLC index + prix/volumes NDX-100) est **très largement couvert**. Ce n'est pas
+un constat d'échec : c'est ce à quoi ressemble un backlog arrivé à maturité.
+
+**Je ne propose donc pas de nouvelle idée de stratégie dans ce cycle.** En
+inventer une pour remplir la file, alors que les trois précédentes se sont
+révélées être des doublons, reviendrait à produire du volume plutôt que du
+résultat.
+
+### File des prochains cycles — méthodologique, et assumée comme telle
+
+1. **Corriger `n_trials` de la non-indépendance mesurée** — trois cas établis
+   (#403 identité exacte, #414 portes à 93,3 %, #418 emboîtement), déclarés
+   comme opération distincte à trois reprises et jamais faits. C'est la dernière
+   dette qui affecte un chiffre publié (le DSR).
+2. **Étendre le critère d'inactivité aux schémas panier** — 8 PASS hors
+   d'atteinte de la règle du #417.
+3. **Persistance générale du P&L** — 114 scripts à `savez` conditionnel, 130 sans.
+   À traiter par lots lus, jamais en masse.
+
+Si une piste de stratégie réellement neuve apparaît, elle sera inscrite **avec
+la trace de sa vérification**, conformément à la règle ci-dessus.
