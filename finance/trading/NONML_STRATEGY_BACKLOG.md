@@ -4351,3 +4351,78 @@ portage point-in-time mais échoue toujours la validation finale.
    `.npz` de `results/`, pour corriger le décompte d'essais du backlog (#403).
 2. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
 3. `net_breadth_vol_targeting_overlay` — portage PIT.
+
+## Backlog #406 (13/08/2026) — balayage des doublons de P&L : le résultat principal est une limite de méthode
+
+| 406 | Chercher, parmi tous les `.npz` de `results/`, les paires de candidats dont le P&L coïncide — question ouverte au #403 | Aucune nouvelle donnée | **FAIT — 1 essai surnuméraire confirmé, mais la méthode ne voit que 41 % du backlog** |
+
+### Ce que le balayage trouve
+
+Couverture **100 %** des 165 `.npz` (8 schémas reconstruits, 0 non reconnu).
+
+- **2 paires** à P&L bit-à-bit identique, **0 quasi-doublon** (seuil de
+  corrélation 0,9999 fixé d'avance).
+
+Vérification **par lecture** (critère 2 du pré-enregistrement), qui en rejette une :
+
+| Groupe | Verdict |
+|---|---|
+| `etape_D_overlay_optimized` / `nonml_etape_d_garch_defensive_overlay` | doublon de **fichier** confirmé, essai surnuméraire **rejeté** |
+| `..._trend_union_overlay_pit_universe` / `..._sma200_leaders_overlay_pit_universe` | doublon **confirmé**, 1 essai surnuméraire |
+
+Le premier groupe vient d'un **même commit** (`0516f8f`, cycle #118), dont
+l'entrée est explicitement qualifiée « FAIT — découverte importante, **pas un
+nouveau backtest** » : c'est un alias de nommage vers l'espace `nonml_`, pas un
+second essai. Le compter aurait été une correction gratuite en ma faveur.
+
+**Correction retenue : 1 essai surnuméraire, 372 → 371.** Négligeable.
+
+### Ce que l'audit établit, et qui compte davantage
+
+Un balayage qui ne trouve presque rien peut signifier deux choses opposées : il
+n'y a presque rien, ou il ne sait pas chercher. L'audit sépare les deux.
+
+- **Contrôle positif** — un doublon synthétique injecté dans une copie du
+  répertoire est bien détecté. La méthode fonctionne.
+- **Contrôle négatif** — une copie bruitée n'est pas signalée. Le seuil ne
+  confond pas ressemblance et identité.
+- **Portée réelle** — **165 `.npz` pour 404 entrées de backlog, soit 41 %.** Un
+  `.npz` n'est sauvegardé que par certains scripts, et souvent seulement en cas
+  de PASS.
+- **Angle mort démontré** — le doublon établi au #403 sur l'univers **d'origine**
+  (`sma200_leaders_overlay` / `leaders_trend_union_overlay`) est **invisible**
+  pour le balayage : `nonml_leaders_trend_union_overlay_pnl.npz` n'existe pas. Le
+  seul doublon connu *avant* ce cycle lui échappe ; il n'a retrouvé que sa
+  réplique sur univers point-in-time, où les deux fichiers existent.
+
+**Conclusion : méthode valide, portée insuffisante.** Le résultat est une
+**borne inférieure**, pas un décompte. Écrire « il n'y a que deux doublons dans
+le backlog » serait faux ; la formulation correcte est « il n'y en a que deux
+parmi les candidats ayant sauvegardé un `.npz` ».
+
+C'est consigné explicitement pour que le chiffre ne soit pas repris plus tard
+comme un décompte complet — le genre de glissement qui a déjà eu lieu au #395,
+où un critère de détection partiel avait produit une liste présentée comme
+exhaustive.
+
+Aucune correction du DSR appliquée, conformément au pré-enregistrement.
+Anti-cheat **CONFORME** (4/4).
+
+### Ce qu'il faudrait pour vraiment répondre à la question
+
+Le balayage par `.npz` est plafonné par ce qui a été sauvegardé. Deux voies, ni
+l'une ni l'autre entreprise ici :
+
+1. **Rendre la sauvegarde systématique** — imposer aux scripts de sauvegarder
+   leur P&L même en cas de FAIL. Cela ne rétroagit pas sur les 239 entrées déjà
+   passées, mais rend le balayage concluant pour la suite.
+2. **Comparer les signaux plutôt que les P&L** — l'identité #33/#41 vient d'une
+   inclusion de signaux (`52w-high ⊂ SMA200`), détectable sans exécuter les
+   stratégies. C'est la voie qui aurait trouvé le cas connu.
+
+### File des prochains cycles
+
+1. `momentum_decile_spread_vol_targeting_overlay` — portage PIT.
+2. `net_breadth_vol_targeting_overlay` — portage PIT.
+3. Sauvegarde systématique du P&L y compris en cas de FAIL (voie 1 ci-dessus),
+   pour rendre les balayages futurs concluants.
