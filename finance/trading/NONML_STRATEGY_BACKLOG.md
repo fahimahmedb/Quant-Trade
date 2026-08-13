@@ -3631,3 +3631,54 @@ Voir `results/nonml_survivorship_exposure_audit.md`.
 **Nouvelle piste prioritaire, ajoutée au backlog :** porter les 15 PASS exposés
 sur l'univers point-in-time, un par cycle, en réutilisant le patron des
 7 variantes `*_pit_universe` existantes.
+
+## Backlog #396 (12/08/2026) — 1er des 15 PASS exposés : breadth DD survit à l'univers point-in-time
+
+| 396 | Porter `deep_drawdown_breadth_vol_targeting_overlay` sur l'univers point-in-time (1er des 15 PASS exposés au #395) | Aucune nouvelle donnée (`prices_pit` déjà locale) | **FAIT — PASS MAINTENU.** Sharpe +0,82 vs +0,79, rendement +698,4 % vs +542,3 %, sur **2645 séances (2016-2026)** contre 1385 pour l'original. PREREG committé avant tout calcul. Anti-cheat **CONFORME (4/4)**. |
+
+**Réutilisation stricte (Règle 7)** : aucun paramètre modifié
+(`DD_THRESHOLD=0,80`, `MEDIAN_WINDOW=252`, `VOL_WINDOW=20`,
+`TARGET_VOL_ANNUAL=0,20`, `CAP=2,0`, `COST_BPS=5`). Seul l'univers du **signal**
+change.
+
+**Particularité déclarée dans le PREREG, avant calcul :** contrairement à
+`amihud` (#394), le P&L de cette stratégie est **indiciel** (overlay sur NDX) —
+l'univers de titres ne sert qu'à compter la breadth. Le biais du survivant agit
+donc sur le **signal**, pas sur la mesure de performance. La prédiction avait été
+explicitement **non tranchée** à l'avance, précisément pour ne pas pouvoir
+rationaliser le résultat après coup.
+
+### Bug trouvé et corrigé AVANT tout commit de résultat
+
+`breadth >= median` rend **False et non NaN** là où la breadth est NaN. Or
+`prices_pit` couvre 1985-2026 alors que la breadth point-in-time ne commence
+qu'en 2015 : la fenêtre testable démarrait donc en **1985**, avec 30 ans où la
+porte est éteinte faute de signal — **10 252 séances au lieu de 2645**, ce qui
+diluait le test au lieu de le restreindre. Détecté en comparant au cycle
+d'origine (1385 séances, « échantillon restreint à la période où la breadth est
+disponible »). Masque `signal_defined` ajouté pour reproduire cette convention.
+
+### Audit adversarial — CONFORME sur trois contrôles
+
+1. **Recalcul indépendant de la breadth** par `pandas.rolling(252).max()` et
+   sélection de colonnes, chemin distinct de la boucle du backtest : **écart
+   maximum 0,00e+00 sur 2907 dates**.
+2. **Anti-lookahead** : rendements du futur multipliés par −3, positions avant la
+   coupure **strictement inchangées**.
+3. **Appartenance point-in-time** résolue à chaque date testée, couverture
+   moyenne 88,4 %.
+
+### Bilan de l'axe « biais du survivant »
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **7** |
+| dont **maintenus** | **4** (`momentum_12_1`, `momentum_breadth`, `sma200_breadth`, **`deep_drawdown_breadth`**) |
+| dont **tombés** | 3 (`amihud`, `dispersion_vol_targeting`, `momentum_turnover_doublesort`) |
+| PASS restant exposés sans vérification | **14** |
+
+**Lecture :** le premier candidat dont le P&L est indiciel (signal seul exposé au
+biais) survit, là où les trois chutes précédentes concernaient des stratégies
+dont le **portefeuille** était construit sur l'univers biaisé. L'échantillon
+reste trop mince (7 cas) pour ériger cette distinction en règle, mais elle est
+cohérente avec le mécanisme et mérite d'être suivie sur les 14 restants.
