@@ -7815,3 +7815,103 @@ Anti-cheat **CONFORME** (4/4).
 - **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
+
+## Backlog #444 (13/08/2026) — troisième schéma `.npz` : **FAIL**, 2 balayages appliquent une formule fausse
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_third_npz_schema_handling.md`
+(committé `96fab63`, avant toute mesure). Aucune stratégie évaluée, **aucun
+rapport ni `.npz` modifié** — ce cycle ne fait que lire. `n_trials = 1`.
+
+### Verdict : FAIL
+
+Critère pré-enregistré : **FAIL si au moins un consommateur applique une formule
+fausse** aux 2 fichiers du troisième schéma. Il y en a **2**.
+
+| | Catégorie | Nombre |
+|---|---|---|
+| **A** | traité correctement | **5** |
+| **B** | écarté explicitement (compté) | **2** |
+| **C** | écarté silencieusement | **3** |
+| **D** | **formule fausse appliquée** | **2** |
+
+**12/12 consommateurs classés**, chacun justifié par la ligne qui décide du
+traitement. 2 connus d'avance (les miens) ⇒ **10 classements neufs**.
+
+Le cycle aurait été trivialement « réussi » en n'énumérant que la concordance des
+2 fichiers, connue et concordante. Le critère avait été placé sur la question
+**non connue**.
+
+### Les deux D, et leur portée exacte
+
+- `nonml_pnl_duplicate_sweep_backtest.py` (l.40-42) soustrait
+  `turn_candidate × coût` d'un `pnl_candidate` **déjà net** → P&L cumulé lu
+  **+0,1705** au lieu de **+0,2028** ;
+- `nonml_leaders_trend_union_pnl_persistence_audit.py` (l.55) hérite du défaut
+  via `sw.main()`, qui parcourt tous les `.npz`.
+
+**Portée vérifiée** : le chiffre faux **n'a été publié nulle part**, et **aucun
+doublon n'a été manqué** (1 seule série comparable, corrélation +0,017). Le
+second fichier du schéma échappe au défaut, dépourvu de `turn_candidate`.
+
+Le défaut est **réel dans le code et sans conséquence publiée à ce jour** — les
+deux moitiés comptent. **Le cycle ne corrige rien** : corriger le balayage change
+les séries que consomment #406, #418 et la batterie Règle 9, ce qui est une
+modification à déclarer et mesurer dans son propre cycle.
+
+### Résultat de fond — le schéma ne détermine pas la convention
+
+| Fichier | Convention | Vérifié par |
+|---|---|---|
+| `dollar_neutral_composite_pit` | rendements **simples** | producteur calcule sur `log1p(pnl)` |
+| `dollar_neutral_composite_vol_targeted` | rendements **log** | `trading_metrics(r_vt)` direct, total par `np.exp(sum)` |
+
+**Deux fichiers, mêmes clés, conventions opposées.** Aucun balayage ne peut
+déduire la convention du seul schéma : quel que soit son choix, il se trompe sur
+l'un des deux. Contrainte réelle sur tout outillage futur, inconnue avant ce
+cycle. Les 4 jambes se retrouvent dans leur rapport, chacune sous **sa**
+convention.
+
+### Écarts publiés, non absorbés
+
+1. **Le pré-enregistrement déclarait la concordance connue d'avance : trop
+   large.** Seul `_pit` avait été sondé au #443. Et c'est précisément le fichier
+   non sondé qui a livré le résultat de fond.
+2. **Un classement corrigé en cours de cycle** : `v2_audit` écrit D par
+   « héritage », sans vérifier qu'un fichier de ce schéma atteigne la fonction —
+   il ne l'atteint jamais. Reclassé A, correction publiée.
+3. **Une entorse de classification signalée** : `npz_report_consistency` (#442)
+   ne rentre proprement dans aucune catégorie (compté, mais sous une raison
+   fausse). Classé C avec l'entorse dite, plutôt que d'élargir une catégorie
+   après avoir vu le cas.
+4. **Ma reconstruction encore en cause avant le dépôt** — 3ᵉ fois sur cet axe
+   (#442 `r_alt`, #443 coûts doublés, #444 `log1p` appliqué aux deux). Le premier
+   passage déclarait `_vol_targeted` discordant à tort.
+
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : verdict FAIL, et cycle
+d'inventaire sans position ni P&L de stratégie. Audit dédié (7c) :
+`results/nonml_third_npz_schema_handling_audit.md`.
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Corriger `net_pnl` du balayage de doublons** — cycle de *modification*, à
+   pré-enregistrer : déclarer la ligne changée, re-mesurer les groupes de
+   doublons avant/après, et vérifier qu'aucun verdict publié ne bouge.
+2. **Les 20 `.npz` sans rapport publié** : variantes au rapport nommé autrement
+   (comme #431 contrôle B) ou orphelins réels. Inspection, pas balayage.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Concordance `.npz` / rapport** : **190/190** (165 scalaires + 21 paniers +
+  4 jambes du troisième schéma) ; restent **20** `.npz` sans rapport.
+- **1 défaut de formule ouvert** (`net_pnl`, 2 consommateurs) — sans conséquence
+  publiée, non corrigé, inscrit en tête de file.
+- **3 consommateurs** laissent leur lecteur mal informé sur ce schéma (C).
+- **Reproductibilité** : borne finale **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **1** PASS non évaluable par la batterie ; **99** scripts sans `.npz` (#428).
