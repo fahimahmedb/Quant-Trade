@@ -41,8 +41,8 @@ p-value SPA : 0.0294
 
 ## e. DSR avec n_trials = taille totale du backlog (jamais 1)
 
-n_trials = 372 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
-SR0 (seuil de sélection) = 0.0717 (journalier), DSR = 0.1717
+n_trials = 370 (taille totale du backlog), var_trials (échelle journalière, convertie depuis les Sharpe annualisés extraits) ≈ 0.000585 (estimée sur 112 Sharpe extractibles de l'historique du backlog -- univers hétérogène, approximation prudente).
+SR0 (seuil de sélection) = 0.0716 (journalier), DSR = 0.1722
 **ÉCHEC — DSR>0,95 : NON.**
 
 ## Verdict de la batterie renforcée

@@ -187,6 +187,30 @@ def check_d_spa(book, cost_baseline):
     return res["p_value"] < 0.05, res["p_value"]
 
 
+# --- Correction de non-independance (cycle #421) ---------------------------
+# Le decompte d'essais lu dans le backlog compte des entrees dont le P&L est
+# BIT-A-BIT IDENTIQUE a celui d'une autre entree : ce ne sont pas des essais
+# independants. Etabli par mesure aux #403 (identite des signaux sur 10273
+# seances), #418 et #419 (P&L identiques, verifies hors balayage).
+#
+# Ne sont deduites QUE les identites mesurees. Les paires voisines (#414,
+# portes identiques a 93,3%) et emboitees (#418, un ET de l'autre) sont des
+# strategies DISTINCTES : les deduire releverait d'un jugement qui, par
+# construction, augmenterait le DSR en ma faveur. Elles restent documentees
+# au backlog sans effet sur ce compte.
+#
+# La correction ABAISSE n_trials, donc abaisse SR0, donc AUGMENTE le DSR :
+# elle va dans le sens favorable aux candidats, d'ou la regle stricte
+# ci-dessus.
+DEPENDENT_DUPLICATES = (
+    # (entree deduite, jumeau conserve, cycle etablissant l'identite)
+    ("leaders_trend_union_overlay", "sma200_leaders_overlay", "#419"),
+    ("leaders_trend_union_overlay_pit_universe",
+     "sma200_leaders_overlay_pit_universe", "#403"),
+)
+N_TRIALS_DEDUCTION = len(DEPENDENT_DUPLICATES)
+
+
 def parse_backlog_n_trials():
     """Lit le dernier total "X PASS [niveau 1] sur Y hypothèses testées" du
     backlog. Bug trouvé au cycle #161 (leaders_index52w_high_overlay) : la
@@ -205,7 +229,10 @@ def parse_backlog_n_trials():
     matches = re.findall(r"(\d+) PASS(?: niveau 1)? sur (\d+) hypoth[eè]ses test[eé]es", backlog)
     if not matches:
         return None
-    return int(matches[-1][1])
+    raw = int(matches[-1][1])
+    # Deduction des doublons exacts mesures (cycle #421). Voir
+    # DEPENDENT_DUPLICATES ci-dessus pour la regle et sa justification.
+    return raw - N_TRIALS_DEDUCTION
 
 
 def approx_var_trials():
