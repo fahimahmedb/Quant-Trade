@@ -6808,3 +6808,99 @@ atteignable est très largement couvert.
 
 - **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
 - **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
+
+---
+
+## Backlog #434 (13/08/2026) — reproductibilité 12/12, mais la prémisse du pré-enregistrement était fausse
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_reproducibility_sample.md`
+(committé avant tout tirage). Aucune stratégie évaluée, aucun verdict recalculé,
+**aucun rapport publié modifié**. `n_trials = 1`.
+
+### Ce qui a été mesuré
+
+Question jamais posée : un rapport publié se reproduit-il encore à partir de son
+propre code ? Échantillon de **12** scripts sur **285** éligibles, graine
+**20260813** fixée au pré-enregistrement, délai 300 s, chaque rapport sauvegardé
+puis **restauré à l'identique**.
+
+| | Nombre |
+|---|---|
+| identiques octet à octet | **12** |
+| divergents | **0** |
+| non concluants | **0** |
+
+**Quatre contrôles pré-enregistrés tenus** : tirage reproductible depuis la
+graine, 0 rapport publié modifié, 12/12 classés, taux publié tel quel.
+
+### Le résultat principal — et il porte contre ce cycle
+
+Le pré-enregistrement affirmait :
+
+> « Les **244** autres n'ont jamais été ré-exécutés depuis leur publication,
+> alors que le code partagé a évolué entre-temps. »
+
+**C'est faux.** Vérification faite après coup, qui aurait dû l'être avant : le
+commit `e00d817` du **12/08** — *« Correction de la composition dans 208 backtests
+indiciels »* — a touché 208 scripts d'un coup, et **285 des 287** scripts ont été
+touchés depuis cette date. La quasi-totalité du corpus a donc été **régénérée un
+à deux jours avant ce cycle**.
+
+**Ce que le 12/12 mesure réellement** : que le corpus est *aujourd'hui* cohérent
+avec son code. Ce n'est pas rien — un générateur non déterministe, une dépendance
+à l'horloge ou à l'ordre des fichiers se serait vue.
+
+**Ce qu'il ne mesure pas** : la dérive d'anciens rapports face à un code qui a
+bougé. Cette question reste **ouverte et intestable en l'état**, la correction de
+masse ayant effacé l'écart qu'il aurait fallu mesurer.
+
+Un « 100 % » annoncé sans cette précision aurait donné au cycle un poids qu'il
+n'a pas. **Sixième** affirmation non vérifiée révélée fausse (#417, #420, #425,
+#426, #428, celle-ci), **deuxième** attrapée par le cycle qui l'écrivait avant
+que le chiffre ne soit survendu.
+
+### Deux défauts corrigés avant publication
+
+1. **Parsing** : l'extraction du tirage ramassait des puces hors de sa section.
+2. **Piège d'auto-référence** — le plus instructif : ce cycle crée lui-même un
+   couple script + rapport qui, laissé dans le vivier, le fait passer de **285 à
+   286** et **décale le tirage**. La graine ne redonnait alors plus les mêmes
+   noms, et le contrôle échouait pour une raison purement mécanique. Le vivier
+   est reconstruit tel qu'il était **au moment du tirage** ; l'exclusion est
+   signalée, pas silencieuse.
+
+### Contrôle secondaire — « zéro ML », balayé pour la première fois
+
+Sur les **287** `scripts/nonml_*.py`, **1 seul** fichier contient un motif ML
+(`sklearn`, `torch`, `RandomForest`…) : `nonml_anti_cheat_check.py`, le
+vérificateur lui-même, dont c'est le motif de détection. **0 violation réelle.**
+Contrôle simple au résultat nul, publié quand même — une vérification faite reste
+une vérification.
+
+Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **En attente d'arbitrage de l'utilisateur — trois points**, aucun tranché
+   unilatéralement : figer `n_trials` (#421) ; le statut de
+   `log_return_compounding_audit` face au vérificateur (#431) ; étendre ou non la
+   batterie au schéma panier (#432).
+2. **Question rouverte, mais non testable ici** : la dérive des rapports face à
+   un code qui évolue. Elle le redeviendra le jour où le corpus aura vécu sans
+   correction de masse — pas avant. L'inscrire maintenant comme tâche serait
+   fabriquer du travail : elle est notée comme **en attente d'une condition**,
+   pas comme actionnable.
+3. Le prochain cycle devra **chercher avant de conclure** (#429), sans s'arrêter
+   à la première résolution (#433), **et vérifier la prémisse qu'il écrit**
+   (#434) — c'est la leçon propre à ce cycle.
+
+**Aucune idée de stratégie n'est proposée** : le #426 a vérifié que les 66
+fichiers de `data/` sont tous déjà utilisés, et le #420 avait établi que l'espace
+atteignable est très largement couvert.
+
+### Dette restante
+
+- **1** PASS non évaluable par la batterie (schéma panier) — listé, non forcé.
+- **99** scripts de backtest non-ML sans `.npz` à leur nom (#428) — inchangée.
+- **273** rapports jamais ré-exécutés individuellement — dette **déclarée et
+  chiffrée**, dont ce cycle a testé 12 par tirage aléatoire.
