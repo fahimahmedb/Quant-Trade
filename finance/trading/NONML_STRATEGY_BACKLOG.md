@@ -3984,3 +3984,101 @@ celle qu'on serait tenté de tirer d'ici le serait sur un échantillon de 10.
 
 **Prochain candidat des 11 restants :** `leaders_vol_targeting_20_overlay`
 (vérifier d'abord son historique dans le backlog, règle du #400).
+
+## Backlog #402 (13/08/2026) — `leaders_vol_targeting_20_overlay` sur univers point-in-time
+
+Quatrième candidat **réellement** non vérifié des 11 exposés. Vérification
+préalable faite selon la règle du #400 (fichier de résultat, PREREG, script,
+historique du backlog) : les seules entrées le mentionnant sont le #48 (origine),
+le #253 (décalage causal) et le #318 (batterie Règle 9, 1/5). Aucun portage.
+
+| 402 | Rejouer `leaders_vol_targeting_20_overlay` (#48) avec l'appartenance NDX-100 résolue à chaque date de rebalancement | `data/pead/prices_pit/` déjà présent | **FAIT — FAIL, le PASS ne survit pas** |
+
+### Résultat
+
+PREREG committé avant tout calcul, `n_trials = 1`, réutilisation stricte
+(Règle 7) : aucun paramètre modifié, exécution causale (#253).
+
+2880 séances (2015-02-11 → 2026-07-27), 174 tickers PIT, couverture 87,7 %,
+exposition moyenne 1,33×.
+
+| | Sharpe ann. | Rendement total net | MDD |
+|---|---|---|---|
+| Leaders 1.0× (référence) | +0,69 | +384,2 % | −32,5 % |
+| Leaders + vol-targeting 20 % | +0,64 | +390,6 % | **−28,7 %** |
+
+Rendement : OUI, de peu. Sharpe : **non, −0,05**. → **FAIL.**
+
+Origine (#48, univers biaisé, 1124 séances) : référence +0,97 / +127,6 %,
+overlay +0,98 / +155,4 % → PASS. La marge de Sharpe valait +0,01 ; elle passe
+à −0,05.
+
+### Ce que ce candidat a de particulier
+
+**C'est le seul de cet axe qui améliore le drawdown** : −28,7 % contre −32,5 %
+pour sa référence. L'overlay fait donc bien ce pour quoi un vol-targeting est
+conçu. Mais le critère pré-enregistré du #48 exige de battre la référence **en
+Sharpe et en rendement** — pas de réduire le risque. Sur l'univers réel, le
+rendement supplémentaire ne paie plus la volatilité du levier, et le critère
+tombe.
+
+C'est une limite du critère du #48, pas un défaut du test : on rapporte le
+verdict tel que pré-enregistré. Le noter ici évite de perdre l'information au
+motif qu'elle ne rentre pas dans la case.
+
+**Différence avec le #401** : là, l'exposition venait d'un signal sur l'indice,
+insensible à l'univers. Ici elle est pilotée par la volatilité du portefeuille
+lui-même et change donc mécaniquement avec l'univers — conséquence du changement
+d'univers, annoncée au PREREG **avant** tout calcul pour qu'on ne la confonde
+pas avec une modification de protocole.
+
+### Audit adversarial — 6 contrôles
+
+Un contrôle de plus qu'au #401, propre à ce candidat : l'overlay étant piloté
+par le portefeuille lui-même, une fuite **circulaire** est possible (dimensionner
+la position du jour t avec le P&L du jour t). Testé par perturbation du P&L à
+partir de l'indice 7131 : exposition inchangée jusqu'à 7131 inclus, première
+divergence en 7132. **CONFORME.**
+
+- **2.** Sélection recalculée par `pandas.rolling` : 0 divergence / 14262. CONFORME.
+- **3.** Anti-lookahead (prix futurs ×5) : poids antérieurs inchangés. CONFORME.
+- **4.** Appartenance PIT : 0 sélection d'un non-membre sur 139 dates de décision
+  (et 0 détention sur un titre sorti, contre 5 au #401). CONFORME.
+- **5.** Décalage causal d'un jour : exact. CONFORME.
+- **6.** Causalité de l'exposition : voir ci-dessus. CONFORME.
+- **1.** Simulation en nombre de parts : écart de niveau **7,00 %**
+  (formule 4,8792 vs parts 4,5601), au-dessus de la tolérance de 5 %. **RÉSERVE.**
+
+Seuil de 5 % **non relâché** après lecture. Diagnostic 1b : rejouées depuis les
+rendements du chemin en parts, les deux jambes donnent **+0,66 vs +0,62** — même
+ordre, l'écart de niveau ne retourne pas le verdict.
+
+**Constat à traiter comme un point ouvert, pas comme un ajustement** : le
+contrôle 1 dépasse maintenant sa tolérance sur deux cycles consécutifs (6,34 %
+au #401, 7,00 % ici), toujours dans le même sens et pour la même raison — la
+tolérance de 5 % a été fixée sur des fenêtres courtes, et la dérive des poids
+sur 21 jours croît avec la durée. Il faudrait soit une tolérance dépendant de
+l'horizon, soit une formule d'agrégation qui laisse dériver les poids. Aucune
+des deux n'est faite ici : changer le gabarit d'audit en cours d'axe, après
+avoir vu deux résultats, serait exactement le geste que le protocole interdit.
+
+Anti-cheat **CONFORME** (4/4). Pas de robustesse ni de simulation 300 € : le
+verdict est FAIL.
+
+### Bilan de l'axe biais du survivant
+
+| | |
+|---|---|
+| PASS testés sur univers point-in-time | **11** |
+| dont maintenus | 5 |
+| dont tombés | **6** (`amihud`, `dispersion_vol_targeting`, `momentum_turnover_doublesort`, `leaders_index52w_high_overlay`, `leaders_trend_union_overlay`, `leaders_vol_targeting_20_overlay`) |
+| PASS restant exposés, sans vérification | **10** |
+
+Les trois candidats bâtis sur le **panier Leaders** testés jusqu'ici (#163, #401,
+#402) sont tombés tous les trois. Ce n'est pas une conclusion — trois cas, et le
+panier Leaders est précisément la brique la plus exposée au biais — mais c'est
+la seule régularité visible de l'axe, et elle sera vérifiée sur
+`sma200_leaders_overlay`, dernier candidat Leaders de la liste.
+
+**Prochain candidat des 10 restants :** `sma200_leaders_overlay` (vérifier
+d'abord son historique dans le backlog, règle du #400).
