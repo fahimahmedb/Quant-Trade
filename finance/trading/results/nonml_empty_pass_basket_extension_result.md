@@ -67,3 +67,8 @@ peuvent pas avoir des P&L identiques.
 sans avoir rien trouvé — ce qui était l'issue annoncée, et reste un résultat :
 le PASS obtenu par inactivité demeure un cas isolé, désormais vérifié sur
 **tous** les schémas où la question est décidable.
+
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).

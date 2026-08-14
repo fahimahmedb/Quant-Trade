@@ -12,19 +12,29 @@ un script est auto-référent si son source balaie l'ensemble du dépôt
 Un rapport auto-référent **dérive nécessairement** dès qu'un cycle ajoute un
 fichier : sa divergence ne dit rien sur la péremption d'un résultat.
 
-- scripts avec rapport publié : **288**
-- **auto-référents, exclus** : **7**
-- vivier de la campagne v2 : **281**
+- scripts avec rapport publié : **302**
+- **auto-référents, exclus** : **17**
+- vivier de la campagne v2 : **285**
 
 Exclus :
 
 - `capitulation_gate_floor_sweep`
+- `net_pnl_correction`
 - `pnl_duplicate_sweep`
 - `protocol_inventory`
+- `reproducibility_campaign_v2`
+- `reproducibility_campaign_v3`
+- `reproducibility_campaign_v3_lot2`
+- `reproducibility_campaign_v3_lot3`
 - `reproducibility_sample`
 - `reproducibility_sample_lot2`
 - `reproducibility_sample_lot3`
 - `sameday_timestamp_resolution`
+- `selfref_reports_marking`
+- `third_npz_schema_handling`
+- `verdict_detector_complete`
+- `verdict_detector_fix`
+- `verdict_rule_propagation`
 
 Tous sont des **diagnostics**, pas des stratégies : aucun verdict PASS/FAIL n'en
 dépend. Ils ne sont **pas corrigés** ici — les rendre stables modifierait des
@@ -56,15 +66,15 @@ une règle qui n'existait pas quand ils ont été faits.
 - `momentum_decile_spread_vol_targeting_overlay`
 - `momentum_dispersion_vol_targeting_overlay`
 - `momentum_turnover_doublesort_pit_universe`
-- `oil_market_volatility_overlay`
-- `overnight_intraday`
-- `presidential_cycle_overlay`
-- `quarter_end_window_dressing`
-- `rate_volatility_regime_overlay`
+- `npz_report_consistency`
+- `oil_price_shock_overlay`
+- `ppi_inflation_overlay`
+- `pre_fomc_drift_overlay`
+- `rate_level_regime_overlay`
+- `sma200_breadth_vol_targeting_overlay_pit_universe`
+- `sma200_leaders_overlay`
 - `sma200_momentum_breadth_and_overlay`
-- `sma200_slope_overlay`
-- `sma200_trend_overlay`
-- `tom_decomposition_overlay`
+- `stlfsi_financial_stress_overlay`
 
 ## Résultat
 
@@ -78,17 +88,11 @@ une règle qui n'existait pas quand ils ont été faits.
 
 | Script | Durée | Lignes différentes |
 |---|---|---|
-| `empty_pass_requalification` | 0.4 s | 5 |
+| `empty_pass_requalification` | 0.3 s | 5 |
 
 **`empty_pass_requalification` — premières lignes divergentes :**
 
 ```
-- - fichiers `nonml_*_pnl.npz` trouvés : **173**
-+ - fichiers `nonml_*_pnl.npz` trouvés : **208**
-- - exploitables (schéma `pos` / `r_asset`) : **158**
-+ - exploitables (schéma `pos` / `r_asset`) : **185**
-- - inexploitables (autre schéma) : **15**
-+ - inexploitables (autre schéma) : **23**
 ```
 
 **Non committées** : le rapport d'origine a été restauré. Ces divergences
@@ -99,29 +103,29 @@ vivier — et constituent le résultat principal du cycle.
 
 | Script | Durée |
 |---|---|
-| `atr_vol_targeting_overlay` | 2.3 s |
-| `credit_spread_overlay` | 6.9 s |
-| `diversification_bond_overlay_crossmarket` | 1.8 s |
-| `dry_bulk_shipping_overlay` | 3.1 s |
-| `em_dm_relative_strength_overlay` | 5.0 s |
-| `garman_klass_vol_targeting_overlay` | 2.3 s |
-| `goldencross_vol_targeting_overlay` | 2.3 s |
-| `index_skewness_regime_overlay` | 7.9 s |
+| `atr_vol_targeting_overlay` | 2.1 s |
+| `credit_spread_overlay` | 6.8 s |
+| `diversification_bond_overlay_crossmarket` | 1.7 s |
+| `dry_bulk_shipping_overlay` | 2.9 s |
+| `em_dm_relative_strength_overlay` | 4.8 s |
+| `garman_klass_vol_targeting_overlay` | 2.0 s |
+| `goldencross_vol_targeting_overlay` | 2.1 s |
+| `index_skewness_regime_overlay` | 7.6 s |
 | `low_vol_tilt` | 1.6 s |
-| `lowvol_regime_vol_targeting_overlay` | 2.1 s |
+| `lowvol_regime_vol_targeting_overlay` | 2.3 s |
 | `momentum_52w_high` | 1.6 s |
 | `momentum_decile_spread_vol_targeting_overlay` | 1.8 s |
-| `momentum_dispersion_vol_targeting_overlay` | 1.9 s |
-| `momentum_turnover_doublesort_pit_universe` | 7.1 s |
-| `oil_market_volatility_overlay` | 4.3 s |
-| `overnight_intraday` | 2.2 s |
-| `presidential_cycle_overlay` | 2.3 s |
-| `quarter_end_window_dressing` | 2.3 s |
-| `rate_volatility_regime_overlay` | 11.1 s |
-| `sma200_momentum_breadth_and_overlay` | 2.1 s |
-| `sma200_slope_overlay` | 2.2 s |
-| `sma200_trend_overlay` | 2.1 s |
-| `tom_decomposition_overlay` | 3.5 s |
+| `momentum_dispersion_vol_targeting_overlay` | 1.7 s |
+| `momentum_turnover_doublesort_pit_universe` | 6.8 s |
+| `npz_report_consistency` | 1.9 s |
+| `oil_price_shock_overlay` | 7.7 s |
+| `ppi_inflation_overlay` | 8.3 s |
+| `pre_fomc_drift_overlay` | 2.2 s |
+| `rate_level_regime_overlay` | 2.6 s |
+| `sma200_breadth_vol_targeting_overlay_pit_universe` | 4.3 s |
+| `sma200_leaders_overlay` | 2.0 s |
+| `sma200_momentum_breadth_and_overlay` | 2.2 s |
+| `stlfsi_financial_stress_overlay` | 6.1 s |
 
 ## Borne v2 — et le recul assumé
 
@@ -130,9 +134,10 @@ et c'est elle le résultat du cycle.
 
 ## Portée
 
-Ce lot couvre **24** scripts sur **281** du vivier v2,
-soit **8.5 %**. Tirage aléatoire à graine
+Ce lot couvre **24** scripts sur **285** du vivier v2,
+soit **8.4 %**. Tirage aléatoire à graine
 fixée d'avance, donc reproductible et non choisi.
+
 
 > **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
 > de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,

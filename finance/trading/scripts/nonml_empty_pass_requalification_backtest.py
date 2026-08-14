@@ -157,6 +157,13 @@ def main():
     L.append("manquer un foyer au #390, un portage au #395 et un doublon au #406.")
     L.append("")
 
+    # #451 : l'encart est desormais EMIS PAR CE SCRIPT. Le #439 l'avait ajoute
+    # au FICHIER publie ; le #450 a demontre qu'une regeneration l'efface.
+    # Texte repris mot pour mot du #439, sans reformulation.
+    L.append("")
+    L.append("> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date")
+    L.append("> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,")
+    L.append("> et ce n'est pas une péremption de résultat (cycles #436-#438).")
     OUT.write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
     print(f"Écrit dans {OUT}")
