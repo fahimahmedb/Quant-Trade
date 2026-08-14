@@ -9792,3 +9792,87 @@ panier (#432).
   **univers d'essais sous-estimé** (#456).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #465 (14/08/2026) — les grandeurs de **contenu** : le #449 innocenté, le « 6 » du #451 confirmé faux
+
+Pré-enregistré dans `PREREG_content_defined_magnitudes.md` (`2022103`).
+`n_trials = 1`. Première piste de la file ouverte au #464.
+
+### Ce que le #462 déclarait hors de portée
+
+> « Consommateurs d'une règle » (#449) et « porteurs d'un encart » (#451) se
+> définissent par le **contenu** des fichiers, pas par leur nom. En ajouter une
+> grandeur maintenant serait ajuster l'instrument au résultat.
+
+Ce cycle est l'instrument manquant, déclaré **avant** de regarder.
+
+### Les deux faux connus, recomptés aux 18 commits épinglés
+
+| Entrée | Annoncé | Recompté | Verdict |
+|---|---|---|---|
+| #449 | **8**, corrigé en **6** | **8** importateurs dont **2** d'instrument → **6** consommateurs | **la correction est JUSTE** |
+| #451 | **6** porteurs | **8** | **le « 6 » était bien faux** |
+
+### Le piège que mon propre pré-enregistrement m'avait tendu
+
+Il disait : si G1 vaut **8**, alors **la correction du #449 était fausse**, et
+je devrai le publier **contre trois cycles de dette inscrite**.
+
+**Le chiffre est tombé sur 8.**
+
+Ce qui a arrêté l'accusation n'est pas le protocole — c'est d'être allé
+**ouvrir les huit fichiers**. Deux sont
+`nonml_verdict_rule_propagation_backtest.py` et son audit : **l'instrument qui a
+propagé la règle**, pas des consommateurs. Les six autres sont exactement ceux
+que l'entrée cite.
+
+> **Troisième cycle de suite où un de mes comptes accuse à tort la trace du
+> dépôt** — 9 discordances au #462, 70 rapports « manquants » au #464, une
+> correction déclarée fausse ici. Le mécanisme ne varie pas : **je confronte ma
+> définition à la leur et je présente l'écart comme un fait.**
+
+### La limite qui invalide ma propre distinction
+
+Le cycle promettait de séparer les rapports qui **portent** l'encart de ceux qui
+le **mentionnent**. Résultat : **8 porteurs, 0 mentionneur** — alors que le #451
+en identifiait **un**.
+
+**Ma distinction ne peut pas tenir.** Un rapport qui **cite verbatim** la marque
+produit une ligne **textuellement identique** à celle d'un rapport qui la porte.
+Le #451 pouvait trancher parce qu'il savait quel script **émet** l'encart ; en
+ne lisant que le texte des rapports, c'est impossible.
+
+Le contrôle C de l'audit établit que **l'émetteur est identifiable dans le
+dépôt** : la limite tient à ma méthode, pas à une impossibilité. **C'est une
+piste, pas une impasse.**
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4), par
+`git grep` — route distincte des milliers de `git show` du backtest.
+Simulation 300 € (7b) **sans objet** : aucune position. Lecture seule.
+
+### File « à faire »
+
+1. **Propager l'exclusion de soi** (#463) aux deux scripts identifiés, et
+   chercher le défaut sur les 296 scripts non éprouvés.
+2. **Croiser rapports et scripts émetteurs** pour séparer porteurs et citeurs —
+   la piste que le contrôle C de ce cycle ouvre.
+3. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Le faux du #453** (« 13 orphelins », une **relation** entre globs) reste
+  hors de portée — **rien n'a été ajouté pour lui**.
+- **G1 est une borne inférieure** : un script qui réimplémenterait la règle sans
+  l'importer échappe au compte, et les #446-#448 ont montré que cela arrive.
+- **2 scripts non idempotents** (#463), non réparés ; **1 écrit 7 rapports qui
+  ne sont pas le sien**.
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459) ;
+  **univers d'essais sous-estimé** (#456).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
