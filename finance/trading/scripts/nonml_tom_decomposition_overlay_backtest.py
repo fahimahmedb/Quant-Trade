@@ -102,6 +102,20 @@ def main():
             quality_report(df)
             mask_full = mask_fn(df["date"])
             r = run_variant(df, mask_full, vname)
+            # #452 : sauvegarde de la variante A sur NDX (convention #416 du
+            # depot pour les strategies multi-marches), afin que le balayage de
+            # doublons puisse enfin voir cette strategie PASS — elle lui
+            # echappait faute de .npz (#446).
+            # `pos` et `bh_full` sont RECALCULES ici plutot qu'ajoutes au retour
+            # de run_variant : le regime de modification annonce ne prevoyait
+            # qu'une insertion, dans cette boucle.
+            if vname.startswith("A") and name.startswith("NDX"):
+                _close = df["close"].values
+                _r_asset = np.log(_close[1:] / _close[:-1])
+                _pos = np.where(mask_full[1:], CAP, 1.0)
+                np.savez(ROOT / "results" / "nonml_tom_decomposition_overlay_pnl.npz",
+                         pos=_pos, r_asset=_r_asset,
+                         dates=df["date"].values[1:], cost_bps=COST_BPS)
             n_markets += 1
             n_success += int(r["sharpe_ok"] and r["ret_ok"])
             lines.append(

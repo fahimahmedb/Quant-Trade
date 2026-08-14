@@ -7,8 +7,8 @@ identiques. Critères fixés avant exécution : égalité exacte
 
 ## Couverture
 
-- fichiers `*_pnl.npz` trouvés : **218**
-- P&L reconstruits : **218**
+- fichiers `*_pnl.npz` trouvés : **219**
+- P&L reconstruits : **219**
 - schémas non reconnus ou séries inexploitables : **0**
 
 **100 % des fichiers trouvés ont été relus** — critère 1 du pré-enregistrement
@@ -22,18 +22,18 @@ des candidats non-ML. Les deux précisions manquaient jusqu'au cycle #428 :
 
 | | Nombre |
 |---|---|
-| séries lues (`results/*_pnl.npz`) | **218** |
-| dont candidats non-ML (`nonml_*`) | **208** |
+| séries lues (`results/*_pnl.npz`) | **219** |
+| dont candidats non-ML (`nonml_*`) | **209** |
 | dont séries **ML / Étape D** | **10** |
-| scripts de backtest non-ML du dépôt | **303** |
-| **couverture non-ML** | **68.6 %** |
+| scripts de backtest non-ML du dépôt | **305** |
+| **couverture non-ML** | **68.5 %** |
 
-**La soustraction 303 − 208 ne compte rien de réel** : les deux
+**La soustraction 305 − 209 ne compte rien de réel** : les deux
 ensembles ne se correspondent pas un à un. Certains `.npz` portent le nom d'une
 **variante** (`*_pit_universe`, `*_russell2000`…) sans script homonyme — il y en a
 **23**. La différence ensembliste est donc la seule mesure valide :
 
-> **118** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
+> **119** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
 > échappent à toute détection de doublon.
 
 Leur verdict publié, compté et non supposé :
@@ -41,17 +41,18 @@ Leur verdict publié, compté et non supposé :
 | Verdict des scripts sans `.npz` | Nombre |
 |---|---|
 | FAIL | **93** |
-| PASS | **3** |
-| indéterminé | **21** |
-| sans rapport | **1** |
+| PASS | **4** |
+| indéterminé | **20** |
+| sans rapport | **2** |
 
 Les **93** FAIL ne peuvent pas changer de verdict, mais un doublon
 parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les
-Les **3** PASS sans `.npz` sont nommés ici plutôt
+Les **4** PASS sans `.npz` sont nommés ici plutôt
 qu'affirmés — la version précédente les disait « les deux candidats écartés
 au #427 », phrase figée qu'un compte calculé a fini par démentir (#446) :
 
-- `tom_decomposition_overlay`
+- `marker_emitted_by_scripts`
+- `six_reports_regeneration`
 - `verdict_detector_complete`
 - `verdict_rule_propagation`
 
@@ -61,7 +62,7 @@ ML / Étape D sont comparées aux candidats non-ML. C'est voulu — un doublon
 inter-familles est une information — mais il faut le savoir pour lire les groupes
 ci-dessous, dont l'un associe précisément une série d'Étape D à un candidat non-ML.
 
-Répartition par schéma : indiciel (182), panier (21), deux jambes (13), candidat seul (2).
+Répartition par schéma : indiciel (183), panier (21), deux jambes (13), candidat seul (2).
 
 ## Doublons exacts
 
