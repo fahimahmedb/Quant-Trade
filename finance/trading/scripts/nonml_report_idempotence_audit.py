@@ -50,13 +50,26 @@ def passages(nom, n):
 
 
 def touche_par(nom):
-    """Les fichiers de results/ que CE script modifie, lui seul."""
+    """Les fichiers de results/ que CE script modifie, lui seul.
+
+    Defaut de la premiere version, corrige ici : `git checkout` ne supprime pas
+    les fichiers NON SUIVIS. Les rapports de ce cycle-ci, encore untracked,
+    survivaient a chaque restauration et etaient donc attribues a **tous** les
+    scripts rejoues — une accusation fausse, du meme genre que les 9 fausses
+    discordances du #462. On releve l'etat AVANT et APRES, et on n'impute que
+    la difference, en excluant les fichiers de ce cycle.
+    """
+    def etat():
+        st = sh("git", "status", "--porcelain", "finance/trading/results/",
+                cwd=REPO).stdout
+        return {l[3:].strip().split("/")[-1] for l in st.splitlines() if l.strip()}
+
     restaure()
+    avant = etat()
     sh(sys.executable, str(SCRIPTS / f"nonml_{nom}_backtest.py"))
-    st = sh("git", "status", "--porcelain", "finance/trading/results/", cwd=REPO).stdout
-    f = sorted({l[3:].strip().split("/")[-1] for l in st.splitlines() if l.strip()})
+    apres = etat()
     restaure()
-    return f
+    return sorted(x for x in (apres - avant) if MOI not in x)
 
 
 def main():
@@ -183,6 +196,29 @@ def main():
     L.append(f"**{'CONCORDANT' if okD else 'ÉCART'}** — un cycle qui dénonce la")
     L.append("non-idempotence des autres doit commencer par la sienne.")
     L.append("")
+    if not okD:
+        L.append("### Pourquoi, et pourquoi ce n'est pas réparable par un patch")
+        L.append("")
+        L.append("Première tentative : supprimer ma sortie avant de mesurer, la")
+        L.append("correction du **#446**. **Elle n'a pas suffi**, et il faut dire")
+        L.append("pourquoi plutôt que d'en empiler une autre.")
+        L.append("")
+        L.append("Mon rapport **cite le diff** de `six_reports_regeneration`. Or le")
+        L.append("contrôle A établit que ce script **dérive perpétuellement** : son")
+        L.append("contenu change à chaque exécution. **Un rapport fidèle d'un objet qui")
+        L.append("bouge bouge avec lui.**")
+        L.append("")
+        L.append("S'y ajoute un **effet d'observateur** : les rapports de ce cycle")
+        L.append("restent **non suivis** dans `results/` pendant la mesure, et")
+        L.append("`git checkout` ne les efface pas. Ils entrent donc dans le corpus que")
+        L.append("les scripts éprouvés recomptent — **ma mesure perturbe ce qu'elle")
+        L.append("mesure**.")
+        L.append("")
+        L.append("> Je pourrais rendre ce rapport idempotent en **retirant les diffs**")
+        L.append("> qu'il publie. Ce serait gagner une propriété en supprimant la preuve")
+        L.append("> — le contraire de ce que le critère 3 exige. **L'écart est donc")
+        L.append("> publié, pas résorbé.**")
+        L.append("")
 
     tous = okB and okD and not perpetuels
     L.append("## Ce que cet audit ne couvre pas")
