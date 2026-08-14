@@ -78,6 +78,19 @@ def main():
         if etat == "NON IDEMPOTENT" and textes:
             diffs[nom] = diff_court(textes[0], textes[1])
 
+    # --- ce que la mesure a touche, AVANT de l'effacer ----------------------
+    # Ajout decide APRES le premier passage, et signale comme tel dans le
+    # rapport : le controle 4 ne regardait l'arbre qu'APRES restauration, donc
+    # la trace des rapports ecrits par un script AUTRE que le sien disparaissait
+    # avant d'avoir ete relevee. Ne change ni le protocole ni les criteres.
+    avant = subprocess.run(["git", "status", "--porcelain",
+                            "finance/trading/results/"],
+                           cwd=REPO, capture_output=True, text=True).stdout
+    touches = sorted({l[3:].strip().split("/")[-1] for l in avant.splitlines()
+                      if l.strip() and MOI not in l})
+    attendus = {f"nonml_{n}_result.md" for n in NOMS}
+    hors_perimetre = [f for f in touches if f not in attendus]
+
     # --- restauration de l'arbre (lecon du #450) ---------------------------
     subprocess.run(["git", "checkout", "--", "finance/trading/results/"],
                    cwd=REPO, capture_output=True, text=True)
@@ -164,13 +177,36 @@ def main():
     L.append("Rejouer ces scripts **réécrit leurs rapports**. Le #450 a montré ce que")
     L.append("coûte une régénération non maîtrisée. L'arbre a donc été restauré.")
     L.append("")
-    L.append(f"- résidus sous `results/` après restauration : **{len(residus)}**")
+    L.append(f"- rapports touchés **pendant** la mesure : **{len(touches)}**")
+    L.append(f"- résidus sous `results/` **après** restauration : **{len(residus)}**")
     if residus:
         L.append("")
         for r in residus[:20]:
             L.append(f"  - `{r.strip()}`")
     L.append("")
     L.append("**Ce cycle ne committe que son propre rapport.**")
+    L.append("")
+    L.append("### Des scripts qui écrivent le rapport d'un **autre** cycle")
+    L.append("")
+    L.append("> **Relevé ajouté après le premier passage**, et signalé comme tel. Le")
+    L.append("> critère 4 ne regardait l'arbre qu'**après** restauration : la trace de")
+    L.append("> ces écritures disparaissait avant d'avoir été relevée. Ni le protocole")
+    L.append("> ni les critères ne changent.")
+    L.append("")
+    if hors_perimetre:
+        L.append(f"**{len(hors_perimetre)}** rapport(s) réécrit(s) alors qu'aucun des")
+        L.append(f"**{len(NOMS)}** scripts éprouvés ne leur correspond :")
+        L.append("")
+        for f in hors_perimetre:
+            L.append(f"- `{f}`")
+        L.append("")
+        L.append("Autrement dit, **un script du lot écrit ailleurs que dans son propre")
+        L.append("rapport**. C'est le couplage même que le #450 a payé cher — une")
+        L.append("régénération qui touche ce qu'on ne surveillait pas. Publié, **pas")
+        L.append("réparé** : l'engagement depuis le #450 est d'inscrire, pas de corriger")
+        L.append("au passage.")
+    else:
+        L.append("**Aucun.** Chaque script éprouvé n'a écrit que son propre rapport.")
     L.append("")
 
     L.append("## Mes trois prédictions, confrontées")
@@ -183,10 +219,29 @@ def main():
              f"{'**vérifiée**' if p1 else '**réfutée**'} |")
     L.append(f"| ≥ 12 tiennent dans le budget | ≥ 12 | {len(eprouves)} | "
              f"{'**vérifiée**' if p2 else '**réfutée**'} |")
-    L.append("| la dérive porte sur l'étiquetage, pas les compteurs | — | "
-             + ("voir les diffs" if non_idem else "*sans objet*")
-             + " | " + ("*à lire*" if non_idem else "*non testable*") + " |")
+    L.append("| la dérive porte sur l'étiquetage, pas les compteurs | étiquettes | "
+             + ("**les compteurs**" if non_idem else "*sans objet*")
+             + " | " + ("**réfutée**" if non_idem else "*non testable*") + " |")
     L.append("")
+    if non_idem:
+        L.append("**La prédiction 3 est réfutée, et c'est la partie instructive.** Je")
+        L.append("m'attendais à une dérive cosmétique, comme celle du #461. Ce sont les")
+        L.append("**compteurs** qui bougent — `9 → 10`, `13 → 14`.")
+        L.append("")
+        L.append("### Les deux cas sont **le même défaut**, et il a déjà un nom")
+        L.append("")
+        L.append("> **Un rapport qui compte des rapports se compte lui-même** au second")
+        L.append("> passage, s'il ne s'exclut pas du corpus.")
+        L.append("")
+        L.append("C'est exactement ce que le **#447** avait énoncé et ce que le **#446**")
+        L.append("avait corrigé en supprimant son propre fichier de sortie avant de")
+        L.append("mesurer. **Deux scripts portent encore le défaut** que ces cycles-là")
+        L.append("avaient identifié — la leçon avait été tirée sans être propagée.")
+        L.append("")
+        L.append("Ce n'est pas une non-idempotence bénigne : `verdict_rule_propagation`")
+        L.append("s'ajoute à **sa propre table de reclassement**, avec un verdict")
+        L.append("`PASS → FAIL` qui n'existait pas au premier passage.")
+        L.append("")
     if not p1:
         L.append("**La prédiction 1 est réfutée.** Le pré-enregistrement m'interdit d'en")
         L.append("conclure que le dépôt est idempotent : **je n'en éprouve que 5,7 %**,")
