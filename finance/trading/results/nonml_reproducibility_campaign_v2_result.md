@@ -12,9 +12,9 @@ un script est auto-référent si son source balaie l'ensemble du dépôt
 Un rapport auto-référent **dérive nécessairement** dès qu'un cycle ajoute un
 fichier : sa divergence ne dit rien sur la péremption d'un résultat.
 
-- scripts avec rapport publié : **302**
+- scripts avec rapport publié : **303**
 - **auto-référents, exclus** : **17**
-- vivier de la campagne v2 : **285**
+- vivier de la campagne v2 : **286**
 
 Exclus :
 
@@ -62,79 +62,75 @@ une règle qui n'existait pas quand ils ont été faits.
 - `index_skewness_regime_overlay`
 - `low_vol_tilt`
 - `lowvol_regime_vol_targeting_overlay`
-- `momentum_52w_high`
-- `momentum_decile_spread_vol_targeting_overlay`
-- `momentum_dispersion_vol_targeting_overlay`
-- `momentum_turnover_doublesort_pit_universe`
-- `npz_report_consistency`
-- `oil_price_shock_overlay`
+- `momentum_12_1_pit_universe`
+- `momentum_consistency_trend_vol_targeting_overlay`
+- `momentum_dispersion_trend_and_overlay`
+- `momentum_turnover_doublesort`
+- `nonfarm_payrolls_overlay`
+- `oil_market_volatility_overlay`
+- `postelection_year_overlay`
 - `ppi_inflation_overlay`
-- `pre_fomc_drift_overlay`
-- `rate_level_regime_overlay`
+- `range_position_vol_targeting_overlay_pit_universe`
+- `sma200_breadth_vol_targeting_overlay`
 - `sma200_breadth_vol_targeting_overlay_pit_universe`
-- `sma200_leaders_overlay`
-- `sma200_momentum_breadth_and_overlay`
-- `stlfsi_financial_stress_overlay`
+- `sma200_leaders_overlay_pit_universe`
+- `smallcap_proxy_outperformance_breadth_overlay_pit_universe`
 
 ## Résultat
 
 | | Nombre |
 |---|---|
-| **identiques** octet à octet | **23** |
-| **divergents** | **1** |
+| **identiques** octet à octet | **24** |
+| **divergents** | **0** |
 | **non concluants** | **0** |
-
-### Divergents
-
-| Script | Durée | Lignes différentes |
-|---|---|---|
-| `empty_pass_requalification` | 0.3 s | 5 |
-
-**`empty_pass_requalification` — premières lignes divergentes :**
-
-```
-```
-
-**Non committées** : le rapport d'origine a été restauré. Ces divergences
-sont **substantielles** — le critère d'auto-référence les avait écartées du
-vivier — et constituent le résultat principal du cycle.
 
 ### Identiques
 
 | Script | Durée |
 |---|---|
-| `atr_vol_targeting_overlay` | 2.1 s |
-| `credit_spread_overlay` | 6.8 s |
-| `diversification_bond_overlay_crossmarket` | 1.7 s |
-| `dry_bulk_shipping_overlay` | 2.9 s |
-| `em_dm_relative_strength_overlay` | 4.8 s |
-| `garman_klass_vol_targeting_overlay` | 2.0 s |
-| `goldencross_vol_targeting_overlay` | 2.1 s |
-| `index_skewness_regime_overlay` | 7.6 s |
+| `atr_vol_targeting_overlay` | 2.3 s |
+| `credit_spread_overlay` | 6.9 s |
+| `diversification_bond_overlay_crossmarket` | 1.8 s |
+| `dry_bulk_shipping_overlay` | 3.0 s |
+| `em_dm_relative_strength_overlay` | 4.9 s |
+| `empty_pass_requalification` | 0.4 s |
+| `garman_klass_vol_targeting_overlay` | 2.2 s |
+| `goldencross_vol_targeting_overlay` | 2.3 s |
+| `index_skewness_regime_overlay` | 7.9 s |
 | `low_vol_tilt` | 1.6 s |
-| `lowvol_regime_vol_targeting_overlay` | 2.3 s |
-| `momentum_52w_high` | 1.6 s |
-| `momentum_decile_spread_vol_targeting_overlay` | 1.8 s |
-| `momentum_dispersion_vol_targeting_overlay` | 1.7 s |
-| `momentum_turnover_doublesort_pit_universe` | 6.8 s |
-| `npz_report_consistency` | 1.9 s |
-| `oil_price_shock_overlay` | 7.7 s |
-| `ppi_inflation_overlay` | 8.3 s |
-| `pre_fomc_drift_overlay` | 2.2 s |
-| `rate_level_regime_overlay` | 2.6 s |
-| `sma200_breadth_vol_targeting_overlay_pit_universe` | 4.3 s |
-| `sma200_leaders_overlay` | 2.0 s |
-| `sma200_momentum_breadth_and_overlay` | 2.2 s |
-| `stlfsi_financial_stress_overlay` | 6.1 s |
+| `lowvol_regime_vol_targeting_overlay` | 2.1 s |
+| `momentum_12_1_pit_universe` | 4.0 s |
+| `momentum_consistency_trend_vol_targeting_overlay` | 1.8 s |
+| `momentum_dispersion_trend_and_overlay` | 1.7 s |
+| `momentum_turnover_doublesort` | 1.8 s |
+| `nonfarm_payrolls_overlay` | 7.3 s |
+| `oil_market_volatility_overlay` | 4.2 s |
+| `postelection_year_overlay` | 2.1 s |
+| `ppi_inflation_overlay` | 7.0 s |
+| `range_position_vol_targeting_overlay_pit_universe` | 6.1 s |
+| `sma200_breadth_vol_targeting_overlay` | 1.7 s |
+| `sma200_breadth_vol_targeting_overlay_pit_universe` | 3.9 s |
+| `sma200_leaders_overlay_pit_universe` | 4.8 s |
+| `smallcap_proxy_outperformance_breadth_overlay_pit_universe` | 7.2 s |
 
 ## Borne v2 — et le recul assumé
 
-**Aucune borne n'est publiée** : une divergence substantielle a été observée,
-et c'est elle le résultat du cycle.
+| | Sans divergence | Borne à 95 % |
+|---|---|---|
+| revendiqué au #435, **caduc** depuis le #436 | 36 | 8.0 % |
+| **campagne v2, ce lot** | **24** | **11.7 %** |
+
+**La borne est moins bonne qu'avant : 11.7 % contre 8.0 %.**
+Le pré-enregistrement l'annonçait chiffrée avant la mesure. C'est le coût
+direct du refus de reclasser 60 tirages selon une règle écrite après eux, et
+ce recul est le prix d'une borne qui, elle, veut dire quelque chose.
+
+Sur un vivier de **286** rapports non auto-référents, il reste
+de la place pour **~33** divergences substantielles.
 
 ## Portée
 
-Ce lot couvre **24** scripts sur **285** du vivier v2,
+Ce lot couvre **24** scripts sur **286** du vivier v2,
 soit **8.4 %**. Tirage aléatoire à graine
 fixée d'avance, donc reproductible et non choisi.
 

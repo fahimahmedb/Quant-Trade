@@ -16,7 +16,7 @@ cas — **chercher une dette réelle plutôt que d'en inventer une, et l'écrire
 
 ## Contrôle B — rapports de résultat sans pré-enregistrement homonyme
 
-- rapports de résultat examinés : **305**
+- rapports de résultat examinés : **306**
 - sans `PREREG_<nom>.md` présent **ni dans l'historique git** : **0**
 
 - dont **résolus** : variante d'un candidat dont le pré-enregistrement porte le
@@ -71,7 +71,7 @@ Les **strictement postérieurs** sont la dette réelle de ce contrôle :
 ## Contrôle E — pré-enregistrements sans aucun artefact produit
 
 - pré-enregistrements examinés : **427**
-- sans `_result.md`, `_audit.md`, `<nom>.md` ni `_anti_cheat.md` : **19**
+- sans `_result.md`, `_audit.md`, `<nom>.md` ni `_anti_cheat.md` : **18**
 
 Compte **brut** lui aussi : un cycle d'outillage nomme parfois son rapport
 autrement que son pré-enregistrement. Liste fournie pour inspection.
@@ -86,7 +86,6 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 - `leaders_calendar_overlays_same_bar_correction`
 - `leaders_overlays_same_bar_correction`
 - `lowvol_trend_vol_targeting_same_bar_correction`
-- `marker_emitted_by_scripts`
 - `meilleurs_candidats_guide_deploiement_v2`
 - `ml_crossmarket_pooling`
 - `ml_exogenous_features_rates_crossmarket`
@@ -104,7 +103,7 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 | B — résultat sans PREREG homonyme (brut) | **0** |
 | C — PASS sans trace de batterie | **30** |
 | D — source `data/` absente | **0** |
-| E — PREREG sans artefact (brut) | **19** |
+| E — PREREG sans artefact (brut) | **18** |
 
 Les comptes B et E sont **bruts et non conclusifs** — ils appellent une
 inspection, faite dans l'audit de ce cycle.
