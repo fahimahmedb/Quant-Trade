@@ -10283,3 +10283,92 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #471 (14/08/2026) — famille capable **épuisée** : 22/22, aucun défaut
+
+Pré-enregistré dans `PREREG_idempotence_famille_capable.md` (`8e3c7dd`).
+`n_trials = 1`. Première piste de la file ouverte au #470.
+
+### La cible corrigée, pas la méthode
+
+Le #470 avait tiré dix scripts **par ordre alphabétique** — dans une population
+où le défaut **ne pouvait pas exister**. Ce cycle vise la bonne, et elle se
+trouve assez petite pour être **épuisée** : sur **324** backtests, **22**
+seulement énumèrent `results/`.
+
+### Les deux couvertures — côte à côte, comme l'engagement l'exigeait
+
+| Périmètre | Éprouvés | Total | Couverture |
+|---|---|---|---|
+| **famille capable** | 22 | 22 | **100,0 %** |
+| **dépôt entier** | 37 | 324 | **11,4 %** |
+
+**Les deux sont vrais en même temps.** Le premier dit que la population où le
+défaut peut exister est couverte ; le second, que l'immense majorité du dépôt ne
+l'est pas. **Ne publier que le premier serait trompeur** — c'est exactement ce
+que la tentation invite à faire.
+
+### Le résultat
+
+Les **3** scripts capables restants sont **idempotents**. Aucun défaut.
+
+**Prédiction 1 vérifiée — et elle n'établit rien de fort.** Le taux observé dans
+cette famille était d'environ **10 %**, soit **0,3** défaut attendu sur 3 : ce
+résultat est compatible avec à peu près n'importe quelle hypothèse. Une
+prédiction de zéro sur trois cas est faible par construction, et je l'avais
+écrit avant de mesurer.
+
+### Ce que « famille épuisée » ne veut pas dire
+
+Ma règle « capable » est la condition d'énumération du détecteur du **#466**,
+dont le **#467** a montré qu'il était **inutilisable comme prédicteur de
+défaut** (0/6). **Ici elle ne prédit rien : elle délimite une population** —
+usage différent et légitime.
+
+Mais un script qui **construirait** son énumération autrement — variable, appel
+indirect — y échapperait. Le **#469** a montré exactement ce cas : une marque
+écrite par variable était invisible à une règle littérale.
+
+> **Épuiser la famille capable n'est pas épuiser les scripts qui peuvent
+> s'auto-inclure.** C'est épuiser ceux que **ma règle** sait reconnaître.
+
+Anti-cheat **CONFORME** (4/4). Restauration après la dernière exécution,
+**0 résidu**, aucun rapport régénéré committé.
+
+### Bilan de la série auto-inclusion (#463 → #471)
+
+| Cycle | Ce qu'il a apporté |
+|---|---|
+| #463 | **2 défauts** trouvés en rejouant 18 scripts |
+| #466 | détecteur statique — **rappel 1/2**, inutilisable |
+| #467 | règle élargie — **0/6** hors échantillon, **piste close** |
+| #468 | **réparation** des 2 défauts, idempotents sur 3 passages |
+| #469 | porteurs/citeurs — **0 citeur établi** |
+| #470 | lot de 10 — **échantillon hors sujet** |
+| #471 | **famille capable épuisée**, 22/22 |
+
+**Deux raccourcis tentés, deux échecs.** La seule méthode qui a produit quelque
+chose est l'exécution — coûteuse, lente, et limitée à ce qu'on sait cibler.
+
+### File « à faire »
+
+1. **Remonter au commit du #451** pour trancher le sort de son citeur (#469).
+2. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+3. **L'incohérence émetteur/rapport** de `six_reports_regeneration` (#469).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **287 scripts sur 324** jamais éprouvés — mais **aucun n'est « capable »** au
+  sens de ma règle.
+- **La règle « capable » a des angles morts** connus et publiés.
+- **1 incohérence** émetteur/rapport ; **sort du citeur du #451** indéterminé.
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
