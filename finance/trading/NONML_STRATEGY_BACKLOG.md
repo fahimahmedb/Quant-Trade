@@ -10217,3 +10217,69 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #470 (14/08/2026) — idempotence lot 2 : **0/10**, sur un échantillon qui ne pouvait pas contenir le défaut
+
+Pré-enregistré dans `PREREG_idempotence_lot2.md` (`bf54e31`). `n_trials = 1`.
+Première piste de la file ouverte au #469.
+
+### Ce que le cycle a mesuré
+
+Dix scripts jamais éprouvés, exécutés deux fois chacun : **0 non idempotent**.
+
+| | |
+|---|---|
+| couverture atteinte | **34 / 323** (**10,5 %**) |
+| écartés (budget, erreur) | **0** |
+| résidus après restauration | **0** |
+
+La proportion est donnée parce que l'engagement 3 l'exigeait : « 34 scripts
+éprouvés » sonne mieux que « **10,5 %** du dépôt », et c'est la seconde
+formulation qui dit la vérité.
+
+### Le vrai défaut du cycle — mon échantillonnage
+
+La réserve pré-enregistrée disait qu'un 0/10 serait non concluant vu la taille
+(10 sur 296, soit 3,4 % du reste). **Le constat ajouté après mesure est plus
+sévère :**
+
+> **Aucun des dix scripts n'énumère `results/`** — alors que l'auto-inclusion,
+> **seul** mécanisme observé (#463, #468), l'exige. La règle alphabétique a tiré
+> dix backtests de **stratégie**, qui lisent des données de marché et
+> n'inspectent jamais le dépôt. **Ils ne pouvaient pas porter le défaut
+> cherché.**
+
+**Ma règle d'échantillonnage était déterministe et annoncée d'avance** — donc à
+l'abri du biais de sélection — **et aveugle à la seule caractéristique qui
+rendait un script pertinent.**
+
+> Le pré-enregistrement protège contre le choix des cas **après coup**. Il ne
+> protège pas contre le choix des **mauvais cas**. Ce sont deux vertus
+> distinctes, et je n'avais tenu que la première.
+
+Anti-cheat **CONFORME** (4/4). Aucun rapport régénéré committé.
+
+### File « à faire »
+
+1. **Lot 3, échantillonné dans la bonne famille** : parmi les scripts qui
+   **énumèrent `results/`**, déclarés tels d'avance — la seule population où le
+   défaut peut exister.
+2. **Remonter au commit du #451** pour trancher le sort de son citeur (#469).
+3. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **289 scripts sur 323** jamais éprouvés par exécution.
+- **Aucun script « capable » du défaut** n'a été éprouvé hors des 24 premiers.
+- **1 incohérence** émetteur/rapport (#469) ; **sort du citeur du #451**
+  indéterminé.
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
