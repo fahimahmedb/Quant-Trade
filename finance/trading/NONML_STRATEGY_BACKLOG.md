@@ -9264,3 +9264,90 @@ simulation 300 € (7b) **sans objet** : aucune stratégie ne ressort du test.
 - **La règle de verdict ne couvre pas les rapports de batterie** (#457).
 - **L'univers d'essais reste sous-estimé** (#456).
 - **Comptes de backlog non revérifiés** : quatre faux en six cycles.
+
+## Backlog #460 (13/08/2026) — règle de verdict étendue aux batteries : **120 reclassés, 0 stratégie touchée**
+
+Pré-enregistré dans `PREREG_verdict_rule_battery.md` (`753e765`). `n_trials = 1`.
+Prolonge la série #448 → #449 → #454.
+
+### La modification
+
+Une **branche unique** (**+7 / −0**) dans `porte_verdict` : une ligne dénudée
+commençant par `**PAS de PASS RENFORCÉ` vaut **FAIL**. La forme positive était
+déjà reconnue — rien n'a été ajouté pour elle.
+
+### L'effet, mesuré sur tout le dépôt
+
+| | Nombre |
+|---|---|
+| fichiers `.md` examinés | **1 449** |
+| **reclassés** | **120** |
+| dont rapports de **batterie** | **120** |
+| dont rapports **hors batterie** | **0** |
+
+**Les trois prédictions sont vérifiées.** Le risque réel — reclasser un rapport
+de stratégie contenant par hasard cette formule — ne s'est pas matérialisé.
+
+### Le constat qui dépasse le #457
+
+> **Sur les 121 rapports de batterie que compte le dépôt, aucun ne porte un PASS
+> RENFORCÉ.**
+
+Le #457 l'avait établi sur les **29** qu'il faisait passer. C'est vrai sur
+**l'ensemble du dépôt** : **pas une seule stratégie, jamais, n'a franchi les cinq
+contrôles renforcés.**
+
+*(1 rapport de batterie reste « indéterminé » — il n'énonce ni l'une ni l'autre
+forme.)*
+
+### Un défaut d'instrument corrigé avant publication
+
+Ma première « ancienne règle » réimplémentait celle d'**avant le #448** (littéral
+comparé en sous-chaîne). Elle attribuait à ce cycle un reclassement qui datait en
+réalité du #448 — un **faux positif produit par une base mal spécifiée**, qui
+faisait échouer le critère 3 à tort. La base réutilise désormais `_nu` du module
+et ne retire **que** la branche ajoutée ici.
+
+### Le reproche que je m'étais adressé d'avance — maintenu
+
+Le pré-enregistrement disait, **avant** toute mesure :
+
+> *Cette branche est taillée sur une formulation connue, comme la couche
+> « étiquette » du #448. C'est une règle ajustée à un corpus existant, pas une
+> théorie générale de l'énoncé d'un verdict.*
+
+**Il reste vrai maintenant que la branche fonctionne** — l'engagement 3
+prévoyait de ne pas l'effacer si elle marchait bien, et c'est tenu. La seule
+défense honnête : elle est déclarée, étroite, vérifiable, et l'alternative est
+pire. **Ce n'est pas une bonne règle, c'est une règle moins mauvaise que le
+silence.**
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : correction d'instrument, aucune position.
+
+### File « à faire » — épuisée pour ce que je peux décider seul
+
+Il ne reste que les **trois points en attente d'arbitrage de l'utilisateur** :
+figer `n_trials` (#421) ; statut de `log_return_compounding_audit` (#431) ;
+extension de la batterie au schéma panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426), et les trois pistes
+statistiques du #455 sont faites (#456, #457, #458/#459).
+
+### Où en est le projet, en une phrase
+
+Trois tests indépendants — batterie renforcée (**0/121**), hors-échantillon
+relatif (**edge médian −0,06**), DSR à décompte corrigé (**4 survivants sur un
+test que le #456 qualifie lui-même d'indulgent**) — convergent vers ce que
+`CLAUDE.md` dit depuis l'Étape B : **Buy & Hold reste la meilleure stratégie
+testée.**
+
+### Dette restante
+
+- **Règle de verdict : couvre désormais les batteries** (#460).
+- **0 PASS renforcé** sur 121 rapports de batterie — constat central du dépôt.
+- **7 consommateurs** verront l'effet de la règle à leur prochaine exécution :
+  écart code/rapport **assumé et déclaré**, comme au #449.
+- **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
+  indulgent.
+- **Comptes de backlog non revérifiés** : quatre faux en six cycles.
