@@ -9351,3 +9351,128 @@ testée.**
 - **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
   indulgent.
 - **Comptes de backlog non revérifiés** : quatre faux en six cycles.
+
+## Backlog #461 (14/08/2026) — les chiffres du backlog : **0 erreur sur 273 jetons**, et six défauts de mon instrument
+
+Pré-enregistré dans `PREREG_backlog_figures_verification.md` (`cb7be8b`).
+`n_trials = 1`. **Cycle de VÉRIFICATION** : ne construit aucune stratégie.
+
+### La dette attaquée
+
+Le backlog portait, en bas de ses six dernières entrées, la même ligne :
+« **comptes de backlog non revérifiés : quatre faux en six cycles** ».
+Inscrite six fois sans jamais aller voir. C'était le seul point de la dette
+que je pouvais traiter seul — les trois autres attendent l'utilisateur.
+
+### Le procédé
+
+Les **18** entrées #443–#460, chacune lue **au commit qui l'a créée** (leçon
+des #445/#451), face au rapport qu'elle cite. Règle d'extraction, exclusions
+et asymétrie du test **déclarées avant** toute mesure :
+
+> Une **absence** est informative ; une **présence** ne prouve rien. Ce cycle
+> ne peut produire qu'une **borne inférieure** du nombre de chiffres
+> invérifiables.
+
+### Le résultat
+
+| | Nombre |
+|---|---|
+| jetons numériques vérifiés | **273** |
+| absents sous la règle stricte | **70** |
+| — variantes typographiques | **28** |
+| — publiés dans un fichier frère (`_audit`/`_robustness`) | **7** |
+| — citations d'un autre cycle | **31** |
+| — **résidu** | **4** |
+
+Les **4** résidus ont été vérifiés **à la main dans la source** : zéro final
+(`0.9` vs `0,90`), sens de l'arrondi (`+0.969870` → `+0,970`), fait
+vérifiable dans git et non dans le rapport (`+8 / −5`, confirmé contre
+`d2cbda21`), citation de l'edge du #459.
+
+> **Aucune erreur de chiffre trouvée sur les 273.**
+
+### Six défauts de mon propre instrument, tous publiés
+
+1. le signe retiré comme s'il était typographique (`−1` « expliqué » par `1`) ;
+2. les sections « Dette restante » / « File des prochains cycles », qui citent
+   d'**autres** cycles, comptées comme des recopies ;
+3. un cycle publie sur **trois** fichiers, mon pré-enregistrement n'en
+   déclarait qu'**un** ;
+4. `startswith("#")` prenant `#447` en prose pour un titre de section ;
+5. **rapport non idempotent** (variantes dans un `set` non trié) — trouvé par
+   le **contrôle D de l'audit**, que le backtest ne pouvait pas voir ;
+6. la grille de robustesse comptant les occurrences **brutes** (82) là où le
+   rapport **dédoublonne** (70) : deux instruments, deux chiffres, même règle.
+
+**Aucun n'a été trouvé par la mesure elle-même** — tous en relisant une sortie
+ou en confrontant deux instruments. C'est la constante depuis le #442.
+
+### La prédiction 1 « passe », et cette vérification est creuse
+
+Mécaniquement **17 entrées sur 18** portent un jeton absent : la prédiction
+tient. **Elle ne devrait convaincre personne** — ces absences sont, à quatre
+près, des artefacts, et les quatre restantes n'en sont pas non plus. C'est la
+configuration du **#458** : un verdict mécanique favorable sur une mesure qui
+ne mesure pas ce qu'elle annonce.
+
+### Robustesse (7a) — et le chiffre inconfortable
+
+| Borne | Entrées | Jetons | **Résidu** | Taux |
+|---|---|---|---|---|
+| **#443** *(déclarée)* | 18 | 273 | **4** | 1,47 % |
+| #430 | 29 | 476 | **6** | 1,26 % |
+| #415 | 29 | 476 | **6** | 1,26 % |
+| #400 | 30 | 494 | **7** | 1,42 % |
+
+**Plateau** (étendue 0,20 point) — mais l'élargissement élargit moins qu'il
+n'y paraît : les entrées anciennes ne suivent pas toutes la convention « un
+`PREREG_` par entrée », le test porte sur **30** entrées au mieux.
+
+En retirant les deux lectures ajoutées **après** mesure, le résidu passe de
+**4** à **42** (**×10**). **La conclusion dépend de classifications posées
+après coup, et c'est publié plutôt que masqué.**
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4).
+Simulation 300 € (7b) **sans objet** : aucune position, aucun capital engagé.
+
+### Ce que ce cycle établit — et la dette qui RESTE
+
+**Il n'a trouvé aucune erreur de chiffre. Ce n'est pas un certificat
+d'exactitude, et la ligne de dette reste au passif** :
+
+> **Les quatre faux connus ne sont pas de la nature que ce contrôle sait
+> voir.** « 8 scripts » (#449), « 6 rapports » (#451), « 13 orphelins »
+> (#453), « 29 en échec » (#457) étaient faux **par rapport au dépôt**, pas
+> par rapport au rapport cité — qui portait souvent la même erreur. Un
+> contrôle de **recopie** ne peut structurellement pas les trouver.
+
+Ce cycle ne solde pas la dette : il établit **quel outil l'aurait soldée**.
+
+### File « à faire » — trois pistes, nées de ce que ce cycle a mesuré
+
+1. **Re-mesurer les grandeurs, pas les recopies.** Pour chaque entrée qui
+   publie un compte d'objets du dépôt (scripts, `.npz`, rapports), **recompter
+   dans le dépôt au commit épinglé** et comparer. C'est le contrôle qui aurait
+   attrapé les quatre faux — le #461 montre pourquoi le sien ne le pouvait pas.
+2. **Idempotence de tous les rapports.** Le contrôle D a trouvé **un** rapport
+   qui changeait d'une exécution à l'autre. Généraliser : rejouer chaque
+   `nonml_*_backtest.py` et comparer les empreintes, pour recenser ceux qui
+   dérivent silencieusement.
+3. **Couverture réelle de la convention « un `PREREG_` par entrée ».** La
+   robustesse a montré que la moitié de l'intervalle #400–#460 en sort.
+   Inventorier lesquelles et pourquoi.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Comptes de backlog** : **aucune erreur de recopie** sur 273 jetons — mais
+  la dette **reste**, le contrôle ne couvre pas la nature des quatre faux.
+- **0 PASS renforcé** sur 121 rapports de batterie (#460).
+- **Edge médian négatif** sur la période récente (#459).
+- **L'univers d'essais reste sous-estimé** (#456) : tout DSR est trop indulgent.
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
