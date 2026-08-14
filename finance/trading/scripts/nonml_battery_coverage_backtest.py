@@ -28,6 +28,32 @@ BUDGET_S = 25 * 60          # declare AVANT de savoir combien passeront
 ANNONCE_431 = 33
 
 
+# Perimetre FIGE au demarrage du cycle, par la regle pre-enregistree (PASS au
+# sens de la regle unifiee, possedant un `.npz`, sans rapport de batterie), et
+# trie ALPHABETIQUEMENT comme declare. Il est inscrit ici parce que les
+# batteries, une fois passees, effacent la trace de ce qui manquait : le
+# recalculer apres coup rendrait le cycle vide.
+PERIMETRE = [
+    "breadth_confirmation_overlay", "dispersion_trend_vol_targeting_overlay",
+    "golden_cross_overlay", "halloween_effect", "index_52w_high_overlay",
+    "intl_breadth_confirmation_overlay", "intraday_range_regime_overlay",
+    "january_effect_lowprice_overlay",
+    "january_effect_lowprice_overlay_pit_universe",
+    "leaders_trend_union_overlay", "lowvol_sma200_overlay", "momentum_12_1",
+    "momentum_breadth_vol_targeting_overlay",
+    "momentum_dispersion_trend_and_overlay",
+    "multimarket_breadth_vol_targeting_overlay",
+    "net_breadth_vol_targeting_overlay", "santa_claus_rally_overlay",
+    "santa_vol_targeting_overlay", "short_term_momentum",
+    "sma200_breadth_vol_targeting_overlay",
+    "sma200_momentum_breadth_and_overlay",
+    "sma200_tom_halloween_union_overlay", "sma50_trend_overlay",
+    "tom_decomposition_overlay", "tom_halloween_union_overlay", "tom_overlay",
+    "turn_of_month", "weakness_breadth_vol_targeting_overlay",
+    "winners_trend_vol_targeting_overlay",
+]
+
+
 def univers():
     """PASS (regle unifiee) possedant un `.npz` — la batterie en exige un."""
     tous, manquants = [], []
@@ -52,12 +78,21 @@ def verdict_batterie(nom):
     t = p.read_text(encoding="utf-8")
     ok = len(re.findall(r"\bOUI\b|✔", t))
     ko = len(re.findall(r"\bNON\b|✘", t))
-    valide = nonml_verdict.verdict_of(t)
-    return valide, (ok, ko)
+    # La batterie enonce son verdict dans SA formulation, pas avec `**PASS` /
+    # `**FAIL` : la regle unifiee du #448 y repond « indetermine ». On lit donc
+    # la phrase de la batterie, et on publie cette limite plutot que de la taire.
+    if "PAS de PASS RENFORCÉ" in t:
+        valide = "non validé"
+    elif "PASS RENFORCÉ" in t:
+        valide = "**VALIDÉ**"
+    else:
+        valide = "illisible"
+    return valide, (ok, ko, nonml_verdict.verdict_of(t))
 
 
 def main():
-    tous, manquants = univers()
+    tous, _ = univers()
+    manquants = list(PERIMETRE)          # perimetre fige, cf. commentaire
 
     executes, non_traites = [], []
     t0 = time.monotonic()
@@ -65,12 +100,19 @@ def main():
         if time.monotonic() - t0 > BUDGET_S:
             non_traites.append((nom, "budget épuisé"))
             continue
-        r = subprocess.run([sys.executable, str(BATTERIE), nom], cwd=REPO,
-                           capture_output=True, text=True, timeout=900)
-        if r.returncode != 0:
-            err = (r.stdout + r.stderr).strip().splitlines()
-            non_traites.append((nom, (err[-1] if err else "échec sans message")[:120]))
-            continue
+        # La batterie sort avec le code 0 si le PASS est RENFORCE et 2 sinon :
+        # le code d'e sortie porte le VERDICT, pas l'etat d'execution. Mon
+        # premier pilote lisait `returncode != 0` comme un echec et a classe
+        # les 29 en « non traites » alors qu'ils avaient tous tourne et ecrit
+        # leur rapport. Defaut corrige AVANT publication du resultat.
+        cible = RESULTS / f"nonml_{nom}_pass_validation_battery.md"
+        if not cible.exists():
+            r = subprocess.run([sys.executable, str(BATTERIE), nom], cwd=REPO,
+                               capture_output=True, text=True, timeout=900)
+            if r.returncode not in (0, 2) or not cible.exists():
+                err = (r.stdout + r.stderr).strip().splitlines()
+                non_traites.append((nom, (err[-1] if err else "échec sans message")[:120]))
+                continue
         v, compte = verdict_batterie(nom)
         executes.append((nom, v, compte))
 
@@ -107,11 +149,31 @@ def main():
         L.append("|---|---|---|")
         for nom, v, compte in executes:
             c = f"{compte[0]} / {compte[1]}" if compte else "—"
-            L.append(f"| `{nom}` | **{v or 'illisible'}** | {c} |")
+            L.append(f"| `{nom}` | {v} | {c} |")
         L.append("")
-        n_pass = sum(1 for _, v, _ in executes if v == "PASS")
+        n_pass = sum(1 for _, v, _ in executes if v.startswith("**VALID"))
         L.append(f"**{n_pass} / {len(executes)}** validés par la batterie.")
         L.append("")
+        indet = sum(1 for _, _, c in executes if c and c[2] == "indéterminé")
+        if indet:
+            L.append("### Une limite de la règle unifiée, découverte ici")
+            L.append("")
+            L.append(f"Sur les **{len(executes)}** rapports de batterie, **{indet}** sont")
+            L.append("classés « indéterminé » par la règle de verdict unifiée (#448/#449).")
+            L.append("Ce n'est pas un défaut de ces rapports : la batterie énonce son verdict")
+            L.append("dans **sa propre formulation** — *« PAS de PASS RENFORCÉ »* — et non")
+            L.append("avec les marqueurs `**PASS` / `**FAIL` que la règle sait lire.")
+            L.append("")
+            L.append("La règle du #448 avait été **taillée sur les rapports de stratégie**.")
+            L.append("Elle ne couvre pas les rapports de batterie, et **personne ne l'avait")
+            L.append("remarqué** — ni le #448, ni le #449, ni le #454 qui a unifié le dernier")
+            L.append("consommateur. Ce cycle le découvre **en passant**, en cherchant autre")
+            L.append("chose.")
+            L.append("")
+            L.append("**Ce n'est pas corrigé ici** : élargir la règle serait une modification")
+            L.append("non déclarée, et le #448 a montré qu'une couche ajoutée pour un cas")
+            L.append("connu est difficile à distinguer d'un ajustement. **Inscrit à la file.**")
+            L.append("")
 
     if non_traites:
         L.append("### Non traités — nommés, pas passés sous silence")
