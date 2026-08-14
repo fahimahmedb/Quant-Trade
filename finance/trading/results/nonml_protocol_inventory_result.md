@@ -9,7 +9,7 @@ cas — **chercher une dette réelle plutôt que d'en inventer une, et l'écrire
 
 ## Contrôle A — rapports anti-cheat dont le verdict n'est pas CONFORME
 
-- rapports anti-cheat examinés : **349**
+- rapports anti-cheat examinés : **350**
 - verdict **non CONFORME** : **1**
 
 - `log_return_compounding_audit` — **[FAIL]** Pré-enregistrement finance/trading/PREREG_log_return_compounding_audit.md non trouvé dans l'historique git.
@@ -37,7 +37,7 @@ pas décidée au cas par cas.
 
 ## Contrôle C — rapports PASS jamais soumis à la batterie (Règle 9)
 
-- rapports **PASS** : **102**
+- rapports **PASS** : **103**
 - sans trace de batterie (fichier dédié **ni** mention interne) : **30**
 
 La Règle 9 est apparue avec `nonml_pass_validation_battery.py`, ajouté au dépôt
@@ -70,8 +70,8 @@ Les **strictement postérieurs** sont la dette réelle de ce contrôle :
 
 ## Contrôle E — pré-enregistrements sans aucun artefact produit
 
-- pré-enregistrements examinés : **426**
-- sans `_result.md`, `_audit.md`, `<nom>.md` ni `_anti_cheat.md` : **18**
+- pré-enregistrements examinés : **427**
+- sans `_result.md`, `_audit.md`, `<nom>.md` ni `_anti_cheat.md` : **19**
 
 Compte **brut** lui aussi : un cycle d'outillage nomme parfois son rapport
 autrement que son pré-enregistrement. Liste fournie pour inspection.
@@ -86,6 +86,7 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 - `leaders_calendar_overlays_same_bar_correction`
 - `leaders_overlays_same_bar_correction`
 - `lowvol_trend_vol_targeting_same_bar_correction`
+- `marker_emitted_by_scripts`
 - `meilleurs_candidats_guide_deploiement_v2`
 - `ml_crossmarket_pooling`
 - `ml_exogenous_features_rates_crossmarket`
@@ -103,7 +104,12 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 | B — résultat sans PREREG homonyme (brut) | **0** |
 | C — PASS sans trace de batterie | **30** |
 | D — source `data/` absente | **0** |
-| E — PREREG sans artefact (brut) | **18** |
+| E — PREREG sans artefact (brut) | **19** |
 
 Les comptes B et E sont **bruts et non conclusifs** — ils appellent une
 inspection, faite dans l'audit de ce cycle.
+
+
+> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
+> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
+> et ce n'est pas une péremption de résultat (cycles #436-#438).

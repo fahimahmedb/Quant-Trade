@@ -78,8 +78,14 @@ def main():
     pas_double = all(r[5] <= 1 for r in rows if r[3])
     tous_exec = all(r[3] for r in rows)
 
+    # Base EPINGLEE au commit du pre-enregistrement, qui precede la
+    # modification. Mesurer contre HEAD ne marche que si la modification n'est
+    # pas encore committee : le premier passage l'a ete, et le diff est revenu
+    # vide — troisieme fois qu'une mesure depend de l'ordre des operations
+    # (#445, #446, ici). La base ne doit pas bouger avec l'historique.
+    BASE = "f2c35e4"
     numstat = {ln.split("\t")[2].split("/")[-1]: (ln.split("\t")[0], ln.split("\t")[1])
-               for ln in git("diff", "HEAD", "--numstat", "--",
+               for ln in git("diff", BASE, "--numstat", "--",
                              "finance/trading/scripts/").splitlines() if "\t" in ln}
     confine = all(numstat.get(s, ("0", "0")) == ("7", "0") for s, _, _ in CIBLES)
 
