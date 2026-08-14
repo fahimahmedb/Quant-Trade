@@ -8944,3 +8944,84 @@ des PASS. **C'est précisément pourquoi elle vaut d'être faite.**
 - **`.npz` orphelins : AUCUN** (#453).
 - **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+
+## Backlog #456 (13/08/2026) — DSR à décompte corrigé (piste A) : **prédiction réfutée**, 1 verdict bascule
+
+Pré-enregistré dans `PREREG_dsr_corrected_trials.md` (`406322e`). `n_trials = 1`.
+Première des trois pistes proposées au #455.
+
+### Le décompte
+
+| | Valeur |
+|---|---|
+| **N_brut** — séries `nonml_*` reconstructibles | **209** |
+| **N_distinct** — après fusion des doublons exacts | **207** |
+| écart | **2** (**1,0 %**) |
+| `var_trials` | 0,000137 → 0,000134 |
+
+### Le résultat
+
+| Décompte | Survivants à **DSR > 0,95** |
+|---|---|
+| N_brut = 209 | **3** |
+| N_distinct = 207 | **4** |
+
+Sous le décompte corrigé : `january_effect_lowprice_overlay` (0,9839),
+`momentum_turnover_doublesort` (0,9737), `amihud_illiquidity_tilt` (0,9643),
+`defensive_diversification_bond_overlay` (0,9519).
+
+### Ma prédiction est réfutée
+
+J'annonçais qu'**aucun verdict ne changerait**. **Un a changé.** Je le note comme
+une **prédiction fausse**, pas comme une découverte.
+
+Mais il faut regarder **de combien** : `defensive_diversification_bond_overlay`
+bascule à **DSR 0,9519**, soit **+0,0019** au-dessus du seuil, après une
+réduction de N de **1 %**.
+
+> **Ce n'est pas un sauvetage, c'est un candidat posé sur la barre.** Un résultat
+> qui bascule quand on retire 2 essais sur 209 rebasculera au premier essai
+> ajouté.
+
+Et le sens de la correction était dit d'avance : dédupliquer **abaisse** le
+seuil. La barre a baissé — les stratégies ne se sont pas améliorées.
+
+### Un écart expliqué plutôt que laissé
+
+**2 groupes ici, 3 au #445.** Le troisième associe `etape_D_overlay_optimized`,
+sans préfixe `nonml_`, donc hors de l'univers non-ML déclaré. Le balayage lit
+tout le dossier ; ce cycle ne compte que les candidats non-ML.
+
+Signalé parce qu'un lecteur y verrait légitimement une incohérence — et que les
+#449 à #453 ont montré qu'un chiffre non expliqué finit recopié faux.
+
+### La réserve capitale, déjà au pré-enregistrement
+
+**L'univers de 209 séries est plus petit que l'ensemble des hypothèses réellement
+essayées** au cours du projet. Un N sous-estimé rend le test **trop indulgent**.
+
+Ces quatre survivants le sont donc sur un test indulgent. **Aucune stratégie
+n'est promue par ce cycle**, et aucun essai n'est retiré d'aucun décompte publié.
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de mesure statistique, aucune position nouvelle.
+
+### File des prochains cycles
+
+1. **Piste B** — recompter les PASS jamais passés par la batterie Règle 9 (33 au
+   #431, chiffre daté donc suspect), puis la leur faire passer.
+2. **Piste C** — un vrai hors-échantillon temporel sur les PASS survivants, la
+   plus susceptible d'en détruire.
+3. **En attente d'arbitrage de l'utilisateur** : figer `n_trials` (#421) ; statut
+   de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Décompte d'essais** : mesuré (#456). L'effet des doublons sur le DSR est
+  **quantitativement marginal** — 1 % de N, un verdict de bord.
+- **L'univers d'essais reste sous-estimé** — nouvelle dette, la plus lourde du
+  lot : tant que N n'inclut pas les hypothèses testées sans `.npz`, tout DSR du
+  dépôt est **trop indulgent**.
+- **Comptes de backlog non revérifiés** : trois faux en cinq cycles.
+- **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
