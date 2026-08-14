@@ -8423,3 +8423,97 @@ position. Anti-cheat **CONFORME** (4/4).
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **Détecteur de verdict** : corrigé au #448, propagé au #449.
+
+## Backlog #450 (13/08/2026) — régénération des six rapports : **PASS**, et deux découvertes hors sujet
+
+**Cycle de MODIFICATION**, sixième après les #445 → #449. Pré-enregistré dans
+`PREREG_six_reports_regeneration.md` (`2842a80`), avant toute régénération.
+`n_trials = 1`. Ce cycle **exécute et compare** ; il ne corrige rien.
+
+### La dette du #449, résorbée
+
+Six rapports régénérés **un par un**, chacun contre sa **baseline épinglée** au
+dernier commit l'ayant touché, avec diff réel (`SequenceMatcher`) et attribution
+**par groupe contigu** — les trois précautions viennent des #445 et #446, où
+chacune avait manqué.
+
+| | Nombre |
+|---|---|
+| rapports régénérés | **6/6** |
+| groupes imputables à **la règle** | **5** |
+| groupes imputables à la **dérive du dépôt** | **18** |
+
+### Les trois prédictions, dont une réfutée
+
+- *« la dérive domine largement l'effet »* — **vérifiée** (18 contre 5) ;
+- *« au moins un rapport sans aucun effet »* — **vérifiée**, et plus largement
+  qu'annoncé : trois sur six ;
+- *« je n'exclus pas qu'un script échoue »* — **réfutée** : les six s'exécutent.
+  Noté comme une prédiction fausse, pas comme un succès.
+
+### Découverte 1 — un septième rapport, hors périmètre
+
+`nonml_pnl_persistence_lot4_audit.py` appelle `sw.main()`, qui **régénère le
+rapport du balayage de doublons**. Portée héritée, **même mécanisme qu'au #444**.
+
+Le pré-enregistrement énumérait six rapports ; il y en a **sept**. **Mon
+périmètre était sous-estimé**, et c'est publié plutôt que fondu dans les six.
+
+Ce septième diff est le plus instructif du cycle : il porte à la fois de la
+dérive (299 → 303 scripts) **et** l'effet de la règle sur les comptes de verdicts
+(**FAIL 91 → 93, PASS 5 → 3**). C'est la propagation du #449 qui devient enfin
+visible dans un rapport publié.
+
+### Découverte 2 — les encarts du #439 sont effacés par la régénération
+
+**4 rapports** perdent l'encart « Rapport dépendant du dépôt » que le #439 leur
+avait ajouté. La cause est structurelle : le #439 les a ajoutés **aux fichiers
+publiés**, pas **aux scripts qui les produisent**. Toute ré-exécution les efface.
+
+> Un encart qui décrit le comportement d'un script doit être **émis par ce
+> script**, sinon il ne survit pas à la première régénération.
+
+**Non restaurés.** L'engagement 2 interdisait de réparer au passage, et les
+remettre réinstallerait un marquage dont ce cycle vient d'établir qu'il ne tient
+pas. La bonne correction est **en tête de file**.
+
+### Le critère 3 tient — mais par lecture
+
+Mon filtre a signalé deux rapports comme possiblement stratégiques. Relus, ce
+sont des **requalifications documentaires** (#417, #422) qui énoncent
+explicitement *« aucun verdict n'est recalculé ni annulé »*. Le critère tient,
+mais **par lecture, pas par le filtre** — quatrième fois qu'une heuristique
+textuelle se montre trop grossière dans cette série.
+
+**Aucune des deux découvertes n'a été trouvée par la mesure** : la première en
+lisant `git status`, la seconde en relisant un diff.
+
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : régénération de
+rapports d'instrument, aucune stratégie ni position. Anti-cheat **CONFORME**
+(4/4).
+
+### File des prochains cycles
+
+1. **Faire émettre l'encart « dépendant du dépôt » par les scripts eux-mêmes**
+   — les 4 effacés au #450, plus les 6 autres marqués au #439 qui subiront le
+   même sort à leur prochaine exécution.
+2. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+3. **Les 20 `.npz` sans rapport publié** : inspection nom par nom.
+4. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Marquage #439 fragile** : 4 encarts effacés, 6 autres condamnés à l'être.
+  **En tête de file.**
+- **Écart code/rapport du #449 : RÉSORBÉ** (#450).
+- **1 variante** du motif laissée intacte (`sessions_column_backfill_audit`).
+- **1 stratégie PASS invisible au balayage** (`tom_decomposition_overlay`).
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **Détecteur de verdict** : corrigé (#448), propagé (#449), visible (#450).
