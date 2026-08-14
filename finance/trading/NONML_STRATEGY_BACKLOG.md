@@ -8326,3 +8326,100 @@ sortie, ou par une correction qui exposait la suivante.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
 - **Défaut de formule `net_pnl` : CORRIGÉ** (#445).
+
+## Backlog #449 (13/08/2026) — propagation de la règle : **PASS**, et le compte de « 8 scripts » était faux
+
+**Cycle de MODIFICATION**, cinquième après les #445 → #448. Pré-enregistré dans
+`PREREG_verdict_rule_propagation.md` (`a5b8b4f`), avant toute modification et
+toute mesure. `n_trials = 1`.
+
+### Le compte de départ était faux, et de la manière annoncée
+
+Le #447 comptait « 9 scripts », le #448 en laissait « 8 à corriger ». Ce chiffre
+venait d'un **`grep`** — donc d'une recherche en sous-chaîne, l'instrument même
+dont ces cycles ont montré qu'il confond **le code et le discours sur le code**.
+Le pré-enregistrement le présumait faux et prescrivait un **recompte par
+lecture** :
+
+| Catégorie | Nombre |
+|---|---|
+| **usages** convertis (fonctions `verdict_of` qui décident d'un classement) | **6** |
+| **variante** non convertible | **1** |
+| **réimplémentations / citations** laissées intactes | **4** |
+
+**Prédiction vérifiée** : j'attendais moins de 8 usages sans savoir combien.
+
+### Ce qui a été fait
+
+Module partagé `scripts/nonml_verdict.py`, copié du #448 — **0 verdict divergent
+sur 304 rapports**, vérifié par l'audit : la copie n'a pas dérivé, et c'est
+justement la divergence entre copies que ce cycle existe pour empêcher.
+
+Six scripts convertis, diff **+3 / −1** chacun, confiné aux **deux régions
+déclarées**. La zone d'imports était déclarée **d'avance** cette fois : aux #447
+et #448 elle ne l'était pas, ce qui m'avait obligé à écrire la règle en clair
+puis en opérations de chaînes pour rester dans le régime. Le code s'en trouve
+plus simple, pas plus contorsionné.
+
+**Effet mesuré** : **5 rapports** étaient mal classés par ces six consommateurs.
+
+### La variante, laissée telle quelle
+
+`nonml_sessions_column_backfill_audit.py` teste `"**PASS" in text` **seul**, sans
+le littéral `"PASS (niveau 1)"`. Le convertir **ajouterait** ce littéral : ce
+serait redéfinir sa sémantique, pas corriger un défaut. Le pré-enregistrement
+avait annoncé ce cas de figure **avant** de le rencontrer et prescrit de ne pas y
+toucher — c'est appliqué.
+
+### Une entorse de classification, signalée
+
+`nonml_sweep_pass_prose_fix_audit.py` ne rentre dans **aucune** des deux
+catégories déclarées : il ne reproduit pas l'ancienne règle pour la comparer, il
+**audite un cycle passé avec la règle de son époque**. Le convertir ferait
+re-vérifier le #446 sous une règle qui n'existait pas alors, et rendrait son
+audit faussement NON CONFORME.
+
+Classé **historique** parce que l'effet est le même — y toucher détruit la mesure
+qu'il porte — et l'écart est **publié** plutôt qu'une troisième catégorie ajoutée
+après coup.
+
+### Ce que le cycle ne fait pas, dit d'avance et tenu
+
+**Aucun rapport publié n'est régénéré.** Les régénérer mélangerait l'effet de la
+règle et la dérive du dépôt — le #445 a montré que **9 lignes sur 10** d'un
+rapport régénéré ne venaient pas de la modification — et six fois plutôt qu'une.
+
+Le cycle crée donc **sciemment** un écart entre le code corrigé et les rapports
+publiés par ces six scripts. C'est **le prix d'une mesure lisible**, inscrit à la
+dette ci-dessous.
+
+Audit indépendant **CONFORME** (4 contrôles : historiques préservés, convertis
+assainis, convertis valides, module fidèle). Robustesse (7a) et simulation 300 €
+(7b) **sans objet** : propagation d'une règle d'instrument, aucune stratégie ni
+position. Anti-cheat **CONFORME** (4/4).
+
+### File des prochains cycles
+
+1. **Régénérer les six rapports** dont le code a été corrigé au #449, un par un,
+   avec baseline épinglée et attribution dérive/effet comme au #445.
+2. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+3. **Les 20 `.npz` sans rapport publié** : inspection nom par nom.
+4. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **6 rapports publiés en écart avec leur code** — créé sciemment au #449,
+  mesuré, à régénérer dans son propre cycle. **En tête de file.**
+- **1 variante** du motif laissée intacte (`sessions_column_backfill_audit`),
+  non convertible sans redéfinition.
+- **1 stratégie PASS invisible au balayage** (`tom_decomposition_overlay`).
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **10 rapports dépendants du dépôt**, dont 6 marqués (#439).
+- **Détecteur de verdict** : corrigé au #448, propagé au #449.
