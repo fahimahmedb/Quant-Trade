@@ -9964,3 +9964,92 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #467 (14/08/2026) — détecteur d'auto-inclusion, 2ᵉ essai : **0/6 hors échantillon**, piste **CLOSE**
+
+Pré-enregistré dans `PREREG_self_inclusion_detector_v2.md` (`38c37dd`).
+**`n_trials = 2`** — le #466 a tenté la même hypothèse et échoué ; le protocole
+impose de **compter l'essai**, pas de repartir à 1.
+
+### Le vrai test — et il condamne l'outil
+
+Les **6** scripts nouvellement signalés, choisis par une règle déterministe
+**fixée avant d'avoir vu la liste**, exécutés deux fois chacun :
+
+> **0 sur 6** sont réellement non idempotents.
+
+**Le détecteur sur-signale ; sa liste de suspects n'a aucune valeur de
+priorité.** Le pré-enregistrement avait fixé la conséquence : **la piste
+« détection statique » est CLOSE**, pas retentée une troisième fois.
+
+### La calibration affiche 2/2 — et ne prouve rien
+
+| | Mesuré |
+|---|---|
+| rappel sur les fautifs connus | **2 / 2** |
+| faux positifs sur les sains connus | **10 / 16** |
+
+J'ai obtenu ce rappel parfait **en élargissant la règle après avoir vu la
+réponse** : la calibration est contaminée par construction. C'était écrit dans
+le pré-enregistrement, à l'endroit même où le chiffre est publié.
+
+> **Un cycle qui n'aurait montré que ce 2/2 aurait eu l'air d'un succès.** C'est
+> la première fois de cette série qu'un garde-fou anti-snooping sert à me
+> **priver d'un chiffre favorable**, et non à corriger une erreur après coup.
+
+### L'audit — 3/4, et il valide l'abandon
+
+- **A** — l'échantillon est bien celui que la règle désigne, réappliquée sans
+  réutiliser le code du backtest.
+- **B** — les 6 sont stables sur un **troisième** passage. Deux passages
+  identiques ne prouvent rien : une dérive de **période 2** y échapperait.
+  **C'est ce contrôle qui rend l'abandon légitime.**
+- **C** — la règle élargie signale **21** contre **20** : l'élargissement a bien
+  eu lieu.
+- **D** — **ÉCART**, tranché depuis (ci-dessous).
+
+### L'écart D était un artefact — vérifié, pas supposé
+
+Le contrôle D donnait mon propre rapport non idempotent. Rejoué **à état de
+dépôt stable** : `c4498fb1148961cf` **deux fois**. L'écart venait de ce que
+**mon propre script d'audit avait été ajouté au dépôt entre les deux mesures**,
+changeant le nombre de scripts comptés — l'effet d'observateur du #463.
+
+> **Le rapport d'audit reste publié tel qu'il a mesuré**, avec ce diagnostic
+> inscrit ici. Après trois cycles où mes comptes ont accusé à tort la trace du
+> dépôt (#462, #464, #465), **publier une fausse auto-accusation ne vaudrait pas
+> mieux** — la même exigence, dans l'autre sens.
+
+Anti-cheat **CONFORME** (4/4). Arbre restauré, **0 résidu**, aucun rapport
+régénéré committé. Simulation 300 € (7b) **sans objet**.
+
+### Ce que ce cycle laisse
+
+La détection **statique** ne marche pas. Ce qui marche est **coûteux et connu** :
+rejouer les scripts, comme au #463. Le dépôt en compte **320** ; **18** ont été
+éprouvés, **6** de plus ici, soit **24**.
+
+### File « à faire »
+
+1. **Réparer les deux fautifs** du #463 dans un cycle dédié, qui **assume la
+   régénération** de leurs rapports.
+2. **Croiser rapports et scripts émetteurs** pour séparer porteurs et citeurs
+   (#465).
+3. **Éprouver par exécution** un lot supplémentaire de scripts jamais testés —
+   la seule méthode dont la valeur soit démontrée.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Piste « détection statique » : CLOSE** après 2 essais (#466, #467).
+- **296 scripts sur 320** n'ont jamais été éprouvés par exécution.
+- **2 scripts non idempotents** toujours non réparés ; **1 écrit 7 rapports qui
+  ne sont pas le sien** (#463).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**

@@ -37,7 +37,7 @@ alphabétique — règle fixée **avant** d'avoir vu la liste. Chacun exécuté
 | `nonml_empty_pass_basket_extension_backtest.py` | idempotent | `b12a26f13d99` | `b12a26f13d99` |
 | `nonml_empty_pass_requalification_backtest.py` | idempotent | `40b40b67ffa5` | `40b40b67ffa5` |
 | `nonml_npz_report_consistency_backtest.py` | idempotent | `da7286665cf8` | `da7286665cf8` |
-| `nonml_pnl_duplicate_sweep_backtest.py` | idempotent | `52c5793c6130` | `52c5793c6130` |
+| `nonml_pnl_duplicate_sweep_backtest.py` | idempotent | `3a2f3fd66255` | `3a2f3fd66255` |
 | `nonml_prereg_convention_coverage_backtest.py` | idempotent | `aae5a76c41c8` | `aae5a76c41c8` |
 
 - éprouvés : **6** / 6
