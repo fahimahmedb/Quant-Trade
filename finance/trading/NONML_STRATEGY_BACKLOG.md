@@ -9192,3 +9192,75 @@ objet** : le test est confondu, il n'y a rien à éprouver.
 - **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
   indulgent.
 - **Comptes de backlog non revérifiés** : quatre faux en six cycles.
+
+## Backlog #459 (13/08/2026) — piste C refaite : **3 prédictions sur 3 vérifiées**, edge médian **−0,06**
+
+Pré-enregistré dans `PREREG_relative_holdout.md` (`c7b3795`). `n_trials = 1`.
+La version correcte de ce que le #458 avait mesuré de travers.
+
+### La métrique, et pourquoi elle change tout
+
+```
+edge = Sharpe(stratégie) − Sharpe(benchmark)     sur la MÊME fenêtre
+```
+
+Le #458 mesurait le Sharpe **absolu** et voyait les PASS « persister » à +1,34 ;
+Buy & Hold faisait +1,39 sur la même fenêtre. **Un edge n'est pas une
+performance** — gagner 30 % dans un marché qui gagne 35 % n'est pas un edge.
+
+**Découpes identiques au #458**, volontairement : seule la métrique change, pour
+qu'aucun écart ne puisse être attribué à la fenêtre.
+
+### Le résultat, sur 100 PASS
+
+| | 252 séances *(principale)* | 504 séances *(secondaire)* |
+|---|---|---|
+| edge médian **avant** | +0,05 | +0,07 |
+| edge médian **sur la fenêtre** | **−0,06** | **−0,07** |
+| fraction à edge **positif** | **18,0 %** | **19,0 %** |
+| fraction dont l'edge **se contracte** | **88,0 %** | **89,0 %** |
+
+Les deux découpes disent la même chose — ce qui était l'intérêt de les déclarer
+toutes les deux.
+
+### Mes prédictions : 3 sur 3 *(au #458 : 0 sur 3)*
+
+| Prédiction | Annoncé | Mesuré | |
+|---|---|---|---|
+| edge médian ≤ 0 | ≤ 0 | −0,06 | ✔ |
+| fraction à edge positif < 50 % | < 50 % | 18,0 % | ✔ |
+| plus de la moitié se contractent | > 50 % | 88,0 % | ✔ |
+
+### Ce que cela établit
+
+**Les stratégies ne battent pas leur benchmark sur la période récente.**
+Troisième confirmation indépendante, après le **0/29** de la batterie renforcée
+(#457) et le constat post-hoc du #458 — et cohérente avec ce que `CLAUDE.md`
+établit depuis l'Étape B : **Buy & Hold reste la meilleure stratégie testée.**
+
+### La réserve, maintenue
+
+**La fenêtre reste contaminée par la sélection** : ces stratégies ont été
+choisies en connaissant tout l'échantillon, fenêtre récente comprise. Un edge nul
+y est **attendu** même si un edge avait existé — et un edge positif n'y aurait
+rien prouvé. Ce cycle resserre un faisceau, il ne le clôt pas.
+
+Le rapport confondu du #458 **reste publié** avec son diagnostic : ce cycle ne
+l'efface pas, il le complète. Anti-cheat **CONFORME** (4/4). Robustesse (7a) et
+simulation 300 € (7b) **sans objet** : aucune stratégie ne ressort du test.
+
+### File des prochains cycles
+
+1. **Étendre la règle de verdict aux rapports de batterie** (#457) — elle les
+   classe tous « indéterminé ».
+2. **En attente d'arbitrage de l'utilisateur** : figer `n_trials` (#421) ; statut
+   de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Piste C : faite correctement** (#459). La version confondue reste publiée.
+- **0 PASS validé** par la batterie renforcée (#457).
+- **Edge médian négatif** sur la période récente, sur les deux découpes (#459).
+- **La règle de verdict ne couvre pas les rapports de batterie** (#457).
+- **L'univers d'essais reste sous-estimé** (#456).
+- **Comptes de backlog non revérifiés** : quatre faux en six cycles.
