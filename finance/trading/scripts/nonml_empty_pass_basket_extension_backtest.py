@@ -20,6 +20,8 @@ stockée dans le fichier.
 import sys
 from pathlib import Path
 
+import nonml_verdict  # regle unique du depot (#449)
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +33,7 @@ MARKER = "REQUALIFICATION #422"
 
 def verdict_of(path: Path):
     txt = path.read_text(encoding="utf-8")
-    if "**PASS" in txt or "PASS (niveau 1)" in txt:
+    if nonml_verdict.porte_verdict(txt, "PASS"):
         return "PASS"
     if "**FAIL" in txt:
         return "FAIL"

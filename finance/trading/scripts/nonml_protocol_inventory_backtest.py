@@ -15,6 +15,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import nonml_verdict  # regle unique du depot (#449)
+
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 SCRIPTS = Path(__file__).resolve().parent
@@ -32,7 +34,7 @@ def git_known(path_rel: str) -> bool:
 
 def verdict_of(p: Path) -> str:
     t = p.read_text(encoding="utf-8")
-    if "**PASS" in t or "PASS (niveau 1)" in t:
+    if nonml_verdict.porte_verdict(t, "PASS"):
         return "PASS"
     if "**FAIL" in t:
         return "FAIL"
