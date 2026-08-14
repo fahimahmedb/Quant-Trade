@@ -9540,8 +9540,8 @@ trace du dépôt** — plus grave qu'un résultat flatteur.
 
 **3/3.** Le saut n'est pas un artefact du repère. *(L'étiquette se décale d'une
 entrée sous la convention `PREREG_` — les fichiers d'un cycle arrivent après son
-pré-enregistrement et avant son entrée de backlog. Même +29, vu d'un cran plus
-tôt.)*
+pré-enregistrement et avant son entrée de backlog. Même +29, vu un cran plus
+tard.)*
 
 Borne de l'univers élargie à #430, #415, #400 : **0 décroissance sur 4/4**,
 jusqu'à **61** entrées. Le dépôt n'ajoute que des fichiers.

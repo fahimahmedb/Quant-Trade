@@ -153,7 +153,7 @@ def main():
             L.append("> `PREREG_`, le saut apparaît une entrée plus loin : les fichiers")
             L.append("> d'un cycle arrivent **après** son pré-enregistrement et **avant**")
             L.append("> son entrée de backlog, donc le repère « PREREG » les voit au tour")
-            L.append("> suivant. **C'est le même +29, vu d'un cran plus tôt** — ce")
+            L.append("> suivant. **C'est le même +29, vu un cran plus tard** — ce")
             L.append("> décalage confirme la mécanique au lieu de la contredire.")
     else:
         L.append("**Le saut ne survit pas à toutes les conventions.** Publié tel quel :")
