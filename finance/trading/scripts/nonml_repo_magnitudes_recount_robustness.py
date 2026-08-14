@@ -53,7 +53,13 @@ def sha_prereg(num):
     noms = sorted(set(re.findall(r"PREREG_([a-z0-9_]+)\.md", txt)))
     if len(noms) != 1:
         return None
-    out = git("log", "-S", f"PREREG_{noms[0]}.md", "--format=%H", "--",
+    # Defaut de la premiere version : `git log -S<nom>` cherche la chaine dans
+    # le CONTENU du fichier, pas dans son nom — aucun PREREG ne se cite
+    # lui-meme, la convention rendait 0 point, et le rapport en concluait que
+    # le saut « ne survit pas ». Une conclusion fausse CONTRE ma propre
+    # trouvaille reste une conclusion fausse. On demande le commit qui a
+    # AJOUTE le fichier.
+    out = git("log", "--diff-filter=A", "--format=%H", "--",
               f"finance/trading/PREREG_{noms[0]}.md")
     lignes = [l for l in (out or "").splitlines() if l.strip()]
     return lignes[-1] if lignes else None
@@ -103,21 +109,40 @@ def main():
     L.append("")
     L.append("| Convention | Points | Sauts | Détail |")
     L.append("|---|---|---|---|")
-    verdicts = []
+    verdicts, series_par_conv = [], []
     for nom, fn in CONVENTIONS:
         s = serie_batteries(fn)
         j = sauts(s)
         det = " ; ".join(f"#{a}→#{b} : {va}→**{vb}** (**{vb - va:+d}**)"
                          for a, va, b, vb in j) or "*aucun*"
+        if not s:
+            det = "*instrument muet — exclue du verdict*"
         L.append(f"| {nom} | {len(s)} | **{len(j)}** | {det} |")
         verdicts.append((nom, j))
+        series_par_conv.append((nom, s))
     L.append("")
-    unique_29 = [(nom, j) for nom, j in verdicts
+    # Une convention qui ne rend AUCUN point n'a pas mesure : c'est une panne
+    # d'instrument, pas un desaccord. La compter comme un echec du saut serait
+    # une conclusion fausse — contre ma propre trouvaille, mais fausse.
+    muettes = [nom for (nom, _fn), (_n, s) in zip(CONVENTIONS,
+                                                  [(n, s) for n, s in series_par_conv])
+               if len(s) == 0]
+    evaluables = [(nom, j) for (nom, j), (_n, s) in zip(verdicts, series_par_conv)
+                  if len(s) > 0]
+    unique_29 = [(nom, j) for nom, j in evaluables
                  if len(j) == 1 and j[0][3] - j[0][1] == 29]
-    L.append(f"- conventions donnant **un saut unique de +29** : "
-             f"**{len(unique_29)}/{len(CONVENTIONS)}**")
+    if muettes:
+        L.append(f"> **{len(muettes)} convention(s) sans aucun point** : "
+                 + ", ".join(f"« {m} »" for m in muettes) + ".")
+        L.append("> C'est une **panne d'instrument**, pas un désaccord — elles sont")
+        L.append("> **exclues du verdict** au lieu d'être comptées comme un échec du")
+        L.append("> saut.")
+        L.append("")
+    L.append(f"- conventions **évaluables** : **{len(evaluables)}/{len(CONVENTIONS)}**")
+    L.append(f"- donnant **un saut unique de +29** : "
+             f"**{len(unique_29)}/{len(evaluables)}**")
     L.append("")
-    if len(unique_29) == len(CONVENTIONS):
+    if evaluables and len(unique_29) == len(evaluables):
         L.append("**Le saut survit aux trois conventions.** Il n'est pas un artefact du")
         L.append("repère : les 29 rapports de batterie existent dans le dépôt, quel que")
         L.append("soit le commit qu'on choisit pour regarder.")
