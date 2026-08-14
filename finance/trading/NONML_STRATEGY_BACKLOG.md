@@ -9596,3 +9596,103 @@ panier (#432).
   **univers d'essais sous-estimé** (#456).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #463 (14/08/2026) — idempotence : **2 rapports sur 18** changent entre deux exécutions
+
+Pré-enregistré dans `PREREG_report_idempotence.md` (`793d4f9`). `n_trials = 1`.
+Deuxième piste de la file ouverte au #461.
+
+### La limite, avant les chiffres
+
+Le dépôt compte **314** `nonml_*_backtest.py`. J'en éprouve **18** — ceux des
+entrées #443-#460 — soit **5,7 %**. **Rien ici ne se généralise.**
+
+### Le résultat
+
+**2 sur 18** rendent deux octets différents entre deux passages consécutifs :
+
+| Script | Ce qui bouge | Nature |
+|---|---|---|
+| `verdict_rule_propagation` | « **9** changent de classement » → **10**, et il s'ajoute à sa propre table avec un `PASS → FAIL` | **convergence en un pas** (P2 = P3) |
+| `six_reports_regeneration` | « **13** réécrits » → **14** ; « **7** hors des six déclarés » → **8** | **dérive perpétuelle** (P1 ≠ P2 ≠ P3) |
+
+**Le même défaut dans les deux cas, et il a déjà un nom ici :**
+
+> un rapport qui compte des rapports **se compte lui-même** au second passage
+> s'il ne s'exclut pas du corpus.
+
+C'est ce que le **#446** avait corrigé chez lui et ce que le **#447** avait
+énoncé comme règle. **La leçon avait été tirée sans jamais être propagée** —
+même schéma que les quatre faux du backlog, trouvés un par un et par accident.
+
+### Les deux cas ne se valent pas
+
+**La convergence est moins grave et plus sournoise** : un cycle qui régénère
+deux fois ne verra plus rien et conclura à tort à la stabilité. La dérive
+perpétuelle, elle, se voit dès qu'on regarde.
+
+### Prédiction 3 réfutée — la partie utile
+
+J'attendais une dérive **cosmétique**, comme celle du #461. Ce sont les
+**compteurs** qui bougent. Un lecteur qui rejoue `verdict_rule_propagation` lit
+un tableau de reclassement contenant une ligne absente du passage précédent.
+
+### Un couplage mesuré : qui écrit le rapport des autres
+
+`six_reports_regeneration` écrit **7** rapports qui ne sont pas le sien ;
+`verdict_rule_propagation` **zéro**. C'est le couplage que le #450 avait payé
+cher, désormais attribué nominativement.
+
+### Trois fois pris en défaut par mes propres contrôles
+
+1. **Mon rapport n'était pas idempotent.** Le contrôle D l'a établi — pas moi.
+   Corrigé en appliquant à moi-même la règle du #446. **Un cycle qui dénonce un
+   défaut en le portant n'aurait pas dû être publié tel quel.**
+2. **Mon contrôle C accusait à tort.** `git checkout` n'efface pas les fichiers
+   **non suivis** : mes propres rapports survivaient à chaque restauration et
+   étaient imputés à tous les scripts rejoués. Même faute qu'au #462 avec ses 9
+   fausses discordances.
+3. **J'ai conclu trop vite que l'écart D était structurel** et non réparable. Il
+   ne l'était pas : l'empreinte « avant » venait encore du script d'avant
+   correctif. **Une explication qui arrange sa propre défaite reste une
+   explication fausse.**
+
+### Effet de bord — annulé et vérifié
+
+**18** rapports touchés pendant la mesure, **0** résidu après restauration.
+Aucun rapport régénéré n'est committé (leçon du #450).
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4).
+Simulation 300 € (7b) **sans objet** : aucune position.
+
+### Ce que ce cycle ne fait pas
+
+- Il ne **corrige** pas les deux scripts fautifs : publiés et inscrits, pas
+  réparés au passage. Seul l'instrument du cycle a été réparé, comme au #461.
+- Il ne dit rien des **296** scripts hors univers.
+- Il ne teste que **3** passages : une dérive à période plus longue lui
+  échapperait.
+
+### File « à faire »
+
+1. **Couverture réelle de la convention « un `PREREG_` par entrée »** (#461).
+2. **Grandeurs définies par le contenu** (#462) — seule voie vers les faux #449
+   et #451.
+3. **Propager l'exclusion de soi** aux deux scripts identifiés ici, et chercher
+   le défaut sur les **296** scripts non éprouvés. Ce cycle montre que la règle
+   du #447 n'a jamais été appliquée ailleurs que là où elle est née.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **2 scripts non idempotents**, identifiés et **non réparés**.
+- **1 script écrit 7 rapports qui ne sont pas le sien.**
+- **La règle du #447 n'a jamais été propagée** — c'est la dette de fond que ce
+  cycle met au jour.
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459) ;
+  **univers d'essais sous-estimé** (#456).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
