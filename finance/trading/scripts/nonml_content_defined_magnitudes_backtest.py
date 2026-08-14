@@ -124,10 +124,12 @@ def main():
     L.append("|---|---|---|---|")
     v449 = v451 = None
     if 449 in par:
-        v449 = par[449][1]
-        L.append(f"| #449 | **8** consommateurs | **{v449}** à `{par[449][0][:8]}` | "
-                 + ("**le « 8 » était bien faux**" if v449 != 8
-                    else "**le « 8 » était JUSTE**") + " |")
+        v449, pr449 = par[449][1], par[449][4]
+        L.append(f"| #449 | **8** consommateurs, corrigé en **6** | "
+                 f"**{v449}** importateurs dont **{pr449}** d'instrument, soit "
+                 f"**{v449 - pr449}** consommateurs, à `{par[449][0][:8]}` | "
+                 + ("**la correction « 6 » est CONFIRMÉE**" if v449 - pr449 == 6
+                    else f"**ni 8 ni 6 : {v449 - pr449}**") + " |")
     if 451 in par:
         v451 = par[451][2]
         L.append(f"| #451 | **6** porteurs | **{v451}** à `{par[451][0][:8]}` | "
