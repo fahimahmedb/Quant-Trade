@@ -9025,3 +9025,91 @@ objet** : cycle de mesure statistique, aucune position nouvelle.
 - **Comptes de backlog non revérifiés** : trois faux en cinq cycles.
 - **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+
+## Backlog #457 (13/08/2026) — batterie Règle 9 (piste B) : 29 PASS soumis, **0 validé**
+
+Pré-enregistré dans `PREREG_battery_coverage.md` (`64af4c8`). `n_trials = 1`.
+Deuxième des trois pistes du #455. **Ce cycle ne mesure pas une lacune, il la
+comble.**
+
+### Le recompte
+
+| | Nombre |
+|---|---|
+| PASS possédant un `.npz` | **100** |
+| **sans batterie Règle 9** | **29** |
+| annoncé par le #431 | **33** |
+| écart | **−4** |
+
+**Quatrième compte de backlog faux** après les #449, #451 et #453. Prédiction
+vérifiée, sans pari sur le sens.
+
+### Le résultat
+
+Les **29** ont passé la batterie, dans l'ordre **alphabétique** déclaré.
+
+> ### **0 / 29 validés.**
+
+Aucun ne franchit les cinq contrôles renforcés — coûts 3×/5×, stress de crise,
+stabilité temporelle par folds, SPA à 1 candidat, DSR à `n_trials` = taille du
+backlog.
+
+**C'est le résultat le plus dur de toute cette série de cycles**, et il est
+cohérent avec ce que `CLAUDE.md` dit depuis l'Étape B : aucun signal actif ne
+tient une fois éprouvé au-delà de son critère d'origine.
+
+### Un défaut d'instrument corrigé avant publication
+
+Mon pilote lisait `returncode != 0` comme un **échec d'exécution**. Or la
+batterie sort avec le code **2** pour dire *« pas de PASS renforcé »* : **le code
+de sortie porte le verdict, pas l'état d'exécution**. Les 29 avaient tous tourné
+et écrit leur rapport, et mon premier passage les déclarait tous « non traités ».
+
+Le périmètre est désormais **figé dans le script** : une fois les batteries
+passées, la trace de ce qui manquait disparaît, et le recalculer rendrait le
+cycle vide.
+
+### Une découverte en passant — la règle unifiée ne couvre pas les batteries
+
+Les **29** rapports de batterie sont classés **« indéterminé »** par la règle de
+verdict unifiée (#448/#449/#454). Elle avait été **taillée sur les rapports de
+stratégie** et ne reconnaît pas la formulation de la batterie — *« PAS de PASS
+RENFORCÉ »*.
+
+**Ni le #448, ni le #449, ni le #454 ne l'avaient remarqué.** Ce cycle le trouve
+en cherchant autre chose — comme presque tous les défauts de cette série.
+
+**Non corrigé ici** : élargir la règle serait une modification non déclarée, et
+le #448 a montré qu'une couche ajoutée pour un cas connu se distingue mal d'un
+ajustement. **Inscrit à la file.**
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : aucun candidat validé, aucune position nouvelle.
+
+### La portée, dite franchement
+
+La batterie **ajoute** une information à un PASS, elle ne l'**annule** pas. Ces
+29 gardent le verdict de leur propre pré-enregistrement ; ce qu'ils perdent,
+c'est la prétention à avoir été **éprouvés** au-delà de leur critère d'origine.
+
+Et son contrôle (e) déflate par un `n_trials` égal à la taille du backlog, qui
+**sous-estime** les hypothèses réellement essayées (#456). La batterie est donc
+elle aussi **indulgente** sur ce point — et **0/29 malgré cette indulgence**.
+
+### File des prochains cycles
+
+1. **Piste C** — un vrai hors-échantillon temporel sur les PASS, la plus
+   susceptible d'en détruire. Après ce 0/29, la question devient : reste-t-il
+   quelque chose à détruire ?
+2. **Étendre la règle de verdict aux rapports de batterie** — à déclarer avant.
+3. **En attente d'arbitrage de l'utilisateur** : figer `n_trials` (#421) ; statut
+   de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Batterie Règle 9 : couverture complète** des PASS avec `.npz` (#457).
+- **0 PASS validé** par la batterie renforcée — constat central du dépôt.
+- **La règle de verdict ne couvre pas les rapports de batterie** — nouvelle.
+- **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
+  indulgent.
+- **Comptes de backlog non revérifiés** : quatre faux en six cycles.
