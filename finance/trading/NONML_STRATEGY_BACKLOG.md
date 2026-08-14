@@ -8768,3 +8768,78 @@ preuve exigée était volontairement faible et vérifiable.
 - **3 consommateurs** mal informent sur le troisième schéma (C). **En tête.**
 - **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+
+## Backlog #454 (13/08/2026) — la dernière variante du détecteur : décision **« convertir »**, et un constat qui relativise le cycle
+
+Cycle de **décision**, pré-enregistré dans `PREREG_verdict_variant_decision.md`
+(`7c08463`). Il pouvait se conclure par *« on ne touche à rien »*. `n_trials = 1`.
+
+### La règle de décision, fixée avant mesure
+
+> **Convertir si et seulement si** les deux règles donnent le **même verdict**
+> sur les 3 rapports cibles.
+
+| Rapport | Règle locale (sans littéral) | Règle partagée (#448) | Coïncident |
+|---|---|---|---|
+| `halloween_effect` | PASS | PASS | ✔ |
+| `intraday_range_regime_overlay` | PASS | PASS | ✔ |
+| `tom_overlay` | PASS | PASS | ✔ |
+
+**Décision : convertir**, appliquée. Diff confiné au régime du #449 — zone
+d'imports + la ligne de l'occurrence (**+8 / −5**, deux hunks).
+
+À effet observable nul, l'uniformité vaut mieux qu'une exception qu'il faudrait
+ré-expliquer à chaque cycle qui recompte les consommateurs.
+
+### Pourquoi ce cas méritait d'être décidé et non converti mécaniquement
+
+Dans ce script, `verdict_of` **ne classe pas dans l'absolu** : il compare le
+verdict d'un rapport **avant** et **après** l'ajout d'une colonne. C'est une
+**comparaison à règle constante**, où une règle grossière ne trompe que si sa
+grossièreté crée une différence là où il n'y en a pas.
+
+### Le constat qui relativise tout le cycle — et qui était prédit
+
+**Le contrôle 3 que cette fonction sert est vide en exécution ordinaire.**
+
+```python
+BEFORE_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+```
+
+Sans argument, la colonne « Avant » affiche `—` et la comparaison ne compare
+rien. La règle discutée ici ne sert donc qu'à une comparaison qui **ne s'exécute
+que si quelqu'un fournit un instantané**.
+
+Le dire vaut mieux que laisser croire qu'on a tranché quelque chose
+d'important. **Prédiction vérifiée**, et c'en était la partie utile.
+
+### Ce que ce cycle ne prétend pas
+
+Il ne dit **pas** que la règle locale était juste : elle confondait porter et
+mentionner un verdict, comme toutes les autres avant le #448. Il constate qu'ici
+cette confusion **n'avait pas de conséquence mesurable**.
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : décision d'outillage, aucune stratégie ni position.
+
+### File des prochains cycles
+
+1. **Les 3 consommateurs de catégorie C** du #444 — ils écartent silencieusement
+   le troisième schéma `.npz` et laissent leur lecteur croire à un balayage
+   complet. Lacune de couverture, pas défaut : à mesurer avant de décider.
+2. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Motif de verdict : entièrement unifié** (#448 → #449 → #454). Plus aucune
+  variante locale.
+- **3 consommateurs** mal informent sur le troisième schéma (C). **En tête.**
+- **Comptes de backlog non revérifiés** : trois faux en cinq cycles (#449, #451,
+  #453). Tout chiffre recopié sans mesure est suspect.
+- **`.npz` orphelins : AUCUN** (#453).
+- **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
