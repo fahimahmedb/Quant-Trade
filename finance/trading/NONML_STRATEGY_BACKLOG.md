@@ -8608,3 +8608,81 @@ position.
 - **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **Détecteur de verdict** : corrigé (#448), propagé (#449), visible (#450).
+
+## Backlog #452 (13/08/2026) — un `.npz` pour `tom_decomposition_overlay` : **PASS**, corrélation +0,963 avec le #8
+
+**Cycle de MODIFICATION**, huitième après les #445 → #451, et **le premier depuis
+longtemps à toucher une stratégie** plutôt qu'un instrument. Pré-enregistré dans
+`PREREG_tom_decomposition_npz.md` (`77954e4`). `n_trials = 1`.
+
+### La question qui ne pouvait pas être posée
+
+La variante A (fin de mois seule) porte un **PASS** (4/5 marchés) et ne
+produisait **aucun `.npz`** : elle échappait au balayage de doublons depuis le
+#446. Or le **#8** (`tom_overlay`, ToM complet — **union** des deux sous-fenêtres)
+est PASS lui aussi et possède le sien, et la variante A en est une
+**sous-fenêtre**. Si les séries étaient interchangeables, deux essais n'en
+feraient qu'un et le DSR de la famille serait faussé.
+
+### Le résultat
+
+**Corrélation variante A / #8 : +0,963497**, sous le seuil de quasi-doublon de
+**0,9999**. **Aucun appariement**, exact ou quasi, dans tout le dépôt.
+
+Les deux PASS de la famille ToM ne sont donc **pas** interchangeables : la
+décomposition isole bien un effet distinct de l'union. **Prédiction vérifiée** —
+j'attendais une corrélation élevée mais sous le seuil ; c'était la déduction la
+plus banale, et elle aurait pu être fausse.
+
+| | Critère | État |
+|---|---|---|
+| 1 | diff confiné (**+14 / −0**, une insertion) | ✔ |
+| 2 | **les chiffres publiés ne bougent pas** | ✔ |
+| 3 | concordance `.npz` / rapport (**+0,53**) | ✔ |
+| 4 | le balayage voit la série | ✔ |
+
+Le critère 2 était le plus exigeant : ajouter une sauvegarde **ne calcule rien**,
+donc le rapport régénéré devait être identique **au caractère près** à sa
+baseline épinglée. Il l'est.
+
+### Robustesse (7a) — la conclusion ne tient pas à un seul chiffre
+
+- **Seuil** : la conclusion tient de 0,9999 jusqu'à 0,98 ; elle ne basculerait
+  qu'à **0,95**, très loin du seuil du dépôt.
+- **Période** : découpée en 4 tranches déclarées d'avance, la corrélation reste
+  entre **+0,959** et **+0,970**. **Aucune tranche n'atteint le seuil** — la
+  conclusion ne repose pas sur un régime particulier.
+
+Simulation 300 € (7b) **sans objet** pour ce cycle : il ajoute une sauvegarde, il
+n'évalue pas une stratégie neuve — et la stratégie elle-même possède déjà ses
+rapports `_robustness.md` et `_sim_300e.md`. Anti-cheat **CONFORME** (4/4).
+
+### Ce que ce cycle ne fait pas
+
+Il **ne requalifie rien** : ni le verdict de la variante A, ni celui du #8, ni le
+décompte d'essais de la famille ToM. Il rend une question **mesurable** et publie
+la mesure. Que la variante A soit distincte du #8 ne dit **rien** de sa
+rentabilité.
+
+### File des prochains cycles
+
+1. **Les 20 `.npz` sans rapport publié** : variantes au rapport nommé autrement
+   (comme #431 contrôle B) ou orphelins réels. Inspection nom par nom.
+2. **La variante du motif de verdict** (`sessions_column_backfill_audit`), non
+   convertible sans redéfinition — décider si elle doit l'être, dans son cycle.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **`tom_decomposition_overlay` : VISIBLE au balayage** (#452), et isolée.
+- **1 variante** du motif de verdict laissée intacte.
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+  **En tête de file.**
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **Marquage #439 : CORRIGÉ** (#451) ; **détecteur de verdict** : corrigé (#448),
+  propagé (#449), visible (#450).
