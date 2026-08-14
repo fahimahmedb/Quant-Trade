@@ -8843,3 +8843,104 @@ objet** : décision d'outillage, aucune stratégie ni position.
 - **`.npz` orphelins : AUCUN** (#453).
 - **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+
+## Backlog #455 (13/08/2026) — les écarts silencieux : **décision « on ne touche à rien »**, par mesure
+
+Cycle de **décision**, pré-enregistré dans `PREREG_silent_skip_decision.md`
+(`238384e`). `n_trials = 1`.
+
+### La règle, fixée avant mesure
+
+> Rendre l'écart visible **si et seulement si** `n_skip > 0` **et** le rapport
+> **revendique** une couverture que ce silence contredit.
+
+| Script | Revendique | Décision |
+|---|---|---|
+| `nonml_empty_pass_requalification_backtest.py` | non | ne rien changer |
+| `nonml_pnl_persistence_lot5_audit.py` | non | ne rien changer |
+| `nonml_npz_report_consistency_backtest.py` | non | ne rien changer *(compte rendu du #442)* |
+
+**n_skip = 2** — les deux fichiers du troisième schéma. **Aucun** des trois
+rapports ne revendique de couverture exhaustive : ils parlent de **candidats**,
+pas de l'inventaire des `.npz`. Leur silence ne trompe personne.
+
+### **Décision : on ne touche à rien.**
+
+C'est **la conclusion d'un cycle, pas son échec**. Un cycle qui mesure et conclut
+qu'il n'y a rien à faire vaut mieux qu'un cycle qui modifie pour justifier son
+existence. La dette ouverte au #444 se ferme **par une mesure**, pas par un
+abandon. **Prédiction vérifiée**, en n'ayant pas exclu l'inverse.
+
+### La provision déclarée d'avance, appliquée sans entorse
+
+`nonml_npz_report_consistency_backtest.py` produit le compte rendu du #442 : le
+pré-enregistrement prévoyait de **ne pas y toucher**, quelle que soit la mesure.
+Le #449 avait rencontré ce cas **sans l'avoir prévu** et avait dû publier une
+entorse ; ici la provision était écrite avant. **C'est le seul progrès de méthode
+du cycle, et il est mince.**
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de décision, aucune stratégie ni position.
+
+---
+
+## File « à faire » épuisée — trois pistes proposées
+
+Après le #455, la file ne contient plus que **trois points en attente
+d'arbitrage de l'utilisateur**, que je ne tranche pas seul : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; extension de la
+batterie Règle 9 au schéma panier (#432).
+
+**Aucune idée de stratégie nouvelle n'est proposée**, et il faut redire pourquoi :
+le #426 a vérifié que les **66 fichiers de `data/`** sont déjà exploités, et le
+#420 que l'espace d'anomalies atteignable avec ces données est largement couvert
+— plus de 150 hypothèses testées. Proposer une 151ᵉ variante de calendrier ou de
+volatilité serait **ajouter un essai au dénominateur du DSR sans raison**.
+
+Les trois pistes ci-dessous sont donc **statistiques et méthodologiques**, pas de
+nouvelles anomalies. Elles portent sur ce que le dépôt **croit déjà savoir**.
+
+### Piste A — recalculer le DSR avec un décompte d'essais corrigé des doublons
+
+Le DSR de Bailey & López de Prado dépend de **N essais**. Le dépôt compte ses
+essais par entrées de backlog, alors que les #406, #445 et #452 ont établi une
+structure de doublons : **3 groupes exacts**, des variantes par marché, des
+familles où une stratégie est écrite deux fois.
+
+> **Question mesurable** : avec un N corrigé — un essai par **série de P&L
+> distincte** plutôt que par entrée —, combien de PASS survivent au DSR ?
+
+Tout est déjà là : les `.npz`, les groupes du balayage, la fonction `dsr` de
+`prediction.py`. C'est la question que toute la discipline anti-snooping du
+projet pointe depuis le début, et **elle n'a jamais été posée**.
+
+### Piste B — la fraction des PASS jamais passés par la batterie Règle 9
+
+Le #431 avait compté **33** rapports PASS n'ayant jamais subi la batterie à 5
+contrôles (coûts, crise, stabilité temporelle, SPA, DSR). Ce chiffre date, et les
+#449/#451/#453 ont montré que **tout chiffre recopié sans mesure est faux**.
+
+> Le recompter, puis **passer la batterie** aux PASS qui ne l'ont jamais eue, en
+> déclarant l'ordre de passage avant de commencer.
+
+### Piste C — un vrai hors-échantillon temporel sur les PASS survivants
+
+Les PASS ont été établis sur l'historique complet disponible. Les données vont
+jusqu'à **juillet 2026** ; les cycles les plus anciens datent d'un état du dépôt
+plus ancien.
+
+> Rejouer les PASS survivants **sur la tranche la plus récente uniquement**,
+> déclarée avant exécution, comme un OOS temporel qu'aucun d'eux n'a subi.
+
+C'est la piste la plus proche d'un vrai test, et la plus susceptible de détruire
+des PASS. **C'est précisément pourquoi elle vaut d'être faite.**
+
+### Dette restante
+
+- **Écarts silencieux : traités** (#455) — mesurés, jugés non trompeurs.
+- **Motif de verdict : entièrement unifié** (#448 → #449 → #454).
+- **Comptes de backlog non revérifiés** : trois faux en cinq cycles (#449, #451,
+  #453). Tout chiffre recopié sans mesure est suspect.
+- **`.npz` orphelins : AUCUN** (#453).
+- **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
