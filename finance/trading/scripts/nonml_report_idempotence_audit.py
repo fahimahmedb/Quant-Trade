@@ -100,9 +100,21 @@ def main():
         L.append("> un cycle qui régénère deux fois ne verra plus rien, et conclura à")
         L.append("> tort que le rapport est stable.")
     elif perpetuels:
-        L.append(f"**{len(perpetuels)} cas dérivent sans se stabiliser.** Le rapport")
-        L.append("change à chaque exécution : toute comparaison à une régénération est")
-        L.append("sans valeur.")
+        L.append(f"**{len(perpetuels)} cas dérive(nt) sans se stabiliser** : le rapport")
+        L.append("change à **chaque** exécution, donc toute comparaison à une")
+        L.append("régénération est sans valeur — "
+                 + ", ".join(f"`{n}`" for n in perpetuels) + ".")
+        if convergents:
+            L.append("")
+            L.append(f"**{len(convergents)} cas converge(nt) en un pas** — "
+                     + ", ".join(f"`{n}`" for n in convergents) + " — le rapport")
+            L.append("s'inclut lui-même une fois puis se stabilise.")
+            L.append("")
+            L.append("> **Les deux cas ne se valent pas, et il faut le dire.** La")
+            L.append("> convergence est moins grave **et plus sournoise** : un cycle qui")
+            L.append("> régénère deux fois ne verra plus rien et conclura à tort à la")
+            L.append("> stabilité. La dérive perpétuelle, elle, se voit dès qu'on")
+            L.append("> regarde.")
     L.append("")
 
     # ------------------------------------------------------------------ B

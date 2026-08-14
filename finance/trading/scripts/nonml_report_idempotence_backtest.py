@@ -71,6 +71,13 @@ def diff_court(a, b, n=12):
 
 
 def main():
+    # Le controle D de l'audit a montre que MON rapport n'etait pas idempotent,
+    # pour exactement le defaut que ce cycle mesure chez les autres : il fait
+    # partie du corpus que `verdict_rule_propagation` et
+    # `six_reports_regeneration` recomptent, donc son contenu dependait de sa
+    # version precedente. C'est la correction du #446 — supprimer sa propre
+    # sortie AVANT de mesurer — que je m'etais dispense d'appliquer a moi-meme.
+    OUT.unlink(missing_ok=True)
     lignes, diffs = [], {}
     for nom in NOMS:
         etat, e1, e2, textes = joue(nom)
@@ -150,6 +157,22 @@ def main():
         for nom, etat, _a, _b in ecartes:
             L.append(f"| `{nom}` | {etat} |")
         L.append("")
+
+    L.append("## Le défaut que je portais moi-même")
+    L.append("")
+    L.append("> **Mon propre rapport n'était pas idempotent**, et c'est le contrôle D de")
+    L.append("> l'audit qui l'a établi — pas moi.")
+    L.append("")
+    L.append("La cause est **exactement celle que ce cycle mesure chez les autres** :")
+    L.append("ce rapport fait partie du corpus que `verdict_rule_propagation` et")
+    L.append("`six_reports_regeneration` recomptent quand je les exécute, donc son")
+    L.append("contenu dépendait de sa propre version précédente.")
+    L.append("")
+    L.append("Corrigé en supprimant ma sortie **avant** de mesurer — la correction que")
+    L.append("le **#446** avait trouvée, que le **#447** avait énoncée, et que je ne")
+    L.append("m'étais pas appliquée. **Un cycle qui dénonce un défaut en le portant")
+    L.append("n'aurait pas dû être publié tel quel.**")
+    L.append("")
 
     L.append("## Les rapports non idempotents — avec le diff qui le prouve")
     L.append("")
