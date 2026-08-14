@@ -9476,3 +9476,123 @@ panier (#432).
 - **L'univers d'essais reste sous-estimé** (#456) : tout DSR est trop indulgent.
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+## Backlog #462 (14/08/2026) — grandeurs du dépôt : **+29 batteries confirmées**, et un appariement raté
+
+Pré-enregistré dans `PREREG_repo_magnitudes_recount.md` (`b855f19`).
+`n_trials = 1`. Première piste de la file ouverte au #461.
+
+### Ce que le cycle cherchait
+
+Le #461 avait vérifié que les chiffres du backlog sont **bien recopiés** depuis
+les rapports cités (0 erreur sur 273 jetons) — et établi **contre lui-même**
+pourquoi cela ne suffit pas : les quatre faux connus étaient faux **par rapport
+au dépôt**, pas par rapport au rapport cité. Ce cycle **recompte dans le dépôt**.
+
+### L'acquis — une confirmation obtenue en comptant, pas en relisant
+
+Six grandeurs définies par leur glob, aux 18 commits épinglés : **108/108**
+cellules. La grandeur `batteries` est **plate à 92** de #443 à #456, puis
+passe à **121** exactement au commit du #457 : **+29**.
+
+> Le #457 racontait avoir soumis **29** stratégies à la batterie après avoir
+> corrigé un défaut de son pilote (code de sortie **2** = « pas de PASS
+> renforcé », pas un échec d'exécution). **Le dépôt le confirme, indépendamment
+> de tout texte.**
+
+L'audit vérifie que le saut est **unique**, **au bon commit**, et que **29** des
+31 fichiers ajoutés sur l'intervalle sont bien des rapports de batterie.
+
+**C'est la première affirmation du backlog confirmée en comptant dans le dépôt
+plutôt qu'en relisant un rapport.**
+
+### L'échec, publié tel quel
+
+Ma règle d'appariement de prose a produit **9 « discordances »**. **Aucune n'est
+une erreur du backlog.** Toutes comparent un **sous-ensemble** ou une
+**relation** à un **total** :
+
+| Ce que la ligne dit | Ce que mon glob compte |
+|---|---|
+| « **99** scripts **sans** `.npz` » | le total des `.npz` (208) |
+| « **20** `.npz` **sans** rapport » | idem |
+| « **1** PASS **non évaluable par** la batterie » | le total des batteries (92) |
+| « les **29** **ont passé** la batterie » | idem (121) |
+
+J'avais écrit dans le pré-enregistrement qu'apparier « scripts » ou
+« rapports » « produirait des écarts qui ne diraient rien ». **J'ai commis
+exactement cette faute sur les deux mots-clés que je croyais sûrs.** Les
+présenter comme des erreurs serait une **accusation fausse portée contre la
+trace du dépôt** — plus grave qu'un résultat flatteur.
+
+> **Deuxième cycle consécutif** où une prédiction passe **mécaniquement** sur
+> une mesure qui ne mesure pas ce qu'elle annonce (#461, puis #462). Ce n'est
+> plus une malchance : je conçois des règles d'appariement trop lâches et je
+> les déclare « étroites » sans les avoir éprouvées sur un cas.
+
+### Robustesse (7a) — le repère, pas les définitions
+
+| Convention d'épinglage | Sauts | Détail |
+|---|---|---|
+| commit de l'entrée *(déclarée)* | **1** | 92 → **121** (**+29**) |
+| commit du `PREREG_` du même cycle | **1** | 92 → **121** (**+29**) |
+| parent du commit de l'entrée | **1** | 92 → **121** (**+29**) |
+
+**3/3.** Le saut n'est pas un artefact du repère. *(L'étiquette se décale d'une
+entrée sous la convention `PREREG_` — les fichiers d'un cycle arrivent après son
+pré-enregistrement et avant son entrée de backlog. Même +29, vu d'un cran plus
+tôt.)*
+
+Borne de l'univers élargie à #430, #415, #400 : **0 décroissance sur 4/4**,
+jusqu'à **61** entrées. Le dépôt n'ajoute que des fichiers.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4).
+Simulation 300 € (7b) **sans objet** : aucune position.
+
+### Quatre défauts d'instrument, dont un contre moi-même
+
+1. `ls-tree` ne supporte pas la magie `:(glob)` — et mon audit transformait le
+   « fatal » de git en un comptage de **0**, donc en 108 faux écarts. **Une
+   erreur git arrête désormais l'audit** au lieu d'être décorée.
+2. `ls-files --with-tree` **ajoute** l'arbre à l'index au lieu de s'y
+   restreindre : 95 faux écarts, identiques d'une ligne à l'autre.
+3. Le contrôle C diffait `sha^..sha` — donc le seul commit de l'entrée, pas le
+   cycle : 1 fichier au lieu de 29.
+4. **Contre ma propre trouvaille** : `git log -S<nom>` cherche la chaîne dans le
+   **contenu**, or aucun `PREREG_` ne se cite lui-même. La convention rendait 0
+   point et le rapport en concluait que le saut « ne survit pas ». **Une
+   conclusion fausse défavorable reste une conclusion fausse** — corrigée, et
+   règle générale ajoutée : une convention muette est une **panne d'instrument**,
+   exclue du verdict, pas un désaccord.
+
+### Ce que ce cycle n'établit pas
+
+**Trois des quatre faux connus restent hors de portée.** « Consommateurs d'une
+règle » (#449) et « porteurs d'un encart » (#451) se définissent par le
+**contenu** des fichiers ; « orphelin » (#453) est une **relation** entre deux
+globs. Les six grandeurs comptent des **totaux** — et **aucune n'a été ajoutée
+après coup** pour rattraper.
+
+### File « à faire »
+
+1. **Idempotence de tous les rapports** (#461) — rejouer chaque
+   `nonml_*_backtest.py` et comparer les empreintes.
+2. **Couverture réelle de la convention « un `PREREG_` par entrée »** (#461).
+3. **Grandeurs définies par le contenu** — compter les *consommateurs* d'une
+   règle et les *porteurs* d'un encart, seule façon d'atteindre les faux #449 et
+   #451. Piste ouverte par ce cycle, qui montre précisément ce qui lui manque.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Table de référence des grandeurs : établie** (#462), citable au lieu d'être
+  recopiée.
+- **Trois des quatre faux connus** restent invérifiables par les outils actuels.
+- **Mes règles d'appariement sont trop lâches** — deux cycles de suite.
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459) ;
+  **univers d'essais sous-estimé** (#456).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**

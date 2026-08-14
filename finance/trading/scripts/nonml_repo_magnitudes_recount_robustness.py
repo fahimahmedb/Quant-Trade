@@ -143,9 +143,18 @@ def main():
              f"**{len(unique_29)}/{len(evaluables)}**")
     L.append("")
     if evaluables and len(unique_29) == len(evaluables):
-        L.append("**Le saut survit aux trois conventions.** Il n'est pas un artefact du")
-        L.append("repère : les 29 rapports de batterie existent dans le dépôt, quel que")
-        L.append("soit le commit qu'on choisit pour regarder.")
+        L.append("**Le saut survit à toutes les conventions évaluables.** Il n'est pas un")
+        L.append("artefact du repère : les 29 rapports de batterie existent dans le dépôt,")
+        L.append("quel que soit le commit qu'on choisit pour regarder.")
+        etiquettes = {(j[0][0], j[0][2]) for _n, j in unique_29}
+        if len(etiquettes) > 1:
+            L.append("")
+            L.append("> **L'étiquette du saut change, sa taille non.** Épinglé au")
+            L.append("> `PREREG_`, le saut apparaît une entrée plus loin : les fichiers")
+            L.append("> d'un cycle arrivent **après** son pré-enregistrement et **avant**")
+            L.append("> son entrée de backlog, donc le repère « PREREG » les voit au tour")
+            L.append("> suivant. **C'est le même +29, vu d'un cran plus tôt** — ce")
+            L.append("> décalage confirme la mécanique au lieu de la contredire.")
     else:
         L.append("**Le saut ne survit pas à toutes les conventions.** Publié tel quel :")
         L.append("c'est exactement le genre de fragilité qu'une robustesse doit révéler,")
