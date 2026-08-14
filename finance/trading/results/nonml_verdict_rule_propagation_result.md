@@ -22,12 +22,12 @@ de 8, sans savoir combien.
 
 Tous sont une fonction `verdict_of` qui **décide** d'un classement :
 
-- `nonml_capitulation_gate_floor_sweep_backtest.py` — diff **+3 / −1**
-- `nonml_empty_pass_basket_extension_backtest.py` — diff **+3 / −1**
-- `nonml_empty_pass_requalification_backtest.py` — diff **+3 / −1**
-- `nonml_pnl_persistence_lot4_audit.py` — diff **+3 / −1**
-- `nonml_protocol_inventory_backtest.py` — diff **+3 / −1**
-- `nonml_sameday_timestamp_resolution_backtest.py` — diff **+3 / −1**
+- `nonml_capitulation_gate_floor_sweep_backtest.py` — diff **+— / −—**
+- `nonml_empty_pass_basket_extension_backtest.py` — diff **+— / −—**
+- `nonml_empty_pass_requalification_backtest.py` — diff **+— / −—**
+- `nonml_pnl_persistence_lot4_audit.py` — diff **+— / −—**
+- `nonml_protocol_inventory_backtest.py` — diff **+— / −—**
+- `nonml_sameday_timestamp_resolution_backtest.py` — diff **+— / −—**
 
 ### La variante, laissée telle quelle
 
@@ -56,7 +56,7 @@ rencontrer, et prescrit de ne pas y toucher. C'est appliqué.
 
 ## Critère 2 — équivalence du module et du balayage
 
-- rapports comparés : **303**
+- rapports comparés : **322**
 - verdicts divergents entre `nonml_verdict` et le balayage : **0**
 
 **Aucune divergence** : le module est bien la règle du #448, pas une
@@ -67,7 +67,7 @@ variante qui lui ressemble.
 Chaque script converti : **+3 / −1** — la zone d'imports (déclarée d'avance
 cette fois) et la ligne de l'occurrence.
 
-**Confiné : OUI.**
+**Confiné : NON.**
 
 Aux #447 et #448, la zone d'imports **n'était pas** déclarée, ce qui m'avait
 obligé à écrire la règle en clair puis en opérations de chaînes pour rester
@@ -76,16 +76,19 @@ dessus — et le code s'en trouve plus simple, pas plus contorsionné.
 
 ## Critère 5 — l'effet du changement, mesuré
 
-Sur les **303** rapports du dépôt, **5** changent de
+Sur les **322** rapports du dépôt, **8** changent de
 classe entre l'ancienne règle et celle du module :
 
 | Rapport | Ancienne règle | Règle #448 |
 |---|---|---|
+| `battery_coverage` | PASS | **indéterminé** |
 | `capitulation_gate_floor_sweep` | PASS | **indéterminé** |
+| `dsr_corrected_trials` | PASS | **indéterminé** |
 | `npz_report_consistency_baskets` | PASS | **indéterminé** |
 | `protocol_inventory` | PASS | **indéterminé** |
 | `sweep_pass_prose_fix` | PASS | **FAIL** |
 | `verdict_detector_fix` | PASS | **FAIL** |
+| `verdict_rule_battery` | PASS | **indéterminé** |
 
 Chacun de ces rapports était **mal classé** par les six consommateurs
 convertis. C'est la mesure de ce que la propagation corrige.
@@ -108,8 +111,8 @@ lisible**, il est inscrit à la dette, et le régénérer proprement est un cycl
 |---|---|---|
 | 1 | chaque occurrence classée par lecture | ✔ |
 | 2 | équivalence module / balayage | ✔ |
-| 3 | diff confiné aux régions déclarées | ✔ |
+| 3 | diff confiné aux régions déclarées | **NON** |
 | 4 | aucune réimplémentation historique modifiée | voir audit |
 | 5 | effet publié par script | ✔ |
 
-### **PASS** *(sous réserve du critère 4, vérifié par l'audit)*
+### **FAIL** *(sous réserve du critère 4, vérifié par l'audit)*

@@ -143,9 +143,14 @@ def main():
         L.append("")
 
     # --- Portee reelle : quels rapports ont VRAIMENT ete reecrits ? --------
+    # #468 : exclusion de soi. Ce corpus est l'ETAT DU DEPOT, pas un dossier :
+    # au second passage, CE rapport figurait parmi les fichiers modifies et se
+    # comptait lui-meme. C'est la forme d'auto-inclusion que le detecteur du
+    # #466 avait manquee, parce qu'elle ne passe pas par un glob.
+    _moi = f"finance/trading/results/{OUT.name}"
     modifs = [ln[3:] for ln in git("status", "--short", "--",
                                    "finance/trading/results/").splitlines()
-              if ln.startswith(" M")]
+              if ln.startswith(" M") and ln[3:] != _moi]
     declares = {f"finance/trading/results/{r}" for _, r in SIX}
     hors = [m for m in modifs if m not in declares]
 

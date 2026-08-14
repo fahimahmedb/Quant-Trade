@@ -57,7 +57,12 @@ def ancienne(t):
 
 
 def main():
-    rapports = sorted(RESULTS.glob("nonml_*_result.md"))
+    # #468 : exclusion de soi. Le glob incluait CE rapport, qui se comptait
+    # lui-meme au second passage et s'ajoutait a sa propre table de
+    # reclassement avec un verdict PASS -> FAIL inexistant au premier.
+    # Defaut trouve au #463, repare ici. Regle enoncee au #447, corrigee au
+    # #446 : un rapport qui compte des rapports doit s'exclure du corpus.
+    rapports = sorted(p for p in RESULTS.glob("nonml_*_result.md") if p != OUT)
 
     # --- Equivalence module <-> balayage, sur tout le depot ----------------
     div = [p.name for p in rapports
