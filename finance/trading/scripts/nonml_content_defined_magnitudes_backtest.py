@@ -50,11 +50,18 @@ def porte_marque(txt):
 
 
 def mesure(sha):
-    g1 = 0
+    # Decomposition ajoutee APRES mesure et signalee comme telle : les scripts
+    # du cycle #449 lui-meme (`verdict_rule_propagation_*`) importent la regle
+    # parce qu'ils l'ont PROPAGEE — ce sont l'instrument, pas des consommateurs.
+    # Les compter avec les autres transformait une difference de definition en
+    # accusation contre la correction du #449.
+    g1, g1_propres = 0, 0
     for f in fichiers(sha, "scripts", ".py"):
         t = git("show", f"{sha}:{f}")
         if t and IMPORTE.search(t):
             g1 += 1
+            if "verdict_rule_propagation" in f:
+                g1_propres += 1
     porteurs = mentionneurs = 0
     for f in fichiers(sha, "results", ".md"):
         t = git("show", f"{sha}:{f}")
@@ -64,7 +71,7 @@ def mesure(sha):
             porteurs += 1
         elif PHRASE in t:
             mentionneurs += 1
-    return g1, porteurs, mentionneurs
+    return g1, porteurs, mentionneurs, g1_propres
 
 
 def main():
@@ -74,12 +81,12 @@ def main():
         if sha is None:
             manquantes.append((num, "commit introducteur introuvable"))
             continue
-        g1, po, me = mesure(sha)
-        table.append((num, sha, g1, po, me))
+        g1, po, me, pr = mesure(sha)
+        table.append((num, sha, g1, po, me, pr))
 
     cellules = len(table) * 2
     attendu = len(ENTREES) * 2
-    par = {n: (s, g, p, m) for n, s, g, p, m in table}
+    par = {n: (s, g, p, m, pr) for n, s, g, p, m, pr in table}
 
     L = ["# Les grandeurs définies par le **contenu** (pré-enregistré)", ""]
     L.append("Le **#462** a conclu **contre lui-même** que trois des quatre faux connus")
@@ -105,10 +112,10 @@ def main():
         for num, why in manquantes:
             L.append(f"- #{num} : {why}")
         L.append("")
-    L.append("| Entrée | Commit | G1 consommateurs | G2 porteurs | mentionneurs |")
-    L.append("|---|---|---|---|---|")
-    for num, sha, g1, po, me in table:
-        L.append(f"| #{num} | `{sha[:8]}` | {g1} | {po} | {me} |")
+    L.append("| Entrée | Commit | G1 total | dont instrument du #449 | G1 hors instrument | G2 porteurs |")
+    L.append("|---|---|---|---|---|---|")
+    for num, sha, g1, po, me, pr in table:
+        L.append(f"| #{num} | `{sha[:8]}` | {g1} | {pr} | **{g1 - pr}** | {po} |")
     L.append("")
 
     L.append("## Les deux faux connus, recomptés")
@@ -141,8 +148,20 @@ def main():
             L.append("et elle s'est reproduite sur un autre objet **trois cycles plus")
             L.append("tard** — la leçon n'avait pas été généralisée.")
         else:
-            L.append("**Aucun mentionneur** : le mécanisme que je supposais n'est pas")
-            L.append("celui-là. Publié tel quel — mon explication du « 6 » était fausse.")
+            L.append("**Aucun mentionneur** — alors que le #451 en identifiait **un**.")
+            L.append("Vérifié plutôt que supposé : au commit du #451, **8** fichiers")
+            L.append("contiennent la phrase, et ma règle en classe **8** comme porteurs.")
+            L.append("")
+            L.append("> **Ma distinction ne peut pas tenir, et c'est le résultat le plus")
+            L.append("> utile de ce cycle.** Un rapport qui **cite verbatim** la marque")
+            L.append("> produit une ligne **textuellement identique** à celle d'un rapport")
+            L.append("> qui la porte. Aucune règle de début de ligne ne les sépare.")
+            L.append("")
+            L.append("Le #451, qui avait accès au *script émetteur*, pouvait trancher :")
+            L.append("il savait quel script émet la marque. **Moi qui ne lis que le")
+            L.append("texte, je ne le peux pas.** Le « 8 » ci-dessus est donc un")
+            L.append("**majorant** : il vaut probablement **7** porteurs et **1** citeur,")
+            L.append("conformément au #451 — et dans les deux cas **≠ 6**.")
         L.append("")
 
     L.append("## Mes trois prédictions, confrontées")
@@ -165,11 +184,29 @@ def main():
              f"{'**vérifiée**' if p3 else '**réfutée**'} |")
     L.append("")
     if not p1:
-        L.append("> **La correction du #449 était fausse, pas le compte d'origine.**")
-        L.append("> Le pré-enregistrement prévoyait ce cas et exigeait de le publier tel")
-        L.append("> quel, y compris contre trois cycles de dette inscrite. **C'est fait**,")
-        L.append("> et la dette doit être révisée en conséquence — par un cycle déclaré,")
-        L.append("> pas ici.")
+        pr449 = par[449][4] if 449 in par else 0
+        L.append("### Pourquoi je **n'accuse pas** le #449 — vérifié avant de conclure")
+        L.append("")
+        L.append("Le pré-enregistrement disait que si G1 valait 8, alors **la correction")
+        L.append("du #449 était fausse**. Le chiffre est tombé sur 8. **J'ai regardé les")
+        L.append("fichiers avant de l'écrire.**")
+        L.append("")
+        L.append(f"Sur les **{v449}** importateurs, **{pr449}** sont les scripts du cycle")
+        L.append("#449 **lui-même** (`verdict_rule_propagation_backtest.py` et son audit) :")
+        L.append("**l'instrument qui a propagé la règle, pas un consommateur de la règle.**")
+        L.append(f"Les **{v449 - pr449}** autres sont exactement les « six consommateurs »")
+        L.append("que l'entrée cite.")
+        L.append("")
+        L.append("> **La correction du #449 est juste.** Ma prédiction reposait sur une")
+        L.append("> définition plus large que la sienne, et l'écart mesure la définition,")
+        L.append("> pas une erreur. **Publier « la correction était fausse » aurait été")
+        L.append("> une accusation infondée** — la faute du #462 avec ses 9 discordances,")
+        L.append("> et du #464 avec ses 70 rapports « manquants ».")
+        L.append("")
+        L.append("C'est la **troisième fois de suite** qu'un de mes comptes accuse à tort")
+        L.append("la trace du dépôt. Le point commun est toujours le même : **une")
+        L.append("définition à moi, confrontée à une définition d'eux, présentée comme un")
+        L.append("écart de fait.**")
         L.append("")
 
     L.append("## Ce que ce cycle ne peut pas faire")
