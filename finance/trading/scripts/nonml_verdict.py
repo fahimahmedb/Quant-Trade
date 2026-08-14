@@ -44,6 +44,13 @@ def porte_verdict(t, m):
     """Le rapport PORTE-t-il ce verdict, ou se contente-t-il d'en parler ?"""
     for ln in t.splitlines():
         nu = _nu(ln)
+        # #460 : les rapports de la batterie Regle 9 enoncent leur verdict
+        # negatif « **PAS de PASS RENFORCE — ... » — ni `**PASS`, ni `**FAIL`.
+        # La regle, taillee sur les rapports de STRATEGIE, les classait tous
+        # « indetermine » (defaut trouve au #457). La forme POSITIVE
+        # (`**PASS RENFORCE`) etait deja reconnue : rien n'est ajoute pour elle.
+        if nu.startswith("**PAS de PASS RENFORCÉ"):
+            return m == "FAIL"
         if nu.startswith("**" + m):
             return True
         if m == "PASS" and nu.startswith("PASS (niveau 1)"):
