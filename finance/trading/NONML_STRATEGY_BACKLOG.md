@@ -10053,3 +10053,82 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #468 (14/08/2026) — **réparation** : les deux scripts auto-inclusifs sont corrigés
+
+Pré-enregistré dans `PREREG_self_inclusion_repair.md` (`814e373`).
+`n_trials = 1`. Première piste de la file ouverte au #467.
+
+### Le premier cycle qui répare
+
+Le #463 avait trouvé les deux défauts **sans les corriger** ; le #466 avait
+refusé de le faire. L'engagement du #450 interdit de **mêler la découverte d'un
+défaut à sa correction** — on ne sait plus alors ce que la mesure a vu.
+
+**Un cycle qui ne fait que réparer, et qui le déclare, lève l'objection.**
+
+### Le résultat
+
+| Script | Idempotence (3 passages) | Effet **isolé** du correctif |
+|---|---|---|
+| `verdict_rule_propagation` | **stable** | 323 → **322** rapports, 9 → **8** reclassés, sa ligne `PASS → FAIL` disparaît |
+| `six_reports_regeneration` | **stable** | 9 → **8** réécrits, 3 → **2** hors des six, son nom disparaît |
+
+**Chacun cesse exactement de se compter lui-même, ni plus ni moins.** Le
+diagnostic du #463 était juste : l'auto-inclusion était la cause **unique**.
+
+Trois passages et non deux — le #467 a montré qu'une dérive de **période 2**
+échappe à deux passages.
+
+### Trois défauts d'instrument, tous trouvés en relisant
+
+1. **Épingler le texte du rapport « avant » n'isole pas l'effet d'un
+   correctif.** La sortie dépend de l'état **courant** du dépôt : le passage de
+   « 303 rapports » à « 321 » était de la **dérive**, pas ma correction. Corrigé
+   en exécutant les **deux versions au même état de dépôt** — seul diff qui
+   mesure quelque chose.
+2. **La restauration avait lieu avant la dernière mesure**, donc le critère 4
+   annonçait « 0 résidu » **sur un arbre sale**.
+3. **L'audit attribuait ligne à ligne** au lieu de bloc contigu, comptant la
+   prose d'une **section supprimée** comme « sans rapport » — alors qu'elle
+   disparaît précisément parce que le script a cessé de se compter.
+
+> Le troisième est **mot pour mot la leçon du #446**, qui avait dû passer de
+> l'attribution par ligne à l'attribution par bloc après 44 fausses
+> divergences. **Je l'ai répétée dans le cycle même dont le sujet est qu'une
+> leçon tirée n'avait jamais été propagée.**
+
+### Le régime tenu
+
+**6 lignes ajoutées, 1 retirée** par script ; **aucun import** ; aucun autre
+fichier. Les **7** rapports tiers réécrits pendant la mesure sont **restaurés**,
+**0 résidu** — le commit ne contient que les 2 scripts, leurs 2 rapports et les
+fichiers du cycle.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4), après
+correction de deux de ses propres défauts.
+
+### File « à faire »
+
+1. **Croiser rapports et scripts émetteurs** pour séparer porteurs et citeurs
+   (#465).
+2. **Éprouver par exécution** un lot de scripts jamais testés — seule méthode
+   dont la valeur soit démontrée (#467 : la détection statique est close).
+3. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **2 scripts non idempotents : RÉPARÉS** (#468). La dette ouverte au #463 est
+  soldée.
+- **294 scripts sur 320** n'ont jamais été éprouvés par exécution.
+- **Piste « détection statique » : CLOSE** après 2 essais (#466, #467).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
