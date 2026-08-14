@@ -9,14 +9,14 @@ cas — **chercher une dette réelle plutôt que d'en inventer une, et l'écrire
 
 ## Contrôle A — rapports anti-cheat dont le verdict n'est pas CONFORME
 
-- rapports anti-cheat examinés : **330**
+- rapports anti-cheat examinés : **349**
 - verdict **non CONFORME** : **1**
 
 - `log_return_compounding_audit` — **[FAIL]** Pré-enregistrement finance/trading/PREREG_log_return_compounding_audit.md non trouvé dans l'historique git.
 
 ## Contrôle B — rapports de résultat sans pré-enregistrement homonyme
 
-- rapports de résultat examinés : **287**
+- rapports de résultat examinés : **305**
 - sans `PREREG_<nom>.md` présent **ni dans l'historique git** : **0**
 
 - dont **résolus** : variante d'un candidat dont le pré-enregistrement porte le
@@ -38,7 +38,7 @@ pas décidée au cas par cas.
 ## Contrôle C — rapports PASS jamais soumis à la batterie (Règle 9)
 
 - rapports **PASS** : **102**
-- sans trace de batterie (fichier dédié **ni** mention interne) : **33**
+- sans trace de batterie (fichier dédié **ni** mention interne) : **30**
 
 La Règle 9 est apparue avec `nonml_pass_validation_battery.py`, ajouté au dépôt
 le **2026-07-29**. Un PASS publié **avant** cette date n'a jamais pu y être
@@ -49,7 +49,7 @@ séparément plutôt que confondues en un chiffre alarmant.
 |---|---|
 | PASS **antérieurs** à la Règle 9 | **10** |
 | PASS du **jour même** de son introduction (ambigu) | **17** |
-| PASS **strictement postérieurs**, sans batterie | **6** |
+| PASS **strictement postérieurs**, sans batterie | **3** |
 
 Les **17** du jour même sont **ambigus** : rien ne dit s'ils ont été publiés
 avant ou après l'ajout du script dans la même journée. Je les compte à part plutôt
@@ -59,12 +59,9 @@ Les **strictement postérieurs** sont la dette réelle de ce contrôle :
 
 | Candidat | Rapport publié le |
 |---|---|
-| `gjr_vol_managed_russell2000` | 2026-08-04 |
-| `gjr_vol_managed_sp500` | 2026-08-04 |
-| `capitulation_gate_floor_sweep` | 2026-08-13 |
-| `deep_drawdown_breadth_vol_targeting_overlay_pit_universe` | 2026-08-13 |
 | `january_effect_lowprice_overlay_pit_universe` | 2026-08-13 |
-| `weakness_breadth_vol_targeting_overlay_pit_universe` | 2026-08-13 |
+| `verdict_detector_complete` | 2026-08-13 |
+| `verdict_rule_propagation` | 2026-08-14 |
 
 ## Contrôle D — scripts référençant un fichier de `data/` absent
 
@@ -73,7 +70,7 @@ Les **strictement postérieurs** sont la dette réelle de ce contrôle :
 
 ## Contrôle E — pré-enregistrements sans aucun artefact produit
 
-- pré-enregistrements examinés : **407**
+- pré-enregistrements examinés : **426**
 - sans `_result.md`, `_audit.md`, `<nom>.md` ni `_anti_cheat.md` : **18**
 
 Compte **brut** lui aussi : un cycle d'outillage nomme parfois son rapport
@@ -104,13 +101,9 @@ autrement que son pré-enregistrement. Liste fournie pour inspection.
 |---|---|
 | A — anti-cheat non CONFORME | **1** |
 | B — résultat sans PREREG homonyme (brut) | **0** |
-| C — PASS sans trace de batterie | **33** |
+| C — PASS sans trace de batterie | **30** |
 | D — source `data/` absente | **0** |
 | E — PREREG sans artefact (brut) | **18** |
 
 Les comptes B et E sont **bruts et non conclusifs** — ils appellent une
 inspection, faite dans l'audit de ce cycle.
-
-> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
-> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
-> et ce n'est pas une péremption de résultat (cycles #436-#438).

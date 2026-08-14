@@ -25,37 +25,35 @@ des candidats non-ML. Les deux précisions manquaient jusqu'au cycle #428 :
 | séries lues (`results/*_pnl.npz`) | **218** |
 | dont candidats non-ML (`nonml_*`) | **208** |
 | dont séries **ML / Étape D** | **10** |
-| scripts de backtest non-ML du dépôt | **299** |
-| **couverture non-ML** | **69.6 %** |
+| scripts de backtest non-ML du dépôt | **303** |
+| **couverture non-ML** | **68.6 %** |
 
-**La soustraction 299 − 208 ne compte rien de réel** : les deux
+**La soustraction 303 − 208 ne compte rien de réel** : les deux
 ensembles ne se correspondent pas un à un. Certains `.npz` portent le nom d'une
 **variante** (`*_pit_universe`, `*_russell2000`…) sans script homonyme — il y en a
 **23**. La différence ensembliste est donc la seule mesure valide :
 
-> **114** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
+> **118** scripts de backtest non-ML n'ont **aucun `.npz` à leur nom** et
 > échappent à toute détection de doublon.
 
 Leur verdict publié, compté et non supposé :
 
 | Verdict des scripts sans `.npz` | Nombre |
 |---|---|
-| FAIL | **91** |
-| PASS | **5** |
-| indéterminé | **17** |
+| FAIL | **93** |
+| PASS | **3** |
+| indéterminé | **21** |
 | sans rapport | **1** |
 
-Les **91** FAIL ne peuvent pas changer de verdict, mais un doublon
+Les **93** FAIL ne peuvent pas changer de verdict, mais un doublon
 parmi eux gonflerait tout de même le décompte d'hypothèses testées. Les
-Les **5** PASS sans `.npz` sont nommés ici plutôt
+Les **3** PASS sans `.npz` sont nommés ici plutôt
 qu'affirmés — la version précédente les disait « les deux candidats écartés
 au #427 », phrase figée qu'un compte calculé a fini par démentir (#446) :
 
-- `capitulation_gate_floor_sweep`
-- `npz_report_consistency_baskets`
-- `protocol_inventory`
-- `sweep_pass_prose_fix`
 - `tom_decomposition_overlay`
+- `verdict_detector_complete`
+- `verdict_rule_propagation`
 
 
 Le balayage lit `results/*_pnl.npz` **sans filtre de préfixe** : les 10 séries

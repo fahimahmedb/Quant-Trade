@@ -76,7 +76,7 @@ chiffrée puis réduite aux #416, #423, #424 et #425, est **soldée**.
 
 | | #424 | #426 |
 |---|---|---|
-| séries de P&L reconstruites | 200 | **202** |
+| séries de P&L reconstruites | 200 | **218** |
 | groupes de doublons exacts | 3 | **3** |
 | quasi-doublons | 1 | **1** |
 

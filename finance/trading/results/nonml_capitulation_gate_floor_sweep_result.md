@@ -8,7 +8,7 @@ Seuil d'inactivité **repris tel quel du #410** : exposition > 1,0× sur moins d
 
 ## Volet A — détection statique
 
-- scripts `nonml_*_backtest.py` examinés : **284**
+- scripts `nonml_*_backtest.py` examinés : **303**
 - illisibles : **0**
 - portant la structure `clip(…, 1.0, …)` : **62**
 
@@ -117,7 +117,3 @@ avant toute conclusion — critère 2 du pré-enregistrement. Voir l'audit.
 **Aucune correction du backlog n'est appliquée ici**, conformément au
 pré-enregistrement : requalifier des PASS est une seconde opération, à déclarer
 séparément.
-
-> **Rapport dépendant du dépôt** — ce document décrit l'état du dépôt à la date
-> de son exécution. Il change à chaque cycle qui ajoute un fichier : c'est voulu,
-> et ce n'est pas une péremption de résultat (cycles #436-#438).
