@@ -8517,3 +8517,94 @@ rapports d'instrument, aucune stratégie ni position. Anti-cheat **CONFORME**
 - **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **Détecteur de verdict** : corrigé (#448), propagé (#449), visible (#450).
+
+## Backlog #451 (13/08/2026) — l'encart émis par les scripts : **PASS**, et le « 6 » du backlog était faux
+
+**Cycle de MODIFICATION**, septième après les #445 → #450. Pré-enregistré dans
+`PREREG_marker_emitted_by_scripts.md` (`f2c35e4`), avant toute modification.
+`n_trials = 1`.
+
+### Le critère central, tenu
+
+| | Critère | État |
+|---|---|---|
+| 1 | diff confiné (**+7 / −0** par script) | ✔ |
+| 2 | **l'encart survit à la régénération** | ✔ |
+| 3 | aucun doublon | ✔ |
+| 4 | périmètre réel publié, écart au backlog dit | ✔ |
+| 5 | rien d'autre déplacé par l'ajout | ✔ |
+
+Chaque script visé est exécuté **deux fois de suite** : l'encart est présent
+après les deux, sur les cinq. **C'est exactement ce que le marquage du #439 ne
+passait pas** — ajouté au *fichier* et non au *script*, il était effacé par la
+première régénération, comme le #450 l'a démontré sur quatre cas réels.
+
+Le texte est repris **mot pour mot** du #439 : le reformuler aurait fait de ce
+cycle une réécriture déguisée.
+
+### Le chiffre du backlog était faux, et de la manière devenue habituelle
+
+Le backlog annonçait « **6 autres** rapports condamnés ». Rétabli **par
+lecture** :
+
+| Catégorie | Nombre |
+|---|---|
+| rapport **portant** l'encart, script ne l'émettant pas | **1** |
+| rapport dont le script **l'émet déjà** | **1** |
+| rapport qui **cite** l'encart sans le porter | **1** |
+| rapports **effacés au #450**, à rétablir | **4** |
+
+Le « 6 » comptait comme marqués des rapports qui **parlent** de l'encart — dont
+celui du #450, qui le reproduit pour l'expliquer. **Même défaut « code contre
+discours sur le code » que les #446 à #449**, cette fois logé dans un **compte de
+backlog** et non dans du code. **Prédiction vérifiée** : j'annonçais un périmètre
+plus petit que 6 sans savoir combien.
+
+### Une ambiguïté de mon propre pré-enregistrement, signalée
+
+Sa définition du périmètre — *« le fichier le contient hors citation »* —
+**exclut**, lue au mot, les 4 rapports effacés au #450, puisqu'ils ne
+contiennent plus rien. Or ce sont eux qui motivent le cycle.
+
+J'ai tranché en faveur de l'objet du cycle et je l'ai écrit : les exclure aurait
+été respecter la lettre d'une phrase mal rédigée **tout en laissant intact le
+défaut que le cycle prétend corriger**.
+
+### Un instrument corrigé avant publication — la troisième fois
+
+Le premier passage mesurait le diff contre `HEAD` **après** que la modification
+ait été committée : diff vide, et un « critère 1 : NON » qui ne disait rien de la
+modification. La base est désormais **épinglée au commit du pré-enregistrement**.
+
+Troisième fois qu'une de mes mesures dépend de l'ordre des opérations (#445 :
+baseline lue sur disque ; #446 : test d'auto-inclusion vidé ; ici). Le résultat
+n'a **pas** été committé tant que la re-mesure tournait : publier le fichier
+d'alors aurait publié un FAIL causé par mon propre bogue.
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : ajout de texte à des rapports d'instrument, aucune stratégie ni
+position.
+
+### File des prochains cycles
+
+1. **`tom_decomposition_overlay` sans `.npz`** — stratégie PASS hors de portée du
+   balayage de doublons. Produire son `.npz` et la soumettre au balayage.
+2. **Les 20 `.npz` sans rapport publié** : inspection nom par nom.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **Marquage #439 : CORRIGÉ** (#451) — l'encart appartient désormais aux scripts
+  et survit à la régénération.
+- **1 variante** du motif de verdict laissée intacte
+  (`sessions_column_backfill_audit`), non convertible sans redéfinition.
+- **1 stratégie PASS invisible au balayage** (`tom_decomposition_overlay`).
+  **En tête de file.**
+- **3 consommateurs** mal informent leur lecteur sur le troisième schéma (C).
+- **Concordance `.npz` / rapport** : **190/190** ; restent **20** sans rapport.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
+- **Détecteur de verdict** : corrigé (#448), propagé (#449), visible (#450).
