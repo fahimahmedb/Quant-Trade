@@ -9876,3 +9876,91 @@ panier (#432).
   **univers d'essais sous-estimé** (#456).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #466 (14/08/2026) — détecteur statique d'auto-inclusion : **il échoue**, rappel 1/2
+
+Pré-enregistré dans `PREREG_self_inclusion_detector.md` (`e8e7ebe`).
+`n_trials = 1`. Première piste de la file ouverte au #465.
+
+### Le problème
+
+Le #463 a trouvé **2** scripts non idempotents en en rejouant **18**. Le dépôt
+en compte **319** : les rejouer deux fois chacun est hors de portée. D'où un
+détecteur **statique**, qui lit le code sans rien exécuter.
+
+### Le résultat — un échec, publié comme tel
+
+| | Attendu | Mesuré |
+|---|---|---|
+| **rappel** sur les fautifs connus | 2 / 2 | **1 / 2** |
+| **faux positifs** sur les sains connus | ≤ 4 | **10 / 16** |
+
+> **Le détecteur rate un défaut qu'il devait trouver. Il est inutilisable en
+> l'état**, et rien de ce qu'il dit des 300 scripts jamais regardés n'autorise
+> de conclusion.
+
+Sur tout le dépôt : **296** hors périmètre, **3** protégés, **20** signalés
+dont **9** inconnus du #463. Ces 20 sont une **liste de suspects**, pas de
+coupables — seule l'exécution trancherait, et ce cycle n'exécute rien.
+
+### Pourquoi il a manqué le cas
+
+`six_reports_regeneration` n'énumère **pas** `results/` par un glob : il exécute
+d'autres scripts, puis demande à **`git status --short`** ce qui a bougé.
+
+> **L'auto-inclusion n'exige pas de parcourir un dossier.** Il suffit de
+> demander au dépôt ce qui a changé, après avoir soi-même changé quelque chose.
+> Ma règle, écrite en pensant aux globs, était **trop étroite d'une forme
+> entière**.
+
+**La règle n'est pas corrigée ici** : déclarée avant mesure, l'élargir
+maintenant la taillerait sur le cas qu'elle vient de rater. Une règle élargie
+devra être **déclarée dans un cycle à part** et **recalibrée sur la même vérité
+terrain**.
+
+### L'audit me corrige — en ma faveur, et je maintiens le chiffre défavorable
+
+Le contrôle C établit que les **10** « faux positifs » écrivent tous leur
+rapport **dans le dossier qu'ils énumèrent** : ils sont **structurellement
+exposés**. Que le #463 ne les ait pas vus dériver est une **observation, pas une
+garantie**.
+
+Mon chiffre de faux positifs est donc **pessimiste**. **Je le laisse tel quel** :
+défini avant mesure, le corriger à la baisse après coup serait exactement ce que
+je reproche aux #462, #464 et #465 — **à l'envers**.
+
+### Ce que ce cycle refuse de faire
+
+La file demandait aussi de **propager l'exclusion de soi** aux deux fautifs.
+**Reporté à un cycle déclaré**, et la raison est dite dans le pré-enregistrement :
+réparer **régénère leurs rapports**, et le #450 a payé cher le mélange d'une
+réparation et d'une mesure. **Détecter et réparer sont deux cycles.**
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (3/3), y compris
+l'idempotence de ce rapport — qui énumère `results/` et y écrit, donc appartient
+à la classe qu'il signale. Simulation 300 € (7b) **sans objet**. Lecture seule.
+
+### File « à faire »
+
+1. **Une règle élargie**, déclarée d'avance et recalibrée sur la vérité terrain
+   du #463 — en couvrant l'énumération par `git status`.
+2. **Réparer les deux fautifs** (#463) dans un cycle dédié, qui assume la
+   régénération de leurs rapports.
+3. **Croiser rapports et scripts émetteurs** pour séparer porteurs et citeurs
+   (#465).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Le détecteur statique est inutilisable** : rappel 1/2.
+- **20 suspects** dont **9** jamais éprouvés — statut indéterminé.
+- **2 scripts non idempotents** toujours non réparés ; **1 écrit 7 rapports qui
+  ne sont pas le sien** (#463).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
