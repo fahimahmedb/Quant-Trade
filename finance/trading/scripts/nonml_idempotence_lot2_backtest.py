@@ -158,6 +158,49 @@ def main():
         L.append("comme au #468. Publié et inscrit.")
     L.append("")
 
+    # Constat ajoute APRES mesure, et signale comme tel : l'echantillon
+    # alphabetique a-t-il seulement pu contenir le defaut cherche ?
+    import re as _re
+    CAPABLE = _re.compile(r"RESULTS\s*\.\s*glob|RESULTS\s*\.\s*iterdir|"
+                          r"glob\.glob|git\s*\(\s*[\"']status")
+    capables = []
+    for n, _e, _a, _b in resultats:
+        try:
+            if CAPABLE.search((SCRIPTS / n).read_text(encoding="utf-8")):
+                capables.append(n)
+        except Exception:  # noqa: BLE001
+            pass
+    L.append("## L'échantillon pouvait-il seulement contenir le défaut ?")
+    L.append("")
+    L.append("*Constat ajouté après mesure, et signalé comme tel.*")
+    L.append("")
+    L.append("L'auto-inclusion — **seul** mécanisme observé (#463, #468) — suppose")
+    L.append("qu'un script **énumère** `results/`. Sinon il ne peut pas se compter.")
+    L.append("")
+    L.append(f"- scripts de l'échantillon **structurellement capables** du défaut : "
+             f"**{len(capables)} / {len(resultats)}**")
+    for n in capables:
+        L.append(f"  - `{n}`")
+    L.append("")
+    if not capables:
+        L.append("> **Aucun.** La règle alphabétique a sélectionné dix scripts de")
+        L.append("> **stratégie**, qui lisent des données de marché et n'inspectent")
+        L.append("> jamais le dépôt. **Ils ne pouvaient pas porter le défaut cherché.**")
+        L.append("")
+        L.append("**Ce 0/10 est donc encore moins informatif que la réserve du")
+        L.append("pré-enregistrement ne le disait.** Celle-ci parlait d'un échantillon")
+        L.append("trop petit ; il faut ajouter qu'il est **hors sujet**. Les deux")
+        L.append("défauts connus vivent dans les scripts qui inspectent le dépôt, et")
+        L.append("l'échantillon n'en contient aucun.")
+        L.append("")
+        L.append("> **Ma règle d'échantillonnage était mal conçue** : déterministe et")
+        L.append("> annoncée d'avance, donc honnête, mais aveugle à la seule")
+        L.append("> caractéristique qui rendait un script pertinent.")
+    else:
+        L.append(f"**{len(capables)}** l'étaient. Le résultat porte donc, au moins en")
+        L.append("partie, sur la famille où le défaut a été observé.")
+    L.append("")
+
     L.append("## Mes trois prédictions, confrontées")
     L.append("")
     p1 = len(fautifs) >= 1
