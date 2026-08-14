@@ -9696,3 +9696,99 @@ panier (#432).
   **univers d'essais sous-estimé** (#456).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #464 (14/08/2026) — la convention `PREREG_` : **60,2 %**, et deux chiffres qui surestimaient
+
+Pré-enregistré dans `PREREG_prereg_convention_coverage.md` (`460b267`).
+`n_trials = 1`. Première piste de la file ouverte au #463.
+
+### Pourquoi ce cycle existe
+
+Les **#461** et **#462** apparient entrée et rapport en supposant qu'une entrée
+cite **un** `PREREG_<nom>.md`. **Aucun des deux ne l'avait vérifié.** La
+robustesse du #462 avait même laissé passer un signal — élargir la borne de
+#430 à #415 n'ajoutait **aucune** entrée — sans dire combien sortaient du
+périmètre.
+
+### Le résultat
+
+| | Nombre |
+|---|---|
+| entrées de backlog | **284** |
+| citant **exactement un** `PREREG_` | **171** (**60,2 %**) |
+| citant **aucun** | **104** |
+| citant **plusieurs** | **9** |
+| citations **pendantes** (fichier absent) | **0** |
+
+### Prédiction 1 réfutée — dans le sens flatteur
+
+J'annonçais **moins de la moitié**. C'est **60,2 %**. Le pré-enregistrement
+imposait alors de **douter d'abord de mon comptage** : l'audit le recompte par
+une route différente — découpage par expression régulière sur le texte entier
+au lieu d'un balayage ligne à ligne — et **confirme les quatre chiffres**.
+
+### Deux chiffres qui surestimaient, trouvés en relisant
+
+**Ni l'un ni l'autre n'est publié comme un défaut du dépôt.**
+
+| Chiffre brut | Ce qu'il devient après lecture |
+|---|---|
+| **70** entrées conformes « sans rapport » | **60** ont leur rapport **sous un autre nom** ; **10** n'ont aucun fichier |
+| **230** `PREREG_` « orphelins » sur 440 | **206** sont mentionnés ailleurs ; **24** réellement orphelins |
+
+La cause du premier est une **convention de nom que ma règle ignorait** : les
+cycles de batterie publient `nonml_<nom>.md`, **sans** suffixe `_result`, leur
+`<nom>` se terminant déjà par `_pass_validation_battery`.
+
+> **Publier 70 et 230 comme des rapports manquants aurait été une accusation
+> fausse portée contre la trace du dépôt** — la faute exacte du #462 avec ses
+> 9 discordances. Les deux classifications sont **ajoutées après avoir vu les
+> chiffres**, et signalées comme telles.
+
+### « Hors convention » n'est pas « en infraction »
+
+Le pré-enregistrement l'exigeait, et le résultat le rend nécessaire : les
+**104** entrées sans `PREREG_` **ne sont pas fautives**. La convention est née
+en cours de route, et les premières entrées décrivent des **stratégies** —
+lignes de tableau, backtests de marché — pas des cycles de vérification.
+
+### Ce que cela fait aux #461 et #462
+
+L'engagement 1 était de le dire si le résultat les affaiblissait.
+
+Sur l'univers qu'ils déclaraient (#443-#460) la convention est **parfaitement
+suivie** et leurs chiffres y sont valides. **C'est leur robustesse qui l'est
+moins** : élargir la borne vers l'arrière n'élargit pas autant qu'il y paraît,
+puisque **113** entrées sur 284 sortent de la règle d'appariement. Le #462
+l'avait signalé sans le chiffrer ; **c'est chiffré**.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4), y
+compris l'idempotence de ce rapport — contrôle ajouté après la leçon du #463.
+Simulation 300 € (7b) **sans objet** : aucune position. Lecture seule, donc
+**aucun effet de bord** à annuler.
+
+### File « à faire »
+
+1. **Grandeurs définies par le contenu** (#462) — seule voie vers les faux #449
+   et #451.
+2. **Propager l'exclusion de soi** (#463) aux deux scripts identifiés, et
+   chercher le défaut sur les 296 scripts non éprouvés.
+3. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` réellement
+   orphelins — établir, pour chacun, s'il s'agit d'un cycle interrompu ou d'une
+   trace perdue.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **10 entrées** citent un `PREREG_` sans qu'aucun fichier ne porte leur `<nom>`.
+- **24 `PREREG_`** dont aucune entrée ne parle.
+- **2 scripts non idempotents** (#463), non réparés ; **1 script écrit 7
+  rapports qui ne sont pas le sien**.
+- **La règle du #447 n'a jamais été propagée** (#463).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459) ;
+  **univers d'essais sous-estimé** (#456).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
