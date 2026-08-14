@@ -17,6 +17,8 @@ import re
 import sys
 from pathlib import Path
 
+import nonml_verdict  # regle unique du depot (#449, #454)
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,11 +67,12 @@ def npz_sessions(name: str):
 
 
 def verdict_of(text: str):
-    if "**PASS" in text:
-        return "PASS"
-    if "**FAIL" in text:
-        return "FAIL"
-    return "indéterminé"
+    # #454 : converti a la regle partagee du #448/#449. La regle locale
+    # confondait « porter » et « mentionner » un verdict, comme toutes les
+    # autres avant le #448 ; la decision de convertir a ete prise sur mesure —
+    # les deux regles donnaient le MEME verdict sur les 3 rapports cibles, donc
+    # la conversion est sans effet observable ici.
+    return nonml_verdict.verdict_of(text)
 
 
 def main():
