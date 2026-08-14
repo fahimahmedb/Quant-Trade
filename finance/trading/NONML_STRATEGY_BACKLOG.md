@@ -8686,3 +8686,85 @@ rentabilité.
 - **Reproductibilité** : borne **4,2 %** (#441), campagne close.
 - **Marquage #439 : CORRIGÉ** (#451) ; **détecteur de verdict** : corrigé (#448),
   propagé (#449), visible (#450).
+
+## Backlog #453 (13/08/2026) — les `.npz` sans rapport : **PASS**, et **0 orphelin réel**
+
+Cycle d'**inventaire**, pré-enregistré dans `PREREG_orphan_npz_inspection.md`
+(`b62967f`). Aucune stratégie évaluée, **aucun rapport ni `.npz` modifié**.
+`n_trials = 1`.
+
+### Le compte, et l'écart
+
+| | Nombre |
+|---|---|
+| `.npz` du dépôt | **219** |
+| **sans rapport à leur nom** | **30** |
+| annoncé par le #442, jamais revérifié | **20** |
+
+**Écart : +10.** Le chiffre traînait depuis dix cycles. **Prédiction vérifiée** :
+j'annonçais un chiffre faux **sans parier sur le sens** — ce qui la rend faible,
+et c'était la seule position honnête.
+
+### Le classement déclaré, et la relecture qui le corrige
+
+Par la règle pré-enregistrée : **V=7, M=10, O=13**.
+
+Mais la relecture montre que **ma règle était le mauvais instrument**. Elle
+exigeait que le **nom complet** de la série apparaisse dans un rapport, et ne
+pouvait donc pas voir la convention de nommage `<famille>_<marché>`.
+
+> **Les 13 « orphelins » n'en sont pas.** Tous sont des **branches par marché**
+> d'une stratégie multi-marchés dont le rapport de famille existe
+> (`gjr_calm_regime_overlay`, `gjr_trend_gated_vol_managed`,
+> `gjr_vol_forecast_momentum_overlay`), ou le préfixe d'un rapport au nom plus
+> long (`ewma_defensive_overlay` → `…_and_triple_engine`).
+>
+> **Orphelins réels : 0.**
+
+**Je n'ai pas reclassé.** Le tableau reste celui de la règle déclarée avant
+mesure ; le reclasser après coup serait ajuster un critère au vu de ce qu'il
+attrape — refus du #437. Les deux lectures sont publiées côte à côte, et **c'est
+la seconde qui est vraie**.
+
+C'est le piège du **#427 mot pour mot** : un résultat **exact au mot près et
+trompeur en pratique**.
+
+### Ce que ça dit de la dette
+
+**La dette ouverte au #442 était vide.** Dix cycles l'ont recopiée sans que
+personne regarde. Une dette qu'on traîne et qui se révèle inexistante en dit
+autant qu'un défaut trouvé — sur la valeur d'un backlog qu'on ne revérifie pas.
+
+C'est le **troisième compte de backlog faux** en cinq cycles : « 8 scripts »
+(#449), « 6 rapports condamnés » (#451), « 20 `.npz` orphelins » (#453).
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle d'inventaire, aucune position.
+
+### Ce que ce cycle ne permet pas de conclure
+
+**Être nommée dans un rapport n'est pas être documentée.** La classe V dit qu'un
+rapport prononce ce nom, **pas** qu'il publie le verdict de cette série. La
+preuve exigée était volontairement faible et vérifiable.
+
+### File des prochains cycles
+
+1. **La variante du motif de verdict** (`sessions_column_backfill_audit`), non
+   convertible sans redéfinition — décider si elle doit l'être, dans son cycle.
+2. **Les 3 consommateurs de catégorie C** du #444, qui mal informent leur lecteur
+   sur le troisième schéma `.npz`.
+3. **En attente d'arbitrage de l'utilisateur — trois points** : figer `n_trials`
+   (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+   panier (#432).
+
+**Aucune idée de stratégie n'est proposée** (#420, #426).
+
+### Dette restante
+
+- **`.npz` orphelins : AUCUN** (#453) — la dette du #442 était vide.
+- **Comptes de backlog non revérifiés** : trois faux en cinq cycles. Tout chiffre
+  recopié sans mesure est désormais à traiter comme suspect.
+- **1 variante** du motif de verdict laissée intacte.
+- **3 consommateurs** mal informent sur le troisième schéma (C). **En tête.**
+- **Concordance `.npz` / rapport** : **190/190** sur le périmètre examiné.
+- **Reproductibilité** : borne **4,2 %** (#441), campagne close.
