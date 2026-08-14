@@ -10132,3 +10132,88 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #469 (14/08/2026) — porteurs / citeurs : **0 citeur établi**, et ma règle reproduisait la confusion
+
+Pré-enregistré dans `PREREG_marker_emitter_crossing.md` (`19c60a8`).
+`n_trials = 1`. Première piste de la file ouverte au #468.
+
+### Ce que le cycle devait lever
+
+Le **#465** n'arrivait pas à séparer les rapports qui **portent** l'encart de
+ceux qui le **citent** : une citation verbatim produit une ligne textuellement
+identique. Le **#451** le pouvait, parce qu'il savait **quel script émet** la
+marque. Ce cycle utilise cette information.
+
+### Le résultat central — et il est contre moi
+
+Ma règle déclarée disait : **« le script contient la chaîne ⇒ il l'émet ».**
+C'est faux. Un script qui **cherche** la marque la contient aussi — le
+`content_defined_magnitudes` du #465 la porte en constante **pour la chercher**.
+
+> **J'ai transposé dans le CODE la confusion *porter / mentionner* que ce cycle
+> devait lever dans les RAPPORTS.** Le #446 l'avait résolue pour les verdicts,
+> le #451 pour l'encart, le #465 avait échoué à la lever — et elle revient ici,
+> **d'un cran plus haut**.
+
+Lecture corrigée (le script doit **écrire** la marque, pas seulement la
+contenir) :
+
+| | Nombre |
+|---|---|
+| rapports **contenant** la marque | **22** |
+| **porteurs** | **21** |
+| **candidats citeurs** | **1** |
+| **citeurs établis** | **0** |
+
+### L'examen individuel retire le seul candidat
+
+L'engagement 3 exigeait d'examiner chaque citeur, jamais de le compter.
+
+`selfref_reports_marking` est **le script du #439 qui a posé les marques** dans
+les autres rapports. Il écrit la marque par **variable** (`MARKER = "…"`), donc
+mon détecteur d'émission **littérale** ne peut pas la voir. **C'est exactement
+le faux citeur que le pré-enregistrement annonçait**, et c'en est un.
+
+### Le chiffre flatteur, refusé
+
+Le compte mécanique donnait **1 citeur**, ce qui aurait **vérifié** ma
+prédiction 1. Mon propre examen le retire, donc la prédiction est **réfutée**.
+
+> **Retenir le compte alors que l'examen le contredit serait l'erreur exacte des
+> #462, #464 et #465** — trois cycles où mes comptes ont accusé à tort la trace
+> du dépôt. Ici l'erreur aurait été dans l'autre sens : me donner raison.
+
+### Ce que je ne conclus pas
+
+Conformément au pré-enregistrement : **je n'affirme pas que le #451 s'est
+trompé.** Soit son citeur a disparu du dépôt depuis, soit ma règle le classe
+porteur à tort. Trancher exigerait de remonter à son commit — **non déclaré
+ici**.
+
+Anti-cheat **CONFORME** (4/4). Lecture seule, **aucun effet de bord**.
+Simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Éprouver par exécution** un lot de scripts jamais testés — seule méthode
+   dont la valeur soit démontrée (#467).
+2. **Remonter au commit du #451** pour trancher le sort de son citeur — le seul
+   moyen de clore la question ouverte ici.
+3. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **1 incohérence** émetteur/rapport subsiste (`six_reports_regeneration`).
+- **Le sort du citeur du #451** reste indéterminé.
+- **294 scripts sur 320** jamais éprouvés par exécution.
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
