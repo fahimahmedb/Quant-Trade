@@ -9113,3 +9113,82 @@ elle aussi **indulgente** sur ce point — et **0/29 malgré cette indulgence**.
 - **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
   indulgent.
 - **Comptes de backlog non revérifiés** : quatre faux en six cycles.
+
+## Backlog #458 (13/08/2026) — hors-échantillon temporel (piste C) : **trois prédictions réfutées, et le défaut est ma découpe**
+
+Pré-enregistré dans `PREREG_temporal_holdout.md` (`74f831a`). `n_trials = 1`.
+Dernière des trois pistes du #455.
+
+### Le résultat brut, publié tel quel
+
+Sur les **252 dernières séances**, 100 PASS évalués :
+
+| | Avant | Hors-échantillon |
+|---|---|---|
+| Sharpe médian | +0,59 | **+1,34** |
+| fraction positive | — | **100,0 %** |
+| battant leur propre Sharpe d'avant | — | **98,0 %** |
+
+**Mes trois prédictions sont réfutées**, toutes dans le sens **favorable** aux
+stratégies. J'annonçais un effondrement ; c'est l'inverse qui sort.
+
+### Je ne le compte pas comme une bonne nouvelle
+
+Le pré-enregistrement engageait : *« si ces prédictions sont démenties, je devrai
+**d'abord douter de ma découpe** avant de conclure à un edge »*. Appliqué.
+
+**Diagnostic post-hoc**, explicitement hors des métriques déclarées :
+
+| Sur la même fenêtre de 252 séances | Stratégies PASS | Buy & Hold |
+|---|---|---|
+| Sharpe médian | +1,34 | **+1,39** |
+| fraction positive | 100,0 % | **100,0 %** |
+
+> **Buy & Hold fait aussi bien, et un peu mieux.** Les 252 dernières séances sont
+> une phase de hausse à faible volatilité : tout ce qui est long y brille.
+
+**Ma découpe comparait une décennie contenant des krachs à une seule année
+haussière.** Elle mesure le **régime de marché**, pas l'edge. La « persistance »
+qu'affichait le tableau est un **artefact de la fenêtre choisie**.
+
+### Le test déclaré est confondu — et je le publie quand même
+
+Le remplacer par une comparaison au benchmark serait **changer la métrique après
+avoir vu le résultat**, ce que le pré-enregistrement interdit. La bonne version —
+Sharpe **relatif au benchmark** sur la même fenêtre — est un cycle à déclarer
+d'avance, inscrit en tête de file.
+
+**Le résultat utile de ce cycle est négatif à son propre égard** : il a produit
+un test qui ne mesure pas ce qu'il prétendait mesurer. C'est le
+pré-enregistrement — en m'obligeant à douter de la découpe **avant** de crier au
+succès — qui a permis de s'en apercevoir. Sans cet engagement écrit à l'avance,
+ce cycle aurait publié « les PASS persistent en hors-échantillon », ce qui aurait
+été **faux et flatteur**.
+
+### Le seul enseignement qui tient
+
+La médiane des stratégies est **inférieure** à celle de Buy & Hold sur cette
+fenêtre. **Même dans le régime qui les flatte le plus, elles ne le battent pas.**
+C'est cohérent avec le 0/29 du #457 et avec ce que `CLAUDE.md` dit depuis
+l'Étape B.
+
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : le test est confondu, il n'y a rien à éprouver.
+
+### File des prochains cycles
+
+1. **Refaire la piste C correctement** — Sharpe **relatif au benchmark** sur la
+   même fenêtre, avec la découpe et la métrique déclarées d'avance.
+2. **Étendre la règle de verdict aux rapports de batterie** (#457).
+3. **En attente d'arbitrage de l'utilisateur** : figer `n_trials` (#421) ; statut
+   de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Piste C à refaire** : la version confondue est publiée, la bonne reste à
+  faire. **En tête de file.**
+- **0 PASS validé** par la batterie renforcée (#457).
+- **La règle de verdict ne couvre pas les rapports de batterie** (#457).
+- **L'univers d'essais reste sous-estimé** (#456) : tout DSR du dépôt est trop
+  indulgent.
+- **Comptes de backlog non revérifiés** : quatre faux en six cycles.
