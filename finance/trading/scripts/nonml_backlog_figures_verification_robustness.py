@@ -77,11 +77,19 @@ def mesure(debut, freres_on, citation_on):
                 f = blob_de(f"{sha}:finance/trading/results/nonml_{nom}_{suff}.md")
                 if f is not None:
                     freres[suff] = bt.normalise(f)
-        for seg, _sec, cite in bt.segments_gras(txt):
+        # MEME dedoublonnage que le backtest — cle (jeton, segment, section).
+        # Sans lui, la grille comptait les occurrences brutes (82) la ou le
+        # rapport en compte 70 : deux instruments, deux chiffres, pour la meme
+        # regle declaree. Aligne plutot que publie cote a cote.
+        vus = set()
+        for seg, sec, cite in bt.segments_gras(txt):
             for j in bt.jetons_du_segment(seg):
                 n_tok += 1
                 if j in rap_n:
                     continue
+                if (j, seg, sec) in vus:
+                    continue
+                vus.add((j, seg, sec))
                 if any(v in rap_n for v in bt.variantes_typographiques(j)):
                     n_typo += 1
                     continue
@@ -111,20 +119,34 @@ def main():
     L.append("")
     L.append("| Depuis | Entrées | Jetons | Typo | Frères | Citation | **Résidu** | Résidu / jeton |")
     L.append("|---|---|---|---|---|---|---|---|")
-    taux = []
+    taux, entrees_par_borne = [], []
     for b in BORNES:
         e, t, ty, fr, ci, du = mesure(b, True, True)
         tx = 100 * du / max(t, 1)
         taux.append(tx)
+        entrees_par_borne.append(e)
         part = f"{tx:.2f} %".replace(".", ",")
         marque = " *(pré-enregistrée)*" if b == 443 else ""
         L.append(f"| **#{b}**{marque} | {e} | {t} | {ty} | {fr} | {ci} | **{du}** | {part} |")
     L.append("")
     etendue = max(taux) - min(taux)
     plateau = etendue <= 2.0          # seuil de lecture, fixe ici avant mesure
-    L.append(f"Taux de résidu : de **{min(taux):.2f} %** à **{max(taux):.2f} %**, "
-             f"étendue **{etendue:.2f} point(s)**.".replace(".", ","))
+    fr = lambda x, n=2: f"{x:.{n}f}".replace(".", ",")   # noqa: E731
+    L.append(f"Taux de résidu : de **{fr(min(taux))} %** à **{fr(max(taux))} %**, "
+             f"étendue **{fr(etendue)} point**.")
     L.append("")
+    # L'extension n'etend pas autant qu'elle en a l'air : les entrees anciennes
+    # ne suivent pas toutes la convention « un PREREG par entree » et sortent du
+    # perimetre. A dire, sinon le tableau laisse croire a un test plus large.
+    ent = [e for e, _ in zip(entrees_par_borne, BORNES)]
+    if len(set(ent)) < len(ent):
+        L.append("> **L'élargissement élargit moins qu'il n'y paraît.** Les bornes")
+        L.append(f"> testées donnent **{', '.join(str(x) for x in ent)}** entrées")
+        L.append("> retenues : deux d'entre elles rendent le **même** nombre. Les")
+        L.append("> entrées anciennes ne suivent pas toutes la convention « un")
+        L.append("> `PREREG_` par entrée » et sortent du périmètre — le test porte donc")
+        L.append(f"> sur **{max(ent)}** entrées au mieux, pas sur les 60 de l'intervalle.")
+        L.append("")
     if plateau:
         L.append("C'est un **plateau** : la conclusion ne tient pas au choix de la borne.")
     else:
@@ -170,7 +192,8 @@ def main():
     L.append("## Ce que la robustesse établit")
     L.append("")
     L.append(f"- **Borne de l'univers** : {'plateau' if plateau else '**pas** un plateau'}")
-    L.append(f"  (étendue {etendue:.2f} point(s) de taux de résidu).".replace(".", ","))
+    L.append(f"  (étendue {fr(etendue)} point de taux de résidu), mais sur")
+    L.append(f"  **{max(entrees_par_borne)}** entrées au mieux, pas sur tout l'intervalle.")
     L.append(f"- **Lectures d'explication** : le résidu passe de **{base}** à")
     L.append(f"  **{strict}** quand on les retire — la conclusion **dépend** de")
     L.append("  classifications posées après mesure. Publié, pas masqué.")
