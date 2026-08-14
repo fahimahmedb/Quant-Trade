@@ -10372,3 +10372,83 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+## Backlog #472 (14/08/2026) — le citeur du #451 : **0 établi**, et c'est ma méthode qui est en cause
+
+Pré-enregistré dans `PREREG_citer_451_resolution.md` (`40bbeda`). `n_trials = 1`.
+Première piste de la file ouverte au #471.
+
+### La question, et pourquoi elle restait ouverte
+
+Le **#451** comptait **« 1 rapport qui cite l'encart sans le porter »**. Le
+**#469**, au dépôt d'aujourd'hui, n'en trouvait **0** — et avait refusé de
+trancher, faute d'avoir déclaré remonter à ce commit. **Ce cycle l'a déclaré et
+l'a fait.**
+
+### Au commit `1d764963`
+
+| | Nombre |
+|---|---|
+| rapports **contenant** la marque | **8** |
+| **porteurs** | **7** |
+| **candidats citeurs** | **1** |
+| **citeurs établis** *(après examen)* | **0** |
+
+Le candidat — `nonml_selfref_reports_marking_result.md` — est retiré par
+l'examen individuel : son script **écrit la marque par variable**, donc ma règle
+littérale ne peut pas la voir.
+
+### Ce que le pré-enregistrement m'obligeait à conclure
+
+> **L'explication commode — « le citeur a disparu du dépôt depuis » — tombe.**
+> Ma règle ne le retrouve pas **au commit même où il a été compté**. C'est
+> **ma méthode** qui est en cause, pas l'histoire du dépôt.
+
+Deux lectures restent ouvertes, et **je n'ai pas de quoi les départager** :
+
+1. le #451 employait une **définition de « citer »** que je n'ai pas
+   reconstituée ;
+2. ma règle littérale a **un angle mort de plus** que celui du #469.
+
+### Un fait qui oriente sans prouver
+
+Le candidat trouvé ici est **le même rapport** qu'au #469, retiré pour **la même
+raison**, à vingt cycles d'écart. **Le désaccord est donc stable, pas
+accidentel** — ce qui pointe vers la lecture 1 plutôt que vers un angle mort
+erratique.
+
+**Ce n'est pas une preuve** : une définition et un angle mort peuvent produire
+la même stabilité. Un défaut erratique, lui, aurait donné des candidats
+différents.
+
+### L'issue, parmi les trois annoncées
+
+Le #451 **ne nomme nominativement aucun rapport** — la comparaison reste donc
+**partielle**, exactement la troisième issue que le pré-enregistrement avait
+prévue.
+
+Anti-cheat **CONFORME** (4/4). Lecture d'objets git, **aucun effet de bord**.
+
+### File « à faire »
+
+1. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+2. **L'incohérence émetteur/rapport** de `six_reports_regeneration` (#469).
+3. **Reconstituer la définition de « citer » du #451** à partir de son script,
+   plutôt que de la deviner — seule voie qui reste pour clore la question.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Le compte du #451 n'est pas reproductible** par le croisement
+  rapport ↔ script émetteur. **Ma méthode, pas l'histoire du dépôt.**
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **1 incohérence** émetteur/rapport (#469).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
