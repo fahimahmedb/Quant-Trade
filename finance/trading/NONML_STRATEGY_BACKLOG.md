@@ -14663,3 +14663,135 @@ Trois propriétés vérifiées que le backtest n'énonce pas : **monotonie**
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #509 (18/08/2026) — **PASS**, et le « fait le plus lourd » du #508 **se dissout** : résidu nul par deux voies
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #508.
+`PREREG_borrowings_temporal_direction.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### Le test
+
+Le #508 laissait **21** emprunts « B tiers » — sourcés au sujet mais ailleurs
+que dans le cycle cité, hors sourçages circulaires. Le **#503** avait établi
+qu'une source **postérieure ne prouve rien** ; le test n'avait jamais été
+appliqué à ceux-là.
+
+| Classe | Nombre | Ce qu'elle permet de conclure |
+|---|---|---|
+| **postérieure** | **19** | **rien** — reprise vers l'avant |
+| **antérieure** | **1** | candidat d'erreur de citation |
+| **indatable** | **1** | rien, et il faut le compter |
+
+### L'unique antériorité ne tient pas — mesuré, pas supposé
+
+`guards_witness_remainder_backtest` cite le #481 pour **766**, source
+`conditional_sections_sweep_audit.md`. **Écart : 56 minutes.**
+
+> Ce dépôt produit plusieurs cycles par heure. Une antériorité de quelques
+> minutes reflète l'**ordre d'écriture des fichiers**, pas l'ordre des
+> travaux. **La règle figée la compte comme antérieure et je ne la change
+> pas** — mais son poids probant est **quasi nul**, et le publier vaut mieux
+> que présenter un résidu plus solide qu'il n'est.
+
+Le mot « candidat », choisi avant la mesure, **n'est pas appliqué** à un écart
+de moins d'un jour.
+
+### La lecture datée de la classe B
+
+| Étape | Effectif |
+|---|---|
+| classe **B** du #508 | **26** |
+| moins les **circulaires** | **21** |
+| moins **postérieures** et **indatables** | **1** |
+| dont antériorité **≥ 1 jour** | **0** |
+
+> **Le « fait le plus lourd de la série » annoncé au #508 se dissout.** Les 26
+> emprunts non sourcés par leur cycle cité s'expliquent **sans exception** par
+> un sourçage circulaire ou une reprise ultérieure. La gravité annoncée était
+> un **artefact de temporalité** — exactement l'erreur que le #503 avait déjà
+> corrigée une fois, et que j'ai refaite un cycle plus tard.
+
+### Une prédiction réfutée
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 15 postérieures | ≥ 15 | **19** | **vérifiée** |
+| ≥ 1 antérieure | ≥ 1 | **1** | **vérifiée** |
+| 0 indatable | 0 | **1** | **réfutée** |
+
+L'indatable est nommé : `reproducibility_sample_backtest` cite le #416, dont
+le `PREREG_` n'a pas de date d'ajout par la règle employée. **Compté, pas
+dissimulé.**
+
+### L'audit confirme par une route aveugle aux minutes
+
+Comparaison des **jours calendaires** au lieu des secondes — une granularité
+qui **ne peut pas** voir un écart de 56 minutes. **0 antériorité sur 1
+survit.** Population recoupée avec le #508 (26 − 5 = **21**, accord), partition
+vérifiée (19 + 1 + 1 = 21). **AUDIT OK (4/4)**, **0** chiffre en dur.
+
+> **Le résidu de neuf cycles d'enquête est nul par deux voies indépendantes.**
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### La série des emprunts, close pour de bon
+
+**#497 → #509**, treize cycles. Le canal soupçonné est **réel** : **31
+chaînes**, **39 nombres** attribués à un autre cycle et **retapés au lieu
+d'être relus**. Et le bilan est sans ambiguïté :
+
+> **Aucune faute repérable.** Ni valeur fausse, ni citation erronée résistant à
+> la mesure de son propre écart temporel. Ce que la série a réellement produit,
+> ce sont **treize détecteurs successifs et leurs limites** — dont au moins
+> **six** ont dû être corrigés par le cycle suivant ou par leur propre audit.
+
+### File « à faire »
+
+1. **Dater le basculement forme/mesure** (#506) — les 20 derniers cycles sont
+   **F à 95 %** alors que le dépôt est à **28 %** : trouver la date de bascule
+   au lieu de la constater sur un échantillon de queue.
+2. **Le seul candidat réellement actionnable** (#507) —
+   `battery_backfill_lot_audit` : tenter la réparation sous le barème du #499,
+   ou établir qu'elle échoue aussi.
+3. **Le coût des détecteurs** (#509) — treize cycles, six détecteurs corrigés
+   après coup. Mesurer combien de cycles du dépôt ont dû être **rectifiés par
+   un successeur**, et si ce taux baisse ou monte.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable** sur
+  **39** nombres. Le canal existe, il n'a rien produit de détectable.
+- **1 indatable** (#509) — le `PREREG_` du #416 n'a pas de date par la règle
+  employée.
+- **11 des 13 « réparables » ne sont pas committables** (#507) ; **solde
+  actionnable = 1**.
+- **Sur 346 rapports à verdict, 72 % ouvrent des données** (#506) — mais
+  **95 %** des 20 plus récents n'en ouvrent aucune. **Basculement non daté.**
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**,
+  **#506**, **#507**, **#508**, **#509** *(la gravité du #508 dissoute — même
+  erreur de temporalité que le #503 avait déjà corrigée)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
