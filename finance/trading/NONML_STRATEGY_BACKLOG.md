@@ -12225,3 +12225,116 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #489 (18/08/2026) — **FAIL** : un témoin sur deux échappe à ma propre règle
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #488.
+Pré-enregistré dans `PREREG_remaining_masking_guards_patch.md` (`ee0fd93`).
+`n_trials = 1`.
+
+### La phrase du #487 était fausse — et je l'avais écrite
+
+Le #487 justifiait de laisser 2 masquants ainsi : *« leur garde ne porte pas sur
+une liste de résultats »*. **Vérifié par AST :**
+
+| Script | Variable | Type réel |
+|---|---|---|
+| `battery_coverage` | `indet` | **entier** (`sum`) |
+| `net_pnl_correction` | `incoh` | **liste** (compréhension) |
+
+> **Inexacte.** `incoh` est bel et bien une compréhension de liste — la forme
+> même que le #487 disait absente. **Elle m'a servi de raison commode pour ne
+> pas finir le travail**, et il suffisait de regarder le type de la variable.
+
+### Le patch, et l'échec
+
+Deux témoins ajoutés, **patch purement additif** : 2 écritures, 0 suppression.
+Mais la règle du #481 n'en reconnaît qu'un :
+
+| Script | Sans témoin avant | après |
+|---|---|---|
+| `battery_coverage` | 1 | **1** |
+| `net_pnl_correction` | 1 | **0** |
+
+**Le témoin de `battery_coverage` est dans un bloc englobant** — profondeur
+mesurée **[1, 2]** contre **[0]** pour l'autre. C'est **l'angle mort exact que
+le #484 avait mesuré** (« témoin situé dans un bloc parent »), rencontré ici en
+le provoquant moi-même.
+
+> **Le témoin est fonctionnellement présent** — un lecteur voit le compte chaque
+> fois que le bloc englobant s'exécute — **mais ma règle ne sait pas le voir.**
+
+> **Je ne déplace pas la ligne après coup.** Retoucher le patch jusqu'à
+> satisfaire ma propre métrique serait itérer sur le résultat. **Critère 3 :
+> NON. Verdict : FAIL.**
+
+### Exécution asymétrique, et rapport non committé
+
+`battery_coverage` **exécute la batterie de validation** → non exécuté ; son
+témoin est **dans le code, pas encore dans son rapport**.
+`net_pnl_correction` n'écrit que son propre rapport → exécuté deux fois,
+**idempotent**. Mais son diff fait **84 lignes** — dominées par la dérive du
+dépôt (218 → 219 séries), **pas** par le témoin. Le pré-enregistrement
+n'autorisait le commit que si le diff **se réduisait au témoin** : **le rapport
+régénéré n'est pas committé**, et l'arbre est **restauré** (0 résidu).
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| les 2 admettent un témoin | 2 | **2** | **vérifiée** |
+| masquants 2 → 0 | 0 | **1 restant** | **réfutée** |
+| la phrase du #487 est inexacte | oui | **oui** | **vérifiée** |
+
+### L'audit vérifie que le FAIL est réel
+
+Un cycle qui échoue son propre critère est peu suspect de complaisance : l'audit
+vérifie donc **l'inverse du réflexe habituel** — le cycle s'accable-t-il pour
+paraître rigoureux tout en ayant fait le travail ?
+
+**CONCORDANT.** Les deux témoins **existent** (le FAIL ne vient pas d'un patch
+manquant) ; les **profondeurs mesurées confirment la raison annoncée** ; le
+patch est **purement additif, aucune ligne déplacée** ; l'arbre est **propre**
+et `battery_coverage` **vérifié non exécuté** ; **5/5** contrôles de
+transparence, dont « refuse-t-il de déplacer la ligne après coup ? ».
+
+Anti-cheat **CONFORME** (4/4). **FAIL** — rapporté tel quel. Robustesse (7a) et
+simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Le témoin de `battery_coverage`** — le déplacer au niveau libre serait une
+   modification **déclarée d'avance** dans un cycle dédié, pas une retouche.
+2. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis 0 sur les 5 derniers.
+3. **Les 4 autres irréparabilités du #485** — leurs justifications ont-elles le
+   même défaut que celle tombée au #488 ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **1 section masquante** au sens de la règle *(4 au #484, −2 au #487, −1 au
+  #489)* — **son témoin existe mais sous garde** ; le déplacer demande un cycle
+  déclaré.
+- **3 rapports** portent un témoin **dans le code mais pas encore publié**
+  (#487, #489).
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485/#488).
+- **La convention d'auto-déclaration** : récente (13/08/2026), 33 sur 461 (#486).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou justifications prises en défaut et publiées comme telles** : #464,
+  #474, #478, #479, #480, #481, #483, #484, #485, #486, **#487 (justification
+  rétractée au #489)**, #488, **#489 (patch insuffisant au regard de sa propre
+  règle)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
