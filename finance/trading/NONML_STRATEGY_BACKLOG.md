@@ -10865,3 +10865,122 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #477 (18/08/2026) — les 13 cycles sans entrée : **0 couvert**, et une étiquette du #474 trop généreuse
+
+**Cycle MIXTE** (vérification puis une seule écriture), première piste de la
+file ouverte au #476. Pré-enregistré dans `PREREG_orphan_cycles_entries.md`
+(`9530fbb`), avant toute mesure. `n_trials = 1`.
+
+### Volet A — la mesure
+
+Le #474 cherchait la mention sous la seule forme `PREREG_<nom>.md`. Ce cycle
+élargit à **toute** citation nominative du **rapport** ou du **script**.
+
+| | Nombre |
+|---|---|
+| « cycles complets » re-dérivés | **13** (**+0** vs #474) |
+| **couverts autrement** | **0** |
+| **non couverts** | **13** |
+
+**La prédiction 1 est réfutée, et durement** : j'annonçais ≥ 8 couverts, il n'y
+en a **aucun**. La lacune de trace est **plus large** que le #474 ne le laissait
+croire.
+
+**Contrôle positif, exigé parce que `0/13` est un résultat extrême** : la même
+recherche, appliquée à l'ensemble des rapports, en trouve **145** cités dans le
+backlog. **Le zéro n'est donc pas un artefact de méthode** — ces 13 ne sont
+réellement nommés nulle part.
+
+### Une étiquette du #474 qui était trop généreuse — post-hoc, signalé comme tel
+
+Le #474 appelait « cycle complet » tout `<nom>` ayant **un** rapport
+`nonml_<nom>*.md`, **sans regarder le suffixe** :
+
+- avec un **`_result.md`** *(cycle publié au sens plein)* : **9**
+- avec un **`_audit.md` seul** : **3** — `n_trials_dependence_correction`,
+  `pnl_duplicate_sweep_v2`, `pnl_persistence_exposed_pass`
+- autre convention *(schéma batterie, sans suffixe)* : **1**
+
+Un `_audit.md` sans `_result.md` n'est pas un cycle publié : c'est un **audit
+orphelin**. **Ce n'est pas une erreur de comptage — les fichiers existent — mais
+une erreur d'étiquette, et elle m'appartient** : c'est moi qui ai écrit cette
+règle au #474.
+
+### Volet B — l'écriture, et ce qui a été refusé
+
+**Une seule entrée collective** (ci-dessous), nommant les 13 et pointant leurs
+rapports. **Aucune entrée rétro-datée, aucun numéro inséré dans la suite
+existante.** Fabriquer treize entrées à la place de cycles qui n'en ont jamais
+écrit reviendrait à falsifier la chronologie du dépôt pour faire disparaître une
+lacune — le geste exact que ces cycles reprochent ailleurs.
+
+> **Une entrée qui dit la lacune vaut mieux qu'une trace qui la masque.**
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (5/5) par une
+route indépendante. **PASS** — le critère portait sur le procédé. Robustesse
+(7a) et simulation 300 € (7b) **sans objet**.
+
+---
+
+## Trace collective — 13 cycles publiés sans entrée de backlog (inscrit au #477)
+
+**Ceci n'est pas un cycle.** C'est la **trace manquante** de treize cycles qui
+ont produit leurs fichiers sans qu'aucune entrée ne les mentionne, établie au
+#477. Ils sont inscrits **ici et à cette date**, sans rétro-datation : leur
+place chronologique réelle est celle de leurs commits, pas celle de ce
+paragraphe.
+
+**Aucun verdict n'est attribué ici** — ce serait juger sur des rapports non
+relus. Seule la trace est rétablie.
+
+| `<nom>` | Rapport le plus complet |
+|---|---|
+| `correlation_regime_episodes_149` | `nonml_correlation_regime_episodes_149.md` |
+| `leaders_vol_targeting_20_overlay_pit_universe` | `nonml_leaders_vol_targeting_20_overlay_pit_universe_result.md` |
+| `lowvol_sma200_overlay_pit_universe` | `nonml_lowvol_sma200_overlay_pit_universe_result.md` |
+| `market_concentration_vol_targeting_overlay_pit_universe` | `nonml_market_concentration_vol_targeting_overlay_pit_universe_result.md` |
+| `momentum_decile_spread_vol_targeting_overlay_pit_universe` | `nonml_momentum_decile_spread_vol_targeting_overlay_pit_universe_result.md` |
+| `momentum_dispersion_vol_targeting_overlay_pit_universe` | `nonml_momentum_dispersion_vol_targeting_overlay_pit_universe_result.md` |
+| `n_trials_dependence_correction` | `nonml_n_trials_dependence_correction_audit.md` *(audit seul)* |
+| `net_breadth_vol_targeting_overlay_pit_universe` | `nonml_net_breadth_vol_targeting_overlay_pit_universe_result.md` |
+| `pnl_duplicate_sweep_v2` | `nonml_pnl_duplicate_sweep_v2_audit.md` *(audit seul)* |
+| `pnl_persistence_exposed_pass` | `nonml_pnl_persistence_exposed_pass_audit.md` *(audit seul)* |
+| `range_position_vol_targeting_overlay_pit_universe` | `nonml_range_position_vol_targeting_overlay_pit_universe_result.md` |
+| `smallcap_proxy_outperformance_breadth_overlay_pit_universe` | `nonml_smallcap_proxy_outperformance_breadth_overlay_pit_universe_result.md` |
+| `winners_trend_vol_targeting_overlay_pit_universe` | `nonml_winners_trend_vol_targeting_overlay_pit_universe_result.md` |
+
+Chacun a son `PREREG_<nom>.md` dans `finance/trading/`. **Les trois « audit
+seul » restent une dette** : leur résultat n'a jamais été publié.
+
+### File « à faire »
+
+1. **Les sections conditionnelles** (#475) — combien de rapports contiennent une
+   section qui ne paraît que sous condition ?
+2. **Les 30 rapports affectés non examinés** (#476) — l'échantillon n'a couvert
+   que les 5 plus chargés.
+3. **Les 3 audits orphelins** (#477) — leur `_result.md` n'existe pas : cycle
+   interrompu après l'audit, ou résultat publié sous un autre nom ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **3 audits orphelins** sans `_result.md` (#477).
+- **2 défauts de type #473** (#476), non réparés ; **30 rapports affectés non
+  examinés**.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474**.
+- **Le compte du #451 a été établi à la main et déclaré tel** (#473).
+- **Un écart pré-enregistrement / script au #472**, inscrit.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
