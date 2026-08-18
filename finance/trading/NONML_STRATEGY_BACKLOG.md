@@ -12767,3 +12767,115 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #494 (18/08/2026) — **4** témoins non publiés, et un refus du #487 fondé sur un **motif faux**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #493.
+Pré-enregistré dans `PREREG_unpublished_witnesses_paths.md` (`60cb102`) —
+préfixes et classes compris. `n_trials = 1`. **Aucun script exécuté, arbre
+vérifié propre.**
+
+### La population : 4, pas 3
+
+| Script | Exécute un tiers | Cibles d'écriture | Classe |
+|---|---|---|---|
+| `battery_coverage` | **1** | `OUT` | **C** — non exécutable |
+| `six_reports_regeneration` | **1** | `OUT` | **C** — non exécutable |
+| `net_pnl_correction` | 0 | `OUT` | **A** — sans danger |
+| `sweep_pass_prose_fix` | 0 | `OUT` | **A** — sans danger |
+
+**La file du #493 annonçait 3.** La dette était plus large que quatre entrées
+successives ne le disaient — confirmé par `git grep` sur une route indépendante.
+
+### Ce qu'il faudrait, par classe
+
+- **Classe A** — il suffirait de les exécuter, puis de vérifier que le diff se
+  réduit au témoin. **Le blocage n'est pas technique, il est de méthode** : tant
+  que le dépôt bouge entre deux exécutions, le diff ne se réduira jamais au seul
+  témoin. Il faudrait **accepter de committer un rapport dont d'autres chiffres
+  ont changé** — décision qui dépasse ce cycle.
+- **Classe C** — le relancer déclencherait une **cascade** dont le périmètre
+  n'est pas connu d'avance. **Il n'existe pas de geste borné.**
+
+### Un motif du #487 est faux
+
+Le #487 avait refusé d'exécuter `sweep_pass_prose_fix` au motif qu'il *« écrit
+2 fichiers, dont un qui n'est pas le sien »*. **Ses deux appels `write_text`
+visent le même chemin** — son propre rapport. Les autres chemins qu'il manipule
+(`REL`, `SWEEP_REL`) ne servent qu'à `git show` et `git diff`, **en lecture
+seule**.
+
+> **Le #487 a compté des appels, pas des cibles.** Il a refusé d'exécuter un
+> script **de classe A, sans danger** — et quatre cycles ont répété ce refus
+> sans le vérifier.
+
+**C'est le troisième motif de cette série que la lecture du code contredit**,
+après ceux du #488 et du #493. Les trois fois, le verdict tenait ou non, **mais
+la raison écrite était fausse.**
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| la population compte 4 scripts | 4 | **4** | **vérifiée** |
+| au moins 2 classes distinctes | ≥ 2 | **2** | **vérifiée** |
+| aucune voie détournée honnête | 0 | 0 | **vérifiée** |
+
+> **La prédiction 3 n'est pas une mesure.** Elle énonce qu'éditer un rapport à
+> la main est exclu — une **règle**, pas un fait observé. Je la marque vérifiée
+> parce qu'aucune voie n'a été trouvée, **mais elle ne pouvait pas être réfutée
+> par la mesure**, et c'est une faiblesse de ma formulation.
+
+**Publier un témoin en éditant le rapport serait fabriquer exactement ce que
+cette série reproche.** L'option était exclue d'avance.
+
+**L'idempotence** de ces rapports est **déclarée hors de portée** : la mesurer
+exigerait de les exécuter deux fois.
+
+### L'audit vérifie une accusation
+
+**CONCORDANT (5/5).** Le cycle accusant un cycle passé, l'audit contrôle par des
+routes propres : les chemins d'écriture **résolus par AST** (2 appels, 1 chemin
+— accusation fondée), le classement C confirmé (`run([sys.executable…])` aux
+lignes 110 et 75), la population confirmée par `git grep`, et l'arbre vérifié
+propre.
+
+*(Son `git grep` a d'abord rendu 0 : les préfixes commencent par `-` et git les
+prenait pour des options. Corrigé avec `-e`, et noté dans le code.)*
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Exécuter les 2 scripts de classe A** — décision déclarée d'avance :
+   accepter un diff non borné au témoin, ou renoncer définitivement.
+2. **Étendre la règle tolérante au #483** (#492) — modification déclarée
+   d'avance, ou établir qu'elle ne doit pas l'être.
+3. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` est
+   désormais réparable : une interpolation suffirait.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **4 témoins non publiés** (#494) : **2 de classe A** — le blocage est de
+  **méthode**, pas technique — et **2 de classe C**, sans geste borné possible.
+- **17 chiffres publiés sans code qui les produise** : 13 réparables,
+  4 irréparables (#493).
+- **La convention d'auto-déclaration est vivante** : 95 % des 20 derniers (#492).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs écrits faux et rétractés sur lecture du code** : **#487** *(compté
+  des appels, pas des cibles)*, **#485** *(deux justifications, #488 et #493)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
