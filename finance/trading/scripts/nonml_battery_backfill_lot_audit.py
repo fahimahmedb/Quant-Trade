@@ -165,7 +165,8 @@ def main():
     L.append(f"| verdicts de niveau 1 modifiés | 0 | 0 | ✔ |")
     L.append("")
     L.append("La dette ouverte par le #431 est **soldée pour les 4 candidats exécutables**. Il")
-    L.append("reste **1** candidat hors de portée de l'outil (schéma panier), listé et non")
+    _hors = sum(1 for _r in SET_ASIDE.values() if "panier" in _r)
+    L.append(f"reste **{_hors}** candidat hors de portée de l'outil (schéma panier), listé et non")
     L.append("forcé — étendre la batterie au schéma panier serait un cycle distinct, à déclarer.")
     L.append("")
 
