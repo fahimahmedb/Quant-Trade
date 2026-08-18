@@ -14795,3 +14795,133 @@ d'être relus**. Et le bilan est sans ambiguïté :
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #510 (18/08/2026) — **PASS** : le basculement est daté au **13/08/2026 21:51**, **+86,5 points** de contraste
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #509.
+`PREREG_form_measure_changepoint.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### Ce qui manquait
+
+Le #506 avait **constaté** un écart entre sa queue (**95 %** sans données) et
+le dépôt (**28 %**). **Constater n'est pas dater.** Ici le point de coupure
+est **calculé** — contraste maximal, plancher de **20** scripts de chaque
+côté, figé au pré-enregistrement pour interdire un maximum trivial en bout de
+série.
+
+Population **élargie** (celle que l'audit du #506 a montrée représentative) :
+**350** scripts à verdict, classés par **appels d'ouverture** — *nommer un
+fichier n'est pas l'ouvrir*.
+
+### Le résultat
+
+| | Effectif | Part « sans données » |
+|---|---|---|
+| **avant** | **288** | **13,5 %** |
+| **après** | **62** | **100,0 %** |
+
+**Date : 13/08/2026 21:51** — premier script du régime postérieur :
+`nonml_sweep_pass_prose_fix_backtest.py`. **Contraste : +86,5 points.**
+
+Le régime postérieur est **homogène** : **0 exception** sur 62. Ce n'est pas
+une moyenne qui glisse, c'est un régime qui change.
+
+### Une convergence que je n'avais pas prédite
+
+- naissance de la convention d'auto-déclaration (#483, #498) : **13/08/2026**
+- basculement forme / mesure (ici) : **13/08/2026**
+
+> **Deux mesures sans rien de commun tombent sur le même jour.** L'une compte
+> des typographies dans des pré-enregistrements, l'autre des appels
+> d'ouverture de fichiers. C'est une **convergence**, pas une preuve — et je
+> ne l'avais pas prédite sous cette forme.
+
+### Deux aveux de méthode
+
+1. **Le seuil qui décide qu'une date est « nette » n'était pas
+   pré-enregistré.** Le PREREG demandait de signaler un second maximum
+   « presque aussi bon » sans chiffrer « presque » ; **les 5 points employés
+   sont un choix fait en écrivant le code**. L'écart mesuré vaut **5,9
+   points** — la marge est mince, et le lecteur doit pouvoir en juger. *(Les
+   deux points sont distants de **13 heures** : ils décrivent la même
+   transition, pas deux dates concurrentes.)*
+2. **La prédiction 1 se vérifie sur une lecture de borne** : le point tombe
+   **le** 13/08 à 21:51, donc après le début de cette journée. J'applique la
+   lecture littérale et publie l'horodatage.
+
+### L'audit porte une **RÉSERVE**, et je ne la lève pas
+
+Trois routes indépendantes :
+
+- **balayage calendaire** (aucun `argmax`, on lit la courbe) → **14/08**,
+  contraste **+85,6**. **Désaccord d'un jour** ;
+- **stabilité** : retirer **5 %** de la population à chaque bout ne déplace
+  pas la coupure → **13/08 21:51**, contraste **+87,8** ;
+- **classement** : **30** scripts sur 350 changent de camp entre la route par
+  littéraux et la route par appels.
+
+> **Le désaccord de la route 1 est de granularité** : un balayage par jour ne
+> peut couper qu'à **minuit**, donc une coupure à 21:51 n'est pas dans ses
+> candidats ; **3** scripts basculent de côté. Les contrastes diffèrent de
+> moins d'un point.
+>
+> **Je ne relâche pas le critère pour autant.** Il exigeait le même jour, il
+> ne l'obtient pas : **AUDIT — RÉSERVE (4/5)**. Un critère qu'on assouplit
+> après l'avoir vu échouer ne contrôle plus rien.
+
+L'audit rappelle aussi ce qu'il ne prouve pas : **il date un changement dans
+ce que les scripts à verdict lisent**, pas un abandon des marchés. Les **72 %**
+de rapports à verdict qui ouvrent des données (#506) sont **antérieurs à la
+coupure**, et restent acquis.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Auto-exclusion déclarée (#447) : ce cycle serait lui-même un script à
+verdict sans données. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Le seul candidat réellement actionnable** (#507) —
+   `battery_backfill_lot_audit` : tenter la réparation sous le barème du #499,
+   ou établir qu'elle échoue aussi.
+2. **Le coût des détecteurs** (#509) — combien de cycles ont dû être
+   **rectifiés par un successeur**, et ce taux monte-t-il ou baisse-t-il ?
+3. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, **+86,5 pts**,
+  régime postérieur homogène (**62** scripts, **0** exception). **Même jour
+  que la naissance de la convention d'auto-déclaration.**
+- **30 scripts sur 350** changent de camp selon la route de classement (#510).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable** sur
+  **39** nombres.
+- **11 des 13 « réparables » ne sont pas committables** (#507) ; **solde
+  actionnable = 1**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498).
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**,
+  **#506**, **#507**, **#508**, **#509**, **#510** *(seuil de « netteté » non
+  pré-enregistré, avoué ; audit en réserve non levée)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
