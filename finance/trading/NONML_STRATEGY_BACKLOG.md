@@ -14282,3 +14282,127 @@ tiers douteux — et **0 emprunt établi faux**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #506 (18/08/2026) — **PASS**, et l'audit **inverse la conclusion** : 72 % des verdicts du dépôt ouvrent bien des données
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #505.
+`PREREG_verdicts_form_vs_measure.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La question
+
+Le #498 a montré qu'un verdict pouvait basculer **sans qu'aucun fait ne
+change** : seul le détecteur avait changé. **Un verdict vaut ce que vaut son
+détecteur** — combien, dans ce dépôt, reposent sur un appariement de forme
+plutôt que sur une mesure ?
+
+Quatre classes figées, établies par AST : **F** (texte + `re`, sans données),
+**D** (données sans texte), **M** (les deux), **N** (ni l'un ni l'autre).
+
+### Le résultat sur la population figée
+
+Sur **60** rapports à verdict **en gras** : **F=40**, **D=0**, **M=12**,
+**N=8**. Part de **F** : **66,7 %** sur l'ensemble, **95,0 %** parmi les
+**20 plus récents** (**+28,3** points).
+
+### Deux défauts de ma règle, mesurés dans le rapport même
+
+1. **La classe D était impossible à peupler.** « Lit le texte du dépôt » se
+   déclenche sur le littéral que **tout** script porte : le chemin de **son
+   propre rapport**. En excluant ce chemin — **diagnostic, pas verdict** —
+   D passerait de **0** à **3**. La prédiction 3 est donc **non testable**,
+   pas réfutée : une médiane sans effectif ne se compare à rien, et je n'ai
+   **pas** remplacé D par M après coup pour sauver la comparaison.
+2. **La population ne couvre que 60 rapports sur 346.** La définition exigeait
+   le **gras** ; elle écarte **286** rapports qui rendent bien un verdict.
+
+### L'audit inverse la lecture
+
+Route par **appels d'ouverture** au lieu de littéraux — *nommer un fichier
+n'est pas l'ouvrir* — et **sur le corpus entier**, pas sur la minorité figée :
+
+| Population | Effectif | Ouvrent des données | Part **sans données** |
+|---|---|---|---|
+| population figée | **60** | **4** | **93,3 %** |
+| **corpus entier** | **346** | **249** | **28,0 %** |
+
+> **La population figée n'était pas représentative** — écart de **−65,3
+> points**. Sur le corpus entier, **72,0 %** des rapports à verdict sont
+> produits par un script qui **ouvre effectivement des données**.
+>
+> **Ce dépôt n'a donc pas cessé de mesurer des marchés.** Le travail sur le
+> texte est **massif dans la période récente** — les 20 derniers sont **F** à
+> **95 %** — mais **minoritaire sur l'ensemble**. Une conclusion tirée de la
+> seule population figée aurait **inversé le fait**.
+
+L'audit publie aussi l'écart entre ses deux routes : **12** scripts « de
+mesure » par littéraux contre **4** par appels. Les deux ne peuvent pas
+coïncider, et l'écart mesure exactement cette différence de nature.
+**AUDIT OK (4/4)**, **0** chiffre en dur.
+
+### Le bilan honnête de ce cycle
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| part de **F** ≥ 50 % | ≥ 50 % | **66,7 %** | **vérifiée** *(sur la minorité figée)* |
+| ≥ 1 **D** parmi les 20 récents | ≥ 1 | **0** | **réfutée** |
+| médiane **F** postérieure à **D** | oui | classe D vide | **non testable** |
+
+> **La seule prédiction vérifiée l'est sur une population que mon propre audit
+> déclare non représentative.** Le résultat utilisable de ce cycle n'est pas
+> son chiffre, c'est **la démonstration que le chiffre ne valait pas pour le
+> dépôt** — et il a fallu élargir la population pour le voir.
+
+L'auto-exclusion était déclarée d'avance (règle du #447) et rappelée dans le
+rapport : **ce cycle serait un F de plus**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+2. **Les 2 « introuvables » requalifiés** (#505) — leur statut exact (nombre
+   existant mais hors sujet) n'a pas de classe dans le dépôt.
+3. **La période récente, mesurée pour elle-même** (#506) — les 20 derniers
+   cycles sont **F à 95 %** alors que le dépôt est à **28 %** : dater le
+   basculement au lieu de le constater sur un échantillon de queue.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Sur 346 rapports à verdict, 72 % ouvrent des données** (#506) — mais
+  **95 %** des 20 plus récents n'en ouvrent aucune. **Le basculement n'est pas
+  daté.**
+- **La piste des emprunts est close** (#500-#505) : **0 emprunt établi faux**
+  sur 39.
+- **1 sourçage « indépendant » douteux** et **2 circulaires** (#505) ;
+  **2 emprunts** dont le nombre existe ailleurs mais **hors sujet**.
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**,
+  **#506** *(classe vide par construction ; population non représentative,
+  conclusion inversée par mon propre audit)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
