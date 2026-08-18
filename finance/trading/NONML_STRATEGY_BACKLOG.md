@@ -10765,3 +10765,103 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #476 (18/08/2026) — les chiffres littéraux : **4,6 %**, et le #451 n'était pas isolé
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #475.
+Pré-enregistré dans `PREREG_hardcoded_figures_sweep.md` (`4d46bb7`), avant toute
+mesure. `n_trials = 1`. Lecture du disque, **aucun script exécuté, aucun effet
+de bord**.
+
+### La question
+
+Le #473 a établi que le « **1** » du #451 était une **chaîne écrite à la main**.
+Restait à savoir si le cas était **isolé ou courant**.
+
+### La prévalence — et ce qu'elle n'est pas
+
+| | Nombre |
+|---|---|
+| rapports avec script producteur sous la convention | **762** |
+| rapports **hors convention** *(comptés à part, jamais fautifs — #464)* | **308** |
+| scripts portant **au moins un** chiffre littéral | **35** (**4,6 %**) |
+| lignes littérales au total | **73** |
+| médiane par rapport affecté / maximum | **2,0** / **7** |
+
+> **Ce chiffre mesure une prévalence, pas une culpabilité.** Un littéral est
+> légitime dans au moins trois cas : un **seuil pré-enregistré** rappelé, un
+> **chiffre cité d'un cycle antérieur**, une **constante de protocole**. La
+> règle mécanique ne sait pas les distinguer — **aucun total ci-dessus n'est un
+> compte de fautes**, et c'est pourquoi cinq scripts ont été lus à la main.
+
+### L'examen individuel — les 5 plus chargés, échantillon fixé avant de regarder
+
+| Script | Verdict |
+|---|---|
+| `protocol_inventory_audit` | **DÉFAUT** — tableau de conclusion à cinq comptes écrits en dur, présentés comme le résultat de l'inspection |
+| `marker_emitted_by_scripts` | **DÉFAUT** — c'est **le #451 lui-même**, donc le **contrôle positif** de la méthode |
+| `duplicate_sweep_coverage_audit` | **DÉFAUT PARTIEL** — total **calculé**, ventilation (90/2/6/1) **écrite en dur** dans la ligne suivante |
+| `repo_magnitudes_recount` | **légitime** — citations de cycles antérieurs |
+| `citer_451_definition` | **légitime** — et **faux positif de ma propre règle** : `**1**`, `**2**`, `**3**` sont des *étiquettes*, pas des mesures |
+
+**La découverte nette est de 2, pas de 3** : l'un des défauts pleins est le #451,
+qui servait de contrôle. Une règle qui ne l'aurait pas retrouvé serait à jeter.
+
+Le cas `protocol_inventory_audit` mérite la même nuance que le #451 : l'en-tête
+« Après inspection » **annonce l'origine manuelle**, comme le #451 annonçait
+« rétabli par lecture ». **Le défaut n'est pas un mensonge** — c'est qu'aucun
+code ne produit ces nombres, donc qu'**aucun cycle ultérieur ne peut les
+reproduire**, ce que les #469 et #472 ont appris à leurs dépens.
+
+### Mes trois prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 50 rapports avec au moins un littéral | ≥ 50 | **35** | **réfutée** |
+| ≥ 1 défaut de type #473 parmi les 5 | ≥ 1 | **3** | **vérifiée** |
+| médiane ≤ 3 par rapport affecté | ≤ 3 | **2,0** | **vérifiée** |
+
+La prédiction 1 est réfutée largement : je surestimais la prévalence en pensant
+aux rappels de seuils, qui sont en fait presque toujours écrits **dans le
+pré-enregistrement** plutôt que recopiés dans le rapport.
+
+**Le `3/5` ne s'extrapole pas aux 35.** L'échantillon a été choisi pour sa
+**charge maximale**, là où un défaut avait le plus de chances de se voir.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (5/5) par
+l'**AST** — `ast.Constant` exclut structurellement les f-strings là où le
+backtest doit les écarter par regex — et il **retrouve le même échantillon de
+5**, donc la règle n'a pas dérivé entre les deux routes. **PASS** — le critère
+portait sur le procédé. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 13 cycles complets sans entrée de backlog** (#474) — écrire les entrées
+   manquantes, ou établir qu'elles sont couvertes autrement.
+2. **Les sections conditionnelles** (#475) — combien de rapports contiennent une
+   section qui ne paraît que sous condition ?
+3. **Les 30 rapports affectés non examinés** (#476) — l'échantillon n'a couvert
+   que les 5 plus chargés ; les autres restent non jugés.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **2 défauts de type #473 découverts** (#476), non réparés : le tableau de
+  conclusion de `protocol_inventory_audit`, la ventilation de
+  `duplicate_sweep_coverage_audit`. **30 rapports affectés non examinés.**
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **13 cycles complets** sans entrée ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** (« listés nominativement » sur 15/24).
+- **Le compte du #451 a été établi à la main et déclaré tel** (#473).
+- **Un écart pré-enregistrement / script au #472**, inscrit.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
