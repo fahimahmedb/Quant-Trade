@@ -14534,3 +14534,132 @@ répare rien.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #508 (18/08/2026) — **FAIL** sur un contrôle dont la **prémisse** était fausse, et **B (26/39) domine A (11)**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #507.
+`PREREG_borrowings_final_taxonomy.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La taxonomie qui manquait
+
+Six cycles ont produit **six vocabulaires ad hoc**. Celui-ci en fixe **un**,
+exclusif et exhaustif, appliqué aux **39** nombres — avec la classe que le
+#505 avait découverte sans pouvoir la nommer :
+
+| Classe | Condition | Nombre |
+|---|---|---|
+| **A** | sourcé **au sujet**, dans le cycle cité | **11** |
+| **B** | sourcé **au sujet**, ailleurs | **26** |
+| **C** | **orphelin de contexte** — existe, jamais au sujet | **2** |
+| **D** | absent du dépôt | **0** |
+
+**Partition vérifiée** : 39 = 39. Paramètres du #502 **inchangés** pour le
+quatrième cycle consécutif.
+
+### Le contrôle échoue — et la cause est mesurée, pas invoquée
+
+Le pré-enregistrement exigeait que les **2 résidus du #505** tombent en **C**.
+**Ils tombent en B.**
+
+| Résidu | Où le contexte a été trouvé |
+|---|---|
+| `content_defined_magnitudes_audit` (#449, **2**) | `nonml_content_defined_magnitudes_audit.md` |
+| `report_idempotence_backtest` (#443, **5,7**) | `nonml_hardcoded_figures_remainder_result.md` |
+
+Les #501-#503 ont fouillé les **sections** du registre ; le #504, les
+**rapports du cycle cité** ; le #505, les `PREREG_` et les commits. **Personne
+n'avait cherché au sujet dans les rapports des *autres* cycles** — ce que la
+classe **B** fait.
+
+> **Ce n'est pas la taxonomie qui est mal construite, c'est ma prémisse.**
+> J'ai posé comme contrôle que ces deux cas *devaient* tomber en **C**, en
+> supposant que **B** ne les trouverait pas. **B** est plus large que tout ce
+> que la série avait tenté.
+>
+> **Le critère pré-enregistré fait néanmoins échouer ce cycle, et je
+> l'applique tel quel.** Un contrôle qu'on réinterprète après l'avoir vu
+> échouer ne contrôle plus rien — règle constante depuis le #480. Elle coûte
+> ici un **FAIL** sur un classement que l'audit juge cohérent.
+
+### Le fait le plus lourd de la série
+
+**Prédiction 3 réfutée** : **B domine (26/39), pas A (11)**.
+
+> **La majorité des emprunts de ce dépôt ne se justifient pas par le cycle
+> qu'ils citent.** C'est plus grave que tout ce que les #500-#507 ont établi.
+>
+> **Nuance mesurée, pas atténuation** : **5** des 26 classements en B sont
+> **circulaires** — contexte trouvé dans le **rapport du script lui-même**,
+> ce que le #505 avait établi comme ne valant pas source. Les B pointant vers
+> une source **tierce** sont **21**. La classe B **surestime** d'autant, et
+> l'angle mort est **enregistré, non absorbé** : exclure le rapport du script
+> après mesure serait la dérive refusée aux #496, #497 et #507.
+
+### L'audit passe, et le dit sans rattraper le FAIL
+
+Route sans **ordre de priorité** : les quatre appartenances calculées
+**indépendamment**, puis la classe reconstruite — un ordre peut masquer un
+test A trop permissif. **4/4 comptes concordants**, effectif recalculé égal.
+
+Trois propriétés vérifiées que le backtest n'énonce pas : **monotonie**
+(A ∪ B ⊂ existe), **0** emprunt en A dont le nombre n'existe nulle part, et
+**D vide n'est pas un artefact** d'un test d'existence trop large.
+**AUDIT OK (5/5)**, **0** chiffre en dur.
+
+> **Un audit qui passe sur un cycle qui échoue n'est pas une contradiction** :
+> le cycle échoue son **contrôle**, l'audit vérifie son **classement**. Le
+> backlog porte les deux.
+
+**FAIL** (4/5 critères — contrôle échoué). Anti-cheat **CONFORME** (4/4).
+**0** script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
+**sans objet**, et de toute façon exclues : le cycle échoue.
+
+### File « à faire »
+
+1. **Les 21 B « tiers »** (#508) — un emprunt qui cite le #449 mais dont le
+   contexte vit au #465 est-il une **erreur de citation** ou une **reprise
+   légitime** ? Le #503 a montré qu'une source postérieure ne prouve rien ;
+   appliquer le même test de **direction temporelle** aux 21.
+2. **Dater le basculement forme/mesure** (#506) — les 20 derniers cycles sont
+   **F à 95 %** alors que le dépôt est à **28 %**.
+3. **Le seul candidat réellement actionnable** (#507) —
+   `battery_backfill_lot_audit` : tenter la réparation sous le barème du #499,
+   ou établir qu'elle échoue aussi.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **26 emprunts sur 39 ne sont pas sourcés par le cycle qu'ils citent**
+  (#508), dont **5 circulaires** — **21 pointent vers une source tierce**,
+  non encore testée en **direction temporelle**.
+- **2 orphelins de contexte** (#508) — la classe existe désormais.
+- **11 des 13 « réparables » ne sont pas committables** (#507) ; **solde
+  actionnable = 1**.
+- **Sur 346 rapports à verdict, 72 % ouvrent des données** (#506) — mais
+  **95 %** des 20 plus récents n'en ouvrent aucune. **Basculement non daté.**
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**,
+  **#506**, **#507**, **#508** *(prémisse d'un contrôle fausse ; classe B
+  surestimée par 5 sourçages circulaires)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
