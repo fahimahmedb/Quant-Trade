@@ -15053,3 +15053,121 @@ une.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #512 (18/08/2026) — **PASS** au critère, **mais l'audit démolit le chiffre** : le témoin neutre fait mieux que les marqueurs
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #511.
+`PREREG_rectification_rate.md` committé **avant toute mesure**, `n_trials=1`.
+
+### Ce que le cycle mesurait
+
+Un cycle `#NNN` est **rectifié** si une section **postérieure** le cite avec,
+dans **±200 caractères**, un marqueur d'une liste figée (`réfut`, `rétract`,
+`corrig`, `invalid`, `fauss`, `faux`, `erron`, `sur-affirm`, `surestim`,
+`sur-estim`, `dissou`, `tombe`). Auto-rectification exclue.
+
+Sur **308** sections : **183 rectifiés**, **taux 59,4 %**, **96,7 %** sur les
+30 derniers, délai médian **1** cycle.
+
+### Le backtest doutait déjà de son propre chiffre
+
+Publié dans le rapport, avant tout audit : `faux` déclenche **741** fois à lui
+seul, et **seulement 42,0 %** des appariements ont le marqueur **dans la même
+phrase** que la référence. La lecture stricte donne **44,5 %** au lieu de
+59,4 %. **La règle figée n'a pas été remplacée** — le chiffre large est publié
+comme **borne supérieure**, pas comme mesure.
+
+### L'audit tranche : le détecteur ne mesure rien
+
+Il monte un **témoin négatif** — la **même règle**, avec des marqueurs
+**neutres** (`cycle`, `rapport`, `mesure`, `script`, `verdict`, `audit`…),
+étrangers à toute rectification :
+
+| Liste | Cycles « rectifiés » | Taux |
+|---|---|---|
+| **réels** | **183** | **59,4 %** |
+| **neutres** (témoin) | **275** | **89,3 %** |
+
+> **Le témoin négatif fait MIEUX que les marqueurs réels** — **−29,9 points**
+> d'écart, dans le mauvais sens. Des mots quelconques du registre désignent
+> **plus** de cycles « rectifiés » que des mots de rectification.
+>
+> **Le détecteur ne discrimine rien.** Il réagit à la présence d'une référence
+> `#NNN` dans un texte dense. **Le taux du #512 ne mesure pas ce qu'il
+> annonce** — ni sa borne supérieure, ni sa lecture stricte.
+
+**AUDIT — RÉSERVE (4/5)**. Les trois autres contrôles passent : **0** paire
+symétrique, **0** auto-rectification comptée, grandeurs recalculées à
+l'identique.
+
+### La lecture honnête
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| taux global ≤ 20 % | ≤ 20 % | **59,4 %** | **réfutée** |
+| taux des 30 derniers > taux global | > 59,4 % | **96,7 %** | **vérifiée** |
+| ≥ 10 cycles rectifiés | ≥ 10 | **183** | **vérifiée** |
+
+> **Deux prédictions « vérifiées » sur un chiffre que l'audit invalide ne sont
+> pas des succès.** La question du #509 — *le taux de rectification monte-t-il
+> ou baisse-t-il ?* — **reste sans réponse**, et c'est le seul résultat
+> utilisable de ce cycle.
+
+Le pré-enregistrement l'avait d'ailleurs annoncé sur un autre plan : cette
+mesure compte **la fréquence à laquelle une rectification est écrite**, pas
+celle à laquelle une erreur est commise. **Un dépôt qui n'avouerait jamais
+rien obtiendrait zéro.**
+
+**PASS** (5/5 critères de procédé — les cinq points sont publiés). Anti-cheat
+**CONFORME** (4/4). **0** script exécuté, arbre propre. Robustesse (7a) et
+simulation 300 € (7b) **sans objet**.
+
+> **Le PASS porte sur le procédé, pas sur la validité du chiffre** — et c'est
+> une limite du barème de cette série, qu'il faut nommer : un cycle peut
+> satisfaire tous ses critères de publication tout en produisant une mesure
+> sans valeur. **Le #512 en est l'exemple le plus net.**
+
+### File « à faire »
+
+1. **Un détecteur de rectification qui passe le témoin négatif** (#512) — la
+   question du #509 reste ouverte, et la méthode lexicale est disqualifiée.
+   Piste : ne compter que les rectifications **explicitement structurées**
+   (une ligne de tableau « Prédiction … réfutée », un titre de section).
+2. **Le témoin négatif, généralisé** (#512) — combien des détecteurs de cette
+   série survivraient au même test ? Il n'a jamais été appliqué aux #500-#511.
+3. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Le taux de rectification n'est pas mesuré** (#512) : le détecteur lexical
+  échoue au témoin négatif (**89,3 %** contre **59,4 %**). La question du #509
+  **reste ouverte**.
+- **Aucun détecteur des #500-#511 n'a subi de témoin négatif.**
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** restant parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) ; **2 justifications du #485 sur 5**
+  sont tombées (#493, #511), **3** jamais vérifiées.
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, régime postérieur
+  homogène (**62** scripts, **0** exception).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
