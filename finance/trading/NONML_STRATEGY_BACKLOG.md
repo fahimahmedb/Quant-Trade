@@ -14406,3 +14406,131 @@ propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #507 (18/08/2026) — **PASS** : **11 des 13 « réparables » ne sont pas committables**, et le contrôle passe sans rien exécuter
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #506.
+`PREREG_repairables_committability.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La distinction que le #499 a rendue nécessaire
+
+Le compte « 13 réparables » du #485/#493 mesure la **dérivabilité** — un
+chiffre que le script possède de quoi recalculer. Le #499 a montré qu'une
+réparation **parfaite** (0 ligne de diff sur les valeurs) peut **échouer** :
+régénérer le rapport réécrit la **dérive du dépôt**. **Personne n'avait mesuré
+la committabilité.**
+
+Règle statique, figée d'avance, **sans aucune exécution** :
+
+- **NC1** — le script déclenche **P1, P2, P9 ou P10** du #497 (règle
+  **importée**, non recopiée) → **cascade** ;
+- **NC2** — il balaie `scripts/`/`results/` ou invoque `git` → **sa sortie
+  bouge avec le dépôt** ;
+- **C** — ni l'un ni l'autre : **candidat**, jamais « committable ».
+
+### Le résultat
+
+Population **dérivée par code** : **13**, exactement le compte attendu.
+
+| Classe | Nombre |
+|---|---|
+| **NC1** — exécute un tiers | **2** |
+| **NC2** — lit l'état courant | **9** |
+| **C** — candidat | **2** |
+| **?** | **0** |
+
+**11 sur 13 sont non committables.** La dette « actionnable aux deux tiers »
+annoncée au #485 se réduit à **2 candidats**, et le mot *candidat* n'a pas été
+durci après mesure.
+
+### Le contrôle intégré passe
+
+La cible du #499 — `reproducibility_campaign_v3_lot2_audit` — est **connue non
+committable par l'expérience**. La règle statique la classe **NC2**.
+
+> **Sans rien exécuter, la règle retrouve ce que le #499 avait payé une
+> exécution complète pour découvrir.** Si elle l'avait classée **C**, le cycle
+> échouait son propre contrôle — c'était écrit au pré-enregistrement.
+
+### Un troisième angle mort, découvert et **non absorbé**
+
+`nonml_coverage_wording_fix_audit.py`, classé **C**, lit `sys.argv` : il attend
+des fichiers « avant » qui n'existent peut-être plus. **C'est une troisième
+cause de non-committabilité que ma règle ne nomme pas.**
+
+> Enregistrée comme angle mort, **pas absorbée après coup** — l'élargir
+> maintenant serait la dérive refusée aux #496 et #497. Le compte de candidats
+> reste **2** ; le lecteur sait que **1** d'entre eux est fragile pour une
+> raison de plus. **Le solde réellement actionnable est donc 1 sur 13.**
+
+### L'audit se déclare **non testable** plutôt que de s'absoudre
+
+Route entièrement différente — l'**histoire** au lieu de la structure : combien
+de fois chaque rapport a été **réécrit** dans git. Résultat : **les 13 ont été
+écrits exactement 1 fois**, valeurs distinctes = **1**.
+
+> **Cette route ne discrimine rien sur cette population.** Une moyenne
+> identique de part et d'autre n'est pas une confirmation, **c'est une absence
+> de mesure**. Le contrôle correspondant est déclaré **NON TESTABLE** et
+> **n'est pas compté comme réussi** — un critère qui passe sur `1,0 ≤ 1,0`
+> revendiquerait une validation qu'il n'a pas faite.
+
+La route fonctionne pourtant : un rapport régénéré du dépôt affiche bien
+plusieurs commits (**14** pour `pnl_duplicate_sweep_result`). C'est **cette
+population** qui est uniforme, parce qu'aucun de ces rapports n'a jamais été
+refait. **AUDIT OK (4/4, 1 non testable)**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+Ce backtest est lui-même de **classe NC2** par sa propre règle — il balaie
+`scripts/` et appelle `git`. Il ne prétend donc pas être committable : il ne
+répare rien.
+
+### File « à faire »
+
+1. **Les 2 « introuvables » requalifiés** (#505) — leur statut exact (nombre
+   existant mais hors sujet) n'a pas de classe dans le dépôt.
+2. **Dater le basculement forme/mesure** (#506) — les 20 derniers cycles sont
+   **F à 95 %** alors que le dépôt est à **28 %** : trouver la date de bascule
+   au lieu de la constater sur un échantillon de queue.
+3. **Le seul candidat réellement actionnable** (#507) —
+   `battery_backfill_lot_audit` : tenter la réparation sous le barème du #499,
+   ou établir qu'elle échoue aussi.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **11 des 13 « réparables » ne sont pas committables** (#507) ; **1** des 2
+  candidats restants dépend de `sys.argv`. **Le solde actionnable est 1.**
+- **Sur 346 rapports à verdict, 72 % ouvrent des données** (#506) — mais
+  **95 %** des 20 plus récents n'en ouvrent aucune. **Le basculement n'est pas
+  daté.**
+- **La piste des emprunts est close** (#500-#505) : **0 emprunt établi faux**
+  sur 39 ; **2 emprunts** dont le nombre existe ailleurs mais **hors sujet**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**,
+  **#506**, **#507** *(troisième cause de non-committabilité manquée par ma
+  règle ; contrôle d'audit inerte, déclaré non testable)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
