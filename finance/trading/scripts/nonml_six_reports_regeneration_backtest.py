@@ -228,6 +228,8 @@ def main():
         if "Rapport dépendant du dépôt" in av and "Rapport dépendant du dépôt" not in ap:
             perdus.append(Path(m).name)
 
+    L.append(f"- rapports ayant **perdu** l'encart du #439 en étant régénérés : **{len(perdus)}**")
+
     if perdus:
         L.append("## Un effet de bord découvert — les marqueurs du #439 sont effacés")
         L.append("")

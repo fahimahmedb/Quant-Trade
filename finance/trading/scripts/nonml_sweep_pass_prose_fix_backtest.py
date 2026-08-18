@@ -130,6 +130,8 @@ def main():
                                        "Inventaire vérifié", "Cycle de MODIFICATION")):
             strategies.append(n)
 
+    L.append(f"- PASS qui sont des **stratégies** et non des scripts d'inventaire : **{len(strategies)}**")
+
     if strategies:
         L.append("## Le résultat qui prime sur la correction de prose")
         L.append("")
