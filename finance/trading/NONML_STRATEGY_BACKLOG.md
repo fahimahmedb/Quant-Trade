@@ -11776,3 +11776,114 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #485 (18/08/2026) — **5 irréparables sur 17**, et un proxy sans aucun pouvoir de séparation
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #484.
+Pré-enregistré dans `PREREG_irreparable_figures_census.md` (`ae7a66c`), **examen
+à la main compris**. `n_trials = 1`. Lecture du disque, **aucun script exécuté**.
+
+### La catégorie du #482, enfin comptée
+
+| | Nombre |
+|---|---|
+| dénombrés au #479 | 18 |
+| rétracté au #482 *(citation de diff)* | −1 |
+| **population re-dérivée** | **17** (**+0**) |
+| **IRRÉPARABLES** | **5** (29,4 %) |
+| **réparables** | **12** |
+| non examinés | **0** |
+
+| Irréparable | Pourquoi |
+|---|---|
+| `protocol_inventory_audit` | colonne « Après inspection » = lecture manuelle |
+| `marker_emitted_by_scripts` | classification que le script n'a **jamais faite** (#451) |
+| `pnl_duplicate_sweep_audit` | compte `n_trials` du backlog entier, non exposé |
+| `pnl_persistence_exposed_pass_audit` | univers du balayage #415, disparu (#482) |
+| `reproducibility_campaign_v3_lot2_audit` | **projection contrefactuelle** — aucun univers |
+
+> **La dette du #479 est actionnable aux deux tiers.** Les 12 réparables le sont
+> par une simple interpolation ; les 5 autres ne peuvent qu'être **signalés**,
+> jamais recalculés.
+
+**Une des cinq renvoie à une question en attente d'arbitrage** : le décompte
+`n_trials` du #421.
+
+### Mon propre défaut reçoit le verdict le plus exigeant
+
+`orphans_interrupted_or_lost` — **mon cycle #474** — est classé **réparable** :
+le script calcule `len(ent) + len(orp)`. **Le classer irréparable aurait fermé
+la dette gratuitement.** Rien ne l'excuse.
+
+### Le proxy mécanique n'a aucun pouvoir de séparation — mesuré
+
+Le pré-enregistrement le déclarait faible d'avance. **Il répond « oui » 17 fois
+sur 17.** L'audit va plus loin : sur **40 scripts témoins** hors population,
+**40 réponses « oui »**.
+
+> **Un motif qui teste `for … in` ou `len(…)` teste que le fichier est du
+> Python.** L'aveu du rapport est **vérifié, pas cru**.
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 5 irréparables | ≥ 5 | **5** | **vérifiée** |
+| ≥ 8 réparables | ≥ 8 | **12** | **vérifiée** |
+| accord du proxy < 80 % | < 80 % | **70,6 %** | **vérifiée** |
+
+**La prédiction 1 passe de justesse — 5 pour un seuil de 5.** Un cas classé
+autrement l'aurait réfutée, et c'est **mon propre verdict à la main** qui a
+décidé de son sort. Le rapport le signale plutôt que de la présenter comme
+confirmée. Quant au 70,6 %, il **flatte** : le proxy répondant « oui » partout,
+son « accord » vaut par construction le nombre de réparables — **une coïncidence
+arithmétique, pas un accord.**
+
+### L'audit teste les verdicts, et émet une réserve
+
+**RÉSERVES (4/5)**. Un verdict « irréparable » est le plus commode qui soit — il
+ferme une dette sans travail — donc l'audit teste **chaque irréparable** par
+l'AST : le script importe-t-il un module du dépôt qui lui fournirait l'univers
+manquant ?
+
+**Quatre sur cinq sont fondées.** La cinquième — `pnl_duplicate_sweep_audit` —
+**énumère `results/` sans liste codée en dur** : sa route ne confirme pas
+l'irréparabilité. **Le verdict à la main n'est pas révisé** *(ce serait un
+retuning)*, **le doute est inscrit**.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**. **Rien n'est réparé** :
+le #482 a montré qu'une réparation peut être nuisible.
+
+### File « à faire »
+
+1. **Les 113 `PREREG_` sans auto-déclaration** (#483) — la convention est-elle
+   récente, ou abandonnée ? Datable par `git log`.
+2. **Les 2 masquants établis au #484** — les réparer demande d'ajouter un
+   témoin inconditionnel, modification minimale et bornée.
+3. **La réserve du #485** sur `pnl_duplicate_sweep_audit` — trancher son
+   irréparabilité, avec examen déclaré d'avance.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **et le #485 montre qu'une dette en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **17 chiffres publiés sans code qui les produise** : **12 réparables**,
+  **5 irréparables** (#485), **1 sous réserve d'audit**.
+- **4 sections masquantes** sur 15 sans témoin (#481+#484), aucune réparée.
+- **113 `PREREG_`** sans auto-déclaration (#483) — non fautifs, non datés.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles prises en défaut et publiées comme telles** : #464, #474, #478, #479
+  *(rétracté au #482)*, #480, #481, #483, #484, **#485 (proxy sans pouvoir de
+  séparation)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
