@@ -13620,3 +13620,119 @@ propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #501 (18/08/2026) — **PASS**, et le résultat honnête est **« la méthode ne départage pas »**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #500.
+`PREREG_borrowed_figures_confrontation.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La question que le #500 s'était interdite
+
+Le #500 avait recensé les emprunts en disant : *« il mesure une exposition,
+pas une erreur »*. Ce cycle relit chacun dans la section `## Backlog #NNN`
+du cycle qu'il cite.
+
+**Les deux unités diffèrent, et c'est publié** : le #500 comptait **31
+chaînes** publiées ; confronter exige de descendre au **nombre**, soit **39**.
+Aucun emprunt n'est écarté — ils sont **dépliés**.
+
+### Les quatre classes
+
+| Classe | Nombre | Part |
+|---|---|---|
+| **confirmé** (en gras dans la section citée) | **22** | 56,4 % |
+| **retrouvé ailleurs** | **17** | 43,6 % |
+| **non retrouvé** | **0** | 0,0 % |
+| **non vérifiable** (section absente) | **0** | 0,0 % |
+
+### La coupure qui empêche de se féliciter
+
+Le pré-enregistrement exigeait de séparer les confirmations selon la taille du
+nombre, **parce qu'un nombre à un ou deux chiffres se retrouve par hasard**.
+
+| Confirmations | Nombre | Part |
+|---|---|---|
+| **fortes** (≥ 3 chiffres) | **3** | 13,6 % |
+| **faibles** (1-2 chiffres) | **19** | **86,4 %** |
+
+> **22 confirmations, dont 3 seulement ont une valeur probante.** La
+> conclusion n'est donc **pas** « les emprunts sont exacts » mais **« la
+> méthode ne sait pas les départager »**. Sans la coupure déclarée d'avance,
+> ce cycle aurait publié un taux de confirmation de **56,4 %** qui n'aurait
+> rien voulu dire.
+
+**Prédiction 2 réfutée** : j'annonçais au moins un nombre orphelin. Il n'y en
+a **aucun** — tout nombre emprunté se retrouve en gras quelque part, ce qui
+**n'établit pas** qu'il y soit au bon endroit.
+
+### Ce que le cycle n'établit pas, et le redit
+
+**Aucun chiffre n'est déclaré faux.** Un « non retrouvé » aurait signalé un
+emprunt *invérifiable*, pas une erreur. Le #498 a montré qu'une règle
+littérale rate **85,0 points** de détection sur une simple mise en forme —
+chiffre **lu** dans son rapport, car dans un cycle sur les emprunts, le
+retaper aurait été une faute de plus.
+
+> **C'est la deuxième fois de suite que mon propre rapport se fait prendre à
+> emprunter** (après le #500). Le détecteur mord son auteur à chaque passage,
+> et c'est le seul signe fiable qu'il fonctionne.
+
+### L'audit
+
+Autre découpage du registre (`re.split` sur les en-têtes au lieu d'un balayage
+ligne à ligne). **8/8 grandeurs concordantes.** Trois propriétés que le
+backtest n'énonce pas : les quatre classes forment une **partition**,
+**confirmé ⊂ retrouvé quelque part**, et la coupure forte/faible est
+**reproductible** depuis le seul nombre de chiffres.
+
+L'audit publie aussi ce que son accord **ne prouve pas** : les deux routes
+partagent la **même règle de confrontation** et ne diffèrent que par le
+découpage. **Leur accord valide le découpage, pas la règle.**
+
+**PASS** (5/5). **AUDIT OK** (5/5). Anti-cheat **CONFORME** (4/4). **0**
+script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
+**sans objet**.
+
+### File « à faire »
+
+1. **Une règle de confrontation qui prouve quelque chose** (#501) — la
+   présente ne départage que **3** emprunts sur 39. Confronter le nombre à
+   son **contexte de phrase** dans la source, pas à sa seule présence.
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **39 nombres empruntés confrontés** (#501) : **0 orphelin**, mais seulement
+  **3 confirmations fortes**. **L'exactitude des emprunts reste inconnue** —
+  ce n'est pas un satisfecit, c'est une limite de méthode.
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501** *(prédiction d'orphelins réfutée ; un emprunt
+  de plus dans mon propre rapport)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
