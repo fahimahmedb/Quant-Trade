@@ -12879,3 +12879,117 @@ Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #495 (18/08/2026) — **FAIL** : les deux « classe A » exécutent un tiers **en process**
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #494.
+Pré-enregistré dans `PREREG_class_a_witness_publication.md` (`356d96b`) — **la
+décision d'accepter un diff non borné comprise**. `n_trials = 1`.
+
+### La décision était prise d'avance
+
+> J'accepte un diff non borné au témoin, **à condition de le publier en entier
+> et d'attribuer chaque ligne**. Un rapport dont les chiffres bougent en silence
+> serait pire que le témoin manquant.
+
+### La prémisse du cycle est fausse
+
+| Script | Module importé | Appels `.main()` |
+|---|---|---|
+| `net_pnl_correction_backtest` | `nonml_pnl_duplicate_sweep_backtest` | **l.222** |
+| `sweep_pass_prose_fix_backtest` | `nonml_pnl_duplicate_sweep_backtest` | **l.72, 76, 251** |
+
+**Les deux exécutent un script du dépôt — en process, pas par `subprocess`.**
+La règle du #494 cherchait `subprocess.run([sys.executable, …])` et **ne pouvait
+pas les voir**. `net_pnl_correction` l'écrit même dans son propre rapport :
+*« corrigé par ricochet puisqu'il appelle `sw.main()` »*. **Personne ne l'avait
+lu.**
+
+### Ce que cela fait à la chaîne #487 → #494 → #495
+
+- le **#487** a refusé d'exécuter `sweep_pass_prose_fix` — **il avait raison**,
+  mais son motif écrit (« écrit 2 fichiers ») était faux ;
+- le **#494** a déclaré ce motif faux — **c'était exact** — et en a conclu que
+  le script était sans danger : **c'était faux** ;
+- le **#495** exécute, et découvre que le refus initial était fondé **pour une
+  troisième raison** que ni l'un ni l'autre n'avait vue.
+
+> **Trois cycles, trois motifs, un seul geste juste : ne pas exécuter.**
+> L'instinct du #487 valait mieux que les deux raisonnements qui l'ont suivi.
+
+### Les témoins sont apparus — et rien n'est publié
+
+Les deux se sont exécutés **sans erreur**, sont **idempotents**, et **le témoin
+figure dans les deux rapports régénérés** (diffs de 84 et 173 lignes, tous deux
+sous le plafond de 200, publiés en entier et attribués ligne à ligne).
+
+**Mais l'exécution a modifié `nonml_pnl_duplicate_sweep_result.md`** — un
+rapport tiers. **Critère 5 : NON.** Committer des rapports tout en échouant le
+critère qui les conditionne serait incohérent : **rien n'est committé, tout est
+restauré.**
+
+> **Le prix de la discipline est visible une deuxième fois**, après le #490.
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| les 2 idempotents | 2 | **2** | **vérifiée** |
+| témoin présent dans les 2 | 2 | **2** | **vérifiée** |
+| le diff dépasse le témoin | 2 | **2** | **vérifiée** |
+
+**Les trois prédictions sont vérifiées et le cycle échoue quand même** — parce
+qu'aucune ne portait sur ce qui l'a fait tomber.
+
+### Le critère 5 ne s'auto-absout pas
+
+Il porte sur ce que **l'exécution** a modifié, **pas sur l'arbre après
+restauration**. Le mesurer après coup l'aurait rendu toujours vrai — **un
+critère qui s'auto-absout ne contrôle rien**, et un cycle qui l'aurait mesuré
+ainsi aurait pu cocher et publier.
+
+### L'audit vérifie que le renoncement est fondé
+
+**CONCORDANT (6/6).** Le cycle ayant exécuté, obtenu ce qu'il voulait, puis tout
+restauré, l'audit vérifie que ce n'est **pas théâtral** : l'appel en process est
+**confirmé par résolution d'alias AST**, l'effet collatéral est **attribué sur
+pièce** (le `OUT` du module appelé **est** le fichier modifié), l'arbre est
+**réellement propre**, et le critère 5 ne s'auto-absout pas.
+
+Anti-cheat **CONFORME** (4/4). **FAIL** — rapporté tel quel. Robustesse (7a) et
+simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Reclasser les 4 témoins non publiés** (#494) — la règle de classe doit
+   inclure l'**exécution en process**, sinon elle est aveugle ; modification
+   déclarée d'avance.
+2. **Étendre la règle tolérante au #483** (#492) — déclarée d'avance, ou
+   établir qu'elle ne doit pas l'être.
+3. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` :
+   une interpolation suffirait.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **4 témoins non publiés** (#494) — **les 4 sont de classe C**, pas 2 : le
+  #495 a montré que la règle du #494 est **aveugle à l'exécution en process**.
+  **Aucun geste borné ne les publie.**
+- **17 chiffres publiés sans code qui les produise** : 13 réparables,
+  4 irréparables (#493).
+- **La convention d'auto-déclaration est vivante** : 95 % des 20 derniers (#492).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs ou classements faux, rétractés sur lecture du code** : **#487**,
+  **#485** *(deux fois)*, **#494** *(classe A aveugle à l'exécution en
+  process)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
