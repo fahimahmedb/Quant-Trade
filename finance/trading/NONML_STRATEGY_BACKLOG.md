@@ -13113,3 +13113,130 @@ Robustesse (7a) et simulation 300 € (7b) **sans objet** : aucune position.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #497 (18/08/2026) — **PASS** : 12 primitives recensées, **8 à zéro**, et un « + 2 » emprunté qui valait **3**
+
+**Cycle de DÉCISION + RECOMPTE**, première piste de la file ouverte au #496.
+`PREREG_execution_primitives_census.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### Changer de méthode plutôt qu'ajouter la forme du jour
+
+La règle « ce script exécute un tiers » avait été **rapiécée 3 fois** : #494
+(`subprocess.run`), #495 (exécution **en process**), #496 (son audit découvre
+`Popen`). Chaque cycle rattrapait la forme que le précédent avait manquée —
+**un procédé qui ne converge pas**.
+
+> Ce cycle **fige d'avance l'univers des 12 primitives d'exécution de Python**
+> et les compte **toutes, zéros compris**, au lieu d'attendre la prochaine
+> surprise.
+
+**Décision sur `Popen`, prise sur un principe déclaré avant tout recompte** :
+une règle qui dit « exécute un tiers » doit nommer **toute primitive qui
+exécute effectivement** — critère **factuel, pas historique**. La variante
+historique (« les formes déjà observées en usage ») aurait laissé `Popen`
+dehors ; elle est publiée dans le rapport, pour que la décision soit
+vérifiable et non rétrospective.
+
+### Le recensement
+
+Sur **971** scripts : **P1** `subprocess.run` **23** · **P2** `Popen` **3** ·
+**P9** `importlib` **1** · **P10** exécution en process **8**.
+**8 primitives sur 12 valent zéro** (P3 `call`/`check_call`/`check_output`,
+P4 `os.system`, P5 `os.popen`, P6 `os.exec*`/`spawn*`, P7 `runpy`,
+P8 `exec(open())`, P11 `from … import main`, P12 `multiprocessing`).
+
+| Grandeur | #496 | #497 | Écart |
+|---|---|---|---|
+| scripts exécutants | 30 | **33** | **+3** |
+| angle mort du #494 | 8 | **10** | **+2** |
+| cibles distinctes | 11 | **12** | **+1** |
+| témoins « exécute un tiers » | 4 | **4** | **+0** |
+
+**Réconciliation nom par nom, résidu 0** : les 3 nouveaux sont
+`reproducibility_campaign_v3_lot2`, `lot3` et `selfref_reports_marking`,
+tous par **P2**.
+
+### Deux prédictions réfutées **ensemble** — ma construction était fausse
+
+Le pré-enregistrement affirmait que les prédictions 1 (« 32 exécutants ») et 2
+(« ≥ 1 primitive hors du quatuor connu ») étaient **mutuellement exclusives par
+construction**, et que l'une **devait** tomber. **Les deux tombent.**
+
+> La construction supposait que le seul écart possible au « 30 + 2 » venait
+> d'une primitive inconnue. **Il venait d'ailleurs : le « + 2 » lui-même était
+> faux.** L'audit du #496 avait compté **2** scripts `Popen` par sa route
+> **regex** ; il y en a **3**. **J'ai emprunté ce chiffre à un rapport
+> antérieur sans le refaire** — c'est ce qui a fait tomber la prédiction 1.
+
+Et le recensement **ne découvre aucune** primitive exotique : les 8 zéros sont
+le résultat. **C'est ce qu'un recensement doit pouvoir donner** — sans lui,
+l'absence n'était pas établie, seulement supposée.
+
+### Trois bugs de mesure, corrigés avant tout résultat committé
+
+1. Un `2` **tapé en dur** dans ma prose : remplacé par une **lecture** du
+   rapport du #496.
+2. Ce lecteur cherchait le nombre **après** la phrase alors qu'il la
+   **précède** — il ramenait **1** au lieu de **2**. Corrigé, et l'audit
+   **relit les trois chiffres empruntés** par une autre expression (3/3).
+3. Une affirmation d'ordinal (« la troisième fois ») que rien ne comptait :
+   remplacée par « une fois de plus ».
+
+L'audit a par ailleurs vu retirer un `discard("P1")` **de complaisance** sur la
+source du backtest : mesuré sans lui, le compte vaut **0** de toute façon —
+la ligne ne servait qu'à excuser d'avance ce qu'elle aurait masqué.
+
+### L'audit
+
+Route indépendante par **`ast.unparse`** sur chaque nœud `Call` — elle partage
+l'analyse syntaxique (le #496 a montré qu'une route purement textuelle confond
+**porteur** et **citeur** et rate les appels coupés en lignes) mais **pas la
+logique d'appariement**, qui est justement ce qui avait faux. **12/12
+concordants**, addition de la réconciliation fermée, **0** chiffre en dur sur
+**56** en gras. **AUDIT OK (6/6)**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script du dépôt exécuté,
+arbre propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Étendre la règle tolérante au #483** (#492) — déclarée d'avance, ou
+   établir qu'elle ne doit pas l'être.
+2. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` :
+   une interpolation suffirait.
+3. **Les chiffres empruntés sans relecture** (#497) — combien de rapports
+   citent un nombre d'un cycle antérieur sans le recalculer ? Le « + 2 » de ce
+   cycle montre que l'emprunt est un **canal d'erreur** non recensé.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **L'univers des primitives d'exécution est clos** (#497) : 12 recensées,
+  **8 à zéro**, **0 angle mort ouvert** — la série des rapiéçages
+  #494→#495→#496 est **close**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, **mesuré** (#496).
+  **Aucun geste borné ne les publie.**
+- **10 scripts** dans l'angle mort de la règle d'origine (#497), contre 8
+  estimés au #496.
+- **17 chiffres publiés sans code qui les produise** : 13 réparables,
+  4 irréparables (#493).
+- **La convention d'auto-déclaration est vivante** : 95 % des 20 derniers (#492).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496** *(deux bugs de
+  détecteur)*, **#497** *(exclusivité mutuelle fausse, chiffre emprunté sans
+  relecture)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
