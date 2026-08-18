@@ -11093,3 +11093,107 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #479 (18/08/2026) — le compte complet : **18 défauts**, et j'en commets un moi-même
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #478.
+Pré-enregistré dans `PREREG_hardcoded_figures_remainder.md` (`40707e8`), avant
+toute mesure. `n_trials = 1`. Lecture du disque, **aucun script exécuté**.
+
+### Le premier dénombrement, plus un taux d'échantillon
+
+Le #476 avait examiné **5** des 35 rapports affectés — les plus chargés — en
+écrivant lui-même que son taux ne se généralisait pas. **Ce cycle a lu les
+restants**, un par un, ligne par ligne.
+
+| Origine | Défauts (pleins + partiels) | Examinés |
+|---|---|---|
+| #476 *(les 5 plus chargés)* | 3 | 5 |
+| **#479** *(le reste)* | **15** | **32** |
+| **total** | **18** | **37** |
+
+Détail des 32 : **11 défauts pleins**, **4 partiels** (citation et résultat
+propre mêlés dans la même phrase), **17 légitimes**, **0 non examiné**.
+
+> **Ce total n'est plus un taux d'échantillon : c'est un dénombrement.** Toute
+> la population a été lue. C'est le premier chiffre de cette série qui ne
+> demande aucune extrapolation.
+
+*(L'effectif est passé de 35 à 37 : les cycles **#477** et **#478**, écrits
+depuis, portent eux aussi des littéraux et entrent donc dans la population
+qu'ils contribuent à mesurer. Écart signalé, chiffre du jour publié.)*
+
+### Mes trois prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 3 défauts parmi les restants | ≥ 3 | **15** | **vérifiée** |
+| ≥ 20 légitimes | ≥ 20 | **17** | **réfutée** |
+| total consolidé ≤ 8 défauts | ≤ 8 | **18** | **réfutée** |
+
+**Les prédictions 2 et 3 sont réfutées, et dans le mauvais sens.** J'annonçais
+au plus 8 défauts ; il y en a **18**. Le défaut du #451, que trois cycles
+avaient traité comme une singularité, est **un usage répandu** dans ce dépôt —
+dont **deux tableaux entiers de résultats tapés à la main**
+(`pnl_persistence_exposed_pass_audit`, `reproducibility_sample_lot3_audit`, ce
+dernier trahi par un `73.2 %` au point décimal quand tout le dépôt écrit la
+virgule).
+
+Le cas le plus net est `marker_emitter_crossing` : **le #469 écrit en dur son
+propre compte** — celui-là même dont les #472 et #473 ont ensuite cherché
+l'origine dans le code.
+
+### Et j'en fais partie
+
+> `orphans_interrupted_or_lost` — **mon cycle #474** — écrit en dur « Sur 33
+> objets examinés, **1** correspond à du travail annoncé et introuvable ».
+> **Je commets le défaut que je mesure, deux cycles après l'avoir nommé.**
+> Aucune circonstance atténuante : le #473 l'avait déjà décrit.
+
+L'audit contrôle mécaniquement ce point — « le cycle s'accuse-t-il lui-même ? » —
+et confirme que le balayage ne s'épargne pas.
+
+### Ce que cela change à la lecture du #451
+
+**Le #451 n'était pas fautif — il était ordinaire.** Ce qui l'a rendu coûteux
+n'est pas d'avoir écrit un nombre à la main, c'est que **trois cycles ont
+ensuite cherché dans le code un calcul qui n'existait pas**.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (5/5) par l'AST,
+et **critère 4 tenu** : **0** défaut compté sans sa ligne publiée, **0** script
+sans section. **PASS** — le critère portait sur le procédé. Robustesse (7a) et
+simulation 300 € (7b) **sans objet**.
+
+**Rien n'est réparé ici** — la réparation, si elle a lieu, sera un cycle dédié.
+
+### File « à faire »
+
+1. **Les 3 audits orphelins** (#477) — leur `_result.md` n'existe pas : cycle
+   interrompu après l'audit, ou résultat publié sous un autre nom ?
+2. **Les gardes sans témoin inconditionnel** (#478) — mesurer, sur les 31,
+   celles qui effacent une section sans qu'aucun compte ne le signale.
+3. **Réparer les 2 tableaux tapés à la main** (#479) — les seuls défauts où un
+   lecteur ne peut pas distinguer une mesure d'une saisie.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **18 chiffres publiés sans code qui les produise** (#479), dénombrés et non
+  réparés — **dont un dans mon propre cycle #474**.
+- **31 scripts** portent une section conditionnelle (#478) ; **26 non examinés**.
+- **3 audits orphelins** sans `_result.md` (#477).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474** ;
+  **une règle d'audit sous-comptante au #478**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
