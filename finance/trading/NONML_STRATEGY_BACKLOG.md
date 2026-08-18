@@ -11659,3 +11659,120 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #484 (18/08/2026) — **4 masquants sur 15**, dénombrement complet, et **deux angles morts de plus**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #483.
+Pré-enregistré dans `PREREG_guards_witness_remainder.md` (`258b283`), **examen à
+la main compris**. `n_trials = 1`. Lecture du disque, **aucun script exécuté**.
+
+### Le dénombrement complet
+
+Le #481 avait classé 14 titres *sans témoin*, n'en avait lu que 5, et avait
+écrit que son **2/5 ne s'extrapolait pas**. **Les restants sont lus ici.**
+
+| Origine | Masquants | Examinés |
+|---|---|---|
+| #481 *(les 5 premiers)* | 2 | 5 |
+| **#484** *(le reste)* | **2** | **10** |
+| **total** | **4** | **15** |
+
+*(La population est passée de 14 à 15 : mon propre cycle **#482**, écrit depuis,
+y est entré.)*
+
+> **Toute la population a été lue** — second dénombrement complet de la série,
+> après celui du #479. **Aucune extrapolation.**
+
+Les deux nouveaux masquants : `six_reports_regeneration` l.232 — **le cas du
+#475 lui-même**, contrôle positif — et `sweep_pass_prose_fix` l.134, dont le
+`if strategies:` n'a **pas d'`else`** et dont aucun compte n'est publié hors
+garde : si aucun PASS n'était une stratégie, le lecteur n'apprendrait jamais que
+le contrôle a eu lieu.
+
+### L'examen révèle **deux angles morts** de ma règle, en plus de celui du #481
+
+| Angle mort | Causes relevées |
+|---|---|
+| branche d'`if/else` exhaustif *(connu au #481)* | **4** |
+| témoin situé dans un **bloc parent** | **2** |
+| témoin publié **sous un autre nom** | **4** |
+
+*(Les causes se recoupent : un cas peut en cumuler deux.)*
+
+> **Ma règle cherchait la variable de la garde au seul niveau non gardé.** Elle
+> manque un témoin dès qu'il est un peu plus haut, ou qu'il porte un autre nom —
+> `rappel` pour `rates`, `ok4` pour `idem`.
+
+**Aucun n'est corrigé.** Les corriger après mesure serait le retuning que les
+#480, #481 et #483 ont refusé. Le majorant est publié **avec ses trois causes**.
+
+### Et j'y figure encore
+
+`hardcoded_tables_repair` — **mon cycle #482** — est entré dans la population et
+**y commet l'angle mort « témoin sous un autre nom »**, dans le cycle même qui
+l'avait nommé deux fois. C'est écrit dans le rapport, et l'audit le contrôle.
+
+### Prédictions — les trois vérifiées, et c'est le moins intéressant
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 2 masquants parmi les restants | ≥ 2 | **2** | **vérifiée** |
+| total consolidé ≤ 7 masquants | ≤ 7 | **4** | **vérifiée** |
+| ≥ 1 branche d'`if/else` | ≥ 1 | **4** | **vérifiée** |
+
+**Elles étaient faibles** : « ≥ 2 » quand le #481 en avait trouvé 2 sur 5,
+« ≤ 7 » sur 14, « ≥ 1 » alternative quand le #481 en signalait déjà une. **Ce
+que le cycle apprend vraiment, il ne l'avait pas prédit** : les deux angles
+morts supplémentaires.
+
+### L'audit teste les motifs, pas les comptes
+
+Un cycle qui déclarerait « anodin » ce qu'il ne veut pas compter masquant serait
+**indétectable par un recomptage**. L'audit teste donc **chaque motif d'anodin**
+par une route propre : **6/6** motifs mécaniquement vérifiables **confirmés**
+(`orelse` non vide par AST ; témoin parent par AST hors du bloc gardé).
+
+Il déclare aussi **5 motifs non vérifiables mécaniquement** — « témoin sous un
+autre nom » demande de comprendre qu'une grandeur est le complément d'une autre.
+**C'est la limite de l'audit, et elle porte sur le motif le plus fréquent** ; il
+le dit, et signale en outre que sa propre détection de motif en a sur-capté 2.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+> **La forme qui a coûté trois cycles existe en 4 exemplaires** sur les 766
+> scripts producteurs. Elle est **réelle, nommée, et rare** — les trois à la
+> fois.
+
+### File « à faire »
+
+1. **Combien des 17 défauts restants sont irréparables par construction ?**
+   (#482) — la catégorie n'a jamais été comptée.
+2. **Les 113 `PREREG_` sans auto-déclaration** (#483) — la convention est-elle
+   récente, ou abandonnée ? Datable par `git log`.
+3. **Les 2 masquants établis au #484** — les réparer demande d'ajouter un
+   témoin inconditionnel, modification minimale et bornée.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **4 sections masquantes** établies sur 15 sans témoin (#481+#484) — **toutes
+  lues**, aucune non jugée, **aucune réparée**.
+- **113 `PREREG_`** sans auto-déclaration (#483) — non fautifs, non datés.
+- **17 chiffres publiés sans code qui les produise**, dont **au moins 1
+  irréparable par construction** (#482).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles prises en défaut et publiées comme telles** : #464, #474, #478, #479
+  *(rétracté au #482)*, #480, #481, #483, **#484 (deux angles morts de plus)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
