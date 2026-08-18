@@ -13240,3 +13240,120 @@ arbre propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #498 (18/08/2026) — **PASS** : à critère strictement identique, le verdict du #483 passe de **C** à **A**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #497.
+`PREREG_declaration_rule_extension_dating.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La question de légitimité, tranchée avant la mesure
+
+Rejouer une mesure avec un autre détecteur **après** avoir vu son verdict est
+la forme la plus discrète du retuning. Trois garde-fous déclarés d'avance :
+
+1. **Le critère du #483 n'est pas touché** — `A` si `m_d > m_n` et `p ≥ 50 %` ;
+   `B` si `m_d < m_n` et `p < 20 %` ; `C` sinon. **Aucun seuil ne bouge.**
+2. **La règle tolérante n'est pas fabriquée ici** : elle vient du #492,
+   verbatim, établie pour une raison étrangère au verdict du #483.
+3. **Les deux règles tournent sur la MÊME population, re-dérivée aujourd'hui**
+   — sans quoi l'écart confondrait **effet de détecteur** et **croissance du
+   dépôt**.
+
+> C'est le garde-fou 3 qui fait de ce cycle une vérification et non une
+> illustration.
+
+### Le résultat
+
+Population unique : **473** `PREREG_`, **0** non datable.
+
+| Règle | Déclarés | `m_d` | `m_n` | `p` (40 récents) | Verdict |
+|---|---|---|---|---|---|
+| **littérale** *(#483)* | **36** | 13/08/2026 | 05/08/2026 | **7,5 %** | **C** |
+| **tolérante** *(#492)* | **78** | 14/08/2026 | 04/08/2026 | **92,5 %** | **A** |
+
+**+42 déclarés, +85,0 points sur `p`, et le verdict bascule** — à critère
+inchangé, sur la même population, le même jour.
+
+> Le #483 n'a pas conclu de travers par erreur de raisonnement : il a conclu
+> sur ce que son détecteur lui montrait. **Une typographie a tenu lieu de
+> fait.** *(Aucun nombre de cycles n'est avancé — je ne l'ai pas compté.)*
+
+**La prédiction 3 était le contrôle** et elle est vérifiée : la littérale rend
+**C** aujourd'hui aussi, sur une population plus grande. **L'écart vient donc
+du détecteur, pas de la croissance du dépôt.** Sans ce contrôle, la bascule
+C→A n'aurait rien prouvé.
+
+### Une prédiction réfutée : le « 380 / 0 » du #483 **survit**
+
+J'annonçais qu'au moins **1** déclaré tolérant précéderait la date du premier
+déclaré littéral. Il y en a **0** : les **380** pré-enregistrements antérieurs
+au 13/08/2026 n'en portent aucun, **même en tolérant la typographie**.
+
+> **La bascule que le #483 décrivait est réelle — son détecteur ne l'avait pas
+> inventée.** Le #483 se trompait sur l'ampleur de la convention, pas sur sa
+> date de naissance. C'est une correction **partielle**, et il faut le dire :
+> un cycle qui réfute un prédécesseur a intérêt à le réfuter en entier.
+
+### L'audit
+
+Route indépendante : la datation est reconstruite en **un seul parcours** de
+l'historique (`git log --name-status`) au lieu d'un `git log` par fichier.
+**6/6 grandeurs concordantes**, population identique (473), **0** `PREREG_`
+non daté.
+
+L'audit vérifie en outre une propriété que le backtest n'énonce pas : la
+tolérante doit **inclure** la littérale. **0** détecté par la littérale seule
+→ l'écart **+42** est un **gain net, jamais un échange**. Il vérifie aussi que
+le critère et les deux regex se **retrouvent** dans leurs cycles d'origine
+(#483, #492) — l'emprunt est relu, leçon du #497. **AUDIT OK (5/5)**.
+
+Deux chiffres tapés en dur ont été retirés avant commit : un ordinal
+(« neuf cycles ») que rien ne comptait, et un `+42` dans l'audit — dans le
+paragraphe même qui traque les chiffres en dur.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script du dépôt exécuté,
+arbre propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` :
+   une interpolation suffirait.
+2. **Les chiffres empruntés sans relecture** (#497) — combien de rapports
+   citent un nombre d'un cycle antérieur sans le recalculer ?
+3. **Les verdicts adossés à un détecteur littéral** (#498) — la bascule C→A
+   montre qu'un verdict vaut ce que vaut son détecteur. **Combien d'autres
+   verdicts du dépôt reposent sur un appariement de forme ?**
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Le verdict C du #483 est corrigé en A** (#498) — à critère identique,
+  par changement de détecteur. **La convention est récente ET dominante :
+  92,5 % des 40 plus récents.**
+- **La date de naissance de la convention tient** : 13/08/2026, **380 / 0**
+  confirmé même en tolérant (#498).
+- **L'univers des primitives d'exécution est clos** (#497) : 12 recensées,
+  **8 à zéro**, **0 angle mort ouvert**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** : 13 réparables,
+  4 irréparables (#493).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496** *(deux bugs de
+  détecteur)*, **#497** *(exclusivité mutuelle fausse, chiffre emprunté)*,
+  **#498** *(verdict C d'un prédécesseur, corrigé à critère constant)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
