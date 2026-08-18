@@ -12993,3 +12993,123 @@ simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #496 (18/08/2026) — **PASS** : l'angle mort du #494 fait **8** scripts, et les **4** témoins sont bien de classe C
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #495.
+`PREREG_execution_detection_rule.md` committé **avant toute mesure**, `n_trials=1`.
+
+### Ce que le #495 avait conclu sans le mesurer
+
+Le #495 a lu **2** des 4 témoins, y a trouvé une exécution **en process**
+(`import nonml_x as sw ; sw.main()`), et en a conclu que **les 4** étaient de
+classe C. La règle corrigée, figée d'avance en **trois conditions** établies par
+AST, tranche : **4 sur 4 exécutent un tiers**. Le #495 avait raison — mais il
+généralisait, et ce cycle est ce qui transforme sa conclusion en mesure.
+
+| Témoin | Classe #494 | Condition qui le déclenche | Verdict |
+|---|---|---|---|
+| `nonml_battery_coverage_backtest.py` | C | 1 | exécute un tiers |
+| `nonml_net_pnl_correction_backtest.py` | **A** | 2 | exécute un tiers |
+| `nonml_six_reports_regeneration_backtest.py` | C | 1 | exécute un tiers |
+| `nonml_sweep_pass_prose_fix_backtest.py` | **A** | 2 | exécute un tiers |
+
+### L'ampleur de l'angle mort, jamais mesurée jusqu'ici
+
+Sur **969** scripts `nonml_*.py`, **30** exécutent un tiers du dépôt
+(condition 1 : **23** ; condition 2 : **8** ; condition 3 : **1**).
+
+> **8 scripts** que la règle du #494 classait « sans exécution » en exécutent
+> pourtant un — c'est **l'angle mort**, et il ne se limitait pas aux 2 cas
+> connus. **11 cibles distinctes**, la plus appelée étant
+> `nonml_pnl_duplicate_sweep_backtest.py` (**8** appels).
+
+### Deux bugs de mon détecteur, corrigés avant tout résultat committé
+
+1. **La condition 1 confondait « déclenchée » et « cible nommable »** : elle
+   exigeait un littéral `".py"` dans l'appel, alors que `battery_coverage` et
+   `six_reports_regeneration` passent une **variable** de chemin. Le premier jet
+   donnait **2 témoins sur 4** — j'aurais publié que le **#495 avait
+   extrapolé**, ce qui est le contraire de la vérité.
+2. **Le critère 5 se mesurait par regex sur ma propre source**, qui **cite** la
+   règle du #494 : le critère tombait à NON pour un script inerte. C'est la
+   distinction **porteur / citeur** du #473, retombée sur moi.
+
+> Les deux fois le détecteur était faux **dans le sens qui m'accusait**. Rien
+> ne garantissait ce signe : un détecteur faux reste faux.
+
+### Une prédiction réfutée, et un troisième angle mort — le mien
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| les 4 témoins exécutent un tiers | 4 | **4** | **vérifiée** |
+| ≥ 5 scripts dans l'angle mort du #494 | ≥ 5 | **8** | **vérifiée** |
+| la condition 3 ne trouve rien | 0 | **1** | **réfutée** |
+
+La condition 3, ajoutée délibérément **plus large que les faits qui la
+motivaient**, trouve `nonml_third_npz_schema_handling_backtest.py`
+(`importlib.util.spec_from_file_location`) — une forme que personne n'avait
+cherchée. **Élargir la règle au-delà du connu a rapporté.**
+
+L'audit en découvre un **troisième** : `subprocess.Popen([sys.executable, …])`,
+**2** scripts, que la condition 1 ne nomme pas (elle dit « la forme du #494 », et
+le #494 cherchait `run`). **Enregistré comme angle mort, pas absorbé après
+coup** — comme `from nonml_x import main` (**0** cas hors classement).
+
+### L'audit confronte deux routes et **mesure** l'écart au lieu de l'excuser
+
+Route **regex**, indépendante de l'AST. Écarts publiés tels quels : 30 vs **33**
+scripts exécutants, 8 vs **6** en angle mort, 11 vs **3** cibles. La cause est
+**mesurée** : **2** citeurs (motif dans un littéral de chaîne — l'AST a raison),
+**2** `Popen`, et une route regex qui ne collecte que les cibles de la
+condition 2. Le dépassement d'implémentation (`check_call`/`check_output`, non
+nommés au pré-enregistrement) est **inerte** : **0** script concerné.
+
+> Un premier jet de l'audit **invoquait** une cause plausible (« imports
+> indentés ou groupés ») qui, mesurée, valait **0**. Une explication crédible et
+> fausse est pire qu'un écart nu.
+
+Le test de réconciliation **borne** sans **identifier** (écart **3** ≤ **4**
+causes nommées) — limite écrite dans le rapport, pas dissimulée.
+
+**PASS** (5/5). Audit **OK** (4/4). Anti-cheat **CONFORME** (4/4). **0** chiffre
+en dur sur **30** en gras. **0** script du dépôt exécuté, arbre propre.
+Robustesse (7a) et simulation 300 € (7b) **sans objet** : aucune position.
+
+### File « à faire »
+
+1. **Le troisième angle mort** (#496) — `subprocess.Popen` : décider par
+   pré-enregistrement si la règle de classe doit le nommer, et **recompter**.
+2. **Étendre la règle tolérante au #483** (#492) — déclarée d'avance, ou
+   établir qu'elle ne doit pas l'être.
+3. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` :
+   une interpolation suffirait.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **4 témoins non publiés** (#494) — **les 4 de classe C, mesuré** (#496), plus
+  seulement inféré. **Aucun geste borné ne les publie.**
+- **8 scripts** dans l'angle mort du #494 (#496) — l'ampleur est désormais
+  chiffrée ; **1 angle mort ouvert** : `subprocess.Popen` (**2** scripts).
+- **17 chiffres publiés sans code qui les produise** : 13 réparables,
+  4 irréparables (#493).
+- **La convention d'auto-déclaration est vivante** : 95 % des 20 derniers (#492).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs ou classements faux, rétractés sur lecture du code** : **#487**,
+  **#485** *(deux fois)*, **#494** *(classe A aveugle à l'exécution en
+  process)*, **#496** *(deux bugs de mon propre détecteur, et une cause
+  invoquée par mon audit qui valait 0)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
