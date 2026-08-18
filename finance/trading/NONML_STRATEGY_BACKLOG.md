@@ -12555,3 +12555,110 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #492 (18/08/2026) — la convention **n'est pas morte** : c'est le détecteur qui décroche
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #491.
+Pré-enregistré dans `PREREG_declaration_convention_decay.md` (`f8a15b0`) —
+**les deux règles et les seuils compris**. `n_trials = 1`. Lecture de `git log`
+et du disque, **aucun script exécuté**.
+
+### Le constat du #486 à éprouver
+
+> **33** déclarés apparus le 13/08, puis **0** sur les 5 derniers.
+
+### Les deux règles, côte à côte
+
+| Règle | Déclarés sur 467 | Part parmi les 20 plus récents |
+|---|---|---|
+| **littérale** *(#483 : `Cycle de **X**`)* | **34** | **5,0 %** |
+| **tolérante** *(accepte aussi `**Cycle de X**`)* | **72** | **95,0 %** |
+| *écart* | *+38* | *+90 points* |
+
+| Tranche | Période | Littérale | Tolérante |
+|---|---|---|---|
+| 1–385 | 28/07 → 13/08 | 2 / 385 | 2 / 385 |
+| 386–462 | 13/08 → 18/08 | **32 / 77** | **65 / 77** |
+| 463–467 | 18/08 | **0 / 5** | **5 / 5** |
+
+### Lecture **B** — artefact de format
+
+**La convention n'est pas morte : elle a changé de typographie.** Les cycles
+récents écrivent `**Cycle de MODIFICATION**` — la phrase entière en gras — au
+lieu de `Cycle de **MODIFICATION**`. **Mêmes mots, astérisques déplacés.**
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| lecture B retenue | B | **B** | **vérifiée** |
+| les 5 derniers : tolérante seule | 5 | **5** | **vérifiée** |
+| +5 déclarés au moins | ≥ 5 | **+38** | **vérifiée** |
+
+### Ce que je dois dire sur mon propre mérite
+
+**C'est l'hypothèse qui m'arrangeait** — elle transforme un abandon de
+convention, dont je serais responsable, en défaut de détecteur. Le
+pré-enregistrement le déclarait avant de mesurer.
+
+> **Le fait mesurable — deux mises en forme pour une même déclaration — est
+> vérifiable par un tiers ; mon mérite à l'avoir prédit ne l'est pas.** J'écris
+> moi-même les cycles concernés, et j'avais toute latitude pour deviner juste.
+
+**Aucun chiffre du #486 n'est faux** : il comptait ce que sa règle voyait, et il
+l'a dit. **Ce cycle ajoute que la règle voyait moins que la pratique.**
+
+**La règle du #483 n'est pas modifiée ailleurs** : la tolérante n'existe que
+dans ce rapport. L'étendre partout serait une modification non déclarée, et
+mériterait son propre cycle.
+
+### L'audit teste l'hypothèse contre elle-même
+
+**CONCORDANT (5/5).** Le résultat arrangeant l'auteur, l'audit contrôle :
+
+1. **la variante existe-t-elle vraiment ?** — 38 cas, extraits **verbatim** :
+   ce sont les mêmes mots, pas des déclarations approximatives rattrapées par
+   une règle lâche ;
+2. **la tolérante n'élargit-elle que la typographie ?** — **0** cas capté sans
+   la locution « Cycle de » : l'élargissement est **purement typographique** ;
+3. **le déclin littéral était-il réel ?** — **1/20** contre **19/20** :
+   réel sous sa règle, **et sans signification** ;
+4. **5/5** contrôles de transparence, dont « publie-t-il la réserve sur son
+   propre mérite ? ».
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 4 autres irréparabilités du #485** — leurs justifications ont-elles le
+   même défaut que celle tombée au #488 ?
+2. **Les 3 rapports portant un témoin non publié** (#487, #489, #491) — établir
+   ce qu'il faudrait pour qu'il paraisse sans effet de bord.
+3. **Étendre la règle tolérante au #483** — modification déclarée d'avance, ou
+   établir qu'elle ne doit pas l'être.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **La convention d'auto-déclaration est vivante** : **95 %** des 20 derniers
+  `PREREG_` la portent (#492). Le chiffre de 33/461 du #486 mesurait un
+  **détecteur**, pas une pratique.
+- **0 section masquante** (#491) — série close.
+- **3 rapports** portent un témoin **dans le code mais pas encore publié**.
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485/#488).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou prédictions prises en défaut et publiées comme telles** : #464,
+  #474, #478, #479, #480, #481, #483 *(détecteur trop littéral, montré au
+  #492)*, #484, #485, #486, #487, #488, #489, #490, #491.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
