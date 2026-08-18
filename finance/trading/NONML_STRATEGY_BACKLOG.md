@@ -15295,3 +15295,121 @@ script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #514 (18/08/2026) — **PASS** : la règle du #502 **survit** au témoin, mais **64 % de faux positifs**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #513.
+`PREREG_contextual_rule_permutation_control.md` committé **avant toute
+mesure**, `n_trials=1`.
+
+### Ce qui était en jeu
+
+Les #512 et #513 ont montré qu'un détecteur peut produire un chiffre entier
+sans rien mesurer. **Aucun détecteur des #500-#511 n'avait subi ce test** — et
+la règle contextuelle du #502 n'est pas un détecteur parmi d'autres : c'est le
+**socle partagé** des **#502, #503, #504, #505, #508 et #509**.
+
+Le pré-enregistrement fixait la conséquence **avant** de connaître le chiffre :
+écart < 20 points → **six cycles atteints ensemble**.
+
+### Le témoin : une permutation, pas des mots neutres
+
+La règle ne cherche pas des mots choisis, elle cherche **les mots-clés de
+l'emprunt lui-même**. Le témoin correct est donc un **dérangement
+déterministe** : chaque emprunt rejoué avec les mots-clés de **son voisin**.
+
+| Mots-clés | Confirmés | Taux |
+|---|---|---|
+| **réels** | **37 / 39** | **94,9 %** |
+| **permutés** | **25 / 39** | **64,1 %** |
+
+**Écart : +30,8 points** — seuil exigé **20**. **La règle discrimine, et les
+six cycles tiennent.**
+
+### Mais le seuil ne dit pas tout
+
+> **Près de deux emprunts sur trois se laissent confirmer par le vocabulaire
+> d'un voisin.** La **spécificité** de la règle n'est que de **35,9 %**. Elle
+> discrimine — **elle ne prouve pas**.
+>
+> Les #502-#509 avaient chacun écrit que leur appariement « ne vaut pas
+> identité de sujet ». **Ce chiffre donne enfin la mesure de cette réserve** :
+> elle valait, en gros, **deux confirmations sur trois**.
+
+**Prédiction 3 réfutée** : j'annonçais moins de 10 faux positifs, il y en a
+**25**.
+
+### L'audit : tous les dérangements, pas un seul
+
+Un dérangement unique peut être chanceux. L'audit rejoue le test avec **les
+38 décalages possibles** :
+
+- taux réel **94,9 %** ; médiane des témoins **46,2 %** ; min **33,3 %**,
+  max **66,7 %** ;
+- **38 décalages sur 38** franchissent le seuil → **le résultat est
+  structurel, pas un coup de chance**.
+
+> **Et le #514 avait tiré le décalage le plus défavorable** : `k=1` arrive au
+> rang **37 sur 38** parmi les témoins les plus forts. Écart médian **+48,7**
+> points contre **+30,8** publié. **Son chiffre est une borne basse, pas un
+> chiffre flatteur** — le seul témoin qu'il a testé était celui qui donnait le
+> plus de crédit à l'adversaire, et la règle le battait quand même.
+
+**AUDIT OK (5/5)**. L'audit publie sa limite : il teste la **robustesse au
+dérangement**, pas la **validité** — « ≥ 2 mots-clés dans ±200 caractères »
+reste une **convention** pour dire « même sujet ».
+
+### Ce que ce cycle ne teste pas
+
+**Seule** la règle contextuelle a été éprouvée. Les autres détecteurs des
+#500-#511 — appariement AST des chaînes publiées (#500), lecture des chiffres
+en gras (#501), primitives d'exécution (#497) — **restent non testés**. Le
+rappeler vaut mieux que laisser croire à un examen complet.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les détecteurs non testés des #500, #501 et #497** (#514) — appariement
+   AST, lecture des chiffres en gras, primitives d'exécution. Aucun n'a subi
+   de témoin ; le #514 n'en a éprouvé qu'un sur quatre.
+2. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+3. **Les 3 justifications du #485 jamais vérifiées** (#511) — deux sont déjà
+   tombées à la lecture du code (#493, #511).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **La règle du #502 discrimine (+30,8 pts, 38/38 décalages) mais sa
+  spécificité n'est que de 35,9 %** (#514). Les conclusions des #502-#509
+  tiennent — **avec cette réserve désormais chiffrée**.
+- **3 détecteurs sur 4 n'ont subi aucun témoin** (#500, #501, #497).
+- **Le taux de rectification est indémontrable par appariement** (#512, #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) ; **2 justifications du #485 sur 5**
+  sont tombées, **3** jamais vérifiées.
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, régime postérieur
+  homogène (**62** scripts, **0** exception).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
