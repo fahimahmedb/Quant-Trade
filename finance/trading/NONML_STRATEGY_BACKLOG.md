@@ -13871,3 +13871,133 @@ propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #503 (18/08/2026) — **PASS**, et **ma propre classe s'appelait mal** : 14 candidates sur 15 sont **postérieures**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #502.
+`PREREG_reference_vs_value_errors.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La question
+
+Le #502 laissait **29 suspects** sans dire de quoi ils souffrent : **bon
+chiffre attribué au mauvais cycle** (erreur de référence) ou **mauvais chiffre
+attribué au bon cycle** (erreur de valeur) ? Paramètres du #502 (**6
+lettres**, **±200 caractères**, **2 mots-clés**) **repris tels quels** —
+les retoucher aurait été régler un détecteur sur la population qu'il juge.
+
+| Classe | Nombre |
+|---|---|
+| **référence probable ailleurs** | **15** |
+| **valeur suspecte** | **13** |
+| **indéterminé** | **1** |
+
+### La correction que le cycle s'inflige
+
+Les **15** « référence probable ailleurs » ont des sections candidates — mais
+**14 sur 15 n'ont que des candidates postérieures au cycle cité**.
+
+> **Une candidate postérieure n'indique aucune erreur de référence** : elle
+> indique qu'un cycle **ultérieur a repris le chiffre**, ce qui est le
+> fonctionnement normal d'un registre où chaque cycle commente les précédents.
+> **Un détecteur qui ignore le temps prend cette reprise pour une erreur
+> d'attribution.**
+
+Le nom de la classe est **conservé** — il était figé au pré-enregistrement, et
+renommer après mesure serait maquiller un résultat gênant — mais **son sens
+est corrigé par la mesure**. Conséquence directe : les **12** candidates
+uniques ne sont pas des corrections nommables. **Il en reste 1.**
+
+### Deux prédictions sur trois réfutées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| « référence ailleurs » ≥ 5 | ≥ 5 | **15** | **vérifiée** |
+| écart ≥ 20 points entre les deux groupes | ≥ 20 | **3,3** | **réfutée** |
+| ≥ 1 candidate unique | ≥ 1 | **12** *(dont **1** exploitable)* | **vérifiée** |
+
+**La prédiction 2 tombe, et elle emporte une lecture du #502** :
+sur-crédités **50,0 %** et absents **53,3 %** de « référence ailleurs ».
+
+> **Les deux groupes du #502 se répartissent de la même façon.** Sa distinction
+> entre « sur-crédité » et « absent » **ne recouvre rien** — c'est écrit ici
+> contre ma propre lecture d'il y a un cycle.
+
+### L'audit
+
+Parcours **inverse** : au lieu de balayer les sections en cherchant le nombre,
+il localise le nombre dans le registre entier et rattache chaque occurrence à
+sa section **par position**. **6/6 grandeurs concordantes**, et la direction
+des candidates **recalculée indépendamment** : **14 sur 15**.
+
+> La correction que le rapport s'inflige est donc **confirmée par un chemin
+> indépendant** — ce n'est pas une concession rhétorique.
+
+Quatre propriétés vérifiées que le backtest n'énonce pas : partition des trois
+classes, effectif égal à **14 + 15** du #502, exclusivité (les classes sans
+candidate en ont bien zéro), direction recalculée. **AUDIT OK (5/5)**, **0**
+chiffre en dur sur **74** en gras.
+
+L'audit publie sa limite : les deux parcours appliquent la **même règle
+contextuelle** — leur accord valide le parcours, pas la règle — et **aucun ne
+lit le sens** : « repris plus tard » est une inférence tirée de **numéros de
+cycle**, pas de phrases.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### Ce que quatre cycles d'enquête ont donné
+
+**#500 → #503** ont recensé, confronté, contextualisé puis daté les emprunts.
+Bilan honnête : sur **39** nombres empruntés, **8** confirmés au même sujet
+*(borne supérieure ; **5** à la phrase)*, **1** seule correction de référence
+nommable, et **13 valeurs suspectes** dont aucune n'est établie fausse.
+
+> **La série a surtout mesuré ses propres détecteurs.** Chaque cycle a corrigé
+> le précédent — et trois fois sur quatre, c'est mon interprétation, pas la
+> mesure, qui était en cause.
+
+### File « à faire »
+
+1. **Les 13 « valeurs suspectes »** (#503) — seule classe qui n'a pas encore
+   été expliquée par un artefact de méthode. Vérifier si leur nombre apparaît
+   dans le **rapport `results/`** du cycle cité, que la règle ne consulte pas
+   — le registre n'est pas la seule source publiée.
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **29 emprunts suspects** (#502) : **15** dont le chiffre est **repris plus
+  tard** *(et non mal attribué)*, **13 valeurs suspectes** non expliquées,
+  **1 indéterminé**. **1 seule correction de référence nommable.**
+- **La distinction sur-crédité / absent du #502 ne recouvre rien** (#503).
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503** *(nom de classe qui
+  sur-affirmait ; une lecture du #502 invalidée)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
