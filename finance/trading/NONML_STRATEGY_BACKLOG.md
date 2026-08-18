@@ -12338,3 +12338,117 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #490 (18/08/2026) — le déplacement **n'a pas lieu**, et ma propre règle me l'a coûté
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #489.
+Pré-enregistré dans `PREREG_battery_witness_hoist.md` (`ebbc76a`) — **aveu
+préalable compris**. `n_trials = 1`. **Aucun script exécuté, 0 ligne modifiée.**
+
+### L'aveu préalable
+
+Le #489 avait refusé de déplacer la ligne après coup et inscrit le déplacement
+comme piste **à déclarer d'avance**. Mais je savais déjà qu'une ligne au niveau
+libre satisferait la règle : **ce point est publié comme non informatif**, et
+**aucune prédiction ne porte dessus**. Ce qui était ouvert : `indet`
+est-elle seulement **disponible** au niveau libre ?
+
+### Volet A — la mesure qui décide, avant toute modification
+
+| Nom | Ligne | Profondeur de garde |
+|---|---|---|
+| `indet` | 157 | **1** |
+| `executes` *(sa seule dépendance)* | 97 | **0** |
+
+**Le témoin ne peut pas être écrit au niveau libre en déplaçant une seule
+ligne** : `indet` n'y est pas dans la portée. Il faudrait **hisser son
+affectation** — ou **dupliquer le `sum(...)`**, ce qui créerait deux sources
+pour un même chiffre, le défaut que les #479 à #488 ont passé neuf cycles à
+dénombrer.
+
+**Le pré-enregistrement l'interdisait.** Décision : **on ne touche à rien.**
+
+### Ce que je dois dire contre moi
+
+`executes` est au niveau libre, et le script y publie déjà `len(executes)` sans
+garde. **Hisser `indet` aurait été parfaitement anodin** — l'audit le vérifie :
+l'expression n'appelle que `sum`, un builtin pur.
+
+> **Mon pré-enregistrement était plus strict que nécessaire, et je l'applique
+> quand même.** L'assouplir maintenant *parce que la mesure me montre qu'il
+> l'est* serait exactement l'ajustement a posteriori refusé depuis le #480.
+
+**C'est le coût réel de la discipline, et il est ici visible : un geste sûr n'a
+pas été fait parce qu'il n'avait pas été annoncé.** Un cycle ultérieur pourra
+déclarer le hissage d'avance — ce sera légitime, mais annoncé.
+
+### Prédictions — aucune ne porte sur la règle
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| `indet` affectée à profondeur > 0 | > 0 | **1** | **vérifiée** |
+| le déplacement exige de hisser un calcul | oui | **oui** | **vérifiée** |
+| aucune autre section ne change de classe | 0 | **0** | **vérifiée** |
+
+**Les trois vérifiées, et le cycle ne modifie rien** — le résultat le plus mince
+de la série, mais **décidé par une mesure prise avant toute modification**.
+
+### L'audit vérifie que l'abstention n'est pas commode
+
+**CONCORDANT (5/5).** Ne rien faire est le résultat le moins coûteux ; l'audit
+contrôle donc :
+
+1. **la portée annoncée** — confirmée par un parcours **ascendant** des parents
+   AST, l'inverse du parcours du backtest ;
+2. **le caractère anodin du hissage** — l'expression n'appelle que `sum` :
+   **l'aveu du rapport est vérifié**, le cycle s'est bien privé d'une réparation
+   sûre ;
+3. **l'interdiction est-elle dans le texte pré-enregistré ?** — oui, écrite
+   avant de connaître la portée : **l'abstention n'est pas une justification
+   construite après coup** ;
+4. **le dépôt intact** — 0 fichier modifié, rapport cible inchangé ;
+5. **5/5 contrôles de transparence.**
+
+*(Les motifs de cet audit **normalisent désormais le markdown**. Cinq audits de
+la série — #478, #482, #484, #487, #488 — ont échoué sur du texte français mis
+en gras ou coupé en deux lignes. **La classe d'erreur est corrigée, plutôt que
+constatée une sixième fois.**)*
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Hisser `indet`** — déclaré d'avance, dans un cycle dédié : c'est le geste
+   que le #490 s'est interdit, et il est sûr.
+2. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis 0 sur les 5 derniers.
+3. **Les 4 autres irréparabilités du #485** — leurs justifications ont-elles le
+   même défaut que celle tombée au #488 ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **1 section masquante** au sens de la règle — **son témoin existe mais sous
+  garde** ; le hisser est **sûr et déclaré à la file**.
+- **3 rapports** portent un témoin **dans le code mais pas encore publié**
+  (#487, #489).
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485/#488).
+- **La convention d'auto-déclaration** : récente (13/08/2026), 33 sur 461 (#486).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou justifications prises en défaut et publiées comme telles** : #464,
+  #474, #478, #479, #480, #481, #483, #484, #485, #486, #487, #488, #489,
+  **#490 (pré-enregistrement plus strict que nécessaire, appliqué quand même)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
