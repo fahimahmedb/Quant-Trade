@@ -10555,3 +10555,115 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #474 (18/08/2026) — les orphelins du #464 : une dette de **nommage**, pas de travail
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #473 (et
+troisième de celle du #464, en attente depuis dix cycles). Pré-enregistré dans
+`PREREG_orphans_interrupted_or_lost.md` (`fbe9c28`), avant toute mesure.
+`n_trials = 1`. Lecture du disque et de `git log`, **aucun effet de bord**.
+
+### La règle, fixée avant de regarder
+
+Trois faits mécaniques par `<nom>` : **R** (rapport présent aujourd'hui),
+**H** (rapport présent à un commit quelconque), **S** (script présent).
+`R` → **cycle complet** ; `¬R ∧ H` → **trace perdue** ; `¬R ∧ ¬H` → **cycle
+interrompu**. Exhaustive par construction, donc **jamais comptée comme une
+prédiction vérifiée**.
+
+### Le résultat
+
+| Population | #464 | Ici | Complet | Interrompu | Perdu |
+|---|---|---|---|---|---|
+| entrées sans aucun fichier | 10 | **10** | 0 | 10 | **0** |
+| `PREREG_` jamais mentionnés | 24 | **23** | 13 | 10 | **0** |
+
+**Aucune trace perdue** sur les 33 objets — vérifié par deux routes distinctes
+(`git log --diff-filter=A` au backtest, `git rev-list --all --objects` à
+l'audit).
+
+### L'écart −1, calculé et non supposé
+
+La liste du #464 **est tronquée** : elle nomme **15** de ses 24 orphelins et
+clôt par « *… et 9 autres* ». **Son critère 3 — « orphelins listés
+nominativement — OUI » — était donc surévalué**, et c'est inscrit ici.
+
+Sa population a donc été **rejouée sur les objets git à son propre commit**
+(`e411360c9c49`) : elle redonne exactement **24**, et le seul sortant est
+**`prereg_convention_coverage` — le pré-enregistrement du #464 lui-même**. Il se
+comptait dans sa propre population : la même **auto-inclusion** que les
+#463/#468 ont traquée ailleurs. C'est ce qui justifie l'exclusion de soi
+appliquée ici avant mesure (règle des #447/#463).
+
+### Le constat qui change le verdict — post-hoc, signalé comme tel
+
+Ma règle cherche un rapport **portant le `<nom>` du pré-enregistrement**. Or un
+**cycle de correction** réutilise des scripts existants et publie sous **leurs**
+noms. Contrôle : **9 des 10** entrées classées « interrompues » citent des
+rapports **qui existent aujourd'hui**.
+
+> **Publier « 10 cycles de travail annoncé et non produit » aurait été une
+> accusation fausse portée contre la trace du dépôt** — la faute exacte que le
+> #464 s'était interdite.
+
+Ce que la règle mesure réellement, énoncé correctement : *aucun rapport ne porte
+le `<nom>` du pré-enregistrement* — vrai, et bien plus faible que « inachevé ».
+
+### Mes trois prédictions
+
+| Prédiction | Mesuré | Verdict |
+|---|---|---|
+| ≥ 12 cycles complets parmi les orphelins | 13 | **vérifiée** |
+| ≥ 6 interrompus parmi les entrées sans fichier | 10 | **vérifiée — mais par un instrument faux** |
+| ≥ 1 trace perdue au total | 0 | **réfutée** |
+
+**La prédiction 2 ne compte pas.** Elle est confirmée par une règle dont le
+contrôle post-hoc vient de montrer qu'elle se trompe 9 fois sur 10 : **une
+prédiction confirmée par un instrument faux n'est pas confirmée.**
+
+### Ce que devient la dette du #464
+
+- **1** seule entrée sans fichier **ni rapport cité présent** —
+  `leaders_index52w_high_overlay_battery_causal_refresh` ;
+- **9** entrées ayant produit leurs rapports **sous d'autres noms** ;
+- **13** cycles complets dont **l'entrée de backlog manque** ;
+- **10** `PREREG_` sans rapport ni entrée ; **0** rapport perdu.
+
+> Sur 33 objets, **1** correspond à du travail annoncé et introuvable. **La
+> dette du #464 était une dette de nommage, pas de travail.**
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (6/6), par une
+route indépendante. **PASS** — le critère portait sur le procédé. Robustesse
+(7a) et simulation 300 € (7b) **sans objet** : aucune position, aucun paramètre
+numérique à perturber — dit plutôt qu'inventé.
+
+**Rien n'est réparé ici** : ni entrée ajoutée, ni `PREREG_` supprimé.
+
+### File « à faire »
+
+1. **L'incohérence émetteur/rapport** de `six_reports_regeneration` (#469).
+2. **Les chiffres publiés sans code qui les produise** — généraliser le constat
+   du #473 : combien d'autres comptes de rapport sont des littéraux ?
+3. **Les 13 cycles complets sans entrée de backlog** (#474) — écrire les entrées
+   manquantes, ou établir qu'elles sont couvertes autrement.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **1 cycle** réellement inachevé (#474) ; **13 cycles complets** sans entrée ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** (« listés nominativement » sur une liste
+  tronquée à 15/24), inscrit et non corrigé rétroactivement.
+- **Le compte du #451 a été établi à la main et déclaré tel** (#473).
+- **Un écart pré-enregistrement / script au #472**, inscrit.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **1 incohérence** émetteur/rapport (#469).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
