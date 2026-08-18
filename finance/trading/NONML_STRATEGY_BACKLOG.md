@@ -11419,3 +11419,127 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #482 (18/08/2026) — un **cycle de modification qui ne modifie rien**, et pourquoi
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #481.
+Pré-enregistré dans `PREREG_hardcoded_tables_repair.md` (`bc78769`), avant toute
+modification et toute mesure. `n_trials = 1`.
+
+Il devait réparer les **2 tableaux tapés à la main** du #479. **Il n'en répare
+aucun** — les deux modifications prévues étaient, l'une **inutile**, l'autre
+**nuisible**.
+
+### Cible 2 — `reproducibility_sample_lot3_audit` : **ce n'est pas un défaut**
+
+Les lignes incriminées sont **à l'intérieur d'un bloc de citation** et
+commencent par `-` et `+` : **c'est un diff reproduit**, celui que le cycle
+avait observé entre deux versions d'un rapport.
+
+Le #479 avait retenu comme indice aggravant que `73.2 %` employait le **point
+décimal** quand tout le dépôt écrit la virgule. **C'était au contraire la preuve
+qu'il s'agissait d'une citation fidèle.**
+
+> **Le verdict du #479 sur cette cible est rétracté. Son total passe de 18 à
+> 17.** Réparer aurait consisté à **falsifier une citation** pour la faire
+> ressembler à une mesure — plus grave que le défaut supposé.
+
+Le #479 avait pourtant lu chaque ligne et publié son motif. **Sa lecture a
+manqué le contexte de la ligne**, pas la ligne.
+
+### Cible 1 — `pnl_persistence_exposed_pass_audit` : défaut réel, **irréparable**
+
+Les trois comptes de la colonne « Après (#416) » sont bien tapés à la main. Mais
+ils portent sur l'univers du balayage **#415**, que ce script **n'importe pas et
+ne reconstruit pas** ; aucun module du dépôt ne l'expose. Le seul décompte
+disponible aujourd'hui — **219** fichiers `.npz` — **ne mesure pas la même
+chose** que le « 42 » de l'époque.
+
+Le pré-enregistrement interdisait de changer une population. **Substituer un
+décompte moderne aurait remplacé un chiffre faux par un chiffre qui mesure autre
+chose.**
+
+> **Une grandeur historique dont l'univers n'est plus reconstructible n'est pas
+> réparable — seulement signalable.** C'est une catégorie que le #479 n'avait
+> pas prévue en inscrivant « réparer » à sa file.
+
+### Ce que l'idempotence ne prouve pas
+
+Les deux scripts ont été exécutés deux fois, comme prévu. `exposed_pass`
+régénère son rapport **octet pour octet** — **0** ligne de diff.
+
+> **C'est exactement ce à quoi il fallait s'attendre, et c'est le problème.** Un
+> tableau tapé à la main se reproduit parfaitement, indéfiniment, **quoi qu'il
+> advienne du dépôt**. Son idempotence est celle d'une constante, pas celle
+> d'une mesure.
+
+Le **#463** avait fait de l'idempotence un critère de qualité ; ce cas en montre
+la limite. À l'inverse, le second script produit **27** lignes de diff
+précisément parce que son décompte est **calculé**. **L'instabilité est ici le
+signe du bon comportement.**
+
+### Mes trois prédictions — confrontées telles qu'écrites
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| les 2 s'exécutent sans erreur | 2 | **2** | **vérifiée** |
+| ≥ 1 produit des chiffres différents | ≥ 1 | **1** | **vérifiée** |
+| les 2 sont idempotents | 2 | **2** | **vérifiée** |
+
+Elles supposaient toutes que la réparation aurait lieu. **Elles sont confrontées
+sur les scripts non modifiés** — la lecture la plus défavorable, et la seule
+honnête : elles ne sont pas réinterprétées après coup.
+
+### L'audit vérifie les refus, pas les chiffres
+
+Un cycle de modification qui ne modifie rien est le cas où la complaisance est
+la plus facile. L'audit contrôle donc **les deux refus** par des routes propres :
+comptage des délimiteurs de citation pour l'un, énumération **AST** des noms
+liés du module pour l'autre. **Les deux refus sont fondés.**
+
+Il vérifie aussi que le dépôt est **réellement intact** (`git diff` : **0**
+fichier modifié) — l'annonce est vérifiée, pas crue — et **5/5** contrôles de
+protocole. Son premier motif de recherche était trop lâche (il captait une
+mention en prose) ; **les deux comptes sont publiés**, pas seulement celui qui
+arrange.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+**0 ligne de code modifiée, 0 résidu**, aucun rapport régénéré committé.
+
+> **La piste « réparer » de la file du #479 est close.**
+
+### File « à faire »
+
+1. **Reprendre les 3 audits orphelins avec examen à la main déclaré d'avance**
+   (#480) — seule voie propre pour clore ce que ce cycle a laissé ouvert.
+2. **Les 9 sans témoin non examinés** (#481) — les lire, échantillon déclaré
+   d'avance.
+3. **Combien des 17 défauts restants sont irréparables par construction ?**
+   (#482) — la catégorie découverte ici n'a jamais été comptée.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **17 chiffres publiés sans code qui les produise** *(18 au #479, **−1**
+  rétracté au #482)*, dont **au moins 1 irréparable par construction**.
+- **2 sections masquantes** (#481) ; **9 sans témoin non examinés** ; total 14
+  publié comme majorant.
+- **3 audits orphelins** : verdict **A/C/?** contredit par deux routes donnant
+  **C/C/C** (#480). **Non tranché.**
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474** ;
+  **une règle d'audit sous-comptante au #478** ; **une règle de lecture
+  défectueuse au #480** ; **une règle aveugle au `if/else` au #481** ; **un
+  verdict de lecture erroné au #479**, rétracté ici.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
