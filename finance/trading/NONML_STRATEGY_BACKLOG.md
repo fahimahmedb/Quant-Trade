@@ -14144,3 +14144,141 @@ non au registre, et **5 résidus** irréductibles.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #505 (18/08/2026) — **PASS**, et l'audit **retire le mot « introuvable »** au rapport
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #504.
+`PREREG_residual_borrowings_unpublished_sources.md` committé **avant toute
+mesure**, `n_trials=1`.
+
+### Les trois familles non publiées
+
+`PREREG_*.md` (appariement **en gras**), commentaires et docstrings
+(`tokenize` + AST, appariement **nu**), messages de commit (appariement
+**nu**). L'appariement nu est plus permissif — **la contrainte de contexte du
+#502 reste identique** pour compenser, **paramètres inchangés** pour la
+troisième fois consécutive.
+
+### Le résultat
+
+| Classe | Nombre |
+|---|---|
+| sourcé au `PREREG_` du cycle cité | **0** |
+| sourcé dans un autre `PREREG_` | **3** |
+| sourcé dans un commentaire ou une docstring | **0** |
+| sourcé dans un message de commit | **0** |
+| **introuvable partout** | **2** |
+
+### La distinction qui empêche la série de se valider elle-même
+
+Sur les **3** sourçages en « autre `PREREG_` », **2 sont circulaires** : le
+chiffre se trouve dans le **pré-enregistrement du script qui le publie**.
+
+> **Même auteur, même cycle, même erreur possible.** Trouver un chiffre dans
+> son propre `PREREG_` ne le source pas. Sans cette distinction, le cycle
+> aurait annoncé **3** résidus sourcés au lieu de **1**.
+
+Et le seul sourçage « tiers » est un `PREREG_` **sans rapport thématique** avec
+le cycle cité (`momentum_decile_spread_vol_targeting_overlay_pit_universe`
+pour un chiffre attribué au #451) : **un appariement de coïncidence**, publié
+comme tel. **Le sourçage réellement indépendant tombe à 1 sur 5 — et il est
+douteux.**
+
+### L'audit corrige le rapport
+
+Il **relâche la contrainte** au lieu de refaire la même mesure : il cherche le
+nombre **nu, sans aucune exigence de sujet**, dans **3203** fichiers suivis et
+**2340** messages de commit.
+
+| Introuvable | Fichiers portant le nombre nu | Dans un commit |
+|---|---|---|
+| `content_defined_magnitudes_audit` (#449, **2**) | **1335** | oui |
+| `report_idempotence_backtest` (#443, **5,7**) | **9** | oui |
+
+> **0 sur 2 sont absents une fois la contrainte de sujet retirée.** Ce n'est
+> donc pas leur **existence** qui manquait mais leur **voisinage thématique**.
+> **Le mot « introuvable » de ma classe est trop fort**, et l'audit le retire.
+
+Il vérifie aussi que ces deux résidus **ne sont pas un artefact d'extraction**
+de la chaîne #500-#504 : **2/2** retrouvés par l'AST du script qui les publie.
+**AUDIT OK (5/5)**.
+
+### Deux défauts corrigés avant commit
+
+- **Une regex d'audit qui manquait un `_`** (`PREREG` au lieu de `PREREG_`) :
+  le critère 4 lisait **NON** faute de pouvoir relire deux comptes pourtant
+  publiés.
+- **Un chiffre tapé en dur dans l'audit** (« 3 au lieu de 1 »), remplacé par
+  une lecture du rapport — dans une série qui recense justement les chiffres
+  retapés.
+
+### Une prédiction réfutée
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 2 résidus sourcés hors publication | ≥ 2 | **3** | **vérifiée** |
+| ≥ 1 introuvable partout | ≥ 1 | **2** | **vérifiée** |
+| les commits expliquent ≤ 1 résidu | ≤ 1 | **3** | **réfutée** |
+
+Les messages de commit touchent **3** résidus, pas au plus 1 : j'avais
+sous-estimé ce que l'appariement nu ramasse dans **2340** messages.
+
+### Le bilan des six cycles #500 → #505
+
+Sur **39** nombres empruntés à un autre cycle : **8** confirmés au même sujet
+*(borne supérieure ; **5** à la phrase)*, **15** repris plus tard, **1**
+correction de référence nommable, **1** retrouvé au rapport, **1** sourçage
+tiers douteux — et **0 emprunt établi faux**.
+
+> **Six cycles n'ont trouvé aucune erreur.** Le canal soupçonné au #497 —
+> emprunter un chiffre sans le relire — **existe** (31 chaînes, 39 nombres)
+> mais **aucune de ses occurrences n'a pu être prise en défaut**. La série a
+> mesuré, à chaque passage, **les limites de ses propres détecteurs**. Ce
+> n'est pas un demi-succès : c'est une **réfutation de mon soupçon initial**,
+> et elle clôt la piste.
+
+### File « à faire »
+
+1. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme plutôt que sur une
+   mesure ?
+2. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+3. **Les 2 « introuvables » requalifiés** (#505) — l'audit montre que le mot
+   était trop fort ; leur statut exact (nombre existant mais hors sujet)
+   n'a pas de classe dans le dépôt.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **La piste des emprunts est close** (#500-#505) : **0 emprunt établi faux**
+  sur 39. Le canal existe, aucune de ses occurrences n'est prise en défaut.
+- **1 sourçage « indépendant » douteux** et **2 circulaires** (#505).
+- **2 emprunts** dont le nombre existe ailleurs mais **hors sujet** — sans
+  classe dans le dépôt.
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504**, **#505**
+  *(« introuvable » retiré par mon propre audit ; regex à un `_` près)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
