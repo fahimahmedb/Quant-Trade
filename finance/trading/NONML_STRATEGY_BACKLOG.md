@@ -13490,3 +13490,133 @@ simulation 300 € (7b) **sans objet** — et de toute façon exclues : le cycle
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #500 (18/08/2026) — **PASS** : **31** emprunts, et **79,2 %** des porteurs **lisent puis retapent quand même**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #499.
+`PREREG_borrowed_figures_census.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La question
+
+Au #497, une prédiction reposait sur un chiffre **emprunté à l'audit du #496
+sans être recalculé**. Il était faux. **Ce canal d'erreur n'avait jamais été
+dénombré** : les #479-#493 ont compté les chiffres *sans code qui les
+produise*, jamais ceux *attribués à un autre cycle et retapés*.
+
+### Les trois définitions, figées avant mesure
+
+- **Chaîne publiée** — `Constant` ou `JoinedStr` argument de `.append(`,
+  `.write_text(` ou `print(` ; commentaires et docstrings exclus **par
+  construction**.
+- **Chiffre emprunté** — chaîne publiée portant **à la fois** `#\d{3}` et un
+  nombre en gras **en texte littéral**, hors champ interpolé.
+- **Relecteur** — script appelant `.read_text(` **et** portant un littéral
+  `.md` autre que son propre rapport.
+
+### Le résultat
+
+Sur **977** scripts : **24 porteurs**, **31 emprunts**, **133 relecteurs**,
+**26 cycles cités** (le #451 en tête, **5** emprunts).
+
+| | Nombre | Part des porteurs |
+|---|---|---|
+| porteurs **qui lisent aussi** | **19** | **79,2 %** |
+| porteurs **qui ne lisent pas** | **5** | **20,8 %** |
+
+**Ma prédiction 2 est réfutée** : j'annonçais que la majorité des porteurs ne
+lirait pas. C'est l'inverse.
+
+> **Le défaut n'est pas « ne pas savoir lire » mais lire et retaper quand
+> même.** C'est le cas que le pré-enregistrement désignait comme *pire* : ces
+> scripts ouvrent déjà des rapports tiers — **l'outil était là et n'a pas
+> servi**.
+
+### Le détecteur a mordu son auteur
+
+Une première version de ce rapport **tapait en dur** les deux chiffres du
+#496 et du #497 dans sa propre introduction. **Mon audit l'a signalé.** Ils
+sont désormais **lus** dans les rapports d'origine.
+
+L'audit a aussi refusé un second littéral : mon **exemple typographique**
+(`"**…**"` avec un chiffre) illustrant ce qu'est un chiffre recopié. Le
+contrôle ne distingue pas un exemple d'un emprunt — **j'ai réécrit l'exemple
+sans chiffre plutôt qu'affaiblir le contrôle pour sauver ma phrase.**
+
+### Un double comptage corrigé — dans les deux scripts
+
+Le premier résultat annonçait **34** emprunts ; l'audit en trouvait **46**.
+Cause commune : **les nœuds internes d'une f-string**. Le backtest comptait un
+fragment `Constant` *et* la `JoinedStr` qui le contient ; l'audit, lui,
+recevait de `get_source_segment` la f-string **entière** pour chaque fragment
+(les nœuds internes portent la position de l'ensemble en Python 3.11).
+
+**Corrigé des deux côtés** — on ne descend plus dans une f-string : **31**
+emprunts, et les deux mécaniques concordent sur **les cinq grandeurs**.
+
+> Le résultat committé d'abord portait **34**. Il est **corrigé**, et le
+> chiffre initial est écrit ici — un compte faux effacé sans trace serait le
+> défaut même que ce cycle recense.
+
+### Ce que ce recensement ne dit **pas**
+
+Il mesure une **exposition**, pas une **erreur**. Aucun emprunt n'est confronté
+à sa source : un chiffre retapé peut être exact, comme le « ~4,1 % » du #499
+l'était. Et la définition **ne voit que les scripts** — le chiffre fautif du
+#497 était dans son **pré-enregistrement**, donc **hors de portée**. Cette
+limite était déclarée d'avance.
+
+### L'audit
+
+Mécanique différente : recomptage depuis le **segment de source brut** avec
+retrait manuel des champs `{…}`. **5/5 grandeurs concordantes.** Trois
+contrôles que le backtest n'énonce pas : **0** chaîne absente verbatim de son
+fichier, **0** docstring comptée, arithmétique du croisement fermée
+(19 + 5 = 24). **AUDIT OK (4/4)**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Confronter les emprunts à leur source** (#500) — les **31** emprunts
+   nommés, chacun relu dans le rapport qu'il cite : combien sont **faux** ?
+   C'est la mesure d'**erreur** que ce cycle s'est explicitement interdite.
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité** : combien survivent ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **31 emprunts** dans **24 scripts** (#500), dont **19** porteurs qui lisent
+  par ailleurs des rapports tiers. **Aucun n'est encore confronté à sa
+  source** — exposition mesurée, erreurs inconnues.
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante** — la clôture « 0 section masquante » du #491 valait pour **sa**
+  population.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500** *(double comptage f-string dans les deux routes ; deux
+  littéraux dans mon propre rapport)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
