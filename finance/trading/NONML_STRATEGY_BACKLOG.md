@@ -10984,3 +10984,112 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #478 (18/08/2026) — sections conditionnelles : **31 scripts**, et la ligne de partage n'était pas celle que je mesurais
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #477.
+Pré-enregistré dans `PREREG_conditional_sections_sweep.md` (`12bd72d`), avant
+toute mesure. `n_trials = 1`. Lecture du disque, **aucun script exécuté**.
+
+### La prévalence — et ce qu'elle n'est pas
+
+| | Nombre |
+|---|---|
+| titres de section écrits, tous scripts confondus | **989** |
+| dont **sous au moins une garde** | **58** (**5,9 %**) |
+| scripts portant au moins un titre conditionnel | **31 / 766** (**4,0 %**) |
+| médiane / maximum par script affecté | **2,0** / **3** |
+
+> **Ce chiffre mesure une prévalence, pas une culpabilité.** Une section
+> conditionnelle est souvent le bon choix : « Les défauts trouvés » suivie d'un
+> `if not fautifs: "Aucun."` **paraît toujours**. Aucun total ci-dessus n'est un
+> compte de fautes.
+
+### Le vrai résultat, trouvé à l'examen et non par la règle
+
+Les **5** plus chargés ont été lus un par un. **Les cinq gardes peuvent être
+fausses** — prédiction 3 vérifiée. Mais la lecture a montré ce que la règle ne
+pouvait pas voir :
+
+> **Dans quatre cas sur cinq, l'effectif est publié *sans garde* juste avant la
+> section gardée.** Le lecteur voit « divergents : **0** », puis pas de section
+> « Divergents » — et comprend pourquoi. **La disparition est signalée.**
+
+C'est exactement ce qui manquait au **#475** : là, `if perdus:` portait
+**l'unique** mention de son sujet, et rien ne disait qu'une section aurait pu
+exister — d'où **trois cycles** (#469, #472, #475) dépensés à chercher un encart
+« perdu » qui n'avait jamais été écrit.
+
+**La ligne de partage n'est donc pas « section conditionnelle ou non », mais
+« la garde a-t-elle un témoin inconditionnel ».** Ma règle ne mesure pas cela,
+et le constat ne s'extrapole pas aux 31 : **seuls les cinq lus le sont**.
+
+Le plus proche du #475 est `repo_magnitudes_recount`, dont une garde porte sur
+des **valeurs de données** (`(ap - av) == 29`) et non sur une liste : si l'écart
+change, la section s'efface **sans qu'aucun compte ne le signale**.
+
+### Mes trois prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 40 scripts avec un titre conditionnel | ≥ 40 | **31** | **réfutée** |
+| médiane ≤ 2 par script affecté | ≤ 2 | **2,0** | **vérifiée** |
+| ≥ 3 des 5 peuvent disparaître | ≥ 3 | **5** | **vérifiée** |
+
+Le motif est **moins répandu** que je ne le pensais : la plupart des rapports
+font varier leur **contenu**, pas leur **structure**.
+
+### L'audit diverge — et c'est l'audit qui a tort
+
+Audit adversarial **DISCORDANT (4/5)** : il compte **26** scripts affectés
+contre 31, par une route à l'**indentation** au lieu de l'AST. **La cause est
+établie plutôt que constatée** : son expression régulière `[^"']*` **s'arrête à
+la première apostrophe**, et dans un dépôt dont les titres sont en français cela
+lui fait manquer **198** titres — **198 contenant une apostrophe**, soit la
+totalité de l'écart.
+
+> **C'est l'instrument de contrôle qui sous-compte, pas le backtest qui
+> sur-compte.** Le backtest **n'a pas été réaligné** : ce serait aligner le bon
+> chiffre sur le mauvais. La variante corrigée est publiée **à côté** de la
+> règle d'origine, jamais à sa place.
+
+Une route de contrôle plus faible que celle qu'elle contrôle reste utile : elle
+a obligé à **démontrer** pourquoi l'AST était le bon outil — ce que la seule
+concordance n'aurait jamais prouvé.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 30 rapports affectés non examinés** (#476) — l'échantillon n'a couvert
+   que les 5 plus chargés.
+2. **Les 3 audits orphelins** (#477) — leur `_result.md` n'existe pas : cycle
+   interrompu après l'audit, ou résultat publié sous un autre nom ?
+3. **Les gardes sans témoin inconditionnel** (#478) — mesurer, sur les 31, celles
+   qui effacent une section **sans qu'aucun compte ne le signale** : c'est la
+   forme qui a coûté trois cycles.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **31 scripts** portent une section conditionnelle (#478) ; **26 non examinés**.
+- **3 audits orphelins** sans `_result.md` (#477).
+- **2 défauts de type #473** (#476), non réparés ; **30 rapports non examinés**.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474** ;
+  **une règle d'audit sous-comptante au #478**.
+- **Le compte du #451 a été établi à la main et déclaré tel** (#473).
+- **Un écart pré-enregistrement / script au #472**, inscrit.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
