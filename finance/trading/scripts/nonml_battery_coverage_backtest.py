@@ -143,6 +143,8 @@ def main():
     L.append("")
     L.append(f"- exécutées : **{len(executes)}**")
     L.append(f"- non traitées : **{len(non_traites)}**")
+    indet = sum(1 for _, _, c in executes if c and c[2] == "indéterminé")
+    L.append(f"- rapports classés « indéterminé » par la règle unifiée : **{indet}**")
     L.append("")
     if executes:
         L.append("| Candidat | Verdict de la batterie | Contrôles ✔ / ✘ |")
@@ -153,9 +155,6 @@ def main():
         L.append("")
         n_pass = sum(1 for _, v, _ in executes if v.startswith("**VALID"))
         L.append(f"**{n_pass} / {len(executes)}** validés par la batterie.")
-        L.append("")
-        indet = sum(1 for _, _, c in executes if c and c[2] == "indéterminé")
-        L.append(f"- rapports classés « indéterminé » par la règle unifiée : **{indet}**")
         L.append("")
         if indet:
             L.append("### Une limite de la règle unifiée, découverte ici")
