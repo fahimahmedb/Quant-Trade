@@ -13357,3 +13357,136 @@ arbre propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #499 (18/08/2026) — **FAIL** : la réparation ne change **rien**, et c'est pourtant elle qui échoue
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #498.
+`PREREG_lot2_bound_interpolation.md` committé **avant toute modification**,
+`n_trials=1`.
+
+### La cible
+
+Le 13ᵉ réparable du #493 : `nonml_reproducibility_campaign_v3_lot2_audit.py`,
+dont le rapport publie **6,2 %** comme littéral **et** comme valeur interpolée,
+alors que le script possède `def bound(n)`.
+
+**Classe A confirmée par AST** (règle des 12 primitives du #497, **importée et
+non recopiée**) : **0** primitive d'exécution, **1** seule cible d'écriture.
+Le geste était donc légitimement tentable.
+
+### Ce que la mesure a donné
+
+La réparation (titre + phrase interpolés, `TIRAGES_SUP = 24` nommé une fois)
+produit un `.py` correct — **13 lignes, toutes dans le périmètre énuméré** —
+et, dans le rapport régénéré, **0 ligne de diff**.
+
+> **Les deux littéraux étaient exacts.** Interpolés, ils réécrivent les mêmes
+> caractères. L'audit le confirme **sans lire la cible**, en recalculant
+> `1 − 0,05^(1/47)` et `1 − 0,05^(1/71)` à la main : **6,2 %** et **4,1 %**.
+
+**Mais régénérer le rapport en réécrit 28 lignes** — vivier **290 → 347**,
+« échantillon redérivé identique au publié » **oui → NON**, « tirage
+reproductible et disjoint » **oui → non**. **Tout a été restauré**, rien
+n'est committé, et le barème du #489/#495 s'applique sans adoucissement.
+
+### La leçon, et elle porte sur le #493
+
+> **Un chiffre dérivable n'est pas pour autant réparable par un geste borné.**
+> Le #493 a compté la **dérivabilité** ; il n'a jamais mesuré la
+> **committabilité**. Les deux ne coïncident pas, et le « 13 réparables » du
+> dépôt décrit la première, pas la seconde.
+
+Ce qui échoue n'est pas la réparation — c'est la possibilité de la déposer.
+Le rapport cible **n'est plus reproductible** : le régénérer réécrit son
+propre constat de reproductibilité.
+
+### Deux dettes laissées en place, nommées
+
+| Ligne | Littéral | Pourquoi il reste |
+|---|---|---|
+| 123 | `abs(100 * bound(cum) - 6.2) < 0.2` | littéral **de contrôle** qui **garde une section** ; le changer toucherait la **logique**, pas la typographie. **Nommé au pré-enregistrement.** |
+| 132 | `"## Ce que 6,2 % dit — et ne dit pas"` | **titre de section** portant le même littéral. **Mon énumération ne l'avait pas vu.** |
+
+> La seconde est la plus instructive : **un cycle dédié à réparer des chiffres
+> en dur a lui-même sous-énuméré les sites**. Je la laisse et je l'écris —
+> l'élargir après coup serait la dérive que le #490 a refusée à son détriment.
+
+Le littéral de contrôle l. 123 est par ailleurs une **section masquante** au
+sens du #475, dans un dépôt où cette série avait été déclarée close à **0**
+au #491 : la clôture valait pour la population recensée alors, **pas pour le
+dépôt entier**.
+
+### Une prédiction réfutée
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| la cible est de classe A | 0 primitive | **0** | **vérifiée** |
+| `100*bound(cum)` redonne le littéral | 6,2 | **6,2** | **vérifiée** |
+| la borne projetée diffère de `~4,1` | ≠ | **4,1** | **réfutée** |
+
+J'annonçais que le « ~4,1 % » était une arithmétique de tête. **Il était
+exact.** Le défaut était la duplication de source, jamais l'erreur de calcul —
+et j'avais présumé la faute plus grave qu'elle n'était.
+
+### Deux critères qui mesuraient autre chose, corrigés avant tout commit
+
+1. Le critère 2 (« diff du `.py` limité au périmètre ») était **couplé à
+   l'échec du critère 3** : il échouait pour une raison qui ne le regardait
+   pas. Découplé, il vaut **OUI** — et le verdict reste **FAIL**.
+2. Sa vérification passait d'abord par des **motifs ajustés**. Remplacée par
+   une **appartenance exacte** au bloc inséré : un motif qu'on retouche
+   jusqu'à ce qu'il accepte son propre diff ne contrôle rien.
+
+### L'audit
+
+**7/7.** Restauration vérifiée **contre l'arbre `git`**, pas contre la parole
+du cycle : arbre propre, diff cible vs `HEAD` **0 ligne**, et les **quatre**
+littéraux toujours en place — preuve que rien n'a été committé en douce.
+Classe A reconfirmée par **déparsage**, sans rien importer du #497. Borne
+recalculée à la main. **0** chiffre en dur.
+
+**FAIL** (3/5 critères). Anti-cheat **CONFORME** (4/4). Robustesse (7a) et
+simulation 300 € (7b) **sans objet** — et de toute façon exclues : le cycle
+échoue.
+
+### File « à faire »
+
+1. **Les chiffres empruntés sans relecture** (#497) — combien de rapports
+   citent un nombre d'un cycle antérieur sans le recalculer ?
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité** : combien survivent ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — **au moins 1** des 13 n'est pas réparable par un geste borné.
+- **2 littéraux `6,2`** laissés dans la cible, dont **1 section masquante**
+  (l. 123) — la clôture « 0 section masquante » du #491 valait pour **sa**
+  population, pas pour le dépôt entier.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** : 13 « réparables »
+  — **au sens dérivable seulement** —, 4 irréparables (#493).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499** *(défaut présumé plus grave qu'il n'était ; deux critères mal
+  branchés)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
