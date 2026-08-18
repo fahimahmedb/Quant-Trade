@@ -11887,3 +11887,112 @@ le #482 a montré qu'une réparation peut être nuisible.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #486 (18/08/2026) — verdict **C** par mon critère, mais **la bascule est nette** : les deux publiés
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #485.
+Pré-enregistré dans `PREREG_declaration_convention_dating.md` (`d24ead4`),
+**seuils du critère compris**. `n_trials = 1`. Lecture de `git log` et du
+disque, **aucun script exécuté**.
+
+### Ce qu'il fallait éprouver
+
+Le #483 avait écrit que les 113 `PREREG_` sans auto-déclaration **« ne sont pas
+fautifs »** parce que la convention *« date d'un moment du projet, pas de son
+origine »*. **Il ne l'avait pas vérifié.**
+
+### La mesure — 461 pré-enregistrements datés, 0 échec
+
+| Groupe | Effectif | Date médiane d'introduction |
+|---|---|---|
+| **déclarés** | 33 | **13/08/2026** |
+| **non déclarés** | 428 | **04/08/2026** |
+
+Part des déclarés parmi les **40** plus récents : **7,5 %**.
+
+**Verdict par le critère pré-enregistré : C — aucune structure temporelle.**
+La lecture A exigeait `p ≥ 50 %` ; on est à 7,5 %.
+
+### Mais la chronologie dit autre chose, et je la publie contre mon verdict
+
+| Tranche | Période | Déclarés |
+|---|---|---|
+| 1–380 | 28/07 → 13/08 | **0** |
+| 381–456 | 13/08 → 18/08 | **33 / 76** |
+
+- **premier `PREREG_` déclaré : 13/08/2026** ;
+- pré-enregistrements antérieurs : **380**, dont **déclarés : 0**.
+
+> **La bascule existe, et elle est nette.** Zéro déclaré sur 380 antérieurs :
+> ce n'est pas une tendance, c'est une **date d'apparition**. **La phrase du
+> #483 est corroborée, pas infirmée.**
+
+**Ce qui échoue, c'est mon critère, pas son hypothèse.** J'avais exigé que la
+convention **domine** les 40 plus récents pour la dire « récente ». Elle est
+récente **et minoritaire même dans sa propre période** — un cas que mes trois
+lectures ne prévoyaient pas.
+
+> **Le seuil était arbitraire et préalable ; il reste appliqué tel quel.** Le
+> verdict **C** tient, et le fait qui aurait donné **A** avec un seuil plus bas
+> est publié à côté. Le rebaisser maintenant serait exactement le retuning que
+> ces cycles refusent depuis le #480.
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| lecture A retenue | A | **C** | **réfutée** |
+| part des déclarés récents ≥ 50 % | ≥ 50 % | **7,5 %** | **réfutée** |
+| aucun `PREREG_` ne résiste à la datation | 0 | **0** | **vérifiée** |
+
+### L'audit vérifie la transparence autant que les chiffres
+
+**CONCORDANT (3/3)** par une route indépendante — un **seul** balayage de
+l'historique au lieu d'un `git log` par fichier — et la bascule **confirmée sans
+passer par une médiane** : 0 déclaré sur 380 antérieurs.
+
+Il ajoute **7/7 contrôles de transparence**, tous tenus, dont « le rapport
+publie-t-il ce qui contredit son propre verdict ? », « dit-il que c'est **son**
+critère qui échoue ? », « refuse-t-il de rebaisser le seuil après mesure ? ».
+
+> **Un rapport pouvait s'abriter derrière son critère et taire la bascule.**
+> Il maintient **C** parce que le seuil était préalable, **et** publie le fait
+> qui donnerait **A** — la seule façon honnête de tenir les deux.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 2 masquants établis au #484** — les réparer demande d'ajouter un
+   témoin inconditionnel, modification minimale et bornée.
+2. **La réserve du #485** sur `pnl_duplicate_sweep_audit` — trancher son
+   irréparabilité, avec examen déclaré d'avance.
+3. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis **0 sur les 5 derniers**. Mesurable au prochain lot.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **La convention d'auto-déclaration** est **récente (13/08/2026) et
+  minoritaire** : 33 sur 461 (#486). **Les 428 non déclarés ne sont pas
+  fautifs** — l'hypothèse du #483 est corroborée.
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485), **1 sous réserve d'audit**.
+- **4 sections masquantes** sur 15 sans témoin (#481+#484), aucune réparée.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou seuils pris en défaut et publiés comme tels** : #464, #474, #478,
+  #479 *(rétracté au #482)*, #480, #481, #483, #484, #485, **#486 (seuil trop
+  exigeant, verdict maintenu quand même)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
