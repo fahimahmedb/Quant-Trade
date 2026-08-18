@@ -10452,3 +10452,106 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #473 (18/08/2026) — le « 1 » du #451 était un **littéral** : il n'y avait aucune règle à reconstituer
+
+**Cycle de VÉRIFICATION**, troisième et dernière piste ouverte au #472.
+Pré-enregistré dans `PREREG_citer_451_definition.md` (`d93d3de`), avant toute
+mesure. `n_trials = 1`. Lecture d'objets git, **aucun effet de bord**.
+
+### La question, et sa dissolution
+
+Le **#451** comptait « **1** rapport qui cite l'encart sans le porter ». Le
+**#469** puis le **#472** ont cherché à reproduire ce compte **par une règle**
+et ont trouvé **0**, laissant deux lectures ouvertes. Ce cycle a cessé de
+deviner la règle et est allé la **lire dans le code du #451**, au commit
+`1d7649637137`.
+
+Il n'y en a pas. La ligne, **verbatim** :
+
+```python
+105:    L.append("| rapport qui **cite** l'encart sans le porter | **1** |")
+```
+
+| Test | Résultat |
+|---|---|
+| la ligne interpole une variable (`f"`, `.format`, `%`, `+`) | **non** |
+| le script du #451 **énumère** `results/` quelque part | **non** |
+| **le nombre est un littéral** | **OUI** |
+
+Le script ne travaille que sur **cinq cibles codées en dur** : il n'a **classé
+aucun rapport du dépôt**. Le « 1 » est une chaîne écrite à la main dans le code
+qui rédige le rapport.
+
+**Le #451 le disait, et je ne l'avais pas entendu** : son rapport annonce
+« **rétabli par lecture** » — à la main, hors du code.
+
+### Volet A — un trou du #472, comblé
+
+Le pré-enregistrement du #472 annonçait relire « le rapport du #451 » ; son
+script a relu l'**entrée de backlog**. Le rapport de résultat n'avait jamais été
+lu. Il l'est ici : il ne nomme **aucun** rapport `.md`, nulle part — les seuls
+fichiers qu'il cite sont les **5 scripts** qu'il modifie. La catégorie est une
+**ligne de tableau sans fichier attaché**.
+
+L'écart est **inscrit, pas gommé** : le verdict du #472 n'est pas réécrit.
+
+### Mes trois prédictions — **toutes réfutées**
+
+| Prédiction | Mesuré | Verdict |
+|---|---|---|
+| le rapport du #451 nomme son citeur | ne nomme pas | **réfutée** |
+| c'est `selfref_reports_marking` | aucun nom | **réfutée** |
+| la lecture retenue est la **1** | **aucune des trois** | **réfutée** |
+
+Elles l'ont été par la même erreur : **j'ai prédit le contenu d'une règle avant
+d'avoir vérifié qu'il y en avait une**. Mon menu de trois lectures présupposait
+ce qu'il fallait vérifier.
+
+### Ce que cela dit des trois cycles
+
+- Le **#451** n'est **pas** en faute : comptage manuel, **déclaré tel quel**.
+- Le **#469** et le **#472** ont posé une question **mal formée**.
+- Le **#472** concluait « c'est ma méthode qui est en cause ». **Il avait
+  raison, mais pas pour la raison qu'il croyait** : le défaut n'était pas un
+  angle mort de la règle, c'était de **supposer qu'une règle existait**.
+
+> Trois cycles pour découvrir qu'un chiffre de rapport avait été écrit à la
+> main. **La leçon utile n'est pas sur « citer » : elle est sur ce que coûte un
+> nombre publié sans le code qui le produit.**
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+
+### Question close
+
+Le pré-enregistrement interdisait une quatrième tentative ; **elle n'aurait plus
+d'objet**. La dette change d'énoncé au lieu de disparaître.
+
+### File « à faire »
+
+1. **Les 10 entrées sans aucun fichier** et les **24** `PREREG_` orphelins
+   (#464).
+2. **L'incohérence émetteur/rapport** de `six_reports_regeneration` (#469).
+3. **Les chiffres publiés sans code qui les produise** — généraliser le constat
+   du #473 : combien d'autres comptes de rapport sont des littéraux ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **Le compte du #451 a été établi à la main et déclaré tel** ; il n'est pas
+  reproductible par programme, et **n'a jamais prétendu l'être**. *(Énoncé
+  corrigé : ce n'est plus « non reproductible », c'est « jamais programmé ».)*
+- **Un écart pré-enregistrement / script au #472** (rapport annoncé, backlog
+  relu), inscrit et non corrigé rétroactivement.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **1 incohérence** émetteur/rapport (#469).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **10 entrées** sans fichier, **24 `PREREG_`** orphelins (#464).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
