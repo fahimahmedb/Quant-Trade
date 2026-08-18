@@ -11297,3 +11297,125 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #481 (18/08/2026) — gardes sans témoin : **2 masquants sur 5 lus**, le cas du #475 n'est pas isolé
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #480.
+Pré-enregistré dans `PREREG_guards_without_witness.md` (`afbb6da`), **examen à
+la main compris**. `n_trials = 1`. Lecture du disque, **aucun script exécuté**.
+
+### Le classement des 58 titres conditionnels
+
+| Classe | Nombre |
+|---|---|
+| **AVEC TÉMOIN** — la disparition est signalée | **36** |
+| **SANS TÉMOIN** — la section s'efface silencieusement | **14** |
+| **GARDE NON NOMMÉE** — hors de portée de ma règle | **8** |
+
+> **Les gardes non nommées ne sont dans aucun total de dette.** Ma règle ne
+> traite que la forme `if <var>:` ; **l'ignorance n'est pas une charge**. Et
+> « sans témoin » n'est pas une faute : une section peut légitimement n'exister
+> que dans un cas particulier.
+
+**Contrôle positif** : `six_reports_regeneration` / `if perdus:` — **le cas
+exact du #475** — est bien classé *sans témoin*. Une règle qui l'aurait manqué
+serait à jeter.
+
+### L'examen à la main — **déclaré avant mesure**, cette fois
+
+Le #480 avait classé mécaniquement, découvert après coup que sa règle avait mal
+lu, et **dû refuser le reclassement** faute d'examen déclaré. **La leçon est
+appliquée** : ordre de l'échantillon et verdict binaire fixés dans le
+pré-enregistrement.
+
+| Cas | Verdict |
+|---|---|
+| `battery_coverage` l.159 `if indet:` | **MASQUANT** |
+| `citer_451_resolution` l.187 `if meme:` | anodin |
+| `marker_emitter_crossing` l.175 `if douteux:` | anodin |
+| `net_pnl_correction` l.279 `if incoh:` | **MASQUANT** |
+| `net_pnl_correction_robustness` l.76 `if tous:` | anodin |
+
+**Le cas du #475 n'est pas isolé** : deux sections masquantes dans des scripts
+sans rapport entre eux, chacune portant **l'unique mention d'une découverte
+faite en passant** — la limite de la règle de verdict du #448 pour l'une, une
+incohérence prose/compte pour l'autre. Si leur garde devenait fausse, la
+découverte s'effacerait sans un mot.
+
+**Les 9 autres sans témoin ne sont pas jugés** : cinq ont été lus parce que cinq
+avaient été déclarés ; le 2/5 **ne s'extrapole pas**.
+
+### L'examen a trouvé un défaut de ma propre règle
+
+Le cinquième cas est une **branche de `if/else`** : les deux issues écrivent une
+section, donc **une section paraît toujours**. **Ma règle ne reconnaît pas
+l'exhaustivité d'un `if/else`** et compte les deux branches comme sans témoin.
+
+> **Le total de 14 est donc un majorant**, publié tel quel **avec sa cause**.
+> Corriger la règle après mesure serait un retuning.
+
+C'est précisément à cela que servait l'examen déclaré d'avance : **il a trouvé
+un défaut de la règle sans que la règle soit changée**, parce qu'il faisait
+partie du protocole au lieu d'y être ajouté.
+
+### Mes trois prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 30 avec témoin | ≥ 30 | **36** | **vérifiée** |
+| ≤ 15 sans témoin | ≤ 15 | **14** | **vérifiée** |
+| ≥ 1 masquant parmi les examinés | ≥ 1 | **2** | **vérifiée** |
+
+### L'audit diverge sur l'attribution, pas sur le nombre
+
+Audit adversarial par la route **indentation** : **33 / 12 / 13** contre
+**36 / 14 / 8**. Mais **les deux totaux valent 58**. L'écart n'est donc **pas de
+couverture** mais **d'attribution**, et sa cause est établie : la route par
+indentation remonte à la ligne de bloc la plus proche, et une branche `else:`
+n'a pas la forme `if <var>:` — elle tombe en « non nommée » là où l'AST retrouve
+la variable au nœud parent. **Déplacement de +5, compensé exactement.**
+
+> **L'AST est la route juste — un `else` appartient au `if` qui le gouverne — et
+> le backtest n'est pas réaligné.**
+
+L'audit confirme par une voie propre le majorant annoncé (**3** `if/else`
+écrivant un titre des deux côtés) et vérifie **6/6** contrôles de protocole,
+dont « l'examen était-il déclaré dans le PREREG ».
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Réparer les 2 tableaux tapés à la main** (#479) — les seuls défauts où un
+   lecteur ne peut pas distinguer une mesure d'une saisie.
+2. **Reprendre les 3 audits orphelins avec examen à la main déclaré d'avance**
+   (#480) — seule voie propre pour clore ce que ce cycle a laissé ouvert.
+3. **Les 9 sans témoin non examinés** (#481) — les lire, avec l'échantillon
+   déclaré d'avance comme ici.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **2 sections masquantes** établies (#481) ; **9 sans témoin non examinés** ;
+  total de 14 publié comme **majorant** (défaut `if/else` de ma règle).
+- **3 audits orphelins** : verdict **A/C/?** contredit par deux routes donnant
+  **C/C/C** (#480). **Non tranché.**
+- **18 chiffres publiés sans code qui les produise** (#479), dont un dans mon
+  propre cycle #474.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474** ;
+  **une règle d'audit sous-comptante au #478** ; **une règle de lecture
+  défectueuse au #480** ; **une règle aveugle au `if/else` au #481**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
