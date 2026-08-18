@@ -11197,3 +11197,103 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #480 (18/08/2026) — les 3 audits orphelins : ma règle dit **A/C/?**, la lecture à la main dit **C/C/C**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #479.
+Pré-enregistré dans `PREREG_orphan_audits_fate.md` (`89a5f0f`), avant toute
+mesure. `n_trials = 1`. Lecture d'objets git et du disque, **aucun script
+exécuté**.
+
+### Le classement pré-enregistré
+
+| `<nom>` | `_backtest.py` | `_result.md` dans l'historique | Lecture |
+|---|---|---|---|
+| `n_trials_dependence_correction` | absent | **0** | **C** — aucun résultat attendu |
+| `pnl_duplicate_sweep_v2` | absent | **0** | **? — aucune des trois** |
+| `pnl_persistence_exposed_pass` | absent | **0** | **A** — cycle interrompu |
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 2 sur 3 relèvent de C | ≥ 2 | **1** | **réfutée** |
+| aucun `_result.md` dans l'historique | 0 | **0** | **vérifiée** |
+| ≥ 1 audit nomme un rapport présent | ≥ 1 | **0** | **réfutée** |
+
+### Ce que ma règle a mal lu — et pourquoi je ne le retiens pas
+
+Relus à la main, **les trois pré-enregistrements se déclarent dès leur
+en-tête** : « Cycle de **correction statistique** », « Cycle de **diagnostic** »,
+« Cycle d'**infrastructure et de mesure** ». **Aucun ne promet de
+`_result.md`.** Deux défauts de ma règle, mesurés et nommés :
+
+1. elle cherchait « audit », « correction », « vérification » — **pas
+   « diagnostic »** ;
+2. elle a cru `pnl_persistence_exposed_pass` promettant un résultat parce que
+   son texte contient `results/nonml_<nom>_result.md` — mention qui désigne **les
+   rapports des dix autres cycles** qu'il compare. **Faux positif.**
+
+> **Lu à la main, les trois relèvent de C. Je ne retiens pas cette version.**
+
+Le pré-enregistrement fixait une règle mécanique et **n'avait pas déclaré**
+d'examen à la main — contrairement aux #476 et #479 qui l'avaient prévu.
+Reclasser maintenant serait **choisir le résultat qui m'arrange après l'avoir
+vu**, la faute exacte que le #469 avait refusé de commettre quand son propre
+examen le désavantageait. **La prédiction 1 reste réfutée**, et les faits qui la
+vérifieraient sont publiés juste au-dessus.
+
+### L'audit contrôle la transparence, pas le classement
+
+Audit adversarial **CONCORDANT (3/3)** par une route indépendante
+(`git rev-list --all --objects` sur les blobs, en-têtes relus hors du backtest).
+Il ajoute **6 contrôles de transparence**, tous tenus : le rapport signale que
+sa règle a mal lu, nomme le mot manqué, nomme son faux positif, énonce la
+lecture à la main, **refuse d'en tirer parti**, et laisse la prédiction 1
+marquée réfutée.
+
+> **L'audit ne conclut pas que le classement mécanique est bon** : il conclut
+> que **le désaccord est visible**. Sur le fond, sa route indépendante donne
+> **C pour les trois**.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### L'état de la dette « 3 audits orphelins »
+
+Elle **reste inscrite au verdict pré-enregistré** (1 cycle interrompu, 1
+requalifié, 1 indéterminé), **avec la mention que deux routes indépendantes la
+contredisent**. Trancher demande un cycle qui déclare l'examen à la main
+*avant* de mesurer — ce que celui-ci n'a pas fait.
+
+### File « à faire »
+
+1. **Les gardes sans témoin inconditionnel** (#478) — mesurer, sur les 31,
+   celles qui effacent une section sans qu'aucun compte ne le signale.
+2. **Réparer les 2 tableaux tapés à la main** (#479) — les seuls défauts où un
+   lecteur ne peut pas distinguer une mesure d'une saisie.
+3. **Reprendre les 3 audits orphelins avec examen à la main déclaré d'avance**
+   (#480) — seule voie propre pour clore ce que ce cycle a dû laisser ouvert.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **3 audits orphelins** : verdict pré-enregistré **A/C/?**, contredit par deux
+  routes indépendantes donnant **C/C/C** (#480). **Non tranché.**
+- **18 chiffres publiés sans code qui les produise** (#479), dont un dans mon
+  propre cycle #474.
+- **31 scripts** portent une section conditionnelle (#478) ; **26 non examinés**.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** ; **une étiquette trop généreuse au #474** ;
+  **une règle d'audit sous-comptante au #478** ; **une règle de lecture
+  défectueuse au #480**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
