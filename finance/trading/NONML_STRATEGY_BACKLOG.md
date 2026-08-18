@@ -12452,3 +12452,106 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #491 (18/08/2026) — hissage **fait**, et ma prédiction chiffrée réfutée par une ligne blanche
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #490.
+Pré-enregistré dans `PREREG_battery_indet_hoist_declared.md` (`533e07c`) —
+**aveu préalable compris**. `n_trials = 1`. **Aucun script exécuté.**
+
+### Le geste que le #490 s'était interdit
+
+`indet` passe du bloc `if executes:` au **niveau libre**, avec sa ligne de
+témoin. Le #490 avait établi que ce serait anodin **et refusé de le faire** faute
+de l'avoir annoncé ; **ici il est annoncé, puis fait.**
+
+> **Je savais que ça marcherait.** Le résultat sur la règle du #481 est donc
+> publié comme **non informatif**, et **aucune prédiction ne portait dessus.**
+
+| | Avec témoin | **Sans témoin** | Garde non nommée |
+|---|---|---|---|
+| **avant** | 40 | **13** | 9 |
+| **après** | 41 | **12** | 9 |
+
+### Un changement de sortie, annoncé avant d'être mesuré
+
+Le pré-enregistrement le disait : si `executes` est vide, aucun compte n'est
+publié aujourd'hui ; après hissage, **le témoin paraît quand même, avec 0**.
+
+**C'est un changement de sortie, pas un simple déplacement** — et c'est
+l'effet recherché. L'audit le confirme par une route indépendante : **+1
+écriture inconditionnelle** (41 → 42).
+
+### La prédiction 1 est réfutée, et je ne l'atténue pas
+
+J'annonçais **2 suppressions et 2 ajouts** ; la mesure donne **3 et 2**. La
+suppression surnuméraire est un `L.append("")` — **un séparateur devenu
+redondant** une fois les lignes remontées.
+
+> **Le geste est matériellement de deux lignes et textuellement de trois.** Je
+> ne présente pas cela comme « essentiellement vérifié » : **la prédiction était
+> chiffrée, elle est fausse.** Le #490 refusait donc un geste très légèrement
+> plus large qu'il ne le pensait.
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| 2 suppressions et 2 ajouts | 2 / 2 | **3 / 2** | **réfutée** |
+| « sans témoin » diminue de 1 | 1 | **1** | **vérifiée** |
+| autres classes inchangées | — | avec 40→41, non nommée 9→9 | **vérifiée** |
+
+### L'audit vérifie ce qui restait ouvert
+
+Un cycle qui exécute un geste **déjà validé par le précédent** n'apprend rien
+sur le geste. L'audit contrôle donc autre chose — et rend **CONCORDANT** :
+
+1. **la sortie a-t-elle vraiment changé ?** — +1 écriture à profondeur 0,
+   confirmé ;
+2. **la prédiction réfutée est-elle publiée sans atténuation ?** — **5/5**,
+   dont « le rapport refuse-t-il la formule *essentiellement vérifiée* ? » ;
+3. **le périmètre est-il tenu ?** — 1 seul fichier touché, rapport non
+   régénéré ;
+4. **le recomptage est-il global ?** — les totaux dépassent ce qu'un script
+   isolé peut porter.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère porte sur le procédé, pas
+sur la justesse de mes annonces. Robustesse (7a) et simulation 300 € (7b)
+**sans objet**.
+
+**Son témoin reste dans le code, pas dans son rapport** — quatrième cycle
+consécutif à devoir le dire (#487, #489, #490, #491), `battery_coverage` lançant
+la batterie de validation.
+
+### File « à faire »
+
+1. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis 0 sur les 5 derniers.
+2. **Les 4 autres irréparabilités du #485** — leurs justifications ont-elles le
+   même défaut que celle tombée au #488 ?
+3. **Les 3 rapports portant un témoin non publié** (#487, #489, #491) — établir
+   ce qu'il faudrait pour qu'il paraisse sans effet de bord.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **0 section masquante** établie *(4 au #484, −2 au #487, −1 au #489, −1 au
+  #491)*. **La série ouverte au #475 est close.**
+- **3 rapports** portent un témoin **dans le code mais pas encore publié**.
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485/#488).
+- **La convention d'auto-déclaration** : récente (13/08/2026), 33 sur 461 (#486).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou prédictions prises en défaut et publiées comme telles** : #464,
+  #474, #478, #479, #480, #481, #483, #484, #485, #486, #487, #488, #489, #490,
+  **#491 (prédiction chiffrée fausse d'une ligne blanche)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
