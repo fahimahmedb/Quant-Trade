@@ -11543,3 +11543,119 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #483 (18/08/2026) — la règle déclarée **ratifie sans rien apprendre**, et se trompe **4 fois sur 4**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #482.
+Pré-enregistré dans `PREREG_orphan_audits_declared_reading.md` (`f4de8c2`) —
+**aveu, liste de mots et échantillon d'examen compris**. `n_trials = 1`.
+
+### L'aveu qui commandait tout
+
+Le #480 avait classé trois cycles **A/C/?**, puis — hors protocole — je les
+avais lus à la main et publié que les trois relevaient de **C**.
+
+> **Je connaissais donc déjà la réponse.** Annoncer « prédiction vérifiée :
+> 3/3 » aurait été **prédire ce que j'avais déjà vu**. Le pré-enregistrement a
+> fixé d'avance que sur les trois, ce cycle **ratifie et ne teste rien**, et
+> qu'**aucune prédiction ne porterait sur eux**.
+
+**Ratification : 3/3 SANS RÉSULTAT ATTENDU** — « correction statistique »,
+« diagnostic », « infrastructure et de mesure ». Le classement devient
+**légitime parce que la règle précède la lecture**, non parce qu'un fait
+nouveau l'établirait. **La dette « 3 audits orphelins » est levée par
+requalification** ; le verdict A/C/? du #480 reste inscrit.
+
+### La population élargie — là où rien n'était connu
+
+Tout `PREREG_` sans `_result.md` : **126** cycles.
+
+| Classe | Nombre | Part |
+|---|---|---|
+| SANS RÉSULTAT ATTENDU | **9** | 7,1 % |
+| RÉSULTAT ATTENDU | **4** | 3,2 % |
+| **NON DÉCLARÉ** | **113** | **89,7 %** |
+
+> **Les 113 non déclarés ne sont dans aucun total de dette.** L'absence de la
+> convention `Cycle de **X**` n'est pas une faute : elle date d'un moment du
+> projet, pas de son origine.
+
+**La prédiction 1 est réfutée de très loin** : j'annonçais ≥ 60 % de « sans
+résultat attendu », la mesure donne **7,1 %**. **J'avais confondu « les cycles
+que je viens de lire » avec « les cycles du dépôt »** — les trois du #480 se
+déclarent tous les trois, ce qui m'a fait croire la convention répandue.
+
+### L'examen déclaré prend ma règle en défaut — **4 sur 4**
+
+Les 4 classés RÉSULTAT ATTENDU, seuls candidats à être de vrais cycles
+inachevés, ont été lus dans l'ordre alphabétique fixé d'avance. **Les quatre
+sont MAL CLASSÉS** : ils se déclarent cycles d'**« outillage »** ou
+d'**« outillage documentaire »**, trois ajoutant *« aucune stratégie évaluée,
+aucun verdict recalculé »*.
+
+**Le mot « outillage » manque à ma liste** — écrite en regardant les trois
+cycles du #480, donc **taillée sur trois cas et appliquée à 126**.
+
+> **Elle n'est pas corrigée ici.** L'élargir après avoir vu le résultat serait
+> le retuning que le #480 avait refusé. La liste figée reste publiée, **et son
+> défaut avec elle**.
+
+**Aucun cycle inachevé n'est établi** — une bonne nouvelle sur le dépôt,
+obtenue par une mauvaise règle.
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 60 % sans résultat attendu | ≥ 60 % | **7,1 %** | **réfutée** |
+| ≥ 1 classé résultat attendu | ≥ 1 | **4** | **vérifiée** |
+| ≥ 1 mal classé à l'examen | ≥ 1 | **4** | **vérifiée** |
+
+*(Aucune ne porte sur les trois — c'était l'engagement 3.)*
+
+### L'audit contrôle l'engagement, pas seulement les chiffres
+
+**CONCORDANT (4/4)** par une route indépendante, et **7/7** contrôles de
+protocole — dont « le PREREG déclare l'aveu avant mesure », « aucune des trois
+prédictions ne porte sur les trois », « la liste de mots n'est pas élargie après
+mesure », « la liste du script est identique à celle du PREREG ».
+
+Il vérifie aussi que la fenêtre de **12 lignes** n'est pas un artefact : élargie
+à 20, elle ne récupère **0** déclaration. **Les 113 non déclarés sont réels.**
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 9 sans témoin non examinés** (#481) — les lire, échantillon déclaré
+   d'avance.
+2. **Combien des 17 défauts restants sont irréparables par construction ?**
+   (#482) — la catégorie n'a jamais été comptée.
+3. **Les 113 `PREREG_` sans auto-déclaration** (#483) — la convention est-elle
+   récente, ou abandonnée ? Datable par `git log`.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **113 `PREREG_`** sans auto-déclaration (#483) — **non fautifs**, non datés.
+- **17 chiffres publiés sans code qui les produise** (#479 corrigé au #482),
+  dont **au moins 1 irréparable par construction**.
+- **2 sections masquantes** (#481) ; **9 sans témoin non examinés**.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles prises en défaut et publiées comme telles** : #464 (critère
+  surévalué), #474 (étiquette trop généreuse), #478 (audit sous-comptant), #479
+  (verdict erroné, rétracté au #482), #480 (lecture défectueuse), #481 (aveugle
+  au `if/else`), **#483 (liste de mots taillée sur 3 cas)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
