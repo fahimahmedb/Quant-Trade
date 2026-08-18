@@ -14925,3 +14925,131 @@ verdict sans données. Robustesse (7a) et simulation 300 € (7b) **sans objet**
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #511 (18/08/2026) — **PASS** : **la première réparation réellement committée**, et une deuxième justification du #485 qui tombe
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #510.
+`PREREG_battery_backfill_repair.md` committé **avant toute modification**,
+`n_trials=1`.
+
+### La cible
+
+`nonml_battery_backfill_lot_audit.py` — après le #507, le **seul** des 13
+« réparables » qui soit candidat committable **et** sans dépendance à
+`sys.argv`. **Si le geste borné n'aboutissait pas ici, le mot « actionnable »
+ne voulait rien dire.**
+
+**Les quatre causes de non-committabilité, mesurées : toutes à 0** —
+exécution d'un tiers, balayage de `scripts/`/`results/`, appel `git`,
+`sys.argv`.
+
+### Le résultat : le geste tient
+
+| | Mesure |
+|---|---|
+| lignes changées dans le `.py` | **3** |
+| lignes changées dans le **rapport** | **0** |
+| autres fichiers touchés | **0** |
+| littéral → valeur dérivée | **1** → **1** |
+
+Le « **1** » de la l. 168 est désormais dérivé de `SET_ASIDE` :
+`sum(1 for _r in SET_ASIDE.values() if "panier" in _r)`.
+
+> **La réparation est committée** — c'est la différence avec le #499, qui
+> avait dû tout restaurer. **Le rapport n'a pas bougé d'un octet** : le code
+> calcule désormais ce qui était tapé et produit **les mêmes caractères**. Un
+> rapport qui aurait changé aurait signifié que le littéral était faux.
+
+### Une deuxième justification du #485 contredite par le code
+
+Le #485 rangeait le « **0,00 %** » de la l. 131 parmi les réparables au motif
+que l'audit « lit les `.npz` d'activation ». **Le code dit autre chose** : sa
+seule source est `read_battery()`, qui relit des rapports `.md`. **Occurrences
+de `np.load(` ou `.npz` : 0.**
+
+> Ce chiffre **n'est pas réparable par interpolation** : le produire exigerait
+> d'ouvrir une source que le script n'ouvre pas — un cycle distinct, pas
+> « une interpolation ». **C'est la deuxième justification du #485 que la
+> lecture du code contredit**, après celle que le #493 avait retirée.
+
+**Ce constat a été fait en lisant le code *avant* d'écrire le
+pré-enregistrement, il y est déclaré comme tel, et il n'est pas compté comme
+une prédiction.** Une prédiction dont je connais déjà la réponse n'en est pas
+une.
+
+### Les trois prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| diff du rapport limité au site réparé | oui | **oui** | **vérifiée** |
+| la valeur calculée vaut le littéral | 1 | **1** | **vérifiée** |
+| les quatre causes valent 0 | 0 | **0** | **vérifiée** |
+
+### L'audit vérifie contre l'arbre, pas contre ma parole
+
+- `_hors` **présent dans `HEAD`**, ancien littéral **disparu** — une
+  réparation *annoncée* et une réparation *déposée* sont deux choses ;
+- **0 ligne** de diff sur le rapport de la cible entre `HEAD~1` et `HEAD` ;
+- valeur **recalculée depuis `SET_ASIDE` par AST**, sans exécuter la cible ni
+  lire le rapport du #511 : **2** entrées, **1** au motif « panier » ;
+- le « 0,00 % » **toujours en dur**, `.npz` **toujours absent**.
+
+**AUDIT OK (5/5)**, **0** chiffre en dur.
+
+> L'audit publie sa limite : il n'établit **pas** que **1** soit la bonne
+> réponse à la question posée dans la phrase — seulement qu'elle est
+> **dérivée** au lieu d'être tapée. Si `SET_ASIDE` est incomplet, le nombre
+> reste faux, **calculé mais faux**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation
+300 € (7b) **sans objet** : cycle de réparation, aucune position.
+
+### File « à faire »
+
+1. **Le coût des détecteurs** (#509) — combien de cycles ont dû être
+   **rectifiés par un successeur**, et ce taux monte-t-il ou baisse-t-il ?
+2. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+3. **Les justifications du #485, une par une** (#511) — **2** sur 5 déjà
+   contredites par la lecture du code (#493, #511). Les **3** restantes n'ont
+   jamais été vérifiées de la même façon.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Le solde actionnable du #507 est soldé** : la réparation est **committée**
+  (#511). **Il reste 0 candidat committable** parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) — la justification du #485 le
+  concernant est **fausse**. **2 justifications du #485 sur 5 sont tombées**
+  (#493, #511) ; **3** n'ont jamais été vérifiées.
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, **+86,5 pts**,
+  régime postérieur homogène (**62** scripts, **0** exception).
+- **30 scripts sur 350** changent de camp selon la route de classement (#510).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable** sur
+  **39** nombres.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498).
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(trois fois désormais : #488, #493, #511)*, **#494**,
+  **#496**, **#497**, **#498**, **#499**, **#500**, **#501**, **#502**,
+  **#503**, **#504**, **#505**, **#506**, **#507**, **#508**, **#509**,
+  **#510**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
