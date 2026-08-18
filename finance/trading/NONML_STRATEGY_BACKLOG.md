@@ -15171,3 +15171,127 @@ simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #513 (18/08/2026) — **PASS** : deux méthodes échouent au même test, et l'audit prouve que **le code n'y est pour rien**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #512.
+`PREREG_structured_rectification.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### Le témoin négatif érigé en **critère**
+
+Le #512 avait découvert son défaut *par l'audit*. Ici le témoin est **dans le
+pré-enregistrement** : un détecteur ne « passe » que s'il bat sa liste neutre
+d'au moins **20 points**, seuil fixé avant mesure. **La leçon du #512 est
+institutionnalisée.**
+
+Deux règles **structurelles** — l'appariement exige une **même unité
+syntaxique**, non un voisinage de caractères :
+
+- **S1** — titre `##`/`###` contenant référence **et** marqueur ;
+- **S2** — span `**…**` contenant référence **et** marqueur.
+
+**Marqueurs identiques au #512, sans un mot de plus ni de moins**, pour que la
+comparaison porte sur la structure et rien d'autre.
+
+### Les quatre taux
+
+| Détecteur | Réel | Témoin neutre | Écart |
+|---|---|---|---|
+| **S1** (titres) | **3,9 %** | **16,5 %** | **−12,6** pts |
+| **S2** (gras) | **4,5 %** | **13,3 %** | **−8,7** pts |
+
+**Aucun ne passe**, et les deux échouent **dans le mauvais sens** — comme le
+détecteur lexical du #512.
+
+### Pourquoi le témoin gagne — mesuré, pas invoqué
+
+| Unité | Total | Portant une référence | dont marqueur | dont mot neutre |
+|---|---|---|---|---|
+| titres | **1097** | **369** | **41** | **136** |
+| spans `**…**` | **7679** | **646** | **80** | **102** |
+
+> Parmi les unités qui **citent** un cycle, un mot neutre est présent bien
+> plus souvent qu'un marqueur : `cycle`, `rapport`, `audit` sont **le tissu
+> même du registre**. **Une référence n'est pas une accusation**, et aucun
+> appariement de forme ne sait faire la différence.
+
+### L'audit renverse le doute : le témoin **positif**
+
+Une conclusion négative peut venir d'un **détecteur cassé** plutôt que d'une
+impossibilité. L'audit fabrique donc un corpus **où la réponse est connue** :
+une section rectifiée par un **titre**, une autre par un **span en gras**, et
+une section **piège** sans référence ni marqueur.
+
+- **S1** retrouve exactement la cible attendue ; **S2** aussi ;
+- **0 faux positif** sur la section piège ;
+- les **quatre taux** du rapport recalculés à l'identique.
+
+> **Les deux détecteurs fonctionnent.** Leur échec sur le vrai registre vient
+> donc **du registre, pas du code** — et la conclusion négative du #513 tient.
+> **AUDIT OK (6/6)**.
+
+### Le résultat, et il est positif malgré tout
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| S1 bat son témoin de ≥ 20 pts | ≥ 20 | **−12,6** | **réfutée** |
+| S2 bat son témoin de ≥ 20 pts | ≥ 20 | **−8,7** | **réfutée** |
+| taux du meilleur < 59,4 % | < 59,4 % | **4,5 %** | **vérifiée** |
+
+> **Le registre ne permet pas de mesurer son propre taux de rectification par
+> appariement automatique.** Deux familles de méthodes — **lexicale** (#512)
+> et **structurelle** (#513) — échouent au même test, et le témoin positif
+> écarte l'hypothèse d'un défaut de code.
+>
+> **Ce n'est pas que la rectification soit rare : c'est qu'elle n'est pas
+> formatée.** La question du #509 est **close faute d'outil**, non laissée
+> ouverte par négligence. C'est un résultat.
+
+**PASS** (5/5). **AUDIT OK** (6/6). Anti-cheat **CONFORME** (4/4). **0**
+script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
+**sans objet**.
+
+### File « à faire »
+
+1. **Le témoin négatif, appliqué rétroactivement** (#512) — combien des
+   détecteurs des **#500-#511** survivraient au test que les #512 et #513
+   viennent d'échouer ? Aucun ne l'a subi.
+2. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+3. **Les 3 justifications du #485 jamais vérifiées** (#511) — deux sont déjà
+   tombées à la lecture du code (#493, #511).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Le taux de rectification est indémontrable par appariement** (#512, #513)
+  — deux méthodes, un témoin positif à l'appui. **Question close faute
+  d'outil.**
+- **Aucun détecteur des #500-#511 n'a subi de témoin négatif.**
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** restant parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) ; **2 justifications du #485 sur 5**
+  sont tombées, **3** jamais vérifiées.
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, régime postérieur
+  homogène (**62** scripts, **0** exception).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
