@@ -11996,3 +11996,113 @@ Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #487 (18/08/2026) — **2 témoins ajoutés**, masquants **4 → 2**, aucun script exécuté
+
+**Cycle de MODIFICATION**, première piste de la file ouverte au #486. Le second
+qui touche au dépôt — après le #482, **qui n'avait finalement rien modifié**.
+Pré-enregistré dans `PREREG_masking_guards_witness_patch.md` (`949d093`).
+`n_trials = 1`.
+
+### La réparation
+
+Deux des 4 sections masquantes établies aux #481/#484 reçoivent **une ligne
+chacune**, hors garde, publiant l'effectif :
+
+```diff
++    L.append(f"- rapports ayant **perdu** l'encart du #439 en étant régénérés : **{len(perdus)}**")
++    L.append(f"- PASS qui sont des **stratégies** et non des scripts d'inventaire : **{len(strategies)}**")
+```
+
+**Patch purement additif : 2 instructions, 0 suppression.** `git diff` compte
+**4** insertions parce qu'il compte aussi les lignes vides de séparation — **les
+deux chiffres sont publiés**, pas seulement celui qui colle à l'annonce.
+
+**La règle du #481, non modifiée, reclasse les deux cas « AVEC TÉMOIN ».** C'est
+la même règle qui les avait dénoncés et qui les reconnaît réparés.
+
+### Aucune exécution — et ce n'est pas une facilité
+
+| Script | Effet de bord constaté |
+|---|---|
+| `six_reports_regeneration` | **exécute d'autres scripts du dépôt** |
+| `sweep_pass_prose_fix` | **écrit 2 fichiers**, dont un qui n'est pas le sien |
+
+> **Les exécuter pour « vérifier » la réparation causerait plus de dégâts que le
+> défaut réparé.** Le #482 avait déjà refusé d'exécuter le premier.
+
+**Conséquence, dite sans l'atténuer : les rapports publiés de ces deux cycles ne
+portent PAS encore le témoin.** La réparation est **dans le code, pas encore
+dans les rapports** ; un lecteur qui les ouvrirait aujourd'hui ne verrait aucun
+changement. Ils le porteront à leur prochaine exécution légitime.
+
+### Prédictions — les trois vérifiées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| les 2 passent « avec témoin » | 2 | **2** | **vérifiée** |
+| total de titres conditionnels inchangé | 4 | **4** | **vérifiée** |
+| aucun autre cas ne change | 0 | **0** | **vérifiée** |
+
+**Le compte de masquants passe de 4 à 2.** Les deux restants —
+`battery_coverage` l.159 et `net_pnl_correction` l.279 — **ne sont pas touchés** :
+leur garde ne porte pas sur une liste de résultats, et la même recette ne s'y
+applique pas telle quelle.
+
+### L'audit ne se fie à aucune annonce
+
+**CONCORDANT.** Un cycle de modification qui se vérifie lui-même statiquement
+est le cas où la complaisance est la plus facile ; l'audit contrôle donc par des
+routes propres :
+
+1. **la réparation est-elle réelle ?** — l'AST cherche une écriture mentionnant
+   la variable de garde **à profondeur zéro**, en ignorant entièrement la règle
+   du #481 : **les deux témoins y sont** ;
+2. **le dépôt est-il intact ?** — `git diff --numstat` : **2 fichiers, 0
+   suppression**, patch purement additif ;
+3. **les rapports ont-ils bougé ?** — **inchangés**, donc l'annonce « aucune
+   exécution » est **vérifiée par ses conséquences**, pas crue sur parole ;
+4. **5/5 contrôles de transparence**, dont « le cycle nomme-t-il les masquants
+   qu'il ne répare pas ? ».
+
+*(Le quatrième contrôle a d'abord échoué sur **mon** motif de recherche — la
+phrase du rapport court sur deux lignes. Même nature d'erreur qu'aux #478, #482
+et #484, publiée plutôt que corrigée en silence.)*
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **La réserve du #485** sur `pnl_duplicate_sweep_audit` — trancher son
+   irréparabilité, avec examen déclaré d'avance.
+2. **Les 2 masquants restants** (#487) — leur garde ne porte pas sur une liste ;
+   trouver la forme de témoin qui leur convient, ou établir qu'il n'y en a pas.
+3. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis 0 sur les 5 derniers.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **2 sections masquantes** *(4 au #484, **−2** réparées au #487)*, dont les
+  rapports **ne portent pas encore** le témoin ajouté.
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  5 irréparables (#485), 1 sous réserve d'audit.
+- **La convention d'auto-déclaration** : récente (13/08/2026) et minoritaire,
+  33 sur 461 (#486). Les 428 non déclarés **ne sont pas fautifs**.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou seuils pris en défaut et publiés comme tels** : #464, #474, #478,
+  #479 *(rétracté au #482)*, #480, #481, #483, #484, #485, #486, **#487 (motif
+  d'audit mal écrit)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
