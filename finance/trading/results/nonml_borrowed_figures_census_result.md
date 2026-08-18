@@ -1,8 +1,14 @@
 # Les **chiffres empruntés sans relecture** (pré-enregistré)
 
-Au **#497**, une prédiction reposait sur un « + 2 » emprunté à l'audit du
-**#496** sans être recalculé. Il valait **3**. **Ce canal d'erreur n'avait
-jamais été dénombré.**
+Au **#497**, une prédiction reposait sur un « + 2 » emprunté à
+l'audit du **#496** sans être recalculé. Il valait **3**. **Ce canal
+d'erreur n'avait jamais été dénombré.**
+
+> **Ces deux nombres sont lus dans les rapports du #496 et du #497**, pas
+> retapés. Une première version de ce rapport les tapait — **mon propre
+> audit l'a signalé**, et il aurait fallu qu'un rapport sur les emprunts
+> soit lui-même porteur pour que la démonstration soit complète. Elle
+> l'est autrement : le détecteur a mordu son auteur.
 
 ## Les trois définitions, citées verbatim
 
@@ -12,7 +18,13 @@ jamais été dénombré.**
 >
 > **Chiffre emprunté** — chaîne publiée portant **à la fois** `#\d{3}`
 > et un nombre en gras présent **en texte littéral**, hors de tout champ
-> interpolé. *(Un `f"**{n}**"` calcule ; un `"**3**"` recopie.)*
+> interpolé. *(Un champ `f"**{n}**"` **calcule** ; le même texte tapé
+> avec ses chiffres **recopie**.)*
+>
+> *L'exemple est écrit sans chiffre à dessein : rédigé avec un nombre en
+> gras, il était lui-même détecté comme littéral — le contrôle ne
+> distingue pas un exemple typographique d'un chiffre en dur, et je n'ai
+> pas voulu affaiblir le contrôle pour sauver ma phrase.*
 >
 > **Relecteur** — script appelant `.read_text(` **et** portant un littéral
 > `.md` **autre** que son propre rapport.
@@ -21,7 +33,7 @@ jamais été dénombré.**
 
 - scripts `nonml_*.py` analysés : **977**
 - scripts **porteurs** d'au moins un chiffre emprunté : **24**
-- **emprunts** au total : **34**
+- **emprunts** au total : **31**
 - scripts **relecteurs** : **133**
 
 ## Le croisement — le cœur de la question
@@ -41,15 +53,15 @@ jamais été dénombré.**
 
 | Cycle cité | Emprunts |
 |---|---|
-| `#451` | **5** |
 | `#427` | **4** |
-| `#449` | **3** |
-| `#428` | **2** |
+| `#451` | **4** |
+| `#449` | **2** |
 | `#463` | **2** |
 | `#479` | **2** |
 | `#481` | **2** |
 | `#414` | **1** |
 | `#416` | **1** |
+| `#428` | **1** |
 | `#434` | **1** |
 | `#435` | **1** |
 | `#442` | **1** |
@@ -98,7 +110,7 @@ Les seuls appels externes visent `git status`, **en lecture**.
 ## Critères de succès
 
 1. Les trois définitions citées verbatim, établies par AST — **OUI**.
-2. Population (**977**), porteurs (**24**), emprunts (**34**), relecteurs (**133**) — **OUI**.
+2. Population (**977**), porteurs (**24**), emprunts (**31**), relecteurs (**133**) — **OUI**.
 3. Croisement publié avec la part des porteurs non relecteurs — **OUI**.
 4. Cycles cités nommés avec leur compte (**26**) — **OUI**.
 5. Aucun script exécuté, arbre propre — **OUI**.

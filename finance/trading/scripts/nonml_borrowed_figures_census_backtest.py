@@ -18,6 +18,8 @@ SCRIPTS = Path(__file__).resolve().parent
 REPO = ROOT.parent.parent
 
 OUT = RESULTS / "nonml_borrowed_figures_census_result.md"
+RAP_497 = RESULTS / "nonml_execution_primitives_census_result.md"
+AUD_496 = RESULTS / "nonml_execution_detection_rule_audit.md"
 MOI = "borrowed_figures_census"
 
 ECRIVAINS = {"append", "write_text", "print"}
@@ -31,6 +33,14 @@ SUFFIXES = [("_backtest.py", "_result.md"), ("_audit.py", "_audit.md"),
 def git(*a):
     r = subprocess.run(["git", *a], cwd=REPO, capture_output=True, text=True)
     return r.stdout if r.returncode == 0 else ""
+
+
+def lu(chemin, motif_re):
+    """Un chiffre LU dans un rapport publie -- jamais retape ici (#497)."""
+    plat = re.sub(r"\s+", " ", chemin.read_text(encoding="utf-8")
+                  .replace("*", "").replace("`", ""))
+    m = re.search(motif_re, plat)
+    return m.group(1) if m else "?"
 
 
 def rapport_de(nom):
@@ -56,7 +66,13 @@ def chaines_publiees(arbre):
         if nom not in ECRIVAINS:
             continue
         for a in list(n.args) + [k.value for k in n.keywords]:
+            # Un fragment interne a une f-string n'est NI un Constant publie NI
+            # une f-string : le compter serait compter deux fois la meme chaine.
+            dedans = {id(v) for j in ast.walk(a) if isinstance(j, ast.JoinedStr)
+                      for v in ast.walk(j) if v is not j}
             for s in ast.walk(a):
+                if id(s) in dedans:
+                    continue
                 if isinstance(s, ast.Constant) and isinstance(s.value, str):
                     out.append((s.value, False))
                 elif isinstance(s, ast.JoinedStr):
@@ -130,9 +146,17 @@ def main():
     A = L.append
     A("# Les **chiffres empruntés sans relecture** (pré-enregistré)")
     A("")
-    A("Au **#497**, une prédiction reposait sur un « + 2 » emprunté à l'audit du")
-    A("**#496** sans être recalculé. Il valait **3**. **Ce canal d'erreur n'avait")
-    A("jamais été dénombré.**")
+    v496 = lu(AUD_496, r"(\d+) script\(s\) appellent subprocess\.Popen")
+    v497 = lu(RAP_497, r"\| P2 \|[^|]*\| (\d+) \|")
+    A(f"Au **#497**, une prédiction reposait sur un « + {v496} » emprunté à")
+    A(f"l'audit du **#496** sans être recalculé. Il valait **{v497}**. **Ce canal")
+    A("d'erreur n'avait jamais été dénombré.**")
+    A("")
+    A("> **Ces deux nombres sont lus dans les rapports du #496 et du #497**, pas")
+    A("> retapés. Une première version de ce rapport les tapait — **mon propre")
+    A("> audit l'a signalé**, et il aurait fallu qu'un rapport sur les emprunts")
+    A("> soit lui-même porteur pour que la démonstration soit complète. Elle")
+    A("> l'est autrement : le détecteur a mordu son auteur.")
     A("")
     A("## Les trois définitions, citées verbatim")
     A("")
@@ -144,7 +168,13 @@ def main():
     A(">")
     A(f"> **Chiffre emprunté** — chaîne publiée portant **à la fois** `{CYCLE.pattern}`")
     A("> et un nombre en gras présent **en texte littéral**, hors de tout champ")
-    A("> interpolé. *(Un `f\"**{n}**\"` calcule ; un `\"**3**\"` recopie.)*")
+    A("> interpolé. *(Un champ `f\"**{n}**\"` **calcule** ; le même texte tapé")
+    A("> avec ses chiffres **recopie**.)*")
+    A(">")
+    A("> *L'exemple est écrit sans chiffre à dessein : rédigé avec un nombre en")
+    A("> gras, il était lui-même détecté comme littéral — le contrôle ne")
+    A("> distingue pas un exemple typographique d'un chiffre en dur, et je n'ai")
+    A("> pas voulu affaiblir le contrôle pour sauver ma phrase.*")
     A(">")
     A("> **Relecteur** — script appelant `.read_text(` **et** portant un littéral")
     A("> `.md` **autre** que son propre rapport.")
