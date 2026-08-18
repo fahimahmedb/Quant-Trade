@@ -12662,3 +12662,108 @@ de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #493 (18/08/2026) — un verdict que **j'ai signé** tombe : irréparables **5 → 4**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #492.
+Pré-enregistré dans `PREREG_irreparability_justifications_audit.md` (`e300e7f`)
+— **examen à la main déclaré compris**. `n_trials = 1`. **Aucun script exécuté.**
+
+### Ce qu'il fallait éprouver
+
+Le #488 avait trouvé **fausse** une des cinq justifications d'irréparabilité du
+#485 (le verdict survivant). **Les 4 autres n'avaient jamais été relues.**
+
+| Script | Justification du #485 | Verdict |
+|---|---|---|
+| `protocol_inventory_audit` | « colonne *Après inspection* = lecture manuelle » | **exacte** |
+| `marker_emitted_by_scripts` | « classification jamais effectuée » | **exacte** |
+| `pnl_persistence_exposed_pass_audit` | « univers du balayage #415, disparu » | **exacte** |
+| `reproducibility_campaign_v3_lot2_audit` | « projection contrefactuelle, aucun univers » | **FAUSSE — verdict tombe** |
+
+### Le cas qui tombe, et il est aggravant
+
+Le script **définit `def bound(n)` au niveau module** (l.29), lie `cum` dans
+`main()` (l.59), et **publie déjà** `{100*bound(cum):.1f} %` **aux lignes 126,
+145 et 176**. Le « **6,2 %** » écrit en dur l.159 **est exactement cette
+valeur** ; le « ~4,1 % » est `100*bound(cum + 24)`.
+
+> **Le même rapport publie 6,2 % comme valeur interpolée et comme littéral.**
+> Deux sources pour un même chiffre dans un même document — la famille de
+> défauts que les #479 à #488 ont passé dix cycles à dénombrer, **et qui a
+> échappé au recensement parce que j'ai cru une phrase au lieu de lire le code.**
+
+### Le compte du #485 est corrigé
+
+| | #485 | Ici |
+|---|---|---|
+| irréparables | 5 | **4** |
+| réparables | 12 | **13** |
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 1 justification fausse | ≥ 1 | **1** | **vérifiée** |
+| aucun verdict ne tombe | 0 | **1** | **réfutée** |
+| `marker_emitted_by_scripts` exacte | exacte | **exacte** | **vérifiée** |
+
+**La prédiction 2 est réfutée, et c'est le résultat qui compte.** Le #485 avait
+un irréparable de trop, et **il aurait suffi de lire son code plutôt que de
+relire ma propre phrase.**
+
+**Deux justifications fausses sur cinq relues** (#488 et #493) — **le taux ne se
+généralise pas** : les 5 le sont désormais toutes.
+
+### L'audit vérifie la chute **et** les maintiens
+
+**CONCORDANT (5/5).** Faire tomber un verdict qu'on a signé est peu suspect ;
+l'audit contrôle donc l'inverse :
+
+1. **la chute est-elle réelle ?** — `bound` est **extraite et évaluée
+   isolément**, sans exécuter le script : `100*bound(47)` = **6,2 %**,
+   `100*bound(71)` = **4,1 %**. Corps verbatim :
+   `return 1.0 - 0.05 ** (1.0 / n)`. **Vérifiée par calcul** ;
+2. **les 3 maintiens sont-ils de complaisance ?** — c'est là que céder serait
+   payant. **Aucun des trois n'a la double capacité** (énumérer un corpus **et**
+   définir des fonctions de calcul) qui a fait tomber le quatrième ;
+3. **5/5** contrôles de transparence, dont « corrige-t-il le compte qu'il avait
+   publié ? » et « refuse-t-il de généraliser un taux de deux cas ? ».
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé : un
+cycle qui fait tomber un de ses propres verdicts et le publie réussit.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 3 rapports portant un témoin non publié** (#487, #489, #491) — établir
+   ce qu'il faudrait pour qu'il paraisse sans effet de bord.
+2. **Étendre la règle tolérante au #483** (#492) — modification déclarée
+   d'avance, ou établir qu'elle ne doit pas l'être.
+3. **Le 13ᵉ réparable** (#493) — `reproducibility_campaign_v3_lot2_audit` est
+   désormais réparable : une interpolation suffirait.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **17 chiffres publiés sans code qui les produise** : **13 réparables**,
+  **4 irréparables** *(5 au #485, **−1** au #493)*. **Les 5 justifications sont
+  désormais toutes relues.**
+- **3 rapports** portent un témoin **dans le code mais pas encore publié**.
+- **La convention d'auto-déclaration est vivante** : 95 % des 20 derniers (#492).
+- **0 section masquante** (#491) — série close.
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles, justifications ou prédictions prises en défaut et publiées comme
+  telles** : #464, #474, #478, #479, #480, #481, #483, #484, **#485 (deux
+  justifications fausses, #488 et #493)**, #486, #487, #488, #489, #490, #491,
+  #492.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
