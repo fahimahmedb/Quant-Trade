@@ -10667,3 +10667,101 @@ panier (#432).
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #475 (18/08/2026) — l'incohérence du #469 : **mes trois prédictions réfutées**, il avait raison
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #474 — dette
+inscrite depuis le #469 et répétée dans six entrées. Pré-enregistré dans
+`PREREG_six_reports_emitter_inconsistency.md` (`d3a2143`), avant toute mesure.
+`n_trials = 1`. **Aucun script du dépôt n'a été exécuté** — en particulier pas
+`six_reports_regeneration`, qui réécrirait des rapports.
+
+### L'hypothèse que je testais, et qui était fausse
+
+Le #469 avait lu l'incohérence comme une **perte** sans le vérifier. Je
+soupçonnais un **faux positif** : `six_reports_regeneration` régénère les
+rapports des autres, donc son émission viserait peut-être **d'autres fichiers**
+que le sien.
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| lecture B (écriture ailleurs) retenue | B | **A** | **réfutée** |
+| le rapport n'a jamais porté la marque | jamais | **1 commit** | **réfutée** |
+| ≥ 6 rapports régénérés portent la marque | ≥ 6 | **4** | **réfutée** |
+
+**Les trois sont réfutées. La mesure donne raison au #469 sur les trois
+points.** La ligne d'émission écrit bien dans **son propre rapport**, et ce
+rapport **a porté la marque** au commit `bbe5165` (#450) avant de la perdre.
+
+Le pré-enregistrement avait nommé le risque — *« ce cycle est ouvert parce que
+je soupçonne un cycle antérieur d'avoir eu tort : c'est exactement la position
+où l'on trouve ce qu'on cherche »* — et exigé que la lecture A **reste
+atteignable**. Elle l'était, et **c'est elle qui sort**. Le garde-fou a servi.
+
+La prédiction 3 tombe pour une raison bête et instructive : la liste `SIX`
+contient un `_audit.md` et un rapport que le #439 n'avait **jamais** marqués.
+**J'avais supposé une population homogène sans la regarder.**
+
+### Ce que la mesure ajoute quand même — post-hoc, signalé comme tel
+
+La marque, dans le rapport historique, se trouvait sous la section **« Un effet
+de bord découvert — les marqueurs du #439 sont effacés »**, produite par la
+ligne 240 sous la garde `if perdus:`. Le rapport ne se marquait donc pas
+lui-même : il **citait** l'encart pour expliquer que quatre **autres** rapports
+venaient de le perdre.
+
+Le pickaxe (`git log -S`) date le retrait : **`1a0c51d`, le #468**, en réparant
+l'auto-inclusion de ce script — **un cycle avant que le #469 ne le signale**.
+Les quatre encarts ayant été rétablis au #451, la garde n'avait plus rien à
+produire.
+
+> **Cela ne renverse pas le verdict.** Le #469 a signalé un fait textuel exact,
+> et mon hypothèse était fausse. Le constat en précise la mécanique.
+
+### La dette n'est pas levée
+
+« **1 incohérence émetteur/rapport** » reste inscrite. Ce cycle ne la répare
+pas et ne la supprime pas : il **la confirme** et la documente. Elle est
+seulement mieux comprise — le rapport n'a rien perdu d'un encart qui le
+décrivait, il a cessé de produire une **section conditionnelle** devenue sans
+objet.
+
+Anti-cheat **CONFORME** (4/4). Audit adversarial **CONCORDANT** (4/4) par une
+route indépendante — `git grep` et **AST** au lieu de la lecture par expression
+régulière, **pickaxe** au lieu du dépliage commit par commit. L'audit a d'abord
+rendu **3/4** : il comparait les **occurrences** de la marque aux **émissions**,
+soit la confusion même que le #469 avait levée. **C'est l'audit qui a été
+corrigé, pas le backtest**, et l'écart de définition est publié.
+
+**PASS** — le critère portait sur le procédé. Robustesse (7a) et simulation
+300 € (7b) **sans objet** : aucune position, aucun paramètre à perturber.
+
+### File « à faire »
+
+1. **Les chiffres publiés sans code qui les produise** — généraliser le constat
+   du #473 : combien d'autres comptes de rapport sont des littéraux ?
+2. **Les 13 cycles complets sans entrée de backlog** (#474) — écrire les entrées
+   manquantes, ou établir qu'elles sont couvertes autrement.
+3. **Les sections conditionnelles** (#475) — un rapport dont une section ne
+   paraît que sous condition change de contenu sans que rien ne soit fautif :
+   combien de rapports en contiennent, et le savent-ils ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au schéma
+panier (#432).
+
+### Dette restante
+
+- **1 incohérence** émetteur/rapport (#469) — **confirmée au #475**, non réparée.
+- **1 cycle** réellement inachevé (#474) ; **13 cycles complets** sans entrée ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Un critère surévalué au #464** (« listés nominativement » sur 15/24).
+- **Le compte du #451 a été établi à la main et déclaré tel** (#473).
+- **Un écart pré-enregistrement / script au #472**, inscrit.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
