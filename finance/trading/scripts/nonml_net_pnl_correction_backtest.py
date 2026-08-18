@@ -275,6 +275,9 @@ def main():
     # Incoherence exposee par le rafraichissement : prose figee vs compte calcule.
     incoh = [ln for ln in apres_txt
              if "PASS sont les deux" in ln and "**2**" not in ln]
+    L.append(f"- incohérences prose/compte exposées par le rafraîchissement : **{len(incoh)}**")
+    L.append("")
+
     if incoh:
         L.append("### Une incohérence exposée par le rafraîchissement")
         L.append("")
