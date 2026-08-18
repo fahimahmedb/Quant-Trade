@@ -12106,3 +12106,122 @@ Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #488 (18/08/2026) — irréparabilité **confirmée**, mais **la justification du #485 était fausse**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #487.
+Pré-enregistré dans `PREREG_duplicate_sweep_irreparability.md` (`fba73a9`),
+**examen à la main déclaré compris**. `n_trials = 1`. Lecture du disque, **aucun
+script exécuté**.
+
+### La réserve à lever
+
+Le #485 avait classé `pnl_duplicate_sweep_audit` **IRRÉPARABLE** ; **son audit
+n'avait pas pu le confirmer** — le script énumère `results/` sans liste codée en
+dur — et **le doute avait été inscrit**.
+
+Sa justification écrite à la main était : *« le **372** est le décompte d'essais
+du backlog entier, que cet audit **ne construit pas** »*.
+
+### Ce que le code dit
+
+**Il lit le backlog** (`BACKLOG.read_text()`, l.128) **et en calcule un
+décompte** — publié sans garde :
+
+| Grandeur | Valeur |
+|---|---|
+| `n_entries` publié dans son rapport | **404** |
+| `n_entries` recalculé aujourd'hui | **449** |
+| le chiffre écrit en dur dans la ligne fautive | **372** |
+
+> **Le script calcule bien un décompte de backlog — mais c'est 404, pas 372.**
+> `n_entries` compte les **lignes de tableau numérotées** ; le 372 vient de la
+> comptabilité `n_trials`, qui compte les **essais** — une notion que ce script
+> n'implémente nulle part. Et l'écart n'est pas temporel : recalculé
+> aujourd'hui, `n_entries` **s'éloigne encore**.
+
+### Lecture **A** — mais pas pour la raison écrite au #485
+
+**L'irréparabilité tient. La justification était fausse.** Le #485 disait que
+l'audit « ne construit pas » le décompte ; il en construit un — simplement pas
+celui-là. **C'est le reproche exact que le #475 s'était fait : « il avait
+raison, mais pas pour la raison qu'il croyait ».**
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| lecture A retenue | A | **A** | **vérifiée** |
+| il énumère `results/`, **pas** le backlog | pas le backlog | **il lit le backlog** | **réfutée** |
+| `372` n'est nulle part une grandeur calculée | 0 | **0** | **vérifiée** |
+
+**La prédiction 2 est réfutée, et c'est elle qui apprend quelque chose** :
+j'avais repris sans la vérifier la justification du #485 — que j'avais moi-même
+signée.
+
+### La réserve de l'audit du #485 est levée, et elle avait raison
+
+> **La route AST ne pouvait pas confirmer, parce que le script construit bel et
+> bien un décompte.** Elle a correctement refusé de valider un raisonnement
+> faux, **même si sa conclusion était juste.** C'est le meilleur usage qu'un
+> audit puisse avoir.
+
+### L'audit de ce cycle teste les deux moitiés séparément
+
+Conclure **A** tout en réfutant la justification du #485 est **confortable** :
+on garde le verdict qu'on a signé en se donnant le mérite d'en corriger la
+raison. L'audit sépare donc :
+
+- **contrôle 1** — le script lit-il le backlog ? **OUI par AST** : la réfutation
+  est fondée ;
+- **contrôle 3** — `n_entries` a-t-il **jamais** valu 372 ? **NON**, sur 25
+  commits d'historique (de 23 à 449) : la thèse « deux grandeurs différentes »
+  tient par une voie non empruntée par le backtest ;
+- **contrôle 2** — **déclaré NON CONCLUANT**. Mon motif large retenait **294**
+  scripts, le précis **60**, et aucun ne distingue un script déclarant son
+  propre `n_trials = 1` d'un module exposant une comptabilité du dépôt.
+  **J'ai refusé d'essayer un troisième motif jusqu'à obtenir la réponse
+  attendue** — il n'infirme pas, il ne confirme pas ;
+- **5/5** contrôles de transparence.
+
+Anti-cheat **CONFORME** (4/4). **PASS** — le critère portait sur le procédé.
+Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### Une dette dépend d'une décision qui n'est pas la mienne
+
+Le **372** vient de la comptabilité `n_trials`, **en attente d'arbitrage depuis
+le #421**. Ce cycle ne la tranche pas : il établit seulement qu'elle **n'est pas
+reconstructible depuis ce script**.
+
+### File « à faire »
+
+1. **Les 2 masquants restants** (#487) — leur garde ne porte pas sur une liste ;
+   trouver la forme de témoin qui leur convient, ou établir qu'il n'y en a pas.
+2. **La convention est-elle en train de mourir ?** (#486) — 33 déclarés apparus
+   le 13/08, puis 0 sur les 5 derniers.
+3. **Les 4 autres irréparabilités du #485** — leurs justifications ont-elles le
+   même défaut que celle qui vient de tomber ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend, confirmée sur pièce au #488** ; statut
+de `log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **17 chiffres publiés sans code qui les produise** : 12 réparables,
+  **5 irréparables** — dont celle du #488, désormais **confirmée avec la bonne
+  raison**. **Plus aucune sous réserve.**
+- **2 sections masquantes** restantes (#487), rapports pas encore régénérés.
+- **La convention d'auto-déclaration** : récente (13/08/2026), 33 sur 461 (#486).
+- **1 incohérence** émetteur/rapport (#469) — confirmée au #475.
+- **1 cycle** réellement inachevé (#474) ; **10 `PREREG_`** sans rapport ni
+  entrée ; **0 rapport perdu**.
+- **Règles ou justifications prises en défaut et publiées comme telles** : #464,
+  #474, #478, #479 *(rétracté au #482)*, #480, #481, #483, #484, #485
+  *(justification rétractée au #488)*, #486, #487, **#488 (motif d'audit non
+  concluant, assumé)**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
