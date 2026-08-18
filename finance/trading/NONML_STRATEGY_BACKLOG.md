@@ -13736,3 +13736,138 @@ script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #502 (18/08/2026) — **PASS** : le contexte mord, mais **14 emprunts** que le #501 disait confirmés tombent
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #501.
+`PREREG_contextual_confrontation.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### La règle, et ses trois paramètres figés avant mesure
+
+Le #501 cherchait **un nombre** dans la section du cycle cité et n'a départagé
+que **3** emprunts sur 39. Ici on vérifie qu'il apparaît **au même sujet** :
+
+- **mots-clés** : mots d'au moins **6 lettres**, minusculisés, chiffres exclus
+  — le seuil écarte les mots outils **sans liste d'exclusion**, qui aurait été
+  un réglage déguisé ;
+- **fenêtre** : **±200 caractères** autour de l'occurrence en gras ;
+- **recouvrement** : au moins **2** mots-clés dans la fenêtre.
+
+### Le reclassement des 39 nombres
+
+| Classe | Nombre | Part |
+|---|---|---|
+| **confirmé en contexte** | **8** | 20,5 % |
+| **présent sans contexte** | **14** | 35,9 % |
+| **absent de la section** | **15** | 38,5 % |
+| **contexte indisponible** (< 2 mots-clés) | **2** | 5,1 % |
+| **non vérifiable** | **0** | 0,0 % |
+
+**Table de transition** : les **22** « confirmés » du #501 se scindent en
+**8** confirmés en contexte et **14 sur-crédités** ; ses **17** « retrouvés
+ailleurs » deviennent **15** absents de la section et **2** contexte
+indisponible.
+
+> **Deux emprunts sur trois que le #501 créditait ne parlent pas du même
+> sujet que leur source.** L'ancienne règle ne mesurait qu'une coïncidence
+> typographique.
+
+### Les deux critères ne sont pas emboîtés — mesuré, pas supposé
+
+**8** confirmations contextuelles contre **3** confirmations « fortes » au
+#501, mais seulement **2 communes**. Comparer les effectifs suggérerait un
+gain net ; le recouvrement montre qu'ils **départagent des emprunts
+différents**.
+
+Et **1 confirmation forte du #501 tombe** :
+`nonml_declaration_convention_dating_backtest.py` cite le #483 pour **113**
+avec **0** mot-clé en commun — le #501 le créditait sur la seule improbabilité
+d'une coïncidence. **Un nombre long au mauvais endroit reste un nombre au
+mauvais endroit.**
+
+**6 emprunts sont sauvés** : petits nombres que le #501 ne pouvait pas
+créditer, et que le contexte valide. **C'est exactement le gain visé.**
+
+### Une prédiction réfutée
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| confirmés en contexte ≥ 10 | ≥ 10 | **8** | **réfutée** |
+| plus que les 3 confirmations fortes du #501 | > 3 | **8** | **vérifiée** |
+| ≥ 1 sur-crédité par le #501 | ≥ 1 | **14** | **vérifiée** |
+
+J'attendais **10** confirmations contextuelles ; il y en a **8**. Le contexte
+mord, mais **moins que je ne l'espérais** — et la majorité des emprunts reste
+**indécidable**.
+
+### L'audit
+
+Découpage **sémantique** au lieu de métrique : le recouvrement est remesuré
+sur la **phrase** contenant l'occurrence, non sur ±200 caractères. **8 → 5**.
+
+> L'écart est **positif**, et son **sens** est le contrôle : une fenêtre de
+> caractères déborde sur les phrases voisines, donc elle **doit** confirmer
+> davantage. Un écart négatif aurait signalé un défaut dans l'une des deux
+> mesures. **La fenêtre est une borne supérieure, pas un compte exact** — et
+> les 8 confirmations du rapport doivent se lire ainsi.
+
+Quatre propriétés vérifiées que le backtest n'énonce pas : partition des cinq
+classes (39 = 39), somme de la table de transition, `confirmé + sans contexte
+= présents dans la section` (22), cohérence de la classe « contexte
+indisponible ». **AUDIT OK (6/6)**, **0** chiffre en dur sur **74** en gras.
+
+L'audit publie aussi sa propre limite : les deux découpages partagent la même
+notion de mot-clé et le même seuil. Leur accord valide **le découpage du
+contexte**, pas l'idée qu'un recouvrement de mots vaut **identité de sujet** —
+qui reste une **convention**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### File « à faire »
+
+1. **Les 14 sur-crédités et les 15 absents** (#502) — les relire **à la main**
+   un par un est hors de portée d'un cycle ; mais on peut mesurer **combien
+   citent un cycle dont la section ne contient aucun nombre de la bonne
+   grandeur**, ce qui distinguerait l'erreur de référence de l'erreur de
+   valeur.
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **39 nombres empruntés** : **8** confirmés en contexte *(borne supérieure —
+  **5** à la phrase)*, **14 sur-crédités par le #501**, **15 absents de la
+  section citée**. **La justesse de la majorité reste inconnue.**
+- **Deux règles de confrontation, non emboîtées** (#501, #502) : **2**
+  confirmations communes seulement.
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502** *(une confirmation « forte » du #501
+  invalidée ; ma propre attente de 10 réfutée)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
