@@ -14001,3 +14001,146 @@ nommable, et **13 valeurs suspectes** dont aucune n'est établie fausse.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #504 (18/08/2026) — **PASS** : changer de source n'explique **qu'1 des 13**, et **5 résidus** survivent à cinq cycles
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #503.
+`PREREG_suspect_values_reports.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### L'hypothèse à tester
+
+Les #501-#503 n'ont interrogé qu'**une** source : la section
+`## Backlog #NNN`. Or un cycle publie aussi un **rapport**, et c'est là que
+ses chiffres naissent — **le registre en est le résumé**. L'hypothèse : les 13
+« valeurs suspectes » du #503 s'expliqueraient par la mauvaise source.
+
+Paramètres du #502 (**6 lettres**, **±200 caractères**, **2 mots-clés**)
+**repris tels quels** — refusé au #503 de les retoucher, refusé encore.
+
+### Le résultat, qui réfute l'hypothèse
+
+| Classe | Nombre |
+|---|---|
+| **confirmé au rapport** | **1** |
+| **présent sans contexte** | **7** |
+| **absent du rapport** | **5** |
+| **rapport introuvable** | **0** |
+
+| Source | Confirmations sur ces 13 |
+|---|---|
+| **registre** | **0** *(par construction)* |
+| **rapports** | **1** |
+
+> **Le changement de source n'explique qu'1 de ces 13.** J'en attendais au
+> moins **6** : réfuté. La source consultée **n'était pas l'explication
+> principale**, contrairement à ce que la piste du #503 laissait espérer.
+
+Le résultat dominant est ailleurs : **7** de ces valeurs **figurent** dans les
+rapports du cycle cité mais **pas au même sujet** — exactement le motif que le
+#502 avait trouvé sur le registre. **Changer de source n'a pas changé le
+diagnostic**, ce qui en renforce la solidité.
+
+### Deux prédictions sur trois réfutées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 6 confirmés au rapport | ≥ 6 | **1** | **réfutée** |
+| ≥ 1 rapport introuvable | ≥ 1 | **0** | **réfutée** |
+| ≥ 1 résidu subsiste | ≥ 1 | **5** | **vérifiée** |
+
+### Les 5 résidus — nommés
+
+`content_defined_magnitudes_audit` (#449, **2**),
+`content_defined_magnitudes_backtest` (#451, **8**),
+`report_idempotence_backtest` (#443, **5,7**),
+`self_inclusion_detector_backtest` (#463, **16** et **2**).
+
+Ce sont les **seuls** emprunts que cinq cycles n'ont pas su rattacher à une
+source publiée. **Ils restent des soupçons** : la liste des sources n'est
+toujours pas exhaustive — un chiffre peut vivre dans un `PREREG_`, un
+commentaire de code ou un message de commit.
+
+### Deux défauts de mon audit, corrigés avant tout commit
+
+1. **Un pathspec faux.** `git log -- finance/trading/PREREG_` ne matche rien —
+   ce n'est pas un chemin. La route par dates rattachait **0** cycle et
+   annonçait **0/8** d'accord. Corrigée : **480** `PREREG_` datés, **8/8**.
+2. **Un critère tautologique.** Il s'écrivait `accord ≥ total − désaccords`,
+   **vrai par construction** : il absolvait l'audit même avec 0 rattachement.
+   Remplacé par `accord == total`, qui peut échouer.
+
+> **Le premier défaut était masqué par le second.** Un critère qui ne peut pas
+> échouer ne signale pas la panne qu'il devrait attraper — c'est la leçon du
+> #495, retrouvée sur mon propre audit.
+
+### L'audit
+
+Route indépendante : les rapports d'un cycle sont identifiés par leur **date
+d'introduction git** (entre son `PREREG_` et le suivant) au lieu du **nom de
+stratégie**. **8/8** rattachements concordants. **5/5** résidus existent
+ailleurs dans `results/` — ce qui **ne les innocente pas** : un nombre qui
+traîne partout dans un dépôt de cette taille ne prouve rien, faiblesse déjà
+mesurée au #501. **AUDIT OK (5/5)**.
+
+**PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0** script exécuté, arbre
+propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
+
+### Le bilan des cinq cycles #500 → #504
+
+Sur **39** nombres empruntés à un autre cycle : **8** confirmés au même sujet
+*(borne supérieure ; **5** à la phrase)*, **15** simplement **repris plus
+tard**, **1** correction de référence nommable, **1** retrouvé au rapport et
+non au registre, et **5 résidus** irréductibles.
+
+> **Aucun des cinq cycles n'a établi qu'un seul emprunt soit faux.** Ils ont
+> établi ce qu'on **ne peut pas** conclure — et corrigé, à chaque passage, une
+> erreur de mon interprétation plutôt qu'une erreur du dépôt.
+
+### File « à faire »
+
+1. **Étendre la recherche des 5 résidus aux sources non publiées** (#504) —
+   `PREREG_*.md`, commentaires de code, messages de commit. Si un résidu s'y
+   trouve, l'emprunt est **sourcé mais mal cité** ; s'il ne s'y trouve nulle
+   part, c'est le **premier candidat sérieux** de toute la série.
+2. **Les verdicts adossés à un détecteur littéral** (#498) — combien de
+   verdicts du dépôt reposent sur un appariement de forme ?
+3. **Dérivable ≠ committable** (#499) — recompter les **13 réparables** du
+   #493 sous le critère de **committabilité**.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **5 résidus** (#504) — emprunts qu'aucune source publiée ne justifie.
+  **Seuls candidats sérieux** de la série, et toujours **pas** des erreurs
+  établies.
+- **7 valeurs** présentes au rapport du cycle cité **mais pas au même sujet**.
+- **15 emprunts** dont le chiffre est **repris plus tard** (#503), **1** seule
+  correction de référence nommable.
+- **La distinction sur-crédité / absent du #502 ne recouvre rien** (#503).
+- **« 13 réparables » (#493) mesure la dérivabilité, pas la committabilité**
+  (#499) — au moins **1** ne l'est pas.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **Le verdict C du #483 est corrigé en A** (#498) ; sa date de naissance
+  (13/08/2026, **380 / 0**) tient.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) — les 4 de classe C, mesuré (#496).
+- **10 scripts** dans l'angle mort de la règle d'origine (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **Motifs, classements ou constructions faux, rétractés sur mesure** :
+  **#487**, **#485** *(deux fois)*, **#494**, **#496**, **#497**, **#498**,
+  **#499**, **#500**, **#501**, **#502**, **#503**, **#504** *(pathspec faux
+  masqué par un critère tautologique ; hypothèse de source réfutée)*.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
+  testée.**
