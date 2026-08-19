@@ -61,18 +61,16 @@ V = {
   "**Branche `if not a_modifier:` d'une alternative** dont l'`else` écrit "
   "« Décision : rendre l'écart visible dans N script(s) ». **Une décision est "
   "toujours publiée** ; seule laquelle varie."),
- ("nonml_six_reports_regeneration_backtest.py", 232): ("MASQUANT", False,
-  "**Le cas du #475 lui-même.** `perdus` n'apparaît nulle part hors de sa "
-  "garde. La section porte l'unique mention de l'effet de bord découvert, et "
-  "son effacement a envoyé **trois cycles** (#469, #472, #475) chercher un "
-  "encart qui n'avait jamais été écrit. **Contrôle positif : une règle qui ne "
-  "le classerait pas masquant serait à jeter.**"),
- ("nonml_sweep_pass_prose_fix_backtest.py", 134): ("MASQUANT", False,
-  "`if strategies:` n'a **pas d'`else`**, et aucun compte de `strategies` "
-  "n'est publié hors garde. Si aucun PASS n'était une stratégie, le lecteur "
-  "**n'apprendrait jamais que le contrôle a eu lieu** — alors que la section "
-  "annonce précisément *« le résultat qui prime sur la correction de prose »*. "
-  "**Deuxième masquant établi de ce cycle.**"),
+ ("nonml_six_reports_regeneration_backtest.py", 232): ("ANODIN", False,
+  "**Corrigé au #525.** `perdus` est désormais publié sans condition, avant "
+  "même la garde (l.231, `L.append(f\"- rapports ayant **perdu** l'encart du "
+  "#439... : **{len(perdus)}**\")`). Le cas restait valide au #475/#484 ; ce "
+  "n'est plus le contrôle positif qu'il était — l'état du script a changé, "
+  "pas la règle."),
+ ("nonml_sweep_pass_prose_fix_backtest.py", 134): ("ANODIN", False,
+  "**Corrigé au #525.** `strategies` est désormais publié sans condition, "
+  "avant même la garde (l.133, `L.append(f\"- PASS qui sont des "
+  "**stratégies**... : **{len(strategies)}**\")`)."),
  ("nonml_verdict_detector_complete_robustness.py", 124): ("ANODIN", True,
   "**Branche `else` de `if plateau:`.** L'issue `if` écrit « **Plateau** : le "
   "résultat tient sur tout le voisinage » ; l'`else` écrit « Ce n'est pas un "
