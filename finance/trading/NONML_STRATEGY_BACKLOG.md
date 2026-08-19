@@ -17733,3 +17733,28 @@ CPI #338, MOVE #357, Bitcoin #344).
   appliquées avec diff borné.
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #537 (19/08/2026) — constat bref : rien de nouveau depuis le #536
+
+**Pas un backtest.** ~17 minutes après le #536, aucun changement
+d'état : la file « à faire » reste limitée aux deux points en attente
+de décision utilisateur (pivot Étape D, arbitrage #432). Un candidat
+de réparation supplémentaire a été envisagé (les 2 littéraux `6,2`
+laissés dans la cible du #499) puis écarté **sans tentative** : le
+#499 a déjà démontré, par mesure directe, que régénérer ce rapport
+précis est impossible à committer proprement (population dérivée
+290→347 depuis) — retenter la même réparation reproduirait le même
+échec déjà documenté, pas une nouvelle information.
+
+**Aucun calcul, aucun résultat committé.** Pour éviter de répéter une
+recherche complète à chaque firing sans changement d'état, les
+prochains cycles vides n'ajouteront une entrée que si quelque chose de
+nouveau est trouvé ou si un délai substantiel s'est écoulé — cohérent
+avec la discipline déjà appliquée aux #368-374.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
