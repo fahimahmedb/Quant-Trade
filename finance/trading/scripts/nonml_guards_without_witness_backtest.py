@@ -35,12 +35,12 @@ VAR = re.compile(r"^if\s+(?:not\s+)?([a-z_][a-z0-9_]*)\s*:\s*$")
 # main apres lecture du code autour de chaque garde.
 # MASQUANT = la section gardee est la SEULE mention de son sujet.
 V = {
- ("nonml_battery_coverage_backtest.py", 159): ("MASQUANT",
-  "La section est **l'unique mention** de la limite découverte : la règle de "
-  "verdict du #448 ne couvre pas les rapports de batterie. La variable `indet` "
-  "n'apparaît **nulle part** hors de la garde. Si elle valait 0, la découverte "
-  "— *« personne ne l'avait remarqué, ni le #448, ni le #449, ni le #454 »* — "
-  "s'effacerait **sans laisser un mot**. C'est la forme du #475."),
+ ("nonml_battery_coverage_backtest.py", 159): ("ANODIN",
+  "**Corrigé au #524** : le #489 a ajouté un témoin — `indet` est désormais "
+  "publié sans condition (l.147, `L.append(f\"- rapports classés « "
+  "indéterminé »... : **{indet}**\")`), avant même la garde citée ici. "
+  "**La variable n'est plus visible seulement sous la garde** : si elle "
+  "valait 0, le lecteur le verrait quand même à la l.147."),
  ("nonml_citer_451_resolution_backtest.py", 187): ("ANODIN",
   "La section ajoute un **argument** (« le désaccord est stable, pas "
   "accidentel ») à une conclusion déjà exposée sans garde au-dessus. Son "
@@ -51,11 +51,11 @@ V = {
   "établis : 0 ». Un lecteur voyant 1 candidat et 0 établi **sait qu'un examen "
   "a eu lieu** ; si la section manquait, les deux nombres seraient égaux et "
   "il n'y aurait rien à expliquer."),
- ("nonml_net_pnl_correction_backtest.py", 279): ("MASQUANT",
-  "La variable `incoh` n'apparaît **que** sous sa garde. La section est la "
-  "**seule** trace d'une incohérence trouvée en passant — « le compte est "
-  "calculé, la prose est figée ». Si le dépôt cessait de la produire, la "
-  "découverte disparaîtrait **sans qu'aucun compte ne le signale**."),
+ ("nonml_net_pnl_correction_backtest.py", 279): ("ANODIN",
+  "**Corrigé au #524** : le #489 a ajouté un témoin — `incoh` est désormais "
+  "publié sans condition (l.278, `L.append(f\"- incohérences prose/compte "
+  "exposées... : **{len(incoh)}**\")`), avant la garde citée ici. **La "
+  "variable n'est plus visible seulement sous la garde.**"),
  ("nonml_net_pnl_correction_robustness.py", 76): ("ANODIN",
   "**C'est une branche de `if/else`.** Les deux issues écrivent une section — "
   "« Plateau, pas pic » ou « La conclusion ne tient pas partout ». **Une "
