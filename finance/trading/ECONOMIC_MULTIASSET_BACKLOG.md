@@ -86,7 +86,7 @@ tel.
 
 | # | Piste | Données nécessaires | Statut |
 |---|---|---|---|
-| E1 | Débloquer la batterie de validation pour le schéma panier (plusieurs actifs simultanés) — condition préalable à E2 | aucune nouvelle donnée, travail d'infrastructure sur `nonml_*_pass_validation_battery.py` | **à faire** |
+| E1 | Débloquer la batterie de validation pour le schéma panier (plusieurs actifs simultanés) — condition préalable à E2 | aucune nouvelle donnée, mais **décision d'architecture en attente d'arbitrage utilisateur** (#432 : « la batterie a été conçue pour une position scalaire », extension jamais tranchée unilatéralement) | **bloqué — en attente d'arbitrage utilisateur (#432)** |
 | E2 | Effet fiscal de fin d'année sur le panier déjà préparé (`january_effect_lowprice_overlay_pit_universe`), enfin exécutable une fois E1 fait | déjà en dépôt | **bloqué sur E1** |
 | E3 | Momentum cross-actifs sur le quatuor actions/obligations/or/dollar (signal : allocation vers les jambes en tendance positive, réduite/nulle sur les jambes en tendance négative) | TLT, GLD, UUP (fetch en cours) | **à faire dès que les 3 fetches sont terminés** |
 
@@ -107,6 +107,9 @@ tel.
 
 Les quatre jambes de données sont **prêtes et vérifiées** (actions, TLT,
 GLD, UUP). **E1** (déblocage schéma panier) ne dépend d'aucune donnée
-externe et peut démarrer dès le prochain cycle sur ce fil — PREREG dédié
-avant toute modification du code de la batterie. Une fois E1 fait, **E2**
-et **E3** sont immédiatement exécutables sans attente supplémentaire.
+externe, mais **reste bloqué sur une décision d'architecture en
+attente d'arbitrage de l'utilisateur** — le #432 du backlog principal
+déclare explicitement cette extension comme l'un de trois points
+« aucun tranché unilatéralement », au motif que la batterie de
+validation a été conçue pour une position scalaire (corrigé au #533,
+qui avait trouvé cette section en contradiction avec le #432).
