@@ -15886,3 +15886,113 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #519 (19/08/2026) — **PASS** : bilan des 4 témoins, et le témoin faible n'est employé qu'à sa définition et son test
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #518.
+`PREREG_witness_synthesis_500_515.md` committé **avant toute mesure**,
+`n_trials` continue le compte global.
+
+### La consolidation, sans recalcul
+
+| Couche | Témoin | Verdict |
+|---|---|---|
+| Extraction (D500) | lift **6,4** | discrimine |
+| Confirmation brute (D501, `en_gras_dans`) | rapport **1,5** | ne discrimine pas seule |
+| Contextuelle (#502) | spécificité **35,9 %** | discrimine, 64 % faux positifs |
+| Primitive d'exécution (D497-P10) | lift **12,1** | discrimine |
+
+### La question neuve : D501 est-elle utilisée seule, ailleurs ?
+
+Recensement mécanique (grep + AST) de tout appel à `en_gras_dans` — la
+fonction montrée non discriminante au #515 — dans l'ensemble du dossier
+`scripts/`. **3 appelants trouvés, hors sa propre définition** :
+- le script du **#502**, qui la **compense** par le contexte (attendu) ;
+- le script du **#515**, qui la **teste** comme sujet (attendu) ;
+- l'**audit du #501 lui-même**, non prévu par son nom exact au
+  pré-enregistrement, mais qui ne fait que **recalculer par une route
+  indépendante les mêmes classes que le #501 backtest** — pas un
+  nouveau verdict substantiel.
+
+> **Zéro conclusion substantielle du dépôt ne repose sur `en_gras_dans`
+> employée seule, sans compensation contextuelle ou hors de son propre
+> test.** Les 8 scripts important le module du #501 sans celui du #502
+> ne consomment, à une exception près déjà nommée, que des utilitaires
+> génériques (`sections_backlog`, `git`) sans rapport avec la fiabilité
+> du témoin.
+
+### Prédictions — 3/3 réfutées, honnêtement publiées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| `en_gras_dans` dans exactement 2 fichiers | 2 | 3 | **réfutée** |
+| 0 « troisième cas » | 0 | 1 | **réfutée** |
+| scripts sans #502 : jamais `en_gras_dans` | 0 | 3 | **réfutée** |
+
+Les trois prédictions tombent sur le même point : le pré-enregistrement
+n'avait nommé que 2 scripts par leur nom exact, oubliant le compagnon
+évident du #501 (son propre audit). **Réfuté et publié tel quel**, avec
+l'explication qui montre que ce n'est pas la lacune substantielle que la
+question cherchait.
+
+### L'audit : grep externe + relecture directe de la source du #515
+
+Processus séparé (`grep -rl`) plutôt que regex Python interne pour
+recompter les appelants ; relecture du rapport du #515 pour confirmer
+que le « 1,5 » cité en Partie 1 y figure bien tel quel, sans passer par
+ce cycle. **Accord exact.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de synthèse bibliographique/code, aucune position.
+
+Deux bugs d'auto-inclusion (le backtest se comptait lui-même via sa
+propre prose ; l'audit comptait le backtest du même cycle) corrigés
+avant de committer, même famille de défaut que celle traquée depuis le
+#463.
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 (déblocage du schéma panier) reste prêt à démarrer, et n'a plus
+   de piste concurrente sur le fil principal.
+2. **Les 3 nouveaux irréparables du #518** — méritent-ils une raison
+   propre publiée dans le style du tableau original du #485 ?
+3. **La série des témoins #500-#519 est désormais synthétisée** —
+   prochaine extension possible : appliquer la même discipline de
+   témoin (négatif/positif, lift, permutation) aux détecteurs plus
+   récents non encore éprouvés.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519) :
+  D500 et D497-P10 discriminent, la couche contextuelle discrimine avec
+  réserve, D501 seule ne discrimine pas — et **aucune conclusion du
+  dépôt ne repose sur D501 employée sans compensation**.
+- **Les 17 figures du #485 sont désormais toutes relues au moins une
+  fois** (#517, #518) : irréparables **5 → 8**, réparables **12 → 9**.
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
