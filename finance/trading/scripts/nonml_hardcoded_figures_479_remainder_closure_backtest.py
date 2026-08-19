@@ -241,8 +241,11 @@ def test_retractation(nom, cycle, secs):
             pos_mk = mm.start()
             # Exclut la phrase generique de la "Dette restante" qui liste
             # des NUMEROS DE CYCLE retractes ("Motifs... retractes sur
-            # mesure : #487, #485..."), sans rapport avec un script precis.
-            if "rétractés sur mesure" in sec[max(0, pos_mk - 60):pos_mk + 40]:
+            # mesure : #487, #485..."), sans rapport avec un script precis
+            # -- generalise au #531 a la narration propre d'un cycle
+            # decrivant sa propre exclusion, faille trouvee au #530.
+            if any(mg in sec[max(0, pos_mk - 60):pos_mk + 40] for mg in
+                   ("rétractés sur mesure", "pas une discussion du script")):
                 continue
             # radical le plus proche de cette occurrence du marqueur,
             # tous scripts candidats confondus (le plus long d'abord pour

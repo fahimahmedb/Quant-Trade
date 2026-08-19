@@ -124,7 +124,11 @@ def occurrences_pertinentes(nom, secs, tous_radicaux):
             for mm in re.finditer(re.escape(mk), sec):
                 pos_mk = mm.start()
                 fenetre60 = sec[max(0, pos_mk - 60):pos_mk + 40]
-                if "rétractés sur mesure" in fenetre60:
+                # Generalise au #531 : couvre aussi la narration propre
+                # d'un cycle decrivant sa propre exclusion, faille
+                # trouvee au #530.
+                if any(mg in fenetre60 for mg in
+                       ("rétractés sur mesure", "pas une discussion du script")):
                     continue
                 meilleur, meilleure_dist = None, None
                 for autre_r in tous_radicaux:

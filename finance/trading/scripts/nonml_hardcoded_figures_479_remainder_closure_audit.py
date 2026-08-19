@@ -96,7 +96,12 @@ def main():
         for mk in ["rétracté", "n'est pas un défaut"]:
             for m in re.finditer(re.escape(mk), bloc):
                 fenetre = bloc[max(0, m.start() - 60):m.start() + 40]
-                if "rétractés sur mesure" in fenetre:
+                # Generalise au #531 : la narration propre d'un cycle
+                # decrivant sa propre exclusion ("... pas une discussion
+                # du script") echappait au filtre precedent, faille
+                # trouvee au #530.
+                if any(mg in fenetre for mg in
+                       ("rétractés sur mesure", "pas une discussion du script")):
                     continue
                 # Le radical de CE script doit apparaitre dans une fenetre
                 # raisonnable autour du marqueur, et cette occurrence ne

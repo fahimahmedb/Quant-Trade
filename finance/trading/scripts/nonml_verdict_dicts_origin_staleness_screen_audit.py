@@ -102,7 +102,14 @@ def main():
                         ["grep", "-c", "rétractés sur mesure", str(tmp)],
                         capture_output=True, text=True)
                     c_dette = int(out_dette.stdout.strip() or "0")
-                    if mk == "rétracté" and c <= c_dette:
+                    # Generalise au #531 : couvre aussi la narration
+                    # propre d'un cycle decrivant sa propre exclusion,
+                    # faille trouvee au #530.
+                    out_dette2 = subprocess.run(
+                        ["grep", "-c", "pas une discussion du script", str(tmp)],
+                        capture_output=True, text=True)
+                    c_dette2 = int(out_dette2.stdout.strip() or "0")
+                    if mk == "rétracté" and c <= c_dette + c_dette2:
                         continue
                     noms_avec_marqueur.add(nom)
         finally:
