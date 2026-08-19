@@ -16982,3 +16982,132 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #530 (19/08/2026) — **FAIL** honnête : le détecteur D528 (proximité radicale) ne discrimine pas sur l'univers complet — lift **0,76** < seuil 3
+
+**Cycle de VÉRIFICATION**, deuxième piste de la file ouverte au #529.
+`PREREG_witness_D528_radical_proximity_lift.md` committé **avant toute
+mesure**, `n_trials` continue le compte global.
+
+### Le détecteur ciblé, jamais testé au-delà de ~12 radicaux curés
+
+D528 = le filtre « radical le plus proche du marqueur, parmi tous les
+radicaux connus, doit être celui du script examiné », introduit au
+#528 pour écarter les collisions de sous-chaîne, réutilisé tel quel au
+#529. Jamais soumis à la discipline de témoin (lift, permutation,
+négatif/positif) de la série #497-519, contrairement à D500/D501/D497
+(#515) — et jamais testé au-delà de l'univers restreint (~12 radicaux)
+des candidats déjà curés par #528/#529. Ce cycle l'étend à l'univers
+**complet** des scripts du dépôt (**1039** au dénombrement).
+
+### Le résultat — lift 0,76, la proximité seule ne discrimine pas
+
+| Mesure | Valeur |
+|---|---|
+| `A_réel` (marqueurs réels avec un radical proche) | 0,4390 (72/164) |
+| `A_nul` (moyenne sur 20 permutations, seed=529) | 0,5765 |
+| **lift = A_réel / A_nul** | **0,76** |
+
+**Lift < 1** : un radical connu se trouve **plus souvent** proche
+d'une position aléatoire que d'un marqueur réel — sur 1039 radicaux,
+la densité d'identifiants dans le backlog est telle que la proximité
+seule ne prouve presque rien. **Confirme exactement la prédiction 1**,
+et la raison déjà donnée au #529 pour ajouter le jugement
+`RESOLUTIONS` **en plus** du filtre de distance.
+
+### Témoin positif : retenu. Témoin négatif 1 : **NON écarté**
+
+Le témoin positif (`reproducibility_sample_lot3_audit.py`, retraction
+confirmée #482→#527) reste correctement retenu, **et** la collision de
+sous-chaîne avec le radical court `reproducibility_sample` reste
+évitée par le tri par longueur décroissante (1/1, comparé
+explicitement à la version naïve alphabétique qui, elle, la
+manquerait — reproduisant le bug d'audit du #528).
+
+Mais le témoin négatif 1 (`nonml_battery_backfill_lot_audit.py`,
+déjà exclu au #528 via la phrase générique « rétractés sur mesure »)
+**n'est PAS écarté** sur l'univers élargi : un second « rétracté »
+apparaît, à distance 151, **dans la narration du #528 lui-même** —
+la phrase qui *décrit* la découverte de la collision (« collision
+avec la phrase générique de la « Dette restante » listant des
+**numéros de cycle** rétractés — pas une discussion du script ») —
+hors du filtre codé pour la seule phrase exacte « rétractés sur
+mesure ». **Publié tel quel, aucune correction forcée** : le
+pré-enregistrement déclarait explicitement ne pas corriger D528 sur la
+base de ce cycle — un lift faible documente une limite déjà
+compensée par le jugement `RESOLUTIONS`, pas un bug à corriger dans ce
+commit.
+
+### L'audit : grep externe + fenêtre structurelle (paragraphe)
+
+Route distincte : dénombrement de la population par `grep`/`ls`/`wc`
+externes (accord exact : 350 sections, 1039 radicaux, 164 marqueurs),
+taux recalculé avec une fenêtre **structurelle** (le paragraphe, coupé
+sur ligne vide) plutôt que la fenêtre fixe de 400 caractères, seed de
+permutation différente (530) : lift structurel **0,91**, même **sens**
+que le backtest (< 3). Citations des deux témoins vérifiées par grep
+direct. `git diff --stat` confirme qu'aucun script existant n'a été
+touché par ce commit.
+
+**AUDIT OK**. **FAIL** (5/6 critères pré-enregistrés — le seul manque
+est le critère 3, 2/2 témoins négatifs, mesuré 1/2). Anti-cheat
+**CONFORME** (3/3, comptage différé du résultat committé après coup,
+normal). Robustesse (7a), simulation 300 € (7b) et audit dédié
+supplémentaire **sans objet** : critère 7 conditionné à un PASS, ce
+cycle est un FAIL.
+
+### Mes trois prédictions, confrontées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| Lift < 3 | oui | 0,76 | **vérifiée** |
+| 2/2 témoins négatifs écartés | 2 | 1 | **réfutée** |
+| Témoin positif retenu | oui | oui | **vérifiée** |
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432, sans piste
+   concurrente sur le fil principal désormais.
+2. **Le filtre dette générique de D528, à généraliser** — la phrase
+   exacte « rétractés sur mesure » ne couvre pas la narration propre
+   d'un cycle décrivant sa propre exclusion (« numéros de cycle
+   rétractés »). Un candidat de réparation borné, pas une remise en
+   cause du filtre de distance lui-même (dont le lift <1 documente une
+   limite déjà connue, pas une régression).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3, témoin positif retenu, **1 témoin négatif sur 2**
+  non écarté (narration propre du #528, hors filtre codé) — non
+  corrigé dans ce commit, portée déclarée à l'avance.
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
