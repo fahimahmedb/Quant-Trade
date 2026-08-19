@@ -17758,3 +17758,22 @@ avec la discipline déjà appliquée aux #368-374.
 (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
 schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
 CPI #338, MOVE #357, Bitcoin #344).
+
+---
+
+## Backlog #538 (19/08/2026) — point d'étape : ~1h sans changement depuis le #536/#537
+
+**Pas un backtest.** Point d'étape bref après plusieurs firings
+consécutifs sans changement d'état (~1h depuis le #536) — confirme que
+la boucle reste active et continue de vérifier à chaque firing, sans
+committer d'entrée à chaque fois par simple habitude (discipline
+établie au #537, pour ne pas polluer le backlog de répétitions
+identiques). La file « à faire » reste limitée aux mêmes deux points
+en attente de décision utilisateur, aucun changement à rapporter.
+
+**Aucun calcul, aucun résultat committé.**
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
