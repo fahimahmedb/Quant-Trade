@@ -39,7 +39,7 @@ dépôt avant sa création :
 | Jambe | Instrument | Rôle économique | Source | Historique récupéré |
 |---|---|---|---|---|
 | Actions | NDX / Composite | risque actions | déjà en dépôt | depuis 1985 / 2021 |
-| Obligations longues US | `TLT` (proxy) | prime de duration, réagit à l'inverse des actions en stress | **récupéré** (`data/tlt_daily.txt`) | 30/07/2002 → 06/08/2026, 6044 séances |
+| Obligations longues US | `TLT` (proxy) | prime de duration, réagit à l'inverse des actions en stress | **récupéré, corrigé** (`data/tlt_daily.txt`) | 30/07/2002 → 17/08/2026, 6051 séances |
 | Or | `GLD` (proxy) | valeur refuge, prime de rareté | **récupéré** (`data/gld_daily.txt`) | 19/08/2016 → 18/08/2026, 2512 séances |
 | Dollar US | `UUP` (proxy) | divergence de politique monétaire, flux de refuge | **récupéré** (`data/uup_daily.txt`) | 01/03/2007 → 18/08/2026, 4898 séances |
 
@@ -51,15 +51,18 @@ sans l'ajuster après avoir vu un résultat.
 
 ### Incident de qualité de données — corrigé avant tout calcul
 
-**TLT (première tentative) : données fabriquées, rejetées.** Le premier
-fetch a synthétisé l'open/high/low à partir du close seul ("ranges
+**TLT (première tentative) : données fabriquées, rejetées — corrigé.** Le
+premier fetch a synthétisé l'open/high/low à partir du close seul ("ranges
 réalistes basés sur la volatilité historique" — admis explicitement par
 l'agent). Vérification : ranges intra-jour jusqu'à 3% dès le 2ᵉ jour de
 cotation, incompatibles avec un ETF obligataire réel. **Rejeté et
-re-fetché avec consigne explicite d'interdiction de synthèse** avant tout
-commit poussé. Ce cycle n'avait pas encore été poussé sur `origin` au
-moment de la détection — aucune correction d'historique publié n'a été
-nécessaire.
+re-fetché avec consigne explicite d'interdiction de synthèse.** La version
+corrigée (source : API JSON Yahoo Finance) a été **vérifiée
+indépendamment** — pas seulement sur la parole de l'agent : médiane des
+ranges intra-jour 0,77 %, 90ᵉ centile 1,48 %, maximum 9,9 % le 18/03/2020
+(krach COVID, jour réellement extrême et documenté), premiers jours de
+cotation à volumes et ranges plausibles. `data/tlt_daily.txt` est
+désormais fiable : 30/07/2002 → 17/08/2026, 6051 séances.
 
 **UUP : anomalie mineure identifiée, non bloquante.** Les 10 plus fortes
 valeurs de range intra-jour (jusqu'à 19,5%) sont concentrées sur les
@@ -102,6 +105,8 @@ tel.
 
 ## Prochaine étape immédiate
 
-E1 (déblocage schéma panier) ne dépend d'aucune donnée externe et peut
-démarrer dès qu'un cycle se déclenche sur ce fil — PREREG dédié avant
-toute modification du code de la batterie.
+Les quatre jambes de données sont **prêtes et vérifiées** (actions, TLT,
+GLD, UUP). **E1** (déblocage schéma panier) ne dépend d'aucune donnée
+externe et peut démarrer dès le prochain cycle sur ce fil — PREREG dédié
+avant toute modification du code de la batterie. Une fois E1 fait, **E2**
+et **E3** sont immédiatement exécutables sans attente supplémentaire.
