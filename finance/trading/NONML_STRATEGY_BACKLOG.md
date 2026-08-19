@@ -17677,3 +17677,59 @@ schéma panier (#432) — condition préalable E1/E2 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #536 (19/08/2026) — vérification légère : file « à faire » toujours limitée aux décisions utilisateur, aucune correction trouvée
+
+**Ce cycle n'est PAS un backtest de stratégie.** E3 étant désormais clos
+(#535), la file « à faire » du #535 ne contient que des points en
+attente de décision utilisateur (pivot Étape D, arbitrage #432 pour
+E1/E2). Conformément à la discipline établie (#393/#471/#532),
+vérification légère plutôt que recherche complète forcée.
+
+### Ce qui a été vérifié
+
+Le candidat de pivot Étape D cité (panel à 6 signaux #365) reste
+**exact et à jour** : recoupé avec les synthèses les plus récentes
+citant un « meilleur candidat de pivot » (#342/v10 : CPI #338 ;
+#366/v14 : panel #365, désormais devant CPI/MOVE/Bitcoin sur le plan
+qualitatif) — aucune contradiction, aucun candidat plus récent trouvé
+qui superséderait cette liste. Rien à corriger.
+
+### Conclusion
+
+**Aucune nouvelle idée non-ML proposée** — la recherche répétée de
+nouvelles pistes (dernière en date : #532) n'a rien trouvé de
+non-redondant avec une source de données fiable, et forcer une
+nouvelle recherche complète à chaque firing vide contredirait la
+discipline déjà établie. **Aucun calcul, aucun résultat committé.**
+
+### File « à faire »
+
+Inchangée depuis le #535 : (1) pivot Étape D, décision utilisateur
+requise ; (2) arbitrage #432 pour E1/E2, décision utilisateur requise.
+Aucune piste supplémentaire actionnable sans décision humaine.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
+
+### Dette restante
+
+- **E3 (momentum cross-actifs) clos, FAIL niveau 1** (#535).
+- **E3 confirmé exécutable sans blocage** (#534), désormais exécuté.
+- **La revendication fausse sur E1 est corrigée** (#533).
+- **File « à faire » de recherche non-ML confirmée épuisée** (#532),
+  reconfirmée sans changement au #536.
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées, **6 corrections**
+  appliquées avec diff borné.
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
