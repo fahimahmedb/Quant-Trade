@@ -121,10 +121,15 @@ V = {
   "« couverture non-ML | **73.2 %** ». **Détail supplémentaire** : `73.2` "
   "emploie le point décimal, contre la virgule partout ailleurs — signe que "
   "la ligne a été tapée, non produite."),
- "nonml_self_inclusion_detector_backtest.py": ("legitime",
-  "« Le #463 a trouvé **2** scripts non idempotents en en rejouant **18** », "
-  "« **2** fautifs, **16** sains » — citations du #463, dont le script "
-  "déclare par ailleurs les listes nominatives."),
+ "nonml_self_inclusion_detector_backtest.py": ("partiel",
+  "**Corrigé au #526.** Sur les **18** noms des listes `FAUTIFS_463`/"
+  "`SAINS_463` que le script déclare, seuls **2** (les fautifs) "
+  "apparaissent littéralement dans la section `## Backlog #463` — les "
+  "**16** « sains » n'y sont **jamais publiés par leur nom**. Ce n'est "
+  "pas une citation vérifiable, comme le #504 l'avait déjà établi "
+  "(« résidu » jamais rattaché à une source publiée). Le script "
+  "**déclare** ses listes (contrairement à un littéral nu), mais leur "
+  "contenu n'est traçable au #463 que pour 2/18."),
  "nonml_self_inclusion_detector_v2_audit.py": ("legitime",
   "« Il éprouve **6** scripts sur les 320 », « **3** passages » — grandeurs "
   "de protocole, dans une section de limites."),
