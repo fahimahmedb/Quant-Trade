@@ -206,7 +206,7 @@ La ventilation « **90** FAIL, **2** PASS, **6** indéterminés, **1** sans rapp
 | `nonml_report_idempotence_backtest.py` | corrigé #518 : dénominateur jamais lu par le script |
 | `nonml_reproducibility_campaign_v2_audit.py` | corrigé #518 : `.glob(` sans rapport avec le chiffre |
 
-> **La dette du #479 est actionnable aux deux tiers.** Les **9** réparables le sont par une simple interpolation ; les
+> **La dette du #479 est actionnable à 52,9 %.** Les **9** réparables le sont par une simple interpolation ; les
 **8** autres ne peuvent qu'être **signalés dans le rapport**,
 jamais recalculés.
 
@@ -227,11 +227,11 @@ accord, c'est une coïncidence arithmétique.**
 
 - la catégorie du #482 est **réelle et minoritaire** : **8** cas
   sur 17, chacun avec sa raison publiée ;
-- **une des cinq renvoie à une question en attente d'arbitrage** — le
+- **une des 8 renvoie à une question en attente d'arbitrage** — le
   décompte `n_trials` du #421 ;
 - **mon propre défaut du #474 est réparable**, et rien ne l'excuse ;
 - **rien n'est réparé ici** : le #482 a montré qu'une réparation peut
-  être nuisible, et chacun des 12 demande sa propre vérification.
+  être nuisible, et chacun des 9 demande sa propre vérification.
 
 ## Critères de succès
 

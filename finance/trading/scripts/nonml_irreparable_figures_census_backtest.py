@@ -244,7 +244,7 @@ def main():
     for d in irrep:
         L.append(f"| `{d['nom']}` | {court.get(d['nom'], '—')} |")
     L.append("")
-    L.append("> **La dette du #479 est actionnable aux deux tiers.** Les "
+    L.append(f"> **La dette du #479 est actionnable à {fr(100 * len(rep) / len(pop))} %.** Les "
              f"**{len(rep)}** réparables le sont par une simple interpolation ; les")
     L.append(f"**{len(irrep)}** autres ne peuvent qu'être **signalés dans le rapport**,")
     L.append("jamais recalculés.")
@@ -281,11 +281,11 @@ def main():
     L.append("")
     L.append(f"- la catégorie du #482 est **réelle et minoritaire** : **{len(irrep)}** cas")
     L.append("  sur 17, chacun avec sa raison publiée ;")
-    L.append("- **une des cinq renvoie à une question en attente d'arbitrage** — le")
+    L.append(f"- **une des {len(irrep)} renvoie à une question en attente d'arbitrage** — le")
     L.append("  décompte `n_trials` du #421 ;")
     L.append("- **mon propre défaut du #474 est réparable**, et rien ne l'excuse ;")
     L.append("- **rien n'est réparé ici** : le #482 a montré qu'une réparation peut")
-    L.append("  être nuisible, et chacun des 12 demande sa propre vérification.")
+    L.append(f"  être nuisible, et chacun des {len(rep)} demande sa propre vérification.")
     L.append("")
 
     L.append("## Critères de succès")
