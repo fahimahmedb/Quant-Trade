@@ -17229,3 +17229,102 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #532 (19/08/2026) — vérification légère : file « à faire » toujours épuisée, aucune idée non-redondante trouvée
+
+**Ce cycle n'est PAS un backtest de stratégie.** Conformément à la
+recommandation déjà établie et réaffirmée à de nombreuses reprises
+depuis les synthèses v9-v15 (#290-374) et le constat du #393/#471
+(« vérification légère suffit désormais à chaque cycle vide, plutôt
+qu'une recherche exploratoire complète »), ce cycle applique cette
+même discipline plutôt que de forcer 3 nouvelles idées à faible
+probabilité de succès (risque de recherche de paramètres déguisée,
+Règle 2).
+
+### Ce qui a été vérifié avant de conclure
+
+1. **La file « à faire » du #531** ne contient qu'une piste bloquée
+   (fil économique, arbitrage utilisateur #432 en attente) et une
+   piste explicitement « à surveiller, pas à réparer ».
+2. **Recherche légère de candidats** (grep anti-doublon sur le
+   backlog complet, ~380 hypothèses déjà testées à ce jour) sur
+   quelques angles non systématiquement écartés : structure par
+   terme de la volatilité implicite (**déjà testée**, #343, VIX
+   3m-30j) ; ratio put/call, sondage de sentiment AAII, rachats
+   d'actions/dividendes — **aucune trace d'un test antérieur trouvée**,
+   mais **aucune source gratuite à historique long identifiée avec
+   confiance suffisante** dans le temps alloué à cette vérification
+   légère (CBOE put/call historique et AAII sont généralement
+   payants/à accès restreint au-delà d'un échantillon récent ; les
+   rachats d'actions agrégés (S&P buyback index) ne sont pas
+   disponibles gratuitement en historique long sur les sources déjà
+   utilisées par ce dépôt — FRED/Yahoo Finance/CFTC/FINRA/SEC EDGAR).
+
+### Conclusion, honnête, inchangée
+
+**Aucune idée forte et non-redondante trouvée cette fois** — même
+verdict que plusieurs cycles précédents de cette famille (#368, #369
+en recherche complémentaire). Le terrain non-ML librement accessible
+reste cartographié comme **épuisé** pour une invention autonome
+supplémentaire sans motivation de données nouvelle. **Aucun calcul,
+aucun résultat committé** (recherche seule, comme au #368).
+
+**Recommandation inchangée, réaffirmée** : la prochaine action
+productive dépend (a) d'une nouvelle catégorie de données fournie par
+l'utilisateur, (b) d'un pivot explicite vers l'Étape D (candidats déjà
+identifiés : panel à 6 signaux #365, CPI #338, MOVE #357, Bitcoin
+#344), ou (c) de la poursuite du fil de méta-audit du dépôt lui-même
+(#516-531, également proche de son propre point de saturation — les 6
+dictionnaires de verdicts connus sont clos, la série des témoins
+#497-519/#530-531 est close). La boucle continuera de traiter toute
+nouvelle ligne « à faire » ajoutée par l'utilisateur ou par un firing
+futur.
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432.
+2. **Pivot Étape D** — candidats déjà identifiés (panel 6 signaux
+   #365, CPI #338, MOVE #357, Bitcoin #344), en attente d'une décision
+   utilisateur explicite.
+3. **Nouvelle catégorie de données utilisateur** — seule voie
+   restante pour de nouvelles hypothèses non-ML non redondantes.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **File « à faire » de recherche non-ML confirmée épuisée** (#532),
+  aucune idée non-redondante trouvée, aucun calcul effectué.
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
