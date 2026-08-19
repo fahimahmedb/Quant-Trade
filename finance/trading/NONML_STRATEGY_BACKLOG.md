@@ -16190,3 +16190,108 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #522 (19/08/2026) — **PASS** : le défaut du #485 n'est pas isolé — 32 candidats sur 51 entrées dans 4 autres dictionnaires
+
+**Cycle de VÉRIFICATION** (pas de réparation), deuxième piste de la file
+ouverte au #521. `PREREG_verdict_dicts_staleness_screen.md` committé
+**avant toute mesure**, `n_trials` continue le compte global.
+
+### La question cadrée avant d'y répondre
+
+Le #521 suggérait, sans le cadrer, d'étendre le balayage de littéraux
+périmés à d'autres scripts « source de vérité ». Ce cycle cadre la
+question : le dépôt contient **4 autres** dictionnaires `V` écrits à la
+main (`hardcoded_figures_remainder` #479, `guards_witness_remainder`
+#484, `guards_without_witness` #481, `orphan_audits_declared_reading`
+#483). Une vérification manuelle exhaustive de chaque entrée serait un
+projet à plusieurs cycles — **hors de portée d'un seul cycle**. Ce
+cycle applique donc un **écran mécanique déclaré faible d'avance**,
+même discipline que le proxy du #485 lui-même.
+
+### Écart au chiffre pré-enregistré, publié et expliqué
+
+Le PREREG annonçait **108** entrées, comptées par une regex rapide qui
+capturait à tort des lignes de continuation de texte de justification.
+**L'extraction AST du backtest, plus rigoureuse, en trouve 51** — même
+famille de bug que le double comptage f-string du #500. Corrigé par la
+méthode la plus stricte, pas par un ajustement après lecture du
+résultat.
+
+### Le résultat — 32 candidats sur 51, aucun confirmé
+
+| Dictionnaire | Effectif | Candidats |
+|---|---|---|
+| `hardcoded_figures_remainder` (#479) | 32 | **24** |
+| `guards_witness_remainder` (#484) | 10 | **3** |
+| `guards_without_witness` (#481) | 5 | **3** |
+| `orphan_audits_declared_reading` (#483) | 4 | **2** |
+
+> **Un candidat n'est pas une confirmation.** Le marqueur de
+> contradiction trouvé dans une section postérieure peut porter sur un
+> axe de classification différent de celui du dictionnaire écranné —
+> exactement la réserve posée au pré-enregistrement. **Chaque candidat
+> est nommé avec sa section source, ajouté à la file « à faire », pas
+> résolu ici.**
+
+### Prédictions — 2/3 vérifiées
+
+| Prédiction | Verdict |
+|---|---|
+| ≥ 1 candidat trouvé | **vérifiée** (32) |
+| taux plus élevé pour `hardcoded_figures_remainder` | **vérifiée** (75,0 % vs 42,1 %) |
+| 0 candidat depuis `orphan_audits_declared_reading` | **réfutée** (2) |
+
+### L'audit : regex + `grep -n`, sans réutiliser le code du backtest
+
+Route distincte : extraction des clés par regex sur texte brut (pas
+AST), découpage du backlog par bornes de ligne issues de `grep -n`
+plutôt qu'un scan regex en mémoire. **Accord exact** sur les 4
+effectifs et le compte total de candidats.
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification bibliographique, aucune position.
+
+### File « à faire »
+
+1. **32 candidats de staleness à vérifier manuellement** (#522, un par
+   un, à la façon des #493/#511/#518) — le plus dense :
+   `hardcoded_figures_remainder` (#479), 24 candidats sur 32 entrées.
+2. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **32 candidats de staleness identifiés dans 4 dictionnaires V**
+  (#522), aucun encore vérifié manuellement.
+- **Le script du #485 est intégralement à jour** (#520, #521) : 8
+  irréparables / 9 réparables, 0 littéral périmé connu.
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
