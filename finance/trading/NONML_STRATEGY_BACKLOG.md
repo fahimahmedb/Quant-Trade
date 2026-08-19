@@ -16855,3 +16855,130 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #529 (19/08/2026) — **PASS** : les 2 dictionnaires `VERDICTS` d'origine (#476, #478) sont à jour — le screen de staleness des verdicts écrits à la main est intégralement clos
+
+**Cycle de VÉRIFICATION**, troisième piste de la file ouverte au #528.
+`PREREG_verdict_dicts_origin_staleness_screen.md` committé **avant
+toute modification**, `n_trials` continue le compte global.
+
+### Un angle mort du motif de recherche du #522
+
+Le #522 avait recensé 4 dictionnaires `V = {` écrits à la main, tous
+**descendants** de deux cycles plus anciens : `nonml_hardcoded_figures_
+sweep_backtest.py` (#476) et `nonml_conditional_sections_sweep_
+backtest.py` (#478) — variable `VERDICTS`, pas `V`, **hors du motif de
+recherche du #522** (`grep -l "^V = {"`). Ce sont les **cycles
+d'origine** des deux familles déjà réparées (#524/#525 pour les
+gardes, #526-#528 pour les chiffres en dur) : s'ils portaient
+eux-mêmes une staleness, elle n'aurait jamais été détectée.
+
+### Le résultat — 10/10 entrées, 5 occurrences, 0 contradiction réelle
+
+Même méthode qu'au #528 (test de rétractation avec garde-fou de
+distance anti-collision, le radical le plus proche du marqueur parmi
+**tous** les radicaux connus du dépôt devant être celui du script
+examiné). Sur les 10 entrées des deux dictionnaires, **5** occurrences
+de marqueur (`rétracté`, `réfuté`, etc.) retenues par ce garde-fou —
+chacune confrontée, dans un dictionnaire `RESOLUTIONS` déclaré et
+justifié avant la mesure finale, au verdict `VERDICTS` cité :
+
+- `protocol_inventory_audit.py` : le « rétracté » du #485 porte sur le
+  **décompte de population** (retrait de `reproducibility_sample_
+  lot3_audit`, déjà réparé au #527), pas sur ce script — le même
+  tableau du #485 confirme au contraire son verdict `defaut`.
+- `marker_emitted_by_scripts_backtest.py` : le #493 confirme
+  explicitement « exacte | exacte | exacte | vérifiée » pour ce
+  script ; le « réfutée » voisin porte sur une **autre ligne** de la
+  même table de prédictions.
+- `repo_magnitudes_recount_backtest.py` (les deux occurrences) : le
+  « réfutée » du #478 porte sur la **prédiction globale du cycle**
+  (prévalence sur toute la population), pas sur cette entrée
+  spécifique.
+- `reproducibility_sample_backtest.py` : le « réfutée » du #509 porte
+  sur un **axe distinct** (datation des `PREREG_`, sujet du #486),
+  sans rapport avec la classification `peut_disparaitre` d'une garde
+  conditionnelle au #478 — même mécanisme de faux positif d'axe
+  qu'aux #523-#525.
+
+**5/5 compatibles, 0 correction nécessaire.** Rapport regénéré après
+câblage du `RESOLUTIONS` dans `main()` (le premier tirage, avant ce
+câblage, comptait à tort les 5 occurrences non triées comme
+contradictions et affichait les 3 prédictions « réfutée » — corrigé
+avant tout commit, aucun résultat intermédiaire committé).
+
+### L'audit : grep externe, sans la logique de distance
+
+Route distincte : `grep -c` externe par section isolée en fichier
+temporaire, sans la logique de distance anti-collision en mémoire du
+backtest (recherche naïve radical+marqueur dans la même section).
+Retrouve, sans filtrage fin, **8** scripts avec un marqueur à
+proximité — un ensemble strictement plus large que les 4 radicaux
+distincts du backtest (`repo_magnitudes_recount` comptant double), ce
+qui est attendu et explicité dans le rapport : la différence **est**
+le garde-fou de distance que le backtest applique en plus. Les 4
+radicaux du backtest sont bien un sous-ensemble des 8. `git diff
+--stat` confirme qu'aucun des deux dictionnaires `VERDICTS` d'origine
+n'a été touché par le commit.
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification de dépôt, aucune position.
+
+### Mes trois prédictions, confrontées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| 0 contradiction confirmée | 0 | 0 | **vérifiée** |
+| Les 10 entrées restent inchangées | 10 | 10 | **vérifiée** |
+| Les 2 dictionnaires déclarés à jour | oui | oui | **vérifiée** |
+
+### Bilan du méta-thread de staleness — intégralement clos
+
+Le screen de staleness des dictionnaires de verdicts écrits à la main
+couvre désormais les **6** dictionnaires connus du dépôt : **4**
+`V = {` (#522-#528, 32 candidats, 6 corrigés) et **2** `VERDICTS = {`
+(#529, 10 entrées, 0 corrigé). **Total : 42 entrées vérifiées, 6
+corrections appliquées, 0 dette non détectée restante sur ce motif de
+recherche.**
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432, sans piste
+   concurrente sur le fil principal désormais.
+2. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents non encore éprouvés, seule
+   piste non bloquée restant explicitement ouverte dans cette file.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
