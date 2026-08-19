@@ -36,12 +36,44 @@ dépôt avant sa création :
 
 ## L'univers d'actifs — figé ici, avant tout calcul
 
-| Jambe | Instrument | Rôle économique | Source |
-|---|---|---|---|
-| Actions | NDX / Composite | risque actions | déjà en dépôt |
-| Obligations longues US | `TLT` (proxy) | prime de duration, réagit à l'inverse des actions en stress | fetch en cours |
-| Or | `GLD` (proxy) | valeur refuge, prime de rareté | fetch en cours |
-| Dollar US | `UUP` (proxy) | divergence de politique monétaire, flux de refuge | fetch en cours |
+| Jambe | Instrument | Rôle économique | Source | Historique récupéré |
+|---|---|---|---|---|
+| Actions | NDX / Composite | risque actions | déjà en dépôt | depuis 1985 / 2021 |
+| Obligations longues US | `TLT` (proxy) | prime de duration, réagit à l'inverse des actions en stress | **récupéré** (`data/tlt_daily.txt`) | 30/07/2002 → 06/08/2026, 6044 séances |
+| Or | `GLD` (proxy) | valeur refuge, prime de rareté | **récupéré** (`data/gld_daily.txt`) | 19/08/2016 → 18/08/2026, 2512 séances |
+| Dollar US | `UUP` (proxy) | divergence de politique monétaire, flux de refuge | **récupéré** (`data/uup_daily.txt`) | 01/03/2007 → 18/08/2026, 4898 séances |
+
+Les trois fichiers passent `quality_report()` sans anomalie. **Contrainte
+déclarée avant tout calcul** : `GLD` limite la fenêtre **commune aux quatre
+jambes** à **19/08/2016 → 18/08/2026** (~10 ans) — c'est cette fenêtre, et
+elle seule, que le PREREG de E3 devra utiliser pour la période multi-actifs,
+sans l'ajuster après avoir vu un résultat.
+
+### Incident de qualité de données — corrigé avant tout calcul
+
+**TLT (première tentative) : données fabriquées, rejetées.** Le premier
+fetch a synthétisé l'open/high/low à partir du close seul ("ranges
+réalistes basés sur la volatilité historique" — admis explicitement par
+l'agent). Vérification : ranges intra-jour jusqu'à 3% dès le 2ᵉ jour de
+cotation, incompatibles avec un ETF obligataire réel. **Rejeté et
+re-fetché avec consigne explicite d'interdiction de synthèse** avant tout
+commit poussé. Ce cycle n'avait pas encore été poussé sur `origin` au
+moment de la détection — aucune correction d'historique publié n'a été
+nécessaire.
+
+**UUP : anomalie mineure identifiée, non bloquante.** Les 10 plus fortes
+valeurs de range intra-jour (jusqu'à 19,5%) sont concentrées sur les
+premiers mois de cotation (2007), avec des volumes très faibles
+(quelques milliers de titres) — signature typique d'un ETF nouvellement
+listé et peu liquide, pas d'une fabrication. **Sans objet pour E3** : la
+fenêtre commune est de toute façon bornée par `GLD` à 2016+, bien après
+cette période. Signalé pour mémoire, aucune action requise.
+
+**Leçon retenue** : `quality_report()` vérifie la cohérence interne
+(high ≥ max(o,c) etc.), **pas l'authenticité**. Toute nouvelle donnée
+récupérée par un agent doit être soumise à un contrôle de plausibilité des
+ranges intra-jour avant d'être committée — ajouté comme pratique
+systématique pour ce fil.
 
 **Aucun autre actif ne sera ajouté à cet univers après avoir vu un
 résultat.** Une extension éventuelle sera un nouveau fil, déclaré comme
