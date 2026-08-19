@@ -15778,3 +15778,111 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #518 (19/08/2026) — **PASS** : 3 des 11 justifications RÉPARABLE du #485 tombent, dont « le cas le plus trivialement réparable »
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #517.
+`PREREG_reparable_justifications_485.md` committé **avant toute mesure**,
+`n_trials` continue le compte global.
+
+### La population — les 11 justifications RÉPARABLE jamais relues
+
+Le #517 a établi que les 5 justifications IRRÉPARABLE du #485 étaient
+entièrement couvertes depuis le #493. Restait le second tableau : **12**
+figures RÉPARABLE, dont une seule (`battery_backfill_lot_audit`) relue
+depuis (#511, tombée). **Les 11 autres** n'avaient jamais reçu le même
+traitement — verdict écrit à la main, adossé à une ligne de code, même
+forme que le #493.
+
+### Le résultat — 8 tiennent, 3 tombent
+
+| | Verdict |
+|---|---|
+| `duplicate_sweep_coverage_audit`, `content_defined_magnitudes_audit`, `content_defined_magnitudes_backtest`, `dsr_corrected_trials_backtest`, `idempotence_famille_capable_backtest`, `idempotence_lot2_backtest`, `marker_emitter_crossing_backtest`, `orphans_interrupted_or_lost_backtest` | **EXACTE** (8) |
+| `coverage_wording_fix_audit`, `report_idempotence_backtest`, `reproducibility_campaign_v2_audit` | **FAUSSE, VERDICT À REVOIR** (3) |
+
+Les 3 partagent le même défaut : le chiffre cité par le #485 est un
+**littéral en prose**, publié sans aucun `.glob(` ni lecture du dépôt
+dans le fichier qui le publie — le même critère que le #511 avait déjà
+appliqué à `battery_backfill_lot_audit`, appliqué ici à l'identique.
+
+> **Le cas le plus instructif est celui que le #485 désignait comme « le
+> plus trivialement réparable de la liste »** — `coverage_wording_fix_audit`,
+> censé calculer 284 par un `glob`. **Il n'a aucun appel `.glob(` nulle
+> part dans le fichier** ; « 284 » est un littéral brut, absent même du
+> fichier qu'il lit. Le cas jugé le plus évident à l'œil est celui qui ne
+> calcule rien du tout.
+
+### Le compte du #485, corrigé une troisième fois
+
+| | #485 | #493 | #511 | #518 |
+|---|---|---|---|---|
+| irréparables | 5 | 4 | 5 | **8** |
+| réparables | 12 | 13 | 12 | **9** |
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| ≥ 1 justification fausse | ≥ 1 | 3 | **vérifiée** |
+| au plus 2 verdicts tombent | ≤ 2 | 3 | **réfutée** |
+| `coverage_wording_fix_audit` exacte | exacte | FAUSSE | **réfutée** |
+
+### L'audit : route AST indépendante, sans lire les verdicts à la main
+
+Parcours AST (pas regex sur texte) pour repérer tout appel `.glob(`, sans
+jamais lire le dictionnaire de verdicts du backtest. **2 des 3 chutes**
+se confirment directement par absence totale de `.glob(` dans le fichier ;
+la 3ᵉ (`reproducibility_campaign_v2_audit`) a un `.glob(`, mais pour
+`eligible()` — sans rapport avec le chiffre cité (208) — vérifié
+séparément. **Accord exact avec le backtest sur les trois cas.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification bibliographique/code, aucune position.
+
+### File « à faire »
+
+1. **Bilan complet des témoins appliqués à la série #500-#514** — les 4
+   couches de détection ont chacune un témoin publié (#514, #515).
+2. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 (déblocage du schéma panier) reste prêt à démarrer.
+3. **Les 3 nouveaux irréparables du #518** — méritent-ils une raison
+   propre publiée dans le style du tableau original du #485, ou suffit-il
+   du motif déjà donné ici (« aucun `.glob(`, littéral en prose ») ?
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Les 17 figures du #485 sont désormais toutes relues au moins une
+  fois** : irréparables **5 → 8** (cumulé #493 -1, #511 +1, #518 +3 net
+  après le -1 déjà compté à #493 sur ce même tableau), réparables
+  **12 → 9**. Plus aucune justification originale du #485 n'est
+  « jamais vérifiée ».
+- **Le tableau des 5 justifications IRRÉPARABLE du #485 est entièrement
+  couvert** (#488, #493) : **0 non vérifiée**, **1 tombée** (#493).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Les 4 couches de détection de la série #500-#514 ont désormais un
+  témoin** (#514, #515).
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
