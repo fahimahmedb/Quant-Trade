@@ -116,11 +116,14 @@ V = {
  "nonml_reproducibility_sample_lot2_backtest.py": ("legitime",
   "« La borne annoncée **avant** de mesurer était de **8,0 %** » — valeur "
   "pré-enregistrée, rappelée."),
- "nonml_reproducibility_sample_lot3_audit.py": ("defaut",
-  "Un tableau de résultats en dur — « scripts de backtest non-ML | **284** », "
-  "« couverture non-ML | **73.2 %** ». **Détail supplémentaire** : `73.2` "
-  "emploie le point décimal, contre la virgule partout ailleurs — signe que "
-  "la ligne a été tapée, non produite."),
+ "nonml_reproducibility_sample_lot3_audit.py": ("legitime",
+  "**Corrigé au #527** : le #482 a établi que les lignes incriminées sont "
+  "**à l'intérieur d'un bloc de citation** (`-`/`+`, un diff reproduit entre "
+  "deux versions d'un rapport). Le point décimal de `73.2 %`, pris par le "
+  "#479 pour un indice de saisie manuelle, est **au contraire la preuve "
+  "d'une citation fidèle** à sa source. Rétractation publiée au #482 "
+  "(« Son total passe de 18 à 17 »), jamais appliquée à cette source avant "
+  "aujourd'hui."),
  "nonml_self_inclusion_detector_backtest.py": ("partiel",
   "**Corrigé au #526.** Sur les **18** noms des listes `FAUTIFS_463`/"
   "`SAINS_463` que le script déclare, seuls **2** (les fautifs) "
