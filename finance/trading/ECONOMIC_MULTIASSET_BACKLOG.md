@@ -88,7 +88,7 @@ tel.
 |---|---|---|---|
 | E1 | Débloquer la batterie de validation pour le schéma panier (plusieurs actifs simultanés) — condition préalable à E2 | aucune nouvelle donnée, mais **décision d'architecture en attente d'arbitrage utilisateur** (#432 : « la batterie a été conçue pour une position scalaire », extension jamais tranchée unilatéralement) | **bloqué — en attente d'arbitrage utilisateur (#432)** |
 | E2 | Effet fiscal de fin d'année sur le panier déjà préparé (`january_effect_lowprice_overlay_pit_universe`), enfin exécutable une fois E1 fait | déjà en dépôt | **bloqué sur E1** |
-| E3 | Momentum cross-actifs sur le quatuor actions/obligations/or/dollar (signal : allocation vers les jambes en tendance positive, réduite/nulle sur les jambes en tendance négative) | TLT, GLD, UUP (fetch en cours) | **à faire dès que les 3 fetches sont terminés** |
+| E3 | Momentum cross-actifs sur le quatuor actions/obligations/or/dollar (signal : allocation vers les jambes en tendance positive, réduite/nulle sur les jambes en tendance négative) | TLT, GLD, UUP (**récupérés et vérifiés**, confirmé sur le disque au #534) | **à faire — données prêtes, aucun blocage restant** |
 
 ## Ce que ce fil ne fait pas
 
