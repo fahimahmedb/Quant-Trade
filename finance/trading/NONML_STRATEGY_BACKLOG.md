@@ -15996,3 +15996,106 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #520 (19/08/2026) — **PASS** : le dictionnaire du #485 réparé, 4 cycles de corrections enfin appliquées à la source
+
+**Cycle de RÉPARATION**, deuxième piste de la file ouverte au #519 (la
+première, E1 du fil économique, dépend de l'arbitrage utilisateur
+toujours en attente sur le #432 — non tranchée ici).
+`PREREG_census_485_repair.md` committé **avant toute modification**,
+`n_trials` continue le compte global.
+
+### Ce qui était périmé
+
+`nonml_irreparable_figures_census_backtest.py` (le script du #485)
+contenait un dictionnaire `V` de 17 verdicts **jamais mis à jour** en
+quatre cycles, alors que **5** de ses entrées avaient été contredites
+avec ligne de code à l'appui : #493 (reproducibility_campaign_v3_lot2,
+IRRÉPARABLE→RÉPARABLE), #511 (battery_backfill_lot_audit) et #518
+(coverage_wording_fix_audit, report_idempotence_backtest,
+reproducibility_campaign_v2_audit — les trois RÉPARABLE→IRRÉPARABLE).
+Toute relecture du script source publiait encore **5/12** au lieu du
+vrai **8/9**.
+
+### Le geste — réparation minimale, diff vérifié borné
+
+Les 5 lignes de `V` corrigées, chacune citant le cycle correcteur.
+**Aucune autre entrée touchée** — confirmé par l'audit dédié (5/5
+scripts dans le diff, 12 autres entrées identiques avant/après). Une
+extension nécessaire et disclosée (le dictionnaire `court` du résumé
+en un mot, 4 entrées ajoutées pour éviter un rapport visiblement cassé)
+a été corrigée avant commit, conformément à l'étape 4 du protocole.
+
+### Le nouveau compte, cohérent avec le #518
+
+- irréparables : **5 → 8**
+- réparables : **12 → 9**
+- taux d'accord du proxy mécanique : **70,6 % → 52,9 %** (dénominateur
+  changé, aucune conclusion nouvelle tirée sur sa qualité)
+
+### L'audit : route indépendante (regex + `git show HEAD~1`)
+
+Reparse `V` par regex sur le texte brut (pas l'AST du backtest, pas
+d'import du module), compare au commit précédent via `git show`
+plutôt qu'à une copie locale. **5/5 corrections vérifiées sur pièce,
+12 autres entrées confirmées intactes, compte recalculé identique.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de réparation de dépôt, aucune position.
+
+### Dette nouvelle, signalée et non corrigée ici
+
+Le littéral en dur « chacun des **12** » (l.288 du script cible)
+décrivait une coïncidence numérique exacte avant ce cycle — il devrait
+valoir **9** désormais. **Hors du périmètre déclaré** au
+pré-enregistrement (5 lignes de `V` uniquement) ; laissé pour un cycle
+dédié plutôt que corrigé silencieusement ici.
+
+### File « à faire »
+
+1. **Le littéral périmé « chacun des 12 »** dans
+   `nonml_irreparable_figures_census_backtest.py` (l.288) — devrait
+   valoir 9, corrigible par une interpolation `len(rep)` plutôt qu'un
+   littéral.
+2. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 (déblocage du schéma panier) reste en attente d'arbitrage sur
+   le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible : appliquer la même discipline de témoin aux détecteurs
+   plus récents non encore éprouvés.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le dictionnaire source du #485 est à jour** (#520) : 8 irréparables
+  / 9 réparables, cohérent avec le #518. **1 nouveau littéral périmé
+  trouvé en réparant** (« chacun des 12 », l.288), signalé, non corrigé.
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519) :
+  D500 et D497-P10 discriminent, la couche contextuelle discrimine avec
+  réserve, D501 seule ne discrimine pas — et aucune conclusion du dépôt
+  ne repose sur D501 employée sans compensation.
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
