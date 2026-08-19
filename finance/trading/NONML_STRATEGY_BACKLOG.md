@@ -16571,3 +16571,97 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #526 (19/08/2026) — **PASS** : le #504 avait raison contre le #479 — la citation « 16 et 2 » n'est traçable qu'à 2/18
+
+**Cycle de VÉRIFICATION, réparation confirmée**, première piste de la
+file ouverte au #525 (« 24 candidats du #522, tous dans
+`hardcoded_figures_remainder` »). `PREREG_hardcoded_figures_479_self_
+inclusion.md` committé **avant toute modification**, `n_trials`
+continue le compte global.
+
+### Une tension réelle entre deux verdicts antérieurs, pas un désaccord d'axe
+
+Contrairement aux #523/#524/#525 (faux positifs par axe distinct), ce
+cas oppose **deux verdicts sur le même axe** : le #479 classait
+`nonml_self_inclusion_detector_backtest.py` **« legitime »**, disant
+que ses listes `FAUTIFS_463`/`SAINS_463` sont des **citations du
+#463**. Le #504, dans la série dédiée à confronter les emprunts à leur
+source (#500-#504), le classait parmi **« les 5 résidus »** — un
+emprunt que **cinq cycles** n'ont jamais su rattacher à une source
+publiée.
+
+### Le verdict mécanique — 2/18, pas 18/18
+
+Sur les **18** noms de script déclarés dans le code (2 `FAUTIFS_463` +
+16 `SAINS_463`), seuls les **2 fautifs** apparaissent littéralement
+dans la section `## Backlog #463` du backlog. **Les 16 « sains » n'y
+sont jamais publiés par leur nom** — le #463 ne nomme, dans son propre
+texte, qu'un seul des 18 scripts examinés (`verdict_rule_propagation`),
+pas la liste complète des 16 autres.
+
+> **Le #504 avait raison.** Ce n'est pas une citation vérifiable —
+> c'est une reconstruction non publiée. Reclassé **« partiel »** (le
+> script *déclare* ses listes, contrairement à un littéral nu, mais
+> leur contenu n'est pas traçable au #463 tel que publié).
+
+### La réparation appliquée — et une régénération refusée par précaution
+
+La ligne `V` du #479 corrigée, diff vérifié borné à cette seule
+entrée. **Le rapport du #479 n'a délibérément pas été régénéré ni
+committé**, même garde-fou qu'aux #524/#525 : ce script recalcule sa
+population par balayage du dépôt, susceptible de la même dérive déjà
+mesurée ailleurs (58→67 sections au #524).
+
+### L'audit : extraction de section + `grep -c` externe
+
+Section #463 extraite dans un fichier temporaire par balayage Python
+simple (pas de regex de découpage), comptage par `grep -c` en
+processus externe. **Accord exact** (2/18) et diff committé confirmé
+borné à 1 entrée.
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification/réparation de dépôt, aucune position.
+
+### File « à faire »
+
+1. **23 candidats restants de `hardcoded_figures_remainder`** (#479) —
+   le reste du lot le plus dense du #522, en cycles dédiés séparés.
+2. **Le fil économique/multi-actifs** — E1 reste en attente
+   d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **9 des 32 candidats de staleness du #522 vérifiés** (#523, #524,
+  #525, #526) : 5 réparés, 4 faux positifs. **23 candidats restants**,
+  tous dans `hardcoded_figures_remainder` (#479).
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
