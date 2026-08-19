@@ -15533,3 +15533,123 @@ par les mots-clés du #502 dans tous les cycles qui s'en servent réellement.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #516 (19/08/2026) — **PASS** : 82 % des PASS du régime postérieur sont procéduraux, et sur les 11 « substantiels », 1 seule vraie exception
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #515.
+`PREREG_postchangepoint_pass_nature.md` committé **avant toute mesure**,
+date pivot reprise du #510 sans recalcul (**13/08/2026 21:51 UTC**),
+`n_trials` continue le compte global.
+
+### La question
+
+Le #510 a daté le basculement ; le #512 a montré qu'un PASS peut être
+purement procédural (porter sur le respect du protocole, pas sur une
+grandeur du dépôt). Le #515 clôturait la file des témoins de détecteurs
+en demandant : dans les **62+** cycles du régime postérieur, combien de
+PASS sont l'un ou l'autre ?
+
+### Le résultat — deux des trois prédictions réfutées, honnêtement publiées
+
+| Classe | Nombre | Part des PASS |
+|---|---|---|
+| **PROCÉDURAL** | **50** | **82,0 %** |
+| **SUBSTANTIEL** | **11** | **18,0 %** |
+
+Régime : **68** scripts (≥ 62 prédits, **vérifiée**), **61** PASS / **7**
+FAIL. Prédiction « ≥ 90 % procédural » **réfutée** (82,0 % mesuré) ;
+prédiction « SUBSTANTIEL = 0 » **réfutée** (11 mesuré).
+
+### Ce que les 11 « substantiels » sont réellement — mesuré après coup
+
+La phrase-témoin « porte sur le procédé » est elle-même une **convention
+adoptée en cours de série**, pas une règle depuis l'origine (première
+occurrence : **14/08/2026 05:38**). Sur les 11 :
+
+- **10** précèdent cette adoption — **artefact de calendrier**, pas une
+  vraie exception (ils ne pouvaient pas encore employer une formule qui
+  n'existait pas).
+- **1 seule** vraie exception, postérieure à l'adoption et ne l'employant
+  pas : `nonml_self_inclusion_repair_backtest.py` — le **premier cycle de
+  réparation** de toute la série (le #463 avait trouvé les défauts sans
+  les corriger, le #466 avait refusé de le faire). Son PASS porte sur une
+  action réelle sur le dépôt, pas sur la publication d'un procédé.
+
+> **Sur 68 scripts du régime, une fois l'artefact de calendrier retiré,
+> le régime postérieur au #510 est en réalité massivement procédural
+> (50 déclarés + 10 antérieurs à la convention = 60/61 PASS qui ne
+> mesurent aucune grandeur nouvelle), avec une seule exception
+> authentique.**
+
+### L'audit : route indépendante, 7/7 grandeurs reproduites
+
+`git log --follow` par fichier (dater chaque script via son propre
+historique de renommages) au lieu du scan `--diff-filter=A` du dossier
+entier utilisé par le backtest — méthode délibérément différente.
+Population, PASS/FAIL, PROCÉDURAL/SUBSTANTIEL et la décomposition
+avant/après adoption : **7/7 accord exact**. Cohérence interne vérifiée
+(50+11=61, 10+1=11).
+
+**AUDIT OK (7/7)**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). **0** script exécuté, arbre propre. Robustesse (7a)
+et simulation 300 € (7b) **sans objet** : cycle de vérification, aucune
+position, aucun paramètre numérique.
+
+### Ce que ce cycle ne juge pas
+
+Un PASS procédural n'est pas une faute — c'est le mode de fonctionnement
+**déclaré** de la série depuis le #513. Ce cycle mesure une proportion,
+et corrige sa propre lecture initiale (11 exceptions apparentes) par une
+mesure supplémentaire descriptive avant de conclure — sans jamais changer
+la classe PROCÉDURAL/SUBSTANTIEL figée au pré-enregistrement.
+
+### File « à faire »
+
+1. **Les 3 justifications du #485 jamais vérifiées** (#511) — deux sont
+   déjà tombées à la lecture du code (#493, #511).
+2. **Bilan complet des témoins appliqués à la série #500-#514** — les 4
+   couches de détection ont désormais chacune un témoin publié (#514,
+   #515) ; un cycle de synthèse pourrait consolider ce qui tient et ce
+   qui ne tient qu'en combinaison.
+3. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`,
+   ouvert cette session) — E1 (déblocage du schéma panier pour la
+   batterie de validation) est prêt à démarrer, indépendant de ce fil.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432)
+— **désormais aussi la condition préalable E1 du fil économique**.
+
+### Dette restante
+
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, dont 82 % procéduraux déclarés + 10 antérieurs à la convention
+  = **60/61 sans grandeur nouvelle**, **1 seule** vraie exception
+  (réparation du #463/#466).
+- **Les 4 couches de détection de la série #500-#514 ont désormais un
+  témoin** (#514, #515) : contextuelle **discrimine** (35,9 % spécificité) ;
+  extraction (#500) et primitive P10 (#497) **discriminent** (lift 6,4 et
+  12,1) ; confirmation brute (#501) **ne discrimine pas seule**, compensée
+  par le #502 dans l'usage réel.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) ; **2 justifications du #485 sur
+  5** sont tombées, **3** jamais vérifiées.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
