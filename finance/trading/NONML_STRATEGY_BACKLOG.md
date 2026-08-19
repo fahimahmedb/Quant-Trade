@@ -17562,3 +17562,118 @@ schéma panier (#432) — condition préalable E1/E2 du fil économique
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #535 (19/08/2026) — **FAIL niveau 1** : momentum cross-actifs (E3) — Sharpe +0,83 vs BH +0,98, MDD amélioré mais insuffisant
+
+**Cycle de STRATÉGIE**, première exécution réelle du fil
+`ECONOMIC_MULTIASSET_BACKLOG.md` (E3), débloquée au #534.
+`PREREG_crossasset_tsmom_overlay.md` committé **avant tout calcul**,
+`n_trials` continue le compte global (dernier total publié : 372).
+
+### Le signal — time-series momentum, 4 classes d'actifs
+
+Time Series Momentum (Moskowitz-Ooi-Pedersen 2012) appliqué
+séparément à 4 jambes (NDX, TLT, GLD, UUP) : chaque jambe pèse 0,25
+si sa tendance sur 252 séances (causale, décalée d'1 jour) est
+positive, 0 sinon — jamais testé dans ce dépôt (le momentum
+déjà testé, #4/#14/#37, est intra-indice, pas cross-actifs). Fenêtre
+commune **2017-08-22 → 2026-07-13** (2233 séances), bornée par GLD.
+
+### Le résultat — FAIL niveau 1
+
+| | Overlay TSMOM | Buy&Hold équipondéré |
+|---|---|---|
+| Sharpe annualisé | +0,83 | +0,98 |
+| Rendement total net | +66,0 % | +104,3 % |
+| MDD | -9,9 % | -17,6 % |
+
+**FAIL niveau 1** (Sharpe ET rendement ne battent pas BH). Exposition
+brute moyenne du portefeuille **62,0 %** (TLT actif seulement 32,1 %
+du temps — bear market obligataire persistant sur la période, prix
+TLT 138,71→81,35 —, NDX actif 86,5 % du temps). **Même schéma déjà
+documenté partout ailleurs dans ce backlog** : réduire l'exposition
+protège le MDD (-9,9 % vs -17,6 %) mais coûte trop de rendement dans
+une décennie globalement haussière. Règle 9 (SPA/DSR, obligatoire
+dans ce fil) **sans objet** : niveau 1 déjà FAIL.
+
+### L'audit : numpy pur + test anti-fuite explicite
+
+Route indépendante : recalcul du signal et du P&L par boucle
+explicite numpy (pas de `.diff()`/`.shift()` pandas). Sharpe overlay
++0,8331 vs backtest +0,8330, Sharpe BH +0,9773 vs +0,9773 — accord
+exact. **Test anti-fuite dédié** : perturbation ×5 du prix du dernier
+jour, confirme qu'aucun signal antérieur n'en est affecté.
+
+**AUDIT OK**. **PASS** (procédure, 5/5 critères pré-enregistrés) —
+verdict de la stratégie elle-même **FAIL niveau 1**. Anti-cheat
+**CONFORME** (4/4). Robustesse (7a), simulation 300 € (7b) et audit
+dédié supplémentaire **sans objet** : réservés aux PASS niveau 1
+(convention du backlog), ce cycle est un FAIL.
+
+Un bug de reporting trouvé et corrigé avant de committer un résultat
+(la ligne « % du temps actif » divisait par le poids 0,25 en plus du
+décompte réel, affichant 21,6 % au lieu de 86,5 % pour NDX — n'a
+**jamais** affecté le calcul du P&L/Sharpe/rendement, uniquement
+l'affichage, corrigé avant tout commit).
+
+### Mes deux prédictions, confrontées
+
+| Prédiction | Verdict |
+|---|---|
+| PASS niveau 1 (50/50, incertain) | mesuré : **FAIL** |
+| Si PASS niveau 1, DSR échoue | **sans objet** (prémisse non tenue) |
+
+### File « à faire »
+
+1. **Pivot Étape D** — candidats déjà identifiés (panel 6 signaux
+   #365, CPI #338, MOVE #357, Bitcoin #344), en attente d'une décision
+   utilisateur explicite.
+2. **E1/E2** restent bloqués sur l'arbitrage #432 (inchangé).
+3. **E3 est clos** (une seule construction pré-enregistrée, FAIL
+   niveau 1, discipline « une idée par cycle » — pas de variante de
+   lookback sans motivation nouvelle).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1/E2 du fil économique.
+
+### Dette restante
+
+- **E3 (momentum cross-actifs) clos, FAIL niveau 1** (#535) : Sharpe
+  +0,83 vs BH +0,98, MDD amélioré (-9,9% vs -17,6%) mais rendement
+  insuffisant — même schéma que la quasi-totalité des overlays
+  défensifs déjà testés dans ce backlog.
+- **E3 confirmé exécutable sans blocage** (#534), désormais exécuté.
+- **La revendication fausse sur E1 est corrigée** (#533).
+- **File « à faire » de recherche non-ML confirmée épuisée** (#532),
+  aucune idée non-redondante trouvée, aucun calcul effectué.
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
