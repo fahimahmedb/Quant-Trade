@@ -16665,3 +16665,94 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #527 (19/08/2026) — **PASS** : une rétractation publiée au #482 n'avait jamais été appliquée à sa source, dizaines de cycles plus tard
+
+**Cycle de VÉRIFICATION, réparation confirmée**, deuxième piste de la
+file ouverte au #526. `PREREG_hardcoded_figures_479_lot3_retraction.md`
+committé **avant toute modification**, `n_trials` continue le compte
+global.
+
+### Le cas le plus net du lot — aucune interprétation requise
+
+Contrairement aux #523-#526 (désaccord d'axe, ou contradiction à
+établir par recoupement), celui-ci se réduit à une question factuelle :
+le **#482** avait **explicitement rétracté**, en toutes lettres, un
+verdict du #479 pour `nonml_reproducibility_sample_lot3_audit.py` —
+*« Le verdict du #479 sur cette cible est rétracté. Son total passe de
+18 à 17. »* Les lignes que le #479 prenait pour un défaut (« **73.2
+%** », point décimal au lieu de la virgule) sont en réalité **un diff
+cité fidèlement**, dont le point décimal prouve l'authenticité de la
+citation plutôt qu'une saisie manuelle.
+
+### La dette — vérifiée, pas supposée
+
+Le dictionnaire `V` du #479 affichait **toujours** `"defaut"` pour
+cette cible aujourd'hui, confirmé par lecture AST directe du script.
+La phrase de rétractation a été retrouvée littéralement dans la
+section `## Backlog #482`. **La rétractation a été publiée une fois et
+jamais répercutée à sa source, sur plusieurs dizaines de cycles.**
+
+### La réparation appliquée, même précaution qu'aux #524-#526
+
+La ligne `V` corrigée (`defaut` → `legitime`), citant le #482, diff
+vérifié borné à cette seule entrée. Rapport du #479 délibérément non
+régénéré.
+
+### L'audit : `git show` sur les deux révisions
+
+Confirme, sans AST ni import du module, que l'entrée valait `defaut`
+avant le commit de réparation et `legitime` après, et que le diff est
+borné à 1 entrée.
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification/réparation de dépôt, aucune position.
+
+Deux bugs corrigés avant commit : un problème de séquencement (le
+script de vérification avait d'abord été réexécuté APRÈS l'application
+du correctif, faussant la lecture de l'état « avant » — restauré et
+reséquencé) ; une fenêtre de recherche de l'audit indépendant plus
+courte que le motif cherché, l'empêchant systématiquement d'atteindre
+le verdict recherché.
+
+### File « à faire »
+
+1. **22 candidats restants de `hardcoded_figures_remainder`** (#479).
+2. **Le fil économique/multi-actifs** — E1 reste en attente
+   d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **10 des 32 candidats de staleness du #522 vérifiés** (#523-#527) :
+  6 réparés, 4 faux positifs. **22 candidats restants**, tous dans
+  `hardcoded_figures_remainder` (#479).
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
