@@ -15653,3 +15653,128 @@ la classe PROCÉDURAL/SUBSTANTIEL figée au pré-enregistrement.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #517 (19/08/2026) — **PASS** : le compte « 3 justifications du #485 jamais vérifiées » confond deux populations
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #516.
+`PREREG_justifications_485_recount.md` committé **avant toute mesure**,
+`n_trials` continue le compte global.
+
+### La phrase recopiée sans être ré-établie
+
+Depuis le #511, la « Dette restante » répète : *« 2 justifications du
+#485 sur 5 sont tombées (#493, #511) ; 3 n'ont jamais été vérifiées »* —
+**6 cycles consécutifs** (#511 à #516), jamais nommée.
+
+### Ce que la vérification mécanique établit
+
+Les **5** noms du tableau IRRÉPARABLE du #485 extraits par script
+(`protocol_inventory_audit`, `marker_emitted_by_scripts`,
+`pnl_duplicate_sweep_audit`, `pnl_persistence_exposed_pass_audit`,
+`reproducibility_campaign_v3_lot2_audit`) ont **chacun** reçu un verdict
+écrit sur pièce dans #493 (4 via le format tableau) ou #488 (1 en prose —
+« l'irréparabilité tient »). **5/5 couverts**, pas 2/5.
+
+Le fait cité par le **#511** (le « 0,00 % » de
+`nonml_battery_backfill_lot_audit.py`) **n'appartient PAS** à ce tableau
+des 5 — c'est une justification de classification **RÉPARABLE**, une
+population distincte des 12-13 autres figures du #485.
+
+> **Le « 2 sur 5 » additionnait une chute dans le tableau des 5 (#493) et
+> une chute hors de ce tableau (#511) — deux populations différentes
+> comptées comme une seule.** La phrase « 3 jamais vérifiées » est
+> **imprécise** pour le tableau des 5 (entièrement couvert dès le #493) ;
+> la vraie dette non couverte est ailleurs — les justifications
+> RÉPARABLE, dont une seule sur 12-13 a été relue (#511).
+
+### La règle mécanique a son propre angle mort — documenté, pas corrigé après coup
+
+Prédite à 5/5, la règle de proximité pré-enregistrée n'en a trouvé que
+**4/5** : elle capture le format tableau du #493 (marqueur à ~50
+caractères du nom) mais manque la conclusion de #488, écrite en prose
+loin du nom. Une mesure **post-hoc, descriptive** (même convention que
+le #516) retrouve le 5e cas ailleurs dans la même section, sans réviser
+le compte pré-enregistré de 4/5 ni la prédiction réfutée.
+
+> **Le proxy mécanique de ce cycle a le même angle mort que celui du
+> #485 lui-même** (« un motif qui teste `for … in` teste que le fichier
+> est du Python ») — la série continue de trouver ce défaut dans ses
+> propres outils, pas seulement dans ceux qu'elle audite.
+
+### Prédictions
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| 5/5 couverts par #488/#493 | 5 | 4 (règle stricte) | **réfutée** |
+| script #511 hors du tableau des 5 | hors | hors | **vérifiée** |
+| phrase recopiée ≥ 10 fois sans nommer les 3 | ≥ 10 | 6 | **réfutée** |
+
+### L'audit : route indépendante (`grep -n`), accord sur le fond
+
+Bornes de section retrouvées par `grep -n` sur les en-têtes plutôt que
+par découpage regex en mémoire ; présence testée par simple `in` plutôt
+que par fenêtre de proximité. **3/3 grandeurs comparables reproduites**
+(extraction des 5 noms, non-appartenance du script du #511, 6 cycles
+ayant recopié la phrase). La divergence 5/5 (présence brute) vs 4/5
+(proximité stricte) est **expliquée**, pas un désaccord : les deux
+routes s'accordent que les 5 noms apparaissent tous dans #488 ou #493.
+
+**AUDIT OK (3/3 comparables)**. **PASS** (5/5 critères pré-enregistrés).
+Anti-cheat **CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b)
+**sans objet** : cycle de vérification bibliographique, aucune position.
+
+### Reformulation de la dette — pour ce cycle seulement, non rétroactive
+
+Comme engagé au pré-enregistrement, la reformulation ci-dessous s'applique
+à **cette** entrée de dette uniquement — les entrées #511 à #516 ne sont
+pas modifiées après coup.
+
+### File « à faire »
+
+1. **Les 11-12 justifications RÉPARABLE du #485 jamais relues** — une
+   seule (`battery_backfill_lot_audit`, #511) l'a été à ce jour ; la même
+   méthode AST que #488/#493 pourrait s'y appliquer.
+2. **Bilan complet des témoins appliqués à la série #500-#514** — les 4
+   couches de détection ont chacune un témoin publié (#514, #515).
+3. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 (déblocage du schéma panier) reste prêt à démarrer.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le tableau des 5 justifications IRRÉPARABLE du #485 est entièrement
+  couvert** (#488, #493) : **0 non vérifiée**, **1 tombée** (#493). Sur
+  les 12-13 justifications RÉPARABLE : **1 relue et tombée** (#511,
+  `battery_backfill_lot_audit`), **11-12 jamais relues** — c'est cette
+  population, pas « les 3 restantes » du tableau des 5, qui est
+  actionnable.
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, 82 % procéduraux déclarés + 10 antérieurs à la convention =
+  **60/61 sans grandeur nouvelle**, **1 seule** vraie exception.
+- **Les 4 couches de détection de la série #500-#514 ont désormais un
+  témoin** (#514, #515) : contextuelle **discrimine** ; extraction
+  (#500) et primitive P10 (#497) **discriminent** ; confirmation brute
+  (#501) **ne discrimine pas seule**, compensée par le #502 dans l'usage
+  réel.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
