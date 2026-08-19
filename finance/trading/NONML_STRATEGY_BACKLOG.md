@@ -17328,3 +17328,131 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #533 (19/08/2026) — **PASS** : correction d'une revendication fausse dans ECONOMIC_MULTIASSET_BACKLOG.md (E1)
+
+**Cycle de RÉPARATION**, découvert en vérifiant l'état réel du fil
+économique après le constat d'épuisement du #532.
+`PREREG_economic_backlog_e1_claim_correction.md` committé **avant
+toute modification**, `n_trials` continue le compte global.
+
+### L'incohérence entre deux documents du dépôt
+
+`ECONOMIC_MULTIASSET_BACKLOG.md` affirmait qu'E1 (extension de la
+batterie de validation Règle 9 au schéma panier) « ne dépend d'aucune
+donnée externe et peut démarrer dès le prochain cycle ». Le **#432**
+du backlog principal dit le contraire, explicitement : c'est l'un de
+**trois points « en attente d'arbitrage de l'utilisateur, aucun
+tranché unilatéralement »**, au motif que la batterie a été conçue
+pour une position **scalaire** — étendre son design au schéma panier
+est une décision d'architecture, pas une tâche mécanique. Cette
+réserve est répétée **102 fois** depuis le #432 (recompté par deux
+routes indépendantes, `grep -c` shell et Python `re`), jamais levée.
+
+**Vérifié avant toute conclusion** : le #443 (« concordance panier »,
+candidat de levée possible) est un cycle d'inventaire de concordance
+`.npz`/rapport — **pas** une extension du code de la batterie. Aucun
+cycle entre #432 et #532 ne modifie effectivement la batterie pour
+accepter un schéma panier.
+
+### La correction — diff borné à 2 passages
+
+Corrigé la ligne E1 du tableau « Statut » et le paragraphe « Prochaine
+étape immédiate » pour qu'ils citent correctement la réserve du #432
+au lieu de la contredire. **Ce cycle ne tranche PAS lui-même la
+question laissée en attente d'arbitrage** — ce serait l'erreur
+inverse (décider à la place de l'utilisateur ce que le #432 a
+explicitement refusé de trancher seul).
+
+### L'audit : git show + grep externe + Python re
+
+Route indépendante : recompte du chiffre 102 par Python `re` (pas le
+`grep -c` shell d'origine), citation du #432 vérifiée par grep direct,
+diff du commit recalculé par `git show --stat` (borné au seul fichier
+attendu), absence de l'ancienne affirmation confirmée. **2 bugs
+trouvés et corrigés dans l'audit avant de committer** : un mauvais
+motif de comparaison (ligne unique vs alternance à 3 motifs) et un
+défaut de normalisation d'espaces (l'habillage markdown du fichier
+corrigé coupe « en\nattente » sur deux lignes, cassant une comparaison
+littérale naïve).
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (3/3). Robustesse (7a), simulation 300 € (7b) et audit
+dédié supplémentaire **sans objet** : cycle de correction documentaire,
+aucune position.
+
+### Une dette supplémentaire trouvée, non corrigée (hors scope déclaré)
+
+**E3** (momentum cross-actifs) affiche encore « à faire dès que les 3
+fetches sont terminés », mais la section « univers d'actifs » du même
+fichier confirme que TLT/GLD/UUP sont **déjà récupérés et vérifiés**
+(dates jusqu'au 17-18/08/2026) — ce statut est probablement stale
+aussi, mais **hors du diff borné déclaré à ce cycle** (2 passages sur
+E1 uniquement). Signalé pour un futur cycle, pas corrigé ici.
+
+### Mes deux prédictions, confrontées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| Les 2 passages identifiés sont les seuls incohérents | oui | oui | **vérifiée** |
+| Diff final borné aux 2 passages | oui | oui (1 fichier, 2 passages) | **vérifiée** |
+
+### File « à faire »
+
+1. **E3 pourrait afficher un statut stale** (« fetch en cours » alors
+   que les 3 fetches sont terminés) — à vérifier et corriger dans un
+   cycle dédié, diff borné, ne pas mélanger avec la question
+   d'arbitrage E1 qui reste ouverte.
+2. **Le fil économique/multi-actifs** reste bloqué sur E1 (arbitrage
+   #432) pour E2 ; **E3** pourrait être exécutable indépendamment une
+   fois son statut vérifié (point 1).
+3. **Pivot Étape D** — candidats déjà identifiés (panel 6 signaux
+   #365, CPI #338, MOVE #357, Bitcoin #344), en attente d'une décision
+   utilisateur explicite.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique,
+**revendication contraire dans ECONOMIC_MULTIASSET_BACKLOG.md
+corrigée au #533, la décision elle-même reste ouverte**.
+
+### Dette restante
+
+- **La revendication fausse sur E1 est corrigée** (#533) : les deux
+  documents du dépôt sont désormais cohérents, la décision
+  d'arbitrage elle-même reste ouverte.
+- **E3 affiche potentiellement un statut stale** (données déjà
+  récupérées, statut encore « fetch en cours ») — à vérifier (#533,
+  non corrigé, hors scope déclaré).
+- **File « à faire » de recherche non-ML confirmée épuisée** (#532),
+  aucune idée non-redondante trouvée, aucun calcul effectué.
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
