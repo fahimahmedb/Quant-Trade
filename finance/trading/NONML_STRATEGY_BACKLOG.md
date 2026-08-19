@@ -17456,3 +17456,109 @@ corrigée au #533, la décision elle-même reste ouverte**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+---
+
+## Backlog #534 (19/08/2026) — **PASS** : statut stale d'E3 corrigé, fetches confirmés terminés sur le disque
+
+**Cycle de RÉPARATION**, première piste de la file ouverte au #533.
+`PREREG_economic_backlog_e3_fetch_status_correction.md` committé
+**avant toute vérification**, `n_trials` continue le compte global.
+
+### La dette signalée mais non corrigée au #533
+
+Le #533 avait trouvé, mais délibérément laissé hors de son diff borné
+à E1, que la ligne E3 du tableau « Statut » d'
+`ECONOMIC_MULTIASSET_BACKLOG.md` affichait « fetch en cours » alors
+que la section « univers d'actifs » du même fichier affirmait déjà
+TLT/GLD/UUP récupérés. Ce cycle vérifie **sur le disque**, pas
+seulement dans la prose, avant de corriger.
+
+### Vérification directe — accord complet
+
+`load_ohlc` + `quality_report()` sur les 3 fichiers : existence,
+chargement sans erreur, comptes de séances **identiques** à ceux déjà
+publiés (TLT 6051, GLD 2512, UUP 4898). Ligne E3 corrigée : « fetch en
+cours » → « récupérés et vérifiés, confirmé sur le disque au #534 »,
+statut « à faire dès que les 3 fetches sont terminés » → « à faire —
+données prêtes, aucun blocage restant ». **Diff borné à cette seule
+ligne.**
+
+### L'audit : comptage brut de lignes + git show
+
+Route indépendante : recompte des séances par lecture brute de
+fichier (sans passer par `data_loader`), commit de correction vérifié
+par `git show --name-only` (exactement les 3 fichiers attendus, diff
+du backlog économique borné à 1 ligne retirée / 1 ajoutée). **Un bug
+de pathspec trouvé et corrigé dans l'audit avant de committer** (`cwd`
+et chemin relatif incohérents faisaient percevoir un diff vide à
+tort).
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a), simulation 300 € (7b) et audit
+dédié supplémentaire **sans objet** : cycle de vérification de
+données et de correction documentaire, aucune position — E3
+(momentum cross-actifs) lui-même n'est **pas** exécuté ce cycle
+(discipline « une idée par cycle »).
+
+### Mes trois prédictions, confrontées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| Les 3 fichiers valides | oui | oui | **vérifiée** |
+| Comptes identiques à la prose déjà publiée | oui | oui | **vérifiée** |
+| Correction appliquée | oui | oui | **vérifiée** |
+
+### File « à faire »
+
+1. **E3 (momentum cross-actifs)** est désormais confirmé **exécutable
+   sans aucun blocage restant** — données prêtes et vérifiées, aucune
+   décision d'arbitrage requise (distinct d'E1/E2). Candidat naturel
+   pour le prochain cycle de stratégie proprement dite sur ce fil,
+   avec PREREG dédié (fenêtre commune 19/08/2016→18/08/2026 déjà
+   figée par GLD, signal à définir avant tout calcul).
+2. **Pivot Étape D** — candidats déjà identifiés (panel 6 signaux
+   #365, CPI #338, MOVE #357, Bitcoin #344), en attente d'une décision
+   utilisateur explicite.
+3. **E1/E2** restent bloqués sur l'arbitrage #432 (inchangé).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1/E2 du fil économique
+(E3 n'en dépend pas, confirmé au #534).
+
+### Dette restante
+
+- **E3 confirmé exécutable sans blocage** (#534) : données vérifiées
+  sur le disque, statut corrigé, aucune décision d'arbitrage requise.
+- **La revendication fausse sur E1 est corrigée** (#533).
+- **File « à faire » de recherche non-ML confirmée épuisée** (#532),
+  aucune idée non-redondante trouvée, aucun calcul effectué.
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
