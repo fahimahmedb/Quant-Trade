@@ -17086,8 +17086,126 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 
 - **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
   **0,76** < seuil 3, témoin positif retenu, **1 témoin négatif sur 2**
-  non écarté (narration propre du #528, hors filtre codé) — non
-  corrigé dans ce commit, portée déclarée à l'avance.
+  non écarté au #530 (narration propre du #528, hors filtre codé) —
+  **réparé au #531** (voir ci-dessous), le lift de proximité seule
+  reste néanmoins < 3 par construction (limite de fond, pas un bug).
+- **Le screen de staleness des dictionnaires de verdicts est clos**
+  (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
+  connus du dépôt, **6 corrections** appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
+
+---
+
+## Backlog #531 (19/08/2026) — **PASS** : le filtre dette-générique de D528 généralisé dans les 4 sites de production, 0 régression
+
+**Cycle de RÉPARATION**, première piste de la file ouverte au #530.
+`PREREG_d528_generic_debt_filter_generalization.md` committé **avant
+toute modification**, `n_trials` continue le compte global.
+
+### La faille du #530, comblée sans retoucher le fond du filtre
+
+Le #530 avait délibérément refusé de corriger D528 sur la base de son
+propre résultat (portée déclarée à l'avance) : le filtre codé pour la
+seule phrase exacte « rétractés sur mesure » ne couvrait pas la
+narration propre d'un cycle décrivant sa **propre** exclusion (« ...
+pas une discussion du script », #528). Ce cycle ajoute ce second motif,
+littéral, vérifié présent **exactement 2 fois** dans tout le backlog
+avant modification (0 risque connu de sur-exclusion), aux **4** sites
+de production qui dupliquent ce filtre :
+
+1. `nonml_hardcoded_figures_479_remainder_closure_backtest.py` (#528)
+2. `nonml_hardcoded_figures_479_remainder_closure_audit.py` (#528)
+3. `nonml_verdict_dicts_origin_staleness_screen_backtest.py` (#529)
+4. `nonml_verdict_dicts_origin_staleness_screen_audit.py` (#529)
+
+### 0 régression — la faille était latente, pas encore active
+
+Baseline des 4 sorties capturée **avant** modification ; les 4
+ré-exécutées **après** sont **identiques** :
+
+| Script | Sortie (avant = après) |
+|---|---|
+| #528 backtest | `PASS — nouvelles_retractations=0, non_tranches=0` |
+| #528 audit | `PASS — n_marqueurs_reels=0, v_absent=True` |
+| #529 backtest | `PASS — entrées=10, contradictions=0` |
+| #529 audit | `PASS — candidats_confirmes=8, accord_backtest=True, dicos_touches=False` |
+
+**La faille était latente** : les 4 sites, avec leurs fenêtres et
+populations propres, n'avaient pas (encore) rencontré le cas précis
+trouvé par le balayage plus large du #530. La réparation est
+préventive, pas corrective d'un verdict existant.
+
+### Script de régression dédié — preuve directe avant/après
+
+Reconstruit le filtre indépendamment des 4 scripts modifiés, appliqué
+à l'occurrence exacte du #530 (`battery_backfill_lot_audit.py`,
+section #528, marqueur « rétracté ») : **non exclue avant** (comme
+prévu), **exclue après** (comme prévu). PASS.
+
+### Une régénération de rapport détectée et refusée
+
+Re-exécuter le #529 backtest a régénéré son rapport avec des
+occurrences **supplémentaires** (le #529 se citant lui-même, puisque
+sa propre section existe désormais dans le backlog qu'il scanne — même
+famille de dérive que le #489/#524) — verdict et comptes inchangés,
+mais hors de la portée déclarée de ce cycle. **Non committée,
+restaurée depuis git**, même précaution qu'au #524.
+
+**PASS** (5/5 critères pré-enregistrés). Anti-cheat **CONFORME** (3/3).
+Robustesse (7a), simulation 300 € (7b) et audit dédié supplémentaire
+**sans objet** : cycle de réparation de dépôt, aucune position — le
+script de régression tient lieu d'audit dédié du protocole général.
+
+### Mes trois prédictions, confrontées
+
+| Prédiction | Annoncé | Mesuré | Verdict |
+|---|---|---|---|
+| Les 4 sorties identiques avant/après | 0 régression | 0 régression | **vérifiée** |
+| Régression dédiée : écart avant/après sur l'occurrence du #530 | oui | oui | **vérifiée** |
+| Diff borné (4 lignes modifiées, rien d'autre) | 4 | 4 fichiers, diff borné à l'exclusion | **vérifiée** |
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432, sans piste
+   concurrente sur le fil principal désormais.
+2. **Le screen de staleness du #522-#529 pourrait dériver dans le
+   temps** — le #531 a montré que re-exécuter un script de vérification
+   longtemps après son cycle d'origine peut trouver de **nouvelles**
+   occurrences (auto-citation) sans changer le verdict : à surveiller,
+   pas à réparer maintenant (aucun verdict actuel n'est faux).
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le filtre dette-générique de D528 est généralisé dans les 4 sites
+  de production** (#531) : 0 régression, faille du #530 comblée,
+  prouvée par régression dédiée avant/après.
+- **D528 ne discrimine pas seul sur l'univers complet** (#530) : lift
+  **0,76** < seuil 3 (limite de fond du filtre de proximité, pas un
+  bug — inchangée par la réparation du #531).
 - **Le screen de staleness des dictionnaires de verdicts est clos**
   (#522-#529) : **42/42** entrées vérifiées sur les 6 dictionnaires
   connus du dépôt, **6 corrections** appliquées avec diff borné.
