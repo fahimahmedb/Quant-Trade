@@ -16484,3 +16484,90 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #525 (19/08/2026) — **PASS** : 2/3 candidats du #484 réparés, dont le « contrôle positif » explicitement désigné du #475
+
+**Cycle de VÉRIFICATION, réparation confirmée**, première piste de la
+file ouverte au #524. `PREREG_staleness_candidates_484.md` committé
+**avant toute modification**, `n_trials` continue le compte global.
+
+### Les 3 candidats du #522 pour `guards_witness_remainder` (#484)
+
+| Cible | Verdict `V` | Mentionné en | Résultat |
+|---|---|---|---|
+| `six_reports_regeneration_backtest.py` (l.232, `perdus`) | MASQUANT | #494 | **tombe → ANODIN** |
+| `sweep_pass_prose_fix_backtest.py` (l.134, `strategies`) | MASQUANT | #494 | **tombe → ANODIN** |
+| `self_inclusion_detector_backtest.py` (l.106) | ANODIN | #504 | **faux positif** (axe distinct) |
+
+### Le contrôle positif de toute la série tombe
+
+`six_reports_regeneration` / `perdus` était cité par le #484 comme
+**« le cas exact du #475 »** — celui qui avait envoyé trois cycles
+(#469, #472, #475) chercher un encart jamais écrit — et repris comme
+**contrôle positif de référence** dans les cycles ultérieurs
+(« une règle qui ne le classerait pas masquant serait à jeter »).
+Vérifié par AST : `perdus` est désormais publié **sans condition**
+(l.231), avant même la garde. **Ce n'est pas la règle qui a changé —
+c'est l'état du script**, qui a reçu un témoin depuis. Le cas reste
+valide **historiquement** au #475/#484 ; il ne l'est plus **aujourd'hui**.
+Même schéma exact pour `sweep_pass_prose_fix` / `strategies` (l.133).
+
+### La réparation appliquée — et une régénération refusée, même précaution qu'au #524
+
+Les 2 verdicts `V` corrigés, diff vérifié borné aux 2 entrées
+déclarées. **Le rapport du #484 n'a délibérément pas été régénéré ni
+committé** — même garde-fou qu'au #524, sans même tenter la
+régénération cette fois puisque le risque de dérive de population
+était déjà établi.
+
+### L'audit : grep externe + `git show`, même forme qu'au #524
+
+Confirme les 2 reclassements et l'absence de tout diff sur le rapport
+du #484 dans le commit de réparation. **Accord exact.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification/réparation de dépôt, aucune position.
+
+### File « à faire »
+
+1. **24 candidats restants du #522** — tous dans
+   `hardcoded_figures_remainder` (#479, 24/32) : le lot le plus dense,
+   nécessitera probablement plusieurs cycles.
+2. **Le fil économique/multi-actifs** — E1 reste en attente
+   d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **8 des 32 candidats de staleness du #522 vérifiés** (#523, #524,
+  #525) : 4 réparés (MASQUANT→ANODIN), 4 faux positifs. **24 candidats
+  restants**, tous dans `hardcoded_figures_remainder` (#479).
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
