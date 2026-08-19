@@ -16099,3 +16099,94 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #521 (19/08/2026) — **PASS** : les 3 derniers littéraux périmés du script du #485 corrigés par interpolation
+
+**Cycle de RÉPARATION**, première piste de la file ouverte au #520.
+`PREREG_census_485_stale_literals.md` committé **avant toute
+modification**, `n_trials` continue le compte global.
+
+### La dette héritée du #520
+
+Le #520 avait réparé les 5 verdicts du dictionnaire `V`, mais signalé
+sans corriger un littéral en dur trouvé en chemin (« chacun des 12 »,
+hors périmètre déclaré). Ce cycle ne s'est pas limité au seul cas déjà
+nommé : **balayage mécanique déclaré** (grep sur les mots-nombres
+français dans les `L.append(`) suivi d'une lecture manuelle, excluant
+articles indéfinis et seuils de prédiction figés.
+
+### 3 littéraux trouvés, tous corrigés par interpolation
+
+| Ligne | Avant | Après | Défaut |
+|---|---|---|---|
+| 247 | « actionnable aux deux tiers » | « actionnable à {len(rep)/len(pop)}% » | qualitatif figé sur 12/17 (70,6 %), réel 9/17 (52,9 %) |
+| 284 | « une des cinq » | « une des {len(irrep)} » | comptait 5 irréparables d'origine, il y en a 8 |
+| 288 | « chacun des 12 » | « chacun des {len(rep)} » | comptait 12 réparables d'origine, il y en a 9 |
+
+**Diff borné aux 3 lignes déclarées** (3 paires +/-, confirmé par git).
+**Aucun seuil de prédiction figé touché** (`≥ 5`, `≥ 8` intacts — ce
+sont les annonces originales du #485, pas des mesures actuelles).
+**Compte final inchangé** : 8 irréparables / 9 réparables — ce cycle ne
+corrige que la *description*, pas la mesure déjà établie au #520.
+
+### L'audit : import direct du module, comparaison git directe
+
+Route distincte du backtest : import du module cible (pas de regex sur
+texte) pour recalculer les 3 grandeurs depuis `V` directement, et
+`git show HEAD~1` vs `HEAD` pour confirmer que les seuils figés
+n'ont pas bougé. **Accord exact sur les 3 grandeurs, seuils confirmés
+intacts.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de réparation de dépôt, aucune position.
+
+Un bug corrigé avant commit : la prédiction sur le pourcentage
+vérifiait le diff du `.py` (code source de l'interpolation) au lieu du
+rapport régénéré (valeur rendue) — corrigé pour lire le rapport.
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 (déblocage du schéma panier) reste en attente d'arbitrage sur
+   le #432.
+2. **La série des témoins #500-#519 est synthétisée** — extension
+   possible : appliquer la même discipline aux détecteurs plus récents.
+3. **Le script du #485 est désormais entièrement à jour** — aucune
+   dette de littéral connue n'y subsiste ; prochain candidat de
+   réparation à identifier par un balayage similaire sur d'autres
+   scripts source-de-vérité du dépôt.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le script du #485 est intégralement à jour** (#520, #521) : 8
+  irréparables / 9 réparables, verdicts et description cohérents,
+  **0 littéral périmé connu restant**.
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519) :
+  D500 et D497-P10 discriminent, la couche contextuelle discrimine avec
+  réserve, D501 seule ne discrimine pas.
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
