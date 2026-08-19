@@ -16295,3 +16295,100 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #523 (19/08/2026) — **PASS** : les 2 candidats du #483 sont des faux positifs, mais l'hypothèse initiale était fausse
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #522
+(« 32 candidats à vérifier manuellement »). `PREREG_staleness_
+candidates_483.md` committé **avant toute mesure**, `n_trials` continue
+le compte global.
+
+### Le lot le plus petit, entièrement vérifiable en un cycle
+
+Sur les 4 dictionnaires du #522, `orphan_audits_declared_reading`
+(#483) était le seul dont les candidats (2 sur 4 entrées) tenaient dans
+un cycle. Les 3 autres lots (**hardcoded_figures_remainder** 24/32,
+**guards_witness_remainder** 3/10, **guards_without_witness** 3/5)
+restent en file.
+
+### L'hypothèse pré-enregistrée était fausse — et c'est le résultat le plus instructif
+
+Le PREREG annonçait : *« les 2 candidats se révèlent être des objets
+distincts de ceux discutés au #518 (faux positifs par collision de
+nom) »*. **Réfuté.** `PREREG_coverage_wording_fix.md` et
+`PREREG_duplicate_sweep_coverage.md` sont bien les pré-enregistrements
+des **mêmes cycles** que les scripts `_audit.py` discutés au #518 —
+vérifié sur pièce.
+
+**La vraie cause, mécaniquement vérifiée** : le #518 juge la
+réparabilité d'un **chiffre cité par le #485** ; le #483 juge si le mot
+de self-déclaration figure dans `MOTS`. **Deux axes indépendants du
+même objet.** Le #522 n'avait aucun moyen de le distinguer — son
+screen ne teste que la co-présence d'un nom et d'un marqueur, pas la
+pertinence de l'axe.
+
+### Le résultat — 2/2 faux positifs confirmés
+
+Pour chacun : (1) toujours orphelin (aucun `nonml_<nom>_result.md` sans
+suffixe n'existe), (2) la règle mécanique se trompe encore exactement
+de la même façon qu'au #483 (« outillage » toujours absent de `MOTS`).
+**Le verdict `MAL CLASSÉ` du #483 n'est pas contredit. Aucune
+correction nécessaire. Le lot est clos.**
+
+### L'audit : réimplémentation indépendante, sans réutiliser le code
+
+`classer()` reimplémenté en lisant le PREREG entier (pas 12 lignes),
+`grep -c` externe confirmant que l'expression caractérisant l'axe du
+#518 existe littéralement dans le backlog. **Accord exact.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification bibliographique/code, aucune position.
+
+Un bug corrigé avant commit : la première version du script inversait
+la logique MAL CLASSÉ/RÉSULTAT ATTENDU (confondait « la règle se
+trompe encore » avec son contraire).
+
+### File « à faire »
+
+1. **30 candidats restants du #522** — `hardcoded_figures_remainder`
+   (#479, 24/32, le plus dense), `guards_witness_remainder` (#484,
+   3/10), `guards_without_witness` (#481, 3/5), chacun en cycles
+   dédiés séparés.
+2. **Le fil économique/multi-actifs** — E1 reste en attente
+   d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **2 des 32 candidats de staleness du #522 vérifiés** — 2/2 faux
+  positifs, `orphan_audits_declared_reading` (#483) clos. **30
+  candidats restants** dans 3 dictionnaires.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
