@@ -15413,3 +15413,123 @@ propre. Robustesse (7a) et simulation 300 € (7b) **sans objet**.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure stratégie
   testée.**
+
+---
+
+## Backlog #515 (19/08/2026) — **PASS** : D500 et D497-P10 discriminent (lift ≥ 6), D501 brut ne discrimine pas — **exactement comme prédit**
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #514.
+`PREREG_untested_detectors_lift.md` committé **avant toute mesure**,
+`n_trials=1`.
+
+### Ce qui restait non couvert
+
+Le #514 n'avait testé que la couche contextuelle du #502. Trois couches
+sous-jacentes, utilisées par toute la série **#500-#514**, n'avaient jamais
+subi de témoin : l'**extraction** du #500 (D500), la **confirmation brute**
+du #501 (D501), la **primitive P10** du #497 (D497).
+
+### La méthode : un témoin de vraisemblance (lift), pas une permutation
+
+Chaque détecteur est une conjonction `A ET B`. `lift = P(A∩B) / (P(A)×P(B))`
+mesure si la conjonction dépasse ce que l'indépendance des deux conditions
+prédirait seule. **Seuil fixé à 3 avant tout calcul.**
+
+### Le résultat — les trois prédictions vérifiées
+
+| Détecteur | Mesure | Verdict |
+|---|---|---|
+| **D500** (#500, extraction) | lift **6,4** | **DISCRIMINE** |
+| **D497-P10** (#497, exécution en process) | lift **12,1** | **DISCRIMINE** |
+| **D501** (#501, « en gras quelque part », brut) | rapport **1,5** | **NE DISCRIMINE PAS** |
+
+Pour D501, un `decoy` construit par **complément à 9 chiffre par chiffre**
+(déterministe, aucun tirage) se retrouve « confirmé » à **65,8 %** contre
+**100 %** pour la vraie valeur — rapport de **1,5** seulement, loin du seuil
+de 3.
+
+> **Le schéma annoncé se confirme.** Les deux couches structurelles
+> mesurent une conjonction réelle. **La confirmation brute du #501 ne
+> discrimine pas** : c'est exactement pourquoi le #502 a dû ajouter les
+> mots-clés — sans eux, la couche #501 seule ne prouvait rien, et ce cycle
+> en donne enfin la mesure.
+
+### L'audit : deux routes indépendantes, et une correction de son propre biais
+
+- **D500** recalculé par **regex pur, sans AST** (route délibérément plus
+  étroite — 16 973 lignes `.append("…")` capturées) : lift **5,4**, toujours
+  au-dessus du seuil.
+- **D497-P10** recalculé par un **second parcours AST** indépendant : lift
+  **12,1**, accord exact avec le backtest.
+- **Le decoy `decoy(v) ≠ v`** vérifié sur un échantillon — garantie du
+  pré-enregistrement tenue.
+
+**L'audit s'est aussi corrigé lui-même deux fois avant publication** :
+1. Son premier jet testait que `decoy` soit une **involution**
+   (`decoy(decoy(v))=v`) — une propriété que le pré-enregistrement **n'avait
+   jamais posée**. Le test échouait sur `v="0"` (`decoy("0")="9"`, mais
+   `decoy("9")` est indéterminé). Corrigé : l'audit teste désormais
+   uniquement la garantie **réellement écrite** (`decoy(v) ≠ v`), et
+   documente l'asymétrie de composition comme un effet de bord, pas un bug.
+2. Une regex d'extraction (`lift (\d+,\d+)`) ne matchait pas `lift = 12,1`
+   (le signe `=` cassait le motif) et **sautait vers une occurrence plus
+   loin dans le document**, lisant "6,4" au lieu de "12,1". Corrigée en
+   `lift\s*=?\s*(\d+,\d+)` avant tout commit.
+
+**AUDIT OK (5/5)**. **PASS** (5/5). Anti-cheat **CONFORME** (4/4). **0**
+script exécuté, arbre propre. Robustesse (7a) et simulation 300 € (7b)
+**sans objet**.
+
+### Portée déclarée
+
+Ce cycle ne teste que les couches isolées. Un détecteur qui échouerait ici
+n'invaliderait pas rétroactivement les cycles qui l'utilisaient **en
+combinaison** avec la couche contextuelle du #502 (déjà validée au #514) —
+et c'est précisément le cas pour D501, dont la faiblesse isolée est compensée
+par les mots-clés du #502 dans tous les cycles qui s'en servent réellement.
+
+### File « à faire »
+
+1. **Ce que le régime postérieur a produit** (#510) — **62** cycles depuis le
+   13/08, tous sans données. Combien ont abouti à un **PASS** portant sur une
+   grandeur du dépôt plutôt que sur un procédé ?
+2. **Les 3 justifications du #485 jamais vérifiées** (#511) — deux sont déjà
+   tombées à la lecture du code (#493, #511).
+3. **Bilan complet des témoins appliqués à la série #500-#514** — avec le
+   #515, 4 couches sur 4 ont désormais un témoin publié (#514 contextuel,
+   #515 D500/D501/D497). Un cycle de synthèse pourrait consolider ce qui
+   tient et ce qui ne tient qu'en combinaison.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) — **une dette du #485 en dépend** ; statut de
+`log_return_compounding_audit` (#431) ; batterie au schéma panier (#432).
+
+### Dette restante
+
+- **Les 4 couches de détection de la série #500-#514 ont désormais un
+  témoin** (#514, #515) : contextuelle **discrimine** (35,9 % spécificité) ;
+  extraction (#500) et primitive P10 (#497) **discriminent** (lift 6,4 et
+  12,1) ; confirmation brute (#501) **ne discrimine pas seule**, compensée
+  par le #502 dans l'usage réel.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13.
+- **Le « 0,00 % » est irréparable** (#511) ; **2 justifications du #485 sur
+  5** sont tombées, **3** jamais vérifiées.
+- **Le basculement est daté** (#510) : **13/08/2026 21:51**, régime
+  postérieur homogène (**62** scripts, **0** exception).
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **17 chiffres publiés sans code qui les produise** (#493) — **1 de moins**
+  depuis le #511.
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
