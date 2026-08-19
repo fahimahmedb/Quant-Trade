@@ -16392,3 +16392,95 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #524 (19/08/2026) — **PASS** : 2/3 candidats du #481 confirmés et réparés, et une leçon du #489 redécouverte en réparant
+
+**Cycle de VÉRIFICATION, réparation confirmée**, première piste de la
+file ouverte au #523. `PREREG_staleness_candidates_481.md` committé
+**avant toute modification**, `n_trials` continue le compte global.
+
+### Les 3 candidats du #522 pour `guards_without_witness` (#481)
+
+| Cible | Verdict `V` | Mentionné en | Résultat |
+|---|---|---|---|
+| `battery_coverage_backtest.py` (l.159, `indet`) | MASQUANT | #489 | **tombe → ANODIN** |
+| `net_pnl_correction_backtest.py` (l.279, `incoh`) | MASQUANT | #489 | **tombe → ANODIN** |
+| `marker_emitter_crossing_backtest.py` (l.175) | ANODIN | #518 | **faux positif** (axe distinct, même mécanisme qu'au #523) |
+
+### Les 2 MASQUANT tombent — le témoin du #489 les a rendus stales
+
+Le #489 avait explicitement ajouté un témoin à ces deux sections
+(« Deux témoins ajoutés, patch purement additif »), sans que le #481
+ne soit corrigé en conséquence. Vérifié par AST : `indet` (l.147) et
+`incoh` (l.278) apparaissent désormais **sans condition, avant même la
+garde citée** — la définition même de MASQUANT (« la variable
+n'apparaît nulle part hors de la garde ») ne tient plus.
+
+> **Bug trouvé en vérifiant : la garde de `net_pnl_correction` avait
+> dérivé de 2 lignes** (citée l.279 par le #481, retrouvée l.281
+> aujourd'hui — le fichier a changé depuis). La détection a été
+> reconstruite par **nom de variable** plutôt que numéro de ligne
+> exact, pour ne pas dépendre d'une citation qui peut se périmer.
+
+### La réparation appliquée — et une régénération refusée
+
+Les 2 lignes `V` corrigées (`MASQUANT` → `ANODIN`), diff vérifié borné.
+**Le rapport du #481 n'a délibérément pas été régénéré ni committé** :
+le recalculer capture aussi la dérive de population du dépôt (58 → 67
+sections conditionnelles depuis #481), qui remplacerait l'échantillon
+examiné et ferait échouer le critère du #481 lui-même — **même
+précédent que le #489** (« le rapport régénéré n'est pas committé, et
+l'arbre est restauré »).
+
+### L'audit : grep externe + `git show`, sans réutiliser le code
+
+Confirme les 2 reclassements (positions de garde retrouvées à
+l'identique par grep pur) et l'absence de tout diff sur le rapport du
+#481 dans le commit de réparation. **Accord exact.**
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification/réparation de dépôt, aucune position.
+
+### File « à faire »
+
+1. **27 candidats restants du #522** — `hardcoded_figures_remainder`
+   (#479, 24/32, le plus dense), `guards_witness_remainder` (#484,
+   3/10), chacun en cycles dédiés séparés.
+2. **Le fil économique/multi-actifs** — E1 reste en attente
+   d'arbitrage sur le #432.
+3. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **5 des 32 candidats de staleness du #522 vérifiés** (#523, #524) :
+  2 réparés (MASQUANT→ANODIN), 3 faux positifs. **27 candidats
+  restants** dans 2 dictionnaires.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
