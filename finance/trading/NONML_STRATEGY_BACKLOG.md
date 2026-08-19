@@ -16756,3 +16756,102 @@ schéma panier (#432) — condition préalable E1 du fil économique.
 - **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
 - **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
   stratégie testée.**
+
+
+---
+
+## Backlog #528 (19/08/2026) — **PASS** : les 32 candidats de staleness du #522 sont désormais tous vérifiés — le lot est clos
+
+**Cycle de VÉRIFICATION**, première piste de la file ouverte au #527.
+`PREREG_hardcoded_figures_479_remainder_closure.md` committé **avant
+toute modification**, `n_trials` continue le compte global.
+
+### Clore 22 candidats en un cycle plutôt qu'un par un
+
+Après cinq cycles de vérification individuelle (#523-#527, 10
+candidats), deux leçons se dégageaient assez clairement pour être
+appliquées en lot aux 22 restants : (1) un verdict « defaut »/« partiel »
+du #479 et un cycle citant qui trouve **la même figure problématique**
+sous un autre angle (réparable, résidu, calcul en dur) **sont
+compatibles**, pas contradictoires ; (2) un verdict « legitime » du
+#479 et un cycle citant sur un **axe différent** (garde MASQUANT/ANODIN,
+classe d'exécution, procédural/substantiel…) est un **faux positif du
+screen**, même mécanisme qu'aux #523-#525.
+
+### Le résultat — 22/22 compatibles, 0 correction
+
+Chaque candidat vérifié avec verdict `V` actuel, cycle citant, axe, et
+justification citée. **0 nouvelle rétractation non appliquée trouvée.**
+
+> Un candidat trouvé par le balayage mécanique brut
+> (`nonml_battery_backfill_lot_audit.py`) s'est révélé être une
+> collision avec la phrase générique de la « Dette restante » listant
+> des **numéros de cycle** rétractés — pas une discussion du script.
+> **Exclue explicitement**, corrigée avant de committer.
+
+### L'audit : grep externe par section isolée
+
+Route distincte : sections isolées par indices de ligne, `grep -c`
+externe. **Confirme 0/22 et que le dictionnaire `V` du #479 n'a reçu
+aucune modification** dans ce commit. Un bug identique (collision de
+sous-chaîne `reproducibility_sample`/`reproducibility_sample_lot3_
+audit`) trouvé et corrigé dans l'audit lui-même avant de committer.
+
+**AUDIT OK**. **PASS** (5/5 critères pré-enregistrés). Anti-cheat
+**CONFORME** (4/4). Robustesse (7a) et simulation 300 € (7b) **sans
+objet** : cycle de vérification de dépôt, aucune position.
+
+### Bilan du thread ouvert au #522 — clos
+
+Les **32** candidats du screen du #522 sont désormais **tous vérifiés** :
+- **10** traités individuellement (#523-#527) : **6 réparés**
+  (`nonml_battery_coverage_backtest.py`, `nonml_net_pnl_correction_
+  backtest.py`, `nonml_six_reports_regeneration_backtest.py`,
+  `nonml_sweep_pass_prose_fix_backtest.py`,
+  `nonml_self_inclusion_detector_backtest.py`,
+  `nonml_reproducibility_sample_lot3_audit.py`), **4 faux positifs**.
+- **22** traités en lot (#528) : **0 réparé**, **22 compatibles**.
+- Au total : **6 corrections appliquées** sur **32 candidats**, dont
+  **une** est le contrôle positif de référence de toute la série
+  (`six_reports_regeneration`/#475, #525).
+
+### File « à faire »
+
+1. **Le fil économique/multi-actifs** (`ECONOMIC_MULTIASSET_BACKLOG.md`)
+   — E1 reste en attente d'arbitrage sur le #432, sans piste concurrente
+   sur le fil principal désormais.
+2. **La série des témoins #500-#519 est synthétisée** — extension
+   possible aux détecteurs plus récents non encore éprouvés.
+3. **Nouveau candidat de balayage** — un cinquième dictionnaire de
+   verdicts écrits à la main pourrait exister ailleurs dans le dépôt ;
+   un screen similaire au #522 sur d'autres motifs (`VERDICTS =`,
+   `CLASSEMENT = {`) pourrait être tenté, à cadrer avant tout calcul.
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) — condition préalable E1 du fil économique.
+
+### Dette restante
+
+- **Le screen de staleness du #522 est clos** (#523-#528) : 32/32
+  candidats vérifiés, 6 corrections appliquées avec diff borné.
+- **Le script du #485 est intégralement à jour** (#520, #521).
+- **Le bilan des 4 témoins de la série #500-#515 est publié** (#519).
+- **Le régime post-#510 est daté et caractérisé** (#516) : 68 scripts,
+  61 PASS, **1 seule** vraie exception substantielle.
+- **Le taux de rectification est indémontrable par appariement** (#512,
+  #513).
+- **Le solde actionnable du #507 est soldé** (#511) : **0 candidat
+  committable** parmi les 13 originaux.
+- **La série des emprunts est close** (#497-#509) : **0 faute repérable**.
+- **2 littéraux `6,2`** laissés dans la cible du #499, dont **1 section
+  masquante**.
+- **L'univers des primitives d'exécution est clos** (#497) : **8 à zéro**.
+- **4 témoins non publiés** (#494) ; **10 scripts** dans l'angle mort (#497).
+- **1 incohérence** émetteur/rapport (#469) ; **1 cycle** inachevé (#474) ;
+  **10 `PREREG_`** sans rapport ni entrée ; **0 rapport perdu**.
+- **287 scripts sur 324** jamais éprouvés — mais aucun n'est « capable » (#471).
+- **Le faux du #453** hors de portée ; **G1 borne inférieure** (#465).
+- **0 PASS renforcé** sur 121 batteries (#460) ; **edge médian négatif** (#459).
+- **Conclusion du projet inchangée** : **Buy & Hold reste la meilleure
+  stratégie testée.**
