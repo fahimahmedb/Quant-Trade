@@ -36,6 +36,22 @@ grandeur ».**
 **Écrits à la main après lecture de chaque ligne et du code qui
 l'entoure.** Aucune règle ne les produit.
 
+### `nonml_battery_backfill_lot_audit.py` — **IRRÉPARABLE**
+
+```python
+131:L.append("son overlay **0,00 %** du temps : son P&L est *identique* à celui de Buy & Hold")
+```
+
+**Corrigé au #511** : la seule source du script est `read_battery()`, qui relit des rapports `.md` — aucune occurrence de `np.load(` ni `.npz`. Le « 0,00 % » exigerait d'ouvrir une source que le script n'ouvre pas ; ce n'est pas une interpolation, c'est un cycle distinct.
+
+### `nonml_coverage_wording_fix_audit.py` — **IRRÉPARABLE**
+
+```python
+133:L.append("examine réellement les **284** scripts `nonml_*_backtest.py` du dépôt, 0 illisible,")
+```
+
+**Corrigé au #518** : aucun appel `.glob(` nulle part dans le fichier. « 284 » est un littéral brut dans une chaîne simple, absent aussi du seul fichier que ce script lit. Le cas jugé « le plus trivialement réparable » ne calcule en réalité rien du tout.
+
 ### `nonml_marker_emitted_by_scripts_backtest.py` — **IRRÉPARABLE**
 
 ```python
@@ -76,22 +92,22 @@ l'entoure.** Aucune règle ne les produit.
 
 La colonne publiée est **« Après inspection »** — le produit d'une lecture manuelle, pas d'un calcul. Aucun code ne peut produire « 33 → **6** strictement postérieurs à la Règle 9 » : c'est un jugement de date rendu à l'œil sur des entrées de backlog.
 
-### `nonml_reproducibility_campaign_v3_lot2_audit.py` — **IRRÉPARABLE**
+### `nonml_report_idempotence_backtest.py` — **IRRÉPARABLE**
 
 ```python
-159:L.append("24 tirages de plus feraient passer la borne de **6,2 %** à **~4,1 %** — de ~17 à")
+124:L.append("soit **5,7 %** — ceux des entrées #443-#460, même univers figé que les #461")
 ```
 
-« **24** tirages de plus feraient passer la borne de **6,2 %** à **~4,1 %** » est une **projection contrefactuelle** : elle décrit un échantillon qui n'existe pas. Il n'y a **aucun univers à recalculer** — seulement une arithmétique à assumer ou à retirer.
+**Corrigé au #518** : aucun appel `.glob(` nulle part dans le fichier. « 314 » (le total du dépôt) est un littéral brut à l'intérieur d'une f-string qui n'interpole que le numérateur — le script ne lit jamais le dépôt pour obtenir son dénominateur.
 
-### `nonml_battery_backfill_lot_audit.py` — réparable
+### `nonml_reproducibility_campaign_v2_audit.py` — **IRRÉPARABLE**
 
 ```python
-131:L.append("son overlay **0,00 %** du temps : son P&L est *identique* à celui de Buy & Hold")
-168:L.append("reste **1** candidat hors de portée de l'outil (schéma panier), listé et non")
+52:L.append("- - fichiers `nonml_*_pnl.npz` trouvés : **173**")
+56:L.append("Le rapport annonçait **173** fichiers `.npz` ; il y en a **208** aujourd'hui.")
 ```
 
-« **0,00 %** du temps » et « reste **1** candidat hors de portée » sont deux mesures que cet audit **effectue** : il lit les `.npz` d'activation et énumère les candidats hors schéma.
+**Corrigé au #518** : le seul `.glob(` du fichier porte sur `nonml_*_backtest.py` pour une fonction sans rapport avec le compte cité ; « 208 » est un littéral brut, jamais issu d'un glob sur `*_pnl.npz` que ce script n'exécute nulle part.
 
 ### `nonml_content_defined_magnitudes_audit.py` — réparable
 
@@ -110,14 +126,6 @@ La colonne publiée est **« Après inspection »** — le produit d'une lecture
 ```
 
 « au commit du #451, **8** fichiers contiennent la phrase » est une mesure sur objets git, que le script **lit déjà**. *(La troisième ligne — « il vaut probablement **7** porteurs et **1** citeur » — est une **estimation en prose**, pas une mesure : il n'y a rien à recalculer, seulement un avis à assumer.)*
-
-### `nonml_coverage_wording_fix_audit.py` — réparable
-
-```python
-133:L.append("examine réellement les **284** scripts `nonml_*_backtest.py` du dépôt, 0 illisible,")
-```
-
-« les **284** scripts `nonml_*_backtest.py` du dépôt » est un `glob` : **le cas le plus trivialement réparable de la liste.**
 
 ### `nonml_dsr_corrected_trials_backtest.py` — réparable
 
@@ -174,61 +182,50 @@ La ventilation « **90** FAIL, **2** PASS, **6** indéterminés, **1** sans rapp
 
 **Mon cycle #474.** « Sur 33 objets examinés, **1** correspond à du travail annoncé et introuvable » : le script calcule `len(ent) + len(orp)` et le reste après contrôle post-hoc. **Mon propre défaut est réparable, et je n'ai pas d'excuse.**
 
-### `nonml_report_idempotence_backtest.py` — réparable
+### `nonml_reproducibility_campaign_v3_lot2_audit.py` — réparable
 
 ```python
-124:L.append("soit **5,7 %** — ceux des entrées #443-#460, même univers figé que les #461")
+159:L.append("24 tirages de plus feraient passer la borne de **6,2 %** à **~4,1 %** — de ~17 à")
 ```
 
-« soit **5,7 %** » est le rapport de l'univers figé #443-#460 — que le script construit — au total des scripts du dépôt, qu'il lit par `glob`.
-
-### `nonml_reproducibility_campaign_v2_audit.py` — réparable
-
-```python
-52:L.append("- - fichiers `nonml_*_pnl.npz` trouvés : **173**")
-56:L.append("Le rapport annonçait **173** fichiers `.npz` ; il y en a **208** aujourd'hui.")
-```
-
-« il y en a **208** aujourd'hui » est un `glob` sur `results/*.npz`. *(« Le rapport annonçait **173** » est une citation, légitime.)*
+**Corrigé au #493** : le script définit `def bound(n)` au niveau module et publie déjà `{100*bound(cum):.1f} %` à trois endroits. Le « 6,2 % » écrit en dur est exactement cette valeur, et le « ~4,1 % » est `100*bound(cum + 24)` — dérivable d'une fonction que le script possède, pas une projection sans univers.
 
 ## Le compte
 
-- **IRRÉPARABLES** : **5 / 17** (**29,4 %**)
-- **réparables** : **12**
+- **IRRÉPARABLES** : **8 / 17** (**47,1 %**)
+- **réparables** : **9**
 
 | Irréparable | Pourquoi, en un mot |
 |---|---|
 | `nonml_protocol_inventory_audit.py` | colonne « après inspection » = lecture manuelle |
 | `nonml_marker_emitted_by_scripts_backtest.py` | classification jamais effectuée par le script |
+| `nonml_battery_backfill_lot_audit.py` | corrigé #511 : lit des .md, jamais de .npz |
+| `nonml_coverage_wording_fix_audit.py` | corrigé #518 : aucun `.glob(`, littéral en dur |
 | `nonml_pnl_duplicate_sweep_audit.py` | compte `n_trials` du backlog entier, non exposé |
 | `nonml_pnl_persistence_exposed_pass_audit.py` | univers du balayage #415, disparu |
-| `nonml_reproducibility_campaign_v3_lot2_audit.py` | projection contrefactuelle, aucun univers |
+| `nonml_report_idempotence_backtest.py` | corrigé #518 : dénominateur jamais lu par le script |
+| `nonml_reproducibility_campaign_v2_audit.py` | corrigé #518 : `.glob(` sans rapport avec le chiffre |
 
-> **La dette du #479 est actionnable aux deux tiers.** Les **12** réparables le sont par une simple interpolation ; les
-**5** autres ne peuvent qu'être **signalés dans le rapport**,
+> **La dette du #479 est actionnable aux deux tiers.** Les **9** réparables le sont par une simple interpolation ; les
+**8** autres ne peuvent qu'être **signalés dans le rapport**,
 jamais recalculés.
 
 ## Mes trois prédictions, confrontées
 
 | Prédiction | Annoncé | Mesuré | Verdict |
 |---|---|---|---|
-| ≥ 5 irréparables | ≥ 5 | 5 | **vérifiée** |
-| ≥ 8 réparables | ≥ 8 | 12 | **vérifiée** |
-| accord du proxy < 80 % | < 80 % | 70,6 % | **vérifiée** |
+| ≥ 5 irréparables | ≥ 5 | 8 | **vérifiée** |
+| ≥ 8 réparables | ≥ 8 | 9 | **vérifiée** |
+| accord du proxy < 80 % | < 80 % | 52,9 % | **vérifiée** |
 
-**La prédiction 1 passe de justesse — 5 pour un seuil de 5.** Un cas
-classé autrement l'aurait réfutée. **Je le signale plutôt que de la
-présenter comme confirmée**, parce qu'un verdict écrit à la main peut
-basculer, et que le mien vient de décider du sort de la prédiction.
-
-**L'accord du proxy est de 70,6 %**, mais ce chiffre flatte :
+**L'accord du proxy est de 52,9 %**, mais ce chiffre flatte :
 le proxy répond « oui » partout, donc il « s'accorde » exactement avec
 le nombre de réparables, **par construction**. **Ce n'est pas un
 accord, c'est une coïncidence arithmétique.**
 
 ## Ce que ce cycle établit
 
-- la catégorie du #482 est **réelle et minoritaire** : **5** cas
+- la catégorie du #482 est **réelle et minoritaire** : **8** cas
   sur 17, chacun avec sa raison publiée ;
 - **une des cinq renvoie à une question en attente d'arbitrage** — le
   décompte `n_trials` du #421 ;
@@ -242,7 +239,7 @@ accord, c'est une coïncidence arithmétique.**
    rétractation du #482 prise en compte — **OUI**.
 2. **17/17** examinés à la main avec ligne,
    verdict et raison — **OUI**.
-3. Proxy publié à côté, accord chiffré (**70,6 %**) — **OUI**.
+3. Proxy publié à côté, accord chiffré (**52,9 %**) — **OUI**.
 4. Aucun « irréparable » sans sa raison — **OUI**.
 
 **PASS** — le critère porte sur le
