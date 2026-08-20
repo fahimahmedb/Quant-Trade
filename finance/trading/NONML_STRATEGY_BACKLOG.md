@@ -18291,3 +18291,29 @@ aux mêmes deux points en attente de décision utilisateur.
 (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
 schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
 CPI #338, MOVE #357, Bitcoin #344).
+
+---
+
+## Backlog #573 (20/08/2026) — point d'étape : ~1h sans changement depuis le #572
+
+**Pas un backtest.** Nouveau point d'étape (cadence horaire) : aucun
+changement d'état depuis le #572. La file « à faire » reste limitée
+aux mêmes points en attente de décision utilisateur.
+
+Recherche de nouvelles idées non répétée ce cycle : la recherche
+exhaustive de candidats non-redondants a déjà été menée le jour même
+au #532 (grep anti-doublon sur ~380+ hypothèses, vérification de
+sources gratuites pour put/call CBOE, sondage AAII, rachats
+d'actions, VVIX, EMB — toutes déjà écartées ou indisponibles
+gratuitement), conclusion inchangée entre-temps (aucune nouvelle
+donnée fournie, aucune source qui aurait pu changer d'état en
+quelques heures). La répéter à l'identique sans motif nouveau serait
+une recherche non bornée sans valeur informationnelle — évité par
+discipline anti-snooping.
+
+**Aucun calcul, aucun résultat committé.**
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
