@@ -18317,3 +18317,18 @@ discipline anti-snooping.
 (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
 schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
 CPI #338, MOVE #357, Bitcoin #344).
+
+---
+
+## Backlog #574 (20/08/2026) — point d'étape : ~1h sans changement depuis le #573
+
+**Pas un backtest.** Nouveau point d'étape (cadence horaire) : aucun
+changement d'état depuis le #573. La file « à faire » reste limitée
+aux mêmes points en attente de décision utilisateur.
+
+**Aucun calcul, aucun résultat committé.**
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
