@@ -18197,3 +18197,22 @@ aux mêmes deux points en attente de décision utilisateur.
 (#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
 schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
 CPI #338, MOVE #357, Bitcoin #344).
+
+---
+
+## Backlog #567 (19/08/2026) — point d'étape : ~1h sans changement depuis le #566 (un firing sauté pour panne réseau)
+
+**Pas un backtest.** Nouveau point d'étape (cadence horaire) : aucun
+changement d'état depuis le #566. Un firing intermédiaire n'a pu
+vérifier l'état distant (erreur 502 du proxy réseau, 4 tentatives
+avec backoff exponentiel épuisées, aucune action prise par prudence)
+— réseau rétabli à ce cycle, branche locale confirmée synchronisée
+avec `origin` avant toute écriture. La file « à faire » reste limitée
+aux mêmes deux points en attente de décision utilisateur.
+
+**Aucun calcul, aucun résultat committé.**
+
+**En attente d'arbitrage de l'utilisateur** (inchangé) : figer `n_trials`
+(#421) ; statut de `log_return_compounding_audit` (#431) ; batterie au
+schéma panier (#432) ; pivot Étape D (candidats : panel 6 signaux #365,
+CPI #338, MOVE #357, Bitcoin #344).
