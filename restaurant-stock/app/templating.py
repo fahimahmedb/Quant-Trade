@@ -10,13 +10,19 @@ templates = Jinja2Templates(directory=str(Path(BASE_DIR) / "app" / "templates"))
 def _euros(value) -> str:
     if value is None:
         return "—"
-    return f"{value:,.2f} €".replace(",", " ").replace(".", ",")
+    # Les coûts unitaires (prix au gramme, etc.) arrondissent souvent à 0,00 €
+    # avec 2 décimales : on affiche plus de précision uniquement dans ce cas,
+    # pour ne pas perdre l'information sur les petits montants.
+    decimals = 4 if value != 0 and round(value, 2) == 0 else 2
+    return f"{value:,.{decimals}f} €".replace(",", " ").replace(".", ",")
 
 
 def _qty(value) -> str:
     if value is None:
         return "—"
-    return f"{value:,.0f}".replace(",", " ") if float(value).is_integer() else f"{value:,.2f}"
+    if float(value).is_integer():
+        return f"{value:,.0f}".replace(",", " ")
+    return f"{value:,.2f}".replace(",", " ").replace(".", ",")
 
 
 def _duration(seconds) -> str:

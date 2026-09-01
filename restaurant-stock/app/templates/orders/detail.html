@@ -42,7 +42,7 @@
     {% if line.decision.value != 'rejetee' %}
     <form method="post" action="/orders/lines/{{ line.id }}/decide" class="flex flex-wrap items-center gap-2">
       <input type="number" step="0.01" min="0" name="final_quantity"
-             value="{{ line.final_quantity if line.final_quantity is not none else line.suggested_quantity }}"
+             value="{{ (line.final_quantity if line.final_quantity is not none else line.suggested_quantity) | round(2) }}"
              class="border rounded px-2 py-1.5 w-28" />
       <span class="text-sm text-gray-500">{{ line.ingredient.unit.value }}</span>
       <button type="submit" class="bg-emerald-600 text-white px-3 py-1.5 rounded text-sm font-medium">Valider cette quantité</button>
