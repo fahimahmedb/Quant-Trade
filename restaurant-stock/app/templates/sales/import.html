@@ -20,7 +20,7 @@
   {% for imp in recent_imports %}
   <li class="px-3 py-2 flex items-center justify-between gap-2">
     <div>
-      <a href="/sales/imports/{{ imp.id }}" class="font-medium hover:underline">{{ imp.filename }}</a>
+      <a href="/sales/imports/{{ imp.id }}" class="font-medium hover:underline break-words">{{ imp.filename }}</a>
       <div class="text-xs text-gray-500">
         {{ imp.imported_at | datetime_fr }} · {{ imp.row_count }} ligne(s)
         {% if imp.unmatched_count %}

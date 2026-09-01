@@ -202,3 +202,62 @@ def test_settings_rejects_garbage_without_crashing(app_client):
     })
     assert r.status_code == 422
     assert "pas un nombre valide" in r.text
+
+
+def test_ingredient_edit_page_shows_stock_movement_history(app_client):
+    client = app_client.client
+    _create_ingredient(client, "Farine", current_theoretical_stock="1000")
+    with app_client.session_factory() as db:
+        farine_id = db.query(models.Ingredient).filter_by(name="Farine").one().id
+
+    r = client.get(f"/ingredients/{farine_id}/edit")
+    assert "Aucun mouvement de stock enregistré" in r.text
+
+    client.post("/recipes/new", data={
+        "name": "Pain", "is_active": "true",
+        "ingredient_id": [str(farine_id)], "quantity": ["200"],
+    })
+    client.post("/sales/import", files={
+        "file": ("export.csv", "date,plat,quantite\n2026-08-01,Pain,3\n", "text/csv"),
+    })
+
+    r = client.get(f"/ingredients/{farine_id}/edit")
+    assert "Aucun mouvement" not in r.text
+    assert "Vente" in r.text
+    assert "-600" in r.text  # 200g * 3 ventes
+    assert "400" in r.text  # 1000 - 600 = stock résultant
+
+
+def test_deleting_ingredient_with_movement_history_but_no_recipe_is_blocked(app_client):
+    """Reproduit un cas trouvé en testant le stock négatif : un ingrédient retiré
+    de toutes ses fiches techniques mais avec un historique de ventes ne doit
+    jamais planter (IntegrityError sur stock_movements.ingredient_id) — il doit
+    être bloqué avec un message clair, comme pour les fiches techniques."""
+    client = app_client.client
+    _create_ingredient(client, "Basilic")
+    with app_client.session_factory() as db:
+        basilic_id = db.query(models.Ingredient).filter_by(name="Basilic").one().id
+
+    client.post("/recipes/new", data={
+        "name": "Plat basilic", "is_active": "true",
+        "ingredient_id": [str(basilic_id)], "quantity": ["10"],
+    })
+    client.post("/sales/import", files={
+        "file": ("export.csv", "date,plat,quantite\n2026-08-01,Plat basilic,1\n", "text/csv"),
+    })
+    # Retire l'ingrédient de la fiche : recipe_lines devient vide mais
+    # l'historique de mouvements, lui, reste.
+    with app_client.session_factory() as db:
+        dish_id = db.query(models.Dish).filter_by(name="Plat basilic").one().id
+    client.post(f"/recipes/{dish_id}/edit", data={"name": "Plat basilic", "is_active": "true", "ingredient_id": [], "quantity": []})
+
+    with app_client.session_factory() as db:
+        ing = db.query(models.Ingredient).filter_by(name="Basilic").one()
+        assert ing.recipe_lines == []
+        assert len(ing.movements) > 0
+
+    r = client.post(f"/ingredients/{basilic_id}/delete")
+    assert r.status_code < 400
+    assert "historique de mouvements" in r.text
+    with app_client.session_factory() as db:
+        assert db.query(models.Ingredient).filter_by(name="Basilic").count() == 1

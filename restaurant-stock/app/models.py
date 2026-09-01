@@ -79,6 +79,14 @@ class MovementType(str, enum.Enum):
     COMPTAGE = "comptage"
     AJUSTEMENT = "ajustement"
 
+    @property
+    def label(self) -> str:
+        return {
+            MovementType.VENTE: "Vente",
+            MovementType.COMPTAGE: "Comptage",
+            MovementType.AJUSTEMENT: "Ajustement",
+        }[self]
+
 
 class SuggestionDecision(str, enum.Enum):
     EN_ATTENTE = "en_attente"

@@ -11,9 +11,14 @@
     <div class="text-xs text-gray-500">
       théorique {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }}
       → réel {{ line.counted_quantity | qty }} {{ line.ingredient.unit.value }}
+      {% if line.theoretical_quantity >= 0 %}
       ({% if line.variance_pct is not none %}{{ "%+.1f"|format(line.variance_pct) }}%{% else %}n/a{% endif %})
+      {% endif %}
       {% if line.variance_reason %} · {{ line.variance_reason.label }}{% endif %}
     </div>
+    {% if line.theoretical_quantity < 0 %}
+    <div class="text-xs text-red-600 mt-0.5">⚠ Stock théorique déjà négatif avant ce comptage — le % n'est pas significatif, vérifiez la saisie des ventes/fiches en amont.</div>
+    {% endif %}
   </li>
   {% else %}
   <li class="px-3 py-4 text-sm text-gray-500">Aucune ligne comptée dans cette session.</li>

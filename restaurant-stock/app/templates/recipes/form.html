@@ -35,7 +35,7 @@
     <div data-ingredient-rows class="space-y-2">
       {% for line in lines %}
       <div data-ingredient-row class="flex gap-2 items-center">
-        <select name="ingredient_id" class="flex-1 border rounded px-2 py-2">
+        <select name="ingredient_id" class="flex-1 min-w-0 border rounded px-2 py-2">
           {% for ing in ingredients %}
           <option value="{{ ing.id }}" {% if line.ingredient_id == ing.id %}selected{% endif %}>{{ ing.name }} ({{ ing.unit.value }})</option>
           {% endfor %}
@@ -46,7 +46,7 @@
       </div>
       {% else %}
       <div data-ingredient-row class="flex gap-2 items-center">
-        <select name="ingredient_id" class="flex-1 border rounded px-2 py-2">
+        <select name="ingredient_id" class="flex-1 min-w-0 border rounded px-2 py-2">
           {% for ing in ingredients %}
           <option value="{{ ing.id }}">{{ ing.name }} ({{ ing.unit.value }})</option>
           {% endfor %}

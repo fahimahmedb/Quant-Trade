@@ -94,7 +94,7 @@ fichier n'est pas régénéré.
 |---|---|
 | 4.1 Fiches techniques | `app/services/recipes.py`, `app/routers/recipes.py` |
 | 4.2 Import des ventes | `app/services/sales_import.py`, `app/routers/sales.py` |
-| 4.3 Stock théorique | `app/services/stock.py` (journal `StockMovement`) |
+| 4.3 Stock théorique | `app/services/stock.py` (journal `StockMovement`, historique visible sur `/ingredients/{id}/edit`) |
 | 4.4/4.5 Comptage + écarts | `app/services/counting.py`, `app/routers/counting.py`, `/variance` |
 | 4.6 Suggestion de commande | `app/services/ordering.py`, `app/routers/orders.py` |
 | 5. Comptage mobile par zone | `app/templates/counting/session.html` (+ `app/static/app.js`) |
@@ -116,10 +116,13 @@ fichier n'est pas régénéré.
   jours de sécurité et jours de couverture cible réglables sur `/settings`,
   section 4.6 et 7 du brief : recommandation toujours explicable et
   modifiable, jamais d'envoi automatique).
-- **Pas de validation de stock négatif** : un stock théorique peut devenir
-  négatif (casse non déclarée, erreur de saisie). C'est volontaire — c'est
-  justement ce que le comptage physique et l'écran d'écarts sont censés
-  révéler, pas quelque chose à masquer en bloquant la saisie.
+- **Pas de blocage sur stock négatif, mais signalé** : un stock théorique
+  peut devenir négatif (casse non déclarée, erreur de saisie, vente
+  important avant le premier comptage). C'est volontaire — c'est justement
+  ce que le comptage physique est censé révéler, pas quelque chose à
+  masquer en bloquant la saisie. Un stock théorique négatif est en
+  revanche signalé explicitement (⚠ en rouge) sur l'écran de comptage et
+  sur l'écran d'écarts, où le % d'écart n'aurait sinon aucun sens.
 
 ## Hors périmètre (identique au brief, section 6)
 

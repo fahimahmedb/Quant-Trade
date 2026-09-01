@@ -75,5 +75,29 @@
       onsubmit="return confirm('Supprimer cet ingrédient ?');">
   <button type="submit" class="text-sm text-red-600">Supprimer cet ingrédient</button>
 </form>
+
+<h2 class="text-lg font-semibold mt-6 mb-2">Historique des mouvements de stock</h2>
+{% if movements %}
+<ul class="bg-white rounded border divide-y text-sm">
+  {% for m in movements %}
+  <li class="px-3 py-2 flex justify-between items-baseline gap-2">
+    <div>
+      <span class="font-medium">{{ m.movement_type.label }}</span>
+      <span class="text-gray-400">· {{ m.created_at | datetime_fr }}</span>
+      {% if m.reference %}<span class="text-gray-400">· {{ m.reference }}</span>{% endif %}
+    </div>
+    <div class="text-right shrink-0">
+      <div class="{% if m.quantity_delta > 0 %}text-emerald-600{% elif m.quantity_delta < 0 %}text-red-600{% endif %}">
+        {{ "+" if m.quantity_delta > 0 else "" }}{{ m.quantity_delta | qty }} {{ ingredient.unit.value }}
+      </div>
+      <div class="text-xs text-gray-400">→ {{ m.resulting_stock | qty }} {{ ingredient.unit.value }}</div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+<p class="text-xs text-gray-500 mt-1">Les 20 derniers mouvements. Positif = entrée (comptage à la hausse, ajustement) ; négatif = sortie (vente, casse constatée au comptage).</p>
+{% else %}
+<p class="text-sm text-gray-500">Aucun mouvement de stock enregistré pour cet ingrédient pour l'instant.</p>
+{% endif %}
 {% endif %}
 {% endblock %}

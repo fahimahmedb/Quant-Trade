@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Import {{ sales_import.filename }}{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1">{{ sales_import.filename }}</h1>
+<h1 class="text-xl font-semibold mb-1 break-words">{{ sales_import.filename }}</h1>
 <p class="text-sm text-gray-500 mb-3">
   Importé le {{ sales_import.imported_at | datetime_fr }} · {{ sales_import.row_count }} ligne(s)
 </p>
