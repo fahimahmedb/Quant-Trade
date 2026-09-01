@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app import models
 from app.database import get_db
 from app.flash import redirect
+from app.forms import InvalidNumberError, parse_float_fr
 from app.services import ordering
 from app.templating import templates
 
@@ -70,8 +71,8 @@ async def decide_line(line_id: int, request: Request, db: Session = Depends(get_
 
     raw_qty = (form.get("final_quantity") or "").strip()
     try:
-        final_qty = float(raw_qty.replace(",", "."))
-    except ValueError:
+        final_qty = parse_float_fr(raw_qty)
+    except InvalidNumberError:
         return redirect(f"/orders/{batch_id}", "Quantité invalide.", error=True)
 
     decision = (

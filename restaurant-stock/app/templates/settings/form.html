@@ -3,6 +3,10 @@
 {% block content %}
 <h1 class="text-xl font-semibold mb-3">Réglages</h1>
 
+{% if error %}
+<div class="mb-3 rounded border px-3 py-2 text-sm flash-error">{{ error }}</div>
+{% endif %}
+
 <form method="post" action="/settings" class="bg-white rounded border p-4 space-y-4">
   <div>
     <label class="block text-sm font-medium mb-1">Fenêtre de moyenne glissante (jours)</label>

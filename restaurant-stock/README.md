@@ -12,21 +12,33 @@ restaurant indépendant à carte fixe et établissement unique.
 
 ## Stack et choix d'architecture
 
-- **FastAPI + Jinja2 + HTMX** : rendu serveur, pages HTML classiques
-  (fonctionnent sans JavaScript) avec quelques fragments HTMX/JS pour le
-  confort (voir `app/static/app.js`). Pas de SPA, pas d'étape de build front —
-  un seul processus à déployer.
+- **FastAPI + Jinja2** : rendu serveur, formulaires HTML classiques qui
+  fonctionnent sans JavaScript (délibéré : le comptage se fait en marchant
+  dans un stockage, potentiellement avec un réseau faible — chaque zone se
+  sauvegarde par son propre `<form>`, pas de round-trip JS qui échouerait
+  silencieusement). Un peu de JS progressif dans `app/static/app.js`
+  (sélection auto au focus, ajout de ligne dans les fiches techniques) qui
+  n'est jamais requis pour que l'appli fonctionne.
 - **SQLAlchemy + SQLite** (`data/restaurant_stock.db`) : suffisant pour un
   établissement unique. Le passage à PostgreSQL ne demanderait qu'un
   changement d'URL de connexion (`RESTAURANT_STOCK_DATABASE_URL`).
-- **Tailwind via CDN** : gain de vitesse pour le MVP. À remplacer par un
-  build Tailwind classique si le projet dépasse le stade pilote.
+- **Tailwind compilé statiquement** (`app/static/tailwind.css`, généré via
+  `npm run build:css`) plutôt que le CDN `cdn.tailwindcss.com` : ce dernier
+  échoue silencieusement sans accès internet sortant et n'est de toute façon
+  pas recommandé pour autre chose qu'un prototype jetable. Regénérer après
+  toute modification de classes Tailwind dans `app/templates/` (voir
+  « Développement » ci-dessous).
 - Pas d'authentification : un seul restaurant, équipe partageant le même
   appareil. Le champ « comptage par » est déclaratif (texte libre), pas un
   compte utilisateur.
 - Pas de migrations (Alembic) : les tables sont créées par
   `Base.metadata.create_all` au démarrage. À ajouter avant tout usage en
   production réelle avec des données à préserver entre versions du schéma.
+- **Saisie numérique tolérante** (`app/forms.py`) : les formulaires acceptent
+  la virgule décimale française en plus du point, et toute valeur invalide
+  ré-affiche le formulaire déjà rempli avec un message clair plutôt que de
+  planter ou de faire tout ressaisir — important pour l'équipe visée
+  (section 2 du brief : pas à l'aise avec les outils digitaux).
 
 ## Démarrage
 
@@ -53,11 +65,28 @@ non reconnue pour illustrer l'écran de rattachement manuel).
 pytest
 ```
 
-23+ tests couvrent la logique métier (`app/services/`) : calcul du coût
-matière, parsing CSV tolérant (délimiteur `,`/`;`, dates FR/ISO, décimales à
-virgule), décrémentation du stock théorique, recalibrage après comptage,
-calcul des écarts, logique de suggestion de commande. Base SQLite en mémoire,
-aucune dépendance à un serveur externe.
+40+ tests : logique métier (`app/services/`, coût matière, parsing CSV
+tolérant, décrémentation du stock théorique, recalibrage après comptage,
+écarts, suggestion de commande) et intégration HTTP (`tests/test_routers.py`
+— erreurs utilisateur plausibles comme un nom en double ou un nombre mal
+saisi, qui doivent ré-afficher un message clair plutôt que planter en 500).
+Base SQLite en mémoire, aucune dépendance à un serveur externe. Tourne aussi
+en CI sur chaque push touchant `restaurant-stock/`
+(`.github/workflows/restaurant-stock-tests.yml`).
+
+### Développement — régénérer le CSS
+
+Après avoir modifié des classes Tailwind dans `app/templates/` :
+
+```bash
+npm install        # une fois
+npm run build:css  # ou npm run watch:css pendant le développement
+```
+
+`app/static/tailwind.css` est committé (pas de build Node au démarrage de
+l'appli elle-même) : oublier de le régénérer ne casse rien immédiatement,
+mais les nouvelles classes utilisées ne seront pas stylées tant que le
+fichier n'est pas régénéré.
 
 ## Où trouver quoi (mapping avec le brief)
 

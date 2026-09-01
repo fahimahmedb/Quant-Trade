@@ -1,9 +1,13 @@
 {% extends "base.html" %}
-{% block title %}{{ "Modifier" if ingredient else "Nouvel" }} ingrédient{% endblock %}
+{% block title %}{{ "Modifier" if ingredient and ingredient.id else "Nouvel" }} ingrédient{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-3">{{ "Modifier l'ingrédient" if ingredient else "Nouvel ingrédient" }}</h1>
+<h1 class="text-xl font-semibold mb-3">{{ "Modifier l'ingrédient" if ingredient and ingredient.id else "Nouvel ingrédient" }}</h1>
 
-<form method="post" action="{{ '/ingredients/%d/edit' % ingredient.id if ingredient else '/ingredients/new' }}"
+{% if error %}
+<div class="mb-3 rounded border px-3 py-2 text-sm flash-error">{{ error }}</div>
+{% endif %}
+
+<form method="post" action="{{ '/ingredients/%d/edit' % ingredient.id if ingredient and ingredient.id else '/ingredients/new' }}"
       class="bg-white rounded border p-4 space-y-4">
 
   <div>
@@ -53,7 +57,7 @@
     <p class="text-xs text-gray-500 mt-1">Si vide, le seuil est dérivé de la consommation moyenne récente (réglages).</p>
   </div>
 
-  {% if ingredient %}
+  {% if ingredient and ingredient.id %}
   <label class="flex items-center gap-2 text-sm">
     <input type="checkbox" name="is_active" value="true" {% if ingredient.is_active %}checked{% endif %} />
     Ingrédient actif (encore utilisé sur la carte)
@@ -66,7 +70,7 @@
   </div>
 </form>
 
-{% if ingredient %}
+{% if ingredient and ingredient.id %}
 <form method="post" action="/ingredients/{{ ingredient.id }}/delete" class="mt-3"
       onsubmit="return confirm('Supprimer cet ingrédient ?');">
   <button type="submit" class="text-sm text-red-600">Supprimer cet ingrédient</button>

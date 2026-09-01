@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app import models
 from app.database import get_db
 from app.flash import redirect
+from app.forms import InvalidNumberError, parse_float_fr
 from app.services import counting
 from app.templating import templates
 
@@ -90,11 +91,14 @@ async def save_zone(
         if raw_value is None or raw_value.strip() == "":
             continue
         try:
-            counted_quantity = float(raw_value.replace(",", "."))
-        except ValueError:
+            counted_quantity = parse_float_fr(raw_value)
+        except InvalidNumberError:
             continue
         raw_reason = form.get(f"reason_{line.id}") or ""
-        reason = models.VarianceReason(raw_reason) if raw_reason else None
+        try:
+            reason = models.VarianceReason(raw_reason) if raw_reason else None
+        except ValueError:
+            reason = None
         counting.confirm_count_line(db, line.id, counted_quantity, reason)
         saved += 1
 

@@ -1,8 +1,11 @@
+from types import SimpleNamespace
+
 from fastapi import APIRouter, Depends, Form, Request
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.flash import redirect
+from app.forms import InvalidNumberError, parse_float_fr, parse_int_fr
 from app.services import settings_service
 from app.templating import templates
 
@@ -17,15 +20,31 @@ def settings_form(request: Request, db: Session = Depends(get_db)):
 
 @router.post("")
 def update_settings(
-    safety_days: float = Form(...),
-    target_days: float = Form(...),
-    rolling_window_days: int = Form(...),
+    request: Request,
+    safety_days: str = Form(...),
+    target_days: str = Form(...),
+    rolling_window_days: str = Form(...),
     db: Session = Depends(get_db),
 ):
+    submitted = SimpleNamespace(
+        safety_days=safety_days, target_days=target_days, rolling_window_days=rolling_window_days
+    )
+    try:
+        parsed_safety_days = parse_float_fr(safety_days)
+        parsed_target_days = parse_float_fr(target_days)
+        parsed_window_days = parse_int_fr(rolling_window_days)
+    except InvalidNumberError as exc:
+        return templates.TemplateResponse(
+            request,
+            "settings/form.html",
+            {"request": request, "settings": submitted, "error": str(exc)},
+            status_code=422,
+        )
+
     settings_service.update_settings(
         db,
-        safety_days=safety_days,
-        target_days=target_days,
-        rolling_window_days=rolling_window_days,
+        safety_days=parsed_safety_days,
+        target_days=parsed_target_days,
+        rolling_window_days=parsed_window_days,
     )
     return redirect("/settings", "Réglages mis à jour.")

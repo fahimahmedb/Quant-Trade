@@ -77,9 +77,11 @@ def test_create_ingredient_then_recipe_shows_food_cost(app_client):
 def test_duplicate_ingredient_name_shows_friendly_error_not_500(app_client):
     client = app_client.client
     _create_ingredient(client, "Farine")
-    r = _create_ingredient(client, "Farine")
-    assert r.status_code == 200
+    r = _create_ingredient(client, "Farine", unit_cost="0.0099")
+    assert r.status_code == 409
     assert "existe déjà" in r.text
+    # Ce qui a été saisi reste affiché, l'utilisateur ne doit pas tout retaper.
+    assert "0.0099" in r.text
 
 
 def test_renaming_ingredient_to_existing_name_shows_friendly_error(app_client):
@@ -94,8 +96,27 @@ def test_renaming_ingredient_to_existing_name_shows_friendly_error(app_client):
         "storage_zone": "sec", "current_theoretical_stock": "500", "alert_threshold": "",
         "is_active": "true",
     })
-    assert r.status_code == 200
+    assert r.status_code == 409
     assert "existe déjà" in r.text
+
+
+def test_ingredient_form_accepts_french_comma_decimals(app_client):
+    client = app_client.client
+    r = _create_ingredient(client, "Huile", unit_cost="0,0075", current_theoretical_stock="12,5")
+    assert r.status_code < 400
+    with app_client.session_factory() as db:
+        huile = db.query(models.Ingredient).filter_by(name="Huile").one()
+        assert huile.unit_cost == 0.0075
+        assert huile.current_theoretical_stock == 12.5
+
+
+def test_ingredient_form_rejects_garbage_number_without_crashing(app_client):
+    client = app_client.client
+    r = _create_ingredient(client, "Poivre", unit_cost="pas un nombre")
+    assert r.status_code == 422
+    assert "pas un nombre valide" in r.text
+    # Le nom déjà saisi reste dans le formulaire.
+    assert 'value="Poivre"' in r.text
 
 
 def test_duplicate_dish_name_shows_friendly_error_not_500(app_client):
@@ -103,8 +124,25 @@ def test_duplicate_dish_name_shows_friendly_error_not_500(app_client):
     payload = {"name": "Burger", "is_active": "true", "ingredient_id": [], "quantity": []}
     client.post("/recipes/new", data=payload)
     r = client.post("/recipes/new", data=payload)
-    assert r.status_code == 200
+    assert r.status_code == 409
     assert "existe déjà" in r.text
+    assert 'value="Burger"' in r.text
+
+
+def test_recipe_quantity_accepts_french_comma_decimal(app_client):
+    client = app_client.client
+    _create_ingredient(client, "Beurre")
+    with app_client.session_factory() as db:
+        beurre_id = db.query(models.Ingredient).filter_by(name="Beurre").one().id
+
+    r = client.post("/recipes/new", data={
+        "name": "Tartine", "is_active": "true",
+        "ingredient_id": [str(beurre_id)], "quantity": ["12,5"],
+    })
+    assert r.status_code < 400
+    with app_client.session_factory() as db:
+        dish = db.query(models.Dish).filter_by(name="Tartine").one()
+        assert dish.recipe_lines[0].quantity == 12.5
 
 
 def test_recipe_form_with_duplicate_ingredient_rows_merges_not_crashes(app_client):
@@ -144,3 +182,23 @@ def test_mapping_unmatched_dish_to_new_name_that_already_exists_reuses_it(app_cl
 
     with app_client.session_factory() as db:
         assert db.query(models.Dish).filter_by(name="Burger").count() == 1
+
+
+def test_settings_accepts_french_comma_decimal(app_client):
+    client = app_client.client
+    r = client.post("/settings", data={
+        "safety_days": "2,5", "target_days": "6", "rolling_window_days": "7",
+    })
+    assert r.status_code < 400
+    with app_client.session_factory() as db:
+        settings = db.query(models.Settings).one()
+        assert settings.safety_days == 2.5
+
+
+def test_settings_rejects_garbage_without_crashing(app_client):
+    client = app_client.client
+    r = client.post("/settings", data={
+        "safety_days": "beaucoup", "target_days": "6", "rolling_window_days": "7",
+    })
+    assert r.status_code == 422
+    assert "pas un nombre valide" in r.text
