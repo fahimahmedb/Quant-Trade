@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Réglages{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-3">Réglages</h1>
+
+<form method="post" action="/settings" class="bg-white rounded border p-4 space-y-4">
+  <div>
+    <label class="block text-sm font-medium mb-1">Fenêtre de moyenne glissante (jours)</label>
+    <input type="number" min="1" name="rolling_window_days" value="{{ settings.rolling_window_days }}" class="w-full border rounded px-3 py-2" />
+    <p class="text-xs text-gray-500 mt-1">Nombre de jours de vente utilisés pour calculer la consommation moyenne journalière.</p>
+  </div>
+  <div>
+    <label class="block text-sm font-medium mb-1">Jours de sécurité (seuil d'alerte par défaut)</label>
+    <input type="number" step="0.5" min="0" name="safety_days" value="{{ settings.safety_days }}" class="w-full border rounded px-3 py-2" />
+    <p class="text-xs text-gray-500 mt-1">Seuil = consommation moyenne journalière × ce nombre de jours, pour les ingrédients sans seuil manuel.</p>
+  </div>
+  <div>
+    <label class="block text-sm font-medium mb-1">Jours de couverture cible (quantité suggérée)</label>
+    <input type="number" step="0.5" min="0" name="target_days" value="{{ settings.target_days }}" class="w-full border rounded px-3 py-2" />
+    <p class="text-xs text-gray-500 mt-1">La quantité suggérée vise à couvrir ce nombre de jours de consommation moyenne.</p>
+  </div>
+  <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded font-medium">Enregistrer</button>
+</form>
+{% endblock %}

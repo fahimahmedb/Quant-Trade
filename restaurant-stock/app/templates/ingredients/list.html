@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Ingrédients{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-3">
+  <h1 class="text-xl font-semibold">Ingrédients</h1>
+  <a href="/ingredients/new" class="bg-emerald-600 text-white px-3 py-2 rounded text-sm font-medium">+ Nouvel ingrédient</a>
+</div>
+
+{% for zone in zones %}
+  {% set zone_ingredients = ingredients | selectattr("storage_zone", "equalto", zone) | list %}
+  {% if zone_ingredients %}
+  <details class="zone-details bg-white rounded border mb-2" open>
+    <summary class="px-3 py-2 font-medium flex justify-between items-center">
+      <span>{{ zone.label }}</span>
+      <span class="text-xs text-gray-400">{{ zone_ingredients | length }}</span>
+    </summary>
+    <ul class="divide-y">
+      {% for ing in zone_ingredients %}
+      <li class="px-3 py-2 flex items-center justify-between gap-2 {% if not ing.is_active %}opacity-50{% endif %}">
+        <div>
+          <a href="/ingredients/{{ ing.id }}/edit" class="font-medium hover:underline">{{ ing.name }}</a>
+          <div class="text-xs text-gray-500">
+            {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}
+            · {{ ing.unit_cost | euros }} / {{ ing.unit.value }}
+            {% if not ing.is_active %} · inactif{% endif %}
+          </div>
+        </div>
+        <a href="/ingredients/{{ ing.id }}/edit" class="text-sm text-slate-600 shrink-0">Modifier</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </details>
+  {% endif %}
+{% endfor %}
+
+{% if not ingredients %}
+<p class="text-gray-500 text-sm">Aucun ingrédient pour l'instant.</p>
+{% endif %}
+{% endblock %}

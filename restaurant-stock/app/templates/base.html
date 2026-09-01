@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>{% block title %}Gestion de stock{% endblock %} — Restaurant</title>
+  <link rel="stylesheet" href="/static/tailwind.css" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+  <header class="bg-slate-800 text-white sticky top-0 z-10 shadow">
+    <div class="px-3 py-2 flex items-center justify-between">
+      <a href="/" class="font-semibold text-lg whitespace-nowrap">🍽️ Stock resto</a>
+    </div>
+    <nav class="flex gap-1 overflow-x-auto px-2 pb-2 text-sm whitespace-nowrap">
+      <a href="/" class="px-3 py-1.5 rounded hover:bg-slate-700">Tableau de bord</a>
+      <a href="/counting" class="px-3 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 font-medium">Comptage</a>
+      <a href="/variance" class="px-3 py-1.5 rounded hover:bg-slate-700">Écarts</a>
+      <a href="/orders" class="px-3 py-1.5 rounded hover:bg-slate-700">Commandes</a>
+      <a href="/recipes" class="px-3 py-1.5 rounded hover:bg-slate-700">Fiches techniques</a>
+      <a href="/ingredients" class="px-3 py-1.5 rounded hover:bg-slate-700">Ingrédients</a>
+      <a href="/sales/import" class="px-3 py-1.5 rounded hover:bg-slate-700">Ventes</a>
+      <a href="/metrics" class="px-3 py-1.5 rounded hover:bg-slate-700">Indicateurs</a>
+      <a href="/settings" class="px-3 py-1.5 rounded hover:bg-slate-700">Réglages</a>
+    </nav>
+  </header>
+
+  <main class="flex-1 w-full max-w-3xl mx-auto p-3 pb-16">
+    {% set msg = request.query_params.get('msg') %}
+    {% if msg %}
+      {% set msg_type = request.query_params.get('type', 'success') %}
+      <div class="mb-3 rounded border px-3 py-2 text-sm {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
+        {{ msg }}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-center text-xs text-gray-400 py-3">
+    MVP — gestion de stock pour restaurant indépendant
+  </footer>
+
+  <script src="/static/app.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

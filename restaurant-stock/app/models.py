@@ -1,0 +1,317 @@
+"""Modèle de données.
+
+Simplification volontaire (documentée dans le README) : chaque ingrédient a
+une seule unité de référence (g, kg, mL, L ou unité/pièce) utilisée partout
+— stock, grammage des fiches techniques, coût unitaire, saisie de comptage.
+Pas de conversion automatique entre unités en v1.
+"""
+import enum
+from datetime import datetime
+
+from sqlalchemy import (
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
+
+
+def utcnow() -> datetime:
+    return datetime.utcnow()
+
+
+def str_enum(enum_cls):
+    """Colonne Enum qui persiste `.value` (ex. "frigo_positif") plutôt que le
+    nom du membre Python — plus lisible en inspectant la base SQLite directement."""
+    return Enum(enum_cls, values_callable=lambda cls: [e.value for e in cls])
+
+
+class Unit(str, enum.Enum):
+    GRAMME = "g"
+    KILOGRAMME = "kg"
+    MILLILITRE = "mL"
+    LITRE = "L"
+    UNITE = "unité"
+
+
+class StorageZone(str, enum.Enum):
+    SEC = "sec"
+    FRIGO_POSITIF = "frigo_positif"
+    FRIGO_NEGATIF = "frigo_negatif"
+    CAVE = "cave"
+
+    @property
+    def label(self) -> str:
+        return {
+            StorageZone.SEC: "Stock sec",
+            StorageZone.FRIGO_POSITIF: "Frigo positif",
+            StorageZone.FRIGO_NEGATIF: "Frigo négatif (surgelé)",
+            StorageZone.CAVE: "Cave",
+        }[self]
+
+
+class VarianceReason(str, enum.Enum):
+    CASSE = "casse"
+    PERIME = "perime"
+    OFFERT = "offert"
+    ERREUR_SAISIE = "erreur_saisie"
+    AUTRE = "autre"
+
+    @property
+    def label(self) -> str:
+        return {
+            VarianceReason.CASSE: "Casse",
+            VarianceReason.PERIME: "Périmé",
+            VarianceReason.OFFERT: "Offert",
+            VarianceReason.ERREUR_SAISIE: "Erreur de saisie",
+            VarianceReason.AUTRE: "Autre",
+        }[self]
+
+
+class MovementType(str, enum.Enum):
+    VENTE = "vente"
+    COMPTAGE = "comptage"
+    AJUSTEMENT = "ajustement"
+
+
+class SuggestionDecision(str, enum.Enum):
+    EN_ATTENTE = "en_attente"
+    ACCEPTEE = "acceptee"
+    MODIFIEE = "modifiee"
+    REJETEE = "rejetee"
+
+
+class Ingredient(Base):
+    __tablename__ = "ingredients"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    unit: Mapped[Unit] = mapped_column(str_enum(Unit), default=Unit.GRAMME)
+    unit_cost: Mapped[float] = mapped_column(Float, default=0.0)
+    storage_zone: Mapped[StorageZone] = mapped_column(
+        str_enum(StorageZone), default=StorageZone.SEC
+    )
+    current_theoretical_stock: Mapped[float] = mapped_column(Float, default=0.0)
+    alert_threshold: Mapped[float | None] = mapped_column(Float, nullable=True)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=utcnow, onupdate=utcnow
+    )
+
+    recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
+        back_populates="ingredient", cascade="all, delete-orphan"
+    )
+    movements: Mapped[list["StockMovement"]] = relationship(back_populates="ingredient")
+
+
+class Dish(Base):
+    __tablename__ = "dishes"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=utcnow, onupdate=utcnow
+    )
+
+    recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
+        back_populates="dish", cascade="all, delete-orphan"
+    )
+    aliases: Mapped[list["DishAlias"]] = relationship(
+        back_populates="dish", cascade="all, delete-orphan"
+    )
+
+    @property
+    def food_cost(self) -> float:
+        return sum(line.quantity * line.ingredient.unit_cost for line in self.recipe_lines)
+
+
+class RecipeIngredient(Base):
+    """Ligne de fiche technique : un ingrédient et son grammage pour un plat."""
+
+    __tablename__ = "recipe_ingredients"
+    __table_args__ = (UniqueConstraint("dish_id", "ingredient_id"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    dish_id: Mapped[int] = mapped_column(ForeignKey("dishes.id"))
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    quantity: Mapped[float] = mapped_column(Float)  # dans l'unité de l'ingrédient
+
+    dish: Mapped[Dish] = relationship(back_populates="recipe_lines")
+    ingredient: Mapped[Ingredient] = relationship(back_populates="recipe_lines")
+
+
+class DishAlias(Base):
+    """Alias reliant un intitulé brut de caisse (CSV) à un plat existant.
+
+    Évite de re-mapper le même nom de plat à chaque import (section 9 du
+    brief : chaque logiciel de caisse a ses propres intitulés).
+    """
+
+    __tablename__ = "dish_aliases"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    raw_name: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    dish_id: Mapped[int] = mapped_column(ForeignKey("dishes.id"))
+
+    dish: Mapped[Dish] = relationship(back_populates="aliases")
+
+
+class SalesImport(Base):
+    __tablename__ = "sales_imports"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    filename: Mapped[str] = mapped_column(String(255))
+    imported_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    row_count: Mapped[int] = mapped_column(Integer, default=0)
+    unmatched_count: Mapped[int] = mapped_column(Integer, default=0)
+
+    lines: Mapped[list["SaleLine"]] = relationship(
+        back_populates="sales_import", cascade="all, delete-orphan"
+    )
+
+
+class SaleLine(Base):
+    __tablename__ = "sale_lines"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sales_import_id: Mapped[int] = mapped_column(ForeignKey("sales_imports.id"))
+    sale_date: Mapped[datetime] = mapped_column(DateTime)
+    raw_dish_name: Mapped[str] = mapped_column(String(200))
+    dish_id: Mapped[int | None] = mapped_column(ForeignKey("dishes.id"), nullable=True)
+    quantity_sold: Mapped[float] = mapped_column(Float)
+    unit_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    stock_applied: Mapped[bool] = mapped_column(default=False)
+
+    sales_import: Mapped[SalesImport] = relationship(back_populates="lines")
+    dish: Mapped[Dish | None] = relationship()
+
+
+class StockMovement(Base):
+    """Journal des mouvements de stock théorique (traçabilité, indicateur 8)."""
+
+    __tablename__ = "stock_movements"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    movement_type: Mapped[MovementType] = mapped_column(str_enum(MovementType))
+    quantity_delta: Mapped[float] = mapped_column(Float)
+    resulting_stock: Mapped[float] = mapped_column(Float)
+    reference: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    ingredient: Mapped[Ingredient] = relationship(back_populates="movements")
+
+
+class CountSession(Base):
+    """Session de comptage physique (section 5 du brief)."""
+
+    __tablename__ = "count_sessions"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    ended_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    counted_by: Mapped[str | None] = mapped_column(String(200), nullable=True)
+
+    lines: Mapped[list["CountLine"]] = relationship(
+        back_populates="count_session", cascade="all, delete-orphan"
+    )
+
+    @property
+    def is_completed(self) -> bool:
+        return self.ended_at is not None
+
+    @property
+    def duration_seconds(self) -> float | None:
+        if self.ended_at is None:
+            return None
+        return (self.ended_at - self.started_at).total_seconds()
+
+
+class CountLine(Base):
+    __tablename__ = "count_lines"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    count_session_id: Mapped[int] = mapped_column(ForeignKey("count_sessions.id"))
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    theoretical_quantity: Mapped[float] = mapped_column(Float)
+    counted_quantity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    variance_reason: Mapped[VarianceReason | None] = mapped_column(
+        str_enum(VarianceReason), nullable=True
+    )
+    confirmed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    count_session: Mapped[CountSession] = relationship(back_populates="lines")
+    ingredient: Mapped[Ingredient] = relationship()
+
+    @property
+    def variance(self) -> float | None:
+        """Écart théorique - réel : positif = perte (il manque du stock)."""
+        if self.counted_quantity is None:
+            return None
+        return self.theoretical_quantity - self.counted_quantity
+
+    @property
+    def variance_pct(self) -> float | None:
+        if self.counted_quantity is None or self.theoretical_quantity == 0:
+            return None
+        return self.variance / self.theoretical_quantity * 100
+
+    @property
+    def variance_value(self) -> float | None:
+        """Valorisation de l'écart en euros, avec le coût unitaire actuel."""
+        if self.counted_quantity is None:
+            return None
+        return self.variance * self.ingredient.unit_cost
+
+
+class OrderSuggestionBatch(Base):
+    """Un lot de suggestions de commande généré à un instant donné."""
+
+    __tablename__ = "order_suggestion_batches"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    generated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    lines: Mapped[list["OrderSuggestionLine"]] = relationship(
+        back_populates="batch", cascade="all, delete-orphan"
+    )
+
+
+class OrderSuggestionLine(Base):
+    __tablename__ = "order_suggestion_lines"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    batch_id: Mapped[int] = mapped_column(ForeignKey("order_suggestion_batches.id"))
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    current_stock: Mapped[float] = mapped_column(Float)
+    avg_daily_consumption: Mapped[float] = mapped_column(Float)
+    threshold_used: Mapped[float] = mapped_column(Float)
+    suggested_quantity: Mapped[float] = mapped_column(Float)
+    final_quantity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    decision: Mapped[SuggestionDecision] = mapped_column(
+        str_enum(SuggestionDecision), default=SuggestionDecision.EN_ATTENTE
+    )
+    validated_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    batch: Mapped[OrderSuggestionBatch] = relationship(back_populates="lines")
+    ingredient: Mapped[Ingredient] = relationship()
+
+
+class Settings(Base):
+    """Table à une seule ligne (id=1) pour les réglages ajustables par le gérant."""
+
+    __tablename__ = "settings"
+
+    id: Mapped[int] = mapped_column(primary_key=True, default=1)
+    safety_days: Mapped[float] = mapped_column(Float, default=2.0)
+    target_days: Mapped[float] = mapped_column(Float, default=5.0)
+    rolling_window_days: Mapped[int] = mapped_column(Integer, default=7)

@@ -1,0 +1,12 @@
+{
+  "name": "restaurant-stock",
+  "private": true,
+  "description": "Génération du CSS Tailwind statique (pas de runtime Node en production).",
+  "scripts": {
+    "build:css": "tailwindcss -i ./app/static/tailwind_src.css -o ./app/static/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./app/static/tailwind_src.css -o ./app/static/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Fiches techniques{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-3">
+  <h1 class="text-xl font-semibold">Fiches techniques</h1>
+  <a href="/recipes/new" class="bg-emerald-600 text-white px-3 py-2 rounded text-sm font-medium">+ Nouveau plat</a>
+</div>
+
+<ul class="bg-white rounded border divide-y">
+  {% for dish in dishes %}
+  <li class="px-3 py-2 flex items-center justify-between gap-2 {% if not dish.is_active %}opacity-50{% endif %}">
+    <div>
+      <a href="/recipes/{{ dish.id }}/edit" class="font-medium hover:underline">{{ dish.name }}</a>
+      <div class="text-xs text-gray-500">
+        {{ dish.recipe_lines | length }} ingrédient(s) · coût matière {{ dish.food_cost | euros }}
+        {% if not dish.is_active %} · inactif{% endif %}
+      </div>
+    </div>
+    <a href="/recipes/{{ dish.id }}/edit" class="text-sm text-slate-600 shrink-0">Modifier</a>
+  </li>
+  {% else %}
+  <li class="px-3 py-4 text-sm text-gray-500">Aucune fiche technique pour l'instant.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Indicateurs{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">Indicateurs (section 8 du brief)</h1>
+
+<section class="bg-white rounded border p-4 mb-4">
+  <h2 class="font-semibold mb-2">Taux d'adoption des suggestions de commande</h2>
+  {% if adoption.total == 0 %}
+  <p class="text-sm text-gray-500">Aucune suggestion générée pour l'instant.</p>
+  {% else %}
+  <div class="space-y-2 text-sm">
+    <div class="flex justify-between"><span>Acceptées telles quelles</span><span>{{ adoption.acceptee }} ({{ "%.0f"|format(adoption.pct(adoption.acceptee)) }}%)</span></div>
+    <div class="w-full bg-gray-100 rounded h-2"><div class="bg-emerald-500 h-2 rounded" style="width:{{ adoption.pct(adoption.acceptee) }}%"></div></div>
+    <div class="flex justify-between"><span>Modifiées avant validation</span><span>{{ adoption.modifiee }} ({{ "%.0f"|format(adoption.pct(adoption.modifiee)) }}%)</span></div>
+    <div class="w-full bg-gray-100 rounded h-2"><div class="bg-amber-500 h-2 rounded" style="width:{{ adoption.pct(adoption.modifiee) }}%"></div></div>
+    <div class="flex justify-between"><span>Rejetées</span><span>{{ adoption.rejetee }} ({{ "%.0f"|format(adoption.pct(adoption.rejetee)) }}%)</span></div>
+    <div class="w-full bg-gray-100 rounded h-2"><div class="bg-red-500 h-2 rounded" style="width:{{ adoption.pct(adoption.rejetee) }}%"></div></div>
+    <p class="text-xs text-gray-400 pt-1">{{ adoption.en_attente }} suggestion(s) encore en attente de décision (non comptée dans les %).</p>
+  </div>
+  {% endif %}
+</section>
+
+<section class="bg-white rounded border p-4 mb-4">
+  <h2 class="font-semibold mb-2">Temps passé sur le comptage</h2>
+  {% if duration.average_seconds is none %}
+  <p class="text-sm text-gray-500">Aucun comptage terminé pour l'instant.</p>
+  {% else %}
+  <p class="text-2xl font-semibold mb-2">{{ duration.average_seconds | duration }} <span class="text-sm font-normal text-gray-500">en moyenne</span></p>
+  <ul class="text-sm divide-y">
+    {% for s in duration.sessions[:10] %}
+    <li class="py-1 flex justify-between">
+      <span>{{ s.ended_at | datetime_fr }}{% if s.counted_by %} — {{ s.counted_by }}{% endif %}</span>
+      <span>{{ s.duration_seconds | duration }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+
+<section class="bg-white rounded border p-4">
+  <h2 class="font-semibold mb-2">Écart théorique/réel dans le temps</h2>
+  {% if not trend %}
+  <p class="text-sm text-gray-500">Aucun comptage terminé pour l'instant.</p>
+  {% else %}
+  <ul class="text-sm divide-y">
+    {% for point in trend | reverse %}
+    <li class="py-1 flex justify-between">
+      <span>{{ point.ended_at | datetime_fr }}</span>
+      <span class="{% if point.total_variance_value > 0 %}text-red-600{% elif point.total_variance_value < 0 %}text-blue-600{% endif %}">
+        {{ point.total_variance_value | euros }} <span class="text-gray-400">(brut {{ point.total_absolute_variance_value | euros }})</span>
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="text-xs text-gray-400 mt-2">
+    Sert de baseline avant de chercher à réduire l'écart — la comparaison prend tout son sens après plusieurs comptages.
+  </p>
+  {% endif %}
+</section>
+{% endblock %}

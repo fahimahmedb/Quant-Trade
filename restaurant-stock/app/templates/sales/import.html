@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Import des ventes{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-3">Import des ventes (CSV)</h1>
+
+<form method="post" action="/sales/import" enctype="multipart/form-data" class="bg-white rounded border p-4 space-y-3 mb-6">
+  <div>
+    <label class="block text-sm font-medium mb-1">Fichier CSV exporté de la caisse</label>
+    <input type="file" name="file" accept=".csv,text/csv" required class="w-full border rounded px-3 py-2" />
+  </div>
+  <p class="text-xs text-gray-500">
+    Colonnes attendues : <code>date</code>, <code>plat</code>, <code>quantite</code>, et optionnellement <code>prix_unitaire</code>.
+    Séparateur virgule ou point-virgule, dates <code>JJ/MM/AAAA</code> ou <code>AAAA-MM-JJ</code>.
+  </p>
+  <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded font-medium">Importer</button>
+</form>
+
+<h2 class="text-lg font-semibold mb-2">Imports récents</h2>
+<ul class="bg-white rounded border divide-y">
+  {% for imp in recent_imports %}
+  <li class="px-3 py-2 flex items-center justify-between gap-2">
+    <div>
+      <a href="/sales/imports/{{ imp.id }}" class="font-medium hover:underline">{{ imp.filename }}</a>
+      <div class="text-xs text-gray-500">
+        {{ imp.imported_at | datetime_fr }} · {{ imp.row_count }} ligne(s)
+        {% if imp.unmatched_count %}
+        · <span class="text-amber-600">{{ imp.unmatched_count }} plat(s) non reconnu(s)</span>
+        {% endif %}
+      </div>
+    </div>
+  </li>
+  {% else %}
+  <li class="px-3 py-4 text-sm text-gray-500">Aucun import pour l'instant.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

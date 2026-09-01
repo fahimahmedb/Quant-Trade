@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Suggestions de commande{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-3">Suggestions de commande</h1>
+<p class="text-sm text-gray-500 mb-4">
+  Aucune suggestion générée pour l'instant. Le système compare le stock théorique actuel de
+  chaque ingrédient à un seuil (fixé par vous, ou dérivé de la consommation moyenne récente)
+  et propose une quantité à commander — jamais envoyée automatiquement.
+</p>
+<form method="post" action="/orders/generate">
+  <button type="submit" class="bg-emerald-600 text-white px-4 py-3 rounded font-medium text-lg">
+    Générer les suggestions maintenant
+  </button>
+</form>
+{% endblock %}

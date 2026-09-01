@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">Tableau de bord</h1>
+
+<div class="grid grid-cols-2 gap-3 mb-4">
+  <a href="/counting" class="bg-emerald-600 text-white rounded p-4 text-center font-medium">
+    {% if open_session %}Reprendre le comptage{% else %}Nouveau comptage{% endif %}
+  </a>
+  <a href="/sales/import" class="bg-slate-700 text-white rounded p-4 text-center font-medium">
+    Importer des ventes
+  </a>
+</div>
+
+<div class="grid grid-cols-2 gap-3 mb-4 text-center text-sm">
+  <div class="bg-white rounded border p-3">
+    <div class="text-2xl font-semibold">{{ dish_count }}</div>
+    <div class="text-gray-500">plats actifs</div>
+  </div>
+  <div class="bg-white rounded border p-3">
+    <div class="text-2xl font-semibold">{{ ingredient_count }}</div>
+    <div class="text-gray-500">ingrédients actifs</div>
+  </div>
+</div>
+
+{% if pending_suggestions %}
+<a href="/orders" class="block bg-amber-50 border border-amber-300 text-amber-800 rounded p-3 mb-4 text-sm">
+  {{ pending_suggestions }} suggestion(s) de commande en attente de décision →
+</a>
+{% endif %}
+
+<div class="bg-white rounded border p-4">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="font-semibold">Derniers écarts constatés</h2>
+    <a href="/variance" class="text-sm text-slate-600">Voir tout →</a>
+  </div>
+  {% if not latest_session %}
+  <p class="text-sm text-gray-500">Aucun comptage terminé pour l'instant.</p>
+  {% else %}
+  <p class="text-xs text-gray-400 mb-2">Comptage du {{ latest_session.ended_at | datetime_fr }}</p>
+  {% set report = top_variances %}
+  {% include "partials/variance_table.html" with context %}
+  {% endif %}
+</div>
+{% endblock %}

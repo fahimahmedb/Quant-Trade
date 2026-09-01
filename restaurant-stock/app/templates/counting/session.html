@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Comptage en cours{% endblock %}
+{% block content %}
+<div class="sticky top-[88px] bg-gray-50 py-2 z-[5] -mx-3 px-3 mb-2">
+  <div class="flex items-center justify-between text-sm mb-1">
+    <span class="font-medium">{{ counted }}/{{ total }} ingrédients comptés</span>
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-2">
+    <div class="bg-emerald-600 h-2 rounded-full" style="width: {{ (counted / total * 100) if total else 0 }}%"></div>
+  </div>
+</div>
+
+<p class="text-sm text-gray-500 mb-3">
+  Les quantités sont pré-remplies avec le stock théorique. Corrigez si besoin, zone par zone,
+  au fil de votre passage dans le stockage.
+</p>
+
+{% for zone in zones %}
+  {% set zone_lines = lines_by_zone[zone] %}
+  {% if zone_lines %}
+  {% set zone_done = (zone_lines | selectattr('counted_quantity', 'none') | list | length) == 0 %}
+  <details id="zone-{{ zone.value }}" class="zone-details bg-white rounded border mb-3" {% if not zone_done %}open{% endif %}>
+    <summary class="px-3 py-3 font-medium flex items-center justify-between">
+      <span>{{ zone.label }}</span>
+      <span class="text-sm {% if zone_done %}text-emerald-600{% else %}text-gray-400{% endif %}">
+        {% if zone_done %}✓ complété{% else %}{{ zone_lines | rejectattr('counted_quantity', 'none') | list | length }}/{{ zone_lines | length }}{% endif %}
+      </span>
+    </summary>
+
+    <form method="post" action="/counting/{{ session.id }}/zone/{{ zone.value }}" class="p-3 pt-0 space-y-3">
+      {% for line in zone_lines %}
+      <div data-count-row data-theoretical="{{ line.theoretical_quantity }}" class="border-t pt-3 first:border-t-0 first:pt-0">
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <label for="count_{{ line.id }}" class="font-medium">{{ line.ingredient.name }}</label>
+          <span class="text-xs text-gray-400">théorique : {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <input
+            type="number" step="0.01" inputmode="decimal"
+            id="count_{{ line.id }}" name="count_{{ line.id }}"
+            value="{{ line.counted_quantity if line.counted_quantity is not none else line.theoretical_quantity }}"
+            class="count-input flex-1 border rounded px-3 py-2" />
+          <span class="text-sm text-gray-500 w-12">{{ line.ingredient.unit.value }}</span>
+        </div>
+        <div data-reason-wrap {% if line.variance_reason is none %}hidden{% endif %} class="mt-2">
+          <label class="block text-xs text-gray-500 mb-1">Motif de l'écart (optionnel)</label>
+          <select name="reason_{{ line.id }}" class="w-full border rounded px-2 py-1.5 text-sm">
+            <option value="">—</option>
+            {% for reason in reasons %}
+            <option value="{{ reason.value }}" {% if line.variance_reason == reason %}selected{% endif %}>{{ reason.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="w-full bg-slate-700 text-white px-4 py-2.5 rounded font-medium">
+        Enregistrer — {{ zone.label }}
+      </button>
+    </form>
+  </details>
+  {% endif %}
+{% endfor %}
+
+<form method="post" action="/counting/{{ session.id }}/complete" class="mt-4"
+      onsubmit="return confirm('Terminer le comptage ? Le stock théorique sera recalé sur les valeurs saisies.');">
+  <button type="submit" class="w-full bg-emerald-700 text-white px-4 py-3 rounded font-semibold text-lg">
+    Terminer le comptage
+  </button>
+</form>
+{% endblock %}

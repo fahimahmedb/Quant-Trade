@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Comptage{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-3">Comptage physique</h1>
+
+{% if open_session %}
+<div class="bg-white rounded border p-4 mb-6">
+  <p class="mb-2">Un comptage est en cours depuis le {{ open_session.started_at | datetime_fr }}
+    {% if open_session.counted_by %}(par {{ open_session.counted_by }}){% endif %}.</p>
+  <a href="/counting/{{ open_session.id }}" class="inline-block bg-emerald-600 text-white px-4 py-3 rounded font-medium text-lg">
+    Continuer le comptage →
+  </a>
+</div>
+{% else %}
+<form method="post" action="/counting/start" class="bg-white rounded border p-4 mb-6 space-y-3">
+  <div>
+    <label class="block text-sm font-medium mb-1">Votre nom (optionnel)</label>
+    <input name="counted_by" class="w-full border rounded px-3 py-2" placeholder="ex. Marie" />
+  </div>
+  <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-3 rounded font-medium text-lg">
+    Démarrer un nouveau comptage
+  </button>
+</form>
+{% endif %}
+
+<h2 class="text-lg font-semibold mb-2">Historique</h2>
+<ul class="bg-white rounded border divide-y">
+  {% for s in history %}
+  <li class="px-3 py-2">
+    <a href="/counting/{{ s.id }}/summary" class="font-medium hover:underline">
+      Comptage du {{ s.ended_at | datetime_fr }}
+    </a>
+    <div class="text-xs text-gray-500">
+      Durée {{ s.duration_seconds | duration }}
+      {% if s.counted_by %} · par {{ s.counted_by }}{% endif %}
+    </div>
+  </li>
+  {% else %}
+  <li class="px-3 py-4 text-sm text-gray-500">Aucun comptage terminé pour l'instant.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
