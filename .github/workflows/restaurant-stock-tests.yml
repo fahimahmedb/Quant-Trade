@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
-      - name: Install Chromium for NR-12 (mobile overflow suite)
+      - name: Install Chromium (NR-12 mobile overflow, F3 comptage hors-ligne)
         run: playwright install --with-deps chromium
 
-      - name: Run tests (unit + HTTP + NR-01..18)
+      - name: Run tests (unit + HTTP + NR-01..18 + TC-F1/F2/F3)
         run: pytest -v
