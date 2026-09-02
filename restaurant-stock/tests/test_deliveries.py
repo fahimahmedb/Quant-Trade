@@ -298,7 +298,9 @@ def test_price_history_and_alert_are_visible_on_screen(seeded_client):
 
     with sessions() as db:
         farine_id = db.query(models.Ingredient).filter_by(name="Farine").one().id
-    page = client.get(f"/ingredients/{farine_id}/edit").text
+    # Espaces fines/insécables ramenées à une espace ordinaire : l'assertion
+    # porte sur le prix affiché, pas sur la typographie qui l'entoure.
+    page = client.get(f"/ingredients/{farine_id}/edit").text.replace("\u202f", " ")
     assert "Historique des prix d'achat" in page
     assert "1,80 €/kg" in page and "1,20 €/kg" in page
     assert "Réception" in client.get(f"/ingredients/{farine_id}/edit").text  # mouvement tracé

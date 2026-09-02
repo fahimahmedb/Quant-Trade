@@ -1,3 +1,233 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   Direction visuelle V1.2 — « l'inox et l'ardoise »
+   --------------------------------------------------------------------------
+   Références : inox brossé, ardoise du service, étiquette de bac gastronorme.
+   Des objets de métier : robustes, lisibles à distance, sans décoration.
+
+   Deux principes qui expliquent la plupart des choix ci-dessous :
+   1. Les chiffres priment sur le texte. C'est une application de quantités et
+      d'euros : ils sont en IBM Plex Mono, donc tabulaires par construction,
+      et les colonnes de nombres s'alignent sans réglage.
+   2. La structure vient du filet, pas de l'ombre. Aucune ombre portée dans
+      toute l'application : les blocs sont des surfaces plates cernées d'un
+      filet de 1 px, comme une étiquette collée sur de l'inox.
+   ========================================================================== */
+
+/* IBM Plex — SIL Open Font License 1.1, licence dans app/static/fonts/.
+   Sous-ensemble latin, servi depuis le serveur du restaurant : aucune requête
+   vers un tiers, et les fichiers sont pré-chargés par le service worker pour
+   que le comptage garde sa typographie hors-ligne. */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2");
+}
+
+@layer base {
+  :root {
+    /* --- Les six valeurs de la direction visuelle ------------------------
+       Contrôlées par tests/test_design_tokens.py : toute modification d'une
+       de ces valeurs doit continuer à passer les seuils de contraste. */
+
+    /* Fond principal : gris froid, jamais blanc pur. L'écran est consulté
+       sous néon de cuisine, où le blanc pur fatigue. */
+    --fond: #e6eae9;
+    /* Encre : très sombre à reflet bleu-vert, jamais noir absolu. */
+    --encre: #141d1c;
+    /* Accent unique, réservé à l'action principale. Un seul bouton coloré
+       par écran : s'il y en a deux, il y en a un de trop. */
+    --accent: #1c4a6e;
+    /* Statut : l'alerte (écart, rupture) et le validé (conforme). */
+    --alerte: #a33323;
+    --valide: #2e6b4c;
+    /* Gris de structure : le filet qui sépare, jamais une ombre. */
+    --structure: #9ba8a4;
+
+    /* --- Teintes dérivées ------------------------------------------------
+       Pas de nouvelles décisions : des éclaircissements des six valeurs
+       ci-dessus, pour les surfaces et les fonds de statut. */
+    --surface: #f8faf9;
+    --encre-doux: #55625f;
+    --filet: #dde3e1;
+    --accent-fond: #e7eff4;
+    --alerte-fond: #f7ebe8;
+    --valide-fond: #e9f2ed;
+  }
+
+  html {
+    background-color: var(--fond);
+  }
+
+  body {
+    background-color: var(--fond);
+    color: var(--encre);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* Si la police échoue à charger, les chiffres restent alignés. */
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Cibles tactiles : le seuil de 44 px vaut pour tout ce qui se touche,
+     pas seulement pour les boutons de comptage (U12). */
+  button,
+  [type="submit"],
+  select {
+    min-height: 2.75rem;
+  }
+
+  /* Le focus doit rester visible partout, y compris au clavier (U12). */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Préférence système « animations réduites » : on la respecte, et comme
+     la direction visuelle n'utilise aucune animation décorative, il ne reste
+     rien à désactiver que ce que le navigateur anime lui-même. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* --- Le bloc, unité de mise en page ---------------------------------
+     Surface plate, filet de 1 px, angle presque droit. Pas d'ombre : c'est
+     ce qui distingue cette interface d'un empilement de cartes SaaS. */
+  .bloc {
+    background-color: var(--surface);
+    border: 1px solid var(--structure);
+    border-radius: 3px;
+  }
+
+  /* Trois niveaux visuellement distincts, pas un seul répété.
+     1. Ce qui demande une action maintenant : filet épais à gauche.
+     2. Ce qu'on consulte : le bloc nu.
+     3. Ce qui est du contexte : ni fond ni filet, texte adouci. */
+  .bloc-action {
+    border-left: 3px solid var(--accent);
+  }
+  .bloc-alerte {
+    border-left: 3px solid var(--alerte);
+    background-color: var(--alerte-fond);
+  }
+  .contexte {
+    color: var(--encre-doux);
+  }
+
+  /* --- Les chiffres ----------------------------------------------------
+     Tout nombre affiché passe par là : quantités, euros, pourcentages,
+     compteurs. C'est ce qui aligne les colonnes. */
+  .nombre {
+    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Le montant qui porte l'information principale d'un écran. */
+  .montant {
+    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* --- Actions ---------------------------------------------------------
+     Un seul bouton d'accent par écran ; tout le reste est secondaire. */
+  .action-principale {
+    background-color: var(--accent);
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 600;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .action-secondaire {
+    background-color: var(--surface);
+    color: var(--encre);
+    border: 1px solid var(--structure);
+    border-radius: 3px;
+    font-weight: 600;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* --- Saisie de comptage ---------------------------------------------
+     Le texte lu debout, à bout de bras : nettement plus grand que le reste,
+     aligné à droite pour que les unités se suivent d'une ligne à l'autre. */
+  .count-input {
+    min-height: 3.25rem;
+    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: right;
+    background-color: #fff;
+    border: 1px solid var(--structure);
+    border-radius: 3px;
+    color: var(--encre);
+  }
+  .count-input:focus {
+    border-color: var(--accent);
+  }
+
+  .zone-details > summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .zone-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* --- Messages --------------------------------------------------------
+     Le fond de statut porte le sens ; il n'y a pas d'icône décorative. */
+  .flash-success {
+    background-color: var(--valide-fond);
+    border-color: var(--valide);
+    color: var(--valide);
+  }
+  .flash-error {
+    background-color: var(--alerte-fond);
+    border-color: var(--alerte);
+    color: var(--alerte);
+  }
+}

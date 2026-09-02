@@ -8,9 +8,16 @@ from app.services import pricing
 templates = Jinja2Templates(directory=str(Path(BASE_DIR) / "app" / "templates"))
 
 
+# Espace fine insécable (U+202F). C'est l'espace des milliers en typographie
+# française, et celle qui précède « € » ou « % ». Insécable pour qu'un montant
+# ne se coupe jamais en fin de ligne ; fine pour que « 14 400 g » ne s'écarte
+# pas quand le nombre est composé en chasse fixe (direction visuelle V1.2).
+ESPACE_FINE = "\u202f"
+
+
 def _fr_number(value: float, decimals: int) -> str:
-    """Format français : espace pour les milliers, virgule décimale."""
-    return f"{value:,.{decimals}f}".replace(",", " ").replace(".", ",")
+    """Format français : espace fine pour les milliers, virgule décimale."""
+    return f"{value:,.{decimals}f}".replace(",", ESPACE_FINE).replace(".", ",")
 
 
 def _euros(value) -> str:
@@ -20,7 +27,7 @@ def _euros(value) -> str:
     # avec 2 décimales : on affiche plus de précision uniquement dans ce cas,
     # pour ne pas perdre l'information sur les petits montants.
     decimals = 4 if value != 0 and round(value, 2) == 0 else 2
-    return f"{_fr_number(value, decimals)} €"
+    return f"{_fr_number(value, decimals)}{ESPACE_FINE}€"
 
 
 def _qty(value) -> str:
@@ -83,7 +90,24 @@ def _history_price(entry) -> str:
     return f"{_euros(pricing.to_display_price(entry.unit_price, unit))}/{pricing.display_unit(unit)}"
 
 
+def _input_number(value) -> str:
+    """Valeur d'un `<input type="number">`.
+
+    La spécification HTML impose le point décimal et interdit le séparateur de
+    milliers : ce filtre ne francise donc rien (le navigateur affiche lui-même
+    la virgule en locale française, cf. OBS-3). Il retire seulement le « .0 »
+    d'un nombre entier : sur l'écran de comptage, en chasse fixe et en gros
+    corps, « 12672.0 » se lit moins vite que « 12672 » et donne deux
+    caractères de plus à effacer avant de saisir la vraie quantité.
+    """
+    if value is None:
+        return ""
+    number = float(value)
+    return str(int(number)) if number.is_integer() else f"{number:.2f}".rstrip("0").rstrip(".")
+
+
 templates.env.filters["euros"] = _euros
+templates.env.filters["input_number"] = _input_number
 templates.env.filters["qty"] = _qty
 templates.env.filters["pct"] = _pct
 templates.env.filters["unit_price"] = _unit_price_display

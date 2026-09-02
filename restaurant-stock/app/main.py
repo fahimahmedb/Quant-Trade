@@ -54,6 +54,7 @@ _SW_WATCHED_FILES = [
     Path(BASE_DIR) / "app" / "static" / "app.css",
     Path(BASE_DIR) / "app" / "static" / "tailwind.css",
     Path(BASE_DIR) / "app" / "static" / "manifest.webmanifest",
+    *sorted((Path(BASE_DIR) / "app" / "static" / "fonts").glob("*.woff2")),
     Path(BASE_DIR) / "app" / "templates" / "base.html",
     Path(BASE_DIR) / "app" / "templates" / "counting" / "session.html",
 ]

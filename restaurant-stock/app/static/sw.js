@@ -26,6 +26,13 @@ const SHELL = [
   "/static/offline-count.js",
   "/static/icon-192.png",
   "/static/manifest.webmanifest",
+  // Les chiffres du comptage sont le contenu de l'écran : sans ces coupes,
+  // une session hors-ligne retomberait sur la police système et les colonnes
+  // de nombres cesseraient de s'aligner.
+  "/static/fonts/ibm-plex-sans-latin-400-normal.woff2",
+  "/static/fonts/ibm-plex-sans-latin-600-normal.woff2",
+  "/static/fonts/ibm-plex-mono-latin-400-normal.woff2",
+  "/static/fonts/ibm-plex-mono-latin-600-normal.woff2",
 ];
 
 self.addEventListener("install", (event) => {

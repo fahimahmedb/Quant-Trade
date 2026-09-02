@@ -1,32 +1,12 @@
-/* Compléments à Tailwind (CDN) : ce que les classes utilitaires ne couvrent pas proprement. */
-
-input[type="number"] {
-  font-variant-numeric: tabular-nums;
-}
-
-/* Zone de comptage : très grands champs, pensés pour être touchés avec des
-   mains occupées/mouillées, pas pour la densité d'information. */
-.count-input {
-  min-height: 3rem;
-  font-size: 1.25rem;
-  text-align: right;
-}
-
-.zone-details > summary {
-  cursor: pointer;
-  list-style: none;
-}
-.zone-details > summary::-webkit-details-marker {
-  display: none;
-}
-
-.flash-success {
-  background-color: #ecfdf5;
-  border-color: #10b981;
-  color: #065f46;
-}
-.flash-error {
-  background-color: #fef2f2;
-  border-color: #ef4444;
-  color: #991b1b;
-}
+/* Ce fichier ne porte plus de style depuis la direction visuelle V1.2.
+ *
+ * Les règles qui étaient ici (champs de comptage, zones repliables, messages
+ * de statut) sont devenues des composants de `app/static/tailwind_src.css`,
+ * pour qu'un seul fichier définisse l'apparence et que les couleurs viennent
+ * toutes des jetons.
+ *
+ * Le fichier reste servi : il figure dans la liste de pré-chargement du
+ * service worker (`app/static/sw.js`). Le supprimer ferait échouer
+ * l'installation du service worker, et avec elle tout le comptage
+ * hors-ligne. Il partira le jour où on retirera aussi son entrée du SHELL.
+ */

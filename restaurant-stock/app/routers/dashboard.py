@@ -18,8 +18,16 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
         .first()
     )
     top_variances = []
+    variance_total = 0.0
+    variance_count = 0
     if latest_session:
-        top_variances = counting.variance_report(db, latest_session.id)[:5]
+        report = counting.variance_report(db, latest_session.id)
+        # Le total porte sur toute la session, pas sur les cinq lignes
+        # affichées : c'est le chiffre qui justifie l'outil, il serait faux
+        # de le calculer sur un extrait.
+        variance_total = sum(abs(line.variance_value or 0) for line in report)
+        variance_count = sum(1 for line in report if (line.variance or 0) != 0)
+        top_variances = report[:5]
 
     pending_suggestions = (
         db.query(models.OrderSuggestionLine)
@@ -38,6 +46,8 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
             "request": request,
             "latest_session": latest_session,
             "top_variances": top_variances,
+            "variance_total": variance_total,
+            "variance_count": variance_count,
             "pending_suggestions": pending_suggestions,
             "open_session": open_session,
             "dish_count": dish_count,

@@ -1,45 +1,74 @@
 {% extends "base.html" %}
 {% block title %}Tableau de bord{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-4">Tableau de bord</h1>
 
-<div class="grid grid-cols-2 gap-3 mb-4">
-  <a href="/counting" class="bg-emerald-600 text-white rounded p-4 text-center font-medium">
-    {% if open_session %}Reprendre le comptage{% else %}Nouveau comptage{% endif %}
-  </a>
-  <a href="/sales/import" class="bg-slate-700 text-white rounded p-4 text-center font-medium">
-    Importer des ventes
-  </a>
-</div>
-
-<div class="grid grid-cols-2 gap-3 mb-4 text-center text-sm">
-  <div class="bg-white rounded border p-3">
-    <div class="text-2xl font-semibold">{{ dish_count }}</div>
-    <div class="text-gray-500">plats actifs</div>
+{# ---------------------------------------------------------------------
+   Niveau 1 — ce qui demande une action maintenant.
+   Un seul bloc d'accent sur l'écran. S'il n'y a rien à faire, on le dit
+   au lieu de laisser une place vide qui inquiète.
+   --------------------------------------------------------------------- #}
+{% if open_session %}
+<a href="/counting" class="bloc bloc-action block px-4 py-4 mb-3">
+  <div class="font-semibold text-titre1 mb-0.5">Comptage en cours</div>
+  <div class="text-base contexte">Commencé le {{ open_session.started_at | datetime_fr }} — reprendre →</div>
+</a>
+{% elif pending_suggestions %}
+<a href="/orders" class="bloc bloc-action block px-4 py-4 mb-3">
+  <div class="font-semibold text-titre1 mb-0.5">
+    <span class="nombre">{{ pending_suggestions }}</span>
+    suggestion{{ 's' if pending_suggestions > 1 }} de commande à décider
   </div>
-  <div class="bg-white rounded border p-3">
-    <div class="text-2xl font-semibold">{{ ingredient_count }}</div>
-    <div class="text-gray-500">ingrédients actifs</div>
-  </div>
-</div>
-
-{% if pending_suggestions %}
-<a href="/orders" class="block bg-amber-50 border border-amber-300 text-amber-800 rounded p-3 mb-4 text-sm">
-  {{ pending_suggestions }} suggestion(s) de commande en attente de décision →
+  <div class="text-base contexte">Rien n'est envoyé sans votre accord — examiner →</div>
+</a>
+{% else %}
+<a href="/counting" class="bloc bloc-action block px-4 py-4 mb-3">
+  <div class="font-semibold text-titre1 mb-0.5">Démarrer un comptage</div>
+  <div class="text-base contexte">Rien ne demande votre attention pour l'instant →</div>
 </a>
 {% endif %}
 
-<div class="bg-white rounded border p-4">
-  <div class="flex items-center justify-between mb-2">
-    <h2 class="font-semibold">Derniers écarts constatés</h2>
-    <a href="/variance" class="text-sm text-slate-600">Voir tout →</a>
-  </div>
+{# ---------------------------------------------------------------------
+   Niveau 2 — ce qu'on consulte. Le montant domine, les quantités suivent.
+   --------------------------------------------------------------------- #}
+<section class="bloc mb-3">
   {% if not latest_session %}
-  <p class="text-sm text-gray-500">Aucun comptage terminé pour l'instant.</p>
+  <div class="px-4 py-5">
+    <h2 class="font-semibold text-titre2 mb-1">Écarts</h2>
+    <p class="text-base contexte">
+      Après votre premier comptage terminé, vous verrez ici ce que le stock
+      réel a coûté par rapport au théorique.
+    </p>
+  </div>
   {% else %}
-  <p class="text-xs text-gray-400 mb-2">Comptage du {{ latest_session.ended_at | datetime_fr }}</p>
+  <div class="px-4 pt-4 pb-3 border-b border-filet">
+    <div class="flex items-end justify-between gap-3">
+      <div class="min-w-0">
+        <h2 class="font-semibold text-titre2">Écarts du dernier comptage</h2>
+        <p class="text-contexte contexte mt-0.5">
+          {{ latest_session.ended_at | datetime_fr }}{% if variance_count %} ·
+          <span class="nombre">{{ variance_count }}</span> ligne{{ 's' if variance_count > 1 }} en écart{% endif %}
+        </p>
+      </div>
+      <div class="montant text-montant shrink-0 {% if variance_total %}text-alerte{% else %}text-valide{% endif %}">
+        {{ variance_total | euros }}
+      </div>
+    </div>
+  </div>
   {% set report = top_variances %}
   {% include "partials/variance_table.html" with context %}
+  <div class="px-4 py-2.5 border-t border-filet">
+    <a href="/variance" class="text-base font-semibold text-accent">Voir tous les écarts →</a>
+  </div>
   {% endif %}
-</div>
+</section>
+
+{# ---------------------------------------------------------------------
+   Niveau 3 — le contexte. Ni fond ni filet : ce n'est pas de l'information,
+   c'est un repère. Les compteurs descendent ici.
+   --------------------------------------------------------------------- #}
+<p class="text-contexte contexte px-1">
+  Catalogue : <span class="nombre">{{ dish_count }}</span> plat{{ 's' if dish_count > 1 }} ·
+  <span class="nombre">{{ ingredient_count }}</span> ingrédient{{ 's' if ingredient_count > 1 }} ·
+  <a href="/sales/import" class="underline">importer des ventes</a>
+</p>
 {% endblock %}

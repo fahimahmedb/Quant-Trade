@@ -37,10 +37,12 @@
     if (!banner) return;
     banner.textContent = text || "";
     banner.hidden = !text;
+    // Le fond de statut porte le sens : pas d'icône décorative, et l'attente
+    // de synchronisation n'emprunte pas les couleurs de l'erreur.
     banner.className = text
-      ? `mb-3 rounded border px-3 py-2 text-sm ${
+      ? `mb-3 rounded border px-3 py-2 text-base ${
           tone === "error" ? "flash-error" : tone === "ok" ? "flash-success"
-          : "border-amber-300 bg-amber-50 text-amber-800"
+          : "border-structure bg-surface text-encre"
         }`
       : "";
   };

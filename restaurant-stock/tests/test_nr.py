@@ -22,9 +22,14 @@ def _ingredient(db, name, **kw):
 
 
 def _visible_text(html: str) -> str:
-    """Texte affiché : sans scripts, sans balises (donc sans attributs value=…)."""
+    """Texte affiché : sans scripts, sans balises (donc sans attributs value=…).
+
+    Les espaces fines et insécables de la typographie française (U+202F,
+    U+00A0) sont ramenées à une espace ordinaire : ces tests portent sur ce
+    qui est écrit, pas sur la finesse de l'espace qui précède « € ».
+    """
     html = re.sub(r"<script.*?</script>", " ", html, flags=re.S)
-    return re.sub(r"<[^>]+>", " ", html)
+    return re.sub(r"<[^>]+>", " ", html).replace("\u202f", " ").replace("\u00a0", " ")
 
 
 def _import_sample(client):

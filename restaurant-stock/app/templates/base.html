@@ -7,57 +7,74 @@
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="/static/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
-  <meta name="theme-color" content="#1e293b" />
+  <meta name="theme-color" content="#141d1c" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  {# Les deux coupes qui portent l'écran : le texte courant et les chiffres.
+     Sans préchargement, le premier rendu se fait dans la police de repli et
+     les colonnes de nombres sautent une fois la vraie police arrivée. #}
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/static/fonts/ibm-plex-sans-latin-400-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/static/fonts/ibm-plex-mono-latin-600-normal.woff2" />
   <link rel="stylesheet" href="/static/tailwind.css" />
   <link rel="stylesheet" href="/static/app.css" />
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
-  <header class="bg-slate-800 text-white sticky top-0 z-10 shadow">
-    <div class="px-3 py-2 flex items-center justify-between gap-2">
-      <a href="/" class="font-semibold text-lg whitespace-nowrap">🍽️ Stock resto</a>
+<body class="bg-fond text-encre min-h-screen flex flex-col">
+  {% set here = request.url.path %}
+  <header class="bg-encre text-surface sticky top-0 z-10">
+    <div class="px-3 py-2.5 flex items-center justify-between gap-2">
+      {# L'outil porte le nom de la maison, pas celui du logiciel. #}
+      <a href="/" class="font-semibold text-titre2 whitespace-nowrap min-w-0 truncate">
+        {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
+      </a>
       {% if request.state.account %}
       <form method="post" action="/logout">
-        <button type="submit" class="text-xs text-slate-300 hover:text-white">Déconnexion</button>
+        <button type="submit" class="text-contexte text-structure">Déconnexion</button>
       </form>
       {% endif %}
     </div>
     {% if request.state.account %}
-    <nav class="flex gap-1 overflow-x-auto px-2 pb-2 text-sm whitespace-nowrap">
-      <a href="/" class="px-3 py-1.5 rounded hover:bg-slate-700">Tableau de bord</a>
-      <a href="/counting" class="px-3 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 font-medium">Comptage</a>
-      <a href="/deliveries" class="px-3 py-1.5 rounded hover:bg-slate-700">Réceptions</a>
-      <a href="/variance" class="px-3 py-1.5 rounded hover:bg-slate-700">Écarts</a>
-      <a href="/orders" class="px-3 py-1.5 rounded hover:bg-slate-700">Commandes</a>
-      <a href="/recipes" class="px-3 py-1.5 rounded hover:bg-slate-700">Fiches techniques</a>
-      <a href="/ingredients" class="px-3 py-1.5 rounded hover:bg-slate-700">Ingrédients</a>
-      <a href="/sales/import" class="px-3 py-1.5 rounded hover:bg-slate-700">Ventes</a>
-      <a href="/metrics" class="px-3 py-1.5 rounded hover:bg-slate-700">Indicateurs</a>
-      <a href="/settings" class="px-3 py-1.5 rounded hover:bg-slate-700">Réglages</a>
+    {# L'onglet courant est souligné, pas colorié : l'accent reste réservé à
+       l'action principale de l'écran. #}
+    {% set tabs = [
+      ("/", "Tableau de bord"),
+      ("/counting", "Comptage"),
+      ("/deliveries", "Réceptions"),
+      ("/variance", "Écarts"),
+      ("/orders", "Commandes"),
+      ("/recipes", "Fiches techniques"),
+      ("/ingredients", "Ingrédients"),
+      ("/sales/import", "Ventes"),
+      ("/metrics", "Indicateurs"),
+      ("/settings", "Réglages"),
+    ] %}
+    <nav class="flex gap-4 overflow-x-auto px-3 text-base whitespace-nowrap">
+      {% for path, label in tabs %}
+      {% set active = here == path or (path != "/" and here.startswith(path)) %}
+      <a href="{{ path }}"
+         class="py-2 border-b-2 {% if active %}border-surface font-semibold{% else %}border-transparent text-structure{% endif %}"
+         {% if active %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
     </nav>
     {% endif %}
   </header>
 
-  <main class="flex-1 w-full max-w-3xl mx-auto p-3 pb-16">
+  <main class="flex-1 w-full max-w-3xl mx-auto p-3 pb-12">
     {% set msg = request.query_params.get('msg') %}
     {% if msg %}
       {% set msg_type = request.query_params.get('type', 'success') %}
-      <div class="mb-3 rounded border px-3 py-2 text-sm {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
+      <div class="mb-3 rounded border px-3 py-2 text-base {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
         {{ msg }}
       </div>
     {% endif %}
     {% set alerts = request.query_params.get('alerts') %}
     {% if alerts %}
-      <div class="mb-3 rounded border border-amber-300 bg-amber-50 text-amber-800 px-3 py-2 text-sm">
-        ⚠ {{ alerts }}
+      <div class="mb-3 rounded border border-alerte bg-alerte-fond text-alerte px-3 py-2 text-base">
+        {{ alerts }}
       </div>
     {% endif %}
     {% block content %}{% endblock %}
   </main>
-
-  <footer class="text-center text-xs text-gray-400 py-3">
-    MVP — gestion de stock pour restaurant indépendant
-  </footer>
 
   <script src="/static/app.js"></script>
   <script>

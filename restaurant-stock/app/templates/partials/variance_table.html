@@ -1,14 +1,20 @@
-{# Attend une variable `report` : liste de CountLine avec counted_quantity défini, triée par |écart €| décroissant. #}
-<ul class="bg-white rounded border divide-y">
+{# Attend une variable `report` : liste de CountLine avec counted_quantity défini, triée par |écart €| décroissant.
+
+   Le bloc est fourni par l'écran appelant : cette liste n'a ni fond ni filet
+   extérieur, pour qu'elle s'insère dans un `.bloc` sans doubler sa bordure. #}
+<ul class="divide-y divide-filet">
   {% for line in report %}
-  <li class="px-3 py-2">
-    <div class="flex justify-between items-baseline">
-      <span class="font-medium">{{ line.ingredient.name }}</span>
-      <span class="{% if line.variance_value > 0 %}text-red-600{% elif line.variance_value < 0 %}text-blue-600{% else %}text-gray-400{% endif %} font-medium">
+  <li class="px-4 py-2.5">
+    <div class="flex justify-between items-baseline gap-3">
+      <span class="font-semibold min-w-0">{{ line.ingredient.name }}</span>
+      {# Le montant domine ; la quantité passe en second plan sous la ligne. #}
+      {# Manquant en alerte : c'est de l'argent parti. Surplus en encre : c'est
+         une anomalie à comprendre, pas une perte. Un écart nul s'efface. #}
+      <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-encre-doux{% endif %}">
         {{ line.variance_value | euros }}
       </span>
     </div>
-    <div class="text-xs text-gray-500">
+    <div class="text-contexte contexte mt-0.5">
       théorique {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }}
       → réel {{ line.counted_quantity | qty }} {{ line.ingredient.unit.value }}
       {% if line.theoretical_quantity >= 0 %}
@@ -17,10 +23,13 @@
       {% if line.variance_reason %} · {{ line.variance_reason.label }}{% endif %}
     </div>
     {% if line.theoretical_quantity < 0 %}
-    <div class="text-xs text-red-600 mt-0.5">⚠ Stock théorique déjà négatif avant ce comptage — le % n'est pas significatif, vérifiez la saisie des ventes/fiches en amont.</div>
+    <div class="text-contexte text-alerte mt-1">
+      Stock théorique déjà négatif avant ce comptage — le pourcentage n'est pas
+      significatif, vérifiez la saisie des ventes et des fiches en amont.
+    </div>
     {% endif %}
   </li>
   {% else %}
-  <li class="px-3 py-4 text-sm text-gray-500">Aucune ligne comptée dans cette session.</li>
+  <li class="px-4 py-4 text-base contexte">Aucune ligne comptée dans cette session.</li>
   {% endfor %}
 </ul>
