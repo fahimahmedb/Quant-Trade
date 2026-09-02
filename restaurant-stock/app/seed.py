@@ -2,7 +2,10 @@
 
 Usage : python -m app.seed
 Ne fait rien si des ingrédients existent déjà (évite d'écraser des données réelles).
+`seed_demo(db)` est aussi utilisé par la suite de non-régression (NR-02, NR-16…).
 """
+from sqlalchemy.orm import Session
+
 from app import models
 from app.database import SessionLocal, init_db
 from app.services import recipes
@@ -39,39 +42,47 @@ DISHES = [
 ]
 
 
+def seed_demo(db: Session) -> tuple[int, int]:
+    """Crée le jeu de démo dans `db`. Renvoie (ingrédients créés, fiches créées) ;
+    (0, 0) si des ingrédients existaient déjà."""
+    if db.query(models.Ingredient).count() > 0:
+        return (0, 0)
+
+    ingredients_by_name = {}
+    for name, unit, unit_cost, zone, stock in INGREDIENTS:
+        ingredient = models.Ingredient(
+            name=name, unit=unit, unit_cost=unit_cost,
+            storage_zone=zone, current_theoretical_stock=stock,
+        )
+        db.add(ingredient)
+        ingredients_by_name[name] = ingredient
+    db.commit()
+
+    for dish_name, lines in DISHES:
+        recipes.upsert_dish(
+            db,
+            dish_id=None,
+            name=dish_name,
+            is_active=True,
+            lines=[
+                recipes.RecipeLineInput(
+                    ingredient_id=ingredients_by_name[ing_name].id, quantity=qty
+                )
+                for ing_name, qty in lines.items()
+            ],
+        )
+    return (len(INGREDIENTS), len(DISHES))
+
+
 def run() -> None:
     init_db()
     db = SessionLocal()
     try:
-        if db.query(models.Ingredient).count() > 0:
+        created_ingredients, created_dishes = seed_demo(db)
+        if (created_ingredients, created_dishes) == (0, 0):
             print("Des ingrédients existent déjà — le seed ne fait rien (pas d'écrasement).")
-            return
-
-        ingredients_by_name = {}
-        for name, unit, unit_cost, zone, stock in INGREDIENTS:
-            ingredient = models.Ingredient(
-                name=name, unit=unit, unit_cost=unit_cost,
-                storage_zone=zone, current_theoretical_stock=stock,
-            )
-            db.add(ingredient)
-            ingredients_by_name[name] = ingredient
-        db.commit()
-
-        for dish_name, lines in DISHES:
-            recipes.upsert_dish(
-                db,
-                dish_id=None,
-                name=dish_name,
-                is_active=True,
-                lines=[
-                    recipes.RecipeLineInput(
-                        ingredient_id=ingredients_by_name[ing_name].id, quantity=qty
-                    )
-                    for ing_name, qty in lines.items()
-                ],
-            )
-
-        print(f"Créé {len(INGREDIENTS)} ingrédient(s) et {len(DISHES)} fiche(s) technique(s).")
+        else:
+            print(f"Créé {created_ingredients} ingrédient(s) et {created_dishes} fiche(s) technique(s).")
     finally:
         db.close()
 

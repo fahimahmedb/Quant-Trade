@@ -4,48 +4,10 @@ Complètent les tests de service (logique métier) en couvrant des erreurs
 utilisateur plausibles qui ne doivent jamais faire planter l'application
 avec une 500 brute (ex. nom en double) mais un message explicite.
 """
-from dataclasses import dataclass
-
-import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
-
 from app import models
-from app.database import Base, get_db
-from app.main import app
 
-
-@dataclass
-class ClientAndDb:
-    client: TestClient
-    session_factory: sessionmaker
-
-
-@pytest.fixture()
-def app_client():
-    engine = create_engine(
-        "sqlite:///:memory:",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    Base.metadata.create_all(bind=engine)
-    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-    def override_get_db():
-        db = testing_session_local()
-        try:
-            yield db
-        finally:
-            db.close()
-
-    app.dependency_overrides[get_db] = override_get_db
-    try:
-        yield ClientAndDb(TestClient(app, follow_redirects=True), testing_session_local)
-    finally:
-        app.dependency_overrides.clear()
-        engine.dispose()
+# La fixture `app_client` (client HTTP + fabrique de sessions sur une base en
+# mémoire) vit dans conftest.py, partagée avec la suite de non-régression.
 
 
 def _create_ingredient(client, name, **overrides):

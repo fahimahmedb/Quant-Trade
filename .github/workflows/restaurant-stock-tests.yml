@@ -26,7 +26,10 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
 
-      - name: Run tests
+      - name: Install Chromium for NR-12 (mobile overflow suite)
+        run: playwright install --with-deps chromium
+
+      - name: Run tests (unit + HTTP + NR-01..18)
         run: pytest -v

@@ -21,7 +21,7 @@
           <a href="/ingredients/{{ ing.id }}/edit" class="font-medium hover:underline">{{ ing.name }}</a>
           <div class="text-xs text-gray-500">
             {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}
-            · {{ ing.unit_cost | euros }} / {{ ing.unit.value }}
+            · {{ ing | unit_price }}
             {% if not ing.is_active %} · inactif{% endif %}
           </div>
         </div>

@@ -12,7 +12,7 @@
       théorique {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }}
       → réel {{ line.counted_quantity | qty }} {{ line.ingredient.unit.value }}
       {% if line.theoretical_quantity >= 0 %}
-      ({% if line.variance_pct is not none %}{{ "%+.1f"|format(line.variance_pct) }}%{% else %}n/a{% endif %})
+      ({{ line.variance_pct | pct }})
       {% endif %}
       {% if line.variance_reason %} · {{ line.variance_reason.label }}{% endif %}
     </div>

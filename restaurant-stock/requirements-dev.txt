@@ -1,0 +1,4 @@
+-r requirements.txt
+# NR-12 (débordements mobiles) tourne dans un vrai Chromium via Playwright.
+# Après installation : `playwright install --with-deps chromium`.
+playwright>=1.45

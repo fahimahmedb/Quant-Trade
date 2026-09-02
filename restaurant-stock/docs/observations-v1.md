@@ -1,0 +1,9 @@
+# Observations v1 — causes et clôture (Specs V2, section 0.1 / F4)
+
+| Réf | Observation | Cause identifiée | Clôture | Test NR |
+|---|---|---|---|---|
+| OBS-1 | Écart Farine exactement ×2 (théorique 14 400 g → réel 7 200 g) sur les captures | **Saisie de test volontaire**, pas un bug. Le script de parcours automatisé `browser_walkthrough.py` (ligne 66 : `new_value = str(round(float(theoretical) * 0.5, 2))`) saisissait délibérément *théorique × 0,5* sur la première ligne de comptage pour déclencher l'affichage du champ « motif de l'écart ». La première ligne de la zone « Stock sec » du jeu de démo est Farine. Aucun calcul n'a divisé quoi que ce soit : 7 200 est la valeur tapée. | Documenté ici. NR-16 vérifie qu'un comptage saisi *égal* au théorique donne un écart strictement nul sur les 9 ingrédients du jeu de démo — ce qui exclut tout facteur caché dans la chaîne saisie → recalage → écart. | NR-16 |
+| OBS-2 | Prix affiché « 0,00 €/g » (farine, salade, sauce tomate, tomate, frites) | Prix stocké par unité de référence (le gramme) et affiché avec 2 décimales : 0,0012 €/g arrondit à 0,00. Une première correction affichait 4 décimales (0,0012 €/g), lisible mais peu naturel pour un chef. | Affichage en **€/kg** pour les ingrédients suivis en grammes et **€/L** pour ceux suivis en millilitres (filtre `unit_price`, `app/templating.py`). Le stockage et les calculs restent par unité de référence. | NR-17 |
+| OBS-3 | « 36.60 unité » — point décimal au lieu de la virgule | Le filtre d'affichage des quantités ne convertissait pas le séparateur décimal dans la branche non entière. | Filtre `qty` corrigé : virgule décimale et espace des milliers partout dans le texte affiché. Les attributs `value` des `<input type="number">` gardent le point (imposé par la spécification HTML — le navigateur affiche la virgule lui-même en locale française). | NR-18 |
+
+Ces trois points étaient bloquants pour l'entrée en V1.1 (section 0.1 des specs V2).

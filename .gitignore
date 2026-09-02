@@ -3,4 +3,7 @@ __pycache__/
 .pytest_cache/
 
 restaurant-stock/data/*.db
+restaurant-stock/data/backups/
+restaurant-stock/data/uploads/
+restaurant-stock/data/secret_key
 restaurant-stock/node_modules/
