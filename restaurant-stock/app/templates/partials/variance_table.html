@@ -1,35 +1,32 @@
 {# Attend une variable `report` : liste de CountLine avec counted_quantity défini, triée par |écart €| décroissant.
 
-   Le bloc est fourni par l'écran appelant : cette liste n'a ni fond ni filet
-   extérieur, pour qu'elle s'insère dans un `.bloc` sans doubler sa bordure. #}
+   Le bloc est fourni par l'écran appelant. Le filet entre lignes est le seul
+   admis par la direction : c'est une liste dense, l'espace seul n'y suffit
+   pas à séparer deux ingrédients. #}
 <ul class="divide-y divide-filet">
   {% for line in report %}
-  <li class="px-4 py-2.5">
-    <div class="flex justify-between items-baseline gap-3">
+  <li class="px-5 py-4">
+    <div class="flex justify-between items-baseline gap-4">
       <span class="font-semibold min-w-0">{{ line.ingredient.name }}</span>
-      {# Le montant domine ; la quantité passe en second plan sous la ligne. #}
-      {# Manquant en alerte : c'est de l'argent parti. Surplus en encre : c'est
-         une anomalie à comprendre, pas une perte. Un écart nul s'efface. #}
+      {# Manquant en alerte : c'est de l'argent parti. Surplus en encre : une
+         anomalie à comprendre, pas une perte. Un écart nul s'efface. #}
       <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-encre-doux{% endif %}">
         {{ line.variance_value | euros }}
       </span>
     </div>
-    <div class="text-contexte contexte mt-0.5">
-      théorique {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }}
-      → réel {{ line.counted_quantity | qty }} {{ line.ingredient.unit.value }}
-      {% if line.theoretical_quantity >= 0 %}
-      ({{ line.variance_pct | pct }})
-      {% endif %}
-      {% if line.variance_reason %} · {{ line.variance_reason.label }}{% endif %}
+    <div class="secondaire mt-1">
+      {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
+      {{ line.counted_quantity | qty }} comptés{% if line.theoretical_quantity >= 0 %} ({{ line.variance_pct | pct }}){% endif %}
+      {%- if line.variance_reason %}<br />Motif&nbsp;: {{ line.variance_reason.label }}{% endif %}
     </div>
     {% if line.theoretical_quantity < 0 %}
-    <div class="text-contexte text-alerte mt-1">
-      Stock théorique déjà négatif avant ce comptage — le pourcentage n'est pas
-      significatif, vérifiez la saisie des ventes et des fiches en amont.
+    <div class="text-contexte text-alerte mt-2">
+      Stock théorique déjà négatif avant ce comptage, le pourcentage n'est pas
+      significatif. Vérifiez la saisie des ventes et des fiches en amont.
     </div>
     {% endif %}
   </li>
   {% else %}
-  <li class="px-4 py-4 text-base contexte">Aucune ligne comptée dans cette session.</li>
+  <li class="px-5 py-5 secondaire">Aucune ligne comptée dans cette session.</li>
   {% endfor %}
 </ul>

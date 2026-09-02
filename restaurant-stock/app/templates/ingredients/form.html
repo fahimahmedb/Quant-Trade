@@ -86,7 +86,7 @@
   <li class="px-3 py-2 flex justify-between items-baseline gap-2">
     <div class="min-w-0">
       <span class="text-gray-500">{{ price.recorded_at | date_fr }}</span>
-      {% if price.supplier %}<span class="text-gray-400 break-words">· {{ price.supplier }}</span>{% endif %}
+      {% if price.supplier %}<span class="text-gray-400 break-words">{{ price.supplier }}</span>{% endif %}
     </div>
     <span class="shrink-0">{{ price | history_price }}</span>
   </li>
@@ -106,14 +106,14 @@
   <li class="px-3 py-2 flex justify-between items-baseline gap-2">
     <div>
       <span class="font-medium">{{ m.movement_type.label }}</span>
-      <span class="text-gray-400">· {{ m.created_at | datetime_fr }}</span>
-      {% if m.reference %}<span class="text-gray-400">· {{ m.reference }}</span>{% endif %}
+      <span class="text-gray-400">{{ m.created_at | datetime_fr }}</span>
+      {% if m.reference %}<span class="text-gray-400">{{ m.reference }}</span>{% endif %}
     </div>
     <div class="text-right shrink-0">
       <div class="{% if m.quantity_delta > 0 %}text-emerald-600{% elif m.quantity_delta < 0 %}text-red-600{% endif %}">
         {{ "+" if m.quantity_delta > 0 else "" }}{{ m.quantity_delta | qty }} {{ ingredient.unit.value }}
       </div>
-      <div class="text-xs text-gray-400">→ {{ m.resulting_stock | qty }} {{ ingredient.unit.value }}</div>
+      <div class="text-xs text-gray-400">reste {{ m.resulting_stock | qty }} {{ ingredient.unit.value }}</div>
     </div>
   </li>
   {% endfor %}

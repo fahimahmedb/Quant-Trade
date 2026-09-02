@@ -18,11 +18,11 @@
       {% for ing in zone_ingredients %}
       <li class="px-3 py-2 flex items-center justify-between gap-2 {% if not ing.is_active %}opacity-50{% endif %}">
         <div>
-          <a href="/ingredients/{{ ing.id }}/edit" class="font-medium hover:underline">{{ ing.name }}</a>
+          <a href="/ingredients/{{ ing.id }}/edit" class="font-medium">{{ ing.name }}</a>
           <div class="text-xs text-gray-500">
             {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}
-            · {{ ing | unit_price }}
-            {% if not ing.is_active %} · inactif{% endif %}
+            {{ ing | unit_price }}
+            {% if not ing.is_active %}, inactif{% endif %}
           </div>
         </div>
         <a href="/ingredients/{{ ing.id }}/edit" class="text-sm text-slate-600 shrink-0">Modifier</a>

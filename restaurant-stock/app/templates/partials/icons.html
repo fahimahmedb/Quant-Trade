@@ -1,0 +1,53 @@
+{# Jeu d'icônes unique — trait fin, régulier, 24 px, `currentColor`.
+
+   Écrit en SVG inline plutôt que chargé depuis une bibliothèque : le comptage
+   doit fonctionner hors-ligne, et une icône manquante y serait une entrée de
+   navigation illisible.
+
+   Elles ne servent que là où elles remplacent ou renforcent une information —
+   onglets, état de synchronisation, zones de stockage. Jamais une icône par
+   ligne de liste, jamais en décoration.
+
+   Le libellé porte le sens : les icônes sont donc `aria-hidden`. #}
+
+{% macro icon(name, size=24, classes="") %}
+<svg class="{{ classes }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24"
+     fill="none" stroke="currentColor" stroke-width="1.5"
+     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {%- if name == "accueil" -%}
+    <path d="M3 10.5 12 4l9 6.5" /><path d="M5.5 9.5V20h13V9.5" />
+  {%- elif name == "comptage" -%}
+    <rect x="5" y="3.5" width="14" height="17" rx="2" />
+    <path d="M9 3.5V2.8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v.7" />
+    <path d="m9 12 2 2 4-4" />
+  {%- elif name == "ecarts" -%}
+    <path d="M4 20V10" /><path d="M10 20V5" /><path d="M16 20v-7" /><path d="M4 20h16" />
+  {%- elif name == "commandes" -%}
+    <path d="m3.5 7 8.5-3.5L20.5 7v10L12 20.5 3.5 17z" />
+    <path d="m3.5 7 8.5 3.5L20.5 7" /><path d="M12 10.5v10" />
+  {%- elif name == "plus" -%}
+    <circle cx="5.5" cy="12" r="1.25" /><circle cx="12" cy="12" r="1.25" />
+    <circle cx="18.5" cy="12" r="1.25" />
+  {%- elif name == "hors-ligne" -%}
+    <path d="M6.5 18.5a4 4 0 0 1-.4-8A6 6 0 0 1 17 8.6" />
+    <path d="M18 11.5a3.5 3.5 0 0 1 .3 7H8" /><path d="m3.5 3.5 17 17" />
+  {%- elif name == "synchronise" -%}
+    <path d="M6.5 18.5a4 4 0 0 1-.4-8 6 6 0 0 1 11.6 0 3.75 3.75 0 0 1-.2 8z" />
+    <path d="m9.5 13.5 2 2 3.5-3.5" />
+  {%- elif name == "en-attente" -%}
+    <path d="M20 12a8 8 0 1 1-2.3-5.6" /><path d="M20 3.5V7h-3.5" />
+  {%- elif name == "sec" -%}
+    <rect x="4" y="7" width="16" height="12.5" rx="1.5" /><path d="M4 11h16" />
+    <path d="M9.5 7V4.5h5V7" />
+  {%- elif name == "frigo_positif" -%}
+    <rect x="6" y="3" width="12" height="18" rx="2" /><path d="M6 10h12" />
+    <path d="M9 6.5v1.5" /><path d="M9 12.5V14" />
+  {%- elif name == "frigo_negatif" -%}
+    <path d="M12 3.5v17" /><path d="m5 7.5 14 9" /><path d="m19 7.5-14 9" />
+    <path d="M12 6.5 10 4.75M12 6.5l2-1.75" />
+  {%- elif name == "cave" -%}
+    <path d="M10 2.5h4v4.2l2.4 3a3 3 0 0 1 .6 1.8v9a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-9a3 3 0 0 1 .6-1.8l2.4-3z" />
+    <path d="M7 14h10" />
+  {%- endif -%}
+</svg>
+{% endmacro %}

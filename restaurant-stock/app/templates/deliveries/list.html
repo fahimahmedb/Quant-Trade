@@ -10,12 +10,12 @@
   {% for receipt in receipts %}
   <li class="px-3 py-2 flex items-center justify-between gap-2">
     <div class="min-w-0">
-      <a href="/deliveries/{{ receipt.id }}" class="font-medium hover:underline break-words">
+      <a href="/deliveries/{{ receipt.id }}" class="font-medium break-words">
         {{ receipt.received_on | date_fr }}{% if receipt.supplier %} — {{ receipt.supplier }}{% endif %}
       </a>
       <div class="text-xs text-gray-500">
-        {{ receipt.lines | length }} ligne(s) · {{ receipt.total_value | euros }}
-        {% if receipt.photo_path %} · photo jointe{% endif %}
+        {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
+        {% if receipt.photo_path %}, photo jointe{% endif %}
       </div>
     </div>
     <a href="/deliveries/{{ receipt.id }}" class="text-sm text-slate-600 shrink-0">Détail</a>

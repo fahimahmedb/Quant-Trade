@@ -3,9 +3,9 @@
 {% block content %}
 <h1 class="text-xl font-semibold mb-1">Résumé du comptage</h1>
 <p class="text-sm text-gray-500 mb-4">
-  {{ session.started_at | datetime_fr }} → {{ session.ended_at | datetime_fr }}
-  · durée {{ session.duration_seconds | duration }}
-  {% if session.counted_by %} · par {{ session.counted_by }}{% endif %}
+  {{ session.started_at | datetime_fr }} à {{ session.ended_at | datetime_fr }}
+  durée {{ session.duration_seconds | duration }}
+  {% if session.counted_by %}, par {{ session.counted_by }}{% endif %}
 </p>
 
 <div class="bg-white rounded border p-3 mb-4">

@@ -10,10 +10,10 @@
   {% for dish in dishes %}
   <li class="px-3 py-2 flex items-center justify-between gap-2 {% if not dish.is_active %}opacity-50{% endif %}">
     <div>
-      <a href="/recipes/{{ dish.id }}/edit" class="font-medium hover:underline">{{ dish.name }}</a>
+      <a href="/recipes/{{ dish.id }}/edit" class="font-medium">{{ dish.name }}</a>
       <div class="text-xs text-gray-500">
-        {{ dish.recipe_lines | length }} ingrédient(s) · coût matière {{ dish.food_cost | euros }}
-        {% if not dish.is_active %} · inactif{% endif %}
+        {{ dish.recipe_lines | length }} ingrédient(s), coût matière {{ dish.food_cost | euros }}
+        {% if not dish.is_active %}, inactif{% endif %}
       </div>
     </div>
     <a href="/recipes/{{ dish.id }}/edit" class="text-sm text-slate-600 shrink-0">Modifier</a>

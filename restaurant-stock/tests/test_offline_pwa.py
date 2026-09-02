@@ -135,7 +135,7 @@ def test_counting_page_survives_a_network_cut_and_syncs_on_reconnect(offline_ser
     _install_service_worker(page, base, session_id)
 
     line_ids = page.eval_on_selector_all(
-        "[data-count-row] .count-input", "els => els.map(e => e.name.replace('count_',''))"
+        "[data-count-row] input[name^='count_']", "els => els.map(e => e.name.replace('count_',''))"
     )
     assert len(line_ids) == 9, line_ids
 
@@ -152,7 +152,7 @@ def test_counting_page_survives_a_network_cut_and_syncs_on_reconnect(offline_ser
 
     # Saisie de 5 lignes hors-ligne, puis enregistrement de la zone.
     zone = page.locator("form[data-zone-form]").first
-    inputs = zone.locator(".count-input")
+    inputs = zone.locator("input[name^='count_']")
     entered = inputs.count()
     for i in range(entered):
         inputs.nth(i).fill(str(100 + i))
@@ -211,13 +211,13 @@ def test_second_device_conflict_is_shown_not_silently_merged(offline_server):
     _install_service_worker(page, base, session_id)
 
     line_id = page.eval_on_selector(
-        "[data-count-row] .count-input", "el => el.name.replace('count_','')"
+        "[data-count-row] input[name^='count_']", "el => el.name.replace('count_','')"
     )
 
     # Le téléphone passe hors-ligne et saisit la ligne.
     context.set_offline(True)
     zone = page.locator("form[data-zone-form]").first
-    zone.locator(".count-input").first.fill("11")
+    zone.locator("input[name^='count_']").first.fill("11")
     zone.locator('button[type="submit"]').click()
     page.wait_for_timeout(300)
 

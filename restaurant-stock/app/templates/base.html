@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
   <title>{% block title %}Gestion de stock{% endblock %} — Restaurant</title>
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="/static/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
-  <meta name="theme-color" content="#141d1c" />
+  <meta name="theme-color" content="#dfe5e4" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   {# Les deux coupes qui portent l'écran : le texte courant et les chiffres.
      Sans préchargement, le premier rendu se fait dans la police de repli et
@@ -19,62 +19,93 @@
   <link rel="stylesheet" href="/static/tailwind.css" />
   <link rel="stylesheet" href="/static/app.css" />
 </head>
+{% import "partials/icons.html" as ico %}
 <body class="bg-fond text-encre min-h-screen flex flex-col">
   {% set here = request.url.path %}
-  <header class="bg-encre text-surface sticky top-0 z-10">
-    <div class="px-3 py-2.5 flex items-center justify-between gap-2">
-      {# L'outil porte le nom de la maison, pas celui du logiciel. #}
-      <a href="/" class="font-semibold text-titre2 whitespace-nowrap min-w-0 truncate">
+
+  {# En-tête réduit à ce qu'il doit porter : le nom de la maison et l'accès au
+     compte. La navigation est descendue en bas de l'écran. #}
+  <header class="bg-fond sticky top-0 z-20">
+    <div class="h-14 px-4 flex items-center justify-between gap-4">
+      <a href="/" class="font-semibold text-titre2 min-w-0 truncate">
         {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
       </a>
       {% if request.state.account %}
-      <form method="post" action="/logout">
-        <button type="submit" class="text-contexte text-structure">Déconnexion</button>
+      <form method="post" action="/logout" class="shrink-0">
+        <button type="submit" class="btn-tertiaire text-contexte text-encre-doux">Déconnexion</button>
       </form>
       {% endif %}
     </div>
-    {% if request.state.account %}
-    {# L'onglet courant est souligné, pas colorié : l'accent reste réservé à
-       l'action principale de l'écran. #}
-    {% set tabs = [
-      ("/", "Tableau de bord"),
-      ("/counting", "Comptage"),
-      ("/deliveries", "Réceptions"),
-      ("/variance", "Écarts"),
-      ("/orders", "Commandes"),
-      ("/recipes", "Fiches techniques"),
-      ("/ingredients", "Ingrédients"),
-      ("/sales/import", "Ventes"),
-      ("/metrics", "Indicateurs"),
-      ("/settings", "Réglages"),
-    ] %}
-    <nav class="flex gap-4 overflow-x-auto px-3 text-base whitespace-nowrap">
-      {% for path, label in tabs %}
-      {% set active = here == path or (path != "/" and here.startswith(path)) %}
-      <a href="{{ path }}"
-         class="py-2 border-b-2 {% if active %}border-surface font-semibold{% else %}border-transparent text-structure{% endif %}"
-         {% if active %}aria-current="page"{% endif %}>{{ label }}</a>
-      {% endfor %}
-    </nav>
-    {% endif %}
   </header>
 
-  <main class="flex-1 w-full max-w-3xl mx-auto p-3 pb-12">
+  <main class="flex-1 w-full max-w-3xl mx-auto px-4 pb-20">
     {% set msg = request.query_params.get('msg') %}
     {% if msg %}
       {% set msg_type = request.query_params.get('type', 'success') %}
-      <div class="mb-3 rounded border px-3 py-2 text-base {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
+      <div class="mb-4 rounded px-5 py-4 text-base {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
         {{ msg }}
       </div>
     {% endif %}
     {% set alerts = request.query_params.get('alerts') %}
     {% if alerts %}
-      <div class="mb-3 rounded border border-alerte bg-alerte-fond text-alerte px-3 py-2 text-base">
+      <div class="mb-4 rounded bg-alerte-fond text-alerte px-5 py-4 text-base">
         {{ alerts }}
       </div>
     {% endif %}
     {% block content %}{% endblock %}
   </main>
+
+  {% if request.state.account %}
+  {# Barre d'onglets fixe en bas : atteignable au pouce, quatre entrées à
+     parts égales plus « Plus ». Aucune ne se coupe, quelle que soit la
+     largeur, parce qu'aucune n'a de largeur propre (AC-D-5). #}
+  {% set onglets = [
+    ("/", "accueil", "Accueil"),
+    ("/counting", "comptage", "Comptage"),
+    ("/variance", "ecarts", "Écarts"),
+    ("/orders", "commandes", "Commandes"),
+  ] %}
+  {% set reste = [
+    ("/deliveries", "Réceptions"),
+    ("/recipes", "Fiches techniques"),
+    ("/ingredients", "Ingrédients"),
+    ("/sales/import", "Ventes"),
+    ("/metrics", "Indicateurs"),
+    ("/settings", "Réglages"),
+  ] %}
+  {% set dans_le_reste = reste | map(attribute=0) | select('equalto', here) | list | length > 0
+     or here.startswith('/recipes') or here.startswith('/ingredients')
+     or here.startswith('/deliveries') or here.startswith('/sales')
+     or here.startswith('/settings') or here.startswith('/metrics') %}
+  <nav class="barre-onglets">
+    <div class="barre-onglets-rail">
+      {% for path, nom, label in onglets %}
+      {% set active = here == path or (path != "/" and here.startswith(path)) %}
+      <a href="{{ path }}" class="onglet" {% if active %}aria-current="page"{% endif %}>
+        {{ ico.icon(nom, 22) }}<span>{{ label }}</span>
+      </a>
+      {% endfor %}
+      {# « Plus » ouvre un panneau pleine largeur au-dessus de la barre. En
+         `<details>` : il s'ouvre et se ferme sans JavaScript, donc il survit
+         à une page servie par le cache hors-ligne. #}
+      <details class="feuille">
+        <summary class="onglet" {% if dans_le_reste %}aria-current="page"{% endif %}>
+          {{ ico.icon("plus", 22) }}<span>Plus</span>
+        </summary>
+        <div class="feuille-panneau">
+          <div class="max-w-3xl mx-auto px-4 py-4">
+            {% for path, label in reste %}
+            <a href="{{ path }}"
+               class="flex items-center min-h-12 px-4 rounded text-base {% if here == path %}text-accent font-semibold{% endif %}">
+              {{ label }}
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </details>
+    </div>
+  </nav>
+  {% endif %}
 
   <script src="/static/app.js"></script>
   <script>

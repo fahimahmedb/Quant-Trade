@@ -4,71 +4,70 @@
 
 {# ---------------------------------------------------------------------
    Niveau 1 — ce qui demande une action maintenant.
-   Un seul bloc d'accent sur l'écran. S'il n'y a rien à faire, on le dit
-   au lieu de laisser une place vide qui inquiète.
+   S'il n'y a rien à faire, on le dit au lieu de laisser un vide qui inquiète.
    --------------------------------------------------------------------- #}
 {% if open_session %}
-<a href="/counting" class="bloc bloc-action block px-4 py-4 mb-3">
-  <div class="font-semibold text-titre1 mb-0.5">Comptage en cours</div>
-  <div class="text-base contexte">Commencé le {{ open_session.started_at | datetime_fr }} — reprendre →</div>
+<a href="/counting" class="bloc bloc-action block px-5 py-5 mb-4">
+  <div class="font-semibold text-titre1">Comptage en cours</div>
+  <div class="secondaire mt-1">Commencé le {{ open_session.started_at | datetime_fr }}</div>
+  <div class="btn-tertiaire mt-1">Reprendre le comptage</div>
 </a>
 {% elif pending_suggestions %}
-<a href="/orders" class="bloc bloc-action block px-4 py-4 mb-3">
-  <div class="font-semibold text-titre1 mb-0.5">
+<a href="/orders" class="bloc bloc-action block px-5 py-5 mb-4">
+  <div class="font-semibold text-titre1">
     <span class="nombre">{{ pending_suggestions }}</span>
     suggestion{{ 's' if pending_suggestions > 1 }} de commande à décider
   </div>
-  <div class="text-base contexte">Rien n'est envoyé sans votre accord — examiner →</div>
+  <div class="secondaire mt-1">Rien n'est envoyé sans votre accord</div>
+  <div class="btn-tertiaire mt-1">Examiner les suggestions</div>
 </a>
 {% else %}
-<a href="/counting" class="bloc bloc-action block px-4 py-4 mb-3">
-  <div class="font-semibold text-titre1 mb-0.5">Démarrer un comptage</div>
-  <div class="text-base contexte">Rien ne demande votre attention pour l'instant →</div>
+<a href="/counting" class="bloc bloc-action block px-5 py-5 mb-4">
+  <div class="font-semibold text-titre1">Démarrer un comptage</div>
+  <div class="secondaire mt-1">Rien ne demande votre attention pour l'instant</div>
 </a>
 {% endif %}
 
 {# ---------------------------------------------------------------------
-   Niveau 2 — ce qu'on consulte. Le montant domine, les quantités suivent.
+   Niveau 2 — ce qu'on consulte. Le montant est l'élément le plus fort.
    --------------------------------------------------------------------- #}
-<section class="bloc mb-3">
+<section class="bloc mb-8">
   {% if not latest_session %}
-  <div class="px-4 py-5">
-    <h2 class="font-semibold text-titre2 mb-1">Écarts</h2>
-    <p class="text-base contexte">
+  <div class="px-5 py-6">
+    <h2 class="font-semibold text-titre2">Écarts</h2>
+    <p class="secondaire mt-2">
       Après votre premier comptage terminé, vous verrez ici ce que le stock
       réel a coûté par rapport au théorique.
     </p>
   </div>
   {% else %}
-  <div class="px-4 pt-4 pb-3 border-b border-filet">
-    <div class="flex items-end justify-between gap-3">
-      <div class="min-w-0">
-        <h2 class="font-semibold text-titre2">Écarts du dernier comptage</h2>
-        <p class="text-contexte contexte mt-0.5">
-          {{ latest_session.ended_at | datetime_fr }}{% if variance_count %} ·
-          <span class="nombre">{{ variance_count }}</span> ligne{{ 's' if variance_count > 1 }} en écart{% endif %}
-        </p>
-      </div>
-      <div class="montant text-montant shrink-0 {% if variance_total %}text-alerte{% else %}text-valide{% endif %}">
-        {{ variance_total | euros }}
-      </div>
+  {# Le montant occupe sa propre ligne. Placé à côté du titre, il entrait en
+     collision dès que celui-ci passait à la ligne — et il vaut mieux qu'il
+     domine seul : c'est le chiffre qui justifie l'outil. #}
+  <div class="px-5 pt-5 pb-4">
+    <h2 class="font-semibold text-titre2">Écarts du dernier comptage</h2>
+    <div class="montant text-montant mt-2 {% if variance_total %}text-alerte{% else %}text-valide{% endif %}">
+      {{ variance_total | euros }}
     </div>
+    <p class="secondaire mt-1">
+      {{ latest_session.ended_at | datetime_fr }}{% if variance_count %},
+      {{ variance_count }} ligne{{ 's' if variance_count > 1 }} en écart{% endif %}
+    </p>
   </div>
   {% set report = top_variances %}
   {% include "partials/variance_table.html" with context %}
-  <div class="px-4 py-2.5 border-t border-filet">
-    <a href="/variance" class="text-base font-semibold text-accent">Voir tous les écarts →</a>
+  <div class="px-5 pb-4">
+    <a href="/variance" class="btn-tertiaire">Voir tous les écarts</a>
   </div>
   {% endif %}
 </section>
 
 {# ---------------------------------------------------------------------
-   Niveau 3 — le contexte. Ni fond ni filet : ce n'est pas de l'information,
-   c'est un repère. Les compteurs descendent ici.
+   Niveau 3 — le contexte. Ni bloc ni fond : c'est un repère, pas une
+   information.
    --------------------------------------------------------------------- #}
-<p class="text-contexte contexte px-1">
-  Catalogue : <span class="nombre">{{ dish_count }}</span> plat{{ 's' if dish_count > 1 }} ·
-  <span class="nombre">{{ ingredient_count }}</span> ingrédient{{ 's' if ingredient_count > 1 }} ·
-  <a href="/sales/import" class="underline">importer des ventes</a>
+<p class="secondaire px-1 pb-4">
+  Catalogue&nbsp;: {{ dish_count }} plat{{ 's' if dish_count > 1 }},
+  {{ ingredient_count }} ingrédient{{ 's' if ingredient_count > 1 }}
 </p>
 {% endblock %}

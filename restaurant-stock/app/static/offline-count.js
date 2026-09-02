@@ -67,7 +67,7 @@
   const collect = (form) => {
     const entries = [];
     form.querySelectorAll("[data-count-row]").forEach((row) => {
-      const input = row.querySelector(".count-input");
+      const input = row.querySelector("input[name^='count_']");
       if (!input || input.value.trim() === "") return;
       const quantity = parseFloat(input.value.replace(",", "."));
       if (Number.isNaN(quantity)) return;
@@ -144,11 +144,93 @@
     return true;
   };
 
+  /* --- Retour visible sur place ----------------------------------------
+   * Enregistrer une zone ne recharge plus la page : le champ passe en état
+   * confirmé, la zone dit « enregistré », l'avancement suit. Un rechargement
+   * silencieux ne dit rien au doigt qui vient d'appuyer.
+   */
+  const marquerConfirme = (form) => {
+    form.querySelectorAll("[data-count-row] [data-champ]").forEach((champ) => {
+      const input = champ.querySelector("input[name^='count_']");
+      if (input && input.value.trim() !== "") champ.dataset.etat = "confirme";
+    });
+  };
+
+  const majAvancement = () => {
+    const compteur = document.querySelector("[data-avancement]");
+    const jauge = document.querySelector("[data-jauge]");
+    if (!compteur) return;
+    const total = Number(compteur.dataset.total) || 0;
+    const faits = document.querySelectorAll('[data-champ][data-etat="confirme"]').length;
+    compteur.innerHTML = `${faits}<span class="text-encre-doux">/${total}</span>`;
+    if (jauge) jauge.style.width = total ? `${(faits / total) * 100}%` : "0%";
+  };
+
+  const majZone = (form, confirmation) => {
+    const bloc = form.closest("details[data-zone]");
+    if (!bloc) return;
+    const etat = bloc.querySelector("[data-zone-etat]");
+    if (!etat) return;
+    const lignes = bloc.querySelectorAll("[data-count-row]").length;
+    const faits = bloc.querySelectorAll('[data-champ][data-etat="confirme"]').length;
+    const repos = () => {
+      if (faits >= lignes) {
+        etat.textContent = "terminé";
+        etat.classList.add("text-valide", "font-semibold");
+      } else {
+        etat.innerHTML = `<span class="nombre">${faits}/${lignes}</span>`;
+        etat.classList.remove("text-valide", "font-semibold");
+      }
+    };
+    if (confirmation) {
+      etat.textContent = "enregistré";
+      etat.classList.add("text-valide", "font-semibold");
+      setTimeout(repos, 2400); // confirmation brève, puis retour à l'état réel
+    } else {
+      repos();
+    }
+  };
+
+  /** Envoi d'une zone sans quitter la page. Renvoie false si le réseau a
+   *  lâché entre-temps, pour retomber sur la file locale. */
+  const envoyerZone = async (form) => {
+    let response;
+    try {
+      response = await fetch(`/counting/${sessionId}/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entries: collect(form), revision: revision }),
+      });
+    } catch (_) {
+      return false;
+    }
+    let result = null;
+    try {
+      result = await response.json();
+    } catch (_) {
+      result = null;
+    }
+    if (response.status === 409 && result && result.closed) {
+      setBanner(result.error, "error");
+      return true; // rien à mettre en file : le comptage est clos
+    }
+    if (!response.ok) return false;
+    if (result && result.stale) {
+      reloadStale("La liste a changé depuis un autre appareil, la page se recharge.");
+      return true;
+    }
+    if (reportConflicts(result && result.conflicts)) return true;
+    marquerConfirme(form);
+    majZone(form, true);
+    majAvancement();
+    return true;
+  };
+
   document.querySelectorAll("form[data-zone-form]").forEach((form) => {
     form.addEventListener("submit", (event) => {
-      // Horodatage de saisie pour l'envoi classique (formulaire en ligne).
+      // Horodatage de saisie pour l'envoi classique (formulaire sans script).
       const stamp = Date.now();
-      form.querySelectorAll("[data-count-row] .count-input").forEach((input) => {
+      form.querySelectorAll("[data-count-row] input[name^='count_']").forEach((input) => {
         const lineId = input.name.replace("count_", "");
         let hidden = form.querySelector(`input[name="entered_at_${lineId}"]`);
         if (!hidden) {
@@ -160,10 +242,21 @@
         hidden.value = String(stamp);
       });
 
-      if (navigator.onLine) return; // envoi normal
-
-      // Hors ligne : on garde la saisie et on reste sur la page.
+      // On ne quitte jamais la page : en ligne on envoie et on confirme sur
+      // place, hors ligne on met en file. Sans script, le `<form>` classique
+      // continue de fonctionner tel quel.
       event.preventDefault();
+
+      if (navigator.onLine) {
+        envoyerZone(form).then((envoye) => {
+          if (envoye) return;
+          // Le réseau a lâché pendant l'envoi : la saisie part en file.
+          writeQueue(readQueue().concat(collect(form)));
+          refreshBanner();
+        });
+        return;
+      }
+
       const queue = readQueue().concat(collect(form));
       writeQueue(queue);
       form.querySelectorAll("[data-count-row]").forEach((row) => {

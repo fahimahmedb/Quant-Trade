@@ -3,18 +3,28 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Direction visuelle V1.2 — « l'inox et l'ardoise »
+   Direction visuelle V1.2 — finition
    --------------------------------------------------------------------------
-   Références : inox brossé, ardoise du service, étiquette de bac gastronorme.
-   Des objets de métier : robustes, lisibles à distance, sans décoration.
+   Même palette, même typographie : ce qui change est l'exigence d'exécution.
+   Référence de finition : une application bancaire moderne. Sobre, mais
+   soignée dans le détail.
 
-   Deux principes qui expliquent la plupart des choix ci-dessous :
-   1. Les chiffres priment sur le texte. C'est une application de quantités et
-      d'euros : ils sont en IBM Plex Mono, donc tabulaires par construction,
-      et les colonnes de nombres s'alignent sans réglage.
-   2. La structure vient du filet, pas de l'ombre. Aucune ombre portée dans
-      toute l'application : les blocs sont des surfaces plates cernées d'un
-      filet de 1 px, comme une étiquette collée sur de l'inox.
+   Quatre règles expliquent presque tout ce fichier :
+   1. Un seul rythme d'espacement, multiples de 4 px. L'irrégularité est ce
+      qui se lit comme « bâclé », même sans qu'on sache pourquoi. L'échelle
+      est verrouillée dans tailwind.config.js : une valeur hors échelle n'est
+      pas seulement interdite, elle n'existe pas.
+   2. On sépare par l'espace, pas par le trait. Un bloc au repos porte une
+      seule des trois marques possibles — ici son fond, ni bordure ni ombre.
+      Le filet ne sert qu'entre les lignes d'une même liste dense.
+   3. Deux rayons dans toute l'application : 12 px pour un bloc, 8 px pour ce
+      qui vit à l'intérieur. Jamais un troisième.
+   4. Tout ce qui se touche réagit, et seulement quand on le touche. Aucune
+      animation d'entrée, aucun effet au survol.
+
+   La tension avec la référence bancaire est tranchée en faveur de la
+   cuisine : cibles d'au moins 48 px, champs de comptage à 52 px, contrastes
+   AAA, même là où un gris plus clair serait plus élégant.
    ========================================================================== */
 
 /* IBM Plex — SIL Open Font License 1.1, licence dans app/static/fonts/.
@@ -54,31 +64,36 @@
   :root {
     /* --- Les six valeurs de la direction visuelle ------------------------
        Contrôlées par tests/test_design_tokens.py : toute modification d'une
-       de ces valeurs doit continuer à passer les seuils de contraste. */
+       de ces valeurs doit continuer à passer les seuils de contraste AAA. */
 
     /* Fond principal : gris froid, jamais blanc pur. L'écran est consulté
-       sous néon de cuisine, où le blanc pur fatigue. */
-    --fond: #e6eae9;
+       sous néon de cuisine, où le blanc pur fatigue. Assombri par rapport à
+       la première direction : c'est lui, désormais, qui détache les blocs,
+       puisqu'ils n'ont plus de filet. */
+    --fond: #dfe5e4;
     /* Encre : très sombre à reflet bleu-vert, jamais noir absolu. */
     --encre: #141d1c;
-    /* Accent unique, réservé à l'action principale. Un seul bouton coloré
-       par écran : s'il y en a deux, il y en a un de trop. */
+    /* Accent unique, réservé à l'action principale. */
     --accent: #1c4a6e;
     /* Statut : l'alerte (écart, rupture) et le validé (conforme). */
     --alerte: #a33323;
     --valide: #2e6b4c;
-    /* Gris de structure : le filet qui sépare, jamais une ombre. */
+    /* Gris de structure : bordure discrète d'un champ, trait d'une icône.
+       Ne cerne plus les blocs. */
     --structure: #9ba8a4;
 
-    /* --- Teintes dérivées ------------------------------------------------
-       Pas de nouvelles décisions : des éclaircissements des six valeurs
-       ci-dessus, pour les surfaces et les fonds de statut. */
-    --surface: #f8faf9;
-    --encre-doux: #55625f;
-    --filet: #dde3e1;
+    /* --- Teintes dérivées ----------------------------------------------- */
+    --surface: #fcfdfd;      /* le bloc */
+    --champ: #eff3f2;        /* le champ, légèrement en retrait du bloc */
+    --encre-doux: #55625f;   /* libellé secondaire */
+    --filet: #e4eae9;        /* entre deux lignes d'une liste dense */
     --accent-fond: #e7eff4;
     --alerte-fond: #f7ebe8;
     --valide-fond: #e9f2ed;
+
+    /* Durée unique des retours au toucher. Au-delà de 200 ms, l'interface
+       paraît molle ; en deçà de 100 ms, on ne voit rien. */
+    --duree: 160ms;
   }
 
   html {
@@ -94,23 +109,15 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Cibles tactiles : le seuil de 44 px vaut pour tout ce qui se touche,
-     pas seulement pour les boutons de comptage (U12). */
-  button,
-  [type="submit"],
-  select {
-    min-height: 2.75rem;
-  }
-
-  /* Le focus doit rester visible partout, y compris au clavier (U12). */
+  /* Le focus doit rester visible partout, y compris au clavier. */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
-  /* Préférence système « animations réduites » : on la respecte, et comme
-     la direction visuelle n'utilise aucune animation décorative, il ne reste
-     rien à désactiver que ce que le navigateur anime lui-même. */
+  /* Rien ne s'anime sans action de l'utilisateur ; il ne reste donc à
+     désactiver que les transitions d'état et ce que le navigateur anime
+     lui-même. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -124,40 +131,44 @@
 }
 
 @layer components {
-  /* --- Le bloc, unité de mise en page ---------------------------------
-     Surface plate, filet de 1 px, angle presque droit. Pas d'ombre : c'est
-     ce qui distingue cette interface d'un empilement de cartes SaaS. */
+  /* --- Le bloc ---------------------------------------------------------
+     Une seule des trois marques possibles : son fond. Pas de bordure, pas
+     d'ombre. Ce qui le sépare du suivant, c'est l'espace. */
   .bloc {
     background-color: var(--surface);
-    border: 1px solid var(--structure);
-    border-radius: 3px;
+    border-radius: 12px;
   }
 
-  /* Trois niveaux visuellement distincts, pas un seul répété.
-     1. Ce qui demande une action maintenant : filet épais à gauche.
-     2. Ce qu'on consulte : le bloc nu.
-     3. Ce qui est du contexte : ni fond ni filet, texte adouci. */
+  /* Ce qui demande une action maintenant. Le liseré d'accent est la seule
+     exception à « pas de bordure » : il porte un sens, il ne cerne rien. */
   .bloc-action {
-    border-left: 3px solid var(--accent);
+    border-left: 4px solid var(--accent);
   }
-  .bloc-alerte {
-    border-left: 3px solid var(--alerte);
-    background-color: var(--alerte-fond);
-  }
+
   .contexte {
     color: var(--encre-doux);
   }
 
+  /* Libellé secondaire : plus petit et plus clair que le nom qu'il
+     accompagne, pour cesser de le concurrencer. */
+  .secondaire {
+    color: var(--encre-doux);
+    font-size: 0.8125rem;
+    line-height: 1.125rem;
+  }
+
   /* --- Les chiffres ----------------------------------------------------
-     Tout nombre affiché passe par là : quantités, euros, pourcentages,
-     compteurs. C'est ce qui aligne les colonnes. */
+     En chasse fixe, donc tabulaires : les colonnes de montants s'alignent
+     sans réglage. Réservé aux colonnes ; en pleine phrase, la chasse fixe
+     écarte les séparateurs de milliers sans rien apporter. */
   .nombre {
     font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
   }
 
-  /* Le montant qui porte l'information principale d'un écran. */
+  /* Le montant est l'élément typographique le plus fort de l'écran : c'est
+     le seul endroit où le gras lourd est autorisé. */
   .montant {
     font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
@@ -165,54 +176,225 @@
     letter-spacing: -0.02em;
   }
 
-  /* --- Actions ---------------------------------------------------------
-     Un seul bouton d'accent par écran ; tout le reste est secondaire. */
-  .action-principale {
-    background-color: var(--accent);
-    color: #fff;
-    border-radius: 3px;
-    font-weight: 600;
-    min-height: 2.75rem;
+  /* --- Boutons ---------------------------------------------------------
+     Trois niveaux, et chacun s'enfonce quand on appuie. Sans cet état
+     pressé, l'interface paraît morte au doigt. */
+  .btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
     text-align: center;
+    transition: background-color var(--duree) ease, transform var(--duree) ease,
+      border-color var(--duree) ease;
   }
-  .action-secondaire {
-    background-color: var(--surface);
-    color: var(--encre);
-    border: 1px solid var(--structure);
-    border-radius: 3px;
-    font-weight: 600;
-    min-height: 2.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  .btn:active {
+    transform: translateY(1px);
   }
 
-  /* --- Saisie de comptage ---------------------------------------------
-     Le texte lu debout, à bout de bras : nettement plus grand que le reste,
-     aligné à droite pour que les unités se suivent d'une ligne à l'autre. */
-  .count-input {
-    min-height: 3.25rem;
+  .btn-principal {
+    background-color: var(--accent);
+    color: #fff;
+  }
+  .btn-principal:active {
+    background-color: #133550;
+  }
+
+  .btn-secondaire {
+    background-color: var(--champ);
+    color: var(--encre);
+  }
+  .btn-secondaire:active {
+    background-color: #dde4e2;
+  }
+
+  /* Tertiaire : du texte, pas une boîte. Garde la cible tactile pleine. */
+  .btn-tertiaire {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    color: var(--accent);
+    font-weight: 600;
+    transition: color var(--duree) ease;
+  }
+  .btn-tertiaire:active {
+    color: #133550;
+  }
+
+  /* --- Champ de saisie -------------------------------------------------
+     L'unité vit dans le champ, à droite : c'est le conteneur qui porte la
+     bordure et le fond, pas l'`input`. Le focus se prend sur le conteneur
+     entier (`focus-within`), sinon la lueur ne suivrait pas l'unité. */
+  .champ {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 16px;
+    background-color: var(--champ);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: border-color var(--duree) ease, box-shadow var(--duree) ease,
+      background-color var(--duree) ease;
+  }
+  .champ:focus-within {
+    background-color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(28, 74, 110, 0.16);
+  }
+  .champ input {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-align: right;
     font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
     font-size: 1.5rem;
     font-weight: 600;
-    text-align: right;
-    background-color: #fff;
-    border: 1px solid var(--structure);
-    border-radius: 3px;
     color: var(--encre);
   }
-  .count-input:focus {
+  .champ input:focus {
+    outline: none; /* la lueur du conteneur tient déjà ce rôle */
+  }
+  .champ .unite {
+    flex: 0 0 auto;
+    color: var(--encre-doux);
+    font-size: 0.875rem;
+  }
+
+  /* Valeur pré-remplie que personne n'a encore confirmée : elle se propose,
+     elle n'affirme pas — chiffre en gris, bordure discrète. Une fois la ligne
+     enregistrée, le champ prend le fond du validé et le chiffre passe en encre
+     pleine. Le pointillé, essayé d'abord, faisait lire neuf champs comme un
+     écran inachevé plutôt que comme neuf valeurs provisoires. */
+  .champ[data-etat="propose"] {
+    border-color: var(--structure);
+  }
+  .champ[data-etat="propose"] input {
+    color: var(--encre-doux);
+  }
+  .champ[data-etat="confirme"] {
+    background-color: var(--valide-fond);
+  }
+
+  /* Le `<select>` reprend l'habillage du champ sans en être un : ce n'est
+     pas un conteneur, il porte lui-même son fond et sa bordure. */
+  .select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    background-color: var(--champ);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--encre);
+    transition: border-color var(--duree) ease, box-shadow var(--duree) ease;
+  }
+  .select:focus {
+    outline: none;
+    background-color: #fff;
     border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(28, 74, 110, 0.16);
+  }
+
+  /* --- Barre d'onglets -------------------------------------------------
+     En bas, atteignable au pouce, et rien n'y est coupé quelle que soit la
+     largeur : cinq onglets à parts égales, aucun n'ayant de largeur propre.
+     C'est ce qui garantit AC-D-5 de 320 à 430 px sans point de rupture. */
+  .barre-onglets {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 20;
+    background-color: var(--surface);
+    /* Le seul filet de séparation admis hors liste dense : il ne cerne pas
+       un bloc, il marque la limite entre deux plans qui se recouvrent. */
+    border-top: 1px solid var(--filet);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .barre-onglets-rail {
+    display: flex;
+    align-items: stretch;
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .onglet {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px;
+    min-height: 56px;
+    color: var(--encre-doux);
+    font-size: 0.6875rem;
+    /* Pas `line-height: 1` : combiné à l'`overflow: hidden` du libellé, il
+       rognait l'accent de « Écarts ». Un diacritique dépasse au-dessus de la
+       hauteur d'x, il faut lui laisser la place. */
+    line-height: 1.3;
+    transition: color var(--duree) ease, background-color var(--duree) ease;
+  }
+  .onglet[aria-current="page"] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .onglet:active {
+    background-color: var(--champ);
+  }
+  .onglet span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* « Plus » : le `<summary>` est le cinquième onglet, le panneau s'ouvre
+     au-dessus de la barre sur toute la largeur — rien à déborder. */
+  .feuille {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .feuille > summary {
+    list-style: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  .feuille > summary::-webkit-details-marker {
+    display: none;
+  }
+  .feuille-panneau {
+    position: fixed;
+    inset-inline: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    background-color: var(--surface);
+    border-top: 1px solid var(--filet);
+  }
+  .feuille-panneau a {
+    color: inherit;
+    transition: background-color var(--duree) ease;
+  }
+  .feuille-panneau a:active {
+    background-color: var(--champ);
   }
 
   .zone-details > summary {
     cursor: pointer;
     list-style: none;
+    transition: background-color var(--duree) ease;
+    border-radius: 12px;
+  }
+  .zone-details > summary:active {
+    background-color: var(--champ);
   }
   .zone-details > summary::-webkit-details-marker {
     display: none;
@@ -222,12 +404,10 @@
      Le fond de statut porte le sens ; il n'y a pas d'icône décorative. */
   .flash-success {
     background-color: var(--valide-fond);
-    border-color: var(--valide);
     color: var(--valide);
   }
   .flash-error {
     background-color: var(--alerte-fond);
-    border-color: var(--alerte);
     color: var(--alerte);
   }
 }

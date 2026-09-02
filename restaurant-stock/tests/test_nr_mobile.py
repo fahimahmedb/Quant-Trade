@@ -14,7 +14,9 @@ from pathlib import Path
 import pytest
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-WIDTHS = (390, 360, 320)
+# AC-D-5 : la barre d'onglets ne doit se couper à aucune largeur usuelle.
+# 430 px est le plus grand téléphone courant, 320 px le plus petit.
+WIDTHS = (430, 390, 360, 320)
 
 
 def _free_port() -> int:
@@ -118,3 +120,37 @@ def test_nr12_no_horizontal_overflow_on_every_screen(live_server, width):
             overflowing.append(f"{path} ({scroll_width}px > {width}px)")
     page.close()
     assert overflowing == [], overflowing
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_ac_d_5_bottom_tab_bar_never_overflows_or_clips(live_server, width):
+    """La navigation était coupée à 390 px dans la première direction.
+
+    Les cinq onglets se partagent la largeur à parts égales, donc aucun n'a de
+    largeur propre à faire déborder : on vérifie que la barre tient dans la
+    fenêtre et qu'aucun onglet ne dépasse de son rail.
+    """
+    base, browser, _done = live_server
+    page = browser.new_page(viewport={"width": width, "height": 844})
+    page.goto(base + "/login")
+    page.fill('input[name="email"]', "chef@bistrot.fr")
+    page.fill('input[name="password"]', "motdepasse123")
+    page.click('button[type="submit"]')
+    page.wait_for_load_state("networkidle")
+
+    rail = page.locator(".barre-onglets-rail")
+    assert rail.count() == 1, "la barre d'onglets doit être présente"
+    boite = rail.bounding_box()
+    assert boite["width"] <= width, f"rail de {boite['width']}px dans {width}px"
+
+    onglets = page.locator(".onglet")
+    assert onglets.count() == 5, "quatre onglets plus « Plus »"
+    for i in range(onglets.count()):
+        onglet = onglets.nth(i).bounding_box()
+        assert onglet["x"] >= -0.5, f"onglet {i} sort à gauche à {width}px"
+        assert onglet["x"] + onglet["width"] <= width + 0.5, (
+            f"onglet {i} sort à droite à {width}px"
+        )
+        # AC-D-4 : la cuisine gagne sur l'élégance, cible d'au moins 48 px.
+        assert onglet["height"] >= 48, f"onglet {i} haut de {onglet['height']}px"
+    page.close()

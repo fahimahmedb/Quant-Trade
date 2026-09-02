@@ -3,7 +3,7 @@
 {% block content %}
 <h1 class="text-xl font-semibold mb-1 break-words">{{ sales_import.filename }}</h1>
 <p class="text-sm text-gray-500 mb-3">
-  Importé le {{ sales_import.imported_at | datetime_fr }} · {{ sales_import.row_count }} ligne(s)
+  Importé le {{ sales_import.imported_at | datetime_fr }}, {{ sales_import.row_count }} ligne(s)
 </p>
 
 {% set errors = request.query_params.get('errors') %}
@@ -24,15 +24,15 @@
   <form method="post" action="/sales/imports/{{ sales_import.id }}/map" class="flex flex-wrap items-center gap-2 py-2 border-t first:border-t-0">
     <input type="hidden" name="raw_name" value="{{ raw_name }}" />
     <span class="font-medium flex-1 min-w-[10rem]">« {{ raw_name }} »</span>
-    <select name="dish_id" class="border rounded px-2 py-1.5 text-sm">
+    <select name="dish_id" class="border rounded px-2 py-2 text-sm">
       <option value="">— choisir un plat existant —</option>
       {% for dish in dishes %}
       <option value="{{ dish.id }}">{{ dish.name }}</option>
       {% endfor %}
     </select>
     <span class="text-xs text-gray-400">ou</span>
-    <input name="new_dish_name" placeholder="nouveau plat…" class="border rounded px-2 py-1.5 text-sm w-40" />
-    <button type="submit" class="bg-slate-700 text-white px-3 py-1.5 rounded text-sm">Rattacher</button>
+    <input name="new_dish_name" placeholder="nouveau plat…" class="border rounded px-2 py-2 text-sm w-40" />
+    <button type="submit" class="bg-slate-700 text-white px-3 py-2 rounded text-sm">Rattacher</button>
   </form>
   {% endfor %}
 </div>

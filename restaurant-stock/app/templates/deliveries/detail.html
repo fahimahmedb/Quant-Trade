@@ -3,8 +3,8 @@
 {% block content %}
 <h1 class="text-xl font-semibold mb-1">Réception du {{ receipt.received_on | date_fr }}</h1>
 <p class="text-sm text-gray-500 mb-4">
-  {% if receipt.supplier %}{{ receipt.supplier }} · {% endif %}
-  {{ receipt.lines | length }} ligne(s) · {{ receipt.total_value | euros }}
+  {% if receipt.supplier %}{{ receipt.supplier }}, {% endif %}
+  {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
   {% if receipt.note %}<br />{{ receipt.note }}{% endif %}
 </p>
 
@@ -18,7 +18,7 @@
     <div class="text-xs text-gray-500">
       {{ line | line_price }}
       {% if line.price_change_pct is not none and line.price_change_pct != 0 %}
-      · <span class="{% if line.price_change_pct > 0 %}text-red-600{% else %}text-emerald-600{% endif %}">
+      <span class="{% if line.price_change_pct > 0 %}text-red-600{% else %}text-emerald-600{% endif %}">
         {{ line.price_change_pct | pct }} vs précédent
       </span>
       {% endif %}
