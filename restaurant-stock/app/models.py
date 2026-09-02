@@ -15,6 +15,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    Text,
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -318,6 +319,25 @@ class OrderSuggestionLine(Base):
 
     batch: Mapped[OrderSuggestionBatch] = relationship(back_populates="lines")
     ingredient: Mapped[Ingredient] = relationship()
+
+
+class ErrorLog(Base):
+    """Journal des erreurs applicatives (F2), consultable par l'équipe projet.
+
+    Volontairement sans données personnelles ni contenu de formulaire : on
+    garde le chemin (sans query string), la méthode, le type et le message
+    de l'exception, et la trace technique.
+    """
+
+    __tablename__ = "error_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    occurred_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
+    method: Mapped[str] = mapped_column(String(10))
+    path: Mapped[str] = mapped_column(String(255))
+    error_type: Mapped[str] = mapped_column(String(120))
+    message: Mapped[str] = mapped_column(String(1000))
+    traceback: Mapped[str] = mapped_column(Text)
 
 
 class Account(Base):

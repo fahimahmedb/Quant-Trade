@@ -1,12 +1,14 @@
 from types import SimpleNamespace
 
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
+from app import models
 from app.database import get_db
 from app.flash import redirect
 from app.forms import InvalidNumberError, parse_float_fr, parse_int_fr
-from app.services import settings_service
+from app.services import data_export, settings_service
 from app.templating import templates
 
 router = APIRouter(prefix="/settings", tags=["settings"])
@@ -16,6 +18,46 @@ router = APIRouter(prefix="/settings", tags=["settings"])
 def settings_form(request: Request, db: Session = Depends(get_db)):
     settings = settings_service.get_settings(db)
     return templates.TemplateResponse(request, "settings/form.html", {"request": request, "settings": settings})
+
+
+@router.get("/export")
+def export_data(db: Session = Depends(get_db)):
+    """Export complet en CSV (F2, réversibilité)."""
+    payload = data_export.export_zip(db)
+    return Response(
+        payload,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{data_export.export_filename()}"'},
+    )
+
+
+@router.post("/import")
+async def import_data(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    """Réimport du catalogue depuis un export (AC-F2-4)."""
+    payload = await file.read()
+    try:
+        summary = data_export.import_catalog(db, payload)
+    except data_export.ImportError_ as exc:
+        return redirect("/settings", str(exc), error=True)
+    return redirect(
+        "/settings",
+        f"Import réussi : {summary['ingredients']} ingrédient(s), {summary['dishes']} plat(s), "
+        f"{summary['recipe_lines']} ligne(s) de fiche technique.",
+    )
+
+
+@router.get("/errors")
+def error_log(request: Request, db: Session = Depends(get_db)):
+    """Journal des erreurs applicatives (F2)."""
+    errors = (
+        db.query(models.ErrorLog)
+        .order_by(models.ErrorLog.occurred_at.desc())
+        .limit(100)
+        .all()
+    )
+    return templates.TemplateResponse(
+        request, "settings/errors.html", {"request": request, "errors": errors}
+    )
 
 
 @router.post("")

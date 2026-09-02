@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import BASE_DIR, UPLOAD_DIR
 from app.database import init_db
-from app.middleware import RequireLoginMiddleware
+from app.middleware import ErrorLogMiddleware, RequireLoginMiddleware
 from app.routers import (
     auth,
     counting,
@@ -31,7 +31,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Gestion de stock — Restaurant indépendant", lifespan=lifespan)
 
 # Fermé par défaut : chaque écran métier exige une session (F2, AC-F2-1).
+# Ajouté en premier donc exécuté en dernier : le journal d'erreurs enveloppe
+# le contrôle de session et voit aussi ce qui casse à l'intérieur.
 app.add_middleware(RequireLoginMiddleware)
+app.add_middleware(ErrorLogMiddleware)
 
 
 @app.get("/healthz", include_in_schema=False)

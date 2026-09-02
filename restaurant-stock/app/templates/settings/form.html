@@ -30,4 +30,32 @@
   </div>
   <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded font-medium">Enregistrer</button>
 </form>
+
+<h2 class="text-lg font-semibold mt-6 mb-2">Vos données</h2>
+<div class="bg-white rounded border p-4 space-y-4">
+  <div>
+    <a href="/settings/export" class="inline-block bg-slate-700 text-white px-4 py-2 rounded text-sm font-medium">
+      Exporter toutes mes données (CSV)
+    </a>
+    <p class="text-xs text-gray-500 mt-1">
+      Une archive ZIP avec un fichier CSV par table, lisible dans un tableur.
+      Vos données vous appartiennent : vous repartez avec si vous arrêtez.
+    </p>
+  </div>
+
+  <form method="post" action="/settings/import" enctype="multipart/form-data" class="space-y-2">
+    <label class="block text-sm font-medium" for="import-file">Réimporter un catalogue</label>
+    <input type="file" id="import-file" name="file" accept=".zip,application/zip" required
+           class="w-full border rounded px-3 py-2" />
+    <button type="submit" class="bg-slate-700 text-white px-4 py-2 rounded text-sm font-medium">Importer</button>
+    <p class="text-xs text-gray-500">
+      Restaure ingrédients et fiches techniques depuis un export, sur une
+      installation neuve. Refusé si un catalogue existe déjà.
+    </p>
+  </form>
+
+  <div>
+    <a href="/settings/errors" class="text-sm text-slate-600 underline">Journal des erreurs applicatives</a>
+  </div>
+</div>
 {% endblock %}

@@ -4,11 +4,16 @@ Fermé par défaut : toute route qui n'est pas explicitement publique exige
 une session valide. Un oubli côté routeur donne donc une redirection vers
 la connexion, jamais une page métier ouverte.
 """
+import logging
+import traceback
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import RedirectResponse
 
 from app.database import SessionLocal
 from app.services import auth
+
+logger = logging.getLogger("app.errors")
 
 
 def _session_factory(request):
@@ -46,3 +51,40 @@ class RequireLoginMiddleware(BaseHTTPMiddleware):
 
         request.state.account = account
         return await call_next(request)
+
+
+class ErrorLogMiddleware(BaseHTTPMiddleware):
+    """Journalise les erreurs applicatives (F2) sans jamais les masquer.
+
+    L'exception est enregistrée puis relancée : le comportement observable
+    ne change pas (page d'erreur du serveur, trace dans les logs), on gagne
+    seulement un journal consultable par l'équipe projet.
+    """
+
+    async def dispatch(self, request, call_next):
+        try:
+            return await call_next(request)
+        except Exception as exc:
+            self._record(request, exc)
+            raise
+
+    @staticmethod
+    def _record(request, exc: Exception) -> None:
+        from app import models
+
+        logger.exception("Erreur non gérée sur %s %s", request.method, request.url.path)
+        db = _session_factory(request)()
+        try:
+            db.add(models.ErrorLog(
+                method=request.method,
+                path=request.url.path,  # sans query string : pas de donnée saisie
+                error_type=type(exc).__name__,
+                message=str(exc)[:1000],
+                traceback="".join(traceback.format_exception(type(exc), exc, exc.__traceback__))[-8000:],
+            ))
+            db.commit()
+        except Exception:  # journaliser ne doit jamais aggraver l'incident
+            logger.exception("Impossible d'enregistrer l'erreur dans le journal")
+            db.rollback()
+        finally:
+            db.close()
