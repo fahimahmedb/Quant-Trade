@@ -6,7 +6,9 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import BASE_DIR, UPLOAD_DIR
 from app.database import init_db
+from app.middleware import RequireLoginMiddleware
 from app.routers import (
+    auth,
     counting,
     dashboard,
     deliveries,
@@ -28,6 +30,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Gestion de stock — Restaurant indépendant", lifespan=lifespan)
 
+# Fermé par défaut : chaque écran métier exige une session (F2, AC-F2-1).
+app.add_middleware(RequireLoginMiddleware)
+
+
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    return {"status": "ok"}
+
 app.mount("/static", StaticFiles(directory=str(Path(BASE_DIR) / "app" / "static")), name="static")
 
 # Photos de bons de livraison (F1) : servies depuis les données du restaurant,
@@ -35,6 +45,7 @@ app.mount("/static", StaticFiles(directory=str(Path(BASE_DIR) / "app" / "static"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
+app.include_router(auth.router)
 app.include_router(dashboard.router)
 app.include_router(deliveries.router)
 app.include_router(ingredients.router)

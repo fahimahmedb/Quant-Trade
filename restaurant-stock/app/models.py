@@ -320,6 +320,23 @@ class OrderSuggestionLine(Base):
     ingredient: Mapped[Ingredient] = relationship()
 
 
+class Account(Base):
+    """Compte de l'établissement (F2). Un seul par installation en V1.1 :
+    l'appareil de la cuisine est partagé, le « votre nom » du comptage reste
+    déclaratif. Pas de rôles tant qu'il n'y a qu'un établissement."""
+
+    __tablename__ = "accounts"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    restaurant_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    failed_attempts: Mapped[int] = mapped_column(Integer, default=0)
+    locked_until: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
 class DeliveryReceipt(Base):
     """Réception de livraison (F1) : la seule entrée de stock de l'application."""
 

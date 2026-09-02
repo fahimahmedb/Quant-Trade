@@ -29,3 +29,36 @@ ROLLING_AVERAGE_WINDOW_DAYS = 7
 # Modifiable depuis la page Réglages (table Settings), pas en dur pour toujours.
 DEFAULT_SAFETY_DAYS = 2
 DEFAULT_TARGET_DAYS = 5
+
+# --- Exploitation (F2) ----------------------------------------------------
+# Durée de session : l'appareil de la cuisine est partagé et rarement
+# reconnecté, on évite de redemander le mot de passe toutes les semaines.
+SESSION_MAX_AGE_DAYS = 30
+
+# Cookie de session en Secure : à laisser à 1 en production (HTTPS
+# obligatoire, cf. README). Mis à 0 uniquement pour un accès local en http.
+SESSION_COOKIE_SECURE = os.environ.get("RESTAURANT_STOCK_COOKIE_SECURE", "1") != "0"
+
+
+def _load_or_create_secret_key() -> str:
+    """Clé de signature des sessions.
+
+    Priorité à la variable d'environnement (production). À défaut, une clé
+    est générée puis conservée dans data/secret_key : sans persistance, un
+    redémarrage déconnecterait tout le monde.
+    """
+    from_env = os.environ.get("RESTAURANT_STOCK_SECRET_KEY")
+    if from_env:
+        return from_env
+    key_file = DATA_DIR / "secret_key"
+    if key_file.exists():
+        return key_file.read_text().strip()
+    import secrets
+
+    key = secrets.token_urlsafe(48)
+    key_file.write_text(key)
+    key_file.chmod(0o600)
+    return key
+
+
+SECRET_KEY = _load_or_create_secret_key()

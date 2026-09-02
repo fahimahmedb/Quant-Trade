@@ -50,7 +50,7 @@ def live_server():
 
     for _ in range(50):
         try:
-            if httpx.get(base + "/", timeout=1).status_code == 200:
+            if httpx.get(base + "/healthz", timeout=1).status_code == 200:
                 break
         except Exception:
             time.sleep(0.2)
@@ -60,6 +60,8 @@ def live_server():
 
     # Données pour que chaque écran ait du contenu : import, comptage terminé, suggestions.
     with httpx.Client(base_url=base, follow_redirects=True) as c:
+        c.post("/setup", data={"email": "chef@bistrot.fr", "password": "motdepasse123",
+                               "restaurant_name": "Bistrot NR-12"})
         csv_path = BASE_DIR / "sample_data" / "exemple_export_ventes.csv"
         c.post("/sales/import", files={"file": (csv_path.name, csv_path.read_bytes(), "text/csv")})
         r = c.post("/counting/start", data={"counted_by": "NR-12"})
@@ -83,6 +85,7 @@ def live_server():
 
 
 SCREENS = [
+    "/login",
     "/", "/ingredients", "/ingredients/new", "/ingredients/1/edit",
     "/recipes", "/recipes/new", "/recipes/1/edit",
     "/sales/import", "/sales/imports/1",
@@ -96,6 +99,12 @@ SCREENS = [
 def test_nr12_no_horizontal_overflow_on_every_screen(live_server, width):
     base, browser, done_session = live_server
     page = browser.new_page(viewport={"width": width, "height": 844})
+    # Les écrans sont protégés (F2) : on se connecte avant de les parcourir.
+    page.goto(base + "/login")
+    page.fill('input[name="email"]', "chef@bistrot.fr")
+    page.fill('input[name="password"]', "motdepasse123")
+    page.click('button[type="submit"]')
+    page.wait_for_load_state("networkidle")
     # id de la session ouverte = dernière créée
     open_session = str(int(done_session) + 1)
     overflowing = []

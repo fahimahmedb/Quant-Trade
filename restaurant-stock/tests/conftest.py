@@ -43,9 +43,13 @@ class ClientAndDb:
     session_factory: sessionmaker
 
 
+TEST_EMAIL = "chef@bistrot.fr"
+TEST_PASSWORD = "motdepasse123"
+
+
 @pytest.fixture()
-def app_client():
-    """Client HTTP sur l'appli complète, base SQLite en mémoire isolée par test."""
+def anonymous_client():
+    """Client HTTP sans session : sert aux tests d'authentification (F2)."""
     from app.main import app
 
     engine = _memory_engine()
@@ -59,11 +63,30 @@ def app_client():
             db.close()
 
     app.dependency_overrides[get_db] = override_get_db
+    # Le middleware de session n'utilise pas les dépendances FastAPI : on lui
+    # injecte la fabrique de sessions du test.
+    app.state.session_factory = testing_session_local
     try:
         yield ClientAndDb(TestClient(app, follow_redirects=True), testing_session_local)
     finally:
         app.dependency_overrides.clear()
+        app.state.session_factory = None
         engine.dispose()
+
+
+@pytest.fixture()
+def app_client(anonymous_client):
+    """Client connecté au compte de test : les écrans métier sont protégés (F2)."""
+    from app.services import auth
+
+    with anonymous_client.session_factory() as db:
+        auth.create_account(db, email=TEST_EMAIL, password=TEST_PASSWORD,
+                            restaurant_name="Bistrot de test")
+    response = anonymous_client.client.post(
+        "/login", data={"email": TEST_EMAIL, "password": TEST_PASSWORD, "next": "/"}
+    )
+    assert response.status_code < 400, "connexion du client de test impossible"
+    return anonymous_client
 
 
 @pytest.fixture()
