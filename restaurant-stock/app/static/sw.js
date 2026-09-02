@@ -10,7 +10,10 @@
  * promis, et mieux vaut une erreur franche qu'un écart calculé sur des
  * chiffres périmés.
  */
-const VERSION = "v1";
+// Injecté par la route /sw.js à partir du contenu réel de la coquille et du
+// gabarit de comptage (app/main.py, _sw_build_version) : change tout seul
+// dès qu'un de ces fichiers change, sans dépendre qu'on y pense au déploiement.
+const VERSION = "__BUILD_VERSION__";
 const SHELL_CACHE = `shell-${VERSION}`;
 const PAGES_CACHE = `pages-${VERSION}`;
 

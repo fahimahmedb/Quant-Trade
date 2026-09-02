@@ -90,6 +90,26 @@ Décisions notables :
 - **Ajout non demandé, assumé : la déconnexion purge les pages de comptage
   en cache.** Le téléphone de la cuisine est partagé ; sans cela, la liste de
   stock restait lisible hors-ligne après déconnexion.
+- **Ajout non demandé, assumé : la version de cache du service worker est
+  calculée**, pas incrémentée à la main. `app/main.py` (`_sw_build_version`)
+  la dérive du contenu réel de la coquille et des gabarits de comptage au
+  démarrage du serveur ; elle change donc seule à chaque déploiement qui
+  touche ces fichiers, sans dépendre qu'on pense à modifier une constante.
+
+**Limite connue, non corrigée : l'arbitrage de conflit ne compense pas un
+décalage d'horloge entre deux appareils.** Le filtre anti-absurde
+(`_client_time`) ne rejette qu'un horodatage à plus de 5 minutes dans le
+futur ou 30 jours dans le passé par rapport à l'heure du serveur — il
+n'existe aucune correction pour un décalage plus fin, par exemple deux
+téléphones dont les horloges diffèrent de 2 ou 3 minutes. Dans ce cas, le
+téléphone dont l'horloge avance gagnera systématiquement l'arbitrage,
+même si sa saisie réelle est postérieure à celle de l'autre appareil. Le
+conflit reste annoncé à l'écran (rien n'est perdu ni fusionné en silence),
+mais lequel des deux gagne peut être physiquement inversé. À corriger si
+le pilote rapporte un cas réel — un correctif raisonnable serait d'estimer
+le décalage de chaque appareil à la connexion (différence entre l'heure
+serveur et l'heure locale au moment de la requête) et de l'appliquer aux
+horodatages avant comparaison, plutôt que de les comparer bruts.
 
 ## 4. F4 — Clôture des observations v1
 
@@ -134,6 +154,8 @@ Deux points valent d'être répétés ici :
 - **Sans HTTPS, le comptage hors-ligne ne fonctionne pas** — un navigateur
   refuse d'enregistrer un service worker sur une origine non sûre, sans
   erreur visible.
-- **Après un déploiement touchant `app/static/` ou le gabarit de comptage,
-  incrémenter `VERSION` dans `app/static/sw.js`**, faute de quoi un téléphone
-  déjà équipé continuera de servir l'ancien écran depuis son cache.
+- **Le processus serveur doit redémarrer au déploiement.** La version de
+  cache du service worker est recalculée à ce moment-là à partir du contenu
+  réel des fichiers ; un déploiement qui ne redémarre pas le processus (code
+  rechargé à chaud) laisserait un téléphone déjà équipé servir l'ancien écran
+  de comptage depuis son cache.

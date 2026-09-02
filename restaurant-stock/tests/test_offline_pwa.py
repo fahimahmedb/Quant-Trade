@@ -272,3 +272,33 @@ def test_logout_purges_cached_counting_pages(offline_server):
 
     assert remaining == [], f"pages de comptage encore en cache après déconnexion : {remaining}"
     context.close()
+
+
+def test_sw_build_version_changes_when_a_watched_file_changes():
+    """La version de cache ne doit pas dépendre qu'on pense à l'incrémenter :
+    elle doit changer toute seule dès que le contenu qu'elle sert change."""
+    import importlib
+
+    from app import main
+
+    watched = main._SW_WATCHED_FILES[1]  # offline-count.js
+    original = watched.read_bytes()
+    before = main._sw_build_version()
+    try:
+        watched.write_bytes(original + b"\n// test\n")
+        after = main._sw_build_version()
+        assert after != before
+    finally:
+        watched.write_bytes(original)
+        assert main._sw_build_version() == before
+
+
+def test_sw_js_route_serves_a_real_version_not_the_placeholder(offline_server):
+    base, _browser = offline_server
+    import httpx
+
+    response = httpx.get(f"{base}/sw.js")
+    assert response.status_code == 200
+    assert "__BUILD_VERSION__" not in response.text
+    assert 'const VERSION = "' in response.text
+    assert response.headers["service-worker-allowed"] == "/"

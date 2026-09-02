@@ -1,8 +1,9 @@
+import hashlib
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from app.config import BASE_DIR, UPLOAD_DIR
@@ -43,12 +44,49 @@ def healthz():
     return {"status": "ok"}
 
 
+# Fichiers dont le contenu détermine le comportement hors-ligne : coquille
+# mise en cache par le service worker, et gabarits qui fixent la structure
+# de la page de comptage que ce même service worker sait rejouer hors-ligne.
+_SW_WATCHED_FILES = [
+    Path(BASE_DIR) / "app" / "static" / "sw.js",
+    Path(BASE_DIR) / "app" / "static" / "offline-count.js",
+    Path(BASE_DIR) / "app" / "static" / "app.js",
+    Path(BASE_DIR) / "app" / "static" / "app.css",
+    Path(BASE_DIR) / "app" / "static" / "tailwind.css",
+    Path(BASE_DIR) / "app" / "static" / "manifest.webmanifest",
+    Path(BASE_DIR) / "app" / "templates" / "base.html",
+    Path(BASE_DIR) / "app" / "templates" / "counting" / "session.html",
+]
+
+
+def _sw_build_version() -> str:
+    """Empreinte de tout ce qui détermine ce que le service worker sert.
+
+    Calculée une fois au démarrage du processus : un déploiement redémarre
+    toujours le serveur, donc pas besoin de la recalculer à chaque requête.
+    Elle remplace une constante à incrémenter à la main — oubliée une fois,
+    un téléphone déjà équipé continuerait de servir l'ancien écran de
+    comptage depuis son cache sans que personne s'en aperçoive.
+    """
+    digest = hashlib.sha256()
+    for path in _SW_WATCHED_FILES:
+        digest.update(path.read_bytes())
+    return digest.hexdigest()[:12]
+
+
+_SW_SOURCE = (
+    (Path(BASE_DIR) / "app" / "static" / "sw.js")
+    .read_text()
+    .replace('"__BUILD_VERSION__"', f'"{_sw_build_version()}"')
+)
+
+
 @app.get("/sw.js", include_in_schema=False)
 def service_worker():
     """Servi à la racine : un service worker ne contrôle que son propre
     chemin et en dessous. Depuis /static/, il ne verrait pas /counting."""
-    return FileResponse(
-        Path(BASE_DIR) / "app" / "static" / "sw.js",
+    return Response(
+        _SW_SOURCE,
         media_type="application/javascript",
         headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
     )
