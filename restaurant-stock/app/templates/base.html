@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>{% block title %}Gestion de stock{% endblock %} — Restaurant</title>
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/static/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
+  <meta name="theme-color" content="#1e293b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="stylesheet" href="/static/tailwind.css" />
   <link rel="stylesheet" href="/static/app.css" />
 </head>
@@ -56,6 +60,24 @@
   </footer>
 
   <script src="/static/app.js"></script>
+  <script>
+    // Service worker : rend le comptage utilisable sans réseau (F3).
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));
+    }
+  </script>
+  {% if not request.state.account %}
+  <script>
+    // Personne n'est connecté : on purge les pages de comptage gardées en
+    // cache. Le téléphone de la cuisine est partagé, et une liste de stock
+    // ne doit pas rester lisible hors-ligne après une déconnexion.
+    if ("caches" in window) {
+      caches.keys().then((keys) => keys.forEach((key) => {
+        if (key.startsWith("pages-")) caches.delete(key);
+      }));
+    }
+  </script>
+  {% endif %}
   {% block scripts %}{% endblock %}
 </body>
 </html>

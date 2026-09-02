@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import BASE_DIR, UPLOAD_DIR
@@ -40,6 +41,17 @@ app.add_middleware(ErrorLogMiddleware)
 @app.get("/healthz", include_in_schema=False)
 def healthz():
     return {"status": "ok"}
+
+
+@app.get("/sw.js", include_in_schema=False)
+def service_worker():
+    """Servi à la racine : un service worker ne contrôle que son propre
+    chemin et en dessous. Depuis /static/, il ne verrait pas /counting."""
+    return FileResponse(
+        Path(BASE_DIR) / "app" / "static" / "sw.js",
+        media_type="application/javascript",
+        headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
+    )
 
 app.mount("/static", StaticFiles(directory=str(Path(BASE_DIR) / "app" / "static")), name="static")
 

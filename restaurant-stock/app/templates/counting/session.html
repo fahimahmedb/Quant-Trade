@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Comptage en cours{% endblock %}
 {% block content %}
+<div data-counting-session="{{ session.id }}" data-count-revision="{{ revision }}"></div>
+<div data-offline-banner hidden></div>
+
 <div class="sticky top-[88px] bg-gray-50 py-2 z-[5] -mx-3 px-3 mb-2">
   <div class="flex items-center justify-between text-sm mb-1">
     <span class="font-medium">{{ counted }}/{{ total }} ingrédients comptés</span>
@@ -27,7 +30,7 @@
       </span>
     </summary>
 
-    <form method="post" action="/counting/{{ session.id }}/zone/{{ zone.value }}" class="p-3 pt-0 space-y-3">
+    <form method="post" action="/counting/{{ session.id }}/zone/{{ zone.value }}" data-zone-form class="p-3 pt-0 space-y-3">
       {% for line in zone_lines %}
       <div data-count-row data-theoretical="{{ line.theoretical_quantity }}" class="border-t pt-3 first:border-t-0 first:pt-0">
         <div class="flex items-center justify-between gap-2 mb-1">
@@ -66,10 +69,14 @@
   {% endif %}
 {% endfor %}
 
-<form method="post" action="/counting/{{ session.id }}/complete" class="mt-4"
+<form method="post" action="/counting/{{ session.id }}/complete" data-complete-form class="mt-4"
       onsubmit="return confirm('Terminer le comptage ? Le stock théorique sera recalé sur les valeurs saisies.');">
   <button type="submit" class="w-full bg-emerald-700 text-white px-4 py-3 rounded font-semibold text-lg">
     Terminer le comptage
   </button>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/offline-count.js"></script>
 {% endblock %}

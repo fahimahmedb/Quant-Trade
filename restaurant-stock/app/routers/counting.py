@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app import models
@@ -70,6 +73,7 @@ def counting_session_view(session_id: int, request: Request, db: Session = Depen
             "reasons": list(models.VarianceReason),
             "counted": counted,
             "total": len(session.lines),
+            "revision": counting.session_revision(db, session_id),
         },
     )
 
@@ -83,7 +87,7 @@ async def save_zone(
         return redirect("/counting", "Session de comptage introuvable ou déjà close.", error=True)
 
     form = await request.form()
-    saved = 0
+    entries = []
     for line in session.lines:
         if line.ingredient.storage_zone != zone:
             continue
@@ -99,18 +103,125 @@ async def save_zone(
             reason = models.VarianceReason(raw_reason) if raw_reason else None
         except ValueError:
             reason = None
-        counting.confirm_count_line(db, line.id, counted_quantity, reason)
-        saved += 1
+        entries.append(counting.CountEntry(
+            line_id=line.id,
+            counted_quantity=counted_quantity,
+            variance_reason=reason,
+            entered_at=_client_time(form.get(f"entered_at_{line.id}")),
+        ))
 
-    return redirect(f"/counting/{session_id}#zone-{zone.value}", f"{saved} ligne(s) enregistrée(s) — {zone.label}.")
+    result = counting.apply_entries(db, session_id, entries)
+    return redirect(
+        f"/counting/{session_id}#zone-{zone.value}",
+        f"{len(result.applied)} ligne(s) enregistrée(s) — {zone.label}.",
+        alerts=_conflict_message(result.conflicts),
+    )
+
+
+def _client_time(raw) -> datetime | None:
+    """Horodatage de saisie envoyé par l'appareil (millisecondes epoch).
+
+    Ignoré s'il est absurde (horloge déréglée, valeur future) : mieux vaut
+    retomber sur l'heure du serveur que dater une saisie de 2037.
+    """
+    try:
+        moment = datetime.utcfromtimestamp(float(raw) / 1000)
+    except (TypeError, ValueError, OverflowError, OSError):
+        return None
+    now = datetime.utcnow()
+    if moment > now + timedelta(minutes=5) or moment < now - timedelta(days=30):
+        return None
+    return moment
+
+
+def _conflict_message(conflicts: list[dict]) -> str | None:
+    if not conflicts:
+        return None
+    details = ", ".join(
+        f"{c['ingredient']} (valeur conservée : {c['kept']})" for c in conflicts
+    )
+    return (
+        f"{len(conflicts)} ligne(s) modifiée(s) entre-temps depuis un autre appareil, "
+        f"votre saisie plus ancienne n'a pas été appliquée : {details}"
+    )
+
+
+@router.post("/{session_id}/sync")
+async def sync_offline_entries(session_id: int, request: Request, db: Session = Depends(get_db)):
+    """Vidage de la file hors-ligne (F3). Renvoie du JSON, pas une page :
+    appelé par le script de la page de comptage à la reconnexion."""
+    payload = await request.json()
+    session = db.get(models.CountSession, session_id)
+    if session is None:
+        return JSONResponse({"error": "Session de comptage introuvable."}, status_code=404)
+
+    entries = []
+    for raw in payload.get("entries", []):
+        try:
+            reason_value = raw.get("variance_reason") or ""
+            reason = models.VarianceReason(reason_value) if reason_value else None
+        except ValueError:
+            reason = None
+        try:
+            entries.append(counting.CountEntry(
+                line_id=int(raw["line_id"]),
+                counted_quantity=float(raw["counted_quantity"]),
+                variance_reason=reason,
+                entered_at=_client_time(raw.get("entered_at")),
+            ))
+        except (KeyError, TypeError, ValueError):
+            continue
+
+    try:
+        result = counting.apply_entries(db, session_id, entries)
+    except counting.SessionClosedError:
+        # Comptage clos depuis un autre appareil pendant qu'on était hors-ligne.
+        # Le stock a déjà été recalé : on refuse d'écrire et on le dit, plutôt
+        # que de laisser des lignes comptées sans mouvement correspondant.
+        return JSONResponse(
+            {
+                "error": "Comptage déjà terminé depuis un autre appareil, "
+                         "vos saisies en attente n'ont pas été appliquées.",
+                "closed": True,
+                "stale": True,
+                "revision": counting.session_revision(db, session_id),
+            },
+            status_code=409,
+        )
+
+    completed = False
+    if payload.get("complete"):
+        counting.complete_count_session(
+            db, session_id, ended_at=_client_time(payload.get("ended_at"))
+        )
+        completed = True
+
+    revision = counting.session_revision(db, session_id)
+    sent_revision = payload.get("revision")
+    return JSONResponse({
+        "applied": len(result.applied),
+        "unknown": result.unknown,
+        "completed": completed,
+        "revision": revision,
+        # Page servie par le cache alors que les fiches ont bougé : la liste
+        # affichée n'est plus celle du serveur, il faut la recharger.
+        "stale": bool(sent_revision) and sent_revision != revision and not completed,
+        "conflicts": [
+            {"ingredient": c["ingredient"], "kept": c["kept"], "discarded": c["discarded"]}
+            for c in result.conflicts
+        ],
+    })
 
 
 @router.post("/{session_id}/complete")
-def complete_session(session_id: int, db: Session = Depends(get_db)):
+async def complete_session(session_id: int, request: Request, db: Session = Depends(get_db)):
     session = db.get(models.CountSession, session_id)
     if session is None:
         return redirect("/counting", "Session de comptage introuvable.", error=True)
-    counting.complete_count_session(db, session_id)
+    form = await request.form()
+    counting.complete_count_session(
+        db, session_id, ended_at=_client_time(form.get("ended_at"))
+    )
     return redirect(f"/counting/{session_id}/summary", "Comptage terminé, stock théorique recalé.")
 
 

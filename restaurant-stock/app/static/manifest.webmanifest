@@ -1,0 +1,17 @@
+{
+  "name": "Stock resto — gestion de stock",
+  "short_name": "Stock resto",
+  "description": "Comptage, écarts et commandes pour un restaurant indépendant.",
+  "start_url": "/counting",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f9fafb",
+  "theme_color": "#1e293b",
+  "lang": "fr",
+  "icons": [
+    { "src": "/static/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

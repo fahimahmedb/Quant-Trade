@@ -20,7 +20,7 @@ def _session_factory(request):
     """Fabrique de sessions de l'application ; les tests y injectent la leur."""
     return getattr(request.app.state, "session_factory", None) or SessionLocal
 
-PUBLIC_PATHS = {"/login", "/setup", "/healthz"}
+PUBLIC_PATHS = {"/login", "/setup", "/healthz", "/sw.js"}
 PUBLIC_PREFIXES = ("/static/",)
 
 
