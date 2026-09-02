@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Réceptions{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-3">
+  <h1 class="text-xl font-semibold">Réceptions</h1>
+  <a href="/deliveries/new" class="bg-emerald-600 text-white px-3 py-2 rounded text-sm font-medium">+ Nouvelle réception</a>
+</div>
+
+<ul class="bg-white rounded border divide-y">
+  {% for receipt in receipts %}
+  <li class="px-3 py-2 flex items-center justify-between gap-2">
+    <div class="min-w-0">
+      <a href="/deliveries/{{ receipt.id }}" class="font-medium hover:underline break-words">
+        {{ receipt.received_on | date_fr }}{% if receipt.supplier %} — {{ receipt.supplier }}{% endif %}
+      </a>
+      <div class="text-xs text-gray-500">
+        {{ receipt.lines | length }} ligne(s) · {{ receipt.total_value | euros }}
+        {% if receipt.photo_path %} · photo jointe{% endif %}
+      </div>
+    </div>
+    <a href="/deliveries/{{ receipt.id }}" class="text-sm text-slate-600 shrink-0">Détail</a>
+  </li>
+  {% else %}
+  <li class="px-3 py-4 text-sm text-gray-500">
+    Aucune réception enregistrée. C'est la seule façon de faire entrer du stock :
+    sans elle, le stock théorique baisse à chaque vente sans jamais remonter.
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

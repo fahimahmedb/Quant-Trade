@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Nouvelle réception{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-3">Nouvelle réception</h1>
+
+{% if error %}
+<div class="mb-3 rounded border px-3 py-2 text-sm flash-error">{{ error }}</div>
+{% endif %}
+
+{% if not rows %}
+<p class="text-sm bg-amber-50 border border-amber-300 text-amber-800 rounded p-3 mb-3">
+  Aucun ingrédient actif. <a href="/ingredients/new" class="underline">Créez d'abord vos ingrédients</a>.
+</p>
+{% endif %}
+
+<form method="post" action="/deliveries/new" enctype="multipart/form-data"
+      class="bg-white rounded border p-4 space-y-4">
+
+  <div class="grid grid-cols-2 gap-3">
+    <div>
+      <label class="block text-sm font-medium mb-1" for="received_on">Date de réception</label>
+      <input type="date" id="received_on" name="received_on" required
+             value="{{ submitted.received_on or today }}" class="w-full border rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="supplier">Fournisseur</label>
+      <input id="supplier" name="supplier" list="supplier-suggestions" placeholder="ex. Metro"
+             value="{{ submitted.supplier or '' }}" class="w-full border rounded px-3 py-2" />
+      <datalist id="supplier-suggestions">
+        {% for supplier in suppliers %}<option value="{{ supplier }}"></option>{% endfor %}
+      </datalist>
+    </div>
+  </div>
+
+  <div>
+    <div class="flex items-center justify-between mb-2">
+      <span class="block text-sm font-medium">Lignes reçues</span>
+      <button type="button" data-add-delivery-row class="text-sm text-emerald-700 font-medium">+ Ajouter une ligne</button>
+    </div>
+
+    <div data-delivery-rows class="space-y-3">
+      {% for _ in range(3) %}
+      <div data-delivery-row class="border-t pt-3 first:border-t-0 first:pt-0 space-y-2">
+        <select name="ingredient_id" data-ingredient-select class="w-full min-w-0 border rounded px-2 py-2">
+          {% for row in rows %}
+          <option value="{{ row.ingredient.id }}"
+                  data-last-price="{{ row.last_price }}"
+                  data-unit="{{ row.ingredient.unit.value }}"
+                  data-price-unit="{{ row.display_unit }}">{{ row.ingredient.name }} ({{ row.ingredient.unit.value }})</option>
+          {% endfor %}
+        </select>
+        <div class="flex items-center gap-2">
+          <input type="number" step="0.01" min="0" inputmode="decimal" name="quantity"
+                 placeholder="quantité" class="flex-1 min-w-0 border rounded px-3 py-2" />
+          <span class="text-sm text-gray-500 shrink-0" data-unit-label>{{ rows[0].ingredient.unit.value if rows else '' }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="number" step="0.0001" min="0" inputmode="decimal" name="unit_price"
+                 placeholder="prix" class="flex-1 min-w-0 border rounded px-3 py-2"
+                 value="{{ rows[0].last_price if rows else '' }}" />
+          <span class="text-sm text-gray-500 shrink-0" data-price-unit-label>€/{{ rows[0].display_unit if rows else '' }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="text-xs text-gray-500 mt-2">
+      Le prix est pré-rempli avec le dernier prix connu et se saisit dans l'unité d'achat
+      (€/kg, €/L). Une ligne laissée vide est ignorée.
+    </p>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="photo">Photo du bon de livraison (optionnel)</label>
+    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment"
+           class="w-full border rounded px-3 py-2" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="note">Note (optionnel)</label>
+    <input id="note" name="note" value="{{ submitted.note or '' }}" class="w-full border rounded px-3 py-2" />
+  </div>
+
+  <div class="flex gap-2 pt-2">
+    <button type="submit" class="bg-emerald-600 text-white px-4 py-3 rounded font-medium text-lg">Valider la réception</button>
+    <a href="/deliveries" class="px-4 py-2 rounded border self-center">Annuler</a>
+  </div>
+</form>
+{% endblock %}

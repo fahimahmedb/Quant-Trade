@@ -11,6 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
+# Photos de bons de livraison (F1). Hors dépôt Git : données du restaurant.
+UPLOAD_DIR = DATA_DIR / "uploads"
+
 DATABASE_URL = os.environ.get(
     "RESTAURANT_STOCK_DATABASE_URL",
     f"sqlite:///{DATA_DIR / 'restaurant_stock.db'}",

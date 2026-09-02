@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi.templating import Jinja2Templates
 
 from app.config import BASE_DIR
+from app.services import pricing
 
 templates = Jinja2Templates(directory=str(Path(BASE_DIR) / "app" / "templates"))
 
@@ -37,25 +38,18 @@ def _pct(value) -> str:
     return f"{value:+.1f}".replace(".", ",") + " %"
 
 
-# Unité de référence -> (facteur, unité d'affichage du prix). OBS-2 : un
-# prix au gramme (0,0012 €/g) est illisible pour un chef ; on l'affiche
-# au kilo / au litre. Le stockage reste par unité de référence.
-_PRICE_DISPLAY = {"g": (1000, "kg"), "mL": (1000, "L")}
-
-
 def _unit_price_display(ingredient) -> str:
     """Prix unitaire lisible : « 1,20 €/kg » pour un ingrédient suivi en grammes.
 
     Tolère un objet de secours (formulaire ré-affiché après erreur) dont le
     coût est encore une chaîne brute : on affiche « — » plutôt que planter.
     """
-    unit = getattr(ingredient.unit, "value", ingredient.unit)
-    factor, display_unit = _PRICE_DISPLAY.get(unit, (1, unit))
     try:
         unit_cost = float(str(ingredient.unit_cost).replace(",", "."))
     except (TypeError, ValueError):
         return "—"
-    return f"{_euros(unit_cost * factor)}/{display_unit}"
+    display = pricing.to_display_price(unit_cost, ingredient.unit)
+    return f"{_euros(display)}/{pricing.display_unit(ingredient.unit)}"
 
 
 def _duration(seconds) -> str:
@@ -71,9 +65,30 @@ def _datetime_fr(value) -> str:
     return value.strftime("%d/%m/%Y %H:%M")
 
 
+def _date_fr(value) -> str:
+    if value is None:
+        return "—"
+    return value.strftime("%d/%m/%Y")
+
+
+def _line_price(line) -> str:
+    """Prix d'une ligne de réception dans son unité d'achat : « 1,20 €/kg »."""
+    unit = line.ingredient.unit
+    return f"{_euros(pricing.to_display_price(line.unit_price, unit))}/{pricing.display_unit(unit)}"
+
+
+def _history_price(entry) -> str:
+    """Idem pour une entrée d'historique de prix."""
+    unit = entry.ingredient.unit
+    return f"{_euros(pricing.to_display_price(entry.unit_price, unit))}/{pricing.display_unit(unit)}"
+
+
 templates.env.filters["euros"] = _euros
 templates.env.filters["qty"] = _qty
 templates.env.filters["pct"] = _pct
 templates.env.filters["unit_price"] = _unit_price_display
 templates.env.filters["duration"] = _duration
 templates.env.filters["datetime_fr"] = _datetime_fr
+templates.env.filters["date_fr"] = _date_fr
+templates.env.filters["line_price"] = _line_price
+templates.env.filters["history_price"] = _history_price

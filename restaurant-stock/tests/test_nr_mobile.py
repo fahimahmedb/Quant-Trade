@@ -66,6 +66,11 @@ def live_server():
         session_id = r.url.path.rstrip("/").split("/")[-1]
         c.post(f"/counting/{session_id}/complete")
         c.post("/orders/generate")
+        c.post("/deliveries/new", data={
+            "received_on": "2026-09-01", "supplier": "Metro", "note": "",
+            "ingredient_id": ["1", "2"], "quantity": ["25000", "24"],
+            "unit_price": ["1,40", "0,38"],
+        })
         c.post("/counting/start", data={"counted_by": "NR-12 (en cours)"})
 
     try:
@@ -82,6 +87,7 @@ SCREENS = [
     "/recipes", "/recipes/new", "/recipes/1/edit",
     "/sales/import", "/sales/imports/1",
     "/counting", "/counting/{open}", "/counting/{done}/summary",
+    "/deliveries", "/deliveries/new", "/deliveries/1",
     "/variance", "/orders", "/metrics", "/settings",
 ]
 

@@ -76,15 +76,25 @@ def test_migrations_match_models_exactly(tmp_path):
 
 
 def test_init_db_stamps_legacy_create_all_database_without_losing_data(tmp_path):
+    """Base d'un pilote déjà en service sous la v1 (create_all, sans alembic_version) :
+    init_db doit l'estampiller puis la migrer jusqu'à head sans perdre de données.
+
+    On reconstitue le schéma v1 réel en jouant la migration baseline puis en
+    retirant alembic_version — plus fidèle qu'un create_all des modèles actuels,
+    qui contiendrait déjà les tables des versions suivantes."""
     engine = create_engine(f"sqlite:///{tmp_path / 'legacy.db'}", connect_args={"check_same_thread": False})
-    Base.metadata.create_all(bind=engine)  # base « v1 » : pas de table alembic_version
+    baseline = ScriptDirectory.from_config(_cfg()).get_base()
+    _run(engine, lambda cfg: command.upgrade(cfg, baseline))
     with engine.begin() as conn:
         conn.execute(INSERT_FARINE)
+        conn.execute(text("DROP TABLE alembic_version"))
     assert "alembic_version" not in _tables(engine)
+    assert "delivery_receipts" not in _tables(engine)  # schéma v1 : F1 pas encore là
 
     init_db(target_engine=engine)
 
     assert "alembic_version" in _tables(engine)
+    assert "delivery_receipts" in _tables(engine)  # migré jusqu'à head
     with engine.connect() as conn:
         assert conn.execute(text("SELECT count(*) FROM ingredients")).scalar() == 1
         version = conn.execute(text("SELECT version_num FROM alembic_version")).scalar()

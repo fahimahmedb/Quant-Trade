@@ -24,15 +24,18 @@ def update_settings(
     safety_days: str = Form(...),
     target_days: str = Form(...),
     rolling_window_days: str = Form(...),
+    price_alert_pct: str = Form("15"),
     db: Session = Depends(get_db),
 ):
     submitted = SimpleNamespace(
-        safety_days=safety_days, target_days=target_days, rolling_window_days=rolling_window_days
+        safety_days=safety_days, target_days=target_days,
+        rolling_window_days=rolling_window_days, price_alert_pct=price_alert_pct,
     )
     try:
         parsed_safety_days = parse_float_fr(safety_days)
         parsed_target_days = parse_float_fr(target_days)
         parsed_window_days = parse_int_fr(rolling_window_days)
+        parsed_price_alert = parse_float_fr(price_alert_pct)
     except InvalidNumberError as exc:
         return templates.TemplateResponse(
             request,
@@ -46,5 +49,6 @@ def update_settings(
         safety_days=parsed_safety_days,
         target_days=parsed_target_days,
         rolling_window_days=parsed_window_days,
+        price_alert_pct=parsed_price_alert,
     )
     return redirect("/settings", "Réglages mis à jour.")

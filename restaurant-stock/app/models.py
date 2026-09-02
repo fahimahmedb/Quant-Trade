@@ -78,6 +78,7 @@ class MovementType(str, enum.Enum):
     VENTE = "vente"
     COMPTAGE = "comptage"
     AJUSTEMENT = "ajustement"
+    RECEPTION = "reception"
 
     @property
     def label(self) -> str:
@@ -85,6 +86,7 @@ class MovementType(str, enum.Enum):
             MovementType.VENTE: "Vente",
             MovementType.COMPTAGE: "Comptage",
             MovementType.AJUSTEMENT: "Ajustement",
+            MovementType.RECEPTION: "Réception",
         }[self]
 
 
@@ -117,6 +119,10 @@ class Ingredient(Base):
         back_populates="ingredient", cascade="all, delete-orphan"
     )
     movements: Mapped[list["StockMovement"]] = relationship(back_populates="ingredient")
+    price_history: Mapped[list["PriceHistory"]] = relationship(
+        back_populates="ingredient", cascade="all, delete-orphan",
+        order_by="PriceHistory.recorded_at.desc()",
+    )
 
 
 class Dish(Base):
@@ -314,6 +320,64 @@ class OrderSuggestionLine(Base):
     ingredient: Mapped[Ingredient] = relationship()
 
 
+class DeliveryReceipt(Base):
+    """Réception de livraison (F1) : la seule entrée de stock de l'application."""
+
+    __tablename__ = "delivery_receipts"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    received_on: Mapped[datetime] = mapped_column(DateTime)
+    supplier: Mapped[str | None] = mapped_column(String(200), nullable=True, index=True)
+    note: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    photo_path: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    lines: Mapped[list["DeliveryLine"]] = relationship(
+        back_populates="receipt", cascade="all, delete-orphan"
+    )
+
+    @property
+    def total_value(self) -> float:
+        return sum(line.quantity * line.unit_price for line in self.lines)
+
+
+class DeliveryLine(Base):
+    __tablename__ = "delivery_lines"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    receipt_id: Mapped[int] = mapped_column(ForeignKey("delivery_receipts.id"))
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    quantity: Mapped[float] = mapped_column(Float)  # dans l'unité de l'ingrédient
+    unit_price: Mapped[float] = mapped_column(Float)  # € par unité de référence
+    previous_unit_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    receipt: Mapped[DeliveryReceipt] = relationship(back_populates="lines")
+    ingredient: Mapped[Ingredient] = relationship()
+
+    @property
+    def price_change_pct(self) -> float | None:
+        if not self.previous_unit_price:
+            return None
+        return (self.unit_price - self.previous_unit_price) / self.previous_unit_price * 100
+
+
+class PriceHistory(Base):
+    """Archive des prix d'achat successifs d'un ingrédient (F1, AC-F1-4)."""
+
+    __tablename__ = "price_history"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    unit_price: Mapped[float] = mapped_column(Float)
+    recorded_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    supplier: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    receipt_id: Mapped[int | None] = mapped_column(
+        ForeignKey("delivery_receipts.id"), nullable=True
+    )
+
+    ingredient: Mapped[Ingredient] = relationship(back_populates="price_history")
+
+
 class Settings(Base):
     """Table à une seule ligne (id=1) pour les réglages ajustables par le gérant."""
 
@@ -323,3 +387,4 @@ class Settings(Base):
     safety_days: Mapped[float] = mapped_column(Float, default=2.0)
     target_days: Mapped[float] = mapped_column(Float, default=5.0)
     rolling_window_days: Mapped[int] = mapped_column(Integer, default=7)
+    price_alert_pct: Mapped[float] = mapped_column(Float, default=15.0)

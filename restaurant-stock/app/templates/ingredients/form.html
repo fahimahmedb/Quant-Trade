@@ -79,6 +79,26 @@
   <button type="submit" class="text-sm text-red-600">Supprimer cet ingrédient</button>
 </form>
 
+<h2 class="text-lg font-semibold mt-6 mb-2">Historique des prix d'achat</h2>
+{% if prices %}
+<ul class="bg-white rounded border divide-y text-sm">
+  {% for price in prices %}
+  <li class="px-3 py-2 flex justify-between items-baseline gap-2">
+    <div class="min-w-0">
+      <span class="text-gray-500">{{ price.recorded_at | date_fr }}</span>
+      {% if price.supplier %}<span class="text-gray-400 break-words">· {{ price.supplier }}</span>{% endif %}
+    </div>
+    <span class="shrink-0">{{ price | history_price }}</span>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="text-sm text-gray-500">
+  Aucun prix archivé : l'historique se construit à chaque
+  <a href="/deliveries/new" class="underline">réception de livraison</a>.
+</p>
+{% endif %}
+
 <h2 class="text-lg font-semibold mt-6 mb-2">Historique des mouvements de stock</h2>
 {% if movements %}
 <ul class="bg-white rounded border divide-y text-sm">

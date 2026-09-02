@@ -14,12 +14,19 @@ def get_settings(db: Session) -> models.Settings:
 
 
 def update_settings(
-    db: Session, *, safety_days: float, target_days: float, rolling_window_days: int
+    db: Session,
+    *,
+    safety_days: float,
+    target_days: float,
+    rolling_window_days: int,
+    price_alert_pct: float | None = None,
 ) -> models.Settings:
     settings = get_settings(db)
     settings.safety_days = safety_days
     settings.target_days = target_days
     settings.rolling_window_days = rolling_window_days
+    if price_alert_pct is not None:
+        settings.price_alert_pct = price_alert_pct
     db.commit()
     db.refresh(settings)
     return settings

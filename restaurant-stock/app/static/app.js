@@ -26,6 +26,41 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleReason();
   });
 
+  // Réception : le prix pré-rempli et les unités suivent l'ingrédient choisi.
+  const syncDeliveryRow = (row) => {
+    const select = row.querySelector("[data-ingredient-select]");
+    if (!select || !select.options.length) return;
+    const option = select.options[select.selectedIndex];
+    const unitLabel = row.querySelector("[data-unit-label]");
+    const priceUnitLabel = row.querySelector("[data-price-unit-label]");
+    const priceInput = row.querySelector('input[name="unit_price"]');
+    if (unitLabel) unitLabel.textContent = option.dataset.unit || "";
+    if (priceUnitLabel) priceUnitLabel.textContent = "€/" + (option.dataset.priceUnit || "");
+    if (priceInput) priceInput.value = option.dataset.lastPrice || "";
+  };
+
+  const deliveryRows = document.querySelector("[data-delivery-rows]");
+  if (deliveryRows) {
+    deliveryRows.querySelectorAll("[data-delivery-row]").forEach(syncDeliveryRow);
+    deliveryRows.addEventListener("change", (event) => {
+      if (event.target.matches("[data-ingredient-select]")) {
+        syncDeliveryRow(event.target.closest("[data-delivery-row]"));
+      }
+    });
+    const addDeliveryRow = document.querySelector("[data-add-delivery-row]");
+    if (addDeliveryRow) {
+      addDeliveryRow.addEventListener("click", () => {
+        const template = deliveryRows.querySelector("[data-delivery-row]");
+        const clone = template.cloneNode(true);
+        clone.querySelectorAll("input").forEach((el) => (el.value = ""));
+        const select = clone.querySelector("[data-ingredient-select]");
+        if (select) select.selectedIndex = 0;
+        deliveryRows.appendChild(clone);
+        syncDeliveryRow(clone);
+      });
+    }
+  }
+
   // Fiche technique : ajout/suppression dynamique de lignes ingrédient.
   const addBtn = document.querySelector("[data-add-ingredient-row]");
   const rowsContainer = document.querySelector("[data-ingredient-rows]");

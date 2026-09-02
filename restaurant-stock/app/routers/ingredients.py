@@ -29,7 +29,17 @@ def _recent_movements(db: Session, ingredient_id: int, limit: int = 20) -> list[
     )
 
 
-def _render_form(request, *, ingredient, movements=None, error=None, status_code=200):
+def _price_history(db: Session, ingredient_id: int, limit: int = 20) -> list[models.PriceHistory]:
+    return (
+        db.query(models.PriceHistory)
+        .filter(models.PriceHistory.ingredient_id == ingredient_id)
+        .order_by(models.PriceHistory.recorded_at.desc(), models.PriceHistory.id.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def _render_form(request, *, ingredient, movements=None, prices=None, error=None, status_code=200):
     return templates.TemplateResponse(
         request,
         "ingredients/form.html",
@@ -37,6 +47,7 @@ def _render_form(request, *, ingredient, movements=None, error=None, status_code
             "request": request,
             "ingredient": ingredient,
             "movements": movements or [],
+            "prices": prices or [],
             "units": list(models.Unit),
             "zones": list(models.StorageZone),
             "error": error,
@@ -107,7 +118,11 @@ def edit_ingredient_form(ingredient_id: int, request: Request, db: Session = Dep
     ingredient = db.get(models.Ingredient, ingredient_id)
     if ingredient is None:
         return redirect("/ingredients", "Ingrédient introuvable.", error=True)
-    return _render_form(request, ingredient=ingredient, movements=_recent_movements(db, ingredient_id))
+    return _render_form(
+        request, ingredient=ingredient,
+        movements=_recent_movements(db, ingredient_id),
+        prices=_price_history(db, ingredient_id),
+    )
 
 
 @router.post("/{ingredient_id}/edit")
@@ -135,6 +150,7 @@ def update_ingredient(
     if _name_taken(db, name, exclude_id=ingredient_id):
         return _render_form(
             request, ingredient=submitted, movements=_recent_movements(db, ingredient_id),
+            prices=_price_history(db, ingredient_id),
             error=f"Un ingrédient « {name} » existe déjà.", status_code=409,
         )
     try:
@@ -144,6 +160,7 @@ def update_ingredient(
     except InvalidNumberError as exc:
         return _render_form(
             request, ingredient=submitted, movements=_recent_movements(db, ingredient_id),
+            prices=_price_history(db, ingredient_id),
             error=str(exc), status_code=422,
         )
 
