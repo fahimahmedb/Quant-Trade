@@ -1,4 +1,4 @@
-# Gestion de stock intelligente pour restaurants indépendants — MVP v1
+# Gestion de stock intelligente pour restaurants indépendants — MVP v1.1
 
 Implémentation du brief « Gestion de stock intelligente pour restaurants
 indépendants » : fiche technique → import des ventes → stock théorique →
@@ -28,12 +28,19 @@ restaurant indépendant à carte fixe et établissement unique.
   pas recommandé pour autre chose qu'un prototype jetable. Regénérer après
   toute modification de classes Tailwind dans `app/templates/` (voir
   « Développement » ci-dessous).
-- Pas d'authentification : un seul restaurant, équipe partageant le même
-  appareil. Le champ « comptage par » est déclaratif (texte libre), pas un
-  compte utilisateur.
-- Pas de migrations (Alembic) : les tables sont créées par
-  `Base.metadata.create_all` au démarrage. À ajouter avant tout usage en
-  production réelle avec des données à préserver entre versions du schéma.
+- **Un compte par établissement** (v1.1) : l'équipe partage un identifiant,
+  la session dure 30 jours pour ne pas faire ressaisir un mot de passe les
+  mains pleines. La protection est fermée par défaut — une route non
+  déclarée publique redirige vers la connexion, un oubli côté routeur ne
+  peut donc pas ouvrir un écran métier. Le champ « comptage par » reste
+  déclaratif (texte libre) : il dit qui a compté, pas qui est connecté.
+- **Migrations Alembic** (v1.1, `alembic upgrade head`) : le schéma évolue
+  sans perdre les données du restaurant. `render_as_batch` est activé, SQLite
+  ne sachant pas modifier une colonne en place.
+- **Service worker** (`app/static/sw.js`, servi à la racine par `/sw.js`) :
+  seules la coquille et les pages de comptage sont mises en cache. Le reste
+  du site n'est pas disponible hors-ligne, délibérément — un écran d'écarts
+  calculé sur des chiffres périmés serait pire qu'une erreur franche.
 - **Saisie numérique tolérante** (`app/forms.py`) : les formulaires acceptent
   la virgule décimale française en plus du point, et toute valeur invalide
   ré-affiche le formulaire déjà rempli avec un message clair plutôt que de
@@ -50,9 +57,18 @@ pip install -r requirements.txt
 # d'un bistrot fictif). Ne fait rien si des ingrédients existent déjà.
 python -m app.seed
 
+# Schéma : à faire avant le premier démarrage et après chaque mise à jour.
+alembic upgrade head
+
 uvicorn app.main:app --reload
 # → http://127.0.0.1:8000
 ```
+
+Au premier lancement, l'application ouvre `/setup` pour créer le compte de
+l'établissement. Tant qu'aucun compte n'existe, toutes les routes y mènent ;
+une fois créé, `/setup` n'est plus accessible. La mise en service chez un
+vrai restaurant (HTTPS, sauvegardes, restauration) est décrite dans
+[`docs/exploitation.md`](docs/exploitation.md).
 
 Un fichier d'exemple pour tester l'import des ventes se trouve dans
 `sample_data/exemple_export_ventes.csv` (compatible avec les noms de plats
@@ -65,14 +81,25 @@ non reconnue pour illustrer l'écran de rattachement manuel).
 pytest
 ```
 
-40+ tests : logique métier (`app/services/`, coût matière, parsing CSV
+128 tests. Logique métier (`app/services/` : coût matière, parsing CSV
 tolérant, décrémentation du stock théorique, recalibrage après comptage,
-écarts, suggestion de commande) et intégration HTTP (`tests/test_routers.py`
-— erreurs utilisateur plausibles comme un nom en double ou un nombre mal
-saisi, qui doivent ré-afficher un message clair plutôt que planter en 500).
-Base SQLite en mémoire, aucune dépendance à un serveur externe. Tourne aussi
-en CI sur chaque push touchant `restaurant-stock/`
-(`.github/workflows/restaurant-stock-tests.yml`).
+écarts, suggestion de commande, réception et historique des prix) et
+intégration HTTP (`tests/test_routers.py` — erreurs utilisateur plausibles
+comme un nom en double ou un nombre mal saisi, qui doivent ré-afficher un
+message clair plutôt que planter en 500). Base SQLite en mémoire, aucune
+dépendance à un serveur externe. Tourne en CI sur chaque push touchant
+`restaurant-stock/` (`.github/workflows/restaurant-stock-tests.yml`).
+
+Trois fichiers méritent un mot :
+
+| Fichier | Ce qu'il verrouille |
+|---|---|
+| `tests/test_nr.py` | NR-01 à NR-18, la suite de non-régression des specs V2 — un test nommé par point, pour que « ça remarchait avant » soit vérifiable |
+| `tests/test_offline_counting.py` | TC-F3-01 à TC-F3-05 : contrat serveur de la file hors-ligne (rejeu, conflit à deux appareils, durée juste après 24 h, cache périmé) |
+| `tests/test_offline_pwa.py`, `tests/test_nr_mobile.py` | Ce qu'aucun test serveur ne prouve : un vrai Chromium hors-ligne, et l'absence de débordement horizontal à 320/360/390 px |
+
+Les deux derniers ont besoin de Chromium (Playwright) ; ils sont ignorés
+proprement s'il est absent, la suite reste exécutable partout.
 
 ### Développement — régénérer le CSS
 
@@ -100,6 +127,15 @@ fichier n'est pas régénéré.
 | 5. Comptage mobile par zone | `app/templates/counting/session.html` (+ `app/static/app.js`) |
 | 8. Indicateurs | `app/services/metrics.py`, page `/metrics` |
 
+Fonctions ajoutées en v1.1 (Specs V2) :
+
+| Fonction | Code |
+|---|---|
+| F1 — Réception de livraison, historique et alerte de prix | `app/services/deliveries.py`, `app/routers/deliveries.py`, `/deliveries` |
+| F2 — Compte, sessions, sauvegarde, export, journal d'erreurs | `app/services/auth.py`, `app/middleware.py`, `scripts/backup.py`, `/settings` |
+| F3 — Comptage hors-ligne | `app/static/sw.js`, `app/static/offline-count.js`, `POST /counting/{id}/sync` |
+| F4 — Clôture des observations v1 | [`docs/observations-v1.md`](docs/observations-v1.md), `tests/test_nr.py` |
+
 ## Simplifications assumées (v1)
 
 - **Une seule unité par ingrédient** (g, kg, mL, L ou unité), utilisée
@@ -124,6 +160,34 @@ fichier n'est pas régénéré.
   revanche signalé explicitement (⚠ en rouge) sur l'écran de comptage et
   sur l'écran d'écarts, où le % d'écart n'aurait sinon aucun sens.
 
+## Comptage hors-ligne — ce qui est garanti, ce qui ne l'est pas (v1.1, F3)
+
+Le comptage se fait en réserve et en chambre froide, là où le réseau tombe.
+Ce qui est promis :
+
+- La page de comptage s'ouvre et s'utilise sans réseau, y compris après
+  fermeture et réouverture de l'onglet.
+- Une zone enregistrée hors-ligne est gardée sur l'appareil et repart seule
+  au retour du réseau, sans action de l'utilisateur.
+- Une session terminée hors-ligne garde la durée réelle du comptage, pas le
+  délai avant que le réseau revienne.
+
+Ce qui ne l'est pas, et pourquoi :
+
+- **Le reste de l'application n'est pas disponible hors-ligne.** Un écran
+  d'écarts ou de commandes servi depuis un cache afficherait des chiffres
+  périmés sans le dire : une erreur franche est préférable.
+- **Deux appareils sur la même session ne fusionnent pas.** La saisie la
+  plus récente gagne (à l'heure de saisie sur l'appareil, pas à l'heure
+  d'arrivée au serveur) et la plus ancienne est annoncée à l'écran, nommée.
+  Rien n'est écrasé en silence, mais rien n'est additionné non plus.
+- **Une session close depuis un autre appareil refuse les saisies en
+  attente.** Le stock théorique a déjà été recalé à la clôture ; les
+  appliquer après coup laisserait des lignes comptées sans mouvement de
+  stock correspondant.
+- **La file vit dans le stockage local du navigateur.** Vider les données du
+  site ou compter en navigation privée la perd.
+
 ## Hors périmètre (identique au brief, section 6)
 
 Intégration caisse temps réel, multi-fournisseurs, signaux externes,
@@ -132,9 +196,16 @@ vocale (section 5, v1.5) n'est pas implémentée.
 
 ## Angles morts non résolus (section 9 du brief)
 
-Le format d'import CSV (`date,plat,quantite,prix_unitaire`, délimiteur `,`
-ou `;`, dates `JJ/MM/AAAA` ou `AAAA-MM-JJ`) est un minimum générique tolérant,
-pas calé sur un export réel de Zelty/L'Addition/Square — à confronter au
-premier restaurant pilote et ajuster `app/services/sales_import.py` en
-conséquence. Le pré-remplissage du comptage par zone n'a pas été testé avec
-un vrai cuisinier.
+Deux angles morts restent ouverts, et aucun test ne peut les fermer :
+
+1. **Le format d'import CSV** (`date,plat,quantite,prix_unitaire`, délimiteur
+   `,` ou `;`, dates `JJ/MM/AAAA` ou `AAAA-MM-JJ`) est un minimum générique
+   tolérant, pas calé sur un export réel de Zelty, L'Addition ou Square. À
+   confronter à l'export du premier restaurant pilote, puis ajuster
+   `app/services/sales_import.py`.
+2. **L'ergonomie réelle du comptage.** Le pré-remplissage par zone, la taille
+   des cibles tactiles et le temps que prend un comptage complet n'ont été
+   vérifiés qu'au clavier et en navigateur simulé. Il faut un vrai cuisinier,
+   un vrai téléphone et une vraie chambre froide — mains froides, gants,
+   écran gras — pour savoir si le parcours tient. C'est le point que la
+   section 5 du brief désigne comme décisif, et c'est celui qui reste.
