@@ -1,23 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Écarts théorique/réel{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-3">Écarts théorique / réel</h1>
+{# Pas de héros ici, décision explicite : cet écran sert à parcourir et
+   comparer des sessions passées, pas à afficher un seul chiffre favorable de
+   synthèse — celui-là vit déjà sur l'accueil. En reprendre un ici ferait
+   doublon plutôt que d'apporter une information propre à cet écran. #}
+<h1 class="section-titre mt-4 mb-4">Écarts théorique / réel</h1>
 
 {% if not sessions %}
-<p class="text-sm text-gray-500">Aucun comptage terminé pour l'instant. <a href="/counting" class="underline">Démarrer un comptage</a>.</p>
+<p class="secondaire">
+  Aucun comptage terminé pour l'instant.
+  <a href="/counting" class="text-accent font-semibold">Démarrer un comptage</a>.
+</p>
 {% else %}
-<form method="get" action="/variance" class="mb-4">
-  <label class="block text-sm font-medium mb-1">Session de comptage</label>
-  <select name="session_id" onchange="this.form.submit()" class="w-full border rounded px-3 py-2">
+<form method="get" action="/variance" class="mb-6">
+  <label class="secondaire block mb-2" for="session_id">Session de comptage</label>
+  <select id="session_id" name="session_id" onchange="this.form.submit()" class="select text-corps">
     {% for s in sessions %}
     <option value="{{ s.id }}" {% if selected and s.id == selected.id %}selected{% endif %}>
-      {{ s.ended_at | datetime_fr }}{% if s.counted_by %} — {{ s.counted_by }}{% endif %}
+      {{ s.ended_at | datetime_fr }}{% if s.counted_by %}, {{ s.counted_by }}{% endif %}
     </option>
     {% endfor %}
   </select>
 </form>
 
-<p class="text-xs text-gray-500 mb-3">
+<p class="secondaire mb-4">
   Triés par écart en valeur décroissant : les pertes ou erreurs les plus significatives en premier.
 </p>
 {% include "partials/variance_table.html" %}

@@ -1,39 +1,38 @@
 {% extends "base.html" %}
 {% block title %}Ingrédients{% endblock %}
 {% block content %}
-<div class="flex items-center justify-between mb-3">
-  <h1 class="text-xl font-semibold">Ingrédients</h1>
-  <a href="/ingredients/new" class="bg-emerald-600 text-white px-3 py-2 rounded text-sm font-medium">+ Nouvel ingrédient</a>
+<div class="flex items-center justify-between gap-4 mt-4 mb-4">
+  <h1 class="section-titre">Ingrédients</h1>
+  <a href="/ingredients/new" class="btn-tertiaire">Nouvel ingrédient</a>
 </div>
 
 {% for zone in zones %}
   {% set zone_ingredients = ingredients | selectattr("storage_zone", "equalto", zone) | list %}
   {% if zone_ingredients %}
-  <details class="zone-details bg-white rounded border mb-2" open>
-    <summary class="px-3 py-2 font-medium flex justify-between items-center">
-      <span>{{ zone.label }}</span>
-      <span class="text-xs text-gray-400">{{ zone_ingredients | length }}</span>
+  <details class="zone-details mb-2" open>
+    <summary class="flex items-center gap-4 py-3">
+      <span class="text-gris shrink-0">{{ ico.icon(zone.value, 20) }}</span>
+      <span class="font-semibold text-titre2 flex-1 min-w-0">{{ zone.label }}</span>
+      <span class="nombre secondaire shrink-0">{{ zone_ingredients | length }}</span>
     </summary>
-    <ul class="divide-y">
+    <div>
       {% for ing in zone_ingredients %}
-      <li class="px-3 py-2 flex items-center justify-between gap-2 {% if not ing.is_active %}opacity-50{% endif %}">
-        <div>
-          <a href="/ingredients/{{ ing.id }}/edit" class="font-medium">{{ ing.name }}</a>
-          <div class="text-xs text-gray-500">
-            {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}
-            {{ ing | unit_price }}
+      <a href="/ingredients/{{ ing.id }}/edit" class="ligne {% if not ing.is_active %}opacity-50{% endif %}">
+        <div class="flex-1 min-w-0">
+          <div class="ligne-titre truncate">{{ ing.name }}</div>
+          <div class="ligne-sous">
+            {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}, {{ ing | unit_price }}
             {% if not ing.is_active %}, inactif{% endif %}
           </div>
         </div>
-        <a href="/ingredients/{{ ing.id }}/edit" class="text-sm text-slate-600 shrink-0">Modifier</a>
-      </li>
+      </a>
       {% endfor %}
-    </ul>
+    </div>
   </details>
   {% endif %}
 {% endfor %}
 
 {% if not ingredients %}
-<p class="text-gray-500 text-sm">Aucun ingrédient pour l'instant.</p>
+<p class="secondaire">Aucun ingrédient pour l'instant.</p>
 {% endif %}
 {% endblock %}

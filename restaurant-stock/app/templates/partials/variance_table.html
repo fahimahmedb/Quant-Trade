@@ -10,7 +10,7 @@
       <span class="font-semibold min-w-0">{{ line.ingredient.name }}</span>
       {# Manquant en alerte : c'est de l'argent parti. Surplus en encre : une
          anomalie à comprendre, pas une perte. Un écart nul s'efface. #}
-      <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-encre-doux{% endif %}">
+      <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-gris{% endif %}">
         {{ line.variance_value | euros }}
       </span>
     </div>
