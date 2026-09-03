@@ -1,73 +1,154 @@
 {% extends "base.html" %}
 {% block title %}Tableau de bord{% endblock %}
-{% block content %}
+{% block theme_color %}#115442{% endblock %}
 
-{# ---------------------------------------------------------------------
-   Niveau 1 — ce qui demande une action maintenant.
-   S'il n'y a rien à faire, on le dit au lieu de laisser un vide qui inquiète.
-   --------------------------------------------------------------------- #}
-{% if open_session %}
-<a href="/counting" class="bloc bloc-action block px-5 py-5 mb-4">
-  <div class="font-semibold text-titre1">Comptage en cours</div>
-  <div class="secondaire mt-1">Commencé le {{ open_session.started_at | datetime_fr }}</div>
-  <div class="btn-tertiaire mt-1">Reprendre le comptage</div>
-</a>
-{% elif pending_suggestions %}
-<a href="/orders" class="bloc bloc-action block px-5 py-5 mb-4">
-  <div class="font-semibold text-titre1">
-    <span class="nombre">{{ pending_suggestions }}</span>
-    suggestion{{ 's' if pending_suggestions > 1 }} de commande à décider
+{# --------------------------------------------------------------------
+   Le héros remplace l'en-tête par défaut : c'est le seul écran qui en
+   porte un (section 5 de la direction). Il concentre l'attention sur le
+   chiffre le plus favorable disponible, jamais sur une perte.
+   -------------------------------------------------------------------- #}
+{% block entete %}
+<header class="heros px-4 pb-6">
+  <div class="h-14 flex items-center justify-between gap-4">
+    <span class="font-semibold text-corps min-w-0 truncate">
+      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
+    </span>
+    <div class="flex items-center gap-4 shrink-0">
+      <a href="/orders" class="relative" aria-label="Suggestions de commande">
+        {{ ico.icon("cloche", 22) }}
+        {% if pending_suggestions %}
+        <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-alerte"></span>
+        {% endif %}
+      </a>
+      <a href="/settings" aria-label="Réglages du compte">{{ ico.icon("compte", 22) }}</a>
+    </div>
   </div>
-  <div class="secondaire mt-1">Rien n'est envoyé sans votre accord</div>
-  <div class="btn-tertiaire mt-1">Examiner les suggestions</div>
-</a>
-{% else %}
-<a href="/counting" class="bloc bloc-action block px-5 py-5 mb-4">
-  <div class="font-semibold text-titre1">Démarrer un comptage</div>
-  <div class="secondaire mt-1">Rien ne demande votre attention pour l'instant</div>
-</a>
-{% endif %}
 
-{# ---------------------------------------------------------------------
-   Niveau 2 — ce qu'on consulte. Le montant est l'élément le plus fort.
-   --------------------------------------------------------------------- #}
-<section class="bloc mb-8">
-  {% if not latest_session %}
-  <div class="px-5 py-6">
-    <h2 class="font-semibold text-titre2">Écarts</h2>
-    <p class="secondaire mt-2">
-      Après votre premier comptage terminé, vous verrez ici ce que le stock
-      réel a coûté par rapport au théorique.
-    </p>
+  {% if open_session %}
+  {# Le comptage en cours est l'action la plus urgente de l'écran : il prend
+     la place du chiffre favorable, avec son propre avancement. #}
+  <a href="/counting" class="block mt-2">
+    <div class="heros-chiffre">
+      <span class="nombre">{{ open_session_counted }}</span><span class="heros-attenue">/{{ open_session_total }}</span>
+    </div>
+    <p class="heros-legende mt-1">Comptage en cours — reprendre</p>
+  </a>
+  {% elif latest_session %}
+  <div class="mt-2">
+    <div class="heros-chiffre">
+      <span class="nombre">{{ conform_lines }}</span><span class="heros-attenue">/{{ counted_lines }}</span>
+    </div>
+    <p class="heros-legende mt-1">ingrédients conformes au dernier comptage</p>
   </div>
   {% else %}
-  {# Le montant occupe sa propre ligne. Placé à côté du titre, il entrait en
-     collision dès que celui-ci passait à la ligne — et il vaut mieux qu'il
-     domine seul : c'est le chiffre qui justifie l'outil. #}
-  <div class="px-5 pt-5 pb-4">
-    <h2 class="font-semibold text-titre2">Écarts du dernier comptage</h2>
-    <div class="montant text-montant mt-2 {% if variance_total %}text-alerte{% else %}text-valide{% endif %}">
-      {{ variance_total | euros }}
-    </div>
-    <p class="secondaire mt-1">
-      {{ latest_session.ended_at | datetime_fr }}{% if variance_count %},
-      {{ variance_count }} ligne{{ 's' if variance_count > 1 }} en écart{% endif %}
-    </p>
+  <div class="mt-2">
+    <p class="heros-legende">Aucun comptage effectué pour l'instant</p>
   </div>
-  {% set report = top_variances %}
-  {% include "partials/variance_table.html" with context %}
-  <div class="px-5 pb-4">
-    <a href="/variance" class="btn-tertiaire">Voir tous les écarts</a>
+  {% endif %}
+
+  <div class="heros-trait mt-5 mb-3"></div>
+
+  {# L'indicateur défavorable reste entièrement lisible, mais en second plan :
+     texte blanc atténué, jamais rouge sur ce fond (le rouge est réservé aux
+     lignes de liste sur fond blanc, section 5). #}
+  {% if latest_session %}
+  <p class="heros-secondaire">
+    {% if variance_total %}
+    Écart à régulariser — {{ variance_total | euros }}
+    {% else %}
+    Aucun écart constaté au dernier comptage
+    {% endif %}
+  </p>
+  {% elif pending_suggestions %}
+  <p class="heros-secondaire">
+    {{ pending_suggestions }} suggestion{{ 's' if pending_suggestions > 1 }} de commande en attente
+  </p>
+  {% else %}
+  <p class="heros-secondaire">Démarrez votre premier comptage pour voir vos écarts ici</p>
+  {% endif %}
+</header>
+{% endblock %}
+
+{% block content %}
+
+{# --------------------------------------------------------------------
+   Rangée d'actions rapides (section 6). Chaque action est justifiée par
+   la fréquence ou l'urgence d'un besoin du brief, jamais choisie pour
+   remplir la rangée :
+     - Compter          : fréquence la plus haute de tout le produit.
+     - Importer ventes  : flux quotidien qui conditionne la justesse du reste.
+     - Réceptions       : doit rester à 2 min de saisie (F1), fréquence
+                           élevée selon le rythme de livraison.
+     - Commandes        : basse fréquence, haute urgence — liée à une
+                           suggestion en attente de décision.
+   -------------------------------------------------------------------- #}
+<div class="flex items-start justify-between gap-2 pt-6 pb-2">
+  <a href="/counting" class="action-rapide">
+    <span class="action-rapide-cercle">{{ ico.icon("comptage", 22) }}</span>
+    <span class="action-rapide-libelle">Compter</span>
+  </a>
+  <a href="/sales/import" class="action-rapide">
+    <span class="action-rapide-cercle">{{ ico.icon("ventes", 22) }}</span>
+    <span class="action-rapide-libelle">Ventes</span>
+  </a>
+  <a href="/deliveries" class="action-rapide">
+    <span class="action-rapide-cercle">{{ ico.icon("livraison", 22) }}</span>
+    <span class="action-rapide-libelle">Réceptions</span>
+  </a>
+  <a href="/orders" class="action-rapide">
+    <span class="action-rapide-cercle">{{ ico.icon("commandes", 22) }}</span>
+    <span class="action-rapide-libelle">Commandes</span>
+  </a>
+</div>
+
+{# --------------------------------------------------------------------
+   Le contenu est posé sur blanc : pas de carte, un titre de section et
+   des lignes séparées par un filet qui démarre après la pastille.
+   -------------------------------------------------------------------- #}
+<section class="pt-6">
+  {% if not latest_session %}
+  <h2 class="section-titre">Écarts</h2>
+  <p class="secondaire mt-2 pb-4">
+    Après votre premier comptage terminé, vous verrez ici ce que le stock
+    réel a coûté par rapport au théorique.
+  </p>
+  {% else %}
+  <div class="flex items-baseline justify-between gap-4">
+    <h2 class="section-titre">Derniers écarts</h2>
+    <a href="/variance" class="btn-tertiaire text-base">Tout voir</a>
+  </div>
+  <div class="mt-1">
+    {% for line in top_variances %}
+    <div class="ligne">
+      {# Manquant en alerte : de l'argent parti. Surplus en pastille neutre :
+         une anomalie à comprendre, pas une perte — l'accent reste réservé à
+         l'action principale, pas à un statut de donnée. Écart nul en valide. #}
+      <span class="pastille {% if line.variance_value > 0 %}pastille-alerte{% elif line.variance_value < 0 %}pastille-neutre{% else %}pastille-valide{% endif %}">
+        {{ ico.icon("ecarts", 18) }}
+      </span>
+      <div class="flex-1 min-w-0">
+        <div class="ligne-titre truncate">{{ line.ingredient.name }}</div>
+        <div class="ligne-sous">
+          {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
+          {{ line.counted_quantity | qty }} comptés
+        </div>
+      </div>
+      <div class="ligne-valeur shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-gris{% endif %}">
+        {{ line.variance_value | euros }}
+      </div>
+    </div>
+    {% else %}
+    <p class="secondaire py-4">Aucune ligne comptée dans cette session.</p>
+    {% endfor %}
   </div>
   {% endif %}
 </section>
 
-{# ---------------------------------------------------------------------
-   Niveau 3 — le contexte. Ni bloc ni fond : c'est un repère, pas une
-   information.
-   --------------------------------------------------------------------- #}
-<p class="secondaire px-1 pb-4">
-  Catalogue&nbsp;: {{ dish_count }} plat{{ 's' if dish_count > 1 }},
-  {{ ingredient_count }} ingrédient{{ 's' if ingredient_count > 1 }}
+{# --------------------------------------------------------------------
+   Contexte : petites capitales grises, poids visuel inférieur — ce n'est
+   pas une information à consulter en priorité.
+   -------------------------------------------------------------------- #}
+<p class="section-contexte pt-8 pb-4">
+  {{ dish_count }} plat{{ 's' if dish_count > 1 }}, {{ ingredient_count }} ingrédient{{ 's' if ingredient_count > 1 }}
 </p>
 {% endblock %}

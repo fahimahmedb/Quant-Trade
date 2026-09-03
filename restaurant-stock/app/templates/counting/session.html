@@ -4,14 +4,15 @@
 {% block content %}
 <div data-counting-session="{{ session.id }}" data-count-revision="{{ revision }}"></div>
 
-{# Avancement : le seul élément collé en défilant. Il ne porte pas de bloc —
-   c'est un repère, pas un contenu. #}
-<div class="sticky top-14 bg-fond z-10 pt-1 pb-4">
+{# Avancement : le seul élément collé en défilant. Écran hors du périmètre de
+   la révision 2 (section 7 de la direction) : pas de héros, pas de pastille,
+   simplement porté sur le blanc désormais commun à tout l'écran. #}
+<div class="sticky top-14 bg-blanc z-10 pt-1 pb-4">
   <div class="flex items-baseline justify-between gap-4 mb-2">
-    <span class="nombre text-titre2 font-semibold" data-avancement data-total="{{ total }}">{{ counted }}<span class="text-encre-doux">/{{ total }}</span></span>
+    <span class="nombre text-titre2 font-semibold" data-avancement data-total="{{ total }}">{{ counted }}<span class="text-gris">/{{ total }}</span></span>
     <span class="secondaire">ingrédients comptés</span>
   </div>
-  <div class="w-full bg-champ h-2 rounded">
+  <div class="w-full bg-appui h-2 rounded">
     <div class="bg-valide h-2 rounded" data-jauge style="width: {{ (counted / total * 100) if total else 0 }}%"></div>
   </div>
   <div data-offline-banner hidden></div>
@@ -21,10 +22,13 @@
   {% set zone_lines = lines_by_zone[zone] %}
   {% if zone_lines %}
   {% set zone_done = (zone_lines | selectattr('counted_quantity', 'none') | list | length) == 0 %}
-  <details id="zone-{{ zone.value }}" class="zone-details bloc mb-4" data-zone="{{ zone.value }}"
-           {% if not zone_done %}open{% endif %}>
-    <summary class="flex items-center gap-4 px-5 py-5">
-      <span class="text-encre-doux shrink-0">{{ ico.icon(zone.value, 20) }}</span>
+  {# Un filet, pas un bloc : la séparation entre zones vient de l'espace et du
+     trait, comme le reste de l'application, sans adopter le système propre
+     au héros que la direction réserve à l'accueil. #}
+  <details id="zone-{{ zone.value }}" class="zone-details border-b border-trait pb-4 mb-4"
+            data-zone="{{ zone.value }}" {% if not zone_done %}open{% endif %}>
+    <summary class="flex items-center gap-4 py-3">
+      <span class="text-gris shrink-0">{{ ico.icon(zone.value, 20) }}</span>
       <span class="font-semibold text-titre2 flex-1 min-w-0">{{ zone.label }}</span>
       <span data-zone-etat class="secondaire shrink-0 {% if zone_done %}text-valide font-semibold{% endif %}">
         {% if zone_done %}terminé{% else %}<span class="nombre">{{ zone_lines | rejectattr('counted_quantity', 'none') | list | length }}/{{ zone_lines | length }}</span>{% endif %}

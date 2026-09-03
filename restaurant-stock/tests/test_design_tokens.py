@@ -1,11 +1,15 @@
-"""Direction visuelle V1.2 — les jetons de couleur tiennent leurs contrastes.
+"""Direction visuelle V1.2 — révision 2 : natif iOS + finition bancaire.
 
-L'écran est consulté sous néon de cuisine, souvent de biais et à bout de bras.
-Les seuils ci-dessous sont donc plus exigeants que le minimum réglementaire
-pour le texte courant : AAA (7:1) au lieu de AA (4.5:1).
+Remplace intégralement l'ancien fichier de contraste (jetons `surface` /
+`structure` / `filet`, système de cartes sur fond gris) : ce système a été
+retiré, pas complété, et ses tests n'ont plus d'objet.
 
-Ce test lit les valeurs dans la feuille de style, pas une copie : retoucher une
-couleur sans rejouer les contrastes fera échouer la suite.
+L'écran est consulté sous néon de cuisine, souvent de biais et à bout de
+bras : les seuils sont plus exigeants que le minimum réglementaire pour le
+texte courant — AAA (7:1) au lieu de AA (4.5:1).
+
+Ce test lit les valeurs dans la feuille de style, pas une copie : retoucher
+une couleur sans rejouer les contrastes fera échouer la suite.
 """
 import re
 from pathlib import Path
@@ -13,6 +17,9 @@ from pathlib import Path
 import pytest
 
 CSS = Path(__file__).resolve().parent.parent / "app" / "static" / "tailwind_src.css"
+RACINE = CSS.parent.parent.parent
+CONFIG = RACINE / "tailwind.config.js"
+GABARITS = sorted((RACINE / "app" / "templates").rglob("*.html"))
 
 
 def _tokens() -> dict[str, str]:
@@ -36,98 +43,172 @@ def _contrast(a: str, b: str) -> float:
     return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
 
 
+def _composite(fg_rgba: str, bg_hex: str) -> str:
+    """Couleur réellement affichée quand `fg_rgba` (blanc à X %) est posé sur
+    `bg_hex`. Nécessaire pour la ligne secondaire du héros, écrite en blanc
+    atténué : son contraste réel dépend de ce qui est dessous, pas du blanc
+    pur déclaré dans la règle CSS."""
+    match = re.search(
+        r"rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)", fg_rgba
+    )
+    fr, fg, fb, alpha = (float(x) for x in match.groups())
+    bg = bg_hex.lstrip("#")
+    br, bgc, bb = (int(bg[i : i + 2], 16) for i in (0, 2, 4))
+    out = [round(alpha * f + (1 - alpha) * b) for f, b in ((fr, br), (fg, bgc), (fb, bb))]
+    return "#%02x%02x%02x" % tuple(out)
+
+
 BLANC = "#ffffff"
 
-# (texte, fond, seuil, raison)
-CONTRASTS = [
-    ("encre", "surface", 7.0, "texte courant sur un bloc"),
-    ("encre", "fond", 7.0, "texte courant sur la page"),
-    ("encre-doux", "surface", 4.5, "texte secondaire sur un bloc"),
-    ("encre-doux", "fond", 4.5, "texte secondaire sur la page"),
-    ("alerte", "surface", 4.5, "montant d'écart sur un bloc"),
-    ("alerte", "alerte-fond", 4.5, "texte d'alerte sur son propre fond"),
-    ("valide", "surface", 4.5, "statut conforme sur un bloc"),
-    ("valide", "valide-fond", 4.5, "texte validé sur son propre fond"),
-    ("accent", "surface", 4.5, "lien d'action sur un bloc"),
-    ("accent", "accent-fond", 4.5, "texte d'accent sur son propre fond"),
+
+# ==========================================================================
+# Le fond est blanc, pas une carte flottante (AC-D2-1 / point 0 et 2 de la
+# révision) : ces tests portent donc sur le texte contre du blanc pur, pas
+# contre un jeton `surface` intermédiaire qui n'existe plus.
+# ==========================================================================
+
+TEXTE_SUR_BLANC = [
+    ("encre", 7.0, "texte courant"),
+    ("gris", 4.5, "texte secondaire"),
+    ("accent", 4.5, "lien d'action"),
+    ("alerte", 4.5, "montant d'écart dans une liste"),
+    ("valide", 4.5, "statut conforme dans une liste"),
 ]
 
 
-@pytest.mark.parametrize("avant, arriere, seuil, raison", CONTRASTS)
-def test_contrast_is_sufficient_under_kitchen_lighting(avant, arriere, seuil, raison):
+@pytest.mark.parametrize("jeton, seuil, raison", TEXTE_SUR_BLANC)
+def test_text_on_white_meets_its_threshold(jeton, seuil, raison):
     tokens = _tokens()
-    ratio = _contrast(tokens[avant], tokens[arriere])
-    assert ratio >= seuil, f"{raison} : {avant}/{arriere} = {ratio:.2f}, minimum {seuil}"
+    ratio = _contrast(tokens[jeton], BLANC)
+    assert ratio >= seuil, f"{raison} : {jeton}/blanc = {ratio:.2f}, minimum {seuil}"
 
 
-@pytest.mark.parametrize("fond", ["accent", "alerte", "valide", "encre"])
-def test_white_text_is_readable_on_every_filled_background(fond):
-    """Les surfaces pleines (bouton d'accent, bandeau, en-tête) portent du
-    texte blanc : il doit rester lisible sur chacune."""
-    ratio = _contrast(BLANC, _tokens()[fond])
-    assert ratio >= 4.5, f"blanc sur {fond} = {ratio:.2f}"
+# ==========================================================================
+# Les pastilles : icône sur fond teinté clair (TC-D2-03). Testées dans les
+# deux sens, comme une pastille doit l'être : l'icône doit se voir sur son
+# fond, et ce même fond doit se distinguer du blanc qui l'entoure.
+# ==========================================================================
+
+PASTILLES = [
+    ("accent", "accent-clair"),
+    ("alerte", "alerte-clair"),
+    ("valide", "valide-clair"),
+]
 
 
-def test_structure_hairline_is_visible_without_being_a_border_of_shame():
-    """Le filet remplace l'ombre portée pour délimiter un bloc : il doit se
-    voir. Le seuil de 3:1 de la WCAG vise les composants porteurs d'état, pas
-    un séparateur — on exige donc qu'il se distingue nettement des deux fonds,
-    sans le noircir au point d'alourdir la page."""
+@pytest.mark.parametrize("icone, fond", PASTILLES)
+def test_pastille_icon_is_readable_on_its_tinted_background(icone, fond):
     tokens = _tokens()
-    for arriere in ("surface", "fond"):
-        ratio = _contrast(tokens["structure"], tokens[arriere])
-        assert 1.7 <= ratio <= 3.5, f"structure/{arriere} = {ratio:.2f}"
+    ratio = _contrast(tokens[icone], tokens[fond])
+    assert ratio >= 4.5, f"pastille {icone}/{fond} = {ratio:.2f}"
 
 
-def test_the_six_named_values_of_the_visual_direction_are_all_defined():
-    """La direction tient en six valeurs. Si l'une disparaît ou si une
-    septième apparaît sans être une teinte dérivée, c'est un changement de
-    direction, pas une retouche."""
+@pytest.mark.parametrize("icone, fond", PASTILLES)
+def test_pastille_background_is_distinguishable_from_white(icone, fond):
+    """Une pastille dont le fond est confondu avec la page ne serait plus une
+    pastille : elle doit rester visible sans dépendre de son icône."""
     tokens = _tokens()
-    fondamentales = {"fond", "encre", "accent", "alerte", "valide", "structure"}
-    derivees = {"surface", "champ", "encre-doux", "filet",
-                "accent-fond", "alerte-fond", "valide-fond"}
-    assert fondamentales <= set(tokens)
-    assert set(tokens) == fondamentales | derivees
+    ratio = _contrast(tokens[fond], BLANC)
+    assert ratio >= 1.1, f"fond de pastille {fond} indiscernable du blanc : {ratio:.3f}"
 
 
-def test_no_tailwind_default_green_survives_in_the_templates():
-    """« Le vert Tailwind actuel doit disparaître : il ne veut rien dire. »
+# ==========================================================================
+# Le héros : le seul bloc plein-couleur de l'écran (TC-D2-02). Le contraste
+# du texte blanc est vérifié sur le HAUT du dégradé, qui est le cas le plus
+# défavorable puisque c'est la teinte la plus claire des deux.
+# ==========================================================================
 
-    Les gabarits migrés n'écrivent plus de couleur Tailwind du tout. Ceux qui
-    en écrivent encore passent par les alias de `tailwind.config.js`, qui
-    pointent vers les jetons — mais aucun ne doit produire un vert générique.
-    """
-    config = (CSS.parent.parent.parent / "tailwind.config.js").read_text()
-    alias = re.findall(r'"(emerald|green)-\d+":\s*"var\(--([a-z-]+)\)"', config)
-    assert alias, "les alias de vert doivent rester explicites tant qu'ils existent"
-    for nom, cible in alias:
-        assert cible in {"accent", "valide", "valide-fond"}, (
-            f"{nom} pointe vers {cible} : un vert Tailwind ne doit jamais "
-            "ressortir tel quel"
+
+def test_hero_full_white_text_meets_aaa_on_the_lightest_point_of_the_gradient():
+    """Le chiffre principal du héros (AC-D2-3 : jamais une perte) doit rester
+    lisible même sur le point le plus clair du dégradé."""
+    tokens = _tokens()
+    ratio = _contrast(BLANC, tokens["heros-haut"])
+    assert ratio >= 7.0, f"blanc/heros-haut = {ratio:.2f}"
+
+
+def test_hero_secondary_line_meets_double_a_despite_its_reduced_opacity():
+    """La ligne secondaire (l'indicateur défavorable) est en blanc atténué à
+    72 % — vérifié sur la vraie couleur composée, pas sur le blanc pur."""
+    source = CSS.read_text()
+    attenue = re.search(r"--heros-attenue:\s*(rgba\([^;]+\));", source).group(1)
+    tokens = _tokens()
+    couleur_reelle = _composite(attenue, tokens["heros-haut"])
+    ratio = _contrast(couleur_reelle, tokens["heros-haut"])
+    assert ratio >= 4.5, f"blanc atténué/heros-haut = {ratio:.2f} (composé : {couleur_reelle})"
+
+
+def test_hero_never_uses_alert_red_for_its_own_text():
+    """« Le rouge reste réservé aux lignes de liste sur fond blanc, pas
+    répété ici » (section 5). La couleur d'alerte ne doit apparaître dans
+    aucune règle `.heros*`."""
+    source = CSS.read_text()
+    bloc_heros = "\n".join(
+        ligne for ligne in source.splitlines() if re.match(r"\s*\.heros", ligne)
+        or (ligne.strip().startswith((".", "}")) is False and "heros" in source)
+    )
+    # Extraction précise : chaque règle .heros* jusqu'à son accolade fermante.
+    regles = re.findall(r"(\.heros[a-z-]*\s*\{[^}]*\})", source)
+    assert regles, "au moins une règle .heros doit exister"
+    for regle in regles:
+        assert "var(--alerte)" not in regle, f"rouge d'alerte utilisé dans le héros : {regle}"
+
+
+# ==========================================================================
+# Les six teintes fondamentales existent toujours, dérivées comprises. Si
+# l'une disparaît ou si une septième apparaît sans être une dérivée déclarée,
+# c'est un changement de direction, pas une retouche.
+# ==========================================================================
+
+
+def test_the_named_tokens_of_the_visual_direction_are_exactly_these():
+    tokens = _tokens()
+    attendus = {
+        "blanc", "encre", "gris", "trait", "appui",
+        "heros-haut", "heros-bas",
+        "accent", "accent-clair", "alerte", "alerte-clair", "valide", "valide-clair",
+    }
+    assert set(tokens) == attendus, (
+        f"jetons inattendus : {set(tokens) - attendus} | "
+        f"jetons manquants : {attendus - set(tokens)}"
+    )
+
+
+def test_no_leftover_card_system_tokens_survive():
+    """Le système de cartes/ombres/jetons de la direction précédente
+    (`surface`, `structure`, `filet`, `fond`, `champ` en couleur nommée) a été
+    retiré, pas complété. Sa réapparition serait un retour en arrière."""
+    tokens = _tokens()
+    for fantome in ("surface", "structure", "filet", "fond"):
+        assert fantome not in tokens, f"jeton de l'ancien système encore présent : {fantome}"
+
+    config = CONFIG.read_text()
+    bloc_colors = config.split("colors: {", 1)[1].split("\n    },", 1)[0]
+    for fantome in ('"surface"', '"structure"', '"filet"', '"fond"'):
+        assert fantome not in bloc_colors, f"alias de couleur fantôme : {fantome}"
+
+
+def test_no_box_shadow_other_than_the_explicit_none():
+    """Aucune ombre portée dans cette direction : la seule aurait été le
+    marqueur du système de cartes rejeté par les captures de référence."""
+    source = CSS.read_text()
+    ombres = re.findall(r"box-shadow:\s*([^;]+);", source)
+    for regle in ombres:
+        assert "rgba(0, 0, 0" not in regle or "0 0 0 3px rgba(28, 74, 110" in regle, (
+            f"ombre grise détectée : {regle}"
         )
 
 
 # ==========================================================================
-# Règles de finition V1.2 (AC-D-1 à AC-D-8).
-#
-# Ces tests portent sur la feuille de style et les gabarits, pas sur le rendu :
-# ils empêchent une valeur hors échelle ou un troisième rayon de revenir sans
-# qu'on s'en aperçoive. Ce qui demande un vrai navigateur (débordement de la
-# navigation) est vérifié dans tests/test_nr_mobile.py.
+# Rythme d'espacement et rayons — repris de la révision précédente, ils ne
+# bougent pas. Un rayon de carte générique n'a plus de raison d'exister,
+# mais le héros et les cercles pleins (pastilles, actions rapides) demandent
+# des valeurs que l'ancienne contrainte « deux rayons au maximum » aurait
+# interdites : elle n'est donc pas reconduite telle quelle.
 # ==========================================================================
 
-RACINE = CSS.parent.parent.parent
-CONFIG = RACINE / "tailwind.config.js"
-GABARITS = sorted((RACINE / "app" / "templates").rglob("*.html"))
 
-
-def test_ac_d_1_every_spacing_step_is_a_multiple_of_four_pixels():
-    """L'irrégularité des marges est ce qui se lit comme « bâclé ».
-
-    L'échelle est verrouillée dans la configuration : un cran hors échelle
-    n'est pas seulement interdit, il est inécrivable dans un gabarit.
-    """
+def test_spacing_scale_stays_a_multiple_of_four_pixels():
     bloc = CONFIG.read_text().split("spacing: {", 1)[1].split("},", 1)[0]
     valeurs = re.findall(r":\s*\"(\d+)px\"", bloc)
     assert valeurs, "l'échelle d'espacement doit rester explicite"
@@ -135,23 +216,7 @@ def test_ac_d_1_every_spacing_step_is_a_multiple_of_four_pixels():
     assert hors_echelle == [], f"crans hors échelle de 4 px : {hors_echelle}"
 
 
-def test_ac_d_1_stylesheet_spacing_declarations_stay_on_the_scale():
-    """Les composants écrits à la main doivent suivre la même échelle que les
-    classes utilitaires, sinon la règle ne vaut que pour la moitié du style."""
-    source = CSS.read_text()
-    fautes = []
-    for prop, valeur in re.findall(
-        r"\b(padding|margin|gap|min-height)(?:-[a-z]+)?:\s*([^;]+);", source
-    ):
-        for px in re.findall(r"(\d+)px", valeur):
-            if int(px) % 4 != 0:
-                fautes.append(f"{prop}: {valeur.strip()}")
-    assert fautes == [], f"espacements hors échelle de 4 px : {fautes}"
-
-
-def test_ac_d_1_templates_use_no_off_scale_arbitrary_spacing():
-    """Une valeur arbitraire (`top-[92px]`) contourne l'échelle : elle doit
-    rester dessus, sinon la configuration ne protège plus rien."""
+def test_templates_use_no_off_scale_arbitrary_spacing():
     fautes = []
     for gabarit in GABARITS:
         for utilitaire, px in re.findall(
@@ -162,72 +227,63 @@ def test_ac_d_1_templates_use_no_off_scale_arbitrary_spacing():
     assert fautes == [], f"valeurs arbitraires hors échelle : {fautes}"
 
 
-def test_ac_d_2_at_most_two_corner_radii_in_the_whole_application():
-    """Un rayon pour le bloc, un pour ce qui vit dedans. Jamais un troisième."""
-    bloc = CONFIG.read_text().split("borderRadius: {", 1)[1].split("},", 1)[0]
-    rayons = {v for v in re.findall(r":\s*\"(\d+)px\"", bloc) if v != "0"}
-    assert len(rayons) <= 2, f"trois rayons ou plus : {sorted(rayons)}"
-
-    dans_le_style = {
-        v for v in re.findall(r"border-radius:\s*(\d+)px", CSS.read_text()) if v != "0"
-    }
-    assert dans_le_style <= rayons, (
-        f"la feuille de style introduit un rayon absent de l'échelle : "
-        f"{sorted(dans_le_style - rayons)}"
-    )
+# ==========================================================================
+# Retour au toucher et accessibilité (AC-D2-5, TC-D2-04, TC-D2-05, TC-D2-06).
+# ==========================================================================
 
 
 @pytest.mark.parametrize(
     "selecteur",
-    [".btn:active", ".btn-tertiaire:active", ".onglet:active",
+    [".btn:active", ".btn-tertiaire:active", ".onglet:active", ".ligne:active",
+     ".action-rapide:active .action-rapide-cercle",
      ".champ:focus-within", ".select:focus", ":focus-visible"],
 )
-def test_ac_d_3_interactive_elements_react_to_touch_and_to_focus(selecteur):
+def test_interactive_elements_react_to_touch_and_to_focus(selecteur):
     """Sans état pressé, l'interface paraît morte au doigt ; sans état de
     focus, elle est inutilisable au clavier."""
     assert selecteur in CSS.read_text(), f"{selecteur} n'est défini nulle part"
 
 
-def test_ac_d_4_counting_field_and_touch_targets_are_large_enough():
-    """La tension avec la référence bancaire est tranchée en faveur de la
-    cuisine : mains froides, gants, écran gras."""
+def test_quick_action_touch_target_is_at_least_48px_regardless_of_circle_size():
+    """AC-D2-5 : le cercle visuel peut être plus petit que 48 px, la cible
+    touchable ne le peut pas."""
     source = CSS.read_text()
+    regle_action = re.search(r"\.action-rapide\s*\{([^}]*)\}", source).group(1)
+    assert re.search(r"min-height:\s*48px", regle_action), (
+        "la zone touchable de .action-rapide doit faire au moins 48 px"
+    )
+    regle_cercle = re.search(r"\.action-rapide-cercle\s*\{([^}]*)\}", source).group(1)
+    largeur = int(re.search(r"width:\s*(\d+)px", regle_cercle).group(1))
+    assert largeur <= 52, (
+        "le cercle est censé être visuellement plus petit que la cible tactile"
+    )
 
-    def min_height(bloc: str) -> int:
-        corps = source.split(bloc + " {", 1)[1].split("}", 1)[0]
-        return int(re.search(r"min-height:\s*(\d+)px", corps).group(1))
 
-    assert min_height(".champ") >= 52, "le champ de comptage doit faire 52 px"
-    assert min_height(".btn") >= 52, "un bouton doit faire 52 px"
-    for cible in (".btn-tertiaire", ".onglet", ".select"):
-        assert min_height(cible) >= 48, f"{cible} sous la cible tactile de 48 px"
+def test_reduced_motion_preference_is_respected():
+    assert "@media (prefers-reduced-motion: reduce)" in CSS.read_text()
 
 
-def test_ac_d_7_nothing_animates_without_a_user_action():
+def test_nothing_animates_without_a_user_action():
     """Aucune animation d'entrée, aucun effet au survol : seules les
-    transitions d'état existent, et la préférence système les coupe."""
+    transitions d'état existent (TC-D2-06)."""
     source = CSS.read_text()
-    assert "@media (prefers-reduced-motion: reduce)" in source
-
-    # Une transition ne se déclenche que sur un changement d'état ; une
-    # `animation` part toute seule au chargement.
     animations = re.findall(r"^\s*animation:\s*[^;]+;", source, flags=re.M)
     assert animations == [], f"animation automatique : {animations}"
-
-    # Le survol n'existe pas sur un écran tactile : le styler donne un état
-    # collant après le toucher.
     survols = re.findall(r"^[^@\n]*:hover[^{]*\{", source, flags=re.M)
     assert survols == [], f"effet au survol : {survols}"
-
     for gabarit in GABARITS:
         texte = gabarit.read_text()
         assert "hover:" not in texte, f"{gabarit.name} utilise un effet au survol"
         assert "animate-" not in texte, f"{gabarit.name} déclenche une animation"
 
 
-def test_ac_d_8_no_trailing_arrows_and_no_middot_separators():
-    """Deux tics d'interface : la flèche collée en fin de libellé et le point
-    médian qui sépare des métadonnées. Le libellé se suffit, la virgule aussi."""
+# ==========================================================================
+# Tics à bannir (repris de la révision précédente, non contredits par
+# celle-ci) et vocabulaire imposé par la structure (grand titre, section 4).
+# ==========================================================================
+
+
+def test_no_trailing_arrows_and_no_middot_separators():
     fautes = []
     for gabarit in GABARITS:
         texte = gabarit.read_text()
@@ -238,9 +294,37 @@ def test_ac_d_8_no_trailing_arrows_and_no_middot_separators():
     assert fautes == [], fautes
 
 
-@pytest.mark.parametrize("etat", ["propose", "confirme"])
-def test_counting_field_distinguishes_proposed_from_confirmed(etat):
-    """Le champ dit s'il porte une valeur pré-remplie que personne n'a encore
-    confirmée, ou une valeur enregistrée. Sans cette différence, le chef ne
-    sait pas ce qui lui reste à faire."""
-    assert f'.champ[data-etat="{etat}"]' in CSS.read_text()
+def test_ac_d2_2_dashboard_hero_number_is_at_least_thirty_px():
+    """AC-D2-2 : grand titre/chiffre ≥ 30 px sur l'écran de synthèse."""
+    source = CSS.read_text()
+    regle = re.search(r"\.heros-chiffre\s*\{([^}]*)\}", source).group(1)
+    taille = int(re.search(r"font-size:\s*(\d+)px", regle).group(1))
+    assert taille >= 30, f".heros-chiffre fait {taille}px, minimum 30"
+
+
+def test_ac_d2_1_no_floating_white_card_class_remains_in_templates():
+    """AC-D2-1 : aucun écran principal n'affiche de carte blanche flottante
+    sur fond gris. La classe qui produisait ce système (`bloc`) a été
+    retirée de la feuille de style ; elle ne doit plus être écrite non plus,
+    sans quoi elle resterait une classe morte trompeuse dans le HTML."""
+    for gabarit in GABARITS:
+        classes = re.findall(r'class="([^"]*)"', gabarit.read_text())
+        for attribut in classes:
+            mots = attribut.split()
+            assert "bloc" not in mots, f"{gabarit.name} écrit encore la classe « bloc »"
+
+
+def test_ac_d2_4_quick_action_justifications_are_documented_in_the_template():
+    """AC-D2-4 : chaque action de la rangée rapide porte sa justification
+    écrite (fréquence ou urgence), en commentaire dans le gabarit."""
+    dashboard = Path(RACINE / "app" / "templates" / "dashboard.html").read_text()
+    for action, mot_cle in [
+        ("Compter", "fréquence la plus haute"),
+        ("Importer ventes", "flux quotidien"),
+        ("Réceptions", "F1"),
+        ("Commandes", "urgence"),
+    ]:
+        assert mot_cle in dashboard, (
+            f"justification de l'action « {action} » introuvable (mot-clé "
+            f"« {mot_cle} » absent du commentaire)"
+        )

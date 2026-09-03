@@ -3,34 +3,31 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Direction visuelle V1.2 — finition
+   Direction visuelle V1.2 — révision 2 : natif iOS + finition bancaire
    --------------------------------------------------------------------------
-   Même palette, même typographie : ce qui change est l'exigence d'exécution.
-   Référence de finition : une application bancaire moderne. Sobre, mais
-   soignée dans le détail.
+   Ce fichier remplace le système précédent, il ne s'ajoute pas à lui. Les
+   cartes blanches flottant sur un fond gris, les ombres portées et les jetons
+   `surface` / `structure` / `filet` ont été retirés, pas complétés : c'est
+   exactement le système que les captures de référence rejetaient.
 
-   Quatre règles expliquent presque tout ce fichier :
-   1. Un seul rythme d'espacement, multiples de 4 px. L'irrégularité est ce
-      qui se lit comme « bâclé », même sans qu'on sache pourquoi. L'échelle
-      est verrouillée dans tailwind.config.js : une valeur hors échelle n'est
-      pas seulement interdite, elle n'existe pas.
-   2. On sépare par l'espace, pas par le trait. Un bloc au repos porte une
-      seule des trois marques possibles — ici son fond, ni bordure ni ombre.
-      Le filet ne sert qu'entre les lignes d'une même liste dense.
-   3. Deux rayons dans toute l'application : 12 px pour un bloc, 8 px pour ce
-      qui vit à l'intérieur. Jamais un troisième.
-   4. Tout ce qui se touche réagit, et seulement quand on le touche. Aucune
-      animation d'entrée, aucun effet au survol.
+   Trois règles portent presque tout ce fichier :
+   1. Le contenu est posé sur du blanc. Il n'y a qu'un seul bloc plein-couleur
+      par écran — le héros — et c'est ce qui lui donne son poids.
+   2. On regroupe par l'espace et par un filet fin aligné sur le texte, jamais
+      bord à bord, jamais un encadré par élément.
+   3. Le favorable domine, le défavorable reste lisible en second plan. Un
+      montant de perte ne reçoit jamais le traitement d'un solde bancaire.
 
-   La tension avec la référence bancaire est tranchée en faveur de la
-   cuisine : cibles d'au moins 48 px, champs de comptage à 52 px, contrastes
-   AAA, même là où un gris plus clair serait plus élégant.
+   Ce qui est repris de la révision précédente et ne bouge pas : le rythme
+   d'espacement en multiples de 4 px (verrouillé dans tailwind.config.js), les
+   chiffres tabulaires, les contrastes AAA pour le texte courant, le retour au
+   toucher sur tout élément interactif, et la règle d'arbitrage — quand la
+   cuisine et l'élégance se contredisent, la cuisine gagne.
    ========================================================================== */
 
 /* IBM Plex — SIL Open Font License 1.1, licence dans app/static/fonts/.
-   Sous-ensemble latin, servi depuis le serveur du restaurant : aucune requête
-   vers un tiers, et les fichiers sont pré-chargés par le service worker pour
-   que le comptage garde sa typographie hors-ligne. */
+   Servi depuis le serveur du restaurant et pré-chargé par le service worker,
+   pour que le comptage garde sa typographie hors-ligne. */
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: normal;
@@ -62,46 +59,58 @@
 
 @layer base {
   :root {
-    /* --- Les six valeurs de la direction visuelle ------------------------
-       Contrôlées par tests/test_design_tokens.py : toute modification d'une
-       de ces valeurs doit continuer à passer les seuils de contraste AAA. */
+    /* --- Le fond est blanc -----------------------------------------------
+       Ce n'est pas une teinte parmi d'autres : c'est la décision qui sépare
+       cette direction de la précédente. Aucune carte ne flotte dessus. */
+    --blanc: #ffffff;
 
-    /* Fond principal : gris froid, jamais blanc pur. L'écran est consulté
-       sous néon de cuisine, où le blanc pur fatigue. Assombri par rapport à
-       la première direction : c'est lui, désormais, qui détache les blocs,
-       puisqu'ils n'ont plus de filet. */
-    --fond: #dfe5e4;
-    /* Encre : très sombre à reflet bleu-vert, jamais noir absolu. */
-    --encre: #141d1c;
-    /* Accent unique, réservé à l'action principale. */
+    /* Texte. Deux valeurs suffisent : ce qu'on lit, et ce qui accompagne. */
+    --encre: #101614;
+    --gris: #68736f;
+
+    /* Filet de regroupement. Il démarre après la pastille, jamais bord à
+       bord : c'est ce qui distingue une liste native d'un tableau. */
+    --trait: #e2e7e5;
+
+    /* --- Le héros --------------------------------------------------------
+       Le seul bloc plein-couleur de l'écran. Dégradé très léger, le haut plus
+       clair que le bas. Le contraste du texte blanc est vérifié sur le HAUT,
+       qui est le cas le plus défavorable.
+
+       ATTENTION : ce vert est un choix par défaut repris du prototype, pas
+       une décision validée par le porteur du projet (angle mort assumé). */
+    --heros-haut: #115442;
+    --heros-bas: #0e4433;
+    /* Blanc atténué de la ligne secondaire du héros : l'indicateur
+       défavorable y reste lisible sans jamais virer au rouge. Le rouge est
+       réservé aux listes sur fond blanc. */
+    --heros-attenue: rgba(255, 255, 255, 0.72);
+    --heros-trait: rgba(255, 255, 255, 0.18);
+
+    /* --- Trois couleurs sémantiques, pour les pastilles et les valeurs ---
+       Chacune existe en teinte pleine (icône, montant) et en teinte claire
+       (fond de pastille). Les deux passent 4.5:1 l'une sur l'autre. */
     --accent: #1c4a6e;
-    /* Statut : l'alerte (écart, rupture) et le validé (conforme). */
+    --accent-clair: #e4edf4;
     --alerte: #a33323;
+    --alerte-clair: #f9ebe8;
     --valide: #2e6b4c;
-    /* Gris de structure : bordure discrète d'un champ, trait d'une icône.
-       Ne cerne plus les blocs. */
-    --structure: #9ba8a4;
+    --valide-clair: #e7f2ec;
 
-    /* --- Teintes dérivées ----------------------------------------------- */
-    --surface: #fcfdfd;      /* le bloc */
-    --champ: #eff3f2;        /* le champ, légèrement en retrait du bloc */
-    --encre-doux: #55625f;   /* libellé secondaire */
-    --filet: #e4eae9;        /* entre deux lignes d'une liste dense */
-    --accent-fond: #e7eff4;
-    --alerte-fond: #f7ebe8;
-    --valide-fond: #e9f2ed;
+    /* Fond d'appui : le gris très léger qui apparaît sous le doigt. */
+    --appui: #f0f3f2;
 
-    /* Durée unique des retours au toucher. Au-delà de 200 ms, l'interface
-       paraît molle ; en deçà de 100 ms, on ne voit rien. */
-    --duree: 160ms;
+    /* Durée unique du retour au toucher. Au-delà de 200 ms l'interface
+       paraît molle, en deçà de 100 ms on ne voit rien. */
+    --duree: 140ms;
   }
 
-  html {
-    background-color: var(--fond);
+  html,
+  body {
+    background-color: var(--blanc);
   }
 
   body {
-    background-color: var(--fond);
     color: var(--encre);
     font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     /* Si la police échoue à charger, les chiffres restent alignés. */
@@ -109,15 +118,14 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Le focus doit rester visible partout, y compris au clavier. */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
-  /* Rien ne s'anime sans action de l'utilisateur ; il ne reste donc à
-     désactiver que les transitions d'état et ce que le navigateur anime
-     lui-même. */
+  /* Rien ne s'anime sans action de l'utilisateur. Il ne reste donc à couper
+     que les transitions d'état et ce que le navigateur anime lui-même — le
+     retour au toucher, lui, est déclenché par l'utilisateur et subsiste. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -131,54 +139,193 @@
 }
 
 @layer components {
-  /* --- Le bloc ---------------------------------------------------------
-     Une seule des trois marques possibles : son fond. Pas de bordure, pas
-     d'ombre. Ce qui le sépare du suivant, c'est l'espace. */
-  .bloc {
-    background-color: var(--surface);
-    border-radius: 12px;
+  /* --- Grand titre -----------------------------------------------------
+     La signature de la référence : gros, gras, en haut à gauche, avec un
+     léger resserrement des lettres. */
+  .titre-ecran {
+    font-size: 34px;
+    line-height: 40px;
+    font-weight: 600;
+    letter-spacing: -0.022em;
   }
 
-  /* Ce qui demande une action maintenant. Le liseré d'accent est la seule
-     exception à « pas de bordure » : il porte un sens, il ne cerne rien. */
-  .bloc-action {
-    border-left: 4px solid var(--accent);
+  /* --- Le héros --------------------------------------------------------
+     Seul bloc plein de l'écran, arrondi en bas uniquement : il vient du haut
+     de la fenêtre et s'y accroche. */
+  .heros {
+    background: linear-gradient(180deg, var(--heros-haut) 0%, var(--heros-bas) 100%);
+    color: var(--blanc);
+    border-radius: 0 0 28px 28px;
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
-  .contexte {
-    color: var(--encre-doux);
+  /* Le chiffre le plus favorable de l'écran. Jamais un montant de perte :
+     donner à une perte le traitement d'un solde bancaire est un contresens
+     de ton, même quand c'est joli. */
+  .heros-chiffre {
+    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 52px;
+    line-height: 56px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
   }
 
-  /* Libellé secondaire : plus petit et plus clair que le nom qu'il
-     accompagne, pour cesser de le concurrencer. */
-  .secondaire {
-    color: var(--encre-doux);
-    font-size: 0.8125rem;
-    line-height: 1.125rem;
+  .heros-legende {
+    color: var(--heros-attenue);
+    font-size: 15px;
+    line-height: 20px;
   }
 
-  /* --- Les chiffres ----------------------------------------------------
-     En chasse fixe, donc tabulaires : les colonnes de montants s'alignent
-     sans réglage. Réservé aux colonnes ; en pleine phrase, la chasse fixe
-     écarte les séparateurs de milliers sans rien apporter. */
+  .heros-trait {
+    height: 1px;
+    background-color: var(--heros-trait);
+  }
+
+  /* L'indicateur défavorable : entièrement lisible, mais en second plan. */
+  .heros-secondaire {
+    color: var(--heros-attenue);
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  /* --- Rangée d'actions rapides ----------------------------------------
+     Le cercle est plus petit que la cible : c'est la zone touchable qui doit
+     faire 48 px, pas le dessin. */
+  .action-rapide {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 4px 0;
+    color: var(--encre);
+    text-align: center;
+  }
+  .action-rapide-cercle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    background-color: var(--accent-clair);
+    color: var(--accent);
+    transition: transform var(--duree) ease, background-color var(--duree) ease;
+  }
+  .action-rapide:active .action-rapide-cercle {
+    transform: scale(0.94);
+    background-color: #d3e1ec;
+  }
+  .action-rapide-libelle {
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* --- Titres de section -----------------------------------------------
+     Une section qu'on consulte porte un titre gras ; un simple contexte
+     porte de petites capitales grises, d'un poids visuel inférieur. */
+  .section-titre {
+    font-size: 21px;
+    line-height: 28px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .section-contexte {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+
+  /* --- Lignes de liste --------------------------------------------------
+     Pastille, titre, sous-texte, valeur à droite. Le filet est porté par la
+     ligne elle-même et démarre après la pastille — c'est ce décalage qui
+     fait la liste native plutôt que le tableau. */
+  .ligne {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 12px 0;
+    transition: background-color var(--duree) ease;
+  }
+  .ligne:active {
+    background-color: var(--appui);
+  }
+  .ligne + .ligne {
+    border-top: 1px solid var(--trait);
+  }
+
+  .pastille {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+  }
+  .pastille-accent {
+    background-color: var(--accent-clair);
+    color: var(--accent);
+  }
+  .pastille-alerte {
+    background-color: var(--alerte-clair);
+    color: var(--alerte);
+  }
+  .pastille-valide {
+    background-color: var(--valide-clair);
+    color: var(--valide);
+  }
+  /* Statut neutre — un surplus, par exemple : une anomalie à comprendre,
+     pas une perte. Volontairement distincte de `.pastille-accent`, qui
+     reste réservée à une action, jamais à un statut de donnée. */
+  .pastille-neutre {
+    background-color: var(--appui);
+    color: var(--encre);
+  }
+
+  .ligne-titre {
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 600;
+  }
+  .ligne-sous {
+    color: var(--gris);
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .ligne-valeur {
+    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* --- Les chiffres ailleurs -------------------------------------------- */
   .nombre {
     font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
   }
-
-  /* Le montant est l'élément typographique le plus fort de l'écran : c'est
-     le seul endroit où le gras lourd est autorisé. */
-  .montant {
-    font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+  .secondaire {
+    color: var(--gris);
+    font-size: 13px;
+    line-height: 18px;
   }
 
-  /* --- Boutons ---------------------------------------------------------
-     Trois niveaux, et chacun s'enfonce quand on appuie. Sans cet état
-     pressé, l'interface paraît morte au doigt. */
+  /* --- Boutons ----------------------------------------------------------
+     Trois niveaux, chacun avec son état pressé. */
   .btn {
     display: flex;
     align-items: center;
@@ -186,33 +333,28 @@
     gap: 8px;
     min-height: 52px;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: 600;
     text-align: center;
-    transition: background-color var(--duree) ease, transform var(--duree) ease,
-      border-color var(--duree) ease;
+    transition: background-color var(--duree) ease, transform var(--duree) ease;
   }
   .btn:active {
     transform: translateY(1px);
   }
-
   .btn-principal {
     background-color: var(--accent);
-    color: #fff;
+    color: var(--blanc);
   }
   .btn-principal:active {
     background-color: #133550;
   }
-
   .btn-secondaire {
-    background-color: var(--champ);
+    background-color: var(--appui);
     color: var(--encre);
   }
   .btn-secondaire:active {
-    background-color: #dde4e2;
+    background-color: #e2e7e5;
   }
-
-  /* Tertiaire : du texte, pas une boîte. Garde la cible tactile pleine. */
   .btn-tertiaire {
     display: inline-flex;
     align-items: center;
@@ -226,24 +368,23 @@
     color: #133550;
   }
 
-  /* --- Champ de saisie -------------------------------------------------
-     L'unité vit dans le champ, à droite : c'est le conteneur qui porte la
-     bordure et le fond, pas l'`input`. Le focus se prend sur le conteneur
-     entier (`focus-within`), sinon la lueur ne suivrait pas l'unité. */
+  /* --- Champ de saisie --------------------------------------------------
+     L'unité vit dans le champ ; c'est le conteneur qui porte le fond et le
+     focus, pas l'`input`, sinon la lueur ne suivrait pas l'unité. */
   .champ {
     display: flex;
     align-items: center;
     gap: 8px;
     min-height: 52px;
     padding: 0 16px;
-    background-color: var(--champ);
+    background-color: var(--appui);
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: border-color var(--duree) ease, box-shadow var(--duree) ease,
       background-color var(--duree) ease;
   }
   .champ:focus-within {
-    background-color: #fff;
+    background-color: var(--blanc);
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(28, 74, 110, 0.16);
   }
@@ -256,7 +397,7 @@
     text-align: right;
     font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: 600;
     color: var(--encre);
   }
@@ -265,57 +406,45 @@
   }
   .champ .unite {
     flex: 0 0 auto;
-    color: var(--encre-doux);
-    font-size: 0.875rem;
+    color: var(--gris);
+    font-size: 14px;
   }
-
-  /* Valeur pré-remplie que personne n'a encore confirmée : elle se propose,
-     elle n'affirme pas — chiffre en gris, bordure discrète. Une fois la ligne
-     enregistrée, le champ prend le fond du validé et le chiffre passe en encre
-     pleine. Le pointillé, essayé d'abord, faisait lire neuf champs comme un
-     écran inachevé plutôt que comme neuf valeurs provisoires. */
-  .champ[data-etat="propose"] {
-    border-color: var(--structure);
-  }
+  /* Valeur pré-remplie que personne n'a confirmée : elle se propose, elle
+     n'affirme pas. Confirmée, elle prend le fond du validé. */
   .champ[data-etat="propose"] input {
-    color: var(--encre-doux);
+    color: var(--gris);
   }
   .champ[data-etat="confirme"] {
-    background-color: var(--valide-fond);
+    background-color: var(--valide-clair);
   }
 
-  /* Le `<select>` reprend l'habillage du champ sans en être un : ce n'est
-     pas un conteneur, il porte lui-même son fond et sa bordure. */
   .select {
     width: 100%;
     min-height: 48px;
     padding: 0 16px;
-    background-color: var(--champ);
+    background-color: var(--appui);
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 12px;
     color: var(--encre);
     transition: border-color var(--duree) ease, box-shadow var(--duree) ease;
   }
   .select:focus {
     outline: none;
-    background-color: #fff;
+    background-color: var(--blanc);
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(28, 74, 110, 0.16);
   }
 
-  /* --- Barre d'onglets -------------------------------------------------
-     En bas, atteignable au pouce, et rien n'y est coupé quelle que soit la
-     largeur : cinq onglets à parts égales, aucun n'ayant de largeur propre.
-     C'est ce qui garantit AC-D-5 de 320 à 430 px sans point de rupture. */
+  /* --- Barre d'onglets --------------------------------------------------
+     En bas, atteignable au pouce. Cinq onglets à parts égales : aucun n'a de
+     largeur propre, donc aucun ne peut se couper, à aucune largeur. */
   .barre-onglets {
     position: fixed;
     inset-inline: 0;
     bottom: 0;
     z-index: 20;
-    background-color: var(--surface);
-    /* Le seul filet de séparation admis hors liste dense : il ne cerne pas
-       un bloc, il marque la limite entre deux plans qui se recouvrent. */
-    border-top: 1px solid var(--filet);
+    background-color: var(--blanc);
+    border-top: 1px solid var(--trait);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .barre-onglets-rail {
@@ -324,7 +453,6 @@
     max-width: 48rem;
     margin: 0 auto;
   }
-
   .onglet {
     display: flex;
     flex: 1 1 0;
@@ -335,11 +463,10 @@
     gap: 4px;
     padding: 8px 4px;
     min-height: 56px;
-    color: var(--encre-doux);
-    font-size: 0.6875rem;
-    /* Pas `line-height: 1` : combiné à l'`overflow: hidden` du libellé, il
-       rognait l'accent de « Écarts ». Un diacritique dépasse au-dessus de la
-       hauteur d'x, il faut lui laisser la place. */
+    color: var(--gris);
+    font-size: 11px;
+    /* Pas `line-height: 1` : avec l'`overflow: hidden` du libellé, il
+       rognerait l'accent de « Écarts ». */
     line-height: 1.3;
     transition: color var(--duree) ease, background-color var(--duree) ease;
   }
@@ -348,7 +475,7 @@
     font-weight: 600;
   }
   .onglet:active {
-    background-color: var(--champ);
+    background-color: var(--appui);
   }
   .onglet span {
     max-width: 100%;
@@ -357,8 +484,6 @@
     white-space: nowrap;
   }
 
-  /* « Plus » : le `<summary>` est le cinquième onglet, le panneau s'ouvre
-     au-dessus de la barre sur toute la largeur — rien à déborder. */
   .feuille {
     display: flex;
     flex: 1 1 0;
@@ -376,38 +501,46 @@
     position: fixed;
     inset-inline: 0;
     bottom: calc(56px + env(safe-area-inset-bottom, 0px));
-    background-color: var(--surface);
-    border-top: 1px solid var(--filet);
+    background-color: var(--blanc);
+    border-top: 1px solid var(--trait);
+  }
+  /* Un enfant direct de <details> en `position: fixed` échappe au masquage
+     natif du navigateur quand <details> est fermé (constaté sur Chromium :
+     `getComputedStyle` y rend `display: block` bien que `open` soit `false`
+     — le panneau, sorti du flux, reste rendu au-dessus de toutes les pages).
+     Sans cette règle, la page "Plus" débordait en permanence, invisible à
+     l'écran mais toujours dans le DOM avec sa largeur propre. Masquage
+     explicite, indépendant de ce comportement natif. */
+  .feuille:not([open]) .feuille-panneau {
+    display: none;
   }
   .feuille-panneau a {
     color: inherit;
     transition: background-color var(--duree) ease;
   }
   .feuille-panneau a:active {
-    background-color: var(--champ);
+    background-color: var(--appui);
   }
 
   .zone-details > summary {
     cursor: pointer;
     list-style: none;
     transition: background-color var(--duree) ease;
-    border-radius: 12px;
   }
   .zone-details > summary:active {
-    background-color: var(--champ);
+    background-color: var(--appui);
   }
   .zone-details > summary::-webkit-details-marker {
     display: none;
   }
 
-  /* --- Messages --------------------------------------------------------
-     Le fond de statut porte le sens ; il n'y a pas d'icône décorative. */
+  /* --- Messages ---------------------------------------------------------- */
   .flash-success {
-    background-color: var(--valide-fond);
+    background-color: var(--valide-clair);
     color: var(--valide);
   }
   .flash-error {
-    background-color: var(--alerte-fond);
+    background-color: var(--alerte-clair);
     color: var(--alerte);
   }
 }

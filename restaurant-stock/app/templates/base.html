@@ -7,7 +7,7 @@
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="/static/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
-  <meta name="theme-color" content="#dfe5e4" />
+  <meta name="theme-color" content="{% block theme_color %}#ffffff{% endblock %}" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   {# Les deux coupes qui portent l'écran : le texte courant et les chiffres.
      Sans préchargement, le premier rendu se fait dans la police de repli et
@@ -20,35 +20,46 @@
   <link rel="stylesheet" href="/static/app.css" />
 </head>
 {% import "partials/icons.html" as ico %}
-<body class="bg-fond text-encre min-h-screen flex flex-col">
+<body class="bg-blanc text-encre min-h-screen flex flex-col">
   {% set here = request.url.path %}
 
-  {# En-tête réduit à ce qu'il doit porter : le nom de la maison et l'accès au
-     compte. La navigation est descendue en bas de l'écran. #}
-  <header class="bg-fond sticky top-0 z-20">
-    <div class="h-14 px-4 flex items-center justify-between gap-4">
-      <a href="/" class="font-semibold text-titre2 min-w-0 truncate">
-        {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
-      </a>
-      {% if request.state.account %}
-      <form method="post" action="/logout" class="shrink-0">
-        <button type="submit" class="btn-tertiaire text-contexte text-encre-doux">Déconnexion</button>
-      </form>
-      {% endif %}
-    </div>
+  {# En-tête par défaut, inchangé pour les écrans non redessinés dans ce lot :
+     nom de l'établissement et déconnexion, comme avant la révision 2. Un
+     grand titre (`.titre-ecran`, 34 px) est disponible pour les écrans que
+     les lots suivants redessineront (écarts, commandes…), mais il ne
+     s'applique pas ici par défaut — le dériver automatiquement du contenu du
+     bloc `title` (souvent une donnée dynamique, comme un nom de fichier
+     importé) produirait un débordement et doublonnerait le titre que chaque
+     écran affiche déjà dans son propre contenu. L'accueil remplace ce bloc
+     par son héros — c'est le seul écran qui en porte un, et c'est là que vit
+     l'accès au compte (icône « compte »). Sur les autres écrans, la
+     déconnexion reste accessible ici : sans elle, un compte resterait
+     connecté sans qu'on puisse jamais s'en défaire une fois sorti de
+     l'accueil. #}
+  {% block entete %}
+  <header class="px-4 h-14 flex items-center justify-between gap-4">
+    <span class="font-semibold text-titre2 min-w-0 truncate">
+      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
+    </span>
+    {% if request.state.account %}
+    <form method="post" action="/logout" class="shrink-0">
+      <button type="submit" class="btn-tertiaire text-contexte text-gris">Déconnexion</button>
+    </form>
+    {% endif %}
   </header>
+  {% endblock %}
 
   <main class="flex-1 w-full max-w-3xl mx-auto px-4 pb-20">
     {% set msg = request.query_params.get('msg') %}
     {% if msg %}
       {% set msg_type = request.query_params.get('type', 'success') %}
-      <div class="mb-4 rounded px-5 py-4 text-base {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
+      <div class="mb-4 rounded px-4 py-4 text-base {{ 'flash-error' if msg_type == 'error' else 'flash-success' }}">
         {{ msg }}
       </div>
     {% endif %}
     {% set alerts = request.query_params.get('alerts') %}
     {% if alerts %}
-      <div class="mb-4 rounded bg-alerte-fond text-alerte px-5 py-4 text-base">
+      <div class="mb-4 rounded bg-alerte-clair text-alerte px-4 py-4 text-base">
         {{ alerts }}
       </div>
     {% endif %}
@@ -56,9 +67,9 @@
   </main>
 
   {% if request.state.account %}
-  {# Barre d'onglets fixe en bas : atteignable au pouce, quatre entrées à
-     parts égales plus « Plus ». Aucune ne se coupe, quelle que soit la
-     largeur, parce qu'aucune n'a de largeur propre (AC-D-5). #}
+  {# Barre d'onglets fixe en bas : atteignable au pouce, quatre entrées plus
+     « Plus ». Aucun onglet n'a de largeur propre, donc aucun ne peut se
+     couper, à aucune largeur. #}
   {% set onglets = [
     ("/", "accueil", "Accueil"),
     ("/counting", "comptage", "Comptage"),
@@ -86,8 +97,8 @@
       </a>
       {% endfor %}
       {# « Plus » ouvre un panneau pleine largeur au-dessus de la barre. En
-         `<details>` : il s'ouvre et se ferme sans JavaScript, donc il survit
-         à une page servie par le cache hors-ligne. #}
+         `<details>` : il s'ouvre sans JavaScript, donc il survit à une page
+         servie par le cache hors-ligne. #}
       <details class="feuille">
         <summary class="onglet" {% if dans_le_reste %}aria-current="page"{% endif %}>
           {{ ico.icon("plus", 22) }}<span>Plus</span>
@@ -96,7 +107,7 @@
           <div class="max-w-3xl mx-auto px-4 py-4">
             {% for path, label in reste %}
             <a href="{{ path }}"
-               class="flex items-center min-h-12 px-4 rounded text-base {% if here == path %}text-accent font-semibold{% endif %}">
+               class="flex items-center min-h-12 px-4 rounded text-corps {% if here == path %}text-accent font-semibold{% endif %}">
               {{ label }}
             </a>
             {% endfor %}
