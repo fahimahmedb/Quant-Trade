@@ -1,23 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Résumé du comptage{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1">Résumé du comptage</h1>
-<p class="text-sm text-gray-500 mb-4">
-  {{ session.started_at | datetime_fr }} à {{ session.ended_at | datetime_fr }}
-  durée {{ session.duration_seconds | duration }}
-  {% if session.counted_by %}, par {{ session.counted_by }}{% endif %}
+<h1 class="section-titre mt-4 mb-1">Résumé du comptage</h1>
+<p class="secondaire mb-4">
+  {{ session.started_at | datetime_fr }} à {{ session.ended_at | datetime_fr }}, durée {{ session.duration_seconds | duration }}
+  {%- if session.counted_by %}, par {{ session.counted_by }}{% endif %}
 </p>
 
-<div class="bg-white rounded border p-3 mb-4">
-  <span class="text-sm text-gray-500">Écart total valorisé</span>
-  <div class="text-2xl font-semibold {% if total_value > 0 %}text-red-600{% elif total_value < 0 %}text-blue-600{% endif %}">
+<div class="mb-6">
+  <span class="secondaire">Écart total valorisé</span>
+  {# Manquant en alerte, surplus en encre neutre : même lecture que partout
+     ailleurs sur les écarts, même agrégé sur toute la session. #}
+  <div class="montant text-montant {% if total_value > 0 %}text-alerte{% elif total_value < 0 %}text-encre{% endif %}">
     {{ total_value | euros }}
   </div>
-  <p class="text-xs text-gray-400">Positif = perte (moins de stock réel que théorique). Négatif = surplus ou erreur de saisie antérieure.</p>
+  <p class="secondaire mt-1">Positif = perte (moins de stock réel que théorique). Négatif = surplus ou erreur de saisie antérieure.</p>
 </div>
 
-<h2 class="font-semibold mb-2">Écarts par ingrédient (les plus importants d'abord)</h2>
+<h2 class="section-titre mb-2">Écarts par ingrédient (les plus importants d'abord)</h2>
 {% include "partials/variance_table.html" %}
 
-<a href="/counting" class="inline-block mt-4 text-sm text-slate-600">← Retour au comptage</a>
+<a href="/counting" class="btn-tertiaire mt-6">Retour au comptage</a>
 {% endblock %}

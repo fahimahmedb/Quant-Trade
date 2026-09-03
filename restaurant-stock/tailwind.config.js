@@ -66,45 +66,6 @@ module.exports = {
       "alerte-clair": "var(--alerte-clair)",
       valide: "var(--valide)",
       "valide-clair": "var(--valide-clair)",
-
-      /* --- Relais transitoire, à supprimer quand tous les écrans auront
-         migré. La révision 2 ne redessine que l'accueil ; les autres écrans
-         écrivent encore `bg-white`, `text-gray-500`, `bg-emerald-600`. Ces
-         noms pointent vers les jetons de la nouvelle direction, pour qu'ils
-         restent lisibles sans avoir été retouchés.
-
-         Les anciens noms de la direction précédente (`surface`, `structure`,
-         `filet`, `fond`) ne figurent plus : ils désignaient le système de
-         cartes sur fond gris, qui a été retiré et non remplacé. */
-      white: "var(--blanc)",
-      "gray-50": "var(--blanc)",
-      "gray-100": "var(--appui)",
-      "gray-200": "var(--trait)",
-      "gray-400": "var(--gris)",
-      "gray-500": "var(--gris)",
-      "gray-600": "var(--gris)",
-      "gray-900": "var(--encre)",
-      "slate-300": "var(--gris)",
-      "slate-600": "var(--gris)",
-      "slate-700": "var(--encre)",
-      "slate-800": "var(--encre)",
-      "emerald-50": "var(--valide-clair)",
-      "emerald-100": "var(--valide-clair)",
-      "emerald-300": "var(--valide)",
-      "emerald-500": "var(--accent)",
-      "emerald-600": "var(--accent)",
-      "emerald-700": "var(--valide)",
-      "red-100": "var(--alerte-clair)",
-      "red-500": "var(--alerte)",
-      "red-600": "var(--alerte)",
-      "red-700": "var(--alerte)",
-      "amber-50": "var(--alerte-clair)",
-      "amber-100": "var(--alerte-clair)",
-      "amber-300": "var(--alerte)",
-      "amber-600": "var(--alerte)",
-      "amber-700": "var(--alerte)",
-      "amber-800": "var(--alerte)",
-      "blue-600": "var(--encre)",
     },
 
     extend: {

@@ -374,3 +374,45 @@ def test_hero_empty_state_has_no_digit_and_no_resume_link(seeded_client):
     assert "Aucun comptage effectué pour l'instant" in page
     assert "Comptage en cours" not in page
     assert 'class="heros-chiffre"' not in page
+
+
+# ==========================================================================
+# Régression — trouvée en relisant une capture d'écran du lot 4 (comptage/
+# accueil) : la mention « (par <nom>) » n'apparaissait jamais sur un comptage
+# en cours, quel que soit le nom saisi. `counted_by` était déclaré comme un
+# paramètre nu (`str = ""`), que FastAPI lit comme un paramètre de requête,
+# alors que le `<form>` de l'écran l'envoie en corps `x-www-form-urlencoded`
+# comme tous les autres formulaires du projet — d'où un `Form(...)` manquant.
+# Un test au niveau service ne l'aurait pas vu : le bug est dans le
+# décodage HTTP, pas dans `start_count_session`. Il faut donc passer par le
+# vrai client HTTP, comme le fait le formulaire réel.
+# ==========================================================================
+def test_counted_by_submitted_via_http_form_is_actually_persisted(seeded_client):
+    client = seeded_client.client
+    client.post("/counting/start", data={"counted_by": "Camille"})
+
+    page = client.get("/counting").text
+    assert "(par Camille)" in page, (
+        "le nom saisi au démarrage du comptage n'apparaît pas sur l'écran "
+        "d'accueil du comptage — `counted_by` n'a pas été reçu par la route"
+    )
+
+
+def test_counted_by_mention_has_no_stray_space_before_its_comma(seeded_client):
+    """Trouvé sur la même capture : la ligne d'historique et l'en-tête du
+    résumé insèrent `, par <nom>` juste après un retour à la ligne Jinja —
+    l'espace d'indentation survit au rendu HTML et se retrouve avant la
+    virgule (« 0 s , par Marie »), contrairement à l'ancien séparateur « · »
+    qui tolérait cet espace. `{%- if %}` supprime l'espace résiduel."""
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    _complete_a_session_with_known_variance(sessions)
+    with sessions() as db:
+        session_id = db.query(models.CountSession).first().id
+
+    home = client.get("/counting").text
+    assert " , par Test" not in home, "espace parasite avant la virgule (historique)"
+    assert ", par Test" in home
+
+    summary = client.get(f"/counting/{session_id}/summary").text
+    assert " , par Test" not in summary, "espace parasite avant la virgule (résumé)"
+    assert ", par Test" in summary

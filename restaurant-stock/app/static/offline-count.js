@@ -42,7 +42,7 @@
     banner.className = text
       ? `mb-3 rounded border px-3 py-2 text-base ${
           tone === "error" ? "flash-error" : tone === "ok" ? "flash-success"
-          : "border-structure bg-surface text-encre"
+          : "border-trait bg-appui text-encre"
         }`
       : "";
   };
@@ -162,7 +162,7 @@
     if (!compteur) return;
     const total = Number(compteur.dataset.total) || 0;
     const faits = document.querySelectorAll('[data-champ][data-etat="confirme"]').length;
-    compteur.innerHTML = `${faits}<span class="text-encre-doux">/${total}</span>`;
+    compteur.innerHTML = `${faits}<span class="text-gris">/${total}</span>`;
     if (jauge) jauge.style.width = total ? `${(faits / total) * 100}%` : "0%";
   };
 

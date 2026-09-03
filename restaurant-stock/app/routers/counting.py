@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -36,7 +36,7 @@ def counting_home(request: Request, db: Session = Depends(get_db)):
 
 
 @router.post("/start")
-def start_session(counted_by: str = "", db: Session = Depends(get_db)):
+def start_session(counted_by: str = Form(""), db: Session = Depends(get_db)):
     session = counting.start_count_session(db, counted_by=counted_by.strip() or None)
     if not session.lines:
         return redirect(

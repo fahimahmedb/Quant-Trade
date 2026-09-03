@@ -1,30 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Journal des erreurs{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1">Journal des erreurs</h1>
-<p class="text-sm text-gray-500 mb-3">
+<h1 class="section-titre mt-4 mb-1">Journal des erreurs</h1>
+<p class="secondaire mb-4">
   Les 100 dernières erreurs applicatives. Aucune donnée saisie n'y figure :
   seulement l'écran concerné et la trace technique.
 </p>
 
-<ul class="bg-white rounded border divide-y">
+<div>
   {% for error in errors %}
-  <li class="px-3 py-2">
-    <div class="flex justify-between items-baseline gap-2">
-      <span class="font-medium break-words">{{ error.error_type }}</span>
-      <span class="text-xs text-gray-400 shrink-0">{{ error.occurred_at | datetime_fr }}</span>
+  <div class="ligne items-start">
+    <div class="flex-1 min-w-0">
+      <div class="flex justify-between items-baseline gap-4">
+        <span class="ligne-titre break-words">{{ error.error_type }}</span>
+        <span class="secondaire shrink-0">{{ error.occurred_at | datetime_fr }}</span>
+      </div>
+      <div class="secondaire break-words">{{ error.method }} {{ error.path }}</div>
+      <div class="secondaire break-words mt-1">{{ error.message }}</div>
+      <details class="mt-2">
+        <summary class="secondaire cursor-pointer">Trace technique</summary>
+        <pre class="text-contexte overflow-x-auto bg-appui rounded p-3 mt-2">{{ error.traceback }}</pre>
+      </details>
     </div>
-    <div class="text-xs text-gray-500 break-words">{{ error.method }} {{ error.path }}</div>
-    <div class="text-xs text-gray-600 break-words mt-1">{{ error.message }}</div>
-    <details class="mt-1">
-      <summary class="text-xs text-slate-600 cursor-pointer">Trace technique</summary>
-      <pre class="text-xs overflow-x-auto bg-gray-50 border rounded p-2 mt-1">{{ error.traceback }}</pre>
-    </details>
-  </li>
+  </div>
   {% else %}
-  <li class="px-3 py-4 text-sm text-gray-500">Aucune erreur enregistrée.</li>
+  <p class="secondaire py-4">Aucune erreur enregistrée.</p>
   {% endfor %}
-</ul>
+</div>
 
-<a href="/settings" class="inline-block mt-4 text-sm text-slate-600">← Retour aux réglages</a>
+<a href="/settings" class="btn-tertiaire mt-6">Retour aux réglages</a>
 {% endblock %}

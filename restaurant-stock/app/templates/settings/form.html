@@ -1,61 +1,64 @@
 {% extends "base.html" %}
 {% block title %}Réglages{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-3">Réglages</h1>
+<h1 class="section-titre mt-4 mb-4">Réglages</h1>
 
 {% if error %}
-<div class="mb-3 rounded border px-3 py-2 text-sm flash-error">{{ error }}</div>
+<div class="mb-4 rounded px-4 py-4 text-base flash-error">{{ error }}</div>
 {% endif %}
 
-<form method="post" action="/settings" class="bg-white rounded border p-4 space-y-4">
+<form method="post" action="/settings" class="space-y-6">
   <div>
-    <label class="block text-sm font-medium mb-1">Fenêtre de moyenne glissante (jours)</label>
-    <input type="number" min="1" name="rolling_window_days" value="{{ settings.rolling_window_days }}" class="w-full border rounded px-3 py-2" />
-    <p class="text-xs text-gray-500 mt-1">Nombre de jours de vente utilisés pour calculer la consommation moyenne journalière.</p>
+    <label class="secondaire block mb-2" for="rolling_window_days">Fenêtre de moyenne glissante (jours)</label>
+    <div class="champ">
+      <input type="number" min="1" id="rolling_window_days" name="rolling_window_days" value="{{ settings.rolling_window_days }}" />
+    </div>
+    <p class="secondaire mt-2">Nombre de jours de vente utilisés pour calculer la consommation moyenne journalière.</p>
   </div>
   <div>
-    <label class="block text-sm font-medium mb-1">Jours de sécurité (seuil d'alerte par défaut)</label>
-    <input type="number" step="0.5" min="0" name="safety_days" value="{{ settings.safety_days }}" class="w-full border rounded px-3 py-2" />
-    <p class="text-xs text-gray-500 mt-1">Seuil = consommation moyenne journalière × ce nombre de jours, pour les ingrédients sans seuil manuel.</p>
+    <label class="secondaire block mb-2" for="safety_days">Jours de sécurité (seuil d'alerte par défaut)</label>
+    <div class="champ">
+      <input type="number" step="0.5" min="0" id="safety_days" name="safety_days" value="{{ settings.safety_days }}" />
+    </div>
+    <p class="secondaire mt-2">Seuil = consommation moyenne journalière × ce nombre de jours, pour les ingrédients sans seuil manuel.</p>
   </div>
   <div>
-    <label class="block text-sm font-medium mb-1">Jours de couverture cible (quantité suggérée)</label>
-    <input type="number" step="0.5" min="0" name="target_days" value="{{ settings.target_days }}" class="w-full border rounded px-3 py-2" />
-    <p class="text-xs text-gray-500 mt-1">La quantité suggérée vise à couvrir ce nombre de jours de consommation moyenne.</p>
+    <label class="secondaire block mb-2" for="target_days">Jours de couverture cible (quantité suggérée)</label>
+    <div class="champ">
+      <input type="number" step="0.5" min="0" id="target_days" name="target_days" value="{{ settings.target_days }}" />
+    </div>
+    <p class="secondaire mt-2">La quantité suggérée vise à couvrir ce nombre de jours de consommation moyenne.</p>
   </div>
   <div>
-    <label class="block text-sm font-medium mb-1">Seuil d'alerte sur variation de prix (%)</label>
-    <input type="number" step="1" min="0" name="price_alert_pct" value="{{ settings.price_alert_pct }}" class="w-full border rounded px-3 py-2" />
-    <p class="text-xs text-gray-500 mt-1">À la validation d'une réception, un prix qui varie de plus de ce pourcentage déclenche un avertissement (non bloquant).</p>
+    <label class="secondaire block mb-2" for="price_alert_pct">Seuil d'alerte sur variation de prix (%)</label>
+    <div class="champ">
+      <input type="number" step="1" min="0" id="price_alert_pct" name="price_alert_pct" value="{{ settings.price_alert_pct }}" />
+    </div>
+    <p class="secondaire mt-2">À la validation d'une réception, un prix qui varie de plus de ce pourcentage déclenche un avertissement (non bloquant).</p>
   </div>
-  <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded font-medium">Enregistrer</button>
+  <button type="submit" class="btn btn-principal w-full">Enregistrer</button>
 </form>
 
-<h2 class="text-lg font-semibold mt-6 mb-2">Vos données</h2>
-<div class="bg-white rounded border p-4 space-y-4">
+<h2 class="section-titre mt-8 mb-4">Vos données</h2>
+<div class="space-y-6">
   <div>
-    <a href="/settings/export" class="inline-block bg-slate-700 text-white px-4 py-2 rounded text-sm font-medium">
-      Exporter toutes mes données (CSV)
-    </a>
-    <p class="text-xs text-gray-500 mt-1">
+    <a href="/settings/export" class="btn btn-secondaire">Exporter toutes mes données (CSV)</a>
+    <p class="secondaire mt-2">
       Une archive ZIP avec un fichier CSV par table, lisible dans un tableur.
       Vos données vous appartiennent : vous repartez avec si vous arrêtez.
     </p>
   </div>
 
   <form method="post" action="/settings/import" enctype="multipart/form-data" class="space-y-2">
-    <label class="block text-sm font-medium" for="import-file">Réimporter un catalogue</label>
-    <input type="file" id="import-file" name="file" accept=".zip,application/zip" required
-           class="w-full border rounded px-3 py-2" />
-    <button type="submit" class="bg-slate-700 text-white px-4 py-2 rounded text-sm font-medium">Importer</button>
-    <p class="text-xs text-gray-500">
+    <label class="secondaire block mb-2" for="import-file">Réimporter un catalogue</label>
+    <input type="file" id="import-file" name="file" accept=".zip,application/zip" required class="select text-base" />
+    <button type="submit" class="btn btn-secondaire mt-2">Importer</button>
+    <p class="secondaire">
       Restaure ingrédients et fiches techniques depuis un export, sur une
       installation neuve. Refusé si un catalogue existe déjà.
     </p>
   </form>
 
-  <div>
-    <a href="/settings/errors" class="text-sm text-slate-600 underline">Journal des erreurs applicatives</a>
-  </div>
+  <a href="/settings/errors" class="btn-tertiaire">Journal des erreurs applicatives</a>
 </div>
 {% endblock %}

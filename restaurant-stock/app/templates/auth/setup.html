@@ -1,34 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Créer le compte{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1">Créer le compte de l'établissement</h1>
-<p class="text-sm text-gray-500 mb-3">
-  Un seul compte, partagé par l'équipe sur l'appareil de la cuisine.
-</p>
+<h1 class="section-titre mt-4 mb-1">Créer le compte de l'établissement</h1>
+<p class="secondaire mb-4">Un seul compte, partagé par l'équipe sur l'appareil de la cuisine.</p>
 
 {% if error %}
-<div class="mb-3 rounded border px-3 py-2 text-sm flash-error">{{ error }}</div>
+<div class="mb-4 rounded px-4 py-4 text-base flash-error">{{ error }}</div>
 {% endif %}
 
-<form method="post" action="/setup" class="bg-white rounded border p-4 space-y-4">
+<form method="post" action="/setup" class="space-y-6">
   <div>
-    <label class="block text-sm font-medium mb-1" for="restaurant_name">Nom du restaurant</label>
-    <input id="restaurant_name" name="restaurant_name" value="{{ restaurant_name or '' }}"
-           class="w-full border rounded px-3 py-2" />
+    <label class="secondaire block mb-2" for="restaurant_name">Nom du restaurant</label>
+    <input id="restaurant_name" name="restaurant_name" value="{{ restaurant_name or '' }}" class="select text-corps" />
   </div>
   <div>
-    <label class="block text-sm font-medium mb-1" for="email">Adresse e-mail</label>
+    <label class="secondaire block mb-2" for="email">Adresse e-mail</label>
     <input type="email" id="email" name="email" required autocomplete="username"
-           value="{{ email or '' }}" class="w-full border rounded px-3 py-2" />
+           value="{{ email or '' }}" class="select text-corps" />
   </div>
   <div>
-    <label class="block text-sm font-medium mb-1" for="password">Mot de passe</label>
+    <label class="secondaire block mb-2" for="password">Mot de passe</label>
     <input type="password" id="password" name="password" required minlength="8"
-           autocomplete="new-password" class="w-full border rounded px-3 py-2" />
-    <p class="text-xs text-gray-500 mt-1">8 caractères minimum.</p>
+           autocomplete="new-password" class="select text-corps" />
+    <p class="secondaire mt-2">8 caractères minimum.</p>
   </div>
-  <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-3 rounded font-medium text-lg">
-    Créer le compte
-  </button>
+  <button type="submit" class="btn btn-principal w-full text-titre2">Créer le compte</button>
 </form>
 {% endblock %}
