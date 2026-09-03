@@ -1,36 +1,36 @@
 {% extends "base.html" %}
 {% block title %}Réception du {{ receipt.received_on | date_fr }}{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1">Réception du {{ receipt.received_on | date_fr }}</h1>
-<p class="text-sm text-gray-500 mb-4">
+<h1 class="section-titre mt-4 mb-1">Réception du {{ receipt.received_on | date_fr }}</h1>
+<p class="secondaire mb-4">
   {% if receipt.supplier %}{{ receipt.supplier }}, {% endif %}
   {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
   {% if receipt.note %}<br />{{ receipt.note }}{% endif %}
 </p>
 
-<ul class="bg-white rounded border divide-y">
+<div>
   {% for line in receipt.lines %}
-  <li class="px-3 py-2">
-    <div class="flex justify-between items-baseline gap-2">
-      <span class="font-medium">{{ line.ingredient.name }}</span>
-      <span class="shrink-0">+{{ line.quantity | qty }} {{ line.ingredient.unit.value }}</span>
+  <div class="ligne">
+    <div class="flex-1 min-w-0">
+      <div class="ligne-titre">{{ line.ingredient.name }}</div>
+      <div class="secondaire">
+        {{ line | line_price }}
+        {% if line.price_change_pct is not none and line.price_change_pct != 0 %}
+        <span class="{% if line.price_change_pct > 0 %}text-alerte{% else %}text-valide{% endif %}">
+          , {{ line.price_change_pct | pct }} vs précédent
+        </span>
+        {% endif %}
+      </div>
     </div>
-    <div class="text-xs text-gray-500">
-      {{ line | line_price }}
-      {% if line.price_change_pct is not none and line.price_change_pct != 0 %}
-      <span class="{% if line.price_change_pct > 0 %}text-red-600{% else %}text-emerald-600{% endif %}">
-        {{ line.price_change_pct | pct }} vs précédent
-      </span>
-      {% endif %}
-    </div>
-  </li>
+    <span class="ligne-valeur shrink-0">+{{ line.quantity | qty }} {{ line.ingredient.unit.value }}</span>
+  </div>
   {% endfor %}
-</ul>
+</div>
 
 {% if receipt.photo_path %}
-<h2 class="text-lg font-semibold mt-6 mb-2">Bon de livraison</h2>
-<img src="/uploads/{{ receipt.photo_path }}" alt="Bon de livraison" class="rounded border" />
+<h2 class="section-titre mt-8 mb-2">Bon de livraison</h2>
+<img src="/uploads/{{ receipt.photo_path }}" alt="Bon de livraison" class="rounded border border-trait" />
 {% endif %}
 
-<a href="/deliveries" class="inline-block mt-4 text-sm text-slate-600">← Retour aux réceptions</a>
+<a href="/deliveries" class="btn-tertiaire mt-6">Retour aux réceptions</a>
 {% endblock %}

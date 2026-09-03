@@ -1,46 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Import {{ sales_import.filename }}{% endblock %}
 {% block content %}
-<h1 class="text-xl font-semibold mb-1 break-words">{{ sales_import.filename }}</h1>
-<p class="text-sm text-gray-500 mb-3">
+<h1 class="section-titre mt-4 mb-1 break-words">{{ sales_import.filename }}</h1>
+<p class="secondaire mb-4">
   Importé le {{ sales_import.imported_at | datetime_fr }}, {{ sales_import.row_count }} ligne(s)
 </p>
 
 {% set errors = request.query_params.get('errors') %}
 {% if errors %}
-<div class="mb-4 rounded border border-amber-300 bg-amber-50 text-amber-800 text-sm p-3">
+<div class="mb-4 rounded px-4 py-4 text-base flash-error">
   <strong>Lignes ignorées à l'import :</strong> {{ errors }}
 </div>
 {% endif %}
 
 {% if unmatched %}
-<div class="bg-white rounded border p-4 mb-4">
-  <h2 class="font-semibold mb-2">Plats non reconnus ({{ unmatched | length }})</h2>
-  <p class="text-sm text-gray-500 mb-3">
+<div class="mb-4">
+  <h2 class="section-titre mb-2">Plats non reconnus ({{ unmatched | length }})</h2>
+  <p class="secondaire mb-4">
     Ces intitulés viennent du fichier de caisse mais ne correspondent à aucune fiche technique.
     Rattachez-les une fois : le mappage sera mémorisé pour les prochains imports.
   </p>
   {% for raw_name in unmatched %}
-  <form method="post" action="/sales/imports/{{ sales_import.id }}/map" class="flex flex-wrap items-center gap-2 py-2 border-t first:border-t-0">
+  <form method="post" action="/sales/imports/{{ sales_import.id }}/map"
+        class="flex flex-wrap items-center gap-3 py-4 {% if not loop.first %}border-t border-trait{% endif %}">
     <input type="hidden" name="raw_name" value="{{ raw_name }}" />
-    <span class="font-medium flex-1 min-w-[10rem]">« {{ raw_name }} »</span>
-    <select name="dish_id" class="border rounded px-2 py-2 text-sm">
-      <option value="">— choisir un plat existant —</option>
+    <span class="ligne-titre flex-1 min-w-[10rem]">« {{ raw_name }} »</span>
+    <select name="dish_id" class="select flex-1 min-w-[10rem] text-base">
+      <option value="">Choisir un plat existant</option>
       {% for dish in dishes %}
       <option value="{{ dish.id }}">{{ dish.name }}</option>
       {% endfor %}
     </select>
-    <span class="text-xs text-gray-400">ou</span>
-    <input name="new_dish_name" placeholder="nouveau plat…" class="border rounded px-2 py-2 text-sm w-40" />
-    <button type="submit" class="bg-slate-700 text-white px-3 py-2 rounded text-sm">Rattacher</button>
+    <span class="secondaire">ou</span>
+    <input name="new_dish_name" placeholder="nouveau plat" class="select flex-1 min-w-[10rem] text-base" />
+    <button type="submit" class="btn btn-secondaire">Rattacher</button>
   </form>
   {% endfor %}
 </div>
 {% else %}
-<p class="text-sm text-emerald-700 bg-emerald-50 border border-emerald-300 rounded p-3 mb-4">
-  Tous les plats de cet import ont été reconnus et le stock théorique a été mis à jour.
-</p>
+<div class="ligne mb-4">
+  <span class="pastille pastille-valide">{{ ico.icon("ventes", 18) }}</span>
+  <p class="secondaire">Tous les plats de cet import ont été reconnus et le stock théorique a été mis à jour.</p>
+</div>
 {% endif %}
 
-<a href="/sales/import" class="text-sm text-slate-600">← Retour aux imports</a>
+<a href="/sales/import" class="btn-tertiaire">Retour aux imports</a>
 {% endblock %}

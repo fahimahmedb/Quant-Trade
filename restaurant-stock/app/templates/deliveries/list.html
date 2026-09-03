@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Réceptions{% endblock %}
 {% block content %}
-<div class="flex items-center justify-between mb-3">
-  <h1 class="text-xl font-semibold">Réceptions</h1>
-  <a href="/deliveries/new" class="bg-emerald-600 text-white px-3 py-2 rounded text-sm font-medium">+ Nouvelle réception</a>
+<div class="flex items-center justify-between gap-4 mt-4 mb-4">
+  <h1 class="section-titre">Réceptions</h1>
+  <a href="/deliveries/new" class="btn-tertiaire">Nouvelle réception</a>
 </div>
 
-<ul class="bg-white rounded border divide-y">
+<div>
   {% for receipt in receipts %}
-  <li class="px-3 py-2 flex items-center justify-between gap-2">
-    <div class="min-w-0">
-      <a href="/deliveries/{{ receipt.id }}" class="font-medium break-words">
-        {{ receipt.received_on | date_fr }}{% if receipt.supplier %} — {{ receipt.supplier }}{% endif %}
-      </a>
-      <div class="text-xs text-gray-500">
+  <a href="/deliveries/{{ receipt.id }}" class="ligne">
+    <div class="flex-1 min-w-0">
+      <div class="ligne-titre break-words">
+        {{ receipt.received_on | date_fr }}{% if receipt.supplier %}, {{ receipt.supplier }}{% endif %}
+      </div>
+      <div class="ligne-sous">
         {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
         {% if receipt.photo_path %}, photo jointe{% endif %}
       </div>
     </div>
-    <a href="/deliveries/{{ receipt.id }}" class="text-sm text-slate-600 shrink-0">Détail</a>
-  </li>
+  </a>
   {% else %}
-  <li class="px-3 py-4 text-sm text-gray-500">
+  <p class="secondaire py-4">
     Aucune réception enregistrée. C'est la seule façon de faire entrer du stock :
     sans elle, le stock théorique baisse à chaque vente sans jamais remonter.
-  </li>
+  </p>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}
