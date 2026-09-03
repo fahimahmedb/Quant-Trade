@@ -300,3 +300,77 @@ def test_tc_d2_08_variance_screen_hero_presence_is_a_documented_decision_not_yet
         "TC-D2-08 demande un choix explicite (présence ou absence), pas une "
         "extrapolation automatique du gabarit de l'accueil"
     )
+
+
+# ==========================================================================
+# Régression — le héros ne doit jamais retomber sur la progression d'un
+# comptage en cours (0/N au départ, lisible comme « 0 conforme »). Trois
+# états explicites (app/routers/dashboard.py, `hero_state`), vérifiés ici
+# sur le HTML rendu : pas besoin d'un navigateur, c'est un rendu serveur.
+# ==========================================================================
+from app import models
+from app.services import counting
+
+
+def _complete_a_session_with_known_variance(sessions):
+    """Un comptage terminé, avec au moins une ligne en écart : de quoi
+    calculer un conform_lines/counted_lines sans ambiguïté."""
+    with sessions() as db:
+        session = counting.start_count_session(db, counted_by="Test")
+        lines = session.lines
+        for i, line in enumerate(lines):
+            valeur = line.theoretical_quantity * (0.5 if i == 0 else 1.0)
+            counting.confirm_count_line(db, line.id, counted_quantity=valeur)
+        counting.complete_count_session(db, session.id)
+        total = len(lines)
+        conformes = total - 1  # une seule ligne mise en écart ci-dessus
+    return conformes, total
+
+
+def test_hero_shows_last_completed_conformity_even_while_a_session_is_open(seeded_client):
+    """Le bug exact remonté : un comptage relancé après un premier comptage
+    terminé ne doit pas faire retomber le héros à « 0/9 »."""
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    conformes, total = _complete_a_session_with_known_variance(sessions)
+
+    # Un second comptage démarre, encore vide : c'est lui qui produisait le
+    # « 0/9 » trompeur avant correction.
+    client.post("/counting/start", data={"counted_by": "Test"})
+
+    page = client.get("/").text
+    assert f'<span class="nombre">{conformes}</span><span class="heros-attenue">/{total}</span>' in page, (
+        "le héros n'affiche pas la conformité du comptage terminé pendant "
+        "qu'un autre est en cours"
+    )
+    assert f'<span class="nombre">0</span><span class="heros-attenue">/{total}</span>' not in page, (
+        "le héros affiche encore la progression (0/N) du comptage en cours"
+    )
+    assert "Comptage en cours" in page and "reprendre" in page, (
+        "le comptage en cours doit rester visible, en élément secondaire"
+    )
+    assert "ingrédients conformes au dernier comptage" in page
+
+
+def test_hero_first_ever_session_in_progress_shows_no_misleading_digit(seeded_client):
+    """Aucun comptage jamais terminé, mais un premier est en cours : troisième
+    état, défini consciemment plutôt qu'un 0/N par défaut."""
+    client = seeded_client.client
+    client.post("/counting/start", data={"counted_by": "Test"})
+
+    page = client.get("/").text
+    assert "Premier comptage en cours" in page
+    assert "Comptage en cours" in page and "reprendre" in page
+    assert "ingrédients conformes" not in page, (
+        "aucune conformité n'existe encore : ce libellé ne doit pas apparaître"
+    )
+    assert 'class="heros-chiffre"' not in page, (
+        "aucun chiffre géant ne doit être affiché sans donnée favorable réelle"
+    )
+
+
+def test_hero_empty_state_has_no_digit_and_no_resume_link(seeded_client):
+    """Ni comptage terminé, ni comptage en cours : l'état vide d'origine."""
+    page = seeded_client.client.get("/").text
+    assert "Aucun comptage effectué pour l'instant" in page
+    assert "Comptage en cours" not in page
+    assert 'class="heros-chiffre"' not in page

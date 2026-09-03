@@ -328,3 +328,15 @@ def test_ac_d2_4_quick_action_justifications_are_documented_in_the_template():
             f"justification de l'action « {action} » introuvable (mot-clé "
             f"« {mot_cle} » absent du commentaire)"
         )
+
+
+def test_number_input_spin_buttons_are_suppressed_for_consistency():
+    """Chromium masque déjà le spinner d'un `<input type=number>` quand la
+    valeur est trop large pour lui faire de la place — d'où une incohérence
+    visuelle d'une ligne à l'autre du comptage. Retiré explicitement plutôt
+    que laissé au hasard de la largeur de la valeur ; sans ce retrait, un
+    spinner visible serait aussi une cible bien en dessous des 48 px de cet
+    écran."""
+    source = CSS.read_text()
+    assert "-webkit-inner-spin-button" in source
+    assert "-webkit-appearance: none" in source

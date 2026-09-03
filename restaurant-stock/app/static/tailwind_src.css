@@ -404,6 +404,19 @@
   .champ input:focus {
     outline: none; /* la lueur du conteneur tient déjà ce rôle */
   }
+  /* Flèches natives d'incrémentation retirées, pas seulement discrètes :
+     Chromium les masque déjà tout seul quand la valeur est trop large pour
+     leur faire de la place à côté du texte (« 12 672 » n'en montre pas, mais
+     « 34 » si) — une incohérence visuelle d'une ligne à l'autre, et si elles
+     s'affichent, une cible bien en dessous des 48 px de cet écran. */
+  .champ input::-webkit-outer-spin-button,
+  .champ input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .champ input[type="number"] {
+    -moz-appearance: textfield;
+  }
   .champ .unite {
     flex: 0 0 auto;
     color: var(--gris);

@@ -24,21 +24,20 @@
     </div>
   </div>
 
-  {% if open_session %}
-  {# Le comptage en cours est l'action la plus urgente de l'écran : il prend
-     la place du chiffre favorable, avec son propre avancement. #}
-  <a href="/counting" class="block mt-2">
-    <div class="heros-chiffre">
-      <span class="nombre">{{ open_session_counted }}</span><span class="heros-attenue">/{{ open_session_total }}</span>
-    </div>
-    <p class="heros-legende mt-1">Comptage en cours — reprendre</p>
-  </a>
-  {% elif latest_session %}
+  {# Le chiffre géant est toujours un favorable déjà acquis, jamais dérivé
+     d'un comptage en cours : celui-ci commence à 0, et 0 se lit comme
+     « 0 conforme » au premier regard — exactement l'inverse voulu par la
+     section 3. Trois états explicites (app/routers/dashboard.py). #}
+  {% if hero_state == "conforme" %}
   <div class="mt-2">
     <div class="heros-chiffre">
       <span class="nombre">{{ conform_lines }}</span><span class="heros-attenue">/{{ counted_lines }}</span>
     </div>
     <p class="heros-legende mt-1">ingrédients conformes au dernier comptage</p>
+  </div>
+  {% elif hero_state == "premier_en_cours" %}
+  <div class="mt-2">
+    <p class="heros-legende">Premier comptage en cours — aucun résultat pour l'instant</p>
   </div>
   {% else %}
   <div class="mt-2">
@@ -48,23 +47,34 @@
 
   <div class="heros-trait mt-5 mb-3"></div>
 
+  {# Le comptage en cours est un élément secondaire distinct, jamais un
+     remplacement du chiffre géant : sous le filet, comme l'indicateur
+     défavorable, il ne rivalise pas avec lui en taille. #}
+  {% if open_session %}
+  <a href="/counting" class="block heros-secondaire font-semibold py-1">
+    Comptage en cours — reprendre
+  </a>
+  {% endif %}
+
   {# L'indicateur défavorable reste entièrement lisible, mais en second plan :
      texte blanc atténué, jamais rouge sur ce fond (le rouge est réservé aux
      lignes de liste sur fond blanc, section 5). #}
-  {% if latest_session %}
-  <p class="heros-secondaire">
+  {% if hero_state == "conforme" %}
+  <p class="heros-secondaire {{ 'mt-2' if open_session }}">
     {% if variance_total %}
     Écart à régulariser — {{ variance_total | euros }}
     {% else %}
     Aucun écart constaté au dernier comptage
     {% endif %}
   </p>
-  {% elif pending_suggestions %}
-  <p class="heros-secondaire">
-    {{ pending_suggestions }} suggestion{{ 's' if pending_suggestions > 1 }} de commande en attente
-  </p>
-  {% else %}
-  <p class="heros-secondaire">Démarrez votre premier comptage pour voir vos écarts ici</p>
+  {% elif hero_state == "vide" %}
+    {% if pending_suggestions %}
+    <p class="heros-secondaire">
+      {{ pending_suggestions }} suggestion{{ 's' if pending_suggestions > 1 }} de commande en attente
+    </p>
+    {% else %}
+    <p class="heros-secondaire">Démarrez votre premier comptage pour voir vos écarts ici</p>
+    {% endif %}
   {% endif %}
 </header>
 {% endblock %}

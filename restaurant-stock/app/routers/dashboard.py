@@ -43,13 +43,25 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
     open_session = (
         db.query(models.CountSession).filter(models.CountSession.ended_at.is_(None)).first()
     )
-    open_session_counted = 0
-    open_session_total = 0
-    if open_session:
-        open_session_total = len(open_session.lines)
-        open_session_counted = sum(
-            1 for line in open_session.lines if line.counted_quantity is not None
-        )
+
+    # Le chiffre géant du héros ne doit jamais être autre chose qu'un favorable
+    # déjà acquis (section 3 de la direction). Trois états, choisis
+    # explicitement plutôt que dérivés par défaut :
+    #  - "conforme"        : un comptage a déjà été terminé, on affiche sa
+    #                        conformité — vrai même si un autre est en cours,
+    #                        sans quoi rouvrir un comptage ferait retomber le
+    #                        héros à « 0/9 », lisible comme « 0 conforme ».
+    #  - "premier_en_cours": aucun comptage jamais terminé, mais un est en
+    #                        cours — rien de favorable à montrer encore, donc
+    #                        pas de chiffre du tout plutôt qu'un 0 trompeur.
+    #  - "vide"             : rien n'a jamais été compté ni commencé.
+    if latest_session:
+        hero_state = "conforme"
+    elif open_session:
+        hero_state = "premier_en_cours"
+    else:
+        hero_state = "vide"
+
     dish_count = db.query(models.Dish).filter(models.Dish.is_active.is_(True)).count()
     ingredient_count = db.query(models.Ingredient).filter(models.Ingredient.is_active.is_(True)).count()
 
@@ -65,8 +77,7 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
             "conform_lines": conform_lines,
             "pending_suggestions": pending_suggestions,
             "open_session": open_session,
-            "open_session_counted": open_session_counted,
-            "open_session_total": open_session_total,
+            "hero_state": hero_state,
             "dish_count": dish_count,
             "ingredient_count": ingredient_count,
         },
