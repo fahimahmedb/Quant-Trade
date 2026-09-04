@@ -17,6 +17,12 @@
   const QUEUE_KEY = `comptage-file-${sessionId}`;
   const banner = document.querySelector("[data-offline-banner]");
 
+  // Équivalent de `pluriel()` côté serveur (app/templating.py) : même règle,
+  // dupliquée ici faute de pouvoir partager une fonction Python avec ce
+  // script. Un « (s) » entre parenthèses est ce qu'on essaie justement de ne
+  // plus écrire.
+  const s = (n) => (Math.abs(n) === 1 ? "" : "s");
+
   const readQueue = () => {
     try {
       return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
@@ -52,12 +58,12 @@
     if (!navigator.onLine) {
       setBanner(
         pending
-          ? `Hors ligne — ${pending} ligne(s) en attente, elles partiront à la reconnexion.`
+          ? `Hors ligne — ${pending} ligne${s(pending)} en attente, elles partiront à la reconnexion.`
           : "Hors ligne — vous pouvez continuer le comptage, tout est gardé sur l'appareil.",
         "warn"
       );
     } else if (pending) {
-      setBanner(`${pending} ligne(s) en attente d'envoi…`, "warn");
+      setBanner(`${pending} ligne${s(pending)} en attente d'envoi…`, "warn");
     } else {
       setBanner("", null);
     }
@@ -88,7 +94,7 @@
       .map((c) => `${c.ingredient} (valeur conservée : ${c.kept})`)
       .join(", ");
     setBanner(
-      `${conflicts.length} ligne(s) modifiée(s) depuis un autre appareil, votre saisie plus ancienne n'a pas été appliquée : ${details}`,
+      `${conflicts.length} ligne${s(conflicts.length)} modifiée${s(conflicts.length)} depuis un autre appareil, votre saisie plus ancienne n'a pas été appliquée : ${details}`,
       "error"
     );
     return true;
@@ -138,7 +144,7 @@
     }
     if (!reportConflicts(result && result.conflicts)) {
       const applied = result ? result.applied : 0;
-      setBanner(`Comptage synchronisé — ${applied} ligne(s) enregistrée(s).`, "ok");
+      setBanner(`Comptage synchronisé — ${applied} ligne${s(applied)} enregistrée${s(applied)}.`, "ok");
       setTimeout(refreshBanner, 6000);
     }
     return true;

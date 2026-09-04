@@ -138,6 +138,28 @@ def test_hero_secondary_line_meets_double_a_despite_its_reduced_opacity():
     assert ratio >= 4.5, f"blanc atténué/heros-haut = {ratio:.2f} (composé : {couleur_reelle})"
 
 
+def test_hero_and_buttons_share_a_single_brand_color():
+    """Point resté « non validé » dans une révision précédente (commentaire
+    explicite dans tailwind_src.css) : le héros était vert, tous les boutons
+    et liens des vingt écrans migrés étaient bleus (--accent) — deux
+    identités de marque à l'échelle de l'app, tranché depuis en faveur du
+    bleu. `heros-haut` doit rester exactement `--accent`, pas une teinte
+    proche : sinon la prochaine retouche de l'un des deux les refait dériver
+    sans que rien ne le signale."""
+    tokens = _tokens()
+    assert tokens["heros-haut"] == tokens["accent"], (
+        f"heros-haut ({tokens['heros-haut']}) a dérivé de accent ({tokens['accent']}) "
+        "— une seule couleur de marque, pas deux"
+    )
+
+    dashboard = (RACINE / "app" / "templates" / "dashboard.html").read_text()
+    theme_color = re.search(r'\{%\s*block theme_color\s*%\}(#[0-9a-fA-F]{6})', dashboard).group(1)
+    assert theme_color.lower() == tokens["heros-haut"].lower(), (
+        "le theme-color du <head> (couleur de la barre de statut) n'est plus synchronisé "
+        "avec le haut du dégradé du héros"
+    )
+
+
 def test_hero_never_uses_alert_red_for_its_own_text():
     """« Le rouge reste réservé aux lignes de liste sur fond blanc, pas
     répété ici » (section 5). La couleur d'alerte ne doit apparaître dans
@@ -186,6 +208,33 @@ def test_no_leftover_card_system_tokens_survive():
     bloc_colors = config.split("colors: {", 1)[1].split("\n    },", 1)[0]
     for fantome in ('"surface"', '"structure"', '"filet"', '"fond"'):
         assert fantome not in bloc_colors, f"alias de couleur fantôme : {fantome}"
+
+
+# Trouvé trois fois de suite (bandeau hors-ligne, compteur de progression,
+# séparateurs de /variance) : une classe Tailwind construite sur un nom de
+# couleur disparu (`divide-filet`, `text-encre-doux`, `border-structure`…)
+# ne produit aucune règle CSS et retombe silencieusement sur une valeur par
+# défaut du navigateur — rien ne le signale à la lecture du gabarit. Un grep
+# ciblé sur les préfixes d'utilitaires colorés couvre gabarits ET scripts
+# (Tailwind scanne aussi `app/static/*.js`, cf. `content` dans la config).
+PREFIXES_COLORES = (
+    "bg", "text", "border", "divide", "ring", "outline",
+    "from", "via", "to", "decoration", "caret", "accent", "fill", "stroke",
+)
+FANTOMES = ("surface", "structure", "filet", "fond", "encre-doux")
+SOURCES_GABARITS_ET_SCRIPTS = GABARITS + sorted((RACINE / "app" / "static").glob("*.js"))
+
+
+def test_no_leftover_card_system_classes_are_referenced_anywhere():
+    """Même vérification que ci-dessus, mais sur les usages plutôt que sur la
+    déclaration : un gabarit ou un script peut référencer une classe fantôme
+    sans que `tailwind.config.js` ne la déclare jamais."""
+    motif = re.compile(
+        r"\b(?:" + "|".join(PREFIXES_COLORES) + r")-(?:" + "|".join(FANTOMES) + r")\b"
+    )
+    for fichier in SOURCES_GABARITS_ET_SCRIPTS:
+        trouve = motif.search(fichier.read_text())
+        assert trouve is None, f"classe fantôme « {trouve.group(0) if trouve else ''} » dans {fichier}"
 
 
 def test_no_box_shadow_other_than_the_explicit_none():

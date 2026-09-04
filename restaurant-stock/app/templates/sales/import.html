@@ -6,7 +6,11 @@
 <form method="post" action="/sales/import" enctype="multipart/form-data" class="space-y-4 mb-8">
   <div>
     <label class="secondaire block mb-2" for="sales-file">Fichier CSV exporté de la caisse</label>
-    <input id="sales-file" type="file" name="file" accept=".csv,text/csv" required class="select text-base" />
+    <div data-champ-fichier>
+      <input id="sales-file" type="file" name="file" accept=".csv,text/csv" required class="sr-only" />
+      <label for="sales-file" class="btn btn-secondaire">Choisir un fichier</label>
+      <p class="secondaire mt-2" data-nom-fichier>Aucun fichier choisi</p>
+    </div>
   </div>
   <p class="secondaire">
     Colonnes attendues : <code>date</code>, <code>plat</code>, <code>quantite</code>, et optionnellement <code>prix_unitaire</code>.
@@ -22,10 +26,8 @@
     <div class="flex-1 min-w-0">
       <div class="ligne-titre break-words">{{ imp.filename }}</div>
       <div class="ligne-sous">
-        {{ imp.imported_at | datetime_fr }}, {{ imp.row_count }} ligne(s)
-        {% if imp.unmatched_count %}
-        <span class="text-alerte">, {{ imp.unmatched_count }} plat(s) non reconnu(s)</span>
-        {% endif %}
+        {{ imp.imported_at | datetime_fr }}, {{ imp.row_count }} ligne{{ imp.row_count | pluriel }}
+        {%- if imp.unmatched_count %}<span class="text-alerte">, {{ imp.unmatched_count }} plat{{ imp.unmatched_count | pluriel }} non reconnu{{ imp.unmatched_count | pluriel }}</span>{% endif %}
       </div>
     </div>
   </a>

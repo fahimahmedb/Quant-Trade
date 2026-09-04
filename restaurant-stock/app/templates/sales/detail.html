@@ -3,7 +3,7 @@
 {% block content %}
 <h1 class="section-titre mt-4 mb-1 break-words">{{ sales_import.filename }}</h1>
 <p class="secondaire mb-4">
-  Importé le {{ sales_import.imported_at | datetime_fr }}, {{ sales_import.row_count }} ligne(s)
+  Importé le {{ sales_import.imported_at | datetime_fr }}, {{ sales_import.row_count }} ligne{{ sales_import.row_count | pluriel }}
 </p>
 
 {% set errors = request.query_params.get('errors') %}

@@ -5,7 +5,7 @@ from app import models
 from app.database import get_db
 from app.flash import redirect
 from app.services import sales_import
-from app.templating import templates
+from app.templating import pluriel, templates
 
 router = APIRouter(prefix="/sales", tags=["sales"])
 
@@ -36,13 +36,16 @@ async def handle_import(request: Request, file: UploadFile = File(...), db: Sess
     content = _decode(raw_bytes)
     sales_import_row, parsed = sales_import.import_sales(db, file.filename or "export.csv", content)
 
-    message = f"{sales_import_row.row_count} ligne(s) importée(s)."
+    n = sales_import_row.row_count
+    message = f"{n} ligne{pluriel(n)} importée{pluriel(n)}."
     error_summary = None
     if parsed.errors:
-        message += f" {len(parsed.errors)} ligne(s) ignorée(s) (voir détail ci-dessous)."
+        n_err = len(parsed.errors)
+        message += f" {n_err} ligne{pluriel(n_err)} ignorée{pluriel(n_err)} (voir détail ci-dessous)."
         error_summary = "; ".join(parsed.errors[:5])
-        if len(parsed.errors) > 5:
-            error_summary += f"; et {len(parsed.errors) - 5} autre(s)"
+        reste = n_err - 5
+        if reste > 0:
+            error_summary += f"; et {reste} autre{pluriel(reste)}"
     return redirect(
         f"/sales/imports/{sales_import_row.id}",
         message,
@@ -98,5 +101,6 @@ async def map_dish(import_id: int, request: Request, db: Session = Depends(get_d
     count = sales_import.map_raw_name_to_dish(db, raw_name, dish_id)
     return redirect(
         f"/sales/imports/{import_id}",
-        f"« {raw_name} » rattaché ({count} ligne(s) mise(s) à jour). Le mappage sera réutilisé automatiquement.",
+        f"« {raw_name} » rattaché ({count} ligne{pluriel(count)} mise{pluriel(count)} à jour). "
+        "Le mappage sera réutilisé automatiquement.",
     )

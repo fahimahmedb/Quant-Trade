@@ -9,7 +9,7 @@ from app.database import get_db
 from app.flash import redirect
 from app.forms import InvalidNumberError, parse_float_fr
 from app.services import counting
-from app.templating import templates
+from app.templating import pluriel, templates
 
 router = APIRouter(prefix="/counting", tags=["counting"])
 
@@ -111,9 +111,10 @@ async def save_zone(
         ))
 
     result = counting.apply_entries(db, session_id, entries)
+    n = len(result.applied)
     return redirect(
         f"/counting/{session_id}#zone-{zone.value}",
-        f"{len(result.applied)} ligne(s) enregistrée(s) — {zone.label}.",
+        f"{n} ligne{pluriel(n)} enregistrée{pluriel(n)} — {zone.label}.",
         alerts=_conflict_message(result.conflicts),
     )
 
@@ -140,8 +141,9 @@ def _conflict_message(conflicts: list[dict]) -> str | None:
     details = ", ".join(
         f"{c['ingredient']} (valeur conservée : {c['kept']})" for c in conflicts
     )
+    n = len(conflicts)
     return (
-        f"{len(conflicts)} ligne(s) modifiée(s) entre-temps depuis un autre appareil, "
+        f"{n} ligne{pluriel(n)} modifiée{pluriel(n)} entre-temps depuis un autre appareil, "
         f"votre saisie plus ancienne n'a pas été appliquée : {details}"
     )
 

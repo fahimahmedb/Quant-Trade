@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 
 from app import models
 from app.config import SECRET_KEY, SESSION_MAX_AGE_DAYS
+from app.templating import pluriel
 
 SESSION_COOKIE = "resto_session"
 MAX_FAILED_ATTEMPTS = 5
@@ -87,7 +88,7 @@ def authenticate(db: Session, *, email: str, password: str, now: datetime | None
     if account.locked_until and account.locked_until > now:
         remaining = int((account.locked_until - now).total_seconds() // 60) + 1
         raise AuthError(
-            f"Trop de tentatives. Réessayez dans {remaining} minute(s)."
+            f"Trop de tentatives. Réessayez dans {remaining} minute{pluriel(remaining)}."
         )
 
     if not verify_password(password or "", account.password_hash):

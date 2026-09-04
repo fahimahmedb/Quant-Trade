@@ -9,7 +9,7 @@ from app.database import get_db
 from app.flash import redirect
 from app.forms import InvalidNumberError, parse_float_fr, parse_int_fr
 from app.services import data_export, settings_service
-from app.templating import templates
+from app.templating import pluriel, templates
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -39,10 +39,11 @@ async def import_data(file: UploadFile = File(...), db: Session = Depends(get_db
         summary = data_export.import_catalog(db, payload)
     except data_export.ImportError_ as exc:
         return redirect("/settings", str(exc), error=True)
+    n_ing, n_plats, n_lignes = summary["ingredients"], summary["dishes"], summary["recipe_lines"]
     return redirect(
         "/settings",
-        f"Import réussi : {summary['ingredients']} ingrédient(s), {summary['dishes']} plat(s), "
-        f"{summary['recipe_lines']} ligne(s) de fiche technique.",
+        f"Import réussi : {n_ing} ingrédient{pluriel(n_ing)}, {n_plats} plat{pluriel(n_plats)}, "
+        f"{n_lignes} ligne{pluriel(n_lignes)} de fiche technique.",
     )
 
 

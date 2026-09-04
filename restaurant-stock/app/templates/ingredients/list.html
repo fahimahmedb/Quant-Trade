@@ -22,7 +22,7 @@
           <div class="ligne-titre truncate">{{ ing.name }}</div>
           <div class="ligne-sous">
             {{ ing.current_theoretical_stock | qty }} {{ ing.unit.value }}, {{ ing | unit_price }}
-            {% if not ing.is_active %}, inactif{% endif %}
+            {%- if not ing.is_active %}, inactif{% endif %}
           </div>
         </div>
       </a>

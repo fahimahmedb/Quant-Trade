@@ -2,31 +2,61 @@
 
    Le bloc est fourni par l'écran appelant. Le filet entre lignes est le seul
    admis par la direction : c'est une liste dense, l'espace seul n'y suffit
-   pas à séparer deux ingrédients. #}
-<ul class="divide-y divide-filet">
-  {% for line in report %}
-  <li class="px-5 py-4">
-    <div class="flex justify-between items-baseline gap-4">
-      <span class="font-semibold min-w-0">{{ line.ingredient.name }}</span>
-      {# Manquant en alerte : c'est de l'argent parti. Surplus en encre : une
-         anomalie à comprendre, pas une perte. Un écart nul s'efface. #}
-      <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-gris{% endif %}">
-        {{ line.variance_value | euros }}
-      </span>
-    </div>
-    <div class="secondaire mt-1">
-      {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
-      {{ line.counted_quantity | qty }} comptés{% if line.theoretical_quantity >= 0 %} ({{ line.variance_pct | pct }}){% endif %}
-      {%- if line.variance_reason %}<br />Motif&nbsp;: {{ line.variance_reason.label }}{% endif %}
-    </div>
-    {% if line.theoretical_quantity < 0 %}
-    <div class="text-contexte text-alerte mt-2">
-      Stock théorique déjà négatif avant ce comptage, le pourcentage n'est pas
-      significatif. Vérifiez la saisie des ventes et des fiches en amont.
-    </div>
-    {% endif %}
-  </li>
+   pas à séparer deux ingrédients.
+
+   AC-U6-1 : un ingrédient sans écart n'a rien à montrer qu'un vrai écart —
+   lui donner la même ligne complète (nom, quantités, pourcentage) que les
+   problèmes réels fait perdre autant de place à un « rien à signaler » qu'à
+   une vraie perte. Sur 9 ingrédients ça passe, sur 40 la liste des vrais
+   écarts se noie dans les lignes à 0,00 €. Ils sont donc repliés sous un
+   compte, sans être supprimés (AC-U6-1 demande de ne pas perdre l'info). #}
+{% set en_ecart = report | selectattr("variance_value", "ne", 0) | list %}
+{% set sans_ecart = report | rejectattr("variance_value", "ne", 0) | list %}
+{% if not report %}
+<p class="px-5 py-5 secondaire">Aucune ligne comptée dans cette session.</p>
+{% else %}
+
+  {% if en_ecart %}
+  <ul class="divide-y divide-trait">
+    {% for line in en_ecart %}
+    <li class="px-5 py-4">
+      <div class="flex justify-between items-baseline gap-4">
+        <span class="font-semibold min-w-0">{{ line.ingredient.name }}</span>
+        {# Manquant en alerte : c'est de l'argent parti. Surplus en encre :
+           une anomalie à comprendre, pas une perte. #}
+        <span class="montant shrink-0 {% if line.variance_value > 0 %}text-alerte{% else %}text-encre{% endif %}">
+          {{ line.variance_value | euros }}
+        </span>
+      </div>
+      <div class="secondaire mt-1">
+        {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
+        {{ line.counted_quantity | qty }} comptés{% if line.theoretical_quantity >= 0 %} ({{ line.variance_pct | pct }}){% endif %}
+        {%- if line.variance_reason %}<br />Motif&nbsp;: {{ line.variance_reason.label }}{% endif %}
+      </div>
+      {% if line.theoretical_quantity < 0 %}
+      <div class="text-contexte text-alerte mt-2">
+        Stock théorique déjà négatif avant ce comptage, le pourcentage n'est pas
+        significatif. Vérifiez la saisie des ventes et des fiches en amont.
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
   {% else %}
-  <li class="px-5 py-5 secondaire">Aucune ligne comptée dans cette session.</li>
-  {% endfor %}
-</ul>
+  <p class="px-5 py-4 secondaire">Tous les ingrédients comptés sont conformes — aucun écart à régulariser.</p>
+  {% endif %}
+
+  {% if sans_ecart %}
+  <details class="mt-2">
+    <summary class="secondaire cursor-pointer px-5 py-3">
+      {{ sans_ecart | length }} ingrédient{{ sans_ecart | length | pluriel }} conforme{{ sans_ecart | length | pluriel }}, sans écart
+    </summary>
+    <ul class="divide-y divide-trait">
+      {% for line in sans_ecart %}
+      <li class="px-5 py-3 secondaire">{{ line.ingredient.name }}</li>
+      {% endfor %}
+    </ul>
+  </details>
+  {% endif %}
+
+{% endif %}

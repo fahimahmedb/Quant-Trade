@@ -39,7 +39,7 @@
   {% block entete %}
   <header class="px-4 h-14 flex items-center justify-between gap-4">
     <span class="font-semibold text-titre2 min-w-0 truncate">
-      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
+      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock resto" }}
     </span>
     {% if request.state.account %}
     <form method="post" action="/logout" class="shrink-0">

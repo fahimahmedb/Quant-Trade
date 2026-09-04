@@ -6,7 +6,7 @@ from app.database import get_db
 from app.flash import redirect
 from app.forms import InvalidNumberError, parse_float_fr
 from app.services import ordering
-from app.templating import templates
+from app.templating import pluriel, templates
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -26,8 +26,9 @@ def orders_home(request: Request, db: Session = Depends(get_db)):
 @router.post("/generate")
 def generate(db: Session = Depends(get_db)):
     batch = ordering.generate_suggestions(db)
+    n = len(batch.lines)
     message = (
-        f"{len(batch.lines)} suggestion(s) générée(s)."
+        f"{n} suggestion{pluriel(n)} générée{pluriel(n)}."
         if batch.lines
         else "Aucun ingrédient sous son seuil actuellement : rien à suggérer."
     )

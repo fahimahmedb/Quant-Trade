@@ -12,8 +12,8 @@
     <div class="flex-1 min-w-0">
       <div class="ligne-titre truncate">{{ dish.name }}</div>
       <div class="ligne-sous">
-        {{ dish.recipe_lines | length }} ingrédient(s), coût matière {{ dish.food_cost | euros }}
-        {% if not dish.is_active %}, inactif{% endif %}
+        {{ dish.recipe_lines | length }} ingrédient{{ dish.recipe_lines | length | pluriel }}, coût matière {{ dish.food_cost | euros }}
+        {%- if not dish.is_active %}, inactif{% endif %}
       </div>
     </div>
   </a>

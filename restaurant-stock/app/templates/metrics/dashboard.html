@@ -30,7 +30,10 @@
       </div>
       <div class="w-full bg-appui rounded h-2"><div class="bg-gris opacity-50 h-2 rounded" style="width:{{ adoption.pct(adoption.rejetee) }}%"></div></div>
     </div>
-    <p class="secondaire">{{ adoption.en_attente }} suggestion(s) encore en attente de décision (non comptée dans les %).</p>
+    <p class="secondaire">
+      {{ adoption.en_attente }} suggestion{{ adoption.en_attente | pluriel }} encore en attente de décision
+      (non comptée{{ adoption.en_attente | pluriel }} dans les %).
+    </p>
   </div>
   {% endif %}
 </section>

@@ -11,7 +11,7 @@ from app.database import get_db
 from app.flash import redirect
 from app.forms import InvalidNumberError, parse_float_fr
 from app.services import deliveries, pricing
-from app.templating import templates
+from app.templating import pluriel, templates
 
 router = APIRouter(prefix="/deliveries", tags=["deliveries"])
 
@@ -144,7 +144,8 @@ async def create_delivery(request: Request, db: Session = Depends(get_db)):
     except (deliveries.DeliveryError, InvalidNumberError) as exc:
         return _render_new(request, db, error=str(exc), status_code=422, submitted=submitted)
 
-    message = f"Réception enregistrée : {len(result.receipt.lines)} ligne(s), stock mis à jour."
+    n = len(result.receipt.lines)
+    message = f"Réception enregistrée : {n} ligne{pluriel(n)}, stock mis à jour."
     warnings = result.price_alerts + ([result.backdated_warning] if result.backdated_warning else [])
     return redirect(
         f"/deliveries/{result.receipt.id}",

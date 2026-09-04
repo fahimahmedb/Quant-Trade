@@ -18,21 +18,21 @@
   <div>
     <label class="secondaire block mb-2" for="safety_days">Jours de sécurité (seuil d'alerte par défaut)</label>
     <div class="champ">
-      <input type="number" step="0.5" min="0" id="safety_days" name="safety_days" value="{{ settings.safety_days }}" />
+      <input type="text" inputmode="decimal" id="safety_days" name="safety_days" value="{{ settings.safety_days | decimal_fr }}" />
     </div>
     <p class="secondaire mt-2">Seuil = consommation moyenne journalière × ce nombre de jours, pour les ingrédients sans seuil manuel.</p>
   </div>
   <div>
     <label class="secondaire block mb-2" for="target_days">Jours de couverture cible (quantité suggérée)</label>
     <div class="champ">
-      <input type="number" step="0.5" min="0" id="target_days" name="target_days" value="{{ settings.target_days }}" />
+      <input type="text" inputmode="decimal" id="target_days" name="target_days" value="{{ settings.target_days | decimal_fr }}" />
     </div>
     <p class="secondaire mt-2">La quantité suggérée vise à couvrir ce nombre de jours de consommation moyenne.</p>
   </div>
   <div>
     <label class="secondaire block mb-2" for="price_alert_pct">Seuil d'alerte sur variation de prix (%)</label>
     <div class="champ">
-      <input type="number" step="1" min="0" id="price_alert_pct" name="price_alert_pct" value="{{ settings.price_alert_pct }}" />
+      <input type="text" inputmode="decimal" id="price_alert_pct" name="price_alert_pct" value="{{ settings.price_alert_pct | decimal_fr }}" />
     </div>
     <p class="secondaire mt-2">À la validation d'une réception, un prix qui varie de plus de ce pourcentage déclenche un avertissement (non bloquant).</p>
   </div>
@@ -51,7 +51,11 @@
 
   <form method="post" action="/settings/import" enctype="multipart/form-data" class="space-y-2">
     <label class="secondaire block mb-2" for="import-file">Réimporter un catalogue</label>
-    <input type="file" id="import-file" name="file" accept=".zip,application/zip" required class="select text-base" />
+    <div data-champ-fichier>
+      <input type="file" id="import-file" name="file" accept=".zip,application/zip" required class="sr-only" />
+      <label for="import-file" class="btn btn-secondaire">Choisir un fichier</label>
+      <p class="secondaire mt-2" data-nom-fichier>Aucun fichier choisi</p>
+    </div>
     <button type="submit" class="btn btn-secondaire mt-2">Importer</button>
     <p class="secondaire">
       Restaure ingrédients et fiches techniques depuis un export, sur une

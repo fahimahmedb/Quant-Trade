@@ -94,11 +94,18 @@ def _input_number(value) -> str:
     """Valeur d'un `<input type="number">`.
 
     La spécification HTML impose le point décimal et interdit le séparateur de
-    milliers : ce filtre ne francise donc rien (le navigateur affiche lui-même
-    la virgule en locale française, cf. OBS-3). Il retire seulement le « .0 »
-    d'un nombre entier : sur l'écran de comptage, en chasse fixe et en gros
-    corps, « 12672.0 » se lit moins vite que « 12672 » et donne deux
-    caractères de plus à effacer avant de saisir la vraie quantité.
+    milliers sur cet attribut : un `value` en virgule y serait invalide et le
+    champ s'afficherait vide. Ce champ reste donc en point décimal — l'écran
+    de comptage (seul restant sur `type="number"`, cf. `decimal_fr` ci-dessous
+    pour les autres) a sa propre validation à venir, pas encore faite ici.
+    Le filtre retire seulement le « .0 » d'un nombre entier : en chasse fixe
+    et en gros corps, « 12672.0 » se lit moins vite que « 12672 » et donne
+    deux caractères de plus à effacer avant de saisir la vraie quantité.
+
+    Point corrigé après coup : une version antérieure de ce commentaire
+    affirmait que « le navigateur affiche lui-même la virgule en locale
+    française ». C'est faux en pratique (Chromium, notamment, ne le fait
+    jamais) — l'hypothèse n'avait pas été vérifiée sur un vrai navigateur.
     """
     if value is None:
         return ""
@@ -106,8 +113,48 @@ def _input_number(value) -> str:
     return str(int(number)) if number.is_integer() else f"{number:.2f}".rstrip("0").rstrip(".")
 
 
+def _decimal_fr(value) -> str:
+    """Valeur d'un champ décimal éditable en `<input type="text" inputmode="decimal">`.
+
+    Contrairement à `qty` (affichage, arrondi à 2 décimales pour la lecture),
+    ce filtre garde la précision stockée : un coût au gramme à 0,0025 € ne
+    doit pas se retrouver arrondi à 0,00 € en rouvrant le formulaire. Comme
+    ce n'est plus un `<input type="number">`, rien n'impose le point : la
+    virgule française s'affiche pour de vrai, pas seulement en théorie.
+
+    Une chaîne est laissée telle quelle plutôt que reconvertie : un
+    formulaire ré-affiché après une erreur de validation passe la saisie
+    brute de la personne (`SimpleNamespace`, cf. les routeurs settings et
+    ingredients), virgule ou non — et parfois invalide, précisément ce
+    qu'elle doit revoir. La reformater ferait perdre l'erreur qu'on lui
+    montre, ou planterait sur une virgule que `float()` n'accepte pas.
+    """
+    if value is None or value == "":
+        return ""
+    if isinstance(value, str):
+        return value
+    number = float(value)
+    texte = f"{number:.10f}".rstrip("0").rstrip(".")
+    return (texte or "0").replace(".", ",")
+
+
+def pluriel(n) -> str:
+    """« s » d'accord au pluriel (0 ou 2+), rien au singulier (1).
+
+    Remplace le `(s)` entre parenthèses laissé sur un nombre de lignes —
+    correct dans tous les cas mais illisible, et une signature reconnaissable
+    de logiciel pas fini. Les pluriels de ce projet sont tous réguliers
+    (ligne/lignes, ingrédient/ingrédients…) — pas besoin d'une table
+    d'exceptions. Nom public (pas de `_`) : les messages flash construits
+    dans les routeurs l'importent aussi, pas seulement les gabarits Jinja.
+    """
+    return "" if abs(n) == 1 else "s"
+
+
 templates.env.filters["euros"] = _euros
 templates.env.filters["input_number"] = _input_number
+templates.env.filters["decimal_fr"] = _decimal_fr
+templates.env.filters["pluriel"] = pluriel
 templates.env.filters["qty"] = _qty
 templates.env.filters["pct"] = _pct
 templates.env.filters["unit_price"] = _unit_price_display

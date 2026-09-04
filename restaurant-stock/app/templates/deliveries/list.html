@@ -14,8 +14,8 @@
         {{ receipt.received_on | date_fr }}{% if receipt.supplier %}, {{ receipt.supplier }}{% endif %}
       </div>
       <div class="ligne-sous">
-        {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
-        {% if receipt.photo_path %}, photo jointe{% endif %}
+        {{ receipt.lines | length }} ligne{{ receipt.lines | length | pluriel }}, {{ receipt.total_value | euros }}
+        {%- if receipt.photo_path %}, photo jointe{% endif %}
       </div>
     </div>
   </a>

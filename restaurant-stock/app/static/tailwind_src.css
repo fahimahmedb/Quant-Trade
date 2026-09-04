@@ -77,10 +77,14 @@
        clair que le bas. Le contraste du texte blanc est vérifié sur le HAUT,
        qui est le cas le plus défavorable.
 
-       ATTENTION : ce vert est un choix par défaut repris du prototype, pas
-       une décision validée par le porteur du projet (angle mort assumé). */
-    --heros-haut: #115442;
-    --heros-bas: #0e4433;
+       Couleur de marque unique, tranchée après coup : le vert par défaut du
+       prototype coexistait avec le bleu de --accent (boutons, liens) sur les
+       vingt écrans déjà migrés — deux identités, pas une. Le haut du dégradé
+       reprend --accent telle quelle (9,3:1 sur blanc, largement au-dessus du
+       7:1 exigé ici) plutôt que d'inventer une troisième teinte : un vert de
+       marque aurait aussi fait doublon avec --valide (le succès), déjà vert. */
+    --heros-haut: #1c4a6e;
+    --heros-bas: #123350;
     /* Blanc atténué de la ligne secondaire du héros : l'indicateur
        défavorable y reste lisible sans jamais virer au rouge. Le rouge est
        réservé aux listes sur fond blanc. */

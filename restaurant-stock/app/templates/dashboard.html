@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Tableau de bord{% endblock %}
-{% block theme_color %}#115442{% endblock %}
+{% block theme_color %}#1c4a6e{% endblock %}
 
 {# --------------------------------------------------------------------
    Le héros remplace l'en-tête par défaut : c'est le seul écran qui en
@@ -11,7 +11,7 @@
 <header class="heros px-4 pb-6">
   <div class="h-14 flex items-center justify-between gap-4">
     <span class="font-semibold text-corps min-w-0 truncate">
-      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock" }}
+      {{ request.state.account.restaurant_name if request.state.account and request.state.account.restaurant_name else "Stock resto" }}
     </span>
     <div class="flex items-center gap-4 shrink-0">
       <a href="/orders" class="relative" aria-label="Suggestions de commande">

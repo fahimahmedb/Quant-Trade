@@ -38,8 +38,8 @@
     <div>
       <label class="secondaire block mb-2" for="ing-cost">Coût unitaire (€ par unité de référence)</label>
       <div class="champ">
-        <input id="ing-cost" type="number" step="0.0001" min="0" name="unit_cost"
-               value="{{ ingredient.unit_cost if ingredient else 0 }}" />
+        <input id="ing-cost" type="text" inputmode="decimal" name="unit_cost"
+               value="{{ (ingredient.unit_cost if ingredient else 0) | decimal_fr }}" />
       </div>
       {% if ingredient and ingredient.id %}
       <p class="secondaire mt-2">soit {{ ingredient | unit_price }}</p>
@@ -48,8 +48,8 @@
     <div>
       <label class="secondaire block mb-2" for="ing-stock">Stock théorique actuel</label>
       <div class="champ">
-        <input id="ing-stock" type="number" step="0.01" name="current_theoretical_stock"
-               value="{{ ingredient.current_theoretical_stock if ingredient else 0 }}" />
+        <input id="ing-stock" type="text" inputmode="decimal" name="current_theoretical_stock"
+               value="{{ (ingredient.current_theoretical_stock if ingredient else 0) | decimal_fr }}" />
         <span class="unite">{{ ingredient.unit.value if ingredient else "" }}</span>
       </div>
     </div>
@@ -58,8 +58,8 @@
   <div>
     <label class="secondaire block mb-2" for="ing-threshold">Seuil d'alerte manuel (optionnel)</label>
     <div class="champ">
-      <input id="ing-threshold" type="number" step="0.01" min="0" name="alert_threshold"
-             value="{{ ingredient.alert_threshold if ingredient and ingredient.alert_threshold is not none else '' }}"
+      <input id="ing-threshold" type="text" inputmode="decimal" name="alert_threshold"
+             value="{{ (ingredient.alert_threshold if ingredient and ingredient.alert_threshold is not none else '') | decimal_fr }}"
              placeholder="auto" />
     </div>
     <p class="secondaire mt-2">Si vide, le seuil est dérivé de la consommation moyenne récente (réglages).</p>
@@ -91,7 +91,7 @@
   <div class="ligne">
     <div class="flex-1 min-w-0">
       <span class="secondaire">{{ price.recorded_at | date_fr }}</span>
-      {% if price.supplier %}<span class="secondaire break-words">, {{ price.supplier }}</span>{% endif %}
+      {%- if price.supplier %}<span class="secondaire break-words">, {{ price.supplier }}</span>{% endif %}
     </div>
     <span class="ligne-valeur shrink-0">{{ price | history_price }}</span>
   </div>
@@ -113,7 +113,7 @@
       <div class="ligne-titre">{{ m.movement_type.label }}</div>
       <div class="secondaire">
         {{ m.created_at | datetime_fr }}
-        {% if m.reference %}, {{ m.reference }}{% endif %}
+        {%- if m.reference %}, {{ m.reference }}{% endif %}
       </div>
     </div>
     <div class="text-right shrink-0">

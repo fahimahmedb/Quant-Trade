@@ -49,8 +49,8 @@
     {% if line.decision.value != 'rejetee' %}
     <form method="post" action="/orders/lines/{{ line.id }}/decide" class="flex flex-wrap items-center gap-3">
       <div class="champ w-24">
-        <input type="number" step="0.01" min="0" name="final_quantity"
-               value="{{ (line.final_quantity if line.final_quantity is not none else line.suggested_quantity) | round(2) }}" />
+        <input type="text" inputmode="decimal" name="final_quantity"
+               value="{{ (line.final_quantity if line.final_quantity is not none else line.suggested_quantity) | round(2) | decimal_fr }}" />
       </div>
       <span class="secondaire">{{ line.ingredient.unit.value }}</span>
       <button type="submit" class="btn btn-secondaire">Valider cette quantité</button>
@@ -73,7 +73,7 @@
   <a href="/orders/{{ h.id }}" class="ligne">
     <div class="flex-1 min-w-0">
       <div class="ligne-titre">{{ h.generated_at | datetime_fr }}</div>
-      <div class="secondaire">{{ h.lines | length }} suggestion(s)</div>
+      <div class="secondaire">{{ h.lines | length }} suggestion{{ h.lines | length | pluriel }}</div>
     </div>
   </a>
   {% endfor %}

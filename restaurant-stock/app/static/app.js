@@ -84,4 +84,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // Nom du fichier choisi : le bouton natif reste (accessibilité, fonctionne
+  // sans JS via `<label for>`), seul son texte anglais du navigateur
+  // (« Choose File », « No file chosen ») est masqué en CSS et remplacé ici.
+  document.querySelectorAll("[data-champ-fichier]").forEach((champ) => {
+    const input = champ.querySelector('input[type="file"]');
+    const nom = champ.querySelector("[data-nom-fichier]");
+    if (!input || !nom) return;
+    const defaut = nom.textContent;
+    input.addEventListener("change", () => {
+      nom.textContent = input.files.length
+        ? Array.from(input.files).map((f) => f.name).join(", ")
+        : defaut;
+    });
+  });
 });

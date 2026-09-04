@@ -4,7 +4,7 @@
 <h1 class="section-titre mt-4 mb-1">Réception du {{ receipt.received_on | date_fr }}</h1>
 <p class="secondaire mb-4">
   {% if receipt.supplier %}{{ receipt.supplier }}, {% endif %}
-  {{ receipt.lines | length }} ligne(s), {{ receipt.total_value | euros }}
+  {{ receipt.lines | length }} ligne{{ receipt.lines | length | pluriel }}, {{ receipt.total_value | euros }}
   {% if receipt.note %}<br />{{ receipt.note }}{% endif %}
 </p>
 
