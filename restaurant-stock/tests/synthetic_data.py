@@ -330,6 +330,11 @@ def build_syn_d(db: Session, seed: int = 4) -> SynD:
             counted={ing1.id: ing1.current_theoretical_stock - perte},
             ended_at=d + timedelta(hours=2),
         ))
+    # `start_count_session` compte TOUS les ingrédients actifs : sans ça, les
+    # comptages des scénarios suivants ajouteraient des lignes "conformes"
+    # parasites à l'historique de ing1, faussant sa série de pertes.
+    ing1.is_active = False
+    db.commit()
 
     ing2 = ingredient(db, "Ingrédient SYN-D anomalie", unit_cost=0.02, stock_qty=100_000.0)
     plat2 = dish(db, "Plat SYN-D anomalie", {ing2.id: 100.0})
@@ -349,6 +354,8 @@ def build_syn_d(db: Session, seed: int = 4) -> SynD:
         counted={ing2.id: ing2.current_theoretical_stock - anomalie},
         ended_at=d + timedelta(hours=2),
     ))
+    ing2.is_active = False
+    db.commit()
 
     ing3 = ingredient(db, "Ingrédient SYN-D sous-seuil", unit_cost=0.02, stock_qty=100_000.0)
     plat3 = dish(db, "Plat SYN-D sous-seuil", {ing3.id: 100.0})
