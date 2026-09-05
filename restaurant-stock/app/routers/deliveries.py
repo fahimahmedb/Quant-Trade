@@ -29,14 +29,14 @@ def _parse_date_fr(raw: str) -> datetime:
     raise deliveries.DeliveryError(f"Date de réception invalide : {raw!r}.")
 
 
-def _price_input_value(price: float) -> str:
-    """Valeur d'un <input type=number> : point décimal imposé par HTML, mais
-    sans zéros inutiles — « 20 » et « 1.2 » plutôt que « 20.0000 »."""
-    return f"{price:.4f}".rstrip("0").rstrip(".") or "0"
-
-
 def _ingredient_rows(db: Session) -> list[dict]:
-    """Ingrédients actifs avec leur prix d'achat pré-rempli, en unité d'achat."""
+    """Ingrédients actifs avec leur prix d'achat pré-rempli, en unité d'achat.
+
+    `last_price` reste un nombre : c'est le gabarit (filtre `decimal_fr`) qui
+    le met en forme pour l'écran, en un seul endroit. Un formatage fait ici
+    (point décimal, ex-`<input type=number>`) serait déjà une chaîne au
+    moment d'atteindre `decimal_fr`, qui la laisse alors passer telle
+    quelle — pensée pour une ressaisie après erreur, pas pour ce cas."""
     ingredients = (
         db.query(models.Ingredient)
         .filter(models.Ingredient.is_active.is_(True))
@@ -47,9 +47,7 @@ def _ingredient_rows(db: Session) -> list[dict]:
         {
             "ingredient": ing,
             "display_unit": pricing.display_unit(ing.unit),
-            "last_price": _price_input_value(
-                pricing.to_display_price(deliveries.last_known_price(db, ing), ing.unit)
-            ),
+            "last_price": pricing.to_display_price(deliveries.last_known_price(db, ing), ing.unit),
         }
         for ing in ingredients
     ]

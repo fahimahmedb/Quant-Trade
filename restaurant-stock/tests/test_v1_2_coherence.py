@@ -224,6 +224,22 @@ def test_ingredient_form_decimal_fields_display_french_comma(seeded_client):
     assert "0,0123" in page
 
 
+def test_delivery_form_prefilled_price_displays_french_comma(seeded_client):
+    """Trouvé en relisant une capture de /deliveries/new : `1.2 €/kg` restait
+    au point décimal malgré le passage en `type=\"text\"` et le filtre
+    `decimal_fr`. Cause réelle : le routeur formatait déjà le prix en chaîne
+    avant que le gabarit ne le voie (`_price_input_value`, un reliquat de
+    l'ancien `<input type=\"number\">`) — `decimal_fr` reçoit alors une
+    chaîne déjà faite et la laisse passer telle quelle, pensé pour une
+    ressaisie après erreur, pas pour une valeur déjà mise en forme ailleurs.
+    Le routeur doit fournir un nombre, pas une chaîne pré-formatée."""
+    page = seeded_client.client.get("/deliveries/new").text
+    valeurs = re.findall(r'name="unit_price"\s+placeholder="0"\s+value="([^"]*)"', page)
+    assert valeurs, "aucun champ unit_price pré-rempli trouvé sur /deliveries/new"
+    for v in valeurs:
+        assert "." not in v, f"point décimal encore affiché dans le prix pré-rempli : {v!r}"
+
+
 # ==========================================================================
 # Bouton de fichier natif — « Choose File » / « No file chosen » remplacés.
 # ==========================================================================

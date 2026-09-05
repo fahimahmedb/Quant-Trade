@@ -256,7 +256,7 @@ def test_ac_f1_1_three_line_delivery_submits_from_a_single_screen(seeded_client)
 
     form = client.get("/deliveries/new").text
     assert form.count('name="ingredient_id"') >= 3  # 3 lignes saisissables d'emblée
-    assert 'data-last-price="1.2"' in form          # prix pré-rempli en €/kg (Farine)
+    assert 'data-last-price="1,2"' in form          # prix pré-rempli en €/kg (Farine), virgule française
 
     r = _delivery_form(client, sessions, received_on="2026-09-01", rows=[
         ("Farine", "25000", "1,40"), ("Tomate", "5000", "3,20"), ("Mozzarella", "2000", "9,00"),
