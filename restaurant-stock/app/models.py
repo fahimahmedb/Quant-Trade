@@ -425,3 +425,13 @@ class Settings(Base):
     target_days: Mapped[float] = mapped_column(Float, default=5.0)
     rolling_window_days: Mapped[int] = mapped_column(Integer, default=7)
     price_alert_pct: Mapped[float] = mapped_column(Float, default=15.0)
+
+    # Fonctionnalités IA (lot IA-0, docs/IA scope.md) : implémentées et
+    # prouvées sur données synthétiques, mais gatées par des données réelles
+    # du pilote qui n'existent pas encore. Toutes éteintes par défaut — leur
+    # activation est une décision du pilote, jamais un effet de bord d'un
+    # déploiement de code.
+    feature_f5_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f6_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f7_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f9_enabled: Mapped[bool] = mapped_column(default=False)
