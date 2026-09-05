@@ -22,8 +22,8 @@ from types import SimpleNamespace
 import pytest
 
 from app import models
-from app.services import ordering, settings_service
-from app.templating import _decimal_fr, pluriel, templates
+from app.services import counting, ordering, settings_service
+from app.templating import _decimal_fr, _qty, pluriel, templates
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 GABARITS = sorted((BASE_DIR / "app" / "templates").rglob("*.html"))
@@ -484,3 +484,46 @@ def test_u8_quantites_dans_l_unite_la_plus_lisible(seeded_client):
     assert "7,33 kg" in page
     assert not re.search(r"12[  ]?672\s*g\b", page), "quantité restée en grammes non convertie"
     assert not re.search(r"7[  ]?328\s*g\b", page), "quantité restée en grammes non convertie"
+
+
+# ==========================================================================
+# Le total « brut » du graphique de tendance (/metrics) n'était accompagné
+# d'aucune explication : deux chiffres proches (« 5,27 € » puis
+# « (brut 5,77 €) ») sans rien pour dire pourquoi ils diffèrent ni lequel
+# retenir. Le brut additionne les écarts en valeur absolue (aucune
+# compensation entre un surplus et une perte), le total net les additionne
+# avec leur signe.
+# ==========================================================================
+def test_metrics_brut_figure_is_explained(seeded_client):
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    with sessions() as db:
+        session = counting.start_count_session(db, counted_by="Test")
+        line = session.lines[0]
+        counting.confirm_count_line(
+            db, line.id, counted_quantity=line.theoretical_quantity - 1
+        )
+        counting.complete_count_session(db, session.id)
+
+    page = client.get("/metrics").text
+    assert "(brut" in page, "le test ne porte plus sur un écran qui affiche encore le brut"
+    assert (
+        "sans laisser un surplus compenser une perte ailleurs" in page
+    ), "aucune explication de ce que mesure le total « brut », par opposition au total net"
+
+
+# ==========================================================================
+# Les grandes quantités en grammes se lisaient mal (« 12 672 g ») sur le
+# partiel partagé par /variance et /counting/{id}/summary. `qty_lisible`
+# (app/templating.py) bascule en kg au-delà de 1000 g/mL — ici sur le
+# partiel directement, comme les tests AC-U6-1 ci-dessus.
+# ==========================================================================
+def test_variance_table_renders_large_gram_quantities_in_kg():
+    lignes = [_ligne("Farine", -1.8, theorique=14400, compte=12672, pct=-12.0)]
+    html = _rendu(lignes)
+    ancien_theorique = f"{_qty(14400)} g"
+    ancien_compte = f"{_qty(12672)} g"
+
+    assert "14,40 kg attendus" in html, "la quantité théorique doit passer en kg au-delà de 1000 g"
+    assert "12,67 kg comptés" in html, "la quantité comptée doit passer en kg au-delà de 1000 g"
+    assert ancien_compte not in html, "l'ancien affichage en grammes bruts (12 672 g) ne doit plus apparaître"
+    assert ancien_theorique not in html, "l'ancien affichage en grammes bruts (14 400 g) ne doit plus apparaître"

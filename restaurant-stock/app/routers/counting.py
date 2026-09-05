@@ -234,7 +234,21 @@ def session_summary(session_id: int, request: Request, db: Session = Depends(get
         return redirect("/counting", "Session de comptage introuvable.", error=True)
     report = counting.variance_report(db, session_id)
     total_value = sum(line.variance_value or 0 for line in report)
+    # Le résumé mène par la conformité, jamais par la perte (section 3 de la
+    # direction) : même calcul que le héros de l'accueil (app/routers/
+    # dashboard.py), mais borné à CETTE session plutôt qu'à la dernière
+    # terminée de tout le restaurant.
+    variance_count = sum(1 for line in report if (line.variance or 0) != 0)
+    counted_lines = len(report)
+    conform_lines = counted_lines - variance_count
     return templates.TemplateResponse(request,
         "counting/summary.html",
-        {"request": request, "session": session, "report": report, "total_value": total_value},
+        {
+            "request": request,
+            "session": session,
+            "report": report,
+            "total_value": total_value,
+            "conform_lines": conform_lines,
+            "counted_lines": counted_lines,
+        },
     )

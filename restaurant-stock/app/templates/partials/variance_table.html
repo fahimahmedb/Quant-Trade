@@ -29,8 +29,8 @@
         </span>
       </div>
       <div class="secondaire mt-1">
-        {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
-        {{ line.counted_quantity | qty }} comptés{% if line.theoretical_quantity >= 0 %} ({{ line.variance_pct | pct }}){% endif %}
+        {{ line.theoretical_quantity | qty_lisible(line.ingredient.unit) }} attendus,
+        {{ line.counted_quantity | qty_lisible(line.ingredient.unit) }} comptés{% if line.theoretical_quantity >= 0 %} ({{ line.variance_pct | pct }}){% endif %}
         {%- if line.variance_reason %}<br />Motif&nbsp;: {{ line.variance_reason.label }}{% endif %}
       </div>
       {% if line.theoretical_quantity < 0 %}

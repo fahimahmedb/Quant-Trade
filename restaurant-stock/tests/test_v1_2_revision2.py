@@ -416,3 +416,47 @@ def test_counted_by_mention_has_no_stray_space_before_its_comma(seeded_client):
     summary = client.get(f"/counting/{session_id}/summary").text
     assert " , par Test" not in summary, "espace parasite avant la virgule (résumé)"
     assert ", par Test" in summary
+
+
+# ==========================================================================
+# Régression — le résumé de comptage menait par l'écart total valorisé (un
+# gros chiffre rouge, juste après avoir fini de compter), exactement
+# l'inverse de la section 3 de la direction déjà respectée par le héros de
+# l'accueil : le favorable domine, le défavorable reste lisible en second
+# plan. Le résumé doit désormais ouvrir sur la conformité de CETTE session
+# (pas celle du dernier comptage terminé de tout le restaurant, comme le
+# héros — ici la page est justement à propos d'une session précise).
+# ==========================================================================
+def test_counting_summary_leads_with_conformity_not_the_variance_total(seeded_client):
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    conformes, total = _complete_a_session_with_known_variance(sessions)
+    with sessions() as db:
+        session_id = db.query(models.CountSession).first().id
+
+    page = client.get(f"/counting/{session_id}/summary").text
+
+    assert f'<span class="nombre">{conformes}</span><span class="secondaire">/{total}</span>' in page, (
+        "le résumé n'affiche pas la conformité de cette session, dans le même "
+        "format que le héros de l'accueil"
+    )
+    assert "ingrédients conformes au dernier comptage" in page
+    assert "Écart total valorisé" in page, "l'écart total reste affiché, seulement plus bas et plus petit"
+    assert page.index("conformes au dernier comptage") < page.index("Écart total valorisé"), (
+        "la conformité doit apparaître avant l'écart total dans le HTML — "
+        "c'est elle qui doit être vue en premier, pas la perte"
+    )
+
+    # Le chiffre de conformité porte le grand format de page réservé aux
+    # écrans sans héros ; l'écart total, lui, ne doit plus le partager —
+    # sinon les deux se disputent l'attention au lieu que l'un domine.
+    assert page.count('class="titre-ecran"') == 1, (
+        "un seul chiffre doit porter le grand format de la page : la conformité"
+    )
+    titre_ecran_index = page.index('class="titre-ecran"')
+    ecart_index = page.index("Écart total valorisé")
+    assert titre_ecran_index < ecart_index, "le grand format doit être utilisé avant l'écart, pas après"
+
+    ecart_block = page[ecart_index:page.index("Positif = perte")]
+    assert "titre-ecran" not in ecart_block, (
+        "l'écart total ne doit pas porter le même grand format que la conformité"
+    )

@@ -7,11 +7,27 @@
   {%- if session.counted_by %}, par {{ session.counted_by }}{% endif %}
 </p>
 
+{# Le favorable domine, le défavorable reste en second plan (section 3 de la
+   direction) — déjà vrai sur le héros de l'accueil, faux ici jusqu'ici :
+   l'écart total ouvrait l'écran. Le chiffre de conformité de CETTE session
+   mène désormais, dans le même format que le grand titre de page
+   (`.titre-ecran`, 34 px) réservé aux écrans sans héros (cf. base.html) —
+   jamais les classes `.heros-*`, qui ne s'appliquent qu'à l'intérieur du
+   bloc plein-couleur de l'accueil. #}
+<div class="mb-6">
+  <div class="titre-ecran">
+    <span class="nombre">{{ conform_lines }}</span><span class="secondaire">/{{ counted_lines }}</span>
+  </div>
+  <p class="secondaire mt-1">ingrédients conformes au dernier comptage</p>
+</div>
+
 <div class="mb-6">
   <span class="secondaire">Écart total valorisé</span>
   {# Manquant en alerte, surplus en encre neutre : même lecture que partout
-     ailleurs sur les écarts, même agrégé sur toute la session. #}
-  <div class="montant text-montant {% if total_value > 0 %}text-alerte{% elif total_value < 0 %}text-encre{% endif %}">
+     ailleurs sur les écarts, même agrégé sur toute la session. Format plus
+     petit que le chiffre de conformité ci-dessus : c'est lui qui mène
+     maintenant, l'écart reste un second plan lisible, pas le premier regard. #}
+  <div class="nombre text-titre1 font-semibold {% if total_value > 0 %}text-alerte{% elif total_value < 0 %}text-encre{% endif %}">
     {{ total_value | euros }}
   </div>
   <p class="secondaire mt-1">Positif = perte (moins de stock réel que théorique). Négatif = surplus ou erreur de saisie antérieure.</p>
