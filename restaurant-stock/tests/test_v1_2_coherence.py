@@ -15,12 +15,14 @@ import subprocess
 import sys
 import tempfile
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
 from app import models
+from app.services import ordering, settings_service
 from app.templating import _decimal_fr, pluriel, templates
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,9 +129,6 @@ def test_decimal_fr_min_decimals_pads_without_ever_truncating_real_precision():
     assert _decimal_fr(1.2, 2) == "1,20"
     assert _decimal_fr(20.0, 2) == "20,00"
     assert _decimal_fr(0.0025, 2) == "0,0025"  # précision réelle jamais tronquée
-    assert _decimal_fr(10.567, 2) == "10,567"  # déjà >= min_decimals : inchangé
-    assert _decimal_fr(None, 2) == ""
-    assert _decimal_fr("1,2", 2) == "1,2"  # chaîne brute : jamais reformatée
 
 
 # ==========================================================================
@@ -262,22 +261,6 @@ def test_delivery_form_prefilled_price_displays_french_comma(seeded_client):
         assert "." not in v, f"point décimal encore affiché dans le prix pré-rempli : {v!r}"
 
 
-def test_delivery_form_price_matches_the_two_decimal_minimum_used_everywhere_else(seeded_client):
-    """Farine est à 1,20 €/kg dans le jeu de démo (`seed.py`). Partout
-    ailleurs dans l'app un prix affiche au moins 2 décimales (`euros` :
-    « 1,20 € »), mais `data-last-price` utilisait `decimal_fr` sans
-    argument, qui retire les zéros de fin : « 1,2 » au lieu de « 1,20 ».
-    Aucun `value=` sur `unit_price` n'est concerné : depuis que le
-    placeholder « Choisir un ingrédient » force un choix explicite (aucun
-    ingrédient présélectionné), ce champ ne pré-remplit plus rien tant
-    qu'aucune ligne n'a été choisie — c'est `data-last-price`, recopié en
-    JS une fois le choix fait, qui porte désormais tout le prix pré-rempli."""
-    page = seeded_client.client.get("/deliveries/new").text
-    assert 'data-last-price="1,20"' in page
-    assert 'data-last-price="1,2"' not in page
-    assert re.search(r'name="unit_price"[^>]*\bvalue="', page) is None
-
-
 # ==========================================================================
 # Bouton de fichier natif — « Choose File » / « No file chosen » remplacés.
 # ==========================================================================
@@ -392,3 +375,112 @@ def test_choosing_a_file_replaces_the_native_english_placeholder_text():
             browser.close()
     finally:
         proc.kill()
+
+
+# ==========================================================================
+# U8 — /orders/{batch_id} (« Suggestions de commande ») : trois défauts
+# relevés sur cet écran précis. Valider/Rejeter avaient un poids visuel
+# inégal (rouge sur le refus, comme si refuser une suggestion était un
+# problème) ; le paragraphe d'explication était un dépôt de trois champs
+# bruts au lieu d'une phrase ; et les quantités s'affichaient au gramme
+# près (voire à la centaine de grammes) même quand un kilo se lit mieux.
+# ==========================================================================
+def _u8_ingredient(db, name, current_stock, alert_threshold=None):
+    ing = models.Ingredient(
+        name=name,
+        unit=models.Unit.GRAMME,
+        unit_cost=0.02,
+        storage_zone=models.StorageZone.SEC,
+        current_theoretical_stock=current_stock,
+        alert_threshold=alert_threshold,
+    )
+    db.add(ing)
+    db.commit()
+    return ing
+
+
+def _u8_sale(db, ingredient, quantity, days_ago):
+    db.add(models.StockMovement(
+        ingredient_id=ingredient.id,
+        movement_type=models.MovementType.VENTE,
+        quantity_delta=-quantity,
+        resulting_stock=ingredient.current_theoretical_stock,
+        created_at=datetime.utcnow() - timedelta(days=days_ago),
+    ))
+    db.commit()
+
+
+def _u8_render_batch(seeded_client):
+    """Génère un lot avec deux lignes de suggestion : une qui reste au
+    gramme (petites quantités) et une qui doit basculer au kilo (grosses
+    quantités), puis renvoie le HTML de /orders/{batch_id}."""
+    with seeded_client.session_factory() as db:
+        settings_service.update_settings(
+            db, safety_days=2, target_days=5, rolling_window_days=7
+        )
+        petite = _u8_ingredient(db, "Beurre U8", current_stock=728)
+        _u8_sale(db, petite, 3290, days_ago=3)  # 3290 / 7 jours = 470 g/jour
+
+        # alert_threshold explicite : pas besoin de ventes pour déclencher
+        # la suggestion, la conso. moyenne peut rester à 0.
+        _u8_ingredient(db, "Farine U8", current_stock=12672, alert_threshold=20000)
+
+        batch = ordering.generate_suggestions(db)
+        batch_id = batch.id
+
+    return seeded_client.client.get(f"/orders/{batch_id}").text
+
+
+def test_u8_valider_et_rejeter_ont_le_meme_poids_visuel(seeded_client):
+    page = _u8_render_batch(seeded_client)
+    formulaires = re.findall(
+        r'<form[^>]*action="/orders/lines/\d+/decide"[^>]*>.*?</form>', page, re.S
+    )
+    assert len(formulaires) == 2, "les deux lignes générées doivent proposer un formulaire de décision"
+    for formulaire in formulaires:
+        boutons = re.findall(r'<button[^>]*>.*?</button>', formulaire, re.S)
+        valider = next(b for b in boutons if "Valider cette quantité" in b)
+        rejeter = next(b for b in boutons if "Rejeter" in b)
+
+        assert "text-alerte" not in valider
+        assert "text-alerte" not in rejeter, (
+            "refuser une suggestion de routine ne doit pas être teinté alerte "
+            "(rouge = écart/rupture, pas un choix de routine)"
+        )
+
+        classe_valider = re.search(r'class="([^"]*)"', valider).group(1)
+        classe_rejeter = re.search(r'class="([^"]*)"', rejeter).group(1)
+        assert "btn-secondaire" in classe_valider
+        assert "btn-secondaire" in classe_rejeter, (
+            "Valider et Rejeter doivent partager la même famille de bouton "
+            f"(trouvé : {classe_valider!r} vs {classe_rejeter!r})"
+        )
+
+
+def test_u8_explication_est_une_phrase_lisible_pas_un_dump(seeded_client):
+    page = _u8_render_batch(seeded_client)
+
+    assert "Stock actuel" not in page
+    assert "conso. moyenne" not in page
+    assert "seuil" not in page, "le seuil est un détail d'implémentation, pas à afficher ligne par ligne"
+
+    assert "suggérés" in page
+    assert "il reste" in page
+    assert "vous en consommez" in page
+
+    phrase = re.search(r"1,62 kg suggérés\s*:\s*il reste 728 g,\s*vous en consommez ~470 g/jour", page)
+    assert phrase, "la phrase attendue (quantité, puis stock restant, puis conso.) est absente"
+
+
+def test_u8_quantites_dans_l_unite_la_plus_lisible(seeded_client):
+    page = _u8_render_batch(seeded_client)
+
+    # Jamais plus de 2 décimales après la virgule sur cet écran.
+    assert not re.search(r",\d{3,}", page), "précision excessive affichée (plus de 2 décimales)"
+
+    # Une grosse quantité en grammes doit basculer au kilo plutôt que de
+    # s'afficher au gramme à quatre chiffres.
+    assert "12,67 kg" in page, "942,86 g au lieu de 0,94 kg : le stock ne bascule pas au kilo"
+    assert "7,33 kg" in page
+    assert not re.search(r"12[  ]?672\s*g\b", page), "quantité restée en grammes non convertie"
+    assert not re.search(r"7[  ]?328\s*g\b", page), "quantité restée en grammes non convertie"

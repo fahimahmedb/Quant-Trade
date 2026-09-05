@@ -28,11 +28,11 @@
          réservée à l'écart et à la rupture, jamais à un choix de routine. #}
       {% if line.decision.value == 'acceptee' %}
         <span class="text-contexte font-semibold text-valide bg-valide-clair px-2 py-1 rounded-cercle shrink-0">
-          Acceptée, {{ line.final_quantity | qty }} {{ line.ingredient.unit.value }}
+          Acceptée, {{ line.final_quantity | qty_lisible(line.ingredient.unit) }}
         </span>
       {% elif line.decision.value == 'modifiee' %}
         <span class="text-contexte font-semibold text-gris bg-appui px-2 py-1 rounded-cercle shrink-0">
-          Modifiée, {{ line.final_quantity | qty }} {{ line.ingredient.unit.value }}
+          Modifiée, {{ line.final_quantity | qty_lisible(line.ingredient.unit) }}
         </span>
       {% elif line.decision.value == 'rejetee' %}
         <span class="text-contexte font-semibold text-gris bg-appui px-2 py-1 rounded-cercle shrink-0">Rejetée</span>
@@ -40,10 +40,15 @@
         <span class="text-contexte font-semibold text-gris bg-appui px-2 py-1 rounded-cercle shrink-0">En attente</span>
       {% endif %}
     </div>
+    {# Phrase lisible plutôt que trois champs bruts juxtaposés : on mène par
+       la quantité suggérée (l'info actionnable), puis on explique en une
+       ligne pourquoi (stock restant, conso. moyenne) — le seuil retenu est
+       un détail d'implémentation, pas quelque chose qu'un chef doit relire
+       à chaque ligne. #}
     <p class="secondaire mb-3">
-      Stock actuel {{ line.current_stock | qty }} {{ line.ingredient.unit.value }},
-      seuil {{ line.threshold_used | qty }} {{ line.ingredient.unit.value }},
-      conso. moyenne {{ line.avg_daily_consumption | qty }} {{ line.ingredient.unit.value }}/jour
+      {{ line.suggested_quantity | qty_lisible(line.ingredient.unit) }} suggérés :
+      il reste {{ line.current_stock | qty_lisible(line.ingredient.unit) }},
+      vous en consommez ~{{ line.avg_daily_consumption | qty_lisible(line.ingredient.unit) }}/jour
     </p>
 
     {% if line.decision.value != 'rejetee' %}
@@ -53,8 +58,13 @@
                value="{{ (line.final_quantity if line.final_quantity is not none else line.suggested_quantity) | round(2) | decimal_fr }}" />
       </div>
       <span class="secondaire">{{ line.ingredient.unit.value }}</span>
+      {# Accepter ou rejeter une suggestion routinière sont deux choix
+         également légitimes, pas un choix « sûr » contre un choix « à
+         risque » : mêmes poids visuels (bouton plein, même gabarit), sans
+         alerte-rouge sur le refus — l'alerte reste réservée à l'écart et à
+         la rupture, jamais à une décision de routine (cf. plus haut). #}
       <button type="submit" class="btn btn-secondaire">Valider cette quantité</button>
-      <button type="submit" name="action" value="reject" class="btn-tertiaire text-alerte">Rejeter</button>
+      <button type="submit" name="action" value="reject" class="btn btn-secondaire">Rejeter</button>
     </form>
     {% else %}
     <form method="post" action="/orders/lines/{{ line.id }}/decide">
