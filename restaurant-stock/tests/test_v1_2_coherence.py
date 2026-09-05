@@ -527,3 +527,27 @@ def test_variance_table_renders_large_gram_quantities_in_kg():
     assert "12,67 kg comptés" in html, "la quantité comptée doit passer en kg au-delà de 1000 g"
     assert ancien_compte not in html, "l'ancien affichage en grammes bruts (12 672 g) ne doit plus apparaître"
     assert ancien_theorique not in html, "l'ancien affichage en grammes bruts (14 400 g) ne doit plus apparaître"
+
+
+# ==========================================================================
+# Même défaut que le partiel ci-dessus, mais sur la propre boucle de
+# l'accueil (« Derniers écarts ») : elle n'utilise pas variance_table.html
+# (cf. commentaire AC-U6-1 dans app/routers/dashboard.py) et n'avait donc
+# pas hérité du passage à qty_lisible.
+# ==========================================================================
+def test_dashboard_derniers_ecarts_renders_large_gram_quantities_in_kg(seeded_client):
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    with sessions() as db:
+        session = counting.start_count_session(db, counted_by="Test")
+        farine = next(l for l in session.lines if l.ingredient.name == "Farine")
+        counting.confirm_count_line(db, farine.id, counted_quantity=farine.theoretical_quantity - 1200)
+        for line in session.lines:
+            if line.id != farine.id:
+                counting.confirm_count_line(db, line.id, counted_quantity=line.theoretical_quantity)
+        counting.complete_count_session(db, session.id)
+
+    page = client.get("/").text
+    assert "20 kg attendus" in page, "la quantité théorique doit passer en kg au-delà de 1000 g"
+    assert "18,80 kg comptés" in page, "la quantité comptée doit passer en kg au-delà de 1000 g"
+    assert "20 000 g" not in page, "ancien affichage brut (théorique) ne doit plus apparaître"
+    assert "18 800 g" not in page, "ancien affichage brut (compté) ne doit plus apparaître"

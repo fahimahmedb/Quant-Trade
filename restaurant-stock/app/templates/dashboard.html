@@ -139,8 +139,8 @@
       <div class="flex-1 min-w-0">
         <div class="ligne-titre truncate">{{ line.ingredient.name }}</div>
         <div class="ligne-sous">
-          {{ line.theoretical_quantity | qty }} {{ line.ingredient.unit.value }} attendus,
-          {{ line.counted_quantity | qty }} comptés
+          {{ line.theoretical_quantity | qty_lisible(line.ingredient.unit) }} attendus,
+          {{ line.counted_quantity | qty_lisible(line.ingredient.unit) }} comptés
         </div>
       </div>
       <div class="ligne-valeur shrink-0 {% if line.variance_value > 0 %}text-alerte{% elif line.variance_value < 0 %}text-encre{% else %}text-gris{% endif %}">
