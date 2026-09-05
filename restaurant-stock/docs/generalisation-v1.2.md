@@ -208,3 +208,7 @@ l'état final (couleur unifiée + toutes les corrections des deux relectures) :
 création de compte, accueil, comptage (accueil et résumé, replié et
 déplié), écarts, commandes, réceptions (liste et nouvelle réception),
 fiches techniques, ingrédients, ventes, réglages, indicateurs.
+
+Les six captures régénérées pour le second passage (section 4 — accueil,
+résumé de comptage replié/déplié, écarts, commandes, réception) sont dans
+`docs/captures-v1.2/correctif/`, à part des captures d'origine du lot 4.
