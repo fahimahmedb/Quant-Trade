@@ -27,13 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Réception : le prix pré-rempli et les unités suivent l'ingrédient choisi.
+  // Tant qu'aucun ingrédient n'est choisi (option vide « Choisir un
+  // ingrédient »), rien ne doit s'afficher : montrer le prix ou l'unité de
+  // Farine par défaut laisserait croire qu'elle est sélectionnée alors
+  // qu'aucune ligne ne l'est vraiment (risque de tripler une même livraison).
   const syncDeliveryRow = (row) => {
     const select = row.querySelector("[data-ingredient-select]");
     if (!select || !select.options.length) return;
-    const option = select.options[select.selectedIndex];
     const unitLabel = row.querySelector("[data-unit-label]");
     const priceUnitLabel = row.querySelector("[data-price-unit-label]");
     const priceInput = row.querySelector('input[name="unit_price"]');
+    if (!select.value) {
+      if (unitLabel) unitLabel.textContent = "";
+      if (priceUnitLabel) priceUnitLabel.textContent = "";
+      if (priceInput) priceInput.value = "";
+      return;
+    }
+    const option = select.options[select.selectedIndex];
     if (unitLabel) unitLabel.textContent = option.dataset.unit || "";
     if (priceUnitLabel) priceUnitLabel.textContent = "€/" + (option.dataset.priceUnit || "");
     if (priceInput) priceInput.value = option.dataset.lastPrice || "";
@@ -60,6 +70,31 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
+
+  // Date de réception : confirmation en toutes lettres, en français, à côté
+  // du sélecteur natif. Le texte AFFICHÉ par <input type="date"> suit la
+  // locale du NAVIGATEUR (jamais le lang="fr" de la page — Chromium ne le
+  // fait jamais) : sur un poste non réglé en fr-FR, 09/05/2026 se lit
+  // mm/jj/aaaa alors que toute autre date de l'app se lit jj/mm/aaaa
+  // (`date_fr`). D'où ce format en toutes lettres, écrit ici, jamais
+  // ambigu — et surtout jamais via `toLocaleDateString`, qui dépend
+  // exactement de la même locale navigateur que le bug qu'on corrige.
+  const MOIS_FR = [
+    "janvier", "février", "mars", "avril", "mai", "juin",
+    "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+  ];
+  document.querySelectorAll('input[type="date"]').forEach((input) => {
+    const champ = input.closest("div");
+    const lisible = champ ? champ.querySelector("[data-date-lisible]") : null;
+    if (!lisible) return;
+    const majDateLisible = () => {
+      const [annee, mois, jour] = (input.value || "").split("-").map(Number);
+      lisible.textContent = annee && mois && jour ? `${jour} ${MOIS_FR[mois - 1]} ${annee}` : "";
+    };
+    input.addEventListener("input", majDateLisible);
+    input.addEventListener("change", majDateLisible);
+    majDateLisible();
+  });
 
   // Fiche technique : ajout/suppression dynamique de lignes ingrédient.
   const addBtn = document.querySelector("[data-add-ingredient-row]");

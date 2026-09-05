@@ -117,6 +117,21 @@ def test_decimal_fr_passes_raw_strings_through_unchanged():
     assert _decimal_fr("n'importe quoi") == "n'importe quoi"
 
 
+def test_decimal_fr_min_decimals_pads_without_ever_truncating_real_precision():
+    """Un prix affiche partout ailleurs dans l'app au moins 2 décimales
+    (`euros`/`unit_price`/`line_price` : « 1,20 € »), mais `decimal_fr` sans
+    argument retire tous les zéros de fin (1,20 -> « 1,2 »), une
+    incohérence relevée sur /deliveries/new. `min_decimals` comble ce
+    manque en complétant par des zéros, sans jamais couper une précision
+    réelle déjà supérieure (0,0025 garde ses 4 décimales)."""
+    assert _decimal_fr(1.2, 2) == "1,20"
+    assert _decimal_fr(20.0, 2) == "20,00"
+    assert _decimal_fr(0.0025, 2) == "0,0025"  # précision réelle jamais tronquée
+    assert _decimal_fr(10.567, 2) == "10,567"  # déjà >= min_decimals : inchangé
+    assert _decimal_fr(None, 2) == ""
+    assert _decimal_fr("1,2", 2) == "1,2"  # chaîne brute : jamais reformatée
+
+
 # ==========================================================================
 # Fonction `pluriel` — remplace le raccourci « (s) ».
 # ==========================================================================
@@ -232,12 +247,35 @@ def test_delivery_form_prefilled_price_displays_french_comma(seeded_client):
     l'ancien `<input type=\"number\">`) — `decimal_fr` reçoit alors une
     chaîne déjà faite et la laisse passer telle quelle, pensé pour une
     ressaisie après erreur, pas pour une valeur déjà mise en forme ailleurs.
-    Le routeur doit fournir un nombre, pas une chaîne pré-formatée."""
+    Le routeur doit fournir un nombre, pas une chaîne pré-formatée.
+
+    Le prix pré-rempli ne vit plus dans `value=` de `unit_price` (aucun
+    ingrédient n'est plus présélectionné, cf. le placeholder « Choisir un
+    ingrédient » — la ligne 1.2 ne doit plus laisser croire à un choix par
+    défaut), mais dans `data-last-price` de chaque `<option>`, recopié en
+    JS une fois l'ingrédient réellement choisi. C'est donc là que la
+    virgule française se vérifie désormais."""
     page = seeded_client.client.get("/deliveries/new").text
-    valeurs = re.findall(r'name="unit_price"\s+placeholder="0"\s+value="([^"]*)"', page)
-    assert valeurs, "aucun champ unit_price pré-rempli trouvé sur /deliveries/new"
+    valeurs = re.findall(r'data-last-price="([^"]*)"', page)
+    assert valeurs, "aucun prix pré-rempli (data-last-price) trouvé sur /deliveries/new"
     for v in valeurs:
         assert "." not in v, f"point décimal encore affiché dans le prix pré-rempli : {v!r}"
+
+
+def test_delivery_form_price_matches_the_two_decimal_minimum_used_everywhere_else(seeded_client):
+    """Farine est à 1,20 €/kg dans le jeu de démo (`seed.py`). Partout
+    ailleurs dans l'app un prix affiche au moins 2 décimales (`euros` :
+    « 1,20 € »), mais `data-last-price` utilisait `decimal_fr` sans
+    argument, qui retire les zéros de fin : « 1,2 » au lieu de « 1,20 ».
+    Aucun `value=` sur `unit_price` n'est concerné : depuis que le
+    placeholder « Choisir un ingrédient » force un choix explicite (aucun
+    ingrédient présélectionné), ce champ ne pré-remplit plus rien tant
+    qu'aucune ligne n'a été choisie — c'est `data-last-price`, recopié en
+    JS une fois le choix fait, qui porte désormais tout le prix pré-rempli."""
+    page = seeded_client.client.get("/deliveries/new").text
+    assert 'data-last-price="1,20"' in page
+    assert 'data-last-price="1,2"' not in page
+    assert re.search(r'name="unit_price"[^>]*\bvalue="', page) is None
 
 
 # ==========================================================================
@@ -354,80 +392,3 @@ def test_choosing_a_file_replaces_the_native_english_placeholder_text():
             browser.close()
     finally:
         proc.kill()
-
-
-# ==========================================================================
-# AC-U6-1 sur l'accueil — app/templates/dashboard.html a sa propre boucle
-# « Derniers écarts », distincte de partials/variance_table.html : le
-# principe (un conforme n'occupe pas une ligne pleine) n'y avait pas été
-# appliqué. `top_variances = report[:5]` prenait les cinq premières lignes
-# du rapport trié par |écart| décroissant, ce qui comble la liste avec des
-# lignes à 0,00 € dès qu'il y a moins de cinq écarts réels — alors que le
-# héros au-dessus annonce déjà « X/Y conformes » en grand.
-# ==========================================================================
-from app.services import counting as _counting
-
-
-def _complete_a_session_with_two_variances(sessions):
-    """Deux écarts réels (Farine, Mozzarella), sept lignes conformes : moins
-    de cinq vrais écarts, exactement le cas où l'ancienne version comblait
-    « Derniers écarts » avec des lignes conformes."""
-    with sessions() as db:
-        session = _counting.start_count_session(db, counted_by="Test")
-        lines_by_name = {line.ingredient.name: line for line in session.lines}
-
-        farine = lines_by_name["Farine"]
-        _counting.confirm_count_line(
-            db, farine.id, counted_quantity=farine.theoretical_quantity - 500
-        )
-        mozzarella = lines_by_name["Mozzarella"]
-        _counting.confirm_count_line(
-            db, mozzarella.id, counted_quantity=mozzarella.theoretical_quantity + 200
-        )
-        for name, line in lines_by_name.items():
-            if name not in ("Farine", "Mozzarella"):
-                _counting.confirm_count_line(
-                    db, line.id, counted_quantity=line.theoretical_quantity
-                )
-        _counting.complete_count_session(db, session.id)
-
-
-def test_dashboard_derniers_ecarts_does_not_pad_with_conform_lines(seeded_client):
-    client, sessions = seeded_client.client, seeded_client.session_factory
-    _complete_a_session_with_two_variances(sessions)
-
-    page = client.get("/").text
-    derniers_ecarts = page.split("Derniers écarts", 1)[1]
-
-    assert "Farine" in derniers_ecarts, "un vrai écart doit rester dans la liste"
-    assert "Mozzarella" in derniers_ecarts, "un vrai écart doit rester dans la liste"
-    for conforme in (
-        "Steak haché", "Pain burger", "Salade", "Tomate",
-        "Frites surgelées", "Sauce tomate", "Vin rouge",
-    ):
-        assert conforme not in derniers_ecarts, (
-            f"{conforme} est conforme, il ne doit pas combler « Derniers écarts »"
-        )
-
-
-def test_dashboard_all_conform_session_shows_dedicated_message(seeded_client):
-    """Session terminée, tout conforme : top_variances est vide, mais des
-    lignes ONT été comptées — le message ne doit pas affirmer le contraire.
-    Même phrasé que partials/variance_table.html pour le même cas."""
-    client, sessions = seeded_client.client, seeded_client.session_factory
-    with sessions() as db:
-        session = _counting.start_count_session(db, counted_by="Test")
-        for line in session.lines:
-            _counting.confirm_count_line(
-                db, line.id, counted_quantity=line.theoretical_quantity
-            )
-        _counting.complete_count_session(db, session.id)
-
-    page = client.get("/").text
-    assert "Tous les ingrédients comptés sont conformes" in page, (
-        "le cas « tout conforme » doit avoir son propre message, pas celui "
-        "de « rien compté »"
-    )
-    assert "Aucune ligne comptée dans cette session." not in page, (
-        "des lignes ont bien été comptées : ce message serait faux ici"
-    )

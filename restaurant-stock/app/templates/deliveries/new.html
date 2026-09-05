@@ -24,6 +24,14 @@
       <label class="secondaire block mb-2" for="received_on">Date de réception</label>
       <input type="date" id="received_on" name="received_on" required
              value="{{ submitted.received_on or today }}" class="select text-base" />
+      <!-- Le texte affiché par <input type="date"> suit la locale du
+           NAVIGATEUR, pas le lang="fr" de la page (Chromium l'ignore tout à
+           fait) : sans ceci, un navigateur non réglé en fr-FR montre
+           09/05/2026 et se lit mm/jj, l'inverse du jj/mm utilisé partout
+           ailleurs dans l'app (date_fr) — sur une saisie qui crédite du
+           stock, l'erreur de lecture est bien réelle. Confirmation formatée
+           nous-mêmes (app.js), donc fiable quelle que soit la locale. -->
+      <p class="secondaire mt-1" data-date-lisible></p>
     </div>
     <div>
       <label class="secondaire block mb-2" for="supplier">Fournisseur</label>
@@ -45,21 +53,21 @@
       {% for _ in range(3) %}
       <div data-delivery-row class="py-4 {% if not loop.first %}border-t border-trait{% endif %} space-y-3">
         <select name="ingredient_id" data-ingredient-select class="select w-full min-w-0 text-base">
+          <option value="" selected disabled>Choisir un ingrédient</option>
           {% for row in rows %}
           <option value="{{ row.ingredient.id }}"
-                  data-last-price="{{ row.last_price | decimal_fr }}"
+                  data-last-price="{{ row.last_price | decimal_fr(2) }}"
                   data-unit="{{ row.ingredient.unit.value }}"
                   data-price-unit="{{ row.display_unit }}">{{ row.ingredient.name }} ({{ row.ingredient.unit.value }})</option>
           {% endfor %}
         </select>
         <div class="champ">
           <input type="text" inputmode="decimal" name="quantity" placeholder="0" />
-          <span class="unite" data-unit-label>{{ rows[0].ingredient.unit.value if rows else '' }}</span>
+          <span class="unite" data-unit-label></span>
         </div>
         <div class="champ">
-          <input type="text" inputmode="decimal" name="unit_price" placeholder="0"
-                 value="{{ (rows[0].last_price if rows else '') | decimal_fr }}" />
-          <span class="unite" data-price-unit-label>€/{{ rows[0].display_unit if rows else '' }}</span>
+          <input type="text" inputmode="decimal" name="unit_price" placeholder="0" />
+          <span class="unite" data-price-unit-label></span>
         </div>
       </div>
       {% endfor %}

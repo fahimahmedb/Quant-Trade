@@ -4,6 +4,8 @@ Couvre AC-F1-1 à AC-F1-5 et TC-F1-01 à TC-F1-07 (Specs V2, section 3).
 Les prix sont saisis en unité d'achat (€/kg) et stockés par unité de
 référence (€/g) : les tests vérifient les deux bouts de la conversion.
 """
+import re
+
 import pytest
 
 from app import models
@@ -256,7 +258,7 @@ def test_ac_f1_1_three_line_delivery_submits_from_a_single_screen(seeded_client)
 
     form = client.get("/deliveries/new").text
     assert form.count('name="ingredient_id"') >= 3  # 3 lignes saisissables d'emblée
-    assert 'data-last-price="1,2"' in form          # prix pré-rempli en €/kg (Farine), virgule française
+    assert 'data-last-price="1,20"' in form          # prix pré-rempli en €/kg (Farine), 2 décimales min.
 
     r = _delivery_form(client, sessions, received_on="2026-09-01", rows=[
         ("Farine", "25000", "1,40"), ("Tomate", "5000", "3,20"), ("Mozzarella", "2000", "9,00"),
@@ -267,6 +269,18 @@ def test_ac_f1_1_three_line_delivery_submits_from_a_single_screen(seeded_client)
         assert farine.current_theoretical_stock == 20000 + 25000
         assert farine.unit_cost == pytest.approx(0.0014)
         assert db.query(models.DeliveryReceipt).one().supplier == "Metro"
+
+
+def test_no_ingredient_is_preselected_on_any_of_the_three_delivery_rows(seeded_client):
+    """Sans `selected` sur aucune option, le navigateur retient la première
+    par ordre alphabétique (Farine) sur les 3 lignes pré-remplies — une
+    livraison où l'on oublie de changer le menu déroulant des lignes 2/3
+    créditerait Farine trois fois au lieu des 3 ingrédients voulus. Le
+    placeholder désactivé force un choix explicite sur chaque ligne."""
+    page = seeded_client.client.get("/deliveries/new").text
+    assert page.count('<option value="" selected disabled>Choisir un ingrédient</option>') >= 3
+    # aucune autre option (un ingrédient réel) ne doit être présélectionnée
+    assert re.search(r'<option value="\d+"[^>]*\bselected\b', page) is None
 
 
 # TC-F1-02 ----------------------------------------------------------------
@@ -335,3 +349,89 @@ def test_delivery_photo_rejects_non_image(seeded_client):
     assert "JPEG, PNG ou WebP" in r.text
     with sessions() as db:
         assert db.query(models.DeliveryReceipt).count() == 0
+
+
+# ==========================================================================
+# Date de réception — lecture non ambiguë en vrai navigateur (le bug ne
+# porte que sur ce que le navigateur AFFICHE dans <input type="date">, pas
+# sur la valeur ISO envoyée au serveur : seul un vrai Chromium peut le
+# prouver). Ignoré proprement si Playwright n'est pas installé.
+# ==========================================================================
+def test_delivery_date_is_confirmed_in_unambiguous_french_regardless_of_browser_locale():
+    """`<input type=\"date\">` affiche son texte selon la locale du
+    NAVIGATEUR, jamais selon le `lang=\"fr\"` de la page (Chromium l'ignore
+    totalement) : sur un navigateur non réglé en fr-FR, 2026-09-05 s'affiche
+    09/05/2026 et se lit mm/jj — 5 septembre lu comme 9 mai, sur une saisie
+    qui crédite du stock. On force explicitement la locale du navigateur à
+    l'anglais américain (`en-US`) pour reproduire ce cas précis, et on
+    vérifie que la confirmation à côté du champ (JS, indépendante de cette
+    locale) affiche bien « septembre » — jamais un simple « 05 » qui resterait
+    ambigu entre mois et jour."""
+    sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
+    import os
+    import socket
+    import subprocess
+    import sys
+    import tempfile
+    import time
+    from pathlib import Path
+
+    import httpx
+
+    base_dir = Path(__file__).resolve().parent.parent
+    email, password = "chef@bistrot.fr", "motdepasse123"
+
+    def free_port():
+        with socket.socket() as s:
+            s.bind(("127.0.0.1", 0))
+            return s.getsockname()[1]
+
+    db_dir = tempfile.mkdtemp()
+    env = {**os.environ, "RESTAURANT_STOCK_DATABASE_URL": f"sqlite:///{db_dir}/date.db"}
+    port = free_port()
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", str(port)],
+        cwd=base_dir, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    base = f"http://127.0.0.1:{port}"
+    try:
+        for _ in range(50):
+            try:
+                if httpx.get(base + "/healthz", timeout=1).status_code == 200:
+                    break
+            except Exception:
+                time.sleep(0.2)
+        else:
+            raise RuntimeError("serveur de test non démarré")
+
+        with httpx.Client(base_url=base, follow_redirects=True) as c:
+            c.post("/setup", data={"email": email, "password": password, "restaurant_name": "Test"})
+
+        with sync_playwright() as p:
+            try:
+                # locale explicitement anglo-saxonne : le cas qui déclenche
+                # le bug (mm/jj), à l'opposé du jj/mm attendu partout ailleurs.
+                browser = p.chromium.launch()
+            except Exception:
+                fallback = Path("/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+                if not fallback.exists():
+                    raise
+                browser = p.chromium.launch(executable_path=str(fallback))
+            page = browser.new_page(locale="en-US")
+            page.goto(base + "/login")
+            page.fill('input[name="email"]', email)
+            page.fill('input[name="password"]', password)
+            page.click('button[type="submit"]')
+            page.wait_for_load_state("networkidle")
+
+            page.goto(base + "/deliveries/new")
+            page.fill('input[type="date"]#received_on', "2026-09-05")
+            texte = page.locator("[data-date-lisible]").inner_text()
+            assert "septembre" in texte, f"mois en toutes lettres attendu, obtenu : {texte!r}"
+            assert "2026" in texte
+            # jamais un « 05 » nu : lisible mois=9 ou jour=9 selon qui le lit.
+            assert "05" not in texte
+
+            browser.close()
+    finally:
+        proc.kill()
