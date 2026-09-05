@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.claude/worktrees/
 
 restaurant-stock/data/*.db
 restaurant-stock/data/backups/
