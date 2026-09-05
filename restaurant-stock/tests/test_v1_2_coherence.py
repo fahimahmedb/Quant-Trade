@@ -354,3 +354,80 @@ def test_choosing_a_file_replaces_the_native_english_placeholder_text():
             browser.close()
     finally:
         proc.kill()
+
+
+# ==========================================================================
+# AC-U6-1 sur l'accueil — app/templates/dashboard.html a sa propre boucle
+# « Derniers écarts », distincte de partials/variance_table.html : le
+# principe (un conforme n'occupe pas une ligne pleine) n'y avait pas été
+# appliqué. `top_variances = report[:5]` prenait les cinq premières lignes
+# du rapport trié par |écart| décroissant, ce qui comble la liste avec des
+# lignes à 0,00 € dès qu'il y a moins de cinq écarts réels — alors que le
+# héros au-dessus annonce déjà « X/Y conformes » en grand.
+# ==========================================================================
+from app.services import counting as _counting
+
+
+def _complete_a_session_with_two_variances(sessions):
+    """Deux écarts réels (Farine, Mozzarella), sept lignes conformes : moins
+    de cinq vrais écarts, exactement le cas où l'ancienne version comblait
+    « Derniers écarts » avec des lignes conformes."""
+    with sessions() as db:
+        session = _counting.start_count_session(db, counted_by="Test")
+        lines_by_name = {line.ingredient.name: line for line in session.lines}
+
+        farine = lines_by_name["Farine"]
+        _counting.confirm_count_line(
+            db, farine.id, counted_quantity=farine.theoretical_quantity - 500
+        )
+        mozzarella = lines_by_name["Mozzarella"]
+        _counting.confirm_count_line(
+            db, mozzarella.id, counted_quantity=mozzarella.theoretical_quantity + 200
+        )
+        for name, line in lines_by_name.items():
+            if name not in ("Farine", "Mozzarella"):
+                _counting.confirm_count_line(
+                    db, line.id, counted_quantity=line.theoretical_quantity
+                )
+        _counting.complete_count_session(db, session.id)
+
+
+def test_dashboard_derniers_ecarts_does_not_pad_with_conform_lines(seeded_client):
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    _complete_a_session_with_two_variances(sessions)
+
+    page = client.get("/").text
+    derniers_ecarts = page.split("Derniers écarts", 1)[1]
+
+    assert "Farine" in derniers_ecarts, "un vrai écart doit rester dans la liste"
+    assert "Mozzarella" in derniers_ecarts, "un vrai écart doit rester dans la liste"
+    for conforme in (
+        "Steak haché", "Pain burger", "Salade", "Tomate",
+        "Frites surgelées", "Sauce tomate", "Vin rouge",
+    ):
+        assert conforme not in derniers_ecarts, (
+            f"{conforme} est conforme, il ne doit pas combler « Derniers écarts »"
+        )
+
+
+def test_dashboard_all_conform_session_shows_dedicated_message(seeded_client):
+    """Session terminée, tout conforme : top_variances est vide, mais des
+    lignes ONT été comptées — le message ne doit pas affirmer le contraire.
+    Même phrasé que partials/variance_table.html pour le même cas."""
+    client, sessions = seeded_client.client, seeded_client.session_factory
+    with sessions() as db:
+        session = _counting.start_count_session(db, counted_by="Test")
+        for line in session.lines:
+            _counting.confirm_count_line(
+                db, line.id, counted_quantity=line.theoretical_quantity
+            )
+        _counting.complete_count_session(db, session.id)
+
+    page = client.get("/").text
+    assert "Tous les ingrédients comptés sont conformes" in page, (
+        "le cas « tout conforme » doit avoir son propre message, pas celui "
+        "de « rien compté »"
+    )
+    assert "Aucune ligne comptée dans cette session." not in page, (
+        "des lignes ont bien été comptées : ce message serait faux ici"
+    )

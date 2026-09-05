@@ -148,7 +148,16 @@
       </div>
     </div>
     {% else %}
+      {# AC-U6-1 : top_variances peut être vide pour deux raisons distinctes —
+         aucune ligne comptée du tout, ou bien des lignes comptées mais toutes
+         conformes (filtrées par le routeur). La confondre affirmerait « rien
+         compté » alors qu'un comptage complet, sans écart, vient d'avoir
+         lieu. Phrasé aligné sur partials/variance_table.html (même cas). #}
+      {% if counted_lines == 0 %}
     <p class="secondaire py-4">Aucune ligne comptée dans cette session.</p>
+      {% else %}
+    <p class="secondaire py-4">Tous les ingrédients comptés sont conformes — aucun écart à régulariser.</p>
+      {% endif %}
     {% endfor %}
   </div>
   {% endif %}
@@ -159,6 +168,6 @@
    pas une information à consulter en priorité.
    -------------------------------------------------------------------- #}
 <p class="section-contexte pt-8 pb-4">
-  {{ dish_count }} plat{{ 's' if dish_count > 1 }}, {{ ingredient_count }} ingrédient{{ 's' if ingredient_count > 1 }}
+  {{ dish_count }} plat{{ dish_count | pluriel }}, {{ ingredient_count }} ingrédient{{ ingredient_count | pluriel }}
 </p>
 {% endblock %}

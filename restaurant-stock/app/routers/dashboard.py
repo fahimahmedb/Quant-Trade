@@ -33,7 +33,12 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
         # perte : c'est le nombre de lignes conformes qui y figure en grand.
         counted_lines = len(report)
         conform_lines = counted_lines - variance_count
-        top_variances = report[:5]
+        # AC-U6-1 : un ingrédient conforme n'a rien à montrer qu'un vrai écart —
+        # il ne doit pas venir combler la liste quand il y a moins de cinq
+        # écarts réels (déjà traité pour /variance et le récap de comptage via
+        # variance_table.html ; l'accueil a sa propre boucle, donc son propre
+        # filtre).
+        top_variances = [line for line in report if (line.variance_value or 0) != 0][:5]
 
     pending_suggestions = (
         db.query(models.OrderSuggestionLine)
