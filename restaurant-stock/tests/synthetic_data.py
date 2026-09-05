@@ -530,23 +530,30 @@ def build_syn_h(db: Session, seed: int = 8, weeks: int = 8) -> SynH:
     """docs/IA scope.md §1.9. Food cost théorique = coût recette / prix de
     vente = pile 30,0% par construction (300 g à 0,01 €/g = 3,00 € sur un
     plat à 10,00 €). Food cost réel dérivé pour tomber pile à 32,5% :
-    réception dimensionnée à rebours de (revenu réel × 32,5% + stock de
-    clôture visé), plutôt qu'une perte approximative injectée au hasard —
-    l'écart de 2,5 points doit être exact à ±0,1 point (critère du document),
-    pas juste plausible.
+    réception dimensionnée à rebours de (stock d'ouverture + réception −
+    stock de clôture visé = 32,5% du revenu réel), plutôt qu'une perte
+    approximative injectée au hasard — l'écart de 2,5 points doit être
+    exact à ±0,1 point (critère du document), pas juste plausible.
+
+    Stock d'ouverture ET de clôture délibérément non triviaux (20 000 g et
+    50 000 g, pas 0) : un stock d'ouverture nul rendrait ce terme de la
+    formule impossible à distinguer d'un bug qui l'omettrait purement et
+    simplement — un test qui ne peut pas détecter une régression ne prouve
+    rien (cf. discipline de non-vacuité, CLAUDE.md).
     """
     rng = random.Random(seed)
     unit_cost = 0.01
     grammage = 300.0
     prix_vente = 10.00
     target_real_pct = 32.5
-    closing_qty = 500.0  # tampon arbitraire, juste pour ne pas finir à 0 pile
+    opening_qty = 20_000.0
+    closing_qty = 50_000.0
 
     ing = ingredient(db, "Ingrédient SYN-H", unit_cost=unit_cost, stock_qty=0.0)
     plat = dish(db, "Plat SYN-H", {ing.id: grammage})
 
     start = datetime(2026, 7, 6)
-    opening = run_count_session(db, counted_by="SYN-H ouverture", counted={ing.id: 0.0}, ended_at=start)
+    opening = run_count_session(db, counted_by="SYN-H ouverture", counted={ing.id: opening_qty}, ended_at=start)
 
     total_qty_sold = 0.0
     rows = []
@@ -557,9 +564,11 @@ def build_syn_h(db: Session, seed: int = 8, weeks: int = 8) -> SynH:
         rows.append((date, plat.name, qty, prix_vente))
 
     revenue = total_qty_sold * prix_vente
+    opening_value = opening_qty * unit_cost
     closing_value = closing_qty * unit_cost
     real_cost_value = revenue * target_real_pct / 100.0
-    receipt_qty = (real_cost_value + closing_value) / unit_cost  # opening = 0
+    # real_cost = opening_value + receipt_value - closing_value == real_cost_value
+    receipt_qty = (real_cost_value - opening_value + closing_value) / unit_cost
 
     # Réception AVANT les ventes : le stock ne transite jamais par du négatif
     # pendant la construction (sans conséquence sur le calcul F9, qui ne lit
