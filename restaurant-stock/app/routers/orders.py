@@ -47,6 +47,14 @@ def batch_detail(batch_id: int, request: Request, db: Session = Depends(get_db))
         .limit(10)
         .all()
     )
+    # Une ligne en attente reflète le stock du moment de la GÉNÉRATION du
+    # lot, pas forcément le stock actuel : un comptage recale le stock
+    # théorique sans jamais toucher les lignes déjà générées (section 3.4).
+    # On la resynchronise donc à chaque affichage, avant que quelqu'un ne
+    # valide une quantité calculée sur un chiffre devenu faux.
+    for line in batch.lines:
+        ordering.refresh_pending_line(db, line)
+
     lines = sorted(batch.lines, key=lambda line: line.ingredient.name)
     return templates.TemplateResponse(request,
         "orders/detail.html",
