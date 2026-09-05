@@ -113,7 +113,7 @@ def _input_number(value) -> str:
     return str(int(number)) if number.is_integer() else f"{number:.2f}".rstrip("0").rstrip(".")
 
 
-def _decimal_fr(value) -> str:
+def _decimal_fr(value, min_decimals: int = 0) -> str:
     """Valeur d'un champ décimal éditable en `<input type="text" inputmode="decimal">`.
 
     Contrairement à `qty` (affichage, arrondi à 2 décimales pour la lecture),
@@ -121,6 +121,11 @@ def _decimal_fr(value) -> str:
     doit pas se retrouver arrondi à 0,00 € en rouvrant le formulaire. Comme
     ce n'est plus un `<input type="number">`, rien n'impose le point : la
     virgule française s'affiche pour de vrai, pas seulement en théorie.
+
+    `min_decimals` complète avec des zéros sans jamais couper une précision
+    réelle : un prix veut au moins 2 décimales (1,20 €, pas 1,2 €, pour
+    lire la même chose que le prix affiché ailleurs dans l'app), mais
+    0,0025 € doit garder ses 4 décimales, pas se faire tronquer à 0,00.
 
     Une chaîne est laissée telle quelle plutôt que reconvertie : un
     formulaire ré-affiché après une erreur de validation passe la saisie
@@ -135,7 +140,30 @@ def _decimal_fr(value) -> str:
         return value
     number = float(value)
     texte = f"{number:.10f}".rstrip("0").rstrip(".")
+    if "." in texte:
+        decimales = len(texte.split(".", 1)[1])
+    else:
+        decimales = 0
+    if decimales < min_decimals:
+        texte = f"{number:.{min_decimals}f}"
     return (texte or "0").replace(".", ",")
+
+
+def _qty_lisible(value, unit) -> str:
+    """Quantité et unité ensemble, dans la plus lisible des deux.
+
+    Le gramme (ou le millilitre) est naturel sous 1000 — personne ne dit
+    « 0,05 kg de beurre » — mais « 12 672 g » se lit moins vite que
+    « 12,7 kg », le seuil où un cuisinier bascule mentalement d'unité.
+    Réutilise la même table que le prix (`pricing`), pour ne jamais
+    diverger sur ce qui compte comme une « grande » unité.
+    """
+    if value is None:
+        return "—"
+    facteur = pricing.factor(unit)
+    if facteur != 1.0 and abs(value) >= facteur:
+        return f"{_qty(value / facteur)} {pricing.display_unit(unit)}"
+    return f"{_qty(value)} {getattr(unit, 'value', unit)}"
 
 
 def pluriel(n) -> str:
@@ -154,6 +182,7 @@ def pluriel(n) -> str:
 templates.env.filters["euros"] = _euros
 templates.env.filters["input_number"] = _input_number
 templates.env.filters["decimal_fr"] = _decimal_fr
+templates.env.filters["qty_lisible"] = _qty_lisible
 templates.env.filters["pluriel"] = pluriel
 templates.env.filters["qty"] = _qty
 templates.env.filters["pct"] = _pct
