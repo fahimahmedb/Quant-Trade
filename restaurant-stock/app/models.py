@@ -116,6 +116,17 @@ class Ingredient(Base):
         DateTime, default=utcnow, onupdate=utcnow
     )
 
+    # F7 (Lot IA-0, docs/IA scope.md §1.8) : champs optionnels, zéro saisie
+    # obligatoire — un ingrédient sans ces champs garde le comportement v1
+    # (app/services/ordering.py) sans dégradation. `delivery_weekdays`
+    # stocke les jours de livraison sous forme d'entiers date.weekday()
+    # (0=lundi..6=dimanche) séparés par des virgules, ex. "1,4" (mar/ven) :
+    # pas de table Fournisseur en v1, le champ existe déjà en texte libre
+    # sur DeliveryReceipt, une normalisation viendrait avec F16.
+    shelf_life_days: Mapped[float | None] = mapped_column(Float, nullable=True)
+    delivery_weekdays: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    pack_size: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="ingredient", cascade="all, delete-orphan"
     )
