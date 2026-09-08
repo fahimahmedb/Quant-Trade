@@ -27,6 +27,7 @@ au-delà de 3× la médiane du jour concerné sont écartées comme aberrations
 pondérée du document s'applique aux occurrences restantes. Les dates
 écartées sont rapportées (`excluded_outliers`) plutôt que supprimées en
 silence : IA-03 exige que toute sortie soit explicable avec ses chiffres.
+Cette résolution est validée par le porteur du projet (docs/bilan-ia-0.md §3).
 """
 import statistics
 from dataclasses import dataclass, field

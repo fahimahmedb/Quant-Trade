@@ -146,6 +146,21 @@ def test_syn_d_below_threshold_ingredient_has_only_two_sessions(db_session):
     assert len(result.below_threshold_sessions) == 2, "sous le seuil de 3 comptages exigé par F5"
 
 
+def test_syn_d1_median_is_computed_from_four_distinct_values(db_session):
+    """SYN-D1 doit avoir une médiane non triviale (pas 4 valeurs identiques,
+    qui rendraient le test de frontière équivalent à un simple multiple
+    constant) et le dernier écart doit correspondre exactement à ratio x
+    médiane, sans quoi la frontière testée dans test_ai_drift.py ne serait
+    pas celle qu'on croit."""
+    result = syn.build_syn_d1(db_session, ratio=3.1)
+    assert len(set(result.historical_variances_g)) == 4, "les 4 écarts historiques doivent être distincts"
+    assert result.median_g == 62.5
+
+    derniere_session = result.sessions[-1]
+    ligne = next(l for l in derniere_session.lines if l.ingredient_id == result.ingredient.id)
+    assert abs(ligne.variance - result.median_g * 3.1) < 0.001
+
+
 def test_syn_e_is_under_both_gates(db_session):
     result = syn.build_syn_e(db_session)
     assert len(result.count_sessions) == 3, "sous le seuil de 4 comptages de F5"

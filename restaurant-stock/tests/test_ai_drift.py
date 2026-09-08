@@ -100,14 +100,52 @@ def test_syn_d_recurrent_ingredient_gets_the_recurring_badge_with_exact_cumulati
     assert abs(badge.cumulative_value - attendu) < 0.001, "le cumul en euros doit être exact au centime"
 
 
-def test_syn_d_anomaly_ingredient_gets_unusual_not_recurring(db_session):
-    result = syn.build_syn_d(db_session)
+def test_syn_d2_above_the_absolute_threshold_gets_unusual_not_recurring(db_session):
+    """SYN-D2 (médiane historique nulle) : écart injecté juste au-dessus du
+    seuil absolu réutilisé (`Settings.loss_alert_eur`) -> badge "inhabituel",
+    jamais "récurrent" (avancement-lot-ia-0, décision actée — remplace
+    l'ancien seuil de 50% du stock, qui ne raisonnait pas en euros)."""
+    result = syn.build_syn_d(db_session, anomaly_above_threshold=True)
     _enable_f5(db_session)
 
     badge = ai_drift.classify_losses(db_session, result.ingredient_anomaly.id)
 
     assert badge is not None
     assert badge.kind == "inhabituel", f"attendu inhabituel, obtenu {badge.kind!r}"
+
+
+def test_syn_d2_below_the_absolute_threshold_gets_no_badge(db_session):
+    """SYN-D2, frontière basse : le même écart isolé, injecté juste EN
+    DESSOUS du seuil absolu, ne doit déclencher aucun badge."""
+    result = syn.build_syn_d(db_session, anomaly_above_threshold=False)
+    _enable_f5(db_session)
+
+    badge = ai_drift.classify_losses(db_session, result.ingredient_anomaly.id)
+
+    assert badge is None
+
+
+def test_syn_d1_at_3_1x_median_triggers_the_badge(db_session):
+    """SYN-D1 (médiane historique non nulle) : la frontière exacte de la
+    règle nominale (ANOMALY_RATIO = 3.0). Juste au-dessus -> badge."""
+    result = syn.build_syn_d1(db_session, ratio=3.1)
+    _enable_f5(db_session)
+
+    badge = ai_drift.classify_losses(db_session, result.ingredient.id)
+
+    assert badge is not None and badge.kind == "inhabituel"
+
+
+def test_syn_d1_at_2_9x_median_gives_no_badge(db_session):
+    """Même jeu, juste EN DESSOUS de la frontière -> aucun badge. Sans ce
+    contre-exemple, le test précédent ne prouverait que l'existence d'un
+    seuil, pas sa valeur."""
+    result = syn.build_syn_d1(db_session, ratio=2.9)
+    _enable_f5(db_session)
+
+    badge = ai_drift.classify_losses(db_session, result.ingredient.id)
+
+    assert badge is None
 
 
 def test_syn_d_below_threshold_ingredient_gets_no_badge(db_session):

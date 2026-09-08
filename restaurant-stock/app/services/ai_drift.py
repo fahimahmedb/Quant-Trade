@@ -39,10 +39,14 @@ DRIFT_SHARE_THRESHOLD = 0.5
 DRIFT_CORRELATION_THRESHOLD = 0.8
 RECURRING_MIN_STREAK = 3  # specs-v2 §4 F5 : « sur 3 comptages consécutifs »
 ANOMALY_RATIO = 3.0  # specs-v2 §4 F5 : « supérieur à 3 fois la MÉDIANE des écarts historiques »
-# Garde-fou hors spec, pour le cas dégénéré où la médiane historique est nulle
-# (tous les comptages précédents conformes) : « 3 x 0 » ferait alerter sur le
-# moindre gramme de bruit. Cf. SYN-D, scénario anomalie.
-ANOMALY_MIN_PCT = 15.0
+# Cas dégénéré formalisé (avancement-lot-ia-0, décision actée, pas un
+# garde-fou ad hoc) : quand la médiane historique valorisée de l'ingrédient
+# est nulle (tous les comptages précédents conformes), « 3 x 0 » n'a pas de
+# sens — le seuil bascule sur `Settings.loss_alert_eur`, la MÊME variable
+# réglable que la perte récurrente (pas une constante séparée à maintenir),
+# raisonnant en euros comme le reste du système d'écarts plutôt qu'en
+# pourcentage de stock, qui n'a pas de sens comparable d'un ingrédient à
+# l'autre. Cf. SYN-D1 (médiane non nulle) / SYN-D2 (médiane nulle).
 
 
 @dataclass
@@ -356,12 +360,13 @@ def classify_losses(db: Session, ingredient_id: int) -> LossBadge | None:
                 f"{mediane:g}, soit {last.variance / mediane:.1f} fois la normale"
             )
         else:
-            # Tous les comptages précédents conformes : « 3 × 0 » n'a pas de
-            # sens, on retombe sur un seuil relatif (cf. SYN-D).
-            is_anomaly = last.pct_of_consumption >= ANOMALY_MIN_PCT
+            # Médiane nulle : seuil absolu réutilisant loss_alert_eur (cf.
+            # constante ANOMALY_RATIO ci-dessus pour la justification).
+            seuil_eur = settings_service.get_settings(db).loss_alert_eur
+            is_anomaly = last.value >= seuil_eur
             pourquoi = (
-                f"écart de {last.pct_of_consumption:.0f} % de la consommation de la période, "
-                f"alors qu'aucun écart n'avait été constaté auparavant"
+                f"écart de {last.value:.2f} € constaté, alors qu'aucun écart "
+                f"n'avait été relevé auparavant (seuil : {seuil_eur:.2f} €)"
             )
         if is_anomaly:
             return LossBadge(

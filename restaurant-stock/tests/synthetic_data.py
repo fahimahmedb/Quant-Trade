@@ -30,13 +30,14 @@ from __future__ import annotations
 import csv
 import io
 import random
+import statistics
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
 
 from app import models
-from app.services import counting, deliveries, recipes, sales_import
+from app.services import counting, deliveries, recipes, sales_import, settings_service
 
 
 # ==========================================================================
@@ -304,25 +305,30 @@ class SynD:
     below_threshold_sessions: list[models.CountSession]
 
 
-def build_syn_d(db: Session, seed: int = 4) -> SynD:
-    """docs/feature-plans/ia-f5-f9.md §1.5. Trois ingrédients indépendants (un plat
-    chacun, la dérive de grammage n'est pas ce que ce jeu teste — seule la
-    SUITE des écarts au fil des comptages compte) :
+def build_syn_d(db: Session, seed: int = 4, anomaly_above_threshold: bool = True) -> SynD:
+    """SYN-D2 dans avancement-lot-ia-0 (décision actée) pour le scénario
+    "anomalie" ; SYN-D1 est un jeu séparé, voir `build_syn_d1` ci-dessous.
+    Trois ingrédients indépendants (un plat chacun, la dérive de grammage
+    n'est pas ce que ce jeu teste — seule la SUITE des écarts au fil des
+    comptages compte) :
     - récurrent : 8% d'écart sur 5 comptages consécutifs -> badge attendu
       « perte récurrente », cumul en € exact.
-    - anomalie : 4 comptages conformes puis un écart isolé massif -> badge
-      attendu « inhabituel », jamais « récurrent ». Note : « 10x la médiane »
-      (le texte du document) n'a pas de médiane non nulle à calculer ici
-      (les 4 comptages précédents sont à 0% par construction) — interprété
-      comme « un ordre de grandeur sans ambiguïté au-dessus d'un écart
-      normal », matérialisé par une perte à 50% du stock plutôt qu'une
-      dérive de quelques %.
+    - anomalie (SYN-D2, médiane historique nulle) : 4 comptages conformes
+      puis un écart isolé injecté juste au-dessus (`anomaly_above_threshold=True`,
+      badge attendu) ou juste en dessous (`False`, aucun badge) du seuil
+      absolu `Settings.loss_alert_eur` — c'est la règle formalisée pour le
+      cas dégénéré où « 3x la médiane » n'a pas de sens (médiane nulle),
+      qui réutilise la même variable réglable que la perte récurrente
+      plutôt qu'un pourcentage de stock arbitraire.
     - sous-seuil : 8% d'écart mais seulement 2 comptages -> aucun badge
       (le seuil de 3 comptages n'est pas atteint).
     """
     rng = random.Random(seed)
     pct = 0.08
     base = datetime(2026, 4, 1)
+    # Le seuil réglable doit exister avant qu'on le lise : `get_settings`
+    # crée la ligne Settings avec ses valeurs par défaut si elle est absente.
+    seuil_eur = settings_service.get_settings(db).loss_alert_eur
 
     ing1 = ingredient(db, "Ingrédient SYN-D récurrent", unit_cost=0.02, stock_qty=100_000.0)
     plat1 = dish(db, "Plat SYN-D récurrent", {ing1.id: 100.0})
@@ -355,7 +361,12 @@ def build_syn_d(db: Session, seed: int = 4) -> SynD:
         ))
     d = base + timedelta(days=4 * 7)
     import_sales_rows(db, [(d, plat2.name, 20.0, None)], filename="syn_d2_4.csv")
-    anomalie = ing2.current_theoretical_stock * 0.5
+    # Marge large (2 €) pour rester du bon côté du seuil quel que soit
+    # l'arrondi de `unit_cost` — ce test vérifie un côté de la frontière,
+    # pas sa valeur exacte au centime.
+    marge_eur = 2.0
+    valeur_visee = seuil_eur + marge_eur if anomaly_above_threshold else seuil_eur - marge_eur
+    anomalie = valeur_visee / ing2.unit_cost
     sessions2.append(run_count_session(
         db, counted_by="SYN-D",
         counted={ing2.id: ing2.current_theoretical_stock - anomalie},
@@ -383,6 +394,63 @@ def build_syn_d(db: Session, seed: int = 4) -> SynD:
         recurrent_sessions=sessions1, anomaly_sessions=sessions2,
         below_threshold_sessions=sessions3,
     )
+
+
+# ==========================================================================
+# SYN-D1 — Anomalie ponctuelle, régime « médiane non nulle » (cible : F5)
+# ==========================================================================
+
+@dataclass
+class SynD1:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    historical_variances_g: list[float]
+    median_g: float
+    sessions: list[models.CountSession]
+
+
+def build_syn_d1(db: Session, seed: int = 41, ratio: float = 3.1) -> SynD1:
+    """avancement-lot-ia-0 (décision actée) : régime « médiane non nulle »
+    du badge « inhabituel », complément de SYN-D2 (`build_syn_d`, médiane
+    nulle). 4 écarts historiques VARIABLES (pas une valeur répétée : sinon
+    la médiane serait triviale et ne distinguerait rien) donnent une
+    médiane non nulle connue, puis un 5ᵉ écart est injecté à exactement
+    `ratio` fois cette médiane — la frontière exacte de la règle nominale
+    (ANOMALY_RATIO = 3.0, specs-v2 §4) : 3,1 doit déclencher le badge,
+    2,9 ne doit pas le déclencher.
+
+    Les 4 écarts historiques restent sous les deux seuils de significativité
+    (`loss_alert_pct`/`loss_alert_eur`, par construction : 4,25 % de la
+    consommation de la période au maximum, moins de 2 € chacun) pour
+    qu'aucun ne puisse former une série "récurrente" avec le 5ᵉ — seule la
+    comparaison à la médiane doit décider du badge, pas un effet de bord
+    du seuil de récurrence.
+    """
+    ing = ingredient(db, f"Ingrédient SYN-D1 x{ratio:g}".replace(".", ","), unit_cost=0.02, stock_qty=100_000.0)
+    plat = dish(db, f"Plat SYN-D1 x{ratio:g}".replace(".", ","), {ing.id: 100.0})
+    base = datetime(2026, 5, 4)
+    historical_g = [40.0, 55.0, 70.0, 85.0]  # < 5% de 2000 g de conso/période, < 10 € : jamais significatifs
+    sessions = []
+    for i, perte in enumerate(historical_g):
+        d = base + timedelta(days=i * 7)
+        import_sales_rows(db, [(d, plat.name, 20.0, None)], filename=f"syn_d1_hist_{i}.csv")
+        sessions.append(run_count_session(
+            db, counted_by="SYN-D1",
+            counted={ing.id: ing.current_theoretical_stock - perte},
+            ended_at=d + timedelta(hours=2),
+        ))
+
+    mediane = statistics.median(historical_g)
+    d = base + timedelta(days=len(historical_g) * 7)
+    import_sales_rows(db, [(d, plat.name, 20.0, None)], filename="syn_d1_final.csv")
+    perte_finale = mediane * ratio
+    sessions.append(run_count_session(
+        db, counted_by="SYN-D1",
+        counted={ing.id: ing.current_theoretical_stock - perte_finale},
+        ended_at=d + timedelta(hours=2),
+    ))
+
+    return SynD1(ingredient=ing, dish=plat, historical_variances_g=historical_g, median_g=mediane, sessions=sessions)
 
 
 # ==========================================================================

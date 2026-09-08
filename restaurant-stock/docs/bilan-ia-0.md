@@ -127,17 +127,19 @@ Ces lignes sont le reste à faire de V2.0, pas une dette de ce lot.
   paramètres : les neuf jeux sont trop hétérogènes (saisonnalité, dérive de
   grammage, cycle de livraison, food cost) pour une signature unique
   lisible. Documenté en tête de `tests/synthetic_data.py`.
-- **SYN-D, badge « inhabituel » — cas dégénéré, toujours ouvert.**
+- **SYN-D, badge « inhabituel » — cas dégénéré, formalisé.**
   `docs/feature-plans/ia-f5-f9.md` disait « un écart de 10x la médiane », les specs V2
-  disent 3× la médiane : c'est 3× qui est appliqué désormais. Mais le
-  scénario SYN-D reste dégénéré des deux côtés — ses 4 comptages
-  précédents sont conformes par construction, donc la médiane historique
-  est nulle et « n × zéro » ne veut rien dire quel que soit n. Un
-  garde-fou relatif (15 % de la consommation de la période) prend le
-  relais dans ce seul cas, faute de quoi le badge se déclencherait sur le
-  moindre gramme de bruit. Ce garde-fou n'est dans aucun des deux
-  documents : c'est le point à trancher au pilote, où la médiane
-  historique sera rarement nulle.
+  disent 3× la médiane : c'est 3× qui est appliqué. Le scénario d'origine
+  restait dégénéré (4 comptages conformes par construction, médiane
+  historique nulle, « n × zéro » ne veut rien dire) — **décision actée par
+  le porteur du projet** : quand la médiane est nulle, le seuil bascule sur
+  `Settings.loss_alert_eur`, la même variable réglable que la perte
+  récurrente, plutôt qu'un pourcentage de stock arbitraire qui n'a pas de
+  sens comparable d'un ingrédient à l'autre. Le jeu synthétique couvre
+  désormais les deux régimes explicitement : SYN-D1 (médiane non nulle,
+  frontière testée à 3,1×/2,9× exactement) et SYN-D2 (médiane nulle,
+  frontière testée juste au-dessus/en dessous du seuil absolu) —
+  `tests/synthetic_data.py` (`build_syn_d`, `build_syn_d1`).
 - **F7 — modèle de données étendu sans spec préexistante.** Le document
   suppose des champs « conservation »/« jours de livraison »/
   « conditionnement » sur un ingrédient sans jamais les spécifier
@@ -229,8 +231,9 @@ Ces lignes sont le reste à faire de V2.0, pas une dette de ce lot.
   (« détection comme anomalie ponctuelle » **puis** « pas d'effet ») : les
   occurrences au-delà de 3× la médiane du jour concerné sont écartées et
   **rapportées** (`excluded_outliers`, pour rester explicable au sens
-  d'IA-03), puis la moyenne pondérée du document s'applique au reste. À
-  faire confirmer : c'est une lecture, pas un arbitrage du porteur du projet.
+  d'IA-03), puis la moyenne pondérée du document s'applique au reste.
+  **Lecture validée par le porteur du projet** — cette résolution de la
+  contradiction §4/§6.3 est actée, pas seulement proposée.
 - **Le scénario nominal d'AC-F7-2 est déjà à la limite de péremption.** Une
   fois la formule complète appliquée (horizon depuis aujourd'hui, +15 % de
   sécurité), le cas « tomate, livraison mar/ven, DLC 5 j, 2 kg/j, stock
@@ -320,10 +323,11 @@ validation explicite »), le lot est livré **sans** elles :
 ## 6. Ce qui reste avant un pilote réel
 
 - `specs-v2-ia-plan-test.md` est désormais reçu et appliqué (§2) : ce point
-  du bilan précédent est clos. Reste à faire confirmer les deux lectures
-  que le document lui-même ne tranche pas — la conciliation F6/IA-08 et le
-  garde-fou du cas dégénéré de SYN-D (§3, « ce que la relecture a fait
-  apparaître »).
+  du bilan précédent est clos. Les deux lectures que le document lui-même
+  ne tranchait pas sont désormais actées par le porteur du projet — la
+  conciliation F6/IA-08 (validée telle quelle) et le garde-fou du cas
+  dégénéré de SYN-D (formalisé en seuil absolu réutilisant `loss_alert_eur`,
+  §3, « ce que la relecture a fait apparaître »).
 - Statuer sur les 3 propositions (§5), et sur ce que « non construit »
   laisse ouvert en §2 (écrans de refus/marquage/adoption/export — hors
   portée de ce lot par construction, mais nécessaires à l'activation
