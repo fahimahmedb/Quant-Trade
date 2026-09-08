@@ -1,6 +1,6 @@
 # Bilan — Lot IA-0
 
-Périmètre : `docs/IA scope.md` (« Lot IA-0 » + extension F10-F19). Sept
+Périmètre : `docs/IA scope.md` (« Lot IA-0 » + extension F10-F19). Neuf
 commits sur `claude/restaurant-stock-management-mvp-6oq43e` :
 
 | Commit | Contenu |
@@ -12,11 +12,14 @@ commits sur `claude/restaurant-stock-management-mvp-6oq43e` :
 | `d4d94ba` | F6 — prévision par jour de semaine, mode ombre |
 | `9d476d7` | F9 — food cost théorique vs réel |
 | `7cc7e9a` | F7 — cycle de commande conscient de la livraison |
+| `90504b2`/`3cc5035` | Bilan de sortie, licences ROB vérifiées |
+| *(à suivre)* | ROB — suite de robustesse sur données externes réelles |
 
-Suite de tests : **220 → 262**, toujours au vert à chaque commit. Chaque
-fonctionnalité prouvée sur ses jeux SYN avant d'être committée, chaque test
-vérifié non-vacuous (logique cassée volontairement, confirmé que le test
-concerné échoue, restauré) — pas seulement « ça passe ».
+Suite de tests : **220 → 267**, toujours au vert à chaque commit. Chaque
+fonctionnalité prouvée sur ses jeux SYN (ou, pour ROB, sur données externes
+réelles) avant d'être committée, chaque test vérifié non-vacuous (logique
+cassée volontairement, confirmé que le test concerné échoue, restauré) —
+pas seulement « ça passe ».
 
 ## 1. Ce qui est prouvé sur données contrôlées, par fonctionnalité
 
@@ -65,33 +68,51 @@ concerné échoue, restauré) — pas seulement « ça passe ».
   donné. Choisi : repli silencieux sur `ordering.rolling_avg_daily_consumption`
   (la moyenne glissante v1 déjà en production), jamais une erreur — cohérent
   avec le principe « zéro saisie obligatoire » déjà appliqué ailleurs.
-- **ROB non fait — vérifié, et délibérément pas construit.** Un token API
-  Kaggle a été fourni en cours de lot, débloquant l'accès technique. Les
-  licences des deux jeux nommés par le document ont été vérifiées via
-  l'API Kaggle (`kaggle datasets metadata`), pas juste consultées en
-  survol :
+- **ROB — jeux nommés écartés (licence), construit avec un remplaçant CC0.**
+  Un token API Kaggle a été fourni en cours de lot. Les licences des deux
+  jeux nommés par le document ont été vérifiées via l'API Kaggle
+  (`kaggle datasets metadata`), pas juste consultées en survol :
   - *Transactions from a bakery* (`sulmansarwar/transactions-from-a-bakery`) :
     licence **`unknown`**.
   - *French bakery daily sales* (`matthieugimbert/french-bakery-daily-sales`) :
-    licence **`copyright-authors`** (tous droits réservés par l'auteur,
-    aucune licence de réutilisation accordée).
+    licence **`copyright-authors`** (tous droits réservés par l'auteur).
 
   Aucune des deux n'autorise clairement l'usage envisagé — la règle du
-  document lui-même (§3.3 : « si elle n'autorise pas clairement l'usage
-  envisagé, ne pas l'utiliser — la suite SYN suffit ») tranche sans
-  ambiguïté : **ROB ne doit pas être construit avec ces deux jeux.** Aucune
-  donnée n'a été téléchargée au-delà des métadonnées de licence
-  elles-mêmes (~1 Ko chacune, non commitées). Le token a servi uniquement
-  à cette vérification, stocké dans le conteneur (`~/.kaggle/access_token`,
-  hors du dépôt), jamais écrit dans un fichier suivi par git ni commité.
+  document lui-même (§3.3) tranche : ne pas les utiliser. Remplacées par
+  `akashdeepkuila/bakery` (`Bakery.csv`), licence **`CC0-1.0`** (vérifiée
+  de la même façon, et re-vérifiée à chaque exécution de la suite ROB —
+  `tests/test_rob_external_data.py` échoue bruyamment si elle change) :
+  20 507 transactions réelles d'une boulangerie, avec le même type de
+  saleté que le jeu original visait (1520 doublons exacts, lignes hors-menu
+  « Adjustment »). Deux limites documentées plutôt qu'ignorées :
+  - **Langue** : ce remplaçant est anglophone. Aucun jeu de vente
+    boulangerie/restauration sous licence claire ET de taille suffisante en
+    français n'a été trouvé après recherche (Kaggle, filtre licence CC).
+    ROB-02 vérifie l'absence de corruption d'encodage sur les caractères
+    spéciaux réellement présents (apostrophes, tirets), pas sur des accents
+    français spécifiquement.
+  - **Volume** : 20 507 lignes contre ~234 000 dans le jeu original écarté.
+    ROB-04 mesure et journalise le temps réel (~13s, ~1600 lignes/s) plutôt
+    que de simuler un volume qu'aucun jeu sous licence compatible n'offrait.
 
-  Sans ROB, SYN reste suffisant pour prouver la justesse du code
-  (tableau §0 du document) — seule la robustesse face à de la donnée réelle
-  sale n'est pas couverte, et elle ne peut pas l'être avec ces deux jeux
-  précis. D'autres jeux bakery/restaurant sous licence claire (CC0, CC BY)
-  existent sur Kaggle ; en choisir un remplaçant est une décision de
-  périmètre, pas une simple question d'accès — à trancher explicitement si
-  la robustesse sur données externes reste souhaitée.
+  Aucune donnée n'est commitée : téléchargée à chaque exécution dans un
+  répertoire temporaire pytest (`tmp_path_factory`), hors du dépôt. Le
+  token n'a été écrit que dans le conteneur (`~/.kaggle/access_token`),
+  jamais dans un fichier suivi par git. Suite optionnelle par construction
+  (`pytest.skip` propre si le CLI `kaggle` ou des identifiants sont
+  absents — confirmé : 5 tests ignorés proprement en moins de 0,1s sans
+  identifiants, aucun échec).
+
+  **ROB-03, limite assumée** : le contrôle ACTIF de doublons (avertir
+  l'utilisateur avant import) est le rôle de F15 (extension F10-F19, hors
+  périmètre de ce lot) — pas construit. Ce que ROB-03 vérifie à la place :
+  qu'aucune ligne (doublon ou hors-menu) n'est fusionnée ou perdue
+  silencieusement pendant l'import actuel — c'est déjà vrai du code
+  existant, pas une fonctionnalité ajoutée par ce lot.
+
+  Non-vacuité : une perte silencieuse de la moitié des lignes injectée
+  volontairement dans `sales_import.import_sales`, confirmé que 2 des 5
+  tests ROB échouent (ROB-01, ROB-03), restauré.
 
 ## 3. Trois propositions du document — non arbitrées, donc non construites
 
@@ -109,7 +130,7 @@ validation explicite »), le lot est livré **sans** elles :
 | Générateur écrit, SYN-A à SYN-I déterministes | Fait |
 | Tests SYN verts, non-vacuous | Fait |
 | F5, F6, F7, F9 implémentées, testées, éteintes par flag | Fait |
-| ROB verts si licence OK, sinon absence documentée | Licences vérifiées, non conformes pour les deux jeux nommés — absence documentée (§2) |
+| ROB verts si licence OK, sinon absence documentée | Fait — jeux nommés écartés (licence non conforme), construit et vert sur un remplaçant CC0 (§2) |
 | NR-01 à NR-18 verts | Vert — aucun fichier v1 modifié par ce lot, hors ajout de colonnes optionnelles sur `Ingredient`/`Settings` |
 | Aucun changement visible pour un utilisateur | Vrai — aucun routeur, gabarit ou test HTTP n'expose F5/F6/F7/F9 |
 | Rapport de sortie | Ce document |
@@ -119,9 +140,9 @@ validation explicite »), le lot est livré **sans** elles :
 - Obtenir ou faire confirmer `specs-v2-ia-plan-test.md` pour vérifier que
   les gates/seuils choisis ici (§2) correspondent aux specs réelles.
 - Statuer sur les 3 propositions (§3).
-- ROB : décider si la robustesse sur données externes reste souhaitée avec
-  d'autres jeux sous licence claire, les deux jeux nommés par le document
-  étant écartés (§2).
+- ROB : si une couverture en français ou à plus grand volume reste
+  souhaitée, choisir un second jeu sous licence claire — décision de
+  périmètre, pas bloquant pour la suite actuelle (§2).
 - Activer les feature flags un par un, sur les vraies données du pilote,
   seulement une fois IA-01 à IA-10 (les tests sur données réelles, pas SYN)
   au vert pour la fonctionnalité concernée — c'est le seul gate d'activation
