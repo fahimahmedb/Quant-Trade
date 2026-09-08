@@ -65,17 +65,33 @@ concerné échoue, restauré) — pas seulement « ça passe ».
   donné. Choisi : repli silencieux sur `ordering.rolling_avg_daily_consumption`
   (la moyenne glissante v1 déjà en production), jamais une erreur — cohérent
   avec le principe « zéro saisie obligatoire » déjà appliqué ailleurs.
-- **ROB non fait — bloqué, pas juste reporté.** Deux blocages concrets :
-  aucun identifiant API Kaggle disponible dans cet environnement pour
-  télécharger les jeux, et la page Kaggle est une SPA JavaScript dont
-  `WebFetch` ne peut pas extraire la licence affichée (rendue côté client).
-  La règle du document (« vérifier la licence avant ingestion, ne pas
-  utiliser si elle n'autorise pas clairement l'usage ») ne peut donc pas
-  être respectée sans intervention humaine : soit fournir les deux CSV
-  directement, soit confirmer une licence compatible après vérification
-  manuelle sur kaggle.com. Sans ROB, SYN reste suffisant pour prouver la
-  justesse du code (tableau §0 du document) — seule la robustesse face à de
-  la donnée réelle sale n'est pas couverte.
+- **ROB non fait — vérifié, et délibérément pas construit.** Un token API
+  Kaggle a été fourni en cours de lot, débloquant l'accès technique. Les
+  licences des deux jeux nommés par le document ont été vérifiées via
+  l'API Kaggle (`kaggle datasets metadata`), pas juste consultées en
+  survol :
+  - *Transactions from a bakery* (`sulmansarwar/transactions-from-a-bakery`) :
+    licence **`unknown`**.
+  - *French bakery daily sales* (`matthieugimbert/french-bakery-daily-sales`) :
+    licence **`copyright-authors`** (tous droits réservés par l'auteur,
+    aucune licence de réutilisation accordée).
+
+  Aucune des deux n'autorise clairement l'usage envisagé — la règle du
+  document lui-même (§3.3 : « si elle n'autorise pas clairement l'usage
+  envisagé, ne pas l'utiliser — la suite SYN suffit ») tranche sans
+  ambiguïté : **ROB ne doit pas être construit avec ces deux jeux.** Aucune
+  donnée n'a été téléchargée au-delà des métadonnées de licence
+  elles-mêmes (~1 Ko chacune, non commitées). Le token a servi uniquement
+  à cette vérification, stocké dans le conteneur (`~/.kaggle/access_token`,
+  hors du dépôt), jamais écrit dans un fichier suivi par git ni commité.
+
+  Sans ROB, SYN reste suffisant pour prouver la justesse du code
+  (tableau §0 du document) — seule la robustesse face à de la donnée réelle
+  sale n'est pas couverte, et elle ne peut pas l'être avec ces deux jeux
+  précis. D'autres jeux bakery/restaurant sous licence claire (CC0, CC BY)
+  existent sur Kaggle ; en choisir un remplaçant est une décision de
+  périmètre, pas une simple question d'accès — à trancher explicitement si
+  la robustesse sur données externes reste souhaitée.
 
 ## 3. Trois propositions du document — non arbitrées, donc non construites
 
@@ -93,7 +109,7 @@ validation explicite »), le lot est livré **sans** elles :
 | Générateur écrit, SYN-A à SYN-I déterministes | Fait |
 | Tests SYN verts, non-vacuous | Fait |
 | F5, F6, F7, F9 implémentées, testées, éteintes par flag | Fait |
-| ROB verts si licence OK, sinon absence documentée | Absence documentée (§2) |
+| ROB verts si licence OK, sinon absence documentée | Licences vérifiées, non conformes pour les deux jeux nommés — absence documentée (§2) |
 | NR-01 à NR-18 verts | Vert — aucun fichier v1 modifié par ce lot, hors ajout de colonnes optionnelles sur `Ingredient`/`Settings` |
 | Aucun changement visible pour un utilisateur | Vrai — aucun routeur, gabarit ou test HTTP n'expose F5/F6/F7/F9 |
 | Rapport de sortie | Ce document |
@@ -103,7 +119,9 @@ validation explicite »), le lot est livré **sans** elles :
 - Obtenir ou faire confirmer `specs-v2-ia-plan-test.md` pour vérifier que
   les gates/seuils choisis ici (§2) correspondent aux specs réelles.
 - Statuer sur les 3 propositions (§3).
-- ROB : fournir les CSV ou confirmer la licence (§2).
+- ROB : décider si la robustesse sur données externes reste souhaitée avec
+  d'autres jeux sous licence claire, les deux jeux nommés par le document
+  étant écartés (§2).
 - Activer les feature flags un par un, sur les vraies données du pilote,
   seulement une fois IA-01 à IA-10 (les tests sur données réelles, pas SYN)
   au vert pour la fonctionnalité concernée — c'est le seul gate d'activation
