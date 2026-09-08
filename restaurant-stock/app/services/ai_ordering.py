@@ -1,5 +1,5 @@
 """F7 — suggestion de commande consciente du cycle de livraison (Lot IA-0,
-docs/IA scope.md §1.8, cible SYN-G). Complète (ne remplace pas)
+docs/feature-plans/ia-f5-f9.md §1.8, cible SYN-G). Complète (ne remplace pas)
 `app/services/ordering.py`, qui reste la règle v1 par seuil simple.
 
 Deux couches :

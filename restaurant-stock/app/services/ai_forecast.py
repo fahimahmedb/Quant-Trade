@@ -1,6 +1,6 @@
 """F6 — prévision de consommation par jour de semaine, EN MODE OMBRE
 (specs-v2-ia-plan-test.md §4 ; jeux synthétiques SYN-A/E/F/I de
-docs/IA scope.md §1.2/1.7/1.10).
+docs/feature-plans/ia-f5-f9.md §1.2/1.7/1.10).
 
 Mode ombre : cette fonction n'est appelée par aucun chemin de code qui
 affiche son résultat à un restaurateur — rien dans ce lot ne l'expose. Elle

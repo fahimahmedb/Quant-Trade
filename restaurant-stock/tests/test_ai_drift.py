@@ -1,4 +1,4 @@
-"""F5 — dérive de grammage et classification des écarts (docs/IA scope.md
+"""F5 — dérive de grammage et classification des écarts (docs/feature-plans/ia-f5-f9.md
 §1.3-1.6), prouvée sur les jeux synthétiques SYN-B/C/D/E. Toute la
 fonctionnalité est éteinte par défaut (`Settings.feature_f5_enabled`) —
 chaque test l'active explicitement, et un test dédié prouve que l'éteindre

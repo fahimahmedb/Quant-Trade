@@ -1,4 +1,4 @@
-"""F7 — cycle de commande conscient de la livraison (docs/IA scope.md
+"""F7 — cycle de commande conscient de la livraison (docs/feature-plans/ia-f5-f9.md
 §1.8), prouvée sur les trois variantes de SYN-G. `plan_order_cycle` est une
 fonction pure (aucun accès DB) : les tests G1/G2/G3 vérifient directement
 son arithmétique, sans passer par la base ni par un feature flag — c'est

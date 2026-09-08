@@ -1,5 +1,5 @@
 """ROB — robustesse sur données externes réelles (Lot IA-0,
-docs/IA scope.md §3).
+docs/feature-plans/ia-f5-f9.md §3).
 
 RÈGLE ABSOLUE (§3.1, à ne jamais enfreindre) : aucun résultat obtenu sur un
 jeu externe ne peut déclencher, justifier ou calibrer une décision métier.
@@ -101,7 +101,7 @@ def french_bakery_csv_path(tmp_path_factory):
     if not _kaggle_configured():
         pytest.skip(
             "kaggle CLI ou identifiants absents (~/.kaggle/access_token ou kaggle.json) : "
-            "ROB ignoré, optionnel par construction (docs/IA scope.md §3)."
+            "ROB ignoré, optionnel par construction (docs/feature-plans/ia-f5-f9.md §3)."
         )
     out_dir = tmp_path_factory.mktemp("rob_french")
     license_name = _log_license(out_dir, FRENCH_SLUG)
@@ -114,7 +114,7 @@ def bread_basket_csv_path(tmp_path_factory):
     if not _kaggle_configured():
         pytest.skip(
             "kaggle CLI ou identifiants absents (~/.kaggle/access_token ou kaggle.json) : "
-            "ROB ignoré, optionnel par construction (docs/IA scope.md §3)."
+            "ROB ignoré, optionnel par construction (docs/feature-plans/ia-f5-f9.md §3)."
         )
     out_dir = tmp_path_factory.mktemp("rob_breadbasket")
     license_name = _log_license(out_dir, BREADBASKET_SLUG)

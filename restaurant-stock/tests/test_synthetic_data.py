@@ -1,4 +1,4 @@
-"""Validation du générateur synthétique lui-même (docs/IA scope.md §1-2),
+"""Validation du générateur synthétique lui-même (docs/feature-plans/ia-f5-f9.md §1-2),
 avant de s'en servir pour prouver F5/F6/F7/F9. Si un jeu SYN a un défaut de
 construction, un test qui l'utilise pourrait sembler passer pour une
 mauvaise raison — ces tests vérifient la vérité terrain déclarée par

@@ -116,7 +116,7 @@ class Ingredient(Base):
         DateTime, default=utcnow, onupdate=utcnow
     )
 
-    # F7 (Lot IA-0, docs/IA scope.md §1.8) : champs optionnels, zéro saisie
+    # F7 (Lot IA-0, docs/feature-plans/ia-f5-f9.md §1.8) : champs optionnels, zéro saisie
     # obligatoire — un ingrédient sans ces champs garde le comportement v1
     # (app/services/ordering.py) sans dégradation. `delivery_weekdays`
     # stocke les jours de livraison sous forme d'entiers date.weekday()
@@ -447,7 +447,7 @@ class Settings(Base):
     loss_alert_eur: Mapped[float] = mapped_column(Float, default=10.0)
     order_safety_margin_pct: Mapped[float] = mapped_column(Float, default=15.0)
 
-    # Fonctionnalités IA (lot IA-0, docs/IA scope.md) : implémentées et
+    # Fonctionnalités IA (lot IA-0, docs/feature-plans/ia-f5-f9.md) : implémentées et
     # prouvées sur données synthétiques, mais gatées par des données réelles
     # du pilote qui n'existent pas encore. Toutes éteintes par défaut — leur
     # activation est une décision du pilote, jamais un effet de bord d'un

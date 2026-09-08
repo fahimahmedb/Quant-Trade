@@ -1,11 +1,11 @@
 """F5 — détection de dérive de fiche technique et classification des écarts
-récurrents (Lot IA-0, docs/IA scope.md §1.3-1.6 pour les jeux SYN, extension
+récurrents (Lot IA-0, docs/feature-plans/ia-f5-f9.md §1.3-1.6 pour les jeux SYN, extension
 F10-F19 pour le contexte des principes généraux).
 
 Deux capacités indépendantes, chacune gatée par les mêmes données
-(≥ 4 comptages complets pour l'ingrédient concerné — docs/IA scope.md §1.6,
+(≥ 4 comptages complets pour l'ingrédient concerné — docs/feature-plans/ia-f5-f9.md §1.6,
 message exact repris de SYN-E) et par le même feature flag
-(`Settings.feature_f5_enabled`, éteint par défaut : cf. docs/IA scope.md,
+(`Settings.feature_f5_enabled`, éteint par défaut : cf. docs/feature-plans/ia-f5-f9.md,
 « toutes derrière un feature flag éteint ») :
 
 1. `detect_drift` — un plat représentant ≥ 50% de la consommation théorique
@@ -190,7 +190,7 @@ def _slope(xs: list[float], ys: list[float]) -> float:
 
 
 def detect_drift(db: Session, ingredient_id: int) -> DriftResult:
-    """docs/IA scope.md §1.3/1.4 (SYN-B/C). Renvoie une proposition de
+    """docs/feature-plans/ia-f5-f9.md §1.3/1.4 (SYN-B/C). Renvoie une proposition de
     grammage corrigé si UN plat représente >= 50% de la consommation
     théorique de l'ingrédient ET que son volume de vente par période
     corrèle (>= 0,8) à l'écart constaté à chaque comptage. Sinon, explique

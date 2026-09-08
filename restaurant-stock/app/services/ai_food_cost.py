@@ -1,5 +1,5 @@
 """F9 — food cost théorique vs réel sur une période (Lot IA-0,
-docs/IA scope.md §1.9, cible SYN-H).
+docs/feature-plans/ia-f5-f9.md §1.9, cible SYN-H).
 
 Food cost théorique = coût recette (fiche technique, coût actuel) des
 plats effectivement vendus / chiffre d'affaires de la période. Ne dépend
@@ -56,7 +56,7 @@ def _bracketing_session(db: Session, ended_at: datetime, *, before: bool) -> mod
 
 
 def compute_food_cost(db: Session, start: datetime, end: datetime) -> FoodCostResult:
-    """docs/IA scope.md §1.9 (SYN-H) : théorique et réel, sur [start, end]."""
+    """docs/feature-plans/ia-f5-f9.md §1.9 (SYN-H) : théorique et réel, sur [start, end]."""
     if not _feature_enabled(db):
         return FoodCostResult(ok=False, message="Fonctionnalité F9 désactivée (feature flag éteint).")
 

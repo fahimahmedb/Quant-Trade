@@ -1,4 +1,4 @@
-"""F6 — prévision par jour de semaine, en mode ombre (docs/IA scope.md
+"""F6 — prévision par jour de semaine, en mode ombre (docs/feature-plans/ia-f5-f9.md
 §1.2/1.7/1.10), prouvée sur SYN-A/E/F/I. Éteinte par défaut
 (`Settings.feature_f6_enabled`) : un test dédié le prouve plutôt que de le
 supposer.

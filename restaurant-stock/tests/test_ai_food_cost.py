@@ -1,4 +1,4 @@
-"""F9 — food cost théorique vs réel (docs/IA scope.md §1.9), prouvée sur
+"""F9 — food cost théorique vs réel (docs/feature-plans/ia-f5-f9.md §1.9), prouvée sur
 SYN-H, à ±0,1 point comme l'exige le document. Éteinte par défaut
 (`Settings.feature_f9_enabled`).
 """

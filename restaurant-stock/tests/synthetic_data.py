@@ -1,4 +1,4 @@
-"""Générateur de jeux de données synthétiques (Lot IA-0, docs/IA scope.md §1-2).
+"""Générateur de jeux de données synthétiques (Lot IA-0, docs/feature-plans/ia-f5-f9.md §1-2).
 
 Code de test uniquement — jamais importé par l'application (section 2 du
 document). Graine fixe obligatoire (IA-04, déterminisme) : chaque builder
@@ -157,7 +157,7 @@ class SynA:
 
 
 def build_syn_a(db: Session, seed: int = 1, weeks: int = 12) -> SynA:
-    """docs/IA scope.md §1.2. Lundi fermé. Facteurs : mar 1,0 / mer 1,1 /
+    """docs/feature-plans/ia-f5-f9.md §1.2. Lundi fermé. Facteurs : mar 1,0 / mer 1,1 /
     jeu 1,2 / ven 2,0 / sam 2,2 / dim 0,8. Un plat, un ingrédient au ratio
     1:1 (pas de dilution entre plats) : le facteur mesurable sur les ventes
     est alors exactement celui mesurable sur la consommation de
@@ -197,7 +197,7 @@ class SynB:
 
 
 def build_syn_b(db: Session, seed: int = 2) -> SynB:
-    """docs/IA scope.md §1.3. Le parseur de ventes ne connaît que la
+    """docs/feature-plans/ia-f5-f9.md §1.3. Le parseur de ventes ne connaît que la
     quantité DÉCLARÉE (150 g) : c'est elle qui décrémente le stock
     théorique à chaque vente, comme dans l'app réelle. La dérive
     (+22 g/burger, soit 172 g réels) n'apparaît que dans l'écart constaté
@@ -262,7 +262,7 @@ class SynC:
 
 
 def build_syn_c(db: Session, seed: int = 3) -> SynC:
-    """docs/IA scope.md §1.4. Trois plats à parts rigoureusement égales
+    """docs/feature-plans/ia-f5-f9.md §1.4. Trois plats à parts rigoureusement égales
     (33% chacun) : aucun n'atteint la condition des 50% de F5. Un écart réel
     existe (bruit générique, non corrélé à un plat précis) — F5 ne doit
     proposer AUCUNE correction de grammage ici."""
@@ -305,7 +305,7 @@ class SynD:
 
 
 def build_syn_d(db: Session, seed: int = 4) -> SynD:
-    """docs/IA scope.md §1.5. Trois ingrédients indépendants (un plat
+    """docs/feature-plans/ia-f5-f9.md §1.5. Trois ingrédients indépendants (un plat
     chacun, la dérive de grammage n'est pas ce que ce jeu teste — seule la
     SUITE des écarts au fil des comptages compte) :
     - récurrent : 8% d'écart sur 5 comptages consécutifs -> badge attendu
@@ -398,7 +398,7 @@ class SynE:
 
 
 def build_syn_e(db: Session, seed: int = 5) -> SynE:
-    """docs/IA scope.md §1.6. 4 semaines de ventes (F6 exige >= 6, section 0)
+    """docs/feature-plans/ia-f5-f9.md §1.6. 4 semaines de ventes (F6 exige >= 6, section 0)
     et 3 comptages seulement (F5 exige >= 4 — message exact du document :
     « 3 comptages sur 4 nécessaires »)."""
     rng = random.Random(seed)
@@ -436,7 +436,7 @@ class SynF:
 
 
 def build_syn_f(db: Session, seed: int = 6, weeks: int = 12) -> SynF:
-    """docs/IA scope.md §1.7. Un jeu SYN-A propre (`clean`, pour comparer)
+    """docs/feature-plans/ia-f5-f9.md §1.7. Un jeu SYN-A propre (`clean`, pour comparer)
     et une copie indépendante avec deux injections : une vente ×100 (erreur
     de saisie) et un comptage à 0 (oubli de saisie). F6 sur la copie ne doit
     pas s'écarter de plus de ±10% de sa prévision sur `clean`."""
@@ -493,7 +493,7 @@ class SynG:
 
 
 def build_syn_g(db: Session, seed: int = 7, variant: str = "G1") -> SynG:
-    """docs/IA scope.md §1.8. Tomate : livraisons mardi/vendredi,
+    """docs/feature-plans/ia-f5-f9.md §1.8. Tomate : livraisons mardi/vendredi,
     conservation 5 jours, conso 2 kg/jour, stock 1 kg, conditionnement 5 kg.
     On se place un mercredi.
     - G1 : nominal.
@@ -538,7 +538,7 @@ class SynH:
 
 
 def build_syn_h(db: Session, seed: int = 8, weeks: int = 8) -> SynH:
-    """docs/IA scope.md §1.9. Food cost théorique = coût recette / prix de
+    """docs/feature-plans/ia-f5-f9.md §1.9. Food cost théorique = coût recette / prix de
     vente = pile 30,0% par construction (300 g à 0,01 €/g = 3,00 € sur un
     plat à 10,00 €). Food cost réel dérivé pour tomber pile à 32,5% :
     réception dimensionnée à rebours de (stock d'ouverture + réception −
@@ -616,7 +616,7 @@ class SynI:
 
 
 def build_syn_i(db: Session, seed: int = 9, weeks: int = 12, new_dish_week: int = 9) -> SynI:
-    """docs/IA scope.md §1.10. Un ingrédient partagé par un plat ancien
+    """docs/feature-plans/ia-f5-f9.md §1.10. Un ingrédient partagé par un plat ancien
     (tout l'historique) et un nouveau plat introduit en semaine 9 sur 12 :
     la prévision au niveau de l'INGRÉDIENT doit continuer de fonctionner
     sur tout l'historique, sans extrapoler silencieusement une vente du

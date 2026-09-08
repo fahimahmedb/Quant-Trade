@@ -16,7 +16,19 @@ d'abord, francophone de bout en bout (utilisateurs, code produit, docs).
 - `app/templates/**/*.html` — Jinja2, un fichier par écran
 - `app/templating.py` — tous les filtres Jinja custom (voir plus bas)
 - `app/static/tailwind_src.css` → compilé vers `tailwind.css` (`npm run build:css`)
-- `tests/` — pytest ; `docs/` — bilans et récapitulatifs par lot
+- `tests/` — pytest
+- `docs/context-strategy.md` — architecture de contexte : où vit quoi dans
+  `docs/`, discipline de session, gabarit de handoff. À lire avant de
+  créer ou déplacer un document dans `docs/`.
+- `docs/feature-plans/*.md` — un plan par module ou lot (specs, gates,
+  critères de test), sans limite de longueur. Pour une tâche sur une
+  fonctionnalité précise, lire le plan concerné, pas l'historique complet.
+- `docs/handoffs/*.md` — un fichier par fin de session ou jalon, jamais
+  réécrit après coup. Lire le dernier handoff pertinent avant de reprendre
+  un travail en cours.
+- `docs/bilan-*.md`, `docs/observations-v1.md` — rapports de sortie de lot
+  adressés au porteur du projet, à la racine de `docs/` (ni un plan
+  prospectif, ni une reprise de session à session).
 
 ## Commandes utiles
 
@@ -33,7 +45,7 @@ Fond blanc partout, pas de cartes ni d'ombres. Vocabulaire de composants :
 `.btn-secondaire` `.btn-tertiaire` / `.pastille*` / `.barre-onglets`.
 
 **Une seule couleur de marque : bleu marine (`--accent`)**, y compris le
-héros de l'accueil (tranché après coup — voir `docs/generalisation-v1.2.md`).
+héros de l'accueil (tranché après coup — voir `docs/feature-plans/ux-v1-2.md`).
 Trois couleurs sémantiques seulement : `--accent` (action), `--alerte`
 (problème réel : écart, rupture — jamais un choix de routine), `--valide`
 (favorable réel). Un manquant de stock est en alerte ; un surplus est en

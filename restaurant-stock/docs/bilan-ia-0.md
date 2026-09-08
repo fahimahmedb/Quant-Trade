@@ -1,11 +1,13 @@
 # Bilan — Lot IA-0
 
-Périmètre : `docs/IA scope.md` (« Lot IA-0 » + extension F10-F19). Neuf
+Périmètre : `docs/feature-plans/ia-f5-f9.md` + `docs/feature-plans/ia-f10-f19.md`
+(scindés depuis l'ancien `docs/IA scope.md` lors de la mise en place de
+`docs/context-strategy.md`). Neuf
 commits sur `claude/restaurant-stock-management-mvp-6oq43e` :
 
 | Commit | Contenu |
 |---|---|
-| `78fe141`/`a91f9bc`/`5c275d9` | docs/IA scope.md (périmètre, transmis puis fusionné) |
+| `78fe141`/`a91f9bc`/`5c275d9` | docs/IA scope.md (périmètre, transmis puis fusionné ; depuis scindé en `docs/feature-plans/ia-f5-f9.md` et `ia-f10-f19.md`) |
 | `856f6fa` | Feature flags F5/F6/F7/F9, éteints par défaut |
 | `3852bdf` | Générateur synthétique SYN-A à SYN-I |
 | `c9695c9` | F5 — dérive de grammage + classification perte/anomalie |
@@ -37,7 +39,7 @@ Ce document — les specs fonctionnelles détaillées de F5-F9, avec leurs
 gates, seuils, critères d'acceptation et cas de test — **n'existait pas
 dans le dépôt quand F5/F6/F7/F9 ont été écrites**. Le lot s'était appuyé
 sur le seul niveau de détail disponible, les descriptions des jeux SYN-A à
-SYN-I de `docs/IA scope.md`. Le bilan précédent le signalait comme le
+SYN-I de `docs/feature-plans/ia-f5-f9.md`. Le bilan précédent le signalait comme le
 premier point à lever avant tout pilote : « si `specs-v2-ia-plan-test.md`
 existe ailleurs et fixe des chiffres différents, ce sont ceux-là qui
 doivent primer ». Il a été fourni depuis ; voici la relecture ligne à
@@ -126,7 +128,7 @@ Ces lignes sont le reste à faire de V2.0, pas une dette de ce lot.
   grammage, cycle de livraison, food cost) pour une signature unique
   lisible. Documenté en tête de `tests/synthetic_data.py`.
 - **SYN-D, badge « inhabituel » — cas dégénéré, toujours ouvert.**
-  `docs/IA scope.md` disait « un écart de 10x la médiane », les specs V2
+  `docs/feature-plans/ia-f5-f9.md` disait « un écart de 10x la médiane », les specs V2
   disent 3× la médiane : c'est 3× qui est appliqué désormais. Mais le
   scénario SYN-D reste dégénéré des deux côtés — ses 4 comptages
   précédents sont conformes par construction, donc la médiane historique
@@ -334,4 +336,4 @@ validation explicite »), le lot est livré **sans** elles :
 - Activer les feature flags un par un, sur les vraies données du pilote,
   seulement une fois IA-01 à IA-10 (les tests sur données réelles, pas SYN)
   au vert pour la fonctionnalité concernée — c'est le seul gate d'activation
-  qui compte (tableau §0 de `docs/IA scope.md`).
+  qui compte (tableau §0 de `docs/feature-plans/ia-f5-f9.md`).

@@ -68,7 +68,7 @@ Au premier lancement, l'application ouvre `/setup` pour créer le compte de
 l'établissement. Tant qu'aucun compte n'existe, toutes les routes y mènent ;
 une fois créé, `/setup` n'est plus accessible. La mise en service chez un
 vrai restaurant (HTTPS, sauvegardes, restauration) est décrite dans
-[`docs/exploitation.md`](docs/exploitation.md).
+[`docs/feature-plans/exploitation.md`](docs/feature-plans/exploitation.md).
 
 Un fichier d'exemple pour tester l'import des ventes se trouve dans
 `sample_data/exemple_export_ventes.csv` (compatible avec les noms de plats
