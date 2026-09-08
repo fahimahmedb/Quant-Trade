@@ -22,6 +22,7 @@ from sqlalchemy.orm import Session
 
 from app import models
 from app.services import ai_forecast, ordering, settings_service
+from app.templating import nom_du_jour
 
 
 @dataclass
@@ -46,11 +47,23 @@ def _next_weekday_on_or_after(d: datetime, weekdays: set[int]) -> datetime:
 def plan_order_cycle(
     *, today: datetime, delivery_weekdays: set[int], shelf_life_days: float,
     daily_consumption: float, current_stock: float, pack_size: float,
-    order_cutoff_passed: bool = False,
+    order_cutoff_passed: bool = False, safety_margin_pct: float = 15.0,
 ) -> OrderCycleResult:
-    """docs/IA scope.md §1.8 (SYN-G, variantes G1/G2/G3). Fonction pure :
-    le feature flag et le choix de `daily_consumption` (F6 ou v1) sont la
-    responsabilité de l'appelant."""
+    """specs-v2-ia-plan-test.md §4 (F7), cible SYN-G (variantes G1/G2/G3).
+    Fonction pure : le feature flag et le choix de `daily_consumption`
+    (F6 ou v1) sont la responsabilité de l'appelant.
+
+    Formule du document, appliquée littéralement :
+      horizon = nombre de jours jusqu'à la livraison SUIVANT la prochaine
+                (« couvrir jusqu'à la livraison d'après, pas jusqu'à la
+                prochaine ») — compté depuis aujourd'hui, pas depuis la
+                livraison visée ;
+      quantité = Σ prévision quotidienne sur l'horizon
+                 + marge de sécurité (défaut 15 %)
+                 − stock théorique actuel,
+                 arrondie au conditionnement supérieur,
+                 plafonnée à la consommation prévue sur la conservation.
+    """
     if not delivery_weekdays:
         return OrderCycleResult(ok=False, message="Aucun jour de livraison connu pour cet ingrédient.")
     if pack_size <= 0:
@@ -63,13 +76,19 @@ def plan_order_cycle(
         target_delivery = first_reachable
     next_after_target = _next_weekday_on_or_after(target_delivery + timedelta(days=1), delivery_weekdays)
 
-    coverage_days = (next_after_target - target_delivery).days
-    days_until_target = (target_delivery - today).days
-    stock_at_target = max(0.0, current_stock - daily_consumption * days_until_target)
-    needed = max(0.0, coverage_days * daily_consumption - stock_at_target)
+    warnings: list[str] = []
+    # TC-F7-06 : un stock théorique négatif est une information sur la qualité
+    # de la donnée, pas une quantité à créditer dans le calcul.
+    stock_pris_en_compte = max(0.0, current_stock)
+    if current_stock < 0:
+        warnings.append("Stock théorique négatif : comptage recommandé avant commande.")
+
+    horizon_days = (next_after_target - today).days
+    besoin_brut = horizon_days * daily_consumption
+    avec_marge = besoin_brut * (1.0 + safety_margin_pct / 100.0)
+    needed = max(0.0, avec_marge - stock_pris_en_compte)
     suggested = math.ceil(needed / pack_size) * pack_size if needed > 0 else 0.0
 
-    warnings: list[str] = []
     max_within_shelf_life = shelf_life_days * daily_consumption
     if suggested > max_within_shelf_life:
         capped = math.ceil(max_within_shelf_life / pack_size) * pack_size if max_within_shelf_life > 0 else 0.0
@@ -81,16 +100,18 @@ def plan_order_cycle(
             )
         else:
             warnings.append(
-                f"Quantité plafonnée à {capped:g} pour respecter la conservation "
-                f"({shelf_life_days:g} j) au lieu de {suggested:g}, qui aurait suffi "
-                f"jusqu'à la prochaine livraison."
+                f"Plafonné à {capped:g} au lieu de {suggested:g} : au-delà, périmé avant "
+                f"consommation (conservation {shelf_life_days:g} j)."
             )
         suggested = capped
 
     message = (
-        f"Livraison visée le {target_delivery:%A %d/%m}"
+        f"Livraison visée le {nom_du_jour(target_delivery)} {target_delivery:%d/%m}"
         + (" (heure limite dépassée pour la précédente)" if order_cutoff_passed else "")
-        + f", à couvrir jusqu'au {next_after_target:%d/%m}."
+        + f", à couvrir jusqu'au {next_after_target:%d/%m}. "
+        + f"{suggested:g} suggérés : {horizon_days} jours à couvrir "
+        + f"(≈ {daily_consumption:g}/jour attendus), +{safety_margin_pct:g} % de sécurité, "
+        + f"− {stock_pris_en_compte:g} en stock, arrondi au conditionnement de {pack_size:g}."
     )
     return OrderCycleResult(
         ok=True, message=message, order_now=True, target_delivery=target_delivery,
@@ -134,4 +155,5 @@ def plan_order_cycle_for_ingredient(
         today=today, delivery_weekdays=delivery_weekdays, shelf_life_days=ingredient.shelf_life_days,
         daily_consumption=daily_consumption, current_stock=ingredient.current_theoretical_stock,
         pack_size=ingredient.pack_size, order_cutoff_passed=order_cutoff_passed,
+        safety_margin_pct=settings.order_safety_margin_pct,
     )

@@ -4,6 +4,8 @@ fonctionnalité est éteinte par défaut (`Settings.feature_f5_enabled`) —
 chaque test l'active explicitement, et un test dédié prouve que l'éteindre
 la neutralise vraiment plutôt que de le supposer.
 """
+from datetime import datetime, timedelta
+
 from app import models
 from app.services import ai_drift, settings_service
 from tests import synthetic_data as syn
@@ -132,3 +134,109 @@ def test_syn_e_reports_the_exact_gate_message(db_session):
     assert drift.gate.message == "3 comptages sur 4 nécessaires", drift.gate.message
     assert drift.proposal is None
     assert badge is None
+
+
+# ==========================================================================
+# Seuils de specs-v2-ia-plan-test.md §4 (F5) — gate, seuil réglable, motifs
+# ==========================================================================
+
+def _serie_ecarts(db, ecarts, nom="Seuils", jours_entre_comptages=7):
+    """Un ingrédient, un plat, un comptage par période, avec l'écart voulu
+    injecté à chaque fois. Consommation théorique par période : 10 plats
+    x 100 g = 1000 g — donc un écart de 50 g vaut exactement le seuil par
+    défaut de 5 %."""
+    ing = syn.ingredient(db, f"Ingrédient {nom}", unit_cost=0.01, stock_qty=1_000_000.0)
+    plat = syn.dish(db, f"Plat {nom}", {ing.id: 100.0})
+    base = datetime(2026, 4, 1)
+    sessions = []
+    for i, ecart in enumerate(ecarts):
+        d = base + timedelta(days=i * jours_entre_comptages)
+        syn.import_sales_rows(db, [(d, plat.name, 10.0, None)], filename=f"{nom}_{i}.csv")
+        sessions.append(syn.run_count_session(
+            db, counted_by=nom, counted={ing.id: ing.current_theoretical_stock - ecart},
+            ended_at=d + timedelta(hours=2),
+        ))
+    return ing, sessions
+
+
+def test_gate_also_requires_four_weeks_of_sales_not_only_four_counts(db_session):
+    """specs-v2 §4 (F5) : « >= 4 comptages validés ET >= 4 semaines de
+    ventes ». Quatre comptages resserrés sur dix jours franchissent la
+    première condition, pas la seconde."""
+    ing, _ = _serie_ecarts(db_session, [0.0, 100.0, 100.0, 100.0], nom="Resserré", jours_entre_comptages=3)
+    _enable_f5(db_session)
+
+    gate = ai_drift.data_gate(db_session, ing.id)
+
+    assert gate.completed_counts == 4, "la condition des comptages est bien atteinte"
+    assert not gate.ok
+    assert "semaines de ventes" in gate.message
+    assert ai_drift.classify_losses(db_session, ing.id) is None
+
+
+def test_recurring_badge_respects_the_configurable_threshold(db_session):
+    """Le seuil « 5 % de la consommation théorique OU 10 € » est réglable
+    (§8 : « valeurs de départ raisonnées, pas des constantes validées ») :
+    des écarts de 4 % ne déclenchent rien par défaut, et le même jeu de
+    données bascule dès que le réglage descend à 3 %."""
+    ing, _ = _serie_ecarts(db_session, [0.0, 0.0, 40.0, 40.0, 40.0], nom="Sous seuil")
+    _enable_f5(db_session)
+
+    assert ai_drift.classify_losses(db_session, ing.id) is None, "4 % < 5 % et 0,40 € < 10 €"
+
+    settings = db_session.get(models.Settings, 1)
+    settings.loss_alert_pct = 3.0
+    db_session.commit()
+
+    badge = ai_drift.classify_losses(db_session, ing.id)
+    assert badge is not None and badge.kind == "perte_recurrente"
+    assert badge.streak_length == 3
+
+
+def test_ac_f5_05_a_variance_with_a_reason_leaves_the_unexplained_cumulative(db_session):
+    """AC-F5-5 : « écart avec motif "casse" saisi → exclu du cumul
+    "inexpliqué", inclus dans le cumul total »."""
+    ing, sessions = _serie_ecarts(db_session, [0.0, 0.0, 100.0, 100.0, 100.0], nom="Motif")
+    _enable_f5(db_session)
+
+    avant = ai_drift.classify_losses(db_session, ing.id)
+    assert avant.kind == "perte_recurrente"
+    assert avant.cumulative_value == avant.cumulative_value_total
+
+    ligne = next(l for l in sessions[-1].lines if l.ingredient_id == ing.id)
+    ligne.variance_reason = models.VarianceReason.CASSE
+    db_session.commit()
+
+    apres = ai_drift.classify_losses(db_session, ing.id)
+    assert apres.streak_length == 3, "le motif ne casse pas la série : le document la conditionne au seul seuil"
+    assert apres.cumulative_value_total == avant.cumulative_value_total
+    assert apres.cumulative_value < apres.cumulative_value_total
+    assert abs(apres.cumulative_value_total - apres.cumulative_value - ligne.variance_value) < 0.001
+
+
+def test_unusual_badge_compares_to_the_median_not_the_mean(db_session):
+    """specs-v2 §4 (F5) : « écart supérieur à 3 fois la MÉDIANE des écarts
+    historiques ». Jeu choisi pour que médiane et moyenne ne disent pas la
+    même chose : écarts antérieurs 20/20/20/20 (médiane 20), dernier écart
+    70 — au-delà de 3 x 20, mais en deçà de 5 x la moyenne."""
+    ing, _ = _serie_ecarts(db_session, [20.0, 20.0, 20.0, 20.0, 70.0], nom="Médiane")
+    _enable_f5(db_session)
+
+    badge = ai_drift.classify_losses(db_session, ing.id)
+
+    assert badge is not None and badge.kind == "inhabituel"
+    assert "médiane" in badge.explanation
+    assert "3.5 fois" in badge.explanation
+
+
+def test_explanations_carry_their_numbers(db_session):
+    """IA-03 : « phrase pourquoi présente, chiffres cohérents avec les
+    données ». Le document donne le format attendu : « écart de 8 % sur 3
+    comptages consécutifs, soit 64 € cumulés »."""
+    ing, _ = _serie_ecarts(db_session, [0.0, 0.0, 100.0, 100.0, 100.0], nom="Explication")
+    _enable_f5(db_session)
+
+    badge = ai_drift.classify_losses(db_session, ing.id)
+
+    assert "10 % sur 3 comptages consécutifs" in badge.explanation
+    assert "3.00 € cumulés" in badge.explanation  # 3 x 100 g x 0,01 €/g

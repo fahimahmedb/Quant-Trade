@@ -38,9 +38,105 @@ def test_g1_targets_next_delivery_and_covers_until_the_one_after(db_session):
     assert result.ok
     assert result.target_delivery.weekday() == 4, "mercredi -> la prochaine livraison est vendredi"
     assert result.covers_until.weekday() == 1, "doit couvrir jusqu'au mardi suivant"
-    # 4 jours (ven->mar) x 2 kg/jour = 8 kg, stock épuisé d'ici la livraison -> arrondi à 10 kg (2x5kg).
+    # specs-v2 §4 (F7), AC-F7-2 : horizon = mercredi -> mardi suivant, soit 6
+    # jours x 2 kg/jour = 12 kg, +15% de sécurité = 13,8 kg, − 1 kg de stock =
+    # 12,8 kg, arrondi au sac de 5 kg = 15 kg. La conservation (5 j x 2 kg/j =
+    # 10 kg) plafonne ensuite à 10 kg : l'AC le prévoit explicitement
+    # (« plafonnée si nécessaire »), le scénario nominal du document est déjà
+    # à la limite de péremption.
     assert result.suggested_quantity == 10_000.0
-    assert not result.warnings
+    assert len(result.warnings) == 1
+    assert "périmé avant consommation" in result.warnings[0]
+
+
+def test_g1_message_carries_every_number_behind_the_suggestion(db_session):
+    """IA-03 : « phrase pourquoi présente, chiffres cohérents avec les
+    données ». Le format cible du document : « 8 kg suggérés : 3 jours à
+    couvrir jusqu'à jeudi (≈ 2,3 kg/jour attendus), +15 % de sécurité,
+    − 1,2 kg en stock, arrondi au sac de 5 kg »."""
+    g1 = syn.build_syn_g(db_session, variant="G1")
+    message = _plan(g1).message
+
+    assert "vendredi" in message, "jour de livraison en français, pas le %A anglais de la locale POSIX"
+    assert "6 jours à couvrir" in message
+    assert "2000/jour" in message
+    assert "+15 % de sécurité" in message
+    assert "− 1000 en stock" in message
+    assert "conditionnement de 5000" in message
+
+
+def test_g1_safety_margin_is_really_applied_not_just_announced(db_session):
+    """La marge de sécurité doit changer la quantité, pas seulement la
+    phrase : à 0 % le besoin retombe sous le plafond de péremption et la
+    suggestion baisse."""
+    g1 = syn.build_syn_g(db_session, variant="G1")
+    avec = ai_ordering.plan_order_cycle(
+        today=g1.today, delivery_weekdays=g1.delivery_weekdays, shelf_life_days=g1.shelf_life_days,
+        daily_consumption=g1.daily_consumption, current_stock=g1.current_stock,
+        pack_size=g1.pack_size, safety_margin_pct=15.0,
+    )
+    sans = ai_ordering.plan_order_cycle(
+        today=g1.today, delivery_weekdays=g1.delivery_weekdays, shelf_life_days=g1.shelf_life_days,
+        daily_consumption=g1.daily_consumption, current_stock=g1.current_stock,
+        pack_size=g1.pack_size, safety_margin_pct=0.0,
+    )
+    # Sans marge : 12 kg − 1 kg = 11 kg -> 15 kg arrondi, plafonné à 10 kg.
+    # Avec marge : 13,8 − 1 = 12,8 -> 15 kg arrondi, plafonné à 10 kg aussi.
+    # Le plafond masque l'effet ici : on le mesure donc avant plafond, sur une
+    # conservation longue, où seule la marge peut faire la différence.
+    avec_longue = ai_ordering.plan_order_cycle(
+        today=g1.today, delivery_weekdays=g1.delivery_weekdays, shelf_life_days=30,
+        daily_consumption=g1.daily_consumption, current_stock=g1.current_stock,
+        pack_size=1.0, safety_margin_pct=15.0,
+    )
+    sans_longue = ai_ordering.plan_order_cycle(
+        today=g1.today, delivery_weekdays=g1.delivery_weekdays, shelf_life_days=30,
+        daily_consumption=g1.daily_consumption, current_stock=g1.current_stock,
+        pack_size=1.0, safety_margin_pct=0.0,
+    )
+    assert avec.suggested_quantity == sans.suggested_quantity == 10_000.0
+    assert sans_longue.suggested_quantity == 11_000.0  # 6 j x 2000 − 1000
+    assert avec_longue.suggested_quantity == 12_800.0  # +15%
+
+
+def test_ac_f7_04_rounds_up_to_the_pack_and_says_so(db_session):
+    """AC-F7-4 : conditionnement 5 kg, besoin 6,2 kg -> 10 kg, l'explication
+    mentionne l'arrondi."""
+    result = ai_ordering.plan_order_cycle(
+        today=datetime(2026, 6, 3), delivery_weekdays={1, 4}, shelf_life_days=30,
+        daily_consumption=1000.0, current_stock=700.0, pack_size=5000.0,
+        safety_margin_pct=15.0,
+    )
+    # 6 jours x 1 kg = 6 kg, +15% = 6,9 kg, − 0,7 kg = 6,2 kg -> 2 sacs de 5 kg.
+    assert result.suggested_quantity == 10_000.0
+    assert "arrondi au conditionnement de 5000" in result.message
+
+
+def test_tc_f7_06_negative_theoretical_stock_is_floored_and_flagged(db_session):
+    """TC-F7-06 : la suggestion calcule sur stock = 0 et le dit, plutôt que
+    de créditer un stock négatif dans le besoin."""
+    commun = dict(
+        today=datetime(2026, 6, 3), delivery_weekdays={1, 4}, shelf_life_days=30,
+        daily_consumption=1000.0, pack_size=1.0, safety_margin_pct=0.0,
+    )
+    negatif = ai_ordering.plan_order_cycle(current_stock=-2000.0, **commun)
+    a_zero = ai_ordering.plan_order_cycle(current_stock=0.0, **commun)
+
+    assert negatif.suggested_quantity == a_zero.suggested_quantity == 6000.0
+    assert any("négatif" in w for w in negatif.warnings)
+    assert not a_zero.warnings
+
+
+def test_tc_f7_08_no_delivery_weekday_is_a_configuration_message_not_an_error(db_session):
+    """TC-F7-08 : aucune livraison possible cochée -> message de
+    configuration, pas d'exception."""
+    result = ai_ordering.plan_order_cycle(
+        today=datetime(2026, 6, 3), delivery_weekdays=set(), shelf_life_days=5,
+        daily_consumption=1000.0, current_stock=0.0, pack_size=1000.0,
+    )
+    assert not result.ok
+    assert "livraison" in result.message.lower()
+    assert result.suggested_quantity is None
 
 
 # ==========================================================================

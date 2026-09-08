@@ -78,6 +78,18 @@ def _date_fr(value) -> str:
     return value.strftime("%d/%m/%Y")
 
 
+JOURS_FR = ("lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche")
+
+
+def nom_du_jour(value) -> str:
+    """Nom français du jour de la semaine. `strftime("%A")` suit la locale du
+    processus (« Friday » sur un serveur en C/POSIX, ce qu'est le conteneur
+    de production) : jamais l'utiliser dans une app francophone. Fonction
+    Python importable, comme `pluriel` — les messages construits dans les
+    services en ont besoin autant que les gabarits."""
+    return JOURS_FR[value.weekday()]
+
+
 def _line_price(line) -> str:
     """Prix d'une ligne de réception dans son unité d'achat : « 1,20 €/kg »."""
     unit = line.ingredient.unit

@@ -23,6 +23,7 @@ lisibles et auditables sans dépendance externe (le projet n'a ni numpy ni
 pandas, et ne devrait pas en avoir besoin ici : ce n'est pas de l'IA
 prédictive, cf. app/services/ordering.py).
 """
+import statistics
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -33,12 +34,15 @@ from app.services import settings_service
 from app.templating import pluriel
 
 MIN_COMPLETED_COUNTS = 4
+MIN_WEEKS_OF_SALES = 4.0  # specs-v2 §4 F5 : « >= 4 comptages validés ET >= 4 semaines de ventes »
 DRIFT_SHARE_THRESHOLD = 0.5
 DRIFT_CORRELATION_THRESHOLD = 0.8
-RECURRING_MIN_STREAK = 3
-RECURRING_MAGNITUDE_RATIO = 3.0  # écart max/min toléré dans une série "récurrente"
-ANOMALY_RATIO = 5.0  # perte >= 5x la moyenne des pertes précédentes -> isolée
-ANOMALY_MIN_PCT = 15.0  # à défaut d'historique de pertes, seuil relatif pour ne pas alerter sur du bruit
+RECURRING_MIN_STREAK = 3  # specs-v2 §4 F5 : « sur 3 comptages consécutifs »
+ANOMALY_RATIO = 3.0  # specs-v2 §4 F5 : « supérieur à 3 fois la MÉDIANE des écarts historiques »
+# Garde-fou hors spec, pour le cas dégénéré où la médiane historique est nulle
+# (tous les comptages précédents conformes) : « 3 x 0 » ferait alerter sur le
+# moindre gramme de bruit. Cf. SYN-D, scénario anomalie.
+ANOMALY_MIN_PCT = 15.0
 
 
 @dataclass
@@ -46,6 +50,7 @@ class DataGateResult:
     ok: bool
     message: str | None
     completed_counts: int
+    weeks_of_sales: float = 0.0
 
 
 @dataclass
@@ -69,9 +74,11 @@ class DriftResult:
 class LossBadge:
     ingredient_id: int
     kind: str  # "perte_recurrente" | "inhabituel"
-    cumulative_value: float | None = None
+    cumulative_value: float | None = None  # cumul INEXPLIQUÉ (hors écarts portant un motif)
+    cumulative_value_total: float | None = None  # cumul total, motifs compris (AC-F5-5)
     streak_length: int | None = None
     session_id: int | None = None
+    explanation: str = ""
 
 
 def _feature_enabled(db: Session) -> bool:
@@ -82,10 +89,30 @@ def _disabled_gate() -> DataGateResult:
     return DataGateResult(ok=False, message="Fonctionnalité F5 désactivée (feature flag éteint).", completed_counts=0)
 
 
+def _weeks_of_sales(db: Session, ingredient_id: int) -> float:
+    """Étendue de l'historique de ventes des plats qui utilisent cet
+    ingrédient, en semaines. Mesurée sur les VENTES (pas les comptages) :
+    c'est bien « X semaines de ventes » que specs-v2 §4 exige, et un
+    ingrédient peut avoir été compté plusieurs fois sans qu'un plat qui
+    l'utilise ait jamais été vendu."""
+    dish_ids = [
+        rl.dish_id for rl in db.query(models.RecipeIngredient).filter_by(ingredient_id=ingredient_id).all()
+    ]
+    if not dish_ids:
+        return 0.0
+    dates = [
+        s.sale_date for s in db.query(models.SaleLine).filter(models.SaleLine.dish_id.in_(dish_ids)).all()
+    ]
+    if not dates:
+        return 0.0
+    return ((max(dates).date() - min(dates).date()).days + 1) / 7.0
+
+
 def data_gate(db: Session, ingredient_id: int) -> DataGateResult:
-    """≥ 4 comptages complets pour CET ingrédient (docs/IA scope.md §1.6).
-    Compté sur les lignes de comptage, pas les sessions du restaurant : un
-    ingrédient ajouté après coup peut avoir moins d'historique que le reste."""
+    """specs-v2-ia-plan-test.md §4 (F5) : « >= 4 comptages validés et >= 4
+    semaines de ventes ». Les comptages sont comptés sur les LIGNES de
+    comptage, pas les sessions du restaurant : un ingrédient ajouté après
+    coup a moins d'historique que le reste (TC-F5-07)."""
     n = (
         db.query(models.CountLine)
         .join(models.CountSession)
@@ -96,13 +123,20 @@ def data_gate(db: Session, ingredient_id: int) -> DataGateResult:
         )
         .count()
     )
-    if n >= MIN_COMPLETED_COUNTS:
-        return DataGateResult(ok=True, message=None, completed_counts=n)
-    return DataGateResult(
-        ok=False,
-        message=f"{n} comptage{pluriel(n)} sur {MIN_COMPLETED_COUNTS} nécessaires",
-        completed_counts=n,
-    )
+    weeks = _weeks_of_sales(db, ingredient_id)
+    if n < MIN_COMPLETED_COUNTS:
+        return DataGateResult(
+            ok=False,
+            message=f"{n} comptage{pluriel(n)} sur {MIN_COMPLETED_COUNTS} nécessaires",
+            completed_counts=n, weeks_of_sales=weeks,
+        )
+    if weeks < MIN_WEEKS_OF_SALES:
+        return DataGateResult(
+            ok=False,
+            message=f"{weeks:.1f} semaines de ventes sur {MIN_WEEKS_OF_SALES:.0f} nécessaires",
+            completed_counts=n, weeks_of_sales=weeks,
+        )
+    return DataGateResult(ok=True, message=None, completed_counts=n, weeks_of_sales=weeks)
 
 
 def _completed_lines(db: Session, ingredient_id: int) -> list[models.CountLine]:
@@ -212,44 +246,129 @@ def detect_drift(db: Session, ingredient_id: int) -> DriftResult:
     )
 
 
+def _theoretical_consumption_between(
+    db: Session, ingredient_id: int, start: datetime | None, end: datetime,
+) -> float:
+    """Consommation théorique de l'ingrédient sur ]start, end] : Σ sur les
+    fiches techniques de (grammage × quantités vendues). C'est la référence
+    du seuil « 5 % de sa consommation théorique de la période » de specs-v2
+    §4 (F5) — pas le stock théorique, qui mélange réceptions et
+    ajustements sans rapport avec ce qui a réellement été cuisiné."""
+    recipe_lines = db.query(models.RecipeIngredient).filter_by(ingredient_id=ingredient_id).all()
+    return sum(rl.quantity * _dish_qty_sold_between(db, rl.dish_id, start, end) for rl in recipe_lines)
+
+
+@dataclass
+class _LossObservation:
+    session_id: int
+    variance: float  # > 0 = perte
+    value: float  # écart valorisé en €
+    pct_of_consumption: float
+    explained: bool  # un motif (casse, périmé, offert…) a été saisi au comptage
+    significant: bool
+
+
+def _loss_observations(db: Session, ingredient_id: int) -> list[_LossObservation]:
+    """Une observation par comptage terminé, du plus ancien au plus récent.
+
+    `significant` applique le seuil de specs-v2 §4 (F5) : l'écart valorisé
+    dépasse `loss_alert_pct` % de la consommation théorique de la période OU
+    `loss_alert_eur` €. Les deux bornes sont réglables (§8 du document : ce
+    sont « des valeurs de départ raisonnées, pas des constantes validées »).
+    Le pourcentage se calcule en quantité, ce qui revient au même qu'en
+    valeur : le coût unitaire multiplie identiquement les deux termes.
+    """
+    settings = settings_service.get_settings(db)
+    lines = _completed_lines(db, ingredient_id)
+    out: list[_LossObservation] = []
+    prev_end: datetime | None = None
+    for line in lines:
+        end = line.count_session.ended_at
+        consumption = _theoretical_consumption_between(db, ingredient_id, prev_end, end)
+        prev_end = end
+        variance = line.variance or 0.0
+        value = line.variance_value or 0.0
+        pct = (variance / consumption * 100.0) if consumption > 0 else 0.0
+        significant = variance > 0 and (
+            value >= settings.loss_alert_eur or pct >= settings.loss_alert_pct
+        )
+        out.append(_LossObservation(
+            session_id=line.count_session_id, variance=variance, value=value,
+            pct_of_consumption=pct, explained=line.variance_reason is not None,
+            significant=significant,
+        ))
+    return out
+
+
 def classify_losses(db: Session, ingredient_id: int) -> LossBadge | None:
-    """docs/IA scope.md §1.5 (SYN-D). `None` = ni "perte récurrente" ni
-    "inhabituel" (y compris si le gate de données n'est pas atteint)."""
+    """specs-v2-ia-plan-test.md §4 (F5), cible SYN-D. `None` = ni « perte
+    récurrente » ni « inhabituel » (y compris si le gate n'est pas atteint).
+
+    Les deux règles sont exclusives et évaluées dans cet ordre : une série
+    de pertes n'est pas « inhabituelle », c'est précisément ce que le
+    document demande de distinguer (TC-F5-05).
+
+    Motifs d'écart : ils ne participent PAS à la formation de la série (le
+    document conditionne celle-ci au seul dépassement de seuil « sur 3
+    comptages consécutifs »), mais séparent les deux cumuls rapportés —
+    `cumulative_value` inexpliqué, `cumulative_value_total` motifs compris
+    (AC-F5-5).
+    """
     if not _feature_enabled(db):
         return None
     if not data_gate(db, ingredient_id).ok:
         return None
 
-    lines = _completed_lines(db, ingredient_id)
-    variances = [(line.count_session_id, line.variance or 0.0, line.variance_value or 0.0) for line in lines]
+    obs = _loss_observations(db, ingredient_id)
+    if not obs:
+        return None
 
-    streak: list[tuple[int, float, float]] = []
-    for item in reversed(variances):
-        if item[1] > 0:
-            streak.append(item)
-        else:
+    streak: list[_LossObservation] = []
+    for o in reversed(obs):
+        if not o.significant:
             break
-    if len(streak) >= RECURRING_MIN_STREAK:
-        magnitudes = [abs(v) for _, v, _ in streak]
-        if max(magnitudes) <= min(magnitudes) * RECURRING_MAGNITUDE_RATIO:
-            return LossBadge(
-                ingredient_id=ingredient_id, kind="perte_recurrente",
-                cumulative_value=sum(val for _, _, val in streak),
-                streak_length=len(streak),
-            )
+        streak.append(o)
+    streak.reverse()
 
-    last_session_id, last_variance, last_value = variances[-1]
-    if last_variance > 0:
-        prior_losses = [v for _, v, _ in variances[:-1] if v > 0]
-        if prior_losses:
-            baseline = sum(prior_losses) / len(prior_losses)
-            is_anomaly = last_variance >= baseline * ANOMALY_RATIO
+    if len(streak) >= RECURRING_MIN_STREAK:
+        cumul_total = sum(o.value for o in streak)
+        cumul_inexplique = sum(o.value for o in streak if not o.explained)
+        pct_moyen = sum(o.pct_of_consumption for o in streak) / len(streak)
+        return LossBadge(
+            ingredient_id=ingredient_id, kind="perte_recurrente",
+            cumulative_value=cumul_inexplique, cumulative_value_total=cumul_total,
+            streak_length=len(streak),
+            explanation=(
+                f"écart de {pct_moyen:.0f} % sur {len(streak)} comptages consécutifs, "
+                f"soit {cumul_inexplique:.2f} € cumulés inexpliqués"
+                + (f" ({cumul_total:.2f} € motifs compris)" if abs(cumul_total - cumul_inexplique) >= 0.005 else "")
+            ),
+        )
+
+    last = obs[-1]
+    if last.significant:
+        anterieurs = [o.variance for o in obs[:-1]]
+        mediane = statistics.median(anterieurs) if anterieurs else 0.0
+        if mediane > 0:
+            is_anomaly = last.variance >= mediane * ANOMALY_RATIO
+            pourquoi = (
+                f"écart de {last.variance:g} contre une médiane historique de "
+                f"{mediane:g}, soit {last.variance / mediane:.1f} fois la normale"
+            )
         else:
-            is_anomaly = (lines[-1].variance_pct or 0.0) >= ANOMALY_MIN_PCT
+            # Tous les comptages précédents conformes : « 3 × 0 » n'a pas de
+            # sens, on retombe sur un seuil relatif (cf. SYN-D).
+            is_anomaly = last.pct_of_consumption >= ANOMALY_MIN_PCT
+            pourquoi = (
+                f"écart de {last.pct_of_consumption:.0f} % de la consommation de la période, "
+                f"alors qu'aucun écart n'avait été constaté auparavant"
+            )
         if is_anomaly:
             return LossBadge(
                 ingredient_id=ingredient_id, kind="inhabituel",
-                cumulative_value=last_value, session_id=last_session_id,
+                cumulative_value=0.0 if last.explained else last.value,
+                cumulative_value_total=last.value,
+                session_id=last.session_id, explanation=pourquoi,
             )
 
     return None

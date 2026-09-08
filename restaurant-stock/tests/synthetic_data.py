@@ -219,7 +219,12 @@ def build_syn_b(db: Session, seed: int = 2) -> SynB:
     sessions = []
     start = datetime(2026, 2, 2)
     for i, burger_n in enumerate(burger_counts):
-        period_start = start + timedelta(days=i * 5)
+        # Comptages hebdomadaires : 6 périodes = 5 semaines de ventes, au-dessus
+        # du gate « >= 4 semaines de ventes » de specs-v2 §4 (F5). L'espacement
+        # n'influence ni la corrélation ni la pente — seules les quantités par
+        # période comptent — mais un jeu qui ne franchit pas le gate de la spec
+        # ne peut rien prouver de la fonctionnalité que la spec décrit.
+        period_start = start + timedelta(days=i * 7)
         rows = [
             (period_start, burger.name, float(burger_n), None),
             (period_start, autre.name, float(autre_n), None),
@@ -268,7 +273,9 @@ def build_syn_c(db: Session, seed: int = 3) -> SynC:
     sessions = []
     start = datetime(2026, 3, 2)
     for i in range(4):
-        period_start = start + timedelta(days=i * 7)
+        # 4 comptages espacés de 10 jours : exactement le minimum de comptages
+        # du gate F5, avec plus de 4 semaines de ventes derrière (specs-v2 §4).
+        period_start = start + timedelta(days=i * 10)
         rows = [(period_start, p.name, 30.0, None) for p in plats]  # parts rigoureusement égales
         import_sales_rows(db, rows, filename=f"syn_c_{i}.csv")
         perte = noisy(rng, 500.0, 0.10)  # écart générique, non attribuable à un seul plat
@@ -445,7 +452,11 @@ def build_syn_f(db: Session, seed: int = 6, weeks: int = 12) -> SynF:
         rng, start=start, weeks=weeks, base_qty=20.0,
         day_factors=day_factors, closed_days=closed_days, noise_pct=0.10,
     )
-    outlier_date = start + timedelta(days=8)  # un mardi de la 2e semaine
+    # Un mardi de l'avant-dernière semaine, donc DANS les 8 dernières
+    # occurrences du mardi que F6 retient (specs-v2 §4). Une aberration plus
+    # ancienne serait écartée par la seule troncature de la fenêtre : le test
+    # de robustesse IA-08 passerait sans que rien de robuste soit exercé.
+    outlier_date = start + timedelta(days=(weeks - 2) * 7 + 1)
     rows = [
         (date, plat.name, qty * 100 if date == outlier_date else qty, None)
         for date, qty in rows_qty

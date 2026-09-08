@@ -437,6 +437,16 @@ class Settings(Base):
     rolling_window_days: Mapped[int] = mapped_column(Integer, default=7)
     price_alert_pct: Mapped[float] = mapped_column(Float, default=15.0)
 
+    # Seuils IA rendus réglables par specs-v2-ia-plan-test.md (§4) plutôt que
+    # codés en dur : F5 « écart valorisé dépassant 5 % de la consommation
+    # théorique de la période OU 10 € », F7 « marge de sécurité, défaut 15 % ».
+    # Le document précise (§8) que ce sont « des valeurs de départ raisonnées,
+    # pas des constantes validées », à revoir après le pilote — d'où la
+    # colonne, pas la constante.
+    loss_alert_pct: Mapped[float] = mapped_column(Float, default=5.0)
+    loss_alert_eur: Mapped[float] = mapped_column(Float, default=10.0)
+    order_safety_margin_pct: Mapped[float] = mapped_column(Float, default=15.0)
+
     # Fonctionnalités IA (lot IA-0, docs/IA scope.md) : implémentées et
     # prouvées sur données synthétiques, mais gatées par des données réelles
     # du pilote qui n'existent pas encore. Toutes éteintes par défaut — leur
