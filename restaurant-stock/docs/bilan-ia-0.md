@@ -15,7 +15,7 @@ commits sur `claude/restaurant-stock-management-mvp-6oq43e` :
 | `90504b2`/`3cc5035` | Bilan de sortie, licences ROB vérifiées |
 | *(à suivre)* | ROB — suite de robustesse sur données externes réelles |
 
-Suite de tests : **220 → 267**, toujours au vert à chaque commit. Chaque
+Suite de tests : **220 → 268**, toujours au vert à chaque commit. Chaque
 fonctionnalité prouvée sur ses jeux SYN (ou, pour ROB, sur données externes
 réelles) avant d'être committée, chaque test vérifié non-vacuous (logique
 cassée volontairement, confirmé que le test concerné échoue, restauré) —
@@ -68,40 +68,59 @@ pas seulement « ça passe ».
   donné. Choisi : repli silencieux sur `ordering.rolling_avg_daily_consumption`
   (la moyenne glissante v1 déjà en production), jamais une erreur — cohérent
   avec le principe « zéro saisie obligatoire » déjà appliqué ailleurs.
-- **ROB — jeux nommés écartés (licence), construit avec un remplaçant CC0.**
-  Un token API Kaggle a été fourni en cours de lot. Les licences des deux
-  jeux nommés par le document ont été vérifiées via l'API Kaggle
-  (`kaggle datasets metadata`), pas juste consultées en survol :
+- **ROB — construit sur les deux jeux nommés à l'origine, licence non
+  vérifiée conforme mais dérogation explicite du porteur du projet.** Un
+  token API Kaggle a été fourni en cours de lot. Les licences des deux
+  jeux ont été vérifiées via l'API Kaggle (`kaggle datasets metadata`),
+  pas juste consultées en survol :
   - *Transactions from a bakery* (`sulmansarwar/transactions-from-a-bakery`) :
     licence **`unknown`**.
   - *French bakery daily sales* (`matthieugimbert/french-bakery-daily-sales`) :
     licence **`copyright-authors`** (tous droits réservés par l'auteur).
 
-  Aucune des deux n'autorise clairement l'usage envisagé — la règle du
-  document lui-même (§3.3) tranche : ne pas les utiliser. Remplacées par
-  `akashdeepkuila/bakery` (`Bakery.csv`), licence **`CC0-1.0`** (vérifiée
-  de la même façon, et re-vérifiée à chaque exécution de la suite ROB —
-  `tests/test_rob_external_data.py` échoue bruyamment si elle change) :
-  20 507 transactions réelles d'une boulangerie, avec le même type de
-  saleté que le jeu original visait (1520 doublons exacts, lignes hors-menu
-  « Adjustment »). Deux limites documentées plutôt qu'ignorées :
-  - **Langue** : ce remplaçant est anglophone. Aucun jeu de vente
-    boulangerie/restauration sous licence claire ET de taille suffisante en
-    français n'a été trouvé après recherche (Kaggle, filtre licence CC).
-    ROB-02 vérifie l'absence de corruption d'encodage sur les caractères
-    spéciaux réellement présents (apostrophes, tirets), pas sur des accents
-    français spécifiquement.
-  - **Volume** : 20 507 lignes contre ~234 000 dans le jeu original écarté.
-    ROB-04 mesure et journalise le temps réel (~13s, ~1600 lignes/s) plutôt
-    que de simuler un volume qu'aucun jeu sous licence compatible n'offrait.
+  Aucune des deux n'autorisait clairement l'usage envisagé au sens de la
+  règle §3.3 du document — d'abord remplacées par un jeu CC0 équivalent
+  mais plus pauvre (anglophone, ~20 500 lignes). **Après avoir vu ce
+  constat détaillé, le porteur du projet a explicitement retiré la règle
+  de vérification de licence pour ces deux jeux précis** (« dans ce cas je
+  supprime cette règle, utilise-les ») : ROB utilise donc maintenant les
+  deux jeux d'origine, en connaissance de cause du risque. Cette
+  dérogation ne couvre QUE la règle §3.3 (vérification de licence) — la
+  règle absolue §3.1 (jamais utiliser un résultat sur donnée externe pour
+  justifier une décision métier) n'a pas été visée par l'instruction et
+  reste entièrement en vigueur, rappelée en tête de
+  `tests/test_rob_external_data.py`. La licence actuelle de chaque jeu est
+  re-vérifiée et journalisée (pas mise en cache) à chaque exécution de la
+  suite, pour que l'état réel reste visible dans le rapport de test au fil
+  du temps.
+
+  Ce changement résout au passage les deux limites précédemment
+  documentées :
+  - **Langue** : *French bakery daily sales* est du vrai français
+    (« BAGUETTE », « PAIN AU CHOCOLAT »…) avec formatage monétaire français
+    réel (« 0,90 € », virgule décimale + symbole €) — ROB-02 le vérifie
+    non corrompu. Nuance découverte en le construisant : les noms de
+    produits sont en capitales sans accents (pas d'« É »/« È » dans ce
+    jeu précis) ; le format de prix « X,XX € » révèle un vrai angle mort
+    du parseur (`unit_price` finit silencieusement à `None` sur toutes les
+    lignes, le symbole € faisant échouer le `float()` après la conversion
+    virgule→point) — caractérisé par un test dédié plutôt que corrigé en
+    douce (correction du parseur hors périmètre F5/F6/F7/F9 de ce lot).
+  - **Volume** : 234 005 lignes réelles importées en 147,3s (~1590
+    lignes/s, ROB-04) — quasiment le chiffre exact du document (~234 000),
+    mesuré et journalisé plutôt que simulé.
+
+  *Transactions from a bakery* (`BreadBasket_DMS.csv`, 21 293 lignes) sert
+  à ROB-03 : 1653 doublons exacts, 786 lignes hors-menu « NONE », 1 ligne
+  « Adjustment » — exactement les trois artefacts cités par le document,
+  tous individuellement traçables après import, aucun fusionné ni perdu.
 
   Aucune donnée n'est commitée : téléchargée à chaque exécution dans un
   répertoire temporaire pytest (`tmp_path_factory`), hors du dépôt. Le
   token n'a été écrit que dans le conteneur (`~/.kaggle/access_token`),
   jamais dans un fichier suivi par git. Suite optionnelle par construction
   (`pytest.skip` propre si le CLI `kaggle` ou des identifiants sont
-  absents — confirmé : 5 tests ignorés proprement en moins de 0,1s sans
-  identifiants, aucun échec).
+  absents — confirmé : les tests sont ignorés proprement, aucun échec).
 
   **ROB-03, limite assumée** : le contrôle ACTIF de doublons (avertir
   l'utilisateur avant import) est le rôle de F15 (extension F10-F19, hors
@@ -111,8 +130,9 @@ pas seulement « ça passe ».
   existant, pas une fonctionnalité ajoutée par ce lot.
 
   Non-vacuité : une perte silencieuse de la moitié des lignes injectée
-  volontairement dans `sales_import.import_sales`, confirmé que 2 des 5
-  tests ROB échouent (ROB-01, ROB-03), restauré.
+  volontairement dans `sales_import.import_sales`, confirmé que ROB-01 et
+  ROB-03 échouent (les seuls à vérifier un décompte exact de lignes),
+  restauré.
 
 ## 3. Trois propositions du document — non arbitrées, donc non construites
 
@@ -130,7 +150,7 @@ validation explicite »), le lot est livré **sans** elles :
 | Générateur écrit, SYN-A à SYN-I déterministes | Fait |
 | Tests SYN verts, non-vacuous | Fait |
 | F5, F6, F7, F9 implémentées, testées, éteintes par flag | Fait |
-| ROB verts si licence OK, sinon absence documentée | Fait — jeux nommés écartés (licence non conforme), construit et vert sur un remplaçant CC0 (§2) |
+| ROB verts si licence OK, sinon absence documentée | Fait — construit sur les deux jeux nommés à l'origine, licence non conforme mais dérogation explicite du porteur du projet (§2) |
 | NR-01 à NR-18 verts | Vert — aucun fichier v1 modifié par ce lot, hors ajout de colonnes optionnelles sur `Ingredient`/`Settings` |
 | Aucun changement visible pour un utilisateur | Vrai — aucun routeur, gabarit ou test HTTP n'expose F5/F6/F7/F9 |
 | Rapport de sortie | Ce document |
@@ -140,9 +160,11 @@ validation explicite »), le lot est livré **sans** elles :
 - Obtenir ou faire confirmer `specs-v2-ia-plan-test.md` pour vérifier que
   les gates/seuils choisis ici (§2) correspondent aux specs réelles.
 - Statuer sur les 3 propositions (§3).
-- ROB : si une couverture en français ou à plus grand volume reste
-  souhaitée, choisir un second jeu sous licence claire — décision de
-  périmètre, pas bloquant pour la suite actuelle (§2).
+- ROB : la dérogation à la vérification de licence (§2) couvre l'usage
+  actuel (tests locaux, jamais commité ni redistribué). Toute évolution
+  vers une redistribution ou un usage commercial de ces deux jeux
+  précisément mériterait une revérification, pas une simple reconduction
+  de cette dérogation.
 - Activer les feature flags un par un, sur les vraies données du pilote,
   seulement une fois IA-01 à IA-10 (les tests sur données réelles, pas SYN)
   au vert pour la fonctionnalité concernée — c'est le seul gate d'activation
