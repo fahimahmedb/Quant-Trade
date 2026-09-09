@@ -162,40 +162,27 @@ réglable dans `Settings`, jamais une constante figée.
 
 ---
 
-### Ticket 2 — F21, menu engineering (matrice popularité/rentabilité) ⭐
+### Ticket 2 — F21, menu engineering : RETIRÉ, déjà construit
 
-**Objectif** : classer chaque plat actif selon le modèle classique (fort
-volume/forte marge, fort volume/faible marge, faible volume/forte marge,
-faible volume/faible marge) pour guider les décisions de carte — combine
-F9 (food cost, déjà construit) et le volume de vente (déjà disponible),
-n'invente aucun nouveau calcul de coût.
+**Correction, trouvée en relisant le code avant d'implémenter ce ticket**
+(pas en le committant tel quel puis en le découvrant après coup) :
+`ai_food_cost.popularity_margin_matrix` (F9, Lot IA-0,
+docs/feature-plans/ia-f5-f9.md §1.9) fait déjà exactement ce que ce
+ticket proposait — quadrants popularité × marge, seuils par MÉDIANE de la
+carte (pas de constante absolue), labels en clair (« stars », « à
+retravailler », « à pousser », « à questionner »), jamais de suggestion
+de retirer un plat. Construire un second calcul aurait dupliqué une
+logique déjà testée (SYN-H) plutôt que d'ajouter une valeur réelle.
 
-**Gate** : F9 actif, ≥ 4 semaines de ventes du plat (même ordre de
-grandeur que les gates F5/F6 du Lot IA-0).
+Seul écart entre ce qui existe et ce ticket : AUCUN écran ne l'expose
+(comme la quasi-totalité des fonctionnalités IA du projet — logique
+d'abord, écran ensuite, décision constante depuis le Lot IA-0). C'est un
+travail d'écran, pas un ticket d'IA — même raisonnement que
+`backlog-lot-ia-1.md` §4 pour l'export matrice F9, déjà écarté de ce lot
+pour la même raison.
 
-**Règles métier**
-- Seuils RELATIFS à la carte du restaurant (médiane de marge et médiane de
-  volume sur les plats actifs), jamais des seuils absolus — un restaurant
-  gastronomique à 8 plats et une brasserie à 40 plats n'ont pas la même
-  notion de « plat populaire ». Même principe que la classification
-  Pareto/ABC de F10 (Lot IA-1), qui raisonne déjà en parts relatives.
-- Quatre classes, formulées sans jargon anglophone (« star / plow-horse /
-  puzzle / dog » n'a pas de sens pour un cuisinier francophone) : à mettre
-  en avant (fort/fort), à surveiller le prix (faible marge, fort volume),
-  à repositionner (fort marge, faible volume), à remettre en question
-  (faible/faible).
-- Jamais une suggestion de retirer un plat de la carte : l'outil classe,
-  le chef décide (même principe d'explicabilité que F17 — une corrélation
-  signalée, jamais une conclusion).
-
-**Lien commercial** : « quels plats vous rapportent vraiment » — item de
-vocabulaire directement issu du secteur (§5 du contexte métier), argument
-fort et déjà connu des restaurateurs formés en école hôtelière.
-
-**Décision par défaut** : sur une carte de moins de 4 plats actifs (trop
-peu pour une médiane stable), fonctionnalité inerte plutôt qu'un
-classement sur un échantillon dérisoire — même logique que le gate « ≥ 4
-semaines » ailleurs dans le projet, transposée à la taille de carte.
+Numérotation des tickets suivants inchangée (pas de renumérotation) pour
+ne pas invalider les références déjà faites ailleurs à ce document.
 
 ---
 
@@ -353,7 +340,6 @@ l'utiliser dans un test.
 
 | Réf | Contenu | Cible |
 |---|---|---|
-| SYN-P | Deux plats connus, l'un fort volume/faible marge, l'autre faible volume/forte marge | F21 |
 | SYN-Q | Historique de pertes mixtes (motivées et non) sur plusieurs mois, montants connus | F22 |
 | SYN-R | Ventes autour de 3-4 jours fériés connus, effet mesurable sur un ingrédient | F20 |
 | SYN-S | Plat ajouté en cours d'historique, estimation initiale connue, ventes réelles progressives | F23 |
@@ -387,12 +373,13 @@ Trois points, chacun explicitement hors de ce que ce document tranche
 
 ## 6. Critères de sortie du lot
 
-- Tickets 1 à 5 construits, testés, derrière feature flag éteint (même
-  principe que F10-F19 : toutes éteintes par défaut).
+- Tickets 1, 3, 4, 5 construits, testés, derrière feature flag éteint
+  (même principe que F10-F19 : toutes éteintes par défaut). Ticket 2
+  (F21) retiré — déjà construit au Lot IA-0 (§3.2 ci-dessus).
 - NR-01 à NR-18 et la suite des Lots IA-0/IA-1 toujours verts.
 - Aucun changement visible pour un utilisateur, sauf ce que le ticket lui-
-  même expose explicitement (F22/F21 sont des vues de lecture — à cadrer
-  avec un écran dédié le moment venu, pas mélangé à la construction de la
+  même expose explicitement (F22 est une vue de lecture — à cadrer avec
+  un écran dédié le moment venu, pas mélangé à la construction de la
   logique, même principe que F12 au Lot IA-1 : construire la logique
   avant l'écran plutôt que d'attendre l'écran pour construire la logique).
 - Rapport de sortie (`docs/bilan-ia-2.md`) listant, comme pour les deux
@@ -404,11 +391,11 @@ Trois points, chacun explicitement hors de ce que ce document tranche
 
 ## Modèle et effort recommandés
 
-**Sonnet, effort par défaut** pour les 5 tickets — chacun réutilise un
-patron déjà établi (agrégation de données existantes pour F22/F25,
-classification relative déjà pratiquée par F10 pour F21, facteur
-multiplicatif mesuré empiriquement déjà pratiqué par F6/F17 pour F20,
-moyenne pondérée glissante déjà pratiquée par la règle v1 pour F23) —
-application répétée plus qu'invention, comme la majorité du Lot IA-1.
+**Sonnet, effort par défaut** pour les 4 tickets restants — chacun
+réutilise un patron déjà établi (agrégation de données existantes pour
+F22/F25, facteur multiplicatif mesuré empiriquement déjà pratiqué par
+F6/F17 pour F20, moyenne pondérée glissante déjà pratiquée par la règle
+v1 pour F23) — application répétée plus qu'invention, comme la majorité
+du Lot IA-1.
 Repasser en Opus uniquement si un ticket remonte un point de jugement
 métier non couvert par la règle de résolution d'ambiguïté (§1 règle 3).
