@@ -111,3 +111,72 @@ fausses entrées, a fait échouer à la fois le comptage F13 et le test
 d'indépendance croisée).
 
 6 tests, `tests/test_ai_recommendation_tracking.py`.
+
+## 4. Ticket 4 — F20, signaux calendaires : construit
+
+**Gate** : feature flag F20, plus le gate de F6 lui-même (`weekday_
+forecast`) dont ce module ajuste la sortie — jamais un second calcul de
+base. Le marquage manuel d'un jour exceptionnel (`mark_exceptional_day`/
+`unmark_exceptional_day`) reste disponible même F20 (et F6) éteints : une
+saisie ne doit jamais être gatée par le calcul qui l'exploite ensuite.
+Referme au passage l'écran « marquage journée exceptionnelle » resté non
+construit depuis le Lot IA-0 (`docs/bilan-ia-0.md`, item F6).
+
+**Deux modules séparés** : `french_calendar.py` (pur, sans accès base de
+données — jours fériés calculés par formule via l'algorithme de Meeus/
+Jones/Butcher, jamais une liste figée par année ; vacances scolaires par
+zone, données embarquées et sourcées pour 2025-2026/2026-2027, seul
+entretien manuel annuel anticipé par le backlog lui-même) et `ai_calendar_
+signals.py` (logique métier F20 — mesure du facteur, priorité entre
+signaux, dégradation sous le seuil).
+
+**Facteur empirique, jamais deviné** : chaque signal actif (férié /
+vacances / exceptionnel) est un facteur multiplicatif sur l'estimation F6
+du jour de semaine, mesuré sur les occurrences PASSÉES de ce même signal
+(`actual / F6_attendu_ce_jour_de_semaine`, moyenné) — jamais un effet fixe
+supposé (« -20 % un jour férié » n'a de sens pour aucun restaurant en
+particulier). Moins de `MIN_PAST_OCCURRENCES` (3) occurrences passées :
+aucun facteur appliqué, l'estimation F6 seule reste la sortie (dégradation
+silencieuse, même principe que partout ailleurs dans le projet) — prouvé
+non vacueusement sur la frontière exacte (2 occurrences n'ajustent pas, 3
+ajustent).
+
+**Priorité entre signaux** (décision purement technique actée par le code,
+backlog §1 règle 4 — le document ne tranchait pas ce cas) : EXCEPTIONNEL
+(le plus spécifique, saisi par le restaurateur pour CE restaurant précis)
+> FÉRIÉ (récurrent chaque année) > VACANCES (la catégorie la plus large).
+Un seul facteur appliqué à la fois, jamais un cumul multiplicatif —
+cumuler amplifierait le bruit statistique plus que le signal réel sur un
+aussi petit échantillon.
+
+**Réutilisation** : nouvelle fonction publique `ai_forecast.ingredient_
+daily_consumption` (renommée depuis `_ingredient_daily_consumption`,
+interne — aucun changement de comportement) pour que F20 lise l'historique
+jour par jour sans dupliquer ce calcul ; `ai_forecast.weekday_forecast`
+(F6) réutilisé tel quel pour l'estimation de base.
+
+**Prouvé sur SYN-R** (ventes plates 2026 avec les jours fériés réels
+boostés ×1,5, cible le 11 novembre — Armistice, volontairement hors de
+toute période de vacances scolaire embarquée, vérifié explicitement pour
+isoler le signal « férié » seul) : 9 fériés passés détectés, facteur
+mesuré ≈1,49 (proche de 1,5 sans lui être identique — effet réel documenté
+ci-dessous, pas une erreur d'arrondi).
+
+**Propriété découverte, pas un bug** : le facteur mesuré n'est jamais
+EXACTEMENT le facteur injecté, parce que F6 lui-même intègre, sans le
+savoir, les jours fériés tombés dans sa propre fenêtre de mesure du jour
+de semaine (les 8 dernières occurrences) — ce qui gonfle légèrement sa
+propre estimation « habituelle » pour ce jour-là. Vérifié empiriquement
+avant d'écrire les seuils de tolérance des tests, documenté dans le
+docstring du module et celui des tests plutôt que traité comme une
+erreur à corriger.
+
+**Non-vacuité** : cassée/restaurée sur 3 points — le seuil `MIN_PAST_
+OCCURRENCES` (frontière exacte 2 vs 3 occurrences), la priorité
+« exceptionnel » sur « férié » (contre-exemple direct : le 1er janvier,
+toujours férié, reste « ferie » sans marquage manuel), et la dépendance
+zone pour les vacances scolaires (une date dans les vacances d'hiver
+zone A seulement, détectée pour « A », absente pour « B »/« C »/aucune
+zone).
+
+12 tests, `tests/test_ai_calendar_signals.py`.

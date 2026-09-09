@@ -255,6 +255,31 @@ class DailySessionOverride(Base):
     ingredient: Mapped["Ingredient"] = relationship()
 
 
+class ExceptionalDay(Base):
+    """F20 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 4) :
+    marquage manuel d'un jour ouvert mais à fréquentation atypique
+    (concert, match, marché local...) — construit ce qui restait comme
+    écran « non construit » depuis le Lot IA-0 (bilan-ia-0.md, item F6).
+
+    Distinct de `ClosedDay` (F15) : ClosedDay explique une ABSENCE de
+    vente (jour fermé), ExceptionalDay qualifie un jour OUVERT dont la
+    fréquentation est notable — les deux ne se recouvrent jamais.
+
+    Indépendant du feature flag F20 : une saisie reste possible même F20
+    éteint (ia-f10-f19.md §... backlog-lot-ia-2.md ticket 4 : « le
+    marquage manuel reste disponible même sans F20 actif, c'est une
+    saisie, indépendante du calcul qui l'exploite ensuite »). Global au
+    restaurant (un concert à proximité touche toute la fréquentation, pas
+    un ingrédient en particulier) — jamais associé à un ingrédient précis."""
+
+    __tablename__ = "exceptional_days"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    on_date: Mapped[date] = mapped_column(Date, unique=True)
+    note: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
 class ModelDecisionLog(Base):
     """F18 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §9, AC-F18-2) :
     journal des bascules automatiques modèle <-> règle v1. Première brique
@@ -609,6 +634,14 @@ class Settings(Base):
     # F25 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 3) :
     # indicateur de confiance étendu (mémorisation prévision/décision F13).
     feature_f25_enabled: Mapped[bool] = mapped_column(default=False)
+
+    # F20 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 4) :
+    # signaux calendaires (jours fériés, vacances scolaires, jours
+    # exceptionnels). `school_vacation_zone` optionnel ("A"/"B"/"C") :
+    # sans lui, le signal vacances scolaires reste inerte (dégradation
+    # silencieuse), les fériés et jours exceptionnels restent actifs.
+    feature_f20_enabled: Mapped[bool] = mapped_column(default=False)
+    school_vacation_zone: Mapped[str | None] = mapped_column(String(1), nullable=True)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

@@ -75,9 +75,11 @@ def _feature_enabled(db: Session) -> bool:
 
 
 def _daily_consumption(db: Session, ingredient_id: int) -> dict[date, float]:
-    """Identique en principe à `ai_forecast._ingredient_daily_consumption` :
-    dupliqué plutôt qu'importé pour ne pas coupler deux modules de
-    fonctionnalités indépendantes via une fonction privée de l'un des deux."""
+    """Identique en principe à `ai_forecast.ingredient_daily_consumption`
+    (rendue publique depuis pour F20, Lot IA-2) : dupliqué ici plutôt
+    qu'importé pour ne pas coupler deux modules de fonctionnalités
+    indépendantes — ce couplage n'aurait de sens que si F10 en avait
+    besoin, ce qui n'est pas le cas."""
     recipe_lines = db.query(models.RecipeIngredient).filter_by(ingredient_id=ingredient_id).all()
     daily: dict[date, float] = {}
     for rl in recipe_lines:

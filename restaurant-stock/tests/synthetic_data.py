@@ -42,6 +42,7 @@ from app.services import (
     ai_recommendation_tracking,
     counting,
     deliveries,
+    french_calendar,
     recipes,
     sales_import,
     settings_service,
@@ -1231,3 +1232,45 @@ def build_syn_t(db: Session, seed: int = 1) -> SynT:
     result.ingredient.current_theoretical_stock = 0.0
     db.commit()
     return SynT(ingredient=result.ingredient, dish=result.dish)
+
+
+# ==========================================================================
+# SYN-R — Ventes autour de jours fériés connus (cible : F20)
+# ==========================================================================
+
+@dataclass
+class SynR:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    target_date: date
+    base_qty: float
+    holiday_factor: float  # facteur RÉELLEMENT injecté (le facteur mesuré par F20 en diffère légèrement :
+    # F6 lui-même intègre sans le savoir les jours fériés tombés dans sa propre fenêtre du jour de semaine)
+
+
+def build_syn_r(db: Session, base_qty: float = 20.0, holiday_factor: float = 1.5) -> SynR:
+    """docs/feature-plans/backlog-lot-ia-2.md ticket 4 (F20) : ventes
+    plates (`base_qty` chaque jour, aucune saisonnalité de jour de
+    semaine — pour isoler proprement l'effet calendaire de tout effet
+    jour de semaine), sauf les jours fériés RÉELS de 2026
+    (`french_calendar.public_holidays`), vendus `holiday_factor` fois
+    plus. Du 1er janvier au 11 novembre 2026 (Armistice, `target_date`) :
+    9 jours fériés passés avant la cible (1er janvier compris), largement
+    au-dessus du seuil de 3 occurrences — et le 11 novembre n'est dans
+    AUCUNE période de vacances scolaires embarquée, pour un signal "férié"
+    isolé, sans interférence avec "vacances" (vérifié empiriquement)."""
+    ing = ingredient(db, "Ingrédient SYN-R", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-R", {ing.id: 1.0})
+    start = date(2026, 1, 1)
+    target_date = date(2026, 11, 11)
+    holidays_2026 = french_calendar.public_holidays(2026)
+
+    rows = []
+    d = start
+    while d <= target_date:
+        qty = base_qty * holiday_factor if d in holidays_2026 else base_qty
+        rows.append((datetime(d.year, d.month, d.day), plat.name, qty, None))
+        d += timedelta(days=1)
+    import_sales_rows(db, rows, filename="syn_r.csv")
+
+    return SynR(ingredient=ing, dish=plat, target_date=target_date, base_qty=base_qty, holiday_factor=holiday_factor)

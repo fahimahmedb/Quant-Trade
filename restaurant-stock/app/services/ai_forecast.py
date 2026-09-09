@@ -87,10 +87,14 @@ def _feature_enabled(db: Session) -> bool:
     return settings_service.get_settings(db).feature_f6_enabled
 
 
-def _ingredient_daily_consumption(db: Session, ingredient_id: int) -> dict[date, float]:
+def ingredient_daily_consumption(db: Session, ingredient_id: int) -> dict[date, float]:
     """{date -> quantité consommée ce jour, tous plats confondus} pour cet
     ingrédient — dérivé des VENTES, jamais du stock théorique (qui mélange
-    réceptions, comptages, ajustements sans rapport avec la saisonnalité)."""
+    réceptions, comptages, ajustements sans rapport avec la saisonnalité).
+
+    Rendue publique pour F20 (Lot IA-2, `ai_calendar_signals.py`), qui a
+    besoin de la même série jour par jour pour mesurer l'effet calendaire
+    — jamais un second calcul parallèle qui pourrait diverger de celui-ci."""
     recipe_lines = db.query(models.RecipeIngredient).filter_by(ingredient_id=ingredient_id).all()
     daily: dict[date, float] = {}
     for rl in recipe_lines:
@@ -201,7 +205,7 @@ def _weekday_forecast_core(
     revenu à la v1 ne pourrait alors plus jamais accumuler de semaines
     rejouables, et donc jamais être réactivé (blocage circulaire révélé
     par TC-F18-05)."""
-    daily = _ingredient_daily_consumption(db, ingredient_id)
+    daily = ingredient_daily_consumption(db, ingredient_id)
     if as_of is not None:
         daily = {d: qty for d, qty in daily.items() if d < as_of}
     if not daily:
@@ -306,7 +310,7 @@ def backtest_vs_v1(db: Session, ingredient_id: int) -> BacktestResult:
     if not _feature_enabled(db):
         return BacktestResult(ok=False, message="Fonctionnalité F6 désactivée (feature flag éteint).")
 
-    daily = _ingredient_daily_consumption(db, ingredient_id)
+    daily = ingredient_daily_consumption(db, ingredient_id)
     if not daily:
         return BacktestResult(ok=False, message="Aucune vente pour cet ingrédient.")
 
