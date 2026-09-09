@@ -423,6 +423,32 @@ class OrderSuggestionLine(Base):
     ingredient: Mapped[Ingredient] = relationship()
 
 
+class ProductionSuggestion(Base):
+    """F25 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 3) :
+    mémorisation prévision/décision réelle pour F13 (mise en place),
+    referme le gap laissé ouvert au ticket 9 du Lot IA-1. Reprend le
+    schéma de `OrderSuggestionLine` (F7) — suggested_quantity/
+    final_quantity/decision/validated_at, même `SuggestionDecision` —
+    sans le concept de lot (`OrderSuggestionBatch`) : F13 génère une
+    suggestion par appel, par ingrédient, jamais une fournée quotidienne
+    comme F7."""
+
+    __tablename__ = "production_suggestions"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
+    generated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    window_days: Mapped[int] = mapped_column(Integer)
+    suggested_quantity: Mapped[float] = mapped_column(Float)
+    final_quantity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    decision: Mapped[SuggestionDecision] = mapped_column(
+        str_enum(SuggestionDecision), default=SuggestionDecision.EN_ATTENTE
+    )
+    validated_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    ingredient: Mapped[Ingredient] = relationship()
+
+
 class ErrorLog(Base):
     """Journal des erreurs applicatives (F2), consultable par l'équipe projet.
 
@@ -579,6 +605,10 @@ class Settings(Base):
     # purement technique, documentée ici (backlog-lot-ia-2.md §1 règle 4).
     feature_f22_enabled: Mapped[bool] = mapped_column(default=False)
     waste_summary_window_days: Mapped[float] = mapped_column(Float, default=90.0)
+
+    # F25 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 3) :
+    # indicateur de confiance étendu (mémorisation prévision/décision F13).
+    feature_f25_enabled: Mapped[bool] = mapped_column(default=False)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

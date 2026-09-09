@@ -37,7 +37,15 @@ from datetime import date, datetime, timedelta
 from sqlalchemy.orm import Session
 
 from app import models
-from app.services import counting, deliveries, recipes, sales_import, settings_service
+from app.services import (
+    ai_production_forecast,
+    ai_recommendation_tracking,
+    counting,
+    deliveries,
+    recipes,
+    sales_import,
+    settings_service,
+)
 
 
 # ==========================================================================
@@ -1190,3 +1198,36 @@ def build_syn_q(db: Session, window_days: float = 90.0) -> SynQ:
         explained_total=3.0 + 2.0, unexplained_total=5.0 + 8.0, revenue=revenue,
         decoy_session=decoy,
     )
+
+
+# ==========================================================================
+# SYN-T — Suggestions F13 avec décisions connues (cible : F25)
+# ==========================================================================
+
+@dataclass
+class SynT:
+    ingredient: models.Ingredient
+    dish: models.Dish
+
+
+def build_syn_t(db: Session, seed: int = 1) -> SynT:
+    """docs/feature-plans/backlog-lot-ia-2.md ticket 3 (F25). Base SYN-A
+    (déjà prouvée franchir le gate F6, docs/bilan-ia-0.md), marquée
+    « préparée en interne » et stock ramené à 0 (même raisonnement que
+    AC-F13-2 : le stock de départ de SYN-A, dimensionné pour 12 semaines
+    de ventes, masquerait toute quantité suggérée).
+
+    Construit SEULEMENT l'ingrédient — n'appelle PAS `ai_recommendation_
+    tracking.record_production_suggestion` (gaté par le feature flag F25 :
+    l'appeler ici imposerait d'activer F25 avant même de construire le
+    jeu, contrairement à tous les autres builders de ce fichier, qui ne
+    dépendent d'aucun flag). Au test d'activer F6/F13/F25 puis d'appeler
+    `record_production_suggestion`/`record_decision` lui-même — c'est
+    justement ce que ces fonctions sont censées faire, pas quelque chose
+    à contourner dans le jeu de données.
+    """
+    result = build_syn_a(db, seed=seed, weeks=12)
+    result.ingredient.is_prepared_in_house = True
+    result.ingredient.current_theoretical_stock = 0.0
+    db.commit()
+    return SynT(ingredient=result.ingredient, dish=result.dish)

@@ -73,3 +73,41 @@ test : la propriété `WasteSummaryResult.total`, calculée séparément, est
 ce que le test lit réellement ; cassée au bon endroit ensuite).
 
 10 tests, `tests/test_ai_waste_summary.py`.
+
+## 3. Ticket 3 — F25, indicateur de confiance étendu à toutes les recommandations : construit
+
+**Gate** : feature flag F25, plus le gate de F13 lui-même (via l'appel à
+`ai_production_forecast.forecast_production`) — reste inerte (aucune
+suggestion journalisée) tant que F13 ne produit rien pour un ingrédient
+donné.
+
+**`ProductionSuggestion`** reprend le schéma d'`OrderSuggestionLine` (F7)
+— `suggested_quantity`/`final_quantity`/`decision`/`validated_at`, même
+`SuggestionDecision` — sans le concept de lot (`OrderSuggestionBatch`) :
+F13 génère une suggestion par appel, par ingrédient, jamais une fournée
+quotidienne comme F7. `record_decision` n'est PAS gatée par F25 (une
+décision qui clôt une suggestion déjà journalisée doit toujours pouvoir
+s'enregistrer, même si le flag a été éteint entre-temps — même principe
+que confirmer une ligne de comptage déjà ouverte ailleurs dans le projet).
+
+**Vue agrégée par fonctionnalité** (`adoption_stats_by_feature`) : F7
+toujours présent (v1, `metrics.suggestion_adoption_stats`, jamais gatée,
+inchangée), F13 SEULEMENT si F25 est actif — sa clé est ABSENTE (pas un
+zéro) quand F25 est éteint, pour que « jamais activé » reste visiblement
+distinct de « activé, mais jamais encore utilisé ».
+
+**Prouvé sur SYN-T** (base SYN-A, marquée « préparée en interne », stock
+ramené à 0 — même raisonnement que AC-F13-2 du Lot IA-1) : 5 suggestions
+journalisées, décisions connues (2 acceptées, 2 modifiées, 1 rejetée),
+`adoption_stats_by_feature()["F13"]` retrouve exactement cette
+répartition.
+
+**Non-vacuité** : cassée/restaurée sur 3 points — le gate F25 sur
+`record_production_suggestion`, l'absence (vs zéro) de la clé « F13 »
+quand F25 est éteint, et l'indépendance des statistiques F7/F13 (un
+contre-exemple avec des décisions F7 ET F13 simultanées, en proportions
+différentes : cassé en polluant `_production_adoption_stats` avec de
+fausses entrées, a fait échouer à la fois le comptage F13 et le test
+d'indépendance croisée).
+
+6 tests, `tests/test_ai_recommendation_tracking.py`.
