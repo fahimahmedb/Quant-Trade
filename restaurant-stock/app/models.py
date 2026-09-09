@@ -571,6 +571,15 @@ class Settings(Base):
     # mise en place. Même principe que les autres flags F10-F19.
     feature_f13_enabled: Mapped[bool] = mapped_column(default=False)
 
+    # F22 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 1) :
+    # gaspillage consolidé et valorisé. Fenêtre glissante en JOURS plutôt
+    # que « mois calendaire » (le backlog l'évoquait ainsi, mais aucune
+    # autre fenêtre temporelle du projet ne raisonne en mois civils —
+    # COMPARISON_WINDOW_DAYS de F12 est le précédent direct) : décision
+    # purement technique, documentée ici (backlog-lot-ia-2.md §1 règle 4).
+    feature_f22_enabled: Mapped[bool] = mapped_column(default=False)
+    waste_summary_window_days: Mapped[float] = mapped_column(Float, default=90.0)
+
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de
     # départ raisonnée, jamais une constante figée.

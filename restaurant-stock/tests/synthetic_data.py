@@ -1136,3 +1136,57 @@ def build_syn_n(db: Session, seed: int = 16) -> SynN:
         explained_sessions=sorted(explained_sessions, key=lambda s: s.ended_at),
         conforming_sessions=sorted(conforming_sessions, key=lambda s: s.ended_at),
     )
+
+
+# ==========================================================================
+# SYN-Q — Pertes mixtes sur plusieurs mois, montants connus (cible : F22)
+# ==========================================================================
+
+@dataclass
+class SynQ:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    window_days: float
+    explained_total: float  # € attendus, motif saisi
+    unexplained_total: float  # € attendus, sans motif
+    revenue: float  # € attendus, ventes dans la fenêtre
+    decoy_session: models.CountSession  # hors fenêtre : ne doit RIEN compter
+
+
+def build_syn_q(db: Session, window_days: float = 90.0) -> SynQ:
+    """docs/feature-plans/backlog-lot-ia-2.md ticket 1 (F22) : historique
+    de pertes mixtes (motivées et non) sur plusieurs mois, montants
+    CONNUS. `unit_cost=1.0` : la valorisation de chaque écart est alors
+    directement sa quantité, aucun calcul intermédiaire à refaire pour
+    vérifier un montant attendu. Une perte massive (100 €) délibérément
+    placée HORS fenêtre (150 jours) : si le filtre de fenêtre disparaît,
+    ce jeu la compterait et la somme attendue ne correspondrait plus —
+    c'est le contre-exemple qui rend le filtre prouvable, pas seulement
+    plausible.
+    """
+    now = datetime.utcnow()
+    ing = ingredient(db, "Ingrédient SYN-Q", unit_cost=1.0, stock_qty=100_000.0)
+    plat = dish(db, "Plat SYN-Q", {ing.id: 1.0})
+
+    rows = [(now - timedelta(days=d), plat.name, 1.0, 20.0) for d in (80, 70, 60, 50, 40, 30, 20, 10, 5, 1)]
+    import_sales_rows(db, rows, filename="syn_q.csv")
+    revenue = 10 * 1.0 * 20.0  # 200.0 €
+
+    def _session(days_ago: float, perte: float, motif: models.VarianceReason | None) -> models.CountSession:
+        motifs = {ing.id: motif} if motif is not None else None
+        return run_count_session(
+            db, counted_by="SYN-Q", counted={ing.id: ing.current_theoretical_stock - perte},
+            motifs=motifs, ended_at=now - timedelta(days=days_ago),
+        )
+
+    decoy = _session(150, 100.0, None)  # hors fenêtre (90 j) : ne doit rien compter
+    _session(65, 5.0, None)  # inexpliqué
+    _session(50, 3.0, models.VarianceReason.CASSE)  # motivé
+    _session(20, 8.0, None)  # inexpliqué
+    _session(5, 2.0, models.VarianceReason.PERIME)  # motivé
+
+    return SynQ(
+        ingredient=ing, dish=plat, window_days=window_days,
+        explained_total=3.0 + 2.0, unexplained_total=5.0 + 8.0, revenue=revenue,
+        decoy_session=decoy,
+    )
