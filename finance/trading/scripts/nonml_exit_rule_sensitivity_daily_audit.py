@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from data_loader import load_ohlc, quality_report  # noqa: E402
 from prediction import _rsi  # noqa: E402
-from nonml_exit_rule_sensitivity_backtest import (  # noqa: E402
+from nonml_exit_rule_sensitivity_daily_backtest import (  # noqa: E402
     compute_indicators, simulate, START, DATA_PATH, SMA_WINDOW, SMA20_WINDOW,
     BREAKOUT_WINDOW, SL_MULT, VARIANTS,
 )
@@ -106,7 +106,7 @@ def main():
     lines.append("")
     lines.append(f"## Verdict global : **{'CONFORME' if all_ok else 'ÉCHEC'}**")
 
-    out = ROOT / "results" / "nonml_exit_rule_sensitivity_audit.md"
+    out = ROOT / "results" / "nonml_exit_rule_sensitivity_daily_audit.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")

@@ -268,7 +268,7 @@ def main():
                      "en signal profitable net de coûts. Cohérent avec la conclusion déjà "
                      "établie du repo (aucun signal actif testé ne bat B&H sur le Composite).")
 
-    out = ROOT / "results" / "nonml_exit_rule_sensitivity_result.md"
+    out = ROOT / "results" / "nonml_exit_rule_sensitivity_daily_result.md"
     out.write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     print(f"\nÉcrit dans {out}")
