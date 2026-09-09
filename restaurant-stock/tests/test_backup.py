@@ -28,7 +28,7 @@ def _make_live_db(path: Path):
     with engine.begin() as conn:
         conn.execute(text(
             "INSERT INTO ingredients (name, unit, unit_cost, storage_zone, current_theoretical_stock,"
-            " is_active, created_at, updated_at) VALUES ('Farine','g',0.0012,'sec',1000,1,"
+            " is_active, f6_reverted_to_v1, created_at, updated_at) VALUES ('Farine','g',0.0012,'sec',1000,1,0,"
             "'2026-01-01 00:00:00','2026-01-01 00:00:00')"
         ))
     engine.dispose()

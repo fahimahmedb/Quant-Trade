@@ -21,6 +21,17 @@ INSERT_FARINE = text(
     " VALUES ('Farine', 'g', 0.0012, 'sec', 1000, NULL, 1, '2026-01-01 00:00:00', '2026-01-01 00:00:00')"
 )
 
+# Contre INSERT_FARINE ci-dessus : celui-ci vise un schéma déjà à head, où
+# f6_reverted_to_v1 (F18) est NOT NULL sans valeur par défaut côté base une
+# fois son server_default retiré (migration e6b4a2d9f1c3) — INSERT_FARINE
+# seul suffit encore contre un schéma ANTÉRIEUR à cette colonne (schéma v1
+# legacy, test_init_db_stamps_legacy_create_all_database_without_losing_data).
+INSERT_FARINE_AT_HEAD = text(
+    "INSERT INTO ingredients (name, unit, unit_cost, storage_zone, current_theoretical_stock,"
+    " alert_threshold, is_active, f6_reverted_to_v1, created_at, updated_at)"
+    " VALUES ('Farine', 'g', 0.0012, 'sec', 1000, NULL, 1, 0, '2026-01-01 00:00:00', '2026-01-01 00:00:00')"
+)
+
 
 def _cfg() -> Config:
     cfg = Config(str(BASE_DIR / "alembic.ini"))
@@ -47,7 +58,7 @@ def test_tc_f2_04_upgrade_then_downgrade_on_a_copy(tmp_path):
     assert {"ingredients", "dishes", "stock_movements", "count_sessions", "alembic_version"} <= tables
 
     with engine.begin() as conn:
-        conn.execute(INSERT_FARINE)
+        conn.execute(INSERT_FARINE_AT_HEAD)
 
     # Montée à vide (déjà à jour) : données préservées.
     _run(engine, lambda cfg: command.upgrade(cfg, "head"))

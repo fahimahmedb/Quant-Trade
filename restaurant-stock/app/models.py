@@ -145,6 +145,15 @@ class Ingredient(Base):
     supplier_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
     supplier_free_shipping_threshold: Mapped[float | None] = mapped_column(Float, nullable=True)
 
+    # F18 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §9) : bascule
+    # automatique vers la règle v1 pour CET ingrédient quand F6 se dégrade
+    # sous la v1 sur 3 semaines consécutives (AC-F18-1) — distincte du
+    # flag global `feature_f6_enabled`, qui reste allumé pour les autres
+    # ingrédients. Lue directement par `ai_forecast.weekday_forecast` pour
+    # que TOUT consommateur de F6 (F7, F14...) la respecte automatiquement,
+    # sans mise à jour séparée de chacun.
+    f6_reverted_to_v1: Mapped[bool] = mapped_column(default=False)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="ingredient", cascade="all, delete-orphan"
     )
@@ -237,6 +246,27 @@ class DailySessionOverride(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     ingredient: Mapped["Ingredient"] = relationship()
+
+
+class ModelDecisionLog(Base):
+    """F18 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §9, AC-F18-2) :
+    journal des bascules automatiques modèle <-> règle v1. Première brique
+    du "journal de décision du modèle" resté en suspens depuis
+    avancement-lot-ia-0-trois-decisions §1 — construite ici au périmètre
+    strict dont F18 a besoin (une bascule est un événement rare et
+    significatif, pas une sortie F10-F19 courante), pas un système
+    générique pour toutes les fonctionnalités IA."""
+
+    __tablename__ = "model_decision_log"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    feature: Mapped[str] = mapped_column(String(10))  # "F18"
+    ingredient_id: Mapped[int | None] = mapped_column(ForeignKey("ingredients.id"), nullable=True)
+    event: Mapped[str] = mapped_column(String(50))  # "revert_to_v1" | "reactivated"
+    detail: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    ingredient: Mapped["Ingredient | None"] = relationship()
 
 
 class SalesImport(Base):
@@ -524,6 +554,7 @@ class Settings(Base):
     # (ia-f10-f19.md §3), même principe que les seuils du Lot IA-0.
     margin_coefficient_threshold: Mapped[float] = mapped_column(Float, default=3.0)
     margin_drop_pct_threshold: Mapped[float] = mapped_column(Float, default=10.0)
+    feature_f18_enabled: Mapped[bool] = mapped_column(default=False)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

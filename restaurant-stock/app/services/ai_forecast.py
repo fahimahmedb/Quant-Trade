@@ -175,6 +175,32 @@ def weekday_forecast(
             gate_ok=False, gate_message="Fonctionnalité F6 désactivée (feature flag éteint).", forecast=None,
         )
 
+    ingredient = db.get(models.Ingredient, ingredient_id)
+    if ingredient is not None and ingredient.f6_reverted_to_v1:
+        # F18 : bascule automatique vers la v1 pour CET ingrédient (dégradé
+        # sous la v1 sur 3 semaines) — lue ici pour que tout consommateur
+        # de F6 (F7, F14...) la respecte sans mise à jour séparée.
+        return ForecastResult(
+            gate_ok=False,
+            gate_message="F6 désactivée pour cet ingrédient (retour automatique à la v1, F18).",
+            forecast=None,
+        )
+
+    return _weekday_forecast_core(db, ingredient_id, as_of=as_of)
+
+
+def _weekday_forecast_core(
+    db: Session, ingredient_id: int, *, as_of: date | None = None,
+) -> ForecastResult:
+    """Le calcul de F6 lui-même, sans les gates de disponibilité (feature
+    flag F6, bascule F18) — utilisé par `weekday_forecast` pour l'usage
+    courant, et directement par `backtest_vs_v1` pour rejouer ce que F6
+    AURAIT produit sur une semaine passée, y compris pour un ingrédient
+    actuellement revenu à la v1. Sans ce contournement, le backtest
+    respecterait lui-même la bascule qu'il sert à lever : un ingrédient
+    revenu à la v1 ne pourrait alors plus jamais accumuler de semaines
+    rejouables, et donc jamais être réactivé (blocage circulaire révélé
+    par TC-F18-05)."""
     daily = _ingredient_daily_consumption(db, ingredient_id)
     if as_of is not None:
         daily = {d: qty for d, qty in daily.items() if d < as_of}
@@ -223,6 +249,21 @@ BACKTEST_REQUIRED_IMPROVEMENT = 0.15
 
 
 @dataclass
+class WeeklyComparison:
+    """Une semaine rejouée : le détail par semaine qu'IA-01 agrège, mais
+    dont F18 (Lot IA-1, suivi runtime, hystérésis) a besoin séparément —
+    « 3 semaines de dégradation consécutives » ne se lit pas sur une
+    moyenne globale."""
+    week_start: date
+    mape_f6: float
+    mape_v1: float
+
+    @property
+    def f6_better(self) -> bool:
+        return self.mape_f6 < self.mape_v1
+
+
+@dataclass
 class BacktestResult:
     ok: bool
     message: str | None
@@ -231,6 +272,7 @@ class BacktestResult:
     weeks_evaluated: int = 0
     improvement: float | None = None  # part d'erreur en moins par rapport à la v1
     should_activate: bool = False
+    weekly_results: list[WeeklyComparison] = field(default_factory=list)
 
 
 def _v1_rolling_average(daily: dict[date, float], as_of: date, window_days: int) -> float:
@@ -276,14 +318,17 @@ def backtest_vs_v1(db: Session, ingredient_id: int) -> BacktestResult:
 
     erreurs_f6: list[float] = []
     erreurs_v1: list[float] = []
+    weekly_results: list[WeeklyComparison] = []
     semaines = 0
     while semaine <= fin:
-        outcome = weekday_forecast(db, ingredient_id, as_of=semaine)
+        outcome = _weekday_forecast_core(db, ingredient_id, as_of=semaine)
         if not outcome.gate_ok:
             semaine += timedelta(weeks=1)
             continue
         v1 = _v1_rolling_average(daily, semaine, window_days)
         jours_evalues = 0
+        erreurs_f6_semaine: list[float] = []
+        erreurs_v1_semaine: list[float] = []
         for offset in range(7):
             jour = semaine + timedelta(days=offset)
             reel = daily.get(jour)
@@ -292,11 +337,18 @@ def backtest_vs_v1(db: Session, ingredient_id: int) -> BacktestResult:
             prevu = outcome.forecast.expected_daily_qty.get(jour.weekday())
             if prevu is None:
                 continue
-            erreurs_f6.append(abs(prevu - reel) / reel)
-            erreurs_v1.append(abs(v1 - reel) / reel)
+            erreurs_f6_semaine.append(abs(prevu - reel) / reel)
+            erreurs_v1_semaine.append(abs(v1 - reel) / reel)
             jours_evalues += 1
         if jours_evalues:
             semaines += 1
+            erreurs_f6.extend(erreurs_f6_semaine)
+            erreurs_v1.extend(erreurs_v1_semaine)
+            weekly_results.append(WeeklyComparison(
+                week_start=semaine,
+                mape_f6=sum(erreurs_f6_semaine) / len(erreurs_f6_semaine),
+                mape_v1=sum(erreurs_v1_semaine) / len(erreurs_v1_semaine),
+            ))
         semaine += timedelta(weeks=1)
 
     if semaines < BACKTEST_MIN_WEEKS or not erreurs_f6:
@@ -313,4 +365,5 @@ def backtest_vs_v1(db: Session, ingredient_id: int) -> BacktestResult:
         ok=True, message=None, mape_f6=mape_f6, mape_v1=mape_v1,
         weeks_evaluated=semaines, improvement=amelioration,
         should_activate=amelioration >= BACKTEST_REQUIRED_IMPROVEMENT,
+        weekly_results=weekly_results,
     )

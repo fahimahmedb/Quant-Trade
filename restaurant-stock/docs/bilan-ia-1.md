@@ -285,14 +285,84 @@ gate s'est révélé être un faux négatif (aucun test n'isolait ce cas du
 cas voisin « pas de prix de vente ») — un test dédié ajouté avant de
 redéclarer la preuve, même schéma que pour le ticket 7 (F16).
 
-## 7. Reste du backlog — non construit à ce stade
+## 7. Ticket 5 — F18, indicateur de confiance et retour automatique à v1 : construit
+
+Aucun jeu SYN dédié dans le document (§9) : fixtures locales, comme F12/
+F16 dans ce même lot. Deux profils construits et vérifiés empiriquement
+avant d'écrire les tests dessus : une tendance haussière sans saisonnalité
+hebdomadaire (F6 perd face à la v1 sur CHAQUE semaine rejouée) et un
+historique saisonnier dont seules les 3 dernières semaines de ventes sont
+perturbées (dégrade exactement les 2 dernières semaines évaluables, pas
+3 — la limite testée par TC-F18-04).
+
+**Gate** : réutilise tel quel le gate d'IA-01 (`backtest_vs_v1`,
+`BACKTEST_MIN_WEEKS` = 4 semaines rejouables), jamais redéfini séparément
+— F18 est explicitement « le pendant runtime du test IA-06 » du document.
+
+**Hystérésis (décision actée, backlog §4 ticket 5)**, fenêtres
+asymétriques :
+- 3 semaines de dégradation CONSÉCUTIVES désactivent F6 pour l'ingrédient
+  concerné (AC-F18-1), journalisées dans `ModelDecisionLog` (AC-F18-2).
+- La réactivation exige un NOUVEAU backtest complet redevenu favorable
+  (`BacktestResult.should_activate`, le même seuil ≥ 15 % qu'IA-01) —
+  jamais seulement quelques bonnes semaines locales, pour qu'un rebond
+  ponctuel ne réenclenche pas immédiatement ce que la dégradation venait
+  d'éteindre (TC-F18-05).
+- 2 semaines dégradées seulement → aucune bascule (TC-F18-04, jeu construit
+  pour dégrader exactement 2 semaines, jamais 3, faute de quoi ce test ne
+  prouverait rien).
+
+**Vocabulaire (AC-F18-3)** : l'écart est exprimé en pourcentage clair
+(« Prévisions justes à ±X % en moyenne sur les 4 dernières semaines »),
+jamais MAPE ni RMSE dans un message destiné à un usage restaurateur.
+
+**Bug réel trouvé par les tests, pas une simple divergence cosmétique** :
+la bascule F18 lue dans `weekday_forecast` (pour que F7/F14 la respectent
+sans mise à jour séparée) était AUSSI lue par `backtest_vs_v1`, qui
+appelle `weekday_forecast` en interne pour rejouer chaque semaine passée.
+Un ingrédient déjà revenu à la v1 voyait donc chaque semaine rejouée par
+le backtest échouer au même gate — 0 semaine rejouable, `backtest.ok
+= False` — et ne pouvait alors plus JAMAIS accumuler les 4 semaines
+nécessaires pour se réactiver : un blocage circulaire qui aurait rendu la
+réactivation totalement inatteignable en usage réel. Révélé par
+`test_tc_f18_05_reactivation_requires_a_favorable_full_backtest` échouant
+dès le premier lancement. Corrigé en extrayant le calcul de F6 lui-même
+(`_weekday_forecast_core`, sans les gates de disponibilité) que
+`weekday_forecast` applique pour l'usage courant et que `backtest_vs_v1`
+appelle directement pour rejouer l'historique sans se heurter à la
+bascule qu'il sert lui-même à lever.
+
+**Non-vacuité** : ce même bug a révélé un second problème, une preuve qui
+passait pour la mauvaise raison —
+`test_tc_f18_05_no_flip_flopping_while_still_degraded` était déjà vert
+AVANT le correctif, mais vacuement : son 2e appel tombait dans le même
+blocage circulaire (`backtest.ok=False`), et `check_and_apply_reversion`
+renvoie `action="none"` par défaut sur cet échec, la seule chose que le
+test vérifiait. Une réactivation empêchée par des données réellement
+défavorables et un backtest qui échoue purement et simplement
+produisaient la même assertion — le test ne distinguait pas les deux.
+Assertion `outcome.ok` ajoutée avant de redéclarer la preuve valide (même
+schéma récurrent que les tickets 6 (F12) et 7 (F16) : une preuve qui
+passe sans qu'on y touche signale un vrai trou de couverture, pas une
+règle inutile). Cassé/restauré ensuite avec le correctif en place : les
+deux tests d'hystérésis (déclenchement à 3 semaines, blocage de la
+réactivation tant que les données restent défavorables) échouent bien
+sans lui, repassent avec.
+
+**Journal de décision du modèle** : première brique du chantier resté en
+suspens depuis avancement-lot-ia-0-trois-decisions §1 — `ModelDecisionLog`
+construit ici au périmètre strict dont F18 a besoin (feature, ingrédient,
+événement, détail), pas le système générique complet évoqué par le
+document pour l'ensemble des décisions IA.
+
+## 8. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
 | 2 | F11 — comptage tournant intelligent ⭐ | **Fait** (§3) |
 | 3 | F12 — alerte de marge érodée ⭐ | **Fait** (§6) |
 | 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
-| 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
+| 5 | F18 — indicateur de confiance, retour auto v1 | **Fait** (§7) |
 | 6 | F14 — risque de péremption | **Fait** (§5) |
 | 7 | F16 — consolidation de commande par fournisseur | **Fait** (§4) |
 | 8 | F17 — diagnostic de cause d'écart | Non construit |
@@ -300,24 +370,30 @@ redéclarer la preuve, même schéma que pour le ticket 7 (F16).
 
 **Les trois décisions actées** (`avancement-lot-ia-0-trois-decisions` §1,
 lues avant ce backlog) :
-- Journal de décision du modèle — **non construit**, priorité haute pour le
-  prochain ticket touché.
+- Journal de décision du modèle — **première brique construite** au
+  ticket 5 (F18, `ModelDecisionLog`), au périmètre strict dont F18 a
+  besoin — pas encore le système générique pour l'ensemble des décisions
+  IA évoqué par le document.
 - Écran de comparaison en mode ombre — **non construit**, le ticket 2
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 8. Critères de sortie du lot — état
+## 9. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **6/8**.
-- Journal de décision du modèle en place dès le ticket 1 : **non fait**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **7/8**.
+- Journal de décision du modèle en place dès le ticket 1 : **première
+  brique** (F18, périmètre strict — voir §8).
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 355 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14 + 14 F12, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 364 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14 + 14 F12 +
+  9 F18, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F11, F12, F14, F15, F16 n'ont ni routeur ni gabarit).
+  construit à date (F10, F11, F12, F14, F15, F16, F18 n'ont ni routeur ni
+  gabarit).
 
-## 9. Prochaine session
+## 10. Prochaine session
 
-Tickets 2, 3, 4, 6 et 7 traités. Restent 5 (F18, hystérésis déjà
-tranchée par le backlog), 8 (F17 ⭐, recommandé Opus — juge la solidité
-d'une corrélation) et 9 (F13, confort, en dernier).
+Tickets 2, 3, 4, 5, 6 et 7 traités. Reste 8 (F17 ⭐, recommandé Opus —
+juge la solidité d'une corrélation ; traité en Sonnet par discipline
+« avance sur tout » faute de changement de session) et 9 (F13, confort,
+en dernier — backlog : à construire seulement si 1 à 8 sont faits).
