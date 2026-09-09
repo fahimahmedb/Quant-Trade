@@ -5,6 +5,7 @@ Square...) — cf. section 9 du brief. On reste tolérant sur les en-têtes et
 les formats de date/nombre plutôt que d'imposer un format unique dès la v1.
 """
 import csv
+import hashlib
 import io
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -175,7 +176,14 @@ def import_sales(
 ) -> tuple[models.SalesImport, ParseResult]:
     parsed = parse_csv(content)
 
-    sales_import = models.SalesImport(filename=filename, row_count=len(parsed.rows))
+    # F15 (docs/feature-plans/ia-f10-f19.md §6) : empreinte du contenu brut,
+    # pour qu'un même fichier réimporté deux fois soit détectable — calculée
+    # ici, à la source, jamais reconstruite après coup à partir de données
+    # déjà écrites.
+    content_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+    sales_import = models.SalesImport(
+        filename=filename, row_count=len(parsed.rows), content_hash=content_hash,
+    )
     db.add(sales_import)
     db.flush()
 

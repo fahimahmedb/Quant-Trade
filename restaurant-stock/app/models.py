@@ -6,9 +6,10 @@ une seule unité de référence (g, kg, mL, L ou unité/pièce) utilisée partou
 Pas de conversion automatique entre unités en v1.
 """
 import enum
-from datetime import datetime
+from datetime import date, datetime
 
 from sqlalchemy import (
+    Date,
     DateTime,
     Enum,
     Float,
@@ -198,6 +199,20 @@ class DishAlias(Base):
     dish: Mapped[Dish] = relationship(back_populates="aliases")
 
 
+class ClosedDay(Base):
+    """F15 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §6) : un jour marqué
+    explicitement comme fermeture (par le gérant, en réponse à une alerte de
+    trou dans l'historique des ventes). Exclu de la détection de jour
+    manquant tant qu'il reste dans cette table."""
+
+    __tablename__ = "closed_days"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    closed_on: Mapped[date] = mapped_column(Date, unique=True)
+    reason: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
 class SalesImport(Base):
     __tablename__ = "sales_imports"
 
@@ -206,6 +221,12 @@ class SalesImport(Base):
     imported_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     row_count: Mapped[int] = mapped_column(Integer, default=0)
     unmatched_count: Mapped[int] = mapped_column(Integer, default=0)
+    # F15 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §6) : empreinte du
+    # contenu brut, pour détecter un même fichier réimporté deux fois
+    # ("détection de doublon de fichier déjà prévue en F8, conservée ici").
+    # Nullable : les imports antérieurs à cette colonne n'ont pas d'empreinte,
+    # ce qui les exclut simplement de la détection, sans jamais planter.
+    content_hash: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
 
     lines: Mapped[list["SaleLine"]] = relationship(
         back_populates="sales_import", cascade="all, delete-orphan"
@@ -468,3 +489,8 @@ class Settings(Base):
     # par défaut.
     feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
+
+    # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
+    # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de
+    # départ raisonnée, jamais une constante figée.
+    import_volume_alert_pct: Mapped[float] = mapped_column(Float, default=40.0)

@@ -32,7 +32,7 @@ import io
 import random
 import statistics
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from sqlalchemy.orm import Session
 
@@ -769,3 +769,69 @@ def build_syn_j(db: Session, seed: int = 10, weeks: int = 8) -> SynJ:
     petits_small = [_build(f"Ingrédient SYN-J petit {i + 1:02d}", 10.625) for i in range(16)]
 
     return SynJ(gros=gros, petit_grand=petit_grand, petits_small=petits_small, weeks=weeks)
+
+
+# ==========================================================================
+# SYN-O — Historique d'imports avec anomalies connues (cible : F15, Lot IA-1)
+# ==========================================================================
+
+@dataclass
+class SynO:
+    dish: models.Dish
+    start: datetime
+    end: datetime
+    missing_day: date
+    low_volume_day: date
+    low_volume_typical: int
+    low_volume_actual: int
+    vacation_start: date
+    vacation_end: date
+    normal_daily_rows: int
+
+
+def build_syn_o(db: Session, seed: int = 15, weeks: int = 12) -> SynO:
+    """docs/feature-plans/ia-f10-f19.md §11 (F15). Un plat vendu tous les
+    jours à un rythme régulier (10 ventes/jour, pour que chaque "ligne"
+    corresponde à un client), sur lequel trois anomalies connues sont
+    injectées :
+    - un jour isolé sans aucune vente (trou d'un jour) ;
+    - un jour à -80% du volume habituel (2 lignes au lieu de 10) ;
+    - une période de congés de 14 jours consécutifs (aucune vente).
+    Les trois sont placées loin les unes des autres, et il reste 2 semaines
+    de données normales APRÈS les congés (semaines 11-12) : sans elles, la
+    fenêtre d'historique connue s'arrêterait pile à la fin des congés, et
+    la période de congés elle-même — hors de toute fenêtre [début, fin
+    connue] — ne serait jamais parcourue par la détection de trous.
+    """
+    rng = random.Random(seed)
+    ing = ingredient(db, "Ingrédient SYN-O", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-O", {ing.id: 10.0})
+    start = datetime(2026, 1, 5)  # un lundi
+    normal_rows = 10
+
+    missing_day = (start + timedelta(days=35)).date()  # semaine 6, un lundi
+    low_volume_day = (start + timedelta(days=49)).date()  # semaine 8, un lundi
+    low_volume_actual = 2  # -80% de 10
+    vacation_start = (start + timedelta(days=56)).date()  # semaine 9
+    vacation_end = vacation_start + timedelta(days=13)  # 14 jours
+
+    rows = []
+    for day_offset in range(weeks * 7):
+        d = (start + timedelta(days=day_offset)).date()
+        if d == missing_day or vacation_start <= d <= vacation_end:
+            continue
+        n = low_volume_actual if d == low_volume_day else normal_rows
+        for _ in range(n):
+            rows.append((
+                datetime.combine(d, datetime.min.time()), plat.name,
+                noisy(rng, 1.0, 0.05), 5.0,
+            ))
+    import_sales_rows(db, rows, filename="syn_o.csv")
+
+    return SynO(
+        dish=plat, start=start, end=start + timedelta(days=weeks * 7 - 1),
+        missing_day=missing_day, low_volume_day=low_volume_day,
+        low_volume_typical=normal_rows, low_volume_actual=low_volume_actual,
+        vacation_start=vacation_start, vacation_end=vacation_end,
+        normal_daily_rows=normal_rows,
+    )

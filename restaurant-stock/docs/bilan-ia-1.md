@@ -67,13 +67,47 @@ le seuil de coefficient de variation déclenchant une promotion B → A.
 
 **Note de flag** : `feature_f15_enabled` a été ajouté au même moment que `feature_f10_enabled` (même migration), par le même réflexe que le Lot IA-0 (« feature flags F5/F6/F7/F9, éteints par défaut » avant que chaque fonctionnalité soit construite une à une) — le flag existe, F15 lui-même reste à construire (§2).
 
-## 2. Reste du backlog — non construit à ce stade
+## 2. Ticket 4 — F15, contrôle d'intégrité des imports : construit
+
+**Gate** : >= 3 occurrences passées du même jour de semaine pour une
+« normale » de volume ; >= 3 semaines d'historique global pour le
+repérage de trous. Sous ces seuils : aucune alerte (AC-F15-3, TC-F15-04).
+
+**Prouvé sur SYN-O** (10 ventes/jour, avec un trou d'un jour, un jour à
+-80%, et une période de congés de 14 jours injectés à des dates connues) :
+
+- Le jour à -80% est détecté (AC-F15-1), les jours normaux ne le sont
+  jamais (contre-exemple direct, sans lequel une alerte permanente
+  passerait aussi le premier test).
+- Seuil de déviation réglable (`Settings.import_volume_alert_pct`, 40%
+  par défaut) — même principe que les seuils du Lot IA-0 (§8 des specs V2).
+- Le trou isolé est signalé comme un jour ; les 14 jours de congés sont
+  groupés en **une seule** alerte de période, pas 14 alertes répétant le
+  même diagnostic (TC-F15-05 : « détecté comme période exceptionnelle »).
+- Marquer un jour comme fermé (`mark_day_closed`, idempotent) retire son
+  alerte immédiatement, sans affecter les autres trous en cours (AC-F15-2).
+- Un jour de semaine chroniquement à zéro vente (ex. fermeture hebdo fixe)
+  n'est jamais un « trou » — distingué d'un jour férié isolé par un gate
+  propre (>= 3 occurrences, toutes à zéro) (TC-F15-06).
+- Détection de doublon de fichier par empreinte du contenu (sha256),
+  calculée à la source dans `sales_import.import_sales` — reprend la
+  demande de F8 (non construite par ailleurs) sans en reconstruire le
+  reste (mapping assisté, prévisualisation).
+
+**Non-vacuité** : groupement de jours consécutifs, gate d'historique,
+détection de fermeture habituelle et prise en compte des jours marqués
+fermés chacun cassés séparément, confirmé que le test concerné (et lui
+seul) échoue, restauré. Un premier passage du test de gate (TC-F15-04)
+avait un trou factice hors de portée de son propre test — corrigé en même
+temps que la preuve de non-vacuité l'a révélé, pas après coup.
+
+## 3. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
 | 2 | F11 — comptage tournant intelligent ⭐ | Non construit — dépend du ticket 1 (fait) |
 | 3 | F12 — alerte de marge érodée ⭐ | Non construit |
-| 4 | F15 — contrôle d'intégrité des imports | Non construit |
+| 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
 | 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
 | 6 | F14 — risque de péremption | Non construit |
 | 7 | F16 — consolidation de commande par fournisseur | Non construit |
@@ -88,19 +122,19 @@ lues avant ce backlog) :
   ticket 2 (F11).
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 3. Critères de sortie du lot — état
+## 4. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **1/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **2/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **non fait**.
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 300 tests
-  au vert (289 IA-0 + 11 F10, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 312 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10 n'a ni routeur ni gabarit).
+  construit à date (F10, F15 n'ont ni routeur ni gabarit).
 
-## 4. Prochaine session
+## 5. Prochaine session
 
-Reprendre au ticket 2 (F11, comptage tournant) une fois le seuil de
-volatilité du ticket 1 tranché — ou traiter le ticket 4 (F15, aucune
-dépendance, priorité haute déclarée par le document) en attendant cette
-décision.
+Ticket 4 (F15) traité. Reprendre au ticket 2 (F11, comptage tournant) —
+le seuil de volatilité de promotion B→A du ticket 1 reste ouvert, mais
+n'empêche pas F11 de s'appuyer sur `effective_class` tel quel (A/B/C sans
+cette promotion spécifique, cf. §1).
