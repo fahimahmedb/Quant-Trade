@@ -207,7 +207,39 @@ groupement par fournisseur s'est révélé être un faux négatif (aucun test
 existant ne vérifiait qu'un fournisseur NOMMÉ reste bien sous son propre
 groupe) — un test dédié a été ajouté avant de redéclarer la preuve.
 
-## 5. Reste du backlog — non construit à ce stade
+## 5. Ticket 6 — F14, risque de péremption : construit
+
+**Gate réel** : durée de conservation renseignée (champ optionnel déjà
+prévu par F7). Le document dit « F6 actif OU moyenne glissante v1
+disponible », mais la moyenne glissante v1 répond toujours 0.0 sans
+jamais échouer — ce n'est donc jamais un second gate bloquant, juste une
+source de repli (même hiérarchie F6-puis-v1 que F7).
+
+Calcul choisi pour ne jamais diviser par la consommation (TC-F14-04) :
+plutôt que « combien de jours avant épuisement », `stock_actuel −
+conservation × consommation` — une consommation nulle donne directement
+tout le stock en trop, sans aucune division dans la formule.
+
+**Prouvé sur SYN-M** (conservation 5 jours, consommation 2000 g/jour
+établie par de vraies ventes, seuil de péremption exactement 10 000 g) :
+- Stock au-dessus du seuil (12 000 g) → à risque, montant en euros exact
+  à la marge de bruit près (AC-F14-2, AC-F14-3).
+- Stock en dessous (8 000 g) → jamais à risque (contre-exemple direct).
+- Consommation nulle → alerte immédiate, tout le stock signalé, aucun
+  crash (TC-F14-04).
+- Une réception en cours de route change le résultat au recalcul suivant
+  (TC-F14-05) — trivialement vrai par construction (fonction pure sur
+  l'état courant, jamais mise en cache), vérifié explicitement plutôt que
+  supposé.
+- Sans conservation renseignée → silencieux, message explicite, jamais
+  une erreur (AC-F14-1).
+
+**Non-vacuité** : formule du reliquat et gate de conservation chacun
+cassés séparément, confirmé que les tests concernés échouent (le second
+cassage produit une `TypeError` franche — le gate protégeait aussi contre
+un accès à un champ `None`), restauré.
+
+## 6. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
@@ -215,7 +247,7 @@ groupe) — un test dédié a été ajouté avant de redéclarer la preuve.
 | 3 | F12 — alerte de marge érodée ⭐ | Non construit |
 | 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
 | 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
-| 6 | F14 — risque de péremption | Non construit |
+| 6 | F14 — risque de péremption | **Fait** (§5) |
 | 7 | F16 — consolidation de commande par fournisseur | **Fait** (§4) |
 | 8 | F17 — diagnostic de cause d'écart | Non construit |
 | 9 | F13 — prévision de mise en place | Non construit |
@@ -228,22 +260,19 @@ lues avant ce backlog) :
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 6. Critères de sortie du lot — état
+## 7. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **4/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **5/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **non fait**.
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 335 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 341 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F11, F15, F16 n'ont ni routeur ni gabarit).
+  construit à date (F10, F11, F14, F15, F16 n'ont ni routeur ni gabarit).
 
-## 7. Prochaine session
+## 8. Prochaine session
 
-Tickets 2, 4 et 7 traités. Reprendre au ticket 3 (F12, alerte de marge
-érodée) — sa dépendance (prix de vente sur la fiche plat, U7 du plan UX)
-n'est pas levée, mais le backlog demande explicitement de construire la
-logique quand même, en amont de l'écran (§4 ticket 3, cohérent avec la
-dégradation silencieuse déjà appliquée à F7/F13/F14/F16). Sinon, ticket 6
-(F14, risque de péremption) : dépendance déjà présente (shelf_life_days,
-champ F7), aucun jugement métier non tranché identifié dans sa spec.
+Tickets 2, 4, 6 et 7 traités. Restent 3 (F12 ⭐, dépendance U7 non
+levée mais construction demandée quand même), 5 (F18, hystérésis déjà
+tranchée par le backlog), 8 (F17 ⭐, recommandé Opus — juge la solidité
+d'une corrélation) et 9 (F13, confort, en dernier).

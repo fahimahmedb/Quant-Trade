@@ -935,3 +935,45 @@ def build_syn_k(db: Session, seed: int = 11) -> SynK:
         syn_j=syn_j, stable_ingredient=stable, unstable_ingredient=unstable,
         stable_low_value=stable_low, new_ingredient=new_ingredient, sessions=sessions,
     )
+
+
+# ==========================================================================
+# SYN-M — Rotation lente, conservation courte (cible : F14)
+# ==========================================================================
+
+@dataclass
+class SynM:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    daily_consumption_g: float
+    shelf_life_days: float
+    stock_at_risk: float
+    stock_safe: float
+
+
+def build_syn_m(db: Session, seed: int = 14) -> SynM:
+    """docs/feature-plans/ia-f10-f19.md §11 (F14). Conservation 5 jours,
+    consommation quotidienne connue (2000 g/jour, établie par de vraies
+    ventes sur les 7 derniers jours pour que la moyenne glissante v1 la
+    retrouve). Le seuil de péremption (conservation x conso) vaut alors
+    précisément 10 000 g. Deux niveaux de stock fournis pour couvrir la
+    frontière : `stock_at_risk` (12 000 g, 2 000 g = 6,00 € en trop) et
+    `stock_safe` (8 000 g, jamais à risque).
+    """
+    rng = random.Random(seed)
+    unit_cost = 0.003
+    grammage = 100.0
+    ing = ingredient(db, "Ingrédient SYN-M", unit_cost=unit_cost, stock_qty=12_000.0)
+    plat = dish(db, "Plat SYN-M", {ing.id: grammage})
+
+    now = datetime.utcnow()
+    rows = [
+        (now - timedelta(days=d), plat.name, noisy(rng, 2000.0 / grammage, 0.05), None)
+        for d in range(7)
+    ]
+    import_sales_rows(db, rows, filename="syn_m.csv")
+
+    return SynM(
+        ingredient=ing, dish=plat, daily_consumption_g=2000.0, shelf_life_days=5.0,
+        stock_at_risk=12_000.0, stock_safe=8_000.0,
+    )

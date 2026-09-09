@@ -515,6 +515,7 @@ class Settings(Base):
     # par défaut.
     feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f11_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f14_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f16_enabled: Mapped[bool] = mapped_column(default=False)
 
