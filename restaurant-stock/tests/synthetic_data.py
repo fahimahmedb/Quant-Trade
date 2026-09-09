@@ -835,3 +835,103 @@ def build_syn_o(db: Session, seed: int = 15, weeks: int = 12) -> SynO:
         vacation_start=vacation_start, vacation_end=vacation_end,
         normal_daily_rows=normal_rows,
     )
+
+
+# ==========================================================================
+# SYN-K — Ingrédients stables et volatils, historique de comptages (cible : F11)
+# ==========================================================================
+
+@dataclass
+class SynK:
+    syn_j: SynJ
+    stable_ingredient: models.Ingredient
+    unstable_ingredient: models.Ingredient
+    stable_low_value: models.Ingredient
+    new_ingredient: models.Ingredient
+    sessions: list[models.CountSession]
+
+
+def build_syn_k(db: Session, seed: int = 11) -> SynK:
+    """docs/feature-plans/ia-f10-f19.md §11 (F11). Réutilise l'axe criticité
+    de SYN-J (3 "gros" classés A, 16 "petits" classés B/C selon leur rang —
+    mêmes garanties de frontière déterministe que `build_syn_j`) plutôt que
+    d'en reconstruire un second à partir de zéro. Ajoute par-dessus 8
+    comptages avec des écarts CONTRÔLÉS sur des ingrédients repères, pour
+    couvrir les coins de la grille fréquence x criticité de F11 :
+    - `stable_ingredient` (un "gros", classe A) : conforme sur 8 comptages
+      -> streak >= 6, attendu HEBDOMADAIRE (un ingrédient critique ne
+      descend jamais à mensuel, même stable).
+    - `unstable_ingredient` (un autre "gros", classe A) : écart massif
+      (50 € de valeur, largement au-dessus du seuil de significativité)
+      sur les 2 derniers comptages -> streak < 3, attendu QUOTIDIEN.
+    - `stable_low_value` (le dernier "petit", classe C) : conforme sur 8
+      comptages -> streak >= 6, attendu MENSUEL.
+    - `new_ingredient` : aucune vente du tout -> gate F10 non atteint,
+      attendu QUOTIDIEN par défaut (TC-F11-06).
+    Les comptages démarrent après la fin de la fenêtre de ventes de SYN-J,
+    pour ne jamais chevaucher les dates que F10 utilise pour son propre
+    calcul de gate/dormance.
+    """
+    syn_j = build_syn_j(db, seed=seed)
+    stable = syn_j.gros[0]
+    unstable = syn_j.gros[1]
+    # Un ingrédient dédié, PAS un des 16 "petits" de SYN-J : leur frontière
+    # B/C est calibrée au plus juste pour SYN-J seul (voir sa docstring) et
+    # devient sensible au bruit de mesure une fois la fenêtre de ventes
+    # prolongée pour les besoins de SYN-K (composition différente de la
+    # fenêtre = léger déplacement de la moyenne). Une valeur annuelle >10x
+    # plus petite que le plus petit "petit" (10,625 €) tombe en C avec une
+    # marge large, sans dépendre d'aucune frontière déjà mise sous tension.
+    stable_low = ingredient(db, "Ingrédient SYN-K stable_low", unit_cost=0.01, stock_qty=10_000_000.0)
+    dish(db, f"Plat {stable_low.name}", {stable_low.id: 100.0})
+
+    # SYN-J n'injecte des ventes que sur ses 8 semaines d'origine (jusqu'au
+    # 2026-11-01 environ). Sans continuation, F10 verrait TOUS ces
+    # ingrédients "dormants" (0 consommation dans les 21 jours précédant
+    # les dates de comptage ci-dessous, largement postérieures) — et les
+    # exclurait du calcul Pareto (build_syn_j exclut les dormants du
+    # classement des autres, par design). Ne prolonger que 3 ingrédients
+    # sur 20 réduirait l'univers Pareto à ces 3 seuls et casserait la
+    # frontière soigneusement calibrée de SYN-J (deux "gros" à 250 € côte
+    # à côte, sans rien entre les deux pour absorber le passage de 49% à
+    # 98% de cumul d'un coup, tomberaient tout droit en C en sautant B) —
+    # tous les ingrédients de SYN-J sont donc prolongés, chacun au MÊME
+    # rythme que son injection d'origine, pour préserver l'univers Pareto
+    # complet et donc la classe de criticité mesurée.
+    unit_cost, grammage = 0.01, 100.0
+    syn_j_end = datetime(2026, 9, 7) + timedelta(weeks=8)
+    prolongation_fin = datetime(2026, 12, 31)  # couvre large la dernière date utilisée par les tests F11 (~21/12)
+    jours = (prolongation_fin - syn_j_end).days
+    tous_les_ingredients = [(ing, 250.0) for ing in syn_j.gros]
+    tous_les_ingredients.append((syn_j.petit_grand, 80.0))
+    tous_les_ingredients += [(ing, 10.625) for ing in syn_j.petits_small]
+    tous_les_ingredients.append((stable_low, 1.0))
+    for ing, valeur_annuelle in tous_les_ingredients:
+        qty_jour = valeur_annuelle / (unit_cost * 365.0) / grammage
+        plat = db.query(models.Dish).filter_by(name=f"Plat {ing.name}").one()
+        rows = [
+            (syn_j_end + timedelta(days=d), plat.name, noisy(random.Random(seed * 1000 + ing.id * 100 + d), qty_jour, 0.02), None)
+            for d in range(jours)
+        ]
+        import_sales_rows(db, rows, filename=f"prolongation_{ing.id}.csv")
+
+    base = datetime(2026, 11, 2)  # après la fin des ventes SYN-J (2026-09-07 + 8 semaines)
+    sessions = []
+    for i in range(8):
+        d = base + timedelta(days=i * 3)
+        counted = {
+            stable.id: stable.current_theoretical_stock,
+            stable_low.id: stable_low.current_theoretical_stock,
+            unstable.id: (
+                unstable.current_theoretical_stock - 5000.0 if i >= 6
+                else unstable.current_theoretical_stock
+            ),
+        }
+        sessions.append(run_count_session(db, counted_by="SYN-K", counted=counted, ended_at=d))
+
+    new_ingredient = ingredient(db, "Ingrédient SYN-K nouveau", stock_qty=10_000_000.0)
+
+    return SynK(
+        syn_j=syn_j, stable_ingredient=stable, unstable_ingredient=unstable,
+        stable_low_value=stable_low, new_ingredient=new_ingredient, sessions=sessions,
+    )

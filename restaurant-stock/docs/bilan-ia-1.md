@@ -101,11 +101,74 @@ seul) échoue, restauré. Un premier passage du test de gate (TC-F15-04)
 avait un trou factice hors de portée de son propre test — corrigé en même
 temps que la preuve de non-vacuité l'a révélé, pas après coup.
 
-## 3. Reste du backlog — non construit à ce stade
+## 3. Ticket 2 — F11, comptage tournant intelligent ⭐ : construit
+
+Le document juge lui-même cette fonctionnalité la plus précieuse des dix :
+« la seule [...] qui s'attaque directement à la friction n°1 [...] elle
+réduit ce que le chef FAIT ».
+
+**Gate** : F10 actif (son propre gate) ET >= 3 comptages complets au
+global. Sous ce seuil : aucune session, message honnête.
+
+**Précédence, du plus fort au plus faible**, chacune prouvée séparément
+sur SYN-K (réutilise l'axe criticité de SYN-J, prolongé pour ne pas
+tomber "dormant" pendant la fenêtre de comptage — voir ci-dessous) :
+1. Badge F5 actif -> réintègre TOUJOURS, même retiré manuellement
+   (TC-F11-07 : la sécurité prime la préférence).
+2. Comptage complet en retard (>= `full_count_interval_days`, 28 j par
+   défaut, réglable) -> force TOUS les ingrédients actifs, aucune session
+   ciblée tant qu'il n'est pas fait (AC-F11-3).
+3. Choix manuel du chef (`set_manual_override`), mémorisé.
+4. Fréquence calculée (criticité x stabilité).
+
+**Grille fréquence x criticité** — les 4 coins couverts par SYN-K :
+ingrédient critique (classe A) instable -> quotidien ; critique stable
+(>= 6 comptages conformes, la fenêtre que le document cite lui-même en
+exemple) -> hebdomadaire, jamais mensuel même stable ; faible valeur
+stable -> mensuel ; nouvel ingrédient sans historique -> quotidien par
+défaut (TC-F11-06).
+
+**Non-vacuité** : plafond hebdomadaire de la classe A, précédence
+badge > manuel, déclenchement du comptage complet en retard et gate
+global chacun cassés séparément, confirmé que le test concerné échoue,
+restauré. Un premier essai de preuve sur la précédence badge/manuel s'est
+révélé être un faux négatif (l'inversion codée ne changeait rien à ce cas
+précis) — corrigé en re-choisissant quelle branche désactiver plutôt que
+déclaré "prouvé" sur un test qui n'aurait rien prouvé.
+
+### Interprétation faute de spec formelle sur le stockage
+
+Aucune notion de « session ciblée » n'existe dans le schéma v1 :
+`counting.start_count_session` pré-remplit déjà une ligne par ingrédient
+ACTIF pour chaque session, sans distinction partielle/complète. « Comptage
+complet », au sens de F11, est donc défini ici comme n'importe quelle
+`CountSession` terminée — `daily_session()` ne fait que RECOMMANDER quels
+ingrédients demander aujourd'hui (un filtre d'affichage pour un futur
+écran), jamais un nouveau type d'enregistrement.
+
+### Grille fréquence x criticité, milieu comblé par un défaut de sécurité
+
+Le document ne donne que les deux coins extrêmes (« fort coût + instable
+-> quotidien », « faible coût + toujours conforme -> mensuel »). Le milieu
+de la grille (ex. faible coût mais instable) est comblé en dégradant vers
+PLUS de comptage plutôt que moins dans le doute — un défaut de sécurité,
+pas un jugement métier sur ce qui est prioritaire (à la différence du
+seuil de volatilité du ticket 1, où un tel défaut n'existe pas). Documenté
+ligne par ligne dans `ai_rotating_count._frequency_for`.
+
+### Ce qui reste hors de ce ticket
+
+AC-F11-2 (accès au comptage complet « en un geste »: un écran),
+AC-F11-5 (temps de comptage moyen mesuré après activation : suppose un
+usage réel, mesurable seulement au pilote) — hors de portée par
+construction, comme tous les écrans du Lot IA-0 restés « non construits »
+(§2 du bilan IA-0).
+
+## 4. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
-| 2 | F11 — comptage tournant intelligent ⭐ | Non construit — dépend du ticket 1 (fait) |
+| 2 | F11 — comptage tournant intelligent ⭐ | **Fait** (§3) |
 | 3 | F12 — alerte de marge érodée ⭐ | Non construit |
 | 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
 | 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
@@ -118,23 +181,24 @@ temps que la preuve de non-vacuité l'a révélé, pas après coup.
 lues avant ce backlog) :
 - Journal de décision du modèle — **non construit**, priorité haute pour le
   prochain ticket touché.
-- Écran de comparaison en mode ombre — **non construit**, prévu après le
-  ticket 2 (F11).
+- Écran de comparaison en mode ombre — **non construit**, le ticket 2
+  (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 4. Critères de sortie du lot — état
+## 5. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **2/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **3/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **non fait**.
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 312 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 326 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F15 n'ont ni routeur ni gabarit).
+  construit à date (F10, F11, F15 n'ont ni routeur ni gabarit).
 
-## 5. Prochaine session
+## 6. Prochaine session
 
-Ticket 4 (F15) traité. Reprendre au ticket 2 (F11, comptage tournant) —
-le seuil de volatilité de promotion B→A du ticket 1 reste ouvert, mais
-n'empêche pas F11 de s'appuyer sur `effective_class` tel quel (A/B/C sans
-cette promotion spécifique, cf. §1).
+Tickets 2 et 4 traités. Reprendre au ticket 3 (F12, alerte de marge
+érodée) — sa dépendance (prix de vente sur la fiche plat, U7 du plan UX)
+n'est pas levée, mais le backlog demande explicitement de construire la
+logique quand même, en amont de l'écran (§4 ticket 3, cohérent avec la
+dégradation silencieuse déjà appliquée à F7/F13/F14/F16).

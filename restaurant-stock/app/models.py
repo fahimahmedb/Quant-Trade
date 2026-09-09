@@ -213,6 +213,22 @@ class ClosedDay(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
+class DailySessionOverride(Base):
+    """F11 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §2) : choix manuel du
+    chef d'ajouter ou de retirer un ingrédient de la session du jour
+    suggérée — mémorisé (TC-F11-07), mais jamais plus fort qu'un badge F5
+    actif (la sécurité prime la préférence, voir ai_rotating_count.py)."""
+
+    __tablename__ = "daily_session_overrides"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"), unique=True)
+    include: Mapped[bool] = mapped_column()
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    ingredient: Mapped["Ingredient"] = relationship()
+
+
 class SalesImport(Base):
     __tablename__ = "sales_imports"
 
@@ -488,9 +504,14 @@ class Settings(Base):
     # Lot IA-1 (docs/feature-plans/ia-f10-f19.md), même principe : éteintes
     # par défaut.
     feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f11_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de
     # départ raisonnée, jamais une constante figée.
     import_volume_alert_pct: Mapped[float] = mapped_column(Float, default=40.0)
+
+    # F11 (Lot IA-1) : « un comptage complet reste imposé périodiquement
+    # (défaut : toutes les 4 semaines, réglable) » (ia-f10-f19.md §2).
+    full_count_interval_days: Mapped[float] = mapped_column(Float, default=28.0)
