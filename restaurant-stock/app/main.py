@@ -10,6 +10,7 @@ from app.config import BASE_DIR, UPLOAD_DIR
 from app.database import init_db
 from app.middleware import ErrorLogMiddleware, RequireLoginMiddleware
 from app.routers import (
+    admin,
     auth,
     counting,
     dashboard,
@@ -110,3 +111,4 @@ app.include_router(variance.router)
 app.include_router(orders.router)
 app.include_router(metrics.router)
 app.include_router(settings.router)
+app.include_router(admin.router)

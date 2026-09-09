@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comparaison IA (équipe projet)</title>
+  <link rel="stylesheet" href="/static/tailwind.css" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+{# Ne s'appuie PAS sur base.html à dessein : pas de barre de navigation
+   restaurateur, pas d'enregistrement de service worker, pas d'en-tête de
+   compte établissement — cet écran n'a rien à voir avec la session
+   restaurateur (app/routers/admin.py). #}
+<body class="bg-blanc text-encre min-h-screen">
+  <div class="px-4 py-6 max-w-3xl mx-auto">
+    <h1 class="section-titre mb-1">Comparaison F6 / v1 — mode ombre</h1>
+    <p class="secondaire mb-6">
+      Réservé à l'équipe projet, jamais montré au restaurateur. Rejoue
+      <code>ai_forecast.backtest_vs_v1</code> (IA-01) pour chaque ingrédient
+      actif — aucun second calcul, cette page n'expose que ce gate déjà en place.
+    </p>
+
+    {% if not comparisons %}
+    <p class="secondaire">Aucun ingrédient actif.</p>
+    {% else %}
+    <div>
+      {% for c in comparisons %}
+      <div class="ligne">
+        <span class="flex-1 min-w-0 ligne-titre truncate">
+          {{ c.ingredient_name }}
+          {%- if c.currently_reverted_to_v1 %}
+          <span class="text-alerte text-corps-petit">— revenu à la v1 (F18)</span>
+          {%- endif %}
+        </span>
+        {% if not c.result.ok %}
+        <span class="ligne-valeur shrink-0 secondaire">{{ c.result.message }}</span>
+        {% else %}
+        <span class="ligne-valeur shrink-0 {% if c.result.should_activate %}text-valide{% endif %}">
+          {{ "%.0f"|format(c.result.improvement * 100) }}&nbsp;% d'amélioration
+          <span class="secondaire">({{ c.result.weeks_evaluated }} semaine{{ c.result.weeks_evaluated | pluriel }})</span>
+        </span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <p class="secondaire mt-4">
+      « Amélioration » en vert : ≥ 15&nbsp;% sur ≥ 4 semaines (IA-01), le seuil qui
+      activerait F6 pour de vrai pour cet ingrédient.
+    </p>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -21,7 +21,10 @@ def _session_factory(request):
     return getattr(request.app.state, "session_factory", None) or SessionLocal
 
 PUBLIC_PATHS = {"/login", "/setup", "/healthz", "/sw.js"}
-PUBLIC_PREFIXES = ("/static/",)
+# `/admin/` : écrans équipe projet (backlog-lot-ia-1.md §1/§6), une session
+# établissement n'a pas de sens ici — protégés séparément par un jeton
+# dédié (app/routers/admin.py), jamais par la session restaurateur.
+PUBLIC_PREFIXES = ("/static/", "/admin/")
 
 
 def _is_public(path: str) -> bool:

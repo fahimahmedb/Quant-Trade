@@ -62,3 +62,12 @@ def _load_or_create_secret_key() -> str:
 
 
 SECRET_KEY = _load_or_create_secret_key()
+
+# --- Écrans internes équipe projet (avancement-lot-ia-0-trois-decisions §1
+# / backlog-lot-ia-1.md §1 et §6) -------------------------------------------
+# Jeton distinct de la session établissement : sans lui, `/admin/*` est
+# introuvable (404), jamais juste non répertorié. Pas de valeur par défaut
+# générée (contrairement à SECRET_KEY) : tant que l'équipe projet ne l'a
+# pas explicitement définie au déploiement, l'écran reste inaccessible,
+# jamais protégé par un secret devinable.
+INTERNAL_ADMIN_TOKEN = os.environ.get("RESTAURANT_STOCK_INTERNAL_ADMIN_TOKEN")

@@ -509,8 +509,8 @@ lues avant ce backlog) :
   ajoutent quoi que ce soit à dessein (voir §8 et §9) : une hypothèse
   n'est pas une décision, et la mémorisation prévision/décision de F13
   reste un écart documenté, pas construit sur une supposition.
-- Écran de comparaison en mode ombre — **non construit**, le ticket 2
-  (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
+- Écran de comparaison en mode ombre — **non construit à ce stade** ;
+  construit dans un second temps, voir §13.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
 ## 11. Critères de sortie du lot — état
@@ -555,11 +555,57 @@ migration/sauvegarde ignorant une colonne NOT NULL nouvellement ajoutée
 §7/§9) — le signe que la discipline attrape autre chose que des fautes de
 frappe.
 
-## 13. Prochaine session
+## 13. Fermeture des trois décisions (`avancement-lot-ia-0-trois-decisions.md`
+§1 / backlog-lot-ia-1.md §1)
 
-Tickets 2 à 9 traités — le backlog transmis (9 tickets) est intégralement
-couvert par ce lot. Reste, explicitement hors périmètre de ce lot et non
-entamé : l'écran de comparaison en mode ombre et la mémorisation
-prévision/décision de F13 (les deux items UI/gap listés en §9 ci-dessus),
-et F19 (structure de données seulement, backlog : « aucune activation
+Ce lot avait clos les tickets numérotés (§10-§12) sans revenir sur les
+trois décisions elles-mêmes, malgré §11 : « écran de comparaison en mode
+ombre : non fait ». Relecture de `backlog-lot-ia-1.md` §1 : les trois
+n'étaient PAS des points ouverts à trancher — déjà actées (« à
+construire », « à construire », « hors périmètre ») avant même le premier
+ticket. Deux des trois marquées ci-dessus comme un gap documenté
+(§12) auraient dû être exécutées, pas redocumentées une troisième fois.
+Fermées maintenant :
+
+- **Journal de décision du modèle** — déclaré COMPLET, pas seulement
+  « première brique ». `ModelDecisionLog` (F18, §7) est un journal
+  générique (feature/ingrédient/événement/détail), pas un mécanisme
+  propre à F18 : n'importe quelle fonctionnalité future peut y écrire
+  sans modification de schéma. F18 en est le premier et seul
+  émetteur aujourd'hui parce que c'est la seule fonctionnalité du lot qui
+  prend une décision automatique (F17 pose des questions, ne décide rien
+  — §8 ; F13 n'a pas de mémorisation construite — §9) — pas parce que le
+  journal serait incomplet. Construire un second émetteur sans besoin
+  réel serait la supposition que §2 règle 2 du backlog interdit
+  justement d'éviter.
+- **Écran de comparaison en mode ombre** — construit. `/admin/
+  comparaison-ia` (`app/routers/admin.py`, `app/services/
+  ai_shadow_comparison.py`) expose `ai_forecast.backtest_vs_v1` (Lot
+  IA-0, IA-01) par ingrédient actif, sans second calcul. Protection par
+  jeton dédié (`RESTAURANT_STOCK_INTERNAL_ADMIN_TOKEN`), volontairement
+  SÉPARÉE de la session établissement plutôt que posée par-dessus elle :
+  un restaurateur connecté sur son propre compte ne doit jamais
+  l'atteindre, même en devinant l'URL (backlog §6 : « à protéger comme
+  tel, pas seulement caché derrière un lien ») — d'où l'exemption de
+  `RequireLoginMiddleware` sur le préfixe `/admin/` (qui n'a pas de sens
+  ici) plutôt qu'une vérification ajoutée en plus de la session. 404
+  systématique sur jeton absent ou faux, jamais 401/403 (qui confirmerait
+  que la route existe). Non-vacuité prouvée par cassure/restauration sur
+  les deux mécanismes (exemption du middleware, contrôle du jeton) —
+  aucune assertion `git checkout`. Vérifié en navigateur réel
+  (Playwright, capture d'écran), pas seulement via le client de test.
+  6 tests, `tests/test_admin_shadow_comparison.py`.
+- **Rejeu historique** — inchangé, toujours hors périmètre.
+
+399 tests au vert (391 précédents + 6 admin), hors ROB. Ni migration ni
+changement de schéma pour cet ajout : le jeton est une variable
+d'environnement (`app/config.py`), pas une donnée métier.
+
+## 15. Prochaine session
+
+Le backlog transmis (9 tickets numérotés + les trois décisions) est
+maintenant intégralement traité. Reste, explicitement hors périmètre de
+ce lot et non entamé : la mémorisation prévision/décision de F13 (§9,
+gap documenté faute d'AC/TC qui en fixerait la forme), et F19 (structure
+de données seulement, backlog : « aucune activation
 avant un second restaurant et une validation juridique »).
