@@ -239,12 +239,58 @@ cassés séparément, confirmé que les tests concernés échouent (le second
 cassage produit une `TypeError` franche — le gate protégeait aussi contre
 un accès à un champ `None`), restauré.
 
-## 6. Reste du backlog — non construit à ce stade
+## 6. Ticket 3 — F12, alerte de marge érodée ⭐ : construit
+
+Dépendance signalée par le document comme non levée (« prix de vente
+saisi sur la fiche plat, U7 du plan UX, non encore fait ») : décision
+actée du backlog (§4 ticket 3) — construire la logique quand même, en
+amont de l'écran. Faute d'un champ dédié sur `Dish`, le prix de vente est
+lu sur une donnée déjà disponible : le `unit_price` le plus récent parmi
+les ventes importées de ce plat (`SaleLine.unit_price`) — pas un nouveau
+champ qui dupliquerait une donnée déjà présente dans le flux existant.
+
+**Gate** : ≥ 2 relevés de prix (`PriceHistory`) sur au moins un
+ingrédient du plat.
+
+**Prouvé sur SYN-L** (plat à 4 ingrédients, 3 aux prix stables, 1 dont le
+prix grimpe sur 90 jours, coefficient 3,4 → 2,8 comme demandé) :
+- Coefficient et baisse sur 90 jours retrouvés à ±0,05 (SYN-L).
+- Décomposition de la hausse : l'intégralité de l'écart attribuée au bon
+  ingrédient, les 3 stables à zéro, la somme des impacts reconstitue
+  exactement l'écart total (AC-F12-3).
+- Frontière du seuil exacte : pile au seuil (3,0 par défaut) → pas
+  d'alerte ; juste en dessous → alerte (AC-F12-1).
+- Sans prix de vente → exclu avec mention, distinct du gate de relevés de
+  prix (AC-F12-2, testé séparément).
+- Prix suggéré : restaure le coefficient D'ORIGINE (celui d'il y a 90
+  jours) appliqué au coût matière actuel, jamais le seuil réglable — au
+  centime près (AC-F12-4). Jamais appliqué au prix de vente réel, sur
+  aucun nombre d'appels (AC-F12-5).
+- Hausse puis retour au prix d'origine → alerte levée puis retirée
+  (TC-F12-06, fonction pure sur l'état courant, jamais mise en cache).
+- Ingrédient partagé par 5 plats → chacun listé avec son impact propre,
+  proportionnel à son grammage (TC-F12-07).
+- Hausse de 40 % sur un ingrédient à 2 % du coût → pas d'alerte, impact
+  agrégé réellement négligeable, aucun cas particulier codé (TC-F12-08).
+
+**Réutilisation** : `PriceHistory` (F1, déjà livré) journalise CHAQUE
+prix qui a été en vigueur, y compris le prix courant — le prix à une date
+donnée est directement le dernier relevé antérieur ou égal à cette date,
+sans logique supplémentaire.
+
+**Non-vacuité** : seuil absolu, formule du prix suggéré, décomposition
+par ingrédient et gate de relevés de prix chacun cassés séparément,
+confirmé que le test concerné échoue, restauré. Le premier essai sur le
+gate s'est révélé être un faux négatif (aucun test n'isolait ce cas du
+cas voisin « pas de prix de vente ») — un test dédié ajouté avant de
+redéclarer la preuve, même schéma que pour le ticket 7 (F16).
+
+## 7. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
 | 2 | F11 — comptage tournant intelligent ⭐ | **Fait** (§3) |
-| 3 | F12 — alerte de marge érodée ⭐ | Non construit |
+| 3 | F12 — alerte de marge érodée ⭐ | **Fait** (§6) |
 | 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
 | 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
 | 6 | F14 — risque de péremption | **Fait** (§5) |
@@ -260,19 +306,18 @@ lues avant ce backlog) :
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 7. Critères de sortie du lot — état
+## 8. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **5/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **6/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **non fait**.
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 341 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 355 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14 + 14 F12, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F11, F14, F15, F16 n'ont ni routeur ni gabarit).
+  construit à date (F10, F11, F12, F14, F15, F16 n'ont ni routeur ni gabarit).
 
-## 8. Prochaine session
+## 9. Prochaine session
 
-Tickets 2, 4, 6 et 7 traités. Restent 3 (F12 ⭐, dépendance U7 non
-levée mais construction demandée quand même), 5 (F18, hystérésis déjà
+Tickets 2, 3, 4, 6 et 7 traités. Restent 5 (F18, hystérésis déjà
 tranchée par le backlog), 8 (F17 ⭐, recommandé Opus — juge la solidité
 d'une corrélation) et 9 (F13, confort, en dernier).

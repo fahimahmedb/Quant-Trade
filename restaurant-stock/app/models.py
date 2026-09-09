@@ -515,9 +515,15 @@ class Settings(Base):
     # par défaut.
     feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f11_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f12_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f14_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f16_enabled: Mapped[bool] = mapped_column(default=False)
+
+    # F12 (Lot IA-1) : "coefficient sous un seuil réglable, défaut 3,0"
+    # (ia-f10-f19.md §3), même principe que les seuils du Lot IA-0.
+    margin_coefficient_threshold: Mapped[float] = mapped_column(Float, default=3.0)
+    margin_drop_pct_threshold: Mapped[float] = mapped_column(Float, default=10.0)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

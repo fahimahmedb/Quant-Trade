@@ -977,3 +977,66 @@ def build_syn_m(db: Session, seed: int = 14) -> SynM:
         ingredient=ing, dish=plat, daily_consumption_g=2000.0, shelf_life_days=5.0,
         stock_at_risk=12_000.0, stock_safe=8_000.0,
     )
+
+
+# ==========================================================================
+# SYN-L — Hausse progressive de coût matière (cible : F12)
+# ==========================================================================
+
+@dataclass
+class SynL:
+    dish: models.Dish
+    ingredient_varying: models.Ingredient
+    ingredients_stable: list[models.Ingredient]
+    sale_price: float
+    food_cost_then: float
+    food_cost_now: float
+    coefficient_then: float
+    coefficient_now: float
+    window_start: datetime
+    now: datetime
+
+
+def build_syn_l(db: Session, seed: int = 12) -> SynL:
+    """docs/feature-plans/ia-f10-f19.md §11 (F12). Plat à 4 ingrédients :
+    3 aux prix STABLES (0,50 € + 0,60 € + 0,60 € = 1,70 €, inchangés sur
+    toute la fenêtre) et 1 ingrédient ("steak") dont le prix grimpe de
+    0,0124 à 0,0187 €/g entre il y a 90 jours et aujourd'hui — seule
+    source de la hausse, pour que TC-F12-03 (décomposition) l'isole sans
+    ambiguïté. Coût matière : 2,94 € il y a 90 jours -> 3,57 € aujourd'hui,
+    soit un coefficient (prix de vente 10 €) de 3,4 -> 2,8, comme demandé
+    par le document.
+    """
+    now = datetime.utcnow()
+    window_start = now - timedelta(days=90)
+    sale_price = 10.0
+
+    ing_a = ingredient(db, "Ingrédient SYN-L stable A", unit_cost=0.01, stock_qty=1_000_000.0)
+    ing_b = ingredient(db, "Ingrédient SYN-L stable B", unit_cost=0.02, stock_qty=1_000_000.0)
+    ing_c = ingredient(db, "Ingrédient SYN-L stable C", unit_cost=0.03, stock_qty=1_000_000.0)
+    ing_d = ingredient(db, "Ingrédient SYN-L steak", unit_cost=0.0187, stock_qty=1_000_000.0)
+
+    plat = dish(db, "Plat SYN-L", {ing_a.id: 50.0, ing_b.id: 30.0, ing_c.id: 20.0, ing_d.id: 100.0})
+
+    # Historique de prix inséré directement plutôt que via
+    # deliveries.record_delivery : son mécanisme de rétro-archivage date le
+    # prix précédent à `ingredient.created_at` (donc "maintenant", au
+    # moment où ce test tourne), jamais à une date antérieure arbitraire —
+    # inadapté pour fixer un prix précisément "il y a 90 jours".
+    db.add(models.PriceHistory(ingredient_id=ing_d.id, unit_price=0.0124, recorded_at=window_start))
+    db.add(models.PriceHistory(ingredient_id=ing_d.id, unit_price=0.0187, recorded_at=now))
+    db.commit()
+
+    # Une vente valorisée pour fixer le "prix de vente" lu par F12
+    # (SaleLine.unit_price le plus récent, faute de champ dédié sur Dish).
+    import_sales_rows(db, [(now, plat.name, 1.0, sale_price)], filename="syn_l.csv")
+
+    food_cost_then = 50.0 * 0.01 + 30.0 * 0.02 + 20.0 * 0.03 + 100.0 * 0.0124
+    food_cost_now = 50.0 * 0.01 + 30.0 * 0.02 + 20.0 * 0.03 + 100.0 * 0.0187
+
+    return SynL(
+        dish=plat, ingredient_varying=ing_d, ingredients_stable=[ing_a, ing_b, ing_c],
+        sale_price=sale_price, food_cost_then=food_cost_then, food_cost_now=food_cost_now,
+        coefficient_then=sale_price / food_cost_then, coefficient_now=sale_price / food_cost_now,
+        window_start=window_start, now=now,
+    )
