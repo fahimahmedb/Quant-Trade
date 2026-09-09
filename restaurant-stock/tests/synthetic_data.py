@@ -708,3 +708,64 @@ def build_syn_i(db: Session, seed: int = 9, weeks: int = 12, new_dish_week: int 
         ingredient=ing, dish_existing=ancien, dish_new=nouveau,
         new_dish_start_week=new_dish_week, weeks=weeks,
     )
+
+
+# ==========================================================================
+# SYN-J — Répartition de valeur Pareto connue (cible : F10, Lot IA-1)
+# ==========================================================================
+
+@dataclass
+class SynJ:
+    gros: list[models.Ingredient]
+    petit_grand: models.Ingredient
+    petits_small: list[models.Ingredient]
+    weeks: int
+
+
+def build_syn_j(db: Session, seed: int = 10, weeks: int = 8) -> SynJ:
+    """docs/feature-plans/ia-f10-f19.md §1/§11 (F10). 20 ingrédients à un
+    plat chacun (grammage 100 g, ratio 1:1, comme SYN-A : le facteur mesuré
+    sur les ventes est directement celui mesuré sur l'ingrédient).
+
+    Répartition de valeur annuelle injectée (unit_cost = 0,01 €/g, donc
+    valeur annuelle = qté/jour x 0,01 x 365) :
+    - 3 « gros » à 250 € chacun (cumul séquentiel 25% / 50% / 75% du total)
+      -> marge de 5 points sous le seuil de 80% de la classe A, quel que
+      soit le bruit.
+    - 1 « petit-grand » à 80 € : seul, franchit la frontière (75%+80=83%,
+      soit 3 points AU-DESSUS de 80%) — un item unique et distinctement
+      plus gros que les 16 suivants, pour que le franchissement de la
+      frontière A/B soit déterministe (pas de valeurs à égalité de part et
+      d'autre de 80%, qui rendraient le classement dépendant de l'ordre
+      arbitraire de tri des ex-æquo).
+    - 16 « petits » à 10,625 € chacun (le reste, 170 €) : la cumulée étant
+      déjà strictement croissante et au-dessus de 80% dès le petit-grand,
+      aucun ne peut plus jamais retomber en classe A.
+    Total = 1000 €. Bruit réduit (2%, pas les 10% habituels) : ce jeu teste
+    la précision d'une frontière de classification, pas la robustesse au
+    bruit (déjà couverte par SYN-F pour F6) — moyenné sur 8 semaines, l'écart
+    résiduel attendu est de l'ordre de 0,15 point, très en dessous des
+    marges ci-dessus.
+    """
+    rng = random.Random(seed)
+    unit_cost = 0.01
+    grammage = 100.0
+    start = datetime(2026, 9, 7)
+    noise_pct = 0.02
+
+    def _build(name: str, annual_value: float) -> models.Ingredient:
+        daily_qty = annual_value / (unit_cost * 365.0)
+        ing = ingredient(db, name, unit_cost=unit_cost, stock_qty=10_000_000.0)
+        plat = dish(db, f"Plat {name}", {ing.id: grammage})
+        rows = [
+            (start + timedelta(days=d), plat.name, noisy(rng, daily_qty / grammage, noise_pct), None)
+            for d in range(weeks * 7)
+        ]
+        import_sales_rows(db, rows, filename=f"{name}.csv")
+        return ing
+
+    gros = [_build(f"Ingrédient SYN-J gros {i + 1}", 250.0) for i in range(3)]
+    petit_grand = _build("Ingrédient SYN-J petit-grand", 80.0)
+    petits_small = [_build(f"Ingrédient SYN-J petit {i + 1:02d}", 10.625) for i in range(16)]
+
+    return SynJ(gros=gros, petit_grand=petit_grand, petits_small=petits_small, weeks=weeks)

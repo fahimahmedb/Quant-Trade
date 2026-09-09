@@ -127,6 +127,13 @@ class Ingredient(Base):
     delivery_weekdays: Mapped[str | None] = mapped_column(String(20), nullable=True)
     pack_size: Mapped[float | None] = mapped_column(Float, nullable=True)
 
+    # F10 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §1) : forçage manuel de
+    # la classe de criticité ("A"/"B"/"C"), prioritaire sur tout recalcul
+    # automatique (AC-F10-3 : « le forçage manuel survit à un recalcul ») —
+    # doit donc être stocké, pas seulement recalculé à chaque appel comme le
+    # reste de la classification.
+    criticality_override: Mapped[str | None] = mapped_column(String(1), nullable=True)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="ingredient", cascade="all, delete-orphan"
     )
@@ -456,3 +463,8 @@ class Settings(Base):
     feature_f6_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f7_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f9_enabled: Mapped[bool] = mapped_column(default=False)
+
+    # Lot IA-1 (docs/feature-plans/ia-f10-f19.md), même principe : éteintes
+    # par défaut.
+    feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
