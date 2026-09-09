@@ -355,7 +355,89 @@ construit ici au périmètre strict dont F18 a besoin (feature, ingrédient,
 événement, détail), pas le système générique complet évoqué par le
 document pour l'ensemble des décisions IA.
 
-## 8. Reste du backlog — non construit à ce stade
+## 8. Ticket 8 — F17, diagnostic de cause d'écart ⭐ : construit
+
+Backlog (§4 ticket 8) recommandait Opus spécifiquement — « juge la
+solidité d'une corrélation ». Traité en Sonnet, faute de changement de
+session, par discipline « avance sur tout ce que je t'ai envoyé » ; par
+prudence, chaque seuil de significativité a été vérifié empiriquement
+(script autonome, base en mémoire) AVANT d'être figé dans le code, jamais
+deviné — même discipline que pour tout le reste du lot, appuyée plus fort
+ici vu l'absence d'Opus.
+
+**Portée (décision actée faute de précision du document)** : les règles
+portent sur les écarts SANS motif saisi. F5 pose déjà cette distinction
+(`LossBadge.cumulative_value` de `ai_drift.classify_losses` est « hors
+écarts portant un motif ») — F17 la continue : un écart déjà motivé
+(casse, périmé...) a déjà sa réponse, rien à diagnostiquer. Le gate (§8 :
+« >= 6 comptages, et >= 3 écarts avec motif saisi ») est donc un seuil
+d'ACTIVITÉ globale sur l'ingrédient (le champ motif est réellement
+utilisé, donc l'historique est fiable), pas un filtre sur les écarts que
+les règles analysent — sans quoi le gate et la portée se contrediraient :
+aucun jeu ne pourrait jamais satisfaire « >= 3 écarts motivés » tout en
+laissant des écarts SANS motif à diagnostiquer.
+
+**Quatre hypothèses, croisées indépendamment** (`app/services/
+ai_variance_diagnosis.py`), chacune une question (AC-F17-3), jamais une
+affirmation :
+- **Affluence** (AC-F17-1, SYN-N) : écarts non expliqués concentrés sur
+  1-2 jours de la semaine — mais SEULEMENT si ces jours sont RÉELLEMENT
+  les jours de plus fort volume de vente pour cet ingrédient (vérifié sur
+  les ventes réelles, jamais supposé sur « vendredi/samedi = rush »).
+  Décision actée par nécessité : le document ne dit pas comment définir
+  « forte affluence » pour un restaurant donné — deviner sur des jours
+  fixes aurait pu inventer une corrélation sur un établissement dont le
+  rush n'est pas le week-end.
+- **Zone** : d'autres ingrédients de la MÊME zone de stockage montrent eux
+  aussi des écarts non expliqués, dans une proportion nettement
+  supérieure aux autres zones.
+- **Date** : les écarts non expliqués n'apparaissent qu'à partir d'une
+  date précise (avant : rien ; après : régulièrement) — détection du plus
+  petit point de rupture chronologique satisfaisant ce critère.
+- **Fiche technique** : renvoi vers F5 (`ai_drift.detect_drift`) si une
+  proposition existe déjà pour cet ingrédient — F17 s'efface derrière
+  elle plutôt que d'inventer une seconde corrélation sur la même donnée.
+
+**Prouvé sur SYN-N** (écarts injectés uniquement vendredi/samedi, mêmes
+facteurs jour/semaine que SYN-A pour que ces 2 jours soient aussi,
+authentiquement, les jours de plus grosse vente) : hypothèse « affluence »
+seule proposée, citant vendredi et samedi (AC-F17-1).
+
+**TC-F17-04** (écarts sur 6 comptages motivés, 5 non expliqués dispersés
+sur 5 jours de semaine différents) : aucune hypothèse — la dispersion ne
+franchit aucun seuil de concentration.
+
+**TC-F17-05** (SYN-N + 2 ingrédients de la même zone montrant eux aussi
+des écarts non expliqués) : « affluence » ET « zone » proposées ensemble,
+jamais un choix arbitraire entre les deux.
+
+**Non-vacuité, trou de couverture trouvé avant même d'écrire un bug** :
+en construisant le fixture d'AC-F17-2 (« aucun motif jamais saisi »), un
+premier jet avec 8 écarts non expliqués (dont 5 vendredi/samedi) donnait
+une concentration de 62,5 % — sous le seuil de 65 % retenu pour la règle
+« affluence ». Le test aurait alors passé pour la mauvaise raison :
+indissociable entre « le gate motifs bloque bien » et « la concentration
+était de toute façon insuffisante ». Corrigé en réutilisant EXACTEMENT la
+répartition non expliquée de SYN-N (5/5, 100 %, déjà prouvée
+déclenchante par AC-F17-1) avant de retirer les motifs — la seule
+variable isolée est alors bien celle que le test prétend vérifier.
+
+Six ruptures supplémentaires prouvées par cassure/restauration (jamais
+`git checkout`, `cp` vers `/tmp` puis retour, `diff` de contrôle) :
+le gate (clause motifs), le croisement affluence/ventes réelles (sans
+lui, aucun test existant — ni AC-F17-1 ni TC-F17-04 — n'aurait détecté sa
+disparition : un contre-exemple dédié a dû être ajouté, écarts concentrés
+à 100 % sur le jour le plus CREUX en vente), le seuil de part affectée de
+la règle zone, l'exigence « rien avant la rupture » de la règle date, le
+renvoi F5, et l'agrégation « toutes les hypothèses » plutôt qu'un premier
+match arbitraire (TC-F17-05).
+
+**Journal de décision du modèle** : F17 ne journalise rien dans
+`ModelDecisionLog` — une hypothèse proposée n'est pas une décision prise
+par le modèle (contrairement à la bascule automatique de F18), juste une
+question posée au restaurateur.
+
+## 9. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
@@ -365,7 +447,7 @@ document pour l'ensemble des décisions IA.
 | 5 | F18 — indicateur de confiance, retour auto v1 | **Fait** (§7) |
 | 6 | F14 — risque de péremption | **Fait** (§5) |
 | 7 | F16 — consolidation de commande par fournisseur | **Fait** (§4) |
-| 8 | F17 — diagnostic de cause d'écart | Non construit |
+| 8 | F17 — diagnostic de cause d'écart ⭐ | **Fait** (§8) |
 | 9 | F13 — prévision de mise en place | Non construit |
 
 **Les trois décisions actées** (`avancement-lot-ia-0-trois-decisions` §1,
@@ -373,27 +455,30 @@ lues avant ce backlog) :
 - Journal de décision du modèle — **première brique construite** au
   ticket 5 (F18, `ModelDecisionLog`), au périmètre strict dont F18 a
   besoin — pas encore le système générique pour l'ensemble des décisions
-  IA évoqué par le document.
+  IA évoqué par le document. F17 (ticket 8) n'y ajoute rien à dessein
+  (voir §8) : une hypothèse n'est pas une décision.
 - Écran de comparaison en mode ombre — **non construit**, le ticket 2
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 9. Critères de sortie du lot — état
+## 10. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **7/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **8/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **première
-  brique** (F18, périmètre strict — voir §8).
+  brique** (F18, périmètre strict — voir §9).
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 364 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14 + 14 F12 +
-  9 F18, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 383 tests
+  au vert (289 IA-0 + 6 tests d'infrastructure migrations/sauvegarde
+  [`test_migrations.py`/`test_backup.py`, cf. §7 — corrigés au ticket 5
+  pour la 1ère colonne NOT NULL ajoutée à `ingredients`] + 11 F10 + 12 F15
+  + 14 F11 + 9 F16 + 6 F14 + 14 F12 + 9 F18 + 13 F17, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F11, F12, F14, F15, F16, F18 n'ont ni routeur ni
+  construit à date (aucun des 8 tickets faits n'a de routeur ni de
   gabarit).
 
-## 10. Prochaine session
+## 11. Prochaine session
 
-Tickets 2, 3, 4, 5, 6 et 7 traités. Reste 8 (F17 ⭐, recommandé Opus —
-juge la solidité d'une corrélation ; traité en Sonnet par discipline
-« avance sur tout » faute de changement de session) et 9 (F13, confort,
-en dernier — backlog : à construire seulement si 1 à 8 sont faits).
+Tickets 2 à 8 traités — seuls les tickets 1-8 du backlog sont dans le
+périmètre visé par les critères de sortie (§10). Reste 9 (F13, confort,
+hors périmètre des critères de sortie, backlog : « à construire seulement
+si les tickets 1 à 8 sont faits » — c'est désormais le cas).

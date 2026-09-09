@@ -127,16 +127,26 @@ def import_sales_rows(db: Session, rows, filename: str = "synthetic.csv"):
 
 def run_count_session(
     db: Session, *, counted_by: str, counted: dict[int, float],
+    motifs: dict[int, models.VarianceReason] | None = None,
     ended_at: datetime | None = None,
 ) -> models.CountSession:
     """Un comptage complet : démarre, saisit `counted` (ingredient_id ->
     quantité comptée) pour les ingrédients concernés, laisse les autres
     conformes (comptés à leur valeur théorique), termine. Recale le stock
-    théorique comme le ferait un vrai comptage."""
+    théorique comme le ferait un vrai comptage.
+
+    `motifs` (ingredient_id -> VarianceReason), optionnel : un écart sans
+    entrée dans ce dict reste SANS motif (F17 cible précisément cette
+    distinction, ia-f10-f19.md §8 — un écart déjà motivé n'a rien à
+    diagnostiquer)."""
+    motifs = motifs or {}
     session = counting.start_count_session(db, counted_by=counted_by)
     for line in session.lines:
         valeur = counted.get(line.ingredient_id, line.theoretical_quantity)
-        counting.confirm_count_line(db, line.id, counted_quantity=valeur)
+        counting.confirm_count_line(
+            db, line.id, counted_quantity=valeur,
+            variance_reason=motifs.get(line.ingredient_id),
+        )
     counting.complete_count_session(db, session.id, ended_at=ended_at)
     db.refresh(session)
     return session
@@ -1039,4 +1049,90 @@ def build_syn_l(db: Session, seed: int = 12) -> SynL:
         sale_price=sale_price, food_cost_then=food_cost_then, food_cost_now=food_cost_now,
         coefficient_then=sale_price / food_cost_then, coefficient_now=sale_price / food_cost_now,
         window_start=window_start, now=now,
+    )
+
+
+# ==========================================================================
+# SYN-N — Écarts concentrés le week-end (cible : F17)
+# ==========================================================================
+
+@dataclass
+class SynN:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    day_factors: dict[int, float]
+    unexplained_sessions: list[models.CountSession]  # vendredi/samedi, sans motif
+    explained_sessions: list[models.CountSession]  # motif CASSE, jours creux
+    conforming_sessions: list[models.CountSession]
+
+
+def build_syn_n(db: Session, seed: int = 16) -> SynN:
+    """docs/feature-plans/ia-f10-f19.md §11 (F17) : « écarts injectés
+    uniquement les vendredis et samedis ». Mêmes facteurs jour/semaine que
+    SYN-A (ven 2,0 / sam 2,2, nettement au-dessus des autres jours) : F17
+    ne doit pas se contenter de remarquer que les écarts se concentrent un
+    jour donné, il doit vérifier que ce jour est RÉELLEMENT un jour de
+    forte affluence pour cet ingrédient (corrélation avec le volume de
+    vente réel, pas une hypothèse gratuite sur "vendredi/samedi = rush").
+
+    Le gate F17 (§8 : « >= 6 comptages, et >= 3 écarts avec motif saisi »)
+    est un seuil d'ACTIVITÉ globale (le restaurateur utilise réellement le
+    champ motif), pas un filtre sur les écarts que la règle jour/semaine
+    analyse elle-même : celle-ci porte sur les écarts SANS motif (F5 pose
+    déjà la même distinction — `cumulative_value` de `classify_losses` est
+    "hors écarts portant un motif" — un écart déjà motivé n'a rien à
+    diagnostiquer). D'où 2 catégories injectées séparément :
+    - 5 comptages vendredi/samedi, écart sans motif (la série que la règle
+      jour/semaine doit isoler) ;
+    - 3 comptages en semaine, petit écart AVEC motif "casse" (satisfait le
+      gate sans polluer la série non-expliquée) ;
+    - 2 comptages en semaine, parfaitement conformes.
+    """
+    rng = random.Random(seed)
+    day_factors = {1: 1.0, 2: 1.1, 3: 1.2, 4: 2.0, 5: 2.2, 6: 0.8}  # 0=lundi absent (fermé)
+    closed_days = {0}
+    ing = ingredient(db, "Ingrédient SYN-N", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-N", {ing.id: 1.0})
+    start = datetime(2026, 1, 5)  # un lundi
+    rows_qty = generate_weekly_quantities(
+        rng, start=start, weeks=10, base_qty=20.0,
+        day_factors=day_factors, closed_days=closed_days, noise_pct=0.10,
+    )
+    import_sales_rows(db, [(d, plat.name, q, None) for d, q in rows_qty], filename="syn_n.csv")
+
+    def _at(week: int, weekday_offset: int) -> datetime:
+        return start + timedelta(weeks=week, days=weekday_offset) + timedelta(hours=20)
+
+    # Pertes en quantité ABSOLUE (échelle des ventes réalistes de ce jeu,
+    # ~20-44 unités/jour), pas une fraction du stock restant : `stock_qty`
+    # est volontairement surdimensionné (headroom, comme SYN-A) pour ne
+    # jamais tomber à zéro sur 10 semaines, pas une échelle de perte.
+    unexplained_sessions = []
+    for week, offset in [(2, 4), (3, 5), (5, 4), (7, 5), (9, 4)]:  # ven/sam
+        d = _at(week, offset)
+        unexplained_sessions.append(run_count_session(
+            db, counted_by="SYN-N", counted={ing.id: ing.current_theoretical_stock - 15.0},
+            ended_at=d,
+        ))
+
+    explained_sessions = []
+    for week, offset in [(4, 1), (6, 3), (9, 6)]:  # mar/jeu/dim, motif casse
+        d = _at(week, offset)
+        explained_sessions.append(run_count_session(
+            db, counted_by="SYN-N", counted={ing.id: ing.current_theoretical_stock - 5.0},
+            motifs={ing.id: models.VarianceReason.CASSE}, ended_at=d,
+        ))
+
+    conforming_sessions = []
+    for week, offset in [(1, 2), (8, 2)]:  # mercredi, conforme
+        d = _at(week, offset)
+        conforming_sessions.append(run_count_session(
+            db, counted_by="SYN-N", counted={ing.id: ing.current_theoretical_stock}, ended_at=d,
+        ))
+
+    return SynN(
+        ingredient=ing, dish=plat, day_factors=day_factors,
+        unexplained_sessions=sorted(unexplained_sessions, key=lambda s: s.ended_at),
+        explained_sessions=sorted(explained_sessions, key=lambda s: s.ended_at),
+        conforming_sessions=sorted(conforming_sessions, key=lambda s: s.ended_at),
     )

@@ -556,6 +556,10 @@ class Settings(Base):
     margin_drop_pct_threshold: Mapped[float] = mapped_column(Float, default=10.0)
     feature_f18_enabled: Mapped[bool] = mapped_column(default=False)
 
+    # F17 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §8) : diagnostic de
+    # cause d'écart. Même principe que les autres flags F10-F19.
+    feature_f17_enabled: Mapped[bool] = mapped_column(default=False)
+
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de
     # départ raisonnée, jamais une constante figée.
