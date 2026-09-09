@@ -182,6 +182,13 @@ class Dish(Base):
         DateTime, default=utcnow, onupdate=utcnow
     )
 
+    # F23 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 5) :
+    # estimation de vente quotidienne initiale du chef, saisie à la
+    # création du plat — optionnelle (dégradation silencieuse : absente,
+    # le plat garde le comportement actuel, aucune suggestion tant
+    # qu'aucune vente réelle n'existe).
+    initial_daily_estimate: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="dish", cascade="all, delete-orphan"
     )
@@ -642,6 +649,15 @@ class Settings(Base):
     # silencieuse), les fériés et jours exceptionnels restent actifs.
     feature_f20_enabled: Mapped[bool] = mapped_column(default=False)
     school_vacation_zone: Mapped[str | None] = mapped_column(String(1), nullable=True)
+
+    # F23 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 5) : cold
+    # start d'un plat sans historique. `cold_start_smoothing_days` est la
+    # constante de lissage du ticket (« combien de jours avant que le réel
+    # pèse la moitié ») — valeur de départ raisonnée et vérifiée sur SYN-S
+    # avant d'être figée (comme les autres seuils du projet, jamais une
+    # intuition non vérifiée), réglable ensuite comme tous les seuils IA.
+    feature_f23_enabled: Mapped[bool] = mapped_column(default=False)
+    cold_start_smoothing_days: Mapped[float] = mapped_column(Float, default=14.0)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

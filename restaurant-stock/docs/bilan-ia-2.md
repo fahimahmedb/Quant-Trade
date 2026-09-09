@@ -180,3 +180,78 @@ zone A seulement, détectée pour « A », absente pour « B »/« C »/aucune
 zone).
 
 12 tests, `tests/test_ai_calendar_signals.py`.
+
+## 5. Ticket 5 — F23, cold start d'un plat sans historique : construit
+
+**Gate** : nouveau champ optionnel `Dish.initial_daily_estimate` (estimation
+de vente quotidienne initiale du chef) — absent pour tout plat utilisant un
+ingrédient donné, F23 s'efface entièrement (`ok=False`, « aucun plat...
+n'a d'estimation »), le comportement actuel (v1) reste inchangé. S'ajoute
+le feature flag F23 et, structurellement, le gate de F6 lui-même : F23 ne
+s'applique QUE tant que F6 n'est PAS encore disponible pour l'ingrédient
+concerné — jamais un second calcul concurrent une fois F6 utilisable.
+
+**Opère au niveau de l'INGRÉDIENT**, comme F6/F7/F13/F14 (jamais du plat) —
+la fiche technique est le mécanisme de conversion entre l'estimation du
+chef (par plat) et une consommation attendue (par ingrédient) :
+`Σ (estimation du chef × grammage)` sur tous les plats de la fiche
+technique de cet ingrédient ayant une estimation renseignée.
+
+**Absence de double comptage avec un plat déjà établi** (propriété non
+triviale, vérifiée empiriquement avant d'être documentée puis testée) : un
+ingrédient partagé entre un plat neuf (estimation du chef) et un plat
+ancien déjà vendu depuis plusieurs semaines n'a PAS besoin d'un traitement
+spécial — si le plat ancien vend cet ingrédient depuis longtemps,
+l'historique COMBINÉ de l'ingrédient a déjà franchi le gate des 6 semaines
+de F6 tout seul, et F23 s'efface avant même de calculer un mélange partiel
+qui ignorerait la consommation déjà bien mesurée du plat ancien. Le cas
+réellement traité par le mélange n'est donc jamais qu'un ingrédient dont
+TOUS les plats contributeurs sont eux-mêmes récents.
+
+**Pondération glissante** (règle métier du ticket, appliquée littéralement) :
+poids du réel = jours observés / (jours observés + constante de lissage).
+`Settings.cold_start_smoothing_days` (défaut 14 jours) déterminé par script
+autonome (scratchpad, non conservé dans le dépôt — seule la conclusion
+compte) plutôt que deviné : à K=14, le poids atteint exactement 0,5 à 14
+jours (par construction de la formule) et ~74,5 % à 41 jours, juste avant
+le gate F6 à 6 semaines (42 jours) — une bascule complète mesurée comme
+progressive, jamais brutale, avant d'être figée.
+
+**Bascule complète à la frontière du gate F6** : vérifiée jour par jour —
+à J+41 (5,86 semaines de span calendaire), F23 s'applique encore ; à J+42
+(exactement 6 semaines), F6 devient disponible et F23 s'efface au même
+instant, sans jour de battement ni chevauchement.
+
+**Prouvé sur SYN-S** (plat neuf seul sur son ingrédient, estimation du chef
+connue et délibérément différente du rythme réel qui s'installe ensuite) :
+jour 0 (aucune vente) → estimation du chef seule ; jour 14 → poids réel
+exactement 0,5 ; le mélange glisse continûment vers la moyenne réelle à
+mesure que les jours s'accumulent.
+
+**Non-vacuité** : cassée/restaurée sur 3 points — la dégradation silencieuse
+de `_chef_component` (aucune estimation sur aucun plat → `None`, jamais un
+zéro qui laisserait croire à une estimation réelle de zéro), la formule de
+pondération elle-même (dénominateur `jours + K`, pas seulement `K`) à sa
+frontière exacte (14 jours → 0,5), et l'effacement de F23 dès que F6 est
+disponible (cassé en retirant ce gate : sur le scénario plat établi +
+plat neuf partageant un ingrédient, produit alors un mélange à 8,94 au
+lieu de s'effacer — la contamination du double comptage redoutée, rendue
+concrète plutôt que seulement théorique).
+
+8 tests, `tests/test_ai_cold_start.py`.
+
+## 6. Bilan de sortie du Lot IA-2
+
+Les 5 tickets du backlog sont clos : F22 et F25 (tickets 1 et 3) construits
+dès le début du lot, F21 (ticket 2) retiré car déjà couvert par F9 (Lot
+IA-0), F20 (ticket 4) et F23 (ticket 5) construits en fin de lot. Comme
+pour le Lot IA-1, chaque fonctionnalité reste en mode ombre — un service
+testé et prouvé sur données synthétiques, gaté par un feature flag éteint
+par défaut, sans écran dédié (même principe que F10-F19 : l'intégration
+UI est un lot UX séparé, jamais mélangée à un lot IA). F24 et F26 restent
+explicitement hors périmètre, bloqués sur des décisions business non
+tranchées (§7 du backlog) ; F19 (Lot IA-1) reste hors périmètre pour les
+mêmes raisons qu'au lot précédent.
+
+Suite complète verte après chaque ticket, à chaque fois avant le commit
+correspondant — jamais un commit sur une suite rouge ou non vérifiée.

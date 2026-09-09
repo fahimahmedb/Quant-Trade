@@ -1274,3 +1274,44 @@ def build_syn_r(db: Session, base_qty: float = 20.0, holiday_factor: float = 1.5
     import_sales_rows(db, rows, filename="syn_r.csv")
 
     return SynR(ingredient=ing, dish=plat, target_date=target_date, base_qty=base_qty, holiday_factor=holiday_factor)
+
+
+# ==========================================================================
+# SYN-S — Plat neuf, estimation du chef connue, ventes réelles progressives
+# à un rythme réel différent (cible : F23, Lot IA-2 ticket 5)
+# ==========================================================================
+
+@dataclass
+class SynS:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    chef_estimate: float
+    real_qty_per_day: float
+    start: date
+
+
+def build_syn_s(
+    db: Session, seed: int = 18, chef_estimate: float = 15.0,
+    real_qty_per_day: float = 10.0, days: int = 30,
+) -> SynS:
+    """docs/feature-plans/backlog-lot-ia-2.md ticket 5 (F23). Un plat neuf,
+    seul à utiliser son ingrédient (aucun risque de mélange avec un plat
+    déjà établi) : estimation initiale du chef connue (`chef_estimate`,
+    volontairement DIFFÉRENTE du rythme réel `real_qty_per_day`, pour que
+    le glissement du mélange soit mesurable), ventes réelles à partir du
+    premier jour. `days` < 42 (6 semaines) par défaut : reste sous le gate
+    F6 sur toute la période, le cas que F23 est censé combler."""
+    rng = random.Random(seed)
+    ing = ingredient(db, "Ingrédient SYN-S", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-S", {ing.id: 1.0})
+    plat.initial_daily_estimate = chef_estimate
+    db.commit()
+
+    start = date(2026, 1, 5)  # lundi
+    rows = []
+    for day_offset in range(days):
+        d = start + timedelta(days=day_offset)
+        rows.append((datetime(d.year, d.month, d.day), plat.name, noisy(rng, real_qty_per_day, 0.10), None))
+    import_sales_rows(db, rows, filename="syn_s.csv")
+
+    return SynS(ingredient=ing, dish=plat, chef_estimate=chef_estimate, real_qty_per_day=real_qty_per_day, start=start)
