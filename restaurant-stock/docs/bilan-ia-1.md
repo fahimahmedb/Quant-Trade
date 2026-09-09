@@ -164,7 +164,50 @@ usage réel, mesurable seulement au pilote) — hors de portée par
 construction, comme tous les écrans du Lot IA-0 restés « non construits »
 (§2 du bilan IA-0).
 
-## 4. Reste du backlog — non construit à ce stade
+## 4. Ticket 7 — F16, consolidation de commande par fournisseur : construit
+
+**Gate** : aucun — « purement combinatoire », dit le document lui-même.
+Traité avant les tickets 3/5/6/8/9 car sans aucune dépendance et sans
+jugement métier à trancher, à la différence des autres tickets restants.
+
+Regroupe les suggestions F7 (Lot IA-0) par fournisseur, calcule le total
+et compare au franco de port. Aucun jeu SYN dédié dans le document
+(logique purement combinatoire) : fixtures locales dans
+`tests/test_ai_supplier_consolidation.py`, sur le même principe que les
+propres tests DB-intégrés de F7 dans le Lot IA-0.
+
+- AC-F16-1 : la quantité groupée est EXACTEMENT celle que F7 suggère
+  seul (comparaison directe, pas recalculée différemment) ; un ingrédient
+  sans fournisseur va dans « Non attribué » ; un ingrédient avec
+  fournisseur va bien sous CE fournisseur, jamais « Non attribué ».
+- AC-F16-2 : sous le franco, proposition d'ajout parmi les ingrédients du
+  même fournisseur pas encore dus, chaque ligne plafonnée par la même
+  borne de péremption que F7 (`shelf_life_days x conso − stock actuel`).
+- TC-F16-05 : quand aucun ajout possible ne suffit à atteindre le franco
+  sans risquer la péremption, le message le dit explicitement et propose
+  un report — jamais une sur-commande pour forcer le seuil (principe 2).
+- AC-F16-3 : aucun envoi automatique dans aucun chemin de code — la
+  fonction produit un texte exportable, jamais un appel réseau.
+
+**Simplification documentée** : le document liste « franco de port » et
+« minimum de commande » comme deux données distinctes, mais son propre
+plan de test (AC/TC) n'exerce que le franco — traité comme un seul seuil
+(`Ingredient.supplier_free_shipping_threshold`) plutôt que deux concepts
+dont l'un resterait entièrement non testé.
+
+**Réutilisation** : la consommation quotidienne pour "combien puis-je
+ajouter maintenant" utilise la moyenne glissante v1 (jamais F6) — F16 pose
+une question secondaire à F7, pas une nouvelle prévision.
+
+**Non-vacuité** : plafond de péremption sur les ajouts proposés,
+recalcul réel de l'atteignabilité du seuil (pas toujours vrai), et
+groupement par fournisseur nommé chacun cassés séparément, confirmé que
+le test concerné échoue, restauré. Le premier essai de preuve sur le
+groupement par fournisseur s'est révélé être un faux négatif (aucun test
+existant ne vérifiait qu'un fournisseur NOMMÉ reste bien sous son propre
+groupe) — un test dédié a été ajouté avant de redéclarer la preuve.
+
+## 5. Reste du backlog — non construit à ce stade
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
@@ -173,7 +216,7 @@ construction, comme tous les écrans du Lot IA-0 restés « non construits »
 | 4 | F15 — contrôle d'intégrité des imports | **Fait** (§2) |
 | 5 | F18 — indicateur de confiance, retour auto v1 | Non construit |
 | 6 | F14 — risque de péremption | Non construit |
-| 7 | F16 — consolidation de commande par fournisseur | Non construit |
+| 7 | F16 — consolidation de commande par fournisseur | **Fait** (§4) |
 | 8 | F17 — diagnostic de cause d'écart | Non construit |
 | 9 | F13 — prévision de mise en place | Non construit |
 
@@ -185,20 +228,22 @@ lues avant ce backlog) :
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 5. Critères de sortie du lot — état
+## 6. Critères de sortie du lot — état
 
-- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **3/8**.
+- Tickets 1 à 8 construits, testés, derrière feature flag éteint : **4/8**.
 - Journal de décision du modèle en place dès le ticket 1 : **non fait**.
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 326 tests
-  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11, hors ROB).
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 335 tests
+  au vert (289 IA-0 + 11 F10 + 12 F15 + 14 F11 + 9 F16, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (F10, F11, F15 n'ont ni routeur ni gabarit).
+  construit à date (F10, F11, F15, F16 n'ont ni routeur ni gabarit).
 
-## 6. Prochaine session
+## 7. Prochaine session
 
-Tickets 2 et 4 traités. Reprendre au ticket 3 (F12, alerte de marge
+Tickets 2, 4 et 7 traités. Reprendre au ticket 3 (F12, alerte de marge
 érodée) — sa dépendance (prix de vente sur la fiche plat, U7 du plan UX)
 n'est pas levée, mais le backlog demande explicitement de construire la
 logique quand même, en amont de l'écran (§4 ticket 3, cohérent avec la
-dégradation silencieuse déjà appliquée à F7/F13/F14/F16).
+dégradation silencieuse déjà appliquée à F7/F13/F14/F16). Sinon, ticket 6
+(F14, risque de péremption) : dépendance déjà présente (shelf_life_days,
+champ F7), aucun jugement métier non tranché identifié dans sa spec.

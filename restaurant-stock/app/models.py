@@ -135,6 +135,16 @@ class Ingredient(Base):
     # reste de la classification.
     criticality_override: Mapped[str | None] = mapped_column(String(1), nullable=True)
 
+    # F16 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §7) : champs optionnels,
+    # zéro saisie obligatoire — un ingrédient sans fournisseur va dans le
+    # groupe "non attribué" (AC-F16-1), jamais une erreur. Le document liste
+    # "franco de port" et "minimum de commande" comme deux données
+    # distinctes, mais son propre plan de test n'exerce que le franco :
+    # traité comme un seul seuil ici plutôt que deux concepts parallèles
+    # dont l'un resterait non testé (voir ai_supplier_consolidation.py).
+    supplier_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    supplier_free_shipping_threshold: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="ingredient", cascade="all, delete-orphan"
     )
@@ -506,6 +516,7 @@ class Settings(Base):
     feature_f10_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f11_enabled: Mapped[bool] = mapped_column(default=False)
     feature_f15_enabled: Mapped[bool] = mapped_column(default=False)
+    feature_f16_enabled: Mapped[bool] = mapped_column(default=False)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de
