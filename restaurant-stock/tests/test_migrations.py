@@ -22,14 +22,18 @@ INSERT_FARINE = text(
 )
 
 # Contre INSERT_FARINE ci-dessus : celui-ci vise un schéma déjà à head, où
-# f6_reverted_to_v1 (F18) est NOT NULL sans valeur par défaut côté base une
-# fois son server_default retiré (migration e6b4a2d9f1c3) — INSERT_FARINE
-# seul suffit encore contre un schéma ANTÉRIEUR à cette colonne (schéma v1
-# legacy, test_init_db_stamps_legacy_create_all_database_without_losing_data).
+# chaque colonne NOT NULL ajoutée après la baseline (f6_reverted_to_v1 F18,
+# is_prepared_in_house F13...) n'a plus de valeur par défaut côté base une
+# fois son server_default retiré (même schéma de migration à chaque fois :
+# ajout avec server_default puis retrait) — INSERT_FARINE seul suffit
+# encore contre un schéma ANTÉRIEUR à ces colonnes (schéma v1 legacy,
+# test_init_db_stamps_legacy_create_all_database_without_losing_data). À
+# étendre ici, jamais dans INSERT_FARINE, à chaque nouvelle colonne NOT
+# NULL sur `ingredients`.
 INSERT_FARINE_AT_HEAD = text(
     "INSERT INTO ingredients (name, unit, unit_cost, storage_zone, current_theoretical_stock,"
-    " alert_threshold, is_active, f6_reverted_to_v1, created_at, updated_at)"
-    " VALUES ('Farine', 'g', 0.0012, 'sec', 1000, NULL, 1, 0, '2026-01-01 00:00:00', '2026-01-01 00:00:00')"
+    " alert_threshold, is_active, f6_reverted_to_v1, is_prepared_in_house, created_at, updated_at)"
+    " VALUES ('Farine', 'g', 0.0012, 'sec', 1000, NULL, 1, 0, 0, '2026-01-01 00:00:00', '2026-01-01 00:00:00')"
 )
 
 

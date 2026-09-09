@@ -154,6 +154,13 @@ class Ingredient(Base):
     # sans mise à jour séparée de chacun.
     f6_reverted_to_v1: Mapped[bool] = mapped_column(default=False)
 
+    # F13 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §4) : marqueur optionnel,
+    # zéro saisie obligatoire (AC-F13-1 : aucun ingrédient marqué -> fonction
+    # invisible). La durée de conservation de la préparation réutilise
+    # `shelf_life_days` ci-dessus (champ F7 déjà prévu) plutôt qu'un second
+    # champ qui dupliquerait le même concept.
+    is_prepared_in_house: Mapped[bool] = mapped_column(default=False)
+
     recipe_lines: Mapped[list["RecipeIngredient"]] = relationship(
         back_populates="ingredient", cascade="all, delete-orphan"
     )
@@ -559,6 +566,10 @@ class Settings(Base):
     # F17 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §8) : diagnostic de
     # cause d'écart. Même principe que les autres flags F10-F19.
     feature_f17_enabled: Mapped[bool] = mapped_column(default=False)
+
+    # F13 (Lot IA-1, docs/feature-plans/ia-f10-f19.md §4) : prévision de
+    # mise en place. Même principe que les autres flags F10-F19.
+    feature_f13_enabled: Mapped[bool] = mapped_column(default=False)
 
     # F15 (Lot IA-1) : « écart > 40%, réglable » (ia-f10-f19.md §6), même
     # principe que les seuils du Lot IA-0 (§8 des specs V2) — valeur de

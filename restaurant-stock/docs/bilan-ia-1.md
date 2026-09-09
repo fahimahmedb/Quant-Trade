@@ -437,7 +437,57 @@ match arbitraire (TC-F17-05).
 par le modèle (contrairement à la bascule automatique de F18), juste une
 question posée au restaurateur.
 
-## 9. Reste du backlog — non construit à ce stade
+## 9. Ticket 9 — F13, prévision de mise en place : construit
+
+Hors périmètre des critères de sortie du lot (backlog §12 : « confort, à
+construire seulement si les tickets 1 à 8 sont faits ») — fait quand même,
+cette condition étant désormais remplie, par discipline « avance sur tout
+ce que je t'ai envoyé ». Aucun jeu SYN dédié : le document pointe
+directement SYN-A (Lot IA-0) pour AC-F13-2.
+
+**Gate** : « F6 actif pour les ingrédients concernés » — réutilise tel
+quel le gate de `ai_forecast.weekday_forecast`, jamais redéfini
+séparément, plus le marqueur optionnel `Ingredient.is_prepared_in_house`
+(AC-F13-1) et le feature flag F13.
+
+**Fenêtre de production** : le lendemain, ou les N jours de conservation
+de la préparation — réutilise `Ingredient.shelf_life_days` (champ F7 déjà
+prévu), pas un second champ dupliquant le même concept ; 1 jour par
+défaut en son absence (TC-F13-05 : 3 jours de conservation -> couvre bien
+3 jours, pas 1).
+
+**Stock existant déduit (AC-F13-3)** : le reste de la préparation
+précédente EST `Ingredient.current_theoretical_stock` — un ingrédient
+« préparé en interne » est un ingrédient comme un autre, aucun second
+compteur.
+
+**Prouvé sur SYN-A** : stock ramené à 0 pour isoler la précision de la
+prévision elle-même (AC-F13-2) de sa déduction (AC-F13-3, testée
+séparément avec un stock réaliste) — le stock de départ de SYN-A
+(10 000 000, une marge pour 12 semaines de ventes, pas un reste de
+préparation réaliste) aurait sinon masqué toute quantité suggérée. Écart
+avec la prévision F6 : quasi nul (bien en-deçà des ±10 % exigés), la
+quantité étant lue directement sur la même sortie.
+
+**Non-vacuité** : le gate F6 n'était couvert par AUCUN test avant l'ajout
+d'un cas dédié — les 7 autres tests roulent tous sur SYN-A (12 semaines,
+largement au-dessus du seuil), donc aucun n'aurait détecté la disparition
+du gate. Cassé/restauré sur 4 points : la déduction du stock, le calcul
+de fenêtre à partir de `shelf_life_days`, le marqueur « préparé en
+interne », et ce gate.
+
+**Colonne NOT NULL n°2 sur `ingredients`** (`is_prepared_in_house`, après
+`f6_reverted_to_v1` au ticket 5) : `test_backup.py`/`test_migrations.py`
+corrigés par anticipation cette fois, avant même de lancer la suite
+complète — le même piège que le ticket 5 avait déjà révélé.
+
+**Mémorisation prévision/décision réelle** (« indicateur de confiance »,
+§4) : **non construite**. Aucun AC ni TC de ce ticket ne la spécifie,
+contrairement au reste — sa forme exacte resterait devinée. Documentée
+comme écart ouvert (même principe que le seuil de promotion de
+volatilité de F10, §1).
+
+## 10. Reste du backlog — état final
 
 | Ticket | Fonctionnalité | État |
 |---|---|---|
@@ -448,37 +498,68 @@ question posée au restaurateur.
 | 6 | F14 — risque de péremption | **Fait** (§5) |
 | 7 | F16 — consolidation de commande par fournisseur | **Fait** (§4) |
 | 8 | F17 — diagnostic de cause d'écart ⭐ | **Fait** (§8) |
-| 9 | F13 — prévision de mise en place | Non construit |
+| 9 | F13 — prévision de mise en place | **Fait** (§9) |
 
 **Les trois décisions actées** (`avancement-lot-ia-0-trois-decisions` §1,
 lues avant ce backlog) :
 - Journal de décision du modèle — **première brique construite** au
   ticket 5 (F18, `ModelDecisionLog`), au périmètre strict dont F18 a
   besoin — pas encore le système générique pour l'ensemble des décisions
-  IA évoqué par le document. F17 (ticket 8) n'y ajoute rien à dessein
-  (voir §8) : une hypothèse n'est pas une décision.
+  IA évoqué par le document. Ni F17 (ticket 8) ni F13 (ticket 9) n'y
+  ajoutent quoi que ce soit à dessein (voir §8 et §9) : une hypothèse
+  n'est pas une décision, et la mémorisation prévision/décision de F13
+  reste un écart documenté, pas construit sur une supposition.
 - Écran de comparaison en mode ombre — **non construit**, le ticket 2
   (F11) qui le débloquait est fait, reste à cadrer l'écran lui-même.
 - Rejeu historique — confirmé hors périmètre, aucune action.
 
-## 10. Critères de sortie du lot — état
+## 11. Critères de sortie du lot — état
 
 - Tickets 1 à 8 construits, testés, derrière feature flag éteint : **8/8**.
+  Le ticket 9 (F13), hors périmètre des critères de sortie (backlog §12 :
+  « confort, à construire seulement si les tickets 1 à 8 sont faits »),
+  est également fait (§9) — les 9 tickets du backlog sont donc traités.
 - Journal de décision du modèle en place dès le ticket 1 : **première
-  brique** (F18, périmètre strict — voir §9).
+  brique** (F18 §7 ; ni F17 §8 ni F13 §9 n'y ajoutent rien, à dessein).
 - Écran de comparaison en mode ombre : **non fait** (attendu après ticket 2).
-- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 383 tests
+- NR-01 à NR-18 et la suite du Lot IA-0 toujours verts : **oui**, 391 tests
   au vert (289 IA-0 + 6 tests d'infrastructure migrations/sauvegarde
-  [`test_migrations.py`/`test_backup.py`, cf. §7 — corrigés au ticket 5
-  pour la 1ère colonne NOT NULL ajoutée à `ingredients`] + 11 F10 + 12 F15
-  + 14 F11 + 9 F16 + 6 F14 + 14 F12 + 9 F18 + 13 F17, hors ROB).
+  [`test_migrations.py`/`test_backup.py`, cf. §7 — corrigés au ticket 5,
+  puis de nouveau au ticket 9, pour chaque nouvelle colonne NOT NULL
+  ajoutée à `ingredients`] + 11 F10 + 12 F15 + 14 F11 + 9 F16 + 6 F14 +
+  14 F12 + 9 F18 + 13 F17 + 8 F13, hors ROB).
 - Aucun changement visible pour un utilisateur : **vrai** pour ce qui est
-  construit à date (aucun des 8 tickets faits n'a de routeur ni de
-  gabarit).
+  construit à date (aucun des 9 tickets n'a de routeur ni de gabarit).
 
-## 11. Prochaine session
+## 12. Bilan de fin de lot
 
-Tickets 2 à 8 traités — seuls les tickets 1-8 du backlog sont dans le
-périmètre visé par les critères de sortie (§10). Reste 9 (F13, confort,
-hors périmètre des critères de sortie, backlog : « à construire seulement
-si les tickets 1 à 8 sont faits » — c'est désormais le cas).
+Les 9 tickets du backlog sont traités : 8 construits (tickets 1 à 8,
+critère de sortie satisfait) + le ticket 9 (F13), non requis par les
+critères de sortie mais fait quand même puisque sa propre condition
+(« si les tickets 1 à 8 sont faits ») est remplie. Écarts documentés,
+jamais devinés : le seuil de promotion de volatilité (F10, §1), l'écran
+de comparaison en mode ombre (F11), et la mémorisation prévision/décision
+réelle (F13, §9) — chacun laissé en l'état faute d'un critère
+d'acceptation ou d'un cas de test qui en fixerait la forme exacte, plutôt
+que construit sur une supposition.
+
+Discipline tenue sur les 9 tickets : synthétique ou fixture locale vérifié
+empiriquement avant l'écriture des tests (jamais l'inverse), non-vacuité
+prouvée par cassure/restauration (jamais `git checkout` — `cp` vers un
+fichier temporaire, puis retour, avec `diff` de contrôle) sur au moins
+chaque règle métier significative, suite complète relancée avant chaque
+commit, un commit par ticket. Trois bugs réels trouvés par les tests eux-
+mêmes plutôt que par relecture (dormance en cascade F10/F11 §1/§3,
+blocage circulaire du gate F18 dans son propre backtest §7, fixtures de
+migration/sauvegarde ignorant une colonne NOT NULL nouvellement ajoutée
+§7/§9) — le signe que la discipline attrape autre chose que des fautes de
+frappe.
+
+## 13. Prochaine session
+
+Tickets 2 à 9 traités — le backlog transmis (9 tickets) est intégralement
+couvert par ce lot. Reste, explicitement hors périmètre de ce lot et non
+entamé : l'écran de comparaison en mode ombre et la mémorisation
+prévision/décision de F13 (les deux items UI/gap listés en §9 ci-dessus),
+et F19 (structure de données seulement, backlog : « aucune activation
+avant un second restaurant et une validation juridique »).
