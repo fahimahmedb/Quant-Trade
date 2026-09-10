@@ -247,10 +247,73 @@ IA-0), F20 (ticket 4) et F23 (ticket 5) construits en fin de lot. Comme
 pour le Lot IA-1, chaque fonctionnalité reste en mode ombre — un service
 testé et prouvé sur données synthétiques, gaté par un feature flag éteint
 par défaut, sans écran dédié (même principe que F10-F19 : l'intégration
-UI est un lot UX séparé, jamais mélangée à un lot IA). F24 et F26 restent
-explicitement hors périmètre, bloqués sur des décisions business non
-tranchées (§5 du backlog) ; F19 (Lot IA-1) reste hors périmètre pour les
-mêmes raisons qu'au lot précédent.
+UI est un lot UX séparé, jamais mélangée à un lot IA). F19 (Lot IA-1)
+reste hors périmètre pour les mêmes raisons qu'au lot précédent. F24 et
+F26 restaient à cette étape bloqués sur des décisions business non
+tranchées (§5 du backlog) — voir §7 pour leur résolution, demandée
+explicitement après la clôture initiale de ce lot.
 
 Suite complète verte après chaque ticket, à chaque fois avant le commit
 correspondant — jamais un commit sur une suite rouge ou non vérifiée.
+
+## 7. Addendum post-clôture — résolution des points bloquants (F20 phase 2, F24, F26)
+
+Sur demande explicite du porteur du projet (« prends les meilleures
+décisions pour ces points bloquants et poursuis en auto »), les trois
+points laissés en suspens au §5 du backlog ont été rouverts un par un —
+pas pour deviner les faits qui manquaient, mais pour vérifier si chacun
+en dépendait VRAIMENT. Décision documentée au complet dans
+`backlog-lot-ia-2.md` §5 « Résolution » ; résumé ici.
+
+**F24, comparaison de prix multi-fournisseurs : construit.** La question
+qui bloquait ce ticket (combien de fournisseurs alternatifs en pratique,
+donc champ optionnel ou table dédiée) n'avait en réalité aucune prise sur
+la conception : `PriceHistory.supplier` (F1, Lot V1.1, déjà en
+production) enregistre depuis le début le fournisseur de CHAQUE
+réception — la donnée multi-fournisseurs existe déjà, pour 1 comme pour
+10 fournisseurs, sans migration ni nouveau champ ni table. `ai_supplier_
+price_comparison.py` n'est qu'une agrégation en lecture par-dessus,
+exactement le même geste que F16 sur `Ingredient.supplier_name`.
+Regroupement par égalité stricte de chaîne (même limite acceptée que
+F16, aucune normalisation nulle part dans ce projet). Dernier prix connu
+PAR fournisseur (jamais le plus bas jamais vu, qui serait une promotion
+périmée) — `Ingredient.unit_cost` lui-même n'a jamais eu de notion de
+fraîcheur, ce module ne s'en invente pas une. Purement consultatif :
+signale un fournisseur moins cher, ne bascule jamais `supplier_name`
+tout seul (même principe que F16, « jamais de sur-commande automatique »).
+
+Prouvé sur SYN-U (un ingrédient, deux fournisseurs réels via `deliveries.
+record_delivery` — pas une écriture directe de `PriceHistory` — dont un
+avec un prix dépassé PUIS un prix plus récent, pour distinguer explicitement
+« dernier prix » de « prix le plus bas jamais vu »). Non-vacuité : cassée/
+restaurée sur 3 points — le seuil `MIN_SUPPLIERS_TO_COMPARE` (frontière
+exacte 1 vs 2 fournisseurs), la primauté du prix le plus RÉCENT par
+fournisseur (cassé en inversant le tri : fait ressortir l'ancien prix
+dépassé de 10 € au lieu du prix actuel de 8 €), et la dégradation
+silencieuse de `potential_saving_pct` (`None`, jamais `0.0`, quand le
+fournisseur désigné est déjà le moins cher — cassé en renvoyant 0.0,
+confond alors « rien à gagner » et « économie mesurée nulle »). 7 tests,
+`tests/test_ai_supplier_price_comparison.py`.
+
+**F26, intégration caisse : reste sciemment non construit.** Contrairement
+à F24, aucun jugement de conception ne comble ici le manque : une
+intégration réelle a besoin d'un compte et d'identifiants d'API chez un
+éditeur précis (Zelty, L'Addition, Square...), qui n'existent pas. Écrire
+du code contre un fournisseur supposé produirait une façade qui ressemble
+à une intégration sans en être une — un risque plus grand qu'une absence
+de code, parce que ça masquerait le vrai blocage plutôt que de le
+signaler. « Prendre la meilleure décision » ici, c'est justement ne pas en
+fabriquer une. Atténuant déjà en place et non dégradé par cette non-
+construction : l'import CSV manuel (F1) couvre déjà le besoin
+fonctionnel — F26 n'aurait apporté qu'une latence réduite (quasi temps
+réel vs import périodique), jamais une capacité absente aujourd'hui.
+
+**Météo en direct (F20, phase 2) : reste sciemment non construite.**
+Choisir un fournisseur d'API météo engage un coût récurrent réel, payé
+par le restaurateur — un engagement financier, pas un jugement technique,
+et donc pas une décision que ce niveau de délégation couvre. Atténuant
+déjà en place : `ExceptionalDay` (F20 ticket 4, construit) permet déjà
+d'ajuster une prévision a posteriori pour une journée météo atypique
+(orage, canicule) par marquage manuel — la météo en direct n'aurait
+ajouté qu'une capacité PRÉDICTIVE (anticiper demain), jamais la capacité
+déjà utile aujourd'hui (apprendre d'hier).

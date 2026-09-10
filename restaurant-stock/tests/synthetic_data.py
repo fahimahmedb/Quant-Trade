@@ -1315,3 +1315,59 @@ def build_syn_s(
     import_sales_rows(db, rows, filename="syn_s.csv")
 
     return SynS(ingredient=ing, dish=plat, chef_estimate=chef_estimate, real_qty_per_day=real_qty_per_day, start=start)
+
+
+# ==========================================================================
+# SYN-U — Ingrédient livré par deux fournisseurs, prix connus
+# (cible : F24, backlog-lot-ia-2.md §5, débloqué a posteriori)
+# ==========================================================================
+
+@dataclass
+class SynU:
+    ingredient: models.Ingredient
+    cheaper_supplier: str
+    cheaper_price: float
+    current_supplier: str
+    current_price: float
+
+
+def build_syn_u(db: Session) -> SynU:
+    """Fait passer les données par le vrai chemin de code
+    (`deliveries.record_delivery`), pas une écriture directe de
+    `PriceHistory` — fidèle à ce que F1 produit réellement en production.
+
+    Trois réceptions, dans l'ordre chronologique :
+    1. Fournisseur A, 6 € (son SEUL prix connu — restera son « dernier »)
+    2. Fournisseur B, 10 € (un premier prix, volontairement dépassé ensuite)
+    3. Fournisseur B, 8 € (son prix le PLUS RÉCENT — remplace le 10 € ;
+       aussi la DERNIÈRE réception globale, donc `Ingredient.unit_cost`
+       vaut 8 € à la fin, pas 6 €)
+
+    Le prix courant (8 €, fournisseur B, désigné comme fournisseur
+    officiel) n'est donc PAS le meilleur prix connu (6 €, fournisseur A) —
+    un écart mesurable pour `potential_saving_pct`. Vérifie aussi que
+    F24 retient bien le prix le plus RÉCENT de B (8 €), pas son premier
+    prix dépassé (10 €) ni le plus bas jamais vu chez B.
+    """
+    ing = ingredient(db, "Ingrédient SYN-U", stock_qty=1000.0, unit_cost=5.0)
+
+    deliveries.record_delivery(
+        db, received_on=datetime(2026, 1, 1), supplier="Fournisseur A",
+        lines=[deliveries.DeliveryLineInput(ingredient_id=ing.id, quantity=10.0, unit_price=6.0)],
+    )
+    deliveries.record_delivery(
+        db, received_on=datetime(2026, 2, 1), supplier="Fournisseur B",
+        lines=[deliveries.DeliveryLineInput(ingredient_id=ing.id, quantity=10.0, unit_price=10.0)],
+    )
+    deliveries.record_delivery(
+        db, received_on=datetime(2026, 3, 1), supplier="Fournisseur B",
+        lines=[deliveries.DeliveryLineInput(ingredient_id=ing.id, quantity=10.0, unit_price=8.0)],
+    )
+    ing.supplier_name = "Fournisseur B"
+    db.commit()
+    db.refresh(ing)
+
+    return SynU(
+        ingredient=ing, cheaper_supplier="Fournisseur A", cheaper_price=6.0,
+        current_supplier="Fournisseur B", current_price=8.0,
+    )

@@ -369,6 +369,46 @@ Trois points, chacun explicitement hors de ce que ce document tranche
    possible avant cette réponse, terrain qui relève de l'équipe
    commerciale plus que du produit.
 
+### Résolution (post-clôture du Lot IA-2, sur demande explicite du porteur du projet)
+
+Le porteur du projet a explicitement demandé de trancher ces trois points
+plutôt que d'attendre — au lieu de deviner les faits manquants (ce qu'ils
+sont, par construction, puisqu'aucune réponse ne les rend techniques),
+chaque point a été rouvert pour vérifier s'il l'était VRAIMENT :
+
+1. **Météo en direct** : TOUJOURS bloqué, sciemment. Choisir un
+   fournisseur d'API engage un coût récurrent réel, payé par le
+   restaurateur — ce n'est pas un jugement technique que « prendre la
+   meilleure décision » puisse trancher à la place du porteur du projet,
+   quelle que soit la qualité du code écrit autour. Non construit.
+   Atténuant déjà en place : `ExceptionalDay` (F20 ticket 4, construit)
+   couvre déjà l'ajustement a posteriori d'une journée atypique (orage,
+   canicule...) par marquage manuel — la météo en direct n'ajouterait
+   qu'une capacité PRÉDICTIVE (anticiper demain), pas la seule capacité
+   déjà utile (apprendre d'hier), ce qui borne ce qui est réellement perdu
+   à ne pas construire cette phase 2 maintenant.
+2. **Comparaison multi-fournisseurs (F24)** : DÉBLOQUÉ — la question posée
+   (combien de fournisseurs alternatifs en pratique) n'avait en réalité
+   aucune influence sur la conception. `PriceHistory` (F1, Lot V1.1,
+   construit depuis le début) enregistre déjà, à CHAQUE réception, le
+   fournisseur de cette ligne précise (`PriceHistory.supplier`, alimenté
+   par `deliveries.record_delivery`) — la donnée multi-fournisseurs existe
+   déjà pour 1 comme pour 10 fournisseurs par ingrédient, sans migration
+   ni nouveau champ ni table dédiée. La question business ne portait donc
+   que sur un choix d'architecture (champ vs table) qui, en pratique, ne
+   se posait pas : construit en agrégation pure sur des données déjà
+   écrites, voir `docs/bilan-ia-2.md` §7.
+3. **Intégration caisse (F26)** : TOUJOURS bloqué, sciemment — pour une
+   raison différente du point 1. Ici, aucun jugement de conception ne
+   comble le manque : une intégration réelle demande un compte et des
+   identifiants d'API chez un éditeur précis, qui n'existent pas. Écrire
+   du code contre un fournisseur suppposé serait une façade qui ressemble
+   à une intégration sans en être une — pire qu'une absence de code, parce
+   que ça masquerait le vrai blocage. Non construit. Atténuant déjà en
+   place : l'import CSV manuel (F1) couvre déjà le besoin fonctionnel —
+   F26 n'apporterait qu'une latence réduite (quasi temps réel vs import
+   périodique), jamais une capacité qui n'existe pas du tout aujourd'hui.
+
 ---
 
 ## 6. Critères de sortie du lot

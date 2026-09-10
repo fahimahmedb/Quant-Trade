@@ -650,6 +650,13 @@ class Settings(Base):
     feature_f20_enabled: Mapped[bool] = mapped_column(default=False)
     school_vacation_zone: Mapped[str | None] = mapped_column(String(1), nullable=True)
 
+    # F24 (backlog-lot-ia-2.md §5, débloqué a posteriori) : comparaison de
+    # prix multi-fournisseurs. Aucun nouveau champ de données requis —
+    # `PriceHistory.supplier` (F1) porte déjà l'information par réception ;
+    # ce flag gate uniquement l'agrégation en lecture (ai_supplier_price_
+    # comparison.py), jamais un second schéma de fournisseurs.
+    feature_f24_enabled: Mapped[bool] = mapped_column(default=False)
+
     # F23 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 5) : cold
     # start d'un plat sans historique. `cold_start_smoothing_days` est la
     # constante de lissage du ticket (« combien de jours avant que le réel
