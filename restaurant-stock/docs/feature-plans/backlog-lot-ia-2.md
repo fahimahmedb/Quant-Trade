@@ -56,7 +56,7 @@ au porteur du projet en cours de ticket :
    valeur devinée à la place.
 3. Sur une question de jugement produit ou métier (pas technique) : ne
    pas construire plutôt que deviner. Documenter le point bloquant
-   (§7 ci-dessous en liste trois pour ce lot).
+   (§5 ci-dessous en liste trois pour ce lot).
 4. Sur une question purement technique sans impact métier : trancher et
    documenter, ne pas remonter.
 
@@ -238,7 +238,7 @@ tierce :
    (`docs/bilan-ia-0.md`, item F6 : « marquage journée exceptionnelle »)
    : ce ticket le construit enfin, pas un concept nouveau.
 La **météo en direct** (API tierce) est explicitement REPORTÉE — voir
-§7, point bloquant 1 : c'est un choix de fournisseur et de budget, pas une
+§5, point bloquant 1 : c'est un choix de fournisseur et de budget, pas une
 question technique.
 
 **Gate** : F6 actif pour l'ingrédient concerné (même gate que F6
@@ -300,7 +300,7 @@ d'être figée (cf. leçon §2) — jamais une intuition non vérifiée.
 ### Explicitement hors de ce lot, ou bloqué sur une décision business
 
 **F24 — comparaison de prix multi-fournisseurs** : NE PAS SPÉCIFIER
-avant réponse à la question business du §7 point 2. `supplier_name` est
+avant réponse à la question business du §5 point 2. `supplier_name` est
 aujourd'hui un champ unique par ingrédient (décision actée en F16) ; une
 vraie comparaison de prix demande de savoir si un ingrédient a
 généralement 1-2 fournisseurs alternatifs ou davantage, ce qui détermine
@@ -309,7 +309,7 @@ si un second champ optionnel suffit ou si une table `Fournisseur` séparée
 une migration de données à refaire.
 
 **F26 — intégration caisse (POS)** : NE PAS SPÉCIFIER avant réponse à la
-question business du §7 point 3. Chaque logiciel de caisse a son propre
+question business du §5 point 3. Chaque logiciel de caisse a son propre
 format d'export/API ; aucune spec technique n'a de sens avant de savoir
 lequel cibler en premier. Remplacerait à terme l'import CSV manuel (F1,
 Lot V1.1) par une lecture quasi temps réel — zone fonctionnelle

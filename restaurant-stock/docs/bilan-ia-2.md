@@ -1,9 +1,8 @@
-# Bilan — Lot IA-2 (en cours)
+# Bilan — Lot IA-2
 
-Périmètre : `docs/feature-plans/backlog-lot-ia-2.md`. Ce document est mis
-à jour au fil des tickets, pas écrit une seule fois à la fin — l'état
-ci-dessous reflète ce qui est réellement construit à date, pas la cible
-finale du lot.
+Périmètre : `docs/feature-plans/backlog-lot-ia-2.md`. Écrit au fil des
+tickets plutôt qu'une seule fois à la fin — voir §6 pour l'état de
+clôture du lot.
 
 ## 1. Ticket 2 — F21, menu engineering : retiré du backlog, aucune action
 
@@ -250,7 +249,7 @@ testé et prouvé sur données synthétiques, gaté par un feature flag éteint
 par défaut, sans écran dédié (même principe que F10-F19 : l'intégration
 UI est un lot UX séparé, jamais mélangée à un lot IA). F24 et F26 restent
 explicitement hors périmètre, bloqués sur des décisions business non
-tranchées (§7 du backlog) ; F19 (Lot IA-1) reste hors périmètre pour les
+tranchées (§5 du backlog) ; F19 (Lot IA-1) reste hors périmètre pour les
 mêmes raisons qu'au lot précédent.
 
 Suite complète verte après chaque ticket, à chaque fois avant le commit
