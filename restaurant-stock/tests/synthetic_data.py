@@ -1371,3 +1371,51 @@ def build_syn_u(db: Session) -> SynU:
         ingredient=ing, cheaper_supplier="Fournisseur A", cheaper_price=6.0,
         current_supplier="Fournisseur B", current_price=8.0,
     )
+
+
+# ==========================================================================
+# SYN-V — Tendance de fond + saisonnalité hebdomadaire connues
+# (cible : F27, lissage exponentiel triple / apprentissage réel)
+# ==========================================================================
+
+@dataclass
+class SynV:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    weeks: int
+    base_start: float
+    growth_per_week: float
+    day_factors: list[float]  # lun..dim
+    start: date
+
+
+def build_syn_v(
+    db: Session, seed: int = 19, weeks: int = 12, base_start: float = 15.0,
+    growth_per_week: float = 1.5, noise_pct: float = 0.05,
+) -> SynV:
+    """Vérité terrain à TENDANCE connue (+`growth_per_week`/semaine, en
+    plus de la saisonnalité) — le cas où F6 (moyenne pondérée des 8
+    dernières occurrences, sans terme de tendance) reste structurellement
+    en retard sur la réalité, vérifié empiriquement (scratchpad
+    probe_f27_hw.py, Test 1) avant d'écrire les seuils des tests F27 :
+    ~20 % d'erreur pour l'équivalent F6 contre ~5 % pour Holt-Winters sur
+    cette même série."""
+    rng = random.Random(seed)
+    ing = ingredient(db, "Ingrédient SYN-V", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-V", {ing.id: 1.0})
+    day_factors = [1.0, 1.0, 1.0, 1.0, 1.2, 1.5, 1.3]  # lun..dim, weekend plus fort
+
+    start = date(2026, 1, 5)  # lundi
+    rows = []
+    for week in range(weeks):
+        level = base_start + growth_per_week * week
+        for wd in range(7):
+            d = start + timedelta(days=week * 7 + wd)
+            qty = noisy(rng, level * day_factors[wd], noise_pct)
+            rows.append((datetime(d.year, d.month, d.day), plat.name, qty, None))
+    import_sales_rows(db, rows, filename="syn_v.csv")
+
+    return SynV(
+        ingredient=ing, dish=plat, weeks=weeks, base_start=base_start,
+        growth_per_week=growth_per_week, day_factors=day_factors, start=start,
+    )

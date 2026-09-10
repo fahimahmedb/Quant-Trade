@@ -657,6 +657,12 @@ class Settings(Base):
     # comparison.py), jamais un second schéma de fournisseurs.
     feature_f24_enabled: Mapped[bool] = mapped_column(default=False)
 
+    # F27 : apprentissage statistique réel (lissage exponentiel triple,
+    # paramètres appris par ingrédient — jamais une constante réglable
+    # unique ici, contrairement à tous les flags précédents : c'est
+    # justement la différence entre une règle et un modèle qui apprend).
+    feature_f27_enabled: Mapped[bool] = mapped_column(default=False)
+
     # F23 (Lot IA-2, docs/feature-plans/backlog-lot-ia-2.md ticket 5) : cold
     # start d'un plat sans historique. `cold_start_smoothing_days` est la
     # constante de lissage du ticket (« combien de jours avant que le réel
