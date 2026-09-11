@@ -161,3 +161,55 @@ def test_compare_models_prefers_f27_on_trending_data(db_session):
     assert out.mape_f27 < out.mape_f6
     assert out.mape_f27 < out.mape_v1
     assert out.best_model == "F27"
+
+
+def test_compare_models_can_prefer_v1_when_there_is_no_trend_to_learn(db_session):
+    """La comparaison n'est pas truquée en faveur de F27 : sur une
+    activité déjà plate et stable (SYN-W, sans tendance), rien ne
+    justifie la variance supplémentaire d'un modèle à 3 paramètres jugés
+    sur une seule semaine de validation — la simple moyenne glissante
+    (v1) gagne, F27 doit explicitement faire MOINS bien qu'elle ET que F6
+    (vérifié empiriquement avant d'écrire ce test : v1 ≈5,5 %, F6 ≈5,8 %,
+    F27 ≈8,5 % d'erreur — le modèle le plus simple gagne quand il n'y a
+    rien à extrapoler, exactement ce qu'on attend d'une vraie comparaison)."""
+    result = syn.build_syn_w(db_session)
+    _enable(db_session)
+
+    out = fl.compare_models(db_session, result.ingredient.id)
+
+    assert out.ok, out.message
+    assert out.mape_f6 is not None and out.mape_f27 is not None
+    assert out.mape_f27 > out.mape_f6 > out.mape_v1
+    assert out.best_model == "v1"
+
+
+def test_learned_forecast_handles_declining_trend_symmetrically(db_session):
+    """SYN-V prouve l'extrapolation à la hausse ; SYN-X (même construction,
+    signe opposé) prouve qu'elle fonctionne aussi à la baisse — pas un
+    artefact d'une seule direction testée."""
+    result = syn.build_syn_x(db_session)
+    _enable(db_session)
+    as_of = result.start + timedelta(weeks=result.weeks)
+
+    out = fl.learned_forecast(db_session, result.ingredient.id, as_of=as_of)
+
+    assert out.ok, out.message
+    assert out.trend_per_day < -0.1
+
+    expected_level = max(1.0, result.base_start - result.decline_per_week * result.weeks)
+    expected = {wd: expected_level * result.day_factors[wd] for wd in range(7)}
+    errors = [abs(out.expected_daily_qty[wd] - expected[wd]) / expected[wd] for wd in range(7)]
+    assert sum(errors) / len(errors) < 0.15
+
+
+def test_compare_models_prefers_f27_on_declining_trend_too(db_session):
+    result = syn.build_syn_x(db_session)
+    _enable(db_session)
+
+    out = fl.compare_models(db_session, result.ingredient.id)
+
+    assert out.ok, out.message
+    assert out.mape_f27 is not None and out.mape_f6 is not None
+    assert out.mape_f27 < out.mape_f6
+    assert out.mape_f27 < out.mape_v1
+    assert out.best_model == "F27"

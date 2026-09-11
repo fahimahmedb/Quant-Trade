@@ -1419,3 +1419,85 @@ def build_syn_v(
         ingredient=ing, dish=plat, weeks=weeks, base_start=base_start,
         growth_per_week=growth_per_week, day_factors=day_factors, start=start,
     )
+
+
+# ==========================================================================
+# SYN-W — Activité plate et stable, SANS tendance (cible : F27, preuve que
+# la comparaison à 3 modèles est honnête, pas truquée en faveur de F27)
+# ==========================================================================
+
+@dataclass
+class SynW:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    weeks: int
+    base: float
+    start: date
+
+
+def build_syn_w(db: Session, seed: int = 20, weeks: int = 12, base: float = 20.0, noise_pct: float = 0.10) -> SynW:
+    """Aucune tendance, aucune saisonnalité forte — vérifié empiriquement
+    (scratchpad probe_syn_w_x.py, puis reconfirmé avec la graine par
+    défaut réellement utilisée ici) que `compare_models` désigne v1
+    gagnant ICI, F27 explicitement le pire des trois (~8,5 % contre
+    ~5,5 % pour v1 et ~5,8 % pour F6) : sur une activité déjà stable,
+    rien à extrapoler ne justifie la variance supplémentaire d'un modèle
+    à 3 paramètres jugés sur une seule semaine de validation. Preuve que
+    F27 ne gagne pas par construction — voir
+    docs/bilan-f27-apprentissage-reel.md."""
+    rng = random.Random(seed)
+    ing = ingredient(db, "Ingrédient SYN-W", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-W", {ing.id: 1.0})
+    start = date(2026, 1, 5)
+    rows = []
+    for day_offset in range(weeks * 7):
+        d = start + timedelta(days=day_offset)
+        rows.append((datetime(d.year, d.month, d.day), plat.name, noisy(rng, base, noise_pct), None))
+    import_sales_rows(db, rows, filename="syn_w.csv")
+
+    return SynW(ingredient=ing, dish=plat, weeks=weeks, base=base, start=start)
+
+
+# ==========================================================================
+# SYN-X — Tendance DÉCLINANTE + saisonnalité connues (cible : F27 ;
+# symétrique de SYN-V, pour prouver que l'extrapolation de tendance
+# fonctionne aussi à la baisse, pas seulement à la hausse)
+# ==========================================================================
+
+@dataclass
+class SynX:
+    ingredient: models.Ingredient
+    dish: models.Dish
+    weeks: int
+    base_start: float
+    decline_per_week: float
+    day_factors: list[float]
+    start: date
+
+
+def build_syn_x(
+    db: Session, seed: int = 21, weeks: int = 12, base_start: float = 40.0,
+    decline_per_week: float = 2.0, noise_pct: float = 0.05,
+) -> SynX:
+    """Vérité terrain à tendance DÉCLINANTE connue — même construction que
+    SYN-V (tendance + saisonnalité), signe opposé. `max(1.0, ...)` évite
+    un niveau nul ou négatif en fin de période, qui rendrait la vérité
+    terrain elle-même dégénérée (pas une caractéristique de F27 à tester)."""
+    rng = random.Random(seed)
+    ing = ingredient(db, "Ingrédient SYN-X", stock_qty=10_000_000.0)
+    plat = dish(db, "Plat SYN-X", {ing.id: 1.0})
+    day_factors = [1.0, 1.0, 1.0, 1.0, 1.2, 1.5, 1.3]
+    start = date(2026, 1, 5)
+    rows = []
+    for week in range(weeks):
+        level = max(1.0, base_start - decline_per_week * week)
+        for wd in range(7):
+            d = start + timedelta(days=week * 7 + wd)
+            qty = noisy(rng, level * day_factors[wd], noise_pct)
+            rows.append((datetime(d.year, d.month, d.day), plat.name, qty, None))
+    import_sales_rows(db, rows, filename="syn_x.csv")
+
+    return SynX(
+        ingredient=ing, dish=plat, weeks=weeks, base_start=base_start,
+        decline_per_week=decline_per_week, day_factors=day_factors, start=start,
+    )

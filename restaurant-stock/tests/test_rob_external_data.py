@@ -48,7 +48,7 @@ from pathlib import Path
 import pytest
 
 from app import models
-from app.services import ai_forecast, recipes, sales_import, settings_service
+from app.services import ai_forecast, ai_forecast_learned, recipes, sales_import, settings_service
 
 KAGGLE_BIN = shutil.which("kaggle")
 
@@ -329,3 +329,51 @@ def test_rob_05_f6_forecast_has_no_aberrant_values_on_real_data(french_bakery_cs
         assert qty == qty, f"NaN détecté pour le jour {wd}"  # NaN != NaN
         assert qty not in (float("inf"), float("-inf")), f"valeur infinie détectée pour le jour {wd}"
         assert qty >= 0, f"quantité négative détectée pour le jour {wd} : {qty}"
+
+
+# ==========================================================================
+# ROB-06 — aucune sortie aberrante de F27 (apprentissage réel) sur données réelles
+# ==========================================================================
+
+def test_rob_06_f27_forecast_has_no_aberrant_values_on_real_data(french_bakery_csv_path, seeded_client):
+    """Même principe et même limite que ROB-05, pour F27 (lissage
+    exponentiel triple à paramètres appris). RAPPEL DE LA RÈGLE §3.1,
+    qui s'applique ICI EXACTEMENT COMME À F6 : ce test ne vérifie AUCUNE
+    notion de justesse de prévision, et le MAPE que F27 obtiendrait sur ce
+    jeu n'est NI calculé NI journalisé ici — un chiffre de performance sur
+    une boulangerie d'ailleurs n'a rien à faire dans un test, même en
+    commentaire, tant il serait tentant de le relire plus tard comme une
+    preuve. Seule l'ABSENCE de sortie aberrante (NaN, infini, négatif) est
+    vérifiée — la même chose que ROB-05, sur le même sous-ensemble réel,
+    pour le nouveau modèle plutôt que l'ancien."""
+    with seeded_client.session_factory() as db:
+        farine = models.Ingredient(
+            name="Farine ROB F27", unit=models.Unit.UNITE, unit_cost=0.5,
+            storage_zone=models.StorageZone.SEC, current_theoretical_stock=1_000_000.0,
+        )
+        db.add(farine)
+        db.commit()
+        recipes.upsert_dish(
+            db, dish_id=None, name="BAGUETTE", is_active=True,
+            lines=[recipes.RecipeLineInput(ingredient_id=farine.id, quantity=1.0)],
+        )
+        content, _ = _adapt_french_bakery(french_bakery_csv_path, limit=60_000)
+        sales_import.import_sales(db, "rob_french_f27.csv", content)
+
+        settings_service.get_settings(db)
+        settings = db.get(models.Settings, 1)
+        settings.feature_f27_enabled = True
+        db.commit()
+
+        outcome = ai_forecast_learned.learned_forecast(db, farine.id)
+
+    if not outcome.ok:
+        pytest.skip(f"gate F27 non atteint sur ce sous-ensemble réel ({outcome.message}) : rien à vérifier")
+
+    for wd, qty in outcome.expected_daily_qty.items():
+        assert qty == qty, f"NaN détecté pour le jour {wd}"  # NaN != NaN
+        assert qty not in (float("inf"), float("-inf")), f"valeur infinie détectée pour le jour {wd}"
+        assert qty >= 0, f"quantité négative détectée pour le jour {wd} : {qty}"
+    assert 0.0 <= outcome.params.alpha <= 1.0
+    assert 0.0 <= outcome.params.beta <= 1.0
+    assert 0.0 <= outcome.params.gamma <= 1.0

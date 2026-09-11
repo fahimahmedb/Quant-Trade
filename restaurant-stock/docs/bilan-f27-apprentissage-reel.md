@@ -84,6 +84,48 @@ Backtest à 3 (`compare_models`, 5 semaines rejouées) :
 F27 gagne empiriquement sur ce cas — jamais supposé, mesuré par la même
 méthode que celle qui a servi à activer F6 lui-même (F18, Lot IA-1).
 
+## Addendum — la comparaison n'est pas truquée en faveur de F27
+
+Sur demande du porteur du projet (simuler d'autres profils, et vérifier
+l'accès à un vrai historique de vente). Deux jeux supplémentaires,
+symétriques et contrastés :
+
+| Jeu | Profil | Vainqueur (`compare_models`) | MAPE v1 / F6 / F27 |
+|---|---|---|---|
+| SYN-W | Plat, sans tendance | **v1** | 5,5 % / 5,8 % / 8,5 % |
+| SYN-X | Tendance déclinante + saisonnalité | **F27** | 17,6 % / 35,0 % / 5,6 % |
+
+Sur SYN-W, F27 est explicitement le PIRE des trois modèles — la variance
+d'un modèle à 3 paramètres jugés sur une seule semaine de validation ne
+se justifie pas quand il n'y a rien à extrapoler. C'est le résultat
+attendu d'une comparaison honnête, pas un raté : si F27 gagnait
+systématiquement, y compris sur des données où il n'a structurellement
+rien à apporter, ce serait le signe d'une comparaison biaisée, pas d'un
+bon modèle. SYN-X confirme, à l'inverse, que l'extrapolation de tendance
+fonctionne aussi à la baisse, pas seulement à la hausse (SYN-V).
+
+**Sur l'accès à un historique de vente réel d'un autre établissement** :
+un jeu réel existe déjà dans ce dépôt (« French bakery daily sales »,
+Kaggle, ~234 000 lignes, 21 mois, boulangerie française réelle),
+téléchargé pour la suite de robustesse ROB (Lot IA-0). Une règle du
+projet, écrite avant ce ticket (`docs/feature-plans/ia-f5-f9.md` §3.1 et
+§5.4), interdit explicitement d'entraîner ou calibrer quoi que ce soit
+dessus, même « pour initialiser » : les rythmes d'une boulangerie
+d'ailleurs ne sont pas transférables à ce restaurant, et un modèle
+pré-entraîné rendrait ses sorties inexplicables — l'inverse de ce que
+« vraie IA, pas des règles » doit signifier ici (apprendre UNIQUEMENT des
+données du restaurant qui l'utilise).
+
+Ce jeu réel reste néanmoins utile dans les limites de cette règle :
+`test_rob_06_f27_forecast_has_no_aberrant_values_on_real_data` (nouveau,
+`tests/test_rob_external_data.py`) vérifie que F27 ne produit aucune
+valeur aberrante (NaN, infini, négatif) sur de la donnée réelle sale —
+exactement ce que ROB-05 vérifie déjà pour F6, ni plus ni moins. Aucun
+MAPE n'est calculé ni journalisé sur ce jeu, sur aucun chemin de code :
+un chiffre de performance sur une boulangerie d'ailleurs n'a pas sa place
+ici, même en commentaire, tant il serait tentant de le relire plus tard
+comme une preuve qu'il n'est pas.
+
 ## Non-vacuité
 
 Cassée/restaurée sur 3 points :
@@ -111,8 +153,10 @@ Corrigé en introduisant la fermeture à la semaine 5 sur 12 : seule une
 vraie mise à jour récursive (pilotée par γ) peut alors corriger un indice
 saisonnier initialement erroné.
 
-13 tests, `tests/test_ai_forecast_learned.py`. SYN-V (tendance +
-saisonnalité connues), `tests/synthetic_data.py`.
+10 tests, `tests/test_ai_forecast_learned.py` (7 d'origine + 3 de
+l'addendum SYN-W/SYN-X). Plus 1 test de robustesse (`test_rob_06...`,
+`tests/test_rob_external_data.py`, cf. addendum). SYN-V/W/X, `tests/
+synthetic_data.py`.
 
 ## Mode ombre, comme F6
 
