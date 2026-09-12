@@ -3,6 +3,10 @@
 Implémentation des Étapes A (diagnostics) et C (volatilité) du cahier des
 charges (revue de littérature orientée conception).
 
+> **Statut de recherche :** les anciens scores de prévision ne constituent pas
+> un edge tradable. L'audit Phase 0 a testé leur première traduction économique
+> et l'a classée **KILL** ; voir `results/phase0_forensic_audit.md`.
+
 ## Structure
 
 ```
@@ -18,6 +22,8 @@ results/    etape_A_diagnostics.md, etape_C_volatilite.md
 pip install numpy scipy pandas statsmodels arch
 python3 scripts/run_etape_a.py
 python3 scripts/run_etape_c.py
+python3 scripts/run_phase0_e1.py  # sans dépendance externe
+python3 -m unittest discover -s tests -v
 ```
 
 ## Résultats clés (voir results/ pour le détail)
@@ -38,3 +44,10 @@ l'univers doit être déclarée, comptée (N essais) et re-testée au SPA /
 Deflated Sharpe. On n'itère pas sur l'échantillon de test jusqu'à obtenir
 un chiffre plaisant : on allonge l'historique ou on améliore les données
 (RV intraday), puis on re-teste une fois.
+
+## Limites connues
+
+Le fichier n'a pas de provenance consignée et représente un indice non
+directement tradable, sans dividendes ni coûts. Le holdout 2024–2026 est
+**consommé**. Aucune conclusion de ce dépôt n'autorise du paper trading ou du
+capital réel.
