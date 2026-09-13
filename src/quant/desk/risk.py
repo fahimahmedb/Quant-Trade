@@ -3,15 +3,11 @@
 ``OPERATING_MODEL.md``: RISK "may reject the proposal even when the candidate
 itself is credible". These limits are about the Book, not the signal.
 
-Two properties matter and both were wrong in the first implementation:
+Two properties matter:
 
-* The portfolio a proposal produces is the *aggregate* of every sleeve, so the
-  strategy's own current sleeve must be removed before its target is added.
-  Otherwise a strategy is charged twice for the position it already holds.
-* An approval must describe the state that will actually be simulated. If a
-  proposal is throttled or scaled, the limits are re-checked on the scaled
-  portfolio, and after execution they are re-checked again on the portfolio the
-  fills actually produce, because capacity truncation can move it further.
+* the strategy's own current sleeve is removed before its target is added;
+* approval and final verification describe the exact portfolio/NAV state that
+  sizing or modelled fills produce, including implementation costs.
 """
 
 from __future__ import annotations
@@ -38,12 +34,7 @@ class RiskLimits:
 
 def project(ledger: Ledger, strategy_id: str,
             target_notional: dict[str, float], prices: dict[str, float] | None = None) -> dict[str, float]:
-    """The portfolio that results if this strategy moves to ``target_notional``.
-
-    Aggregate exposure, less this strategy's existing sleeve, plus its target.
-    Symbols the strategy is dropping must appear in ``target_notional`` at zero;
-    the desk guarantees that.
-    """
+    """The portfolio that results if this strategy moves to ``target_notional``."""
     resulting = dict(ledger.symbol_exposures_at(prices) if prices is not None else ledger.symbol_exposures())
     sleeve = ledger.sleeve_exposures_at(strategy_id, prices) if prices is not None else ledger.sleeve_exposures(strategy_id)
     for symbol, value in sleeve.items():
@@ -90,11 +81,7 @@ def assess(portfolio: dict[str, float], nav: float, drawdown: float,
 
 def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float],
              limits: RiskLimits, prices: dict[str, float] | None = None) -> dict[str, Any]:
-    """Decide on the proposal, and judge the state the decision actually produces.
-
-    Returns the scaled targets alongside the verdict so the caller cannot apply
-    a different portfolio from the one that was approved.
-    """
+    """Decide on the proposal and return the exact scaled target approved."""
     nav = ledger.nav_at(prices) if prices is not None else ledger.nav
     drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
     initial = ledger.state.initial_capital
@@ -113,20 +100,10 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
         gross = sum(abs(value) for value in portfolio.values())
         return (gross / nav if nav else 0.0) <= limits.max_gross_ratio + 1e-12
 
-    # Scaling is a sizing remedy, so it answers only the limits that are about
-    # size: gross exposure and the drawdown throttle. A neutrality or
-    # concentration breach is structural -- shrinking a directional proposal
-    # until it fits the neutrality limit still leaves a directional position
-    # that the strategy's evidence does not support, so those are vetoed below
-    # rather than quietly resized.
-    #
-    # Scaling only shrinks this strategy's own legs; exposure held by other
-    # sleeves is fixed, so a closed-form ratio of the proposed gross is wrong.
-    # Search for the largest admissible scale instead.
     if within_gross(cap):
         scale = cap
     elif not within_gross(0.0):
-        scale = 0.0  # Not repairable by sizing: the rest of the book is the problem.
+        scale = 0.0
     else:
         low, high = 0.0, cap
         for _ in range(60):
@@ -138,7 +115,6 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
         scale = low
 
     scaled = {symbol: value * scale for symbol, value in target_notional.items()}
-    # The approval describes this portfolio, not the pre-scale one.
     final = assess(project(ledger, strategy_id, scaled, prices), nav, drawdown, limits, initial)
 
     return {"approved": not final["violations"], "scale": scale,
@@ -153,17 +129,21 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
 
 
 def verify_final(ledger: Ledger, strategy_id: str, executed_notional: dict[str, float],
-                 limits: RiskLimits, prices: dict[str, float] | None = None) -> dict[str, Any]:
-    """Re-check the limits on the portfolio the modelled fills actually produce.
+                 limits: RiskLimits, prices: dict[str, float] | None = None,
+                 nav_adjustment: float = 0.0) -> dict[str, Any]:
+    """Re-check the exact post-fill portfolio before it is committed to Book.
 
-    Capacity truncation happens after sizing, so the executed portfolio is not
-    necessarily the approved one.
+    ``executed_notional`` must already be final quantity multiplied by the one
+    valuation vector supplied in ``prices``. ``nav_adjustment`` carries cash-only
+    implementation frictions (currently commissions) that Book will deduct when
+    the fills are applied, so a floor/drawdown check cannot approve a NAV that
+    will not exist after booking.
     """
-    nav = ledger.nav_at(prices) if prices is not None else ledger.nav
+    nav = (ledger.nav_at(prices) if prices is not None else ledger.nav) + nav_adjustment
     drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
     verdict = assess(project(ledger, strategy_id, executed_notional, prices), nav,
                      drawdown, limits, ledger.state.initial_capital)
     return {"approved": not verdict["violations"], "vetoes": verdict["violations"],
             "gross_ratio": verdict["gross_ratio"], "net_ratio": verdict["net_ratio"],
             "largest_symbol_ratio": verdict["largest_symbol_ratio"],
-            "checks": verdict["checks"]}
+            "checks": verdict["checks"], "nav": nav, "drawdown": drawdown}
