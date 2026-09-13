@@ -1,79 +1,104 @@
-# Quant-Trade Research State
+# Quant System State
 
-This file is the compact strategic state of the autonomous research system.
+This file is the compact current state of the whole Quant project. It should be updated at meaningful milestones, not after every minor experiment.
 
-Codex should update it at meaningful milestones rather than after every minor test.
+Read `QUANT_NORTH_STAR.md` before interpreting this file.
 
-## Current search space
+## Architectural state
 
-Five lanes were scored on mechanism, point-in-time data, beta isolation, cost,
-falsifiability, implementation, economic significance and information value.
-The complete ranking is in `research/opportunity_map.json`. A fifth,
-time-series relative-value lane was selected only because it permits an honest
-vertical-slice test with the data already present; it is not a commitment to
-continue the legacy NASDAQ direction.
+The project has been re-centered on the full Quant system rather than an autonomous-research-only interpretation.
 
-## Strongest current evidence
+Current hierarchy:
 
-On the discovery-only 60% subsample, the strongest of three pre-declared lag
-scans was weak 5-day reversal (correlation -0.0369). The causal 500-observation
-OOS expression made 2.03% after 5 bps per position change, but this is not
-credible edge: it lost 3.27% at 10 bps, failed in the second OOS half, and its
-apparent gain was extremely concentrated. Decision: `NO_TRADE`.
+- `QUANT_NORTH_STAR.md` — product/architecture North Star;
+- `SYSTEM_ARCHITECTURE.md` — whole-system planes;
+- `OPERATING_MODEL.md` — persistent behavior and role model;
+- `MISSION.md` — terminal economic objective;
+- `SOURCE_BASIS.md` — source-derived architecture and caveats;
+- `PIPELINE.md` — Research Factory sub-pipeline only.
 
-## Rejected / deprioritized directions
+The persistent research runtime introduced by PR #9 is now interpreted as **Control Plane / Research Factory bootstrap infrastructure**, not as Quant itself.
 
-The tested fixed short-horizon index-reversal expression is rejected. No
-parameter rescue will be attempted on this sample. Historical volatility-model
-research remains prior work, not evidence of tradable alpha.
+## What exists today
 
-## Important data / timing constraints
+Useful implemented pieces include:
 
-The repository has one daily NASDAQ index proxy (1,251 observations through
-2026-07-10), no executable instrument quotes or volume, and no synchronized
-cross-sectional, options, factor or filing panel. Close-t signals are therefore
-tested only against close-t-to-close-t+1 returns and are research evidence, not
-fillable trade claims.
+- historical NASDAQ research and reusable quantitative utilities;
+- a `ResearchTicket` state machine;
+- append-only research memory;
+- one bounded research worker/vertical slice;
+- persistent campaign state and task queue;
+- restart/recovery behavior;
+- heartbeat/watchdog concepts;
+- operator controls for the research campaign.
 
-## What the system learned about how to search
+## Current research evidence
 
-A cheap discovery gate successfully prevented look-ahead selection: only the
-first 60% ranked the pre-declared lags, while the last 40% was untouched until
-testing. Friction and subperiod checks overturned a superficially positive
-5-bps result, confirming that cost sensitivity must precede paper admission.
+The first bounded time-series relative-value test selected a weak 5-day reversal pattern on the discovery sample.
 
-## Runtime maturity
+Its out-of-sample result was not credible edge after stronger friction/subperiod/concentration checks. The fixed expression remains rejected and should not be parameter-rescued on the same evidence.
 
-The PR #7 worker proves that one bounded discovery cycle can execute end to end,
-write a ResearchTicket, append memory and produce a next-action hint.
+This result is useful primarily as integration evidence for the Research Factory and as a reminder that superficially positive results can fail economic validation.
 
-That is **not yet persistent autonomy**. The current worker finishes when the
-single cycle finishes.
+## Current data frontier
 
-The next architecture target is now fixed in `RUNTIME.md`: a restart-safe
-Research Campaign Orchestrator with persistent campaign state, a research queue,
-heartbeat/idle semantics, memory-driven follow-up selection and explicit
-resource/budget stop reasons.
+The repository remains data-constrained.
 
-A completed experiment, rejected ticket, finished vertical slice or opened PR
-is not a research-campaign stop condition.
+It lacks the broader synchronized point-in-time datasets required to exercise several higher-value research lanes. The existing runtime correctly represents those missing resources as blocked work rather than silently inventing data.
 
-## Current highest-value next action
+A first-class Data Plane is still missing.
 
-There are two parallel priorities:
+## Whole-system maturity
 
-1. **System priority:** implement the persistent campaign runtime specified by
-   `RUNTIME.md` and `schemas/campaign_state.schema.json`, so autonomy survives a
-   Codex task boundary.
-2. **Research priority:** construct or obtain a compact synchronized ETF
-   total-return/quote panel and scan beta-neutral cross-sectional relative value
-   rather than tuning the rejected single-index reversal rule.
+### Control Plane / Clock
 
-The runtime should represent unavailable-data work as a blocked queued task and
-continue any other executable research rather than silently declaring the
-campaign complete.
+**Partial v0.** Persistent campaign state, queue, restart/recovery and watchdog concepts exist. The current research CLI is not yet the complete persistent whole-system Clock.
+
+### Data Plane
+
+**Mostly absent.** No unified dataset registry, lineage, validation and dependency/unblocking layer yet.
+
+### Research Factory
+
+**Early v0.** One bounded worker exists; research breadth, strategy lifecycle and replacement/decay loops remain immature.
+
+### Capital decision / paper-shadow chain
+
+**Not yet implemented as a coherent whole-system subsystem.** The target functional topology remains `SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` as defined in the North Star.
+
+### Persistent Book
+
+**Absent.** Runtime/research state persists, but the target paper/shadow economic state and bankroll continuity are not yet implemented.
+
+### Learning feedback
+
+**Research-centric v0.** Experiment lessons persist, but whole-system feedback from current opportunity decisions, paper/shadow outcomes, strategy degradation and missed opportunities is not yet unified.
+
+### Build Plane
+
+**Informal but active.** Codex has successfully built bounded research and persistent-runtime components. `CODEX.md` now defines Codex as Builder / Quant Engineer rather than the runtime itself.
+
+### Status / Control UI
+
+**Absent.** A future UI must be generated from real persistent state and act as an architectural checksum, not a mock dashboard.
+
+## Highest-value next milestone
+
+The next large implementation milestone should be **Quant System V1 in persistent paper/shadow mode**.
+
+It should close several connected North-Star gaps together rather than perform another isolated infrastructure pass.
+
+Priority areas are:
+
+1. persistent whole-system Clock / event model;
+2. first-class Data Plane;
+3. broader Research Factory plus versioned strategy lifecycle;
+4. persistent paper/shadow Book and whole-system learning state;
+5. paper/shadow current-opportunity functions matching the North-Star topology;
+6. status/control UI backed by actual persistent state.
 
 ## Human boundary currently reached?
 
-No for the runtime build itself. A future research task may legitimately become
-blocked when it requires external data or access not present in the environment.
+No architectural boundary is currently blocking the next build milestone.
+
+Some future research lanes remain genuinely blocked by missing data/resources, but that should not prevent building the coherent system topology or executing other available work.

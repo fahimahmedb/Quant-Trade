@@ -1,100 +1,47 @@
-# Autonomous Research Pipeline
+# Research Factory Pipeline
 
-This file defines the minimum functional pipeline Codex should build first.
+This file defines the Research Factory sub-pipeline only.
 
-## Stage 1 — SCAN
+It does **not** define the whole Quant system. Read `QUANT_NORTH_STAR.md`, `SYSTEM_ARCHITECTURE.md` and `OPERATING_MODEL.md` first.
 
-Broad, inexpensive candidate generation.
+Canonical research loop:
 
-Input: point-in-time market / filing / derived data.
+`OBSERVE -> SCAN -> FILTER -> HYPOTHESIZE -> TEST -> VALIDATE -> REGISTER -> LEARN -> CONTINUE`
 
-Output: `OpportunityTicket` with observable facts only.
+## SCAN
 
-No strategy claim is made at this stage.
+Generate broad, inexpensive research candidates from point-in-time data.
 
-## Stage 2 — FILTER
+## FILTER
 
-Remove obvious low-value candidates before expensive reasoning.
+Remove stale, duplicate, low-materiality or already-discredited candidates before expensive reasoning.
 
-Possible reasons:
+## HYPOTHESIZE
 
-- insufficient deviation;
-- stale data;
-- missing point-in-time fields;
-- insufficient liquidity proxy;
-- duplicate candidate;
-- already-known dead pattern.
+Define a falsifiable mechanism, required information, benchmark and failure condition.
 
-The purpose is to reserve deep reasoning for a smaller set of candidates.
+## TEST
 
-## Stage 3 — HYPOTHESIS
+Run the smallest credible causal test with explicit timestamp semantics and machine-readable evidence.
 
-A deeper reasoning pass proposes a falsifiable mechanism and a research expression.
+## VALIDATE
 
-Required outputs:
+Attempt to falsify the result using timing/leakage checks, out-of-sample behavior, beta/factor attribution, modeled costs, sensitivity, regime dependence and concentration checks as relevant.
 
-- mechanism;
-- expected horizon;
-- required variables;
-- benchmark;
-- falsification condition;
-- key implementation assumptions.
+Possible outcomes include `REJECT_RESEARCH`, `REVISE` and `VALIDATED`.
 
-## Stage 4 — TEST
+## REGISTER
 
-Implement the smallest credible historical test.
+A surviving result should become a versioned strategy definition with evidence and lifecycle state, rather than remain only a backtest artifact.
 
-Keep the data timestamp semantics explicit and produce machine-readable results.
+## LEARN
 
-## Stage 5 — VALIDATE
+Persist what failed or survived and how that changes future research priority.
 
-Attack the result.
+## CONTINUE
 
-Relevant checks may include:
+Choose the next highest-value executable research action automatically. Ordinary failed tests do not require the human to invent the next strategy.
 
-- causality / timing;
-- leakage;
-- out-of-sample behavior;
-- beta/factor attribution;
-- sensitivity to costs;
-- parameter perturbation;
-- regime dependence;
-- multiple-testing pressure.
+## Boundary
 
-Outcome:
-
-- `REJECT_RESEARCH`
-- `REVISE`
-- `VALIDATED_FOR_PAPER`
-
-## Stage 6 — PAPER FILTER
-
-For validated strategies, evaluate whether every raw signal should be acted on in paper/shadow simulation.
-
-Possible outcomes:
-
-- `PAPER_ACCEPT`
-- `PAPER_REJECT`
-- `NO_TRADE`
-
-Track the counterfactual outcome of rejected signals when possible. The project should learn whether selectivity improves the simulated economics.
-
-## Stage 7 — MEMORY
-
-Every ticket ends with a lesson.
-
-Memory should capture:
-
-- what pattern was tested;
-- why it survived or failed;
-- rejection stage;
-- data problems;
-- cost problems;
-- sensitivity problems;
-- whether the scanner deserves more or less future research budget.
-
-## Stage 8 — CONTINUE
-
-The orchestrator selects the next highest-value research action automatically.
-
-An ordinary failed test is not a reason to wait for human instructions.
+Research is one subsystem of Quant. Whole-system behavior, persistent economic state, Control/Data/Build planes and the project status surface are defined by the higher-level architecture documents.

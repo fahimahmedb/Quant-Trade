@@ -1,162 +1,101 @@
-# Persistent Research Runtime
+# Control Plane / Persistent Research Runtime
+
+Read `QUANT_NORTH_STAR.md` and `SYSTEM_ARCHITECTURE.md` first.
+
+This document describes the **research-campaign portion of Quant's Control Plane**. It is important infrastructure, but it is not the whole Quant system.
 
 ## Why this exists
 
-A Codex task ending is not the same thing as the Quant research system ending.
+A Codex task ending is not the same thing as Quant ending.
 
-The first autonomous vertical slice proved that one cycle can run end to end. The next architectural step is to move autonomy out of the temporary Codex task and into a persistent research runtime.
-
-The intended distinction is:
+The first bounded research worker proved that one cycle can execute end to end. The persistent runtime moves campaign state, scheduling, recovery and next-action logic into the software itself.
 
 ```text
 BUILD PLANE
 Codex / engineer
     -> builds and improves Quant
 
-RUN PLANE
-Quant research runtime
-    -> keeps scanning, testing, learning and reprioritizing after the build task ends
+CONTROL / RUN PLANE
+Quant
+    -> persists state, schedules due work and remains coherent after the build task ends
 ```
 
 ## Non-negotiable runtime rule
 
-The following events are **not** normal stop conditions:
+These events are not normal campaign stop conditions:
 
 - one experiment completed;
 - one candidate rejected;
 - one vertical slice completed;
 - one pull request opened;
 - one scanner produced no candidate;
-- one strategy failed validation.
+- one research path failed validation.
 
-A research campaign should continue until it reaches a real boundary such as:
+A campaign may become idle, paused or blocked for explicit reasons, but ordinary negative evidence should become memory and reprioritization.
 
-- configured compute/time budget exhausted;
-- no remaining credible research task with currently available data;
-- required data is unavailable;
-- paid/permissioned access is required;
-- credentials or another external resource are required;
-- an explicit human boundary is reached.
+## Responsibilities of this subsystem
 
-## Runtime responsibilities
+The research runtime/control bootstrap owns or contributes to:
 
-The runtime should eventually own:
+1. Clock / scheduler for research work;
+2. persistent research task queue;
+3. worker dispatch;
+4. campaign state across restarts;
+5. heartbeat and liveness;
+6. research-memory integration;
+7. watchdog/fault detection;
+8. explicit resource/budget boundaries.
 
-1. **Clock / scheduler** — decides which research jobs are due.
-2. **Research queue** — persistent ordered backlog of candidate tasks.
-3. **Worker dispatch** — wakes only the modules needed for a ticket.
-4. **Campaign state** — persists across process restarts.
-5. **Heartbeat** — proves the system is alive even when there is no candidate worth acting on.
-6. **Memory integration** — lessons from completed tickets change future priorities.
-7. **Watchdog** — detects repeated failures, stalled tasks and dead workers.
-8. **Boundary detection** — distinguishes ordinary negative results from genuine reasons to stop/escalate.
+PR #9 implements a useful v0 of these capabilities.
 
 ## Event-driven model
 
-The runtime should not force every role to run continuously.
+The runtime should wake functions only when useful work is due.
 
-Conceptual flow:
-
-```text
-CLOCK
-  ↓
-SCAN due?
-  ↓
-create candidate ticket
-  ↓
-FILTER
-  ├─ reject -> memory -> continue
-  ↓
-HYPOTHESIS / TEST / VALIDATE
-  ├─ reject -> memory -> continue
-  ↓
-PAPER/SHADOW evaluation
-  ↓
-feedback -> memory -> reprioritize
-  ↺
-```
-
-Expensive reasoning should be activated only when a cheaper upstream stage produces something worth deeper work.
+Expensive reasoning should be activated only after cheaper upstream filtering produces something worth deeper work.
 
 ## Campaign state
 
-A persistent campaign state should include at least:
+Persistent state should expose at least:
 
-- campaign ID;
-- status;
-- start time;
-- last heartbeat;
-- cycles completed;
-- active ticket IDs;
-- queued ticket IDs;
-- blocked tasks;
-- last completed ticket;
+- campaign identity/status;
+- heartbeat;
+- completed/active/queued/blocked work;
 - latest lesson;
-- current highest-value next action;
-- data fingerprints / versions already processed;
-- configured research budget;
-- budget consumed;
-- stop / pause reason when applicable.
+- current next action;
+- processed data/task identities;
+- configured/consumed research budget;
+- explicit pause/block reason.
 
-See `schemas/campaign_state.schema.json`.
+See `schemas/campaign_state.schema.json` for the current v0 contract.
 
 ## Research queue
 
-The queue must prevent two failure modes:
+The queue should prevent both:
 
-### Repeating the same dead experiment
+- repeating equivalent dead work without new evidence;
+- stopping simply because the first idea failed.
 
-A failed ticket should update memory and normally lower the priority of equivalent tasks unless there is a new reason to revisit them.
-
-### Stopping because the first idea died
-
-When a ticket closes, the orchestrator should inspect:
-
-- ticket lesson;
-- next-action hints;
-- opportunity map;
-- available datasets;
-- existing memory;
-
-and generate or promote the next credible task automatically.
+When work closes, the runtime should preserve the result and promote the next credible executable research action when one exists.
 
 ## Data-aware idling
 
-Autonomy does not mean generating artificial work.
+`IDLE` means alive with no useful research work due at that moment.
 
-If no new data or credible next experiment exists, the runtime may idle while remaining alive.
+Possible reasons include waiting for new data, a scheduled event or resolution of a dependency.
 
-`IDLE` is different from `FINISHED`.
+`IDLE` is not `FINISHED`.
 
-The runtime should expose why it is idle:
+## Relationship to the whole system
 
-- waiting for new data;
-- waiting for scheduled scan;
-- no candidate above threshold;
-- all available research lanes blocked by missing data;
-- compute budget temporarily paused.
+This runtime is only part of the architecture.
 
-## Relationship with Codex
+Quant also requires the Data Plane, Research Factory breadth/strategy lifecycle, the paper/shadow decision functions described in the North Star, persistent Book/feedback, Build Plane and status UI.
 
-Codex should be treated as a builder / maintainer / deep-research worker, not as the process lifetime itself.
+Do not use this document to redefine Quant as a research orchestrator.
 
-A good Codex run can finish while Quant remains conceptually active.
+## Current maturity
 
-Future Codex tasks should therefore improve one or more parts of the persistent runtime rather than treating PR creation as the end of the research campaign.
+PR #9 provides the first restart-safe campaign orchestrator and should be preserved as a Control Plane bootstrap.
 
-## First implementation target
-
-The next Codex run should build a minimal persistent campaign orchestrator around the existing PR #7 vertical slice.
-
-Minimum behavior:
-
-1. load campaign state;
-2. inspect the research queue;
-3. run due work;
-4. persist ticket result and lesson;
-5. update priorities;
-6. choose the next action;
-7. heartbeat while idle;
-8. stop only on explicit budget/resource/human boundary.
-
-The implementation should be dependency-light, restart-safe, deterministic where possible, and testable without any live-capital integration.
+Its remaining weaknesses should be fixed inside larger North-Star milestones rather than becoming an endless sequence of isolated runtime micro-projects.
