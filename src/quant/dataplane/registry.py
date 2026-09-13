@@ -79,42 +79,69 @@ class DatasetRegistry:
         return self.root / record.path
 
     def reload(self) -> list[str]:
-        """Re-read the registry from disk and return newly seen dataset ids.
+        """Re-read records written by another ingestion process.
 
-        Ingestion runs in its own process, so a long-running Clock that only
-        consults the copy it loaded at boot can never notice a dataset that
-        arrived while it was idle.
+        Existing ids are replaced when the persisted document changed. The old
+        implementation only copied *new* ids, which let a long-running Clock
+        combine new dataset bytes with stale validation/provenance held in
+        memory.
         """
         payload = read_json(self.path, {"version": 1, "datasets": {}}) or {}
         stored = payload.get("datasets", {})
-        added = [key for key in stored if key not in self.records]
+        changed: list[str] = []
         for key, value in stored.items():
-            if key not in self.records:
-                self.records[key] = DatasetRecord(**value)
-        return added
+            incoming = DatasetRecord(**value)
+            current = self.records.get(key)
+            if current is None or current.to_dict() != incoming.to_dict():
+                self.records[key] = incoming
+                changed.append(key)
+        return changed
+
+    def _revalidate(self, record: DatasetRecord, path: Path) -> None:
+        """Refresh structural metadata and validation from the actual bytes."""
+        # Local imports keep the registry primitive free of an import cycle.
+        from .panel import PricePanel
+        from .validation import validate_panel
+
+        try:
+            panel = PricePanel.load(path)
+            expected = list(record.symbols) or list(panel.symbols)
+            validation = validate_panel(panel, expected)
+            record.rows = len(panel.bars)
+            record.symbols = list(panel.symbols)
+            record.first_date = panel.dates[0] if panel.dates else None
+            record.last_date = panel.dates[-1] if panel.dates else None
+            record.validation = validation
+            record.availability = "AVAILABLE" if validation["passed"] else "INVALID"
+        except Exception as exc:
+            record.validation = {"passed": False,
+                                 "problems": [f"validation failed: {type(exc).__name__}: {exc}"],
+                                 "warnings": []}
+            record.availability = "INVALID"
 
     def refresh_availability(self) -> list[DatasetRecord]:
         """Re-check every registered dataset against the filesystem.
 
-        A dataset whose bytes changed is re-fingerprinted, which is the event
-        that makes previously completed work eligible to run again.
+        A byte change is never promoted directly to AVAILABLE. It is
+        re-fingerprinted *and revalidated* first, so research cannot combine a
+        fresh file with yesterday's health verdict.
         """
-        changed = []
+        changed: list[DatasetRecord] = []
         for record in self.records.values():
             path = self.root / record.path
             if not path.exists():
                 if record.availability != "MISSING":
                     record.availability = "MISSING"
+                    record.refreshed_at = utc_now()
                     changed.append(record)
                 continue
             current = fingerprint_file(path)
-            if current != record.fingerprint:
+            bytes_changed = current != record.fingerprint
+            needs_recheck = bytes_changed or record.availability in {"MISSING", "STALE"}
+            if needs_recheck:
                 record.fingerprint = current
                 record.refreshed_at = utc_now()
-                record.availability = "AVAILABLE"
-                changed.append(record)
-            elif record.availability == "MISSING":
-                record.availability = "AVAILABLE"
+                self._revalidate(record, path)
                 changed.append(record)
         if changed:
             self.save()
