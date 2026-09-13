@@ -1,57 +1,36 @@
 # Quant-Trade — Autonomous Alpha Discovery System
 
-Quant-Trade is being rebuilt as an autonomous quantitative research and trading system whose terminal objective is simple:
+Quant-Trade is being rebuilt as an autonomous quantitative research system whose terminal objective is simple:
 
-> **Find, validate, select and eventually monetize real market edge so that capital grows over time.**
+> **Find and validate real market edge so the system can improve the future growth of capital.**
 
 This repository is not organized around one permanent strategy, one market, or one forecasting model.
 
-The target is a continuously learning system that can:
+The target is a continuously learning discovery engine that can:
 
-`SCAN -> REASON -> TEST -> VALIDATE -> VET -> SIZE -> RISK -> FILL -> BOOK -> LEARN -> REPEAT`
+`SCAN -> FILTER -> HYPOTHESIZE -> TEST -> VALIDATE -> PAPER/SHADOW SELECT -> LEARN -> REPEAT`
 
 ## Core idea
 
 The durable asset is not one winning strategy. It is a factory that discovers new strategies faster than old alpha decays.
 
-Quant-Trade therefore separates three different problems:
+A candidate is not a conclusion. A signal is not automatically an action. `NO_TRADE` is a valid paper/shadow decision.
 
-1. **Alpha discovery** — where is the edge?
-2. **Capital decision** — does this opportunity deserve money now, and how much?
-3. **Execution / book** — what actually happened to the capital?
+## Source-inspired architecture
 
-A signal is not an order. `NO_TRADE` is a valid decision.
+The supplied source material contributes three central ideas:
 
-## Architecture
+1. **continuous strategy discovery** rather than one static strategy;
+2. **wide/cheap scanning followed by narrow/deep reasoning**;
+3. **specialized logical roles** for scanning, hypothesis generation, backtesting, validation and downstream selection.
 
-See `SYSTEM.md` for the full design.
+The later screenshots add a fourth idea: strong autonomy may look inactive because most candidates can be rejected. Their displayed profit claims are not treated as verified evidence.
 
-High-level flow:
-
-```text
-MARKETS / DATA
-    ↓
-SCAN LAYER
-    ↓
-CANDIDATES
-    ↓
-HYPOTHESIS / BACKTEST / VALIDATION
-    ↓
-LIVE SIGNAL
-    ↓
-VET → SIZE → RISK → FILLS → BOOK
-    ↓
-REALIZED ECONOMICS
-    ↓
-MEMORY / ALPHA-DECAY LEARNING
-    ↺
-```
-
-The scan layer should be broad and cheap. Deep reasoning should be spent only on filtered candidates.
+See `SOURCE_BASIS.md` for the exact distinction between source-derived concepts and project inference.
 
 ## Initial research families
 
-The source material motivating this rebuild proposes four initial families of mispricing:
+The source material proposes four starting families:
 
 - statistical arbitrage / relative value;
 - volatility-surface mispricings;
@@ -62,40 +41,37 @@ These are starting lanes, not permanent limits.
 
 ## Important economic rule
 
-Profit caused mainly by passive long exposure to a secularly rising market is not automatically evidence of discovered alpha.
+Profit caused mainly by passive exposure to a secularly rising market is not automatically evidence of discovered alpha.
 
-Where relevant, Quant-Trade must separate broad beta / factor exposure from the residual contribution of the strategy.
-
-## Stateful capital
-
-The system is stateful. Capital carries over from one decision to the next.
-
-There is no conceptual reset after every trade or session:
-
-`State_t = cash + positions + exposures + open risk + history + current market state`
-
-The next decision depends on the current state.
-
-The **Book** is the accounting source of truth for cash, positions, realized P&L, unrealized P&L, fees, financing and NAV.
+Where relevant, Quant-Trade must separate broad beta / factor exposure from the residual contribution of the research hypothesis.
 
 ## Autonomy
 
 The human defines the terminal objective and hard external boundaries.
 
-The system should choose the research path itself: markets, hypotheses, tests, rejections, sizing logic, and next research action.
+The system should choose the research path itself: markets, hypotheses, tests, rejections and next research action.
 
 Failed ideas should normally be absorbed internally rather than handed back to the human one by one.
 
 ## Existing NASDAQ research
 
-The existing `src/`, `scripts/`, `data/` and `results/` directories contain the historical NASDAQ volatility research that predates this rebuild.
+The existing `src/`, `scripts/`, `data/` and `results/` directories contain historical NASDAQ volatility research that predates this rebuild.
 
 It is retained as prior research and reusable code where useful. It does **not** define the future research universe.
 
+## Core files
+
+- `MISSION.md` — terminal objective and autonomy.
+- `SOURCE_BASIS.md` — what came from the article/screenshots versus project inference.
+- `AGENTS.md` — autonomous research contract.
+- `PIPELINE.md` — minimum continuous discovery loop.
+- `schemas/research_ticket.schema.json` — common research-ticket format.
+- `CODEX.md` — single launch mandate for Codex.
+
 ## Start Codex
 
-The single launch instruction is:
+Launch Codex from this branch and give it only:
 
-`CODEX.md`
+> Read `CODEX.md` in full, then execute it as your operating mandate. Read every referenced project file before acting. Continue autonomously through ordinary failed experiments rather than asking me to invent the next strategy.
 
-Codex should read `CODEX.md`, `MISSION.md`, `SYSTEM.md`, `AGENTS.md`, `SOURCE_BASIS.md`, and the schemas before beginning work.
+Any future real-capital integration is a separate explicit stage. This rebuild focuses on the autonomous research and paper/shadow decision engine.
