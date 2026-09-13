@@ -44,8 +44,10 @@ BENCHMARK = "SPY"
 
 
 def session_date(index: int) -> str:
-    year, remainder = 2020 + (index // 360), index % 360
-    return f"{year}-{(remainder // 30) + 1:02d}-{(remainder % 30) + 1:02d}"
+    # Real calendar dates keep the synthetic fixture compatible with the same
+    # Data Plane validation imposed on market data. Weekends are harmless here:
+    # this fixture proves mechanics, not an exchange calendar.
+    return (datetime(2020, 1, 1) + timedelta(days=index)).date().isoformat()
 
 
 def fixture_panel(sessions: int = 400, seed: float = 0.17) -> PricePanel:
