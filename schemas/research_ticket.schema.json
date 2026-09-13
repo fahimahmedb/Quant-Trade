@@ -23,6 +23,7 @@
     "hypothesis": {"type": "object", "additionalProperties": true},
     "test_result": {"type": "object", "additionalProperties": true},
     "validation_result": {"type": "object", "additionalProperties": true},
+    "paper_decision": {"type": "object", "additionalProperties": true},
     "lesson": {"type": ["string", "null"]},
     "next_action_hint": {"type": ["string", "null"]}
   },

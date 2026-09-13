@@ -1,0 +1,86 @@
+{
+  "candidate_data": {
+    "candidates": [
+      {
+        "correlation": -0.0369246689386526,
+        "lookback_days": 5
+      },
+      {
+        "correlation": -0.028181936015449643,
+        "lookback_days": 2
+      },
+      {
+        "correlation": 0.0017047189440040664,
+        "lookback_days": 1
+      }
+    ],
+    "discovery_observations": 750,
+    "selected": {
+      "correlation": -0.0369246689386526,
+      "lookback_days": 5
+    }
+  },
+  "created_at": "2026-09-13T02:37:04.680415+00:00",
+  "filter_result": {
+    "minimum_absolute_correlation": 0.03,
+    "passed": true
+  },
+  "hypothesis": {
+    "benchmark": "zero-return cash and explicit market-beta attribution",
+    "expected_horizon_days": 1,
+    "expression": "Contrarian +/-1 position after a trailing move beyond one expanding standard deviation.",
+    "falsification": "Reject unless net profitable at 5 and 10 bps, profitable in both OOS halves, unconcentrated, and |beta| < 0.25.",
+    "mechanism": "Liquidity demand and investor overreaction may cause extreme short-horizon moves to reverse.",
+    "timing": "Signal formed with close t information; position earns close t to close t+1 return."
+  },
+  "information_available_at": "2026-07-10T23:59:59Z",
+  "instruments": [
+    "NASDAQ Composite (research proxy)"
+  ],
+  "lane": "time_series_relative_value",
+  "lesson": "Fixed short-horizon reversal failed: profitable_at_10_bps, profitable_in_both_halves, top_5_share_below_0_5.",
+  "market": "NASDAQ Composite index",
+  "next_action_hint": "Acquire or construct a compact cross-sectional ETF universe for beta-neutral relative-value scanning.",
+  "observation": "Discovery-sample lag dependence is -0.0369 at 5 trading-day lookback.",
+  "observed_at": "2026-07-10",
+  "paper_decision": {
+    "decision": "NO_TRADE",
+    "reason": "Historical validation failed; paper deployment is prohibited."
+  },
+  "source_refs": [
+    "/workspace/Quant-Trade/data/nasdaq_composite_daily.txt",
+    "sha256:a594f2da8590676126537f5c1dc59fe9c3e0b2b3b1e8a315c5612afa3621ff26"
+  ],
+  "status": "LEARNED",
+  "test_result": {
+    "active_observations": 125,
+    "annual_mean_return": 0.01020604925178967,
+    "annual_volatility": 0.1463681676612809,
+    "cost_bps": 5.0,
+    "market_beta": 0.247525889647263,
+    "net_return": 0.020250097721804902,
+    "observations": 500,
+    "sharpe_zero_rate": 0.06972861254509985,
+    "test_end": "2026-07-10",
+    "test_start": "2024-07-11",
+    "turnover": 106.0
+  },
+  "ticket_id": "TSR-NDX-001",
+  "updated_at": "2026-09-13T02:37:06.174798+00:00",
+  "validation_result": {
+    "decision": "REJECT_RESEARCH",
+    "net_return_at_10_bps": -0.0327499022781951,
+    "oos_half_returns": [
+      0.07284687635458655,
+      -0.05259677863278164
+    ],
+    "passed": false,
+    "tests": {
+      "absolute_beta_below_0_25": true,
+      "profitable_at_10_bps": false,
+      "profitable_in_both_halves": false,
+      "top_5_share_below_0_5": false
+    },
+    "top_5_profit_share": 11.972044030500351
+  }
+}
