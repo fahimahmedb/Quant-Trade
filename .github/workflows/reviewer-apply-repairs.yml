@@ -27,5 +27,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add src tests
           git diff --cached --check
-          git commit -m "fix: repair V1 causal and persistence invariants"
+          git commit -m "fix: close final V1 red-team defects"
           git push origin HEAD:reviewer/v1-final-red-team
+
+# red-team trigger: final demonstrated repairs
