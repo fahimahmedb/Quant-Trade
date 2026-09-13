@@ -101,7 +101,10 @@ class DecisionTimeCausalityTests(unittest.TestCase):
                 with patch("quant.desk.desk.weights_for", return_value=target):
                     summary = desk.run_session(panel, decision_date, next_date)
                 ticket = summary["tickets"][0]
-                tickets.append((ticket["status"], ticket["stage"], ticket["stage_trace"]))
+                semantic_trace = [
+                    {key: value for key, value in entry.items() if key != "at"}
+                    for entry in ticket["stage_trace"]]
+                tickets.append((ticket["status"], ticket["stage"], semantic_trace))
                 size = next((entry for entry in ticket["stage_trace"]
                              if entry["stage"] == "SIZE"), None)
                 allocations.append(None if size is None else size["detail"]["allocation"])

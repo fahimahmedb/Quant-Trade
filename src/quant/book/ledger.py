@@ -224,7 +224,6 @@ class Ledger:
         if self.state.inception_date is None:
             self.state.inception_date = date
         self.state.last_session_date = date
-        self.state.peak_nav = max(self.state.peak_nav, nav)
         point = {"date": date, "nav": nav, "cash": self.state.cash,
                  "market_value": market_value, "unrealized_pnl": unrealized,
                  "realized_pnl": self.state.realized_pnl, "fees_paid": self.state.fees_paid,
@@ -236,6 +235,9 @@ class Ledger:
         else:
             self.state.sessions += 1
             self.state.nav_history.append(point)
+        self.state.peak_nav = max(
+            [self.state.initial_capital]
+            + [float(item["nav"]) for item in self.state.nav_history])
         self.save()
         return point
 
