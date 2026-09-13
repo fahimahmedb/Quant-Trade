@@ -161,7 +161,7 @@ class Ledger:
             total = position.average_price * position.quantity + price * quantity
             position.average_price = total / new_quantity if new_quantity else 0.0
         elif abs(new_quantity) > 1e-9 and (new_quantity > 0) != (position.quantity > 0):
-            position.average_price = price  # The sleeve flipped; the new side starts here.
+            position.average_price = price
         position.quantity = new_quantity
         position.last_price = price
         if abs(position.quantity) <= 1e-9:
@@ -178,8 +178,6 @@ class Ledger:
         bucket["fills"] += 1
         bucket["notional"] += abs(quantity * price)
 
-        # The operation is recorded in the same durable write as its effect, so a
-        # process killed here either has both or neither.
         self._applied.add(operation_id)
         self.state.applied_operations.append(operation_id)
         self.save()
@@ -215,7 +213,6 @@ class Ledger:
                  "open_positions": len(self.aggregate_positions()),
                  "open_sleeves": len(self._open_sleeves())}
         if repeat:
-            # A replayed mark restates the same session rather than inventing a new one.
             self.state.nav_history[-1] = point
         else:
             self.state.sessions += 1
@@ -232,27 +229,42 @@ class Ledger:
         return [position for position in self._positions() if position.quantity]
 
     def sleeve_positions(self, strategy_id: str) -> list[dict[str, Any]]:
-        """One strategy's own holdings, with its own attribution."""
         return sorted((position.to_dict() | {"market_value": position.market_value,
                                              "unrealized_pnl": position.unrealized_pnl}
                        for position in self.sleeves.get(strategy_id, {}).values()
                        if position.quantity), key=lambda item: item["symbol"])
 
     def sleeve_exposures(self, strategy_id: str) -> dict[str, float]:
-        """Market value per symbol for one strategy."""
         return {symbol: position.market_value
                 for symbol, position in self.sleeves.get(strategy_id, {}).items()
                 if position.quantity}
 
+    def sleeve_exposures_at(self, strategy_id: str,
+                            prices: dict[str, float]) -> dict[str, float]:
+        """Value one sleeve at supplied point-in-time prices without mutating the Book."""
+        return {symbol: position.quantity * prices.get(symbol, position.last_price)
+                for symbol, position in self.sleeves.get(strategy_id, {}).items()
+                if position.quantity}
+
     def symbol_exposures(self) -> dict[str, float]:
-        """Net market value per symbol across every sleeve. This is the portfolio."""
         totals: dict[str, float] = {}
         for position in self._open_sleeves():
             totals[position.symbol] = totals.get(position.symbol, 0.0) + position.market_value
         return {symbol: value for symbol, value in totals.items() if abs(value) > 1e-9}
 
+    def symbol_exposures_at(self, prices: dict[str, float]) -> dict[str, float]:
+        """Aggregate portfolio exposure at supplied prices without changing persistent marks."""
+        totals: dict[str, float] = {}
+        for position in self._open_sleeves():
+            value = position.quantity * prices.get(position.symbol, position.last_price)
+            totals[position.symbol] = totals.get(position.symbol, 0.0) + value
+        return {symbol: value for symbol, value in totals.items() if abs(value) > 1e-9}
+
+    def nav_at(self, prices: dict[str, float]) -> float:
+        """NAV at supplied prices, used for pre-fill risk after an overnight gap."""
+        return self.state.cash + sum(self.symbol_exposures_at(prices).values())
+
     def aggregate_positions(self) -> list[dict[str, Any]]:
-        """Portfolio view: one row per symbol, summed across strategies."""
         rows: dict[str, dict[str, Any]] = {}
         for position in self._open_sleeves():
             row = rows.setdefault(position.symbol, {
@@ -267,7 +279,6 @@ class Ledger:
             row["strategies"] = sorted(set(row["strategies"]))
         return sorted(rows.values(), key=lambda item: item["symbol"])
 
-    #: Portfolio-level positions. The status surface and RISK use this view.
     def open_positions(self) -> list[dict[str, Any]]:
         return self.aggregate_positions()
 
