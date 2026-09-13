@@ -14,6 +14,7 @@ import argparse
 import dataclasses
 import json
 import sys
+import types
 import typing
 from pathlib import Path
 
@@ -49,7 +50,7 @@ PRIMITIVES = {str: "string", int: "integer", float: "number", bool: "boolean"}
 
 def json_type(annotation: typing.Any) -> dict[str, typing.Any]:
     origin = typing.get_origin(annotation)
-    if origin is typing.Union or str(origin) == "types.UnionType":
+    if origin in (typing.Union, types.UnionType):
         parts = [json_type(arg) for arg in typing.get_args(annotation)
                  if arg is not type(None)]
         nullable = any(arg is type(None) for arg in typing.get_args(annotation))
