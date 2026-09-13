@@ -88,6 +88,11 @@ python3 scripts/demo_quant_system.py    # boot, stop mid-campaign, restart, resu
 python3 scripts/generate_schemas.py --check
 ```
 
+The V1 integrity gate contains 87 tests, including adversarial window-containment,
+frozen-cohort, refresh, malformed-data, execution-gap, per-strategy fault-isolation and
+crash/replay cases. Research partitions and multiple-testing reservations are durable across
+append-only refreshes and restarts; historical changes inside a frozen cohort block review.
+
 `ingest_data.py` fetches from a free credential-free source when the network allows and
 otherwise re-registers the fingerprinted snapshot committed under `data/datasets/`, so every
 published result is reproducible offline. It never fabricates a bar.

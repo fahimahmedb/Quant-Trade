@@ -34,7 +34,7 @@ from ..events import EventLog
 from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
-from ..state import ComponentRegistry, append_jsonl
+from ..state import ComponentRegistry, append_jsonl, read_jsonl
 from .execution import ExecutionModel
 from .journal import DeskJournal
 from .opportunity import OpportunityTicket
@@ -88,6 +88,9 @@ class CapitalDesk:
         for definition in actionable:
             opportunity_id = f"OPP-{definition.strategy_id}-{date}"
             if self.journal.is_processed(opportunity_id):
+                outcome = self.journal.outcomes.get(opportunity_id)
+                if outcome:
+                    tickets.append(OpportunityTicket(**outcome))
                 replayed.append(opportunity_id)
                 continue
             plan = self.journal.pending_plan(opportunity_id)
@@ -95,13 +98,32 @@ class CapitalDesk:
                 tickets.append(self._resume(definition, plan))
                 replayed.append(opportunity_id)
                 continue
-            tickets.append(self._run_strategy(panel, date, next_date, definition,
-                                              opportunity_id))
+            try:
+                tickets.append(self._run_strategy(panel, date, next_date, definition,
+                                                  opportunity_id))
+            except Exception as exc:
+                # Once intent is durable this is a transaction interruption,
+                # not a strategy fault.  Let the process boundary propagate so
+                # restart recovery resumes the recorded plan.
+                if self.journal.pending_plan(opportunity_id) is not None:
+                    raise
+                ticket = OpportunityTicket(opportunity_id, date, definition.strategy_id,
+                                           definition.lifecycle,
+                                           self.ledger_for(definition).state.authority,
+                                           execution_date=next_date)
+                ticket.stop("SCAN", "FAULT", f"{type(exc).__name__}: {exc}")
+                self.components.set("SCAN", "FAULT", ticket.reason)
+                self.log.emit("DESK", "SCAN", "strategy_fault", opportunity_id,
+                              severity="FAULT", strategy=definition.strategy_id,
+                              session=date, error=ticket.reason)
+                tickets.append(self._finish(definition, ticket))
 
         # The mark belongs to the session where the orders executed.
         marks = self._mark(panel, next_date or date)
+        existing = {row.get("opportunity_id") for row in read_jsonl(self.paths.opportunities)}
         for ticket in tickets:
-            append_jsonl(self.paths.opportunities, ticket.to_dict())
+            if ticket.opportunity_id not in existing:
+                append_jsonl(self.paths.opportunities, ticket.to_dict())
         return {"date": date, "execution_date": next_date,
                 "tickets": [ticket.to_dict() for ticket in tickets], "replayed": replayed,
                 "capital": self.capital.summary(), "evaluation": self.evaluation.summary(),
@@ -112,6 +134,8 @@ class CapitalDesk:
                       opportunity_id: str) -> OpportunityTicket:
         spec = definition.to_spec()
         ledger = self.ledger_for(definition)
+        execution_prices = ({symbol: panel.adjusted(next_date, symbol, "open")
+                             for symbol in panel.symbols if next_date and panel.has(next_date, symbol)})
         ticket = OpportunityTicket(
             opportunity_id=opportunity_id, session_date=date,
             strategy_id=definition.strategy_id, lifecycle=definition.lifecycle,
@@ -139,7 +163,7 @@ class CapitalDesk:
             return self._finish(definition, ticket.stop(
                 "VET", "BLOCKED", "no later session exists in which orders could execute"))
         sessions_held = self._sessions_since_rebalance(definition, panel, date)
-        current_weights = self._current_weights(ledger, definition)
+        current_weights = self._current_weights(ledger, definition, execution_prices)
         drift = sum(abs(weights.get(symbol, 0.0) - current_weights.get(symbol, 0.0))
                     for symbol in set(weights) | set(current_weights))
         if not should_rebalance(sessions_held, drift, spec):
@@ -153,11 +177,11 @@ class CapitalDesk:
 
         # --- SIZE ----------------------------------------------------------
         self.components.set("SIZE", "RUN", definition.strategy_id)
-        capital = ledger.nav * definition.capital_fraction * self.strategy_allocation
+        capital = ledger.nav_at(execution_prices) * definition.capital_fraction * self.strategy_allocation
         target_notional = {symbol: capital * weight for symbol, weight in weights.items()}
         # Legs the sleeve holds but no longer wants are targeted at zero, so RISK
         # scores the portfolio the fills will actually produce.
-        for symbol in ledger.sleeve_exposures(definition.strategy_id):
+        for symbol in ledger.sleeve_exposures_at(definition.strategy_id, execution_prices):
             target_notional.setdefault(symbol, 0.0)
         ticket.sized_notional = sum(abs(value) for value in target_notional.values())
         entitlement = ("counterfactual size on the evaluation ledger"
@@ -171,7 +195,8 @@ class CapitalDesk:
 
         # --- RISK ----------------------------------------------------------
         self.components.set("RISK", "RUN", definition.strategy_id)
-        verdict = evaluate_risk(ledger, definition.strategy_id, target_notional, self.limits)
+        verdict = evaluate_risk(ledger, definition.strategy_id, target_notional, self.limits,
+                                execution_prices)
         if not verdict["approved"]:
             self.components.set("RISK", "IDLE", "proposal vetoed")
             self.log.emit("DESK", "RISK", "opportunity_vetoed", ticket.opportunity_id,
@@ -195,11 +220,13 @@ class CapitalDesk:
 
         # Capacity truncation can move the executed portfolio away from the approved
         # one, so the limits are checked once more on what will actually be applied.
-        executed = dict(ledger.sleeve_exposures(definition.strategy_id))
+        executed = dict(ledger.sleeve_exposures_at(definition.strategy_id, execution_prices))
         for fill in fills:
             executed[fill["symbol"]] = (executed.get(fill["symbol"], 0.0)
                                         + fill["quantity"] * fill["fill_price"])
-        final = verify_final(ledger, definition.strategy_id, executed, self.limits)
+        final_prices = dict(execution_prices)
+        final_prices.update({fill["symbol"]: fill["fill_price"] for fill in fills})
+        final = verify_final(ledger, definition.strategy_id, executed, self.limits, final_prices)
         if not final["approved"]:
             self.components.set("RISK", "IDLE", "executed portfolio vetoed")
             self.log.emit("DESK", "RISK", "execution_vetoed", ticket.opportunity_id,
@@ -260,7 +287,7 @@ class CapitalDesk:
     def _finish(self, definition: StrategyDefinition, ticket: OpportunityTicket,
                 rebalanced: bool = False) -> OpportunityTicket:
         self.journal.commit(ticket.opportunity_id, definition.strategy_id, ticket.status,
-                            ticket.session_date, rebalanced)
+                            ticket.session_date, rebalanced, ticket.to_dict())
         return ticket
 
     def _sessions_since_rebalance(self, definition: StrategyDefinition, panel: PricePanel,
@@ -275,9 +302,10 @@ class CapitalDesk:
             return None
         return current - previous
 
-    def _current_weights(self, ledger: Ledger, definition: StrategyDefinition) -> dict[str, float]:
-        held = ledger.sleeve_exposures(definition.strategy_id)
-        base = ledger.nav * definition.capital_fraction * self.strategy_allocation
+    def _current_weights(self, ledger: Ledger, definition: StrategyDefinition,
+                         prices: dict[str, float]) -> dict[str, float]:
+        held = ledger.sleeve_exposures_at(definition.strategy_id, prices)
+        base = ledger.nav_at(prices) * definition.capital_fraction * self.strategy_allocation
         if base <= 0:
             return {}
         return {symbol: value / base for symbol, value in held.items()}
@@ -285,7 +313,9 @@ class CapitalDesk:
     def _execute(self, panel: PricePanel, ledger: Ledger, definition: StrategyDefinition,
                  date: str, next_date: str, target_notional: dict[str, float]
                  ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-        held = ledger.sleeve_exposures(definition.strategy_id)
+        prices = {symbol: panel.adjusted(next_date, symbol, "open") for symbol in panel.symbols
+                  if panel.has(next_date, symbol)}
+        held = ledger.sleeve_exposures_at(definition.strategy_id, prices)
         legs: list[dict[str, Any]] = []
         fills: list[dict[str, Any]] = []
         for symbol in sorted(set(target_notional) | set(held)):

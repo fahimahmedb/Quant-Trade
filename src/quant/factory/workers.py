@@ -9,6 +9,8 @@ human, as ``AGENTS.md`` requires.
 from __future__ import annotations
 
 import sys
+import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
@@ -59,10 +61,17 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
 
     definition = lane_definitions(universe, dataset_id)[lane_name]
     panel = PricePanel.load(context.paths.root / record.path)
-    visible, windows = research_panel(panel, universe)
-    discovery = panel.split(WINDOWS, symbols=universe)["DISCOVERY"]
-    validation = panel.split(WINDOWS, symbols=universe)["VALIDATION"]
-    dataset_key = f"{dataset_id}@{record.fingerprint}"
+    declared = panel.split(WINDOWS, symbols=universe)
+    frozen = context.strategies.preserve_research_partition(dataset_id, declared)
+    from ..dataplane.panel import Window
+    partition = {name: Window(**value) for name, value in frozen.items()}
+    discovery, validation = partition["DISCOVERY"], partition["VALIDATION"]
+    visible = panel.restrict(end=validation.end)
+    windows = frozen
+    cohort_rows = [dict(bar) for (date, symbol), bar in sorted(visible.bars.items())
+                   if date <= validation.end and symbol in universe]
+    cohort_key = context.strategies.preserve_research_cohort(dataset_id, cohort_rows)
+    dataset_key = f"{dataset_id}@{cohort_key}"
 
     ticket = ResearchTicket(
         ticket_id=f"{lane_name.upper().replace('_', '-')}-{record.fingerprint[7:15]}",
@@ -99,7 +108,11 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
         "expressions_gross_positive_but_net_negative": len(cost_dominated),
         "median_annual_turnover": median_turnover,
         "cost_is_binding_constraint": bool(cost_dominated) and median_turnover > 50.0}
-    trials = context.strategies.record_trials(dataset_key, len(definition["grid"]))
+    grid_document = [spec.to_dict() for spec in definition["grid"]]
+    grid_hash = hashlib.sha256(json.dumps(grid_document, sort_keys=True).encode()).hexdigest()
+    experiment_key = f"{dataset_key}:{lane_name}:{grid_hash}"
+    trials = context.strategies.record_trials(
+        dataset_key, len(definition["grid"]), experiment_key=experiment_key)
     best = scanned[0]
     ticket.candidate_data["ranked_expressions"] = scanned[:5]
     ticket.candidate_data["cumulative_expressions_tested_on_dataset"] = trials

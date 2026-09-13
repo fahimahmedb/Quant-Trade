@@ -18,16 +18,36 @@
     "dataset_id": {
       "type": "string"
     },
-    "fingerprint": {},
-    "first_date": {},
+    "fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "first_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "ingested_at": {
       "type": "string"
     },
     "kind": {
       "type": "string"
     },
-    "last_date": {},
-    "license_note": {},
+    "last_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "license_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "path": {
       "type": "string"
     },
@@ -35,7 +55,12 @@
       "additionalProperties": {},
       "type": "object"
     },
-    "refreshed_at": {},
+    "refreshed_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "rows": {
       "type": "integer"
     },

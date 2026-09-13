@@ -6,8 +6,18 @@
     "component": {
       "type": "string"
     },
-    "detail": {},
-    "last_active_at": {},
+    "detail": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_active_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "runs": {
       "type": "integer"
     },

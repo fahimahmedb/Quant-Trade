@@ -6,8 +6,18 @@
     "created_at": {
       "type": "string"
     },
-    "dataset_fingerprint": {},
-    "dataset_id": {},
+    "dataset_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dataset_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "evaluation_track": {
       "type": "boolean"
     },
@@ -41,7 +51,12 @@
       },
       "type": "array"
     },
-    "retirement_reason": {},
+    "retirement_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "shadow": {
       "additionalProperties": {},
       "type": "object"
