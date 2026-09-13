@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchTicket",
+  "type": "object",
+  "required": ["ticket_id", "created_at", "status", "lane", "observation"],
+  "properties": {
+    "ticket_id": {"type": "string"},
+    "created_at": {"type": "string"},
+    "updated_at": {"type": ["string", "null"]},
+    "status": {
+      "type": "string",
+      "enum": ["DETECTED", "FILTERED", "RESEARCHING", "REJECTED", "REVISE", "VALIDATED", "LEARNED"]
+    },
+    "lane": {"type": "string"},
+    "market": {"type": ["string", "null"]},
+    "instruments": {"type": "array", "items": {"type": "string"}},
+    "observation": {"type": "string"},
+    "observed_at": {"type": ["string", "null"]},
+    "information_available_at": {"type": ["string", "null"]},
+    "source_refs": {"type": "array", "items": {"type": "string"}},
+    "candidate_data": {"type": "object", "additionalProperties": true},
+    "filter_result": {"type": "object", "additionalProperties": true},
+    "hypothesis": {"type": "object", "additionalProperties": true},
+    "test_result": {"type": "object", "additionalProperties": true},
+    "validation_result": {"type": "object", "additionalProperties": true},
+    "lesson": {"type": ["string", "null"]},
+    "next_action_hint": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
