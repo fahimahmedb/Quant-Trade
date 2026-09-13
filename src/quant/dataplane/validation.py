@@ -1,12 +1,14 @@
 """Validation rules applied before a dataset is allowed to be AVAILABLE.
 
 These checks exist to stop the classic silent corruptions: a symbol that stops
-updating, a duplicated bar, a non-positive/non-finite price, or an impossible
-one-day move that is really an unadjusted split.
+updating, a duplicated bar, a non-positive/non-finite price, malformed session
+keys, impossible OHLC geometry, or an implausible one-day move that is really
+an unadjusted split.
 """
 
 from __future__ import annotations
 
+from datetime import date as calendar_date
 import math
 from typing import Any
 
@@ -27,6 +29,15 @@ def validate_panel(panel: PricePanel, expected_symbols: list[str],
 
     if panel.duplicate_keys:
         problems.append(f"duplicate bars: {sorted(set(panel.duplicate_keys))[:5]}")
+
+    invalid_dates: list[str] = []
+    for value in panel.dates:
+        try:
+            calendar_date.fromisoformat(value)
+        except ValueError:
+            invalid_dates.append(value)
+    if invalid_dates:
+        problems.append(f"invalid ISO session dates: {sorted(invalid_dates)[:5]}")
 
     per_symbol = {symbol: sum(1 for (_, sym) in panel.bars if sym == symbol)
                   for symbol in panel.symbols}
@@ -50,14 +61,18 @@ def validate_panel(panel: PricePanel, expected_symbols: list[str],
     if negative_volume:
         problems.append(f"negative volume: {sorted(negative_volume)[:5]}")
 
-    inconsistent = [f"{date}:{symbol}" for (date, symbol), bar in panel.bars.items()
-                    if all(math.isfinite(bar[field]) for field in ("low", "close", "high"))
-                    and not (bar["low"] <= bar["close"] <= bar["high"])]
-    if inconsistent:
-        warnings.append(f"bars where close sits outside the low/high range: {len(inconsistent)}")
+    # Raw execution prices must describe a possible daily bar. Adjusted close is
+    # deliberately excluded because corporate-action adjustment changes scale.
+    impossible_ohlc = [
+        f"{date}:{symbol}" for (date, symbol), bar in panel.bars.items()
+        if all(math.isfinite(bar[field]) for field in ("open", "high", "low", "close"))
+        and not (bar["low"] <= min(bar["open"], bar["close"])
+                 <= max(bar["open"], bar["close"]) <= bar["high"])]
+    if impossible_ohlc:
+        problems.append(f"impossible OHLC bars: {sorted(impossible_ohlc)[:5]}")
 
     # A panel can have plenty of history and still silently stop one required
-    # symbol today.  Alignment would merely stop advancing and make the daemon
+    # symbol today. Alignment would merely stop advancing and make the daemon
     # look healthy-but-idle, so latest-session coverage is an availability
     # condition rather than a warning.
     if panel.dates and not missing:
