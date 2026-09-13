@@ -18,6 +18,7 @@ Codex must read:
 - `docs/AUTONOMOUS_QUANT_MANDATE.md`
 - `docs/MARKET_SELECTION_DOCTRINE.md`
 - `docs/ALPHA_FACTORY_V1_PLAN.md`
+- `docs/DECISION_GATE_AND_ABSTENTION.md`
 - `docs/SOURCE_ANALYSIS_ROAN.md`
 - `research/EXPERIMENT_PROTOCOL.md`
 - `evaluation/ACCEPTANCE.md`
@@ -41,6 +42,16 @@ It is a request to:
 9. stop only at a genuine human or resource boundary;
 10. leave a clear autonomous next action.
 
+## Decision quality
+
+Quant must not equate autonomy with activity.
+
+A valid output can be `NO_TRADE` when available opportunities do not clear the economic decision gate.
+
+The system should measure the value added by rejecting weak signals as well as the value of trades actually taken.
+
+Signal generation, capital routing, position sizing, execution and exit control are distinct functions.
+
 ## Human should NOT inject
 
 Do not append a preferred strategy, market, model, indicator or target result to the launch prompt unless intentionally changing the project objective.
@@ -58,6 +69,8 @@ Judge it by whether:
 - it separated alpha from beta;
 - it used a real candidate funnel;
 - it killed weak ideas without asking the human what to do next;
+- it distinguished signal generation from decision routing;
+- it treated `NO_TRADE` as a legitimate economic decision;
 - it preserved research memory;
 - it created at least one end-to-end vertical slice;
 - it identified surviving economic evidence honestly;
