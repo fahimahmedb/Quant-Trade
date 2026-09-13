@@ -26,6 +26,9 @@ jobs:
           git diff -- schemas
           git restore schemas
 
+      - name: Status artifact freshness
+        run: python3 scripts/status_artifacts.py --check
+
       - name: Unit tests
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
