@@ -16,13 +16,16 @@
     "realized_pnl": {
       "type": "number"
     },
-    "strategy_id": {},
+    "strategy_id": {
+      "type": "string"
+    },
     "symbol": {
       "type": "string"
     }
   },
   "required": [
-    "symbol"
+    "symbol",
+    "strategy_id"
   ],
   "title": "position",
   "type": "object"

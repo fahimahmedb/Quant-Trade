@@ -4,7 +4,22 @@
 no fresh seed per experiment, session, restart or build task. Every number the
 status surface shows about money comes from here.
 
-Two ledgers exist, sharing this implementation:
+Three invariants govern this module.
+
+**Sleeves.** A position is keyed by ``(strategy_id, symbol)``, not by symbol.
+Several strategies may hold the same instrument, on opposite sides, without
+overwriting each other's attribution. Portfolio state is the aggregate of the
+sleeves and is computed, never stored.
+
+**Idempotence.** Every economic mutation carries a deterministic operation id.
+Replaying an operation that is already applied is a no-op, so a crash between a
+durable fill and the end of a session cannot double-count it on restart.
+
+**Monotonic time.** Marking may not move backward. A mark dated before the last
+marked session is a bug in the caller, and a mark repeating the last session
+replaces its point rather than appending a second one.
+
+Two ledgers share this implementation:
 
 ``CAPITAL``      the authoritative paper/shadow bankroll; only strategies in a
                  tradable lifecycle state may touch it.
@@ -26,15 +41,21 @@ from ..state import read_json, utc_now, write_json
 AUTHORITIES = ("CAPITAL", "EVALUATION")
 
 
+class BackwardInTime(ValueError):
+    """A mark was dated before the Book's last marked session."""
+
+
 @dataclass
 class Position:
+    """One strategy's holding in one instrument. A sleeve entry, not a symbol total."""
+
     symbol: str
+    strategy_id: str
     quantity: float = 0.0
     average_price: float = 0.0
     last_price: float = 0.0
     realized_pnl: float = 0.0
     opened_at: str | None = None
-    strategy_id: str | None = None
 
     @property
     def market_value(self) -> float:
@@ -62,11 +83,14 @@ class LedgerState:
     sessions: int = 0
     realized_pnl: float = 0.0
     fees_paid: float = 0.0
-    positions: dict[str, dict[str, Any]] = field(default_factory=dict)
+    #: strategy_id -> symbol -> position document
+    sleeves: dict[str, dict[str, dict[str, Any]]] = field(default_factory=dict)
     nav_history: list[dict[str, Any]] = field(default_factory=list)
     attribution: dict[str, dict[str, float]] = field(default_factory=dict)
     peak_nav: float = 1_000_000.0
     fills: int = 0
+    #: Deterministic ids of every mutation already applied, so replay is a no-op.
+    applied_operations: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -74,7 +98,7 @@ class LedgerState:
 
 
 class Ledger:
-    """Restart-safe double-entry-lite accounting over a persistent JSON document."""
+    """Restart-safe, idempotent accounting over a persistent JSON document."""
 
     def __init__(self, path: Path, ledger_id: str = "quant-shadow-book",
                  authority: str = "CAPITAL", initial_capital: float = 1_000_000.0):
@@ -86,25 +110,45 @@ class Ledger:
             self.state = LedgerState(ledger_id=ledger_id, authority=authority,
                                      initial_capital=initial_capital, cash=initial_capital,
                                      peak_nav=initial_capital)
+            self.sleeves: dict[str, dict[str, Position]] = {}
             self.save()
         else:
             self.state = LedgerState(**payload)
-        self.positions: dict[str, Position] = {
-            symbol: Position(**value) for symbol, value in self.state.positions.items()}
+            self.sleeves = {strategy: {symbol: Position(**document)
+                                       for symbol, document in holdings.items()}
+                            for strategy, holdings in self.state.sleeves.items()}
+        self._applied = set(self.state.applied_operations)
 
     # --- persistence -------------------------------------------------------
     def save(self) -> None:
-        self.state.positions = {symbol: position.to_dict()
-                                for symbol, position in getattr(self, "positions", {}).items()
-                                if abs(position.quantity) > 1e-9}
+        self.state.sleeves = {
+            strategy: {symbol: position.to_dict() for symbol, position in holdings.items()
+                       if abs(position.quantity) > 1e-9}
+            for strategy, holdings in self.sleeves.items()}
+        self.state.sleeves = {strategy: holdings
+                              for strategy, holdings in self.state.sleeves.items() if holdings}
         write_json(self.path, self.state.to_dict())
+
+    def has_applied(self, operation_id: str) -> bool:
+        return operation_id in self._applied
 
     # --- accounting --------------------------------------------------------
     def apply_fill(self, symbol: str, quantity: float, price: float, cost: float,
-                   date: str, strategy_id: str | None = None) -> dict[str, Any]:
-        """Book a fill. ``quantity`` is signed; ``cost`` is the total frictional charge."""
-        position = self.positions.setdefault(symbol, Position(symbol=symbol, opened_at=date,
-                                                              strategy_id=strategy_id))
+                   date: str, strategy_id: str, operation_id: str) -> dict[str, Any]:
+        """Book a fill into one strategy's sleeve.
+
+        ``quantity`` is signed and ``cost`` is the total frictional charge.
+        ``operation_id`` must be deterministic for the economic event, so that a
+        replay after a crash is recognised rather than applied twice.
+        """
+        if operation_id in self._applied:
+            return {"symbol": symbol, "quantity": 0.0, "price": price, "cost": 0.0,
+                    "realized_pnl": 0.0, "cash_after": self.state.cash,
+                    "operation_id": operation_id, "replayed": True}
+
+        holdings = self.sleeves.setdefault(strategy_id, {})
+        position = holdings.setdefault(symbol, Position(symbol=symbol, strategy_id=strategy_id,
+                                                        opened_at=date))
         realized = 0.0
         if position.quantity != 0 and (position.quantity > 0) != (quantity > 0):
             closing = min(abs(quantity), abs(position.quantity))
@@ -117,11 +161,9 @@ class Ledger:
             total = position.average_price * position.quantity + price * quantity
             position.average_price = total / new_quantity if new_quantity else 0.0
         elif abs(new_quantity) > 1e-9 and (new_quantity > 0) != (position.quantity > 0):
-            position.average_price = price  # Position flipped; the new side starts here.
+            position.average_price = price  # The sleeve flipped; the new side starts here.
         position.quantity = new_quantity
         position.last_price = price
-        if strategy_id:
-            position.strategy_id = strategy_id
         if abs(position.quantity) <= 1e-9:
             position.quantity = 0.0
             position.average_price = 0.0
@@ -129,47 +171,109 @@ class Ledger:
         self.state.cash -= cost
         self.state.fees_paid += cost
         self.state.fills += 1
-        if strategy_id:
-            bucket = self.state.attribution.setdefault(
-                strategy_id, {"realized_pnl": 0.0, "costs": 0.0, "fills": 0.0, "notional": 0.0})
-            bucket["realized_pnl"] += realized
-            bucket["costs"] += cost
-            bucket["fills"] += 1
-            bucket["notional"] += abs(quantity * price)
-        # A fill changes economic reality, so it is durable before it is reported:
-        # a process killed between the fill and the next mark must not lose it.
+        bucket = self.state.attribution.setdefault(
+            strategy_id, {"realized_pnl": 0.0, "costs": 0.0, "fills": 0.0, "notional": 0.0})
+        bucket["realized_pnl"] += realized
+        bucket["costs"] += cost
+        bucket["fills"] += 1
+        bucket["notional"] += abs(quantity * price)
+
+        # The operation is recorded in the same durable write as its effect, so a
+        # process killed here either has both or neither.
+        self._applied.add(operation_id)
+        self.state.applied_operations.append(operation_id)
         self.save()
         return {"symbol": symbol, "quantity": quantity, "price": price, "cost": cost,
-                "realized_pnl": realized, "cash_after": self.state.cash}
+                "realized_pnl": realized, "cash_after": self.state.cash,
+                "operation_id": operation_id, "replayed": False}
 
     def mark_to_market(self, date: str, prices: dict[str, float]) -> dict[str, Any]:
-        """Revalue open positions and append one point to the persistent NAV history."""
-        for symbol, position in self.positions.items():
-            if symbol in prices:
-                position.last_price = prices[symbol]
-        market_value = sum(position.market_value for position in self.positions.values())
-        unrealized = sum(position.unrealized_pnl for position in self.positions.values())
+        """Revalue every sleeve and record one point in the persistent NAV history."""
+        if self.state.last_session_date and date < self.state.last_session_date:
+            raise BackwardInTime(
+                f"cannot mark {date}: the Book is already marked through "
+                f"{self.state.last_session_date}")
+        repeat = date == self.state.last_session_date
+
+        for holdings in self.sleeves.values():
+            for symbol, position in holdings.items():
+                if symbol in prices:
+                    position.last_price = prices[symbol]
+        market_value = sum(position.market_value for position in self._positions())
+        unrealized = sum(position.unrealized_pnl for position in self._positions())
         nav = self.state.cash + market_value
-        gross = sum(abs(position.market_value) for position in self.positions.values())
-        net = market_value
+        gross = sum(abs(value) for value in self.symbol_exposures().values())
+        net = sum(self.symbol_exposures().values())
         if self.state.inception_date is None:
             self.state.inception_date = date
         self.state.last_session_date = date
-        self.state.sessions += 1
         self.state.peak_nav = max(self.state.peak_nav, nav)
         point = {"date": date, "nav": nav, "cash": self.state.cash,
                  "market_value": market_value, "unrealized_pnl": unrealized,
                  "realized_pnl": self.state.realized_pnl, "fees_paid": self.state.fees_paid,
                  "gross_exposure": gross, "net_exposure": net,
-                 "open_positions": sum(1 for p in self.positions.values() if p.quantity)}
-        self.state.nav_history.append(point)
+                 "open_positions": len(self.aggregate_positions()),
+                 "open_sleeves": len(self._open_sleeves())}
+        if repeat:
+            # A replayed mark restates the same session rather than inventing a new one.
+            self.state.nav_history[-1] = point
+        else:
+            self.state.sessions += 1
+            self.state.nav_history.append(point)
         self.save()
         return point
 
-    # --- reporting ---------------------------------------------------------
+    # --- views -------------------------------------------------------------
+    def _positions(self) -> list[Position]:
+        return [position for holdings in self.sleeves.values()
+                for position in holdings.values()]
+
+    def _open_sleeves(self) -> list[Position]:
+        return [position for position in self._positions() if position.quantity]
+
+    def sleeve_positions(self, strategy_id: str) -> list[dict[str, Any]]:
+        """One strategy's own holdings, with its own attribution."""
+        return sorted((position.to_dict() | {"market_value": position.market_value,
+                                             "unrealized_pnl": position.unrealized_pnl}
+                       for position in self.sleeves.get(strategy_id, {}).values()
+                       if position.quantity), key=lambda item: item["symbol"])
+
+    def sleeve_exposures(self, strategy_id: str) -> dict[str, float]:
+        """Market value per symbol for one strategy."""
+        return {symbol: position.market_value
+                for symbol, position in self.sleeves.get(strategy_id, {}).items()
+                if position.quantity}
+
+    def symbol_exposures(self) -> dict[str, float]:
+        """Net market value per symbol across every sleeve. This is the portfolio."""
+        totals: dict[str, float] = {}
+        for position in self._open_sleeves():
+            totals[position.symbol] = totals.get(position.symbol, 0.0) + position.market_value
+        return {symbol: value for symbol, value in totals.items() if abs(value) > 1e-9}
+
+    def aggregate_positions(self) -> list[dict[str, Any]]:
+        """Portfolio view: one row per symbol, summed across strategies."""
+        rows: dict[str, dict[str, Any]] = {}
+        for position in self._open_sleeves():
+            row = rows.setdefault(position.symbol, {
+                "symbol": position.symbol, "quantity": 0.0, "market_value": 0.0,
+                "unrealized_pnl": 0.0, "last_price": position.last_price, "strategies": []})
+            row["quantity"] += position.quantity
+            row["market_value"] += position.market_value
+            row["unrealized_pnl"] += position.unrealized_pnl
+            row["last_price"] = position.last_price
+            row["strategies"].append(position.strategy_id)
+        for row in rows.values():
+            row["strategies"] = sorted(set(row["strategies"]))
+        return sorted(rows.values(), key=lambda item: item["symbol"])
+
+    #: Portfolio-level positions. The status surface and RISK use this view.
+    def open_positions(self) -> list[dict[str, Any]]:
+        return self.aggregate_positions()
+
     @property
     def nav(self) -> float:
-        return self.state.cash + sum(position.market_value for position in self.positions.values())
+        return self.state.cash + sum(position.market_value for position in self._positions())
 
     @property
     def drawdown(self) -> float:
@@ -182,15 +286,10 @@ class Ledger:
 
     def exposures(self) -> dict[str, float]:
         nav = self.nav or 1.0
-        gross = sum(abs(position.market_value) for position in self.positions.values())
-        net = sum(position.market_value for position in self.positions.values())
+        values = self.symbol_exposures()
+        gross = sum(abs(value) for value in values.values())
+        net = sum(values.values())
         return {"gross": gross, "net": net, "gross_ratio": gross / nav, "net_ratio": net / nav}
-
-    def open_positions(self) -> list[dict[str, Any]]:
-        return sorted((position.to_dict() | {"market_value": position.market_value,
-                                             "unrealized_pnl": position.unrealized_pnl}
-                       for position in self.positions.values() if position.quantity),
-                      key=lambda item: item["symbol"])
 
     def summary(self) -> dict[str, Any]:
         exposures = self.exposures()
@@ -199,12 +298,17 @@ class Ledger:
                 "initial_capital": self.state.initial_capital, "nav": self.nav,
                 "cash": self.state.cash, "total_return": self.total_return,
                 "realized_pnl": self.state.realized_pnl,
-                "unrealized_pnl": sum(p.unrealized_pnl for p in self.positions.values()),
+                "unrealized_pnl": sum(p.unrealized_pnl for p in self._positions()),
                 "fees_paid": self.state.fees_paid, "drawdown": self.drawdown,
                 "sessions": self.state.sessions, "fills": self.state.fills,
                 "inception_date": self.state.inception_date,
                 "last_session_date": self.state.last_session_date,
-                "open_positions": len(self.open_positions()),
+                "open_positions": len(self.aggregate_positions()),
+                "open_sleeves": len(self._open_sleeves()),
+                "strategies_with_exposure": sorted(
+                    strategy for strategy, holdings in self.sleeves.items()
+                    if any(position.quantity for position in holdings.values())),
+                "operations_applied": len(self.state.applied_operations),
                 "gross_exposure_ratio": exposures["gross_ratio"],
                 "net_exposure_ratio": exposures["net_ratio"],
                 "attribution": self.state.attribution}

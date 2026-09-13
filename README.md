@@ -71,7 +71,8 @@ The system has no third-party dependencies. Python 3.11+ and the standard librar
 ```bash
 python3 scripts/ingest_data.py          # Data Plane: refresh and fingerprint datasets
 python3 scripts/quant.py boot           # resume persistent state, seed due work
-python3 scripts/quant.py run            # run until IDLE
+python3 scripts/quant.py run            # run until IDLE (bounded batch)
+python3 scripts/quant.py serve          # stay alive: work when due, wait when not
 python3 scripts/quant.py status         # status surface, rendered from real state
 python3 scripts/quant.py brief          # regenerate CHIEF_BRIEF.md
 python3 scripts/quant.py health         # watchdog report
@@ -98,7 +99,7 @@ published result is reproducible offline. It never fabricates a bar.
 | `data/datasets/*.csv` | normalized price panels | yes |
 | `data/datasets/*.meta.json` | provenance, caveats, validation, fingerprint | yes |
 | `schemas/` | contracts for the persistent state objects, generated from the code | yes |
-| `var/` | live operational state: control state, work queue, ledgers, tickets, events | no |
+| `var/` | live operational state: control state, work queue, ledgers, desk journal, tickets, events | no |
 
 A different `--root` gives a fully isolated system, which is how the tests and the restart
 demonstration avoid touching operational state.
@@ -107,9 +108,15 @@ demonstration avoid touching operational state.
 
 Quant System V1 is implemented end to end in persistent paper/shadow mode: Control Plane clock,
 Data Plane with real ingestion, Research Factory with a versioned strategy lifecycle, the
-`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` chain, a persistent Book, a learning loop that
-scores the system's own rejections, and a status surface plus `CHIEF_BRIEF.md` rendered from
-that state.
+`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` chain, a persistent Book with per-strategy
+sleeves, a learning loop that scores the system's own rejections, and a status surface plus
+`CHIEF_BRIEF.md` rendered from that state.
+
+Research, simulated execution and the Book share one causal timeline: information through
+`close(t)`, decision after that close, entry at `open(t+1)`, exit and marking at `open(t+2)` or
+later. Economic state mutations carry deterministic operation identities, and a session records
+its intent before it moves money, so a crash plus replay is provably equal to an uninterrupted
+run.
 
 `STATE.md` carries the current evidence, including what the research actually concluded and
 which North-Star gaps remain open.

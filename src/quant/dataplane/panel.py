@@ -113,6 +113,18 @@ class PricePanel:
     def price(self, date: str, symbol: str, field: str = "adj_close") -> float:
         return self.bars[(date, symbol)][field]
 
+    def adjusted(self, date: str, symbol: str, field: str = "open") -> float:
+        """Put raw open/high/low on the same adjusted basis as ``adj_close``.
+
+        Research returns, modelled fills and Book marks must share one price
+        basis, or the Book drifts against its own evidence every time a dividend
+        or split lands.
+        """
+        bar = self.bars[(date, symbol)]
+        if bar["close"] <= 0:
+            return bar["adj_close"]
+        return bar[field] * (bar["adj_close"] / bar["close"])
+
     def restrict(self, start: str | None = None, end: str | None = None,
                  symbols: Iterable[str] | None = None) -> "PricePanel":
         wanted = set(symbols) if symbols is not None else None

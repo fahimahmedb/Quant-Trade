@@ -75,9 +75,11 @@ def build_chief_brief(snapshot: dict[str, Any]) -> str:
     for strategy_id, definition in sorted(research["strategies"].items()):
         evidence = definition["evidence"].get("validation", {})
         verdict = definition["evidence"].get("falsification", {})
+        stats = research.get("desk_stats", {}).get(strategy_id, {})
         lines.append(f"- **{strategy_id}** - lifecycle `{definition['lifecycle']}`"
-                     + (", evaluation track" if definition["desk"].get("evaluation_track")
-                        else ""))
+                     + (", evaluation track" if definition.get("evaluation_track") else "")
+                     + (f", {len(definition.get('previous_versions', []))} superseded version(s)"
+                        if definition.get("previous_versions") else ""))
         if evidence:
             lines.append(f"  - out of sample: {_percent(evidence.get('net_return', 0.0))} net, "
                          f"beta {evidence.get('market_beta', 0.0):+.3f}, "
@@ -86,9 +88,9 @@ def build_chief_brief(snapshot: dict[str, Any]) -> str:
                          f"{verdict.get('required_t_statistic', 0.0):.2f}")
         if verdict.get("failed_tests"):
             lines.append(f"  - failed: {', '.join(verdict['failed_tests'])}")
-        lines.append(f"  - desk: {definition['desk'].get('booked', 0)} rebalances, "
-                     f"{definition['desk'].get('no_trade', 0)} no-trade, "
-                     f"{definition['desk'].get('vetoed', 0)} vetoed")
+        lines.append(f"  - desk: {stats.get('booked', 0)} rebalances, "
+                     f"{stats.get('no_trade', 0)} no-trade, "
+                     f"{stats.get('vetoed', 0)} vetoed")
 
     lines += ["", "## Strongest evidence and rejections", ""]
     if learning.get("latest_lesson"):

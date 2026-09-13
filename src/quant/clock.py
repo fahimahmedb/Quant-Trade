@@ -10,13 +10,16 @@ the plane that can do it, keeps component state honest and survives restarts.
 from __future__ import annotations
 
 import sys
+import time
 from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from autonomous_research.runtime import PersistentQueue, ResearchTask  # noqa: E402
+from autonomous_research.watchdog import is_lease_stale  # noqa: E402
 
 from .dataplane.ingest import SECTOR_DATASET, SECTOR_UNIVERSE  # noqa: E402
 from .dataplane.panel import PricePanel  # noqa: E402
@@ -28,11 +31,26 @@ from .factory.strategies import StrategyRegistry  # noqa: E402
 from .factory.workers import ResearchContext, run_lane  # noqa: E402
 from .learning.store import BuildTask, LearningStore  # noqa: E402
 from .paths import QuantPaths  # noqa: E402
-from .state import ComponentRegistry, read_json, read_jsonl, utc_now, write_json  # noqa: E402
+from .state import (ComponentRegistry, parse_ts, read_json, read_jsonl,  # noqa: E402
+                     utc_now, write_json)
 
 
 HEARTBEAT_TIMEOUT_SECONDS = 900
 MAX_TASK_ATTEMPTS = 3
+#: How long a worker may hold a task before its lease is considered stale.
+TASK_LEASE_SECONDS = 600
+#: Default wait between wake-ups when the system is IDLE.
+IDLE_POLL_SECONDS = 60.0
+
+
+class Timer:
+    """Injectable clock source. Tests substitute one that never really sleeps."""
+
+    def now(self) -> datetime:
+        return datetime.now(timezone.utc)
+
+    def sleep(self, seconds: float) -> None:
+        time.sleep(seconds)
 
 
 @dataclass
@@ -45,6 +63,8 @@ class ControlState:
     last_heartbeat: str = field(default_factory=utc_now)
     boots: int = 0
     ticks: int = 0
+    waits: int = 0
+    last_wake_at: str | None = None
     research_runs: int = 0
     desk_sessions: int = 0
     desk_cursor: str | None = None
@@ -64,8 +84,10 @@ class QuantSystem:
     """The whole system, addressable from one object."""
 
     def __init__(self, root: Path, initial_capital: float = 1_000_000.0,
-                 universe: list[str] | None = None, dataset_id: str = SECTOR_DATASET):
+                 universe: list[str] | None = None, dataset_id: str = SECTOR_DATASET,
+                 timer: Timer | None = None):
         self.paths = QuantPaths(Path(root)).ensure()
+        self.timer = timer or Timer()
         self.universe = universe or SECTOR_UNIVERSE
         self.dataset_id = dataset_id
         self.log = EventLog(self.paths.events)
@@ -96,6 +118,7 @@ class QuantSystem:
         self.state.last_boot_at = utc_now()
         self.components.set("CONTROL", "RUN", "booting")
         recovered = self._recover_interrupted()
+        self.datasets.reload()
         changed = self.datasets.refresh_availability()
         unblocked = self._unblock_dependencies()
         seeded = self._seed_work()
@@ -309,6 +332,8 @@ class QuantSystem:
         self.state.status = "RUN"
         task.status = "RUNNING"
         task.attempts += 1
+        task.started_at = utc_now()
+        task.lease_seconds = TASK_LEASE_SECONDS
         task.updated_at = utc_now()
         self.queue.save()
         self.components.set("RESEARCH", "RUN", task.task_id)
@@ -389,7 +414,8 @@ class QuantSystem:
             return False
         if self.learning.decision_quality.get("strategies_evaluated", 0):
             return False
-        assessments = self.learning.assess_rejections(self.strategies, self.desk.evaluation)
+        assessments = self.learning.assess_rejections(
+            self.strategies, self.desk.evaluation, self.desk.journal.stats_for)
         if not assessments:
             return False
         self.components.set("LEARNING", "RUN", "rejection quality assessed")
@@ -412,6 +438,59 @@ class QuantSystem:
         entry = {"run_id": f"run-{len(self.state.run_history) + 1}", "started_at": started,
                  "finished_at": utc_now(), "outcomes": outcomes,
                  "ticks": sum(outcomes.values()), "ended": self.state.status}
+        self.state.run_history.append(entry)
+        self.state.run_history = self.state.run_history[-50:]
+        self.save()
+        return entry
+
+    def serve(self, poll_seconds: float = IDLE_POLL_SECONDS, max_cycles: int | None = None,
+              stop_when: Callable[["QuantSystem"], bool] | None = None) -> dict[str, Any]:
+        """Run indefinitely: work when work is due, wait when it is not.
+
+        ``run`` returns at the first IDLE, which is only useful for a bounded
+        batch. The system is supposed to stay alive: IDLE means nothing is due
+        right now, not that the campaign is over. Each wake re-checks dataset
+        availability, because new data is the event that unblocks work.
+
+        Waiting goes through the injectable timer so liveness can be tested
+        deterministically instead of by sleeping in a test suite.
+        """
+        started = utc_now()
+        outcomes: dict[str, int] = {}
+        cycles = 0
+        while True:
+            outcome = self.tick()
+            outcomes[outcome] = outcomes.get(outcome, 0) + 1
+            if outcome not in {"IDLE", "PAUSED"}:
+                continue
+            if stop_when is not None and stop_when(self):
+                break
+            if max_cycles is not None and cycles >= max_cycles:
+                break
+            cycles += 1
+            self.state.waits += 1
+            self.components.set("CONTROL", "IDLE",
+                                f"waiting {poll_seconds:.0f}s for due work or new data")
+            self.log.emit("CONTROL", "CONTROL", "clock_waiting", self.state.system_id,
+                          poll_seconds=poll_seconds, next_action=self.state.next_action)
+            self.save()
+            self.timer.sleep(poll_seconds)
+            self.state.last_wake_at = self.timer.now().isoformat()
+            arrived = self.datasets.reload()
+            changed = self.datasets.refresh_availability()
+            if arrived or changed:
+                self._panel = None  # the cached panel may be stale
+                self._seed_work()
+            unblocked = self._unblock_dependencies()
+            if arrived or changed or unblocked:
+                self.log.emit("CONTROL", "CONTROL", "clock_woken", self.state.system_id,
+                              datasets_arrived=arrived,
+                              datasets_changed=[record.dataset_id for record in changed],
+                              unblocked=unblocked)
+            self.save()
+        entry = {"run_id": f"serve-{len(self.state.run_history) + 1}", "started_at": started,
+                 "finished_at": utc_now(), "outcomes": outcomes, "waits": cycles,
+                 "ticks": sum(outcomes.values()), "ended": self.state.status, "mode": "serve"}
         self.state.run_history.append(entry)
         self.state.run_history = self.state.run_history[-50:]
         self.save()
@@ -448,16 +527,18 @@ class QuantSystem:
 
     def health(self) -> list[dict[str, str]]:
         """Watchdog. Reports conditions, never repairs silently."""
-        from datetime import datetime, timezone
         alerts: list[dict[str, str]] = []
-        age = (datetime.now(timezone.utc)
-               - datetime.fromisoformat(self.state.last_heartbeat)).total_seconds()
+        now = self.timer.now()
+        age = (now - parse_ts(self.state.last_heartbeat)).total_seconds()
         if age > HEARTBEAT_TIMEOUT_SECONDS:
             alerts.append({"code": "HEARTBEAT_STALE",
                            "detail": f"{age:.0f}s since the last heartbeat"})
         for task in self.queue.tasks.values():
-            if task.status == "RUNNING":
-                alerts.append({"code": "WORKER_STUCK", "detail": task.task_id})
+            # RUNNING is healthy work until the lease expires; only then is it stuck.
+            if task.status == "RUNNING" and is_lease_stale(task, now):
+                alerts.append({"code": "WORKER_STUCK",
+                               "detail": f"{task.task_id} lease expired "
+                                         f"(started {task.started_at})"})
             if task.attempts >= MAX_TASK_ATTEMPTS and task.status in {"PENDING", "FAILED"}:
                 alerts.append({"code": "REPEATED_FAILURE", "detail": task.task_id})
         for name, status in self.components.statuses.items():
@@ -505,9 +586,13 @@ class QuantSystem:
                                                       key=lambda item: -item.priority)],
                          "strategies": {key: value.to_dict()
                                         for key, value in self.strategies.strategies.items()},
+                         "desk_stats": {key: self.desk.journal.stats_for(key)
+                                        for key in self.strategies.strategies},
                          "lifecycle": self.strategies.by_lifecycle()},
             "book": self.desk.capital.summary(),
             "book_positions": self.desk.capital.open_positions(),
+            "book_sleeves": {key: self.desk.capital.sleeve_positions(key)
+                             for key in self.desk.capital.sleeves},
             "evaluation": self.desk.evaluation.summary(),
             "evaluation_positions": self.desk.evaluation.open_positions(),
             "tickets": self._ticket_counts(),

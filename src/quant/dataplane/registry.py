@@ -78,6 +78,21 @@ class DatasetRegistry:
         record = self.records[dataset_id]
         return self.root / record.path
 
+    def reload(self) -> list[str]:
+        """Re-read the registry from disk and return newly seen dataset ids.
+
+        Ingestion runs in its own process, so a long-running Clock that only
+        consults the copy it loaded at boot can never notice a dataset that
+        arrived while it was idle.
+        """
+        payload = read_json(self.path, {"version": 1, "datasets": {}}) or {}
+        stored = payload.get("datasets", {})
+        added = [key for key in stored if key not in self.records]
+        for key, value in stored.items():
+            if key not in self.records:
+                self.records[key] = DatasetRecord(**value)
+        return added
+
     def refresh_availability(self) -> list[DatasetRecord]:
         """Re-check every registered dataset against the filesystem.
 

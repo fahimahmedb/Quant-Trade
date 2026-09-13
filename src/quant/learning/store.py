@@ -75,17 +75,20 @@ class LearningStore:
         return self.lessons[-1]["lesson"] if self.lessons else None
 
     # --- decision quality --------------------------------------------------
-    def assess_rejections(self, strategies: Any, evaluation_ledger: Any) -> list[dict[str, Any]]:
+    def assess_rejections(self, strategies: Any, evaluation_ledger: Any,
+                          desk_stats: Any = None) -> list[dict[str, Any]]:
         """Score every rejected strategy against what it would actually have done."""
         assessments = []
         for definition in strategies.strategies.values():
-            if not definition.desk.get("evaluation_track"):
+            if not definition.evaluation_track:
                 continue
             attributed = evaluation_ledger.state.attribution.get(definition.strategy_id)
-            if not attributed or definition.desk.get("booked", 0) == 0:
+            stats = desk_stats(definition.strategy_id) if desk_stats else {}
+            if not attributed or stats.get("booked", 0) == 0:
                 continue
-            positions = [position for position in evaluation_ledger.open_positions()
-                         if position.get("strategy_id") == definition.strategy_id]
+            # The strategy's own sleeve, not the aggregate book: another strategy's
+            # position in the same symbol is not this one's counterfactual.
+            positions = evaluation_ledger.sleeve_positions(definition.strategy_id)
             unrealized = sum(position["unrealized_pnl"] for position in positions)
             pnl = attributed["realized_pnl"] + unrealized - attributed["costs"]
             base = evaluation_ledger.state.initial_capital or 1.0
@@ -99,8 +102,8 @@ class LearningStore:
             assessments.append({
                 "strategy_id": definition.strategy_id, "verdict": verdict,
                 "counterfactual_pnl": pnl, "counterfactual_return": ratio,
-                "sessions": definition.desk.get("sessions", 0),
-                "rebalances": definition.desk.get("booked", 0),
+                "sessions": stats.get("sessions", 0),
+                "rebalances": stats.get("booked", 0),
                 "costs": attributed["costs"], "assessed_at": utc_now()})
         if assessments:
             self.decision_quality = {

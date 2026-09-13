@@ -71,6 +71,10 @@ class ResearchTask:
     blocked_reason: str | None = None
     data_fingerprint: str | None = None
     due_at: str | None = None
+    #: When the current attempt started and how long it may run before its lease
+    #: is stale. RUNNING on its own says nothing about health; these do.
+    started_at: str | None = None
+    lease_seconds: int = 600
     created_at: str = field(default_factory=utc_now)
     updated_at: str = field(default_factory=utc_now)
     last_error: str | None = None

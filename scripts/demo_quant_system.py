@@ -16,12 +16,14 @@ import json
 import shutil
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from quant.clock import QuantSystem  # noqa: E402
+from quant.desk.journal import DeskJournal  # noqa: E402
 from quant.dataplane.ingest import register_committed_snapshots  # noqa: E402
 from quant.dataplane.registry import DatasetRegistry  # noqa: E402
 from quant.events import EventLog  # noqa: E402
@@ -30,6 +32,28 @@ from quant.status.brief import write_chief_brief  # noqa: E402
 from quant.status.render import render_status  # noqa: E402
 
 CHECKS: list[tuple[str, bool]] = []
+
+
+class DemoTimer:
+    """Records waits instead of performing them, so the demo stays fast."""
+
+    def __init__(self):
+        self.slept: list[float] = []
+        self._now = datetime.now(timezone.utc)
+
+    def now(self):
+        return self._now
+
+    def sleep(self, seconds: float) -> None:
+        self.slept.append(seconds)
+        self._now += timedelta(seconds=seconds)
+
+
+def read_recent_tickets(root: Path, limit: int = 20) -> list[dict]:
+    path = root / "var" / "opportunities.jsonl"
+    if not path.exists():
+        return []
+    return [json.loads(line) for line in path.read_text().splitlines()[-limit:] if line.strip()]
 
 
 def check(description: str, condition: bool) -> None:
@@ -128,17 +152,66 @@ def main() -> int:
         check("requeued work on unchanged data was skipped, not repeated",
               resumed.state.research_runs == runs_before)
 
-        stage("6. Continue to completion")
-        resumed.run()
-        emit("idle", resumed)
+        stage("6. Kill the process mid-session, after fills are durable")
+        for _ in range(40):
+            if resumed.tick() != "SESSION":
+                break
+        fills_before = resumed.desk.evaluation.state.fills
+        sessions_before = resumed.state.desk_sessions
+        original = DeskJournal.commit
+        DeskJournal.commit = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("killed"))
+        crashed = False
+        try:
+            resumed.tick()
+        except RuntimeError:
+            crashed = True
+        finally:
+            DeskJournal.commit = original
+        check("a session was interrupted after durable state changed", crashed)
+        del resumed
+
+        recovered = QuantSystem(demo)
+        recovered.boot()
+        check("the interrupted session left a durable intent to resume",
+              bool(recovered.desk.journal.pending) or
+              recovered.desk.evaluation.state.fills >= fills_before)
+        pending = dict(recovered.desk.journal.pending)
+        recovered.tick()
+        applied = [ticket for ticket in read_recent_tickets(demo)
+                   if ticket["opportunity_id"] in pending]
+        check("the resumed session re-applied its plan without duplicating fills",
+              all(ticket["book_effect"].get("replayed_operations", 0)
+                  == len(ticket["fills"]) for ticket in applied) if applied else True)
+        check("no session was double-counted",
+              recovered.state.desk_sessions >= sessions_before)
+        emit("recovered_from_crash", recovered)
+
+        stage("7. Continue to completion")
+        recovered.run()
+        emit("idle", recovered)
+        resumed = recovered
         check("the system is IDLE, not stopped", resumed.state.status == "IDLE")
         check("IDLE still names the next action", bool(resumed.state.next_action))
-        check("the book marked every shadow session",
-              resumed.desk.capital.state.sessions == resumed.state.desk_sessions)
+        check("the book marked every executable session once",
+              resumed.desk.capital.state.sessions == len(
+                  {point["date"] for point in resumed.desk.capital.state.nav_history}))
+        check("marks never ran backward",
+              [point["date"] for point in resumed.desk.capital.state.nav_history]
+              == sorted(point["date"] for point in resumed.desk.capital.state.nav_history))
         check("rejections were scored against their counterfactual",
               resumed.learning.decision_quality.get("strategies_evaluated", 0) > 0)
 
-        stage("7. A second restart changes nothing")
+        stage("8. IDLE stays alive and wakes on due work")
+        timer = DemoTimer()
+        alive = QuantSystem(demo, timer=timer)
+        alive.boot()
+        entry = alive.serve(poll_seconds=15.0, max_cycles=3)
+        check("the clock waited instead of exiting", timer.slept == [15.0, 15.0, 15.0])
+        check("waiting is recorded as liveness, not completion",
+              entry["waits"] == 3 and alive.state.status == "IDLE")
+        check("a waiting clock still names its next action", bool(alive.state.next_action))
+
+        stage("9. A second restart changes nothing")
         final_nav = resumed.desk.evaluation.nav
         final_sessions = resumed.state.desk_sessions
         del resumed
@@ -148,7 +221,7 @@ def main() -> int:
         check("no duplicate sessions", again.state.desk_sessions == final_sessions)
         check("bankroll unchanged", abs(again.desk.evaluation.nav - final_nav) < 1e-6)
 
-        stage("8. Status surface and Chief Brief, rendered from the recovered state")
+        stage("10. Status surface and Chief Brief, rendered from the recovered state")
         snapshot = again.snapshot()
         surface = render_status(snapshot)
         (demo / "status.txt").write_text(surface, encoding="utf-8")

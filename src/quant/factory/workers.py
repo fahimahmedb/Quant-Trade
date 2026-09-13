@@ -237,11 +237,11 @@ def _finish(context: ResearchContext, ticket: ResearchTicket, lane_name: str,
             # Not tradable. It goes on the evaluation track so the system can find
             # out whether rejecting it was right, which is the false-reject
             # measurement the North Star asks for.
-            definition.desk["evaluation_track"] = True
+            definition.evaluation_track = True
         context.strategies.upsert(definition)
         context.log.emit("RESEARCH", "RESEARCH", "strategy_registered", strategy_id,
                          lifecycle=definition.lifecycle,
-                         evaluation_track=definition.desk["evaluation_track"])
+                         evaluation_track=definition.evaluation_track)
     diagnosis = ticket.candidate_data.get("cost_diagnosis", {})
     return {"ticket_id": ticket.ticket_id, "status": ticket.status,
             "outcome": ticket.validation_result.get("decision", ticket.status),

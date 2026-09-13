@@ -9,6 +9,15 @@ The stages are separate functions with their own verdicts because the
 architecture requires each decision to be traceable, not because six models are
 needed. Most of them are deterministic.
 
+The session obeys one causal timeline:
+
+``information through close(t) -> decision after close(t) -> fill at open(t+1)
+-> mark at close(t+1)``
+
+The Book is therefore marked on the execution date, never on the decision date:
+marking at close(t) after applying a fill priced at open(t+1) would move the
+Book backward in time and value positions before they existed.
+
 A strategy reaches the capital ledger only from a tradable lifecycle state.
 Strategies on the evaluation track run the identical chain into a zero-authority
 ledger so the system can measure the cost of its own rejections.
@@ -16,7 +25,6 @@ ledger so the system can measure the cost of its own rejections.
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 from ..book.ledger import Ledger
@@ -28,8 +36,9 @@ from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl
 from .execution import ExecutionModel
+from .journal import DeskJournal
 from .opportunity import OpportunityTicket
-from .risk import RiskLimits, evaluate as evaluate_risk
+from .risk import RiskLimits, evaluate as evaluate_risk, verify_final
 
 
 MIN_ORDER_NOTIONAL = 500.0
@@ -48,9 +57,10 @@ class CapitalDesk:
         self.execution = execution or ExecutionModel()
         self.limits = limits or RiskLimits()
         self.strategy_allocation = strategy_allocation
+        self.journal = DeskJournal(paths.desk_journal)
         self.capital = Ledger(paths.book, "quant-shadow-book", "CAPITAL", initial_capital)
-        self.evaluation = Ledger(Path(str(paths.var / "evaluation_ledger.json")),
-                                 "quant-evaluation-track", "EVALUATION", initial_capital)
+        self.evaluation = Ledger(paths.evaluation_ledger, "quant-evaluation-track",
+                                 "EVALUATION", initial_capital)
 
     # --- helpers -----------------------------------------------------------
     def ledger_for(self, definition: StrategyDefinition) -> Ledger:
@@ -58,18 +68,14 @@ class CapitalDesk:
 
     def actionable(self) -> list[StrategyDefinition]:
         return sorted((definition for definition in self.strategies.strategies.values()
-                       if definition.tradable or definition.desk.get("evaluation_track")),
+                       if definition.tradable or definition.evaluation_track),
                       key=lambda item: item.strategy_id)
-
-    def _positions_of(self, ledger: Ledger, strategy_id: str) -> dict[str, float]:
-        return {position["symbol"]: position["market_value"]
-                for position in ledger.open_positions()
-                if position.get("strategy_id") == strategy_id}
 
     # --- the chain ---------------------------------------------------------
     def run_session(self, panel: PricePanel, date: str, next_date: str | None) -> dict[str, Any]:
         """Run one dated session. ``next_date`` is when orders can actually execute."""
         tickets: list[OpportunityTicket] = []
+        replayed: list[str] = []
         actionable = self.actionable()
 
         self.components.set("SCAN", "RUN", f"session {date}")
@@ -80,27 +86,36 @@ class CapitalDesk:
             self.log.emit("DESK", "SCAN", "session_no_candidates", date,
                           reason="no strategy holds a tradable lifecycle state")
         for definition in actionable:
-            tickets.append(self._run_strategy(panel, date, next_date, definition))
+            opportunity_id = f"OPP-{definition.strategy_id}-{date}"
+            if self.journal.is_processed(opportunity_id):
+                replayed.append(opportunity_id)
+                continue
+            plan = self.journal.pending_plan(opportunity_id)
+            if plan is not None:
+                tickets.append(self._resume(definition, plan))
+                replayed.append(opportunity_id)
+                continue
+            tickets.append(self._run_strategy(panel, date, next_date, definition,
+                                              opportunity_id))
 
-        marks = self._mark(panel, date)
-        summary = {"date": date, "tickets": [ticket.to_dict() for ticket in tickets],
-                   "capital": self.capital.summary(), "evaluation": self.evaluation.summary(),
-                   "marks": marks}
+        # The mark belongs to the session where the orders executed.
+        marks = self._mark(panel, next_date or date)
         for ticket in tickets:
             append_jsonl(self.paths.opportunities, ticket.to_dict())
-        self.strategies.save()
-        return summary
+        return {"date": date, "execution_date": next_date,
+                "tickets": [ticket.to_dict() for ticket in tickets], "replayed": replayed,
+                "capital": self.capital.summary(), "evaluation": self.evaluation.summary(),
+                "marks": marks}
 
     def _run_strategy(self, panel: PricePanel, date: str, next_date: str | None,
-                      definition: StrategyDefinition) -> OpportunityTicket:
+                      definition: StrategyDefinition,
+                      opportunity_id: str) -> OpportunityTicket:
         spec = definition.to_spec()
         ledger = self.ledger_for(definition)
         ticket = OpportunityTicket(
-            opportunity_id=f"OPP-{definition.strategy_id}-{date}",
-            session_date=date, strategy_id=definition.strategy_id,
-            lifecycle=definition.lifecycle, ledger=ledger.state.authority)
-        definition.desk["sessions"] = definition.desk.get("sessions", 0) + 1
-        definition.desk["tickets"] = definition.desk.get("tickets", 0) + 1
+            opportunity_id=opportunity_id, session_date=date,
+            strategy_id=definition.strategy_id, lifecycle=definition.lifecycle,
+            ledger=ledger.state.authority, execution_date=next_date)
 
         # --- SCAN ----------------------------------------------------------
         missing = self.datasets.missing_for([spec.dataset_id] if spec.dataset_id else [])
@@ -140,11 +155,9 @@ class CapitalDesk:
         self.components.set("SIZE", "RUN", definition.strategy_id)
         capital = ledger.nav * definition.capital_fraction * self.strategy_allocation
         target_notional = {symbol: capital * weight for symbol, weight in weights.items()}
-        # Legs the strategy holds but no longer wants are targeted at zero. Without
-        # them RISK would score a portfolio that keeps positions the FILLS stage is
-        # about to close, and would veto an exactly neutral rebalance for breaching
-        # neutrality -- leaving the book further from the limit than accepting it.
-        for symbol in self._positions_of(ledger, definition.strategy_id):
+        # Legs the sleeve holds but no longer wants are targeted at zero, so RISK
+        # scores the portfolio the fills will actually produce.
+        for symbol in ledger.sleeve_exposures(definition.strategy_id):
             target_notional.setdefault(symbol, 0.0)
         ticket.sized_notional = sum(abs(value) for value in target_notional.values())
         entitlement = ("counterfactual size on the evaluation ledger"
@@ -158,64 +171,101 @@ class CapitalDesk:
 
         # --- RISK ----------------------------------------------------------
         self.components.set("RISK", "RUN", definition.strategy_id)
-        verdict = evaluate_risk(ledger, target_notional, self.limits)
+        verdict = evaluate_risk(ledger, definition.strategy_id, target_notional, self.limits)
         if not verdict["approved"]:
             self.components.set("RISK", "IDLE", "proposal vetoed")
-            definition.desk["vetoed"] = definition.desk.get("vetoed", 0) + 1
             self.log.emit("DESK", "RISK", "opportunity_vetoed", ticket.opportunity_id,
                           severity="WARN", vetoes=verdict["vetoes"])
             return self._finish(definition, ticket.stop(
                 "RISK", "VETOED", "; ".join(verdict["vetoes"]), **verdict))
-        if verdict["throttled"]:
-            target_notional = {symbol: value * verdict["scale"]
-                               for symbol, value in target_notional.items()}
+        approved = verdict["scaled_target"]
         ticket.record("RISK", "APPROVED",
-                      f"gross {verdict['gross_ratio']:.2f}x, net {verdict['net_ratio']:+.3f}x, "
-                      f"scale {verdict['scale']:.2f}", **verdict)
+                      f"final portfolio gross {verdict['gross_ratio']:.2f}x, net "
+                      f"{verdict['net_ratio']:+.3f}x, scale {verdict['scale']:.2f}", **verdict)
 
         # --- FILLS ---------------------------------------------------------
         self.components.set("FILLS", "RUN", definition.strategy_id)
-        legs, fills = self._execute(panel, ledger, definition, date, next_date, target_notional)
+        legs, fills = self._execute(panel, ledger, definition, date, next_date, approved)
         ticket.legs = legs
         ticket.fills = fills
         if not fills:
             self.components.set("FILLS", "IDLE", "no order cleared the minimum size")
             return self._finish(definition, ticket.stop(
                 "FILLS", "NO_TRADE", "every implied order was below the minimum order size"))
+
+        # Capacity truncation can move the executed portfolio away from the approved
+        # one, so the limits are checked once more on what will actually be applied.
+        executed = dict(ledger.sleeve_exposures(definition.strategy_id))
+        for fill in fills:
+            executed[fill["symbol"]] = (executed.get(fill["symbol"], 0.0)
+                                        + fill["quantity"] * fill["fill_price"])
+        final = verify_final(ledger, definition.strategy_id, executed, self.limits)
+        if not final["approved"]:
+            self.components.set("RISK", "IDLE", "executed portfolio vetoed")
+            self.log.emit("DESK", "RISK", "execution_vetoed", ticket.opportunity_id,
+                          severity="WARN", vetoes=final["vetoes"])
+            return self._finish(definition, ticket.stop(
+                "RISK", "VETOED",
+                "executed portfolio breaches a hard limit: " + "; ".join(final["vetoes"]),
+                **final))
         ticket.record("FILLS", "FILLED", f"{len(fills)} orders executed at the "
                       f"{next_date} open",
                       shortfall=sum(fill["implementation_shortfall"] for fill in fills),
-                      commission=sum(fill["commission"] for fill in fills))
+                      commission=sum(fill["commission"] for fill in fills),
+                      final_gross_ratio=final["gross_ratio"],
+                      final_net_ratio=final["net_ratio"])
 
         # --- BOOK ----------------------------------------------------------
         self.components.set("BOOK", "RUN", definition.strategy_id)
+        # Intent is durable before money moves, so a crash here resumes rather
+        # than re-deciding against a Book that already carries these fills.
+        self.journal.begin(opportunity_id, definition.strategy_id, date,
+                           ticket.to_dict(), fills)
+        return self._apply(definition, ticket, fills, next_date)
+
+    def _apply(self, definition: StrategyDefinition, ticket: OpportunityTicket,
+               fills: list[dict[str, Any]], execution_date: str) -> OpportunityTicket:
+        """Apply a recorded plan. Safe to call again after a crash."""
+        ledger = self.ledger_for(definition)
         effects = [ledger.apply_fill(fill["symbol"], fill["quantity"], fill["fill_price"],
-                                     fill["commission"], next_date, definition.strategy_id)
+                                     fill["commission"], execution_date,
+                                     definition.strategy_id,
+                                     operation_id=f"{ticket.opportunity_id}:{fill['symbol']}")
                    for fill in fills]
         ticket.book_effect = {"ledger": ledger.state.authority, "nav_after": ledger.nav,
                               "cash_after": ledger.state.cash,
                               "realized_pnl": sum(effect["realized_pnl"] for effect in effects),
-                              "costs": sum(fill["commission"] for fill in fills)}
-        definition.desk["last_rebalance_date"] = date
-        definition.desk["booked"] = definition.desk.get("booked", 0) + 1
+                              "costs": sum(fill["commission"] for fill in fills),
+                              "replayed_operations": sum(1 for effect in effects
+                                                         if effect["replayed"])}
         self.log.emit("DESK", "BOOK", "opportunity_booked", ticket.opportunity_id,
                       ledger=ledger.state.authority, strategy=definition.strategy_id,
                       orders=len(fills), notional=sum(fill["notional"] for fill in fills))
-        return self._finish(definition, ticket.complete(
-            f"{len(fills)} fills applied to the {ledger.state.authority} ledger",
-            **ticket.book_effect))
+        if ticket.status != "BOOKED":
+            ticket.complete(f"{len(fills)} fills applied to the "
+                            f"{ledger.state.authority} ledger", **ticket.book_effect)
+        return self._finish(definition, ticket, rebalanced=True)
+
+    def _resume(self, definition: StrategyDefinition,
+                plan: dict[str, Any]) -> OpportunityTicket:
+        """Re-apply an interrupted session's recorded intent, unchanged."""
+        ticket = OpportunityTicket(**plan["ticket"])
+        self.log.emit("DESK", "BOOK", "session_resumed", ticket.opportunity_id,
+                      severity="WARN", strategy=definition.strategy_id,
+                      fills=len(plan["fills"]))
+        return self._apply(definition, ticket, plan["fills"],
+                           ticket.execution_date or plan["session_date"])
 
     # --- stage helpers -----------------------------------------------------
-    def _finish(self, definition: StrategyDefinition,
-                ticket: OpportunityTicket) -> OpportunityTicket:
-        if ticket.status == "NO_TRADE":
-            definition.desk["no_trade"] = definition.desk.get("no_trade", 0) + 1
-        self.strategies.upsert(definition)
+    def _finish(self, definition: StrategyDefinition, ticket: OpportunityTicket,
+                rebalanced: bool = False) -> OpportunityTicket:
+        self.journal.commit(ticket.opportunity_id, definition.strategy_id, ticket.status,
+                            ticket.session_date, rebalanced)
         return ticket
 
     def _sessions_since_rebalance(self, definition: StrategyDefinition, panel: PricePanel,
                                   date: str) -> int | None:
-        last = definition.desk.get("last_rebalance_date")
+        last = self.journal.stats_for(definition.strategy_id).get("last_rebalance_date")
         if not last:
             return None
         universe = definition.to_spec().universe
@@ -226,7 +276,7 @@ class CapitalDesk:
         return current - previous
 
     def _current_weights(self, ledger: Ledger, definition: StrategyDefinition) -> dict[str, float]:
-        held = self._positions_of(ledger, definition.strategy_id)
+        held = ledger.sleeve_exposures(definition.strategy_id)
         base = ledger.nav * definition.capital_fraction * self.strategy_allocation
         if base <= 0:
             return {}
@@ -235,13 +285,13 @@ class CapitalDesk:
     def _execute(self, panel: PricePanel, ledger: Ledger, definition: StrategyDefinition,
                  date: str, next_date: str, target_notional: dict[str, float]
                  ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-        held = self._positions_of(ledger, definition.strategy_id)
+        held = ledger.sleeve_exposures(definition.strategy_id)
         legs: list[dict[str, Any]] = []
         fills: list[dict[str, Any]] = []
         for symbol in sorted(set(target_notional) | set(held)):
             if not panel.has(next_date, symbol):
                 continue
-            price = self.execution.adjusted(panel, next_date, symbol, "open")
+            price = panel.adjusted(next_date, symbol, "open")
             if price <= 0:
                 continue
             target = target_notional.get(symbol, 0.0)
@@ -260,11 +310,11 @@ class CapitalDesk:
             fills.append(fill)
         return legs, fills
 
-    def _mark(self, panel: PricePanel, date: str) -> dict[str, Any]:
-        prices = {symbol: panel.price(date, symbol) for symbol in panel.symbols
-                  if panel.has(date, symbol)}
-        capital_point = self.capital.mark_to_market(date, prices)
-        evaluation_point = self.evaluation.mark_to_market(date, prices)
+    def _mark(self, panel: PricePanel, mark_date: str) -> dict[str, Any]:
+        prices = {symbol: panel.price(mark_date, symbol) for symbol in panel.symbols
+                  if panel.has(mark_date, symbol)}
+        capital_point = self.capital.mark_to_market(mark_date, prices)
+        evaluation_point = self.evaluation.mark_to_market(mark_date, prices)
         self.components.set("BOOK", "RUN" if self.capital.open_positions() else "IDLE",
-                            f"marked {date}")
+                            f"marked {mark_date}")
         return {"capital": capital_point, "evaluation": evaluation_point}

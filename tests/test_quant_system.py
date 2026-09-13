@@ -10,21 +10,24 @@ import math
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from quant.book.ledger import Ledger
-from quant.clock import QuantSystem
+from quant.book.ledger import BackwardInTime, Ledger
+from quant.clock import QuantSystem, Timer
 from quant.dataplane.panel import PricePanel
 from quant.dataplane.registry import DatasetRecord, DatasetRegistry
 from quant.dataplane.validation import validate_panel
 from quant.desk.desk import CapitalDesk
 from quant.desk.execution import ExecutionModel
-from quant.desk.risk import RiskLimits, evaluate as evaluate_risk
+from quant.desk.journal import DeskJournal
+from quant.desk.risk import RiskLimits, evaluate as evaluate_risk, verify_final
 from quant.events import EventLog
-from quant.factory.evaluate import falsify, required_t_statistic, summarize, walk_forward
+from quant.factory.evaluate import (compound, falsify, required_t_statistic,
+                                    summarize, walk_forward)
 from quant.factory.lanes import WINDOWS
 from quant.factory.signals import (StrategySpec, cross_sectional_scores, should_rebalance,
                                    target_weights, weights_for)
@@ -40,13 +43,17 @@ UNIVERSE = ["AAA", "BBB", "CCC", "DDD"]
 BENCHMARK = "SPY"
 
 
+def session_date(index: int) -> str:
+    year, remainder = 2020 + (index // 360), index % 360
+    return f"{year}-{(remainder // 30) + 1:02d}-{(remainder % 30) + 1:02d}"
+
+
 def fixture_panel(sessions: int = 400, seed: float = 0.17) -> PricePanel:
     """Deterministic synthetic bars. Not market data and never presented as such."""
     rows = []
     level = {symbol: 100.0 for symbol in UNIVERSE + [BENCHMARK]}
     for index in range(sessions):
-        year, remainder = 2020 + (index // 360), index % 360
-        date = f"{year}-{(remainder // 30) + 1:02d}-{(remainder % 30) + 1:02d}"
+        date = session_date(index)
         for position, symbol in enumerate(UNIVERSE + [BENCHMARK]):
             wave = math.sin((index + position * 7) * seed) * 0.01
             drift = 0.0003 if symbol == BENCHMARK else 0.0002
@@ -55,6 +62,26 @@ def fixture_panel(sessions: int = 400, seed: float = 0.17) -> PricePanel:
             rows.append({"date": date, "symbol": symbol, "open": price * 0.999,
                          "high": price * 1.004, "low": price * 0.996, "close": price,
                          "adj_close": price, "volume": 5_000_000.0})
+    return PricePanel(rows)
+
+
+def overnight_gap_panel(sessions: int = 120) -> PricePanel:
+    """Adversarial fixture: every move happens in the forbidden interval.
+
+    Opens are identical on every session, so ``open(t+1) -> open(t+2)`` is
+    exactly zero for every symbol. Closes carry a persistent cross-sectional
+    ranking, so a close-to-close backtest sees a large, stable profit that lives
+    entirely in the close(t) -> open(t+1) gap the desk can never trade.
+    """
+    drifts = {"AAA": 0.004, "BBB": 0.002, "CCC": -0.002, "DDD": -0.004, BENCHMARK: 0.0}
+    rows = []
+    for index in range(sessions):
+        date = session_date(index)
+        for symbol, drift in drifts.items():
+            close = 100.0 * (1.0 + drift) ** index
+            rows.append({"date": date, "symbol": symbol, "open": 100.0,
+                         "high": max(100.0, close) * 1.01, "low": min(100.0, close) * 0.99,
+                         "close": close, "adj_close": close, "volume": 5_000_000.0})
     return PricePanel(rows)
 
 
@@ -96,16 +123,53 @@ class LeakageTests(unittest.TestCase):
         self.assertLess(visible.dates[-1], windows["SHADOW"]["start"])
         self.assertEqual(visible.dates[-1], windows["VALIDATION"]["end"])
 
-    def test_signal_does_not_earn_the_return_of_its_own_session(self):
-        """A shock on session t must not be tradable in session t."""
+    def test_return_interval_starts_at_the_earliest_possible_fill(self):
+        """Entry is the open after the decision; the return may not start earlier."""
         panel = fixture_panel(sessions=200)
         dates = panel.aligned_dates(UNIVERSE)
         spec = fixture_spec(lookback_days=1)
         window = panel.split({"A": 0.5, "B": 0.5}, symbols=UNIVERSE)["B"]
         rows = walk_forward(panel, spec, window, cost_bps=0.0)
+        self.assertTrue(rows)
         for row in rows:
-            self.assertLess(row["signal_date"], row["return_date"])
-            self.assertEqual(dates[dates.index(row["signal_date"]) + 1], row["return_date"])
+            self.assertLess(row["signal_date"], row["entry_date"])
+            self.assertLess(row["entry_date"], row["exit_date"])
+            index = dates.index(row["signal_date"])
+            self.assertEqual(dates[index + 1], row["entry_date"])
+            self.assertEqual(dates[index + 2], row["exit_date"])
+
+
+class OvernightGapTests(unittest.TestCase):
+    """Invariant 1: no return may be credited before the entry can happen."""
+
+    def setUp(self):
+        self.panel = overnight_gap_panel()
+        self.spec = fixture_spec(direction=1, lookback_days=5, min_abs_score=0.5)
+        self.window = self.panel.split({"A": 0.3, "B": 0.7}, symbols=UNIVERSE)["B"]
+        self.rows = walk_forward(self.panel, self.spec, self.window, cost_bps=0.0)
+
+    def test_the_fixture_really_is_adversarial(self):
+        """A close-to-close reading of the same positions would look very profitable."""
+        counterfactual = []
+        for row in self.rows:
+            earned = 0.0
+            for symbol, weight in row["weights"].items():
+                before = self.panel.price(row["signal_date"], symbol)
+                earned += weight * (self.panel.price(row["entry_date"], symbol) / before - 1.0)
+            counterfactual.append(earned)
+        self.assertGreater(compound(counterfactual), 0.05,
+                           "the fixture must put a large profit in the forbidden interval")
+
+    def test_the_forbidden_interval_is_not_credited(self):
+        self.assertTrue(self.rows)
+        for row in self.rows:
+            self.assertAlmostEqual(row["gross_return"], 0.0, places=12)
+        summary = summarize(self.rows, self.panel, BENCHMARK, 0.0)
+        self.assertAlmostEqual(summary["gross_return"], 0.0, places=10)
+
+    def test_costs_can_only_make_it_worse(self):
+        costed = walk_forward(self.panel, self.spec, self.window, cost_bps=5.0)
+        self.assertLessEqual(summarize(costed, self.panel, BENCHMARK, 5.0)["net_return"], 0.0)
 
 
 class SignalTests(unittest.TestCase):
@@ -183,19 +247,19 @@ class LedgerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "book.json"
             ledger = Ledger(path, initial_capital=1_000_000)
-            ledger.apply_fill("AAA", 100, 50.0, 5.0, "2025-01-02", "S1")
+            ledger.apply_fill("AAA", 100, 50.0, 5.0, "2025-01-02", "S1", "op-1")
             recovered = Ledger(path)
-            self.assertEqual(recovered.positions["AAA"].quantity, 100)
+            self.assertEqual(recovered.sleeves["S1"]["AAA"].quantity, 100)
             self.assertAlmostEqual(recovered.state.cash, 1_000_000 - 5_000 - 5.0)
 
     def test_realized_pnl_on_closing_a_long_and_covering_a_short(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = Ledger(Path(directory) / "book.json", initial_capital=1_000_000)
-            ledger.apply_fill("AAA", 100, 50.0, 0.0, "2025-01-02", "S1")
-            ledger.apply_fill("AAA", -100, 60.0, 0.0, "2025-01-03", "S1")
+            ledger.apply_fill("AAA", 100, 50.0, 0.0, "2025-01-02", "S1", "a1")
+            ledger.apply_fill("AAA", -100, 60.0, 0.0, "2025-01-03", "S1", "a2")
             self.assertAlmostEqual(ledger.state.realized_pnl, 1_000.0)
-            ledger.apply_fill("BBB", -100, 50.0, 0.0, "2025-01-03", "S1")
-            ledger.apply_fill("BBB", 100, 40.0, 0.0, "2025-01-04", "S1")
+            ledger.apply_fill("BBB", -100, 50.0, 0.0, "2025-01-03", "S1", "b1")
+            ledger.apply_fill("BBB", 100, 40.0, 0.0, "2025-01-04", "S1", "b2")
             self.assertAlmostEqual(ledger.state.realized_pnl, 2_000.0)
             self.assertEqual(ledger.open_positions(), [])
 
@@ -203,7 +267,7 @@ class LedgerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "book.json"
             first = Ledger(path, initial_capital=500_000)
-            first.apply_fill("AAA", 100, 50.0, 1.0, "2025-01-02", "S1")
+            first.apply_fill("AAA", 100, 50.0, 1.0, "2025-01-02", "S1", "op-1")
             first.mark_to_market("2025-01-02", {"AAA": 50.0})
             first.mark_to_market("2025-01-03", {"AAA": 55.0})
             nav = first.nav
@@ -216,42 +280,188 @@ class LedgerTests(unittest.TestCase):
     def test_attribution_is_kept_per_strategy(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = Ledger(Path(directory) / "book.json")
-            ledger.apply_fill("AAA", 10, 10.0, 1.0, "2025-01-02", "S1")
-            ledger.apply_fill("BBB", 10, 10.0, 2.0, "2025-01-02", "S2")
+            ledger.apply_fill("AAA", 10, 10.0, 1.0, "2025-01-02", "S1", "op-1")
+            ledger.apply_fill("BBB", 10, 10.0, 2.0, "2025-01-02", "S2", "op-2")
             self.assertAlmostEqual(ledger.state.attribution["S1"]["costs"], 1.0)
             self.assertAlmostEqual(ledger.state.attribution["S2"]["costs"], 2.0)
 
+    def test_marking_may_not_move_backward_in_time(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Ledger(Path(directory) / "book.json")
+            ledger.mark_to_market("2025-01-03", {})
+            with self.assertRaises(BackwardInTime):
+                ledger.mark_to_market("2025-01-02", {})
+
+    def test_repeating_a_mark_restates_it_instead_of_adding_a_session(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Ledger(Path(directory) / "book.json")
+            ledger.apply_fill("AAA", 100, 50.0, 0.0, "2025-01-02", "S1", "op-1")
+            ledger.mark_to_market("2025-01-02", {"AAA": 50.0})
+            ledger.mark_to_market("2025-01-02", {"AAA": 60.0})
+            self.assertEqual(ledger.state.sessions, 1)
+            self.assertEqual(len(ledger.state.nav_history), 1)
+            self.assertAlmostEqual(ledger.state.nav_history[-1]["nav"], ledger.nav)
+
+
+class SleeveTests(unittest.TestCase):
+    """Invariant 3: several strategies may hold the same instrument."""
+
+    def make(self, directory):
+        return Ledger(Path(directory) / "book.json", initial_capital=1_000_000)
+
+    def test_two_strategies_hold_opposing_exposure_without_corrupting_attribution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make(directory)
+            ledger.apply_fill("AAA", 100, 50.0, 1.0, "2025-01-02", "LONG", "l-1")
+            ledger.apply_fill("AAA", -60, 50.0, 2.0, "2025-01-02", "SHORT", "s-1")
+            ledger.mark_to_market("2025-01-02", {"AAA": 50.0})
+
+            self.assertAlmostEqual(ledger.sleeve_exposures("LONG")["AAA"], 5_000.0)
+            self.assertAlmostEqual(ledger.sleeve_exposures("SHORT")["AAA"], -3_000.0)
+            self.assertAlmostEqual(ledger.symbol_exposures()["AAA"], 2_000.0)
+
+            aggregate = ledger.aggregate_positions()
+            self.assertEqual(len(aggregate), 1)
+            self.assertAlmostEqual(aggregate[0]["quantity"], 40.0)
+            self.assertEqual(aggregate[0]["strategies"], ["LONG", "SHORT"])
+            self.assertAlmostEqual(ledger.state.attribution["LONG"]["costs"], 1.0)
+            self.assertAlmostEqual(ledger.state.attribution["SHORT"]["costs"], 2.0)
+
+    def test_one_strategy_exiting_leaves_the_other_untouched(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make(directory)
+            ledger.apply_fill("AAA", 100, 50.0, 0.0, "2025-01-02", "LONG", "l-1")
+            ledger.apply_fill("AAA", -60, 50.0, 0.0, "2025-01-02", "SHORT", "s-1")
+            ledger.apply_fill("AAA", 60, 55.0, 0.0, "2025-01-03", "SHORT", "s-2")
+            self.assertEqual(ledger.sleeve_exposures("SHORT"), {})
+            self.assertAlmostEqual(ledger.sleeves["LONG"]["AAA"].quantity, 100)
+            self.assertAlmostEqual(ledger.state.attribution["SHORT"]["realized_pnl"], -300.0)
+            self.assertAlmostEqual(ledger.state.attribution["LONG"]["realized_pnl"], 0.0)
+
+    def test_sleeves_survive_restart(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "book.json"
+            ledger = Ledger(path, initial_capital=1_000_000)
+            ledger.apply_fill("AAA", 100, 50.0, 0.0, "2025-01-02", "LONG", "l-1")
+            ledger.apply_fill("AAA", -60, 50.0, 0.0, "2025-01-02", "SHORT", "s-1")
+            recovered = Ledger(path)
+            self.assertAlmostEqual(recovered.sleeves["LONG"]["AAA"].quantity, 100)
+            self.assertAlmostEqual(recovered.sleeves["SHORT"]["AAA"].quantity, -60)
+
+
+class IdempotenceTests(unittest.TestCase):
+    """Invariant 2: crash plus replay must equal the uninterrupted run."""
+
+    def test_replaying_an_operation_id_changes_nothing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "book.json"
+            ledger = Ledger(path, initial_capital=1_000_000)
+            ledger.apply_fill("AAA", 100, 50.0, 5.0, "2025-01-02", "S1", "op-1")
+            before = (ledger.state.cash, ledger.state.fills, ledger.state.fees_paid,
+                      ledger.sleeves["S1"]["AAA"].quantity)
+
+            replayed = Ledger(path).apply_fill("AAA", 100, 50.0, 5.0, "2025-01-02",
+                                               "S1", "op-1")
+            after = Ledger(path)
+            self.assertTrue(replayed["replayed"])
+            self.assertEqual((after.state.cash, after.state.fills, after.state.fees_paid,
+                              after.sleeves["S1"]["AAA"].quantity), before)
+
+    def test_journal_resumes_a_pending_plan_rather_than_re_deciding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            journal = DeskJournal(Path(directory) / "journal.json")
+            journal.begin("OPP-1", "S1", "2025-01-02", {"opportunity_id": "OPP-1"}, [{"x": 1}])
+            reopened = DeskJournal(Path(directory) / "journal.json")
+            self.assertIsNotNone(reopened.pending_plan("OPP-1"))
+            self.assertFalse(reopened.is_processed("OPP-1"))
+            reopened.commit("OPP-1", "S1", "BOOKED", "2025-01-02", True)
+            final = DeskJournal(Path(directory) / "journal.json")
+            self.assertIsNone(final.pending_plan("OPP-1"))
+            self.assertTrue(final.is_processed("OPP-1"))
+            self.assertEqual(final.stats_for("S1")["booked"], 1)
+
 
 class RiskTests(unittest.TestCase):
+    """Invariant 5: approval must describe the state that will be simulated."""
+
     def make_ledger(self, directory, **kwargs):
         return Ledger(Path(directory) / "book.json", initial_capital=1_000_000, **kwargs)
 
     def test_net_exposure_breach_is_vetoed(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = self.make_ledger(directory)
-            verdict = evaluate_risk(ledger, {"AAA": 400_000.0}, RiskLimits())
+            verdict = evaluate_risk(ledger, "S1", {"AAA": 400_000.0}, RiskLimits())
             self.assertFalse(verdict["approved"])
             self.assertTrue(any("net exposure" in reason for reason in verdict["vetoes"]))
 
     def test_neutral_rebalance_that_closes_a_dropped_leg_is_approved(self):
-        """Regression: legs targeted at zero must not be scored as retained."""
+        """Legs targeted at zero must not be scored as retained."""
         with tempfile.TemporaryDirectory() as directory:
             ledger = self.make_ledger(directory)
-            ledger.apply_fill("CCC", 2_000, 100.0, 0.0, "2025-01-02", "S1")
+            ledger.apply_fill("CCC", 2_000, 100.0, 0.0, "2025-01-02", "S1", "op-1")
             ledger.mark_to_market("2025-01-02", {"CCC": 100.0})
             target = {"AAA": 100_000.0, "BBB": -100_000.0, "CCC": 0.0}
-            verdict = evaluate_risk(ledger, target, RiskLimits())
+            verdict = evaluate_risk(ledger, "S1", target, RiskLimits())
             self.assertTrue(verdict["approved"], verdict["vetoes"])
             self.assertAlmostEqual(verdict["net_ratio"], 0.0, places=6)
+
+    def test_a_strategy_is_not_charged_twice_for_its_own_sleeve(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make_ledger(directory)
+            ledger.apply_fill("AAA", 2_000, 100.0, 0.0, "2025-01-02", "S1", "op-1")
+            ledger.apply_fill("BBB", -2_000, 100.0, 0.0, "2025-01-02", "S1", "op-2")
+            ledger.mark_to_market("2025-01-02", {"AAA": 100.0, "BBB": 100.0})
+            # Re-proposing exactly what it already holds is a no-op portfolio.
+            verdict = evaluate_risk(ledger, "S1", {"AAA": 200_000.0, "BBB": -200_000.0},
+                                    RiskLimits())
+            self.assertTrue(verdict["approved"], verdict["vetoes"])
+            self.assertAlmostEqual(verdict["gross_ratio"], 0.4, places=6)
+
+    def test_scaling_is_validated_on_the_scaled_portfolio(self):
+        """Regression: existing exposure plus a proposal that must be scaled."""
+        limits = RiskLimits(max_gross_ratio=1.0, max_net_ratio=1.0, max_symbol_ratio=1.0)
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make_ledger(directory)
+            ledger.apply_fill("AAA", 6_000, 100.0, 0.0, "2025-01-02", "OTHER", "op-1")
+            ledger.mark_to_market("2025-01-02", {"AAA": 100.0})
+            verdict = evaluate_risk(ledger, "S1", {"BBB": 900_000.0}, limits)
+            self.assertTrue(verdict["throttled"])
+            self.assertGreater(verdict["pre_scale"]["gross_ratio"], limits.max_gross_ratio)
+            # The approved portfolio, not the proposed one, is inside the limit.
+            self.assertLessEqual(verdict["gross_ratio"], limits.max_gross_ratio + 1e-9)
+            self.assertTrue(verdict["approved"])
+            applied = verify_final(ledger, "S1", verdict["scaled_target"], limits)
+            self.assertTrue(applied["approved"], applied["vetoes"])
+
+    def test_scaling_that_cannot_satisfy_a_hard_limit_is_vetoed(self):
+        """Scaling reduces gross but cannot fix a breach caused by another sleeve."""
+        limits = RiskLimits(max_gross_ratio=5.0, max_net_ratio=0.10, max_symbol_ratio=1.0)
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make_ledger(directory)
+            ledger.apply_fill("AAA", 5_000, 100.0, 0.0, "2025-01-02", "OTHER", "op-1")
+            ledger.mark_to_market("2025-01-02", {"AAA": 100.0})
+            verdict = evaluate_risk(ledger, "S1", {"BBB": 10_000.0}, limits)
+            self.assertFalse(verdict["approved"])
+            self.assertTrue(any("net exposure" in reason for reason in verdict["vetoes"]))
+
+    def test_verify_final_rejects_a_truncated_execution_that_breaches_a_limit(self):
+        limits = RiskLimits(max_net_ratio=0.05)
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = self.make_ledger(directory)
+            approved = {"AAA": 100_000.0, "BBB": -100_000.0}
+            self.assertTrue(evaluate_risk(ledger, "S1", approved, limits)["approved"])
+            # Capacity truncation removed the short leg; the executed book is not neutral.
+            executed = {"AAA": 100_000.0, "BBB": -1_000.0}
+            self.assertFalse(verify_final(ledger, "S1", executed, limits)["approved"])
 
     def test_drawdown_throttles_then_halts(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = self.make_ledger(directory)
             ledger.state.peak_nav = 1_000_000
             ledger.state.cash = 880_000
-            self.assertTrue(evaluate_risk(ledger, {}, RiskLimits())["throttled"])
+            self.assertTrue(evaluate_risk(ledger, "S1", {}, RiskLimits())["throttled"])
             ledger.state.cash = 750_000
-            self.assertFalse(evaluate_risk(ledger, {}, RiskLimits())["approved"])
+            self.assertFalse(evaluate_risk(ledger, "S1", {}, RiskLimits())["approved"])
 
 
 class ExecutionTests(unittest.TestCase):
@@ -446,7 +656,7 @@ class SystemTests(unittest.TestCase):
                             f"{touched - tradable}")
             evaluated = {definition.strategy_id for definition
                          in system.strategies.strategies.values()
-                         if definition.desk.get("evaluation_track")}
+                         if definition.evaluation_track}
             self.assertTrue(set(system.desk.evaluation.state.attribution) <= evaluated)
             self.assertGreater(system.desk.capital.state.sessions, 0,
                                "the book marks every session even when flat")
@@ -547,7 +757,7 @@ class LifecycleTests(unittest.TestCase):
     def test_evaluation_track_is_sized_but_not_tradable(self):
         definition = StrategyDefinition(strategy_id="S", version=1, lane="l",
                                         spec=fixture_spec().to_dict())
-        definition.desk["evaluation_track"] = True
+        definition.evaluation_track = True
         self.assertFalse(definition.tradable)
         self.assertGreater(definition.capital_fraction, 0.0)
 
@@ -571,9 +781,10 @@ class LearningTests(unittest.TestCase):
             strategies = StrategyRegistry(Path(directory) / "strategies.json")
             definition = StrategyDefinition(strategy_id="S1", version=1, lane="l",
                                             spec=fixture_spec().to_dict())
-            definition.desk.update({"evaluation_track": True, "booked": 10})
+            definition.evaluation_track = True
             strategies.upsert(definition)
-            assessments = store.assess_rejections(strategies, ledger)
+            assessments = store.assess_rejections(
+                strategies, ledger, lambda _: {"booked": 10, "sessions": 10})
             self.assertEqual(assessments[0]["verdict"], "TRUE_REJECT")
             self.assertEqual(store.decision_quality["true_rejects"], 1)
 
@@ -587,10 +798,10 @@ class LearningTests(unittest.TestCase):
             strategies = StrategyRegistry(Path(directory) / "strategies.json")
             definition = StrategyDefinition(strategy_id="S1", version=1, lane="l",
                                             spec=fixture_spec().to_dict())
-            definition.desk.update({"evaluation_track": True, "booked": 10})
+            definition.evaluation_track = True
             strategies.upsert(definition)
-            self.assertEqual(store.assess_rejections(strategies, ledger)[0]["verdict"],
-                             "FALSE_REJECT")
+            self.assertEqual(store.assess_rejections(
+                strategies, ledger, lambda _: {"booked": 10})[0]["verdict"], "FALSE_REJECT")
 
     def test_build_tasks_capture_capability_gaps_once(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -640,6 +851,312 @@ class DataPlaneTests(unittest.TestCase):
             registry.refresh_availability()
             self.assertEqual(registry.get("fixture").availability, "MISSING")
             self.assertEqual(registry.missing_for(["fixture"]), ["fixture"])
+
+
+class FakeTimer:
+    """Deterministic clock. Records waits instead of performing them."""
+
+    def __init__(self):
+        self.slept: list[float] = []
+        self._now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+
+    def now(self):
+        return self._now
+
+    def sleep(self, seconds: float) -> None:
+        self.slept.append(seconds)
+        self._now += timedelta(seconds=seconds)
+
+
+def shadow_desk(root: Path, panel: PricePanel, strategy_id: str = "STR-TEST",
+                **spec_overrides):
+    """A desk with one tradable strategy over a fixture panel."""
+    paths = QuantPaths(root).ensure()
+    panel.write(root / "data" / "datasets" / "fixture.csv")
+    registry = DatasetRegistry(paths.dataset_registry, root)
+    registry.register(DatasetRecord(dataset_id="fixture", source="fixture",
+                                    adapter="fixture", path="data/datasets/fixture.csv"))
+    registry.refresh_availability()
+    strategies = StrategyRegistry(paths.strategies)
+    if strategy_id not in strategies.strategies:
+        definition = StrategyDefinition(strategy_id=strategy_id, version=1, lane="test",
+                                        spec=fixture_spec(**spec_overrides).to_dict())
+        definition.transition("VALIDATED", "fixture")
+        definition.transition("SHADOW", "fixture")
+        strategies.upsert(definition)
+    return CapitalDesk(paths, strategies, registry, EventLog(paths.events),
+                       ComponentRegistry(paths.components))
+
+
+def ledger_fingerprint(ledger: Ledger) -> dict:
+    """Everything the mission requires to be identical after a crash."""
+    return {"cash": round(ledger.state.cash, 6), "nav": round(ledger.nav, 6),
+            "fills": ledger.state.fills, "sessions": ledger.state.sessions,
+            "realized": round(ledger.state.realized_pnl, 6),
+            "fees": round(ledger.state.fees_paid, 6),
+            "nav_points": len(ledger.state.nav_history),
+            "last_session": ledger.state.last_session_date,
+            "sleeves": {strategy: {symbol: round(position.quantity, 6)
+                                   for symbol, position in holdings.items()}
+                        for strategy, holdings in sorted(ledger.sleeves.items())},
+            "attribution": {key: {name: round(value, 6) for name, value in sorted(item.items())}
+                            for key, item in sorted(ledger.state.attribution.items())}}
+
+
+class CrashRecoveryTests(unittest.TestCase):
+    """Invariant 2, end to end: crash + restart + replay == uninterrupted."""
+
+    SESSIONS = 12
+
+    def run_sessions(self, root: Path, panel: PricePanel, dates: list[str],
+                     crash_on: str | None = None) -> Ledger:
+        desk = shadow_desk(root, panel)
+        for index, date in enumerate(dates):
+            next_date = dates[index + 1] if index + 1 < len(dates) else None
+            if date == crash_on:
+                original = DeskJournal.commit
+                exploded = {"done": False}
+
+                def exploding(self, opportunity_id, *args, **kwargs):
+                    # Crash after the fills are durable but before the session
+                    # is committed: the dangerous boundary.
+                    if not exploded["done"]:
+                        exploded["done"] = True
+                        raise RuntimeError("process killed mid-session")
+                    return original(self, opportunity_id, *args, **kwargs)
+
+                DeskJournal.commit = exploding
+                try:
+                    with self.assertRaises(RuntimeError):
+                        desk.run_session(panel, date, next_date)
+                finally:
+                    DeskJournal.commit = original
+                # The process is gone: rebuild every object from disk.
+                desk = shadow_desk(root, panel)
+                desk.run_session(panel, date, next_date)
+            else:
+                desk.run_session(panel, date, next_date)
+        return desk
+
+    def test_crash_after_durable_fills_does_not_duplicate_anything(self):
+        panel = fixture_panel(sessions=90)
+        dates = panel.aligned_dates(UNIVERSE)[20:20 + self.SESSIONS]
+        with tempfile.TemporaryDirectory() as clean, tempfile.TemporaryDirectory() as crashed:
+            expected = ledger_fingerprint(
+                self.run_sessions(Path(clean), panel, dates).capital)
+            actual = ledger_fingerprint(
+                self.run_sessions(Path(crashed), panel, dates, crash_on=dates[5]).capital)
+            self.assertEqual(actual, expected)
+            self.assertGreater(expected["fills"], 0, "the run must actually trade")
+
+    def test_the_crash_really_left_durable_state_behind(self):
+        """Guards the test itself: a crash that changed nothing proves nothing."""
+        panel = fixture_panel(sessions=90)
+        dates = panel.aligned_dates(UNIVERSE)[20:26]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desk = shadow_desk(root, panel)
+            for index, date in enumerate(dates[:-1]):
+                desk.run_session(panel, date, dates[index + 1])
+            before = desk.capital.state.fills
+            original = DeskJournal.commit
+            DeskJournal.commit = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("killed"))
+            try:
+                with self.assertRaises(RuntimeError):
+                    desk.run_session(panel, dates[-1], dates[-1])
+            finally:
+                DeskJournal.commit = original
+            reopened = shadow_desk(root, panel)
+            self.assertGreater(reopened.capital.state.fills, before,
+                               "the crash must land after durable fills")
+            self.assertTrue(reopened.journal.pending,
+                            "an interrupted session must leave a pending plan")
+
+    def test_a_resumed_session_keeps_the_original_decision(self):
+        panel = fixture_panel(sessions=90)
+        dates = panel.aligned_dates(UNIVERSE)[20:30]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desk = shadow_desk(root, panel, holding_days=5, no_trade_band=0.05)
+            # Sessions 1-4 sit inside the holding period; session 5 is the next
+            # rebalance, so that is where an interrupted decision matters.
+            for index, date in enumerate(dates[:5]):
+                desk.run_session(panel, date, dates[index + 1])
+            original = DeskJournal.commit
+            DeskJournal.commit = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("killed"))
+            try:
+                with self.assertRaises(RuntimeError):
+                    desk.run_session(panel, dates[5], dates[6])
+            finally:
+                DeskJournal.commit = original
+            resumed = shadow_desk(root, panel, holding_days=5, no_trade_band=0.05)
+            self.assertTrue(resumed.journal.pending, "the crash must leave a pending plan")
+            summary = resumed.run_session(panel, dates[5], dates[6])
+            ticket = summary["tickets"][0]
+            # Re-deciding against the already-mutated Book would have seen no
+            # drift and recorded NO_TRADE. The recorded intent wins.
+            self.assertEqual(ticket["status"], "BOOKED")
+            self.assertEqual(ticket["book_effect"]["replayed_operations"],
+                             len(ticket["fills"]))
+            self.assertEqual(resumed.journal.stats_for("STR-TEST")["booked"], 2)
+
+
+class DeskTimelineTests(unittest.TestCase):
+    """Invariant 1, desk side: the Book is marked where the orders executed."""
+
+    def test_the_book_is_marked_on_the_execution_date(self):
+        panel = fixture_panel(sessions=90)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            summary = desk.run_session(panel, dates[30], dates[31])
+            self.assertEqual(summary["execution_date"], dates[31])
+            self.assertEqual(desk.capital.state.last_session_date, dates[31])
+            for ticket in summary["tickets"]:
+                for fill in ticket["fills"]:
+                    self.assertEqual(fill["execution_date"], dates[31])
+                    self.assertEqual(fill["signal_date"], dates[30])
+
+    def test_marks_never_run_backward_across_sessions(self):
+        panel = fixture_panel(sessions=90)
+        dates = panel.aligned_dates(UNIVERSE)[20:30]
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            marked = []
+            for index, date in enumerate(dates[:-1]):
+                desk.run_session(panel, date, dates[index + 1])
+                marked.append(desk.capital.state.last_session_date)
+            self.assertEqual(marked, sorted(marked))
+            self.assertEqual(len(set(marked)), len(marked))
+
+
+class LivenessTests(unittest.TestCase):
+    """Invariant 4: IDLE is a waiting state, not an exit."""
+
+    def build_dataset(self, root: Path, sessions: int = 400) -> None:
+        panel = fixture_panel(sessions=sessions)
+        panel.write(root / "data" / "datasets" / "fixture.csv")
+        paths = QuantPaths(root).ensure()
+        registry = DatasetRegistry(paths.dataset_registry, root)
+        record = DatasetRecord(dataset_id="fixture", source="synthetic test fixture",
+                               adapter="fixture", path="data/datasets/fixture.csv")
+        record.symbols = panel.symbols
+        registry.register(record)
+        registry.refresh_availability()
+
+    def test_the_clock_waits_while_idle_instead_of_exiting(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            QuantPaths(root).ensure()
+            timer = FakeTimer()
+            system = QuantSystem(root, universe=UNIVERSE, dataset_id="fixture", timer=timer)
+            system.boot()
+            entry = system.serve(poll_seconds=30.0, max_cycles=3)
+            self.assertEqual(timer.slept, [30.0, 30.0, 30.0])
+            self.assertEqual(system.state.waits, 3)
+            self.assertEqual(system.state.status, "IDLE")
+            self.assertEqual(entry["waits"], 3)
+            self.assertTrue(system.state.next_action)
+
+    def test_data_arriving_while_idle_wakes_the_system(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            QuantPaths(root).ensure()
+            timer = FakeTimer()
+            system = QuantSystem(root, universe=UNIVERSE, dataset_id="fixture", timer=timer)
+            system.boot()
+            self.assertEqual(system.tick(), "IDLE", "blocked on a missing dataset")
+
+            waits = {"count": 0}
+
+            def stop_when(current: QuantSystem) -> bool:
+                waits["count"] += 1
+                if waits["count"] == 1:
+                    self.build_dataset(root)      # data arrives while the clock waits
+                    return False
+                return True
+
+            entry = system.serve(poll_seconds=5.0, stop_when=stop_when)
+            self.assertTrue(timer.slept, "the clock must wait rather than exit")
+            self.assertGreaterEqual(entry["outcomes"].get("RESEARCH", 0), 1,
+                                    "work must resume once the dependency resolves")
+            self.assertGreater(system.state.research_runs, 0)
+
+    def test_serve_respects_an_operator_pause(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            QuantPaths(root).ensure()
+            timer = FakeTimer()
+            system = QuantSystem(root, universe=UNIVERSE, dataset_id="fixture", timer=timer)
+            system.boot()
+            system.pause("maintenance")
+            system.serve(poll_seconds=1.0, max_cycles=2)
+            self.assertEqual(system.state.status, "PAUSED")
+
+
+class WatchdogLeaseTests(unittest.TestCase):
+    """Invariant 6: RUNNING is not STUCK."""
+
+    def system(self, root: Path, timer=None) -> QuantSystem:
+        QuantPaths(root).ensure()
+        return QuantSystem(root, universe=UNIVERSE, dataset_id="fixture", timer=timer)
+
+    def test_healthy_running_work_is_not_reported_stuck(self):
+        with tempfile.TemporaryDirectory() as directory:
+            system = self.system(Path(directory))
+            system.boot()
+            task = next(iter(system.queue.tasks.values()))
+            task.status = "RUNNING"
+            task.started_at = Timer().now().isoformat()
+            task.lease_seconds = 600
+            system.queue.save()
+            codes = {alert["code"] for alert in system.health()}
+            self.assertNotIn("WORKER_STUCK", codes)
+
+    def test_work_whose_lease_expired_is_reported_stuck(self):
+        with tempfile.TemporaryDirectory() as directory:
+            system = self.system(Path(directory))
+            system.boot()
+            task = next(iter(system.queue.tasks.values()))
+            task.status = "RUNNING"
+            task.started_at = (Timer().now() - timedelta(seconds=1_200)).isoformat()
+            task.lease_seconds = 600
+            system.queue.save()
+            alerts = [alert for alert in system.health() if alert["code"] == "WORKER_STUCK"]
+            self.assertEqual(len(alerts), 1)
+            self.assertIn(task.task_id, alerts[0]["detail"])
+
+    def test_running_work_with_no_recorded_start_is_treated_as_stale(self):
+        with tempfile.TemporaryDirectory() as directory:
+            system = self.system(Path(directory))
+            system.boot()
+            task = next(iter(system.queue.tasks.values()))
+            task.status = "RUNNING"
+            task.started_at = None
+            system.queue.save()
+            self.assertIn("WORKER_STUCK", {alert["code"] for alert in system.health()})
+
+
+class VersionPreservationTests(unittest.TestCase):
+    def test_a_superseded_strategy_version_stays_inspectable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            registry = StrategyRegistry(Path(directory) / "strategies.json")
+            first = StrategyDefinition(strategy_id="S", version=1, lane="l",
+                                       spec=fixture_spec(lookback_days=5).to_dict(),
+                                       evidence={"validation": {"net_return": 0.1}})
+            registry.upsert(first)
+            second = StrategyDefinition(strategy_id="S", version=2, lane="l",
+                                        spec=fixture_spec(lookback_days=21).to_dict(),
+                                        evidence={"validation": {"net_return": -0.2}})
+            registry.upsert(second)
+            reopened = StrategyRegistry(Path(directory) / "strategies.json")
+            stored = reopened.get("S")
+            self.assertEqual(stored.version, 2)
+            self.assertEqual(len(stored.previous_versions), 1)
+            self.assertEqual(stored.previous_versions[0]["version"], 1)
+            self.assertEqual(stored.previous_versions[0]["spec"]["lookback_days"], 5)
+            self.assertEqual(stored.previous_versions[0]["evidence"]["validation"]["net_return"],
+                             0.1)
 
 
 if __name__ == "__main__":

@@ -59,12 +59,14 @@ class StrategyDefinition:
     shadow: dict[str, Any] = field(default_factory=lambda: {
         "sessions": 0, "net_pnl": 0.0, "gross_pnl": 0.0, "costs": 0.0,
         "wins": 0, "losses": 0, "peak_pnl": 0.0, "max_drawdown": 0.0})
-    #: Desk-side execution state. ``evaluation_track`` marks a strategy the desk
-    #: runs at zero capital authority purely to measure whether rejecting it was
-    #: the right call; such a strategy never touches the capital ledger.
-    desk: dict[str, Any] = field(default_factory=lambda: {
-        "evaluation_track": False, "last_rebalance_date": None, "sessions": 0,
-        "tickets": 0, "no_trade": 0, "vetoed": 0, "booked": 0})
+    #: Marks a strategy the desk runs at zero capital authority purely to measure
+    #: whether rejecting it was the right call. Such a strategy never touches the
+    #: capital ledger. Desk counters live in the desk journal, not here, so a
+    #: session commits its work and its bookkeeping in one durable write.
+    evaluation_track: bool = False
+    #: Superseded documents of this strategy, oldest first. Without these the
+    #: registry would not be version-preserving, only version-numbered.
+    previous_versions: list[dict[str, Any]] = field(default_factory=list)
     retirement_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -81,7 +83,7 @@ class StrategyDefinition:
     def capital_fraction(self) -> float:
         if self.tradable:
             return TRADABLE[self.lifecycle]
-        return EVALUATION_FRACTION if self.desk.get("evaluation_track") else 0.0
+        return EVALUATION_FRACTION if self.evaluation_track else 0.0
 
     def transition(self, new_state: str, reason: str) -> None:
         if new_state not in TRANSITIONS.get(self.lifecycle, set()):
@@ -124,6 +126,12 @@ class StrategyRegistry:
         return self.trials.get(dataset_key, 0)
 
     def upsert(self, definition: StrategyDefinition) -> StrategyDefinition:
+        """Store a strategy, keeping any superseded document inspectable."""
+        existing = self.strategies.get(definition.strategy_id)
+        if existing is not None and existing.version != definition.version:
+            archived = existing.to_dict()
+            archived.pop("previous_versions", None)
+            definition.previous_versions = existing.previous_versions + [archived]
         self.strategies[definition.strategy_id] = definition
         self.save()
         return definition

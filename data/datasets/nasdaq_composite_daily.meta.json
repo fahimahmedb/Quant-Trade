@@ -11,7 +11,7 @@
   ],
   "fingerprint": "sha256:ba0a84803fee43f4b6b984d86a93d23c7b73e8a2630fa4e8e6e55290769d6a14",
   "first_date": "2021-07-13",
-  "ingested_at": "2026-09-13T19:56:37.970854+00:00",
+  "ingested_at": "2026-09-13T20:56:46.053268+00:00",
   "kind": "daily_bars",
   "last_date": "2026-07-10",
   "license_note": "operator-supplied export already committed to this repository",
@@ -21,7 +21,7 @@
     "minimum_decision_lag_days": 1,
     "timestamp_semantics": "daily index close; the index is not directly tradable"
   },
-  "refreshed_at": "2026-09-13T19:56:37.976989+00:00",
+  "refreshed_at": "2026-09-13T20:56:46.059735+00:00",
   "rows": 1251,
   "source": "operator-supplied historical export committed to the repository",
   "symbols": [

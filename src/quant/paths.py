@@ -67,6 +67,14 @@ class QuantPaths:
         return self.var / "opportunities.jsonl"
 
     @property
+    def desk_journal(self) -> Path:
+        return self.var / "desk_journal.json"
+
+    @property
+    def evaluation_ledger(self) -> Path:
+        return self.var / "evaluation_ledger.json"
+
+    @property
     def research_tickets(self) -> Path:
         return self.var / "research_tickets"
 

@@ -10,6 +10,7 @@
     "created_at": {
       "type": "string"
     },
+    "execution_date": {},
     "fills": {
       "items": {
         "additionalProperties": {},

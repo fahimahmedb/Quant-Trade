@@ -26,7 +26,18 @@ TRADING_DAYS = 252
 
 def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
                  cost_bps: float) -> list[dict[str, Any]]:
-    """Run the strategy day by day inside ``window``.
+    """Run the strategy session by session inside ``window``.
+
+    One causal timeline, identical to the desk's:
+
+    ``information through close(t) -> decision after close(t) ->
+    entry at open(t+1) -> exit at open(t+2)``
+
+    The return interval therefore *starts* at the first moment an order could
+    have executed. Measuring from close(t) instead would credit the overnight
+    gap between the decision and the earliest possible fill, which the desk can
+    never capture, and would make every published metric describe a strategy
+    the system cannot run.
 
     The panel is truncated at the window end before anything is computed, so a
     future bar is not merely unused, it is unreachable.
@@ -36,8 +47,8 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
     rows: list[dict[str, Any]] = []
     held: dict[str, float] = {}
     last_rebalance: int | None = None
-    for index in range(len(dates) - 1):
-        date, next_date = dates[index], dates[index + 1]
+    for index in range(len(dates) - 2):
+        date, entry_date, exit_date = dates[index], dates[index + 1], dates[index + 2]
         if not window.contains(date):
             continue
         target = weights_for(visible, spec, date)
@@ -49,12 +60,14 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
             held, turnover, last_rebalance = target, drift, len(rows)
         gross = 0.0
         for symbol, weight in held.items():
-            before = visible.price(date, symbol)
-            gross += weight * (visible.price(next_date, symbol) / before - 1.0)
+            entry = visible.adjusted(entry_date, symbol, "open")
+            if entry <= 0:
+                continue
+            gross += weight * (visible.adjusted(exit_date, symbol, "open") / entry - 1.0)
         cost = turnover * cost_bps / 10_000.0
-        rows.append({"signal_date": date, "return_date": next_date, "gross_return": gross,
-                     "cost": cost, "net_return": gross - cost, "turnover": turnover,
-                     "positions": len(held), "weights": dict(held)})
+        rows.append({"signal_date": date, "entry_date": entry_date, "exit_date": exit_date,
+                     "gross_return": gross, "cost": cost, "net_return": gross - cost,
+                     "turnover": turnover, "positions": len(held), "weights": dict(held)})
     return rows
 
 
@@ -93,15 +106,19 @@ def summarize(rows: list[dict[str, Any]], panel: PricePanel, benchmark: str,
         return {"observations": 0, "net_return": 0.0, "empty": True}
     net = [row["net_return"] for row in rows]
     gross = [row["gross_return"] for row in rows]
-    market = [panel.price(row["return_date"], benchmark) / panel.price(row["signal_date"],
-              benchmark) - 1.0 for row in rows]
+    # The benchmark is measured over the same executable interval, or the beta
+    # attribution would compare two different clocks.
+    market = [panel.adjusted(row["exit_date"], benchmark, "open")
+              / panel.adjusted(row["entry_date"], benchmark, "open") - 1.0 for row in rows]
     mean, deviation = statistics.fmean(net), (statistics.stdev(net) if len(net) > 1 else 0.0)
     volatility = deviation * math.sqrt(TRADING_DAYS)
     active = sum(1 for row in rows if row["positions"] > 0)
     beta = _beta(net, market)
     return {
         "observations": len(rows), "active_observations": active,
-        "first_date": rows[0]["signal_date"], "last_date": rows[-1]["return_date"],
+        "first_signal_date": rows[0]["signal_date"],
+        "first_entry_date": rows[0]["entry_date"], "last_exit_date": rows[-1]["exit_date"],
+        "timeline": "signal at close(t); entry at open(t+1); exit at open(t+2)",
         "cost_bps": cost_bps,
         "gross_return": compound(gross), "net_return": compound(net),
         "market_return_same_window": compound(market),

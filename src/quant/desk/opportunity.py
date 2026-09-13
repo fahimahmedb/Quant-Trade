@@ -27,6 +27,9 @@ class OpportunityTicket:
     lifecycle: str
     ledger: str
     created_at: str = field(default_factory=utc_now)
+    #: Session whose open the orders would execute at. Decisions are made after
+    #: the close of ``session_date``; nothing can fill earlier than this.
+    execution_date: str | None = None
     stage: str = "SCAN"
     status: str = "OPEN"
     reason: str | None = None

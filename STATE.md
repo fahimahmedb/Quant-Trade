@@ -29,19 +29,25 @@ lifecycle, and `PersistentQueue` / `ResearchTask` are now the Control Plane's du
 
 ## What exists today
 
-- a whole-system clock with boot/resume, durable run history, heartbeat, watchdog, pause/resume,
-  fault isolation and bounded retry;
+- a whole-system clock with boot/resume, durable run history, heartbeat, lease-based watchdog,
+  pause/resume, fault isolation, bounded retry, dead-work protection, and a long-running `serve`
+  mode that waits while IDLE and wakes on due work or newly arrived data;
 - a Data Plane with adapters, validation, fingerprints, committed provenance sidecars,
-  availability tracking and dependency unblocking;
+  availability tracking, registry reload and dependency unblocking;
 - a Research Factory with declared lanes, a discovery/validation/shadow point-in-time partition,
-  a versioned strategy lifecycle, a multiple-testing budget and dead-work protection;
+  a versioned strategy lifecycle that preserves superseded documents, a multiple-testing budget
+  and dead-work protection;
 - the `SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` chain as six distinct, traced, stateful
-  functions over an `OpportunityTicket`;
-- two persistent ledgers: the authoritative capital Book and a zero-authority evaluation ledger;
+  functions over an `OpportunityTicket`, on one causal timeline shared with research;
+- a persistent Book with per-strategy sleeves, aggregate portfolio views, deterministic
+  operation identities and monotonic marking;
+- a write-ahead desk journal so an interrupted session resumes its recorded decision instead of
+  re-deciding against a Book it has already mutated;
+- two ledgers: the authoritative capital Book and a zero-authority evaluation ledger;
 - a learning loop that scores the system's own rejections and raises `BuildTask` capability gaps;
 - a status surface and `CHIEF_BRIEF.md` rendered only from persistent state;
-- 56 tests, an end-to-end restart demonstration with 27 assertions, and JSON schemas for the
-  persistent state objects generated from the dataclasses with a drift test.
+- 82 tests, an end-to-end restart and crash demonstration with 35 assertions, and JSON schemas
+  for the persistent state objects generated from the dataclasses with a drift test.
 
 ## Current data frontier
 
@@ -64,75 +70,108 @@ and open `BuildTask` records: `factor_residual`, `insider_filings`, `volatility_
 
 ## Current research evidence
 
+**These numbers replace the ones published in the first version of PR #12.** The earlier
+metrics were computed on a close(t) -> close(t+1) interval, which credited the overnight gap
+between the decision and the earliest possible fill. The corrected timeline is
+
+`information through close(t) -> decision after close(t) -> entry at open(t+1) -> exit at open(t+2)`
+
+and is now shared by the research evaluator, the desk and the Book. The old figures are not
+comparable and should not be cited.
+
 Two lanes ran on the new panel. The second was promoted automatically by the first lane's
 diagnosis, not by a human supplying the next idea.
 
 Windows: discovery 2016-09-12 to 2022-03-08, validation 2022-03-09 to 2025-03-11, and a shadow
 window from 2025-03-12 reserved for the desk and never visible to research.
 
-| Expression | OOS net | OOS gross | Costs | Turnover | Beta | t | required t |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `xs_momentum_l21_z0.5_h1_b0` | -13.16% | -2.79% | 11.28% | 75x/yr | -0.070 | -0.97 | 3.08 |
-| `xs_momentum_l21_z0.5_h5_b0.05` | -7.27% | -2.61% | 4.90% | 33x/yr | -0.063 | -0.49 | 3.20 |
+### Lane 1 - `xs_daily_relative_value`: filtered before validation
 
-**Both are rejected.** No strategy holds a tradable lifecycle state, so the capital Book has
-never taken a position.
+Under the corrected timeline the best of its 24 declared expressions reached a discovery Sharpe
+of **-0.015**. The lane's own rule is that the validation window is only spent on a candidate
+that survived discovery, so the window was preserved rather than consumed. Under the old,
+gap-inflated timeline this same family reached +0.20 and was carried all the way to validation.
+
+Its scan still showed the cost mechanism clearly: 10 of 24 expressions were gross-positive and
+net-negative, at a median 157x annual turnover. That diagnosis is what promoted lane 2.
+
+### Lane 2 - `xs_execution_aware_relative_value`: rejected out of sample
+
+| Metric | Value |
+| --- | --- |
+| Expression | `xs_momentum_l21_z0.5_h5_b0.05` |
+| Discovery Sharpe | +0.363 |
+| OOS net return | **-6.08%** |
+| OOS gross return | -1.37% |
+| Modelled costs | 4.90% |
+| Annual turnover | 32.9x |
+| Market beta | -0.062 (benchmark +38.34% over the same interval) |
+| t-statistic | -0.39 against a required **3.20** after 36 declared expressions |
+
+**No strategy is tradable.** The capital Book has never taken a position.
 
 What the evidence actually says:
 
-1. On the discovery window every one of the 24 declared daily expressions was gross-positive or
-   near-flat and net-negative after 5bp one-way costs, at 92x to 410x annual turnover. The
-   binding constraint was implementation, not signal direction.
-2. The structural response — a holding period and a no-trade band — worked *mechanically*:
-   turnover fell from 75x to 33x per year and modelled costs fell from 11.3% to 4.9%. It did not
-   rescue the strategy, because out of sample the residual signal was gross-negative too.
-3. Neither result is close to significant. After 36 declared expressions on one dataset the
-   Bonferroni-adjusted bar is t >= 3.20; the best reached -0.49. These results are
-   indistinguishable from search luck, in the unprofitable direction.
-4. Beta attribution is reported on every result. Both expressions ran at |beta| < 0.07 against a
-   benchmark that returned +35.9% over the same window, so essentially none of the outcome is
-   disguised market exposure — the dollar-neutral construction did its job.
+1. The daily family does not survive its own discovery window once the return interval starts
+   where an order could actually execute. Most of its apparent edge was in the gap.
+2. The structural response to cost worked mechanically: turnover 157x -> 33x, modelled costs
+   4.9% of the window. It did not rescue the strategy, because out of sample the residual was
+   gross-negative as well.
+3. Nothing is close to significant. After 36 declared expressions the Bonferroni-adjusted bar is
+   t >= 3.20; the best reached -0.39.
+4. Beta attribution is reported on every result. |beta| < 0.07 against a benchmark that returned
+   +38.3%, so essentially none of the outcome is disguised market exposure.
 
-The honest conclusion: cross-sectional sector relative value, as expressed here, is not a source
-of edge on this dataset, and the failure is not merely a cost problem.
+The honest conclusion is unchanged in direction and stronger in degree: cross-sectional sector
+relative value, as expressed here, is not a source of edge on this dataset.
 
 ## Current economic state
 
-- Capital Book: NAV 1,000,000 USD, unchanged since inception, 0 fills, 0 positions, 378 sessions
-  marked. `NO_TRADE` held for the entire shadow window because nothing was validated.
-- Evaluation ledger (zero authority, counterfactual only): NAV 983,622, -1.64% over 378 sessions
-  and 2,690 modelled fills, with 3,073 USD of modelled commission.
-- Desk tickets: 451 booked, 301 no-trade, 2 risk-vetoed, 2 blocked.
+- Capital Book: NAV 1,000,000 USD, unchanged since inception, 0 fills, 0 positions, 377 marked
+  sessions. `NO_TRADE` held for the entire shadow window because nothing was validated.
+- Evaluation ledger (zero authority, counterfactual only): NAV 993,834, **-0.62%** over 377
+  sessions, 518 modelled fills, 468 USD of modelled commission, 9 open sleeves.
+- Desk tickets: 76 booked, 301 no-trade, 1 blocked (the final session has no later session in
+  which orders could execute).
 
-Decision quality: both rejections were scored against what they would actually have done. Both
-came out **UNDETERMINED** — the counterfactual loss is real but below the materiality band and
-statistically indistinguishable from zero, so the system does not claim its rejections were
-vindicated. There were no false rejects.
+Decision quality: the single evaluated rejection scored **UNDETERMINED** - the counterfactual
+loss is real but below the materiality band and statistically indistinguishable from zero, so
+the system does not claim its rejection was vindicated. There were no false rejects.
 
 ## Whole-system maturity
 
 | Plane | State |
 | --- | --- |
-| Control Plane / Clock | **Implemented.** Boot/resume, due-work routing across planes, durable run history, heartbeat, watchdog, fault isolation, bounded retry, pause/resume, dead-work protection. |
+| Control Plane / Clock | **Implemented.** Boot/resume, due-work routing across planes, durable run history, heartbeat, lease-based watchdog, fault isolation, bounded retry, pause/resume, dead-work protection, and a long-running mode that waits while IDLE. |
 | Data Plane | **Implemented for daily bars.** Registry, adapters, validation, fingerprints, committed provenance, availability-driven unblocking. No intraday, no point-in-time fundamentals, no corporate-action history. |
 | Research Factory | **Implemented for one family.** Declared lanes, discovery/validation separation, adversarial falsification, multiple-testing budget, evidence-driven follow-up promotion. Breadth is still narrow: one signal family on one asset class. |
-| Capital Desk | **Implemented.** Six distinct traced stages over an `OpportunityTicket`, execution modelled at the next open with spread, commission, square-root impact and ADV capacity truncation. |
-| Persistent Book | **Implemented.** Durable fills, realized/unrealized P&L, NAV history, per-strategy attribution, restart-safe. Verified by tests and by the restart demonstration. |
+| Capital Desk | **Implemented.** Six distinct traced stages over an `OpportunityTicket`, execution modelled at the next session's open with spread, commission, square-root impact and ADV capacity truncation. RISK validates the scaled portfolio and re-validates the executed one. |
+| Persistent Book | **Implemented.** Per-strategy sleeves with separate aggregate exposure, durable and idempotent fills, monotonic marking, realized/unrealized P&L, NAV history, attribution. Crash-plus-replay is proven equal to the uninterrupted run. |
 | Learning | **Implemented for research and rejections.** Lessons, lane priorities, counterfactual scoring, `BuildTask` capability gaps. Decay and retirement transitions exist but have never fired, because no strategy has been tradable. |
 | Build Plane | **Represented.** Capability gaps are first-class records; execution is still a human-triggered agent task. |
 | Status UI | **Implemented as a text surface.** Every field is read from persistent state; nothing is mocked. |
 
 ## Known limitations
 
-- One symbol is assumed to be owned by one strategy within a ledger; multi-strategy netting on
-  the same symbol is not implemented.
-- Cash earns no financing return, and shorts pay no borrow. Both are modelled as zero and are
+- Cash earns no financing return and shorts pay no borrow. Both are modelled as zero and are
   material to a real bankroll.
-- The `DECAYING` and `RETIRED` transitions are implemented and tested but have never run on real
-  evidence.
+- The `DECAYING` and `RETIRED` lifecycle transitions are implemented and unit-tested but have
+  never fired on real evidence, because no strategy has ever been tradable. The system does not
+  yet demonstrate autonomous alpha-decay management; it demonstrates the state machine that
+  would carry it.
+- Strategy versioning preserves superseded documents in `previous_versions`, so old evidence
+  stays inspectable. It is not a full audit log: intermediate edits within one version are not
+  retained.
 - The evaluation ledger's materiality band is a fixed fraction of initial capital rather than of
-  capital actually at risk.
+  capital actually at risk, so a small counterfactual is reported as UNDETERMINED rather than
+  scaled to the exposure that produced it.
+- The execution model's spread and impact coefficients are assumed, not calibrated against
+  quotes. Costs decided both research results, so this assumption carries real weight.
+- Research breadth is one signal family on one asset class. Nothing here supports a conclusion
+  about the Research Factory's general ability to find edge.
 - The status surface is a text rendering, not an interactive control UI.
+- `serve` wakes on a fixed poll interval and re-reads the dataset registry; it does not yet
+  subscribe to external events.
 
 ## Highest-value next actions
 

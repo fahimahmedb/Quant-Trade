@@ -3,6 +3,12 @@
   "additionalProperties": false,
   "description": "Persistent economic state of one ledger.",
   "properties": {
+    "applied_operations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
     "attribution": {
       "additionalProperties": {
         "additionalProperties": {
@@ -57,18 +63,21 @@
     "peak_nav": {
       "type": "number"
     },
-    "positions": {
-      "additionalProperties": {
-        "additionalProperties": {},
-        "type": "object"
-      },
-      "type": "object"
-    },
     "realized_pnl": {
       "type": "number"
     },
     "sessions": {
       "type": "integer"
+    },
+    "sleeves": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "type": "object"
+      },
+      "type": "object"
     }
   },
   "required": [

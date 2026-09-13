@@ -21,9 +21,9 @@
     "TLT",
     "GLD"
   ],
-  "fingerprint": "sha256:97b4653ca827809162f21f0cee47f76e28b1ed5cc5ef2278e4e8a7681d7aa1ab",
+  "fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
   "first_date": "2016-09-12",
-  "ingested_at": "2026-09-13T19:56:41.880158+00:00",
+  "ingested_at": "2026-09-13T20:56:49.999598+00:00",
   "kind": "daily_bars",
   "last_date": "2026-09-11",
   "license_note": "public endpoint, personal research use; not redistributed as a data product",
@@ -32,10 +32,10 @@
     "information_available_at": "the close of the dated session",
     "minimum_decision_lag_days": 1,
     "requested_range": "10y",
-    "retrieved_at": "2026-09-13T19:56:41.843506+00:00",
+    "retrieved_at": "2026-09-13T20:56:49.959571+00:00",
     "timestamp_semantics": "bar timestamp is the session open; the date is the exchange session and the bar is complete only after that session's close"
   },
-  "refreshed_at": "2026-09-13T19:56:42.028120+00:00",
+  "refreshed_at": "2026-09-13T20:56:50.163428+00:00",
   "rows": 30168,
   "source": "Yahoo Finance chart API (public, credential-free)",
   "symbols": [

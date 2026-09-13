@@ -8,9 +8,8 @@
     },
     "dataset_fingerprint": {},
     "dataset_id": {},
-    "desk": {
-      "additionalProperties": {},
-      "type": "object"
+    "evaluation_track": {
+      "type": "boolean"
     },
     "evidence": {
       "additionalProperties": {},
@@ -31,6 +30,13 @@
         "additionalProperties": {
           "type": "string"
         },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "previous_versions": {
+      "items": {
+        "additionalProperties": {},
         "type": "object"
       },
       "type": "array"

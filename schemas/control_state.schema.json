@@ -30,6 +30,7 @@
     "last_heartbeat": {
       "type": "string"
     },
+    "last_wake_at": {},
     "mode": {
       "type": "string"
     },
@@ -52,6 +53,9 @@
       "type": "string"
     },
     "ticks": {
+      "type": "integer"
+    },
+    "waits": {
       "type": "integer"
     }
   },

@@ -42,23 +42,10 @@ class ExecutionModel:
         return sum(panel.price(day, symbol, "close") * panel.price(day, symbol, "volume")
                    for day in recent) / len(recent)
 
-    @staticmethod
-    def adjusted(panel: PricePanel, date: str, symbol: str, field: str) -> float:
-        """Put raw open/high/low on the same adjusted basis as ``adj_close``.
-
-        Marks and fills must share one price basis or the Book drifts against
-        its own returns whenever a dividend or split lands.
-        """
-        close = panel.price(date, symbol, "close")
-        if close <= 0:
-            return panel.price(date, symbol, "adj_close")
-        factor = panel.price(date, symbol, "adj_close") / close
-        return panel.price(date, symbol, field) * factor
-
     def fill(self, panel: PricePanel, symbol: str, quantity: float, signal_date: str,
              execution_date: str) -> dict[str, Any]:
         """Model one order. Returns the (possibly capacity-truncated) fill."""
-        reference = self.adjusted(panel, execution_date, symbol, "open")
+        reference = panel.adjusted(execution_date, symbol, "open")
         capacity = self.adv(panel, symbol, signal_date) * self.max_participation
         requested_notional = abs(quantity) * reference
         truncated = False
