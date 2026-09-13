@@ -85,6 +85,85 @@ For every material action, the governing question is:
 
 If not, it is lower priority.
 
+## Autonomous operating intent
+
+Quant-Trade is not intended to become a collection of manually requested backtests.
+
+The intended end state is an autonomous quantitative research system that can continuously:
+
+`observe -> detect -> hypothesize -> test -> falsify -> validate -> allocate -> monitor -> retire -> rediscover`
+
+The human defines the terminal objective and capital boundary. The system should increasingly decide the research path itself.
+
+The system is expected to choose, when justified by evidence:
+
+- which markets deserve attention;
+- which datasets to acquire or ignore;
+- which anomalies deserve deeper research;
+- which hypotheses to kill cheaply;
+- which experiments deserve expensive compute;
+- which strategies deserve further validation;
+- when an existing strategy is decaying;
+- where research resources should move next.
+
+A research system that waits for the human to invent each next strategy is not the target architecture.
+
+## Internalize research failure
+
+Failed experiments are unavoidable and useful, but they should be absorbed inside the research process rather than becoming the primary human interaction loop.
+
+The system should be capable of running many inexpensive falsification cycles internally, recording them in the research ledger, and escalating only when one of the following is true:
+
+- evidence materially changes the current research direction;
+- a candidate deserves promotion to a more expensive validation stage;
+- a new data source, external resource, credential, or irreversible action is required;
+- a capital-boundary decision is required;
+- the system encounters an ambiguity it cannot resolve empirically.
+
+The human should not have to choose the next hypothesis after every `KILL`.
+
+## Continuous discovery, not static strategy optimization
+
+The durable asset sought by this project is not one permanent trading strategy.
+
+The durable asset is the ability to discover and replace economic edges as market structure changes.
+
+Strategies therefore have lifecycles:
+
+`RESEARCH -> VALIDATION -> PAPER -> LIMITED_LIVE -> ACTIVE -> DECAY_WATCH -> RETIRED`
+
+Retirement is not failure of the Alpha Factory. An autonomous system that retires dead alpha and reallocates research effort is functioning correctly.
+
+## Search breadth
+
+Quant-Trade is not bound to the market, horizon, or model family currently present in the repository.
+
+The existing NASDAQ work is historical research, not the definition of the project.
+
+The system may research, when justified by data quality and economic opportunity:
+
+- statistical / relative-value relationships;
+- cross-sectional long/short anomalies;
+- options and volatility relative value;
+- event and filing-driven signals;
+- futures, rates, FX, commodities, crypto, prediction markets or other suitable instruments;
+- microstructure and cross-venue effects;
+- other market structures not yet represented in the repository.
+
+Breadth exists to increase the probability of finding real edge, not to maximize the number of markets scanned.
+
+## Alpha versus beta
+
+A profitable result is not automatically evidence of discovered alpha.
+
+Where broad directional exposure can explain the economics, the project must attribute and neutralize that exposure before claiming edge.
+
+Passive secular drift must not be laundered into a research success.
+
+The relevant benchmark is the economic alternative that preserves unavoidable exposures while removing the claimed informational advantage.
+
+See `docs/MARKET_SELECTION_DOCTRINE.md`.
+
 ## Market reality outranks narrative
 
 The system must be willing to falsify its own work.
@@ -118,8 +197,28 @@ The intended progression is:
 
 Each stage exists only to improve the probability that deployed capital is exposed to real edge rather than research illusion.
 
+## Capital autonomy versus research autonomy
+
+Research autonomy should be broad.
+
+Capital autonomy must be earned progressively.
+
+The system may autonomously choose research directions, write code, run experiments, reject hypotheses, rank opportunities and recommend allocation changes within the repository.
+
+It must not silently move from research evidence to unrestricted live-capital deployment.
+
+Live-capital authority is a separate capability that must be explicitly enabled and bounded.
+
+This distinction preserves maximum intellectual autonomy without confusing experimentation with irreversible capital action.
+
 ## Final principle
 
 The project is not trying to look quantitative.
 
 It is trying to become economically correct often enough, after costs and uncertainty, to grow capital over time.
+
+The desired end state is not an assistant that produces trading research on request.
+
+It is an autonomous quantitative organization whose continuing purpose is:
+
+> **find where economically exploitable edge exists, prove it, monetize it, detect when it dies, and search again.**
