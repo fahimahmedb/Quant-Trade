@@ -164,6 +164,35 @@ The relevant benchmark is the economic alternative that preserves unavoidable ex
 
 See `docs/MARKET_SELECTION_DOCTRINE.md`.
 
+## Selectivity and abstention
+
+Trading activity is not an objective.
+
+The system must distinguish between **discovering a signal** and **deciding that the signal deserves capital**.
+
+A validated signal may still be rejected at the capital-allocation stage because its expected net edge is too small, too uncertain, too expensive to execute, too correlated with existing positions, outside its validated regime, or dominated by a better available opportunity.
+
+The permitted decision set therefore includes actions such as:
+
+- `TAKE`
+- `HOLD`
+- `REDUCE`
+- `EXIT`
+- `REJECT`
+- `NO_TRADE`
+
+`NO_TRADE` is a legitimate economic action, not a failure of autonomy.
+
+The system should not trade to demonstrate activity and should not reject opportunities merely to demonstrate caution.
+
+The decision criterion remains the terminal objective:
+
+> **allocate capital only when doing so has higher expected contribution to future wealth than preserving that capital for better opportunities.**
+
+Rejection quality must itself be studied. The project should measure false accepts, false rejects, opportunity cost of abstention, and the marginal economic value added by each decision gate.
+
+See `docs/DECISION_GATE_AND_ABSTENTION.md`.
+
 ## Market reality outranks narrative
 
 The system must be willing to falsify its own work.
@@ -221,4 +250,4 @@ The desired end state is not an assistant that produces trading research on requ
 
 It is an autonomous quantitative organization whose continuing purpose is:
 
-> **find where economically exploitable edge exists, prove it, monetize it, detect when it dies, and search again.**
+> **find where economically exploitable edge exists, prove it, decide when it deserves capital, monetize it, detect when it dies, and search again.**
