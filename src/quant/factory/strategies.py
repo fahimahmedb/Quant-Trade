@@ -14,6 +14,8 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
+import hashlib
+import json
 
 from ..state import read_json, utc_now, write_json
 from .signals import StrategySpec
@@ -120,6 +122,7 @@ class StrategyRegistry:
             payload.get("trial_reservations") or {})
         self.research_partitions: dict[str, dict[str, dict[str, str]]] = dict(
             payload.get("research_partitions") or {})
+        self.research_cohorts: dict[str, str] = dict(payload.get("research_cohorts") or {})
 
     def save(self) -> None:
         write_json(self.path, {
@@ -128,7 +131,8 @@ class StrategyRegistry:
                            for key, value in sorted(self.strategies.items())},
             "trials": dict(sorted(self.trials.items())),
             "trial_reservations": dict(sorted(self.trial_reservations.items())),
-            "research_partitions": dict(sorted(self.research_partitions.items()))})
+            "research_partitions": dict(sorted(self.research_partitions.items())),
+            "research_cohorts": dict(sorted(self.research_cohorts.items()))})
 
     def record_trials(self, dataset_key: str, count: int,
                       experiment_key: str | None = None) -> int:
@@ -178,6 +182,22 @@ class StrategyRegistry:
         self.research_partitions[dataset_id] = documents
         self.save()
         return documents
+
+    def preserve_research_cohort(self, dataset_id: str, rows: list[dict[str, Any]]) -> str:
+        """Freeze a digest of all bytes/values inside the declared research cohort.
+
+        Appends beyond VALIDATION do not alter this digest; a historical rewrite
+        does, and is therefore a review boundary rather than a fresh experiment.
+        """
+        digest = "sha256:" + hashlib.sha256(
+            json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        existing = self.research_cohorts.get(dataset_id)
+        if existing is not None and existing != digest:
+            raise ValueError(f"historical research cohort changed for {dataset_id}")
+        if existing is None:
+            self.research_cohorts[dataset_id] = digest
+            self.save()
+        return digest
 
     def upsert(self, definition: StrategyDefinition) -> StrategyDefinition:
         """Store a strategy, keeping any superseded document inspectable."""

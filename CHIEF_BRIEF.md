@@ -73,7 +73,7 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 
 ## Decision quality
 
-- evaluation ledger NAV 993,834.43 (-0.62%) over 377 sessions and 518 fills
+- evaluation ledger NAV 993,742.87 (-0.63%) over 377 sessions after execution-time revaluation
 - rejections scored: 1 (true rejects 0, false rejects 0, undetermined 1)
 - counterfactual P&L of rejected strategies: -6,165.57
 - desk tickets: {'BOOKED': 76, 'NO_TRADE': 301, 'BLOCKED': 1}
@@ -90,4 +90,3 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 ## Next autonomous action
 
 blocked on a dependency for SCAN-FACTOR-RESIDUAL-001: no survivorship-controlled security and factor panel
-

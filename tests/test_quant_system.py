@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quant.book.ledger import BackwardInTime, Ledger
 from quant.clock import QuantSystem, Timer
-from quant.dataplane.panel import PricePanel
+from quant.dataplane.panel import PricePanel, Window
 from quant.dataplane.registry import DatasetRecord, DatasetRegistry
 from quant.dataplane.validation import validate_panel
 from quant.desk.desk import CapitalDesk
@@ -117,6 +117,23 @@ class PanelTests(unittest.TestCase):
 
 
 class LeakageTests(unittest.TestCase):
+    def test_full_return_interval_must_fit_discovery(self):
+        panel = fixture_panel(sessions=40)
+        dates = panel.aligned_dates(UNIVERSE)
+        window = Window("DISCOVERY", dates[10], dates[20])
+        rows = walk_forward(panel, fixture_spec(), window, 0.0)
+        self.assertTrue(rows)
+        self.assertLessEqual(rows[-1]["exit_date"], window.end)
+        baseline = [row["net_return"] for row in rows]
+        changed = []
+        for (date, symbol), bar in panel.bars.items():
+            item = {"date": date, "symbol": symbol, **bar}
+            if date > window.end:
+                item["open"] *= 100
+            changed.append(item)
+        altered = walk_forward(PricePanel(changed), fixture_spec(), window, 0.0)
+        self.assertEqual([row["net_return"] for row in altered], baseline)
+
     def test_research_cannot_see_the_desk_reserved_window(self):
         panel = fixture_panel()
         visible, windows = research_panel(panel, UNIVERSE)
@@ -624,13 +641,15 @@ class SystemTests(unittest.TestCase):
             runs = system.state.research_runs
             task = next(task for task in system.queue.tasks.values()
                         if task.status == "COMPLETED")
-            task.status = "PENDING"
-            system.queue.save()
+            prior = task.metadata["result"]
             self.build(directory, sessions=430)          # the dataset moves on
-            system.datasets.refresh_availability()
-            system._panel = None
-            system.tick()
-            self.assertEqual(system.state.research_runs, runs + 1)
+            resumed = self.system(root)
+            resumed.boot()
+            refreshed = resumed.queue.tasks[task.task_id]
+            self.assertEqual(refreshed.status, "PENDING")
+            self.assertEqual(refreshed.metadata["execution_history"][0]["result"], prior)
+            resumed.tick()
+            self.assertEqual(resumed.state.research_runs, runs + 1)
 
     def test_pause_survives_restart_until_resume(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -676,11 +695,50 @@ class SystemTests(unittest.TestCase):
 
 
 class DeskRoutingTests(unittest.TestCase):
+    def test_execution_delta_revalues_an_overnight_gap(self):
+        panel = fixture_panel(sessions=300)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            definition = desk.strategies.get("STR-TEST")
+            open_price = panel.adjusted(dates[31], "AAA", "open")
+            desk.capital.apply_fill("AAA", 1000, open_price / 2, 0, dates[30],
+                                    "STR-TEST", "seed-gap")
+            legs, _ = desk._execute(panel, desk.capital, definition, dates[30], dates[31],
+                                    {"AAA": 1000 * open_price / 2})
+            leg = next(item for item in legs if item["symbol"] == "AAA")
+            self.assertAlmostEqual(leg["current_notional"], 1000 * open_price)
+            self.assertAlmostEqual(leg["delta_notional"], -1000 * open_price / 2)
+
+    def test_one_strategy_fault_does_not_stop_an_independent_strategy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            panel = fixture_panel(sessions=300)
+            desk = shadow_desk(root, panel, strategy_id="A", lookback_days=6)
+            other = StrategyDefinition("B", 1, "test", fixture_spec().to_dict())
+            other.transition("VALIDATED", "fixture")
+            other.transition("SHADOW", "fixture")
+            desk.strategies.upsert(other)
+            import quant.desk.desk as desk_module
+            original = desk_module.weights_for
+            desk_module.weights_for = lambda p, spec, date: (
+                (_ for _ in ()).throw(ValueError("bad strategy"))
+                if spec.lookback_days == 6 else original(p, spec, date))
+            try:
+                dates = panel.aligned_dates(UNIVERSE)
+                summary = desk.run_session(panel, dates[20], dates[21])
+            finally:
+                desk_module.weights_for = original
+            statuses = {ticket["strategy_id"]: ticket["status"] for ticket in summary["tickets"]}
+            self.assertEqual(statuses["A"], "FAULT")
+            self.assertEqual(statuses["B"], "BOOKED")
+            self.assertTrue(desk.journal.is_processed("OPP-A-" + dates[20]))
+
     def test_a_tradable_strategy_books_into_the_capital_ledger(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             paths = QuantPaths(root).ensure()
-            panel = fixture_panel(sessions=120)
+            panel = fixture_panel(sessions=300)
             panel.write(root / "data" / "datasets" / "fixture.csv")
             registry = DatasetRegistry(paths.dataset_registry, root)
             record = DatasetRecord(dataset_id="fixture", source="fixture", adapter="fixture",
@@ -710,7 +768,7 @@ class DeskRoutingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             paths = QuantPaths(root).ensure()
-            panel = fixture_panel(sessions=120)
+            panel = fixture_panel(sessions=300)
             panel.write(root / "data" / "datasets" / "fixture.csv")
             registry = DatasetRegistry(paths.dataset_registry, root)
             registry.register(DatasetRecord(dataset_id="fixture", source="fixture",
@@ -742,6 +800,22 @@ class DeskRoutingTests(unittest.TestCase):
 
 
 class LifecycleTests(unittest.TestCase):
+    def test_partition_and_trial_reservation_survive_append_and_retry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            registry = StrategyRegistry(Path(directory) / "strategies.json")
+            windows = {"DISCOVERY": Window("DISCOVERY", "1", "2"),
+                       "VALIDATION": Window("VALIDATION", "3", "4"),
+                       "SHADOW": Window("SHADOW", "5", "6")}
+            frozen = registry.preserve_research_partition("d", windows)
+            self.assertEqual(registry.preserve_research_partition("d", {
+                **windows, "SHADOW": Window("SHADOW", "5", "9")}), frozen)
+            self.assertEqual(registry.record_trials("d@cohort", 12, "grid-a"), 12)
+            self.assertEqual(registry.record_trials("d@cohort", 12, "grid-a"), 12)
+            self.assertEqual(registry.record_trials("d@cohort", 4, "grid-b"), 16)
+            registry.preserve_research_cohort("d", [{"date": "1", "close": 1}])
+            with self.assertRaisesRegex(ValueError, "historical research cohort changed"):
+                registry.preserve_research_cohort("d", [{"date": "1", "close": 2}])
+
     def test_lifecycle_transitions_are_restrictive(self):
         definition = StrategyDefinition(strategy_id="S", version=1, lane="l",
                                         spec=fixture_spec().to_dict())
@@ -826,6 +900,20 @@ class SchemaTests(unittest.TestCase):
 
 
 class DataPlaneTests(unittest.TestCase):
+    def test_changed_malformed_bytes_invalidate_previous_verdict(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / "panel.csv"
+            fixture_panel(sessions=300).write(target)
+            registry = DatasetRegistry(root / "registry.json", root)
+            registry.register(DatasetRecord("fixture", "fixture", "fixture", "panel.csv"))
+            registry.refresh_availability()
+            self.assertEqual(registry.get("fixture").availability, "AVAILABLE")
+            target.write_text("not,a,panel\n")
+            registry.refresh_availability()
+            self.assertEqual(registry.get("fixture").availability, "INVALID")
+            self.assertFalse(registry.get("fixture").validation["passed"])
+
     def test_validation_rejects_a_panel_with_a_missing_symbol(self):
         panel = fixture_panel(sessions=300)
         result = validate_panel(panel, UNIVERSE + ["MISSING"])
@@ -939,31 +1027,31 @@ class CrashRecoveryTests(unittest.TestCase):
         return desk
 
     def test_crash_after_durable_fills_does_not_duplicate_anything(self):
-        panel = fixture_panel(sessions=90)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)[20:20 + self.SESSIONS]
         with tempfile.TemporaryDirectory() as clean, tempfile.TemporaryDirectory() as crashed:
             expected = ledger_fingerprint(
                 self.run_sessions(Path(clean), panel, dates).capital)
             actual = ledger_fingerprint(
-                self.run_sessions(Path(crashed), panel, dates, crash_on=dates[5]).capital)
+                self.run_sessions(Path(crashed), panel, dates, crash_on=dates[6]).capital)
             self.assertEqual(actual, expected)
             self.assertGreater(expected["fills"], 0, "the run must actually trade")
 
     def test_the_crash_really_left_durable_state_behind(self):
         """Guards the test itself: a crash that changed nothing proves nothing."""
-        panel = fixture_panel(sessions=90)
-        dates = panel.aligned_dates(UNIVERSE)[20:26]
+        panel = fixture_panel(sessions=300)
+        dates = panel.aligned_dates(UNIVERSE)[20:28]
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             desk = shadow_desk(root, panel)
-            for index, date in enumerate(dates[:-1]):
+            for index, date in enumerate(dates[:6]):
                 desk.run_session(panel, date, dates[index + 1])
             before = desk.capital.state.fills
             original = DeskJournal.commit
             DeskJournal.commit = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("killed"))
             try:
                 with self.assertRaises(RuntimeError):
-                    desk.run_session(panel, dates[-1], dates[-1])
+                    desk.run_session(panel, dates[6], dates[7])
             finally:
                 DeskJournal.commit = original
             reopened = shadow_desk(root, panel)
@@ -973,7 +1061,7 @@ class CrashRecoveryTests(unittest.TestCase):
                             "an interrupted session must leave a pending plan")
 
     def test_a_resumed_session_keeps_the_original_decision(self):
-        panel = fixture_panel(sessions=90)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)[20:30]
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1005,7 +1093,7 @@ class DeskTimelineTests(unittest.TestCase):
     """Invariant 1, desk side: the Book is marked where the orders executed."""
 
     def test_the_book_is_marked_on_the_execution_date(self):
-        panel = fixture_panel(sessions=90)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)
@@ -1018,7 +1106,7 @@ class DeskTimelineTests(unittest.TestCase):
                     self.assertEqual(fill["signal_date"], dates[30])
 
     def test_marks_never_run_backward_across_sessions(self):
-        panel = fixture_panel(sessions=90)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)[20:30]
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)

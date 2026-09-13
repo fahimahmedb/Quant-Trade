@@ -10,7 +10,12 @@
     "created_at": {
       "type": "string"
     },
-    "execution_date": {},
+    "execution_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "fills": {
       "items": {
         "additionalProperties": {},
@@ -34,7 +39,12 @@
     "opportunity_id": {
       "type": "string"
     },
-    "reason": {},
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "session_date": {
       "type": "string"
     },

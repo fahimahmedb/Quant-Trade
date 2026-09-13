@@ -15,7 +15,12 @@
     "created_at": {
       "type": "string"
     },
-    "desk_cursor": {},
+    "desk_cursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "desk_sessions": {
       "type": "integer"
     },
@@ -26,16 +31,36 @@
       },
       "type": "array"
     },
-    "last_boot_at": {},
+    "last_boot_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "last_heartbeat": {
       "type": "string"
     },
-    "last_wake_at": {},
+    "last_wake_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "mode": {
       "type": "string"
     },
-    "next_action": {},
-    "pause_reason": {},
+    "next_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pause_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "research_runs": {
       "type": "integer"
     },

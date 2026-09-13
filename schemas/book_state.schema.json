@@ -36,11 +36,21 @@
     "inception": {
       "type": "string"
     },
-    "inception_date": {},
+    "inception_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "initial_capital": {
       "type": "number"
     },
-    "last_session_date": {},
+    "last_session_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "ledger_id": {
       "type": "string"
     },

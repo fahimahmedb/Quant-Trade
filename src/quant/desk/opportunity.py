@@ -16,7 +16,7 @@ from ..state import utc_now
 
 
 STAGES = ("SCAN", "VET", "SIZE", "RISK", "FILLS", "BOOK")
-TERMINAL = ("BOOKED", "NO_TRADE", "REJECTED", "VETOED", "BLOCKED")
+TERMINAL = ("BOOKED", "NO_TRADE", "REJECTED", "VETOED", "BLOCKED", "FAULT")
 
 
 @dataclass

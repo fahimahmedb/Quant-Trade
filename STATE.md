@@ -46,7 +46,7 @@ lifecycle, and `PersistentQueue` / `ResearchTask` are now the Control Plane's du
 - two ledgers: the authoritative capital Book and a zero-authority evaluation ledger;
 - a learning loop that scores the system's own rejections and raises `BuildTask` capability gaps;
 - a status surface and `CHIEF_BRIEF.md` rendered only from persistent state;
-- 82 tests, an end-to-end restart and crash demonstration with 35 assertions, and JSON schemas
+- 87 tests, an end-to-end restart and crash demonstration with 35 assertions, and JSON schemas
   for the persistent state objects generated from the dataclasses with a drift test.
 
 ## Current data frontier
@@ -129,8 +129,9 @@ relative value, as expressed here, is not a source of edge on this dataset.
 
 - Capital Book: NAV 1,000,000 USD, unchanged since inception, 0 fills, 0 positions, 377 marked
   sessions. `NO_TRADE` held for the entire shadow window because nothing was validated.
-- Evaluation ledger (zero authority, counterfactual only): NAV 993,834, **-0.62%** over 377
-  sessions, 518 modelled fills, 468 USD of modelled commission, 9 open sleeves.
+- Evaluation ledger (zero authority, counterfactual only): NAV 993,743, **-0.63%** over 377
+  sessions. The changed value was recomputed after execution-time open valuation was made
+  authoritative; older desk figures are not comparable.
 - Desk tickets: 76 booked, 301 no-trade, 1 blocked (the final session has no later session in
   which orders could execute).
 
@@ -152,6 +153,11 @@ the system does not claim its rejection was vindicated. There were no false reje
 | Status UI | **Implemented as a text surface.** Every field is read from persistent state; nothing is mocked. |
 
 ## Known limitations
+
+- Research inference still uses independent-observation t-statistics; HAC/Newey-West or a
+  block bootstrap is required before future positive evidence can authorize capital.
+- Native ingestion scheduling/event subscriptions remain absent; `serve` discovers refreshes
+  by polling. Historical changes inside a frozen research cohort block the lineage for review.
 
 - Cash earns no financing return and shorts pay no borrow. Both are modelled as zero and are
   material to a real bankroll.

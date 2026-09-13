@@ -37,10 +37,12 @@ class DeskJournal:
         self.pending: dict[str, dict[str, Any]] = payload.get("pending", {})
         self.stats: dict[str, dict[str, Any]] = payload.get("stats", {})
         self.last_session_date: str | None = payload.get("last_session_date")
+        self.outcomes: dict[str, dict[str, Any]] = payload.get("outcomes", {})
 
     def save(self) -> None:
         write_json(self.path, {"version": 1, "processed": sorted(self.processed),
                                "pending": self.pending, "stats": self.stats,
+                               "outcomes": self.outcomes,
                                "last_session_date": self.last_session_date})
 
     # --- queries -----------------------------------------------------------
@@ -63,9 +65,14 @@ class DeskJournal:
         self.save()
 
     def commit(self, opportunity_id: str, strategy_id: str, status: str,
-               session_date: str, rebalanced: bool) -> None:
+               session_date: str, rebalanced: bool,
+               ticket: dict[str, Any] | None = None) -> None:
         """Finish the opportunity: clear any intent and update the counters, atomically."""
+        if opportunity_id in self.processed:
+            return
         self.pending.pop(opportunity_id, None)
+        if ticket is not None:
+            self.outcomes[opportunity_id] = ticket
         stats = self.stats.setdefault(strategy_id, dict(EMPTY_STATS))
         stats["sessions"] += 1
         stats["tickets"] += 1

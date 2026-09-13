@@ -9,7 +9,12 @@
     "last_price": {
       "type": "number"
     },
-    "opened_at": {},
+    "opened_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "quantity": {
       "type": "number"
     },

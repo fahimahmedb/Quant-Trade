@@ -118,13 +118,19 @@ class QuantSystem:
         self.state.last_boot_at = utc_now()
         self.components.set("CONTROL", "RUN", "booting")
         recovered = self._recover_interrupted()
-        self.datasets.reload()
+        arrived = self.datasets.reload()
         changed = self.datasets.refresh_availability()
+        # Task fingerprints are the durable comparison point.  The registry
+        # may already contain the new version when this process is constructed,
+        # so do not depend solely on an in-memory "changed" notification.
+        refresh_records = self.datasets.available()
+        refreshed = self._reactivate_changed_research(refresh_records)
         unblocked = self._unblock_dependencies()
         seeded = self._seed_work()
         self.log.emit("CONTROL", "CONTROL", "system_boot", self.state.system_id,
                       boot=self.state.boots, recovered=recovered,
                       datasets_changed=[record.dataset_id for record in changed],
+                      research_reactivated=refreshed,
                       unblocked=unblocked, seeded=seeded,
                       resumed_desk_cursor=self.state.desk_cursor,
                       book_nav=self.desk.capital.nav)
@@ -173,6 +179,30 @@ class QuantSystem:
         if unblocked:
             self.queue.save()
         return unblocked
+
+    def _reactivate_changed_research(self, changed: list[Any]) -> list[str]:
+        """Wake completed research on genuinely new available dataset versions."""
+        available = {record.dataset_id: record for record in changed
+                     if record.availability == "AVAILABLE"}
+        reactivated: list[str] = []
+        for task in self.queue.tasks.values():
+            if task.status != "COMPLETED" or self.dataset_id not in task.required_resources:
+                continue
+            record = available.get(self.dataset_id)
+            if record is None or task.data_fingerprint == record.fingerprint:
+                continue
+            history = task.metadata.setdefault("execution_history", [])
+            if task.metadata.get("result") is not None:
+                history.append({"fingerprint": task.data_fingerprint,
+                                "result": task.metadata["result"],
+                                "completed_at": task.updated_at})
+            task.data_fingerprint = record.fingerprint
+            task.status = "PENDING"
+            task.updated_at = utc_now()
+            reactivated.append(task.task_id)
+        if reactivated:
+            self.queue.save()
+        return reactivated
 
     def _seed_work(self) -> list[str]:
         """Declare the research lanes, and preserve the lanes still genuinely blocked."""
@@ -344,7 +374,9 @@ class QuantSystem:
         try:
             result = run_lane(context, lane_name, self.universe, self.dataset_id)
         except Exception as exc:  # A worker fault must not kill the system.
-            task.status = "FAILED"
+            integrity = isinstance(exc, ValueError) and "historical research cohort changed" in str(exc)
+            task.status = "BLOCKED" if integrity else "FAILED"
+            task.blocked_reason = str(exc) if integrity else None
             task.last_error = f"{type(exc).__name__}: {exc}"
             task.updated_at = utc_now()
             self.queue.save()
@@ -352,7 +384,8 @@ class QuantSystem:
             self.state.faults.append(fault)
             self.components.set("RESEARCH", "FAULT", task.last_error)
             self.log.emit("RESEARCH", "RESEARCH", "worker_fault", task.task_id,
-                          severity="FAULT", error=task.last_error)
+                          severity="FAULT", error=task.last_error,
+                          data_integrity=integrity)
             self.heartbeat()
             return "FAULT"
 
@@ -481,6 +514,10 @@ class QuantSystem:
             if arrived or changed:
                 self._panel = None  # the cached panel may be stale
                 self._seed_work()
+                refresh_records = list(changed) + [self.datasets.get(dataset_id)
+                                                   for dataset_id in arrived
+                                                   if self.datasets.get(dataset_id)]
+                self._reactivate_changed_research(refresh_records)
             unblocked = self._unblock_dependencies()
             if arrived or changed or unblocked:
                 self.log.emit("CONTROL", "CONTROL", "clock_woken", self.state.system_id,

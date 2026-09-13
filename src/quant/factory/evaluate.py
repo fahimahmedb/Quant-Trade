@@ -49,7 +49,11 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
     last_rebalance: int | None = None
     for index in range(len(dates) - 2):
         date, entry_date, exit_date = dates[index], dates[index + 1], dates[index + 2]
-        if not window.contains(date):
+        # A row belongs to a research window only when the complete executable
+        # interval belongs to it.  Merely containing the signal date lets the
+        # final signal borrow entry/exit prices from the next (holdout) window.
+        if not (window.contains(date) and window.contains(entry_date)
+                and window.contains(exit_date)):
             continue
         target = weights_for(visible, spec, date)
         drift = sum(abs(target.get(symbol, 0.0) - held.get(symbol, 0.0))

@@ -37,15 +37,16 @@ class RiskLimits:
 
 
 def project(ledger: Ledger, strategy_id: str,
-            target_notional: dict[str, float]) -> dict[str, float]:
+            target_notional: dict[str, float], prices: dict[str, float] | None = None) -> dict[str, float]:
     """The portfolio that results if this strategy moves to ``target_notional``.
 
     Aggregate exposure, less this strategy's existing sleeve, plus its target.
     Symbols the strategy is dropping must appear in ``target_notional`` at zero;
     the desk guarantees that.
     """
-    resulting = dict(ledger.symbol_exposures())
-    for symbol, value in ledger.sleeve_exposures(strategy_id).items():
+    resulting = dict(ledger.symbol_exposures_at(prices) if prices is not None else ledger.symbol_exposures())
+    sleeve = ledger.sleeve_exposures_at(strategy_id, prices) if prices is not None else ledger.sleeve_exposures(strategy_id)
+    for symbol, value in sleeve.items():
         resulting[symbol] = resulting.get(symbol, 0.0) - value
     for symbol, value in target_notional.items():
         resulting[symbol] = resulting.get(symbol, 0.0) + value
@@ -88,16 +89,17 @@ def assess(portfolio: dict[str, float], nav: float, drawdown: float,
 
 
 def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float],
-             limits: RiskLimits) -> dict[str, Any]:
+             limits: RiskLimits, prices: dict[str, float] | None = None) -> dict[str, Any]:
     """Decide on the proposal, and judge the state the decision actually produces.
 
     Returns the scaled targets alongside the verdict so the caller cannot apply
     a different portfolio from the one that was approved.
     """
-    nav, drawdown = ledger.nav, ledger.drawdown
+    nav = ledger.nav_at(prices) if prices is not None else ledger.nav
+    drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
     initial = ledger.state.initial_capital
 
-    proposed = assess(project(ledger, strategy_id, target_notional), nav, drawdown,
+    proposed = assess(project(ledger, strategy_id, target_notional, prices), nav, drawdown,
                       limits, initial)
 
     cap = 1.0
@@ -107,7 +109,7 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
     def within_gross(candidate: float) -> bool:
         portfolio = project(ledger, strategy_id,
                             {symbol: value * candidate
-                             for symbol, value in target_notional.items()})
+                             for symbol, value in target_notional.items()}, prices)
         gross = sum(abs(value) for value in portfolio.values())
         return (gross / nav if nav else 0.0) <= limits.max_gross_ratio + 1e-12
 
@@ -137,7 +139,7 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
 
     scaled = {symbol: value * scale for symbol, value in target_notional.items()}
     # The approval describes this portfolio, not the pre-scale one.
-    final = assess(project(ledger, strategy_id, scaled), nav, drawdown, limits, initial)
+    final = assess(project(ledger, strategy_id, scaled, prices), nav, drawdown, limits, initial)
 
     return {"approved": not final["violations"], "scale": scale,
             "throttled": scale < 1.0, "scaled_target": scaled,
@@ -151,14 +153,16 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
 
 
 def verify_final(ledger: Ledger, strategy_id: str, executed_notional: dict[str, float],
-                 limits: RiskLimits) -> dict[str, Any]:
+                 limits: RiskLimits, prices: dict[str, float] | None = None) -> dict[str, Any]:
     """Re-check the limits on the portfolio the modelled fills actually produce.
 
     Capacity truncation happens after sizing, so the executed portfolio is not
     necessarily the approved one.
     """
-    verdict = assess(project(ledger, strategy_id, executed_notional), ledger.nav,
-                     ledger.drawdown, limits, ledger.state.initial_capital)
+    nav = ledger.nav_at(prices) if prices is not None else ledger.nav
+    drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
+    verdict = assess(project(ledger, strategy_id, executed_notional, prices), nav,
+                     drawdown, limits, ledger.state.initial_capital)
     return {"approved": not verdict["violations"], "vetoes": verdict["violations"],
             "gross_ratio": verdict["gross_ratio"], "net_ratio": verdict["net_ratio"],
             "largest_symbol_ratio": verdict["largest_symbol_ratio"],
