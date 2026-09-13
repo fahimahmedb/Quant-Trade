@@ -68,6 +68,22 @@ It is retained as prior research and reusable code where useful. It does **not**
 - `schemas/research_ticket.schema.json` — common research-ticket format.
 - `CODEX.md` — single launch mandate for Codex.
 
+## Reproduce the first discovery cycle
+
+The initial vertical slice uses only the Python standard library. It ranks a
+small pre-declared scan on a discovery subsample, performs a strictly lagged OOS
+test with costs, attacks the result, writes a ticket, and appends research
+memory:
+
+```bash
+python scripts/run_discovery_cycle.py
+PYTHONPATH=src python -m unittest discover -s tests -v
+```
+
+The committed ticket is the immutable evidence from the first run. Re-running
+the command intentionally appends another record; use a separate memory path
+from the Python API for exploratory runs.
+
 ## Start Codex
 
 Launch Codex from this branch and give it only:
