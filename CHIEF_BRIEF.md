@@ -2,9 +2,9 @@
 
 Generated from persistent system state. Do not edit by hand: `python3 scripts/quant.py brief` regenerates it.
 
-- generated at: 2026-09-13T20:59:15.811204+00:00
+- canonical state basis: clean persistent replay of committed inputs through 2026-09-11
 - system: `quant-system-v1` in `paper_shadow` mode, status `IDLE`
-- boots: 2, ticks: 385, research runs: 2, desk sessions: 378
+- boots: 1, ticks: 381, research runs: 2, desk sessions: 377
 
 ## System health
 
@@ -73,10 +73,10 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 
 ## Decision quality
 
-- evaluation ledger NAV 993,742.87 (-0.63%) over 377 sessions after execution-time revaluation
+- evaluation ledger NAV 993,757.74 (-0.62%) over 377 sessions and 521 fills
 - rejections scored: 1 (true rejects 0, false rejects 0, undetermined 1)
-- counterfactual P&L of rejected strategies: -6,165.57
-- desk tickets: {'BOOKED': 76, 'NO_TRADE': 301, 'BLOCKED': 1}
+- counterfactual P&L of rejected strategies: -6,242.26
+- desk tickets: {'BOOKED': 76, 'NO_TRADE': 301}
 
 ## Blockers and capability gaps
 
@@ -90,3 +90,4 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 ## Next autonomous action
 
 blocked on a dependency for SCAN-FACTOR-RESIDUAL-001: no survivorship-controlled security and factor panel
+
