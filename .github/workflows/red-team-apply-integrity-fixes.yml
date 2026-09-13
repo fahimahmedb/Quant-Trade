@@ -1,0 +1,36 @@
+name: Red-team apply integrity fixes
+
+on:
+  push:
+    branches:
+      - reviewer/v1-final-red-team
+    paths:
+      - red_team/apply_integrity_fixes.py
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: reviewer/v1-final-red-team
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply demonstrated fixes
+        run: python3 red_team/apply_integrity_fixes.py
+      - name: Commit and push
+        run: |
+          git config user.name "quant-red-team"
+          git config user.email "quant-red-team@users.noreply.github.com"
+          git add src/quant/clock.py src/quant/desk/desk.py tests/test_quant_system.py tests/test_v1_red_team.py
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "fix: close remaining V1 integrity gaps"
+          git push origin HEAD:reviewer/v1-final-red-team
