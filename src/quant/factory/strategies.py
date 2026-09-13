@@ -11,27 +11,18 @@ allowed to trade a strategy that is not in a tradable lifecycle state.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
-import hashlib
-import json
 
 from ..state import read_json, utc_now, write_json
 from .signals import StrategySpec
 
 
 LIFECYCLE = ("RESEARCH", "VALIDATED", "SHADOW", "ACTIVE_SHADOW", "DECAYING", "RETIRED")
-
-#: Lifecycle states the Capital Desk may act on, and the capital fraction each
-#: is entitled to. A strategy with evidence but no shadow track record trades
-#: at probe size only.
 TRADABLE = {"SHADOW": 0.35, "ACTIVE_SHADOW": 1.0, "DECAYING": 0.25}
-
-#: Size used for a strategy on the evaluation track. Zero *authority* is not the
-#: same as zero *size*: the counterfactual only answers "was rejecting this
-#: right?" if it is measured at the size the strategy would actually have been
-#: given, which for a newly validated strategy is the SHADOW fraction.
 EVALUATION_FRACTION = TRADABLE["SHADOW"]
 
 TRANSITIONS = {
@@ -61,13 +52,7 @@ class StrategyDefinition:
     shadow: dict[str, Any] = field(default_factory=lambda: {
         "sessions": 0, "net_pnl": 0.0, "gross_pnl": 0.0, "costs": 0.0,
         "wins": 0, "losses": 0, "peak_pnl": 0.0, "max_drawdown": 0.0})
-    #: Marks a strategy the desk runs at zero capital authority purely to measure
-    #: whether rejecting it was the right call. Such a strategy never touches the
-    #: capital ledger. Desk counters live in the desk journal, not here, so a
-    #: session commits its work and its bookkeeping in one durable write.
     evaluation_track: bool = False
-    #: Superseded documents of this strategy, oldest first. Without these the
-    #: registry would not be version-preserving, only version-numbered.
     previous_versions: list[dict[str, Any]] = field(default_factory=list)
     retirement_reason: str | None = None
 
@@ -101,14 +86,9 @@ class StrategyDefinition:
 class StrategyRegistry:
     """Persistent strategy store plus research-integrity state.
 
-    Two pieces of state deliberately live beside strategy evidence:
-
-    * ``research_partitions`` freezes the discovery/validation boundary for a
-      dataset lineage. Appending new market data therefore extends SHADOW rather
-      than moving yesterday's holdout back into research.
-    * ``trial_reservations`` makes the multiple-testing budget idempotent. A
-      crash/retry of the same declared grid returns the original reservation
-      instead of buying another Bonferroni penalty for no new hypothesis.
+    ``research_partitions`` freezes Discovery/Validation boundaries and
+    ``research_cohorts`` binds those boundaries to exact historical values.
+    ``trial_reservations`` makes retrying one declared grid idempotent.
     """
 
     def __init__(self, path: Path):
@@ -136,13 +116,7 @@ class StrategyRegistry:
 
     def record_trials(self, dataset_key: str, count: int,
                       experiment_key: str | None = None) -> int:
-        """Reserve a declared grid exactly once and return the cumulative total.
-
-        ``experiment_key`` must identify the scientific experiment, not the
-        worker attempt. Retrying the same experiment after a crash is therefore
-        idempotent, while a genuinely different declared grid receives a new
-        reservation and tightens the threshold.
-        """
+        """Reserve a declared grid exactly once and return the cumulative total."""
         if count < 0:
             raise ValueError("trial count cannot be negative")
         if experiment_key:
@@ -183,14 +157,25 @@ class StrategyRegistry:
         self.save()
         return documents
 
+    @staticmethod
+    def research_cohort_digest(rows: list[dict[str, Any]]) -> str:
+        return "sha256:" + hashlib.sha256(
+            json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+    def verify_research_cohort(self, dataset_id: str, rows: list[dict[str, Any]]) -> bool | None:
+        """Return True/False against a frozen cohort, or None before first freeze."""
+        existing = self.research_cohorts.get(dataset_id)
+        if existing is None:
+            return None
+        return existing == self.research_cohort_digest(rows)
+
     def preserve_research_cohort(self, dataset_id: str, rows: list[dict[str, Any]]) -> str:
-        """Freeze a digest of all bytes/values inside the declared research cohort.
+        """Freeze a digest of all values inside the declared research cohort.
 
         Appends beyond VALIDATION do not alter this digest; a historical rewrite
         does, and is therefore a review boundary rather than a fresh experiment.
         """
-        digest = "sha256:" + hashlib.sha256(
-            json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        digest = self.research_cohort_digest(rows)
         existing = self.research_cohorts.get(dataset_id)
         if existing is not None and existing != digest:
             raise ValueError(f"historical research cohort changed for {dataset_id}")
