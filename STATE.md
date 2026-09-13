@@ -44,30 +44,30 @@ testing. Friction and subperiod checks overturned a superficially positive
 
 ## Runtime maturity
 
-The PR #7 worker proves that one bounded discovery cycle can execute end to end,
-write a ResearchTicket, append memory and produce a next-action hint.
+The first persistent Research Campaign Orchestrator now wraps the PR #7 bounded
+worker. Campaign state, queue tasks (including blocked and completed records),
+heartbeats, lessons, cycle budget, next action and processed execution
+fingerprints are atomically persisted under `runtime/` and recovered on a new
+process. A rejected experiment promotes an available follow-up; absent data
+blocks only its own task. With no executable work, the campaign is `IDLE`, not
+stopped.
 
-That is **not yet persistent autonomy**. The current worker finishes when the
-single cycle finishes.
-
-The next architecture target is now fixed in `RUNTIME.md`: a restart-safe
-Research Campaign Orchestrator with persistent campaign state, a research queue,
-heartbeat/idle semantics, memory-driven follow-up selection and explicit
-resource/budget stop reasons.
-
-A completed experiment, rejected ticket, finished vertical slice or opened PR
-is not a research-campaign stop condition.
+The scheduler dispatches only due work, and task identity plus data fingerprint
+prevents the unchanged `TSR-NDX-001` experiment from being repeated. The
+watchdog reports stale heartbeat, interrupted/stuck work, repeated crashes,
+duplicate work identity and queue starvation. It diagnoses faults without
+rewriting research conclusions.
 
 ## Current highest-value next action
 
-There are two parallel priorities:
+There are two parallel priorities selected by the runtime:
 
-1. **System priority:** implement the persistent campaign runtime specified by
-   `RUNTIME.md` and `schemas/campaign_state.schema.json`, so autonomy survives a
-   Codex task boundary.
-2. **Research priority:** construct or obtain a compact synchronized ETF
-   total-return/quote panel and scan beta-neutral cross-sectional relative value
-   rather than tuning the rejected single-index reversal rule.
+1. construct or obtain a compact synchronized ETF total-return/quote panel and
+   scan beta-neutral cross-sectional relative value rather than tuning the
+   rejected single-index reversal rule;
+2. keep the factor-residual, filing and volatility-surface lanes durably queued
+   as blocked until their point-in-time datasets exist, while continuing any
+   newly executable independent work.
 
 The runtime should represent unavailable-data work as a blocked queued task and
 continue any other executable research rather than silently declaring the
@@ -75,5 +75,7 @@ campaign complete.
 
 ## Human boundary currently reached?
 
-No for the runtime build itself. A future research task may legitimately become
-blocked when it requires external data or access not present in the environment.
+No for runtime operation. The current research queue does contain genuine data
+boundaries: no synchronized multi-asset panel, survivorship-controlled factor
+panel, point-in-time filing feed, or historical option surface is present.
+Those tasks remain visible and do not convert the whole campaign to `STOPPED`.

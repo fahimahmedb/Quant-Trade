@@ -1,12 +1,27 @@
 # Research Runtime Runbook
 
-This runbook defines the intended operator contract for the persistent research runtime that the next Codex run must implement.
+This runbook is the operator contract for the dependency-light persistent
+research runtime. Runtime documents live under `runtime/` and are replaced
+atomically. Starting or resuming never clears them.
 
 ## Start
 
 Starting the runtime should create or load a campaign state and begin processing executable research tasks from the persistent queue.
 
 A start must never erase prior research memory or completed-ticket history.
+
+```bash
+python scripts/research_runtime.py start
+```
+
+`start` loads or creates the campaign, seeds the queue from the opportunity
+map, executes all currently due credible work, and then becomes `IDLE` (or
+`PAUSED` at a configured boundary). For clock-driven operation, invoke one
+scheduler heartbeat from cron/systemd with:
+
+```bash
+python scripts/research_runtime.py tick
+```
 
 ## Inspect
 
@@ -21,6 +36,11 @@ An operator should be able to inspect, without reading logs manually:
 - latest lesson;
 - current next action;
 - budget consumed / remaining when configured.
+
+```bash
+python scripts/research_runtime.py inspect
+python scripts/research_runtime.py watchdog
+```
 
 ## Idle
 
@@ -46,6 +66,17 @@ Typical reasons:
 - temporary resource boundary.
 
 Resume must continue from the same campaign state.
+
+```bash
+python scripts/research_runtime.py pause --reason "maintenance window"
+python scripts/research_runtime.py resume
+```
+
+An optional cycle boundary can be set when the campaign is first created:
+
+```bash
+python scripts/research_runtime.py start --max-cycles 10
+```
 
 ## Blocked
 
@@ -90,3 +121,14 @@ The watchdog should eventually flag:
 - queue starvation despite available executable work.
 
 The watchdog reports a system fault; it should not silently rewrite research conclusions.
+
+## Restart demonstration
+
+The deterministic demonstration uses a temporary runtime directory, runs the
+PR #7 worker once, records its rejection and follow-up lesson, idles with the
+data-bound research lanes preserved, destroys the Python campaign object, then
+reconstructs it from disk and proves the completed fingerprint is not rerun:
+
+```bash
+python scripts/demo_research_runtime.py
+```
