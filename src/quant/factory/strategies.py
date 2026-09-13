@@ -97,7 +97,17 @@ class StrategyDefinition:
 
 
 class StrategyRegistry:
-    """Persistent strategy store plus the dataset-level multiple-testing counter."""
+    """Persistent strategy store plus research-integrity state.
+
+    Two pieces of state deliberately live beside strategy evidence:
+
+    * ``research_partitions`` freezes the discovery/validation boundary for a
+      dataset lineage. Appending new market data therefore extends SHADOW rather
+      than moving yesterday's holdout back into research.
+    * ``trial_reservations`` makes the multiple-testing budget idempotent. A
+      crash/retry of the same declared grid returns the original reservation
+      instead of buying another Bonferroni penalty for no new hypothesis.
+    """
 
     def __init__(self, path: Path):
         self.path = path
@@ -105,25 +115,69 @@ class StrategyRegistry:
         self.strategies: dict[str, StrategyDefinition] = {
             key: StrategyDefinition(**value)
             for key, value in (payload.get("strategies") or {}).items()}
-        #: How many distinct expressions have been tested against each dataset
-        #: version. Validation thresholds tighten as this grows.
         self.trials: dict[str, int] = dict(payload.get("trials") or {})
+        self.trial_reservations: dict[str, dict[str, Any]] = dict(
+            payload.get("trial_reservations") or {})
+        self.research_partitions: dict[str, dict[str, dict[str, str]]] = dict(
+            payload.get("research_partitions") or {})
 
     def save(self) -> None:
         write_json(self.path, {
-            "version": 1,
+            "version": 2,
             "strategies": {key: value.to_dict()
                            for key, value in sorted(self.strategies.items())},
-            "trials": dict(sorted(self.trials.items()))})
+            "trials": dict(sorted(self.trials.items())),
+            "trial_reservations": dict(sorted(self.trial_reservations.items())),
+            "research_partitions": dict(sorted(self.research_partitions.items()))})
 
-    def record_trials(self, dataset_key: str, count: int) -> int:
-        """Count tested expressions. Returns the cumulative total."""
-        self.trials[dataset_key] = self.trials.get(dataset_key, 0) + count
+    def record_trials(self, dataset_key: str, count: int,
+                      experiment_key: str | None = None) -> int:
+        """Reserve a declared grid exactly once and return the cumulative total.
+
+        ``experiment_key`` must identify the scientific experiment, not the
+        worker attempt. Retrying the same experiment after a crash is therefore
+        idempotent, while a genuinely different declared grid receives a new
+        reservation and tightens the threshold.
+        """
+        if count < 0:
+            raise ValueError("trial count cannot be negative")
+        if experiment_key:
+            existing = self.trial_reservations.get(experiment_key)
+            if existing is not None:
+                if existing.get("dataset_key") != dataset_key or int(existing.get("count", -1)) != count:
+                    raise ValueError("experiment key reused for a different trial reservation")
+                return int(existing["cumulative"])
+        cumulative = self.trials.get(dataset_key, 0) + count
+        self.trials[dataset_key] = cumulative
+        if experiment_key:
+            self.trial_reservations[experiment_key] = {
+                "dataset_key": dataset_key, "count": count,
+                "cumulative": cumulative, "reserved_at": utc_now()}
         self.save()
-        return self.trials[dataset_key]
+        return cumulative
 
     def trial_count(self, dataset_key: str) -> int:
         return self.trials.get(dataset_key, 0)
+
+    def research_partition(self, dataset_id: str) -> dict[str, dict[str, str]] | None:
+        partition = self.research_partitions.get(dataset_id)
+        return dict(partition) if partition else None
+
+    def preserve_research_partition(self, dataset_id: str,
+                                    windows: dict[str, Any]) -> dict[str, dict[str, str]]:
+        """Freeze the first declared research split for this dataset lineage."""
+        existing = self.research_partitions.get(dataset_id)
+        if existing is not None:
+            return existing
+        documents = {
+            name: (window.to_dict() if hasattr(window, "to_dict") else dict(window))
+            for name, window in windows.items()}
+        required = {"DISCOVERY", "VALIDATION", "SHADOW"}
+        if set(documents) != required:
+            raise ValueError(f"research partition must contain {sorted(required)}")
+        self.research_partitions[dataset_id] = documents
+        self.save()
+        return documents
 
     def upsert(self, definition: StrategyDefinition) -> StrategyDefinition:
         """Store a strategy, keeping any superseded document inspectable."""
