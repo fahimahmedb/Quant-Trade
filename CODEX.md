@@ -1,6 +1,6 @@
-# Codex Launch Mandate
+# Codex Launch Mandate — Persistent Research Runtime
 
-Work from this branch as the autonomous research lead for Quant-Trade.
+Work from this branch as the autonomous research-system engineer for Quant-Trade.
 
 Before changing code, read:
 
@@ -8,163 +8,149 @@ Before changing code, read:
 2. `SOURCE_BASIS.md`
 3. `AGENTS.md`
 4. `PIPELINE.md`
-5. `README.md`
-6. `schemas/research_ticket.schema.json`
-7. the existing source, scripts, data notes and results
+5. `RUNTIME.md`
+6. `README.md`
+7. `schemas/research_ticket.schema.json`
+8. `schemas/campaign_state.schema.json`
+9. the existing `src/autonomous_research/` package, tests, research memory, opportunity map and current `STATE.md`
 
-## Mission
+## What already exists
 
-Build the first coherent version of an autonomous alpha-discovery system.
+The first Codex run already built and exercised one end-to-end research vertical slice:
 
-Do not treat this as a request to backtest one strategy.
+`SCAN -> FILTER -> HYPOTHESIS -> TEST -> VALIDATE -> PAPER/SHADOW -> MEMORY`
 
-Do not inherit the historical NASDAQ research direction automatically.
+Do not rebuild that demonstration from scratch.
 
-The system should become capable of:
+Treat it as a worker that can perform one bounded research cycle.
 
-- broad candidate discovery;
-- filtering candidates before expensive reasoning;
-- generating its own falsifiable hypotheses;
-- implementing tests;
-- adversarial validation;
-- paper/shadow decision filtering;
-- persistent research memory;
-- autonomous selection of the next research action.
+## Mission for this run
 
-## Preserve the architecture's nature
+Move autonomy out of the temporary Codex task and into the software itself.
 
-The project is inspired by a continuous-strategy-discovery model where:
+Build the first persistent **Research Campaign Orchestrator** around the existing worker.
 
-- broad, cheaper monitoring runs continuously;
-- a stronger reasoning layer receives filtered candidates;
-- specialized logical roles handle scanning, hypothesis generation, backtesting, validation and downstream decision evaluation;
-- strategies are expected to decay and be replaced.
+A Codex task ending, a PR being opened, one experiment finishing, or one candidate being rejected must no longer be interpreted as the end of the Quant research campaign.
 
-The supplied screenshots add an important idea: many signals can be rejected, and inactivity can be intentional. In research/paper evaluation, `NO_TRADE` is a valid output.
+## Required runtime capabilities
 
-Do not copy vendor names, profit claims, model counts or exact agent counts as requirements.
+Implement the smallest restart-safe runtime that can:
 
-## First build target
+1. persist campaign state across process restarts;
+2. maintain a research queue;
+3. dispatch due research work;
+4. record heartbeat / idle state;
+5. persist completed-ticket lessons;
+6. use memory and the opportunity map to choose the next credible research action;
+7. avoid repeating the same dead experiment without new evidence;
+8. distinguish `IDLE` from `FINISHED`;
+9. distinguish ordinary failed experiments from genuine resource/human boundaries;
+10. stop or pause only for an explicit configured reason.
 
-Do not build a giant platform all at once.
+## Normal events that MUST NOT terminate the campaign
 
-Build one complete autonomous vertical slice with reusable interfaces:
+Do not treat any of these as a final stop condition:
 
-`DATA -> SCAN -> RESEARCH TICKET -> HYPOTHESIS -> TEST -> VALIDATE -> PAPER/SHADOW FILTER -> MEMORY -> NEXT ACTION`
+- one cycle completed;
+- one ticket rejected;
+- one scanner returned no useful candidate;
+- one lane failed;
+- one vertical slice was successfully demonstrated;
+- one pull request was created.
 
-Then use it on real historical data so the architecture is exercised rather than merely documented.
+These are events inside the campaign.
 
-## ResearchTicket
+## Genuine campaign boundaries
 
-Use one persistent ticket object to trace a candidate through the system.
+A campaign may pause or escalate when, for example:
 
-Do not allow each module to invent its own incompatible result format.
+- configured compute/time budget is exhausted;
+- no credible next research task can be executed with currently available data;
+- a required dataset is unavailable;
+- paid or permissioned access is needed;
+- credentials or an external account are needed;
+- an explicit human boundary is reached.
 
-The ticket should retain:
+When blocked, preserve the exact reason in campaign state.
 
-- origin;
-- market/instruments;
-- timestamp semantics;
-- candidate evidence;
-- hypothesis;
-- test result;
-- validation result;
-- rejection reason if any;
-- final lesson.
+## Queue behavior
 
-## Research universe
+The runtime should maintain persistent task state rather than a transient Python list.
 
-Construct and rank a compact opportunity map before choosing the first lane.
+At minimum each queued task should expose:
 
-At minimum consider the four source-derived families:
+- task ID;
+- research lane;
+- source / parent ticket;
+- priority;
+- status;
+- reason it exists;
+- required data/resources;
+- attempt count;
+- blocked reason when applicable.
 
-- statistical arbitrage / relative value;
-- volatility-surface anomalies;
-- factor-residual anomalies;
-- insider / filing-driven signals.
+The orchestrator should be able to promote a next action from:
 
-You may identify a better fifth lane if evidence supports it.
+- a ticket's lesson / next-action hint;
+- the opportunity map;
+- research memory;
+- newly available data.
 
-Rank lanes by:
+## Heartbeat behavior
 
-- plausible mechanism;
-- data availability and point-in-time quality;
-- ability to isolate edge from passive beta;
-- research cost;
-- falsifiability;
-- implementation realism;
-- likely economic significance;
-- value of information.
+If the system has nothing useful to execute right now, remain `IDLE` rather than pretending the research mission is complete.
 
-Choose the first lane yourself.
+Heartbeat/state should make clear whether Quant is:
 
-## Autonomy after failure
+- actively processing a ticket;
+- waiting for new data;
+- waiting for a scheduled scan;
+- blocked by missing resources;
+- paused by budget;
+- explicitly stopped.
 
-When a candidate fails:
+## Reuse the first worker correctly
 
-1. record why;
-2. update memory;
-3. decide whether the failure applies to the expression, hypothesis, scanner or entire lane;
-4. choose the next highest-value action;
-5. continue.
+The existing PR #7 implementation is a bounded research worker and proof of integration.
 
-Do not stop to ask the human for a new strategy idea after an ordinary negative result.
+Do not keep rerunning the same NDX experiment against the same unchanged dataset merely to create activity.
 
-## Evidence standard
+Use data fingerprints / completed-task identity / memory to prevent duplicate work.
 
-A positive-looking result is not enough.
+If the next credible research direction requires a dataset that is not present, represent that as a blocked queued task and continue any other executable work before escalating.
 
-Check, as relevant:
+## Testing requirements
 
-- point-in-time correctness;
-- look-ahead / leakage;
-- survivorship;
-- common beta/factor exposure;
-- multiple testing;
-- out-of-sample behavior;
-- realistic costs;
-- parameter sensitivity;
-- regime dependence;
-- concentration in a few observations.
+Add tests for at least:
 
-## Paper/shadow decision layer
+- campaign state persistence across restart;
+- queue persistence and ordering;
+- completed work not being immediately repeated;
+- rejected ticket leading to another queued action when one is available;
+- `IDLE` not being treated as `STOPPED`;
+- explicit budget / resource boundary producing a recorded pause/block reason;
+- heartbeat updates without corrupting research memory.
 
-For a validated strategy, test whether conditional selectivity adds value.
-
-Compare:
-
-- raw signal outcomes;
-- filtered paper/shadow signal outcomes;
-- rejected-signal outcomes.
-
-A high rejection rate is not automatically good. Measure false rejections and false accepts.
-
-## Existing code
-
-Reuse old NASDAQ modules only if they are useful primitives. Do not spend the run defending or extending the old direction by inertia.
-
-## Deliverables for this run
+## Deliverables
 
 Leave the branch with:
 
-1. a small, coherent package structure for the autonomous discovery loop;
-2. a machine-readable ResearchTicket implementation matching the schema;
-3. one scanner/candidate generator for the chosen lane;
-4. one hypothesis/test/validation path exercised end-to-end;
-5. persistent research-memory artifacts;
-6. tests for timing/causality and core state transitions;
-7. a concise `STATE.md` stating what the system now knows, what it rejected, what survived, and what it will do next autonomously.
+1. a campaign/orchestrator module;
+2. persistent campaign-state storage matching `schemas/campaign_state.schema.json`;
+3. a persistent research queue;
+4. a scheduler/heartbeat entry point;
+5. tests for lifecycle and restart behavior;
+6. updated `STATE.md` explaining what can now keep running without a Codex task;
+7. a short runbook describing how to start, inspect, pause and resume the research runtime.
 
-## Stop conditions
+## Definition of done
 
-Stop and escalate only if the next meaningful research step requires unavailable external access, paid data, credentials, an irreversible integration, or another boundary outside the current research environment.
+The task is not complete merely because one cycle can run.
 
-Otherwise keep working through the research loop.
+It is complete when the repository contains a research runtime whose state survives the Codex task and which can decide whether to run, idle, queue follow-up work, or pause at a genuine boundary.
 
 ## Final instruction
 
-Build an autonomous researcher, not a pile of disconnected backtests.
+Codex is the builder.
 
-The desired behavior is:
-
-> **search broadly, reason deeply, reject freely, learn continuously, and keep looking for real economic edge.**
+Quant is the thing that should keep going.
