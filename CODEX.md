@@ -7,9 +7,10 @@ Before changing code, read:
 1. `MISSION.md`
 2. `SOURCE_BASIS.md`
 3. `AGENTS.md`
-4. `README.md`
-5. `schemas/opportunity_ticket.schema.json`
-6. the existing source, scripts, data notes and results
+4. `PIPELINE.md`
+5. `README.md`
+6. `schemas/research_ticket.schema.json`
+7. the existing source, scripts, data notes and results
 
 ## Mission
 
@@ -49,11 +50,11 @@ Do not build a giant platform all at once.
 
 Build one complete autonomous vertical slice with reusable interfaces:
 
-`DATA -> SCAN -> CANDIDATE TICKET -> HYPOTHESIS -> TEST -> VALIDATE -> PAPER/SHADOW FILTER -> MEMORY -> NEXT ACTION`
+`DATA -> SCAN -> RESEARCH TICKET -> HYPOTHESIS -> TEST -> VALIDATE -> PAPER/SHADOW FILTER -> MEMORY -> NEXT ACTION`
 
 Then use it on real historical data so the architecture is exercised rather than merely documented.
 
-## OpportunityTicket
+## ResearchTicket
 
 Use one persistent ticket object to trace a candidate through the system.
 
@@ -68,7 +69,6 @@ The ticket should retain:
 - hypothesis;
 - test result;
 - validation result;
-- paper/shadow decision;
 - rejection reason if any;
 - final lesson.
 
@@ -148,7 +148,7 @@ Reuse old NASDAQ modules only if they are useful primitives. Do not spend the ru
 Leave the branch with:
 
 1. a small, coherent package structure for the autonomous discovery loop;
-2. a machine-readable OpportunityTicket implementation matching the schema;
+2. a machine-readable ResearchTicket implementation matching the schema;
 3. one scanner/candidate generator for the chosen lane;
 4. one hypothesis/test/validation path exercised end-to-end;
 5. persistent research-memory artifacts;
