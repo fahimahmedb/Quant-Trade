@@ -1,0 +1,40 @@
+{
+  "adapter": "local_tsv",
+  "availability": "AVAILABLE",
+  "caveats": [
+    "price index without dividends; not a tradable instrument",
+    "no corporate-action or constituent history"
+  ],
+  "dataset_id": "nasdaq_composite_daily",
+  "expected_symbols": [
+    "NDXCOMP"
+  ],
+  "fingerprint": "sha256:ba0a84803fee43f4b6b984d86a93d23c7b73e8a2630fa4e8e6e55290769d6a14",
+  "first_date": "2021-07-13",
+  "ingested_at": "2026-09-13T20:56:46.053268+00:00",
+  "kind": "daily_bars",
+  "last_date": "2026-07-10",
+  "license_note": "operator-supplied export already committed to this repository",
+  "path": "data/datasets/nasdaq_composite_daily.csv",
+  "point_in_time": {
+    "information_available_at": "the close of the dated session",
+    "minimum_decision_lag_days": 1,
+    "timestamp_semantics": "daily index close; the index is not directly tradable"
+  },
+  "refreshed_at": "2026-09-13T20:56:46.059735+00:00",
+  "rows": 1251,
+  "source": "operator-supplied historical export committed to the repository",
+  "symbols": [
+    "NDXCOMP"
+  ],
+  "validation": {
+    "aligned_dates": 1251,
+    "bars_per_symbol": {
+      "NDXCOMP": 1251
+    },
+    "passed": true,
+    "problems": [],
+    "rows": 1251,
+    "warnings": []
+  }
+}

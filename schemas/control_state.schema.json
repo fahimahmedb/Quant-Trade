@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Control Plane lifetime and cursors.",
+  "properties": {
+    "boots": {
+      "type": "integer"
+    },
+    "completed_work": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "desk_cursor": {},
+    "desk_sessions": {
+      "type": "integer"
+    },
+    "faults": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "last_boot_at": {},
+    "last_heartbeat": {
+      "type": "string"
+    },
+    "last_wake_at": {},
+    "mode": {
+      "type": "string"
+    },
+    "next_action": {},
+    "pause_reason": {},
+    "research_runs": {
+      "type": "integer"
+    },
+    "run_history": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "type": "string"
+    },
+    "system_id": {
+      "type": "string"
+    },
+    "ticks": {
+      "type": "integer"
+    },
+    "waits": {
+      "type": "integer"
+    }
+  },
+  "required": [],
+  "title": "control_state",
+  "type": "object"
+}
