@@ -1,93 +1,85 @@
-# Quant-Trade — Autonomous Alpha Discovery System
+# Quant — Persistent Autonomous Quantitative System
 
-Quant-Trade is being rebuilt as an autonomous quantitative research system whose terminal objective is simple:
+Quant exists to increase real capital by repeatedly discovering, selecting and exploiting genuine market edge.
 
-> **Find and validate real market edge so the system can improve the future growth of capital.**
+Read **`QUANT_NORTH_STAR.md` first**. It is the highest-level product specification for this repository.
 
-This repository is not organized around one permanent strategy, one market, or one forecasting model.
+Quant is not a backtester, a scanner, an LLM wrapper or a collection of strategies. The target is a persistent system combining:
 
-The target is a continuously learning discovery engine that can:
+- Control Plane / Clock;
+- Data Plane;
+- Research Factory;
+- the paper/shadow functional chain `SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK`;
+- persistent Book/economic state;
+- learning feedback;
+- Build/Codex plane;
+- status/control UI backed by real state.
 
-`SCAN -> FILTER -> HYPOTHESIZE -> TEST -> VALIDATE -> PAPER/SHADOW SELECT -> LEARN -> REPEAT`
+## Architecture
 
-## Core idea
-
-The durable asset is not one winning strategy. It is a factory that discovers new strategies faster than old alpha decays.
-
-A candidate is not a conclusion. A signal is not automatically an action. `NO_TRADE` is a valid paper/shadow decision.
-
-## Source-inspired architecture
-
-The supplied source material contributes three central ideas:
-
-1. **continuous strategy discovery** rather than one static strategy;
-2. **wide/cheap scanning followed by narrow/deep reasoning**;
-3. **specialized logical roles** for scanning, hypothesis generation, backtesting, validation and downstream selection.
-
-The later screenshots add a fourth idea: strong autonomy may look inactive because most candidates can be rejected. Their displayed profit claims are not treated as verified evidence.
-
-See `SOURCE_BASIS.md` for the exact distinction between source-derived concepts and project inference.
-
-## Initial research families
-
-The source material proposes four starting families:
-
-- statistical arbitrage / relative value;
-- volatility-surface mispricings;
-- factor-decomposition anomalies;
-- insider / filing-driven signals.
-
-These are starting lanes, not permanent limits.
-
-## Important economic rule
-
-Profit caused mainly by passive exposure to a secularly rising market is not automatically evidence of discovered alpha.
-
-Where relevant, Quant-Trade must separate broad beta / factor exposure from the residual contribution of the research hypothesis.
-
-## Autonomy
-
-The human defines the terminal objective and hard external boundaries.
-
-The system should choose the research path itself: markets, hypotheses, tests, rejections and next research action.
-
-Failed ideas should normally be absorbed internally rather than handed back to the human one by one.
-
-## Existing NASDAQ research
-
-The existing `src/`, `scripts/`, `data/` and `results/` directories contain historical NASDAQ volatility research that predates this rebuild.
-
-It is retained as prior research and reusable code where useful. It does **not** define the future research universe.
-
-## Core files
-
-- `MISSION.md` — terminal objective and autonomy.
-- `SOURCE_BASIS.md` — what came from the article/screenshots versus project inference.
-- `AGENTS.md` — autonomous research contract.
-- `PIPELINE.md` — minimum continuous discovery loop.
-- `schemas/research_ticket.schema.json` — common research-ticket format.
-- `CODEX.md` — single launch mandate for Codex.
-
-## Reproduce the first discovery cycle
-
-The initial vertical slice uses only the Python standard library. It ranks a
-small pre-declared scan on a discovery subsample, performs a strictly lagged OOS
-test with costs, attacks the result, writes a ticket, and appends research
-memory:
-
-```bash
-python scripts/run_discovery_cycle.py
-PYTHONPATH=src python -m unittest discover -s tests -v
+```text
+                     HUMAN / PROJECT CONTROL
+                              |
+                              v
+                       ROOT / CLOCK
+                              |
+          +-------------------+-------------------+
+          |                   |                   |
+          v                   v                   v
+       DATA PLANE       RESEARCH FACTORY       BUILD PLANE
+          |                   |                   |
+          +-------------------+-------------------+
+                              |
+                              v
+                  SCAN -> VET -> SIZE -> RISK
+                              -> FILLS -> BOOK
+                                     |
+                                     v
+                              LEARNING / MEMORY
+                                     |
+                                     +----> SEARCH AGAIN
 ```
 
-The committed ticket is the immutable evidence from the first run. Re-running
-the command intentionally appends another record; use a separate memory path
-from the Python API for exploratory runs.
+Quant System V1 is developed in persistent paper/shadow mode while preserving the topology of the intended complete system.
 
-## Start Codex
+## Source basis
 
-Launch Codex from this branch and give it only:
+The supplied source material contributes the principles of continuous strategy discovery, alpha replacement/decay, broad inexpensive monitoring before deeper reasoning and specialized functional roles.
 
-> Read `CODEX.md` in full, then execute it as your operating mandate. Read every referenced project file before acting. Continue autonomously through ordinary failed experiments rather than asking me to invent the next strategy.
+The project screenshots contribute system-level ideas including persistent runtime, `RUN/IDLE` state, ticket/activity traceability, bankroll continuity and the visible `SCAN/VET/SIZE/RISK/FILLS/BOOK` chain.
 
-Any future real-capital integration is a separate explicit stage. This rebuild focuses on the autonomous research and paper/shadow decision engine.
+Their financial results, vendor claims and performance numbers are **not treated as verified evidence**.
+
+See `SOURCE_BASIS.md`.
+
+## Core specification hierarchy
+
+1. `QUANT_NORTH_STAR.md` — what Quant is and what wins when priorities conflict.
+2. `SYSTEM_ARCHITECTURE.md` — whole-system planes and boundaries.
+3. `OPERATING_MODEL.md` — how the system behaves over time.
+4. `MISSION.md` — terminal economic objective and autonomy rules.
+5. `SOURCE_BASIS.md` — source-derived ideas versus project adaptations.
+6. `PIPELINE.md` — Research Factory sub-pipeline, not the whole product.
+7. `STATE.md` — current implementation/research frontier.
+
+Lower-level documents and code must not silently redefine the North Star.
+
+## Current state
+
+The existing PR #9 persistent research campaign is valuable **Control Plane / Research Factory bootstrap work**. It provides restart-safe campaign state, a durable queue, heartbeat/watchdog concepts and a first bounded research worker.
+
+It is not yet the whole Quant system.
+
+Major remaining system areas include a first-class Data Plane, broader Research Factory, versioned strategy lifecycle, persistent paper/shadow Book, whole-system feedback and a status UI driven by actual persistent state.
+
+## Historical NASDAQ work
+
+The existing NASDAQ research predates the rebuild. It remains prior evidence and reusable code where useful, but it does not define Quant's future market universe or architecture.
+
+## Build philosophy
+
+Codex is primarily the Builder / Quant Engineer. Quant is the persistent system.
+
+A Codex task may end. Quant's state, Book, research memory, pending work and next legitimate action must remain coherent.
+
+Build large coherent North-Star milestones instead of accumulating unrelated micro-fixes.
