@@ -10,22 +10,19 @@ This review started from the verified V1 integrity-pass commit
 The review did not assume the initial suspicions were true. It reconstructed behavior from code,
 persistent contracts and executable proof, then added adversarial regressions for defects that
 could falsify research evidence, capital decisions, recovery, data integrity or reported state.
-Phase 2 was not started.
+Phase 2 was not started and PR #12 was not merged or repurposed.
 
-## Verdict
+## Close-out verdict rule
 
-**NOT MERGEABLE as a truthful V1 snapshot yet.**
+All material V1 merge blockers demonstrated by this review are resolved in the current tree.
+The final reviewer verdict is **MERGEABLE if and only if the V1 proof gate is green on this exact
+commit**. This wording is deliberate: a green earlier checkpoint is evidence, but it is not a
+substitute for proving the final HEAD.
 
-The repaired code path has passed the independent proof gate on review checkpoints, and the final
-review tree must pass the same gate before this report is closed. The remaining merge blocker is
-not a known failing runtime invariant: it is a source-of-truth mismatch in the committed project
-state artifacts. `STATE.md` and `CHIEF_BRIEF.md` still contain pre-red-team counts/economic values
-that are no longer the output of the repaired causal desk semantics. They must be regenerated from
-the intended persistent operator state after these repairs rather than hand-edited from a test
-fixture.
-
-This matters because the North Star treats the status surface as an architectural checksum: a
-committed artifact presented as live/current must not report superseded economic state.
+The previous remaining blocker was committed-state truthfulness. It is now closed by rebuilding
+`CHIEF_BRIEF.md` and the generated status checkpoint in `STATE.md` from a clean persistent replay
+of the committed V1 inputs, and by making that replay a CI freshness gate. The committed status
+surface can therefore no longer drift silently while the V1 proof gate remains green.
 
 ## Material defects demonstrated and repaired
 
@@ -68,17 +65,39 @@ committed artifact presented as live/current must not report superseded economic
 13. **The synthetic proof fixture itself used calendar-invalid dates.** Test sessions now use valid
     ISO calendar dates, so Data Plane date validation is exercised rather than bypassed by the
     fixture.
+14. **Committed status artifacts could become stale while runtime tests stayed green.**
+    `scripts/status_artifacts.py` now reconstructs canonical persistent state from committed data,
+    runs the real Control Plane to IDLE, regenerates `CHIEF_BRIEF.md` plus the generated checkpoint
+    in `STATE.md`, and fails CI if either artifact differs. The generated brief is normalized so
+    this freshness check and `git diff --check` can both be green.
 
-## Adversarial proof added
+## Canonical persistent-state truth
 
-The review suite now includes targeted regressions for decision-time leakage, multi-strategy
-session leakage, execution-basis consistency, commission-aware final risk, frozen-cohort append
-and rewrite behavior, forward terminal-close execution, research crash transactions, refreshed
-false-reject learning, malformed market data, Book peak restatement and torn JSONL recovery.
+The canonical replay over the committed market snapshot now produces and commits the same facts:
 
-The independent `V1 proof gate` executes, on a clean GitHub runner:
+- desk cursor `2026-09-10`, **377** executable desk sessions;
+- **377** authoritative capital Book marks, last mark `2026-09-11`;
+- capital Book **1,000,000.00 USD**, 0 fills, 0 positions;
+- tickets: **76 BOOKED, 301 NO_TRADE, 0 terminal BLOCKED**;
+- evaluation NAV **993,757.74**, total return about **-0.62%**;
+- counterfactual P&L **-6,242.26**;
+- research queue: 3 BLOCKED, 2 COMPLETED;
+- proof inventory: **104 unit tests discovered** and **35 end-to-end demo assertions**.
+
+The superseded pre-red-team values (378 desk sessions, one terminal BLOCKED ticket, evaluation NAV
+993,742.87 and counterfactual P&L -6,165.57) are no longer presented as current post-repair truth.
+
+## Adversarial proof and proof gate
+
+The review suite includes targeted regressions for decision-time leakage, multi-strategy session
+leakage, execution-basis consistency, commission-aware final risk, frozen-cohort append/rewrite,
+forward terminal-close execution, research crash transactions, refreshed rejection learning,
+malformed market data, Book peak restatement and torn JSONL recovery.
+
+The `V1 proof gate` now executes, on a clean GitHub runner:
 
 ```text
+python3 scripts/status_artifacts.py --check
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 python3 scripts/demo_quant_system.py
 python3 scripts/generate_schemas.py --check
@@ -86,31 +105,14 @@ git diff --check a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0...HEAD
 clean working-tree assertion
 ```
 
-A successful pre-report proof checkpoint ran 100 tests plus the 35/35 end-to-end restart/crash
-checks. Subsequent adversarial additions are required to pass the same gate on the final review
-head before any merge decision is revisited.
+Checkpoint `88c1f841c51821eb1f3a7badab9905985d4e8b11`, workflow run `34788806926`, passed every gate:
+canonical status artifacts fresh, **104/104 tests**, **35/35 end-to-end checks**, schemas checked,
+diff check clean and working tree clean. The final verdict still depends on the same proof being
+green on the exact commit containing this close-out report.
 
-## Demonstrated state-artifact mismatch
+## Economic boundary
 
-A successful repaired replay over the committed market snapshot produced:
-
-- desk cursor `2026-09-10`, **377** desk sessions;
-- **377** authoritative Book marks, last mark `2026-09-11`;
-- tickets: **76 BOOKED, 301 NO_TRADE, 0 terminal BLOCKED**;
-- evaluation NAV **993,757.74**, total return about **-0.62%**;
-- counterfactual P&L **-6,242.26**;
-- capital Book unchanged at **1,000,000.00**, 0 fills, 0 positions.
-
-The committed pre-red-team state artifacts still report, among other differences, 378 desk
-sessions / one terminal BLOCKED ticket, evaluation NAV 993,742.87 and counterfactual P&L
--6,165.57. Those values describe superseded desk semantics and must not be presented as current
-post-repair truth.
-
-The research claims themselves remain non-financial evidence only. No result in this review
-verifies profitability, and no real-capital authority is implied.
-
-## Required close-out before merge
-
-Regenerate `CHIEF_BRIEF.md` (and reconcile `STATE.md`) from the intended persistent operator state
-using the repaired V1 code, verify that no superseded economic numbers remain, then rerun the full
-proof gate on that exact commit. Until that is done, the review verdict remains **NOT MERGEABLE**.
+No result in this review verifies profitability, and no real-capital authority is implied. The
+current strategy evidence remains negative and non-tradable. The mandatory HAC/Newey-West or block
+bootstrap boundary before future positive evidence can authorize capital remains a prerequisite,
+not something this V1 integrity review relaxes.
