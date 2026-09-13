@@ -81,10 +81,9 @@ class DatasetRegistry:
     def reload(self) -> list[str]:
         """Re-read records written by another ingestion process.
 
-        Existing ids are replaced when the persisted document changed. The old
-        implementation only copied *new* ids, which let a long-running Clock
-        combine new dataset bytes with stale validation/provenance held in
-        memory.
+        Existing ids are replaced when the persisted document changed.  A
+        reloaded AVAILABLE verdict is still checked against the validation
+        fingerprint in ``refresh_availability`` before it can be trusted.
         """
         payload = read_json(self.path, {"version": 1, "datasets": {}}) or {}
         stored = payload.get("datasets", {})
@@ -98,33 +97,47 @@ class DatasetRegistry:
         return changed
 
     def _revalidate(self, record: DatasetRecord, path: Path) -> None:
-        """Refresh structural metadata and validation from the actual bytes."""
+        """Refresh structural metadata and bind validation to the actual bytes."""
         # Local imports keep the registry primitive free of an import cycle.
         from .panel import PricePanel
         from .validation import validate_panel
 
+        before = fingerprint_file(path)
         try:
             panel = PricePanel.load(path)
             expected = list(record.symbols) or list(panel.symbols)
             validation = validate_panel(panel, expected)
+            after = fingerprint_file(path)
+            record.fingerprint = after
             record.rows = len(panel.bars)
             record.symbols = list(panel.symbols)
             record.first_date = panel.dates[0] if panel.dates else None
             record.last_date = panel.dates[-1] if panel.dates else None
+            if after != before:
+                validation = {"passed": False,
+                              "problems": ["dataset bytes changed during validation"],
+                              "warnings": validation.get("warnings", []),
+                              "fingerprint": after}
+                record.availability = "STALE"
+            else:
+                validation["fingerprint"] = after
+                record.availability = "AVAILABLE" if validation["passed"] else "INVALID"
             record.validation = validation
-            record.availability = "AVAILABLE" if validation["passed"] else "INVALID"
         except Exception as exc:
+            current = fingerprint_file(path) if path.exists() else None
+            record.fingerprint = current
             record.validation = {"passed": False,
                                  "problems": [f"validation failed: {type(exc).__name__}: {exc}"],
-                                 "warnings": []}
+                                 "warnings": [], "fingerprint": current}
             record.availability = "INVALID"
 
     def refresh_availability(self) -> list[DatasetRecord]:
         """Re-check every registered dataset against the filesystem.
 
-        A byte change is never promoted directly to AVAILABLE. It is
-        re-fingerprinted *and revalidated* first, so research cannot combine a
-        fresh file with yesterday's health verdict.
+        A byte change is never promoted directly to AVAILABLE.  The validation
+        verdict itself carries the exact byte fingerprint it describes, so a
+        second process cannot publish new bytes/new fingerprint while leaving a
+        stale AVAILABLE verdict behind.
         """
         changed: list[DatasetRecord] = []
         for record in self.records.values():
@@ -137,9 +150,11 @@ class DatasetRegistry:
                 continue
             current = fingerprint_file(path)
             bytes_changed = current != record.fingerprint
-            needs_recheck = bytes_changed or record.availability in {"MISSING", "STALE"}
+            validation_fingerprint = record.validation.get("fingerprint")
+            needs_recheck = (bytes_changed
+                             or record.availability in {"MISSING", "STALE"}
+                             or validation_fingerprint != current)
             if needs_recheck:
-                record.fingerprint = current
                 record.refreshed_at = utc_now()
                 self._revalidate(record, path)
                 changed.append(record)
