@@ -44,27 +44,23 @@ testing. Friction and subperiod checks overturned a superficially positive
 
 ## Runtime maturity
 
-The PR #7 worker proves that one bounded discovery cycle can execute end to end,
-write a ResearchTicket, append memory and produce a next-action hint.
+The first restart-safe Research Campaign Orchestrator is implemented. It owns
+atomic campaign and queue checkpoints, priority dispatch, restart recovery,
+durable task deduplication, heartbeat/idle semantics, explicit budget pauses and
+blocked-task isolation. A worker result updates the campaign lesson and next
+action; it cannot terminate the campaign merely because an experiment failed.
 
-That is **not yet persistent autonomy**. The current worker finishes when the
-single cycle finishes.
-
-The next architecture target is now fixed in `RUNTIME.md`: a restart-safe
-Research Campaign Orchestrator with persistent campaign state, a research queue,
-heartbeat/idle semantics, memory-driven follow-up selection and explicit
-resource/budget stop reasons.
-
-A completed experiment, rejected ticket, finished vertical slice or opened PR
-is not a research-campaign stop condition.
+The initial implementation remains intentionally local and dependency-light.
+Scheduled eligibility, bounded retry policy and watchdog alerts are the next
+runtime-hardening targets after operational evidence identifies the useful
+thresholds.
 
 ## Current highest-value next action
 
 There are two parallel priorities:
 
-1. **System priority:** implement the persistent campaign runtime specified by
-   `RUNTIME.md` and `schemas/campaign_state.schema.json`, so autonomy survives a
-   Codex task boundary.
+1. **System priority:** exercise the persistent runtime under repeated scheduled
+   cycles, then add stale-heartbeat and repeated-worker-failure watchdog alerts.
 2. **Research priority:** construct or obtain a compact synchronized ETF
    total-return/quote panel and scan beta-neutral cross-sectional relative value
    rather than tuning the rejected single-index reversal rule.

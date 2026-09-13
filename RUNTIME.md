@@ -144,11 +144,13 @@ A good Codex run can finish while Quant remains conceptually active.
 
 Future Codex tasks should therefore improve one or more parts of the persistent runtime rather than treating PR creation as the end of the research campaign.
 
-## First implementation target
+## Implemented minimum runtime
 
-The next Codex run should build a minimal persistent campaign orchestrator around the existing PR #7 vertical slice.
+The dependency-light campaign orchestrator now lives in
+`src/autonomous_research/runtime.py`, with its operator entry point in
+`scripts/run_research_runtime.py`.
 
-Minimum behavior:
+Its minimum behavior is:
 
 1. load campaign state;
 2. inspect the research queue;
@@ -159,4 +161,13 @@ Minimum behavior:
 7. heartbeat while idle;
 8. stop only on explicit budget/resource/human boundary.
 
-The implementation should be dependency-light, restart-safe, deterministic where possible, and testable without any live-capital integration.
+State and queue transitions use atomic JSON replacement. An `ACTIVE` task found
+at startup is returned to the queue, completed task IDs are durable
+deduplication keys, blocked work remains inspectable, and unrelated executable
+work continues. The worker registry keeps orchestration separate from specific
+research lanes.
+
+The next runtime increment should add scheduled task eligibility, retry policy
+and watchdog alerts for repeated crashes or stale heartbeats. Those controls
+should be added from observed operational need rather than by prematurely
+building distributed infrastructure.

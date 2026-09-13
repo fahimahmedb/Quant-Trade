@@ -84,6 +84,25 @@ The committed ticket is the immutable evidence from the first run. Re-running
 the command intentionally appends another record; use a separate memory path
 from the Python API for exploratory runs.
 
+## Persistent campaign runtime
+
+The dependency-light run plane stores campaign and queue state as atomically
+replaced JSON documents. It recovers interrupted tasks after restart, executes
+the highest-priority available work, preserves blocked work without starving
+other tasks, heartbeats while idle, and pauses only at an explicit budget.
+
+```bash
+python scripts/run_research_runtime.py seed
+python scripts/run_research_runtime.py run-once
+python scripts/run_research_runtime.py inspect
+# Long-lived operation (normally under a service manager):
+python scripts/run_research_runtime.py run --poll-seconds 60
+```
+
+The seed task records the currently missing ETF panel as blocked; that result
+is an honest resource boundary, not a campaign completion signal. State paths
+can be redirected with `--state` and `--queue` for isolated campaigns.
+
 ## Start Codex
 
 Launch Codex from this branch and give it only:
