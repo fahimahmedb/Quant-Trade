@@ -95,7 +95,7 @@ def canonical_brief(snapshot: dict[str, Any]) -> str:
     )
     if substitutions != 1:
         raise RuntimeError("Chief Brief generation timestamp marker was not found")
-    return brief
+    return brief.rstrip() + "\n"
 
 
 def state_checkpoint(snapshot: dict[str, Any], tests: int, demo_checks: int) -> str:

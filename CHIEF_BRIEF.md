@@ -90,4 +90,3 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 ## Next autonomous action
 
 blocked on a dependency for SCAN-FACTOR-RESIDUAL-001: no survivorship-controlled security and factor panel
-
