@@ -38,5 +38,7 @@ jobs:
       - name: Diff check
         run: git diff --check a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0...HEAD
 
-      - name: Status
-        run: git status --short
+      - name: Clean working tree
+        run: |
+          git status --short
+          test -z "$(git status --porcelain)"
