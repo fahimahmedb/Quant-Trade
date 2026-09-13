@@ -1,1 +1,0 @@
-print('red team probe')
