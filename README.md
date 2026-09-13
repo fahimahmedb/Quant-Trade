@@ -1,40 +1,101 @@
-# Quant-Trade — Outil probabiliste NASDAQ Composite
+# Quant-Trade — Autonomous Alpha Discovery System
 
-Implémentation des Étapes A (diagnostics) et C (volatilité) du cahier des
-charges (revue de littérature orientée conception).
+Quant-Trade is being rebuilt as an autonomous quantitative research and trading system whose terminal objective is simple:
 
-## Structure
+> **Find, validate, select and eventually monetize real market edge so that capital grows over time.**
 
+This repository is not organized around one permanent strategy, one market, or one forecasting model.
+
+The target is a continuously learning system that can:
+
+`SCAN -> REASON -> TEST -> VALIDATE -> VET -> SIZE -> RISK -> FILL -> BOOK -> LEARN -> REPEAT`
+
+## Core idea
+
+The durable asset is not one winning strategy. It is a factory that discovers new strategies faster than old alpha decays.
+
+Quant-Trade therefore separates three different problems:
+
+1. **Alpha discovery** — where is the edge?
+2. **Capital decision** — does this opportunity deserve money now, and how much?
+3. **Execution / book** — what actually happened to the capital?
+
+A signal is not an order. `NO_TRADE` is a valid decision.
+
+## Architecture
+
+See `SYSTEM.md` for the full design.
+
+High-level flow:
+
+```text
+MARKETS / DATA
+    ↓
+SCAN LAYER
+    ↓
+CANDIDATES
+    ↓
+HYPOTHESIS / BACKTEST / VALIDATION
+    ↓
+LIVE SIGNAL
+    ↓
+VET → SIZE → RISK → FILLS → BOOK
+    ↓
+REALIZED ECONOMICS
+    ↓
+MEMORY / ALPHA-DECAY LEARNING
+    ↺
 ```
-data/       nasdaq_composite_daily.txt — OHLC quotidien 13/07/2021 → 10/07/2026 (1251 séances)
-src/        data_loader.py, diagnostics.py (Étape A), volatility.py (Étape C + DM + SPA)
-scripts/    run_etape_a.py, run_etape_c.py — régénèrent results/ à l'identique
-results/    etape_A_diagnostics.md, etape_C_volatilite.md
-```
 
-## Reproduire
+The scan layer should be broad and cheap. Deep reasoning should be spent only on filtered candidates.
 
-```bash
-pip install numpy scipy pandas statsmodels arch
-python3 scripts/run_etape_a.py
-python3 scripts/run_etape_c.py
-```
+## Initial research families
 
-## Résultats clés (voir results/ pour le détail)
+The source material motivating this rebuild proposes four initial families of mispricing:
 
-- **Étape A** : random walk non rejeté (Lo-MacKinlay z* robustes non
-  significatives) ; effet ARCH massif ; queues épaisses (ν≈4,8 non
-  conditionnel). Aucune autocorrélation exploitable du rendement.
-- **Étape C** : GJR-GARCH(1,1)-t bat GARCH(1,1)-n en walk-forward
-  (500 prévisions OOS, QLIKE −3 %, DM p=0.014 à h=1, p=0.030 à h=5,
-  cohérent sur deux proxys) — mais le SPA de Hansen famille entière donne
-  p≈0.11 : la limite est la taille d'échantillon, pas le modèle.
+- statistical arbitrage / relative value;
+- volatility-surface mispricings;
+- factor-decomposition anomalies;
+- insider / filing-driven signals.
 
-## Discipline anti-data-snooping (non négociable)
+These are starting lanes, not permanent limits.
 
-L'univers de modèles (6) et le protocole OOS sont figés dans
-`scripts/run_etape_c.py` AVANT toute évaluation. Toute extension de
-l'univers doit être déclarée, comptée (N essais) et re-testée au SPA /
-Deflated Sharpe. On n'itère pas sur l'échantillon de test jusqu'à obtenir
-un chiffre plaisant : on allonge l'historique ou on améliore les données
-(RV intraday), puis on re-teste une fois.
+## Important economic rule
+
+Profit caused mainly by passive long exposure to a secularly rising market is not automatically evidence of discovered alpha.
+
+Where relevant, Quant-Trade must separate broad beta / factor exposure from the residual contribution of the strategy.
+
+## Stateful capital
+
+The system is stateful. Capital carries over from one decision to the next.
+
+There is no conceptual reset after every trade or session:
+
+`State_t = cash + positions + exposures + open risk + history + current market state`
+
+The next decision depends on the current state.
+
+The **Book** is the accounting source of truth for cash, positions, realized P&L, unrealized P&L, fees, financing and NAV.
+
+## Autonomy
+
+The human defines the terminal objective and hard external boundaries.
+
+The system should choose the research path itself: markets, hypotheses, tests, rejections, sizing logic, and next research action.
+
+Failed ideas should normally be absorbed internally rather than handed back to the human one by one.
+
+## Existing NASDAQ research
+
+The existing `src/`, `scripts/`, `data/` and `results/` directories contain the historical NASDAQ volatility research that predates this rebuild.
+
+It is retained as prior research and reusable code where useful. It does **not** define the future research universe.
+
+## Start Codex
+
+The single launch instruction is:
+
+`CODEX.md`
+
+Codex should read `CODEX.md`, `MISSION.md`, `SYSTEM.md`, `AGENTS.md`, `SOURCE_BASIS.md`, and the schemas before beginning work.
