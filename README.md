@@ -64,13 +64,55 @@ See `SOURCE_BASIS.md`.
 
 Lower-level documents and code must not silently redefine the North Star.
 
+## Running the system
+
+The system has no third-party dependencies. Python 3.11+ and the standard library are enough.
+
+```bash
+python3 scripts/ingest_data.py          # Data Plane: refresh and fingerprint datasets
+python3 scripts/quant.py boot           # resume persistent state, seed due work
+python3 scripts/quant.py run            # run until IDLE
+python3 scripts/quant.py status         # status surface, rendered from real state
+python3 scripts/quant.py brief          # regenerate CHIEF_BRIEF.md
+python3 scripts/quant.py health         # watchdog report
+python3 scripts/quant.py tick           # advance exactly one unit of due work
+python3 scripts/quant.py pause --reason "..." | resume
+```
+
+Verification:
+
+```bash
+PYTHONPATH=src python3 -m unittest discover -s tests
+python3 scripts/demo_quant_system.py    # boot, stop mid-campaign, restart, resume
+python3 scripts/generate_schemas.py --check
+```
+
+`ingest_data.py` fetches from a free credential-free source when the network allows and
+otherwise re-registers the fingerprinted snapshot committed under `data/datasets/`, so every
+published result is reproducible offline. It never fabricates a bar.
+
+### Where state lives
+
+| Path | Contents | Committed |
+| --- | --- | --- |
+| `data/datasets/*.csv` | normalized price panels | yes |
+| `data/datasets/*.meta.json` | provenance, caveats, validation, fingerprint | yes |
+| `schemas/` | contracts for the persistent state objects, generated from the code | yes |
+| `var/` | live operational state: control state, work queue, ledgers, tickets, events | no |
+
+A different `--root` gives a fully isolated system, which is how the tests and the restart
+demonstration avoid touching operational state.
+
 ## Current state
 
-The existing PR #9 persistent research campaign is valuable **Control Plane / Research Factory bootstrap work**. It provides restart-safe campaign state, a durable queue, heartbeat/watchdog concepts and a first bounded research worker.
+Quant System V1 is implemented end to end in persistent paper/shadow mode: Control Plane clock,
+Data Plane with real ingestion, Research Factory with a versioned strategy lifecycle, the
+`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` chain, a persistent Book, a learning loop that
+scores the system's own rejections, and a status surface plus `CHIEF_BRIEF.md` rendered from
+that state.
 
-It is not yet the whole Quant system.
-
-Major remaining system areas include a first-class Data Plane, broader Research Factory, versioned strategy lifecycle, persistent paper/shadow Book, whole-system feedback and a status UI driven by actual persistent state.
+`STATE.md` carries the current evidence, including what the research actually concluded and
+which North-Star gaps remain open.
 
 ## Historical NASDAQ work
 
@@ -78,8 +120,8 @@ The existing NASDAQ research predates the rebuild. It remains prior evidence and
 
 ## Build philosophy
 
-Codex is primarily the Builder / Quant Engineer. Quant is the persistent system.
+The engineering agent is the Builder / Quant Engineer. Quant is the persistent system.
 
-A Codex task may end. Quant's state, Book, research memory, pending work and next legitimate action must remain coherent.
+A build task may end. Quant's state, Book, research memory, pending work and next legitimate action must remain coherent.
 
 Build large coherent North-Star milestones instead of accumulating unrelated micro-fixes.

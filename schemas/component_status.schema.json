@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "RUN/IDLE/BLOCKED/FAULT/PAUSED per function.",
+  "properties": {
+    "component": {
+      "type": "string"
+    },
+    "detail": {},
+    "last_active_at": {},
+    "runs": {
+      "type": "integer"
+    },
+    "since": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "component"
+  ],
+  "title": "component_status",
+  "type": "object"
+}

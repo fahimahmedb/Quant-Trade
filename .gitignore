@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# Live operational state. The system writes it; the repository does not carry it.
+var/
+runtime/*.json

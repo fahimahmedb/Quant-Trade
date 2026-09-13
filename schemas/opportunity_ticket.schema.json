@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Lifecycle of one paper/shadow opportunity through SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK.",
+  "properties": {
+    "book_effect": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "fills": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "ledger": {
+      "type": "string"
+    },
+    "legs": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lifecycle": {
+      "type": "string"
+    },
+    "opportunity_id": {
+      "type": "string"
+    },
+    "reason": {},
+    "session_date": {
+      "type": "string"
+    },
+    "sized_notional": {
+      "type": "number"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "stage_trace": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "type": "string"
+    },
+    "strategy_id": {
+      "type": "string"
+    },
+    "target_weights": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "opportunity_id",
+    "session_date",
+    "strategy_id",
+    "lifecycle",
+    "ledger"
+  ],
+  "title": "opportunity_ticket",
+  "type": "object"
+}

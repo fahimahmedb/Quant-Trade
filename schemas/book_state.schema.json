@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Persistent economic state of one ledger.",
+  "properties": {
+    "attribution": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "type": "number"
+        },
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "cash": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "fees_paid": {
+      "type": "number"
+    },
+    "fills": {
+      "type": "integer"
+    },
+    "inception": {
+      "type": "string"
+    },
+    "inception_date": {},
+    "initial_capital": {
+      "type": "number"
+    },
+    "last_session_date": {},
+    "ledger_id": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "nav_history": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "peak_nav": {
+      "type": "number"
+    },
+    "positions": {
+      "additionalProperties": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "realized_pnl": {
+      "type": "number"
+    },
+    "sessions": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "ledger_id"
+  ],
+  "title": "book_state",
+  "type": "object"
+}

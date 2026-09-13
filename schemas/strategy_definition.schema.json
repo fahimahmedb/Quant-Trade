@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Versioned strategy, its evidence and its lifecycle.",
+  "properties": {
+    "created_at": {
+      "type": "string"
+    },
+    "dataset_fingerprint": {},
+    "dataset_id": {},
+    "desk": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "hypothesis": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "lane": {
+      "type": "string"
+    },
+    "lifecycle": {
+      "type": "string"
+    },
+    "lifecycle_history": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "retirement_reason": {},
+    "shadow": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "spec": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "strategy_id": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "strategy_id",
+    "version",
+    "lane",
+    "spec"
+  ],
+  "title": "strategy_definition",
+  "type": "object"
+}
