@@ -36,19 +36,24 @@ class Window:
 class PricePanel:
     """Daily bars keyed by ``(date, symbol)``.
 
-    ``adj_close`` drives returns; ``close`` drives notional accounting so the
-    Book is not restated by later corporate actions.
+    ``adj_close`` drives the adjusted price basis used by research, modelled
+    execution and marks.  Duplicate input keys are retained as validation
+    evidence instead of being silently overwritten by the mapping below.
     """
 
     FIELDS = ("open", "high", "low", "close", "adj_close", "volume")
 
     def __init__(self, rows: list[dict[str, object]]):
         self.bars: dict[tuple[str, str], dict[str, float]] = {}
+        self.duplicate_keys: list[str] = []
         symbols: set[str] = set()
         dates: set[str] = set()
         for row in rows:
             date, symbol = str(row["date"]), str(row["symbol"])
-            self.bars[(date, symbol)] = {field: float(row[field]) for field in self.FIELDS}
+            key = (date, symbol)
+            if key in self.bars:
+                self.duplicate_keys.append(f"{date}:{symbol}")
+            self.bars[key] = {field: float(row[field]) for field in self.FIELDS}
             symbols.add(symbol)
             dates.add(date)
         self.symbols = sorted(symbols)
