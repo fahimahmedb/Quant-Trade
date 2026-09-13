@@ -275,7 +275,8 @@ class FinalRiskBasisTests(unittest.TestCase):
             ledger = Ledger(Path(directory) / "book.json", initial_capital=1_000_000)
             ledger.state.cash = 500_001.0
             limits = RiskLimits(min_nav_ratio=0.50, max_net_ratio=1.0,
-                                max_gross_ratio=5.0, max_symbol_ratio=1.0)
+                                max_gross_ratio=5.0, max_symbol_ratio=1.0,
+                                drawdown_throttle=-0.80, drawdown_halt=-0.90)
             self.assertTrue(verify_final(ledger, "S", {}, limits)["approved"])
             charged = verify_final(ledger, "S", {}, limits, nav_adjustment=-2.0)
             self.assertFalse(charged["approved"],

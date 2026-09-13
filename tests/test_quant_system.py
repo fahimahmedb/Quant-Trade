@@ -632,7 +632,7 @@ class SystemTests(unittest.TestCase):
                              "a skipped repeat must not inflate the trial count")
             self.assertEqual(system.queue.tasks[task.task_id].status, "COMPLETED")
 
-    def test_new_data_makes_the_same_question_worth_asking_again(self):
+    def test_append_only_data_does_not_rebuy_frozen_research(self):
         with tempfile.TemporaryDirectory() as directory:
             root = self.build(directory)
             system = self.system(root)
@@ -642,14 +642,13 @@ class SystemTests(unittest.TestCase):
             task = next(task for task in system.queue.tasks.values()
                         if task.status == "COMPLETED")
             prior = task.metadata["result"]
-            self.build(directory, sessions=430)          # the dataset moves on
+            self.build(directory, sessions=430)
             resumed = self.system(root)
             resumed.boot()
             refreshed = resumed.queue.tasks[task.task_id]
-            self.assertEqual(refreshed.status, "PENDING")
-            self.assertEqual(refreshed.metadata["execution_history"][0]["result"], prior)
-            resumed.tick()
-            self.assertEqual(resumed.state.research_runs, runs + 1)
+            self.assertEqual(refreshed.status, "COMPLETED")
+            self.assertEqual(refreshed.metadata["result"], prior)
+            self.assertEqual(resumed.state.research_runs, runs)
 
     def test_pause_survives_restart_until_resume(self):
         with tempfile.TemporaryDirectory() as directory:

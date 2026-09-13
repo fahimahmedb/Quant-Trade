@@ -119,6 +119,25 @@ class Ledger:
                             for strategy, holdings in self.state.sleeves.items()}
         self._applied = set(self.state.applied_operations)
 
+    @classmethod
+    def from_document(cls, document: dict[str, Any]) -> "Ledger":
+        """Build a detached read-only view of a previously persisted Book state.
+
+        The Capital Desk journals one such document at the decision boundary so
+        every strategy in a session sees the same close(t) portfolio even if an
+        earlier strategy has already modelled an open(t+1) fill, or after a
+        crash/restart midway through the session.
+        """
+        ledger = cls.__new__(cls)
+        ledger.path = Path("__detached_decision_ledger__")
+        ledger.state = LedgerState(**document)
+        ledger.sleeves = {
+            strategy: {symbol: Position(**position)
+                       for symbol, position in holdings.items()}
+            for strategy, holdings in ledger.state.sleeves.items()}
+        ledger._applied = set(ledger.state.applied_operations)
+        return ledger
+
     # --- persistence -------------------------------------------------------
     def save(self) -> None:
         self.state.sleeves = {

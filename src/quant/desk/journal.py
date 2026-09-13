@@ -38,11 +38,14 @@ class DeskJournal:
         self.stats: dict[str, dict[str, Any]] = payload.get("stats", {})
         self.last_session_date: str | None = payload.get("last_session_date")
         self.outcomes: dict[str, dict[str, Any]] = payload.get("outcomes", {})
+        self.decision_snapshots: dict[str, dict[str, Any]] = payload.get(
+            "decision_snapshots", {})
 
     def save(self) -> None:
-        write_json(self.path, {"version": 1, "processed": sorted(self.processed),
+        write_json(self.path, {"version": 2, "processed": sorted(self.processed),
                                "pending": self.pending, "stats": self.stats,
                                "outcomes": self.outcomes,
+                               "decision_snapshots": self.decision_snapshots,
                                "last_session_date": self.last_session_date})
 
     # --- queries -----------------------------------------------------------
@@ -54,6 +57,24 @@ class DeskJournal:
 
     def stats_for(self, strategy_id: str) -> dict[str, Any]:
         return self.stats.get(strategy_id, dict(EMPTY_STATS))
+
+    def decision_snapshot(self, session_date: str) -> dict[str, Any] | None:
+        return self.decision_snapshots.get(session_date)
+
+    def begin_session(self, session_date: str, capital: dict[str, Any],
+                      evaluation: dict[str, Any]) -> dict[str, Any]:
+        """Freeze the close-time Book before any open(t+1) fill is modelled."""
+        existing = self.decision_snapshots.get(session_date)
+        if existing is not None:
+            return existing
+        snapshot = {"CAPITAL": capital, "EVALUATION": evaluation}
+        self.decision_snapshots[session_date] = snapshot
+        self.save()
+        return snapshot
+
+    def close_session(self, session_date: str) -> None:
+        if self.decision_snapshots.pop(session_date, None) is not None:
+            self.save()
 
     # --- transaction -------------------------------------------------------
     def begin(self, opportunity_id: str, strategy_id: str, session_date: str,

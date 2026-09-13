@@ -22,7 +22,7 @@ from autonomous_research.runtime import PersistentQueue, ResearchTask  # noqa: E
 from autonomous_research.watchdog import is_lease_stale  # noqa: E402
 
 from .dataplane.ingest import SECTOR_DATASET, SECTOR_UNIVERSE  # noqa: E402
-from .dataplane.panel import PricePanel  # noqa: E402
+from .dataplane.panel import PricePanel, Window  # noqa: E402
 from .dataplane.registry import DatasetRegistry  # noqa: E402
 from .desk.desk import CapitalDesk  # noqa: E402
 from .events import EventLog  # noqa: E402
@@ -169,6 +169,8 @@ class QuantSystem:
         for task in self.queue.tasks.values():
             if task.status != "BLOCKED" or not task.required_resources:
                 continue
+            if task.metadata.get("integrity_block"):
+                continue
             if not self.datasets.missing_for(task.required_resources):
                 task.status = "PENDING"
                 task.blocked_reason = None
@@ -181,28 +183,46 @@ class QuantSystem:
         return unblocked
 
     def _reactivate_changed_research(self, changed: list[Any]) -> list[str]:
-        """Wake completed research on genuinely new available dataset versions."""
-        available = {record.dataset_id: record for record in changed
-                     if record.availability == "AVAILABLE"}
-        reactivated: list[str] = []
-        for task in self.queue.tasks.values():
-            if task.status != "COMPLETED" or self.dataset_id not in task.required_resources:
-                continue
-            record = available.get(self.dataset_id)
-            if record is None or task.data_fingerprint == record.fingerprint:
-                continue
-            history = task.metadata.setdefault("execution_history", [])
-            if task.metadata.get("result") is not None:
-                history.append({"fingerprint": task.data_fingerprint,
-                                "result": task.metadata["result"],
-                                "completed_at": task.updated_at})
-            task.data_fingerprint = record.fingerprint
-            task.status = "PENDING"
-            task.updated_at = utc_now()
-            reactivated.append(task.task_id)
-        if reactivated:
-            self.queue.save()
-        return reactivated
+        """Classify changed bytes against the frozen scientific cohort.
+
+        Appends after Validation are forward evidence and must not buy another
+        historical experiment. A changed value inside the frozen cohort blocks
+        research and Desk progression until explicit review.
+        """
+        record = self.datasets.get(self.dataset_id)
+        if record is None or record.availability != "AVAILABLE":
+            return []
+        status = self._frozen_cohort_status()
+        touched: list[str] = []
+        if status is False:
+            reason = "historical research cohort changed; review required"
+            for task in self.queue.tasks.values():
+                if task.worker != "research_lane" or self.dataset_id not in task.required_resources:
+                    continue
+                task.status = "BLOCKED"
+                task.blocked_reason = reason
+                task.metadata["integrity_block"] = True
+                task.updated_at = utc_now()
+                touched.append(task.task_id)
+            if touched:
+                self.queue.save()
+                self.components.set("RESEARCH", "BLOCKED", reason)
+                self.log.emit("DATA", "RESEARCH", "research_cohort_changed",
+                              self.dataset_id, severity="FAULT", tasks=touched)
+            return touched
+        if status is True:
+            # Restoring the exact frozen cohort clears an integrity block, but a
+            # forward append alone never reactivates completed science.
+            for task in self.queue.tasks.values():
+                if not task.metadata.pop("integrity_block", False):
+                    continue
+                task.blocked_reason = None
+                task.status = "COMPLETED" if task.metadata.get("result") else "PENDING"
+                task.updated_at = utc_now()
+                touched.append(task.task_id)
+            if touched:
+                self.queue.save()
+        return touched
 
     def _seed_work(self) -> list[str]:
         """Declare the research lanes, and preserve the lanes still genuinely blocked."""
@@ -267,24 +287,45 @@ class QuantSystem:
             self._panel_fingerprint = record.fingerprint
         return self._panel
 
+    def _research_cohort_rows(self) -> list[dict[str, Any]] | None:
+        panel = self.panel()
+        frozen = self.strategies.research_partition(self.dataset_id)
+        if panel is None or frozen is None:
+            return None
+        end = frozen["VALIDATION"]["end"]
+        visible = panel.restrict(end=end)
+        return [dict(bar) for (date, symbol), bar in sorted(visible.bars.items())
+                if date <= end and symbol in self.universe]
+
+    def _frozen_cohort_status(self) -> bool | None:
+        rows = self._research_cohort_rows()
+        if rows is None:
+            return None
+        return self.strategies.verify_research_cohort(self.dataset_id, rows)
+
     def shadow_window(self):
         panel = self.panel()
         if panel is None:
             return None
-        return panel.split(WINDOWS, symbols=self.universe)["SHADOW"]
+        frozen = self.strategies.research_partition(self.dataset_id)
+        if frozen is None:
+            return panel.split(WINDOWS, symbols=self.universe)["SHADOW"]
+        start = frozen["SHADOW"]["start"]
+        dates = [date for date in panel.aligned_dates(self.universe) if date >= start]
+        return Window("SHADOW", start, dates[-1]) if dates else None
 
     def _next_desk_session(self) -> tuple[str, str | None] | None:
         panel, window = self.panel(), self.shadow_window()
-        if panel is None or window is None:
+        if panel is None or window is None or self._frozen_cohort_status() is False:
             return None
         dates = [date for date in panel.aligned_dates(self.universe) if window.contains(date)]
         pending = [date for date in dates
                    if self.state.desk_cursor is None or date > self.state.desk_cursor]
-        if not pending:
+        # close(t) is a decision point only once open(t+1) actually exists. Leave
+        # the terminal close pending so an append can make it executable later.
+        if len(pending) < 2:
             return None
-        date = pending[0]
-        following = pending[1] if len(pending) > 1 else None
-        return date, following
+        return pending[0], pending[1]
 
     # --- the tick ----------------------------------------------------------
     def tick(self) -> str:
@@ -345,8 +386,17 @@ class QuantSystem:
             self.components.set("RESEARCH", "BLOCKED", task.blocked_reason)
             return self.tick()
         record = self.datasets.get(self.dataset_id)
-        if record is not None and task.data_fingerprint != record.fingerprint:
-            # New evidence: the same question is worth asking again.
+        cohort_status = self._frozen_cohort_status()
+        if cohort_status is False:
+            task.status = "BLOCKED"
+            task.blocked_reason = "historical research cohort changed; review required"
+            task.metadata["integrity_block"] = True
+            task.updated_at = utc_now()
+            self.queue.save()
+            self.components.set("RESEARCH", "BLOCKED", task.blocked_reason)
+            self.heartbeat()
+            return "BLOCKED"
+        if record is not None and cohort_status is None and task.data_fingerprint != record.fingerprint:
             task.data_fingerprint = record.fingerprint
         if task.execution_key in self.state.completed_work:
             # Repeating an identical test on identical data buys no information and
@@ -389,19 +439,25 @@ class QuantSystem:
             self.heartbeat()
             return "FAULT"
 
-        task.status = "COMPLETED"
+        # Persist the worker result while the task is still RUNNING. A crash
+        # anywhere below is therefore recoverable rather than falsely terminal.
         task.metadata["result"] = result
         task.updated_at = utc_now()
         self.queue.save()
-        if task.execution_key not in self.state.completed_work:
-            self.state.completed_work.append(task.execution_key)
-        self.state.research_runs += 1
         self.learning.record_research(lane_name, task.lane, result)
         self._promote_followup(lane_name, result)
+        if task.execution_key not in self.state.completed_work:
+            self.state.completed_work.append(task.execution_key)
+            self.state.research_runs += 1
         self.components.set("RESEARCH", "IDLE", f"{task.task_id} closed: {result['outcome']}")
         self.components.set("LEARNING", "RUN", "research lesson recorded")
         self.state.next_action = result.get("next_action_hint") or self._describe_next_action()
+        # completed_work is the transaction commit marker and is durable before
+        # the queue becomes terminal. A crash after this point is dead-work-safe.
         self.heartbeat()
+        task.status = "COMPLETED"
+        task.updated_at = utc_now()
+        self.queue.save()
         return "RESEARCH"
 
     def _promote_followup(self, lane_name: str, result: dict[str, Any]) -> None:
@@ -444,8 +500,6 @@ class QuantSystem:
     def _assess_decision_quality(self) -> bool:
         """Once the desk has finished its window, score the system's own rejections."""
         if self._next_desk_session() is not None or self.state.desk_sessions == 0:
-            return False
-        if self.learning.decision_quality.get("strategies_evaluated", 0):
             return False
         assessments = self.learning.assess_rejections(
             self.strategies, self.desk.evaluation, self.desk.journal.stats_for)
