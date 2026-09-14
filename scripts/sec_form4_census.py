@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from quant.dataplane.sec_form4 import (  # noqa: E402
+    DEFAULT_SEC_RATE_PER_SECOND,
     PARSER_VERSION,
     SessionCalendar,
     SourceRecord,
@@ -174,6 +175,9 @@ def run(args: argparse.Namespace) -> None:
         build,
         fetcher=sec_fetch,
         cache_dir=raw_dir / "acceptance_headers",
+        checkpoint_path=raw_dir / "acceptance_checkpoint.jsonl",
+        workers=args.workers,
+        rate_per_second=args.rate_per_second,
     )
     build.events = events
     build.losses = losses
@@ -312,6 +316,11 @@ def main() -> int:
     parser.add_argument("--generate-calendar", action="store_true")
     parser.add_argument("--probe-price-coverage", action="store_true")
     parser.add_argument("--verify-source-hashes", action="store_true")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="concurrent EDGAR acceptance fetchers; work is assigned "
+                             "disjointly and paced by one process-global rate limiter")
+    parser.add_argument("--rate-per-second", type=float, default=DEFAULT_SEC_RATE_PER_SECOND,
+                        help="process-wide SEC request budget, independent of --workers")
     parser.add_argument("--preflight", action="store_true",
                         help="prove official SEC reachability through the acquisition path")
     args = parser.parse_args()

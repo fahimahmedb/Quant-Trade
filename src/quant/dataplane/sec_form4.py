@@ -13,6 +13,7 @@ import io
 import json
 import os
 import re
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -22,6 +23,7 @@ from collections import Counter, defaultdict, deque
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Iterable, Iterator, Sequence
 
 START_DATE = date(2020, 1, 1)
@@ -661,6 +663,74 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
                        dict(sorted(waterfall.items())), diagnostics, normalized_candidates)
 
 
+class RateLimiter:
+    """Process-global token bucket shared by every SEC worker.
+
+    Fair Access is a property of the whole process, not of one thread. Each
+    worker must draw from the same bucket or concurrency silently multiplies the
+    request rate by the worker count.
+    """
+
+    def __init__(self, rate_per_second: float, burst: float | None = None):
+        if rate_per_second <= 0:
+            raise ValueError("rate_per_second must be positive")
+        self._rate = float(rate_per_second)
+        # Default to a single token: a large bucket would let a run open with a
+        # burst well above the declared pace, which is exactly what Fair Access
+        # asks callers not to do. Callers may widen it deliberately.
+        self._capacity = float(burst) if burst is not None else 1.0
+        self._tokens = self._capacity
+        self._updated = time.monotonic()
+        self._lock = threading.Lock()
+
+    @property
+    def rate_per_second(self) -> float:
+        return self._rate
+
+    def acquire(self, tokens: float = 1.0) -> None:
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                self._tokens = min(self._capacity,
+                                   self._tokens + (now - self._updated) * self._rate)
+                self._updated = now
+                if self._tokens >= tokens:
+                    self._tokens -= tokens
+                    return
+                wait = (tokens - self._tokens) / self._rate
+            time.sleep(wait)
+
+
+def write_atomic(path: Path, data: bytes) -> None:
+    """Replace a cache entry atomically.
+
+    A reader -- including a second resolver process sharing this directory --
+    must never observe a half-written document.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f"{path.name}.tmp.{os.getpid()}.{threading.get_ident()}")
+    try:
+        temporary.write_bytes(data)
+        os.replace(temporary, path)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def assign_disjoint(items: Sequence[str], workers: int) -> list[list[str]]:
+    """Deterministically partition work so no accession is fetched twice.
+
+    Strided rather than contiguous so every shard spans the whole range and the
+    workers finish together.
+    """
+    if workers < 1:
+        raise ValueError("workers must be >= 1")
+    shards: list[list[str]] = [[] for _ in range(workers)]
+    for index, item in enumerate(items):
+        shards[index % workers].append(item)
+    return shards
+
+
 def acceptance_header_url(issuer_cik: str, accession: str) -> str:
     cik = str(int(issuer_cik))
     acc_dir = accession.replace("-", "")
@@ -707,7 +777,168 @@ def parse_acceptance_timestamp(payload: bytes) -> str:
     return dt.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir: Path | None = None) -> tuple[list[Form4Event], list[LossLedgerRecord], dict[str, dict[str, str]]]:
+#: Requests per second the resolver will draw, process-wide. SEC's Fair Access
+#: guidance is stricter than this only under sustained abuse; the default leaves
+#: a wide margin and is never raised to buy speed.
+DEFAULT_SEC_RATE_PER_SECOND = 5.0
+#: Completed accessions are checkpointed in batches of this size.
+ACCEPTANCE_CHECKPOINT_BATCH = 200
+
+
+def load_acceptance_checkpoint(path: Path | None) -> dict[str, dict[str, Any]]:
+    """Previously completed accessions, keyed by accession."""
+    if path is None or not path.exists():
+        return {}
+    done: dict[str, dict[str, Any]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            continue  # a line torn by a kill is simply not yet done
+        if record.get("accession"):
+            done[record["accession"]] = record
+    return done
+
+
+def validate_acceptance_cache(done: dict[str, dict[str, Any]], cache_dir: Path | None
+                              ) -> tuple[dict[str, dict[str, Any]], list[str]]:
+    """Keep only checkpoint entries whose cached bytes still hash as recorded.
+
+    Resume must be exact: an entry whose document is missing or altered is not
+    resumed, it is re-fetched.
+    """
+    if cache_dir is None:
+        return {}, sorted(done)
+    good: dict[str, dict[str, Any]] = {}
+    stale: list[str] = []
+    for accession, record in done.items():
+        path = cache_dir / f"{accession}.html"
+        if not path.exists():
+            stale.append(accession)
+            continue
+        payload = path.read_bytes()
+        if _sha256_bytes(payload) != record.get("sha256"):
+            stale.append(accession)
+            continue
+        good[accession] = record
+    return good, sorted(stale)
+
+
+def resolve_acceptance_documents(
+    accessions: Sequence[str], issuer_of: dict[str, str], cache_dir: Path | None = None,
+    checkpoint_path: Path | None = None, fetcher: Any = None, workers: int = 1,
+    limiter: "RateLimiter | None" = None,
+    rate_per_second: float = DEFAULT_SEC_RATE_PER_SECOND,
+    batch_size: int = ACCEPTANCE_CHECKPOINT_BATCH,
+) -> tuple[dict[str, dict[str, str]], list[tuple[str, str]]]:
+    """Fetch EDGAR acceptance headers durably, optionally with several workers.
+
+    Concurrency is admissible here only because three properties hold together:
+
+    * one process-global rate limiter, so Fair Access pace is independent of the
+      worker count;
+    * disjoint accession assignment, so no document is ever fetched twice;
+    * atomic cache writes and a batched checkpoint carrying each document's
+      sha256, so a kill at any instant resumes exactly.
+
+    The returned mapping is assembled from the sorted accession list, so the
+    result is byte-identical whatever the worker count or completion order.
+    """
+    fetcher = fetcher or _http_get
+    limiter = limiter or RateLimiter(rate_per_second)
+    wanted = sorted(set(accessions))
+
+    resumed, stale = validate_acceptance_cache(
+        load_acceptance_checkpoint(checkpoint_path), cache_dir)
+    pending = [a for a in wanted if a not in resumed]
+
+    force_refetch = set(stale)
+    store: dict[str, dict[str, Any]] = dict(resumed)
+    failures: dict[str, str] = {}
+    store_lock = threading.Lock()
+    checkpoint_lock = threading.Lock()
+    buffered: list[dict[str, Any]] = []
+
+    def flush(force: bool = False) -> None:
+        # The buffer is drained under the same lock that fills it. Guarding one
+        # list with two locks loses records appended between read and clear,
+        # which would leave completed work absent from the checkpoint and
+        # silently re-fetched on resume.
+        with store_lock:
+            if not buffered or (len(buffered) < batch_size and not force):
+                return
+            batch = list(buffered)
+            buffered.clear()
+        if checkpoint_path is None:
+            return
+        with checkpoint_lock:
+            checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+            payload = "".join(json.dumps(r, sort_keys=True) + "\n" for r in batch)
+            with checkpoint_path.open("a", encoding="utf-8") as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+
+    def work(shard: Sequence[str]) -> None:
+        for accession in shard:
+            issuer = issuer_of.get(accession, "")
+            url = acceptance_header_url(issuer, accession)
+            local = cache_dir / f"{accession}.html" if cache_dir is not None else None
+            try:
+                payload: bytes | None = None
+                # A document the checkpoint marked stale failed its recorded
+                # hash, so its cached bytes are not the bytes SEC served. It must
+                # be fetched again rather than re-read: a tampered or truncated
+                # file can still parse, and trusting it would launder altered
+                # content into the census.
+                if local is not None and accession not in force_refetch and local.exists():
+                    candidate = local.read_bytes()
+                    try:
+                        parse_acceptance_timestamp(candidate)
+                        payload = candidate
+                    except Exception:
+                        payload = None  # torn or truncated: re-fetch rather than trust
+                if payload is None:
+                    limiter.acquire()
+                    payload = fetcher(url)
+                    if local is not None:
+                        write_atomic(local, payload)
+                accepted = parse_acceptance_timestamp(payload)
+                record = {"accession": accession, "url": url,
+                          "sha256": _sha256_bytes(payload), "bytes": len(payload),
+                          "acceptance_time": accepted}
+            except Exception as exc:
+                with store_lock:
+                    failures[accession] = f"{type(exc).__name__}: {exc}"
+                continue
+            with store_lock:
+                store[accession] = record
+                buffered.append(record)
+                ready = len(buffered) >= batch_size
+            if ready:
+                flush()
+
+    shards = assign_disjoint(pending, max(1, workers))
+    if workers <= 1:
+        work(pending)
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            for future in [pool.submit(work, shard) for shard in shards if shard]:
+                future.result()
+    flush(force=True)
+
+    resolved = {a: {"acceptance_time": store[a]["acceptance_time"], "url": store[a]["url"],
+                    "sha256": store[a]["sha256"]}
+                for a in wanted if a in store}
+    return resolved, sorted(failures.items())
+
+
+def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir: Path | None = None,
+                        checkpoint_path: Path | None = None, workers: int = 1,
+                        rate_per_second: float = DEFAULT_SEC_RATE_PER_SECOND,
+                        ) -> tuple[list[Form4Event], list[LossLedgerRecord], dict[str, dict[str, str]]]:
     """Resolve acceptance time only for accession lineage used by economic formations."""
     observations = {o.observation_id: o for o in build.observations}
     needed = sorted({acc for event in build.events for acc in event.accessions})
@@ -715,30 +946,19 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
     for event in build.events:
         for acc in event.accessions:
             accession_issuer.setdefault(acc, event.issuer_cik)
-    resolved: dict[str, dict[str, str]] = {}
     losses = list(build.losses)
     if cache_dir is not None:
         cache_dir.mkdir(parents=True, exist_ok=True)
-    for acc in needed:
-        issuer = accession_issuer[acc]
-        url = acceptance_header_url(issuer, acc)
-        payload: bytes | None = None
-        local = cache_dir / f"{acc}.html" if cache_dir is not None else None
-        try:
-            if local is not None and local.exists():
-                payload = local.read_bytes()
-            else:
-                payload = fetcher(url)
-                if local is not None:
-                    local.write_bytes(payload)
-            accepted = parse_acceptance_timestamp(payload)
-            resolved[acc] = {"acceptance_time": accepted, "url": url, "sha256": _sha256_bytes(payload)}
-        except Exception as exc:
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["acceptance", acc], "LOSS-"), event_id=None, accession=acc,
-                issuer_cik=issuer, owner_cik=None, status="UNRESOLVED",
-                reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",), detail=str(exc),
-            ))
+    resolved, failures = resolve_acceptance_documents(
+        needed, accession_issuer, cache_dir=cache_dir,
+        checkpoint_path=checkpoint_path, fetcher=fetcher, workers=workers,
+        rate_per_second=rate_per_second)
+    for acc, detail in failures:
+        losses.append(LossLedgerRecord(
+            record_id=_stable_hash(["acceptance", acc], "LOSS-"), event_id=None, accession=acc,
+            issuer_cik=accession_issuer.get(acc), owner_cik=None, status="UNRESOLVED",
+            reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",), detail=detail,
+        ))
 
     out: list[Form4Event] = []
     for event in build.events:
