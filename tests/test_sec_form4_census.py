@@ -37,6 +37,8 @@ class Form4CensusTests(unittest.TestCase):
   a,b='0000000001-24-000001','0000000001-24-000002';build=self.build([submission(a),submission(b)],[owner(a,'101',name='A'),owner(b,'101',name='B')],[tx(a,1),tx(b,1,'03-JAN-2024')]);self.assertFalse(build.events)
  def test_missing_owner_cik_unresolved_not_fuzzy(self):
   a='0000000001-24-000001';build=self.build([submission(a)],[owner(a,'',name='Known')],[tx(a,1)]);self.assertFalse(build.observations);self.assertEqual(1,build.waterfall['owner_id_unresolved_rows'])
+ def test_valid_owner_plus_missing_owner_cik_is_unresolved(self):
+  a='0000000001-24-000001';build=self.build([submission(a)],[owner(a,'101'),owner(a,'')],[tx(a,1)]);self.assertFalse(build.observations);self.assertEqual(1,build.normalized_candidates[0].unresolved_owner_cik_rows)
  def test_joint_filing_ambiguous_excluded(self):
   a='0000000001-24-000001';build=self.build([submission(a)],[owner(a,'101'),owner(a,'102')],[tx(a,1)]);self.assertFalse(build.observations);self.assertEqual(1,build.waterfall['joint_owner_ambiguous_rows'])
  def test_ten_sessions_qualifies_eleven_does_not(self):

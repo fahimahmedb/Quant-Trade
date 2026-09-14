@@ -361,11 +361,13 @@ class _PrimaryKeyIndex:
         self.states: dict[tuple[str, ...], _PKState] = {}
         self.raw_rows = 0
         self.unkeyed_rows = 0
+        self.unkeyed_data: list[dict[str, str]] = []
 
     def add(self, key: tuple[str, ...], row: dict[str, str]) -> None:
         self.raw_rows += 1
         if not key or any(not _clean(part) for part in key):
             self.unkeyed_rows += 1
+            self.unkeyed_data.append(row)
             return
         rendered = _row_repr(row)
         state = self.states.get(key)
@@ -454,6 +456,10 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
     submission_conflicts = {key[0] for key, state in sub_idx.states.items() if state.conflict}
     owners_by_accession: dict[str, list[dict[str, str]]] = defaultdict(list)
     owner_conflict_accessions: set[str] = set()
+    owner_unkeyed_counts: Counter[str] = Counter(
+        _clean(row.get('ACCESSION_NUMBER')) for row in owner_idx.unkeyed_data
+        if _clean(row.get('ACCESSION_NUMBER'))
+    )
     owner_orphans = 0
     for key, state in owner_idx.states.items():
         acc = key[0]
@@ -506,7 +512,7 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
         issuer_cik, symbol = normalize_cik(sub.get("ISSUERCIK")), _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
         owners = owners_by_accession.get(acc, [])
         owner_ids = [normalize_cik(o.get("RPTOWNERCIK")) for o in owners]
-        unresolved_owner_rows = sum(x is None for x in owner_ids)
+        unresolved_owner_rows = sum(x is None for x in owner_ids) + owner_unkeyed_counts.get(acc, 0)
         owner_ciks = tuple(sorted({x for x in owner_ids if x}))
         owner_conflict = acc in owner_conflict_accessions
         single_owner = owner_ciks[0] if not owner_conflict and unresolved_owner_rows == 0 and len(owner_ciks) == 1 else None
