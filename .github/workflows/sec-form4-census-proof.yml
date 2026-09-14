@@ -17,7 +17,7 @@ jobs:
     # every runner class. A standard runner is correct once the declared
     # identity is compliant.
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 360
     env:
       # Must be a reachable contact address and must not contain "github.com".
       # Resolved in exactly one place, quant.dataplane.sec_form4.sec_user_agent().
@@ -38,6 +38,23 @@ jobs:
         # clean runner. The calendar version remains pinned and is recorded in
         # provenance; changing it cannot alter the frozen event definition.
         run: python -m pip install 'exchange-calendars==4.13.1'
+
+      # The raw SEC bytes are immutable published documents: 26 quarterly ZIPs
+      # and one acceptance header per accession in event lineage (~31,500).
+      # Re-fetching them costs roughly six hours at SEC's fair-access pace,
+      # which exceeds the maximum job duration, so a cold gate cannot finish in
+      # a single run. The cache is restored before acquisition and saved even
+      # when the job fails or times out, so successive runs resume instead of
+      # restarting. Every cached payload still carries its own sha256 in the
+      # provenance manifest, so resuming cannot weaken the proof.
+      - name: Restore official SEC raw byte cache
+        id: raw-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: var/sec_form4_raw
+          key: sec-form4-raw-${{ github.run_id }}
+          restore-keys: |
+            sec-form4-raw-
 
       - name: Official SEC source connectivity preflight
         # Runs through the acquisition path itself. A preflight with its own
@@ -71,6 +88,15 @@ jobs:
             python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage
           fi
           python3 scripts/sec_form4_proof.py --check
+
+      - name: Save official SEC raw byte cache
+        # if: always() so a timed-out or failed acquisition still banks its
+        # progress for the next run.
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: var/sec_form4_raw
+          key: sec-form4-raw-${{ github.run_id }}
 
       - name: Commit deterministic census artifacts locally
         id: final
