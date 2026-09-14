@@ -85,6 +85,19 @@ jobs:
           fi
           python3 scripts/sec_form4_proof.py --check
 
+      - name: Quiesce SEC acquisition before cache snapshot
+        if: always()
+        run: |
+          pkill -TERM -f '[s]cripts/sec_form4_census.py' || true
+          for _ in $(seq 1 20); do
+            if ! pgrep -f '[s]cripts/sec_form4_census.py' >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          pkill -KILL -f '[s]cripts/sec_form4_census.py' || true
+          sync
+
       - name: Save official SEC raw byte cache
         if: always()
         uses: actions/cache/save@v4
