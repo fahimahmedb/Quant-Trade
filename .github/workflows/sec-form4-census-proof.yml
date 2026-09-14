@@ -11,14 +11,17 @@ permissions:
 
 jobs:
   census-and-exact-head-proof:
-    # The standard Linux runner and ARM macOS runner both receive SEC HTTP 403.
-    # Try GitHub's distinct Intel macOS runner/network class with the same
-    # canonical official URLs and declared fair-access identity. Transport only;
-    # no census definition or source population changes.
-    runs-on: macos-15-intel
+    # The earlier HTTP 403 was never a runner or network property: SEC refuses
+    # any User-Agent containing "github.com", so the previous declaration
+    # (a users.noreply.github.com address plus a repository URL) was refused on
+    # every runner class. A standard runner is correct once the declared
+    # identity is compliant.
+    runs-on: ubuntu-latest
     timeout-minutes: 330
     env:
-      SEC_USER_AGENT: Quant-Trade ${{ github.actor }}@users.noreply.github.com https://github.com/${{ github.repository }}
+      # Must be a reachable contact address and must not contain "github.com".
+      # Resolved in exactly one place, quant.dataplane.sec_form4.sec_user_agent().
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
     steps:
       - name: Checkout Builder branch
         uses: actions/checkout@v4
@@ -37,24 +40,11 @@ jobs:
         run: python -m pip install 'exchange-calendars==4.13.1'
 
       - name: Official SEC source connectivity preflight
-        run: |
-          mkdir -p var/sec_form4_raw
-          curl --fail --location --retry 2 --retry-all-errors \
-            --connect-timeout 20 --max-time 90 \
-            --user-agent "$SEC_USER_AGENT" \
-            --header 'Accept: application/zip,application/octet-stream;q=0.9,*/*;q=0.8' \
-            --header 'Accept-Language: en-US,en;q=0.8' \
-            --referer 'https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets' \
-            'https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q1_form345.zip' \
-            --output var/sec_form4_raw/2020q1_form345.zip
-          python3 - <<'PY'
-          from pathlib import Path
-          path = Path('var/sec_form4_raw/2020q1_form345.zip')
-          data = path.read_bytes()
-          if not data.startswith(b'PK'):
-              raise SystemExit('official SEC 2020Q1 payload is not a ZIP archive')
-          print(f'official SEC curl preflight ok: {len(data)} bytes')
-          PY
+        # Runs through the acquisition path itself. A preflight with its own
+        # transport, User-Agent or header set can pass while the acquisition it
+        # is supposed to validate is refused -- that divergence is exactly what
+        # made the earlier gate fail after a green preflight.
+        run: python3 scripts/sec_form4_census.py --preflight
 
       - name: Refresh generated V1 proof inventory
         run: |

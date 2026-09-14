@@ -11,6 +11,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 import re
 import time
 import urllib.error
@@ -26,7 +27,78 @@ from typing import Any, Iterable, Iterator, Sequence
 START_DATE = date(2020, 1, 1)
 END_DATE = date(2026, 6, 30)
 PARSER_VERSION = "sec-form4-census-v2a/2"
-SEC_USER_AGENT = "Quant-Trade SEC Form4 Census research contact: project-owner-via-github"
+#: SEC Fair Access requires automated traffic to declare a reachable contact
+#: address. Two empirically verified rules govern what SEC's edge accepts, and
+#: both were established by probing the official 2020Q1 URL directly:
+#:
+#: 1. The declaration must carry a contact email, or the request is refused with
+#:    HTTP 403 whose body reads "Request Rate Threshold Exceeded". That message
+#:    is misleading: it is a compliance rejection, not a rate limit.
+#: 2. The declaration must not contain ``github.com`` in any form. A
+#:    ``user@users.noreply.github.com`` address and a trailing repository URL are
+#:    both refused, while the same request with an ordinary mailbox succeeds.
+#:
+#: There is deliberately no default identity. A committed default would either
+#: embed a personal contact address in a public repository or invent an
+#: unreachable one, and an unreachable contact is not Fair-Access compliance. The
+#: operator declares the identity through the environment instead.
+SEC_USER_AGENT_ENV = "SEC_USER_AGENT"
+#: Substrings empirically refused by SEC's edge inside a User-Agent.
+SEC_REFUSED_UA_TOKENS = ("github.com",)
+
+
+class SecIdentityError(RuntimeError):
+    """The declared SEC identity is missing or not Fair-Access compliant."""
+
+
+def sec_identity_problem(user_agent: str) -> str | None:
+    """Why this User-Agent would be refused, or None when it is acceptable."""
+    if not user_agent.strip():
+        return f"no SEC identity declared; set {SEC_USER_AGENT_ENV}"
+    token = next((part for part in user_agent.split() if "@" in part), "")
+    local, _, domain = token.partition("@")
+    if not local or "." not in domain:
+        return ("SEC Fair Access requires a reachable contact email in the "
+                f"User-Agent; got {user_agent!r}")
+    for refused in SEC_REFUSED_UA_TOKENS:
+        if refused in user_agent.lower():
+            return (f"SEC refuses any User-Agent containing {refused!r} "
+                    f"(verified against the official 2020Q1 URL); got {user_agent!r}")
+    return None
+
+
+def sec_identity_is_compliant(user_agent: str) -> bool:
+    return sec_identity_problem(user_agent) is None
+
+
+def sec_user_agent() -> str:
+    """The single source of truth for this project's declared SEC identity.
+
+    Every SEC request -- connectivity preflight, quarterly ZIP acquisition and
+    EDGAR acceptance headers alike -- resolves its identity here. When a
+    preflight and the acquisition it is meant to validate derive their identity
+    separately, the preflight can pass while the acquisition is refused, which is
+    precisely the failure this function exists to prevent.
+    """
+    declared = os.environ.get(SEC_USER_AGENT_ENV, "").strip()
+    problem = sec_identity_problem(declared)
+    if problem:
+        raise SecIdentityError(problem)
+    return declared
+
+
+def sec_request_headers(user_agent: str | None = None) -> dict[str, str]:
+    """The complete HTTP identity used for every SEC request.
+
+    Returned as one mapping so a caller cannot accidentally send a different
+    header set from the one the acquisition path uses.
+    """
+    return {
+        "User-Agent": user_agent or sec_user_agent(),
+        "Accept": "application/zip,application/octet-stream;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.8",
+        "Accept-Encoding": "identity",
+    }
 OLD_SEC_ZIP_ROOT = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets"
 NEW_SEC_ZIP_ROOT = "https://www.sec.gov/files/datastandardsinnovation/data/insider-transactions-data-sets"
 SEC_ARCHIVE_ROOT = "https://www.sec.gov/Archives/edgar/data"
@@ -95,8 +167,27 @@ def iso_or_none(value: str) -> str | None:
 
 
 def source_url(year: int, quarter: int) -> str:
-    root = NEW_SEC_ZIP_ROOT if year >= 2026 else OLD_SEC_ZIP_ROOT
-    return f"{root}/{year}q{quarter}_form345.zip"
+    """Primary canonical URL for a quarter. See ``source_url_candidates``."""
+    return source_url_candidates(year, quarter)[0]
+
+
+def source_url_candidates(year: int, quarter: int) -> list[str]:
+    """Both canonical SEC locations for a quarter, most likely first.
+
+    SEC serves these archives from two official roots and has migrated the
+    boundary over time: as verified against the live service, 2026Q1 is still
+    published under the legacy root while 2026Q2 is published under the newer
+    one. A hardcoded year boundary therefore requests the wrong root for at
+    least one in-scope quarter and receives a 404.
+
+    Both entries are official SEC roots, so trying the second is not a mirror or
+    a substitute source; it is the same publisher. The root that actually served
+    each quarter is recorded in provenance.
+    """
+    name = f"{year}q{quarter}_form345.zip"
+    roots = ([NEW_SEC_ZIP_ROOT, OLD_SEC_ZIP_ROOT] if (year, quarter) >= (2026, 2)
+             else [OLD_SEC_ZIP_ROOT, NEW_SEC_ZIP_ROOT])
+    return [f"{root}/{name}" for root in roots]
 
 
 def quarter_specs() -> list[tuple[int, int]]:
@@ -576,16 +667,29 @@ def acceptance_header_url(issuer_cik: str, accession: str) -> str:
     return f"{SEC_ARCHIVE_ROOT}/{cik}/{acc_dir}/{accession}-index-headers.html"
 
 
-def _http_get(url: str, user_agent: str = SEC_USER_AGENT, timeout: int = 60, retries: int = 4, delay: float = 0.13) -> bytes:
+def _http_get(url: str, user_agent: str | None = None, timeout: int = 60, retries: int = 4,
+              delay: float = 0.13) -> bytes:
+    """Fetch official SEC bytes under the one declared identity.
+
+    ``user_agent`` defaults to ``None`` rather than to the module constant on
+    purpose: a default argument binds at import time, which would freeze the
+    identity before the environment is read and silently reintroduce the
+    preflight/acquisition divergence this module guards against.
+    """
     error: Exception | None = None
     for attempt in range(retries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": user_agent, "Accept-Encoding": "identity"})
+            req = urllib.request.Request(url, headers=sec_request_headers(user_agent))
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 data = response.read()
             if delay:
                 time.sleep(delay)
             return data
+        except urllib.error.HTTPError as exc:
+            if exc.code in (403, 404):
+                raise
+            error = exc
+            time.sleep(min(4.0, 0.5 * (2 ** attempt)))
         except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
             error = exc
             time.sleep(min(4.0, 0.5 * (2 ** attempt)))

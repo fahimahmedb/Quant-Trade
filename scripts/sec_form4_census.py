@@ -8,6 +8,7 @@ import json
 import os
 import shutil
 import sys
+import urllib.error
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,7 +18,6 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quant.dataplane.sec_form4 import (  # noqa: E402
     PARSER_VERSION,
-    SEC_USER_AGENT,
     SessionCalendar,
     SourceRecord,
     _http_get,
@@ -33,7 +33,10 @@ from quant.dataplane.sec_form4 import (  # noqa: E402
     probe_yahoo_symbols,
     quarter_specs,
     resolve_event_times,
+    sec_identity_is_compliant,
+    sec_user_agent,
     source_url,
+    source_url_candidates,
 )
 
 
@@ -47,12 +50,38 @@ def write_json(path: Path, payload: object) -> None:
 
 
 def sec_fetch(url: str) -> bytes:
-    """Fetch official SEC bytes with one declared identity and a fair-access pace."""
-    return _http_get(
-        url,
-        user_agent=os.environ.get("SEC_USER_AGENT", SEC_USER_AGENT),
-        delay=0.2,
-    )
+    """Fetch official SEC bytes with one declared identity and a fair-access pace.
+
+    The identity is resolved inside ``_http_get`` via ``sec_user_agent()``. This
+    function deliberately does not read the environment itself: a second reader
+    is a second source of truth, and that is how a passing preflight came to
+    coexist with a refused acquisition.
+    """
+    return _http_get(url, delay=0.2)
+
+
+def preflight() -> int:
+    """Prove official SEC reachability through the acquisition path itself.
+
+    Any preflight that uses its own transport or its own header set can succeed
+    while the real acquisition is refused, so this one calls exactly what the
+    census calls.
+    """
+    identity = sec_user_agent()
+    if not sec_identity_is_compliant(identity):
+        print(f"declared SEC identity is not Fair-Access compliant: {identity!r}", file=sys.stderr)
+        print("SEC requires a contact address in the User-Agent.", file=sys.stderr)
+        return 1
+    year, quarter = quarter_specs()[0]
+    url = source_url(year, quarter)
+    print(f"preflight identity: {identity}", flush=True)
+    print(f"preflight url: {url}", flush=True)
+    data = sec_fetch(url)
+    if not data.startswith(b"PK"):
+        print(f"official SEC {year}Q{quarter} payload is not a ZIP archive", file=sys.stderr)
+        return 1
+    print(f"official SEC preflight ok: {len(data)} bytes sha256={_sha256_bytes(data)}", flush=True)
+    return 0
 
 
 def acquire(raw_dir: Path, expected_manifest: dict[str, dict[str, object]] | None = None) -> tuple[list[tuple[str, bytes]], list[SourceRecord]]:
@@ -62,12 +91,33 @@ def acquire(raw_dir: Path, expected_manifest: dict[str, dict[str, object]] | Non
     for year, quarter in quarter_specs():
         period = f"{year}Q{quarter}"
         path = raw_dir / f"{year}q{quarter}_form345.zip"
-        url = source_url(year, quarter)
+        candidates = source_url_candidates(year, quarter)
+        url = candidates[0]
         if path.exists():
             data = path.read_bytes()
+            url = (expected_manifest or {}).get(period, {}).get("source_url", url)
         else:
-            print(f"download {period}: {url}", flush=True)
-            data = sec_fetch(url)
+            data = None
+            attempts: list[str] = []
+            for candidate in candidates:
+                print(f"download {period}: {candidate}", flush=True)
+                try:
+                    data = sec_fetch(candidate)
+                except urllib.error.HTTPError as exc:
+                    # 404 means this official root does not publish the quarter.
+                    # Record the attempt and try the other official root. Any
+                    # other status is fatal: it is never silently skipped.
+                    if exc.code != 404:
+                        raise
+                    attempts.append(f"{candidate} -> 404")
+                    continue
+                url = candidate
+                break
+            if data is None:
+                raise SystemExit(
+                    f"{period} is not served by any official SEC root; attempts: {attempts}")
+            if not data.startswith(b"PK"):
+                raise SystemExit(f"{period} payload from {url} is not a ZIP archive")
             path.write_bytes(data)
         digest = _sha256_bytes(data)
         expected = (expected_manifest or {}).get(period)
@@ -262,7 +312,11 @@ def main() -> int:
     parser.add_argument("--generate-calendar", action="store_true")
     parser.add_argument("--probe-price-coverage", action="store_true")
     parser.add_argument("--verify-source-hashes", action="store_true")
+    parser.add_argument("--preflight", action="store_true",
+                        help="prove official SEC reachability through the acquisition path")
     args = parser.parse_args()
+    if args.preflight:
+        return preflight()
     run(args)
     return 0
 
