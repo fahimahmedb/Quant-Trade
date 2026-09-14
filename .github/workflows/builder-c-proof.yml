@@ -1,0 +1,67 @@
+name: Builder C proof gate
+
+on:
+  push:
+    branches:
+      - builder/evidence-store-identity-v2
+  pull_request:
+    branches:
+      - reviewer/v1-final-red-team
+  workflow_dispatch:
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify mandated base and ownership scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=37f298423ca4a100c1c633da2c3c6c2641d8dd8e
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-only "$BASE...HEAD" | tee /tmp/builder-c-changed.txt
+          if grep -Eq '^(src/quant/dataplane/sec_form4\.py|src/quant/factory/|artifacts/sec_form4_census/)' /tmp/builder-c-changed.txt; then
+            echo 'Builder C touched a READ ONLY/FORBIDDEN path' >&2
+            exit 1
+          fi
+          if grep -Evq '^(src/quant/dataplane/(evidence.*|identity.*|corporate_actions.*)\.py|schemas/(raw_object|validated_object|derived_artifact|issuer_identity|issuer_name_interval|security_identity|ticker_interval|listing_interval|corporate_action_event|corporate_action_leg)\.schema\.json|tests/test_evidence_identity.*\.py|\.github/workflows/builder-c-proof\.yml)$' /tmp/builder-c-changed.txt; then
+            echo 'Builder C touched a path outside its implementation/proof surface' >&2
+            exit 1
+          fi
+
+      - name: Builder C adversarial tests
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_evidence_identity*.py' -v
+
+      - name: Full unit regression
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+
+      - name: V1 end-to-end demo regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Existing generated schemas remain fresh
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: Canonical economic status artifacts remain untouched
+        run: |
+          git diff --exit-code 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD -- STATE.md CHIEF_BRIEF.md
+
+      - name: Compile Builder C modules
+        run: python3 -m compileall -q src/quant/dataplane/evidence.py src/quant/dataplane/identity.py src/quant/dataplane/corporate_actions.py
+
+      - name: Diff hygiene
+        run: git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+
+      - name: Clean working tree
+        run: |
+          git status --short
+          test -z "$(git status --porcelain)"
