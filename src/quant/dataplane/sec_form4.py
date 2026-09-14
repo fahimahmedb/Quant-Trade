@@ -13,6 +13,7 @@ import io
 import json
 import os
 import re
+import sys
 import threading
 import time
 import urllib.error
@@ -28,7 +29,7 @@ from typing import Any, Iterable, Iterator, Sequence
 
 START_DATE = date(2020, 1, 1)
 END_DATE = date(2026, 6, 30)
-PARSER_VERSION = "sec-form4-census-v2a/2"
+PARSER_VERSION = "sec-form4-census-v2a/3"
 #: SEC Fair Access requires automated traffic to declare a reachable contact
 #: address. Two empirically verified rules govern what SEC's edge accepts, and
 #: both were established by probing the official 2020Q1 URL directly:
@@ -119,6 +120,8 @@ REASON_CODES = {
     "DUPLICATE_REPORTING_OWNER_ROW_CONFLICT",
     "DUPLICATE_TRANSACTION_ROW",
     "DUPLICATE_TRANSACTION_ROW_CONFLICT",
+    "MALFORMED_SOURCE_ROW",
+    "SUBMISSION_ROW_MISSING",
     "ISSUER_ID_UNRESOLVED",
     "ACCEPTANCE_TIMESTAMP_UNRESOLVED",
     "TICKER_CHANGED",
@@ -273,8 +276,8 @@ class LossLedgerRecord:
 
 @dataclass
 class CensusBuild:
-    submissions: dict[str, dict[str, str]]
-    owners_by_accession: dict[str, list[dict[str, str]]]
+    submissions: dict[str, "SubmissionRecord"]
+    owners_by_accession: dict[str, list["ReportingOwnerRecord"]]
     transaction_rows: list[dict[str, str]]
     observations: list[PurchaseObservation]
     events: list[Form4Event]
@@ -330,23 +333,223 @@ def _member_name(names: Sequence[str], token: str) -> str:
     return matches[0]
 
 
-def _read_tsv(zf: zipfile.ZipFile, token: str) -> list[dict[str, str]]:
+#: Primary key SEC documents for each raw table used by the certified census.
+TABLE_KEY_COLUMNS: dict[str, tuple[str, ...]] = {
+    "SUBMISSION": ("ACCESSION_NUMBER",),
+    "REPORTINGOWNER": ("ACCESSION_NUMBER", "RPTOWNERCIK"),
+    "NONDERIV_TRANS": ("ACCESSION_NUMBER", "NONDERIV_TRANS_SK"),
+}
+
+#: The exact columns the certified population reads.  Declaring them turns a
+#: renamed, dropped or reordered SEC column into a hard failure instead of an
+#: empty string that would silently reclassify filings (an absent DOCUMENT_TYPE
+#: would make every filing "not a Form 4", an absent TRANS_CODE would make every
+#: row "not a purchase") while the waterfall still looked plausible.
+TABLE_REQUIRED_COLUMNS: dict[str, tuple[str, ...]] = {
+    "SUBMISSION": ("ACCESSION_NUMBER", "DOCUMENT_TYPE", "ISSUERCIK",
+                   "ISSUERTRADINGSYMBOL", "FILING_DATE"),
+    "REPORTINGOWNER": ("ACCESSION_NUMBER", "RPTOWNERCIK", "RPTOWNER_RELATIONSHIP"),
+    "NONDERIV_TRANS": ("ACCESSION_NUMBER", "NONDERIV_TRANS_SK", "TRANS_DATE",
+                       "TRANS_CODE", "TRANS_ACQUIRED_DISP_CD"),
+}
+
+
+def _intern_or_none(value: str | None) -> str | None:
+    """Intern repeated identity strings; 26 quarters share very few distinct ones."""
+    return None if value is None else sys.intern(value)
+
+
+class CensusSchemaError(RuntimeError):
+    """A raw SEC table does not satisfy the declared certified schema."""
+
+
+class CensusConservationError(RuntimeError):
+    """Raw source rows are not exhaustively accounted for by the waterfall."""
+
+
+@dataclass(frozen=True)
+class RawTableRead:
+    """One raw SEC table read under the declared schema, with row conservation.
+
+    ``data_lines`` counts physical data records in the member.  Every one of
+    them is either parsed into ``rows`` or counted in ``malformed_lines``; the
+    reader refuses to return unless those two account for all of them.
+    """
+
+    token: str
+    member: str
+    columns: tuple[str, ...]
+    rows: list[dict[str, str]]
+    data_lines: int
+    malformed_lines: int
+    malformed_accessions: tuple[str, ...]
+    malformed_details: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class QuarterTables:
+    period: str
+    submissions: RawTableRead
+    owners: RawTableRead
+    transactions: RawTableRead
+
+
+def _read_tsv(zf: zipfile.ZipFile, token: str) -> RawTableRead:
     member = _member_name(zf.namelist(), token)
-    raw = zf.read(member)
-    text = raw.decode("utf-8-sig", errors="strict")
-    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
-    return [{(_clean(k).upper()): _clean(v) for k, v in row.items() if k is not None} for row in reader]
+    text = zf.read(member).decode("utf-8-sig", errors="strict")
+    reader = csv.reader(io.StringIO(text), delimiter="\t")
+    try:
+        header = next(reader)
+    except StopIteration:
+        raise CensusSchemaError(f"{member}: table has no header row") from None
+    columns = tuple(_clean(c).upper() for c in header)
+    duplicated = sorted({c for c in columns if columns.count(c) > 1})
+    if duplicated:
+        raise CensusSchemaError(f"{member}: duplicated column name(s) {duplicated}")
+    missing = [c for c in TABLE_REQUIRED_COLUMNS[token] if c not in columns]
+    if missing:
+        raise CensusSchemaError(
+            f"{member}: missing required column(s) {missing}; declared columns={list(columns)}")
+    acc_index = columns.index("ACCESSION_NUMBER")
+    width = len(columns)
+    rows: list[dict[str, str]] = []
+    malformed_accessions: list[str] = []
+    details: list[str] = []
+    data_lines = 0
+    malformed_lines = 0
+    for lineno, fields in enumerate(reader, start=2):
+        data_lines += 1
+        if len(fields) != width:
+            malformed_lines += 1
+            recovered = _clean(fields[acc_index]) if len(fields) > acc_index else ""
+            if not recovered:
+                # A malformed line whose accession cannot even be read has an
+                # unbounded effect on the certified population: it could belong
+                # to any filing.  Fail the build rather than publish a census
+                # with content that cannot be attributed or excluded.
+                raise CensusSchemaError(
+                    f"{member} line {lineno}: malformed row with no recoverable "
+                    f"ACCESSION_NUMBER ({len(fields)} field(s), header declares {width})")
+            malformed_accessions.append(recovered)
+            if len(details) < 8:
+                details.append(
+                    f"{member} line {lineno}: {len(fields)} field(s), header declares {width}")
+            continue
+        rows.append({columns[i]: _clean(fields[i]) for i in range(width)})
+    if len(rows) + malformed_lines != data_lines:
+        raise CensusConservationError(
+            f"{member}: {data_lines} data line(s) but {len(rows)} parsed + "
+            f"{malformed_lines} malformed")
+    return RawTableRead(
+        token=token, member=member, columns=columns, rows=rows, data_lines=data_lines,
+        malformed_lines=malformed_lines,
+        malformed_accessions=tuple(sorted(set(malformed_accessions))),
+        malformed_details=tuple(details),
+    )
 
 
-def parse_quarter_zip(data: bytes, period: str) -> tuple[list[dict[str, str]], list[dict[str, str]], list[dict[str, str]]]:
+def parse_quarter_zip(data: bytes, period: str) -> QuarterTables:
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
-        submissions = _read_tsv(zf, "SUBMISSION")
-        owners = _read_tsv(zf, "REPORTINGOWNER")
-        transactions = _read_tsv(zf, "NONDERIV_TRANS")
-    for rows in (submissions, owners, transactions):
-        for row in rows:
-            row["_SOURCE_PERIOD"] = period
-    return submissions, owners, transactions
+        return QuarterTables(
+            period=period,
+            submissions=_read_tsv(zf, "SUBMISSION"),
+            owners=_read_tsv(zf, "REPORTINGOWNER"),
+            transactions=_read_tsv(zf, "NONDERIV_TRANS"),
+        )
+
+
+def _read_quarter_table(data: bytes, token: str) -> RawTableRead:
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        return _read_tsv(zf, token)
+
+
+class KeyConflictResolver:
+    """Order-independent primary-key resolution for one raw SEC table.
+
+    The outcome for a key is a function of the *set* of distinct row contents
+    carrying that key, never of which physical row the reader happened to see
+    first:
+
+    * one distinct content, one occurrence  -> canonical row
+    * one distinct content, N occurrences   -> canonical row + N-1 benign copies
+    * two or more distinct contents         -> CONFLICT
+
+    A conflict is fail-closed: the key is removed from the certified population
+    and ledgered.  "First line wins" is never an outcome, because the census
+    cannot silently prefer one of two irreconcilable official rows.  Detecting
+    a conflict by comparing each occurrence against one arbitrary reference is
+    itself order-free: a key whose contents are all equal never produces an
+    inequality in any order, and a key with two distinct contents produces one
+    in every order.
+    """
+
+    __slots__ = ("name", "_fingerprint", "duplicate_occurrences", "conflicting",
+                 "duplicate_periods")
+
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self._fingerprint: dict[str, bytes] = {}
+        #: extra physical rows beyond the first, per duplicated key only
+        self.duplicate_occurrences: Counter[str] = Counter()
+        self.duplicate_periods: dict[str, list[str]] = {}
+        self.conflicting: set[str] = set()
+
+    @staticmethod
+    def fingerprint(row: dict[str, str]) -> bytes:
+        payload = "\x1f".join(f"{k}\x1e{row[k]}" for k in sorted(row))
+        return hashlib.sha256(payload.encode("utf-8")).digest()[:16]
+
+    def observe(self, key: str, row: dict[str, str], period: str) -> bool:
+        """Record one physical row; return True only for a key's first row."""
+        fingerprint = self.fingerprint(row)
+        known = self._fingerprint.get(key)
+        if known is None:
+            self._fingerprint[key] = fingerprint
+            return True
+        self.duplicate_occurrences[key] += 1
+        self.duplicate_periods.setdefault(key, []).append(period)
+        if known != fingerprint:
+            self.conflicting.add(key)
+        return False
+
+    @property
+    def duplicated_keys(self) -> set[str]:
+        return set(self.duplicate_occurrences)
+
+    def rows_for(self, keys: Iterable[str]) -> int:
+        """Total physical rows carried by the given keys."""
+        return sum(1 + self.duplicate_occurrences.get(k, 0) for k in keys)
+
+    def release(self) -> None:
+        """Drop the per-key fingerprint index once resolution is complete."""
+        self._fingerprint = {}
+
+
+@dataclass(frozen=True, slots=True)
+class SubmissionRecord:
+    """Only the submission fields the certified population is allowed to read."""
+
+    accession: str
+    source_period: str
+    document_type: str
+    issuer_cik: str | None
+    issuer_symbol: str
+    filing_date: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class ReportingOwnerRecord:
+    """Only the reporting-owner fields the certified population may read.
+
+    ``owner_cik`` is ``None`` when the authoritative CIK is absent or not a
+    number; identity is never inferred from the name.
+    """
+
+    accession: str
+    source_period: str
+    owner_cik: str | None
+    is_director: bool
+    is_officer: bool
 
 
 def _role_flags(relationship: str) -> tuple[bool, bool]:
@@ -359,114 +562,319 @@ def _role_qualified(relationship: str) -> bool:
     return is_director or is_officer
 
 
+#: (label, raw total key, mutually exclusive disposition keys).  Every raw line
+#: read from an official table must land in exactly one bucket.
+CONSERVATION_IDENTITIES: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("submission_rows", "submission_rows", (
+        "submission_rows_malformed",
+        "submission_rows_blank_accession",
+        "submission_rows_key_conflicting",
+        "submission_rows_duplicate_identical",
+        "submission_rows_excluded_accession",
+        "original_form4_filings",
+        "form4a_filings",
+        "submission_rows_other_form_type",
+    )),
+    ("reporting_owner_rows", "reporting_owner_rows", (
+        "reporting_owner_rows_malformed",
+        "reporting_owner_rows_blank_accession",
+        "reporting_owner_rows_key_conflicting",
+        "reporting_owner_rows_duplicate_identical",
+        "reporting_owner_rows_without_submission",
+        "reporting_owner_rows_excluded_accession",
+        "canonical_reporting_owner_rows",
+    )),
+    ("nonderivative_rows", "nonderivative_rows", (
+        "nonderivative_rows_malformed",
+        "nonderivative_rows_blank_accession",
+        "nonderivative_rows_key_conflicting",
+        "nonderivative_rows_duplicate_identical",
+        "nonderivative_rows_without_submission",
+        "nonderivative_rows_excluded_accession",
+        "canonical_nonderivative_rows",
+    )),
+    ("canonical_nonderivative_rows", "canonical_nonderivative_rows", (
+        "original_form4_nonderivative_rows",
+        "form4a_nonderivative_rows",
+        "nonderivative_rows_other_form_type",
+    )),
+    ("original_form4_nonderivative_rows", "original_form4_nonderivative_rows", (
+        "original_form4_not_p_acquired_rows",
+        "original_form4_p_acquired_rows",
+    )),
+    ("form4a_nonderivative_rows", "form4a_nonderivative_rows", (
+        "form4a_not_p_acquired_rows",
+        "form4a_p_acquired_rows",
+    )),
+    ("original_form4_p_acquired_rows", "original_form4_p_acquired_rows", (
+        "p_acquired_rows_date_out_of_scope",
+        "p_acquired_rows_in_scope",
+    )),
+    ("p_acquired_rows_in_scope", "p_acquired_rows_in_scope", (
+        "owner_id_unresolved_rows",
+        "resolvable_owner_cik_rows",
+    )),
+    ("resolvable_owner_cik_rows", "resolvable_owner_cik_rows", (
+        "joint_owner_ambiguous_rows",
+        "single_owner_unambiguous_rows",
+    )),
+    ("single_owner_unambiguous_rows", "single_owner_unambiguous_rows", (
+        "unqualified_role_rows",
+        "qualified_officer_director_rows",
+    )),
+    ("qualified_officer_director_rows", "qualified_officer_director_rows", (
+        "issuer_id_unresolved_rows",
+        "resolvable_issuer_cik_rows",
+    )),
+    ("normalized_candidate_rows", "normalized_candidate_rows", (
+        "original_form4_p_acquired_rows",
+        "form4a_p_acquired_rows",
+    )),
+)
+
+
+def _assert_conservation(waterfall: dict[str, int] | Counter) -> list[dict[str, Any]]:
+    """Fail closed unless every raw row is accounted for exactly once."""
+    report: list[dict[str, Any]] = []
+    for label, total_key, parts in CONSERVATION_IDENTITIES:
+        total = int(waterfall.get(total_key, 0))
+        accounted = sum(int(waterfall.get(part, 0)) for part in parts)
+        report.append({
+            "identity": label, "total_key": total_key, "total": total,
+            "accounted": accounted, "parts": {p: int(waterfall.get(p, 0)) for p in parts},
+        })
+        if accounted != total:
+            detail = ", ".join(f"{p}={int(waterfall.get(p, 0))}" for p in parts)
+            raise CensusConservationError(
+                f"raw row conservation violated for {label}: {total_key}={total} "
+                f"but dispositions sum to {accounted} ({detail})")
+    return report
+
+
 def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: SessionCalendar) -> CensusBuild:
     """Build the price-independent economic formation population.
 
-    Quarterly ZIPs are processed incrementally so the certified census does not
-    require holding the full SEC non-derivative table in memory.  Only P/acquired
-    candidate rows are retained after the raw/filter waterfall is counted.
+    The build is two-phase on purpose.  Phase one resolves the *identity* layer
+    (submissions and reporting owners) across every quarter, so the complete
+    universe of canonical filings and their conflicts is fixed before a single
+    transaction row is normalized.  Phase two then normalizes transactions
+    against that frozen universe.  Nothing in the certified output can therefore
+    depend on the physical order in which quarters, members or lines are read.
+
+    Only the declared columns are read, only P/acquired candidate rows are
+    retained row-by-row, and every raw line is accounted for in the waterfall.
     """
     losses: list[LossLedgerRecord] = []
     waterfall: Counter[str] = Counter()
-    submissions: dict[str, dict[str, str]] = {}
-    owners_by_accession: dict[str, list[dict[str, str]]] = defaultdict(list)
-    owner_seen: dict[tuple[str, str], dict[str, str]] = {}
-    tx_seen: dict[tuple[str, str], dict[str, str]] = {}
+    submissions: dict[str, SubmissionRecord] = {}
+    owner_records: list[ReportingOwnerRecord] = []
     normalized_candidates: list[NormalizedCandidateRecord] = []
     grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
 
     payloads = sorted(quarter_payloads, key=lambda item: item[0])
     waterfall["source_quarters"] = len(payloads)
 
-    for period, payload in payloads:
-        quarter_submissions, quarter_owners, quarter_tx = parse_quarter_zip(payload, period)
-        waterfall["submission_rows"] += len(quarter_submissions)
-        waterfall["reporting_owner_rows"] += len(quarter_owners)
-        waterfall["nonderivative_rows"] += len(quarter_tx)
+    submission_keys = KeyConflictResolver("SUBMISSION")
+    owner_keys = KeyConflictResolver("REPORTINGOWNER")
+    transaction_keys = KeyConflictResolver("NONDERIV_TRANS")
+    malformed_accessions: dict[str, set[str]] = defaultdict(set)
 
-        accepted_here: set[str] = set()
-        for row in sorted(quarter_submissions, key=lambda r: r.get("ACCESSION_NUMBER", "")):
+    # ---- phase one: identity layer over every quarter -----------------------
+    for period, payload in payloads:
+        tables = parse_quarter_zip(payload, period)
+
+        waterfall["submission_rows"] += tables.submissions.data_lines
+        waterfall["submission_rows_malformed"] += tables.submissions.malformed_lines
+        waterfall["reporting_owner_rows"] += tables.owners.data_lines
+        waterfall["reporting_owner_rows_malformed"] += tables.owners.malformed_lines
+        waterfall["nonderivative_rows"] += tables.transactions.data_lines
+        waterfall["nonderivative_rows_malformed"] += tables.transactions.malformed_lines
+        for table in (tables.submissions, tables.owners, tables.transactions):
+            for accession in table.malformed_accessions:
+                malformed_accessions[accession].add(table.token)
+
+        for row in tables.submissions.rows:
+            accession = _clean(row.get("ACCESSION_NUMBER"))
+            if not accession:
+                waterfall["submission_rows_blank_accession"] += 1
+                continue
+            if not submission_keys.observe(accession, row, period):
+                continue
+            try:
+                filing_date = iso_or_none(row.get("FILING_DATE", ""))
+            except ValueError:
+                filing_date = None
+                waterfall["submission_rows_unparseable_filing_date"] += 1
+            submissions[accession] = SubmissionRecord(
+                accession=accession,
+                source_period=sys.intern(period),
+                document_type=sys.intern(_clean(row.get("DOCUMENT_TYPE")).upper()),
+                issuer_cik=_intern_or_none(normalize_cik(row.get("ISSUERCIK"))),
+                issuer_symbol=sys.intern(_clean(row.get("ISSUERTRADINGSYMBOL")).upper()),
+                filing_date=_intern_or_none(filing_date),
+            )
+
+        for row in tables.owners.rows:
+            accession = _clean(row.get("ACCESSION_NUMBER"))
+            if not accession:
+                waterfall["reporting_owner_rows_blank_accession"] += 1
+                continue
+            owner_cik = _intern_or_none(normalize_cik(row.get("RPTOWNERCIK")))
+            # SEC documents (ACCESSION_NUMBER, RPTOWNERCIK) as the primary key.
+            # Relationship text is never part of the identity key: adding it
+            # could turn one owner with conflicting duplicate metadata into two
+            # apparent owners.  Rows with no authoritative CIK have no usable
+            # key at all, so they are keyed by their own content instead: two
+            # genuinely different unidentified filers must stay two unresolved
+            # rows, not collapse into one apparent duplicate.
+            if owner_cik is None:
+                key = f"{accession}|?|{KeyConflictResolver.fingerprint(row).hex()}"
+            else:
+                key = f"{accession}|{owner_cik}"
+            if not owner_keys.observe(key, row, period):
+                continue
+            is_director, is_officer = _role_flags(row.get("RPTOWNER_RELATIONSHIP", ""))
+            owner_records.append(ReportingOwnerRecord(
+                accession=accession, source_period=sys.intern(period),
+                owner_cik=owner_cik, is_director=is_director, is_officer=is_officer,
+            ))
+
+        for row in tables.transactions.rows:
+            accession = _clean(row.get("ACCESSION_NUMBER"))
+            if not accession:
+                waterfall["nonderivative_rows_blank_accession"] += 1
+                continue
+            transaction_keys.observe(
+                f"{accession}|{_clean(row.get('NONDERIV_TRANS_SK'))}", row, period)
+
+    submission_keys.release()
+    owner_keys.release()
+    transaction_keys.release()
+
+    # ---- fail-closed exclusion set -----------------------------------------
+    excluded: dict[str, set[str]] = defaultdict(set)
+    for accession in submission_keys.conflicting:
+        excluded[accession].add("DUPLICATE_ACCESSION_CONFLICT")
+    for key in owner_keys.conflicting:
+        excluded[key.split("|", 1)[0]].add("DUPLICATE_REPORTING_OWNER_ROW_CONFLICT")
+    for key in transaction_keys.conflicting:
+        excluded[key.split("|", 1)[0]].add("DUPLICATE_TRANSACTION_ROW_CONFLICT")
+    for accession in malformed_accessions:
+        excluded[accession].add("MALFORMED_SOURCE_ROW")
+
+    excluded_submission_rows = 0
+    for accession, reasons in sorted(excluded.items()):
+        record = submissions.get(accession)
+        losses.append(LossLedgerRecord(
+            record_id=_stable_hash(["excluded-accession", accession, sorted(reasons)], "LOSS-"),
+            event_id=None, accession=accession,
+            issuer_cik=record.issuer_cik if record else None, owner_cik=None,
+            status="EXCLUDED", reason_codes=tuple(sorted(reasons)),
+            detail=("official source rows for this accession are irreconcilable or "
+                    "malformed; the whole filing is excluded from the certified "
+                    "population rather than resolved by physical row order"),
+        ))
+        waterfall["fail_closed_excluded_accessions"] += 1
+        # The row a first-line-wins reader would have kept is discarded here:
+        # a conflicted key contributes nothing to the certified population.
+        if record is not None and accession not in submission_keys.conflicting:
+            excluded_submission_rows += 1
+        submissions.pop(accession, None)
+    waterfall["submission_rows_excluded_accession"] = excluded_submission_rows
+
+    # Benign duplicates are recorded but change nothing: every occurrence of the
+    # key carried byte-identical content.
+    for resolver, label in ((submission_keys, "DUPLICATE_ACCESSION"),
+                            (owner_keys, "DUPLICATE_REPORTING_OWNER_ROW"),
+                            (transaction_keys, "DUPLICATE_TRANSACTION_ROW")):
+        for key in sorted(resolver.duplicated_keys - resolver.conflicting):
+            accession = key.split("|", 1)[0]
+            periods = sorted(set(resolver.duplicate_periods.get(key, [])))
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["duplicate", resolver.name, key, periods], "LOSS-"),
+                event_id=None, accession=accession,
+                issuer_cik=(submissions[accession].issuer_cik if accession in submissions else None),
+                owner_cik=None, status="DIAGNOSTIC", reason_codes=(label,),
+                detail=(f"{resolver.duplicate_occurrences[key]} identical copy/copies of "
+                        f"{resolver.name} key {key!r} in period(s) {periods}; content is "
+                        "byte-identical so the certified population is unchanged"),
+            ))
+
+    waterfall["submission_rows_key_conflicting"] = submission_keys.rows_for(submission_keys.conflicting)
+    waterfall["submission_rows_duplicate_identical"] = sum(
+        submission_keys.duplicate_occurrences[k]
+        for k in submission_keys.duplicated_keys - submission_keys.conflicting)
+    waterfall["reporting_owner_rows_key_conflicting"] = owner_keys.rows_for(owner_keys.conflicting)
+    waterfall["reporting_owner_rows_duplicate_identical"] = sum(
+        owner_keys.duplicate_occurrences[k]
+        for k in owner_keys.duplicated_keys - owner_keys.conflicting)
+    waterfall["nonderivative_rows_key_conflicting"] = transaction_keys.rows_for(transaction_keys.conflicting)
+    waterfall["nonderivative_rows_duplicate_identical"] = sum(
+        transaction_keys.duplicate_occurrences[k]
+        for k in transaction_keys.duplicated_keys - transaction_keys.conflicting)
+
+    owners_by_accession: dict[str, list[ReportingOwnerRecord]] = defaultdict(list)
+    orphan_owner_accessions: set[str] = set()
+    for record in owner_records:
+        # Rows of a conflicting owner key are already accounted for as
+        # conflicting rows; the first-seen row a physical-order reader would
+        # have kept is discarded here rather than counted twice.
+        if (record.owner_cik is not None
+                and f"{record.accession}|{record.owner_cik}" in owner_keys.conflicting):
+            continue
+        if record.accession not in submissions:
+            if record.accession in excluded:
+                waterfall["reporting_owner_rows_excluded_accession"] += 1
+            else:
+                waterfall["reporting_owner_rows_without_submission"] += 1
+                orphan_owner_accessions.add(record.accession)
+            continue
+        owners_by_accession[record.accession].append(record)
+        waterfall["canonical_reporting_owner_rows"] += 1
+    owner_records.clear()
+
+    original_accessions = {a for a, s in submissions.items() if s.document_type == "4"}
+    amendment_accessions = {a for a, s in submissions.items() if s.document_type == "4/A"}
+    waterfall["original_form4_filings"] = len(original_accessions)
+    waterfall["form4a_filings"] = len(amendment_accessions)
+    waterfall["submission_rows_other_form_type"] = (
+        len(submissions) - len(original_accessions) - len(amendment_accessions))
+
+    # ---- phase two: transactions against the frozen identity universe -------
+    transaction_duplicates = transaction_keys.duplicated_keys - transaction_keys.conflicting
+    emitted_duplicates: set[str] = set()
+    orphan_transaction_accessions: set[str] = set()
+    for period, payload in payloads:
+        table = _read_quarter_table(payload, "NONDERIV_TRANS")
+        for row in table.rows:
             acc = _clean(row.get("ACCESSION_NUMBER"))
             if not acc:
                 continue
-            previous = submissions.get(acc)
-            if previous is None:
-                submissions[acc] = row
-                accepted_here.add(acc)
-                continue
-            same = ({k: v for k, v in previous.items() if k != "_SOURCE_PERIOD"}
-                    == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
-            reason = "DUPLICATE_ACCESSION" if same else "DUPLICATE_ACCESSION_CONFLICT"
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["submission", acc, period, reason], "LOSS-"),
-                event_id=None, accession=acc,
-                issuer_cik=normalize_cik(row.get("ISSUERCIK")), owner_cik=None,
-                status="DIAGNOSTIC", reason_codes=(reason,),
-                detail=f"duplicate submission row in {period}; canonical source period is {previous.get('_SOURCE_PERIOD', '')}",
-            ))
-            waterfall[reason.lower()] += 1
-
-        # Ownership/transaction rows from a duplicate copy of an accession are
-        # not merged into the canonical filing; the duplicate itself remains in
-        # the diagnostic ledger above.
-        for row in quarter_owners:
-            acc = _clean(row.get("ACCESSION_NUMBER"))
-            if acc not in accepted_here:
-                continue
-            # SEC documents (ACCESSION_NUMBER, RPTOWNERCIK) as the REPORTINGOWNER
-            # primary key.  Do not add relationship text to the identity key: doing
-            # so could turn one owner with conflicting duplicate metadata into two
-            # apparent owners.  Keep the first row deterministic and ledger the
-            # duplicate/conflict explicitly.
-            key = (acc, _clean(row.get("RPTOWNERCIK")))
-            previous_owner = owner_seen.get(key)
-            if previous_owner is not None:
-                same = ({k: v for k, v in previous_owner.items() if k != "_SOURCE_PERIOD"}
-                        == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
-                reason = ("DUPLICATE_REPORTING_OWNER_ROW" if same
-                          else "DUPLICATE_REPORTING_OWNER_ROW_CONFLICT")
-                losses.append(LossLedgerRecord(
-                    record_id=_stable_hash(["owner-row", *key, period, reason], "LOSS-"),
-                    event_id=None, accession=acc,
-                    issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")),
-                    owner_cik=normalize_cik(row.get("RPTOWNERCIK")), status="DIAGNOSTIC",
-                    reason_codes=(reason,),
-                    detail=f"duplicate reporting-owner primary key in {period}",
-                ))
-                waterfall[reason.lower()] += 1
-                continue
-            owner_seen[key] = row
-            owners_by_accession[acc].append(row)
-
-        for row in quarter_tx:
-            acc = _clean(row.get("ACCESSION_NUMBER"))
-            if acc not in accepted_here:
-                continue
             sk = _clean(row.get("NONDERIV_TRANS_SK"))
-            key = (acc, sk)
-            previous_tx = tx_seen.get(key)
-            if previous_tx is not None:
-                same = ({k: v for k, v in previous_tx.items() if k != "_SOURCE_PERIOD"}
-                        == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
-                reason = "DUPLICATE_TRANSACTION_ROW" if same else "DUPLICATE_TRANSACTION_ROW_CONFLICT"
-                losses.append(LossLedgerRecord(
-                    record_id=_stable_hash(["tx", acc, sk, period, reason], "LOSS-"),
-                    event_id=None, accession=acc,
-                    issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")), owner_cik=None,
-                    status="DIAGNOSTIC", reason_codes=(reason,), detail=f"duplicate transaction row {sk}",
-                ))
-                waterfall[reason.lower()] += 1
+            key = f"{acc}|{sk}"
+            if key in transaction_keys.conflicting:
                 continue
-            tx_seen[key] = row
+            if key in transaction_duplicates:
+                if key in emitted_duplicates:
+                    continue
+                emitted_duplicates.add(key)
+            sub = submissions.get(acc)
+            if sub is None:
+                if acc in excluded:
+                    waterfall["nonderivative_rows_excluded_accession"] += 1
+                else:
+                    waterfall["nonderivative_rows_without_submission"] += 1
+                    orphan_transaction_accessions.add(acc)
+                continue
             waterfall["canonical_nonderivative_rows"] += 1
 
-            sub = submissions[acc]
-            form = _clean(sub.get("DOCUMENT_TYPE")).upper()
+            form = sub.document_type
             if form == "4":
                 waterfall["original_form4_nonderivative_rows"] += 1
             elif form == "4/A":
                 waterfall["form4a_nonderivative_rows"] += 1
             else:
+                waterfall["nonderivative_rows_other_form_type"] += 1
                 continue
 
             code = _clean(row.get("TRANS_CODE")).upper()
@@ -483,21 +891,19 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
             else:
                 waterfall["form4a_p_acquired_rows"] += 1
 
-            issuer_cik = normalize_cik(sub.get("ISSUERCIK"))
-            symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
+            issuer_cik = sub.issuer_cik
+            symbol = sub.issuer_symbol
             owners = owners_by_accession.get(acc, [])
-            normalized_owner_ids = [normalize_cik(o.get("RPTOWNERCIK")) for o in owners]
-            unresolved_owner_rows = sum(cik is None for cik in normalized_owner_ids)
-            owner_ciks = tuple(sorted({cik for cik in normalized_owner_ids if cik is not None}))
+            unresolved_owner_rows = sum(o.owner_cik is None for o in owners)
+            owner_ciks = tuple(sorted({o.owner_cik for o in owners if o.owner_cik is not None}))
             # A filing with one valid owner CIK plus one missing/invalid owner CIK is
             # not a single-owner filing.  Certified identity may never be inferred
             # from the surviving row.  Treat any unresolved reporting-owner key as
             # an identity failure before joint/single-owner classification.
             single_owner = owner_ciks[0] if unresolved_owner_rows == 0 and len(owner_ciks) == 1 else None
-            owner_rows = [o for o in owners if single_owner and normalize_cik(o.get("RPTOWNERCIK")) == single_owner]
-            role_flags = [_role_flags(o.get("RPTOWNER_RELATIONSHIP", "")) for o in owner_rows]
-            is_director = any(flag[0] for flag in role_flags) if single_owner else None
-            is_officer = any(flag[1] for flag in role_flags) if single_owner else None
+            owner_rows = [o for o in owners if single_owner and o.owner_cik == single_owner]
+            is_director = any(o.is_director for o in owner_rows) if single_owner else None
+            is_officer = any(o.is_officer for o in owner_rows) if single_owner else None
 
             tx_date_iso: str | None = None
             try:
@@ -589,10 +995,23 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
                 item["symbols"].add(symbol)
             item["rows"] += 1
 
-    original_accessions = {acc for acc, sub in submissions.items() if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4"}
-    amendment_accessions = {acc for acc, sub in submissions.items() if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4/A"}
-    waterfall["original_form4_filings"] = len(original_accessions)
-    waterfall["form4a_filings"] = len(amendment_accessions)
+    for label, accessions, rows in (
+            ("reporting-owner", orphan_owner_accessions,
+             int(waterfall["reporting_owner_rows_without_submission"])),
+            ("non-derivative transaction", orphan_transaction_accessions,
+             int(waterfall["nonderivative_rows_without_submission"]))):
+        if not rows:
+            continue
+        sample = sorted(accessions)[:20]
+        losses.append(LossLedgerRecord(
+            record_id=_stable_hash(["orphan-rows", label, rows, sample], "LOSS-"),
+            event_id=None, accession=None, issuer_cik=None, owner_cik=None,
+            status="EXCLUDED", reason_codes=("SUBMISSION_ROW_MISSING",),
+            detail=(f"{rows} official {label} row(s) across {len(accessions)} accession(s) "
+                    f"carry no SUBMISSION row in any acquired quarter; sample={sample}"),
+        ))
+
+    waterfall["normalized_candidate_rows"] = len(normalized_candidates)
 
     observations: list[PurchaseObservation] = []
     for (issuer_cik, owner_cik, tx_date), item in sorted(grouped.items()):
@@ -644,10 +1063,9 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
                 ))
     waterfall["economic_formations"] = len(events)
 
-    filings_by_period = Counter(sub.get("_SOURCE_PERIOD", "UNKNOWN") for sub in submissions.values()
-                                if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4")
-    amendments_by_period = Counter(sub.get("_SOURCE_PERIOD", "UNKNOWN") for sub in submissions.values()
-                                   if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4/A")
+    filings_by_period = Counter(s.source_period for s in submissions.values() if s.document_type == "4")
+    amendments_by_period = Counter(s.source_period for s in submissions.values() if s.document_type == "4/A")
+    conservation = _assert_conservation(waterfall)
     diagnostics = {
         "calendar_source": calendar.source,
         "calendar_version": calendar.version,
@@ -656,6 +1074,14 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
         "start_date": START_DATE.isoformat(), "end_date": END_DATE.isoformat(),
         "parser_version": PARSER_VERSION,
         "normalized_candidate_scope": "all Form 4 / 4-A non-derivative P+acquired rows; non-P/A rows are counted in the waterfall but not persisted row-by-row",
+        "declared_source_columns": {t: list(c) for t, c in sorted(TABLE_REQUIRED_COLUMNS.items())},
+        "primary_key_columns": {t: list(c) for t, c in sorted(TABLE_KEY_COLUMNS.items())},
+        "key_conflict_policy": ("a primary key carrying two or more distinct official row "
+                                "contents is fail-closed: the whole accession is excluded from "
+                                "the certified population and ledgered; identical duplicates are "
+                                "ledgered as diagnostics and change nothing; no disposition "
+                                "depends on physical row, member or quarter order"),
+        "raw_row_conservation": conservation,
         "original_form4_filings_by_source_period": dict(sorted(filings_by_period.items())),
         "form4a_filings_by_source_period": dict(sorted(amendments_by_period.items())),
     }
@@ -738,7 +1164,7 @@ def acceptance_header_url(issuer_cik: str, accession: str) -> str:
 
 
 def _http_get(url: str, user_agent: str | None = None, timeout: int = 60, retries: int = 4,
-              delay: float = 0.13) -> bytes:
+              delay: float = 0.13, limiter: "RateLimiter | None" = None) -> bytes:
     """Fetch official SEC bytes under the one declared identity.
 
     ``user_agent`` defaults to ``None`` rather than to the module constant on
@@ -749,6 +1175,12 @@ def _http_get(url: str, user_agent: str | None = None, timeout: int = 60, retrie
     error: Exception | None = None
     for attempt in range(retries):
         try:
+            # Every attempt is a real request to SEC, so every attempt draws from
+            # the budget. Charging only the first would let retries present a
+            # multiple of the declared pace during exactly the conditions that
+            # provoke retries.
+            if limiter is not None:
+                limiter.acquire()
             req = urllib.request.Request(url, headers=sec_request_headers(user_agent))
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 data = response.read()
@@ -764,6 +1196,116 @@ def _http_get(url: str, user_agent: str | None = None, timeout: int = 60, retrie
             error = exc
             time.sleep(min(4.0, 0.5 * (2 ** attempt)))
     raise RuntimeError(f"failed GET {url}: {error}")
+
+
+class AcceptanceIdentityError(ValueError):
+    """An EDGAR document is not the document it was fetched for."""
+
+
+@dataclass(frozen=True)
+class AcceptanceDocument:
+    """Identity and acceptance time read out of one EDGAR header."""
+
+    accession: str
+    submission_type: str
+    issuer_ciks: tuple[str, ...]
+    owner_ciks: tuple[str, ...]
+    acceptance_time: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"accession": self.accession, "submission_type": self.submission_type,
+                "issuer_ciks": list(self.issuer_ciks), "owner_ciks": list(self.owner_ciks),
+                "acceptance_time": self.acceptance_time}
+
+
+def parse_acceptance_document(payload: bytes) -> AcceptanceDocument:
+    """Read identity and acceptance time from the authoritative SGML header.
+
+    An EDGAR index-headers document carries the machine-readable header inside an
+    HTML comment and repeats it afterwards as escaped human-readable text. Only
+    the SGML block is parsed: the rendering is a duplicate, and reading identity
+    from a duplicate is how a substituted document passes inspection.
+
+    ``<CIK>`` appears under both ``<ISSUER>`` and ``<REPORTING-OWNER>``, so the
+    parse tracks which block it is inside rather than matching the tag globally.
+    """
+    text = payload.decode("utf-8", errors="replace")
+    start = text.find("<SEC-HEADER>")
+    if start < 0:
+        raise AcceptanceIdentityError("no SEC-HEADER block")
+    header = text[start:]
+    end = header.find("-->")
+    if end >= 0:
+        header = header[:end]
+
+    accession = ""
+    submission_type = ""
+    acceptance = ""
+    issuers: list[str] = []
+    owners: list[str] = []
+    block = ""
+    for raw_line in header.splitlines():
+        line = raw_line.strip()
+        if line.startswith("<REPORTING-OWNER>"):
+            block = "owner"
+        elif line.startswith("<ISSUER>"):
+            block = "issuer"
+        elif line.startswith(("</REPORTING-OWNER>", "</ISSUER>")):
+            block = ""
+        elif line.startswith("<ACCEPTANCE-DATETIME>") and not acceptance:
+            acceptance = line[len("<ACCEPTANCE-DATETIME>"):].strip()
+        elif line.startswith("<ACCESSION-NUMBER>") and not accession:
+            accession = line[len("<ACCESSION-NUMBER>"):].strip()
+        elif line.startswith("<TYPE>") and not submission_type:
+            submission_type = line[len("<TYPE>"):].strip()
+        elif line.startswith("<CIK>"):
+            cik = normalize_cik(line[len("<CIK>"):].strip())
+            if cik and block == "issuer":
+                issuers.append(cik)
+            elif cik and block == "owner":
+                owners.append(cik)
+
+    if not re.fullmatch(r"\d{14}", acceptance or ""):
+        raise AcceptanceIdentityError("ACCEPTANCE-DATETIME not found")
+    if not accession:
+        raise AcceptanceIdentityError("ACCESSION-NUMBER not found")
+    stamp = datetime.strptime(acceptance, "%Y%m%d%H%M%S").replace(
+        tzinfo=timezone(timedelta(hours=-5)))
+    # The EDGAR header does not encode a DST offset. Preserve the authoritative
+    # wall clock and label the timezone separately rather than inventing a UTC
+    # conversion. The ISO string intentionally carries no offset.
+    return AcceptanceDocument(
+        accession=accession, submission_type=submission_type.upper(),
+        issuer_ciks=tuple(sorted(set(issuers))), owner_ciks=tuple(sorted(set(owners))),
+        acceptance_time=stamp.strftime("%Y-%m-%dT%H:%M:%S"))
+
+
+def verify_acceptance_document(payload: bytes, accession: str, issuer_cik: str | None = None,
+                               owner_ciks: Sequence[str] = ()) -> AcceptanceDocument:
+    """Accept an acceptance time only from a document proven to be the right one.
+
+    A timestamp is meaningless unless the document it came from is this
+    accession, is an original Form 4, and belongs to the issuer and reporting
+    owners the census expects. Checking that the bytes merely parse would let a
+    substituted, truncated or mis-cached document supply a timestamp.
+    """
+    document = parse_acceptance_document(payload)
+    if document.accession != accession:
+        raise AcceptanceIdentityError(
+            f"document is accession {document.accession}, expected {accession}")
+    if document.submission_type != "4":
+        raise AcceptanceIdentityError(
+            f"submission type {document.submission_type!r} is not an original Form 4")
+    expected_issuer = normalize_cik(issuer_cik) if issuer_cik else None
+    if expected_issuer and expected_issuer not in document.issuer_ciks:
+        raise AcceptanceIdentityError(
+            f"issuer {expected_issuer} absent from document issuers {document.issuer_ciks}")
+    missing = sorted({normalize_cik(o) for o in owner_ciks if normalize_cik(o)}
+                     - set(document.owner_ciks))
+    if missing:
+        raise AcceptanceIdentityError(
+            f"reporting owners {missing} absent from document owners {document.owner_ciks}")
+    return document
 
 
 def parse_acceptance_timestamp(payload: bytes) -> str:
@@ -785,6 +1327,25 @@ DEFAULT_SEC_RATE_PER_SECOND = 5.0
 ACCEPTANCE_CHECKPOINT_BATCH = 200
 
 
+def repair_checkpoint_tail(path: Path | None) -> int:
+    """Truncate a checkpoint to its last complete line. Returns bytes dropped.
+
+    A process killed mid-append leaves a partial final line. Appending after it
+    fuses the fragment with the next record, producing a line that is neither
+    the old one nor the new one, so the damage outlives the crash.
+    """
+    if path is None or not path.exists():
+        return 0
+    data = path.read_bytes()
+    if not data or data.endswith(b"\n"):
+        return 0
+    cut = data.rfind(b"\n")
+    keep = data[:cut + 1] if cut >= 0 else b""
+    dropped = len(data) - len(keep)
+    write_atomic(path, keep)
+    return dropped
+
+
 def load_acceptance_checkpoint(path: Path | None) -> dict[str, dict[str, Any]]:
     """Previously completed accessions, keyed by accession."""
     if path is None or not path.exists():
@@ -802,15 +1363,22 @@ def load_acceptance_checkpoint(path: Path | None) -> dict[str, dict[str, Any]]:
     return done
 
 
-def validate_acceptance_cache(done: dict[str, dict[str, Any]], cache_dir: Path | None
+def validate_acceptance_cache(done: dict[str, dict[str, Any]], cache_dir: Path | None,
+                              issuer_of: dict[str, str] | None = None,
+                              owners_of: dict[str, Sequence[str]] | None = None,
                               ) -> tuple[dict[str, dict[str, Any]], list[str]]:
-    """Keep only checkpoint entries whose cached bytes still hash as recorded.
+    """Re-derive every resumed record from the cached bytes.
 
-    Resume must be exact: an entry whose document is missing or altered is not
-    resumed, it is re-fetched.
+    A matching sha256 proves the bytes are unchanged since they were recorded.
+    It does not prove the recorded acceptance time or URL were ever derived from
+    those bytes, nor that the document is the right one. Resume therefore
+    re-parses and re-verifies each document and rebuilds the record from what
+    the bytes actually say; a stored field that disagrees makes the entry stale.
     """
     if cache_dir is None:
         return {}, sorted(done)
+    issuer_of = issuer_of or {}
+    owners_of = owners_of or {}
     good: dict[str, dict[str, Any]] = {}
     stale: list[str] = []
     for accession, record in done.items():
@@ -819,15 +1387,30 @@ def validate_acceptance_cache(done: dict[str, dict[str, Any]], cache_dir: Path |
             stale.append(accession)
             continue
         payload = path.read_bytes()
-        if _sha256_bytes(payload) != record.get("sha256"):
+        digest = _sha256_bytes(payload)
+        if digest != record.get("sha256"):
             stale.append(accession)
             continue
-        good[accession] = record
+        try:
+            document = verify_acceptance_document(
+                payload, accession, issuer_of.get(accession), owners_of.get(accession, ()))
+        except (AcceptanceIdentityError, ValueError):
+            stale.append(accession)
+            continue
+        if record.get("acceptance_time") and record["acceptance_time"] != document.acceptance_time:
+            stale.append(accession)
+            continue
+        good[accession] = {"accession": accession,
+                           "url": acceptance_header_url(issuer_of.get(accession, ""), accession),
+                           "sha256": digest, "bytes": len(payload),
+                           "acceptance_time": document.acceptance_time,
+                           "submission_type": document.submission_type}
     return good, sorted(stale)
 
 
 def resolve_acceptance_documents(
-    accessions: Sequence[str], issuer_of: dict[str, str], cache_dir: Path | None = None,
+    accessions: Sequence[str], issuer_of: dict[str, str],
+    owners_of: dict[str, Sequence[str]] | None = None, cache_dir: Path | None = None,
     checkpoint_path: Path | None = None, fetcher: Any = None, workers: int = 1,
     limiter: "RateLimiter | None" = None,
     rate_per_second: float = DEFAULT_SEC_RATE_PER_SECOND,
@@ -846,12 +1429,20 @@ def resolve_acceptance_documents(
     The returned mapping is assembled from the sorted accession list, so the
     result is byte-identical whatever the worker count or completion order.
     """
-    fetcher = fetcher or _http_get
     limiter = limiter or RateLimiter(rate_per_second)
+    owners_of = owners_of or {}
+    # An injected fetcher does its own thing, so the caller is charged once per
+    # accession. The default fetcher charges every attempt from inside, so
+    # charging here as well would double-count.
+    budgeted_inside = fetcher is None
+    if budgeted_inside:
+        def fetcher(url: str) -> bytes:  # noqa: F811 - default, budget-aware
+            return _http_get(url, limiter=limiter, delay=0.0)
     wanted = sorted(set(accessions))
 
+    repair_checkpoint_tail(checkpoint_path)
     resumed, stale = validate_acceptance_cache(
-        load_acceptance_checkpoint(checkpoint_path), cache_dir)
+        load_acceptance_checkpoint(checkpoint_path), cache_dir, issuer_of, owners_of)
     pending = [a for a in wanted if a not in resumed]
 
     force_refetch = set(stale)
@@ -886,29 +1477,34 @@ def resolve_acceptance_documents(
             issuer = issuer_of.get(accession, "")
             url = acceptance_header_url(issuer, accession)
             local = cache_dir / f"{accession}.html" if cache_dir is not None else None
+            expected_owners = owners_of.get(accession, ())
             try:
                 payload: bytes | None = None
-                # A document the checkpoint marked stale failed its recorded
-                # hash, so its cached bytes are not the bytes SEC served. It must
-                # be fetched again rather than re-read: a tampered or truncated
-                # file can still parse, and trusting it would launder altered
-                # content into the census.
+                # A document the checkpoint marked stale failed verification, so
+                # its cached bytes are not trustworthy and must be fetched again.
+                # A cache entry that no checkpoint vouches for is not promoted on
+                # the strength of a parsable timestamp either: it has to pass the
+                # same identity verification a fresh fetch would.
                 if local is not None and accession not in force_refetch and local.exists():
                     candidate = local.read_bytes()
                     try:
-                        parse_acceptance_timestamp(candidate)
+                        verify_acceptance_document(candidate, accession,
+                                                   issuer, expected_owners)
                         payload = candidate
                     except Exception:
-                        payload = None  # torn or truncated: re-fetch rather than trust
+                        payload = None
                 if payload is None:
-                    limiter.acquire()
+                    if not budgeted_inside:
+                        limiter.acquire()
                     payload = fetcher(url)
                     if local is not None:
                         write_atomic(local, payload)
-                accepted = parse_acceptance_timestamp(payload)
+                document = verify_acceptance_document(payload, accession, issuer,
+                                                      expected_owners)
                 record = {"accession": accession, "url": url,
                           "sha256": _sha256_bytes(payload), "bytes": len(payload),
-                          "acceptance_time": accepted}
+                          "acceptance_time": document.acceptance_time,
+                          "submission_type": document.submission_type}
             except Exception as exc:
                 with store_lock:
                     failures[accession] = f"{type(exc).__name__}: {exc}"
@@ -949,8 +1545,13 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
     losses = list(build.losses)
     if cache_dir is not None:
         cache_dir.mkdir(parents=True, exist_ok=True)
+    accession_owners: dict[str, set[str]] = defaultdict(set)
+    for obs in build.observations:
+        for acc in obs.accessions:
+            accession_owners[acc].add(obs.owner_cik)
     resolved, failures = resolve_acceptance_documents(
-        needed, accession_issuer, cache_dir=cache_dir,
+        needed, accession_issuer, owners_of={k: sorted(v) for k, v in accession_owners.items()},
+        cache_dir=cache_dir,
         checkpoint_path=checkpoint_path, fetcher=fetcher, workers=workers,
         rate_per_second=rate_per_second)
     for acc, detail in failures:
@@ -963,18 +1564,35 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
     out: list[Form4Event] = []
     for event in build.events:
         owner_times: list[str] = []
+        unknown_owners: list[str] = []
+        missing_accessions: set[str] = set()
         relevant_obs = [observations[x] for x in event.constituent_observation_ids]
         for owner in event.owner_ciks:
-            times = [resolved[a]["acceptance_time"] for o in relevant_obs if o.owner_cik == owner for a in o.accessions if a in resolved]
-            if times:
-                owner_times.append(min(times))
+            owner_accessions = {a for o in relevant_obs if o.owner_cik == owner
+                                for a in o.accessions}
+            outstanding = sorted(a for a in owner_accessions if a not in resolved)
+            if outstanding or not owner_accessions:
+                # R-05. The earliest instant this owner became public is bounded
+                # below by an accession whose acceptance time is unknown, so the
+                # minimum over the resolved subset is not the owner's earliest.
+                # Treating it as such would report an event_time earlier than the
+                # evidence supports.
+                unknown_owners.append(owner)
+                missing_accessions.update(outstanding)
+                continue
+            owner_times.append(min(resolved[a]["acceptance_time"] for a in owner_accessions))
         accession_times = tuple(sorted((a, resolved[a]["acceptance_time"]) for a in event.accessions if a in resolved))
-        if len(owner_times) < 2:
+        if unknown_owners or len(owner_times) < 2:
             out.append(Form4Event(**{**asdict(event), "acceptance_timestamps": accession_times, "event_time": None, "event_time_status": "UNRESOLVED"}))
             losses.append(LossLedgerRecord(
                 record_id=_stable_hash(["event-time", event.event_id], "LOSS-"), event_id=event.event_id,
                 accession=None, issuer_cik=event.issuer_cik, owner_cik=None, status="UNRESOLVED",
-                reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",), detail="fewer than two distinct constituent owners have resolved acceptance timestamps",
+                reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",),
+                detail=(f"earliest public observability unknown for owners "
+                        f"{sorted(unknown_owners)} via unresolved accessions "
+                        f"{sorted(missing_accessions)}" if unknown_owners else
+                        "fewer than two distinct constituent owners have resolved "
+                        "acceptance timestamps"),
             ))
         else:
             event_time = sorted(owner_times)[1]
@@ -985,13 +1603,10 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
 def ticker_history(build: CensusBuild) -> dict[str, list[tuple[str, str, str]]]:
     history: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
     for acc, sub in build.submissions.items():
-        if _clean(sub.get("DOCUMENT_TYPE")).upper() != "4":
+        if sub.document_type != "4":
             continue
-        cik = normalize_cik(sub.get("ISSUERCIK"))
-        symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
-        filing_date = iso_or_none(sub.get("FILING_DATE", ""))
-        if cik and filing_date:
-            history[cik].append((filing_date, symbol, acc))
+        if sub.issuer_cik and sub.filing_date:
+            history[sub.issuer_cik].append((sub.filing_date, sub.issuer_symbol, acc))
     return {k: sorted(v) for k, v in history.items()}
 
 
@@ -1005,7 +1620,8 @@ def build_mapping_ledger(build: CensusBuild, events: Sequence[Form4Event], price
                 symbol_ciks[sym].add(cik)
     out: list[dict[str, Any]] = []
     for event in events:
-        symbols = sorted({_clean(build.submissions[a].get("ISSUERTRADINGSYMBOL")).upper() for a in event.accessions if a in build.submissions and _clean(build.submissions[a].get("ISSUERTRADINGSYMBOL"))})
+        symbols = sorted({build.submissions[a].issuer_symbol for a in event.accessions
+                          if a in build.submissions and build.submissions[a].issuer_symbol})
         reasons: list[str] = []
         diagnostic: list[str] = []
         if len(symbols) == 0:

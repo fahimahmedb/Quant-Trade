@@ -19,6 +19,7 @@ from quant.dataplane.sec_form4 import (  # noqa: E402
     build_census,
     build_mapping_ledger,
     parse_acceptance_timestamp,
+    parse_acceptance_document,
     resolve_event_times,
 )
 
@@ -50,6 +51,30 @@ def owner(acc, cik, relationship="Officer"):
 def tx(acc, sk, d, code="P", ad="A"):
     return {"ACCESSION_NUMBER": acc, "NONDERIV_TRANS_SK": str(sk), "TRANS_DATE": d, "TRANS_CODE": code, "TRANS_ACQUIRED_DISP_CD": ad}
 
+
+
+def edgar_header(accession: str, issuer_cik: str, owner_ciks, stamp: str,
+                 submission_type: str = "4") -> bytes:
+    """A realistic EDGAR index-headers document.
+
+    Identity is verified before an acceptance time is accepted, so a fixture
+    carrying only a timestamp no longer represents a document the resolver would
+    trust. These fixtures mirror the real SGML block.
+    """
+    owners = "".join(
+        f"<REPORTING-OWNER>\n<OWNER-DATA>\n<CIK>{str(c).zfill(10)}\n"
+        f"</OWNER-DATA>\n</REPORTING-OWNER>\n" for c in owner_ciks)
+    return (
+        "<HTML><HEAD><TITLE>SEC EDGAR Submission</TITLE>\n<!--\n"
+        f"<SEC-HEADER>{accession}.hdr.sgml\n"
+        f"<ACCEPTANCE-DATETIME>{stamp}\n"
+        f"<ACCESSION-NUMBER>{accession}\n"
+        f"<TYPE>{submission_type}\n"
+        f"{owners}"
+        f"<ISSUER>\n<COMPANY-DATA>\n<CIK>{str(issuer_cik).zfill(10)}\n"
+        "</COMPANY-DATA>\n</ISSUER>\n"
+        "</SEC-HEADER>\n-->\n</HEAD></HTML>"
+    ).encode()
 
 class Form4CensusTests(unittest.TestCase):
     def setUp(self):
@@ -95,14 +120,32 @@ class Form4CensusTests(unittest.TestCase):
         self.assertEqual(2,row.reporting_owner_rows)
         self.assertEqual(1,row.unresolved_owner_cik_rows)
 
-    def test_reporting_owner_primary_key_conflict_is_diagnostic_not_extra_owner(self):
+    def test_reporting_owner_primary_key_conflict_fails_closed_not_first_row_wins(self):
+        # Two irreconcilable official rows for one (accession, owner) key.  The
+        # census may not silently keep whichever row was read first: the filing
+        # leaves the certified population and the contradiction is ledgered.
         a="0000000001-24-000001"
         o1=owner(a,"101","Officer")
         o2=owner(a,"101","Director")
         build=self.build([submission(a)],[o1,o2],[tx(a,1,"02-JAN-2024")])
-        self.assertEqual(1,len(build.observations))
-        self.assertEqual(1,build.waterfall["duplicate_reporting_owner_row_conflict"])
-        self.assertTrue(any("DUPLICATE_REPORTING_OWNER_ROW_CONFLICT" in x.reason_codes for x in build.losses))
+        self.assertEqual(0,len(build.observations))
+        self.assertEqual(0,len(build.events))
+        self.assertEqual(2,build.waterfall["reporting_owner_rows_key_conflicting"])
+        self.assertEqual(1,build.waterfall["fail_closed_excluded_accessions"])
+        self.assertTrue(any("DUPLICATE_REPORTING_OWNER_ROW_CONFLICT" in x.reason_codes
+                            and x.status=="EXCLUDED" for x in build.losses))
+
+    def test_key_conflict_outcome_does_not_depend_on_physical_row_order(self):
+        a="0000000001-24-000001"
+        o1=owner(a,"101","Officer")
+        o2=owner(a,"101","Director")
+        forward=self.build([submission(a)],[o1,o2],[tx(a,1,"02-JAN-2024")])
+        reverse=self.build([submission(a)],[o2,o1],[tx(a,1,"02-JAN-2024")])
+        self.assertEqual(forward.observations,reverse.observations)
+        self.assertEqual(forward.events,reverse.events)
+        self.assertEqual(forward.waterfall,reverse.waterfall)
+        self.assertEqual([x.reason_codes for x in forward.losses],
+                         [x.reason_codes for x in reverse.losses])
 
     def test_missing_issuer_cik_is_explicitly_unresolved(self):
         a="0000000001-24-000001"
@@ -185,7 +228,8 @@ class Form4CensusTests(unittest.TestCase):
     def test_event_time_is_second_distinct_owner_public_time(self):
         a,b="0000000001-24-000001","0000000001-24-000002"
         build=self.build([submission(a),submission(b)],[owner(a,"101"),owner(b,"102")],[tx(a,1,"02-JAN-2024"),tx(b,1,"03-JAN-2024")])
-        payloads={a:b"<ACCEPTANCE-DATETIME>20240104120000",b:b"<ACCEPTANCE-DATETIME>20240103160000"}
+        payloads={a:edgar_header(a,"0000000001",["101"],"20240104120000"),
+                  b:edgar_header(b,"0000000001",["102"],"20240103160000")}
         events,losses,_=resolve_event_times(build,fetcher=lambda url: payloads[a] if a in url else payloads[b])
         self.assertEqual("2024-01-04T12:00:00",events[0].event_time)
         self.assertGreaterEqual(events[0].event_time[:10],events[0].formation_transaction_date)
@@ -194,7 +238,9 @@ class Form4CensusTests(unittest.TestCase):
         acc=[f"0000000001-24-{i:06d}" for i in range(1,4)]
         build=self.build([submission(a) for a in acc],[owner(a,str(100+i)) for i,a in enumerate(acc,1)],[tx(a,1,"03-JAN-2024") for a in acc])
         self.assertEqual(1,len(build.events)); self.assertEqual(3,len(build.events[0].owner_ciks))
-        times={acc[0]:b"<ACCEPTANCE-DATETIME>20240103170000",acc[1]:b"<ACCEPTANCE-DATETIME>20240103160000",acc[2]:b"<ACCEPTANCE-DATETIME>20240103180000"}
+        times={acc[0]:edgar_header(acc[0],"0000000001",["101"],"20240103170000"),
+               acc[1]:edgar_header(acc[1],"0000000001",["102"],"20240103160000"),
+               acc[2]:edgar_header(acc[2],"0000000001",["103"],"20240103180000")}
         events,_,_=resolve_event_times(build,fetcher=lambda url: next(v for k,v in times.items() if k in url))
         self.assertEqual("2024-01-03T17:00:00",events[0].event_time)
 
@@ -206,6 +252,10 @@ class Form4CensusTests(unittest.TestCase):
 
     def test_acceptance_header_parser(self):
         self.assertEqual("2026-06-11T07:01:13",parse_acceptance_timestamp(b"x<ACCEPTANCE-DATETIME>20260611070113\ny"))
+        doc=parse_acceptance_document(edgar_header("0000000001-26-000001","99",["101","102"],"20260611070113"))
+        self.assertEqual(("0000000099",),doc.issuer_ciks)
+        self.assertEqual(("0000000101","0000000102"),doc.owner_ciks)
+        self.assertEqual("4",doc.submission_type)
 
     def test_ticker_change_does_not_split_issuer(self):
         a,b="0000000001-24-000001","0000000001-24-000002"
@@ -257,7 +307,7 @@ class Form4CensusTests(unittest.TestCase):
         a="0000000001-24-000001"
         build=self.build([submission(a)],[owner(a,"101"),owner(a,"101")],[tx(a,1,"02-JAN-2024")])
         self.assertEqual(1,len(build.observations))
-        self.assertEqual(1,build.waterfall["duplicate_reporting_owner_row"])
+        self.assertEqual(1,build.waterfall["reporting_owner_rows_duplicate_identical"])
         self.assertTrue(any("DUPLICATE_REPORTING_OWNER_ROW" in x.reason_codes for x in build.losses))
 
     def test_hand_verifiable_mini_fixture_reconciles_crossing_and_unresolved_classes(self):
@@ -274,7 +324,8 @@ class Form4CensusTests(unittest.TestCase):
     def test_event_retains_exact_accession_acceptance_timestamps(self):
         a,b="0000000001-24-000001","0000000001-24-000002"
         build=self.build([submission(a),submission(b)],[owner(a,"101"),owner(b,"102")],[tx(a,1,"02-JAN-2024"),tx(b,1,"03-JAN-2024")])
-        payloads={a:b"<ACCEPTANCE-DATETIME>20240104120000",b:b"<ACCEPTANCE-DATETIME>20240103160000"}
+        payloads={a:edgar_header(a,"0000000001",["101"],"20240104120000"),
+                  b:edgar_header(b,"0000000001",["102"],"20240103160000")}
         events,_,_=resolve_event_times(build,fetcher=lambda url: payloads[a] if a in url else payloads[b])
         self.assertEqual(((a,"2024-01-04T12:00:00"),(b,"2024-01-03T16:00:00")),events[0].acceptance_timestamps)
 
