@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forward_capture_gap.json",
+  "title": "Forward Recorder Gap Ledger Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","gap_id","source_id","detected_utc","reason","previous_capture_id","current_capture_id","gap_ms","expected_cadence_ms","clock_skew_ms","detail"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "gap_id": {"type": "string", "pattern": "^gap_[0-9a-f]{24}$"},
+    "source_id": {"type": "string", "minLength": 1},
+    "detected_utc": {"type": "string", "format": "date-time"},
+    "reason": {"enum": ["polling_gap", "clock_skew", "fetch_error", "http_error", "unclean_restart"]},
+    "previous_capture_id": {"type": ["string", "null"]},
+    "current_capture_id": {"type": ["string", "null"]},
+    "gap_ms": {"type": ["integer", "null"], "minimum": 0},
+    "expected_cadence_ms": {"type": ["integer", "null"], "minimum": 1},
+    "clock_skew_ms": {"type": ["integer", "null"]},
+    "detail": {"type": "string"}
+  }
+}
