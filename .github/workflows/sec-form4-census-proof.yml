@@ -1,10 +1,118 @@
-name: SEC Form-4 census proof staging guard
+name: SEC Form-4 census proof
 
 on:
+  push:
+    branches:
+      - builder/sec-form4-census-v2a
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  staging-disabled:
+  census-and-exact-head-proof:
     runs-on: ubuntu-latest
+    timeout-minutes: 330
     steps:
-      - run: echo 'SEC census proof intentionally disabled only during exact Git payload staging.'
+      - name: Checkout Builder branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned calendar dependency
+        run: python -m pip install 'exchange-calendars==4.11.1'
+
+      - name: Refresh generated V1 proof inventory
+        run: |
+          python3 scripts/status_artifacts.py --write
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add STATE.md CHIEF_BRIEF.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs: refresh proof inventory for SEC census tests'
+          fi
+
+      - name: Frozen V1 baseline proof
+        run: |
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/demo_quant_system.py
+          python3 scripts/generate_schemas.py --check
+
+      - name: Acquire official SEC 2020Q1-2026Q2 and build census
+        env:
+          SEC_USER_AGENT: Quant-Trade Form4 Census https://github.com/fahimahmedb/Quant-Trade
+        run: |
+          if test -f artifacts/sec_form4_census/provenance_manifest.json; then
+            python3 scripts/sec_form4_census.py --verify-source-hashes
+          else
+            python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage
+          fi
+          python3 scripts/sec_form4_proof.py --check
+
+      - name: Commit deterministic census artifacts locally
+        id: final
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Retrieval/run timestamps are intentionally volatile. On a rerun of an
+          # already-published census, restore those committed metadata files so an
+          # identical deterministic census cannot manufacture a new commit.
+          if git ls-files --error-unmatch artifacts/sec_form4_census/provenance_manifest.json >/dev/null 2>&1; then
+            git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
+          fi
+          git add data/calendars/xnys_sessions_2019_2026.csv artifacts/sec_form4_census
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: publish deterministic SEC Form-4 census'
+          fi
+          echo "final_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "Exact candidate HEAD: $(git rev-parse HEAD)"
+
+      - name: Exact-head proof in clean worktree from cached raw bytes
+        env:
+          SEC_USER_AGENT: Quant-Trade Form4 Census https://github.com/fahimahmedb/Quant-Trade
+        run: |
+          FINAL_SHA='${{ steps.final.outputs.final_sha }}'
+          git worktree add --detach /tmp/quant-sec-proof "$FINAL_SHA"
+          mkdir -p /tmp/quant-sec-proof/var
+          cp -a var/sec_form4_raw /tmp/quant-sec-proof/var/sec_form4_raw
+          cd /tmp/quant-sec-proof
+          python3 scripts/sec_form4_census.py --verify-source-hashes
+          python3 scripts/sec_form4_proof.py --check
+          # Rebuild the exact economic population with no price/coverage input at
+          # all.  The certified events must be byte-identical.
+          python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price
+          cmp artifacts/sec_form4_census/events.jsonl /tmp/sec-no-price/events.jsonl
+          git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/demo_quant_system.py
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/sec_form4_proof.py --check
+          git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+          echo "proof HEAD: $(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+          git status --short
+          test -z "$(git status --porcelain)"
+
+      - name: Upload pinned raw SEC cache for Red Team reproduction
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-form4-v2a-raw-cache-${{ steps.final.outputs.final_sha }}
+          path: var/sec_form4_raw/
+          retention-days: 90
+          compression-level: 0
+
+      - name: Push only the exact proven HEAD
+        run: |
+          FINAL_SHA='${{ steps.final.outputs.final_sha }}'
+          test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+          git push origin HEAD:builder/sec-form4-census-v2a
+          REMOTE_SHA="$(git ls-remote origin refs/heads/builder/sec-form4-census-v2a | cut -f1)"
+          echo "remote HEAD: $REMOTE_SHA"
+          test "$REMOTE_SHA" = "$FINAL_SHA"

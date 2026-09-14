@@ -3,6 +3,15 @@
   "additionalProperties": false,
   "description": "One deterministic 2-insider/10-session crossing formation.",
   "properties": {
+    "acceptance_timestamps": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "type": "array"
+    },
     "accessions": {
       "items": {
         "type": "string"

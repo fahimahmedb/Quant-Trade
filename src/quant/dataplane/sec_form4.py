@@ -25,7 +25,7 @@ from typing import Any, Iterable, Iterator, Sequence
 
 START_DATE = date(2020, 1, 1)
 END_DATE = date(2026, 6, 30)
-PARSER_VERSION = "sec-form4-census-v2a/1"
+PARSER_VERSION = "sec-form4-census-v2a/2"
 SEC_USER_AGENT = "Quant-Trade SEC Form4 Census research contact: project-owner-via-github"
 OLD_SEC_ZIP_ROOT = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets"
 NEW_SEC_ZIP_ROOT = "https://www.sec.gov/files/datastandardsinnovation/data/insider-transactions-data-sets"
@@ -41,7 +41,11 @@ REASON_CODES = {
     "JOINT_OWNER_AMBIGUOUS",
     "DUPLICATE_ACCESSION",
     "DUPLICATE_ACCESSION_CONFLICT",
+    "DUPLICATE_REPORTING_OWNER_ROW",
+    "DUPLICATE_REPORTING_OWNER_ROW_CONFLICT",
     "DUPLICATE_TRANSACTION_ROW",
+    "DUPLICATE_TRANSACTION_ROW_CONFLICT",
+    "ISSUER_ID_UNRESOLVED",
     "ACCEPTANCE_TIMESTAMP_UNRESOLVED",
     "TICKER_CHANGED",
     "TICKER_REUSED_OR_AMBIGUOUS",
@@ -118,12 +122,21 @@ class SourceRecord:
 class NormalizedCandidateRecord:
     accession: str
     row_id: str
+    source_period: str
+    document_type: str
     issuer_cik: str | None
+    issuer_trading_symbol: str
     owner_cik: str | None
-    transaction_date: str
+    reporting_owner_ciks: tuple[str, ...]
+    reporting_owner_rows: int
+    unresolved_owner_cik_rows: int
+    is_director: bool | None
+    is_officer: bool | None
+    transaction_date: str | None
+    transaction_code: str
+    acquired_disposed_code: str
     status: str
     reason_codes: tuple[str, ...] = ()
-    reporting_owner_ciks: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -147,6 +160,7 @@ class Form4Event:
     constituent_observation_ids: tuple[str, ...]
     accessions: tuple[str, ...]
     session_distance: int
+    acceptance_timestamps: tuple[tuple[str, str], ...] = ()
     event_time: str | None = None
     event_time_timezone: str = "America/New_York"
     event_time_status: str = "PENDING"
@@ -242,159 +256,258 @@ def parse_quarter_zip(data: bytes, period: str) -> tuple[list[dict[str, str]], l
     return submissions, owners, transactions
 
 
-def _role_qualified(relationship: str) -> bool:
+def _role_flags(relationship: str) -> tuple[bool, bool]:
     value = re.sub(r"[^A-Z]", "", _clean(relationship).upper())
-    return "DIRECTOR" in value or "OFFICER" in value
+    return "DIRECTOR" in value, "OFFICER" in value
+
+
+def _role_qualified(relationship: str) -> bool:
+    is_director, is_officer = _role_flags(relationship)
+    return is_director or is_officer
 
 
 def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: SessionCalendar) -> CensusBuild:
-    """Build the price-independent economic formation population."""
-    all_submissions: list[dict[str, str]] = []
-    all_owners: list[dict[str, str]] = []
-    all_tx: list[dict[str, str]] = []
-    for period, payload in quarter_payloads:
-        submissions, owners, tx = parse_quarter_zip(payload, period)
-        all_submissions.extend(submissions)
-        all_owners.extend(owners)
-        all_tx.extend(tx)
+    """Build the price-independent economic formation population.
 
+    Quarterly ZIPs are processed incrementally so the certified census does not
+    require holding the full SEC non-derivative table in memory.  Only P/acquired
+    candidate rows are retained after the raw/filter waterfall is counted.
+    """
     losses: list[LossLedgerRecord] = []
     waterfall: Counter[str] = Counter()
-    waterfall["source_quarters"] = len(quarter_payloads)
-    waterfall["submission_rows"] = len(all_submissions)
-    waterfall["reporting_owner_rows"] = len(all_owners)
-    waterfall["nonderivative_rows"] = len(all_tx)
-
     submissions: dict[str, dict[str, str]] = {}
-    for row in sorted(all_submissions, key=lambda r: (r.get("ACCESSION_NUMBER", ""), r.get("_SOURCE_PERIOD", ""))):
-        acc = _clean(row.get("ACCESSION_NUMBER"))
-        if not acc:
-            continue
-        previous = submissions.get(acc)
-        if previous is None:
-            submissions[acc] = row
-        else:
-            same = {k: v for k, v in previous.items() if k != "_SOURCE_PERIOD"} == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"}
+    owners_by_accession: dict[str, list[dict[str, str]]] = defaultdict(list)
+    owner_seen: dict[tuple[str, str], dict[str, str]] = {}
+    tx_seen: dict[tuple[str, str], dict[str, str]] = {}
+    normalized_candidates: list[NormalizedCandidateRecord] = []
+    grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
+
+    payloads = sorted(quarter_payloads, key=lambda item: item[0])
+    waterfall["source_quarters"] = len(payloads)
+
+    for period, payload in payloads:
+        quarter_submissions, quarter_owners, quarter_tx = parse_quarter_zip(payload, period)
+        waterfall["submission_rows"] += len(quarter_submissions)
+        waterfall["reporting_owner_rows"] += len(quarter_owners)
+        waterfall["nonderivative_rows"] += len(quarter_tx)
+
+        accepted_here: set[str] = set()
+        for row in sorted(quarter_submissions, key=lambda r: r.get("ACCESSION_NUMBER", "")):
+            acc = _clean(row.get("ACCESSION_NUMBER"))
+            if not acc:
+                continue
+            previous = submissions.get(acc)
+            if previous is None:
+                submissions[acc] = row
+                accepted_here.add(acc)
+                continue
+            same = ({k: v for k, v in previous.items() if k != "_SOURCE_PERIOD"}
+                    == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
             reason = "DUPLICATE_ACCESSION" if same else "DUPLICATE_ACCESSION_CONFLICT"
             losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["submission", acc, row.get("_SOURCE_PERIOD"), reason], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=normalize_cik(row.get("ISSUERCIK")), owner_cik=None,
-                status="DIAGNOSTIC", reason_codes=(reason,), detail=f"duplicate submission row in {row.get('_SOURCE_PERIOD', '')}",
+                record_id=_stable_hash(["submission", acc, period, reason], "LOSS-"),
+                event_id=None, accession=acc,
+                issuer_cik=normalize_cik(row.get("ISSUERCIK")), owner_cik=None,
+                status="DIAGNOSTIC", reason_codes=(reason,),
+                detail=f"duplicate submission row in {period}; canonical source period is {previous.get('_SOURCE_PERIOD', '')}",
             ))
             waterfall[reason.lower()] += 1
 
-    owners_by_accession: dict[str, list[dict[str, str]]] = defaultdict(list)
-    owner_seen: set[tuple[str, str, str]] = set()
-    for row in all_owners:
-        acc = _clean(row.get("ACCESSION_NUMBER"))
-        key = (acc, _clean(row.get("RPTOWNERCIK")), _clean(row.get("RPTOWNER_RELATIONSHIP")))
-        if key in owner_seen:
-            continue
-        owner_seen.add(key)
-        owners_by_accession[acc].append(row)
+        # Ownership/transaction rows from a duplicate copy of an accession are
+        # not merged into the canonical filing; the duplicate itself remains in
+        # the diagnostic ledger above.
+        for row in quarter_owners:
+            acc = _clean(row.get("ACCESSION_NUMBER"))
+            if acc not in accepted_here:
+                continue
+            # SEC documents (ACCESSION_NUMBER, RPTOWNERCIK) as the REPORTINGOWNER
+            # primary key.  Do not add relationship text to the identity key: doing
+            # so could turn one owner with conflicting duplicate metadata into two
+            # apparent owners.  Keep the first row deterministic and ledger the
+            # duplicate/conflict explicitly.
+            key = (acc, _clean(row.get("RPTOWNERCIK")))
+            previous_owner = owner_seen.get(key)
+            if previous_owner is not None:
+                same = ({k: v for k, v in previous_owner.items() if k != "_SOURCE_PERIOD"}
+                        == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
+                reason = ("DUPLICATE_REPORTING_OWNER_ROW" if same
+                          else "DUPLICATE_REPORTING_OWNER_ROW_CONFLICT")
+                losses.append(LossLedgerRecord(
+                    record_id=_stable_hash(["owner-row", *key, period, reason], "LOSS-"),
+                    event_id=None, accession=acc,
+                    issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")),
+                    owner_cik=normalize_cik(row.get("RPTOWNERCIK")), status="DIAGNOSTIC",
+                    reason_codes=(reason,),
+                    detail=f"duplicate reporting-owner primary key in {period}",
+                ))
+                waterfall[reason.lower()] += 1
+                continue
+            owner_seen[key] = row
+            owners_by_accession[acc].append(row)
 
-    tx_rows: list[dict[str, str]] = []
-    tx_seen: set[tuple[str, str]] = set()
-    for row in all_tx:
-        acc = _clean(row.get("ACCESSION_NUMBER"))
-        sk = _clean(row.get("NONDERIV_TRANS_SK"))
-        key = (acc, sk)
-        if key in tx_seen:
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["tx", acc, sk, row.get("_SOURCE_PERIOD")], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")), owner_cik=None,
-                status="DIAGNOSTIC", reason_codes=("DUPLICATE_TRANSACTION_ROW",), detail=f"duplicate transaction row {sk}",
-            ))
-            waterfall["duplicate_transaction_row"] += 1
-            continue
-        tx_seen.add(key)
-        tx_rows.append(row)
+        for row in quarter_tx:
+            acc = _clean(row.get("ACCESSION_NUMBER"))
+            if acc not in accepted_here:
+                continue
+            sk = _clean(row.get("NONDERIV_TRANS_SK"))
+            key = (acc, sk)
+            previous_tx = tx_seen.get(key)
+            if previous_tx is not None:
+                same = ({k: v for k, v in previous_tx.items() if k != "_SOURCE_PERIOD"}
+                        == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"})
+                reason = "DUPLICATE_TRANSACTION_ROW" if same else "DUPLICATE_TRANSACTION_ROW_CONFLICT"
+                losses.append(LossLedgerRecord(
+                    record_id=_stable_hash(["tx", acc, sk, period, reason], "LOSS-"),
+                    event_id=None, accession=acc,
+                    issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")), owner_cik=None,
+                    status="DIAGNOSTIC", reason_codes=(reason,), detail=f"duplicate transaction row {sk}",
+                ))
+                waterfall[reason.lower()] += 1
+                continue
+            tx_seen[key] = row
+            waterfall["canonical_nonderivative_rows"] += 1
 
-    original_accessions = {acc for acc, s in submissions.items() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4"}
-    amendment_accessions = {acc for acc, s in submissions.items() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4/A"}
+            sub = submissions[acc]
+            form = _clean(sub.get("DOCUMENT_TYPE")).upper()
+            if form == "4":
+                waterfall["original_form4_nonderivative_rows"] += 1
+            elif form == "4/A":
+                waterfall["form4a_nonderivative_rows"] += 1
+            else:
+                continue
+
+            code = _clean(row.get("TRANS_CODE")).upper()
+            acquired = _clean(row.get("TRANS_ACQUIRED_DISP_CD")).upper()
+            if not (code == "P" and acquired == "A"):
+                if form == "4":
+                    waterfall["original_form4_not_p_acquired_rows"] += 1
+                else:
+                    waterfall["form4a_not_p_acquired_rows"] += 1
+                continue
+
+            if form == "4":
+                waterfall["original_form4_p_acquired_rows"] += 1
+            else:
+                waterfall["form4a_p_acquired_rows"] += 1
+
+            issuer_cik = normalize_cik(sub.get("ISSUERCIK"))
+            symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
+            owners = owners_by_accession.get(acc, [])
+            normalized_owner_ids = [normalize_cik(o.get("RPTOWNERCIK")) for o in owners]
+            unresolved_owner_rows = sum(cik is None for cik in normalized_owner_ids)
+            owner_ciks = tuple(sorted({cik for cik in normalized_owner_ids if cik is not None}))
+            # A filing with one valid owner CIK plus one missing/invalid owner CIK is
+            # not a single-owner filing.  Certified identity may never be inferred
+            # from the surviving row.  Treat any unresolved reporting-owner key as
+            # an identity failure before joint/single-owner classification.
+            single_owner = owner_ciks[0] if unresolved_owner_rows == 0 and len(owner_ciks) == 1 else None
+            owner_rows = [o for o in owners if single_owner and normalize_cik(o.get("RPTOWNERCIK")) == single_owner]
+            role_flags = [_role_flags(o.get("RPTOWNER_RELATIONSHIP", "")) for o in owner_rows]
+            is_director = any(flag[0] for flag in role_flags) if single_owner else None
+            is_officer = any(flag[1] for flag in role_flags) if single_owner else None
+
+            tx_date_iso: str | None = None
+            try:
+                tx_date = parse_sec_date(row.get("TRANS_DATE", ""))
+                tx_date_iso = tx_date.isoformat()
+            except ValueError:
+                tx_date = None
+
+            base_candidate = dict(
+                accession=acc, row_id=sk, source_period=period, document_type=form,
+                issuer_cik=issuer_cik, issuer_trading_symbol=symbol,
+                owner_cik=single_owner, reporting_owner_ciks=owner_ciks,
+                reporting_owner_rows=len(owners), unresolved_owner_cik_rows=unresolved_owner_rows,
+                is_director=is_director, is_officer=is_officer,
+                transaction_date=tx_date_iso, transaction_code=code,
+                acquired_disposed_code=acquired,
+            )
+
+            if form == "4/A":
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("FORM_AMENDMENT",)))
+                continue
+
+            if tx_date is None or not (START_DATE <= tx_date <= END_DATE):
+                waterfall["p_acquired_rows_date_out_of_scope"] += 1
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("TRANSACTION_DATE_OUT_OF_SCOPE",)))
+                if tx_date is None:
+                    losses.append(LossLedgerRecord(
+                        record_id=_stable_hash(["bad-date", acc, sk], "LOSS-"), event_id=None,
+                        accession=acc, issuer_cik=issuer_cik, owner_cik=single_owner,
+                        status="EXCLUDED", reason_codes=("TRANSACTION_DATE_OUT_OF_SCOPE",),
+                        detail=f"unparseable transaction date {row.get('TRANS_DATE')!r}",
+                    ))
+                continue
+            waterfall["p_acquired_rows_in_scope"] += 1
+
+            if not owners or unresolved_owner_rows:
+                waterfall["owner_id_unresolved_rows"] += 1
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("OWNER_ID_UNRESOLVED",)))
+                losses.append(LossLedgerRecord(
+                    record_id=_stable_hash(["owner-missing", acc, sk, unresolved_owner_rows], "LOSS-"), event_id=None,
+                    accession=acc, issuer_cik=issuer_cik, owner_cik=None, status="EXCLUDED",
+                    reason_codes=("OWNER_ID_UNRESOLVED",),
+                    detail=(f"{unresolved_owner_rows} reporting-owner row(s) lack a valid authoritative CIK"
+                            if owners else "no reporting-owner row is available"),
+                ))
+                continue
+            waterfall["resolvable_owner_cik_rows"] += 1
+            if len(owner_ciks) != 1:
+                waterfall["joint_owner_ambiguous_rows"] += 1
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("JOINT_OWNER_AMBIGUOUS",)))
+                losses.append(LossLedgerRecord(
+                    record_id=_stable_hash(["joint", acc, sk], "LOSS-"), event_id=None,
+                    accession=acc, issuer_cik=issuer_cik, owner_cik=None, status="EXCLUDED",
+                    reason_codes=("JOINT_OWNER_AMBIGUOUS",),
+                    detail=f"{len(owner_ciks)} distinct reporting-owner CIKs; transaction row has no owner attribution",
+                ))
+                continue
+            waterfall["single_owner_unambiguous_rows"] += 1
+            if not (is_director or is_officer):
+                waterfall["unqualified_role_rows"] += 1
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("QUALIFIED_ROLE_FALSE",)))
+                continue
+            waterfall["qualified_officer_director_rows"] += 1
+            waterfall["qualified_unambiguous_p_acquired_rows"] += 1
+
+            if issuer_cik is None:
+                waterfall["issuer_id_unresolved_rows"] += 1
+                normalized_candidates.append(NormalizedCandidateRecord(
+                    **base_candidate, status="EXCLUDED", reason_codes=("ISSUER_ID_UNRESOLVED",)))
+                losses.append(LossLedgerRecord(
+                    record_id=_stable_hash(["issuer-missing", acc, sk], "LOSS-"), event_id=None,
+                    accession=acc, issuer_cik=None, owner_cik=single_owner, status="EXCLUDED",
+                    reason_codes=("ISSUER_ID_UNRESOLVED",), detail="issuer CIK is not resolvable",
+                ))
+                continue
+            waterfall["resolvable_issuer_cik_rows"] += 1
+
+            normalized_candidates.append(NormalizedCandidateRecord(
+                **base_candidate, status="QUALIFYING", reason_codes=()))
+            group_key = (issuer_cik, single_owner, tx_date_iso)
+            item = grouped.setdefault(group_key, {"accessions": set(), "symbols": set(), "rows": 0})
+            item["accessions"].add(acc)
+            if symbol:
+                item["symbols"].add(symbol)
+            item["rows"] += 1
+
+    original_accessions = {acc for acc, sub in submissions.items() if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4"}
+    amendment_accessions = {acc for acc, sub in submissions.items() if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4/A"}
     waterfall["original_form4_filings"] = len(original_accessions)
     waterfall["form4a_filings"] = len(amendment_accessions)
-
-    original_tx = [r for r in tx_rows if _clean(r.get("ACCESSION_NUMBER")) in original_accessions]
-    waterfall["original_form4_nonderivative_rows"] = len(original_tx)
-    pa_rows = [r for r in original_tx if _clean(r.get("TRANS_CODE")).upper() == "P" and _clean(r.get("TRANS_ACQUIRED_DISP_CD")).upper() == "A"]
-    waterfall["original_form4_p_acquired_rows"] = len(pa_rows)
-
-    grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
-    normalized_candidates: list[NormalizedCandidateRecord] = []
-    for row in pa_rows:
-        acc = _clean(row.get("ACCESSION_NUMBER"))
-        sub = submissions[acc]
-        issuer_cik = normalize_cik(sub.get("ISSUERCIK"))
-        try:
-            tx_date = parse_sec_date(row.get("TRANS_DATE", ""))
-        except ValueError:
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["bad-date", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
-                status="EXCLUDED", reason_codes=("TRANSACTION_DATE_OUT_OF_SCOPE",), detail=f"unparseable transaction date {row.get('TRANS_DATE')!r}",
-            ))
-            continue
-        if not (START_DATE <= tx_date <= END_DATE):
-            waterfall["p_acquired_rows_date_out_of_scope"] += 1
-            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("TRANSACTION_DATE_OUT_OF_SCOPE",)))
-            continue
-        waterfall["p_acquired_rows_in_scope"] += 1
-
-        owners = owners_by_accession.get(acc, [])
-        owner_ciks = sorted({c for o in owners if (c := normalize_cik(o.get("RPTOWNERCIK")))})
-        if len(owner_ciks) == 0:
-            waterfall["owner_id_unresolved_rows"] += 1
-            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("OWNER_ID_UNRESOLVED",)))
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["owner-missing", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
-                status="EXCLUDED", reason_codes=("OWNER_ID_UNRESOLVED",), detail="no authoritative reporting-owner CIK",
-            ))
-            continue
-        if len(owner_ciks) != 1:
-            waterfall["joint_owner_ambiguous_rows"] += 1
-            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("JOINT_OWNER_AMBIGUOUS",), tuple(owner_ciks)))
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["joint", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
-                status="EXCLUDED", reason_codes=("JOINT_OWNER_AMBIGUOUS",), detail=f"{len(owner_ciks)} distinct reporting-owner CIKs; transaction row has no owner attribution",
-            ))
-            continue
-        owner_cik = owner_ciks[0]
-        owner_rows = [o for o in owners if normalize_cik(o.get("RPTOWNERCIK")) == owner_cik]
-        if not any(_role_qualified(o.get("RPTOWNER_RELATIONSHIP", "")) for o in owner_rows):
-            waterfall["unqualified_role_rows"] += 1
-            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, owner_cik, tx_date.isoformat(), "EXCLUDED", ("QUALIFIED_ROLE_FALSE",)))
-            continue
-        waterfall["qualified_unambiguous_p_acquired_rows"] += 1
-        normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, owner_cik, tx_date.isoformat(), "QUALIFYING" if issuer_cik is not None else "EXCLUDED", () if issuer_cik is not None else ("CIK_SYMBOL_CONFLICT",)))
-        if issuer_cik is None:
-            losses.append(LossLedgerRecord(
-                record_id=_stable_hash(["issuer-missing", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
-                event_id=None, accession=acc, issuer_cik=None, owner_cik=owner_cik,
-                status="EXCLUDED", reason_codes=("CIK_SYMBOL_CONFLICT",), detail="issuer CIK is not resolvable",
-            ))
-            continue
-        key = (issuer_cik, owner_cik, tx_date.isoformat())
-        item = grouped.setdefault(key, {"accessions": set(), "symbols": set(), "rows": 0})
-        item["accessions"].add(acc)
-        symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
-        if symbol:
-            item["symbols"].add(symbol)
-        item["rows"] += 1
 
     observations: list[PurchaseObservation] = []
     for (issuer_cik, owner_cik, tx_date), item in sorted(grouped.items()):
         accessions = tuple(sorted(item["accessions"]))
-        payload = [issuer_cik, owner_cik, tx_date, accessions]
         observations.append(PurchaseObservation(
-            observation_id=_stable_hash(payload, "OBS-"),
-            issuer_cik=issuer_cik,
-            owner_cik=owner_cik,
-            transaction_date=tx_date,
-            issuer_symbols=tuple(sorted(item["symbols"])),
-            accessions=accessions,
+            observation_id=_stable_hash([issuer_cik, owner_cik, tx_date, accessions], "OBS-"),
+            issuer_cik=issuer_cik, owner_cik=owner_cik, transaction_date=tx_date,
+            issuer_symbols=tuple(sorted(item["symbols"])), accessions=accessions,
             source_rows=int(item["rows"]),
         ))
     waterfall["certified_purchase_observations"] = len(observations)
@@ -406,9 +519,8 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
     for obs in observations:
         obs_by_issuer[obs.issuer_cik].append(obs)
     for issuer_cik, issuer_obs in sorted(obs_by_issuer.items()):
-        ordered = sorted(issuer_obs, key=lambda o: (o.transaction_date, o.owner_cik, o.observation_id))
         by_date: dict[str, list[PurchaseObservation]] = defaultdict(list)
-        for obs in ordered:
+        for obs in sorted(issuer_obs, key=lambda o: (o.transaction_date, o.owner_cik, o.observation_id)):
             by_date[obs.transaction_date].append(obs)
         window: deque[PurchaseObservation] = deque()
         owner_counts: Counter[str] = Counter()
@@ -422,39 +534,40 @@ def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: Sessio
             for obs in sorted(by_date[tx_date], key=lambda o: (o.owner_cik, o.observation_id)):
                 window.append(obs)
                 owner_counts[obs.owner_cik] += 1
-            distinct_after = len(owner_counts)
-            if distinct_before < 2 <= distinct_after:
+            if distinct_before < 2 <= len(owner_counts):
                 owners = tuple(sorted(owner_counts))
                 relevant = tuple(sorted(window, key=lambda x: (x.transaction_date, x.owner_cik, x.observation_id)))
                 accessions = tuple(sorted({a for x in relevant for a in x.accessions}))
                 start_date = relevant[0].transaction_date
                 distance = calendar.distance(start_date, tx_date)
-                event_payload = [issuer_cik, tx_date, owners, tuple(x.observation_id for x in relevant), accessions]
+                event_payload = [issuer_cik, tx_date, owners,
+                                 tuple(x.observation_id for x in relevant), accessions]
                 events.append(Form4Event(
-                    event_id=_stable_hash(event_payload, "F4EV-"),
-                    issuer_cik=issuer_cik,
-                    formation_transaction_date=tx_date,
-                    window_start_date=start_date,
+                    event_id=_stable_hash(event_payload, "F4EV-"), issuer_cik=issuer_cik,
+                    formation_transaction_date=tx_date, window_start_date=start_date,
                     owner_ciks=owners,
                     constituent_observation_ids=tuple(x.observation_id for x in relevant),
-                    accessions=accessions,
-                    session_distance=distance,
+                    accessions=accessions, session_distance=distance,
                 ))
     waterfall["economic_formations"] = len(events)
 
-    filings_by_period = Counter(s.get("_SOURCE_PERIOD", "UNKNOWN") for s in submissions.values() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4")
-    amendments_by_period = Counter(s.get("_SOURCE_PERIOD", "UNKNOWN") for s in submissions.values() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4/A")
+    filings_by_period = Counter(sub.get("_SOURCE_PERIOD", "UNKNOWN") for sub in submissions.values()
+                                if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4")
+    amendments_by_period = Counter(sub.get("_SOURCE_PERIOD", "UNKNOWN") for sub in submissions.values()
+                                   if _clean(sub.get("DOCUMENT_TYPE")).upper() == "4/A")
     diagnostics = {
         "calendar_source": calendar.source,
         "calendar_version": calendar.version,
         "calendar_semantics": "session_distance(a,b)=count of XNYS regular sessions with a < session <= b",
-        "start_date": START_DATE.isoformat(),
-        "end_date": END_DATE.isoformat(),
+        "same_transaction_date_tie_semantics": "all qualifying observations on one transaction date enter atomically before threshold crossing is evaluated",
+        "start_date": START_DATE.isoformat(), "end_date": END_DATE.isoformat(),
         "parser_version": PARSER_VERSION,
+        "normalized_candidate_scope": "all Form 4 / 4-A non-derivative P+acquired rows; non-P/A rows are counted in the waterfall but not persisted row-by-row",
         "original_form4_filings_by_source_period": dict(sorted(filings_by_period.items())),
         "form4a_filings_by_source_period": dict(sorted(amendments_by_period.items())),
     }
-    return CensusBuild(submissions, dict(owners_by_accession), tx_rows, observations, events, losses, dict(sorted(waterfall.items())), diagnostics, normalized_candidates)
+    return CensusBuild(submissions, dict(owners_by_accession), [], observations, events, losses,
+                       dict(sorted(waterfall.items())), diagnostics, normalized_candidates)
 
 
 def acceptance_header_url(issuer_cik: str, accession: str) -> str:
@@ -531,8 +644,9 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
             times = [resolved[a]["acceptance_time"] for o in relevant_obs if o.owner_cik == owner for a in o.accessions if a in resolved]
             if times:
                 owner_times.append(min(times))
+        accession_times = tuple(sorted((a, resolved[a]["acceptance_time"]) for a in event.accessions if a in resolved))
         if len(owner_times) < 2:
-            out.append(Form4Event(**{**asdict(event), "event_time": None, "event_time_status": "UNRESOLVED"}))
+            out.append(Form4Event(**{**asdict(event), "acceptance_timestamps": accession_times, "event_time": None, "event_time_status": "UNRESOLVED"}))
             losses.append(LossLedgerRecord(
                 record_id=_stable_hash(["event-time", event.event_id], "LOSS-"), event_id=event.event_id,
                 accession=None, issuer_cik=event.issuer_cik, owner_cik=None, status="UNRESOLVED",
@@ -540,7 +654,7 @@ def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir:
             ))
         else:
             event_time = sorted(owner_times)[1]
-            out.append(Form4Event(**{**asdict(event), "event_time": event_time, "event_time_status": "RESOLVED"}))
+            out.append(Form4Event(**{**asdict(event), "acceptance_timestamps": accession_times, "event_time": event_time, "event_time_status": "RESOLVED"}))
     return out, losses, resolved
 
 
@@ -574,7 +688,10 @@ def build_mapping_ledger(build: CensusBuild, events: Sequence[Form4Event], price
             reasons.append("NONSTANDARD_SECURITY")
             chosen = None
         elif len(symbols) > 1:
-            reasons.append("CIK_SYMBOL_CONFLICT")
+            # Multiple as-filed symbols on one stable issuer CIK are a temporal
+            # ticker-path issue, not an issuer-identity split.  Keep the event
+            # and make the mapping loss explicit.
+            reasons.append("TICKER_CHANGED")
             chosen = None
         else:
             chosen = symbols[0]
@@ -645,6 +762,22 @@ def census_summary(build: CensusBuild, events: Sequence[Form4Event], mapping: Se
     top10 = sum(count for _, count in by_issuer.most_common(10))
     resolved = sum(e.event_time_status == "RESOLVED" for e in events)
     mappable = None if mapping is None else sum(r["mapping_status"] == "MAPPABLE" for r in mapping)
+    coverage_by_year: dict[str, dict[str, int]] = {}
+    coverage_by_issuer: dict[str, dict[str, int]] = {}
+    if mapping is not None:
+        for row in mapping:
+            year = row["formation_transaction_date"][:4]
+            issuer = row["issuer_cik"]
+            raw_identified = bool(row.get("as_filed_symbols"))
+            clean = row["mapping_status"] == "MAPPABLE"
+            for bucket, key in ((coverage_by_year, year), (coverage_by_issuer, issuer)):
+                item = bucket.setdefault(key, {"events": 0, "raw_symbol_identified": 0, "mappable": 0, "unmappable": 0})
+                item["events"] += 1
+                item["raw_symbol_identified"] += int(raw_identified)
+                item["mappable"] += int(clean)
+                item["unmappable"] += int(not clean)
+        coverage_by_year = dict(sorted(coverage_by_year.items()))
+        coverage_by_issuer = dict(sorted(coverage_by_issuer.items()))
     avg_events = (total / len(by_issuer)) if by_issuer else 0.0
     n_eff = {}
     for rho in (0.0, 0.25, 0.5, 0.75):
@@ -655,6 +788,8 @@ def census_summary(build: CensusBuild, events: Sequence[Form4Event], mapping: Se
         "formations": total,
         "event_time_resolved": resolved,
         "event_time_unresolved": total - resolved,
+        "distinct_qualifying_issuers": build.waterfall.get("distinct_issuer_ciks_in_observations", 0),
+        "distinct_qualifying_insiders": build.waterfall.get("distinct_owner_ciks_in_observations", 0),
         "distinct_event_issuers": len(by_issuer),
         "distinct_event_insiders": len({owner for e in events for owner in e.owner_ciks}),
         "annual_formations": dict(sorted(by_year.items())),
@@ -664,6 +799,8 @@ def census_summary(build: CensusBuild, events: Sequence[Form4Event], mapping: Se
         "repeat_formations": max(0, total - len(by_issuer)),
         "mappable_events": mappable,
         "unmappable_events": None if mappable is None else total - mappable,
+        "mapping_coverage_by_year": coverage_by_year,
+        "mapping_coverage_by_issuer": coverage_by_issuer,
         "design_n_effective_by_intracluster_rho": n_eff,
         "waterfall": build.waterfall,
         "diagnostics": build.diagnostics,

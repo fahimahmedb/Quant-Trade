@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 import shutil
@@ -34,6 +35,10 @@ from quant.dataplane.sec_form4 import (  # noqa: E402
     resolve_event_times,
     source_url,
 )
+
+
+def deterministic_gzip(data: bytes) -> bytes:
+    return gzip.compress(data, compresslevel=9, mtime=0)
 
 
 def write_json(path: Path, payload: object) -> None:
@@ -76,8 +81,11 @@ def generate_calendar(path: Path) -> None:
         import exchange_calendars as xcals
     except ImportError as exc:
         raise SystemExit("exchange_calendars is required to generate the pinned XNYS calendar") from exc
-    cal = xcals.get_calendar("XNYS")
-    sessions = cal.sessions_in_range("2019-12-01", "2026-07-31")
+    # exchange_calendars may instantiate a default calendar with bounds near
+    # "today"; request the full mission interval explicitly so a future runner
+    # cannot fail or silently use a truncated schedule.
+    cal = xcals.get_calendar("XNYS", start="2019-11-25", end="2026-08-07")
+    sessions = cal.sessions_in_range("2019-12-02", "2026-07-31")
     version = getattr(sys.modules.get("exchange_calendars"), "__version__", "unknown")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -145,10 +153,10 @@ def run(args: argparse.Namespace) -> None:
             ))
 
     deterministic_files = {
-        "normalized_candidates.jsonl": jsonl_bytes(candidate_to_dict(x) for x in sorted(build.normalized_candidates, key=lambda x: (x.accession, x.row_id))),
-        "normalized_purchase_observations.jsonl": jsonl_bytes(observation_to_dict(o) for o in build.observations),
+        "normalized_candidates.jsonl.gz": deterministic_gzip(jsonl_bytes(candidate_to_dict(x) for x in sorted(build.normalized_candidates, key=lambda x: (x.accession, x.row_id)))),
+        "normalized_purchase_observations.jsonl.gz": deterministic_gzip(jsonl_bytes(observation_to_dict(o) for o in build.observations)),
         "events.jsonl": jsonl_bytes(event_to_dict(e) for e in events),
-        "loss_ledger.jsonl": jsonl_bytes(loss_to_dict(x) for x in sorted(losses, key=lambda x: x.record_id)),
+        "loss_ledger.jsonl.gz": deterministic_gzip(jsonl_bytes(loss_to_dict(x) for x in sorted(losses, key=lambda x: x.record_id))),
         "mapping_ledger.jsonl": jsonl_bytes(sorted(mapping, key=lambda x: x["event_id"])),
     }
     for name, data in deterministic_files.items():
@@ -158,6 +166,48 @@ def run(args: argparse.Namespace) -> None:
     write_json(out_dir / "census_summary.json", summary)
     write_json(out_dir / "waterfall.json", build.waterfall)
     write_json(out_dir / "acceptance_manifest.json", acceptance)
+
+    loss_counts = {}
+    for item in losses:
+        for code in item.reason_codes:
+            loss_counts[code] = loss_counts.get(code, 0) + 1
+    top = sorted(summary["issuer_event_distribution"].items(), key=lambda kv: (-kv[1], kv[0]))[:10]
+    report = [
+        "# SEC Form-4 deterministic census (V2-A)", "",
+        "This report is generated from the machine-readable census. It contains no market-outcome or strategy-performance analysis.", "",
+        f"- period: 2020-01-01 through 2026-06-30 inclusive (2026 H1)",
+        f"- official SEC quarterly sources: {len(sources)}",
+        f"- original Form 4 filings: **{build.waterfall.get('original_form4_filings', 0)}**; Form 4/A diagnostics: **{build.waterfall.get('form4a_filings', 0)}**",
+        f"- non-derivative P/acquired rows in scope: **{build.waterfall.get('p_acquired_rows_in_scope', 0)}**",
+        f"- owner-CIK unresolved rows: **{build.waterfall.get('owner_id_unresolved_rows', 0)}**; joint-owner ambiguous rows: **{build.waterfall.get('joint_owner_ambiguous_rows', 0)}**",
+        f"- economic 2-insider / 10-session formations: **{summary['formations']}**",
+        f"- event-time resolved: **{summary['event_time_resolved']}**; unresolved: **{summary['event_time_unresolved']}**",
+        f"- qualifying issuers: **{summary['distinct_qualifying_issuers']}**; qualifying insiders: **{summary['distinct_qualifying_insiders']}**",
+        f"- event issuers: **{summary['distinct_event_issuers']}**; event insiders: **{summary['distinct_event_insiders']}**",
+        f"- top-10 issuer share: **{summary['top_10_issuer_share']:.4%}**; issuer HHI: **{summary['issuer_hhi']:.6f}**",
+        f"- mappable events: **{summary['mappable_events']}**; unmappable: **{summary['unmappable_events']}**", "",
+        "## Annual formations", "",
+    ]
+    report.extend(f"- {year}: {count}" for year, count in summary["annual_formations"].items())
+    report.extend(["", "## Top issuers by formation count", ""])
+    report.extend(f"- {cik}: {count}" for cik, count in top)
+    report.extend(["", "## Mapping coverage by year", ""])
+    report.extend(
+        f"- {year}: events {row['events']}; raw symbol identified {row['raw_symbol_identified']}; mappable {row['mappable']}; unmappable {row['unmappable']}"
+        for year, row in summary["mapping_coverage_by_year"].items()
+    )
+    report.extend(["", "## Waterfall", ""])
+    report.extend(f"- {key}: {value}" for key, value in sorted(build.waterfall.items()))
+    report.extend(["", "## Unresolved / diagnostic reason counts", ""])
+    report.extend(f"- {key}: {value}" for key, value in sorted(loss_counts.items()))
+    report.extend(["", "## Calendar", "", f"- source: {calendar.source}", f"- version: {calendar.version}", f"- semantics: {build.diagnostics['calendar_semantics']}", "", "## Design-level sample-size sensitivity", ""])
+    report.extend(f"- intracluster rho {rho}: N_effective {value}" for rho, value in summary["design_n_effective_by_intracluster_rho"].items())
+    (out_dir / "CENSUS_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
+
+    deterministic_hashes = {name: _sha256_bytes(data) for name, data in deterministic_files.items()}
+    for name in ("census_summary.json", "waterfall.json", "acceptance_manifest.json", "CENSUS_REPORT.md"):
+        deterministic_hashes[name] = _sha256_bytes((out_dir / name).read_bytes())
+    price_symbols_bytes = json.dumps(price_status or {}, sort_keys=True, separators=(",", ":")).encode("utf-8")
     provenance = {
         "parser_version": PARSER_VERSION,
         "period": ["2020Q1", "2026Q2"],
@@ -168,42 +218,26 @@ def run(args: argparse.Namespace) -> None:
             "version": calendar.version,
         },
         "sources": [asdict(x) for x in sources],
-        "deterministic_outputs": {name: _sha256_bytes(data) for name, data in deterministic_files.items()},
+        "mapping_input": {
+            "price_coverage_symbols_sha256": _sha256_bytes(price_symbols_bytes),
+            "price_probe_enabled_on_initial_build": bool(args.probe_price_coverage),
+            "population_invariant": "price coverage is downstream-only and cannot alter events.jsonl",
+        },
+        "raw_cache": {
+            "local_path": str(raw_dir),
+            "github_actions_artifact_pattern": "sec-form4-v2a-raw-cache-<exact-final-sha>",
+            "versioning": "each exact-head proof run uploads immutable source bytes; hash drift fails --verify-source-hashes rather than rewriting certified lineage",
+        },
+        "deterministic_outputs": deterministic_hashes,
     }
     write_json(manifest_path, provenance)
     run_meta = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "raw_cache": str(raw_dir),
         "price_probe_enabled": bool(args.probe_price_coverage),
+        "acceptance_header_cache": str(raw_dir / "acceptance_headers"),
     }
     write_json(out_dir / "run_metadata.json", run_meta)
-    loss_counts = {}
-    for item in losses:
-        for code in item.reason_codes:
-            loss_counts[code] = loss_counts.get(code, 0) + 1
-    top = sorted(summary["issuer_event_distribution"].items(), key=lambda kv: (-kv[1], kv[0]))[:10]
-    report = [
-        "# SEC Form-4 deterministic census (V2-A)", "",
-        "This report is generated from the machine-readable census. It contains no return, P&L, Sharpe, alpha, hit-rate or performance analysis.", "",
-        f"- period: 2020-01-01 through 2026-06-30 inclusive (2026 H1)",
-        f"- official SEC quarterly sources: {len(sources)}",
-        f"- economic 2-insider / 10-session formations: **{summary['formations']}**",
-        f"- event-time resolved: **{summary['event_time_resolved']}**; unresolved: **{summary['event_time_unresolved']}**",
-        f"- event issuers: **{summary['distinct_event_issuers']}**; event insiders: **{summary['distinct_event_insiders']}**",
-        f"- top-10 issuer share: **{summary['top_10_issuer_share']:.4%}**; issuer HHI: **{summary['issuer_hhi']:.6f}**",
-        f"- mappable events: **{summary['mappable_events']}**; unmappable: **{summary['unmappable_events']}**", "",
-        "## Annual formations", "",
-    ]
-    report.extend(f"- {year}: {count}" for year, count in summary["annual_formations"].items())
-    report.extend(["", "## Top issuers by formation count", ""])
-    report.extend(f"- {cik}: {count}" for cik, count in top)
-    report.extend(["", "## Waterfall", ""])
-    report.extend(f"- {key}: {value}" for key, value in sorted(build.waterfall.items()))
-    report.extend(["", "## Unresolved / diagnostic reason counts", ""])
-    report.extend(f"- {key}: {value}" for key, value in sorted(loss_counts.items()))
-    report.extend(["", "## Calendar", "", f"- source: {calendar.source}", f"- version: {calendar.version}", f"- semantics: {build.diagnostics['calendar_semantics']}", "", "## Design-level sample-size sensitivity", ""])
-    report.extend(f"- intracluster rho {rho}: N_effective {value}" for rho, value in summary["design_n_effective_by_intracluster_rho"].items())
-    (out_dir / "CENSUS_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(json.dumps(summary, indent=2, sort_keys=True))
 
 
