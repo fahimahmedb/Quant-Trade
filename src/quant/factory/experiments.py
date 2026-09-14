@@ -1,12 +1,13 @@
 """Outcome-blind experiment contracts and registry for Quant's Research Factory.
 
 The scientific protocol is immutable within a version. Scientific changes create a new
-version. Dataset references may be attached only before ``DATA_READY`` and are frozen by
+version. Dataset references may be attached only after preregistration and are frozen by
 the Blue Team gate. This module deliberately has no dependency on market-price code.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field, replace
+from datetime import date, datetime
 from enum import Enum
 import hashlib
 import json
@@ -70,9 +71,16 @@ class EventRecord:
             value = getattr(self, name)
             if not isinstance(value, str) or not value.strip():
                 raise ExperimentError(f"{name} must be a non-empty string")
-        parts = self.formation_date.split("-")
-        if len(parts) != 3 or not all(part.isdigit() for part in parts):
-            raise ExperimentError("formation_date must be ISO YYYY-MM-DD")
+        try:
+            date.fromisoformat(self.formation_date)
+        except ValueError as exc:
+            raise ExperimentError("formation_date must be a valid ISO YYYY-MM-DD date") from exc
+        try:
+            timestamp = datetime.fromisoformat(self.event_time.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise ExperimentError("event_time must be a valid ISO date-time") from exc
+        if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+            raise ExperimentError("event_time must be timezone-aware")
 
 
 @dataclass(frozen=True)
@@ -201,12 +209,13 @@ class ExperimentRegistry:
 
     Persistence is intentionally transport-agnostic: ``snapshot()`` returns canonical JSON-ready
     records so the Control/Data Plane can choose the durable store without changing scientific
-    behavior.
+    behavior. The stable identity namespace is the pair ``(lane, experiment_key)``, allowing the
+    same semantic key to exist independently in Form 4, crypto, futures, and future lanes.
     """
 
     def __init__(self) -> None:
         self._records: dict[tuple[str, int], ExperimentRecord] = {}
-        self._keys: dict[str, str] = {}
+        self._keys: dict[tuple[str, str], str] = {}
 
     @staticmethod
     def stable_id(experiment_key: str, lane: str) -> str:
@@ -219,18 +228,21 @@ class ExperimentRegistry:
 
     def propose(self, experiment_key: str, lane: str,
                 protocol: PreregistrationContract) -> ExperimentRecord:
-        experiment_id = self.stable_id(experiment_key, lane)
-        known = self._keys.get(experiment_key)
+        key = experiment_key.strip()
+        lane_key = lane.strip()
+        experiment_id = self.stable_id(key, lane_key)
+        identity_key = (lane_key, key)
+        known = self._keys.get(identity_key)
         if known is not None and known != experiment_id:
             raise ExperimentError("experiment identity collision")
-        self._keys[experiment_key] = experiment_id
+        self._keys[identity_key] = experiment_id
         prior = [version for (eid, version) in self._records if eid == experiment_id]
         version = max(prior, default=0) + 1
         record = ExperimentRecord(
             experiment_id=experiment_id,
-            experiment_key=experiment_key,
+            experiment_key=key,
             version=version,
-            lane=lane,
+            lane=lane_key,
             status=ExperimentStatus.PROPOSED,
             dataset_refs=(),
             protocol=protocol,
@@ -248,8 +260,8 @@ class ExperimentRegistry:
     def attach_datasets(self, experiment_id: str, version: int,
                         dataset_refs: Iterable[DatasetRef]) -> ExperimentRecord:
         record = self.get(experiment_id, version)
-        if record.status not in {ExperimentStatus.PROPOSED, ExperimentStatus.PREREGISTERED}:
-            raise ExperimentError("dataset refs are immutable once DATA_READY")
+        if record.status is not ExperimentStatus.PREREGISTERED:
+            raise ExperimentError("formation dataset refs may attach only after PREREGISTERED and are immutable once DATA_READY")
         refs = tuple(dataset_refs)
         if not refs:
             raise ExperimentError("at least one dataset ref is required")

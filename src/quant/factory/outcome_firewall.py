@@ -39,11 +39,23 @@ class DataAccessRequest:
     operation: str = "load"
 
 
-# Conservative lexical deny-list. Opaque aliases still require manifest lineage and are caught there.
 _OUTCOME_TOKENS = frozenset({
     "outcome", "outcomes", "return", "returns", "future", "forward", "pnl", "profit",
     "loss", "alpha", "excess", "label", "target", "response", "entryprice", "exitprice",
     "openprice", "closeprice", "price", "nav", "benchmarkreturn", "abnormalreturn",
+})
+_GENERIC_EVENT_ROLES: Mapping[str, ColumnRole] = {
+    "event_id": ColumnRole.IDENTIFIER,
+    "issuer_id": ColumnRole.IDENTIFIER,
+    "event_time": ColumnRole.FORMATION,
+    "formation_date": ColumnRole.FORMATION,
+    "provenance": ColumnRole.METADATA,
+    "status": ColumnRole.METADATA,
+}
+_SAFE_GEOMETRY_DERIVED = frozenset({
+    "n", "annual_distribution", "events_per_issuer", "hhi", "effective_issuers",
+    "overlapping_pairs", "events_with_any_overlap", "max_concurrent_windows",
+    "cluster_count", "multi_event_cluster_count", "cluster_size_distribution", "max_cluster_size",
 })
 
 
@@ -59,7 +71,8 @@ class OutcomeFirewall:
 
     Security does not rely on the filesystem path. Known outcome content hashes are denied even
     when copied to another path, while column role, lexical checks and recursive lineage catch
-    direct, aliased and derived outcome fields. Unknown derivations fail closed.
+    direct, aliased and derived outcome fields. Before Blue Team freeze, the only loadable raw
+    fields are the six fields of the generic event contract; unknown opaque fields fail closed.
     """
 
     def __init__(self, known_outcome_hashes: Iterable[str] = ()) -> None:
@@ -68,9 +81,15 @@ class OutcomeFirewall:
     def authorize(self, request: DataAccessRequest, experiment: ExperimentRecord,
                   gate: BlueTeamGate | None = None) -> None:
         outcome_tainted = self._request_is_outcome_tainted(request)
-        if not outcome_tainted:
+        if outcome_tainted:
+            self._require_gate(experiment, gate)
             return
-        self._require_gate(experiment, gate)
+        if experiment.status in {
+            ExperimentStatus.PROPOSED,
+            ExperimentStatus.PREREGISTERED,
+            ExperimentStatus.DATA_READY,
+        }:
+            self._require_pre_outcome_contract(request)
 
     def _request_is_outcome_tainted(self, request: DataAccessRequest) -> bool:
         if request.dataset_ref.role in {"outcome", "benchmark"}:
@@ -115,6 +134,37 @@ class OutcomeFirewall:
             return memo[name]
 
         return any(tainted(column.name) for column in request.columns)
+
+    @staticmethod
+    def _require_pre_outcome_contract(request: DataAccessRequest) -> None:
+        manifest = {column.name: column for column in request.columns}
+        for spec in request.columns:
+            if spec.alias_of is not None:
+                raise OutcomeFirewallError("aliases are not permitted before BLUE_FROZEN")
+            if spec.role == ColumnRole.DERIVED:
+                if spec.name not in _SAFE_GEOMETRY_DERIVED:
+                    raise OutcomeFirewallError(
+                        f"pre-outcome derivation {spec.name!r} is outside the geometry allowlist"
+                    )
+                if not spec.sources:
+                    raise OutcomeFirewallError("pre-outcome geometry derivations require explicit lineage")
+                for source in spec.sources:
+                    source_spec = manifest.get(source)
+                    expected_role = _GENERIC_EVENT_ROLES.get(source)
+                    if source_spec is None or expected_role is None or source_spec.role != expected_role:
+                        raise OutcomeFirewallError(
+                            f"pre-outcome derivation source {source!r} is outside the generic event contract"
+                        )
+                continue
+            expected_role = _GENERIC_EVENT_ROLES.get(spec.name)
+            if expected_role is None:
+                raise OutcomeFirewallError(
+                    f"pre-outcome field {spec.name!r} is outside the generic event contract"
+                )
+            if spec.role != expected_role:
+                raise OutcomeFirewallError(
+                    f"pre-outcome field {spec.name!r} has role {spec.role.value}, expected {expected_role.value}"
+                )
 
     @staticmethod
     def _require_gate(experiment: ExperimentRecord, gate: BlueTeamGate | None) -> None:

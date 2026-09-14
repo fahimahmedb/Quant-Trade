@@ -38,6 +38,23 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
+    def test_opaque_undeclared_formation_alias_fails_closed(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/renamed/events", (
+            ColumnSpec("x17", ColumnRole.FORMATION),
+        ))
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
+
+    def test_safe_named_alias_still_fails_closed_before_freeze(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/renamed/events", (
+            ColumnSpec("issuer_id", ColumnRole.IDENTIFIER),
+            ColumnSpec("event_id", ColumnRole.IDENTIFIER, alias_of="issuer_id"),
+        ))
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
+
     def test_alternative_path_blocked_by_fingerprint(self):
         _, record = frozen_experiment()
         fingerprint = "9" * 64
@@ -57,6 +74,14 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
+    def test_safe_geometry_derivation_from_generic_event_field_is_allowed(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", (
+            ColumnSpec("issuer_id", ColumnRole.IDENTIFIER),
+            ColumnSpec("hhi", ColumnRole.DERIVED, sources=("issuer_id",)),
+        ), operation="derive")
+        OutcomeFirewall().authorize(request, record)
+
     def test_exact_gate_allows_outcome_and_rejects_dataset_substitution(self):
         registry, record = frozen_experiment()
         record, gate = registry.blue_freeze(record.experiment_id, record.version)
@@ -71,7 +96,10 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", (
             ColumnSpec("event_id", ColumnRole.IDENTIFIER),
             ColumnSpec("issuer_id", ColumnRole.IDENTIFIER),
+            ColumnSpec("event_time", ColumnRole.FORMATION),
             ColumnSpec("formation_date", ColumnRole.FORMATION),
+            ColumnSpec("provenance", ColumnRole.METADATA),
+            ColumnSpec("status", ColumnRole.METADATA),
         ))
         OutcomeFirewall().authorize(request, record)
 
