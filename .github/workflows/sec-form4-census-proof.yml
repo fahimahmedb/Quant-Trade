@@ -11,12 +11,13 @@ permissions:
 
 jobs:
   census-and-exact-head-proof:
-    runs-on: ubuntu-latest
+    # SEC rejects the Azure-hosted Linux egress class with HTTP 403 even when
+    # the automated client declares a fair-access identity.  Use GitHub's macOS
+    # runner as a clean independent network path; this changes transport only,
+    # never the frozen census semantics or source URLs.
+    runs-on: macos-15
     timeout-minutes: 330
     env:
-      # SEC fair-access guidance asks automated clients to declare an identity
-      # and contact. Use the public GitHub actor no-reply identity plus repo URL;
-      # do not embed a private/personal email in repository code.
       SEC_USER_AGENT: Quant-Trade ${{ github.actor }}@users.noreply.github.com https://github.com/${{ github.repository }}
     steps:
       - name: Checkout Builder branch
@@ -34,6 +35,21 @@ jobs:
         # clean runner. The calendar version remains pinned and is recorded in
         # provenance; changing it cannot alter the frozen event definition.
         run: python -m pip install 'exchange-calendars==4.13.1'
+
+      - name: Official SEC source connectivity preflight
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from scripts.sec_form4_census import sec_fetch
+          url = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q1_form345.zip"
+          data = sec_fetch(url)
+          if not data.startswith(b"PK"):
+              raise SystemExit("official SEC 2020Q1 payload is not a ZIP archive")
+          path = Path("var/sec_form4_raw/2020q1_form345.zip")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_bytes(data)
+          print(f"official SEC preflight ok: {len(data)} bytes")
+          PY
 
       - name: Refresh generated V1 proof inventory
         run: |
