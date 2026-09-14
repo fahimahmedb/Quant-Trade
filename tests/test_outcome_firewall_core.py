@@ -46,6 +46,16 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
+    def test_opaque_field_after_blue_freeze_still_requires_exact_gate(self):
+        registry, record = frozen_experiment()
+        record, gate = registry.blue_freeze(record.experiment_id, record.version)
+        request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/renamed/events", (
+            ColumnSpec("x17", ColumnRole.FORMATION),
+        ))
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
+        OutcomeFirewall().authorize(request, record, gate)
+
     def test_safe_named_alias_still_fails_closed_before_freeze(self):
         _, record = frozen_experiment()
         request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/renamed/events", (
@@ -68,12 +78,6 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
-    def test_empty_manifest_fails_closed(self):
-        _, record = frozen_experiment()
-        request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", ())
-        with self.assertRaises(OutcomeFirewallError):
-            OutcomeFirewall().authorize(request, record)
-
     def test_safe_geometry_derivation_from_generic_event_field_is_allowed(self):
         _, record = frozen_experiment()
         request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", (
@@ -81,6 +85,12 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
             ColumnSpec("hhi", ColumnRole.DERIVED, sources=("issuer_id",)),
         ), operation="derive")
         OutcomeFirewall().authorize(request, record)
+
+    def test_empty_manifest_fails_closed(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", ())
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
 
     def test_exact_gate_allows_outcome_and_rejects_dataset_substitution(self):
         registry, record = frozen_experiment()

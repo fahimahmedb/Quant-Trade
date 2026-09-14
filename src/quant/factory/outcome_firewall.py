@@ -84,12 +84,14 @@ class OutcomeFirewall:
         if outcome_tainted:
             self._require_gate(experiment, gate)
             return
-        if experiment.status in {
-            ExperimentStatus.PROPOSED,
-            ExperimentStatus.PREREGISTERED,
-            ExperimentStatus.DATA_READY,
-        }:
+        try:
             self._require_pre_outcome_contract(request)
+            return
+        except OutcomeFirewallError:
+            # Any opaque/non-generic field is treated as potentially outcome-bearing.
+            # It becomes accessible only with the exact Blue Team capability, even if
+            # the experiment object already says BLUE_FROZEN or TESTING.
+            self._require_gate(experiment, gate)
 
     def _request_is_outcome_tainted(self, request: DataAccessRequest) -> bool:
         if request.dataset_ref.role in {"outcome", "benchmark"}:
