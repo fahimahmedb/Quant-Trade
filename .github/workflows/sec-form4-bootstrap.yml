@@ -30,13 +30,14 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m unittest tests.test_sec_form4_census -v
           python3 -m py_compile src/quant/dataplane/sec_form4.py scripts/sec_form4_census.py scripts/sec_form4_proof.py
+          python3 scripts/generate_schemas.py --check
 
-      - name: Commit durable implementation
+      - name: Commit durable implementation and remove bootstrap
         run: |
           git config user.name 'quant-builder-bot'
           git config user.email 'quant-builder-bot@users.noreply.github.com'
-          rm -f .github/workflows/sec-form4-census-proof.yml
           git add -A
           git rm -rf .bootstrap
-          git commit -m 'build: add deterministic SEC Form-4 census gate'
+          git rm .github/workflows/sec-form4-bootstrap.yml
+          git commit -m 'build: harden deterministic SEC Form-4 census semantics'
           git push origin HEAD:builder/sec-form4-census-v2a
