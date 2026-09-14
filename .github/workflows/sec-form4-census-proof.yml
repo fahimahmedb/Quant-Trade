@@ -25,7 +25,10 @@ jobs:
           python-version: '3.12'
 
       - name: Install pinned calendar dependency
-        run: python -m pip install 'exchange-calendars==4.11.1'
+        # 4.13.1 contains the pandas-3 schedule/unit fixes needed by the current
+        # clean runner. The calendar version remains pinned and is recorded in
+        # provenance; changing it cannot alter the frozen event definition.
+        run: python -m pip install 'exchange-calendars==4.13.1'
 
       - name: Refresh generated V1 proof inventory
         run: |
@@ -85,7 +88,7 @@ jobs:
           python3 scripts/sec_form4_census.py --verify-source-hashes
           python3 scripts/sec_form4_proof.py --check
           # Rebuild the exact economic population with no price/coverage input at
-          # all.  The certified events must be byte-identical.
+          # all. The certified events must be byte-identical.
           python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price
           cmp artifacts/sec_form4_census/events.jsonl /tmp/sec-no-price/events.jsonl
           git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
