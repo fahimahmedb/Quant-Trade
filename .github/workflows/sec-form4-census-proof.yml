@@ -1,0 +1,93 @@
+name: SEC Form-4 census proof
+
+on:
+  push:
+    branches:
+      - builder/sec-form4-census-v2a
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-census:
+    if: "${{ github.event.head_commit.message != 'data: publish deterministic SEC Form-4 census' }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned calendar dependency
+        run: python -m pip install 'exchange-calendars==4.11.1'
+      - name: Frozen V1 baseline proof
+        run: |
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/demo_quant_system.py
+          python3 scripts/generate_schemas.py --check
+      - name: Acquire official SEC 2020Q1-2026Q2 and build census
+        env:
+          SEC_USER_AGENT: Quant-Trade Form4 Census github-actions contact via repository owner
+        run: |
+          python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage
+          python3 scripts/sec_form4_proof.py --check
+      - name: Upload raw SEC cache for independent Red-Team reproduction
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-form4-v2a-raw-cache-${{ github.sha }}
+          path: var/sec_form4_raw/
+          retention-days: 90
+          compression-level: 0
+      - name: Commit deterministic census artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/calendars/xnys_sessions_2019_2026.csv artifacts/sec_form4_census
+          git commit -m 'data: publish deterministic SEC Form-4 census' || true
+          git push origin HEAD:builder/sec-form4-census-v2a
+
+  exact-head-proof:
+    if: "${{ github.event.head_commit.message == 'data: publish deterministic SEC Form-4 census' }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned calendar dependency
+        run: python -m pip install 'exchange-calendars==4.11.1'
+      - name: Verify source bytes and regenerate SEC census in clean workspace
+        env:
+          SEC_USER_AGENT: Quant-Trade Form4 Census exact-head proof contact via repository owner
+        run: |
+          cp -a artifacts/sec_form4_census /tmp/committed_sec_form4_census
+          rm -rf var/sec_form4_raw
+          python3 scripts/sec_form4_census.py --verify-source-hashes
+          python3 scripts/sec_form4_proof.py --check
+          diff -u /tmp/committed_sec_form4_census/normalized_candidates.jsonl artifacts/sec_form4_census/normalized_candidates.jsonl
+          diff -u /tmp/committed_sec_form4_census/normalized_purchase_observations.jsonl artifacts/sec_form4_census/normalized_purchase_observations.jsonl
+          diff -u /tmp/committed_sec_form4_census/events.jsonl artifacts/sec_form4_census/events.jsonl
+          diff -u /tmp/committed_sec_form4_census/loss_ledger.jsonl artifacts/sec_form4_census/loss_ledger.jsonl
+          diff -u /tmp/committed_sec_form4_census/census_summary.json artifacts/sec_form4_census/census_summary.json
+          diff -u /tmp/committed_sec_form4_census/waterfall.json artifacts/sec_form4_census/waterfall.json
+          diff -u /tmp/committed_sec_form4_census/CENSUS_REPORT.md artifacts/sec_form4_census/CENSUS_REPORT.md
+          diff -u /tmp/committed_sec_form4_census/acceptance_manifest.json artifacts/sec_form4_census/acceptance_manifest.json
+          diff -u /tmp/committed_sec_form4_census/mapping_ledger.jsonl artifacts/sec_form4_census/mapping_ledger.jsonl
+          git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json artifacts/sec_form4_census/price_coverage_snapshot.json
+      - name: Full proof gate exact HEAD
+        run: |
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/demo_quant_system.py
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/sec_form4_proof.py --check
+          git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+          git status --short
+          test -z "$(git status --porcelain)"
