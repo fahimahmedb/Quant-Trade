@@ -23,8 +23,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize prepared payload
-        run: cat .bootstrap/sec_payload.part* | base64 -d | tar -xz -C .
+      - name: Materialize exact Git-transported payload
+        run: cat .bootstrap/exact.part* | base64 -d | tar -xzf - -C .
+
+      - name: Install pinned calendar dependency
+        run: python -m pip install 'exchange-calendars==4.11.1'
 
       - name: Validate SEC census implementation
         run: |
@@ -32,7 +35,7 @@ jobs:
           python3 -m py_compile src/quant/dataplane/sec_form4.py scripts/sec_form4_census.py scripts/sec_form4_proof.py
           python3 scripts/generate_schemas.py --check
 
-      - name: Commit durable implementation and remove bootstrap
+      - name: Commit durable implementation and remove transport
         run: |
           git config user.name 'quant-builder-bot'
           git config user.email 'quant-builder-bot@users.noreply.github.com'
