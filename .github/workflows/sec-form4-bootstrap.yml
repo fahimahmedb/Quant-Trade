@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   materialize:
-    if: github.event.head_commit.message == 'build: stage SEC Form-4 V2-A payload'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
