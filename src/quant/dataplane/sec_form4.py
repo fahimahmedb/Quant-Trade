@@ -36,7 +36,7 @@ OLD_SEC_ZIP_ROOT = "https://www.sec.gov/files/structureddata/data/insider-transa
 NEW_SEC_ZIP_ROOT = "https://www.sec.gov/files/datastandardsinnovation/data/insider-transactions-data-sets"
 SEC_ARCHIVE_ROOT = "https://www.sec.gov/Archives/edgar/data"
 YAHOO_CHART_ROOT = "https://query1.finance.yahoo.com/v8/finance/chart"
-DEFAULT_SEC_RATE_PER_SECOND = 5.0
+DEFAULT_SEC_RATE_PER_SECOND = 8.0
 ACCEPTANCE_CHECKPOINT_BATCH = 200
 
 REASON_CODES = {
@@ -670,7 +670,7 @@ def acceptance_header_url(archive_cik: str, accession: str) -> str:
 
 def acceptance_header_url_candidates(accession: str, issuer_cik: str, owner_ciks: Sequence[str]=()) -> list[str]:
     ciks=[]
-    for value in [*owner_ciks,issuer_cik,accession[:10]]:
+    for value in [issuer_cik,*owner_ciks,accession[:10]]:
         norm=normalize_cik(value)
         if norm and norm not in ciks: ciks.append(norm)
     return [acceptance_header_url(cik,accession) for cik in ciks]

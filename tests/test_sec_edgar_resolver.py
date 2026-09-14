@@ -22,8 +22,8 @@ class Fetcher:
     def __call__(self,url): self.calls.append(url); return self.payload
 
 class ResolverIntegrityTests(unittest.TestCase):
-    def test_owner_archive_candidates_precede_issuer_fallback(self):
-        urls=acceptance_header_url_candidates(ACC,'1',['101']);self.assertIn('/101/',urls[0]);self.assertIn('/1/',urls[1])
+    def test_issuer_archive_candidate_precedes_owner_fallback(self):
+        urls=acceptance_header_url_candidates(ACC,'1',['101']);self.assertIn('/1/',urls[0]);self.assertIn('/101/',urls[1])
     def test_legacy_cache_is_semantically_revalidated_without_network(self):
         with tempfile.TemporaryDirectory() as d:
             base=Path(d);cache=base/'cache';cache.mkdir();(cache/f'{ACC}.html').write_bytes(sgml());f=Fetcher()
@@ -44,7 +44,7 @@ class ResolverIntegrityTests(unittest.TestCase):
         calls=[]
         def fetch(url):
             calls.append(url)
-            if '/101/' in url: raise urllib.error.HTTPError(url,404,'missing',{},None)
+            if '/1/' in url: raise urllib.error.HTTPError(url,404,'missing',{},None)
             return sgml()
         with tempfile.TemporaryDirectory() as d:
             base=Path(d);got,fail=resolve_acceptance_documents([ACC],ISS,cache_dir=base/'cache',checkpoint_path=base/'cp',fetcher=fetch,rate_per_second=1000,owner_ciks_of=OWN)
