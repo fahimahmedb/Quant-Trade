@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "One normalized Form-4 P/acquired candidate row with explicit qualification status.",
+  "properties": {
+    "accession": {
+      "type": "string"
+    },
+    "issuer_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owner_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "reporting_owner_ciks": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "row_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "transaction_date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "accession",
+    "row_id",
+    "issuer_cik",
+    "owner_cik",
+    "transaction_date",
+    "status"
+  ],
+  "title": "sec_form4_candidate_record",
+  "type": "object"
+}

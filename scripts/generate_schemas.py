@@ -24,6 +24,13 @@ sys.path.insert(0, str(ROOT / "src"))
 from quant.book.ledger import LedgerState, Position  # noqa: E402
 from quant.clock import ControlState  # noqa: E402
 from quant.dataplane.registry import DatasetRecord  # noqa: E402
+from quant.dataplane.sec_form4 import (  # noqa: E402
+    Form4Event,
+    LossLedgerRecord,
+    NormalizedCandidateRecord,
+    PurchaseObservation,
+    SourceRecord,
+)
 from quant.desk.opportunity import OpportunityTicket  # noqa: E402
 from quant.events import SystemEvent  # noqa: E402
 from quant.factory.strategies import StrategyDefinition  # noqa: E402
@@ -43,6 +50,11 @@ OBJECTS = {
     "control_state": (ControlState, "Control Plane lifetime and cursors."),
     "component_status": (ComponentStatus, "RUN/IDLE/BLOCKED/FAULT/PAUSED per function."),
     "build_task": (BuildTask, "A capability gap the system raised for the Build Plane."),
+    "sec_form4_source_record": (SourceRecord, "Pinned official SEC quarterly source provenance."),
+    "sec_form4_candidate_record": (NormalizedCandidateRecord, "One normalized Form-4 P/acquired candidate row with explicit qualification status."),
+    "sec_form4_purchase_observation": (PurchaseObservation, "Deduplicated issuer/owner/date purchase observation used by the census."),
+    "sec_form4_event": (Form4Event, "One deterministic 2-insider/10-session crossing formation."),
+    "sec_form4_loss_record": (LossLedgerRecord, "Explicit exclusion, unresolved mapping/timing, or diagnostic ledger record."),
 }
 
 PRIMITIVES = {str: "string", int: "integer", float: "number", bool: "boolean"}
@@ -104,6 +116,7 @@ def main() -> int:
             if not path.exists() or path.read_text(encoding="utf-8") != rendered:
                 stale.append(name)
         else:
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(rendered, encoding="utf-8")
     if args.check and stale:
         print("stale schemas: " + ", ".join(stale))

@@ -1,6 +1,6 @@
 # Codex Operating Mandate — Quant Builder
 
-Codex is primarily the **Builder / Quant Engineer** for Quant.
+Codex is one possible provider occupying the **Builder / Quant Engineer** role for Quant. The canonical provider-independent role contract is `BUILDER_ROLE.md`; this file must not redefine or expand that authority.
 
 Your task is not to become the lifetime of the Quant process and not to reinterpret the current subsystem as the whole product.
 
@@ -9,14 +9,16 @@ Your task is not to become the lifetime of the Quant process and not to reinterp
 Before any substantial change, read:
 
 1. `QUANT_NORTH_STAR.md`
-2. `SYSTEM_ARCHITECTURE.md`
-3. `OPERATING_MODEL.md`
-4. `MISSION.md`
-5. `SOURCE_BASIS.md`
-6. `AGENTS.md`
-7. `PIPELINE.md`
-8. `STATE.md`
-9. the code/tests/artifacts relevant to the current build mission.
+2. `BUILDER_ROLE.md`
+3. the current released mission document
+4. `SYSTEM_ARCHITECTURE.md`
+5. `OPERATING_MODEL.md`
+6. `MISSION.md`
+7. `SOURCE_BASIS.md`
+8. `AGENTS.md`
+9. `PIPELINE.md`
+10. `STATE.md`
+11. the code/tests/artifacts relevant to the current build mission.
 
 If a lower-level document appears to conflict with `QUANT_NORTH_STAR.md`, preserve the North Star and flag the inconsistency.
 
@@ -81,14 +83,15 @@ A build is complete when its stated system capability is implemented, tested, do
 At completion:
 
 - run the relevant test suite and demonstrations;
-- update `STATE.md` from actual evidence;
+- update durable state/reporting from actual evidence as required by the released mission;
 - report what North-Star gaps were closed;
 - report what remains genuinely missing;
 - preserve explicit blockers rather than hiding them;
-- ensure Quant has coherent state and a legitimate next action after the Codex task ends.
+- ensure Quant has coherent state and a legitimate next action after the Builder task ends;
+- hand off to independent Red Team when the mission requires it rather than self-certifying mergeability.
 
 ## Final instruction
 
-Codex builds Quant.
+Builder builds Quant.
 
 Quant is the persistent system described by `QUANT_NORTH_STAR.md`.

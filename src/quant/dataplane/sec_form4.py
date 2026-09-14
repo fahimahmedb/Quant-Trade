@@ -1,0 +1,690 @@
+"""Deterministic SEC Form-4 census primitives for the V2-A data-semantics gate.
+
+This module deliberately contains no return, P&L, alpha, Sharpe or performance
+logic.  The certified population is constructed only from official SEC ownership
+filings plus a pinned regular-session calendar.  Security/price-path coverage is
+an optional downstream diagnostic and cannot alter event formation.
+"""
+from __future__ import annotations
+
+import csv
+import hashlib
+import io
+import json
+import re
+import time
+import urllib.error
+import urllib.request
+import urllib.parse
+import zipfile
+from collections import Counter, defaultdict, deque
+from dataclasses import asdict, dataclass, field
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any, Iterable, Iterator, Sequence
+
+START_DATE = date(2020, 1, 1)
+END_DATE = date(2026, 6, 30)
+PARSER_VERSION = "sec-form4-census-v2a/1"
+SEC_USER_AGENT = "Quant-Trade SEC Form4 Census research contact: project-owner-via-github"
+OLD_SEC_ZIP_ROOT = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets"
+NEW_SEC_ZIP_ROOT = "https://www.sec.gov/files/datastandardsinnovation/data/insider-transactions-data-sets"
+SEC_ARCHIVE_ROOT = "https://www.sec.gov/Archives/edgar/data"
+YAHOO_CHART_ROOT = "https://query1.finance.yahoo.com/v8/finance/chart"
+
+REASON_CODES = {
+    "FORM_AMENDMENT",
+    "NOT_P_ACQUIRED",
+    "TRANSACTION_DATE_OUT_OF_SCOPE",
+    "QUALIFIED_ROLE_FALSE",
+    "OWNER_ID_UNRESOLVED",
+    "JOINT_OWNER_AMBIGUOUS",
+    "DUPLICATE_ACCESSION",
+    "DUPLICATE_ACCESSION_CONFLICT",
+    "DUPLICATE_TRANSACTION_ROW",
+    "ACCEPTANCE_TIMESTAMP_UNRESOLVED",
+    "TICKER_CHANGED",
+    "TICKER_REUSED_OR_AMBIGUOUS",
+    "NONSTANDARD_SECURITY",
+    "CIK_SYMBOL_CONFLICT",
+    "DELISTED_OR_NO_HISTORY",
+    "CORPORATE_ACTION_UNRESOLVED",
+    "PRICE_SOURCE_UNAVAILABLE",
+}
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _stable_hash(payload: Any, prefix: str) -> str:
+    rendered = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return prefix + hashlib.sha256(rendered.encode("utf-8")).hexdigest()[:24]
+
+
+def _clean(value: Any) -> str:
+    return "" if value is None else str(value).strip()
+
+
+def normalize_cik(value: Any) -> str | None:
+    raw = _clean(value)
+    if not raw or not raw.isdigit():
+        return None
+    return raw.zfill(10)
+
+
+def parse_sec_date(value: str) -> date:
+    raw = _clean(value)
+    for fmt in ("%d-%b-%Y", "%Y-%m-%d", "%m/%d/%Y"):
+        try:
+            return datetime.strptime(raw, fmt).date()
+        except ValueError:
+            pass
+    raise ValueError(f"unsupported SEC date: {value!r}")
+
+
+def iso_or_none(value: str) -> str | None:
+    raw = _clean(value)
+    if not raw:
+        return None
+    return parse_sec_date(raw).isoformat()
+
+
+def source_url(year: int, quarter: int) -> str:
+    root = NEW_SEC_ZIP_ROOT if year >= 2026 else OLD_SEC_ZIP_ROOT
+    return f"{root}/{year}q{quarter}_form345.zip"
+
+
+def quarter_specs() -> list[tuple[int, int]]:
+    out: list[tuple[int, int]] = []
+    for year in range(2020, 2027):
+        last_q = 2 if year == 2026 else 4
+        out.extend((year, q) for q in range(1, last_q + 1))
+    return out
+
+
+@dataclass(frozen=True)
+class SourceRecord:
+    period: str
+    source_url: str
+    sha256: str
+    bytes: int
+    retrieved_at: str
+    parser_version: str = PARSER_VERSION
+    local_path: str | None = None
+
+
+@dataclass(frozen=True)
+class NormalizedCandidateRecord:
+    accession: str
+    row_id: str
+    issuer_cik: str | None
+    owner_cik: str | None
+    transaction_date: str
+    status: str
+    reason_codes: tuple[str, ...] = ()
+    reporting_owner_ciks: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class PurchaseObservation:
+    observation_id: str
+    issuer_cik: str
+    owner_cik: str
+    transaction_date: str
+    issuer_symbols: tuple[str, ...]
+    accessions: tuple[str, ...]
+    source_rows: int
+
+
+@dataclass(frozen=True)
+class Form4Event:
+    event_id: str
+    issuer_cik: str
+    formation_transaction_date: str
+    window_start_date: str
+    owner_ciks: tuple[str, ...]
+    constituent_observation_ids: tuple[str, ...]
+    accessions: tuple[str, ...]
+    session_distance: int
+    event_time: str | None = None
+    event_time_timezone: str = "America/New_York"
+    event_time_status: str = "PENDING"
+
+
+@dataclass(frozen=True)
+class LossLedgerRecord:
+    record_id: str
+    event_id: str | None
+    accession: str | None
+    issuer_cik: str | None
+    owner_cik: str | None
+    status: str
+    reason_codes: tuple[str, ...]
+    detail: str = ""
+
+
+@dataclass
+class CensusBuild:
+    submissions: dict[str, dict[str, str]]
+    owners_by_accession: dict[str, list[dict[str, str]]]
+    transaction_rows: list[dict[str, str]]
+    observations: list[PurchaseObservation]
+    events: list[Form4Event]
+    losses: list[LossLedgerRecord]
+    waterfall: dict[str, int]
+    diagnostics: dict[str, Any]
+    normalized_candidates: list[NormalizedCandidateRecord] = field(default_factory=list)
+
+
+class SessionCalendar:
+    """Pinned U.S. regular-session dates; distance is sessions crossed.
+
+    session_distance(a, b) counts regular sessions s with a < s <= b when a<=b.
+    Thus same-date distance is 0, adjacent regular sessions are distance 1, and
+    exactly 10 qualifies while 11 does not.  Off-session transaction dates are
+    handled by the same interval rule, avoiding ad-hoc weekend/holiday shifts.
+    """
+
+    def __init__(self, sessions: Sequence[str], source: str, version: str):
+        parsed = sorted({date.fromisoformat(s) for s in sessions})
+        if not parsed:
+            raise ValueError("empty session calendar")
+        self.sessions = parsed
+        self.source = source
+        self.version = version
+
+    @classmethod
+    def from_csv(cls, path: Path) -> "SessionCalendar":
+        rows = list(csv.DictReader(path.open(encoding="utf-8", newline="")))
+        if not rows:
+            raise ValueError("calendar file is empty")
+        source = rows[0].get("source", "")
+        version = rows[0].get("version", "")
+        return cls([r["session"] for r in rows], source, version)
+
+    def distance(self, earlier: str | date, later: str | date) -> int:
+        a = date.fromisoformat(earlier) if isinstance(earlier, str) else earlier
+        b = date.fromisoformat(later) if isinstance(later, str) else later
+        if b < a:
+            raise ValueError("session distance requires chronological dates")
+        # bisect without importing another dependency.
+        import bisect
+        return bisect.bisect_right(self.sessions, b) - bisect.bisect_right(self.sessions, a)
+
+
+def _member_name(names: Sequence[str], token: str) -> str:
+    token = token.upper()
+    matches = [n for n in names if token in n.upper()]
+    if not matches:
+        raise KeyError(f"zip missing member containing {token}; members={list(names)!r}")
+    # Prefer .tsv/.txt and shortest canonical-looking path deterministically.
+    matches.sort(key=lambda n: (0 if n.lower().endswith((".tsv", ".txt")) else 1, len(n), n))
+    return matches[0]
+
+
+def _read_tsv(zf: zipfile.ZipFile, token: str) -> list[dict[str, str]]:
+    member = _member_name(zf.namelist(), token)
+    raw = zf.read(member)
+    text = raw.decode("utf-8-sig", errors="strict")
+    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
+    return [{(_clean(k).upper()): _clean(v) for k, v in row.items() if k is not None} for row in reader]
+
+
+def parse_quarter_zip(data: bytes, period: str) -> tuple[list[dict[str, str]], list[dict[str, str]], list[dict[str, str]]]:
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        submissions = _read_tsv(zf, "SUBMISSION")
+        owners = _read_tsv(zf, "REPORTINGOWNER")
+        transactions = _read_tsv(zf, "NONDERIV_TRANS")
+    for rows in (submissions, owners, transactions):
+        for row in rows:
+            row["_SOURCE_PERIOD"] = period
+    return submissions, owners, transactions
+
+
+def _role_qualified(relationship: str) -> bool:
+    value = re.sub(r"[^A-Z]", "", _clean(relationship).upper())
+    return "DIRECTOR" in value or "OFFICER" in value
+
+
+def build_census(quarter_payloads: Sequence[tuple[str, bytes]], calendar: SessionCalendar) -> CensusBuild:
+    """Build the price-independent economic formation population."""
+    all_submissions: list[dict[str, str]] = []
+    all_owners: list[dict[str, str]] = []
+    all_tx: list[dict[str, str]] = []
+    for period, payload in quarter_payloads:
+        submissions, owners, tx = parse_quarter_zip(payload, period)
+        all_submissions.extend(submissions)
+        all_owners.extend(owners)
+        all_tx.extend(tx)
+
+    losses: list[LossLedgerRecord] = []
+    waterfall: Counter[str] = Counter()
+    waterfall["source_quarters"] = len(quarter_payloads)
+    waterfall["submission_rows"] = len(all_submissions)
+    waterfall["reporting_owner_rows"] = len(all_owners)
+    waterfall["nonderivative_rows"] = len(all_tx)
+
+    submissions: dict[str, dict[str, str]] = {}
+    for row in sorted(all_submissions, key=lambda r: (r.get("ACCESSION_NUMBER", ""), r.get("_SOURCE_PERIOD", ""))):
+        acc = _clean(row.get("ACCESSION_NUMBER"))
+        if not acc:
+            continue
+        previous = submissions.get(acc)
+        if previous is None:
+            submissions[acc] = row
+        else:
+            same = {k: v for k, v in previous.items() if k != "_SOURCE_PERIOD"} == {k: v for k, v in row.items() if k != "_SOURCE_PERIOD"}
+            reason = "DUPLICATE_ACCESSION" if same else "DUPLICATE_ACCESSION_CONFLICT"
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["submission", acc, row.get("_SOURCE_PERIOD"), reason], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=normalize_cik(row.get("ISSUERCIK")), owner_cik=None,
+                status="DIAGNOSTIC", reason_codes=(reason,), detail=f"duplicate submission row in {row.get('_SOURCE_PERIOD', '')}",
+            ))
+            waterfall[reason.lower()] += 1
+
+    owners_by_accession: dict[str, list[dict[str, str]]] = defaultdict(list)
+    owner_seen: set[tuple[str, str, str]] = set()
+    for row in all_owners:
+        acc = _clean(row.get("ACCESSION_NUMBER"))
+        key = (acc, _clean(row.get("RPTOWNERCIK")), _clean(row.get("RPTOWNER_RELATIONSHIP")))
+        if key in owner_seen:
+            continue
+        owner_seen.add(key)
+        owners_by_accession[acc].append(row)
+
+    tx_rows: list[dict[str, str]] = []
+    tx_seen: set[tuple[str, str]] = set()
+    for row in all_tx:
+        acc = _clean(row.get("ACCESSION_NUMBER"))
+        sk = _clean(row.get("NONDERIV_TRANS_SK"))
+        key = (acc, sk)
+        if key in tx_seen:
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["tx", acc, sk, row.get("_SOURCE_PERIOD")], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=normalize_cik(submissions.get(acc, {}).get("ISSUERCIK")), owner_cik=None,
+                status="DIAGNOSTIC", reason_codes=("DUPLICATE_TRANSACTION_ROW",), detail=f"duplicate transaction row {sk}",
+            ))
+            waterfall["duplicate_transaction_row"] += 1
+            continue
+        tx_seen.add(key)
+        tx_rows.append(row)
+
+    original_accessions = {acc for acc, s in submissions.items() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4"}
+    amendment_accessions = {acc for acc, s in submissions.items() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4/A"}
+    waterfall["original_form4_filings"] = len(original_accessions)
+    waterfall["form4a_filings"] = len(amendment_accessions)
+
+    original_tx = [r for r in tx_rows if _clean(r.get("ACCESSION_NUMBER")) in original_accessions]
+    waterfall["original_form4_nonderivative_rows"] = len(original_tx)
+    pa_rows = [r for r in original_tx if _clean(r.get("TRANS_CODE")).upper() == "P" and _clean(r.get("TRANS_ACQUIRED_DISP_CD")).upper() == "A"]
+    waterfall["original_form4_p_acquired_rows"] = len(pa_rows)
+
+    grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
+    normalized_candidates: list[NormalizedCandidateRecord] = []
+    for row in pa_rows:
+        acc = _clean(row.get("ACCESSION_NUMBER"))
+        sub = submissions[acc]
+        issuer_cik = normalize_cik(sub.get("ISSUERCIK"))
+        try:
+            tx_date = parse_sec_date(row.get("TRANS_DATE", ""))
+        except ValueError:
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["bad-date", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
+                status="EXCLUDED", reason_codes=("TRANSACTION_DATE_OUT_OF_SCOPE",), detail=f"unparseable transaction date {row.get('TRANS_DATE')!r}",
+            ))
+            continue
+        if not (START_DATE <= tx_date <= END_DATE):
+            waterfall["p_acquired_rows_date_out_of_scope"] += 1
+            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("TRANSACTION_DATE_OUT_OF_SCOPE",)))
+            continue
+        waterfall["p_acquired_rows_in_scope"] += 1
+
+        owners = owners_by_accession.get(acc, [])
+        owner_ciks = sorted({c for o in owners if (c := normalize_cik(o.get("RPTOWNERCIK")))})
+        if len(owner_ciks) == 0:
+            waterfall["owner_id_unresolved_rows"] += 1
+            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("OWNER_ID_UNRESOLVED",)))
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["owner-missing", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
+                status="EXCLUDED", reason_codes=("OWNER_ID_UNRESOLVED",), detail="no authoritative reporting-owner CIK",
+            ))
+            continue
+        if len(owner_ciks) != 1:
+            waterfall["joint_owner_ambiguous_rows"] += 1
+            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, None, tx_date.isoformat(), "EXCLUDED", ("JOINT_OWNER_AMBIGUOUS",), tuple(owner_ciks)))
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["joint", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=issuer_cik, owner_cik=None,
+                status="EXCLUDED", reason_codes=("JOINT_OWNER_AMBIGUOUS",), detail=f"{len(owner_ciks)} distinct reporting-owner CIKs; transaction row has no owner attribution",
+            ))
+            continue
+        owner_cik = owner_ciks[0]
+        owner_rows = [o for o in owners if normalize_cik(o.get("RPTOWNERCIK")) == owner_cik]
+        if not any(_role_qualified(o.get("RPTOWNER_RELATIONSHIP", "")) for o in owner_rows):
+            waterfall["unqualified_role_rows"] += 1
+            normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, owner_cik, tx_date.isoformat(), "EXCLUDED", ("QUALIFIED_ROLE_FALSE",)))
+            continue
+        waterfall["qualified_unambiguous_p_acquired_rows"] += 1
+        normalized_candidates.append(NormalizedCandidateRecord(acc, _clean(row.get("NONDERIV_TRANS_SK")), issuer_cik, owner_cik, tx_date.isoformat(), "QUALIFYING" if issuer_cik is not None else "EXCLUDED", () if issuer_cik is not None else ("CIK_SYMBOL_CONFLICT",)))
+        if issuer_cik is None:
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["issuer-missing", acc, row.get("NONDERIV_TRANS_SK")], "LOSS-"),
+                event_id=None, accession=acc, issuer_cik=None, owner_cik=owner_cik,
+                status="EXCLUDED", reason_codes=("CIK_SYMBOL_CONFLICT",), detail="issuer CIK is not resolvable",
+            ))
+            continue
+        key = (issuer_cik, owner_cik, tx_date.isoformat())
+        item = grouped.setdefault(key, {"accessions": set(), "symbols": set(), "rows": 0})
+        item["accessions"].add(acc)
+        symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
+        if symbol:
+            item["symbols"].add(symbol)
+        item["rows"] += 1
+
+    observations: list[PurchaseObservation] = []
+    for (issuer_cik, owner_cik, tx_date), item in sorted(grouped.items()):
+        accessions = tuple(sorted(item["accessions"]))
+        payload = [issuer_cik, owner_cik, tx_date, accessions]
+        observations.append(PurchaseObservation(
+            observation_id=_stable_hash(payload, "OBS-"),
+            issuer_cik=issuer_cik,
+            owner_cik=owner_cik,
+            transaction_date=tx_date,
+            issuer_symbols=tuple(sorted(item["symbols"])),
+            accessions=accessions,
+            source_rows=int(item["rows"]),
+        ))
+    waterfall["certified_purchase_observations"] = len(observations)
+    waterfall["distinct_issuer_ciks_in_observations"] = len({o.issuer_cik for o in observations})
+    waterfall["distinct_owner_ciks_in_observations"] = len({o.owner_cik for o in observations})
+
+    events: list[Form4Event] = []
+    obs_by_issuer: dict[str, list[PurchaseObservation]] = defaultdict(list)
+    for obs in observations:
+        obs_by_issuer[obs.issuer_cik].append(obs)
+    for issuer_cik, issuer_obs in sorted(obs_by_issuer.items()):
+        ordered = sorted(issuer_obs, key=lambda o: (o.transaction_date, o.owner_cik, o.observation_id))
+        by_date: dict[str, list[PurchaseObservation]] = defaultdict(list)
+        for obs in ordered:
+            by_date[obs.transaction_date].append(obs)
+        window: deque[PurchaseObservation] = deque()
+        owner_counts: Counter[str] = Counter()
+        for tx_date in sorted(by_date):
+            while window and calendar.distance(window[0].transaction_date, tx_date) > 10:
+                expired = window.popleft()
+                owner_counts[expired.owner_cik] -= 1
+                if owner_counts[expired.owner_cik] <= 0:
+                    del owner_counts[expired.owner_cik]
+            distinct_before = len(owner_counts)
+            for obs in sorted(by_date[tx_date], key=lambda o: (o.owner_cik, o.observation_id)):
+                window.append(obs)
+                owner_counts[obs.owner_cik] += 1
+            distinct_after = len(owner_counts)
+            if distinct_before < 2 <= distinct_after:
+                owners = tuple(sorted(owner_counts))
+                relevant = tuple(sorted(window, key=lambda x: (x.transaction_date, x.owner_cik, x.observation_id)))
+                accessions = tuple(sorted({a for x in relevant for a in x.accessions}))
+                start_date = relevant[0].transaction_date
+                distance = calendar.distance(start_date, tx_date)
+                event_payload = [issuer_cik, tx_date, owners, tuple(x.observation_id for x in relevant), accessions]
+                events.append(Form4Event(
+                    event_id=_stable_hash(event_payload, "F4EV-"),
+                    issuer_cik=issuer_cik,
+                    formation_transaction_date=tx_date,
+                    window_start_date=start_date,
+                    owner_ciks=owners,
+                    constituent_observation_ids=tuple(x.observation_id for x in relevant),
+                    accessions=accessions,
+                    session_distance=distance,
+                ))
+    waterfall["economic_formations"] = len(events)
+
+    filings_by_period = Counter(s.get("_SOURCE_PERIOD", "UNKNOWN") for s in submissions.values() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4")
+    amendments_by_period = Counter(s.get("_SOURCE_PERIOD", "UNKNOWN") for s in submissions.values() if _clean(s.get("DOCUMENT_TYPE")).upper() == "4/A")
+    diagnostics = {
+        "calendar_source": calendar.source,
+        "calendar_version": calendar.version,
+        "calendar_semantics": "session_distance(a,b)=count of XNYS regular sessions with a < session <= b",
+        "start_date": START_DATE.isoformat(),
+        "end_date": END_DATE.isoformat(),
+        "parser_version": PARSER_VERSION,
+        "original_form4_filings_by_source_period": dict(sorted(filings_by_period.items())),
+        "form4a_filings_by_source_period": dict(sorted(amendments_by_period.items())),
+    }
+    return CensusBuild(submissions, dict(owners_by_accession), tx_rows, observations, events, losses, dict(sorted(waterfall.items())), diagnostics, normalized_candidates)
+
+
+def acceptance_header_url(issuer_cik: str, accession: str) -> str:
+    cik = str(int(issuer_cik))
+    acc_dir = accession.replace("-", "")
+    return f"{SEC_ARCHIVE_ROOT}/{cik}/{acc_dir}/{accession}-index-headers.html"
+
+
+def _http_get(url: str, user_agent: str = SEC_USER_AGENT, timeout: int = 60, retries: int = 4, delay: float = 0.13) -> bytes:
+    error: Exception | None = None
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": user_agent, "Accept-Encoding": "identity"})
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                data = response.read()
+            if delay:
+                time.sleep(delay)
+            return data
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            error = exc
+            time.sleep(min(4.0, 0.5 * (2 ** attempt)))
+    raise RuntimeError(f"failed GET {url}: {error}")
+
+
+def parse_acceptance_timestamp(payload: bytes) -> str:
+    text = payload.decode("utf-8", errors="replace")
+    match = re.search(r"<ACCEPTANCE-DATETIME>\s*(\d{14})", text, flags=re.IGNORECASE)
+    if not match:
+        raise ValueError("ACCEPTANCE-DATETIME not found")
+    dt = datetime.strptime(match.group(1), "%Y%m%d%H%M%S").replace(tzinfo=timezone(timedelta(hours=-5)))
+    # EDGAR header does not encode DST offset. Preserve the authoritative wall clock and label timezone separately
+    # instead of inventing a UTC conversion. The ISO string intentionally carries no offset.
+    return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def resolve_event_times(build: CensusBuild, fetcher: Any = _http_get, cache_dir: Path | None = None) -> tuple[list[Form4Event], list[LossLedgerRecord], dict[str, dict[str, str]]]:
+    """Resolve acceptance time only for accession lineage used by economic formations."""
+    observations = {o.observation_id: o for o in build.observations}
+    needed = sorted({acc for event in build.events for acc in event.accessions})
+    accession_issuer: dict[str, str] = {}
+    for event in build.events:
+        for acc in event.accessions:
+            accession_issuer.setdefault(acc, event.issuer_cik)
+    resolved: dict[str, dict[str, str]] = {}
+    losses = list(build.losses)
+    if cache_dir is not None:
+        cache_dir.mkdir(parents=True, exist_ok=True)
+    for acc in needed:
+        issuer = accession_issuer[acc]
+        url = acceptance_header_url(issuer, acc)
+        payload: bytes | None = None
+        local = cache_dir / f"{acc}.html" if cache_dir is not None else None
+        try:
+            if local is not None and local.exists():
+                payload = local.read_bytes()
+            else:
+                payload = fetcher(url)
+                if local is not None:
+                    local.write_bytes(payload)
+            accepted = parse_acceptance_timestamp(payload)
+            resolved[acc] = {"acceptance_time": accepted, "url": url, "sha256": _sha256_bytes(payload)}
+        except Exception as exc:
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["acceptance", acc], "LOSS-"), event_id=None, accession=acc,
+                issuer_cik=issuer, owner_cik=None, status="UNRESOLVED",
+                reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",), detail=str(exc),
+            ))
+
+    out: list[Form4Event] = []
+    for event in build.events:
+        owner_times: list[str] = []
+        relevant_obs = [observations[x] for x in event.constituent_observation_ids]
+        for owner in event.owner_ciks:
+            times = [resolved[a]["acceptance_time"] for o in relevant_obs if o.owner_cik == owner for a in o.accessions if a in resolved]
+            if times:
+                owner_times.append(min(times))
+        if len(owner_times) < 2:
+            out.append(Form4Event(**{**asdict(event), "event_time": None, "event_time_status": "UNRESOLVED"}))
+            losses.append(LossLedgerRecord(
+                record_id=_stable_hash(["event-time", event.event_id], "LOSS-"), event_id=event.event_id,
+                accession=None, issuer_cik=event.issuer_cik, owner_cik=None, status="UNRESOLVED",
+                reason_codes=("ACCEPTANCE_TIMESTAMP_UNRESOLVED",), detail="fewer than two distinct constituent owners have resolved acceptance timestamps",
+            ))
+        else:
+            event_time = sorted(owner_times)[1]
+            out.append(Form4Event(**{**asdict(event), "event_time": event_time, "event_time_status": "RESOLVED"}))
+    return out, losses, resolved
+
+
+def ticker_history(build: CensusBuild) -> dict[str, list[tuple[str, str, str]]]:
+    history: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+    for acc, sub in build.submissions.items():
+        if _clean(sub.get("DOCUMENT_TYPE")).upper() != "4":
+            continue
+        cik = normalize_cik(sub.get("ISSUERCIK"))
+        symbol = _clean(sub.get("ISSUERTRADINGSYMBOL")).upper()
+        filing_date = iso_or_none(sub.get("FILING_DATE", ""))
+        if cik and filing_date:
+            history[cik].append((filing_date, symbol, acc))
+    return {k: sorted(v) for k, v in history.items()}
+
+
+def build_mapping_ledger(build: CensusBuild, events: Sequence[Form4Event], price_status: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    """Map events after formation. `price_status` may be absent without changing events."""
+    history = ticker_history(build)
+    symbol_ciks: dict[str, set[str]] = defaultdict(set)
+    for cik, rows in history.items():
+        for _, sym, _ in rows:
+            if sym:
+                symbol_ciks[sym].add(cik)
+    out: list[dict[str, Any]] = []
+    for event in events:
+        symbols = sorted({_clean(build.submissions[a].get("ISSUERTRADINGSYMBOL")).upper() for a in event.accessions if a in build.submissions and _clean(build.submissions[a].get("ISSUERTRADINGSYMBOL"))})
+        reasons: list[str] = []
+        diagnostic: list[str] = []
+        if len(symbols) == 0:
+            reasons.append("NONSTANDARD_SECURITY")
+            chosen = None
+        elif len(symbols) > 1:
+            reasons.append("CIK_SYMBOL_CONFLICT")
+            chosen = None
+        else:
+            chosen = symbols[0]
+            issuer_symbols = {sym for _, sym, _ in history.get(event.issuer_cik, []) if sym}
+            if len(issuer_symbols) > 1:
+                diagnostic.append("TICKER_CHANGED")
+            if len(symbol_ciks.get(chosen, set())) > 1:
+                reasons.append("TICKER_REUSED_OR_AMBIGUOUS")
+            if not re.fullmatch(r"[A-Z0-9.\-]{1,15}", chosen):
+                reasons.append("NONSTANDARD_SECURITY")
+            if price_status is not None and not reasons:
+                p = price_status.get(chosen)
+                if not p:
+                    reasons.append("PRICE_SOURCE_UNAVAILABLE")
+                elif p.get("status") == "NO_HISTORY":
+                    reasons.append("DELISTED_OR_NO_HISTORY")
+                elif p.get("status") != "AVAILABLE":
+                    reasons.append("PRICE_SOURCE_UNAVAILABLE")
+                elif event.formation_transaction_date not in set(p.get("covered_event_dates", [])):
+                    reasons.append("DELISTED_OR_NO_HISTORY")
+        out.append({
+            "event_id": event.event_id,
+            "issuer_cik": event.issuer_cik,
+            "formation_transaction_date": event.formation_transaction_date,
+            "as_filed_symbols": symbols,
+            "selected_symbol": chosen,
+            "mapping_status": "MAPPABLE" if not reasons else "UNRESOLVED",
+            "reason_codes": sorted(set(reasons)),
+            "diagnostic_codes": sorted(set(diagnostic)),
+        })
+    return out
+
+
+def probe_yahoo_symbols(symbol_events: dict[str, list[str]], timeout: int = 30) -> dict[str, dict[str, Any]]:
+    """Coverage-only probe. Reads timestamps, never price/return arrays."""
+    statuses: dict[str, dict[str, Any]] = {}
+    for symbol, event_dates in sorted(symbol_events.items()):
+        start = int(datetime(2019, 12, 1, tzinfo=timezone.utc).timestamp())
+        end = int(datetime(2026, 8, 1, tzinfo=timezone.utc).timestamp())
+        url = f"{YAHOO_CHART_ROOT}/{urllib.parse.quote(symbol)}?period1={start}&period2={end}&interval=1d&events=history&includeAdjustedClose=false"
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 Quant-Trade coverage probe"})
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            result = ((payload.get("chart") or {}).get("result") or [None])[0]
+            if not result:
+                statuses[symbol] = {"status": "NO_HISTORY", "covered_event_dates": [], "source": url}
+                continue
+            timestamps = result.get("timestamp") or []
+            available_dates = {datetime.fromtimestamp(int(ts), tz=timezone.utc).date() for ts in timestamps}
+            covered: list[str] = []
+            for d in event_dates:
+                event_d = date.fromisoformat(d)
+                if any(abs((x - event_d).days) <= 7 for x in available_dates):
+                    covered.append(d)
+            statuses[symbol] = {"status": "AVAILABLE", "covered_event_dates": sorted(set(covered)), "source": url, "timestamp_count": len(timestamps)}
+            time.sleep(0.05)
+        except Exception as exc:
+            statuses[symbol] = {"status": "UNAVAILABLE", "covered_event_dates": [], "source": url, "error": f"{type(exc).__name__}: {exc}"}
+    return statuses
+
+
+def census_summary(build: CensusBuild, events: Sequence[Form4Event], mapping: Sequence[dict[str, Any]] | None = None) -> dict[str, Any]:
+    by_year = Counter(e.formation_transaction_date[:4] for e in events)
+    by_issuer = Counter(e.issuer_cik for e in events)
+    total = len(events)
+    shares = [(count / total) for count in by_issuer.values()] if total else []
+    top10 = sum(count for _, count in by_issuer.most_common(10))
+    resolved = sum(e.event_time_status == "RESOLVED" for e in events)
+    mappable = None if mapping is None else sum(r["mapping_status"] == "MAPPABLE" for r in mapping)
+    avg_events = (total / len(by_issuer)) if by_issuer else 0.0
+    n_eff = {}
+    for rho in (0.0, 0.25, 0.5, 0.75):
+        denom = 1.0 + max(0.0, avg_events - 1.0) * rho
+        n_eff[str(rho)] = round(total / denom, 2) if denom else float(total)
+    return {
+        "time_range": [START_DATE.isoformat(), END_DATE.isoformat()],
+        "formations": total,
+        "event_time_resolved": resolved,
+        "event_time_unresolved": total - resolved,
+        "distinct_event_issuers": len(by_issuer),
+        "distinct_event_insiders": len({owner for e in events for owner in e.owner_ciks}),
+        "annual_formations": dict(sorted(by_year.items())),
+        "issuer_event_distribution": dict(sorted(by_issuer.items())),
+        "top_10_issuer_share": (top10 / total) if total else 0.0,
+        "issuer_hhi": sum(s * s for s in shares),
+        "repeat_formations": max(0, total - len(by_issuer)),
+        "mappable_events": mappable,
+        "unmappable_events": None if mappable is None else total - mappable,
+        "design_n_effective_by_intracluster_rho": n_eff,
+        "waterfall": build.waterfall,
+        "diagnostics": build.diagnostics,
+    }
+
+
+def event_to_dict(event: Form4Event) -> dict[str, Any]:
+    return asdict(event)
+
+
+def candidate_to_dict(row: NormalizedCandidateRecord) -> dict[str, Any]:
+    return asdict(row)
+
+
+def observation_to_dict(obs: PurchaseObservation) -> dict[str, Any]:
+    return asdict(obs)
+
+
+def loss_to_dict(loss: LossLedgerRecord) -> dict[str, Any]:
+    return asdict(loss)
+
+
+def jsonl_bytes(rows: Iterable[dict[str, Any]]) -> bytes:
+    return b"".join((json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8") for row in rows)
