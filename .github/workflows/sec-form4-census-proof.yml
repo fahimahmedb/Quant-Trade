@@ -1,9 +1,10 @@
 name: SEC Form-4 census proof
 
 on:
-  push:
-    branches:
-      - builder/sec-form4-census-v2a
+  # Emergency Builder-A takeover: pushes are deliberately quiet while the
+  # inherited run 28/29 jobs are still able to bank durable raw SEC cache.
+  # Builder dispatches proof explicitly after PA/R closure so one writer owns
+  # the SEC domain and no speculative push starts another six-hour acquisition.
   workflow_dispatch:
 
 permissions:
@@ -11,16 +12,9 @@ permissions:
 
 jobs:
   census-and-exact-head-proof:
-    # The earlier HTTP 403 was never a runner or network property: SEC refuses
-    # any User-Agent containing "github.com", so the previous declaration
-    # (a users.noreply.github.com address plus a repository URL) was refused on
-    # every runner class. A standard runner is correct once the declared
-    # identity is compliant.
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
-      # Must be a reachable contact address and must not contain "github.com".
-      # Resolved in exactly one place, quant.dataplane.sec_form4.sec_user_agent().
       SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
     steps:
       - name: Checkout Builder branch
@@ -34,19 +28,8 @@ jobs:
           python-version: '3.12'
 
       - name: Install pinned calendar dependency
-        # 4.13.1 contains the pandas-3 schedule/unit fixes needed by the current
-        # clean runner. The calendar version remains pinned and is recorded in
-        # provenance; changing it cannot alter the frozen event definition.
         run: python -m pip install 'exchange-calendars==4.13.1'
 
-      # The raw SEC bytes are immutable published documents: 26 quarterly ZIPs
-      # and one acceptance header per accession in event lineage (~31,500).
-      # Re-fetching them costs roughly six hours at SEC's fair-access pace,
-      # which exceeds the maximum job duration, so a cold gate cannot finish in
-      # a single run. The cache is restored before acquisition and saved even
-      # when the job fails or times out, so successive runs resume instead of
-      # restarting. Every cached payload still carries its own sha256 in the
-      # provenance manifest, so resuming cannot weaken the proof.
       - name: Restore official SEC raw byte cache
         id: raw-cache
         uses: actions/cache/restore@v4
@@ -57,10 +40,6 @@ jobs:
             sec-form4-raw-
 
       - name: Official SEC source connectivity preflight
-        # Runs through the acquisition path itself. A preflight with its own
-        # transport, User-Agent or header set can pass while the acquisition it
-        # is supposed to validate is refused -- that divergence is exactly what
-        # made the earlier gate fail after a green preflight.
         run: python3 scripts/sec_form4_census.py --preflight
 
       - name: Refresh generated V1 proof inventory
@@ -80,7 +59,7 @@ jobs:
           python3 scripts/demo_quant_system.py
           python3 scripts/generate_schemas.py --check
 
-      - name: Acquire official SEC 2020Q1-2026Q2 and build census
+      - name: Acquire official SEC corpus and build census
         run: |
           if test -f artifacts/sec_form4_census/provenance_manifest.json; then
             python3 scripts/sec_form4_census.py --verify-source-hashes
@@ -90,8 +69,6 @@ jobs:
           python3 scripts/sec_form4_proof.py --check
 
       - name: Save official SEC raw byte cache
-        # if: always() so a timed-out or failed acquisition still banks its
-        # progress for the next run.
         if: always()
         uses: actions/cache/save@v4
         with:
@@ -103,9 +80,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          # Retrieval/run timestamps are intentionally volatile. On a rerun of an
-          # already-published census, restore those committed metadata files so an
-          # identical deterministic census cannot manufacture a new commit.
           if git ls-files --error-unmatch artifacts/sec_form4_census/provenance_manifest.json >/dev/null 2>&1; then
             git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
           fi
@@ -125,8 +99,6 @@ jobs:
           cd /tmp/quant-sec-proof
           python3 scripts/sec_form4_census.py --verify-source-hashes
           python3 scripts/sec_form4_proof.py --check
-          # Rebuild the exact economic population with no price/coverage input at
-          # all. The certified events must be byte-identical.
           python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price
           cmp artifacts/sec_form4_census/events.jsonl /tmp/sec-no-price/events.jsonl
           git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
