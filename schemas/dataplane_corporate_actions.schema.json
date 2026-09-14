@@ -1,0 +1,1 @@
+{"$schema":"http://json-schema.org/draft-07/schema#","title":"CorporateActionEvent","type":"object","properties":{"event_id":{"type":"string"},"action_type":{"type":"string"},"knowledge_at":{"type":"string"},"effective_at":{"type":"string"},"evidence_hashes":{"type":"array"}},"required":["event_id","action_type","knowledge_at","effective_at","evidence_hashes"]}
