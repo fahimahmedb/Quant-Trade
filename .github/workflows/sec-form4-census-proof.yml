@@ -1,17 +1,35 @@
 name: SEC Form-4 census proof
 
 on:
-  # Emergency Builder-A takeover: pushes are deliberately quiet while the
-  # inherited run 28/29 jobs are still able to bank durable raw SEC cache.
-  # Builder dispatches proof explicitly after PA/R closure so one writer owns
-  # the SEC domain and no speculative push starts another six-hour acquisition.
+  push:
+    branches: [builder/sec-form4-census-v2a]
+    paths: [.github/workflows/sec-form4-census-proof.yml]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
+  takeover-unit-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install 'exchange-calendars==4.13.1'
+      - name: Builder-A unit and frozen-V1 proof
+        run: |
+          python3 scripts/status_artifacts.py --write
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/demo_quant_system.py
+          python3 scripts/generate_schemas.py --check
+          git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+
   census-and-exact-head-proof:
+    if: github.event_name == 'workflow_dispatch'
+    needs: takeover-unit-proof
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
@@ -19,17 +37,12 @@ jobs:
     steps:
       - name: Checkout Builder branch
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+        with: {fetch-depth: 0}
       - name: Set up Python
         uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
+        with: {python-version: '3.12'}
       - name: Install pinned calendar dependency
         run: python -m pip install 'exchange-calendars==4.13.1'
-
       - name: Restore official SEC raw byte cache
         id: raw-cache
         uses: actions/cache/restore@v4
@@ -38,28 +51,23 @@ jobs:
           key: sec-form4-raw-${{ github.run_id }}
           restore-keys: |
             sec-form4-raw-
-
       - name: Official SEC source connectivity preflight
         run: python3 scripts/sec_form4_census.py --preflight
-
       - name: Refresh generated V1 proof inventory
         run: |
           python3 scripts/status_artifacts.py --write
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add STATE.md CHIEF_BRIEF.md
-          if ! git diff --cached --quiet; then
-            git commit -m 'docs: refresh proof inventory for SEC census tests'
-          fi
-
+          if ! git diff --cached --quiet; then git commit -m 'docs: refresh proof inventory for SEC census tests'; fi
       - name: Frozen V1 baseline proof
         run: |
           python3 scripts/status_artifacts.py --check
           PYTHONPATH=src python3 -m unittest discover -s tests -v
           python3 scripts/demo_quant_system.py
           python3 scripts/generate_schemas.py --check
-
       - name: Acquire official SEC corpus and build census
+        timeout-minutes: 315
         run: |
           if test -f artifacts/sec_form4_census/provenance_manifest.json; then
             python3 scripts/sec_form4_census.py --verify-source-hashes
@@ -67,14 +75,12 @@ jobs:
             python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage
           fi
           python3 scripts/sec_form4_proof.py --check
-
       - name: Save official SEC raw byte cache
         if: always()
         uses: actions/cache/save@v4
         with:
           path: var/sec_form4_raw
           key: sec-form4-raw-${{ github.run_id }}
-
       - name: Commit deterministic census artifacts locally
         id: final
         run: |
@@ -84,12 +90,9 @@ jobs:
             git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
           fi
           git add data/calendars/xnys_sessions_2019_2026.csv artifacts/sec_form4_census
-          if ! git diff --cached --quiet; then
-            git commit -m 'data: publish deterministic SEC Form-4 census'
-          fi
+          if ! git diff --cached --quiet; then git commit -m 'data: publish deterministic SEC Form-4 census'; fi
           echo "final_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "Exact candidate HEAD: $(git rev-parse HEAD)"
-
       - name: Exact-head proof in clean worktree from cached raw bytes
         run: |
           FINAL_SHA='${{ steps.final.outputs.final_sha }}'
@@ -110,9 +113,7 @@ jobs:
           git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
           echo "proof HEAD: $(git rev-parse HEAD)"
           test "$(git rev-parse HEAD)" = "$FINAL_SHA"
-          git status --short
           test -z "$(git status --porcelain)"
-
       - name: Upload pinned raw SEC cache for Red Team reproduction
         uses: actions/upload-artifact@v4
         with:
@@ -120,7 +121,6 @@ jobs:
           path: var/sec_form4_raw/
           retention-days: 90
           compression-level: 0
-
       - name: Push only the exact proven HEAD
         run: |
           FINAL_SHA='${{ steps.final.outputs.final_sha }}'
