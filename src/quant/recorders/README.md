@@ -14,10 +14,10 @@ A root directory contains:
 
 - `raw/<source_id>/<sha256>.bin`: exact content-addressed response bytes;
 - `captures/YYYY-MM-DD/<source_id>/<capture_id>.json`: provenance and timing metadata;
-- `gaps/YYYY-MM-DD/<source_id>/<gap_id>.json`: polling-gap, clock-skew, fetch-error and unclean-restart ledger;
+- `gaps/YYYY-MM-DD/<source_id>/<gap_id>.json`: polling-gap, clock-skew, UTC-regression, fetch-error and unclean-restart ledger;
 - `state/recorder_state.json`: atomic restart state and per-source cursor.
 
-Raw bytes are de-duplicated by SHA-256. Metadata/state/gaps use temp-file + fsync + atomic rename. The recorder returns to `IDLE` in `finally` and does not import or write the Book or Capital Desk.
+Raw bytes are de-duplicated by SHA-256. Metadata/state/gaps use temp-file + fsync + atomic rename. On startup, the state cursor is reconciled from already committed capture metadata so an interruption between capture persistence and state persistence cannot silently replay the sequence. The recorder returns to `IDLE` in `finally` and does not import or write the Book or Capital Desk.
 
 ## Rotation / retention / ToS gate
 

@@ -39,6 +39,37 @@ class AtomicCaptureStore:
     def save_state(self, state: RecorderState) -> None:
         self._atomic_json(self.state_path, state.to_dict())
 
+    def recover_state(self) -> RecorderState:
+        """Reconcile durable state with committed capture metadata after an interrupted write sequence."""
+        state = self.load_state()
+        max_sequence = state.next_sequence - 1
+        latest_completed = state.last_completed_utc
+        for path in self.capture_root.glob("**/*.json"):
+            try:
+                row = json.loads(path.read_text(encoding="utf-8"))
+                sequence = int(row["sequence"])
+                source_id = str(row["source_id"])
+                capture_id = str(row["capture_id"])
+                raw_sha256 = str(row["raw_sha256"])
+                completed = str(row["retrieval_completed_utc"])
+            except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+                continue
+            prior = state.last_by_source.get(source_id, {})
+            prior_sequence = int(prior.get("sequence", 0)) if isinstance(prior, dict) else 0
+            if sequence >= prior_sequence:
+                state.last_by_source[source_id] = {
+                    "capture_id": capture_id,
+                    "raw_sha256": raw_sha256,
+                    "retrieval_completed_utc": completed,
+                    "sequence": sequence,
+                }
+            max_sequence = max(max_sequence, sequence)
+            if completed > latest_completed:
+                latest_completed = completed
+        state.next_sequence = max_sequence + 1
+        state.last_completed_utc = latest_completed
+        return state
+
     def persist_raw(self, *, utc_date: str, source_id: str, raw: bytes) -> tuple[str, str, bool]:
         digest = hashlib.sha256(raw).hexdigest()
         destination = self.raw_root / source_id / f"{digest}.bin"

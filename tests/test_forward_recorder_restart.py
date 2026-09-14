@@ -66,6 +66,33 @@ class RestartTests(unittest.TestCase):
             self.assertTrue(any(json.loads(path.read_text())["reason"] == "polling_gap" for path in gap_files))
             self.assertEqual(store.load_state().mode, "IDLE")
 
+    def test_recovery_rebuilds_cursor_from_committed_capture_after_state_lag(self):
+        t0 = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
+        body = json.dumps({"serverTime": int(t0.timestamp() * 1000)}).encode()
+        with tempfile.TemporaryDirectory() as tmp:
+            store = AtomicCaptureStore(tmp)
+            recorder = ForwardRecorder(store, transport=FakeTransport([body]), now_fn=StepClock([t0, t0, t0]), monotonic_ns_fn=MonoClock())
+            recorder.run_once([spec()])
+            stale = store.load_state()
+            stale.last_by_source = {}
+            stale.next_sequence = 1
+            stale.last_completed_utc = ""
+            store.save_state(stale)
+            recovered = store.recover_state()
+            self.assertEqual(recovered.next_sequence, 2)
+            self.assertIn("test-time", recovered.last_by_source)
+
+    def test_utc_clock_regression_is_ledgered(self):
+        t0 = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
+        body = json.dumps({"serverTime": int(t0.timestamp() * 1000)}).encode()
+        with tempfile.TemporaryDirectory() as tmp:
+            store = AtomicCaptureStore(tmp)
+            ForwardRecorder(store, transport=FakeTransport([body]), now_fn=StepClock([t0, t0, t0]), monotonic_ns_fn=MonoClock()).run_once([spec()])
+            earlier = t0 - timedelta(minutes=1)
+            ForwardRecorder(store, transport=FakeTransport([body]), now_fn=StepClock([earlier, earlier, earlier, earlier]), monotonic_ns_fn=MonoClock()).run_once([spec()])
+            reasons = [json.loads(path.read_text())["reason"] for path in Path(tmp).glob("gaps/**/*.json")]
+            self.assertIn("utc_clock_regression", reasons)
+
     def test_unclean_restart_is_ledgered_and_recovers_to_idle(self):
         t0 = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
         body = b'{"serverTime":1789387200000}'

@@ -10,7 +10,7 @@
     "gap_id": {"type": "string", "pattern": "^gap_[0-9a-f]{24}$"},
     "source_id": {"type": "string", "minLength": 1},
     "detected_utc": {"type": "string", "format": "date-time"},
-    "reason": {"enum": ["polling_gap", "clock_skew", "fetch_error", "http_error", "unclean_restart"]},
+    "reason": {"enum": ["polling_gap", "clock_skew", "fetch_error", "http_error", "unclean_restart", "utc_clock_regression"]},
     "previous_capture_id": {"type": ["string", "null"]},
     "current_capture_id": {"type": ["string", "null"]},
     "gap_ms": {"type": ["integer", "null"], "minimum": 0},

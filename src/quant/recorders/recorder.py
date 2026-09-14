@@ -69,7 +69,7 @@ class ForwardRecorder:
         plan = tuple(specs)
         if not plan:
             raise ValueError("capture plan cannot be empty")
-        state = self.store.load_state()
+        state = self.store.recover_state()
         run_id = "run_" + uuid.uuid4().hex[:20]
         gaps = 0
         if state.mode == "RUN":
@@ -133,9 +133,12 @@ class ForwardRecorder:
         previous = self._previous(state, spec.source_id)
         gap_ms = None
         gap_detected = False
+        utc_regression = False
         if previous.get("retrieval_completed_utc"):
             delta = completed_utc - _parse_utc(str(previous["retrieval_completed_utc"]))
-            gap_ms = max(0, int(delta.total_seconds() * 1000))
+            raw_gap_ms = int(delta.total_seconds() * 1000)
+            utc_regression = raw_gap_ms < 0
+            gap_ms = max(0, raw_gap_ms)
             gap_detected = gap_ms > int(spec.expected_cadence_seconds * 1000 * self.gap_multiplier)
         digest, raw_path, raw_already_present = self.store.persist_raw(
             utc_date=completed_iso[:10], source_id=spec.source_id, raw=response.body
@@ -183,6 +186,15 @@ class ForwardRecorder:
                 current_capture_id=capture_id,
                 gap_ms=gap_ms,
                 expected_cadence_ms=spec.expected_cadence_seconds * 1000,
+            )
+        if utc_regression:
+            gap_count += self._persist_gap(
+                state=state,
+                source_id=spec.source_id,
+                reason="utc_clock_regression",
+                previous_capture_id=previous.get("capture_id"),
+                current_capture_id=capture_id,
+                detail="retrieval UTC moved backwards relative to the previous committed capture",
             )
         if clock_skew_ms is not None and abs(clock_skew_ms) > self.clock_skew_threshold_ms:
             gap_count += self._persist_gap(
