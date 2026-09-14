@@ -82,24 +82,25 @@ jobs:
           source = source_path.read_text(encoding='utf-8')
           if '[SEC acceptance]' not in source:
               anchor = '    store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]\n'
-              block = '''    store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]
-    progress_started=time.monotonic(); progress_last=[progress_started]; progress_done=[len(resumed)]; progress_lock=threading.Lock()
-    def report_progress(force=False):
-        with progress_lock:
-            now=time.monotonic()
-            if not force and now-progress_last[0] < 30.0: return
-            done=progress_done[0]; fresh=max(0,done-len(resumed)); elapsed=max(now-progress_started,1e-9)
-            rate=fresh/elapsed; remaining=max(0,len(wanted)-done)
-            eta_minutes=(remaining/rate/60.0) if rate>0 else None
-            pct=(100.0*done/len(wanted)) if wanted else 100.0
-            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'
-            print(f'[SEC acceptance] {done}/{len(wanted)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)
-            progress_last[0]=now
-    def mark_progress():
-        with progress_lock: progress_done[0]+=1
-        report_progress()
-    report_progress(force=True)
-'''
+              block = (
+                  '    store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]\n'
+                  '    progress_started=time.monotonic(); progress_last=[progress_started]; progress_done=[len(resumed)]; progress_lock=threading.Lock()\n'
+                  '    def report_progress(force=False):\n'
+                  '        with progress_lock:\n'
+                  '            now=time.monotonic()\n'
+                  '            if not force and now-progress_last[0] < 30.0: return\n'
+                  '            done=progress_done[0]; fresh=max(0,done-len(resumed)); elapsed=max(now-progress_started,1e-9)\n'
+                  '            rate=fresh/elapsed; remaining=max(0,len(wanted)-done)\n'
+                  '            eta_minutes=(remaining/rate/60.0) if rate>0 else None\n'
+                  '            pct=(100.0*done/len(wanted)) if wanted else 100.0\n'
+                  "            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
+                  "            print(f'[SEC acceptance] {done}/{len(wanted)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)\n"
+                  '            progress_last[0]=now\n'
+                  '    def mark_progress():\n'
+                  '        with progress_lock: progress_done[0]+=1\n'
+                  '        report_progress()\n'
+                  '    report_progress(force=True)\n'
+              )
               if anchor not in source: raise SystemExit('acceptance telemetry anchor missing')
               source = source.replace(anchor, block, 1)
               fail_anchor = '            except Exception as exc:\n                with store_lock: failures[accession]=f"{type(exc).__name__}: {exc}"\n                continue\n'
@@ -120,19 +121,20 @@ jobs:
               script = script.replace('import argparse, csv, gzip, io, json, os, re, sys, zipfile',
                                       'import argparse, csv, gzip, io, json, os, re, sys, time, zipfile', 1)
               q3_anchor = "    master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}\n"
-              q3_block = '''    master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}
-    q3_started=time.monotonic();q3_last=[q3_started];q3_done=[0]
-    def q3_progress(force=False):
-        with lock:
-            now=time.monotonic()
-            if not force and now-q3_last[0] < 30.0:return
-            done=q3_done[0];elapsed=max(now-q3_started,1e-9);rate=done/elapsed;remaining=max(0,len(rows)-done)
-            eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*done/len(rows)) if rows else 100.0
-            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'
-            print(f'[SEC Q3 headers] {done}/{len(rows)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)
-            q3_last[0]=now
-    q3_progress(force=True)
-'''
+              q3_block = (
+                  "    master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}\n"
+                  '    q3_started=time.monotonic();q3_last=[q3_started];q3_done=[0]\n'
+                  '    def q3_progress(force=False):\n'
+                  '        with lock:\n'
+                  '            now=time.monotonic()\n'
+                  '            if not force and now-q3_last[0] < 30.0:return\n'
+                  '            done=q3_done[0];elapsed=max(now-q3_started,1e-9);rate=done/elapsed;remaining=max(0,len(rows)-done)\n'
+                  '            eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*done/len(rows)) if rows else 100.0\n'
+                  "            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
+                  "            print(f'[SEC Q3 headers] {done}/{len(rows)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)\n"
+                  '            q3_last[0]=now\n'
+                  '    q3_progress(force=True)\n'
+              )
               if q3_anchor not in script: raise SystemExit('Q3 telemetry anchor missing')
               script = script.replace(q3_anchor, q3_block, 1)
               record_anchor = "        with lock:records[row['accession']]={'row':row,'header':payload,'period':period,'meta':meta}\n"
@@ -140,11 +142,22 @@ jobs:
               if record_anchor not in script: raise SystemExit('Q3 record telemetry anchor missing')
               script = script.replace(record_anchor, record_block, 1)
               pool_anchor = "        for future in [pool.submit(one,r) for r in rows]:future.result()\n    subs=[];owners=[];txs=[];manifest=[];candidate_count=0\n"
-              pool_block = "        for future in [pool.submit(one,r) for r in rows]:future.result()\n    q3_progress(force=True)\n    subs=[];owners=[];txs=[];manifest=[];candidate_count=0\n    full_total=sum(rec['period'] is None or rec['period']<=END_DATE.isoformat() for rec in records.values());full_done=0;full_started=time.monotonic();full_last=full_started\n    print(f'[SEC Q3 full] 0/{full_total} (0.0%) | ETA n/a',flush=True)\n"
+              pool_block = (
+                  "        for future in [pool.submit(one,r) for r in rows]:future.result()\n"
+                  '    q3_progress(force=True)\n'
+                  '    subs=[];owners=[];txs=[];manifest=[];candidate_count=0\n'
+                  "    full_total=sum(rec['period'] is None or rec['period']<=END_DATE.isoformat() for rec in records.values());full_done=0;full_started=time.monotonic();full_last=full_started\n"
+                  "    print(f'[SEC Q3 full] 0/{full_total} (0.0%) | ETA n/a',flush=True)\n"
+              )
               if pool_anchor not in script: raise SystemExit('Q3 pool telemetry anchor missing')
               script = script.replace(pool_anchor, pool_block, 1)
-              full_anchor = '            full=fp.read_bytes();sub,oo,tt=_synthetic_tail_rows(rec[\'row\'],rec[\'header\'],full);subs.append(sub);owners.extend(oo);txs.extend(tt);full_sha=_sha256_bytes(full);full_bytes=len(full)\n'
-              full_block = full_anchor + "            full_done+=1;now=time.monotonic();elapsed=max(now-full_started,1e-9);rate=full_done/elapsed\n            if full_done==full_total or now-full_last>=30.0:\n                remaining=max(0,full_total-full_done);eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*full_done/full_total) if full_total else 100.0;eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n                print(f'[SEC Q3 full] {full_done}/{full_total} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True);full_last=now\n"
+              full_anchor = "            full=fp.read_bytes();sub,oo,tt=_synthetic_tail_rows(rec['row'],rec['header'],full);subs.append(sub);owners.extend(oo);txs.extend(tt);full_sha=_sha256_bytes(full);full_bytes=len(full)\n"
+              full_block = full_anchor + (
+                  '            full_done+=1;now=time.monotonic();elapsed=max(now-full_started,1e-9);rate=full_done/elapsed\n'
+                  '            if full_done==full_total or now-full_last>=30.0:\n'
+                  "                remaining=max(0,full_total-full_done);eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*full_done/full_total) if full_total else 100.0;eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
+                  "                print(f'[SEC Q3 full] {full_done}/{full_total} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True);full_last=now\n"
+              )
               if full_anchor not in script: raise SystemExit('Q3 full telemetry anchor missing')
               script = script.replace(full_anchor, full_block, 1)
               script_path.write_text(script, encoding='utf-8')
