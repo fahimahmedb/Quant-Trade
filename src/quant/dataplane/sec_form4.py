@@ -789,6 +789,22 @@ def resolve_acceptance_documents(accessions: Sequence[str], issuer_of: dict[str,
     resumed,stale=validate_acceptance_cache(checkpoint,cache_dir,expectations)
     pending=[a for a in wanted if a not in resumed]; force_refetch=set(stale)
     store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]
+    progress_started=time.monotonic(); progress_last=[progress_started]; progress_done=[len(resumed)]; progress_lock=threading.Lock()
+    def report_progress(force=False):
+        with progress_lock:
+            now=time.monotonic()
+            if not force and now-progress_last[0] < 30.0: return
+            done=progress_done[0]; fresh=max(0,done-len(resumed)); elapsed=max(now-progress_started,1e-9)
+            rate=fresh/elapsed; remaining=max(0,len(wanted)-done)
+            eta_minutes=(remaining/rate/60.0) if rate>0 else None
+            pct=(100.0*done/len(wanted)) if wanted else 100.0
+            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'
+            print(f'[SEC acceptance] {done}/{len(wanted)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)
+            progress_last[0]=now
+    def mark_progress():
+        with progress_lock: progress_done[0]+=1
+        report_progress()
+    report_progress(force=True)
 
     def checkpoint_append(batch):
         if checkpoint_path is None or not batch: return
@@ -848,16 +864,19 @@ def resolve_acceptance_documents(accessions: Sequence[str], issuer_of: dict[str,
                         "reporting_owner_ciks":list(meta.reporting_owner_ciks)}
             except Exception as exc:
                 with store_lock: failures[accession]=f"{type(exc).__name__}: {exc}"
+                mark_progress()
                 continue
             with store_lock:
                 store[accession]=record; buffered.append(record); ready=len(buffered)>=batch_size
             if ready: flush()
+            mark_progress()
     shards=assign_disjoint(pending,max(1,workers))
     if workers<=1: work(pending)
     else:
         with ThreadPoolExecutor(max_workers=workers) as pool:
             for future in [pool.submit(work,shard) for shard in shards if shard]: future.result()
     flush(force=True)
+    report_progress(force=True)
     resolved={a:{"acceptance_time":store[a]["acceptance_time"],"url":store[a]["url"],"sha256":store[a]["sha256"],
                  "submission_type":store[a]["submission_type"],"issuer_cik":store[a]["issuer_cik"],
                  "reporting_owner_ciks":store[a]["reporting_owner_ciks"]} for a in wanted if a in store}

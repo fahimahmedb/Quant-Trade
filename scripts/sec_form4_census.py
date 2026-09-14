@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Acquire official SEC ownership bytes and build the V2-A1 deterministic census."""
 from __future__ import annotations
-import argparse, csv, gzip, io, json, os, re, sys, zipfile
+import argparse, csv, gzip, io, json, os, re, sys, time, zipfile
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
@@ -143,6 +143,17 @@ def acquire_q3_tail(raw_dir:Path,limiter:RateLimiter,workers:int=4):
     index_path=base/'master.idx'
     if not index_path.exists():write_atomic(index_path,sec_fetch(Q3_MASTER_URL,limiter))
     master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}
+    q3_started=time.monotonic();q3_last=[q3_started];q3_done=[0]
+    def q3_progress(force=False):
+        with lock:
+            now=time.monotonic()
+            if not force and now-q3_last[0] < 30.0:return
+            done=q3_done[0];elapsed=max(now-q3_started,1e-9);rate=done/elapsed;remaining=max(0,len(rows)-done)
+            eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*done/len(rows)) if rows else 100.0
+            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'
+            print(f'[SEC Q3 headers] {done}/{len(rows)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)
+            q3_last[0]=now
+    q3_progress(force=True)
     def one(row):
         hp=headers/f"{row['accession']}.html";payload=None
         if hp.exists():
@@ -156,15 +167,24 @@ def acquire_q3_tail(raw_dir:Path,limiter:RateLimiter,workers:int=4):
             write_atomic(hp,payload)
         period=_period_from_header(payload)
         with lock:records[row['accession']]={'row':row,'header':payload,'period':period,'meta':meta}
+        with lock:q3_done[0]+=1
+        q3_progress()
     with ThreadPoolExecutor(max_workers=max(1,workers)) as pool:
         for future in [pool.submit(one,r) for r in rows]:future.result()
+    q3_progress(force=True)
     subs=[];owners=[];txs=[];manifest=[];candidate_count=0
+    full_total=sum(rec['period'] is None or rec['period']<=END_DATE.isoformat() for rec in records.values());full_done=0;full_started=time.monotonic();full_last=full_started
+    print(f'[SEC Q3 full] 0/{full_total} (0.0%) | ETA n/a',flush=True)
     for acc in sorted(records):
         rec=records[acc];period=rec['period'];full_sha=None;full_bytes=None;need_full=period is None or period<=END_DATE.isoformat()
         if need_full:
             candidate_count+=1;fp=filings/f'{acc}.txt'
             if not fp.exists():write_atomic(fp,sec_fetch(_full_url(rec['row']),limiter))
             full=fp.read_bytes();sub,oo,tt=_synthetic_tail_rows(rec['row'],rec['header'],full);subs.append(sub);owners.extend(oo);txs.extend(tt);full_sha=_sha256_bytes(full);full_bytes=len(full)
+            full_done+=1;now=time.monotonic();elapsed=max(now-full_started,1e-9);rate=full_done/elapsed
+            if full_done==full_total or now-full_last>=30.0:
+                remaining=max(0,full_total-full_done);eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*full_done/full_total) if full_total else 100.0;eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'
+                print(f'[SEC Q3 full] {full_done}/{full_total} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True);full_last=now
         manifest.append({'accession':acc,'filed_date':rec['row']['filed_date'],'master_cik':rec['row']['master_cik'],'filename':rec['row']['filename'],
                          'period_of_report':period,'header_url':_header_url(rec['row']),'header_sha256':_sha256_bytes(rec['header']),'header_bytes':len(rec['header']),
                          'full_submission_sha256':full_sha,'full_submission_bytes':full_bytes})
