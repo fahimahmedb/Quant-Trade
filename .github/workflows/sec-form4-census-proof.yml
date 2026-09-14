@@ -28,7 +28,7 @@ jobs:
               s=s.replace('            self.unkeyed_rows += 1\n            return\n', '            self.unkeyed_rows += 1\n            self.unkeyed_data.append(row)\n            return\n')
           if 'owner_unkeyed_counts:' not in s:
               s=s.replace('    owner_conflict_accessions: set[str] = set()\n    owner_orphans = 0\n', "    owner_conflict_accessions: set[str] = set()\n    owner_unkeyed_counts: Counter[str] = Counter(\n        _clean(row.get('ACCESSION_NUMBER')) for row in owner_idx.unkeyed_data\n        if _clean(row.get('ACCESSION_NUMBER'))\n    )\n    owner_orphans = 0\n")
-          s=s.replace('        unresolved_owner_rows = sum(x is None for x in normalized_owner_ids)\n', '        unresolved_owner_rows = sum(x is None for x in normalized_owner_ids) + owner_unkeyed_counts.get(acc, 0)\n')
+          s=s.replace('        unresolved_owner_rows = sum(x is None for x in owner_ids)\n', '        unresolved_owner_rows = sum(x is None for x in owner_ids) + owner_unkeyed_counts.get(acc, 0)\n')
           s=s.replace('reporting_owner_rows=len(owners), unresolved_owner_cik_rows=unresolved_owner_rows,', 'reporting_owner_rows=len(owners) + owner_unkeyed_counts.get(acc, 0), unresolved_owner_cik_rows=unresolved_owner_rows,')
           p.write_text(s)
           t=Path('tests/test_sec_form4_census.py');q=t.read_text()
