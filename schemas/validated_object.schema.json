@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "identity_assertions": {
+      "type": "object"
+    },
+    "parser_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "parser_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "raw_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "validated_at": {
+      "type": "string"
+    },
+    "validation_id": {
+      "pattern": "^validation:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "validation_status": {
+      "enum": [
+        "VALID",
+        "INVALID",
+        "AMBIGUOUS"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_id",
+    "raw_sha256",
+    "parser_name",
+    "parser_version",
+    "validation_status",
+    "identity_assertions",
+    "errors",
+    "validated_at"
+  ],
+  "title": "ValidatedObject",
+  "type": "object"
+}

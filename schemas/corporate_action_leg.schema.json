@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "cash_per_source_share": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "enum": [
+        "CASH",
+        "STOCK",
+        "SPIN"
+      ],
+      "type": "string"
+    },
+    "target_security_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "units_per_source_share": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "kind"
+  ],
+  "title": "CorporateActionLeg",
+  "type": "object"
+}
