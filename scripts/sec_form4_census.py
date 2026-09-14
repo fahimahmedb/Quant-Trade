@@ -46,6 +46,15 @@ def write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def sec_fetch(url: str) -> bytes:
+    """Fetch official SEC bytes with one declared identity and a fair-access pace."""
+    return _http_get(
+        url,
+        user_agent=os.environ.get("SEC_USER_AGENT", SEC_USER_AGENT),
+        delay=0.2,
+    )
+
+
 def acquire(raw_dir: Path, expected_manifest: dict[str, dict[str, object]] | None = None) -> tuple[list[tuple[str, bytes]], list[SourceRecord]]:
     raw_dir.mkdir(parents=True, exist_ok=True)
     payloads: list[tuple[str, bytes]] = []
@@ -58,7 +67,7 @@ def acquire(raw_dir: Path, expected_manifest: dict[str, dict[str, object]] | Non
             data = path.read_bytes()
         else:
             print(f"download {period}: {url}", flush=True)
-            data = _http_get(url, user_agent=os.environ.get("SEC_USER_AGENT", SEC_USER_AGENT), delay=0.2)
+            data = sec_fetch(url)
             path.write_bytes(data)
         digest = _sha256_bytes(data)
         expected = (expected_manifest or {}).get(period)
@@ -111,7 +120,11 @@ def run(args: argparse.Namespace) -> None:
 
     payloads, sources = acquire(raw_dir, expected_manifest=expected_manifest)
     build = build_census(payloads, calendar)
-    events, losses, acceptance = resolve_event_times(build, cache_dir=raw_dir / "acceptance_headers")
+    events, losses, acceptance = resolve_event_times(
+        build,
+        fetcher=sec_fetch,
+        cache_dir=raw_dir / "acceptance_headers",
+    )
     build.events = events
     build.losses = losses
     build.waterfall["event_time_resolved_formations"] = sum(e.event_time_status == "RESOLVED" for e in events)
