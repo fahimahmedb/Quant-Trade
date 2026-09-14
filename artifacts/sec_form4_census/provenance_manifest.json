@@ -1,0 +1,270 @@
+{
+  "calendar": {
+    "path": "data/calendars/xnys_sessions_2019_2026.csv",
+    "sha256": "3de90a0ddd12db0f21ebd3c0c464271956cfaad7a42fb2a30beb07843346c5e3",
+    "source": "exchange_calendars:XNYS",
+    "version": "4.13.1"
+  },
+  "deterministic_outputs": {
+    "CENSUS_REPORT.md": "73416d1eacc2981f76535a0769a84b0c53004dbd47698bc1494f67db1e1d8ff8",
+    "acceptance_manifest.json": "b386a94eeeb4fb029c85c8a0483b0b6d319522d9a598cd1142bb6964203ee8e2",
+    "census_summary.json": "7c696b0be5292570e39c49f117285a54c171dec979474009c83d3b6bf57edd53",
+    "events.jsonl": "c5f059aa3b06ac04148fc9b3adb13eb7a044c14174c304e3594f196521cd64fe",
+    "loss_ledger.jsonl.gz": "9385617603d1a23a07a4a40d76a4f0ac9ab36b0bd2c4bbde626f5a0ccdcf1814",
+    "mapping_ledger.jsonl": "bfee6261e5c7140b9c20d8a3485517b946baf2a50584d35a80cd040c67f7a6ba",
+    "normalized_candidates.jsonl.gz": "b238be183c70df21dab7c9f262f2bad8c4842c7ecfe7d33275d69d2fee9777ce",
+    "normalized_purchase_observations.jsonl.gz": "a7b70c1bd01a792af5f34287349ade787894470accf9ca33d0a43b89753c7741",
+    "waterfall.json": "57611755e679a85a7155c344dd20edcc2311349c2ee5fc154faf0335a980f19b"
+  },
+  "mapping_input": {
+    "population_invariant": "price coverage is downstream-only and cannot alter events.jsonl",
+    "price_coverage_symbols_sha256": "c2300737345a658d852e415f0f28fe507ce61bccf5a13f4823b88a3ac8923aef",
+    "price_probe_enabled_on_initial_build": true
+  },
+  "parser_version": "sec-form4-census-v2a/2",
+  "period": [
+    "2020Q1",
+    "2026Q2"
+  ],
+  "raw_cache": {
+    "github_actions_artifact_pattern": "sec-form4-v2a-raw-cache-<exact-final-sha>",
+    "local_path": "/home/user/Quant-Trade/var/sec_form4_raw",
+    "versioning": "each exact-head proof run uploads immutable source bytes; hash drift fails --verify-source-hashes rather than rewriting certified lineage"
+  },
+  "sources": [
+    {
+      "bytes": 13886112,
+      "local_path": "var/sec_form4_raw/2020q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2020Q1",
+      "retrieved_at": "2026-09-14T15:22:02.797111+00:00",
+      "sha256": "3c3bc3fefa4dbe32cb68f052ac4ea32cae16099bb2b104a0bd8d242465e004a8",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q1_form345.zip"
+    },
+    {
+      "bytes": 10237249,
+      "local_path": "var/sec_form4_raw/2020q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2020Q2",
+      "retrieved_at": "2026-09-14T15:22:02.829222+00:00",
+      "sha256": "665be773d41b30fae10f4dea03096a0e33a7557b0acbb3fab9f1cd5796ee2b22",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q2_form345.zip"
+    },
+    {
+      "bytes": 8765495,
+      "local_path": "var/sec_form4_raw/2020q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2020Q3",
+      "retrieved_at": "2026-09-14T15:22:02.848619+00:00",
+      "sha256": "5b89d93d94b70a649355bd47ec5a68a0450e40cc12f082b2817079589aa541b1",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q3_form345.zip"
+    },
+    {
+      "bytes": 10162651,
+      "local_path": "var/sec_form4_raw/2020q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2020Q4",
+      "retrieved_at": "2026-09-14T15:22:02.878325+00:00",
+      "sha256": "0abb3ec65cb2ef4ef15d0e3f4c7ba782a2801b9998d32b5b36c3f44cc4130af3",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q4_form345.zip"
+    },
+    {
+      "bytes": 15891333,
+      "local_path": "var/sec_form4_raw/2021q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2021Q1",
+      "retrieved_at": "2026-09-14T15:22:02.923964+00:00",
+      "sha256": "3ea90731d424e9b0324f00a6bab1ad603cc9419d9366025f7d7120fffc2a73c5",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2021q1_form345.zip"
+    },
+    {
+      "bytes": 12494758,
+      "local_path": "var/sec_form4_raw/2021q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2021Q2",
+      "retrieved_at": "2026-09-14T15:22:02.957092+00:00",
+      "sha256": "7277d43d94cda0fdb83d7e6f4d9021a3baa2d886a963c0cd97b65e6875aec3b6",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2021q2_form345.zip"
+    },
+    {
+      "bytes": 10198876,
+      "local_path": "var/sec_form4_raw/2021q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2021Q3",
+      "retrieved_at": "2026-09-14T15:22:02.992408+00:00",
+      "sha256": "8323d1ceb62ebbdc27da242533501f8abea7ef9703bc374dc28cef7379aa0070",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2021q3_form345.zip"
+    },
+    {
+      "bytes": 10818822,
+      "local_path": "var/sec_form4_raw/2021q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2021Q4",
+      "retrieved_at": "2026-09-14T15:22:03.021991+00:00",
+      "sha256": "cd630b3ba9402d578b9ec88d637f022248f1452476de9066b4813823200e3fca",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2021q4_form345.zip"
+    },
+    {
+      "bytes": 14253893,
+      "local_path": "var/sec_form4_raw/2022q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2022Q1",
+      "retrieved_at": "2026-09-14T15:22:03.068016+00:00",
+      "sha256": "bc733530b3360ec59b624041043a4b50619feba4cd8a13aea441d171d6d2c2c5",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2022q1_form345.zip"
+    },
+    {
+      "bytes": 10603723,
+      "local_path": "var/sec_form4_raw/2022q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2022Q2",
+      "retrieved_at": "2026-09-14T15:22:03.097005+00:00",
+      "sha256": "fc091183d24d25283826e7e11e0318a8027995a9d77ea8bc4667589eb2b4d8f5",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2022q2_form345.zip"
+    },
+    {
+      "bytes": 8024500,
+      "local_path": "var/sec_form4_raw/2022q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2022Q3",
+      "retrieved_at": "2026-09-14T15:22:03.123865+00:00",
+      "sha256": "846c1115906b1c45dd8761da076a32ea0cb9f8995dae76f81d0cd93b7e05b032",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2022q3_form345.zip"
+    },
+    {
+      "bytes": 8400983,
+      "local_path": "var/sec_form4_raw/2022q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2022Q4",
+      "retrieved_at": "2026-09-14T15:22:03.149749+00:00",
+      "sha256": "6c6a909bd2eaaa0a24ccf5f0071b404670c115845d2939bc592bf3ce420dcdb9",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2022q4_form345.zip"
+    },
+    {
+      "bytes": 13882049,
+      "local_path": "var/sec_form4_raw/2023q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2023Q1",
+      "retrieved_at": "2026-09-14T15:22:03.197298+00:00",
+      "sha256": "0b476188f52a0862e71886eb31a81f6345fc6616403b52188484aef0438cfcfb",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2023q1_form345.zip"
+    },
+    {
+      "bytes": 10742628,
+      "local_path": "var/sec_form4_raw/2023q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2023Q2",
+      "retrieved_at": "2026-09-14T15:22:03.219405+00:00",
+      "sha256": "7e636787231ae0f00accf5c3627298402dedd1aefffd7c50fb48292e5d3a8fbb",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2023q2_form345.zip"
+    },
+    {
+      "bytes": 8202487,
+      "local_path": "var/sec_form4_raw/2023q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2023Q3",
+      "retrieved_at": "2026-09-14T15:22:03.237863+00:00",
+      "sha256": "26947559fbd710ca4fb007e2ff0481b13ebc3ca47153e77a9b0bc84db250a48e",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2023q3_form345.zip"
+    },
+    {
+      "bytes": 8497639,
+      "local_path": "var/sec_form4_raw/2023q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2023Q4",
+      "retrieved_at": "2026-09-14T15:22:03.266732+00:00",
+      "sha256": "be19822ad9116ea6c1a55303b1f2e23864f21101e42d2da0455a6ff2b33e1a9e",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2023q4_form345.zip"
+    },
+    {
+      "bytes": 13874620,
+      "local_path": "var/sec_form4_raw/2024q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2024Q1",
+      "retrieved_at": "2026-09-14T15:22:03.303794+00:00",
+      "sha256": "8e9bb34335416829a88e4ca7d09bb8aaceca689da9718fef22c298d6f18c9b04",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2024q1_form345.zip"
+    },
+    {
+      "bytes": 10286787,
+      "local_path": "var/sec_form4_raw/2024q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2024Q2",
+      "retrieved_at": "2026-09-14T15:22:03.326507+00:00",
+      "sha256": "782abee663e466b243f953625ae319da93c3e896816007d5a375e558c94dc7c1",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2024q2_form345.zip"
+    },
+    {
+      "bytes": 8163472,
+      "local_path": "var/sec_form4_raw/2024q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2024Q3",
+      "retrieved_at": "2026-09-14T15:22:03.361433+00:00",
+      "sha256": "8b55b4ffd91e56770fc0e71f9b73e6886f3c60fac8b7266e4b3e5586d2857910",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2024q3_form345.zip"
+    },
+    {
+      "bytes": 8954329,
+      "local_path": "var/sec_form4_raw/2024q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2024Q4",
+      "retrieved_at": "2026-09-14T15:22:03.402677+00:00",
+      "sha256": "44763a00aa8a2077747bc015f12c6a4c09ba7cae4a2d031bf24398f9db9e52f3",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2024q4_form345.zip"
+    },
+    {
+      "bytes": 12804783,
+      "local_path": "var/sec_form4_raw/2025q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2025Q1",
+      "retrieved_at": "2026-09-14T15:22:03.435849+00:00",
+      "sha256": "37f6b4287df129b88acf0782498540640d055b1c893320877e329945b534a8c2",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2025q1_form345.zip"
+    },
+    {
+      "bytes": 9860984,
+      "local_path": "var/sec_form4_raw/2025q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2025Q2",
+      "retrieved_at": "2026-09-14T15:22:03.456944+00:00",
+      "sha256": "64e7f81328933b1281bd8737961048d76d2ab3d5d1d2d7149a32ec061b0e3ff2",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2025q2_form345.zip"
+    },
+    {
+      "bytes": 7956025,
+      "local_path": "var/sec_form4_raw/2025q3_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2025Q3",
+      "retrieved_at": "2026-09-14T15:22:03.475099+00:00",
+      "sha256": "9c57f272b7230500771f661bc1fe181527ed6b76a6f45d23a910c7fc7e9fcfa4",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2025q3_form345.zip"
+    },
+    {
+      "bytes": 8309708,
+      "local_path": "var/sec_form4_raw/2025q4_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2025Q4",
+      "retrieved_at": "2026-09-14T15:22:03.506758+00:00",
+      "sha256": "6af26a68f5834eab96dff2c568530d9213638d3e6c9d1256e4f6c9f8af1d2d28",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2025q4_form345.zip"
+    },
+    {
+      "bytes": 13874904,
+      "local_path": "var/sec_form4_raw/2026q1_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2026Q1",
+      "retrieved_at": "2026-09-14T15:22:03.548583+00:00",
+      "sha256": "3dcb680593f5829bc951cb0969e858b60fc21a6835b094838218093a849592d6",
+      "source_url": "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2026q1_form345.zip"
+    },
+    {
+      "bytes": 11498860,
+      "local_path": "var/sec_form4_raw/2026q2_form345.zip",
+      "parser_version": "sec-form4-census-v2a/2",
+      "period": "2026Q2",
+      "retrieved_at": "2026-09-14T15:22:03.571362+00:00",
+      "sha256": "11f1b2bbbdcbe6347a34437c02d04202fda0eca1dbb023726e4b56504b802e27",
+      "source_url": "https://www.sec.gov/files/datastandardsinnovation/data/insider-transactions-data-sets/2026q2_form345.zip"
+    }
+  ]
+}
