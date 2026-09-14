@@ -1,0 +1,143 @@
+"""Fail-closed outcome access control for preregistered Research Factory experiments."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from enum import Enum
+import hashlib
+import json
+import re
+from typing import Iterable, Mapping
+
+from .experiments import BlueTeamGate, DatasetRef, ExperimentRecord, ExperimentStatus
+
+
+class OutcomeFirewallError(PermissionError):
+    pass
+
+
+class ColumnRole(str, Enum):
+    IDENTIFIER = "IDENTIFIER"
+    FORMATION = "FORMATION"
+    METADATA = "METADATA"
+    OUTCOME = "OUTCOME"
+    DERIVED = "DERIVED"
+
+
+@dataclass(frozen=True)
+class ColumnSpec:
+    name: str
+    role: ColumnRole
+    sources: tuple[str, ...] = ()
+    alias_of: str | None = None
+
+
+@dataclass(frozen=True)
+class DataAccessRequest:
+    dataset_ref: DatasetRef
+    path: str
+    columns: tuple[ColumnSpec, ...]
+    operation: str = "load"
+
+
+# Conservative lexical deny-list. Opaque aliases still require manifest lineage and are caught there.
+_OUTCOME_TOKENS = frozenset({
+    "outcome", "outcomes", "return", "returns", "future", "forward", "pnl", "profit",
+    "loss", "alpha", "excess", "label", "target", "response", "entryprice", "exitprice",
+    "openprice", "closeprice", "price", "nav", "benchmarkreturn", "abnormalreturn",
+})
+
+
+def _tokens(name: str) -> set[str]:
+    compact = re.sub(r"[^a-z0-9]+", "", name.lower())
+    split = set(re.findall(r"[a-z]+|[0-9]+", name.lower()))
+    split.add(compact)
+    return split
+
+
+class OutcomeFirewall:
+    """Blocks outcome loading/derivation unless an exact Blue Team capability is present.
+
+    Security does not rely on the filesystem path. Known outcome content hashes are denied even
+    when copied to another path, while column role, lexical checks and recursive lineage catch
+    direct, aliased and derived outcome fields. Unknown derivations fail closed.
+    """
+
+    def __init__(self, known_outcome_hashes: Iterable[str] = ()) -> None:
+        self._known_outcome_hashes = frozenset(known_outcome_hashes)
+
+    def authorize(self, request: DataAccessRequest, experiment: ExperimentRecord,
+                  gate: BlueTeamGate | None = None) -> None:
+        outcome_tainted = self._request_is_outcome_tainted(request)
+        if not outcome_tainted:
+            return
+        self._require_gate(experiment, gate)
+
+    def _request_is_outcome_tainted(self, request: DataAccessRequest) -> bool:
+        if request.dataset_ref.role in {"outcome", "benchmark"}:
+            return True
+        if request.dataset_ref.content_hash in self._known_outcome_hashes:
+            return True
+        if not request.columns:
+            raise OutcomeFirewallError("column manifest is required; access fails closed")
+
+        manifest: Mapping[str, ColumnSpec] = {column.name: column for column in request.columns}
+        if len(manifest) != len(request.columns):
+            raise OutcomeFirewallError("duplicate column names in manifest")
+
+        memo: dict[str, bool] = {}
+        visiting: set[str] = set()
+
+        def tainted(name: str) -> bool:
+            if name in memo:
+                return memo[name]
+            if name in visiting:
+                raise OutcomeFirewallError("cyclic column lineage")
+            spec = manifest.get(name)
+            if spec is None:
+                raise OutcomeFirewallError(f"unresolved lineage source: {name}")
+            visiting.add(name)
+            lexical = bool(_tokens(spec.name) & _OUTCOME_TOKENS)
+            direct = spec.role == ColumnRole.OUTCOME
+            alias = False
+            if spec.alias_of is not None:
+                if spec.alias_of not in manifest:
+                    raise OutcomeFirewallError(f"unresolved alias source: {spec.alias_of}")
+                alias = tainted(spec.alias_of)
+            derived = False
+            if spec.role == ColumnRole.DERIVED:
+                if not spec.sources:
+                    raise OutcomeFirewallError("derived columns require explicit lineage")
+                derived = any(tainted(source) for source in spec.sources)
+            elif spec.sources:
+                raise OutcomeFirewallError("only DERIVED columns may declare sources")
+            visiting.remove(name)
+            memo[name] = lexical or direct or alias or derived
+            return memo[name]
+
+        return any(tainted(column.name) for column in request.columns)
+
+    @staticmethod
+    def _require_gate(experiment: ExperimentRecord, gate: BlueTeamGate | None) -> None:
+        post_freeze = {
+            ExperimentStatus.BLUE_FROZEN,
+            ExperimentStatus.TESTING,
+            ExperimentStatus.PROMISING,
+            ExperimentStatus.REJECT,
+            ExperimentStatus.INSUFFICIENT,
+            ExperimentStatus.RETIRED,
+        }
+        if experiment.status not in post_freeze:
+            raise OutcomeFirewallError("outcomes are blocked before BLUE_FROZEN")
+        if gate is None:
+            raise OutcomeFirewallError("Blue Team gate required")
+        if gate.authority != "BLUE_TEAM":
+            raise OutcomeFirewallError("invalid gate authority")
+        if gate.experiment_id != experiment.experiment_id or gate.version != experiment.version:
+            raise OutcomeFirewallError("gate is bound to a different experiment/version")
+        if gate.protocol_hash != experiment.protocol_hash:
+            raise OutcomeFirewallError("protocol hash mismatch")
+        payload = [ref.to_dict() for ref in experiment.dataset_refs]
+        encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        dataset_set_hash = hashlib.sha256(encoded).hexdigest()
+        if gate.dataset_set_hash != dataset_set_hash:
+            raise OutcomeFirewallError("frozen dataset set mismatch")
