@@ -22,6 +22,12 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
+    def test_lying_role_still_blocked_by_name(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/x", (ColumnSpec("future_return", ColumnRole.FORMATION),))
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
+
     def test_alias_and_derived_lineage_blocked(self):
         _, record = frozen_experiment()
         request = DataAccessRequest(DatasetRef("mixed", "v1", "m" * 64), "/x", (
@@ -42,6 +48,12 @@ class OutcomeFirewallAdversarialTests(unittest.TestCase):
     def test_unknown_derivation_fails_closed(self):
         _, record = frozen_experiment()
         request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", (ColumnSpec("mystery", ColumnRole.DERIVED),), operation="derive")
+        with self.assertRaises(OutcomeFirewallError):
+            OutcomeFirewall().authorize(request, record)
+
+    def test_empty_manifest_fails_closed(self):
+        _, record = frozen_experiment()
+        request = DataAccessRequest(DatasetRef("events", "v1", "e" * 64), "/events", ())
         with self.assertRaises(OutcomeFirewallError):
             OutcomeFirewall().authorize(request, record)
 
