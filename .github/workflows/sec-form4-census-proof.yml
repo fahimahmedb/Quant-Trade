@@ -11,10 +11,10 @@ permissions:
 
 jobs:
   census-and-exact-head-proof:
-    # SEC rejects the Azure-hosted Linux egress class with HTTP 403 even when
-    # the automated client declares a fair-access identity.  Use GitHub's macOS
-    # runner as a clean independent network path; this changes transport only,
-    # never the frozen census semantics or source URLs.
+    # SEC rejects cloud-runner urllib requests with HTTP 403.  Keep the clean
+    # macOS environment and verify whether a standard curl client, still using
+    # the declared fair-access identity and canonical SEC URL, can retrieve the
+    # exact public ZIP bytes. This changes transport only, never census science.
     runs-on: macos-15
     timeout-minutes: 330
     env:
@@ -38,17 +38,22 @@ jobs:
 
       - name: Official SEC source connectivity preflight
         run: |
+          mkdir -p var/sec_form4_raw
+          curl --fail --location --retry 2 --retry-all-errors \
+            --connect-timeout 20 --max-time 90 \
+            --user-agent "$SEC_USER_AGENT" \
+            --header 'Accept: application/zip,application/octet-stream;q=0.9,*/*;q=0.8' \
+            --header 'Accept-Language: en-US,en;q=0.8' \
+            --referer 'https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets' \
+            'https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q1_form345.zip' \
+            --output var/sec_form4_raw/2020q1_form345.zip
           python3 - <<'PY'
           from pathlib import Path
-          from scripts.sec_form4_census import sec_fetch
-          url = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets/2020q1_form345.zip"
-          data = sec_fetch(url)
-          if not data.startswith(b"PK"):
-              raise SystemExit("official SEC 2020Q1 payload is not a ZIP archive")
-          path = Path("var/sec_form4_raw/2020q1_form345.zip")
-          path.parent.mkdir(parents=True, exist_ok=True)
-          path.write_bytes(data)
-          print(f"official SEC preflight ok: {len(data)} bytes")
+          path = Path('var/sec_form4_raw/2020q1_form345.zip')
+          data = path.read_bytes()
+          if not data.startswith(b'PK'):
+              raise SystemExit('official SEC 2020Q1 payload is not a ZIP archive')
+          print(f'official SEC curl preflight ok: {len(data)} bytes')
           PY
 
       - name: Refresh generated V1 proof inventory
