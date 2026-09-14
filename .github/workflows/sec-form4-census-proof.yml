@@ -13,6 +13,11 @@ jobs:
   census-and-exact-head-proof:
     runs-on: ubuntu-latest
     timeout-minutes: 330
+    env:
+      # SEC fair-access guidance asks automated clients to declare an identity
+      # and contact. Use the public GitHub actor no-reply identity plus repo URL;
+      # do not embed a private/personal email in repository code.
+      SEC_USER_AGENT: Quant-Trade ${{ github.actor }}@users.noreply.github.com https://github.com/${{ github.repository }}
     steps:
       - name: Checkout Builder branch
         uses: actions/checkout@v4
@@ -48,8 +53,6 @@ jobs:
           python3 scripts/generate_schemas.py --check
 
       - name: Acquire official SEC 2020Q1-2026Q2 and build census
-        env:
-          SEC_USER_AGENT: Quant-Trade Form4 Census https://github.com/fahimahmedb/Quant-Trade
         run: |
           if test -f artifacts/sec_form4_census/provenance_manifest.json; then
             python3 scripts/sec_form4_census.py --verify-source-hashes
@@ -77,8 +80,6 @@ jobs:
           echo "Exact candidate HEAD: $(git rev-parse HEAD)"
 
       - name: Exact-head proof in clean worktree from cached raw bytes
-        env:
-          SEC_USER_AGENT: Quant-Trade Form4 Census https://github.com/fahimahmedb/Quant-Trade
         run: |
           FINAL_SHA='${{ steps.final.outputs.final_sha }}'
           git worktree add --detach /tmp/quant-sec-proof "$FINAL_SHA"
