@@ -1,0 +1,41 @@
+name: SEC Form-4 V2-A bootstrap
+
+on:
+  push:
+    branches:
+      - builder/sec-form4-census-v2a
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.event.head_commit.message == 'build: stage SEC Form-4 V2-A payload'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize prepared payload
+        run: cat .bootstrap/sec_payload.part* | base64 -d | tar -xz -C .
+
+      - name: Validate SEC census implementation
+        run: |
+          PYTHONPATH=src python3 -m unittest tests.test_sec_form4_census -v
+          python3 -m py_compile src/quant/dataplane/sec_form4.py scripts/sec_form4_census.py scripts/sec_form4_proof.py
+
+      - name: Commit durable implementation
+        run: |
+          git config user.name 'quant-builder-bot'
+          git config user.email 'quant-builder-bot@users.noreply.github.com'
+          git add -A
+          git rm -rf .bootstrap .github/workflows/sec-form4-bootstrap.yml
+          git commit -m 'build: add deterministic SEC Form-4 census gate'
+          git push origin HEAD:builder/sec-form4-census-v2a
