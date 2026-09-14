@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - builder/evidence-store-identity-v2
+  pull_request:
+    branches:
+      - reviewer/v1-final-red-team
   workflow_dispatch:
 
 jobs:
@@ -31,7 +34,7 @@ jobs:
             echo 'Builder C touched a READ ONLY/FORBIDDEN path' >&2
             exit 1
           fi
-          if grep -Evq '^(src/quant/dataplane/(evidence.*|identity.*|corporate_actions.*)\.py|schemas/(evidence_.*|raw_object|validated_object|derived_artifact|issuer_identity|issuer_name_interval|security_identity|ticker_interval|listing_interval|corporate_action_event|corporate_action_leg|security_identity_contracts|dataplane_corporate_actions)\.schema\.json|tests/test_evidence_identity.*\.py|\.github/workflows/builder-c-proof\.yml)$' /tmp/builder-c-changed.txt; then
+          if grep -Evq '^(src/quant/dataplane/(evidence.*|identity.*|corporate_actions.*)\.py|schemas/(raw_object|validated_object|derived_artifact|issuer_identity|issuer_name_interval|security_identity|ticker_interval|listing_interval|corporate_action_event|corporate_action_leg)\.schema\.json|tests/test_evidence_identity.*\.py|\.github/workflows/builder-c-proof\.yml)$' /tmp/builder-c-changed.txt; then
             echo 'Builder C touched a path outside its implementation/proof surface' >&2
             exit 1
           fi
