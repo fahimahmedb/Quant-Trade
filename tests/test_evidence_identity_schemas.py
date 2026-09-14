@@ -32,9 +32,9 @@ def field_names(cls: type) -> set[str]:
 class BuilderCSchemaTests(unittest.TestCase):
     def test_evidence_schema_properties_match_dataclasses(self) -> None:
         cases = (
-            (RawObject, "evidence_raw_object.schema.json"),
-            (ValidatedObject, "evidence_validated_object.schema.json"),
-            (DerivedArtifact, "evidence_derived_artifact.schema.json"),
+            (RawObject, "raw_object.schema.json"),
+            (ValidatedObject, "validated_object.schema.json"),
+            (DerivedArtifact, "derived_artifact.schema.json"),
         )
         for cls, filename in cases:
             with self.subTest(filename=filename):
@@ -43,24 +43,30 @@ class BuilderCSchemaTests(unittest.TestCase):
                 self.assertEqual(set(schema["required"]), field_names(cls))
                 self.assertFalse(schema["additionalProperties"])
 
-    def test_identity_schema_definitions_match_pit_contracts(self) -> None:
-        schema = load_schema("security_identity_contracts.schema.json")
-        definitions = schema["definitions"]
-        cases = (IssuerIdentity, IssuerNameInterval, SecurityIdentity, TickerInterval, ListingInterval)
-        self.assertEqual({cls.__name__ for cls in cases}, set(definitions))
-        for cls in cases:
-            with self.subTest(contract=cls.__name__):
-                definition = definitions[cls.__name__]
-                self.assertEqual(set(definition["properties"]), field_names(cls))
-                self.assertFalse(definition["additionalProperties"])
+    def test_identity_schema_properties_match_pit_dataclasses(self) -> None:
+        cases = (
+            (IssuerIdentity, "issuer_identity.schema.json"),
+            (IssuerNameInterval, "issuer_name_interval.schema.json"),
+            (SecurityIdentity, "security_identity.schema.json"),
+            (TickerInterval, "ticker_interval.schema.json"),
+            (ListingInterval, "listing_interval.schema.json"),
+        )
+        for cls, filename in cases:
+            with self.subTest(filename=filename):
+                schema = load_schema(filename)
+                self.assertEqual(set(schema["properties"]), field_names(cls))
+                self.assertFalse(schema["additionalProperties"])
 
-    def test_corporate_action_schema_covers_event_and_leg_fields(self) -> None:
-        schema = load_schema("dataplane_corporate_actions.schema.json")
-        self.assertEqual(set(schema["properties"]), field_names(CorporateActionEvent))
-        leg = schema["properties"]["legs"]["items"]
-        self.assertEqual(set(leg["properties"]), field_names(CorporateActionLeg))
-        self.assertFalse(schema["additionalProperties"])
-        self.assertFalse(leg["additionalProperties"])
+    def test_corporate_action_schemas_cover_event_and_leg_fields(self) -> None:
+        event_schema = load_schema("corporate_action_event.schema.json")
+        leg_schema = load_schema("corporate_action_leg.schema.json")
+        self.assertEqual(set(event_schema["properties"]), field_names(CorporateActionEvent))
+        self.assertEqual(set(leg_schema["properties"]), field_names(CorporateActionLeg))
+        embedded_leg = event_schema["properties"]["legs"]["items"]
+        self.assertEqual(set(embedded_leg["properties"]), field_names(CorporateActionLeg))
+        self.assertFalse(event_schema["additionalProperties"])
+        self.assertFalse(leg_schema["additionalProperties"])
+        self.assertFalse(embedded_leg["additionalProperties"])
 
 
 if __name__ == "__main__":
