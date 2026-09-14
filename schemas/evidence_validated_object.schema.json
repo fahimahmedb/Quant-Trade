@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ValidatedObject",
+  "description": "Parser/version-bound validation assertions that require replay from raw bytes before trust.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "validation_id": {"type": "string", "pattern": "^validation:[0-9a-f]{64}$"},
+    "raw_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "parser_name": {"type": "string", "minLength": 1},
+    "parser_version": {"type": "string", "minLength": 1},
+    "validation_status": {"type": "string", "enum": ["VALID", "INVALID", "AMBIGUOUS"]},
+    "identity_assertions": {"type": "object"},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "validated_at": {"type": "string", "minLength": 1}
+  },
+  "required": ["validation_id", "raw_sha256", "parser_name", "parser_version", "validation_status", "identity_assertions", "errors", "validated_at"]
+}
