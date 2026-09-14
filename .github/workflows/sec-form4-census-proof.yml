@@ -11,11 +11,11 @@ permissions:
 
 jobs:
   census-and-exact-head-proof:
-    # SEC rejects cloud-runner urllib requests with HTTP 403.  Keep the clean
-    # macOS environment and verify whether a standard curl client, still using
-    # the declared fair-access identity and canonical SEC URL, can retrieve the
-    # exact public ZIP bytes. This changes transport only, never census science.
-    runs-on: macos-15
+    # The standard Linux runner and ARM macOS runner both receive SEC HTTP 403.
+    # Try GitHub's distinct Intel macOS runner/network class with the same
+    # canonical official URLs and declared fair-access identity. Transport only;
+    # no census definition or source population changes.
+    runs-on: macos-15-intel
     timeout-minutes: 330
     env:
       SEC_USER_AGENT: Quant-Trade ${{ github.actor }}@users.noreply.github.com https://github.com/${{ github.repository }}
