@@ -66,12 +66,25 @@ jobs:
       - name: Acquire official SEC corpus and build V2-A1 census
         timeout-minutes: 315
         run: |
-          if test -f artifacts/sec_form4_census/provenance_manifest.json; then
-            python3 scripts/sec_form4_census.py --verify-source-hashes --workers 12 --rate-per-second 8
-          else
-            python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage --workers 12 --rate-per-second 8
-          fi
-          python3 scripts/sec_form4_proof.py --check
+          set -e
+          for attempt in 1 2 3; do
+            echo "SEC acquisition/proof attempt ${attempt}/3"
+            if test -f artifacts/sec_form4_census/provenance_manifest.json; then
+              python3 scripts/sec_form4_census.py --verify-source-hashes --workers 2 --rate-per-second 2 || census_rc=$?
+            else
+              python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage --workers 2 --rate-per-second 2 || census_rc=$?
+            fi
+            census_rc=${census_rc:-0}
+            if test "$census_rc" -eq 0 && python3 scripts/sec_form4_proof.py --check; then
+              exit 0
+            fi
+            if test "$attempt" -lt 3; then
+              echo "SEC acquisition/proof incomplete; preserving cache/checkpoint and backing off before retry"
+              sleep $((attempt * 30))
+              unset census_rc
+            fi
+          done
+          exit 1
       - name: Quiesce SEC acquisition before cache snapshot
         if: always()
         run: |
@@ -103,10 +116,10 @@ jobs:
           mkdir -p /tmp/quant-sec-proof/var
           cp -a var/sec_form4_raw /tmp/quant-sec-proof/var/sec_form4_raw
           cd /tmp/quant-sec-proof
-          python3 scripts/sec_form4_census.py --verify-source-hashes --workers 12 --rate-per-second 8
+          python3 scripts/sec_form4_census.py --verify-source-hashes --workers 2 --rate-per-second 2
           python3 scripts/sec_form4_proof.py --check
           rm -rf /tmp/sec-no-price
-          python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price --workers 12 --rate-per-second 8
+          python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price --workers 2 --rate-per-second 2
           cmp artifacts/sec_form4_census/events.jsonl /tmp/sec-no-price/events.jsonl
           git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
           python3 scripts/status_artifacts.py --check
