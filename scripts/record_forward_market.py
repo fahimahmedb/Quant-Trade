@@ -128,7 +128,11 @@ def main() -> int:
                     prior_sequences[source_id] = int(cursor.get("sequence", 0))
                 except (TypeError, ValueError):
                     prior_sequences[source_id] = 0
-    summary = ForwardRecorder(store).run_once(plan, timeout_seconds=args.timeout)
+    summary = ForwardRecorder(store).run_once(
+        plan,
+        timeout_seconds=args.timeout,
+        stop_on_fetch_error=args.proof,
+    )
     print(json.dumps({"run": summary.__dict__}, sort_keys=True))
     if args.proof:
         proof = _verify_live_provenance(root, plan, prior_sequences=prior_sequences)
