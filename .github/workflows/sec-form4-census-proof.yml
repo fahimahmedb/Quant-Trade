@@ -21,31 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, ref: builder/sec-form4-census-v2a}
-
-      - name: Accept observed official SEC SUBMISSION schema variant
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('src/quant/dataplane/sec_form4.py')
-          s=p.read_text(encoding='utf-8')
-          old='    "NO_SECURITIES_OWNED", "NOT_SUBJECT_SEC16", "FORM3_HOLDING_REPORTED",\n'
-          new='    "NO_SECURITIES_OWNED", "NOT_SUBJECT_SEC16", "FORM3_HOLDING_REPORTED", "FORM3_HOLDINGS_REPORTED",\n'
-          if old in s:
-              s=s.replace(old,new,1)
-          elif '"FORM3_HOLDINGS_REPORTED"' not in s:
-              raise SystemExit('unexpected SUBMISSION schema declaration')
-          p.write_text(s,encoding='utf-8')
-          t=Path('tests/test_sec_submission_schema_variant.py')
-          t.write_text('''from __future__ import annotations\nimport csv, io, sys, unittest, zipfile\nfrom pathlib import Path\nROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/"src"))\nfrom quant.dataplane.sec_form4 import parse_quarter_zip\n\ndef table(header,row):\n    out=io.StringIO();w=csv.DictWriter(out,fieldnames=header,delimiter="\\t",lineterminator="\\n");w.writeheader();w.writerow(row);return out.getvalue()\n\nclass OfficialSubmissionSchemaVariantTests(unittest.TestCase):\n    def test_form3_holdings_reported_variant_is_accepted(self):\n        a="0000000001-26-000001"\n        sub={"ACCESSION_NUMBER":a,"FILING_DATE":"01-JUL-2026","DOCUMENT_TYPE":"4","ISSUERCIK":"1","ISSUERTRADINGSYMBOL":"AAA","FORM3_HOLDINGS_REPORTED":"0"}\n        own={"ACCESSION_NUMBER":a,"RPTOWNERCIK":"101","RPTOWNERNAME":"Owner","RPTOWNER_RELATIONSHIP":"Officer"}\n        tx={"ACCESSION_NUMBER":a,"NONDERIV_TRANS_SK":"1","TRANS_DATE":"30-JUN-2026","TRANS_CODE":"P","TRANS_ACQUIRED_DISP_CD":"A"}\n        b=io.BytesIO()\n        with zipfile.ZipFile(b,"w") as z:\n            z.writestr("SUBMISSION.tsv",table(list(sub),sub));z.writestr("REPORTINGOWNER.tsv",table(list(own),own));z.writestr("NONDERIV_TRANS.tsv",table(list(tx),tx))\n        subs,owners,txs=parse_quarter_zip(b.getvalue(),"2026Q2")\n        self.assertEqual("0",subs[0]["FORM3_HOLDINGS_REPORTED"]);self.assertEqual(1,len(owners));self.assertEqual(1,len(txs))\n\nif __name__=="__main__":unittest.main()\n''',encoding='utf-8')
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/quant/dataplane/sec_form4.py tests/test_sec_submission_schema_variant.py
-          if ! git diff --cached --quiet; then
-            git commit -m 'fix: accept official SEC submission schema variant'
-            git push origin HEAD:builder/sec-form4-census-v2a
-          fi
-
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python -m pip install 'exchange-calendars==4.13.1'
