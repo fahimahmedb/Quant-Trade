@@ -1,2 +1,11 @@
 __pycache__/
 *.pyc
+
+# Live operational state. The system writes it; the repository does not carry it.
+var/
+runtime/*.json
+
+# Claude Code machine-local overrides and memory.
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/agent-memory-local/

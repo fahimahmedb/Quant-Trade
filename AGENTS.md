@@ -3,27 +3,29 @@
 Read in this order before acting:
 
 1. `QUANT_NORTH_STAR.md`
-2. `SYSTEM_ARCHITECTURE.md`
-3. `OPERATING_MODEL.md`
-4. `MISSION.md`
-5. `SOURCE_BASIS.md`
-6. `STATE.md`
+2. `BUILDER_ROLE.md` when acting in the Build Plane
+3. `SYSTEM_ARCHITECTURE.md`
+4. `OPERATING_MODEL.md`
+5. `MISSION.md`
+6. `SOURCE_BASIS.md`
+7. `STATE.md`
+8. the current released mission document when present
 
 ## Prime rule
 
 Do not reduce Quant to the subsystem currently being worked on.
 
-A research worker, runtime, data adapter, Book, dashboard or Codex task is a component of Quant, not Quant itself.
+A research worker, runtime, data adapter, Book, dashboard or Builder task is a component of Quant, not Quant itself.
 
 When local implementation choices conflict with the North Star, prefer the North Star.
 
 ## Agent roles
 
-### Codex / engineering agent
+### Builder / engineering agent
 
-Primary role: **Builder / Quant Engineer**.
+Primary role: **Builder / Quant Engineer**. The provider-independent authority, prohibitions, proof discipline, human boundaries and Red-Team handoff are defined in `BUILDER_ROLE.md`.
 
-Build, repair and extend the persistent Quant system. Do not assume your task lifetime is the runtime lifetime.
+Build, repair and extend the persistent Quant system. Do not assume your task lifetime is the runtime lifetime. Do not self-certify mergeability.
 
 A build task should leave:
 

@@ -1,0 +1,146 @@
+name: SEC Form-4 census proof
+# Fresh-head retry after cached Q3 reconciliation.
+
+on:
+  push:
+    branches: [builder/sec-form4-census-v2a]
+    paths: [.github/workflows/sec-form4-census-proof.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sec-form4-v2a-single-writer
+  cancel-in-progress: true
+
+jobs:
+  takeover-unit-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0, ref: builder/sec-form4-census-v2a}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install 'exchange-calendars==4.13.1'
+      - name: Builder-A unit and frozen-V1 proof
+        run: |
+          python3 scripts/status_artifacts.py --write
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/generate_schemas.py --check
+          git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+
+  census-and-exact-head-proof:
+    needs: takeover-unit-proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Checkout Builder branch
+        uses: actions/checkout@v4
+        with: {fetch-depth: 0, ref: builder/sec-form4-census-v2a}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install pinned calendar dependency
+        run: python -m pip install 'exchange-calendars==4.13.1'
+      - name: Restore official SEC raw byte cache
+        uses: actions/cache/restore@v4
+        with:
+          path: var/sec_form4_raw
+          key: sec-form4-raw-${{ github.run_id }}
+          restore-keys: |
+            sec-form4-raw-
+      - name: Official SEC source connectivity preflight
+        run: python3 scripts/sec_form4_census.py --preflight
+      - name: Frozen V1 baseline proof
+        run: |
+          python3 scripts/status_artifacts.py --write
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/generate_schemas.py --check
+      - name: Acquire official SEC corpus and build V2-A1 census
+        timeout-minutes: 315
+        run: |
+          set -e
+          for attempt in 1 2 3; do
+            echo "SEC acquisition/proof attempt ${attempt}/3"
+            if test -f artifacts/sec_form4_census/provenance_manifest.json; then
+              python3 scripts/sec_form4_census.py --verify-source-hashes --workers 2 --rate-per-second 2 || census_rc=$?
+            else
+              python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage --workers 2 --rate-per-second 2 || census_rc=$?
+            fi
+            census_rc=${census_rc:-0}
+            if test "$census_rc" -eq 0 && python3 scripts/sec_form4_proof.py --check; then
+              exit 0
+            fi
+            if test "$attempt" -lt 3; then
+              echo "SEC acquisition/proof incomplete; preserving cache/checkpoint and backing off before retry"
+              sleep $((attempt * 30))
+              unset census_rc
+            fi
+          done
+          exit 1
+      - name: Quiesce SEC acquisition before cache snapshot
+        if: always()
+        run: |
+          pkill -TERM -f '[s]cripts/sec_form4_census.py' || true
+          for _ in $(seq 1 20); do if ! pgrep -f '[s]cripts/sec_form4_census.py' >/dev/null; then break; fi; sleep 1; done
+          pkill -KILL -f '[s]cripts/sec_form4_census.py' || true
+          sync
+      - name: Save official SEC raw byte cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: var/sec_form4_raw
+          key: sec-form4-raw-${{ github.run_id }}
+      - name: Commit deterministic census artifacts locally
+        id: final
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-files --error-unmatch artifacts/sec_form4_census/provenance_manifest.json >/dev/null 2>&1; then
+            git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
+          fi
+          git add data/calendars/xnys_sessions_2019_2026.csv artifacts/sec_form4_census
+          if ! git diff --cached --quiet; then git commit -m 'data: publish deterministic SEC Form-4 V2-A1 census'; fi
+          echo "final_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Exact-head proof in clean worktree from cached raw bytes
+        run: |
+          FINAL_SHA='${{ steps.final.outputs.final_sha }}'
+          git worktree add --detach /tmp/quant-sec-proof "$FINAL_SHA"
+          mkdir -p /tmp/quant-sec-proof/var
+          cp -a var/sec_form4_raw /tmp/quant-sec-proof/var/sec_form4_raw
+          cd /tmp/quant-sec-proof
+          python3 scripts/sec_form4_census.py --verify-source-hashes --workers 2 --rate-per-second 2
+          python3 scripts/sec_form4_proof.py --check
+          rm -rf /tmp/sec-no-price
+          python3 scripts/sec_form4_census.py --raw-dir var/sec_form4_raw --output-dir /tmp/sec-no-price --workers 2 --rate-per-second 2
+          cmp artifacts/sec_form4_census/events.jsonl /tmp/sec-no-price/events.jsonl
+          git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
+          python3 scripts/status_artifacts.py --check
+          PYTHONPATH=src python3 -m unittest discover -s tests -v
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/sec_form4_proof.py --check
+          git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
+          test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+          test -z "$(git status --porcelain)"
+      - name: Upload pinned raw SEC cache for Red Team reproduction
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-form4-v2a1-raw-cache-${{ steps.final.outputs.final_sha }}
+          path: var/sec_form4_raw/
+          retention-days: 90
+          compression-level: 0
+      - name: Push only the exact proven HEAD
+        run: |
+          FINAL_SHA='${{ steps.final.outputs.final_sha }}'
+          test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+          git push origin HEAD:builder/sec-form4-census-v2a
+          REMOTE_SHA="$(git ls-remote origin refs/heads/builder/sec-form4-census-v2a | cut -f1)"
+          echo "remote HEAD: $REMOTE_SHA"
+          test "$REMOTE_SHA" = "$FINAL_SHA"
