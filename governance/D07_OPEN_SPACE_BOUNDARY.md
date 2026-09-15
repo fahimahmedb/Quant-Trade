@@ -1,8 +1,10 @@
 # D07_OPEN_SPACE_BOUNDARY
 
-**Status:** FROZEN  
+**Status:** FROZEN — AMENDED PRE-D05-A  
 **Authority:** Blue Team / Mission Control  
 **Purpose:** exhaustively bound the design space D07 may choose after D05-A.
+
+This amendment narrows/clarifies the boundary **before any D05-A empirical value has been inspected**. It therefore does not trigger `POST_D05A_BOUNDARY_EXPANSION_INVALIDATES_AFFECTED_AUTHORITY`.
 
 Once D05-A has executed, this boundary cannot expand without invalidating the authority of any D05-A metric whose design-invariance no longer holds.
 
@@ -39,13 +41,13 @@ The following are closed and outside D07:
 - insider identity = reporting-owner CIK;
 - no fuzzy-name matching.
 
-The notation above is deliberate:
+The notation is deliberate:
 
 `transaction code P` + `acquired/disposed indicator A`
 
 does **not** admit Form 4 transaction code `A` (award/grant).
 
-### 2.2 Signal
+### 2.2 Signal semantics
 
 The following are closed:
 
@@ -65,9 +67,31 @@ The projection:
 
 `EDGAR date -> formation_session`
 
-is **not** closed and is D07-O1.
+is not closed and is D07-O1.
 
-D07 may decide only how the frozen EDGAR date is projected onto the regular-session calendar for formation-window purposes. It may not redefine the public-observability source fact.
+D07 may decide only how a frozen EDGAR date with no regular session is attached to the regular-session calendar for formation-window purposes. It may not redefine the source fact.
+
+#### Closed rolling-window transition semantics
+
+For every regular formation session `S`, define the rolling formation window as:
+
+`W(S) = {S and the preceding 9 regular market sessions}`.
+
+The state transition for `S` is closed as follows:
+
+1. before any observation attached to `S` is applied, remove all prior observations whose formation sessions are no longer in `W(S)`;
+2. recompute the set/count of distinct qualifying insider CIKs after those expirations;
+3. apply re-arm semantics caused by that expiration step;
+4. only then apply observations attached to `S`;
+5. no further window expiration occurs between observations within the same `S`.
+
+Therefore expiration is a **session-boundary transition**, not an intra-session ordering choice.
+
+**Invariant:** `WINDOW_EXPIRY_PRECEDES_SESSION_ADDITIONS`
+
+This invariant belongs to the closed signal semantics, not to O2. D07 cannot revise it through an O2 choice.
+
+Within a fixed session, after the expiry transition has completed, applying qualifying observations can only preserve or increase the set of distinct qualifying insider CIKs.
 
 ### 2.3 Economic exposure
 
@@ -89,31 +113,68 @@ The economic entry rule is already fixed:
 
 `first regular-session open after EDGAR date`.
 
-The only remaining temporal projection is:
+For an EDGAR date that itself is a regular market session:
 
-> Which regular session is attached to an EDGAR date for calculating the rolling 10-session formation window?
+`formation_session = that regular session`.
 
-For an EDGAR date that itself corresponds to a regular market session, attachment to that session is determined.
+No choice remains.
 
-The material residual degree of freedom is primarily EDGAR dates with no regular market session: weekend, holiday or another no-session date.
+For an EDGAR date with **no** regular market session, the complete admissible O1 set is frozen as:
 
-D07 must freeze one deterministic convention, for example previous regular session or next regular session, unless an earlier closed decision already dictates the choice.
+`G_O1 = {PREVIOUS_REGULAR_SESSION, NEXT_REGULAR_SESSION}`.
 
-The resulting function must be unique:
+Definitions:
+
+- `PREVIOUS_REGULAR_SESSION`: attach the filing to the immediately preceding regular market session;
+- `NEXT_REGULAR_SESSION`: attach the filing to the immediately following regular market session.
+
+No other O1 rule is admissible in this lineage.
+
+Explicitly excluded:
+
+- `NEAREST_REGULAR_SESSION`;
+- day-of-week-dependent hybrids;
+- issuer-dependent rules;
+- filing-dependent local rules;
+- rules chosen using event counts, coverage, outcomes or downstream convenience.
+
+#### Why `NEAREST_REGULAR_SESSION` is excluded
+
+`nearest` is not excluded because it is mathematically dominated. It can produce a crossing count different from, and potentially larger than, either globally fixed previous-session or next-session projection.
+
+It is excluded because the frozen mechanism does not leave open a locally adaptive rule that selects direction case by case. `nearest` has no independent economic interpretation here; it is an additional algorithmic degree of freedom whose effect is to combine the two fundamental global conventions across cases.
+
+Under the boundary minimality rule, such a local hybrid is not part of the honest mechanism-bounded design space.
+
+Therefore the admissible space is **exactly**:
+
+`{PREVIOUS_REGULAR_SESSION, NEXT_REGULAR_SESSION}`.
+
+**Invariant:** `O1_ADMISSIBLE_SET_IS_EXHAUSTIVE`
+
+Any future addition of another O1 convention would be a boundary expansion with the consequences defined in §6.
+
+The resulting chosen function must be unique:
 
 `EDGAR date -> formation_session`.
 
-O1 is used only for the 10-session formation geometry. It may shift a filing between formation windows. It may not modify the source EDGAR date or the economic entry rule.
+O1 is used only for the 10-session formation geometry. It may shift a filing between formation windows. It may not modify source EDGAR date, economic entry rule or closed session-boundary expiry semantics.
 
-### O2 — intra-session ordering / threshold-crossing instant
+### O2 — intra-session ordering / threshold-crossing identity
 
-When multiple qualifying observations attach to the same `formation_session`, D07 must freeze deterministic application order, the logical instant at which `<2 -> >=2` occurs, and a deterministic tie rule when strict ordering is unavailable.
+When multiple qualifying observations attach to the same `formation_session`, D07 must freeze deterministic application order, the logical intra-session instant at which `<2 -> >=2` occurs, and a deterministic tie rule where no strict source order exists.
 
-O2 is a state-machine convention only. It cannot change threshold 2, the 10-session window, re-arm logic or economic entry date.
+O2 begins **after** the closed session-boundary expiry transition.
+
+O2 may affect which filing/owner is designated as the threshold-triggering observation and the logical trigger position within the session.
+
+O2 cannot change threshold 2, 10-session membership, expiry timing, re-arm caused by session-boundary expiry or economic entry date.
+
+Because `WINDOW_EXPIRY_PRECEDES_SESSION_ADDITIONS` is closed, the distinct-owner count cannot decrease during O2 application within a session.
 
 ### O3 — 20-session interval measurement convention
 
-The number 20 and the economic holding rule are closed.
+The number 20 and economic holding rule are closed.
 
 D07 only fixes interval identification/indexing: start, regular-session numbering, end of the 20th regular session, and calendrical representation of an expected session when the security is not normally observable/tradable.
 
@@ -155,7 +216,7 @@ A quantity `Q` may enter D05-A only if its definition, observation unit, populat
 
 `D07-O1 × D07-O2 × D07-O3 × D07-O4`.
 
-The test is against the full open D07 space, never the likely or preferred geometry.
+The test is against the full frozen open space, never the likely or preferred geometry.
 
 If a component changes under any admissible D07 convention:
 
@@ -167,9 +228,17 @@ If invariance cannot be established before observing values:
 
 `AMBIGUOUS` is not terminal; it must be resolved before execution without inspecting values.
 
+A special one-sided envelope calculation may internally instantiate design-sensitive intermediates only where a separately frozen governance artifact explicitly gives them `AUTHORITY=0` and exposes only a pre-specified bound incapable of informing design choice.
+
 ## 6. Boundary monotonicity
 
-The boundary is written without D05 empirical values, frozen, versioned and hashed before D05-A execution.
+This boundary is written without D05 empirical values, frozen, versioned and hashed before D05-A execution.
+
+The present amendment is a clean pre-D05-A narrowing/clarification:
+
+- it makes the rolling-window session transition explicit;
+- it narrows O1 from an incompletely enumerated space to the exhaustive mechanism-bounded set `{PREVIOUS_REGULAR_SESSION, NEXT_REGULAR_SESSION}`;
+- no empirical D05 value has been used.
 
 After the first D05-A inspection, the boundary cannot expand without scientific consequence.
 
@@ -181,20 +250,21 @@ This applies even if the historical numerical value remains technically correct.
 
 **Invariant:** `POST_D05A_BOUNDARY_EXPANSION_INVALIDATES_AFFECTED_AUTHORITY`
 
-Narrowing the boundary later never retroactively restores authority to a metric observed under an inadmissible classification.
+Narrowing later does not retroactively restore authority to a metric observed under an inadmissible classification.
 
 ## 7. Canonical relation to D05
 
 `BOUNDARY FREEZE`
 → `UNIT TAXONOMY`
 → `RESOLUTION / MAPPING CONTRACT FREEZE`
+→ `SAMPLE SUFFICIENCY AND ROBUSTNESS GENERATOR FREEZE`
 → `D05-A METRICS + STRATA + STOPPING RULE FREEZE`
 → `EXECUTE D05-A`
 → `D07 FREEZE`
 → `D05-B`
 → `FEASIBILITY VERDICT`.
 
-D05-A contains only D07-independent measurements.
+D05-A contains only D07-independent measurements except for explicitly sealed, authority-zero design-sensitive intermediates used solely to compute pre-authorized one-sided impossibility envelopes.
 
 D05-B may use units that only exist or become well-defined after D07.
 
@@ -214,7 +284,7 @@ A dimension remains open only if all three are true:
 2. the economic mechanism does not determine its value;
 3. a convention is genuinely required for an executable and scientifically unambiguous claim.
 
-Therefore already determined dimensions are closed; mechanism-underdetermined real choices stay open; and “just in case” dimensions are excluded.
+Therefore already determined dimensions are closed; mechanism-underdetermined real choices stay open; and “just in case” or locally adaptive rules without independent mechanism content are excluded.
 
 A boundary that is too wide makes D05-A unnecessarily severe. A boundary that is artificially narrow hides legitimate design choice.
 
@@ -222,9 +292,13 @@ Target:
 
 > **la plus petite frontière honnête compatible avec le claim et son mécanisme économique — jamais la frontière la plus favorable à D05-A.**
 
+This is the governing reason `NEAREST_REGULAR_SESSION` is excluded from O1.
+
 ## 9. Invariants
 
 - `BOUNDARY_BEFORE_VALUES`
+- `WINDOW_EXPIRY_PRECEDES_SESSION_ADDITIONS`
+- `O1_ADMISSIBLE_SET_IS_EXHAUSTIVE`
 - `POST_D05A_BOUNDARY_EXPANSION_INVALIDATES_AFFECTED_AUTHORITY`
 - mechanism-bounded design space
 - derived-unit reproducibility
