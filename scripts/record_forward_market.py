@@ -14,15 +14,18 @@ sys.path.insert(0, str(ROOT / "src"))
 from quant.recorders import AtomicCaptureStore, ForwardRecorder, binance_public_plan
 
 
-def _verify_live_provenance(root: Path, plan) -> dict[str, object]:
+def _verify_live_provenance(root: Path, plan, *, prior_sequences: dict[str, int] | None = None) -> dict[str, object]:
     """Fail closed unless the just-completed full plan is durably verifiable.
 
     Verification is deliberately independent of parsed market values: it checks only
     public-source provenance, HTTP success, exact raw bytes, hashes, parser version,
-    and UTC/monotonic retrieval metadata.
+    and UTC/monotonic retrieval metadata. When prior_sequences is supplied, every
+    source must have advanced during the current run so stale captures cannot satisfy
+    a failed proof attempt.
     """
     store = AtomicCaptureStore(root)
     state = store.recover_state()
+    prior_sequences = prior_sequences or {}
     verified: list[dict[str, object]] = []
     failures: list[str] = []
 
@@ -30,6 +33,14 @@ def _verify_live_provenance(root: Path, plan) -> dict[str, object]:
         cursor = state.last_by_source.get(spec.source_id)
         if not isinstance(cursor, dict):
             failures.append(f"{spec.source_id}: missing durable cursor")
+            continue
+        try:
+            current_sequence = int(cursor.get("sequence", 0))
+        except (TypeError, ValueError):
+            failures.append(f"{spec.source_id}: invalid durable sequence")
+            continue
+        if current_sequence <= int(prior_sequences.get(spec.source_id, 0)):
+            failures.append(f"{spec.source_id}: no fresh capture committed by this proof run")
             continue
         capture_id = str(cursor.get("capture_id", ""))
         matches = list((root / "captures").glob(f"**/{capture_id}.json"))
@@ -44,6 +55,7 @@ def _verify_live_provenance(root: Path, plan) -> dict[str, object]:
         raw = raw_path.read_bytes()
         digest = hashlib.sha256(raw).hexdigest()
         checks = {
+            "sequence": metadata.get("sequence") == current_sequence,
             "endpoint": metadata.get("endpoint") == spec.endpoint,
             "parser_version": metadata.get("parser_version") == spec.parser_version,
             "http_2xx": isinstance(metadata.get("http_status"), int) and 200 <= metadata["http_status"] < 300,
@@ -63,6 +75,7 @@ def _verify_live_provenance(root: Path, plan) -> dict[str, object]:
             {
                 "source_id": spec.source_id,
                 "capture_id": capture_id,
+                "sequence": current_sequence,
                 "http_status": metadata["http_status"],
                 "raw_bytes": len(raw),
                 "raw_sha256": digest,
@@ -88,7 +101,7 @@ def main() -> int:
     parser.add_argument(
         "--proof",
         action="store_true",
-        help="run the complete BTCUSDT+ETHUSDT public plan once and verify persisted provenance/raw hashes",
+        help="run the complete BTCUSDT+ETHUSDT public plan once and verify fresh persisted provenance/raw hashes",
     )
     args = parser.parse_args()
 
@@ -105,10 +118,20 @@ def main() -> int:
         return 0
 
     root = Path(args.root)
-    summary = ForwardRecorder(AtomicCaptureStore(root)).run_once(plan, timeout_seconds=args.timeout)
+    store = AtomicCaptureStore(root)
+    prior_sequences: dict[str, int] = {}
+    if args.proof:
+        before = store.recover_state()
+        for source_id, cursor in before.last_by_source.items():
+            if isinstance(cursor, dict):
+                try:
+                    prior_sequences[source_id] = int(cursor.get("sequence", 0))
+                except (TypeError, ValueError):
+                    prior_sequences[source_id] = 0
+    summary = ForwardRecorder(store).run_once(plan, timeout_seconds=args.timeout)
     print(json.dumps({"run": summary.__dict__}, sort_keys=True))
     if args.proof:
-        proof = _verify_live_provenance(root, plan)
+        proof = _verify_live_provenance(root, plan, prior_sequences=prior_sequences)
         print(json.dumps({"live_provenance_proof": proof}, sort_keys=True))
         return 0 if proof["proof"] == "PASS" else 3
     return 0 if summary.successful > 0 else 2
