@@ -65,7 +65,13 @@ class ForwardRecorder:
         self.gap_multiplier = gap_multiplier
         self.clock_skew_threshold_ms = clock_skew_threshold_ms
 
-    def run_once(self, specs: Iterable[EndpointSpec], *, timeout_seconds: float = 10.0) -> RecorderRunSummary:
+    def run_once(
+        self,
+        specs: Iterable[EndpointSpec],
+        *,
+        timeout_seconds: float = 10.0,
+        stop_on_fetch_error: bool = False,
+    ) -> RecorderRunSummary:
         plan = tuple(specs)
         if not plan:
             raise ValueError("capture plan cannot be empty")
@@ -84,9 +90,10 @@ class ForwardRecorder:
         state.mode = "RUN"
         state.run_id = run_id
         self.store.save_state(state)
-        captured = successful = failed = duplicates = 0
+        attempted = captured = successful = failed = duplicates = 0
         try:
             for spec in plan:
+                attempted += 1
                 try:
                     record, duplicate, new_gaps, ok = self._capture(spec, state, timeout_seconds)
                     captured += 1
@@ -113,7 +120,9 @@ class ForwardRecorder:
                         current_capture_id=None,
                         detail=str(exc),
                     )
-            return RecorderRunSummary(run_id, len(plan), captured, successful, failed, duplicates, gaps, "IDLE")
+                    if stop_on_fetch_error:
+                        break
+            return RecorderRunSummary(run_id, attempted, captured, successful, failed, duplicates, gaps, "IDLE")
         finally:
             latest = self.store.load_state()
             latest.mode = "IDLE"
