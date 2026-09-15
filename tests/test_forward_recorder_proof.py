@@ -77,6 +77,21 @@ class LiveProofGateTests(unittest.TestCase):
             self.assertEqual(proof["verified_sources"], len(plan))
             self.assertEqual(proof["failures"], [])
 
+    def test_stale_successful_captures_cannot_satisfy_new_proof_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            plan = self._seed_complete_plan(root)
+            state = AtomicCaptureStore(root).recover_state()
+            prior_sequences = {
+                source_id: int(cursor["sequence"])
+                for source_id, cursor in state.last_by_source.items()
+            }
+            proof = SCRIPT._verify_live_provenance(root, plan, prior_sequences=prior_sequences)
+            self.assertEqual(proof["proof"], "FAIL")
+            self.assertEqual(proof["verified_sources"], 0)
+            self.assertEqual(len(proof["failures"]), len(plan))
+            self.assertTrue(all("no fresh capture" in failure for failure in proof["failures"]))
+
     def test_non_2xx_capture_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
