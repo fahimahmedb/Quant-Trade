@@ -1,8 +1,8 @@
 # D08 POWER-FLOOR OUTCOME TRANSFORM BOUNDARY
 
-**Status:** FREEZE CANDIDATE — `DELTA_COORDINATE_COMPATIBILITY_GATE` OPEN  
+**Status:** FREEZE CANDIDATE — ASTRA-CORRECTED — `DELTA_COORDINATE_COMPATIBILITY_GATE` OPEN  
 **Authority:** Blue Team / Mission Control  
-**Purpose:** bound the outcome transform space used only to construct a one-sided lower bound on required effective sample before final D08 inference is frozen.
+**Purpose:** bound the outcome transform space used only to construct a one-sided lower bound on required **raw observation count** before final D08 inference is frozen.
 
 ## 1. Scope
 
@@ -10,7 +10,7 @@ This artifact does not choose the final D08 estimator, dependence treatment or c
 
 It defines only the transform space allowed to support:
 
-`N_eff_required(final science) >= N_eff_required_floor`.
+`N_raw_required(final science) >= N_RAW_REQUIRED_FLOOR`.
 
 The floor can support early impossibility only. It cannot authorize positive sufficiency.
 
@@ -41,6 +41,10 @@ with:
 `T_SPY_SIMPLE_EXCESS_20 = R_security_20 - R_SPY_20`.
 
 The security and SPY use the same frozen economic interval and compatible return/corporate-action conventions.
+
+No execution-noise term is silently added to this gross market-return transform. If final science instead targets a net executed-return transform, that is a distinct transform requiring its own admission/mapping/covariance treatment.
+
+**Invariant:** `GROSS_MARKET_TRANSFORM_DOES_NOT_SILENTLY_ABSORB_EXECUTION_NOISE`.
 
 ## 4. Rejected transforms in the current lineage
 
@@ -88,7 +92,7 @@ Instead:
 
 forces a return to this boundary using the true D09 coordinate and a new admission test.
 
-**Invariant:** `DELTA_MISMATCH_INVALIDATES_FLOOR_TRANSFORM_ASSUMPTION`
+**Invariant:** `DELTA_MISMATCH_INVALIDATES_FLOOR_TRANSFORM_ASSUMPTION`.
 
 ## 6. Singleton consequence
 
@@ -98,7 +102,7 @@ If the delta gate passes:
 
 There is no transform optimization channel in this lineage and no active transform argmin to reveal.
 
-**Invariant:** `SINGLETON_FLOOR_TRANSFORM_HAS_NO_DESIGN_SELECTION_CHANNEL`
+**Invariant:** `SINGLETON_FLOOR_TRANSFORM_HAS_NO_DESIGN_SELECTION_CHANNEL`.
 
 ## 7. Transform admission vs floor instantiation
 
@@ -106,19 +110,42 @@ Define:
 
 `G_T_INSTANTIATED`
 
-as the subset of admitted transforms for which at least one external source passes the frozen external lower-bound transport contract.
+as the subset of admitted transforms for which an authority-bearing lower bound on raw required sample has been produced under the frozen external lower-bound transport contract or another pre-frozen admissible route.
 
 A transform may be scientifically admissible yet have no admissible external floor source.
 
-**Invariant:** `TRANSFORM_ADMISSION_AND_FLOOR_INSTANTIATION_ARE_SEPARATE`
+**Invariant:** `TRANSFORM_ADMISSION_AND_FLOOR_INSTANTIATION_ARE_SEPARATE`.
 
-In a generic multi-transform lineage:
+### Current singleton lineage
 
-`N_eff_required_floor = min_{T in G_T_INSTANTIATED} N_floor(T)`.
+If the delta gate passes, either:
 
-A transform with no admissible source is absent from this aggregation; its absence does not invalidate floors from other already-admitted transforms.
+- `T_SPY_SIMPLE_EXCESS_20` is instantiated; or
+- `POWER_REQUIREMENT_UNRESOLVED_SOURCE` / another cause-preserving unresolved state remains.
 
-In the current singleton lineage, either the singleton is instantiated or no external floor is available.
+No partial transform aggregation exists because the set is a singleton.
+
+### Generic future multi-transform lineage
+
+A generic future lineage may use:
+
+`N_RAW_REQUIRED_FLOOR = min_T N_raw_floor(T)`
+
+**only when every transform in the authority-covered admissible set is either:**
+
+1. independently instantiated with an authority-bearing lower bound; or
+2. covered by an independently frozen/proven dominance relation showing that omitting its separate instantiation cannot make the true minimum lower than the published floor.
+
+An admissible transform with unknown/unbounded required-sample floor may not simply be omitted from the minimum.
+
+Otherwise:
+
+`POWER_REQUIREMENT_UNRESOLVED_TRANSFORM_COVERAGE`.
+
+**Invariants**
+
+- `EVERY_ADMISSIBLE_TRANSFORM_MUST_BE_INSTANTIATED_OR_PROVEN_DOMINATED`
+- `UNINSTANTIATED_TRANSFORM_CANNOT_BE_SILENTLY_DROPPED`
 
 ## 8. Distinct unresolved causes
 
@@ -131,38 +158,45 @@ If no valid transform/MEUE mapping exists:
 
 ### External-authority failure
 
-If the floor object is defined but no source passes the frozen transport contract:
+If the floor object is defined but no source/route produces an admissible bound:
 
 `NO_ADMISSIBLE_EXTERNAL_FLOOR_SOURCE`
 → `POWER_REQUIREMENT_UNRESOLVED_SOURCE`.
 
-Both roll up to:
+### Transform-coverage failure
+
+In a future multi-transform authority set, if at least one admissible transform is neither instantiated nor proven dominated:
+
+`POWER_REQUIREMENT_UNRESOLVED_TRANSFORM_COVERAGE`.
+
+All roll up to:
 
 `POWER_REQUIREMENT_UNRESOLVED`.
 
 The child cause must be preserved.
 
-**Invariant:** `POWER_UNRESOLVED_CAUSE_MUST_BE_PRESERVED`
+**Invariant:** `POWER_UNRESOLVED_CAUSE_MUST_BE_PRESERVED`.
 
 ## 9. No source-failure transform rescue
 
 Failed source search may not expand the transform set after source values/search outcomes are known.
 
-**Invariant:** `SOURCE_FAILURE_DOES_NOT_EXPAND_TRANSFORM_SPACE`
+**Invariant:** `SOURCE_FAILURE_DOES_NOT_EXPAND_TRANSFORM_SPACE`.
 
 ## 10. Relation to final D08
 
 Final D08 may use a different estimator/transform only if prior impossibility authority remains valid under an independent proof:
 
-`N_required(final_D08) >= N_eff_required_floor`.
+`N_raw_required(final_D08) >= N_RAW_REQUIRED_FLOOR`.
 
 Otherwise the earlier power-impossibility verdict cannot be carried into that new inference lineage.
 
-**Invariant:** `FINAL_D08_CANNOT_UNDERCUT_PRIOR_POWER_FLOOR_WITHOUT_INVALIDATION`
+**Invariant:** `FINAL_D08_CANNOT_UNDERCUT_PRIOR_POWER_FLOOR_WITHOUT_INVALIDATION`.
 
 ## 11. Status gate
 
-This artifact remains `FREEZE_CANDIDATE`, not a hash-addressable scientific authority for the floor, until D09 resolves:
+This artifact remains `FREEZE_CANDIDATE`, not authority-bearing for the power floor, until D09 resolves:
 
 - `DELTA_COORDINATE_COMPATIBILITY_GATE`;
-- unique `MEUE -> effect_T` mapping.
+- unique `MEUE -> effect_T` mapping;
+- the common raw-required-sample power formulation consumed downstream.
