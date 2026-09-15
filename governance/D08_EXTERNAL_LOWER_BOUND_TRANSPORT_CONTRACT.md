@@ -1,10 +1,10 @@
 # D08 EXTERNAL LOWER-BOUND TRANSPORT CONTRACT
 
-**Status:** FROZEN CONTRACT — SOURCE SEARCH NOT YET AUTHORIZED  
+**Status:** FROZEN CONTRACT — ASTRA-CORRECTED — SOURCE SEARCH NOT YET AUTHORIZED  
 **Authority:** Blue Team / Mission Control  
-**Purpose:** define ex ante when external evidence may supply an authority-bearing lower bound for `N_eff_required_floor`.
+**Purpose:** define ex ante when external evidence may supply authority-bearing ingredients for `N_RAW_REQUIRED_FLOOR`.
 
-Source search remains blocked until the D08 delta gate and the D09 MEUE mapping dependency are resolved.
+Source search remains blocked until the D08 delta gate, D09 MEUE mapping dependency, raw-count power formulation, source-search rule and uncertainty treatment are resolved.
 
 ## 1. Core distinction
 
@@ -16,43 +16,67 @@ What the external source measured or reported.
 
 ### `TRANSPORT_ASSUMPTION`
 
-Quant's governance assumption that the external quantity validly lower-bounds the target floor object.
+Quant's governance assumption that the external quantity validly lower-bounds the target floor object or an ingredient used to derive it.
 
 The second is not proven merely because literature reports the first.
 
-**Invariant:** `TRANSPORT_ASSUMPTION_IS_NOT_SOURCE_MEASUREMENT`
+**Invariant:** `TRANSPORT_ASSUMPTION_IS_NOT_SOURCE_MEASUREMENT`.
 
 ## 2. Required direction
 
-For variance transport:
+The final authority-bearing object is a lower bound on the **raw number of statistical observations required** for target power.
 
-`V_external_floor <= V_target`.
+For a direct required-sample route:
 
-For direct required-sample transport:
+`N_raw_required_external_floor <= N_raw_required_target`.
 
-`N_required_external_floor <= N_required_target`.
+For a variance/dependence ingredient route, every transported inequality must be oriented such that the resulting normalized raw requirement satisfies the same inequality.
 
 The transport direction must make a false early impossibility verdict harder, never easier.
 
-**Invariant:** `TRANSPORT_DIRECTION_PROTECTS_AGAINST_FALSE_IMPOSSIBILITY`
+**Invariants**
+
+- `TRANSPORT_DIRECTION_PROTECTS_AGAINST_FALSE_IMPOSSIBILITY`
+- `RAW_REQUIRED_SAMPLE_IS_THE_COMMON_POWER_FLOOR_UNIT`
 
 ## 3. Admission before values
 
 A source is admitted using non-numerical pre-frozen properties only, including where relevant:
 
-- population class
-- return/outcome definition
-- horizon
-- benchmark treatment
-- study design
-- provenance
-- measurement construction
+- population class;
+- return/outcome definition;
+- horizon;
+- benchmark treatment;
+- study design;
+- provenance class;
+- measurement construction;
+- whether the statistic can be mapped to the frozen raw-count power object.
 
 Numerical variance/power/required-N values may be used only after admission.
 
-**Invariant:** `SOURCE_ADMISSION_PRECEDES_SOURCE_VALUES`
+**Invariant:** `SOURCE_ADMISSION_PRECEDES_SOURCE_VALUES`.
 
-## 4. Floor-transform compatibility
+## 4. Search universe, search procedure and stopping rule precede values
+
+Before numerical source inspection, freeze/hash-address at minimum:
+
+- allowed bibliographic/data-source classes;
+- search query/procedure or reproducible discovery protocol;
+- inclusion/exclusion rule;
+- duplicate/publication-family handling;
+- search stopping rule;
+- extraction schema;
+- rule for inaccessible or incompletely reported studies;
+- rule for superseded/corrected versions.
+
+A search may not stop because a convenient low required-N value has been found or continue because an inconvenient value was found.
+
+**Invariants**
+
+- `SOURCE_SEARCH_RULE_PRECEDES_SOURCE_VALUES`
+- `SEARCH_STOPPING_IS_NOT_RESULT_DRIVEN`
+
+## 5. Floor-transform compatibility
 
 A source must measure the frozen floor transform directly or an object connected to it by a lower-bound-preserving mapping frozen before source values are inspected.
 
@@ -60,38 +84,56 @@ Otherwise:
 
 `SOURCE_INADMISSIBLE_FOR_POWER_FLOOR`.
 
-## 5. Population transport
+## 6. Population transport
 
 The contract requires directional dominance, not vague comparability.
 
-An admitted external population must belong to a predeclared class for which Quant explicitly adopts the governance assumption that its relevant uncertainty / required-sample object lies at or below the target population's.
+An admitted external population must belong to a predeclared class for which Quant explicitly adopts the governance assumption that the transported uncertainty/power ingredient is oriented favorably enough that the normalized raw required-sample floor cannot exceed the true target requirement.
 
 This assumption must remain labelled as governance, not later rewritten as an empirical theorem.
 
-## 6. Horizon rule
+## 7. Horizon rule
 
 Direct evidence at the frozen 20-regular-session horizon is preferred.
 
-No horizon scaling is authorized without a pre-frozen lower-bound proof:
+No horizon scaling is authorized without a pre-frozen lower-bound proof connecting the source statistic to the frozen 20-session outcome transform.
 
-`Var(20-session object) >= f(external-horizon measurement)`.
+For example, if variance is transported, the rule must establish an inequality of the form:
 
-The function `f` and the assumptions supporting the inequality must be frozen before candidate scaled-source values are inspected.
+`V_20_target >= f(source_measurement)`
 
-In particular, `20 x Var(1d)` is not automatically a valid lower bound because negative autocovariance can reduce cumulative variance.
+under explicitly frozen assumptions.
 
-A looser function may be used if defensible; its cost is reduced early-rejection power.
+The function `f` and its assumptions must be frozen before candidate scaled-source values are inspected.
+
+`20 x Var(1d)` is not automatically a valid lower bound because negative autocovariance can reduce cumulative variance.
+
+A looser valid function may be used; its cost is reduced early-rejection power.
 
 **Invariants**
 
 - `NO_HORIZON_SCALING_WITHOUT_PRE_FROZEN_LOWER_BOUND_PROOF`
 - `NO_HORIZON_RULE_AFTER_NUMERICAL_SOURCE_INSPECTION`
 
-## 7. Direct-power route
+## 8. Alpha, target power and inferential family
 
-A source may directly supply a lower bound such as:
+Before source values are inspected, freeze/hash-address:
 
-`N_required_external(effect_T, alpha, target_power)`.
+- scientific alpha/error policy relevant to the floor;
+- target power;
+- one-sided/two-sided status as applicable;
+- the inference/test family used to convert transported ingredients into `N_raw_required`;
+- any multiplicity coupling required by D10.
+
+A source using a different alpha/power/test construction is admissible only through a pre-frozen conservative transformation that preserves the lower-bound direction.
+
+**Invariant:** `POWER_POLICY_PRECEDES_EXTERNAL_VALUES`.
+
+## 9. Direct-power / direct-required-sample route
+
+A source may directly supply or permit deterministic derivation of:
+
+`N_raw_required_external(effect_T, alpha, target_power)`.
 
 It is authority-bearing only when:
 
@@ -100,73 +142,102 @@ It is authority-bearing only when:
 - alpha and target power are compatible or conservatively transformed by a pre-frozen rule;
 - population transport passes;
 - horizon transport passes;
-- the source's inference construction validly serves as a lower bound.
+- the source's inference construction validly lower-bounds the target raw required sample.
 
 Otherwise it is a prior, not floor authority.
 
-## 8. Variance-plus-dependence route
+## 10. Variance-plus-dependence ingredient route
 
-If no direct-power source is admitted, a construction may instead combine:
-
-- marginal variance floor;
-- dependence favorability floor.
+If no direct raw-required-sample source is admitted, a construction may instead use externally transported statistical ingredients.
 
 For example:
 
-`kappa = V_aggregate / D_diagonal`
+- marginal variance lower envelope;
+- covariance/dependence restrictions;
+- a directly transported aggregate variance lower envelope.
 
-with:
+A helper factor may be defined, such as:
 
-`kappa >= kappa_floor`.
+`kappa = V_aggregate / D_diagonal`,
 
-PSD alone is insufficient to establish `kappa_floor > 0`.
+but PSD alone is insufficient to establish a positive `kappa_floor`.
 
-A positive dependence floor requires an explicit economic or empirical restriction independent of Form 4 outcomes.
+The transported ingredients do **not** create an `N_eff` object for comparison with D05. They feed the frozen `Power_n(...)` construction, which returns `N_raw_required`.
 
-**Invariant:** `POSITIVE_DEPENDENCE_FLOOR_REQUIRES_ECONOMIC_OR_EMPIRICAL_RESTRICTION`
+**Invariants**
 
-## 9. Every independently admissible source enters
+- `POSITIVE_DEPENDENCE_FLOOR_REQUIRES_ECONOMIC_OR_EMPIRICAL_RESTRICTION`
+- `DEPENDENCE_ENTERS_POWER_FLOOR_EXACTLY_ONCE`
+- `NO_EXTERNAL_NEFF_BRIDGE_TO_D05`
 
-Each source passing the frozen contract is normalized to a lower bound on required effective sample:
+## 11. Source-estimation uncertainty
 
-`L_s`.
+A point estimate reported by an external source is not automatically a lower bound.
+
+For every numerical source measurement, freeze before inspection the rule that converts sampling/measurement uncertainty into an authority-bearing lower-bound ingredient.
+
+The rule may use, where justified:
+
+- reported confidence intervals;
+- standard errors with a pre-frozen confidence construction;
+- conservative endpoint extraction;
+- exact reported bounds;
+- or another independently reviewable method.
+
+If the source does not contain enough information to apply the frozen uncertainty rule:
+
+`SOURCE_NUMERIC_BOUND_UNRESOLVED`.
+
+It may remain a prior/diagnostic but cannot support the power floor.
+
+**Invariant:** `SOURCE_POINT_ESTIMATE_IS_NOT_AUTOMATIC_BOUND`.
+
+## 12. Every independently admissible source enters
+
+Each admitted source that successfully produces an authority-bearing normalized raw required-sample lower bound yields:
+
+`L_s_raw`.
 
 Then:
 
-`N_eff_required_floor_external = min_s L_s`.
+`N_RAW_REQUIRED_FLOOR_EXTERNAL = min_s L_s_raw`.
 
-The minimum is deliberate protection against a false `POWER_IMPOSSIBLE` verdict: a lower floor makes the inequality required for early rejection harder to satisfy.
+The minimum deliberately protects against a false `POWER_IMPOSSIBLE` verdict: a lower raw requirement floor makes early rejection harder.
 
 This is the same one-sided logic as:
 
 `UNKNOWN_AVAILABILITY_IS_FAVORABLE_FOR_REJECTION_BOUND`.
 
+Exact duplication/dependence among sources does not create multiplicative evidence or raise the minimum. Publication-family/duplicate handling remains governed by the pre-frozen search rule so that the source inventory is reproducible.
+
 No post-value quality ranking may be introduced to remove an inconvenient low-floor admitted source.
 
 **Invariants**
 
-- `ALL_ADMISSIBLE_SOURCES_ENTER`
+- `ALL_ADMISSIBLE_BOUNDED_SOURCES_ENTER`
 - `MIN_EXTERNAL_FLOOR_PROTECTS_AGAINST_FALSE_IMPOSSIBILITY`
 - `EXTERNAL_FLOOR_ARGMIN_IS_EMBARGOED`
 
-## 10. Source authority package
+## 13. Source authority package
 
-Every admitted source must bind:
+Every admitted authority-bearing source must bind:
 
-- immutable source identity/version/date
-- artifact hash
-- bibliographic/provenance metadata
-- admission-rule result
-- `TRANSPORT_ASSUMPTION_ID`
-- measured quantity
-- extraction rule
-- transformation rule
-- normalized `L_s`
-- independent review/certification evidence
+- immutable source identity/version/date;
+- artifact hash or stable content identity;
+- bibliographic/provenance metadata;
+- source-family/duplicate identity;
+- admission-rule result;
+- `TRANSPORT_ASSUMPTION_ID`;
+- measured quantity;
+- extraction rule/result;
+- source-uncertainty transformation;
+- horizon/population transformation where applicable;
+- normalized `L_s_raw`;
+- independent review/certification evidence.
 
-## 11. Failed source search
+## 14. Failed source search
 
-If no source passes:
+If no source passes and produces a usable bound:
 
 `NO_ADMISSIBLE_EXTERNAL_FLOOR_SOURCE`.
 
@@ -175,12 +246,12 @@ The transport contract is not relaxed because search failed.
 Allowed consequences are:
 
 - pursue another already pre-frozen floor route;
-- freeze a new horizon-scaling rule before numerical inspection in a new lineage;
+- freeze a new transport/scaling rule only in a new lineage that has not been exposed to candidate numerical values relevant to that rule;
 - retain `POWER_REQUIREMENT_UNRESOLVED_SOURCE`.
 
-**Invariant:** `FAILED_SOURCE_SEARCH_DOES_NOT_RELAX_TRANSPORT_CONTRACT`
+**Invariant:** `FAILED_SOURCE_SEARCH_DOES_NOT_RELAX_TRANSPORT_CONTRACT`.
 
-## 12. Anti-rescue
+## 15. Anti-rescue
 
 After external numerical values/search outcomes have been inspected, the current lineage may not:
 
@@ -190,17 +261,22 @@ After external numerical values/search outcomes have been inspected, the current
 - weaken horizon requirements;
 - add a favorable scaling rule;
 - remove an admitted low-floor source;
-- change alpha/target power.
+- change alpha/target power;
+- change source-uncertainty treatment;
+- change search/stop rules to obtain a preferred floor.
 
-Material changes require a new scientific lineage.
+Material changes require a new scientific lineage and appropriate contamination treatment.
 
-## 13. D05 interface
+## 16. D05 interface
 
 D05 consumes only:
 
-- an authority-bearing `N_eff_required_floor`; or
+- an authority-bearing `N_RAW_REQUIRED_FLOOR`; or
 - a cause-preserving unresolved state.
 
-D05 does not source-shop or inspect transform/source argmins.
+D05 does not source-shop, inspect transform/source argmins, or construct an effective-sample proxy.
 
-**Invariant:** `D05_CONSUMES_FLOOR_D05_DOES_NOT_SOURCE_SHOP`
+**Invariants**
+
+- `D05_CONSUMES_FLOOR_D05_DOES_NOT_SOURCE_SHOP`
+- `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`
