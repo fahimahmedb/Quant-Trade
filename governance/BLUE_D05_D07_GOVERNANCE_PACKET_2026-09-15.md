@@ -1,4 +1,4 @@
-# BLUE D05/D07/D08/D09 Governance Checkpoint — updated 2026-09-16
+# BLUE D05/D07/D08/D09 Governance Checkpoint — Astra-corrected 2026-09-16
 
 **Project:** Quant / Agent Trader  
 **Authority:** Blue Team / Mission Control  
@@ -11,37 +11,75 @@ All artifacts remain subordinate to `QUANT_NORTH_STAR.md`, frozen scientific con
 ## Canonical D05/D07 artifacts
 
 1. `governance/D07_OPEN_SPACE_BOUNDARY.md`
-2. `governance/D05_OBSERVATION_UNIT_TAXONOMY.md`
-3. `governance/D05_REPRESENTATIVENESS_FAILURE_MODE_REGISTER.md`
-4. `governance/D05_DENOMINATOR_RECONCILIATION_CONTRACT.md`
-5. `governance/D05_SAMPLE_SUFFICIENCY_AND_ROBUSTNESS_GENERATOR.md`
-6. `governance/D05_SAMPLE_SUFFICIENCY_AND_ROBUSTNESS_GENERATOR_AMENDMENT_2026-09-16.md`
-7. `governance/D05A_MINIMAL_METRIC_AND_STRATUM_SURFACE.md`
-8. `governance/D05A_STOPPING_SNAPSHOT_REPLAY_RULE.md`
+2. `governance/D07_PUBLIC_OBSERVABILITY_ENTRY_DEPENDENCY.md`
+3. `governance/D05_OBSERVATION_UNIT_TAXONOMY.md`
+4. `governance/D05_REPRESENTATIVENESS_FAILURE_MODE_REGISTER.md`
+5. `governance/D05_DENOMINATOR_RECONCILIATION_CONTRACT.md`
+6. `governance/D05_SAMPLE_SUFFICIENCY_AND_ROBUSTNESS_GENERATOR.md`
+7. `governance/D05_SAMPLE_SUFFICIENCY_AND_ROBUSTNESS_GENERATOR_AMENDMENT_2026-09-16.md`
+8. `governance/D05A_MINIMAL_METRIC_AND_STRATUM_SURFACE.md`
+9. `governance/D05A_UNIT_AND_CEILING_CONVERSION_CONTRACT.md`
+10. `governance/D05A_STOPPING_SNAPSHOT_REPLAY_RULE.md`
 
-## D08/D09 power-floor dependency artifacts
+## D08/D09/D19 dependency artifacts
 
-9. `governance/D08_POWER_FLOOR_OUTCOME_TRANSFORM_BOUNDARY.md`
-10. `governance/D08_EXTERNAL_LOWER_BOUND_TRANSPORT_CONTRACT.md`
-11. `governance/D09_MEUE_POWER_FLOOR_DERIVATION_DEPENDENCY.md`
+11. `governance/D08_POWER_FLOOR_OUTCOME_TRANSFORM_BOUNDARY.md`
+12. `governance/D08_EXTERNAL_LOWER_BOUND_TRANSPORT_CONTRACT.md`
+13. `governance/D09_MEUE_POWER_FLOOR_DERIVATION_DEPENDENCY.md`
+14. `governance/D19_ADVERSE_TREATMENT_SPEC_DEPENDENCY.md`
+15. `governance/ASTRA_D05_D09_CORRECTION_2026-09-16.md`
 
 ## Current scientific status
 
-- D07 Open Space Boundary: **FROZEN — pre-D05-A boundary only**
+- D07 Open Space Boundary: **FROZEN — pre-D05-A crossing boundary only**
+- D07 public-observability / entry mechanics: **DECIDED_NOT_SPECIFIED — blocks final entry/outcome geometry**
 - D05 Observation Unit Taxonomy: **CLOSED**
 - Representativeness Failure-Mode Register: **CLOSED**
 - Denominator Reconciliation Rule: **FROZEN**
-- D05 Sample Sufficiency / Robustness Generator: **FROZEN RULE + FROZEN 2026-09-16 AMENDMENT**
-- D05-A Minimal Metric / Stratum Surface: **CLOSED / FROZEN**
-- D05-A Stopping / Snapshot / Replay Rule: **CLOSED / FROZEN**
+- D05 Sample Sufficiency / Robustness Generator: **FROZEN BASE + ASTRA-CORRECTED AMENDMENT**
+- D05-A Minimal Metric / Stratum Surface: **CLOSED / FROZEN — ASTRA-CORRECTED**
+- D05-A Unit / Ceiling Conversion Contract: **FROZEN**
+- D05-A Stopping / Snapshot / Replay Rule: **CLOSED / FROZEN — ASTRA-CORRECTED**
 - Expected SEC-index manifest/population: **NOT YET CREATED / NOT YET HASHED**
 - D05-A empirical substrate pass: **NOT YET EXECUTED**
+- D08 floor-transform boundary: **FREEZE_CANDIDATE — delta gate open**
+- D08 external transport contract: **FROZEN RECIPE — numerical source search not authorized**
+- D09 MEUE/power-floor derivation: **DECIDED_NOT_SPECIFIED — blocking consumable floor authority**
+- D19 adverse-treatment mechanics: **DECIDED_NOT_SPECIFIED — blocking robustness authority**
 - D07 final geometry: **NOT FROZEN**
 - outcome access: **NOT AUTHORIZED**
 
-## Closed D05-A amendments
+## Astra correction — fatal theorem repair
 
-### Two opposite conservatisms
+Astra demonstrated that the prior statement:
+
+`N_eff <= N_raw_observations`
+
+is false in general under admissible negative dependence.
+
+Therefore D05 no longer compares a raw observation ceiling to an effective-sample requirement.
+
+The common authority unit is now raw statistical observation count:
+
+`N_raw_required(theta) = min { n : Power_n(MEUE(theta), Sigma_n(theta), T(theta), alpha, target_power) >= target_power }`
+
+and:
+
+`N_RAW_REQUIRED_FLOOR = inf_theta N_raw_required(theta)`.
+
+Dependence enters the power construction exactly once.
+
+Early impossibility uses only:
+
+`N_obs_ceiling_claim_density < N_RAW_REQUIRED_FLOOR`
+
+or:
+
+`N_obs_ceiling_available < N_RAW_REQUIRED_FLOOR`.
+
+No authority-bearing theorem uses an unproved `N_eff -> N_raw` bridge.
+
+## D05-A conservative asymmetry
 
 Bias validity:
 
@@ -53,7 +91,7 @@ Impossibility bound:
 
 Only proven structural availability loss may reduce `N_obs_ceiling_available`.
 
-### Branch B simplification
+## Branch B simplification
 
 No `B_route`, `m_star` or concentration-routing threshold is required in this lineage.
 
@@ -67,20 +105,112 @@ Use:
 
 If conservative routing later produces `INSUFFICIENT`, the same lineage may not create a post-hoc concentration threshold to rescue the result.
 
-### Unified open-condition ledger
+D19 outcome robustness remains unauthorized until `D19_ADVERSE_TREATMENT_SPEC_DEPENDENCY.md` is discharged by a consumable hash-addressable specification.
 
-Both:
+## D05-A unit and completion closure
 
-- `RECOVERY_CONDITIONS_OPEN`
-- `AVAILABILITY_CLASSIFICATION_CONDITIONS_OPEN`
+Scientific units are explicit:
 
-require named owner, mission, independent certifier, deadline and proof artifact. Classification work is analysis/review, not implicit repair.
+`accession/submission -> reporting-owner CIK -> formation-state contribution -> threshold crossing -> downstream market/outcome state`.
 
-### Same object across gates
+Key rules:
 
-A missing object may reduce Branch-A attainable information and also enter Branch-B robustness treatment without population duplication.
+- `1 accession != 1 owner != 1 crossing`;
+- crossing derives from the frozen formation state machine;
+- market/outcome absence does not rewrite formation history;
+- one missing object may feed Branch A and Branch B without population duplication;
+- favorable claim completion is not `ALL_UNRESOLVED -> QUALIFYING`;
+- use exact global maximization or a proven majorant;
+- no invented owner-multiplicity cap for unresolved submissions.
 
-## D05-A replay / exposure closure
+## Ceiling-contamination firewall
+
+Before any human-visible D05 ceiling value is published, the complete derivation recipe for `N_RAW_REQUIRED_FLOOR` must already be frozen/hash-addressable, including:
+
+- D09 delta / MEUE mapping;
+- deployment-domain rule;
+- alpha/target power;
+- transform/inference family;
+- external source search/admission/stop rule;
+- extraction/source-uncertainty rule;
+- horizon scaling if any;
+- numerical-infimum certification.
+
+Mechanical access separation is the only alternative.
+
+`POWER_FLOOR_RECIPE_PRECEDES_D05_CEILING_VISIBILITY`.
+
+## D08 external transport closure
+
+Every authority-bearing source is normalized to a lower bound on raw observations required:
+
+`L_s_raw`.
+
+Then:
+
+`N_RAW_REQUIRED_FLOOR_EXTERNAL = min_s L_s_raw`.
+
+Before numerical source inspection freeze:
+
+- source universe/search procedure;
+- inclusion/exclusion;
+- duplicate/publication-family handling;
+- search stopping rule;
+- extraction schema;
+- source-estimation uncertainty treatment;
+- alpha/target power/inference family.
+
+A published point estimate is not automatically a lower bound.
+
+## D08 transform status
+
+Current candidate set remains:
+
+`G_T_FLOOR = {T_SPY_SIMPLE_EXCESS_20}`
+
+where:
+
+`T_SPY_SIMPLE_EXCESS_20 = R_security_20 - R_SPY_20`.
+
+This remains **FREEZE_CANDIDATE**, not authority-bearing, until D09 resolves the exact `delta` coordinate and unique MEUE mapping.
+
+If delta is incompatible, D08 reruns transform admission; delta is not changed to fit the candidate.
+
+For any future multi-transform lineage:
+
+`EVERY_ADMISSIBLE_TRANSFORM_MUST_BE_INSTANTIATED_OR_PROVEN_DOMINATED`.
+
+An uninstantiated admissible transform may not be silently dropped from the floor.
+
+## D09 current blocker
+
+D09 must still expose a consumable specification for:
+
+- `DELTA_COORDINATE_COMPATIBILITY_GATE`;
+- exact `Phi` / BEEE root including root existence/uniqueness;
+- `THETA_PROGRAM_DEPLOYMENT` sourced from D02/D03 + execution feasibility;
+- execution-cost moment/estimand declarations;
+- execution-feasible friction domain;
+- deterministic `MEUE_POWER_FLOOR_MAP(theta)`;
+- raw-count power formulation consumed by D08.
+
+For the current gross SPY-excess transform, execution cost may enter `Phi`/MEUE. Execution variance is not silently added to the statistical variance of the gross market-return transform.
+
+## D07 public observability / entry blocker
+
+Final entry/outcome geometry must distinguish:
+
+`LOGICAL_TRIGGER_IDENTITY`
+
+from:
+
+`PUBLIC_KNOWLEDGE_TIME`.
+
+Entry may not occur before all public facts required to establish the crossing are known.
+
+This blocks final D07/entry authority but not the D05 raw crossing-count ceiling.
+
+## Replay / exposure closure
 
 - pass completion is defined by frozen work, not desired result;
 - no intermediate scientific output by default;
@@ -89,86 +219,22 @@ A missing object may reduce Branch-A attainable information and also enter Branc
 - open recovery/classification conditions do not keep the pass open;
 - condition discharge requires a new full pass when the scientific substrate changes;
 - `IDENTICAL_REPLAY` requires the same implementation commit;
-- `REPAIRED_REPLAY` uses a different implementation commit only after independent semantic-equivalence certification and receives a new pass identity.
+- `REPAIRED_REPLAY` uses a different implementation commit only after independent semantic-equivalence certification and receives a new pass identity;
+- power-floor recipe hash/state is part of pass identity;
+- ceiling visibility before recipe freeze contaminates later threshold design unless mechanical access separation is proven.
 
-## Power-floor status
+## What remains before authority-bearing D05 early power verdicts
 
-D05 consumes `N_eff_required_floor`; D05 does not choose it.
+1. materialize/hash the expected SEC index manifest;
+2. discharge D09 consumable derivation specification;
+3. pass D08 delta compatibility and freeze the transform boundary;
+4. complete/freeze the full raw-floor recipe before ceiling visibility;
+5. obtain external lower-bound measurements under the frozen transport/search protocol or retain a cause-preserving unresolved state;
+6. implement/prove D05 unit/ceiling conversion contract;
+7. execute D05-A under the frozen stopping/exposure rule.
 
-If the floor remains unresolved, D05-A may still produce denominator, qualification, availability, missing-set and ceiling outputs, but cannot issue the definitive power-impossibility ELEs.
+D19 adverse-treatment specification is additionally required before outcome robustness authority.
 
-### D08 outcome-transform boundary
+D07 public-observability/entry specification is additionally required before final D07/outcome geometry.
 
-Current candidate set is a singleton:
-
-`G_T_FLOOR = {T_SPY_SIMPLE_EXCESS_20}`
-
-where:
-
-`T_SPY_SIMPLE_EXCESS_20 = R_security_20 - R_SPY_20`.
-
-This boundary remains **FREEZE_CANDIDATE**, not authority-bearing, until D09 resolves the exact `delta` coordinate and unique MEUE mapping.
-
-If delta is incompatible, D08 must rerun transform admission; delta is not changed to fit the candidate.
-
-### D08 external transport contract
-
-The source-admission contract is frozen before numerical source search.
-
-Key rules:
-
-- `TRANSPORT_ASSUMPTION_IS_NOT_SOURCE_MEASUREMENT`;
-- source admission precedes numerical values;
-- horizon scaling requires a pre-frozen lower-bound proof;
-- all independently admissible sources enter;
-- normalized external floor uses the minimum across admitted sources to protect against false impossibility;
-- failed source search does not relax the contract.
-
-External numerical floor-source search is **NOT YET AUTHORIZED**.
-
-### D09 dependency-pull finding
-
-D09 is conceptually `DECIDED` but is not yet consumable authority for this power-floor use.
-
-Required specification objects include:
-
-- `DELTA_COORDINATE_COMPATIBILITY_GATE`;
-- exact `Phi` / BEEE root contract;
-- `THETA_PROGRAM_DEPLOYMENT = THETA_EXECUTION_FEASIBLE ∩ THETA_EX_ANTE_PROGRAM_INTENDED`;
-- separate mean and variance execution parameters;
-- execution-feasible friction domain, not an alpha prior;
-- deterministic `MEUE_POWER_FLOOR_MAP(theta)`.
-
-D08 must ultimately evaluate the power floor jointly:
-
-`N_eff_required_floor = inf_{theta in THETA_PROGRAM_DEPLOYMENT} N_required(theta)`.
-
-Expected execution cost and execution variance may move the floor in opposite directions. They may not be collapsed into one ambiguous execution term.
-
-For continuous deployment domains, the numerical infimum must be a certified lower bound.
-
-Domain expansion requires power-floor reevaluation; domain contraction preserves prior impossibility authority.
-
-## Governance technique discovered
-
-`DOWNSTREAM_CONSUMER_MUST_RESOLVE_TO_HASHED_AUTHORITY_ARTIFACT`.
-
-A dependency-pull audit follows a real consumer through every upstream decision until the dependency terminates in a versioned/hash-addressable authority object.
-
-If it terminates in conceptual prose or a handoff statement, that dependency is:
-
-`NOT_YET_CONSUMABLE_AUTHORITY`.
-
-This technique should be reused on other blocks marked `DECIDED` before implementation relies on them.
-
-## Immediate next sequence
-
-1. submit this consolidated D05/D08/D09 reasoning to Astra for one-shot adversarial review;
-2. Blue evaluates Astra findings — Astra does not decide;
-3. specify the missing D09 consumable derivation object;
-4. resolve the D08 delta gate and freeze/hash the floor-transform boundary if it passes;
-5. only then begin external numerical floor-source search under the frozen transport contract;
-6. independently, after Blue authorization, build and hash the expected SEC manifest and execute D05-A under the frozen surface/stopping rules;
-7. definitive pre-D07 power-impossibility ELEs remain unavailable until an authority-bearing `N_eff_required_floor` exists.
-
-No profitability, final D07 geometry, final D08 inference or capital authority is asserted by this checkpoint.
+No profitability or capital-authority conclusion is asserted by this checkpoint.
