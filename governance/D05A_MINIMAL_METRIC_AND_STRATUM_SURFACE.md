@@ -1,6 +1,6 @@
 # D05-A MINIMAL METRIC AND STRATUM SURFACE
 
-**Status:** CLOSED / FROZEN SURFACE  
+**Status:** CLOSED / FROZEN SURFACE — ASTRA-CORRECTED  
 **Authority:** Blue Team / Mission Control  
 **Purpose:** define the smallest outcome-blind D05-A surface capable of feeding the frozen D05 generator without exploratory leakage.
 
@@ -90,6 +90,13 @@ Terminal outputs:
 
 No segmentation of Branch C is authorized.
 
+The favorable ceiling is a **global** upper-bound problem over compatible unresolved completions. It must not be implemented as `ALL_UNRESOLVED -> QUALIFYING` unless a proof establishes that this is an upper bound under the frozen state machine.
+
+**Invariants**
+
+- `FAVORABLE_CLAIM_COMPLETION_IS_NOT_ALL_QUALIFYING`
+- `CLAIM_DENSITY_CEILING_REQUIRES_GLOBAL_MAXIMIZATION_OR_PROVEN_MAJORANT`
+
 ## 5. Branch A — denominator / join
 
 The exact J0-J5 taxonomy is inherited from `D05_DENOMINATOR_RECONCILIATION_CONTRACT.md`:
@@ -148,11 +155,16 @@ Authorized visible quantities:
 - `RESOLUTION_STRUCTURAL_LOSS_COUNT`
 - `RESOLUTION_AVAILABILITY_UNCLASSIFIED_COUNT`
 
-A17/A18-style unresolved/ambiguous objects may also enter Branch B robustness treatment when causal clearance is absent.
+Unresolved/ambiguous objects may also enter Branch B robustness treatment when causal clearance is absent.
 
 This is the same missing object viewed by two gates, not two different population units.
 
-**Invariant:** `SAME_MISSING_OBJECT_MAY_FEED_MULTIPLE_GATES_WITHOUT_POPULATION_DUPLICATION`
+The implementation must preserve one canonical missing-object identity and may attach multiple gate-role/reason annotations without subtracting or weighting the same object twice inside one estimand.
+
+**Invariants**
+
+- `SAME_MISSING_OBJECT_MAY_FEED_MULTIPLE_GATES_WITHOUT_POPULATION_DUPLICATION`
+- `ONE_MISSING_OBJECT_ONE_POPULATION_IDENTITY`
 
 ## 9. Branch A — market substrate
 
@@ -167,6 +179,10 @@ Visible quantities:
 - `MARKET_AVAILABILITY_UNCLASSIFIED_COUNT`
 
 Signal-entry/exit performance is not a D05-A output.
+
+Market/outcome unavailability may not retroactively erase filing/owner observations from the formation/re-arm state machine.
+
+**Invariant:** `OUTCOME_UNAVAILABILITY_DOES_NOT_REWRITE_FORMATION_HISTORY`.
 
 ## 10. Availability state semantics
 
@@ -196,7 +212,7 @@ Treatment:
 
 `INCLUDE_IN_N_OBS_CEILING_AVAILABLE + AVAILABILITY_CLASSIFICATION_CONDITION`.
 
-**Invariant:** `ONLY_PROVEN_STRUCTURAL_LOSS_REDUCES_REJECTION_CEILING`
+**Invariant:** `ONLY_PROVEN_STRUCTURAL_LOSS_REDUCES_REJECTION_CEILING`.
 
 ## 11. Authorized Branch-A classification strata
 
@@ -297,9 +313,15 @@ Visible quantities/statuses:
 - `ROUTED_B_FOR_LACK_OF_CAUSAL_CLEARANCE_COUNT_BY_REASON`
 - `BIAS_RULE_STATE`
 
-Normal pre-outcome state:
+Until the D19 adverse-treatment mechanics resolve to a hash-addressable specification, the authority-bearing state is:
+
+`D19_ADVERSE_TREATMENT_SPEC_PENDING`.
+
+Only after that specification exists may the surface emit:
 
 `BIAS_RULE_READY_PENDING_OUTCOME_APPLICATION`.
+
+**Invariant:** `D19_DECISION_NAME_IS_NOT_ADVERSE_TREATMENT_SPEC`.
 
 ## 16. Conservative-routing anti-rescue
 
@@ -312,7 +334,32 @@ Such refinement requires a new scientific lineage with a pre-frozen routing cont
 - `CONSERVATIVE_ROUTING_FAILURE_DOES_NOT_AUTHORIZE_POST_HOC_RECLASSIFICATION`
 - `SIMPLICITY_MAY_SPEND_POWER_NOT_VALIDITY`
 
-## 17. Sealed envelope surface
+## 17. Scientific unit-conversion gate
+
+The surface spans several units that must never be silently conflated:
+
+- EDGAR accession / submission;
+- reporting-owner CIK;
+- qualifying owner observation;
+- issuer/security identity;
+- formation-session state;
+- threshold crossing;
+- market/outcome availability record.
+
+Every cross-unit conversion used by a ceiling must resolve to explicit deterministic keys and multiplicity rules.
+
+Examples:
+
+- `1 accession` may contain multiple reporting owners and transaction rows;
+- owner identity is reporting-owner CIK, not fuzzy natural-person merge;
+- a crossing is derived from frozen formation state and is not equivalent to a filing count;
+- outcome availability is downstream of crossing formation.
+
+Until the conversion contract is hash-addressable, source-stage counts may be recorded but final event ceilings are not consumable scientific authority.
+
+**Invariant:** `SCIENTIFIC_UNIT_CONVERSION_REQUIRES_EXPLICIT_KEYS`.
+
+## 18. Sealed envelope surface
 
 The following may be computed mechanically but remain `NOT_VISIBLE`:
 
@@ -330,11 +377,11 @@ Visible authority is limited to the scalar envelope outputs already allowed by t
 - `ARGMAX_IS_EMBARGOED`
 - `ENVELOPE_OUTPUT_ONLY`
 
-## 18. Terminal D05-A surface
+## 19. Terminal D05-A surface
 
 Visible terminal quantities include:
 
-- `N_EFF_REQUIRED_FLOOR` or explicit unresolved state
+- `N_RAW_REQUIRED_FLOOR` or explicit unresolved state
 - `N_OBS_CEILING_CLAIM_DENSITY`
 - `N_OBS_CEILING_AVAILABLE`
 - `POWER_AVAILABILITY_VERDICT`
@@ -342,19 +389,31 @@ Visible terminal quantities include:
 - `AVAILABILITY_CLASSIFICATION_CONDITIONS_OPEN_COUNT`
 - unified `D05A_CONDITION_LEDGER`
 
+`N_RAW_REQUIRED_FLOOR` and both ceilings are all measured in **raw statistical-observation count**. No authority-bearing D05 theorem compares a raw ceiling to an effective-sample scalar.
+
 No independent stage-level scientific q threshold is authorized.
 
-## 19. Power-floor dependency
+**Invariants**
 
-D05 consumes the floor. D05 does not choose it.
+- `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`
+- `NO_UNPROVEN_NEFF_TO_NRAW_BRIDGE`
+
+## 20. Power-floor dependency and visibility firewall
+
+D05 consumes the raw requirement floor. D05 does not choose it.
 
 `D05_CONSUMES_POWER_FLOOR_D05_DOES_NOT_CHOOSE_IT`.
 
-If the upstream D09/D08 power-floor dependency is unresolved, D05-A may still produce denominator, qualification, availability, missing-set and ceiling counts.
+Before any human-visible ceiling value is published, the complete upstream recipe for deriving `N_RAW_REQUIRED_FLOOR` must already be frozen/hash-addressable, or a mechanically proven access separation must prevent every actor able to modify that recipe from seeing the ceiling.
 
-It may not issue the definitive power-impossibility ELEs until an authority-bearing `N_EFF_REQUIRED_FLOOR` exists.
+The numerical floor may remain unresolved because external measurements are not yet acquired, but its derivation rules may not remain designable after ceiling visibility.
 
-## 20. Explicit OUT_OF_PASS examples
+**Invariants**
+
+- `POWER_FLOOR_RECIPE_PRECEDES_D05_CEILING_VISIBILITY`
+- `NO_CEILING_INFORMED_POWER_FLOOR_DESIGN`
+
+## 21. Explicit OUT_OF_PASS examples
 
 Unless separately frozen before execution:
 
@@ -372,7 +431,7 @@ Unless separately frozen before execution:
 - return data
 - benchmark performance
 
-## 21. Minimality tests
+## 22. Minimality tests
 
 ### Metric
 
@@ -386,7 +445,7 @@ If routing/classification remains decidable without the partition, it is `OUT_OF
 
 If it is unnecessary for lineage, causal treatment, recovery or condition discharge, it is `OUT_OF_PASS`.
 
-## 22. Core invariants
+## 23. Core invariants
 
 - `NO_VERDICT_NO_METRIC`
 - `CLAIM_DENSITY_IS_NOT_A_FAILURE_MODE`
@@ -397,9 +456,14 @@ If it is unnecessary for lineage, causal treatment, recovery or condition discha
 - `UNKNOWN_AVAILABILITY_IS_FAVORABLE_FOR_REJECTION_BOUND`
 - `ONLY_PROVEN_STRUCTURAL_LOSS_REDUCES_REJECTION_CEILING`
 - `SAME_MISSING_OBJECT_MAY_FEED_MULTIPLE_GATES_WITHOUT_POPULATION_DUPLICATION`
+- `ONE_MISSING_OBJECT_ONE_POPULATION_IDENTITY`
 - `NO_CAUSAL_CLEARANCE_IMPLIES_ROBUSTNESS_TREATMENT`
 - `ROUTED_B_FOR_LACK_OF_CAUSAL_CLEARANCE_IS_NOT_BIAS_CLASSIFICATION`
 - `CONSERVATIVE_ROUTING_FAILURE_DOES_NOT_AUTHORIZE_POST_HOC_RECLASSIFICATION`
 - `SIMPLICITY_MAY_SPEND_POWER_NOT_VALIDITY`
 - `NO_CARTESIAN_EXPLORATION`
+- `FAVORABLE_CLAIM_COMPLETION_IS_NOT_ALL_QUALIFYING`
+- `SCIENTIFIC_UNIT_CONVERSION_REQUIRES_EXPLICIT_KEYS`
+- `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`
+- `POWER_FLOOR_RECIPE_PRECEDES_D05_CEILING_VISIBILITY`
 - `D05_CONSUMES_POWER_FLOOR_D05_DOES_NOT_CHOOSE_IT`
