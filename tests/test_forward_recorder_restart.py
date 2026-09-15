@@ -134,6 +134,21 @@ class RestartTests(unittest.TestCase):
             reasons = [json.loads(path.read_text())["reason"] for path in Path(tmp).glob("gaps/**/*.json")]
             self.assertIn("fetch_error", reasons)
 
+    def test_stop_on_fetch_error_bounds_proof_attempt_and_returns_idle(self):
+        t0 = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
+        plan = [
+            spec(),
+            EndpointSpec("second", "test", "spot", "ETHUSDT", "server_time", "https://public.invalid/time2"),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            store = AtomicCaptureStore(tmp)
+            transport = FakeTransport([NetworkFetchError("dns"), b'{"serverTime":1}'])
+            recorder = ForwardRecorder(store, transport=transport, now_fn=StepClock([t0, t0]), monotonic_ns_fn=MonoClock())
+            summary = recorder.run_once(plan, stop_on_fetch_error=True)
+            self.assertEqual((summary.attempted, summary.captured, summary.failed), (1, 0, 1))
+            self.assertEqual(len(transport.bodies), 1)
+            self.assertEqual(store.load_state().mode, "IDLE")
+
 
 if __name__ == "__main__":
     unittest.main()
