@@ -18,8 +18,13 @@ Branch: `builder/forward-market-recorder-v2`
 - atomic fsync + rename persistence;
 - documented UTC/source rotation and deliberately no automatic retention deletion;
 - one-shot CLI only; no daemon/scheduler or long automatic collection;
-- JSON schemas and deterministic restart/storage/public-plan tests;
-- fail-closed `--proof` mode that succeeds only when the complete public plan has been captured with HTTP 2xx and every persisted raw SHA/provenance field verifies.
+- JSON schemas and deterministic restart/storage/public-plan/proof tests;
+- fail-closed `--proof` mode that requires the complete 14-source BTCUSDT+ETHUSDT public plan, fresh captures from the current proof run, HTTP 2xx, exact persisted raw SHA-256, parser version, endpoint provenance, UTC timestamps and monotonic timing;
+- proof-mode fail-fast on the first network fetch error so a DNS/network outage cannot turn the required short run into a long sequence of repeated failures.
+
+## Verification
+
+The deterministic Builder D suite currently passes **17/17** targeted `test_forward_recorder_*` tests, including restart recovery, state-lag reconciliation, raw replay/deduplication, polling gaps, clock regression, HTTP/fetch errors, credential-header absence, proof rejection of stale captures, proof rejection of non-2xx responses, proof rejection of corrupted raw bytes and bounded fail-fast behavior.
 
 ## Hard boundaries
 
@@ -29,9 +34,11 @@ There is no API-key or credential loading, account/user endpoint, order endpoint
 
 ## Live proof status
 
-A real short public run was attempted from the available execution runtime. DNS resolution failed for both configured public Binance hosts with `Temporary failure in name resolution`. The recorder correctly ledgered the fetch failures and returned to `IDLE`, but no public response bytes were captured.
+Direct public-network attempts from the available execution runtime fail DNS resolution for the configured Binance public hosts with `Temporary failure in name resolution`.
 
-Accordingly, the mandate's live-public-collection Definition of Done is **not** claimed as satisfied. Synthetic fixtures, web documentation, or mocked responses are not substituted for this requirement.
+The exact proof path is fail-closed: on a fresh store it attempted one public source, captured zero responses, recorded one `fetch_error`, returned the durable state to `IDLE`, and reported `live_provenance_proof.proof == "FAIL"` with zero verified sources. No prior capture can satisfy a later failed proof run because every source must advance its durable sequence during that proof invocation.
+
+Accordingly, the mandate's live-public-collection Definition of Done is **not** claimed as satisfied. Synthetic fixtures, web documentation, cached captures, or mocked responses are not substituted for this requirement.
 
 Re-run from a network-enabled checkout with:
 
