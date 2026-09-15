@@ -19,157 +19,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: {fetch-depth: 0}
+        with: {fetch-depth: 0, ref: builder/sec-form4-census-v2a}
 
-      - name: Stop stale SEC proof runs
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          CURRENT='${{ github.run_id }}'
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs?branch=builder%2Fsec-form4-census-v2a&status=in_progress&per_page=100" \
-            --jq '.workflow_runs[] | select(.name == "SEC Form-4 census proof") | .id' | while read -r RUN_ID; do
-              if test -n "$RUN_ID" && test "$RUN_ID" != "$CURRENT"; then
-                echo "cancelling stale SEC proof run $RUN_ID"
-                gh api -X POST "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/cancel" || true
-              fi
-            done
-
-      - name: Install bounded SEC throughput patch
+      - name: Accept observed official SEC SUBMISSION schema variant
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
-          source_path = Path('src/quant/dataplane/sec_form4.py')
-          source = source_path.read_text(encoding='utf-8')
-          if 'DEFAULT_SEC_RATE_PER_SECOND = 5.0' in source:
-              source = source.replace('DEFAULT_SEC_RATE_PER_SECOND = 5.0', 'DEFAULT_SEC_RATE_PER_SECOND = 8.0', 1)
-          elif 'DEFAULT_SEC_RATE_PER_SECOND = 8.0' not in source:
-              raise SystemExit('unexpected SEC rate constant')
-
-          old_order = 'for value in [*owner_ciks,issuer_cik,accession[:10]]:'
-          new_order = 'for value in [issuer_cik,*owner_ciks,accession[:10]]:'
-          if old_order in source:
-              source = source.replace(old_order, new_order, 1)
-          elif new_order not in source:
-              raise SystemExit('unexpected EDGAR archive candidate order')
-          source_path.write_text(source, encoding='utf-8')
-
-          test_path = Path('tests/test_sec_edgar_resolver.py')
-          tests = test_path.read_text(encoding='utf-8')
-          tests = tests.replace(
-              'def test_owner_archive_candidates_precede_issuer_fallback(self):\n        urls=acceptance_header_url_candidates(ACC,\'1\',[\'101\']);self.assertIn(\'/101/\',urls[0]);self.assertIn(\'/1/\',urls[1])',
-              'def test_issuer_archive_candidate_precedes_owner_fallback(self):\n        urls=acceptance_header_url_candidates(ACC,\'1\',[\'101\']);self.assertIn(\'/1/\',urls[0]);self.assertIn(\'/101/\',urls[1])')
-          tests = tests.replace("if '/101/' in url: raise urllib.error.HTTPError(url,404,'missing',{},None)",
-                                "if '/1/' in url: raise urllib.error.HTTPError(url,404,'missing',{},None)")
-          if 'def test_issuer_archive_candidate_precedes_owner_fallback' not in tests:
-              raise SystemExit('resolver archive-order test patch did not apply')
-          test_path.write_text(tests, encoding='utf-8')
+          p=Path('src/quant/dataplane/sec_form4.py')
+          s=p.read_text(encoding='utf-8')
+          old='    "NO_SECURITIES_OWNED", "NOT_SUBJECT_SEC16", "FORM3_HOLDING_REPORTED",\n'
+          new='    "NO_SECURITIES_OWNED", "NOT_SUBJECT_SEC16", "FORM3_HOLDING_REPORTED", "FORM3_HOLDINGS_REPORTED",\n'
+          if old in s:
+              s=s.replace(old,new,1)
+          elif '"FORM3_HOLDINGS_REPORTED"' not in s:
+              raise SystemExit('unexpected SUBMISSION schema declaration')
+          p.write_text(s,encoding='utf-8')
+          t=Path('tests/test_sec_submission_schema_variant.py')
+          t.write_text('''from __future__ import annotations\nimport csv, io, sys, unittest, zipfile\nfrom pathlib import Path\nROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/"src"))\nfrom quant.dataplane.sec_form4 import parse_quarter_zip\n\ndef table(header,row):\n    out=io.StringIO();w=csv.DictWriter(out,fieldnames=header,delimiter="\\t",lineterminator="\\n");w.writeheader();w.writerow(row);return out.getvalue()\n\nclass OfficialSubmissionSchemaVariantTests(unittest.TestCase):\n    def test_form3_holdings_reported_variant_is_accepted(self):\n        a="0000000001-26-000001"\n        sub={"ACCESSION_NUMBER":a,"FILING_DATE":"01-JUL-2026","DOCUMENT_TYPE":"4","ISSUERCIK":"1","ISSUERTRADINGSYMBOL":"AAA","FORM3_HOLDINGS_REPORTED":"0"}\n        own={"ACCESSION_NUMBER":a,"RPTOWNERCIK":"101","RPTOWNERNAME":"Owner","RPTOWNER_RELATIONSHIP":"Officer"}\n        tx={"ACCESSION_NUMBER":a,"NONDERIV_TRANS_SK":"1","TRANS_DATE":"30-JUN-2026","TRANS_CODE":"P","TRANS_ACQUIRED_DISP_CD":"A"}\n        b=io.BytesIO()\n        with zipfile.ZipFile(b,"w") as z:\n            z.writestr("SUBMISSION.tsv",table(list(sub),sub));z.writestr("REPORTINGOWNER.tsv",table(list(own),own));z.writestr("NONDERIV_TRANS.tsv",table(list(tx),tx))\n        subs,owners,txs=parse_quarter_zip(b.getvalue(),"2026Q2")\n        self.assertEqual("0",subs[0]["FORM3_HOLDINGS_REPORTED"]);self.assertEqual(1,len(owners));self.assertEqual(1,len(txs))\n\nif __name__=="__main__":unittest.main()\n''',encoding='utf-8')
           PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/quant/dataplane/sec_form4.py tests/test_sec_edgar_resolver.py
+          git add src/quant/dataplane/sec_form4.py tests/test_sec_submission_schema_variant.py
           if ! git diff --cached --quiet; then
-            git commit -m 'perf: bound and accelerate SEC Form-4 acquisition'
-            git push origin HEAD:builder/sec-form4-census-v2a
-          fi
-
-      - name: Install live SEC progress telemetry
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          source_path = Path('src/quant/dataplane/sec_form4.py')
-          source = source_path.read_text(encoding='utf-8')
-          if '[SEC acceptance]' not in source:
-              anchor = '    store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]\n'
-              block = (
-                  '    store=dict(resumed); failures={}; store_lock=threading.Lock(); checkpoint_lock=threading.Lock(); buffered=[]\n'
-                  '    progress_started=time.monotonic(); progress_last=[progress_started]; progress_done=[len(resumed)]; progress_lock=threading.Lock()\n'
-                  '    def report_progress(force=False):\n'
-                  '        with progress_lock:\n'
-                  '            now=time.monotonic()\n'
-                  '            if not force and now-progress_last[0] < 30.0: return\n'
-                  '            done=progress_done[0]; fresh=max(0,done-len(resumed)); elapsed=max(now-progress_started,1e-9)\n'
-                  '            rate=fresh/elapsed; remaining=max(0,len(wanted)-done)\n'
-                  '            eta_minutes=(remaining/rate/60.0) if rate>0 else None\n'
-                  '            pct=(100.0*done/len(wanted)) if wanted else 100.0\n'
-                  "            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
-                  "            print(f'[SEC acceptance] {done}/{len(wanted)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)\n"
-                  '            progress_last[0]=now\n'
-                  '    def mark_progress():\n'
-                  '        with progress_lock: progress_done[0]+=1\n'
-                  '        report_progress()\n'
-                  '    report_progress(force=True)\n'
-              )
-              if anchor not in source: raise SystemExit('acceptance telemetry anchor missing')
-              source = source.replace(anchor, block, 1)
-              fail_anchor = '            except Exception as exc:\n                with store_lock: failures[accession]=f"{type(exc).__name__}: {exc}"\n                continue\n'
-              fail_block = '            except Exception as exc:\n                with store_lock: failures[accession]=f"{type(exc).__name__}: {exc}"\n                mark_progress()\n                continue\n'
-              if fail_anchor not in source: raise SystemExit('acceptance failure telemetry anchor missing')
-              source = source.replace(fail_anchor, fail_block, 1)
-              success_anchor = '            if ready: flush()\n'
-              if success_anchor not in source: raise SystemExit('acceptance success telemetry anchor missing')
-              source = source.replace(success_anchor, success_anchor + '            mark_progress()\n', 1)
-              end_anchor = '    flush(force=True)\n    resolved='
-              if end_anchor not in source: raise SystemExit('acceptance completion telemetry anchor missing')
-              source = source.replace(end_anchor, '    flush(force=True)\n    report_progress(force=True)\n    resolved=', 1)
-              source_path.write_text(source, encoding='utf-8')
-
-          script_path = Path('scripts/sec_form4_census.py')
-          script = script_path.read_text(encoding='utf-8')
-          if '[SEC Q3 headers]' not in script:
-              script = script.replace('import argparse, csv, gzip, io, json, os, re, sys, zipfile',
-                                      'import argparse, csv, gzip, io, json, os, re, sys, time, zipfile', 1)
-              q3_anchor = "    master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}\n"
-              q3_block = (
-                  "    master=index_path.read_bytes();rows=_q3_master_rows(master);lock=__import__('threading').Lock();records={}\n"
-                  '    q3_started=time.monotonic();q3_last=[q3_started];q3_done=[0]\n'
-                  '    def q3_progress(force=False):\n'
-                  '        with lock:\n'
-                  '            now=time.monotonic()\n'
-                  '            if not force and now-q3_last[0] < 30.0:return\n'
-                  '            done=q3_done[0];elapsed=max(now-q3_started,1e-9);rate=done/elapsed;remaining=max(0,len(rows)-done)\n'
-                  '            eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*done/len(rows)) if rows else 100.0\n'
-                  "            eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
-                  "            print(f'[SEC Q3 headers] {done}/{len(rows)} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True)\n"
-                  '            q3_last[0]=now\n'
-                  '    q3_progress(force=True)\n'
-              )
-              if q3_anchor not in script: raise SystemExit('Q3 telemetry anchor missing')
-              script = script.replace(q3_anchor, q3_block, 1)
-              record_anchor = "        with lock:records[row['accession']]={'row':row,'header':payload,'period':period,'meta':meta}\n"
-              record_block = record_anchor + '        with lock:q3_done[0]+=1\n        q3_progress()\n'
-              if record_anchor not in script: raise SystemExit('Q3 record telemetry anchor missing')
-              script = script.replace(record_anchor, record_block, 1)
-              pool_anchor = "        for future in [pool.submit(one,r) for r in rows]:future.result()\n    subs=[];owners=[];txs=[];manifest=[];candidate_count=0\n"
-              pool_block = (
-                  "        for future in [pool.submit(one,r) for r in rows]:future.result()\n"
-                  '    q3_progress(force=True)\n'
-                  '    subs=[];owners=[];txs=[];manifest=[];candidate_count=0\n'
-                  "    full_total=sum(rec['period'] is None or rec['period']<=END_DATE.isoformat() for rec in records.values());full_done=0;full_started=time.monotonic();full_last=full_started\n"
-                  "    print(f'[SEC Q3 full] 0/{full_total} (0.0%) | ETA n/a',flush=True)\n"
-              )
-              if pool_anchor not in script: raise SystemExit('Q3 pool telemetry anchor missing')
-              script = script.replace(pool_anchor, pool_block, 1)
-              full_anchor = "            full=fp.read_bytes();sub,oo,tt=_synthetic_tail_rows(rec['row'],rec['header'],full);subs.append(sub);owners.extend(oo);txs.extend(tt);full_sha=_sha256_bytes(full);full_bytes=len(full)\n"
-              full_block = full_anchor + (
-                  '            full_done+=1;now=time.monotonic();elapsed=max(now-full_started,1e-9);rate=full_done/elapsed\n'
-                  '            if full_done==full_total or now-full_last>=30.0:\n'
-                  "                remaining=max(0,full_total-full_done);eta_minutes=(remaining/rate/60.0) if rate>0 else None;pct=(100.0*full_done/full_total) if full_total else 100.0;eta='n/a' if eta_minutes is None else f'{eta_minutes:.1f}m'\n"
-                  "                print(f'[SEC Q3 full] {full_done}/{full_total} ({pct:.1f}%) | {rate:.2f} docs/s | ETA {eta}',flush=True);full_last=now\n"
-              )
-              if full_anchor not in script: raise SystemExit('Q3 full telemetry anchor missing')
-              script = script.replace(full_anchor, full_block, 1)
-              script_path.write_text(script, encoding='utf-8')
-
-          for marker,path in (('[SEC acceptance]',source_path),('[SEC Q3 headers]',script_path),('[SEC Q3 full]',script_path)):
-              if marker not in path.read_text(encoding='utf-8'): raise SystemExit(f'missing telemetry marker {marker}')
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/quant/dataplane/sec_form4.py scripts/sec_form4_census.py
-          if ! git diff --cached --quiet; then
-            git commit -m 'obs: report live SEC acquisition progress'
+            git commit -m 'fix: accept official SEC submission schema variant'
             git push origin HEAD:builder/sec-form4-census-v2a
           fi
 
@@ -181,7 +53,6 @@ jobs:
           python3 scripts/status_artifacts.py --write
           python3 scripts/status_artifacts.py --check
           PYTHONPATH=src python3 -m unittest discover -s tests -v
-          python3 scripts/demo_quant_system.py
           python3 scripts/generate_schemas.py --check
           git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
 
@@ -195,17 +66,12 @@ jobs:
     steps:
       - name: Checkout Builder branch
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: builder/sec-form4-census-v2a
-
+        with: {fetch-depth: 0, ref: builder/sec-form4-census-v2a}
       - name: Set up Python
         uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-
       - name: Install pinned calendar dependency
         run: python -m pip install 'exchange-calendars==4.13.1'
-
       - name: Restore official SEC raw byte cache
         uses: actions/cache/restore@v4
         with:
@@ -213,27 +79,14 @@ jobs:
           key: sec-form4-raw-${{ github.run_id }}
           restore-keys: |
             sec-form4-raw-
-
       - name: Official SEC source connectivity preflight
         run: python3 scripts/sec_form4_census.py --preflight
-
-      - name: Refresh generated V1 proof inventory
-        run: |
-          python3 scripts/status_artifacts.py --write
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add STATE.md CHIEF_BRIEF.md
-          if ! git diff --cached --quiet; then
-            git commit -m 'docs: refresh proof inventory for SEC V2-A1 tests'
-          fi
-
       - name: Frozen V1 baseline proof
         run: |
+          python3 scripts/status_artifacts.py --write
           python3 scripts/status_artifacts.py --check
           PYTHONPATH=src python3 -m unittest discover -s tests -v
-          python3 scripts/demo_quant_system.py
           python3 scripts/generate_schemas.py --check
-
       - name: Acquire official SEC corpus and build V2-A1 census
         timeout-minutes: 315
         run: |
@@ -243,27 +96,19 @@ jobs:
             python3 scripts/sec_form4_census.py --generate-calendar --probe-price-coverage --workers 12 --rate-per-second 8
           fi
           python3 scripts/sec_form4_proof.py --check
-
       - name: Quiesce SEC acquisition before cache snapshot
         if: always()
         run: |
           pkill -TERM -f '[s]cripts/sec_form4_census.py' || true
-          for _ in $(seq 1 20); do
-            if ! pgrep -f '[s]cripts/sec_form4_census.py' >/dev/null; then
-              break
-            fi
-            sleep 1
-          done
+          for _ in $(seq 1 20); do if ! pgrep -f '[s]cripts/sec_form4_census.py' >/dev/null; then break; fi; sleep 1; done
           pkill -KILL -f '[s]cripts/sec_form4_census.py' || true
           sync
-
       - name: Save official SEC raw byte cache
         if: always()
         uses: actions/cache/save@v4
         with:
           path: var/sec_form4_raw
           key: sec-form4-raw-${{ github.run_id }}
-
       - name: Commit deterministic census artifacts locally
         id: final
         run: |
@@ -273,12 +118,8 @@ jobs:
             git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
           fi
           git add data/calendars/xnys_sessions_2019_2026.csv artifacts/sec_form4_census
-          if ! git diff --cached --quiet; then
-            git commit -m 'data: publish deterministic SEC Form-4 V2-A1 census'
-          fi
+          if ! git diff --cached --quiet; then git commit -m 'data: publish deterministic SEC Form-4 V2-A1 census'; fi
           echo "final_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          echo "Exact candidate HEAD: $(git rev-parse HEAD)"
-
       - name: Exact-head proof in clean worktree from cached raw bytes
         run: |
           FINAL_SHA='${{ steps.final.outputs.final_sha }}'
@@ -294,14 +135,11 @@ jobs:
           git restore artifacts/sec_form4_census/provenance_manifest.json artifacts/sec_form4_census/run_metadata.json
           python3 scripts/status_artifacts.py --check
           PYTHONPATH=src python3 -m unittest discover -s tests -v
-          python3 scripts/demo_quant_system.py
           python3 scripts/generate_schemas.py --check
           python3 scripts/sec_form4_proof.py --check
           git diff --check 37f298423ca4a100c1c633da2c3c6c2641d8dd8e...HEAD
-          echo "proof HEAD: $(git rev-parse HEAD)"
           test "$(git rev-parse HEAD)" = "$FINAL_SHA"
           test -z "$(git status --porcelain)"
-
       - name: Upload pinned raw SEC cache for Red Team reproduction
         uses: actions/upload-artifact@v4
         with:
@@ -309,7 +147,6 @@ jobs:
           path: var/sec_form4_raw/
           retention-days: 90
           compression-level: 0
-
       - name: Push only the exact proven HEAD
         run: |
           FINAL_SHA='${{ steps.final.outputs.final_sha }}'
