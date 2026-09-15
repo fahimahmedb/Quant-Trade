@@ -1,4 +1,5 @@
 name: SEC Form-4 census proof
+# Fresh-head retry after cached Q3 reconciliation.
 
 on:
   push:
