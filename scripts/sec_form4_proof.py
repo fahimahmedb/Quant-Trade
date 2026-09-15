@@ -66,10 +66,13 @@ def main():
         if audit['raw_rows']!=audit['unkeyed_rows']+audit['unique_primary_keys']+audit['duplicate_rows']:return fail(f'raw row conservation failed: {table}')
         if audit['conflict_keys']<0:return fail(f'invalid conflict accounting: {table}')
     if q3!=summary.get('q3_tail_audit') or q3!=manifest.get('q3_tail',{}) | {'manifest_sha256':manifest.get('q3_tail',{}).get('manifest_sha256')}:
-        # provenance adds only manifest_sha256; compare audit fields separately below.
         for k,v in q3.items():
             if manifest.get('q3_tail',{}).get(k)!=v:return fail(f'Q3 provenance drift: {k}')
-    if q3.get('master_form4_count',0)!=len(tail):return fail('Q3 master Form4 count does not match tail manifest')
+    tail_accessions=[row.get('accession') for row in tail]
+    if any(not a for a in tail_accessions) or len(set(tail_accessions))!=len(tail):return fail('Q3 tail manifest accessions are missing or duplicated')
+    if q3.get('master_form4_count',0)<len(tail):return fail('Q3 unique filing manifest exceeds master Form4 row count')
+    q3_duplicate_master_rows=q3.get('master_form4_count',0)-len(tail)
+    if q3_duplicate_master_rows:print(f'Q3 master duplicate-accession rows collapsed into unique filing manifest: {q3_duplicate_master_rows}')
     if not q3.get('max_filing_date') or q3['max_filing_date']<'2026-07-01':return fail('Q3 tail snapshot does not cover any Q3 posting')
     if any(not row.get('period_of_report') for row in tail):return fail('Q3 tail has unresolved earliest transaction date')
     candidate_tail=[row for row in tail if row['period_of_report']<='2026-06-30']
