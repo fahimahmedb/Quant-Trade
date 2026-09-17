@@ -1,30 +1,51 @@
 # D09 MEUE / POWER-FLOOR DERIVATION DEPENDENCY
 
-**Status:** DECIDED_NOT_SPECIFIED — ASTRA-CORRECTED — BLOCKING CONSUMABLE POWER-FLOOR AUTHORITY  
+**Status:** SUPERSEDED_FOR_THIS_LINEAGE — HISTORICAL ROUTE-A DEPENDENCY — ASTRA-CORRECTED  
 **Authority:** Blue Team / Mission Control  
-**Nature:** specification/execution of already-decided D09 semantics, not a reopening of D09's economic decision.
+**Nature:** historical specification dependency for a pre-D07 power floor. It is not the active D09 blocker list for the current Route-B lineage.
 
-## 1. Why this artifact exists
+## Current-lineage supersession notice — 2026-09-17
 
-Dependency-pull from D05/D08 reached D09 and found that the conceptual decision is not yet represented by a standalone hash-addressable derivation object.
+`BLUE_POWER_ROUTE_B_DECISION_2026-09-17.md` selected `ROUTE_B_FINAL_PROTOCOL_ONLY` and retired the global pre-D07 power-floor route after `RD2_UNIFORM_FLOOR_TRIVIAL`.
 
-Current decided semantics include:
+The current common economic coordinate/root semantics are now controlled by:
+
+`D09_ECONOMIC_CORE_EC1_ALLOCATION_WEIGHTED_EFFECT.md`.
+
+The remaining Route-B D09 obligations are controlled separately by:
+
+`D09_ROUTE_B_COMMON_CORE_REMAINDER_2026-09-17.md`.
+
+Accordingly, the following objects in this historical dependency are **not current-lineage obligations**:
+
+- `MEUE_POWER_FLOOR_MAP` over the full deployment domain;
+- `THETA_POWER_FLOOR`;
+- joint infimum optimization across the Route-A domain;
+- certified numerical-infimum rule;
+- external power-floor transport dependencies;
+- power-floor deployment-domain expansion/contraction authority;
+- floor-recipe contamination firewall.
+
+The historical clauses below remain correct for a future lineage that independently re-authorizes Route A. They must not be imported into Route B merely because they were previously frozen.
+
+`STATUS_CURRENT_LINEAGE = SUPERSEDED_FOR_THIS_LINEAGE`.
+
+## 1. Why this historical artifact exists
+
+Dependency-pull from D05/D08 reached D09 and found that the conceptual decision was not represented by a standalone hash-addressable derivation object.
+
+Decided semantics included:
 
 - derive `BEEE` first;
 - `MEUE = BEEE + predetermined conservative economic margin`;
-- economic mapping is geometry/execution aware:
-  `V_annual = Phi(delta, C, G, execution)`;
+- economic mapping is geometry/execution aware;
 - D09 power consumes MEUE rather than allowing D05 to tune it.
 
-Astra review additionally established that the one-sided D05 theorem must use a **raw-observation requirement**, not an unproven bridge from effective sample to raw observations.
-
-The repository does not yet expose an authority-bearing specification for the exact `delta` coordinate, root equation, deployment domain, execution-cost decomposition and deterministic MEUE mapping needed by D08.
+Astra additionally established that a Route-A one-sided D05 theorem must use a raw-observation requirement rather than an unproven effective-sample bridge.
 
 **Governance finding:** `DECIDED != CONSUMABLE_AUTHORITY`.
 
-## 2. Required D09 specification outputs
-
-The downstream consumer must resolve to a hash-addressable artifact implementing the following objects.
+## 2. Historical Route-A required specification outputs
 
 ### 2.1 `DELTA_COORDINATE_COMPATIBILITY_GATE`
 
@@ -32,224 +53,108 @@ Specify exactly what `delta` means in:
 
 `Phi(delta, C, G, execution)`.
 
-This is a gate, not a confirmation exercise.
-
-If delta is not on the coordinate assumed by `D08_POWER_FLOOR_OUTCOME_TRANSFORM_BOUNDARY.md`, D09 does not redefine delta to fit D08.
-
-Instead D08 must return to transform admission using the true D09 coordinate.
-
-**Invariant:** `DELTA_MISMATCH_INVALIDATES_FLOOR_TRANSFORM_ASSUMPTION`.
+If delta is not on the coordinate assumed by a Route-A floor transform, D09 does not redefine delta to fit that transform.
 
 ### 2.2 `PHI_AND_BEEE_ROOT_CONTRACT`
 
-Define the exact economic value function and break-even equation.
+Define the exact economic value function and break-even equation, economic terms, units/sign conventions, root existence/uniqueness and failure states.
 
-Conceptually:
+Research/program sunk costs remain outside market/deployment MEUE unless an already-decided upstream rule explicitly places them there.
 
-`Phi(BEEE, C, G, execution) = 0`
+### 2.3 Historical `THETA_PROGRAM_DEPLOYMENT`
 
-or the exact mathematically equivalent root condition.
+The Route-A power-floor economic domain was defined as execution-feasible and ex-ante program-intended, with dimensions capable of altering `Phi` or the power object.
 
-The contract must state:
-
-- which economic terms enter expected value;
-- their units and sign conventions;
-- whether a BEEE root exists;
-- whether it is unique;
-- what state is emitted when there is no economically meaningful root or multiple roots.
-
-Research/program sunk costs remain outside the market/deployment MEUE unless an already-decided upstream rule explicitly places them there.
-
-**Invariants**
-
-- `BEEE_ROOT_EXISTENCE_AND_UNIQUENESS_MUST_BE_SPECIFIED`
-- `PROGRAM_COST_DOES_NOT_SILENTLY_ENTER_MARKET_MEUE`
-
-### 2.3 `THETA_PROGRAM_DEPLOYMENT`
-
-The power-floor economic domain is not all theoretically executable capital.
-
-Define:
-
-`THETA_PROGRAM_DEPLOYMENT = THETA_EXECUTION_FEASIBLE ∩ THETA_EX_ANTE_PROGRAM_INTENDED`.
-
-The intended-deployment component must resolve upstream to D02/D03 authority, not be invented inside D09 after D05 ceiling values or market outcomes are observed.
-
-The domain must name the dimensions that materially alter `Phi` or the statistical power object, including where applicable:
-
-- capital/equity budget;
-- feasible allocation / position size;
-- ADV/capacity constraints;
-- event frequency / overlap geometry inputs already authorized for this stage;
-- capital saturation;
-- execution regime.
-
-This prevents the floor from being protected by a capital scale the program never contemplated deploying.
+This full-domain construction is no longer a Route-B requirement. Route B still requires outcome-blind economic/allocation semantics and a valid final geometry-specific instantiation.
 
 ### 2.4 Execution terms declare their moment and estimand role
 
-Each execution component must declare whether it enters:
+Each execution component must still, when consumed by final science, declare whether it enters expected economic cost/mean, statistical variance of the tested outcome, or both through separately named parameters with explicit covariance treatment.
 
-- expected economic cost / mean inside `Phi`;
-- statistical variance of the **tested outcome transform**;
-- or both through separately named parameters with an explicit covariance model.
+For the gross SPY-excess primitive outcome, execution mean/cost may enter `Phi -> BEEE -> MEUE`, but execution variance is not automatically added to the statistical variance of the gross market-return transform.
 
-**Invariants**
+This principle remains reusable in Route B because it is estimand semantics, not a floor-specific rule.
 
-- `EXECUTION_TERM_DECLARES_ITS_MOMENT`
-- `MEAN_AND_VARIANCE_EXECUTION_PARAMETERS_ARE_DISTINCT_AUTHORITY_OBJECTS`
-- `EXECUTION_VARIANCE_REQUIRES_ESTIMAND_COMPATIBILITY`
+### 2.5 Historical execution-feasible friction envelope
 
-For the current D08 candidate:
+The Route-A contract required an execution-feasible friction domain frozen before D05 ceiling visibility and used it in the one-sided floor construction.
 
-`T_SPY_SIMPLE_EXCESS_20 = R_security_20 - R_SPY_20`
+For Route B, the need to freeze an outcome-blind friction rule remains, but the one-sided floor direction does **not** carry over. The active Route-B rule is specified in `D09_ROUTE_B_COMMON_CORE_REMAINDER_2026-09-17.md`.
 
-which is a gross market-return transform. Therefore execution mean/cost may enter `Phi -> BEEE -> MEUE`, but execution variance is **not automatically added to the variance of T**.
+### 2.6 Historical `MEUE_POWER_FLOOR_MAP`
 
-If a future inference target is net executed return, it is a distinct transform and must explicitly define execution-error variance and covariance with market return, e.g. the relevant terms in:
-
-`Var(T - execution_error)`.
-
-No generic rule `execution_variance -> Sigma_floor` is authority-bearing for the current gross transform.
-
-### 2.5 Execution-feasible friction envelope
-
-The admissible friction domain is bounded by execution feasibility, not by a prior on expected insider alpha.
-
-A friction bound may be an explicit governance assumption when calibration is unavailable, but it must be economically/execution feasible and frozen before D05 ceiling visibility / outcome inspection.
-
-It must never be justified by choosing a value that makes the hypothesized alpha look plausible.
-
-**Invariants**
-
-- `FRICTION_BOUND_USES_EXECUTION_FEASIBILITY_NOT_ALPHA_PRIOR`
-- `FRICTION_BOUND_PRECEDES_D05_CEILING_VISIBILITY`
-
-### 2.6 `MEUE_POWER_FLOOR_MAP`
-
-D09 should expose a deterministic/hashable mapping over the frozen deployment domain:
+Route A required a deterministic/hashable map over the full frozen deployment domain:
 
 `theta -> {MEUE(theta), execution_mean_components(theta), economic_geometry_inputs(theta)}`.
 
-Where execution-uncertainty components are relevant to a separately admitted statistical transform, they must be exposed as separately named objects rather than silently folded into the MEUE map.
+This full-domain map is `N/A_CURRENT_LINEAGE`.
 
-D09 should not collapse the map to a single scenario merely to simplify D08.
+Route B needs the common mapping recipe frozen outcome-blind and a final instantiation after `G*` and the authorized capital/policy instance are fixed.
 
-## 3. Correct downstream power-floor object
+## 3. Historical corrected downstream power-floor object
 
-The D05 early-impossibility gate consumes a raw-observation requirement.
-
-For each fully specified admissible statistical/economic scenario `theta`, define:
+For each admissible Route-A scenario:
 
 `N_raw_required(theta) = min { n : Power_n(MEUE(theta), Sigma_n(theta), T(theta), alpha, target_power) >= target_power }`.
 
-`Sigma_n(theta)` here represents the covariance/variance structure of the admitted tested outcome under `n` raw observations. Dependence is handled inside the power calculation exactly once.
+and:
 
-The one-sided floor is:
+`N_RAW_REQUIRED_FLOOR = inf_theta N_raw_required(theta)`.
 
-`N_RAW_REQUIRED_FLOOR = inf_{theta in THETA_POWER_FLOOR} N_raw_required(theta)`.
+Dependence enters the power construction exactly once.
 
-`THETA_POWER_FLOOR` must be a frozen authority-covered domain constructed from `THETA_PROGRAM_DEPLOYMENT` plus the admitted D08 statistical/transport uncertainty dimensions.
+These raw-count unit corrections remain scientifically valid but have no active D05 consumer in the current lineage.
 
-D05 then compares raw observation ceilings only to this raw observation requirement.
+## 4. Historical joint optimization and safe relaxations
 
-**Invariants**
+Route A required a joint infimum over one common admissible scenario and prohibited combining incompatible scenario-specific favorable components without an independent lower-bound proof.
 
-- `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`
-- `DEPENDENCE_ENTERS_POWER_FLOOR_EXACTLY_ONCE`
-- `NO_UNPROVEN_NEFF_TO_NRAW_BRIDGE`
+`N/A_CURRENT_LINEAGE` for Route B.
 
-## 4. Joint optimization and safe relaxations
+## 5. Historical continuous-domain numerical rule
 
-The default authority object is the joint infimum over a common admissible scenario because MEUE, statistical uncertainty and deployment geometry can co-vary.
+Route A required a certified numerical lower bound on the continuous-domain infimum rather than an uncertified grid minimum.
 
-Do not combine scenario-specific values and present them as one realizable scenario when no such scenario exists.
+`N/A_CURRENT_LINEAGE` for Route B.
 
-**Invariant:** `POWER_FLOOR_OPTIMIZES_JOINTLY_OVER_ONE_SCENARIO`.
+## 6. Historical deployment-domain changes
 
-A mathematically relaxed lower bound that combines separately favorable components may be used **only** when an independent proof establishes that the relaxation is less than or equal to the true joint infimum. Such a relaxation must be labelled as a bound, not as an attainable scenario.
+Expansion/contraction rules governed preservation of prior Route-A impossibility authority.
 
-**Invariant:** `NONREALIZABLE_RELAXATION_REQUIRES_LOWER_BOUND_PROOF`.
+`N/A_CURRENT_LINEAGE` because no current-lineage pre-D07 impossibility authority exists.
 
-## 5. Continuous-domain numerical rule
+## 7. Historical ceiling-contamination firewall
 
-There is no assumption that the infimum occurs at a boundary of the deployment/statistical domain.
+Route A required all floor-moving rules frozen before ceiling visibility.
 
-If the domain is continuous, the numerical procedure must be frozen before result inspection and must deliver a certified lower bound, not merely a grid minimum whose error direction is unknown.
+This is superseded by the current-lineage Route-B firewall:
 
-Required authority property:
+`ROUTE_B_FINAL_PROTOCOL_FIREWALL_CONTRACT_FROZEN`
 
-`N_floor_authorized <= true_inf_theta N_raw_required(theta)`.
+with satisfaction still required before ceiling publication to protocol-mutating actors.
 
-An implementation may use exact optimization, interval methods, deterministic gridding with a proven error bound, or another method satisfying the inequality.
+## 8. Dependency-pull governance technique — retained
 
-**Invariant:** `NUMERICAL_INFIMUM_MUST_BE_A_CERTIFIED_LOWER_BOUND`.
-
-## 6. Deployment-domain changes
-
-If the deployment domain expands:
-
-`THETA_new ⊃ THETA_old`
-
-then the infimum may fall. Prior impossibility authority must be reevaluated.
-
-If the deployment domain contracts:
-
-`THETA_new ⊂ THETA_old`
-
-then the infimum cannot fall **provided the scientific function, estimand, units, population, transport assumptions and ceiling construction are otherwise unchanged**.
-
-A change to those objects is not a mere domain contraction and does not automatically inherit prior authority.
-
-**Invariants**
-
-- `DEPLOYMENT_DOMAIN_EXPANSION_REQUIRES_POWER_FLOOR_REEVALUATION`
-- `PURE_DEPLOYMENT_DOMAIN_CONTRACTION_PRESERVES_PRIOR_IMPOSSIBILITY_AUTHORITY`
-
-## 7. Ceiling-contamination firewall
-
-All rules capable of moving `N_RAW_REQUIRED_FLOOR` must be frozen before human-visible D05 ceiling values are available to actors who can modify those rules.
-
-This includes:
-
-- the D09 objects in §2;
-- alpha / target power;
-- the D08 transform space;
-- the power-function/inference family used for the floor;
-- external source admission/search/stop rules;
-- source uncertainty treatment;
-- numerical-infimum rule.
-
-Mechanical access separation is an acceptable alternative if it proves recipe designers could not inspect D05 ceiling values.
-
-**Invariants**
-
-- `POWER_FLOOR_RECIPE_PRECEDES_D05_CEILING_VISIBILITY`
-- `NO_CEILING_INFORMED_POWER_FLOOR_DESIGN`
-
-## 8. Dependency-pull governance technique
-
-This gap was discovered by following a real downstream consumer from D05 to D08 to D09, not by abstractly rereading D09.
-
-General reusable rule:
+The reusable governance rule remains active:
 
 `DOWNSTREAM_CONSUMER_MUST_RESOLVE_TO_HASHED_AUTHORITY_ARTIFACT`.
 
-A hash is necessary but not sufficient: the artifact must also define the units, domain, assumptions, mappings and inequality direction actually consumed by the downstream gate.
+A hash is necessary but not sufficient: the artifact must define the units, domain, assumptions, mappings and decision semantics actually consumed downstream.
 
-If the chain terminates in conceptual prose, handoff language, an ambiguous unit, or an unproved inequality, that dependency is:
+If a former consumer disappears because a route is retired, its dependency must be marked superseded rather than left as a phantom blocker.
 
-`NOT_YET_CONSUMABLE_AUTHORITY`.
-
-This dependency-pull audit should be reused on other `DECIDED` blocks before granting operational scientific authority.
+**Invariant:** `RETIRED_CONSUMER_RETIRES_ITS_ROUTE_SPECIFIC_DEPENDENCIES`.
 
 ## 9. Current blocker chain
 
-`D05 early power-impossibility authority`
-← `N_RAW_REQUIRED_FLOOR`
-← `D08 raw-count lower-bound construction`
-← `D08 floor outcome transform`
-← `D09 delta / MEUE mapping + deployment domain`
-← **this missing specification object**.
+The historical chain:
 
-No external numerical floor-source search and no human-visible D05 ceiling should precede freeze of the authority-bearing floor recipe, absent mechanically proven access separation.
+`D05 early power-impossibility authority <- N_RAW_REQUIRED_FLOOR <- D08 <- D09 power-floor map`
+
+is closed and inactive for this lineage.
+
+The current Route-B chain is instead:
+
+`D05 ceiling visibility`
+← `ROUTE_B_FINAL_PROTOCOL_FIREWALL_SATISFIED`
+← common mini-D09 completion + `A_CONSTRUCTOR/C_claim(G)` rule + D07 selection procedure + final-inference selection/error-control contract.
