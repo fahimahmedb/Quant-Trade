@@ -14,6 +14,7 @@ All artifacts remain subordinate to `QUANT_NORTH_STAR.md` and independently cert
 3. `governance/D05A_ROUTE_B_SURFACE_VISIBILITY_AMENDMENT_2026-09-17.md`
 4. `governance/D09_ROUTE_B_COMMON_CORE_REMAINDER_2026-09-17.md`
 5. `governance/D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`
+6. `governance/D09_ROUTE_B_M_ECONOMIC_UNCERTAINTY_ENVELOPE_2026-09-17.md`
 
 Earlier Astra-corrected D05/D07 artifacts remain controlling where not superseded.
 
@@ -48,7 +49,20 @@ Closed/frozen:
 - the same risk may not be charged through both friction conservatism and `M_economic` without an explicit non-overlap decomposition;
 - the `K_forward` recipe is frozen before D05 ceiling visibility, while the final numerical value may be instantiated after `G*`, `A_claim^{G*}` and authorized `C` are known.
 
-The exact expected-cost parameter calibration and numerical/functional `M_economic` rule are still open.
+### Route-B `M_economic` uncertainty-envelope structure
+
+Closed/frozen:
+
+- `M_economic` is derived from a pre-frozen ex-ante uncertainty envelope, not from the final MEUE result and not from an arbitrary percentage markup;
+- each uncertain parameter separates its expected/central value from its model-risk uncertainty set;
+- numerical envelope construction must be independent of D05 ceilings, Form 4 outcomes and the resulting threshold magnitude;
+- adverse/asymmetric economic consequences determine the margin direction;
+- `MEUE_RESULT_CANNOT_TUNE_ITS_OWN_MARGIN`;
+- the first-regular-open execution regime receives an explicit cost/model-risk dimension rather than silently inheriting generic intraday calibration;
+- generic intraday spread/slippage evidence is not automatically valid calibration for the opening regime;
+- improved independent execution calibration may narrow the model-risk envelope under the frozen update/version rule.
+
+Still open are the numerical envelopes, exact source/admission protocol, exact Form 4 parameter inventory, uncertainty aggregation and the final numerical/functional mapping where non-linearity requires it.
 
 ### Power route
 
@@ -112,8 +126,8 @@ Before release, bind/hash at minimum:
 - D09 EC1;
 - active Route-B mini-D09 recipe;
 - frozen friction/margin role partition;
+- frozen `M_economic` uncertainty-envelope structure plus completed numerical/evidence calibration rule;
 - executable `K_forward` expected-cost recipe;
-- numerical/functional `M_economic` calibration rule;
 - `A_CONSTRUCTOR` and `C_claim(G)` derivation rule;
 - D07 final-geometry selection procedure with permitted inputs/outputs/failure states and sealed-input prohibitions;
 - final-inference selection/error-control contract;
@@ -158,27 +172,32 @@ The reusable estimand semantics have been carried into EC1 / the active Route-B 
 Controlled by:
 
 - `D09_ROUTE_B_COMMON_CORE_REMAINDER_2026-09-17.md`;
-- `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`.
+- `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`;
+- `D09_ROUTE_B_M_ECONOMIC_UNCERTAINTY_ENVELOPE_2026-09-17.md`.
 
 Remaining active D09 objects are:
 
 1. `DELTA_COORDINATE_COMPATIBILITY_GATE` for the final return/corporate-action/terminal/aggregation implementation;
 2. consumable `PHI_AND_BEEE_ROOT_CONTRACT` recipe;
 3. executable expected-cost `K_forward` recipe / parameter provenance rules;
-4. numerical/functional `M_economic` calibration rule.
+4. exact Form 4 cost/model-risk parameter inventory;
+5. numerical uncertainty envelopes plus their source/admission rules;
+6. uncertainty aggregation and final deterministic `M_economic` mapping.
 
 Route B does **not** require:
 
 - exploration of a full pre-D07 deployment domain for power-floor purposes;
 - joint `inf_theta N_raw_required(theta)`;
 - numerical floor discretization/certification;
-- external lower-bound transport/search.
+- external lower-bound transport/search for a pre-D07 power floor.
 
 The historical Route-A friction-envelope direction is retired and does not transfer.
 
-Current friction state:
+Current friction/margin state:
 
 `FRICTION_ROLE_PARTITION = CLOSED`
+
+`M_ECONOMIC_ENVELOPE_STRUCTURE = CLOSED`
 
 while:
 
@@ -186,13 +205,15 @@ while:
 
 and:
 
-`M_ECONOMIC_CALIBRATION_RULE = UNRESOLVED`.
+`M_ECONOMIC_NUMERICAL_CALIBRATION = UNRESOLVED`.
 
 ## 8. Current execution-model evidence relevant to D09
 
 `STATE.md` records that the current V1 Capital Desk models execution using spread, commission, square-root impact and ADV capacity truncation, while also stating that spread/impact coefficients are assumed rather than calibrated and that modeled costs materially affected prior research results.
 
 Therefore current execution code may supply implementation structure or provisional input provenance, but its assumed coefficients do not automatically constitute Route-B economic calibration authority.
+
+For Form 4 specifically, the economic entry rule targets the first authorized regular-session open. The current governance therefore requires an explicit opening-regime execution component/model-risk dimension. This checkpoint does **not** assert a numerical opening-cost premium; that remains an empirical calibration question.
 
 ## 9. D07 and D19 placement
 
@@ -221,11 +242,13 @@ D19 mechanics may advance in parallel; D19 is not a general D05-A counting prere
 - D05-A unit/ceiling conversion: **FROZEN**
 - D09 EC1: **CLOSED / FROZEN**
 - Route-B friction/margin role partition: **CLOSED / FROZEN**
+- Route-B `M_economic` envelope structure: **CLOSED / FROZEN — NUMERICAL CALIBRATION OPEN**
 - Route-B D09 remainder contract: **RECORDED / ACTIVE DEPENDENCY**
 - final delta compatibility: **NOT YET CONSUMABLE**
 - exact Route-B Phi/BEEE recipe: **NOT YET CONSUMABLE**
 - executable `K_forward` expected-cost recipe: **OPEN / NOT YET CONSUMABLE**
-- numerical/functional `M_economic` rule: **OPEN / UNRESOLVED**
+- exact parameter inventory/source-admission protocol: **OPEN**
+- numerical uncertainty envelopes / final `M_economic`: **OPEN / UNRESOLVED**
 - Power Route A: **CLOSED / NOT AVAILABLE CURRENT LINEAGE**
 - Power Route B: **SELECTED**
 - D08 power-floor transform: **SUPERSEDED_FOR_THIS_LINEAGE**
@@ -242,13 +265,16 @@ D19 mechanics may advance in parallel; D19 is not a general D05-A counting prere
 
 ## 11. Immediate next Blue closure
 
-The next useful closure is the **executable Route-B friction/model-risk recipe**:
+The next useful closure is the **Form 4 friction/model-risk parameter contract**, not a numerical MEUE result.
 
-1. define the exact Form 4 expected-cost component inventory and provenance rule;
-2. define allowed central/expected estimators for uncalibrated parameters and failure states;
-3. define the model-risk uncertainty representation feeding `M_economic`;
-4. define the deterministic `M_economic` calibration functional, including asymmetric downside and anti-double-counting;
-5. then complete the consumable Phi/BEEE recipe around those closed inputs.
+Required next steps:
+
+1. freeze the exact Form 4 parameter inventory, including the opening execution regime as a distinct modeling dimension;
+2. freeze source/evidence classes and admission rules for central expected-cost estimates and uncertainty envelopes before candidate numerical values are used;
+3. freeze interval/set construction and uncertainty aggregation rules;
+4. freeze the deterministic adverse-side mapping from the resulting uncertainty object into `M_economic` / `delta` units;
+5. close failure/update/version behavior;
+6. then acquire/calibrate independent numerical evidence under that frozen contract and complete the consumable Phi/BEEE recipe.
 
 After that:
 
@@ -261,4 +287,4 @@ No new general Astra review is required for this closure.
 
 ## 12. No economic conclusion yet
 
-This checkpoint retires an unidentifiable pre-D07 power-kill route, removes its phantom dependencies, and closes the semantic role split between expected friction and economic model-risk margin. It does not establish Form 4 profitability, power sufficiency, edge existence, capturability or capital authority.
+This checkpoint retires an unidentifiable pre-D07 power-kill route, removes its phantom dependencies, and closes the semantic structure separating expected friction from economic model-risk margin. It does not establish Form 4 profitability, power sufficiency, edge existence, capturability or capital authority.
