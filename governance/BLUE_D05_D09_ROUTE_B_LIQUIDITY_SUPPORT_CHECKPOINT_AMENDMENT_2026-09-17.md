@@ -11,7 +11,8 @@ This amendment controls where it is more recent/specific than the parent checkpo
 Add:
 
 - `governance/D05A_LIQUIDITY_GATE_RESOLUTION_AND_D19_ROUTING_AMENDMENT_2026-09-17.md`;
-- `governance/D05A_D09_LIQUIDITY_EDGAR_CUTOFF_SINGLE_EVALUATION_AMENDMENT_2026-09-17.md`.
+- `governance/D05A_D09_LIQUIDITY_EDGAR_CUTOFF_SINGLE_EVALUATION_AMENDMENT_2026-09-17.md`;
+- `governance/D05A_D09_LIQUIDITY_IDENTITY_AND_LOOKBACK_SELECTION_AMENDMENT_2026-09-17.md`.
 
 ## 2. Qualification versus deployment support
 
@@ -43,7 +44,7 @@ FM-08 covers unresolved claim-defining liquidity/deployment-gate inputs after sc
 
 It does not convert deterministic policy ineligibility into missingness.
 
-## 4. Liquidity cutoff semantics are now closed
+## 4. Liquidity cutoff semantics are closed
 
 The liquidity measurement is anchored to source metadata, not final D07 geometry:
 
@@ -80,6 +81,8 @@ Final crossings still depend on `G*`. For a final crossing:
 
 over the frozen source facts required to establish that crossing under final geometry.
 
+The deployment security/listing identity for that crossing is resolved PIT at that latest required EDGAR date under the frozen downstream resolver contract. Earlier filing identities do not override the final PIT identity. If the required identity is unresolved/ambiguous, the crossing enters FM-08 rather than using a stale fallback.
+
 Therefore:
 
 - pre-D07 liquidity measurement/snapshot: **D05-A eligible**;
@@ -90,6 +93,7 @@ Therefore:
 
 - `SOURCE_UNIT_LIQUIDITY_SNAPSHOT_IS_D07_INDEPENDENT`
 - `D07_INDEPENDENT_LIQUIDITY_MEASUREMENT_DOES_NOT_IMPLY_D07_INDEPENDENT_CROSSING_SUPPORT`
+- `DEPLOYMENT_SECURITY_IDENTITY_IS_PIT_AT_CROSSING_REFERENCE_DATE`
 - `Q_THETA_CONSUMES_FINAL_CROSSING_SUPPORT_NOT_SOURCE_UNIT_COUNTS`
 
 ## 6. Cross-unit reconciliation correction
@@ -136,17 +140,44 @@ Current authority remains:
 
 `D19_ADVERSE_TREATMENT_SPEC_PENDING`.
 
-## 9. Remaining liquidity metric contract blockers
+## 9. Lookback selection rule is closed; exact length remains open
+
+The liquidity lookback length is claim-defining because it affects both measurement stability and which securities possess sufficient history to satisfy the gate. It belongs in `LIQUIDITY_ELIGIBILITY_RULE_HASH`.
+
+The exact length must be chosen before D05 ceiling visibility using a predeclared measurement objective, such as independently justified stability/smoothing of the liquidity estimator under the intended execution regime.
+
+It may **not** be selected by inspecting:
+
+- Form-4 issuer/event retention under candidate windows;
+- final crossing retention;
+- D05 ceilings;
+- `Q(theta)`;
+- BEEE/MEUE;
+- outcomes.
+
+Current state:
+
+`LOOKBACK_SELECTION_CRITERION = CLOSED / MEASUREMENT_PROPERTY_NOT_TARGET_RETENTION`.
+
+The exact numerical lookback remains `OPEN / NOT YET CONSUMABLE`.
+
+**Invariants**
+
+- `LIQUIDITY_LOOKBACK_LENGTH_IS_CLAIM_FINGERPRINTED`
+- `LOOKBACK_SELECTED_FOR_MEASUREMENT_PROPERTY_NOT_TARGET_INCLUSION`
+- `TARGET_RETENTION_CANNOT_SELECT_LIQUIDITY_LOOKBACK`
+
+## 10. Remaining liquidity metric contract blockers
 
 Before `LIQUIDITY_ELIGIBILITY_RULE_HASH` becomes consumable, still freeze/hash:
 
 - exact metric definition;
-- exact PIT lookback length;
+- exact PIT lookback length under the closed selection criterion;
 - minimum valid observations;
 - missing/non-trading session handling;
 - adjustment/corporate-action convention where relevant;
-- source/provider/version/PIT semantics;
-- listing/security identity semantics;
+- source class/provider/version/PIT semantics;
+- coherent security/listing lineage semantics for the lookback;
 - recently listed / insufficient-history treatment;
 - suspension/listing-transition treatment;
 - numerical threshold or deterministic eligibility functional;
@@ -154,9 +185,9 @@ Before `LIQUIDITY_ELIGIBILITY_RULE_HASH` becomes consumable, still freeze/hash:
 
 A generic `ADV` label is not sufficient.
 
-The cutoff/reference anchor and single-shot evaluation semantics are no longer open.
+The cutoff/reference anchor, final identity-resolution time, lookback selection criterion and single-shot evaluation semantics are no longer open.
 
-## 10. Firewall consequence
+## 11. Firewall consequence
 
 `ROUTE_B_FINAL_PROTOCOL_FIREWALL_SATISFIED` remains `FALSE`.
 
@@ -168,7 +199,7 @@ Current liquidity-side blockers before ceiling release to protocol-mutating acto
 - frozen source-to-final-crossing propagation/unit-conversion rule in the implementation contract;
 - D19 consumable adverse mechanics for unresolved final deployment support where required.
 
-## 11. Current state additions
+## 12. Current state additions
 
 - scientific Form-4 qualification partition: **UNCHANGED / FROZEN**
 - deployment-support partition: **CLOSED / FROZEN STRUCTURE**
@@ -177,19 +208,21 @@ Current liquidity-side blockers before ceiling release to protocol-mutating acto
 - daily liquidity cutoff semantics: **CLOSED / LAST COMPLETED SESSION STRICTLY BEFORE EDGAR DATE**
 - source-unit liquidity snapshot D07-independence: **CLOSED / YES**
 - final crossing support D07-independence: **NO — FOLLOWS G***
+- final deployment security identity time: **CLOSED / PIT AT LATEST REQUIRED EDGAR DATE**
 - confirmatory eligibility refresh: **CLOSED / SINGLE-SHOT**
+- lookback selection criterion: **CLOSED / MEASUREMENT PROPERTY, NOT TARGET RETENTION**
 - exact liquidity metric/lookback length/source/threshold: **OPEN / NOT YET CONSUMABLE**
 - insufficient-history policy: **OPEN / NOT YET CONSUMABLE**
 - D19 adverse mechanics for unresolved final deployment support: **NOT YET CONSUMABLE**
 - D05-A empirical pass: **NOT YET EXECUTED**
 - outcome access: **NOT AUTHORIZED**
 
-## 12. Next closure
+## 13. Next closure
 
 Before instantiating the F1–F7 numerical source registry, close the remaining non-numerical liquidity-gate measurement contract:
 
 `exact metric + lookback length + source class + minimum-history rule + missing-session/adjustment semantics`.
 
-The cutoff/reference-time question and the 20-session re-evaluation question are now closed.
+The cutoff/reference-time question, final security-identity resolution time, lookback selection criterion and 20-session re-evaluation question are now closed.
 
 Only after the full liquidity rule is hash-addressable should liquidity-sensitive F2/F3/F4 parameter source contracts be bound to that deployment class.
