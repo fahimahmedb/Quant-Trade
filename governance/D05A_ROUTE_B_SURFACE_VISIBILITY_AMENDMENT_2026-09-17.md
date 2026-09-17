@@ -19,13 +19,33 @@ For the current lineage D05-A cannot emit:
 - `CLAIM_POPULATION_TOO_SPARSE_FOR_REQUIRED_POWER`;
 - `POWER_IMPOSSIBLE_DUE_TO_AVAILABILITY`;
 - a positive/negative `POWER_AVAILABILITY_VERDICT` based on a pre-D07 floor;
-- `N_RAW_REQUIRED_FLOOR` as a current-lineage D05-A input/output.
+- `N_RAW_REQUIRED_FLOOR` as a current-lineage D05-A input/output;
+- any legacy `N_EFF_REQUIRED_FLOOR` object as a current-lineage input/output.
 
 Instead expose the fixed route state:
 
 `EARLY_POWER_AUTHORITY_STATE = ROUTE_B_NO_PRE_D07_POWER_KILL`.
 
 Historical raw-count unit corrections remain valid if a future new lineage reintroduces a floor.
+
+### 1.1 Legacy floor invariants are N/A, not false
+
+The previously frozen invariants:
+
+- `D05_CONSUMES_POWER_FLOOR_D05_DOES_NOT_CHOOSE_IT`;
+- `D05_CONSUMES_FLOOR_D05_DOES_NOT_SOURCE_SHOP`;
+- `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`;
+- related `N_eff -> N_raw` repair clauses;
+
+remain scientifically correct for a lineage that has an active pre-D07 power-floor consumer.
+
+For the current Route-B lineage they are:
+
+`N/A_CURRENT_LINEAGE`.
+
+They must not be read as pending obligations or blockers.
+
+**Invariant:** `RETIRED_CONSUMER_RETIRES_ROUTE_SPECIFIC_INVARIANTS`.
 
 ## 2. Active terminal D05-A surface
 
@@ -118,7 +138,7 @@ A completed current-lineage D05-A publication artifact binds at minimum:
 - publication timestamp;
 - implementation commit.
 
-It does not contain `N_RAW_REQUIRED_FLOOR`.
+It does not contain `N_RAW_REQUIRED_FLOOR` or a legacy effective-sample floor.
 
 ## 7. Partial exposure semantics
 
@@ -161,6 +181,7 @@ Final D07 geometry remains post-D05-A under the separately frozen selection proc
 - D05-A execution: **still not executed**
 - expected SEC manifest: **still not materialized/hashed**
 - early power kill: **retired current lineage**
+- pre-D07 power-floor inputs/invariants: **N/A CURRENT LINEAGE**
 - Route-B firewall contract: **frozen**
 - Route-B firewall satisfaction: **not yet satisfied**
 - human-visible ceiling release: **not yet authorized**
@@ -168,6 +189,7 @@ Final D07 geometry remains post-D05-A under the separately frozen selection proc
 ## 12. Core invariants
 
 - `EARLY_POWER_ELE_RETIRED_CURRENT_LINEAGE`
+- `RETIRED_CONSUMER_RETIRES_ROUTE_SPECIFIC_INVARIANTS`
 - `ROUTE_B_FIREWALL_PRECEDES_CEILING_VISIBILITY`
 - `NO_CEILING_INFORMED_FINAL_PROTOCOL_DESIGN`
 - `D05_CEILINGS_REMAIN_DESCRIPTIVE_FEASIBILITY_OBJECTS`
