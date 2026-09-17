@@ -2,7 +2,7 @@
 
 **Status:** DECIDED_NOT_SPECIFIED — ACTIVE ROUTE-B DEPENDENCY  
 **Authority:** Blue Team / Mission Control  
-**Parent decisions:** `D09_ECONOMIC_CORE_EC1_ALLOCATION_WEIGHTED_EFFECT.md`, `BLUE_POWER_ROUTE_B_DECISION_2026-09-17.md`
+**Parent decisions:** `D09_ECONOMIC_CORE_EC1_ALLOCATION_WEIGHTED_EFFECT.md`, `BLUE_POWER_ROUTE_B_DECISION_2026-09-17.md`, `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`
 
 ## 1. Purpose
 
@@ -74,62 +74,79 @@ Required outputs include:
 
 The recipe must be outcome-blind even though its final numerical instantiation may consume the later authorized final geometry and market-state inputs allowed by that recipe.
 
-## 5. Remaining active object C — forward-friction rule
+## 5. Forward-friction role is closed; expected-cost calibration remains open
 
-Route-A friction logic is **not inherited**.
+The role partition is frozen in `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`.
 
-The historical Route-A rule bounded a domain in the direction needed to make a false early impossibility verdict harder. That one-sided purpose has disappeared.
+For Route B:
 
-Route B needs a rule answering a different question:
+`K_forward(theta) = E[forward deployment cost | frozen execution regime and permitted inputs]`.
 
-> Which forward deployment-friction quantity enters the economically meaningful final BEEE/MEUE used by the confirmatory protocol?
+`K_forward` is an expected-cost object, not a conservative upper bound.
 
-This rule is currently:
+Model/economic uncertainty about the expected-cost model belongs to `M_economic`, subject to the frozen anti-double-counting rule.
 
-`FRICTION_TO_MEUE_RULE = UNRESOLVED`.
+Therefore the former state:
 
-The future Blue closure must choose and justify, before ceiling visibility, a deterministic treatment of friction uncertainty. Candidate classes include, but are not limited to:
+`FRICTION_TO_MEUE_RULE = UNRESOLVED`
 
-- an ex-ante expected/central forward-cost estimate plus a separate conservative economic margin;
-- a conservative forward-cost functional/quantile with an anti-double-counting rule for `M_economic`;
-- another independently justified mapping.
+is superseded by:
 
-No candidate is authorized by this artifact.
+`FRICTION_ROLE_PARTITION = CLOSED`.
 
-Requirements independent of the eventual choice:
+Still unresolved are the executable inputs/calibration needed to instantiate that role:
 
-- no friction value/rule may be selected because it makes Form 4 pass or fail;
-- execution feasibility and real deployability constrain admissible inputs;
-- sunk research/program cost stays outside market MEUE;
-- if a cost parameter also affects statistical execution noise in a separately admitted final estimand, mean and variance roles remain distinct authority objects;
-- the same economic risk may not be charged once through friction conservatism and again through `M_economic` without an explicit non-overlap justification.
+- exact Form 4 cost-component inventory;
+- provenance/estimation rule for every expected-cost parameter;
+- allowed central/expected parameter estimator;
+- failure state when an expected-cost input lacks authority;
+- permitted dependence on capital, geometry, liquidity and allocation state.
+
+The current V1 execution model may supply implementation structure or provisional inputs, but assumed spread/impact coefficients do not become calibrated authority merely because they exist in code.
 
 **Invariants**
 
-- `ROUTE_A_ONE_SIDED_FRICTION_RULE_DOES_NOT_TRANSFER_TO_ROUTE_B`
-- `FRICTION_RULE_PRECEDES_D05_CEILING_VISIBILITY`
-- `FRICTION_AND_MEUE_MARGIN_DO_NOT_DOUBLE_COUNT_SAME_RISK`
+- `K_FORWARD_IS_EXPECTED_FORWARD_COST_NOT_CONSERVATIVE_BOUND`
+- `K_FORWARD_RECIPE_PRECEDES_D05_CEILING_VISIBILITY`
+- `K_FORWARD_NUMERICAL_INSTANTIATION_MAY_FOLLOW_FINAL_GEOMETRY`
+- `EXISTING_EXECUTION_PARAMETER_IS_NOT_AUTOMATIC_CALIBRATION_AUTHORITY`
 
-## 6. Remaining active object D — `M_economic`
+## 6. Remaining active object C — `M_economic`
 
 Route B still requires:
 
 `MEUE(theta_final) = BEEE(theta_final) + M_economic(theta_final)`.
 
-The conservative economic-margin rule is not yet specified.
+The conservative economic-margin role is now partially closed:
+
+- model/economic risk protection belongs here rather than in a prudentially inflated `K_forward`;
+- uncertainty about expected-cost parameters belongs here unless explicitly reassigned under a non-overlap decomposition;
+- the same risk may not be charged in both `K_forward` and `M_economic`;
+- asymmetric economic harm from cost-model misspecification must be respected.
+
+The **numerical/functional calibration rule remains open**.
 
 It must define before ceiling visibility:
 
 - purpose/risk classes covered by the margin;
 - units and sign;
+- plausible parameter/model uncertainty set or another independently justified representation;
+- deterministic mapping from that uncertainty into effect-coordinate units;
+- treatment of asymmetric downside;
 - whether the margin is constant, state-dependent or a deterministic functional of permitted ex-ante inputs;
-- how uncertainty already charged through the friction rule is excluded from duplicate charge;
+- how uncertainty already charged elsewhere is excluded from duplicate charge;
 - failure state when required inputs are unavailable;
 - whether/how the rule varies inside the authorized `C_claim(G*)` domain.
 
 The margin is not statistical standard error, alpha, MDE, program TCO or research opportunity cost.
 
 It may not depend on D05 ceiling values or Form 4 outcomes.
+
+**Invariants**
+
+- `ECONOMIC_MODEL_RISK_LIVES_IN_M_ECONOMIC`
+- `M_ECONOMIC_MUST_RESPECT_ASYMMETRIC_MODEL_RISK`
+- `FRICTION_AND_MARGIN_DO_NOT_DOUBLE_COUNT_SAME_RISK`
 
 ## 7. Route-B final instantiation
 
@@ -141,9 +158,11 @@ It requires:
 2. final D07 geometry `G*` selected under the separately frozen selection procedure;
 3. `A_claim^{G*}` instantiated from the frozen `A_CONSTRUCTOR`;
 4. an authorized capital point/domain inside `C_claim(G*)` according to the frozen economic recipe;
-5. permitted forward-friction inputs instantiated under the frozen friction rule;
-6. `BEEE(theta_final)` and `MEUE(theta_final)` derived mechanically;
-7. final D08 inference targeting that same economic coordinate.
+5. permitted expected forward-friction inputs instantiated under the frozen `K_forward` recipe;
+6. `BEEE(theta_final)` derived mechanically;
+7. `M_economic(theta_final)` derived mechanically under its frozen calibration rule;
+8. `MEUE(theta_final)` derived mechanically;
+9. final D08 inference targeting that same economic coordinate.
 
 No global infimum, full-domain search or certified numerical discretization is required merely because those objects were previously needed by Route A.
 
@@ -158,8 +177,9 @@ The Route-B firewall cannot be marked satisfied until the following D09-side obj
 
 - EC1;
 - this remainder contract;
-- closed `FRICTION_TO_MEUE_RULE`;
-- closed `M_economic` rule;
+- frozen friction/margin role partition;
+- closed executable `K_forward` expected-cost recipe;
+- closed numerical/functional `M_economic` calibration rule;
 - consumable `PHI_AND_BEEE_ROOT_CONTRACT` recipe;
 - `A_CONSTRUCTOR` plus `C_claim(G)` derivation rule.
 
@@ -184,10 +204,11 @@ They are not invalid. They are superseded because their consumer was retired.
 ## 10. Current status
 
 - EC1: **CLOSED / FROZEN**
+- friction versus margin role partition: **CLOSED / FROZEN**
 - delta final-coordinate compatibility: **NOT YET CONSUMABLE**
 - exact `Phi/BEEE` recipe inputs: **NOT YET CONSUMABLE**
-- Route-B friction-to-MEUE rule: **OPEN / UNRESOLVED**
-- `M_economic` rule: **OPEN / UNRESOLVED**
+- executable `K_forward` expected-cost recipe: **OPEN / NOT YET CONSUMABLE**
+- numerical/functional `M_economic` calibration rule: **OPEN / UNRESOLVED**
 - full-domain power-floor map: **N/A CURRENT LINEAGE**
 - external numerical power-floor search: **NOT AUTHORIZED / NO CURRENT CONSUMER**
 
