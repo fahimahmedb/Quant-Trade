@@ -16,12 +16,13 @@ All artifacts remain subordinate to `QUANT_NORTH_STAR.md` and independently cert
 5. `governance/D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`
 6. `governance/D09_ROUTE_B_M_ECONOMIC_UNCERTAINTY_ENVELOPE_2026-09-17.md`
 7. `governance/D09_ROUTE_B_COST_PARAMETER_SOURCE_AND_JOINT_SCENARIO_CONTRACT_2026-09-17.md`
+8. `governance/D09_ROUTE_B_LIQUIDITY_ELIGIBILITY_AND_FINITE_COST_SCENARIO_AMENDMENT_2026-09-17.md`
 
 Earlier Astra-corrected D05/D07 artifacts remain controlling where not superseded.
 
 The Route-A-specific D08/D09 artifacts remain preserved but are explicitly `SUPERSEDED_FOR_THIS_LINEAGE`.
 
-Where the earlier M_economic envelope artifact used generic `combine_k(...)` language or generic evidence classes, the newer cost-parameter/joint-scenario contract controls: source authority and multi-source rules are parameter-specific, and uncertainty is composed through coherent joint cost scenarios rather than independent marginal-envelope summation by default.
+Where earlier Route-B cost/margin artifacts used generic `combine_k(...)`, open-ended scenario-set language, or generic evidence classes, the newer cost-parameter contract plus the liquidity/finite-scenario amendment control: source authority is parameter-specific, uncertainty is represented by a finite named coherent scenario registry, and liquidity-sensitive source applicability resolves to a pre-frozen deployment-liquidity class rather than a D05-discovered population distribution.
 
 ## 2. Blue decisions closed in this phase
 
@@ -52,7 +53,7 @@ Closed/frozen:
 - the same risk may not be charged through both friction conservatism and `M_economic` without an explicit non-overlap decomposition;
 - the `K_forward` recipe is frozen before D05 ceiling visibility, while the final numerical value may be instantiated after `G*`, `A_claim^{G*}` and authorized `C` are known.
 
-### Cost-source / joint-scenario structure
+### Cost-source / finite joint-scenario / liquidity structure
 
 Closed/frozen:
 
@@ -61,14 +62,19 @@ Closed/frozen:
 - Route-A `min(source)` logic is `N/A_CURRENT_LINEAGE` for expected-cost calibration;
 - no single global source aggregator is imposed across heterogeneous cost parameters;
 - the initial cost-class inventory includes explicit fees, opening entry crossing/spread, opening-regime slippage, impact, exit execution cost, financing/borrow when applicable, and residual-capital drag only if separately justified;
-- uncertainty across spread/impact/liquidity/participation is represented through coherent joint cost-model scenarios, not by summing marginal envelopes by default;
+- uncertainty across spread/impact/liquidity/participation is represented through a **finite named coherent** cost-scenario registry `S_cost`, not by summing marginal envelopes or by a Cartesian product of marginal endpoints;
+- scenario count/names/coherence rules are frozen before numerical scenario values and may not expand after seeing MEUE;
 - unknown cross-parameter dependence does not default to independence;
+- liquidity-sensitive parameter calibration must resolve to a pre-frozen deployment-liquidity class `L_deploy(theta)` rather than use the realized D05 Form-4 population distribution to choose a source class;
+- liquidity eligibility is consumed by `A_CONSTRUCTOR` and therefore belongs in the Scientific Claim Fingerprint;
+- changing the liquidity gate so that the support of non-zero scientific weights changes is `NEW_POLICY_VERSION`;
+- liquidity eligibility remains distinct from the `C_claim(G)` scaling-homogeneity proof;
 - `theta` is fixed under a pre-frozen rule before cost/margin evaluation;
 - the one-way order is:
-  `theta -> participation/liquidity -> K_forward(theta) -> M_economic(theta) -> MEUE(theta)`;
-- `MEUE` may not feed back into the same evaluation to search for a more convenient capital size.
+  `theta incl. L_deploy -> A_claim^{G*} -> participation/liquidity -> K_forward -> BEEE_s -> M_economic -> MEUE`;
+- `MEUE` may not feed back into the same evaluation to tune liquidity class, capital size, allocation support, participation or scenario membership.
 
-The exact numerical parameter-source rules, theta-selection rule, scenario construction and final M_economic functional are still open.
+The exact numerical liquidity gate, parameter-source rules, theta-selection rule, numerical scenario construction and final M_economic functional are still open.
 
 ### Power route
 
@@ -132,9 +138,10 @@ Before release, bind/hash at minimum:
 - D09 EC1;
 - active Route-B mini-D09 recipe;
 - frozen friction/margin role partition;
-- frozen uncertainty-envelope and joint-scenario structures;
+- frozen uncertainty-envelope and finite joint-scenario structures;
 - executable `K_forward` expected-cost recipe;
 - parameter-specific source/admission/multiple-source rules;
+- exact `L_deploy` / liquidity-eligibility rule and `LIQUIDITY_ELIGIBILITY_RULE_HASH`;
 - numerical/functional `M_economic` calibration rule;
 - pre-frozen `theta` selection rule;
 - `A_CONSTRUCTOR` and `C_claim(G)` derivation rule;
@@ -183,7 +190,8 @@ Controlled by:
 - `D09_ROUTE_B_COMMON_CORE_REMAINDER_2026-09-17.md`;
 - `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`;
 - `D09_ROUTE_B_M_ECONOMIC_UNCERTAINTY_ENVELOPE_2026-09-17.md`;
-- `D09_ROUTE_B_COST_PARAMETER_SOURCE_AND_JOINT_SCENARIO_CONTRACT_2026-09-17.md`.
+- `D09_ROUTE_B_COST_PARAMETER_SOURCE_AND_JOINT_SCENARIO_CONTRACT_2026-09-17.md`;
+- `D09_ROUTE_B_LIQUIDITY_ELIGIBILITY_AND_FINITE_COST_SCENARIO_AMENDMENT_2026-09-17.md`.
 
 Remaining active D09 objects are:
 
@@ -191,9 +199,10 @@ Remaining active D09 objects are:
 2. consumable `PHI_AND_BEEE_ROOT_CONTRACT` recipe;
 3. executable expected-cost `K_forward` recipe / parameter provenance rules;
 4. exact parameter-specific numerical source contracts;
-5. pre-frozen `theta` selection rule;
-6. joint scenario construction/dependence rule;
-7. numerical/functional `M_economic` calibration rule.
+5. exact numerical liquidity-eligibility rule / source semantics consumed by `A_CONSTRUCTOR`;
+6. pre-frozen `theta` selection rule;
+7. finite named joint scenario registry plus numerical construction/dependence rules;
+8. numerical/functional `M_economic` calibration rule.
 
 Route B does **not** require:
 
@@ -208,13 +217,19 @@ Current friction/model-risk state:
 
 `M_ECONOMIC_ENVELOPE_STRUCTURE = CLOSED`
 
-`PARAMETER_SOURCE_AND_JOINT_SCENARIO_STRUCTURE = CLOSED`
+`PARAMETER_SOURCE_STRUCTURE = CLOSED`
+
+`FINITE_JOINT_COST_SCENARIO_STRUCTURE = CLOSED`
+
+`LIQUIDITY_AS_THETA_AND_FINGERPRINT_ROLE = CLOSED`
 
 while:
 
 `K_FORWARD_EXPECTED_COST_RECIPE = NOT_YET_CONSUMABLE`
 
 `PARAMETER_SPECIFIC_NUMERICAL_SOURCE_RULES = NOT_YET_CONSUMABLE`
+
+`LIQUIDITY_ELIGIBILITY_NUMERICAL_RULE = NOT_YET_CONSUMABLE`
 
 `THETA_SELECTION_RULE = NOT_YET_CONSUMABLE`
 
@@ -258,14 +273,17 @@ D19 mechanics may advance in parallel; D19 is not a general D05-A counting prere
 - D09 EC1: **CLOSED / FROZEN**
 - Route-B friction/margin role partition: **CLOSED / FROZEN**
 - M_economic envelope structure: **CLOSED / FROZEN**
-- parameter-source/joint-scenario structure: **CLOSED / FROZEN**
+- parameter-source structure: **CLOSED / FROZEN**
+- finite joint-cost-scenario structure: **CLOSED / FROZEN**
+- liquidity-as-theta / fingerprint role: **CLOSED / FROZEN**
 - Route-B D09 remainder contract: **RECORDED / ACTIVE DEPENDENCY**
 - final delta compatibility: **NOT YET CONSUMABLE**
 - exact Route-B Phi/BEEE recipe: **NOT YET CONSUMABLE**
 - executable `K_forward` expected-cost recipe: **OPEN / NOT YET CONSUMABLE**
 - parameter-specific numerical source rules: **OPEN / NOT YET CONSUMABLE**
+- numerical liquidity eligibility rule: **OPEN / NOT YET CONSUMABLE**
 - `theta` selection rule: **OPEN / NOT YET CONSUMABLE**
-- numerical joint-scenario construction: **OPEN / NOT YET CONSUMABLE**
+- numerical finite joint-scenario registry: **OPEN / NOT YET CONSUMABLE**
 - numerical/functional `M_economic` rule: **OPEN / UNRESOLVED**
 - Power Route A: **CLOSED / NOT AVAILABLE CURRENT LINEAGE**
 - Power Route B: **SELECTED**
@@ -283,18 +301,19 @@ D19 mechanics may advance in parallel; D19 is not a general D05-A counting prere
 
 ## 11. Immediate next Blue closure
 
-The next closure is no longer a generic literature search. It is to instantiate the frozen parameter registry and source policy without seeing numerical candidate values:
+The next closure is to instantiate the parameter/liquidity/scenario registry **without seeing numerical candidate values**:
 
 1. define exact parameter records inside F1–F7;
-2. for each parameter, freeze exact admissible source classes, priority/applicability rule and deterministic multiple-source rule;
-3. freeze the `theta` selection rule so capital/participation cannot be optimized against the MEUE result;
-4. freeze the joint scenario/dependence construction using those parameter records;
-5. freeze the final `M_economic` functional around the consumable Phi/BEEE recipe;
-6. only then authorize numerical source search/calibration.
+2. define the exact ex-ante liquidity metric/class rule that may feed `A_CONSTRUCTOR`, including missing-data semantics and version/hash behavior;
+3. for each liquidity-sensitive parameter, freeze exact admissible source classes, applicability to `L_deploy`, priority rule and deterministic multiple-source rule;
+4. freeze the `theta` selection rule so liquidity/capital/participation cannot be optimized against the MEUE result;
+5. name and freeze the finite `S_cost` scenario registry and cross-parameter coherence rules;
+6. freeze the final `M_economic` functional around the consumable Phi/BEEE recipe;
+7. only then authorize numerical source search/calibration.
 
 After D09-side firewall prerequisites close:
 
-- freeze the concrete `A_CONSTRUCTOR` interface and `C_claim(G)` homogeneity-test rule;
+- freeze the concrete `A_CONSTRUCTOR` interface and `C_claim(G)` homogeneity-test rule with the liquidity gate included in its fingerprinted eligibility semantics;
 - freeze D07 selection inputs/outputs/failure states without exposing sealed O1/O2 internals;
 - freeze the final-inference selection/error-control contract sufficiently to prevent ceiling-driven adaptation;
 - then materialize/hash the SEC manifest and execute D05-A under the Route-B publication gate.
@@ -303,4 +322,4 @@ No new general Astra review is required for this closure.
 
 ## 12. No economic conclusion yet
 
-This checkpoint retires an unidentifiable pre-D07 power-kill route, removes its phantom dependencies, and closes the structural role split among expected friction, model-risk margin, parameter-specific source governance and joint uncertainty scenarios. It does not establish Form 4 profitability, power sufficiency, edge existence, capturability or capital authority.
+This checkpoint retires an unidentifiable pre-D07 power-kill route, removes its phantom dependencies, and closes the structural role split among expected friction, model-risk margin, parameter-specific source governance, finite coherent joint scenarios and fingerprinted deployment-liquidity eligibility. It does not establish Form 4 profitability, power sufficiency, edge existence, capturability or capital authority.
