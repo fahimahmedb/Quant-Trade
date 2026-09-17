@@ -1,8 +1,23 @@
 # D08 POWER-FLOOR OUTCOME TRANSFORM BOUNDARY
 
-**Status:** FREEZE CANDIDATE — ASTRA-CORRECTED — `DELTA_COORDINATE_COMPATIBILITY_GATE` OPEN  
+**Status:** SUPERSEDED_FOR_THIS_LINEAGE — HISTORICAL ROUTE-A ARTIFACT — ASTRA-CORRECTED  
 **Authority:** Blue Team / Mission Control  
-**Purpose:** bound the outcome transform space used only to construct a one-sided lower bound on required **raw observation count** before final D08 inference is frozen.
+**Purpose:** historical/candidate contract for a one-sided pre-D07 raw-observation power floor. It is not an active dependency of the current Route-B lineage.
+
+## Current-lineage supersession notice — 2026-09-17
+
+`BLUE_POWER_ROUTE_B_DECISION_2026-09-17.md` selected `ROUTE_B_FINAL_PROTOCOL_ONLY` and retired pre-D07 global power-floor authority for the current Form 4 lineage after `RD2_UNIFORM_FLOOR_TRIVIAL`.
+
+Therefore this artifact is scientifically retained but has **no active downstream consumer in the current lineage**.
+
+- `T_SPY_SIMPLE_EXCESS_20` remains useful as the primitive gross scientific outcome concept through D09 EC1.
+- The floor-transform admission, floor instantiation, source-coverage and carry-forward-impossibility clauses below are not current-lineage obligations.
+- No numerical floor-source work is authorized from this artifact.
+- A future new lineage may reactivate these rules only through a new Blue decision with independently justified assumptions and an exposure-safe pre-freeze.
+
+`STATUS_CURRENT_LINEAGE = SUPERSEDED_FOR_THIS_LINEAGE`.
+
+The historical text below is preserved because it remains correct for the Route-A problem it was written to govern.
 
 ## 1. Scope
 
@@ -193,10 +208,12 @@ Otherwise the earlier power-impossibility verdict cannot be carried into that ne
 
 **Invariant:** `FINAL_D08_CANNOT_UNDERCUT_PRIOR_POWER_FLOOR_WITHOUT_INVALIDATION`.
 
-## 11. Status gate
+## 11. Historical status gate
 
-This artifact remains `FREEZE_CANDIDATE`, not authority-bearing for the power floor, until D09 resolves:
+Under a Route-A lineage this artifact would remain a `FREEZE_CANDIDATE` until D09 resolved:
 
 - `DELTA_COORDINATE_COMPATIBILITY_GATE`;
 - unique `MEUE -> effect_T` mapping;
 - the common raw-required-sample power formulation consumed downstream.
+
+For the current Route-B lineage this gate is not active.
