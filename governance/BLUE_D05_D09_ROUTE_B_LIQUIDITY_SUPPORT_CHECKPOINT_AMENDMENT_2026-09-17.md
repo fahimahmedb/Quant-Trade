@@ -12,7 +12,9 @@ Add:
 
 - `governance/D05A_LIQUIDITY_GATE_RESOLUTION_AND_D19_ROUTING_AMENDMENT_2026-09-17.md`;
 - `governance/D05A_D09_LIQUIDITY_EDGAR_CUTOFF_SINGLE_EVALUATION_AMENDMENT_2026-09-17.md`;
-- `governance/D05A_D09_LIQUIDITY_IDENTITY_AND_LOOKBACK_SELECTION_AMENDMENT_2026-09-17.md`.
+- `governance/D05A_D09_LIQUIDITY_IDENTITY_AND_LOOKBACK_SELECTION_AMENDMENT_2026-09-17.md`;
+- `governance/D05A_D09_LIQUIDITY_METRIC_AND_LOOKBACK_STABILITY_CONTRACT_2026-09-17.md`;
+- `governance/D05A_D09_LIQUIDITY_PREDICTIVE_LOOKBACK_AND_NOTIONAL_SOURCE_CONTRACT_2026-09-17.md`.
 
 ## 2. Qualification versus deployment support
 
@@ -124,7 +126,115 @@ Current state:
 
 **Invariant:** `NO_POST_ENTRY_LIQUIDITY_REEVALUATION_OF_SCIENTIFIC_SUPPORT`.
 
-## 8. D19 dependency extension
+## 8. Liquidity gate purpose / metric family are closed
+
+The claim-defining liquidity gate is a **capacity-eligibility gate only**.
+
+It does not gate on opening spread, opening depth, auction quality or opening slippage. Those remain economic-cost/model-risk objects in `K_forward` / `M_economic`.
+
+The claim-defining metric family is:
+
+`ADV_NOTIONAL(W) = mean DAILY_TRADED_NOTIONAL over the frozen lookback`.
+
+Participation is expressed as:
+
+`INTENDED_ORDER_NOTIONAL / ADV_NOTIONAL`.
+
+Raw share-volume ADV is not the claim-support coordinate in this lineage.
+
+Current state:
+
+`LIQUIDITY_GATE_PURPOSE = CLOSED / CAPACITY_ONLY`
+
+`LIQUIDITY_METRIC_FAMILY = CLOSED / NOTIONAL_ADV`.
+
+**Invariants**
+
+- `OPEN_EXECUTION_QUALITY_IS_NOT_A_SUPPORT_GATE`
+- `CLAIM_LIQUIDITY_METRIC_IS_NOTIONAL_ADV`
+- `PARTICIPATION_USES_NOTIONAL_OVER_NOTIONAL_ADV`
+
+## 9. Lookback criterion is predictive, not fixed-parameter estimation
+
+The authority-bearing lookback objective is no longer interpreted as estimating a fixed latent ADV.
+
+For cutoff session `t`, the primary external calibration target is:
+
+`NEXT_SESSION_TRADED_NOTIONAL(t)`
+
+for the immediately following regular session of the same PIT-resolved security/listing lineage.
+
+The lookback-selection form is:
+
+`W* = shortest W in the frozen candidate set such that ADV_PREDICTION_ERROR(W) <= epsilon_ADV`.
+
+Before inspecting candidate-window results, freeze/hash:
+
+- candidate window set;
+- exact prediction-error/loss functional;
+- pooling/aggregation/weighting rule;
+- `epsilon_ADV`;
+- tie/failure rule;
+- calibration-corpus construction.
+
+The 20-session holding horizon does not redefine this entry-capacity forecast horizon. Post-entry/exit liquidity remains cost/risk/terminal treatment rather than support refresh.
+
+Current state:
+
+`LOOKBACK_OBJECTIVE = CLOSED / NEXT-SESSION PREDICTIVE LIQUIDITY`
+
+while the exact error functional and numerical threshold remain open.
+
+**Invariants**
+
+- `ADV_LOOKBACK_TARGET_IS_PREDICTIVE_LIQUIDITY`
+- `ADV_CAPACITY_FORECAST_HORIZON_IS_NEXT_REGULAR_SESSION`
+- `PREDICTION_ERROR_FUNCTIONAL_PRECEDES_WINDOW_RESULTS`
+- `EPSILON_ADV_PRECEDES_WINDOW_RESULTS`
+
+## 10. Calibration corpus applicability and non-circularity
+
+The non-target lookback-calibration corpus must cover the intended `L_deploy(theta)` liquidity regime.
+
+Its inclusion rule may not depend on realized candidate-window ADV outputs, because that would make the window selector choose the corpus that chooses the window.
+
+Before calibration, freeze a candidate-window-independent `CALIBRATION_LIQUIDITY_DOMAIN` using a separately justified provider/source class, independent reference convention, or broader predeclared universe/stratification that contains the intended deployment regime.
+
+If no non-circular applicability rule can be frozen:
+
+`LIQUIDITY_LOOKBACK_CALIBRATION_DOMAIN_UNRESOLVED`.
+
+**Invariants**
+
+- `CALIBRATION_CORPUS_COVERS_INTENDED_LIQUIDITY_REGIME`
+- `CALIBRATION_CORPUS_MEMBERSHIP_IS_INDEPENDENT_OF_CANDIDATE_WINDOW_RESULTS`
+
+## 11. Daily traded-notional representation follows source authority
+
+The exact `DAILY_TRADED_NOTIONAL` route is still open, but its selection logic is closed.
+
+Allowed routes are:
+
+- a source-provided daily traded-notional field with sufficient PIT/version/reproducibility semantics; or
+- a deterministic frozen price × share-volume construction.
+
+If constructed, the exact price reference (for example close, VWAP or another justified field), volume field, corporate-action convention and PIT lineage must be frozen.
+
+No price convention is selected merely because it is theoretically preferable if the authorized source cannot reproduce it historically/PIT. Conversely, no simpler convention is selected because it retains more target securities or changes ADV favorably.
+
+Current state:
+
+`DAILY_NOTIONAL_REPRESENTATION_RULE = CLOSED / SOURCE-AUTHORITY-AND-REPRODUCIBILITY-FIRST`
+
+while N1 versus N2 and any exact price/volume fields remain open.
+
+**Invariants**
+
+- `DAILY_NOTIONAL_REPRESENTATION_FOLLOWS_FROZEN_SOURCE_AUTHORITY`
+- `THEORETICAL_PREFERENCE_DOES_NOT_OVERRIDE_PIT_REPRODUCIBILITY`
+- `NO_TARGET_RETENTION_DRIVEN_PRICE_CONVENTION`
+
+## 12. D19 dependency extension
 
 An unresolved source-unit liquidity snapshot is recorded under FM-08.
 
@@ -140,66 +250,37 @@ Current authority remains:
 
 `D19_ADVERSE_TREATMENT_SPEC_PENDING`.
 
-## 9. Lookback selection rule is closed; exact length remains open
-
-The liquidity lookback length is claim-defining because it affects both measurement stability and which securities possess sufficient history to satisfy the gate. It belongs in `LIQUIDITY_ELIGIBILITY_RULE_HASH`.
-
-The exact length must be chosen before D05 ceiling visibility using a predeclared measurement objective, such as independently justified stability/smoothing of the liquidity estimator under the intended execution regime.
-
-It may **not** be selected by inspecting:
-
-- Form-4 issuer/event retention under candidate windows;
-- final crossing retention;
-- D05 ceilings;
-- `Q(theta)`;
-- BEEE/MEUE;
-- outcomes.
-
-Current state:
-
-`LOOKBACK_SELECTION_CRITERION = CLOSED / MEASUREMENT_PROPERTY_NOT_TARGET_RETENTION`.
-
-The exact numerical lookback remains `OPEN / NOT YET CONSUMABLE`.
-
-**Invariants**
-
-- `LIQUIDITY_LOOKBACK_LENGTH_IS_CLAIM_FINGERPRINTED`
-- `LOOKBACK_SELECTED_FOR_MEASUREMENT_PROPERTY_NOT_TARGET_INCLUSION`
-- `TARGET_RETENTION_CANNOT_SELECT_LIQUIDITY_LOOKBACK`
-
-## 10. Remaining liquidity metric contract blockers
+## 13. Remaining liquidity metric contract blockers
 
 Before `LIQUIDITY_ELIGIBILITY_RULE_HASH` becomes consumable, still freeze/hash:
 
-- exact metric definition;
-- exact PIT lookback length under the closed selection criterion;
+- exact candidate-window set;
+- exact `ADV_PREDICTION_ERROR(W)` functional and aggregation rule;
+- numerical `epsilon_ADV`;
+- exact candidate-window-independent `CALIBRATION_LIQUIDITY_DOMAIN`;
+- exact daily-notional source/construction route;
+- source class/provider/version/PIT semantics;
+- final lookback length derived under the frozen rule;
 - minimum valid observations;
 - missing/non-trading session handling;
-- adjustment/corporate-action convention where relevant;
-- source class/provider/version/PIT semantics;
-- coherent security/listing lineage semantics for the lookback;
 - recently listed / insufficient-history treatment;
 - suspension/listing-transition treatment;
-- numerical threshold or deterministic eligibility functional;
+- numerical ADV threshold or deterministic capacity/participation eligibility functional;
 - recovery/failure/update/version rules.
 
-A generic `ADV` label is not sufficient.
+The cutoff/reference anchor, final identity-resolution time, gate purpose, metric family, forecast horizon, lookback objective form and single-shot support evaluation are no longer open.
 
-The cutoff/reference anchor, final identity-resolution time, lookback selection criterion and single-shot evaluation semantics are no longer open.
-
-## 11. Firewall consequence
+## 14. Firewall consequence
 
 `ROUTE_B_FINAL_PROTOCOL_FIREWALL_SATISFIED` remains `FALSE`.
 
-Current liquidity-side blockers before ceiling release to protocol-mutating actors are:
+Current liquidity-side blockers before ceiling release to protocol-mutating actors are the hash-addressable completion of the remaining objects in §13, plus:
 
-- hash-addressable `LIQUIDITY_ELIGIBILITY_RULE_HASH` completing the remaining metric/window/source/history/threshold semantics;
-- frozen insufficient-history treatment;
 - concrete `A_CONSTRUCTOR` binding the liquidity gate;
 - frozen source-to-final-crossing propagation/unit-conversion rule in the implementation contract;
 - D19 consumable adverse mechanics for unresolved final deployment support where required.
 
-## 12. Current state additions
+## 15. Current state additions
 
 - scientific Form-4 qualification partition: **UNCHANGED / FROZEN**
 - deployment-support partition: **CLOSED / FROZEN STRUCTURE**
@@ -210,19 +291,21 @@ Current liquidity-side blockers before ceiling release to protocol-mutating acto
 - final crossing support D07-independence: **NO — FOLLOWS G***
 - final deployment security identity time: **CLOSED / PIT AT LATEST REQUIRED EDGAR DATE**
 - confirmatory eligibility refresh: **CLOSED / SINGLE-SHOT**
-- lookback selection criterion: **CLOSED / MEASUREMENT PROPERTY, NOT TARGET RETENTION**
-- exact liquidity metric/lookback length/source/threshold: **OPEN / NOT YET CONSUMABLE**
+- gate purpose: **CLOSED / CAPACITY ONLY**
+- metric family: **CLOSED / NOTIONAL ADV**
+- lookback objective: **CLOSED / NEXT-SESSION PREDICTIVE LIQUIDITY**
+- calibration-corpus non-circularity: **CLOSED / REQUIRED**
+- daily-notional representation selection principle: **CLOSED / SOURCE AUTHORITY FIRST**
+- exact loss/window/epsilon/corpus/provider/notional route/threshold: **OPEN / NOT YET CONSUMABLE**
 - insufficient-history policy: **OPEN / NOT YET CONSUMABLE**
 - D19 adverse mechanics for unresolved final deployment support: **NOT YET CONSUMABLE**
 - D05-A empirical pass: **NOT YET EXECUTED**
 - outcome access: **NOT AUTHORIZED**
 
-## 13. Next closure
+## 16. Next closure
 
-Before instantiating the F1–F7 numerical source registry, close the remaining non-numerical liquidity-gate measurement contract:
+Before instantiating liquidity-sensitive F2/F3/F4 source contracts or authorizing numerical calibration, close the remaining non-numerical selector objects:
 
-`exact metric + lookback length + source class + minimum-history rule + missing-session/adjustment semantics`.
+`candidate windows + prediction-error functional + aggregation rule + epsilon rule/source + calibration-liquidity-domain rule + daily-notional source/construction precedence + minimum-history semantics`.
 
-The cutoff/reference-time question, final security-identity resolution time, lookback selection criterion and 20-session re-evaluation question are now closed.
-
-Only after the full liquidity rule is hash-addressable should liquidity-sensitive F2/F3/F4 parameter source contracts be bound to that deployment class.
+Only after these objects are hash-addressable may numerical source/calibration results choose the final window and feed the liquidity gate.
