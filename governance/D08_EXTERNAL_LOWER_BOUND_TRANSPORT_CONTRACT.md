@@ -1,10 +1,24 @@
 # D08 EXTERNAL LOWER-BOUND TRANSPORT CONTRACT
 
-**Status:** FROZEN CONTRACT — ASTRA-CORRECTED — SOURCE SEARCH NOT YET AUTHORIZED  
+**Status:** SUPERSEDED_FOR_THIS_LINEAGE — HISTORICAL ROUTE-A CONTRACT — ASTRA-CORRECTED  
 **Authority:** Blue Team / Mission Control  
-**Purpose:** define ex ante when external evidence may supply authority-bearing ingredients for `N_RAW_REQUIRED_FLOOR`.
+**Purpose:** historical contract governing external evidence used to build a pre-D07 lower bound on raw observations required. It is not an active dependency of the current Route-B lineage.
 
-Source search remains blocked until the D08 delta gate, D09 MEUE mapping dependency, raw-count power formulation, source-search rule and uncertainty treatment are resolved.
+## Current-lineage supersession notice — 2026-09-17
+
+`BLUE_POWER_ROUTE_B_DECISION_2026-09-17.md` selected `ROUTE_B_FINAL_PROTOCOL_ONLY` and retired current-lineage pre-D07 power-floor authority after `RD2_UNIFORM_FLOOR_TRIVIAL`.
+
+Therefore:
+
+- this contract remains scientifically valid for the Route-A problem it was written to govern;
+- it has no active downstream consumer in the current Form 4 lineage;
+- external numerical floor-source search remains **NOT AUTHORIZED**, now because the route itself is retired rather than because prerequisite gates are merely incomplete;
+- its one-sided source-minimum, lower-bound transport and anti-false-kill rules must not be imported into final Route-B inference unless a separate Route-B contract independently justifies them;
+- a future new lineage may reactivate this contract only through a new Blue decision with independently justified assumptions and proper exposure-safe pre-freeze.
+
+`STATUS_CURRENT_LINEAGE = SUPERSEDED_FOR_THIS_LINEAGE`.
+
+The historical Route-A contract follows unchanged in substance.
 
 ## 1. Core distinction
 
@@ -267,16 +281,18 @@ After external numerical values/search outcomes have been inspected, the current
 
 Material changes require a new scientific lineage and appropriate contamination treatment.
 
-## 16. D05 interface
+## 16. Historical D05 interface
 
-D05 consumes only:
+Under an active Route-A lineage D05 would consume only:
 
 - an authority-bearing `N_RAW_REQUIRED_FLOOR`; or
 - a cause-preserving unresolved state.
 
-D05 does not source-shop, inspect transform/source argmins, or construct an effective-sample proxy.
+D05 would not source-shop, inspect transform/source argmins, or construct an effective-sample proxy.
 
-**Invariants**
+**Historical Route-A invariants**
 
 - `D05_CONSUMES_FLOOR_D05_DOES_NOT_SOURCE_SHOP`
 - `RAW_CEILING_COMPARES_ONLY_TO_RAW_REQUIREMENT`
+
+For the current Route-B lineage these invariants have no active consumer and are `N/A_CURRENT_LINEAGE`.
