@@ -201,7 +201,8 @@ def module_digests(root: Path) -> dict[str, str]:
 
 
 def build_manifest(policy: SecAccessPolicy, *, root: Path,
-                   supervisor: dict[str, Any] | None = None) -> dict[str, Any]:
+                   supervisor: dict[str, Any] | None = None,
+                   environ: dict[str, str] | None = None) -> dict[str, Any]:
     """The deterministic manifest the fingerprint is taken over.
 
     Everything in here can change the expected sequence of acquisition actions.
@@ -234,7 +235,7 @@ def build_manifest(policy: SecAccessPolicy, *, root: Path,
             "transform_canonical": sorted(TRANSFORM_CANONICAL),
             "explicitly_noncritical": sorted(EXPLICITLY_NONCRITICAL),
         },
-        "supervisor": supervisor or supervisor_manifest(root),
+        "supervisor": supervisor or supervisor_manifest(root, environ),
     }
 
 
@@ -243,5 +244,7 @@ def compute_fingerprint(manifest: dict[str, Any]) -> str:
 
 
 def acquisition_critical_fingerprint(policy: SecAccessPolicy, *, root: Path,
-                                     supervisor: dict[str, Any] | None = None) -> str:
-    return compute_fingerprint(build_manifest(policy, root=root, supervisor=supervisor))
+                                     supervisor: dict[str, Any] | None = None,
+                                     environ: dict[str, str] | None = None) -> str:
+    return compute_fingerprint(build_manifest(policy, root=root, supervisor=supervisor,
+                                              environ=environ))

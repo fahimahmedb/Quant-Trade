@@ -228,8 +228,10 @@ class SecForm4Collector:
         # trusted: a deployment whose code or policy moved must not be able to
         # present the previous window's fingerprint.
         self.fingerprint: str | None = None
+        self._environ = environ
         if self.policy is not None:
-            self.fingerprint = acquisition_critical_fingerprint(self.policy, root=self.root)
+            self.fingerprint = acquisition_critical_fingerprint(
+                self.policy, root=self.root, environ=environ)
 
     # --- scheduler provenance ---------------------------------------------
     def record_transition(self, state: str, cause: str, *, next_due_at: str | None,
@@ -328,6 +330,14 @@ class SecForm4Collector:
             blockers.append("ACQUISITION_FINGERPRINT_UNAVAILABLE")
         if not self.lifecycle.get("externally_attested"):
             blockers.append("LIFECYCLE_CAUSE_UNATTESTED")
+        if not self.lifecycle.get("service_managed"):
+            # No recognised service manager launched this process, so its start
+            # cause rests on the operator's word rather than on provenance.
+            blockers.append("LAUNCH_NOT_SERVICE_MANAGED")
+        if not self.lifecycle.get("qualifying_service_mode"):
+            blockers.append("NOT_QUALIFYING_SERVICE_MODE")
+        if self.lifecycle.get("invalidates_observation_window"):
+            blockers.append("INVALIDATING_LIFECYCLE_CAUSE")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
         if not self.paths.sec_fingerprint.exists():
@@ -337,6 +347,10 @@ class SecForm4Collector:
                 "acquisition_critical_fingerprint": self.fingerprint,
                 "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
                 "boot_id": self.lifecycle.get("boot_id"),
+                "service_managed": self.lifecycle.get("service_managed"),
+                "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
+                "effective_service_configuration": self.lifecycle.get(
+                    "effective_service_configuration"),
                 "scheduler_transitions_recorded": len(self.scheduler.all()),
                 # This lane never declares t0 or closes the continuity state.
                 "t0_authority": "BLUE_TEAM",
@@ -346,7 +360,7 @@ class SecForm4Collector:
         """Write the manifest and its fingerprint durably, before t0."""
         if self.policy is None:
             raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
-        manifest = build_manifest(self.policy, root=self.root)
+        manifest = build_manifest(self.policy, root=self.root, environ=self._environ)
         fingerprint = compute_fingerprint(manifest)
         payload = {"acquisition_critical_fingerprint": fingerprint,
                    "materialized_at_utc": self.timebase.now_iso(),
@@ -1149,6 +1163,8 @@ class SecForm4Collector:
             "boot_id": self.lifecycle.get("boot_id"),
             "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
             "lifecycle_externally_attested": self.lifecycle.get("externally_attested"),
+            "launch_service_managed": self.lifecycle.get("service_managed"),
+            "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
             "capture_state": storage["capture_state"],
             "visibility_state": storage["visibility_state"],
             "admissibility_state": storage["admissibility_state"],

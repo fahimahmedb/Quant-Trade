@@ -21,7 +21,14 @@ Wants=network-online.target
 Type=simple
 WorkingDirectory=/opt/quant
 EnvironmentFile=/etc/quant/sec-capture.env
-ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant
+# Declares which service manager is launching this. systemd additionally supplies
+# INVOCATION_ID per unit invocation, which a hand-typed command does not carry.
+# Both are required before a run may call itself qualifying, so a human who simply
+# omits a flag is recorded as MANUAL_START rather than SCHEDULED_START.
+Environment=QUANT_SEC_SERVICE_MANAGER=systemd
+# --qualifying refuses every acquisition-critical override: cadence comes from the
+# frozen policy and a qualifying service does not stop after N idle waits.
+ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying
 Restart=on-failure
 RestartSec=15
 StartLimitIntervalSec=600

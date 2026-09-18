@@ -55,10 +55,15 @@ from quant.dataplane.sec.scheduler import (AUTHORIZED_SUPERSESSION_CAUSES,  # no
                                            POLL_COMPLETED, SCHEDULER_STATES,
                                            SERVICE_START, SchedulerTransition,
                                            WORK_ENQUEUED)
-from quant.dataplane.sec.supervisor import (AUTOMATIC_RESTART_AFTER_FAILURE,  # noqa: E402
-                                            DEPLOYMENT_RESTART, LIFECYCLE_CAUSES,
-                                            MANUAL_START, SCHEDULED_START, UNATTESTED,
-                                            lifecycle_provenance)
+from quant.dataplane.sec.supervisor import (AUTOMATIC_CAUSES,  # noqa: E402
+                                            AUTOMATIC_RESTART_AFTER_FAILURE,
+                                            AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+                                            DEPLOYMENT_RESTART, INVALIDATING_CAUSES,
+                                            LIFECYCLE_CAUSES, MANUAL_START,
+                                            SCHEDULED_START, UNATTESTED,
+                                            effective_service_configuration,
+                                            lifecycle_provenance,
+                                            service_manager_provenance)
 from quant.dataplane.sec.timebase import FrozenTimebase  # noqa: E402
 from quant.dataplane.sec.visibility import (assert_no_scientific_content,  # noqa: E402
                                             find_leaks)
@@ -2628,3 +2633,205 @@ class AuditFalsePassTests(CollectorTestCase):
         report = audit_observation_window(collector)
         self.assertTrue(report["accountable"], report["findings"])
         self.assertEqual(report["obligations_without_identity"], [])
+
+
+# ---------------------------------------------------------------------------
+# LIFECYCLE_PROVENANCE_NOT_AUTHORITATIVE
+# ---------------------------------------------------------------------------
+
+SERVICE_MANAGED_ENV = {"QUANT_SEC_SERVICE_MANAGER": "systemd",
+                       "INVOCATION_ID": "9f2c1b7ad4e14f0c8a3e5d6b7c8f9a0b"}
+
+
+class LaunchProvenanceTests(SecCaptureTestCase):
+    """Blue finding 2. Provenance an operator cannot silently omit."""
+
+    def test_absence_of_provenance_is_never_a_scheduled_start(self) -> None:
+        """The inversion: omission yields MANUAL_START, not SCHEDULED_START."""
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        # A human runs the command directly, passing nothing at all. Previously
+        # this produced SCHEDULED_START from an empty state.
+        cause = launcher.classify({}, "sha256:aaa", manual=False,
+                                  service_managed=False, invocation_id=None)
+        self.assertEqual(cause, MANUAL_START)
+        # Even with a prior clean state, an unmanaged launch stays manual.
+        cause = launcher.classify({"fingerprint": "sha256:aaa", "last_child_exit_code": 0},
+                                  "sha256:aaa", manual=False, service_managed=False,
+                                  invocation_id=None)
+        self.assertEqual(cause, MANUAL_START)
+
+    def test_a_service_managed_first_launch_is_a_scheduled_start(self) -> None:
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        self.assertEqual(
+            launcher.classify({}, "sha256:aaa", manual=False, service_managed=True,
+                              invocation_id="inv-1"),
+            SCHEDULED_START)
+
+    def test_a_dead_supervisor_is_reported_as_a_supervisor_restart(self) -> None:
+        """Blue's case B: last_child_exit_code=null used to read as SCHEDULED_START."""
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        # Exactly the state the old supervisor left just before launching a child.
+        previous = {"fingerprint": "sha256:aaa", "last_child_exit_code": None,
+                    "supervisor_running": True, "supervisor_invocation_id": "inv-1"}
+        cause = launcher.classify(previous, "sha256:aaa", manual=False,
+                                  service_managed=True, invocation_id="inv-2")
+        self.assertEqual(cause, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
+        self.assertNotEqual(cause, SCHEDULED_START)
+        # A clean prior exit under the same conditions is a scheduled start.
+        clean = dict(previous, supervisor_running=False, last_child_exit_code=0)
+        self.assertEqual(launcher.classify(clean, "sha256:aaa", manual=False,
+                                           service_managed=True, invocation_id="inv-2"),
+                         SCHEDULED_START)
+
+    def test_child_failure_and_deployment_remain_distinguishable(self) -> None:
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        child_failed = {"fingerprint": "sha256:aaa", "last_child_exit_code": 1,
+                        "supervisor_running": False, "supervisor_invocation_id": "inv-1"}
+        self.assertEqual(launcher.classify(child_failed, "sha256:aaa", manual=False,
+                                           service_managed=True, invocation_id="inv-1"),
+                         AUTOMATIC_RESTART_AFTER_FAILURE)
+        redeployed = {"fingerprint": "sha256:old", "last_child_exit_code": 0,
+                      "supervisor_running": False, "supervisor_invocation_id": "inv-1"}
+        self.assertEqual(launcher.classify(redeployed, "sha256:new", manual=False,
+                                           service_managed=True, invocation_id="inv-2"),
+                         DEPLOYMENT_RESTART)
+
+    def test_all_five_lifecycle_causes_are_reachable_and_classified(self) -> None:
+        self.assertEqual(set(LIFECYCLE_CAUSES), {
+            SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE,
+            AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, DEPLOYMENT_RESTART,
+            MANUAL_START})
+        # Only an operator intervention invalidates the window.
+        self.assertEqual(INVALIDATING_CAUSES, frozenset({MANUAL_START}))
+        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, AUTOMATIC_CAUSES)
+
+    def test_a_launch_without_a_service_manager_is_not_qualifying(self) -> None:
+        provenance = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-1",
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertFalse(provenance["service_managed"])
+        self.assertFalse(provenance["qualifying_service_mode"],
+                         "claiming qualifying mode without a manager must not work")
+
+    def test_a_service_managed_launch_can_be_qualifying(self) -> None:
+        provenance = lifecycle_provenance({
+            **SERVICE_MANAGED_ENV,
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-1",
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertTrue(provenance["service_managed"])
+        self.assertTrue(provenance["qualifying_service_mode"])
+        self.assertEqual(provenance["service_invocation_id"],
+                         SERVICE_MANAGED_ENV["INVOCATION_ID"])
+
+    def test_an_unrecognised_service_manager_is_not_accepted(self) -> None:
+        provenance = lifecycle_provenance({
+            "QUANT_SEC_SERVICE_MANAGER": "my-shell-script",
+            "INVOCATION_ID": "whatever",
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertFalse(provenance["service_managed"])
+        self.assertFalse(provenance["qualifying_service_mode"])
+
+    def test_readiness_blocks_a_launch_without_external_provenance(self) -> None:
+        collector = SecForm4Collector(self.paths, policy=self.policy(),
+                                      transport=FakeTransport(lambda p, c: None),
+                                      timebase=self.timebase, root=ROOT, environ={})
+        readiness = collector.t0_readiness()
+        self.assertFalse(readiness["instrumentation_ready"])
+        for blocker in ("LIFECYCLE_CAUSE_UNATTESTED", "LAUNCH_NOT_SERVICE_MANAGED",
+                        "NOT_QUALIFYING_SERVICE_MODE"):
+            self.assertIn(blocker, readiness["blockers"])
+
+    def test_readiness_blocks_a_manual_start(self) -> None:
+        collector = SecForm4Collector(
+            self.paths, policy=self.policy(),
+            transport=FakeTransport(lambda p, c: None), timebase=self.timebase, root=ROOT,
+            environ={**SERVICE_MANAGED_ENV, "QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START,
+                     "QUANT_SEC_BOOT_ID": "b1", "QUANT_SEC_QUALIFYING_MODE": "1"})
+        readiness = collector.t0_readiness()
+        self.assertFalse(readiness["instrumentation_ready"])
+        self.assertIn("INVALIDATING_LIFECYCLE_CAUSE", readiness["blockers"])
+
+
+class QualifyingModeGateTests(SecCaptureTestCase):
+    """Acquisition-critical runtime overrides are refused or bound."""
+
+    def run_launcher(self, *args, environ: dict[str, str] | None = None):
+        import subprocess
+        environment = {**os.environ, "QUANT_SEC_USER_AGENT": USER_AGENT}
+        environment.pop("INVOCATION_ID", None)
+        environment.pop("QUANT_SEC_SERVICE_MANAGER", None)
+        environment.update(environ or {})
+        return subprocess.run(
+            [sys.executable, str(ROOT / "deploy" / "quant_sec_supervisor.py"),
+             "--root", str(self.root), *args],
+            capture_output=True, text=True, env=environment, timeout=120)
+
+    def test_qualifying_mode_refuses_a_poll_seconds_override(self) -> None:
+        result = self.run_launcher("--qualifying", "--poll-seconds", "5",
+                                   environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--poll-seconds", result.stdout)
+        self.assertIn("overrides not permitted", result.stdout)
+
+    def test_qualifying_mode_refuses_a_max_waits_override(self) -> None:
+        result = self.run_launcher("--qualifying", "--max-waits", "2",
+                                   environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--max-waits", result.stdout)
+
+    def test_qualifying_mode_refuses_a_manual_start(self) -> None:
+        result = self.run_launcher("--qualifying", "--manual", environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("manual start cannot be the qualifying", result.stdout)
+
+    def test_qualifying_mode_refuses_a_launch_without_a_service_manager(self) -> None:
+        result = self.run_launcher("--qualifying")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("no recognised service manager provenance", result.stdout)
+
+    def test_effective_runtime_configuration_is_bound_into_the_fingerprint(self) -> None:
+        """Two services from identical code with different cadence must differ."""
+        base = {**SERVICE_MANAGED_ENV, "QUANT_SEC_QUALIFYING_MODE": "1",
+                "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0",
+                "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": "15.0"}
+        first = acquisition_critical_fingerprint(self.policy(), root=ROOT, environ=base)
+        faster = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT,
+            environ={**base, "QUANT_SEC_SERVICE_POLL_SECONDS": "5.0"})
+        self.assertNotEqual(faster, first, "wake cadence must move the fingerprint")
+        bounded = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT, environ={**base, "QUANT_SEC_SERVICE_MAX_WAITS": "3"})
+        self.assertNotEqual(bounded, first, "a service lifetime bound must move it")
+        slower_restart = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT,
+            environ={**base, "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": "120.0"})
+        self.assertNotEqual(slower_restart, first, "restart pacing must move it")
+        non_qualifying = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT, environ={**base, "QUANT_SEC_QUALIFYING_MODE": "0"})
+        self.assertNotEqual(non_qualifying, first,
+                            "qualifying and non-qualifying services are not the same service")
+        # Identical environments still agree.
+        self.assertEqual(acquisition_critical_fingerprint(self.policy(), root=ROOT,
+                                                          environ=base), first)
+
+    def test_the_manifest_records_the_effective_service_invocation(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT, environ={
+            **SERVICE_MANAGED_ENV, "QUANT_SEC_QUALIFYING_MODE": "1",
+            "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
+        invocation = manifest["supervisor"]["effective_service_invocation"]
+        self.assertEqual(invocation["poll_seconds"], 60.0)
+        self.assertTrue(invocation["qualifying_mode"])
+        self.assertIsNone(invocation["max_waits"])
+
+    def test_the_unit_declares_the_service_manager_and_qualifying_mode(self) -> None:
+        unit = (ROOT / "deploy" / "quant-sec-capture.service").read_text(encoding="utf-8")
+        self.assertIn("Environment=QUANT_SEC_SERVICE_MANAGER=systemd", unit)
+        self.assertIn("--qualifying", unit)
+        self.assertIn("Restart=on-failure", unit)
