@@ -140,6 +140,10 @@ class CollectorState:
     pending_tasks: list[dict[str, Any]] = field(default_factory=list)
     reconciled_days: list[str] = field(default_factory=list)
     unreconciled_days: list[str] = field(default_factory=list)
+    #: The obligation currently outstanding, so the next transition can declare
+    #: prospectively that it replaces this one. Durable, because a restart must
+    #: not orphan an obligation the audit is still expecting an answer for.
+    open_obligation_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -238,11 +242,19 @@ class SecForm4Collector:
         changes - including when the lane is blocked and nothing will happen.
         """
         budget_state = self.budget.load() if self.budget else None
+        # A transition that commits to a next action creates a *named*
+        # obligation, and simultaneously declares which still-open obligation it
+        # replaces. Both halves are written before the new due time arrives, so
+        # the audit can tell a genuine re-plan from a hole papered over later.
+        obligation_id = uuid.uuid4().hex[:16] if next_due_at else None
+        superseded = self.state.open_obligation_id
         transition = SchedulerTransition(
             transition_id=uuid.uuid4().hex[:16],
             recorded_at_utc=self.timebase.now_iso(),
             state=state, cause=cause, next_due_at_utc=next_due_at,
             acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
+            obligation_id=obligation_id,
+            supersedes_obligation_id=superseded,
             boot_id=self.lifecycle.get("boot_id"),
             lifecycle_cause=self.lifecycle.get("lifecycle_cause"),
             cooldown_until_utc=budget_state.cooldown_until_utc if budget_state else None,
@@ -252,6 +264,8 @@ class SecForm4Collector:
             work_in_flight=bool(self.state.pending_tasks),
             detail=detail)
         self.scheduler.record(transition)
+        self.state.open_obligation_id = obligation_id
+        self.save()
         return transition
 
     def next_due_at(self) -> str | None:

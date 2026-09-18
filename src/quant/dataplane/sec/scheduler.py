@@ -14,6 +14,16 @@ scheduler said it intended to do.
 Every record carries the active acquisition fingerprint, so a transition can be
 attributed to the exact frozen semantics that produced it.
 
+**Obligations have identity.** A transition that declares a ``next_due_at_utc``
+creates a named *obligation* - a thing the lane has committed to doing by a
+stated time. The name matters: without it the audit can only reconcile times
+against times, which turns into a many-to-many match where one attempt can
+appear to answer several obligations and any later transition can appear to
+cancel an earlier one. So each obligation carries an ``obligation_id``, and a
+transition that replaces a still-open obligation says so explicitly through
+``supersedes_obligation_id``. Supersession is a prospective claim: it counts only
+when it was recorded *before* the obligation it replaces came due.
+
 Firewall-safe by construction: states, causes, times, digests and cooldown
 figures only. No accession, locator, filing content or count.
 """
@@ -54,6 +64,15 @@ CONFIG_FAIL_CLOSED = "CONFIG_FAIL_CLOSED"
 LANE_DISABLED = "LANE_DISABLED"
 LANE_ENABLED = "LANE_ENABLED"
 
+#: Causes permitted to supersede a still-open obligation. An unrecognised cause
+#: cannot retire an obligation, so adding a new cause without classifying it
+#: leaves the obligation open rather than silently clearing it.
+AUTHORIZED_SUPERSESSION_CAUSES = frozenset({
+    SERVICE_START, POLL_COMPLETED, POLL_FAILED, WORK_ENQUEUED, DRAIN_COMPLETED,
+    RECONCILE_COMPLETED, BACKOFF_ENTERED, COOLDOWN_OBSERVED, COOLDOWN_EXPIRED,
+    CONFIG_FAIL_CLOSED, LANE_DISABLED, LANE_ENABLED,
+})
+
 
 @dataclass
 class SchedulerTransition:
@@ -68,6 +87,12 @@ class SchedulerTransition:
     #: a claim the audit can check.
     next_due_at_utc: str | None
     acquisition_critical_fingerprint: str
+    #: Identity of the obligation this transition creates. Present exactly when
+    #: ``next_due_at_utc`` is, so every commitment can be reconciled by name.
+    obligation_id: str | None = None
+    #: The still-open obligation this transition prospectively replaces. Only
+    #: honoured by the audit when recorded before that obligation's due time.
+    supersedes_obligation_id: str | None = None
     boot_id: str | None = None
     lifecycle_cause: str | None = None
     cooldown_until_utc: str | None = None
@@ -101,13 +126,22 @@ class SchedulerJournal:
         return records[-1] if records else None
 
     def expected_actions(self) -> list[dict[str, Any]]:
-        """Every moment the scheduler prospectively said an action would be due.
+        """Every obligation the scheduler prospectively committed to.
 
-        This is what the retrospective audit reconciles against the attempt
-        journal. A due time with no corresponding attempt and no later
-        transition explaining it is an unexplained hole.
+        This is what the retrospective audit reconciles, one obligation to one
+        resolution. A due obligation with no attempt in its window and no valid
+        prospective supersession is an unexplained hole.
         """
         return [record for record in self.all() if record.get("next_due_at_utc")]
+
+    def supersessions(self) -> dict[str, list[dict[str, Any]]]:
+        """Transitions grouped by the obligation each one claims to replace."""
+        grouped: dict[str, list[dict[str, Any]]] = {}
+        for record in self.all():
+            target = record.get("supersedes_obligation_id")
+            if target:
+                grouped.setdefault(target, []).append(record)
+        return grouped
 
     def fingerprints_seen(self) -> list[str]:
         seen: list[str] = []

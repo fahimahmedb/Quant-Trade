@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import dataclasses
 import errno
+import uuid
 import gzip
 import json
 import os
@@ -46,12 +47,14 @@ from quant.dataplane.sec.fingerprint import (ACQUISITION_CRITICAL_MODULES,  # no
                                              policy_field_names,
                                              verify_policy_classification)
 from quant.dataplane.sec.audit import audit_observation_window  # noqa: E402
-from quant.dataplane.sec.scheduler import (AWAITING_POLL, BACKOFF,  # noqa: E402
+from quant.dataplane.sec.scheduler import (AUTHORIZED_SUPERSESSION_CAUSES,  # noqa: E402
+                                           AWAITING_POLL, BACKOFF,
                                            BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
                                            CONFIG_FAIL_CLOSED, COOLDOWN,
                                            DRAIN_COMPLETED, DRAINING, LANE_ENABLED,
                                            POLL_COMPLETED, SCHEDULER_STATES,
-                                           SERVICE_START, WORK_ENQUEUED)
+                                           SERVICE_START, SchedulerTransition,
+                                           WORK_ENQUEUED)
 from quant.dataplane.sec.supervisor import (AUTOMATIC_RESTART_AFTER_FAILURE,  # noqa: E402
                                             DEPLOYMENT_RESTART, LIFECYCLE_CAUSES,
                                             MANUAL_START, SCHEDULED_START, UNATTESTED,
@@ -65,7 +68,7 @@ from quant.dataplane.sec.transport import (COMPLETE,  # noqa: E402
                                            SecHttpResponse, SecHttpTransport,
                                            SecTransportError, TRUNCATED)
 from quant.paths import QuantPaths  # noqa: E402
-from quant.state import parse_ts, read_jsonl  # noqa: E402
+from quant.state import append_jsonl, parse_ts, read_jsonl  # noqa: E402
 
 
 USER_AGENT = "Quant Research quant-research@example.com"
@@ -2346,3 +2349,282 @@ class ContinuousServiceTests(CollectorTestCase):
             self.assertIn("visibility firewall", gap["acceptance"])
             # And booting twice is stable.
             QuantSystem(root).boot()
+
+
+# ---------------------------------------------------------------------------
+# RETROSPECTIVE_AUDIT_CAN_FALSE_PASS
+# ---------------------------------------------------------------------------
+
+class AuditFalsePassTests(CollectorTestCase):
+    """Each test constructs a journal that the previous audit called accountable.
+
+    The defect class was that obligations had no identity, so reconciliation was
+    many-to-many: a pre-due attempt could answer a future deadline, one attempt
+    could answer several deadlines, and any later transition could cancel an
+    earlier one. These are the three false passes, plus the legitimate
+    supersession that must still pass.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.lane = self.collector_with_attested_lifecycle()
+
+    def collector_with_attested_lifecycle(self, *, enable: bool = False):
+        """A collector whose scheduler journal starts empty.
+
+        Enabling the lane or recording a service start would add real
+        obligations, which would mix into the hand-built scenarios below. The
+        lifecycle record these tests need is therefore written directly, so the
+        only transitions in the ledger are the ones the scenario states.
+        """
+        collector = self.collector(self.fixture_router(), enable=enable)
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-audit"})
+        return collector
+
+    def write_transition(self, *, recorded_at: str, due_at: str | None, cause: str,
+                         obligation_id: str | None, supersedes: str | None = None,
+                         state: str = AWAITING_POLL) -> None:
+        """Append a scheduler transition directly, to build an exact scenario."""
+        self.lane.scheduler.record(SchedulerTransition(
+            transition_id=f"t-{uuid.uuid4().hex[:8]}",
+            recorded_at_utc=recorded_at, state=state, cause=cause,
+            next_due_at_utc=due_at,
+            acquisition_critical_fingerprint=self.lane.fingerprint or "fp",
+            obligation_id=obligation_id, supersedes_obligation_id=supersedes,
+            boot_id="boot-audit", lifecycle_cause=SCHEDULED_START))
+
+    def write_attempt(self, *, attempted_at: str, attempt_id: str,
+                      result_state: str = CAPTURED_OK) -> None:
+        self.lane.store.record_attempt(SecAttemptRecord(
+            attempt_id=attempt_id, attempt_kind="DISCOVERY", endpoint_class="test",
+            source_locator_digest=digest_text("loc"),
+            request_attempted_at_utc=attempted_at,
+            response_received_at_utc=attempted_at,
+            result_state=result_state, collector_version="v", git_commit="c",
+            http_status=200))
+
+    def audit(self, *, now: str):
+        # Written directly rather than through record_service_start, which would
+        # also append a transition and add an obligation to the scenario.
+        append_jsonl(self.paths.sec_lifecycle,
+                     dict(self.lane.lifecycle,
+                          recorded_at_utc="2026-09-18T11:59:00+00:00",
+                          acquisition_critical_fingerprint=self.lane.fingerprint
+                          or "fp"))
+        return audit_observation_window(self.lane, tolerance_seconds=180.0,
+                                        now=parse_ts(now))
+
+    # --- case A: an earlier attempt must not satisfy a later obligation -----
+    def test_an_attempt_before_the_due_time_does_not_satisfy_the_obligation(self) -> None:
+        """Defect A. `abs(attempt - due) <= tolerance` accepted a pre-due request."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # The only request happened a minute BEFORE the deadline it would answer,
+        # and well inside the 180s tolerance window in absolute terms.
+        self.write_attempt(attempted_at="2026-09-18T12:04:00+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(report["unexplained_obligations"][0]["obligation_id"], "OB-1")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 0)
+
+    def test_an_attempt_after_the_due_time_within_tolerance_does_satisfy_it(self) -> None:
+        """The forward-only rule must still accept a slightly late tick."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_attempt(attempted_at="2026-09-18T12:06:30+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_an_attempt_beyond_tolerance_does_not_satisfy_the_obligation(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_attempt(attempted_at="2026-09-18T12:20:00+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:40:00+00:00")
+        self.assertEqual(report["obligations_unexplained"], 1)
+
+    # --- case B: one attempt cannot answer two obligations ------------------
+    def test_one_attempt_cannot_satisfy_two_due_obligations(self) -> None:
+        """Defect B. Attempts were matched with `any(...)` and never consumed."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # A second, independent obligation due at the same moment. Nothing
+        # supersedes either one, so both need their own answer.
+        self.write_transition(recorded_at="2026-09-18T12:00:30+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2",
+                              state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1,
+                         "the single request may retire exactly one obligation")
+        self.assertEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(report["reconciliation"], "one_obligation_to_one_resolution")
+
+    def test_two_attempts_satisfy_two_obligations(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:00:30+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2", state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        self.write_attempt(attempted_at="2026-09-18T12:05:40+00:00", attempt_id="A-2")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 2)
+        self.assertEqual(report["obligations_unexplained"], 0)
+        self.assertTrue(report["accountable"], report["findings"])
+
+    # --- case C: supersession cannot be retroactive -------------------------
+    def test_a_transition_after_a_missed_deadline_cannot_erase_the_hole(self) -> None:
+        """Defect C. Any later transition used to count as supersession."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # The service came back long after the deadline and re-planned, naming
+        # the obligation it replaces. That is a post-hoc note, not an excuse.
+        self.write_transition(recorded_at="2026-09-18T12:40:00+00:00",
+                              due_at="2026-09-18T12:45:00+00:00",
+                              cause=SERVICE_START, obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:41:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        unexplained = {item["obligation_id"] for item in report["unexplained_obligations"]}
+        self.assertEqual(unexplained, {"OB-1"})
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0)
+        # OB-2 is not yet due, so it is pending rather than a second hole.
+        self.assertEqual(report["obligations_pending"], 1)
+
+    def test_a_transition_before_the_due_time_supersedes_and_stays_accountable(self) -> None:
+        """The legitimate re-plan: prospective, named, authorized cause."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Work arrived before the poll came due, so the lane re-planned.
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:03:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2",
+                              supersedes="OB-1", state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:03:20+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(report["obligations_resolved_by_supersession"], 1)
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_supersession_requires_naming_the_obligation_it_replaces(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Recorded before the deadline, but names nothing. Not a supersession.
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:09:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OB-1", {item["obligation_id"]
+                               for item in report["unexplained_obligations"]})
+
+    def test_supersession_requires_an_authorized_cause(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:09:00+00:00",
+                              cause="OPERATOR_DECIDED_TO_SKIP", obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"],
+                         "an unrecognised cause must not retire an obligation")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0)
+
+    def test_one_transition_cannot_supersede_two_obligations(self) -> None:
+        """Resolutions are consumed on both sides of the ledger."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:00:10+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2", state=DRAINING)
+        # One transition claiming to replace both.
+        transition_id = f"t-{uuid.uuid4().hex[:8]}"
+        for target in ("OB-1", "OB-2"):
+            self.lane.scheduler.record(SchedulerTransition(
+                transition_id=transition_id,
+                recorded_at_utc="2026-09-18T12:02:00+00:00", state=AWAITING_POLL,
+                cause=POLL_COMPLETED, next_due_at_utc="2026-09-18T12:20:00+00:00",
+                acquisition_critical_fingerprint="fp", obligation_id="OB-3",
+                supersedes_obligation_id=target, boot_id="boot-audit",
+                lifecycle_cause=SCHEDULED_START))
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 1,
+                         "one re-plan retires one obligation")
+        self.assertFalse(report["accountable"])
+
+    # --- ledger integrity ---------------------------------------------------
+    def test_an_obligation_without_identity_fails_the_window(self) -> None:
+        """A journal that cannot be reconciled by name is not audited by time."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id=None)
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OBLIGATION_IDENTITY_MISSING", report["findings"])
+        self.assertEqual(len(report["obligations_without_identity"]), 1)
+
+    def test_every_obligation_has_exactly_one_status(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:06:00+00:00",
+                              due_at="2026-09-18T12:11:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-2")
+        self.write_attempt(attempted_at="2026-09-18T12:05:05+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:12:00+00:00")
+        total = (report["obligations_resolved_by_attempt"]
+                 + report["obligations_resolved_by_supersession"]
+                 + report["obligations_pending"]
+                 + report["obligations_unexplained"])
+        self.assertEqual(total, report["obligations"],
+                         "the four statuses must partition the ledger exactly")
+
+    def test_a_live_service_last_obligation_is_pending_not_a_hole(self) -> None:
+        """The newest commitment of a running service is not yet a miss."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        report = self.audit(now="2026-09-18T12:05:30+00:00")
+        self.assertEqual(report["obligations_pending"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+        self.assertTrue(report["accountable"], report["findings"])
+
+    def test_the_real_collector_emits_reconcilable_obligations(self) -> None:
+        """The production path must produce a ledger the audit can settle."""
+        collector = self.collector_with_attested_lifecycle(enable=True)
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        transitions = collector.scheduler.all()
+        committed = [record for record in transitions if record.get("next_due_at_utc")]
+        self.assertTrue(committed)
+        for record in committed:
+            with self.subTest(transition=record["transition_id"]):
+                self.assertTrue(record["obligation_id"],
+                                "every commitment must be named")
+        # Each transition after the first declares what it replaces.
+        chained = [record for record in transitions
+                   if record.get("supersedes_obligation_id")]
+        self.assertTrue(chained, "re-plans must name the obligation they replace")
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(report["obligations_without_identity"], [])
