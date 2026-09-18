@@ -24,6 +24,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from quant.book.ledger import LedgerState, Position  # noqa: E402
 from quant.clock import ControlState  # noqa: E402
 from quant.dataplane.registry import DatasetRecord  # noqa: E402
+from quant.dataplane.sec_form4 import SecCollectorState  # noqa: E402
+from quant.dataplane.sec_form4_raw import (SecAttemptRecord, SecRawObjectRecord,
+                                           SecSourceVersionRecord)  # noqa: E402
 from quant.desk.opportunity import OpportunityTicket  # noqa: E402
 from quant.events import SystemEvent  # noqa: E402
 from quant.factory.strategies import StrategyDefinition  # noqa: E402
@@ -39,6 +42,10 @@ OBJECTS = {
     "strategy_definition": (StrategyDefinition,
                             "Versioned strategy, its evidence and its lifecycle."),
     "dataset_record": (DatasetRecord, "Data lineage, validation and availability."),
+    "sec_attempt_record": (SecAttemptRecord, "Append-only SEC request/poll acquisition envelope."),
+    "sec_raw_object_record": (SecRawObjectRecord, "Immutable SEC raw-response manifest row."),
+    "sec_source_version_record": (SecSourceVersionRecord, "Observed version of one SEC source identity."),
+    "sec_collector_state": (SecCollectorState, "Persistent SEC raw-capture cursor and liveness state."),
     "system_event": (SystemEvent, "Append-only trace entry for status and audit."),
     "control_state": (ControlState, "Control Plane lifetime and cursors."),
     "component_status": (ComponentStatus, "RUN/IDLE/BLOCKED/FAULT/PAUSED per function."),
