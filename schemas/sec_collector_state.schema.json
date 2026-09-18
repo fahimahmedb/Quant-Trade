@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Durable capture-lane state: continuity cursor, coverage verdict, open gaps, queued work and reconciliation progress.",
+  "properties": {
+    "active_poll": {
+      "additionalProperties": {},
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "attempts": {
+      "type": "integer"
+    },
+    "blocked_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bootstrap_scope_from_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bootstrap_scope_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bootstrap_started_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "captures": {
+      "type": "integer"
+    },
+    "conflicts": {
+      "type": "integer"
+    },
+    "coverage_detail": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coverage_state": {
+      "type": "string"
+    },
+    "cursor_advanced_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cursor_feed_updated_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cursor_identity_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deduplications": {
+      "type": "integer"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "last_attempt_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_capture_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_error_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_poll_completed_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_poll_started_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_result_state": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_validated_discovery_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "open_gaps": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "pending_cursor_feed_updated_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pending_cursor_identity_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pending_tasks": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "polls": {
+      "type": "integer"
+    },
+    "reconciled_days": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "resolved_gaps": {
+      "items": {
+        "additionalProperties": {},
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "unreconciled_days": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "validated_polls": {
+      "type": "integer"
+    }
+  },
+  "required": [],
+  "title": "sec_collector_state",
+  "type": "object"
+}

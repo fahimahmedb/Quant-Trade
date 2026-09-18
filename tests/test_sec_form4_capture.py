@@ -32,8 +32,11 @@ from quant.dataplane.sec.store import (CAPTURED, NOT_ADMISSIBLE_FOR_CONFIRMATION
                                        SecRawObjectRecord, SecStorageFailure,
                                        digest_bytes)
 from quant.dataplane.sec.timebase import FrozenTimebase  # noqa: E402
-from quant.dataplane.sec.transport import (COMPLETE, SecHttpResponse,  # noqa: E402
-                                           SecTransportError, TRUNCATED)
+from quant.dataplane.sec.visibility import (assert_no_scientific_content,  # noqa: E402
+                                            find_leaks)
+from quant.dataplane.sec.transport import (COMPLETE,  # noqa: E402
+                                           DEADLINE_EXCEEDED as DEADLINE_EXCEEDED_OUTCOME,
+                                           SecHttpResponse, SecTransportError, TRUNCATED)
 from quant.paths import QuantPaths  # noqa: E402
 
 
@@ -454,10 +457,12 @@ from quant.dataplane.sec.collector import (COMPLETE as COVERAGE_COMPLETE,  # noq
 from quant.dataplane.sec.discovery import (DiscoveryInvalid, daily_index_path,  # noqa: E402
                                            discovery_path, parse_daily_index,
                                            parse_discovery_page)
-from quant.dataplane.sec.store import (ACCESS_FORBIDDEN, CAPTURED_OK, DEDUPLICATED,  # noqa: E402
+from quant.dataplane.sec.store import (ACCESS_FORBIDDEN, CAPTURED_OK,  # noqa: E402
+                                       COOLDOWN_SUPPRESSED, DEDUPLICATED,
                                        DISCOVERY_INVALID, HUNG_REQUEST,
                                        INCOMPLETE_TRANSFER, NEW_ITEMS, NO_NEW_DATA,
-                                       RATE_LIMITED, REQUEST_FAILED, SERVER_ERROR,
+                                       PERMANENT_CLIENT_ERROR, RATE_LIMITED,
+                                       REQUEST_FAILED, SERVER_ERROR, STORAGE_FAILED,
                                        digest_text)
 
 FIXTURES = ROOT / "tests" / "fixtures" / "sec"
@@ -1006,3 +1011,449 @@ class ReconciliationTests(CollectorTestCase):
         results = collector.drain(max_items=5)
         self.assertEqual([item["result_state"] for item in results], [CAPTURED_OK] * 2)
         self.assertEqual(collector.state.pending_tasks, [])
+
+
+# ---------------------------------------------------------------------------
+# Request-control behaviour under adverse responses
+# ---------------------------------------------------------------------------
+
+class RequestControlTests(CollectorTestCase):
+    def test_429_enters_rate_limit_backoff_and_honours_retry_after(self) -> None:
+        """Requirement 11: 429 stops draining and respects the authoritative wait."""
+        collector = self.collector(lambda path, call: response(
+            b"slow down", status=429, headers={"Retry-After": "600",
+                                               "Content-Type": "text/plain"}))
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, RATE_LIMITED)
+        self.assertNotEqual(outcome.result_state, NO_NEW_DATA)
+        self.assertAlmostEqual(collector.cooldown_remaining(), 600.0, delta=1.0,
+                               msg="Retry-After above the policy floor must win")
+        self.assertEqual(collector.budget.load().cooldown_reason, "http_429_rate_limited")
+        self.assertEqual(collector.store.attempts()[-1]["retry_after_seconds"], 600.0)
+        # Ordinary draining stops immediately: no further request is made.
+        before = len(self.transport.requested)
+        self.assertFalse(collector.poll_due())
+        self.assertEqual(collector.poll().result_state, COOLDOWN_SUPPRESSED)
+        self.assertEqual(len(self.transport.requested), before)
+
+    def test_429_without_retry_after_falls_back_to_the_policy_floor(self) -> None:
+        collector = self.collector(lambda path, call: response(b"x", status=429))
+        collector.poll()
+        self.assertAlmostEqual(collector.cooldown_remaining(),
+                               self.policy().rate_limit_cooldown_seconds, delta=1.0)
+
+    def test_403_does_not_hot_loop_and_records_a_blocked_state(self) -> None:
+        """Requirement 12: an access-control 403 backs off hard, never spins."""
+        html = (FIXTURES / "edgar_error_page.html").read_bytes()
+        collector = self.collector(lambda path, call: response(
+            html, status=403, headers={"Content-Type": "text/html"}))
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, ACCESS_FORBIDDEN)
+        self.assertAlmostEqual(collector.cooldown_remaining(),
+                               self.policy().forbidden_cooldown_seconds, delta=1.0)
+        self.assertIn("403", collector.state.blocked_reason or "")
+        requests_after_first = len(self.transport.requested)
+        for _ in range(6):
+            collector.poll()
+            collector.drain(max_items=3)
+        self.assertEqual(len(self.transport.requested), requests_after_first,
+                         "a 403 must not be retried in a loop")
+        state, detail = collector.component_state()
+        self.assertEqual(state, "BLOCKED")
+        self.assertIn("cooldown", detail)
+
+    def test_timeout_and_5xx_walk_the_bounded_backoff_ladder(self) -> None:
+        """Requirement 10: transient failures back off, bounded, with jitter."""
+        collector = self.collector(lambda path, call: response(b"oops", status=503))
+        ladder = self.policy().backoff_schedule_seconds
+        observed = []
+        for _ in range(7):
+            outcome = collector.poll()
+            self.assertEqual(outcome.result_state, SERVER_ERROR)
+            observed.append(collector.cooldown_remaining())
+            # Let the cooldown expire so the next attempt is permitted.
+            self.timebase.advance(collector.cooldown_remaining() + 61)
+        for index, value in enumerate(observed):
+            base = ladder[min(index, len(ladder) - 1)]
+            self.assertGreaterEqual(value, base * 0.7)
+            self.assertLessEqual(value, base * 1.3)
+        self.assertLessEqual(observed[-1], ladder[-1] * 1.3, "the ladder is bounded")
+
+    def test_a_successful_poll_resets_the_backoff_ladder(self) -> None:
+        state = {"fail": True}
+
+        def handler(path: str, call: int):
+            if state["fail"]:
+                return response(b"oops", status=503)
+            return response((FIXTURES / "latest_form4_page.atom").read_bytes())
+
+        collector = self.collector(handler)
+        collector.poll()
+        self.assertGreater(collector.budget.load().backoff_step, 0)
+        self.timebase.advance(collector.cooldown_remaining() + 61)
+        state["fail"] = False
+        collector.poll()
+        self.assertEqual(collector.budget.load().backoff_step, 0)
+
+    def test_hung_request_leaves_a_diagnosable_liveness_state(self) -> None:
+        """Requirement 20: a blocked request is diagnosable, never a silent stall."""
+        collector = self.collector(lambda path, call: SecTransportError(
+            "read_timeout:TimeoutError", DEADLINE_EXCEEDED_OUTCOME))
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, HUNG_REQUEST)
+        self.assertNotEqual(outcome.result_state, NO_NEW_DATA)
+        self.assertTrue(outcome.heartbeat_durable)
+        attempt = collector.store.attempts()[-1]
+        self.assertEqual(attempt["result_state"], HUNG_REQUEST)
+        self.assertEqual(attempt["transfer_outcome"], DEADLINE_EXCEEDED_OUTCOME)
+        self.assertEqual(attempt["error_class"], "read_timeout:TimeoutError")
+        self.assertIsNone(attempt["response_received_at_utc"],
+                          "no response was received, so no receipt time is invented")
+        self.assertEqual(collector.liveness(), RUNNING,
+                         "the collector is alive; the request is what failed")
+        self.assertGreater(collector.cooldown_remaining(), 0)
+
+    def test_truncated_transfer_never_becomes_a_capture(self) -> None:
+        """Requirement 18, at the collector level."""
+        body = (FIXTURES / "form4_submission.txt").read_bytes()[:400]
+
+        def handler(path: str, call: int):
+            if path.startswith("/cgi-bin"):
+                return response((FIXTURES / "latest_form4_page.atom").read_bytes())
+            return response(body, headers={"Content-Length": "9999",
+                                           "Content-Type": "text/plain"},
+                            transfer_outcome=TRUNCATED)
+
+        collector = self.collector(handler)
+        collector.poll()
+        results = collector.drain(max_items=1)
+        self.assertEqual(results[0]["result_state"], INCOMPLETE_TRANSFER)
+        self.assertEqual(collector.store.envelopes(), [],
+                         "an incomplete transfer may not be acknowledged")
+        self.assertEqual(len(collector.state.pending_tasks), 3,
+                         "the task stays queued for a safe retry")
+        attempt = collector.store.attempts()[-1]
+        self.assertIsNotNone(attempt["incomplete_object_sha256"])
+        self.assertIsNone(attempt["raw_object_sha256"])
+        self.assertFalse(collector.store.has_object(digest_bytes(body)))
+        self.assertTrue(collector.store.incomplete_path(digest_bytes(body)).exists())
+
+    def test_compressed_discovery_and_filing_hash_the_wire_bytes(self) -> None:
+        """Requirement 17, at the collector level: the gzip path the SEC actually uses."""
+        atom = gzip.compress((FIXTURES / "latest_form4_page.atom").read_bytes())
+        submission = gzip.compress((FIXTURES / "form4_submission.txt").read_bytes())
+
+        def handler(path: str, call: int):
+            body = atom if path.startswith("/cgi-bin") else submission
+            return response(body, headers={"Content-Encoding": "gzip",
+                                           "Content-Length": str(len(body))})
+
+        collector = self.collector(handler)
+        outcome = collector.poll()
+        self.assertTrue(outcome.valid_discovery, "a gzip body must parse after decoding")
+        self.assertEqual(outcome.discovery_object_sha256, digest_bytes(atom),
+                         "the stored hash describes the compressed wire bytes")
+        results = collector.drain(max_items=1)
+        self.assertEqual(results[0]["raw_object_sha256"], digest_bytes(submission))
+        self.assertEqual(collector.store.read_object(results[0]["raw_object_sha256"]),
+                         submission)
+        envelope = collector.store.envelopes()[0]
+        self.assertEqual(envelope["content_encoding"], "gzip")
+        self.assertEqual(envelope["byte_length"], len(submission))
+
+    def test_permanent_4xx_is_recorded_without_escalating_cooldown(self) -> None:
+        collector = self.collector(lambda path, call: response(b"gone", status=404))
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, PERMANENT_CLIENT_ERROR)
+        self.assertEqual(collector.cooldown_remaining(), 0.0,
+                         "a permanent 4xx is journalled, not escalated")
+        self.assertEqual(collector.store.attempts()[-1]["error_class"], "http_404")
+
+    def test_no_new_data_request_failed_and_did_not_run_are_distinguishable(self) -> None:
+        """The three cases a reviewer must be able to separate afterwards."""
+        collector = self.collector(self.fixture_router(), enable=False)
+        self.assertEqual(collector.liveness(), NEVER_RAN)
+        self.assertEqual(collector.store.attempts(), [])
+
+        collector.enable()
+        collector.poll()
+        collector.drain(max_items=3)
+        self.timebase.advance(60)
+        quiet = collector.poll()
+        self.assertEqual(quiet.result_state, NO_NEW_DATA)
+
+        self.timebase.advance(60)
+        broken = self.collector(lambda path, call: SecTransportError("request_failed:OSError"))
+        failed = broken.poll()
+        self.assertEqual(failed.result_state, REQUEST_FAILED)
+
+        states = [record["result_state"] for record in broken.store.attempts()]
+        self.assertIn(REQUEST_FAILED, states)
+        self.assertEqual(broken.liveness(), RUNNING)
+        # A collector that stops asking becomes STALE rather than quietly "fine".
+        self.timebase.advance(60 * 60)
+        self.assertEqual(broken.liveness(), STALE)
+
+
+# ---------------------------------------------------------------------------
+# Crash boundaries and restart safety
+# ---------------------------------------------------------------------------
+
+class _SimulatedCrash(RuntimeError):
+    """Stands in for the process dying at one specific commit boundary."""
+
+
+class CrashBoundaryTests(CollectorTestCase):
+    """Requirement 15: every commit boundary is replayable without silent loss.
+
+    Each test kills the collector at one boundary, rebuilds it from disk exactly
+    as a restart would, and checks two things: nothing captured disappeared, and
+    nothing was silently substituted or acquired twice.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.router = self.fixture_router()
+
+    def test_crash_between_discovery_and_queue_rediscovers_rather_than_skips(self) -> None:
+        collector = self.collector(self.router)
+        original = collector.store.record_locator
+
+        def crash_on_filing_locator(**kwargs):
+            if kwargs.get("endpoint_class") == "edgar_archives_submission_text":
+                raise _SimulatedCrash("died before the task reached the queue")
+            return original(**kwargs)
+
+        collector.store.record_locator = crash_on_filing_locator
+        with self.assertRaises(_SimulatedCrash):
+            collector.poll()
+
+        restarted = self.reborn(self.router)
+        self.assertEqual(restarted.state.pending_tasks, [])
+        self.assertIsNone(restarted.state.cursor_identity_digest,
+                          "the anchor must not have moved past undiscovered work")
+        # The discovery response itself is preserved, and the poll is replayable.
+        self.assertTrue(restarted.store.raw_manifest())
+        outcome = restarted.poll()
+        self.assertEqual(outcome.enqueued, 3, "the same work is rediscovered, not skipped")
+        self.assertEqual(len(restarted.store.raw_manifest()), 1,
+                         "the identical discovery response deduplicated")
+
+    def test_crash_between_raw_write_and_envelope_replays_safely(self) -> None:
+        collector = self.collector(self.router)
+        collector.poll()
+        collector.store.record_envelope = lambda envelope: (_ for _ in ()).throw(
+            _SimulatedCrash("died after the bytes were durable"))
+        with self.assertRaises(_SimulatedCrash):
+            collector.drain(max_items=1)
+
+        restarted = self.reborn(self.router)
+        self.assertEqual(restarted.store.envelopes(), [],
+                         "no envelope means the filing was never acknowledged")
+        self.assertEqual(len(restarted.state.pending_tasks), 3,
+                         "the task is still queued for replay")
+        submission = (FIXTURES / "form4_submission.txt").read_bytes()
+        self.assertTrue(restarted.store.has_object(digest_bytes(submission)),
+                        "bytes already written must survive the crash")
+        results = restarted.drain(max_items=1)
+        self.assertEqual(results[0]["result_state"], CAPTURED_OK)
+        self.assertEqual(len(restarted.store.envelopes()), 1)
+        # The replay deduplicated rather than writing a second object.
+        matching = [record for record in restarted.store.raw_manifest()
+                    if record["raw_object_sha256"] == digest_bytes(submission)]
+        self.assertEqual(len(matching), 1, "no duplicate raw object was created")
+
+    def test_crash_between_envelope_and_acknowledgement_costs_no_refetch(self) -> None:
+        collector = self.collector(self.router)
+        collector.poll()
+        collector._drop_task = lambda task: (_ for _ in ()).throw(
+            _SimulatedCrash("died after the envelope was durable"))
+        with self.assertRaises(_SimulatedCrash):
+            collector.drain(max_items=1)
+        self.assertEqual(len(collector.store.envelopes()), 1)
+
+        restarted = self.reborn(self.router)
+        self.assertEqual(len(restarted.state.pending_tasks), 3)
+        before = len(self.transport.requested)
+        results = restarted.drain(max_items=1)
+        self.assertEqual(results[0]["result_state"], DEDUPLICATED)
+        self.assertEqual(results[0]["requests_spent"], 0,
+                         "a durable envelope means the filing is never fetched again")
+        self.assertEqual(len(self.transport.requested), before)
+        self.assertEqual(len(restarted.store.envelopes()), 1,
+                         "no second envelope was appended")
+        self.assertEqual(len(restarted.state.pending_tasks), 2)
+
+    def test_crash_between_acknowledgement_and_cursor_advance_is_recoverable(self) -> None:
+        collector = self.collector(self.router)
+        collector.poll()
+        collector.drain(max_items=2)
+        collector._maybe_advance_cursor = lambda: (_ for _ in ()).throw(
+            _SimulatedCrash("died before the cursor moved"))
+        with self.assertRaises(_SimulatedCrash):
+            collector.drain(max_items=1)
+
+        restarted = self.reborn(self.router)
+        self.assertIsNone(restarted.state.cursor_identity_digest,
+                          "the cursor did not advance, so nothing was skipped")
+        self.assertIsNotNone(restarted.state.pending_cursor_identity_digest)
+        before = len(self.transport.requested)
+        restarted.drain(max_items=1)
+        self.assertEqual(len(self.transport.requested), before,
+                         "the acknowledged filing is not fetched again")
+        self.assertEqual(restarted.state.pending_tasks, [])
+        self.assertEqual(restarted.state.cursor_identity_digest,
+                         digest_text("0000320193-26-000045"),
+                         "the cursor advances once every task is acknowledged")
+
+    def test_disk_full_during_acquisition_cannot_acknowledge_anything(self) -> None:
+        """Requirement 16, at the collector level."""
+        collector = self.collector(self.router)
+        collector.poll()
+        real_put = collector.store.put_object
+
+        def full_disk(body: bytes, *, incomplete: bool = False):
+            raise SecStorageFailure("raw object write failed: ENOSPC")
+
+        collector.store.put_object = full_disk
+        results = collector.drain(max_items=1)
+        self.assertEqual(results[0]["result_state"], STORAGE_FAILED)
+        self.assertEqual(collector.store.envelopes(), [])
+        self.assertEqual(len(collector.state.pending_tasks), 3,
+                         "nothing may be acknowledged when the bytes cannot be stored")
+        self.assertEqual(collector.store.attempts()[-1]["result_state"], STORAGE_FAILED)
+        self.assertIsNone(collector.store.attempts()[-1]["raw_object_sha256"])
+
+        # Recovery once storage returns: the same task completes normally.
+        collector.store.put_object = real_put
+        recovered = collector.drain(max_items=1)
+        self.assertEqual(recovered[0]["result_state"], CAPTURED_OK)
+        self.assertEqual(len(collector.store.envelopes()), 1)
+
+    def test_restart_preserves_append_only_history_and_all_lane_state(self) -> None:
+        """Requirement 14: nothing captured disappears, nothing is replaced."""
+        collector = self.collector(self.router)
+        collector.poll()
+        collector.drain(max_items=3)
+        collector.budget.enter_cooldown(300.0, "http_429_rate_limited")
+        attempts = collector.store.attempts()
+        envelopes = collector.store.envelopes()
+        manifest = collector.store.raw_manifest()
+        cursor = collector.state.cursor_identity_digest
+        coverage = collector.state.coverage_state
+
+        restarted = self.reborn(self.router)
+        self.assertEqual(restarted.store.attempts(), attempts)
+        self.assertEqual(restarted.store.envelopes(), envelopes)
+        self.assertEqual(restarted.store.raw_manifest(), manifest)
+        self.assertEqual(restarted.state.cursor_identity_digest, cursor)
+        self.assertEqual(restarted.state.coverage_state, coverage)
+        self.assertEqual(restarted.state.enabled, True)
+        self.assertEqual(restarted.store.verify_objects(), [])
+        # Requirement 13: the SEC cooldown is still in force after the restart.
+        self.assertAlmostEqual(restarted.cooldown_remaining(), 300.0, delta=1.0)
+        self.assertFalse(restarted.poll_due())
+        state, detail = restarted.component_state()
+        self.assertEqual(state, "BLOCKED")
+
+
+# ---------------------------------------------------------------------------
+# Visibility firewall
+# ---------------------------------------------------------------------------
+
+class VisibilityFirewallTests(CollectorTestCase):
+    """Requirement 19: no interpretable Form-4 content reaches a visible surface."""
+
+    def test_leak_detector_recognises_the_content_it_is_meant_to_catch(self) -> None:
+        submission = (FIXTURES / "form4_submission.txt").read_text(encoding="utf-8")
+        self.assertTrue(find_leaks(submission), "the detector must flag a real Form 4")
+        self.assertIn("accession_number", find_leaks("filing 0000320193-26-000045 arrived"))
+        self.assertIn("filing_archive_path",
+                      find_leaks("https://www.sec.gov/Archives/edgar/data/1/x.txt"))
+        self.assertIn("transaction_field", find_leaks("<transactionCode>P</transactionCode>"))
+        self.assertIn("filer_identity_field", find_leaks("<issuerName>ACME</issuerName>"))
+        self.assertEqual(find_leaks("coverage COMPLETE, sha256:abc, 2048 bytes"), [])
+
+    def test_no_visible_surface_exposes_captured_form_4_content(self) -> None:
+        from quant.clock import QuantSystem
+        from quant.status.brief import build_chief_brief
+        from quant.status.render import render_status
+
+        collector = self.collector(self.fixture_router(
+            index=(FIXTURES / "master.20260917.idx").read_bytes()))
+        collector.poll()
+        collector.drain(max_items=3)
+        collector.reconcile(date(2026, 9, 17))
+
+        system = QuantSystem(self.root)
+        system.sec = collector
+        system.boot()
+        snapshot = system.snapshot()
+        surfaces = {
+            "status surface": render_status(snapshot),
+            "CHIEF_BRIEF.md": build_chief_brief(snapshot),
+            "snapshot JSON": json.dumps(snapshot, sort_keys=True, default=str),
+            "collector telemetry": json.dumps(collector.telemetry(), sort_keys=True,
+                                              default=str),
+            "event log": self.paths.events.read_text(encoding="utf-8"),
+        }
+        for path in self.paths.sec_firewall_safe_journals():
+            if path.exists():
+                surfaces[f"journal {path.name}"] = path.read_text(encoding="utf-8")
+        for where, text in surfaces.items():
+            with self.subTest(surface=where):
+                assert_no_scientific_content(text, where)
+
+        # The content really was captured: it is in the restricted tier only.
+        restricted = "\n".join(path.read_text(encoding="utf-8")
+                               for path in self.paths.sec_restricted.glob("*.jsonl"))
+        self.assertIn("0000320193-26-000045", restricted)
+        self.assertTrue(find_leaks(restricted),
+                        "the restricted tier is where identity legitimately lives")
+
+    def test_telemetry_publishes_no_filing_counts(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        collector.drain(max_items=3)
+        telemetry = collector.telemetry()
+        # Work in flight and storage presence are booleans, never tallies.
+        self.assertIsInstance(telemetry["work_in_flight"], bool)
+        self.assertIsInstance(telemetry["storage"]["objects_present"], bool)
+        self.assertNotIn("raw_objects", telemetry["storage"])
+        self.assertNotIn("pending_tasks", telemetry)
+        self.assertNotIn("captures", telemetry)
+        for key, value in telemetry.items():
+            if key in ("rate_limit", "policy", "storage"):
+                continue
+            self.assertNotIsInstance(value, int if not isinstance(value, bool) else str,
+                                     f"{key} publishes a count")
+
+    def test_exceptions_and_error_classes_never_carry_response_content(self) -> None:
+        leaky = (b"<html><body>ACME CORP filing 0000320193-26-000045 "
+                 b"<transactionCode>P</transactionCode></body></html>")
+        collector = self.collector(lambda path, call: response(
+            leaky, headers={"Content-Type": "text/html"}))
+        outcome = collector.poll()
+        self.assertEqual(find_leaks(outcome.error_class or ""), [])
+        self.assertEqual(find_leaks(json.dumps(outcome.to_dict(), default=str)), [])
+        assert_no_scientific_content(self.paths.sec_attempts.read_text(encoding="utf-8"),
+                                     "attempt journal")
+        assert_no_scientific_content(self.paths.events.read_text(encoding="utf-8")
+                                     if self.paths.events.exists() else "", "event log")
+        # The offending bytes are still preserved as evidence.
+        self.assertEqual(collector.store.read_object(digest_bytes(leaky)), leaky)
+
+    def test_discovery_invalid_reason_classes_are_bounded_not_echoed(self) -> None:
+        hostile = build_feed([], entries=[
+            "\t<entry>\n\t\t<title>4 - X</title>\n"
+            "\t\t<link rel='alternate' href='https://www.sec.gov/Archives/edgar/data/1/"
+            "900000000126000001/9000000001-26-000001-index.htm'/>\n"
+            "\t\t<category term='ACME CORP 0000320193-26-000045 transactionCode' "
+            "label='form type'/>\n"
+            "\t\t<id>urn:tag:sec.gov,2008:accession-number=9000000001-26-000001</id>\n"
+            "\t</entry>"])
+        with self.assertRaises(DiscoveryInvalid) as raised:
+            parse_discovery_page(hostile, requested_start=0, requested_count=40)
+        self.assertEqual(find_leaks(raised.exception.reason), [],
+                         "a reason class must not echo arbitrary source text")
+        self.assertLessEqual(len(raised.exception.reason), 60)

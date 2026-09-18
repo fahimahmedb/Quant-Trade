@@ -24,6 +24,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from quant.book.ledger import LedgerState, Position  # noqa: E402
 from quant.clock import ControlState  # noqa: E402
 from quant.dataplane.registry import DatasetRecord  # noqa: E402
+from quant.dataplane.sec.collector import CollectorState  # noqa: E402
+from quant.dataplane.sec.store import (SecAcquisitionEnvelope, SecAttemptRecord,  # noqa: E402
+                                       SecRawObjectRecord, SecSourceVersionRecord)
 from quant.desk.opportunity import OpportunityTicket  # noqa: E402
 from quant.events import SystemEvent  # noqa: E402
 from quant.factory.strategies import StrategyDefinition  # noqa: E402
@@ -43,6 +46,28 @@ OBJECTS = {
     "control_state": (ControlState, "Control Plane lifetime and cursors."),
     "component_status": (ComponentStatus, "RUN/IDLE/BLOCKED/FAULT/PAUSED per function."),
     "build_task": (BuildTask, "A capability gap the system raised for the Build Plane."),
+    "sec_attempt_record": (SecAttemptRecord,
+                           "One SEC request attempt. The Day-1 liveness record, "
+                           "written whether or not bytes were received, carrying "
+                           "an opaque locator digest rather than an identifying "
+                           "locator."),
+    "sec_raw_object_record": (SecRawObjectRecord,
+                              "One immutable raw response body: content address, "
+                              "byte length, receipt time, transport metadata and "
+                              "the capture/visibility/admissibility states."),
+    "sec_acquisition_envelope": (SecAcquisitionEnvelope,
+                                 "Binds one source identity to one immutable raw "
+                                 "object. The durable acknowledgement, and the "
+                                 "record that keeps source publication time "
+                                 "distinct from local receipt time."),
+    "sec_source_version": (SecSourceVersionRecord,
+                           "Every observation of a source identity's bytes, so "
+                           "differing bytes become an explicit conflict version "
+                           "instead of a silent replacement."),
+    "sec_collector_state": (CollectorState,
+                            "Durable capture-lane state: continuity cursor, "
+                            "coverage verdict, open gaps, queued work and "
+                            "reconciliation progress."),
 }
 
 PRIMITIVES = {str: "string", int: "integer", float: "number", bool: "boolean"}

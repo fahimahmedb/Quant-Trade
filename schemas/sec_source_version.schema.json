@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Every observation of a source identity's bytes, so differing bytes become an explicit conflict version instead of a silent replacement.",
+  "properties": {
+    "attempt_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conflict": {
+      "type": "boolean"
+    },
+    "observed_at_utc": {
+      "type": "string"
+    },
+    "prior_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_object_sha256": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_identity",
+    "raw_object_sha256",
+    "observed_at_utc",
+    "version"
+  ],
+  "title": "sec_source_version",
+  "type": "object"
+}

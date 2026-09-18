@@ -393,7 +393,23 @@ class QuantSystem:
         collector = self.sec
         if not collector.configured or not collector.state.enabled:
             return None
-        state, detail = collector.component_state()
+        try:
+            return self._capture_step(collector)
+        except Exception as exc:
+            # A capture fault must not kill the system, and must not be mistaken
+            # for a quiet poll. The attempt journal already holds whatever was
+            # durably recorded before the fault.
+            detail = f"{type(exc).__name__}: {exc}"
+            self.components.set("SEC_CAPTURE", "FAULT", detail[:200])
+            self.state.faults.append({"at": utc_now(), "task": "SEC_CAPTURE",
+                                      "error": detail[:200]})
+            self.log.emit("DATA", "SEC_CAPTURE", "capture_fault",
+                          collector.store.collector_version, severity="FAULT",
+                          error_class=type(exc).__name__)
+            self.heartbeat()
+            return "SEC_FAULT"
+
+    def _capture_step(self, collector: SecForm4Collector) -> str | None:
         if collector.has_pending_work():
             self.components.set("SEC_CAPTURE", "RUN", "acquiring a queued filing")
             outcomes = collector.drain()

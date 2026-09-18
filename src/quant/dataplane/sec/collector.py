@@ -758,8 +758,12 @@ class SecForm4Collector:
         committed = self.committed_identities()
         if identity in committed:
             # Already acknowledged: zero network requests, exactly as intended.
+            # This is also the path a replay takes after a crash, so it must
+            # advance the cursor like any other acknowledgement - otherwise the
+            # anchor could stay stuck behind work that is provably complete.
             self._drop_task(task)
             self.state.deduplications += 1
+            self._maybe_advance_cursor()
             self.save()
             return {"task_id": task["task_id"], "result_state": DEDUPLICATED,
                     "raw_object_sha256": committed[identity], "requests_spent": 0}

@@ -21,6 +21,7 @@ Component state:
 - `RESEARCH`: **BLOCKED** - no survivorship-controlled security and factor panel
 - `RISK`: **IDLE** - no session due
 - `SCAN`: **IDLE** - no session due
+- `SEC_CAPTURE`: **BLOCKED** - SEC user agent/contact not configured; capture fails closed
 - `SIZE`: **IDLE** - no session due
 - `VET`: **IDLE** - no session due
 
@@ -37,6 +38,19 @@ Registry health: `{'AVAILABLE': 2, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - caveat: adj_close is restated retroactively for dividends and splits, so adjusted levels are not strictly point-in-time; returns are standard practice but embed later corporate-action information
   - caveat: the endpoint is an undocumented public JSON API with no availability guarantee and no vendor support
   - caveat: prices are consolidated daily bars, not the venue-level quotes an execution model would eventually need
+
+## SEC Form-4 raw capture (P0 acquisition lane)
+
+- collector `BLOCKED`: SEC user agent/contact not configured; capture fails closed
+- liveness: **COLLECTOR_DID_NOT_RUN**, last attempt never, last validated discovery never
+- coverage: **COVERAGE_UNKNOWN** - no validated discovery poll has completed yet
+- last result: `none`
+- continuity cursor: `not established`
+- work in flight: no
+- raw store: 0 bytes, append-only True, content-addressed True, incomplete evidence present False
+- request policy: None req/s cap (SEC documented maximum None), concurrency None, poll Nones, backoff None
+- cooldown: none, requests spent 0
+- states: `CAPTURED` / `NOT_VISIBLE_FOR_SCIENTIFIC_PROTOCOL` / `NOT_ADMISSIBLE_FOR_CONFIRMATION`
 
 ## Research
 

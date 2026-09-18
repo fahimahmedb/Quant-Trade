@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Binds one source identity to one immutable raw object. The durable acknowledgement, and the record that keeps source publication time distinct from local receipt time.",
+  "properties": {
+    "admissibility_state": {
+      "type": "string"
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "byte_length": {
+      "type": "integer"
+    },
+    "capture_state": {
+      "type": "string"
+    },
+    "collector_version": {
+      "type": "string"
+    },
+    "content_encoding": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "declared_content_length": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "deduplicated": {
+      "type": "boolean"
+    },
+    "discovery_object_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "endpoint_class": {
+      "type": "string"
+    },
+    "envelope_id": {
+      "type": "string"
+    },
+    "git_commit": {
+      "type": "string"
+    },
+    "http_status": {
+      "type": "integer"
+    },
+    "media_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "poll_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_object_sha256": {
+      "type": "string"
+    },
+    "request_attempted_at_utc": {
+      "type": "string"
+    },
+    "response_received_at_utc": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": "string"
+    },
+    "source_locator": {
+      "type": "string"
+    },
+    "source_published_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transfer_outcome": {
+      "type": "string"
+    },
+    "visibility_state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "envelope_id",
+    "attempt_id",
+    "source_identity",
+    "source_locator",
+    "endpoint_class",
+    "request_attempted_at_utc",
+    "response_received_at_utc",
+    "http_status",
+    "raw_object_sha256",
+    "byte_length",
+    "collector_version",
+    "git_commit"
+  ],
+  "title": "sec_acquisition_envelope",
+  "type": "object"
+}
