@@ -6,6 +6,7 @@ Before acting, read `QUANT_NORTH_STAR.md`, `STATE.md`, and:
 
 - `governance/P0_RAW_CAPTURE_CRITICAL_PATH_RECLASSIFICATION_2026-09-18.md`
 - `governance/BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md`
+- `governance/P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md`
 
 Do not reopen Route-B scientific specification as part of this mission.
 
@@ -84,7 +85,9 @@ Before `t0`, Builder must implement the frozen rule in
   active backoff/cooldown state;
 - externally supplied lifecycle provenance from the launcher/supervisor, including boot/instance id
   and cause;
-- a deterministic, prospectively committed `ACQUISITION_CRITICAL_FINGERPRINT`.
+- a deterministic, prospectively committed `ACQUISITION_CRITICAL_FINGERPRINT` using the frozen V1 membership;
+- a complete canonical runtime-policy serialization rather than `SecAccessPolicy.to_dict()`;
+- elimination or full audit-surfacing of the current hidden transport retry so every HTTP request gets its own budget reservation and durable attempt id.
 
 Once those three pieces are live, record `t0` durably and let the observation clock run while
 non-critical development continues.
