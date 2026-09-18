@@ -112,6 +112,25 @@ def render_status(snapshot: dict[str, Any]) -> str:
                      f"{record['last_date']}")
         lines.append(f"  {'':<26}{(record['fingerprint'] or 'no fingerprint')[:30]}")
 
+    capture = data["sec_form4_capture"]
+    lines += ["", _rule(), "SEC / FORM-4 RAW CAPTURE", _rule(),
+              _row("STATE", f"{capture['state']}   enabled={capture['enabled']}"),
+              _row("LAST POLL", str(capture['last_poll_result'] or "none")),
+              _row("LAST ATTEMPT", str(capture['last_attempt_at_utc'] or "none")),
+              _row("LAST RECEIPT", str(capture['last_receipt_at_utc'] or "none")),
+              _row("HTTP / ENDPOINT", f"{capture['last_http_status']} / "
+                                     f"{capture['last_endpoint_class'] or 'none'}"),
+              _row("RAW OBJECT", str(capture['last_raw_object_sha256'] or "none")),
+              _row("BYTE LENGTH", str(capture['last_byte_length'] or "none")),
+              _row("STORAGE", capture["storage_health"]),
+              _row("NEXT POLL", str(capture['next_poll_at_utc'] or "none")),
+              _row("BLOCKED UNTIL", str(capture['blocked_until_utc'] or "none")),
+              _row("RATE POLICY", f"{capture['policy']['request_rate_per_second']:.1f} req/s, "
+                                  f"concurrency {capture['policy']['max_concurrency']}, "
+                                  f"poll {capture['policy']['poll_seconds']}s"),
+              _row("SCIENTIFIC ACCESS", capture["visibility"]["scientific_visibility"]),
+              _row("CONFIRMATION", capture["visibility"]["confirmation_admissibility"])]
+
     lines += ["", _rule(), "RESEARCH", _rule()]
     lines.append(_row("QUEUE", ", ".join(f"{key} {value}" for key, value
                                          in research["queue"].items() if value)))
