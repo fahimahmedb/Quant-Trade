@@ -125,6 +125,12 @@
       },
       "type": "array"
     },
+    "open_obligation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "pending_cursor_feed_updated_at_utc": {
       "type": [
         "string",
