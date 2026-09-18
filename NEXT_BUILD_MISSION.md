@@ -20,6 +20,8 @@ Current recorded state:
 
 `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
 
+`P0_CONTINUITY_T0_BLOCKER_STATE = BLOCKS_CAPTURE_INTEGRITY`
+
 PR #16 established the durable capture slice with real SEC requests, immutable raw storage,
 PIT acquisition envelopes, durable heartbeat/attempt history, restart safety, conservative
 request controls and the minimal visibility firewall.
@@ -87,10 +89,20 @@ Before `t0`, Builder must implement the frozen rule in
   and cause;
 - a deterministic, prospectively committed `ACQUISITION_CRITICAL_FINGERPRINT` using the frozen V1 membership;
 - a complete canonical runtime-policy serialization rather than `SecAccessPolicy.to_dict()`;
-- elimination or full audit-surfacing of the current hidden transport retry so every HTTP request gets its own budget reservation and durable attempt id.
+- elimination or full audit-surfacing of the current hidden transport retry so every HTTP request gets its own budget reservation and durable attempt id;
+- a policy-field completeness test against `dataclasses.fields(SecAccessPolicy)`, requiring every
+  field to be included, deterministically transformed or explicitly justified as non-critical.
 
-Once those three pieces are live, record `t0` durably and let the observation clock run while
-non-critical development continues.
+Before `t0`, close both active `BLOCKS_CAPTURE_INTEGRITY` objects:
+
+1. `HIDDEN_TRANSPORT_RETRY`: preferred resolution is removal. If a retry remains, it must be a
+   prospective scheduler transition with its own cause, due state, budget reservation and attempt id;
+   post-hoc journaling is insufficient.
+2. `INCOMPLETE_CRITICAL_POLICY_SERIALIZATION`: fingerprint serialization must be complete by
+   construction and fail when an unclassified `SecAccessPolicy` field is added.
+
+Once those blockers and the three instrumentation pieces are closed, record `t0` durably and let
+the observation clock run while non-critical development continues.
 
 A code/config deployment may cross the active observation window only when:
 
