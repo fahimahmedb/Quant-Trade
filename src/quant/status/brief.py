@@ -63,7 +63,25 @@ def build_chief_brief(snapshot: dict[str, Any]) -> str:
         for caveat in record["caveats"]:
             lines.append(f"  - caveat: {caveat}")
 
-    lines += ["", "## Research", "",
+    capture = data["sec_form4_capture"]
+    lines += ["", "## SEC / Form-4 raw capture", "",
+              f"- collector state: `{capture['state']}`; enabled: "
+              f"`{capture['enabled']}`; storage: `{capture['storage_health']}`",
+              f"- last poll result: `{capture['last_poll_result'] or 'none'}`; "
+              f"last attempt: `{capture['last_attempt_at_utc'] or 'none'}`; "
+              f"last receipt: `{capture['last_receipt_at_utc'] or 'none'}`",
+              f"- last opaque object: `{capture['last_raw_object_sha256'] or 'none'}`; "
+              f"bytes: `{capture['last_byte_length'] or 'none'}`; endpoint class: "
+              f"`{capture['last_endpoint_class'] or 'none'}`",
+              f"- access policy: {capture['policy']['request_rate_per_second']:.1f} req/s, "
+              f"concurrency {capture['policy']['max_concurrency']}, "
+              f"poll {capture['policy']['poll_seconds']}s",
+              f"- scientific visibility: "
+              f"`{capture['visibility']['scientific_visibility']}`; confirmation: "
+              f"`{capture['visibility']['confirmation_admissibility']}`",
+              ""]
+
+    lines += ["## Research", "",
               f"Queue: `{research['queue']}`.", ""]
     for task in research["tasks"]:
         result = task.get("result") or {}
