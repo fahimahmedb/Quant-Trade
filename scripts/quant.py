@@ -18,6 +18,10 @@ SEC Form-4 P0 raw capture (requires QUANT_SEC_USER_AGENT, else it fails closed):
     python3 scripts/quant.py sec-probe      one discovery poll plus a bounded drain
     python3 scripts/quant.py sec-reconcile  compare a closed day's daily index
     python3 scripts/quant.py sec-verify     re-hash every stored raw object
+    python3 scripts/quant.py sec-serve      run the capture service (supervisor entry)
+    python3 scripts/quant.py sec-fingerprint  materialize ACQUISITION_CRITICAL_FINGERPRINT
+    python3 scripts/quant.py sec-readiness   pre-t0 instrumentation readiness
+    python3 scripts/quant.py sec-audit       reconcile scheduler intent against attempts
 """
 
 from __future__ import annotations
@@ -43,6 +47,14 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     interpretable Form-4 content.
     """
     collector = system.sec
+    if args.command == "sec-readiness":
+        print(json.dumps(collector.t0_readiness(), indent=2, sort_keys=True, default=str))
+        return 0
+    if args.command == "sec-audit":
+        from quant.dataplane.sec.audit import audit_observation_window
+        report = audit_observation_window(collector)
+        print(json.dumps(report, indent=2, sort_keys=True, default=str))
+        return 0 if report["accountable"] else 1
     if args.command == "sec-status":
         print(json.dumps(collector.telemetry(), indent=2, sort_keys=True, default=str))
         return 0
@@ -57,6 +69,25 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
                           "remedy": "export QUANT_SEC_USER_AGENT='Name contact@example.com'"},
                          indent=2))
         return 2
+    if args.command == "sec-fingerprint":
+        payload = collector.materialize_fingerprint()
+        print(json.dumps({"acquisition_critical_fingerprint":
+                          payload["acquisition_critical_fingerprint"],
+                          "materialized_at_utc": payload["materialized_at_utc"],
+                          "git_commit": payload["git_commit"],
+                          "manifest_members": sorted(payload["manifest"])},
+                         indent=2, sort_keys=True))
+        return 0
+    if args.command == "sec-serve":
+        # The service entry point the supervisor launches. Capture keeps running
+        # under the Control Plane clock; IDLE means nothing is due right now.
+        # boot() binds the externally attested lifecycle before any capture work.
+        system.boot()
+        if not collector.state.enabled:
+            collector.enable()
+        entry = system.serve(poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
+        print(json.dumps(entry, indent=2, sort_keys=True, default=str))
+        return 0
     if args.command == "sec-enable":
         collector.enable()
     elif args.command == "sec-disable":
@@ -92,7 +123,9 @@ def main() -> None:
     parser.add_argument("command", choices=("boot", "tick", "run", "serve", "status",
                                             "brief", "health", "snapshot", "pause", "resume",
                                             "sec-status", "sec-enable", "sec-disable",
-                                            "sec-probe", "sec-reconcile", "sec-verify"))
+                                            "sec-probe", "sec-reconcile", "sec-verify",
+                                            "sec-serve", "sec-fingerprint",
+                                            "sec-readiness", "sec-audit"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--max-ticks", type=int, default=10_000)
     parser.add_argument("--reason", default="operator-requested pause")

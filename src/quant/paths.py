@@ -131,6 +131,21 @@ class QuantPaths:
         return self.sec / "collector_state.json"
 
     @property
+    def sec_scheduler(self) -> Path:
+        """Prospective scheduler-state transitions, the audit's expected sequence."""
+        return self.sec / "scheduler.jsonl"
+
+    @property
+    def sec_lifecycle(self) -> Path:
+        """Externally attested service start/restart provenance."""
+        return self.sec / "lifecycle.jsonl"
+
+    @property
+    def sec_fingerprint(self) -> Path:
+        """The materialized acquisition-critical manifest and its fingerprint."""
+        return self.sec / "acquisition_fingerprint.json"
+
+    @property
     def sec_budget(self) -> Path:
         """Global SEC traffic budget, shared by every SEC consumer."""
         return self.sec / "sec_traffic_budget.json"
@@ -158,7 +173,8 @@ class QuantPaths:
     def sec_firewall_safe_journals(self) -> tuple[Path, ...]:
         """Capture state a protocol-mutating surface is allowed to read."""
         return (self.sec_attempts, self.sec_raw_manifest, self.sec_coverage,
-                self.sec_collector_state, self.sec_budget)
+                self.sec_collector_state, self.sec_budget, self.sec_scheduler,
+                self.sec_lifecycle, self.sec_fingerprint)
 
     def sec_restricted_journals(self) -> tuple[Path, ...]:
         return (self.sec_locators, self.sec_envelopes, self.sec_source_versions)

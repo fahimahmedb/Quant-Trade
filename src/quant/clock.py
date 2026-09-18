@@ -160,11 +160,19 @@ class QuantSystem:
                       unblocked=unblocked, seeded=seeded,
                       resumed_desk_cursor=self.state.desk_cursor,
                       book_nav=self.desk.capital.nav)
+        # Bind this process's externally attested lifecycle before any capture
+        # work runs, so the observation audit can attribute every subsequent
+        # scheduler transition to a known service instance.
+        lifecycle = self.sec.record_service_start()
         self.state.next_action = self._describe_next_action()
         self.components.set("CONTROL", "IDLE", "booted")
         self.save()
         return {"boot": self.state.boots, "recovered": recovered, "seeded": seeded,
-                "unblocked": unblocked, "next_action": self.state.next_action}
+                "unblocked": unblocked, "next_action": self.state.next_action,
+                "sec_lifecycle_cause": lifecycle["lifecycle_cause"],
+                "sec_boot_id": lifecycle["boot_id"],
+                "sec_acquisition_fingerprint": lifecycle[
+                    "acquisition_critical_fingerprint"]}
 
     def _recover_interrupted(self) -> list[str]:
         recovered = []

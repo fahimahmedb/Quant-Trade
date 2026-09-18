@@ -1,0 +1,33 @@
+# SEC/Form-4 P0 acquisition service.
+#
+# The restart semantics below are acquisition-critical: they decide the expected
+# acquisition timeline after a failure, so this file is digested into
+# ACQUISITION_CRITICAL_FINGERPRINT and a change to it resets t0.
+#
+# The unit launches the supervisor, not the collector. The supervisor classifies
+# why each collector instance started, which the collector is not permitted to
+# do for itself.
+#
+# QUANT_SEC_USER_AGENT must carry a requester name and contact address. Without
+# it the lane fails closed and makes no SEC request. It is supplied through an
+# environment file that is NOT committed to the repository.
+
+[Unit]
+Description=Quant SEC/Form-4 P0 acquisition service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/quant
+EnvironmentFile=/etc/quant/sec-capture.env
+ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant
+Restart=on-failure
+RestartSec=15
+StartLimitIntervalSec=600
+StartLimitBurst=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

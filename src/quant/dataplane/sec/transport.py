@@ -17,6 +17,29 @@ silently.
 The connection is kept alive and reused across requests, which is the cheapest
 possible thing to do to SEC infrastructure: the frozen policy already spaces
 requests, and reuse removes a TLS handshake per filing.
+
+**One request per permit.** ``P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md`` §6
+requires
+
+    ONE_BUDGET_RESERVATION == ONE_NETWORK_REQUEST_ATTEMPT == ONE_AUDITABLE_ATTEMPT_ID
+
+so this module may never decide by itself to send a second request. An earlier
+version retried once on a fresh connection after a connection-level failure,
+which could put two SEC requests under one limiter reservation and one attempt
+id. That retry is gone, and its absence is now structural rather than a matter
+of reading the code: ``fetch`` requires a :class:`RequestPermit` that the
+collector mints from a budget reservation, and a permit is consumed by the
+first ``request()`` that goes out. A second send under the same permit raises.
+
+That understates nothing to the SEC either: a limiter counting reservations
+while the transport could emit more requests than reservations misstates real
+traffic, which is the failure that risks throttling and an irreversible gap.
+
+A *reconnect* is still allowed, because it changes no semantics and emits no
+extra request. Since a keep-alive socket the far end closed while the lane was
+idle is the ordinary cause of the failure the old retry papered over, the
+connection is now closed **before** it goes stale: a connection older than
+``idle_reuse_seconds`` is replaced during permit issue, not after a failure.
 """
 
 from __future__ import annotations
@@ -58,6 +81,36 @@ class SecTransportError(RuntimeError):
         self.error_class = error_class
         self.outcome = outcome
         self.partial = partial
+
+
+@dataclass
+class RequestPermit:
+    """Authority to emit exactly one HTTP request.
+
+    Minted by the collector from one traffic-budget reservation and carrying the
+    attempt id that will journal the result, so the permit is the object that
+    makes reservation, request and audit record one-to-one. It is single use:
+    ``consume`` succeeds once and raises afterwards.
+    """
+
+    attempt_id: str
+    reserved_at_utc: str
+    endpoint_class: str
+    spent: bool = False
+
+    def consume(self) -> None:
+        if self.spent:
+            raise PermitAlreadySpent(
+                f"attempt {self.attempt_id} already emitted its single permitted request")
+        self.spent = True
+
+
+class PermitAlreadySpent(RuntimeError):
+    """A second HTTP request was attempted under one reservation/attempt id.
+
+    This is a capture-integrity fault, not a retryable error: it would mean the
+    real SEC traffic exceeded what the budget and the attempt journal record.
+    """
 
 
 @dataclass
@@ -156,7 +209,10 @@ class SecHttpTransport:
         self.host = host
         self.context = context or ssl.create_default_context()
         self._connection: http.client.HTTPSConnection | None = None
+        self._connection_last_used: Any = None
         self.connections_opened = 0
+        #: Actual HTTP requests put on the wire. The audit compares this against
+        #: budget reservations and durable attempt ids; they must be equal.
         self.requests_sent = 0
 
     # --- connection reuse --------------------------------------------------
@@ -167,6 +223,19 @@ class SecHttpTransport:
             self.connections_opened += 1
         return self._connection
 
+    def _recycle_if_idle(self) -> None:
+        """Drop a connection old enough that the far end has likely closed it.
+
+        This replaces the removed retry. Reconnecting before sending costs no
+        request and changes no semantics; reconnecting *after* a failure would
+        have meant a second request under the first one's reservation.
+        """
+        if self._connection is None or self._connection_last_used is None:
+            return
+        idle = (self.timebase.now() - self._connection_last_used).total_seconds()
+        if idle >= self.policy.idle_reuse_seconds:
+            self.close()
+
     def close(self) -> None:
         if self._connection is not None:
             try:
@@ -174,42 +243,42 @@ class SecHttpTransport:
             except OSError:
                 pass
             self._connection = None
+            self._connection_last_used = None
 
-    def fetch(self, path: str) -> SecHttpResponse:
-        """Issue one GET. The caller has already spent a limiter slot."""
+    def fetch(self, path: str, permit: RequestPermit) -> SecHttpResponse:
+        """Issue exactly one GET against the permit the collector minted.
+
+        There is no retry here, by design. A failure returns to the collector,
+        which records the attempt, applies the frozen backoff and schedules the
+        next try as its own reservation, attempt id and scheduler transition.
+        """
         try:
-            return self._fetch_once(path)
+            return self._fetch_once(path, permit)
         except SecTransportError:
             # A broken connection is never reused: the next request would fail
             # for a reason unrelated to the next request.
             self.close()
             raise
 
-    def _fetch_once(self, path: str) -> SecHttpResponse:
+    def _fetch_once(self, path: str, permit: RequestPermit) -> SecHttpResponse:
+        self._recycle_if_idle()
         connection = self._connect()
         headers = dict(self.policy.headers())
         headers["Connection"] = "keep-alive"
         headers.setdefault("Accept", "*/*")
         started = self.timebase.now()
+        # The permit is spent at the moment the request goes out, so a failure
+        # after this point can never be re-sent under the same attempt id.
+        permit.consume()
+        self.requests_sent += 1
         try:
             connection.request("GET", path, headers=headers)
             response = connection.getresponse()
         except (http.client.HTTPException, socket.timeout, TimeoutError, ssl.SSLError,
                 OSError) as exc:
             self.close()
-            # One retry on a fresh connection covers the ordinary case of a
-            # keep-alive socket the far end closed while the lane was idle.
-            if self.requests_sent == 0:
-                raise SecTransportError(f"request_failed:{type(exc).__name__}") from exc
-            try:
-                connection = self._connect()
-                connection.request("GET", path, headers=headers)
-                response = connection.getresponse()
-            except (http.client.HTTPException, socket.timeout, TimeoutError, ssl.SSLError,
-                    OSError) as retry_exc:
-                raise SecTransportError(
-                    f"request_failed:{type(retry_exc).__name__}") from retry_exc
-        self.requests_sent += 1
+            raise SecTransportError(f"request_failed:{type(exc).__name__}") from exc
+        self._connection_last_used = self.timebase.now()
         preserved = {name: value for name in PRESERVED_HEADERS
                      if (value := response.getheader(name)) is not None}
         body, outcome = self._read_body(response, started)

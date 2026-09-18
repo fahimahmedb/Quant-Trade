@@ -33,6 +33,14 @@ from typing import Any, Callable
 from ...paths import QuantPaths
 from ...state import parse_ts, read_json, write_json, append_jsonl
 from .budget import SecCooldownActive, SecTrafficBudget, seconds_from_retry_after
+from .fingerprint import acquisition_critical_fingerprint, build_manifest, compute_fingerprint
+from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
+                        CONFIG_FAIL_CLOSED, COOLDOWN, COOLDOWN_OBSERVED, DISABLED,
+                        DRAIN_COMPLETED, DRAINING, LANE_DISABLED, LANE_ENABLED,
+                        POLL_COMPLETED, POLL_DUE, POLL_FAILED, RECONCILE_COMPLETED,
+                        RECONCILING, SERVICE_START, SchedulerJournal, SchedulerTransition,
+                        WORK_ENQUEUED)
+from .supervisor import UNATTESTED, lifecycle_provenance
 from .discovery import (DailyIndexPage, DiscoveryEntry, DiscoveryInvalid, DiscoveryPage,
                         daily_index_path, daily_index_url, discovery_path, discovery_url,
                         endpoint_class_for, parse_daily_index, parse_discovery_page)
@@ -45,8 +53,8 @@ from .store import (ACCESS_FORBIDDEN, CAPTURED_OK, COOLDOWN_SUPPRESSED, DEDUPLIC
                     SecCaptureStore, SecRawObjectRecord, SecStorageFailure, digest_text)
 from .timebase import Timebase
 from .visibility import firewall_safe_storage
-from .transport import (DEADLINE_EXCEEDED, SecHttpResponse, SecHttpTransport,
-                        SecTransportError, decode_body)
+from .transport import (DEADLINE_EXCEEDED, RequestPermit, SecHttpResponse,
+                        SecHttpTransport, SecTransportError, decode_body)
 
 
 #: Coverage vocabulary. Only these two states may ever be reported.
@@ -210,6 +218,130 @@ class SecForm4Collector:
             self.transport = SecHttpTransport(policy, timebase=self.timebase)
         self.state = self._load_state()
         self._committed: dict[str, str] | None = None
+        self.scheduler = SchedulerJournal(self.paths.sec_scheduler)
+        self.lifecycle = lifecycle_provenance(environ)
+        # The fingerprint is computed from the frozen membership, not stored and
+        # trusted: a deployment whose code or policy moved must not be able to
+        # present the previous window's fingerprint.
+        self.fingerprint: str | None = None
+        if self.policy is not None:
+            self.fingerprint = acquisition_critical_fingerprint(self.policy, root=self.root)
+
+    # --- scheduler provenance ---------------------------------------------
+    def record_transition(self, state: str, cause: str, *, next_due_at: str | None,
+                          detail: str | None = None) -> SchedulerTransition:
+        """Say prospectively what the lane will do next, and when.
+
+        The audit reconstructs the expected attempt sequence from these records.
+        It must never infer that nothing was due merely because nothing was
+        attempted, so a transition is written whenever the next expected action
+        changes - including when the lane is blocked and nothing will happen.
+        """
+        budget_state = self.budget.load() if self.budget else None
+        transition = SchedulerTransition(
+            transition_id=uuid.uuid4().hex[:16],
+            recorded_at_utc=self.timebase.now_iso(),
+            state=state, cause=cause, next_due_at_utc=next_due_at,
+            acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
+            boot_id=self.lifecycle.get("boot_id"),
+            lifecycle_cause=self.lifecycle.get("lifecycle_cause"),
+            cooldown_until_utc=budget_state.cooldown_until_utc if budget_state else None,
+            cooldown_reason=budget_state.cooldown_reason if budget_state else None,
+            backoff_step=budget_state.backoff_step if budget_state else None,
+            coverage_state=self.state.coverage_state,
+            work_in_flight=bool(self.state.pending_tasks),
+            detail=detail)
+        self.scheduler.record(transition)
+        return transition
+
+    def next_due_at(self) -> str | None:
+        """When the next acquisition action becomes due, from durable state."""
+        if not self.configured or not self.state.enabled:
+            return None
+        cooldown = self.cooldown_remaining()
+        if cooldown > 0:
+            budget_state = self.budget.load()
+            return budget_state.cooldown_until_utc
+        if self.state.pending_tasks:
+            return self.timebase.now_iso()
+        last = self.state.last_poll_started_at_utc
+        if last is None:
+            return self.timebase.now_iso()
+        due = parse_ts(last) + timedelta(seconds=self.policy.discovery_poll_seconds)
+        return due.isoformat()
+
+    def scheduler_state(self) -> str:
+        if not self.configured:
+            return BLOCKED_NOT_CONFIGURED
+        if not self.state.enabled:
+            return DISABLED
+        if self.cooldown_remaining() > 0:
+            budget_state = self.budget.load()
+            reason = (budget_state.cooldown_reason or "")
+            return COOLDOWN if reason.startswith("http_") else BACKOFF
+        if self.state.pending_tasks:
+            return DRAINING
+        if self.poll_due():
+            return POLL_DUE
+        return AWAITING_POLL
+
+    def record_current_state(self, cause: str, detail: str | None = None) -> SchedulerTransition:
+        return self.record_transition(self.scheduler_state(), cause,
+                                      next_due_at=self.next_due_at(), detail=detail)
+
+    def record_service_start(self) -> dict[str, Any]:
+        """Bind this process's externally attested lifecycle to the journal."""
+        record = dict(self.lifecycle,
+                      recorded_at_utc=self.timebase.now_iso(),
+                      acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
+                      collector_version=self.store.collector_version,
+                      git_commit=self.store.git_commit)
+        append_jsonl(self.paths.sec_lifecycle, record)
+        cause = SERVICE_START if self.configured else CONFIG_FAIL_CLOSED
+        self.record_current_state(cause, detail=self.lifecycle.get("lifecycle_cause"))
+        return record
+
+    def t0_readiness(self) -> dict[str, Any]:
+        """Whether the pre-t0 instrumentation is in place. Blue decides t0, not this.
+
+        Reported, never acted on: the collector does not start or stop an
+        observation window, it only says what is and is not yet true.
+        """
+        blockers: list[str] = []
+        if not self.configured:
+            blockers.append("SEC_IDENTITY_NOT_CONFIGURED")
+        if self.fingerprint is None:
+            blockers.append("ACQUISITION_FINGERPRINT_UNAVAILABLE")
+        if not self.lifecycle.get("externally_attested"):
+            blockers.append("LIFECYCLE_CAUSE_UNATTESTED")
+        if not self.scheduler.all():
+            blockers.append("NO_SCHEDULER_PROVENANCE")
+        if not self.paths.sec_fingerprint.exists():
+            blockers.append("FINGERPRINT_NOT_MATERIALIZED")
+        return {"instrumentation_ready": not blockers,
+                "blockers": blockers,
+                "acquisition_critical_fingerprint": self.fingerprint,
+                "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
+                "boot_id": self.lifecycle.get("boot_id"),
+                "scheduler_transitions_recorded": len(self.scheduler.all()),
+                # This lane never declares t0 or closes the continuity state.
+                "t0_authority": "BLUE_TEAM",
+                "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
+
+    def materialize_fingerprint(self) -> dict[str, Any]:
+        """Write the manifest and its fingerprint durably, before t0."""
+        if self.policy is None:
+            raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
+        manifest = build_manifest(self.policy, root=self.root)
+        fingerprint = compute_fingerprint(manifest)
+        payload = {"acquisition_critical_fingerprint": fingerprint,
+                   "materialized_at_utc": self.timebase.now_iso(),
+                   "collector_version": self.store.collector_version,
+                   "git_commit": self.store.git_commit,
+                   "manifest": manifest}
+        write_json(self.paths.sec_fingerprint, payload)
+        self.fingerprint = fingerprint
+        return payload
 
     # --- durable state -----------------------------------------------------
     def _load_state(self) -> CollectorState:
@@ -238,11 +370,13 @@ class SecForm4Collector:
         if self.state.bootstrap_started_at_utc is None:
             self.state.bootstrap_started_at_utc = self.timebase.now_iso()
         self.save()
+        self.record_current_state(LANE_ENABLED)
 
     def disable(self, reason: str | None = None) -> None:
         self.state.enabled = False
         self.state.blocked_reason = reason
         self.save()
+        self.record_current_state(LANE_DISABLED, detail=reason)
 
     # --- scheduling --------------------------------------------------------
     def cooldown_remaining(self) -> float:
@@ -336,10 +470,18 @@ class SecForm4Collector:
             return finish(COOLDOWN_SUPPRESSED, error_class=f"cooldown:{cooldown.reason}",
                           retry_after_seconds=cooldown.remaining_seconds)
 
+        # One reservation mints exactly one permit, carrying the attempt id that
+        # will journal the outcome. The transport cannot send without it and
+        # cannot send twice with it, so
+        # ONE_BUDGET_RESERVATION == ONE_NETWORK_REQUEST_ATTEMPT == ONE_ATTEMPT_ID
+        # holds by construction rather than by inspection of the transport.
+        permit = RequestPermit(attempt_id=attempt_id,
+                               reserved_at_utc=reservation["reserved_at_utc"],
+                               endpoint_class=endpoint_class)
         attempted_at_dt = self.timebase.now()
         attempted_at = attempted_at_dt.isoformat()
         try:
-            response = self.transport.fetch(path)
+            response = self.transport.fetch(path, permit)
         except SecTransportError as exc:
             hung = exc.outcome == DEADLINE_EXCEEDED
             self._enter_transient_cooldown(f"transport:{exc.error_class}")
@@ -360,6 +502,9 @@ class SecForm4Collector:
         if response.status == 429:
             seconds = self._authoritative_cooldown(response, self.policy.rate_limit_cooldown_seconds)
             self.budget.enter_cooldown(seconds, "http_429_rate_limited")
+            self.record_transition(COOLDOWN, COOLDOWN_OBSERVED,
+                                   next_due_at=self.budget.load().cooldown_until_utc,
+                                   detail="http_429_rate_limited")
             return finish(RATE_LIMITED, error_class="http_429", retry_after_seconds=seconds,
                           byte_length=response.byte_length, **common)
         if response.status == 403:
@@ -367,6 +512,9 @@ class SecForm4Collector:
             seconds = self._authoritative_cooldown(response, self.policy.forbidden_cooldown_seconds)
             self.budget.enter_cooldown(seconds, "http_403_access_controlled")
             self.state.blocked_reason = "SEC returned 403; extended cooldown in force"
+            self.record_transition(COOLDOWN, COOLDOWN_OBSERVED,
+                                   next_due_at=self.budget.load().cooldown_until_utc,
+                                   detail="http_403_access_controlled")
             return finish(ACCESS_FORBIDDEN, error_class="http_403", retry_after_seconds=seconds,
                           byte_length=response.byte_length, **common)
         if 500 <= response.status < 600:
@@ -441,6 +589,9 @@ class SecForm4Collector:
 
     def _enter_transient_cooldown(self, reason: str) -> None:
         self.budget.enter_cooldown(self.budget.next_backoff_seconds(), reason)
+        self.record_transition(BACKOFF, BACKOFF_ENTERED,
+                               next_due_at=self.budget.load().cooldown_until_utc,
+                               detail=reason)
 
     # --- coverage bookkeeping ---------------------------------------------
     def _open_gap(self, kind: str, detail: dict[str, Any]) -> str:
@@ -668,6 +819,9 @@ class SecForm4Collector:
             enqueued += 1
         if enqueued:
             self.save()
+            self.record_transition(DRAINING, WORK_ENQUEUED,
+                                   next_due_at=self.timebase.now_iso(),
+                                   detail="discovered filings queued for acquisition")
         return enqueued
 
     def _summarize(self, valid_discovery: bool, coverage_state: str,
@@ -701,6 +855,9 @@ class SecForm4Collector:
         self.state.active_poll = None
         self._maybe_advance_cursor()
         self.save()
+        self.record_current_state(
+            POLL_COMPLETED if valid_discovery else POLL_FAILED,
+            detail=f"{result_state}/{self.state.coverage_state}")
         self._emit("sec_discovery_poll", poll_id=poll_id, result_state=result_state,
                    valid_discovery=valid_discovery, coverage_state=self.state.coverage_state,
                    pages_walked=pages_walked, error_class=error_class,
@@ -743,6 +900,9 @@ class SecForm4Collector:
         outcomes: list[dict[str, Any]] = []
         for task in list(self.state.pending_tasks)[:limit]:
             outcomes.append(self._acquire(task))
+        if outcomes:
+            self.record_current_state(DRAIN_COMPLETED,
+                                      detail=outcomes[-1].get("result_state"))
         return outcomes
 
     def _acquire(self, task: dict[str, Any]) -> dict[str, Any]:
@@ -901,6 +1061,8 @@ class SecForm4Collector:
             self._recompute_coverage(self.state.coverage_state == COMPLETE,
                                      f"daily index confirmed coverage through {key}")
         self.save()
+        self.record_current_state(RECONCILE_COMPLETED,
+                                  detail=f"{key}:{'confirmed' if not missing else 'gap'}")
         return {"day": key, "result_state": CAPTURED_OK, "reconciled": not missing,
                 "gap_id": gap_id, "daily_index_object_sha256": attempt.raw_object_sha256}
 
@@ -966,6 +1128,13 @@ class SecForm4Collector:
             "rate_limit": self.budget.telemetry() if self.budget else None,
             "policy": self.policy.to_dict() if self.policy else None,
             "outage_seconds": self._outage_seconds(),
+            "acquisition_critical_fingerprint": self.fingerprint,
+            "scheduler_state": self.scheduler_state() if self.configured else
+                               BLOCKED_NOT_CONFIGURED,
+            "next_due_at_utc": self.next_due_at(),
+            "boot_id": self.lifecycle.get("boot_id"),
+            "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
+            "lifecycle_externally_attested": self.lifecycle.get("externally_attested"),
             "capture_state": storage["capture_state"],
             "visibility_state": storage["visibility_state"],
             "admissibility_state": storage["admissibility_state"],

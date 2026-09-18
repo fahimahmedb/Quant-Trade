@@ -7,12 +7,14 @@ check the list rather than trust a summary.
 
 from __future__ import annotations
 
+import dataclasses
 import errno
 import gzip
 import json
 import os
 import sys
 import unittest
+from unittest import mock
 from datetime import timedelta
 from pathlib import Path
 
@@ -31,13 +33,39 @@ from quant.dataplane.sec.store import (CAPTURED, NOT_ADMISSIBLE_FOR_CONFIRMATION
                                        SecAttemptRecord, SecCaptureStore,
                                        SecRawObjectRecord, SecStorageFailure,
                                        digest_bytes)
+from quant.dataplane.sec import fingerprint as fingerprint_module  # noqa: E402
+from quant.dataplane.sec.fingerprint import (ACQUISITION_CRITICAL_MODULES,  # noqa: E402
+                                             EXPLICITLY_NONCRITICAL,
+                                             FINGERPRINT_SCHEMA_VERSION,
+                                             INCLUDE_CANONICAL, TRANSFORM_CANONICAL,
+                                             PolicyClassificationInvalid,
+                                             UnclassifiedPolicyField,
+                                             acquisition_critical_fingerprint,
+                                             build_manifest, canonical_json,
+                                             canonical_policy, compute_fingerprint,
+                                             policy_field_names,
+                                             verify_policy_classification)
+from quant.dataplane.sec.audit import audit_observation_window  # noqa: E402
+from quant.dataplane.sec.scheduler import (AWAITING_POLL, BACKOFF,  # noqa: E402
+                                           BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
+                                           CONFIG_FAIL_CLOSED, COOLDOWN,
+                                           DRAIN_COMPLETED, DRAINING, LANE_ENABLED,
+                                           POLL_COMPLETED, SCHEDULER_STATES,
+                                           SERVICE_START, WORK_ENQUEUED)
+from quant.dataplane.sec.supervisor import (AUTOMATIC_RESTART_AFTER_FAILURE,  # noqa: E402
+                                            DEPLOYMENT_RESTART, LIFECYCLE_CAUSES,
+                                            MANUAL_START, SCHEDULED_START, UNATTESTED,
+                                            lifecycle_provenance)
 from quant.dataplane.sec.timebase import FrozenTimebase  # noqa: E402
 from quant.dataplane.sec.visibility import (assert_no_scientific_content,  # noqa: E402
                                             find_leaks)
 from quant.dataplane.sec.transport import (COMPLETE,  # noqa: E402
                                            DEADLINE_EXCEEDED as DEADLINE_EXCEEDED_OUTCOME,
-                                           SecHttpResponse, SecTransportError, TRUNCATED)
+                                           PermitAlreadySpent, RequestPermit,
+                                           SecHttpResponse, SecHttpTransport,
+                                           SecTransportError, TRUNCATED)
 from quant.paths import QuantPaths  # noqa: E402
+from quant.state import parse_ts, read_jsonl  # noqa: E402
 
 
 USER_AGENT = "Quant Research quant-research@example.com"
@@ -511,14 +539,23 @@ def build_feed(indices: list[int], *, form: str = "4",
 
 
 class FakeTransport:
-    """Same ``fetch`` contract as the real transport, so production has no test branch."""
+    """Same ``fetch`` contract as the real transport, so production has no test branch.
+
+    It honours the permit exactly as the real transport does - consumed at send,
+    single use - so every test in this file exercises the one-request-per-permit
+    invariant rather than only the tests that name it.
+    """
 
     def __init__(self, handler):
         self.handler = handler
         self.requested: list[str] = []
+        #: Attempt id carried by the permit for each request actually emitted.
+        self.permits_consumed: list[str] = []
 
-    def fetch(self, path: str) -> SecHttpResponse:
+    def fetch(self, path: str, permit) -> SecHttpResponse:
+        permit.consume()
         self.requested.append(path)
+        self.permits_consumed.append(permit.attempt_id)
         outcome = self.handler(path, len(self.requested) - 1)
         if isinstance(outcome, BaseException):
             raise outcome
@@ -1457,3 +1494,579 @@ class VisibilityFirewallTests(CollectorTestCase):
         self.assertEqual(find_leaks(raised.exception.reason), [],
                          "a reason class must not echo arbitrary source text")
         self.assertLessEqual(len(raised.exception.reason), 60)
+
+
+# ---------------------------------------------------------------------------
+# HIDDEN_TRANSPORT_RETRY: one reservation, one request, one attempt id
+# ---------------------------------------------------------------------------
+
+class RequestAccountingTests(CollectorTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §6.
+
+    The invariant is structural: the transport cannot send without a permit and
+    cannot send twice with one. These tests check that the structure holds on
+    the paths the collector actually takes, including every failure path, since
+    a failure is exactly where the removed retry used to fire.
+    """
+
+    def assert_one_to_one(self, collector, transport) -> None:
+        """Requests emitted == budget reservations == distinct durable attempt ids."""
+        attempts = collector.store.attempts()
+        journalled = [record["attempt_id"] for record in attempts
+                      if record["result_state"] != COOLDOWN_SUPPRESSED]
+        reservations = collector.budget.load().requests
+        self.assertEqual(len(transport.requested), reservations,
+                         "an HTTP request was emitted without a budget reservation")
+        self.assertEqual(len(transport.requested), len(journalled),
+                         "an HTTP request was emitted without a durable attempt id")
+        self.assertEqual(len(set(journalled)), len(journalled),
+                         "an attempt id was reused across requests")
+        self.assertEqual(transport.permits_consumed, journalled,
+                         "the permit attempt ids must match the journal, in order")
+
+    def test_transport_refuses_a_second_request_under_one_permit(self) -> None:
+        permit = RequestPermit(attempt_id="a1", reserved_at_utc="2026-09-18T00:00:00+00:00",
+                               endpoint_class="test")
+        permit.consume()
+        with self.assertRaises(PermitAlreadySpent):
+            permit.consume()
+
+    def test_the_permit_is_spent_even_when_the_request_fails(self) -> None:
+        """The removed retry lived exactly here: a failure after the send.
+
+        The permit is consumed before the socket write, so a connection-level
+        failure can never be re-sent under the same reservation.
+        """
+        class ExplodingConnection:
+            def request(self, *args, **kwargs):
+                raise OSError("connection reset by peer")
+
+            def close(self):
+                pass
+
+        transport = SecHttpTransport(self.policy(), timebase=self.timebase)
+        transport._connection = ExplodingConnection()
+        permit = RequestPermit(attempt_id="a1", reserved_at_utc="t", endpoint_class="test")
+        with self.assertRaises(SecTransportError):
+            transport.fetch("/cgi-bin/browse-edgar", permit)
+        self.assertTrue(permit.spent, "a failed send still consumes its permit")
+        self.assertEqual(transport.requests_sent, 1,
+                         "exactly one request was attempted, and it is counted")
+        with self.assertRaises(PermitAlreadySpent):
+            transport.fetch("/cgi-bin/browse-edgar", permit)
+
+    def test_an_idle_connection_is_recycled_before_sending_not_retried_after(self) -> None:
+        """The permitted reconnect: no extra request, no hidden retry."""
+        transport = SecHttpTransport(self.policy(idle_reuse_seconds=20.0),
+                                     timebase=self.timebase)
+
+        class DeadConnection:
+            closed = False
+
+            def close(self):
+                DeadConnection.closed = True
+
+        transport._connection = DeadConnection()
+        transport._connection_last_used = self.timebase.now()
+        # Fresh enough to reuse.
+        self.timebase.advance(5)
+        transport._recycle_if_idle()
+        self.assertIsNotNone(transport._connection)
+        # Idle past the threshold: replaced before the next send.
+        self.timebase.advance(30)
+        transport._recycle_if_idle()
+        self.assertIsNone(transport._connection)
+        self.assertTrue(DeadConnection.closed)
+        self.assertEqual(transport.requests_sent, 0,
+                         "recycling a connection must not emit a request")
+
+    def test_accounting_holds_across_a_normal_poll_and_drain(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        collector.drain(max_items=3)
+        self.timebase.advance(60)
+        collector.poll()
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_accounting_holds_across_every_failure_path(self) -> None:
+        """Each adverse response class, driven through the real collector path."""
+        cases = {
+            "transport_error": lambda path, call: SecTransportError("request_failed:OSError"),
+            "hung": lambda path, call: SecTransportError("read_timeout:TimeoutError",
+                                                         DEADLINE_EXCEEDED_OUTCOME),
+            "server_error": lambda path, call: response(b"oops", status=503),
+            "rate_limited": lambda path, call: response(b"x", status=429),
+            "forbidden": lambda path, call: response(b"x", status=403),
+            "permanent": lambda path, call: response(b"x", status=404),
+            "html_200": lambda path, call: response(
+                b"<html><body>error</body></html>", headers={"Content-Type": "text/html"}),
+            "truncated": lambda path, call: response(
+                b"partial", headers={"Content-Length": "9999"}, transfer_outcome=TRUNCATED),
+        }
+        for name, handler in cases.items():
+            with self.subTest(case=name):
+                self.setUp()
+                collector = self.collector(handler)
+                collector.poll()
+                # Push past any cooldown and try again, so a retry-shaped path
+                # would show up as an extra request if one existed.
+                self.timebase.advance(collector.cooldown_remaining() + 120)
+                collector.poll()
+                self.assert_one_to_one(collector, self.transport)
+
+    def test_accounting_holds_while_paginating_and_reconciling(self) -> None:
+        pages = {0: build_feed([10, 9]), 2: build_feed([8, 7]), 4: build_feed([6, 5])}
+
+        def handler(path: str, call: int):
+            if path.startswith("/Archives/edgar/daily-index"):
+                return response((FIXTURES / "master.20260917.idx").read_bytes(),
+                                headers={"Content-Type": "text/plain"})
+            if path.startswith("/cgi-bin"):
+                start = int(path.split("start=")[1].split("&")[0])
+                return response(pages[start])
+            return response((FIXTURES / "form4_submission.txt").read_bytes(),
+                            headers={"Content-Type": "text/plain"})
+
+        collector = self.collector(handler, discovery_page_size=2)
+        collector.state.cursor_identity_digest = digest_text(synthetic_accession(6))
+        collector.save()
+        collector.poll()
+        collector.drain(max_items=4)
+        collector.reconcile(date(2026, 9, 17))
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_a_cooldown_suppressed_attempt_spends_no_reservation_and_no_request(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.budget.enter_cooldown(300.0, "http_429_rate_limited")
+        before = len(self.transport.requested)
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, COOLDOWN_SUPPRESSED)
+        self.assertEqual(len(self.transport.requested), before,
+                         "a suppressed attempt must not reach the network")
+        # It still leaves a durable record, so the audit sees why nothing went out.
+        self.assertEqual(collector.store.attempts()[-1]["result_state"], COOLDOWN_SUPPRESSED)
+        self.assertIsNone(collector.store.attempts()[-1]["http_status"])
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_the_transport_has_no_retry_construct_left(self) -> None:
+        """A source-level guard: the defect was a nested re-send, so ban the shape."""
+        source = (ROOT / "src" / "quant" / "dataplane" / "sec" / "transport.py").read_text()
+        body = source[source.index("def _fetch_once"):]
+        self.assertEqual(body.count("connection.request("), 1,
+                         "transport must emit at most one request per fetch")
+        self.assertEqual(body.count("getresponse("), 1)
+
+
+# ---------------------------------------------------------------------------
+# INCOMPLETE_CRITICAL_POLICY_SERIALIZATION and the V1 fingerprint
+# ---------------------------------------------------------------------------
+
+class PolicyClassificationTests(SecCaptureTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §4, completeness invariant."""
+
+    def test_classification_covers_every_policy_field_exactly_once(self) -> None:
+        fields = policy_field_names()
+        noncritical = frozenset(EXPLICITLY_NONCRITICAL)
+        self.assertEqual(INCLUDE_CANONICAL | TRANSFORM_CANONICAL | noncritical, fields,
+                         "POLICY_FIELD_SET must equal the union of the three sets")
+        self.assertEqual(INCLUDE_CANONICAL & TRANSFORM_CANONICAL, frozenset())
+        self.assertEqual(INCLUDE_CANONICAL & noncritical, frozenset())
+        self.assertEqual(TRANSFORM_CANONICAL & noncritical, frozenset())
+        verify_policy_classification()
+
+    def test_every_noncritical_field_carries_a_frozen_rationale(self) -> None:
+        for name, rationale in EXPLICITLY_NONCRITICAL.items():
+            with self.subTest(field=name):
+                self.assertGreater(len(rationale), 120,
+                                   "a non-critical claim needs an argued rationale")
+                self.assertIn("runtime", rationale.lower())
+
+    def test_an_unclassified_policy_field_blocks_fingerprint_generation(self) -> None:
+        """The defence the governance asks for: fail generation, not just tests."""
+        original = dataclasses.fields(SecAccessPolicy)
+        added = dataclasses.field(default=1.0)
+        added.name = "future_unclassified_knob"
+        added.type = float
+
+        def with_extra_field(cls):
+            return tuple(list(original) + [added])
+
+        with mock.patch.object(dataclasses, "fields", side_effect=with_extra_field):
+            with self.assertRaises(UnclassifiedPolicyField) as raised:
+                verify_policy_classification()
+            self.assertIn("future_unclassified_knob", str(raised.exception))
+            with self.assertRaises(UnclassifiedPolicyField):
+                canonical_policy(self.policy())
+            with self.assertRaises(UnclassifiedPolicyField):
+                acquisition_critical_fingerprint(self.policy(), root=ROOT)
+
+    def test_a_classification_for_a_removed_field_is_also_rejected(self) -> None:
+        with mock.patch.object(fingerprint_module, "INCLUDE_CANONICAL",
+                               INCLUDE_CANONICAL | {"field_that_no_longer_exists"}):
+            with self.assertRaises(PolicyClassificationInvalid):
+                verify_policy_classification()
+
+    def test_overlapping_classifications_are_rejected(self) -> None:
+        with mock.patch.object(fingerprint_module, "TRANSFORM_CANONICAL",
+                               TRANSFORM_CANONICAL | {"discovery_poll_seconds"}):
+            with self.assertRaises(PolicyClassificationInvalid):
+                verify_policy_classification()
+
+    def test_canonical_policy_carries_the_fields_to_dict_omitted(self) -> None:
+        """The concrete defect: to_dict() could not serve as the fingerprint source."""
+        canonical = canonical_policy(self.policy())
+        telemetry = self.policy().to_dict()
+        for omitted in ("filings_per_drain", "accept_encoding", "max_response_bytes"):
+            with self.subTest(field=omitted):
+                self.assertIn(omitted, canonical)
+                self.assertNotIn(omitted, telemetry,
+                                 "test guards the reason a dedicated serializer exists")
+
+    def test_requester_identity_is_bound_but_never_plaintext(self) -> None:
+        canonical = canonical_policy(self.policy())
+        self.assertNotIn("user_agent", canonical)
+        binding = canonical["requester_identity_binding"]
+        self.assertTrue(binding.startswith("sha256:"))
+        self.assertNotIn("example.com", binding)
+        self.assertNotIn("Quant", binding)
+        # Different declared identity, different binding.
+        other = SecAccessPolicy(user_agent="Other Requester other@example.org")
+        self.assertNotEqual(canonical_policy(other)["requester_identity_binding"], binding)
+
+
+class FingerprintTests(SecCaptureTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §8, before-t0 acceptance."""
+
+    def fingerprint(self, **overrides) -> str:
+        return acquisition_critical_fingerprint(self.policy(**overrides), root=ROOT)
+
+    def test_two_identical_builds_produce_the_same_fingerprint(self) -> None:
+        self.assertEqual(self.fingerprint(), self.fingerprint())
+        # And through a whole separate manifest construction.
+        first = build_manifest(self.policy(), root=ROOT)
+        second = build_manifest(self.policy(), root=ROOT)
+        self.assertEqual(canonical_json(first), canonical_json(second))
+        self.assertEqual(compute_fingerprint(first), compute_fingerprint(second))
+
+    def test_the_manifest_contains_every_mandated_v1_member(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT)
+        self.assertEqual(manifest["schema"], FINGERPRINT_SCHEMA_VERSION)
+        # Code-semantic roots, all of them, per the frozen module list.
+        for module in ACQUISITION_CRITICAL_MODULES:
+            self.assertIn(module, manifest["code"])
+            self.assertTrue(manifest["code"][module].startswith("sha256:"))
+        self.assertIn("src/quant/clock.py", manifest["code"],
+                      "clock.py is fingerprint-critical in full until the "
+                      "acquisition scheduling path is isolated")
+        # Every mandated runtime value.
+        for value in ("discovery_poll_seconds", "max_concurrency", "max_requests_per_second",
+                      "allow_burst", "connect_timeout_seconds", "read_timeout_seconds",
+                      "total_deadline_seconds", "backoff_schedule_seconds", "jitter_ratio",
+                      "rate_limit_cooldown_seconds", "forbidden_cooldown_seconds",
+                      "discovery_page_size", "max_discovery_pages_per_poll",
+                      "filings_per_drain", "accept_encoding", "max_response_bytes",
+                      "requester_identity_binding"):
+            self.assertIn(value, manifest["policy"])
+        self.assertIn("host", manifest["request_shape"])
+        self.assertIn("query_construction_version", manifest["request_shape"])
+        self.assertIn("service_definition_digests", manifest["supervisor"])
+        self.assertIn("restart_policy", manifest["supervisor"])
+
+    def test_changing_a_timeout_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(self.fingerprint(connect_timeout_seconds=11.0), baseline)
+        self.assertNotEqual(self.fingerprint(read_timeout_seconds=21.0), baseline)
+        self.assertNotEqual(self.fingerprint(total_deadline_seconds=61.0), baseline)
+        self.assertNotEqual(self.fingerprint(idle_reuse_seconds=30.0), baseline)
+
+    def test_changing_a_retry_or_backoff_rule_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(
+            self.fingerprint(backoff_schedule_seconds=(5.0, 15.0, 60.0, 300.0, 1800.0)),
+            baseline)
+        self.assertNotEqual(self.fingerprint(jitter_ratio=0.1), baseline)
+        self.assertNotEqual(self.fingerprint(rate_limit_cooldown_seconds=600.0), baseline)
+        self.assertNotEqual(self.fingerprint(forbidden_cooldown_seconds=7200.0), baseline)
+
+    def test_changing_discovery_or_coverage_settings_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(self.fingerprint(discovery_page_size=41), baseline)
+        self.assertNotEqual(self.fingerprint(max_discovery_pages_per_poll=11), baseline)
+        self.assertNotEqual(self.fingerprint(filings_per_drain=2), baseline)
+        self.assertNotEqual(self.fingerprint(discovery_poll_seconds=30.0), baseline)
+
+    def test_changing_any_critical_policy_field_changes_the_fingerprint(self) -> None:
+        """Sweep every INCLUDE_CANONICAL field rather than a chosen sample."""
+        baseline = self.fingerprint()
+        mutations = {
+            "discovery_poll_seconds": 90.0, "max_concurrency": 2,
+            "max_requests_per_second": 1.0, "allow_burst": True,
+            "connect_timeout_seconds": 12.0, "read_timeout_seconds": 25.0,
+            "idle_reuse_seconds": 45.0, "total_deadline_seconds": 90.0,
+            "backoff_schedule_seconds": (1.0, 2.0), "jitter_ratio": 0.5,
+            "rate_limit_cooldown_seconds": 301.0, "forbidden_cooldown_seconds": 3601.0,
+            "discovery_page_size": 20, "max_discovery_pages_per_poll": 3,
+            "filings_per_drain": 5, "accept_encoding": "identity",
+            "max_response_bytes": 1024,
+        }
+        self.assertEqual(set(mutations), set(INCLUDE_CANONICAL),
+                         "every canonically included field needs a mutation case")
+        for name, value in mutations.items():
+            with self.subTest(field=name):
+                self.assertNotEqual(self.fingerprint(**{name: value}), baseline)
+
+    def test_changing_the_declared_sec_identity_changes_the_fingerprint(self) -> None:
+        other = SecAccessPolicy(user_agent="Different Requester ops@example.org")
+        self.assertNotEqual(acquisition_critical_fingerprint(other, root=ROOT),
+                            self.fingerprint())
+
+    def test_changing_acquisition_code_changes_the_fingerprint(self) -> None:
+        """A module edit must move the fingerprint even with identical config."""
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            target = mirror / "src" / "quant" / "dataplane" / "sec" / "collector.py"
+            target.write_text(target.read_text() + "\n# acquisition semantics changed\n")
+            self.assertNotEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                                before)
+
+    def test_changing_the_supervisor_restart_policy_changes_the_fingerprint(self) -> None:
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            unit = mirror / "deploy" / "quant-sec-capture.service"
+            unit.write_text(unit.read_text().replace("RestartSec=15", "RestartSec=120"))
+            self.assertNotEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                                before)
+
+    def test_a_downstream_only_change_leaves_the_fingerprint_unchanged(self) -> None:
+        """Manifest/parser/gap-ledger work must not reset t0."""
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            # A downstream parser/normalizer, and an edit to a non-acquisition plane.
+            (mirror / "src" / "quant" / "dataplane" / "form4_parser.py").write_text(
+                "'''Downstream parser, strictly after immutable raw storage.'''\n")
+            desk = mirror / "src" / "quant" / "desk" / "desk.py"
+            desk.write_text(desk.read_text() + "\n# unrelated desk change\n")
+            self.assertEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                             before, "downstream work must not reset the window")
+
+    def test_recording_a_newer_sec_documentation_revision_does_not_reset_t0(self) -> None:
+        """The frozen rationale for the one EXPLICITLY_NONCRITICAL field, tested."""
+        baseline = self.fingerprint()
+        restated = SecAccessPolicy(
+            user_agent=USER_AGENT,
+            sources=({"url": "https://www.sec.gov/os/webmaster-faq",
+                      "reviewed_or_updated": "2027-01-01",
+                      "consulted_at_utc": "2027-01-02"},))
+        self.assertEqual(acquisition_critical_fingerprint(restated, root=ROOT), baseline)
+        # But an actual limit changed in response to that re-check does reset it.
+        self.assertNotEqual(self.fingerprint(max_requests_per_second=1.5), baseline)
+
+    def test_the_fingerprint_is_deterministic_json_not_dict_order(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT)
+        shuffled = dict(reversed(list(manifest.items())))
+        self.assertEqual(compute_fingerprint(shuffled), compute_fingerprint(manifest))
+
+
+# ---------------------------------------------------------------------------
+# Scheduler and lifecycle provenance
+# ---------------------------------------------------------------------------
+
+class SchedulerProvenanceTests(CollectorTestCase):
+    """`BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md §5.2`."""
+
+    def test_every_cadence_changing_event_records_a_transition(self) -> None:
+        collector = self.collector(self.fixture_router(), enable=False)
+        self.assertEqual(collector.scheduler.all(), [])
+        collector.enable()
+        collector.poll()
+        collector.drain(max_items=3)
+        causes = [record["cause"] for record in collector.scheduler.all()]
+        for expected in (LANE_ENABLED, POLL_COMPLETED, WORK_ENQUEUED, DRAIN_COMPLETED):
+            self.assertIn(expected, causes)
+
+    def test_each_transition_carries_the_full_mandated_payload(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        for record in collector.scheduler.all():
+            with self.subTest(transition=record["transition_id"]):
+                self.assertIn(record["state"], SCHEDULER_STATES)
+                self.assertTrue(record["recorded_at_utc"])
+                self.assertTrue(record["cause"])
+                self.assertTrue(record["acquisition_critical_fingerprint"].startswith("sha256:"))
+                self.assertIn("next_due_at_utc", record)
+                self.assertIn("cooldown_until_utc", record)
+                self.assertIn("backoff_step", record)
+
+    def test_next_due_at_reflects_cadence_backoff_and_pending_work(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        # Pending filings are due immediately.
+        self.assertTrue(collector.state.pending_tasks)
+        self.assertEqual(collector.scheduler_state(), DRAINING)
+        collector.drain(max_items=3)
+        # Then the cadence governs.
+        self.assertEqual(collector.scheduler_state(), AWAITING_POLL)
+        due = parse_ts(collector.next_due_at())
+        expected = parse_ts(collector.state.last_poll_started_at_utc) + timedelta(seconds=60)
+        self.assertEqual(due, expected)
+        # A cooldown moves the due time to the cooldown end.
+        collector.budget.enter_cooldown(300.0, "http_429_rate_limited")
+        self.assertEqual(collector.scheduler_state(), COOLDOWN)
+        self.assertEqual(collector.next_due_at(),
+                         collector.budget.load().cooldown_until_utc)
+
+    def test_a_backoff_transition_is_prospective_not_post_hoc(self) -> None:
+        """The audit must learn when the next try is due, not just that one failed."""
+        collector = self.collector(lambda path, call: response(b"oops", status=503))
+        collector.poll()
+        backoffs = [record for record in collector.scheduler.all()
+                    if record["cause"] == BACKOFF_ENTERED]
+        self.assertTrue(backoffs)
+        transition = backoffs[-1]
+        self.assertEqual(transition["state"], BACKOFF)
+        self.assertIsNotNone(transition["next_due_at_utc"],
+                             "a backoff must declare when the retry becomes due")
+        self.assertGreater(parse_ts(transition["next_due_at_utc"]), self.timebase.now()
+                           - timedelta(seconds=1))
+
+    def test_a_blocked_lane_still_declares_its_state(self) -> None:
+        """Silence must never be the only evidence that nothing was due."""
+        collector = SecForm4Collector(self.paths, timebase=self.timebase, root=ROOT,
+                                      environ={})
+        self.assertFalse(collector.configured)
+        collector.record_service_start()
+        latest = collector.scheduler.latest()
+        self.assertEqual(latest["state"], BLOCKED_NOT_CONFIGURED)
+        self.assertEqual(latest["cause"], CONFIG_FAIL_CLOSED)
+        self.assertIsNone(latest["next_due_at_utc"],
+                          "nothing becomes due without an external change")
+
+    def test_scheduler_journal_is_append_only_across_restart(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        before = collector.scheduler.all()
+        restarted = self.reborn(self.fixture_router())
+        self.assertEqual(restarted.scheduler.all()[:len(before)], before)
+
+
+class LifecycleProvenanceTests(CollectorTestCase):
+    def test_the_collector_never_attests_its_own_origin(self) -> None:
+        collector = self.collector(self.fixture_router())
+        self.assertEqual(collector.lifecycle["lifecycle_cause"], UNATTESTED)
+        self.assertFalse(collector.lifecycle["externally_attested"])
+        readiness = collector.t0_readiness()
+        self.assertIn("LIFECYCLE_CAUSE_UNATTESTED", readiness["blockers"])
+        self.assertFalse(readiness["instrumentation_ready"])
+
+    def test_a_supervisor_supplied_cause_is_recorded_verbatim(self) -> None:
+        for cause in LIFECYCLE_CAUSES:
+            with self.subTest(cause=cause):
+                provenance = lifecycle_provenance({
+                    "QUANT_SEC_LIFECYCLE_CAUSE": cause,
+                    "QUANT_SEC_BOOT_ID": "boot-123",
+                    "QUANT_SEC_BOOT_AT_UTC": "2026-09-18T00:00:00+00:00",
+                    "QUANT_SEC_SUPERVISOR_ID": "sup-1"})
+                self.assertEqual(provenance["lifecycle_cause"], cause)
+                self.assertTrue(provenance["externally_attested"])
+                self.assertEqual(provenance["boot_id"], "boot-123")
+
+    def test_an_unrecognised_cause_is_not_silently_accepted(self) -> None:
+        provenance = lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": "LOOKS_FINE"})
+        self.assertEqual(provenance["lifecycle_cause"], UNATTESTED)
+        self.assertEqual(provenance["lifecycle_cause_declared"], "LOOKS_FINE")
+        self.assertFalse(provenance["externally_attested"])
+
+    def test_manual_start_is_flagged_as_invalidating(self) -> None:
+        provenance = lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START})
+        self.assertTrue(provenance["invalidates_observation_window"])
+        for benign in (SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE, DEPLOYMENT_RESTART):
+            self.assertFalse(
+                lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": benign})
+                ["invalidates_observation_window"])
+
+    def test_service_start_is_journalled_with_the_active_fingerprint(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-abc"})
+        record = collector.record_service_start()
+        self.assertEqual(record["lifecycle_cause"], SCHEDULED_START)
+        self.assertEqual(record["boot_id"], "boot-abc")
+        self.assertTrue(record["acquisition_critical_fingerprint"].startswith("sha256:"))
+        persisted = list(read_jsonl(self.paths.sec_lifecycle))
+        self.assertEqual(len(persisted), 1)
+        self.assertEqual(persisted[0]["boot_id"], "boot-abc")
+
+
+class ObservationAuditTests(CollectorTestCase):
+    def test_a_healthy_run_is_accountable(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertTrue(report["fingerprint_stable"])
+        self.assertEqual(report["lifecycle_causes"], [SCHEDULED_START])
+
+    def test_an_unattested_start_is_reported_not_assumed_benign(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("LIFECYCLE_CAUSE_UNATTESTED", report["findings"])
+
+    def test_a_manual_start_is_reported_as_an_invalidating_intervention(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("INVALIDATING_INTERVENTION", report["findings"])
+
+    def test_a_changed_fingerprint_mid_window_is_detected(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        # A deployment that moved acquisition semantics mid-window.
+        collector.fingerprint = "sha256:" + "0" * 64
+        collector.record_current_state(SERVICE_START, detail="redeployed")
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("ACQUISITION_FINGERPRINT_CHANGED", report["findings"])
+        self.assertEqual(len(report["fingerprints_observed"]), 2)
+
+    def test_the_audit_never_infers_health_from_an_empty_journal(self) -> None:
+        collector = self.collector(self.fixture_router(), enable=False)
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("NO_SCHEDULER_PROVENANCE", report["findings"])
+        self.assertEqual(report["expected_actions"], 0)
+
+    def test_the_audit_reports_and_never_closes_the_continuity_state(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.record_service_start()
+        report = audit_observation_window(collector)
+        self.assertEqual(report["t0_authority"], "BLUE_TEAM")
+        self.assertEqual(report["p0_continuous_service_state"],
+                         "OPEN / NOT_YET_PROVEN_CONTINUOUS")
+        self.assertEqual(collector.t0_readiness()["t0_authority"], "BLUE_TEAM")
