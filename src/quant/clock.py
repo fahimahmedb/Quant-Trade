@@ -37,6 +37,11 @@ from .state import (ComponentRegistry, parse_ts, read_json, read_jsonl,  # noqa:
                      utc_now, write_json)
 
 
+#: Keys a legacy blocked-lane entry carries for the BuildTask rather than the
+#: ResearchTask. Passing one to ResearchTask is a TypeError, which on a fresh
+#: ``var/`` used to make ``boot()`` fail outright.
+BUILD_TASK_ONLY_FIELDS = frozenset({"capability", "acceptance", "affected_subsystems"})
+
 HEARTBEAT_TIMEOUT_SECONDS = 900
 MAX_TASK_ATTEMPTS = 3
 #: How long a worker may hold a task before its lease is considered stale.
@@ -282,8 +287,14 @@ class QuantSystem:
             if self.queue.add(task):
                 seeded.append(task_id)
         for entry in self._legacy_blocked_lanes():
-            if entry["task_id"] not in self.queue.tasks and self.queue.add(ResearchTask(**{
-                    key: value for key, value in entry.items() if key != "capability"})):
+            # A legacy entry describes both a blocked task and the capability gap
+            # behind it. Only the task fields may reach ResearchTask; the rest
+            # belong to the BuildTask below. Filtering by an explicit set rather
+            # than by one name keeps a newly described gap from crashing boot.
+            task_fields = {key: value for key, value in entry.items()
+                           if key not in BUILD_TASK_ONLY_FIELDS}
+            if entry["task_id"] not in self.queue.tasks and self.queue.add(
+                    ResearchTask(**task_fields)):
                 seeded.append(entry["task_id"])
                 self.learning.raise_build_task(BuildTask(
                     task_id=f"BUILD-{entry['task_id']}", capability=entry["capability"],

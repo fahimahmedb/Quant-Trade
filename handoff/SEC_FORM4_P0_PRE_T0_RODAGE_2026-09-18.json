@@ -1,0 +1,111 @@
+{
+  "acquisition_critical_fingerprint": "sha256:ec40b4a1ad1b8466c06fb42cda8624249312ffa0ef4e691dd43b1a39a4682b51",
+  "artifact": "sec_form4_p0_pre_t0_rodage",
+  "blocker_closure": {
+    "HIDDEN_TRANSPORT_RETRY": {
+      "enforcement": "structural: transport.fetch requires a single-use RequestPermit minted from one budget reservation and carrying the attempt id; a second send raises",
+      "live_invariant": {
+        "budget_reservations": 10,
+        "distinct_attempt_ids": 10,
+        "durable_attempt_ids": 10,
+        "holds": true
+      },
+      "resolution": "removed; preferred option 1 of the governance",
+      "state": "CLOSED"
+    },
+    "INCOMPLETE_CRITICAL_POLICY_SERIALIZATION": {
+      "resolution": "dedicated canonical serialization; completeness checked against dataclasses.fields(SecAccessPolicy) at generation time, so an unclassified field blocks fingerprint generation as well as failing tests",
+      "state": "CLOSED"
+    }
+  },
+  "collector_version": "sec-form4-p0-raw-capture/1",
+  "fingerprint_schema": "acquisition_critical_fingerprint/v1",
+  "git_commit": "b89743d4d59f8baa7e382c8e6e9d54d8f7f1ed4e",
+  "not_yet_established": [
+    "Multi-day unattended operation. This rodage is minutes, not days; a single session cannot produce calendar time.",
+    "A complete weekend and a predeclared source-normal silence interval, both required by the qualifying window.",
+    "Live 429/403 behaviour, which is deliberately not provoked against SEC and is proven offline only.",
+    "Multi-host budget coordination: the limiter is a file lock, so it bounds one machine and cannot coordinate two."
+  ],
+  "note": "Opaque acquisition evidence only. No filing identity, locator, body, parsed field or filing count. Attempt and transition counts describe requests and scheduler decisions, not filings.",
+  "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
+  "produced_at_utc": "2026-09-18T11:42:59.489898+00:00",
+  "purpose": "Initial pre-t0 burn-in in the frozen state, to surface a third BLOCKS_CAPTURE_INTEGRITY defect before the observation window starts. This rodage does not count toward the fourteen days and does not authorize t0.",
+  "retrospective_audit": {
+    "accountable": true,
+    "attempts_recorded": 10,
+    "expected_actions": 13,
+    "findings": [],
+    "fingerprint_stable": true,
+    "scheduler_transitions": 14,
+    "service_starts": 2,
+    "unexplained_expected_actions": [],
+    "window_duration_seconds": 154.8
+  },
+  "rodage_checklist": {
+    "automatic_restart": "OBSERVED_LIVE (AUTOMATIC_RESTART_AFTER_FAILURE, attested by supervisor)",
+    "crash_restart": "COVERED_OFFLINE (four commit boundaries) and OBSERVED_LIVE (restart/resume)",
+    "http_403": "COVERED_OFFLINE (deliberately not provoked against SEC)",
+    "http_429": "COVERED_OFFLINE (deliberately not provoked against SEC)",
+    "http_5xx": "COVERED_OFFLINE (not provoked against SEC)",
+    "multiple_normal_cycles": "OBSERVED_LIVE",
+    "no_firewall_leak": "COVERED_OFFLINE (status, brief, journals, snapshot, exceptions)",
+    "no_network_request_outside_budget_and_journal": "VERIFIED_LIVE and COVERED_OFFLINE",
+    "no_new_publication_period": "OBSERVED_LIVE (earned NO_NEW_DATA, one request, no refetch)",
+    "no_starvation_by_research_or_desk": "COVERED_OFFLINE (capture wins the tick against due replayable work)",
+    "persistent_cooldown": "COVERED_OFFLINE (durable, extend-only, survives restart)",
+    "timeout": "COVERED_OFFLINE (not provoked against SEC)"
+  },
+  "rodage_observations": {
+    "all_starts_externally_attested": true,
+    "attempts_by_endpoint_kind": {
+      "DISCOVERY": 3,
+      "FILING": 7
+    },
+    "attempts_by_result_state": {
+      "CAPTURED": 10
+    },
+    "average_requests_per_second": 0.065,
+    "coverage_state": "COMPLETE",
+    "fingerprint_stable_across_restart": true,
+    "lifecycle_causes_observed": [
+      "AUTOMATIC_RESTART_AFTER_FAILURE",
+      "SCHEDULED_START"
+    ],
+    "open_gap_kinds": [],
+    "raw_bytes_stored": 19839,
+    "raw_object_address_mismatches": [],
+    "request_span_seconds": 154.5,
+    "scheduler_transitions": 14,
+    "supervised_service_starts": 2,
+    "transition_causes": {
+      "DRAIN_COMPLETED": 7,
+      "LANE_ENABLED": 1,
+      "POLL_COMPLETED": 3,
+      "SERVICE_START": 2,
+      "WORK_ENQUEUED": 1
+    },
+    "transition_states": {
+      "AWAITING_POLL": 4,
+      "DISABLED": 1,
+      "DRAINING": 8,
+      "POLL_DUE": 1
+    },
+    "validated_polls": 3
+  },
+  "states": {
+    "admissibility_state": "NOT_ADMISSIBLE_FOR_CONFIRMATION",
+    "capture_state": "CAPTURED",
+    "visibility_state": "NOT_VISIBLE_FOR_SCIENTIFIC_PROTOCOL"
+  },
+  "t0_authority": "BLUE_TEAM",
+  "t0_declared_by_this_artifact": false,
+  "third_defect_found_by_this_rodage": {
+    "classification": "BLOCKS_CAPTURE_INTEGRITY",
+    "name": "DISCOVERY_FORM_TYPE_PREFIX_MATCH",
+    "observed": "EDGAR's Latest Filings 'type' parameter is a prefix match, not an exact match: type=4 also returned a 497J fund filing. The validator correctly refused the poll as DISCOVERY_INVALID rather than emitting NO_NEW_DATA, which is how it was found.",
+    "resolution": "the server filter is treated as a narrowing hint and local classification is authoritative; a non-ownership form type is excluded explicitly, while an unreadable form type remains an error. Query construction version bumped, so the fingerprint moved.",
+    "state": "CLOSED",
+    "why_the_first_live_probe_missed_it": "that window happened to contain only form 4 entries"
+  }
+}

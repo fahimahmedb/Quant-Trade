@@ -46,7 +46,7 @@ FINGERPRINT_SCHEMA_VERSION = "acquisition_critical_fingerprint/v1"
 
 #: Query-construction version. Change it whenever the shape of a request the
 #: SEC actually receives changes, even if no policy value moves.
-QUERY_CONSTRUCTION_VERSION = "edgar_getcurrent_atom+daily_master_index/v1"
+QUERY_CONSTRUCTION_VERSION = "edgar_getcurrent_atom+daily_master_index/v2"
 
 #: Module roots frozen by the governance document, relative to the repo root.
 #: ``clock.py`` is included in full: the governance's conservative V1 rule,
@@ -218,6 +218,11 @@ def build_manifest(policy: SecAccessPolicy, *, root: Path,
             "host": SEC_HOST,
             "query_construction_version": QUERY_CONSTRUCTION_VERSION,
             "discovery_endpoint_class": DISCOVERY_ENDPOINT_CLASS,
+            # EDGAR matches ``type`` by prefix, so the authoritative Form-4
+            # selection is local. Frozen here because changing which side
+            # decides changes what gets captured.
+            "server_filter_semantics": "prefix_match_not_exact",
+            "authoritative_form_selection": "local",
             "filing_endpoint_class": FILING_ENDPOINT_CLASS,
             # The literal request lines, so a change to query construction moves
             # the fingerprint even if no policy value and no module body did.

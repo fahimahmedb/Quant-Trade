@@ -12,6 +12,16 @@ Two SEC surfaces are used, both chosen for compactness rather than breadth.
 * **Latest Filings, Ownership/Form-4, Atom** - one small request per poll. It
   carries a stable accession identity per entry, from which the raw document
   locator is derived deterministically, so no crawl around the filing is needed.
+
+  Its ``type`` parameter is a **prefix match, not an exact match**: ``type=4``
+  also returns ``497``, ``497J`` and ``497K`` fund filings. Observed live during
+  the pre-t0 rodage, after an earlier probe happened to land on a window that
+  contained only ``4`` entries. The server filter is therefore treated as a
+  narrowing hint and **local classification is authoritative**. A form type
+  outside the ownership set is an expected consequence of prefix matching and is
+  excluded locally; a form type that is absent or not even shaped like an EDGAR
+  form type is still an error, because that is the case where the filter or
+  parser genuinely cannot be shown to work.
 * **Daily index (``master.<YYYYMMDD>.idx``)** - one compact pipe-delimited file
   per closed day, which is what the SEC publishes for exactly this purpose. It
   is the authority for *coverage*: expected Form-4 accessions versus captured.
@@ -36,6 +46,10 @@ ATOM = "{http://www.w3.org/2005/Atom}"
 #: Ownership form types. The lane captures Form 4 and its amendments.
 FORM_4_TYPES = frozenset({"4", "4/A"})
 OWNERSHIP_FORM_TYPES = frozenset({"3", "3/A", "4", "4/A", "5", "5/A"})
+
+#: A plausible EDGAR form type, e.g. ``4``, ``4/A``, ``10-K``, ``497J``, ``S-1``.
+#: Used to separate "a form we do not want" from "we cannot read the form type".
+FORM_TYPE_PATTERN = re.compile(r"^[0-9A-Z][0-9A-Z/.\-]{0,19}$")
 
 #: ``0001234567-26-000123``
 ACCESSION_PATTERN = re.compile(r"\b(\d{10}-\d{2}-\d{6})\b")
@@ -122,6 +136,22 @@ class DiscoveryPage:
         return len(self.entries)
 
     @property
+    def ownership_entries(self) -> list[DiscoveryEntry]:
+        return [entry for entry in self.entries
+                if entry.form_type in OWNERSHIP_FORM_TYPES]
+
+    @property
+    def excluded_form_types(self) -> list[str]:
+        """Form types the server's prefix match returned and we do not want.
+
+        Kept so exclusion is an explicit, inspectable decision rather than a
+        silent drop. Internal only: it is a count-bearing view of other filers'
+        activity and never reaches a protocol-mutating surface.
+        """
+        return sorted({entry.form_type for entry in self.entries
+                       if entry.form_type not in OWNERSHIP_FORM_TYPES})
+
+    @property
     def page_full(self) -> bool:
         """A full page is the endpoint's way of saying "there may be more"."""
         return self.entry_count >= self.requested_count
@@ -198,12 +228,10 @@ def _parse_entry(element: ElementTree.Element, requested_form_type: str) -> Disc
         # error rather than an entry to skip.
         raise DiscoveryInvalid("discovery_entry_missing_form_type")
     term = term.strip()
-    if term not in OWNERSHIP_FORM_TYPES:
-        raise DiscoveryInvalid(f"discovery_form_type_filter_mismatch:{_safe_term(term)}")
-    if requested_form_type in FORM_4_TYPES and term not in FORM_4_TYPES:
-        # The request asked for Form 4 and the source answered with something
-        # else: the filter configuration cannot be trusted this poll.
-        raise DiscoveryInvalid(f"discovery_form_type_filter_mismatch:{_safe_term(term)}")
+    if not FORM_TYPE_PATTERN.match(term):
+        # Not a form type we merely do not want - one we cannot read at all.
+        # That is the case where the filter/parser cannot be shown to work.
+        raise DiscoveryInvalid(f"discovery_entry_form_type_unparseable:{_safe_term(term)}")
 
     identifier = element.findtext(f"{ATOM}id") or ""
     from_id = ACCESSION_PATTERN.search(identifier)

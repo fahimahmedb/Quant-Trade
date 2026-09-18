@@ -719,21 +719,82 @@ class AntiFalseSuccessTests(CollectorTestCase):
                     parse_discovery_page(body, requested_start=0, requested_count=40)
                 self.assertEqual(raised.exception.reason, expected)
 
-    def test_a_filter_that_does_not_surface_form_4_is_an_error(self) -> None:
-        """A discovery filter that cannot be shown to work is never NO_NEW_DATA."""
-        wrong_form = build_feed([1], form="8-K")
-        with self.assertRaises(DiscoveryInvalid) as raised:
-            parse_discovery_page(wrong_form, requested_start=0, requested_count=40)
-        self.assertTrue(raised.exception.reason.startswith(
-            "discovery_form_type_filter_mismatch"))
-        # An ownership form other than 4 when 4 was requested is also a mismatch.
-        with self.assertRaises(DiscoveryInvalid):
-            parse_discovery_page(build_feed([2], form="3"), requested_start=0,
-                                 requested_count=40)
-        collector = self.collector(lambda path, call: response(wrong_form))
+    def test_prefix_matched_non_ownership_forms_are_excluded_not_errors(self) -> None:
+        """EDGAR matches ``type`` by prefix, so ``type=4`` also returns 497*.
+
+        Observed live during the pre-t0 rodage: a ``497J`` fund filing arrived on
+        the Form-4 feed. The server filter is a narrowing hint; local
+        classification is authoritative. Excluding an unwanted form is normal
+        operation, so it must not fail the poll - but the exclusion is explicit
+        and inspectable, never a silent drop.
+        """
+        mixed = build_feed([], entries=[
+            ENTRY_TEMPLATE.format(form="4", n=1, cik="0000320193", cik_int="320193",
+                                  nodash="000032019326000045",
+                                  accession="0000320193-26-000045", hh="16", mm="31"),
+            ENTRY_TEMPLATE.format(form="497J", n=2, cik="0000789019", cik_int="789019",
+                                  nodash="000078901926000112",
+                                  accession="0000789019-26-000112", hh="16", mm="22"),
+            ENTRY_TEMPLATE.format(form="497K", n=3, cik="0001018724", cik_int="1018724",
+                                  nodash="000101872426000301",
+                                  accession="0001018724-26-000301", hh="16", mm="04"),
+            ENTRY_TEMPLATE.format(form="4/A", n=4, cik="0001045810", cik_int="1045810",
+                                  nodash="000104581026000777",
+                                  accession="0001045810-26-000777", hh="15", mm="50")])
+        page = parse_discovery_page(mixed, requested_start=0, requested_count=40)
+        self.assertEqual(page.entry_count, 4)
+        self.assertEqual([entry.form_type for entry in page.form_4_entries()], ["4", "4/A"])
+        self.assertEqual(page.excluded_form_types, ["497J", "497K"])
+
+        collector = self.collector(self.fixture_router(atom=mixed))
+        outcome = collector.poll()
+        self.assertTrue(outcome.valid_discovery,
+                        "an unwanted form type is not a broken discovery")
+        self.assertEqual(outcome.result_state, NEW_ITEMS)
+        self.assertEqual(outcome.enqueued, 2, "only the ownership filings are queued")
+        self.assertEqual(collector.state.open_gaps, [])
+
+    def test_an_unreadable_form_type_is_still_an_error(self) -> None:
+        """The real guard: a term we cannot read means the filter is unproven."""
+        # XML-valid terms that are not readable as an EDGAR form type. (A term
+        # containing raw markup breaks XML parsing first, which is also an
+        # error, just an earlier one.)
+        for bad in ("not a form type!", "4" * 40, "../../etc/passwd", "form type: four"):
+            with self.subTest(term=bad):
+                feed = build_feed([], entries=[
+                    "\t<entry>\n\t\t<title>x</title>\n"
+                    "\t\t<link rel='alternate' href='https://www.sec.gov/Archives/edgar/"
+                    "data/1/900000000126000001/9000000001-26-000001-index.htm'/>\n"
+                    f"\t\t<category term='{bad}' label='form type'/>\n"
+                    "\t\t<id>urn:tag:sec.gov,2008:accession-number="
+                    "9000000001-26-000001</id>\n\t</entry>"])
+                with self.assertRaises(DiscoveryInvalid) as raised:
+                    parse_discovery_page(feed, requested_start=0, requested_count=40)
+                self.assertTrue(raised.exception.reason.startswith(
+                    "discovery_entry_form_type_unparseable"))
+        collector = self.collector(lambda path, call: response(build_feed([], entries=[
+            "\t<entry>\n\t\t<title>x</title>\n"
+            "\t\t<link rel='alternate' href='https://www.sec.gov/Archives/edgar/data/1/"
+            "900000000126000001/9000000001-26-000001-index.htm'/>\n"
+            "\t\t<category term='not a form!' label='form type'/>\n"
+            "\t\t<id>urn:tag:sec.gov,2008:accession-number=9000000001-26-000001</id>\n"
+            "\t</entry>"])))
         outcome = collector.poll()
         self.assertEqual(outcome.result_state, DISCOVERY_INVALID)
         self.assertNotEqual(outcome.result_state, NO_NEW_DATA)
+
+    def test_a_page_of_only_unwanted_forms_is_valid_but_yields_nothing(self) -> None:
+        """No Form 4 in a prefix-matched window is not a failure, and not new data."""
+        only_funds = build_feed([], entries=[
+            ENTRY_TEMPLATE.format(form="497J", n=2, cik="0000789019", cik_int="789019",
+                                  nodash="000078901926000112",
+                                  accession="0000789019-26-000112", hh="16", mm="22")])
+        collector = self.collector(self.fixture_router(atom=only_funds))
+        outcome = collector.poll()
+        self.assertTrue(outcome.valid_discovery)
+        self.assertEqual(outcome.enqueued, 0)
+        self.assertEqual(outcome.result_state, NO_NEW_DATA,
+                         "a validated page with no ownership filing is earned NO_NEW_DATA")
 
     def test_entry_missing_form_type_or_locator_is_an_error(self) -> None:
         missing_category = build_feed([], entries=[
@@ -2070,3 +2131,218 @@ class ObservationAuditTests(CollectorTestCase):
         self.assertEqual(report["p0_continuous_service_state"],
                          "OPEN / NOT_YET_PROVEN_CONTINUOUS")
         self.assertEqual(collector.t0_readiness()["t0_authority"], "BLUE_TEAM")
+
+
+# ---------------------------------------------------------------------------
+# Continuous-service behaviour under the Control Plane
+# ---------------------------------------------------------------------------
+
+class ContinuousServiceTests(CollectorTestCase):
+    """`NEXT_BUILD_MISSION.md` continuous-service work items, offline.
+
+    These drive the real `QuantSystem` clock rather than the collector directly,
+    because the claim being tested is about scheduling, not about capture.
+    """
+
+    def system(self, handler, *, enable: bool = True):
+        import random
+        from quant.clock import QuantSystem, Timer
+
+        class FrozenTimer(Timer):
+            def __init__(self, timebase):
+                self.timebase = timebase
+
+            def now(self):
+                return self.timebase.now()
+
+            def sleep(self, seconds):
+                self.timebase.sleep(seconds)
+
+        policy = self.policy()
+        transport = FakeTransport(handler)
+        system = QuantSystem(self.root, timer=FrozenTimer(self.timebase))
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(5)),
+            root=ROOT, emit=system.log.emit,
+            environ={"QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                     "QUANT_SEC_BOOT_ID": "boot-service-1"})
+        system.sec = collector
+        self.transport = transport
+        if enable:
+            collector.enable()
+        return system, collector
+
+    def test_capture_is_scheduled_ahead_of_replayable_research_and_desk_work(self) -> None:
+        """Item 1: a backlog of replayable work cannot starve acquisition."""
+        from autonomous_research.runtime import ResearchTask
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        # Queue replayable work that is genuinely due, which is the backlog that
+        # starved the capture lane on the first live run.
+        system.queue.add(ResearchTask(
+            task_id="RESEARCH-BACKLOG-PROBE", lane="probe", priority=99.0,
+            reason="a due, replayable task competing with acquisition",
+            worker="research_lane", required_resources=[], status="PENDING",
+            metadata={"lane_name": "probe"}))
+        system.queue.save()
+        self.assertIsNotNone(system.queue.next_due(),
+                             "the test needs genuinely due replayable work")
+        outcome = system.tick()
+        self.assertTrue(outcome.startswith("SEC_"),
+                        f"acquisition must win the first tick, got {outcome}")
+        # And the replayable task is still there, waiting rather than lost.
+        self.assertEqual(system.queue.tasks["RESEARCH-BACKLOG-PROBE"].status, "PENDING")
+
+    def test_repeated_cycles_leave_liveness_evidence_with_no_new_filing(self) -> None:
+        """Item 2: quiet periods are evidenced, not silent."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        for _ in range(6):
+            system.tick()
+        collector.drain(max_items=3)
+        attempts_before = len(collector.store.attempts())
+        for _ in range(3):
+            self.timebase.advance(61)
+            system.tick()
+        self.assertGreater(len(collector.store.attempts()), attempts_before)
+        quiet = [record for record in collector.store.attempts()
+                 if record["result_state"] in (CAPTURED_OK, DEDUPLICATED)]
+        self.assertTrue(quiet)
+        self.assertEqual(collector.state.last_result_state, NO_NEW_DATA)
+        self.assertEqual(collector.liveness(), RUNNING)
+
+    def test_a_collector_that_stops_polling_becomes_observably_stale(self) -> None:
+        """Item 6: heartbeat health cannot masquerade as coverage."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        self.assertEqual(collector.liveness(), RUNNING)
+        self.timebase.advance(60 * 60 * 6)
+        self.assertEqual(collector.liveness(), STALE)
+        # Coverage is a separate axis and is not upgraded by a healthy heartbeat.
+        self.assertIn(collector.state.coverage_state, (COVERAGE_COMPLETE, COVERAGE_UNKNOWN))
+
+    def test_losing_the_requester_identity_fails_closed_as_blocked(self) -> None:
+        """Item 5: missing identity is BLOCKED, never healthy idle service."""
+        from quant.clock import QuantSystem
+        system = QuantSystem(self.root)
+        system.sec = SecForm4Collector(self.paths, timebase=self.timebase, root=ROOT,
+                                       environ={})
+        system.boot()
+        outcome = system.tick()
+        self.assertEqual(outcome, "IDLE", "a fail-closed lane produces no capture work")
+        state = system.components.get("SEC_CAPTURE")
+        self.assertEqual(state.state, "BLOCKED")
+        self.assertIn("not configured", (state.detail or ""))
+        self.assertFalse(system.sec.t0_readiness()["instrumentation_ready"])
+        # And it is visible as blocked rather than absent on the status surface.
+        from quant.status.render import render_status
+        surface = render_status(system.snapshot())
+        self.assertIn("BLOCKED", surface[surface.index("SEC FORM-4"):])
+
+    def test_a_capture_fault_is_isolated_and_does_not_stop_the_system(self) -> None:
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        collector.poll = lambda: (_ for _ in ()).throw(RuntimeError("capture exploded"))
+        collector.has_pending_work = lambda: False
+        collector.poll_due = lambda: True
+        outcome = system.tick()
+        self.assertEqual(outcome, "SEC_FAULT")
+        self.assertEqual(system.components.get("SEC_CAPTURE").state, "FAULT")
+        # The system is still alive and keeps working afterwards.
+        collector.poll_due = lambda: False
+        collector.reconciliation_due = lambda: None
+        self.assertIn(system.tick(), {"RESEARCH", "SESSION", "IDLE", "LEARNED", "BLOCKED"})
+
+    def test_restart_mid_service_resumes_without_mutating_prior_evidence(self) -> None:
+        """Item 3: ordinary restart resumes from durable state."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        collector.drain(max_items=2)
+        attempts = collector.store.attempts()
+        envelopes = collector.store.envelopes()
+        transitions = collector.scheduler.all()
+
+        import random
+        policy = self.policy()
+        restarted = SecForm4Collector(
+            self.paths, policy=policy, transport=FakeTransport(
+                self.fixture_router()),
+            timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(5)),
+            root=ROOT,
+            environ={"QUANT_SEC_LIFECYCLE_CAUSE": AUTOMATIC_RESTART_AFTER_FAILURE,
+                     "QUANT_SEC_BOOT_ID": "boot-service-2"})
+        self.assertEqual(restarted.store.attempts(), attempts)
+        self.assertEqual(restarted.store.envelopes(), envelopes)
+        self.assertEqual(restarted.scheduler.all()[:len(transitions)], transitions)
+        restarted.record_service_start()
+        # A second boot id appears, and the cause is the supervisor's, not ours.
+        lifecycle = list(read_jsonl(self.paths.sec_lifecycle))
+        self.assertEqual(lifecycle[-1]["lifecycle_cause"], AUTOMATIC_RESTART_AFTER_FAILURE)
+        self.assertEqual(lifecycle[-1]["boot_id"], "boot-service-2")
+        # An automatic restart does not invalidate the window.
+        self.assertFalse(lifecycle[-1]["invalidates_observation_window"])
+        self.assertEqual(restarted.fingerprint, collector.fingerprint,
+                         "a restart alone must not move the acquisition fingerprint")
+
+    def test_the_status_surface_stays_firewall_safe_with_the_new_provenance(self) -> None:
+        from quant.status.brief import build_chief_brief
+        from quant.status.render import render_status
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        collector.drain(max_items=3)
+        snapshot = system.snapshot()
+        for where, text in (("status surface", render_status(snapshot)),
+                            ("CHIEF_BRIEF.md", build_chief_brief(snapshot)),
+                            ("scheduler journal",
+                             self.paths.sec_scheduler.read_text(encoding="utf-8")),
+                            ("lifecycle journal",
+                             self.paths.sec_lifecycle.read_text(encoding="utf-8")),
+                            ("fingerprint manifest",
+                             self.paths.sec_fingerprint.read_text(encoding="utf-8")
+                             if self.paths.sec_fingerprint.exists() else "")):
+            with self.subTest(surface=where):
+                assert_no_scientific_content(text, where)
+
+    def test_the_fingerprint_manifest_never_carries_the_contact_address(self) -> None:
+        system, collector = self.system(self.fixture_router())
+        payload = collector.materialize_fingerprint()
+        rendered = json.dumps(payload, sort_keys=True)
+        self.assertNotIn("example.com", rendered)
+        self.assertNotIn(USER_AGENT, rendered)
+        self.assertIn("requester_identity_binding", rendered)
+
+    def test_a_fresh_install_can_boot_the_control_plane(self) -> None:
+        """Regression: a fresh var/ must not crash boot().
+
+        Found while regenerating the status artifacts on the Blue base commit
+        c1a955316055aaf6c1b28853e21ed07e36e55f6a. The insider_filings legacy
+        entry had gained `acceptance` and `affected_subsystems` keys describing
+        its capability gap, but only `capability` was filtered out of the
+        ResearchTask kwargs, so ResearchTask(**entry) raised TypeError. An
+        already-seeded queue hid it, because the seeding call short-circuits on
+        the task id - so it reproduced only on a first boot, which is exactly
+        when a new deployment of the capture service starts.
+        """
+        import shutil, tempfile
+        from quant.clock import QuantSystem
+        with tempfile.TemporaryDirectory(prefix="quant-fresh-boot-") as directory:
+            root = Path(directory)
+            (root / "research").mkdir()
+            shutil.copy2(ROOT / "research" / "opportunity_map.json", root / "research")
+            system = QuantSystem(root)
+            seeded = system.boot()["seeded"]
+            self.assertIn("SCAN-INSIDER-FILINGS-001", seeded)
+            # The capability gap it describes is still raised for the Build Plane.
+            gaps = {task["task_id"]: task for task in system.learning.open_build_tasks()}
+            gap = gaps["BUILD-SCAN-INSIDER-FILINGS-001"]
+            self.assertIn("admissibility", gap["capability"])
+            self.assertIn("visibility firewall", gap["acceptance"])
+            # And booting twice is stable.
+            QuantSystem(root).boot()
