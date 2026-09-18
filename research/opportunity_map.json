@@ -1,12 +1,101 @@
 {
   "as_of": "2026-09-13",
   "scale": "1 (poor) to 5 (strong); research_cost is reversed so 5 means inexpensive",
-  "criteria": ["mechanism", "point_in_time_data", "beta_isolation", "research_cost", "falsifiability", "implementation", "economic_significance", "information_value"],
+  "criteria": [
+    "mechanism",
+    "point_in_time_data",
+    "beta_isolation",
+    "research_cost",
+    "falsifiability",
+    "implementation",
+    "economic_significance",
+    "information_value"
+  ],
   "lanes": [
-    {"rank": 1, "lane": "time_series_relative_value", "scores": [3, 5, 3, 5, 5, 3, 2, 4], "total": 30, "decision": "first vertical slice", "constraint": "available index is not directly tradable and cannot provide cross-sectional neutrality"},
-    {"rank": 2, "lane": "statistical_arbitrage", "scores": [4, 1, 5, 2, 5, 3, 4, 5], "total": 29, "decision": "next after data expansion", "constraint": "no synchronized multi-asset point-in-time panel"},
-    {"rank": 3, "lane": "factor_residual", "scores": [4, 1, 5, 2, 4, 3, 4, 5], "total": 28, "decision": "queued", "constraint": "no survivorship-controlled security and factor panel"},
-    {"rank": 4, "lane": "insider_filings", "scores": [4, 1, 4, 2, 5, 3, 3, 5], "total": 27, "decision": "queued", "constraint": "point-in-time filing feed absent"},
-    {"rank": 5, "lane": "volatility_surface", "scores": [5, 1, 5, 1, 4, 2, 5, 4], "total": 27, "decision": "deferred", "constraint": "historical option chains, quotes, rates, dividends, and corporate actions absent"}
+    {
+      "rank": 1,
+      "lane": "time_series_relative_value",
+      "scores": [
+        3,
+        5,
+        3,
+        5,
+        5,
+        3,
+        2,
+        4
+      ],
+      "total": 30,
+      "decision": "first vertical slice",
+      "constraint": "available index is not directly tradable and cannot provide cross-sectional neutrality"
+    },
+    {
+      "rank": 2,
+      "lane": "statistical_arbitrage",
+      "scores": [
+        4,
+        1,
+        5,
+        2,
+        5,
+        3,
+        4,
+        5
+      ],
+      "total": 29,
+      "decision": "next after data expansion",
+      "constraint": "no synchronized multi-asset point-in-time panel"
+    },
+    {
+      "rank": 3,
+      "lane": "factor_residual",
+      "scores": [
+        4,
+        1,
+        5,
+        2,
+        4,
+        3,
+        4,
+        5
+      ],
+      "total": 28,
+      "decision": "queued",
+      "constraint": "no survivorship-controlled security and factor panel"
+    },
+    {
+      "rank": 4,
+      "lane": "insider_filings",
+      "scores": [
+        4,
+        1,
+        4,
+        2,
+        5,
+        3,
+        3,
+        5
+      ],
+      "total": 27,
+      "decision": "queued after scientific protocol",
+      "constraint": "raw SEC/Form-4 acquisition operational; downstream parsing, qualification and scientific admissibility protocol not yet authorized/implemented"
+    },
+    {
+      "rank": 5,
+      "lane": "volatility_surface",
+      "scores": [
+        5,
+        1,
+        5,
+        1,
+        4,
+        2,
+        5,
+        4
+      ],
+      "total": 27,
+      "decision": "deferred",
+      "constraint": "historical option chains, quotes, rates, dividends, and corporate actions absent"
+    }
   ]
 }
