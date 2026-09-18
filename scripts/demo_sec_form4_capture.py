@@ -109,8 +109,9 @@ def run(root: Path, live: bool) -> dict:
         raw_reload_verified = ("sha256:" + hashlib.sha256(raw).hexdigest()) == digest
 
     snapshot = resumed.snapshot()
-    render_status(snapshot, resumed.paths.status_surface)
-    build_chief_brief(snapshot, root / "CHIEF_BRIEF.live.md")
+    resumed.paths.status_surface.write_text(render_status(snapshot) + "\n", encoding="utf-8")
+    (root / "CHIEF_BRIEF.live.md").write_text(
+        build_chief_brief(snapshot), encoding="utf-8")
     return safe_proof(resumed, outcome, before, after, raw_reload_verified)
 
 
