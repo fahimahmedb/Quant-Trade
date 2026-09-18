@@ -92,6 +92,18 @@ This open service question does not reclassify the existing scientific backlog a
 blocker. Work on Route B, D05, D07, D09 and D19 may proceed in parallel without stopping the
 acquisition clock.
 
+### 5.1 Historical visibility exposure note
+
+During PR #16 review/merge, an aggregate raw Form-4 capture count was visible in repository-facing
+state/evidence and was also observed by Blue. The current tip removes that count from the visible
+P0 state/probe surfaces.
+
+That prior exposure cannot be made unseen. It therefore has no authority to justify, relax, tune or
+select any later claim-defining, D05, D07, D09, liquidity, power or admissibility rule.
+
+This is a recorded anti-selection constraint, not a new raw-capture blocker. Acquisition continues
+under the existing P0 firewall.
+
 ## 6. Unchanged downstream protections
 
 This addendum does not:
