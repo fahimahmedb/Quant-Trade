@@ -152,6 +152,9 @@ A collector process cannot authoritatively classify its own origin.
 
 #### Acquisition-critical fingerprint
 
+The controlling V1 membership and implementation constraints are frozen in
+`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md`.
+
 Before `t0`, Builder must materialize and commit a deterministic fingerprint over the code and
 effective configuration that control acquisition semantics. At minimum it covers:
 
@@ -168,6 +171,11 @@ effective configuration that control acquisition semantics. At minimum it covers
 
 The fingerprint definition itself is prospective: its membership cannot be narrowed after an
 incident in order to preserve the observation window.
+
+`t0` is not authorized while an actual SEC HTTP request can occur outside a distinct traffic-budget
+reservation and durable attempt record. The current hidden transport retry identified in the V1
+fingerprint audit must be removed or surfaced through the auditable request path before observation
+begins.
 
 #### Intervention classification
 
