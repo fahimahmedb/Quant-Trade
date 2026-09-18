@@ -55,13 +55,42 @@ Any unfillable historical gap remains explicit.
 
 ## 5. Current implementation state
 
-Current Blue system state identifies the insider-filings lane as blocked on the absence of a point-in-time filing feed.
+PR #16, `P0: durable SEC/Form-4 raw capture, running and probed live`, is merged into
+`blue/handoff-memory-2026-09-15` at merge commit
+`52dfe380c753cad44f2876fd5a04d68c46ead8db`.
 
-Therefore:
+Committed live-probe evidence:
+`handoff/SEC_FORM4_P0_FIRST_LIVE_PROBE_2026-09-18.json`.
 
-`P0_IMPLEMENTATION_GAP = TRUE`.
+The recorded Day-1 acceptance state is:
 
-The next implementation mission should target the minimal durable SEC/Form-4 capture slice before returning to deeper Route-B specification work, unless a newly discovered issue demonstrates a concrete `BLOCKS_CAPTURE_INTEGRITY`, `BLOCKS_PIT_RECONSTRUCTABILITY`, or `BLOCKS_ANTI_SELECTION_OR_VISIBILITY_FIREWALL` failure.
+- `VALID_DISCOVERY = TRUE`;
+- `COVERAGE_STATE = COMPLETE`;
+- `HEARTBEAT_DURABLE = TRUE`;
+- `RAW_CAPTURE_DURABLE = TRUE`;
+- immutable/content-addressed raw storage present;
+- restart/resume evidence present;
+- conservative SEC request controls active;
+- visible evidence sanitized to opaque acquisition telemetry.
+
+Therefore the current acquisition state is:
+
+`P0_RAW_CAPTURE_OPERATIONAL = TRUE`.
+
+`P0_IMPLEMENTATION_GAP = FALSE`.
+
+The `insider_filings` research lane remains blocked on downstream scientific protocol /
+visibility / admissibility work, not on absence of raw acquisition.
+
+The remaining acquisition-critical operational question is continuous service. The live probe
+demonstrates the capture path and restart safety, but does not by itself prove unattended
+long-duration service across future source/network/runtime disturbances.
+
+`P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`.
+
+This open service question does not reclassify the existing scientific backlog as a raw-capture
+blocker. Work on Route B, D05, D07, D09 and D19 may proceed in parallel without stopping the
+acquisition clock.
 
 ## 6. Unchanged downstream protections
 
