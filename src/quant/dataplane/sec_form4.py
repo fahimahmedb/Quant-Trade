@@ -347,12 +347,16 @@ class SecForm4Collector:
             try:
                 expected_length = int(content_length)
             except ValueError as exc:
-                self._finish_attempt(started, "CONTENT_LENGTH_MISMATCH", received,
-                                     response.status, error_class="ContentLengthMismatch")
+                self._finish_attempt(
+                    started, "CONTENT_LENGTH_MISMATCH", received, response.status,
+                    response.body, response.headers.get("content-type"),
+                    error_class="ContentLengthMismatch", source_identity=source_identity)
                 raise IOError("invalid HTTP content-length header") from exc
             if expected_length != len(response.body):
-                self._finish_attempt(started, "CONTENT_LENGTH_MISMATCH", received,
-                                     response.status, error_class="ContentLengthMismatch")
+                self._finish_attempt(
+                    started, "CONTENT_LENGTH_MISMATCH", received, response.status,
+                    response.body, response.headers.get("content-type"),
+                    error_class="ContentLengthMismatch", source_identity=source_identity)
                 raise IOError("HTTP content-length does not match received bytes")
         _, conflict = self._finish_attempt(
             started, self._http_result(response.status), received, response.status,
