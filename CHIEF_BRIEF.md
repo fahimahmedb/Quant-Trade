@@ -59,7 +59,7 @@ Queue: `{'PENDING': 0, 'RUNNING': 0, 'BLOCKED': 3, 'COMPLETED': 2, 'FAILED': 0}`
 - `RESEARCH-XS-EXECUTION-AWARE-RELATIVE-VALUE` - **COMPLETED** REJECT_RESEARCH
 - `RESEARCH-XS-DAILY-RELATIVE-VALUE` - **COMPLETED** FILTERED
 - `SCAN-FACTOR-RESIDUAL-001` - **BLOCKED** no survivorship-controlled security and factor panel
-- `SCAN-INSIDER-FILINGS-001` - **BLOCKED** point-in-time filing feed absent
+- `SCAN-INSIDER-FILINGS-001` - **BLOCKED** raw SEC/Form-4 acquisition operational; downstream parsing, qualification and scientific admissibility protocol not yet authorized/implemented
 - `SCAN-VOLATILITY-SURFACE-001` - **BLOCKED** historical option chains, quotes, rates, dividends, and corporate actions absent
 
 Strategy lifecycle: `RESEARCH` 1
@@ -95,10 +95,10 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 ## Blockers and capability gaps
 
 - `SCAN-FACTOR-RESIDUAL-001` blocked: no survivorship-controlled security and factor panel
-- `SCAN-INSIDER-FILINGS-001` blocked: point-in-time filing feed absent
+- `SCAN-INSIDER-FILINGS-001` blocked: raw SEC/Form-4 acquisition operational; downstream parsing, qualification and scientific admissibility protocol not yet authorized/implemented
 - `SCAN-VOLATILITY-SURFACE-001` blocked: historical option chains, quotes, rates, dividends, and corporate actions absent
 - build task `BUILD-SCAN-FACTOR-RESIDUAL-001`: point-in-time dataset for the factor_residual lane (acceptance: a validated, fingerprinted dataset unblocks SCAN-FACTOR-RESIDUAL-001)
-- build task `BUILD-SCAN-INSIDER-FILINGS-001`: point-in-time dataset for the insider_filings lane (acceptance: a validated, fingerprinted dataset unblocks SCAN-INSIDER-FILINGS-001)
+- build task `BUILD-SCAN-INSIDER-FILINGS-001`: authorized parsing / qualification / scientific admissibility path for the insider_filings lane (acceptance: an authorized downstream Form-4 protocol can consume captured raw evidence without violating the P0 visibility firewall)
 - build task `BUILD-SCAN-VOLATILITY-SURFACE-001`: point-in-time dataset for the volatility_surface lane (acceptance: a validated, fingerprinted dataset unblocks SCAN-VOLATILITY-SURFACE-001)
 
 ## Next autonomous action
