@@ -279,9 +279,13 @@ class QuantSystem:
                 seeded.append(entry["task_id"])
                 self.learning.raise_build_task(BuildTask(
                     task_id=f"BUILD-{entry['task_id']}", capability=entry["capability"],
-                    reason=entry["blocked_reason"], affected_subsystems=["DATA", "RESEARCH"],
-                    acceptance=f"a validated, fingerprinted dataset unblocks "
-                               f"{entry['task_id']}", priority=entry["priority"]))
+                    reason=entry["blocked_reason"],
+                    affected_subsystems=entry.get("affected_subsystems", ["DATA", "RESEARCH"]),
+                    acceptance=entry.get(
+                        "acceptance",
+                        f"a validated, fingerprinted dataset unblocks {entry['task_id']}"
+                    ),
+                    priority=entry["priority"]))
         return seeded
 
     def _legacy_blocked_lanes(self) -> list[dict[str, Any]]:
@@ -294,13 +298,29 @@ class QuantSystem:
         for lane in payload["lanes"]:
             if lane["lane"] in {"statistical_arbitrage", "time_series_relative_value"}:
                 continue  # now executable, or already carried by the legacy worker
-            entries.append({
+            entry = {
                 "task_id": f"SCAN-{lane['lane'].upper().replace('_', '-')}-001",
                 "lane": lane["lane"], "priority": float(lane["total"]),
                 "reason": f"ranked research lane: {lane['decision']}",
                 "worker": "unavailable_data", "required_resources": [lane["lane"] + "_panel"],
                 "status": "BLOCKED", "blocked_reason": lane["constraint"],
-                "capability": f"point-in-time dataset for the {lane['lane']} lane"})
+                "capability": f"point-in-time dataset for the {lane['lane']} lane",
+            }
+            if lane["lane"] == "insider_filings":
+                entry.update({
+                    "worker": "unavailable_scientific_protocol",
+                    "required_resources": [],
+                    "capability": (
+                        "authorized parsing / qualification / scientific admissibility path "
+                        "for the insider_filings lane"
+                    ),
+                    "acceptance": (
+                        "an authorized downstream Form-4 protocol can consume captured raw "
+                        "evidence without violating the P0 visibility firewall"
+                    ),
+                    "affected_subsystems": ["DATA", "RESEARCH"],
+                })
+            entries.append(entry)
         return entries
 
     # --- data --------------------------------------------------------------
