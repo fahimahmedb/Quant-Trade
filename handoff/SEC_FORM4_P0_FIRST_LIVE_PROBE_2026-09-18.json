@@ -1,12 +1,5 @@
 {
   "artifact": "sec_form4_p0_first_live_probe",
-  "attempts_by_endpoint_kind": {
-    "DISCOVERY": 2,
-    "FILING": 20
-  },
-  "attempts_by_result_state": {
-    "CAPTURED": 22
-  },
   "collector_version": "sec-form4-p0-raw-capture/1",
   "coverage": {
     "continuity_cursor_digest": "sha256:43ddeb17f233434a23b88b99bc8f030528f9609ef6750ddce64e1f188cdea27c",
@@ -45,7 +38,7 @@
     "last_validated_discovery_at_utc": "2026-09-18T01:41:13.150050+00:00",
     "state": "RUNNING"
   },
-  "note": "Opaque acquisition evidence only. Filing identities, locators, bodies, parsed fields and filing counts are deliberately absent: they live in the restricted capture tier under var/sec/restricted/, which no status surface reads. Capture grants neither scientific visibility nor confirmation admissibility.",
+  "note": "Opaque acquisition evidence only. Filing identities, locators, bodies, parsed fields and filing counts are deliberately absent. Capture grants neither scientific visibility nor confirmation admissibility.",
   "produced_at_utc": "2026-09-18T01:41:12.715431+00:00",
   "rate_limit_state": {
     "backoff_step": 0,
@@ -54,14 +47,12 @@
     "cooldown_until_utc": null,
     "last_request_at_utc": "2026-09-18T01:41:12.715208+00:00",
     "limiter_wait_seconds": 8.155,
-    "limiter_waits": 18,
     "max_concurrency": 1,
-    "max_requests_per_second": 2.0,
-    "requests_spent": 22
+    "max_requests_per_second": 2
   },
   "raw_object_integrity": {
     "address_mismatches": [],
-    "objects_rehashed": 22
+    "full_address_hash_verification_passed": true
   },
   "raw_store": {
     "admissibility_state": "NOT_ADMISSIBLE_FOR_CONFIRMATION",
@@ -77,22 +68,22 @@
   "request_policy_in_force": {
     "allow_burst": false,
     "backoff_schedule_seconds": [
-      5.0,
-      15.0,
-      60.0,
-      300.0,
-      900.0
+      5,
+      15,
+      60,
+      300,
+      900
     ],
-    "connect_timeout_seconds": 10.0,
-    "discovery_poll_seconds": 60.0,
-    "documented_sec_max_requests_per_second": 10.0,
-    "forbidden_cooldown_seconds": 3600.0,
+    "connect_timeout_seconds": 10,
+    "discovery_poll_seconds": 60,
+    "documented_sec_max_requests_per_second": 10,
+    "forbidden_cooldown_seconds": 3600,
     "jitter_ratio": 0.25,
     "max_concurrency": 1,
-    "max_requests_per_second": 2.0,
-    "rate_limit_cooldown_seconds": 300.0,
-    "read_timeout_seconds": 20.0,
-    "total_deadline_seconds": 60.0,
+    "max_requests_per_second": 2,
+    "rate_limit_cooldown_seconds": 300,
+    "read_timeout_seconds": 20,
+    "total_deadline_seconds": 60,
     "user_agent_declared": true
   },
   "sec_policy_sources_consulted": [
