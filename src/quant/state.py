@@ -19,8 +19,8 @@ from typing import Any, Iterator
 COMPONENT_STATES = ("RUN", "IDLE", "BLOCKED", "FAULT", "PAUSED")
 
 #: Logical functions the North Star requires the system to expose state for.
-COMPONENTS = ("CONTROL", "DATA", "RESEARCH", "SCAN", "VET", "SIZE", "RISK",
-              "FILLS", "BOOK", "LEARNING", "BUILD")
+COMPONENTS = ("CONTROL", "DATA", "SEC_CAPTURE", "RESEARCH", "SCAN", "VET", "SIZE",
+              "RISK", "FILLS", "BOOK", "LEARNING", "BUILD")
 
 
 def utc_now() -> str:

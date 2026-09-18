@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "One immutable raw response body: content address, byte length, receipt time, transport metadata and the capture/visibility/admissibility states.",
+  "properties": {
+    "admissibility_state": {
+      "type": "string"
+    },
+    "byte_length": {
+      "type": "integer"
+    },
+    "capture_state": {
+      "type": "string"
+    },
+    "collector_version": {
+      "type": "string"
+    },
+    "content_encoding": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "declared_content_length": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "endpoint_class": {
+      "type": "string"
+    },
+    "first_received_at_utc": {
+      "type": "string"
+    },
+    "media_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_object_sha256": {
+      "type": "string"
+    },
+    "transfer_outcome": {
+      "type": "string"
+    },
+    "visibility_state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "raw_object_sha256",
+    "byte_length",
+    "first_received_at_utc",
+    "endpoint_class"
+  ],
+  "title": "sec_raw_object_record",
+  "type": "object"
+}

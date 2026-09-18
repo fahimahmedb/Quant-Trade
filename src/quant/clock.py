@@ -24,6 +24,8 @@ from autonomous_research.watchdog import is_lease_stale  # noqa: E402
 from .dataplane.ingest import SECTOR_DATASET, SECTOR_UNIVERSE  # noqa: E402
 from .dataplane.panel import PricePanel, Window  # noqa: E402
 from .dataplane.registry import DatasetRegistry  # noqa: E402
+from .dataplane.sec.collector import SecForm4Collector  # noqa: E402
+from .dataplane.sec.timebase import Timebase  # noqa: E402
 from .desk.desk import CapitalDesk  # noqa: E402
 from .events import EventLog  # noqa: E402
 from .factory.lanes import FOLLOWUP, WINDOWS, lane_definitions  # noqa: E402
@@ -51,6 +53,24 @@ class Timer:
 
     def sleep(self, seconds: float) -> None:
         time.sleep(seconds)
+
+
+class _TimerTimebase(Timebase):
+    """Give the capture lane the Control Plane's clock, not a second one.
+
+    The lane declares its own time contract to avoid an import cycle; this
+    adapter makes sure a test that controls the system clock also controls
+    capture cadence, backoff and cooldown.
+    """
+
+    def __init__(self, timer: Timer):
+        self.timer = timer
+
+    def now(self) -> datetime:
+        return self.timer.now()
+
+    def sleep(self, seconds: float) -> None:
+        self.timer.sleep(seconds)
 
 
 @dataclass
@@ -98,6 +118,12 @@ class QuantSystem:
         self.queue = PersistentQueue(self.paths.work_queue)
         self.desk = CapitalDesk(self.paths, self.strategies, self.datasets, self.log,
                                 self.components, initial_capital=initial_capital)
+        # The P0 SEC capture lane is owned by the Control Plane rather than by a
+        # separate process, so its lifecycle, liveness and restart behaviour are
+        # the ones the rest of the system already proves. It fails closed when
+        # the SEC-required identity is absent: BLOCKED, never a request.
+        self.sec = SecForm4Collector(self.paths, timebase=_TimerTimebase(self.timer),
+                                     root=self.paths.root, emit=self.log.emit)
         payload = read_json(self.paths.control)
         self.state = ControlState(**payload) if payload else ControlState()
         self._panel: PricePanel | None = None
@@ -336,6 +362,15 @@ class QuantSystem:
             self.heartbeat()
             return "PAUSED"
 
+        # Acquisition goes first. A missed SEC discovery window is irrecoverable:
+        # the feed is a rolling window and a filing that leaves it cannot be
+        # re-observed at the time it was published. Research and desk work run
+        # over committed, fingerprinted data and are replayable at any later
+        # tick, so they must never starve the capture lane.
+        capture = self._run_due_capture()
+        if capture is not None:
+            return capture
+
         task = self.queue.next_due()
         if task is not None:
             return self._run_task(task)
@@ -348,6 +383,59 @@ class QuantSystem:
             return "LEARNED"
 
         return self._idle()
+
+    def _run_due_capture(self) -> str | None:
+        """Advance the SEC capture lane by one unit of work, if any is due.
+
+        A queued filing is drained before a new poll is started, so a backlog is
+        worked off at the frozen rate rather than growing behind fresh discovery.
+        """
+        collector = self.sec
+        if not collector.configured or not collector.state.enabled:
+            return None
+        try:
+            return self._capture_step(collector)
+        except Exception as exc:
+            # A capture fault must not kill the system, and must not be mistaken
+            # for a quiet poll. The attempt journal already holds whatever was
+            # durably recorded before the fault.
+            detail = f"{type(exc).__name__}: {exc}"
+            self.components.set("SEC_CAPTURE", "FAULT", detail[:200])
+            self.state.faults.append({"at": utc_now(), "task": "SEC_CAPTURE",
+                                      "error": detail[:200]})
+            self.log.emit("DATA", "SEC_CAPTURE", "capture_fault",
+                          collector.store.collector_version, severity="FAULT",
+                          error_class=type(exc).__name__)
+            self.heartbeat()
+            return "SEC_FAULT"
+
+    def _capture_step(self, collector: SecForm4Collector) -> str | None:
+        if collector.has_pending_work():
+            self.components.set("SEC_CAPTURE", "RUN", "acquiring a queued filing")
+            outcomes = collector.drain()
+            self.state.status = "RUN"
+            state, detail = collector.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return "SEC_CAPTURE" if outcomes else None
+        if collector.poll_due():
+            self.components.set("SEC_CAPTURE", "RUN", "polling SEC discovery")
+            outcome = collector.poll()
+            self.state.status = "RUN"
+            state, detail = collector.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return f"SEC_DISCOVERY_{outcome.result_state}"
+        day = collector.reconciliation_due()
+        if day is not None:
+            self.components.set("SEC_CAPTURE", "RUN", "reconciling a closed day")
+            result = collector.reconcile(day)
+            self.state.status = "RUN"
+            state, detail = collector.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return f"SEC_RECONCILE_{result['result_state']}"
+        return None
 
     def _idle(self) -> str:
         self.state.status = "IDLE"
@@ -363,6 +451,8 @@ class QuantSystem:
                             f"marked through {self.desk.capital.state.last_session_date}")
         self.components.set("DATA", "IDLE" if self.datasets.health()["healthy"] else "BLOCKED",
                             f"{len(self.datasets.available())} datasets available")
+        capture_state, capture_detail = self.sec.component_state()
+        self.components.set("SEC_CAPTURE", capture_state, capture_detail)
         self.components.set("LEARNING", "IDLE",
                             f"{len(self.learning.lessons)} lessons recorded")
         self.components.set("BUILD", "BLOCKED" if self.learning.open_build_tasks() else "IDLE",
@@ -609,11 +699,22 @@ class QuantSystem:
         session = self._next_desk_session()
         if session is not None:
             return f"run the desk session for {session[0]}"
+        if self.sec.configured and self.sec.state.enabled:
+            if self.sec.has_pending_work():
+                return "acquire the queued SEC filing raw bytes"
+            cooldown = self.sec.cooldown_remaining()
+            if cooldown > 0:
+                return f"wait {cooldown:.0f}s for the SEC cooldown to expire"
+            if self.sec.state.coverage_state != "COMPLETE":
+                return (f"resolve SEC capture coverage: "
+                        f"{self.sec.state.coverage_detail or 'unknown'}")
         blocked = sorted((task for task in self.queue.tasks.values()
                           if task.status == "BLOCKED"), key=lambda task: -task.priority)
         if blocked:
             return (f"blocked on a dependency for {blocked[0].task_id}: "
                     f"{blocked[0].blocked_reason}")
+        if self.sec.configured and self.sec.state.enabled:
+            return "poll SEC discovery when the next cadence window opens"
         return "idle: awaiting new data, a new session or an operator instruction"
 
     def health(self) -> list[dict[str, str]]:
@@ -690,6 +791,9 @@ class QuantSystem:
             "learning": self.learning.summary(),
             "build_tasks": self.learning.open_build_tasks(),
             "health": self.health(),
+            # Opaque acquisition telemetry only. See the visibility firewall in
+            # governance/P0_RAW_CAPTURE_CRITICAL_PATH_RECLASSIFICATION_2026-09-18.md.
+            "sec_capture": self.sec.telemetry(),
             "events": {"total": self.log.count(), "recent": self.log.recent(15),
                        "faults": len(self.log.faults())},
         }

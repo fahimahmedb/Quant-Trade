@@ -1,0 +1,115 @@
+{
+  "artifact": "sec_form4_p0_first_live_probe",
+  "attempts_by_endpoint_kind": {
+    "DISCOVERY": 2,
+    "FILING": 20
+  },
+  "attempts_by_result_state": {
+    "CAPTURED": 22
+  },
+  "collector_version": "sec-form4-p0-raw-capture/1",
+  "coverage": {
+    "continuity_cursor_digest": "sha256:43ddeb17f233434a23b88b99bc8f030528f9609ef6750ddce64e1f188cdea27c",
+    "coverage_detail": "continuity established from the last validated poll; captured scope begins 2026-09-17T21:39:38-04:00",
+    "coverage_state": "COMPLETE",
+    "cursor_advanced_at_utc": "2026-09-18T01:40:58.910677+00:00",
+    "open_gap_intervals": [],
+    "open_gap_kinds": []
+  },
+  "first_attempt": {
+    "attempt_kind": "DISCOVERY",
+    "byte_length": 1876,
+    "collector_version": "sec-form4-p0-raw-capture/1",
+    "content_encoding": "gzip",
+    "endpoint_class": "edgar_browse_getcurrent_atom",
+    "git_commit": "736abbae45578825f9b85e793d79a2798f92e6e6",
+    "http_status": 200,
+    "raw_object_sha256": "sha256:455bfc519b2dbbeca4e3cbdb7a1a9225093ad16581fa6fee8d591e025f48c562",
+    "request_attempted_at_utc": "2026-09-18T01:39:37.263621+00:00",
+    "response_received_at_utc": "2026-09-18T01:39:38.523343+00:00",
+    "result_state": "CAPTURED",
+    "source_locator_digest": "sha256:842cb0776f5d80d1269d74fea938e27f94c902ced892fb713b6d5f4bcffe7a36",
+    "transfer_outcome": "COMPLETE"
+  },
+  "first_live_probe_criteria": {
+    "COVERAGE_STATE": "COMPLETE",
+    "HEARTBEAT_DURABLE": true,
+    "RAW_CAPTURE_DURABLE": true,
+    "VALID_DISCOVERY": true
+  },
+  "git_commit": "736abbae45578825f9b85e793d79a2798f92e6e6",
+  "liveness": {
+    "last_attempt_at_utc": "2026-09-18T01:41:12.715431+00:00",
+    "last_capture_at_utc": "2026-09-18T01:40:58.906933+00:00",
+    "last_result_state": "NO_NEW_DATA",
+    "last_validated_discovery_at_utc": "2026-09-18T01:41:13.150050+00:00",
+    "state": "RUNNING"
+  },
+  "note": "Opaque acquisition evidence only. Filing identities, locators, bodies, parsed fields and filing counts are deliberately absent: they live in the restricted capture tier under var/sec/restricted/, which no status surface reads. Capture grants neither scientific visibility nor confirmation admissibility.",
+  "produced_at_utc": "2026-09-18T01:41:12.715431+00:00",
+  "rate_limit_state": {
+    "backoff_step": 0,
+    "cooldown_active": false,
+    "cooldown_reason": null,
+    "cooldown_until_utc": null,
+    "last_request_at_utc": "2026-09-18T01:41:12.715208+00:00",
+    "limiter_wait_seconds": 8.155,
+    "limiter_waits": 18,
+    "max_concurrency": 1,
+    "max_requests_per_second": 2.0,
+    "requests_spent": 22
+  },
+  "raw_object_integrity": {
+    "address_mismatches": [],
+    "objects_rehashed": 22
+  },
+  "raw_store": {
+    "admissibility_state": "NOT_ADMISSIBLE_FOR_CONFIRMATION",
+    "append_only": true,
+    "capture_state": "CAPTURED",
+    "content_addressed": true,
+    "incomplete_present": false,
+    "objects_present": true,
+    "raw_bytes": 49752,
+    "uncommitted_staging_present": false,
+    "visibility_state": "NOT_VISIBLE_FOR_SCIENTIFIC_PROTOCOL"
+  },
+  "request_policy_in_force": {
+    "allow_burst": false,
+    "backoff_schedule_seconds": [
+      5.0,
+      15.0,
+      60.0,
+      300.0,
+      900.0
+    ],
+    "connect_timeout_seconds": 10.0,
+    "discovery_poll_seconds": 60.0,
+    "documented_sec_max_requests_per_second": 10.0,
+    "forbidden_cooldown_seconds": 3600.0,
+    "jitter_ratio": 0.25,
+    "max_concurrency": 1,
+    "max_requests_per_second": 2.0,
+    "rate_limit_cooldown_seconds": 300.0,
+    "read_timeout_seconds": 20.0,
+    "total_deadline_seconds": 60.0,
+    "user_agent_declared": true
+  },
+  "sec_policy_sources_consulted": [
+    {
+      "consulted_at_utc": "2026-09-18",
+      "reviewed_or_updated": "2024-08-23",
+      "url": "https://www.sec.gov/os/webmaster-faq"
+    },
+    {
+      "consulted_at_utc": "2026-09-18",
+      "reviewed_or_updated": "2024-06-26",
+      "url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data"
+    }
+  ],
+  "states": {
+    "admissibility_state": "NOT_ADMISSIBLE_FOR_CONFIRMATION",
+    "capture_state": "CAPTURED",
+    "visibility_state": "NOT_VISIBLE_FOR_SCIENTIFIC_PROTOCOL"
+  }
+}
