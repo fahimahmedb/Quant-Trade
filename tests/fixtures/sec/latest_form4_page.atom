@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>Latest Filings - Ownership Forms</title>
+	<link rel="alternate" type="text/html" href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent"/>
+	<link rel="self" type="application/atom+xml" href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&amp;type=4&amp;company=&amp;dateb=&amp;owner=include&amp;start=0&amp;count=40&amp;output=atom"/>
+	<id>https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent</id>
+	<updated>2026-09-18T16:35:12-04:00</updated>
+	<entry>
+		<title>4 - REFERENCE ISSUER CORP (0000320193) (Issuer)</title>
+		<link rel="alternate" type="text/html" href="https://www.sec.gov/Archives/edgar/data/320193/000032019326000045/0000320193-26-000045-index.htm"/>
+		<summary type="html">&lt;b&gt;Filed:&lt;/b&gt; 2026-09-18 &lt;b&gt;AccNo:&lt;/b&gt; 0000320193-26-000045 &lt;b&gt;Size:&lt;/b&gt; 9 KB</summary>
+		<updated>2026-09-18T16:31:05-04:00</updated>
+		<category scheme="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany" label="form type" term="4"/>
+		<id>urn:tag:sec.gov,2008:accession-number=0000320193-26-000045</id>
+	</entry>
+	<entry>
+		<title>4 - SECOND REFERENCE INC (0000789019) (Issuer)</title>
+		<link rel="alternate" type="text/html" href="https://www.sec.gov/Archives/edgar/data/789019/000078901926000112/0000789019-26-000112-index.htm"/>
+		<summary type="html">&lt;b&gt;Filed:&lt;/b&gt; 2026-09-18 &lt;b&gt;AccNo:&lt;/b&gt; 0000789019-26-000112 &lt;b&gt;Size:&lt;/b&gt; 11 KB</summary>
+		<updated>2026-09-18T16:22:40-04:00</updated>
+		<category scheme="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany" label="form type" term="4"/>
+		<id>urn:tag:sec.gov,2008:accession-number=0000789019-26-000112</id>
+	</entry>
+	<entry>
+		<title>4/A - THIRD REFERENCE PLC (0001018724) (Issuer)</title>
+		<link rel="alternate" type="text/html" href="https://www.sec.gov/Archives/edgar/data/1018724/000101872426000301/0001018724-26-000301-index.htm"/>
+		<summary type="html">&lt;b&gt;Filed:&lt;/b&gt; 2026-09-18 &lt;b&gt;AccNo:&lt;/b&gt; 0001018724-26-000301 &lt;b&gt;Size:&lt;/b&gt; 10 KB</summary>
+		<updated>2026-09-18T16:04:18-04:00</updated>
+		<category scheme="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany" label="form type" term="4/A"/>
+		<id>urn:tag:sec.gov,2008:accession-number=0001018724-26-000301</id>
+	</entry>
+</feed>
