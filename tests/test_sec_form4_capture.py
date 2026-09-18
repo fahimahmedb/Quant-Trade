@@ -204,6 +204,22 @@ class CollectorTests(unittest.TestCase):
             self.assertEqual(poll_rows[-1]["result_state"], "NO_NEW_DATA")
             self.assertIsNotNone(item.state.last_successful_poll_at_utc)
 
+    def test_content_length_mismatch_preserves_received_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            clock = FakeClock()
+            malformed = HttpResponse(
+                200, b"received-despite-bad-length",
+                {"content-type": "application/atom+xml", "content-length": "999"})
+            item, _ = collector(Path(directory), clock, [malformed])
+            self.assertEqual(item.poll_once(), "BLOCKED")
+            digest = SecCaptureStore.digest(malformed.body)
+            self.assertEqual(item.store.read_raw(digest), malformed.body)
+            completed = [row for row in read_jsonl(item.paths.sec_form4_attempts)
+                         if row["attempt_kind"] == "DISCOVERY"
+                         and row["phase"] == "COMPLETED"]
+            self.assertEqual(completed[-1]["result_state"], "CONTENT_LENGTH_MISMATCH")
+            self.assertEqual(completed[-1]["raw_object_sha256"], digest)
+
     def test_timeout_and_5xx_retries_are_bounded(self):
         for responses in ([TimeoutError("x"), TimeoutError("x"), TimeoutError("x")],
                           [response(503, b"busy"), response(503, b"busy"),
