@@ -88,6 +88,20 @@ long-duration service across future source/network/runtime disturbances.
 
 `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`.
 
+Current pre-`t0` blocker state:
+
+`P0_CONTINUITY_T0_BLOCKER_STATE = BLOCKS_CAPTURE_INTEGRITY`.
+
+The active blocker set is:
+
+- `HIDDEN_TRANSPORT_RETRY`;
+- `INCOMPLETE_CRITICAL_POLICY_SERIALIZATION`.
+
+This classification is an application of the existing reclassification filter, not an exception to
+it. Raw capture remains operational, but the fourteen-day continuity clock is not authorized until
+the actual SEC request path and its acquisition-critical fingerprint are auditable one-for-one.
+
+
 This open service question does not reclassify the existing scientific backlog as a raw-capture
 blocker. Work on Route B, D05, D07, D09 and D19 may proceed in parallel without stopping the
 acquisition clock.
