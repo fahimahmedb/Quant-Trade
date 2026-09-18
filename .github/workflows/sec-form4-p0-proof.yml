@@ -71,13 +71,13 @@ jobs:
         run: python3 -m unittest tests.test_sec_form4_capture -v
 
       - name: Full unit regression
-        run: python3 -m unittest discover -s tests -p 'test_*.py'
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_*.py'
 
       - name: Synthetic capture plus restart demonstration
         run: python3 scripts/demo_sec_form4_capture.py
 
       - name: V1 end-to-end regression
-        run: python3 scripts/demo_v1.py
+        run: python3 scripts/demo_quant_system.py
 
       - name: Compile and diff hygiene
         shell: bash
