@@ -104,6 +104,111 @@ select any later claim-defining, D05, D07, D09, liquidity, power or admissibilit
 This is a recorded anti-selection constraint, not a new raw-capture blocker. Acquisition continues
 under the existing P0 firewall.
 
+### 5.2 Continuous-service observation rule — FROZEN
+
+The continuous-service proof is temporal. It cannot be closed by a live probe, a unit test, or a
+point-in-time health check.
+
+`P0_CONTINUOUS_OBSERVATION_MIN = P14D`.
+
+The qualifying observation window starts only after the following are deployed and durable:
+
+- scheduler-state provenance sufficient to reconstruct every expected poll from recorded state
+  transitions rather than from the absence of attempts;
+- lifecycle provenance emitted by the external launcher / supervisor, not self-attested by the
+  collector;
+- a prospectively materialized `ACQUISITION_CRITICAL_FINGERPRINT`.
+
+The observation window must contain at least one complete weekend and at least one predeclared
+source-normal silence interval. A holiday may satisfy the latter only when the applicable source
+calendar was identified before observing the publication outcome. If the minimum fourteen days
+elapse before those calendar conditions are satisfied, the window remains open until they are.
+
+#### Scheduler provenance
+
+Every transition that can change the next expected acquisition action must durably record at least:
+
+- transition time;
+- scheduler state;
+- `next_due_at`;
+- transition cause;
+- effective acquisition-critical policy/fingerprint;
+- active backoff/cooldown state when applicable.
+
+The retrospective audit derives the expected attempt sequence from these transitions. It must never
+infer that an attempt was not due merely because no attempt was recorded.
+
+#### Lifecycle provenance
+
+Every service start/restart must carry an externally supplied boot/instance identifier, timestamp
+and launch cause. The minimum cause vocabulary is:
+
+- `SCHEDULED_START`;
+- `AUTOMATIC_RESTART_AFTER_FAILURE`;
+- `DEPLOYMENT_RESTART`;
+- `MANUAL_START`.
+
+A collector process cannot authoritatively classify its own origin.
+
+#### Acquisition-critical fingerprint
+
+Before `t0`, Builder must materialize and commit a deterministic fingerprint over the code and
+effective configuration that control acquisition semantics. At minimum it covers:
+
+- polling cadence / scheduler transition rules;
+- request limiter, backoff and cooldown semantics;
+- discovery endpoint/query construction and response validation;
+- pagination / continuity / cursor semantics;
+- the rule by which `NO_NEW_DATA` is earned;
+- coverage-state transitions;
+- acknowledgement / cursor-advance / restart semantics;
+- raw-object and acquisition-envelope durability semantics;
+- P0 visibility-firewall behavior;
+- scheduler and lifecycle provenance semantics used by this audit.
+
+The fingerprint definition itself is prospective: its membership cannot be narrowed after an
+incident in order to preserve the observation window.
+
+#### Intervention classification
+
+The following invalidate the active observation window and reset `t0`:
+
+- any change to the `ACQUISITION_CRITICAL_FINGERPRINT`;
+- `MANUAL_START` after a stop or failure;
+- manual mutation of collector durable state, cursor, acknowledgement state or acquisition journal;
+- manual bypass/override of cadence, limiter, backoff, cooldown, coverage or discovery validation;
+- any deployment/restart that leaves an expected acquisition action unexplained or missed.
+
+The following do not invalidate the window when fully journaled and when the
+`ACQUISITION_CRITICAL_FINGERPRINT` is unchanged:
+
+- read-only observation/audit;
+- downstream manifest, gap-ledger, backfill, parser/normalizer, registry or scientific work;
+- unrelated configuration changes outside the critical fingerprint;
+- a `DEPLOYMENT_RESTART` or `AUTOMATIC_RESTART_AFTER_FAILURE` whose external cause is recorded,
+  whose durable state resumes correctly, and which leaves no expected poll unaccounted for.
+
+This distinction permits non-acquisition-critical development to continue while the calendar proof
+runs. It does not permit an operator to create a planned silence and relabel it as healthy service.
+
+#### Closure condition
+
+`P0_CONTINUOUS_SERVICE_STATE` may close only when one retrospective audit establishes all of:
+
+1. the qualifying calendar window above has elapsed;
+2. every expected acquisition action is derivable from scheduler-state transitions and is accounted
+   for by an attempt, an authorized backoff/cooldown transition, or an explicit failure state;
+3. there is no unexplained heartbeat/attempt hole;
+4. the window contains no invalidating intervention;
+5. restart/deployment events preserve raw objects, acquisition envelopes and remaining work;
+6. invalid or incomplete discovery never resolves to `NO_NEW_DATA`;
+7. source-normal silence is distinguishable from collector death by the durable heartbeat/lifecycle
+   record.
+
+Until then:
+
+`P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`.
+
 ## 6. Unchanged downstream protections
 
 This addendum does not:
