@@ -97,10 +97,10 @@ def render_status(snapshot: dict[str, Any]) -> str:
         lines.append(f"{name:<9}{status.get('state', 'UNKNOWN'):<10}{detail[:55]}")
 
     lines += ["", _rule(), "PLANES", _rule()]
-    for name in ("CONTROL", "DATA", "RESEARCH", "LEARNING", "BUILD"):
+    for name in ("CONTROL", "DATA", "SEC_CAPTURE", "RESEARCH", "LEARNING", "BUILD"):
         status = components.get(name, {})
         detail = status.get("detail") or ""
-        lines.append(f"{name:<9}{status.get('state', 'UNKNOWN'):<10}{detail[:55]}")
+        lines.append(f"{name:<13}{status.get('state', 'UNKNOWN'):<10}{detail[:51]}")
 
     lines += ["", _rule(), "DATA", _rule()]
     health = data["health"]
@@ -111,6 +111,46 @@ def render_status(snapshot: dict[str, Any]) -> str:
                      f"{record['rows']:>7,} rows  {record['first_date']} -> "
                      f"{record['last_date']}")
         lines.append(f"  {'':<26}{(record['fingerprint'] or 'no fingerprint')[:30]}")
+
+    capture = snapshot.get("sec_capture") or {}
+    if capture:
+        lines += ["", _rule(), "SEC FORM-4 RAW CAPTURE", _rule()]
+        # Opaque acquisition telemetry only. The P0 visibility firewall forbids
+        # filing bodies, parsed fields, identifying locators and filing counts on
+        # this surface, so work in flight is a boolean and nothing is counted.
+        storage = capture.get("storage") or {}
+        rate = capture.get("rate_limit") or {}
+        policy = capture.get("policy") or {}
+        lines += [
+            _row("COLLECTOR", f"{capture.get('state', 'UNKNOWN'):<10}"
+                              f"{(capture.get('detail') or '')[:44]}"),
+            _row("LIVENESS", f"{capture.get('liveness', 'unknown')}   "
+                             f"last attempt {capture.get('last_attempt_at_utc') or 'never'}"),
+            _row("COVERAGE", f"{capture.get('coverage_state', 'unknown'):<18}"
+                             f"{(capture.get('coverage_detail') or '')[:38]}"),
+            _row("LAST VALIDATED", str(capture.get('last_validated_discovery_at_utc')
+                                       or 'never')),
+            _row("LAST RESULT", f"{capture.get('last_result_state') or 'none'}"
+                                + (f"   ({capture['last_error_class']})"
+                                   if capture.get("last_error_class") else "")),
+            _row("CURSOR", (capture.get("cursor_identity_digest") or "not established")[:54]),
+            _row("WORK IN FLIGHT", "yes" if capture.get("work_in_flight") else "no"),
+            _row("RAW STORE", f"{storage.get('raw_bytes', 0):,} bytes   "
+                              f"append-only {storage.get('append_only')}   "
+                              f"content-addressed {storage.get('content_addressed')}"),
+            _row("RATE LIMIT", f"{policy.get('max_requests_per_second', '?')}/s cap, "
+                               f"concurrency {policy.get('max_concurrency', '?')}, "
+                               f"spent {rate.get('requests_spent', 0)}"),
+            _row("COOLDOWN", ("active until " + str(rate.get("cooldown_until_utc")))
+                 if rate.get("cooldown_active") else "none"),
+            _row("STATES", f"{capture.get('capture_state')} / "
+                           f"{capture.get('visibility_state')} / "
+                           f"{capture.get('admissibility_state')}"),
+        ]
+        for gap in capture.get("open_gap_intervals") or []:
+            span = " ".join(f"{key}={value}" for key, value in gap.items()
+                            if key not in ("gap_id", "opened_at_utc"))
+            lines.append(f"  gap {gap['gap_id']}  {span[:52]}")
 
     lines += ["", _rule(), "RESEARCH", _rule()]
     lines.append(_row("QUEUE", ", ".join(f"{key} {value}" for key, value

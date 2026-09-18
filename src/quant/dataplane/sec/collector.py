@@ -44,8 +44,9 @@ from .store import (ACCESS_FORBIDDEN, CAPTURED_OK, COOLDOWN_SUPPRESSED, DEDUPLIC
                     SERVER_ERROR, STORAGE_FAILED, SecAcquisitionEnvelope, SecAttemptRecord,
                     SecCaptureStore, SecRawObjectRecord, SecStorageFailure, digest_text)
 from .timebase import Timebase
+from .visibility import firewall_safe_storage
 from .transport import (DEADLINE_EXCEEDED, SecHttpResponse, SecHttpTransport,
-                        SecTransportError)
+                        SecTransportError, decode_body)
 
 
 #: Coverage vocabulary. Only these two states may ever be reported.
@@ -117,6 +118,12 @@ class CollectorState:
     pending_cursor_identity_digest: str | None = None
     pending_cursor_feed_updated_at_utc: str | None = None
     bootstrap_started_at_utc: str | None = None
+    #: Where captured history begins. The discovery feed is a rolling window with
+    #: no beginning to walk back to, so the first poll defines the scope instead
+    #: of crawling the window, and anything older is explicitly out of captured
+    #: scope until the reconciliation/backfill engine addresses it.
+    bootstrap_scope_from_utc: str | None = None
+    bootstrap_scope_note: str | None = None
     coverage_state: str = COVERAGE_UNKNOWN
     coverage_detail: str | None = "no validated discovery poll has completed yet"
     open_gaps: list[dict[str, Any]] = field(default_factory=list)
@@ -412,6 +419,18 @@ class SecForm4Collector:
         result.response_received_at_utc = received_at
         return result
 
+    def _decoded(self, attempt: _AttemptResult) -> bytes:
+        """Bytes to parse: read back from the store, verified, then decoded.
+
+        Reading through the store re-checks the content address, so a page is
+        parsed only from bytes that are provably the ones preserved. Decoding is
+        applied to a copy, using the transport encoding actually received, so the
+        stored object and its hash keep describing the wire bytes.
+        """
+        stored = self.store.read_object(attempt.raw_object_sha256)
+        encoding = attempt.response.content_encoding if attempt.response else None
+        return decode_body(stored, encoding)
+
     def _elapsed(self, since: datetime) -> float:
         return round((self.timebase.now() - since).total_seconds(), 3)
 
@@ -507,9 +526,11 @@ class SecForm4Collector:
                                         attempt.error_class, new_identities)
             first_object = first_object or attempt.raw_object_sha256
             try:
-                page = parse_discovery_page(self.store.read_object(attempt.raw_object_sha256),
+                page = parse_discovery_page(self._decoded(attempt),
                                             requested_start=start, requested_count=page_size)
-            except DiscoveryInvalid as invalid:
+            except (DiscoveryInvalid, SecTransportError) as invalid:
+                invalid = (invalid if isinstance(invalid, DiscoveryInvalid)
+                           else DiscoveryInvalid(invalid.error_class))
                 # Nominal HTTP success, unusable semantics. Never NO_NEW_DATA.
                 gap_ids.append(self._open_gap(PAGE_FETCH_FAILED, {
                     "poll_id": poll_id, "page_start": start,
@@ -530,6 +551,14 @@ class SecForm4Collector:
             continuity, fresh = self._scan_page(page, poll_id, attempt.raw_object_sha256, start)
             new_identities.extend(fresh)
             if continuity:
+                break
+            if self.state.cursor_identity_digest is None:
+                # Bootstrap. There is no anchor to walk back to, and the feed is
+                # a rolling window with no beginning, so paging deeper would be a
+                # crawl that buys no continuity. Page one defines the scope; the
+                # daily index is what addresses anything older.
+                continuity = True
+                self._record_bootstrap_scope(poll_id, page)
                 break
             if not page.page_full:
                 # The feed ended before the anchor was reached.
@@ -556,14 +585,33 @@ class SecForm4Collector:
             # A completed walk back to the anchor also proves the range an
             # interrupted poll had been trying to cover.
             self._resolve_gaps(PAGINATION_INTERRUPTED, "continuity re-established")
-        self._recompute_coverage(continuity,
-                                 "continuity established from the last validated poll")
+        self._recompute_coverage(
+            continuity,
+            "continuity established from the last validated poll"
+            + (f"; captured scope begins {self.state.bootstrap_scope_from_utc}"
+               if self.state.bootstrap_scope_from_utc else ""))
         self.state.validated_polls += 1
         self.state.last_validated_discovery_at_utc = self.timebase.now_iso()
         result_state = self._summarize(True, self.state.coverage_state, len(new_identities))
         return self._close_poll(poll_id, result_state, True, pages_walked, first_object,
                                 gap_ids, None, new_identities, enqueued=enqueued,
                                 continuity=continuity)
+
+    def _record_bootstrap_scope(self, poll_id: str, page: DiscoveryPage) -> None:
+        """State plainly where captured history begins, rather than implying it."""
+        if self.state.bootstrap_scope_from_utc is not None:
+            return
+        self.state.bootstrap_scope_from_utc = page.feed_updated or self.timebase.now_iso()
+        self.state.bootstrap_scope_note = (
+            "captured history begins at the first discovery page; filings older than "
+            "the bootstrap point were never in scope and are the reconciliation/"
+            "backfill engine's work, not a claim of coverage")
+        append_jsonl(self.paths.sec_coverage, {
+            "event": "bootstrap_scope_established", "poll_id": poll_id,
+            "observed_at_utc": self.timebase.now_iso(),
+            "scope_from_feed_updated": self.state.bootstrap_scope_from_utc,
+            "page_start": page.requested_start, "page_size": page.requested_count})
+        self.save()
 
     def _scan_page(self, page: DiscoveryPage, poll_id: str, object_sha256: str,
                    start: int) -> tuple[bool, list[tuple[DiscoveryEntry, str, int]]]:
@@ -575,7 +623,10 @@ class SecForm4Collector:
         """
         anchor = self.state.cursor_identity_digest
         committed = self.committed_identities()
-        pending = {task["identity_digest"] for task in self.state.pending_tasks}
+        # EDGAR's Latest Filings feed lists one accession once per filer, so the
+        # same Form 4 legitimately appears as several entries. Identity, not entry
+        # position, is what deduplicates - including within a single page.
+        seen = {task["identity_digest"] for task in self.state.pending_tasks}
         fresh: list[tuple[DiscoveryEntry, str, int]] = []
         for entry in page.entries:
             identity_digest = digest_text(entry.accession)
@@ -586,8 +637,9 @@ class SecForm4Collector:
                 self.state.active_poll["newest_feed_updated"] = page.feed_updated
             if not entry.is_form_4:
                 continue
-            if entry.accession in committed or identity_digest in pending:
-                continue  # already acknowledged or already queued: no request
+            if entry.accession in committed or identity_digest in seen:
+                continue  # already acknowledged, or already queued by this walk
+            seen.add(identity_digest)
             fresh.append((entry, object_sha256, start))
         return False, fresh
 
@@ -809,8 +861,10 @@ class SecForm4Collector:
             return {"day": key, "result_state": attempt.result_state, "reconciled": False,
                     "gap_id": gap}
         try:
-            index = parse_daily_index(self.store.read_object(attempt.raw_object_sha256), day)
-        except DiscoveryInvalid as invalid:
+            index = parse_daily_index(self._decoded(attempt), day)
+        except (DiscoveryInvalid, SecTransportError) as invalid:
+            invalid = (invalid if isinstance(invalid, DiscoveryInvalid)
+                       else DiscoveryInvalid(invalid.error_class))
             gap = self._open_gap(DAILY_INDEX_UNAVAILABLE, {
                 "day": key, "result_state": DISCOVERY_INVALID,
                 "error_class": invalid.reason})
@@ -904,7 +958,7 @@ class SecForm4Collector:
             "cursor_identity_digest": self.state.cursor_identity_digest,
             "cursor_advanced_at_utc": self.state.cursor_advanced_at_utc,
             "work_in_flight": bool(self.state.pending_tasks),
-            "storage": storage,
+            "storage": firewall_safe_storage(storage),
             "rate_limit": self.budget.telemetry() if self.budget else None,
             "policy": self.policy.to_dict() if self.policy else None,
             "outage_seconds": self._outage_seconds(),

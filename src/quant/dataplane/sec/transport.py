@@ -101,26 +101,8 @@ class SecHttpResponse:
         return self.transfer_outcome == COMPLETE
 
     def decoded_body(self) -> bytes:
-        """A decoded *copy* for parsing. The stored object stays untouched.
-
-        Decoding failure is a transport-integrity failure: a body that claims an
-        encoding it does not honour cannot be shown to be complete.
-        """
-        encoding = (self.content_encoding or "identity").lower().strip()
-        if encoding in ("identity", ""):
-            return self.body
-        try:
-            if encoding == "gzip":
-                return gzip.decompress(self.body)
-            if encoding == "deflate":
-                try:
-                    return zlib.decompress(self.body)
-                except zlib.error:
-                    return zlib.decompress(self.body, -zlib.MAX_WBITS)
-        except (OSError, zlib.error, EOFError) as exc:
-            raise SecTransportError(f"content_decode_failed:{encoding}:{type(exc).__name__}",
-                                    TRUNCATED, partial=self.body) from exc
-        raise SecTransportError(f"unsupported_content_encoding:{encoding}", TRANSPORT_ERROR)
+        """A decoded *copy* for parsing. The stored object stays untouched."""
+        return decode_body(self.body, self.content_encoding)
 
     def transport_metadata(self) -> dict[str, Any]:
         return {"http_status": self.status,
@@ -130,6 +112,33 @@ class SecHttpResponse:
                 "media_type": self.media_type,
                 "transfer_outcome": self.transfer_outcome,
                 "transfer_encoding": self.headers.get("Transfer-Encoding")}
+
+
+def decode_body(body: bytes, content_encoding: str | None) -> bytes:
+    """Decode a *copy* of a body for parsing, never for hashing or storage.
+
+    SEC serves these endpoints gzip-encoded, so this is the ordinary path rather
+    than an edge case. The stored object and its SHA-256 always describe the
+    bytes that arrived; only parsing sees this copy.
+
+    Decoding failure is a transport-integrity failure: a body that claims an
+    encoding it does not honour cannot be shown to be complete.
+    """
+    encoding = (content_encoding or "identity").lower().strip()
+    if encoding in ("identity", ""):
+        return body
+    try:
+        if encoding == "gzip":
+            return gzip.decompress(body)
+        if encoding == "deflate":
+            try:
+                return zlib.decompress(body)
+            except zlib.error:
+                return zlib.decompress(body, -zlib.MAX_WBITS)
+    except (OSError, zlib.error, EOFError) as exc:
+        raise SecTransportError(f"content_decode_failed:{encoding}:{type(exc).__name__}",
+                                TRUNCATED, partial=body) from exc
+    raise SecTransportError(f"unsupported_content_encoding:{encoding}", TRANSPORT_ERROR)
 
 
 class SecHttpTransport:

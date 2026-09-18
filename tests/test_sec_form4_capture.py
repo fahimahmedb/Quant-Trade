@@ -981,3 +981,28 @@ class ReconciliationTests(CollectorTestCase):
         collector.state.reconciled_days.append("2026-09-17")
         collector.save()
         self.assertIsNone(collector.reconciliation_due())
+
+    def test_one_accession_listed_once_per_filer_enqueues_one_task(self) -> None:
+        """EDGAR lists a Form 4 once per filer; identity is what deduplicates.
+
+        Observed on the first live probe: a 40-entry page carried 19 distinct
+        accessions, so entry position would have queued each filing twice.
+        """
+        repeated = build_feed([], entries=[
+            ENTRY_TEMPLATE.format(form="4", n=1, cik="0000320193", cik_int="320193",
+                                  nodash="000032019326000045",
+                                  accession="0000320193-26-000045", hh="16", mm="31"),
+            ENTRY_TEMPLATE.format(form="4", n=2, cik="0001214156", cik_int="1214156",
+                                  nodash="000032019326000045",
+                                  accession="0000320193-26-000045", hh="16", mm="31"),
+            ENTRY_TEMPLATE.format(form="4", n=3, cik="0000789019", cik_int="789019",
+                                  nodash="000078901926000112",
+                                  accession="0000789019-26-000112", hh="16", mm="22")])
+        collector = self.collector(self.fixture_router(atom=repeated))
+        outcome = collector.poll()
+        self.assertEqual(outcome.enqueued, 2, "two distinct accessions, three entries")
+        identities = {task["identity_digest"] for task in collector.state.pending_tasks}
+        self.assertEqual(len(identities), len(collector.state.pending_tasks))
+        results = collector.drain(max_items=5)
+        self.assertEqual([item["result_state"] for item in results], [CAPTURED_OK] * 2)
+        self.assertEqual(collector.state.pending_tasks, [])
