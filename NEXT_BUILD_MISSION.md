@@ -73,6 +73,36 @@ Close the operational gap by proving that:
 9. The production status surface remains firewall-safe while still showing enough opaque telemetry to diagnose service health.
 10. Capture continues while downstream parser, reconciliation, Route-B and scientific work advance independently.
 
+## Observation-window instrumentation must land first
+
+The fourteen-day proof clock does not start merely because the collector is running.
+
+Before `t0`, Builder must implement the frozen rule in
+`governance/BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md §5.2`:
+
+- durable scheduler-state transitions with `next_due_at`, cause, critical policy fingerprint and
+  active backoff/cooldown state;
+- externally supplied lifecycle provenance from the launcher/supervisor, including boot/instance id
+  and cause;
+- a deterministic, prospectively committed `ACQUISITION_CRITICAL_FINGERPRINT`.
+
+Once those three pieces are live, record `t0` durably and let the observation clock run while
+non-critical development continues.
+
+A code/config deployment may cross the active observation window only when:
+
+- the `ACQUISITION_CRITICAL_FINGERPRINT` is unchanged;
+- the external lifecycle cause is recorded;
+- restart/resume preserves durable collector state;
+- no expected acquisition action is missed or left unexplained.
+
+Any critical-fingerprint change, manual restart after outage, manual acquisition-state mutation, or
+unexplained missed due action resets `t0`.
+
+The minimum qualifying window is fourteen consecutive calendar days and must also contain a complete
+weekend plus a predeclared source-normal silence interval. If those calendar conditions are not yet
+met, observation continues beyond day fourteen.
+
 ## Evidence required
 
 Commit durable evidence sufficient to establish continuous-service behavior without exposing
