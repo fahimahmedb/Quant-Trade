@@ -13,8 +13,9 @@ authoritative over prose memory.
 1. `QUANT_NORTH_STAR.md`
 2. `governance/P0_RAW_CAPTURE_CRITICAL_PATH_RECLASSIFICATION_2026-09-18.md`
 3. `governance/BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md`
-4. `NEXT_BUILD_MISSION.md`
-5. `STATE.md`
+4. `governance/P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md`
+5. `NEXT_BUILD_MISSION.md`
+6. `STATE.md`
 
 ## Current P0 state
 
@@ -82,6 +83,24 @@ expected acquisition action is unaccounted for.
 
 This rule exists specifically so non-acquisition-critical development can continue while calendar
 time accrues.
+
+## Fingerprint V1 implementation finding
+
+The acquisition-critical fingerprint must cover the modules that *produce* scheduler and discovery
+transitions, not merely the polling configuration. The frozen V1 membership includes policy,
+budget, transport, discovery, collector, store, visibility and timebase semantics plus the
+acquisition-specific Control Plane scheduling path and the effective supervisor/restart policy.
+
+Two concrete pre-`t0` implementation gaps were identified:
+
+- `SecAccessPolicy.to_dict()` omits at least `filings_per_drain`, `accept_encoding` and
+  `max_response_bytes`; it therefore cannot serve as the fingerprint's canonical config input.
+- `transport.py` currently contains an internal fresh-connection HTTP retry after certain failures,
+  while the collector reserves/journals only the outer request. This can emit a second network
+  request without a distinct budget reservation and durable attempt id.
+
+The observation clock must not start until the runtime fingerprint serialization is complete and
+actual HTTP requests obey one reservation / one auditable attempt identity.
 
 ## Three operational claims still requiring evidence
 
