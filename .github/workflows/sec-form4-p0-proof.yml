@@ -1,0 +1,155 @@
+name: SEC Form-4 P0 Raw Capture Proof
+
+on:
+  push:
+    branches:
+      - builder/sec-form4-p0-raw-capture
+  pull_request:
+    branches:
+      - blue/handoff-memory-2026-09-15
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify mandated base and diff scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=be54d8a9f221a58ebb1cfce5ad64c6b96f0574bd
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-only "$BASE"...HEAD | tee /tmp/p0-files.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          allowed_exact = {
+              ".github/workflows/sec-form4-p0-proof.yml",
+              "src/quant/paths.py",
+              "src/quant/state.py",
+              "src/quant/clock.py",
+              "src/quant/dataplane/__init__.py",
+              "src/quant/dataplane/sec_form4.py",
+              "src/quant/dataplane/sec_form4_raw.py",
+              "src/quant/status/render.py",
+              "src/quant/status/brief.py",
+              "scripts/generate_schemas.py",
+              "scripts/demo_sec_form4_capture.py",
+              "tests/test_sec_form4_capture.py",
+              "docs/sec_form4_raw_capture.md",
+              "STATE.md",
+              "CHIEF_BRIEF.md",
+          }
+          allowed_prefixes = ("schemas/sec_", "artifacts/sec_form4_p0/")
+          changed = [line.strip() for line in Path("/tmp/p0-files.txt").read_text().splitlines()
+                     if line.strip()]
+          bad = [p for p in changed
+                 if p not in allowed_exact and not p.startswith(allowed_prefixes)]
+          forbidden = [p for p in changed
+                       if p.startswith("src/quant/factory/")
+                       or p.startswith("src/quant/desk/")
+                       or p.startswith("src/quant/book/")]
+          if bad or forbidden:
+              raise SystemExit(f"scope violation: bad={bad}, forbidden={forbidden}")
+          print(f"P0 scope clean: {len(changed)} files")
+          PY
+
+      - name: Check generated schemas
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: Focused P0 adversarial tests
+        run: python3 -m unittest tests.test_sec_form4_capture -v
+
+      - name: Full unit regression
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Synthetic capture plus restart demonstration
+        run: python3 scripts/demo_sec_form4_capture.py
+
+      - name: V1 end-to-end regression
+        run: python3 scripts/demo_v1.py
+
+      - name: Compile and diff hygiene
+        shell: bash
+        run: |
+          python3 -m compileall -q src scripts tests/test_sec_form4_capture.py
+          git diff --check
+          test -z "$(git status --porcelain)"
+
+  live:
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[live-sec]')
+    needs: proof
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure compliant SEC identity without logging contact
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONTACT="$(git show -s --format=%ae be54d8a9f221a58ebb1cfce5ad64c6b96f0574bd)"
+          case "$CONTACT" in
+            *@*.*) ;;
+            *) echo "No valid repository contact email available; refusing live SEC access"; exit 2 ;;
+          esac
+          echo "::add-mask::$CONTACT"
+          {
+            echo "QUANT_SEC_FORM4_CAPTURE=1"
+            echo "SEC_REQUESTER_NAME=Quant-Trade/fahimahmedb"
+            echo "SEC_CONTACT_EMAIL=$CONTACT"
+            echo "SEC_MAX_DOCUMENTS_PER_POLL=1"
+            echo "QUANT_GIT_COMMIT=$GITHUB_SHA"
+          } >> "$GITHUB_ENV"
+
+      - name: Live SEC capture plus restart proof
+        id: live_capture
+        shell: bash
+        run: |
+          set +e
+          python3 scripts/demo_sec_form4_capture.py --root . --live --proof-out /tmp/sec-live.json
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload sanitized proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-form4-p0-live-proof
+          path: |
+            /tmp/sec-live.json
+            CHIEF_BRIEF.live.md
+            var/status.txt
+          retention-days: 30
+
+      - name: Upload raw evidence privately as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-form4-p0-raw-evidence
+          path: var/sec_form4/
+          retention-days: 30
+
+      - name: Enforce live outcome after preserving evidence
+        shell: bash
+        run: |
+          code="${{ steps.live_capture.outputs.exit_code }}"
+          if [ "$code" -ne 0 ]; then
+            echo "Live capture ended BLOCKED or failed; evidence/status artifacts were preserved."
+            exit "$code"
+          fi
