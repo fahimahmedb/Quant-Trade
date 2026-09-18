@@ -27,6 +27,8 @@ authoritative over prose memory.
 
 `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
 
+`P0_CONTINUITY_T0_BLOCKER_STATE = BLOCKS_CAPTURE_INTEGRITY`
+
 PR #16 established live durable SEC/Form-4 raw capture. Raw acquisition is no longer the blocker for
 the insider-filings lane; downstream parsing, qualification, visibility and scientific admissibility
 remain separate.
@@ -101,6 +103,28 @@ Two concrete pre-`t0` implementation gaps were identified:
 
 The observation clock must not start until the runtime fingerprint serialization is complete and
 actual HTTP requests obey one reservation / one auditable attempt identity.
+
+### Capture-integrity blockers before `t0`
+
+The reclassification filter now has two concrete class-1 objects:
+
+- `HIDDEN_TRANSPORT_RETRY`: the transport can emit more actual SEC HTTP requests than the budget
+  reservations / durable attempt ids record. This is both an audit defect and a real SEC traffic
+  budget defect.
+- `INCOMPLETE_CRITICAL_POLICY_SERIALIZATION`: the candidate policy serialization can omit effective
+  policy fields, allowing semantically different acquisition policies to share a fingerprint.
+
+Preferred retry repair is deletion of the nested transport HTTP retry. If Builder retains any retry,
+the retry itself must become a prospective scheduler transition with its own cause, due state,
+budget reservation and durable attempt id.
+
+Canonical policy serialization must be complete by construction. A test compares
+`dataclasses.fields(SecAccessPolicy)` against three pairwise-disjoint classification sets:
+included, deterministically transformed, or explicitly non-critical. A newly added unclassified
+field must fail immediately.
+
+Neither blocker revokes the fact that P0 raw capture has operated live. Both prevent authorization
+of the fourteen-day continuity `t0`.
 
 ## Three operational claims still requiring evidence
 
