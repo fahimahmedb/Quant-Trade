@@ -16,6 +16,22 @@ launcher policy can all change the expected sequence of acquisition actions whil
 
 Therefore the acquisition-critical fingerprint is not a configuration-file hash.
 
+The current implementation audit has identified the first concrete objects in this program that are
+classified for the continuous-service qualification path as:
+
+`BLOCKS_CAPTURE_INTEGRITY`.
+
+They are:
+
+- `HIDDEN_TRANSPORT_RETRY`: an actual SEC HTTP request can occur without its own traffic-budget
+  reservation and durable attempt identity;
+- `INCOMPLETE_CRITICAL_POLICY_SERIALIZATION`: two effective acquisition policies can currently
+  differ while producing the same candidate fingerprint input.
+
+These blockers do not revoke `P0_RAW_CAPTURE_OPERATIONAL = TRUE`. They block authorization of the
+continuous-service observation clock `t0`, because they make the property being observed
+inauditable or misstate the real request budget.
+
 ## 2. Fingerprint object
 
 Builder must materialize a deterministic canonical manifest and compute:
@@ -116,6 +132,35 @@ does not presently expose at least `filings_per_drain`, `accept_encoding` and
 Builder must create a dedicated complete canonical fingerprint serialization rather than reusing a
 telemetry serializer whose purpose is different.
 
+### Policy-field completeness invariant
+
+The canonical serializer must be complete by construction rather than by a hand-maintained list
+with no coverage check.
+
+For every field returned by `dataclasses.fields(SecAccessPolicy)`, exactly one classification must
+exist:
+
+- `INCLUDE_CANONICAL`: serialize the effective value directly in canonical form;
+- `TRANSFORM_CANONICAL`: serialize a deterministic semantic transform, such as a non-plaintext
+  stable digest of requester identity;
+- `EXPLICITLY_NONCRITICAL`: permitted only with a frozen rationale showing that the field cannot
+  alter request timing, request shape, source identity, response acceptance, retry/failure
+  classification, backlog drain, discovery/coverage or firewall semantics.
+
+The implementation test must assert:
+
+`POLICY_FIELD_SET == INCLUDE_CANONICAL ∪ TRANSFORM_CANONICAL ∪ EXPLICITLY_NONCRITICAL`
+
+and that those three sets are pairwise disjoint.
+
+Adding a new `SecAccessPolicy` dataclass field without classifying it must fail tests and prevent
+fingerprint generation. This is the required defense against a future policy field silently
+escaping the fingerprint.
+
+For V1, `user_agent` must be transformed to a stable non-plaintext identity binding rather than
+omitted. Any source/policy metadata field that is not runtime-critical must still be explicitly
+classified; silent omission is forbidden.
+
 ## 5. External launcher / supervisor input
 
 The runtime artifact or configuration that controls process/service launch, automatic restart,
@@ -147,10 +192,21 @@ Current implementation audit at the parent frontier found an internal fresh-conn
 
 Builder must either:
 
-1. remove the hidden HTTP retry and let the collector's normal failure/backoff path schedule the
-   next request; or
-2. route every actual retry through a fresh traffic-budget reservation and a distinct durable
-   attempt record.
+1. **preferred:** remove the hidden HTTP retry and let the collector's normal failure/backoff path
+   schedule the next request; or
+2. route every actual retry through the Control Plane / collector request path with:
+   - a fresh traffic-budget reservation;
+   - a distinct durable attempt id;
+   - an explicit scheduler transition / retry cause;
+   - a reconstructible `next_due_at` or equivalent due-state transition;
+   - the resulting backoff/cooldown state.
+
+Option 2 is not satisfied by adding a second attempt record after the fact. The retry must be part of
+the prospective scheduler state from which the retrospective audit derives the expected sequence.
+
+The hidden retry is also a request-budget defect: a limiter that counts reservations while the
+transport can emit more requests than reservations understates real SEC traffic and increases the
+risk of source throttling/blocking and an irreversible acquisition gap.
 
 The qualifying observation window cannot start while an actual SEC request can occur outside the
 auditable budget/journal path.
@@ -186,6 +242,12 @@ The fourteen-day clock must not begin until Builder demonstrates all of:
 - effective runtime values in the manifest match the service actually launched;
 - supervisor/service-definition digest is bound;
 - no hidden network retry can bypass budget/journal accounting;
+- the implementation proves one budget reservation per actual HTTP request and one durable attempt
+  identity per actual HTTP request;
+- if any retry remains, the scheduler journal prospectively explains why and when that retry became
+  due;
+- the policy-field completeness invariant is tested against `dataclasses.fields(SecAccessPolicy)`
+  so an added field cannot be silently omitted;
 - the fingerprint is emitted with scheduler/lifecycle transitions used by the retrospective audit.
 
 Only after those conditions are met may Blue record the qualifying `t0`.
