@@ -105,12 +105,11 @@ The opaque evidence artifact is `handoff/SEC_FORM4_P0_FIRST_LIVE_PROBE_2026-09-1
 attempt/receipt timestamps, content addresses, byte totals, the request controls in force and the
 SEC policy sources consulted. It deliberately carries no filing identity, locator, body or count.
 
-What the first live run established: 22 requests at an average of 0.23 req/s against a 2 req/s cap
-and SEC's documented 10 req/s ceiling; one validated discovery page; 20 distinct Form-4 accessions
-acquired as immutable content-addressed objects; 22 objects re-hashed with no address mismatch; a
-second poll that *earned* `NO_NEW_DATA` by re-establishing continuity from the cursor in a single
-request with no refetch; and a restart between the two polls that preserved the attempt journal,
-envelopes, raw bytes, cursor and coverage state.
+What the first live run established: the collector operated below its frozen 2 req/s cap and
+SEC's documented 10 req/s ceiling; discovery validated successfully; immutable content-addressed
+Form-4 captures are present and passed full address/hash verification; a subsequent poll *earned*
+`NO_NEW_DATA` by re-establishing continuity from the cursor without refetching acknowledged work;
+and a restart preserved the attempt journal, envelopes, raw bytes, cursor and coverage state.
 
 Design, in one line each:
 
