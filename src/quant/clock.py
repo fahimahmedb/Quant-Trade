@@ -24,6 +24,7 @@ from autonomous_research.watchdog import is_lease_stale  # noqa: E402
 from .dataplane.ingest import SECTOR_DATASET, SECTOR_UNIVERSE  # noqa: E402
 from .dataplane.panel import PricePanel, Window  # noqa: E402
 from .dataplane.registry import DatasetRegistry  # noqa: E402
+from .dataplane.sec_form4 import SecForm4Collector  # noqa: E402
 from .desk.desk import CapitalDesk  # noqa: E402
 from .events import EventLog  # noqa: E402
 from .factory.lanes import FOLLOWUP, WINDOWS, lane_definitions  # noqa: E402
@@ -92,6 +93,8 @@ class QuantSystem:
         self.dataset_id = dataset_id
         self.log = EventLog(self.paths.events)
         self.components = ComponentRegistry(self.paths.components)
+        self.sec_capture = SecForm4Collector(
+            self.paths, self.log, self.components, now=self.timer.now, sleep=self.timer.sleep)
         self.datasets = DatasetRegistry(self.paths.dataset_registry, self.paths.root)
         self.strategies = StrategyRegistry(self.paths.strategies)
         self.learning = LearningStore(self.paths.learning)
@@ -118,6 +121,7 @@ class QuantSystem:
         self.state.last_boot_at = utc_now()
         self.components.set("CONTROL", "RUN", "booting")
         recovered = self._recover_interrupted()
+        capture_recovery = self.sec_capture.recover()
         arrived = self.datasets.reload()
         changed = self.datasets.refresh_availability()
         # Task fingerprints are the durable comparison point.  The registry
@@ -132,6 +136,7 @@ class QuantSystem:
                       datasets_changed=[record.dataset_id for record in changed],
                       research_reactivated=refreshed,
                       unblocked=unblocked, seeded=seeded,
+                      sec_capture_recovery=capture_recovery,
                       resumed_desk_cursor=self.state.desk_cursor,
                       book_nav=self.desk.capital.nav)
         self.state.next_action = self._describe_next_action()
@@ -336,6 +341,9 @@ class QuantSystem:
             self.heartbeat()
             return "PAUSED"
 
+        if self.sec_capture.due():
+            return self._run_sec_capture()
+
         task = self.queue.next_due()
         if task is not None:
             return self._run_task(task)
@@ -349,6 +357,16 @@ class QuantSystem:
 
         return self._idle()
 
+    def _run_sec_capture(self) -> str:
+        """Advance the P0 SEC acquisition lifecycle by one scheduled poll."""
+        self.state.status = "RUN"
+        self.components.set("CONTROL", "RUN", "SEC/Form-4 raw capture")
+        self.save()
+        result = self.sec_capture.poll_once()
+        self.state.next_action = self._describe_next_action()
+        self.heartbeat()
+        return "SEC_CAPTURE_BLOCKED" if result == "BLOCKED" else "SEC_CAPTURE"
+
     def _idle(self) -> str:
         self.state.status = "IDLE"
         blocked = [task for task in self.queue.tasks.values() if task.status == "BLOCKED"]
@@ -361,8 +379,12 @@ class QuantSystem:
             self.components.set(name, "IDLE", "no session due")
         self.components.set("BOOK", "RUN" if self.desk.capital.open_positions() else "IDLE",
                             f"marked through {self.desk.capital.state.last_session_date}")
-        self.components.set("DATA", "IDLE" if self.datasets.health()["healthy"] else "BLOCKED",
-                            f"{len(self.datasets.available())} datasets available")
+        capture = self.sec_capture.status_snapshot()
+        data_blocked = (not self.datasets.health()["healthy"]
+                        or (capture["enabled"] and capture["state"] == "BLOCKED"))
+        self.components.set("DATA", "BLOCKED" if data_blocked else "IDLE",
+                            f"{len(self.datasets.available())} datasets available; "
+                            f"SEC capture {capture['state'].lower()}")
         self.components.set("LEARNING", "IDLE",
                             f"{len(self.learning.lessons)} lessons recorded")
         self.components.set("BUILD", "BLOCKED" if self.learning.open_build_tasks() else "IDLE",
@@ -603,6 +625,8 @@ class QuantSystem:
 
     # --- observation -------------------------------------------------------
     def _describe_next_action(self) -> str:
+        if self.sec_capture.due():
+            return "poll SEC latest Form-4 feed and preserve raw evidence"
         due = self.queue.next_due()
         if due is not None:
             return f"run research task {due.task_id}"
@@ -611,6 +635,13 @@ class QuantSystem:
             return f"run the desk session for {session[0]}"
         blocked = sorted((task for task in self.queue.tasks.values()
                           if task.status == "BLOCKED"), key=lambda task: -task.priority)
+        if self.sec_capture.enabled():
+            capture = self.sec_capture.status_snapshot()
+            if capture["state"] == "BLOCKED":
+                return (f"SEC raw capture blocked until {capture['blocked_until_utc']}: "
+                        f"{capture['last_error_class']}")
+            if capture["next_poll_at_utc"]:
+                return f"await SEC raw capture poll at {capture['next_poll_at_utc']}"
         if blocked:
             return (f"blocked on a dependency for {blocked[0].task_id}: "
                     f"{blocked[0].blocked_reason}")
@@ -638,6 +669,13 @@ class QuantSystem:
         health = self.datasets.health()
         if not health["healthy"]:
             alerts.append({"code": "DATA_UNHEALTHY", "detail": str(health["by_availability"])})
+        capture = self.sec_capture.status_snapshot()
+        if capture["enabled"] and capture["state"] == "BLOCKED":
+            alerts.append({"code": "SEC_CAPTURE_BLOCKED",
+                           "detail": capture["last_error_class"] or "blocked"})
+        if capture["enabled"] and capture["storage_health"] == "DEGRADED":
+            alerts.append({"code": "SEC_CAPTURE_STORAGE_DEGRADED",
+                           "detail": "raw evidence integrity review required"})
         if self.state.status == "IDLE" and self.queue.next_due() is not None:
             alerts.append({"code": "QUEUE_STARVATION",
                            "detail": self.queue.next_due().task_id})
@@ -667,7 +705,8 @@ class QuantSystem:
             "components": self.components.snapshot(),
             "data": {"health": self.datasets.health(),
                      "datasets": {key: record.to_dict()
-                                  for key, record in self.datasets.records.items()}},
+                                  for key, record in self.datasets.records.items()},
+                     "sec_form4_capture": self.sec_capture.status_snapshot()},
             "research": {"queue": self.queue.counts(),
                          "tasks": [{"task_id": task.task_id, "status": task.status,
                                     "lane": task.lane, "priority": task.priority,
