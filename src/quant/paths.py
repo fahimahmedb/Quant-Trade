@@ -90,6 +90,86 @@ class QuantPaths:
     def status_surface(self) -> Path:
         return self.var / "status.txt"
 
+    # --- SEC / Form-4 P0 raw capture --------------------------------------
+    # The capture lane keeps its own subtree so an immutable raw object can
+    # never share a path with mutable operational state, and so the restricted
+    # journal that carries identifying locators is a separate directory from
+    # the firewall-safe journals a status surface may read.
+    @property
+    def sec(self) -> Path:
+        return self.var / "sec"
+
+    @property
+    def sec_raw_objects(self) -> Path:
+        """Content-addressed immutable raw response bodies."""
+        return self.sec / "raw"
+
+    @property
+    def sec_incomplete_objects(self) -> Path:
+        """Partial bodies from truncated transfers. Never a valid capture."""
+        return self.sec / "incomplete"
+
+    @property
+    def sec_staging(self) -> Path:
+        """Uncommitted writes. A crash here leaves no acknowledged evidence."""
+        return self.sec / "staging"
+
+    @property
+    def sec_raw_manifest(self) -> Path:
+        return self.sec / "raw_manifest.jsonl"
+
+    @property
+    def sec_attempts(self) -> Path:
+        return self.sec / "attempts.jsonl"
+
+    @property
+    def sec_coverage(self) -> Path:
+        return self.sec / "coverage.jsonl"
+
+    @property
+    def sec_collector_state(self) -> Path:
+        return self.sec / "collector_state.json"
+
+    @property
+    def sec_budget(self) -> Path:
+        """Global SEC traffic budget, shared by every SEC consumer."""
+        return self.sec / "sec_traffic_budget.json"
+
+    # Restricted tier. These journals carry source identity, so no status
+    # surface, brief, log or exception may read them. They exist because
+    # point-in-time reconstructability requires knowing which source produced
+    # which bytes, which the firewall-safe tier deliberately cannot say.
+    @property
+    def sec_restricted(self) -> Path:
+        return self.sec / "restricted"
+
+    @property
+    def sec_locators(self) -> Path:
+        return self.sec_restricted / "locators.jsonl"
+
+    @property
+    def sec_envelopes(self) -> Path:
+        return self.sec_restricted / "envelopes.jsonl"
+
+    @property
+    def sec_source_versions(self) -> Path:
+        return self.sec_restricted / "source_versions.jsonl"
+
+    def sec_firewall_safe_journals(self) -> tuple[Path, ...]:
+        """Capture state a protocol-mutating surface is allowed to read."""
+        return (self.sec_attempts, self.sec_raw_manifest, self.sec_coverage,
+                self.sec_collector_state, self.sec_budget)
+
+    def sec_restricted_journals(self) -> tuple[Path, ...]:
+        return (self.sec_locators, self.sec_envelopes, self.sec_source_versions)
+
     def ensure(self) -> "QuantPaths":
         self.var.mkdir(parents=True, exist_ok=True)
+        return self
+
+    def ensure_sec(self) -> "QuantPaths":
+        """Create the capture subtree. Called by the collector, not by boot."""
+        for directory in (self.sec, self.sec_raw_objects, self.sec_incomplete_objects,
+                          self.sec_staging, self.sec_restricted):
+            directory.mkdir(parents=True, exist_ok=True)
         return self
