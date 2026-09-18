@@ -90,6 +90,38 @@ class QuantPaths:
     def status_surface(self) -> Path:
         return self.var / "status.txt"
 
+    @property
+    def sec_form4(self) -> Path:
+        return self.var / "sec_form4"
+
+    @property
+    def sec_form4_raw(self) -> Path:
+        return self.sec_form4 / "raw" / "sha256"
+
+    @property
+    def sec_form4_pending(self) -> Path:
+        return self.sec_form4 / "pending"
+
+    @property
+    def sec_form4_attempts(self) -> Path:
+        return self.sec_form4 / "attempts.jsonl"
+
+    @property
+    def sec_form4_manifest(self) -> Path:
+        return self.sec_form4 / "manifest.jsonl"
+
+    @property
+    def sec_form4_source_versions(self) -> Path:
+        return self.sec_form4 / "source_versions.jsonl"
+
+    @property
+    def sec_form4_reconciliation(self) -> Path:
+        return self.sec_form4 / "reconciliation.jsonl"
+
+    @property
+    def sec_form4_state(self) -> Path:
+        return self.sec_form4 / "collector_state.json"
+
     def ensure(self) -> "QuantPaths":
         self.var.mkdir(parents=True, exist_ok=True)
         return self
