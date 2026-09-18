@@ -1,0 +1,46 @@
+{
+  "all_passed": true,
+  "artifact": "sec_form4_p0_verification",
+  "checks": {
+    "generated_schema_drift": {
+      "command": "python3 scripts/generate_schemas.py --check",
+      "exit_code": 0,
+      "last_line": "schemas checked",
+      "result": "PASS"
+    },
+    "status_artifact_freshness": {
+      "command": "python3 scripts/status_artifacts.py --check",
+      "exit_code": 0,
+      "last_line": "fresh: STATE.md",
+      "result": "PASS"
+    }
+  },
+  "environment": {
+    "platform": "Linux-6.18.44-fc-v33-x86_64-with-glibc2.39",
+    "python_implementation": "CPython",
+    "python_version": "3.11.15"
+  },
+  "network_requests_made": 0,
+  "note": "Counts here are counts of tests and checks. Nothing in this artifact describes captured SEC data, and no SEC request is made while producing it.",
+  "purpose": "Reproducible record of the verification actually executed, so the test claim on the pull request is checkable from the repository rather than asserted in prose.",
+  "recorded_at_utc": "2026-09-18T20:03:37.167465+00:00",
+  "sec_identity_configured_during_verification": false,
+  "sec_p0_lane_tests_discovered": 193,
+  "suites": {
+    "full_unit_suite": {
+      "command": "python3 -m unittest discover -s tests",
+      "exit_code": 0,
+      "last_line": "OK",
+      "result": "PASS"
+    },
+    "sec_p0_lane_suite": {
+      "command": "python3 -m unittest tests.test_sec_form4_capture",
+      "exit_code": 0,
+      "last_line": "OK",
+      "result": "PASS"
+    }
+  },
+  "tests_discovered": 297,
+  "verified_sha": "d23ab945d33da6893223998fa2994989c51d080b",
+  "verified_tree_digest": "sha256:418d9b4a0c3949f5f5176b753089a43108462d16376fb45a9392f8948ca683f9"
+}

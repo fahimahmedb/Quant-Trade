@@ -5,10 +5,10 @@
     "HIDDEN_TRANSPORT_RETRY": {
       "enforcement": "structural: transport.fetch requires a single-use RequestPermit minted from one budget reservation and carrying the attempt id; a second send raises",
       "live_invariant": {
-        "budget_reservations": 10,
-        "distinct_attempt_ids": 10,
-        "durable_attempt_ids": 10,
-        "holds": true
+        "DUPLICATED_ATTEMPT_AUTHORITY": false,
+        "REQUEST_ACCOUNTING_INVARIANT": "PASS",
+        "UNACCOUNTED_NETWORK_REQUESTS": false,
+        "note": "Verified live: every HTTP request emitted had exactly one budget reservation and one distinct durable attempt id. Stated as the invariant rather than as counts, because the FILING request count is a filing count under the frozen one-request-per-filing path."
       },
       "resolution": "removed; preferred option 1 of the governance",
       "state": "CLOSED"
@@ -20,6 +20,17 @@
   },
   "collector_version": "sec-form4-p0-raw-capture/1",
   "fingerprint_schema": "acquisition_critical_fingerprint/v1",
+  "fourth_defect_found_while_sanitizing": {
+    "blindness_restored": false,
+    "classification": "BLOCKS_ANTI_SELECTION_OR_VISIBILITY_FIREWALL",
+    "exposure_is_irreversible": true,
+    "found_by": "Builder, while remediating VISIBILITY_FIREWALL_REGRESSION",
+    "name": "DRAIN_TRANSITION_COUNT_PROXY",
+    "observed": "While removing the FILING request count Blue identified, the same artifact was found to publish transition_causes.DRAIN_COMPLETED and transition_states.DRAINING as integers. The drain path completes once per acquired filing, so both tallies are the filing count under a different name. The first count-proxy detector missed them because their key names contain no reference to filings.",
+    "observed_by_blue": "Yes, in the same published artifact revision Blue reviewed; this exposure is therefore also irreversible.",
+    "resolution": "Per-cause and per-state tallies are replaced by the sorted set of causes and states observed, which evidences the scheduler vocabulary exercised without publishing volume. find_count_proxies now matches drain and capture transition keys on the full path.",
+    "state": "CLOSED"
+  },
   "git_commit": "b89743d4d59f8baa7e382c8e6e9d54d8f7f1ed4e",
   "not_yet_established": [
     "Multi-day unattended operation. This rodage is minutes, not days; a single session cannot produce calendar time.",
@@ -27,7 +38,7 @@
     "Live 429/403 behaviour, which is deliberately not provoked against SEC and is proven offline only.",
     "Multi-host budget coordination: the limiter is a file lock, so it bounds one machine and cannot coordinate two."
   ],
-  "note": "Opaque acquisition evidence only. No filing identity, locator, body, parsed field or filing count. Attempt and transition counts describe requests and scheduler decisions, not filings.",
+  "note": "Opaque acquisition evidence only. No filing identity, locator, body, parsed field, filing count or per-filing request count. Numeric fields describe scheduler decisions, obligations, bytes and request budget, never scientific volume. See visibility_firewall_provenance for an exposure that did occur and was observed.",
   "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
   "produced_at_utc": "2026-09-18T11:42:59.489898+00:00",
   "purpose": "Initial pre-t0 burn-in in the frozen state, to surface a third BLOCKS_CAPTURE_INTEGRITY defect before the observation window starts. This rodage does not count toward the fourteen days and does not authorize t0.",
@@ -58,39 +69,43 @@
   },
   "rodage_observations": {
     "all_starts_externally_attested": true,
-    "attempts_by_endpoint_kind": {
-      "DISCOVERY": 3,
-      "FILING": 7
-    },
-    "attempts_by_result_state": {
-      "CAPTURED": 10
-    },
-    "average_requests_per_second": 0.065,
     "coverage_state": "COMPLETE",
+    "endpoint_classes_exercised": [
+      "edgar_browse_getcurrent_atom",
+      "edgar_archives_submission_text",
+      "edgar_daily_index"
+    ],
     "fingerprint_stable_across_restart": true,
     "lifecycle_causes_observed": [
       "AUTOMATIC_RESTART_AFTER_FAILURE",
       "SCHEDULED_START"
     ],
     "open_gap_kinds": [],
-    "raw_bytes_stored": 19839,
     "raw_object_address_mismatches": [],
-    "request_span_seconds": 154.5,
+    "raw_object_integrity": {
+      "address_mismatches": [],
+      "all_rehashed_objects_match": true
+    },
+    "request_accounting": {
+      "DUPLICATED_ATTEMPT_AUTHORITY": false,
+      "REQUEST_ACCOUNTING_INVARIANT": "PASS",
+      "UNACCOUNTED_NETWORK_REQUESTS": false
+    },
     "scheduler_transitions": 14,
     "supervised_service_starts": 2,
-    "transition_causes": {
-      "DRAIN_COMPLETED": 7,
-      "LANE_ENABLED": 1,
-      "POLL_COMPLETED": 3,
-      "SERVICE_START": 2,
-      "WORK_ENQUEUED": 1
-    },
-    "transition_states": {
-      "AWAITING_POLL": 4,
-      "DISABLED": 1,
-      "DRAINING": 8,
-      "POLL_DUE": 1
-    },
+    "transition_causes_observed": [
+      "DRAIN_COMPLETED",
+      "LANE_ENABLED",
+      "POLL_COMPLETED",
+      "SERVICE_START",
+      "WORK_ENQUEUED"
+    ],
+    "transition_states_observed": [
+      "AWAITING_POLL",
+      "DISABLED",
+      "DRAINING",
+      "POLL_DUE"
+    ],
     "validated_polls": 3
   },
   "states": {
@@ -107,5 +122,16 @@
     "resolution": "the server filter is treated as a narrowing hint and local classification is authoritative; a non-ownership form type is excluded explicitly, while an unreadable form type remains an error. Query construction version bumped, so the fingerprint moved.",
     "state": "CLOSED",
     "why_the_first_live_probe_missed_it": "that window happened to contain only form 4 entries"
+  },
+  "visibility_firewall_provenance": {
+    "authority": "This exposure has no authority to justify, relax, tune or select any later claim-defining, D05, D07, D09, liquidity, power or admissibility rule. It is recorded as an anti-selection constraint, not repaired.",
+    "blindness_restored": false,
+    "classification": "BLOCKS_ANTI_SELECTION_OR_VISIBILITY_FIREWALL",
+    "defect": "VISIBILITY_FIREWALL_REGRESSION",
+    "exposure_is_irreversible": true,
+    "observed_by_blue": true,
+    "precedent": "A comparable irreversible exposure during PR #16 is recorded in governance/BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md section 5.1.",
+    "remediation": "The value is removed from the visible surface and the 1:1 request invariant is now stated as booleans. find_count_proxies inspects artifact structure for the shape of this defect, so the same claim cannot be made again alongside the same number.",
+    "what_was_exposed": "An earlier revision of this artifact published rodage_observations.attempts_by_endpoint_kind.FILING as an integer, together with result-state and per-second request tallies from which it could also be derived, while asserting that the artifact carried no filing count. Under the frozen acquisition path one filing costs exactly one FILING request, so that integer was a filing count by proxy."
   }
 }

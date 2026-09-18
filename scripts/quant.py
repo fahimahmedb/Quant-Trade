@@ -48,8 +48,12 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     """
     collector = system.sec
     if args.command == "sec-readiness":
-        print(json.dumps(collector.t0_readiness(), indent=2, sort_keys=True, default=str))
-        return 0
+        readiness = collector.t0_readiness()
+        print(json.dumps(readiness, indent=2, sort_keys=True, default=str))
+        # Exit code is the gate signal: 0 only when the pre-t0 instrumentation is
+        # actually in place. Blue still decides t0; this only reports whether the
+        # preconditions hold.
+        return 0 if readiness["instrumentation_ready"] else 1
     if args.command == "sec-audit":
         from quant.dataplane.sec.audit import audit_observation_window
         report = audit_observation_window(collector)

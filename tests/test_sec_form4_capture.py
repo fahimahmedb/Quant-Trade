@@ -65,8 +65,9 @@ from quant.dataplane.sec.supervisor import (AUTOMATIC_CAUSES,  # noqa: E402
                                             lifecycle_provenance,
                                             service_manager_provenance)
 from quant.dataplane.sec.timebase import FrozenTimebase  # noqa: E402
-from quant.dataplane.sec.visibility import (assert_no_scientific_content,  # noqa: E402
-                                            find_leaks)
+from quant.dataplane.sec.visibility import (assert_no_count_proxies,  # noqa: E402
+                                            assert_no_scientific_content,
+                                            find_count_proxies, find_leaks)
 from quant.dataplane.sec.transport import (COMPLETE,  # noqa: E402
                                            DEADLINE_EXCEEDED as DEADLINE_EXCEEDED_OUTCOME,
                                            PermitAlreadySpent, RequestPermit,
@@ -335,7 +336,7 @@ class JournalTests(SecCaptureTestCase):
             request_attempted_at_utc=self.timebase.now_iso(),
             result_state="CAPTURED", collector_version="v", git_commit="c"))
         safe = "\n".join(path.read_text(encoding="utf-8")
-                         for path in self.paths.sec_firewall_safe_journals()
+                         for path in self.paths.sec_operator_internal_journals()
                          if path.exists())
         self.assertNotIn("0000320193", safe)
         self.assertNotIn("Archives/edgar/data", safe)
@@ -1046,7 +1047,7 @@ class ReconciliationTests(CollectorTestCase):
         restricted = (self.paths.sec_restricted / "reconciliation.jsonl").read_text()
         self.assertIn("0000320193-26-000044", restricted)
         safe = "\n".join(path.read_text(encoding="utf-8")
-                         for path in self.paths.sec_firewall_safe_journals()
+                         for path in self.paths.sec_operator_internal_journals()
                          if path.exists())
         self.assertNotIn("0000320193-26-000044", safe)
 
@@ -1503,7 +1504,7 @@ class VisibilityFirewallTests(CollectorTestCase):
                                               default=str),
             "event log": self.paths.events.read_text(encoding="utf-8"),
         }
-        for path in self.paths.sec_firewall_safe_journals():
+        for path in self.paths.sec_operator_internal_journals():
             if path.exists():
                 surfaces[f"journal {path.name}"] = path.read_text(encoding="utf-8")
         for where, text in surfaces.items():
@@ -2835,3 +2836,368 @@ class QualifyingModeGateTests(SecCaptureTestCase):
         self.assertIn("Environment=QUANT_SEC_SERVICE_MANAGER=systemd", unit)
         self.assertIn("--qualifying", unit)
         self.assertIn("Restart=on-failure", unit)
+
+
+# ---------------------------------------------------------------------------
+# VISIBILITY_FIREWALL_REGRESSION
+# ---------------------------------------------------------------------------
+
+class CountProxyFirewallTests(SecCaptureTestCase):
+    """Blue finding 3. A prose promise is not a control.
+
+    The first rodage artifact published `attempts_by_endpoint_kind.FILING = 7`
+    while asserting it carried no filing count. Under the frozen path one filing
+    costs one FILING request, so that integer was a filing count by proxy. These
+    tests make the *shape* of that defect detectable.
+    """
+
+    def test_the_detector_catches_the_exact_field_blue_found(self) -> None:
+        offending = {"rodage_observations": {
+            "attempts_by_endpoint_kind": {"DISCOVERY": 3, "FILING": 7}}}
+        proxies = find_count_proxies(offending)
+        self.assertEqual(len(proxies), 1)
+        self.assertIn("FILING", proxies[0])
+        with self.assertRaises(AssertionError):
+            assert_no_count_proxies(offending, "artifact")
+
+    def test_the_detector_catches_other_filing_count_shapes(self) -> None:
+        for payload in ({"filings_captured": 12},
+                        {"nested": {"filing_requests": 4}},
+                        {"accessions_seen": 9},
+                        {"envelopes_written": 5},
+                        {"totals": [{"source_versions": 3}]}):
+            with self.subTest(payload=payload):
+                self.assertTrue(find_count_proxies(payload),
+                                f"{payload} should be flagged as a filing-count proxy")
+
+    def test_operational_health_numbers_remain_permitted(self) -> None:
+        """The firewall forbids scientific volume, not all numbers."""
+        healthy = {"raw_bytes": 49752, "requests_spent": 22, "scheduler_transitions": 14,
+                   "obligations": 13, "obligations_unexplained": 0,
+                   "window_duration_seconds": 154.8, "backoff_step": 0,
+                   "poll_seconds": 60.0, "service_starts": 2}
+        self.assertEqual(find_count_proxies(healthy), [])
+        assert_no_count_proxies(healthy, "telemetry")
+
+    def test_booleans_are_never_treated_as_counts(self) -> None:
+        self.assertEqual(find_count_proxies({"filing_present": True}), [])
+
+    def test_the_published_rodage_artifact_is_firewall_safe(self) -> None:
+        """The committed artifact itself, checked both ways."""
+        path = ROOT / "handoff" / "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        assert_no_count_proxies(document, path.name)
+        assert_no_scientific_content(path.read_text(encoding="utf-8"), path.name)
+        # The field must be gone. Its *name* legitimately survives inside the
+        # provenance note that records the exposure, so check the structure.
+        self.assertNotIn("attempts_by_endpoint_kind", document["rodage_observations"])
+        self.assertIn("attempts_by_endpoint_kind",
+                      document["visibility_firewall_provenance"]["what_was_exposed"])
+        # The invariant is still evidenced, as booleans rather than volume.
+        invariant = document["blocker_closure"]["HIDDEN_TRANSPORT_RETRY"]["live_invariant"]
+        self.assertEqual(invariant["REQUEST_ACCOUNTING_INVARIANT"], "PASS")
+        self.assertFalse(invariant["UNACCOUNTED_NETWORK_REQUESTS"])
+        self.assertFalse(invariant["DUPLICATED_ATTEMPT_AUTHORITY"])
+
+    def test_the_artifact_preserves_the_irreversible_exposure_provenance(self) -> None:
+        """Removing the value must not become a claim that it never happened."""
+        path = ROOT / "handoff" / "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        provenance = document["visibility_firewall_provenance"]
+        self.assertTrue(provenance["observed_by_blue"])
+        self.assertTrue(provenance["exposure_is_irreversible"])
+        self.assertFalse(provenance["blindness_restored"],
+                         "the artifact must not claim blindness was restored")
+        self.assertIn("no authority", provenance["authority"])
+        self.assertIn("attempts_by_endpoint_kind", provenance["what_was_exposed"])
+
+    def test_every_committed_handoff_artifact_is_firewall_safe(self) -> None:
+        """Applies the control to all of them, not just the one that regressed."""
+        for path in sorted((ROOT / "handoff").glob("*.json")):
+            with self.subTest(artifact=path.name):
+                text = path.read_text(encoding="utf-8")
+                assert_no_scientific_content(text, path.name)
+                assert_no_count_proxies(json.loads(text), path.name)
+
+    def test_live_telemetry_publishes_no_count_proxy(self) -> None:
+        collector = self.collector_for_telemetry()
+        collector.poll()
+        collector.drain(max_items=3)
+        assert_no_count_proxies(collector.telemetry(), "collector telemetry")
+        assert_no_count_proxies(
+            audit_observation_window(collector), "observation audit")
+
+    def collector_for_telemetry(self):
+        import random
+        policy = self.policy()
+        transport = FakeTransport(CollectorTestCase.fixture_router())
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(11)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                "QUANT_SEC_BOOT_ID": "boot-tel",
+                                "QUANT_SEC_QUALIFYING_MODE": "1"})
+        collector.enable()
+        return collector
+
+
+# ---------------------------------------------------------------------------
+# Rodage falsification attempts
+# ---------------------------------------------------------------------------
+
+class RodageFalsificationTests(CollectorTestCase):
+    """Deliberate attempts to make the instrumentation report something false.
+
+    The pre-t0 rodage brief asks for these specifically: a missed obligation, a
+    stale service, an override, an invalid discovery, and a crash, each checked
+    for whether the system would still call itself healthy.
+    """
+
+    def qualifying_collector(self, handler, *, cause: str = SCHEDULED_START,
+                             boot_id: str = "boot-q1", enable: bool = True):
+        import random
+        policy = self.policy()
+        transport = FakeTransport(handler)
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(13)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": cause,
+                                "QUANT_SEC_BOOT_ID": boot_id,
+                                "QUANT_SEC_QUALIFYING_MODE": "1",
+                                "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
+        self.transport = transport
+        # A real restart does not re-enable an already-enabled lane: sec-serve
+        # only calls enable() when durable state says the lane is off.
+        if enable and not collector.state.enabled:
+            collector.enable()
+        return collector
+
+    def test_a_service_that_simply_stops_polling_is_not_accountable(self) -> None:
+        """The core falsification: skip the work and see if the audit notices."""
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        self.assertTrue(audit_observation_window(collector)["accountable"])
+        # Now the service goes silent for an hour. Nothing is recorded, which is
+        # exactly the case a journal of attempts alone cannot distinguish from
+        # "nothing was due".
+        self.timebase.advance(3600)
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"],
+                         "an hour of silence against an open obligation is a hole")
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertGreaterEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(collector.liveness(), STALE)
+
+    def test_a_stale_service_cannot_present_itself_as_healthy(self) -> None:
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        self.timebase.advance(3600 * 4)
+        telemetry = collector.telemetry()
+        self.assertEqual(telemetry["liveness"], STALE)
+        # Coverage is a separate axis and must not be upgraded by liveness.
+        self.assertEqual(telemetry["coverage_state"], COVERAGE_COMPLETE)
+        self.assertFalse(audit_observation_window(collector)["accountable"])
+
+    def test_an_invalid_discovery_leaves_an_accounted_attempt_and_no_false_coverage(self) -> None:
+        html = (FIXTURES / "edgar_error_page.html").read_bytes()
+        collector = self.qualifying_collector(
+            lambda path, call: response(html, headers={"Content-Type": "text/html"}))
+        collector.record_service_start()
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, DISCOVERY_INVALID)
+        self.assertEqual(outcome.coverage_state, COVERAGE_UNKNOWN)
+        # The attempt is recorded, so the obligation it answered is accounted for
+        # even though the poll failed. A failure is not a hole.
+        report = audit_observation_window(collector)
+        self.assertNotIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertGreaterEqual(report["obligations_resolved_by_attempt"]
+                                + report["obligations_resolved_by_supersession"], 1)
+
+    def test_a_cooldown_period_is_explained_rather_than_silent(self) -> None:
+        collector = self.qualifying_collector(
+            lambda path, call: response(b"slow down", status=429,
+                                        headers={"Retry-After": "300"}))
+        collector.record_service_start()
+        collector.poll()
+        # The cooldown moved the next due time, and said so prospectively.
+        cooldown_transitions = [record for record in collector.scheduler.all()
+                                if record["state"] == COOLDOWN]
+        self.assertTrue(cooldown_transitions)
+        transition = cooldown_transitions[-1]
+        self.assertIsNotNone(transition["next_due_at_utc"])
+        self.assertIsNotNone(transition["obligation_id"])
+        self.assertIsNotNone(transition["supersedes_obligation_id"])
+        # Waiting out the cooldown is service, not a hole.
+        self.timebase.advance(60)
+        report = audit_observation_window(collector)
+        self.assertNotIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+
+    def test_a_restart_preserves_the_open_obligation(self) -> None:
+        """A restart must not orphan the commitment the audit is waiting on."""
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        open_obligation = collector.state.open_obligation_id
+        self.assertIsNotNone(open_obligation)
+
+        restarted = self.qualifying_collector(
+            self.fixture_router(), cause=AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+            boot_id="boot-q2")
+        self.assertEqual(restarted.state.open_obligation_id, open_obligation,
+                         "the open obligation survives the restart")
+        restarted.record_service_start()
+        # The restart transition names the obligation it replaces.
+        latest = restarted.scheduler.latest()
+        self.assertEqual(latest["supersedes_obligation_id"], open_obligation)
+        report = audit_observation_window(restarted)
+        self.assertTrue(report["fingerprint_stable"])
+        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+                      report["lifecycle_causes"])
+        self.assertFalse(
+            any(record["lifecycle_cause"] in INVALIDATING_CAUSES
+                for record in read_jsonl(self.paths.sec_lifecycle)),
+            "an automatic supervisor restart does not invalidate the window")
+
+    def test_a_manual_restart_mid_window_is_reported_as_invalidating(self) -> None:
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        intervened = self.qualifying_collector(self.fixture_router(),
+                                               cause=MANUAL_START, boot_id="boot-q3")
+        intervened.record_service_start()
+        report = audit_observation_window(intervened)
+        self.assertFalse(report["accountable"])
+        self.assertIn("INVALIDATING_INTERVENTION", report["findings"])
+
+    def test_no_publication_period_still_leaves_obligations_answered(self) -> None:
+        """A quiet source is not a quiet service."""
+        empty_feed = build_feed([], entries=[])
+        collector = self.qualifying_collector(self.fixture_router(atom=empty_feed))
+        collector.record_service_start()
+        first = collector.poll()
+        self.assertTrue(first.valid_discovery)
+        for _ in range(3):
+            self.timebase.advance(60)
+            collector.poll()
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(collector.state.last_result_state, NO_NEW_DATA)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_operator_internal_journals_are_content_free_but_not_count_free(self) -> None:
+        """The tier contract, stated honestly and pinned by a test.
+
+        Found while remediating the firewall regression: the tier was named
+        `sec_firewall_safe_journals`, which reads as "publishable". It is not.
+        These journals carry no filing-identifying string, and that is all they
+        promise - the drain path records one transition per acquired filing, so a
+        reader with file access can recover the count. The no-count rule binds the
+        published projection, not the journals.
+        """
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+
+        # What the tier does promise: no identifying content.
+        for path in self.paths.sec_operator_internal_journals():
+            if path.exists():
+                with self.subTest(journal=path.name):
+                    assert_no_scientific_content(path.read_text(encoding="utf-8"),
+                                                 path.name)
+
+        # What it does not promise, demonstrated rather than glossed over.
+        drains = [record for record in collector.scheduler.all()
+                  if record["cause"] == DRAIN_COMPLETED]
+        self.assertTrue(drains, "the journal does record one drain per acquisition")
+
+        # The published projection is what must be count-free, and is.
+        from quant.clock import QuantSystem
+        from quant.status.brief import build_chief_brief
+        from quant.status.render import render_status
+        system = QuantSystem(self.root)
+        system.sec = collector
+        snapshot = system.snapshot()
+        for where, payload in (("collector telemetry", collector.telemetry()),
+                               ("observation audit", audit_observation_window(collector)),
+                               ("snapshot sec_capture", snapshot["sec_capture"])):
+            with self.subTest(surface=where):
+                assert_no_count_proxies(payload, where)
+        for where, text in (("status surface", render_status(snapshot)),
+                            ("CHIEF_BRIEF.md", build_chief_brief(snapshot))):
+            with self.subTest(surface=where):
+                assert_no_scientific_content(text, where)
+                self.assertNotIn("DRAIN_COMPLETED", text,
+                                 "a published surface must not tally drain events")
+
+
+class AuditAdversarialExtraTests(AuditFalsePassTests):
+    """Further attempts to make the ledger settle something it should not."""
+
+    def test_a_supersession_recorded_exactly_at_the_due_time_is_too_late(self) -> None:
+        """The boundary. `before the due time` must mean strictly before."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:05:00+00:00",
+                              due_at="2026-09-18T12:20:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0,
+                         "a supersession at the deadline has not prevented the miss")
+        self.assertFalse(report["accountable"])
+
+    def test_a_chain_of_supersessions_cannot_clear_an_older_missed_obligation(self) -> None:
+        """A long re-plan chain must not sweep up a deadline already missed."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Nothing answered OB-1. Later the service re-plans repeatedly, each step
+        # naming the previous obligation, as the live collector legitimately does.
+        previous = "OB-1"
+        for index, minute in enumerate(range(40, 46), start=2):
+            obligation = f"OB-{index}"
+            self.write_transition(recorded_at=f"2026-09-18T12:{minute}:00+00:00",
+                                  due_at=f"2026-09-18T12:{minute + 1}:00+00:00",
+                                  cause=POLL_COMPLETED, obligation_id=obligation,
+                                  supersedes=previous)
+            previous = obligation
+        report = self.audit(now="2026-09-18T13:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OB-1", {item["obligation_id"]
+                               for item in report["unexplained_obligations"]},
+                      "the original miss survives any later chain")
+
+    def test_an_attempt_cannot_answer_an_obligation_created_after_it(self) -> None:
+        """Even inside tolerance, causality runs one way."""
+        self.write_attempt(attempted_at="2026-09-18T12:00:00+00:00", attempt_id="A-1")
+        # The obligation is created after the request, and comes due after it too.
+        self.write_transition(recorded_at="2026-09-18T12:01:00+00:00",
+                              due_at="2026-09-18T12:02:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 0)
+        self.assertFalse(report["accountable"])
+
+    def test_many_attempts_cannot_cover_more_obligations_than_they_number(self) -> None:
+        """Three obligations, two requests: at most two can be answered."""
+        for index, minute in enumerate(("05", "06", "07"), start=1):
+            self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                                  due_at=f"2026-09-18T12:{minute}:00+00:00",
+                                  cause=POLL_COMPLETED, obligation_id=f"OB-{index}")
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        self.write_attempt(attempted_at="2026-09-18T12:06:10+00:00", attempt_id="A-2")
+        report = self.audit(now="2026-09-18T12:40:00+00:00")
+        self.assertLessEqual(report["obligations_resolved_by_attempt"], 2)
+        self.assertGreaterEqual(report["obligations_unexplained"], 1)
+        self.assertFalse(report["accountable"])
