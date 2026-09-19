@@ -19,7 +19,9 @@ from quant.economics import (ALLOCATION_WEIGHTED_RATIO, AuthorisedZero, CostComp
                              KForwardRecipe, MEUERecipe, ParameterInventory, ReturnConvention,
                              RiskClaim, RiskPartition, SourceContract, ThetaSelectionRule,
                              ThetaState)
-from quant.economics.frictions import (SIGN_COST_POSITIVE, UNIT_ACCOUNT_CURRENCY)
+from quant.economics.frictions import (COST_SHAPE_PER_NOTIONAL, COST_SHAPE_SPREAD_CROSSING,
+                                       COST_SHAPE_SQRT_IMPACT, SIGN_COST_POSITIVE,
+                                       UNIT_ACCOUNT_CURRENCY)
 from quant.economics.states import PROVENANCE_CALIBRATED, PROVENANCE_V1_ASSUMED
 from quant.economics.scenarios import SCENARIO_ADVERSE, SCENARIO_CENTRAL
 from quant.economics.theta import Q_PROVENANCE_ALLOCATION_CONSTRUCTOR
@@ -148,14 +150,14 @@ def k_forward_recipe() -> KForwardRecipe:
                 functional=_fees,
                 formula_statement="fee_bps/1e4 * 2 * Q(theta)",
                 input_classes=("FROZEN_COST_PARAMETER", "EXPECTED_DEPLOYED_EXPOSURE_Q"),
-                consumes=(FEE_BPS,)),
+                consumes=(FEE_BPS,), shape=COST_SHAPE_PER_NOTIONAL),
             CostComponent(
                 name="OPEN_ENTRY_CROSSING", cost_class="F2_OPEN_ENTRY_CROSSING",
                 applicability="FIRST_AUTHORIZED_REGULAR_SESSION_OPEN",
                 functional=_crossing,
                 formula_statement="half_spread_bps/1e4 * Q(theta)",
                 input_classes=("FROZEN_COST_PARAMETER", "EXPECTED_DEPLOYED_EXPOSURE_Q"),
-                consumes=(OPEN_HALF_SPREAD_BPS,)),
+                consumes=(OPEN_HALF_SPREAD_BPS,), shape=COST_SHAPE_SPREAD_CROSSING),
             CostComponent(
                 name="MARKET_IMPACT", cost_class="F4_MARKET_IMPACT",
                 applicability="FIRST_AUTHORIZED_REGULAR_SESSION_OPEN_WITH_POSITIVE_"
@@ -166,14 +168,15 @@ def k_forward_recipe() -> KForwardRecipe:
                                "PERMITTED_LIQUIDITY_REFERENCE",
                                "EXPECTED_DEPLOYED_EXPOSURE_Q"),
                 consumes=(IMPACT_BPS_AT_FULL_PARTICIPATION, IMPACT_REFERENCE_PARTICIPATION),
-                dependence=Dependence(liquidity=True, participation=True)),
+                dependence=Dependence(liquidity=True, participation=True),
+                shape=COST_SHAPE_SQRT_IMPACT),
             CostComponent(
                 name="EXIT_EXECUTION", cost_class="F5_EXIT_EXECUTION",
                 applicability="AUTHORIZED_EXIT_CONVENTION",
                 functional=_exit,
                 formula_statement="exit_bps/1e4 * Q(theta)",
                 input_classes=("FROZEN_COST_PARAMETER", "EXPECTED_DEPLOYED_EXPOSURE_Q"),
-                consumes=(EXIT_BPS,)),
+                consumes=(EXIT_BPS,), shape=COST_SHAPE_SPREAD_CROSSING),
         ),
         authorised_zeros=(
             AuthorisedZero("F3_OPEN_ENTRY_SLIPPAGE", TEST_AUTHORITY,

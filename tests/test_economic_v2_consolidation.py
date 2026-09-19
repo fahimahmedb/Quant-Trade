@@ -15,18 +15,30 @@ from dataclasses import replace
 
 import economics_fixtures as fixtures
 from quant.desk.execution import ExecutionModel, RESEARCH_ONE_WAY_COST_BPS
-from quant.economics import (EffectEstimate, PortfolioInteraction, economic_gate,
-                             verify_research_cost_consistency)
+from quant.economics import (COST_CLASSES, AuthorisedZero, CostComponent, Dependence,
+                             EffectEstimate, KForwardRecipe, PortfolioInteraction,
+                             economic_gate, verify_research_cost_consistency,
+                             verify_shape_declarations)
 from quant.economics.consistency import ExecutionCostModel, ResearchExecutionConsistency
 from quant.economics.decision import (AUTHORITY_DEVELOPMENT_ONLY, AUTHORITY_FORWARD_CONFIRMED,
                                       EVIDENCE_DEVELOPMENT, EVIDENCE_FORWARD_CONFIRMATION)
+from quant.economics.frictions import (COST_SHAPE_FIXED, COST_SHAPE_PER_NOTIONAL,
+                                       COST_SHAPE_SQRT_IMPACT)
 from quant.economics.margin import FUNCTIONAL_FROZEN
 from quant.economics.states import (CLUSTERING_UNIT_O4_RESOLVED, CLUSTERING_UNIT_O4_UNRESOLVED,
                                     CLUSTERING_UNIT_UNDECLARED, CONTINUE, KILL, NO_TRADE,
                                     ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY,
                                     ORDER_ELIGIBILITY_NOT_ELIGIBLE,
                                     ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE,
-                                    PROVENANCE_CALIBRATED, RECIPE_CONSUMABLE, RECIPE_PROVISIONAL)
+                                    PROVENANCE_CALIBRATED, RECIPE_CONSUMABLE, RECIPE_INVALID,
+                                    RECIPE_PROVISIONAL)
+
+
+def _single_component_recipe(component: CostComponent) -> KForwardRecipe:
+    return KForwardRecipe(
+        recipe_id="TEST_SINGLE_COMPONENT", components=(component,),
+        authorised_zeros=tuple(AuthorisedZero(cost_class, "TEST_AUTHORITY", "not modelled")
+                               for cost_class in COST_CLASSES if cost_class != component.cost_class))
 
 
 def joined(problems) -> str:
@@ -290,6 +302,88 @@ class ClusteringUnitO4DependencyTest(unittest.TestCase):
                                 consistency=self.consistency)
         self.assertEqual(verdict.verdict, NO_TRADE)
         self.assertEqual(verdict.reason, "BLOCKING_INPUT_DEFECT")
+
+
+class CostShapeTypologyTest(unittest.TestCase):
+    """Cost model types: fix the Codex weakness (self red team item 1 /
+    ``W1-SELF-001``) that a computed currency cost does not prove its
+    dependence on size. Each shape's claimed ratio is probed numerically.
+    """
+
+    def setUp(self):
+        self.theta = fixtures.theta_state()
+        self.params = dict(fixtures.CENTRAL_PARAMS)
+
+    def test_red_undeclared_shape_is_a_hard_violation(self):
+        component = CostComponent(name="X", cost_class="F1_EXPLICIT_FEES",
+                                  applicability="ALWAYS",
+                                  functional=lambda delta, theta, params: 1.0,
+                                  formula_statement="1.0",
+                                  input_classes=("FROZEN_COST_PARAMETER",))
+        self.assertEqual(component.shape, "")
+        self.assertIn("X: COST_SHAPE_NOT_DECLARED", component.violations())
+
+    def test_green_correctly_labelled_fixture_recipe_passes_the_shape_probe(self):
+        recipe = fixtures.k_forward_recipe()
+        self.assertEqual(verify_shape_declarations(recipe, self.theta, self.params), [])
+
+    def test_red_mislabelled_fixed_cost_that_actually_scales_is_caught(self):
+        """RED: before this pass, nothing checked a FIXED claim at all."""
+        component = CostComponent(
+            name="MISLABELLED_FIXED", cost_class="F1_EXPLICIT_FEES",
+            applicability="ALWAYS_APPLICABLE",
+            functional=lambda delta, theta, params: 0.0001 * theta.expected_deployed_exposure,
+            formula_statement="0.0001 * Q(theta) -- mislabelled as FIXED",
+            input_classes=("EXPECTED_DEPLOYED_EXPOSURE_Q",), shape=COST_SHAPE_FIXED)
+        problems = verify_shape_declarations(_single_component_recipe(component), self.theta,
+                                             self.params)
+        self.assertIn("MISLABELLED_FIXED: DECLARED_FIXED_BUT_VARIES_WITH_EXPOSURE", problems)
+
+    def test_green_a_genuinely_fixed_cost_is_not_flagged(self):
+        component = CostComponent(
+            name="GENUINELY_FIXED", cost_class="F1_EXPLICIT_FEES",
+            applicability="ALWAYS_APPLICABLE", functional=lambda delta, theta, params: 12.5,
+            formula_statement="12.5 (a flat account fee)",
+            input_classes=("FROZEN_COST_PARAMETER",), shape=COST_SHAPE_FIXED)
+        problems = verify_shape_declarations(_single_component_recipe(component), self.theta,
+                                             self.params)
+        self.assertEqual(problems, [])
+
+    def test_red_mislabelled_sqrt_impact_that_is_actually_linear_is_caught(self):
+        component = CostComponent(
+            name="MISLABELLED_SQRT", cost_class="F4_MARKET_IMPACT",
+            applicability="ALWAYS_APPLICABLE",
+            functional=lambda delta, theta, params: 0.001 * (theta.participation or 0.0),
+            formula_statement="0.001 * participation -- actually linear, mislabelled sqrt",
+            input_classes=("PARTICIPATION_DERIVED_FROM_THETA",),
+            dependence=Dependence(participation=True), shape=COST_SHAPE_SQRT_IMPACT)
+        problems = verify_shape_declarations(_single_component_recipe(component), self.theta,
+                                             self.params)
+        self.assertTrue(any("DECLARED_SQRT_IMPACT_BUT_RATIO" in problem for problem in problems),
+                        problems)
+
+    def test_red_mislabelled_per_notional_that_is_actually_constant_is_caught(self):
+        component = CostComponent(
+            name="MISLABELLED_CONSTANT", cost_class="F1_EXPLICIT_FEES",
+            applicability="ALWAYS_APPLICABLE", functional=lambda delta, theta, params: 7.5,
+            formula_statement="7.5 -- constant, mislabelled as per-notional",
+            input_classes=("FROZEN_COST_PARAMETER",), shape=COST_SHAPE_PER_NOTIONAL)
+        problems = verify_shape_declarations(_single_component_recipe(component), self.theta,
+                                             self.params)
+        self.assertIn("MISLABELLED_CONSTANT: DECLARED_LINEAR_IN_EXPOSURE_BUT_CONSTANT", problems)
+
+    def test_green_recipe_evaluation_fails_closed_on_a_shape_contradiction(self):
+        """End to end: MEUERecipe.evaluate() itself refuses the mislabelled recipe."""
+        bad_component = CostComponent(
+            name="MISLABELLED_CONSTANT", cost_class="F1_EXPLICIT_FEES",
+            applicability="ALWAYS_APPLICABLE", functional=lambda delta, theta, params: 7.5,
+            formula_statement="7.5", input_classes=("FROZEN_COST_PARAMETER",),
+            shape=COST_SHAPE_PER_NOTIONAL)
+        recipe = fixtures.meue_recipe(k_forward=_single_component_recipe(bad_component))
+        result = recipe.evaluate(fixtures.theta_state())
+        self.assertEqual(result.recipe_state, RECIPE_INVALID)
+        self.assertTrue(any("DECLARED_LINEAR_IN_EXPOSURE_BUT_CONSTANT" in violation
+                            for violation in result.violations), result.violations)
 
 
 if __name__ == "__main__":

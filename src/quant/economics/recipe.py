@@ -24,7 +24,7 @@ from typing import Any
 
 from .coordinate import DeltaCoordinateBinding, evaluate_delta_coordinate
 from .fingerprint import recipe_hash
-from .frictions import KForwardRecipe, verify_dependence_declarations
+from .frictions import KForwardRecipe, verify_dependence_declarations, verify_shape_declarations
 from .margin import (FUNCTIONAL_FREEZE_CANDIDATE, FUNCTIONAL_FROZEN, MarginComponent,
                      MarginResult, m_economic)
 from .parameters import ParameterInventory
@@ -173,7 +173,8 @@ class MEUERecipe:
         params = dict(central.parameter_values)
         instance = PhiInstance(theta, self.k_forward, params, self.domain)
 
-        declaration_problems = verify_dependence_declarations(self.k_forward, theta, params)
+        declaration_problems = (verify_dependence_declarations(self.k_forward, theta, params)
+                               + verify_shape_declarations(self.k_forward, theta, params))
         if declaration_problems:
             return MEUEResult(RECIPE_INVALID, theta.theta_id, None, None, None, None,
                               theta.fingerprint(), tuple(sorted(set(declaration_problems))))

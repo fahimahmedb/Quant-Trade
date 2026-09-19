@@ -199,5 +199,57 @@ Files: `src/quant/economics/states.py`, `src/quant/economics/decision.py`,
 **Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
 → 603 passed (588 pre-existing + 15 new), 0 failures, 0 skipped.
 
+### Slice 2 — explicit cost-shape typology
+
+Files: `src/quant/economics/frictions.py`, `src/quant/economics/recipe.py`,
+`src/quant/economics/__init__.py`, `tests/economics_fixtures.py`,
+`tests/test_economic_v2_consolidation.py`.
+
+- Added an explicit `shape` declaration to `CostComponent`
+  (`COST_SHAPES`: `FIXED`, `PER_SHARE`, `PER_NOTIONAL`, `SPREAD_CROSSING`,
+  `SQRT_IMPACT`, `NONLINEAR_IMPACT`, `BORROW`, `FINANCING`,
+  `TURNOVER_REBALANCE`, `LATENCY_SLIPPAGE_REGIME` — exactly the mission's
+  named typology). Undeclared/unrecognised shape is a hard structural
+  violation, the same idiom every other `CostComponent` declaration already
+  uses.
+- Added `verify_shape_declarations()`, wired into `MEUERecipe.evaluate()`
+  alongside the pre-existing `verify_dependence_declarations()` (same call
+  site, same fail-closed-to-`RECIPE_INVALID` behaviour). It numerically
+  probes each component's functional against its declared shape by scaling
+  two independent axes — `expected_deployed_exposure` (`Q(theta)`, what
+  `gross_value` scales with) and `participation` (what the sqrt-impact shape
+  scales with) — because the recipe's cost functionals take a full `theta`,
+  not one size scalar, and (as discovered while building the fixture's own
+  `MARKET_IMPACT` component) a pure exposure-scaling probe cannot see a
+  sqrt-in-participation nonlinearity at all if participation is held fixed.
+  `FIXED`/linear/`SQRT_IMPACT` shapes get an exact ratio check;
+  `NONLINEAR_IMPACT`/`LATENCY_SLIPPAGE_REGIME` are checked only for not being
+  silently constant, since neither claims one closed-form ratio — no
+  numerical coefficient is invented for either.
+- This directly closes the Codex-identified weakness this pass was asked to
+  fix (self red team item 1 / `W1-SELF-001`): "cost amounts are supplied as
+  already-computed currency values; the engine does not prove their
+  functional dependence on order size." Claude Wave 1's functional-callable
+  design already made size-dependence *possible*; this slice makes a
+  mismatch between the declared shape and the actual functional
+  *mechanically detectable*, with 6 new tests proving both the positive case
+  (`fixtures.k_forward_recipe()` — all 4 real components pass) and 3
+  independent mislabelling cases (a scaling cost mislabelled `FIXED`, a
+  linear-in-participation cost mislabelled `SQRT_IMPACT`, a constant cost
+  mislabelled `PER_NOTIONAL`) plus one full end-to-end
+  `MEUERecipe.evaluate()` refusal.
+- Updated the shared `tests/economics_fixtures.py` (labelled, as its own
+  docstring already states, a test fixture with no scientific authority) to
+  declare the correct shape on its 4 existing cost components
+  (`PER_NOTIONAL` for the two Q-linear fee/exit charges, `SPREAD_CROSSING`
+  for the entry crossing charge, `SQRT_IMPACT` for the market-impact
+  charge — matching its own pre-existing `formula_statement` docstrings
+  exactly). This is the only change to shared Wave 1 test infrastructure in
+  this pass, made necessary by tightening a schema all four components
+  already satisfied; no existing assertion was altered.
+
+**Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
+→ 610 passed (588 Wave 1 + 22 this pass), 0 failures.
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_

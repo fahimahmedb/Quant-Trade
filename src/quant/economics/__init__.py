@@ -21,8 +21,9 @@ from .coordinate import (ALLOCATION_WEIGHTED_RATIO, DeltaCoordinateBinding,
 from .decision import (EconomicVerdict, EffectEstimate, PortfolioInteraction,
                        economic_gate)
 from .fingerprint import RecipeNotOutcomeBlind, canonical_json, recipe_hash
-from .frictions import (AuthorisedZero, CostComponent, CostInputUnavailable, KForwardRecipe,
-                        verify_dependence_declarations)
+from .frictions import (COST_SHAPES, AuthorisedZero, CostComponent, CostInputUnavailable,
+                        KForwardRecipe, verify_dependence_declarations,
+                        verify_shape_declarations)
 from .margin import MarginComponent, MarginResult, m_economic
 from .opening import OpeningExecutionModel
 from .parameters import (COST_CLASSES, Dependence, EconomicParameter, InventoryFrozen,
@@ -46,7 +47,8 @@ from .value import (AffineShortcutUnavailable, BEEEResult, EffectDomain, PhiInst
                     beee_affine, solve_beee)
 
 __all__ = ["ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "AuthorisedZero",
-    "BEEEResult", "COST_CLASSES", "CLUSTERING_UNIT_O4_RESOLVED", "CLUSTERING_UNIT_O4_UNRESOLVED",
+    "BEEEResult", "COST_CLASSES", "COST_SHAPES",
+    "CLUSTERING_UNIT_O4_RESOLVED", "CLUSTERING_UNIT_O4_UNRESOLVED",
     "CLUSTERING_UNIT_STATES", "CLUSTERING_UNIT_UNDECLARED",
     "CapacityLimit", "CapacityOutcome", "CausalEventLedger",
     "CostComponent", "CostInputUnavailable", "CostScenario", "DeltaCoordinateBinding",
@@ -65,6 +67,6 @@ __all__ = ["ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "Authorised
     "aggregate_allocation_weighted", "apply_capacity", "beee", "beee_affine", "canonical_json",
     "combine_lanes", "economic_gate", "evaluate_delta_coordinate",
     "implied_participation_ceiling", "m_economic", "partition_from", "recipe_hash",
-    "size_lane", "solve_beee", "verify_dependence_declarations",
+    "size_lane", "solve_beee", "verify_dependence_declarations", "verify_shape_declarations",
     "verify_research_cost_consistency", "verify_risk_approval"
 ]
