@@ -33,6 +33,8 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import json
+import platform
+import ssl
 from pathlib import Path
 from typing import Any
 
@@ -208,10 +210,24 @@ def canonical_json(payload: Any) -> str:
 
 
 def module_digests(root: Path) -> dict[str, str]:
-    """Hash the exact source of every acquisition-critical module."""
+    """Hash the runtime import closure conservatively.
+
+    The current service entry imports QuantSystem, whose module imports research,
+    desk, registry and learning packages at module load.  A change there can
+    prevent acquisition from starting even if it never calls a SEC function.
+    Until that topology is narrowed, name-based SEC membership is insufficient.
+    """
+    root = Path(root)
+    members = set(ACQUISITION_CRITICAL_MODULES)
+    for package in ("src/quant", "src/autonomous_research"):
+        base = root / package
+        if base.exists():
+            members.update(str(path.relative_to(root))
+                           for path in base.rglob("*.py")
+                           if "__pycache__" not in path.parts)
     digests: dict[str, str] = {}
-    for relative in sorted(ACQUISITION_CRITICAL_MODULES):
-        path = Path(root) / relative
+    for relative in sorted(members):
+        path = root / relative
         if not path.exists():
             raise FileNotFoundError(
                 f"acquisition-critical module missing from the fingerprint root: {relative}")
@@ -233,6 +249,11 @@ def build_manifest(policy: SecAccessPolicy, *, root: Path,
     return {
         "schema": FINGERPRINT_SCHEMA_VERSION,
         "code": module_digests(root),
+        "runtime": {
+            "python": platform.python_version(),
+            "python_implementation": platform.python_implementation(),
+            "openssl": ssl.OPENSSL_VERSION,
+        },
         "policy": canonical_policy(policy),
         "request_shape": {
             "host": SEC_HOST,
