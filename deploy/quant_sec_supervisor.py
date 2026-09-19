@@ -170,22 +170,29 @@ def _effective_environment(args: argparse.Namespace, root: Path,
                            managed: dict) -> tuple[dict, float]:
     from quant.dataplane.sec.policy import policy_from_environment
     environment = dict(os.environ)
+    # The authority command fingerprints the service it authorizes, not the
+    # shell process writing the token.
+    qualifying_target = bool(args.qualifying or args.authorize_deployment)
     poll_seconds = args.poll_seconds
     if poll_seconds is None:
         poll_seconds = policy_from_environment(environment).discovery_poll_seconds
     effective_unit = None
-    if args.qualifying:
-        if not managed["service_managed"]:
+    if qualifying_target:
+        if not managed["service_managed"] and not args.authorize_deployment:
             raise RuntimeError("SERVICE_MANAGER_UNATTESTED")
         effective_unit = _effective_systemd_definition(root)
+    for unsafe in (
+        "PYTHONPATH", "PYTHONHOME", "PYTHONSTARTUP", "PYTHONINSPECT",
+        "PYTHONUSERBASE",
+    ):
+        environment.pop(unsafe, None)
     environment.update({
-        "PYTHONPATH": str(root / "src"),
         "QUANT_SEC_SERVICE_POLL_SECONDS": str(poll_seconds),
         "QUANT_SEC_SERVICE_MAX_WAITS": (
             "" if args.max_waits is None else str(args.max_waits)),
         "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": str(RESTART_DELAY_SECONDS),
         "QUANT_SEC_SERVICE_RESTART_BURST_LIMIT": str(RESTART_BURST_LIMIT),
-        "QUANT_SEC_QUALIFYING_MODE": "1" if args.qualifying else "0",
+        "QUANT_SEC_QUALIFYING_MODE": "1" if qualifying_target else "0",
         "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": effective_unit or "UNATTESTED",
     })
     return environment, poll_seconds
@@ -252,7 +259,7 @@ def materialize_if_absent(root: Path, environment: dict) -> str | None:
     fingerprint_file = Path(root) / "var" / "sec" / "acquisition_fingerprint.json"
     active = current_fingerprint(root, environment)
     completed = subprocess.run(
-        [sys.executable, "-s", str(Path(root) / "scripts" / "quant.py"),
+        [sys.executable, "-I", str(Path(root) / "scripts" / "quant.py"),
          "sec-fingerprint", "--root", str(root)],
         env=environment, cwd=str(root), capture_output=True, text=True)
     if completed.returncode != 0:
@@ -292,7 +299,7 @@ def main() -> int:
     from quant.dataplane.sec.supervisor import host_boot_id, service_manager_provenance
 
     managed = service_manager_provenance(os.environ)
-    if args.qualifying:
+    if args.qualifying or args.authorize_deployment:
         refused = [name for name, value in (
             ("--poll-seconds", args.poll_seconds),
             ("--max-waits", args.max_waits),
@@ -408,7 +415,7 @@ def main() -> int:
                 write_state(supervisor_state_path(root), state)
 
                 command = [
-                    sys.executable, "-s", str(root / "scripts" / "quant.py"), "sec-serve",
+                    sys.executable, "-I", str(root / "scripts" / "quant.py"), "sec-serve",
                     "--root", str(root), "--poll-seconds", str(poll_seconds),
                 ]
                 if args.max_waits is not None:
