@@ -13,6 +13,8 @@ Form-4 cost coefficient, or authorises real capital.
 
 from .capacity import (CapacityLimit, CapacityOutcome, ExposureBudget, NEW_POLICY_VERSION,
                        apply_capacity)
+from .consistency import (ExecutionCostModel, ResearchExecutionConsistency,
+                          implied_participation_ceiling, verify_research_cost_consistency)
 from .coordinate import (ALLOCATION_WEIGHTED_RATIO, DeltaCoordinateBinding,
                          DeltaCoordinateVerdict, ReturnConvention,
                          evaluate_delta_coordinate)
@@ -22,27 +24,36 @@ from .fingerprint import RecipeNotOutcomeBlind, canonical_json, recipe_hash
 from .frictions import (AuthorisedZero, CostComponent, CostInputUnavailable, KForwardRecipe,
                         verify_dependence_declarations)
 from .margin import MarginComponent, MarginResult, m_economic
+from .opening import OpeningExecutionModel
 from .parameters import (COST_CLASSES, Dependence, EconomicParameter, InventoryFrozen,
                          ParameterInventory, SourceContract)
 from .partition import RiskClaim, RiskPartition, partition_from
 from .recipe import MEUERecipe, MEUEResult
 from .scenarios import CostScenario, JointScenarioSet
+from .sizing import (MarginSizingRule, RiskApproval, SizingPlan, SleeveTarget, combine_lanes,
+                     size_lane, verify_risk_approval)
 from .theta import (EvaluationSession, ThetaFeedbackViolation, ThetaSelectionRule,
                     ThetaState)
+from .timeline import (CausalEventLedger, EventTimeline, FrictionCharge, InformationInput,
+                       NetOutcome, aggregate_allocation_weighted)
 from .value import (AffineShortcutUnavailable, BEEEResult, EffectDomain, PhiInstance, beee,
                     beee_affine, solve_beee)
 
-__all__ = [
-    "ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "AuthorisedZero", "BEEEResult",
-    "COST_CLASSES", "CapacityLimit", "CapacityOutcome", "CostComponent",
-    "CostInputUnavailable", "CostScenario", "DeltaCoordinateBinding",
+__all__ = ["ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "AuthorisedZero",
+    "BEEEResult", "COST_CLASSES", "CapacityLimit", "CapacityOutcome", "CausalEventLedger",
+    "CostComponent", "CostInputUnavailable", "CostScenario", "DeltaCoordinateBinding",
     "DeltaCoordinateVerdict", "Dependence", "EconomicParameter", "EconomicVerdict",
-    "EffectDomain", "EffectEstimate", "EvaluationSession", "ExposureBudget",
+    "EffectDomain", "EffectEstimate", "EvaluationSession", "EventTimeline",
+    "ExecutionCostModel", "ExposureBudget", "FrictionCharge", "InformationInput",
     "InventoryFrozen", "JointScenarioSet", "KForwardRecipe", "MEUERecipe", "MEUEResult",
-    "MarginComponent", "MarginResult", "NEW_POLICY_VERSION", "ParameterInventory",
-    "PhiInstance", "PortfolioInteraction", "RecipeNotOutcomeBlind", "ReturnConvention",
-    "RiskClaim", "RiskPartition", "SourceContract", "ThetaFeedbackViolation",
-    "ThetaSelectionRule", "ThetaState", "apply_capacity", "beee", "beee_affine",
-    "canonical_json", "economic_gate", "evaluate_delta_coordinate", "m_economic",
-    "partition_from", "recipe_hash", "solve_beee", "verify_dependence_declarations",
+    "MarginComponent", "MarginResult", "MarginSizingRule", "NEW_POLICY_VERSION", "NetOutcome",
+    "OpeningExecutionModel", "ParameterInventory", "PhiInstance", "PortfolioInteraction",
+    "RecipeNotOutcomeBlind", "ResearchExecutionConsistency", "ReturnConvention",
+    "RiskApproval", "RiskClaim", "RiskPartition", "SizingPlan", "SleeveTarget",
+    "SourceContract", "ThetaFeedbackViolation", "ThetaSelectionRule", "ThetaState",
+    "aggregate_allocation_weighted", "apply_capacity", "beee", "beee_affine", "canonical_json",
+    "combine_lanes", "economic_gate", "evaluate_delta_coordinate",
+    "implied_participation_ceiling", "m_economic", "partition_from", "recipe_hash",
+    "size_lane", "solve_beee", "verify_dependence_declarations",
+    "verify_research_cost_consistency", "verify_risk_approval"
 ]

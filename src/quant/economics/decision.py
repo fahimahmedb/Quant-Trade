@@ -23,6 +23,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from .capacity import CapacityOutcome, NEW_POLICY_VERSION
+from .consistency import ResearchExecutionConsistency
 from .coordinate import ALLOCATION_WEIGHTED_RATIO
 from .recipe import MEUEResult
 from .states import CONTINUE, KILL, NO_TRADE, RECIPE_CONSUMABLE, RECIPE_PROVISIONAL
@@ -158,7 +159,8 @@ def _step(name: str, **detail: Any) -> dict[str, Any]:
 
 def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: ThetaState,
                   interaction: PortfolioInteraction,
-                  capacity: CapacityOutcome | None = None) -> EconomicVerdict:
+                  capacity: CapacityOutcome | None = None,
+                  consistency: ResearchExecutionConsistency | None = None) -> EconomicVerdict:
     """Run the chain once and return one verdict.
 
     Every blocking condition returns ``NO_TRADE`` rather than raising: a decision
@@ -172,6 +174,12 @@ def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: Thet
                        interval=[estimate.lower, estimate.upper],
                        evidence_label=estimate.evidence_label,
                        provenance=estimate.sample_provenance))
+
+    if consistency is not None:
+        # Research evidence that charges less friction than the executable path
+        # is evidence about a cheaper strategy than the one being decided on.
+        problems.extend(consistency.violations())
+        chain.append(_step("RESEARCH_EXECUTION_CONSISTENCY", **consistency.to_dict()))
 
     authority = (AUTHORITY_FORWARD_CONFIRMED
                  if estimate.evidence_label == EVIDENCE_FORWARD_CONFIRMATION
