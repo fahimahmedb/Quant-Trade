@@ -41,7 +41,8 @@ VERIFIED_TREES = ("src", "tests", "scripts", "deploy")
 
 SUITES = {
     "full_unit_suite": ["python3", "-m", "unittest", "discover", "-s", "tests"],
-    "sec_p0_lane_suite": ["python3", "-m", "unittest", "tests.test_sec_form4_capture"],
+    "sec_p0_lane_suite": ["python3", "-m", "unittest",
+                          "tests.test_sec_form4_capture", "tests.test_p0_adversarial"],
 }
 CHECKS = {
     "generated_schema_drift": ["python3", "scripts/generate_schemas.py", "--check"],
@@ -97,7 +98,11 @@ def lane_test_count() -> int:
     cannot be imported, which silently records 1. That is exactly the kind of
     fabricated-looking figure this artifact must not carry.
     """
-    loaded = unittest.TestLoader().loadTestsFromName("tests.test_sec_form4_capture")
+    loader = unittest.TestLoader()
+    loaded = unittest.TestSuite([
+        loader.loadTestsFromName("tests.test_sec_form4_capture"),
+        loader.loadTestsFromName("tests.test_p0_adversarial"),
+    ])
     count = loaded.countTestCases()
     if count <= 1:
         raise RuntimeError(
