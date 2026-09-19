@@ -12,7 +12,7 @@ from __future__ import annotations
 import math
 import statistics
 from statistics import NormalDist
-from typing import Any
+from typing import Any, Callable
 
 from ..dataplane.panel import PricePanel, Window
 from .signals import StrategySpec, should_rebalance, weights_for
@@ -25,7 +25,10 @@ TRADING_DAYS = 252
 
 
 def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
-                 cost_bps: float) -> list[dict[str, Any]]:
+                 cost_bps: float,
+                 weights_fn: Callable[[PricePanel, StrategySpec, str],
+                                      dict[str, float]] = weights_for
+                 ) -> list[dict[str, Any]]:
     """Run the strategy session by session inside ``window``.
 
     One causal timeline, identical to the desk's:
@@ -41,6 +44,11 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
 
     The panel is truncated at the window end before anything is computed, so a
     future bar is not merely unused, it is unreachable.
+
+    ``weights_fn`` lets a second signal family run through this same timeline and
+    the same turnover accounting instead of getting its own loop. Reimplementing
+    the rebalance and cost path per family is how two families end up being
+    compared on two different sets of rules.
     """
     visible = panel.restrict(end=window.end)
     dates = visible.aligned_dates(spec.universe)
@@ -55,7 +63,7 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
         if not (window.contains(date) and window.contains(entry_date)
                 and window.contains(exit_date)):
             continue
-        target = weights_for(visible, spec, date)
+        target = weights_fn(visible, spec, date)
         drift = sum(abs(target.get(symbol, 0.0) - held.get(symbol, 0.0))
                     for symbol in set(target) | set(held))
         sessions_held = None if last_rebalance is None else len(rows) - last_rebalance
