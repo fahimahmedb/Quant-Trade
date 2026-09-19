@@ -2424,10 +2424,14 @@ class AuditFalsePassTests(CollectorTestCase):
                       obligation_id: str | None = None) -> None:
         if obligation_id is None:
             used = {record.get("obligation_id") for record in self.lane.store.attempts()}
+            superseded = {record.get("supersedes_obligation_id")
+                          for record in self.lane.scheduler.all()
+                          if record.get("supersedes_obligation_id")}
             candidates = [record.get("obligation_id")
                           for record in self.lane.scheduler.all()
                           if record.get("obligation_id")
-                          and record.get("obligation_id") not in used]
+                          and record.get("obligation_id") not in used
+                          and record.get("obligation_id") not in superseded]
             obligation_id = candidates[0] if candidates else None
         intent_path = self.paths.sec / "request_intents.jsonl"
         append_jsonl(intent_path, {"event": "INTENT", "attempt_id": attempt_id,
