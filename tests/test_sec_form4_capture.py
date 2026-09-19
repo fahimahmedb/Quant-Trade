@@ -2648,122 +2648,76 @@ SERVICE_MANAGED_ENV = {"QUANT_SEC_SERVICE_MANAGER": "systemd",
 
 
 class LaunchProvenanceTests(SecCaptureTestCase):
-    """Blue finding 2. Provenance an operator cannot silently omit."""
+    """Replacement supervisors never infer an automatic cause."""
 
-    def test_absence_of_provenance_is_never_a_scheduled_start(self) -> None:
-        """The inversion: omission yields MANUAL_START, not SCHEDULED_START."""
+    def launcher(self):
         sys.path.insert(0, str(ROOT / "deploy"))
         import quant_sec_supervisor as launcher
-        # A human runs the command directly, passing nothing at all. Previously
-        # this produced SCHEDULED_START from an empty state.
-        cause = launcher.classify({}, "sha256:aaa", manual=False,
-                                  service_managed=False, invocation_id=None)
-        self.assertEqual(cause, MANUAL_START)
-        # Even with a prior clean state, an unmanaged launch stays manual.
-        cause = launcher.classify({"fingerprint": "sha256:aaa", "last_child_exit_code": 0},
-                                  "sha256:aaa", manual=False, service_managed=False,
-                                  invocation_id=None)
-        self.assertEqual(cause, MANUAL_START)
+        return launcher
 
-    def test_a_service_managed_first_launch_is_a_scheduled_start(self) -> None:
-        sys.path.insert(0, str(ROOT / "deploy"))
-        import quant_sec_supervisor as launcher
+    def test_absence_of_provenance_is_manual(self) -> None:
         self.assertEqual(
-            launcher.classify({}, "sha256:aaa", manual=False, service_managed=True,
-                              invocation_id="inv-1"),
-            SCHEDULED_START)
+            self.launcher().classify({}, "sha256:aaa", manual=False,
+                                     service_managed=False, invocation_id=None),
+            MANUAL_START)
 
-    def test_a_dead_supervisor_is_reported_as_a_supervisor_restart(self) -> None:
-        """Blue's case B: last_child_exit_code=null used to read as SCHEDULED_START."""
-        sys.path.insert(0, str(ROOT / "deploy"))
-        import quant_sec_supervisor as launcher
-        # Exactly the state the old supervisor left just before launching a child.
+    def test_service_managed_first_launch_still_needs_authority(self) -> None:
+        self.assertEqual(
+            self.launcher().classify({}, "sha256:aaa", manual=False,
+                                     service_managed=True, invocation_id="inv-1"),
+            MANUAL_START)
+
+    def test_replacement_after_dead_supervisor_is_manual_even_immediately(self) -> None:
         previous = {"fingerprint": "sha256:aaa", "last_child_exit_code": None,
                     "supervisor_running": True, "supervisor_invocation_id": "inv-1",
                     "host_boot_id": "boot-A",
                     "boot_at_utc": self.timebase.now().isoformat()}
-        cause = launcher.classify(previous, "sha256:aaa", manual=False,
-                                  service_managed=True, invocation_id="inv-2",
-                                  boot_id="boot-A", now=self.timebase.now())
-        self.assertEqual(cause, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
-        self.assertNotEqual(cause, SCHEDULED_START)
-        # A clean prior exit under the same conditions is a scheduled start.
-        # A clean prior exit and the same host boot is an operator, not a schedule.
-        clean = dict(previous, supervisor_running=False, last_child_exit_code=0,
-                     last_child_exit_at_utc=self.timebase.now().isoformat())
-        self.assertEqual(launcher.classify(clean, "sha256:aaa", manual=False,
-                                           service_managed=True, invocation_id="inv-2",
-                                           boot_id="boot-A", now=self.timebase.now()),
-                         MANUAL_START)
+        cause = self.launcher().classify(
+            previous, "sha256:aaa", manual=False, service_managed=True,
+            invocation_id="inv-2", boot_id="boot-A", now=self.timebase.now())
+        self.assertEqual(cause, MANUAL_START)
 
-    def test_child_failure_and_deployment_remain_distinguishable(self) -> None:
-        sys.path.insert(0, str(ROOT / "deploy"))
-        import quant_sec_supervisor as launcher
-        now = self.timebase.now()
-        child_failed = {"fingerprint": "sha256:aaa", "last_child_exit_code": 1,
-                        "supervisor_running": False, "supervisor_invocation_id": "inv-1",
-                        "host_boot_id": "boot-A",
-                        "last_child_exit_at_utc": now.isoformat()}
-        self.assertEqual(launcher.classify(child_failed, "sha256:aaa", manual=False,
-                                           service_managed=True, invocation_id="inv-1",
-                                           boot_id="boot-A", now=now),
-                         AUTOMATIC_RESTART_AFTER_FAILURE)
-        redeployed = {"fingerprint": "sha256:old", "last_child_exit_code": 0,
-                      "supervisor_running": False, "supervisor_invocation_id": "inv-1",
-                      "host_boot_id": "boot-A",
-                      "last_child_exit_at_utc": now.isoformat()}
-        self.assertEqual(launcher.classify(redeployed, "sha256:new", manual=False,
-                                           service_managed=True, invocation_id="inv-2",
-                                           boot_id="boot-A", now=now),
-                         DEPLOYMENT_RESTART)
+    def test_only_same_supervisor_witness_can_attest_child_restart(self) -> None:
+        cause = self.launcher().classify(
+            {}, "sha256:aaa", manual=False, service_managed=True,
+            invocation_id="inv-1", witnessed_child_failure=True)
+        self.assertEqual(cause, AUTOMATIC_RESTART_AFTER_FAILURE)
 
-    def test_all_five_lifecycle_causes_are_reachable_and_classified(self) -> None:
-        self.assertEqual(set(LIFECYCLE_CAUSES), {
-            SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE,
-            AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, DEPLOYMENT_RESTART,
-            MANUAL_START})
-        # Only an operator intervention invalidates the window.
-        self.assertEqual(INVALIDATING_CAUSES, frozenset({MANUAL_START}))
-        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, AUTOMATIC_CAUSES)
+    def test_deployment_requires_explicit_authority(self) -> None:
+        changed = {"fingerprint": "sha256:old"}
+        self.assertEqual(
+            self.launcher().classify(
+                changed, "sha256:new", manual=False, service_managed=True,
+                invocation_id="inv-2"),
+            MANUAL_START)
+        self.assertEqual(
+            self.launcher().classify(
+                changed, "sha256:new", manual=False, service_managed=True,
+                invocation_id="inv-2", deployment_authorized=True),
+            DEPLOYMENT_RESTART)
+
+    def test_legacy_replacement_supervisor_cause_is_invalidating(self) -> None:
+        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, INVALIDATING_CAUSES)
+        self.assertNotIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, AUTOMATIC_CAUSES)
 
     def test_a_launch_without_a_service_manager_is_not_qualifying(self) -> None:
         provenance = lifecycle_provenance({
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
             "QUANT_SEC_BOOT_ID": "boot-1",
-            "QUANT_SEC_QUALIFYING_MODE": "1"})
-        self.assertFalse(provenance["service_managed"])
-        self.assertFalse(provenance["qualifying_service_mode"],
-                         "claiming qualifying mode without a manager must not work")
-
-    def test_a_service_managed_launch_can_be_qualifying(self) -> None:
-        provenance = lifecycle_provenance({
-            **SERVICE_MANAGED_ENV,
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
-            "QUANT_SEC_BOOT_ID": "boot-1",
-            "QUANT_SEC_QUALIFYING_MODE": "1"})
-        self.assertTrue(provenance["service_managed"])
-        self.assertTrue(provenance["qualifying_service_mode"])
-        self.assertEqual(provenance["service_invocation_id"],
-                         SERVICE_MANAGED_ENV["INVOCATION_ID"])
-
-    def test_an_unrecognised_service_manager_is_not_accepted(self) -> None:
-        provenance = lifecycle_provenance({
-            "QUANT_SEC_SERVICE_MANAGER": "my-shell-script",
-            "INVOCATION_ID": "whatever",
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
             "QUANT_SEC_QUALIFYING_MODE": "1"})
         self.assertFalse(provenance["service_managed"])
         self.assertFalse(provenance["qualifying_service_mode"])
 
-    def test_readiness_blocks_a_launch_without_external_provenance(self) -> None:
-        collector = SecForm4Collector(self.paths, policy=self.policy(),
-                                      transport=FakeTransport(lambda p, c: None),
-                                      timebase=self.timebase, root=ROOT, environ={})
-        readiness = collector.t0_readiness()
-        self.assertFalse(readiness["instrumentation_ready"])
-        for blocker in ("LIFECYCLE_CAUSE_UNATTESTED", "LAUNCH_NOT_SERVICE_MANAGED",
-                        "NOT_QUALIFYING_SERVICE_MODE"):
-            self.assertIn(blocker, readiness["blockers"])
+    def test_an_authorized_service_managed_launch_can_be_qualifying(self) -> None:
+        provenance = lifecycle_provenance({
+            **SERVICE_MANAGED_ENV,
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
+            "QUANT_SEC_BOOT_ID": "boot-1",
+            "QUANT_SEC_QUALIFYING_MODE": "1",
+            "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "nonce-1"})
+        self.assertTrue(provenance["service_managed"])
+        self.assertTrue(provenance["qualifying_service_mode"])
+        self.assertEqual(provenance["launch_authority_nonce"], "nonce-1")
 
     def test_readiness_blocks_a_manual_start(self) -> None:
         collector = SecForm4Collector(
@@ -2794,24 +2748,23 @@ class QualifyingModeGateTests(SecCaptureTestCase):
         result = self.run_launcher("--qualifying", "--poll-seconds", "5",
                                    environ=SERVICE_MANAGED_ENV)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("--poll-seconds", result.stdout)
-        self.assertIn("overrides not permitted", result.stdout)
+        self.assertIn("QUALIFYING_OVERRIDE_REFUSED", result.stdout)
 
     def test_qualifying_mode_refuses_a_max_waits_override(self) -> None:
         result = self.run_launcher("--qualifying", "--max-waits", "2",
                                    environ=SERVICE_MANAGED_ENV)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("--max-waits", result.stdout)
+        self.assertIn("QUALIFYING_OVERRIDE_REFUSED", result.stdout)
 
     def test_qualifying_mode_refuses_a_manual_start(self) -> None:
         result = self.run_launcher("--qualifying", "--manual", environ=SERVICE_MANAGED_ENV)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("manual start cannot be the qualifying", result.stdout)
+        self.assertIn("QUALIFYING_MANUAL_OVERRIDE_REFUSED", result.stdout)
 
     def test_qualifying_mode_refuses_a_launch_without_a_service_manager(self) -> None:
         result = self.run_launcher("--qualifying")
         self.assertEqual(result.returncode, 2)
-        self.assertIn("no recognised service manager provenance", result.stdout)
+        self.assertIn("SERVICE_MANAGER_UNATTESTED", result.stdout)
 
     def test_effective_runtime_configuration_is_bound_into_the_fingerprint(self) -> None:
         """Two services from identical code with different cadence must differ."""
@@ -3224,85 +3177,51 @@ class AuditAdversarialExtraTests(AuditFalsePassTests):
 # ---------------------------------------------------------------------------
 
 class OperatorRestartTests(SecCaptureTestCase):
-    """`systemctl restart` must not be able to hide behind a non-invalidating cause.
-
-    INVOCATION_ID proves systemd started the service; it says nothing about why.
-    An automatic action must therefore be positively demonstrated, and the only
-    positive reasons a cleanly stopped service can start are a host boot and the
-    first start of a deployment.
-    """
+    """No boot/timing/fingerprint heuristic upgrades a replacement supervisor."""
 
     def launcher(self):
         sys.path.insert(0, str(ROOT / "deploy"))
         import quant_sec_supervisor as module
         return module
 
-    def state(self, **overrides):
-        base = {"fingerprint": "sha256:fp", "last_child_exit_code": 0,
-                "supervisor_running": False, "supervisor_invocation_id": "inv-1",
-                "host_boot_id": "boot-A",
-                "last_child_exit_at_utc": self.timebase.now().isoformat()}
-        base.update(overrides)
-        return base
-
     def classify(self, previous, **kwargs):
-        defaults = {"manual": False, "service_managed": True, "invocation_id": "inv-2",
-                    "boot_id": "boot-A", "now": self.timebase.now()}
+        defaults = {"manual": False, "service_managed": True,
+                    "invocation_id": "inv-2", "boot_id": "boot-A",
+                    "now": self.timebase.now()}
         defaults.update(kwargs)
         return self.launcher().classify(previous, "sha256:fp", **defaults)
 
-    def test_an_operator_systemctl_restart_is_a_manual_start(self) -> None:
-        """The exact hole: systemd launched it, but an operator asked."""
-        self.assertEqual(self.classify(self.state()), MANUAL_START)
+    def test_systemctl_restart_is_manual(self) -> None:
+        self.assertEqual(self.classify({"fingerprint": "sha256:fp"}), MANUAL_START)
 
-    def test_a_host_reboot_is_a_scheduled_start(self) -> None:
-        """A boot-time launch is positively automatic: the kernel boot id moved."""
-        self.assertEqual(self.classify(self.state(), boot_id="boot-B"), SCHEDULED_START)
+    def test_host_reboot_does_not_prove_automaticity(self) -> None:
+        previous = {"fingerprint": "sha256:fp", "host_boot_id": "boot-A"}
+        self.assertEqual(self.classify(previous, boot_id="boot-B"), MANUAL_START)
 
-    def test_the_first_start_of_a_deployment_is_a_scheduled_start(self) -> None:
-        """Not a restart after a stop or failure, so not an intervention."""
-        self.assertEqual(self.classify({}), SCHEDULED_START)
-
-    def test_an_automatic_restart_is_only_automatic_while_systemd_retries(self) -> None:
-        """Past the restart window systemd has given up, so a start is an operator."""
-        failed = self.state(last_child_exit_code=1)
-        self.assertEqual(self.classify(failed), AUTOMATIC_RESTART_AFTER_FAILURE)
-        # The same failed state, revisited long afterwards.
-        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
-        self.assertEqual(self.classify(failed, now=self.timebase.now()), MANUAL_START)
-
-    def test_a_dead_supervisor_outside_the_window_is_an_operator_restart(self) -> None:
-        dead = self.state(supervisor_running=True, last_child_exit_code=None,
-                          boot_at_utc=self.timebase.now().isoformat())
-        self.assertEqual(self.classify(dead),
-                         AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
-        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
-        self.assertEqual(self.classify(dead, now=self.timebase.now()), MANUAL_START)
-
-    def test_a_malformed_state_without_timing_falls_to_manual(self) -> None:
-        """No exit timestamp means no demonstration, so the safe answer wins."""
+    def test_fast_restart_after_failure_is_still_manual_for_new_supervisor(self) -> None:
         failed = {"fingerprint": "sha256:fp", "last_child_exit_code": 1,
-                  "host_boot_id": "boot-A"}
+                  "last_child_exit_at_utc": self.timebase.now().isoformat()}
         self.assertEqual(self.classify(failed), MANUAL_START)
 
-    def test_a_deployment_still_wins_over_an_operator_restart(self) -> None:
-        """A changed fingerprint is a deployment whoever typed the command."""
+    def test_fingerprint_change_alone_is_not_deployment_authority(self) -> None:
+        previous = {"fingerprint": "sha256:old"}
         self.assertEqual(
-            self.launcher().classify(self.state(fingerprint="sha256:old"), "sha256:new",
-                                     manual=False, service_managed=True,
-                                     invocation_id="inv-2", boot_id="boot-A",
-                                     now=self.timebase.now()),
+            self.launcher().classify(previous, "sha256:new", manual=False,
+                                     service_managed=True, invocation_id="inv-2"),
+            MANUAL_START)
+
+    def test_explicit_deployment_authority_is_distinct(self) -> None:
+        self.assertEqual(
+            self.launcher().classify({}, "sha256:fp", manual=False,
+                                     service_managed=True, invocation_id="inv-1",
+                                     deployment_authorized=True),
             DEPLOYMENT_RESTART)
 
     def test_the_host_boot_id_is_read_from_the_kernel(self) -> None:
         from quant.dataplane.sec.supervisor import host_boot_id
-        self.assertTrue(host_boot_id(), "this host should expose a boot id")
+        self.assertTrue(host_boot_id())
         self.assertIsNone(host_boot_id("/nonexistent/boot_id"))
 
-
-# ---------------------------------------------------------------------------
-# The materialized fingerprint must be the active one (Blue follow-up 2)
-# ---------------------------------------------------------------------------
 
 class MaterializedFingerprintTests(CollectorTestCase):
     """Existence was never the question.
@@ -3361,17 +3280,14 @@ class MaterializedFingerprintTests(CollectorTestCase):
         self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
         self.assertFalse(self.qualifying().telemetry()["fingerprint_matches_materialized"])
 
-    def test_rematerializing_after_a_change_clears_the_blocker(self) -> None:
+    def test_rematerializing_after_a_change_refuses_silent_repair(self) -> None:
         collector = self.qualifying()
         stale = {"acquisition_critical_fingerprint": "sha256:" + "2" * 64}
         self.paths.ensure_sec()
         self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
-        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
-                      collector.t0_readiness()["blockers"])
-        collector.materialize_fingerprint()
-        self.assertNotIn("FINGERPRINT_MATERIALIZED_MISMATCH",
-                         collector.t0_readiness()["blockers"])
-        self.assertTrue(collector.t0_readiness()["fingerprint_matches_materialized"])
+        self.assertFalse(collector.t0_readiness()["instrumentation_ready"])
+        with self.assertRaises(SecStorageFailure):
+            collector.materialize_fingerprint()
 
     def test_a_changed_acquisition_module_makes_the_materialized_fingerprint_stale(self) -> None:
         """End to end: the check catches exactly the visibility.py case."""
