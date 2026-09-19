@@ -571,6 +571,7 @@ class SecForm4Collector:
             "event": "INTENT", "attempt_id": attempt_id,
             "obligation_id": obligation_id, "endpoint_class": endpoint_class,
             "recorded_at_utc": self.timebase.now_iso(),
+            "acquisition_critical_fingerprint": self.fingerprint,
         })
         locator_digest = self.store.record_locator(
             locator=url, source_identity=source_identity, endpoint_class=endpoint_class,

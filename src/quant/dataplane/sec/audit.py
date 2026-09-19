@@ -185,10 +185,10 @@ def _mark_pending(obligations: dict[str, Obligation], now: datetime,
             obligation.status = PENDING
 
 
-def _request_accounting(collector: Any, attempts: list[dict[str, Any]],
+def _request_accounting(attempts: list[dict[str, Any]],
+                        reservations: list[dict[str, Any]],
+                        intents: list[dict[str, Any]],
                         findings: list[str]) -> None:
-    reservations = _read(collector.paths.sec_budget_reservations)
-    intents = _read(collector.paths.sec_request_intents)
     _unique(reservations, "attempt_id", "DUPLICATE_BUDGET_RESERVATION", findings)
     _unique(attempts, "attempt_id", "DUPLICATE_ATTEMPT_ID", findings)
 
@@ -218,7 +218,7 @@ def _request_accounting(collector: Any, attempts: list[dict[str, Any]],
             findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
         if aid not in reservation_ids:
             findings.append("ATTEMPT_WITHOUT_BUDGET_RESERVATION")
-        if aid not in attempt_ids:
+        if "SEND_AUTHORIZED" in events and aid not in attempt_ids:
             findings.append("SEND_WITHOUT_DURABLE_ATTEMPT")
 
     for aid in reservation_ids:
@@ -242,9 +242,26 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
         moment = (now or collector.timebase.now()).astimezone(timezone.utc)
         if moment.tzinfo is None:
             raise ValueError("audit time must be aware")
-        transitions = _read(collector.paths.sec_scheduler)
-        attempts = collector.store.attempts()
-        lifecycle = _read(collector.paths.sec_lifecycle)
+        active_fingerprint = collector.fingerprint
+        all_transitions = _read(collector.paths.sec_scheduler)
+        all_lifecycle = _read(collector.paths.sec_lifecycle)
+        all_intents = _read(collector.paths.sec_request_intents)
+        all_reservations = _read(collector.paths.sec_budget_reservations)
+        all_attempts = collector.store.attempts()
+
+        # A new acquisition-critical fingerprint begins a new prospective epoch.
+        # Historical bytes/journals remain immutable, but cannot certify or poison
+        # the current pre-t0 window.
+        transitions = [row for row in all_transitions
+                       if row.get("acquisition_critical_fingerprint") == active_fingerprint]
+        lifecycle = [row for row in all_lifecycle
+                     if row.get("acquisition_critical_fingerprint") == active_fingerprint]
+        intents = [row for row in all_intents
+                   if row.get("acquisition_critical_fingerprint") == active_fingerprint]
+        scoped_ids = {row.get("attempt_id") for row in intents if row.get("attempt_id")}
+        attempts = [row for row in all_attempts if row.get("attempt_id") in scoped_ids]
+        reservations = [row for row in all_reservations
+                        if row.get("attempt_id") in scoped_ids]
         policy = getattr(collector, "policy", None)
         tolerance = (tolerance_seconds if tolerance_seconds is not None else
                      (policy.discovery_poll_seconds * DUE_TOLERANCE_MULTIPLIER
@@ -282,7 +299,7 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
         if any(row.get("lifecycle_cause") in INVALIDATING_CAUSES for row in lifecycle):
             findings.append("INVALIDATING_INTERVENTION")
 
-        _request_accounting(collector, attempts, findings)
+        _request_accounting(attempts, reservations, intents, findings)
         findings.extend(collector._state_proof_findings())
         if collector.state.coverage_state != "COMPLETE" or collector.state.open_gaps:
             findings.append("COVERAGE_NOT_COMPLETE")

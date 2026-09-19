@@ -21,6 +21,8 @@ Two properties matter more than elegance here:
 from __future__ import annotations
 
 import fcntl
+import hashlib
+import json
 import os
 import random
 import uuid
@@ -30,7 +32,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterator
 
-from ...state import append_jsonl, parse_ts, read_json, write_json
+from ...state import append_jsonl, parse_ts, read_json, read_jsonl, write_json
 from .policy import SecAccessPolicy
 from .timebase import Timebase
 
@@ -76,13 +78,41 @@ class SecTrafficBudget:
         self.lock_path = self.path.with_suffix(".lock")
 
     # --- durable state -----------------------------------------------------
+    @property
+    def commit_path(self) -> Path:
+        return self.path.parent / "budget_state_commits.jsonl"
+
+    @staticmethod
+    def _digest(payload: dict[str, Any]) -> str:
+        rendered = json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                              allow_nan=False).encode("utf-8")
+        return "sha256:" + hashlib.sha256(rendered).hexdigest()
+
     def load(self) -> BudgetState:
-        payload = read_json(self.path) or {}
-        known = {field: payload[field] for field in BudgetState().to_dict() if field in payload}
+        payload = read_json(self.path)
+        commits = list(read_jsonl(self.commit_path))
+        if payload is None:
+            if commits:
+                raise RuntimeError("BUDGET_STATE_MISSING_WITH_COMMITS")
+            return BudgetState()
+        if not isinstance(payload, dict):
+            raise RuntimeError("BUDGET_STATE_INVALID")
+        expected = set(BudgetState().to_dict())
+        if commits:
+            if set(payload) != expected:
+                raise RuntimeError("BUDGET_STATE_SCHEMA_INVALID")
+            if commits[-1].get("state_digest") != self._digest(payload):
+                raise RuntimeError("BUDGET_STATE_ROLLBACK_OR_UNCOMMITTED")
+        known = {field: payload[field] for field in expected if field in payload}
         return BudgetState(**known)
 
     def save(self, state: BudgetState) -> None:
-        write_json(self.path, state.to_dict())
+        payload = state.to_dict()
+        write_json(self.path, payload)
+        append_jsonl(self.commit_path, {
+            "state_digest": self._digest(payload),
+            "recorded_at_utc": self.timebase.now_iso(),
+        })
 
     @contextmanager
     def _exclusive(self) -> Iterator[None]:
