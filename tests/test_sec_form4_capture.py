@@ -3399,3 +3399,275 @@ class MaterializedFingerprintTests(CollectorTestCase):
             self.assertNotEqual(moved.fingerprint, collector.fingerprint)
             self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
                           moved.t0_readiness()["blockers"])
+
+
+# ---------------------------------------------------------------------------
+# Astra deep adversarial pre-t0 campaign
+# ---------------------------------------------------------------------------
+
+class AstraProductionPathTests(CollectorTestCase):
+    """Falsification regressions discovered after Blue's third PR #17 review."""
+
+    def test_materialized_manifest_body_cannot_lie_while_digest_claim_stays_old(self) -> None:
+        collector = self.collector(self.fixture_router())
+        payload = collector.materialize_fingerprint()
+        payload["manifest"]["policy"]["discovery_poll_seconds"] = 86400
+        self.paths.sec_fingerprint.write_text(json.dumps(payload), encoding="utf-8")
+        self.assertEqual(collector.materialized_fingerprint(), "INVALID")
+        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                      collector.t0_readiness()["blockers"])
+
+    def test_materialized_mismatch_is_not_silently_repaired(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.materialize_fingerprint()
+        payload = json.loads(self.paths.sec_fingerprint.read_text(encoding="utf-8"))
+        payload["acquisition_critical_fingerprint"] = "sha256:" + "0" * 64
+        self.paths.sec_fingerprint.write_text(json.dumps(payload), encoding="utf-8")
+        before = self.paths.sec_fingerprint.read_bytes()
+        with self.assertRaises(SecStorageFailure):
+            collector.materialize_fingerprint()
+        self.assertEqual(self.paths.sec_fingerprint.read_bytes(), before)
+
+    def test_shared_acquisition_and_proof_modules_are_fingerprinted(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT)
+        for path in (
+            "src/quant/state.py", "src/quant/paths.py", "src/quant/events.py",
+            "src/quant/dataplane/sec/version.py", "src/quant/status/render.py",
+            "src/quant/status/brief.py", "scripts/verify_p0.py",
+            "scripts/status_artifacts.py",
+        ):
+            with self.subTest(path=path):
+                self.assertIn(path, manifest["code"])
+
+    def test_torn_sec_journal_is_evidence_not_silently_repaired(self) -> None:
+        path = self.paths.sec / "attempts.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b'{"attempt_id":"crash-boundary"')
+        with self.assertRaises(ValueError):
+            list(read_jsonl(path))
+        with self.assertRaises(ValueError):
+            append_jsonl(path, {"attempt_id": "later"})
+        self.assertEqual(path.read_bytes(), b'{"attempt_id":"crash-boundary"')
+
+    def test_acknowledged_envelope_cannot_outlive_its_raw_object(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        collector.drain(max_items=1)
+        envelope = collector.store.envelopes()[0]
+        collector.store.object_path(envelope["raw_object_sha256"]).unlink()
+        with self.assertRaises(SecStorageFailure):
+            collector.store.committed_identities()
+
+    def test_future_attempt_timestamp_is_not_live(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.state.last_attempt_at_utc = "2099-01-01T00:00:00+00:00"
+        self.assertEqual(collector.liveness(), STALE)
+
+    def test_orphan_send_authorization_makes_audit_fail_closed(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
+            "QUANT_SEC_BOOT_ID": "boot-astra",
+        })
+        collector.record_service_start()
+        collector.poll()
+        append_jsonl(self.paths.sec_request_intents, {
+            "event": "INTENT", "attempt_id": "orphan", "obligation_id": "unknown",
+            "endpoint_class": "discovery", "recorded_at_utc": self.timebase.now_iso(),
+        })
+        append_jsonl(self.paths.sec_request_intents, {
+            "event": "SEND_AUTHORIZED", "attempt_id": "orphan",
+            "obligation_id": "unknown", "recorded_at_utc": self.timebase.now_iso(),
+        })
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("REQUEST_ACCOUNTING_INCOMPLETE", report["findings"])
+
+    def test_duplicate_attempt_id_cannot_satisfy_two_obligations(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
+            "QUANT_SEC_BOOT_ID": "boot-astra",
+        })
+        collector.record_service_start()
+        collector.poll()
+        original = collector.store.attempts()[-1]
+        append_jsonl(self.paths.sec_attempts, original)
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("DUPLICATE_ATTEMPT_ID", report["findings"])
+
+    def test_discovery_due_has_priority_over_a_large_drain_backlog(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        self.assertTrue(collector.has_pending_work())
+        self.timebase.advance(collector.policy.discovery_poll_seconds + 1)
+        self.assertTrue(collector.poll_due())
+        # The invariant is pinned at the actual Control Plane source: poll_due()
+        # is evaluated before has_pending_work(), so backlog cannot starve discovery.
+        source = (ROOT / "src/quant/clock.py").read_text(encoding="utf-8")
+        method = source[source.index("def _capture_step"):
+                        source.index("def _idle", source.index("def _capture_step"))]
+        self.assertLess(method.index("if collector.poll_due()"),
+                        method.index("if collector.has_pending_work()"))
+
+
+class AstraRealConnectionTests(CollectorTestCase):
+    """Instrument the real http.client path; FakeTransport cannot prove send count."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        import socketserver
+        import threading
+
+        owner = self
+        self.wire_requests: list[bytes] = []
+        self.reply = (b"HTTP/1.1 200 OK\r\nContent-Length: 2\r\n"
+                      b"Connection: close\r\n\r\nOK")
+        self.reply_delay = 0.0
+
+        class Server(socketserver.ThreadingTCPServer):
+            allow_reuse_address = True
+            daemon_threads = True
+
+        class Handler(socketserver.BaseRequestHandler):
+            def handle(inner) -> None:
+                import time
+                data = b""
+                while b"\r\n\r\n" not in data:
+                    part = inner.request.recv(4096)
+                    if not part:
+                        return
+                    data += part
+                owner.wire_requests.append(data)
+                if owner.reply_delay:
+                    time.sleep(owner.reply_delay)
+                try:
+                    inner.request.sendall(owner.reply)
+                except OSError:
+                    pass
+
+        self.server = Server(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(self.server.shutdown)
+        self.addCleanup(self.server.server_close)
+
+    def real_collector(self, **overrides):
+        import http.client
+        policy = self.policy(**overrides)
+        transport = SecHttpTransport(policy)
+
+        def connect():
+            if transport._connection is None:
+                transport._connection = http.client.HTTPConnection(
+                    "127.0.0.1", self.server.server_address[1],
+                    timeout=policy.connect_timeout_seconds)
+            return transport._connection
+
+        transport._connect = connect
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, root=ROOT)
+        self.addCleanup(transport.close)
+        return collector, transport
+
+    def test_one_budget_reservation_is_one_real_send_is_one_attempt_id(self) -> None:
+        collector, transport = self.real_collector()
+        result = collector._request("DISCOVERY", "/fixture",
+                                    "https://www.sec.gov/fixture")
+        self.assertTrue(result.ok)
+        self.assertEqual(len(self.wire_requests), 1)
+        reservations = list(read_jsonl(self.paths.sec_budget_reservations))
+        attempts = collector.store.attempts()
+        self.assertEqual(len(reservations), 1)
+        self.assertEqual(len(attempts), 1)
+        self.assertEqual(reservations[0]["attempt_id"], attempts[0]["attempt_id"])
+        self.assertEqual(transport.requests_sent, 1)
+        self.assertIn(b"User-Agent:", self.wire_requests[0])
+
+    def test_truncated_response_never_hidden_retries(self) -> None:
+        self.reply = (b"HTTP/1.1 200 OK\r\nContent-Length: 100\r\n"
+                      b"Connection: close\r\n\r\nshort")
+        collector, transport = self.real_collector()
+        result = collector._request("DISCOVERY", "/fixture",
+                                    "https://www.sec.gov/fixture")
+        self.assertFalse(result.ok)
+        self.assertEqual(len(self.wire_requests), 1)
+        self.assertEqual(transport.requests_sent, 1)
+        self.assertEqual(len(collector.store.attempts()), 1)
+
+    def test_response_header_stall_is_bounded_and_counted_once(self) -> None:
+        import time
+        self.reply_delay = 0.30
+        collector, transport = self.real_collector(
+            connect_timeout_seconds=0.10, read_timeout_seconds=0.10,
+            total_deadline_seconds=0.15)
+        started = time.monotonic()
+        result = collector._request("DISCOVERY", "/fixture",
+                                    "https://www.sec.gov/fixture")
+        elapsed = time.monotonic() - started
+        self.assertFalse(result.ok)
+        self.assertLess(elapsed, 0.60)
+        self.assertEqual(transport.requests_sent, 1)
+        self.assertEqual(len(self.wire_requests), 1)
+
+
+class AstraSupervisorMainPathTests(SecCaptureTestCase):
+    def test_persisted_host_boot_id_is_never_the_child_boot_id(self) -> None:
+        import importlib.util
+        import tempfile
+        from unittest.mock import patch
+
+        spec = importlib.util.spec_from_file_location(
+            "astra_quant_sec_supervisor", ROOT / "deploy/quant_sec_supervisor.py")
+        launcher = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(launcher)
+
+        class Child:
+            returncode = 0
+            pid = 987654
+            def poll(self):
+                return self.returncode
+            def wait(self, timeout=None):
+                return self.returncode
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "scripts").mkdir()
+            (root / "scripts/quant.py").write_text("raise SystemExit(0)\n",
+                                                   encoding="utf-8")
+            argv = ["quant_sec_supervisor.py", "--root", str(root),
+                    "--poll-seconds", "60", "--max-restarts", "1"]
+            env = {USER_AGENT_ENV: USER_AGENT}
+            with patch.dict(os.environ, env, clear=True), \\
+                 patch.object(sys, "argv", argv), \\
+                 patch.object(launcher, "current_fingerprint", return_value="sha256:fp"), \\
+                 patch.object(launcher, "materialize_if_absent", return_value="sha256:fp"), \\
+                 patch.object(launcher.subprocess, "Popen", return_value=Child()):
+                self.assertEqual(launcher.main(), 0)
+            state = launcher.read_state(launcher.supervisor_state_path(root))
+            from quant.dataplane.sec.supervisor import host_boot_id
+            self.assertEqual(state["host_boot_id"], host_boot_id())
+            self.assertNotEqual(state["host_boot_id"], state["child_boot_id"])
+
+    def test_replacement_supervisor_never_infers_automatic_from_heuristics(self) -> None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "astra_quant_sec_supervisor_classify", ROOT / "deploy/quant_sec_supervisor.py")
+        launcher = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(launcher)
+        scenarios = (
+            {},
+            {"host_boot_id": "old"},
+            {"last_child_exit_code": 1,
+             "last_child_exit_at_utc": "2099-01-01T00:00:00+00:00"},
+            {"supervisor_running": True, "supervisor_invocation_id": "old",
+             "boot_at_utc": "2099-01-01T00:00:00+00:00"},
+        )
+        for previous in scenarios:
+            with self.subTest(previous=previous):
+                self.assertEqual(
+                    launcher.classify(previous, "fp", manual=False,
+                                      service_managed=True, invocation_id="new",
+                                      boot_id="different"),
+                    MANUAL_START)
