@@ -1881,7 +1881,13 @@ class FingerprintTests(SecCaptureTestCase):
                          "every canonically included field needs a mutation case")
         for name, value in mutations.items():
             with self.subTest(field=name):
-                self.assertNotEqual(self.fingerprint(**{name: value}), baseline)
+                if name in {"max_concurrency", "allow_burst"}:
+                    # Those alternative policies are no longer implementable:
+                    # P0 structurally supports one concurrent request/no burst.
+                    with self.assertRaises(SecPolicyNotConfigured):
+                        self.policy(**{name: value})
+                else:
+                    self.assertNotEqual(self.fingerprint(**{name: value}), baseline)
 
     def test_changing_the_declared_sec_identity_changes_the_fingerprint(self) -> None:
         other = SecAccessPolicy(user_agent="Different Requester ops@example.org")
