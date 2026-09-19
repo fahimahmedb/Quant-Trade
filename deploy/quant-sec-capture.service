@@ -29,12 +29,12 @@ Environment=QUANT_SEC_SERVICE_MANAGER=systemd
 # --qualifying refuses every acquisition-critical override: cadence comes from the
 # frozen policy and a qualifying service does not stop after N idle waits.
 ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying
-Restart=on-failure
+Restart=no
 RestartSec=15
 StartLimitIntervalSec=600
 StartLimitBurst=5
 TimeoutStopSec=30
-KillSignal=SIGINT
+KillSignal=SIGTERM\nKillMode=control-group\nUMask=0077\nNoNewPrivileges=yes
 
 [Install]
 WantedBy=multi-user.target

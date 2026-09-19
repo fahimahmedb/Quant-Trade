@@ -31,12 +31,52 @@ def parse_ts(value: str) -> datetime:
     return datetime.fromisoformat(value)
 
 
+def fsync_directory(path: Path) -> None:
+    """Durably commit directory metadata after create/link/replace/unlink."""
+    handle = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(handle)
+    finally:
+        os.close(handle)
+
+
 def write_json(path: Path, value: Any) -> None:
-    """Atomically replace a JSON document."""
+    """Atomically and durably replace a JSON document.
+
+    Unique staging names avoid two writers clobbering one shared .tmp path.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        fsync_directory(path.parent)
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+
+
+def write_json_exclusive(path: Path, value: Any) -> None:
+    """Atomically create a JSON document without replacing an existing one."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.link(temporary, path)
+        fsync_directory(path.parent)
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
 
 
 def read_json(path: Path, default: Any = None) -> Any:
