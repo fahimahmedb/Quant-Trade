@@ -248,23 +248,15 @@ def _consume_deployment_authority(root: Path, fingerprint: str | None) -> dict |
 
 
 def materialize_if_absent(root: Path, environment: dict) -> str | None:
-    """Materialize once, and fail if an existing freeze is not the active one."""
+    """Create the freeze once or validate the existing freeze before launch."""
     fingerprint_file = Path(root) / "var" / "sec" / "acquisition_fingerprint.json"
     active = current_fingerprint(root, environment)
-    if fingerprint_file.exists():
-        try:
-            stored = json.loads(fingerprint_file.read_text(encoding="utf-8"))
-            if stored.get("acquisition_critical_fingerprint") != active:
-                raise RuntimeError("FINGERPRINT_MATERIALIZED_MISMATCH")
-        except (OSError, json.JSONDecodeError):
-            raise RuntimeError("FINGERPRINT_MATERIALIZED_INVALID") from None
-        return active
     completed = subprocess.run(
-        [sys.executable, str(Path(root) / "scripts" / "quant.py"), "sec-fingerprint",
-         "--root", str(root)],
+        [sys.executable, "-s", str(Path(root) / "scripts" / "quant.py"),
+         "sec-fingerprint", "--root", str(root)],
         env=environment, cwd=str(root), capture_output=True, text=True)
     if completed.returncode != 0:
-        raise RuntimeError("FINGERPRINT_MATERIALIZATION_FAILED")
+        raise RuntimeError("FINGERPRINT_MATERIALIZATION_OR_VALIDATION_FAILED")
     try:
         stored = json.loads(fingerprint_file.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
