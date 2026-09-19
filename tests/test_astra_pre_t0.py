@@ -541,3 +541,132 @@ class Phase5AuthorityBindingCampaign(CollectorTestCase):
                 self.assertNotEqual(
                     launcher.main(),0,
                     'SIGHUP is not an authorized clean shutdown of the qualifying service')
+
+
+class Phase6ProofAndConcurrencyCampaign(CollectorTestCase):
+    def test_published_test_inventory_matches_authoritative_package_discovery(self):
+        import re
+        import unittest
+        declared_text=(ROOT/'STATE.md').read_text()
+        match=re.search(r'Proof inventory: **(\d+) unit tests discovered',declared_text)
+        self.assertIsNotNone(match)
+        declared=int(match.group(1))
+        authoritative=unittest.TestLoader().discover(
+            str(ROOT/'tests'),pattern='test*.py',top_level_dir=str(ROOT)).countTestCases()
+        self.assertEqual(
+            declared,authoritative,
+            'a freshness gate must not publish a smaller suite than package-aware discovery')
+
+        spec=importlib.util.spec_from_file_location(
+            'astra_status_phase6',ROOT/'scripts/status_artifacts.py')
+        status=importlib.util.module_from_spec(spec);spec.loader.exec_module(status)
+        self.assertEqual(
+            status.unit_test_count(),authoritative,
+            'the status generator itself must count the authoritative package suite')
+
+    def test_global_max_concurrency_one_covers_the_actual_network_window(self):
+        import multiprocessing
+        from quant.dataplane.sec.budget import SecTrafficBudget
+        from quant.dataplane.sec.transport import SecHttpTransport,RequestPermit
+        active=0
+        maximum=0
+        guard=threading.Lock()
+        first_started=threading.Event()
+
+        class Server(socketserver.ThreadingTCPServer):
+            allow_reuse_address=True
+            daemon_threads=True
+
+        class Handler(socketserver.BaseRequestHandler):
+            def handle(inner):
+                nonlocal active,maximum
+                data=b''
+                while b'\r\n\r\n' not in data:
+                    piece=inner.request.recv(4096)
+                    if not piece:return
+                    data+=piece
+                with guard:
+                    active+=1
+                    maximum=max(maximum,active)
+                    first_started.set()
+                try:
+                    time.sleep(1.0)
+                    inner.request.sendall(
+                        b'HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nOK')
+                finally:
+                    with guard: active-=1
+
+        with tempfile.TemporaryDirectory() as directory, Server(('127.0.0.1',0),Handler) as server:
+            thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+            root=Path(directory)
+            port=server.server_address[1]
+            ctx=multiprocessing.get_context('fork')
+
+            def worker():
+                from quant.dataplane.sec.budget import SecTrafficBudget
+                from quant.dataplane.sec.policy import SecAccessPolicy
+                from quant.dataplane.sec.transport import SecHttpTransport,RequestPermit
+                import http.client,os
+                policy=SecAccessPolicy(user_agent=USER_AGENT)
+                budget=SecTrafficBudget(root/'budget.json',policy)
+                reservation=budget.reserve('synthetic_real_socket')
+                transport=SecHttpTransport(policy)
+                transport._connection=http.client.HTTPConnection(
+                    '127.0.0.1',port,timeout=5)
+                permit=RequestPermit(str(os.getpid()),reservation['reserved_at_utc'],
+                                     'synthetic_real_socket')
+                response=transport.fetch('/probe',permit)
+                if response.body != b'OK':
+                    raise RuntimeError('unexpected local response')
+
+            first=ctx.Process(target=worker);first.start()
+            self.assertTrue(first_started.wait(5),'first request never reached local server')
+            second=ctx.Process(target=worker);second.start()
+            first.join(8);second.join(8)
+            server.shutdown()
+            self.assertEqual(first.exitcode,0)
+            self.assertEqual(second.exitcode,0)
+            self.assertEqual(
+                maximum,1,
+                'max_concurrency=1 must serialize the whole network request, not only reserve()')
+
+    def test_qualifying_launch_never_auto_creates_a_missing_materialization(self):
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase6_materialization',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec);spec.loader.exec_module(launcher)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'var/sec').mkdir(parents=True)
+            environment={'QUANT_SEC_USER_AGENT':USER_AGENT}
+            completed=SimpleNamespace(returncode=0,stdout='',stderr='')
+            with mock.patch.object(launcher,'current_fingerprint',return_value=FP), \
+                 mock.patch.object(launcher.subprocess,'run',return_value=completed) as run:
+                with self.assertRaises(RuntimeError):
+                    launcher.materialize_if_absent(root,environment)
+                run.assert_not_called()
+
+    def test_readiness_requires_the_same_consumed_deployment_authority_as_audit(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        from quant.state import write_json
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        lifecycle=c.lifecycle
+        write_json(c.paths.sec/'supervisor_state.json',{
+            'schema':'p0_supervisor/v2',
+            'supervisor_id':lifecycle.get('supervisor_id'),
+            'child_boot_id':lifecycle.get('boot_id'),
+            'supervisor_invocation_id':lifecycle.get('service_invocation_id'),
+            'lifecycle_cause':lifecycle.get('lifecycle_cause'),
+            'fingerprint':c.fingerprint,
+            'supervisor_running':True,
+            'service_managed':True,
+            'qualifying_mode':True,
+            'deployment_authority_nonce':lifecycle.get('launch_authority_nonce'),
+        })
+        ready=c.t0_readiness()
+        self.assertTrue(ready['instrumentation_ready'],ready['blockers'])
+        (c.paths.sec/'deployment_authorities.jsonl').unlink()
+        after=c.t0_readiness()
+        self.assertFalse(
+            after['instrumentation_ready'],
+            'readiness must fail when the audit would reject missing consumed authority')
