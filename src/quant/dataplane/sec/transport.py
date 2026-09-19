@@ -219,7 +219,10 @@ class SecHttpTransport:
     def _connect(self) -> http.client.HTTPSConnection:
         if self._connection is None:
             self._connection = http.client.HTTPSConnection(
-                self.host, timeout=self.policy.connect_timeout_seconds, context=self.context)
+                self.host,
+                timeout=min(self.policy.connect_timeout_seconds,
+                            self.policy.total_deadline_seconds),
+                context=self.context)
             self.connections_opened += 1
         return self._connection
 
@@ -260,6 +263,17 @@ class SecHttpTransport:
             self.close()
             raise
 
+    def _bound_socket_timeout(self, connection: http.client.HTTPSConnection,
+                              started: Any, requested: float) -> None:
+        """Bound the next blocking socket operation by the total deadline."""
+        elapsed = (self.timebase.now() - started).total_seconds()
+        remaining = self.policy.total_deadline_seconds - elapsed
+        if remaining <= 0:
+            raise SecTransportError("total_deadline_exceeded", DEADLINE_EXCEEDED)
+        sock = getattr(connection, "sock", None)
+        if sock is not None:
+            sock.settimeout(max(0.001, min(requested, remaining)))
+
     def _fetch_once(self, path: str, permit: RequestPermit) -> SecHttpResponse:
         self._recycle_if_idle()
         connection = self._connect()
@@ -273,6 +287,8 @@ class SecHttpTransport:
         self.requests_sent += 1
         try:
             connection.request("GET", path, headers=headers)
+            self._bound_socket_timeout(
+                connection, started, self.policy.read_timeout_seconds)
             response = connection.getresponse()
         except (http.client.HTTPException, socket.timeout, TimeoutError, ssl.SSLError,
                 OSError) as exc:
@@ -306,6 +322,9 @@ class SecHttpTransport:
             if (self.timebase.now() - started).total_seconds() > deadline:
                 return b"".join(chunks), DEADLINE_EXCEEDED
             try:
+                if self._connection is not None:
+                    self._bound_socket_timeout(
+                        self._connection, started, self.policy.read_timeout_seconds)
                 chunk = response.read(65536)
             except http.client.IncompleteRead as exc:
                 chunks.append(exc.partial)
