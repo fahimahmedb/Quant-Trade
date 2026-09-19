@@ -72,6 +72,12 @@
         "null"
       ]
     },
+    "obligation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "page_start": {
       "type": [
         "integer",
@@ -112,12 +118,6 @@
       "type": "string"
     },
     "transfer_outcome": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "obligation_id": {
       "type": [
         "string",
         "null"
