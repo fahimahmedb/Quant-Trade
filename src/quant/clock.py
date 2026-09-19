@@ -435,9 +435,12 @@ class QuantSystem:
         try:
             return self._capture_step(collector)
         except Exception as exc:
-            # A capture fault must not kill the system, and must not be mistaken
-            # for a quiet poll. The attempt journal already holds whatever was
-            # durably recorded before the fault.
+            # A qualifying acquisition service must fail outward so the external
+            # supervisor observes the fault.  Converting an integrity failure to
+            # an in-process SEC_FAULT loop would leave a live-looking process
+            # that stopped making accountable requests.
+            if collector.lifecycle.get("qualifying_service_mode"):
+                raise
             detail = f"{type(exc).__name__}: {exc}"
             self.components.set("SEC_CAPTURE", "FAULT", detail[:200])
             self.state.faults.append({"at": utc_now(), "task": "SEC_CAPTURE",
@@ -449,14 +452,9 @@ class QuantSystem:
             return "SEC_FAULT"
 
     def _capture_step(self, collector: SecForm4Collector) -> str | None:
-        if collector.has_pending_work():
-            self.components.set("SEC_CAPTURE", "RUN", "acquiring a queued filing")
-            outcomes = collector.drain()
-            self.state.status = "RUN"
-            state, detail = collector.component_state()
-            self.components.set("SEC_CAPTURE", state, detail)
-            self.heartbeat()
-            return "SEC_CAPTURE" if outcomes else None
+        # A discovery obligation that is already due outranks backlog drain.
+        # Otherwise a large queue can keep the rolling feed unobserved long
+        # enough to create an irreversible coverage hole.
         if collector.poll_due():
             self.components.set("SEC_CAPTURE", "RUN", "polling SEC discovery")
             outcome = collector.poll()
@@ -465,6 +463,14 @@ class QuantSystem:
             self.components.set("SEC_CAPTURE", state, detail)
             self.heartbeat()
             return f"SEC_DISCOVERY_{outcome.result_state}"
+        if collector.has_pending_work():
+            self.components.set("SEC_CAPTURE", "RUN", "acquiring queued SEC work")
+            outcomes = collector.drain()
+            self.state.status = "RUN"
+            state, detail = collector.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return "SEC_CAPTURE" if outcomes else None
         day = collector.reconciliation_due()
         if day is not None:
             self.components.set("SEC_CAPTURE", "RUN", "reconciling a closed day")
@@ -654,6 +660,39 @@ class QuantSystem:
         entry = {"run_id": f"run-{len(self.state.run_history) + 1}", "started_at": started,
                  "finished_at": utc_now(), "outcomes": outcomes,
                  "ticks": sum(outcomes.values()), "ended": self.state.status}
+        self.state.run_history.append(entry)
+        self.state.run_history = self.state.run_history[-50:]
+        self.save()
+        return entry
+
+    def serve_sec(self, poll_seconds: float = IDLE_POLL_SECONDS,
+                  max_cycles: int | None = None) -> dict[str, Any]:
+        """Dedicated acquisition-only service loop.
+
+        It never dispatches research, desk, learning or dataset-refresh work.
+        Those are replayable; a missed rolling-feed poll is not.
+        """
+        started = utc_now()
+        outcomes: dict[str, int] = {}
+        waits = 0
+        while True:
+            outcome = self._run_due_capture() or "IDLE"
+            outcomes[outcome] = outcomes.get(outcome, 0) + 1
+            if outcome != "IDLE":
+                continue
+            if max_cycles is not None and waits >= max_cycles:
+                break
+            waits += 1
+            self.timer.sleep(poll_seconds)
+            self.state.last_wake_at = self.timer.now().isoformat()
+            self.heartbeat()
+        entry = {
+            "run_id": f"sec-serve-{len(self.state.run_history) + 1}",
+            "started_at": started, "finished_at": utc_now(),
+            "outcomes": outcomes, "waits": waits,
+            "ticks": sum(outcomes.values()), "ended": self.state.status,
+            "mode": "sec-serve",
+        }
         self.state.run_history.append(entry)
         self.state.run_history = self.state.run_history[-50:]
         self.save()
