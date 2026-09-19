@@ -23,6 +23,7 @@ from __future__ import annotations
 import fcntl
 import os
 import random
+import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -147,7 +148,7 @@ class SecTrafficBudget:
                 self.save(state)
 
     # --- the slot ----------------------------------------------------------
-    def reserve(self, endpoint_class: str, *, attempt_id: str) -> dict[str, Any]:
+    def reserve(self, endpoint_class: str, *, attempt_id: str | None = None) -> dict[str, Any]:
         """Wait for a compliant slot and durably record that it was spent.
 
         Raises ``SecCooldownActive`` rather than sleeping through a cooldown:
@@ -171,7 +172,7 @@ class SecTrafficBudget:
             # kill during the request cannot re-spend this slot immediately.
             self.save(state)
             reservation = {
-                "attempt_id": attempt_id,
+                "attempt_id": attempt_id or ("unbound-" + uuid.uuid4().hex),
                 "reserved_at_utc": state.last_request_at_utc,
                 "endpoint_class": endpoint_class,
                 "waited_seconds": waited,
