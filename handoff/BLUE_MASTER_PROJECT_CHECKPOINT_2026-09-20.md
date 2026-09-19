@@ -1,5 +1,249 @@
 # BLUE MASTER PROJECT CHECKPOINT — 2026-09-20
 
+## 0. LATEST VERIFIED DELTA — supersedes stale branch-status statements below
+
+This section was added after the initial master checkpoint. For **current branch heads and active work state**, this section wins over older snapshot statements later in the file. The older sections remain useful as historical context.
+
+### 0.1 Current exact branch heads
+
+Verified from GitHub after the initial checkpoint:
+
+| Track | Branch | Current durable HEAD | State relative to mission base |
+|---|---|---|---|
+| P0 / Astra | `astra/p0-deep-adversarial-pre-t0` | `ea86d6b40f12c4f3cd0e5fcf722e20cdb1c46eda` | 1 commit after PR #18 merge |
+| Claude Wave 1 | `parallel/claude-wave1-economic-system-2026-09-19` | `b17b381a8fa1f6a24e6cd6f92a090b40627bfe78` | unchanged |
+| Codex reference | `parallel/codex-wave1-economic-system-2026-09-19` | `738a5879ef8634d3e08c717a2d439632fe64e1ff` | unchanged |
+| Economic V2 | `parallel/claude-economic-v2-2026-09-20` | `80551a535ffcc82d356fb3a651c395f9e35a2b6b` | 2 commits after Wave 1 base |
+| Forward Data | `parallel/claude-forward-data-2026-09-20` | `7ac8ebaa535f5fba97d4ed8ada7a1f1bbbe154a1` | 2 commits after Wave 1 base |
+| Blue recovery | `checkpoint/blue-master-project-2026-09-20` | this checkpoint update | recovery-only branch |
+
+No GitHub Actions workflow run was attached to the current heads `ea86d6b...`, `80551a...`, or `7ac8eb...` at the time of this update. Their test claims below are **local branch evidence**, not exact-head CI evidence.
+
+### 0.2 P0 / Astra has advanced after PR #18
+
+Current durable P0 commit:
+
+`ea86d6b40f12c4f3cd0e5fcf722e20cdb1c46eda`
+
+Commit title:
+
+`p0: fail closed on effective systemd restart-timing and KillSignal drift`
+
+New confirmed closed defect:
+
+`SYSTEMD_EFFECTIVE_TIMING_AND_SIGNAL_NOT_VALIDATED`
+
+Classification:
+
+`BLOCKS_CAPTURE_INTEGRITY`
+
+The defect was that effective loaded systemd properties were included in the fingerprint material but several were not actually validated against the expected service contract. Drift in `KillSignal`, `RestartUSec`, `StartLimitIntervalUSec`, or `TimeoutStopUSec` could therefore be silently accepted instead of failing closed.
+
+The fix validates those effective values, including requiring SIGTERM semantics and expected restart/stop timings.
+
+A restart-burst-exhaustion falsification attempt did **not** reproduce a continuity defect: a fresh OS-level restart after burst exhaustion classified `MANUAL_START`, which remains invalidating. This was correctly recorded as “hypothesis tested / defect not reproduced”, not promoted into bureaucracy.
+
+Local verification reported by the P0 branch:
+
+- 375/375 full suite PASS;
+- 271/271 SEC P0 lane PASS;
+- 35/35 V1 end-to-end PASS;
+- schema drift check PASS;
+- status artifact freshness PASS.
+
+Still unchanged:
+
+`t0 = NOT DECLARED`
+
+`P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
+
+No final target-runtime rodage, active/materialized fingerprint equality proof, final exact evidence binding, or 14-day continuity proof exists yet.
+
+Remaining Phase-7 areas remain hypotheses to test, **not automatic blockers**, including interrupted/concurrent materialization, deeper network/budget/journal failure ordering, PIT crash boundaries, proxy leaks, final evidence binding, and final exact-state rodage.
+
+### 0.3 Economic V2 has now started materially
+
+Current durable Economic V2 head:
+
+`80551a535ffcc82d356fb3a651c395f9e35a2b6b`
+
+Important new commit:
+
+`economic: close RECIPE_PROVISIONAL eligibility gap, ECON-001 fail-open, D07-O4 clustering exposure`
+
+Economic V2 first performed the requested Claude-vs-Codex Red-Team comparison and concluded that Codex is valuable mainly as an independently-derived minimum fail-closed reference, not as a second architecture to merge wholesale.
+
+Key durable changes now present:
+
+- `EconomicVerdict` has a distinct `capital_order_eligibility` tier;
+- a mechanical `CONTINUE` is no longer implicitly capital/order authority;
+- `RECIPE_PROVISIONAL` may remain a development signal but is not silently treated as portfolio-order eligibility;
+- capital/order eligibility requires a consumable recipe, forward-confirmed evidence, O4-resolved clustering provenance, and a research/execution cost-consistency check that actually ran and passed;
+- the residual `ECON-001` fail-open path was closed at the eligibility layer without arbitrarily changing the research 5 bps assumption or Desk max-participation constant;
+- unresolved D07-O4 clustering authority is represented as unresolved rather than guessed.
+
+Local verification reported:
+
+- 603/603 tests PASS;
+- 15 new Economic V2 tests around these defects.
+
+Important integration fact discovered by Economic V2:
+
+**the Wave 1 economics package is not currently consumed by the live Desk path.**
+
+At the time of its audit, `desk/desk.py` imported nothing from `quant.economics`. Therefore a correct economic library does not protect live SCAN→VET→SIZE→RISK→FILLS→BOOK decisions until integration is made real. This is now a first-class acceptance concern, not a hidden assumption.
+
+### 0.4 Forward Data has also started materially
+
+Current durable Forward Data head:
+
+`7ac8ebaa535f5fba97d4ed8ada7a1f1bbbe154a1`
+
+Important new commit:
+
+`data: honest forward-recorder time provenance, fix two-writer race at read time`
+
+The mission established repository-backed facts:
+
+- the already-used Yahoo Finance chart endpoint is credential-free in this repo and was reachable from the Claude execution environment;
+- the Nasdaq Composite historical export has no live update path and is not itself a forward-capture source;
+- other candidate data lanes remain honestly blocked on providers or P0/science requirements.
+
+The ForwardRecorder was hardened:
+
+- explicit time concepts now distinguish market session, fetch start/end, source timestamp, local receipt/record time, and timestamp authority;
+- `recorded_at` is explicitly labelled as an unattested local clock, not external truth;
+- a real two-writer race was reproduced: independent recorder instances could append conflicting ACCEPTED records for the same key;
+- replay now enforces first-accepted-per-key and surfaces later conflicting rows via a race-conflict path without rewriting history;
+- torn/partial final writes, timezone normalization, vendor restatement, late correction, and out-of-order delivery were adversarially tested.
+
+Local verification reported:
+
+- 601/601 tests PASS;
+- 13 new adversarial Forward tests.
+
+The Forward mission has **not yet proven persistent service operation**. Its own live checkpoint states that its next work is source inventory, adapter contract, capture task/request execution contract, and coverage ledger.
+
+Therefore:
+
+`FORWARD_CAPTURE_PROVEN_RUNNING = FALSE`
+
+remains the correct project-level claim.
+
+### 0.5 Astra whole-system review — important conclusions
+
+Astra was given a short architecture-level review rather than another coding task.
+
+Its diagnosis:
+
+Quant remains aligned with the North Star, but new work currently converges more in **intent** than in the actually executed path. V1 already has the persistent Clock, Research, Desk, Book, and feedback foundations. The main risk is not missing architecture; it is failing to connect the new capabilities into that path.
+
+Astra identified these high-value points:
+
+1. Acquisition and scientific admissibility should stay separate. Capturing evidence now without pretending it is already scientifically admissible is correct.
+2. `ECON-001` matters because it directly affects whether research economics and executable economics describe the same trade.
+3. Negative research results should remain negative; do not re-grid merely to manufacture continuation.
+4. One Clock and one coherent system should remain the rule; competing agent implementations are reference material, not competing runtime authorities.
+5. The biggest drift risk is **control available vs control actually applied**. A guard sitting unused in a library is not a system guarantee.
+6. Forward accumulation has real time value, but “more daily prices” must not be confused with automatic calibration of spread, impact, borrow, or other execution economics.
+7. The learning loop should not be overstated: durable lessons and predefined successor tasks do not yet prove that realized economics improves future search quality.
+
+Astra found no major whole domain with zero owner. It did identify one execution responsibility that was not fully owned:
+
+**who performs the concrete persistent Forward→Clock hookup after the Forward branch produces a safe callable contract?**
+
+The current Forward mission is intentionally forbidden from editing `clock.py`, so it can prepare the contract but cannot complete the final persistent scheduling integration itself.
+
+Astra judged three Blue decisions as genuinely mature at this stage:
+
+- define the relationship between future P0 qualifying deployment and parallel code deployment;
+- explicitly own the final persistent Forward hookup;
+- make actual Research→Desk→Book consumption a condition of receiving Economic V2, rather than accepting another standalone economics library.
+
+It specifically did **not** conclude that D07, Form-4 cost coefficients, D19, or final inference choices must be decided now.
+
+Astra’s one-line system priority:
+
+> Reduce the delay between a new admissible observation and a persistent economic decision whose realized result improves the next research cycle.
+
+This is the key whole-system criterion while the parallel Claude missions continue.
+
+### 0.6 Newly verified structural issue: P0 fingerprint coupling
+
+After Astra’s review, Blue directly verified the current P0 fingerprint implementation.
+
+In `src/quant/dataplane/sec/fingerprint.py`, `module_digests()` does not hash only the explicit SEC-critical list. It conservatively adds every Python file under:
+
+- `src/quant`
+- `src/autonomous_research`
+
+The repository comment explains why: the current SEC service entry path imports `QuantSystem`, whose module import closure reaches research, Desk, registry, learning, and other packages. Until that topology is narrowed, the implementation treats the whole Python import closure conservatively as acquisition-critical.
+
+Consequences must be stated precisely:
+
+- a Git branch advancing does **not** by itself reset P0;
+- a merge existing on GitHub does **not** by itself reset P0;
+- what matters is the code tree actually deployed/executed by the qualifying SEC service;
+- if Economic/Forward Python changes are deployed into the same `/opt/quant` tree used by the P0 service, they currently change the acquisition fingerprint even when no `src/quant/dataplane/sec/**` file changed.
+
+The systemd unit currently uses:
+
+`WorkingDirectory=/opt/quant`
+
+and:
+
+`ExecStart=/usr/bin/python3 -I /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying`
+
+The fingerprint source itself states that narrowing this conservative closure is permitted only before the first qualifying t0.
+
+This creates a real pre-t0 architecture question:
+
+**Can P0 run from an exact immutable/pinned deployment while the rest of Quant continues to evolve elsewhere, or should the SEC runtime import closure be narrowed legitimately before t0 so unrelated Economic/Forward code is not part of the acquisition fingerprint?**
+
+This is not yet answered in the master checkpoint.
+
+### 0.7 Current Astra reflection still pending at handoff time
+
+Astra was given a second, focused no-code deep-dive on exactly the issue above.
+
+The requested comparison is:
+
+- global freeze of the deployed P0 runtime;
+- pinned immutable P0 release/worktree while development continues elsewhere;
+- legitimate narrowing of the SEC service import closure before t0;
+- or a combination.
+
+Astra was explicitly asked to compare:
+
+- capture integrity;
+- PIT reconstructability;
+- firewall;
+- evidence binding;
+- operational complexity;
+- probability of resetting a future window;
+- opportunity cost for the rest of Quant;
+- North Star coherence.
+
+It was also asked to distinguish **repository development state** from **deployed qualifying runtime state** and to answer whether, if nothing changes before t0, deploying Economic/Forward progress into the same runtime effectively conflicts with keeping the 14-day P0 fingerprint stable.
+
+**No result from that second deep-dive is recorded in this checkpoint yet.**
+Do not invent its conclusion in a new conversation.
+
+### 0.8 Immediate resume posture
+
+When resuming in a new conversation:
+
+1. Read this Section 0 first.
+2. Check whether Astra has returned the P0 deployment-isolation/fingerprint-coupling memo.
+3. Check the current remote heads of P0, Economic V2, and Forward Data because all three are active.
+4. Read each branch’s live checkpoint before giving it new work.
+5. Keep `t0` undeclared and real capital disabled.
+6. Do not treat local test counts as exact-head CI unless a GitHub Actions run is actually attached.
+7. Judge incoming Claude work by whether it shortens the full path:
+   observation → admissible evidence → economic eligibility → Desk/Risk/Book → realized feedback → better next search.
+
+---
+
 ## Purpose
 
 This file is a **recovery checkpoint for the whole Quant project**. Its purpose is that Blue and the project owner can resume from another conversation, machine, or agent without relying on chat memory.
