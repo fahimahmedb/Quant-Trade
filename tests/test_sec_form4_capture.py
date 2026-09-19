@@ -581,7 +581,6 @@ class CollectorTestCase(SecCaptureTestCase):
         transport = FakeTransport(handler)
         budget = SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
                                   rng=random.Random(3))
-        launch_nonce = "rodage-authority" if cause == DEPLOYMENT_RESTART else ""
         collector = SecForm4Collector(
             self.paths, policy=policy, transport=transport, timebase=self.timebase,
             budget=budget, root=ROOT)
@@ -2969,6 +2968,7 @@ class RodageFalsificationTests(CollectorTestCase):
         import random
         policy = self.policy()
         transport = FakeTransport(handler)
+        launch_nonce = "rodage-authority" if cause == DEPLOYMENT_RESTART else ""
         collector = SecForm4Collector(
             self.paths, policy=policy, transport=transport, timebase=self.timebase,
             budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
