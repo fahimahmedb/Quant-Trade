@@ -116,6 +116,12 @@
         "string",
         "null"
       ]
+    },
+    "obligation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "required": [
