@@ -19,7 +19,8 @@ from quant.economics import (AffineShortcutUnavailable, AuthorisedZero, Capacity
                              DeltaCoordinateBinding, EconomicParameter, EffectDomain,
                              EffectEstimate, EvaluationSession, InventoryFrozen,
                              JointScenarioSet, KForwardRecipe, ParameterInventory,
-                             PhiInstance, PortfolioInteraction, RecipeNotOutcomeBlind,
+                             PhiInstance, PortfolioInteraction, ProvenanceBinding,
+                             RecipeNotOutcomeBlind,
                              ReturnConvention, RiskClaim, RiskPartition, ThetaFeedbackViolation,
                              apply_capacity, beee, beee_affine, economic_gate,
                              evaluate_delta_coordinate, recipe_hash, solve_beee,
@@ -35,7 +36,9 @@ from quant.economics.states import (BEEE_NO_ECONOMIC_ROOT, BEEE_NONMONOTONE_MAPP
                                     DELTA_COORDINATE_COMPATIBLE, DELTA_COORDINATE_MISMATCH,
                                     DELTA_COORDINATE_UNRESOLVED, KILL,
                                     M_ECONOMIC_ENVELOPE_UNRESOLVED, NO_TRADE,
-                                    PROVENANCE_CALIBRATED, PROVENANCE_V1_ASSUMED,
+                                    PROVENANCE_CALIBRATED,
+                                    PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED,
+                                    PROVENANCE_V1_ASSUMED,
                                     RECIPE_CONSUMABLE, RECIPE_INVALID, RECIPE_PROVISIONAL)
 from quant.economics.theta import Q_PROVENANCE_NAIVE_ANNUALISATION
 
@@ -388,6 +391,15 @@ class RecipeAssemblyTest(unittest.TestCase):
         values = {key: (value, PROVENANCE_CALIBRATED)
                   for key, (value, _) in fixtures.CENTRAL_VALUES.items()}
         inventory = fixtures.parameter_inventory().instantiate(values)
+        # A CALIBRATED label alone is syntactic; see
+        # test_economic_v2_consolidation.py::ProvenanceAuthenticityTest for the
+        # dedicated coverage of what happens when this binding is withheld.
+        inventory = inventory.bind_provenance({
+            key: ProvenanceBinding(version="v1", as_of="2026-09-19",
+                                   authority="TEST_AUTHORITY",
+                                   dataset_fingerprint="sha256:test-fixture-only",
+                                   validation_state=PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED)
+            for key in values})
         recipe = fixtures.meue_recipe(inventory=inventory,
                                       margin_functional_status=FUNCTIONAL_FROZEN)
         result = recipe.evaluate(fixtures.theta_state())

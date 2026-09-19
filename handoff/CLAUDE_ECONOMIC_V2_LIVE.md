@@ -251,5 +251,65 @@ Files: `src/quant/economics/frictions.py`, `src/quant/economics/recipe.py`,
 **Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
 → 610 passed (588 Wave 1 + 22 this pass), 0 failures.
 
+### Slice 3 — provenance authenticity: refuse a syntactic-only calibration claim
+
+Files: `src/quant/economics/states.py`, `src/quant/economics/parameters.py`,
+`src/quant/economics/recipe.py`, `src/quant/economics/__init__.py`,
+`tests/economics_fixtures.py` (unaffected — no fixture change needed),
+`tests/test_economics_engine.py` (one test updated), `tests/test_economic_v2_consolidation.py`.
+
+- Added `ProvenanceBinding` (`parameters.py`): `version`, `as_of`, `authority`,
+  `dataset_fingerprint`, `artifact_hash`, `validation_state`
+  (`UNVALIDATED`/`INTERNALLY_REVIEWED`/`INDEPENDENTLY_VALIDATED`), plus an
+  `is_bound` property requiring all of version/as_of/authority, at least one
+  of the two identifying hashes, and a validation state beyond `UNVALIDATED`.
+  Added `provenance_binding` field to `EconomicParameter` (safe default:
+  unbound) and a new `ParameterInventory.bind_provenance()` method, layered on
+  top of the existing `instantiate()` without changing its signature.
+- **Deliberately not a structural, always-on violation.** An earlier design
+  draft made this blocking inside `EconomicParameter.violations()`, which
+  would have made ~75 pre-existing Wave 1 tests fail at once (`FEE_BPS`/
+  `EXIT_BPS` are `PROVENANCE_CALIBRATED` in the shared fixture's *default*
+  recipe, used almost everywhere) — disproportionate for what a consolidation
+  pass should touch. Wired instead into `MEUERecipe._consumability()`
+  (`recipe.py`), the exact existing method that already downgrades a recipe
+  to `RECIPE_PROVISIONAL` for an uncalibrated execution parameter or a
+  freeze-candidate margin functional — a calibrated-but-unbound claim is the
+  same class of gap and now produces the same
+  `RECIPE_PROVISIONAL` outcome with a new note,
+  `PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING_EVIDENCE`, scoped only to
+  parameters the recipe's `k_forward` actually consumes. Only
+  `PROVENANCE_CALIBRATED` is held to this bar — `PROVENANCE_V1_ASSUMED`/
+  `PROVENANCE_ENGINEERING_BOUND` already admit non-authoritative status and
+  are charged as model risk instead, so they are untouched.
+- `provenance_binding` is excluded from `ParameterInventory.rule_document()`
+  (same treatment as `central_estimate`/`central_provenance`): it is
+  value-adjacent evidence about one instantiation, not part of the frozen
+  rule, so it must not change a recipe's `fingerprint()` — verified directly
+  by a new test.
+- **Directly closes two independently-found defects**: Wave 1 red team item 4
+  (`ExposureBudget` provenance is declared, not proved — "nothing verifies
+  the per-event exposures came from that constructor") and Codex's self red
+  team item 5 ("a nonempty source string can lie... bind immutable
+  dataset/artifact hashes and validation state").
+- One existing test needed a minimal, honest update:
+  `test_economics_engine.py::test_recipe_is_consumable_only_with_calibration_
+  and_a_frozen_functional` now also calls `bind_provenance()` for its already
+  fully-calibrated fixture — the test's own assertion (`RECIPE_CONSUMABLE`)
+  is unchanged; it is supplying more complete input to satisfy a deliberately
+  strengthened precondition, not a weakened assertion. This mirrors the one
+  fixture change already needed in Slice 2.
+- 8 new tests in `test_economic_v2_consolidation.py`: the red case (a bare
+  `CALIBRATED` label stays provisional), the green case (fully bound reaches
+  consumable), two partial-binding negative cases (missing dataset link;
+  unvalidated), a hard-input-defect case (garbage `validation_state`), a
+  scope-check (V1_ASSUMED parameters are never held to this bar — including
+  the discovery, corrected mid-writing, that the *default* fixture recipe
+  already legitimately mixes both provenance classes), an `InventoryFrozen`
+  refusal for an unknown parameter id, and the rule-hash-independence proof.
+
+**Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
+→ 618 passed (588 Wave 1 + 30 this pass), 0 failures.
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_

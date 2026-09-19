@@ -30,8 +30,8 @@ from .margin import (FUNCTIONAL_FREEZE_CANDIDATE, FUNCTIONAL_FROZEN, MarginCompo
 from .parameters import ParameterInventory
 from .partition import RiskPartition
 from .scenarios import JointScenarioSet
-from .states import (DELTA_COORDINATE_COMPATIBLE, RECIPE_CONSUMABLE, RECIPE_INVALID,
-                     RECIPE_PROVISIONAL)
+from .states import (DELTA_COORDINATE_COMPATIBLE, PROVENANCE_CALIBRATED, RECIPE_CONSUMABLE,
+                     RECIPE_INVALID, RECIPE_PROVISIONAL)
 from .theta import EvaluationSession, ThetaSelectionRule, ThetaState
 from .value import BEEEResult, EffectDomain, PhiInstance, beee
 
@@ -145,6 +145,17 @@ class MEUERecipe:
         if uncalibrated:
             notes.append("EXISTING_EXECUTION_PARAMETER_IS_NOT_AUTOMATIC_CALIBRATION_AUTHORITY:"
                          + ",".join(uncalibrated))
+        unauthenticated = sorted(
+            parameter_id for parameter_id in consumed
+            if parameter_id in self.inventory
+            and self.inventory[parameter_id].central_provenance == PROVENANCE_CALIBRATED
+            and not self.inventory[parameter_id].provenance_binding.is_bound)
+        if unauthenticated:
+            # A calibrated claim with no non-syntactic evidence behind it is
+            # the exact gap Wave 1 red team item 4 and Codex self red team
+            # item 5 both named: "a nonempty source string can lie."
+            notes.append("PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING_EVIDENCE:"
+                         + ",".join(unauthenticated))
         if self.margin_functional_status != FUNCTIONAL_FROZEN:
             notes.append("MARGIN_FUNCTIONAL_IS_A_FREEZE_CANDIDATE_NOT_AUTHORITY")
         unresolved = self.inventory.unresolved()

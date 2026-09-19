@@ -31,6 +31,7 @@ from .fingerprint import recipe_hash
 from .states import (HOME_K_FORWARD, HOME_M_ECONOMIC, K_FORWARD_PARAMETER_UNRESOLVED,
                      PARAMETER_UNRESOLVED, PROVENANCE_CLASSES,
                      PROVENANCE_REQUIRING_MODEL_RISK, PROVENANCE_UNAVAILABLE,
+                     PROVENANCE_VALIDATION_STATES, PROVENANCE_VALIDATION_UNVALIDATED,
                      SOURCE_SET_NONCOMMENSURABLE)
 
 
@@ -164,6 +165,53 @@ class SourceContract:
 
 
 @dataclass(frozen=True)
+class ProvenanceBinding:
+    """Binds a parameter's central value to more than a syntactic source label.
+
+    ``source="foo"`` (or ``central_provenance=PROVENANCE_CALIBRATED`` alone)
+    is a claim. Wave 1's own red team (item 4) and Codex's self red team
+    (item 5) independently named the same gap: a nonempty source string can
+    lie, and nothing verified that ``ExposureBudget``/parameter provenance
+    came from what it claimed. This binding is what a *calibrated* claim
+    needs before it is authoritative rather than merely asserted: which
+    dataset version and artifact produced it, what version of the estimation
+    this is, when it was as-of, who/what supplied it, and its own validation
+    maturity.
+
+    Only ``PROVENANCE_CALIBRATED`` parameters are ever required to carry a
+    bound instance of this (see ``MEUERecipe._consumability``): a
+    ``PROVENANCE_V1_ASSUMED`` or ``PROVENANCE_ENGINEERING_BOUND`` value
+    already admits it is not authoritative and is charged as model risk
+    instead, so holding it to the same evidentiary bar would penalise
+    honesty about a weaker claim more than the weaker claim itself.
+    """
+
+    version: str = ""
+    as_of: str = ""
+    authority: str = ""
+    #: At least one of these two should identify what the value came from.
+    dataset_fingerprint: str = ""
+    artifact_hash: str = ""
+    validation_state: str = PROVENANCE_VALIDATION_UNVALIDATED
+
+    @property
+    def is_bound(self) -> bool:
+        """True once this is more than an unfilled/syntactic-only claim."""
+        return bool(
+            self.version and self.as_of and self.authority
+            and (self.dataset_fingerprint or self.artifact_hash)
+            and self.validation_state != PROVENANCE_VALIDATION_UNVALIDATED)
+
+    def violations(self, parameter_id: str) -> list[str]:
+        if self.validation_state not in PROVENANCE_VALIDATION_STATES:
+            return [f"{parameter_id}: PROVENANCE_VALIDATION_STATE_NOT_RECOGNISED"]
+        return []
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class EconomicParameter:
     """One row of the frozen inventory (envelope contract section 7)."""
 
@@ -187,9 +235,15 @@ class EconomicParameter:
     #: symmetric (``M_ECONOMIC_MUST_RESPECT_ASYMMETRIC_MODEL_RISK``), so the
     #: adverse side has to be named rather than inferred at evaluation time.
     adverse_direction: str = "HIGHER_IS_ADVERSE"
+    #: Non-syntactic evidence behind a ``PROVENANCE_CALIBRATED`` claim. See
+    #: ``ProvenanceBinding``. Unbound by default; binding is a separate step
+    #: from ``ParameterInventory.instantiate()`` (``bind_provenance``), never
+    #: required for non-calibrated provenance classes.
+    provenance_binding: "ProvenanceBinding" = field(default_factory=lambda: ProvenanceBinding())
 
     def violations(self) -> list[str]:
         problems = list(self.source_contract.violations(self.parameter_id))
+        problems.extend(self.provenance_binding.violations(self.parameter_id))
         if self.cost_component not in COST_CLASSES:
             problems.append(f"{self.parameter_id}: COST_CLASS_NOT_IN_FROZEN_INVENTORY")
         if self.execution_regime not in EXECUTION_REGIMES:
@@ -288,6 +342,7 @@ class ParameterInventory:
             document = parameter.to_dict()
             document.pop("central_estimate", None)
             document.pop("central_provenance", None)
+            document.pop("provenance_binding", None)
             rows.append(document)
         return {"inventory_id": self.inventory_id,
                 "parameters": sorted(rows, key=lambda row: row["parameter_id"])}
@@ -323,6 +378,31 @@ class ParameterInventory:
                 estimate, provenance = values[parameter_id]
                 parameter = replace(parameter, central_estimate=estimate,
                                     central_provenance=provenance)
+            clone._parameters[parameter_id] = parameter
+        clone._frozen_hash = self._frozen_hash
+        return clone
+
+    def bind_provenance(self, bindings: Mapping[str, "ProvenanceBinding"]
+                        ) -> "ParameterInventory":
+        """Return a copy carrying non-syntactic provenance evidence.
+
+        Layers on top of :meth:`instantiate`, never below it: a
+        ``PROVENANCE_CALIBRATED`` claim with no bound
+        :class:`ProvenanceBinding` is exactly the syntactic-only provenance
+        the mission requires this package to refuse authority to (see
+        :meth:`MEUERecipe._consumability`). A key absent from the frozen
+        inventory is refused for the same reason :meth:`instantiate` refuses
+        one.
+        """
+        unknown = sorted(set(bindings) - set(self._parameters))
+        if unknown:
+            raise InventoryFrozen(
+                "cannot bind provenance for parameters absent from the frozen inventory: "
+                + ", ".join(unknown))
+        clone = ParameterInventory(self.inventory_id)
+        for parameter_id, parameter in self._parameters.items():
+            if parameter_id in bindings:
+                parameter = replace(parameter, provenance_binding=bindings[parameter_id])
             clone._parameters[parameter_id] = parameter
         clone._frozen_hash = self._frozen_hash
         return clone

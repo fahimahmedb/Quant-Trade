@@ -17,7 +17,7 @@ import economics_fixtures as fixtures
 from quant.desk.execution import ExecutionModel, RESEARCH_ONE_WAY_COST_BPS
 from quant.economics import (COST_CLASSES, AuthorisedZero, CostComponent, Dependence,
                              EffectEstimate, KForwardRecipe, PortfolioInteraction,
-                             economic_gate, verify_research_cost_consistency,
+                             ProvenanceBinding, economic_gate, verify_research_cost_consistency,
                              verify_shape_declarations)
 from quant.economics.consistency import ExecutionCostModel, ResearchExecutionConsistency
 from quant.economics.decision import (AUTHORITY_DEVELOPMENT_ONLY, AUTHORITY_FORWARD_CONFIRMED,
@@ -30,8 +30,10 @@ from quant.economics.states import (CLUSTERING_UNIT_O4_RESOLVED, CLUSTERING_UNIT
                                     ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY,
                                     ORDER_ELIGIBILITY_NOT_ELIGIBLE,
                                     ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE,
-                                    PROVENANCE_CALIBRATED, RECIPE_CONSUMABLE, RECIPE_INVALID,
-                                    RECIPE_PROVISIONAL)
+                                    PROVENANCE_CALIBRATED,
+                                    PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED,
+                                    PROVENANCE_VALIDATION_UNVALIDATED, RECIPE_CONSUMABLE,
+                                    RECIPE_INVALID, RECIPE_PROVISIONAL)
 
 
 def _single_component_recipe(component: CostComponent) -> KForwardRecipe:
@@ -45,8 +47,16 @@ def joined(problems) -> str:
     return " | ".join(problems)
 
 
+def _fully_bound_provenance(keys) -> dict:
+    return {key: ProvenanceBinding(
+                version="v1", as_of="2026-09-19", authority="TEST_AUTHORITY",
+                dataset_fingerprint="sha256:test-fixture-only-no-scientific-authority",
+                validation_state=PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED)
+            for key in keys}
+
+
 def consumable_recipe():
-    """A RECIPE_CONSUMABLE recipe: every parameter calibrated, functional frozen.
+    """A RECIPE_CONSUMABLE recipe: every parameter calibrated and bound, functional frozen.
 
     Mirrors ``test_recipe_is_consumable_only_with_calibration_and_a_frozen_
     functional`` in ``test_economics_engine.py`` exactly, so this file never
@@ -55,6 +65,7 @@ def consumable_recipe():
     values = {key: (value, PROVENANCE_CALIBRATED)
               for key, (value, _) in fixtures.CENTRAL_VALUES.items()}
     inventory = fixtures.parameter_inventory().instantiate(values)
+    inventory = inventory.bind_provenance(_fully_bound_provenance(values))
     return fixtures.meue_recipe(inventory=inventory, margin_functional_status=FUNCTIONAL_FROZEN)
 
 
@@ -384,6 +395,108 @@ class CostShapeTypologyTest(unittest.TestCase):
         self.assertEqual(result.recipe_state, RECIPE_INVALID)
         self.assertTrue(any("DECLARED_LINEAR_IN_EXPOSURE_BUT_CONSTANT" in violation
                             for violation in result.violations), result.violations)
+
+
+class ProvenanceAuthenticityTest(unittest.TestCase):
+    """Provenance authenticity: refuse a syntactic-only calibration claim.
+
+    Wave 1 red team item 4 (`ExposureBudget` provenance is declared, not
+    proved) and Codex's self red team item 5 (a nonempty source string can
+    lie) independently named the same gap. Only ``PROVENANCE_CALIBRATED`` —
+    the one class that can make a recipe ``RECIPE_CONSUMABLE`` — is held to
+    the stricter bar; ``PROVENANCE_V1_ASSUMED``/``PROVENANCE_ENGINEERING_
+    BOUND`` already admit they are not authoritative and are charged as model
+    risk instead (unaffected here, and unaffected by this whole test class).
+    """
+
+    def setUp(self):
+        self.theta = fixtures.theta_state()
+        self.calibrated_values = {key: (value, PROVENANCE_CALIBRATED)
+                                  for key, (value, _) in fixtures.CENTRAL_VALUES.items()}
+
+    def test_red_a_calibrated_label_alone_is_syntactic_and_stays_provisional(self):
+        """RED: before this pass, CALIBRATED + a frozen functional was enough."""
+        inventory = fixtures.parameter_inventory().instantiate(self.calibrated_values)
+        recipe = fixtures.meue_recipe(inventory=inventory, margin_functional_status=FUNCTIONAL_FROZEN)
+        result = recipe.evaluate(self.theta)
+        self.assertEqual(result.recipe_state, RECIPE_PROVISIONAL)
+        self.assertIn("PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING_EVIDENCE",
+                      joined(result.notes))
+
+    def test_green_binding_every_consumed_calibrated_parameter_reaches_consumable(self):
+        recipe = consumable_recipe()  # already binds provenance; see helper above
+        result = recipe.evaluate(self.theta)
+        self.assertEqual(result.recipe_state, RECIPE_CONSUMABLE)
+
+    def test_partial_binding_is_still_syntactic_only(self):
+        """Every field matters: a binding missing just the dataset link fails closed."""
+        inventory = fixtures.parameter_inventory().instantiate(self.calibrated_values)
+        incomplete = {key: ProvenanceBinding(version="v1", as_of="2026-09-19",
+                                             authority="TEST_AUTHORITY",
+                                             validation_state=
+                                             PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED)
+                     for key in self.calibrated_values}  # no dataset_fingerprint/artifact_hash
+        inventory = inventory.bind_provenance(incomplete)
+        recipe = fixtures.meue_recipe(inventory=inventory, margin_functional_status=FUNCTIONAL_FROZEN)
+        result = recipe.evaluate(self.theta)
+        self.assertEqual(result.recipe_state, RECIPE_PROVISIONAL)
+
+    def test_unvalidated_binding_is_still_syntactic_only(self):
+        inventory = fixtures.parameter_inventory().instantiate(self.calibrated_values)
+        unvalidated = {key: ProvenanceBinding(version="v1", as_of="2026-09-19",
+                                              authority="TEST_AUTHORITY",
+                                              dataset_fingerprint="sha256:test",
+                                              validation_state=PROVENANCE_VALIDATION_UNVALIDATED)
+                      for key in self.calibrated_values}
+        inventory = inventory.bind_provenance(unvalidated)
+        recipe = fixtures.meue_recipe(inventory=inventory, margin_functional_status=FUNCTIONAL_FROZEN)
+        result = recipe.evaluate(self.theta)
+        self.assertEqual(result.recipe_state, RECIPE_PROVISIONAL)
+
+    def test_garbage_validation_state_is_a_hard_structural_violation(self):
+        binding = ProvenanceBinding(validation_state="NOT_A_RECOGNISED_STATE")
+        self.assertIn("PARAM: PROVENANCE_VALIDATION_STATE_NOT_RECOGNISED",
+                      binding.violations("PARAM"))
+
+    def test_v1_assumed_parameters_are_never_held_to_the_binding_bar(self):
+        """Only a CALIBRATED claim is authoritative enough to need proving.
+
+        The default fixture recipe mixes both provenance classes (FEE_BPS/
+        EXIT_BPS calibrated, the rest V1_ASSUMED), so both notes legitimately
+        fire together; what matters is that the V1_ASSUMED-only parameters
+        never appear in the *binding* note, since they were never claiming to
+        be authoritative in the first place.
+        """
+        result = fixtures.meue_recipe().evaluate(self.theta)
+        self.assertEqual(result.recipe_state, RECIPE_PROVISIONAL)
+        binding_note = next(note for note in result.notes
+                            if note.startswith("PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING"))
+        self.assertNotIn("F2_OPEN_HALF_SPREAD_BPS", binding_note)
+        self.assertNotIn("F4_IMPACT_BPS_AT_FULL_PARTICIPATION", binding_note)
+        self.assertNotIn("F4_REFERENCE_PARTICIPATION", binding_note)
+
+        # An inventory with no CALIBRATED claim at all never raises the note.
+        all_assumed = {key: (value, fixtures.PROVENANCE_V1_ASSUMED)
+                      for key, (value, _) in fixtures.CENTRAL_VALUES.items()}
+        inventory = fixtures.parameter_inventory().instantiate(all_assumed)
+        recipe = fixtures.meue_recipe(inventory=inventory)
+        result = recipe.evaluate(self.theta)
+        self.assertNotIn("PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING_EVIDENCE",
+                         joined(result.notes))
+
+    def test_bind_provenance_refuses_an_unknown_parameter(self):
+        inventory = fixtures.parameter_inventory()
+        with self.assertRaises(Exception):
+            inventory.bind_provenance({"NOT_A_DECLARED_PARAMETER": ProvenanceBinding()})
+
+    def test_provenance_binding_is_excluded_from_the_frozen_rule_hash(self):
+        """RULE_BEFORE_VALUES: binding evidence is value-adjacent, not the rule."""
+        bound = consumable_recipe()
+        unbound = fixtures.meue_recipe(
+            inventory=fixtures.parameter_inventory().instantiate(self.calibrated_values),
+            margin_functional_status=FUNCTIONAL_FROZEN)
+        self.assertEqual(bound.inventory.rule_document(), unbound.inventory.rule_document())
+        self.assertEqual(bound.fingerprint(), unbound.fingerprint())
 
 
 if __name__ == "__main__":

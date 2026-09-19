@@ -173,3 +173,20 @@ CLUSTERING_UNIT_O4_RESOLVED = "O4_RESOLVED_CLUSTERING_UNIT"
 
 CLUSTERING_UNIT_STATES = (CLUSTERING_UNIT_UNDECLARED, CLUSTERING_UNIT_O4_UNRESOLVED,
                           CLUSTERING_UNIT_O4_RESOLVED)
+
+
+# --- provenance-binding validation state (V2 consolidation) ------------------
+#
+# ``source="foo"`` is a syntactic claim (Wave 1 red team item 4 / Codex self
+# red team item 5: "a nonempty source string can lie"). A ``ProvenanceBinding``
+# (``parameters.py``) is what makes a ``PROVENANCE_CALIBRATED`` claim checkable
+# rather than merely asserted; this is its own validation-maturity state,
+# independent of whether the binding fields are merely present.
+
+PROVENANCE_VALIDATION_UNVALIDATED = "UNVALIDATED"
+PROVENANCE_VALIDATION_INTERNALLY_REVIEWED = "INTERNALLY_REVIEWED"
+PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED = "INDEPENDENTLY_VALIDATED"
+
+PROVENANCE_VALIDATION_STATES = (PROVENANCE_VALIDATION_UNVALIDATED,
+                                PROVENANCE_VALIDATION_INTERNALLY_REVIEWED,
+                                PROVENANCE_VALIDATION_INDEPENDENTLY_VALIDATED)

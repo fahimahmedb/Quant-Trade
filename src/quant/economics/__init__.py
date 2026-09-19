@@ -27,7 +27,7 @@ from .frictions import (COST_SHAPES, AuthorisedZero, CostComponent, CostInputUna
 from .margin import MarginComponent, MarginResult, m_economic
 from .opening import OpeningExecutionModel
 from .parameters import (COST_CLASSES, Dependence, EconomicParameter, InventoryFrozen,
-                         ParameterInventory, SourceContract)
+                         ParameterInventory, ProvenanceBinding, SourceContract)
 from .partition import RiskClaim, RiskPartition, partition_from
 from .recipe import MEUERecipe, MEUEResult
 from .scenarios import CostScenario, JointScenarioSet
@@ -60,7 +60,7 @@ __all__ = ["ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "Authorised
     "OpeningExecutionModel", "ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY",
     "ORDER_ELIGIBILITY_NOT_ELIGIBLE", "ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE",
     "ORDER_ELIGIBILITY_STATES",
-    "ParameterInventory", "PhiInstance", "PortfolioInteraction",
+    "ParameterInventory", "PhiInstance", "PortfolioInteraction", "ProvenanceBinding",
     "RecipeNotOutcomeBlind", "ResearchExecutionConsistency", "ReturnConvention",
     "RiskApproval", "RiskClaim", "RiskPartition", "SizingPlan", "SleeveTarget",
     "SourceContract", "ThetaFeedbackViolation", "ThetaSelectionRule", "ThetaState",
