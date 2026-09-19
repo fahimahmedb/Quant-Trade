@@ -1903,6 +1903,7 @@ class FingerprintTests(SecCaptureTestCase):
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
             shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            shutil.copytree(ROOT / ".github", mirror / ".github")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             target = mirror / "src" / "quant" / "dataplane" / "sec" / "collector.py"
             target.write_text(target.read_text() + "\n# acquisition semantics changed\n")
@@ -1916,6 +1917,7 @@ class FingerprintTests(SecCaptureTestCase):
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
             shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            shutil.copytree(ROOT / ".github", mirror / ".github")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             unit = mirror / "deploy" / "quant-sec-capture.service"
             unit.write_text(unit.read_text().replace("RestartSec=15", "RestartSec=120"))
@@ -1930,6 +1932,7 @@ class FingerprintTests(SecCaptureTestCase):
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
             shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            shutil.copytree(ROOT / ".github", mirror / ".github")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             # A downstream parser/normalizer, and an edit to a non-acquisition plane.
             (mirror / "src" / "quant" / "dataplane" / "form4_parser.py").write_text(
@@ -3385,6 +3388,7 @@ class MaterializedFingerprintTests(CollectorTestCase):
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
             shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            shutil.copytree(ROOT / ".github", mirror / ".github")
             target = mirror / "src" / "quant" / "dataplane" / "sec" / "visibility.py"
             target.write_text(target.read_text() + "\n# firewall rule changed\n")
             import random
