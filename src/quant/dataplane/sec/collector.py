@@ -25,13 +25,15 @@ whose envelope is already durable costs zero requests.
 from __future__ import annotations
 
 import uuid
+import hashlib
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable
 
 from ...paths import QuantPaths
-from ...state import parse_ts, read_json, write_json, append_jsonl
+from ...state import (append_jsonl, create_json_once, parse_ts, read_json, read_jsonl,
+                      write_json)
 from .budget import SecCooldownActive, SecTrafficBudget, seconds_from_retry_after
 from .fingerprint import acquisition_critical_fingerprint, build_manifest, compute_fingerprint
 from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
@@ -340,20 +342,15 @@ class SecForm4Collector:
             blockers.append("INVALIDATING_LIFECYCLE_CAUSE")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
-        materialized = self.materialized_fingerprint()
-        if materialized is None:
-            blockers.append("FINGERPRINT_NOT_MATERIALIZED")
-        elif materialized != self.fingerprint:
-            # Existence was never the question. A materialized manifest that
-            # describes a different build than the one running is worse than none,
-            # because it presents a frozen state the service does not have. This
-            # is what let a stale fingerprint reach a published rodage artifact.
-            blockers.append("FINGERPRINT_MATERIALIZED_MISMATCH")
+        materialized, materialized_error = self._validated_materialization()
+        if materialized_error:
+            blockers.append(materialized_error)
         return {"instrumentation_ready": not blockers,
                 "blockers": blockers,
                 "acquisition_critical_fingerprint": self.fingerprint,
                 "materialized_fingerprint": materialized,
-                "fingerprint_matches_materialized": materialized == self.fingerprint,
+                "fingerprint_matches_materialized": (
+                    materialized_error is None and materialized == self.fingerprint),
                 "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
                 "boot_id": self.lifecycle.get("boot_id"),
                 "service_managed": self.lifecycle.get("service_managed"),
@@ -365,33 +362,101 @@ class SecForm4Collector:
                 "t0_authority": "BLUE_TEAM",
                 "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
 
+    def _materialization_host_binding(self) -> str:
+        """Bind a freeze to the host without making the semantic fingerprint host-specific."""
+        machine_id = Path("/etc/machine-id")
+        try:
+            identity = machine_id.read_text(encoding="utf-8").strip()
+        except OSError:
+            from .supervisor import host_boot_id
+            identity = host_boot_id() or "UNAVAILABLE"
+        return digest_text(identity)
+
+    def _validated_materialization(self) -> tuple[str | None, str | None]:
+        """Return (fingerprint, error).  No repair is performed here."""
+        if not self.paths.sec_fingerprint.exists():
+            return None, "FINGERPRINT_NOT_MATERIALIZED"
+        try:
+            payload = read_json(self.paths.sec_fingerprint)
+            if not isinstance(payload, dict):
+                return None, "FINGERPRINT_MATERIALIZED_INVALID"
+            manifest = payload["manifest"]
+            stored = payload["acquisition_critical_fingerprint"]
+            if payload.get("schema") != "p0_materialized_fingerprint/v2":
+                return stored, "FINGERPRINT_MATERIALIZED_SCHEMA_MISMATCH"
+            if payload.get("host_identity_digest") != self._materialization_host_binding():
+                return stored, "FINGERPRINT_MATERIALIZED_OTHER_HOST"
+            if compute_fingerprint(manifest) != stored:
+                return stored, "FINGERPRINT_MATERIALIZED_SELF_MISMATCH"
+            active_manifest = build_manifest(
+                self.policy, root=self.root, environ=self._environ)
+            if manifest != active_manifest or stored != self.fingerprint:
+                return stored, "FINGERPRINT_MATERIALIZED_MISMATCH"
+            return stored, None
+        except (OSError, ValueError, KeyError, TypeError):
+            return None, "FINGERPRINT_MATERIALIZED_INVALID"
+
     def materialized_fingerprint(self) -> str | None:
-        """The fingerprint recorded on disk, or None if nothing is materialized."""
-        payload = read_json(self.paths.sec_fingerprint)
-        if not payload:
-            return None
-        return payload.get("acquisition_critical_fingerprint")
+        fingerprint, _ = self._validated_materialization()
+        return fingerprint
+
+    def require_active_materialization(self) -> None:
+        """Qualifying service cannot emit a request under stale/unbound semantics."""
+        if not self.lifecycle.get("qualifying_service_mode"):
+            return
+        fingerprint, error = self._validated_materialization()
+        if error or fingerprint != self.fingerprint:
+            raise SecStorageFailure(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
 
     def materialize_fingerprint(self) -> dict[str, Any]:
-        """Write the manifest and its fingerprint durably, before t0."""
+        """Freeze once. Existing content is validated, never silently rewritten."""
         if self.policy is None:
             raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
+        if self.paths.sec_fingerprint.exists():
+            fingerprint, error = self._validated_materialization()
+            if error or fingerprint != self.fingerprint:
+                raise SecStorageFailure(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
+            payload = read_json(self.paths.sec_fingerprint)
+            assert isinstance(payload, dict)
+            return payload
         manifest = build_manifest(self.policy, root=self.root, environ=self._environ)
         fingerprint = compute_fingerprint(manifest)
-        payload = {"acquisition_critical_fingerprint": fingerprint,
-                   "materialized_at_utc": self.timebase.now_iso(),
-                   "collector_version": self.store.collector_version,
-                   "git_commit": self.store.git_commit,
-                   "manifest": manifest}
-        write_json(self.paths.sec_fingerprint, payload)
+        payload = {
+            "schema": "p0_materialized_fingerprint/v2",
+            "acquisition_critical_fingerprint": fingerprint,
+            "host_identity_digest": self._materialization_host_binding(),
+            "materialized_at_utc": self.timebase.now_iso(),
+            "collector_version": self.store.collector_version,
+            "git_commit": self.store.git_commit,
+            "manifest": manifest,
+        }
+        try:
+            create_json_once(self.paths.sec_fingerprint, payload)
+        except FileExistsError:
+            # Concurrent materializers race only to the validator; neither may
+            # overwrite the winner.
+            existing, error = self._validated_materialization()
+            if error or existing != fingerprint:
+                raise SecStorageFailure(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
+            payload = read_json(self.paths.sec_fingerprint)
         self.fingerprint = fingerprint
         return payload
 
     # --- durable state -----------------------------------------------------
     def _load_state(self) -> CollectorState:
-        payload = read_json(self.paths.sec_collector_state) or {}
-        known = {name: payload[name] for name in CollectorState().to_dict() if name in payload}
-        return CollectorState(**known)
+        payload = read_json(self.paths.sec_collector_state)
+        if payload is None:
+            return CollectorState()
+        if not isinstance(payload, dict):
+            raise SecStorageFailure("COLLECTOR_STATE_INVALID")
+        expected = set(CollectorState().to_dict())
+        actual = set(payload)
+        if actual != expected:
+            missing = sorted(expected - actual)
+            extra = sorted(actual - expected)
+            raise SecStorageFailure(
+                f"COLLECTOR_STATE_SCHEMA_MISMATCH:missing={missing}:extra={extra}")
+        return CollectorState(**payload)
 
     def save(self) -> None:
         write_json(self.paths.sec_collector_state, self.state.to_dict())
@@ -467,7 +532,7 @@ class SecForm4Collector:
             return STALE
         elapsed = (self.timebase.now() - parse_ts(self.state.last_attempt_at_utc)).total_seconds()
         allowance = max(self.policy.discovery_poll_seconds * 3, self.cooldown_remaining() + 60)
-        return RUNNING if elapsed <= allowance else STALE
+        return RUNNING if 0 <= elapsed <= allowance else STALE
 
     # --- the single SEC request path ---------------------------------------
     def _request(self, kind: str, path: str, url: str, *, poll_id: str | None = None,
@@ -480,8 +545,16 @@ class SecForm4Collector:
         ``NO_NEW_DATA``, ``REQUEST_FAILED`` and ``COLLECTOR_DID_NOT_RUN``
         distinguishable afterwards.
         """
+        self.require_active_materialization()
         endpoint_class = endpoint_class_for(kind)
         attempt_id = self.store.new_attempt_id()
+        obligation_id = self.state.open_obligation_id
+        intent_path = self.paths.sec / "request_intents.jsonl"
+        append_jsonl(intent_path, {
+            "event": "INTENT", "attempt_id": attempt_id,
+            "obligation_id": obligation_id, "endpoint_class": endpoint_class,
+            "recorded_at_utc": self.timebase.now_iso(),
+        })
         locator_digest = self.store.record_locator(
             locator=url, source_identity=source_identity, endpoint_class=endpoint_class,
             observed_at_utc=self.timebase.now_iso(), poll_id=poll_id,
@@ -494,8 +567,12 @@ class SecForm4Collector:
                 request_attempted_at_utc=extra.pop("attempted_at", self.timebase.now_iso()),
                 result_state=result_state, collector_version=self.store.collector_version,
                 git_commit=self.store.git_commit, poll_id=poll_id, page_start=page_start,
-                **extra)
+                obligation_id=obligation_id, **extra)
             self.store.record_attempt(record)
+            append_jsonl(intent_path, {
+                "event": "FINISHED", "attempt_id": attempt_id,
+                "recorded_at_utc": self.timebase.now_iso(),
+            })
             self.state.attempts += 1
             self.state.last_attempt_at_utc = record.request_attempted_at_utc
             self.state.last_result_state = result_state
@@ -519,6 +596,11 @@ class SecForm4Collector:
         # cannot send twice with it, so
         # ONE_BUDGET_RESERVATION == ONE_NETWORK_REQUEST_ATTEMPT == ONE_ATTEMPT_ID
         # holds by construction rather than by inspection of the transport.
+        append_jsonl(intent_path, {
+            "event": "RESERVED", "attempt_id": attempt_id,
+            "obligation_id": obligation_id,
+            "reserved_at_utc": reservation["reserved_at_utc"],
+        })
         permit = RequestPermit(attempt_id=attempt_id,
                                reserved_at_utc=reservation["reserved_at_utc"],
                                endpoint_class=endpoint_class)
@@ -534,6 +616,14 @@ class SecForm4Collector:
                           limiter_waited_seconds=reservation["waited_seconds"],
                           duration_seconds=self._elapsed(attempted_at_dt))
         received_at = self.timebase.now_iso()
+        append_jsonl(intent_path, {
+            "event": "RECEIVED", "attempt_id": attempt_id,
+            "recorded_at_utc": received_at,
+            "raw_object_sha256": "sha256:" + hashlib.sha256(response.body).hexdigest(),
+            "byte_length": len(response.body),
+            "http_status": response.status,
+            "transfer_outcome": response.transfer_outcome,
+        })
         metadata = response.transport_metadata()
         common = {"attempted_at": attempted_at, "response_received_at_utc": received_at,
                   "http_status": response.status, "media_type": response.media_type,
