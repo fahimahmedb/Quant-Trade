@@ -418,7 +418,14 @@ def _validate_request_intents(collector: Any,
 def _validate_external_lifecycle_authority(
         collector: Any, lifecycle: list[dict[str, Any]],
         baseline_lifecycle: dict[str, Any] | None = None) -> list[str]:
-    """Bind child lifecycle claims to an append-only ledger written by supervisor."""
+    """Bind child lifecycle claims to supervisor-observed durable authority.
+
+    A lifecycle cause is never trusted because its string is plausible.  For a
+    deployment start, the one-use deployment authority must have been consumed
+    before the matching child launch.  For an automatic restart, the same live
+    supervisor must have durably recorded the exact prior child exit and named
+    that child as the witness for the next launch.
+    """
     if not getattr(collector, "lifecycle", {}).get("qualifying_service_mode"):
         return []
     path = collector.paths.sec / "supervisor_events.jsonl"
@@ -427,6 +434,11 @@ def _validate_external_lifecycle_authority(
     events = list(read_jsonl(path))
     launches = [record for record in events
                 if record.get("event") == "CHILD_LAUNCH_AUTHORIZED"]
+    exits = [record for record in events
+             if record.get("event") == "CHILD_EXIT_OBSERVED"]
+    authority_path = collector.paths.sec / "deployment_authorities.jsonl"
+    authorities = (list(read_jsonl(authority_path))
+                   if authority_path.exists() else [])
     findings: list[str] = []
     records = list(lifecycle)
     if baseline_lifecycle is not None and baseline_lifecycle not in records:
@@ -451,8 +463,42 @@ def _validate_external_lifecycle_authority(
         child_at = record.get("recorded_at_utc")
         if not launch_at or not child_at or parse_ts(launch_at) > parse_ts(child_at):
             findings.append("LIFECYCLE_EXTERNAL_AUTHORITY_TIME_INVALID")
-    return sorted(set(findings))
 
+        cause = record.get("lifecycle_cause")
+        if cause == "DEPLOYMENT_RESTART":
+            nonce = launch.get("deployment_authority_nonce")
+            consumed = [
+                item for item in authorities
+                if item.get("nonce") == nonce
+                and item.get("cause") == "DEPLOYMENT_RESTART"
+                and item.get("acquisition_critical_fingerprint")
+                    == record.get("acquisition_critical_fingerprint")
+                and item.get("consumed_at_utc")
+            ]
+            if not nonce or len(consumed) != 1:
+                findings.append("DEPLOYMENT_AUTHORITY_CONSUMPTION_MISSING")
+            else:
+                consumed_at = parse_ts(consumed[0]["consumed_at_utc"])
+                if not launch_at or consumed_at > parse_ts(launch_at):
+                    findings.append("DEPLOYMENT_AUTHORITY_CONSUMPTION_INVALID")
+
+        if cause == "AUTOMATIC_RESTART_AFTER_FAILURE":
+            witness_id = launch.get("restart_witness_child_boot_id")
+            witnessed = [
+                item for item in exits
+                if item.get("supervisor_id") == record.get("supervisor_id")
+                and item.get("child_boot_id") == witness_id
+                and item.get("fingerprint") == record.get("acquisition_critical_fingerprint")
+                and item.get("unexpected_termination") is True
+                and item.get("stopped_by_supervisor") is False
+                and item.get("recorded_at_utc")
+            ]
+            if not witness_id or len(witnessed) != 1:
+                findings.append("AUTOMATIC_RESTART_WITNESS_MISSING")
+            elif (not launch_at
+                  or parse_ts(witnessed[0]["recorded_at_utc"]) > parse_ts(launch_at)):
+                findings.append("AUTOMATIC_RESTART_WITNESS_INVALID")
+    return sorted(set(findings))
 
 def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
                              now: datetime | None = None,

@@ -87,6 +87,7 @@ ACQUISITION_CRITICAL_MODULES: tuple[str, ...] = (
     "src/quant/status/brief.py",
     "scripts/status_artifacts.py",
     "scripts/verify_p0.py",
+    ".github/workflows/sec-p0-pre-t0-gate.yml",
     # The service entry point. `sec-serve` binds the clock's wake cadence into
     # system.serve(), so it decides how often a due poll is noticed - acquisition
     # timing, in a file no source digest covered until now. Membership may only be

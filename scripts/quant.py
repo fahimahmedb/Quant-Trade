@@ -57,8 +57,11 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         # preconditions hold.
         return 0 if readiness["instrumentation_ready"] else 1
     if args.command == "sec-audit":
+        from datetime import datetime as _datetime
         from quant.dataplane.sec.audit import audit_observation_window
-        report = audit_observation_window(collector)
+        window_start = (_datetime.fromisoformat(args.window_start)
+                        if args.window_start else None)
+        report = audit_observation_window(collector, window_start=window_start)
         public = {key: report.get(key) for key in (
             "accountable", "findings", "fingerprint_stable", "coverage_state",
             "p0_continuous_service_state")}
@@ -161,6 +164,8 @@ def main() -> None:
     parser.add_argument("--drain", type=int, default=1,
                         help="filings a single sec-probe may acquire after discovery")
     parser.add_argument("--day", help="closed day to reconcile, as YYYY-MM-DD")
+    parser.add_argument("--window-start",
+                        help="Blue-declared t0/window start as timezone-aware ISO-8601")
     args = parser.parse_args()
 
     # Mutating SEC commands share the service lock and acquire it before

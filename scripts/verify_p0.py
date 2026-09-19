@@ -42,7 +42,8 @@ VERIFIED_TREES = ("src", "tests", "scripts", "deploy")
 SUITES = {
     "full_unit_suite": ["python3", "-m", "unittest", "discover", "-s", "tests"],
     "sec_p0_lane_suite": ["python3", "-m", "unittest",
-                          "tests.test_sec_form4_capture", "tests.test_p0_adversarial"],
+                          "tests.test_sec_form4_capture", "tests.test_p0_adversarial",
+                          "tests.test_astra_pre_t0"],
 }
 CHECKS = {
     "generated_schema_drift": ["python3", "scripts/generate_schemas.py", "--check"],
@@ -108,6 +109,7 @@ def lane_test_count() -> int:
     loaded = unittest.TestSuite([
         loader.loadTestsFromName("tests.test_sec_form4_capture"),
         loader.loadTestsFromName("tests.test_p0_adversarial"),
+        loader.loadTestsFromName("tests.test_astra_pre_t0"),
     ])
     count = loaded.countTestCases()
     if count <= 1:
@@ -202,6 +204,9 @@ def main() -> int:
     digest = verified_tree_digest()
     if record.get("verified_tree_digest") != digest:
         problems.append("verified_tree_digest does not match the working tree")
+    if args.sha and record.get("verified_sha") != args.sha:
+        problems.append(
+            f"verified_sha {record.get('verified_sha')} != exact requested {args.sha}")
     if problems:
         print("verification record is stale or inconsistent:")
         for problem in problems:
@@ -211,10 +216,6 @@ def main() -> int:
     print(f"verification record matches this tree: {record['tests_discovered']} tests "
           f"({record['sec_p0_lane_tests_discovered']} in the SEC P0 lane), all passed; "
           f"recorded against commit {record.get('verified_sha')}")
-    if args.sha and record.get("verified_sha") != args.sha:
-        # Expected for the commit that carries the record. Reported, not failed.
-        print(f"note: recorded against {record.get('verified_sha')}, "
-              f"now checked at {args.sha}; the tree digest is what was enforced")
     return 0
 
 

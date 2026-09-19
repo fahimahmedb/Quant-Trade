@@ -581,6 +581,7 @@ class CollectorTestCase(SecCaptureTestCase):
         transport = FakeTransport(handler)
         budget = SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
                                   rng=random.Random(3))
+        launch_nonce = "rodage-authority" if cause == DEPLOYMENT_RESTART else ""
         collector = SecForm4Collector(
             self.paths, policy=policy, transport=transport, timebase=self.timebase,
             budget=budget, root=ROOT)
@@ -2963,7 +2964,8 @@ class RodageFalsificationTests(CollectorTestCase):
     """
 
     def qualifying_collector(self, handler, *, cause: str = DEPLOYMENT_RESTART,
-                             boot_id: str = "boot-q1", enable: bool = True):
+                             boot_id: str = "boot-q1", enable: bool = True,
+                             witnessed_child_failure: bool = False):
         import random
         policy = self.policy()
         transport = FakeTransport(handler)
@@ -2975,12 +2977,38 @@ class RodageFalsificationTests(CollectorTestCase):
                                 "QUANT_SEC_LIFECYCLE_CAUSE": cause,
                                 "QUANT_SEC_BOOT_ID": boot_id,
                                 "QUANT_SEC_SUPERVISOR_ID": "sup-rodage",
-                                "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "rodage-authority",
+                                "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": launch_nonce,
                                 "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "d" * 64,
                                 "QUANT_SEC_QUALIFYING_MODE": "1",
                                 "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
         self.transport = transport
         collector.materialize_fingerprint()
+        witness_id = None
+        if cause == DEPLOYMENT_RESTART:
+            append_jsonl(self.paths.sec / "deployment_authorities.jsonl", {
+                "schema": "p0_deployment_authority/v1",
+                "nonce": launch_nonce,
+                "cause": DEPLOYMENT_RESTART,
+                "acquisition_critical_fingerprint": collector.fingerprint,
+                "host_boot_id": "synthetic-test-host",
+                "authorized_at_utc": self.timebase.now_iso(),
+                "consumed_at_utc": self.timebase.now_iso(),
+            })
+        if cause == AUTOMATIC_RESTART_AFTER_FAILURE and witnessed_child_failure:
+            prior = [item for item in read_jsonl(
+                self.paths.sec / "supervisor_events.jsonl")
+                     if item.get("event") == "CHILD_LAUNCH_AUTHORIZED"]
+            witness_id = (prior[-1]["child_boot_id"] if prior else "synthetic-prior-child")
+            append_jsonl(self.paths.sec / "supervisor_events.jsonl", {
+                "event": "CHILD_EXIT_OBSERVED",
+                "recorded_at_utc": self.timebase.now_iso(),
+                "supervisor_id": collector.lifecycle.get("supervisor_id"),
+                "child_boot_id": witness_id,
+                "fingerprint": collector.fingerprint,
+                "exit_code": 1,
+                "stopped_by_supervisor": False,
+                "unexpected_termination": True,
+            })
         append_jsonl(self.paths.sec / "supervisor_events.jsonl", {
             "event": "CHILD_LAUNCH_AUTHORIZED",
             "recorded_at_utc": self.timebase.now_iso(),
@@ -2992,7 +3020,7 @@ class RodageFalsificationTests(CollectorTestCase):
             "fingerprint": collector.fingerprint,
             "qualifying_mode": True,
             "deployment_authority_nonce": collector.lifecycle.get("launch_authority_nonce"),
-            "restart_witness_child_boot_id": None,
+            "restart_witness_child_boot_id": witness_id,
         })
         # A real restart does not re-enable an already-enabled lane: sec-serve
         # only calls enable() when durable state says the lane is off.
@@ -3075,7 +3103,7 @@ class RodageFalsificationTests(CollectorTestCase):
 
         restarted = self.qualifying_collector(
             self.fixture_router(), cause=AUTOMATIC_RESTART_AFTER_FAILURE,
-            boot_id="boot-q2")
+            boot_id="boot-q2", witnessed_child_failure=True)
         self.assertEqual(restarted.state.open_obligation_id, open_obligation,
                          "the open obligation survives the restart")
         restarted.record_service_start()

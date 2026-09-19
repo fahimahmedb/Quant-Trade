@@ -164,6 +164,22 @@ def _effective_systemd_definition(root: Path) -> str:
         raise RuntimeError("SYSTEMD_FRAGMENT_DIFFERS_FROM_REPOSITORY")
     if (parsed.get("DropInPaths") or "").strip():
         raise RuntimeError("SYSTEMD_DROPINS_UNBOUND")
+    expected = {
+        "Restart": "on-failure",
+        "KillMode": "control-group",
+        "StartLimitBurst": str(RESTART_BURST_LIMIT),
+    }
+    for key, value in expected.items():
+        if parsed.get(key) != value:
+            raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_MISMATCH")
+    exec_start = parsed.get("ExecStart") or ""
+    if ("quant_sec_supervisor.py" not in exec_start
+            or "--qualifying" not in exec_start):
+        raise RuntimeError("SYSTEMD_EFFECTIVE_EXECSTART_MISMATCH")
+    if parsed.get("WorkingDirectory") != "/opt/quant":
+        raise RuntimeError("SYSTEMD_EFFECTIVE_WORKDIR_MISMATCH")
+    if "/etc/quant/sec-capture.env" not in (parsed.get("EnvironmentFiles") or ""):
+        raise RuntimeError("SYSTEMD_EFFECTIVE_ENVIRONMENT_FILE_MISMATCH")
     canonical = json.dumps(parsed, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return "sha256:" + hashlib.sha256(canonical).hexdigest()
 
@@ -447,14 +463,16 @@ def main() -> int:
         launches = 0
         restart_times: list[float] = []
         stopped = False
+        stop_signal: int | None = None
         child: subprocess.Popen | None = None
         supervisor_events = sec_dir / "supervisor_events.jsonl"
         restart_witness_child_boot_id: str | None = None
         handlers: dict[int, object] = {}
 
         def stop(signum, frame) -> None:
-            nonlocal stopped
+            nonlocal stopped, stop_signal
             stopped = True
+            stop_signal = signum
             if child is not None:
                 _terminate_group(child, signal.SIGTERM)
 
@@ -559,6 +577,8 @@ def main() -> int:
                 })
 
                 if stopped:
+                    if args.qualifying and stop_signal == signal.SIGHUP:
+                        return 71
                     return 0
                 operational_exit_code = exit_code
                 if exit_code == 0:
@@ -585,6 +605,8 @@ def main() -> int:
                 while not stopped and time.monotonic() < deadline:
                     time.sleep(min(0.2, deadline - time.monotonic()))
                 if stopped:
+                    if args.qualifying and stop_signal == signal.SIGHUP:
+                        return 71
                     return 0
 
                 # Positive authority: this exact live supervisor observed this
