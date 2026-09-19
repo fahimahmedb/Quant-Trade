@@ -328,3 +328,86 @@ class Phase3AuthorityAndBindingCampaign(CollectorTestCase):
         c.save()
         self.assertTrue(c.poll_due(),
             'a future prior-poll timestamp must fail closed instead of suppressing polling')
+
+
+class Phase4LifecycleAndWindowCampaign(CollectorTestCase):
+    def test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service(self):
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase4', ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec); spec.loader.exec_module(launcher)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'scripts').mkdir()
+            (root/'scripts/quant.py').write_text('raise SystemExit(0)\n')
+            env={'QUANT_SEC_USER_AGENT':USER_AGENT,'INVOCATION_ID':'qualifying-zero',
+                 'QUANT_SEC_SERVICE_MANAGER':'systemd'}
+            argv=['supervisor','--root',str(root),'--qualifying']
+            with mock.patch.dict(os.environ,env,clear=True), \
+                 mock.patch.object(sys,'argv',argv), \
+                 mock.patch.object(launcher,'current_fingerprint',return_value=FP), \
+                 mock.patch.object(launcher,'materialize_if_absent',return_value=FP), \
+                 mock.patch.object(launcher,'_effective_systemd_definition',
+                                   return_value='sha256:'+'d'*64), \
+                 mock.patch.object(launcher,'RESTART_BURST_LIMIT',0):
+                self.assertNotEqual(
+                    launcher.main(),0,
+                    'an unsolicited child exit, even code 0, must not turn off Restart=on-failure')
+
+    def test_truncated_task_id_collision_cannot_drop_a_distinct_filing(self):
+        from tests.test_sec_form4_capture import build_feed, synthetic_accession
+        from quant.dataplane.sec.store import digest_text as real_digest_text
+        first=synthetic_accession(100);second=synthetic_accession(99)
+        one='sha256:'+'a'*16+'1'*48
+        two='sha256:'+'a'*16+'2'*48
+        def colliding(value):
+            if value == first: return one
+            if value == second: return two
+            return real_digest_text(value)
+        c=self.collector(self.fixture_router(atom=build_feed([100,99])),
+                         discovery_page_size=2)
+        with mock.patch('quant.dataplane.sec.collector.digest_text',side_effect=colliding):
+            c.poll()
+            self.assertEqual(len(c.state.pending_tasks),2)
+            self.assertNotEqual(c.state.pending_tasks[0]['identity_digest'],
+                                c.state.pending_tasks[1]['identity_digest'])
+            self.assertEqual(c.state.pending_tasks[0]['task_id'],
+                             c.state.pending_tasks[1]['task_id'],
+                             'red precondition: distinct identities collide in truncated task id')
+            c.drain(max_items=1)
+            self.assertEqual(
+                len(c.state.pending_tasks),1,
+                'acknowledging one filing must not delete another distinct identity')
+
+    def test_qualifying_audit_requires_append_only_external_lifecycle_authority(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        ledger=c.paths.sec/'supervisor_events.jsonl'
+        if ledger.exists(): ledger.unlink()
+        report=audit_observation_window(c)
+        self.assertIn('LIFECYCLE_EXTERNAL_AUTHORITY_MISSING',report['findings'])
+        self.assertFalse(report['accountable'])
+
+
+class Phase4AuditWindowCampaign(AuditCampaign):
+    def test_qualifying_window_is_bounded_by_external_blue_t0(self):
+        self.lane.paths.sec_lifecycle.write_text('')
+        append_jsonl(self.lane.paths.sec_lifecycle,{
+            'lifecycle_cause':'MANUAL_START','boot_id':'pre','supervisor_id':'pre-sup',
+            'recorded_at_utc':'2026-09-18T11:00:00+00:00',
+            'boot_at_utc':'2026-09-18T11:00:00+00:00',
+            'acquisition_critical_fingerprint':FP})
+        append_jsonl(self.lane.paths.sec_lifecycle,{
+            'lifecycle_cause':'DEPLOYMENT_RESTART','boot_id':'post','supervisor_id':'post-sup',
+            'recorded_at_utc':'2026-09-18T12:35:00+00:00',
+            'boot_at_utc':'2026-09-18T12:35:00+00:00',
+            'acquisition_critical_fingerprint':FP})
+        self.transition(identity='post-t0',
+                        due='2026-09-18T13:02:00+00:00',
+                        stamp='2026-09-18T12:35:00+00:00')
+        t0=datetime(2026,9,18,12,30,tzinfo=timezone.utc)
+        report=audit_observation_window(self.lane,now=NOW,window_start=t0)
+        self.assertEqual(report['window_start_utc'],t0.isoformat())
+        self.assertEqual(report['window_duration_seconds'],1800.0)
+        self.assertNotIn('INVALIDATING_INTERVENTION',report['findings'],
+                         'pre-t0 manual history cannot invalidate the later Blue window')
