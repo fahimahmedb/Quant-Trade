@@ -1268,12 +1268,12 @@ class RequestControlTests(CollectorTestCase):
         self.assertEqual(envelope["content_encoding"], "gzip")
         self.assertEqual(envelope["byte_length"], len(submission))
 
-    def test_permanent_4xx_is_recorded_without_escalating_cooldown(self) -> None:
+    def test_permanent_4xx_is_recorded_with_bounded_retry_cooldown(self) -> None:
         collector = self.collector(lambda path, call: response(b"gone", status=404))
         outcome = collector.poll()
         self.assertEqual(outcome.result_state, PERMANENT_CLIENT_ERROR)
-        self.assertEqual(collector.cooldown_remaining(), 0.0,
-                         "a permanent 4xx is journalled, not escalated")
+        self.assertGreater(collector.cooldown_remaining(), 0.0,
+                           "a permanent 4xx must not be selected again next tick")
         self.assertEqual(collector.store.attempts()[-1]["error_class"], "http_404")
 
     def test_no_new_data_request_failed_and_did_not_run_are_distinguishable(self) -> None:
@@ -2890,8 +2890,8 @@ class CountProxyFirewallTests(SecCaptureTestCase):
         path = ROOT / "handoff" / "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json"
         document = json.loads(path.read_text(encoding="utf-8"))
         assert_no_scientific_content(path.read_text(encoding="utf-8"), path.name)
-        self.assertTrue(find_count_proxies(document),
-                        "historical proxy exposure must remain observable in provenance")
+        self.assertEqual(find_count_proxies(document), [],
+                         "current checkout must not republish historic proxy values")
         self.assertIn("attempts_by_endpoint_kind",
                       document["visibility_firewall_provenance"]["what_was_exposed"])
 
