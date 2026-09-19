@@ -207,6 +207,55 @@ def _effective_environment(args: argparse.Namespace, root: Path,
     return environment, poll_seconds
 
 
+def _canonical_digest(payload: dict) -> str:
+    import hashlib
+    rendered = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return "sha256:" + hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+
+
+def _migrate_pre_t0_state_ledgers(root: Path) -> None:
+    """Explicitly baseline legacy operational state before an authorized deploy.
+
+    This is intentionally NOT performed by collector/budget constructors:
+    otherwise a crash between state write and journal write would be
+    indistinguishable from a legacy state and silently blessed.
+    """
+    sec = root / "var" / "sec"
+    pairs = (
+        (sec / "collector_state.json", sec / "collector_state.commits.jsonl",
+         "state_digest"),
+        (sec / "sec_traffic_budget.json", sec / "sec_traffic_budget.commits.jsonl",
+         "digest"),
+    )
+    for state_path, ledger_path, digest_key in pairs:
+        if not state_path.exists():
+            continue
+        try:
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            raise RuntimeError("PRE_T0_STATE_MIGRATION_INVALID") from None
+        if not isinstance(payload, dict):
+            raise RuntimeError("PRE_T0_STATE_MIGRATION_INVALID")
+        digest = _canonical_digest(payload)
+        if ledger_path.exists():
+            lines = [line for line in ledger_path.read_text(encoding="utf-8").splitlines()
+                     if line.strip()]
+            if not lines:
+                raise RuntimeError("PRE_T0_STATE_LEDGER_EMPTY")
+            try:
+                last = json.loads(lines[-1])
+            except json.JSONDecodeError:
+                raise RuntimeError("PRE_T0_STATE_LEDGER_CORRUPT") from None
+            if last.get(digest_key) != digest:
+                raise RuntimeError("PRE_T0_STATE_LEDGER_MISMATCH")
+            continue
+        _append_jsonl(ledger_path, {
+            "event": "EXPLICIT_PRE_T0_BASELINE_MIGRATION",
+            digest_key: digest,
+            "recorded_at_utc": utc_now(),
+        })
+
+
 def _write_deployment_authority(root: Path, fingerprint: str | None) -> dict:
     """Create, never replace, a one-use deployment authority."""
     if not fingerprint:
@@ -254,10 +303,23 @@ def _consume_deployment_authority(root: Path, fingerprint: str | None) -> dict |
         )
     except (KeyError, TypeError, ValueError):
         valid = False
+    used_nonces: set[str] = set()
+    ledger = authority_ledger_path(root)
+    if ledger.exists():
+        for line in ledger.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                raise RuntimeError("DEPLOYMENT_AUTHORITY_LEDGER_CORRUPT") from None
+            if record.get("nonce"):
+                used_nonces.add(record["nonce"])
+    if value.get("nonce") in used_nonces:
+        valid = False
     if not valid:
         raise RuntimeError("DEPLOYMENT_AUTHORITY_INVALID")
-    _append_jsonl(authority_ledger_path(root),
-                  {**value, "consumed_at_utc": utc_now()})
+    _append_jsonl(ledger, {**value, "consumed_at_utc": utc_now()})
     path.unlink()
     _fsync_dir(path.parent)
     return value
@@ -345,6 +407,7 @@ def main() -> int:
 
     if args.authorize_deployment:
         try:
+            _migrate_pre_t0_state_ledgers(root)
             _write_deployment_authority(root, fingerprint)
         except Exception as exc:
             print(f"[supervisor] BLOCKED {type(exc).__name__}", flush=True)
