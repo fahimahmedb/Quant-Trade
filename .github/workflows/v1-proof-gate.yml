@@ -1,0 +1,47 @@
+name: V1 proof gate
+
+on:
+  push:
+    branches:
+      - reviewer/v1-final-red-team
+  workflow_dispatch:
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Schema drift diagnostic
+        run: |
+          python3 scripts/generate_schemas.py
+          git diff -- schemas
+          git restore schemas
+
+      - name: Status artifact freshness
+        run: python3 scripts/status_artifacts.py --check
+
+      - name: Unit tests
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+
+      - name: Demo
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Schemas
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: Diff check
+        run: git diff --check a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0...HEAD
+
+      - name: Clean working tree
+        run: |
+          git status --short
+          test -z "$(git status --porcelain)"

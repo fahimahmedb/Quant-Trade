@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Explicit exclusion, unresolved mapping/timing, or diagnostic ledger record.",
+  "properties": {
+    "accession": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "detail": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issuer_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owner_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "record_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "record_id",
+    "event_id",
+    "accession",
+    "issuer_cik",
+    "owner_cik",
+    "status",
+    "reason_codes"
+  ],
+  "title": "sec_form4_loss_record",
+  "type": "object"
+}
