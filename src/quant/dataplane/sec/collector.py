@@ -645,6 +645,40 @@ class SecForm4Collector:
                   "limiter_waited_seconds": reservation["waited_seconds"],
                   "duration_seconds": self._elapsed(attempted_at_dt)}
 
+        # Preserve the exact response bytes before semantic classification,
+        # including 403/429/5xx bodies.  Error responses are still acquisition
+        # evidence; discarding them can make a later incident unreconstructible.
+        raw_object_sha256 = None
+        incomplete_id = None
+        deduplicated = False
+        if store_bytes:
+            try:
+                if response.complete:
+                    written = self.store.put_object(response.body)
+                    raw_object_sha256 = written.raw_object_sha256
+                    deduplicated = written.deduplicated
+                    if not deduplicated:
+                        self.store.record_raw_object(SecRawObjectRecord(
+                            raw_object_sha256=raw_object_sha256,
+                            byte_length=written.byte_length,
+                            first_received_at_utc=received_at,
+                            endpoint_class=endpoint_class,
+                            media_type=response.media_type,
+                            content_encoding=response.content_encoding,
+                            declared_content_length=response.declared_content_length,
+                            collector_version=self.store.collector_version))
+                else:
+                    incomplete_id = self.store.put_object(
+                        response.body, incomplete=True).raw_object_sha256
+            except SecStorageFailure as exc:
+                return finish(STORAGE_FAILED, error_class=str(exc), **common)
+
+        evidence = {}
+        if raw_object_sha256 is not None:
+            evidence["raw_object_sha256"] = raw_object_sha256
+        if incomplete_id is not None:
+            evidence["incomplete_object_sha256"] = incomplete_id
+
         if response.status == 429:
             seconds = self._authoritative_cooldown(response, self.policy.rate_limit_cooldown_seconds)
             self.budget.enter_cooldown(seconds, "http_429_rate_limited")
@@ -652,7 +686,7 @@ class SecForm4Collector:
                                    next_due_at=self.budget.load().cooldown_until_utc,
                                    detail="http_429_rate_limited")
             return finish(RATE_LIMITED, error_class="http_429", retry_after_seconds=seconds,
-                          byte_length=response.byte_length, **common)
+                          byte_length=response.byte_length, **evidence, **common)
         if response.status == 403:
             # Consistent with automated-access control: long cooldown, no loop.
             seconds = self._authoritative_cooldown(response, self.policy.forbidden_cooldown_seconds)
@@ -662,7 +696,7 @@ class SecForm4Collector:
                                    next_due_at=self.budget.load().cooldown_until_utc,
                                    detail="http_403_access_controlled")
             return finish(ACCESS_FORBIDDEN, error_class="http_403", retry_after_seconds=seconds,
-                          byte_length=response.byte_length, **common)
+                          byte_length=response.byte_length, **evidence, **common)
         if 500 <= response.status < 600:
             retry_after = seconds_from_retry_after(
                 response.retry_after, self.timebase.now()) or 0.0
@@ -670,42 +704,19 @@ class SecForm4Collector:
                 f"http_{response.status}", floor_seconds=retry_after)
             return finish(SERVER_ERROR, error_class=f"http_{response.status}",
                           retry_after_seconds=retry_after or None,
-                          byte_length=response.byte_length, **common)
+                          byte_length=response.byte_length, **evidence, **common)
         if response.status != 200:
             # Permanent client error: recorded once, never hot-looped. The poll
             # cadence alone bounds it; no cooldown escalation is warranted.
             return finish(PERMANENT_CLIENT_ERROR, error_class=f"http_{response.status}",
-                          byte_length=response.byte_length, **common)
+                          byte_length=response.byte_length, **evidence, **common)
         if not response.complete:
-            incomplete_id = None
-            try:
-                if store_bytes and response.body:
-                    incomplete_id = self.store.put_object(
-                        response.body, incomplete=True).raw_object_sha256
-            except SecStorageFailure as exc:
-                return finish(STORAGE_FAILED, error_class=str(exc), **common)
             self._enter_transient_cooldown(f"incomplete:{response.transfer_outcome}")
             return finish(INCOMPLETE_TRANSFER, error_class=f"transfer_{response.transfer_outcome}",
                           incomplete_object_sha256=incomplete_id,
                           byte_length=response.byte_length, **common)
 
-        # A complete 200. The raw bytes become durable before anything else.
-        raw_object_sha256 = None
-        deduplicated = False
-        if store_bytes:
-            try:
-                written = self.store.put_object(response.body)
-            except SecStorageFailure as exc:
-                return finish(STORAGE_FAILED, error_class=str(exc), **common)
-            raw_object_sha256 = written.raw_object_sha256
-            deduplicated = written.deduplicated
-            if not deduplicated:
-                self.store.record_raw_object(SecRawObjectRecord(
-                    raw_object_sha256=raw_object_sha256, byte_length=written.byte_length,
-                    first_received_at_utc=received_at, endpoint_class=endpoint_class,
-                    media_type=response.media_type, content_encoding=response.content_encoding,
-                    declared_content_length=response.declared_content_length,
-                    collector_version=self.store.collector_version))
+        # A complete 200 is already durable above.
         self.budget.reset_backoff()
         result = finish(DEDUPLICATED if deduplicated else CAPTURED_OK,
                         raw_object_sha256=raw_object_sha256,
