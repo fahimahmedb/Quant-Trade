@@ -73,15 +73,24 @@ _COUNT_PROXY_KEYS: tuple[tuple[str, tuple[str, ...]], ...] = (
 #: Numeric fields that describe acquisition health rather than scientific volume,
 #: and are therefore permitted even though they are numbers.
 _PERMITTED_NUMERIC_KEYS: frozenset[str] = frozenset({
+    "due_tolerance_seconds", "poll_seconds", "max_waits",
+    "restart_delay_seconds", "restart_burst_limit",
+    "max_requests_per_second", "max_concurrency",
+})
+_OPERATIONAL_VOLUME_KEYS: frozenset[str] = frozenset({
     "raw_bytes", "byte_length", "declared_content_length", "requests_spent",
     "budget_reservations", "durable_attempt_ids", "distinct_attempt_ids",
-    "limiter_waits", "limiter_wait_seconds", "backoff_step", "window_duration_seconds",
-    "request_span_seconds", "average_requests_per_second", "scheduler_transitions",
+    "limiter_waits", "limiter_wait_seconds", "scheduler_transitions",
     "obligations", "obligations_pending", "obligations_unexplained",
     "obligations_resolved_by_attempt", "obligations_resolved_by_supersession",
-    "expected_actions", "service_starts", "supervised_service_starts",
-    "attempts_recorded", "validated_polls", "objects_rehashed", "due_tolerance_seconds",
-    "poll_seconds", "max_waits", "restart_delay_seconds", "restart_burst_limit",
+    "expected_actions", "attempts_recorded", "validated_polls", "objects_rehashed",
+    "request_span_seconds", "average_requests_per_second",
+})
+_SENSITIVE_SURFACE_KEYS: frozenset[str] = frozenset({
+    "last_capture_at_utc", "last_attempt_at_utc", "last_poll_started_at_utc",
+    "last_validated_discovery_at_utc", "cursor_advanced_at_utc",
+    "cursor_identity_digest", "next_due_at_utc", "work_in_flight",
+    "raw_object_sha256", "discovery_object_sha256", "source_locator_digest",
 })
 
 
@@ -97,8 +106,14 @@ def find_count_proxies(payload: Any, path: str = "") -> list[str]:
         for key, value in payload.items():
             here = f"{path}.{key}" if path else str(key)
             lowered = str(key).lower()
+            if lowered in _SENSITIVE_SURFACE_KEYS:
+                found.append(f"{here} (scientific_activity_proxy)")
             if isinstance(value, bool):
+                if lowered == "work_in_flight" and value:
+                    found.append(f"{here} (scientific_activity_proxy)")
                 continue
+            if isinstance(value, (int, float)) and lowered in _OPERATIONAL_VOLUME_KEYS:
+                found.append(f"{here} (operational_volume_proxy)")
             if isinstance(value, (int, float)) and lowered not in _PERMITTED_NUMERIC_KEYS:
                 for name, fragments in _COUNT_PROXY_KEYS:
                     haystack = f"{path}.{lowered}".lower()
@@ -138,8 +153,7 @@ def firewall_safe_storage(storage: dict[str, Any]) -> dict[str, Any]:
     are not published: they are close enough to a filing count to be worth
     withholding while the scientific protocol is still open.
     """
-    return {"raw_bytes": storage.get("raw_bytes", 0),
-            "objects_present": bool(storage.get("raw_objects")),
+    return {
             "incomplete_present": bool(storage.get("incomplete_objects")),
             "uncommitted_staging_present": bool(storage.get("uncommitted_staging_files")),
             "append_only": storage.get("append_only", True),
