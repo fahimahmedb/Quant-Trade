@@ -73,12 +73,18 @@ def git_sha() -> str:
 
 
 def verified_tree_digest() -> str:
-    """Digest over the sources the recorded verification covers."""
+    """Digest every runtime/test input under the verified source trees.
+
+    The old Python-only walk silently omitted the systemd unit even though
+    deploy was named as verified. Fixtures and non-Python service definitions
+    can change what was exercised, so they are bound too.
+    """
     import hashlib
     digest = hashlib.sha256()
     for tree in VERIFIED_TREES:
-        for path in sorted((ROOT / tree).rglob("*.py")):
-            if "__pycache__" in path.parts:
+        for path in sorted((ROOT / tree).rglob("*")):
+            if (not path.is_file() or "__pycache__" in path.parts
+                    or path.suffix in {".pyc", ".pyo"}):
                 continue
             digest.update(str(path.relative_to(ROOT)).encode("utf-8"))
             digest.update(path.read_bytes())

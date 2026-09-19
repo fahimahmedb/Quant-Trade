@@ -323,6 +323,42 @@ class SecForm4Collector:
             self.record_current_state(cause, detail=self.lifecycle.get("lifecycle_cause"))
         return record
 
+    def _external_lifecycle_binding_error(self) -> str | None:
+        """Bind qualifying child claims to state written by the external supervisor.
+
+        Environment variables are transport for provenance, not authority by
+        themselves. The supervisor writes this state durably before spawning
+        the child; copied environment markers cannot buy t0 readiness.
+        """
+        if not self.lifecycle.get("qualifying_service_mode"):
+            return None
+        path = self.paths.sec / "supervisor_state.json"
+        try:
+            state = read_json(path)
+        except (OSError, ValueError, TypeError):
+            return "EXTERNAL_SUPERVISOR_STATE_INVALID"
+        if not isinstance(state, dict):
+            return "EXTERNAL_SUPERVISOR_STATE_MISSING"
+        if state.get("schema") != "p0_supervisor/v2":
+            return "EXTERNAL_SUPERVISOR_STATE_INVALID"
+        expected = {
+            "supervisor_id": self.lifecycle.get("supervisor_id"),
+            "child_boot_id": self.lifecycle.get("boot_id"),
+            "supervisor_invocation_id": self.lifecycle.get("service_invocation_id"),
+            "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
+            "fingerprint": self.fingerprint,
+        }
+        if any(state.get(key) != value for key, value in expected.items()):
+            return "EXTERNAL_SUPERVISOR_BINDING_MISMATCH"
+        if not state.get("supervisor_running") or not state.get("service_managed"):
+            return "EXTERNAL_SUPERVISOR_NOT_ACTIVE"
+        if not state.get("qualifying_mode"):
+            return "EXTERNAL_SUPERVISOR_NOT_QUALIFYING"
+        expected_nonce = self.lifecycle.get("launch_authority_nonce") or None
+        if (state.get("deployment_authority_nonce") or None) != expected_nonce:
+            return "EXTERNAL_LAUNCH_AUTHORITY_MISMATCH"
+        return None
+
     def t0_readiness(self) -> dict[str, Any]:
         """Whether the pre-t0 instrumentation is in place. Blue decides t0, not this.
 
@@ -355,6 +391,9 @@ class SecForm4Collector:
         if (self.lifecycle.get("lifecycle_cause") == "DEPLOYMENT_RESTART"
                 and not self.lifecycle.get("launch_authority_nonce")):
             blockers.append("DEPLOYMENT_AUTHORITY_MISSING")
+        external_lifecycle_error = self._external_lifecycle_binding_error()
+        if external_lifecycle_error:
+            blockers.append(external_lifecycle_error)
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
         if self.configured and not self.state.enabled:
@@ -579,6 +618,11 @@ class SecForm4Collector:
         if last is None:
             return True
         elapsed = (self.timebase.now() - parse_ts(last)).total_seconds()
+        # A wall-clock regression or future/corrupt prior timestamp must never
+        # buy silence. Poll immediately; the durable audit can then flag the
+        # reversed timestamps instead of losing a rolling-feed observation.
+        if elapsed < 0:
+            return True
         return elapsed >= self.policy.discovery_poll_seconds
 
     def has_pending_work(self) -> bool:
