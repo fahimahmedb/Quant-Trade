@@ -76,17 +76,6 @@ class SecTrafficBudget:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.lock_path = self.path.with_suffix(".lock")
         self.commit_path = self.path.with_suffix(".commits.jsonl")
-        # Pre-t0 migration of an existing budget is explicit in the ledger.
-        # After this baseline every mutation is digest-bound.
-        if self.path.exists() and not self.commit_path.exists():
-            payload = read_json(self.path)
-            if not isinstance(payload, dict):
-                raise RuntimeError("BUDGET_STATE_INVALID")
-            append_jsonl(self.commit_path, {
-                "event": "PRE_T0_BASELINE_MIGRATION",
-                "digest": self._digest(payload),
-                "recorded_at_utc": self.timebase.now_iso(),
-            })
 
     # --- durable state -----------------------------------------------------
     @staticmethod
