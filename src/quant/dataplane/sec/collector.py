@@ -444,9 +444,15 @@ class SecForm4Collector:
         return payload
 
     # --- durable state -----------------------------------------------------
+    def _state_commit_path(self) -> Path:
+        return self.paths.sec / "collector_state.commits.jsonl"
+
     def _load_state(self) -> CollectorState:
         payload = read_json(self.paths.sec_collector_state)
+        commits = list(read_jsonl(self._state_commit_path()))
         if payload is None:
+            if commits:
+                raise SecStorageFailure("COLLECTOR_STATE_MISSING_WITH_HISTORY")
             return CollectorState()
         if not isinstance(payload, dict):
             raise SecStorageFailure("COLLECTOR_STATE_INVALID")
@@ -457,10 +463,27 @@ class SecForm4Collector:
             extra = sorted(actual - expected)
             raise SecStorageFailure(
                 f"COLLECTOR_STATE_SCHEMA_MISMATCH:missing={missing}:extra={extra}")
+        digest = compute_fingerprint(payload)
+        if not commits:
+            # Explicit pre-t0 migration of the operational state that already
+            # existed before state-digest binding was introduced.
+            append_jsonl(self._state_commit_path(), {
+                "event": "PRE_T0_BASELINE_MIGRATION",
+                "state_digest": digest,
+                "recorded_at_utc": self.timebase.now_iso(),
+            })
+        elif commits[-1].get("state_digest") != digest:
+            raise SecStorageFailure("COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK")
         return CollectorState(**payload)
 
     def save(self) -> None:
-        write_json(self.paths.sec_collector_state, self.state.to_dict())
+        payload = self.state.to_dict()
+        write_json(self.paths.sec_collector_state, payload)
+        append_jsonl(self._state_commit_path(), {
+            "event": "STATE_COMMITTED",
+            "state_digest": compute_fingerprint(payload),
+            "recorded_at_utc": self.timebase.now_iso(),
+        })
 
     @property
     def configured(self) -> bool:
