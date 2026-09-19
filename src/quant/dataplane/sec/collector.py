@@ -627,6 +627,11 @@ class SecForm4Collector:
             response = self.transport.fetch(path, permit)
         except SecTransportError as exc:
             hung = exc.outcome == DEADLINE_EXCEEDED
+            if exc.partial:
+                try:
+                    self.store.put_object(exc.partial, incomplete=True)
+                except SecStorageFailure:
+                    pass
             self._enter_transient_cooldown(f"transport:{exc.error_class}")
             return finish(HUNG_REQUEST if hung else REQUEST_FAILED, attempted_at=attempted_at,
                           error_class=exc.error_class, transfer_outcome=exc.outcome,

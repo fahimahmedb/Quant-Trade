@@ -48,6 +48,7 @@ import gzip
 import http.client
 import socket
 import ssl
+import time
 import zlib
 from dataclasses import dataclass, field
 from typing import Any
@@ -219,7 +220,10 @@ class SecHttpTransport:
     def _connect(self) -> http.client.HTTPSConnection:
         if self._connection is None:
             self._connection = http.client.HTTPSConnection(
-                self.host, timeout=self.policy.connect_timeout_seconds, context=self.context)
+                self.host,
+                timeout=min(self.policy.connect_timeout_seconds,
+                            self.policy.total_deadline_seconds),
+                context=self.context)
             self.connections_opened += 1
         return self._connection
 
@@ -267,12 +271,18 @@ class SecHttpTransport:
         headers["Connection"] = "keep-alive"
         headers.setdefault("Accept", "*/*")
         started = self.timebase.now()
+        deadline = time.monotonic() + self.policy.total_deadline_seconds
         # The permit is spent at the moment the request goes out, so a failure
         # after this point can never be re-sent under the same attempt id.
         permit.consume()
         self.requests_sent += 1
         try:
             connection.request("GET", path, headers=headers)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("total deadline exceeded before response headers")
+            if connection.sock is not None:
+                connection.sock.settimeout(min(self.policy.read_timeout_seconds, remaining))
             response = connection.getresponse()
         except (http.client.HTTPException, socket.timeout, TimeoutError, ssl.SSLError,
                 OSError) as exc:
@@ -281,7 +291,10 @@ class SecHttpTransport:
         self._connection_last_used = self.timebase.now()
         preserved = {name: value for name in PRESERVED_HEADERS
                      if (value := response.getheader(name)) is not None}
-        body, outcome = self._read_body(response, started)
+        body, outcome = self._read_body(response, deadline, connection)
+        if outcome != COMPLETE:
+            # An unread/truncated body must never contaminate the next keep-alive response.
+            self.close()
         if outcome != COMPLETE and response.status == 200:
             # A nominally successful status with an unprovable body is evidence
             # of an incomplete transfer, never a capture.
@@ -297,16 +310,27 @@ class SecHttpTransport:
         return SecHttpResponse(status=response.status, reason=response.reason or "",
                                body=body, headers=preserved, transfer_outcome=outcome)
 
-    def _read_body(self, response: http.client.HTTPResponse,
-                   started: Any) -> tuple[bytes, str]:
+    def _read_body(self, response: http.client.HTTPResponse, deadline: float,
+                   connection: http.client.HTTPSConnection) -> tuple[bytes, str]:
         chunks: list[bytes] = []
         total = 0
-        deadline = self.policy.total_deadline_seconds
         while True:
-            if (self.timebase.now() - started).total_seconds() > deadline:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
                 return b"".join(chunks), DEADLINE_EXCEEDED
+            sock = connection.sock
+            if sock is None:
+                try:
+                    sock = response.fp.raw._sock
+                except AttributeError:
+                    sock = None
+            if sock is not None:
+                sock.settimeout(min(self.policy.read_timeout_seconds, remaining))
             try:
-                chunk = response.read(65536)
+                # read1 performs at most one underlying socket read, so the total
+                # deadline is re-applied between chunks rather than after a large
+                # blocking read returns.
+                chunk = response.read1(65536)
             except http.client.IncompleteRead as exc:
                 chunks.append(exc.partial)
                 return b"".join(chunks), TRUNCATED

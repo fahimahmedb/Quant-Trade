@@ -16,6 +16,7 @@ second SEC consumer added later cannot collectively exceed the frozen rate.
 
 from __future__ import annotations
 
+import math
 import os
 import re
 from dataclasses import dataclass, field
@@ -126,8 +127,28 @@ class SecAccessPolicy:
         if self.max_requests_per_second > SEC_DOCUMENTED_MAX_REQUESTS_PER_SECOND:
             raise SecPolicyNotConfigured(
                 "configured request rate exceeds the documented SEC maximum")
-        if self.max_concurrency < 1:
-            raise SecPolicyNotConfigured("concurrency must be at least 1")
+        numeric = (
+            self.discovery_poll_seconds, self.max_requests_per_second,
+            self.connect_timeout_seconds, self.read_timeout_seconds,
+            self.idle_reuse_seconds, self.total_deadline_seconds,
+            self.rate_limit_cooldown_seconds, self.forbidden_cooldown_seconds,
+            self.max_response_bytes, self.max_discovery_pages_per_poll,
+            self.filings_per_drain, *self.backoff_schedule_seconds,
+        )
+        if any(not math.isfinite(float(value)) or float(value) <= 0 for value in numeric):
+            raise SecPolicyNotConfigured("acquisition policy values must be finite and positive")
+        if self.max_concurrency != 1:
+            raise SecPolicyNotConfigured("this limiter implements exactly one global SEC request")
+        if self.allow_burst:
+            raise SecPolicyNotConfigured("burst credit is not implemented and cannot be enabled")
+        if not self.backoff_schedule_seconds or not 0 <= self.jitter_ratio <= 1:
+            raise SecPolicyNotConfigured("invalid backoff/jitter policy")
+        if "\r" in self.user_agent or "\n" in self.user_agent:
+            raise SecPolicyNotConfigured("user agent contains HTTP header control characters")
+        if self.connect_timeout_seconds > self.total_deadline_seconds:
+            raise SecPolicyNotConfigured("connect timeout exceeds whole-request deadline")
+        if self.read_timeout_seconds > self.total_deadline_seconds:
+            raise SecPolicyNotConfigured("read timeout exceeds whole-request deadline")
         if self.discovery_page_size < 1 or self.discovery_page_size > 100:
             raise SecPolicyNotConfigured("discovery page size must be between 1 and 100")
 

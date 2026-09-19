@@ -449,22 +449,25 @@ class QuantSystem:
             return "SEC_FAULT"
 
     def _capture_step(self, collector: SecForm4Collector) -> str | None:
-        if collector.has_pending_work():
-            self.components.set("SEC_CAPTURE", "RUN", "acquiring a queued filing")
-            outcomes = collector.drain()
-            self.state.status = "RUN"
-            state, detail = collector.component_state()
-            self.components.set("SEC_CAPTURE", state, detail)
-            self.heartbeat()
-            return "SEC_CAPTURE" if outcomes else None
+        # Discovery obligations have priority over backlog drain. Otherwise a
+        # sustained backlog can keep returning non-IDLE ticks and starve the poll
+        # whose continuity proof protects against silent gaps.
         if collector.poll_due():
-            self.components.set("SEC_CAPTURE", "RUN", "polling SEC discovery")
+            self.components.set("SEC_CAPTURE", "RUN", "SEC acquisition active")
             outcome = collector.poll()
             self.state.status = "RUN"
             state, detail = collector.component_state()
             self.components.set("SEC_CAPTURE", state, detail)
             self.heartbeat()
             return f"SEC_DISCOVERY_{outcome.result_state}"
+        if collector.has_pending_work():
+            self.components.set("SEC_CAPTURE", "RUN", "SEC acquisition active")
+            outcomes = collector.drain()
+            self.state.status = "RUN"
+            state, detail = collector.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return "SEC_CAPTURE" if outcomes else None
         day = collector.reconciliation_due()
         if day is not None:
             self.components.set("SEC_CAPTURE", "RUN", "reconciling a closed day")
