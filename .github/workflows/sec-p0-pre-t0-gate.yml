@@ -66,12 +66,19 @@ jobs:
       - name: V1 end-to-end regression
         run: python3 scripts/demo_quant_system.py
 
-      - name: Verification artifact matches this tree
-        # The commit carrying the record cannot name its own SHA, so the gate is a
-        # digest over the verified sources: it fails if anything under src, tests
-        # or scripts changed after the record was written. This run is itself the
-        # independent observation of the head.
-        run: PYTHONPATH=src python3 scripts/verify_p0.py --check --sha "${{ github.sha }}"
+      - name: Exact-head verification artifact
+        run: |
+          PYTHONPATH=src python3 scripts/verify_p0.py --runtime \
+            --sha "${{ github.sha }}" \
+            --output /tmp/SEC_FORM4_P0_VERIFICATION_EXACT_HEAD.json
+
+      - name: Upload exact-head verification artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-p0-verification-${{ github.sha }}
+          path: /tmp/SEC_FORM4_P0_VERIFICATION_EXACT_HEAD.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Clean working tree
         run: |

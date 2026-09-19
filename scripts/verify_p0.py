@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -37,7 +38,7 @@ ARTIFACT = ROOT / "handoff" / "SEC_FORM4_P0_VERIFICATION.json"
 #: these is what makes the record checkable: the commit containing the record
 #: cannot name its own SHA, but it can pin the tree it was produced from.
 # deploy carries the unit and launcher, which are fingerprint-critical.
-VERIFIED_TREES = ("src", "tests", "scripts", "deploy")
+VERIFIED_TREES = ("src", "tests", "scripts", "deploy", ".github/workflows")
 
 SUITES = {
     "full_unit_suite": ["python3", "-m", "unittest", "discover", "-s", "tests"],
@@ -76,11 +77,14 @@ def verified_tree_digest() -> str:
     import hashlib
     digest = hashlib.sha256()
     for tree in VERIFIED_TREES:
-        for path in sorted((ROOT / tree).rglob("*.py")):
-            if "__pycache__" in path.parts:
+        for path in sorted((ROOT / tree).rglob("*")):
+            if (not path.is_file() or "__pycache__" in path.parts
+                    or path.suffix in {".pyc", ".pyo"}):
                 continue
             digest.update(str(path.relative_to(ROOT)).encode("utf-8"))
+            digest.update(b"\0")
             digest.update(path.read_bytes())
+            digest.update(b"\0")
     return "sha256:" + digest.hexdigest()
 
 
@@ -120,7 +124,13 @@ def run(command: list[str]) -> dict[str, object]:
             "last_line": tail[-1] if tail else ""}
 
 
-def build_record() -> dict[str, object]:
+def git_tree_sha() -> str:
+    completed = subprocess.run(["git", "rev-parse", "HEAD^{tree}"], cwd=str(ROOT),
+                               capture_output=True, text=True, check=True)
+    return completed.stdout.strip()
+
+
+def build_record(*, exact_sha: str | None = None) -> dict[str, object]:
     suites = {name: run(command) for name, command in SUITES.items()}
     checks = {name: run(command) for name, command in CHECKS.items()}
     return {
@@ -131,8 +141,11 @@ def build_record() -> dict[str, object]:
         # The commit at the time of recording. The commit that *contains* this
         # record cannot name its own SHA, so this is the parent and the tree
         # digest below is what --check actually enforces.
-        "verified_sha": git_sha(),
+        "verified_sha": exact_sha or git_sha(),
+        "git_tree_sha": git_tree_sha(),
         "verified_tree_digest": verified_tree_digest(),
+        "ci_run_id": os.environ.get("GITHUB_RUN_ID"),
+        "ci_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
         "environment": {
             "python_version": platform.python_version(),
@@ -158,7 +171,10 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--write", action="store_true")
     mode.add_argument("--check", action="store_true")
-    parser.add_argument("--sha", help="expected commit, for CI")
+    mode.add_argument("--runtime", action="store_true",
+                      help="run verification and emit an exact-head CI artifact")
+    parser.add_argument("--sha", help="expected exact commit, for CI")
+    parser.add_argument("--output", type=Path, help="runtime artifact output path")
     args = parser.parse_args()
 
     if args.write:
@@ -169,6 +185,22 @@ def main() -> int:
                           ("verified_sha", "tests_discovered",
                            "sec_p0_lane_tests_discovered", "all_passed")},
                          indent=2, sort_keys=True))
+        return 0 if record["all_passed"] else 1
+
+    if args.runtime:
+        if not args.sha or not args.output:
+            parser.error("--runtime requires --sha and --output")
+        actual = git_sha()
+        if actual != args.sha:
+            print(f"exact-head mismatch: checkout {actual} != requested {args.sha}")
+            return 1
+        record = build_record(exact_sha=args.sha)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(record, indent=2, sort_keys=True) + "\n",
+                               encoding="utf-8")
+        print(json.dumps({key: record[key] for key in
+                          ("verified_sha", "git_tree_sha", "verified_tree_digest",
+                           "ci_run_id", "all_passed")}, indent=2, sort_keys=True))
         return 0 if record["all_passed"] else 1
 
     if not ARTIFACT.exists():
