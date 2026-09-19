@@ -1,309 +1,307 @@
-"""Retrospective observation-window audit.
+"""Fail-closed retrospective audit for the pre-t0 SEC acquisition service.
 
-``BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md §5.2`` closure condition
-2: "every expected acquisition action is derivable from scheduler-state
-transitions and is accounted for by an attempt, an authorized backoff/cooldown
-transition, or an explicit failure state", and the rule right after it - the
-audit "must never infer that an attempt was not due merely because no attempt was
-recorded."
+The audit never invents a healthy interval from absence. Every scheduled action
+has an obligation id and a network attempt may answer only the exact obligation
+it names. Request accounting is reconciled across four independent durable
+facts: scheduler obligation, traffic-budget reservation, pre-send intent and
+attempt journal.
 
-The first version of this module reconciled times against times, and Blue found
-three ways that let a missed deadline still report ``accountable=true``:
-
-1. the attempt window was ``abs(attempt - due) <= tolerance``, whose second half
-   subsumes the forward-only condition, so a request made *before* a deadline
-   could be offered as proof that the deadline was later met;
-2. attempts were matched with ``any(...)`` and never consumed, so one request
-   could silently answer several distinct obligations;
-3. an obligation counted as "superseded" by *any* later transition, including one
-   recorded after the deadline had already been missed.
-
-All three had the same root cause: obligations had no identity, so nothing could
-be reconciled one-to-one. This version gives them one.
-
-An **obligation** is a named commitment created by a transition that declared a
-``next_due_at_utc``. Exactly one resolution may retire it:
-
-* **SUPERSEDED** - a transition that explicitly names this obligation in
-  ``supersedes_obligation_id``, was recorded strictly *before* its due time, and
-  carries an authorized cause. Supersession is prospective by construction: a
-  transition recorded after the deadline cannot erase the hole.
-* **ATTEMPT** - a durable attempt whose request time falls in ``[due, due +
-  tolerance]``. Forward only, and consumed: an attempt retires at most one
-  obligation.
-* **PENDING** - the due time (plus grace) has not passed yet at audit time. Not
-  an answer, and not a hole either; reported separately so the last obligation of
-  a live service is not mistaken for a miss.
-
-Anything else is an unexplained hole and the window is not accountable.
-
-Supersessions are resolved before attempts. A supersession is the stronger claim
-- explicit, named, and necessarily recorded before the deadline - so letting it
-retire its obligation first keeps the scarce attempts available for the
-obligations that actually needed a request. The reverse order would produce
-spurious failures, and either order is safe against a false pass.
-
-This module reports. It never closes ``P0_CONTINUOUS_SERVICE_STATE`` and never
-records ``t0``: both belong to Blue.
+This module reports. It never declares t0 and never closes the 14-day state.
 """
-
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Any
 
 from ...state import parse_ts, read_jsonl
 from .scheduler import AUTHORIZED_SUPERSESSION_CAUSES
 from .supervisor import INVALIDATING_CAUSES, LIFECYCLE_CAUSES, UNATTESTED
 
-
-#: Grace after a due time within which an attempt still answers the obligation.
-#: One poll interval: a tick that lands a little late is service, not a hole.
 DUE_TOLERANCE_MULTIPLIER = 3.0
-
-#: Resolution kinds.
 RESOLVED_BY_ATTEMPT = "ATTEMPT"
 RESOLVED_BY_SUPERSESSION = "SUPERSEDED"
 PENDING = "PENDING"
 UNEXPLAINED = "UNEXPLAINED"
 
-#: Attempt result states that do not count as answering an obligation. An
-#: attempt suppressed by cooldown *is* an answer: the lane tried at the due time
-#: and the frozen policy stopped it, which is an accounted-for action.
-NON_ANSWERING_ATTEMPT_STATES: frozenset[str] = frozenset()
-
 
 @dataclass
 class Obligation:
-    """One named commitment and its single resolution, if it has one."""
-
     obligation_id: str
-    created_at_utc: str
-    due_at_utc: str
-    state: str
-    cause: str
-    acquisition_critical_fingerprint: str
     transition_id: str
-    supersedes_obligation_id: str | None = None
+    created_at: datetime
+    due_at: datetime
     status: str = UNEXPLAINED
-    resolution_kind: str | None = None
-    #: attempt_id, or the transition_id of the superseding transition.
     resolution_ref: str | None = None
-    resolution_at_utc: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
 
 
-def _obligations_from(transitions: list[dict[str, Any]]) -> tuple[list[Obligation], list[str]]:
-    """Read the obligation ledger out of the scheduler journal.
+def _aware(raw: str) -> datetime:
+    value = parse_ts(raw)
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise ValueError("timestamp is not timezone-aware")
+    return value.astimezone(timezone.utc)
 
-    A transition that declared a due time without an ``obligation_id`` cannot be
-    reconciled by name. Rather than fall back to matching by time - which is the
-    defect this module was rebuilt to remove - those are reported so the window
-    fails loudly instead of being audited under weaker rules.
-    """
-    obligations: list[Obligation] = []
-    unidentified: list[str] = []
-    for record in transitions:
-        due = record.get("next_due_at_utc")
-        if not due:
+
+def _read(path) -> list[dict[str, Any]]:
+    rows = list(read_jsonl(path))
+    if any(not isinstance(row, dict) for row in rows):
+        raise ValueError("journal record is not an object")
+    return rows
+
+
+def _unique(rows: list[dict[str, Any]], key: str, finding: str,
+            findings: list[str], *, required: bool = True) -> None:
+    seen: set[str] = set()
+    for row in rows:
+        value = row.get(key)
+        if not value:
+            if required:
+                findings.append(finding)
             continue
-        obligation_id = record.get("obligation_id")
-        if not obligation_id:
-            unidentified.append(record.get("transition_id") or "unknown")
+        if value in seen:
+            findings.append(finding)
+        seen.add(value)
+
+
+def _validate_timestamps(rows: list[dict[str, Any]], key: str, now: datetime,
+                         findings: list[str]) -> None:
+    prior: datetime | None = None
+    for row in rows:
+        raw = row.get(key)
+        if not raw:
+            findings.append("TIMESTAMP_MISSING")
             continue
-        obligations.append(Obligation(
-            obligation_id=obligation_id,
-            created_at_utc=record.get("recorded_at_utc") or "",
-            due_at_utc=due,
-            state=record.get("state") or "",
-            cause=record.get("cause") or "",
-            acquisition_critical_fingerprint=record.get(
-                "acquisition_critical_fingerprint") or "UNAVAILABLE",
-            transition_id=record.get("transition_id") or "",
-            supersedes_obligation_id=record.get("supersedes_obligation_id")))
-    return obligations, unidentified
+        stamp = _aware(raw)
+        if stamp > now:
+            findings.append("FUTURE_EVIDENCE")
+        if prior is not None and stamp < prior:
+            findings.append("JOURNAL_CLOCK_REVERSED")
+        prior = stamp
 
 
-def _resolve_supersessions(obligations: list[Obligation],
-                           transitions: list[dict[str, Any]]) -> None:
-    """Retire obligations explicitly replaced before they came due.
-
-    Three conditions, all required: the transition names this obligation, it was
-    recorded strictly before the due time, and its cause is authorized. A
-    superseding transition is consumed, so one re-plan cannot retire two
-    obligations.
-    """
-    consumed: set[str] = set()
-    by_target: dict[str, list[dict[str, Any]]] = {}
-    for record in transitions:
-        target = record.get("supersedes_obligation_id")
-        if target:
-            by_target.setdefault(target, []).append(record)
-    for obligation in obligations:
-        candidates = by_target.get(obligation.obligation_id, [])
-        due = parse_ts(obligation.due_at_utc)
-        for record in sorted(candidates, key=lambda item: item.get("recorded_at_utc") or ""):
-            transition_id = record.get("transition_id") or ""
-            if transition_id in consumed:
-                continue
-            recorded_raw = record.get("recorded_at_utc")
-            if not recorded_raw:
-                continue
-            if parse_ts(recorded_raw) >= due:
-                # Recorded at or after the deadline: this is a post-hoc note, and
-                # a post-hoc note never erases a missed deadline.
-                continue
-            if (record.get("cause") or "") not in AUTHORIZED_SUPERSESSION_CAUSES:
-                continue
-            obligation.status = RESOLVED_BY_SUPERSESSION
-            obligation.resolution_kind = RESOLVED_BY_SUPERSESSION
-            obligation.resolution_ref = transition_id
-            obligation.resolution_at_utc = recorded_raw
-            consumed.add(transition_id)
-            break
-
-
-def _resolve_attempts(obligations: list[Obligation], attempts: list[dict[str, Any]],
-                      tolerance: float) -> None:
-    """Assign at most one attempt to each still-open obligation, forward only.
-
-    Obligations are taken in due order and each is given the earliest unconsumed
-    attempt inside ``[due, due + tolerance]``. Greedy assignment over two sorted
-    sequences is optimal for point-in-window matching, and consumption is what
-    makes the relation one-to-one.
-    """
-    available = sorted(
-        ((parse_ts(record["request_attempted_at_utc"]), record.get("attempt_id") or "")
-         for record in attempts
-         if record.get("request_attempted_at_utc")
-         and record.get("result_state") not in NON_ANSWERING_ATTEMPT_STATES),
-        key=lambda pair: pair[0])
-    spent: set[int] = set()
-    for obligation in sorted(obligations, key=lambda item: item.due_at_utc):
-        if obligation.status != UNEXPLAINED:
+def _obligations(transitions: list[dict[str, Any]],
+                 findings: list[str]) -> dict[str, Obligation]:
+    out: dict[str, Obligation] = {}
+    for row in transitions:
+        due_raw = row.get("next_due_at_utc")
+        oid = row.get("obligation_id")
+        if due_raw is None:
+            if oid is not None:
+                findings.append("OBLIGATION_WITHOUT_DUE_TIME")
             continue
-        due = parse_ts(obligation.due_at_utc)
-        for index, (stamp, attempt_id) in enumerate(available):
-            if index in spent:
-                continue
-            offset = (stamp - due).total_seconds()
-            # Forward only. An attempt made before the deadline answers whatever
-            # was due then, never a commitment that had not yet come due.
-            if offset < 0:
-                continue
-            if offset > tolerance:
-                break
-            obligation.status = RESOLVED_BY_ATTEMPT
-            obligation.resolution_kind = RESOLVED_BY_ATTEMPT
-            obligation.resolution_ref = attempt_id
-            obligation.resolution_at_utc = stamp.isoformat()
-            spent.add(index)
-            break
-
-
-def _mark_pending(obligations: list[Obligation], now: datetime, tolerance: float) -> None:
-    """An obligation whose grace period has not elapsed is not yet a hole."""
-    for obligation in obligations:
-        if obligation.status != UNEXPLAINED:
+        if not oid:
+            findings.append("OBLIGATION_IDENTITY_MISSING")
             continue
-        due = parse_ts(obligation.due_at_utc)
-        if (now - due).total_seconds() <= tolerance:
+        if oid in out:
+            findings.append("DUPLICATE_OBLIGATION_ID")
+            continue
+        created = _aware(row["recorded_at_utc"])
+        due = _aware(due_raw)
+        if due < created:
+            findings.append("OBLIGATION_DUE_BEFORE_CREATION")
+        out[oid] = Obligation(oid, row.get("transition_id") or "", created, due)
+    return out
+
+
+def _apply_supersessions(obligations: dict[str, Obligation],
+                         transitions: list[dict[str, Any]],
+                         findings: list[str]) -> None:
+    used_transitions: set[str] = set()
+    by_transition = {row.get("transition_id"): row for row in transitions
+                     if row.get("transition_id")}
+    for row in transitions:
+        target = row.get("supersedes_obligation_id")
+        if not target:
+            continue
+        tid = row.get("transition_id")
+        target_ob = obligations.get(target)
+        if target_ob is None:
+            findings.append("SUPERSESSION_TARGET_UNKNOWN")
+            continue
+        if not tid or tid in used_transitions:
+            findings.append("SUPERSESSION_TRANSITION_REUSED")
+            continue
+        recorded = _aware(row["recorded_at_utc"])
+        if recorded < target_ob.created_at:
+            findings.append("NONCAUSAL_SUPERSESSION")
+            continue
+        if recorded >= target_ob.due_at:
+            # A re-plan at/after the deadline cannot erase the missed duty.
+            continue
+        if (row.get("cause") or "") not in AUTHORIZED_SUPERSESSION_CAUSES:
+            findings.append("UNAUTHORIZED_SUPERSESSION")
+            continue
+        if tid == target_ob.transition_id:
+            findings.append("SELF_SUPERSESSION")
+            continue
+        # The transition doing the superseding must itself exist in the ledger.
+        if tid not in by_transition:
+            findings.append("SUPERSESSION_TRANSITION_UNKNOWN")
+            continue
+        if target_ob.status != UNEXPLAINED:
+            findings.append("OBLIGATION_DOUBLE_RESOLUTION")
+            continue
+        target_ob.status = RESOLVED_BY_SUPERSESSION
+        target_ob.resolution_ref = tid
+        used_transitions.add(tid)
+
+
+def _apply_attempts(obligations: dict[str, Obligation],
+                    attempts: list[dict[str, Any]], tolerance: float,
+                    findings: list[str]) -> None:
+    for row in attempts:
+        oid = row.get("obligation_id")
+        aid = row.get("attempt_id")
+        if not oid:
+            findings.append("ATTEMPT_OBLIGATION_ID_MISSING")
+            continue
+        obligation = obligations.get(oid)
+        if obligation is None:
+            findings.append("ATTEMPT_OBLIGATION_UNKNOWN")
+            continue
+        stamp = _aware(row["request_attempted_at_utc"])
+        offset = (stamp - obligation.due_at).total_seconds()
+        if offset < 0:
+            findings.append("ATTEMPT_BEFORE_DUE")
+            continue
+        if offset > tolerance:
+            findings.append("ATTEMPT_AFTER_DUE_WINDOW")
+            continue
+        if obligation.status == RESOLVED_BY_SUPERSESSION:
+            findings.append("OBLIGATION_DOUBLE_RESOLUTION")
+            continue
+        if obligation.status == RESOLVED_BY_ATTEMPT:
+            findings.append("OBLIGATION_MULTIPLE_ATTEMPTS")
+            continue
+        obligation.status = RESOLVED_BY_ATTEMPT
+        obligation.resolution_ref = aid
+
+
+def _mark_pending(obligations: dict[str, Obligation], now: datetime,
+                  tolerance: float) -> None:
+    for obligation in obligations.values():
+        if obligation.status == UNEXPLAINED and \
+                (now - obligation.due_at).total_seconds() <= tolerance:
             obligation.status = PENDING
+
+
+def _request_accounting(collector: Any, attempts: list[dict[str, Any]],
+                        findings: list[str]) -> None:
+    reservations = _read(collector.paths.sec_budget_reservations)
+    intents = _read(collector.paths.sec_request_intents)
+    _unique(reservations, "attempt_id", "DUPLICATE_BUDGET_RESERVATION", findings)
+    _unique(attempts, "attempt_id", "DUPLICATE_ATTEMPT_ID", findings)
+
+    stages: dict[str, list[str]] = {}
+    for row in intents:
+        aid = row.get("attempt_id")
+        event = row.get("event")
+        if not aid or event not in {
+            "INTENT", "RESERVED", "SEND_AUTHORIZED", "RECEIVED", "FINISHED", "SUPPRESSED"}:
+            findings.append("REQUEST_INTENT_INVALID")
+            continue
+        stages.setdefault(aid, []).append(event)
+
+    reservation_ids = {row.get("attempt_id") for row in reservations}
+    attempt_ids = {row.get("attempt_id") for row in attempts}
+    for aid, events in stages.items():
+        for event in set(events):
+            if events.count(event) > 1:
+                findings.append("DUPLICATE_REQUEST_STAGE")
+        if "SUPPRESSED" in events:
+            if any(event in events for event in ("RESERVED", "SEND_AUTHORIZED",
+                                                 "RECEIVED", "FINISHED")):
+                findings.append("SUPPRESSED_REQUEST_WAS_EMITTED")
+            continue
+        required = {"INTENT", "RESERVED", "SEND_AUTHORIZED", "FINISHED"}
+        if not required.issubset(events):
+            findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
+        if aid not in reservation_ids:
+            findings.append("ATTEMPT_WITHOUT_BUDGET_RESERVATION")
+        if aid not in attempt_ids:
+            findings.append("SEND_WITHOUT_DURABLE_ATTEMPT")
+
+    for aid in reservation_ids:
+        if aid not in stages:
+            findings.append("BUDGET_RESERVATION_WITHOUT_INTENT")
+        if aid not in attempt_ids:
+            findings.append("BUDGET_RESERVATION_WITHOUT_ATTEMPT")
+    for aid in attempt_ids:
+        if aid not in reservation_ids:
+            findings.append("ATTEMPT_WITHOUT_BUDGET_RESERVATION")
+        events = stages.get(aid, [])
+        if "SEND_AUTHORIZED" not in events or "FINISHED" not in events:
+            findings.append("ATTEMPT_REQUEST_CHAIN_INCOMPLETE")
 
 
 def audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
                              now: datetime | None = None) -> dict[str, Any]:
-    """Reconcile the obligation ledger against the durable attempt record."""
-    transitions = collector.scheduler.all()
-    attempts = collector.store.attempts()
-    lifecycle = list(read_jsonl(collector.paths.sec_lifecycle))
-    policy = getattr(collector, "policy", None)
-    tolerance = (tolerance_seconds if tolerance_seconds is not None
-                 else (policy.discovery_poll_seconds * DUE_TOLERANCE_MULTIPLIER
-                       if policy else 180.0))
-    moment = now or collector.timebase.now()
-
-    obligations, unidentified = _obligations_from(transitions)
-    _resolve_supersessions(obligations, transitions)
-    _resolve_attempts(obligations, attempts, tolerance)
-    _mark_pending(obligations, moment, tolerance)
-
-    unexplained = [obligation.to_dict() for obligation in obligations
-                   if obligation.status == UNEXPLAINED]
-    pending = [obligation.obligation_id for obligation in obligations
-               if obligation.status == PENDING]
-    by_attempt = sum(1 for item in obligations
-                     if item.status == RESOLVED_BY_ATTEMPT)
-    by_supersession = sum(1 for item in obligations
-                          if item.status == RESOLVED_BY_SUPERSESSION)
-
-    fingerprints = collector.scheduler.fingerprints_seen()
-    unattested = [record for record in lifecycle
-                  if record.get("lifecycle_cause") == UNATTESTED]
-    invalidating = [record for record in lifecycle
-                    if record.get("lifecycle_cause") in INVALIDATING_CAUSES]
-
+    """Return a count-free pass/fail projection suitable for a pre-t0 gate."""
     findings: list[str] = []
-    if unexplained:
-        findings.append("UNEXPLAINED_EXPECTED_ACTION")
-    if unidentified:
-        findings.append("OBLIGATION_IDENTITY_MISSING")
-    if len(fingerprints) > 1:
-        findings.append("ACQUISITION_FINGERPRINT_CHANGED")
-    if unattested:
-        findings.append("LIFECYCLE_CAUSE_UNATTESTED")
-    if invalidating:
-        findings.append("INVALIDATING_INTERVENTION")
-    if not transitions:
-        findings.append("NO_SCHEDULER_PROVENANCE")
+    try:
+        moment = (now or collector.timebase.now()).astimezone(timezone.utc)
+        if moment.tzinfo is None:
+            raise ValueError("audit time must be aware")
+        transitions = _read(collector.paths.sec_scheduler)
+        attempts = collector.store.attempts()
+        lifecycle = _read(collector.paths.sec_lifecycle)
+        policy = getattr(collector, "policy", None)
+        tolerance = (tolerance_seconds if tolerance_seconds is not None else
+                     (policy.discovery_poll_seconds * DUE_TOLERANCE_MULTIPLIER
+                      if policy else 180.0))
+        if tolerance < 0 or tolerance == float("inf"):
+            raise ValueError("invalid tolerance")
 
-    window = _window_bounds(transitions)
+        _unique(transitions, "transition_id", "DUPLICATE_TRANSITION_ID", findings)
+        _validate_timestamps(transitions, "recorded_at_utc", moment, findings)
+        _validate_timestamps(attempts, "request_attempted_at_utc", moment, findings)
+        if lifecycle:
+            _validate_timestamps(lifecycle, "recorded_at_utc", moment, findings)
+        else:
+            findings.append("LIFECYCLE_PROVENANCE_MISSING")
+
+        obligations = _obligations(transitions, findings)
+        _apply_supersessions(obligations, transitions, findings)
+        _apply_attempts(obligations, attempts, tolerance, findings)
+        _mark_pending(obligations, moment, tolerance)
+
+        if any(item.status == UNEXPLAINED for item in obligations.values()):
+            findings.append("UNEXPLAINED_EXPECTED_ACTION")
+        if not transitions:
+            findings.append("NO_SCHEDULER_PROVENANCE")
+
+        fingerprints = {row.get("acquisition_critical_fingerprint")
+                        for row in transitions if row.get("acquisition_critical_fingerprint")}
+        if len(fingerprints) > 1:
+            findings.append("ACQUISITION_FINGERPRINT_CHANGED")
+        if any(row.get("lifecycle_cause") == UNATTESTED for row in lifecycle):
+            findings.append("LIFECYCLE_CAUSE_UNATTESTED")
+        if any(row.get("lifecycle_cause") not in LIFECYCLE_CAUSES
+               for row in lifecycle):
+            findings.append("LIFECYCLE_CAUSE_INVALID")
+        if any(row.get("lifecycle_cause") in INVALIDATING_CAUSES for row in lifecycle):
+            findings.append("INVALIDATING_INTERVENTION")
+
+        _request_accounting(collector, attempts, findings)
+        findings.extend(collector._state_proof_findings())
+        if collector.state.coverage_state != "COMPLETE" or collector.state.open_gaps:
+            findings.append("COVERAGE_NOT_COMPLETE")
+        if collector.liveness() != "RUNNING":
+            findings.append("COLLECTOR_NOT_LIVE")
+    except Exception:
+        findings.append("ACQUISITION_JOURNAL_INVALID")
+
+    findings = sorted(set(findings))
     return {
         "accountable": not findings,
         "findings": findings,
-        # Obligation accounting. Every obligation has exactly one status.
-        "obligations": len(obligations),
-        "obligations_resolved_by_attempt": by_attempt,
-        "obligations_resolved_by_supersession": by_supersession,
-        "obligations_pending": len(pending),
-        "obligations_pending_ids": pending,
-        "obligations_unexplained": len(unexplained),
-        "unexplained_obligations": unexplained,
-        "obligations_without_identity": unidentified,
-        "reconciliation": "one_obligation_to_one_resolution",
-        "attempt_matching": "forward_only_within_tolerance_consumed",
-        "supersession_rule": "explicit_named_before_due_with_authorized_cause",
-        "due_tolerance_seconds": tolerance,
-        # Kept for continuity with the earlier report shape.
-        "expected_actions": len(obligations),
-        "unexplained_expected_actions": unexplained,
-        "attempts_recorded": len(attempts),
-        "scheduler_transitions": len(transitions),
-        "service_starts": len(lifecycle),
-        "lifecycle_causes": sorted({record.get("lifecycle_cause") for record in lifecycle}
-                                   - {None}),
-        "lifecycle_cause_vocabulary": list(LIFECYCLE_CAUSES),
-        "fingerprints_observed": fingerprints,
-        "fingerprint_stable": len(fingerprints) <= 1,
-        "window_start_utc": window[0],
-        "window_end_utc": window[1],
-        "window_duration_seconds": window[2],
-        "coverage_state": collector.state.coverage_state,
-        "open_gap_kinds": sorted({gap["kind"] for gap in collector.state.open_gaps}),
-        # Deliberately not decided here.
+        "fingerprint_stable": "ACQUISITION_FINGERPRINT_CHANGED" not in findings,
+        "coverage_complete": "COVERAGE_NOT_COMPLETE" not in findings,
+        "request_accounting_complete": not any(
+            marker in finding for finding in findings
+            for marker in ("REQUEST_", "ATTEMPT_", "BUDGET_RESERVATION")),
+        "lifecycle_attested": not any(
+            finding.startswith("LIFECYCLE_") for finding in findings),
         "t0_authority": "BLUE_TEAM",
         "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
     }
-
-
-def _window_bounds(transitions: list[dict[str, Any]]
-                   ) -> tuple[str | None, str | None, float | None]:
-    stamps = sorted(parse_ts(record["recorded_at_utc"]) for record in transitions
-                    if record.get("recorded_at_utc"))
-    if not stamps:
-        return None, None, None
-    return stamps[0].isoformat(), stamps[-1].isoformat(), round(
-        (stamps[-1] - stamps[0]).total_seconds(), 1)
