@@ -62,14 +62,13 @@ LIFECYCLE_CAUSES = (SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE,
 
 #: Automatic causes, which do not invalidate an observation window on their own.
 AUTOMATIC_CAUSES = frozenset({AUTOMATIC_RESTART_AFTER_FAILURE,
-                              AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
                               DEPLOYMENT_RESTART, SCHEDULED_START})
 
 #: Not a cause. The absence of one.
 UNATTESTED = "LIFECYCLE_CAUSE_UNATTESTED"
 
 #: Causes that invalidate an active observation window (§5.2 intervention rule).
-INVALIDATING_CAUSES = frozenset({MANUAL_START})
+INVALIDATING_CAUSES = frozenset({MANUAL_START, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE})
 
 BOOT_ID_ENV = "QUANT_SEC_BOOT_ID"
 CAUSE_ENV = "QUANT_SEC_LIFECYCLE_CAUSE"
@@ -94,6 +93,8 @@ SERVICE_POLL_SECONDS_ENV = "QUANT_SEC_SERVICE_POLL_SECONDS"
 SERVICE_MAX_WAITS_ENV = "QUANT_SEC_SERVICE_MAX_WAITS"
 SERVICE_RESTART_DELAY_ENV = "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS"
 SERVICE_RESTART_BURST_ENV = "QUANT_SEC_SERVICE_RESTART_BURST_LIMIT"
+EFFECTIVE_UNIT_DIGEST_ENV = "QUANT_SEC_EFFECTIVE_UNIT_DIGEST"
+LAUNCH_AUTHORITY_NONCE_ENV = "QUANT_SEC_LAUNCH_AUTHORITY_NONCE"
 
 #: Service managers whose invocation identity is accepted as provenance.
 RECOGNISED_SERVICE_MANAGERS = frozenset({"systemd"})
@@ -156,7 +157,9 @@ def effective_service_configuration(environ: dict[str, str] | None = None) -> di
             "restart_delay_seconds": number(SERVICE_RESTART_DELAY_ENV),
             "restart_burst_limit": number(SERVICE_RESTART_BURST_ENV),
             "qualifying_mode": (source.get(QUALIFYING_ENV) or "").strip().lower()
-                               in ("1", "true", "yes")}
+                               in ("1", "true", "yes"),
+            "effective_unit_digest": (
+                (source.get(EFFECTIVE_UNIT_DIGEST_ENV) or "").strip() or None)}
 
 
 def lifecycle_provenance(environ: dict[str, str] | None = None) -> dict[str, Any]:
@@ -176,6 +179,8 @@ def lifecycle_provenance(environ: dict[str, str] | None = None) -> dict[str, Any
         "lifecycle_cause_declared": declared or None,
         "boot_at_utc": (source.get(BOOT_AT_ENV) or "").strip() or None,
         "supervisor_id": (source.get(SUPERVISOR_ENV) or "").strip() or None,
+        "launch_authority_nonce": (
+            (source.get(LAUNCH_AUTHORITY_NONCE_ENV) or "").strip() or None),
         "externally_attested": cause != UNATTESTED,
         "invalidates_observation_window": cause in INVALIDATING_CAUSES,
         "service_manager": managed["service_manager"],
