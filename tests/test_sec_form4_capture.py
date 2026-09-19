@@ -1523,17 +1523,15 @@ class VisibilityFirewallTests(CollectorTestCase):
         collector.poll()
         collector.drain(max_items=3)
         telemetry = collector.telemetry()
-        # Work in flight and storage presence are booleans, never tallies.
-        self.assertIsInstance(telemetry["work_in_flight"], bool)
-        self.assertIsInstance(telemetry["storage"]["objects_present"], bool)
+        # Protocol-mutating actors receive no activity-volume/timing proxy.
+        for forbidden in ("work_in_flight", "cursor_identity_digest",
+                          "last_attempt_at_utc", "last_capture_at_utc",
+                          "next_due_at_utc", "raw_bytes", "requests_spent"):
+            self.assertNotIn(forbidden, json.dumps(telemetry))
+        self.assertEqual(find_count_proxies(telemetry), [])
         self.assertNotIn("raw_objects", telemetry["storage"])
         self.assertNotIn("pending_tasks", telemetry)
         self.assertNotIn("captures", telemetry)
-        for key, value in telemetry.items():
-            if key in ("rate_limit", "policy", "storage"):
-                continue
-            self.assertNotIsInstance(value, int if not isinstance(value, bool) else str,
-                                     f"{key} publishes a count")
 
     def test_exceptions_and_error_classes_never_carry_response_content(self) -> None:
         leaky = (b"<html><body>ACME CORP filing 0000320193-26-000045 "
@@ -2841,12 +2839,13 @@ class CountProxyFirewallTests(SecCaptureTestCase):
 
     def test_operational_health_numbers_remain_permitted(self) -> None:
         """The firewall forbids scientific volume, not all numbers."""
-        healthy = {"raw_bytes": 49752, "requests_spent": 22, "scheduler_transitions": 14,
-                   "obligations": 13, "obligations_unexplained": 0,
-                   "window_duration_seconds": 154.8, "backoff_step": 0,
-                   "poll_seconds": 60.0, "service_starts": 2}
+        healthy = {"poll_seconds": 60.0, "max_requests_per_second": 2.0,
+                   "max_concurrency": 1, "cooldown_active": False}
         self.assertEqual(find_count_proxies(healthy), [])
         assert_no_count_proxies(healthy, "telemetry")
+        for proxy in ({"raw_bytes": 49752}, {"requests_spent": 22},
+                      {"scheduler_transitions": 14}, {"obligations": 13}):
+            self.assertTrue(find_count_proxies(proxy))
 
     def test_booleans_are_never_treated_as_counts(self) -> None:
         self.assertEqual(find_count_proxies({"filing_present": True}), [])
