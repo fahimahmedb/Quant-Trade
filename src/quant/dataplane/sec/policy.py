@@ -90,6 +90,12 @@ class SecAccessPolicy:
     allow_burst: bool = False
     connect_timeout_seconds: float = 10.0
     read_timeout_seconds: float = 20.0
+    #: A kept-alive connection idle longer than this is replaced *before* the
+    #: next request rather than retried after it fails. This is the permitted
+    #: reconnect that replaced the removed hidden HTTP retry, so it is
+    #: acquisition-critical: it changes when a reconnect happens, never how many
+    #: requests are emitted.
+    idle_reuse_seconds: float = 20.0
     #: Whole-request deadline, so a trickling response cannot stall liveness.
     total_deadline_seconds: float = 60.0
     #: Bounded exponential backoff with jitter, per NEXT_BUILD_MISSION.md.
@@ -150,6 +156,7 @@ class SecAccessPolicy:
             "connect_timeout_seconds": self.connect_timeout_seconds,
             "read_timeout_seconds": self.read_timeout_seconds,
             "total_deadline_seconds": self.total_deadline_seconds,
+            "idle_reuse_seconds": self.idle_reuse_seconds,
             "backoff_schedule_seconds": list(self.backoff_schedule_seconds),
             "jitter_ratio": self.jitter_ratio,
             "rate_limit_cooldown_seconds": self.rate_limit_cooldown_seconds,

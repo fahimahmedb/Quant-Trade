@@ -37,6 +37,11 @@ from .state import (ComponentRegistry, parse_ts, read_json, read_jsonl,  # noqa:
                      utc_now, write_json)
 
 
+#: Keys a legacy blocked-lane entry carries for the BuildTask rather than the
+#: ResearchTask. Passing one to ResearchTask is a TypeError, which on a fresh
+#: ``var/`` used to make ``boot()`` fail outright.
+BUILD_TASK_ONLY_FIELDS = frozenset({"capability", "acceptance", "affected_subsystems"})
+
 HEARTBEAT_TIMEOUT_SECONDS = 900
 MAX_TASK_ATTEMPTS = 3
 #: How long a worker may hold a task before its lease is considered stale.
@@ -160,11 +165,19 @@ class QuantSystem:
                       unblocked=unblocked, seeded=seeded,
                       resumed_desk_cursor=self.state.desk_cursor,
                       book_nav=self.desk.capital.nav)
+        # Bind this process's externally attested lifecycle before any capture
+        # work runs, so the observation audit can attribute every subsequent
+        # scheduler transition to a known service instance.
+        lifecycle = self.sec.record_service_start()
         self.state.next_action = self._describe_next_action()
         self.components.set("CONTROL", "IDLE", "booted")
         self.save()
         return {"boot": self.state.boots, "recovered": recovered, "seeded": seeded,
-                "unblocked": unblocked, "next_action": self.state.next_action}
+                "unblocked": unblocked, "next_action": self.state.next_action,
+                "sec_lifecycle_cause": lifecycle["lifecycle_cause"],
+                "sec_boot_id": lifecycle["boot_id"],
+                "sec_acquisition_fingerprint": lifecycle[
+                    "acquisition_critical_fingerprint"]}
 
     def _recover_interrupted(self) -> list[str]:
         recovered = []
@@ -274,8 +287,14 @@ class QuantSystem:
             if self.queue.add(task):
                 seeded.append(task_id)
         for entry in self._legacy_blocked_lanes():
-            if entry["task_id"] not in self.queue.tasks and self.queue.add(ResearchTask(**{
-                    key: value for key, value in entry.items() if key != "capability"})):
+            # A legacy entry describes both a blocked task and the capability gap
+            # behind it. Only the task fields may reach ResearchTask; the rest
+            # belong to the BuildTask below. Filtering by an explicit set rather
+            # than by one name keeps a newly described gap from crashing boot.
+            task_fields = {key: value for key, value in entry.items()
+                           if key not in BUILD_TASK_ONLY_FIELDS}
+            if entry["task_id"] not in self.queue.tasks and self.queue.add(
+                    ResearchTask(**task_fields)):
                 seeded.append(entry["task_id"])
                 self.learning.raise_build_task(BuildTask(
                     task_id=f"BUILD-{entry['task_id']}", capability=entry["capability"],

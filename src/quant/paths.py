@@ -131,6 +131,21 @@ class QuantPaths:
         return self.sec / "collector_state.json"
 
     @property
+    def sec_scheduler(self) -> Path:
+        """Prospective scheduler-state transitions, the audit's expected sequence."""
+        return self.sec / "scheduler.jsonl"
+
+    @property
+    def sec_lifecycle(self) -> Path:
+        """Externally attested service start/restart provenance."""
+        return self.sec / "lifecycle.jsonl"
+
+    @property
+    def sec_fingerprint(self) -> Path:
+        """The materialized acquisition-critical manifest and its fingerprint."""
+        return self.sec / "acquisition_fingerprint.json"
+
+    @property
     def sec_budget(self) -> Path:
         """Global SEC traffic budget, shared by every SEC consumer."""
         return self.sec / "sec_traffic_budget.json"
@@ -155,10 +170,30 @@ class QuantPaths:
     def sec_source_versions(self) -> Path:
         return self.sec_restricted / "source_versions.jsonl"
 
-    def sec_firewall_safe_journals(self) -> tuple[Path, ...]:
-        """Capture state a protocol-mutating surface is allowed to read."""
+    def sec_operator_internal_journals(self) -> tuple[Path, ...]:
+        """Capture state that carries no filing-identifying string.
+
+        Named for what it actually guarantees. These journals contain no
+        accession, locator, body or parsed field, so a leak of one exposes no
+        filing identity - but they are per-event records, and under the frozen
+        acquisition path some events are one-per-filing. Counting
+        ``DRAIN_COMPLETED`` transitions here, or FILING attempts in the attempt
+        journal, recovers the filing count.
+
+        They are therefore **operator-internal**, not publishable to a
+        protocol-mutating actor as they stand. What may be published is the
+        aggregated, count-free projection: the status surface, the Chief Brief,
+        ``telemetry()``, the observation audit and the committed handoff
+        artifacts. ``sec_published_surfaces`` is the set held to the no-count
+        rule; see ``visibility.find_count_proxies``.
+
+        The earlier name for this method was ``sec_firewall_safe_journals``, which
+        overstated the guarantee and is what let a per-cause tally reach a
+        published artifact in the first place.
+        """
         return (self.sec_attempts, self.sec_raw_manifest, self.sec_coverage,
-                self.sec_collector_state, self.sec_budget)
+                self.sec_collector_state, self.sec_budget, self.sec_scheduler,
+                self.sec_lifecycle, self.sec_fingerprint)
 
     def sec_restricted_journals(self) -> tuple[Path, ...]:
         return (self.sec_locators, self.sec_envelopes, self.sec_source_versions)

@@ -7,12 +7,15 @@ check the list rather than trust a summary.
 
 from __future__ import annotations
 
+import dataclasses
 import errno
+import uuid
 import gzip
 import json
 import os
 import sys
 import unittest
+from unittest import mock
 from datetime import timedelta
 from pathlib import Path
 
@@ -31,13 +34,47 @@ from quant.dataplane.sec.store import (CAPTURED, NOT_ADMISSIBLE_FOR_CONFIRMATION
                                        SecAttemptRecord, SecCaptureStore,
                                        SecRawObjectRecord, SecStorageFailure,
                                        digest_bytes)
+from quant.dataplane.sec import fingerprint as fingerprint_module  # noqa: E402
+from quant.dataplane.sec.fingerprint import (ACQUISITION_CRITICAL_MODULES,  # noqa: E402
+                                             EXPLICITLY_NONCRITICAL,
+                                             FINGERPRINT_SCHEMA_VERSION,
+                                             INCLUDE_CANONICAL, TRANSFORM_CANONICAL,
+                                             PolicyClassificationInvalid,
+                                             UnclassifiedPolicyField,
+                                             acquisition_critical_fingerprint,
+                                             build_manifest, canonical_json,
+                                             canonical_policy, compute_fingerprint,
+                                             policy_field_names,
+                                             verify_policy_classification)
+from quant.dataplane.sec.audit import audit_observation_window  # noqa: E402
+from quant.dataplane.sec.scheduler import (AUTHORIZED_SUPERSESSION_CAUSES,  # noqa: E402
+                                           AWAITING_POLL, BACKOFF,
+                                           BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
+                                           CONFIG_FAIL_CLOSED, COOLDOWN,
+                                           DRAIN_COMPLETED, DRAINING, LANE_ENABLED,
+                                           POLL_COMPLETED, SCHEDULER_STATES,
+                                           SERVICE_START, SchedulerTransition,
+                                           WORK_ENQUEUED)
+from quant.dataplane.sec.supervisor import (AUTOMATIC_CAUSES,  # noqa: E402
+                                            AUTOMATIC_RESTART_AFTER_FAILURE,
+                                            AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+                                            DEPLOYMENT_RESTART, INVALIDATING_CAUSES,
+                                            LIFECYCLE_CAUSES, MANUAL_START,
+                                            SCHEDULED_START, UNATTESTED,
+                                            effective_service_configuration,
+                                            lifecycle_provenance,
+                                            service_manager_provenance)
 from quant.dataplane.sec.timebase import FrozenTimebase  # noqa: E402
-from quant.dataplane.sec.visibility import (assert_no_scientific_content,  # noqa: E402
-                                            find_leaks)
+from quant.dataplane.sec.visibility import (assert_no_count_proxies,  # noqa: E402
+                                            assert_no_scientific_content,
+                                            find_count_proxies, find_leaks)
 from quant.dataplane.sec.transport import (COMPLETE,  # noqa: E402
                                            DEADLINE_EXCEEDED as DEADLINE_EXCEEDED_OUTCOME,
-                                           SecHttpResponse, SecTransportError, TRUNCATED)
+                                           PermitAlreadySpent, RequestPermit,
+                                           SecHttpResponse, SecHttpTransport,
+                                           SecTransportError, TRUNCATED)
 from quant.paths import QuantPaths  # noqa: E402
+from quant.state import append_jsonl, parse_ts, read_jsonl  # noqa: E402
 
 
 USER_AGENT = "Quant Research quant-research@example.com"
@@ -299,7 +336,7 @@ class JournalTests(SecCaptureTestCase):
             request_attempted_at_utc=self.timebase.now_iso(),
             result_state="CAPTURED", collector_version="v", git_commit="c"))
         safe = "\n".join(path.read_text(encoding="utf-8")
-                         for path in self.paths.sec_firewall_safe_journals()
+                         for path in self.paths.sec_operator_internal_journals()
                          if path.exists())
         self.assertNotIn("0000320193", safe)
         self.assertNotIn("Archives/edgar/data", safe)
@@ -511,14 +548,23 @@ def build_feed(indices: list[int], *, form: str = "4",
 
 
 class FakeTransport:
-    """Same ``fetch`` contract as the real transport, so production has no test branch."""
+    """Same ``fetch`` contract as the real transport, so production has no test branch.
+
+    It honours the permit exactly as the real transport does - consumed at send,
+    single use - so every test in this file exercises the one-request-per-permit
+    invariant rather than only the tests that name it.
+    """
 
     def __init__(self, handler):
         self.handler = handler
         self.requested: list[str] = []
+        #: Attempt id carried by the permit for each request actually emitted.
+        self.permits_consumed: list[str] = []
 
-    def fetch(self, path: str) -> SecHttpResponse:
+    def fetch(self, path: str, permit) -> SecHttpResponse:
+        permit.consume()
         self.requested.append(path)
+        self.permits_consumed.append(permit.attempt_id)
         outcome = self.handler(path, len(self.requested) - 1)
         if isinstance(outcome, BaseException):
             raise outcome
@@ -682,21 +728,82 @@ class AntiFalseSuccessTests(CollectorTestCase):
                     parse_discovery_page(body, requested_start=0, requested_count=40)
                 self.assertEqual(raised.exception.reason, expected)
 
-    def test_a_filter_that_does_not_surface_form_4_is_an_error(self) -> None:
-        """A discovery filter that cannot be shown to work is never NO_NEW_DATA."""
-        wrong_form = build_feed([1], form="8-K")
-        with self.assertRaises(DiscoveryInvalid) as raised:
-            parse_discovery_page(wrong_form, requested_start=0, requested_count=40)
-        self.assertTrue(raised.exception.reason.startswith(
-            "discovery_form_type_filter_mismatch"))
-        # An ownership form other than 4 when 4 was requested is also a mismatch.
-        with self.assertRaises(DiscoveryInvalid):
-            parse_discovery_page(build_feed([2], form="3"), requested_start=0,
-                                 requested_count=40)
-        collector = self.collector(lambda path, call: response(wrong_form))
+    def test_prefix_matched_non_ownership_forms_are_excluded_not_errors(self) -> None:
+        """EDGAR matches ``type`` by prefix, so ``type=4`` also returns 497*.
+
+        Observed live during the pre-t0 rodage: a ``497J`` fund filing arrived on
+        the Form-4 feed. The server filter is a narrowing hint; local
+        classification is authoritative. Excluding an unwanted form is normal
+        operation, so it must not fail the poll - but the exclusion is explicit
+        and inspectable, never a silent drop.
+        """
+        mixed = build_feed([], entries=[
+            ENTRY_TEMPLATE.format(form="4", n=1, cik="0000320193", cik_int="320193",
+                                  nodash="000032019326000045",
+                                  accession="0000320193-26-000045", hh="16", mm="31"),
+            ENTRY_TEMPLATE.format(form="497J", n=2, cik="0000789019", cik_int="789019",
+                                  nodash="000078901926000112",
+                                  accession="0000789019-26-000112", hh="16", mm="22"),
+            ENTRY_TEMPLATE.format(form="497K", n=3, cik="0001018724", cik_int="1018724",
+                                  nodash="000101872426000301",
+                                  accession="0001018724-26-000301", hh="16", mm="04"),
+            ENTRY_TEMPLATE.format(form="4/A", n=4, cik="0001045810", cik_int="1045810",
+                                  nodash="000104581026000777",
+                                  accession="0001045810-26-000777", hh="15", mm="50")])
+        page = parse_discovery_page(mixed, requested_start=0, requested_count=40)
+        self.assertEqual(page.entry_count, 4)
+        self.assertEqual([entry.form_type for entry in page.form_4_entries()], ["4", "4/A"])
+        self.assertEqual(page.excluded_form_types, ["497J", "497K"])
+
+        collector = self.collector(self.fixture_router(atom=mixed))
+        outcome = collector.poll()
+        self.assertTrue(outcome.valid_discovery,
+                        "an unwanted form type is not a broken discovery")
+        self.assertEqual(outcome.result_state, NEW_ITEMS)
+        self.assertEqual(outcome.enqueued, 2, "only the ownership filings are queued")
+        self.assertEqual(collector.state.open_gaps, [])
+
+    def test_an_unreadable_form_type_is_still_an_error(self) -> None:
+        """The real guard: a term we cannot read means the filter is unproven."""
+        # XML-valid terms that are not readable as an EDGAR form type. (A term
+        # containing raw markup breaks XML parsing first, which is also an
+        # error, just an earlier one.)
+        for bad in ("not a form type!", "4" * 40, "../../etc/passwd", "form type: four"):
+            with self.subTest(term=bad):
+                feed = build_feed([], entries=[
+                    "\t<entry>\n\t\t<title>x</title>\n"
+                    "\t\t<link rel='alternate' href='https://www.sec.gov/Archives/edgar/"
+                    "data/1/900000000126000001/9000000001-26-000001-index.htm'/>\n"
+                    f"\t\t<category term='{bad}' label='form type'/>\n"
+                    "\t\t<id>urn:tag:sec.gov,2008:accession-number="
+                    "9000000001-26-000001</id>\n\t</entry>"])
+                with self.assertRaises(DiscoveryInvalid) as raised:
+                    parse_discovery_page(feed, requested_start=0, requested_count=40)
+                self.assertTrue(raised.exception.reason.startswith(
+                    "discovery_entry_form_type_unparseable"))
+        collector = self.collector(lambda path, call: response(build_feed([], entries=[
+            "\t<entry>\n\t\t<title>x</title>\n"
+            "\t\t<link rel='alternate' href='https://www.sec.gov/Archives/edgar/data/1/"
+            "900000000126000001/9000000001-26-000001-index.htm'/>\n"
+            "\t\t<category term='not a form!' label='form type'/>\n"
+            "\t\t<id>urn:tag:sec.gov,2008:accession-number=9000000001-26-000001</id>\n"
+            "\t</entry>"])))
         outcome = collector.poll()
         self.assertEqual(outcome.result_state, DISCOVERY_INVALID)
         self.assertNotEqual(outcome.result_state, NO_NEW_DATA)
+
+    def test_a_page_of_only_unwanted_forms_is_valid_but_yields_nothing(self) -> None:
+        """No Form 4 in a prefix-matched window is not a failure, and not new data."""
+        only_funds = build_feed([], entries=[
+            ENTRY_TEMPLATE.format(form="497J", n=2, cik="0000789019", cik_int="789019",
+                                  nodash="000078901926000112",
+                                  accession="0000789019-26-000112", hh="16", mm="22")])
+        collector = self.collector(self.fixture_router(atom=only_funds))
+        outcome = collector.poll()
+        self.assertTrue(outcome.valid_discovery)
+        self.assertEqual(outcome.enqueued, 0)
+        self.assertEqual(outcome.result_state, NO_NEW_DATA,
+                         "a validated page with no ownership filing is earned NO_NEW_DATA")
 
     def test_entry_missing_form_type_or_locator_is_an_error(self) -> None:
         missing_category = build_feed([], entries=[
@@ -940,7 +1047,7 @@ class ReconciliationTests(CollectorTestCase):
         restricted = (self.paths.sec_restricted / "reconciliation.jsonl").read_text()
         self.assertIn("0000320193-26-000044", restricted)
         safe = "\n".join(path.read_text(encoding="utf-8")
-                         for path in self.paths.sec_firewall_safe_journals()
+                         for path in self.paths.sec_operator_internal_journals()
                          if path.exists())
         self.assertNotIn("0000320193-26-000044", safe)
 
@@ -1397,7 +1504,7 @@ class VisibilityFirewallTests(CollectorTestCase):
                                               default=str),
             "event log": self.paths.events.read_text(encoding="utf-8"),
         }
-        for path in self.paths.sec_firewall_safe_journals():
+        for path in self.paths.sec_operator_internal_journals():
             if path.exists():
                 surfaces[f"journal {path.name}"] = path.read_text(encoding="utf-8")
         for where, text in surfaces.items():
@@ -1457,3 +1564,1838 @@ class VisibilityFirewallTests(CollectorTestCase):
         self.assertEqual(find_leaks(raised.exception.reason), [],
                          "a reason class must not echo arbitrary source text")
         self.assertLessEqual(len(raised.exception.reason), 60)
+
+
+# ---------------------------------------------------------------------------
+# HIDDEN_TRANSPORT_RETRY: one reservation, one request, one attempt id
+# ---------------------------------------------------------------------------
+
+class RequestAccountingTests(CollectorTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §6.
+
+    The invariant is structural: the transport cannot send without a permit and
+    cannot send twice with one. These tests check that the structure holds on
+    the paths the collector actually takes, including every failure path, since
+    a failure is exactly where the removed retry used to fire.
+    """
+
+    def assert_one_to_one(self, collector, transport) -> None:
+        """Requests emitted == budget reservations == distinct durable attempt ids."""
+        attempts = collector.store.attempts()
+        journalled = [record["attempt_id"] for record in attempts
+                      if record["result_state"] != COOLDOWN_SUPPRESSED]
+        reservations = collector.budget.load().requests
+        self.assertEqual(len(transport.requested), reservations,
+                         "an HTTP request was emitted without a budget reservation")
+        self.assertEqual(len(transport.requested), len(journalled),
+                         "an HTTP request was emitted without a durable attempt id")
+        self.assertEqual(len(set(journalled)), len(journalled),
+                         "an attempt id was reused across requests")
+        self.assertEqual(transport.permits_consumed, journalled,
+                         "the permit attempt ids must match the journal, in order")
+
+    def test_transport_refuses_a_second_request_under_one_permit(self) -> None:
+        permit = RequestPermit(attempt_id="a1", reserved_at_utc="2026-09-18T00:00:00+00:00",
+                               endpoint_class="test")
+        permit.consume()
+        with self.assertRaises(PermitAlreadySpent):
+            permit.consume()
+
+    def test_the_permit_is_spent_even_when_the_request_fails(self) -> None:
+        """The removed retry lived exactly here: a failure after the send.
+
+        The permit is consumed before the socket write, so a connection-level
+        failure can never be re-sent under the same reservation.
+        """
+        class ExplodingConnection:
+            def request(self, *args, **kwargs):
+                raise OSError("connection reset by peer")
+
+            def close(self):
+                pass
+
+        transport = SecHttpTransport(self.policy(), timebase=self.timebase)
+        transport._connection = ExplodingConnection()
+        permit = RequestPermit(attempt_id="a1", reserved_at_utc="t", endpoint_class="test")
+        with self.assertRaises(SecTransportError):
+            transport.fetch("/cgi-bin/browse-edgar", permit)
+        self.assertTrue(permit.spent, "a failed send still consumes its permit")
+        self.assertEqual(transport.requests_sent, 1,
+                         "exactly one request was attempted, and it is counted")
+        with self.assertRaises(PermitAlreadySpent):
+            transport.fetch("/cgi-bin/browse-edgar", permit)
+
+    def test_an_idle_connection_is_recycled_before_sending_not_retried_after(self) -> None:
+        """The permitted reconnect: no extra request, no hidden retry."""
+        transport = SecHttpTransport(self.policy(idle_reuse_seconds=20.0),
+                                     timebase=self.timebase)
+
+        class DeadConnection:
+            closed = False
+
+            def close(self):
+                DeadConnection.closed = True
+
+        transport._connection = DeadConnection()
+        transport._connection_last_used = self.timebase.now()
+        # Fresh enough to reuse.
+        self.timebase.advance(5)
+        transport._recycle_if_idle()
+        self.assertIsNotNone(transport._connection)
+        # Idle past the threshold: replaced before the next send.
+        self.timebase.advance(30)
+        transport._recycle_if_idle()
+        self.assertIsNone(transport._connection)
+        self.assertTrue(DeadConnection.closed)
+        self.assertEqual(transport.requests_sent, 0,
+                         "recycling a connection must not emit a request")
+
+    def test_accounting_holds_across_a_normal_poll_and_drain(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        collector.drain(max_items=3)
+        self.timebase.advance(60)
+        collector.poll()
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_accounting_holds_across_every_failure_path(self) -> None:
+        """Each adverse response class, driven through the real collector path."""
+        cases = {
+            "transport_error": lambda path, call: SecTransportError("request_failed:OSError"),
+            "hung": lambda path, call: SecTransportError("read_timeout:TimeoutError",
+                                                         DEADLINE_EXCEEDED_OUTCOME),
+            "server_error": lambda path, call: response(b"oops", status=503),
+            "rate_limited": lambda path, call: response(b"x", status=429),
+            "forbidden": lambda path, call: response(b"x", status=403),
+            "permanent": lambda path, call: response(b"x", status=404),
+            "html_200": lambda path, call: response(
+                b"<html><body>error</body></html>", headers={"Content-Type": "text/html"}),
+            "truncated": lambda path, call: response(
+                b"partial", headers={"Content-Length": "9999"}, transfer_outcome=TRUNCATED),
+        }
+        for name, handler in cases.items():
+            with self.subTest(case=name):
+                self.setUp()
+                collector = self.collector(handler)
+                collector.poll()
+                # Push past any cooldown and try again, so a retry-shaped path
+                # would show up as an extra request if one existed.
+                self.timebase.advance(collector.cooldown_remaining() + 120)
+                collector.poll()
+                self.assert_one_to_one(collector, self.transport)
+
+    def test_accounting_holds_while_paginating_and_reconciling(self) -> None:
+        pages = {0: build_feed([10, 9]), 2: build_feed([8, 7]), 4: build_feed([6, 5])}
+
+        def handler(path: str, call: int):
+            if path.startswith("/Archives/edgar/daily-index"):
+                return response((FIXTURES / "master.20260917.idx").read_bytes(),
+                                headers={"Content-Type": "text/plain"})
+            if path.startswith("/cgi-bin"):
+                start = int(path.split("start=")[1].split("&")[0])
+                return response(pages[start])
+            return response((FIXTURES / "form4_submission.txt").read_bytes(),
+                            headers={"Content-Type": "text/plain"})
+
+        collector = self.collector(handler, discovery_page_size=2)
+        collector.state.cursor_identity_digest = digest_text(synthetic_accession(6))
+        collector.save()
+        collector.poll()
+        collector.drain(max_items=4)
+        collector.reconcile(date(2026, 9, 17))
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_a_cooldown_suppressed_attempt_spends_no_reservation_and_no_request(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.budget.enter_cooldown(300.0, "http_429_rate_limited")
+        before = len(self.transport.requested)
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, COOLDOWN_SUPPRESSED)
+        self.assertEqual(len(self.transport.requested), before,
+                         "a suppressed attempt must not reach the network")
+        # It still leaves a durable record, so the audit sees why nothing went out.
+        self.assertEqual(collector.store.attempts()[-1]["result_state"], COOLDOWN_SUPPRESSED)
+        self.assertIsNone(collector.store.attempts()[-1]["http_status"])
+        self.assert_one_to_one(collector, self.transport)
+
+    def test_the_transport_has_no_retry_construct_left(self) -> None:
+        """A source-level guard: the defect was a nested re-send, so ban the shape."""
+        source = (ROOT / "src" / "quant" / "dataplane" / "sec" / "transport.py").read_text()
+        body = source[source.index("def _fetch_once"):]
+        self.assertEqual(body.count("connection.request("), 1,
+                         "transport must emit at most one request per fetch")
+        self.assertEqual(body.count("getresponse("), 1)
+
+
+# ---------------------------------------------------------------------------
+# INCOMPLETE_CRITICAL_POLICY_SERIALIZATION and the V1 fingerprint
+# ---------------------------------------------------------------------------
+
+class PolicyClassificationTests(SecCaptureTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §4, completeness invariant."""
+
+    def test_classification_covers_every_policy_field_exactly_once(self) -> None:
+        fields = policy_field_names()
+        noncritical = frozenset(EXPLICITLY_NONCRITICAL)
+        self.assertEqual(INCLUDE_CANONICAL | TRANSFORM_CANONICAL | noncritical, fields,
+                         "POLICY_FIELD_SET must equal the union of the three sets")
+        self.assertEqual(INCLUDE_CANONICAL & TRANSFORM_CANONICAL, frozenset())
+        self.assertEqual(INCLUDE_CANONICAL & noncritical, frozenset())
+        self.assertEqual(TRANSFORM_CANONICAL & noncritical, frozenset())
+        verify_policy_classification()
+
+    def test_every_noncritical_field_carries_a_frozen_rationale(self) -> None:
+        for name, rationale in EXPLICITLY_NONCRITICAL.items():
+            with self.subTest(field=name):
+                self.assertGreater(len(rationale), 120,
+                                   "a non-critical claim needs an argued rationale")
+                self.assertIn("runtime", rationale.lower())
+
+    def test_an_unclassified_policy_field_blocks_fingerprint_generation(self) -> None:
+        """The defence the governance asks for: fail generation, not just tests."""
+        original = dataclasses.fields(SecAccessPolicy)
+        added = dataclasses.field(default=1.0)
+        added.name = "future_unclassified_knob"
+        added.type = float
+
+        def with_extra_field(cls):
+            return tuple(list(original) + [added])
+
+        with mock.patch.object(dataclasses, "fields", side_effect=with_extra_field):
+            with self.assertRaises(UnclassifiedPolicyField) as raised:
+                verify_policy_classification()
+            self.assertIn("future_unclassified_knob", str(raised.exception))
+            with self.assertRaises(UnclassifiedPolicyField):
+                canonical_policy(self.policy())
+            with self.assertRaises(UnclassifiedPolicyField):
+                acquisition_critical_fingerprint(self.policy(), root=ROOT)
+
+    def test_a_classification_for_a_removed_field_is_also_rejected(self) -> None:
+        with mock.patch.object(fingerprint_module, "INCLUDE_CANONICAL",
+                               INCLUDE_CANONICAL | {"field_that_no_longer_exists"}):
+            with self.assertRaises(PolicyClassificationInvalid):
+                verify_policy_classification()
+
+    def test_overlapping_classifications_are_rejected(self) -> None:
+        with mock.patch.object(fingerprint_module, "TRANSFORM_CANONICAL",
+                               TRANSFORM_CANONICAL | {"discovery_poll_seconds"}):
+            with self.assertRaises(PolicyClassificationInvalid):
+                verify_policy_classification()
+
+    def test_canonical_policy_carries_the_fields_to_dict_omitted(self) -> None:
+        """The concrete defect: to_dict() could not serve as the fingerprint source."""
+        canonical = canonical_policy(self.policy())
+        telemetry = self.policy().to_dict()
+        for omitted in ("filings_per_drain", "accept_encoding", "max_response_bytes"):
+            with self.subTest(field=omitted):
+                self.assertIn(omitted, canonical)
+                self.assertNotIn(omitted, telemetry,
+                                 "test guards the reason a dedicated serializer exists")
+
+    def test_requester_identity_is_bound_but_never_plaintext(self) -> None:
+        canonical = canonical_policy(self.policy())
+        self.assertNotIn("user_agent", canonical)
+        binding = canonical["requester_identity_binding"]
+        self.assertTrue(binding.startswith("sha256:"))
+        self.assertNotIn("example.com", binding)
+        self.assertNotIn("Quant", binding)
+        # Different declared identity, different binding.
+        other = SecAccessPolicy(user_agent="Other Requester other@example.org")
+        self.assertNotEqual(canonical_policy(other)["requester_identity_binding"], binding)
+
+
+class FingerprintTests(SecCaptureTestCase):
+    """`P0_ACQUISITION_CRITICAL_FINGERPRINT_V1.md` §8, before-t0 acceptance."""
+
+    def fingerprint(self, **overrides) -> str:
+        return acquisition_critical_fingerprint(self.policy(**overrides), root=ROOT)
+
+    def test_two_identical_builds_produce_the_same_fingerprint(self) -> None:
+        self.assertEqual(self.fingerprint(), self.fingerprint())
+        # And through a whole separate manifest construction.
+        first = build_manifest(self.policy(), root=ROOT)
+        second = build_manifest(self.policy(), root=ROOT)
+        self.assertEqual(canonical_json(first), canonical_json(second))
+        self.assertEqual(compute_fingerprint(first), compute_fingerprint(second))
+
+    def test_the_manifest_contains_every_mandated_v1_member(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT)
+        self.assertEqual(manifest["schema"], FINGERPRINT_SCHEMA_VERSION)
+        # Code-semantic roots, all of them, per the frozen module list.
+        for module in ACQUISITION_CRITICAL_MODULES:
+            self.assertIn(module, manifest["code"])
+            self.assertTrue(manifest["code"][module].startswith("sha256:"))
+        self.assertIn("src/quant/clock.py", manifest["code"],
+                      "clock.py is fingerprint-critical in full until the "
+                      "acquisition scheduling path is isolated")
+        # Every mandated runtime value.
+        for value in ("discovery_poll_seconds", "max_concurrency", "max_requests_per_second",
+                      "allow_burst", "connect_timeout_seconds", "read_timeout_seconds",
+                      "total_deadline_seconds", "backoff_schedule_seconds", "jitter_ratio",
+                      "rate_limit_cooldown_seconds", "forbidden_cooldown_seconds",
+                      "discovery_page_size", "max_discovery_pages_per_poll",
+                      "filings_per_drain", "accept_encoding", "max_response_bytes",
+                      "requester_identity_binding"):
+            self.assertIn(value, manifest["policy"])
+        self.assertIn("host", manifest["request_shape"])
+        self.assertIn("query_construction_version", manifest["request_shape"])
+        self.assertIn("service_definition_digests", manifest["supervisor"])
+        self.assertIn("restart_policy", manifest["supervisor"])
+
+    def test_changing_a_timeout_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(self.fingerprint(connect_timeout_seconds=11.0), baseline)
+        self.assertNotEqual(self.fingerprint(read_timeout_seconds=21.0), baseline)
+        self.assertNotEqual(self.fingerprint(total_deadline_seconds=61.0), baseline)
+        self.assertNotEqual(self.fingerprint(idle_reuse_seconds=30.0), baseline)
+
+    def test_changing_a_retry_or_backoff_rule_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(
+            self.fingerprint(backoff_schedule_seconds=(5.0, 15.0, 60.0, 300.0, 1800.0)),
+            baseline)
+        self.assertNotEqual(self.fingerprint(jitter_ratio=0.1), baseline)
+        self.assertNotEqual(self.fingerprint(rate_limit_cooldown_seconds=600.0), baseline)
+        self.assertNotEqual(self.fingerprint(forbidden_cooldown_seconds=7200.0), baseline)
+
+    def test_changing_discovery_or_coverage_settings_changes_the_fingerprint(self) -> None:
+        baseline = self.fingerprint()
+        self.assertNotEqual(self.fingerprint(discovery_page_size=41), baseline)
+        self.assertNotEqual(self.fingerprint(max_discovery_pages_per_poll=11), baseline)
+        self.assertNotEqual(self.fingerprint(filings_per_drain=2), baseline)
+        self.assertNotEqual(self.fingerprint(discovery_poll_seconds=30.0), baseline)
+
+    def test_changing_any_critical_policy_field_changes_the_fingerprint(self) -> None:
+        """Sweep every INCLUDE_CANONICAL field rather than a chosen sample."""
+        baseline = self.fingerprint()
+        mutations = {
+            "discovery_poll_seconds": 90.0, "max_concurrency": 2,
+            "max_requests_per_second": 1.0, "allow_burst": True,
+            "connect_timeout_seconds": 12.0, "read_timeout_seconds": 25.0,
+            "idle_reuse_seconds": 45.0, "total_deadline_seconds": 90.0,
+            "backoff_schedule_seconds": (1.0, 2.0), "jitter_ratio": 0.5,
+            "rate_limit_cooldown_seconds": 301.0, "forbidden_cooldown_seconds": 3601.0,
+            "discovery_page_size": 20, "max_discovery_pages_per_poll": 3,
+            "filings_per_drain": 5, "accept_encoding": "identity",
+            "max_response_bytes": 1024,
+        }
+        self.assertEqual(set(mutations), set(INCLUDE_CANONICAL),
+                         "every canonically included field needs a mutation case")
+        for name, value in mutations.items():
+            with self.subTest(field=name):
+                self.assertNotEqual(self.fingerprint(**{name: value}), baseline)
+
+    def test_changing_the_declared_sec_identity_changes_the_fingerprint(self) -> None:
+        other = SecAccessPolicy(user_agent="Different Requester ops@example.org")
+        self.assertNotEqual(acquisition_critical_fingerprint(other, root=ROOT),
+                            self.fingerprint())
+
+    def test_changing_acquisition_code_changes_the_fingerprint(self) -> None:
+        """A module edit must move the fingerprint even with identical config."""
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            target = mirror / "src" / "quant" / "dataplane" / "sec" / "collector.py"
+            target.write_text(target.read_text() + "\n# acquisition semantics changed\n")
+            self.assertNotEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                                before)
+
+    def test_changing_the_supervisor_restart_policy_changes_the_fingerprint(self) -> None:
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            unit = mirror / "deploy" / "quant-sec-capture.service"
+            unit.write_text(unit.read_text().replace("RestartSec=15", "RestartSec=120"))
+            self.assertNotEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                                before)
+
+    def test_a_downstream_only_change_leaves_the_fingerprint_unchanged(self) -> None:
+        """Manifest/parser/gap-ledger work must not reset t0."""
+        import shutil, tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            before = acquisition_critical_fingerprint(self.policy(), root=mirror)
+            # A downstream parser/normalizer, and an edit to a non-acquisition plane.
+            (mirror / "src" / "quant" / "dataplane" / "form4_parser.py").write_text(
+                "'''Downstream parser, strictly after immutable raw storage.'''\n")
+            desk = mirror / "src" / "quant" / "desk" / "desk.py"
+            desk.write_text(desk.read_text() + "\n# unrelated desk change\n")
+            self.assertEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
+                             before, "downstream work must not reset the window")
+
+    def test_recording_a_newer_sec_documentation_revision_does_not_reset_t0(self) -> None:
+        """The frozen rationale for the one EXPLICITLY_NONCRITICAL field, tested."""
+        baseline = self.fingerprint()
+        restated = SecAccessPolicy(
+            user_agent=USER_AGENT,
+            sources=({"url": "https://www.sec.gov/os/webmaster-faq",
+                      "reviewed_or_updated": "2027-01-01",
+                      "consulted_at_utc": "2027-01-02"},))
+        self.assertEqual(acquisition_critical_fingerprint(restated, root=ROOT), baseline)
+        # But an actual limit changed in response to that re-check does reset it.
+        self.assertNotEqual(self.fingerprint(max_requests_per_second=1.5), baseline)
+
+    def test_the_fingerprint_is_deterministic_json_not_dict_order(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT)
+        shuffled = dict(reversed(list(manifest.items())))
+        self.assertEqual(compute_fingerprint(shuffled), compute_fingerprint(manifest))
+
+
+# ---------------------------------------------------------------------------
+# Scheduler and lifecycle provenance
+# ---------------------------------------------------------------------------
+
+class SchedulerProvenanceTests(CollectorTestCase):
+    """`BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md §5.2`."""
+
+    def test_every_cadence_changing_event_records_a_transition(self) -> None:
+        collector = self.collector(self.fixture_router(), enable=False)
+        self.assertEqual(collector.scheduler.all(), [])
+        collector.enable()
+        collector.poll()
+        collector.drain(max_items=3)
+        causes = [record["cause"] for record in collector.scheduler.all()]
+        for expected in (LANE_ENABLED, POLL_COMPLETED, WORK_ENQUEUED, DRAIN_COMPLETED):
+            self.assertIn(expected, causes)
+
+    def test_each_transition_carries_the_full_mandated_payload(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        for record in collector.scheduler.all():
+            with self.subTest(transition=record["transition_id"]):
+                self.assertIn(record["state"], SCHEDULER_STATES)
+                self.assertTrue(record["recorded_at_utc"])
+                self.assertTrue(record["cause"])
+                self.assertTrue(record["acquisition_critical_fingerprint"].startswith("sha256:"))
+                self.assertIn("next_due_at_utc", record)
+                self.assertIn("cooldown_until_utc", record)
+                self.assertIn("backoff_step", record)
+
+    def test_next_due_at_reflects_cadence_backoff_and_pending_work(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        # Pending filings are due immediately.
+        self.assertTrue(collector.state.pending_tasks)
+        self.assertEqual(collector.scheduler_state(), DRAINING)
+        collector.drain(max_items=3)
+        # Then the cadence governs.
+        self.assertEqual(collector.scheduler_state(), AWAITING_POLL)
+        due = parse_ts(collector.next_due_at())
+        expected = parse_ts(collector.state.last_poll_started_at_utc) + timedelta(seconds=60)
+        self.assertEqual(due, expected)
+        # A cooldown moves the due time to the cooldown end.
+        collector.budget.enter_cooldown(300.0, "http_429_rate_limited")
+        self.assertEqual(collector.scheduler_state(), COOLDOWN)
+        self.assertEqual(collector.next_due_at(),
+                         collector.budget.load().cooldown_until_utc)
+
+    def test_a_backoff_transition_is_prospective_not_post_hoc(self) -> None:
+        """The audit must learn when the next try is due, not just that one failed."""
+        collector = self.collector(lambda path, call: response(b"oops", status=503))
+        collector.poll()
+        backoffs = [record for record in collector.scheduler.all()
+                    if record["cause"] == BACKOFF_ENTERED]
+        self.assertTrue(backoffs)
+        transition = backoffs[-1]
+        self.assertEqual(transition["state"], BACKOFF)
+        self.assertIsNotNone(transition["next_due_at_utc"],
+                             "a backoff must declare when the retry becomes due")
+        self.assertGreater(parse_ts(transition["next_due_at_utc"]), self.timebase.now()
+                           - timedelta(seconds=1))
+
+    def test_a_blocked_lane_still_declares_its_state(self) -> None:
+        """Silence must never be the only evidence that nothing was due."""
+        collector = SecForm4Collector(self.paths, timebase=self.timebase, root=ROOT,
+                                      environ={})
+        self.assertFalse(collector.configured)
+        collector.record_service_start()
+        latest = collector.scheduler.latest()
+        self.assertEqual(latest["state"], BLOCKED_NOT_CONFIGURED)
+        self.assertEqual(latest["cause"], CONFIG_FAIL_CLOSED)
+        self.assertIsNone(latest["next_due_at_utc"],
+                          "nothing becomes due without an external change")
+
+    def test_scheduler_journal_is_append_only_across_restart(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.poll()
+        before = collector.scheduler.all()
+        restarted = self.reborn(self.fixture_router())
+        self.assertEqual(restarted.scheduler.all()[:len(before)], before)
+
+
+class LifecycleProvenanceTests(CollectorTestCase):
+    def test_the_collector_never_attests_its_own_origin(self) -> None:
+        collector = self.collector(self.fixture_router())
+        self.assertEqual(collector.lifecycle["lifecycle_cause"], UNATTESTED)
+        self.assertFalse(collector.lifecycle["externally_attested"])
+        readiness = collector.t0_readiness()
+        self.assertIn("LIFECYCLE_CAUSE_UNATTESTED", readiness["blockers"])
+        self.assertFalse(readiness["instrumentation_ready"])
+
+    def test_a_supervisor_supplied_cause_is_recorded_verbatim(self) -> None:
+        for cause in LIFECYCLE_CAUSES:
+            with self.subTest(cause=cause):
+                provenance = lifecycle_provenance({
+                    "QUANT_SEC_LIFECYCLE_CAUSE": cause,
+                    "QUANT_SEC_BOOT_ID": "boot-123",
+                    "QUANT_SEC_BOOT_AT_UTC": "2026-09-18T00:00:00+00:00",
+                    "QUANT_SEC_SUPERVISOR_ID": "sup-1"})
+                self.assertEqual(provenance["lifecycle_cause"], cause)
+                self.assertTrue(provenance["externally_attested"])
+                self.assertEqual(provenance["boot_id"], "boot-123")
+
+    def test_an_unrecognised_cause_is_not_silently_accepted(self) -> None:
+        provenance = lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": "LOOKS_FINE"})
+        self.assertEqual(provenance["lifecycle_cause"], UNATTESTED)
+        self.assertEqual(provenance["lifecycle_cause_declared"], "LOOKS_FINE")
+        self.assertFalse(provenance["externally_attested"])
+
+    def test_manual_start_is_flagged_as_invalidating(self) -> None:
+        provenance = lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START})
+        self.assertTrue(provenance["invalidates_observation_window"])
+        for benign in (SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE, DEPLOYMENT_RESTART):
+            self.assertFalse(
+                lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": benign})
+                ["invalidates_observation_window"])
+
+    def test_service_start_is_journalled_with_the_active_fingerprint(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-abc"})
+        record = collector.record_service_start()
+        self.assertEqual(record["lifecycle_cause"], SCHEDULED_START)
+        self.assertEqual(record["boot_id"], "boot-abc")
+        self.assertTrue(record["acquisition_critical_fingerprint"].startswith("sha256:"))
+        persisted = list(read_jsonl(self.paths.sec_lifecycle))
+        self.assertEqual(len(persisted), 1)
+        self.assertEqual(persisted[0]["boot_id"], "boot-abc")
+
+
+class ObservationAuditTests(CollectorTestCase):
+    def test_a_healthy_run_is_accountable(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertTrue(report["fingerprint_stable"])
+        self.assertEqual(report["lifecycle_causes"], [SCHEDULED_START])
+
+    def test_an_unattested_start_is_reported_not_assumed_benign(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("LIFECYCLE_CAUSE_UNATTESTED", report["findings"])
+
+    def test_a_manual_start_is_reported_as_an_invalidating_intervention(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("INVALIDATING_INTERVENTION", report["findings"])
+
+    def test_a_changed_fingerprint_mid_window_is_detected(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1"})
+        collector.record_service_start()
+        collector.poll()
+        # A deployment that moved acquisition semantics mid-window.
+        collector.fingerprint = "sha256:" + "0" * 64
+        collector.record_current_state(SERVICE_START, detail="redeployed")
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("ACQUISITION_FINGERPRINT_CHANGED", report["findings"])
+        self.assertEqual(len(report["fingerprints_observed"]), 2)
+
+    def test_the_audit_never_infers_health_from_an_empty_journal(self) -> None:
+        collector = self.collector(self.fixture_router(), enable=False)
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"])
+        self.assertIn("NO_SCHEDULER_PROVENANCE", report["findings"])
+        self.assertEqual(report["expected_actions"], 0)
+
+    def test_the_audit_reports_and_never_closes_the_continuity_state(self) -> None:
+        collector = self.collector(self.fixture_router())
+        collector.record_service_start()
+        report = audit_observation_window(collector)
+        self.assertEqual(report["t0_authority"], "BLUE_TEAM")
+        self.assertEqual(report["p0_continuous_service_state"],
+                         "OPEN / NOT_YET_PROVEN_CONTINUOUS")
+        self.assertEqual(collector.t0_readiness()["t0_authority"], "BLUE_TEAM")
+
+
+# ---------------------------------------------------------------------------
+# Continuous-service behaviour under the Control Plane
+# ---------------------------------------------------------------------------
+
+class ContinuousServiceTests(CollectorTestCase):
+    """`NEXT_BUILD_MISSION.md` continuous-service work items, offline.
+
+    These drive the real `QuantSystem` clock rather than the collector directly,
+    because the claim being tested is about scheduling, not about capture.
+    """
+
+    def system(self, handler, *, enable: bool = True):
+        import random
+        from quant.clock import QuantSystem, Timer
+
+        class FrozenTimer(Timer):
+            def __init__(self, timebase):
+                self.timebase = timebase
+
+            def now(self):
+                return self.timebase.now()
+
+            def sleep(self, seconds):
+                self.timebase.sleep(seconds)
+
+        policy = self.policy()
+        transport = FakeTransport(handler)
+        system = QuantSystem(self.root, timer=FrozenTimer(self.timebase))
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(5)),
+            root=ROOT, emit=system.log.emit,
+            environ={"QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                     "QUANT_SEC_BOOT_ID": "boot-service-1"})
+        system.sec = collector
+        self.transport = transport
+        if enable:
+            collector.enable()
+        return system, collector
+
+    def test_capture_is_scheduled_ahead_of_replayable_research_and_desk_work(self) -> None:
+        """Item 1: a backlog of replayable work cannot starve acquisition."""
+        from autonomous_research.runtime import ResearchTask
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        # Queue replayable work that is genuinely due, which is the backlog that
+        # starved the capture lane on the first live run.
+        system.queue.add(ResearchTask(
+            task_id="RESEARCH-BACKLOG-PROBE", lane="probe", priority=99.0,
+            reason="a due, replayable task competing with acquisition",
+            worker="research_lane", required_resources=[], status="PENDING",
+            metadata={"lane_name": "probe"}))
+        system.queue.save()
+        self.assertIsNotNone(system.queue.next_due(),
+                             "the test needs genuinely due replayable work")
+        outcome = system.tick()
+        self.assertTrue(outcome.startswith("SEC_"),
+                        f"acquisition must win the first tick, got {outcome}")
+        # And the replayable task is still there, waiting rather than lost.
+        self.assertEqual(system.queue.tasks["RESEARCH-BACKLOG-PROBE"].status, "PENDING")
+
+    def test_repeated_cycles_leave_liveness_evidence_with_no_new_filing(self) -> None:
+        """Item 2: quiet periods are evidenced, not silent."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        for _ in range(6):
+            system.tick()
+        collector.drain(max_items=3)
+        attempts_before = len(collector.store.attempts())
+        for _ in range(3):
+            self.timebase.advance(61)
+            system.tick()
+        self.assertGreater(len(collector.store.attempts()), attempts_before)
+        quiet = [record for record in collector.store.attempts()
+                 if record["result_state"] in (CAPTURED_OK, DEDUPLICATED)]
+        self.assertTrue(quiet)
+        self.assertEqual(collector.state.last_result_state, NO_NEW_DATA)
+        self.assertEqual(collector.liveness(), RUNNING)
+
+    def test_a_collector_that_stops_polling_becomes_observably_stale(self) -> None:
+        """Item 6: heartbeat health cannot masquerade as coverage."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        self.assertEqual(collector.liveness(), RUNNING)
+        self.timebase.advance(60 * 60 * 6)
+        self.assertEqual(collector.liveness(), STALE)
+        # Coverage is a separate axis and is not upgraded by a healthy heartbeat.
+        self.assertIn(collector.state.coverage_state, (COVERAGE_COMPLETE, COVERAGE_UNKNOWN))
+
+    def test_losing_the_requester_identity_fails_closed_as_blocked(self) -> None:
+        """Item 5: missing identity is BLOCKED, never healthy idle service."""
+        from quant.clock import QuantSystem
+        system = QuantSystem(self.root)
+        system.sec = SecForm4Collector(self.paths, timebase=self.timebase, root=ROOT,
+                                       environ={})
+        system.boot()
+        outcome = system.tick()
+        self.assertEqual(outcome, "IDLE", "a fail-closed lane produces no capture work")
+        state = system.components.get("SEC_CAPTURE")
+        self.assertEqual(state.state, "BLOCKED")
+        self.assertIn("not configured", (state.detail or ""))
+        self.assertFalse(system.sec.t0_readiness()["instrumentation_ready"])
+        # And it is visible as blocked rather than absent on the status surface.
+        from quant.status.render import render_status
+        surface = render_status(system.snapshot())
+        self.assertIn("BLOCKED", surface[surface.index("SEC FORM-4"):])
+
+    def test_a_capture_fault_is_isolated_and_does_not_stop_the_system(self) -> None:
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        collector.poll = lambda: (_ for _ in ()).throw(RuntimeError("capture exploded"))
+        collector.has_pending_work = lambda: False
+        collector.poll_due = lambda: True
+        outcome = system.tick()
+        self.assertEqual(outcome, "SEC_FAULT")
+        self.assertEqual(system.components.get("SEC_CAPTURE").state, "FAULT")
+        # The system is still alive and keeps working afterwards.
+        collector.poll_due = lambda: False
+        collector.reconciliation_due = lambda: None
+        self.assertIn(system.tick(), {"RESEARCH", "SESSION", "IDLE", "LEARNED", "BLOCKED"})
+
+    def test_restart_mid_service_resumes_without_mutating_prior_evidence(self) -> None:
+        """Item 3: ordinary restart resumes from durable state."""
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        collector.drain(max_items=2)
+        attempts = collector.store.attempts()
+        envelopes = collector.store.envelopes()
+        transitions = collector.scheduler.all()
+
+        import random
+        policy = self.policy()
+        restarted = SecForm4Collector(
+            self.paths, policy=policy, transport=FakeTransport(
+                self.fixture_router()),
+            timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(5)),
+            root=ROOT,
+            environ={"QUANT_SEC_LIFECYCLE_CAUSE": AUTOMATIC_RESTART_AFTER_FAILURE,
+                     "QUANT_SEC_BOOT_ID": "boot-service-2"})
+        self.assertEqual(restarted.store.attempts(), attempts)
+        self.assertEqual(restarted.store.envelopes(), envelopes)
+        self.assertEqual(restarted.scheduler.all()[:len(transitions)], transitions)
+        restarted.record_service_start()
+        # A second boot id appears, and the cause is the supervisor's, not ours.
+        lifecycle = list(read_jsonl(self.paths.sec_lifecycle))
+        self.assertEqual(lifecycle[-1]["lifecycle_cause"], AUTOMATIC_RESTART_AFTER_FAILURE)
+        self.assertEqual(lifecycle[-1]["boot_id"], "boot-service-2")
+        # An automatic restart does not invalidate the window.
+        self.assertFalse(lifecycle[-1]["invalidates_observation_window"])
+        self.assertEqual(restarted.fingerprint, collector.fingerprint,
+                         "a restart alone must not move the acquisition fingerprint")
+
+    def test_the_status_surface_stays_firewall_safe_with_the_new_provenance(self) -> None:
+        from quant.status.brief import build_chief_brief
+        from quant.status.render import render_status
+        system, collector = self.system(self.fixture_router())
+        system.boot()
+        system.tick()
+        collector.drain(max_items=3)
+        snapshot = system.snapshot()
+        for where, text in (("status surface", render_status(snapshot)),
+                            ("CHIEF_BRIEF.md", build_chief_brief(snapshot)),
+                            ("scheduler journal",
+                             self.paths.sec_scheduler.read_text(encoding="utf-8")),
+                            ("lifecycle journal",
+                             self.paths.sec_lifecycle.read_text(encoding="utf-8")),
+                            ("fingerprint manifest",
+                             self.paths.sec_fingerprint.read_text(encoding="utf-8")
+                             if self.paths.sec_fingerprint.exists() else "")):
+            with self.subTest(surface=where):
+                assert_no_scientific_content(text, where)
+
+    def test_the_fingerprint_manifest_never_carries_the_contact_address(self) -> None:
+        system, collector = self.system(self.fixture_router())
+        payload = collector.materialize_fingerprint()
+        rendered = json.dumps(payload, sort_keys=True)
+        self.assertNotIn("example.com", rendered)
+        self.assertNotIn(USER_AGENT, rendered)
+        self.assertIn("requester_identity_binding", rendered)
+
+    def test_a_fresh_install_can_boot_the_control_plane(self) -> None:
+        """Regression: a fresh var/ must not crash boot().
+
+        Found while regenerating the status artifacts on the Blue base commit
+        c1a955316055aaf6c1b28853e21ed07e36e55f6a. The insider_filings legacy
+        entry had gained `acceptance` and `affected_subsystems` keys describing
+        its capability gap, but only `capability` was filtered out of the
+        ResearchTask kwargs, so ResearchTask(**entry) raised TypeError. An
+        already-seeded queue hid it, because the seeding call short-circuits on
+        the task id - so it reproduced only on a first boot, which is exactly
+        when a new deployment of the capture service starts.
+        """
+        import shutil, tempfile
+        from quant.clock import QuantSystem
+        with tempfile.TemporaryDirectory(prefix="quant-fresh-boot-") as directory:
+            root = Path(directory)
+            (root / "research").mkdir()
+            shutil.copy2(ROOT / "research" / "opportunity_map.json", root / "research")
+            system = QuantSystem(root)
+            seeded = system.boot()["seeded"]
+            self.assertIn("SCAN-INSIDER-FILINGS-001", seeded)
+            # The capability gap it describes is still raised for the Build Plane.
+            gaps = {task["task_id"]: task for task in system.learning.open_build_tasks()}
+            gap = gaps["BUILD-SCAN-INSIDER-FILINGS-001"]
+            self.assertIn("admissibility", gap["capability"])
+            self.assertIn("visibility firewall", gap["acceptance"])
+            # And booting twice is stable.
+            QuantSystem(root).boot()
+
+
+# ---------------------------------------------------------------------------
+# RETROSPECTIVE_AUDIT_CAN_FALSE_PASS
+# ---------------------------------------------------------------------------
+
+class AuditFalsePassTests(CollectorTestCase):
+    """Each test constructs a journal that the previous audit called accountable.
+
+    The defect class was that obligations had no identity, so reconciliation was
+    many-to-many: a pre-due attempt could answer a future deadline, one attempt
+    could answer several deadlines, and any later transition could cancel an
+    earlier one. These are the three false passes, plus the legitimate
+    supersession that must still pass.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.lane = self.collector_with_attested_lifecycle()
+
+    def collector_with_attested_lifecycle(self, *, enable: bool = False):
+        """A collector whose scheduler journal starts empty.
+
+        Enabling the lane or recording a service start would add real
+        obligations, which would mix into the hand-built scenarios below. The
+        lifecycle record these tests need is therefore written directly, so the
+        only transitions in the ledger are the ones the scenario states.
+        """
+        collector = self.collector(self.fixture_router(), enable=enable)
+        collector.lifecycle = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-audit"})
+        return collector
+
+    def write_transition(self, *, recorded_at: str, due_at: str | None, cause: str,
+                         obligation_id: str | None, supersedes: str | None = None,
+                         state: str = AWAITING_POLL) -> None:
+        """Append a scheduler transition directly, to build an exact scenario."""
+        self.lane.scheduler.record(SchedulerTransition(
+            transition_id=f"t-{uuid.uuid4().hex[:8]}",
+            recorded_at_utc=recorded_at, state=state, cause=cause,
+            next_due_at_utc=due_at,
+            acquisition_critical_fingerprint=self.lane.fingerprint or "fp",
+            obligation_id=obligation_id, supersedes_obligation_id=supersedes,
+            boot_id="boot-audit", lifecycle_cause=SCHEDULED_START))
+
+    def write_attempt(self, *, attempted_at: str, attempt_id: str,
+                      result_state: str = CAPTURED_OK) -> None:
+        self.lane.store.record_attempt(SecAttemptRecord(
+            attempt_id=attempt_id, attempt_kind="DISCOVERY", endpoint_class="test",
+            source_locator_digest=digest_text("loc"),
+            request_attempted_at_utc=attempted_at,
+            response_received_at_utc=attempted_at,
+            result_state=result_state, collector_version="v", git_commit="c",
+            http_status=200))
+
+    def audit(self, *, now: str):
+        # Written directly rather than through record_service_start, which would
+        # also append a transition and add an obligation to the scenario.
+        append_jsonl(self.paths.sec_lifecycle,
+                     dict(self.lane.lifecycle,
+                          recorded_at_utc="2026-09-18T11:59:00+00:00",
+                          acquisition_critical_fingerprint=self.lane.fingerprint
+                          or "fp"))
+        return audit_observation_window(self.lane, tolerance_seconds=180.0,
+                                        now=parse_ts(now))
+
+    # --- case A: an earlier attempt must not satisfy a later obligation -----
+    def test_an_attempt_before_the_due_time_does_not_satisfy_the_obligation(self) -> None:
+        """Defect A. `abs(attempt - due) <= tolerance` accepted a pre-due request."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # The only request happened a minute BEFORE the deadline it would answer,
+        # and well inside the 180s tolerance window in absolute terms.
+        self.write_attempt(attempted_at="2026-09-18T12:04:00+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(report["unexplained_obligations"][0]["obligation_id"], "OB-1")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 0)
+
+    def test_an_attempt_after_the_due_time_within_tolerance_does_satisfy_it(self) -> None:
+        """The forward-only rule must still accept a slightly late tick."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_attempt(attempted_at="2026-09-18T12:06:30+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_an_attempt_beyond_tolerance_does_not_satisfy_the_obligation(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_attempt(attempted_at="2026-09-18T12:20:00+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:40:00+00:00")
+        self.assertEqual(report["obligations_unexplained"], 1)
+
+    # --- case B: one attempt cannot answer two obligations ------------------
+    def test_one_attempt_cannot_satisfy_two_due_obligations(self) -> None:
+        """Defect B. Attempts were matched with `any(...)` and never consumed."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # A second, independent obligation due at the same moment. Nothing
+        # supersedes either one, so both need their own answer.
+        self.write_transition(recorded_at="2026-09-18T12:00:30+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2",
+                              state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1,
+                         "the single request may retire exactly one obligation")
+        self.assertEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(report["reconciliation"], "one_obligation_to_one_resolution")
+
+    def test_two_attempts_satisfy_two_obligations(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:00:30+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2", state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        self.write_attempt(attempted_at="2026-09-18T12:05:40+00:00", attempt_id="A-2")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 2)
+        self.assertEqual(report["obligations_unexplained"], 0)
+        self.assertTrue(report["accountable"], report["findings"])
+
+    # --- case C: supersession cannot be retroactive -------------------------
+    def test_a_transition_after_a_missed_deadline_cannot_erase_the_hole(self) -> None:
+        """Defect C. Any later transition used to count as supersession."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # The service came back long after the deadline and re-planned, naming
+        # the obligation it replaces. That is a post-hoc note, not an excuse.
+        self.write_transition(recorded_at="2026-09-18T12:40:00+00:00",
+                              due_at="2026-09-18T12:45:00+00:00",
+                              cause=SERVICE_START, obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:41:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        unexplained = {item["obligation_id"] for item in report["unexplained_obligations"]}
+        self.assertEqual(unexplained, {"OB-1"})
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0)
+        # OB-2 is not yet due, so it is pending rather than a second hole.
+        self.assertEqual(report["obligations_pending"], 1)
+
+    def test_a_transition_before_the_due_time_supersedes_and_stays_accountable(self) -> None:
+        """The legitimate re-plan: prospective, named, authorized cause."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Work arrived before the poll came due, so the lane re-planned.
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:03:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2",
+                              supersedes="OB-1", state=DRAINING)
+        self.write_attempt(attempted_at="2026-09-18T12:03:20+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(report["obligations_resolved_by_supersession"], 1)
+        self.assertEqual(report["obligations_resolved_by_attempt"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_supersession_requires_naming_the_obligation_it_replaces(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Recorded before the deadline, but names nothing. Not a supersession.
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:09:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OB-1", {item["obligation_id"]
+                               for item in report["unexplained_obligations"]})
+
+    def test_supersession_requires_an_authorized_cause(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:02:00+00:00",
+                              due_at="2026-09-18T12:09:00+00:00",
+                              cause="OPERATOR_DECIDED_TO_SKIP", obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"],
+                         "an unrecognised cause must not retire an obligation")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0)
+
+    def test_one_transition_cannot_supersede_two_obligations(self) -> None:
+        """Resolutions are consumed on both sides of the ledger."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:00:10+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=WORK_ENQUEUED, obligation_id="OB-2", state=DRAINING)
+        # One transition claiming to replace both.
+        transition_id = f"t-{uuid.uuid4().hex[:8]}"
+        for target in ("OB-1", "OB-2"):
+            self.lane.scheduler.record(SchedulerTransition(
+                transition_id=transition_id,
+                recorded_at_utc="2026-09-18T12:02:00+00:00", state=AWAITING_POLL,
+                cause=POLL_COMPLETED, next_due_at_utc="2026-09-18T12:20:00+00:00",
+                acquisition_critical_fingerprint="fp", obligation_id="OB-3",
+                supersedes_obligation_id=target, boot_id="boot-audit",
+                lifecycle_cause=SCHEDULED_START))
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 1,
+                         "one re-plan retires one obligation")
+        self.assertFalse(report["accountable"])
+
+    # --- ledger integrity ---------------------------------------------------
+    def test_an_obligation_without_identity_fails_the_window(self) -> None:
+        """A journal that cannot be reconciled by name is not audited by time."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id=None)
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OBLIGATION_IDENTITY_MISSING", report["findings"])
+        self.assertEqual(len(report["obligations_without_identity"]), 1)
+
+    def test_every_obligation_has_exactly_one_status(self) -> None:
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:06:00+00:00",
+                              due_at="2026-09-18T12:11:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-2")
+        self.write_attempt(attempted_at="2026-09-18T12:05:05+00:00", attempt_id="A-1")
+        report = self.audit(now="2026-09-18T12:12:00+00:00")
+        total = (report["obligations_resolved_by_attempt"]
+                 + report["obligations_resolved_by_supersession"]
+                 + report["obligations_pending"]
+                 + report["obligations_unexplained"])
+        self.assertEqual(total, report["obligations"],
+                         "the four statuses must partition the ledger exactly")
+
+    def test_a_live_service_last_obligation_is_pending_not_a_hole(self) -> None:
+        """The newest commitment of a running service is not yet a miss."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        report = self.audit(now="2026-09-18T12:05:30+00:00")
+        self.assertEqual(report["obligations_pending"], 1)
+        self.assertEqual(report["obligations_unexplained"], 0)
+        self.assertTrue(report["accountable"], report["findings"])
+
+    def test_the_real_collector_emits_reconcilable_obligations(self) -> None:
+        """The production path must produce a ledger the audit can settle."""
+        collector = self.collector_with_attested_lifecycle(enable=True)
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        transitions = collector.scheduler.all()
+        committed = [record for record in transitions if record.get("next_due_at_utc")]
+        self.assertTrue(committed)
+        for record in committed:
+            with self.subTest(transition=record["transition_id"]):
+                self.assertTrue(record["obligation_id"],
+                                "every commitment must be named")
+        # Each transition after the first declares what it replaces.
+        chained = [record for record in transitions
+                   if record.get("supersedes_obligation_id")]
+        self.assertTrue(chained, "re-plans must name the obligation they replace")
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(report["obligations_without_identity"], [])
+
+
+# ---------------------------------------------------------------------------
+# LIFECYCLE_PROVENANCE_NOT_AUTHORITATIVE
+# ---------------------------------------------------------------------------
+
+SERVICE_MANAGED_ENV = {"QUANT_SEC_SERVICE_MANAGER": "systemd",
+                       "INVOCATION_ID": "9f2c1b7ad4e14f0c8a3e5d6b7c8f9a0b"}
+
+
+class LaunchProvenanceTests(SecCaptureTestCase):
+    """Blue finding 2. Provenance an operator cannot silently omit."""
+
+    def test_absence_of_provenance_is_never_a_scheduled_start(self) -> None:
+        """The inversion: omission yields MANUAL_START, not SCHEDULED_START."""
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        # A human runs the command directly, passing nothing at all. Previously
+        # this produced SCHEDULED_START from an empty state.
+        cause = launcher.classify({}, "sha256:aaa", manual=False,
+                                  service_managed=False, invocation_id=None)
+        self.assertEqual(cause, MANUAL_START)
+        # Even with a prior clean state, an unmanaged launch stays manual.
+        cause = launcher.classify({"fingerprint": "sha256:aaa", "last_child_exit_code": 0},
+                                  "sha256:aaa", manual=False, service_managed=False,
+                                  invocation_id=None)
+        self.assertEqual(cause, MANUAL_START)
+
+    def test_a_service_managed_first_launch_is_a_scheduled_start(self) -> None:
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        self.assertEqual(
+            launcher.classify({}, "sha256:aaa", manual=False, service_managed=True,
+                              invocation_id="inv-1"),
+            SCHEDULED_START)
+
+    def test_a_dead_supervisor_is_reported_as_a_supervisor_restart(self) -> None:
+        """Blue's case B: last_child_exit_code=null used to read as SCHEDULED_START."""
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        # Exactly the state the old supervisor left just before launching a child.
+        previous = {"fingerprint": "sha256:aaa", "last_child_exit_code": None,
+                    "supervisor_running": True, "supervisor_invocation_id": "inv-1",
+                    "host_boot_id": "boot-A",
+                    "boot_at_utc": self.timebase.now().isoformat()}
+        cause = launcher.classify(previous, "sha256:aaa", manual=False,
+                                  service_managed=True, invocation_id="inv-2",
+                                  boot_id="boot-A", now=self.timebase.now())
+        self.assertEqual(cause, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
+        self.assertNotEqual(cause, SCHEDULED_START)
+        # A clean prior exit under the same conditions is a scheduled start.
+        # A clean prior exit and the same host boot is an operator, not a schedule.
+        clean = dict(previous, supervisor_running=False, last_child_exit_code=0,
+                     last_child_exit_at_utc=self.timebase.now().isoformat())
+        self.assertEqual(launcher.classify(clean, "sha256:aaa", manual=False,
+                                           service_managed=True, invocation_id="inv-2",
+                                           boot_id="boot-A", now=self.timebase.now()),
+                         MANUAL_START)
+
+    def test_child_failure_and_deployment_remain_distinguishable(self) -> None:
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as launcher
+        now = self.timebase.now()
+        child_failed = {"fingerprint": "sha256:aaa", "last_child_exit_code": 1,
+                        "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                        "host_boot_id": "boot-A",
+                        "last_child_exit_at_utc": now.isoformat()}
+        self.assertEqual(launcher.classify(child_failed, "sha256:aaa", manual=False,
+                                           service_managed=True, invocation_id="inv-1",
+                                           boot_id="boot-A", now=now),
+                         AUTOMATIC_RESTART_AFTER_FAILURE)
+        redeployed = {"fingerprint": "sha256:old", "last_child_exit_code": 0,
+                      "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                      "host_boot_id": "boot-A",
+                      "last_child_exit_at_utc": now.isoformat()}
+        self.assertEqual(launcher.classify(redeployed, "sha256:new", manual=False,
+                                           service_managed=True, invocation_id="inv-2",
+                                           boot_id="boot-A", now=now),
+                         DEPLOYMENT_RESTART)
+
+    def test_all_five_lifecycle_causes_are_reachable_and_classified(self) -> None:
+        self.assertEqual(set(LIFECYCLE_CAUSES), {
+            SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE,
+            AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, DEPLOYMENT_RESTART,
+            MANUAL_START})
+        # Only an operator intervention invalidates the window.
+        self.assertEqual(INVALIDATING_CAUSES, frozenset({MANUAL_START}))
+        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE, AUTOMATIC_CAUSES)
+
+    def test_a_launch_without_a_service_manager_is_not_qualifying(self) -> None:
+        provenance = lifecycle_provenance({
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-1",
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertFalse(provenance["service_managed"])
+        self.assertFalse(provenance["qualifying_service_mode"],
+                         "claiming qualifying mode without a manager must not work")
+
+    def test_a_service_managed_launch_can_be_qualifying(self) -> None:
+        provenance = lifecycle_provenance({
+            **SERVICE_MANAGED_ENV,
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_BOOT_ID": "boot-1",
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertTrue(provenance["service_managed"])
+        self.assertTrue(provenance["qualifying_service_mode"])
+        self.assertEqual(provenance["service_invocation_id"],
+                         SERVICE_MANAGED_ENV["INVOCATION_ID"])
+
+    def test_an_unrecognised_service_manager_is_not_accepted(self) -> None:
+        provenance = lifecycle_provenance({
+            "QUANT_SEC_SERVICE_MANAGER": "my-shell-script",
+            "INVOCATION_ID": "whatever",
+            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_QUALIFYING_MODE": "1"})
+        self.assertFalse(provenance["service_managed"])
+        self.assertFalse(provenance["qualifying_service_mode"])
+
+    def test_readiness_blocks_a_launch_without_external_provenance(self) -> None:
+        collector = SecForm4Collector(self.paths, policy=self.policy(),
+                                      transport=FakeTransport(lambda p, c: None),
+                                      timebase=self.timebase, root=ROOT, environ={})
+        readiness = collector.t0_readiness()
+        self.assertFalse(readiness["instrumentation_ready"])
+        for blocker in ("LIFECYCLE_CAUSE_UNATTESTED", "LAUNCH_NOT_SERVICE_MANAGED",
+                        "NOT_QUALIFYING_SERVICE_MODE"):
+            self.assertIn(blocker, readiness["blockers"])
+
+    def test_readiness_blocks_a_manual_start(self) -> None:
+        collector = SecForm4Collector(
+            self.paths, policy=self.policy(),
+            transport=FakeTransport(lambda p, c: None), timebase=self.timebase, root=ROOT,
+            environ={**SERVICE_MANAGED_ENV, "QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START,
+                     "QUANT_SEC_BOOT_ID": "b1", "QUANT_SEC_QUALIFYING_MODE": "1"})
+        readiness = collector.t0_readiness()
+        self.assertFalse(readiness["instrumentation_ready"])
+        self.assertIn("INVALIDATING_LIFECYCLE_CAUSE", readiness["blockers"])
+
+
+class QualifyingModeGateTests(SecCaptureTestCase):
+    """Acquisition-critical runtime overrides are refused or bound."""
+
+    def run_launcher(self, *args, environ: dict[str, str] | None = None):
+        import subprocess
+        environment = {**os.environ, "QUANT_SEC_USER_AGENT": USER_AGENT}
+        environment.pop("INVOCATION_ID", None)
+        environment.pop("QUANT_SEC_SERVICE_MANAGER", None)
+        environment.update(environ or {})
+        return subprocess.run(
+            [sys.executable, str(ROOT / "deploy" / "quant_sec_supervisor.py"),
+             "--root", str(self.root), *args],
+            capture_output=True, text=True, env=environment, timeout=120)
+
+    def test_qualifying_mode_refuses_a_poll_seconds_override(self) -> None:
+        result = self.run_launcher("--qualifying", "--poll-seconds", "5",
+                                   environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--poll-seconds", result.stdout)
+        self.assertIn("overrides not permitted", result.stdout)
+
+    def test_qualifying_mode_refuses_a_max_waits_override(self) -> None:
+        result = self.run_launcher("--qualifying", "--max-waits", "2",
+                                   environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--max-waits", result.stdout)
+
+    def test_qualifying_mode_refuses_a_manual_start(self) -> None:
+        result = self.run_launcher("--qualifying", "--manual", environ=SERVICE_MANAGED_ENV)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("manual start cannot be the qualifying", result.stdout)
+
+    def test_qualifying_mode_refuses_a_launch_without_a_service_manager(self) -> None:
+        result = self.run_launcher("--qualifying")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("no recognised service manager provenance", result.stdout)
+
+    def test_effective_runtime_configuration_is_bound_into_the_fingerprint(self) -> None:
+        """Two services from identical code with different cadence must differ."""
+        base = {**SERVICE_MANAGED_ENV, "QUANT_SEC_QUALIFYING_MODE": "1",
+                "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0",
+                "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": "15.0"}
+        first = acquisition_critical_fingerprint(self.policy(), root=ROOT, environ=base)
+        faster = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT,
+            environ={**base, "QUANT_SEC_SERVICE_POLL_SECONDS": "5.0"})
+        self.assertNotEqual(faster, first, "wake cadence must move the fingerprint")
+        bounded = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT, environ={**base, "QUANT_SEC_SERVICE_MAX_WAITS": "3"})
+        self.assertNotEqual(bounded, first, "a service lifetime bound must move it")
+        slower_restart = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT,
+            environ={**base, "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": "120.0"})
+        self.assertNotEqual(slower_restart, first, "restart pacing must move it")
+        non_qualifying = acquisition_critical_fingerprint(
+            self.policy(), root=ROOT, environ={**base, "QUANT_SEC_QUALIFYING_MODE": "0"})
+        self.assertNotEqual(non_qualifying, first,
+                            "qualifying and non-qualifying services are not the same service")
+        # Identical environments still agree.
+        self.assertEqual(acquisition_critical_fingerprint(self.policy(), root=ROOT,
+                                                          environ=base), first)
+
+    def test_the_manifest_records_the_effective_service_invocation(self) -> None:
+        manifest = build_manifest(self.policy(), root=ROOT, environ={
+            **SERVICE_MANAGED_ENV, "QUANT_SEC_QUALIFYING_MODE": "1",
+            "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
+        invocation = manifest["supervisor"]["effective_service_invocation"]
+        self.assertEqual(invocation["poll_seconds"], 60.0)
+        self.assertTrue(invocation["qualifying_mode"])
+        self.assertIsNone(invocation["max_waits"])
+
+    def test_the_unit_declares_the_service_manager_and_qualifying_mode(self) -> None:
+        unit = (ROOT / "deploy" / "quant-sec-capture.service").read_text(encoding="utf-8")
+        self.assertIn("Environment=QUANT_SEC_SERVICE_MANAGER=systemd", unit)
+        self.assertIn("--qualifying", unit)
+        self.assertIn("Restart=on-failure", unit)
+
+
+# ---------------------------------------------------------------------------
+# VISIBILITY_FIREWALL_REGRESSION
+# ---------------------------------------------------------------------------
+
+class CountProxyFirewallTests(SecCaptureTestCase):
+    """Blue finding 3. A prose promise is not a control.
+
+    The first rodage artifact published `attempts_by_endpoint_kind.FILING = 7`
+    while asserting it carried no filing count. Under the frozen path one filing
+    costs one FILING request, so that integer was a filing count by proxy. These
+    tests make the *shape* of that defect detectable.
+    """
+
+    def test_the_detector_catches_the_exact_field_blue_found(self) -> None:
+        offending = {"rodage_observations": {
+            "attempts_by_endpoint_kind": {"DISCOVERY": 3, "FILING": 7}}}
+        proxies = find_count_proxies(offending)
+        self.assertEqual(len(proxies), 1)
+        self.assertIn("FILING", proxies[0])
+        with self.assertRaises(AssertionError):
+            assert_no_count_proxies(offending, "artifact")
+
+    def test_the_detector_catches_other_filing_count_shapes(self) -> None:
+        for payload in ({"filings_captured": 12},
+                        {"nested": {"filing_requests": 4}},
+                        {"accessions_seen": 9},
+                        {"envelopes_written": 5},
+                        {"totals": [{"source_versions": 3}]}):
+            with self.subTest(payload=payload):
+                self.assertTrue(find_count_proxies(payload),
+                                f"{payload} should be flagged as a filing-count proxy")
+
+    def test_operational_health_numbers_remain_permitted(self) -> None:
+        """The firewall forbids scientific volume, not all numbers."""
+        healthy = {"raw_bytes": 49752, "requests_spent": 22, "scheduler_transitions": 14,
+                   "obligations": 13, "obligations_unexplained": 0,
+                   "window_duration_seconds": 154.8, "backoff_step": 0,
+                   "poll_seconds": 60.0, "service_starts": 2}
+        self.assertEqual(find_count_proxies(healthy), [])
+        assert_no_count_proxies(healthy, "telemetry")
+
+    def test_booleans_are_never_treated_as_counts(self) -> None:
+        self.assertEqual(find_count_proxies({"filing_present": True}), [])
+
+    def test_the_published_rodage_artifact_is_firewall_safe(self) -> None:
+        """The committed artifact itself, checked both ways."""
+        path = ROOT / "handoff" / "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        assert_no_count_proxies(document, path.name)
+        assert_no_scientific_content(path.read_text(encoding="utf-8"), path.name)
+        # The field must be gone. Its *name* legitimately survives inside the
+        # provenance note that records the exposure, so check the structure.
+        self.assertNotIn("attempts_by_endpoint_kind", document["rodage_observations"])
+        self.assertIn("attempts_by_endpoint_kind",
+                      document["visibility_firewall_provenance"]["what_was_exposed"])
+        # The invariant is still evidenced, as booleans rather than volume.
+        invariant = document["blocker_closure"]["HIDDEN_TRANSPORT_RETRY"]["live_invariant"]
+        self.assertEqual(invariant["REQUEST_ACCOUNTING_INVARIANT"], "PASS")
+        self.assertFalse(invariant["UNACCOUNTED_NETWORK_REQUESTS"])
+        self.assertFalse(invariant["DUPLICATED_ATTEMPT_AUTHORITY"])
+
+    def test_the_artifact_preserves_the_irreversible_exposure_provenance(self) -> None:
+        """Removing the value must not become a claim that it never happened."""
+        path = ROOT / "handoff" / "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        provenance = document["visibility_firewall_provenance"]
+        self.assertTrue(provenance["observed_by_blue"])
+        self.assertTrue(provenance["exposure_is_irreversible"])
+        self.assertFalse(provenance["blindness_restored"],
+                         "the artifact must not claim blindness was restored")
+        self.assertIn("no authority", provenance["authority"])
+        self.assertIn("attempts_by_endpoint_kind", provenance["what_was_exposed"])
+
+    def test_every_committed_handoff_artifact_is_firewall_safe(self) -> None:
+        """Applies the control to all of them, not just the one that regressed."""
+        for path in sorted((ROOT / "handoff").glob("*.json")):
+            with self.subTest(artifact=path.name):
+                text = path.read_text(encoding="utf-8")
+                assert_no_scientific_content(text, path.name)
+                assert_no_count_proxies(json.loads(text), path.name)
+
+    def test_live_telemetry_publishes_no_count_proxy(self) -> None:
+        collector = self.collector_for_telemetry()
+        collector.poll()
+        collector.drain(max_items=3)
+        assert_no_count_proxies(collector.telemetry(), "collector telemetry")
+        assert_no_count_proxies(
+            audit_observation_window(collector), "observation audit")
+
+    def collector_for_telemetry(self):
+        import random
+        policy = self.policy()
+        transport = FakeTransport(CollectorTestCase.fixture_router())
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(11)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                "QUANT_SEC_BOOT_ID": "boot-tel",
+                                "QUANT_SEC_QUALIFYING_MODE": "1"})
+        collector.enable()
+        return collector
+
+
+# ---------------------------------------------------------------------------
+# Rodage falsification attempts
+# ---------------------------------------------------------------------------
+
+class RodageFalsificationTests(CollectorTestCase):
+    """Deliberate attempts to make the instrumentation report something false.
+
+    The pre-t0 rodage brief asks for these specifically: a missed obligation, a
+    stale service, an override, an invalid discovery, and a crash, each checked
+    for whether the system would still call itself healthy.
+    """
+
+    def qualifying_collector(self, handler, *, cause: str = SCHEDULED_START,
+                             boot_id: str = "boot-q1", enable: bool = True):
+        import random
+        policy = self.policy()
+        transport = FakeTransport(handler)
+        collector = SecForm4Collector(
+            self.paths, policy=policy, transport=transport, timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(13)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": cause,
+                                "QUANT_SEC_BOOT_ID": boot_id,
+                                "QUANT_SEC_QUALIFYING_MODE": "1",
+                                "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
+        self.transport = transport
+        # A real restart does not re-enable an already-enabled lane: sec-serve
+        # only calls enable() when durable state says the lane is off.
+        if enable and not collector.state.enabled:
+            collector.enable()
+        return collector
+
+    def test_a_service_that_simply_stops_polling_is_not_accountable(self) -> None:
+        """The core falsification: skip the work and see if the audit notices."""
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        self.assertTrue(audit_observation_window(collector)["accountable"])
+        # Now the service goes silent for an hour. Nothing is recorded, which is
+        # exactly the case a journal of attempts alone cannot distinguish from
+        # "nothing was due".
+        self.timebase.advance(3600)
+        report = audit_observation_window(collector)
+        self.assertFalse(report["accountable"],
+                         "an hour of silence against an open obligation is a hole")
+        self.assertIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertGreaterEqual(report["obligations_unexplained"], 1)
+        self.assertEqual(collector.liveness(), STALE)
+
+    def test_a_stale_service_cannot_present_itself_as_healthy(self) -> None:
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        self.timebase.advance(3600 * 4)
+        telemetry = collector.telemetry()
+        self.assertEqual(telemetry["liveness"], STALE)
+        # Coverage is a separate axis and must not be upgraded by liveness.
+        self.assertEqual(telemetry["coverage_state"], COVERAGE_COMPLETE)
+        self.assertFalse(audit_observation_window(collector)["accountable"])
+
+    def test_an_invalid_discovery_leaves_an_accounted_attempt_and_no_false_coverage(self) -> None:
+        html = (FIXTURES / "edgar_error_page.html").read_bytes()
+        collector = self.qualifying_collector(
+            lambda path, call: response(html, headers={"Content-Type": "text/html"}))
+        collector.record_service_start()
+        outcome = collector.poll()
+        self.assertEqual(outcome.result_state, DISCOVERY_INVALID)
+        self.assertEqual(outcome.coverage_state, COVERAGE_UNKNOWN)
+        # The attempt is recorded, so the obligation it answered is accounted for
+        # even though the poll failed. A failure is not a hole.
+        report = audit_observation_window(collector)
+        self.assertNotIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+        self.assertGreaterEqual(report["obligations_resolved_by_attempt"]
+                                + report["obligations_resolved_by_supersession"], 1)
+
+    def test_a_cooldown_period_is_explained_rather_than_silent(self) -> None:
+        collector = self.qualifying_collector(
+            lambda path, call: response(b"slow down", status=429,
+                                        headers={"Retry-After": "300"}))
+        collector.record_service_start()
+        collector.poll()
+        # The cooldown moved the next due time, and said so prospectively.
+        cooldown_transitions = [record for record in collector.scheduler.all()
+                                if record["state"] == COOLDOWN]
+        self.assertTrue(cooldown_transitions)
+        transition = cooldown_transitions[-1]
+        self.assertIsNotNone(transition["next_due_at_utc"])
+        self.assertIsNotNone(transition["obligation_id"])
+        self.assertIsNotNone(transition["supersedes_obligation_id"])
+        # Waiting out the cooldown is service, not a hole.
+        self.timebase.advance(60)
+        report = audit_observation_window(collector)
+        self.assertNotIn("UNEXPLAINED_EXPECTED_ACTION", report["findings"])
+
+    def test_a_restart_preserves_the_open_obligation(self) -> None:
+        """A restart must not orphan the commitment the audit is waiting on."""
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+        open_obligation = collector.state.open_obligation_id
+        self.assertIsNotNone(open_obligation)
+
+        restarted = self.qualifying_collector(
+            self.fixture_router(), cause=AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+            boot_id="boot-q2")
+        self.assertEqual(restarted.state.open_obligation_id, open_obligation,
+                         "the open obligation survives the restart")
+        restarted.record_service_start()
+        # The restart transition names the obligation it replaces.
+        latest = restarted.scheduler.latest()
+        self.assertEqual(latest["supersedes_obligation_id"], open_obligation)
+        report = audit_observation_window(restarted)
+        self.assertTrue(report["fingerprint_stable"])
+        self.assertIn(AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+                      report["lifecycle_causes"])
+        self.assertFalse(
+            any(record["lifecycle_cause"] in INVALIDATING_CAUSES
+                for record in read_jsonl(self.paths.sec_lifecycle)),
+            "an automatic supervisor restart does not invalidate the window")
+
+    def test_a_manual_restart_mid_window_is_reported_as_invalidating(self) -> None:
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        intervened = self.qualifying_collector(self.fixture_router(),
+                                               cause=MANUAL_START, boot_id="boot-q3")
+        intervened.record_service_start()
+        report = audit_observation_window(intervened)
+        self.assertFalse(report["accountable"])
+        self.assertIn("INVALIDATING_INTERVENTION", report["findings"])
+
+    def test_no_publication_period_still_leaves_obligations_answered(self) -> None:
+        """A quiet source is not a quiet service."""
+        empty_feed = build_feed([], entries=[])
+        collector = self.qualifying_collector(self.fixture_router(atom=empty_feed))
+        collector.record_service_start()
+        first = collector.poll()
+        self.assertTrue(first.valid_discovery)
+        for _ in range(3):
+            self.timebase.advance(60)
+            collector.poll()
+        report = audit_observation_window(collector)
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(collector.state.last_result_state, NO_NEW_DATA)
+        self.assertEqual(report["obligations_unexplained"], 0)
+
+    def test_operator_internal_journals_are_content_free_but_not_count_free(self) -> None:
+        """The tier contract, stated honestly and pinned by a test.
+
+        Found while remediating the firewall regression: the tier was named
+        `sec_firewall_safe_journals`, which reads as "publishable". It is not.
+        These journals carry no filing-identifying string, and that is all they
+        promise - the drain path records one transition per acquired filing, so a
+        reader with file access can recover the count. The no-count rule binds the
+        published projection, not the journals.
+        """
+        collector = self.qualifying_collector(self.fixture_router())
+        collector.record_service_start()
+        collector.poll()
+        collector.drain(max_items=3)
+
+        # What the tier does promise: no identifying content.
+        for path in self.paths.sec_operator_internal_journals():
+            if path.exists():
+                with self.subTest(journal=path.name):
+                    assert_no_scientific_content(path.read_text(encoding="utf-8"),
+                                                 path.name)
+
+        # What it does not promise, demonstrated rather than glossed over.
+        drains = [record for record in collector.scheduler.all()
+                  if record["cause"] == DRAIN_COMPLETED]
+        self.assertTrue(drains, "the journal does record one drain per acquisition")
+
+        # The published projection is what must be count-free, and is.
+        from quant.clock import QuantSystem
+        from quant.status.brief import build_chief_brief
+        from quant.status.render import render_status
+        system = QuantSystem(self.root)
+        system.sec = collector
+        snapshot = system.snapshot()
+        for where, payload in (("collector telemetry", collector.telemetry()),
+                               ("observation audit", audit_observation_window(collector)),
+                               ("snapshot sec_capture", snapshot["sec_capture"])):
+            with self.subTest(surface=where):
+                assert_no_count_proxies(payload, where)
+        for where, text in (("status surface", render_status(snapshot)),
+                            ("CHIEF_BRIEF.md", build_chief_brief(snapshot))):
+            with self.subTest(surface=where):
+                assert_no_scientific_content(text, where)
+                self.assertNotIn("DRAIN_COMPLETED", text,
+                                 "a published surface must not tally drain events")
+
+
+class AuditAdversarialExtraTests(AuditFalsePassTests):
+    """Further attempts to make the ledger settle something it should not."""
+
+    def test_a_supersession_recorded_exactly_at_the_due_time_is_too_late(self) -> None:
+        """The boundary. `before the due time` must mean strictly before."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        self.write_transition(recorded_at="2026-09-18T12:05:00+00:00",
+                              due_at="2026-09-18T12:20:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-2",
+                              supersedes="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0,
+                         "a supersession at the deadline has not prevented the miss")
+        self.assertFalse(report["accountable"])
+
+    def test_a_chain_of_supersessions_cannot_clear_an_older_missed_obligation(self) -> None:
+        """A long re-plan chain must not sweep up a deadline already missed."""
+        self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                              due_at="2026-09-18T12:05:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        # Nothing answered OB-1. Later the service re-plans repeatedly, each step
+        # naming the previous obligation, as the live collector legitimately does.
+        previous = "OB-1"
+        for index, minute in enumerate(range(40, 46), start=2):
+            obligation = f"OB-{index}"
+            self.write_transition(recorded_at=f"2026-09-18T12:{minute}:00+00:00",
+                                  due_at=f"2026-09-18T12:{minute + 1}:00+00:00",
+                                  cause=POLL_COMPLETED, obligation_id=obligation,
+                                  supersedes=previous)
+            previous = obligation
+        report = self.audit(now="2026-09-18T13:30:00+00:00")
+        self.assertFalse(report["accountable"])
+        self.assertIn("OB-1", {item["obligation_id"]
+                               for item in report["unexplained_obligations"]},
+                      "the original miss survives any later chain")
+
+    def test_an_attempt_cannot_answer_an_obligation_created_after_it(self) -> None:
+        """Even inside tolerance, causality runs one way."""
+        self.write_attempt(attempted_at="2026-09-18T12:00:00+00:00", attempt_id="A-1")
+        # The obligation is created after the request, and comes due after it too.
+        self.write_transition(recorded_at="2026-09-18T12:01:00+00:00",
+                              due_at="2026-09-18T12:02:00+00:00",
+                              cause=POLL_COMPLETED, obligation_id="OB-1")
+        report = self.audit(now="2026-09-18T12:30:00+00:00")
+        self.assertEqual(report["obligations_resolved_by_attempt"], 0)
+        self.assertFalse(report["accountable"])
+
+    def test_many_attempts_cannot_cover_more_obligations_than_they_number(self) -> None:
+        """Three obligations, two requests: at most two can be answered."""
+        for index, minute in enumerate(("05", "06", "07"), start=1):
+            self.write_transition(recorded_at="2026-09-18T12:00:00+00:00",
+                                  due_at=f"2026-09-18T12:{minute}:00+00:00",
+                                  cause=POLL_COMPLETED, obligation_id=f"OB-{index}")
+        self.write_attempt(attempted_at="2026-09-18T12:05:10+00:00", attempt_id="A-1")
+        self.write_attempt(attempted_at="2026-09-18T12:06:10+00:00", attempt_id="A-2")
+        report = self.audit(now="2026-09-18T12:40:00+00:00")
+        self.assertLessEqual(report["obligations_resolved_by_attempt"], 2)
+        self.assertGreaterEqual(report["obligations_unexplained"], 1)
+        self.assertFalse(report["accountable"])
+
+
+# ---------------------------------------------------------------------------
+# A systemd launch is not a reason (Blue follow-up 1)
+# ---------------------------------------------------------------------------
+
+class OperatorRestartTests(SecCaptureTestCase):
+    """`systemctl restart` must not be able to hide behind a non-invalidating cause.
+
+    INVOCATION_ID proves systemd started the service; it says nothing about why.
+    An automatic action must therefore be positively demonstrated, and the only
+    positive reasons a cleanly stopped service can start are a host boot and the
+    first start of a deployment.
+    """
+
+    def launcher(self):
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as module
+        return module
+
+    def state(self, **overrides):
+        base = {"fingerprint": "sha256:fp", "last_child_exit_code": 0,
+                "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                "host_boot_id": "boot-A",
+                "last_child_exit_at_utc": self.timebase.now().isoformat()}
+        base.update(overrides)
+        return base
+
+    def classify(self, previous, **kwargs):
+        defaults = {"manual": False, "service_managed": True, "invocation_id": "inv-2",
+                    "boot_id": "boot-A", "now": self.timebase.now()}
+        defaults.update(kwargs)
+        return self.launcher().classify(previous, "sha256:fp", **defaults)
+
+    def test_an_operator_systemctl_restart_is_a_manual_start(self) -> None:
+        """The exact hole: systemd launched it, but an operator asked."""
+        self.assertEqual(self.classify(self.state()), MANUAL_START)
+
+    def test_a_host_reboot_is_a_scheduled_start(self) -> None:
+        """A boot-time launch is positively automatic: the kernel boot id moved."""
+        self.assertEqual(self.classify(self.state(), boot_id="boot-B"), SCHEDULED_START)
+
+    def test_the_first_start_of_a_deployment_is_a_scheduled_start(self) -> None:
+        """Not a restart after a stop or failure, so not an intervention."""
+        self.assertEqual(self.classify({}), SCHEDULED_START)
+
+    def test_an_automatic_restart_is_only_automatic_while_systemd_retries(self) -> None:
+        """Past the restart window systemd has given up, so a start is an operator."""
+        failed = self.state(last_child_exit_code=1)
+        self.assertEqual(self.classify(failed), AUTOMATIC_RESTART_AFTER_FAILURE)
+        # The same failed state, revisited long afterwards.
+        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
+        self.assertEqual(self.classify(failed, now=self.timebase.now()), MANUAL_START)
+
+    def test_a_dead_supervisor_outside_the_window_is_an_operator_restart(self) -> None:
+        dead = self.state(supervisor_running=True, last_child_exit_code=None,
+                          boot_at_utc=self.timebase.now().isoformat())
+        self.assertEqual(self.classify(dead),
+                         AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
+        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
+        self.assertEqual(self.classify(dead, now=self.timebase.now()), MANUAL_START)
+
+    def test_a_malformed_state_without_timing_falls_to_manual(self) -> None:
+        """No exit timestamp means no demonstration, so the safe answer wins."""
+        failed = {"fingerprint": "sha256:fp", "last_child_exit_code": 1,
+                  "host_boot_id": "boot-A"}
+        self.assertEqual(self.classify(failed), MANUAL_START)
+
+    def test_a_deployment_still_wins_over_an_operator_restart(self) -> None:
+        """A changed fingerprint is a deployment whoever typed the command."""
+        self.assertEqual(
+            self.launcher().classify(self.state(fingerprint="sha256:old"), "sha256:new",
+                                     manual=False, service_managed=True,
+                                     invocation_id="inv-2", boot_id="boot-A",
+                                     now=self.timebase.now()),
+            DEPLOYMENT_RESTART)
+
+    def test_the_host_boot_id_is_read_from_the_kernel(self) -> None:
+        from quant.dataplane.sec.supervisor import host_boot_id
+        self.assertTrue(host_boot_id(), "this host should expose a boot id")
+        self.assertIsNone(host_boot_id("/nonexistent/boot_id"))
+
+
+# ---------------------------------------------------------------------------
+# The materialized fingerprint must be the active one (Blue follow-up 2)
+# ---------------------------------------------------------------------------
+
+class MaterializedFingerprintTests(CollectorTestCase):
+    """Existence was never the question.
+
+    A materialized manifest describing a different build than the one running is
+    worse than none: it presents a frozen state the service does not have. That is
+    how a stale fingerprint reached a published rodage artifact.
+    """
+
+    def qualifying(self):
+        import random
+        policy = self.policy()
+        return SecForm4Collector(
+            self.paths, policy=policy, transport=FakeTransport(self.fixture_router()),
+            timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(17)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                "QUANT_SEC_BOOT_ID": "boot-fp",
+                                "QUANT_SEC_QUALIFYING_MODE": "1"})
+
+    def test_readiness_blocks_when_nothing_is_materialized(self) -> None:
+        collector = self.qualifying()
+        self.assertIsNone(collector.materialized_fingerprint())
+        readiness = collector.t0_readiness()
+        self.assertIn("FINGERPRINT_NOT_MATERIALIZED", readiness["blockers"])
+        self.assertFalse(readiness["fingerprint_matches_materialized"])
+
+    def test_readiness_blocks_when_the_materialized_fingerprint_is_stale(self) -> None:
+        """The defect: a manifest on disk from a previous build."""
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        self.assertEqual(collector.materialized_fingerprint(), collector.fingerprint)
+
+        # A deployment changed acquisition code; the manifest on disk did not move.
+        stale = json.loads(self.paths.sec_fingerprint.read_text(encoding="utf-8"))
+        stale["acquisition_critical_fingerprint"] = "sha256:" + "0" * 64
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+
+        reborn = self.qualifying()
+        readiness = reborn.t0_readiness()
+        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH", readiness["blockers"])
+        self.assertNotIn("FINGERPRINT_NOT_MATERIALIZED", readiness["blockers"])
+        self.assertFalse(readiness["instrumentation_ready"])
+        self.assertFalse(readiness["fingerprint_matches_materialized"])
+        self.assertNotEqual(readiness["materialized_fingerprint"],
+                            readiness["acquisition_critical_fingerprint"])
+
+    def test_telemetry_surfaces_the_mismatch_on_a_live_service(self) -> None:
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        self.assertTrue(collector.telemetry()["fingerprint_matches_materialized"])
+        stale = json.loads(self.paths.sec_fingerprint.read_text(encoding="utf-8"))
+        stale["acquisition_critical_fingerprint"] = "sha256:" + "1" * 64
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+        self.assertFalse(self.qualifying().telemetry()["fingerprint_matches_materialized"])
+
+    def test_rematerializing_after_a_change_clears_the_blocker(self) -> None:
+        collector = self.qualifying()
+        stale = {"acquisition_critical_fingerprint": "sha256:" + "2" * 64}
+        self.paths.ensure_sec()
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                      collector.t0_readiness()["blockers"])
+        collector.materialize_fingerprint()
+        self.assertNotIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                         collector.t0_readiness()["blockers"])
+        self.assertTrue(collector.t0_readiness()["fingerprint_matches_materialized"])
+
+    def test_a_changed_acquisition_module_makes_the_materialized_fingerprint_stale(self) -> None:
+        """End to end: the check catches exactly the visibility.py case."""
+        import shutil, tempfile
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            target = mirror / "src" / "quant" / "dataplane" / "sec" / "visibility.py"
+            target.write_text(target.read_text() + "\n# firewall rule changed\n")
+            import random
+            policy = self.policy()
+            moved = SecForm4Collector(
+                self.paths, policy=policy,
+                transport=FakeTransport(self.fixture_router()), timebase=self.timebase,
+                budget=SecTrafficBudget(self.paths.sec_budget, policy,
+                                        timebase=self.timebase, rng=random.Random(17)),
+                root=mirror, environ={**SERVICE_MANAGED_ENV,
+                                      "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                      "QUANT_SEC_BOOT_ID": "boot-fp",
+                                      "QUANT_SEC_QUALIFYING_MODE": "1"})
+            self.assertNotEqual(moved.fingerprint, collector.fingerprint)
+            self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                          moved.t0_readiness()["blockers"])
