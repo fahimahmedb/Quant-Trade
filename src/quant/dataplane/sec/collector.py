@@ -465,14 +465,8 @@ class SecForm4Collector:
                 f"COLLECTOR_STATE_SCHEMA_MISMATCH:missing={missing}:extra={extra}")
         digest = compute_fingerprint(payload)
         if not commits:
-            # Explicit pre-t0 migration of the operational state that already
-            # existed before state-digest binding was introduced.
-            append_jsonl(self._state_commit_path(), {
-                "event": "PRE_T0_BASELINE_MIGRATION",
-                "state_digest": digest,
-                "recorded_at_utc": self.timebase.now_iso(),
-            })
-        elif commits[-1].get("state_digest") != digest:
+            raise SecStorageFailure("COLLECTOR_STATE_UNCOMMITTED_OR_LEGACY")
+        if commits[-1].get("state_digest") != digest:
             raise SecStorageFailure("COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK")
         return CollectorState(**payload)
 
