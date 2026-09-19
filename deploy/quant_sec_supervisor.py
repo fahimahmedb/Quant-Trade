@@ -17,6 +17,7 @@ This file never declares t0.
 from __future__ import annotations
 
 import argparse
+import ctypes
 import fcntl
 import json
 import os
@@ -273,6 +274,18 @@ def materialize_if_absent(root: Path, environment: dict) -> str | None:
     return active
 
 
+def _child_parent_death_guard() -> None:
+    """Linux child invariant: no collector may outlive its supervisor."""
+    libc = ctypes.CDLL(None, use_errno=True)
+    parent = os.getppid()
+    PR_SET_PDEATHSIG = 1
+    if libc.prctl(PR_SET_PDEATHSIG, signal.SIGKILL) != 0:
+        os._exit(125)
+    # Parent could have died between fork and prctl.
+    if parent == 1 or os.getppid() != parent:
+        os._exit(125)
+
+
 def _terminate_group(child: subprocess.Popen, sig: int) -> None:
     if child.poll() is not None:
         return
@@ -421,7 +434,8 @@ def main() -> int:
                 if args.max_waits is not None:
                     command += ["--max-waits", str(args.max_waits)]
                 child = subprocess.Popen(
-                    command, env=child_environment, cwd=str(root), start_new_session=True)
+                    command, env=child_environment, cwd=str(root),
+                    start_new_session=True, preexec_fn=_child_parent_death_guard)
 
                 while child.poll() is None:
                     try:
