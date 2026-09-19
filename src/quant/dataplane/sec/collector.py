@@ -357,6 +357,17 @@ class SecForm4Collector:
             blockers.append("DEPLOYMENT_AUTHORITY_MISSING")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
+        if self.configured and not self.state.enabled:
+            blockers.append("COLLECTOR_DISABLED")
+        if self.configured and self.state.enabled:
+            if self.liveness() != RUNNING:
+                blockers.append("COLLECTOR_NOT_LIVE")
+            if self.state.coverage_state != COMPLETE:
+                blockers.append("COVERAGE_NOT_COMPLETE")
+            if self.state.open_gaps:
+                blockers.append("OPEN_COVERAGE_GAPS")
+            if not self.store.attempts():
+                blockers.append("NO_DURABLE_ACQUISITION_ATTEMPT")
         materialized, materialized_error = self._validated_materialization()
         if materialized_error:
             blockers.append(materialized_error)
@@ -401,6 +412,10 @@ class SecForm4Collector:
                 return stored, "FINGERPRINT_MATERIALIZED_SCHEMA_MISMATCH"
             if payload.get("host_identity_digest") != self._materialization_host_binding():
                 return stored, "FINGERPRINT_MATERIALIZED_OTHER_HOST"
+            if payload.get("git_commit") != self.store.git_commit:
+                return stored, "FINGERPRINT_MATERIALIZED_COMMIT_MISMATCH"
+            if payload.get("collector_version") != self.store.collector_version:
+                return stored, "FINGERPRINT_MATERIALIZED_VERSION_MISMATCH"
             if compute_fingerprint(manifest) != stored:
                 return stored, "FINGERPRINT_MATERIALIZED_SELF_MISMATCH"
             active_manifest = build_manifest(
@@ -478,7 +493,26 @@ class SecForm4Collector:
         payload = read_json(self.paths.sec_collector_state)
         commits = list(read_jsonl(self._state_commit_path()))
         if payload is None:
-            if commits:
+            history_paths = (
+                self.paths.sec_attempts, self.paths.sec_scheduler,
+                self.paths.sec_lifecycle, self.paths.sec_coverage,
+                self.paths.sec_raw_manifest, self.paths.sec_budget,
+                self.paths.sec_locators, self.paths.sec_envelopes,
+                self.paths.sec_source_versions,
+                self.paths.sec / "request_intents.jsonl",
+            )
+            history_present = any(
+                path.exists() and path.stat().st_size > 0 for path in history_paths)
+            if not history_present:
+                history_present = any(
+                    path.is_file()
+                    for directory in (
+                        self.paths.sec_raw_objects,
+                        self.paths.sec_incomplete_objects,
+                        self.paths.sec_staging,
+                    )
+                    for path in directory.rglob("*"))
+            if commits or history_present:
                 raise SecStorageFailure("COLLECTOR_STATE_MISSING_WITH_HISTORY")
             return CollectorState()
         if not isinstance(payload, dict):
@@ -750,9 +784,16 @@ class SecForm4Collector:
                           retry_after_seconds=retry_after or None,
                           byte_length=response.byte_length, **evidence, **common)
         if response.status != 200:
-            # Permanent client error: recorded once, never hot-looped. The poll
-            # cadence alone bounds it; no cooldown escalation is warranted.
-            return finish(PERMANENT_CLIENT_ERROR, error_class=f"http_{response.status}",
+            # Filing drain and daily reconciliation can otherwise select the
+            # same permanent 4xx again on the very next Control Plane tick.
+            retry_after = seconds_from_retry_after(
+                response.retry_after, self.timebase.now()) or 0.0
+            self._enter_transient_cooldown(
+                f"http_{response.status}_client_error",
+                floor_seconds=retry_after)
+            return finish(PERMANENT_CLIENT_ERROR,
+                          error_class=f"http_{response.status}",
+                          retry_after_seconds=retry_after or None,
                           byte_length=response.byte_length, **evidence, **common)
         if not response.complete:
             self._enter_transient_cooldown(f"incomplete:{response.transfer_outcome}")
@@ -865,6 +906,7 @@ class SecForm4Collector:
         first_object: str | None = None
         gap_ids = list(interrupted)
         new_identities: list[tuple[DiscoveryEntry, str, int]] = []
+        enqueued = 0
         continuity = False
         start = 0
         page_size = self.policy.discovery_page_size
@@ -879,9 +921,10 @@ class SecForm4Collector:
                     "page_range_end": start + page_size,
                     "result_state": attempt.result_state,
                     "error_class": attempt.error_class}))
-                return self._close_poll(poll_id, attempt.result_state, False,
-                                        pages_walked, first_object, gap_ids,
-                                        attempt.error_class, new_identities)
+                return self._close_poll(
+                    poll_id, attempt.result_state, False,
+                    pages_walked, first_object, gap_ids,
+                    attempt.error_class, new_identities, enqueued=enqueued)
             first_object = first_object or attempt.raw_object_sha256
             try:
                 page = parse_discovery_page(self._decoded(attempt),
@@ -896,8 +939,10 @@ class SecForm4Collector:
                     "result_state": DISCOVERY_INVALID, "error_class": invalid.reason}))
                 self._emit("sec_discovery_invalid", severity="WARN", poll_id=poll_id,
                            page_start=start, error_class=invalid.reason)
-                return self._close_poll(poll_id, DISCOVERY_INVALID, False, pages_walked + 1,
-                                        first_object, gap_ids, invalid.reason, new_identities)
+                return self._close_poll(
+                    poll_id, DISCOVERY_INVALID, False, pages_walked + 1,
+                    first_object, gap_ids, invalid.reason, new_identities,
+                    enqueued=enqueued)
             pages_walked += 1
             self.state.active_poll["pages"].append({
                 "page_start": start, "raw_object_sha256": attempt.raw_object_sha256,
@@ -906,8 +951,12 @@ class SecForm4Collector:
                 self.state.active_poll["newest_feed_updated"] = page.feed_updated
             self.save()
 
-            continuity, fresh = self._scan_page(page, poll_id, attempt.raw_object_sha256, start)
+            continuity, fresh = self._scan_page(
+                page, poll_id, attempt.raw_object_sha256, start)
             new_identities.extend(fresh)
+            # A successful page is durable acquisition evidence. Persist every
+            # newly observed filing before issuing the next page request.
+            enqueued += self._enqueue(fresh, poll_id)
             if continuity:
                 break
             if self.state.cursor_identity_digest is None:
@@ -938,7 +987,6 @@ class SecForm4Collector:
                 "pages_walked": pages_walked,
                 "from_cursor_identity_digest": self.state.cursor_identity_digest}))
 
-        enqueued = self._enqueue(new_identities, poll_id)
         if continuity:
             # A completed walk back to the anchor also proves the range an
             # interrupted poll had been trying to cover.
@@ -1308,10 +1356,10 @@ class SecForm4Collector:
 
     # --- telemetry ---------------------------------------------------------
     def _emit(self, kind: str, severity: str = "INFO", **detail: Any) -> None:
-        if self.emit is None:
-            return
-        self.emit("DATA", "SEC_CAPTURE", kind, self.store.collector_version,
-                  severity=severity, **detail)
+        # Detailed acquisition evidence already lives under var/sec. Mirroring
+        # one row per poll/capture into the shared EventLog leaks volume, timing,
+        # object hashes and discovery outcomes to protocol-mutating actors.
+        return
 
     def component_state(self) -> tuple[str, str]:
         """Protocol-facing service health, deliberately independent of filing volume."""
