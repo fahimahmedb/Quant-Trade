@@ -341,6 +341,15 @@ class SecForm4Collector:
             blockers.append("NOT_QUALIFYING_SERVICE_MODE")
         if self.lifecycle.get("invalidates_observation_window"):
             blockers.append("INVALIDATING_LIFECYCLE_CAUSE")
+        if not self.lifecycle.get("boot_id") or not self.lifecycle.get("supervisor_id"):
+            blockers.append("LIFECYCLE_IDENTITY_INCOMPLETE")
+        effective_service = self.lifecycle.get("effective_service_configuration") or {}
+        if (self.lifecycle.get("qualifying_service_mode")
+                and not effective_service.get("effective_unit_digest")):
+            blockers.append("EFFECTIVE_SERVICE_DEFINITION_UNATTESTED")
+        if (self.lifecycle.get("lifecycle_cause") == "DEPLOYMENT_RESTART"
+                and not self.lifecycle.get("launch_authority_nonce")):
+            blockers.append("DEPLOYMENT_AUTHORITY_MISSING")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
         materialized, materialized_error = self._validated_materialization()
