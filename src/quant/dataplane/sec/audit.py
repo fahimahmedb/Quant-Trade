@@ -168,40 +168,31 @@ def _resolve_supersessions(obligations: list[Obligation],
 
 def _resolve_attempts(obligations: list[Obligation], attempts: list[dict[str, Any]],
                       tolerance: float) -> None:
-    """Assign at most one attempt to each still-open obligation, forward only.
+    """Resolve by explicit obligation identity, then check the due window.
 
-    Obligations are taken in due order and each is given the earliest unconsumed
-    attempt inside ``[due, due + tolerance]``. Greedy assignment over two sorted
-    sequences is optimal for point-in-window matching, and consumption is what
-    makes the relation one-to-one.
+    Time proximity alone is not authority: two obligations may overlap.  A
+    request answers only the obligation captured durably at request creation.
     """
-    available = sorted(
-        ((parse_ts(record["request_attempted_at_utc"]), record.get("attempt_id") or "")
-         for record in attempts
-         if record.get("request_attempted_at_utc")
-         and record.get("result_state") not in NON_ANSWERING_ATTEMPT_STATES),
-        key=lambda pair: pair[0])
-    spent: set[int] = set()
-    for obligation in sorted(obligations, key=lambda item: item.due_at_utc):
+    by_id = {item.obligation_id: item for item in obligations}
+    for record in attempts:
+        obligation_id = record.get("obligation_id")
+        if not obligation_id or obligation_id not in by_id:
+            continue
+        obligation = by_id[obligation_id]
         if obligation.status != UNEXPLAINED:
             continue
+        attempted_raw = record.get("request_attempted_at_utc")
+        if not attempted_raw:
+            continue
+        stamp = parse_ts(attempted_raw)
         due = parse_ts(obligation.due_at_utc)
-        for index, (stamp, attempt_id) in enumerate(available):
-            if index in spent:
-                continue
-            offset = (stamp - due).total_seconds()
-            # Forward only. An attempt made before the deadline answers whatever
-            # was due then, never a commitment that had not yet come due.
-            if offset < 0:
-                continue
-            if offset > tolerance:
-                break
-            obligation.status = RESOLVED_BY_ATTEMPT
-            obligation.resolution_kind = RESOLVED_BY_ATTEMPT
-            obligation.resolution_ref = attempt_id
-            obligation.resolution_at_utc = stamp.isoformat()
-            spent.add(index)
-            break
+        offset = (stamp - due).total_seconds()
+        if offset < 0 or offset > tolerance:
+            continue
+        obligation.status = RESOLVED_BY_ATTEMPT
+        obligation.resolution_kind = RESOLVED_BY_ATTEMPT
+        obligation.resolution_ref = record.get("attempt_id")
+        obligation.resolution_at_utc = stamp.isoformat()
 
 
 def _mark_pending(obligations: list[Obligation], now: datetime, tolerance: float) -> None:
@@ -212,6 +203,131 @@ def _mark_pending(obligations: list[Obligation], now: datetime, tolerance: float
         due = parse_ts(obligation.due_at_utc)
         if (now - due).total_seconds() <= tolerance:
             obligation.status = PENDING
+
+
+def _validate_structure(transitions: list[dict[str, Any]],
+                        attempts: list[dict[str, Any]],
+                        lifecycle: list[dict[str, Any]],
+                        now: datetime) -> list[str]:
+    """Find malformed evidence that could otherwise manufacture a false pass."""
+    findings: list[str] = []
+
+    def aware(raw: str | None) -> datetime | None:
+        if not raw:
+            return None
+        value = parse_ts(raw)
+        if value.tzinfo is None:
+            findings.append("NAIVE_TIMESTAMP")
+            return None
+        if value > now:
+            findings.append("FUTURE_EVIDENCE_TIMESTAMP")
+        return value
+
+    transition_ids: set[str] = set()
+    obligation_ids: set[str] = set()
+    transition_by_obligation: dict[str, dict[str, Any]] = {}
+    previous_transition_time: datetime | None = None
+    for record in transitions:
+        transition_id = record.get("transition_id")
+        if not transition_id or transition_id in transition_ids:
+            findings.append("DUPLICATE_OR_MISSING_TRANSITION_ID")
+        if transition_id:
+            transition_ids.add(transition_id)
+        stamp = aware(record.get("recorded_at_utc"))
+        if stamp and previous_transition_time and stamp < previous_transition_time:
+            findings.append("SCHEDULER_TIME_REVERSED")
+        if stamp:
+            previous_transition_time = stamp
+        obligation_id = record.get("obligation_id")
+        due = record.get("next_due_at_utc")
+        if bool(obligation_id) != bool(due):
+            findings.append("OBLIGATION_ID_DUE_MISMATCH")
+        if obligation_id:
+            if obligation_id in obligation_ids:
+                findings.append("DUPLICATE_OBLIGATION_ID")
+            obligation_ids.add(obligation_id)
+            transition_by_obligation[obligation_id] = record
+            aware(due)
+
+    superseded_targets: set[str] = set()
+    for record in transitions:
+        target = record.get("supersedes_obligation_id")
+        if not target:
+            continue
+        if target in superseded_targets:
+            findings.append("OBLIGATION_SUPERSEDED_MORE_THAN_ONCE")
+        superseded_targets.add(target)
+        original = transition_by_obligation.get(target)
+        if original is None:
+            findings.append("SUPERSESSION_TARGET_UNKNOWN")
+            continue
+        replacement_time = aware(record.get("recorded_at_utc"))
+        created_time = aware(original.get("recorded_at_utc"))
+        if replacement_time and created_time and replacement_time < created_time:
+            findings.append("NONPROSPECTIVE_SUPERSESSION")
+        if record.get("obligation_id") == target:
+            findings.append("CIRCULAR_SUPERSESSION")
+
+    attempt_ids: set[str] = set()
+    previous_attempt_time: datetime | None = None
+    for record in attempts:
+        attempt_id = record.get("attempt_id")
+        if not attempt_id or attempt_id in attempt_ids:
+            findings.append("DUPLICATE_OR_MISSING_ATTEMPT_ID")
+        if attempt_id:
+            attempt_ids.add(attempt_id)
+        attempted = aware(record.get("request_attempted_at_utc"))
+        received = aware(record.get("response_received_at_utc"))
+        if attempted and previous_attempt_time and attempted < previous_attempt_time:
+            findings.append("ATTEMPT_TIME_REVERSED")
+        if attempted:
+            previous_attempt_time = attempted
+        if attempted and received and received < attempted:
+            findings.append("RECEIPT_PRECEDES_ATTEMPT")
+        if not record.get("obligation_id"):
+            findings.append("ATTEMPT_OBLIGATION_ID_MISSING")
+        elif record.get("obligation_id") not in obligation_ids:
+            findings.append("ATTEMPT_OBLIGATION_UNKNOWN")
+
+    if not lifecycle:
+        findings.append("LIFECYCLE_PROVENANCE_MISSING")
+    for record in lifecycle:
+        aware(record.get("recorded_at_utc"))
+        if record.get("lifecycle_cause") not in LIFECYCLE_CAUSES:
+            findings.append("LIFECYCLE_CAUSE_UNATTESTED")
+        if not record.get("boot_id") or not record.get("supervisor_id"):
+            findings.append("LIFECYCLE_IDENTITY_INCOMPLETE")
+
+    return sorted(set(findings))
+
+
+def _validate_request_intents(collector: Any,
+                              attempts: list[dict[str, Any]]) -> list[str]:
+    path = collector.paths.sec / "request_intents.jsonl"
+    if not path.exists():
+        return ["REQUEST_INTENT_JOURNAL_MISSING"] if attempts else []
+    intents = list(read_jsonl(path))
+    by_attempt: dict[str, list[dict[str, Any]]] = {}
+    for record in intents:
+        attempt_id = record.get("attempt_id")
+        if not attempt_id:
+            return ["REQUEST_INTENT_ID_MISSING"]
+        by_attempt.setdefault(attempt_id, []).append(record)
+    findings: list[str] = []
+    attempt_ids = {record.get("attempt_id") for record in attempts}
+    for attempt_id, records in by_attempt.items():
+        events = [record.get("event") for record in records]
+        if events.count("INTENT") != 1 or events.count("FINISHED") != 1:
+            findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
+        if attempt_id not in attempt_ids:
+            findings.append("REQUEST_INTENT_WITHOUT_ATTEMPT")
+    for record in attempts:
+        attempt_id = record.get("attempt_id")
+        records = by_attempt.get(attempt_id, [])
+        events = [item.get("event") for item in records]
+        if record.get("result_state") != "COOLDOWN_SUPPRESSED" and events.count("RESERVED") != 1:
+            findings.append("BUDGET_RESERVATION_ACCOUNTING_INCOMPLETE")
+    return sorted(set(findings))
 
 
 def audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
@@ -226,6 +342,8 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
                        if policy else 180.0))
     moment = now or collector.timebase.now()
 
+    findings: list[str] = _validate_structure(transitions, attempts, lifecycle, moment)
+    findings.extend(_validate_request_intents(collector, attempts))
     obligations, unidentified = _obligations_from(transitions)
     _resolve_supersessions(obligations, transitions)
     _resolve_attempts(obligations, attempts, tolerance)
@@ -246,7 +364,6 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
     invalidating = [record for record in lifecycle
                     if record.get("lifecycle_cause") in INVALIDATING_CAUSES]
 
-    findings: list[str] = []
     if unexplained:
         findings.append("UNEXPLAINED_EXPECTED_ACTION")
     if unidentified:
@@ -259,6 +376,13 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
         findings.append("INVALIDATING_INTERVENTION")
     if not transitions:
         findings.append("NO_SCHEDULER_PROVENANCE")
+    if collector.state.coverage_state != "COMPLETE":
+        findings.append("COVERAGE_NOT_COMPLETE")
+    if collector.state.open_gaps:
+        findings.append("OPEN_COVERAGE_GAPS")
+    if not fingerprints or "UNAVAILABLE" in fingerprints:
+        findings.append("ACQUISITION_FINGERPRINT_UNAVAILABLE")
+    findings = sorted(set(findings))
 
     window = _window_bounds(transitions)
     return {
