@@ -17,6 +17,7 @@ import ast
 import difflib
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -65,9 +66,21 @@ def canonical_snapshot() -> dict[str, Any]:
 
 
 def unit_test_count() -> int:
-    """Count exactly what unittest discovery sees without executing the suite."""
-    suite = unittest.TestLoader().discover(str(ROOT / "tests"), pattern="test*.py")
-    return suite.countTestCases()
+    """Count package discovery in a fresh interpreter, independent of imports."""
+    program = (
+        "import sys,unittest; from pathlib import Path; "
+        "root=Path(sys.argv[1]); sys.path.insert(0,str(root/'src')); "
+        "suite=unittest.TestLoader().discover(str(root/'tests'),pattern='test*.py'); "
+        "print(suite.countTestCases())"
+    )
+    completed = subprocess.run(
+        [sys.executable, "-c", program, str(ROOT)],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return int(completed.stdout.strip())
 
 
 def demo_assertion_count() -> int:

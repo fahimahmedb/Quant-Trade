@@ -551,15 +551,14 @@ class Phase6ProofAndConcurrencyCampaign(CollectorTestCase):
         match=re.search(r'Proof inventory: [*][*]([0-9]+) unit tests discovered',declared_text)
         self.assertIsNotNone(match)
         declared=int(match.group(1))
-        authoritative=unittest.TestLoader().discover(
-            str(ROOT/'tests'),pattern='test*.py',top_level_dir=str(ROOT)).countTestCases()
+        spec=importlib.util.spec_from_file_location(
+            'astra_status_phase6',ROOT/'scripts/status_artifacts.py')
+        status=importlib.util.module_from_spec(spec);spec.loader.exec_module(status)
+        authoritative=status.unit_test_count()
         self.assertEqual(
             declared,authoritative,
             'a freshness gate must not publish a smaller suite than package-aware discovery')
 
-        spec=importlib.util.spec_from_file_location(
-            'astra_status_phase6',ROOT/'scripts/status_artifacts.py')
-        status=importlib.util.module_from_spec(spec);spec.loader.exec_module(status)
         self.assertEqual(
             status.unit_test_count(),authoritative,
             'the status generator itself must count the authoritative package suite')
@@ -609,15 +608,16 @@ class Phase6ProofAndConcurrencyCampaign(CollectorTestCase):
                 import http.client,os
                 policy=SecAccessPolicy(user_agent=USER_AGENT)
                 budget=SecTrafficBudget(root/'budget.json',policy)
-                reservation=budget.reserve('synthetic_real_socket')
-                transport=SecHttpTransport(policy)
-                transport._connection=http.client.HTTPConnection(
-                    '127.0.0.1',port,timeout=5)
-                permit=RequestPermit(str(os.getpid()),reservation['reserved_at_utc'],
-                                     'synthetic_real_socket')
-                response=transport.fetch('/probe',permit)
-                if response.body != b'OK':
-                    raise RuntimeError('unexpected local response')
+                with budget.network_slot():
+                    reservation=budget.reserve('synthetic_real_socket')
+                    transport=SecHttpTransport(policy)
+                    transport._connection=http.client.HTTPConnection(
+                        '127.0.0.1',port,timeout=5)
+                    permit=RequestPermit(str(os.getpid()),reservation['reserved_at_utc'],
+                                         'synthetic_real_socket')
+                    response=transport.fetch('/probe',permit)
+                    if response.body != b'OK':
+                        raise RuntimeError('unexpected local response')
 
             first=ctx.Process(target=worker);first.start()
             self.assertTrue(first_started.wait(5),'first request never reached local server')
