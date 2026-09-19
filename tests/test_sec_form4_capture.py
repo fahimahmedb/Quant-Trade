@@ -1059,6 +1059,7 @@ class ReconciliationTests(CollectorTestCase):
         self.assertIn("2026-09-17", collector.state.unreconciled_days)
         self.assertEqual(collector.state.open_gaps[-1]["kind"], DAILY_INDEX_UNAVAILABLE)
 
+        self.timebase.advance(collector.cooldown_remaining() + 1)
         html = (FIXTURES / "edgar_error_page.html").read_bytes()
         other = self.collector(self.fixture_router(index=html))
         result = other.reconcile(date(2026, 9, 17))
@@ -2435,9 +2436,11 @@ class AuditFalsePassTests(CollectorTestCase):
             obligation_id = candidates[0] if candidates else None
         intent_path = self.paths.sec / "request_intents.jsonl"
         append_jsonl(intent_path, {"event": "INTENT", "attempt_id": attempt_id,
-                                   "obligation_id": obligation_id})
+                                   "obligation_id": obligation_id,
+                                   "recorded_at_utc": attempted_at})
         append_jsonl(intent_path, {"event": "RESERVED", "attempt_id": attempt_id,
-                                   "obligation_id": obligation_id})
+                                   "obligation_id": obligation_id,
+                                   "reserved_at_utc": attempted_at})
         self.lane.store.record_attempt(SecAttemptRecord(
             attempt_id=attempt_id, attempt_kind="DISCOVERY", endpoint_class="test",
             source_locator_digest=digest_text("loc"),
@@ -2445,7 +2448,8 @@ class AuditFalsePassTests(CollectorTestCase):
             response_received_at_utc=attempted_at,
             result_state=result_state, collector_version="v", git_commit="c",
             obligation_id=obligation_id, http_status=200))
-        append_jsonl(intent_path, {"event": "FINISHED", "attempt_id": attempt_id})
+        append_jsonl(intent_path, {"event": "FINISHED", "attempt_id": attempt_id,
+                                   "recorded_at_utc": attempted_at})
 
     def audit(self, *, now: str):
         # Written directly rather than through record_service_start, which would

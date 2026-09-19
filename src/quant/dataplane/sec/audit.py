@@ -336,6 +336,7 @@ def _validate_request_intents(collector: Any,
         attempt = attempt_by_id.get(attempt_id)
         if attempt is None:
             findings.append("REQUEST_INTENT_WITHOUT_ATTEMPT")
+            findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
             continue
         if any(event not in allowed for event in events):
             findings.append("REQUEST_EVENT_ORDER_INVALID")

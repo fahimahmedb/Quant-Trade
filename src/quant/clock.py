@@ -852,19 +852,27 @@ class QuantSystem:
             "total": self.log.count(), "recent": self.log.recent(15),
             "faults": len(self.log.faults())}
         if self.sec.configured:
-            for key in ("ticks", "waits", "last_wake_at", "run_history", "next_action"):
-                control.pop(key, None)
+            control.pop("run_history", None)
+            control["ticks"] = "RESTRICTED"
+            control["waits"] = "RESTRICTED"
+            control["last_wake_at"] = "RESTRICTED"
+            control["last_heartbeat"] = "RESTRICTED"
+            control["next_action"] = "SEC service active; operational schedule restricted"
             for name in ("CONTROL", "SEC_CAPTURE"):
                 status = components.get(name)
                 if status is not None:
                     components[name] = {
                         "component": name,
                         "state": status.get("state"),
-                        "detail": status.get("detail"),
+                        "detail": "operational detail restricted",
                     }
+            # Even non-SEC shared rows such as clock_waiting can encode how much
+            # acquisition work happened between waits, so the public projection
+            # exposes no shared event cardinality or timing while SEC is active.
             events = {
-                "recent": [event for event in self.log.recent(15)
-                           if event.get("component") != "SEC_CAPTURE"],
+                "total": "RESTRICTED",
+                "faults": "RESTRICTED",
+                "recent": [],
                 "activity_redacted": True,
             }
         return {

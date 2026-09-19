@@ -412,16 +412,16 @@ class SecForm4Collector:
                 return stored, "FINGERPRINT_MATERIALIZED_SCHEMA_MISMATCH"
             if payload.get("host_identity_digest") != self._materialization_host_binding():
                 return stored, "FINGERPRINT_MATERIALIZED_OTHER_HOST"
-            if payload.get("git_commit") != self.store.git_commit:
-                return stored, "FINGERPRINT_MATERIALIZED_COMMIT_MISMATCH"
-            if payload.get("collector_version") != self.store.collector_version:
-                return stored, "FINGERPRINT_MATERIALIZED_VERSION_MISMATCH"
             if compute_fingerprint(manifest) != stored:
                 return stored, "FINGERPRINT_MATERIALIZED_SELF_MISMATCH"
             active_manifest = build_manifest(
                 self.policy, root=self.root, environ=self._environ)
             if manifest != active_manifest or stored != self.fingerprint:
                 return stored, "FINGERPRINT_MATERIALIZED_MISMATCH"
+            if payload.get("git_commit") != self.store.git_commit:
+                return stored, "FINGERPRINT_MATERIALIZED_COMMIT_MISMATCH"
+            if payload.get("collector_version") != self.store.collector_version:
+                return stored, "FINGERPRINT_MATERIALIZED_VERSION_MISMATCH"
             return stored, None
         except (OSError, ValueError, KeyError, TypeError):
             return None, "FINGERPRINT_MATERIALIZED_INVALID"
