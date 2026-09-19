@@ -72,6 +72,19 @@ ACQUISITION_CRITICAL_MODULES: tuple[str, ...] = (
     # is the one that stays available later.
     "src/quant/dataplane/sec/audit.py",
     "src/quant/clock.py",
+    # Shared runtime primitives reached on the acquisition path.  Their names do
+    # not contain "sec", but changing their persistence/path/event behaviour can
+    # change acquisition or the proof of acquisition.
+    "src/quant/state.py",
+    "src/quant/paths.py",
+    "src/quant/events.py",
+    "src/quant/dataplane/sec/version.py",
+    # Published firewall projections and the scripts that generate/check them.
+    # A weaker projection or verifier can manufacture a false pre-t0 proof.
+    "src/quant/status/render.py",
+    "src/quant/status/brief.py",
+    "scripts/status_artifacts.py",
+    "scripts/verify_p0.py",
     # The service entry point. `sec-serve` binds the clock's wake cadence into
     # system.serve(), so it decides how often a due poll is noticed - acquisition
     # timing, in a file no source digest covered until now. Membership may only be
