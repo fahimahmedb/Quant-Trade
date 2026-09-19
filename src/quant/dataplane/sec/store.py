@@ -111,6 +111,8 @@ class SecAttemptRecord:
     #: Discovery page offset. An offset is not a filing count.
     page_start: int | None = None
     duration_seconds: float | None = None
+    #: Exact scheduler obligation this network attempt was emitted to satisfy.
+    obligation_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -213,10 +215,16 @@ class SecCaptureStore:
         if not object_id.startswith("sha256:") or len(object_id) != 71:
             raise ValueError("raw object id must be a sha256: digest")
         hexdigest = object_id[7:]
+        if any(character not in "0123456789abcdef" for character in hexdigest):
+            raise ValueError("raw object id contains non-hex characters")
         return self.paths.sec_raw_objects / hexdigest[:2] / f"{hexdigest}.bin"
 
     def incomplete_path(self, object_id: str) -> Path:
+        if not object_id.startswith("sha256:") or len(object_id) != 71:
+            raise ValueError("incomplete object id must be a sha256: digest")
         hexdigest = object_id[7:]
+        if any(character not in "0123456789abcdef" for character in hexdigest):
+            raise ValueError("incomplete object id contains non-hex characters")
         return self.paths.sec_incomplete_objects / hexdigest[:2] / f"{hexdigest}.partial"
 
     def has_object(self, object_id: str) -> bool:
@@ -278,16 +286,16 @@ class SecCaptureStore:
 
     @staticmethod
     def _fsync_dir(path: Path) -> None:
+        """Evidence publication is not durable if directory fsync fails."""
         try:
-            handle = os.open(path, os.O_RDONLY)
-        except OSError:
-            return
-        try:
-            os.fsync(handle)
-        except OSError:
-            pass
-        finally:
-            os.close(handle)
+            handle = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+            try:
+                os.fsync(handle)
+            finally:
+                os.close(handle)
+        except OSError as exc:
+            raise SecStorageFailure(
+                f"directory fsync failed: {type(exc).__name__}") from exc
 
     # --- journals ----------------------------------------------------------
     def _append(self, path: Path, record: dict[str, Any]) -> None:
@@ -320,6 +328,13 @@ class SecCaptureStore:
         return locator_digest
 
     def record_envelope(self, envelope: SecAcquisitionEnvelope) -> SecAcquisitionEnvelope:
+        """ACK only bytes that are still present, address-correct and complete."""
+        try:
+            body = self.read_object(envelope.raw_object_sha256)
+        except (OSError, RawObjectConflict, ValueError) as exc:
+            raise SecStorageFailure("envelope raw object is not reconstructible") from exc
+        if len(body) != envelope.byte_length:
+            raise SecStorageFailure("envelope byte length does not match raw object")
         self._append(self.paths.sec_envelopes, envelope.to_dict())
         return envelope
 
@@ -371,6 +386,14 @@ class SecCaptureStore:
         """
         committed: dict[str, str] = {}
         for record in self.envelopes():
+            try:
+                body = self.read_object(record["raw_object_sha256"])
+            except (OSError, RawObjectConflict, ValueError, KeyError) as exc:
+                raise SecStorageFailure(
+                    "acknowledged envelope references non-reconstructible bytes") from exc
+            if len(body) != record.get("byte_length"):
+                raise SecStorageFailure(
+                    "acknowledged envelope byte length no longer matches raw object")
             committed[record["source_identity"]] = record["raw_object_sha256"]
         return committed
 

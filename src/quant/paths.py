@@ -150,6 +150,21 @@ class QuantPaths:
         """Global SEC traffic budget, shared by every SEC consumer."""
         return self.sec / "sec_traffic_budget.json"
 
+    @property
+    def sec_budget_reservations(self) -> Path:
+        """Append-only reservation ledger binding budget slots to attempt ids."""
+        return self.sec / "budget_reservations.jsonl"
+
+    @property
+    def sec_request_intents(self) -> Path:
+        """Pre-send/request completion ledger used to detect ambiguous crashes."""
+        return self.sec / "request_intents.jsonl"
+
+    @property
+    def sec_state_commits(self) -> Path:
+        """Append-only digests binding mutable collector state revisions."""
+        return self.sec / "state_commits.jsonl"
+
     # Restricted tier. These journals carry source identity, so no status
     # surface, brief, log or exception may read them. They exist because
     # point-in-time reconstructability requires knowing which source produced
@@ -206,5 +221,10 @@ class QuantPaths:
         """Create the capture subtree. Called by the collector, not by boot."""
         for directory in (self.sec, self.sec_raw_objects, self.sec_incomplete_objects,
                           self.sec_staging, self.sec_restricted):
-            directory.mkdir(parents=True, exist_ok=True)
+            directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+        try:
+            self.sec.chmod(0o700)
+            self.sec_restricted.chmod(0o700)
+        except OSError:
+            pass
         return self

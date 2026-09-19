@@ -29,7 +29,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterator
 
-from ...state import parse_ts, read_json, write_json
+from ...state import append_jsonl, parse_ts, read_json, write_json
 from .policy import SecAccessPolicy
 from .timebase import Timebase
 
@@ -147,7 +147,7 @@ class SecTrafficBudget:
                 self.save(state)
 
     # --- the slot ----------------------------------------------------------
-    def reserve(self, endpoint_class: str) -> dict[str, Any]:
+    def reserve(self, endpoint_class: str, *, attempt_id: str) -> dict[str, Any]:
         """Wait for a compliant slot and durably record that it was spent.
 
         Raises ``SecCooldownActive`` rather than sleeping through a cooldown:
@@ -170,8 +170,17 @@ class SecTrafficBudget:
             # Persisted before the caller is allowed to make the request, so a
             # kill during the request cannot re-spend this slot immediately.
             self.save(state)
-            return {"reserved_at_utc": state.last_request_at_utc, "waited_seconds": waited,
-                    "requests": state.requests, "endpoint_class": endpoint_class}
+            reservation = {
+                "attempt_id": attempt_id,
+                "reserved_at_utc": state.last_request_at_utc,
+                "endpoint_class": endpoint_class,
+                "waited_seconds": waited,
+            }
+            # Written before the caller receives authority to emit the request.
+            # If this append fails, no request is sent and the spent budget slot
+            # remains conservatively unavailable.
+            append_jsonl(self.path.parent / "budget_reservations.jsonl", reservation)
+            return reservation
 
     def _wait_for_spacing(self, state: BudgetState) -> float:
         if state.last_request_at_utc is None:
@@ -191,14 +200,7 @@ class SecTrafficBudget:
     def telemetry(self) -> dict[str, Any]:
         """Firewall-safe: rate/cooldown state only, no locator and no content."""
         state = self.load()
-        return {"requests_spent": state.requests,
-                "last_request_at_utc": state.last_request_at_utc,
-                "cooldown_active": self.cooldown_remaining(state) > 0,
-                "cooldown_until_utc": state.cooldown_until_utc,
-                "cooldown_reason": state.cooldown_reason,
-                "backoff_step": state.backoff_step,
-                "limiter_waits": state.waits,
-                "limiter_wait_seconds": round(state.total_wait_seconds, 3),
+        return {"cooldown_active": self.cooldown_remaining(state) > 0,
                 "max_requests_per_second": self.policy.max_requests_per_second,
                 "max_concurrency": self.policy.max_concurrency}
 
