@@ -30,7 +30,7 @@ EnvironmentFile=/etc/quant/sec-capture.env
 Environment=QUANT_SEC_SERVICE_MANAGER=systemd
 # --qualifying refuses every acquisition-critical override: cadence comes from the
 # frozen policy and a qualifying service does not stop after N idle waits.
-ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying
+ExecStart=/usr/bin/python3 -I /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying
 Restart=on-failure
 RestartSec=15
 TimeoutStopSec=30
