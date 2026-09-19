@@ -95,38 +95,23 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
                          indent=2, sort_keys=True))
         return 0
     if args.command == "sec-serve":
-        # One host, one active collector.  The file lock also prevents an orphan
-        # child plus a replacement supervisor from emitting concurrent traffic.
-        lock_path = system.paths.sec / "collector_service.lock"
-        lock_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-        lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
-        try:
-            try:
-                fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError:
+        effective = collector.lifecycle.get("effective_service_configuration") or {}
+        if collector.lifecycle.get("qualifying_service_mode"):
+            if (effective.get("poll_seconds") != args.poll_seconds
+                    or effective.get("max_waits") != args.max_waits):
                 print(json.dumps({"state": "BLOCKED",
-                                  "reason": "COLLECTOR_ALREADY_RUNNING"}))
+                                  "reason": "CLI_RUNTIME_MISMATCH"}))
                 return 2
-            effective = collector.lifecycle.get("effective_service_configuration") or {}
-            if collector.lifecycle.get("qualifying_service_mode"):
-                if (effective.get("poll_seconds") != args.poll_seconds
-                        or effective.get("max_waits") != args.max_waits):
-                    print(json.dumps({"state": "BLOCKED",
-                                      "reason": "CLI_RUNTIME_MISMATCH"}))
-                    return 2
-                collector.require_active_materialization()
-            # boot() binds lifecycle before capture; serve_sec never dispatches
-            # research/desk/learning work between acquisition obligations.
-            system.boot()
-            if not collector.state.enabled:
-                collector.enable()
-            entry = system.serve_sec(
-                poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
-            print(json.dumps({"service_exit": "STOPPED",
-                              "mode": entry["mode"]}, sort_keys=True))
-            return 0
-        finally:
-            os.close(lock_fd)
+            collector.require_active_materialization()
+        # main() acquired the single-writer lock before QuantSystem constructed.
+        system.boot()
+        if not collector.state.enabled:
+            collector.enable()
+        entry = system.serve_sec(
+            poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
+        print(json.dumps({"service_exit": "STOPPED",
+                          "mode": entry["mode"]}, sort_keys=True))
+        return 0
     if args.command == "sec-enable":
         collector.enable()
     elif args.command == "sec-disable":
@@ -178,6 +163,34 @@ def main() -> None:
     parser.add_argument("--day", help="closed day to reconcile, as YYYY-MM-DD")
     args = parser.parse_args()
 
+    # Mutating SEC commands share the service lock and acquire it before
+    # QuantSystem constructs the collector. A concurrent operator command
+    # therefore cannot load stale state and write it back over the live service.
+    mutating_sec = {
+        "sec-enable", "sec-disable", "sec-probe", "sec-reconcile",
+        "sec-serve", "sec-fingerprint",
+    }
+    sec_lock_fd: int | None = None
+    if args.command in mutating_sec:
+        lock_path = args.root / "var" / "sec" / "collector_service.lock"
+        lock_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        sec_lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(sec_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            os.close(sec_lock_fd)
+            print(json.dumps({"state": "BLOCKED",
+                              "reason": "COLLECTOR_ALREADY_RUNNING"}))
+            raise SystemExit(2)
+
+    if args.command.startswith("sec-"):
+        try:
+            system = QuantSystem(args.root, initial_capital=args.capital)
+            raise SystemExit(sec_command(system, args))
+        finally:
+            if sec_lock_fd is not None:
+                os.close(sec_lock_fd)
+
     system = QuantSystem(args.root, initial_capital=args.capital)
 
     if args.command == "boot":
@@ -197,8 +210,6 @@ def main() -> None:
         print(json.dumps(system.serve(poll_seconds=args.poll_seconds,
                                       max_cycles=args.max_waits), indent=2, sort_keys=True))
         return
-    if args.command.startswith("sec-"):
-        raise SystemExit(sec_command(system, args))
     if args.command == "pause":
         system.pause(args.reason)
         print(json.dumps({"status": system.state.status,
