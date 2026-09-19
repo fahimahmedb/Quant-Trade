@@ -227,14 +227,9 @@ class SecTrafficBudget:
     def telemetry(self) -> dict[str, Any]:
         """Firewall-safe: rate/cooldown state only, no locator and no content."""
         state = self.load()
-        return {"requests_spent": state.requests,
-                "last_request_at_utc": state.last_request_at_utc,
-                "cooldown_active": self.cooldown_remaining(state) > 0,
-                "cooldown_until_utc": state.cooldown_until_utc,
+        return {"cooldown_active": self.cooldown_remaining(state) > 0,
                 "cooldown_reason": state.cooldown_reason,
-                "backoff_step": state.backoff_step,
-                "limiter_waits": state.waits,
-                "limiter_wait_seconds": round(state.total_wait_seconds, 3),
+                "backoff_active": state.backoff_step > 0,
                 "max_requests_per_second": self.policy.max_requests_per_second,
                 "max_concurrency": self.policy.max_concurrency}
 
