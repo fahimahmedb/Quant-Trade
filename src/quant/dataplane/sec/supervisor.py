@@ -1,44 +1,4 @@
-"""Lifecycle provenance supplied from outside the collector.
-
-``BLUE_P0_RAW_CAPTURE_CHECKPOINT_ADDENDUM_2026-09-18.md §5.2``: "A collector
-process cannot authoritatively classify its own origin." The retrospective audit
-needs to know whether a restart was scheduled, automatic, a deployment, or a human
-intervention - and the last of those invalidates the observation window, so the
-process with an interest in the answer must not supply it.
-
-Blue's second finding was that the first version was still not authoritative
-enough, in three ways, all fixed here.
-
-**Absence of provenance is never SCHEDULED_START.** The earlier design derived
-``MANUAL_START`` from an ``--manual`` flag, so a human who simply did not pass it
-was recorded as a normal scheduled start. The default direction is now inverted: a
-launch that cannot show service-manager provenance is ``MANUAL_START`` and is not
-qualifying. Omission cannot buy a clean record; only a real service manager can.
-
-**The supervisor's own restart is observable.** The supervisor records that it is
-running, together with the invocation identity the service manager gave it. A new
-supervisor that finds a previous one still marked running under a different
-invocation knows the previous one died, and reports
-``AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE`` rather than inheriting a clean
-``SCHEDULED_START``.
-
-**A service manager launch is not yet a reason.** ``INVOCATION_ID`` proves systemd
-started the service; it says nothing about why. An operator typing
-``systemctl restart quant-sec-capture`` therefore looked identical to a scheduled
-start. The classification no longer accepts "systemd did it" as evidence of an
-automatic action: it requires a positive reason, and falls to ``MANUAL_START``
-otherwise. The two positive reasons a healthy service can be started for are a
-host boot - visible because the kernel's boot id changed - and the very first
-start of a deployment. Anything else on a cleanly stopped service is an operator,
-and an automatic restart after a failure is only automatic while it is still
-inside the restart window the unit declares; after that systemd has given up and
-a new start is again an operator.
-
-**Effective service timing is bound.** Wake cadence, termination controls and
-restart pacing change the expected acquisition timeline without touching any
-source file, so they are exported by the launcher and folded into the fingerprint
-manifest. In qualifying mode they may not be overridden at all.
-"""
+"""Lifecycle provenance supplied from outside the collector.\n\nThe current pre-t0 rule is intentionally conservative. Only two non-invalidating\ncauses have positive authority: a child failure directly witnessed/restarted by\nthe same continuously-running supervisor, or a deployment restart backed by a\nseparate durable one-use authorization consumed before launch.\n\nA replacement supervisor never upgrades itself from boot id, wall-clock timing,\nprior exit state or the fact systemd launched it. Those are observations, not\nproof of cause. SCHEDULED_START remains in the historical vocabulary so old\njournals remain parseable, but it is invalidating for a new qualifying window.\n\nEffective wake/restart configuration and the digest of the unit actually loaded\nby systemd are bound into the acquisition fingerprint.\n"""
 
 from __future__ import annotations
 
@@ -62,13 +22,15 @@ LIFECYCLE_CAUSES = (SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE,
 
 #: Automatic causes, which do not invalidate an observation window on their own.
 AUTOMATIC_CAUSES = frozenset({AUTOMATIC_RESTART_AFTER_FAILURE,
-                              DEPLOYMENT_RESTART, SCHEDULED_START})
+                              DEPLOYMENT_RESTART})
 
 #: Not a cause. The absence of one.
 UNATTESTED = "LIFECYCLE_CAUSE_UNATTESTED"
 
 #: Causes that invalidate an active observation window (§5.2 intervention rule).
-INVALIDATING_CAUSES = frozenset({MANUAL_START, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE})
+INVALIDATING_CAUSES = frozenset({
+    MANUAL_START, SCHEDULED_START, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
+})
 
 BOOT_ID_ENV = "QUANT_SEC_BOOT_ID"
 CAUSE_ENV = "QUANT_SEC_LIFECYCLE_CAUSE"
