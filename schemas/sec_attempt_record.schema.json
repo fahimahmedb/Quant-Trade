@@ -72,6 +72,12 @@
         "null"
       ]
     },
+    "obligation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "page_start": {
       "type": [
         "integer",
