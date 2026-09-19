@@ -16,6 +16,8 @@
 Description=Quant SEC/Form-4 P0 acquisition service
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=5
 
 [Service]
 Type=simple
@@ -31,10 +33,11 @@ Environment=QUANT_SEC_SERVICE_MANAGER=systemd
 ExecStart=/usr/bin/python3 /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying
 Restart=on-failure
 RestartSec=15
-StartLimitIntervalSec=600
-StartLimitBurst=5
 TimeoutStopSec=30
-KillSignal=SIGINT
+KillSignal=SIGTERM
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=yes
 
 [Install]
 WantedBy=multi-user.target
