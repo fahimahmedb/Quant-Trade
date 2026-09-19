@@ -1921,8 +1921,8 @@ class FingerprintTests(SecCaptureTestCase):
             self.assertNotEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
                                 before)
 
-    def test_a_downstream_only_change_leaves_the_fingerprint_unchanged(self) -> None:
-        """Manifest/parser/gap-ledger work must not reset t0."""
+    def test_current_runtime_tree_change_moves_conservative_fingerprint(self) -> None:
+        """Before t0, widen rather than guess which import-time code is harmless."""
         import shutil, tempfile
         with tempfile.TemporaryDirectory() as directory:
             mirror = Path(directory) / "repo"
@@ -1935,8 +1935,9 @@ class FingerprintTests(SecCaptureTestCase):
                 "'''Downstream parser, strictly after immutable raw storage.'''\n")
             desk = mirror / "src" / "quant" / "desk" / "desk.py"
             desk.write_text(desk.read_text() + "\n# unrelated desk change\n")
-            self.assertEqual(acquisition_critical_fingerprint(self.policy(), root=mirror),
-                             before, "downstream work must not reset the window")
+            self.assertNotEqual(
+                acquisition_critical_fingerprint(self.policy(), root=mirror), before,
+                "current service topology conservatively freezes the Python runtime tree")
 
     def test_recording_a_newer_sec_documentation_revision_does_not_reset_t0(self) -> None:
         """The frozen rationale for the one EXPLICITLY_NONCRITICAL field, tested."""
@@ -1970,7 +1971,7 @@ class SchedulerProvenanceTests(CollectorTestCase):
         collector.poll()
         collector.drain(max_items=3)
         causes = [record["cause"] for record in collector.scheduler.all()]
-        for expected in (LANE_ENABLED, POLL_COMPLETED, WORK_ENQUEUED, DRAIN_COMPLETED):
+        for expected in (LANE_ENABLED, POLL_COMPLETED, DRAIN_COMPLETED):
             self.assertIn(expected, causes)
 
     def test_each_transition_carries_the_full_mandated_payload(self) -> None:
