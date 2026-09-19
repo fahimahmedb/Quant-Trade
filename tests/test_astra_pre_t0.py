@@ -411,3 +411,133 @@ class Phase4AuditWindowCampaign(AuditCampaign):
         self.assertEqual(report['window_duration_seconds'],1800.0)
         self.assertNotIn('INVALIDATING_INTERVENTION',report['findings'],
                          'pre-t0 manual history cannot invalidate the later Blue window')
+
+
+class Phase5AuthorityBindingCampaign(CollectorTestCase):
+    def test_automatic_restart_requires_external_exit_witness(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        from quant.dataplane.sec.supervisor import AUTOMATIC_RESTART_AFTER_FAILURE
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(
+            case.fixture_router(), cause=AUTOMATIC_RESTART_AFTER_FAILURE,
+            boot_id='boot-auto-without-witness')
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        # The synthetic helper has a launch record, but deliberately no prior
+        # CHILD_EXIT_OBSERVED record proving this same supervisor saw the child fail.
+        report=audit_observation_window(c)
+        self.assertIn('AUTOMATIC_RESTART_WITNESS_MISSING',report['findings'])
+        self.assertFalse(report['accountable'])
+
+    def test_deployment_restart_requires_consumed_external_authority(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        ledger=c.paths.sec/'deployment_authorities.jsonl'
+        if ledger.exists(): ledger.unlink()
+        report=audit_observation_window(c)
+        self.assertIn('DEPLOYMENT_AUTHORITY_CONSUMPTION_MISSING',report['findings'])
+        self.assertFalse(report['accountable'])
+
+    def test_effective_systemd_restart_policy_mismatch_is_rejected(self):
+        import shutil
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase5_systemd',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec);spec.loader.exec_module(launcher)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'deploy').mkdir()
+            target=root/'deploy/quant-sec-capture.service'
+            shutil.copy2(ROOT/'deploy/quant-sec-capture.service',target)
+            shown='\n'.join([
+                f'FragmentPath={target}',
+                'DropInPaths=',
+                'ExecStart={ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 -I /opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying ; }',
+                'WorkingDirectory=/opt/quant',
+                'Restart=no',
+                'RestartUSec=15s',
+                'StartLimitIntervalUSec=10min',
+                'StartLimitBurst=5',
+                'KillMode=control-group',
+                'KillSignal=15',
+                'TimeoutStopUSec=30s',
+                'EnvironmentFiles=/etc/quant/sec-capture.env (ignore_errors=no)',
+            ])+'\n'
+            completed=SimpleNamespace(returncode=0,stdout=shown,stderr='')
+            with mock.patch.object(launcher.subprocess,'run',return_value=completed):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_verification_check_rejects_wrong_exact_sha_even_same_tree(self):
+        spec=importlib.util.spec_from_file_location(
+            'astra_verify_phase5',ROOT/'scripts/verify_p0.py')
+        verify=importlib.util.module_from_spec(spec);spec.loader.exec_module(verify)
+        with tempfile.TemporaryDirectory() as directory:
+            artifact=Path(directory)/'verification.json'
+            artifact.write_text(json.dumps({
+                'all_passed':True,
+                'tests_discovered':verify.discovered_test_count(),
+                'sec_p0_lane_tests_discovered':verify.lane_test_count(),
+                'verified_tree_digest':verify.verified_tree_digest(),
+                'verified_sha':'a'*40,
+            }))
+            verify.ARTIFACT=artifact
+            with mock.patch.object(sys,'argv',[
+                'verify_p0.py','--check','--sha','b'*40]):
+                self.assertNotEqual(
+                    verify.main(),0,
+                    'the final gate must reject a verification record bound to another SHA')
+
+    def test_sec_audit_cli_accepts_explicit_window_start(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result=subprocess.run([
+                sys.executable,str(ROOT/'scripts/quant.py'),'sec-audit',
+                '--root',directory,'--window-start','2026-09-18T12:30:00+00:00'],
+                env={**os.environ,'PYTHONPATH':str(ROOT/'src'),
+                     'QUANT_SEC_USER_AGENT':USER_AGENT},
+                capture_output=True,text=True,timeout=15)
+        self.assertNotIn('unrecognized arguments',result.stderr)
+        self.assertNotEqual(result.returncode,2)
+
+    def test_sighup_cannot_cleanly_stop_qualifying_supervisor(self):
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase5_hup',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec);spec.loader.exec_module(launcher)
+        handlers={}
+        class HupChild:
+            def __init__(self):
+                self.returncode=None;self.pid=999991
+            def poll(self):
+                return self.returncode
+            def wait(self,timeout=None):
+                if self.returncode is None:
+                    handlers[launcher.signal.SIGHUP](launcher.signal.SIGHUP,None)
+                return self.returncode
+        child=HupChild()
+        def install(sig,handler):
+            prior=handlers.get(sig,launcher.signal.SIG_DFL)
+            handlers[sig]=handler
+            return prior
+        def terminate(proc,sig):
+            proc.returncode=-int(sig)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'scripts').mkdir()
+            (root/'scripts/quant.py').write_text('raise SystemExit(0)\n')
+            env={'QUANT_SEC_USER_AGENT':USER_AGENT,'INVOCATION_ID':'qualifying-hup',
+                 'QUANT_SEC_SERVICE_MANAGER':'systemd'}
+            effective={**env,'QUANT_SEC_SERVICE_POLL_SECONDS':'60',
+                       'QUANT_SEC_QUALIFYING_MODE':'1'}
+            with mock.patch.dict(os.environ,env,clear=True), \
+                 mock.patch.object(sys,'argv',[
+                     'supervisor','--root',str(root),'--qualifying']), \
+                 mock.patch.object(launcher,'_effective_environment',
+                                   return_value=(effective,60.0)), \
+                 mock.patch.object(launcher,'current_fingerprint',return_value=FP), \
+                 mock.patch.object(launcher,'materialize_if_absent',return_value=FP), \
+                 mock.patch.object(launcher,'_consume_deployment_authority',
+                                   return_value=None), \
+                 mock.patch.object(launcher.subprocess,'Popen',return_value=child), \
+                 mock.patch.object(launcher,'_terminate_group',side_effect=terminate), \
+                 mock.patch.object(launcher.signal,'signal',side_effect=install):
+                self.assertNotEqual(
+                    launcher.main(),0,
+                    'SIGHUP is not an authorized clean shutdown of the qualifying service')
