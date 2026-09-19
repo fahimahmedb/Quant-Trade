@@ -314,13 +314,43 @@ def _validate_structure(transitions: list[dict[str, Any]],
     return sorted(set(findings))
 
 
+def _event_time(record: dict[str, Any]) -> datetime | None:
+    raw = (record.get("recorded_at_utc") or record.get("reserved_at_utc")
+           or record.get("request_attempted_at_utc"))
+    return parse_ts(raw) if raw else None
+
+
+def _filter_window_evidence(records: list[dict[str, Any]], start: datetime | None,
+                            *, time_key: str) -> list[dict[str, Any]]:
+    if start is None:
+        return records
+    selected: list[dict[str, Any]] = []
+    for record in records:
+        raw = record.get(time_key)
+        if raw and parse_ts(raw) >= start:
+            selected.append(record)
+    return selected
+
+
 def _validate_request_intents(collector: Any,
-                              attempts: list[dict[str, Any]]) -> list[str]:
+                              attempts: list[dict[str, Any]],
+                              window_start: datetime | None = None) -> list[str]:
     """Validate request accounting as an ordered state machine, not a tally."""
     path = collector.paths.sec / "request_intents.jsonl"
     if not path.exists():
         return ["REQUEST_INTENT_JOURNAL_MISSING"] if attempts else []
     intents = list(read_jsonl(path))
+    attempt_ids = {record.get("attempt_id") for record in attempts}
+    if window_start is not None:
+        filtered: list[dict[str, Any]] = []
+        for record in intents:
+            attempt_id = record.get("attempt_id")
+            stamp = _event_time(record)
+            # Preserve every event for an in-window attempt, plus any event that
+            # itself begins in the window. The latter catches orphan intents.
+            if attempt_id in attempt_ids or (stamp is not None and stamp >= window_start):
+                filtered.append(record)
+        intents = filtered
     by_attempt: dict[str, list[dict[str, Any]]] = {}
     for record in intents:
         attempt_id = record.get("attempt_id")
@@ -384,30 +414,106 @@ def _validate_request_intents(collector: Any,
             findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
     return sorted(set(findings))
 
+
+def _validate_external_lifecycle_authority(
+        collector: Any, lifecycle: list[dict[str, Any]],
+        baseline_lifecycle: dict[str, Any] | None = None) -> list[str]:
+    """Bind child lifecycle claims to an append-only ledger written by supervisor."""
+    if not getattr(collector, "lifecycle", {}).get("qualifying_service_mode"):
+        return []
+    path = collector.paths.sec / "supervisor_events.jsonl"
+    if not path.exists():
+        return ["LIFECYCLE_EXTERNAL_AUTHORITY_MISSING"]
+    events = list(read_jsonl(path))
+    launches = [record for record in events
+                if record.get("event") == "CHILD_LAUNCH_AUTHORIZED"]
+    findings: list[str] = []
+    records = list(lifecycle)
+    if baseline_lifecycle is not None and baseline_lifecycle not in records:
+        records.insert(0, baseline_lifecycle)
+    for record in records:
+        matches = [
+            event for event in launches
+            if event.get("supervisor_id") == record.get("supervisor_id")
+            and event.get("child_boot_id") == record.get("boot_id")
+            and event.get("lifecycle_cause") == record.get("lifecycle_cause")
+            and event.get("fingerprint") == record.get("acquisition_critical_fingerprint")
+            and (event.get("deployment_authority_nonce") or None)
+                == (record.get("launch_authority_nonce") or None)
+        ]
+        if len(matches) != 1:
+            findings.append("LIFECYCLE_EXTERNAL_AUTHORITY_MISMATCH")
+            continue
+        launch = matches[0]
+        if not launch.get("qualifying_mode"):
+            findings.append("LIFECYCLE_EXTERNAL_AUTHORITY_NOT_QUALIFYING")
+        launch_at = launch.get("recorded_at_utc")
+        child_at = record.get("recorded_at_utc")
+        if not launch_at or not child_at or parse_ts(launch_at) > parse_ts(child_at):
+            findings.append("LIFECYCLE_EXTERNAL_AUTHORITY_TIME_INVALID")
+    return sorted(set(findings))
+
+
 def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
-                             now: datetime | None = None) -> dict[str, Any]:
-    """Reconcile the obligation ledger against the durable attempt record."""
-    transitions = collector.scheduler.all()
-    attempts = collector.store.attempts()
-    lifecycle = list(read_jsonl(collector.paths.sec_lifecycle))
+                             now: datetime | None = None,
+                             window_start: datetime | None = None) -> dict[str, Any]:
+    """Reconcile the obligation ledger against durable evidence in one window."""
+    moment = now or collector.timebase.now()
+    if moment.tzinfo is None:
+        raise ValueError("AUDIT_NOW_MUST_BE_TIMEZONE_AWARE")
+    if window_start is not None:
+        if window_start.tzinfo is None:
+            raise ValueError("AUDIT_WINDOW_START_MUST_BE_TIMEZONE_AWARE")
+        if window_start > moment:
+            raise ValueError("AUDIT_WINDOW_START_IN_FUTURE")
+
+    all_transitions = collector.scheduler.all()
+    all_attempts = collector.store.attempts()
+    all_lifecycle = list(read_jsonl(collector.paths.sec_lifecycle))
+
+    if window_start is None:
+        transitions = all_transitions
+        attempts = all_attempts
+        lifecycle = all_lifecycle
+        baseline_lifecycle = None
+    else:
+        # A commitment created before t0 but due after t0 belongs to the window:
+        # otherwise declaring t0 between scheduler ticks could erase the first
+        # expected acquisition.
+        transitions = []
+        for record in all_transitions:
+            recorded = record.get("recorded_at_utc")
+            due = record.get("next_due_at_utc")
+            if ((recorded and parse_ts(recorded) >= window_start)
+                    or (due and parse_ts(due) >= window_start)):
+                transitions.append(record)
+        attempts = _filter_window_evidence(
+            all_attempts, window_start, time_key="request_attempted_at_utc")
+        lifecycle = _filter_window_evidence(
+            all_lifecycle, window_start, time_key="recorded_at_utc")
+        before = [record for record in all_lifecycle
+                  if record.get("recorded_at_utc")
+                  and parse_ts(record["recorded_at_utc"]) <= window_start]
+        baseline_lifecycle = max(
+            before, key=lambda record: parse_ts(record["recorded_at_utc"])) if before else None
+
     policy = getattr(collector, "policy", None)
     tolerance = (tolerance_seconds if tolerance_seconds is not None
                  else (policy.discovery_poll_seconds * DUE_TOLERANCE_MULTIPLIER
                        if policy else 180.0))
-    moment = now or collector.timebase.now()
     if not math.isfinite(tolerance) or tolerance < 0:
         raise ValueError("INVALID_AUDIT_TOLERANCE")
 
     findings: list[str] = _validate_structure(transitions, attempts, lifecycle, moment)
-    findings.extend(_validate_request_intents(collector, attempts))
+    findings.extend(_validate_request_intents(
+        collector, attempts, window_start=window_start))
+    findings.extend(_validate_external_lifecycle_authority(
+        collector, lifecycle, baseline_lifecycle))
     obligations, unidentified = _obligations_from(transitions)
     _resolve_supersessions(obligations, transitions)
     _resolve_attempts(obligations, attempts, tolerance)
     _mark_pending(obligations, moment, tolerance)
 
-    # Every live service must retain a prospective next obligation. If the
-    # currently named obligation has already been answered, a crash between the
-    # response and successor scheduling must not look accountable.
     if getattr(collector.state, "enabled", False):
         open_id = getattr(collector.state, "open_obligation_id", None)
         if not open_id:
@@ -424,12 +530,15 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
                    if obligation.status == UNEXPLAINED]
     pending = [obligation.obligation_id for obligation in obligations
                if obligation.status == PENDING]
-    by_attempt = sum(1 for item in obligations
-                     if item.status == RESOLVED_BY_ATTEMPT)
-    by_supersession = sum(1 for item in obligations
-                          if item.status == RESOLVED_BY_SUPERSESSION)
+    by_attempt = sum(1 for item in obligations if item.status == RESOLVED_BY_ATTEMPT)
+    by_supersession = sum(
+        1 for item in obligations if item.status == RESOLVED_BY_SUPERSESSION)
 
-    fingerprints = collector.scheduler.fingerprints_seen()
+    fingerprints = sorted({
+        record.get("acquisition_critical_fingerprint")
+        for record in transitions
+        if record.get("acquisition_critical_fingerprint")
+    })
     unattested = [record for record in lifecycle
                   if record.get("lifecycle_cause") == UNATTESTED]
     invalidating = [record for record in lifecycle
@@ -444,8 +553,11 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
     active = getattr(collector, "fingerprint", None)
     if active and any(value != active for value in fingerprints):
         findings.append("ACTIVE_FINGERPRINT_DIFFERS_FROM_JOURNAL")
-    if any(record.get("acquisition_critical_fingerprint") != active
-           for record in lifecycle) and active:
+    lifecycle_for_fingerprint = list(lifecycle)
+    if baseline_lifecycle is not None:
+        lifecycle_for_fingerprint.append(baseline_lifecycle)
+    if (any(record.get("acquisition_critical_fingerprint") != active
+            for record in lifecycle_for_fingerprint) and active):
         findings.append("LIFECYCLE_FINGERPRINT_MISMATCH")
     if (collector.paths.sec / "integrity_fault.json").exists():
         findings.append("DURABLE_INTEGRITY_FAULT")
@@ -463,11 +575,10 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
         findings.append("ACQUISITION_FINGERPRINT_UNAVAILABLE")
     findings = sorted(set(findings))
 
-    window = _window_bounds(transitions)
+    window = _window_bounds(transitions, window_start=window_start, now=moment)
     return {
         "accountable": not findings,
         "findings": findings,
-        # Obligation accounting. Every obligation has exactly one status.
         "obligations": len(obligations),
         "obligations_resolved_by_attempt": by_attempt,
         "obligations_resolved_by_supersession": by_supersession,
@@ -480,7 +591,6 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
         "attempt_matching": "forward_only_within_tolerance_consumed",
         "supersession_rule": "explicit_named_before_due_with_authorized_cause",
         "due_tolerance_seconds": tolerance,
-        # Kept for continuity with the earlier report shape.
         "expected_actions": len(obligations),
         "unexplained_expected_actions": unexplained,
         "attempts_recorded": len(attempts),
@@ -496,25 +606,34 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
         "window_duration_seconds": window[2],
         "coverage_state": collector.state.coverage_state,
         "open_gap_kinds": sorted({gap["kind"] for gap in collector.state.open_gaps}),
-        # Deliberately not decided here.
         "t0_authority": "BLUE_TEAM",
         "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
     }
 
 
 def audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
-                             now: datetime | None = None) -> dict[str, Any]:
+                             now: datetime | None = None,
+                             window_start: datetime | None = None) -> dict[str, Any]:
     """Malformed evidence is an explicit failed verdict, never a missing report."""
     try:
-        return _audit_observation_window(collector, tolerance_seconds=tolerance_seconds, now=now)
+        return _audit_observation_window(
+            collector, tolerance_seconds=tolerance_seconds, now=now,
+            window_start=window_start)
     except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError):
         return {"accountable": False, "findings": ["ACQUISITION_EVIDENCE_INVALID"],
                 "t0_authority": "BLUE_TEAM",
                 "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
 
 
-def _window_bounds(transitions: list[dict[str, Any]]
+def _window_bounds(transitions: list[dict[str, Any]], *,
+                   window_start: datetime | None = None,
+                   now: datetime | None = None
                    ) -> tuple[str | None, str | None, float | None]:
+    if window_start is not None:
+        if now is None:
+            raise ValueError("AUDIT_WINDOW_END_MISSING")
+        return (window_start.isoformat(), now.isoformat(),
+                round((now - window_start).total_seconds(), 1))
     stamps = sorted(parse_ts(record["recorded_at_utc"]) for record in transitions
                     if record.get("recorded_at_utc"))
     if not stamps:

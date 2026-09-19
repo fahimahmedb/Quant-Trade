@@ -1319,8 +1319,16 @@ class SecForm4Collector:
                 "byte_length": attempt.byte_length, "conflict": version.conflict}
 
     def _drop_task(self, task: dict[str, Any]) -> None:
-        self.state.pending_tasks = [item for item in self.state.pending_tasks
-                                    if item["task_id"] != task["task_id"]]
+        """Acknowledge exactly one full filing identity.
+
+        task_id is intentionally short for operator diagnostics and can collide.
+        identity_digest is the durable authority for queue membership.
+        """
+        identity = task.get("identity_digest")
+        self.state.pending_tasks = [
+            item for item in self.state.pending_tasks
+            if item.get("identity_digest") != identity
+        ]
 
     def _maybe_advance_cursor(self) -> None:
         """Acknowledgement precedes cursor advance, never the other way round."""

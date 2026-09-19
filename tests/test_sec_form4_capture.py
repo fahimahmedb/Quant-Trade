@@ -2981,6 +2981,19 @@ class RodageFalsificationTests(CollectorTestCase):
                                 "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
         self.transport = transport
         collector.materialize_fingerprint()
+        append_jsonl(self.paths.sec / "supervisor_events.jsonl", {
+            "event": "CHILD_LAUNCH_AUTHORIZED",
+            "recorded_at_utc": self.timebase.now_iso(),
+            "supervisor_id": collector.lifecycle.get("supervisor_id"),
+            "supervisor_invocation_id": collector.lifecycle.get("service_invocation_id"),
+            "child_boot_id": collector.lifecycle.get("boot_id"),
+            "host_boot_id": "synthetic-test-host",
+            "lifecycle_cause": collector.lifecycle.get("lifecycle_cause"),
+            "fingerprint": collector.fingerprint,
+            "qualifying_mode": True,
+            "deployment_authority_nonce": collector.lifecycle.get("launch_authority_nonce"),
+            "restart_witness_child_boot_id": None,
+        })
         # A real restart does not re-enable an already-enabled lane: sec-serve
         # only calls enable() when durable state says the lane is off.
         if enable and not collector.state.enabled:

@@ -36,6 +36,7 @@ RESTART_DELAY_SECONDS = 15.0
 RESTART_BURST_LIMIT = 5
 RESTART_BURST_WINDOW_SECONDS = 600.0
 DEPLOYMENT_AUTHORITY_MAX_AGE_SECONDS = 3600.0
+QUALIFYING_UNSOLICITED_EXIT_CODE = 70
 
 
 def utc_now() -> str:
@@ -447,6 +448,8 @@ def main() -> int:
         restart_times: list[float] = []
         stopped = False
         child: subprocess.Popen | None = None
+        supervisor_events = sec_dir / "supervisor_events.jsonl"
+        restart_witness_child_boot_id: str | None = None
         handlers: dict[int, object] = {}
 
         def stop(signum, frame) -> None:
@@ -497,6 +500,20 @@ def main() -> int:
                     "previous_state_invalid": bool(previous.get("state_invalid")),
                 }
                 write_state(supervisor_state_path(root), state)
+                _append_jsonl(supervisor_events, {
+                    "event": "CHILD_LAUNCH_AUTHORIZED",
+                    "recorded_at_utc": boot_at,
+                    "supervisor_id": supervisor_id,
+                    "supervisor_invocation_id": managed["invocation_id"],
+                    "child_boot_id": child_boot_id,
+                    "host_boot_id": kernel_boot_id,
+                    "lifecycle_cause": cause,
+                    "fingerprint": fingerprint,
+                    "qualifying_mode": bool(args.qualifying),
+                    "deployment_authority_nonce": (
+                        authority.get("nonce") if authority else None),
+                    "restart_witness_child_boot_id": restart_witness_child_boot_id,
+                })
 
                 command = [
                     sys.executable, "-I", str(root / "scripts" / "quant.py"), "sec-serve",
@@ -523,19 +540,36 @@ def main() -> int:
 
                 exit_code = child.returncode
                 launches += 1
+                exit_at = utc_now()
                 state = read_state(supervisor_state_path(root))
                 state.update({
                     "last_child_exit_code": exit_code,
-                    "last_child_exit_at_utc": utc_now(),
+                    "last_child_exit_at_utc": exit_at,
                 })
                 write_state(supervisor_state_path(root), state)
+                _append_jsonl(supervisor_events, {
+                    "event": "CHILD_EXIT_OBSERVED",
+                    "recorded_at_utc": exit_at,
+                    "supervisor_id": supervisor_id,
+                    "child_boot_id": child_boot_id,
+                    "fingerprint": fingerprint,
+                    "exit_code": exit_code,
+                    "stopped_by_supervisor": stopped,
+                    "unexpected_termination": not stopped,
+                })
 
                 if stopped:
                     return 0
+                operational_exit_code = exit_code
                 if exit_code == 0:
-                    return 0
+                    if not args.qualifying:
+                        return 0
+                    # A continuous qualifying child has no authorized clean
+                    # self-termination path. Treat disappearance as service
+                    # failure so systemd Restart=on-failure cannot miss it.
+                    operational_exit_code = QUALIFYING_UNSOLICITED_EXIT_CODE
                 if args.max_restarts is not None and launches >= args.max_restarts:
-                    return exit_code
+                    return operational_exit_code
 
                 now = time.monotonic()
                 restart_times = [
@@ -543,8 +577,9 @@ def main() -> int:
                     if now - stamp < RESTART_BURST_WINDOW_SECONDS
                 ]
                 if len(restart_times) >= RESTART_BURST_LIMIT:
-                    return exit_code
+                    return operational_exit_code
                 restart_times.append(now)
+                restart_witness_child_boot_id = child_boot_id
 
                 deadline = now + RESTART_DELAY_SECONDS
                 while not stopped and time.monotonic() < deadline:
