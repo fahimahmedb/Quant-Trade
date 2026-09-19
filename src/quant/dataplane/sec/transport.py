@@ -154,9 +154,10 @@ class SecHttpResponse:
     def complete(self) -> bool:
         return self.transfer_outcome == COMPLETE
 
-    def decoded_body(self) -> bytes:
-        """A decoded *copy* for parsing. The stored object stays untouched."""
-        return decode_body(self.body, self.content_encoding)
+    def decoded_body(self, max_decoded_bytes: int | None = None) -> bytes:
+        """A bounded decoded copy for parsing. Stored bytes remain untouched."""
+        return decode_body(self.body, self.content_encoding,
+                           max_decoded_bytes=max_decoded_bytes)
 
     def transport_metadata(self) -> dict[str, Any]:
         return {"http_status": self.status,
@@ -168,31 +169,45 @@ class SecHttpResponse:
                 "transfer_encoding": self.headers.get("Transfer-Encoding")}
 
 
-def decode_body(body: bytes, content_encoding: str | None) -> bytes:
-    """Decode a *copy* of a body for parsing, never for hashing or storage.
-
-    SEC serves these endpoints gzip-encoded, so this is the ordinary path rather
-    than an edge case. The stored object and its SHA-256 always describe the
-    bytes that arrived; only parsing sees this copy.
-
-    Decoding failure is a transport-integrity failure: a body that claims an
-    encoding it does not honour cannot be shown to be complete.
-    """
+def decode_body(body: bytes, content_encoding: str | None,
+                *, max_decoded_bytes: int | None = None) -> bytes:
+    """Decode a parsing copy with an explicit expansion bound."""
+    limit = max_decoded_bytes if max_decoded_bytes is not None else 64 * 1024 * 1024
+    if limit <= 0:
+        raise SecTransportError("decoded_body_limit_invalid", OVERSIZED, partial=body)
     encoding = (content_encoding or "identity").lower().strip()
     if encoding in ("identity", ""):
+        if len(body) > limit:
+            raise SecTransportError("decoded_body_oversized", OVERSIZED, partial=body)
         return body
     try:
-        if encoding == "gzip":
-            return gzip.decompress(body)
-        if encoding == "deflate":
-            try:
-                return zlib.decompress(body)
-            except zlib.error:
-                return zlib.decompress(body, -zlib.MAX_WBITS)
+        wbits = zlib.MAX_WBITS | 16 if encoding == "gzip" else zlib.MAX_WBITS
+        if encoding not in ("gzip", "deflate"):
+            raise SecTransportError(f"unsupported_content_encoding:{encoding}",
+                                    TRANSPORT_ERROR)
+        decoder = zlib.decompressobj(wbits)
+        decoded = decoder.decompress(body, limit + 1)
+        if len(decoded) > limit or decoder.unconsumed_tail:
+            raise SecTransportError("decoded_body_oversized", OVERSIZED, partial=body)
+        decoded += decoder.flush(limit + 1 - len(decoded))
+        if len(decoded) > limit:
+            raise SecTransportError("decoded_body_oversized", OVERSIZED, partial=body)
+        if not decoder.eof:
+            # Raw-deflate fallback is permitted only for deflate.
+            if encoding == "deflate":
+                decoder = zlib.decompressobj(-zlib.MAX_WBITS)
+                decoded = decoder.decompress(body, limit + 1)
+                decoded += decoder.flush(max(0, limit + 1 - len(decoded)))
+                if len(decoded) <= limit and decoder.eof:
+                    return decoded
+            raise SecTransportError(f"content_decode_failed:{encoding}:IncompleteStream",
+                                    TRUNCATED, partial=body)
+        return decoded
+    except SecTransportError:
+        raise
     except (OSError, zlib.error, EOFError) as exc:
         raise SecTransportError(f"content_decode_failed:{encoding}:{type(exc).__name__}",
                                 TRUNCATED, partial=body) from exc
-    raise SecTransportError(f"unsupported_content_encoding:{encoding}", TRANSPORT_ERROR)
 
 
 class SecHttpTransport:

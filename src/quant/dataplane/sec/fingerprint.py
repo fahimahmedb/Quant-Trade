@@ -33,6 +33,9 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import json
+import platform
+import ssl
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -206,19 +209,41 @@ def module_digests(root: Path) -> dict[str, str]:
     return digests
 
 
+def runtime_binding() -> dict[str, str]:
+    """Bind the host/runtime that can change acquisition semantics.
+
+    No plaintext host name or machine id is exposed: only a stable digest.
+    Moving a materialized manifest to another host therefore fails closed.
+    """
+    candidates = (Path("/etc/machine-id"), Path("/var/lib/dbus/machine-id"))
+    identity = next((path.read_text(encoding="utf-8").strip()
+                     for path in candidates if path.exists()), platform.node())
+    executable = Path(sys.executable).resolve()
+    return {
+        "host_identity_digest": "sha256:" + hashlib.sha256(
+            identity.encode("utf-8")).hexdigest(),
+        "python_implementation": platform.python_implementation(),
+        "python_version": platform.python_version(),
+        "openssl_version": ssl.OPENSSL_VERSION,
+        "python_executable_sha256": "sha256:" + hashlib.sha256(
+            executable.read_bytes()).hexdigest(),
+    }
+
+
 def build_manifest(policy: SecAccessPolicy, *, root: Path,
                    supervisor: dict[str, Any] | None = None,
                    environ: dict[str, str] | None = None) -> dict[str, Any]:
     """The deterministic manifest the fingerprint is taken over.
 
     Everything in here can change the expected sequence of acquisition actions.
-    Nothing in here is a wall-clock value, a path, a hostname of this machine or
-    anything else that would make two identical deployments differ.
+    Nothing in here is a wall-clock value. The runtime member intentionally binds
+    the deployment host and interpreter because transplanting a frozen manifest is unsafe.
     """
     from .supervisor import supervisor_manifest
 
     return {
         "schema": FINGERPRINT_SCHEMA_VERSION,
+        "runtime": runtime_binding(),
         "code": module_digests(root),
         "policy": canonical_policy(policy),
         "request_shape": {

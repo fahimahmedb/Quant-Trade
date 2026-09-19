@@ -14,6 +14,7 @@ No command in this file declares t0.
 from __future__ import annotations
 
 import argparse
+import ctypes
 import fcntl
 import hashlib
 import json
@@ -221,6 +222,20 @@ def _child_environment(args: argparse.Namespace, root: Path,
     return environment, poll_seconds
 
 
+def _arm_parent_death_signal() -> None:
+    """Linux: kill the acquisition child if its attesting supervisor disappears."""
+    parent = os.getppid()
+    libc = ctypes.CDLL(None, use_errno=True)
+    # PR_SET_PDEATHSIG = 1. The supervisor is single-threaded before Popen, so
+    # this deliberately-small preexec hook is safe for this dedicated process.
+    if libc.prctl(1, signal.SIGKILL, 0, 0, 0) != 0:
+        error = ctypes.get_errno()
+        raise OSError(error, os.strerror(error))
+    # Close the race where the parent died between fork() and prctl().
+    if os.getppid() != parent or parent == 1:
+        os.kill(os.getpid(), signal.SIGKILL)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -357,7 +372,8 @@ def main() -> int:
             if args.max_waits is not None:
                 command += ["--max-waits", str(args.max_waits)]
             child = subprocess.Popen(command, env=environment, cwd=str(root),
-                                     start_new_session=True)
+                                     start_new_session=True,
+                                     preexec_fn=_arm_parent_death_signal)
             launches += 1
             while child.poll() is None:
                 try:

@@ -207,7 +207,9 @@ class QuantPaths:
         published artifact in the first place.
         """
         return (self.sec_attempts, self.sec_raw_manifest, self.sec_coverage,
-                self.sec_collector_state, self.sec_budget, self.sec_scheduler,
+                self.sec_collector_state, self.sec_state_commits, self.sec_budget,
+                self.sec_budget_reservations, self.sec_request_intents,
+                self.sec / "budget_state_commits.jsonl", self.sec_scheduler,
                 self.sec_lifecycle, self.sec_fingerprint)
 
     def sec_restricted_journals(self) -> tuple[Path, ...]:

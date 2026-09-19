@@ -457,15 +457,27 @@ class SecForm4Collector:
     # --- durable state -----------------------------------------------------
     def _load_state(self) -> CollectorState:
         payload = read_json(self.paths.sec_collector_state)
+        commits = list(read_jsonl(self.paths.sec_state_commits))
         if payload is None:
+            if commits:
+                raise SecStorageFailure("COLLECTOR_STATE_MISSING_WITH_COMMITS")
             return CollectorState()
         expected = set(CollectorState().to_dict())
         if not isinstance(payload, dict) or set(payload) != expected:
             raise SecStorageFailure("COLLECTOR_STATE_SCHEMA_INVALID")
+        if commits and commits[-1].get("state_digest") != compute_fingerprint(payload):
+            raise SecStorageFailure("COLLECTOR_STATE_ROLLBACK_OR_UNCOMMITTED")
         return CollectorState(**payload)
 
     def save(self) -> None:
-        write_json(self.paths.sec_collector_state, self.state.to_dict())
+        payload = self.state.to_dict()
+        write_json(self.paths.sec_collector_state, payload)
+        append_jsonl(self.paths.sec_state_commits, {
+            "state_digest": compute_fingerprint(payload),
+            "acquisition_critical_fingerprint": self.fingerprint,
+            "recorded_at_utc": self.timebase.now_iso(),
+            "acquisition_critical_fingerprint": self.fingerprint,
+        })
 
     @property
     def configured(self) -> bool:
@@ -576,6 +588,7 @@ class SecForm4Collector:
             self.store.record_attempt(record)
             append_jsonl(self.paths.sec_request_intents, {
                 "event": "FINISHED", "attempt_id": attempt_id,
+                "acquisition_critical_fingerprint": self.fingerprint,
                 "obligation_id": obligation_id,
                 "recorded_at_utc": self.timebase.now_iso(),
             })
@@ -595,12 +608,14 @@ class SecForm4Collector:
             reservation = self.budget.reserve(endpoint_class, attempt_id=attempt_id)
             append_jsonl(self.paths.sec_request_intents, {
                 "event": "RESERVED", "attempt_id": attempt_id,
+                "acquisition_critical_fingerprint": self.fingerprint,
                 "obligation_id": obligation_id,
                 "recorded_at_utc": reservation["reserved_at_utc"],
             })
         except SecCooldownActive as cooldown:
             append_jsonl(self.paths.sec_request_intents, {
                 "event": "SUPPRESSED", "attempt_id": attempt_id,
+                "acquisition_critical_fingerprint": self.fingerprint,
                 "obligation_id": obligation_id,
                 "recorded_at_utc": self.timebase.now_iso(),
                 "reason": "COOLDOWN",
@@ -621,6 +636,7 @@ class SecForm4Collector:
         attempted_at = attempted_at_dt.isoformat()
         append_jsonl(self.paths.sec_request_intents, {
             "event": "SEND_AUTHORIZED", "attempt_id": attempt_id,
+                "acquisition_critical_fingerprint": self.fingerprint,
             "obligation_id": obligation_id, "recorded_at_utc": attempted_at,
         })
         try:
@@ -640,6 +656,7 @@ class SecForm4Collector:
         received_at = self.timebase.now_iso()
         append_jsonl(self.paths.sec_request_intents, {
             "event": "RECEIVED", "attempt_id": attempt_id,
+                "acquisition_critical_fingerprint": self.fingerprint,
             "obligation_id": obligation_id, "recorded_at_utc": received_at,
             "http_status": response.status, "transfer_outcome": response.transfer_outcome,
         })
@@ -730,7 +747,7 @@ class SecForm4Collector:
         """
         stored = self.store.read_object(attempt.raw_object_sha256)
         encoding = attempt.response.content_encoding if attempt.response else None
-        return decode_body(stored, encoding)
+        return decode_body(stored, encoding, max_decoded_bytes=self.policy.max_response_bytes)
 
     def _elapsed(self, since: datetime) -> float:
         return round((self.timebase.now() - since).total_seconds(), 3)
@@ -1113,7 +1130,7 @@ class SecForm4Collector:
             return {"task_id": task["task_id"], "result_state": DISCOVERY_INVALID,
                     "error_class": exc.error_class, "gap_id": gap}
         form4 = re.search(
-            rb"(?:CONFORMED SUBMISSION TYPE:\\s*|<TYPE>)4(?:/A)?(?:\\s|<)",
+            rb"(?:CONFORMED SUBMISSION TYPE:\s*|<TYPE>)4(?:/A)?(?:\s|<)",
             decoded, re.IGNORECASE)
         if (b"<SEC-DOCUMENT>" not in decoded or b"</SEC-DOCUMENT>" not in decoded
                 or form4 is None):

@@ -401,6 +401,20 @@ class QuantSystem:
             self.heartbeat()
             return "PAUSED"
 
+        # A qualifying P0 service is acquisition-only. Unrelated research/desk
+        # work is replayable and must never delay a due discovery obligation.
+        if self.sec.lifecycle.get("qualifying_service_mode"):
+            capture = self._run_due_capture()
+            if capture is not None:
+                return capture
+            self.state.status = "IDLE"
+            self.state.next_action = "SEC acquisition waiting for next obligation"
+            self.components.set("CONTROL", "IDLE", "dedicated SEC acquisition service")
+            state, detail = self.sec.component_state()
+            self.components.set("SEC_CAPTURE", state, detail)
+            self.heartbeat()
+            return "IDLE"
+
         # Acquisition goes first. A missed SEC discovery window is irrecoverable:
         # the feed is a rolling window and a filing that leaves it cannot be
         # re-observed at the time it was published. Research and desk work run
@@ -435,6 +449,11 @@ class QuantSystem:
         try:
             return self._capture_step(collector)
         except Exception as exc:
+            if collector.lifecycle.get("qualifying_service_mode"):
+                # A qualifying process must not convert a durable-integrity fault
+                # into a healthy-looking loop. The external supervisor witnesses
+                # the child failure and owns the restart attestation.
+                raise
             # A capture fault must not kill the system, and must not be mistaken
             # for a quiet poll. The attempt journal already holds whatever was
             # durably recorded before the fault.
