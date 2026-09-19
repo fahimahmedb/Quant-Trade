@@ -167,6 +167,8 @@ def read_jsonl(path: Path) -> Iterator[dict[str, Any]]:
                 if (not _sec_evidence_path(path)
                         and index == len(lines) - 1 and not line.endswith("\n")):
                     return
+                if not _sec_evidence_path(path):
+                    raise
                 raise ValueError("JOURNAL_CORRUPT") from None
             if not isinstance(value, dict):
                 raise ValueError("JOURNAL_RECORD_NOT_OBJECT")
