@@ -548,7 +548,7 @@ class Phase6ProofAndConcurrencyCampaign(CollectorTestCase):
         import re
         import unittest
         declared_text=(ROOT/'STATE.md').read_text()
-        match=re.search(r'Proof inventory: **(\d+) unit tests discovered',declared_text)
+        match=re.search(r'Proof inventory: [*][*]([0-9]+) unit tests discovered',declared_text)
         self.assertIsNotNone(match)
         declared=int(match.group(1))
         authoritative=unittest.TestLoader().discover(

@@ -343,8 +343,10 @@ def _consume_deployment_authority(root: Path, fingerprint: str | None) -> dict |
 
 
 def materialize_if_absent(root: Path, environment: dict) -> str | None:
-    """Create the freeze once or validate the existing freeze before launch."""
+    """Validate a pre-existing freeze; qualifying launch never creates one."""
     fingerprint_file = Path(root) / "var" / "sec" / "acquisition_fingerprint.json"
+    if not fingerprint_file.exists():
+        raise RuntimeError("FINGERPRINT_NOT_MATERIALIZED")
     active = current_fingerprint(root, environment)
     completed = subprocess.run(
         [sys.executable, "-I", str(Path(root) / "scripts" / "quant.py"),

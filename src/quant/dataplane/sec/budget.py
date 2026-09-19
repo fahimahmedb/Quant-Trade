@@ -75,6 +75,7 @@ class SecTrafficBudget:
         self.rng = rng or random.Random()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.lock_path = self.path.with_suffix(".lock")
+        self.network_lock_path = self.path.with_suffix(".network.lock")
         self.commit_path = self.path.with_suffix(".commits.jsonl")
 
     # --- durable state -----------------------------------------------------
@@ -113,6 +114,26 @@ class SecTrafficBudget:
         """Advisory exclusive lock: this is the frozen ``max_concurrency = 1``."""
         self.lock_path.parent.mkdir(parents=True, exist_ok=True)
         handle = os.open(self.lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(handle, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(handle, fcntl.LOCK_UN)
+        finally:
+            os.close(handle)
+
+    @contextmanager
+    def network_slot(self) -> Iterator[None]:
+        """Hold the frozen global max_concurrency=1 across the network window.
+
+        reserve() serializes durable budget mutation, but that lock cannot be
+        released while the request is still in flight: otherwise a second SEC
+        consumer can reserve the next rate slot and overlap the first request.
+        flock is process-shared and the kernel releases it on crash.
+        """
+        self.network_lock_path.parent.mkdir(parents=True, exist_ok=True)
+        handle = os.open(self.network_lock_path, os.O_CREAT | os.O_RDWR, 0o600)
         try:
             fcntl.flock(handle, fcntl.LOCK_EX)
             try:

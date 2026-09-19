@@ -394,6 +394,10 @@ class SecForm4Collector:
         external_lifecycle_error = self._external_lifecycle_binding_error()
         if external_lifecycle_error:
             blockers.append(external_lifecycle_error)
+        if self.lifecycle.get("qualifying_service_mode"):
+            from .audit import audit_observation_window
+            if not audit_observation_window(self)["accountable"]:
+                blockers.append("ACQUISITION_AUDIT_NOT_ACCOUNTABLE")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
         if self.configured and not self.state.enabled:
@@ -658,17 +662,25 @@ class SecForm4Collector:
         return RUNNING if 0 <= elapsed <= allowance else STALE
 
     # --- the single SEC request path ---------------------------------------
-    def _request(self, kind: str, path: str, url: str, *, poll_id: str | None = None,
-                 page_start: int | None = None, source_identity: str | None = None,
-                 source_published_at_utc: str | None = None,
-                 store_bytes: bool = True) -> _AttemptResult:
+    def _request(self, *args: Any, **kwargs: Any) -> _AttemptResult:
+        """Serialize the complete request window across every SEC consumer."""
+        self.require_active_materialization()
+        if self.budget is None:
+            raise SecStorageFailure("SEC_TRAFFIC_BUDGET_UNAVAILABLE")
+        with self.budget.network_slot():
+            return self._request_serialized(*args, **kwargs)
+
+    def _request_serialized(self, kind: str, path: str, url: str, *,
+                            poll_id: str | None = None,
+                            page_start: int | None = None,
+                            source_identity: str | None = None,
+                            source_published_at_utc: str | None = None,
+                            store_bytes: bool = True) -> _AttemptResult:
         """Issue one SEC request and leave a durable attempt record, always.
 
-        Every exit from this method has written a heartbeat: that is what makes
-        ``NO_NEW_DATA``, ``REQUEST_FAILED`` and ``COLLECTOR_DID_NOT_RUN``
-        distinguishable afterwards.
+        The caller holds the process-shared network lease before reserve() and
+        until this method has durably journalled the outcome.
         """
-        self.require_active_materialization()
         endpoint_class = endpoint_class_for(kind)
         attempt_id = self.store.new_attempt_id()
         obligation_id = self.state.open_obligation_id
