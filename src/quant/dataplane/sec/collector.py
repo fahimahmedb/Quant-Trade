@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import uuid
 import hashlib
+import re
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -610,9 +611,20 @@ class SecForm4Collector:
             response = self.transport.fetch(path, permit)
         except SecTransportError as exc:
             hung = exc.outcome == DEADLINE_EXCEEDED
+            incomplete_id = None
+            if exc.partial:
+                try:
+                    incomplete_id = self.store.put_object(
+                        exc.partial, incomplete=True).raw_object_sha256
+                except SecStorageFailure:
+                    return finish(STORAGE_FAILED, attempted_at=attempted_at,
+                                  error_class="partial_evidence_storage_failed",
+                                  limiter_waited_seconds=reservation["waited_seconds"],
+                                  duration_seconds=self._elapsed(attempted_at_dt))
             self._enter_transient_cooldown(f"transport:{exc.error_class}")
             return finish(HUNG_REQUEST if hung else REQUEST_FAILED, attempted_at=attempted_at,
                           error_class=exc.error_class, transfer_outcome=exc.outcome,
+                          incomplete_object_sha256=incomplete_id,
                           limiter_waited_seconds=reservation["waited_seconds"],
                           duration_seconds=self._elapsed(attempted_at_dt))
         received_at = self.timebase.now_iso()
@@ -652,8 +664,12 @@ class SecForm4Collector:
             return finish(ACCESS_FORBIDDEN, error_class="http_403", retry_after_seconds=seconds,
                           byte_length=response.byte_length, **common)
         if 500 <= response.status < 600:
-            self._enter_transient_cooldown(f"http_{response.status}")
+            retry_after = seconds_from_retry_after(
+                response.retry_after, self.timebase.now()) or 0.0
+            self._enter_transient_cooldown(
+                f"http_{response.status}", floor_seconds=retry_after)
             return finish(SERVER_ERROR, error_class=f"http_{response.status}",
+                          retry_after_seconds=retry_after or None,
                           byte_length=response.byte_length, **common)
         if response.status != 200:
             # Permanent client error: recorded once, never hot-looped. The poll
@@ -721,8 +737,10 @@ class SecForm4Collector:
         supplied = seconds_from_retry_after(response.retry_after, self.timebase.now())
         return max(floor, supplied or 0.0)
 
-    def _enter_transient_cooldown(self, reason: str) -> None:
-        self.budget.enter_cooldown(self.budget.next_backoff_seconds(), reason)
+    def _enter_transient_cooldown(self, reason: str,
+                                  floor_seconds: float = 0.0) -> None:
+        seconds = max(self.budget.next_backoff_seconds(), floor_seconds)
+        self.budget.enter_cooldown(seconds, reason)
         self.record_transition(BACKOFF, BACKOFF_ENTERED,
                                next_due_at=self.budget.load().cooldown_until_utc,
                                detail=reason)
@@ -1033,6 +1051,8 @@ class SecForm4Collector:
         limit = self.policy.filings_per_drain if max_items is None else max_items
         outcomes: list[dict[str, Any]] = []
         for task in list(self.state.pending_tasks)[:limit]:
+            if self.cooldown_remaining() > 0:
+                break
             outcomes.append(self._acquire(task))
         if outcomes:
             self.record_current_state(DRAIN_COMPLETED,
@@ -1072,13 +1092,43 @@ class SecForm4Collector:
             task["last_error_class"] = attempt.error_class or attempt.result_state
             gap_id = None
             if task["attempts"] >= MAX_FILING_ATTEMPTS:
-                # Give up retrying, but never pretend the filing was captured.
+                # Quarantine instead of hot-looping forever.  The open gap keeps
+                # coverage non-COMPLETE and prevents cursor advancement.
                 gap_id = self._open_gap(FILING_ACQUISITION_FAILED, {
                     "task_id": task["task_id"], "attempts": task["attempts"],
                     "error_class": task["last_error_class"]})
+                append_jsonl(self.paths.sec_restricted / "failed_tasks.jsonl", dict(task))
+                self._drop_task(task)
             self.save()
             return {"task_id": task["task_id"], "result_state": attempt.result_state,
                     "error_class": attempt.error_class, "gap_id": gap_id}
+
+        # A transport-level 200 is not proof the filing locator returned a
+        # Form-4 submission.  A WAF/error HTML page under 200 must never be
+        # acknowledged as the filing and advance the cursor.
+        try:
+            filing_body = self._decoded(attempt)
+        except SecTransportError as invalid:
+            filing_body = b""
+        form4_header = re.search(
+            rb"CONFORMED SUBMISSION TYPE:\s*4(?:/A)?(?:\s|$)", filing_body,
+            re.IGNORECASE)
+        form4_document = re.search(
+            rb"<TYPE>\s*4(?:/A)?(?:\s|<)", filing_body, re.IGNORECASE)
+        if (b"<SEC-DOCUMENT>" not in filing_body.upper()
+                or b"</SEC-DOCUMENT>" not in filing_body.upper()
+                or not (form4_header or form4_document)):
+            task["attempts"] = int(task.get("attempts", 0)) + 1
+            task["last_error_class"] = "FILING_PACKAGE_INVALID"
+            gap_id = self._open_gap(FILING_ACQUISITION_FAILED, {
+                "task_id": task["task_id"],
+                "error_class": "FILING_PACKAGE_INVALID"})
+            self._enter_transient_cooldown("FILING_PACKAGE_INVALID")
+            self.save()
+            return {"task_id": task["task_id"],
+                    "result_state": DISCOVERY_INVALID,
+                    "error_class": "FILING_PACKAGE_INVALID",
+                    "gap_id": gap_id}
 
         # Raw bytes are durable at this point. The envelope is the acknowledgement.
         version = self.store.record_source_version(
