@@ -981,10 +981,11 @@ class SecForm4Collector:
             self.state.active_poll["task_ids"].append(identity_digest[7:23])
             enqueued += 1
         if enqueued:
+            # Persist the queue, but do not mint a second immediate scheduler
+            # obligation here. _close_poll() declares exactly one next action
+            # after the poll is committed.  Two "due now" obligations cannot be
+            # prospectively superseded and would manufacture an audit hole.
             self.save()
-            self.record_transition(DRAINING, WORK_ENQUEUED,
-                                   next_due_at=self.timebase.now_iso(),
-                                   detail="discovered filings queued for acquisition")
         return enqueued
 
     def _summarize(self, valid_discovery: bool, coverage_state: str,
