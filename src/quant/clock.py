@@ -743,7 +743,7 @@ class QuantSystem:
             return f"run the desk session for {session[0]}"
         if self.sec.configured and self.sec.state.enabled:
             if self.sec.has_pending_work():
-                return "acquire the queued SEC filing raw bytes"
+                return "run SEC acquisition work"
             cooldown = self.sec.cooldown_remaining()
             if cooldown > 0:
                 return f"wait {cooldown:.0f}s for the SEC cooldown to expire"
@@ -805,7 +805,7 @@ class QuantSystem:
 
     def snapshot(self) -> dict[str, Any]:
         """Everything the status surface and the brief are rendered from."""
-        return {
+        snapshot = {
             "control": self.state.to_dict(),
             "components": self.components.snapshot(),
             "data": {"health": self.datasets.health(),
@@ -839,3 +839,18 @@ class QuantSystem:
             "events": {"total": self.log.count(), "recent": self.log.recent(15),
                        "faults": len(self.log.faults())},
         }
+        if self.sec.configured:
+            # Dedicated P0 service activity can make generic Control Plane
+            # counters/timestamps indirect Form-4 volume/timing proxies.
+            for key in ("ticks", "waits", "run_history", "last_heartbeat", "last_wake_at"):
+                if key in snapshot["control"]:
+                    snapshot["control"][key] = [] if key == "run_history" else None
+            for name in ("CONTROL", "SEC_CAPTURE"):
+                status = snapshot["components"].get(name)
+                if status:
+                    status["runs"] = 0
+                    status["last_active_at"] = None
+                    status["since"] = None
+            snapshot["events"] = {"total": 0, "recent": [], "faults": 0}
+        return snapshot
+
