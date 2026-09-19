@@ -91,7 +91,8 @@ class SupervisorProductionPathTests(unittest.TestCase):
                                return_value="sha256:" + "a" * 64), \
              mock.patch.object(launcher, "_consume_deployment_authority",
                                return_value=authority), \
-             mock.patch.object(launcher, "host_boot_id", return_value="kernel-boot-A"), \
+             mock.patch("quant.dataplane.sec.supervisor.host_boot_id",
+                        return_value="kernel-boot-A"), \
              mock.patch.object(launcher.subprocess, "Popen", side_effect=popen), \
              mock.patch.object(launcher, "RESTART_DELAY_SECONDS", 0.0):
             return launcher.main()
