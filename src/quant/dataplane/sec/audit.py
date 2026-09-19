@@ -316,6 +316,7 @@ def _validate_structure(transitions: list[dict[str, Any]],
 
 def _validate_request_intents(collector: Any,
                               attempts: list[dict[str, Any]]) -> list[str]:
+    """Validate request accounting as an ordered state machine, not a tally."""
     path = collector.paths.sec / "request_intents.jsonl"
     if not path.exists():
         return ["REQUEST_INTENT_JOURNAL_MISSING"] if attempts else []
@@ -326,22 +327,61 @@ def _validate_request_intents(collector: Any,
         if not attempt_id:
             return ["REQUEST_INTENT_ID_MISSING"]
         by_attempt.setdefault(attempt_id, []).append(record)
+
     findings: list[str] = []
-    attempt_ids = {record.get("attempt_id") for record in attempts}
+    attempt_by_id = {record.get("attempt_id"): record for record in attempts}
+    allowed = {"INTENT", "RESERVED", "RECEIVED", "FINISHED"}
     for attempt_id, records in by_attempt.items():
         events = [record.get("event") for record in records]
+        attempt = attempt_by_id.get(attempt_id)
+        if attempt is None:
+            findings.append("REQUEST_INTENT_WITHOUT_ATTEMPT")
+            continue
+        if any(event not in allowed for event in events):
+            findings.append("REQUEST_EVENT_ORDER_INVALID")
+        if not events or events[0] != "INTENT" or events[-1] != "FINISHED":
+            findings.append("REQUEST_EVENT_ORDER_INVALID")
         if events.count("INTENT") != 1 or events.count("FINISHED") != 1:
             findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
-        if attempt_id not in attempt_ids:
-            findings.append("REQUEST_INTENT_WITHOUT_ATTEMPT")
-    for record in attempts:
-        attempt_id = record.get("attempt_id")
-        records = by_attempt.get(attempt_id, [])
-        events = [item.get("event") for item in records]
-        if record.get("result_state") != "COOLDOWN_SUPPRESSED" and events.count("RESERVED") != 1:
-            findings.append("BUDGET_RESERVATION_ACCOUNTING_INCOMPLETE")
-    return sorted(set(findings))
 
+        suppressed = attempt.get("result_state") == "COOLDOWN_SUPPRESSED"
+        expected_reserved = 0 if suppressed else 1
+        if events.count("RESERVED") != expected_reserved:
+            findings.append("BUDGET_RESERVATION_ACCOUNTING_INCOMPLETE")
+        if events.count("RECEIVED") > 1 or (suppressed and events.count("RECEIVED")):
+            findings.append("REQUEST_EVENT_ORDER_INVALID")
+
+        positions = {event: [index for index, value in enumerate(events)
+                             if value == event] for event in allowed}
+        if positions["RESERVED"]:
+            if (positions["RESERVED"][0] <= positions["INTENT"][0]
+                    or positions["RESERVED"][0] >= positions["FINISHED"][0]):
+                findings.append("REQUEST_EVENT_ORDER_INVALID")
+        if positions["RECEIVED"]:
+            if (not positions["RESERVED"]
+                    or positions["RECEIVED"][0] <= positions["RESERVED"][0]
+                    or positions["RECEIVED"][0] >= positions["FINISHED"][0]):
+                findings.append("REQUEST_EVENT_ORDER_INVALID")
+
+        prior: datetime | None = None
+        for record in records:
+            raw = record.get("recorded_at_utc") or record.get("reserved_at_utc")
+            if not raw:
+                findings.append("REQUEST_EVENT_TIMESTAMP_MISSING")
+                continue
+            try:
+                stamp = parse_ts(raw)
+            except (TypeError, ValueError):
+                findings.append("REQUEST_EVENT_TIMESTAMP_INVALID")
+                continue
+            if prior is not None and stamp < prior:
+                findings.append("REQUEST_EVENT_TIME_REVERSED")
+            prior = stamp
+
+    for record in attempts:
+        if record.get("attempt_id") not in by_attempt:
+            findings.append("REQUEST_ACCOUNTING_INCOMPLETE")
+    return sorted(set(findings))
 
 def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
                              now: datetime | None = None) -> dict[str, Any]:
@@ -363,6 +403,21 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
     _resolve_supersessions(obligations, transitions)
     _resolve_attempts(obligations, attempts, tolerance)
     _mark_pending(obligations, moment, tolerance)
+
+    # Every live service must retain a prospective next obligation. If the
+    # currently named obligation has already been answered, a crash between the
+    # response and successor scheduling must not look accountable.
+    if getattr(collector.state, "enabled", False):
+        open_id = getattr(collector.state, "open_obligation_id", None)
+        if not open_id:
+            findings.append("OPEN_OBLIGATION_MISSING")
+        else:
+            open_obligation = next(
+                (item for item in obligations if item.obligation_id == open_id), None)
+            if open_obligation is None:
+                findings.append("OPEN_OBLIGATION_UNKNOWN")
+            elif open_obligation.status != PENDING:
+                findings.append("SUCCESSOR_OBLIGATION_MISSING")
 
     unexplained = [obligation.to_dict() for obligation in obligations
                    if obligation.status == UNEXPLAINED]
