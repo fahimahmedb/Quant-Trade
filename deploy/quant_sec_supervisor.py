@@ -132,12 +132,52 @@ def classify(previous: dict, fingerprint: str | None, *, manual: bool,
     return MANUAL_START
 
 
-def _effective_environment(args: argparse.Namespace, root: Path) -> tuple[dict, float]:
+def _effective_systemd_definition(root: Path) -> str:
+    """Digest the unit systemd actually loaded, not only the repository file."""
+    import hashlib
+    executable = "/bin/systemctl" if Path("/bin/systemctl").exists() else "systemctl"
+    properties = (
+        "FragmentPath,DropInPaths,ExecStart,WorkingDirectory,Restart,RestartUSec,"
+        "StartLimitIntervalUSec,StartLimitBurst,KillMode,KillSignal,TimeoutStopUSec,"
+        "EnvironmentFiles"
+    )
+    completed = subprocess.run(
+        [executable, "show", "quant-sec-capture.service", "--no-pager",
+         f"--property={properties}"],
+        capture_output=True, text=True, timeout=15)
+    if completed.returncode != 0:
+        raise RuntimeError("SYSTEMD_EFFECTIVE_UNIT_UNAVAILABLE")
+    parsed = {}
+    for line in completed.stdout.splitlines():
+        if "=" in line:
+            key, value = line.split("=", 1)
+            parsed[key] = value
+    fragment = Path(parsed.get("FragmentPath") or "")
+    if not fragment.is_file():
+        raise RuntimeError("SYSTEMD_FRAGMENT_UNAVAILABLE")
+    repo_unit = root / "deploy" / "quant-sec-capture.service"
+    loaded_digest = hashlib.sha256(fragment.read_bytes()).hexdigest()
+    repo_digest = hashlib.sha256(repo_unit.read_bytes()).hexdigest()
+    if loaded_digest != repo_digest:
+        raise RuntimeError("SYSTEMD_FRAGMENT_DIFFERS_FROM_REPOSITORY")
+    if (parsed.get("DropInPaths") or "").strip():
+        raise RuntimeError("SYSTEMD_DROPINS_UNBOUND")
+    canonical = json.dumps(parsed, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(canonical).hexdigest()
+
+
+def _effective_environment(args: argparse.Namespace, root: Path,
+                           managed: dict) -> tuple[dict, float]:
     from quant.dataplane.sec.policy import policy_from_environment
     environment = dict(os.environ)
     poll_seconds = args.poll_seconds
     if poll_seconds is None:
         poll_seconds = policy_from_environment(environment).discovery_poll_seconds
+    effective_unit = None
+    if args.qualifying:
+        if not managed["service_managed"]:
+            raise RuntimeError("SERVICE_MANAGER_UNATTESTED")
+        effective_unit = _effective_systemd_definition(root)
     environment.update({
         "PYTHONPATH": str(root / "src"),
         "QUANT_SEC_SERVICE_POLL_SECONDS": str(poll_seconds),
@@ -146,6 +186,7 @@ def _effective_environment(args: argparse.Namespace, root: Path) -> tuple[dict, 
         "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS": str(RESTART_DELAY_SECONDS),
         "QUANT_SEC_SERVICE_RESTART_BURST_LIMIT": str(RESTART_BURST_LIMIT),
         "QUANT_SEC_QUALIFYING_MODE": "1" if args.qualifying else "0",
+        "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": effective_unit or "UNATTESTED",
     })
     return environment, poll_seconds
 
@@ -276,7 +317,7 @@ def main() -> int:
             return 2
 
     try:
-        environment, poll_seconds = _effective_environment(args, root)
+        environment, poll_seconds = _effective_environment(args, root, managed)
         fingerprint = current_fingerprint(root, environment)
     except Exception as exc:
         print(f"[supervisor] BLOCKED {type(exc).__name__}", flush=True)
@@ -344,6 +385,8 @@ def main() -> int:
                     "QUANT_SEC_LIFECYCLE_CAUSE": cause,
                     "QUANT_SEC_BOOT_AT_UTC": boot_at,
                     "QUANT_SEC_SUPERVISOR_ID": supervisor_id,
+                    "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": (
+                        authority.get("nonce") if authority else ""),
                 })
 
                 # Existing materialization is validated before the child exists.
