@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import json
 import os
+import fcntl
+import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -31,12 +33,60 @@ def parse_ts(value: str) -> datetime:
     return datetime.fromisoformat(value)
 
 
+def _fsync_directory(path: Path) -> None:
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def _sec_evidence_path(path: Path) -> bool:
+    """SEC P0 journals fail closed on any torn/corrupt tail."""
+    return "sec" in path.parts
+
+
 def write_json(path: Path, value: Any) -> None:
-    """Atomically replace a JSON document."""
+    """Atomically and durably replace a JSON document.
+
+    A unique staging file prevents two writers from sharing the old fixed .tmp
+    name.  fsync of both file and directory makes a successful return durable
+    across a crash rather than merely visible in page cache.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    fd, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        _fsync_directory(path.parent)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def create_json_once(path: Path, value: Any) -> None:
+    """Durably create a JSON document exactly once, never overwrite it."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.freeze.", dir=path.parent)
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.link(temporary, path)
+        _fsync_directory(path.parent)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def read_json(path: Path, default: Any = None) -> Any:
@@ -46,13 +96,14 @@ def read_json(path: Path, default: Any = None) -> Any:
 
 
 def _discard_torn_jsonl_tail(path: Path) -> None:
-    """Remove only an unterminated final record left by an interrupted append.
+    """Repair only non-SEC generic logs.
 
-    A malformed newline-terminated record is *not* repaired here: that is
-    durable corruption and readers should raise.  The only automatically
-    recoverable case is the final line lacking its terminating newline, which
-    is exactly the shape a process kill can leave while appending one record.
+    Acquisition-critical SEC journals never self-repair: a torn tail is evidence
+    of an interrupted durable operation and must invalidate readiness until an
+    explicit recovery procedure accounts for it.
     """
+    if _sec_evidence_path(path):
+        return
     if not path.exists() or path.stat().st_size == 0:
         return
     with path.open("rb+") as handle:
@@ -66,16 +117,34 @@ def _discard_torn_jsonl_tail(path: Path) -> None:
         handle.truncate(last_newline + 1 if last_newline >= 0 else 0)
         handle.flush()
         os.fsync(handle.fileno())
+    _fsync_directory(path.parent)
 
 
 def append_jsonl(path: Path, record: dict[str, Any]) -> None:
-    """Durably append one JSONL record and recover a torn final append first."""
+    """Durably serialize one JSONL append.
+
+    Writers share a lock.  SEC evidence refuses an existing torn tail rather
+    than discarding it and manufacturing a clean-looking history.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    _discard_torn_jsonl_tail(path)
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
-        handle.flush()
-        os.fsync(handle.fileno())
+    lock_path = path.with_name(path.name + ".lock")
+    lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+    try:
+        fcntl.flock(lock_fd, fcntl.LOCK_EX)
+        if _sec_evidence_path(path) and path.exists() and path.stat().st_size:
+            with path.open("rb") as check:
+                check.seek(-1, os.SEEK_END)
+                if check.read(1) != b"\n":
+                    raise ValueError("SEC_JOURNAL_TORN_TAIL")
+        else:
+            _discard_torn_jsonl_tail(path)
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        _fsync_directory(path.parent)
+    finally:
+        os.close(lock_fd)
 
 
 def read_jsonl(path: Path) -> Iterator[dict[str, Any]]:
@@ -83,20 +152,25 @@ def read_jsonl(path: Path) -> Iterator[dict[str, Any]]:
         return iter(())
 
     def _iterate() -> Iterator[dict[str, Any]]:
-        with path.open(encoding="utf-8") as handle:
-            lines = handle.readlines()
+        data = path.read_bytes()
+        if _sec_evidence_path(path) and data and not data.endswith(b"\n"):
+            raise ValueError("SEC_JOURNAL_TORN_TAIL")
+        lines = data.decode("utf-8").splitlines(keepends=True)
         for index, line in enumerate(lines):
             if not line.strip():
+                if _sec_evidence_path(path):
+                    raise ValueError("SEC_JOURNAL_EMPTY_RECORD")
                 continue
             try:
-                yield json.loads(line)
+                value = json.loads(line)
             except json.JSONDecodeError:
-                # A process may die between bytes of the final append.  Ignore
-                # only that unterminated tail; corruption of any committed line
-                # remains loud rather than being silently skipped.
-                if index == len(lines) - 1 and not line.endswith("\n"):
+                if (not _sec_evidence_path(path)
+                        and index == len(lines) - 1 and not line.endswith("\n")):
                     return
-                raise
+                raise ValueError("JOURNAL_CORRUPT") from None
+            if not isinstance(value, dict):
+                raise ValueError("JOURNAL_RECORD_NOT_OBJECT")
+            yield value
 
     return _iterate()
 
