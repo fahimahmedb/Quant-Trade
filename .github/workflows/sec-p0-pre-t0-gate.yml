@@ -61,7 +61,7 @@ jobs:
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
       - name: SEC P0 lane suite
-        run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture -v
+        run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial -v
 
       - name: V1 end-to-end regression
         run: python3 scripts/demo_quant_system.py
