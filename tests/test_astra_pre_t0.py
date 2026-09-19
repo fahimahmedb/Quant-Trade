@@ -1,0 +1,194 @@
+"""Independent red/green campaign; synthetic source bytes only, no SEC traffic."""
+import copy
+import http.client
+import importlib.util
+import json
+import os
+from pathlib import Path
+import socketserver
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import unittest
+from types import SimpleNamespace
+from unittest import mock
+from datetime import datetime, timezone, timedelta
+
+from quant.dataplane.sec.audit import audit_observation_window
+from quant.dataplane.sec.transport import SecHttpTransport, RequestPermit, COMPLETE
+from quant.dataplane.sec.policy import SecAccessPolicy
+from quant.dataplane.sec.collector import SecForm4Collector
+from quant.dataplane.sec.store import SecStorageFailure
+from quant.state import append_jsonl, read_jsonl
+from tests.test_sec_form4_capture import CollectorTestCase, USER_AGENT, ROOT
+
+NOW = datetime(2026, 9, 18, 13, tzinfo=timezone.utc)
+T = '2026-09-18T12:00:00+00:00'
+DUE = '2026-09-18T12:05:00+00:00'
+FP = 'sha256:' + 'a' * 64
+
+class AuditCampaign(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        sec = Path(self.temp.name) / 'sec'
+        sec.mkdir()
+        self.transitions = []
+        self.attempts = []
+        self.lane = SimpleNamespace(
+            paths=SimpleNamespace(sec=sec, sec_lifecycle=sec/'lifecycle.jsonl'),
+            scheduler=SimpleNamespace(all=lambda: self.transitions,
+                fingerprints_seen=lambda: sorted(set(r['acquisition_critical_fingerprint'] for r in self.transitions))),
+            store=SimpleNamespace(attempts=lambda: self.attempts),
+            state=SimpleNamespace(coverage_state='COMPLETE', open_gaps=[]),
+            timebase=SimpleNamespace(now=lambda: NOW), fingerprint=FP)
+        append_jsonl(self.lane.paths.sec_lifecycle, {
+            'lifecycle_cause':'DEPLOYMENT_RESTART', 'boot_id':'child',
+            'supervisor_id':'sup', 'recorded_at_utc':T,
+            'boot_at_utc':T, 'acquisition_critical_fingerprint':FP})
+
+    def transition(self, identity='one', due=DUE, supersedes=None, stamp=T):
+        self.transitions.append(dict(transition_id='transition-'+str(identity),
+            recorded_at_utc=stamp, next_due_at_utc=due, obligation_id=identity,
+            state='AWAITING_POLL', cause='SERVICE_START',
+            acquisition_critical_fingerprint=FP, supersedes_obligation_id=supersedes))
+
+    def report(self):
+        return audit_observation_window(self.lane, now=NOW)
+
+    def test_missing_due_cannot_erase_all_expected_work(self):
+        self.transition(identity=None, due=None)
+        self.assertFalse(self.report()['accountable'])
+
+    def test_two_node_circular_supersession_same_timestamp(self):
+        self.transition('one', supersedes='two')
+        self.transition('two', supersedes='one')
+        self.assertFalse(self.report()['accountable'])
+
+    def test_single_foreign_fingerprint_cannot_pass(self):
+        self.transition(due=(NOW+timedelta(minutes=1)).isoformat())
+        self.lane.fingerprint='sha256:'+'b'*64
+        self.assertFalse(self.report()['accountable'])
+
+    def test_future_due_is_commitment_not_future_evidence(self):
+        self.transition(due=(NOW+timedelta(minutes=1)).isoformat())
+        self.assertNotIn('FUTURE_EVIDENCE_TIMESTAMP',self.report()['findings'])
+
+    def test_missing_transition_time_is_invalid(self):
+        self.transition(due=T, stamp=None)
+        self.assertIn('EVIDENCE_TIMESTAMP_MISSING', self.report()['findings'])
+
+    def test_corrupt_journal_returns_explicit_failed_verdict(self):
+        self.transition()
+        self.lane.paths.sec_lifecycle.write_bytes(b'{')
+        self.assertFalse(self.report()['accountable'])
+
+    def test_nan_tolerance_cannot_make_obligations_pending(self):
+        self.transition()
+        report=audit_observation_window(self.lane, now=NOW, tolerance_seconds=float('inf'))
+        self.assertFalse(report['accountable'])
+
+class CollectorCampaign(CollectorTestCase):
+    def test_fingerprint_mismatch_cannot_be_cleared_by_restoring_file(self):
+        c=self.collector(self.fixture_router())
+        c.lifecycle['qualifying_service_mode']=True
+        c.materialize_fingerprint()
+        original=self.paths.sec_fingerprint.read_bytes()
+        self.paths.sec_fingerprint.write_bytes(b'{')
+        with self.assertRaises(SecStorageFailure):
+            c.require_active_materialization()
+        self.paths.sec_fingerprint.write_bytes(original)
+        with self.assertRaises(SecStorageFailure):
+            c.require_active_materialization()
+
+    def test_restart_does_not_replace_the_unanswered_obligation(self):
+        c=self.collector(self.fixture_router())
+        before=c.state.open_obligation_id
+        c.record_service_start()
+        self.assertEqual(c.state.open_obligation_id,before)
+
+    def test_due_poll_wins_over_a_backlog_in_real_clock(self):
+        from quant.clock import QuantSystem
+        c=self.collector(self.fixture_router())
+        c.poll()
+        self.timebase.advance(61)
+        system=QuantSystem(self.root)
+        system.sec=c
+        with mock.patch.object(c,'poll',wraps=c.poll) as poll, mock.patch.object(c,'drain',wraps=c.drain) as drain:
+            system._capture_step(c)
+        self.assertEqual(poll.call_count,1)
+        self.assertEqual(drain.call_count,0)
+
+class WireCampaign(unittest.TestCase):
+    def exchange(self, wire, *, trickle=False):
+        requests=[]
+        class Handler(socketserver.BaseRequestHandler):
+            def handle(inner):
+                try:
+                    data=b''
+                    while b'\r\n\r\n' not in data:
+                        piece=inner.request.recv(4096)
+                        if not piece: return
+                        data+=piece
+                    requests.append(data)
+                    if trickle:
+                        inner.request.sendall(b'HTTP/1.1 200 OK\r\nContent-Length: 20\r\n\r\n')
+                        for _ in range(20):
+                            inner.request.sendall(b'x')
+                            time.sleep(.025)
+                    else:
+                        inner.request.sendall(wire)
+                except (BrokenPipeError,ConnectionResetError):
+                    pass
+        class Server(socketserver.ThreadingTCPServer):
+            allow_reuse_address=True
+            daemon_threads=True
+        with Server(('127.0.0.1',0),Handler) as server:
+            thread=threading.Thread(target=server.serve_forever,daemon=True)
+            thread.start()
+            p=SecAccessPolicy(user_agent=USER_AGENT,total_deadline_seconds=.12,
+                connect_timeout_seconds=.12,read_timeout_seconds=.06)
+            transport=SecHttpTransport(p)
+            transport._connection=http.client.HTTPConnection(*server.server_address,timeout=.12)
+            started=time.monotonic()
+            try:
+                result=transport.fetch('/fixture',RequestPermit('id',T,'test'))
+            finally:
+                elapsed=time.monotonic()-started
+                transport.close()
+                server.shutdown()
+            return result,elapsed,requests
+
+    def test_trickling_body_respects_total_deadline_real_socket(self):
+        result,elapsed,requests=self.exchange(b'',trickle=True)
+        self.assertEqual(len(requests),1)
+        self.assertLess(elapsed,.35)
+        self.assertNotEqual(result.transfer_outcome,COMPLETE)
+        self.assertTrue(result.body,'partial evidence must be preserved')
+
+    def test_real_connection_truncation_and_send_count(self):
+        response,_,requests=self.exchange(b'HTTP/1.1 200 OK\r\nContent-Length: 9\r\n\r\npart')
+        self.assertEqual(len(requests),1)
+        self.assertEqual(response.body,b'part')
+        self.assertNotEqual(response.transfer_outcome,COMPLETE)
+
+class LauncherRealChild(unittest.TestCase):
+    def test_real_main_child_exit_relaunch_keeps_host_identity(self):
+        spec=importlib.util.spec_from_file_location('astra_launcher',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec); spec.loader.exec_module(launcher)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'scripts').mkdir()
+            (root/'scripts/quant.py').write_text('raise SystemExit(0)\n')
+            for invocation in ('first','second'):
+                env={'QUANT_SEC_USER_AGENT':USER_AGENT,'INVOCATION_ID':invocation,
+                     'QUANT_SEC_SERVICE_MANAGER':'systemd'}
+                with mock.patch.dict(os.environ,env,clear=True), mock.patch.object(sys,'argv',['supervisor','--root',str(root)]), mock.patch.object(launcher,'current_fingerprint',return_value=FP), mock.patch.object(launcher,'materialize_if_absent',return_value=FP):
+                    self.assertEqual(launcher.main(),0)
+                state=json.loads((root/'var/sec/supervisor_state.json').read_text())
+                self.assertEqual(state['host_boot_id'],Path('/proc/sys/kernel/random/boot_id').read_text().strip())
+                self.assertEqual(state['lifecycle_cause'],'MANUAL_START')
+                self.assertFalse(state['supervisor_running'])
+
+if __name__=='__main__': unittest.main()
