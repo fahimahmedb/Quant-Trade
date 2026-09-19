@@ -65,45 +65,36 @@ def build_chief_brief(snapshot: dict[str, Any]) -> str:
 
     capture = snapshot.get("sec_capture") or {}
     if capture:
-        # Opaque acquisition telemetry only: no filing body, no parsed field, no
-        # identifying locator and no filing count reaches this brief.
         storage = capture.get("storage") or {}
         rate = capture.get("rate_limit") or {}
         policy = capture.get("policy") or {}
         lines += ["", "## SEC Form-4 raw capture (P0 acquisition lane)", "",
                   f"- collector `{capture.get('state')}`: {capture.get('detail')}",
-                  f"- liveness: **{capture.get('liveness')}**, last attempt "
-                  f"{capture.get('last_attempt_at_utc') or 'never'}, last validated "
-                  f"discovery {capture.get('last_validated_discovery_at_utc') or 'never'}",
-                  f"- coverage: **{capture.get('coverage_state')}** - "
-                  f"{capture.get('coverage_detail')}",
-                  f"- last result: `{capture.get('last_result_state') or 'none'}`"
-                  + (f" (`{capture['last_error_class']}`)"
-                     if capture.get("last_error_class") else ""),
-                  f"- continuity cursor: `{capture.get('cursor_identity_digest') or 'not established'}`",
-                  f"- work in flight: {'yes' if capture.get('work_in_flight') else 'no'}",
-                  f"- raw store: {storage.get('raw_bytes', 0):,} bytes, append-only "
-                  f"{storage.get('append_only')}, content-addressed "
-                  f"{storage.get('content_addressed')}, incomplete evidence present "
-                  f"{storage.get('incomplete_present')}",
+                  f"- liveness: **{capture.get('liveness')}**",
+                  f"- coverage: **{capture.get('coverage_state')}**",
+                  f"- fingerprint/materialization: "
+                  f"{'MATCH' if capture.get('fingerprint_matches_materialized') else 'NOT MATCHED'}",
+                  f"- raw store: append-only {storage.get('append_only')}, "
+                  f"content-addressed {storage.get('content_addressed')}, "
+                  f"incomplete evidence present {storage.get('incomplete_present')}",
                   f"- request policy: {policy.get('max_requests_per_second')} req/s cap "
                   f"(SEC documented maximum "
                   f"{policy.get('documented_sec_max_requests_per_second')}), concurrency "
                   f"{policy.get('max_concurrency')}, poll "
                   f"{policy.get('discovery_poll_seconds')}s, backoff "
                   f"{policy.get('backoff_schedule_seconds')}",
-                  f"- cooldown: {'active until ' + str(rate.get('cooldown_until_utc')) if rate.get('cooldown_active') else 'none'}"
-                  f", requests spent {rate.get('requests_spent', 0)}",
+                  f"- cooldown: {'active' if rate.get('cooldown_active') else 'inactive'}"
+                  + (f" ({rate.get('cooldown_reason')})"
+                     if rate.get("cooldown_reason") else ""),
                   f"- states: `{capture.get('capture_state')}` / "
                   f"`{capture.get('visibility_state')}` / "
                   f"`{capture.get('admissibility_state')}`"]
         for source in policy.get("policy_sources") or []:
             lines.append(f"- SEC policy source consulted {source['consulted_at_utc']}: "
                          f"{source['url']} (page revision {source['reviewed_or_updated']})")
-        for gap in capture.get("open_gap_intervals") or []:
-            span = ", ".join(f"{key} {value}" for key, value in gap.items()
-                             if key not in ("gap_id",))
-            lines.append(f"- open coverage gap `{gap['gap_id']}`: {span}")
+        if capture.get("open_gap_kinds"):
+            lines.append("- coverage alert kinds: " +
+                         ", ".join(capture["open_gap_kinds"]))
 
     lines += ["", "## Research", "",
               f"Queue: `{research['queue']}`.", ""]
