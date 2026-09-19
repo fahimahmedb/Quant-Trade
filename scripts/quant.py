@@ -27,7 +27,9 @@ SEC Form-4 P0 raw capture (requires QUANT_SEC_USER_AGENT, else it fails closed):
 from __future__ import annotations
 
 import argparse
+import fcntl
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -57,15 +59,18 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     if args.command == "sec-audit":
         from quant.dataplane.sec.audit import audit_observation_window
         report = audit_observation_window(collector)
-        print(json.dumps(report, indent=2, sort_keys=True, default=str))
+        public = {key: report[key] for key in (
+            "accountable", "findings", "fingerprint_stable", "coverage_complete",
+            "request_accounting_complete", "lifecycle_attested",
+            "t0_authority", "p0_continuous_service_state")}
+        print(json.dumps(public, indent=2, sort_keys=True))
         return 0 if report["accountable"] else 1
     if args.command == "sec-status":
         print(json.dumps(collector.telemetry(), indent=2, sort_keys=True, default=str))
         return 0
     if args.command == "sec-verify":
         broken = collector.store.verify_objects()
-        print(json.dumps({"raw_objects_checked": collector.store.storage_health(),
-                          "address_mismatches": broken}, indent=2, sort_keys=True))
+        print(json.dumps({"integrity_verified": not broken}, sort_keys=True))
         return 1 if broken else 0
     if not collector.configured:
         # Fail closed, loudly, with the remedy named.
@@ -95,8 +100,8 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         system.boot()
         if not collector.state.enabled:
             collector.enable()
-        entry = system.serve(poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
-        print(json.dumps(entry, indent=2, sort_keys=True, default=str))
+        system.serve(poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
+        print(json.dumps({"service_exit": "STOPPED"}, sort_keys=True))
         return 0
     if args.command == "sec-enable":
         collector.enable()
@@ -105,20 +110,18 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     elif args.command == "sec-probe":
         if not collector.state.enabled:
             collector.enable()
-        outcome = collector.poll()
-        drained = collector.drain(max_items=args.drain) if args.drain else []
-        print(json.dumps({"discovery": outcome.to_dict(),
-                          "acquisitions": [{key: value for key, value in item.items()
-                                            if key != "source_identity"}
-                                           for item in drained]},
-                         indent=2, sort_keys=True, default=str))
+        collector.poll()
+        if args.drain:
+            collector.drain(max_items=args.drain)
+        print(json.dumps({"collector": collector.telemetry()}, sort_keys=True))
     elif args.command == "sec-reconcile":
         from datetime import date as _date
         day = (_date.fromisoformat(args.day) if args.day else collector.reconciliation_due())
         if day is None:
             print(json.dumps({"reconciliation": "no closed day is due"}, indent=2))
             return 0
-        print(json.dumps(collector.reconcile(day), indent=2, sort_keys=True, default=str))
+        collector.reconcile(day)
+        print(json.dumps({"collector": collector.telemetry()}, sort_keys=True))
     state, detail = collector.component_state()
     system.components.set("SEC_CAPTURE", state, detail)
     print(json.dumps({"collector": state, "detail": detail,
@@ -148,6 +151,21 @@ def main() -> None:
                         help="filings a single sec-probe may acquire after discovery")
     parser.add_argument("--day", help="closed day to reconcile, as YYYY-MM-DD")
     args = parser.parse_args()
+
+    lock_fd = None
+    if args.command in {"tick", "run", "serve", "sec-serve", "sec-enable",
+                         "sec-disable", "sec-probe", "sec-reconcile"}:
+        lock_path = args.root / "var" / "sec" / "collector.lock"
+        lock_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            os.close(lock_fd)
+            print(json.dumps({"state": "BLOCKED", "reason": "COLLECTOR_ALREADY_RUNNING"}))
+            raise SystemExit(2)
+        import atexit
+        atexit.register(os.close, lock_fd)
 
     system = QuantSystem(args.root, initial_capital=args.capital)
 

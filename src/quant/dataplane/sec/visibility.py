@@ -73,15 +73,21 @@ _COUNT_PROXY_KEYS: tuple[tuple[str, tuple[str, ...]], ...] = (
 #: Numeric fields that describe acquisition health rather than scientific volume,
 #: and are therefore permitted even though they are numbers.
 _PERMITTED_NUMERIC_KEYS: frozenset[str] = frozenset({
+    "poll_seconds", "max_requests_per_second", "max_concurrency",
+    "restart_delay_seconds", "restart_burst_limit",
+    "tests_discovered", "sec_p0_lane_tests_discovered",
+})
+
+_OPERATIONAL_PROXY_KEYS: frozenset[str] = frozenset({
     "raw_bytes", "byte_length", "declared_content_length", "requests_spent",
     "budget_reservations", "durable_attempt_ids", "distinct_attempt_ids",
-    "limiter_waits", "limiter_wait_seconds", "backoff_step", "window_duration_seconds",
-    "request_span_seconds", "average_requests_per_second", "scheduler_transitions",
-    "obligations", "obligations_pending", "obligations_unexplained",
-    "obligations_resolved_by_attempt", "obligations_resolved_by_supersession",
-    "expected_actions", "service_starts", "supervised_service_starts",
-    "attempts_recorded", "validated_polls", "objects_rehashed", "due_tolerance_seconds",
-    "poll_seconds", "max_waits", "restart_delay_seconds", "restart_burst_limit",
+    "limiter_waits", "limiter_wait_seconds", "backoff_step",
+    "window_duration_seconds", "request_span_seconds", "average_requests_per_second",
+    "scheduler_transitions", "obligations", "obligations_pending",
+    "obligations_unexplained", "obligations_resolved_by_attempt",
+    "obligations_resolved_by_supersession", "expected_actions",
+    "attempts_recorded", "validated_polls", "objects_rehashed",
+    "work_queue_length", "queue_length", "file_count", "object_count",
 })
 
 
@@ -99,6 +105,8 @@ def find_count_proxies(payload: Any, path: str = "") -> list[str]:
             lowered = str(key).lower()
             if isinstance(value, bool):
                 continue
+            if isinstance(value, (int, float)) and lowered in _OPERATIONAL_PROXY_KEYS:
+                found.append(f"{here} (acquisition_volume_or_timing_proxy)")
             if isinstance(value, (int, float)) and lowered not in _PERMITTED_NUMERIC_KEYS:
                 for name, fragments in _COUNT_PROXY_KEYS:
                     haystack = f"{path}.{lowered}".lower()
@@ -138,11 +146,7 @@ def firewall_safe_storage(storage: dict[str, Any]) -> dict[str, Any]:
     are not published: they are close enough to a filing count to be worth
     withholding while the scientific protocol is still open.
     """
-    return {"raw_bytes": storage.get("raw_bytes", 0),
-            "objects_present": bool(storage.get("raw_objects")),
-            "incomplete_present": bool(storage.get("incomplete_objects")),
-            "uncommitted_staging_present": bool(storage.get("uncommitted_staging_files")),
-            "append_only": storage.get("append_only", True),
+    return {"append_only": storage.get("append_only", True),
             "content_addressed": storage.get("content_addressed", True),
             "capture_state": storage.get("capture_state"),
             "visibility_state": storage.get("visibility_state"),

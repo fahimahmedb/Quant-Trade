@@ -103,7 +103,7 @@ def attest_effective_unit(root: Path) -> str:
     are then hashed and exported into the runtime fingerprint.
     """
     completed = subprocess.run(
-        ["systemctl", "show", SERVICE_NAME, "--no-pager",
+        ["/usr/bin/systemctl", "show", SERVICE_NAME, "--no-pager",
          "--property=FragmentPath,DropInPaths,ExecStart,WorkingDirectory,Restart,"
          "KillMode,KillSignal,TimeoutStopUSec,EnvironmentFiles"],
         capture_output=True, text=True, timeout=10)
@@ -123,6 +123,13 @@ def attest_effective_unit(root: Path) -> str:
         raise RuntimeError("SYSTEMD_UNIT_DIFFERS_FROM_REVIEWED")
     if values.get("DropInPaths"):
         raise RuntimeError("SYSTEMD_DROPINS_NOT_FROZEN")
+    expected_exec = (
+        f"/usr/bin/python3 {root}/deploy/quant_sec_supervisor.py "
+        f"--root {root} --qualifying")
+    if values.get("WorkingDirectory") != str(root):
+        raise RuntimeError("SYSTEMD_WORKING_DIRECTORY_MISMATCH")
+    if expected_exec not in (values.get("ExecStart") or ""):
+        raise RuntimeError("SYSTEMD_EXECSTART_MISMATCH")
     if values.get("Restart") != "no" or values.get("KillMode") != "control-group":
         raise RuntimeError("SYSTEMD_EFFECTIVE_RESTART_POLICY_MISMATCH")
     canonical = json.dumps(values, sort_keys=True, separators=(",", ":")).encode()
