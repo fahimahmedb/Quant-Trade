@@ -152,9 +152,11 @@ timestamp + lifecycle provenance, all bound together in one artifact); final exa
 * `scripts/status_artifacts.py --check`: **PASS** after `--write` regenerated `STATE.md`'s proof
   inventory line (371 → 375) to match authoritative package discovery; `CHIEF_BRIEF.md` was
   already fresh.
-* CI run: **not yet triggered for this commit** — this checkpoint is being pushed now; the next
-  session/CI observer should confirm the exact-head GitHub Actions run for the commit this
-  checkpoint accompanies before treating it as gate-equivalent to a green CI run.
+* CI run for the code fix (`ea86d6b4`): GitHub Actions run **35476131802**, "SEC P0 pre-t0 gate",
+  **COMPLETED / SUCCESS** (all steps green: schema drift, status freshness, full unit suite,
+  SEC P0 lane, V1 end-to-end, exact-head verification artifact, clean working tree). The follow-up
+  documentation-only commit (`dbbdbe56`, this checkpoint's falsification notes) also triggers its
+  own CI run; no code changed since `ea86d6b4` so it is not separately gate-relevant.
 
 ## Fingerprint / rodage / readiness (unchanged claims from prior checkpoint, still true)
 
