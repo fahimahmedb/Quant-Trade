@@ -358,7 +358,7 @@ class SecForm4Collector:
                 "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
                 "effective_service_configuration": self.lifecycle.get(
                     "effective_service_configuration"),
-                "scheduler_transitions_recorded": len(self.scheduler.all()),
+                "scheduler_provenance_present": bool(self.scheduler.all()),
                 # This lane never declares t0 or closes the continuity state.
                 "t0_authority": "BLUE_TEAM",
                 "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
@@ -1258,29 +1258,22 @@ class SecForm4Collector:
                   severity=severity, **detail)
 
     def component_state(self) -> tuple[str, str]:
-        """RUN/IDLE/BLOCKED plus an opaque reason, for the Control Plane."""
+        """Protocol-facing service health, deliberately independent of filing volume."""
         if not self.configured:
-            return "BLOCKED", "SEC user agent/contact not configured; capture fails closed"
+            return "BLOCKED", "SEC identity/contact not configured"
         if not self.state.enabled:
             return "IDLE", self.state.blocked_reason or "capture lane disabled"
         if self.cooldown_remaining() > 0:
-            return "BLOCKED", f"SEC cooldown {self.cooldown_remaining():.0f}s remaining"
-        if self.state.pending_tasks:
-            return "RUN", "acquiring queued filings"
-        if self.state.coverage_state != COMPLETE:
-            return "RUN", f"coverage {self.state.coverage_state}"
-        return "IDLE", "coverage COMPLETE; awaiting next poll"
+            return "BLOCKED", "SEC cooldown active"
+        if self.liveness() == STALE:
+            return "FAULT", "acquisition heartbeat stale"
+        return "RUN", "acquisition service active"
 
     def telemetry(self) -> dict[str, Any]:
-        """Opaque acquisition telemetry only.
-
-        The visibility firewall permits states, times, opaque object ids, sizes,
-        storage health and rate-limit state. It forbids filing bodies, parsed
-        fields, identifying locators and **counts of filings**. Work in flight is
-        therefore reported as a boolean, never as a number of filings.
-        """
+        """Strict public projection: health and integrity, never activity volume."""
         state, detail = self.component_state()
         storage = self.store.storage_health()
+        materialized, materialized_error = self._validated_materialization()
         return {
             "collector_version": self.store.collector_version,
             "git_commit": self.store.git_commit,
@@ -1289,37 +1282,16 @@ class SecForm4Collector:
             "state": state,
             "detail": detail,
             "liveness": self.liveness(),
-            "last_attempt_at_utc": self.state.last_attempt_at_utc,
-            "last_poll_started_at_utc": self.state.last_poll_started_at_utc,
-            "last_validated_discovery_at_utc": self.state.last_validated_discovery_at_utc,
-            "last_capture_at_utc": self.state.last_capture_at_utc,
-            "last_result_state": self.state.last_result_state,
-            "last_error_class": self.state.last_error_class,
             "coverage_state": self.state.coverage_state,
-            "coverage_detail": self.state.coverage_detail,
             "open_gap_kinds": sorted({gap["kind"] for gap in self.state.open_gaps}),
-            "open_gap_ids": [gap["gap_id"] for gap in self.state.open_gaps],
-            "open_gap_intervals": [
-                {key: gap.get(key) for key in
-                 ("gap_id", "kind", "day", "interval_start", "interval_end",
-                  "page_start", "page_range_end", "opened_at_utc")
-                 if gap.get(key) is not None}
-                for gap in self.state.open_gaps],
-            "cursor_identity_digest": self.state.cursor_identity_digest,
-            "cursor_advanced_at_utc": self.state.cursor_advanced_at_utc,
-            "work_in_flight": bool(self.state.pending_tasks),
             "storage": firewall_safe_storage(storage),
             "rate_limit": self.budget.telemetry() if self.budget else None,
             "policy": self.policy.to_dict() if self.policy else None,
-            "outage_seconds": self._outage_seconds(),
             "acquisition_critical_fingerprint": self.fingerprint,
-            "materialized_fingerprint": self.materialized_fingerprint(),
-            "fingerprint_matches_materialized":
-                self.materialized_fingerprint() == self.fingerprint,
-            "scheduler_state": self.scheduler_state() if self.configured else
-                               BLOCKED_NOT_CONFIGURED,
-            "next_due_at_utc": self.next_due_at(),
-            "boot_id": self.lifecycle.get("boot_id"),
+            "materialized_fingerprint": materialized,
+            "materialization_error": materialized_error,
+            "fingerprint_matches_materialized": (
+                materialized_error is None and materialized == self.fingerprint),
             "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
             "lifecycle_externally_attested": self.lifecycle.get("externally_attested"),
             "launch_service_managed": self.lifecycle.get("service_managed"),
