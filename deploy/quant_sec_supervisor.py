@@ -21,6 +21,7 @@ import ctypes
 import fcntl
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -35,8 +36,33 @@ sys.path.insert(0, str(ROOT / "src"))
 RESTART_DELAY_SECONDS = 15.0
 RESTART_BURST_LIMIT = 5
 RESTART_BURST_WINDOW_SECONDS = 600.0
+TIMEOUT_STOP_SECONDS = 30.0
 DEPLOYMENT_AUTHORITY_MAX_AGE_SECONDS = 3600.0
 QUALIFYING_UNSOLICITED_EXIT_CODE = 70
+
+#: Matches the unit's declared KillSignal=SIGTERM; systemd reports the numeric value.
+EXPECTED_KILL_SIGNAL = str(int(signal.SIGTERM))
+
+#: systemd pretty-prints *USec properties (e.g. "15s", "10min", "1min 40s500ms")
+#: rather than raw microseconds. A tolerance absorbs rounding in that
+#: pretty-printing, not genuine drift between the declared and loaded unit.
+_DURATION_UNIT_SECONDS = {"us": 1e-6, "ms": 1e-3, "s": 1.0, "min": 60.0, "h": 3600.0}
+_DURATION_TOLERANCE_SECONDS = 1.0
+
+
+def _systemd_duration_seconds(text: str) -> float:
+    """Parse a systemctl-show pretty-printed duration into seconds.
+
+    Raises ValueError for "infinity" or anything unparseable so a caller must
+    treat those as a mismatch rather than silently comparing equal to 0.0.
+    """
+    stripped = text.strip()
+    if not stripped or stripped == "0":
+        return 0.0
+    parts = re.findall(r"(\d+(?:\.\d+)?)\s*(us|ms|min|h|s)", stripped)
+    if not parts:
+        raise ValueError(f"unparseable systemd duration: {text!r}")
+    return sum(float(amount) * _DURATION_UNIT_SECONDS[unit] for amount, unit in parts)
 
 
 def utc_now() -> str:
@@ -168,9 +194,28 @@ def _effective_systemd_definition(root: Path) -> str:
         "Restart": "on-failure",
         "KillMode": "control-group",
         "StartLimitBurst": str(RESTART_BURST_LIMIT),
+        "KillSignal": EXPECTED_KILL_SIGNAL,
     }
     for key, value in expected.items():
         if parsed.get(key) != value:
+            raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_MISMATCH")
+    # Duration properties are pretty-printed by systemd, not returned as raw
+    # microseconds, so they cannot join the exact-string `expected` map above.
+    # An unparseable or drifted value must fail closed exactly like the exact
+    # matches: a stale `daemon-reload` or a hand-edited running unit must not
+    # silently widen the restart-storm window or shrink the shutdown grace
+    # period while still passing as an accepted acquisition fingerprint input.
+    expected_durations = {
+        "RestartUSec": RESTART_DELAY_SECONDS,
+        "StartLimitIntervalUSec": RESTART_BURST_WINDOW_SECONDS,
+        "TimeoutStopUSec": TIMEOUT_STOP_SECONDS,
+    }
+    for key, expected_seconds in expected_durations.items():
+        try:
+            actual_seconds = _systemd_duration_seconds(parsed.get(key) or "")
+        except ValueError:
+            raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_UNPARSEABLE") from None
+        if abs(actual_seconds - expected_seconds) > _DURATION_TOLERANCE_SECONDS:
             raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_MISMATCH")
     exec_start = parsed.get("ExecStart") or ""
     if ("quant_sec_supervisor.py" not in exec_start

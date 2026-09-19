@@ -1,47 +1,148 @@
 # CHECKPOINT ASTRA P0
 
-* timestamp UTC: 2026-09-19T23:59:00Z
-* branch: `@astra/p0-deep-adversarial-pre-t0` (requested single branch; repository handoff documents omit the leading `@`)
-* VERIFIED_CODE_SHA: `b42ae73a805cc8a137561239c60fe917daf83c7b`
-* documentation-only correction: this checkpoint update is committed after `VERIFIED_CODE_SHA`; its commit SHA is not the code SHA tested by run 35472851297
-* parent/base SHA: continuation handoff `f823a6d133dd8da8d7ed2dc4b6a9b227f37743c5`; phase-6 production correction `0150419c0ed0fd24df2491df8f3b4e51bf037764`; phase-6 red `d737eabee8f502e30852b3594972c5bcbbde2dbd`; audit baseline `8d5dbb41559c4716e94d5290b6ae979a8b96143c`
+* timestamp UTC: 2026-09-19T23:30:00Z
+* branch: `astra/p0-deep-adversarial-pre-t0` (single branch; no new branch created)
+* HEAD SHA at start of this session: `288d224fc3f2830add4338c9875d9fd50ab174e2` (PR #18 merge commit, verified against remote before any work)
+* parent/base SHA: PR #18 merge `288d224fc3f2830add4338c9875d9fd50ab174e2`; phase-6 documentation-binding correction `a321bfd9d77d42bb43a4fcd8b774a6eb38789179`; phase-6 verified code `b42ae73a805cc8a137561239c60fe917daf83c7b`
 * t0 status: **NOT DECLARED**
 * P0_CONTINUOUS_SERVICE_STATE: **OPEN / NOT_YET_PROVEN_CONTINUOUS**
-* defects CONFIRMED OPEN: none from phase 6; deeper campaign remains incomplete and may produce new blockers
-* defects CONFIRMED CLOSED:
-  - `GLOBAL_MAX_CONCURRENCY_NOT_HELD_FOR_NETWORK_WINDOW` — prior red run 35471064118; production `network_slot()` correction at 0150419; process-shared real-socket discriminant green at verified code SHA `b42ae73a805cc8a137561239c60fe917daf83c7b`.
-  - `QUALIFYING_MISSING_FINGERPRINT_AUTO_MATERIALIZATION_ATTEMPT` — prior red run 35471064118; qualifying supervisor now fails closed; discriminant green locally.
-  - `READINESS_WEAKER_THAN_EXTERNAL_AUTHORITY_AUDIT` — prior red run 35471064118; readiness consumes the audit authority contract; discriminant green locally.
-  - `STATUS_ARTIFACT_TEST_INVENTORY_FALSE_GREEN` — promoted after repaired regex/discovery harness reproduced `310 != 371`; status generation now counts discovery in a fresh interpreter and committed STATE reports 371; discriminant green locally.
-  - phase-5 six blockers remain green in the phase-6/full local suite.
-* hypotheses NOT YET REPRODUCED: restart-limit exhaustion; SIGTERM/systemctl stop-start semantics; supervisor SIGKILL child-death behavior; exact loaded systemd RestartUSec/StartLimitIntervalUSec/KillSignal/TimeoutStopUSec validation; truly concurrent/interrupted materialization; deeper budget/state journal failure ordering; remaining PIT crash boundaries and public/protocol proxy leaks; final evidence binding and target-host rodage.
-* red tests: GitHub Actions 35471064118 (3 genuine phase-6 failures plus malformed inventory-test error); repaired inventory test subsequently reproduced the intended `310 != 371` failure locally.
-* green tests: `PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase6ProofAndConcurrencyCampaign -v` — 4/4 PASS; `PYTHONPATH=src python3 -m unittest discover -s tests` — 371/371 PASS.
-* full-suite status: **371/371 PASS** at VERIFIED_CODE_SHA `b42ae73a805cc8a137561239c60fe917daf83c7b`.
-* EXACT_HEAD_CI_RUN: `35472851297`
-* EXACT_HEAD_CI_STATUS: **COMPLETED / SUCCESS**
-* exact-head CI evidence at VERIFIED_CODE_SHA `b42ae73a805cc8a137561239c60fe917daf83c7b`:
-  - 371/371 full suite: **PASS**
-  - SEC P0 lane: **PASS**
-  - V1 end-to-end: **PASS**
-  - exact-head verification artifact generation/upload: **PASS**
-  - clean working tree: **PASS**
+
+## This session: Phase 7 campaign start
+
+Scope for this increment: Phase 7 priority #3 (EFFECTIVE SYSTEMD CONTRACT) from the mission brief,
+plus adversarial falsification of Phase 7 priority #1 (RESTART LIMIT EXHAUSTION).
+
+### defects CONFIRMED CLOSED this session
+
+- `SYSTEMD_EFFECTIVE_TIMING_AND_SIGNAL_NOT_VALIDATED` — **BLOCKS_CAPTURE_INTEGRITY**.
+  - Scenario: `_effective_systemd_definition()` in `deploy/quant_sec_supervisor.py` fetched
+    `RestartUSec`, `StartLimitIntervalUSec`, `KillSignal` and `TimeoutStopUSec` from `systemctl
+    show` and folded them into the fingerprint digest, but only ever *validated* `Restart`,
+    `KillMode` and `StartLimitBurst` against expected values. The other four properties could
+    silently diverge from what the repository unit file declares (stale `daemon-reload`,
+    hand-edited running unit, corrupted deploy) with no `RuntimeError` raised — the drift would
+    just become a new, unaudited fingerprint input rather than a fail-closed rejection.
+  - Reproduction (red, confirmed locally before the fix): with every other property matching the
+    frozen unit exactly, `KillSignal=9` (SIGKILL instead of the declared SIGTERM) and, separately,
+    `RestartUSec=1ms` / `StartLimitIntervalUSec=1ms` / `TimeoutStopUSec=1ms` (restart-storm
+    protection and shutdown grace period effectively disabled) were both silently accepted with no
+    exception. A SIGKILL-only shutdown path means the process can never flush/fsync
+    raw-object/envelope/attempt-journal writes on stop — a direct capture-integrity /
+    PIT-reconstructability risk at exactly the crash boundary this program audits.
+  - Minimal correction: added `EXPECTED_KILL_SIGNAL` (derived from `signal.SIGTERM`, not a bare
+    literal) to the existing exact-match `expected` dict, and a small `_systemd_duration_seconds()`
+    parser (handles systemd's pretty-printed `us/ms/s/min/h` duration format) to numerically
+    compare `RestartUSec`/`StartLimitIntervalUSec`/`TimeoutStopUSec` against
+    `RESTART_DELAY_SECONDS` / `RESTART_BURST_WINDOW_SECONDS` / the new `TIMEOUT_STOP_SECONDS`
+    constant, with a 1-second tolerance for pretty-print rounding. An unparseable duration raises
+    rather than being treated as `0.0`.
+  - Red→green test: `tests/test_astra_pre_t0.py::Phase7EffectiveSystemdContractCampaign` (4 new
+    tests: consistent-unit accepted, KillSignal→SIGKILL rejected, each of the three timing
+    properties independently rejected when drifted, unparseable duration rejected). Existing
+    `Phase5AuthorityBindingCampaign.test_effective_systemd_restart_policy_mismatch_is_rejected`
+    still passes unchanged (no regression).
+  - Fingerprint impact: `_effective_systemd_definition()`'s return value flows into
+    `supervisor_manifest()` → `acquisition_critical_fingerprint()` (confirmed by reading
+    `fingerprint.py`), so this correction changes the acquisition-critical fingerprint. This is a
+    fingerprint-critical file per the header comment in `deploy/quant-sec-capture.service`.
+  - Rodage impact: none yet — no rodage has run since this correction; any future qualifying `t0`
+    must be materialized on code that includes this fix, not before it.
+
+### hypothesis tested and NOT reproduced (recorded per method: falsification attempted, defect did not exist)
+
+- **Restart-burst exhaustion → fictitious continuity.** Concern: when the supervisor's *internal*
+  child-restart loop exhausts `RESTART_BURST_LIMIT` and the process returns/exits, does systemd's
+  subsequent fresh OS-level restart of the supervisor get incorrectly self-attributed
+  `AUTOMATIC_RESTART_AFTER_FAILURE` (positive/non-invalidating), producing fictitious continuity?
+  - Method: loaded the real `deploy/quant_sec_supervisor.py` twice as two independent module
+    instances (simulating two separate OS processes sharing one `--root`), first exhausting its
+    own internal burst limit against an always-failing fake child, then invoking a second, fresh
+    `main()` to represent systemd's next `Restart=on-failure` launch. Inspected the *first*
+    `CHILD_LAUNCH_AUTHORIZED` event of the second process's `supervisor_id` in
+    `supervisor_events.jsonl` (not the final state snapshot, which can reflect a later internal
+    iteration and gave a misleading first reading during this investigation).
+  - Result: the second process's first launch is classified `MANUAL_START`, which **is** in
+    `supervisor.INVALIDATING_CAUSES`. `classify()` never reads `previous` state and only returns
+    `AUTOMATIC_RESTART_AFTER_FAILURE` when `witnessed_child_failure=True` is explicitly passed by
+    the *same, still-live* process's own internal loop — a fresh process launch never sets that
+    flag on its first iteration. Confirmed: no fictitious continuity across a burst-exhaustion →
+    systemd-restart boundary under the current code. Not promoted to a defect.
+  - Residual, non-blocking observation (not a defect under the class-1/2/3 test): the internal
+    burst-exhaustion exit path appends no distinct `RESTART_BURST_EXHAUSTED`-style event before
+    returning — the terminal `CHILD_EXIT_OBSERVED` looks the same as an ordinary mid-loop failure.
+    This is a diagnostic/observability quality gap only: `MANUAL_START`'s default-invalidating
+    classification already makes the window-safety outcome correct regardless, so per the burden-
+    of-proof rule this is not classified as a P0 blocker. Left as a note for anyone doing incident
+    forensics, not for this campaign to act on further.
+
+### defects CONFIRMED OPEN
+
+None newly opened this session beyond what remains in the "hypotheses NOT YET REPRODUCED" list.
+
+### hypotheses NOT YET REPRODUCED (carried forward, Phase 7 still incomplete)
+
+SIGTERM/systemctl stop-start semantics beyond what Phase 5 already covers; supervisor SIGKILL
+child-death behavior; truly concurrent/interrupted materialization (two materializers racing,
+temp/write/fsync/rename interruption, stale/foreign-host manifest); deeper budget/state journal
+failure ordering (DNS/connect/TLS failure, 403/429/Retry-After/5xx interaction with reconnect,
+lock-holder death, two-process competition beyond the existing max-concurrency test); remaining PIT
+crash boundaries (ENOSPC, partial append, torn JSONL, rename interruption, rollback, duplicate
+replay, state-newer-than-journal / journal-newer-than-state); remaining public/protocol proxy leaks
+beyond the existing public-snapshot tests; final evidence binding (commit SHA + tree digest +
+fingerprint + manifest schema + effective runtime config + effective service digest + CI run id +
+timestamp + lifecycle provenance, all bound together in one artifact); final exact-head rodage.
+
+## Verification (local, this session)
+
+* red tests (pre-fix, confirmed locally, not committed): ad hoc probes reproducing
+  `KillSignal=9` and `RestartUSec/StartLimitIntervalUSec/TimeoutStopUSec=1ms` silently accepted by
+  `_effective_systemd_definition()`.
+* green tests: `PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase7EffectiveSystemdContractCampaign -v` — 4/4 PASS.
+* full-suite status: **375/375 PASS** (was 371; +4 new Phase 7 tests).
+* SEC P0 lane (`tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0`): **271/271 PASS**.
+* V1 end-to-end (`scripts/demo_quant_system.py`): **35/35 checks PASS**.
+* `scripts/generate_schemas.py --check`: **PASS** (no schema drift).
+* `scripts/status_artifacts.py --check`: **PASS** after `--write` regenerated `STATE.md`'s proof
+  inventory line (371 → 375) to match authoritative package discovery; `CHIEF_BRIEF.md` was
+  already fresh.
+* CI run: **not yet triggered for this commit** — this checkpoint is being pushed now; the next
+  session/CI observer should confirm the exact-head GitHub Actions run for the commit this
+  checkpoint accompanies before treating it as gate-equivalent to a green CI run.
+
+## Fingerprint / rodage / readiness (unchanged claims from prior checkpoint, still true)
+
 * active fingerprint: NOT MEASURED IN ACTUAL SERVICE RUNTIME
 * materialized fingerprint: NOT AVAILABLE
 * manifest schema/version: `p0_materialized_fingerprint/v2`; `acquisition_critical_fingerprint/v1`; final freeze not performed
 * final rodage exact artifact/status: **NOT YET RUN** on final code/target runtime
 * 14-day continuity: **NOT PROVEN**; no claim is made about the required weekend or silence interval
-* readiness: phase-6 local discriminant green; final target-runtime readiness NOT ESTABLISHED
-* audit: phase-6 local authority/readiness consistency green; final coherent exact-head audit pending
-* firewall: prior regressions green in 371-test suite; final broad audit pending
-* acquisition-critical files changed since handoff: production correction 0150419 changed budget/collector/supervisor and therefore changes the acquisition fingerprint; VERIFIED_CODE_SHA `b42ae73a805cc8a137561239c60fe917daf83c7b` includes the phase-6 tests/status-artifact correction.
-* next unique action: merge disposition for PR #18 after this documentation-only correction; do not infer that this documentation commit was the code tested by exact-head run 35472851297.
-* exact resume commands:
-  - `git checkout @astra/p0-deep-adversarial-pre-t0`
-  - `git log --oneline f823a6d..HEAD`
-  - `PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase6ProofAndConcurrencyCampaign -v`
-  - `PYTHONPATH=src python3 -m unittest discover -s tests`
-  - `PYTHONPATH=src python3 scripts/status_artifacts.py --check`
-  - `git diff 8d5dbb41559c4716e94d5290b6ae979a8b96143c..HEAD`
+* readiness: local discriminants green; final target-runtime readiness NOT ESTABLISHED
+* audit: local authority/readiness consistency green; final coherent exact-head audit pending
+* firewall: prior regressions green in the 375-test suite; final broad audit pending
 
-No merge, no Blue review request, no t0 declaration, and no claim that rodage proves the 14-day window.
+## Acquisition-critical files changed this session
+
+- `deploy/quant_sec_supervisor.py` — fingerprint-critical (see file header); this session's edit
+  changes the acquisition-critical fingerprint the next time it is materialized.
+- `tests/test_astra_pre_t0.py` — test-only, not fingerprint-critical.
+- `STATE.md` — regenerated status artifact (proof inventory count), not fingerprint-critical.
+
+## Next unique action
+
+Continue Phase 7 against the "hypotheses NOT YET REPRODUCED" list above. Suggested next target:
+concurrent/interrupted materialization (temp/write/fsync/rename interruption and stale/foreign-host
+manifest), since it is a distinct capture-integrity surface from what this session covered and has
+not yet had a dedicated adversarial pass in this campaign.
+
+## Exact resume commands
+
+- `git fetch origin astra/p0-deep-adversarial-pre-t0 && git checkout astra/p0-deep-adversarial-pre-t0 && git pull --ff-only`
+- `PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase7EffectiveSystemdContractCampaign -v`
+- `PYTHONPATH=src python3 -m unittest discover -s tests`
+- `PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0`
+- `python3 scripts/demo_quant_system.py`
+- `python3 scripts/status_artifacts.py --check`
+- `git diff 288d224fc3f2830add4338c9875d9fd50ab174e2..HEAD`
+
+No merge, no Blue review request, no t0 declaration, and no claim that any of the above proves the
+14-day window.

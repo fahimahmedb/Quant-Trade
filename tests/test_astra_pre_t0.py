@@ -670,3 +670,86 @@ class Phase6ProofAndConcurrencyCampaign(CollectorTestCase):
         self.assertFalse(
             after['instrumentation_ready'],
             'readiness must fail when the audit would reject missing consumed authority')
+
+
+class Phase7EffectiveSystemdContractCampaign(unittest.TestCase):
+    """The loaded unit's *effective* values, not only its declared strings.
+
+    `_effective_systemd_definition` compared the declared Restart/KillMode/
+    StartLimitBurst strings, but folded RestartUSec, StartLimitIntervalUSec,
+    KillSignal and TimeoutStopUSec straight into the fingerprint digest with
+    no validation at all. A stale `daemon-reload`, a hand overridden unit, or
+    a corrupted deploy could silently widen the restart-storm window, gut the
+    shutdown grace period, or replace SIGTERM with SIGKILL - none of that
+    would raise, it would just become a new, unaudited fingerprint input.
+    """
+    @staticmethod
+    def _launcher():
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase7_systemd',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec);spec.loader.exec_module(launcher)
+        return launcher
+
+    @staticmethod
+    def _shown(root,**overrides):
+        import shutil
+        target=root/'deploy/quant-sec-capture.service'
+        (root/'deploy').mkdir(exist_ok=True)
+        shutil.copy2(ROOT/'deploy/quant-sec-capture.service',target)
+        fields={
+            'FragmentPath':str(target),
+            'DropInPaths':'',
+            'ExecStart':('{ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 -I '
+                         '/opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant '
+                         '--qualifying ; }'),
+            'WorkingDirectory':'/opt/quant',
+            'Restart':'on-failure',
+            'RestartUSec':'15s',
+            'StartLimitIntervalUSec':'10min',
+            'StartLimitBurst':'5',
+            'KillMode':'control-group',
+            'KillSignal':'15',
+            'TimeoutStopUSec':'30s',
+            'EnvironmentFiles':'/etc/quant/sec-capture.env (ignore_errors=no)',
+        }
+        fields.update(overrides)
+        text='\n'.join(f'{key}={value}' for key,value in fields.items())+'\n'
+        return SimpleNamespace(returncode=0,stdout=text,stderr='')
+
+    def test_consistent_effective_unit_is_accepted(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root)):
+                self.assertTrue(launcher._effective_systemd_definition(root))
+
+    def test_effective_kill_signal_drift_to_sigkill_is_rejected(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,KillSignal='9')):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_effective_restart_and_timeout_timing_drift_is_rejected(self):
+        launcher=self._launcher()
+        for field in ('RestartUSec','StartLimitIntervalUSec','TimeoutStopUSec'):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                with mock.patch.object(launcher.subprocess,'run',
+                                       return_value=self._shown(root,**{field:'1ms'})):
+                    with self.assertRaises(
+                            RuntimeError,
+                            msg=f'{field} silently drifted from the declared unit'):
+                        launcher._effective_systemd_definition(root)
+
+    def test_unparseable_effective_duration_is_rejected_not_treated_as_zero(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,RestartUSec='garbage')):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
