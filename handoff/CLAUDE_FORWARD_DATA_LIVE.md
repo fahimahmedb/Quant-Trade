@@ -117,8 +117,46 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
   level, the two-writer race (and the identical-value non-race control case),
   vendor restatement, and late correction. Full suite: **601 tests, all
   passing** (588 baseline + 13 new), zero regressions.
-- [next] Source inventory + adapter contract module
-  (`dataplane/forward_contracts.py`), then the `ForwardCaptureTask`/
-  `ForwardCaptureRequest` execution engine and the coverage ledger.
+- [done] **Source inventory** (`src/quant/dataplane/forward_contracts.py`).
+  `SourceProfile` dataclass with a hard `__post_init__` rule: anything not
+  `SOURCE_AUTHORIZED` must name its exact `blocker`, never a vague category.
+  Real inventory, five entries, every claim traced to a repository artifact in
+  its `evidence` field: `yahoo_daily_chart` (AUTHORIZED — already used by
+  `ingest.py`, reachability re-verified live), `local_tsv_index` (NOT_LIVE_
+  CAPTURABLE — static export, no endpoint to poll), `factor_residual_panel` and
+  `volatility_surface_panel` (BLOCKED_NEW_PROVIDER, quoting
+  `research/opportunity_map.json`'s own named constraints verbatim), and
+  `sec_form4_p0` (P0_EXCLUSIVE_OUT_OF_SCOPE — no reservoir content read to
+  produce this entry, exists only to record deliberate exclusion).
+- [done] **Adapter contract + execution engine**
+  (`src/quant/dataplane/forward_capture.py`). `CaptureAttempt` carries every
+  mission-required field (source id/version, fetch window, market session,
+  symbol identity, schema version, payload hash, validation state, lineage,
+  failure state) and its own `__post_init__` refuses a failed attempt with no
+  failure_state or a succeeded one that carries one. `AttemptJournal` is
+  append-only jsonl. `ForwardCaptureRequest`/`ForwardCaptureTaskState`/
+  `due()`/`execute_forward_capture()` are the Control-Plane-callable seam:
+  `execute_forward_capture` performs exactly one capture cycle and contains no
+  loop, sleep or thread of its own — deciding *when* to call it is entirely
+  the caller's job, mirroring the existing `SecForm4Collector.poll_due()`/
+  `.poll()` relationship with `clock.py` (read for the pattern, not modified).
+  Deliberately **not** inserted into `PersistentQueue`/`ResearchTask`: that
+  queue's dispatch is hard-coded in `clock.py` to the `research_lane` worker,
+  so a foreign task there would only sit permanently `BLOCKED` — noise, not
+  infrastructure. `yahoo_forward_adapter()` wraps the existing, unmodified
+  `adapters.fetch_yahoo_daily` with no retry/coercion added. Failure states
+  are classified honestly from what that adapter actually raises (via
+  `__cause__` inspection), not invented; `FAILURE_TRUNCATED` is exercisable
+  only via direct injection today, documented as a named, honest limitation
+  of the current real adapter rather than a fabricated detection path.
+  23 new tests (`tests/test_dataplane_forward_capture.py`): due-predicate
+  behaviour, success/idempotence/no-zero-coercion, one test per named failure
+  state (DNS, timeout, HTTP/rate-limit, malformed JSON, source-error-payload,
+  no-usable-rows, truncated-via-injection, schema-drift-via-moved-keys),
+  consecutive-failure accounting, and restart/replay of the journal + task
+  store + recorder together. Full suite: **624 passed**, 0 regressions.
+- [next] Forward Coverage Ledger (EXPECTED/ATTEMPTED/OBSERVED/VALID/CONFLICT/
+  MISSING/UNKNOWN), then the UseLedger/admissibility integration and the
+  manual runner script.
 
 (Further entries appended after each significant, committed slice.)
