@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import os
 import re
+import math
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -123,11 +124,27 @@ class SecAccessPolicy:
         if not _CONTACT_PATTERN.search(self.user_agent):
             raise SecPolicyNotConfigured(
                 f"{USER_AGENT_ENV} must carry a contact email address, as SEC guidance requires")
+        numeric = (
+            self.discovery_poll_seconds, self.max_requests_per_second,
+            self.connect_timeout_seconds, self.read_timeout_seconds,
+            self.idle_reuse_seconds, self.total_deadline_seconds,
+            self.rate_limit_cooldown_seconds, self.forbidden_cooldown_seconds,
+            float(self.discovery_page_size), float(self.max_discovery_pages_per_poll),
+            float(self.filings_per_drain), float(self.max_response_bytes),
+            *self.backoff_schedule_seconds,
+        )
+        if any(not math.isfinite(value) or value <= 0 for value in numeric):
+            raise SecPolicyNotConfigured("policy values must be finite and positive")
         if self.max_requests_per_second > SEC_DOCUMENTED_MAX_REQUESTS_PER_SECOND:
             raise SecPolicyNotConfigured(
                 "configured request rate exceeds the documented SEC maximum")
-        if self.max_concurrency < 1:
-            raise SecPolicyNotConfigured("concurrency must be at least 1")
+        if self.max_concurrency != 1 or self.allow_burst:
+            raise SecPolicyNotConfigured(
+                "P0 implements one global concurrent request with no burst credit")
+        if not 0 <= self.jitter_ratio <= 1:
+            raise SecPolicyNotConfigured("jitter_ratio must be between 0 and 1")
+        if any(character in self.user_agent for character in "\r\n"):
+            raise SecPolicyNotConfigured("user agent may not contain CR/LF")
         if self.discovery_page_size < 1 or self.discovery_page_size > 100:
             raise SecPolicyNotConfigured("discovery page size must be between 1 and 100")
 
