@@ -25,6 +25,9 @@ from quant.dataplane.forward_recorder import (COVERAGE_COMPLETE, COVERAGE_INCOMP
                                               COVERAGE_UNKNOWN, RECORD_ACCEPTED,
                                               RECORD_BACKDATED, RECORD_CONFLICT,
                                               RECORD_DUPLICATE, RECORD_INVALID,
+                                              SOURCE_TIMESTAMP_ABSENT,
+                                              SOURCE_TIMESTAMP_PRESENT,
+                                              TIME_AUTHORITY_UNATTESTED_LOCAL_CLOCK,
                                               ForwardObservation, ForwardRecorder)
 
 
@@ -142,6 +145,182 @@ class ForwardRecorderTest(unittest.TestCase):
             self.assertEqual(reopened.record(observation()).state, RECORD_DUPLICATE)
             self.assertEqual(reopened.symbols(), ["AAA"])
             self.assertEqual(reopened.sessions(), ["2026-09-18"])
+
+    # -- time authority (mission section 2) --------------------------------
+
+    def test_recorded_at_is_never_presented_as_externally_attested(self):
+        provenance = observation().time_provenance()
+        self.assertEqual(provenance["system_recorded_at_authority"],
+                         TIME_AUTHORITY_UNATTESTED_LOCAL_CLOCK)
+        self.assertEqual(provenance["system_recorded_at"], "2026-09-18T21:00:00+00:00")
+
+    def test_time_provenance_names_every_distinct_time_concept(self):
+        rich = replace(observation(), market_session="REGULAR",
+                       fetch_started_at="2026-09-18T20:59:58+00:00",
+                       fetch_completed_at="2026-09-18T20:59:59+00:00",
+                       source_timestamp="2026-09-18T20:00:00+00:00",
+                       source_timestamp_state=SOURCE_TIMESTAMP_PRESENT)
+        provenance = rich.time_provenance()
+        self.assertEqual(provenance["source_event_session"], "2026-09-18")
+        self.assertEqual(provenance["market_session"], "REGULAR")
+        self.assertEqual(provenance["fetch_started_at"], "2026-09-18T20:59:58+00:00")
+        self.assertEqual(provenance["fetch_completed_at"], "2026-09-18T20:59:59+00:00")
+        self.assertEqual(provenance["source_timestamp"], "2026-09-18T20:00:00+00:00")
+        self.assertEqual(provenance["source_timestamp_state"], SOURCE_TIMESTAMP_PRESENT)
+        self.assertEqual(rich.violations(), [])
+
+    def test_fetch_completed_before_started_is_a_violation(self):
+        broken = replace(observation(), fetch_started_at="2026-09-18T21:00:00+00:00",
+                         fetch_completed_at="2026-09-18T20:00:00+00:00")
+        self.assertIn("FETCH_COMPLETED_BEFORE_STARTED", broken.violations())
+
+    def test_fetch_completed_without_started_is_a_violation(self):
+        broken = replace(observation(), fetch_completed_at="2026-09-18T20:00:00+00:00")
+        self.assertIn("FETCH_STARTED_AT_MISSING_WITH_COMPLETED", broken.violations())
+
+    def test_source_timestamp_state_must_match_whether_a_value_is_given(self):
+        claims_present_but_empty = replace(observation(),
+                                           source_timestamp_state=SOURCE_TIMESTAMP_PRESENT)
+        self.assertIn("SOURCE_TIMESTAMP_STATE_PRESENT_BUT_VALUE_MISSING",
+                      claims_present_but_empty.violations())
+        claims_absent_but_has_value = replace(
+            observation(), source_timestamp="2026-09-18T20:00:00+00:00",
+            source_timestamp_state=SOURCE_TIMESTAMP_ABSENT)
+        self.assertIn("SOURCE_TIMESTAMP_STATE_ABSENT_BUT_VALUE_GIVEN",
+                      claims_absent_but_has_value.violations())
+
+    def test_market_session_cannot_be_declared_empty(self):
+        broken = replace(observation(), market_session="")
+        self.assertIn("MARKET_SESSION_UNDECLARED", broken.violations())
+
+    def test_out_of_order_fetch_delivery_is_tolerated_ledger_order_is_not(self):
+        """Fetch start/finish ordering is informational; only recorded_at governs."""
+        with tempfile.TemporaryDirectory() as directory:
+            recorder = self.recorder(directory)
+            first_fetch_started_late = replace(
+                observation(symbol="AAA", recorded_at="2026-09-18T21:00:00+00:00"),
+                fetch_started_at="2026-09-18T20:59:00+00:00",
+                fetch_completed_at="2026-09-18T20:59:59+00:00")
+            second_fetch_started_earlier_finished_later = replace(
+                observation(symbol="BBB", recorded_at="2026-09-18T21:00:01+00:00"),
+                fetch_started_at="2026-09-18T20:58:00+00:00",
+                fetch_completed_at="2026-09-18T21:00:00+00:00")
+            self.assertTrue(recorder.record(first_fetch_started_late).accepted)
+            self.assertTrue(recorder.record(second_fetch_started_earlier_finished_later).accepted)
+            self.assertEqual(recorder.symbols(), ["AAA", "BBB"])
+
+    def test_timezone_offsets_are_normalised_for_monotonicity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            recorder = self.recorder(directory)
+            recorder.record(observation(symbol="AAA",
+                                        recorded_at="2026-09-18T21:00:00+00:00"))
+            # 17:00-04:00 is the same instant as 21:00+00:00: not a back-date.
+            same_instant_other_offset = observation(
+                symbol="BBB", recorded_at="2026-09-18T17:00:00-04:00")
+            self.assertTrue(recorder.record(same_instant_other_offset).accepted)
+            earlier_in_utc_disguised = observation(
+                symbol="CCC", recorded_at="2026-09-18T16:59:59-04:00")
+            self.assertEqual(recorder.record(earlier_in_utc_disguised).state,
+                             RECORD_BACKDATED)
+
+    # -- adversarial failure model (mission section 8) ----------------------
+
+    def test_torn_final_write_does_not_corrupt_recorder_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "forward.jsonl"
+            recorder = ForwardRecorder(path)
+            recorder.record(observation(symbol="AAA"))
+            # Simulate a crash mid-append: a second, syntactically incomplete
+            # record with no trailing newline, exactly what a kill -9 between
+            # write() and flush leaves on some filesystems.
+            with path.open("a", encoding="utf-8") as handle:
+                handle.write('{"symbol": "BBB", "state": "ACCEPTED", "key":')
+
+            recovered = ForwardRecorder(path)
+            self.assertEqual(recovered.symbols(), ["AAA"])
+            self.assertEqual(len(recovered), 1)
+            # The recorder must repair-on-append (truncate the torn tail) rather
+            # than append after it and leave two records sharing one line.
+            outcome = recovered.record(observation(symbol="BBB"))
+            self.assertTrue(outcome.accepted)
+            self.assertEqual(ForwardRecorder(path).symbols(), ["AAA", "BBB"])
+            self.assertTrue(path.read_bytes().endswith(b"\n"))
+
+    def test_two_writers_racing_the_same_new_key_cannot_produce_two_truths(self):
+        """Two ForwardRecorder instances, neither aware of the other's write yet.
+
+        This is the scenario the mission's failure model names explicitly: two
+        writers must not be able to produce an incoherent history. Both accept
+        locally (each has an empty in-memory guard for a brand-new key); the
+        file ends up with two different ACCEPTED rows for the same key. Every
+        reader -- including a third, freshly opened recorder -- must resolve
+        that to exactly one authoritative value, and must say so rather than
+        silently pick one.
+        """
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "forward.jsonl"
+            writer_one = ForwardRecorder(path)
+            writer_two = ForwardRecorder(path)  # opened before writer_one wrote anything
+
+            first = observation(symbol="RACE", close=100.0,
+                                recorded_at="2026-09-18T21:00:00+00:00")
+            second = observation(symbol="RACE", close=101.0,
+                                 recorded_at="2026-09-18T21:00:01+00:00")
+
+            outcome_one = writer_one.record(first)
+            outcome_two = writer_two.record(second)
+            # Neither writer saw a conflict locally -- both believed they were first.
+            self.assertTrue(outcome_one.accepted)
+            self.assertTrue(outcome_two.accepted)
+
+            referee = ForwardRecorder(path)
+            stored = referee.accepted()
+            self.assertEqual(len(stored), 1)
+            self.assertEqual(stored[0]["fields"]["close"], 100.0)  # first in append order
+            races = referee.race_conflicts()
+            self.assertEqual(len(races), 1)
+            self.assertEqual(races[0]["fields"]["close"], 101.0)
+            self.assertEqual(len(referee), 1)
+            # The coverage report must not hide that a race was detected.
+            self.assertEqual(referee.coverage()["race_conflicts"], 1)
+
+    def test_two_writers_racing_an_identical_value_is_not_a_race(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "forward.jsonl"
+            writer_one = ForwardRecorder(path)
+            writer_two = ForwardRecorder(path)
+            same = observation(symbol="TWIN")
+            writer_one.record(same)
+            writer_two.record(replace(same))  # same content_address, not a race
+            referee = ForwardRecorder(path)
+            self.assertEqual(len(referee.accepted()), 1)
+            self.assertEqual(referee.race_conflicts(), [])
+
+    def test_vendor_restatement_is_visible_not_silently_applied(self):
+        """A vendor that later revises an adjusted close must not rewrite history."""
+        with tempfile.TemporaryDirectory() as directory:
+            recorder = self.recorder(directory)
+            original = observation(symbol="AAA", close=100.0,
+                                   recorded_at="2026-09-18T21:00:00+00:00")
+            recorder.record(original)
+            restated = replace(observation(symbol="AAA", close=100.5,
+                                           recorded_at="2026-09-25T21:00:00+00:00"),
+                               note="vendor restated adj_close after a dividend")
+            outcome = recorder.record(restated)
+            self.assertEqual(outcome.state, RECORD_CONFLICT)
+            self.assertEqual(recorder.accepted()[0]["fields"]["close"], 100.0)
+            self.assertEqual(len(recorder.conflicts()), 1)
+
+    def test_late_correction_of_an_already_sealed_session_is_a_conflict_not_an_edit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            recorder = self.recorder(directory)
+            recorder.record(observation(symbol="AAA", close=50.0))
+            seal_before = recorder.session_seal("2026-09-18")
+            correction = replace(observation(symbol="AAA", close=50.25,
+                                             recorded_at="2026-09-19T09:00:00+00:00"),
+                                 note="broker corrected a fat-fingered print")
+            self.assertEqual(recorder.record(correction).state, RECORD_CONFLICT)
+            self.assertEqual(recorder.session_seal("2026-09-18"), seal_before)
 
 
 SYNTHETIC_FORM4 = b"""<?xml version="1.0"?>

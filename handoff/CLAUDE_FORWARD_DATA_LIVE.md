@@ -84,7 +84,41 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
 
 ## Progress log
 
-- [in progress] Checkpoint file created. Baseline established. Beginning
-  `ForwardObservation` time-authority hardening next.
+- [done] Checkpoint file created. Baseline established (588 tests).
+- [done] **Time authority** (`src/quant/dataplane/forward_recorder.py`).
+  `ForwardObservation` gained explicit, additive, default-valued fields:
+  `market_session`, `fetch_started_at`, `fetch_completed_at`, `source_timestamp`,
+  `source_timestamp_state`. A new `time_provenance()` method names all six time
+  concepts the mission distinguishes (source event time, market session, fetch
+  start/end, system receipt time, vendor publication time) and explicitly labels
+  `recorded_at` with `TIME_AUTHORITY_UNATTESTED_LOCAL_CLOCK` — it is this
+  process's own clock, never claimed as externally attested. New violations:
+  inconsistent fetch-window ordering, a `source_timestamp_state` that
+  contradicts whether a value was actually supplied, an undeclared
+  `market_session`. Zero renames, zero required-field additions — fully
+  backward compatible with the 33 tests Wave 1 left passing.
+- [done] **Real defect found and fixed by falsification**: the recorder's read
+  path (`accepted()`, and the count computed in `__init__`) did not enforce
+  first-accepted-per-key across two independent recorder instances racing the
+  same file — only a single already-running instance's in-memory guard did.
+  Reproduced with a test that opens two `ForwardRecorder`s against the same
+  empty file and has both accept a different value for the same brand-new key;
+  before the fix, a third, freshly opened reader saw two different "ACCEPTED"
+  rows for one key. Fixed with a single `_replay()` method every reader now
+  goes through, which keeps the first accepted content address per key in
+  append order and reports every later, differently-addressed row through a
+  new `race_conflicts()` accessor instead of silently returning it as a second
+  valid observation. Nothing already committed to a `ForwardRecorder` file is
+  rewritten — this is a read-time reclassification, not history editing.
+- [done] 13 new adversarial tests added to `tests/test_dataplane_forward_lane.py`
+  covering: time-provenance fields and violations, out-of-order fetch delivery
+  tolerance vs. ledger-order enforcement, timezone-offset normalisation at the
+  monotonicity boundary, torn/partial final write recovery at the recorder
+  level, the two-writer race (and the identical-value non-race control case),
+  vendor restatement, and late correction. Full suite: **601 tests, all
+  passing** (588 baseline + 13 new), zero regressions.
+- [next] Source inventory + adapter contract module
+  (`dataplane/forward_contracts.py`), then the `ForwardCaptureTask`/
+  `ForwardCaptureRequest` execution engine and the coverage ledger.
 
 (Further entries appended after each significant, committed slice.)
