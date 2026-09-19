@@ -2069,7 +2069,10 @@ class LifecycleProvenanceTests(CollectorTestCase):
     def test_manual_start_is_flagged_as_invalidating(self) -> None:
         provenance = lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": MANUAL_START})
         self.assertTrue(provenance["invalidates_observation_window"])
-        for benign in (SCHEDULED_START, AUTOMATIC_RESTART_AFTER_FAILURE, DEPLOYMENT_RESTART):
+        self.assertTrue(
+            lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START})
+            ["invalidates_observation_window"])
+        for benign in (AUTOMATIC_RESTART_AFTER_FAILURE, DEPLOYMENT_RESTART):
             self.assertFalse(
                 lifecycle_provenance({"QUANT_SEC_LIFECYCLE_CAUSE": benign})
                 ["invalidates_observation_window"])
@@ -2092,7 +2095,7 @@ class ObservationAuditTests(CollectorTestCase):
     def test_a_healthy_run_is_accountable(self) -> None:
         collector = self.collector(self.fixture_router())
         collector.lifecycle = lifecycle_provenance({
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1",
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART, "QUANT_SEC_BOOT_ID": "b1",
             "QUANT_SEC_SUPERVISOR_ID": "sup-observation"})
         collector.record_service_start()
         collector.poll()
@@ -2100,7 +2103,7 @@ class ObservationAuditTests(CollectorTestCase):
         report = audit_observation_window(collector)
         self.assertTrue(report["accountable"], report["findings"])
         self.assertTrue(report["fingerprint_stable"])
-        self.assertEqual(report["lifecycle_causes"], [SCHEDULED_START])
+        self.assertEqual(report["lifecycle_causes"], [DEPLOYMENT_RESTART])
 
     def test_an_unattested_start_is_reported_not_assumed_benign(self) -> None:
         collector = self.collector(self.fixture_router())
@@ -2124,7 +2127,8 @@ class ObservationAuditTests(CollectorTestCase):
     def test_a_changed_fingerprint_mid_window_is_detected(self) -> None:
         collector = self.collector(self.fixture_router())
         collector.lifecycle = lifecycle_provenance({
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START, "QUANT_SEC_BOOT_ID": "b1"})
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART, "QUANT_SEC_BOOT_ID": "b1",
+            "QUANT_SEC_SUPERVISOR_ID": "sup-observation"})
         collector.record_service_start()
         collector.poll()
         # A deployment that moved acquisition semantics mid-window.
@@ -2395,7 +2399,7 @@ class AuditFalsePassTests(CollectorTestCase):
         """
         collector = self.collector(self.fixture_router(), enable=enable)
         collector.lifecycle = lifecycle_provenance({
-            "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+            "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
             "QUANT_SEC_BOOT_ID": "boot-audit",
             "QUANT_SEC_SUPERVISOR_ID": "sup-audit"})
         collector.state.coverage_state = COVERAGE_COMPLETE
@@ -2413,7 +2417,7 @@ class AuditFalsePassTests(CollectorTestCase):
             next_due_at_utc=due_at,
             acquisition_critical_fingerprint=self.lane.fingerprint or "fp",
             obligation_id=obligation_id, supersedes_obligation_id=supersedes,
-            boot_id="boot-audit", lifecycle_cause=SCHEDULED_START))
+            boot_id="boot-audit", lifecycle_cause=DEPLOYMENT_RESTART))
 
     def write_attempt(self, *, attempted_at: str, attempt_id: str,
                       result_state: str = CAPTURED_OK,
@@ -2931,6 +2935,7 @@ class CountProxyFirewallTests(SecCaptureTestCase):
                                 "QUANT_SEC_BOOT_ID": "boot-tel",
                                 "QUANT_SEC_SUPERVISOR_ID": "sup-tel",
                                 "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "deploy-tel",
+                                "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "d" * 64,
                                 "QUANT_SEC_QUALIFYING_MODE": "1"})
         collector.materialize_fingerprint()
         collector.enable()
@@ -2949,7 +2954,7 @@ class RodageFalsificationTests(CollectorTestCase):
     for whether the system would still call itself healthy.
     """
 
-    def qualifying_collector(self, handler, *, cause: str = SCHEDULED_START,
+    def qualifying_collector(self, handler, *, cause: str = DEPLOYMENT_RESTART,
                              boot_id: str = "boot-q1", enable: bool = True):
         import random
         policy = self.policy()
@@ -2963,6 +2968,7 @@ class RodageFalsificationTests(CollectorTestCase):
                                 "QUANT_SEC_BOOT_ID": boot_id,
                                 "QUANT_SEC_SUPERVISOR_ID": "sup-rodage",
                                 "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "rodage-authority",
+                                "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "d" * 64,
                                 "QUANT_SEC_QUALIFYING_MODE": "1",
                                 "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0"})
         self.transport = transport
@@ -3267,8 +3273,11 @@ class MaterializedFingerprintTests(CollectorTestCase):
             budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
                                     rng=random.Random(17)),
             root=ROOT, environ={**SERVICE_MANAGED_ENV,
-                                "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
                                 "QUANT_SEC_BOOT_ID": "boot-fp",
+                                "QUANT_SEC_SUPERVISOR_ID": "sup-fp",
+                                "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "deploy-fp",
+                                "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "e" * 64,
                                 "QUANT_SEC_QUALIFYING_MODE": "1"})
 
     def test_readiness_blocks_when_nothing_is_materialized(self) -> None:
@@ -3336,8 +3345,11 @@ class MaterializedFingerprintTests(CollectorTestCase):
                 budget=SecTrafficBudget(self.paths.sec_budget, policy,
                                         timebase=self.timebase, rng=random.Random(17)),
                 root=mirror, environ={**SERVICE_MANAGED_ENV,
-                                      "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                      "QUANT_SEC_LIFECYCLE_CAUSE": DEPLOYMENT_RESTART,
                                       "QUANT_SEC_BOOT_ID": "boot-fp",
+                                      "QUANT_SEC_SUPERVISOR_ID": "sup-fp",
+                                      "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": "deploy-fp",
+                                      "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "e" * 64,
                                       "QUANT_SEC_QUALIFYING_MODE": "1"})
             self.assertNotEqual(moved.fingerprint, collector.fingerprint)
             self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
