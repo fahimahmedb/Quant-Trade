@@ -175,6 +175,12 @@ class CaptureAttempt:
     #: One-line description of where this attempt's output goes next.
     lineage: str
     symbols_observed: tuple[str, ...] = ()
+    #: Calendar session dates this attempt's payload actually covered. Empty on
+    #: failure -- a failed attempt reveals nothing about which sessions it
+    #: would have returned. The coverage ledger uses this, not a guessed
+    #: lookback window, to decide whether a *successful* attempt was ever in a
+    #: position to have produced a given session.
+    sessions_observed: tuple[str, ...] = ()
     detail: str = ""
 
     def __post_init__(self) -> None:
@@ -187,6 +193,7 @@ class CaptureAttempt:
         document = asdict(self)
         document["symbols_requested"] = list(self.symbols_requested)
         document["symbols_observed"] = list(self.symbols_observed)
+        document["sessions_observed"] = list(self.sessions_observed)
         return document
 
 
@@ -451,6 +458,7 @@ def execute_forward_capture(request: ForwardCaptureRequest, recorder: ForwardRec
         validation_state=VALIDATION_OK if observations else VALIDATION_FAILED,
         lineage=f"{request.source_id}->forward_capture->{len(outcomes)}_submitted_{accepted}_accepted",
         symbols_observed=tuple(sorted({observation.symbol for observation in observations})),
+        sessions_observed=tuple(sorted({observation.session_date for observation in observations})),
         detail=f"{accepted}/{len(outcomes)} observations newly accepted")
     journal.append(attempt)
     task.attempts += 1

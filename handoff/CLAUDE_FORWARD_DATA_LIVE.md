@@ -155,8 +155,34 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
   no-usable-rows, truncated-via-injection, schema-drift-via-moved-keys),
   consecutive-failure accounting, and restart/replay of the journal + task
   store + recorder together. Full suite: **624 passed**, 0 regressions.
-- [next] Forward Coverage Ledger (EXPECTED/ATTEMPTED/OBSERVED/VALID/CONFLICT/
-  MISSING/UNKNOWN), then the UseLedger/admissibility integration and the
-  manual runner script.
+- [done] **Forward Coverage Ledger** (`src/quant/dataplane/forward_coverage.py`).
+  `ExpectedCalendar` holds two append-only declaration logs: sessions (an
+  idempotent, monotonically growing set) and universe (versioned by
+  `effective_from`, so a symbol added today is never applied retroactively to
+  older sessions — tested directly). `seed_expected_sessions_from_dataset`
+  bootstraps the session dimension from the already-validated
+  `us_sector_etf_daily` snapshot instead of inventing a trading-holiday
+  calendar. `ForwardCoverageLedger.classify()` resolves every (session,
+  symbol) cell to exactly one of the seven mission-named states with a
+  documented precedence order, and `known_since` is always the determining
+  record's own timestamp, never the query time.
+  **A real design bug found by testing the mission's own invariant list**: my
+  first precedence order checked accepted-before-conflict, which made
+  `CONFLICT` structurally unreachable — a `CONFLICT` record can only exist for
+  a key that *already* has an accepted observation (the recorder only refuses
+  a second, differing write for an already-claimed key), so "accepted first"
+  always won before conflict was ever checked. Fixed by checking conflicts
+  first: surfacing a dispute now takes priority over quietly reporting the
+  first-accepted value. Caught by `test_conflict_is_visible_as_its_own_state`
+  failing honestly rather than by inspection.
+  `MISSING` requires both a post-close attempt *and* an elapsed grace period
+  (`DEFAULT_MISSING_GRACE_HOURS`, named explicitly as an assumed operational
+  parameter, not a derived SLA); an unattempted cell is `EXPECTED`, never a
+  silent `MISSING` default — both inequalities the mission states
+  (`UNKNOWN != MISSING`, `MISSING != ZERO`) have a dedicated test each.
+  16 new tests, including one lightweight integration check against the real
+  committed dataset file. Full suite: **640 passed**, 0 regressions.
+- [next] UseLedger/admissibility integration, then the manual runner script,
+  a real live capture run, and the final deliverable.
 
 (Further entries appended after each significant, committed slice.)
