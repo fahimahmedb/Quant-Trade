@@ -26,7 +26,12 @@ from .capacity import CapacityOutcome, NEW_POLICY_VERSION
 from .consistency import ResearchExecutionConsistency
 from .coordinate import ALLOCATION_WEIGHTED_RATIO
 from .recipe import MEUEResult
-from .states import CONTINUE, KILL, NO_TRADE, RECIPE_CONSUMABLE, RECIPE_PROVISIONAL
+from .states import (CLUSTERING_UNIT_O4_UNRESOLVED, CLUSTERING_UNIT_STATES,
+                     CLUSTERING_UNIT_UNDECLARED, CONTINUE, KILL, NO_TRADE,
+                     ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY,
+                     ORDER_ELIGIBILITY_NOT_ELIGIBLE,
+                     ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE,
+                     RECIPE_CONSUMABLE, RECIPE_PROVISIONAL)
 from .theta import ThetaState
 
 
@@ -68,6 +73,12 @@ class EffectEstimate:
     #: Number of contributing events. Not a substitute for the interval.
     event_count: int | None = None
     p_value: float | None = None
+    #: Where the interval's clustering unit came from. D07-O4 is the frozen
+    #: object that defines it and O4 is currently unresolved, so the honest
+    #: default is to say so rather than silently assume independence. This
+    #: does not block the mechanical verdict (see ``states.py`` for why); it
+    #: caps ``capital_order_eligibility`` instead.
+    clustering_unit_provenance: str = CLUSTERING_UNIT_UNDECLARED
 
     def violations(self) -> list[str]:
         problems: list[str] = []
@@ -81,6 +92,8 @@ class EffectEstimate:
             problems.append("CONFIDENCE_LEVEL_OUT_OF_RANGE")
         if not self.sample_provenance:
             problems.append("SAMPLE_PROVENANCE_UNDECLARED")
+        if self.clustering_unit_provenance not in CLUSTERING_UNIT_STATES:
+            problems.append("CLUSTERING_UNIT_PROVENANCE_NOT_RECOGNISED")
         return problems
 
     def to_dict(self) -> dict[str, Any]:
@@ -145,6 +158,15 @@ class EconomicVerdict:
     capital_authority: str = PAPER_SHADOW_ONLY
     chain: tuple[dict[str, Any], ...] = ()
     violations: tuple[str, ...] = ()
+    #: State of the MEUE recipe this verdict was evaluated against, when one
+    #: was reached (``None`` only if the gate returned before consulting it).
+    recipe_state: str | None = None
+    #: Whether this verdict may be read as more than a development signal.
+    #: Never "approved order": SIZE/RISK/BOOK decide that. See ``states.py``.
+    capital_order_eligibility: str = ORDER_ELIGIBILITY_NOT_ELIGIBLE
+    #: Why eligibility stopped short of PORTFOLIO_CONSIDERATION_ELIGIBLE.
+    #: Empty exactly when eligibility is NOT_ELIGIBLE or fully eligible.
+    capital_order_eligibility_reasons: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         document = asdict(self)
@@ -155,6 +177,41 @@ class EconomicVerdict:
 
 def _step(name: str, **detail: Any) -> dict[str, Any]:
     return {"step": name, **detail}
+
+
+def _capital_order_eligibility(verdict: str, recipe_state: str | None, authority: str,
+                               estimate: EffectEstimate,
+                               consistency: ResearchExecutionConsistency | None
+                               ) -> tuple[str, tuple[str, ...]]:
+    """Whether a ``CONTINUE`` means more than a development signal.
+
+    Never invents a governance ruling: a ``RECIPE_PROVISIONAL`` verdict still
+    mechanically ``CONTINUE``s exactly as before, and this function does not
+    touch that. It only refuses to let that CONTINUE be read as portfolio
+    eligibility while the recipe is non-authoritative, the evidence is not
+    forward-confirmed, its clustering unit is an undeclared/O4-unresolved
+    assumption, or nobody checked research/execution cost consistency.
+    """
+    if verdict != CONTINUE:
+        return ORDER_ELIGIBILITY_NOT_ELIGIBLE, ()
+
+    reasons: list[str] = []
+    if recipe_state != RECIPE_CONSUMABLE:
+        reasons.append(f"ECONOMIC_THRESHOLD_RECIPE_STATE_{recipe_state}_NOT_CONSUMABLE")
+    if authority != AUTHORITY_FORWARD_CONFIRMED:
+        reasons.append("EVIDENCE_NOT_FORWARD_CONFIRMED")
+    if estimate.clustering_unit_provenance == CLUSTERING_UNIT_UNDECLARED:
+        reasons.append("CLUSTERING_UNIT_PROVENANCE_UNDECLARED")
+    elif estimate.clustering_unit_provenance == CLUSTERING_UNIT_O4_UNRESOLVED:
+        reasons.append("CLUSTERING_UNIT_DEPENDS_ON_UNFROZEN_D07_O4")
+    if consistency is None:
+        reasons.append("RESEARCH_EXECUTION_CONSISTENCY_NOT_VERIFIED")
+    elif not consistency.consistent:
+        reasons.append("RESEARCH_EXECUTION_CONSISTENCY_VIOLATED")
+
+    if reasons:
+        return ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY, tuple(reasons)
+    return ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE, ()
 
 
 def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: ThetaState,
@@ -191,7 +248,8 @@ def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: Thet
         chain.append(_step("ECONOMIC_THRESHOLD", state=meue_result.recipe_state))
         return EconomicVerdict(NO_TRADE, "ECONOMIC_RECIPE_NOT_EVALUABLE", None, None, None,
                               None, None, None, authority, chain=tuple(chain),
-                              violations=tuple(sorted(set(problems))))
+                              violations=tuple(sorted(set(problems))),
+                              recipe_state=meue_result.recipe_state)
 
     meue = meue_result.meue
     chain.append(_step("ECONOMIC_THRESHOLD", meue=meue,
@@ -206,7 +264,8 @@ def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: Thet
     if q <= 0:
         return EconomicVerdict(NO_TRADE, "NO_DEPLOYABLE_EXPOSURE", meue, None, None, None,
                                None, None, authority, chain=tuple(chain),
-                               violations=tuple(sorted(set(problems))))
+                               violations=tuple(sorted(set(problems))),
+                               recipe_state=meue_result.recipe_state)
 
     if capacity is not None:
         chain.append(_step("CAPACITY", **capacity.to_dict()))
@@ -214,7 +273,8 @@ def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: Thet
         if capacity.policy_consequence == NEW_POLICY_VERSION:
             return EconomicVerdict(
                 NO_TRADE, NEW_POLICY_VERSION, meue, None, None, None, None, None,
-                authority, chain=tuple(chain), violations=tuple(sorted(set(problems))))
+                authority, chain=tuple(chain), violations=tuple(sorted(set(problems))),
+                recipe_state=meue_result.recipe_state)
 
     scale = 1.0 - interaction.overlap_fraction
     delta_incremental = estimate.delta_hat * scale
@@ -242,18 +302,26 @@ def economic_gate(estimate: EffectEstimate, meue_result: MEUEResult, theta: Thet
         return EconomicVerdict(NO_TRADE, "BLOCKING_INPUT_DEFECT", meue, delta_incremental,
                                lower_incremental, upper_incremental, net, margin_of_safety,
                                authority, chain=tuple(chain),
-                               violations=tuple(sorted(set(problems))))
+                               violations=tuple(sorted(set(problems))),
+                               recipe_state=meue_result.recipe_state)
 
     if upper_incremental < meue:
         # The entire plausible effect range is below the economic threshold. A
         # small p-value cannot rescue this: the lane is economically dominated.
         return EconomicVerdict(KILL, "ECONOMICALLY_DOMINATED_ACROSS_WHOLE_INTERVAL", meue,
                                delta_incremental, lower_incremental, upper_incremental, net,
-                               margin_of_safety, authority, chain=tuple(chain))
+                               margin_of_safety, authority, chain=tuple(chain),
+                               recipe_state=meue_result.recipe_state)
     if lower_incremental > meue:
+        eligibility, reasons = _capital_order_eligibility(
+            CONTINUE, meue_result.recipe_state, authority, estimate, consistency)
         return EconomicVerdict(CONTINUE, "EFFECT_INTERVAL_ABOVE_ECONOMIC_THRESHOLD", meue,
                                delta_incremental, lower_incremental, upper_incremental, net,
-                               margin_of_safety, authority, chain=tuple(chain))
+                               margin_of_safety, authority, chain=tuple(chain),
+                               recipe_state=meue_result.recipe_state,
+                               capital_order_eligibility=eligibility,
+                               capital_order_eligibility_reasons=reasons)
     return EconomicVerdict(NO_TRADE, "UNCERTAINTY_STRADDLES_ECONOMIC_THRESHOLD", meue,
                            delta_incremental, lower_incremental, upper_incremental, net,
-                           margin_of_safety, authority, chain=tuple(chain))
+                           margin_of_safety, authority, chain=tuple(chain),
+                           recipe_state=meue_result.recipe_state)

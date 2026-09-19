@@ -114,3 +114,62 @@ HOME_K_FORWARD = "K_FORWARD"
 HOME_M_ECONOMIC = "M_ECONOMIC"
 
 ECONOMIC_HOMES = (HOME_K_FORWARD, HOME_M_ECONOMIC)
+
+
+# --- capital/order eligibility tier (V2 consolidation) -----------------------
+#
+# ``verdict`` (CONTINUE/NO_TRADE/KILL) is the mechanical result of the chain and
+# is deliberately unchanged by any of this: a RECIPE_PROVISIONAL evaluation may
+# still mechanically CONTINUE, exactly as Wave 1 designed, so development can
+# proceed before calibration. What was missing is a separate, honest answer to
+# "does this CONTINUE mean anything a Desk/Book consumer may act on yet?" A
+# recipe that is not RECIPE_CONSUMABLE, evidence that is not forward-confirmed,
+# or a research/execution cost consistency check that was never run must never
+# be silently read as capital or paper/shadow order eligibility.
+#
+# This is a representation of the current governance state, not an invented
+# rule: it does not decide whether a provisional recipe *may* ever produce
+# CONTINUE (that question is explicitly left to Blue, per Wave 1 red team
+# item 8.1) and it grants nothing beyond "eligible for portfolio
+# consideration" even at its highest tier — approval remains SIZE/RISK/BOOK's
+# alone, never the economic engine's.
+
+#: The verdict was not CONTINUE, or the eligibility question does not arise.
+ORDER_ELIGIBILITY_NOT_ELIGIBLE = "NOT_ELIGIBLE"
+#: CONTINUE, but at least one authority/verification gap remains: see the
+#: verdict's ``capital_order_eligibility_reasons`` for exactly which.
+ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY = "DEVELOPMENT_SIGNAL_ONLY"
+#: CONTINUE, on a consumable recipe, forward-confirmed evidence, and a verified
+#: research/execution cost consistency check. Eligible for SIZE/RISK/BOOK to
+#: consider — never itself an approved order and never real-capital authority.
+ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE = "PORTFOLIO_CONSIDERATION_ELIGIBLE"
+
+ORDER_ELIGIBILITY_STATES = (ORDER_ELIGIBILITY_NOT_ELIGIBLE,
+                            ORDER_ELIGIBILITY_DEVELOPMENT_SIGNAL_ONLY,
+                            ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE)
+
+
+# --- clustering-unit provenance for a scientific effect estimate -------------
+#
+# D07-O4 (overlap geometry) is the frozen object that defines the true
+# clustering unit for inference (``handoff/CLAUDE_WAVE1_PROTOCOL_PROPOSALS_
+# 2026-09-19.md`` s2 O4; Wave 1 red team item 3). It is unfrozen. An effect
+# estimate that does not declare where its interval's clustering unit came
+# from is silently assuming independence, which is exactly the "free
+# t-statistic" failure mode the frozen inference module was built to prevent
+# one layer down. This package does not own ``quant.science`` (a distinct
+# writer domain per the Wave 1 Builder allocation proposal) and does not
+# change its behaviour; it only refuses to treat an undeclared or
+# O4-unresolved clustering unit as equivalent to a resolved one.
+
+#: No declaration was made at all.
+CLUSTERING_UNIT_UNDECLARED = "CLUSTERING_UNIT_PROVENANCE_UNDECLARED"
+#: Declared, but the estimate used the naive "each observation its own
+#: cluster" default because D07-O4 is not yet frozen — an assumption, not a
+#: result.
+CLUSTERING_UNIT_O4_UNRESOLVED = "O4_UNRESOLVED_ASSUMED_INDEPENDENT"
+#: Declared and traceable to a specific frozen O4 overlap geometry.
+CLUSTERING_UNIT_O4_RESOLVED = "O4_RESOLVED_CLUSTERING_UNIT"
+
+CLUSTERING_UNIT_STATES = (CLUSTERING_UNIT_UNDECLARED, CLUSTERING_UNIT_O4_UNRESOLVED,
+                          CLUSTERING_UNIT_O4_RESOLVED)

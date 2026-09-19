@@ -134,5 +134,70 @@ importing Codex's flatter data model.
   nothing in the returned object currently forces a caller to notice the
   threshold itself was non-authoritative.
 
+### Slice 1 — RECIPE_PROVISIONAL eligibility tier + ECON-001 fail-closed + D07-O4 clustering exposure
+
+Files: `src/quant/economics/states.py`, `src/quant/economics/decision.py`,
+`src/quant/economics/__init__.py`, `tests/test_economic_v2_consolidation.py` (new).
+
+- Added a `capital_order_eligibility` tier to `EconomicVerdict`
+  (`NOT_ELIGIBLE` / `DEVELOPMENT_SIGNAL_ONLY` /
+  `PORTFOLIO_CONSIDERATION_ELIGIBLE`) plus `recipe_state` and
+  `capital_order_eligibility_reasons`, computed by a new
+  `_capital_order_eligibility()` helper in `decision.py`. **Deliberately does
+  not change whether `economic_gate` returns `CONTINUE`** — Wave 1's own
+  mechanical verdict (development can proceed before calibration) is
+  untouched, and whether a `RECIPE_PROVISIONAL` evaluation *may* ever produce
+  a meaningful `CONTINUE` is explicitly left as Blue's ruling (red team 8.1).
+  What changed: `CONTINUE` alone can no longer be read as anything beyond a
+  development signal unless the recipe is `RECIPE_CONSUMABLE`, the evidence is
+  forward-confirmed, the effect estimate's clustering-unit provenance is
+  O4-resolved (not undeclared or assumed-independent), and a
+  `ResearchExecutionConsistency` check was actually run and passed. This is a
+  representation of the current governance gap, not an invented rule — see
+  `states.py`'s new docstring block for the reasoning.
+- **ECON-001 residual gap closed**: the discriminating reproduction against
+  the real shipped constants already existed
+  (`test_economics_timeline_execution.py::ResearchExecutionConsistencyTest`,
+  confirmed passing, confirmed importing the real `ExecutionModel`/
+  `RESEARCH_ONE_WAY_COST_BPS`, not a synthetic stand-in). The actual open part
+  was that `consistency` is an optional parameter to `economic_gate`, so a
+  verdict could reach `CONTINUE` without the check ever running. Fixed by
+  making `capital_order_eligibility` fail closed
+  (`RESEARCH_EXECUTION_CONSISTENCY_NOT_VERIFIED`) whenever `consistency is
+  None`, and by adding an independent re-derivation of the 6.5 bps
+  understatement / 0.6125% ceiling in the new test file that does not import
+  `ExecutionCostModel` or `implied_participation_ceiling` at all (arithmetic
+  redone by hand from `ExecutionModel`'s raw fields), as a cross-check against
+  Wave 1's own reproduction. **Neither `RESEARCH_ONE_WAY_COST_BPS` nor
+  `max_participation` was touched** — asserted directly by
+  `test_no_new_scientific_constant_was_introduced`.
+- **D07-O4 clustering exposure** (red team item 3): added
+  `clustering_unit_provenance` to `EffectEstimate` (default
+  `CLUSTERING_UNIT_UNDECLARED`), with three recognised states
+  (`UNDECLARED` / `O4_UNRESOLVED_ASSUMED_INDEPENDENT` / `O4_RESOLVED_...`).
+  Undeclared or O4-unresolved caps eligibility exactly like the other gates
+  above; a genuinely unrecognised value is a hard input defect
+  (`BLOCKING_INPUT_DEFECT`, mechanical `NO_TRADE`). **Scope discipline: this
+  does not touch `src/quant/science/**` at all** — the clustering unit itself
+  is that module's frozen-object dependency on O4 and a distinct writer
+  domain per the Wave 1 Builder allocation proposal (§6 of
+  `CLAUDE_WAVE1_PROTOCOL_PROPOSALS_2026-09-19.md`); this pass only refuses to
+  let the *economics* engine treat an unresolved clustering unit as
+  equivalent to a resolved one when deciding eligibility.
+- All three fixes are additive dataclass fields with safe defaults — zero
+  existing call sites needed updating, zero existing tests needed touching.
+- New file `tests/test_economic_v2_consolidation.py`: 15 tests, explicit
+  RED-then-GREEN pairs per defect (`test_red_*` reproduces the exact
+  before-state, `test_green_*` proves the fix), plus one full positive case
+  (`test_full_eligibility_requires_recipe_evidence_clustering_and_consistency_
+  together`) proving the top eligibility tier is actually reachable, not just
+  permanently closed.
+- Exported the new `ORDER_ELIGIBILITY_*` / `CLUSTERING_UNIT_*` constants from
+  `quant.economics.__init__` for downstream consumers (the journal in the next
+  slice, and eventually Desk).
+
+**Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
+→ 603 passed (588 pre-existing + 15 new), 0 failures, 0 skipped.
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_
