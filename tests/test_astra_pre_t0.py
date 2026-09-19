@@ -296,3 +296,35 @@ class MutatingCLIExclusion(unittest.TestCase):
                 self.assertEqual(result.returncode,2,result.stdout+result.stderr)
                 self.assertIn('COLLECTOR_ALREADY_RUNNING',result.stdout)
                 self.assertFalse((sec/'collector_state.json').exists())
+
+
+class Phase3AuthorityAndBindingCampaign(CollectorTestCase):
+    def test_verification_digest_changes_when_systemd_unit_changes(self):
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('astra_verify_p0',ROOT/'scripts/verify_p0.py')
+        verify=importlib.util.module_from_spec(spec);spec.loader.exec_module(verify)
+        unit=ROOT/'deploy/quant-sec-capture.service'
+        original=unit.read_bytes()
+        before=verify.verified_tree_digest()
+        try:
+            unit.write_bytes(original+b'\n# adversarial unit mutation\n')
+            after=verify.verified_tree_digest()
+        finally:
+            unit.write_bytes(original)
+        self.assertNotEqual(before,after,
+            'the verification binding must cover the effective service definition')
+
+    def test_forged_child_environment_cannot_buy_qualifying_readiness(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        self.assertFalse(c.t0_readiness()['instrumentation_ready'],
+            'environment markers without durable external launch authority are not proof')
+
+    def test_future_last_poll_timestamp_cannot_suppress_due_acquisition(self):
+        c=self.collector(self.fixture_router())
+        c.state.last_poll_started_at_utc=(self.timebase.now()+timedelta(hours=1)).isoformat()
+        c.save()
+        self.assertTrue(c.poll_due(),
+            'a future prior-poll timestamp must fail closed instead of suppressing polling')
