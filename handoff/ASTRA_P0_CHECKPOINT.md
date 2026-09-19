@@ -1,3 +1,42 @@
+# CHECKPOINT ASTRA P0 — deployment isolation campaign
+
+This section supersedes stale next-action/status statements below.
+
+* timestamp UTC: 2026-09-19T23:57:29.850972+00:00
+* branch: `astra/p0-deep-adversarial-pre-t0`
+* exact HEAD SHA / parent/base SHA at campaign entry: `8dbe25aea136332f73174917af42dc524f8454e7`
+* this checkpoint commit: resolve with `git log -1 --format=%H -- handoff/ASTRA_P0_CHECKPOINT.md`; no self-referential SHA claim
+* t0 status: NOT DECLARED
+* P0_CONTINUOUS_SERVICE_STATE: OPEN / NOT_YET_PROVEN_CONTINUOUS
+* defects CONFIRMED OPEN: none newly confirmed at this checkpoint
+* defects CONFIRMED CLOSED: prior committed closures retained below; none newly claimed
+* hypotheses NOT YET REPRODUCED: real process signal/death boundaries, raw publication durability after interrupted fsync, CLI stdout firewall
+* tests rouges ajoutés: none yet
+* tests verts obtenus: prior exact-head CI only at this checkpoint
+* full-suite status: baseline exact-head CI SUCCESS
+* CI run id/status: 35476749853 COMPLETED/SUCCESS on exact entry SHA; successor CI pending
+* active fingerprint: NOT MEASURED IN TARGET RUNTIME
+* materialized fingerprint: NOT AVAILABLE IN TARGET RUNTIME
+* manifest schema/version: p0_materialized_fingerprint/v2; acquisition_critical_fingerprint/v1
+* rodage status + exact artifact: NOT RUN; no final artifact
+* readiness status: READY_FOR_FINAL_RODAGE = FALSE; target prerequisites unverified
+* audit status: target-runtime final audit pending
+* firewall status: existing CI green; dedicated CLI stdout regression pending
+* fichiers acquisition-critical modifiés: none
+* prochaine action unique: falsify raw publication retry durability, then real process signal boundaries
+* commandes exactes nécessaires pour reproduire/reprendre:
+  `git fetch origin astra/p0-deep-adversarial-pre-t0 && git pull --ff-only origin astra/p0-deep-adversarial-pre-t0`
+  `cat governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md`
+  `PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0 -v`
+
+The dedicated release contract is durable in governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md.
+No import narrowing, WorkingDirectory change, target deployment, other branch merge or scientific change.
+The local container has PID 1 `codex`, and systemctl explicitly reports systemd unavailable;
+local signal tests must not be labelled actual systemd stop/start proof.
+Already falsified materialization, restart-limit, and 403/429 accounting hypotheses are NOT reopened.
+
+---
+
 # CHECKPOINT ASTRA P0
 
 * timestamp UTC: 2026-09-19T23:30:00Z
