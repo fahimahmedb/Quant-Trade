@@ -29,6 +29,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import fcntl
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,15 +59,19 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     if args.command == "sec-audit":
         from quant.dataplane.sec.audit import audit_observation_window
         report = audit_observation_window(collector)
-        print(json.dumps(report, indent=2, sort_keys=True, default=str))
+        public = {key: report.get(key) for key in (
+            "accountable", "findings", "fingerprint_stable", "coverage_state",
+            "p0_continuous_service_state")}
+        print(json.dumps(public, indent=2, sort_keys=True, default=str))
         return 0 if report["accountable"] else 1
     if args.command == "sec-status":
         print(json.dumps(collector.telemetry(), indent=2, sort_keys=True, default=str))
         return 0
     if args.command == "sec-verify":
         broken = collector.store.verify_objects()
-        print(json.dumps({"raw_objects_checked": collector.store.storage_health(),
-                          "address_mismatches": broken}, indent=2, sort_keys=True))
+        print(json.dumps({"integrity_verified": not broken,
+                          "address_mismatch_present": bool(broken)},
+                         indent=2, sort_keys=True))
         return 1 if broken else 0
     if not collector.configured:
         # Fail closed, loudly, with the remedy named.
@@ -89,15 +95,38 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
                          indent=2, sort_keys=True))
         return 0
     if args.command == "sec-serve":
-        # The service entry point the supervisor launches. Capture keeps running
-        # under the Control Plane clock; IDLE means nothing is due right now.
-        # boot() binds the externally attested lifecycle before any capture work.
-        system.boot()
-        if not collector.state.enabled:
-            collector.enable()
-        entry = system.serve(poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
-        print(json.dumps(entry, indent=2, sort_keys=True, default=str))
-        return 0
+        # One host, one active collector.  The file lock also prevents an orphan
+        # child plus a replacement supervisor from emitting concurrent traffic.
+        lock_path = system.paths.sec / "collector_service.lock"
+        lock_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            try:
+                fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                print(json.dumps({"state": "BLOCKED",
+                                  "reason": "COLLECTOR_ALREADY_RUNNING"}))
+                return 2
+            effective = collector.lifecycle.get("effective_service_configuration") or {}
+            if collector.lifecycle.get("qualifying_service_mode"):
+                if (effective.get("poll_seconds") != args.poll_seconds
+                        or effective.get("max_waits") != args.max_waits):
+                    print(json.dumps({"state": "BLOCKED",
+                                      "reason": "CLI_RUNTIME_MISMATCH"}))
+                    return 2
+                collector.require_active_materialization()
+            # boot() binds lifecycle before capture; serve_sec never dispatches
+            # research/desk/learning work between acquisition obligations.
+            system.boot()
+            if not collector.state.enabled:
+                collector.enable()
+            entry = system.serve_sec(
+                poll_seconds=args.poll_seconds, max_cycles=args.max_waits)
+            print(json.dumps({"service_exit": "STOPPED",
+                              "mode": entry["mode"]}, sort_keys=True))
+            return 0
+        finally:
+            os.close(lock_fd)
     if args.command == "sec-enable":
         collector.enable()
     elif args.command == "sec-disable":
@@ -105,12 +134,10 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
     elif args.command == "sec-probe":
         if not collector.state.enabled:
             collector.enable()
-        outcome = collector.poll()
-        drained = collector.drain(max_items=args.drain) if args.drain else []
-        print(json.dumps({"discovery": outcome.to_dict(),
-                          "acquisitions": [{key: value for key, value in item.items()
-                                            if key != "source_identity"}
-                                           for item in drained]},
+        collector.poll()
+        if args.drain:
+            collector.drain(max_items=args.drain)
+        print(json.dumps({"collector": collector.telemetry()},
                          indent=2, sort_keys=True, default=str))
     elif args.command == "sec-reconcile":
         from datetime import date as _date
@@ -118,7 +145,9 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         if day is None:
             print(json.dumps({"reconciliation": "no closed day is due"}, indent=2))
             return 0
-        print(json.dumps(collector.reconcile(day), indent=2, sort_keys=True, default=str))
+        collector.reconcile(day)
+        print(json.dumps({"collector": collector.telemetry()},
+                         indent=2, sort_keys=True, default=str))
     state, detail = collector.component_state()
     system.components.set("SEC_CAPTURE", state, detail)
     print(json.dumps({"collector": state, "detail": detail,
