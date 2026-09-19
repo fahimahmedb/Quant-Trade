@@ -840,10 +840,36 @@ class QuantSystem:
                             "reason": item["reason"]} for item in recent[-8:][::-1]]}
 
     def snapshot(self) -> dict[str, Any]:
-        """Everything the status surface and the brief are rendered from."""
+        """Everything the status surface and the brief are rendered from.
+
+        With the SEC lane configured, mixed Control Plane counters and shared
+        events are projected so they cannot become indirect filing signals.
+        Detailed acquisition evidence remains under var/sec.
+        """
+        control = self.state.to_dict()
+        components = self.components.snapshot()
+        events: dict[str, Any] = {
+            "total": self.log.count(), "recent": self.log.recent(15),
+            "faults": len(self.log.faults())}
+        if self.sec.configured:
+            for key in ("ticks", "waits", "last_wake_at", "run_history", "next_action"):
+                control.pop(key, None)
+            for name in ("CONTROL", "SEC_CAPTURE"):
+                status = components.get(name)
+                if status is not None:
+                    components[name] = {
+                        "component": name,
+                        "state": status.get("state"),
+                        "detail": status.get("detail"),
+                    }
+            events = {
+                "recent": [event for event in self.log.recent(15)
+                           if event.get("component") != "SEC_CAPTURE"],
+                "activity_redacted": True,
+            }
         return {
-            "control": self.state.to_dict(),
-            "components": self.components.snapshot(),
+            "control": control,
+            "components": components,
             "data": {"health": self.datasets.health(),
                      "datasets": {key: record.to_dict()
                                   for key, record in self.datasets.records.items()}},
@@ -869,9 +895,6 @@ class QuantSystem:
             "learning": self.learning.summary(),
             "build_tasks": self.learning.open_build_tasks(),
             "health": self.health(),
-            # Opaque acquisition telemetry only. See the visibility firewall in
-            # governance/P0_RAW_CAPTURE_CRITICAL_PATH_RECLASSIFICATION_2026-09-18.md.
             "sec_capture": self.sec.telemetry(),
-            "events": {"total": self.log.count(), "recent": self.log.recent(15),
-                       "faults": len(self.log.faults())},
+            "events": events,
         }
