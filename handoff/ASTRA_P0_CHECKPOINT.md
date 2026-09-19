@@ -75,6 +75,53 @@ plus adversarial falsification of Phase 7 priority #1 (RESTART LIMIT EXHAUSTION)
     of-proof rule this is not classified as a P0 blocker. Left as a note for anyone doing incident
     forensics, not for this campaign to act on further.
 
+- **Concurrent/interrupted fingerprint materialization** (`collector.materialize_fingerprint()` /
+  `state.create_json_once`). Concern: two racing materializers, or a crash between temp-write,
+  fsync and the durable create-once step, producing a partial or double-accepted freeze.
+  - Method: read (not executed as a new test — this is code-reading falsification, method
+    explicitly allows this) `create_json_once`: unique `tempfile.mkstemp` per caller, full
+    write+flush+fsync of the temp file, then `os.link(temporary, path)` (atomic add-only rename
+    substitute — fails `FileExistsError` if `path` already exists), then `_fsync_directory`, then
+    unlink the temp name. `materialize_fingerprint()` explicitly handles the `FileExistsError` race
+    by re-validating the winner's content against this process's own computed fingerprint rather
+    than assuming success.
+  - Result: no crash window produces a torn or double-written `acquisition_fingerprint.json`.
+    Worst case of a crash before `os.link` is an orphaned temp file and a retryable empty target;
+    worst case of a crash after `os.link` but before the final `unlink` is a harmless leftover hard
+    link to already-durable content. Not promoted to a defect.
+
+- **Budget/attempt write-ordering across a 429/403 crash boundary**
+  (`collector._request_serialized`, `budget.enter_cooldown`, `audit._validate_request_accounting`).
+  Concern: on a 429/403, `budget.enter_cooldown()` is called and durably persisted *before* the
+  attempt journal's `FINISHED` event and `store.record_attempt()`. A crash in that window would
+  leave `request_intents.jsonl` with INTENT/RESERVED/RECEIVED but no FINISHED, and no matching
+  completed record in `store.attempts()` for that attempt id.
+  - Method: read `_request_serialized` call order plus `_validate_request_accounting` in
+    `audit.py`, which independently builds `by_attempt` from the intent journal and
+    `attempt_by_id` from completed attempt records.
+  - Result: this exact gap is already caught — `attempt_by_id.get(attempt_id) is None` yields
+    both `REQUEST_INTENT_WITHOUT_ATTEMPT` and `REQUEST_ACCOUNTING_INCOMPLETE`, which makes
+    `audit_observation_window` report `accountable=False` for a window containing the crash. The
+    durable cooldown itself is independent of the attempt record (`budget.json`), so a restart
+    still correctly refuses to poll through the cooldown even though the triggering attempt is
+    unaccounted for — no silent hot-loop, only a (correct) non-accountable window. Not promoted to
+    a defect.
+
+### test-coverage observation (not a defect, not acted on this session)
+
+`scripts/quant.py sec-audit`'s CLI stdout manually whitelists 5 keys from the full audit report
+before printing (`accountable, findings, fingerprint_stable, coverage_state,
+p0_continuous_service_state`), and `findings` values are confirmed-static uppercase codes (no
+`findings.append(f"...")` interpolation exists in `audit.py`), so the current output is firewall-safe
+by construction. But unlike `telemetry()`/the public snapshot/`CHIEF_BRIEF.md`, no test actually
+runs `find_leaks`/`find_count_proxies` against this CLI's literal stdout — a future field added to
+that manual allowlist would not be caught by any existing regression test. Attempting to add this
+test hit real friction: `sec-audit --root <fresh temp dir>` fails before producing JSON, because
+`fingerprint.py`'s `module_digests()` requires `.github/workflows/sec-p0-pre-t0-gate.yml` to exist
+under `--root` (fingerprint-critical CI workflow), so a temp-dir invocation needs either a real
+checkout copy or `--root` pointed at the repo itself with an isolated `var/`. Left for a future
+session rather than forced under this checkpoint's time budget.
+
 ### defects CONFIRMED OPEN
 
 None newly opened this session beyond what remains in the "hypotheses NOT YET REPRODUCED" list.
