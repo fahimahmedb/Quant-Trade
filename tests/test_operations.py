@@ -370,5 +370,46 @@ class EvidenceRegistryTest(unittest.TestCase):
             self.assertEqual(len(registry.confirmation_records()), 1)
 
 
+class EconomicDashboardTest(unittest.TestCase):
+    """The dashboard reports what is recorded and refuses to fill the gaps."""
+
+    def summary(self, directory: str) -> dict:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "economic_dashboard", Path(__file__).resolve().parents[1] / "scripts"
+            / "economic_dashboard.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        path = Path(directory) / "evidence.jsonl"
+        registry = EvidenceRegistry(path)
+        registry.record(EvidenceRecord("E1", "panel@sha256:a", "sha256:p1", "abc",
+                                       "net 12 bps", "CONTINUE", "DEVELOPMENT",
+                                       recorded_at="2026-09-01T00:00:00+00:00"))
+        registry.record(EvidenceRecord("E2", "panel@sha256:a", "sha256:p2", "abc",
+                                       "net -4 bps", "KILL", "EXPLORATION",
+                                       recorded_at="2026-09-11T00:00:00+00:00"))
+        registry.record(EvidenceRecord("E3", "panel@sha256:a", "", "abc", "x", "KILL",
+                                       "EXPLORATION"))
+        return module.summarise(path)
+
+    def test_counts_and_velocity_come_from_the_registry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            summary = self.summary(directory)
+            self.assertEqual(summary["records_accepted"], 2)
+            self.assertEqual(summary["records_incomplete"], 1)
+            self.assertEqual(summary["killed"], 1)
+            self.assertEqual(summary["continued"], 1)
+            self.assertAlmostEqual(summary["observed_span_days"], 10.0, places=9)
+            self.assertAlmostEqual(
+                summary["falsification_velocity_decisions_per_day"], 0.2, places=9)
+
+    def test_unrecorded_quantities_are_unavailable_not_estimated(self):
+        with tempfile.TemporaryDirectory() as directory:
+            summary = self.summary(directory)
+            self.assertEqual(summary["research_cost_builder_days"], "UNAVAILABLE")
+            self.assertEqual(summary["expected_net_economic_value"], "UNAVAILABLE")
+            self.assertFalse(summary["real_capital_authorized"])
+
+
 if __name__ == "__main__":
     unittest.main()
