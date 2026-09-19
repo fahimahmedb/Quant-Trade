@@ -3062,9 +3062,10 @@ class RodageFalsificationTests(CollectorTestCase):
         self.assertEqual(restarted.state.open_obligation_id, open_obligation,
                          "the open obligation survives the restart")
         restarted.record_service_start()
-        # The restart transition names the obligation it replaces.
+        # Restart preserves the original commitment without minting a replacement.
         latest = restarted.scheduler.latest()
-        self.assertEqual(latest["supersedes_obligation_id"], open_obligation)
+        self.assertEqual(latest["obligation_id"], open_obligation)
+        self.assertEqual(restarted.state.open_obligation_id, open_obligation)
         report = audit_observation_window(restarted)
         self.assertTrue(report["fingerprint_stable"])
         self.assertIn(AUTOMATIC_RESTART_AFTER_FAILURE,

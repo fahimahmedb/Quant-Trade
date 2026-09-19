@@ -51,6 +51,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from datetime import datetime
+import math
 from typing import Any
 
 from ...state import parse_ts, read_jsonl
@@ -212,14 +213,17 @@ def _validate_structure(transitions: list[dict[str, Any]],
     """Find malformed evidence that could otherwise manufacture a false pass."""
     findings: list[str] = []
 
-    def aware(raw: str | None) -> datetime | None:
+    def aware(raw: str | None, *, future_allowed: bool = False,
+              required: bool = True) -> datetime | None:
         if not raw:
+            if required:
+                findings.append("EVIDENCE_TIMESTAMP_MISSING")
             return None
         value = parse_ts(raw)
         if value.tzinfo is None:
             findings.append("NAIVE_TIMESTAMP")
             return None
-        if value > now:
+        if value > now and not future_allowed:
             findings.append("FUTURE_EVIDENCE_TIMESTAMP")
         return value
 
@@ -242,16 +246,25 @@ def _validate_structure(transitions: list[dict[str, Any]],
         due = record.get("next_due_at_utc")
         if bool(obligation_id) != bool(due):
             findings.append("OBLIGATION_ID_DUE_MISMATCH")
+        if not due and record.get("state") not in ("DISABLED", "BLOCKED_NOT_CONFIGURED"):
+            findings.append("EXPECTED_ACTION_DUE_MISSING")
+        if record.get("state") in ("DISABLED", "BLOCKED_NOT_CONFIGURED"):
+            findings.append("ACQUISITION_DISABLED_DURING_WINDOW")
         if obligation_id:
             if obligation_id in obligation_ids:
                 findings.append("DUPLICATE_OBLIGATION_ID")
             obligation_ids.add(obligation_id)
             transition_by_obligation[obligation_id] = record
-            aware(due)
+            aware(due, future_allowed=True)
 
     superseded_targets: set[str] = set()
+    prior_obligations: set[str] = set()
     for record in transitions:
         target = record.get("supersedes_obligation_id")
+        if target and target not in prior_obligations:
+            findings.append("NONPROSPECTIVE_SUPERSESSION")
+        if record.get("obligation_id"):
+            prior_obligations.add(record["obligation_id"])
         if not target:
             continue
         if target in superseded_targets:
@@ -277,7 +290,7 @@ def _validate_structure(transitions: list[dict[str, Any]],
         if attempt_id:
             attempt_ids.add(attempt_id)
         attempted = aware(record.get("request_attempted_at_utc"))
-        received = aware(record.get("response_received_at_utc"))
+        received = aware(record.get("response_received_at_utc"), required=False)
         if attempted and previous_attempt_time and attempted < previous_attempt_time:
             findings.append("ATTEMPT_TIME_REVERSED")
         if attempted:
@@ -330,7 +343,7 @@ def _validate_request_intents(collector: Any,
     return sorted(set(findings))
 
 
-def audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
+def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
                              now: datetime | None = None) -> dict[str, Any]:
     """Reconcile the obligation ledger against the durable attempt record."""
     transitions = collector.scheduler.all()
@@ -341,6 +354,8 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
                  else (policy.discovery_poll_seconds * DUE_TOLERANCE_MULTIPLIER
                        if policy else 180.0))
     moment = now or collector.timebase.now()
+    if not math.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("INVALID_AUDIT_TOLERANCE")
 
     findings: list[str] = _validate_structure(transitions, attempts, lifecycle, moment)
     findings.extend(_validate_request_intents(collector, attempts))
@@ -370,6 +385,14 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
         findings.append("OBLIGATION_IDENTITY_MISSING")
     if len(fingerprints) > 1:
         findings.append("ACQUISITION_FINGERPRINT_CHANGED")
+    active = getattr(collector, "fingerprint", None)
+    if active and any(value != active for value in fingerprints):
+        findings.append("ACTIVE_FINGERPRINT_DIFFERS_FROM_JOURNAL")
+    if any(record.get("acquisition_critical_fingerprint") != active
+           for record in lifecycle) and active:
+        findings.append("LIFECYCLE_FINGERPRINT_MISMATCH")
+    if (collector.paths.sec / "integrity_fault.json").exists():
+        findings.append("DURABLE_INTEGRITY_FAULT")
     if unattested:
         findings.append("LIFECYCLE_CAUSE_UNATTESTED")
     if invalidating:
@@ -421,6 +444,17 @@ def audit_observation_window(collector: Any, *, tolerance_seconds: float | None 
         "t0_authority": "BLUE_TEAM",
         "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
     }
+
+
+def audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
+                             now: datetime | None = None) -> dict[str, Any]:
+    """Malformed evidence is an explicit failed verdict, never a missing report."""
+    try:
+        return _audit_observation_window(collector, tolerance_seconds=tolerance_seconds, now=now)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError):
+        return {"accountable": False, "findings": ["ACQUISITION_EVIDENCE_INVALID"],
+                "t0_authority": "BLUE_TEAM",
+                "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
 
 
 def _window_bounds(transitions: list[dict[str, Any]]

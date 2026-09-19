@@ -316,8 +316,11 @@ class SecForm4Collector:
                       collector_version=self.store.collector_version,
                       git_commit=self.store.git_commit)
         append_jsonl(self.paths.sec_lifecycle, record)
-        cause = SERVICE_START if self.configured else CONFIG_FAIL_CLOSED
-        self.record_current_state(cause, detail=self.lifecycle.get("lifecycle_cause"))
+        # A process start cannot rewrite an existing prospective commitment.
+        # Initial enable() records the first obligation once the lane is active.
+        if not self.configured or (self.state.enabled and not self.state.open_obligation_id):
+            cause = SERVICE_START if self.configured else CONFIG_FAIL_CLOSED
+            self.record_current_state(cause, detail=self.lifecycle.get("lifecycle_cause"))
         return record
 
     def t0_readiness(self) -> dict[str, Any]:
@@ -327,6 +330,8 @@ class SecForm4Collector:
         observation window, it only says what is and is not yet true.
         """
         blockers: list[str] = []
+        if (self.paths.sec / "integrity_fault.json").exists():
+            blockers.append("DURABLE_INTEGRITY_FAULT")
         if not self.configured:
             blockers.append("SEC_IDENTITY_NOT_CONFIGURED")
         if self.fingerprint is None:
@@ -412,19 +417,32 @@ class SecForm4Collector:
 
     def require_active_materialization(self) -> None:
         """Qualifying service cannot emit a request under stale/unbound semantics."""
+        if (self.paths.sec / "integrity_fault.json").exists():
+            raise SecStorageFailure("DURABLE_INTEGRITY_FAULT")
         if not self.lifecycle.get("qualifying_service_mode"):
             return
         fingerprint, error = self._validated_materialization()
         if error or fingerprint != self.fingerprint:
+            self._latch_integrity_fault(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
             raise SecStorageFailure(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
+
+    def _latch_integrity_fault(self, reason: str) -> None:
+        try:
+            create_json_once(self.paths.sec / "integrity_fault.json", {
+                "reason": reason, "recorded_at_utc": self.timebase.now_iso()})
+        except FileExistsError:
+            pass
 
     def materialize_fingerprint(self) -> dict[str, Any]:
         """Freeze once. Existing content is validated, never silently rewritten."""
+        if (self.paths.sec / "integrity_fault.json").exists():
+            raise SecStorageFailure("DURABLE_INTEGRITY_FAULT")
         if self.policy is None:
             raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
         if self.paths.sec_fingerprint.exists():
             fingerprint, error = self._validated_materialization()
             if error or fingerprint != self.fingerprint:
+                self._latch_integrity_fault(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
                 raise SecStorageFailure(error or "FINGERPRINT_MATERIALIZED_MISMATCH")
             payload = read_json(self.paths.sec_fingerprint)
             assert isinstance(payload, dict)

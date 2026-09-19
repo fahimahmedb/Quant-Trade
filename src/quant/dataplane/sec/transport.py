@@ -49,6 +49,8 @@ import http.client
 import socket
 import ssl
 import zlib
+import signal
+import threading
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -255,6 +257,19 @@ class SecHttpTransport:
         which records the attempt, applies the frozen backoff and schedules the
         next try as its own reservation, attempt id and scheduler transition.
         """
+        # Production runs on the service's main thread. A socket timeout alone
+        # cannot bound DNS, header trickling, or a buffered read making many
+        # syscalls. A process timer bounds the entire operation, without leaving
+        # an uncancellable background worker that might send after timeout.
+        if threading.current_thread() is not threading.main_thread():
+            raise SecTransportError("request_requires_main_thread_deadline")
+        if signal.getitimer(signal.ITIMER_REAL) != (0.0, 0.0):
+            raise SecTransportError("request_deadline_timer_already_owned")
+        previous = signal.getsignal(signal.SIGALRM)
+        def deadline(signum, frame):
+            raise TimeoutError("total_request_deadline")
+        signal.signal(signal.SIGALRM, deadline)
+        signal.setitimer(signal.ITIMER_REAL, self.policy.total_deadline_seconds)
         try:
             return self._fetch_once(path, permit)
         except SecTransportError:
@@ -262,6 +277,12 @@ class SecHttpTransport:
             # for a reason unrelated to the next request.
             self.close()
             raise
+        except (TimeoutError, OSError) as exc:
+            self.close()
+            raise SecTransportError(type(exc).__name__, DEADLINE_EXCEEDED) from None
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, previous)
 
     def _bound_socket_timeout(self, connection: http.client.HTTPSConnection,
                               started: Any, requested: float) -> None:
@@ -293,7 +314,8 @@ class SecHttpTransport:
         except (http.client.HTTPException, socket.timeout, TimeoutError, ssl.SSLError,
                 OSError) as exc:
             self.close()
-            raise SecTransportError(f"request_failed:{type(exc).__name__}") from exc
+            outcome = DEADLINE_EXCEEDED if isinstance(exc, TimeoutError) else TRANSPORT_ERROR
+            raise SecTransportError(f"request_failed:{type(exc).__name__}", outcome) from exc
         self._connection_last_used = self.timebase.now()
         preserved = {name: value for name in PRESERVED_HEADERS
                      if (value := response.getheader(name)) is not None}
@@ -325,13 +347,15 @@ class SecHttpTransport:
                 if self._connection is not None:
                     self._bound_socket_timeout(
                         self._connection, started, self.policy.read_timeout_seconds)
-                chunk = response.read(65536)
+                # read1 returns received chunks before a later syscall blocks,
+                # so timeout preserves every body chunk already delivered.
+                reader = getattr(response, "read1", response.read)
+                chunk = reader(min(65536, self.policy.max_response_bytes - total + 1))
             except http.client.IncompleteRead as exc:
                 chunks.append(exc.partial)
                 return b"".join(chunks), TRUNCATED
-            except (socket.timeout, TimeoutError) as exc:
-                raise SecTransportError(f"read_timeout:{type(exc).__name__}",
-                                        DEADLINE_EXCEEDED, b"".join(chunks)) from exc
+            except (socket.timeout, TimeoutError):
+                return b"".join(chunks), DEADLINE_EXCEEDED
             except (http.client.HTTPException, ssl.SSLError, OSError):
                 # Bytes already read are partial evidence, not a capture.
                 return b"".join(chunks), TRUNCATED if chunks else TRANSPORT_ERROR
