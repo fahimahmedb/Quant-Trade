@@ -111,6 +111,8 @@ class SecAttemptRecord:
     #: Discovery page offset. An offset is not a filing count.
     page_start: int | None = None
     duration_seconds: float | None = None
+    #: Exact scheduler obligation this request was intended to answer.
+    obligation_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -213,10 +215,16 @@ class SecCaptureStore:
         if not object_id.startswith("sha256:") or len(object_id) != 71:
             raise ValueError("raw object id must be a sha256: digest")
         hexdigest = object_id[7:]
+        if any(char not in "0123456789abcdef" for char in hexdigest):
+            raise ValueError("raw object id must contain lowercase hexadecimal")
         return self.paths.sec_raw_objects / hexdigest[:2] / f"{hexdigest}.bin"
 
     def incomplete_path(self, object_id: str) -> Path:
+        if not object_id.startswith("sha256:") or len(object_id) != 71:
+            raise ValueError("incomplete object id must be a sha256: digest")
         hexdigest = object_id[7:]
+        if any(char not in "0123456789abcdef" for char in hexdigest):
+            raise ValueError("incomplete object id must contain lowercase hexadecimal")
         return self.paths.sec_incomplete_objects / hexdigest[:2] / f"{hexdigest}.partial"
 
     def has_object(self, object_id: str) -> bool:
@@ -278,14 +286,10 @@ class SecCaptureStore:
 
     @staticmethod
     def _fsync_dir(path: Path) -> None:
-        try:
-            handle = os.open(path, os.O_RDONLY)
-        except OSError:
-            return
+        """A successful raw publication includes durable directory metadata."""
+        handle = os.open(path, os.O_RDONLY)
         try:
             os.fsync(handle)
-        except OSError:
-            pass
         finally:
             os.close(handle)
 
@@ -371,7 +375,20 @@ class SecCaptureStore:
         """
         committed: dict[str, str] = {}
         for record in self.envelopes():
-            committed[record["source_identity"]] = record["raw_object_sha256"]
+            object_id = record["raw_object_sha256"]
+            try:
+                body = self.read_object(object_id)
+            except (OSError, RawObjectConflict, ValueError) as exc:
+                raise SecStorageFailure("ENVELOPE_OBJECT_MISSING_OR_CORRUPT") from exc
+            if len(body) != record.get("byte_length"):
+                raise SecStorageFailure("ENVELOPE_OBJECT_LENGTH_MISMATCH")
+            identity = record["source_identity"]
+            prior = committed.get(identity)
+            if prior is not None and prior != object_id:
+                # Multiple source versions are legitimate, but a committed
+                # identity may never be reconstructed by silently choosing one.
+                raise SecStorageFailure("MULTIPLE_COMMITTED_OBJECTS_FOR_IDENTITY")
+            committed[identity] = object_id
         return committed
 
     def conflicts(self) -> list[dict[str, Any]]:
