@@ -1897,6 +1897,7 @@ class FingerprintTests(SecCaptureTestCase):
             mirror = Path(directory) / "repo"
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             target = mirror / "src" / "quant" / "dataplane" / "sec" / "collector.py"
             target.write_text(target.read_text() + "\n# acquisition semantics changed\n")
@@ -1909,6 +1910,7 @@ class FingerprintTests(SecCaptureTestCase):
             mirror = Path(directory) / "repo"
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             unit = mirror / "deploy" / "quant-sec-capture.service"
             unit.write_text(unit.read_text().replace("RestartSec=15", "RestartSec=120"))
@@ -1922,6 +1924,7 @@ class FingerprintTests(SecCaptureTestCase):
             mirror = Path(directory) / "repo"
             shutil.copytree(ROOT / "src", mirror / "src")
             shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
             before = acquisition_critical_fingerprint(self.policy(), root=mirror)
             # A downstream parser/normalizer, and an edit to a non-acquisition plane.
             (mirror / "src" / "quant" / "dataplane" / "form4_parser.py").write_text(
@@ -2676,29 +2679,42 @@ class LaunchProvenanceTests(SecCaptureTestCase):
         import quant_sec_supervisor as launcher
         # Exactly the state the old supervisor left just before launching a child.
         previous = {"fingerprint": "sha256:aaa", "last_child_exit_code": None,
-                    "supervisor_running": True, "supervisor_invocation_id": "inv-1"}
+                    "supervisor_running": True, "supervisor_invocation_id": "inv-1",
+                    "host_boot_id": "boot-A",
+                    "boot_at_utc": self.timebase.now().isoformat()}
         cause = launcher.classify(previous, "sha256:aaa", manual=False,
-                                  service_managed=True, invocation_id="inv-2")
+                                  service_managed=True, invocation_id="inv-2",
+                                  boot_id="boot-A", now=self.timebase.now())
         self.assertEqual(cause, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
         self.assertNotEqual(cause, SCHEDULED_START)
         # A clean prior exit under the same conditions is a scheduled start.
-        clean = dict(previous, supervisor_running=False, last_child_exit_code=0)
+        # A clean prior exit and the same host boot is an operator, not a schedule.
+        clean = dict(previous, supervisor_running=False, last_child_exit_code=0,
+                     last_child_exit_at_utc=self.timebase.now().isoformat())
         self.assertEqual(launcher.classify(clean, "sha256:aaa", manual=False,
-                                           service_managed=True, invocation_id="inv-2"),
-                         SCHEDULED_START)
+                                           service_managed=True, invocation_id="inv-2",
+                                           boot_id="boot-A", now=self.timebase.now()),
+                         MANUAL_START)
 
     def test_child_failure_and_deployment_remain_distinguishable(self) -> None:
         sys.path.insert(0, str(ROOT / "deploy"))
         import quant_sec_supervisor as launcher
+        now = self.timebase.now()
         child_failed = {"fingerprint": "sha256:aaa", "last_child_exit_code": 1,
-                        "supervisor_running": False, "supervisor_invocation_id": "inv-1"}
+                        "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                        "host_boot_id": "boot-A",
+                        "last_child_exit_at_utc": now.isoformat()}
         self.assertEqual(launcher.classify(child_failed, "sha256:aaa", manual=False,
-                                           service_managed=True, invocation_id="inv-1"),
+                                           service_managed=True, invocation_id="inv-1",
+                                           boot_id="boot-A", now=now),
                          AUTOMATIC_RESTART_AFTER_FAILURE)
         redeployed = {"fingerprint": "sha256:old", "last_child_exit_code": 0,
-                      "supervisor_running": False, "supervisor_invocation_id": "inv-1"}
+                      "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                      "host_boot_id": "boot-A",
+                      "last_child_exit_at_utc": now.isoformat()}
         self.assertEqual(launcher.classify(redeployed, "sha256:new", manual=False,
-                                           service_managed=True, invocation_id="inv-2"),
+                                           service_managed=True, invocation_id="inv-2",
+                                           boot_id="boot-A", now=now),
                          DEPLOYMENT_RESTART)
 
     def test_all_five_lifecycle_causes_are_reachable_and_classified(self) -> None:
@@ -3201,3 +3217,185 @@ class AuditAdversarialExtraTests(AuditFalsePassTests):
         self.assertLessEqual(report["obligations_resolved_by_attempt"], 2)
         self.assertGreaterEqual(report["obligations_unexplained"], 1)
         self.assertFalse(report["accountable"])
+
+
+# ---------------------------------------------------------------------------
+# A systemd launch is not a reason (Blue follow-up 1)
+# ---------------------------------------------------------------------------
+
+class OperatorRestartTests(SecCaptureTestCase):
+    """`systemctl restart` must not be able to hide behind a non-invalidating cause.
+
+    INVOCATION_ID proves systemd started the service; it says nothing about why.
+    An automatic action must therefore be positively demonstrated, and the only
+    positive reasons a cleanly stopped service can start are a host boot and the
+    first start of a deployment.
+    """
+
+    def launcher(self):
+        sys.path.insert(0, str(ROOT / "deploy"))
+        import quant_sec_supervisor as module
+        return module
+
+    def state(self, **overrides):
+        base = {"fingerprint": "sha256:fp", "last_child_exit_code": 0,
+                "supervisor_running": False, "supervisor_invocation_id": "inv-1",
+                "host_boot_id": "boot-A",
+                "last_child_exit_at_utc": self.timebase.now().isoformat()}
+        base.update(overrides)
+        return base
+
+    def classify(self, previous, **kwargs):
+        defaults = {"manual": False, "service_managed": True, "invocation_id": "inv-2",
+                    "boot_id": "boot-A", "now": self.timebase.now()}
+        defaults.update(kwargs)
+        return self.launcher().classify(previous, "sha256:fp", **defaults)
+
+    def test_an_operator_systemctl_restart_is_a_manual_start(self) -> None:
+        """The exact hole: systemd launched it, but an operator asked."""
+        self.assertEqual(self.classify(self.state()), MANUAL_START)
+
+    def test_a_host_reboot_is_a_scheduled_start(self) -> None:
+        """A boot-time launch is positively automatic: the kernel boot id moved."""
+        self.assertEqual(self.classify(self.state(), boot_id="boot-B"), SCHEDULED_START)
+
+    def test_the_first_start_of_a_deployment_is_a_scheduled_start(self) -> None:
+        """Not a restart after a stop or failure, so not an intervention."""
+        self.assertEqual(self.classify({}), SCHEDULED_START)
+
+    def test_an_automatic_restart_is_only_automatic_while_systemd_retries(self) -> None:
+        """Past the restart window systemd has given up, so a start is an operator."""
+        failed = self.state(last_child_exit_code=1)
+        self.assertEqual(self.classify(failed), AUTOMATIC_RESTART_AFTER_FAILURE)
+        # The same failed state, revisited long afterwards.
+        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
+        self.assertEqual(self.classify(failed, now=self.timebase.now()), MANUAL_START)
+
+    def test_a_dead_supervisor_outside_the_window_is_an_operator_restart(self) -> None:
+        dead = self.state(supervisor_running=True, last_child_exit_code=None,
+                          boot_at_utc=self.timebase.now().isoformat())
+        self.assertEqual(self.classify(dead),
+                         AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE)
+        self.timebase.advance(self.launcher().AUTOMATIC_RESTART_WINDOW_SECONDS + 60)
+        self.assertEqual(self.classify(dead, now=self.timebase.now()), MANUAL_START)
+
+    def test_a_malformed_state_without_timing_falls_to_manual(self) -> None:
+        """No exit timestamp means no demonstration, so the safe answer wins."""
+        failed = {"fingerprint": "sha256:fp", "last_child_exit_code": 1,
+                  "host_boot_id": "boot-A"}
+        self.assertEqual(self.classify(failed), MANUAL_START)
+
+    def test_a_deployment_still_wins_over_an_operator_restart(self) -> None:
+        """A changed fingerprint is a deployment whoever typed the command."""
+        self.assertEqual(
+            self.launcher().classify(self.state(fingerprint="sha256:old"), "sha256:new",
+                                     manual=False, service_managed=True,
+                                     invocation_id="inv-2", boot_id="boot-A",
+                                     now=self.timebase.now()),
+            DEPLOYMENT_RESTART)
+
+    def test_the_host_boot_id_is_read_from_the_kernel(self) -> None:
+        from quant.dataplane.sec.supervisor import host_boot_id
+        self.assertTrue(host_boot_id(), "this host should expose a boot id")
+        self.assertIsNone(host_boot_id("/nonexistent/boot_id"))
+
+
+# ---------------------------------------------------------------------------
+# The materialized fingerprint must be the active one (Blue follow-up 2)
+# ---------------------------------------------------------------------------
+
+class MaterializedFingerprintTests(CollectorTestCase):
+    """Existence was never the question.
+
+    A materialized manifest describing a different build than the one running is
+    worse than none: it presents a frozen state the service does not have. That is
+    how a stale fingerprint reached a published rodage artifact.
+    """
+
+    def qualifying(self):
+        import random
+        policy = self.policy()
+        return SecForm4Collector(
+            self.paths, policy=policy, transport=FakeTransport(self.fixture_router()),
+            timebase=self.timebase,
+            budget=SecTrafficBudget(self.paths.sec_budget, policy, timebase=self.timebase,
+                                    rng=random.Random(17)),
+            root=ROOT, environ={**SERVICE_MANAGED_ENV,
+                                "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                "QUANT_SEC_BOOT_ID": "boot-fp",
+                                "QUANT_SEC_QUALIFYING_MODE": "1"})
+
+    def test_readiness_blocks_when_nothing_is_materialized(self) -> None:
+        collector = self.qualifying()
+        self.assertIsNone(collector.materialized_fingerprint())
+        readiness = collector.t0_readiness()
+        self.assertIn("FINGERPRINT_NOT_MATERIALIZED", readiness["blockers"])
+        self.assertFalse(readiness["fingerprint_matches_materialized"])
+
+    def test_readiness_blocks_when_the_materialized_fingerprint_is_stale(self) -> None:
+        """The defect: a manifest on disk from a previous build."""
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        self.assertEqual(collector.materialized_fingerprint(), collector.fingerprint)
+
+        # A deployment changed acquisition code; the manifest on disk did not move.
+        stale = json.loads(self.paths.sec_fingerprint.read_text(encoding="utf-8"))
+        stale["acquisition_critical_fingerprint"] = "sha256:" + "0" * 64
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+
+        reborn = self.qualifying()
+        readiness = reborn.t0_readiness()
+        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH", readiness["blockers"])
+        self.assertNotIn("FINGERPRINT_NOT_MATERIALIZED", readiness["blockers"])
+        self.assertFalse(readiness["instrumentation_ready"])
+        self.assertFalse(readiness["fingerprint_matches_materialized"])
+        self.assertNotEqual(readiness["materialized_fingerprint"],
+                            readiness["acquisition_critical_fingerprint"])
+
+    def test_telemetry_surfaces_the_mismatch_on_a_live_service(self) -> None:
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        self.assertTrue(collector.telemetry()["fingerprint_matches_materialized"])
+        stale = json.loads(self.paths.sec_fingerprint.read_text(encoding="utf-8"))
+        stale["acquisition_critical_fingerprint"] = "sha256:" + "1" * 64
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+        self.assertFalse(self.qualifying().telemetry()["fingerprint_matches_materialized"])
+
+    def test_rematerializing_after_a_change_clears_the_blocker(self) -> None:
+        collector = self.qualifying()
+        stale = {"acquisition_critical_fingerprint": "sha256:" + "2" * 64}
+        self.paths.ensure_sec()
+        self.paths.sec_fingerprint.write_text(json.dumps(stale, indent=2, sort_keys=True))
+        self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                      collector.t0_readiness()["blockers"])
+        collector.materialize_fingerprint()
+        self.assertNotIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                         collector.t0_readiness()["blockers"])
+        self.assertTrue(collector.t0_readiness()["fingerprint_matches_materialized"])
+
+    def test_a_changed_acquisition_module_makes_the_materialized_fingerprint_stale(self) -> None:
+        """End to end: the check catches exactly the visibility.py case."""
+        import shutil, tempfile
+        collector = self.qualifying()
+        collector.materialize_fingerprint()
+        with tempfile.TemporaryDirectory() as directory:
+            mirror = Path(directory) / "repo"
+            shutil.copytree(ROOT / "src", mirror / "src")
+            shutil.copytree(ROOT / "deploy", mirror / "deploy")
+            shutil.copytree(ROOT / "scripts", mirror / "scripts")
+            target = mirror / "src" / "quant" / "dataplane" / "sec" / "visibility.py"
+            target.write_text(target.read_text() + "\n# firewall rule changed\n")
+            import random
+            policy = self.policy()
+            moved = SecForm4Collector(
+                self.paths, policy=policy,
+                transport=FakeTransport(self.fixture_router()), timebase=self.timebase,
+                budget=SecTrafficBudget(self.paths.sec_budget, policy,
+                                        timebase=self.timebase, rng=random.Random(17)),
+                root=mirror, environ={**SERVICE_MANAGED_ENV,
+                                      "QUANT_SEC_LIFECYCLE_CAUSE": SCHEDULED_START,
+                                      "QUANT_SEC_BOOT_ID": "boot-fp",
+                                      "QUANT_SEC_QUALIFYING_MODE": "1"})
+            self.assertNotEqual(moved.fingerprint, collector.fingerprint)
+            self.assertIn("FINGERPRINT_MATERIALIZED_MISMATCH",
+                          moved.t0_readiness()["blockers"])

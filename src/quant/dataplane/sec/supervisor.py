@@ -22,6 +22,18 @@ invocation knows the previous one died, and reports
 ``AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE`` rather than inheriting a clean
 ``SCHEDULED_START``.
 
+**A service manager launch is not yet a reason.** ``INVOCATION_ID`` proves systemd
+started the service; it says nothing about why. An operator typing
+``systemctl restart quant-sec-capture`` therefore looked identical to a scheduled
+start. The classification no longer accepts "systemd did it" as evidence of an
+automatic action: it requires a positive reason, and falls to ``MANUAL_START``
+otherwise. The two positive reasons a healthy service can be started for are a
+host boot - visible because the kernel's boot id changed - and the very first
+start of a deployment. Anything else on a cleanly stopped service is an operator,
+and an automatic restart after a failure is only automatic while it is still
+inside the restart window the unit declares; after that systemd has given up and
+a new start is again an operator.
+
 **Effective service timing is bound.** Wake cadence, termination controls and
 restart pacing change the expected acquisition timeline without touching any
 source file, so they are exported by the launcher and folded into the fingerprint
@@ -73,6 +85,11 @@ INVOCATION_ID_ENV = "INVOCATION_ID"
 QUALIFYING_ENV = "QUANT_SEC_QUALIFYING_MODE"
 
 #: Effective service configuration the launcher exports for the fingerprint.
+#: Kernel-supplied identity of the current host boot. It changes on every boot
+#: and an operator cannot omit it, which is what lets a boot-time start be told
+#: apart from an operator restart.
+HOST_BOOT_ID_PATH = "/proc/sys/kernel/random/boot_id"
+
 SERVICE_POLL_SECONDS_ENV = "QUANT_SEC_SERVICE_POLL_SECONDS"
 SERVICE_MAX_WAITS_ENV = "QUANT_SEC_SERVICE_MAX_WAITS"
 SERVICE_RESTART_DELAY_ENV = "QUANT_SEC_SERVICE_RESTART_DELAY_SECONDS"
@@ -86,6 +103,15 @@ SERVICE_DEFINITION_FILES: tuple[str, ...] = (
     "deploy/quant-sec-capture.service",
     "deploy/quant_sec_supervisor.py",
 )
+
+
+def host_boot_id(path: str = HOST_BOOT_ID_PATH) -> str | None:
+    """The kernel's identity for this host boot, or None where unavailable."""
+    try:
+        value = Path(path).read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    return value or None
 
 
 def service_manager_provenance(environ: dict[str, str] | None = None) -> dict[str, Any]:

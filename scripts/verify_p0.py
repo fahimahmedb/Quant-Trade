@@ -36,7 +36,8 @@ ARTIFACT = ROOT / "handoff" / "SEC_FORM4_P0_VERIFICATION.json"
 #: Files whose content the recorded result actually depends on. A digest over
 #: these is what makes the record checkable: the commit containing the record
 #: cannot name its own SHA, but it can pin the tree it was produced from.
-VERIFIED_TREES = ("src", "tests", "scripts")
+# deploy carries the unit and launcher, which are fingerprint-critical.
+VERIFIED_TREES = ("src", "tests", "scripts", "deploy")
 
 SUITES = {
     "full_unit_suite": ["python3", "-m", "unittest", "discover", "-s", "tests"],

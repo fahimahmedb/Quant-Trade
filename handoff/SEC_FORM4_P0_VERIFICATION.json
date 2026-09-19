@@ -23,9 +23,9 @@
   "network_requests_made": 0,
   "note": "Counts here are counts of tests and checks. Nothing in this artifact describes captured SEC data, and no SEC request is made while producing it.",
   "purpose": "Reproducible record of the verification actually executed, so the test claim on the pull request is checkable from the repository rather than asserted in prose.",
-  "recorded_at_utc": "2026-09-18T20:03:37.167465+00:00",
+  "recorded_at_utc": "2026-09-19T01:04:59.563576+00:00",
   "sec_identity_configured_during_verification": false,
-  "sec_p0_lane_tests_discovered": 193,
+  "sec_p0_lane_tests_discovered": 206,
   "suites": {
     "full_unit_suite": {
       "command": "python3 -m unittest discover -s tests",
@@ -40,7 +40,7 @@
       "result": "PASS"
     }
   },
-  "tests_discovered": 297,
-  "verified_sha": "d23ab945d33da6893223998fa2994989c51d080b",
-  "verified_tree_digest": "sha256:418d9b4a0c3949f5f5176b753089a43108462d16376fb45a9392f8948ca683f9"
+  "tests_discovered": 310,
+  "verified_sha": "1450af4a7352ccbe938030a49f774c33b7d61a80",
+  "verified_tree_digest": "sha256:36e5f26720f907b40aac81b40a26bff05d155e305b00c2366fa1a71266ef6858"
 }

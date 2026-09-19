@@ -75,11 +75,17 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         return 2
     if args.command == "sec-fingerprint":
         payload = collector.materialize_fingerprint()
+        # The effective service configuration is part of the manifest, so the
+        # fingerprint depends on the environment this ran in. Printed so a
+        # hand-run outside the service environment is visibly a different freeze.
         print(json.dumps({"acquisition_critical_fingerprint":
                           payload["acquisition_critical_fingerprint"],
                           "materialized_at_utc": payload["materialized_at_utc"],
                           "git_commit": payload["git_commit"],
-                          "manifest_members": sorted(payload["manifest"])},
+                          "manifest_members": sorted(payload["manifest"]),
+                          "effective_service_invocation":
+                          payload["manifest"]["supervisor"][
+                              "effective_service_invocation"]},
                          indent=2, sort_keys=True))
         return 0
     if args.command == "sec-serve":

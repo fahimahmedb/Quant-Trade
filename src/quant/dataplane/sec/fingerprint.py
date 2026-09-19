@@ -72,6 +72,12 @@ ACQUISITION_CRITICAL_MODULES: tuple[str, ...] = (
     # is the one that stays available later.
     "src/quant/dataplane/sec/audit.py",
     "src/quant/clock.py",
+    # The service entry point. `sec-serve` binds the clock's wake cadence into
+    # system.serve(), so it decides how often a due poll is noticed - acquisition
+    # timing, in a file no source digest covered until now. Membership may only be
+    # narrowed before the first qualifying t0, so it is added while that is still
+    # possible rather than left for an incident to find.
+    "scripts/quant.py",
 )
 
 # --- policy field classification -------------------------------------------

@@ -340,11 +340,20 @@ class SecForm4Collector:
             blockers.append("INVALIDATING_LIFECYCLE_CAUSE")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
-        if not self.paths.sec_fingerprint.exists():
+        materialized = self.materialized_fingerprint()
+        if materialized is None:
             blockers.append("FINGERPRINT_NOT_MATERIALIZED")
+        elif materialized != self.fingerprint:
+            # Existence was never the question. A materialized manifest that
+            # describes a different build than the one running is worse than none,
+            # because it presents a frozen state the service does not have. This
+            # is what let a stale fingerprint reach a published rodage artifact.
+            blockers.append("FINGERPRINT_MATERIALIZED_MISMATCH")
         return {"instrumentation_ready": not blockers,
                 "blockers": blockers,
                 "acquisition_critical_fingerprint": self.fingerprint,
+                "materialized_fingerprint": materialized,
+                "fingerprint_matches_materialized": materialized == self.fingerprint,
                 "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
                 "boot_id": self.lifecycle.get("boot_id"),
                 "service_managed": self.lifecycle.get("service_managed"),
@@ -355,6 +364,13 @@ class SecForm4Collector:
                 # This lane never declares t0 or closes the continuity state.
                 "t0_authority": "BLUE_TEAM",
                 "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
+
+    def materialized_fingerprint(self) -> str | None:
+        """The fingerprint recorded on disk, or None if nothing is materialized."""
+        payload = read_json(self.paths.sec_fingerprint)
+        if not payload:
+            return None
+        return payload.get("acquisition_critical_fingerprint")
 
     def materialize_fingerprint(self) -> dict[str, Any]:
         """Write the manifest and its fingerprint durably, before t0."""
@@ -1157,6 +1173,9 @@ class SecForm4Collector:
             "policy": self.policy.to_dict() if self.policy else None,
             "outage_seconds": self._outage_seconds(),
             "acquisition_critical_fingerprint": self.fingerprint,
+            "materialized_fingerprint": self.materialized_fingerprint(),
+            "fingerprint_matches_materialized":
+                self.materialized_fingerprint() == self.fingerprint,
             "scheduler_state": self.scheduler_state() if self.configured else
                                BLOCKED_NOT_CONFIGURED,
             "next_due_at_utc": self.next_due_at(),

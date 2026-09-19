@@ -24,6 +24,26 @@ previous one still marked running, under a different identity, reports
 ``last_child_exit_code = null`` written before launch and concluded
 ``SCHEDULED_START``.
 
+**A systemd launch is not a reason.** ``INVOCATION_ID`` shows that systemd started
+the service, not why, so ``systemctl restart quant-sec-capture`` typed by a human
+used to classify as ``SCHEDULED_START``. The rule is now that an automatic action
+must be positively demonstrated. A cleanly stopped service can legitimately be
+started by a host boot, visible because the kernel's boot id changed, or by being
+the first start of a deployment; anything else is an operator. An automatic restart
+after a failure counts as automatic only while it is still inside the window the
+unit's ``RestartSec``/``StartLimitBurst`` imply - past that systemd has given up,
+so a new start is an operator acting on a stopped service, which is exactly the
+case §5.2 says invalidates the window.
+
+**The service materializes its own fingerprint.** Effective service configuration
+is part of the manifest, so a fingerprint materialized by hand in a different
+environment is one the running service can never match - and readiness now refuses
+to start a window on a manifest that describes a different build. The supervisor
+therefore materializes the manifest itself, in the exact child environment, and
+only when nothing is materialized yet. Leaving an existing manifest alone is the
+point: a deployment that changes acquisition semantics must surface as a mismatch
+rather than silently re-freeze itself mid-window.
+
 **Effective timing is frozen or refused.** ``--poll-seconds`` changes the wake
 cadence and ``--max-waits`` bounds the service lifetime, neither of which shows up
 in a source-file digest. In qualifying mode both are refused: cadence comes from
@@ -96,13 +116,33 @@ def current_fingerprint(root: Path, environ: dict) -> str | None:
         return None
 
 
+#: How long after a failure a new start can still be systemd's own restart rather
+#: than an operator's. Derived from the unit's RestartSec with margin for the
+#: StartLimitBurst sequence; past it systemd has stopped trying.
+AUTOMATIC_RESTART_WINDOW_SECONDS = RESTART_DELAY_SECONDS * 4
+
+
+def _seconds_since(stamp: str | None, now: datetime | None = None) -> float | None:
+    if not stamp:
+        return None
+    try:
+        when = datetime.fromisoformat(stamp)
+    except ValueError:
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=timezone.utc)
+    return ((now or datetime.now(timezone.utc)) - when).total_seconds()
+
+
 def classify(previous: dict, fingerprint: str | None, *, manual: bool,
-             service_managed: bool, invocation_id: str | None) -> str:
+             service_managed: bool, invocation_id: str | None,
+             boot_id: str | None = None, now: datetime | None = None) -> str:
     """Decide why this instance is starting.
 
-    Order matters. Anything that cannot be shown to be an automatic action by a
-    real service manager falls to ``MANUAL_START``, which is the conservative
-    answer because it is the one that invalidates the window.
+    An automatic action must be *positively* demonstrated. Being launched by a
+    service manager is not such a demonstration - ``INVOCATION_ID`` says systemd
+    started the service, never why - so everything that cannot be shown automatic
+    falls to ``MANUAL_START``, the answer that invalidates the observation window.
     """
     from quant.dataplane.sec.supervisor import (
         AUTOMATIC_RESTART_AFTER_FAILURE, AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE,
@@ -115,16 +155,58 @@ def classify(previous: dict, fingerprint: str | None, *, manual: bool,
         return MANUAL_START
     if fingerprint and previous.get("fingerprint") and fingerprint != previous["fingerprint"]:
         return DEPLOYMENT_RESTART
+
+    # An automatic restart is bounded in time. Inside the window it is systemd
+    # retrying; outside it systemd has given up, so a start is an operator acting
+    # on a stopped service.
+    elapsed = _seconds_since(previous.get("last_child_exit_at_utc")
+                             or previous.get("boot_at_utc"), now)
+    within_restart_window = elapsed is not None and elapsed <= AUTOMATIC_RESTART_WINDOW_SECONDS
+
     if previous.get("supervisor_running") and previous.get("supervisor_invocation_id") \
             and previous.get("supervisor_invocation_id") != invocation_id:
         # A previous supervisor was still marked running under a different
         # invocation, so it died rather than exiting cleanly.
-        return AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE
+        return (AUTOMATIC_RESTART_AFTER_SUPERVISOR_FAILURE if within_restart_window
+                else MANUAL_START)
     if previous.get("last_child_exit_code") not in (0, None):
-        return AUTOMATIC_RESTART_AFTER_FAILURE
+        return (AUTOMATIC_RESTART_AFTER_FAILURE if within_restart_window else MANUAL_START)
     if not previous:
+        # First start of this deployment. Not a restart "after a stop or failure",
+        # so it is the scheduled beginning rather than an intervention.
         return SCHEDULED_START
-    return SCHEDULED_START
+    if boot_id and previous.get("host_boot_id") and boot_id != previous["host_boot_id"]:
+        # The host rebooted and the unit started at boot: positively automatic.
+        return SCHEDULED_START
+
+    # A cleanly stopped service, same host boot, no failure to retry. systemd does
+    # not do this on its own, so someone asked it to.
+    return MANUAL_START
+
+
+def materialize_if_absent(root: Path, environment: dict) -> str | None:
+    """Freeze the manifest in the child's own environment, once per deployment.
+
+    Returns the fingerprint when it wrote one, else None. Never overwrites: the
+    readiness mismatch is the signal a deployment changed acquisition semantics,
+    and a supervisor that re-froze on every launch would erase it.
+    """
+    fingerprint_file = Path(root) / "var" / "sec" / "acquisition_fingerprint.json"
+    if fingerprint_file.exists():
+        return None
+    completed = subprocess.run(
+        [sys.executable, str(Path(root) / "scripts" / "quant.py"), "sec-fingerprint",
+         "--root", str(root)],
+        env=environment, cwd=str(root), capture_output=True, text=True)
+    if completed.returncode != 0:
+        print(f"[supervisor] could not materialize the fingerprint: "
+              f"{(completed.stderr or '').strip().splitlines()[-1:] or ''}", flush=True)
+        return None
+    try:
+        return json.loads(fingerprint_file.read_text(encoding="utf-8"))[
+            "acquisition_critical_fingerprint"]
+    except (OSError, json.JSONDecodeError, KeyError):
+        return None
 
 
 class QualifyingModeViolation(SystemExit):
@@ -149,9 +231,11 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.root.resolve()
-    from quant.dataplane.sec.supervisor import service_manager_provenance
+    from quant.dataplane.sec.supervisor import (host_boot_id,
+                                                service_manager_provenance)
 
     managed = service_manager_provenance(os.environ)
+    boot_id = host_boot_id()
 
     # --- qualifying-mode gate ------------------------------------------------
     if args.qualifying:
@@ -208,7 +292,7 @@ def main() -> int:
             fingerprint = current_fingerprint(root, environment)
             cause = classify(previous, fingerprint, manual=args.manual and launches == 0,
                              service_managed=managed["service_managed"],
-                             invocation_id=invocation_id)
+                             invocation_id=invocation_id, boot_id=boot_id)
             boot_id = uuid.uuid4().hex[:16]
             boot_at = utc_now()
             environment.update({
@@ -227,6 +311,9 @@ def main() -> int:
                 # supervisor that dies leaves this true and its successor can tell.
                 "supervisor_running": True,
                 "supervisor_invocation_id": invocation_id,
+                # Compared on the next start to tell a boot-time launch from an
+                # operator restart of a healthy service.
+                "host_boot_id": boot_id,
                 "service_managed": managed["service_managed"],
                 "qualifying_mode": bool(args.qualifying),
                 "effective_poll_seconds": poll_seconds,
@@ -237,6 +324,13 @@ def main() -> int:
                        "--root", str(root), "--poll-seconds", str(poll_seconds)]
             if args.max_waits is not None:
                 command += ["--max-waits", str(args.max_waits)]
+            # Materialize the manifest in the environment the child will run in,
+            # and only when none exists. An existing manifest is never overwritten:
+            # a mid-window semantic change has to show up as a readiness mismatch.
+            materialized = materialize_if_absent(root, environment)
+            if materialized:
+                print(f"[supervisor] materialized acquisition fingerprint "
+                      f"{materialized[:23]}...", flush=True)
             print(f"[supervisor] launching boot={boot_id} cause={cause} "
                   f"qualifying={bool(args.qualifying)} managed={managed['service_managed']}",
                   flush=True)
