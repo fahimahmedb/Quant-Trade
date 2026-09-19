@@ -23,13 +23,15 @@ from __future__ import annotations
 import fcntl
 import os
 import random
+import hashlib
+import json
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterator
 
-from ...state import parse_ts, read_json, write_json
+from ...state import append_jsonl, parse_ts, read_json, read_jsonl, write_json
 from .policy import SecAccessPolicy
 from .timebase import Timebase
 
@@ -73,15 +75,49 @@ class SecTrafficBudget:
         self.rng = rng or random.Random()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.lock_path = self.path.with_suffix(".lock")
+        self.commit_path = self.path.with_suffix(".commits.jsonl")
+        # Pre-t0 migration of an existing budget is explicit in the ledger.
+        # After this baseline every mutation is digest-bound.
+        if self.path.exists() and not self.commit_path.exists():
+            payload = read_json(self.path)
+            if not isinstance(payload, dict):
+                raise RuntimeError("BUDGET_STATE_INVALID")
+            append_jsonl(self.commit_path, {
+                "event": "PRE_T0_BASELINE_MIGRATION",
+                "digest": self._digest(payload),
+                "recorded_at_utc": self.timebase.now_iso(),
+            })
 
     # --- durable state -----------------------------------------------------
+    @staticmethod
+    def _digest(payload: dict[str, Any]) -> str:
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        return "sha256:" + hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
     def load(self) -> BudgetState:
-        payload = read_json(self.path) or {}
-        known = {field: payload[field] for field in BudgetState().to_dict() if field in payload}
-        return BudgetState(**known)
+        payload = read_json(self.path)
+        commits = list(read_jsonl(self.commit_path))
+        if payload is None:
+            if commits:
+                raise RuntimeError("BUDGET_STATE_MISSING_WITH_COMMIT_HISTORY")
+            return BudgetState()
+        if not isinstance(payload, dict):
+            raise RuntimeError("BUDGET_STATE_INVALID")
+        expected = set(BudgetState().to_dict())
+        if set(payload) != expected:
+            raise RuntimeError("BUDGET_STATE_SCHEMA_MISMATCH")
+        if not commits or commits[-1].get("digest") != self._digest(payload):
+            raise RuntimeError("BUDGET_STATE_UNCOMMITTED_OR_ROLLED_BACK")
+        return BudgetState(**payload)
 
     def save(self, state: BudgetState) -> None:
-        write_json(self.path, state.to_dict())
+        payload = state.to_dict()
+        write_json(self.path, payload)
+        append_jsonl(self.commit_path, {
+            "event": "STATE_COMMITTED",
+            "digest": self._digest(payload),
+            "recorded_at_utc": self.timebase.now_iso(),
+        })
 
     @contextmanager
     def _exclusive(self) -> Iterator[None]:
