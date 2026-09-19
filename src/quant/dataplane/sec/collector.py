@@ -24,6 +24,7 @@ whose envelope is already durable costs zero requests.
 
 from __future__ import annotations
 
+import re
 import uuid
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta
@@ -31,7 +32,8 @@ from pathlib import Path
 from typing import Any, Callable
 
 from ...paths import QuantPaths
-from ...state import parse_ts, read_json, write_json, append_jsonl
+from ...state import (append_jsonl, parse_ts, read_json, read_jsonl, write_json,
+                      write_json_exclusive)
 from .budget import SecCooldownActive, SecTrafficBudget, seconds_from_retry_after
 from .fingerprint import acquisition_critical_fingerprint, build_manifest, compute_fingerprint
 from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
@@ -317,12 +319,24 @@ class SecForm4Collector:
         self.record_current_state(cause, detail=self.lifecycle.get("lifecycle_cause"))
         return record
 
-    def t0_readiness(self) -> dict[str, Any]:
-        """Whether the pre-t0 instrumentation is in place. Blue decides t0, not this.
+    def _state_proof_findings(self) -> list[str]:
+        """Cross-check mutable state against append-only acquisition authority."""
+        findings: list[str] = []
+        try:
+            latest = self.scheduler.latest()
+            if latest is not None and latest.get("obligation_id") != self.state.open_obligation_id:
+                findings.append("COLLECTOR_STATE_SCHEDULER_MISMATCH")
+            attempts = self.store.attempts()
+            if attempts:
+                newest = attempts[-1].get("request_attempted_at_utc")
+                if newest != self.state.last_attempt_at_utc:
+                    findings.append("COLLECTOR_STATE_ATTEMPT_MISMATCH")
+        except (OSError, ValueError, KeyError, SecStorageFailure):
+            findings.append("ACQUISITION_JOURNAL_INVALID")
+        return findings
 
-        Reported, never acted on: the collector does not start or stop an
-        observation window, it only says what is and is not yet true.
-        """
+    def t0_readiness(self) -> dict[str, Any]:
+        """Fail-closed pre-t0 readiness. Blue remains the only t0 authority."""
         blockers: list[str] = []
         if not self.configured:
             blockers.append("SEC_IDENTITY_NOT_CONFIGURED")
@@ -331,67 +345,124 @@ class SecForm4Collector:
         if not self.lifecycle.get("externally_attested"):
             blockers.append("LIFECYCLE_CAUSE_UNATTESTED")
         if not self.lifecycle.get("service_managed"):
-            # No recognised service manager launched this process, so its start
-            # cause rests on the operator's word rather than on provenance.
             blockers.append("LAUNCH_NOT_SERVICE_MANAGED")
         if not self.lifecycle.get("qualifying_service_mode"):
             blockers.append("NOT_QUALIFYING_SERVICE_MODE")
         if self.lifecycle.get("invalidates_observation_window"):
             blockers.append("INVALIDATING_LIFECYCLE_CAUSE")
+        if not self.lifecycle.get("boot_id") or not self.lifecycle.get("boot_at_utc") \
+                or not self.lifecycle.get("supervisor_id"):
+            blockers.append("LIFECYCLE_IDENTITY_INCOMPLETE")
+        effective = self.lifecycle.get("effective_service_configuration") or {}
+        if effective.get("effective_unit_digest") in (None, "", "UNATTESTED"):
+            blockers.append("SERVICE_DEFINITION_NOT_ATTESTED")
+        if not self.state.enabled:
+            blockers.append("COLLECTOR_DISABLED")
+        if self.liveness() != RUNNING:
+            blockers.append("COLLECTOR_NOT_LIVE")
+        if self.state.coverage_state != COMPLETE or self.state.open_gaps:
+            blockers.append("COVERAGE_NOT_COMPLETE")
         if not self.scheduler.all():
             blockers.append("NO_SCHEDULER_PROVENANCE")
+
         materialized = self.materialized_fingerprint()
         if materialized is None:
             blockers.append("FINGERPRINT_NOT_MATERIALIZED")
         elif materialized != self.fingerprint:
-            # Existence was never the question. A materialized manifest that
-            # describes a different build than the one running is worse than none,
-            # because it presents a frozen state the service does not have. This
-            # is what let a stale fingerprint reach a published rodage artifact.
             blockers.append("FINGERPRINT_MATERIALIZED_MISMATCH")
-        return {"instrumentation_ready": not blockers,
-                "blockers": blockers,
-                "acquisition_critical_fingerprint": self.fingerprint,
-                "materialized_fingerprint": materialized,
-                "fingerprint_matches_materialized": materialized == self.fingerprint,
-                "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
-                "boot_id": self.lifecycle.get("boot_id"),
-                "service_managed": self.lifecycle.get("service_managed"),
-                "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
-                "effective_service_configuration": self.lifecycle.get(
-                    "effective_service_configuration"),
-                "scheduler_transitions_recorded": len(self.scheduler.all()),
-                # This lane never declares t0 or closes the continuity state.
-                "t0_authority": "BLUE_TEAM",
-                "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS"}
+
+        blockers.extend(self._state_proof_findings())
+        try:
+            from .audit import audit_observation_window
+            report = audit_observation_window(self)
+            blockers.extend(report.get("findings") or [])
+        except Exception:
+            blockers.append("ACQUISITION_AUDIT_FAILED_CLOSED")
+
+        blockers = sorted(set(blockers))
+        return {
+            "instrumentation_ready": not blockers,
+            "blockers": blockers,
+            "acquisition_critical_fingerprint": self.fingerprint,
+            "materialized_fingerprint": materialized,
+            "fingerprint_matches_materialized": materialized == self.fingerprint,
+            "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
+            "service_managed": self.lifecycle.get("service_managed"),
+            "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
+            "scheduler_provenance_present": bool(self.scheduler.all()),
+            "t0_authority": "BLUE_TEAM",
+            "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
+        }
 
     def materialized_fingerprint(self) -> str | None:
-        """The fingerprint recorded on disk, or None if nothing is materialized."""
-        payload = read_json(self.paths.sec_fingerprint)
-        if not payload:
+        """Validate the stored manifest itself, never its claimed digest alone."""
+        if not self.paths.sec_fingerprint.exists():
             return None
-        return payload.get("acquisition_critical_fingerprint")
+        try:
+            payload = read_json(self.paths.sec_fingerprint)
+            manifest = payload["manifest"]
+            declared = payload["acquisition_critical_fingerprint"]
+            active_manifest = build_manifest(self.policy, root=self.root, environ=self._environ)
+            valid = (
+                payload.get("schema") == "p0_materialization/v2"
+                and compute_fingerprint(manifest) == declared
+                and manifest == active_manifest
+                and declared == self.fingerprint
+            )
+            return declared if valid else "INVALID"
+        except (OSError, ValueError, TypeError, KeyError):
+            return "INVALID"
 
     def materialize_fingerprint(self) -> dict[str, Any]:
-        """Write the manifest and its fingerprint durably, before t0."""
+        """Create once; an existing mismatch is a blocker, never auto-repaired."""
         if self.policy is None:
             raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
+        if self.paths.sec_fingerprint.exists():
+            existing = self.materialized_fingerprint()
+            if existing != self.fingerprint:
+                raise SecStorageFailure("FINGERPRINT_MATERIALIZED_MISMATCH")
+            payload = read_json(self.paths.sec_fingerprint)
+            if not isinstance(payload, dict):
+                raise SecStorageFailure("FINGERPRINT_MATERIALIZED_INVALID")
+            return payload
+
         manifest = build_manifest(self.policy, root=self.root, environ=self._environ)
         fingerprint = compute_fingerprint(manifest)
-        payload = {"acquisition_critical_fingerprint": fingerprint,
-                   "materialized_at_utc": self.timebase.now_iso(),
-                   "collector_version": self.store.collector_version,
-                   "git_commit": self.store.git_commit,
-                   "manifest": manifest}
-        write_json(self.paths.sec_fingerprint, payload)
+        payload = {
+            "schema": "p0_materialization/v2",
+            "acquisition_critical_fingerprint": fingerprint,
+            "materialized_at_utc": self.timebase.now_iso(),
+            "collector_version": self.store.collector_version,
+            "git_commit": self.store.git_commit,
+            "manifest": manifest,
+        }
+        try:
+            write_json_exclusive(self.paths.sec_fingerprint, payload)
+        except FileExistsError:
+            if self.materialized_fingerprint() != fingerprint:
+                raise SecStorageFailure("FINGERPRINT_MATERIALIZATION_RACE_MISMATCH")
+            return read_json(self.paths.sec_fingerprint)
         self.fingerprint = fingerprint
         return payload
 
+    def require_active_integrity(self) -> None:
+        """Gate every qualifying send, not just a later readiness report."""
+        if self.lifecycle.get("qualifying_service_mode"):
+            if self.materialized_fingerprint() != self.fingerprint:
+                raise SecStorageFailure("FINGERPRINT_MATERIALIZED_MISMATCH")
+            if self.lifecycle.get("effective_service_configuration", {}).get(
+                    "effective_unit_digest") in (None, "", "UNATTESTED"):
+                raise SecStorageFailure("SERVICE_DEFINITION_NOT_ATTESTED")
+
     # --- durable state -----------------------------------------------------
     def _load_state(self) -> CollectorState:
-        payload = read_json(self.paths.sec_collector_state) or {}
-        known = {name: payload[name] for name in CollectorState().to_dict() if name in payload}
-        return CollectorState(**known)
+        payload = read_json(self.paths.sec_collector_state)
+        if payload is None:
+            return CollectorState()
+        expected = set(CollectorState().to_dict())
+        if not isinstance(payload, dict) or set(payload) != expected:
+            raise SecStorageFailure("COLLECTOR_STATE_SCHEMA_INVALID")
+        return CollectorState(**payload)
 
     def save(self) -> None:
         write_json(self.paths.sec_collector_state, self.state.to_dict())
@@ -467,7 +538,7 @@ class SecForm4Collector:
             return STALE
         elapsed = (self.timebase.now() - parse_ts(self.state.last_attempt_at_utc)).total_seconds()
         allowance = max(self.policy.discovery_poll_seconds * 3, self.cooldown_remaining() + 60)
-        return RUNNING if elapsed <= allowance else STALE
+        return RUNNING if 0 <= elapsed <= allowance else STALE
 
     # --- the single SEC request path ---------------------------------------
     def _request(self, kind: str, path: str, url: str, *, poll_id: str | None = None,
@@ -480,8 +551,15 @@ class SecForm4Collector:
         ``NO_NEW_DATA``, ``REQUEST_FAILED`` and ``COLLECTOR_DID_NOT_RUN``
         distinguishable afterwards.
         """
+        self.require_active_integrity()
         endpoint_class = endpoint_class_for(kind)
         attempt_id = self.store.new_attempt_id()
+        obligation_id = self.state.open_obligation_id
+        append_jsonl(self.paths.sec_request_intents, {
+            "event": "INTENT", "attempt_id": attempt_id,
+            "obligation_id": obligation_id, "endpoint_class": endpoint_class,
+            "recorded_at_utc": self.timebase.now_iso(),
+        })
         locator_digest = self.store.record_locator(
             locator=url, source_identity=source_identity, endpoint_class=endpoint_class,
             observed_at_utc=self.timebase.now_iso(), poll_id=poll_id,
@@ -494,8 +572,13 @@ class SecForm4Collector:
                 request_attempted_at_utc=extra.pop("attempted_at", self.timebase.now_iso()),
                 result_state=result_state, collector_version=self.store.collector_version,
                 git_commit=self.store.git_commit, poll_id=poll_id, page_start=page_start,
-                **extra)
+                obligation_id=obligation_id, **extra)
             self.store.record_attempt(record)
+            append_jsonl(self.paths.sec_request_intents, {
+                "event": "FINISHED", "attempt_id": attempt_id,
+                "obligation_id": obligation_id,
+                "recorded_at_utc": self.timebase.now_iso(),
+            })
             self.state.attempts += 1
             self.state.last_attempt_at_utc = record.request_attempted_at_utc
             self.state.last_result_state = result_state
@@ -509,10 +592,22 @@ class SecForm4Collector:
                 response_received_at_utc=record.response_received_at_utc)
 
         try:
-            reservation = self.budget.reserve(endpoint_class)
+            reservation = self.budget.reserve(endpoint_class, attempt_id=attempt_id)
+            append_jsonl(self.paths.sec_request_intents, {
+                "event": "RESERVED", "attempt_id": attempt_id,
+                "obligation_id": obligation_id,
+                "recorded_at_utc": reservation["reserved_at_utc"],
+            })
         except SecCooldownActive as cooldown:
-            return finish(COOLDOWN_SUPPRESSED, error_class=f"cooldown:{cooldown.reason}",
-                          retry_after_seconds=cooldown.remaining_seconds)
+            append_jsonl(self.paths.sec_request_intents, {
+                "event": "SUPPRESSED", "attempt_id": attempt_id,
+                "obligation_id": obligation_id,
+                "recorded_at_utc": self.timebase.now_iso(),
+                "reason": "COOLDOWN",
+            })
+            return _AttemptResult(
+                attempt_id=attempt_id, result_state=COOLDOWN_SUPPRESSED,
+                error_class=f"cooldown:{cooldown.reason}")
 
         # One reservation mints exactly one permit, carrying the attempt id that
         # will journal the outcome. The transport cannot send without it and
@@ -524,6 +619,10 @@ class SecForm4Collector:
                                endpoint_class=endpoint_class)
         attempted_at_dt = self.timebase.now()
         attempted_at = attempted_at_dt.isoformat()
+        append_jsonl(self.paths.sec_request_intents, {
+            "event": "SEND_AUTHORIZED", "attempt_id": attempt_id,
+            "obligation_id": obligation_id, "recorded_at_utc": attempted_at,
+        })
         try:
             response = self.transport.fetch(path, permit)
         except SecTransportError as exc:
@@ -534,6 +633,11 @@ class SecForm4Collector:
                           limiter_waited_seconds=reservation["waited_seconds"],
                           duration_seconds=self._elapsed(attempted_at_dt))
         received_at = self.timebase.now_iso()
+        append_jsonl(self.paths.sec_request_intents, {
+            "event": "RECEIVED", "attempt_id": attempt_id,
+            "obligation_id": obligation_id, "recorded_at_utc": received_at,
+            "http_status": response.status, "transfer_outcome": response.transfer_outcome,
+        })
         metadata = response.transport_metadata()
         common = {"attempted_at": attempted_at, "response_received_at_utc": received_at,
                   "http_status": response.status, "media_type": response.media_type,
@@ -863,9 +967,6 @@ class SecForm4Collector:
             enqueued += 1
         if enqueued:
             self.save()
-            self.record_transition(DRAINING, WORK_ENQUEUED,
-                                   next_due_at=self.timebase.now_iso(),
-                                   detail="discovered filings queued for acquisition")
         return enqueued
 
     def _summarize(self, valid_discovery: bool, coverage_state: str,
@@ -943,6 +1044,8 @@ class SecForm4Collector:
         limit = self.policy.filings_per_drain if max_items is None else max_items
         outcomes: list[dict[str, Any]] = []
         for task in list(self.state.pending_tasks)[:limit]:
+            if self.cooldown_remaining() > 0:
+                break
             outcomes.append(self._acquire(task))
         if outcomes:
             self.record_current_state(DRAIN_COMPLETED,
@@ -982,13 +1085,39 @@ class SecForm4Collector:
             task["last_error_class"] = attempt.error_class or attempt.result_state
             gap_id = None
             if task["attempts"] >= MAX_FILING_ATTEMPTS:
-                # Give up retrying, but never pretend the filing was captured.
+                # Quarantine exhausted work. Coverage remains unknown through the
+                # durable gap; the service must not hot-loop this filing forever.
                 gap_id = self._open_gap(FILING_ACQUISITION_FAILED, {
                     "task_id": task["task_id"], "attempts": task["attempts"],
                     "error_class": task["last_error_class"]})
+                append_jsonl(self.paths.sec_restricted / "failed_tasks.jsonl", dict(task))
+                self._drop_task(task)
             self.save()
             return {"task_id": task["task_id"], "result_state": attempt.result_state,
                     "error_class": attempt.error_class, "gap_id": gap_id}
+
+        # HTTP 200 is not enough to ACK a filing. A proxy/WAF HTML page can be
+        # complete transport bytes yet not the requested SEC submission package.
+        try:
+            decoded = self._decoded(attempt)
+        except SecTransportError as exc:
+            gap = self._open_gap(FILING_ACQUISITION_FAILED, {
+                "task_id": task["task_id"], "error_class": exc.error_class})
+            self._enter_transient_cooldown("filing_decode_invalid")
+            self.save()
+            return {"task_id": task["task_id"], "result_state": DISCOVERY_INVALID,
+                    "error_class": exc.error_class, "gap_id": gap}
+        form4 = re.search(
+            rb"(?:CONFORMED SUBMISSION TYPE:\\s*|<TYPE>)4(?:/A)?(?:\\s|<)",
+            decoded, re.IGNORECASE)
+        if (b"<SEC-DOCUMENT>" not in decoded or b"</SEC-DOCUMENT>" not in decoded
+                or form4 is None):
+            gap = self._open_gap(FILING_ACQUISITION_FAILED, {
+                "task_id": task["task_id"], "error_class": "FILING_PACKAGE_INVALID"})
+            self._enter_transient_cooldown("filing_package_invalid")
+            self.save()
+            return {"task_id": task["task_id"], "result_state": DISCOVERY_INVALID,
+                    "error_class": "FILING_PACKAGE_INVALID", "gap_id": gap}
 
         # Raw bytes are durable at this point. The envelope is the acknowledgement.
         version = self.store.record_source_version(
@@ -1112,35 +1241,28 @@ class SecForm4Collector:
 
     # --- telemetry ---------------------------------------------------------
     def _emit(self, kind: str, severity: str = "INFO", **detail: Any) -> None:
-        if self.emit is None:
-            return
-        self.emit("DATA", "SEC_CAPTURE", kind, self.store.collector_version,
-                  severity=severity, **detail)
+        # Per-acquisition events are operator-internal evidence. Mirroring them
+        # into the shared event stream leaks counts/timing to protocol actors.
+        return
 
     def component_state(self) -> tuple[str, str]:
-        """RUN/IDLE/BLOCKED plus an opaque reason, for the Control Plane."""
+        """Protocol-facing state: categorical health, no signal-volume proxies."""
         if not self.configured:
-            return "BLOCKED", "SEC user agent/contact not configured; capture fails closed"
+            return "BLOCKED", "SEC acquisition not configured"
         if not self.state.enabled:
-            return "IDLE", self.state.blocked_reason or "capture lane disabled"
+            return "IDLE", "SEC acquisition disabled"
         if self.cooldown_remaining() > 0:
-            return "BLOCKED", f"SEC cooldown {self.cooldown_remaining():.0f}s remaining"
-        if self.state.pending_tasks:
-            return "RUN", "acquiring queued filings"
+            return "BLOCKED", "SEC source cooldown active"
         if self.state.coverage_state != COMPLETE:
-            return "RUN", f"coverage {self.state.coverage_state}"
-        return "IDLE", "coverage COMPLETE; awaiting next poll"
+            return "RUN", "SEC coverage not complete"
+        return "RUN", "SEC acquisition service active"
 
     def telemetry(self) -> dict[str, Any]:
-        """Opaque acquisition telemetry only.
-
-        The visibility firewall permits states, times, opaque object ids, sizes,
-        storage health and rate-limit state. It forbids filing bodies, parsed
-        fields, identifying locators and **counts of filings**. Work in flight is
-        therefore reported as a boolean, never as a number of filings.
-        """
+        """Strict public projection; detailed journals remain operator-internal."""
         state, detail = self.component_state()
+        materialized = self.materialized_fingerprint()
         storage = self.store.storage_health()
+        effective = self.lifecycle.get("effective_service_configuration") or {}
         return {
             "collector_version": self.store.collector_version,
             "git_commit": self.store.git_commit,
@@ -1149,41 +1271,25 @@ class SecForm4Collector:
             "state": state,
             "detail": detail,
             "liveness": self.liveness(),
-            "last_attempt_at_utc": self.state.last_attempt_at_utc,
-            "last_poll_started_at_utc": self.state.last_poll_started_at_utc,
-            "last_validated_discovery_at_utc": self.state.last_validated_discovery_at_utc,
-            "last_capture_at_utc": self.state.last_capture_at_utc,
-            "last_result_state": self.state.last_result_state,
-            "last_error_class": self.state.last_error_class,
             "coverage_state": self.state.coverage_state,
-            "coverage_detail": self.state.coverage_detail,
-            "open_gap_kinds": sorted({gap["kind"] for gap in self.state.open_gaps}),
-            "open_gap_ids": [gap["gap_id"] for gap in self.state.open_gaps],
-            "open_gap_intervals": [
-                {key: gap.get(key) for key in
-                 ("gap_id", "kind", "day", "interval_start", "interval_end",
-                  "page_start", "page_range_end", "opened_at_utc")
-                 if gap.get(key) is not None}
-                for gap in self.state.open_gaps],
-            "cursor_identity_digest": self.state.cursor_identity_digest,
-            "cursor_advanced_at_utc": self.state.cursor_advanced_at_utc,
-            "work_in_flight": bool(self.state.pending_tasks),
-            "storage": firewall_safe_storage(storage),
-            "rate_limit": self.budget.telemetry() if self.budget else None,
-            "policy": self.policy.to_dict() if self.policy else None,
-            "outage_seconds": self._outage_seconds(),
+            "coverage_has_open_gap": bool(self.state.open_gaps),
+            "storage": {
+                "append_only": storage.get("append_only", True),
+                "content_addressed": storage.get("content_addressed", True),
+            },
+            "policy": {
+                "max_requests_per_second": self.policy.max_requests_per_second,
+                "max_concurrency": self.policy.max_concurrency,
+                "discovery_poll_seconds": self.policy.discovery_poll_seconds,
+            } if self.policy else None,
             "acquisition_critical_fingerprint": self.fingerprint,
-            "materialized_fingerprint": self.materialized_fingerprint(),
-            "fingerprint_matches_materialized":
-                self.materialized_fingerprint() == self.fingerprint,
-            "scheduler_state": self.scheduler_state() if self.configured else
-                               BLOCKED_NOT_CONFIGURED,
-            "next_due_at_utc": self.next_due_at(),
-            "boot_id": self.lifecycle.get("boot_id"),
+            "materialized_fingerprint": materialized,
+            "fingerprint_matches_materialized": materialized == self.fingerprint,
             "lifecycle_cause": self.lifecycle.get("lifecycle_cause"),
             "lifecycle_externally_attested": self.lifecycle.get("externally_attested"),
             "launch_service_managed": self.lifecycle.get("service_managed"),
             "qualifying_service_mode": self.lifecycle.get("qualifying_service_mode"),
+            "effective_unit_digest": effective.get("effective_unit_digest"),
             "capture_state": storage["capture_state"],
             "visibility_state": storage["visibility_state"],
             "admissibility_state": storage["admissibility_state"],
