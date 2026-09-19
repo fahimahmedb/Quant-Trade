@@ -192,3 +192,107 @@ class LauncherRealChild(unittest.TestCase):
                 self.assertFalse(state['supervisor_running'])
 
 if __name__=='__main__': unittest.main()
+
+class MoreCollectorCampaign(CollectorTestCase):
+    def test_request_intent_order_is_authority_not_just_event_counts(self):
+        from quant.state import write_json
+        c=self.collector(self.fixture_router())
+        c.lifecycle.update(lifecycle_cause='DEPLOYMENT_RESTART',boot_id='b',supervisor_id='s')
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        path=self.paths.sec/'request_intents.jsonl'
+        records=list(read_jsonl(path))
+        # Corrupt only the order: the old audit checked counts, not transitions.
+        path.write_text(''.join(json.dumps(r)+'\n' for r in reversed(records)))
+        report=audit_observation_window(c)
+        self.assertIn('REQUEST_EVENT_ORDER_INVALID',report['findings'])
+        self.assertFalse(report['accountable'])
+
+    def test_missing_state_and_commit_ledger_with_request_history_refuses_bootstrap(self):
+        c=self.collector(self.fixture_router());c.poll()
+        self.paths.sec_collector_state.unlink()
+        (self.paths.sec/'collector_state.commits.jsonl').unlink()
+        with self.assertRaises(SecStorageFailure):
+            self.reborn(self.fixture_router())
+
+    def test_readiness_requires_live_enabled_and_complete_capture(self):
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start()
+        # Valid-looking lifecycle and materialization, but no request ever ran.
+        self.assertFalse(c.t0_readiness()['instrumentation_ready'])
+
+    def test_public_snapshot_has_no_per_capture_events_or_counters(self):
+        from quant.clock import QuantSystem
+        from quant.dataplane.sec.visibility import find_count_proxies
+        c=self.collector(self.fixture_router());system=QuantSystem(self.root)
+        system.sec=c;c.emit=system.log.emit
+        system._capture_step(c);system._capture_step(c)
+        snapshot=system.snapshot()
+        self.assertEqual(find_count_proxies(snapshot),[])
+        self.assertNotIn('sec_raw_capture',json.dumps(snapshot))
+        self.assertNotIn('last_active_at',snapshot['components'].get('SEC_CAPTURE',{}))
+        self.assertNotIn('run_history',snapshot['control'])
+
+    def test_shared_events_do_not_encode_one_row_per_capture(self):
+        from quant.clock import QuantSystem
+        c=self.collector(self.fixture_router());system=QuantSystem(self.root)
+        c.emit=system.log.emit;c.poll();c.drain(max_items=3)
+        self.assertNotIn('sec_raw_capture',self.paths.events.read_text() if self.paths.events.exists() else '')
+
+    def test_successful_pages_survive_a_later_page_failure(self):
+        from tests.test_sec_form4_capture import build_feed, response
+        from quant.dataplane.sec.store import digest_text
+        def handler(path, call):
+            if 'start=0&' in path:return response(build_feed([100,99]))
+            return response(b'',status=503)
+        c=self.collector(handler,discovery_page_size=2)
+        c.state.cursor_identity_digest=digest_text('0000000001-26-000001');c.save()
+        c.poll()
+        self.assertTrue(c.state.pending_tasks,'already observed filings must remain durably queued')
+        recovered=self.reborn(handler,discovery_page_size=2)
+        self.assertEqual(recovered.state.pending_tasks,c.state.pending_tasks)
+
+    def test_reconciliation_404_cannot_hot_loop(self):
+        from datetime import date
+        c=self.collector(self.fixture_router());c.poll();c.drain(max_items=3)
+        c.reconcile(date(2026,9,16))
+        self.assertGreater(c.cooldown_remaining(),0)
+
+    def test_qualifying_stop_after_answer_before_next_obligation_is_not_accountable(self):
+        c=self.collector(self.fixture_router())
+        c.lifecycle.update(lifecycle_cause='DEPLOYMENT_RESTART',boot_id='b',supervisor_id='s')
+        c.record_service_start()
+        # Crash boundary: request/attempt committed; poll close/next obligation absent.
+        c._request('DISCOVERY','/cgi-bin/browse-edgar','https://www.sec.gov/cgi-bin/browse-edgar')
+        self.timebase.advance(3600)
+        c.state.coverage_state='COMPLETE';c.state.open_gaps=[]
+        self.assertFalse(audit_observation_window(c)['accountable'])
+
+    def test_materialization_valid_hash_wrong_commit_is_rejected(self):
+        c=self.collector(self.fixture_router());c.materialize_fingerprint()
+        payload=json.loads(self.paths.sec_fingerprint.read_text())
+        payload['git_commit']='0'*40
+        self.paths.sec_fingerprint.write_text(json.dumps(payload))
+        self.assertIsNotNone(c._validated_materialization()[1])
+
+class PublicArtifactCampaign(unittest.TestCase):
+    def test_current_checkout_does_not_republish_historical_volume_proxies(self):
+        from quant.dataplane.sec.visibility import find_count_proxies
+        for path in (ROOT/'handoff').glob('SEC_FORM4*.json'):
+            with self.subTest(path=path.name):
+                self.assertEqual(find_count_proxies(json.loads(path.read_text())),[])
+
+class MutatingCLIExclusion(unittest.TestCase):
+    def test_probe_is_refused_before_state_load_while_service_lock_held(self):
+        import fcntl
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);sec=root/'var/sec';sec.mkdir(parents=True)
+            for name in ('src','scripts','deploy'): (root/name).symlink_to(ROOT/name, target_is_directory=True)
+            with (sec/'collector_service.lock').open('w') as lock:
+                fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                result=subprocess.run([sys.executable,str(ROOT/'scripts/quant.py'),
+                    'sec-disable','--root',str(root)],env={**os.environ,'QUANT_SEC_USER_AGENT':USER_AGENT},capture_output=True,text=True,timeout=10)
+                self.assertEqual(result.returncode,2,result.stdout+result.stderr)
+                self.assertIn('COLLECTOR_ALREADY_RUNNING',result.stdout)
+                self.assertFalse((sec/'collector_state.json').exists())
