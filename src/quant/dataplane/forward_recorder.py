@@ -423,5 +423,33 @@ class ForwardRecorder:
         document["state"] = COVERAGE_COMPLETE if not missing else COVERAGE_INCOMPLETE
         return document
 
+    def ledger_fingerprint(self) -> str | None:
+        """Content fingerprint of the whole accepted ledger, order-independent.
+
+        Changes whenever the accepted set changes, and is stable across
+        restarts and re-ordered replay since it hashes the sorted,
+        deduplicated content addresses -- the same contract
+        ``DatasetRecord.fingerprint`` gives a committed CSV snapshot, extended
+        to an ever-growing forward ledger. ``None`` only when nothing has been
+        accepted yet.
+        """
+        addresses = sorted(str(record.get("content_address")) for record in self.accepted())
+        if not addresses:
+            return None
+        return "sha256:" + hashlib.sha256("|".join(addresses).encode("utf-8")).hexdigest()
+
+    def earliest_recorded_at(self) -> str | None:
+        """The instant this ledger's oldest accepted write was appended.
+
+        This is what admissibility's forward-confirmation rule should compare
+        a protocol freeze against, not any session's calendar label: a session
+        date is whatever the caller supplies, but ``recorded_at`` is bound by
+        this recorder's own forward-only monotonicity and cannot be moved
+        earlier after the fact.
+        """
+        recorded_ats = [str(record.get("recorded_at")) for record in self.accepted()
+                        if record.get("recorded_at")]
+        return min(recorded_ats) if recorded_ats else None
+
     def __len__(self) -> int:
         return self._count

@@ -182,7 +182,29 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
   (`UNKNOWN != MISSING`, `MISSING != ZERO`) have a dedicated test each.
   16 new tests, including one lightweight integration check against the real
   committed dataset file. Full suite: **640 passed**, 0 regressions.
-- [next] UseLedger/admissibility integration, then the manual runner script,
-  a real live capture run, and the final deliverable.
+- [done] **UseLedger/admissibility integration**
+  (`src/quant/dataplane/forward_admissibility.py`), zero changes to Wave 1's
+  `admissibility.py`. `forward_dataset_view()` renders a `ForwardRecorder` as a
+  registry-record-shaped dict; critically, `recorded_from` is
+  `ForwardRecorder.earliest_recorded_at()` (a new small accessor, added
+  alongside `ledger_fingerprint()`), never a session's calendar label — a
+  caller could mislabel a session date, but not move this recorder's own
+  forward-only clock earlier.
+  **A second real gap found by testing section 9's own words**
+  ("une version déjà utilisée pour fit ne devient jamais forward
+  confirmation"): `evaluate_admissibility`'s FORWARD_CONFIRMATION branch checks
+  only timing and the pre-outcome seal — it never cross-checks the UseLedger's
+  fit/validation history for that version, so a version already spent on
+  `EXPLORATORY_FIT` could still separately pass forward-confirmation purely on
+  timing. Closed with an additive guard in `evaluate_forward_confirmation()`
+  (this new module only, `admissibility.py` untouched) that refuses the
+  verdict when the version's prior uses intersect `CONSUMING_USES`, labelled
+  `FORWARD_CONFIRMATION_VERSION_ALREADY_CONSUMED_BY_FIT_OR_VALIDATION`. A
+  contrast test proves the guard is doing real work (the identical version
+  passes when no ledger is supplied, and is refused once one records the
+  prior fit).
+  8 new tests. Full suite: **648 passed**, 0 regressions.
+- [next] Manual runner script, a real live capture run, and the final
+  deliverable.
 
 (Further entries appended after each significant, committed slice.)
