@@ -170,23 +170,31 @@ def _effective_systemd_definition(root: Path) -> str:
 def _effective_environment(args: argparse.Namespace, root: Path,
                            managed: dict) -> tuple[dict, float]:
     from quant.dataplane.sec.policy import policy_from_environment
-    environment = dict(os.environ)
+    source = dict(os.environ)
     # The authority command fingerprints the service it authorizes, not the
     # shell process writing the token.
     qualifying_target = bool(args.qualifying or args.authorize_deployment)
     poll_seconds = args.poll_seconds
     if poll_seconds is None:
-        poll_seconds = policy_from_environment(environment).discovery_poll_seconds
+        poll_seconds = policy_from_environment(source).discovery_poll_seconds
     effective_unit = None
     if qualifying_target:
         if not managed["service_managed"] and not args.authorize_deployment:
             raise RuntimeError("SERVICE_MANAGER_UNATTESTED")
         effective_unit = _effective_systemd_definition(root)
-    for unsafe in (
-        "PYTHONPATH", "PYTHONHOME", "PYTHONSTARTUP", "PYTHONINSPECT",
-        "PYTHONUSERBASE",
-    ):
-        environment.pop(unsafe, None)
+
+    # Whitelist the child's ambient environment.  Acquisition semantics must
+    # not depend on unbound PYTHONPATH/sitecustomize, proxy, git, locale or
+    # arbitrary operator variables inherited from the service manager.
+    environment = {
+        "PATH": source.get("PATH", "/usr/bin:/bin"),
+        "HOME": source.get("HOME", "/"),
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "QUANT_SEC_USER_AGENT": source.get("QUANT_SEC_USER_AGENT", ""),
+        "QUANT_SEC_SERVICE_MANAGER": source.get("QUANT_SEC_SERVICE_MANAGER", ""),
+        "INVOCATION_ID": source.get("INVOCATION_ID", ""),
+    }
     environment.update({
         "QUANT_SEC_SERVICE_POLL_SECONDS": str(poll_seconds),
         "QUANT_SEC_SERVICE_MAX_WAITS": (
