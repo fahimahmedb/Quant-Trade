@@ -493,3 +493,147 @@ invalidate the red reproductions above.
 `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
 
 `REAL_CAPITAL_AUTHORIZED = FALSE`
+
+
+---
+
+# INDEPENDENT AUDIT PROGRESS CHECKPOINT — CONTINUATION — 2026-09-20T11:00Z
+
+This continuation records additional independent falsification work after the
+10:35:17Z checkpoint.  The qualifying candidate itself remains frozen at
+`db166fd04c681e67a2c6d4440828af14ef58c48c`; no candidate file was modified.
+
+## New reproduced defect — omitted reconciliation is invisible to the audit
+
+Classification: `REAL_DEFECT`.
+
+A qualifying collector was kept continuously active for 44 virtual hours with
+normal discovery polls every 60 seconds.  The daily reconciliation action was
+deliberately omitted.  At the end of the run:
+
+- `collector.reconciliation_due()` reported that a daily reconciliation was
+  due under the bound EDGAR calendar;
+- every discovery cadence obligation remained durably accounted for;
+- `audit_observation_window()` nevertheless returned `accountable=True`.
+
+Root cause confirmed by exact-candidate code reading:
+
+- `reconciliation_due()` independently knows when the oldest daily-index
+  reconciliation is due;
+- the retrospective audit builds expected work only from scheduler transitions
+  already written to the journal;
+- therefore, if Clock omits an entire action class and never writes the
+  corresponding transition, the audit has no independent calendar oracle from
+  which to derive that missing action.
+
+This is not a test-count issue.  It is a proof false-positive: the mechanism
+whose contract says it must not infer that work was not due merely because no
+attempt was recorded can still make exactly that inference for reconciliation
+when the scheduler itself omits the work.
+
+## New audit-window defect — prospective t0 between ticks loses context
+
+Classification: `REAL_DEFECT`.
+
+A separate discriminant starts with an already-running, qualifying service whose
+full-history audit is accountable.  It places prospective `t0` halfway between
+two 60-second ticks and then performs the next normal poll.
+
+Exact-candidate window slicing keeps a pre-t0 scheduler transition when its due
+time falls after t0, but filters lifecycle rows to records at/after t0.  The
+latest pre-t0 lifecycle is retained only as `baseline_lifecycle` for external
+authority validation; it is not passed to structural lifecycle validation.
+Likewise, a retained transition can name a supersession target that is filtered
+out because the predecessor was both created and due before t0.
+
+Consequences on an otherwise healthy already-running service include spurious
+structural findings such as missing lifecycle provenance and/or unknown
+supersession ancestry.  A valid prospective t0 declaration between ticks can
+therefore produce a false negative rather than a coherent observation window.
+
+This defect is distinct from the earlier B2 offline-auditor bug: B2 correctly
+uses durable qualifying history to decide whether strict authority validation
+applies, while this defect concerns the consistency of explicit-window slicing.
+
+## Durable red branch created
+
+Independent audit branch:
+
+`astra/p0-gate-a-v2-independent-audit-2026-09-20`
+
+Merge base:
+
+`db166fd04c681e67a2c6d4440828af14ef58c48c`
+
+First red-test commit:
+
+`d72b057bce8d7e2c0168d8d7bd4af52d26c4c0ba`
+
+It adds only:
+
+`tests/test_gate_a_v2_independent_audit.py`
+
+with two discriminants:
+
+1. `test_omitted_due_daily_reconciliation_cannot_audit_accountable`
+2. `test_t0_between_ticks_preserves_pre_t0_lifecycle_and_supersession_context`
+
+Because repository status freshness binds the discovered unit-test count,
+the audit-only branch then refreshed the proof inventory from 396 to 398 tests:
+
+`e3c51e6b937646c77fea037f8cb8a505d272b4c2`
+
+A compare against the frozen candidate shows the audit branch is exactly two
+commits ahead and changes only:
+
+- `tests/test_gate_a_v2_independent_audit.py`;
+- the single `STATE.md` proof-inventory count line.
+
+No production implementation file differs from the frozen candidate.
+
+GitHub Actions run for exact audit-branch head
+`e3c51e6b937646c77fea037f8cb8a505d272b4c2`:
+
+`35506576224`
+
+Status at this checkpoint: `IN_PROGRESS`.
+
+The expected discriminating outcome is a red full-unit-suite failure caused by
+the two assertions above, after ordinary repository freshness checks pass.  Do
+not convert that expectation into a fact until the run completes.
+
+## Gate implication already established independently of pending CI
+
+The earlier reproduced defects R1-R5 already prevent a Gate A PASS.  The omitted
+reconciliation false-positive adds a separate reason the repository audit cannot
+currently certify scheduler completeness.
+
+Current evidence state:
+
+`B1_DIRECT_RECONCILE = STILL_OPEN`
+
+`B2_OFFLINE_AUDIT_AUTHORITY = CLOSED` for the exact v1 regression, with
+distinct lifecycle/transition-binding defects still open.
+
+`B3_MANUAL_OPERATOR_INTERVENTION = STILL_OPEN`
+
+A final audit verdict has not yet been durably issued in this checkpoint, but no
+evidence currently supports closing repository Gate A.
+
+## Resume point
+
+1. Query run `35506576224` to confirm the two independent red discriminants.
+2. Record exact CI result here.
+3. Stop broadening the attack surface once the blockers are sufficiently
+   discriminated; route narrowly scoped repairs to Builder.
+4. Re-audit a new frozen candidate rather than modifying the rejected candidate.
+
+Safety flags remain:
+
+`t0 = NOT DECLARED`
+
+`P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
+
+`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+
+`REAL_CAPITAL_AUTHORIZED = FALSE`
