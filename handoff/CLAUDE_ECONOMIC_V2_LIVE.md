@@ -337,5 +337,38 @@ and two exclusions matching this fixture's real properties (unlevered/no
 borrow — same reason as its existing F6 `AuthorisedZero`; single execution
 policy id, no regime switching modelled). 8 new tests. 626/626 pass.
 
+### Slice 5 — durable economic assessment journal
+
+New file `src/quant/economics/journal.py`, new test file
+`tests/test_economic_assessment_journal.py` (8 tests).
+
+The top gap both Wave 1 (WS31) and Codex (W1-EVID-001 / self red team item 3)
+independently named. `EconomicAssessmentJournal`: append-only via the
+existing `state.append_jsonl`/`read_jsonl` primitives (same fsync'd,
+torn-tail-recovering persistence `CausalEventLedger`/`EvidenceRegistry`
+already use). Same `assessment_id`+fingerprint replays idempotently (no
+second append); same id with a *different* `compute_input_fingerprint()`
+raises `AssessmentConflict` before any `ASSESSMENT_RECORDED` line is written
+(only an audit `ASSESSMENT_ID_CONFLICT` line), so the original accepted
+decision is never overwritten. `compute_input_fingerprint()` is deliberately
+its own function, not `fingerprint.recipe_hash` — that one refuses to hash a
+document carrying a realised value (`delta_hat` etc.), which is backwards for
+an assessment fingerprint whose whole job is to detect when the realised
+inputs changed. `AssessmentRecord` carries every mission-named field
+(assessment_id, input fingerprint, effect version, recipe version — the real
+`MEUEResult.recipe_hash`, parameter provenance, cost scenario, capacity
+state, portfolio context ref, decision, reason codes, timestamp, code
+SHA/protocol hash); the contextual fields are caller-supplied with an honest
+`""` default, never fabricated.
+
+Tests cover exactly the mission's named list: duplicate append (idempotent,
+no new line), same-id conflict (fails closed, original preserved, audit
+trail kept), restart (fresh instance from the same path reaches identical
+state), the crash-after-assessment-before-Desk scenario by name (record,
+discard the live instance, reopen, assert byte-identical decision), and torn
+final append (recovered, not duplicated or corrupted) — plus fingerprint
+stability/sensitivity checks. 634/634 tests pass (588 Wave 1 + 46 this pass
+across all slices so far).
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_

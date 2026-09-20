@@ -24,6 +24,8 @@ from .fingerprint import RecipeNotOutcomeBlind, canonical_json, recipe_hash
 from .frictions import (COST_SHAPES, AuthorisedZero, CostComponent, CostInputUnavailable,
                         KForwardRecipe, verify_dependence_declarations,
                         verify_shape_declarations)
+from .journal import (AssessmentConflict, AssessmentRecord, EconomicAssessmentJournal,
+                      compute_input_fingerprint)
 from .margin import MarginComponent, MarginResult, m_economic
 from .opening import OpeningExecutionModel
 from .parameters import (COST_CLASSES, Dependence, EconomicParameter, InventoryFrozen,
@@ -57,11 +59,13 @@ __all__ = ["ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION",
     "ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH",
     "ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE",
     "ADVERSE_SCENARIO_CATEGORIES", "ALLOCATION_WEIGHTED_RATIO",
-    "AffineShortcutUnavailable", "AuthorisedScenarioExclusion", "AuthorisedZero",
+    "AffineShortcutUnavailable", "AssessmentConflict", "AssessmentRecord",
+    "AuthorisedScenarioExclusion", "AuthorisedZero",
     "BEEEResult", "COST_CLASSES", "COST_SHAPES",
     "CLUSTERING_UNIT_O4_RESOLVED", "CLUSTERING_UNIT_O4_UNRESOLVED",
     "CLUSTERING_UNIT_STATES", "CLUSTERING_UNIT_UNDECLARED",
     "CapacityLimit", "CapacityOutcome", "CausalEventLedger",
+    "EconomicAssessmentJournal",
     "CostComponent", "CostInputUnavailable", "CostScenario", "DeltaCoordinateBinding",
     "DeltaCoordinateVerdict", "Dependence", "EconomicParameter", "EconomicVerdict",
     "EffectDomain", "EffectEstimate", "EvaluationSession", "EventTimeline",
@@ -76,7 +80,7 @@ __all__ = ["ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION",
     "RiskApproval", "RiskClaim", "RiskPartition", "SizingPlan", "SleeveTarget",
     "SourceContract", "ThetaFeedbackViolation", "ThetaSelectionRule", "ThetaState",
     "aggregate_allocation_weighted", "apply_capacity", "beee", "beee_affine", "canonical_json",
-    "combine_lanes", "economic_gate", "evaluate_delta_coordinate",
+    "combine_lanes", "compute_input_fingerprint", "economic_gate", "evaluate_delta_coordinate",
     "implied_participation_ceiling", "m_economic", "partition_from", "recipe_hash",
     "size_lane", "solve_beee", "verify_dependence_declarations", "verify_shape_declarations",
     "verify_research_cost_consistency", "verify_risk_approval"
