@@ -437,8 +437,8 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
                 "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0",
             },
         )
-        forged.record_service_start()
         try:
+            forged.record_service_start()
             forged.poll()
         except (SecStorageFailure, PermissionError, RuntimeError):
             return
