@@ -104,7 +104,11 @@ PRS_OPEN_LAST_VERIFIED = 0.
 PRS_CLOSED_THIS_PASS = 10 (#7, #8, #9, #10, #11, #12, #13, #14, #15, #17).
 BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
-DELETE_AFTER_BUILDER_COUNT = 39 candidate refs for **re-evaluation**, not authorization.
+BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
+DELETE_NOW_SAFE_COUNT = 15.
+KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
+DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
+HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW = diverged Forward/Economic/Research/recovery refs with possible unique value.
 
 DELETE_AFTER_BUILDER_REVIEW =
 - `autonomous-quant-rebuild`
@@ -149,7 +153,7 @@ DELETE_AFTER_BUILDER_REVIEW =
 
 PR_CLEANUP = COMPLETE / 0 OPEN PRS.
 
-Branch cleanup remains separate and more conservative. No branch deletion is implied by PR closure.
+Branch cleanup remains separate and more conservative. First-pass classification is now durable in `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`. No branch deletion is implied by PR closure or classification.
 
 Explicitly preserved regardless of cleanup pressure through independent Astra review:
 - `blue/p0-calendar-direct-reconcile-red-2026-09-20`;
@@ -187,7 +191,7 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 NEXT_EXPECTED_EVENT = independent Astra audit activity/handoff on `astra/p0-gate-a-v3-independent-audit-2026-09-20`.
 
-NEXT_ACTION = do not modify the frozen candidate. Observe Astra independently replay and attack Gate A v3. On Astra final handoff, execute Blue post-audit reception and Gate disposition.
+NEXT_ACTION = do not modify the frozen candidate. In parallel with Astra, continue non-destructive GitHub cleanup by reviewing diverged HOLD branches and preserving any unique useful content. On Astra final handoff, execute Blue post-audit reception and Gate disposition.
 
 Do not start Product integration.
 Do not declare Gate A PASS before independent Astra.
