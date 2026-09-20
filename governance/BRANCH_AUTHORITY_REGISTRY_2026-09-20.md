@@ -1,5 +1,31 @@
 # Branch Authority Registry — 2026-09-20
 
+## 0. LATEST BLUE ROUTING DELTA — authoritative over stale rows below
+
+Context-recovery checkpoint:
+`handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
+
+Live branch count at reacquisition:
+`72`
+
+Current P0 routing:
+- historical Gate A v3 repository PASS remains exact-SHA evidence at `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
+- v3 target-host eligibility is `REJECTED_BY_NEW_REAL_DEFECT`;
+- corrective branch `builder/p0-effective-unit-digest-stability-v4-2026-09-20` is ACTIVE Builder work;
+- current observed Builder v4 HEAD: `0bdd397d7409b01529c1f958c68781499679a95e`;
+- exact-head workflow `35535347844` was `IN_PROGRESS` at context reacquisition;
+- Blue reception remains pending final Builder handoff + exact-head CI + independent inspection.
+
+Current P14D routing:
+- `P0_CONTINUOUS_OBSERVATION_MIN = P14D` remains authoritative until explicit amendment;
+- `blue/long-horizon-research-2026-09-20@7e0fae86834db7f46ecea5755faf0ac544245399` is ACTIVE GOVERNANCE-METHOD EVIDENCE for the P14D challenge, not out-of-scope;
+- its exact-head workflow `35480999341 = SUCCESS`;
+- the technical recommendation is hybrid evidence-based qualification, but the amendment remains draft/non-authoritative;
+- final Red Team + explicit Blue amendment are required before t0.
+
+The table below contains historical classifications written before the target-host defect and v4 dispatch. Where a row conflicts with this Section 0, Section 0 wins.
+
+
 Authority: Quant North Star > durable current Blue governance > frozen candidate/audit evidence > historical refs.
 
 This registry is descriptive governance. A branch existing does **not** make it current. Green CI does **not** imply Gate PASS. Gate A v3 repository proof is now PASS/CLOSED; target-host qualification is the active mission. Physical branch deletion remains unexecuted because the current connector exposes no safe delete-ref mutation.
@@ -11,7 +37,7 @@ This registry is descriptive governance. A branch existing does **not** make it 
 - FROZEN_GATE_A_V2 = `blue/p0-gate-a-v2-final-2026-09-20@db166fd04c681e67a2c6d4440828af14ef58c48c` — REJECTED.
 - CANONICAL_GATE_A_V2_AUDIT = `astra/p0-gate-a-v2-independent-audit-2026-09-20@64b105f5a2cc1d798d1cf1e41e715b967c845a85` — BLOCKED, B1/B3 open, B2 closed.
 - DELIVERED_GATE_A_V3_BUILDER = `builder/p0-gate-a-v3-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; Builder STOPPED after final handoff and exact-head CI `35514180655 = SUCCESS`.
-- FROZEN_GATE_A_V3 = `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; final Blue repository disposition = PASS.
+- FROZEN_GATE_A_V3 = `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; historical repository disposition = PASS, but target-host eligibility is now REJECTED_BY_NEW_REAL_DEFECT.
 - FINAL_GATE_A_V3_AUDIT = `astra/p0-gate-a-v3-independent-audit-2026-09-20@33995d03c8632e5c3a7b77a12b87366fb06b4d30`; independent verdict PASS; exact-head CI `35517935710 = SUCCESS`.
 - BLUE_GATE_A_V3_FINAL_DISPOSITION = `handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md` => `GATE_A_V3_REPOSITORY_DISPOSITION = PASS`.
 - Builder dependencies that MUST remain reachable: `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` and `345e18d94963b4fcc7063d73d1c23aff5244ca28`.
@@ -31,7 +57,8 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `blue/checkpoint-gate-a-v2-audit-2026-09-20` | `4678c29eb8cd22aa7ef143075c6d4b68739026a3` | **AUDIT_EVIDENCE** | Originates R1-R5 before formal Astra branch | astra/p0-gate-a-v2-independent-audit-2026-09-20 | — | NO |
 | `blue/p0-gate-a-v2-final-2026-09-20` | `db166fd04c681e67a2c6d4440828af14ef58c48c` | **REJECTED** | Frozen Gate A v2 input; exact-head CI green but audit BLOCKED | builder/p0-gate-a-v3-2026-09-20 | — | NO |
 | `builder/p0-gate-a-v3-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **DELIVERED / AUDITED** | Gate A v3 Builder delivery; exact-head CI 35514180655 SUCCESS; independently audited PASS | blue/p0-gate-a-v3-frozen-2026-09-20 | — | NO |
-| `blue/p0-gate-a-v3-frozen-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **GATE_A_PASS_FROZEN** | Exact immutable Gate A v3 repository-PASS candidate; preserve for target-host qualification | — | — | NO |
+| `builder/p0-effective-unit-digest-stability-v4-2026-09-20` | `0bdd397d7409b01529c1f958c68781499679a95e` | **ACTIVE_BUILDER / RECEPTION_PENDING** | Corrective effective-unit-digest stability mission from exact v3 baseline; current implementation committed; run 35535347844 in progress at reacquisition | future frozen v4 candidate after Blue reception | — | NO |
+| `blue/p0-gate-a-v3-frozen-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **HISTORICAL_REPOSITORY_PASS / TARGET_HOST_REJECTED** | Preserve exact repository-PASS evidence; new target-host REAL_DEFECT forbids further v3 qualification starts | corrective v4 Builder | — | NO |
 | `astra/p0-gate-a-v3-independent-audit-2026-09-20` | `33995d03c8632e5c3a7b77a12b87366fb06b4d30` | **FINAL_AUDIT_EVIDENCE** | Independent Astra Gate A v3 audit PASS; exact-head CI 35517935710 SUCCESS; audit-only delta over frozen candidate | handoff/ASTRA_GATE_A_V3_INDEPENDENT_AUDIT_2026-09-20.md | — | NO |
 | `blue/p0-calendar-direct-reconcile-red-2026-09-20` | `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` | **AUDIT_EVIDENCE** | Original unredirected B1 reconcile() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-manual-probe-red-2026-09-20` | `efbf72484e5e6873aba2446d53a728798b3f453f` | **AUDIT_EVIDENCE** | Tip weakened, but parent 345e18d9 contains original collector.poll() discriminant; Builder dependency | — | — | NO |
@@ -52,7 +79,7 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `parallel/claude-economic-v2-2026-09-20` | `35dff27b8fac53618da434ee6d31febbddcc0e69` | **CANONICAL** | Canonical Economic leaf input; frozen pending later CI qualification | — | — | NO |
 | `blue/forward-finalization-2026-09-20` | `d209348159c44ba4eac9c0a1999e04f0e96e7108` | **DIVERGED** | 2 ahead / 2 behind canonical Forward; smoke-workflow concept only | parallel/claude-forward-data-2026-09-20 | — | ONLY_AFTER_BUILDER_AND_INDEX |
 | `blue/integration-readiness-2026-09-20` | `37e9f95f3e24be78b1cb61ab35244b2880988b12` | **FROZEN_INPUT** | Future product-integration topology reference; execution paused | — | — | NO |
-| `blue/long-horizon-research-2026-09-20` | `7e0fae86834db7f46ecea5755faf0ac544245399` | **REFERENCE_ONLY** | P14D-adjacent research; out of current scope | — | — | REVIEW_AFTER_BUILDER |
+| `blue/long-horizon-research-2026-09-20` | `7e0fae86834db7f46ecea5755faf0ac544245399` | **ACTIVE_GOVERNANCE_METHOD_EVIDENCE** | P14D challenge/hybrid qualification research; exact-head CI 35480999341 SUCCESS; amendment still draft | explicit Blue P14D amendment after final Red Team | — | NO |
 | `checkpoint/blue-master-consolidated-2026-09-20` | `4db2614e419bbbaaa185dc49e12538355d33a0d2` | **SUPERSEDED** | Prior master consolidation checkpoint | blue/master-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `checkpoint/blue-master-project-2026-09-20` | `9b55e5276a03907257a867e61ab45c26356c0d36` | **SUPERSEDED** | Earlier project recovery checkpoint | blue/master-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `blue/d05-d07-governance-2026-09-15` | `1700611ad56104a2e4fde6ff72ce886d43a55958` | **SUPERSEDED** | Historical governance ancestor | blue/master-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
