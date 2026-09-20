@@ -11,6 +11,7 @@ from datetime import date, datetime, time, timedelta, timezone
 
 from zoneinfo import ZoneInfo
 
+from quant.dataplane.sec.calendar import EdgarCalendarUnbound, is_edgar_business_day
 from quant.dataplane.sec.timebase import FrozenTimebase
 from tests.test_sec_form4_capture import CollectorTestCase
 
@@ -93,6 +94,16 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         # + 30 elapsed hours lands at Thursday 08:00 UTC.
         self.timebase.advance(24 * 60 * 60)
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 8))
+
+    def test_unbound_calendar_year_fails_closed(self) -> None:
+        """A future year is never guessed from weekday arithmetic."""
+        with self.assertRaises(EdgarCalendarUnbound):
+            is_edgar_business_day(date(2027, 1, 4))
+
+    def test_business_day_stays_business_day_independent_of_http_outcome(self) -> None:
+        """Only the bound calendar, never an observed 404, defines a holiday."""
+        self.assertTrue(is_edgar_business_day(date(2026, 9, 8)))
+        self.assertFalse(is_edgar_business_day(date(2026, 9, 7)))
 
     def test_virtual_p14d_horizon_has_no_hidden_calendar_state(self) -> None:
         """The former 14-day horizon reduces to settled weekdays under exact logic."""

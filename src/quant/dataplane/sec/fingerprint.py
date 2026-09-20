@@ -57,6 +57,7 @@ QUERY_CONSTRUCTION_VERSION = "edgar_getcurrent_atom+daily_master_index/v2"
 ACQUISITION_CRITICAL_MODULES: tuple[str, ...] = (
     "src/quant/dataplane/sec/policy.py",
     "src/quant/dataplane/sec/budget.py",
+    "src/quant/dataplane/sec/calendar.py",
     "src/quant/dataplane/sec/transport.py",
     "src/quant/dataplane/sec/discovery.py",
     "src/quant/dataplane/sec/collector.py",

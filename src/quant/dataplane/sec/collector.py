@@ -37,6 +37,7 @@ from ...paths import QuantPaths
 from ...state import (append_jsonl, create_json_once, parse_ts, read_json, read_jsonl,
                       write_json)
 from .budget import SecCooldownActive, SecTrafficBudget, seconds_from_retry_after
+from .calendar import is_edgar_business_day
 from .fingerprint import acquisition_critical_fingerprint, build_manifest, compute_fingerprint
 from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
                         CONFIG_FAIL_CLOSED, COOLDOWN, COOLDOWN_OBSERVED, DISABLED,
@@ -674,7 +675,7 @@ class SecForm4Collector:
         while day <= today_edgar:
             key = day.isoformat()
             if (key not in self.state.reconciled_days
-                    and day.weekday() < 5
+                    and is_edgar_business_day(day)
                     and now_utc >= _daily_index_settled_at_utc(day)):
                 return day
             day = day + timedelta(days=1)
