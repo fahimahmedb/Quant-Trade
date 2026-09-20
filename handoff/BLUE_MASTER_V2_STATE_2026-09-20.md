@@ -11,7 +11,7 @@ NORTH_STAR_VERIFIED = TRUE
 CURRENT_GOVERNANCE_INDEX = `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
-CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 REPOSITORY_PASS / CLOSED
+CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 historical REPOSITORY_PASS / target-host candidate REJECTED_BY_NEW_REAL_DEFECT; corrective Gate A v4 REQUIRED
 T0_STATE = NOT_DECLARED
 P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
@@ -36,7 +36,7 @@ PRODUCT_INTEGRATION = PAUSED
 
 MISSION = Target-host qualification / final rodage entrance
 OWNER = Blue / Mission Control
-STATUS = READY_TO_DISPATCH / TARGET_HOST_NOT_EXECUTED
+STATUS = TARGET_HOST_EXECUTED / FAILED_REAL_DEFECT / BUILDER_CORRECTION_REQUIRED
 FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
 FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
@@ -52,7 +52,7 @@ ASTRA_AUDIT_HEAD = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
 ASTRA_DECLARED_VERDICT = PASS
 ASTRA_EXACT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
 BLUE_FINAL_GATE_A_DISPOSITION = `handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md`
-NEXT_OWNER = Blue / Mission Control; execution may be delegated only to an operator/agent with real target-host access.
+NEXT_OWNER = Builder for the Blue-approved effective-unit-digest stability correction; afterward independent Astra/Red Team, then Blue. No further v3 target-host qualification start is authorized.
 
 ## D. EVENT INBOX
 
@@ -67,21 +67,24 @@ NEXT_OWNER = Blue / Mission Control; execution may be delegated only to an opera
 9. Creating the frozen/Astra refs triggered redundant workflow runs on the same SHA. They are operational duplicates, not new candidate SHAs and not substitutes for run `35514180655`.
 10. Process improvement retained: finalize the handoff before the last delivery CI so documentation does not create a needless extra HEAD/run.
 11. Repository-only continuation found that the mandatory deployment contract path was absent from Blue while cited by current target-host authorities. Exact source bytes from `astra/p0-deep-adversarial-pre-t0@643deacdf5bbbdb1d2410c762eb20f72aff16bbf` (Git blob `3ffe40107b7710c58de3b5a01b2e1574d611c5cb`) were restored at `governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md`; no frozen-candidate, Gate, target-host, t0, P14D, Product or capital state changed.
+12. Real target-host execution later disproved v3 target-host eligibility: `_effective_systemd_definition()` hashes mutable execution metadata embedded by systemd in the raw `ExecStart` property. Materialized effective-unit digest `sha256:33d166b68a337947f7737ae659b386df88545867012ce88d0b30bcdbcf070b3d` changed to `sha256:c6394ef740c3f66c35e2920ebd4f21d27ff1417d11be5ab93b457f0f7e355c22` without semantic unit drift. Restricted defect artifact SHA-256: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`. Classification: REAL_DEFECT. Durable disposition: `handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`.
 
 ## E. WAITING FOR
 
-WAITING_FOR = no further Gate A repository proof event.
+WAITING_FOR = Builder corrective implementation for effective-unit-digest stability, then exact-head CI, independent Astra reproduction/review, then Blue disposition.
 
-Gate A repository proof is closed. The next evidence domain is target-host qualification / rodage entrance against the exact frozen candidate and deployment contract.
+Historical Gate A v3 repository proof remains closed at its exact SHA, but the frozen candidate is no longer eligible for target-host entrance because of the newly reproduced REAL_DEFECT.
 
 ## F. DECISIONS REQUIRED
 
 Blue must now:
-1. preserve the exact frozen Gate A candidate and final Astra audit evidence;
-2. plan target-host rodage / qualification entrance;
-3. carry forward the fingerprint/service-manager residual as a target-host entrance condition;
-4. continue post-Gate branch cleanup and authority simplification;
-5. only later resume Forward/Economic qualification and Product integration under separate explicit decisions.
+1. preserve the exact frozen Gate A v3 candidate, historical Astra evidence and the failed target-host evidence;
+2. dispatch the minimal effective-unit-digest stability correction from the exact frozen implementation baseline;
+3. require regression tests that prove transient systemd execution metadata cannot move the digest while semantic unit drift still fails closed;
+4. require exact-head CI and independent Astra reproduction/review before freezing any replacement candidate;
+5. prohibit further v3 target-host starts/rematerialization/reauthorization intended to obtain a clean-looking run;
+6. continue cleanup only where it cannot disturb this evidence;
+7. only later resume Forward/Economic qualification and Product integration under separate explicit decisions.
 
 No t0, P14D amendment, Gate B completion, Product integration, or real-capital authorization is implied by Gate A repository PASS.
 
@@ -188,7 +191,7 @@ FROZEN_GATE_A_V3_SHA = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 INDEPENDENT_ASTRA_GATE_A_V3 = PASS @ `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
 ASTRA_AUDIT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
 GATE_A_V3_REPOSITORY_DISPOSITION = PASS
-TARGET_HOST_READY = FALSE / NOT_YET_QUALIFIED
+TARGET_HOST_READY = FALSE / BLOCKED_BY_REAL_DEFECT
 GATE_B = NOT_STARTED
 PRODUCT_INTEGRATION = PAUSED
 
@@ -205,9 +208,42 @@ BLUE_TARGET_HOST_QUALIFICATION_MISSION = `handoff/BLUE_TARGET_HOST_QUALIFICATION
 DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
-NEXT_EXPECTED_EVENT = target-host entrance execution evidence plus continued post-Gate cleanup.
+NEXT_EXPECTED_EVENT = Builder delivery of the effective-unit-digest stability correction with exact-head CI, followed by independent Astra review.
 
-NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; use `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md` as the sole operational branch-deletion list when delete-ref capability is available; execute default-branch migration only through an explicit repository-admin mutation after one last live recheck; do not declare t0 until target-host entrance evidence is satisfied.
+NEXT_ACTION = preserve frozen candidate `2da079d8...` and its failed target-host evidence; do not start it again for qualification; implement the Blue-approved effective-unit-digest stability correction from the exact frozen implementation baseline; require exact-head CI, independent Astra review and a new Blue disposition before any target-host re-entry; do not declare t0 until the replacement candidate satisfies target-host entrance.
 
 Do not start Product integration yet.
 Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real-capital readiness.
+
+
+## K. TARGET-HOST REAL DEFECT — EFFECTIVE UNIT DIGEST INSTABILITY
+
+Durable disposition:
+`handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
+
+Target-host evidence established:
+
+- frozen candidate: `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
+- loaded unit byte-match repository unit: TRUE;
+- unbound drop-ins: NONE;
+- frozen semantic systemd validator: PASS;
+- materialized effective-unit digest: `sha256:33d166b68a337947f7737ae659b386df88545867012ce88d0b30bcdbcf070b3d`;
+- effective-unit digest after systemd execution metadata changed: `sha256:c6394ef740c3f66c35e2920ebd4f21d27ff1417d11be5ab93b457f0f7e355c22`;
+- one-use deployment authority after failed entrance: PRESENT / UNCONSUMED;
+- deployment-authority ledger: ABSENT;
+- supervisor launch event: ABSENT;
+- lifecycle record: ABSENT;
+- integrity latch: ABSENT;
+- restricted artifact SHA-256: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`;
+- classification: `REAL_DEFECT`;
+- target-host entrance: `FAIL / NO_T0`.
+
+Blue decision:
+
+`GATE_A_V3_REPOSITORY_DISPOSITION = PASS_HISTORICAL_AT_EXACT_SHA`
+
+`GATE_A_V3_TARGET_HOST_ELIGIBILITY = REJECTED_BY_NEW_REAL_DEFECT`
+
+`CORRECTIVE_GATE_A_V4_REQUIRED = TRUE`
+
+The correction must canonicalize effective `ExecStart` semantics and exclude mutable execution observations while preserving fail-closed detection of real unit drift. No v3 evidence transfers automatically to the corrected SHA.
