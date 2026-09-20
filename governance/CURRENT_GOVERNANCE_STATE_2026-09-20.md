@@ -369,3 +369,50 @@ This branch was explicitly removed from the physical-delete batch by owner reque
 
 Current physical-delete batch size:
 `34`
+
+
+## 17. P14D final Red Team / active parallel work — 2026-09-21
+
+Durable Red Team:
+`governance/BLUE_P14D_FINAL_RED_TEAM_2026-09-21.md`
+
+Prepared amendment candidate:
+`governance/BLUE_P14D_HYBRID_AMENDMENT_CANDIDATE_V2_2026-09-21.md`
+
+Current method disposition:
+- `FIXED_P14D_UNIQUE_SPECIFIC_ACCEPTANCE_PROPERTY = NONE_FOUND`;
+- `RAW_ELAPSED_TIME_RESIDUAL_VALUE = REAL_BUT_UNCALIBRATED`;
+- hybrid qualification is recommended for the enumerated P0 properties, while passive-time residual value is preserved through post-qualification surveillance rather than an arbitrary pre-qualification minimum;
+- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED` until the promotion gates close.
+
+Red Team hardening added:
+- `T0_BINDING_MODE = PRECOMMITTED_NEXT_AUTHORIZED_QUALIFYING_LAUNCH` is the recommended anti-selection binding;
+- the next single launch event is precommitted before outcomes; its externally attributable UTC timestamp becomes t0;
+- ambiguous, missing, duplicate or wrongly bound launch provenance => `NO_T0`;
+- after successful Gate D, `P0_POST_QUALIFICATION_SURVEILLANCE = ACTIVE` should preserve the residual value of real elapsed exposure and allow new defects to reopen current eligibility.
+
+Promotion blockers remain:
+1. Gate-A fault-matrix closure with no unresolved repository blocker;
+2. final independent Gate A v4 review plus Blue disposition;
+3. exact candidate/evidence lineage binding;
+4. atomic supersession of stale fixed-P14D current checkpoints.
+
+### ACTIVE_PARALLEL_WORK
+
+`BLUE_NOW = FINAL_P14D_METHOD_CLOSURE + AMENDMENT_READINESS + GATE_B/t0_ENTRANCE_PREPARATION`
+
+`BUILDER_NOW = HYBRID_QUALIFICATION_EVIDENCE / FAULT_MATRIX_CONTINUATION`
+
+Durable predecessor Builder checkpoint:
+`builder/p0-hybrid-qualification-harness-2026-09-20@d4d446c412258b2a9e4792cdcd9e2442ef24b615` with exact-head run `35541420721 = SUCCESS`.
+
+Any later Codex continuation is counted only after its branch/SHA/evidence appears durably on GitHub.
+
+`ASTRA_NOW = INDEPENDENT_GATE_A_V4_AUDIT`
+
+Current audit branch at this checkpoint:
+`astra/p0-gate-a-v4-independent-audit-2026-09-20@b636a04b6f8f7786679907d01a4fa22bdfc4e329`.
+
+`DO_NOT_WAIT_FOR_OTHER_LANES_WHEN_WORK_IS_INDEPENDENT = TRUE`
+
+No lane may infer completion from another lane's green CI or chat claim.
