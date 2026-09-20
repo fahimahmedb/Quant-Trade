@@ -256,6 +256,8 @@ class MoreCollectorCampaign(CollectorTestCase):
     def test_reconciliation_404_cannot_hot_loop(self):
         from datetime import date
         c=self.collector(self.fixture_router());c.poll();c.drain(max_items=3)
+        c.state.bootstrap_started_at_utc='2026-09-16T12:00:00+00:00';c.save()
+        self.assertEqual(c.reconciliation_due(),date(2026,9,16))
         c.reconcile(date(2026,9,16))
         self.assertGreater(c.cooldown_remaining(),0)
 

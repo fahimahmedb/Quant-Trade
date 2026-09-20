@@ -1013,6 +1013,18 @@ class CoverageTruthfulnessTests(CollectorTestCase):
 
 
 class ReconciliationTests(CollectorTestCase):
+    def _make_day_due(self, collector, day: date) -> None:
+        """Arrange calendar preconditions without bypassing public reconcile()."""
+        collector.state.bootstrap_started_at_utc = (
+            f"{day.isoformat()}T12:00:00+00:00"
+        )
+        collector.save()
+        for _ in range(96):
+            if collector.reconciliation_due() == day:
+                return
+            self.timebase.advance(60 * 60)
+        self.fail(f"reconciliation day never became due: {day}")
+
     def test_daily_index_confirms_coverage_when_everything_expected_was_captured(self) -> None:
         index = (FIXTURES / "master.20260917.idx").read_bytes()
         atom = build_feed([], entries=[
@@ -1026,6 +1038,7 @@ class ReconciliationTests(CollectorTestCase):
         collector.poll()
         collector.drain(max_items=2)
         self.assertEqual(collector.state.coverage_state, COVERAGE_COMPLETE)
+        self._make_day_due(collector, date(2026, 9, 17))
         outcome = collector.reconcile(date(2026, 9, 17))
         self.assertTrue(outcome["reconciled"])
         self.assertIsNone(outcome["gap_id"])
@@ -1035,6 +1048,7 @@ class ReconciliationTests(CollectorTestCase):
     def test_daily_index_gap_is_detected_and_keeps_identities_restricted(self) -> None:
         index = (FIXTURES / "master.20260917.idx").read_bytes()
         collector = self.collector(self.fixture_router(index=index))
+        self._make_day_due(collector, date(2026, 9, 17))
         outcome = collector.reconcile(date(2026, 9, 17))
         self.assertFalse(outcome["reconciled"])
         self.assertIsNotNone(outcome["gap_id"])
@@ -1053,6 +1067,7 @@ class ReconciliationTests(CollectorTestCase):
 
     def test_unavailable_or_invalid_daily_index_never_confirms_coverage(self) -> None:
         collector = self.collector(self.fixture_router(index=None))
+        self._make_day_due(collector, date(2026, 9, 17))
         outcome = collector.reconcile(date(2026, 9, 17))
         self.assertFalse(outcome["reconciled"])
         self.assertNotIn("2026-09-17", collector.state.reconciled_days)
@@ -2447,8 +2462,14 @@ class AuditFalsePassTests(CollectorTestCase):
         append_jsonl(intent_path, {"event": "RESERVED", "attempt_id": attempt_id,
                                    "obligation_id": obligation_id,
                                    "reserved_at_utc": attempted_at})
+        target_transition = next(
+            (record for record in self.lane.scheduler.all()
+             if record.get("obligation_id") == obligation_id),
+            {},
+        )
+        attempt_kind = target_transition.get("required_action_kind") or "DISCOVERY"
         self.lane.store.record_attempt(SecAttemptRecord(
-            attempt_id=attempt_id, attempt_kind="DISCOVERY", endpoint_class="test",
+            attempt_id=attempt_id, attempt_kind=attempt_kind, endpoint_class="test",
             source_locator_digest=digest_text("loc"),
             request_attempted_at_utc=attempted_at,
             response_received_at_utc=attempted_at,

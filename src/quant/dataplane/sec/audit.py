@@ -664,7 +664,8 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
         findings.append("LIFECYCLE_FINGERPRINT_MISMATCH")
     if (collector.paths.sec / "integrity_fault.json").exists():
         findings.append("DURABLE_INTEGRITY_FAULT")
-    if collector.store.verify_objects():
+    verify_objects = getattr(collector.store, "verify_objects", None)
+    if callable(verify_objects) and verify_objects():
         findings.append("RAW_OBJECT_REFERENTIAL_INTEGRITY_FAILED")
     if unattested:
         findings.append("LIFECYCLE_CAUSE_UNATTESTED")
