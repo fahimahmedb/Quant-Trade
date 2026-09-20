@@ -33,11 +33,9 @@ from quant.paths import QuantPaths  # noqa: E402
 HARNESS_USER_AGENT = "Quant P0 Qualification Harness harness@quant.example.com"
 
 
-def response(body: bytes, *, status: int = 200, headers: dict[str, str] | None = None
-             ) -> SecHttpResponse:
-    return SecHttpResponse(
-        status=status, headers=headers or {}, body=body, encoding_lied=False,
-        truncated=False, elapsed_seconds=0.0)
+def response(body: bytes, *, status: int = 200, headers: dict[str, str] | None = None,
+             reason: str = "OK") -> SecHttpResponse:
+    return SecHttpResponse(status=status, reason=reason, body=body, headers=headers or {})
 
 
 class FakeTransport:
