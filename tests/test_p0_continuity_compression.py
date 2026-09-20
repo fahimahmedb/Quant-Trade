@@ -71,6 +71,26 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
             "bootstrap source day must be derived in America/New_York, not UTC",
         )
 
+    def test_known_sec_federal_holiday_is_not_a_reconciliation_target(self) -> None:
+        """Labor Day is source-normal silence, not a missing daily index."""
+        labor_day = datetime(2026, 9, 7, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(labor_day)
+
+        # 44h later is Wednesday 08:00 UTC. If Monday were an ordinary EDGAR
+        # business day, its 22:00 ET close + 30h settle horizon would just have
+        # elapsed. The official SEC calendar says 2026-09-07 is a federal
+        # holiday, so there must be no reconciliation obligation for that date.
+        self.timebase.advance(44 * 60 * 60)
+        self.assertIsNone(
+            collector.reconciliation_due(),
+            "a known SEC holiday must not be converted into DAILY_INDEX_UNAVAILABLE work",
+        )
+
+        # Tuesday 2026-09-08 is the next EDGAR business day. Its 22:00 ET close
+        # + 30 elapsed hours lands at Thursday 08:00 UTC.
+        self.timebase.advance(24 * 60 * 60)
+        self.assertEqual(collector.reconciliation_due(), date(2026, 9, 8))
+
     def test_virtual_p14d_horizon_has_no_hidden_calendar_state(self) -> None:
         """The former 14-day horizon reduces to settled weekdays under exact logic."""
         start = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
