@@ -41,6 +41,36 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         self.timebase.advance(24 * 60 * 60)
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 21))
 
+    def test_settle_delay_is_measured_after_edgar_close_not_utc_date_start(self) -> None:
+        """Friday is not settled until 30h after the 22:00 ET EDGAR close."""
+        friday = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(friday)
+
+        # On 2026-09-18 New York is UTC-4. EDGAR closes Friday at 22:00 ET,
+        # i.e. Saturday 02:00 UTC. Thirty hours later is Sunday 08:00 UTC.
+        self.timebase.advance((44 * 60 * 60) - 1)
+        self.assertIsNone(
+            collector.reconciliation_due(),
+            "a calendar-date truncation must not spend the 30h settle buffer early",
+        )
+
+        self.timebase.advance(1)
+        self.assertEqual(collector.reconciliation_due(), date(2026, 9, 18))
+
+    def test_bootstrap_day_is_the_edgar_eastern_business_date(self) -> None:
+        """A 01:00 UTC bootstrap still belongs to the prior EDGAR business day."""
+        # 2026-09-22 01:00 UTC is 2026-09-21 21:00 EDT, one hour before close.
+        start = datetime(2026, 9, 22, 1, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(start)
+
+        # Monday closes at Tuesday 02:00 UTC; +30h => Wednesday 08:00 UTC.
+        self.timebase.advance((31 * 60 * 60) + 1)
+        self.assertEqual(
+            collector.reconciliation_due(),
+            date(2026, 9, 21),
+            "bootstrap source day must be derived in America/New_York, not UTC",
+        )
+
     def test_virtual_p14d_horizon_has_no_hidden_calendar_state(self) -> None:
         """The former 14-day horizon reduces to settled weekdays under exact logic."""
         start = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
