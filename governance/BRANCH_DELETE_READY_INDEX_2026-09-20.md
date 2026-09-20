@@ -8,9 +8,9 @@ Status:
 Purpose: single operational authority for branch refs already approved for namespace deletion. This consolidates the earlier safe batch, post-Gate strict-ancestor batch, and post-Gate absorbed-proof review.
 
 Live verification after Gate A v3 PASS:
-- total refs: **35**
-- exact HEAD matches expected SHA: **35 / 35**
-- unprotected branches: **35 / 35**
+- total refs: **34**
+- exact HEAD matches expected SHA: **34 / 34**
+- unprotected branches: **34 / 34**
 - missing/moved refs: **0**
 - physical deletions executed: **0**
 - current blocker: GitHub connector exposes no safe delete-ref mutation
@@ -35,7 +35,6 @@ Deletion removes only the branch ref. It must not be interpreted as deletion of 
 | `FIRST_SAFE` | `claude/memoire-finance-presentation-9p2q5g` | `57a966f8239ef1e044ed6eab790ea030445a8037` |
 | `FIRST_SAFE` | `claude/political-prediction-token-optimization-di47f2` | `7a0872efa595984c366dd0ed042f7cc97961aac0` |
 | `FIRST_SAFE` | `claude/price-prediction-model-ykhog1` | `79572ad060120cb978c865ae5a5993cc6f3c616f` |
-| `FIRST_SAFE` | `claude/restaurant-stock-management-mvp-6oq43e` | `e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0` |
 | `FIRST_SAFE` | `claude/nasdaq-quant-trading-model-emdbg5` | `dda7395c6b29b663434331ba4f6faf77818b23e5` |
 | `POST_GATE_ANCESTOR` | `blue/d05-d07-governance-2026-09-15` | `1700611ad56104a2e4fde6ff72ce886d43a55958` |
 | `POST_GATE_ANCESTOR` | `blue/handoff-memory-2026-09-15` | `c1a955316055aaf6c1b28853e21ed07e36e55f6a` |
@@ -74,6 +73,7 @@ Do not emulate deletion with `update_ref`, force-moving, or overwriting the bran
 ## Explicit exclusions
 
 Not delete-ready through this index:
+- `claude/restaurant-stock-management-mvp-6oq43e` — explicit owner retention request on 2026-09-20;
 - current Blue authority;
 - frozen Gate A v3 candidate;
 - final Astra v3 audit;
