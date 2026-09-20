@@ -71,7 +71,7 @@ NEXT_OWNER = Builder for the Blue-approved effective-unit-digest stability corre
 
 ## E. WAITING FOR
 
-WAITING_FOR = Builder corrective implementation for effective-unit-digest stability, then exact-head CI, independent Astra reproduction/review, then Blue disposition.
+WAITING_FOR = Builder corrective implementation on `builder/p0-effective-unit-digest-stability-v4-2026-09-20`, then exact-head CI, independent Astra reproduction/review, then Blue disposition.
 
 Historical Gate A v3 repository proof remains closed at its exact SHA, but the frozen candidate is no longer eligible for target-host entrance because of the newly reproduced REAL_DEFECT.
 
@@ -208,7 +208,7 @@ BLUE_TARGET_HOST_QUALIFICATION_MISSION = `handoff/BLUE_TARGET_HOST_QUALIFICATION
 DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
-NEXT_EXPECTED_EVENT = Builder delivery of the effective-unit-digest stability correction with exact-head CI, followed by independent Astra review.
+NEXT_EXPECTED_EVENT = Builder delivery from `builder/p0-effective-unit-digest-stability-v4-2026-09-20` with exact-head CI, followed by independent Astra review.
 
 NEXT_ACTION = preserve frozen candidate `2da079d8...` and its failed target-host evidence; do not start it again for qualification; implement the Blue-approved effective-unit-digest stability correction from the exact frozen implementation baseline; require exact-head CI, independent Astra review and a new Blue disposition before any target-host re-entry; do not declare t0 until the replacement candidate satisfies target-host entrance.
 
@@ -247,3 +247,25 @@ Blue decision:
 `CORRECTIVE_GATE_A_V4_REQUIRED = TRUE`
 
 The correction must canonicalize effective `ExecStart` semantics and exclude mutable execution observations while preserving fail-closed detection of real unit drift. No v3 evidence transfers automatically to the corrected SHA.
+
+
+## L. CORRECTIVE BUILDER DISPATCH
+
+Blue has dispatched the corrective implementation mission.
+
+Builder branch:
+`builder/p0-effective-unit-digest-stability-v4-2026-09-20`
+
+Branch implementation baseline:
+`2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
+
+Mission contract:
+`handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_MISSION_2026-09-20.md`
+
+Mission-contract commit on Builder branch:
+`b3fc705f082ce1fee7d415211ce42829c96cdbfc`
+
+Dispatch status:
+`DISPATCHED / IMPLEMENTATION_PENDING`
+
+Builder must not declare independent correctness, Gate A v4 PASS, target-host readiness or t0. Delivery returns to Blue for reception, then independent Astra/Red Team review.
