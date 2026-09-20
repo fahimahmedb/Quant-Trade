@@ -528,6 +528,8 @@ class SecForm4Collector:
             self._qualifying_mutation_authority_claimed = (
                 self._claim_qualifying_mutation_authority()
             )
+            if not self._qualifying_mutation_authority_claimed:
+                raise SecStorageFailure("QUALIFYING_MUTATION_AUTHORITY_UNBOUND")
         record = dict(self.lifecycle,
                       recorded_at_utc=self.timebase.now_iso(),
                       acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
