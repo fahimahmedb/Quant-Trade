@@ -105,6 +105,30 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         self.assertTrue(is_edgar_business_day(date(2026, 9, 8)))
         self.assertFalse(is_edgar_business_day(date(2026, 9, 7)))
 
+    def test_spring_dst_does_not_shorten_30_elapsed_hours(self) -> None:
+        """The spring clock jump cannot spend one hour of the settle buffer."""
+        start = datetime(2026, 3, 6, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(start)
+
+        # Friday 22:00 EST == Saturday 03:00 UTC. +30 real hours == Sunday
+        # 09:00 UTC, even though New York jumps from 01:59 to 03:00 meanwhile.
+        self.timebase.advance((45 * 60 * 60) - 1)
+        self.assertIsNone(collector.reconciliation_due())
+        self.timebase.advance(1)
+        self.assertEqual(collector.reconciliation_due(), date(2026, 3, 6))
+
+    def test_fall_dst_does_not_lengthen_30_elapsed_hours(self) -> None:
+        """The repeated fall-back hour cannot add one hour to the settle buffer."""
+        start = datetime(2026, 10, 30, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(start)
+
+        # Friday 22:00 EDT == Saturday 02:00 UTC. +30 real hours == Sunday
+        # 08:00 UTC, even though New York repeats the 01:00 hour meanwhile.
+        self.timebase.advance((44 * 60 * 60) - 1)
+        self.assertIsNone(collector.reconciliation_due())
+        self.timebase.advance(1)
+        self.assertEqual(collector.reconciliation_due(), date(2026, 10, 30))
+
     def test_virtual_p14d_horizon_has_no_hidden_calendar_state(self) -> None:
         """The former 14-day horizon reduces to settled weekdays under exact logic."""
         start = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
