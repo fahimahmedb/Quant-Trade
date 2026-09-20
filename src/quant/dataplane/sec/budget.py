@@ -78,11 +78,29 @@ class SecTrafficBudget:
         self.lock_path = self.path.with_suffix(".lock")
         self.network_lock_path = self.path.with_suffix(".network.lock")
         self.commit_path = self.path.with_suffix(".commits.jsonl")
-        self._mutation_authority = mutation_authority
+        self._mutation_authority: Callable[[str], None] | None = None
+        if mutation_authority is not None:
+            self.bind_mutation_authority(mutation_authority)
 
-    def bind_mutation_authority(self, authority: Callable[[str], None]) -> None:
-        """Bind every durable budget write to a qualifying mutation authority."""
-        self._mutation_authority = authority
+    def bind_mutation_authority(self, authority: Callable[[str], None]) -> bool:
+        """Bind only the collector that actually owns this budget instance.
+
+        The callback is not itself authority: accepting an arbitrary callable
+        would let any lower-level caller mint a no-op bypass. A valid binding
+        must be the owning collector's bound _authorize_budget_mutation method
+        and that collector must point back to this exact budget object.
+        Invalid public binding attempts deliberately leave the budget unbound,
+        so qualifying durable mutation remains fail-closed in save().
+        """
+        owner = getattr(authority, "__self__", None)
+        valid = (
+            owner is not None
+            and getattr(authority, "__name__", None) == "_authorize_budget_mutation"
+            and getattr(owner, "budget", None) is self
+            and getattr(getattr(owner, "paths", None), "sec_budget", None) == self.path
+        )
+        self._mutation_authority = authority if valid else None
+        return valid
 
     def _authorize_mutation(self, operation: str) -> None:
         if self._mutation_authority is not None:
