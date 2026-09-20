@@ -87,6 +87,31 @@ class SecTrafficBudget:
     def _authorize_mutation(self, operation: str) -> None:
         if self._mutation_authority is not None:
             self._mutation_authority(operation)
+            return
+
+        # A fresh SecTrafficBudget object over an already-qualifying durable
+        # lane must not bypass the collector-bound authority callback. The
+        # lifecycle journal is a sibling of the global budget file, so an
+        # unbound mutator can independently determine whether qualifying
+        # history exists and fail closed before changing durable state.
+        lifecycle_path = self.path.parent / "lifecycle.jsonl"
+        try:
+            qualifying_history = (
+                lifecycle_path.exists()
+                and any(
+                    isinstance(record, dict)
+                    and record.get("qualifying_service_mode")
+                    for record in read_jsonl(lifecycle_path)
+                )
+            )
+        except (OSError, ValueError, TypeError, AttributeError) as exc:
+            raise RuntimeError(
+                "QUALIFYING_MUTATION_AUTHORITY_UNVERIFIABLE"
+            ) from exc
+        if qualifying_history:
+            raise RuntimeError(
+                f"QUALIFYING_MUTATION_AUTHORITY_REQUIRED:{operation}"
+            )
 
     # --- durable state -----------------------------------------------------
     @staticmethod
