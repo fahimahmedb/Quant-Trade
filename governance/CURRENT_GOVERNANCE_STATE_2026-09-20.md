@@ -2,6 +2,24 @@
 
 Purpose: compact current-governance index for Quant. This is a routing/index document, not a replacement for the authorities it cites.
 
+## 0A. REPOSITORY HYGIENE EXECUTION — LATEST
+
+`REPOSITORY_HYGIENE = CLOSED / EXECUTED`
+
+Durable execution handoff:
+`handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`
+
+Current verified namespace state:
+- default branch = `blue/master-v2-2026-09-20`;
+- live branches = `40`;
+- delete batch = `34 / 34 COMPLETE`;
+- delete-ready survivors = `0`;
+- restaurant branch = `RETAIN_OWNER_REQUEST`;
+- open PRs = `0`;
+- open issues = `0`.
+
+This cleanup does not alter Gate A v4, P14D, t0, Product integration, target-host readiness or capital authority.
+
 ## 0. Authority precedence
 
 1. `QUANT_NORTH_STAR.md` — highest architecture/product authority unless explicitly revised by owner.
@@ -117,16 +135,16 @@ Open issues:
 `0`
 
 Current branch inventory:
-`74`
+`40`
 
 Single operational deletion authority:
 `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
 
 Current verified delete-ready state:
-- refs = 35;
-- exact pinned SHA matches = 34/34;
-- unprotected = 34/34;
-- physical deletions executed = 0.
+- refs = 34 historical execution inputs;
+- exact pinned SHA preflight = 34/34;
+- physical deletions executed = 34/34;
+- delete-ready survivors = 0.
 
 Deletion must use a true branch-delete/delete-ref operation. Never emulate deletion by moving refs.
 
@@ -135,7 +153,7 @@ Divergent falsifier/audit refs and unique Product/recovery/learning/design refs 
 ## 7. Default branch governance
 
 Current repository default:
-`claude/nasdaq-trading-model-design-h3mp4n@8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce`
+`blue/master-v2-2026-09-20`
 
 It is stale and non-authoritative.
 
@@ -144,7 +162,7 @@ Review:
 
 `DEFAULT_BRANCH_REVIEW = COMPLETE`
 
-`DEFAULT_BRANCH_MIGRATION_EXECUTED = FALSE`
+`DEFAULT_BRANCH_MIGRATION_EXECUTED = TRUE`
 
 Proposed interim default:
 `blue/master-v2-2026-09-20`
@@ -210,11 +228,11 @@ Then:
 
 `GATE_DISCIPLINE = ESTABLISHED`
 
-`BRANCH_CLEANUP = PREPARED / PHYSICAL_DELETE_PENDING_TOOLING`
+`BRANCH_CLEANUP = EXECUTED / CLOSED`
 
-`DEFAULT_BRANCH_MIGRATION = REVIEWED / NOT_EXECUTED`
+`DEFAULT_BRANCH_MIGRATION = EXECUTED / VERIFIED`
 
-`ACTIVE_FRONTIER = INDEPENDENT_GATE_A_V4_AUDIT + P14D_HYBRID_METHOD_REVIEW + REPOSITORY_HYGIENE_EXECUTION`
+`ACTIVE_FRONTIER = INDEPENDENT_GATE_A_V4_AUDIT + P14D_HYBRID_METHOD_REVIEW`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
