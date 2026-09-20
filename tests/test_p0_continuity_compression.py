@@ -146,6 +146,33 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         )
         self.assertNotIn("2026-09-18", collector.state.reconciled_days)
 
+    def test_cli_reconcile_before_settlement_emits_no_request(self) -> None:
+        """The real sec-reconcile --day CLI must use the same due boundary."""
+        import contextlib
+        import importlib.util
+        import io
+        from types import SimpleNamespace
+        from pathlib import Path
+
+        friday = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(friday)
+        requested_before = list(self.transport.requested)
+
+        root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location(
+            "quant_cli_direct_reconcile", root / "scripts" / "quant.py")
+        cli = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cli)
+        args = SimpleNamespace(command="sec-reconcile", day="2026-09-18")
+        components = SimpleNamespace(set=lambda *args, **kwargs: None)
+
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = cli.sec_command(SimpleNamespace(sec=collector, components=components), args)
+
+        self.assertEqual(rc, 0)
+        self.assertEqual(self.transport.requested, requested_before)
+        self.assertNotIn("2026-09-18", collector.state.reconciled_days)
+
     def test_direct_reconcile_cannot_skip_oldest_due_day(self) -> None:
         """Explicit --day cannot jump over an older due reconciliation obligation."""
         start = datetime(2026, 9, 16, 12, 0, tzinfo=timezone.utc)
