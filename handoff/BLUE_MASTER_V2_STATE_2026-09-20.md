@@ -66,6 +66,7 @@ NEXT_OWNER = Blue / Mission Control; execution may be delegated only to an opera
 8. Independent Astra audit branch pre-created at exact `2da079d8...`; no candidate code was changed.
 9. Creating the frozen/Astra refs triggered redundant workflow runs on the same SHA. They are operational duplicates, not new candidate SHAs and not substitutes for run `35514180655`.
 10. Process improvement retained: finalize the handoff before the last delivery CI so documentation does not create a needless extra HEAD/run.
+11. Repository-only continuation found that the mandatory deployment contract path was absent from Blue while cited by current target-host authorities. Exact source bytes from `astra/p0-deep-adversarial-pre-t0@643deacdf5bbbdb1d2410c762eb20f72aff16bbf` (Git blob `3ffe40107b7710c58de3b5a01b2e1574d611c5cb`) were restored at `governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md`; no frozen-candidate, Gate, target-host, t0, P14D, Product or capital state changed.
 
 ## E. WAITING FOR
 
