@@ -27,6 +27,7 @@ from __future__ import annotations
 import uuid
 import hashlib
 import re
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
@@ -39,12 +40,13 @@ from ...state import (append_jsonl, create_json_once, parse_ts, read_json, read_
 from .budget import SecCooldownActive, SecTrafficBudget, seconds_from_retry_after
 from .calendar import is_edgar_business_day
 from .fingerprint import acquisition_critical_fingerprint, build_manifest, compute_fingerprint
-from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
+from .scheduler import (ACTION_DISCOVERY, ACTION_FILING, ACTION_RECONCILE,
+                        AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CONFIGURED,
                         CONFIG_FAIL_CLOSED, COOLDOWN, COOLDOWN_OBSERVED, DISABLED,
                         DRAIN_COMPLETED, DRAINING, LANE_DISABLED, LANE_ENABLED,
                         POLL_COMPLETED, POLL_DUE, POLL_FAILED, RECONCILE_COMPLETED,
-                        RECONCILING, SERVICE_START, SchedulerJournal, SchedulerTransition,
-                        WORK_ENQUEUED)
+                        RECONCILIATION_SCHEDULED, RECONCILING, SERVICE_START,
+                        SchedulerJournal, SchedulerTransition, WORK_ENQUEUED)
 from .supervisor import MANUAL_START, UNATTESTED, host_boot_id, lifecycle_provenance
 from .discovery import (DailyIndexPage, DiscoveryEntry, DiscoveryInvalid, DiscoveryPage,
                         daily_index_path, daily_index_url, discovery_path, discovery_url,
@@ -252,6 +254,10 @@ class SecForm4Collector:
         self._committed: dict[str, str] | None = None
         self.scheduler = SchedulerJournal(self.paths.sec_scheduler)
         self.lifecycle = lifecycle_provenance(environ)
+        self._operator_mutation_depth = 0
+        self._internal_budget_mutation_depth = 0
+        if self.budget is not None:
+            self.budget.bind_mutation_authority(self._authorize_budget_mutation)
         # The fingerprint is computed from the frozen membership, not stored and
         # trusted: a deployment whose code or policy moved must not be able to
         # present the previous window's fingerprint.
@@ -261,9 +267,51 @@ class SecForm4Collector:
             self.fingerprint = acquisition_critical_fingerprint(
                 self.policy, root=self.root, environ=environ)
 
+    # --- qualifying mutation authority ------------------------------------
+    def _qualifying_history_exists(self) -> bool:
+        return any(record.get("qualifying_service_mode")
+                   for record in read_jsonl(self.paths.sec_lifecycle))
+
+    def _current_process_is_qualifying(self) -> bool:
+        return bool(self.lifecycle.get("qualifying_service_mode")
+                    and self.lifecycle.get("externally_attested")
+                    and self.lifecycle.get("service_managed"))
+
+    def _guard_public_mutation(self, action: str) -> None:
+        """Record a lower-level manual mutation once qualifying evidence exists."""
+        if self._operator_mutation_depth or self._current_process_is_qualifying():
+            return
+        if self._qualifying_history_exists():
+            self.record_operator_intervention(f"direct:{action}")
+
+    @contextmanager
+    def operator_mutation(self, command: str):
+        """One durable provenance record for an explicit operator mutation."""
+        self.record_operator_intervention(command)
+        self._operator_mutation_depth += 1
+        try:
+            yield
+        finally:
+            self._operator_mutation_depth -= 1
+
+    @contextmanager
+    def _internal_budget_mutation(self):
+        self._internal_budget_mutation_depth += 1
+        try:
+            yield
+        finally:
+            self._internal_budget_mutation_depth -= 1
+
+    def _authorize_budget_mutation(self, operation: str) -> None:
+        if self._internal_budget_mutation_depth or self._operator_mutation_depth:
+            return
+        if self._qualifying_history_exists():
+            self.record_operator_intervention(f"direct:budget:{operation}")
+
     # --- scheduler provenance ---------------------------------------------
     def record_transition(self, state: str, cause: str, *, next_due_at: str | None,
-                          detail: str | None = None) -> SchedulerTransition:
+                          detail: str | None = None,
+                          required_action_kind: str | None = None) -> SchedulerTransition:
         """Say prospectively what the lane will do next, and when.
 
         The audit reconstructs the expected attempt sequence from these records.
@@ -285,6 +333,8 @@ class SecForm4Collector:
             acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
             obligation_id=obligation_id,
             supersedes_obligation_id=superseded,
+            required_action_kind=(required_action_kind
+                                  or self._main_required_action_kind()),
             boot_id=self.lifecycle.get("boot_id"),
             lifecycle_cause=self.lifecycle.get("lifecycle_cause"),
             cooldown_until_utc=budget_state.cooldown_until_utc if budget_state else None,
@@ -297,6 +347,62 @@ class SecForm4Collector:
         self.state.open_obligation_id = obligation_id
         self.save()
         return transition
+
+    def _main_required_action_kind(self) -> str:
+        return ACTION_FILING if self.state.pending_tasks else ACTION_DISCOVERY
+
+    def _next_reconciliation_target(self) -> date | None:
+        start = self.state.bootstrap_started_at_utc
+        if start is None or not self.configured or not self.state.enabled:
+            return None
+        day = _edgar_business_date(parse_ts(start))
+        while True:
+            if is_edgar_business_day(day) and day.isoformat() not in self.state.reconciled_days:
+                return day
+            day = day + timedelta(days=1)
+
+    def _ensure_reconciliation_obligation(self) -> str | None:
+        """Materialize source-calendar reconciliation independently of Clock."""
+        day = self._next_reconciliation_target()
+        if day is None:
+            return None
+        detail = f"daily_index:{day.isoformat()}"
+        attempted = {record.get("obligation_id") for record in self.store.attempts()}
+        candidates = [
+            record for record in self.scheduler.all()
+            if record.get("required_action_kind") == ACTION_RECONCILE
+            and record.get("detail") == detail
+            and record.get("obligation_id")
+            and record.get("obligation_id") not in attempted
+        ]
+        if candidates:
+            return candidates[-1]["obligation_id"]
+
+        due = _daily_index_settled_at_utc(day)
+        now = self.timebase.now().astimezone(timezone.utc)
+        if due < now:
+            due = now
+        if self.cooldown_remaining() > 0 and self.budget is not None:
+            cooldown = self.budget.load().cooldown_until_utc
+            if cooldown and parse_ts(cooldown) > due:
+                due = parse_ts(cooldown)
+        transition = SchedulerTransition(
+            transition_id=uuid.uuid4().hex[:16],
+            recorded_at_utc=self.timebase.now_iso(),
+            state=RECONCILING,
+            cause=RECONCILIATION_SCHEDULED,
+            next_due_at_utc=due.isoformat(),
+            acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
+            obligation_id=uuid.uuid4().hex[:16],
+            supersedes_obligation_id=None,
+            required_action_kind=ACTION_RECONCILE,
+            boot_id=self.lifecycle.get("boot_id"),
+            lifecycle_cause=self.lifecycle.get("lifecycle_cause"),
+            coverage_state=self.state.coverage_state,
+            work_in_flight=bool(self.state.pending_tasks),
+            detail=detail)
+        self.scheduler.record(transition)
+        return transition.obligation_id
 
     def next_due_at(self) -> str | None:
         """When the next acquisition action becomes due, from durable state."""
@@ -330,8 +436,10 @@ class SecForm4Collector:
         return AWAITING_POLL
 
     def record_current_state(self, cause: str, detail: str | None = None) -> SchedulerTransition:
-        return self.record_transition(self.scheduler_state(), cause,
-                                      next_due_at=self.next_due_at(), detail=detail)
+        self._ensure_reconciliation_obligation()
+        return self.record_transition(
+            self.scheduler_state(), cause, next_due_at=self.next_due_at(),
+            detail=detail, required_action_kind=self._main_required_action_kind())
 
     def record_operator_intervention(self, command: str) -> dict[str, Any]:
         """Durably mark a one-shot operator mutation as qualification-invalidating.
@@ -372,6 +480,7 @@ class SecForm4Collector:
                       collector_version=self.store.collector_version,
                       git_commit=self.store.git_commit)
         append_jsonl(self.paths.sec_lifecycle, record)
+        self._ensure_reconciliation_obligation()
         # A process start cannot rewrite an existing prospective commitment.
         # Initial enable() records the first obligation once the lane is active.
         if not self.configured or (self.state.enabled and not self.state.open_obligation_id):
@@ -561,6 +670,8 @@ class SecForm4Collector:
             payload = read_json(self.paths.sec_fingerprint)
             assert isinstance(payload, dict)
             return payload
+        if self._qualifying_history_exists() and not self._operator_mutation_depth:
+            self.record_operator_intervention("direct:materialize_fingerprint")
         manifest = build_manifest(self.policy, root=self.root, environ=self._environ)
         fingerprint = compute_fingerprint(manifest)
         payload = {
@@ -650,6 +761,7 @@ class SecForm4Collector:
         return self._committed
 
     def enable(self) -> None:
+        self._guard_public_mutation("enable")
         if not self.configured:
             raise SecPolicyNotConfigured(self.policy_error or "SEC access is not configured")
         self.state.enabled = True
@@ -660,6 +772,7 @@ class SecForm4Collector:
         self.record_current_state(LANE_ENABLED)
 
     def disable(self, reason: str | None = None) -> None:
+        self._guard_public_mutation("disable")
         self.state.enabled = False
         self.state.blocked_reason = reason
         self.save()
@@ -736,7 +849,8 @@ class SecForm4Collector:
                             page_start: int | None = None,
                             source_identity: str | None = None,
                             source_published_at_utc: str | None = None,
-                            store_bytes: bool = True) -> _AttemptResult:
+                            store_bytes: bool = True,
+                            obligation_id: str | None = None) -> _AttemptResult:
         """Issue one SEC request and leave a durable attempt record, always.
 
         The caller holds the process-shared network lease before reserve() and
@@ -744,7 +858,8 @@ class SecForm4Collector:
         """
         endpoint_class = endpoint_class_for(kind)
         attempt_id = self.store.new_attempt_id()
-        obligation_id = self.state.open_obligation_id
+        if obligation_id is None:
+            obligation_id = self.state.open_obligation_id
         intent_path = self.paths.sec / "request_intents.jsonl"
         append_jsonl(intent_path, {
             "event": "INTENT", "attempt_id": attempt_id,
@@ -782,7 +897,8 @@ class SecForm4Collector:
                 response_received_at_utc=record.response_received_at_utc)
 
         try:
-            reservation = self.budget.reserve(endpoint_class)
+            with self._internal_budget_mutation():
+                reservation = self.budget.reserve(endpoint_class)
         except SecCooldownActive as cooldown:
             return finish(COOLDOWN_SUPPRESSED, error_class=f"cooldown:{cooldown.reason}",
                           retry_after_seconds=cooldown.remaining_seconds)
@@ -876,7 +992,8 @@ class SecForm4Collector:
 
         if response.status == 429:
             seconds = self._authoritative_cooldown(response, self.policy.rate_limit_cooldown_seconds)
-            self.budget.enter_cooldown(seconds, "http_429_rate_limited")
+            with self._internal_budget_mutation():
+                self.budget.enter_cooldown(seconds, "http_429_rate_limited")
             self.record_transition(COOLDOWN, COOLDOWN_OBSERVED,
                                    next_due_at=self.budget.load().cooldown_until_utc,
                                    detail="http_429_rate_limited")
@@ -885,7 +1002,8 @@ class SecForm4Collector:
         if response.status == 403:
             # Consistent with automated-access control: long cooldown, no loop.
             seconds = self._authoritative_cooldown(response, self.policy.forbidden_cooldown_seconds)
-            self.budget.enter_cooldown(seconds, "http_403_access_controlled")
+            with self._internal_budget_mutation():
+                self.budget.enter_cooldown(seconds, "http_403_access_controlled")
             self.state.blocked_reason = "SEC returned 403; extended cooldown in force"
             self.record_transition(COOLDOWN, COOLDOWN_OBSERVED,
                                    next_due_at=self.budget.load().cooldown_until_utc,
@@ -919,7 +1037,8 @@ class SecForm4Collector:
                           byte_length=response.byte_length, **common)
 
         # A complete 200 is already durable above.
-        self.budget.reset_backoff()
+        with self._internal_budget_mutation():
+            self.budget.reset_backoff()
         result = finish(DEDUPLICATED if deduplicated else CAPTURED_OK,
                         raw_object_sha256=raw_object_sha256,
                         byte_length=response.byte_length, **common)
@@ -952,8 +1071,9 @@ class SecForm4Collector:
 
     def _enter_transient_cooldown(self, reason: str,
                                   floor_seconds: float = 0.0) -> None:
-        seconds = max(self.budget.next_backoff_seconds(), floor_seconds)
-        self.budget.enter_cooldown(seconds, reason)
+        with self._internal_budget_mutation():
+            seconds = max(self.budget.next_backoff_seconds(), floor_seconds)
+            self.budget.enter_cooldown(seconds, reason)
         self.record_transition(BACKOFF, BACKOFF_ENTERED,
                                next_due_at=self.budget.load().cooldown_until_utc,
                                detail=reason)
@@ -1002,6 +1122,8 @@ class SecForm4Collector:
     # --- discovery poll ----------------------------------------------------
     def poll(self) -> PollOutcome:
         """One discovery poll: validate, walk only what is needed, stay honest."""
+        self._guard_public_mutation("poll")
+        self._ensure_reconciliation_obligation()
         if not self.configured:
             return PollOutcome(poll_id="", result_state=COOLDOWN_SUPPRESSED,
                                valid_discovery=False,
@@ -1267,6 +1389,7 @@ class SecForm4Collector:
     # --- filing acquisition ------------------------------------------------
     def drain(self, max_items: int | None = None) -> list[dict[str, Any]]:
         """Acquire queued filings under the same limiter. Backlog never rushes."""
+        self._guard_public_mutation("drain")
         if not self.configured:
             return []
         limit = self.policy.filings_per_drain if max_items is None else max_items
@@ -1418,28 +1541,27 @@ class SecForm4Collector:
 
     # --- reconciliation (detection only; backfill is later work) -----------
     def reconcile_due(self, day: date) -> dict[str, Any]:
-        """Run reconciliation only when the Control-Plane calendar says it is due.
-
-        Runtime callers (Clock and operator CLI) use this boundary. The lower
-        reconcile primitive remains responsible only for comparing one daily
-        index, which keeps scheduling authority out of the Data-Plane operation.
-        """
-        due_day = self.reconciliation_due()
-        if due_day != day:
-            return {"day": day.isoformat(), "result_state": "RECONCILIATION_NOT_DUE",
-                    "reconciled": False}
+        """Compatibility entry point; the raw primitive enforces the same gate."""
         return self.reconcile(day)
 
     def reconcile(self, day: date) -> dict[str, Any]:
-        """Compare a closed day\'s daily index against what was captured.
+        """Compare one due closed day against captured evidence.
 
-        Day-1 scope is honest detection. A missing expected filing opens a
-        durable gap; repairing it is the later backfill engine\'s job.
+        Scheduling authority is enforced at this lowest public mutation
+        boundary, so a wrapper cannot make an early direct call safe.
         """
         if not self.configured:
             return {"day": day.isoformat(), "result_state": COOLDOWN_SUPPRESSED,
                     "reconciled": False}
-        attempt = self._request("RECONCILE", daily_index_path(day), daily_index_url(day))
+        due_day = self.reconciliation_due()
+        if due_day != day:
+            return {"day": day.isoformat(), "result_state": "RECONCILIATION_NOT_DUE",
+                    "reconciled": False}
+        self._guard_public_mutation("reconcile")
+        obligation_id = self._ensure_reconciliation_obligation()
+        attempt = self._request(
+            "RECONCILE", daily_index_path(day), daily_index_url(day),
+            obligation_id=obligation_id)
         key = day.isoformat()
         if not attempt.ok:
             gap = self._open_gap(DAILY_INDEX_UNAVAILABLE, {

@@ -29,7 +29,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
 from ...state import append_jsonl, parse_ts, read_json, read_jsonl, write_json
 from .policy import SecAccessPolicy
@@ -68,7 +68,8 @@ class SecTrafficBudget:
     """Process-shared, restart-durable request budget for all SEC traffic."""
 
     def __init__(self, path: Path, policy: SecAccessPolicy, timebase: Timebase | None = None,
-                 rng: random.Random | None = None):
+                 rng: random.Random | None = None,
+                 mutation_authority: Callable[[str], None] | None = None):
         self.path = Path(path)
         self.policy = policy
         self.timebase = timebase or Timebase()
@@ -77,6 +78,15 @@ class SecTrafficBudget:
         self.lock_path = self.path.with_suffix(".lock")
         self.network_lock_path = self.path.with_suffix(".network.lock")
         self.commit_path = self.path.with_suffix(".commits.jsonl")
+        self._mutation_authority = mutation_authority
+
+    def bind_mutation_authority(self, authority: Callable[[str], None]) -> None:
+        """Bind every durable budget write to a qualifying mutation authority."""
+        self._mutation_authority = authority
+
+    def _authorize_mutation(self, operation: str) -> None:
+        if self._mutation_authority is not None:
+            self._mutation_authority(operation)
 
     # --- durable state -----------------------------------------------------
     @staticmethod
@@ -101,6 +111,9 @@ class SecTrafficBudget:
         return BudgetState(**payload)
 
     def save(self, state: BudgetState) -> None:
+        # All durable budget mutation converges here, including direct save(),
+        # cooldown, reserve and backoff state changes.
+        self._authorize_mutation("save")
         payload = state.to_dict()
         write_json(self.path, payload)
         append_jsonl(self.commit_path, {

@@ -427,16 +427,62 @@ class SecCaptureStore:
                 "admissibility_state": NOT_ADMISSIBLE_FOR_CONFIRMATION}
 
     def verify_objects(self) -> list[str]:
-        """Re-hash every object. Returns the addresses whose bytes disagree."""
-        broken: list[str] = []
+        """Verify existing objects and every durable complete-object reference.
+
+        A directory scan alone cannot notice deletion because a missing file
+        vanishes from the scan. Build the authoritative reference set from the
+        durable journals/state, require each target to exist, then re-hash the
+        bytes to the expected content address.
+        """
+        referenced: set[str] = set()
+
+        def add(value: Any) -> None:
+            if isinstance(value, str) and value.startswith("sha256:"):
+                referenced.add(value)
+
+        for record in self.raw_manifest():
+            add(record.get("raw_object_sha256"))
+        for record in self.attempts():
+            add(record.get("raw_object_sha256"))
+        for record in self.envelopes():
+            add(record.get("raw_object_sha256"))
+            add(record.get("discovery_object_sha256"))
+        for record in self.source_versions():
+            add(record.get("raw_object_sha256"))
+            add(record.get("prior_sha256"))
+
+        state = read_json(self.paths.sec_collector_state)
+        if isinstance(state, dict):
+            active_poll = state.get("active_poll") or {}
+            for page in active_poll.get("pages") or []:
+                add(page.get("raw_object_sha256"))
+            for task in state.get("pending_tasks") or []:
+                add(task.get("discovery_object_sha256"))
+            for gap in (state.get("open_gaps") or []) + (state.get("resolved_gaps") or []):
+                add(gap.get("daily_index_object_sha256"))
+
+        for record in read_jsonl(self.paths.sec_coverage):
+            add(record.get("daily_index_object_sha256"))
+        for record in read_jsonl(self.paths.sec_restricted / "reconciliation.jsonl"):
+            add(record.get("daily_index_object_sha256"))
+
+        broken: set[str] = set()
         for path in sorted(self.paths.sec_raw_objects.rglob("*.bin")):
             object_id = "sha256:" + path.stem
             try:
                 if digest_bytes(path.read_bytes()) != object_id:
-                    broken.append(object_id)
+                    broken.add(object_id)
             except OSError:
-                broken.append(object_id)
-        return broken
+                broken.add(object_id)
+
+        for object_id in sorted(referenced):
+            try:
+                path = self.object_path(object_id)
+                if not path.exists() or digest_bytes(path.read_bytes()) != object_id:
+                    broken.add(object_id)
+            except (OSError, ValueError):
+                broken.add(object_id)
+        return sorted(broken)
 
     def new_attempt_id(self) -> str:
         return uuid.uuid4().hex

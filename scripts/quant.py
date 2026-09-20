@@ -115,18 +115,19 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         print(json.dumps({"service_exit": "STOPPED",
                           "mode": entry["mode"]}, sort_keys=True))
         return 0
-    if args.command in {"sec-enable", "sec-disable", "sec-probe", "sec-reconcile"}:
-        collector.record_operator_intervention(args.command)
     if args.command == "sec-enable":
-        collector.enable()
-    elif args.command == "sec-disable":
-        collector.disable(args.reason)
-    elif args.command == "sec-probe":
-        if not collector.state.enabled:
+        with collector.operator_mutation(args.command):
             collector.enable()
-        collector.poll()
-        if args.drain:
-            collector.drain(max_items=args.drain)
+    elif args.command == "sec-disable":
+        with collector.operator_mutation(args.command):
+            collector.disable(args.reason)
+    elif args.command == "sec-probe":
+        with collector.operator_mutation(args.command):
+            if not collector.state.enabled:
+                collector.enable()
+            collector.poll()
+            if args.drain:
+                collector.drain(max_items=args.drain)
         print(json.dumps({"collector": collector.telemetry()},
                          indent=2, sort_keys=True, default=str))
     elif args.command == "sec-reconcile":
@@ -135,7 +136,8 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         if day is None:
             print(json.dumps({"reconciliation": "no closed day is due"}, indent=2))
             return 0
-        collector.reconcile_due(day)
+        with collector.operator_mutation(args.command):
+            collector.reconcile_due(day)
         print(json.dumps({"collector": collector.telemetry()},
                          indent=2, sort_keys=True, default=str))
     state, detail = collector.component_state()

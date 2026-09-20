@@ -10,7 +10,13 @@ from __future__ import annotations
 from datetime import date
 import unittest
 
-from quant.dataplane.sec.audit import audit_observation_window
+from quant.dataplane.sec.audit import (
+    RESOLVED_BY_ATTEMPT,
+    UNEXPLAINED,
+    _obligations_from,
+    _resolve_attempts,
+    audit_observation_window,
+)
 from quant.dataplane.sec.store import SecStorageFailure
 from quant.state import append_jsonl, read_jsonl, write_json
 from tests import test_sec_form4_capture as sec_capture_tests
@@ -109,43 +115,41 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         )
 
     def test_reconcile_attempt_cannot_retire_discovery_poll_obligation(self):
-        """A RECONCILE attempt cannot satisfy a DISCOVERY/POLL obligation."""
-        case = self._case()
-        index = b"""Description: synthetic Gate A v3 daily index
-CIK|Company Name|Form Type|Date Filed|Filename
---------------------------------------------------------------------------------
-320193|A|4|2026-09-17|edgar/data/320193/0000320193-26-000045.txt
-789019|B|4|2026-09-17|edgar/data/789019/0000789019-26-000112.txt
-1018724|C|4/A|2026-09-17|edgar/data/1018724/0001018724-26-000301.txt
-"""
-        collector = case.qualifying_collector(case.fixture_router(index=index))
-        collector.record_service_start()
-        collector.poll()
-        collector.drain(max_items=3)
-        baseline = audit_observation_window(collector, now=case.timebase.now())
-        self.assertTrue(baseline["accountable"], baseline["findings"])
-
-        poll_obligation = collector.state.open_obligation_id
-        transition = next(
-            row for row in collector.scheduler.all()
-            if row.get("obligation_id") == poll_obligation
+        """The audit matcher must bind obligation identity and required action kind."""
+        due = "2026-09-18T12:01:00+00:00"
+        transitions = [{
+            "transition_id": "T-POLL",
+            "recorded_at_utc": "2026-09-18T12:00:00+00:00",
+            "state": "AWAITING_POLL",
+            "cause": "POLL_COMPLETED",
+            "next_due_at_utc": due,
+            "acquisition_critical_fingerprint": "sha256:" + "1" * 64,
+            "obligation_id": "OB-POLL",
+            "required_action_kind": "DISCOVERY",
+        }]
+        obligations, missing = _obligations_from(transitions)
+        self.assertEqual(missing, [])
+        wrong = [{
+            "attempt_id": "A-WRONG",
+            "attempt_kind": "RECONCILE",
+            "obligation_id": "OB-POLL",
+            "request_attempted_at_utc": due,
+        }]
+        _resolve_attempts(obligations, wrong, tolerance=180.0)
+        self.assertEqual(
+            obligations[0].status,
+            UNEXPLAINED,
+            "a RECONCILE attempt retired an obligation requiring DISCOVERY",
         )
-        self.assertEqual(transition["state"], "AWAITING_POLL")
 
-        case.timebase.advance(60)
-        result = collector.reconcile(date(2026, 9, 17))
-        self.assertTrue(result["reconciled"])
-        bound_attempt = [
-            row for row in collector.store.attempts()
-            if row.get("obligation_id") == poll_obligation
-        ][-1]
-        self.assertEqual(bound_attempt["attempt_kind"], "RECONCILE")
-
-        report = audit_observation_window(collector, now=case.timebase.now())
-        self.assertFalse(
-            report["accountable"],
-            "wrong attempt_kind retired an obligation that required polling",
-        )
+        right = [{
+            "attempt_id": "A-RIGHT",
+            "attempt_kind": "DISCOVERY",
+            "obligation_id": "OB-POLL",
+            "request_attempted_at_utc": due,
+        }]
+        _resolve_attempts(obligations, right, tolerance=180.0)
+        self.assertEqual(obligations[0].status, RESOLVED_BY_ATTEMPT)
 
     def test_missing_referenced_raw_object_fails_verification_and_audit(self):
         """Deleting a durably referenced raw object must be detectable."""

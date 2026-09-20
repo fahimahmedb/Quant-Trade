@@ -54,8 +54,9 @@ from datetime import datetime
 import math
 from typing import Any
 
-from ...state import parse_ts, read_jsonl
-from .scheduler import AUTHORIZED_SUPERSESSION_CAUSES
+from ...state import parse_ts, read_json, read_jsonl
+from .scheduler import (ACTION_RECONCILE, AUTHORIZED_SUPERSESSION_CAUSES,
+                        required_action_for_state)
 from .supervisor import INVALIDATING_CAUSES, LIFECYCLE_CAUSES, UNATTESTED
 
 
@@ -86,6 +87,7 @@ class Obligation:
     cause: str
     acquisition_critical_fingerprint: str
     transition_id: str
+    required_action_kind: str
     supersedes_obligation_id: str | None = None
     status: str = UNEXPLAINED
     resolution_kind: str | None = None
@@ -124,6 +126,9 @@ def _obligations_from(transitions: list[dict[str, Any]]) -> tuple[list[Obligatio
             acquisition_critical_fingerprint=record.get(
                 "acquisition_critical_fingerprint") or "UNAVAILABLE",
             transition_id=record.get("transition_id") or "",
+            required_action_kind=(record.get("required_action_kind")
+                                  or required_action_for_state(
+                                      record.get("state") or "")),
             supersedes_obligation_id=record.get("supersedes_obligation_id")))
     return obligations, unidentified
 
@@ -182,6 +187,8 @@ def _resolve_attempts(obligations: list[Obligation], attempts: list[dict[str, An
         obligation = by_id[obligation_id]
         if obligation.status != UNEXPLAINED:
             continue
+        if record.get("attempt_kind") != obligation.required_action_kind:
+            continue
         attempted_raw = record.get("request_attempted_at_utc")
         if not attempted_raw:
             continue
@@ -202,14 +209,16 @@ def _mark_pending(obligations: list[Obligation], now: datetime, tolerance: float
         if obligation.status != UNEXPLAINED:
             continue
         due = parse_ts(obligation.due_at_utc)
-        if (now - due).total_seconds() <= tolerance:
+        grace = 0.0 if obligation.required_action_kind == ACTION_RECONCILE else tolerance
+        if (now - due).total_seconds() < grace:
             obligation.status = PENDING
 
 
 def _validate_structure(transitions: list[dict[str, Any]],
                         attempts: list[dict[str, Any]],
                         lifecycle: list[dict[str, Any]],
-                        now: datetime) -> list[str]:
+                        now: datetime,
+                        window_start: datetime | None = None) -> list[str]:
     """Find malformed evidence that could otherwise manufacture a false pass."""
     findings: list[str] = []
 
@@ -256,12 +265,21 @@ def _validate_structure(transitions: list[dict[str, Any]],
             obligation_ids.add(obligation_id)
             transition_by_obligation[obligation_id] = record
             aware(due, future_allowed=True)
+            required_kind = (record.get("required_action_kind")
+                             or required_action_for_state(record.get("state") or ""))
+            if required_kind not in {"DISCOVERY", "FILING", "RECONCILE"}:
+                findings.append("OBLIGATION_ACTION_KIND_INVALID")
 
     superseded_targets: set[str] = set()
     prior_obligations: set[str] = set()
     for record in transitions:
         target = record.get("supersedes_obligation_id")
-        if target and target not in prior_obligations:
+        recorded_raw = record.get("recorded_at_utc")
+        boundary_predecessor = bool(
+            target and window_start is not None and recorded_raw
+            and parse_ts(recorded_raw) < window_start
+            and target not in transition_by_obligation)
+        if target and target not in prior_obligations and not boundary_predecessor:
             findings.append("NONPROSPECTIVE_SUPERSESSION")
         if record.get("obligation_id"):
             prior_obligations.add(record["obligation_id"])
@@ -272,7 +290,8 @@ def _validate_structure(transitions: list[dict[str, Any]],
         superseded_targets.add(target)
         original = transition_by_obligation.get(target)
         if original is None:
-            findings.append("SUPERSESSION_TARGET_UNKNOWN")
+            if not boundary_predecessor:
+                findings.append("SUPERSESSION_TARGET_UNKNOWN")
             continue
         replacement_time = aware(record.get("recorded_at_utc"))
         created_time = aware(original.get("recorded_at_utc"))
@@ -510,6 +529,27 @@ def _validate_external_lifecycle_authority(
                 findings.append("AUTOMATIC_RESTART_WITNESS_INVALID")
     return sorted(set(findings))
 
+def _terminal_supervisor_stopped(collector: Any,
+                                 lifecycle: list[dict[str, Any]],
+                                 baseline_lifecycle: dict[str, Any] | None) -> bool:
+    """Recognise durable terminal state bound to the qualifying lifecycle."""
+    records = list(lifecycle)
+    if baseline_lifecycle is not None:
+        records.append(baseline_lifecycle)
+    qualifying = [record for record in records if record.get("qualifying_service_mode")]
+    if not qualifying:
+        return False
+    latest = max(qualifying, key=lambda record: record.get("recorded_at_utc") or "")
+    state = read_json(collector.paths.sec / "supervisor_state.json")
+    if not isinstance(state, dict) or state.get("schema") != "p0_supervisor/v2":
+        return False
+    if state.get("supervisor_id") != latest.get("supervisor_id"):
+        return False
+    if state.get("fingerprint") != latest.get("acquisition_critical_fingerprint"):
+        return False
+    return state.get("supervisor_running") is False
+
+
 def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None = None,
                              now: datetime | None = None,
                              window_start: datetime | None = None) -> dict[str, Any]:
@@ -560,7 +600,11 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
     if not math.isfinite(tolerance) or tolerance < 0:
         raise ValueError("INVALID_AUDIT_TOLERANCE")
 
-    findings: list[str] = _validate_structure(transitions, attempts, lifecycle, moment)
+    structural_lifecycle = list(lifecycle)
+    if baseline_lifecycle is not None:
+        structural_lifecycle.insert(0, baseline_lifecycle)
+    findings: list[str] = _validate_structure(
+        transitions, attempts, structural_lifecycle, moment, window_start=window_start)
     findings.extend(_validate_request_intents(
         collector, attempts, window_start=window_start))
     findings.extend(_validate_external_lifecycle_authority(
@@ -586,6 +630,9 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
                    if obligation.status == UNEXPLAINED]
     pending = [obligation.obligation_id for obligation in obligations
                if obligation.status == PENDING]
+    if pending and _terminal_supervisor_stopped(
+            collector, lifecycle, baseline_lifecycle):
+        findings.append("QUALIFYING_SUPERVISOR_STOPPED_WITH_PENDING_OBLIGATION")
     by_attempt = sum(1 for item in obligations if item.status == RESOLVED_BY_ATTEMPT)
     by_supersession = sum(
         1 for item in obligations if item.status == RESOLVED_BY_SUPERSESSION)
@@ -617,6 +664,8 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
         findings.append("LIFECYCLE_FINGERPRINT_MISMATCH")
     if (collector.paths.sec / "integrity_fault.json").exists():
         findings.append("DURABLE_INTEGRITY_FAULT")
+    if collector.store.verify_objects():
+        findings.append("RAW_OBJECT_REFERENTIAL_INTEGRITY_FAILED")
     if unattested:
         findings.append("LIFECYCLE_CAUSE_UNATTESTED")
     if invalidating:

@@ -50,6 +50,22 @@ DISABLED = "DISABLED"
 SCHEDULER_STATES = (AWAITING_POLL, POLL_DUE, DRAINING, RECONCILING, BACKOFF, COOLDOWN,
                     BLOCKED_NOT_CONFIGURED, DISABLED)
 
+#: Every due obligation binds the acquisition/action class that can resolve it.
+ACTION_DISCOVERY = "DISCOVERY"
+ACTION_FILING = "FILING"
+ACTION_RECONCILE = "RECONCILE"
+ACTION_KINDS = frozenset({ACTION_DISCOVERY, ACTION_FILING, ACTION_RECONCILE})
+
+
+def required_action_for_state(state: str) -> str:
+    """Conservative default for hand-built or legacy transitions."""
+    if state == DRAINING:
+        return ACTION_FILING
+    if state == RECONCILING:
+        return ACTION_RECONCILE
+    return ACTION_DISCOVERY
+
+
 #: Causes. Why the next expected action changed.
 SERVICE_START = "SERVICE_START"
 POLL_COMPLETED = "POLL_COMPLETED"
@@ -57,6 +73,7 @@ POLL_FAILED = "POLL_FAILED"
 WORK_ENQUEUED = "WORK_ENQUEUED"
 DRAIN_COMPLETED = "DRAIN_COMPLETED"
 RECONCILE_COMPLETED = "RECONCILE_COMPLETED"
+RECONCILIATION_SCHEDULED = "RECONCILIATION_SCHEDULED"
 BACKOFF_ENTERED = "BACKOFF_ENTERED"
 COOLDOWN_OBSERVED = "COOLDOWN_OBSERVED"
 COOLDOWN_EXPIRED = "COOLDOWN_EXPIRED"
@@ -93,6 +110,7 @@ class SchedulerTransition:
     #: The still-open obligation this transition prospectively replaces. Only
     #: honoured by the audit when recorded before that obligation's due time.
     supersedes_obligation_id: str | None = None
+    required_action_kind: str | None = None
     boot_id: str | None = None
     lifecycle_cause: str | None = None
     cooldown_until_utc: str | None = None
@@ -101,6 +119,10 @@ class SchedulerTransition:
     coverage_state: str | None = None
     work_in_flight: bool = False
     detail: str | None = None
+
+    def __post_init__(self) -> None:
+        if self.next_due_at_utc and self.required_action_kind is None:
+            self.required_action_kind = required_action_for_state(self.state)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -115,6 +137,9 @@ class SchedulerJournal:
     def record(self, transition: SchedulerTransition) -> SchedulerTransition:
         if transition.state not in SCHEDULER_STATES:
             raise ValueError(f"unknown scheduler state: {transition.state}")
+        if (transition.next_due_at_utc
+                and transition.required_action_kind not in ACTION_KINDS):
+            raise ValueError("due obligation requires a known action kind")
         append_jsonl(self.path, transition.to_dict())
         return transition
 
