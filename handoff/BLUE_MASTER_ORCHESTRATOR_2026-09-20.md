@@ -283,10 +283,15 @@ conversation. Everything you need is below and in the repository itself.
 READ FIRST, IN THIS ORDER:
 1. QUANT_NORTH_STAR.md (repo root, any branch — identical everywhere)
 2. handoff/BLUE_MASTER_ORCHESTRATOR_2026-09-20.md on branch
-   claude/quant-blue-master-2026-09-20-mogpvh, exact HEAD:
-   c6468fb3610e07c9d30f1926f92b5d08727cf160 — this is your Master Handoff.
+   claude/quant-blue-master-2026-09-20-mogpvh — this is your Master Handoff.
    Its §6, §7 and §8 are your exact scope, boundaries and acceptance
-   sequence.
+   sequence. A commit cannot truthfully state its own SHA (this exact
+   sentence was last edited in commit 53f0ae2bd2e8952d1d88aa86cdd3d1e54c42bab8,
+   which is therefore already this branch's PARENT, not its HEAD, the
+   instant it is committed) — do not trust a hardcoded number here or
+   anywhere else in this repository's handoffs for "current HEAD". Resolve
+   it yourself before relying on it:
+   `git log -1 --format=%H origin/claude/quant-blue-master-2026-09-20-mogpvh -- handoff/BLUE_MASTER_ORCHESTRATOR_2026-09-20.md`
 3. handoff/ASTRA_GATE_A_V2_INDEPENDENT_AUDIT_2026-09-20.md on
    astra/p0-gate-a-v2-independent-audit-2026-09-20 @ 64b105f5a2cc1d798d1cf1e41e715b967c845a85
    — the independent audit you are correcting against.
