@@ -10,7 +10,7 @@ CURRENT_BLUE_HEAD_RESOLVER = `git log -1 --format=%H origin/blue/master-v2-2026-
 NORTH_STAR_VERIFIED = TRUE
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
-CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 BLUE_RECEPTION_PASSED / FROZEN_FOR_INDEPENDENT_ASTRA
+CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 ASTRA_PASS_RECEIVED / BLUE_POST_AUDIT_RECEPTION_PENDING_PACKAGING_CI
 T0_STATE = NOT_DECLARED
 P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
@@ -33,9 +33,9 @@ PRODUCT_INTEGRATION = PAUSED
 
 ## C. ACTIVE MISSIONS
 
-MISSION = Gate A v3 independent audit
-OWNER = independent Astra / Red Team
-STATUS = DISPATCH_READY
+MISSION = Gate A v3 post-Astra reception
+OWNER = Blue / Mission Control
+STATUS = CONDITIONAL_ACCEPTANCE_PENDING_AUDIT_PACKAGING_CI
 FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
 FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
@@ -47,7 +47,11 @@ BUILDER_HANDOFF = `handoff/BUILDER_GATE_A_V3_2026-09-20.md`
 BUILDER_DELIVERY_HEAD = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 BUILDER_EXACT_HEAD_CI = `35514180655 COMPLETED / SUCCESS`
 
-NEXT_OWNER = independent Astra. Blue waits for Astra's durable audit handoff before any Gate disposition.
+ASTRA_AUDIT_HEAD = `b55e4c460a561eee93cfa797c373b6315f4f5473`
+ASTRA_DECLARED_VERDICT = PASS
+ASTRA_EXACT_HEAD_CI = `35516760209 COMPLETED / FAILURE` at status-artifact freshness
+BLUE_POST_ASTRA_RECEPTION = `handoff/BLUE_GATE_A_V3_POST_ASTRA_RECEPTION_2026-09-20.md`
+NEXT_OWNER = Astra for one minimal audit-packaging correction, then Blue final Gate disposition.
 
 ## D. EVENT INBOX
 
@@ -64,16 +68,17 @@ NEXT_OWNER = independent Astra. Blue waits for Astra's durable audit handoff bef
 
 ## E. WAITING FOR
 
-WAITING_FOR = independent Astra Gate A v3 audit handoff.
+WAITING_FOR = corrected Astra audit packaging + new exact-head CI.
 
 Required event:
-- independent replay of B1/B2/B3, D1-D5 and S7;
-- adversarial search for new bypasses;
-- exact audit-test SHA(s) and CI evidence;
-- final `AUDIT_GATE_A_V3 = PASS | BLOCKED`;
-- durable `handoff/ASTRA_GATE_A_V3_INDEPENDENT_AUDIT_2026-09-20.md`.
+- status artifact refreshed from 411 to 416 discovered tests;
+- handoff commit-count/history corrected;
+- failed run `35516760209` recorded as audit-packaging failure;
+- no production-code modification;
+- new exact-head CI on corrected Astra HEAD;
+- final durable Astra handoff consistent with actual branch history.
 
-Do not infer audit success from Builder/Blue green CI.
+Astra substantive verdict PASS has been received, but Blue has not yet finalized Gate A repository PASS.
 
 ## F. DECISIONS REQUIRED
 
@@ -182,7 +187,9 @@ GATE_A_V2 = REJECTED / FROZEN
 GATE_A_V3_BUILDER = COMPLETE / STOPPED
 BLUE_RECEPTION_GATE_A_V3 = PASS_FOR_INDEPENDENT_ASTRA_REVIEW
 FROZEN_GATE_A_V3_SHA = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
-INDEPENDENT_ASTRA_GATE_A_V3 = DISPATCH_READY / NO_VERDICT_YET
+INDEPENDENT_ASTRA_GATE_A_V3 = PASS_RECEIVED @ `b55e4c460a561eee93cfa797c373b6315f4f5473`
+ASTRA_AUDIT_HEAD_CI = FAILURE / STATUS_ARTIFACT_STALE (411 -> 416)
+BLUE_POST_ASTRA_RECEPTION = CONDITIONAL_ACCEPTANCE_PENDING_AUDIT_PACKAGING_CI
 PRODUCT_INTEGRATION = PAUSED
 
 Authoritative delivery CI:
@@ -192,9 +199,9 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 ## J. NEXT ACTION
 
-NEXT_EXPECTED_EVENT = independent Astra audit activity/handoff on `astra/p0-gate-a-v3-independent-audit-2026-09-20`.
+NEXT_EXPECTED_EVENT = Astra pushes minimal packaging correction on `astra/p0-gate-a-v3-independent-audit-2026-09-20` and receives a new exact-head CI result.
 
-NEXT_ACTION = do not modify the frozen candidate. In parallel with Astra, continue non-destructive GitHub cleanup by reviewing diverged HOLD branches and preserving any unique useful content. On Astra final handoff, execute Blue post-audit reception and Gate disposition.
+NEXT_ACTION = do not modify the frozen candidate. Require Astra to fix only audit packaging/status freshness and handoff history, then verify new exact-head CI. In parallel, continue non-destructive GitHub cleanup. If corrected audit packaging is green and no new finding appears, Blue may render final repository Gate A disposition.
 
 Do not start Product integration.
 Do not declare Gate A PASS before independent Astra.
