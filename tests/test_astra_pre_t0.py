@@ -378,21 +378,29 @@ class Phase4LifecycleAndWindowCampaign(CollectorTestCase):
                 'acknowledging one filing must not delete another distinct identity')
 
     def test_early_manual_probe_cannot_supersede_qualifying_obligation(self):
-        """A one-shot operator probe cannot silently rewrite the qualifying cadence."""
+        """The real operator CLI cannot silently rewrite the qualifying cadence."""
+        import contextlib
+        import io
         from tests.test_sec_form4_capture import RodageFalsificationTests
         case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
         c=case.qualifying_collector(case.fixture_router())
         c.record_service_start();c.poll();c.drain(max_items=3)
         self.assertTrue(audit_observation_window(c)['accountable'])
 
-        # The normal next discovery is due in 60s. Simulate the same collector
-        # being invoked manually 10s later (as sec-probe does by calling poll()
-        # directly) without an externally attested qualifying process identity.
-        self.timebase = case.timebase
+        # The normal next discovery is due in 60s. A shell-launched sec-probe
+        # 10s later has no qualifying process provenance but currently calls
+        # collector.poll() directly.
         case.timebase.advance(10)
         c.lifecycle['qualifying_service_mode']=False
         c.lifecycle['lifecycle_cause']='LIFECYCLE_CAUSE_UNATTESTED'
-        c.poll()
+        c.lifecycle['service_managed']=False
+
+        spec=importlib.util.spec_from_file_location('quant_cli_manual_probe',ROOT/'scripts/quant.py')
+        cli=importlib.util.module_from_spec(spec);spec.loader.exec_module(cli)
+        components=SimpleNamespace(set=lambda *args, **kwargs: None)
+        args=SimpleNamespace(command='sec-probe',drain=0)
+        with contextlib.redirect_stdout(io.StringIO()):
+            cli.sec_command(SimpleNamespace(sec=c,components=components),args)
 
         report=audit_observation_window(c)
         self.assertFalse(
