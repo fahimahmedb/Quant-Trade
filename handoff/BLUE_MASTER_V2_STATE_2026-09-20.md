@@ -10,7 +10,7 @@ CURRENT_BLUE_HEAD_RESOLVER = `git log -1 --format=%H origin/blue/master-v2-2026-
 NORTH_STAR_VERIFIED = TRUE
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
-CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 BUILDER_IN_PROGRESS
+CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 BLUE_RECEPTION_PASSED / FROZEN_FOR_INDEPENDENT_ASTRA
 T0_STATE = NOT_DECLARED
 P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
@@ -24,58 +24,72 @@ PRODUCT_INTEGRATION = PAUSED
 - Frozen rejected v2: `blue/p0-gate-a-v2-final-2026-09-20@db166fd04c681e67a2c6d4440828af14ef58c48c`.
 - Canonical v2 audit: `astra/p0-gate-a-v2-independent-audit-2026-09-20@64b105f5a2cc1d798d1cf1e41e715b967c845a85` => BLOCKED; B1/B3 open, B2 closed.
 - P0 deployment contract source: `astra/p0-deep-adversarial-pre-t0@643deacdf5bbbdb1d2410c762eb20f72aff16bbf`.
+- Blue Gate A v3 reception: `handoff/BLUE_GATE_A_V3_RECEPTION_2026-09-20.md` => PASS_FOR_INDEPENDENT_ASTRA_REVIEW.
+- Frozen Gate A v3 candidate: `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`.
+- Astra Gate A v3 mission contract: `handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`.
+- Astra audit branch: `astra/p0-gate-a-v3-independent-audit-2026-09-20`, initialized exactly at the frozen candidate SHA.
 - Canonical Forward: `parallel/claude-forward-data-2026-09-20@83521dbfdd90027c90d04adfb7d814593c2355c5`.
 - Canonical Economic: `parallel/claude-economic-v2-2026-09-20@35dff27b8fac53618da434ee6d31febbddcc0e69`.
 
 ## C. ACTIVE MISSIONS
 
-MISSION = Gate A v3 implementation
-OWNER = Builder Chat
-STATUS = IN_PROGRESS
-BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
-BRANCH = `builder/p0-gate-a-v3-2026-09-20`
-LAST_OBSERVED_HEAD = `8609aaa06fd635e489adaf165ff9a835ab5d24cc`
-LAST_OBSERVED_CHECKPOINT = `handoff/BUILDER_GATE_A_V3_CHECKPOINT_2026-09-20.md`
-CHECKPOINT_STATE = all seven surfaces have primitive-faithful RED discriminants; full v3 suite not yet run; implementation corrections not yet delivered.
-EXPECTED_OUTPUT = one frozen Builder candidate + final Builder handoff + exact-head CI.
-NEXT_OWNER = Blue reception, then independent Astra only if Blue reception passes.
+MISSION = Gate A v3 independent audit
+OWNER = independent Astra / Red Team
+STATUS = DISPATCH_READY
+FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
+FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
+FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
+AUDIT_BRANCH = `astra/p0-gate-a-v3-independent-audit-2026-09-20`
+MISSION_CONTRACT = `handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`
+BLUE_RECEPTION = PASS_FOR_INDEPENDENT_ASTRA_REVIEW
+BUILDER = STOPPED_AFTER_FINAL_HANDOFF
+BUILDER_HANDOFF = `handoff/BUILDER_GATE_A_V3_2026-09-20.md`
+BUILDER_DELIVERY_HEAD = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
+BUILDER_EXACT_HEAD_CI = `35514180655 COMPLETED / SUCCESS`
 
-Builder completion MUST NOT be inferred from commits alone.
+NEXT_OWNER = independent Astra. Blue waits for Astra's durable audit handoff before any Gate disposition.
 
 ## D. EVENT INBOX
 
-1. Previous Blue authority remained unchanged at `69884d50...` when reconstruction began.
-2. New branch since that authority: `builder/p0-gate-a-v3-2026-09-20`.
-3. Builder branch initially pointed exactly at frozen v2, then advanced to `8609aaa0...` with commit message `builder: reproduce Gate A v3 primitive reds`.
-4. Builder checkpoint confirms raw primitives remain targeted: `reconcile()`, `poll()`, `drain()`, `materialize_fingerprint()`, `SecTrafficBudget.clear_cooldown()`.
-5. PR #7 was closed as historical/superseded with evidence branch retained.
-6. PR #8 received a cleanup closure comment; close mutation was rejected by connector safety guard, so it remains open.
-7. Forward divergent branch reverified: merge-base `c2d71c4c7b71480a75ec82df8e80982be3cece26`, exactly 2 ahead / 2 behind canonical; `forward-live-smoke.yml` concept retained for future reimplementation.
-8. Forward and Economic canonical leaves still have zero GitHub Actions runs.
+1. Builder delivered final handoff at `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`.
+2. Implementation candidate `b278e4c5403adcc92d2c065f2d305365e48ec6f0` had exact-head run `35513010411 = SUCCESS`.
+3. Final delivery run `35514180655` on exact `2da079d8...` is `COMPLETED / SUCCESS`.
+4. Delta `b278e4c5...2da079d8` is documentation-only: Builder checkpoint + final handoff.
+5. Blue independently verified exact ancestry from v2, full changed-path scope, all seven correction surfaces, primitive fidelity/anti-redirection, and B2 preservation.
+6. Blue reception verdict is `PASS_FOR_INDEPENDENT_ASTRA_REVIEW`; this is not Gate A PASS.
+7. Frozen Blue ref created at exact `2da079d8...`.
+8. Independent Astra audit branch pre-created at exact `2da079d8...`; no candidate code was changed.
+9. Creating the frozen/Astra refs triggered redundant workflow runs on the same SHA. They are operational duplicates, not new candidate SHAs and not substitutes for run `35514180655`.
+10. Process improvement retained: finalize the handoff before the last delivery CI so documentation does not create a needless extra HEAD/run.
 
 ## E. WAITING FOR
 
-WAITING_FOR = Builder final delivery, not merely RED checkpoint.
+WAITING_FOR = independent Astra Gate A v3 audit handoff.
+
 Required event:
-- final Builder handoff/stop condition;
-- frozen exact candidate SHA;
-- exact-head GitHub Actions result bound to delivered SHA.
+- independent replay of B1/B2/B3, D1-D5 and S7;
+- adversarial search for new bypasses;
+- exact audit-test SHA(s) and CI evidence;
+- final `AUDIT_GATE_A_V3 = PASS | BLOCKED`;
+- durable `handoff/ASTRA_GATE_A_V3_INDEPENDENT_AUDIT_2026-09-20.md`.
+
+Do not infer audit success from Builder/Blue green CI.
 
 ## F. DECISIONS REQUIRED
 
-After Builder delivery Blue must decide:
-1. Does candidate descend from exact `db166fd0...`?
-2. Is diff limited to seven correction surfaces/tests/status artifacts?
-3. Are forbidden areas untouched?
-4. Does B2 remain closed?
-5. Do discriminant bodies still invoke named raw primitives?
-6. Does delivered handoff SHA equal candidate branch HEAD after the handoff commit?
-7. Is exact-head CI on that delivered HEAD required/re-run if handoff changed HEAD?
-8. Only then: freeze candidate and dispatch independent Astra.
+After Astra returns, Blue must:
+1. resolve the exact Astra audit HEAD and verify the audit started from frozen `2da079d8...`;
+2. read every material finding and independent discriminant;
+3. classify REAL_DEFECT / TEST_DEFECT / MISSING_PROOF / TARGET_HOST_ONLY / NON_ISSUE;
+4. verify no fix was smuggled into the audit candidate;
+5. decide Gate A repository disposition;
+6. only if independent Gate A evidence is sufficient, decide the next target-host rodage/qualification step.
+
+No t0, P14D amendment, Gate B, Product integration, or real-capital authorization is implied by Blue reception.
 
 ## G. INTEGRATION QUEUE
 
-DEFERRED until Gate A v3 -> Blue reception -> Astra -> Blue Gate disposition:
+DEFERRED until Gate A v3 -> Blue reception -> independent Astra -> Blue Gate disposition:
 1. qualify canonical Forward leaf with exact-head GitHub CI;
 2. qualify canonical Economic leaf with exact-head GitHub CI;
 3. reimplement the useful `forward-live-smoke` workflow concept against canonical runner semantics; do not cherry-pick the stale branch blindly;
@@ -85,7 +99,7 @@ QUALIFYING P0 RUNTIME and PRODUCT INTEGRATION RUNTIME remain separate.
 
 ## H. CLEANUP QUEUE
 
-BRANCHES_CLASSIFIED = 69 (including this Blue V2 branch).
+BRANCHES_CLASSIFIED = 71 (including frozen Gate A v3 and Astra audit refs).
 PRS_OPEN_LAST_VERIFIED = 9 (#8, #9, #10, #11, #12, #13, #14, #15, #17).
 PRS_CLOSED_THIS_PASS = 1 (#7).
 BRANCHES_DELETED_THIS_PASS = 0.
@@ -133,14 +147,16 @@ DELETE_AFTER_BUILDER_REVIEW =
 - `tmp-ignore`
 - `blue/forward-finalization-2026-09-20`
 
-Explicitly preserved regardless of cleanup pressure while Builder is active:
+Explicitly preserved regardless of cleanup pressure through independent Astra review:
 - `blue/p0-calendar-direct-reconcile-red-2026-09-20`;
 - `blue/p0-manual-probe-red-2026-09-20` including `345e18d9...`;
 - `blue/checkpoint-gate-a-v2-audit-2026-09-20`;
 - both Astra Gate A v2 audit refs;
 - `astra/p0-deep-adversarial-pre-t0`;
 - frozen v2;
-- active Builder;
+- delivered Builder branch;
+- frozen Gate A v3 ref `blue/p0-gate-a-v3-frozen-2026-09-20`;
+- Astra Gate A v3 audit branch `astra/p0-gate-a-v3-independent-audit-2026-09-20`;
 - Blue V2;
 - canonical Forward/Economic;
 - rejected v1 exact candidate and known insufficient direct-reconcile fix until post-v3 evidence review.
@@ -152,28 +168,23 @@ P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
 REAL_CAPITAL_AUTHORIZED = FALSE
 GATE_A_V2 = REJECTED / FROZEN
-GATE_A_V3 = BUILDER_IN_PROGRESS
+GATE_A_V3_BUILDER = COMPLETE / STOPPED
+BLUE_RECEPTION_GATE_A_V3 = PASS_FOR_INDEPENDENT_ASTRA_REVIEW
+FROZEN_GATE_A_V3_SHA = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
+INDEPENDENT_ASTRA_GATE_A_V3 = DISPATCH_READY / NO_VERDICT_YET
 PRODUCT_INTEGRATION = PAUSED
 
-CI snapshot at last observation before this state write:
-ACTIONS_RUNNING = 6:
-- `35510157012` Blue V2 @ `9fc83d60...`
-- `35510117345` Blue V2 @ `d635244c...`
-- `35510093554` Blue V2 @ `66cd5b84...`
-- `35510081908` Builder @ `8609aaa0...`
-- `35509977775` Blue V2 @ `69884d50...`
-- `35509759716` Builder @ frozen v2 `db166fd0...`
-ACTIONS_QUEUED = 0
-ACTIONS_REQUESTED = 0
-ACTIONS_WAITING = 0
+Authoritative delivery CI:
+- `35514180655 @ 2da079d8ad75c69eb3fc2990c512735cb4bdc02b = COMPLETED / SUCCESS`.
 
-These are workflow-execution facts only; they do not change Gate status.
+Green CI and Blue reception do not establish target-host continuity, P14D proof, economic readiness, or capital authorization.
 
 ## J. NEXT ACTION
 
-NEXT_EXPECTED_EVENT = Builder advances from RED checkpoint to implementation/final handoff.
-NEXT_ACTION = observe the Builder branch without modification. On a declared final handoff, execute Blue reception protocol: resolve branch/head/base/handoff/CI, verify ancestry and complete diff, inspect all primitive-level discriminant bodies, verify B2, verify exact-head CI, then and only then write an Astra dispatch contract.
+NEXT_EXPECTED_EVENT = independent Astra audit activity/handoff on `astra/p0-gate-a-v3-independent-audit-2026-09-20`.
 
-Do not launch Astra yet.
+NEXT_ACTION = do not modify the frozen candidate. Observe Astra independently replay and attack Gate A v3. On Astra final handoff, execute Blue post-audit reception and Gate disposition.
+
 Do not start Product integration.
-Do not declare Gate A PASS, t0, P14D proof, or real-capital readiness.
+Do not declare Gate A PASS before independent Astra.
+Do not declare t0, P14D proof, target-host readiness, Gate B, or real-capital readiness.
