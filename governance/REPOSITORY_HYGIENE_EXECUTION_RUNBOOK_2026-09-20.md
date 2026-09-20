@@ -124,8 +124,8 @@ rows = re.findall(
     flags=re.M,
 )
 
-if len(rows) != 35:
-    raise SystemExit(f"DELETE_INDEX_COUNT_MISMATCH expected=35 got={len(rows)}")
+if len(rows) != 34:
+    raise SystemExit(f"DELETE_INDEX_COUNT_MISMATCH expected=34 got={len(rows)}")
 
 for branch, sha in rows:
     print(f"{sha}\t{branch}")
@@ -195,7 +195,7 @@ PY
 ```
 
 Required result:
-`DELETE_PREFLIGHT_OK count=35`
+`DELETE_PREFLIGHT_OK count=34`
 
 Anything else:
 `STOP / RE-REVIEW`
@@ -232,11 +232,11 @@ Re-run Phase B exactly.
 Do not skip it.
 
 Required:
-`DELETE_PREFLIGHT_OK count=35`
+`DELETE_PREFLIGHT_OK count=34`
 
 ## 8. Phase E — physical deletion
 
-Only after all 35 passed together:
+Only after all 34 passed together:
 
 ```bash
 set -euo pipefail
@@ -308,7 +308,7 @@ echo "===== CURRENT BLUE ====="
 git ls-remote --heads origin "refs/heads/$BLUE"
 ```
 
-If no concurrent branch creation occurs after this runbook revision, 74 - 35 = **39** branches should remain.
+If no concurrent branch creation occurs after this runbook revision, 74 - 34 = **40** branches should remain.
 
 Do not use the count alone as proof. The exact branch list is authoritative.
 
@@ -339,6 +339,7 @@ Current v4 refs are not in the delete-ready batch and must survive:
 
 
 Among others:
+- `claude/restaurant-stock-management-mvp-6oq43e` — retained by explicit owner request;
 - `blue/master-v2-2026-09-20`;
 - Builder v4;
 - frozen Gate A v3;
