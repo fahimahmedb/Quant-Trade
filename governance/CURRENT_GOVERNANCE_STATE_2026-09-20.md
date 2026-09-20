@@ -117,7 +117,7 @@ Open issues:
 `0`
 
 Current branch inventory:
-`72`
+`74`
 
 Single operational deletion authority:
 `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
@@ -214,19 +214,23 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = REVIEWED / NOT_EXECUTED`
 
-`ACTIVE_FRONTIER = GATE_A_V4_RECEPTION + P14D_HYBRID_METHOD_REVIEW + REPOSITORY_HYGIENE_EXECUTION`
+`ACTIVE_FRONTIER = INDEPENDENT_GATE_A_V4_AUDIT + P14D_HYBRID_METHOD_REVIEW + REPOSITORY_HYGIENE_EXECUTION`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
 - exact implementation baseline: `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
 - mission contract commit: `b3fc705f082ce1fee7d415211ce42829c96cdbfc`;
 - implementation commit: `0bdd397d7409b01529c1f958c68781499679a95e`;
-- final Builder branch HEAD: `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- selected delivery candidate: `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- frozen ref: `blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
 - implementation-head workflow: `35535347844 = COMPLETED / SUCCESS`;
-- final-head workflow: `35536353538 = IN_PROGRESS` at last organizational audit refresh;
+- selected-delivery workflow: `35536353538 = COMPLETED / SUCCESS`;
 - mission file: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_MISSION_2026-09-20.md`;
 - final handoff: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_HANDOFF_2026-09-20.md`;
-- status: `DELIVERED / BLUE_RECEPTION_PENDING_FINAL_EXACT_HEAD_CI`.
+- Blue reception: `PASS_FOR_INDEPENDENT_ASTRA_REVIEW`;
+- independent audit branch: `astra/p0-gate-a-v4-independent-audit-2026-09-20`;
+- Astra mission commit: `b636a04b6f8f7786679907d01a4fa22bdfc4e329`;
+- status: `FROZEN / INDEPENDENT_AUDIT_DISPATCHED`.
 
 
 ## 12. Target-host event — 2026-09-20
@@ -309,3 +313,28 @@ Entry-point repairs completed:
 - `AGENTS.md` routes agents through current Blue governance before runtime snapshots;
 - `NEXT_BUILD_MISSION.md` is now a router rather than a stale frozen mission;
 - stale issue #2 closed with historical record preserved.
+
+
+## 15. Gate A v4 reception and independent audit dispatch
+
+Blue reception:
+`handoff/BLUE_GATE_A_V4_RECEPTION_2026-09-20.md`
+
+Selected candidate:
+`blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+Builder code-fix SHA:
+`0bdd397d7409b01529c1f958c68781499679a95e`
+
+Selected candidate exact-head CI:
+`35536353538 = COMPLETED / SUCCESS`
+
+A later Builder documentation-only commit `b10cde0dd193714346abdfe87afb841482e9b7c8` records that CI result but is not the audited candidate. Blue intentionally cuts the documentation/CI recursion at the already-CI-green declared delivery SHA `4d06bdbf...`.
+
+Independent audit:
+- branch: `astra/p0-gate-a-v4-independent-audit-2026-09-20`;
+- created exactly from `4d06bdbf...`;
+- mission: `handoff/ASTRA_GATE_A_V4_MISSION_2026-09-20.md`;
+- mission commit: `b636a04b6f8f7786679907d01a4fa22bdfc4e329`.
+
+No Gate A v4 PASS, target-host readiness, t0 or P14D amendment is implied.
