@@ -204,7 +204,52 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
   passes when no ledger is supplied, and is refused once one records the
   prior fit).
   8 new tests. Full suite: **648 passed**, 0 regressions.
-- [next] Manual runner script, a real live capture run, and the final
-  deliverable.
+- [done] **Manual runner + a real live capture** (`scripts/forward_capture_runner.py`).
+  Subcommands `declare-universe`/`declare-sessions`/`run-once`/`status`/`coverage`,
+  all thin wrappers calling exactly `forward_capture.due`/
+  `execute_forward_capture` and `forward_coverage.*` -- no logic of its own
+  beyond argument parsing and printing. `paths.py` gained a `forward` subtree
+  (`forward_observations`, `forward_attempts`, `forward_tasks`,
+  `forward_expected_sessions`, `forward_expected_universe`), mirroring the
+  existing `sec_*` convention; `paths.py` is not on the mission's forbidden
+  list, only `clock.py`, `scripts/quant.py` and `sec/**` are.
+  **Ran it for real** against the live, already-reachable Yahoo endpoint:
+  `declare-sessions` seeded 2,514 real trading sessions from the committed,
+  already-validated `us_sector_etf_daily` snapshot; `run-once` made one real
+  HTTP fetch and durably recorded **60 real observations** (12 symbols x 5
+  sessions, 2026-09-14 to 2026-09-18 -- sessions newer than the static
+  snapshot's own last date) with full provenance (content hashes,
+  fetch_started_at/completed_at, payload_hash); a second `run-once --force`
+  against the identical window correctly produced 0 newly-accepted
+  (idempotent resubmission, live-proven, not just unit-tested).
+  **Two more real gaps found by running the actual tool, not by inspection**:
+  (1) `ForwardCoverageLedger.summary()`'s inner loop iterated
+  `expected_symbols_for(session) or ()`, which silently *skipped* any session
+  older than a universe declaration's `effective_from` instead of reporting
+  it `UNKNOWN` -- against the real 2,514-session calendar this made the
+  entire coverage report show all-zero counts. Fixed by enumerating every
+  declared session against every symbol *ever* declared
+  (`ExpectedCalendar.all_declared_symbols`, new) and letting `classify` itself
+  resolve each cell, so nothing is dropped from the report; a regression test
+  reproduces the exact scenario. (2) That same fix made `summary()`
+  O(cells x file-scans) -- correct but impractically slow at 30,168 cells.
+  Fixed by computing the accepted/conflict/attempt indexes once per `summary()`
+  call and threading them through `classify()`'s new optional keyword
+  arguments, dropping real wall-clock time from unmeasured/slow to ~0.15-0.8s.
+  A third, purely operational gap, also found live: the static dataset
+  snapshot's calendar stops at its own last ingested date, so sessions the
+  live fetch newly observed (09-14..09-18) were not yet in the declared
+  calendar and could not classify as `VALID` until declared. Closed
+  honestly, not by inventing a trading-calendar generator: `run-once` now
+  also declares the exact sessions its own successful payload contained
+  (`sessions_observed`) as expected -- a retroactive record of an observed
+  fact, never a forward-looking claim, and it never touches whether any
+  attempt outcome itself succeeded or failed. A `summary(session_from=...)` /
+  `coverage --since` filter was added so a status check can focus on the
+  operationally relevant recent window instead of the honest but
+  UNKNOWN-heavy multi-year tail.
+  6 new tests (2 coverage-ledger regressions, 4 runner-wiring checks with no
+  network calls). Full suite: **654 passed**, 0 regressions.
+- [next] Final deliverable handoff document, attestation, push.
 
 (Further entries appended after each significant, committed slice.)

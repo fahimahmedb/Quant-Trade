@@ -1,0 +1,65 @@
+{
+  "evidence_kind": "FORWARD_DATA_FIRST_LIVE_CAPTURE",
+  "generated_at": "2026-09-20T10:05:00+00:00",
+  "source_id": "yahoo_daily_chart",
+  "source_evidence": "src/quant/dataplane/adapters.py:fetch_yahoo_daily (already used by ingest.py, unmodified)",
+  "runner": "scripts/forward_capture_runner.py run-once",
+  "network_reachability_check": {
+    "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=5d&interval=1d",
+    "http_status": 200,
+    "when": "pre-implementation reconnaissance, this session"
+  },
+  "attempts": [
+    {
+      "attempt_id": "a17c72bf2a238b1c",
+      "outcome": "ATTEMPT_SUCCEEDED",
+      "fetch_started_at": "2026-09-19T23:43:58.374546+00:00",
+      "fetch_completed_at": "2026-09-19T23:44:01.331997+00:00",
+      "payload_hash": "sha256:e4c5b100c791e6847a8bd1d6c32ac5d8d393edac6d1bda06dffe1bebf2423ba9",
+      "sessions_observed": ["2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18"],
+      "symbols_observed": ["GLD", "SPY", "TLT", "XLB", "XLE", "XLF", "XLI", "XLK", "XLP", "XLU", "XLV", "XLY"],
+      "newly_accepted_observations": 60,
+      "note": "first live attempt; sessions newer than the committed us_sector_etf_daily snapshot's own last date (2026-09-11 per STATE.md), so these could not have been fabricated from that snapshot"
+    },
+    {
+      "attempt_id": "2b629feef8dc1a27",
+      "outcome": "ATTEMPT_SUCCEEDED",
+      "fetch_started_at": "2026-09-20T10:04:51.269792+00:00",
+      "fetch_completed_at": "2026-09-20T10:04:53.767005+00:00",
+      "payload_hash": "sha256:e4c5b100c791e6847a8bd1d6c32ac5d8d393edac6d1bda06dffe1bebf2423ba9",
+      "sessions_observed": ["2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18"],
+      "newly_accepted_observations": 0,
+      "note": "forced re-attempt over the identical window; identical payload_hash to the first attempt, 0 newly accepted -- idempotent resubmission proven live, not only unit-tested"
+    }
+  ],
+  "ledger_state_after": {
+    "accepted_observations": 60,
+    "sessions_recorded": 5,
+    "first_session": "2026-09-14",
+    "last_session": "2026-09-18",
+    "symbols": ["GLD", "SPY", "TLT", "XLB", "XLE", "XLF", "XLI", "XLK", "XLP", "XLU", "XLV", "XLY"],
+    "conflicts": 0,
+    "race_conflicts": 0,
+    "ledger_fingerprint": "sha256:92bb411a3f71c7504ea34b76930d59c3069a8e2da83016a32423c1443da5673f",
+    "earliest_recorded_at": "2026-09-19T23:44:01.332423+00:00"
+  },
+  "coverage_ledger_after": {
+    "session_from": "2026-09-01",
+    "counts": {"VALID": 60, "MISSING": 96, "UNKNOWN": 0, "EXPECTED": 0,
+              "ATTEMPTED": 0, "OBSERVED": 0, "CONFLICT": 0},
+    "note": "MISSING = the 8 sessions 2026-09-01..2026-09-11 already closed before this lane's first attempt and were never covered by any attempt; this is a historical gap this session did not attempt to backfill, named honestly rather than hidden"
+  },
+  "what_this_does_not_establish": [
+    "continuous / unattended operation: both attempts above were invoked manually, in this session, by a human-equivalent operator action, not by a running service",
+    "multi-day liveness or restart-under-a-real-outage",
+    "behavior against a genuine 429/403/5xx from Yahoo (exercised only via injected fakes in tests/test_dataplane_forward_capture.py)",
+    "backfill of the 2026-09-01..2026-09-11 gap"
+  ],
+  "attestation": {
+    "P0_RESERVOIR_ACCESSED": false,
+    "CLOCK_PY_MODIFIED": false,
+    "SCRIPTS_QUANT_PY_MODIFIED": false,
+    "SEC_DIR_MODIFIED": false,
+    "REAL_CAPITAL_AUTHORIZED": false
+  }
+}

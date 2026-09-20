@@ -145,6 +145,21 @@ class ExpectedCalendar:
             return None
         return set(applicable[-1]["symbols"])
 
+    def all_declared_symbols(self) -> set[str]:
+        """Every symbol named in any universe declaration, for enumeration only.
+
+        Point-in-time correctness for one specific session is still
+        `expected_symbols_for`'s job -- this is deliberately broader, so a
+        caller enumerating cells (see `ForwardCoverageLedger.summary`) does
+        not silently skip a (session, symbol) pair just because that symbol's
+        declaration starts later than that session. Skipping would hide the
+        cell instead of correctly classifying it `UNKNOWN`.
+        """
+        symbols: set[str] = set()
+        for row in self.universe_declarations():
+            symbols.update(row.get("symbols", []))
+        return symbols
+
 
 def seed_expected_sessions_from_dataset(calendar: ExpectedCalendar, dataset_path: Path,
                                         symbols: Sequence[str] | None = None) -> int:
@@ -221,7 +236,26 @@ class ForwardCoverageLedger:
         self.source_id = source_id
         self.missing_grace_hours = missing_grace_hours
 
-    def classify(self, session: str, symbol: str, now: datetime) -> CoverageCell:
+    def _accepted_index(self) -> dict[tuple[str, str], dict[str, Any]]:
+        return {(str(row.get("symbol")), str(row.get("session_date"))): row
+               for row in self.recorder.accepted()}
+
+    def _conflict_index(self) -> dict[tuple[str, str], dict[str, Any]]:
+        """First conflict on file per key -- enough to prove a dispute exists."""
+        index: dict[tuple[str, str], dict[str, Any]] = {}
+        for row in self.recorder.conflicts():
+            index.setdefault((str(row.get("symbol")), str(row.get("session_date"))), row)
+        return index
+
+    def classify(self, session: str, symbol: str, now: datetime, *,
+                accepted_index: dict[tuple[str, str], dict[str, Any]] | None = None,
+                conflict_index: dict[tuple[str, str], dict[str, Any]] | None = None,
+                attempts: list[dict[str, Any]] | None = None) -> CoverageCell:
+        """Classify one cell. The three keyword indexes let :meth:`summary`
+        scan the recorder and the attempt journal exactly once for every cell
+        it enumerates, instead of once per cell -- a standalone call (as every
+        test in this module makes) simply computes them on the spot.
+        """
         expected_symbols = self.calendar.expected_symbols_for(session)
         if (expected_symbols is None or symbol not in expected_symbols
                 or session not in self.calendar.expected_sessions()):
@@ -229,6 +263,8 @@ class ForwardCoverageLedger:
                                 "no authoritative expected-calendar/universe "
                                 "declaration covers this cell")
 
+        if conflict_index is None:
+            conflict_index = self._conflict_index()
         # Checked before VALID, deliberately: a CONFLICT record can only ever
         # exist for a key that already has an accepted observation (the
         # recorder only refuses a *second*, differing write for an
@@ -236,20 +272,22 @@ class ForwardCoverageLedger:
         # would be structurally unreachable. Surfacing the dispute takes
         # priority over quietly reporting the first-accepted value as if
         # nothing had ever disagreed with it.
-        for record in self.recorder.conflicts():
-            if record.get("symbol") == symbol and record.get("session_date") == session:
-                return CoverageCell(session, symbol, CELL_CONFLICT,
-                                    record.get("journaled_at"),
-                                    "a later differing observation was refused, "
-                                    "not silently applied; the first-accepted "
-                                    "value is still on file and unchanged")
-        for record in self.recorder.accepted():
-            if record.get("symbol") == symbol and record.get("session_date") == session:
-                return CoverageCell(session, symbol, CELL_VALID,
-                                    record.get("journaled_at"),
-                                    "accepted observation on file")
+        conflict = conflict_index.get((symbol, session))
+        if conflict is not None:
+            return CoverageCell(session, symbol, CELL_CONFLICT, conflict.get("journaled_at"),
+                                "a later differing observation was refused, "
+                                "not silently applied; the first-accepted "
+                                "value is still on file and unchanged")
 
-        attempts = self.journal.for_source(self.source_id)
+        if accepted_index is None:
+            accepted_index = self._accepted_index()
+        accepted = accepted_index.get((symbol, session))
+        if accepted is not None:
+            return CoverageCell(session, symbol, CELL_VALID, accepted.get("journaled_at"),
+                                "accepted observation on file")
+
+        if attempts is None:
+            attempts = self.journal.for_source(self.source_id)
         succeeded_covering = [
             row for row in attempts
             if row.get("outcome") == ATTEMPT_SUCCEEDED
@@ -285,7 +323,7 @@ class ForwardCoverageLedger:
                             f"{len(after_close)} post-close attempt(s) so far, none "
                             "produced this cell yet; still within grace period")
 
-    def summary(self, now: datetime) -> dict[str, Any]:
+    def summary(self, now: datetime, session_from: str | None = None) -> dict[str, Any]:
         """Full funnel across every declared (session, symbol) cell.
 
         This is the answer to the mission's six questions: what was expected
@@ -293,14 +331,44 @@ class ForwardCoverageLedger:
         (the per-cell disposition), and when each became knowable
         (`known_since`, taken from the record that actually determined it --
         never the summary's own generation time).
+
+        Enumerates every declared session against *every symbol ever
+        declared* (`ExpectedCalendar.all_declared_symbols`), not only the
+        symbols in effect for each specific session: a session that predates
+        a symbol's own universe declaration must still appear, correctly
+        classified `UNKNOWN` by `classify`, rather than silently dropped from
+        the report because it was never in that session's effective set. The
+        three recorder/journal scans happen once here, not once per cell --
+        with a multi-year session calendar the cell count is large enough
+        that repeating them per cell would make this call impractically slow.
+
+        ``session_from`` only narrows which *already-declared* sessions are
+        enumerated in this report -- it declares nothing and changes no
+        cell's classification. It exists because seeding the session
+        dimension from a multi-year dataset (see
+        `seed_expected_sessions_from_dataset`) legitimately makes most of the
+        calendar predate this mission's own universe declaration, which
+        `classify` correctly reports as `UNKNOWN`, not `MISSING`: those
+        sessions were never in scope for a capture lane that did not exist
+        yet. Left at `None`, this reports the honest, calendar-wide picture,
+        UNKNOWN-heavy tail included; a caller who only wants the operationally
+        relevant recent window supplies a cutoff instead.
         """
+        accepted_index = self._accepted_index()
+        conflict_index = self._conflict_index()
+        attempts = self.journal.for_source(self.source_id)
         counts = {state: 0 for state in CELL_STATES}
         cells: list[dict[str, Any]] = []
-        for session in sorted(self.calendar.expected_sessions()):
-            for symbol in sorted(self.calendar.expected_symbols_for(session) or ()):
-                cell = self.classify(session, symbol, now)
+        sessions = sorted(self.calendar.expected_sessions())
+        if session_from is not None:
+            sessions = [session for session in sessions if session >= session_from]
+        for session in sessions:
+            for symbol in sorted(self.calendar.all_declared_symbols()):
+                cell = self.classify(session, symbol, now, accepted_index=accepted_index,
+                                     conflict_index=conflict_index, attempts=attempts)
                 counts[cell.state] += 1
                 cells.append(cell.to_dict())
         return {"generated_at": utc_now(), "source_id": self.source_id,
                "missing_grace_hours": self.missing_grace_hours,
+               "session_from": session_from,
                "counts": counts, "cells": cells}

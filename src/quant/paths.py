@@ -198,6 +198,41 @@ class QuantPaths:
     def sec_restricted_journals(self) -> tuple[Path, ...]:
         return (self.sec_locators, self.sec_envelopes, self.sec_source_versions)
 
+    # --- Forward market-data capture (non-P0) -------------------------------
+    # Its own subtree, separate from `sec/`, so the two capture lanes never
+    # share a path or a failure boundary.
+    @property
+    def forward(self) -> Path:
+        return self.var / "forward"
+
+    @property
+    def forward_observations(self) -> Path:
+        """The append-only, immutable ForwardRecorder ledger."""
+        return self.forward / "observations.jsonl"
+
+    @property
+    def forward_attempts(self) -> Path:
+        """The append-only AttemptJournal: every fetch attempt, success or failure."""
+        return self.forward / "attempts.jsonl"
+
+    @property
+    def forward_tasks(self) -> Path:
+        """Per-source ForwardCaptureTaskState -- best-effort telemetry, not evidence."""
+        return self.forward / "tasks.json"
+
+    @property
+    def forward_expected_sessions(self) -> Path:
+        return self.forward / "expected_sessions.jsonl"
+
+    @property
+    def forward_expected_universe(self) -> Path:
+        return self.forward / "expected_universe.jsonl"
+
+    def ensure_forward(self) -> "QuantPaths":
+        """Create the capture subtree. Called by the runner, not by boot."""
+        self.forward.mkdir(parents=True, exist_ok=True)
+        return self
+
     def ensure(self) -> "QuantPaths":
         self.var.mkdir(parents=True, exist_ok=True)
         return self

@@ -228,6 +228,36 @@ class ClassifyTest(unittest.TestCase):
 
 
 class SummaryTest(unittest.TestCase):
+    def test_summary_does_not_silently_skip_a_session_before_the_universe_declaration(self):
+        """Regression: a session older than any universe's effective_from must
+        still be enumerated and classified UNKNOWN, not dropped from the
+        report -- found by running the real CLI against the real, multi-year
+        committed calendar."""
+        with tempfile.TemporaryDirectory() as directory:
+            calendar, recorder, journal, ledger = rig(directory)
+            calendar.declare_sessions(["2016-01-04", "2026-09-18"])
+            calendar.declare_universe(["XLK"], effective_from="2026-09-01")
+            summary = ledger.summary(datetime(2026, 9, 20, tzinfo=timezone.utc))
+            self.assertEqual(sum(summary["counts"].values()), 2)
+            sessions_reported = {cell["session"] for cell in summary["cells"]}
+            self.assertEqual(sessions_reported, {"2016-01-04", "2026-09-18"})
+            old_cell = next(c for c in summary["cells"] if c["session"] == "2016-01-04")
+            self.assertEqual(old_cell["state"], CELL_UNKNOWN)
+
+    def test_session_from_narrows_the_report_without_declaring_anything(self):
+        with tempfile.TemporaryDirectory() as directory:
+            calendar, recorder, journal, ledger = rig(directory, grace_hours=0.0)
+            calendar.declare_sessions(["2026-09-01", "2026-09-18"])
+            calendar.declare_universe(["XLK"], effective_from="2026-09-01")
+            now = datetime(2026, 9, 20, tzinfo=timezone.utc)
+            full = ledger.summary(now)
+            narrowed = ledger.summary(now, session_from="2026-09-10")
+            self.assertEqual(sum(full["counts"].values()), 2)
+            self.assertEqual(sum(narrowed["counts"].values()), 1)
+            self.assertEqual({cell["session"] for cell in narrowed["cells"]}, {"2026-09-18"})
+            # Narrowing the report must not itself declare or undeclare anything.
+            self.assertEqual(calendar.expected_sessions(), {"2026-09-01", "2026-09-18"})
+
     def test_summary_counts_every_declared_cell_exactly_once(self):
         with tempfile.TemporaryDirectory() as directory:
             calendar, recorder, journal, ledger = rig(directory, grace_hours=0.0)
