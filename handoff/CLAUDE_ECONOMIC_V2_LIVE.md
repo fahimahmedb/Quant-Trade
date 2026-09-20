@@ -370,5 +370,22 @@ final append (recovered, not duplicated or corrupted) — plus fingerprint
 stability/sensitivity checks. 634/634 tests pass (588 Wave 1 + 46 this pass
 across all slices so far).
 
+### Slice 6 — portfolio interaction integration (new test file only, no src changes)
+
+New file `tests/test_economic_portfolio_integration.py` (6 tests). No
+production code changed — Slice 1 already made "`CONTINUE` ≠ approved order"
+structural (`capital_order_eligibility`); this proves it end to end against
+the real `quant.desk.risk`/`quant.book.ledger` objects, not a parallel model:
+an economically `PORTFOLIO_CONSIDERATION_ELIGIBLE` verdict is still vetoed by
+`desk.risk.evaluate` on concentration; sleeves for two strategies on the same
+symbol stay separate while the aggregate is the Book's own sum (never
+collapsed attribution); `apply_capacity`'s clipping and `RISK`'s own scaling
+compose as two independent throttles; overlap reduces `delta_incremental`
+upstream of RISK entirely. Sector/factor and a portfolio-level "turnover
+budget" are named as gaps in the module docstring, not fabricated — no such
+primitive exists anywhere in this codebase today (`desk/risk.py` enforces
+gross/net/per-symbol only; Wave 1's own handoff names the same absence).
+640/640 tests pass.
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_
