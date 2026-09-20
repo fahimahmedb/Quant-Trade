@@ -5,7 +5,7 @@ disable-model-invocation: true
 effort: xhigh
 ---
 
-Audit the current change independently from the implementation narrative.
+Audit the current change independently from the implementation narrative. First resolve current Blue governance, the exact frozen candidate SHA and the branch-specific audit mission; do not infer authority from the working branch name or STATE.md.
 
 Use a small parallel workflow only if the change is substantive. Give each reviewer a non-overlapping question:
 
