@@ -10,7 +10,9 @@ This registry is descriptive governance. A branch existing does **not** make it 
 - CURRENT_BLUE_HEAD_RESOLVER = `git log -1 --format=%H origin/blue/master-v2-2026-09-20 -- handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
 - FROZEN_GATE_A_V2 = `blue/p0-gate-a-v2-final-2026-09-20@db166fd04c681e67a2c6d4440828af14ef58c48c` — REJECTED.
 - CANONICAL_GATE_A_V2_AUDIT = `astra/p0-gate-a-v2-independent-audit-2026-09-20@64b105f5a2cc1d798d1cf1e41e715b967c845a85` — BLOCKED, B1/B3 open, B2 closed.
-- ACTIVE_GATE_A_V3_BUILDER = `builder/p0-gate-a-v3-2026-09-20`; at reconstruction time its HEAD was still exactly the frozen v2 SHA.
+- DELIVERED_GATE_A_V3_BUILDER = `builder/p0-gate-a-v3-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; Builder STOPPED after final handoff and exact-head CI `35514180655 = SUCCESS`.
+- FROZEN_GATE_A_V3 = `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; Blue reception PASS_FOR_INDEPENDENT_ASTRA_REVIEW.
+- ACTIVE_GATE_A_V3_AUDIT = `astra/p0-gate-a-v3-independent-audit-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`; independent audit branch initialized at frozen candidate; no verdict yet.
 - Builder dependencies that MUST remain reachable: `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` and `345e18d94963b4fcc7063d73d1c23aff5244ca28`.
 - Canonical product leaves remain immutable and paused: Forward `83521dbf...`; Economic `35dff27b...`; both currently have zero GitHub Actions runs.
 - Default branch remains `claude/nasdaq-trading-model-design-h3mp4n@8fea5581...`, 277 commits behind the Blue V2 base lineage. Do not change it during active Builder work.
@@ -27,7 +29,9 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `astra/p0-deep-adversarial-2026-09-19` | `816b999832d3ebf8d5d535981f232147a2a257f9` | **AUDIT_EVIDENCE** | Earlier adversarial trail | astra/p0-deep-adversarial-pre-t0 | — | NO |
 | `blue/checkpoint-gate-a-v2-audit-2026-09-20` | `4678c29eb8cd22aa7ef143075c6d4b68739026a3` | **AUDIT_EVIDENCE** | Originates R1-R5 before formal Astra branch | astra/p0-gate-a-v2-independent-audit-2026-09-20 | — | NO |
 | `blue/p0-gate-a-v2-final-2026-09-20` | `db166fd04c681e67a2c6d4440828af14ef58c48c` | **REJECTED** | Frozen Gate A v2 input; exact-head CI green but audit BLOCKED | builder/p0-gate-a-v3-2026-09-20 | — | NO |
-| `builder/p0-gate-a-v3-2026-09-20` | `8609aaa06fd635e489adaf165ff9a835ab5d24cc` | **BUILDER_IN_PROGRESS** | Active Gate A v3 Builder branch; RED checkpoint only, not delivered | — | — | NO |
+| `builder/p0-gate-a-v3-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **DELIVERED / BUILDER_STOPPED** | Gate A v3 Builder delivery; exact-head CI 35514180655 SUCCESS; awaiting independent audit disposition | blue/p0-gate-a-v3-frozen-2026-09-20 | — | NO |
+| `blue/p0-gate-a-v3-frozen-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **FROZEN_CANDIDATE** | Exact immutable reference selected by Blue reception for independent audit | — | — | NO |
+| `astra/p0-gate-a-v3-independent-audit-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **AUDIT_ACTIVE_BASE** | Independent Astra audit branch initialized at exact frozen candidate; no audit verdict yet | handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md | — | NO |
 | `blue/p0-calendar-direct-reconcile-red-2026-09-20` | `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` | **AUDIT_EVIDENCE** | Original unredirected B1 reconcile() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-manual-probe-red-2026-09-20` | `efbf72484e5e6873aba2446d53a728798b3f453f` | **AUDIT_EVIDENCE** | Tip weakened, but parent 345e18d9 contains original collector.poll() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-direct-reconcile-fix-2026-09-20` | `dc9769b2790e724aaa281af209d822449d0bedfb` | **REJECTED** | Known insufficient B1 fix and test-redirection example | — | — | NO |
@@ -91,12 +95,12 @@ This registry is descriptive governance. A branch existing does **not** make it 
 
 ## Deletion rule
 
-No row above is authorization to delete a branch. During BUILDER_IN_PROGRESS, all deletion remains deferred. After Builder reception, Blue must re-check exact reachability, cited SHAs, unique red/CI evidence, open-PR state, and whether the v3 regression suite durably absorbed the evidence before deleting any ref.
+No row above is authorization to delete a branch. During independent Gate A v3 audit, destructive cleanup of Gate A evidence remains deferred. After Astra disposition, Blue must re-check exact reachability, cited SHAs, unique red/CI evidence, open-PR state, and whether the v3 regression suite durably absorbed the evidence before deleting any ref.
 
 ## Default-branch governance smell
 
 CURRENT_DEFAULT_BRANCH = `claude/nasdaq-trading-model-design-h3mp4n`
 CURRENT_DEFAULT_HEAD = `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce`
 CANONICAL_PROGRAM_LINE = `blue/master-v2-2026-09-20` for governance, with frozen/audit/product refs explicitly listed above.
-RISK_OF_DEFAULT_BRANCH_CHANGE = HIGH during active Builder work because PR bases, workflows, external tooling and future agents may depend on it.
-RECOMMENDED_FUTURE_ACTION = after Gate A v3 reception/Astra disposition, perform an explicit default-branch migration review; never change it as incidental cleanup.
+RISK_OF_DEFAULT_BRANCH_CHANGE = HIGH during active independent Gate A v3 audit because PR bases, workflows, external tooling and audit reproducibility may depend on stable refs.
+RECOMMENDED_FUTURE_ACTION = after Astra disposition and Blue Gate decision, perform an explicit default-branch migration review; never change it as incidental cleanup.
