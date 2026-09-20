@@ -256,6 +256,10 @@ class SecForm4Collector:
         self.lifecycle = lifecycle_provenance(environ)
         self._operator_mutation_depth = 0
         self._internal_budget_mutation_depth = 0
+        # Process-local qualifying markers are transport, not authority. The
+        # live child earns mutation authority only after record_service_start()
+        # binds this exact instance to one durable external launch event.
+        self._qualifying_mutation_authority_claimed = False
         if self.budget is not None:
             self.budget.bind_mutation_authority(self._authorize_budget_mutation)
         # The fingerprint is computed from the frozen membership, not stored and
@@ -273,9 +277,54 @@ class SecForm4Collector:
                    for record in read_jsonl(self.paths.sec_lifecycle))
 
     def _current_process_is_qualifying(self) -> bool:
-        return bool(self.lifecycle.get("qualifying_service_mode")
+        return bool(self._qualifying_mutation_authority_claimed
+                    and self.lifecycle.get("qualifying_service_mode")
                     and self.lifecycle.get("externally_attested")
                     and self.lifecycle.get("service_managed"))
+
+    def _claim_qualifying_mutation_authority(self) -> bool:
+        """Claim one externally authorized child launch for this collector instance.
+
+        Environment markers can be copied into another SecForm4Collector, so
+        they cannot by themselves authorize qualifying durable mutation. The
+        service start must match exactly one external CHILD_LAUNCH_AUTHORIZED
+        record, and the same launch identity may not already have been claimed
+        by a prior qualifying lifecycle record.
+        """
+        if not self.lifecycle.get("qualifying_service_mode"):
+            return False
+        events_path = self.paths.sec / "supervisor_events.jsonl"
+        try:
+            events = list(read_jsonl(events_path))
+            lifecycle_rows = list(read_jsonl(self.paths.sec_lifecycle))
+        except (OSError, ValueError, TypeError, AttributeError):
+            return False
+        matches = [
+            event for event in events
+            if event.get("event") == "CHILD_LAUNCH_AUTHORIZED"
+            and event.get("supervisor_id") == self.lifecycle.get("supervisor_id")
+            and event.get("supervisor_invocation_id")
+                == self.lifecycle.get("service_invocation_id")
+            and event.get("child_boot_id") == self.lifecycle.get("boot_id")
+            and event.get("lifecycle_cause") == self.lifecycle.get("lifecycle_cause")
+            and event.get("fingerprint") == self.fingerprint
+            and bool(event.get("qualifying_mode"))
+            and (event.get("deployment_authority_nonce") or None)
+                == (self.lifecycle.get("launch_authority_nonce") or None)
+        ]
+        if len(matches) != 1:
+            return False
+
+        already_claimed = any(
+            row.get("qualifying_service_mode")
+            and row.get("supervisor_id") == self.lifecycle.get("supervisor_id")
+            and row.get("service_invocation_id")
+                == self.lifecycle.get("service_invocation_id")
+            and row.get("boot_id") == self.lifecycle.get("boot_id")
+            and row.get("acquisition_critical_fingerprint") == self.fingerprint
+            for row in lifecycle_rows
+        )
+        return not already_claimed
 
     def _guard_public_mutation(self, action: str) -> None:
         """Record a lower-level manual mutation once qualifying evidence exists."""
@@ -474,6 +523,11 @@ class SecForm4Collector:
 
     def record_service_start(self) -> dict[str, Any]:
         """Bind this process's externally attested lifecycle to the journal."""
+        if (self.lifecycle.get("qualifying_service_mode")
+                and not self._qualifying_mutation_authority_claimed):
+            self._qualifying_mutation_authority_claimed = (
+                self._claim_qualifying_mutation_authority()
+            )
         record = dict(self.lifecycle,
                       recorded_at_utc=self.timebase.now_iso(),
                       acquisition_critical_fingerprint=self.fingerprint or "UNAVAILABLE",
