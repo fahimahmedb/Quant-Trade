@@ -28,7 +28,7 @@ CURRENT_GOVERNANCE_INDEX = `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
 CURRENT_CONTEXT_REACQUISITION = `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
-CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 historical REPOSITORY_PASS / target-host candidate REJECTED_BY_NEW_REAL_DEFECT; corrective Gate A v4 REQUIRED
+CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 historical REPOSITORY_PASS / target-host candidate REJECTED_BY_NEW_REAL_DEFECT; Gate A v4 BUILT/FROZEN / PENDING_INDEPENDENT_REVIEW
 T0_STATE = NOT_DECLARED
 P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
@@ -53,7 +53,7 @@ PRODUCT_INTEGRATION = PAUSED
 
 MISSION = Target-host qualification / final rodage entrance
 OWNER = Blue / Mission Control
-STATUS = TARGET_HOST_EXECUTED / FAILED_REAL_DEFECT / BUILDER_CORRECTION_REQUIRED
+STATUS = V4_BUILT_AND_FROZEN / INDEPENDENT_REVIEW_PENDING / NO_TARGET_HOST_REENTRY_YET
 FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
 FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
@@ -69,7 +69,7 @@ ASTRA_AUDIT_HEAD = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
 ASTRA_DECLARED_VERDICT = PASS
 ASTRA_EXACT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
 BLUE_FINAL_GATE_A_DISPOSITION = `handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md`
-NEXT_OWNER = Builder for the Blue-approved effective-unit-digest stability correction; afterward independent Astra/Red Team, then Blue. No further v3 target-host qualification start is authorized.
+NEXT_OWNER = Astra/Red Team for final independent Gate A v4 review, then Blue disposition. Hybrid Gate-A fault-matrix evidence proceeds in parallel. No target-host re-entry is authorized before both proof lanes are received and Blue decides.
 
 ## D. EVENT INBOX
 
