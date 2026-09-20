@@ -12,7 +12,7 @@ Current frozen authority remains:
 
 `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
 
-This draft may be promoted only after all activation gates below are satisfied.
+This draft may be promoted as the governing qualification method after the **governance-adoption gates** below are satisfied. Target-host Gate B does not need to be completed before adopting the method; instead, the adopted method itself requires Gate B before any `t0` declaration. This keeps governance from being blocked merely because target-host access is not yet available.
 
 ## Why an amendment is being considered
 
@@ -35,9 +35,9 @@ Mature-system prior art supports a hybrid proof model:
 
 The amendment preserves the evidence objective while removing arbitrary elapsed time as a substitute for direct testing.
 
-## Activation gates
+## Governance-adoption gates
 
-This draft **must not be promoted** unless all are true:
+This draft **must not be promoted into authoritative governance** unless all are true:
 
 ### A — repository/fault-compression gate
 - one coherent exact-head branch includes all accepted calendar fixes and proofs;
@@ -53,7 +53,18 @@ This draft **must not be promoted** unless all are true:
 - long-history obligation audit green;
 - no open repository-side capture/PIT/firewall blocker.
 
-### B — target-host entrance gate
+### G — governance-method review gate
+- the hybrid rule is internally consistent with the P0 deployment contract;
+- it preserves capture integrity, PIT reconstructability and the visibility firewall;
+- it does not weaken any repository-side blocker merely to reduce elapsed time;
+- one final Blue Red Team pass finds no property for which a fixed 14-day minimum is uniquely necessary;
+- the authoritative amendment clearly states that Gate B remains mandatory before t0.
+
+### Runtime entrance gates after governance adoption
+
+Once the hybrid method is authoritative, the following are **execution gates**, not prerequisites for adopting the method.
+
+#### B — target-host entrance gate
 - immutable exact release and fixed service view verified;
 - persistent state mount verified and absence fails closed;
 - target filesystem primitives proven;
@@ -65,8 +76,8 @@ This draft **must not be promoted** unless all are true:
 - actual systemctl stop/start, child failure, supervisor SIGKILL and controlled reboot completed pre-t0 with accountable evidence;
 - no integrity latch.
 
-### C0 — prospective t0 entrance
-After A and B pass:
+#### C0 — prospective t0 entrance
+After authoritative governance adoption and after A/B runtime entrance requirements are satisfied on the exact deployment:
 - candidate exact runtime is frozen;
 - required live SEC calendar intervals are predeclared;
 - entrance artifact is sealed;
@@ -179,9 +190,9 @@ The terminal objective remains long-run net wealth growth after real frictions; 
 
 ## Promotion procedure
 
-If activation gates pass:
+If the governance-adoption gates pass:
 
-1. Red Team this draft one final time against the exact coherent Gate A head and target-host contract.
+1. Red Team this draft one final time against the exact coherent Gate A head and the target-host contract as a specification.
 2. Create a new authoritative governance file clearly marked as superseding the P14D clauses.
 3. Update every checkpoint that still states fixed P14D as active.
 4. Commit the amendment before any t0 declaration.
