@@ -283,3 +283,213 @@ Launch the fresh independent Gate A v2 audit against exactly:
 `db166fd04c681e67a2c6d4440828af14ef58c48c`
 
 Do not modify that SHA until the independent audit verdict is returned.
+
+---
+
+# INDEPENDENT AUDIT PROGRESS CHECKPOINT — 2026-09-20T10:35:17Z
+
+This section was appended by the independent auditor after the audit had begun.
+It records executed evidence, not Blue's implementation claims.  The final
+verdict has not yet been issued, but the reproduced repository defects below
+are already sufficient to prevent a Gate A PASS unless disproved.
+
+## Audit isolation and exact-head verification
+
+- The candidate was inspected in a clean detached worktree at exactly
+  `db166fd04c681e67a2c6d4440828af14ef58c48c`.
+- The candidate branch was not modified.
+- GitHub Actions run `35504152951` was queried independently through the
+  GitHub API.  It is `completed / success`, with exact `head_sha`
+  `db166fd04c681e67a2c6d4440828af14ef58c48c`.
+- Its only job, `gate`, is `completed / success`; every reported step is
+  complete and successful.  The commit check-runs endpoint likewise reports
+  the exact-head `gate` check as successful.
+- The merge base of Astra baseline `643deacdf5bbbdb1d2410c762eb20f72aff16bbf`
+  and the candidate is exactly that Astra baseline.
+- The mandatory North Star, the Astra checkpoint at the baseline, and the
+  qualifying deployment contract were read from exact Git blobs.
+
+## Blind-diff observations
+
+The full Astra-baseline-to-v2 diff and the separate rejected-v1-to-v2 diff
+were inspected before relying on the Blue correction narrative.
+
+Important structural observation:
+
+- commit `048be0f` initially placed the due-date guard in the public
+  `reconcile(day)` method;
+- commit `dc9769b` moved the guard to a new public wrapper
+  `reconcile_due(day)` and restored an unguarded public `reconcile(day)`;
+- Clock and the CLI use the wrapper, but arbitrary Python/runtime callers can
+  still call the unguarded primitive;
+- corresponding tests were changed to exercise `reconcile_due(day)` instead
+  of proving that the reachable lower-level primitive cannot bypass WHEN.
+
+The final CLI test calls `sec_command()` directly rather than entering through
+the complete subprocess/parser/lock boundary.  A separate existing lock test
+does prove rejection while the service lock is held, but it does not close the
+public-Python boundary.
+
+## Executed discriminating reproductions
+
+### R1 — direct reconciliation before due emits a SEC request
+
+Classification: `REAL_DEFECT`.
+
+At Friday 2026-09-18 12:00 UTC, `reconciliation_due()` returned `None`.
+Calling public `collector.reconcile(date(2026, 9, 18))` directly nevertheless
+emitted a request for:
+
+`/Archives/edgar/daily-index/2026/QT3/master.20260918.idx`
+
+The fixture returned a client error only because it did not contain that daily
+index.  The discriminating property is the already-observed outbound request
+before the day was due.  This reproduces the B1 bypass below the new wrapper.
+
+Provisional regression status:
+`B1_DIRECT_RECONCILE = STILL_OPEN`.
+
+### R2 — direct manual poll supersedes qualifying work and still audits true
+
+Classification: `REAL_DEFECT`.
+
+Starting from a qualifying externally attested collector, a normal poll/drain
+produced `accountable=True`.  Before the next normal poll was due, the current
+process lifecycle was changed to nonqualifying/unattested and public
+`collector.poll()` was called directly, without the CLI intervention marker.
+
+Observed:
+
+- the new scheduler transition carried
+  `LIFECYCLE_CAUSE_UNATTESTED`;
+- it superseded the prior qualifying obligation;
+- the retrospective audit still returned `accountable=True` with no findings.
+
+The audit does not bind each scheduler transition/supersession to a matching
+durable, externally authorized lifecycle instance.
+
+### R3 — supervised manual stop/current stopped state still audits true
+
+Classification: `REAL_DEFECT`.
+
+After a qualifying normal capture, the reproduction appended a durable
+`CHILD_EXIT_OBSERVED` event with `stopped_by_supervisor=True` and wrote
+`supervisor_state.json` with `supervisor_running=False`.  With the next
+obligation still pending, `audit_observation_window()` returned:
+
+- `accountable=True`;
+- no findings;
+- one pending obligation.
+
+On the same evidence, `_external_lifecycle_binding_error()` returned
+`EXTERNAL_SUPERVISOR_NOT_ACTIVE`.  Thus readiness/lifecycle validation knows
+the supervisor is inactive while the retrospective audit ignores it.
+
+### R4 — deletion of a referenced raw object is not detected
+
+Classification: `REAL_DEFECT`.
+
+After a qualifying poll/drain, a raw object referenced by the raw manifest was
+deleted.  The manifest still referenced the deleted digest.  Nevertheless:
+
+- `store.verify_objects()` returned an empty broken-object list because it
+  scans only files that still exist;
+- the retrospective audit remained `accountable=True` with no findings.
+
+This is a PIT/durability false pass: neither `sec-verify` nor the observation
+audit proves that every referenced raw object still exists.
+
+### R5 — fingerprint rematerialization is an unmarked manual mutation
+
+Classification: `REAL_DEFECT`.
+
+After qualifying evidence existed, the materialized fingerprint file was
+deleted and `materialize_fingerprint()` was called again, matching the real
+`sec-fingerprint` command's behavior.
+
+Observed:
+
+- the semantic fingerprint stayed the same;
+- the freeze-file bytes changed because the materialization time changed;
+- zero operator-intervention lifecycle rows were added;
+- the retrospective audit still returned `accountable=True` with no findings.
+
+`sec-fingerprint` takes the service lock but is omitted from the set of CLI
+commands that call `record_operator_intervention()` before mutation.
+
+Provisional regression status from R2/R3/R5:
+`B3_MANUAL_OPERATOR_INTERVENTION = STILL_OPEN`.
+
+## B2 replay executed so far
+
+The offline-auditor regression was replayed using durable qualifying lifecycle
+evidence while the audit process itself was nonqualifying/offline.
+
+- deleting `supervisor_events.jsonl` produced
+  `LIFECYCLE_EXTERNAL_AUTHORITY_MISSING` and `accountable=False`;
+- corrupting the supervisor-events tail produced
+  `ACQUISITION_EVIDENCE_INVALID` and `accountable=False`;
+- deleting `deployment_authorities.jsonl` produced
+  `DEPLOYMENT_AUTHORITY_CONSUMPTION_MISSING` and `accountable=False`.
+
+Provisional status for the exact v1 offline-mode bug:
+`B2_OFFLINE_AUDIT_AUTHORITY = CLOSED`.
+
+This does not close the distinct transition-binding and stopped-supervisor
+defects above.
+
+## Existing tests independently rerun
+
+- 12 continuity/calendar/reconciliation tests passed, covering wrapper/CLI
+  early refusal, weekend, 2026 SEC holiday, DST, and settlement behavior.
+- 11 selected Astra lifecycle/authority tests passed.
+- the readiness/audit deployment-authority parity test passed.
+- the subprocess service-lock exclusion test passed.
+- the unsolicited zero-exit supervisor test passed.
+- one selected-test command also contained a stale/nonexistent test class name;
+  its loader error was command selection error, not a candidate failure.
+
+These green tests establish behavior of their selected boundaries but do not
+invalidate the red reproductions above.
+
+## Other open adversarial observations
+
+- public acquisition and budget mutators remain reachable directly, including
+  `poll()`, `drain()`, `enable()`, `disable()`, `reconcile()`, and
+  `SecTrafficBudget.clear_cooldown()`;
+- `clear_cooldown()` is durable but has no operator/lifecycle provenance;
+- scheduler transitions carry lifecycle fields, but the audit does not require
+  a matching external launch authority for every transition;
+- the audit does not consume final supervisor liveness/stop evidence;
+- unconsumed or action-mismatched attempts require further discriminating
+  checks because obligation resolution matching is primarily identity/time
+  based;
+- the 20,160-obligation stress fixture advances one record per ten minutes,
+  spanning about 140 days despite describing a 14-day density proof;
+- raw-locator/source-version reconstruction performs repeated journal scans
+  and needs real-volume complexity assessment;
+- journals are ordinary mutable files, so target-host permissions/immutability
+  remain Gate B evidence even after repository logic is repaired;
+- prospective t0 authority is not yet declared or proven.
+
+## Remaining work after this checkpoint
+
+1. Complete the manual-intervention matrix, including pending work,
+   cooldown/backoff, direct budget mutation, and post-hypothetical-t0 cases.
+2. Compute and compare acquisition-critical fingerprints for Astra, v1, and
+   v2 under identical explicit service configuration.
+3. Run the full local candidate test suite and repository verification checks.
+4. Complete new-defect probes for attempt-action binding, crash windows,
+   multi-process semantics, audit-window boundaries, and long-history costs.
+5. Issue the required final verdict and separate repository blockers from
+   target-host-only residuals.
+
+## Safety flags remain unchanged
+
+`t0 = NOT DECLARED`
+
+`P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
+
+`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+
+`REAL_CAPITAL_AUTHORIZED = FALSE`
