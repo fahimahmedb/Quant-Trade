@@ -10,7 +10,7 @@ CURRENT_BLUE_HEAD_RESOLVER = `git log -1 --format=%H origin/blue/master-v2-2026-
 NORTH_STAR_VERIFIED = TRUE
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
-CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 ASTRA_PASS_RECEIVED / BLUE_POST_AUDIT_RECEPTION_PENDING_PACKAGING_CI
+CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 REPOSITORY_PASS / CLOSED
 T0_STATE = NOT_DECLARED
 P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
 P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED
@@ -33,9 +33,9 @@ PRODUCT_INTEGRATION = PAUSED
 
 ## C. ACTIVE MISSIONS
 
-MISSION = Gate A v3 post-Astra reception
+MISSION = Post-Gate-A transition / target-host qualification planning
 OWNER = Blue / Mission Control
-STATUS = CONDITIONAL_ACCEPTANCE_PENDING_AUDIT_PACKAGING_CI
+STATUS = GATE_A_REPOSITORY_PASS
 FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
 FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
@@ -47,11 +47,11 @@ BUILDER_HANDOFF = `handoff/BUILDER_GATE_A_V3_2026-09-20.md`
 BUILDER_DELIVERY_HEAD = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 BUILDER_EXACT_HEAD_CI = `35514180655 COMPLETED / SUCCESS`
 
-ASTRA_AUDIT_HEAD = `b55e4c460a561eee93cfa797c373b6315f4f5473`
+ASTRA_AUDIT_HEAD = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
 ASTRA_DECLARED_VERDICT = PASS
-ASTRA_EXACT_HEAD_CI = `35516760209 COMPLETED / FAILURE` at status-artifact freshness
-BLUE_POST_ASTRA_RECEPTION = `handoff/BLUE_GATE_A_V3_POST_ASTRA_RECEPTION_2026-09-20.md`
-NEXT_OWNER = Astra for one minimal audit-packaging correction, then Blue final Gate disposition.
+ASTRA_EXACT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
+BLUE_FINAL_GATE_A_DISPOSITION = `handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md`
+NEXT_OWNER = Blue / Mission Control for target-host qualification planning and post-Gate cleanup.
 
 ## D. EVENT INBOX
 
@@ -68,29 +68,20 @@ NEXT_OWNER = Astra for one minimal audit-packaging correction, then Blue final G
 
 ## E. WAITING FOR
 
-WAITING_FOR = corrected Astra audit packaging + new exact-head CI.
+WAITING_FOR = no further Gate A repository proof event.
 
-Required event:
-- status artifact refreshed from 411 to 416 discovered tests;
-- handoff commit-count/history corrected;
-- failed run `35516760209` recorded as audit-packaging failure;
-- no production-code modification;
-- new exact-head CI on corrected Astra HEAD;
-- final durable Astra handoff consistent with actual branch history.
-
-Astra substantive verdict PASS has been received, but Blue has not yet finalized Gate A repository PASS.
+Gate A repository proof is closed. The next evidence domain is target-host qualification / rodage entrance against the exact frozen candidate and deployment contract.
 
 ## F. DECISIONS REQUIRED
 
-After Astra returns, Blue must:
-1. resolve the exact Astra audit HEAD and verify the audit started from frozen `2da079d8...`;
-2. read every material finding and independent discriminant;
-3. classify REAL_DEFECT / TEST_DEFECT / MISSING_PROOF / TARGET_HOST_ONLY / NON_ISSUE;
-4. verify no fix was smuggled into the audit candidate;
-5. decide Gate A repository disposition;
-6. only if independent Gate A evidence is sufficient, decide the next target-host rodage/qualification step.
+Blue must now:
+1. preserve the exact frozen Gate A candidate and final Astra audit evidence;
+2. plan target-host rodage / qualification entrance;
+3. carry forward the fingerprint/service-manager residual as a target-host entrance condition;
+4. continue post-Gate branch cleanup and authority simplification;
+5. only later resume Forward/Economic qualification and Product integration under separate explicit decisions.
 
-No t0, P14D amendment, Gate B, Product integration, or real-capital authorization is implied by Blue reception.
+No t0, P14D amendment, Gate B completion, Product integration, or real-capital authorization is implied by Gate A repository PASS.
 
 ## G. INTEGRATION QUEUE
 
@@ -188,9 +179,11 @@ GATE_A_V2 = REJECTED / FROZEN
 GATE_A_V3_BUILDER = COMPLETE / STOPPED
 BLUE_RECEPTION_GATE_A_V3 = PASS_FOR_INDEPENDENT_ASTRA_REVIEW
 FROZEN_GATE_A_V3_SHA = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
-INDEPENDENT_ASTRA_GATE_A_V3 = PASS_RECEIVED @ `b55e4c460a561eee93cfa797c373b6315f4f5473`
-ASTRA_AUDIT_HEAD_CI = FAILURE / STATUS_ARTIFACT_STALE (411 -> 416)
-BLUE_POST_ASTRA_RECEPTION = CONDITIONAL_ACCEPTANCE_PENDING_AUDIT_PACKAGING_CI
+INDEPENDENT_ASTRA_GATE_A_V3 = PASS @ `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
+ASTRA_AUDIT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
+GATE_A_V3_REPOSITORY_DISPOSITION = PASS
+TARGET_HOST_READY = FALSE / NOT_YET_QUALIFIED
+GATE_B = NOT_STARTED
 PRODUCT_INTEGRATION = PAUSED
 
 Authoritative delivery CI:
@@ -200,10 +193,9 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 ## J. NEXT ACTION
 
-NEXT_EXPECTED_EVENT = Astra pushes minimal packaging correction on `astra/p0-gate-a-v3-independent-audit-2026-09-20` and receives a new exact-head CI result.
+NEXT_EXPECTED_EVENT = Blue target-host qualification / rodage entrance decision plus post-Gate cleanup.
 
-NEXT_ACTION = do not modify the frozen candidate. Require Astra to fix only audit packaging/status freshness and handoff history, then verify new exact-head CI. In parallel, continue non-destructive GitHub cleanup and context consolidation; post-Gate batch of 12 strict-ancestor refs is already prepared. If corrected audit packaging is green and no new finding appears, Blue may render final repository Gate A disposition.
+NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute post-Gate cleanup reviews; prepare exact target-host entrance contract/checklist; do not declare t0 until target-host entrance evidence is satisfied.
 
-Do not start Product integration.
-Do not declare Gate A PASS before independent Astra.
-Do not declare t0, P14D proof, target-host readiness, Gate B, or real-capital readiness.
+Do not start Product integration yet.
+Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real-capital readiness.
