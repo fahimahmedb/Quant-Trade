@@ -3,7 +3,7 @@
 Authority: Blue / Mission Control.
 
 Status:
-`DELETE_READY_INDEX = VERIFIED / PHYSICAL_DELETE_NOT_EXECUTED`
+`DELETE_READY_INDEX = EXECUTED / CLOSED`
 
 Purpose: single operational authority for branch refs already approved for namespace deletion. This consolidates the earlier safe batch, post-Gate strict-ancestor batch, and post-Gate absorbed-proof review.
 
@@ -12,8 +12,9 @@ Live verification after Gate A v3 PASS:
 - exact HEAD matches expected SHA: **34 / 34**
 - unprotected branches: **34 / 34**
 - missing/moved refs: **0**
-- physical deletions executed: **0**
-- current blocker: GitHub connector exposes no safe delete-ref mutation
+- physical deletions executed: **34 / 34**
+- delete-ready survivors: **0**
+- execution path: authenticated admin clone / true branch deletion
 
 Deletion removes only the branch ref. It must not be interpreted as deletion of Git objects, historical evidence, or a change in Gate/economic authority.
 
@@ -53,6 +54,17 @@ Deletion removes only the branch ref. It must not be interpreted as deletion of 
 | `POST_GATE_PROOF_ABSORBED` | `builder/p0-integrity-blockers-fingerprint-v1` | `8d5dbb41559c4716e94d5290b6ae979a8b96143c` |
 | `POST_GATE_PROOF_ABSORBED` | `builder/sec-form4-p0-raw-capture-v2` | `859ffafd2f31aa16e26c120def79aa8726517ed0` |
 | `POST_GATE_PROOF_ABSORBED` | `codex/reprendre-mission-astra-p0-pre-t0` | `a321bfd9d77d42bb43a4fcd8b774a6eb38789179` |
+
+## Execution result
+
+All 34 refs listed below were revalidated after default-branch migration and then physically deleted with fail-fast exact-SHA checks.
+
+- operator start UTC: `2026-09-20T21:22:08Z`
+- post-cleanup branch count: `40`
+- restricted log SHA-256: `d9500fc9ec90871d7861932e5afb9b7729f59fec87e85bff1265f7655e285070`
+- durable handoff: `handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`
+
+The table below is now a historical execution manifest, not a list of live refs.
 
 ## Execution rule
 
