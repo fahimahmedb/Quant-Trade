@@ -18,15 +18,15 @@ Cleanup objective is authority clarity, not deletion count. Deleting a branch re
 - The stale repository default branch is not changed as incidental cleanup.
 - No Forward/Economic/Product integration decision is made by this cleanup.
 
-Current post-Gate snapshot:
-- branches = 71;
+Current post-cleanup snapshot:
+- branches = 40;
 - open PRs = 0;
 - Blue authority = `blue/master-v2-2026-09-20`;
 - Gate A v3 = `REPOSITORY_PASS / CLOSED`;
 - frozen Gate A v3 = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
 - final Astra v3 audit = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`, CI `35517935710 = SUCCESS`;
-- target-host qualification = `READY_TO_DISPATCH / NOT_EXECUTED`;
-- delete-ready operational index = `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`, 35 refs verified.
+- target-host qualification remains governed separately; repository cleanup makes no target-host readiness claim;
+- delete-ready operational index = `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`, 34 refs executed.
 
 ## 2. KEEP — current authority / canonical / final evidence
 
@@ -43,7 +43,7 @@ These refs are not deletion candidates:
 - `parallel/claude-economic-v2-2026-09-20`
 - `blue/integration-readiness-2026-09-20`
 - `reviewer/v1-final-red-team`
-- current repository default `claude/nasdaq-trading-model-design-h3mp4n` until an explicit default-branch migration decision.
+- repository default `blue/master-v2-2026-09-20`; former default `claude/nasdaq-trading-model-design-h3mp4n` retained as historical rollback/reference.
 
 ## 3. POST-GATE PROOF REF DISPOSITION
 
@@ -127,7 +127,7 @@ DELETE_NOW_SAFE_COUNT = 17.
 
 `RETAIN_OWNER_REQUEST = TRUE`
 
-No deletion has been executed by this document.
+Physical deletion was later executed under the repository-hygiene runbook; see `handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`.
 
 ## 5. POST-GATE DELETE-READY CONSOLIDATION
 
@@ -143,10 +143,11 @@ Together with the first 17 safe refs and five newly absorbed proof refs, the sin
 Current verified total:
 `DELETE_READY = 34`
 
-At the latest recheck:
-- 34/34 current delete-ready branches exist at their pinned SHA;
-- 34/34 are unprotected;
-- 0 physical deletions had been executed.
+Execution result:
+- 34/34 passed post-migration preflight;
+- 34/34 were physically deleted;
+- 0 delete-ready survivors remain;
+- live branch count after cleanup = 40.
 
 Any old branch-specific status in this plan is subordinate to the consolidated delete-ready index and later Blue governance.
 
@@ -202,16 +203,19 @@ These refs contain distinct concepts or alternate implementations that are not c
   - contains unique Alpha Factory, market-selection, abstention and launch-doctrine documents;
   - preserve as design reference until useful content is either adopted or explicitly superseded.
 
-## 9. Next cleanup actions
+## 9. Cleanup disposition
 
-1. Treat `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md` as the single operational deletion list.
-2. Physical-delete the 34 refs only when a true branch-delete/delete-ref capability is available.
-3. Immediately before each deletion, re-check pinned SHA, protection, default status and later Blue authority.
-4. Do not emulate deletion by force-moving refs.
-5. Preserve divergent Gate falsifier/audit refs until their unique replay/audit value is explicitly retired.
-6. Preserve unique Product capability, recovery, learning and design refs until later integration/content decisions.
-7. Default-branch migration is a separate governance action. Review is complete; execution remains pending.
-8. Product integration remains paused; cleanup must not become integration.
+`REPOSITORY_HYGIENE = CLOSED`
 
+- default migration: executed and verified;
+- physical deletion: 34/34 complete;
+- delete-ready survivors: 0;
+- restaurant branch: retained by explicit owner request;
+- open PRs/issues: 0/0;
+- Product integration remains paused;
+- P0/V4/P14D remain separate workstreams.
 
+Durable execution handoff:
+`handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`
 
+Separate future action: review branch/ruleset protection for critical retained refs.
