@@ -153,12 +153,12 @@ These refs should survive until Blue explicitly decides how their capabilities m
 These branches are diverged and can contain unique work or concepts. They are not current authority, but deletion is premature:
 
 - `blue/forward-finalization-2026-09-20` — diverged 2 ahead / 2 behind canonical Forward; unique `forward-live-smoke` concept is still queued for reimplementation.
-- `builder/forward-market-recorder-v2` — diverged old Forward implementation line.
-- `parallel/codex-wave1-economic-system-2026-09-19` — diverged alternate Economic line.
+- `builder/forward-market-recorder-v2` — diverged old Forward implementation line. Tree inspection shows a distinct `src/quant/recorders/**` architecture and recorder schemas/tests not present by path in canonical Forward; preserve until Blue decides whether any recorder concepts need porting.
+- `parallel/codex-wave1-economic-system-2026-09-19` — diverged alternate Economic line. It contains an older compact `economics/engine.py` implementation while canonical Economic V2 has a much broader modular economics stack; preserve until semantic supersession is explicitly recorded.
 - `codex/alignment-bootstrap`
 - `codex/optimiser-recherche-persistente-avec-intelligence++`
 - `codex/test`
-- `research/design-v1`
+- `research/design-v1` — contains unique Alpha Factory / market-selection / abstention / launch doctrine documents; preserve as design reference until their useful content is either adopted or explicitly superseded
 - `parallel/codex-wave1-economic-system-2026-09-19`
 - `blue/long-horizon-research-2026-09-20`
 - `recovery/claude-sec-local-20260914`.
@@ -172,3 +172,4 @@ For these, inspect unique commits/files or explicitly supersede their useful con
 3. While Astra runs, inspect the remaining diverged HOLD set and promote any unique useful concept into a durable queue/index. Unique product capability branches identified in Section 6 are explicitly preserved.
 4. After Astra handoff, re-run reachability/citation checks and shrink the `KEEP_UNTIL_ASTRA` + `DELETE_AFTER_ASTRA` sets.
 5. Only after Gate disposition review the stale default branch migration.
+6. Current tool limitation: GitHub connector exposes no branch-ref deletion operation. Do not substitute force-moving refs for deletion; actual ref removal requires a proper branch-delete capability or manual GitHub operation.
