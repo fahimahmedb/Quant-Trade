@@ -1,5 +1,7 @@
 # Control Plane / Persistent Research Runtime
 
+> **Current-routing notice:** this is subsystem/history documentation for the research runtime. It is not the current project mission, P0 target-host runbook, or repository-administration runbook. For current work, read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` and the exact mission it references.
+
 Read `QUANT_NORTH_STAR.md` and `SYSTEM_ARCHITECTURE.md` first.
 
 This document describes the **research-campaign portion of Quant's Control Plane**. It is important infrastructure, but it is not the whole Quant system.
