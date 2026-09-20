@@ -14,8 +14,8 @@ B2_REGRESSION = CLOSED_IN_BASE; MUST_REMAIN_GREEN
 FOCUSED_TESTS = NEW_ADVERSARIAL_CASES_PUSHED; EXACT_HEAD_CI_PENDING
 FULL_SUITE = EXACT_HEAD_CI_PENDING
 CI = PENDING_ON_CURRENT_DELIVERED_HEAD
-KNOWN_BLOCKERS = SELF_ADVERSARIAL_RED_PENDING: FORGED QUALIFYING ENVIRONMENT MAY BYPASS PUBLIC poll() AUTHORITY
-NEXT_ACTION = Reproduce forged-qualifying-environment direct poll() red on exact-head CI; if reproduced, bind mutation authority to durable external supervisor evidence, then rerun the regression ladder.
+KNOWN_BLOCKERS = NONE_KNOWN; FORGED_QUALIFYING_PROCESS_FIX_PENDING_EXACT_HEAD_CI
+NEXT_ACTION = Inspect exact-head CI for 7c54516d...; fix only reproduced regressions; if green, write final Builder handoff and require CI again on the delivered handoff HEAD.
 
 ## Red integrity matrix
 
@@ -43,3 +43,13 @@ No test above is redirected to a CLI or safer wrapper.
 - bccd9420: current-child terminal exit is consumed even when supervisor_state.json is absent.
 
 These are implementation facts only, not a Gate A verdict.
+
+
+## Second-order mutation-authority hardening
+
+- 7b56a064: reproduced a forged qualifying-environment direct poll bypass as the sole full-suite failure.
+- a6ad8bbf: qualifying public mutation now requires this collector instance to claim one exact durable CHILD_LAUNCH_AUTHORIZED record at record_service_start().
+- 6ed7c9a5: added a stronger discriminant proving the same external launch cannot be reclaimed by a second collector through record_service_start().
+- 7c54516d: proof inventory refreshed to 411 unit tests.
+
+Status: implementation complete pending exact-head regression/CI. This is not a Gate A verdict.
