@@ -124,8 +124,8 @@ Single operational deletion authority:
 
 Current verified delete-ready state:
 - refs = 35;
-- exact pinned SHA matches = 35/35;
-- unprotected = 35/35;
+- exact pinned SHA matches = 34/34;
+- unprotected = 34/34;
 - physical deletions executed = 0.
 
 Deletion must use a true branch-delete/delete-ref operation. Never emulate deletion by moving refs.
@@ -298,7 +298,7 @@ Execution runbook:
 Verified during audit:
 - 72 live branches;
 - registry covers 72/72 live branches;
-- 35 delete-ready refs remain exact at pinned SHA, unprotected and non-default;
+- 34 delete-ready refs remain exact at pinned SHA, unprotected and non-default;
 - 0 open PRs;
 - 0 open issues after closing stale historical Phase-0 issue #2;
 - repository rulesets = 0;
@@ -338,3 +338,16 @@ Independent audit:
 - mission commit: `b636a04b6f8f7786679907d01a4fa22bdfc4e329`.
 
 No Gate A v4 PASS, target-host readiness, t0 or P14D amendment is implied.
+
+
+## 16. Owner retention override — restaurant branch
+
+`RESTAURANT_BRANCH_RETENTION = KEEP`
+
+Branch:
+`claude/restaurant-stock-management-mvp-6oq43e@e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0`
+
+This branch was explicitly removed from the physical-delete batch by owner request on 2026-09-20.
+
+Current physical-delete batch size:
+`34`
