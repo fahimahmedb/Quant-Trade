@@ -540,6 +540,40 @@ def _terminal_supervisor_stopped(collector: Any,
     if not qualifying:
         return False
     latest = max(qualifying, key=lambda record: record.get("recorded_at_utc") or "")
+
+    # A terminal event is itself durable liveness evidence. Do not let deleting
+    # or omitting supervisor_state.json erase the fact that the current
+    # qualifying child has exited.
+    events_path = collector.paths.sec / "supervisor_events.jsonl"
+    if events_path.exists():
+        events = list(read_jsonl(events_path))
+        matching_launches = [
+            event for event in events
+            if event.get("event") == "CHILD_LAUNCH_AUTHORIZED"
+            and event.get("supervisor_id") == latest.get("supervisor_id")
+            and event.get("child_boot_id") == latest.get("boot_id")
+            and event.get("fingerprint") == latest.get("acquisition_critical_fingerprint")
+            and event.get("recorded_at_utc")
+        ]
+        matching_exits = [
+            event for event in events
+            if event.get("event") == "CHILD_EXIT_OBSERVED"
+            and event.get("supervisor_id") == latest.get("supervisor_id")
+            and event.get("child_boot_id") == latest.get("boot_id")
+            and event.get("fingerprint") == latest.get("acquisition_critical_fingerprint")
+            and event.get("recorded_at_utc")
+        ]
+        if matching_exits:
+            last_exit = max(matching_exits,
+                            key=lambda event: parse_ts(event["recorded_at_utc"]))
+            later_launch = any(
+                parse_ts(event["recorded_at_utc"])
+                > parse_ts(last_exit["recorded_at_utc"])
+                for event in matching_launches
+            )
+            if not later_launch:
+                return True
+
     state = read_json(collector.paths.sec / "supervisor_state.json")
     if not isinstance(state, dict) or state.get("schema") != "p0_supervisor/v2":
         return False
