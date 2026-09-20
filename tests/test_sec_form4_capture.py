@@ -1089,7 +1089,10 @@ class ReconciliationTests(CollectorTestCase):
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 16))
         collector.state.reconciled_days.append("2026-09-16")
         collector.save()
-        # 2026-09-17 is a Thursday; today (the 18th) is not yet settled.
+        # 2026-09-17 is a Thursday; at Friday 12:00 UTC its 22:00 ET close
+        # is only 10 elapsed hours old, so the 30-hour settle rule is not met.
+        self.assertIsNone(collector.reconciliation_due())
+        self.timebase.advance(20 * 60 * 60)
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 17))
         collector.state.reconciled_days.append("2026-09-17")
         collector.save()

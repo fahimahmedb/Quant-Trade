@@ -28,8 +28,9 @@ import uuid
 import hashlib
 import re
 from dataclasses import asdict, dataclass, field
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from typing import Any, Callable
 
 from ...paths import QuantPaths
@@ -78,8 +79,31 @@ RUNNING = "RUNNING"
 STALE = "STALE"
 NEVER_RAN = "COLLECTOR_DID_NOT_RUN"
 
+#: EDGAR business-day authority. Filing/index dates are Eastern Time, not UTC.
+EDGAR_TIMEZONE = ZoneInfo("America/New_York")
+EDGAR_BUSINESS_DAY_CLOSE_HOUR = 22
+
 #: How long after a day closes its daily index is expected to be published.
 DAILY_INDEX_SETTLE_HOURS = 30
+
+
+def _edgar_business_date(stamp: datetime) -> date:
+    """Map an aware instant to the EDGAR Eastern-Time business calendar date."""
+    if stamp.tzinfo is None:
+        raise ValueError("EDGAR_BUSINESS_DATE_REQUIRES_AWARE_TIME")
+    return stamp.astimezone(EDGAR_TIMEZONE).date()
+
+
+def _daily_index_settled_at_utc(day: date) -> datetime:
+    """Earliest instant a closed business day may be treated as settled.
+
+    The existing 30-hour policy is elapsed time after EDGAR closes that business
+    day at 22:00 Eastern. Convert the close to UTC before adding the duration so
+    daylight-saving transitions cannot shorten or lengthen the real wait.
+    """
+    close_local = datetime.combine(
+        day, time(hour=EDGAR_BUSINESS_DAY_CLOSE_HOUR), tzinfo=EDGAR_TIMEZONE)
+    return close_local.astimezone(timezone.utc) + timedelta(hours=DAILY_INDEX_SETTLE_HOURS)
 
 MAX_FILING_ATTEMPTS = 4
 
@@ -642,11 +666,16 @@ class SecForm4Collector:
         if start is None:
             return None
         now = self.timebase.now()
-        cutoff = now - timedelta(hours=DAILY_INDEX_SETTLE_HOURS)
-        day = parse_ts(start).date()
-        while day <= cutoff.date():
+        if now.tzinfo is None:
+            raise ValueError("SEC_RECONCILIATION_REQUIRES_AWARE_TIME")
+        now_utc = now.astimezone(timezone.utc)
+        day = _edgar_business_date(parse_ts(start))
+        today_edgar = _edgar_business_date(now)
+        while day <= today_edgar:
             key = day.isoformat()
-            if key not in self.state.reconciled_days and day.weekday() < 5:
+            if (key not in self.state.reconciled_days
+                    and day.weekday() < 5
+                    and now_utc >= _daily_index_settled_at_utc(day)):
                 return day
             day = day + timedelta(days=1)
         return None
