@@ -2,9 +2,13 @@
 
 ```
 BASE_SHA  = b17b381a8fa1f6a24e6cd6f92a090b40627bfe78
-FINAL_SHA = c52b4359521be4d446592e74c37f282b49c86cdf
+FINAL_SHA = branch tip; resolve immutably with `git rev-parse HEAD` (a commit
+            cannot embed its own SHA — this document's own commit necessarily
+            advances HEAD past whatever value would be written here)
 BRANCH    = parallel/claude-economic-v2-2026-09-20
 ```
+
+Last code commit before this documentation commit: `c52b4359521be4d446592e74c37f282b49c86cdf`.
 
 Role: consolidation Builder for `quant.economics`. Not P0. Not Clock. Not the
 scientific-protocol writer (`src/quant/science/**` untouched throughout).
@@ -196,7 +200,8 @@ T0_TOUCHED              = FALSE
 ```
 
 Supporting facts: `git diff --stat b17b381a8fa1f6a24e6cd6f92a090b40627bfe78
-HEAD` touches only `src/quant/economics/**`, four `tests/` files, and
+c52b4359521be4d446592e74c37f282b49c86cdf` (last code commit) touches only
+`src/quant/economics/**`, four `tests/` files, and
 `handoff/`. No file under `src/quant/dataplane/sec/`, `deploy/`,
 `src/quant/clock.py` or `scripts/quant.py` appears in that diff (verified by
 direct `grep` against the diff, not by assertion). The Codex branch
@@ -275,5 +280,5 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 T0_TOUCHED              = FALSE
 ```
 
-`git status` clean at `c52b4359521be4d446592e74c37f282b49c86cdf`. Pushed to
-`origin/parallel/claude-economic-v2-2026-09-20`. Nothing merged. STOP.
+`git status` clean; pushed to `origin/parallel/claude-economic-v2-2026-09-20`
+at this document's own commit (`git rev-parse HEAD`). Nothing merged. STOP.
