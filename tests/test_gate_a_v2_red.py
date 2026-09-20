@@ -10,12 +10,12 @@ import unittest
 from datetime import date
 
 from quant.dataplane.sec.audit import audit_observation_window
-from tests.test_sec_form4_capture import RodageFalsificationTests
+from tests import test_sec_form4_capture as sec_capture_tests
 
 
 class GateAV2AttemptActionBindingRed(unittest.TestCase):
     def _qualifying_case(self):
-        case = RodageFalsificationTests()
+        case = sec_capture_tests.RodageFalsificationTests()
         case.setUp()
         self.addCleanup(case.doCleanups)
         return case
