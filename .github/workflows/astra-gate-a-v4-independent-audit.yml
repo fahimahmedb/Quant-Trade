@@ -44,7 +44,7 @@ jobs:
       - name: Upload independent probe artifact
         uses: actions/upload-artifact@v4
         with:
-          name: astra-gate-a-v4-independent-probe-\${{ github.sha }}
+          name: astra-gate-a-v4-independent-probe-${{ github.sha }}
           path: astra_gate_a_v4_probe_results.json
           if-no-files-found: error
           retention-days: 90
