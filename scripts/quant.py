@@ -82,6 +82,13 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
                           "remedy": "export QUANT_SEC_USER_AGENT='Name contact@example.com'"},
                          indent=2))
         return 2
+    # One-shot operator acquisition/state commands are processes too. Journal
+    # their lifecycle before they mutate durable acquisition state so a manual
+    # intervention inside a qualifying window cannot masquerade as continuous
+    # service simply because it reused the service's open obligation.
+    if args.command in {"sec-enable", "sec-disable", "sec-probe", "sec-reconcile"}:
+        collector.record_service_start()
+
     if args.command == "sec-fingerprint":
         payload = collector.materialize_fingerprint()
         # The effective service configuration is part of the manifest, so the
