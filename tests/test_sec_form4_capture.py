@@ -2623,6 +2623,90 @@ class AuditFalsePassTests(CollectorTestCase):
                          "one re-plan retires one obligation")
         self.assertFalse(report["accountable"])
 
+    def test_fourteen_day_synthetic_history_remains_bijectively_accountable(self) -> None:
+        """2,016 obligations over 14 virtual days stay one-to-one under audit.
+
+        Per-record fsync durability is covered elsewhere. This fixture writes a
+        complete synthetic journal in bulk so the real parsers/reconciler can
+        be stressed on history size without making CI perform thousands of
+        redundant disk flushes.
+        """
+        base = parse_ts("2026-09-18T12:00:00+00:00")
+        count = 14 * 24 * 6  # one obligation every ten minutes for fourteen days
+        fingerprint = self.lane.fingerprint or "fp"
+        scheduler_records = []
+        attempt_records = []
+        intent_records = []
+
+        for index in range(count):
+            recorded = base + timedelta(minutes=index * 10)
+            due = recorded + timedelta(minutes=5)
+            attempted = due + timedelta(seconds=30)
+            obligation_id = f"OB-LONG-{index:04d}"
+            attempt_id = f"A-LONG-{index:04d}"
+            scheduler_records.append(SchedulerTransition(
+                transition_id=f"T-LONG-{index:04d}",
+                recorded_at_utc=recorded.isoformat(),
+                state=AWAITING_POLL,
+                cause=POLL_COMPLETED,
+                next_due_at_utc=due.isoformat(),
+                acquisition_critical_fingerprint=fingerprint,
+                obligation_id=obligation_id,
+                boot_id="boot-audit",
+                lifecycle_cause=DEPLOYMENT_RESTART,
+            ).to_dict())
+            attempt_records.append(SecAttemptRecord(
+                attempt_id=attempt_id,
+                attempt_kind="DISCOVERY",
+                endpoint_class="test",
+                source_locator_digest=digest_text("long-history"),
+                request_attempted_at_utc=attempted.isoformat(),
+                response_received_at_utc=attempted.isoformat(),
+                result_state=CAPTURED_OK,
+                collector_version="v",
+                git_commit="c",
+                obligation_id=obligation_id,
+                http_status=200,
+            ).to_dict())
+            intent_records.extend((
+                {"event": "INTENT", "attempt_id": attempt_id,
+                 "obligation_id": obligation_id,
+                 "recorded_at_utc": attempted.isoformat()},
+                {"event": "RESERVED", "attempt_id": attempt_id,
+                 "obligation_id": obligation_id,
+                 "reserved_at_utc": attempted.isoformat()},
+                {"event": "FINISHED", "attempt_id": attempt_id,
+                 "recorded_at_utc": attempted.isoformat()},
+            ))
+
+        def write_jsonl_fixture(path, records) -> None:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
+                encoding="utf-8",
+            )
+
+        write_jsonl_fixture(self.paths.sec_scheduler, scheduler_records)
+        write_jsonl_fixture(self.paths.sec_attempts, attempt_records)
+        write_jsonl_fixture(self.paths.sec / "request_intents.jsonl", intent_records)
+        write_jsonl_fixture(self.paths.sec_lifecycle, [{
+            **self.lane.lifecycle,
+            "recorded_at_utc": (base - timedelta(minutes=1)).isoformat(),
+            "acquisition_critical_fingerprint": fingerprint,
+        }])
+
+        report = audit_observation_window(
+            self.lane,
+            tolerance_seconds=180.0,
+            now=base + timedelta(minutes=count * 10 + 10),
+        )
+        self.assertTrue(report["accountable"], report["findings"])
+        self.assertEqual(report["obligations"], count)
+        self.assertEqual(report["obligations_resolved_by_attempt"], count)
+        self.assertEqual(report["obligations_resolved_by_supersession"], 0)
+        self.assertEqual(report["obligations_unexplained"], 0)
+        self.assertEqual(report["obligations_pending"], 0)
+
     # --- ledger integrity ---------------------------------------------------
     def test_an_obligation_without_identity_fails_the_window(self) -> None:
         """A journal that cannot be reconciled by name is not audited by time."""
