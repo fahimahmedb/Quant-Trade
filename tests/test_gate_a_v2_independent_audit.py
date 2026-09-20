@@ -36,15 +36,17 @@ class GateAV2IndependentAuditRedTests(unittest.TestCase):
             case.timebase.advance(60)
             collector.poll()
 
+        due = collector.reconciliation_due()
         self.assertIsNotNone(
-            collector.reconciliation_due(),
+            due,
             "the calendar must say a daily reconciliation is now due",
         )
         report = audit_observation_window(collector, now=case.timebase.now())
         self.assertFalse(
             report["accountable"],
             "an audit that derives obligations only from scheduler transitions "
-            "must not silently miss an entire due action class",
+            "must not silently miss an entire due action class; "
+            f"due={due}, findings={report['findings']}",
         )
 
     def test_t0_between_ticks_preserves_pre_t0_lifecycle_and_supersession_context(self) -> None:
