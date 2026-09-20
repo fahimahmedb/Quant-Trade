@@ -3,19 +3,19 @@
 BASE_SHA = db166fd04c681e67a2c6d4440828af14ef58c48c
 CURRENT_BRANCH = builder/p0-gate-a-v3-2026-09-20
 CURRENT_HEAD = resolve origin/builder/p0-gate-a-v3-2026-09-20; a commit cannot truthfully contain its own SHA
-SURFACE_1 = RED_DISCRIMINANT_ADDED
-SURFACE_2 = RED_DISCRIMINANT_ADDED
-SURFACE_3 = RED_DISCRIMINANTS_ADDED_FOR_DIRECT_RECONCILE_POLL_DRAIN
-SURFACE_4 = RED_DISCRIMINANT_ADDED
-SURFACE_5 = RED_DISCRIMINANT_ADDED
-SURFACE_6 = RED_DISCRIMINANT_ADDED
-SURFACE_7 = RED_DISCRIMINANTS_ADDED_FOR_FINGERPRINT_AND_CLEAR_COOLDOWN
+SURFACE_1 = IMPLEMENTED_PENDING_REGRESSION_CI
+SURFACE_2 = IMPLEMENTED_PENDING_REGRESSION_CI
+SURFACE_3 = IMPLEMENTED_PENDING_REGRESSION_CI; DIRECT_RECONCILE_POLL_DRAIN_FIDELITY_RETAINED
+SURFACE_4 = IMPLEMENTED_PENDING_REGRESSION_CI; TERMINAL_EVENT_WITHOUT_STATE_FIX_AT_bccd9420
+SURFACE_5 = IMPLEMENTED_PENDING_REGRESSION_CI
+SURFACE_6 = IMPLEMENTED_PENDING_REGRESSION_CI
+SURFACE_7 = IMPLEMENTED_PENDING_REGRESSION_CI; FORGED_BUDGET_CALLBACK_FIX_AT_6fc9f10d
 B2_REGRESSION = CLOSED_IN_BASE; MUST_REMAIN_GREEN
-FOCUSED_TESTS = PENDING_RED_CI
-FULL_SUITE = NOT_RUN_FOR_V3
-CI = PENDING_RED_CI
+FOCUSED_TESTS = NEW_ADVERSARIAL_CASES_PUSHED; EXACT_HEAD_CI_PENDING
+FULL_SUITE = EXACT_HEAD_CI_PENDING
+CI = PENDING_ON_CURRENT_DELIVERED_HEAD
 KNOWN_BLOCKERS = NONE
-NEXT_ACTION = Inspect exact-head red CI; confirm failures are intended primitive-level Gate A v3 defects, then implement minimal corrections without redirecting tests.
+NEXT_ACTION = Run/inspect exact-head regression ladder; fix only reproduced regressions; preserve primitive-level tests and B2 closure.
 
 ## Red integrity matrix
 
@@ -31,3 +31,15 @@ NEXT_ACTION = Inspect exact-head red CI; confirm failures are intended primitive
 - S7 cooldown calls public SecTrafficBudget.clear_cooldown() directly.
 
 No test above is redirected to a CLI or safer wrapper.
+
+
+## Current durable implementation milestones
+
+- 8609aaa0: primitive RED set added from frozen v2 base.
+- 3fe5b805 / 1c497244: typed obligations, due-reconciliation proof, raw-integrity/lifecycle/mutation-boundary implementation and legacy compatibility work.
+- 7d11e812 / a550da04: D1 fidelity restored; fresh/unbound budget mutation made fail-closed.
+- f287f74f: added second-order attacks for terminal event evidence and forged public budget authority binding.
+- 6fc9f10d: arbitrary/no-op budget callback no longer installs mutation authority.
+- bccd9420: current-child terminal exit is consumed even when supervisor_state.json is absent.
+
+These are implementation facts only, not a Gate A verdict.
