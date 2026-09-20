@@ -1,0 +1,50 @@
+name: Astra Gate A v4 independent audit
+
+on:
+  push:
+    branches:
+      - 'astra/p0-gate-a-v4-independent-audit-2026-09-20'
+    paths:
+      - 'audit/**'
+      - '.github/workflows/astra-gate-a-v4-independent-audit.yml'
+      - 'handoff/ASTRA_GATE_A_V4_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify frozen candidate ancestry
+        run: |
+          set -euo pipefail
+          test "$(git merge-base HEAD 4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072)" = "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072"
+          git diff --name-only 4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072...HEAD
+
+      - name: Run independent Astra discriminants A1-A10
+        run: PYTHONPATH=src python3 audit/astra_gate_a_v4_independent_probe.py
+
+      - name: Replay focused existing authority/systemd/digest campaigns
+        run: |
+          PYTHONPATH=src python3 -m unittest -v \
+            tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign \
+            tests.test_astra_pre_t0.Phase7EffectiveSystemdContractCampaign \
+            tests.test_astra_pre_t0.Phase8EffectiveUnitDigestStabilityCampaign
+
+      - name: Upload independent probe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astra-gate-a-v4-independent-probe-\${{ github.sha }}
+          path: astra_gate_a_v4_probe_results.json
+          if-no-files-found: error
+          retention-days: 90
