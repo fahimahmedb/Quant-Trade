@@ -105,9 +105,19 @@ Sources:
 - https://github.com/systemd/systemd/blob/main/test/units/TEST-59-RELOADING-RESTART.sh
 - https://github.com/systemd/systemd/blob/main/man/systemd.service.xml
 
+### SEC calendar authority
+
+Current SEC guidance says EDGAR accepts filings from 06:00 to 22:00 Eastern Time Monday through Friday except federal holidays. SEC guidance also says daily indexes are updated nightly beginning around 22:00 ET and usually complete within a few hours.
+
+Sources:
+- https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/determine-status-my-filing
+- https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data
+
+Transferable lesson: a normal overnight closure and a complete weekend are prospectively knowable source-silence states; they do not require a two-week wait to encounter.
+
 ## 4. What Quant P0 already compresses
 
-Current Astra candidate has an injectable `FrozenTimebase`; tests can advance cadence, backoff and cooldown without sleeping.
+Current Astra candidate has an injectable `FrozenTimebase`; tests can advance cadence, backoff and cooldown without sleeping. P0 also has real calendar logic: daily-index reconciliation waits `DAILY_INDEX_SETTLE_HOURS = 30` and deliberately skips weekend target days (`day.weekday() < 5`). That means weekend semantics are a genuine boundary, but the branch logic itself can be exercised deterministically with the injected timebase.
 
 The scheduler creates named prospective obligations with `next_due_at_utc`; the audit reconciles every due obligation to one attempt or a valid prospective supersession and rejects unexplained holes.
 
@@ -138,7 +148,7 @@ Exact tested code candidate `88566cb4fb08bdf01561ffcbfe18fd391e57c572` passed Gi
 | Discovery fail-closed | Invalid/truncated/error payload regressions | Little | COVERED |
 | NO_NEW_DATA vs dead/failed collector | Explicit semantic/liveness tests | Live source silence still adds source/runtime evidence | PARTIAL |
 | 429/403/cooldown ordering | deterministic tests | 14d does not guarantee these happen naturally | COVERED logically; LIVE SOURCE PARTIAL |
-| Complete weekend semantics | No special weekend-dependent code identified; timebase is UTC/cadence-driven | Real host/service crossing a weekend is operational evidence | REAL-TIME-ONLY component |
+| Complete weekend semantics | Daily-index reconciliation has a real weekday/weekend branch and 30-hour settle rule; a dedicated Friday->weekend->Monday boundary regression was not found | Branch semantics can be accelerated; real host/source crossing a weekend still adds operational evidence | PARTIAL + REAL-TIME component |
 | Source-normal silence | Logical distinction tested | A naturally occurring, prospectively declared live silence is not synthetically equivalent | REAL-TIME-ONLY component |
 | Loaded systemd/drop-ins/cgroup behavior | Config parser/validation + process tests | Only actual target host proves loaded unit behavior | TARGET-HOST-ONLY |
 | Mount absence/read-only code/persistent state binding | Deployment contract only | Calendar time does not prove setup correctness by itself | TARGET-HOST-ONLY |
@@ -187,16 +197,18 @@ On the actual target host and exact pinned release:
 
 Run the exact pinned target runtime prospectively with no invalidating intervention.
 
-Closure is event-based, not `N` arbitrary days. The live window must:
-- begin before a predeclared complete weekend and remain accountable through the first required post-weekend acquisition cycle;
-- include at least one predeclared source-normal silence interval observed on the real source;
+Closure is event-based, not `N` arbitrary days. Use the SEC's prospectively known EDGAR operating calendar as the source authority: EDGAR accepts filings 06:00–22:00 Eastern Time Monday–Friday except federal holidays, and daily indexes are updated nightly beginning around 22:00 ET. The live window must:
+- include one ordinary weekday overnight source-closed interval (22:00–06:00 ET) declared before observing outcomes;
+- then include one complete weekend source closure and remain accountable through at least the first required post-weekend acquisition cycle after EDGAR reopens;
+- complete the applicable Friday/preceding-business-day daily-index reconciliation under the existing 30-hour settle rule;
+- therefore exercise both source-normal silence and the collector's real weekday/weekend reconciliation boundary prospectively;
 - account for every prospective scheduler obligation through the durable audit;
 - show no unexplained heartbeat/attempt hole;
 - preserve stable active/materialized fingerprint and target runtime/service bindings;
 - expose only opaque operational verdicts outside the restricted P0 evidence boundary;
 - include restricted before/after resource-stability checks for file descriptors, memory/state growth and storage pressure without leaking scientific/count proxies.
 
-If the required silence condition has not occurred, the window stays open. No fixed minimum of fourteen days is needed once Gates A/B provide the failure coverage that calendar waiting previously proxied.
+If the required source-calendar conditions have not occurred, the window stays open. A practical qualifying live window can normally be scheduled from before a weekday EDGAR close through the next Monday reopen, while still remaining event-based rather than hard-coding a shorter arbitrary duration. No fixed minimum of fourteen days is needed once Gates A/B provide the failure coverage that calendar waiting previously proxied.
 
 ### Gate D — Final retrospective audit
 
