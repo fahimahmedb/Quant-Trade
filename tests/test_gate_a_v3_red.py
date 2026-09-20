@@ -406,5 +406,55 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         )
 
 
+    def test_forged_collector_cannot_reclaim_already_bound_external_launch(self):
+        """One external child launch authorizes at most one qualifying collector."""
+        case, collector = self._qualifying_baseline()
+        before_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        case.timebase.advance(10)
+
+        forged = SecForm4Collector(
+            case.paths,
+            policy=collector.policy,
+            transport=sec_capture_tests.FakeTransport(case.fixture_router()),
+            timebase=case.timebase,
+            budget=SecTrafficBudget(
+                collector.paths.sec_budget,
+                collector.policy,
+                timebase=case.timebase,
+            ),
+            root=sec_capture_tests.ROOT,
+            environ={
+                **sec_capture_tests.SERVICE_MANAGED_ENV,
+                "QUANT_SEC_LIFECYCLE_CAUSE":
+                    collector.lifecycle.get("lifecycle_cause") or "DEPLOYMENT_RESTART",
+                "QUANT_SEC_BOOT_ID": collector.lifecycle.get("boot_id") or "boot-q1",
+                "QUANT_SEC_SUPERVISOR_ID":
+                    collector.lifecycle.get("supervisor_id") or "sup-rodage",
+                "QUANT_SEC_LAUNCH_AUTHORITY_NONCE":
+                    collector.lifecycle.get("launch_authority_nonce") or "rodage-authority",
+                "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "d" * 64,
+                "QUANT_SEC_QUALIFYING_MODE": "1",
+                "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0",
+            },
+        )
+        forged.record_service_start()
+        try:
+            forged.poll()
+        except (SecStorageFailure, PermissionError, RuntimeError):
+            return
+
+        after_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        report = audit_observation_window(forged, now=case.timebase.now())
+        self.assertGreater(
+            len(after_rows),
+            len(before_rows),
+            "a duplicate collector silently reclaimed an already-bound child launch",
+        )
+        self.assertFalse(
+            report["accountable"],
+            "duplicate record_service_start() converted copied provenance into authority",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
