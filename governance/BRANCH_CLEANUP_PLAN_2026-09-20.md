@@ -9,23 +9,26 @@ Cleanup objective is authority clarity, not deletion count. Deleting a branch re
 ## 1. Non-negotiable rules
 
 - Do not modify or delete the frozen Gate A v3 candidate.
-- Do not delete the active Astra Gate A v3 audit branch.
+- Do not delete the final Astra Gate A v3 audit branch; it is canonical independent evidence.
 - Do not delete a branch merely because it is old.
 - A branch whose tip is a strict ancestor of a retained authority can generally lose its ref without losing its commits.
 - A diverged branch needs an explicit content/evidence decision before deletion.
 - Branch deletion is more conservative than PR closure.
-- During independent Astra Gate A v3 review, retain all Gate A refs needed for replay, anti-redirection, audit history, or exact-SHA reconstruction.
+- Gate A v3 review is closed. Retain divergent Gate A falsifier/audit refs where branch-level discoverability still carries unique replay or audit value.
 - The stale repository default branch is not changed as incidental cleanup.
 - No Forward/Economic/Product integration decision is made by this cleanup.
 
-Live snapshot at classification start:
+Current post-Gate snapshot:
 - branches = 71;
 - open PRs = 0;
 - Blue authority = `blue/master-v2-2026-09-20`;
+- Gate A v3 = `REPOSITORY_PASS / CLOSED`;
 - frozen Gate A v3 = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
-- Astra v3 audit = active/no verdict yet.
+- final Astra v3 audit = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`, CI `35517935710 = SUCCESS`;
+- target-host qualification = `READY_TO_DISPATCH / NOT_EXECUTED`;
+- delete-ready operational index = `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`, 35 refs verified.
 
-## 2. KEEP — current authority / canonical / active audit
+## 2. KEEP — current authority / canonical / final evidence
 
 These refs are not deletion candidates:
 
@@ -42,28 +45,36 @@ These refs are not deletion candidates:
 - `reviewer/v1-final-red-team`
 - current repository default `claude/nasdaq-trading-model-design-h3mp4n` until an explicit default-branch migration decision.
 
-## 3. KEEP_UNTIL_ASTRA — Gate A / P0 proof refs
+## 3. POST-GATE PROOF REF DISPOSITION
 
-Do not delete these while the independent Gate A v3 audit is open, even where their commits are reachable elsewhere:
+The former `KEEP_UNTIL_ASTRA` category is closed because the independent Gate A v3 audit is complete.
+
+Current authority:
+`governance/POST_GATE_A_PROOF_REF_REVIEW_2026-09-20.md`.
+
+### Delete-ready absorbed proof refs
+
+The following five refs are now delete-ready because their exact tips are strict ancestors of retained authorities and their evidentiary SHAs are durably indexed:
+
+- `blue/p0-direct-reconcile-fix-2026-09-20`
+- `blue/p0-gate-a-final-2026-09-20`
+- `builder/p0-integrity-blockers-fingerprint-v1`
+- `builder/sec-form4-p0-raw-capture-v2`
+- `codex/reprendre-mission-astra-p0-pre-t0`
+
+### Preserve divergent historical evidence
+
+Keep these branch refs because they retain unique divergent falsifier/audit/recovery history:
 
 - `blue/p0-calendar-direct-reconcile-red-2026-09-20`
 - `blue/p0-manual-probe-red-2026-09-20`
-- `blue/p0-direct-reconcile-fix-2026-09-20`
 - `blue/p0-audit-authority-red-2026-09-20`
 - `blue/checkpoint-gate-a-v2-audit-2026-09-20`
 - `astra/checkpoint-gate-a-v2-independent-audit-2026-09-20`
 - `astra/p0-deep-adversarial-2026-09-19`
-- `blue/p0-gate-a-final-2026-09-20`
-- `builder/p0-integrity-blockers-fingerprint-v1`
-- `blue/frontier-p0-continuity-rule-2026-09-18`
-- `blue/frontier-p0-fingerprint-v1-2026-09-18`
-- `blue/frontier-p0-integrity-blockers-2026-09-18`
-- `blue/frontier-p0-operational-2026-09-18`
 - `builder/sec-form4-p0-raw-capture`
-- `builder/sec-form4-p0-raw-capture-v2`
-- `codex/reprendre-mission-astra-p0-pre-t0`.
 
-These are retained for replay convenience, historical falsifiers, or P0 lineage. Re-evaluate after Astra handoff.
+Do not infer that "rejected" or "old" means deletable; divergence and evidence value govern this category.
 
 ## 4. DELETE_NOW_SAFE — first branch-cleanup tranche
 
@@ -113,27 +124,26 @@ DELETE_NOW_SAFE_COUNT = 18.
 
 No deletion has been executed by this document.
 
-## 5. DELETE_AFTER_ASTRA — absorbed or superseded P0/governance refs
+## 5. POST-GATE DELETE-READY CONSOLIDATION
 
-These are strong deletion candidates, but their refs should remain until Astra returns because they are close to the current P0 proof lineage:
+The former `DELETE_AFTER_ASTRA` waiting state is closed.
 
-- `blue/d05-d07-governance-2026-09-15` — strict ancestor of current Blue.
-- `blue/handoff-memory-2026-09-15` — same tip as `blue/frontier-p0-integrity-blockers-2026-09-18`, strict ancestor of Blue.
-- `blue/p0-calendar-holiday-red-2026-09-20` — strict ancestor of frozen v3.
-- `blue/p0-gate-a-consolidated-2026-09-20` — strict ancestor of frozen v3.
-- `blue/p0-gate-a-v2-2026-09-20` — strict ancestor of frozen v3.
-- `blue/p0-audit-authority-fix-2026-09-20` — diverged alternate fix line; retain until audit confirms no unique falsifier remains.
-- `blue/p0-calendar-dst-proof-2026-09-20` — diverged by one commit from later Gate lineage; retain until audit disposition.
-- `blue/p0-continuity-qualification-2026-09-20` — diverged P0 qualification line.
-- `blue/p0-gate-a-long-history-2026-09-20` — diverged long-history/stress proof.
-- `blue/p0-gate-a-v2-staging-2026-09-20` — diverged staging consolidation.
-- `blue/p0-manual-operator-provenance-fix-2026-09-20` — diverged alternate B3 fix.
-- `blue/p0-manual-probe-fix-2026-09-20` — diverged partial B3 fix.
-- `claude/quant-blue-master-2026-09-20-mogpvh` — superseded Blue authority; retain until Astra consumes current governance handoff cleanly.
-- `checkpoint/blue-master-consolidated-2026-09-20`
-- `checkpoint/blue-master-project-2026-09-20`.
+Twelve strict-ancestor refs were rechecked after Gate A PASS and moved to delete-ready in:
+`governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md`.
 
-Post-Astra deletion still requires a final citation/reachability check.
+Together with the first 18 safe refs and five newly absorbed proof refs, the single operational deletion authority is now:
+
+`governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
+
+Current verified total:
+`DELETE_READY = 35`
+
+At the latest recheck:
+- 35/35 branches existed at their pinned SHA;
+- 35/35 were unprotected;
+- 0 physical deletions had been executed.
+
+Any old branch-specific status in this plan is subordinate to the consolidated delete-ready index and later Blue governance.
 
 ## 6. PRESERVE_UNIQUE_PRODUCT_CAPABILITIES
 
@@ -188,6 +198,17 @@ These refs contain distinct concepts or alternate implementations that are not c
   - preserve as design reference until useful content is either adopted or explicitly superseded.
 
 ## 9. Next cleanup actions
+
+1. Treat `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md` as the single operational deletion list.
+2. Physical-delete the 35 refs only when a true branch-delete/delete-ref capability is available.
+3. Immediately before each deletion, re-check pinned SHA, protection, default status and later Blue authority.
+4. Do not emulate deletion by force-moving refs.
+5. Preserve divergent Gate falsifier/audit refs until their unique replay/audit value is explicitly retired.
+6. Preserve unique Product capability, recovery, learning and design refs until later integration/content decisions.
+7. Default-branch migration is a separate governance action. Review is complete; execution remains pending.
+8. Product integration remains paused; cleanup must not become integration.
+
+
 
 1. Delete the 18 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
 2. Do not emulate deletion by force-moving refs.
