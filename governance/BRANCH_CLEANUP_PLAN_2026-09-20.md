@@ -115,12 +115,17 @@ The existing Blue branch registry already classifies the following as unrelated/
 - `claude/memoire-finance-presentation-9p2q5g`
 - `claude/political-prediction-token-optimization-di47f2`
 - `claude/price-prediction-model-ykhog1`
-- `claude/restaurant-stock-management-mvp-6oq43e`
 - `claude/nasdaq-quant-trading-model-emdbg5`
 
 They are not inputs to current Gate A, Forward, Economic, Product integration, or Blue governance.
 
-DELETE_NOW_SAFE_COUNT = 18.
+DELETE_NOW_SAFE_COUNT = 17.
+
+### Owner retention override
+
+`claude/restaurant-stock-management-mvp-6oq43e@e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0` was previously classified as unrelated cleanup clutter but was explicitly retained by the owner on 2026-09-20. It is therefore removed from the operational delete-ready batch.
+
+`RETAIN_OWNER_REQUEST = TRUE`
 
 No deletion has been executed by this document.
 
@@ -131,16 +136,16 @@ The former `DELETE_AFTER_ASTRA` waiting state is closed.
 Twelve strict-ancestor refs were rechecked after Gate A PASS and moved to delete-ready in:
 `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md`.
 
-Together with the first 18 safe refs and five newly absorbed proof refs, the single operational deletion authority is now:
+Together with the first 17 safe refs and five newly absorbed proof refs, the single operational deletion authority is now:
 
 `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
 
 Current verified total:
-`DELETE_READY = 35`
+`DELETE_READY = 34`
 
 At the latest recheck:
-- 35/35 branches existed at their pinned SHA;
-- 35/35 were unprotected;
+- 34/34 current delete-ready branches exist at their pinned SHA;
+- 34/34 are unprotected;
 - 0 physical deletions had been executed.
 
 Any old branch-specific status in this plan is subordinate to the consolidated delete-ready index and later Blue governance.
@@ -200,7 +205,7 @@ These refs contain distinct concepts or alternate implementations that are not c
 ## 9. Next cleanup actions
 
 1. Treat `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md` as the single operational deletion list.
-2. Physical-delete the 35 refs only when a true branch-delete/delete-ref capability is available.
+2. Physical-delete the 34 refs only when a true branch-delete/delete-ref capability is available.
 3. Immediately before each deletion, re-check pinned SHA, protection, default status and later Blue authority.
 4. Do not emulate deletion by force-moving refs.
 5. Preserve divergent Gate falsifier/audit refs until their unique replay/audit value is explicitly retired.
