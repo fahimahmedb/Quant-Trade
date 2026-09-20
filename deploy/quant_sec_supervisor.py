@@ -65,6 +65,40 @@ def _systemd_duration_seconds(text: str) -> float:
     return sum(float(amount) * _DURATION_UNIT_SECONDS[unit] for amount, unit in parts)
 
 
+#: `systemctl show --property=ExecStart` returns a struct that mixes static
+#: configuration (`path`, `argv[]`, `ignore_errors`) with transient execution
+#: observations. Those observations change every time the unit actually runs
+#: even though nothing about the configured command changed, so they must
+#: never join an acquisition-critical digest.
+_EXEC_START_TRANSIENT_KEYS = frozenset({"start_time", "stop_time", "pid", "code", "status"})
+
+
+def _canonicalize_exec_start(raw: str) -> list[dict]:
+    """Reduce the raw `ExecStart` show property to configuration-only semantics.
+
+    The property looks like:
+    ``{ path=... ; argv[]=... ; ignore_errors=no ; start_time=[...] ;
+    stop_time=[...] ; pid=... ; code=... ; status=... }``, optionally repeated
+    (one `{...}` struct per configured `ExecStart=` directive). Only the
+    configuration fields are kept; the transient observation fields are
+    dropped before this ever reaches a digest.
+    """
+    entries = []
+    for match in re.finditer(r"\{([^{}]*)\}", raw):
+        fields: dict[str, str] = {}
+        for piece in match.group(1).split(";"):
+            piece = piece.strip()
+            if not piece or "=" not in piece:
+                continue
+            key, value = piece.split("=", 1)
+            key = key.strip()
+            if key in _EXEC_START_TRANSIENT_KEYS:
+                continue
+            fields[key] = value.strip()
+        entries.append(fields)
+    return entries
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -217,14 +251,27 @@ def _effective_systemd_definition(root: Path) -> str:
             raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_UNPARSEABLE") from None
         if abs(actual_seconds - expected_seconds) > _DURATION_TOLERANCE_SECONDS:
             raise RuntimeError(f"SYSTEMD_EFFECTIVE_{key.upper()}_MISMATCH")
-    exec_start = parsed.get("ExecStart") or ""
-    if ("quant_sec_supervisor.py" not in exec_start
-            or "--qualifying" not in exec_start):
+    exec_start_entries = _canonicalize_exec_start(parsed.get("ExecStart") or "")
+    if not exec_start_entries:
+        raise RuntimeError("SYSTEMD_EFFECTIVE_EXECSTART_UNPARSEABLE")
+    exec_start_path = exec_start_entries[0].get("path", "")
+    exec_start_argv = exec_start_entries[0].get("argv[]", "")
+    if ("quant_sec_supervisor.py" not in exec_start_path
+            and "quant_sec_supervisor.py" not in exec_start_argv):
+        raise RuntimeError("SYSTEMD_EFFECTIVE_EXECSTART_MISMATCH")
+    # Exact token match, not substring: a substring check would silently
+    # accept an altered flag such as `--qualifying-disabled` as if the
+    # qualifying flag were still present.
+    if "--qualifying" not in exec_start_argv.split():
         raise RuntimeError("SYSTEMD_EFFECTIVE_EXECSTART_MISMATCH")
     if parsed.get("WorkingDirectory") != "/opt/quant":
         raise RuntimeError("SYSTEMD_EFFECTIVE_WORKDIR_MISMATCH")
     if "/etc/quant/sec-capture.env" not in (parsed.get("EnvironmentFiles") or ""):
         raise RuntimeError("SYSTEMD_EFFECTIVE_ENVIRONMENT_FILE_MISMATCH")
+    # Bind the canonicalized, configuration-only ExecStart in place of the raw
+    # property string: the digest must move with genuine command drift but
+    # stay fixed across repeated invocations of the same semantic unit.
+    parsed["ExecStart"] = exec_start_entries
     canonical = json.dumps(parsed, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return "sha256:" + hashlib.sha256(canonical).hexdigest()
 

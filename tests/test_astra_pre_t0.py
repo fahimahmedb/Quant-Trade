@@ -804,3 +804,246 @@ class Phase7EffectiveSystemdContractCampaign(unittest.TestCase):
                                    return_value=self._shown(root,RestartUSec='garbage')):
                 with self.assertRaises(RuntimeError):
                     launcher._effective_systemd_definition(root)
+
+
+class Phase8EffectiveUnitDigestStabilityCampaign(unittest.TestCase):
+    """P0 EFFECTIVE UNIT DIGEST STABILITY V4.
+
+    Target-host evidence (restricted defect artifact
+    sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442)
+    showed `_effective_systemd_definition` hashing the raw `ExecStart` show
+    property. On real systemd that property embeds transient execution
+    observations (start_time/stop_time/pid/code/status) alongside the static
+    command, so the digest moved every time the qualifying service actually
+    ran even though the unit's configured semantics never changed. This left
+    a valid pre-start materialization stale purely from the service having
+    executed, with no unit-byte drift, no drop-in and no consumed/replayed
+    deployment authority. This campaign proves the corrected implementation
+    is stable under exactly that discriminant while remaining fail-closed on
+    genuine semantic drift.
+    """
+
+    @staticmethod
+    def _launcher():
+        spec=importlib.util.spec_from_file_location(
+            'astra_launcher_phase8_digest_stability',ROOT/'deploy/quant_sec_supervisor.py')
+        launcher=importlib.util.module_from_spec(spec);spec.loader.exec_module(launcher)
+        return launcher
+
+    #: Real target-host `ExecStart` form before the qualifying service ever ran,
+    #: matching the mission's literal regression fixture.
+    _EXEC_START_BEFORE=(
+        '{ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 -I '
+        '/opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying ; '
+        'ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; '
+        'code=(null) ; status=0/0 }')
+
+    #: The identical semantic unit after one qualifying invocation: systemd
+    #: has now filled in start_time/stop_time/pid/code/status.
+    _EXEC_START_AFTER=(
+        '{ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 -I '
+        '/opt/quant/deploy/quant_sec_supervisor.py --root /opt/quant --qualifying ; '
+        'ignore_errors=no ; start_time=[Sun 2026-09-20 18:42:33 UTC] ; '
+        'stop_time=[Sun 2026-09-20 19:58:25 UTC] ; pid=48213 ; code=exited ; '
+        'status=0/SUCCESS }')
+
+    @classmethod
+    def _shown(cls,root,exec_start,**overrides):
+        import shutil
+        target=root/'deploy/quant-sec-capture.service'
+        (root/'deploy').mkdir(exist_ok=True)
+        shutil.copy2(ROOT/'deploy/quant-sec-capture.service',target)
+        fields={
+            'FragmentPath':str(target),
+            'DropInPaths':'',
+            'ExecStart':exec_start,
+            'WorkingDirectory':'/opt/quant',
+            'Restart':'on-failure',
+            'RestartUSec':'15s',
+            'StartLimitIntervalUSec':'10min',
+            'StartLimitBurst':'5',
+            'KillMode':'control-group',
+            'KillSignal':'15',
+            'TimeoutStopUSec':'30s',
+            'EnvironmentFiles':'/etc/quant/sec-capture.env (ignore_errors=no)',
+        }
+        fields.update(overrides)
+        text='\n'.join(f'{key}={value}' for key,value in fields.items())+'\n'
+        return SimpleNamespace(returncode=0,stdout=text,stderr='')
+
+    def test_target_host_execstart_fixture_is_accepted(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_BEFORE)):
+                digest=launcher._effective_systemd_definition(root)
+            self.assertTrue(digest.startswith('sha256:'))
+
+    def test_pid_timestamp_code_status_drift_leaves_digest_identical(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_BEFORE)):
+                before=launcher._effective_systemd_definition(root)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_AFTER)):
+                after=launcher._effective_systemd_definition(root)
+        self.assertEqual(
+            before,after,
+            'transient PID/timestamp/exit-code/status observations must not '
+            'move the acquisition-critical effective-unit digest')
+
+    def test_same_semantic_unit_before_and_after_prior_invocation_is_stable(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_BEFORE)):
+                materialized_before_run=launcher._effective_systemd_definition(root)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_AFTER)):
+                observed_after_run=launcher._effective_systemd_definition(root)
+        self.assertEqual(
+            materialized_before_run,observed_after_run,
+            'a pre-start materialization must not go stale merely because '
+            'the qualifying service was invoked once')
+
+    def test_executable_path_drift_is_rejected_or_changes_accepted_digest(self):
+        launcher=self._launcher()
+        drifted=self._EXEC_START_AFTER.replace(
+            'path=/usr/bin/python3 ;','path=/usr/bin/python3.11 ;')
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_AFTER)):
+                baseline=launcher._effective_systemd_definition(root)
+            try:
+                with mock.patch.object(launcher.subprocess,'run',
+                                       return_value=self._shown(root,drifted)):
+                    drifted_digest=launcher._effective_systemd_definition(root)
+            except RuntimeError:
+                return  # rejected outright -- satisfies the frozen contract
+        self.assertNotEqual(
+            baseline,drifted_digest,
+            'an executable-path change must be rejected or bound into a '
+            'different accepted digest, never silently absorbed')
+
+    def test_argv_drift_is_rejected_or_changes_accepted_digest(self):
+        launcher=self._launcher()
+        drifted=self._EXEC_START_AFTER.replace('--root /opt/quant','--root /tmp/evil')
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_AFTER)):
+                baseline=launcher._effective_systemd_definition(root)
+            try:
+                with mock.patch.object(launcher.subprocess,'run',
+                                       return_value=self._shown(root,drifted)):
+                    drifted_digest=launcher._effective_systemd_definition(root)
+            except RuntimeError:
+                return
+        self.assertNotEqual(baseline,drifted_digest)
+
+    def test_qualifying_flag_removed_or_altered_is_rejected(self):
+        launcher=self._launcher()
+        variants={
+            'removed':self._EXEC_START_AFTER.replace(' --qualifying',''),
+            'altered':self._EXEC_START_AFTER.replace(
+                '--qualifying','--qualifying-disabled'),
+        }
+        for label,drifted in variants.items():
+            with self.subTest(variant=label), tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                with mock.patch.object(launcher.subprocess,'run',
+                                       return_value=self._shown(root,drifted)):
+                    with self.assertRaises(RuntimeError):
+                        launcher._effective_systemd_definition(root)
+
+    def test_non_empty_dropinpaths_is_rejected(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(
+                                       root,self._EXEC_START_AFTER,
+                                       DropInPaths=(
+                                           '/etc/systemd/system/quant-sec-capture.service.d'
+                                           '/override.conf'))):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_loaded_fragment_byte_mismatch_is_rejected(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            tampered=root/'run-systemd-generator/quant-sec-capture.service'
+            tampered.parent.mkdir(parents=True)
+            tampered.write_text('# hand-edited unit\n[Service]\nExecStart=/bin/true\n')
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(
+                                       root,self._EXEC_START_AFTER,
+                                       FragmentPath=str(tampered))):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_workdir_semantic_drift_is_rejected(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(
+                                       root,self._EXEC_START_AFTER,
+                                       WorkingDirectory='/tmp')):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_environment_file_semantic_drift_is_rejected(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(
+                                       root,self._EXEC_START_AFTER,
+                                       EnvironmentFiles=(
+                                           '/etc/quant/other.env (ignore_errors=no)'))):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_unparseable_structured_execstart_fails_closed(self):
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(
+                                       root,self._EXEC_START_AFTER,
+                                       ExecStart='garbage-no-braces-or-equals')):
+                with self.assertRaises(RuntimeError):
+                    launcher._effective_systemd_definition(root)
+
+    def test_materialize_authorize_then_qualifying_start_is_not_invalidated_by_metadata_change(self):
+        """The environment the launcher derives for the acquisition fingerprint
+        must carry the same QUANT_SEC_EFFECTIVE_UNIT_DIGEST before and after
+        the qualifying service actually executes once, so a pre-start
+        materialization + authorization is not falsely invalidated merely
+        because systemd execution observations changed."""
+        launcher=self._launcher()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            args=SimpleNamespace(qualifying=True,authorize_deployment=False,
+                                 poll_seconds=60.0,max_waits=None)
+            managed={'service_managed':True}
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_BEFORE)):
+                env_before,_=launcher._effective_environment(args,root,managed)
+            with mock.patch.object(launcher.subprocess,'run',
+                                   return_value=self._shown(root,self._EXEC_START_AFTER)):
+                env_after,_=launcher._effective_environment(args,root,managed)
+        self.assertEqual(
+            env_before['QUANT_SEC_EFFECTIVE_UNIT_DIGEST'],
+            env_after['QUANT_SEC_EFFECTIVE_UNIT_DIGEST'],
+            'the qualifying launch environment must bind an identical effective '
+            'unit digest before and after the service actually executes once')
+        self.assertNotEqual(
+            env_before['QUANT_SEC_EFFECTIVE_UNIT_DIGEST'],'UNATTESTED')
