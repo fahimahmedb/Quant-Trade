@@ -264,8 +264,14 @@ This is the irreducible live portion. It tests the real host + real SEC source, 
 
 ## C1. Start condition
 
-Start only after Gates A and B are green and the exact candidate is frozen.
-Predeclare the UTC/ET calendar intervals before observing outcomes.
+Start only after Gates A and B are green, the exact candidate is frozen, and the final restricted entrance audit passes.
+
+Before observing qualifying outcomes:
+1. predeclare the UTC/ET source-calendar intervals;
+2. ensure the superseding governance contract is already authoritative;
+3. Blue explicitly declares `t0 = <exact UTC timestamp>`.
+
+The qualifying live window begins at that t0. t0 is never chosen retrospectively after seeing the window.
 
 Use current SEC source authority:
 - filing acceptance generally 06:00–22:00 ET Monday–Friday except federal holidays;
@@ -335,7 +341,7 @@ Produce one restricted exact-runtime artifact binding:
 - lifecycle/deployment authority references;
 - before/after resource verdicts.
 
-Run the existing retrospective obligation audit over the prospective live interval.
+Run the existing retrospective obligation audit over the prospective live interval beginning at the already-declared t0.
 
 Public output must remain opaque:
 - PASS / FAIL / BLOCKED;
