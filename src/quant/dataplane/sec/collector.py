@@ -1386,19 +1386,27 @@ class SecForm4Collector:
         self.state.pending_cursor_feed_updated_at_utc = None
 
     # --- reconciliation (detection only; backfill is later work) -----------
-    def reconcile(self, day: date) -> dict[str, Any]:
-        """Compare the oldest currently-due closed day against captured state.
+    def reconcile_due(self, day: date) -> dict[str, Any]:
+        """Run reconciliation only when the Control-Plane calendar says it is due.
 
-        Direct/manual callers must pass through the exact same calendar,
-        settlement, cooldown and ordering gate as the Clock.  An explicit day
-        is never authority to emit an early/out-of-order SEC request.
+        Runtime callers (Clock and operator CLI) use this boundary. The lower
+        reconcile primitive remains responsible only for comparing one daily
+        index, which keeps scheduling authority out of the Data-Plane operation.
         """
-        if not self.configured:
-            return {"day": day.isoformat(), "result_state": COOLDOWN_SUPPRESSED,
-                    "reconciled": False}
         due_day = self.reconciliation_due()
         if due_day != day:
             return {"day": day.isoformat(), "result_state": "RECONCILIATION_NOT_DUE",
+                    "reconciled": False}
+        return self.reconcile(day)
+
+    def reconcile(self, day: date) -> dict[str, Any]:
+        """Compare a closed day\'s daily index against what was captured.
+
+        Day-1 scope is honest detection. A missing expected filing opens a
+        durable gap; repairing it is the later backfill engine\'s job.
+        """
+        if not self.configured:
+            return {"day": day.isoformat(), "result_state": COOLDOWN_SUPPRESSED,
                     "reconciled": False}
         attempt = self._request("RECONCILE", daily_index_path(day), daily_index_url(day))
         key = day.isoformat()

@@ -474,7 +474,7 @@ class QuantSystem:
         day = collector.reconciliation_due()
         if day is not None:
             self.components.set("SEC_CAPTURE", "RUN", "reconciling a closed day")
-            result = collector.reconcile(day)
+            result = collector.reconcile_due(day)
             self.state.status = "RUN"
             state, detail = collector.component_state()
             self.components.set("SEC_CAPTURE", state, detail)

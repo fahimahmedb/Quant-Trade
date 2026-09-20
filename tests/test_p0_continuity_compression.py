@@ -135,7 +135,7 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         collector = self._collector_starting(friday)
         requested_before = list(self.transport.requested)
 
-        result = collector.reconcile(date(2026, 9, 18))
+        result = collector.reconcile_due(date(2026, 9, 18))
 
         self.assertFalse(result["reconciled"])
         self.assertEqual(result["result_state"], "RECONCILIATION_NOT_DUE")
@@ -154,7 +154,7 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         requested_before = list(self.transport.requested)
 
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 16))
-        result = collector.reconcile(date(2026, 9, 17))
+        result = collector.reconcile_due(date(2026, 9, 17))
 
         self.assertEqual(result["result_state"], "RECONCILIATION_NOT_DUE")
         self.assertFalse(result["reconciled"])

@@ -133,7 +133,7 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         if day is None:
             print(json.dumps({"reconciliation": "no closed day is due"}, indent=2))
             return 0
-        collector.reconcile(day)
+        collector.reconcile_due(day)
         print(json.dumps({"collector": collector.telemetry()},
                          indent=2, sort_keys=True, default=str))
     state, detail = collector.component_state()
