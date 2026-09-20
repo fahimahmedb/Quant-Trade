@@ -1,0 +1,204 @@
+{
+  "body": {
+    "policy_backoff_ladder_boundary_check": {
+      "accountable": true,
+      "clamps_below_zero_to_first_step": true,
+      "clamps_beyond_last_step_to_final_step": true,
+      "observed_by_step": {
+        "-1": 5.0,
+        "0": 5.0,
+        "1": 15.0,
+        "15": 900.0,
+        "4": 900.0,
+        "5": 900.0
+      },
+      "schedule": [
+        5.0,
+        15.0,
+        60.0,
+        300.0,
+        900.0
+      ]
+    }
+  },
+  "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+  "gate": "GATE_A_TIMING_BOUNDARY_MATRIX",
+  "generated_at_utc": "2026-09-20T21:54:15.654011+00:00",
+  "no_p14d_amendment_claimed": true,
+  "no_t0_declared": true,
+  "no_target_host_claimed": true,
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "records": [
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=60.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_sec_form4_capture.SchedulerProvenanceTests.test_next_due_at_reflects_cadence_backoff_and_pending_work',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:discovery_poll_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.SchedulerProvenanceTests.test_next_due_at_reflects_cadence_backoff_and_pending_work -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=20.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_astra_pre_t0.WireCampaign.test_real_connection_truncation_and_send_count',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:idle_reuse_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.WireCampaign.test_real_connection_truncation_and_send_count -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=10.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:connect_timeout_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=20.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:read_timeout_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=60.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:total_deadline_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.WireCampaign.test_trickling_body_respects_total_deadline_real_socket -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=(5.0, 15.0, 60.0, 300.0, 900.0) read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_sec_form4_capture.TrafficBudgetTests.test_backoff_walks_the_frozen_ladder_with_jitter_and_stops_growing',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:backoff_schedule_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.TrafficBudgetTests.test_backoff_walks_the_frozen_ladder_with_jitter_and_stops_growing -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=300.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_sec_form4_capture.TrafficBudgetTests.test_retry_after_is_parsed_in_both_permitted_forms',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:rate_limit_cooldown_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.TrafficBudgetTests.test_retry_after_is_parsed_in_both_permitted_forms -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=3600.0 read from src/quant/dataplane/sec/policy.py:SecAccessPolicy; boundary proven by ('tests.test_sec_form4_capture.TrafficBudgetTests.test_cooldown_is_durable_across_restart_and_never_shortened',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:forbidden_cooldown_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.TrafficBudgetTests.test_cooldown_is_durable_across_restart_and_never_shortened -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=30 read from src/quant/dataplane/sec/collector.py:DAILY_INDEX_SETTLE_HOURS; boundary proven by ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_settle_delay_is_measured_after_edgar_close_not_utc_date_start', 'tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_spring_dst_does_not_shorten_30_elapsed_hours', 'tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_fall_dst_does_not_lengthen_30_elapsed_hours')",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:daily_index_settle_hours",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_settle_delay_is_measured_after_edgar_close_not_utc_date_start -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=15.0 read from deploy/quant_sec_supervisor.py; boundary proven by ('tests.test_p0_deployment_boundaries.SupervisorRealProcessBoundaryTests.test_sigterm_stop_is_clean_but_replacement_supervisor_is_manual',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:restart_delay_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.SupervisorRealProcessBoundaryTests.test_sigterm_stop_is_clean_but_replacement_supervisor_is_manual -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=5 read from deploy/quant_sec_supervisor.py; boundary proven by ('tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:restart_burst_limit",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=600.0 read from deploy/quant_sec_supervisor.py; boundary proven by ('tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_automatic_restart_requires_external_exit_witness',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:restart_burst_window_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_automatic_restart_requires_external_exit_witness -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "value=30.0 read from deploy/quant_sec_supervisor.py; boundary proven by ('tests.test_astra_pre_t0.Phase7EffectiveSystemdContractCampaign.test_effective_restart_and_timeout_timing_drift_is_rejected',)",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:stop_timeout_seconds",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase7EffectiveSystemdContractCampaign.test_effective_restart_and_timeout_timing_drift_is_rejected -v",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "MISSING_PROOF",
+      "detail": "value=3600.0 read from deploy/quant_sec_supervisor.py; no citation registered yet",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:deployment_authority_max_age_seconds",
+      "reproduce_command": null,
+      "residual": "new boundary test required"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "max_age=3600.0s age=3600.0s (clock frozen) accepted=True expected_accept=True",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:deployment_authority_max_age_seconds:at_exact_max_age",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.timing_matrix",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "max_age=3600.0s age=3600.000001s (clock frozen) accepted=False expected_accept=False",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:deployment_authority_max_age_seconds:one_microsecond_over_max_age",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.timing_matrix",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "max_age=3600.0s age=3601.0s (clock frozen) accepted=False expected_accept=False",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "timing_boundary:deployment_authority_max_age_seconds:one_second_over_max_age",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.timing_matrix",
+      "residual": null
+    }
+  ],
+  "report_digest": "sha256:cb62b08ae741a30f9c62b6ef724a20d338aa52a6dfcfa6d956a6106aa680b399"
+}
