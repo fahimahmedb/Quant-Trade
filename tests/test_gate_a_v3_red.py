@@ -18,6 +18,7 @@ from quant.dataplane.sec.audit import (
     audit_observation_window,
 )
 from quant.dataplane.sec.budget import SecTrafficBudget
+from quant.dataplane.sec.collector import SecForm4Collector
 from quant.dataplane.sec.store import SecStorageFailure
 from quant.state import append_jsonl, read_jsonl, write_json
 from tests import test_sec_form4_capture as sec_capture_tests
@@ -348,6 +349,59 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
             len(before_rows),
             "a public no-op authority callback silently authorized durable "
             "qualifying budget mutation",
+        )
+
+
+    def test_forged_qualifying_environment_cannot_bypass_direct_poll_authority(self):
+        """Forgeable service markers are transport, not qualifying mutation authority."""
+        case, collector = self._qualifying_baseline()
+        before_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        case.timebase.advance(10)
+
+        forged_environ = {
+            **sec_capture_tests.SERVICE_MANAGED_ENV,
+            "QUANT_SEC_LIFECYCLE_CAUSE": collector.lifecycle.get("lifecycle_cause") or "DEPLOYMENT_RESTART",
+            "QUANT_SEC_BOOT_ID": collector.lifecycle.get("boot_id") or "boot-q1",
+            "QUANT_SEC_SUPERVISOR_ID": collector.lifecycle.get("supervisor_id") or "sup-rodage",
+            "QUANT_SEC_LAUNCH_AUTHORITY_NONCE": collector.lifecycle.get("launch_authority_nonce") or "rodage-authority",
+            "QUANT_SEC_EFFECTIVE_UNIT_DIGEST": "sha256:" + "d" * 64,
+            "QUANT_SEC_QUALIFYING_MODE": "1",
+            "QUANT_SEC_SERVICE_POLL_SECONDS": "60.0",
+        }
+        forged = SecForm4Collector(
+            case.paths,
+            policy=collector.policy,
+            transport=sec_capture_tests.FakeTransport(case.fixture_router()),
+            timebase=case.timebase,
+            budget=SecTrafficBudget(
+                collector.paths.sec_budget,
+                collector.policy,
+                timebase=case.timebase,
+            ),
+            root=sec_capture_tests.ROOT,
+            environ=forged_environ,
+        )
+        self.assertTrue(
+            forged.lifecycle.get("qualifying_service_mode"),
+            "test setup requires process-local markers to claim qualifying mode",
+        )
+
+        try:
+            forged.poll()
+        except (SecStorageFailure, PermissionError, RuntimeError):
+            return
+
+        after_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        report = audit_observation_window(forged, now=case.timebase.now())
+        self.assertGreater(
+            len(after_rows),
+            len(before_rows),
+            "forged environment markers let direct poll() mutate qualifying state "
+            "without durable intervention provenance",
+        )
+        self.assertFalse(
+            report["accountable"],
+            "a process that only forged qualifying markers produced clean evidence",
         )
 
 

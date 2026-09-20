@@ -14,8 +14,8 @@ B2_REGRESSION = CLOSED_IN_BASE; MUST_REMAIN_GREEN
 FOCUSED_TESTS = NEW_ADVERSARIAL_CASES_PUSHED; EXACT_HEAD_CI_PENDING
 FULL_SUITE = EXACT_HEAD_CI_PENDING
 CI = PENDING_ON_CURRENT_DELIVERED_HEAD
-KNOWN_BLOCKERS = NONE
-NEXT_ACTION = Run/inspect exact-head regression ladder; fix only reproduced regressions; preserve primitive-level tests and B2 closure.
+KNOWN_BLOCKERS = SELF_ADVERSARIAL_RED_PENDING: FORGED QUALIFYING ENVIRONMENT MAY BYPASS PUBLIC poll() AUTHORITY
+NEXT_ACTION = Reproduce forged-qualifying-environment direct poll() red on exact-head CI; if reproduced, bind mutation authority to durable external supervisor evidence, then rerun the regression ladder.
 
 ## Red integrity matrix
 
