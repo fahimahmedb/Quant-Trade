@@ -3,7 +3,8 @@
 BASE_SHA = 2da079d8ad75c69eb3fc2990c512735cb4bdc02b
 CURRENT_BRANCH = builder/p0-effective-unit-digest-stability-v4-2026-09-20
 CURRENT_HEAD = resolve origin/builder/p0-effective-unit-digest-stability-v4-2026-09-20; a commit cannot truthfully contain its own SHA
-DELIVERY_SHA = 0bdd397d7409b01529c1f958c68781499679a95e
+CODE_FIX_SHA = 0bdd397d7409b01529c1f958c68781499679a95e
+DELIVERY_SHA = 4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072 (code fix + handoff/checkpoint docs)
 DEFECT_INDEPENDENTLY_REPRODUCED_ON_UNMODIFIED_BASELINE = TRUE
 FIX_SURFACE = deploy/quant_sec_supervisor.py::_effective_systemd_definition; canonicalize ExecStart, drop start_time/stop_time/pid/code/status
 INCIDENTAL_TIGHTENING = qualifying flag check: substring -> exact argv-token match (same function, required by mandatory test list)
@@ -15,7 +16,7 @@ FULL_SUITE = GREEN_ON_EXACT_HEAD_0bdd397d (423 tests)
 DEMO_E2E = GREEN_ON_EXACT_HEAD_0bdd397d (35/35 assertions)
 SCHEMA_DRIFT_CHECK = PASS
 STATUS_FRESHNESS_CHECK = PASS (STATE.md proof-inventory regenerated 411 -> 423)
-CI = RUN_35535347844_COMPLETED_SUCCESS_ON_0bdd397d7409b01529c1f958c68781499679a95e
+CI = RUN_35535347844_COMPLETED_SUCCESS_ON_0bdd397d7409b01529c1f958c68781499679a95e; RUN_35536353538_COMPLETED_SUCCESS_ON_4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072
 KNOWN_BLOCKERS = NONE_KNOWN_IN_BUILDER_SCOPE
 NEXT_ACTION = Stop; hand control back to Blue for reception and independent Astra/Red Team review. Builder does not declare Gate A v4 PASS, target-host readiness, or t0.
 
@@ -23,6 +24,7 @@ NEXT_ACTION = Stop; hand control back to Blue for reception and independent Astr
 
 - `b3fc705f`: mission doc (pre-existing on branch before this session).
 - `0bdd397d`: independent reproduction against unmodified baseline; corrective fix; 12 mandatory discriminating tests; STATE.md regeneration. Exact-head CI SUCCESS at run `35535347844`.
+- `4d06bdbf`: this handoff + checkpoint document. Exact-head CI SUCCESS at run `35536353538`.
 
 ## What was NOT done (out of scope, per mission)
 

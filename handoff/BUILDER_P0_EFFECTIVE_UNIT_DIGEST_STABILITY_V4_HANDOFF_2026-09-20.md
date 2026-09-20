@@ -25,13 +25,14 @@ Blue / Mission Control remains the decision authority. Independent Astra/Red Tea
 - Restricted defect artifact binding: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`
 - Builder branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`
 - Exact implementation baseline (verified by `git merge-base`): `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
-- **Final delivery HEAD: `0bdd397d7409b01529c1f958c68781499679a95e`**
+- Code-fix delivery SHA (the corrective code change itself): `0bdd397d7409b01529c1f958c68781499679a95e`
+- **Final delivery HEAD (code fix + this handoff/checkpoint): `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`**
 
-The Builder branch is a linear descendant of the frozen baseline SHA and does not modify Blue master or any frozen/checkpoint branch. Two commits sit ahead of the baseline: `b3fc705f` (pre-existing mission doc, not authored in this session) and `0bdd397d` (this correction).
+The Builder branch is a linear descendant of the frozen baseline SHA and does not modify Blue master or any frozen/checkpoint branch. Three commits sit ahead of the baseline: `b3fc705f` (pre-existing mission doc, not authored in this session), `0bdd397d` (this correction), and `4d06bdbf` (this handoff + checkpoint document). Both `0bdd397d` and `4d06bdbf` independently received exact-head CI SUCCESS (§7) — a commit cannot truthfully embed its own SHA, so Blue should still resolve the branch HEAD before reception rather than trusting this document's SHA in isolation.
 
 ## 2. Changed paths
 
-Relative to `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`, this delivery commit (`0bdd397d`) changes exactly:
+Relative to `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`, the code-fix commit (`0bdd397d`) changes exactly:
 
 - `deploy/quant_sec_supervisor.py` — the corrective fix
 - `tests/test_astra_pre_t0.py` — mandatory discriminating regression tests
@@ -125,13 +126,19 @@ Proof inventory at this candidate: **423 unit tests discovered** (411 baseline +
 
 Workflow: `SEC P0 pre-t0 gate` (`.github/workflows/sec-p0-pre-t0-gate.yml`)
 
-Exact-head run on final delivery HEAD `0bdd397d7409b01529c1f958c68781499679a95e`:
+Exact-head run on the code-fix commit `0bdd397d7409b01529c1f958c68781499679a95e`:
 
 - **Run ID: `35535347844`**
 - **Result: `COMPLETED / SUCCESS`**
 - URL: `https://github.com/fahimahmedb/Quant-Trade/actions/runs/35535347844`
 
-All steps green:
+Exact-head run on the final delivery HEAD `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072` (code fix + this handoff/checkpoint):
+
+- **Run ID: `35536353538`**
+- **Result: `COMPLETED / SUCCESS`**
+- URL: `https://github.com/fahimahmedb/Quant-Trade/actions/runs/35536353538`
+
+Both runs are green on all steps:
 - Fail-closed check (no SEC identity configured)
 - Generated schema drift
 - Status artifact freshness
