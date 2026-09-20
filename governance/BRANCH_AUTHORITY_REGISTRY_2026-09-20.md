@@ -126,7 +126,7 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `claude/nasdaq-quant-trading-model-emdbg5` | `dda7395c6b29b663434331ba4f6faf77818b23e5` | **REFERENCE_ONLY** | Unrelated/legacy NASDAQ work | — | — | REVIEW_AFTER_BUILDER |
 | `claude/political-prediction-token-optimization-di47f2` | `7a0872efa595984c366dd0ed042f7cc97961aac0` | **REFERENCE_ONLY** | Unrelated historical content | — | — | REVIEW_AFTER_BUILDER |
 | `claude/price-prediction-model-ykhog1` | `79572ad060120cb978c865ae5a5993cc6f3c616f` | **REFERENCE_ONLY** | Unrelated historical content | — | — | REVIEW_AFTER_BUILDER |
-| `claude/restaurant-stock-management-mvp-6oq43e` | `e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0` | **REFERENCE_ONLY** | Unrelated historical content | — | — | REVIEW_AFTER_BUILDER |
+| `claude/restaurant-stock-management-mvp-6oq43e` | `e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0` | **RETAIN_OWNER_REQUEST** | Explicit owner retention request; excluded from repository cleanup batch | — | — | NO |
 
 ## Current cleanup authority
 
