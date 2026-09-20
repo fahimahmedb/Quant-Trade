@@ -103,7 +103,9 @@ CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
 BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
 BRANCH_DELETE_BATCH = `governance/BRANCH_DELETE_BATCH_2026-09-20.md`.
 POST_GATE_A_BRANCH_DELETE_BATCH = `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md` (12 strict-ancestor refs; final Gate A PASS satisfied; all 12 rechecked at pinned SHA and unprotected; ready for delete when a proper delete-ref capability is available).
+POST_GATE_A_PROOF_REF_REVIEW = `governance/POST_GATE_A_PROOF_REF_REVIEW_2026-09-20.md` (5 additional absorbed proof refs delete-ready; divergent B1/B2/B3/audit evidence preserved).
 DELETE_NOW_SAFE_COUNT = 18.
+ADDITIONAL_POST_GATE_DELETE_READY = 17 (12 post-Gate strict ancestors + 5 absorbed proof refs; physical deletion unavailable in current connector).
 KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
 DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
 PRESERVE_UNIQUE_PRODUCT_CAPABILITIES = Evidence/PIT, Research Factory core and product-side SEC census branches retained.
@@ -194,6 +196,7 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 ## J. NEXT ACTION
 
 TARGET_HOST_ENTRANCE_CONTRACT = `governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md` = PREPARED / NOT_EXECUTED.
+TARGET_HOST_P0_RODAGE_RUNBOOK = `governance/TARGET_HOST_P0_RODAGE_RUNBOOK_2026-09-20.md` = PREPARED_ONLY / NOT_EXECUTED.
 DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
