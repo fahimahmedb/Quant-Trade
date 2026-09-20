@@ -283,9 +283,10 @@ conversation. Everything you need is below and in the repository itself.
 READ FIRST, IN THIS ORDER:
 1. QUANT_NORTH_STAR.md (repo root, any branch — identical everywhere)
 2. handoff/BLUE_MASTER_ORCHESTRATOR_2026-09-20.md on branch
-   claude/quant-blue-master-2026-09-20-mogpvh (exact HEAD: 4db2614e419bbbaaa185dc49e12538355d33a0d2
-   plus this file) — this is your Master Handoff. Its §6, §7 and §8 are your
-   exact scope, boundaries and acceptance sequence.
+   claude/quant-blue-master-2026-09-20-mogpvh, exact HEAD:
+   c6468fb3610e07c9d30f1926f92b5d08727cf160 — this is your Master Handoff.
+   Its §6, §7 and §8 are your exact scope, boundaries and acceptance
+   sequence.
 3. handoff/ASTRA_GATE_A_V2_INDEPENDENT_AUDIT_2026-09-20.md on
    astra/p0-gate-a-v2-independent-audit-2026-09-20 @ 64b105f5a2cc1d798d1cf1e41e715b967c845a85
    — the independent audit you are correcting against.
@@ -326,19 +327,21 @@ USABLE REFERENCE MATERIAL (read-only mining, do not merge these branches):
 - Commit 345e18d94963b4fcc7063d73d1c23aff5244ca28 (reachable inside
   blue/p0-manual-probe-red-2026-09-20's history, NOT its tip) holds the
   original, correct, un-redirected B3 discriminant (calls collector.poll()
-  directly). The branch TIP (efbf7248) is a weakened version — do not use
-  the tip.
+  directly). The branch TIP (efbf72484e5e6873aba2446d53a728798b3f453f) is a
+  weakened version — do not use the tip.
 
 FORBIDDEN — DO NOT cherry-pick or wholesale-reuse these branches; each is
 either already duplicated in db166fd0, inferior, or is itself the source of
 a defect:
-  blue/p0-audit-authority-fix-2026-09-20 (a98bc8ae)
-  blue/p0-audit-authority-red-2026-09-20 (ca0f6b00)
-  blue/p0-manual-operator-provenance-fix-2026-09-20 (927f496a)
-  blue/p0-manual-probe-fix-2026-09-20 (a6924958)
-  blue/p0-manual-probe-red-2026-09-20 tip (efbf7248 — the tip, not 345e18d9)
-  blue/p0-direct-reconcile-fix-2026-09-20 (dc9769b2 — this is the exact
-    insufficient fix the audit found, and the source of a test redirection)
+  blue/p0-audit-authority-fix-2026-09-20 (a98bc8aef3a397c054a3df495f14a781b1b939de)
+  blue/p0-audit-authority-red-2026-09-20 (ca0f6b00c3e88e2a6e6d541ad538a529bfb57aee)
+  blue/p0-manual-operator-provenance-fix-2026-09-20 (927f496a58fe71ffbaa6cce4df5297fe9638d0bb)
+  blue/p0-manual-probe-fix-2026-09-20 (a6924958e88c8f3f4ad38caa2c45bf8db9309116)
+  blue/p0-manual-probe-red-2026-09-20 tip (efbf72484e5e6873aba2446d53a728798b3f453f
+    — the tip, not 345e18d94963b4fcc7063d73d1c23aff5244ca28)
+  blue/p0-direct-reconcile-fix-2026-09-20 (dc9769b2790e724aaa281af209d822449d0bedfb
+    — this is the exact insufficient fix the audit found, and the source of
+    a test redirection)
 
 CRITICAL INTEGRITY RULE — read this twice:
 This repository's Gate A v2 candidate stayed green in CI while an
