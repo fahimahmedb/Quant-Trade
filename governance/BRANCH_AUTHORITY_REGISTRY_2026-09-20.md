@@ -5,19 +5,21 @@
 Context-recovery checkpoint:
 `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
 
-Live branch count at reacquisition:
-`72`
+Live branch count after v4 freeze/audit dispatch:
+`74`
 
 Current P0 routing:
 - historical Gate A v3 repository PASS remains exact-SHA evidence at `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
 - v3 target-host eligibility is `REJECTED_BY_NEW_REAL_DEFECT`;
 - corrective branch `builder/p0-effective-unit-digest-stability-v4-2026-09-20` is ACTIVE Builder work;
 - implementation commit: `0bdd397d7409b01529c1f958c68781499679a95e`;
-- current final Builder v4 HEAD: `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- selected/frozen delivery candidate: `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- Builder branch later moved docs-only to `b10cde0dd193714346abdfe87afb841482e9b7c8`;
 - implementation-head workflow `35535347844 = SUCCESS`;
-- final-head workflow `35536353538 = IN_PROGRESS` at last organizational audit refresh;
-- final Builder handoff is present;
-- Blue reception remains pending final-head CI completion.
+- selected-delivery workflow `35536353538 = SUCCESS`;
+- Blue reception = `PASS_FOR_INDEPENDENT_ASTRA_REVIEW`;
+- frozen v4 = `blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf...`;
+- independent Astra v4 branch dispatched.
 
 Current P14D routing:
 - `P0_CONTINUOUS_OBSERVATION_MIN = P14D` remains authoritative until explicit amendment;
@@ -60,8 +62,10 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `blue/checkpoint-gate-a-v2-audit-2026-09-20` | `4678c29eb8cd22aa7ef143075c6d4b68739026a3` | **AUDIT_EVIDENCE** | Originates R1-R5 before formal Astra branch | astra/p0-gate-a-v2-independent-audit-2026-09-20 | — | NO |
 | `blue/p0-gate-a-v2-final-2026-09-20` | `db166fd04c681e67a2c6d4440828af14ef58c48c` | **REJECTED** | Frozen Gate A v2 input; exact-head CI green but audit BLOCKED | builder/p0-gate-a-v3-2026-09-20 | — | NO |
 | `builder/p0-gate-a-v3-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **DELIVERED / AUDITED** | Gate A v3 Builder delivery; exact-head CI 35514180655 SUCCESS; independently audited PASS | blue/p0-gate-a-v3-frozen-2026-09-20 | — | NO |
-| `builder/p0-effective-unit-digest-stability-v4-2026-09-20` | `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072` | **DELIVERED / BLUE_RECEPTION_PENDING_FINAL_CI** | Corrective v4 delivery; implementation at 0bdd397d, final handoff/checkpoint at 4d06bdbf; implementation-head CI 35535347844 SUCCESS; final-head run 35536353538 pending at audit refresh | future frozen v4 candidate after Blue reception | — | NO |
+| `builder/p0-effective-unit-digest-stability-v4-2026-09-20` | `b10cde0dd193714346abdfe87afb841482e9b7c8` | **DELIVERED / POST_DELIVERY_DOCS** | Corrective implementation at 0bdd397d; Blue-selected delivery candidate is 4d06bdbf with CI 35536353538 SUCCESS; live Builder ref later moved only to record that CI in handoff docs | blue/p0-gate-a-v4-frozen-2026-09-20 | — | NO |
 | `blue/p0-gate-a-v3-frozen-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` | **HISTORICAL_REPOSITORY_PASS / TARGET_HOST_REJECTED** | Preserve exact repository-PASS evidence; new target-host REAL_DEFECT forbids further v3 qualification starts | corrective v4 Builder | — | NO |
+| `blue/p0-gate-a-v4-frozen-2026-09-20` | `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072` | **FROZEN_V4_AUDIT_INPUT** | Exact Blue-selected v4 delivery candidate; exact-head CI 35536353538 SUCCESS; immutable input to independent Astra review | Astra v4 independent audit | — | NO |
+| `astra/p0-gate-a-v4-independent-audit-2026-09-20` | `RESOLVE_LIVE` | **ACTIVE_INDEPENDENT_AUDIT** | Independent v4 Red Team branch created exactly from frozen 4d06bdbf; mission contract committed at b636a04b | handoff/ASTRA_GATE_A_V4_MISSION_2026-09-20.md | — | NO |
 | `astra/p0-gate-a-v3-independent-audit-2026-09-20` | `33995d03c8632e5c3a7b77a12b87366fb06b4d30` | **FINAL_AUDIT_EVIDENCE** | Independent Astra Gate A v3 audit PASS; exact-head CI 35517935710 SUCCESS; audit-only delta over frozen candidate | handoff/ASTRA_GATE_A_V3_INDEPENDENT_AUDIT_2026-09-20.md | — | NO |
 | `blue/p0-calendar-direct-reconcile-red-2026-09-20` | `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` | **AUDIT_EVIDENCE** | Original unredirected B1 reconcile() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-manual-probe-red-2026-09-20` | `efbf72484e5e6873aba2446d53a728798b3f453f` | **AUDIT_EVIDENCE** | Tip weakened, but parent 345e18d9 contains original collector.poll() discriminant; Builder dependency | — | — | NO |
