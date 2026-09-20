@@ -7,7 +7,9 @@ using the production collector with its injectable timebase.
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
+
+from zoneinfo import ZoneInfo
 
 from quant.dataplane.sec.timebase import FrozenTimebase
 from tests.test_sec_form4_capture import CollectorTestCase
@@ -37,8 +39,9 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
             "weekend dates must not become daily-index reconciliation obligations",
         )
 
-        # Tuesday 18:00 UTC => cutoff Monday 12:00 UTC. Monday is now settled.
-        self.timebase.advance(24 * 60 * 60)
+        # Monday closes Tuesday 02:00 UTC (22:00 ET); +30 elapsed hours
+        # is Wednesday 08:00 UTC, 38h after the Monday-18:00 point above.
+        self.timebase.advance(38 * 60 * 60)
         self.assertEqual(collector.reconciliation_due(), date(2026, 9, 21))
 
     def test_settle_delay_is_measured_after_edgar_close_not_utc_date_start(self) -> None:
@@ -77,7 +80,8 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
         collector = self._collector_starting(start)
 
         self.timebase.advance(14 * 24 * 60 * 60)
-        cutoff = (self.timebase.now() - timedelta(hours=30)).date()
+        now_utc = self.timebase.now().astimezone(timezone.utc)
+        edgar_tz = ZoneInfo("America/New_York")
 
         observed: list[date] = []
         while True:
@@ -88,10 +92,16 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
             collector.state.reconciled_days.append(due.isoformat())
             collector.save()
 
+        # Independent oracle: source date is Eastern Time and each weekday is
+        # eligible only 30 real hours after its 22:00 ET close. Do not reuse
+        # the production helper or the former UTC-date cutoff.
         expected: list[date] = []
-        day = start.date()
-        while day <= cutoff:
-            if day.weekday() < 5:
+        day = start.astimezone(edgar_tz).date()
+        final_day = self.timebase.now().astimezone(edgar_tz).date()
+        while day <= final_day:
+            close_local = datetime.combine(day, time(hour=22), tzinfo=edgar_tz)
+            settled_utc = close_local.astimezone(timezone.utc) + timedelta(hours=30)
+            if day.weekday() < 5 and now_utc >= settled_utc:
                 expected.append(day)
             day += timedelta(days=1)
 
