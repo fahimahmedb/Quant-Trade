@@ -103,7 +103,7 @@ Expected current high-level state at preparation time:
 - default = `claude/nasdaq-trading-model-design-h3mp4n`;
 - open PRs = 0;
 - open issues = 0 after organizational audit;
-- live branches = 72.
+- live branches = 74 after creation of the frozen v4 and independent Astra v4 refs.
 
 If the live state differs, do not assume failure. Record the delta and re-evaluate before mutation.
 
@@ -308,7 +308,7 @@ echo "===== CURRENT BLUE ====="
 git ls-remote --heads origin "refs/heads/$BLUE"
 ```
 
-If no concurrent branch creation occurred, 72 - 35 = **37** branches should remain.
+If no concurrent branch creation occurs after this runbook revision, 74 - 35 = **39** branches should remain.
 
 Do not use the count alone as proof. The exact branch list is authoritative.
 
@@ -331,6 +331,12 @@ echo "No P0 start/restart/reset-failed/authorization/rematerialization executed 
 Do not issue service mutations from this runbook.
 
 ## 11. Branches explicitly NOT authorized for deletion by this batch
+
+Current v4 refs are not in the delete-ready batch and must survive:
+- `blue/p0-gate-a-v4-frozen-2026-09-20`;
+- `astra/p0-gate-a-v4-independent-audit-2026-09-20`;
+- `builder/p0-effective-unit-digest-stability-v4-2026-09-20`.
+
 
 Among others:
 - `blue/master-v2-2026-09-20`;
