@@ -181,7 +181,7 @@ For these, inspect unique commits/files or explicitly supersede their useful con
 
 ## 9. Next cleanup actions
 
-1. Delete the 15 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
+1. Delete the 17 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
 2. Do not emulate deletion by force-moving refs.
 3. While Astra runs, inspect the remaining diverged HOLD set and promote any unique useful concept into a durable queue/index. Unique product capability branches identified in Section 6 are explicitly preserved.
 4. After Astra handoff, re-run reachability/citation checks and shrink the `KEEP_UNTIL_ASTRA` + `DELETE_AFTER_ASTRA` sets.
