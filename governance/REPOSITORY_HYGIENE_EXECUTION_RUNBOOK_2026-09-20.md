@@ -6,7 +6,22 @@ Deletion authority: `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`.
 Default migration review: `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md`.
 
 Status:
-`RUNBOOK = PREPARED / NOT_EXECUTED`
+`RUNBOOK = EXECUTED / COMPLETE`
+
+## 0. Execution record
+
+Execution completed on 2026-09-20 from the administrative clone.
+
+- pre-execution Blue authority: `f11508db2bdd5b08575188866f31a56f19b77fab`
+- default after migration: `blue/master-v2-2026-09-20`
+- delete batch: `34 / 34 COMPLETE`
+- survivors: `0`
+- branches after: `40`
+- restaurant branch: retained
+- restricted log SHA-256: `d9500fc9ec90871d7861932e5afb9b7729f59fec87e85bff1265f7655e285070`
+- durable handoff: `handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`
+
+The procedure below is retained as the reproducible execution record.
 
 ## 1. Purpose
 
