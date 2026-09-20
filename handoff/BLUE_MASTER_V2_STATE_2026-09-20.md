@@ -209,7 +209,7 @@ BLUE_TARGET_HOST_QUALIFICATION_MISSION = `handoff/BLUE_TARGET_HOST_QUALIFICATION
 DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
-NEXT_EXPECTED_EVENT = Builder delivery from `builder/p0-effective-unit-digest-stability-v4-2026-09-20` with exact-head CI, followed by independent Astra review.
+NEXT_EXPECTED_EVENT = final Builder v4 exact-head CI completion on `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`, followed by Blue reception and independent Astra review; repository hygiene may execute in parallel.
 
 NEXT_ACTION = preserve frozen candidate `2da079d8...` and its failed target-host evidence; do not start it again for qualification; implement the Blue-approved effective-unit-digest stability correction from the exact frozen implementation baseline; require exact-head CI, independent Astra review and a new Blue disposition before any target-host re-entry; do not declare t0 until the replacement candidate satisfies target-host entrance.
 
@@ -303,3 +303,31 @@ Current parallel Blue fronts:
 Material P14D calendar-compression tests are already present in the later frozen v3 lineage; do not treat the method work as isolated abandoned research.
 
 No t0, continuity PASS, Product integration, Gate B completion or real-capital authority follows from this routing repair.
+
+
+## N. ORGANIZATIONAL AUDIT / REPOSITORY HYGIENE ROUTE
+
+Durable audit:
+`governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
+
+Server execution runbook:
+`governance/REPOSITORY_HYGIENE_EXECUTION_RUNBOOK_2026-09-20.md`
+
+Current repository-hygiene facts at audit:
+- live branches = 72;
+- open PRs = 0;
+- open issues = 0;
+- delete-ready refs = 35 / exact SHA reverified;
+- physical deletions = 0;
+- repository default = stale historical branch, 339 commits behind Blue / 0 ahead;
+- default migration reviewed, not executed;
+- rulesets = 0.
+
+Repository cleanup is a live Blue workstream that may proceed in parallel from the admin clone. It must not mutate the P0 target runtime.
+
+Current Builder v4 delivery:
+- implementation = `0bdd397d7409b01529c1f958c68781499679a95e`;
+- final Builder HEAD = `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- implementation-head CI `35535347844 = SUCCESS`;
+- final-head CI `35536353538 = IN_PROGRESS` at the audit refresh;
+- Blue final reception waits for that exact final-head CI.
