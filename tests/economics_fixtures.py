@@ -13,7 +13,13 @@ from __future__ import annotations
 
 import math
 
-from quant.economics import (ALLOCATION_WEIGHTED_RATIO, AuthorisedZero, CostComponent,
+from quant.economics import (ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION,
+                             ADVERSE_CATEGORY_CAPACITY_REDUCTION,
+                             ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION,
+                             ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH,
+                             ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE,
+                             ALLOCATION_WEIGHTED_RATIO, AuthorisedScenarioExclusion,
+                             AuthorisedZero, CostComponent,
                              CostScenario, DeltaCoordinateBinding, Dependence,
                              EconomicParameter, EffectDomain, JointScenarioSet,
                              KForwardRecipe, MEUERecipe, ParameterInventory, ReturnConvention,
@@ -242,7 +248,23 @@ def scenario_set() -> JointScenarioSet:
                                         "steepens impact together; they are not independent",
                 dependence_representation="SHARED_OPENING_LIQUIDITY_FACTOR_MOVES_BOTH_"
                                           "COEFFICIENTS_AND_THE_REFERENCE_PARTICIPATION",
-                provenance=TEST_AUTHORITY),
+                provenance=TEST_AUTHORITY,
+                # Honest labelling, not decoration: the halved reference
+                # participation in ADVERSE_PARAMS *is* a liquidity/capacity
+                # reduction, jointly with the widened spread/impact.
+                categories=(ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION,
+                           ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE,
+                           ADVERSE_CATEGORY_CAPACITY_REDUCTION)),
+        ),
+        category_exclusions=(
+            AuthorisedScenarioExclusion(
+                ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION, TEST_AUTHORITY,
+                "fixture: unlevered long-only exposure, no borrow or financing modelled "
+                "(see this recipe's F6_FINANCING_BORROW authorised zero)"),
+            AuthorisedScenarioExclusion(
+                ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH, TEST_AUTHORITY,
+                "fixture: one execution policy id declared throughout with no "
+                "regime-switching authority exercised"),
         ))
 
 

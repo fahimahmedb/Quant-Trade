@@ -311,5 +311,31 @@ Files: `src/quant/economics/states.py`, `src/quant/economics/parameters.py`,
 **Tests:** `PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"`
 → 618 passed (588 Wave 1 + 30 this pass), 0 failures.
 
+### Slice 4 — joint adverse scenario category coverage
+
+Files: `src/quant/economics/scenarios.py`, `src/quant/economics/recipe.py`,
+`src/quant/economics/__init__.py`, `tests/economics_fixtures.py`,
+`tests/test_economic_v2_consolidation.py`.
+
+Added `ADVERSE_SCENARIO_CATEGORIES` (correlated liquidity deterioration,
+spread widening + impact increase, borrow/financing deterioration, capacity
+reduction, execution regime mismatch — the mission's named list) and
+`AuthorisedScenarioExclusion` (the `AuthorisedZero` idiom, ported to
+scenarios). `JointScenarioSet.category_coverage_violations()` requires each
+category be addressed by an adverse scenario's new `categories` tag or
+explicitly excluded with authority+justification; unaddressed-and-unexcluded
+is `JOINT_ADVERSE_CATEGORY_NOT_ADDRESSED`, not silence. No numerical scenario
+or category selection was authored here — mission instruction not to choose
+authoritative scenarios myself. Wired into `MEUERecipe._consumability()` as a
+note (same non-blocking treatment as Slice 3's provenance check, for the same
+reason: blocking would have invalidated ~75 pre-existing tests at once).
+Updated the shared fixture's `scenario_set()` with honest labels (its
+existing `s_1_opening_regime_worse` already substantively models liquidity
+deterioration + spread/impact widening + capacity reduction jointly — the
+`categories` tag states what its own `coherence_justification` already said)
+and two exclusions matching this fixture's real properties (unlevered/no
+borrow — same reason as its existing F6 `AuthorisedZero`; single execution
+policy id, no regime switching modelled). 8 new tests. 626/626 pass.
+
 _(Further slices appended below as they land — checkpoint updated, committed
 and pushed after each.)_

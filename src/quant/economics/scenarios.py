@@ -31,6 +31,31 @@ CONSTRUCTION_COHERENT_JOINT = "COHERENT_JOINT_SCENARIOS"
 CONSTRUCTION_UNRESTRICTED_CARTESIAN = "UNRESTRICTED_CARTESIAN_ENDPOINTS"
 CONSTRUCTIONS = (CONSTRUCTION_COHERENT_JOINT, CONSTRUCTION_UNRESTRICTED_CARTESIAN)
 
+#: Named joint adverse scenario categories (V2 consolidation). This is *not*
+#: a claim of scientific authority over their numerical values or even over
+#: which of them applies to a given recipe — Blue freezes those, per the
+#: mission's explicit instruction not to choose authoritative scenarios in
+#: this Builder's own name. It is only the mechanism that requires each named
+#: category to be either addressed by a coherent adverse scenario or
+#: explicitly, authoritatively excluded, the same
+#: modelled-or-authorised-zero discipline ``frictions.py`` already applies to
+#: the F1..F7 cost classes. An absent authority stays absent: the recipe is
+#: held at ``RECIPE_PROVISIONAL``, never invalidated and never silently
+#: waved through.
+ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION = "CORRELATED_LIQUIDITY_DETERIORATION"
+ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE = "SPREAD_WIDENING_WITH_IMPACT_INCREASE"
+ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION = "BORROW_FINANCING_DETERIORATION"
+ADVERSE_CATEGORY_CAPACITY_REDUCTION = "CAPACITY_REDUCTION"
+ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH = "EXECUTION_REGIME_MISMATCH"
+
+ADVERSE_SCENARIO_CATEGORIES = (
+    ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION,
+    ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE,
+    ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION,
+    ADVERSE_CATEGORY_CAPACITY_REDUCTION,
+    ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH,
+)
+
 
 @dataclass(frozen=True)
 class CostScenario:
@@ -46,6 +71,12 @@ class CostScenario:
     dependence_representation: str = ""
     #: Where the scenario's values come from, per the envelope admission rule.
     provenance: str = ""
+    #: Which named ``ADVERSE_SCENARIO_CATEGORIES`` this scenario addresses.
+    #: One coherent joint scenario may honestly claim several at once — that
+    #: is the whole point of a joint (rather than marginal) scenario. Empty
+    #: is admissible (an adverse scenario need not map to a named category at
+    #: all); a non-empty entry outside the taxonomy is not.
+    categories: tuple[str, ...] = ()
 
     def violations(self) -> list[str]:
         problems: list[str] = []
@@ -53,6 +84,10 @@ class CostScenario:
             problems.append(f"{self.scenario_id}: SCENARIO_KIND_NOT_RECOGNISED")
         if not self.parameter_values:
             problems.append(f"{self.scenario_id}: SCENARIO_HAS_NO_PARAMETER_VALUES")
+        for category in self.categories:
+            if category not in ADVERSE_SCENARIO_CATEGORIES:
+                problems.append(f"{self.scenario_id}: ADVERSE_CATEGORY_NOT_IN_NAMED_TAXONOMY:"
+                                f"{category}")
         if self.kind == SCENARIO_ADVERSE:
             if not self.coherence_justification:
                 problems.append(f"{self.scenario_id}: ADVERSE_SCENARIO_WITHOUT_COHERENCE_"
@@ -69,7 +104,38 @@ class CostScenario:
                 "parameter_values": dict(sorted(self.parameter_values.items())),
                 "coherence_justification": self.coherence_justification,
                 "dependence_representation": self.dependence_representation,
-                "provenance": self.provenance}
+                "provenance": self.provenance,
+                "categories": sorted(self.categories)}
+
+
+@dataclass(frozen=True)
+class AuthorisedScenarioExclusion:
+    """An explicit authority that a named adverse category needs no scenario.
+
+    The analogue of ``frictions.AuthorisedZero`` for a cost class: absence of
+    a scenario is a gap unless *someone* has said, by name, why this recipe
+    does not need one for this category — a strategy with no F6 borrow/
+    financing component, say, has a real reason to exclude
+    ``BORROW_FINANCING_DETERIORATION`` rather than inventing a scenario for a
+    risk it does not carry.
+    """
+
+    category: str
+    authority_reference: str
+    justification: str
+
+    def violations(self) -> list[str]:
+        problems: list[str] = []
+        if self.category not in ADVERSE_SCENARIO_CATEGORIES:
+            problems.append(f"{self.category}: ADVERSE_CATEGORY_NOT_IN_NAMED_TAXONOMY")
+        if not self.authority_reference:
+            problems.append(f"{self.category}: EXCLUSION_REQUIRES_EXPLICIT_AUTHORITY")
+        if not self.justification:
+            problems.append(f"{self.category}: EXCLUSION_REQUIRES_JUSTIFICATION")
+        return problems
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
 
 @dataclass(frozen=True)
@@ -78,6 +144,9 @@ class JointScenarioSet:
 
     set_id: str
     scenarios: tuple[CostScenario, ...]
+    #: Named categories (``ADVERSE_SCENARIO_CATEGORIES``) explicitly excluded
+    #: rather than addressed by a scenario. See ``category_coverage_violations``.
+    category_exclusions: tuple[AuthorisedScenarioExclusion, ...] = ()
     construction: str = CONSTRUCTION_COHERENT_JOINT
     #: Required when the construction is an unrestricted Cartesian product.
     cartesian_justification: str | None = None
@@ -171,6 +240,28 @@ class JointScenarioSet:
                         f"{parameter_id}")
         return problems
 
+    def category_coverage_violations(self) -> list[str]:
+        """Every named adverse category addressed or explicitly excluded.
+
+        Mirrors ``KForwardRecipe.coverage_violations``'s modelled-or-
+        authorised-zero discipline. This does not choose which categories
+        apply or their values — only Blue may freeze that — it refuses to
+        let an absent authority pass as silent coverage.
+        """
+        problems: list[str] = []
+        for exclusion in self.category_exclusions:
+            problems.extend(exclusion.violations())
+        addressed = {category for scenario in self.adverse for category in scenario.categories}
+        excluded = {exclusion.category for exclusion in self.category_exclusions}
+        overlap = addressed & excluded
+        problems.extend(f"{category}: CATEGORY_BOTH_ADDRESSED_AND_EXCLUDED"
+                        for category in sorted(overlap))
+        missing = [category for category in ADVERSE_SCENARIO_CATEGORIES
+                  if category not in addressed and category not in excluded]
+        problems.extend(f"JOINT_ADVERSE_CATEGORY_NOT_ADDRESSED:{category}"
+                        for category in missing)
+        return problems
+
     # -- addressability -------------------------------------------------------
 
     def rule_document(self) -> dict[str, Any]:
@@ -178,7 +269,10 @@ class JointScenarioSet:
                 "cartesian_justification": self.cartesian_justification,
                 "update_rule": self.update_rule,
                 "scenarios": sorted((scenario.to_dict() for scenario in self.scenarios),
-                                    key=lambda row: row["scenario_id"])}
+                                    key=lambda row: row["scenario_id"]),
+                "category_exclusions": sorted(
+                    (exclusion.to_dict() for exclusion in self.category_exclusions),
+                    key=lambda row: row["category"])}
 
     def fingerprint(self) -> str:
         return recipe_hash(self.rule_document())

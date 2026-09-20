@@ -156,6 +156,9 @@ class MEUERecipe:
             # item 5 both named: "a nonempty source string can lie."
             notes.append("PROVENANCE_CLAIMS_CALIBRATION_WITHOUT_BINDING_EVIDENCE:"
                          + ",".join(unauthenticated))
+        uncovered_categories = self.scenarios.category_coverage_violations()
+        if uncovered_categories:
+            notes.append("JOINT_ADVERSE_SCENARIO_CATEGORY_GAP:" + ",".join(uncovered_categories))
         if self.margin_functional_status != FUNCTIONAL_FROZEN:
             notes.append("MARGIN_FUNCTIONAL_IS_A_FREEZE_CANDIDATE_NOT_AUTHORITY")
         unresolved = self.inventory.unresolved()

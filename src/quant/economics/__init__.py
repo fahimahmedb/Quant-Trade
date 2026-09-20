@@ -30,7 +30,13 @@ from .parameters import (COST_CLASSES, Dependence, EconomicParameter, InventoryF
                          ParameterInventory, ProvenanceBinding, SourceContract)
 from .partition import RiskClaim, RiskPartition, partition_from
 from .recipe import MEUERecipe, MEUEResult
-from .scenarios import CostScenario, JointScenarioSet
+from .scenarios import (ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION,
+                        ADVERSE_CATEGORY_CAPACITY_REDUCTION,
+                        ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION,
+                        ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH,
+                        ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE,
+                        ADVERSE_SCENARIO_CATEGORIES, AuthorisedScenarioExclusion, CostScenario,
+                        JointScenarioSet)
 from .sizing import (MarginSizingRule, RiskApproval, SizingPlan, SleeveTarget, combine_lanes,
                      size_lane, verify_risk_approval)
 from .states import (CLUSTERING_UNIT_O4_RESOLVED, CLUSTERING_UNIT_O4_UNRESOLVED,
@@ -46,7 +52,12 @@ from .timeline import (CausalEventLedger, EventTimeline, FrictionCharge, Informa
 from .value import (AffineShortcutUnavailable, BEEEResult, EffectDomain, PhiInstance, beee,
                     beee_affine, solve_beee)
 
-__all__ = ["ALLOCATION_WEIGHTED_RATIO", "AffineShortcutUnavailable", "AuthorisedZero",
+__all__ = ["ADVERSE_CATEGORY_BORROW_FINANCING_DETERIORATION",
+    "ADVERSE_CATEGORY_CAPACITY_REDUCTION", "ADVERSE_CATEGORY_CORRELATED_LIQUIDITY_DETERIORATION",
+    "ADVERSE_CATEGORY_EXECUTION_REGIME_MISMATCH",
+    "ADVERSE_CATEGORY_SPREAD_WIDENING_WITH_IMPACT_INCREASE",
+    "ADVERSE_SCENARIO_CATEGORIES", "ALLOCATION_WEIGHTED_RATIO",
+    "AffineShortcutUnavailable", "AuthorisedScenarioExclusion", "AuthorisedZero",
     "BEEEResult", "COST_CLASSES", "COST_SHAPES",
     "CLUSTERING_UNIT_O4_RESOLVED", "CLUSTERING_UNIT_O4_UNRESOLVED",
     "CLUSTERING_UNIT_STATES", "CLUSTERING_UNIT_UNDECLARED",

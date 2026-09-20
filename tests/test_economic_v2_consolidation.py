@@ -15,10 +15,13 @@ from dataclasses import replace
 
 import economics_fixtures as fixtures
 from quant.desk.execution import ExecutionModel, RESEARCH_ONE_WAY_COST_BPS
-from quant.economics import (COST_CLASSES, AuthorisedZero, CostComponent, Dependence,
-                             EffectEstimate, KForwardRecipe, PortfolioInteraction,
+from quant.economics import (ADVERSE_SCENARIO_CATEGORIES, COST_CLASSES,
+                             AuthorisedScenarioExclusion, AuthorisedZero, CostComponent,
+                             CostScenario, Dependence, EffectEstimate, JointScenarioSet,
+                             KForwardRecipe, PortfolioInteraction,
                              ProvenanceBinding, economic_gate, verify_research_cost_consistency,
                              verify_shape_declarations)
+from quant.economics.scenarios import SCENARIO_ADVERSE, SCENARIO_CENTRAL
 from quant.economics.consistency import ExecutionCostModel, ResearchExecutionConsistency
 from quant.economics.decision import (AUTHORITY_DEVELOPMENT_ONLY, AUTHORITY_FORWARD_CONFIRMED,
                                       EVIDENCE_DEVELOPMENT, EVIDENCE_FORWARD_CONFIRMATION)
@@ -497,6 +500,77 @@ class ProvenanceAuthenticityTest(unittest.TestCase):
             margin_functional_status=FUNCTIONAL_FROZEN)
         self.assertEqual(bound.inventory.rule_document(), unbound.inventory.rule_document())
         self.assertEqual(bound.fingerprint(), unbound.fingerprint())
+
+
+class JointAdverseScenarioCategoryTest(unittest.TestCase):
+    """Joint adverse scenarios: refuse an absent authority, name none myself.
+
+    Mission item 6: harden S_cost/M_economic against correlated liquidity
+    deterioration, spread widening + impact increase, borrow/financing
+    deterioration, capacity reduction, execution regime mismatch — without
+    choosing which numerical scenarios are authoritative (Blue's call).
+    """
+
+    def test_red_bare_scenario_set_has_uncovered_categories(self):
+        """RED: before this pass, nothing checked category coverage at all."""
+        bare = JointScenarioSet(
+            set_id="BARE", update_rule="ANY_RULE",
+            scenarios=(CostScenario("s_0", SCENARIO_CENTRAL, {"X": 1.0}, provenance="T"),
+                      CostScenario("s_1", SCENARIO_ADVERSE, {"X": 2.0},
+                                  coherence_justification="j", dependence_representation="d",
+                                  provenance="T")))
+        problems = bare.category_coverage_violations()
+        self.assertEqual(len(problems), len(ADVERSE_SCENARIO_CATEGORIES))
+        for category in ADVERSE_SCENARIO_CATEGORIES:
+            self.assertIn(f"JOINT_ADVERSE_CATEGORY_NOT_ADDRESSED:{category}", problems)
+
+    def test_green_fixture_scenario_set_addresses_or_excludes_every_category(self):
+        self.assertEqual(fixtures.scenario_set().category_coverage_violations(), [])
+
+    def test_green_default_recipe_carries_the_category_gap_note_until_fixed(self):
+        """The fixture itself is fully covered, so evaluate() on the plain
+        default recipe carries no category gap note (unlike the calibration/
+        provenance notes, which fire for unrelated reasons on this fixture).
+        """
+        result = fixtures.meue_recipe().evaluate(fixtures.theta_state())
+        self.assertNotIn("JOINT_ADVERSE_SCENARIO_CATEGORY_GAP", joined(result.notes))
+
+    def test_a_scenario_set_missing_one_category_is_caught(self):
+        incomplete = replace(fixtures.scenario_set(),
+                             category_exclusions=fixtures.scenario_set().category_exclusions[:1])
+        problems = incomplete.category_coverage_violations()
+        self.assertIn(
+            f"JOINT_ADVERSE_CATEGORY_NOT_ADDRESSED:"
+            f"{fixtures.scenario_set().category_exclusions[1].category}", problems)
+
+    def test_exclusion_without_authority_is_refused(self):
+        exclusion = AuthorisedScenarioExclusion("CAPACITY_REDUCTION", "", "no reason given")
+        self.assertIn("CAPACITY_REDUCTION: EXCLUSION_REQUIRES_EXPLICIT_AUTHORITY",
+                      exclusion.violations())
+
+    def test_addressed_and_excluded_at_once_is_a_contradiction(self):
+        category = "CAPACITY_REDUCTION"
+        contradictory = JointScenarioSet(
+            set_id="X", update_rule="R",
+            scenarios=(CostScenario("s_0", SCENARIO_CENTRAL, {"X": 1.0}, provenance="T"),
+                      CostScenario("s_1", SCENARIO_ADVERSE, {"X": 2.0},
+                                  coherence_justification="j", dependence_representation="d",
+                                  provenance="T", categories=(category,))),
+            category_exclusions=(AuthorisedScenarioExclusion(category, "AUTH", "reason"),))
+        self.assertIn(f"{category}: CATEGORY_BOTH_ADDRESSED_AND_EXCLUDED",
+                      contradictory.category_coverage_violations())
+
+    def test_unrecognised_category_on_a_scenario_is_a_hard_violation(self):
+        scenario = CostScenario("s_1", SCENARIO_ADVERSE, {"X": 2.0}, coherence_justification="j",
+                                dependence_representation="d", provenance="T",
+                                categories=("NOT_A_REAL_CATEGORY",))
+        self.assertIn("s_1: ADVERSE_CATEGORY_NOT_IN_NAMED_TAXONOMY:NOT_A_REAL_CATEGORY",
+                      scenario.violations())
+
+    def test_this_pass_named_no_authoritative_numerical_scenario(self):
+        """This pass builds the mechanism only; it asserts no scenario values."""
+        for scenario in fixtures.scenario_set().scenarios:
+            self.assertEqual(scenario.provenance, fixtures.TEST_AUTHORITY)
 
 
 if __name__ == "__main__":
