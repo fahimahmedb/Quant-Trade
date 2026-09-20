@@ -384,3 +384,50 @@ Current disposition:
 `BLUE_GATE_A_V4_BUILDER_RECEPTION = PASS_FOR_INDEPENDENT_ASTRA_REVIEW`
 
 No Gate A v4 PASS or target-host readiness has been declared.
+
+
+## P. ACTIVE PARALLEL WORK / P14D FINAL RED TEAM — 2026-09-21
+
+Blue has completed the final method-level Red Team of fixed P14D sufficiently to prepare, but not yet promote, a superseding amendment.
+
+Durable records:
+- `governance/BLUE_P14D_FINAL_RED_TEAM_2026-09-21.md`;
+- `governance/BLUE_P14D_HYBRID_AMENDMENT_CANDIDATE_V2_2026-09-21.md`.
+
+Method conclusion:
+- no specific acceptance property was found that uniquely requires exactly fourteen real calendar days;
+- additional raw elapsed time retains residual discovery value for unspecified rare/slow defects, but the number 14 has no calibrated failure-rate derivation in current authority;
+- the proposed hybrid rule therefore uses direct falsification for enumerated properties, retains irreducible real source events, and moves unspecified passive exposure into continuous post-qualification surveillance rather than pretending it has zero value.
+
+Recommended t0 hardening:
+`T0_BINDING_MODE = PRECOMMITTED_NEXT_AUTHORIZED_QUALIFYING_LAUNCH`.
+The launch identity is frozen before outcomes; its externally attributable timestamp becomes t0. Ambiguous/missing/multiple/wrongly-bound launch evidence is `NO_T0`.
+
+Current parallel ownership:
+
+`BLUE_NOW`
+- close amendment-readiness evidence;
+- prepare Gate B/t0 entrance semantics;
+- receive Astra/Builder evidence when it arrives;
+- do not wait idly for independent lanes.
+
+`BUILDER_NOW`
+- durable predecessor: `builder/p0-hybrid-qualification-harness-2026-09-20@d4d446c412258b2a9e4792cdcd9e2442ef24b615`;
+- exact-head CI: `35541420721 = COMPLETED / SUCCESS`;
+- completed: timing matrix, calendar matrix, 14 virtual days / 2,016 obligations, clean accountable horizon plus negative discriminant;
+- next bounded evidence phase: Gate-A fault matrix;
+- any Codex continuation is UNKNOWN until a durable branch/SHA is pushed and independently inspected.
+
+`ASTRA_NOW`
+- independent Gate A v4 audit branch remains `astra/p0-gate-a-v4-independent-audit-2026-09-20@b636a04b6f8f7786679907d01a4fa22bdfc4e329` at this checkpoint;
+- no final v4 audit verdict is inferred from CI alone.
+
+`DO_NOT_WAIT_FOR_OTHER_LANES_WHEN_WORK_IS_INDEPENDENT = TRUE`.
+
+Still unchanged:
+- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`;
+- `t0 = NOT DECLARED`;
+- `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`;
+- `TARGET_HOST_READY = FALSE` until a corrected exact candidate passes the required independent/target-host gates;
+- `PRODUCT_INTEGRATION = PAUSED`;
+- `REAL_CAPITAL_AUTHORIZED = FALSE`.
