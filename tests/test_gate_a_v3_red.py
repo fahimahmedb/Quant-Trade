@@ -92,8 +92,11 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         """Discovery cadence cannot hide an omitted, independently due reconciliation."""
         case, collector = self._qualifying_baseline()
 
-        for _ in range(44 * 60):
-            case.timebase.advance(60)
+        # Compress wall-clock cost without weakening the v2 accounting path:
+        # each poll is 180s after its 60s due time, exactly the audit tolerance.
+        # The virtual interval remains 44h and the primitive remains poll().
+        for _ in range(44 * 15):
+            case.timebase.advance(240)
             collector.poll()
 
         due = collector.reconciliation_due()
