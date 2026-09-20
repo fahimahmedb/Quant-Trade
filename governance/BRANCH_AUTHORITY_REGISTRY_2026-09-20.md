@@ -60,29 +60,29 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `blue/frontier-p0-integrity-blockers-2026-09-18` | `c1a955316055aaf6c1b28853e21ed07e36e55f6a` | **SUPERSEDED** | Historical P0 integrity ancestor | astra/p0-deep-adversarial-pre-t0 | — | REVIEW_AFTER_BUILDER |
 | `blue/frontier-p0-operational-2026-09-18` | `ef4e1fe30b8f96f6dd70fa26add67d224b5edc8d` | **SUPERSEDED** | Historical P0 operational ancestor | astra/p0-deep-adversarial-pre-t0 | — | REVIEW_AFTER_BUILDER |
 | `blue/handoff-memory-2026-09-15` | `c1a955316055aaf6c1b28853e21ed07e36e55f6a` | **SUPERSEDED** | Historical handoff ancestor | blue/master-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
-| `builder/p0-integrity-blockers-fingerprint-v1` | `8d5dbb41559c4716e94d5290b6ae979a8b96143c` | **AUDIT_EVIDENCE** | Initial P0 audit baseline; historical PR #17 | astra/p0-deep-adversarial-pre-t0 | #17 OPEN / CANDIDATE_FOR_CLOSURE | NO |
-| `builder/evidence-store-identity-v2` | `b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba` | **SUPERSEDED** | Old Builder C line; historical PR #15 | later P0 hardening | #15 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
+| `builder/p0-integrity-blockers-fingerprint-v1` | `8d5dbb41559c4716e94d5290b6ae979a8b96143c` | **AUDIT_EVIDENCE** | Initial P0 audit baseline; historical PR #17 | astra/p0-deep-adversarial-pre-t0 | #17 CLOSED | NO |
+| `builder/evidence-store-identity-v2` | `b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba` | **SUPERSEDED** | Old Builder C line; historical PR #15 | later P0 hardening | #15 CLOSED | REVIEW_AFTER_BUILDER |
 | `builder/forward-market-recorder-v2` | `87bd049574ec41fe9d22b2ffcfdfc06ec7b7166a` | **SUPERSEDED** | Old Forward recorder Builder branch | parallel/claude-forward-data-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `builder/research-factory-core-v2-proof-scratch` | `9097eab6e8bde2fd5307a55416e0fb0f0e9dd807` | **STALE** | Research proof scratch | — | — | REVIEW_AFTER_BUILDER |
 | `builder/research-factory-core-v2` | `ca8ffe439953b063fb9d049773ce0b6245958c7d` | **SUPERSEDED** | Old research-factory Builder line | later main lineage | — | REVIEW_AFTER_BUILDER |
-| `builder/sec-form4-census-v2a` | `08dcfc39b4b22e0b25e54edde7b6accbb2bc4502` | **SUPERSEDED** | Old census/product-era branch; historical PR #14 | later P0 raw-capture/hardening | #14 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
+| `builder/sec-form4-census-v2a` | `08dcfc39b4b22e0b25e54edde7b6accbb2bc4502` | **SUPERSEDED** | Old census/product-era branch; historical PR #14 | later P0 raw-capture/hardening | #14 CLOSED | REVIEW_AFTER_BUILDER |
 | `builder/sec-form4-p0-raw-capture` | `348c4e42bf4efb29d6e4135cc39b2e5ae31bf5ef` | **SUPERSEDED** | Raw capture v1 | builder/sec-form4-p0-raw-capture-v2 | — | REVIEW_AFTER_BUILDER |
 | `builder/sec-form4-p0-raw-capture-v2` | `859ffafd2f31aa16e26c120def79aa8726517ed0` | **SUPERSEDED** | Merged historical PR #16; absorbed into later P0 lineage | astra/p0-deep-adversarial-pre-t0 | — | REVIEW_AFTER_BUILDER |
 | `reviewer/v1-final-red-team` | `37f298423ca4a100c1c633da2c3c6c2641d8dd8e` | **AUDIT_EVIDENCE** | Historical whole-system red-team baseline | — | — | NO |
 | `autonomous-quant-rebuild` | `4af5b1dea0e1785acdf697d411153bfbf3113ad6` | **SUPERSEDED** | Early autonomous-research ancestor | later main lineage | — | REVIEW_AFTER_BUILDER |
-| `runtime/persistent-research-v1` | `8bc25a9ce576617a68ccd1131ed914461acccb61` | **SUPERSEDED** | Early persistent-research runtime | later main lineage | #8 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
-| `quant-system-v1` | `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce` | **SUPERSEDED** | Early whole-system branch; same tip as stale default | later main lineage | #10 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
+| `runtime/persistent-research-v1` | `8bc25a9ce576617a68ccd1131ed914461acccb61` | **SUPERSEDED** | Early persistent-research runtime | later main lineage | #8 CLOSED | REVIEW_AFTER_BUILDER |
+| `quant-system-v1` | `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce` | **SUPERSEDED** | Early whole-system branch; same tip as stale default | later main lineage | #10 CLOSED | REVIEW_AFTER_BUILDER |
 | `parallel/claude-wave1-economic-system-2026-09-19` | `b17b381a8fa1f6a24e6cd6f92a090b40627bfe78` | **SUPERSEDED** | Literal ancestor/base of Economic v2 | parallel/claude-economic-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `parallel/codex-wave1-economic-system-2026-09-19` | `738a5879ef8634d3e08c717a2d439632fe64e1ff` | **REFERENCE_ONLY** | Historical alternate Economic comparison line | parallel/claude-economic-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `recovery/claude-sec-local-20260914` | `ac37339ed31b59f2c16caed6a5e914e647006671` | **REFERENCE_ONLY** | Preserved recovery snapshot | — | — | REVIEW_AFTER_BUILDER |
 | `claude/nasdaq-trading-model-design-h3mp4n` | `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce` | **STALE** | Repository default branch; 277 commits behind Blue V2 base | future explicit default-branch migration | — | REVIEW_AFTER_BUILDER |
-| `claude/quant-code-mandate-q0l644` | `dba6a95153006a395ea7bc739f552a9c21b9ca35` | **SUPERSEDED** | Historical implementation mandate; PR #12 | later main lineage | #12 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
+| `claude/quant-code-mandate-q0l644` | `dba6a95153006a395ea7bc739f552a9c21b9ca35` | **SUPERSEDED** | Historical implementation mandate; PR #12 | later main lineage | #12 CLOSED | REVIEW_AFTER_BUILDER |
 | `claude-config-bootstrap` | `002b9b04a2a62e26229b4fc17a39d64c109f53c6` | **SUPERSEDED** | Historical config bootstrap | later main lineage | — | REVIEW_AFTER_BUILDER |
-| `codex/add-task-acknowledgment-and-tracking` | `5d80132da2de3d3a3525c49d09234700017dc994` | **SUPERSEDED** | Early vertical slice; PR #7 closed this pass | later main lineage | #7 CLOSED_THIS_PASS | REVIEW_AFTER_BUILDER |
+| `codex/add-task-acknowledgment-and-tracking` | `5d80132da2de3d3a3525c49d09234700017dc994` | **SUPERSEDED** | Early vertical slice; PR #7 closed this pass | later main lineage | #7 CLOSED | REVIEW_AFTER_BUILDER |
 | `codex/alignment-bootstrap` | `73e30782aab39fe19261c1edead9c86ea916e69c` | **STALE** | Unmerged stale Codex branch | — | — | REVIEW_AFTER_BUILDER |
-| `codex/build-persistent-research-campaign-orchestrator` | `dc65d4918b5253949122dead09e02a4c4f60833d` | **SUPERSEDED** | Historical PR #9 | later main lineage | #9 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
-| `codex/complete-v1-integrity-pass-for-codex` | `a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0` | **SUPERSEDED** | Historical PR #13 | later main lineage | #13 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
-| `codex/optimiser-recherche-persistente-avec-intelligence++` | `eb69d66f93081a8252bfcbfd0bc779923e9d6467` | **STALE** | Diverged one-commit historical PR #11 | — | #11 OPEN / CANDIDATE_FOR_CLOSURE | REVIEW_AFTER_BUILDER |
+| `codex/build-persistent-research-campaign-orchestrator` | `dc65d4918b5253949122dead09e02a4c4f60833d` | **SUPERSEDED** | Historical PR #9 | later main lineage | #9 CLOSED | REVIEW_AFTER_BUILDER |
+| `codex/complete-v1-integrity-pass-for-codex` | `a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0` | **SUPERSEDED** | Historical PR #13 | later main lineage | #13 CLOSED | REVIEW_AFTER_BUILDER |
+| `codex/optimiser-recherche-persistente-avec-intelligence++` | `eb69d66f93081a8252bfcbfd0bc779923e9d6467` | **STALE** | Diverged one-commit historical PR #11 | — | #11 CLOSED | REVIEW_AFTER_BUILDER |
 | `codex/reprendre-mission-astra-p0-pre-t0` | `a321bfd9d77d42bb43a4fcd8b774a6eb38789179` | **SUPERSEDED** | PR #18 head merged into P0 hardening | astra/p0-deep-adversarial-pre-t0 | — | REVIEW_AFTER_BUILDER |
 | `codex/test` | `723a778e302b6bc96e72030ded91440f75769aba` | **STALE** | Scratch/test branch | — | — | REVIEW_AFTER_BUILDER |
 | `research/design-v1` | `2da2d1b6786e9a7b1d34f94f5066dca79abf8e07` | **STALE** | Old research design branch | — | — | REVIEW_AFTER_BUILDER |
