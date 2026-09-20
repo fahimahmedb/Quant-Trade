@@ -111,6 +111,7 @@ BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
 BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
 BRANCH_DELETE_BATCH = `governance/BRANCH_DELETE_BATCH_2026-09-20.md`.
+POST_GATE_A_BRANCH_DELETE_BATCH = `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md` (12 strict-ancestor refs; prepared only, execution waits for final Blue Gate A disposition).
 DELETE_NOW_SAFE_COUNT = 18.
 KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
 DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
@@ -201,7 +202,7 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 NEXT_EXPECTED_EVENT = Astra pushes minimal packaging correction on `astra/p0-gate-a-v3-independent-audit-2026-09-20` and receives a new exact-head CI result.
 
-NEXT_ACTION = do not modify the frozen candidate. Require Astra to fix only audit packaging/status freshness and handoff history, then verify new exact-head CI. In parallel, continue non-destructive GitHub cleanup. If corrected audit packaging is green and no new finding appears, Blue may render final repository Gate A disposition.
+NEXT_ACTION = do not modify the frozen candidate. Require Astra to fix only audit packaging/status freshness and handoff history, then verify new exact-head CI. In parallel, continue non-destructive GitHub cleanup and context consolidation; post-Gate batch of 12 strict-ancestor refs is already prepared. If corrected audit packaging is green and no new finding appears, Blue may render final repository Gate A disposition.
 
 Do not start Product integration.
 Do not declare Gate A PASS before independent Astra.
