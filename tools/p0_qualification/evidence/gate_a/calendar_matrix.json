@@ -14,9 +14,9 @@
       "2026-12-25"
     ]
   },
-  "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+  "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
   "gate": "GATE_A_CALENDAR_MATRIX",
-  "generated_at_utc": "2026-09-20T21:57:09.500526+00:00",
+  "generated_at_utc": "2026-09-20T22:20:34.678728+00:00",
   "no_p14d_amendment_claimed": true,
   "no_t0_declared": true,
   "no_target_host_claimed": true,
@@ -27,7 +27,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-09-22 (Tuesday) is_edgar_business_day=True",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:ordinary_weekday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,9,22)))\"",
       "residual": null
@@ -37,7 +37,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-09-18 (Friday) is_edgar_business_day=True",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:friday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,9,18)))\"",
       "residual": null
@@ -47,7 +47,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-09-19 (Saturday) is_edgar_business_day=False",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:saturday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,9,19)))\"",
       "residual": null
@@ -57,7 +57,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-09-20 (Sunday) is_edgar_business_day=False",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:sunday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,9,20)))\"",
       "residual": null
@@ -67,7 +67,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-09-21 (Monday) is_edgar_business_day=True",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:monday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,9,21)))\"",
       "residual": null
@@ -77,7 +77,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "2026-11-26 (Thursday) is_edgar_business_day=False",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:date_classification:known_2026_thanksgiving_holiday",
       "reproduce_command": "PYTHONPATH=src python3 -c \"from quant.dataplane.sec.calendar import is_edgar_business_day; from datetime import date; print(is_edgar_business_day(date(2026,11,26)))\"",
       "residual": null
@@ -87,7 +87,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "11 official 2026 EDGAR closures bound",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:2026_closure_count",
       "reproduce_command": null,
       "residual": null
@@ -97,7 +97,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "edgar_closed_dates(2027) raised EdgarCalendarUnbound=True",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:unbound_future_year_fails_closed",
       "reproduce_command": null,
       "residual": null
@@ -107,7 +107,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_friday_weekend_monday_reconciliation_boundary',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:weekend_never_reconciliation_target",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_friday_weekend_monday_reconciliation_boundary -v",
       "residual": null
@@ -117,7 +117,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_known_sec_federal_holiday_is_not_a_reconciliation_target',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:known_federal_holiday_not_reconciliation_target",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_known_sec_federal_holiday_is_not_a_reconciliation_target -v",
       "residual": null
@@ -127,7 +127,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_unbound_calendar_year_fails_closed',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:unbound_calendar_year_fails_closed",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_unbound_calendar_year_fails_closed -v",
       "residual": null
@@ -137,7 +137,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_business_day_stays_business_day_independent_of_http_outcome',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:business_day_independent_of_http_outcome",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_business_day_stays_business_day_independent_of_http_outcome -v",
       "residual": null
@@ -147,7 +147,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_spring_dst_does_not_shorten_30_elapsed_hours',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:dst_spring_boundary",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_spring_dst_does_not_shorten_30_elapsed_hours -v",
       "residual": null
@@ -157,7 +157,7 @@
       "defect_class": "NON_ISSUE",
       "detail": "cited ('tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_fall_dst_does_not_lengthen_30_elapsed_hours',)",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:dst_fall_boundary",
       "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_continuity_compression.CalendarBoundaryCompressionTests.test_fall_dst_does_not_lengthen_30_elapsed_hours -v",
       "residual": null
@@ -167,11 +167,11 @@
       "defect_class": "NON_ISSUE",
       "detail": "due=2026-09-21 outcome_result_state=PERMANENT_CLIENT_ERROR gap_kinds=['DAILY_INDEX_UNAVAILABLE'] reconciled=False",
       "domain": "REPOSITORY",
-      "exact_sha": "c21707a50e8717bcb0a4a26f1c25ca6554174f6c",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
       "property": "calendar:business_day_404_is_never_a_holiday",
       "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.calendar_matrix",
       "residual": null
     }
   ],
-  "report_digest": "sha256:d7c078129f30ab88e54fa2e8f5c88b92d61d6efd03f68056512944c7ae35f59b"
+  "report_digest": "sha256:de9928d99118a025d53e31833cdf8d6df802023595f22ba4ffc744836aec8304"
 }

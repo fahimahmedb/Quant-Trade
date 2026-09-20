@@ -1,0 +1,57 @@
+{
+  "body": {
+    "clean_horizon": {
+      "accountable": true,
+      "coverage_state": "COMPLETE",
+      "findings": [],
+      "fingerprint_stable": true,
+      "fingerprints_seen_count": 1,
+      "obligations": 2035,
+      "obligations_resolved_by_attempt": 2025,
+      "obligations_resolved_by_supersession": 8,
+      "obligations_unexplained": 0,
+      "polls_executed": 2016,
+      "target_obligations_reference": 2016,
+      "virtual_days_covered": 14,
+      "wall_clock_seconds": 118.26
+    },
+    "discriminating_break": {
+      "accountable": false,
+      "discriminating_power_confirmed": true,
+      "findings": [
+        "SUCCESSOR_OBLIGATION_MISSING",
+        "UNEXPLAINED_EXPECTED_ACTION"
+      ]
+    }
+  },
+  "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
+  "gate": "GATE_A_LONG_HISTORY_CAMPAIGN",
+  "generated_at_utc": "2026-09-20T22:18:27.983746+00:00",
+  "no_p14d_amendment_claimed": true,
+  "no_t0_declared": true,
+  "no_target_host_claimed": true,
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "records": [
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "2016 polls over 14d virtual (118.3s wall); accountable=True obligations=2035 unexplained=0 fingerprint_stable=True",
+      "domain": "REPOSITORY",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
+      "property": "long_history:clean_horizon_fully_accountable",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.long_history",
+      "residual": null
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "accountable=False findings=['SUCCESSOR_OBLIGATION_MISSING', 'UNEXPLAINED_EXPECTED_ACTION'] unexplained=21",
+      "domain": "REPOSITORY",
+      "exact_sha": "96f5ed534d3b62d006255f1df5e1e64f49600792",
+      "property": "long_history:forged_unanswered_obligation_is_caught",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.long_history",
+      "residual": null
+    }
+  ],
+  "report_digest": "sha256:8a8fdd710f1f331792ccae3079fb11ffdab2c5269d338baadb0ddaa0cd0f57c4"
+}
