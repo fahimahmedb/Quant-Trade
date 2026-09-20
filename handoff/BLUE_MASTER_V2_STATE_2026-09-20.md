@@ -1,5 +1,21 @@
 # BLUE MASTER V2 STATE — 2026-09-20
 
+## 0A. Repository hygiene closure
+
+`REPOSITORY_HYGIENE = CLOSED / EXECUTED`
+
+- default branch migrated to `blue/master-v2-2026-09-20`;
+- 34/34 authorized cleanup refs physically deleted;
+- 0 delete-ready survivors;
+- 40 live branches remain;
+- `claude/restaurant-stock-management-mvp-6oq43e` retained by owner request;
+- open PRs/issues = 0/0;
+- execution handoff: `handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`;
+- restricted cleanup log SHA-256: `d9500fc9ec90871d7861932e5afb9b7729f59fec87e85bff1265f7655e285070`.
+
+This closure does not change the V4 audit, P14D, t0, Product-integration, target-host-readiness or capital states.
+
+
 This is an event-driven governance checkpoint. GitHub is durable memory. Verify deltas from this state; do not reconstruct from chat.
 
 ## A. PROJECT STATE
