@@ -194,10 +194,12 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 ## J. NEXT ACTION
 
 TARGET_HOST_ENTRANCE_CONTRACT = `governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md` = PREPARED / NOT_EXECUTED.
+DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
+PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
 NEXT_EXPECTED_EVENT = target-host entrance execution evidence plus continued post-Gate cleanup.
 
-NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; continue post-Gate cleanup and default-branch migration review; do not declare t0 until target-host entrance evidence is satisfied.
+NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; continue physical branch cleanup when delete-ref capability is available; execute default-branch migration only through an explicit repository-admin mutation after one last live recheck; do not declare t0 until target-host entrance evidence is satisfied.
 
 Do not start Product integration yet.
 Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real-capital readiness.
