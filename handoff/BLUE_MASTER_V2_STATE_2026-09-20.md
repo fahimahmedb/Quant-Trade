@@ -9,6 +9,7 @@ CURRENT_BLUE_HEAD_RESOLVER = `git log -1 --format=%H origin/blue/master-v2-2026-
 
 NORTH_STAR_VERIFIED = TRUE
 CURRENT_GOVERNANCE_INDEX = `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
+CURRENT_CONTEXT_REACQUISITION = `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
 PREVIOUS_BLUE_MASTER_VERIFIED = TRUE at `claude/quant-blue-master-2026-09-20-mogpvh@69884d50a01dc0c0490059ac5c7f76e886e88458`
 
 CURRENT_GATE_STATE = Gate A v2 REJECTED/FROZEN; Gate A v3 historical REPOSITORY_PASS / target-host candidate REJECTED_BY_NEW_REAL_DEFECT; corrective Gate A v4 REQUIRED
@@ -71,7 +72,7 @@ NEXT_OWNER = Builder for the Blue-approved effective-unit-digest stability corre
 
 ## E. WAITING FOR
 
-WAITING_FOR = Builder corrective implementation on `builder/p0-effective-unit-digest-stability-v4-2026-09-20`, then exact-head CI, independent Astra reproduction/review, then Blue disposition.
+WAITING_FOR = Builder v4 final handoff + exact-head CI on `builder/p0-effective-unit-digest-stability-v4-2026-09-20`, then Blue reception, independent Astra reproduction/review, and Blue disposition. In parallel, Blue resumes final P14D hybrid-method review.
 
 Historical Gate A v3 repository proof remains closed at its exact SHA, but the frozen candidate is no longer eligible for target-host entrance because of the newly reproduced REAL_DEFECT.
 
@@ -269,3 +270,36 @@ Dispatch status:
 `DISPATCHED / IMPLEMENTATION_PENDING`
 
 Builder must not declare independent correctness, Gate A v4 PASS, target-host readiness or t0. Delivery returns to Blue for reception, then independent Astra/Red Team review.
+
+
+## M. CONTEXT REACQUISITION / P14D ROUTING REPAIR
+
+Durable recovery checkpoint:
+`handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
+
+A full Blue context reread found routing metadata drift:
+- current governance/Blue state knew about the target-host REAL_DEFECT and v4;
+- the Branch Authority Registry still described v3 as the target-host candidate;
+- the long-horizon P14D branch was still labeled out-of-scope;
+- live branch count was 72 versus the older 71 count.
+
+Those routing defects are now explicitly repaired.
+
+Current parallel Blue fronts:
+
+1. **Corrective Gate A v4**
+   - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
+   - current observed HEAD: `0bdd397d7409b01529c1f958c68781499679a95e`;
+   - exact-head run: `35535347844 = IN_PROGRESS` at reacquisition;
+   - Blue reception pending final Builder handoff + CI.
+
+2. **P14D hybrid qualification challenge**
+   - method branch: `blue/long-horizon-research-2026-09-20@7e0fae86834db7f46ecea5755faf0ac544245399`;
+   - exact-head CI: `35480999341 = SUCCESS`;
+   - technical recommendation: replace arbitrary fixed P14D with hybrid compressed + target-host + event-based live proof;
+   - governance status remains `STILL_FROZEN / NOT_YET_AMENDED`;
+   - amendment remains draft until final Red Team and explicit Blue promotion.
+
+Material P14D calendar-compression tests are already present in the later frozen v3 lineage; do not treat the method work as isolated abandoned research.
+
+No t0, continuity PASS, Product integration, Gate B completion or real-capital authority follows from this routing repair.
