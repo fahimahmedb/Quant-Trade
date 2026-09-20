@@ -377,6 +377,28 @@ class Phase4LifecycleAndWindowCampaign(CollectorTestCase):
                 len(c.state.pending_tasks),1,
                 'acknowledging one filing must not delete another distinct identity')
 
+    def test_early_manual_probe_cannot_supersede_qualifying_obligation(self):
+        """A one-shot operator probe cannot silently rewrite the qualifying cadence."""
+        from tests.test_sec_form4_capture import RodageFalsificationTests
+        case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
+        c=case.qualifying_collector(case.fixture_router())
+        c.record_service_start();c.poll();c.drain(max_items=3)
+        self.assertTrue(audit_observation_window(c)['accountable'])
+
+        # The normal next discovery is due in 60s. Simulate the same collector
+        # being invoked manually 10s later (as sec-probe does by calling poll()
+        # directly) without an externally attested qualifying process identity.
+        self.timebase = case.timebase
+        case.timebase.advance(10)
+        c.lifecycle['qualifying_service_mode']=False
+        c.lifecycle['lifecycle_cause']='LIFECYCLE_CAUSE_UNATTESTED'
+        c.poll()
+
+        report=audit_observation_window(c)
+        self.assertFalse(
+            report['accountable'],
+            'manual early acquisition must invalidate, not supersede, the qualifying obligation')
+
     def test_qualifying_audit_requires_append_only_external_lifecycle_authority(self):
         from tests.test_sec_form4_capture import RodageFalsificationTests
         case=RodageFalsificationTests();case.setUp();self.addCleanup(case.doCleanups)
