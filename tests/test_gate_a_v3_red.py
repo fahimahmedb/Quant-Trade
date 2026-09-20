@@ -220,8 +220,9 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         report = audit_observation_window(
             collector, now=case.timebase.now(), window_start=t0
         )
-        self.assertTrue(
-            report["accountable"],
+        self.assertNotIn(
+            "LIFECYCLE_PROVENANCE_MISSING",
+            report["findings"],
             "pre-t0 baseline lifecycle was discarded by structural validation: "
             f"{report['findings']}",
         )

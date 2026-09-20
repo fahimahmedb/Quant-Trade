@@ -217,8 +217,7 @@ def _mark_pending(obligations: list[Obligation], now: datetime, tolerance: float
 def _validate_structure(transitions: list[dict[str, Any]],
                         attempts: list[dict[str, Any]],
                         lifecycle: list[dict[str, Any]],
-                        now: datetime,
-                        window_start: datetime | None = None) -> list[str]:
+                        now: datetime) -> list[str]:
     """Find malformed evidence that could otherwise manufacture a false pass."""
     findings: list[str] = []
 
@@ -274,12 +273,7 @@ def _validate_structure(transitions: list[dict[str, Any]],
     prior_obligations: set[str] = set()
     for record in transitions:
         target = record.get("supersedes_obligation_id")
-        recorded_raw = record.get("recorded_at_utc")
-        boundary_predecessor = bool(
-            target and window_start is not None and recorded_raw
-            and parse_ts(recorded_raw) < window_start
-            and target not in transition_by_obligation)
-        if target and target not in prior_obligations and not boundary_predecessor:
+        if target and target not in prior_obligations:
             findings.append("NONPROSPECTIVE_SUPERSESSION")
         if record.get("obligation_id"):
             prior_obligations.add(record["obligation_id"])
@@ -290,8 +284,7 @@ def _validate_structure(transitions: list[dict[str, Any]],
         superseded_targets.add(target)
         original = transition_by_obligation.get(target)
         if original is None:
-            if not boundary_predecessor:
-                findings.append("SUPERSESSION_TARGET_UNKNOWN")
+            findings.append("SUPERSESSION_TARGET_UNKNOWN")
             continue
         replacement_time = aware(record.get("recorded_at_utc"))
         created_time = aware(original.get("recorded_at_utc"))
@@ -638,7 +631,7 @@ def _audit_observation_window(collector: Any, *, tolerance_seconds: float | None
     if baseline_lifecycle is not None:
         structural_lifecycle.insert(0, baseline_lifecycle)
     findings: list[str] = _validate_structure(
-        transitions, attempts, structural_lifecycle, moment, window_start=window_start)
+        transitions, attempts, structural_lifecycle, moment)
     findings.extend(_validate_request_intents(
         collector, attempts, window_start=window_start))
     findings.extend(_validate_external_lifecycle_authority(
