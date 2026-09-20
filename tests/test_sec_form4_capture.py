@@ -2624,7 +2624,7 @@ class AuditFalsePassTests(CollectorTestCase):
         self.assertFalse(report["accountable"])
 
     def test_fourteen_day_synthetic_history_remains_bijectively_accountable(self) -> None:
-        """2,016 obligations over 14 virtual days stay one-to-one under audit.
+        """20,160 obligations over 14 virtual days stay one-to-one under audit.
 
         Per-record fsync durability is covered elsewhere. This fixture writes a
         complete synthetic journal in bulk so the real parsers/reconciler can
@@ -2632,7 +2632,7 @@ class AuditFalsePassTests(CollectorTestCase):
         redundant disk flushes.
         """
         base = parse_ts("2026-09-18T12:00:00+00:00")
-        count = 14 * 24 * 6  # one obligation every ten minutes for fourteen days
+        count = 14 * 24 * 60  # production discovery cadence: one obligation per minute
         fingerprint = self.lane.fingerprint or "fp"
         scheduler_records = []
         attempt_records = []
