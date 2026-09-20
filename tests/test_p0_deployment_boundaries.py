@@ -30,11 +30,14 @@ class RawPublicationDurabilityTests(unittest.TestCase):
         object_id = digest_bytes(body)
         target = self.store.object_path(object_id)
 
-        with mock.patch.object(
-            self.store,
-            "_fsync_dir",
-            side_effect=OSError(errno.EIO, "synthetic directory fsync failure"),
-        ):
+        original = SecCaptureStore._fsync_dir
+
+        def fail_after_link(path: Path) -> None:
+            if path == target.parent:
+                raise OSError(errno.EIO, "synthetic post-link directory fsync failure")
+            original(path)
+
+        with mock.patch.object(self.store, "_fsync_dir", side_effect=fail_after_link):
             with self.assertRaises(SecStorageFailure):
                 self.store.put_object(body)
 
@@ -43,7 +46,6 @@ class RawPublicationDurabilityTests(unittest.TestCase):
             "the adversarial boundary requires the link to exist after fsync failed",
         )
 
-        original = SecCaptureStore._fsync_dir
         with mock.patch.object(
             self.store,
             "_fsync_dir",
