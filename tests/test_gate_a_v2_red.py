@@ -1,8 +1,7 @@
-"""Independent Gate-A-v2 red-team discriminants.
+"""Independent Gate-A-v2 red-team discriminant for action binding.
 
-These tests live only on the audit branch.  They deliberately assert the
-property the frozen candidate must prove, so a failure is evidence against the
-candidate rather than a request to mutate it.
+This file lives only on the audit branch.  It asserts a property the frozen
+candidate must prove; failure is red-team evidence, not a production change.
 """
 
 from __future__ import annotations
@@ -11,48 +10,64 @@ import unittest
 from datetime import date
 
 from quant.dataplane.sec.audit import audit_observation_window
-from tests.test_sec_form4_capture import RodageFalsificationTests, build_feed
+from tests.test_sec_form4_capture import RodageFalsificationTests
 
 
-class GateAV2ReconciliationAuditRed(unittest.TestCase):
+class GateAV2AttemptActionBindingRed(unittest.TestCase):
     def _qualifying_case(self):
         case = RodageFalsificationTests()
         case.setUp()
         self.addCleanup(case.doCleanups)
         return case
 
-    def test_due_reconciliation_cannot_be_omitted_while_audit_stays_accountable(self):
-        """Normal 60s discovery polls must not hide an omitted daily reconciliation.
+    def test_reconcile_attempt_cannot_retire_a_discovery_poll_obligation(self):
+        """One obligation must be resolved by the action it actually required.
 
-        Start Friday 2026-09-18 12:00 UTC.  Friday's EDGAR day settles exactly
-        44 elapsed hours later (22:00 ET close + 30h).  We keep satisfying every
-        discovery poll obligation at the real 60s cadence but deliberately omit
-        reconciliation.  At the end the source-calendar obligation is due, so a
-        retrospective audit that claims complete acquisition accountability must
-        fail rather than infer "nothing else was due" from the scheduler journal.
+        The scheduler has an AWAITING_POLL obligation due at t+60s.  Instead of
+        issuing the due discovery request, call the still-public lower-level
+        reconcile primitive at exactly that deadline.  The resulting SEC request
+        carries the same obligation_id, but its durable attempt_kind is
+        RECONCILE.  A correct audit must reject that type mismatch rather than
+        treating any request with the right id/time as proof the poll happened.
         """
         case = self._qualifying_case()
-        empty_feed = build_feed([], entries=[])
-        collector = case.qualifying_collector(
-            case.fixture_router(atom=empty_feed),
-        )
+        index = b"""Description: synthetic red-team daily index
+CIK|Company Name|Form Type|Date Filed|Filename
+--------------------------------------------------------------------------------
+320193|A|4|2026-09-17|edgar/data/320193/0000320193-26-000045.txt
+789019|B|4|2026-09-17|edgar/data/789019/0000789019-26-000112.txt
+1018724|C|4/A|2026-09-17|edgar/data/1018724/0001018724-26-000301.txt
+"""
+        collector = case.qualifying_collector(case.fixture_router(index=index))
         collector.record_service_start()
         collector.poll()
-        self.assertTrue(audit_observation_window(collector)["accountable"])
+        collector.drain(max_items=3)
+        baseline = audit_observation_window(collector, now=case.timebase.now())
+        self.assertTrue(baseline["accountable"], baseline["findings"])
 
-        for _ in range(44 * 60):
-            case.timebase.advance(60)
-            collector.poll()
+        poll_obligation = collector.state.open_obligation_id
+        transition = next(
+            row for row in collector.scheduler.all()
+            if row.get("obligation_id") == poll_obligation
+        )
+        self.assertEqual(transition["state"], "AWAITING_POLL")
 
-        self.assertEqual(collector.reconciliation_due(), date(2026, 9, 18))
-        self.assertNotIn("2026-09-18", collector.state.reconciled_days)
+        case.timebase.advance(60)
+        result = collector.reconcile(date(2026, 9, 17))
+        self.assertTrue(result["reconciled"])
 
-        report = audit_observation_window(collector)
+        bound_attempt = [
+            row for row in collector.store.attempts()
+            if row.get("obligation_id") == poll_obligation
+        ][-1]
+        self.assertEqual(bound_attempt["attempt_kind"], "RECONCILE")
+
+        report = audit_observation_window(collector, now=case.timebase.now())
         self.assertFalse(
             report["accountable"],
-            "a due source-calendar reconciliation was omitted, but sec-audit "
-            "reported accountable=True because reconciliation obligations are "
-            "not independently derived from the calendar",
+            "sec-audit accepted a RECONCILE request as resolution of an "
+            "AWAITING_POLL obligation because attempt_kind is not bound to the "
+            "obligation's required action",
         )
 
 
