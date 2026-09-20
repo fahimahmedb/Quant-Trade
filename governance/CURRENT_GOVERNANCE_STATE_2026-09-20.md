@@ -38,7 +38,11 @@ General flow:
 
 Resolve live HEAD rather than copying a stale self-reference.
 
-`GATE_A_V3_REPOSITORY_DISPOSITION = PASS`
+`GATE_A_V3_REPOSITORY_DISPOSITION = PASS` — historical repository-only disposition at the exact audited SHA.
+
+`GATE_A_V3_TARGET_HOST_ELIGIBILITY = REJECTED_BY_NEW_REAL_DEFECT`
+
+`CORRECTIVE_GATE_A_V4_REQUIRED = TRUE`
 
 Frozen candidate:
 `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
@@ -60,7 +64,7 @@ Blue final disposition:
 
 `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
 
-`TARGET_HOST_READY = FALSE / NOT_YET_QUALIFIED`
+`TARGET_HOST_READY = FALSE / BLOCKED_BY_REAL_DEFECT`
 
 `GATE_B = NOT_STARTED`
 
@@ -74,10 +78,13 @@ Gate A PASS must not be promoted into any stronger statement above.
 
 `MISSION = TARGET-HOST QUALIFICATION / FINAL RODAGE ENTRANCE`
 
-`STATUS = READY_TO_DISPATCH / NOT_EXECUTED`
+`STATUS = EXECUTED / FAILED_REAL_DEFECT / BUILDER_CORRECTION_REQUIRED`
 
 Mission handoff:
 `handoff/BLUE_TARGET_HOST_QUALIFICATION_MISSION_2026-09-20.md`
+
+Target-host real-defect disposition:
+`handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
 
 Entrance contract:
 `governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md`
@@ -182,9 +189,11 @@ First:
 - verify live Blue HEAD and current repository deltas.
 
 Then:
-- continue target-host qualification when real host access exists;
-- otherwise continue non-destructive governance/cleanup work;
-- do not reopen Gate A without new contradictory evidence;
+- treat the target-host effective-unit-digest instability finding as current blocking evidence;
+- dispatch/complete the corrective Builder mission from the exact frozen implementation baseline;
+- require exact-head CI, independent Astra reproduction/review and a new Blue disposition before any new target-host start;
+- preserve the failed target-host evidence and do not rematerialize/re-authorize v3 to make it appear clean;
+- do not reopen unrelated Gate A findings without new contradictory evidence;
 - do not start Product integration without explicit Blue decision;
 - do not declare t0, P14D proof, Gate B completion or capital authorization by implication.
 
@@ -202,4 +211,25 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = REVIEWED / NOT_EXECUTED`
 
-`ACTIVE_FRONTIER = TARGET_HOST_QUALIFICATION`
+`ACTIVE_FRONTIER = CORRECTIVE_GATE_A_V4 / EFFECTIVE_UNIT_DIGEST_STABILITY`
+
+
+## 12. Target-host event — 2026-09-20
+
+Real target-host execution against frozen Gate A v3 candidate `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` produced a reproducible acquisition-critical fingerprint instability.
+
+Durable Blue finding:
+`handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
+
+Restricted target-host artifact binding:
+- artifact: `TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_INSTABILITY_20260920T195825Z.json`;
+- SHA-256: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`;
+- materialized effective-unit digest: `sha256:33d166b68a337947f7737ae659b386df88545867012ce88d0b30bcdbcf070b3d`;
+- post-invocation effective-unit digest: `sha256:c6394ef740c3f66c35e2920ebd4f21d27ff1417d11be5ab93b457f0f7e355c22`;
+- `DIGEST_STABLE = False`;
+- `CLASSIFICATION = REAL_DEFECT`;
+- `TARGET_HOST_ENTRANCE = FAIL / NO_T0`.
+
+The defect is in the frozen implementation's canonicalization of `systemctl show ExecStart`: mutable execution observations are included in the effective-unit digest. The loaded unit bytes and frozen semantic checks otherwise matched.
+
+The historical repository-only Gate A v3 PASS remains attributable only to its prior proof domain. The v3 candidate is no longer eligible for target-host entrance. A corrected candidate requires Builder implementation, exact-head CI, independent review and a new Blue disposition. No proof transfers silently across SHA.
