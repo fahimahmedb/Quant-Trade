@@ -97,17 +97,19 @@ QUALIFYING P0 RUNTIME and PRODUCT INTEGRATION RUNTIME remain separate.
 
 BRANCHES_CLASSIFIED = 71 (including frozen Gate A v3 and Astra audit refs).
 PRS_OPEN_LAST_VERIFIED = 0.
+GOVERNANCE_HYGIENE_STATUS = POST_GATE_ALIGNED.
 PRS_CLOSED_THIS_PASS = 10 (#7, #8, #9, #10, #11, #12, #13, #14, #15, #17).
 BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
-BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
-BRANCH_DELETE_BATCH = `governance/BRANCH_DELETE_BATCH_2026-09-20.md`.
-POST_GATE_A_BRANCH_DELETE_BATCH = `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md` (12 strict-ancestor refs; final Gate A PASS satisfied; all 12 rechecked at pinned SHA and unprotected; ready for delete when a proper delete-ref capability is available).
-POST_GATE_A_PROOF_REF_REVIEW = `governance/POST_GATE_A_PROOF_REF_REVIEW_2026-09-20.md` (5 additional absorbed proof refs delete-ready; divergent B1/B2/B3/audit evidence preserved).
-DELETE_NOW_SAFE_COUNT = 18.
-ADDITIONAL_POST_GATE_DELETE_READY = 17 (12 post-Gate strict ancestors + 5 absorbed proof refs; physical deletion unavailable in current connector).
-KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
-DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
+BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md` = POST_GATE_HYGIENE_ALIGNED.
+BRANCH_DELETE_READY_INDEX = `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`.
+DELETE_READY_VERIFIED_COUNT = 35.
+DELETE_READY_EXACT_SHA_MATCH = 35/35.
+DELETE_READY_UNPROTECTED = 35/35.
+PHYSICAL_BRANCH_DELETIONS = 0 (blocked only by missing safe delete-ref capability).
+FORMER_KEEP_UNTIL_ASTRA = CLOSED / RECLASSIFIED.
+FORMER_DELETE_AFTER_ASTRA = CLOSED / RECLASSIFIED.
+DIVERGENT_GATE_FALSIFIER_AUDIT_REFS = PRESERVE.
 PRESERVE_UNIQUE_PRODUCT_CAPABILITIES = Evidence/PIT, Research Factory core and product-side SEC census branches retained.
 PRESERVE_SPECIAL_EVIDENCE = P14D draft, SEC recovery census evidence and Phase-0 economic learning retained.
 HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW = Forward finalization, old Forward recorder, alternate Economic Wave 1 and research/design-v1.
@@ -203,7 +205,7 @@ PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
 NEXT_EXPECTED_EVENT = target-host entrance execution evidence plus continued post-Gate cleanup.
 
-NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; continue physical branch cleanup when delete-ref capability is available; execute default-branch migration only through an explicit repository-admin mutation after one last live recheck; do not declare t0 until target-host entrance evidence is satisfied.
+NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; use `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md` as the sole operational branch-deletion list when delete-ref capability is available; execute default-branch migration only through an explicit repository-admin mutation after one last live recheck; do not declare t0 until target-host entrance evidence is satisfied.
 
 Do not start Product integration yet.
 Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real-capital readiness.
