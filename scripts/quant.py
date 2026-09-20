@@ -115,6 +115,8 @@ def sec_command(system: QuantSystem, args: argparse.Namespace) -> int:
         print(json.dumps({"service_exit": "STOPPED",
                           "mode": entry["mode"]}, sort_keys=True))
         return 0
+    if args.command in {"sec-enable", "sec-disable", "sec-probe", "sec-reconcile"}:
+        collector.record_operator_intervention(args.command)
     if args.command == "sec-enable":
         collector.enable()
     elif args.command == "sec-disable":

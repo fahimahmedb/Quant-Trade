@@ -45,7 +45,7 @@ from .scheduler import (AWAITING_POLL, BACKOFF, BACKOFF_ENTERED, BLOCKED_NOT_CON
                         POLL_COMPLETED, POLL_DUE, POLL_FAILED, RECONCILE_COMPLETED,
                         RECONCILING, SERVICE_START, SchedulerJournal, SchedulerTransition,
                         WORK_ENQUEUED)
-from .supervisor import UNATTESTED, lifecycle_provenance
+from .supervisor import MANUAL_START, UNATTESTED, host_boot_id, lifecycle_provenance
 from .discovery import (DailyIndexPage, DiscoveryEntry, DiscoveryInvalid, DiscoveryPage,
                         daily_index_path, daily_index_url, discovery_path, discovery_url,
                         endpoint_class_for, parse_daily_index, parse_discovery_page)
@@ -332,6 +332,37 @@ class SecForm4Collector:
     def record_current_state(self, cause: str, detail: str | None = None) -> SchedulerTransition:
         return self.record_transition(self.scheduler_state(), cause,
                                       next_due_at=self.next_due_at(), detail=detail)
+
+    def record_operator_intervention(self, command: str) -> dict[str, Any]:
+        """Durably mark a one-shot operator mutation as qualification-invalidating.
+
+        Manual CLI commands are useful diagnostics, but they are not the
+        service-managed acquisition process.  If one is run during a qualifying
+        window, the retrospective audit must see the intervention instead of
+        mistaking its requests/transitions for continuous service evidence.
+        """
+        record = {
+            "boot_id": host_boot_id(),
+            "lifecycle_cause": MANUAL_START,
+            "lifecycle_cause_declared": MANUAL_START,
+            "boot_at_utc": None,
+            "supervisor_id": None,
+            "launch_authority_nonce": None,
+            "externally_attested": False,
+            "invalidates_observation_window": True,
+            "service_manager": None,
+            "service_managed": False,
+            "service_invocation_id": None,
+            "qualifying_service_mode": False,
+            "effective_service_configuration": {},
+            "recorded_at_utc": self.timebase.now_iso(),
+            "acquisition_critical_fingerprint": self.fingerprint or "UNAVAILABLE",
+            "collector_version": self.store.collector_version,
+            "git_commit": self.store.git_commit,
+            "operator_command": command,
+        }
+        append_jsonl(self.paths.sec_lifecycle, record)
+        return record
 
     def record_service_start(self) -> dict[str, Any]:
         """Bind this process's externally attested lifecycle to the journal."""
