@@ -105,10 +105,12 @@ PRS_CLOSED_THIS_PASS = 10 (#7, #8, #9, #10, #11, #12, #13, #14, #15, #17).
 BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
 BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
-DELETE_NOW_SAFE_COUNT = 15.
+DELETE_NOW_SAFE_COUNT = 18.
 KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
 DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
-HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW = diverged Forward/Economic/Research/recovery refs with possible unique value.
+PRESERVE_UNIQUE_PRODUCT_CAPABILITIES = Evidence/PIT, Research Factory core and product-side SEC census branches retained.
+PRESERVE_SPECIAL_EVIDENCE = P14D draft, SEC recovery census evidence and Phase-0 economic learning retained.
+HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW = Forward finalization, old Forward recorder, alternate Economic Wave 1 and research/design-v1.
 
 DELETE_AFTER_BUILDER_REVIEW =
 - `autonomous-quant-rebuild`
