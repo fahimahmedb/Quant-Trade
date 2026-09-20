@@ -19,7 +19,7 @@ This registry is descriptive governance. A branch existing does **not** make it 
 
 | BRANCH | HEAD | STATUS | ROLE / RATIONALE | SUPERSEDED_BY / DEPENDENCY | OPEN_PR | SAFE_TO_DELETE |
 |---|---|---|---|---|---|---|
-| `blue/master-v2-2026-09-20` | `69884d50a01dc0c0490059ac5c7f76e886e88458` | **ACTIVE_OWNER** | Blue V2 governance/orchestration | — | — | NO |
+| `blue/master-v2-2026-09-20` | `RESOLVE_LIVE` | **ACTIVE_OWNER** | Blue V2 governance/orchestration | — | — | NO |
 | `claude/quant-blue-master-2026-09-20-mogpvh` | `69884d50a01dc0c0490059ac5c7f76e886e88458` | **SUPERSEDED** | Previous Blue Master authority | blue/master-v2-2026-09-20 | — | REVIEW_AFTER_BUILDER |
 | `astra/p0-gate-a-v2-independent-audit-2026-09-20` | `64b105f5a2cc1d798d1cf1e41e715b967c845a85` | **CANONICAL** | Final independent Gate A v2 audit; BLOCKED | — | — | NO |
 | `astra/checkpoint-gate-a-v2-independent-audit-2026-09-20` | `357b0e58bcf29832ee72976f757bc12d481c5d45` | **AUDIT_EVIDENCE** | Superseded audit checkpoint; stale CLOSED claim is evidence | astra/p0-gate-a-v2-independent-audit-2026-09-20 | — | NO |
@@ -27,7 +27,7 @@ This registry is descriptive governance. A branch existing does **not** make it 
 | `astra/p0-deep-adversarial-2026-09-19` | `816b999832d3ebf8d5d535981f232147a2a257f9` | **AUDIT_EVIDENCE** | Earlier adversarial trail | astra/p0-deep-adversarial-pre-t0 | — | NO |
 | `blue/checkpoint-gate-a-v2-audit-2026-09-20` | `4678c29eb8cd22aa7ef143075c6d4b68739026a3` | **AUDIT_EVIDENCE** | Originates R1-R5 before formal Astra branch | astra/p0-gate-a-v2-independent-audit-2026-09-20 | — | NO |
 | `blue/p0-gate-a-v2-final-2026-09-20` | `db166fd04c681e67a2c6d4440828af14ef58c48c` | **REJECTED** | Frozen Gate A v2 input; exact-head CI green but audit BLOCKED | builder/p0-gate-a-v3-2026-09-20 | — | NO |
-| `builder/p0-gate-a-v3-2026-09-20` | `db166fd04c681e67a2c6d4440828af14ef58c48c` | **BUILDER_IN_PROGRESS** | Active Gate A v3 Builder branch; currently no commit beyond frozen base | — | — | NO |
+| `builder/p0-gate-a-v3-2026-09-20` | `8609aaa06fd635e489adaf165ff9a835ab5d24cc` | **BUILDER_IN_PROGRESS** | Active Gate A v3 Builder branch; RED checkpoint only, not delivered | — | — | NO |
 | `blue/p0-calendar-direct-reconcile-red-2026-09-20` | `c81fa1cdf93d5b08265c5f06ed0f4424bdda917f` | **AUDIT_EVIDENCE** | Original unredirected B1 reconcile() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-manual-probe-red-2026-09-20` | `efbf72484e5e6873aba2446d53a728798b3f453f` | **AUDIT_EVIDENCE** | Tip weakened, but parent 345e18d9 contains original collector.poll() discriminant; Builder dependency | — | — | NO |
 | `blue/p0-direct-reconcile-fix-2026-09-20` | `dc9769b2790e724aaa281af209d822449d0bedfb` | **REJECTED** | Known insufficient B1 fix and test-redirection example | — | — | NO |
