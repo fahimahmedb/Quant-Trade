@@ -113,8 +113,11 @@ if unauthorized pre-seeding can occur and the later qualifying audit still reach
 Open PRs:
 `0`
 
+Open issues:
+`0`
+
 Current branch inventory:
-`71`
+`72`
 
 Single operational deletion authority:
 `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
@@ -211,16 +214,19 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = REVIEWED / NOT_EXECUTED`
 
-`ACTIVE_FRONTIER = CORRECTIVE_GATE_A_V4 / EFFECTIVE_UNIT_DIGEST_STABILITY + P14D_HYBRID_METHOD_REVIEW`
+`ACTIVE_FRONTIER = GATE_A_V4_RECEPTION + P14D_HYBRID_METHOD_REVIEW + REPOSITORY_HYGIENE_EXECUTION`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
 - exact implementation baseline: `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
 - mission contract commit: `b3fc705f082ce1fee7d415211ce42829c96cdbfc`;
-- current observed Builder head: `0bdd397d7409b01529c1f958c68781499679a95e`;
-- exact-head workflow run: `35535347844 = IN_PROGRESS` at context reacquisition;
+- implementation commit: `0bdd397d7409b01529c1f958c68781499679a95e`;
+- final Builder branch HEAD: `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- implementation-head workflow: `35535347844 = COMPLETED / SUCCESS`;
+- final-head workflow: `35536353538 = IN_PROGRESS` at last organizational audit refresh;
 - mission file: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_MISSION_2026-09-20.md`;
-- status: `IMPLEMENTATION_COMMITTED / BLUE_RECEPTION_PENDING_CI_AND_FINAL_HANDOFF`.
+- final handoff: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_HANDOFF_2026-09-20.md`;
+- status: `DELIVERED / BLUE_RECEPTION_PENDING_FINAL_EXACT_HEAD_CI`.
 
 
 ## 12. Target-host event — 2026-09-20
@@ -275,3 +281,31 @@ The amendment draft remains non-authoritative. Final Red Team review and an expl
 Material calendar-compression tests are present in the later frozen v3 lineage, so this workstream is not merely abandoned branch-local prose.
 
 The newly observed target-host effective-unit-digest defect is additional evidence for the value of deliberate target-host challenge over passive calendar waiting, but it does not by itself authorize replacing P14D.
+
+
+## 14. Organizational audit / cleanup execution
+
+Durable audit:
+`governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
+
+Execution runbook:
+`governance/REPOSITORY_HYGIENE_EXECUTION_RUNBOOK_2026-09-20.md`
+
+Verified during audit:
+- 72 live branches;
+- registry covers 72/72 live branches;
+- 35 delete-ready refs remain exact at pinned SHA, unprotected and non-default;
+- 0 open PRs;
+- 0 open issues after closing stale historical Phase-0 issue #2;
+- repository rulesets = 0;
+- stale default branch is 339 commits behind current Blue / 0 ahead;
+- default migration remains reviewed but not executed;
+- physical branch deletions remain 0.
+
+The server/admin clone is explicitly a second operational role distinct from the P0 qualifying runtime: repository cleanup may be executed from the development clone without mutating `/opt/quant` or `/var/lib/quant-p0`.
+
+Entry-point repairs completed:
+- `README.md` now exposes the current governance restart surface;
+- `AGENTS.md` routes agents through current Blue governance before runtime snapshots;
+- `NEXT_BUILD_MISSION.md` is now a router rather than a stale frozen mission;
+- stale issue #2 closed with historical record preserved.
