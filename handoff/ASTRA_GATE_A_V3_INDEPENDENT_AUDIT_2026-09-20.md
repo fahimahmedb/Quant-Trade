@@ -16,9 +16,13 @@ Frozen rejected v2 baseline: `db166fd04c681e67a2c6d4440828af14ef58c48c`
 Canonical v2 independent audit: `64b105f5a2cc1d798d1cf1e41e715b967c845a85`
 
 The candidate's own production code (`src/quant/**`, `scripts/quant.py`) was
-**not modified** by this audit. All new material is audit-only: two commits
-adding `tests/test_astra_gate_a_v3_audit.py`, this checkpoint, and this
-handoff, on the dedicated Astra branch.
+**not modified** by this audit. All new material is audit-only, added on the
+dedicated Astra branch across two commits: the first adding
+`tests/test_astra_gate_a_v3_audit.py`, this checkpoint, and this handoff; a
+second, packaging-only correction commit regenerating committed status
+artifacts to the correct discovered-test count and fixing this section's
+commit-count wording, after the first commit's own exact-head CI failed
+solely at the `Status artifact freshness` step (see Section 1a).
 
 ## 1. Ancestry and CI verification (independently re-derived)
 
@@ -52,6 +56,46 @@ artifact, with no network access and a deliberate fail-closed check with no
 SEC identity configured). It is not scientific certification, runtime
 continuity proof, P14D proof, economic readiness, or capital authorization,
 consistent with Section 0 of this mission.
+
+### 1a. Astra's own first audit commit had a red exact-head CI
+
+**FACT** — the first audit commit on this branch (adding
+`tests/test_astra_gate_a_v3_audit.py`, the checkpoint, and this handoff)
+produced GitHub Actions run `35516760209`, `head_sha =
+b55e4c460a561eee93cfa797c373b6315f4f5473`, `status = completed`,
+`conclusion = failure`. Independently queried job steps show the failure is
+isolated to step 7, `Status artifact freshness`; steps 1–6 (checkout,
+setup, environment record, fail-closed check, generated-schema drift) all
+succeeded, and steps 8–14 (full unit suite, SEC P0 lane suite, V1 end-to-end
+regression, verification-artifact generation/upload, placeholder restore,
+clean-tree check) were `skipped` as a consequence of the earlier failure,
+not independently red.
+
+**FACT** — the root cause was independently reproduced: adding
+`tests/test_astra_gate_a_v3_audit.py` (5 test methods) raised the
+repository's discoverable-test count from 411 to 416
+(`unittest.TestLoader().discover("tests").countTestCases() == 416`), but
+`STATE.md`'s committed generated status block still read "411 unit tests
+discovered", which is exactly the drift `scripts/status_artifacts.py --check`
+exists to catch.
+
+**Classification: TEST_DEFECT / AUDIT_PACKAGING_DEFECT, not REAL_DEFECT.**
+This is a packaging omission in Astra's own first audit commit (a generated
+artifact not regenerated after adding tests), not a regression in the frozen
+candidate `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` or in any of the seven
+correction surfaces. The candidate's own exact-head CI (`35514180655`,
+Section 1) remains green and is unaffected by this commit.
+
+**Correction applied, packaging-only, no `src/quant/**` or
+`scripts/quant.py` change**: ran `python3 scripts/status_artifacts.py
+--write` (the canonical generator, not a hand-edit) to regenerate `STATE.md`
+from the same reconstructed canonical V1 snapshot the CI check uses; the
+resulting diff is exactly the one generated line
+(`411 unit tests discovered` → `416 unit tests discovered`).
+`python3 scripts/status_artifacts.py --check` and
+`python3 scripts/generate_schemas.py --check` both pass locally afterward.
+This correction, plus the Section 0 commit-count wording fix, is the second
+commit on this branch.
 
 ## 2. Method
 
