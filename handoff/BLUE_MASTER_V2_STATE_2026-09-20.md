@@ -102,7 +102,7 @@ BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
 BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`.
 BRANCH_DELETE_BATCH = `governance/BRANCH_DELETE_BATCH_2026-09-20.md`.
-POST_GATE_A_BRANCH_DELETE_BATCH = `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md` (12 strict-ancestor refs; prepared only, execution waits for final Blue Gate A disposition).
+POST_GATE_A_BRANCH_DELETE_BATCH = `governance/POST_GATE_A_BRANCH_DELETE_BATCH_2026-09-20.md` (12 strict-ancestor refs; final Gate A PASS satisfied; all 12 rechecked at pinned SHA and unprotected; ready for delete when a proper delete-ref capability is available).
 DELETE_NOW_SAFE_COUNT = 18.
 KEEP_UNTIL_ASTRA = active P0/Gate A proof refs retained conservatively.
 DELETE_AFTER_ASTRA = superseded P0/governance refs pending post-audit citation/reachability check.
@@ -193,9 +193,11 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 ## J. NEXT ACTION
 
-NEXT_EXPECTED_EVENT = Blue target-host qualification / rodage entrance decision plus post-Gate cleanup.
+TARGET_HOST_ENTRANCE_CONTRACT = `governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md` = PREPARED / NOT_EXECUTED.
 
-NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute post-Gate cleanup reviews; prepare exact target-host entrance contract/checklist; do not declare t0 until target-host entrance evidence is satisfied.
+NEXT_EXPECTED_EVENT = target-host entrance execution evidence plus continued post-Gate cleanup.
+
+NEXT_ACTION = preserve frozen candidate `2da079d8...`; execute the prepared target-host entrance contract on the real host when access is available; continue post-Gate cleanup and default-branch migration review; do not declare t0 until target-host entrance evidence is satisfied.
 
 Do not start Product integration yet.
 Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real-capital readiness.
