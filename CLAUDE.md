@@ -10,15 +10,21 @@ Do not redefine Quant around the subsystem currently being edited. Preserve the 
 
 No real-capital authority is granted by this file. Current engineering work remains paper/shadow unless the project owner explicitly changes that boundary.
 
-## Read economically, not ceremonially
+## Current authority / restart surface
 
 Before substantial work:
 1. Read `QUANT_NORTH_STAR.md`.
-2. Read `STATE.md` and `CLAUDE_CURRENT_MISSION.md` when present.
-3. Read only the architecture, code and tests relevant to the current change.
-4. Read longer docs such as `SYSTEM_ARCHITECTURE.md`, `OPERATING_MODEL.md` and `AGENTS.md` only when the decision depends on them.
+2. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`.
+3. Read `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`.
+4. Read `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`.
+5. Read the exact branch-specific mission/handoff named by current Blue governance.
+6. Read only the architecture, code and tests relevant to that exact mission.
 
-Do not import `AGENTS.md` here. Avoiding that startup context cost is intentional.
+`STATE.md` and `CHIEF_BRIEF.md` are runtime/research snapshots, not current project-routing authority.
+`CLAUDE_CURRENT_MISSION.md` is now a router and must not contain a frozen historical mission.
+The repository default branch is currently historical and is not authority.
+
+Do not import the whole of `AGENTS.md` into every session; use the current governance files above as the compact routing surface.
 
 ## Builder role
 
@@ -76,9 +82,11 @@ Passing tests is necessary, not sufficient. Add adversarial tests for the specif
 
 ## Git behavior
 
-For the current corrective pass, update draft PR #12 rather than opening another PR. Do not merge, force-push, delete branches or perform irreversible external actions unless explicitly authorized.
+Follow the exact branch ownership and mutation permissions in the current Blue mission/handoff. Do not infer a current PR or branch from historical files.
 
-Commit coherent checkpoints and remove temporary scratch files from the final diff.
+Do not merge, force-push, delete branches, move frozen refs or perform irreversible external actions unless the current mission explicitly authorizes that operation.
+
+Commit coherent checkpoints and keep durable mission state in GitHub rather than chat.
 
 ## Stop conditions
 
