@@ -9,14 +9,18 @@ Your task is not to become the lifetime of the Quant process and not to reinterp
 Before any substantial change, read:
 
 1. `QUANT_NORTH_STAR.md`
-2. `SYSTEM_ARCHITECTURE.md`
-3. `OPERATING_MODEL.md`
-4. `MISSION.md`
-5. `SOURCE_BASIS.md`
-6. `AGENTS.md`
-7. `PIPELINE.md`
-8. `STATE.md`
-9. the code/tests/artifacts relevant to the current build mission.
+2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
+3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
+4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
+5. the exact branch-specific mission/handoff referenced by current Blue governance
+6. `SYSTEM_ARCHITECTURE.md`
+7. `OPERATING_MODEL.md`
+8. `MISSION.md`
+9. `SOURCE_BASIS.md`
+10. `AGENTS.md`
+11. `PIPELINE.md`
+12. `STATE.md` as runtime/research snapshot, not mission authority
+13. the code/tests/artifacts relevant to the exact current build mission.
 
 If a lower-level document appears to conflict with `QUANT_NORTH_STAR.md`, preserve the North Star and flag the inconsistency.
 
