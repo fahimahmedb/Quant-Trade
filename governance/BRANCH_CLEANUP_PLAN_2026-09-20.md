@@ -152,7 +152,21 @@ Independent file checks found that several diverged Builder branches contain mod
 
 These refs should survive until Blue explicitly decides how their capabilities map into the Product integration runtime. P0 isolation is not evidence that product-side capabilities are obsolete.
 
-## 7. HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW — do not delete yet
+## 7. PRESERVE_SPECIAL_EVIDENCE / GOVERNANCE
+
+- `blue/long-horizon-research-2026-09-20`
+  - contains the explicit **DRAFT ONLY / NOT AUTHORITATIVE** proposal to replace fixed P14D with a hybrid event-based qualification;
+  - current authority still says fixed P14D/frozen;
+  - preserve until Gate A/Astra disposition and a later Blue governance decision either adopts or rejects the amendment.
+- `recovery/claude-sec-local-20260914`
+  - contains recovery-only SEC census artifacts, including an acceptance manifest described by its commit as requiring roughly eight hours of SEC fair-access acquisition;
+  - explicitly not certification/economic authority, but expensive reproduction material;
+  - preserve until the relevant product/census lineage has a durable replacement.
+  - contains the historical Phase-0 P0-E1 economic value experiment and forensic report;
+  - result was `KILL / REJECT`: lower volatility did not improve terminal wealth versus buy-and-hold under the tested setup, and the data/instrument provenance was inadequate for a production edge claim;
+  - preserve as historical learning/memory evidence, not as current scientific authority.
+
+## 8. HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW — do not delete yet
 
 These branches are diverged and can contain unique work or concepts. They are not current authority, but deletion is premature:
 
@@ -162,12 +176,10 @@ These branches are diverged and can contain unique work or concepts. They are no
 - `codex/test`
 - `research/design-v1` — contains unique Alpha Factory / market-selection / abstention / launch doctrine documents; preserve as design reference until their useful content is either adopted or explicitly superseded
 - `parallel/codex-wave1-economic-system-2026-09-19`
-- `blue/long-horizon-research-2026-09-20`
-- `recovery/claude-sec-local-20260914`.
 
 For these, inspect unique commits/files or explicitly supersede their useful content before deleting the ref.
 
-## 8. Next cleanup actions
+## 9. Next cleanup actions
 
 1. Delete the 15 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
 2. Do not emulate deletion by force-moving refs.
