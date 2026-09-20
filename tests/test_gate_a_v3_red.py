@@ -301,5 +301,55 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         self.assertFalse(report["accountable"])
 
 
+    def test_terminal_child_exit_event_without_state_is_not_ignored(self):
+        """A durable current-child terminal exit cannot disappear without state."""
+        case, collector = self._qualifying_baseline()
+        lifecycle = collector.lifecycle
+        append_jsonl(collector.paths.sec / "supervisor_events.jsonl", {
+            "event": "CHILD_EXIT_OBSERVED",
+            "recorded_at_utc": case.timebase.now_iso(),
+            "supervisor_id": lifecycle.get("supervisor_id"),
+            "child_boot_id": lifecycle.get("boot_id"),
+            "fingerprint": collector.fingerprint,
+            "exit_code": 0,
+            "stopped_by_supervisor": True,
+            "unexpected_termination": False,
+        })
+
+        report = audit_observation_window(collector, now=case.timebase.now())
+        self.assertTrue(report["obligations_pending"])
+        self.assertFalse(
+            report["accountable"],
+            "durable terminal CHILD_EXIT_OBSERVED was ignored merely because "
+            "supervisor_state.json was absent",
+        )
+
+    def test_public_budget_authority_binding_cannot_install_noop_bypass(self):
+        """Public budget authority binding cannot mint mutation authority."""
+        case, collector = self._qualifying_baseline()
+        fresh = SecTrafficBudget(
+            collector.paths.sec_budget,
+            collector.policy,
+            timebase=case.timebase,
+        )
+        before_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        state = fresh.load()
+        state.requests += 1
+
+        fresh.bind_mutation_authority(lambda operation: None)
+        try:
+            fresh.save(state)
+        except (SecStorageFailure, PermissionError, RuntimeError):
+            return
+
+        after_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        self.assertGreater(
+            len(after_rows),
+            len(before_rows),
+            "a public no-op authority callback silently authorized durable "
+            "qualifying budget mutation",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
