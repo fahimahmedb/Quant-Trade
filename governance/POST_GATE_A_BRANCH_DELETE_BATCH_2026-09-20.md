@@ -3,14 +3,20 @@
 Authority: Blue / Mission Control.
 
 Status:
-`PREPARED_ONLY / DO_NOT_EXECUTE_BEFORE_FINAL_BLUE_GATE_A_DISPOSITION`
+`READY_FOR_DELETE_WHEN_CAPABILITY_AVAILABLE`
+
+Final Blue Gate A repository disposition is now PASS. Live recheck after that disposition confirmed all 12 refs still exist at exactly their pinned SHAs and are unprotected. Physical deletion remains blocked only by the current GitHub connector lacking a delete-ref operation.
 
 Purpose: prepare the second cleanup tranche while Astra fixes audit packaging. These refs are all independently verified as strict ancestors of a retained authority. Their commits therefore remain reachable after branch-ref deletion.
 
 Execution precondition:
-- final Blue Gate A repository disposition must be rendered;
-- no new audit finding may reopen a dependency on one of these refs;
-- re-fetch each branch and require exact HEAD equality before deletion.
+- final Blue Gate A repository disposition: SATISFIED;
+- no new audit finding reopening a dependency: SATISFIED at this recheck;
+- exact pinned HEAD equality: SATISFIED for all 12 at this recheck;
+- branches unprotected: SATISFIED for all 12 at this recheck;
+- actual delete-ref capability: NOT AVAILABLE in the current connector.
+
+Before any later physical deletion, re-fetch each branch once more and require exact HEAD equality.
 
 | Branch | Expected HEAD | Retained descendant |
 |---|---|---|
