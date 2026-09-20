@@ -250,6 +250,12 @@ NEW_BRANCH_CREATED      = FALSE (working on parallel/claude-forward-data-2026-09
   UNKNOWN-heavy multi-year tail.
   6 new tests (2 coverage-ledger regressions, 4 runner-wiring checks with no
   network calls). Full suite: **654 passed**, 0 regressions.
-- [next] Final deliverable handoff document, attestation, push.
+- [done] Final deliverable written: `handoff/CLAUDE_FORWARD_DATA_2026-09-20.md`.
+  Whole-system demo re-verified (`scripts/demo_quant_system.py` -> 35/35
+  checks passed), confirming this branch's changes leave the existing V1
+  system's own invariants intact. Mission complete; see that document for the
+  full report, attestation and `CAPTURE_IS_ACTUALLY_RUNNING = FALSE` verdict
+  with its exact blocker.
 
-(Further entries appended after each significant, committed slice.)
+(Mission complete. See `handoff/CLAUDE_FORWARD_DATA_2026-09-20.md` for the
+final deliverable.)
