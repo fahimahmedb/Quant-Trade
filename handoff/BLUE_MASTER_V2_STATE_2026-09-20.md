@@ -72,7 +72,7 @@ NEXT_OWNER = Builder for the Blue-approved effective-unit-digest stability corre
 
 ## E. WAITING FOR
 
-WAITING_FOR = Builder v4 final handoff + exact-head CI on `builder/p0-effective-unit-digest-stability-v4-2026-09-20`, then Blue reception, independent Astra reproduction/review, and Blue disposition. In parallel, Blue resumes final P14D hybrid-method review.
+WAITING_FOR = independent Astra Gate A v4 reproduction/review on frozen candidate `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`, then Blue disposition. P14D hybrid-method review and repository hygiene may proceed in parallel.
 
 Historical Gate A v3 repository proof remains closed at its exact SHA, but the frozen candidate is no longer eligible for target-host entrance because of the newly reproduced REAL_DEFECT.
 
@@ -209,7 +209,7 @@ BLUE_TARGET_HOST_QUALIFICATION_MISSION = `handoff/BLUE_TARGET_HOST_QUALIFICATION
 DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
-NEXT_EXPECTED_EVENT = final Builder v4 exact-head CI completion on `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`, followed by Blue reception and independent Astra review; repository hygiene may execute in parallel.
+NEXT_EXPECTED_EVENT = independent Astra Gate A v4 audit checkpoint/final handoff from `astra/p0-gate-a-v4-independent-audit-2026-09-20`; repository hygiene and P14D method review may execute in parallel.
 
 NEXT_ACTION = preserve frozen candidate `2da079d8...` and its failed target-host evidence; do not start it again for qualification; implement the Blue-approved effective-unit-digest stability correction from the exact frozen implementation baseline; require exact-head CI, independent Astra review and a new Blue disposition before any target-host re-entry; do not declare t0 until the replacement candidate satisfies target-host entrance.
 
@@ -329,5 +329,42 @@ Current Builder v4 delivery:
 - implementation = `0bdd397d7409b01529c1f958c68781499679a95e`;
 - final Builder HEAD = `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
 - implementation-head CI `35535347844 = SUCCESS`;
-- final-head CI `35536353538 = IN_PROGRESS` at the audit refresh;
-- Blue final reception waits for that exact final-head CI.
+- selected-delivery CI `35536353538 = COMPLETED / SUCCESS`;
+- Blue reception = `PASS_FOR_INDEPENDENT_ASTRA_REVIEW`;
+- frozen candidate = `blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- independent Astra branch = `astra/p0-gate-a-v4-independent-audit-2026-09-20`;
+- Astra mission commit = `b636a04b6f8f7786679907d01a4fa22bdfc4e329`.
+
+
+## O. GATE A V4 RECEIVED / ASTRA DISPATCHED
+
+Blue reception:
+`handoff/BLUE_GATE_A_V4_RECEPTION_2026-09-20.md`
+
+Builder implementation:
+`0bdd397d7409b01529c1f958c68781499679a95e`
+
+Selected final delivery / frozen candidate:
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+Exact-head CI:
+`35536353538 = COMPLETED / SUCCESS`
+
+Frozen ref:
+`blue/p0-gate-a-v4-frozen-2026-09-20`
+
+A later Builder docs-only commit `b10cde0dd193714346abdfe87afb841482e9b7c8` is post-delivery evidence only. It does not move the audited candidate.
+
+Independent audit branch:
+`astra/p0-gate-a-v4-independent-audit-2026-09-20`
+
+Astra mission:
+`handoff/ASTRA_GATE_A_V4_MISSION_2026-09-20.md`
+
+Mission commit:
+`b636a04b6f8f7786679907d01a4fa22bdfc4e329`
+
+Current disposition:
+`BLUE_GATE_A_V4_BUILDER_RECEPTION = PASS_FOR_INDEPENDENT_ASTRA_REVIEW`
+
+No Gate A v4 PASS or target-host readiness has been declared.
