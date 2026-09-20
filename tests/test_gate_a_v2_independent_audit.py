@@ -10,12 +10,12 @@ from __future__ import annotations
 import unittest
 
 from quant.dataplane.sec.audit import audit_observation_window
-from tests.test_sec_form4_capture import RodageFalsificationTests
+from tests import test_sec_form4_capture as sec_capture_tests
 
 
 class GateAV2IndependentAuditRedTests(unittest.TestCase):
-    def _rodage_case(self) -> RodageFalsificationTests:
-        case = RodageFalsificationTests(methodName="runTest")
+    def _rodage_case(self) -> sec_capture_tests.RodageFalsificationTests:
+        case = sec_capture_tests.RodageFalsificationTests(methodName="runTest")
         case.setUp()
         self.addCleanup(case.doCleanups)
         return case
