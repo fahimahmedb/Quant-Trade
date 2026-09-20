@@ -100,10 +100,10 @@ QUALIFYING P0 RUNTIME and PRODUCT INTEGRATION RUNTIME remain separate.
 ## H. CLEANUP QUEUE
 
 BRANCHES_CLASSIFIED = 71 (including frozen Gate A v3 and Astra audit refs).
-PRS_OPEN_LAST_VERIFIED = 9 (#8, #9, #10, #11, #12, #13, #14, #15, #17).
-PRS_CLOSED_THIS_PASS = 1 (#7).
+PRS_OPEN_LAST_VERIFIED = 0.
+PRS_CLOSED_THIS_PASS = 10 (#7, #8, #9, #10, #11, #12, #13, #14, #15, #17).
 BRANCHES_DELETED_THIS_PASS = 0.
-CANDIDATE_FOR_PR_CLOSURE_COUNT = 9.
+CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
 DELETE_AFTER_BUILDER_COUNT = 39 candidate refs for **re-evaluation**, not authorization.
 
 DELETE_AFTER_BUILDER_REVIEW =
@@ -146,6 +146,10 @@ DELETE_AFTER_BUILDER_REVIEW =
 - `runtime/persistent-research-v1`
 - `tmp-ignore`
 - `blue/forward-finalization-2026-09-20`
+
+PR_CLEANUP = COMPLETE / 0 OPEN PRS.
+
+Branch cleanup remains separate and more conservative. No branch deletion is implied by PR closure.
 
 Explicitly preserved regardless of cleanup pressure through independent Astra review:
 - `blue/p0-calendar-direct-reconcile-red-2026-09-20`;
