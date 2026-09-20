@@ -211,14 +211,16 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = REVIEWED / NOT_EXECUTED`
 
-`ACTIVE_FRONTIER = CORRECTIVE_GATE_A_V4 / EFFECTIVE_UNIT_DIGEST_STABILITY`
+`ACTIVE_FRONTIER = CORRECTIVE_GATE_A_V4 / EFFECTIVE_UNIT_DIGEST_STABILITY + P14D_HYBRID_METHOD_REVIEW`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
 - exact implementation baseline: `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
 - mission contract commit: `b3fc705f082ce1fee7d415211ce42829c96cdbfc`;
+- current observed Builder head: `0bdd397d7409b01529c1f958c68781499679a95e`;
+- exact-head workflow run: `35535347844 = IN_PROGRESS` at context reacquisition;
 - mission file: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_MISSION_2026-09-20.md`;
-- status: `DISPATCHED / IMPLEMENTATION_PENDING`.
+- status: `IMPLEMENTATION_COMMITTED / BLUE_RECEPTION_PENDING_CI_AND_FINAL_HANDOFF`.
 
 
 ## 12. Target-host event — 2026-09-20
@@ -240,3 +242,36 @@ Restricted target-host artifact binding:
 The defect is in the frozen implementation's canonicalization of `systemctl show ExecStart`: mutable execution observations are included in the effective-unit digest. The loaded unit bytes and frozen semantic checks otherwise matched.
 
 The historical repository-only Gate A v3 PASS remains attributable only to its prior proof domain. The v3 candidate is no longer eligible for target-host entrance. A corrected candidate requires Builder implementation, exact-head CI, independent review and a new Blue disposition. No proof transfers silently across SHA.
+
+
+## 13. P14D parallel governance workstream
+
+The fixed rule remains authoritative until explicitly superseded:
+
+`P0_CONTINUOUS_OBSERVATION_MIN = P14D`
+
+`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+
+However, Blue's P14D challenge is an ACTIVE governance-method workstream, not out-of-scope reference material.
+
+Method authority input:
+`blue/long-horizon-research-2026-09-20@7e0fae86834db7f46ecea5755faf0ac544245399`
+
+Exact-head CI:
+`35480999341 = COMPLETED / SUCCESS`
+
+Technical recommendation:
+`REPLACE_FIXED_DURATION_WITH_HYBRID_EVIDENCE_CONTRACT`
+
+The candidate hybrid method is:
+- accelerated/fault-compressed repository proof;
+- destructive target-host entrance proof;
+- explicit prospective t0;
+- event-based live source window spanning ordinary overnight silence + full weekend + reopen/reconciliation;
+- final retrospective audit.
+
+The amendment draft remains non-authoritative. Final Red Team review and an explicit Blue amendment are required before t0.
+
+Material calendar-compression tests are present in the later frozen v3 lineage, so this workstream is not merely abandoned branch-local prose.
+
+The newly observed target-host effective-unit-digest defect is additional evidence for the value of deliberate target-host challenge over passive calendar waiting, but it does not by itself authorize replacing P14D.
