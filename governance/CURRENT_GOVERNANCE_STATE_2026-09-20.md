@@ -213,6 +213,13 @@ Then:
 
 `ACTIVE_FRONTIER = CORRECTIVE_GATE_A_V4 / EFFECTIVE_UNIT_DIGEST_STABILITY`
 
+Corrective Builder dispatch:
+- branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
+- exact implementation baseline: `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`;
+- mission contract commit: `b3fc705f082ce1fee7d415211ce42829c96cdbfc`;
+- mission file: `handoff/BUILDER_P0_EFFECTIVE_UNIT_DIGEST_STABILITY_V4_MISSION_2026-09-20.md`;
+- status: `DISPATCHED / IMPLEMENTATION_PENDING`.
+
 
 ## 12. Target-host event — 2026-09-20
 
