@@ -130,17 +130,31 @@ These are strong deletion candidates, but their refs should remain until Astra r
 
 Post-Astra deletion still requires a final citation/reachability check.
 
-## 6. HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW — do not delete yet
+## 6. PRESERVE_UNIQUE_PRODUCT_CAPABILITIES
+
+Independent file checks found that several diverged Builder branches contain modules that do **not** exist on the frozen Gate A v3 P0 candidate. They therefore carry unique product-side implementation and are not cleanup noise:
+
+- `builder/evidence-store-identity-v2`
+  - unique modules include `src/quant/dataplane/evidence.py`, `identity.py`, corporate-action/PIT identity schemas and adversarial evidence tests;
+  - these files are absent from frozen P0 v3.
+- `builder/research-factory-core-v2`
+  - unique modules include `experiments.py`, `outcome_firewall.py`, power/geometry and experiment-registry proof;
+  - these files are absent from frozen P0 v3.
+- `builder/research-factory-core-v2-proof-scratch`
+  - earlier proof lineage for the same Research Factory capability; retain until the final core branch has been integrated or explicitly archived.
+- `builder/sec-form4-census-v2a`
+  - unique product-side census implementation `src/quant/dataplane/sec_form4.py`, schemas, calendar data and census tests;
+  - `sec_form4.py` is absent from the frozen P0 v3 tree.
+
+These refs should survive until Blue explicitly decides how their capabilities map into the Product integration runtime. P0 isolation is not evidence that product-side capabilities are obsolete.
+
+## 7. HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW — do not delete yet
 
 These branches are diverged and can contain unique work or concepts. They are not current authority, but deletion is premature:
 
 - `blue/forward-finalization-2026-09-20` — diverged 2 ahead / 2 behind canonical Forward; unique `forward-live-smoke` concept is still queued for reimplementation.
 - `builder/forward-market-recorder-v2` — diverged old Forward implementation line.
 - `parallel/codex-wave1-economic-system-2026-09-19` — diverged alternate Economic line.
-- `builder/evidence-store-identity-v2`
-- `builder/research-factory-core-v2`
-- `builder/research-factory-core-v2-proof-scratch`
-- `builder/sec-form4-census-v2a`
 - `codex/alignment-bootstrap`
 - `codex/optimiser-recherche-persistente-avec-intelligence++`
 - `codex/test`
@@ -151,10 +165,10 @@ These branches are diverged and can contain unique work or concepts. They are no
 
 For these, inspect unique commits/files or explicitly supersede their useful content before deleting the ref.
 
-## 7. Next cleanup actions
+## 8. Next cleanup actions
 
 1. Delete the 15 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
 2. Do not emulate deletion by force-moving refs.
-3. While Astra runs, inspect the diverged HOLD set and promote any unique useful concept into a durable queue/index.
+3. While Astra runs, inspect the remaining diverged HOLD set and promote any unique useful concept into a durable queue/index. Unique product capability branches identified in Section 6 are explicitly preserved.
 4. After Astra handoff, re-run reachability/citation checks and shrink the `KEEP_UNTIL_ASTRA` + `DELETE_AFTER_ASTRA` sets.
 5. Only after Gate disposition review the stale default branch migration.
