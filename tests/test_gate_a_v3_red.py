@@ -17,6 +17,7 @@ from quant.dataplane.sec.audit import (
     _resolve_attempts,
     audit_observation_window,
 )
+from quant.dataplane.sec.budget import SecTrafficBudget
 from quant.dataplane.sec.store import SecStorageFailure
 from quant.state import append_jsonl, read_jsonl, write_json
 from tests import test_sec_form4_capture as sec_capture_tests
@@ -98,11 +99,11 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
         """Discovery cadence cannot hide an omitted, independently due reconciliation."""
         case, collector = self._qualifying_baseline()
 
-        # Compress wall-clock cost without weakening the v2 accounting path:
-        # each poll is 180s after its 60s due time, exactly the audit tolerance.
-        # The virtual interval remains 44h and the primitive remains poll().
-        for _ in range(44 * 15):
-            case.timebase.advance(240)
+        # Preserve the original audit reproduction exactly: every discovery
+        # obligation is satisfied on the normal 60-second cadence for 44 virtual
+        # hours while reconciliation is deliberately omitted.
+        for _ in range(44 * 60):
+            case.timebase.advance(60)
             collector.poll()
 
         due = collector.reconciliation_due()
@@ -248,6 +249,32 @@ class GateAV3PrimitiveRedTests(unittest.TestCase):
             "without durable intervention provenance",
         )
         self.assertFalse(report["accountable"])
+
+    def test_fresh_budget_instance_cannot_bypass_qualifying_mutation_authority(self):
+        """A fresh SecTrafficBudget on qualifying state cannot bypass authority."""
+        case, collector = self._qualifying_baseline()
+        collector.budget.enter_cooldown(300.0, "synthetic_gate_a_v3_fresh_instance")
+        fresh = SecTrafficBudget(
+            collector.paths.sec_budget,
+            collector.policy,
+            timebase=case.timebase,
+        )
+        before_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        before = fresh.load().to_dict()
+
+        try:
+            fresh.clear_cooldown()
+        except (SecStorageFailure, PermissionError, RuntimeError):
+            return
+
+        after = fresh.load().to_dict()
+        after_rows = list(read_jsonl(collector.paths.sec_lifecycle))
+        self.assertNotEqual(before, after, "test setup expected a durable mutation")
+        self.assertGreater(
+            len(after_rows),
+            len(before_rows),
+            "a fresh budget instance bypassed qualifying mutation provenance",
+        )
 
     def test_direct_clear_cooldown_is_rejected_or_provenanced(self):
         """SecTrafficBudget.clear_cooldown() cannot silently mutate qualifying state."""
