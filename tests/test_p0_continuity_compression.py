@@ -74,6 +74,23 @@ class CalendarBoundaryCompressionTests(CollectorTestCase):
             "bootstrap source day must be derived in America/New_York, not UTC",
         )
 
+    def test_direct_reconcile_before_settlement_emits_no_request(self) -> None:
+        """Manual reconciliation cannot bypass the same source-calendar gate."""
+        friday = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
+        collector = self._collector_starting(friday)
+        requested_before = list(self.transport.requested)
+
+        result = collector.reconcile(date(2026, 9, 18))
+
+        self.assertFalse(result["reconciled"])
+        self.assertEqual(result["result_state"], "RECONCILIATION_NOT_DUE")
+        self.assertEqual(
+            self.transport.requested,
+            requested_before,
+            "an explicit --day must not emit an early SEC request",
+        )
+        self.assertNotIn("2026-09-18", collector.state.reconciled_days)
+
     def test_virtual_p14d_horizon_has_no_hidden_calendar_state(self) -> None:
         """The former 14-day horizon reduces to settled weekdays under exact logic."""
         start = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
