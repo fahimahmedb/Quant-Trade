@@ -8,11 +8,12 @@ effort: high
 
 Verify the current milestone rather than summarizing it.
 
-1. Read `CLAUDE_CURRENT_MISSION.md` and identify each explicit invariant.
-2. Run the repository's normal verification commands.
-3. Inspect the tests that claim to prove each invariant; distinguish existence tests from behavioral/adversarial proof.
-4. Reproduce the most dangerous restart, timeline, attribution, transformation and liveness edge cases relevant to the mission.
-5. Compare generated status/brief claims against persistent state.
-6. Return PASS / FAIL / UNPROVEN for every mission invariant, with the exact evidence or failing test.
+1. Read current Blue governance, resolve the exact branch-specific mission/handoff and identify each explicit invariant. `CLAUDE_CURRENT_MISSION.md` may help route but is not the authority.
+2. Bind every proof claim to the exact candidate SHA/proof domain before running verification.
+3. Run the repository's normal verification commands.
+4. Inspect the tests that claim to prove each invariant; distinguish existence tests from behavioral/adversarial proof.
+5. Reproduce the most dangerous restart, timeline, attribution, transformation and liveness edge cases relevant to the mission.
+6. Compare generated status/brief claims against persistent state where relevant.
+7. Return PASS / FAIL / UNPROVEN for every mission invariant, with exact SHA, proof domain, evidence or failing test.
 
 Do not modify code during this skill. Its purpose is independent proof.
