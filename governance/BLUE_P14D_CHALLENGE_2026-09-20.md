@@ -193,9 +193,13 @@ On the actual target host and exact pinned release:
 - verify private SEC requester identity and one global requester budget;
 - bind runtime image/interpreter/OpenSSL/configuration and active/materialized fingerprint.
 
-### Gate C — Live event-based rodage
+### Gate C — Qualifying live event window
 
-Run the exact pinned target runtime prospectively with no invalidating intervention.
+After Gate B, perform one final restricted entrance audit on the exact pinned runtime. If it passes and the superseding governance rule is already in force, Blue explicitly declares:
+
+`t0 = <exact UTC timestamp>`
+
+That declaration starts the qualifying live continuity window. Run the exact pinned target runtime prospectively from t0 with no invalidating intervention.
 
 Closure is event-based, not `N` arbitrary days. Use the SEC's prospectively known EDGAR operating calendar as the source authority: EDGAR accepts filings 06:00–22:00 Eastern Time Monday–Friday except federal holidays, and daily indexes are updated nightly beginning around 22:00 ET. The live window must:
 - include one ordinary weekday overnight source-closed interval (22:00–06:00 ET) declared before observing outcomes;
@@ -212,7 +216,7 @@ If the required source-calendar conditions have not occurred, the window stays o
 
 ### Gate D — Final retrospective audit
 
-Produce one target artifact binding exact SHA/tree/input-tree digest/fingerprint/manifest/runtime image/effective service digest/CI run/UTC interval/lifecycle authority and the Gate A/B/C verdicts. Only after this may Blue decide whether to declare t0 under the amended rule.
+Produce one target artifact binding exact SHA/tree/input-tree digest/fingerprint/manifest/runtime image/effective service digest/CI run/UTC interval/lifecycle authority and the Gate A/B/C verdicts. Gate D decides whether the continuity proof that began at the declared t0 is complete; it does not retroactively choose t0.
 
 ## 8. Why this is stronger than fixed P14D
 
