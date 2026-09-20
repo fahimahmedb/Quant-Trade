@@ -84,6 +84,7 @@ GitHub compare independently verified each of the following as a strict ancestor
 - `tmp-ignore`
 - `codex/alignment-bootstrap` — strict ancestor of preserved `research/design-v1`; no unique tip content remains outside that retained design line.
 - `codex/optimiser-recherche-persistente-avec-intelligence++` — closed PR #11 alternative runtime implementation; deliberately not selected. Current Blue carries the selected persistent runtime/orchestrator lineage instead. Preserve PR history, but the branch is not current authority or required evidence.
+- `builder/research-factory-core-v2-proof-scratch` — exact strict ancestor of preserved `builder/research-factory-core-v2` (final core is 3 commits ahead / 0 behind).
 
 Additional duplicate-ref facts:
 - `tmp-ignore` and `claude-config-bootstrap` point to the same commit `002b9b04a2a62e26229b4fc17a39d64c109f53c6`.
@@ -108,7 +109,7 @@ The existing Blue branch registry already classifies the following as unrelated/
 
 They are not inputs to current Gate A, Forward, Economic, Product integration, or Blue governance.
 
-DELETE_NOW_SAFE_COUNT = 17.
+DELETE_NOW_SAFE_COUNT = 18.
 
 No deletion has been executed by this document.
 
@@ -144,13 +145,13 @@ Independent file checks found that several diverged Builder branches contain mod
 - `builder/research-factory-core-v2`
   - unique modules include `experiments.py`, `outcome_firewall.py`, power/geometry and experiment-registry proof;
   - these files are absent from frozen P0 v3.
-- `builder/research-factory-core-v2-proof-scratch`
-  - earlier proof lineage for the same Research Factory capability; retain until the final core branch has been integrated or explicitly archived.
 - `builder/sec-form4-census-v2a`
   - unique product-side census implementation `src/quant/dataplane/sec_form4.py`, schemas, calendar data and census tests;
   - `sec_form4.py` is absent from the frozen P0 v3 tree.
 
-These refs should survive until Blue explicitly decides how their capabilities map into the Product integration runtime. P0 isolation is not evidence that product-side capabilities are obsolete.
+These refs survive until Blue explicitly decides how their capabilities map into the Product integration runtime. P0 isolation is not evidence that product-side capabilities are obsolete.
+
+The scratch ref `builder/research-factory-core-v2-proof-scratch` is **not** required: GitHub compare proves `builder/research-factory-core-v2` is 3 commits ahead / 0 behind with merge-base exactly the scratch tip. The scratch ref therefore moves to DELETE_NOW_SAFE while the final core ref is preserved.
 
 ## 7. PRESERVE_SPECIAL_EVIDENCE / GOVERNANCE
 
@@ -162,28 +163,36 @@ These refs should survive until Blue explicitly decides how their capabilities m
   - contains recovery-only SEC census artifacts, including an acceptance manifest described by its commit as requiring roughly eight hours of SEC fair-access acquisition;
   - explicitly not certification/economic authority, but expensive reproduction material;
   - preserve until the relevant product/census lineage has a durable replacement.
+- `codex/test`
   - contains the historical Phase-0 P0-E1 economic value experiment and forensic report;
   - result was `KILL / REJECT`: lower volatility did not improve terminal wealth versus buy-and-hold under the tested setup, and the data/instrument provenance was inadequate for a production edge claim;
   - preserve as historical learning/memory evidence, not as current scientific authority.
 
 ## 8. HOLD_FOR_INTEGRATION_OR_CONTENT_REVIEW — do not delete yet
 
-These branches are diverged and can contain unique work or concepts. They are not current authority, but deletion is premature:
+These refs contain distinct concepts or alternate implementations that are not current authority but should not be discarded before their successor integration decisions:
 
-- `blue/forward-finalization-2026-09-20` — diverged 2 ahead / 2 behind canonical Forward; unique `forward-live-smoke` concept is still queued for reimplementation.
-- `builder/forward-market-recorder-v2` — diverged old Forward implementation line. Tree inspection shows a distinct `src/quant/recorders/**` architecture and recorder schemas/tests not present by path in canonical Forward; preserve until Blue decides whether any recorder concepts need porting.
-- `parallel/codex-wave1-economic-system-2026-09-19` — diverged alternate Economic line. It contains an older compact `economics/engine.py` implementation while canonical Economic V2 has a much broader modular economics stack; preserve until semantic supersession is explicitly recorded.
-- `codex/test`
-- `research/design-v1` — contains unique Alpha Factory / market-selection / abstention / launch doctrine documents; preserve as design reference until their useful content is either adopted or explicitly superseded
+- `blue/forward-finalization-2026-09-20`
+  - diverged 2 ahead / 2 behind canonical Forward;
+  - unique `forward-live-smoke` workflow concept remains queued for reimplementation against canonical runner semantics.
+- `builder/forward-market-recorder-v2`
+  - distinct `src/quant/recorders/**` recorder architecture plus recorder schemas/restart/live-proof tests;
+  - canonical Forward uses a different `src/quant/dataplane/forward_*` architecture;
+  - preserve until Blue determines whether any recorder semantics need porting.
 - `parallel/codex-wave1-economic-system-2026-09-19`
-
-For these, inspect unique commits/files or explicitly supersede their useful content before deleting the ref.
+  - three unique commits from the old Wave-1 base, including compact provenance-bound `economics/engine.py`;
+  - canonical Economic V2 is substantially broader/modular but is not yet integrated/qualified;
+  - preserve until semantic supersession is explicitly recorded during Economic reception.
+- `research/design-v1`
+  - contains unique Alpha Factory, market-selection, abstention and launch-doctrine documents;
+  - preserve as design reference until useful content is either adopted or explicitly superseded.
 
 ## 9. Next cleanup actions
 
-1. Delete the 17 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
+1. Delete the 18 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
 2. Do not emulate deletion by force-moving refs.
-3. While Astra runs, inspect the remaining diverged HOLD set and promote any unique useful concept into a durable queue/index. Unique product capability branches identified in Section 6 are explicitly preserved.
+3. While Astra runs, keep reviewing only the remaining Gate-adjacent/post-Astra candidates; product-capability/evidence refs above are already classified.
 4. After Astra handoff, re-run reachability/citation checks and shrink the `KEEP_UNTIL_ASTRA` + `DELETE_AFTER_ASTRA` sets.
 5. Only after Gate disposition review the stale default branch migration.
 6. Current tool limitation: GitHub connector exposes no branch-ref deletion operation. Do not substitute force-moving refs for deletion; actual ref removal requires a proper branch-delete capability or manual GitHub operation.
+
