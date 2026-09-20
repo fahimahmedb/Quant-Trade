@@ -502,3 +502,48 @@ Blue has recovered its route when a new conversation can answer, from repository
 - what remains forbidden.
 
 After the entry-point repairs in this audit, that condition is materially stronger than at audit start.
+
+
+## 16. Automatic agent-context layer — critical finding and repair
+
+A deeper entrypoint audit found a more dangerous stale route than the root mission files:
+
+- `CLAUDE.md` is intentionally auto-loaded by Claude Code;
+- it still instructed Claude to read `STATE.md` and `CLAUDE_CURRENT_MISSION.md`;
+- `CLAUDE_CURRENT_MISSION.md` still contained the historical **PR #12 Corrective Integrity Pass**;
+- `CLAUDE.md` itself still said to update draft PR #12;
+- `.claude/skills/quant-orient/SKILL.md` treated `STATE.md` + `CLAUDE_CURRENT_MISSION.md` as the mission source;
+- `.claude/skills/quant-proof/SKILL.md` derived proof invariants from that stale mission;
+- `CODEX.md` also read architecture/runtime state before current Blue governance.
+
+This is a direct mechanism by which a new Claude/Codex session could ignore the well-organized current governance and confidently resume an obsolete task.
+
+Classification:
+`REAL_ORGANIZATIONAL_DEFECT / CONTEXT_ROUTING`
+
+Corrections committed during this audit:
+
+- `CLAUDE.md` now routes through current Blue governance and exact mission handoff; old PR #12 Git instructions removed.
+- `CLAUDE_CURRENT_MISSION.md` is now a router, not a frozen mission.
+- `CODEX.md` now reads current governance/Blue state before architecture/runtime snapshots.
+- `/quant-orient` resolves exact Blue authority, mission base/SHA and proof domain.
+- `/quant-proof` binds proof to exact current mission/candidate SHA.
+- `/quant-audit` resolves frozen candidate authority before review.
+- `RUNTIME.md` and `RUNTIME_RUNBOOK.md` are explicitly labeled as subsystem/history docs, not current routing.
+
+This finding explains why repository reorganization alone was insufficient: the **auto-loaded model context layer** still pointed at old work.
+
+## 17. Organizational route after repair
+
+The restart hierarchy is now intentionally redundant in the right direction:
+
+`CLAUDE.md / CODEX.md / AGENTS.md / README.md`
+→ `CURRENT_GOVERNANCE_STATE`
+→ `BLUE_MASTER_V2_STATE`
+→ `BLUE_CONTEXT_REACQUISITION`
+→ exact mission/frozen SHA
+→ code/tests/evidence.
+
+`STATE.md`, `CHIEF_BRIEF.md`, old issues, old PR text and historical runbooks can no longer legitimately outrank that route.
+
+The remaining organizational work is physical namespace cleanup/default migration and later branch protection; the logical routing defect has been materially repaired.
