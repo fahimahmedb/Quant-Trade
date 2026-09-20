@@ -247,6 +247,16 @@ class SecCaptureStore:
             if existing != body:
                 raise RawObjectConflict(
                     f"content address collision at {object_id}: stored bytes differ")
+            # A previous process may have linked these exact bytes and then died
+            # (or observed an fsync error) before directory metadata was proven
+            # durable. Existence is therefore not sufficient to acknowledge a
+            # deduplication after restart: re-establish both directory levels.
+            try:
+                self._fsync_dir(target.parent.parent)
+                self._fsync_dir(target.parent)
+            except OSError as exc:
+                raise SecStorageFailure(
+                    f"raw object durability revalidation failed: {type(exc).__name__}") from exc
             return RawWriteResult(object_id, len(body), True, target)
         self._link_into_place(body, target)
         return RawWriteResult(object_id, len(body), False, target)
@@ -255,6 +265,11 @@ class SecCaptureStore:
         staging = self.paths.sec_staging / f"{uuid.uuid4().hex}.part"
         try:
             target.parent.mkdir(parents=True, exist_ok=True)
+            # The two-hex hash-prefix directory is created lazily. fsyncing the
+            # prefix after linking an object does not by itself make the prefix
+            # entry durable in raw/ (or incomplete/), so establish that parent
+            # metadata before publishing any object beneath it.
+            self._fsync_dir(target.parent.parent)
             handle = os.open(staging, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
             try:
                 written = 0
