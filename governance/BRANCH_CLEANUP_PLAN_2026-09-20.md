@@ -82,9 +82,13 @@ GitHub compare independently verified each of the following as a strict ancestor
 - `quant-system-v1`
 - `runtime/persistent-research-v1`
 - `tmp-ignore`
+- `codex/alignment-bootstrap` — strict ancestor of preserved `research/design-v1`; no unique tip content remains outside that retained design line.
+- `codex/optimiser-recherche-persistente-avec-intelligence++` — closed PR #11 alternative runtime implementation; deliberately not selected. Current Blue carries the selected persistent runtime/orchestrator lineage instead. Preserve PR history, but the branch is not current authority or required evidence.
 
-Additional fact:
+Additional duplicate-ref facts:
 - `tmp-ignore` and `claude-config-bootstrap` point to the same commit `002b9b04a2a62e26229b4fc17a39d64c109f53c6`.
+- `quant-system-v1` and the stale repository default `claude/nasdaq-trading-model-design-h3mp4n` point to the same commit `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce`; keep the default only until explicit default migration, making `quant-system-v1` redundant as a ref.
+- `codex/alignment-bootstrap` is an exact ancestor of retained `research/design-v1` (12 commits ahead / 0 behind from alignment to design).
 
 ### Economic ancestor absorbed by canonical Economic
 
@@ -104,7 +108,7 @@ The existing Blue branch registry already classifies the following as unrelated/
 
 They are not inputs to current Gate A, Forward, Economic, Product integration, or Blue governance.
 
-DELETE_NOW_SAFE_COUNT = 15.
+DELETE_NOW_SAFE_COUNT = 17.
 
 No deletion has been executed by this document.
 
@@ -155,8 +159,6 @@ These branches are diverged and can contain unique work or concepts. They are no
 - `blue/forward-finalization-2026-09-20` — diverged 2 ahead / 2 behind canonical Forward; unique `forward-live-smoke` concept is still queued for reimplementation.
 - `builder/forward-market-recorder-v2` — diverged old Forward implementation line. Tree inspection shows a distinct `src/quant/recorders/**` architecture and recorder schemas/tests not present by path in canonical Forward; preserve until Blue decides whether any recorder concepts need porting.
 - `parallel/codex-wave1-economic-system-2026-09-19` — diverged alternate Economic line. It contains an older compact `economics/engine.py` implementation while canonical Economic V2 has a much broader modular economics stack; preserve until semantic supersession is explicitly recorded.
-- `codex/alignment-bootstrap`
-- `codex/optimiser-recherche-persistente-avec-intelligence++`
 - `codex/test`
 - `research/design-v1` — contains unique Alpha Factory / market-selection / abstention / launch doctrine documents; preserve as design reference until their useful content is either adopted or explicitly superseded
 - `parallel/codex-wave1-economic-system-2026-09-19`
