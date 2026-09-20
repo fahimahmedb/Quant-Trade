@@ -426,8 +426,21 @@ def _validate_external_lifecycle_authority(
     supervisor must have durably recorded the exact prior child exit and named
     that child as the witness for the next launch.
     """
-    if not getattr(collector, "lifecycle", {}).get("qualifying_service_mode"):
+    records = list(lifecycle)
+    if baseline_lifecycle is not None and baseline_lifecycle not in records:
+        records.insert(0, baseline_lifecycle)
+
+    # Authority is a property of the durable qualifying window being audited,
+    # not of the process that happens to execute the retrospective audit. The
+    # operator-facing sec-audit command is normally offline/manual, so using the
+    # auditor process identity here would let it silently downgrade validation.
+    qualifying_claimed = (
+        bool(getattr(collector, "lifecycle", {}).get("qualifying_service_mode"))
+        or any(bool(record.get("qualifying_service_mode")) for record in records)
+    )
+    if not qualifying_claimed:
         return []
+
     path = collector.paths.sec / "supervisor_events.jsonl"
     if not path.exists():
         return ["LIFECYCLE_EXTERNAL_AUTHORITY_MISSING"]
@@ -440,9 +453,6 @@ def _validate_external_lifecycle_authority(
     authorities = (list(read_jsonl(authority_path))
                    if authority_path.exists() else [])
     findings: list[str] = []
-    records = list(lifecycle)
-    if baseline_lifecycle is not None and baseline_lifecycle not in records:
-        records.insert(0, baseline_lifecycle)
     for record in records:
         matches = [
             event for event in launches
