@@ -273,11 +273,11 @@ After reboot verify:
 - no unexplained due obligation;
 - no silent fresh state.
 
-## Phase 9 — live rodage entrance
+## Phase 9 — final pre-t0 entrance audit
 
 Only after all destructive checks are complete and the final live state is clean.
 
-Re-check immediately before live rodage:
+Re-check immediately before any qualifying t0:
 - exact SHA/tree;
 - clean release;
 - mount identities;
@@ -291,9 +291,15 @@ Re-check immediately before live rodage:
 
 No code/service semantic mutation after this point without a new deployment event.
 
-## Phase 10 — live event window
+If the superseding continuity governance rule is already authoritative and every entrance check is green, Blue now makes the explicit prospective declaration:
 
-Predeclare UTC and Eastern calendar boundaries before observation.
+`t0 = <exact UTC timestamp>`
+
+Record that declaration in restricted evidence before the first qualifying post-t0 observation. Never choose t0 retroactively.
+
+## Phase 10 — qualifying live event window
+
+Predeclare UTC and Eastern calendar boundaries before observation. The interval begins at the explicit t0 above.
 
 Require:
 - at least one normal 22:00→06:00 ET source-closed interval;
@@ -306,7 +312,7 @@ Require:
 - stable fingerprint/runtime/service binding;
 - no invalidating intervention.
 
-If governance still says P14D at that moment, P14D remains binding until explicitly amended.
+If governance still says P14D at the entrance point, do **not** substitute this event-based window: P14D remains binding until an explicit amendment is already in force before t0.
 
 ## Phase 11 — before/after resource checks
 
