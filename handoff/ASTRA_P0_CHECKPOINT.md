@@ -1,3 +1,210 @@
+# CHECKPOINT ASTRA P0 — final repository-side Phase-7 handoff
+
+This section supersedes stale status/next-action statements below. Later target-runtime
+evidence, when it exists, must supersede this repository-side checkpoint.
+
+* timestamp UTC: 2026-09-20T00:26:21.773782+00:00
+* branch: `astra/p0-deep-adversarial-pre-t0`
+* exact HEAD SHA of the tested code candidate before this documentation-only checkpoint: `88566cb4fb08bdf01561ffcbfe18fd391e57c572`
+* checkpoint-containing HEAD: intentionally resolve with `git log -1 --format=%H -- handoff/ASTRA_P0_CHECKPOINT.md`; a commit cannot truthfully contain its own SHA
+* parent/base SHA: mission entry `8dbe25aea136332f73174917af42dc524f8454e7`; tested code candidate tree `061a9eb73a45c76184aa18f30dd7aacbe9b8ae15`
+* t0 status: **NOT DECLARED**
+* P0_CONTINUOUS_SERVICE_STATE: **OPEN / NOT_YET_PROVEN_CONTINUOUS**
+
+## Deployment-isolation decision
+
+Durable decision memo: `governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md`.
+
+Repository development, Product integration and the qualifying P0 runtime are separate states.
+Keep the conservative acquisition fingerprint. Do **not** narrow the SEC import closure merely
+to reduce merge friction. The accepted target topology, subject to target-host verification, is
+a complete immutable detached release under `/opt/quant-releases/<exact-git-sha>/`, presented
+through the existing fixed `/opt/quant` service view, with persistent writable P0 state backed
+by `/var/lib/quant-p0/` and mounted at `/opt/quant/var`. Development/integration live elsewhere.
+GitHub branch motion alone has no runtime authority. An intentional release replacement is a
+deployment event with explicit one-use deployment authority and lifecycle evidence.
+
+The current `WorkingDirectory=/opt/quant` / `--root /opt/quant` contract does not prevent this
+isolation and was not changed. No Economic V2 or Forward Data branch was merged.
+
+## defects CONFIRMED OPEN
+
+None known in the repository in the classes
+`BLOCKS_CAPTURE_INTEGRITY`, `BLOCKS_PIT_RECONSTRUCTABILITY`, or
+`BLOCKS_ANTI_SELECTION_OR_VISIBILITY_FIREWALL` after the tested candidate below.
+
+Target-runtime entrance conditions are still unproven facts, not repository defects.
+
+## defects CONFIRMED CLOSED this campaign
+
+### RAW_OBJECT_DIRECTORY_DURABILITY_GAP — BLOCKS_PIT_RECONSTRUCTABILITY
+
+Scenario/reproduction: raw publication uses a content-addressed hardlink. Before the fix, if
+the hardlink became visible and directory `fsync` then failed/crashed, a restart seeing the
+same bytes returned the deduplication immediately without re-establishing directory durability.
+Also, a lazily-created two-hex hash-prefix directory was never `fsync`ed in its parent before
+objects were published beneath it. Visibility of a pathname is not proof that its directory
+entry survived a power-loss boundary.
+
+Red discriminants are durable in `tests/test_p0_deployment_boundaries.py`:
+* `test_retry_after_directory_fsync_failure_revalidates_durability`;
+* `test_new_hash_prefix_is_fsynced_in_its_parent`.
+
+The first test injects failure specifically after the hardlink, at the containing directory
+`fsync`; an earlier version of the test failed too early after the new pre-publication sync and
+was corrected to hit the intended crash boundary.
+
+Minimal correction in `src/quant/dataplane/sec/store.py`:
+* a deduplicated existing object re-`fsync`s the parent-of-prefix and object directory before ACK;
+* creation of a hash-prefix directory is made durable in its parent before object publication;
+* an `OSError` during revalidation fails closed as `SecStorageFailure`.
+
+Green proof: exact-head run `35478291920` on candidate `88566cb4...` is
+COMPLETED/SUCCESS; full unit discovery 380/380 PASS. This change is acquisition-fingerprint
+critical because `store.py` is in the acquisition closure. All earlier materialized fingerprints
+and rodages are superseded for a future qualifying candidate.
+
+## hypotheses tested and NOT reproduced as defects
+
+* **Real Linux SIGTERM supervisor/child boundary.** A real supervisor subprocess and real child
+  process were exercised. SIGTERM to the supervisor produced a clean witnessed child stop; a
+  replacement supervisor over the same durable state classified its first launch `MANUAL_START`.
+  No false automatic continuity was reproduced.
+* **Real Linux SIGKILL/PDEATHSIG boundary.** SIGKILL of the supervisor killed the child through
+  the configured parent-death signal; a replacement supervisor again defaulted to
+  `MANUAL_START`. No false continuity was reproduced.
+* **`sec-audit` stdout proxy leak.** The literal CLI output was exercised after realistic
+  synthetic capture activity and passed both `assert_no_count_proxies` and
+  `assert_no_scientific_content`. No new protocol-visible count/content proxy was reproduced.
+
+These Linux process tests are not an assertion about actual target systemd control-group behavior.
+Real `systemctl stop/start`, loaded-unit behavior and host-level kill/reboot boundaries remain
+target-rodage observations.
+
+Previously closed/falsified hypotheses remain closed and were not reopened: restart-burst
+exhaustion false continuity; create-once/materialized-fingerprint race; 403/429 cooldown-to-attempt
+crash accounting.
+
+## tests rouges ajoutés
+
+* `tests/test_p0_deployment_boundaries.py::RawPublicationDurabilityTests` — two PIT durability
+  crash-boundary discriminants.
+* Process/firewall tests were added as falsification tests; they did not expose a new defect.
+
+## tests verts obtenus / full-suite status
+
+Exact tested code candidate: `88566cb4fb08bdf01561ffcbfe18fd391e57c572`.
+
+GitHub Actions run `35478291920`: **COMPLETED / SUCCESS**.
+* generated-schema drift: PASS
+* status-artifact freshness: PASS
+* full unit suite: **380/380 PASS**
+* explicit SEC P0 lane suite: **271/271 PASS**
+* V1 end-to-end regression: PASS
+* exact-head verification artifact generation/check: PASS
+* clean working tree: PASS
+
+Exact-head verification artifact:
+* GitHub artifact id: `10595186792`
+* name: `sec-p0-verification-88566cb4fb08bdf01561ffcbfe18fd391e57c572`
+* artifact digest: `sha256:d5effcc84ff66ada3f97ba68551fe165504e76e930335a9b43f34958aeda8a16`
+* verified SHA: `88566cb4fb08bdf01561ffcbfe18fd391e57c572`
+* Git tree: `061a9eb73a45c76184aa18f30dd7aacbe9b8ae15`
+* verified input-tree digest:
+  `sha256:744d699d060be21d0f27b4bbefbb7ab4f538ee41a0e72d8e9d0d7c1665f1cd6d`
+* artifact recorded at: `2026-09-20T00:24:41.265501+00:00`
+* CI environment: CPython 3.12.14, Linux Azure runner; network requests made: 0.
+
+## fingerprint / manifest / evidence state
+
+* active fingerprint: **NOT MEASURED IN THE FINAL TARGET RUNTIME**
+* materialized fingerprint: **NOT AVAILABLE FOR THE FINAL TARGET RUNTIME**
+* manifest schema/version: `p0_materialized_fingerprint/v2`;
+  semantic fingerprint schema `acquisition_critical_fingerprint/v1`
+* final target-runtime rodage status + exact artifact: **NOT RUN / DOES NOT EXIST**
+* readiness status: **READY_FOR_FINAL_RODAGE = FALSE**
+* audit status: repository audit/falsification regressions green; target exact-runtime final audit pending
+* firewall status: repository public/protocol regressions including dedicated `sec-audit` stdout
+  are green; target access/mount/operator-surface isolation remains to be verified
+* 14-day continuity proof: **NOT PROVEN**
+
+`READY_FOR_FINAL_RODAGE = FALSE` is not a request for more repository architecture work. The
+remaining evidence is target-specific: no actual pinned release, mounts, production systemd,
+private requester identity, target materialization or target lifecycle authority was available
+to this session.
+
+## fichiers acquisition-critical modifiés
+
+* `src/quant/dataplane/sec/store.py` — **YES, fingerprint-critical**, for the durability fix above.
+
+Other changes in this campaign:
+* `tests/test_p0_deployment_boundaries.py` — tests only;
+* `governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md` — deployment decision memo;
+* `STATE.md` — canonical test inventory refresh;
+* this checkpoint — handoff only.
+
+The documentation-only checkpoint commit changes the repository SHA but does not change acquisition
+semantics. A final target release must nevertheless pin the exact commit it actually deploys.
+
+## exact remaining conditions before final target-runtime rodage
+
+1. Select the exact release commit/tree only after this checkpoint is durable and its exact-head
+   CI is green.
+2. Instantiate and verify the pinned release topology from the deployment contract:
+   immutable backing release, fixed `/opt/quant` view, persistent `/var/lib/quant-p0` state
+   mount, code read-only outside `var`, mount-before-service fail-closed behavior.
+3. Verify target filesystem semantics required by the store and journals; verify single P0 writer
+   and one global SEC requester-budget authority.
+4. Bind the actual target interpreter/runtime image/OpenSSL/private requester identity/effective
+   SEC configuration.
+5. Verify the loaded production systemd fragment, effective values and digest, with no unbound
+   drop-in/override.
+6. Materialize the v2 manifest in that exact effective service environment and prove
+   ACTIVE_RUNTIME_FINGERPRINT == MATERIALIZED_FINGERPRINT with no integrity latch.
+7. Record/consume explicit deployment authority and bind lifecycle provenance.
+8. Execute bounded target pre-t0 fault checks, including actual `systemctl stop/start` and
+   host/supervisor kill behavior, using synthetic/offline state where destructive.
+9. Execute the final live target rodage on the same exact state and produce an artifact outside
+   the immutable release that binds SHA + Git tree + verified input-tree digest + acquisition
+   fingerprint + full manifest/schema + effective runtime config/image + repository and loaded
+   service digests + exact CI run id + UTC interval + lifecycle/authority references. Verify the
+   bindings both before and after rodage and publish only opaque verdicts.
+
+Rodage success would establish readiness for Blue to decide what happens next. It does not
+declare t0 and cannot prove the required 14 days.
+
+## prochaine action unique
+
+**Stop repository Phase-7 expansion. Instantiate/verify the target pinned P0 release contract and
+run the final target-runtime entrance checks/rodage.** Reopen repository code only if that target
+falsification produces concrete evidence of a class 1–3 defect.
+
+## commandes exactes nécessaires pour reproduire/reprendre
+
+Repository:
+```bash
+git fetch origin astra/p0-deep-adversarial-pre-t0
+git checkout astra/p0-deep-adversarial-pre-t0
+git pull --ff-only origin astra/p0-deep-adversarial-pre-t0
+cat governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md
+PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries -v
+PYTHONPATH=src python3 -m unittest discover -s tests -v
+python3 scripts/status_artifacts.py --check
+git diff 8dbe25aea136332f73174917af42dc524f8454e7..HEAD
+```
+
+Target evidence inspection (do not substitute these reads for the full contract):
+```bash
+systemctl cat quant-sec-capture.service
+systemctl show quant-sec-capture.service --no-pager
+```
+
+t0 = NOT DECLARED
+
+P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS
+
+---
+
 # CHECKPOINT ASTRA P0 — deployment isolation campaign
 
 This section supersedes stale next-action/status statements below.
