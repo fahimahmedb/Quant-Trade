@@ -1,5 +1,7 @@
 # Research Runtime Runbook
 
+> **Current-routing notice:** this runbook describes the legacy/research-runtime subsystem only. It does not govern current P0 qualification or repository cleanup. Current routing is in `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`; current repository cleanup is `governance/REPOSITORY_HYGIENE_EXECUTION_RUNBOOK_2026-09-20.md`.
+
 This runbook is the operator contract for the dependency-light persistent
 research runtime. Runtime documents live under `runtime/` and are replaced
 atomically. Starting or resuming never clears them.
