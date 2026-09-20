@@ -1387,13 +1387,18 @@ class SecForm4Collector:
 
     # --- reconciliation (detection only; backfill is later work) -----------
     def reconcile(self, day: date) -> dict[str, Any]:
-        """Compare a closed day's daily index against what was captured.
+        """Compare the oldest currently-due closed day against captured state.
 
-        Day-1 scope is honest detection. A missing expected filing opens a
-        durable gap; repairing it is the later backfill engine's job.
+        Direct/manual callers must pass through the exact same calendar,
+        settlement, cooldown and ordering gate as the Clock.  An explicit day
+        is never authority to emit an early/out-of-order SEC request.
         """
         if not self.configured:
             return {"day": day.isoformat(), "result_state": COOLDOWN_SUPPRESSED,
+                    "reconciled": False}
+        due_day = self.reconciliation_due()
+        if due_day != day:
+            return {"day": day.isoformat(), "result_state": "RECONCILIATION_NOT_DUE",
                     "reconciled": False}
         attempt = self._request("RECONCILE", daily_index_path(day), daily_index_url(day))
         key = day.isoformat()
