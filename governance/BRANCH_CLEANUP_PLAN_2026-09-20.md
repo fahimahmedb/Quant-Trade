@@ -168,7 +168,7 @@ The scratch ref `builder/research-factory-core-v2-proof-scratch` is **not** requ
 - `blue/long-horizon-research-2026-09-20`
   - contains the explicit **DRAFT ONLY / NOT AUTHORITATIVE** proposal to replace fixed P14D with a hybrid event-based qualification;
   - current authority still says fixed P14D/frozen;
-  - preserve until Gate A/Astra disposition and a later Blue governance decision either adopts or rejects the amendment.
+  - Gate A/Astra disposition is now complete; preserve until a later explicit Blue governance decision adopts, revises or rejects the P14D amendment.
 - `recovery/claude-sec-local-20260914`
   - contains recovery-only SEC census artifacts, including an acceptance manifest described by its commit as requiring roughly eight hours of SEC fair-access acquisition;
   - explicitly not certification/economic authority, but expensive reproduction material;
@@ -209,11 +209,4 @@ These refs contain distinct concepts or alternate implementations that are not c
 8. Product integration remains paused; cleanup must not become integration.
 
 
-
-1. Delete the 18 `DELETE_NOW_SAFE` refs when a branch-delete capability is available.
-2. Do not emulate deletion by force-moving refs.
-3. While Astra runs, keep reviewing only the remaining Gate-adjacent/post-Astra candidates; product-capability/evidence refs above are already classified.
-4. After Astra handoff, re-run reachability/citation checks and shrink the `KEEP_UNTIL_ASTRA` + `DELETE_AFTER_ASTRA` sets.
-5. Only after Gate disposition review the stale default branch migration.
-6. Current tool limitation: GitHub connector exposes no branch-ref deletion operation. Do not substitute force-moving refs for deletion; actual ref removal requires a proper branch-delete capability or manual GitHub operation.
 
