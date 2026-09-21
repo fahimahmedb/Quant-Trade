@@ -775,3 +775,58 @@ infer owner inactivity from unchanged remote HEADs. No target-host, qualifying P
 Gate-B, t0, restricted-data visibility, deployment or capital authority changes.
 After S11 closure, keep ONE BIG BUILD with one primary Product owner and internal
 milestones; no separate estimator implementation precursor is presently justified.
+
+
+## CURRENT TWO-RAIL OVERRIDE — F11 CLOSED / S11 ONLY — 2026-09-21
+
+### Rail A
+
+```text
+F11_REPOSITORY_DEFECT = CLOSED
+ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE
+ASTRA_EXACT_HEAD_CI = 35624089971 = COMPLETED / SUCCESS
+```
+
+Final closure:
+`handoff/BLUE_FINAL_F11_REPOSITORY_CLOSURE_2026-09-21.md`
+
+Do not reopen repository F11 absent a new concrete defect.
+
+Rail A next:
+proceed through the already-prepared Gate-B activation/convergence authority.
+Target-host mutation is still NOT authorized by implication.
+
+### Rail B
+
+Scientific state:
+
+```text
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
+```
+
+S11 independent methods challenge is already dispatched:
+`parallel/claude-s11-dependence-interval-challenge-2026-09-21`
+
+Economic question map received:
+`handoff/BLUE_ECONOMIC_QUESTION_MAP_RECEPTION_2026-09-21.md`
+
+Accepted map:
+Q1 effect existence;
+Q2 evidence validity;
+Q3 development/forward confirmation;
+Q4 friction survival;
+Q5 justified size;
+Q6 portfolio Risk;
+Q7 TRADE vs NO_TRADE;
+Q8 execution preservation;
+Q9 wealth contribution;
+Q10 decay;
+Q11 rejection correctness;
+Q12 next Research direction.
+
+Do not dispatch another question-map mission.
+
+Current Rail-B next:
+receive exactly one S11 methods verdict, then Blue decides build-spec freeze.
+
