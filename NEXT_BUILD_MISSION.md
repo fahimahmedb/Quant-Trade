@@ -534,7 +534,7 @@ Authorized Astra branch:
 
 Expected mission HEAD:
 
-`15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+`1340c1e8eefdbbcd11aece6506040336f448d38d`
 
 Blue dispatch:
 
