@@ -771,3 +771,92 @@ t0 = NOT_DECLARED
 ```
 
 Antigravity Product prestage remains complete and parked.
+
+
+## LATEST ROUTING OVERRIDE — 2026-09-21 / TWO-RAIL CONVERGENCE
+
+This section supersedes older routing/frontier language in this file where inconsistent.
+
+Authoritative current reacquisition checkpoint:
+
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+
+Creation commit:
+
+`c248f23cae8d579261a3f43c6aca78463eccae92`
+
+Current global safety:
+
+```text
+GATE_A_V4_REPOSITORY_DISPOSITION = PASS
+P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
+
+Current active frontier is exactly two rails:
+
+### Rail A — F11 / Gate-B critical path
+
+Final Builder:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@e600295b2aa7056e8176e0286f9d67f5c65b1c11`
+
+Exact-head CI:
+
+`35617257622 = COMPLETED / SUCCESS`
+
+Blue final integration candidate:
+
+`blue/gate-b-f11-final-integration-2026-09-21@4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+
+Current integration CI at this checkpoint:
+
+`35619545254 = IN_PROGRESS`
+
+Therefore:
+
+```text
+PASS_FOR_INDEPENDENT_ASTRA_RECHECK = PENDING_EXACT_HEAD_CI
+ASTRA_F11_RECHECK_AUTHORIZED = FALSE
+```
+
+The intended Astra branch does not yet exist durably and must be created only by Blue
+after exact-head integration CI success.
+
+### Rail B — Product/Economic pre-big-build
+
+Build-prep received:
+
+`parallel/claude-post-p0-vertical-build-prep-2026-09-21@ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec`
+
+Adversarial challenge received:
+
+`claude/confident-mendel-h4qqo4@9e6431dedaa621d58218f6ffb09ed1300de1bd1b`
+
+Blue consolidated correction authority:
+
+`governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`
+
+Current remaining prerequisite:
+
+`REAL_RESEARCH_TO_FROZEN_EFFECT_ESTIMATE = MISSING_SCIENTIFIC_OUTPUT_CONTRACT`
+
+Active science-prestage branch:
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@866e6c1e96ab7460a7cd6464ead922e710ce7b0b`
+
+Do not dispatch Product implementation until the scientific contract is received and
+Blue freezes one final vertical-loop build specification.
+
+Next Product implementation policy:
+
+`ONE LARGE BOUNDED BUILD`, not several small competing Builders.
+
+For all exact sequencing, read:
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`.
