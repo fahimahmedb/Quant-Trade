@@ -144,3 +144,72 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
 Return control to Blue.
+
+## 8. BLUE SPECIFICATION WORK RECEIVED — latest disposition, 2026-09-21
+
+The completed Claude prestage is reused, not reopened or overwritten. Its accepted
+finding (no implemented lawful producer) remains true. Blue's subsequent specification
+work is persisted in the existing authority:
+
+`governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md` §§9–12.
+
+Population/PIT, D07 observation/entry geometry, pre-outcome allocation and stable identity,
+security/SPY returns and actions, D19 complete-cohort-or-insufficient treatment, exact
+ratio, sample/use/trial rules, evidence authority and typed output mapping are explicit.
+Implementation and genuine data/edge evidence are not claimed.
+
+The bounded self-consistency check found one unresolved contradiction: the proposed
+calendar/issuer connected-component bootstrap needs 30 clusters but can have at most
+four within 252 entry sessions. That interval design is rejected. This is Blue's check,
+not independent review. A single bounded independent S11 methods challenge is prepared
+in §12, not dispatched; no duplicate science owner or competing Builder was created.
+
+```
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+PRODUCT_INTEGRATION = PAUSED
+NEXT_SINGLE_ACTION = Dispatch the one bounded independent S11 methods challenge from the exact published authority after checking for concurrent ownership.
+```
+
+Consolidated Product consequences, both execution-cost checks and the intended single
+Builder's internal milestones are in correction-spec §13. Runtime, target-host,
+Gate-B, t0 and capital restrictions are unchanged. The next Clock/runtime action is
+unchanged by this documentation mission; once implemented, missing/insufficient
+scientific inputs will yield durable NO_TRADE/learning and wait for the named input.
+
+### Actual checks for this specification delivery
+
+- Refreshed GitHub refs and searched durable mission/handoff paths, branch names,
+  commit subjects, open issues and PRs before writing. Blue baseline was
+  `8e8859c3e221118cf2578fa728f2986d9667dddd`; final prestage ref matched its received SHA.
+- Inspected pinned scientific, Forward, Economic and Product source and relevant tests
+  listed in science §9.1. No target corpus or restricted runtime data was read.
+- In clean archived trees, `PYTHONPATH=src python -m pytest -q
+  tests/test_science_protocol.py tests/test_dataplane_forward_admissibility.py` at
+  Forward `83521dbfdd90027c90d04adfb7d814593c2355c5`: **67 passed**.
+- At Economic `35dff27b8fac53618da434ee6d31febbddcc0e69`, targeted
+  `test_economic_v2_consolidation.py`, `test_economics_engine.py` and
+  `test_economics_timeline_execution.py`: **154 passed**.
+- Exact interval-packing dynamic calculation confirmed at most four disjoint
+  80-session influence intervals for entry indices 0..251, and at least 2,321 entry
+  sessions for 30. This is a design-capacity proof, not a market measurement.
+- Synthetic declaration checks against pinned E confirmed the specified binding is
+  accepted, a QQQ benchmark is rejected, and mismatched terminal strings still pass
+  the existing gate. The specified adapter must close that last gap.
+- Both-side arithmetic checks reproduced actual fill shortfall including the
+  commission cross-term. These are formula checks, not calibrated cost evidence.
+- `git diff --check` passed. Changes are confined to existing governance/handoff/router
+  Markdown files. No estimator/Product code, tests, schema, workflow or runtime changed.
+
+These tests do not validate the proposed (rejected) S11 method, a future implementation,
+or genuine market edge. Remote CI for this delivery must be reported against its actual
+commit after push; no prior SHA's green result is transferred and no follow-up commit
+is needed merely to record documentation CI.
+
+Publication preflight also discovered
+`parallel/claude-economic-question-falsification-map-2026-09-21@dc5d0e3`.
+Its mission explicitly says not to replace the scientific-estimator owner; it is a
+separate read-only economic question map, not an S11 method/specification delivery.
+Its work is preserved. Astra F11 also advanced remotely; this bounded Rail-B mission
+does not receive or self-perform that separate independent review.

@@ -213,3 +213,471 @@ GATE_B_MUTATION_AUTHORIZED = FALSE
 t0 = NOT_DECLARED
 REAL_CAPITAL_AUTHORIZED = FALSE
 ```
+
+## 9. BLUE FIRST-SLICE SPECIFICATION CLOSURE — latest authority, 2026-09-21
+
+This section supersedes the prestage's analysis-only remit for **specification**.
+Sections 0–8 preserve the completed prestage mission; they are not a second active
+assignment. Blue records the resolved producer decisions and one irreducible method blocker here. No implementation is performed
+or authorized by this closure. The single consolidated build disposition is section 13
+of `BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`.
+
+```
+ECONOMIC_PROGRESS = An implementable gross SPY-excess scientific producer contract now connects Research evidence to Economic admission and the persistent vertical loop.
+REMAINING_BLOCKER = S11: a defensible interval method preserving issuer/calendar dependence within the bounded cohort; the proposed graph/30-cluster combination is impossible.
+EXIT_CONDITION = Resolve S11 under the bounded challenge in section 12, then freeze; all other decisions remain preserved.
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_S11_DEPENDENCE_INTERVAL
+```
+
+### 9.1 Authority, evidence and lineage
+
+Inspected Blue baseline: `8e8859c3e221118cf2578fa728f2986d9667dddd`.
+Reused final prestage: `1226427082e55e7b3c51f96c5f091b90a6278447`, including
+`handoff/CLAUDE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md`.
+Remote refs, Blue tree, branch names, commit subjects and open PRs/issues were
+refreshed before writing; no newer specification mission/delivery was found.
+No inference of another owner's inactivity is made from an unchanged HEAD.
+
+Pinned implementation sources:
+
+- **F**: Forward `83521dbfdd90027c90d04adfb7d814593c2355c5`:
+  `src/quant/science/{eligibility,formation,inference}.py`,
+  `src/quant/dataplane/{admissibility,forward_admissibility}.py`,
+  `tests/test_science_protocol.py`, `tests/test_dataplane_forward_admissibility.py`.
+- **E**: Economic `35dff27b8fac53618da434ee6d31febbddcc0e69`:
+  `src/quant/economics/{coordinate,decision,states,recipe,consistency,timeline}.py`,
+  `tests/test_economic_v2_consolidation.py`.
+- **P**: Product spine `cbf30c1bb38dd69c11fb64c523c3aec694116b9c`:
+  `src/autonomous_research/ticket.py`, `src/quant/factory/workers.py`,
+  `src/quant/desk/execution.py`.
+
+Scientific authorities (paths relative to governance):
+**G** = `D07_OPEN_SPACE_BOUNDARY.md`;
+**K** = `D07_PUBLIC_OBSERVABILITY_ENTRY_DEPENDENCY.md`;
+**D** = `D19_ADVERSE_TREATMENT_SPEC_DEPENDENCY.md`;
+**EC1** = `D09_ECONOMIC_CORE_EC1_ALLOCATION_WEIGHTED_EFFECT.md`;
+**L** = `D09_ROUTE_B_LIQUIDITY_ELIGIBILITY_AND_FINITE_COST_SCENARIO_AMENDMENT_2026-09-17.md`;
+**C** = `D09_ROUTE_B_FRICTION_MARGIN_PARTITION_2026-09-17.md`.
+
+All numerical defaults below are **new Blue normative engineering/design choices**,
+not measurements, calibration, power guarantees, or statements of available data.
+This is a new prospective claim lineage `FORM4_FIRST_VERTICAL_V1`. It inherits G's
+closed population, mechanism and EC1 coordinate, but inherits **no** historical
+D05 feasibility, liquidity-calibration, selection, or confirmatory authority. This
+explicit new lineage avoids falsely certifying that today's constructor preceded
+historical ceiling visibility. It does not repeal the old Route-B liquidity-UCB
+contracts or claim to have executed their prerequisites. Historical and unknown-use
+samples remain development-only. No restricted P0 corpus or outcomes were inspected.
+
+### 9.2 Decision table (normative rules and falsifiable build acceptance)
+
+The referenced subsections are part of each rule, not optional implementation hints.
+
+| ID / question | Governing authority | Chosen first-slice rule and implementation consequence | Falsifiable acceptance | Deliberate limitation |
+| --- | --- | --- | --- | --- |
+| S01 Universe/PIT | G §2; F eligibility; Blue §10.1 | Original non-derivative Form 4, P + acquired A, officer/director, exact CIK identities. Deduplicate accession/owner observations; bind PIT security mapping and source census. | Grant code A, 10%-only owner and amendments never qualify; missing upstream XML remains an unresolved possible member, not an exclusion. | No fuzzy identity or present-day survivor universe. |
+| S02 D07 O1–O4/dependence | G; K; Blue §§10.1,10.4 | O1 NEXT; O2 public-date/accession/owner order; O3 first open to twentieth close. Every genuine re-armed crossing is retained. Dependence requirements are closed; the component proposal is rejected under S11. | Repeated active-window filings cannot create crossings; overlapping different issuers and repeated issuer exposures cannot become independent draws. | Final inferential grouping is blocked by S11; observation identity is closed. |
+| S03 Allocation a_j | EC1; L; Blue §10.2 | Fixed reference capital, 20 reserved slots, deterministic order, PIT liquidity cap; record all zero allocations. | Outcome permutation cannot change weights, reservations or selected events; deployed reservations never exceed reference capital. | A declared policy scenario, not generic Form-4 alpha or another Desk sizer. |
+| S04 Constructor identity/timing | EC1 §§2–4; Blue §10.2 | Content-address rule, config and input schema; append allocation commitment before entry/outcome. | Changed threshold/order/cap changes ID; replay with later prices cannot rewrite committed a_j. | Historical reconstruction is not proof of a prospective commitment. |
+| S05 Security/SPY returns | EC1 §1; Blue §10.3 | Simple total holding return in USD for both legs; gross of deployment frictions. | Hand-calculated split/dividend fixtures match both legs; SPY replacement fails. | SPY subtraction is not beta/factor neutrality. |
+| S06 Interval/time | G §2.3/O3; K; Blue §10.1 | Latest required public date, next regular open; close of session e+19. Explicit exchange calendar/timezone and UTC instants. | Weekend plus Monday required filing enters Tuesday; never enter on logical-trigger date. | No same-day or intraday interpretation; missing scheduled open is unresolved. |
+| S07 Corporate actions | EC1; D; Blue §10.3 | Raw tradable prices plus split/share and distribution cash-flow ledger; same convention both legs. | Split leaves economic wealth invariant; dividend paid/receivable counted once; unexplained adjustment fails. | No opaque adjusted-close ratio assumed to provide total return. |
+| S08 D19/missing/terminal | D §§3.1–3.6; Blue §10.3 | Canonical missing object union, full adverse completions, unresolved cohort => INSUFFICIENT, never complete-case promotion. | Delete a loser, remove raw filing, hide delisting or double-tag one object: no easier promotion; no duplicate missing identity. | No positive inference from partially identified cohorts in V1. |
+| S09 T_j units | EC1 §1/5 | T_j = R_security,j − R_SPY,j; dimensionless decimal over the identical interval. | 0.08 minus 0.03 is 0.05, not 5 or annualized Sharpe; cost changes do not change T_j. | No net/factor/log-return replacement. |
+| S10 Estimator/denominator | EC1 §6; F inference; Blue §10.4 | sum(a*T)/sum(a), finite nonnegative weights, strictly positive finite denominator. | Negative/NaN/Inf weights, mismatched lengths, duplicate IDs and zero exposure produce typed refusal. | Sample ratio estimates ratio of population expectations under declared sampling assumptions; no exact unbiasedness claim. |
+| S11 Interval/cluster/bootstrap | F inference; Blue §10.4 | **OPEN / candidate rejected**: whole-component pairs bootstrap cannot satisfy its 30-cluster guard in this cohort. Section 12 must supply one justified replacement or exact impossibility. | Prove dependence handling and feasible information requirements before freeze; preserve random denominator, reproducibility and invalid-draw refusal. | No consumable interval or forward-confirmed estimate until S11 is resolved. |
+| S12 Identity/lineage | F Forward/PIT; correction C3; Blue §10.5 | Immutable protocol/cohort/input/commitment/outcome manifests with hashes and timing. | Source revision changes outcome artifact, never resets consumed evidence; unrelated ledger append preserves identity. | No claim existing vendors supply these records. |
+| S13 Discovery/validation | F UseLedger; Blue §10.5 | Account for atom-level overlapping content and ancestor versions; unknown prior use is development-only. | Repackaging/subsetting fitted atoms cannot restore confirmation; crash/replay cannot consume twice. | Existing historical returns cannot establish fresh confirmation. |
+| S14 Multiplicity | F MultiplicityBudget; Blue §10.5 | One prespecified directional lane claim and one terminal look, alpha .05; no optional stopping/variant selection. | Second look or changed variant exhausts V1 authority, remains development-only; trial ledger survives restart. | No post-hoc broad search correction or automatic reset via new name. |
+| S15 Forward/evidence label | F admissibility; correction C3; Blue §10.5 | Exact session evidence, pre-outcome allocation seal, post-freeze recording, unconsumed atoms and qualified method all required. | Timing-only or label-only synthetic estimate cannot become forward-confirmed. | Local unauthenticated clock alone is insufficient timing proof. |
+| S16 Delta binding | E coordinate/recipe; correction C2; Blue §10.6 | Exact binding for both point/interval plus real evaluate_delta_coordinate compatible verdict; independently verify its underlying facts. | Wrong terminal convention, allocation digest, horizon or benchmark fails even where current string gate is permissive. | Declaration gate alone does not establish computation or validity. |
+| S17 EffectEstimate/Ticket | E decision; P ticket; Blue §10.6 | Typed persisted envelope, schema version, immutable references; no relabeling portfolio statistics. | Serialize/reload reconstructs identical estimate and provenance; legacy ticket yields missing-estimate refusal. | No implementation exists yet; synthetic success is plumbing evidence only. |
+
+## 10. Executable scientific contract
+
+### 10.1 Population, formation and entry
+
+Use a sealed, source-reconciled Form-4 accession census for the cohort, including
+expected-but-unacquired and unparsable records. A zero-record day requires affirmative
+coverage evidence. Store qualification reasons for included, excluded and unresolved
+records. Collapse multiple qualifying transactions for the same accession/owner into
+one formation observation; preserve transaction rows as evidence. Multiple owners are
+distinct only by CIK. Resolve issuer to the transaction's actual USD-listed equity
+security using PIT security identifiers and corporate lineage; ambiguous multiple
+share classes are unresolved, never resolved using future prices or current tickers.
+
+O1 is `NEXT_REGULAR_SESSION` for non-session EDGAR dates. O2 sorts by
+`(EDGAR_public_date, accession, owner_CIK)` after session-boundary expiry. Date order
+makes a later-public fact unable to masquerade as an earlier trigger. A crossing
+contains its complete dependency set: the qualifying live-window owner facts and
+source completeness/identity facts required to determine the state and prior re-arm.
+The public-knowledge date is the maximum EDGAR public date in that set, never merely
+the trigger's date. The source contract uses the SEC accession's filing/public date,
+cross-checked against its acceptance date when available; disagreement, absent date
+or uncertain timezone yields `PUBLIC_KNOWLEDGE_UNRESOLVED`. Transaction date is not
+public date. SEC acceptance timestamps, when used, must carry the source's timezone
+mapping; naive timestamps are not silently treated as UTC.
+
+The date-only conservative rule is normative: **first regular open on a session date
+strictly later than every required public date**, even for a pre-open filing. Use the
+versioned US-equity regular-session calendar and `America/New_York` DST conversion;
+store actual UTC open/close instants, including early closes. All required facts must
+also have been captured/available to Quant and committed before this entry instant.
+If capture is late, retain a missed/non-executable event; do not roll entry forward
+and claim the same policy. Missing fact timing is D19 uncertainty, not zero weight.
+
+Hold from entry open e through regular close e+19 (20 session dates including e).
+No next-open substitute for the exit. Scheduled sessions come from the calendar,
+not the security's surviving price rows. A halt does not shorten the holding horizon.
+Source coverage must include the formation warm-up (10 sessions) and allocation
+warm-up (20 sessions). Insufficient warm-up blocks membership certification.
+
+### 10.2 Pre-outcome allocation constructor
+
+Freeze `FORM4_SLOT20_ADV20_V1` with reference capital C0 = USD 10,000, 20 slots,
+per-slot maximum C0/20, participation ceiling p0 = 0.001 of trailing daily dollar
+volume. These are an explicitly limited engineering scenario, **not calibrated
+liquidity thresholds or capital authorization**. No claim is made that old Route-B
+liquidity certification is satisfied by this choice. Economic parameter sources must
+independently establish applicability to this precise scenario under L and C.
+
+At each authorized entry, use only the 20 completed regular sessions before entry:
+`ADV20 = sum(raw_close * raw_share_volume)/20` in USD/session, with consistent split
+units per bar. Require all 20 reconciled bars and finite positive ADV; unknown ADV is
+unresolved support, not an exclusion. Persist the data cutoff and all hashes.
+
+Process events by `(entry_UTC, issuer_CIK, security_ID, crossing_ID)`. At the start of
+an entry session release slots whose scheduled e+19 close is earlier than entry.
+A slot reservation is time-based, not released early on a profitable exit, delisting
+or observed loss. If an issuer already has an active slot or all 20 slots are occupied,
+set `a_j=0` with the exact capacity reason. Otherwise reserve the lowest free slot and
+set `a_j=min(C0/20, p0*ADV20_j)`. No recycling of realized gains/losses into C0.
+Every crossing stays in the population journal, including zero allocations; inference
+uses strictly positive weights only after membership completeness is certified.
+Unknown identity/ADV/capture eligibility that could affect this sequence makes the
+cohort unresolved. Predeclared ineligibility with positive proof may produce zero.
+
+`allocation_constructor_id = FORM4_SLOT20_ADV20_V1:sha256(canonical_rule_document)`.
+Canonical rule document binds this entire algorithm, parameters, calendar, geometry,
+permitted input schema, missingness rules and slot ordering. Use UTF-8 sorted-key
+canonical JSON with no NaN/Infinity; decimal parameter strings avoid float-rendering
+ambiguity. Bind schema/canonicalization version. An allocation instance additionally
+hashes C0, prior reservation state and immutable PIT input manifest. Commit these
+before entry; output values or outcome hashes are forbidden constructor inputs.
+Test invariance to arbitrary future outcome mutations, not merely a Boolean flag.
+
+This scientific constructor defines reference policy weights; it is **not** a second
+runtime sizing service. The existing Economic MarginSizingRule remains the sole SIZE
+authority. EC1 transport into any executable policy requires identical eligibility
+and relative weights, or a proved common positive scaling over the registered
+scenario. Event-specific clipping, Risk selection or changing Economic margins does
+not automatically inherit the estimated policy's effect. Record the exact deviation;
+if no authorized transport exists, refuse new entry with `NEW_POLICY_VERSION` and
+learn from the refusal. Risk remains free to veto. Book wealth never resets to C0.
+`C_claim` is initially only the reference scenario; larger scaling is unproved.
+
+### 10.3 Returns, corporate actions and D19
+
+For each leg buy a notional unit at the raw official entry open. Maintain split-adjusted
+share quantity, actual successor entitlements and a separate distribution/receivable
+account. Gross terminal wealth is shares marked at scheduled exit close plus cash
+and legally established distribution receivables attributable to ownership during
+`(entry_open, exit_close]`. Reinvest no cash distributions and accrue no interest on
+this scientific cash account. Then `R = terminal_wealth / entry_notional - 1`.
+Use the same rule for SPY, including its distributions. Costs/taxes/fees/spread/impact
+are not deducted here; applicable deployment costs belong to Economic and Book.
+A spin-off or exchange requires traceable quantity and exit valuation of every
+entitlement. No action ledger or ambiguous entitlement => unresolved, never a guessed
+adjustment. Fully settled cash acquisition proceeds stay as cash until scheduled exit.
+Bankruptcy is not automatically −100%; zero requires evidence that all equity claims
+and recoveries have extinguished. Suspension, delisting and symbol disappearance do
+not permit last-price carry, early exit, survivor exclusion or a standard loss imputation.
+Unpriced residual claims make the outcome unresolved. SPY uses the original scheduled
+interval even if the security resolves earlier.
+
+D19 closure for this first slice is **complete-cohort or insufficient**, not complete-
+case analysis. Canonical missing identities link accession, owner, issuer/security,
+crossing and leg/interval when known; earlier-stage unknowns remain source-census
+objects until linkage exists. Union reasons on one object. Never subtract an object
+once per failure reason. Qualification-indecidable records include unacquired XML,
+parse failures, missing roles/identities and unresolved deployment support, including
+objects outside the successfully parsed partition.
+
+The adverse completion set contains **all** qualification/membership/identity,
+allocation-support and outcome completions consistent with known facts and the frozen
+rules; missing membership may change later crossings/reservations. Do not assume
+independent row-wise imputation can represent those changes. A missing long unlevered
+leg's wealth has support [0,+infinity); when SPY is known, missing T has support
+[-1−R_SPY,+infinity). Missing SPY or membership can leave ratio bounds unbounded or
+its denominator zero. No finite upper cap is invented.
+
+For any unresolved member capable of changing positive-weight membership, a_j or T_j,
+V1 computes the conservative outer robustness interval `[-infinity,+infinity]`, with
+`D19_INSUFFICIENT_UNRESOLVED_COMPLETIONS`, and emits **no consumable EffectEstimate**.
+This outer interval deliberately spends all power; it is not a claim of sharp bounds.
+When all such objects are resolved, the completion set is a singleton and ordinary
+inference below applies. Unmatured outcomes are `WAITING_FOR_OUTCOME` until the
+registered maturation cutoff, then `INSUFFICIENT` if still unknown. All events remain
+in the denominator census. Evidence proving an object irrelevant under *every*
+admissible completion may clear it, with the proof recorded. No performance-based
+resolution or silent cohort extension is allowed. `INSUFFICIENT` never means `NO_EDGE`.
+This fully defines D19 primary-verdict behavior for V1; useful finite partial-
+identification bounds and general uncertain corporate-action resolution are deferred.
+
+### 10.4 O4 and interval procedure — candidate rejected; S11 remains OPEN
+
+The observation rule is closed: each genuine threshold crossing is an observation; new same-issuer crossings after
+re-arm remain distinct, even if allocation is zero due to an active slot. Do not merge
+observations to improve the point estimate. The following inference proposal was checked and rejected, not frozen. It would build dependence components on the full
+cohort before dropping known zero-weight rows. Connect events if:
+
+1. they share issuer or a resolved corporate predecessor/successor dependence group,
+   anywhere in the cohort;
+2. their closed influence spans intersect, across **all** issuers (shared market/SPY
+   shocks, formation/ADV input reuse and slot competition are thus kept together).
+
+The influence span runs from the earliest required formation/ADV input session to
+scheduled exit, extended by 20 regular sessions at each end. Connect any additional
+known common decision/state dependency; unresolved corporate links block inferential
+authority. Cluster ID is SHA-256 of sorted member crossing IDs. Resample connected
+components intact, with all member (a,T) pairs and no re-estimation of a from outcomes.
+Components with zero total weight remain census records but not bootstrap draws.
+
+This covers mechanical overlap and declared issuer/corporate/state dependencies.
+It **does not prove** the absence of longer cross-component market dependence or
+regime drift. The inferential model assumes components are exchangeable independent
+sampling units with finite second moments and no dominating component in the target
+regime. These are model assumptions, not empirical findings. A connected graph label
+alone cannot make them true. Unknown applicability is `DEPENDENCE_MODEL_UNSUPPORTED`
+and caps evidence at DEVELOPMENT. A method qualification artifact, bound to this
+protocol and separately received by Blue after implementation review, must state the
+assumptions, applicability rationale, and results of prespecified coverage/stress
+checks (including market serial persistence and heavy concentration). Synthetic
+coverage exercises qualify a numerical method under their stated models only; they
+do not establish real-world independence or alpha. A known cross-component dependency
+must be added, even if this collapses the sample to one cluster.
+
+Method background: [Cameron and Miller, A Practitioner's Guide to Cluster-Robust
+Inference](https://doi.org/10.3368/jhr.50.2.317) distinguishes within-cluster dependence
+from the required cross-cluster independence and warns about few-cluster inference.
+It is methodological context, not validation of this graph or of market data.
+
+Preflight: aligned finite arrays, unique event IDs, finite a>0 after explicit zero
+routing, finite T, finite positive total exposure A, complete D19 and provenance.
+Require G>=30 positive-exposure components and max(component exposure)/A<=0.10.
+These are conservative Blue refusal guards, not sufficient conditions for coverage.
+Any failed guard returns `INSUFFICIENT_CLUSTER_INFORMATION`; never split components,
+change horizon, shrink buffers, discard an issuer, or choose an alternate interval
+after observing the failure.
+
+Point: `delta_hat = sum_j a_j*T_j / A`. Use the generic F `ratio_estimate` point as a
+cross-check; its normal delta-method interval is diagnostic only. The rejected candidate
+interval would use F `cluster_bootstrap_ratio` semantics with **9,999 draws**, seed
+**20260921**, Python `random.Random` algorithm/runtime version pinned in the artifact,
+cluster ordering by stable ASCII IDs. Each draw samples G whole positive components
+uniformly with replacement, then divides the resampled numerator by the resampled
+exposure, keeping the random denominator. Do not average component means equally.
+
+Sort B=9999 ratios. With alpha=.05, lower is sorted index floor(.025*B), upper is
+ceil(.975*B)−1, zero-based, exactly the existing percentile implementation. Persist
+seed, requested/completed draws, indices digest, cluster count/exposures and runtime.
+A nonfinite or nonpositive draw denominator invalidates the **whole result**; do not
+skip or redraw it. Zero bootstrap spread, nonfinite bounds or bounds excluding the
+point refuse the adapter (the existing EffectEstimate requires point containment);
+do not widen/clip the interval or switch methods to make it pass. Interval semantics
+are a nominal two-sided 95% approximate sampling interval under the declared model,
+not posterior probability or a finite-sample coverage guarantee. p_value=None; no
+bootstrap-tail fraction or t-statistic is relabeled as a calibrated p-value.
+
+### 10.5 Cohort, use and forward authority
+
+One registered cohort uses entry sessions numbered 0..251 after an explicit future
+protocol activation, followed by the required 19-session outcome tail and a fixed
+20-session data reconciliation grace period. Warm-up inputs must also be recorded
+post-freeze; activation therefore waits for 20 complete prior sessions. Calendar,
+activation, terminal evaluation instant, source scope and protocol digest are sealed
+before the first outcome. No rolling significance looks or outcome-driven extensions.
+Only the existing Clock schedules these due events. A cohort with too few components
+is honestly insufficient; more observations are not collected by extending this test.
+Future cohorts require prospective alpha allocation before access, not an automatic
+fresh .05 budget. This restriction does not stop ordinary exploratory research.
+
+The lane budget is **one claim / one inferential look / family alpha .05** for this
+first-slice lineage. Charge it durably before outcome read, including failed and
+aborted looks. Resolved S01–S17 rules are fixed, not candidate variants; S11 must be closed before any cohort activation. Reserve the
+two-sided .05 interval for this one test; a positive Research validation requires
+lower>0 plus all scientific admissibility conditions. Economic sufficiency remains
+lower_incremental>MEUE and all existing eligibility gates. No t-threshold heuristic
+replaces this interval. If prior candidate selection used this cohort, a second look
+occurs, or lineage history cannot be reconciled, confirmation authority is exhausted
+and the result is DEVELOPMENT. Family/trial ancestry persists across renamed lanes.
+
+Immutable manifests bind protocol hash, constructor/instance IDs, producer commit,
+calendar/timezone version, cohort boundaries, population census, raw byte addresses,
+SEC public/capture timestamps, parse and PIT identity versions, allocation commitments,
+price/action versions, (a,T,cluster) row digest, D19 statuses, interval method and
+UseLedger receipts. Outcome revisions preserve earlier versions and contaminated-use
+history. A sample hash is not timing proof: preserve append order and clock provenance.
+
+Forward identity is `dataset_id + session_date + sorted exact content addresses +
+session seal`, with session-specific recorded-at facts. Require the existing
+`evaluate_forward_confirmation`/`evaluate_admissibility` checks through the C3-corrected
+session view, plus atom/ancestor consumption checks across overlapping samples. A
+new wrapper, subset, vendor revision or whole-ledger append cannot refresh independence.
+Protocol freeze must precede recording of every claim-dependent input; allocation
+seal must precede entry, and outcome records must postdate their actual availability.
+A post-outcome seal cannot be used as the pre-outcome commitment. Use an explicit
+non-optional durable UseLedger; missing ledger/time authority => unresolved.
+
+`FORWARD_CONFIRMATION` requires all those receipts, complete D19, unspent family budget,
+a qualified/applicable dependence method and the current Blue-authorized scientific
+lineage. Otherwise emit DEVELOPMENT (or an invalid/insufficient result with no estimate).
+Never generate this label from a caller's Boolean, positive delta, a green test, or a
+matching binding string. This specification does not authorize access to restricted
+P0 evidence or declare that its prospective timing conditions are already satisfied.
+
+### 10.6 Producer and interface mapping
+
+Planned producer: `src/quant/science/effect.py :: assemble_form4_effect` (new module
+inside the future single build), returning a typed immutable `ScientificEffectArtifact`
+with status/reasons, protocol/sample IDs, row/cluster/weight commitments, D19 result,
+interval result, binding, admissibility/use receipts and optional EffectEstimate.
+Do not place estimation inside the Desk, Book, or the Economic gate.
+
+Exact binding:
+
+```
+security.return_definition = benchmark.return_definition = SIMPLE_SINGLE_PERIOD
+security.interval_spec = benchmark.interval_spec = PUBLIC_KNOWLEDGE_NEXT_OPEN_TO_20TH_CLOSE_V1
+security.corporate_action_convention = benchmark.corporate_action_convention = SHARE_ENTITLEMENTS_PLUS_UNREINVESTED_CASH_V1
+security.terminal_treatment = benchmark.terminal_treatment = VERIFIED_ENTITLEMENTS_ELSE_D19_INSUFFICIENT_V1
+benchmark_symbol = SPY
+aggregation = E[sum_j a_j T_j] / E[sum_j a_j]
+allocation_constructor_id = FORM4_SLOT20_ADV20_V1:<canonical-rule-sha256>
+allocation_weight_precedes_outcome = True  # only after commitment validation
+d19_reference = governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md#103-returns-corporate-actions-and-d19
+```
+
+Call E `evaluate_delta_coordinate(binding)` and require compatible. Persist its
+`binding_hash`, and verify the point, interval and Economic recipe refer to the same
+binding and scenario. The current gate compares declarations and does not compare
+terminal conventions: the adapter **must** verify equality and actual terminal/action
+lineage separately. Never pass `True` for timing absent the underlying receipts.
+The recipe's ThetaSelectionRule must name the constructor among upstream authorities.
+
+| Destination | Exact source |
+| --- | --- |
+| EffectEstimate.delta_hat/lower/upper | Validated bootstrap result on the committed rows; point cross-checked against ratio formula |
+| confidence_level | 0.95, with method/trial semantics in immutable artifact |
+| evidence_label | §10.5 adjudication, not caller input |
+| sample_provenance | Immutable ScientificEffectArtifact content-address reference |
+| estimator_form | E ALLOCATION_WEIGHTED_RATIO constant, backed by actual formula |
+| event_count | Number of positive-weight contributing crossings; separately retain total, zero and unresolved counts |
+| p_value | None |
+| clustering_unit_provenance | E `O4_RESOLVED_CLUSTERING_UNIT` only for the frozen graph with valid metadata; never claim independence from this enum |
+| ResearchTicket.scientific_effect | New versioned typed envelope/reference, with explicit absent state for legacy tickets |
+| ResearchTicket.test_result / validation_result | Descriptive diagnostics and scientific disposition; existing portfolio metrics remain named as such |
+
+Research's VALIDATED status requires the scientific result and single-look rule;
+SHADOW is a separate StrategyRegistry state requiring Economic admission. Insufficient
+science creates a persisted refusal, lesson, dependency/next action and no promotion.
+Do not force an invalid interval into EffectEstimate; preserve its diagnostic artifact
+and use `NO_TRADE / EFFECT_ESTIMATE_ON_FROZEN_COORDINATE_UNAVAILABLE` with specific
+causal reasons. Synthetic artifacts carry `synthetic=true` in the envelope and cannot
+reach a real-data admission context even if all fixture fields look positive.
+
+## 11. Bounded Blue consistency challenge and disposition
+
+This is Blue's own consistency check, **not independent review**.
+
+| Failure mode / concrete contradiction | Resolution and falsifier |
+| --- | --- |
+| Outcome-driven weights | S03/S04: sealed reservation/input commitments; mutate future returns and require identical allocations. |
+| Issuer-only clustering ignores shared SPY/time shocks | S02/S11: shared influence-span graph; cross-issuer overlap fixture must share a component. Unsupported residual dependence caps authority. |
+| Denominator NaN/negative inputs or one giant component pass generic utility | S10/S11: strict adapter validation and cluster guards; reject rather than inherit generic resolved state. |
+| Unacquired filings or delisted losers disappear from the sample | S01/S08: census and full completion routing; deleting a source/outcome must block the whole cohort. |
+| Fit data repackaged as a new sample | S12–S15: atom ancestry and immutable consumption receipts; repackage fixture remains consumed. |
+| Open-to-open Desk execution silently replaces frozen twentieth close | S06 plus correction §13: extend the sole fill authority to explicit scheduled close phase; refuse absent support. |
+| Cost model's one-way scalar ignores actual fill commission basis | correction §13: exact per-leg reference-notional shortfall, component inventory, and post-size order envelope. |
+| Compatible string declarations conceal terminal/policy mismatch | S16: verify actual manifest and both conventions, not just the existing gate's permissive strings. |
+| Forward label based on timing-only test | S15: method, atom use, census, seal and trial authority all required. |
+| Arbitrary Risk/Economic selection inherits reference-policy delta | S03: policy transport gate; changes to relative weights/support are NEW_POLICY_VERSION, not inherited evidence. |
+
+**Unresolved contradiction, S11:** for entry index e, ADV20 alone starts no later
+than e−20; the candidate's buffers extend the influence span through at least
+[e−40,e+39]. Two separate temporal components therefore require entry separation
+of at least 80 sessions. With entry indices 0..251, at most
+`floor(251/80)+1 = 4` components can exist, before issuer links merge more.
+The 30-cluster requirement is impossible, independently of returns or event counts.
+Lowering 30 to 4 does not establish valid few-cluster inference. Extending collection
+to at least 2,321 entry sessions merely to make 30 possible is not an acceptable
+silent first-slice substitution and would not prove independence anyway.
+
+The smallest required resolution is one justified issuer/calendar dependence and
+interval procedure for the already-fixed estimand/cohort, or a precise finding that
+this cohort cannot support inferential authority under a stated model. This is the
+only specification blocker. Blue cannot turn a nominal bootstrap into established
+validity by declaring its clusters independent. Section 12 prepares one bounded
+independent methods challenge; no review has been executed or dispatched here.
+The normal implementation review remains required after any later build delivery. The conservative missingness/dependence refusals are
+fully specified behaviors, not requests for the human to invent another strategy.
+
+Deferred: useful partial-identification inference; high-power multiway/time-series
+methods if this graph lacks capacity; calibrated real execution parameters; generalized
+policy transport/scaling; partial-fill continuations; additional strategy families;
+real data availability and genuine economic edge. None is claimed by this spec freeze.
+
+```
+ECONOMIC_PROGRESS = Scientific producer semantics and lawful refusal paths are now fixed for the first traceable economic loop.
+REMAINING_BLOCKER = S11 dependence/interval method; concrete capacity contradiction above.
+EXIT_CONDITION = NOT_MET_FOR_FREEZE; completed decisions preserved, one bounded next action in section 12.
+```
+
+
+## 12. Prepared bounded independent scientific challenge — sole next action
+
+```
+SCIENCE_CHALLENGE = PREPARED / NOT_DISPATCHED
+IMPLEMENTATION_AUTHORIZED = FALSE
+REVIEW_OWNER = ONE independent scientific-methods reviewer (not Blue, not the existing F11 mission)
+```
+
+This is the only prepared science mission. Do not create a duplicate specification
+branch or restart prestage archaeology. At dispatch, Blue binds the exact published
+commit containing this section and a single reviewer branch/owner after refreshing
+for concurrent missions. This preparation does not commandeer Astra's active F11
+owner or imply that its unchanged HEAD means inactivity.
+
+**Input:** S01–S17 here, EC1, D07/D19 authorities, pinned F inference implementation,
+E coordinate/decision contract, and the exact inequality in §11. All resolved rules
+remain fixed. No outcomes, restricted P0 corpus, target host or capital access.
+
+**Question:** Is there one defensible implementable interval estimator for the
+allocation-weighted ratio that preserves overlapping holding/formation/ADV windows,
+shared SPY/market time shocks, issuer/corporate recurrence and allocation-state
+competition, within the registered 252-entry-session cohort? Challenge the proposed
+method's applicability and attainable information, not its profitability.
+
+**Required final delivery:** one amendment recommendation to S11, with mathematical
+sampling assumptions and primary methodological support; exact resampling units,
+block/bandwidth/nuisance rule frozen before target outcomes; random-denominator
+handling; interval/tail semantics; finite/insufficient-sample guards; deterministic
+seed/draw/quantile rules; and targeted falsifiers. Explain what evidence could support
+applicability, and distinguish numerical stress evidence from real-world validity.
+Do not substitute event-iid or issuer-only resampling, arbitrary block lengths,
+normal t-statistics, a new return coordinate, or empirical outcome tuning.
+
+**Finite acceptance:** demonstrate on analytically tractable fixtures or a declared
+finite simulation matrix that the proposed procedure handles (1) simultaneous common
+market shocks, (2) repeated-issuer dependence, (3) overlapping windows, (4) unequal
+allocation and random denominator, (5) insufficient information. State model coverage
+limits and Monte Carlo uncertainty; no test-count success proxy. No production code.
+The recommendation must show that its own requirements are not impossible by cohort
+construction. If no justified method is available, return the exact missing assumption
+or external evidence and the smallest resolution; do not write a menu of new missions.
+
+**Exit:** one of `S11_READY_FOR_BLUE_FREEZE` with the full implementable contract, or
+`S11_BLOCKED_<EXACT_REASON>`. Stop after that delivery. Blue receives it once; another
+cycle requires a new concrete contradiction. No general architecture audit, Product
+implementation, deployment, or F11 review is in scope.

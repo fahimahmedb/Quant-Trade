@@ -461,3 +461,147 @@ challenge
 
 Do not dispatch implementation before the scientific output contract is closed.
 
+
+## 13. SCIENTIFIC CLOSURE RECEPTION / CONSOLIDATED BUILD DISPOSITION — latest, 2026-09-21
+
+This section is the sole current first-vertical build disposition. Sections 3–10
+remain required. The estimator contract and decision table are maintained in the
+existing authority, not a competing specification:
+
+`governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md` §§9–12.
+
+```
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+PRODUCT_INTEGRATION = PAUSED
+DEPLOYMENT_AUTHORIZED = FALSE
+ONE_BIG_BUILD = DEFAULT_AFTER_S11_CLOSURE / NOT_DISPATCHED
+INDEPENDENT_REVIEW_REQUIRED = ONE_BOUNDED_S11_CHALLENGE_PREPARED; IMPLEMENTATION_REVIEW_AFTER_DELIVERY
+```
+
+Blue closed population, formation/entry, allocation identity/timing, return/action/
+terminal rules, denominator checks, data-use/trial/evidence authority and output mapping.
+O4 observation semantics are closed; inferential dependence/interval authority is not.
+The draft connected-component bootstrap can supply at most four components in the
+252-session cohort while requiring 30. That method is rejected. Declaring all real
+results insufficient by this impossible guard is not coherent scientific closure.
+The exact bounded next action is §12 of the science authority. This disposition grants
+no right to weaken existing admission checks merely to demonstrate a fill.
+
+### 13.1 Two execution-cost checks — precise shared contract
+
+**Before sizing**, bind actual `ExecutionModel` type/version/config and the exact
+price/volume/ADV inputs and cutoff, order side, reference price, execution phase,
+participation denominator, units, and cost inventory. The Research/Economic comparison
+must use compatible price units and per-leg reference-notional units, not just a higher
+scalar cost. `1 bp = 0.0001` of the declared notional. Declare entry and exit separately;
+round-trip cost is the sum of leg currency costs divided by the original allocated
+notional, not blindly twice a one-way coefficient when exit notional differs.
+
+The pinned Desk model has `s(p)=half_spread_bps + impact_bps_at_full_participation *
+sqrt(min(p,1)/max_participation)`, fill price `P*(1+side*s/10000)`, and commission
+`abs(q)*fill_price*commission_bps/10000`. Thus exact per-leg shortfall on reference
+notional includes the commission cross-term:
+`cost_bps = s + commission_bps*(1+side*s/10000)`.
+The existing Economic consistency helper's additive bps comparison is useful but
+not sufficient for this exact check. Reuse its model extraction; add a pure comparison
+against the actual fill formula without calling fill to simulate an admission.
+Reject invalid coefficients, nonpositive ADV/capacity, stale/unavailable units, unknown
+execution phase or uncovered components. Missing ADV must not exploit the current
+fill function's zero-participation fallback.
+
+Compare a declared Research/Economic execution-assumption envelope against that exact
+cost model over its full allowed participation range, including both sides and reference
+bases. A component present only on one side requires a governed unit/applicability
+mapping, not implicit zero. Cover commissions/fees, spread, impact/slippage, financing,
+borrow and other applicable losses. Long-only unlevered policy may justify no borrow
+or financing liability, but zeros require explicit applicability evidence. The SPY leg
+is a scientific comparator, not an assumed executed hedge incurring fictional fees.
+The current assumed Desk coefficients retain assumed provenance; compatibility does
+not make the MEUE recipe calibrated or `RECIPE_CONSUMABLE`.
+
+`T_j` stays gross. Expected costs enter `K_forward`; adverse parameter/model uncertainty
+enters `M_economic` under the existing partition. Research's old net portfolio-cost
+charge is not subtracted again from T_j. Actual Book costs arise once through fills or
+separately identified applicable ledger charges. A cost class cannot be both charged
+in fill price and again as a duplicate cash debit. Larger assumptions alone do not
+establish compatibility, and conservatism is not silently loaded into expected cost.
+
+**After sizing and before fill**, compute implied participation from the actual final
+quantity/reference notional and the same authorized ADV basis, on each proposed leg.
+Validate the participation/cost envelope again after rounding, execution-price updates,
+capacity truncation or any transformation that changes the order. Persist both check
+artifacts with the AssessmentRecord/OpportunityTicket. Risk scaling down cannot increase
+participation only while the same prices/ADV apply; changed inputs require recheck.
+Failure yields `NO_TRADE / EXECUTION_COST_CONSISTENCY_EXCEEDED_AFTER_SIZING` (or the
+precise missing-input reason) before `ExecutionModel.fill` and before Book mutation.
+A pure order preview may validate inputs but is not a second fill authority.
+
+### 13.2 Exact integration consequences retained for one build
+
+- Initial Economic assessment precedes `VALIDATED -> SHADOW` and Desk actionable
+  selection. Persist AssessmentRecord and StrategyRegistry transition with linked
+  identities and restart recovery. CONTINUE alone does not confer order eligibility.
+- Size remains `min(MarginSizingRule(NAV*strategy_allocation, economic_margin),
+  NAV*strategy_allocation*definition.capital_fraction)`. The science constructor is
+  reference-policy evidence, not a parallel SIZE engine. Verify policy applicability
+  and EC1 weight homogeneity; changed support/relative weights require a new policy
+  version and cannot silently inherit the reference estimate.
+- Risk remains independent downstream veto/throttle. A Risk rejection persists a
+  refusal/lesson. No scientific pass overrides portfolio context or missing beta
+  attribution. SPY excess alone is not proof of factor-adjusted alpha.
+- `ExecutionModel.fill` remains the sole shadow-fill authority. The science holding
+  convention requires explicit scheduled close support for the twentieth session;
+  the pinned implementation only reads an opening price. The future single build must
+  extend that function's explicit execution-phase contract, preserve open defaults,
+  and test exact entry/exit references. It must not substitute next-open returns.
+- Entry and scheduled exit use separate deterministic OpportunityTicket IDs linked to
+  one position lifecycle, retaining one-fill-per-symbol-per-opportunity semantics.
+  This permits the required round trip without general partial-fill continuations.
+  Corporate-action entitlements/cash must enter the existing authoritative Book as
+  idempotent action records, never a second ledger or fabricated trade fill.
+- Forward confirmation identity is session/content-address scoped; consumption also
+  follows shared source atoms/ancestry. Durable Learning processed IDs and payload
+  digests survive the last-200 display window and reject conflicting replay.
+- Preserve the single chain `ForwardObservation -> ResearchTicket -> AssessmentRecord
+  -> OpportunityTicket -> DeskJournal -> Ledger -> LearningStore`. All refused,
+  unmatured, incomplete and economically negative outcomes retain reasons and next
+  actions. The existing Clock wakes only on new data, due outcomes or resolved blockers;
+  it does not repeatedly spend the same cohort's inferential look.
+
+### 13.3 Prepared implementation shape — not permission
+
+One intended implementation owner: **one primary Product Builder**, on
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`, only after explicit Blue
+freeze and dispatch. This branch is not created by this mission. No separate estimator
+implementation precursor is justified: estimator code, typed output, promotion and
+vertical integration can be built together once S11 is resolved. Independent method
+specification is needed first; profitable alpha is not.
+
+Internal verifiable milestones for that eventual mission:
+
+1. **Scientific artifact:** assembler with S01–S17, interval method as finally accepted,
+   D19 refusals, real lineage/commitment checks and deterministic arithmetic fixtures.
+2. **Research/Economic boundary:** typed ticket persistence, exact coordinate/recipe
+   binding, use/trial ledger, session evidence identity, durable initial admission.
+3. **Desk/Book boundary:** sole Economic size with lifecycle cap, policy transport,
+   independent Risk, both exact cost checks, sole fill authority with entry/exit phases,
+   existing Book action/position accounting and recovery.
+4. **Learning/Clock closure:** bounded display plus durable idempotence; full correction
+   §10 restart/conflict/negative matrix and scientific falsifiers; one final handoff
+   with exact commit, actual tests and a real-data capability report. Synthetic positive
+   cases are explicitly labeled and never presented as market-edge evidence.
+
+These are checkpoints inside ONE BIG BUILD, not four Builder dispatches. The final
+handoff must identify unavailable real inputs and resulting NO_TRADE states without
+manufacturing a positive estimate. Subsequent independent review is bounded to the
+scientific and integration contracts and the frozen delivery; Blue receives it before
+any later integration/deployment decision. No whole Forward/Economic branch merge is
+implied. No target-host, qualifying P0, data-unsealing or capital permission is granted.
+
+```
+ECONOMIC_PROGRESS = Precise producer and Product integration decisions are preserved; the impossible interval candidate was rejected before it could become production authority.
+REMAINING_BLOCKER = S11: scientifically justified issuer/calendar dependence and interval contract for the bounded first-slice cohort.
+EXIT_CONDITION = One bounded methods delivery resolves S11 or proves the exact insufficiency; Blue then makes the freeze decision without reopening settled architecture.
+```

@@ -912,3 +912,33 @@ Gates/audits are means toward the first traceable economic loop, not terminal ob
 
 Read:
 `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` section 17.
+
+
+## LATEST RAIL-B SCIENTIFIC SPECIFICATION DISPOSITION — 2026-09-21
+
+This overrides earlier Rail-B instructions to create a new specification/prestage
+mission. Rail A and its existing independent owner are unchanged.
+
+Reuse the completed prestage at `1226427082e55e7b3c51f96c5f091b90a6278447`.
+Blue's resolved scientific decisions and exact remaining blocker are now in:
+`governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md` §§9–12.
+The single consolidated Product build disposition is:
+`governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md` §13.
+
+```
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+PRODUCT_INTEGRATION = PAUSED
+SCIENCE_CHALLENGE = PREPARED / NOT_DISPATCHED
+ECONOMIC_PROGRESS = Producer decisions and vertical integration consequences persisted; an impossible inference candidate rejected before implementation.
+REMAINING_BLOCKER = S11 dependence/interval authority: the proposed 30-cluster method can have at most four components in the 252-session cohort.
+EXIT_CONDITION = One bounded independent methods delivery resolves S11 or states exact insufficiency; no reopening of settled Product architecture.
+NEXT_SINGLE_ACTION = Refresh ownership, then dispatch the single S11 methods challenge already specified in science-authority section 12.
+```
+
+No new branch/Builder/reviewer was dispatched by this specification mission. Do not
+infer owner inactivity from unchanged remote HEADs. No target-host, qualifying P0,
+Gate-B, t0, restricted-data visibility, deployment or capital authority changes.
+After S11 closure, keep ONE BIG BUILD with one primary Product owner and internal
+milestones; no separate estimator implementation precursor is presently justified.
