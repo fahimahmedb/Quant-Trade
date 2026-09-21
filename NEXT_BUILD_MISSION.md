@@ -522,3 +522,55 @@ t0 = NOT_DECLARED
 PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
 ```
+
+
+## FINAL LIVE ROUTER — 2026-09-21
+
+### RAIL A — EXECUTE NOW
+
+Authorized Astra branch:
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+
+Expected mission HEAD:
+
+`15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+
+Blue dispatch:
+
+`handoff/BLUE_GATE_B_F11_PASS_FOR_INDEPENDENT_ASTRA_RECHECK_2026-09-21.md`
+
+Action:
+
+run the targeted independent F11 recheck. Do not restart the entire run-authority audit.
+
+### RAIL B — NEXT
+
+Scientific prestage returned:
+
+`SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
+
+Final handoff:
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@1226427082e55e7b3c51f96c5f091b90a6278447`
+
+Blue reception:
+
+`handoff/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_RECEPTION_2026-09-21.md`
+
+Action:
+
+close the exact scientific-estimator specification before freezing the vertical-loop
+Builder mission.
+
+Do NOT launch `builder/post-p0-first-vertical-shadow-loop-2026-09-21` yet.
+
+### SAFETY
+
+```text
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
