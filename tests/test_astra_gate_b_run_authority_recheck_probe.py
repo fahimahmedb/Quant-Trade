@@ -476,10 +476,11 @@ os.close(fd)
         h = RunHarness()
         try:
             h.set_epoch()
+            real_write = os.write
             def zero_registry(fd, data):
                 if fd_path(fd) == str(h.registry_path):
                     return 0
-                return os.write(fd, data)
+                return real_write(fd, data)
             with mock.patch.object(runctl.os, "write", side_effect=zero_registry):
                 with self.assertRaises(runctl.AuthorityError):
                     h.reserve()
@@ -609,12 +610,12 @@ os.close(fd)
         h = RunHarness()
         try:
             h.set_epoch()
-            r1 = h.reserve(run_id="gate-b-astra-one")
+            r1 = h.reserve(run_id="gate-b-11111111-1111-4111-8111-111111111111")
             _, raw1, d1 = h.activation(r1, activation_id="act-astra-one")
             h.registry.seal_activation(activation_bytes=raw1, activation_digest=d1)
             h.consume(raw1, d1, r1["run_id"], now=dt.datetime.now(dt.timezone.utc))
             h.registry.terminal(run_id=r1["run_id"], status="FAILED_TERMINAL", reason="astra complete")
-            r2 = h.reserve(run_id="gate-b-astra-two")
+            r2 = h.reserve(run_id="gate-b-22222222-2222-4222-8222-222222222222")
             _, raw2, d2 = h.activation(r2, activation_id="act-astra-two")
             h.registry.seal_activation(activation_bytes=raw2, activation_digest=d2)
             h.consume(raw2, d2, r2["run_id"], now=dt.datetime.now(dt.timezone.utc))
