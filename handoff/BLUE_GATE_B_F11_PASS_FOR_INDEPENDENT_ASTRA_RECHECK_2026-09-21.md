@@ -103,3 +103,29 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 Only Astra may establish:
 
 `ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE`
+
+
+## 5. Final Astra mission binding
+
+Authorized Astra branch created exactly from the audited integration SHA:
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+
+Mission file:
+
+`handoff/ASTRA_GATE_B_F11_LOCK_IDENTITY_RECHECK_MISSION_2026-09-21.md`
+
+EXPECTED_ASTRA_MISSION_HEAD:
+
+`15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+
+Blue final dispatch state:
+
+```text
+PASS_FOR_INDEPENDENT_ASTRA_RECHECK = TRUE
+ASTRA_F11_RECHECK_AUTHORIZED = TRUE
+EXPECTED_ASTRA_MISSION_HEAD = 15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9
+```
+
+Astra must verify its branch resolves exactly to that mission HEAD before substantive
+audit work.
