@@ -145,3 +145,62 @@ Deletion eligibility requires a separate exact-SHA retirement decision.
 `t0 = NOT_DECLARED`
 
 `REAL_CAPITAL_AUTHORIZED = FALSE`
+
+## 4. LATEST AUTHORITY OVERRIDE — F11 FRONTIER
+
+This section supersedes stale active-branch classifications above.
+
+Current Blue authority:
+
+`blue/master-v2-2026-09-20`
+
+Latest compact restart surface:
+
+`handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
+
+Current audited integration object:
+
+`blue/gate-b-run-authority-repair-integration-2026-09-21@644da76eb0227be275b8e3448118dac0cc7096ca`
+
+Final Astra review branch:
+
+`astra/gate-b-run-authority-mechanisms-recheck-2026-09-21@41c3f291f46b7b5849bdb702c09ccefbeecde691`
+
+Classification:
+
+`FINAL_ASTRA_RECHECK / BLOCKED_F11 / PRESERVE`
+
+Antigravity Product-prestage branch:
+
+`parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21@568eea1e028302e14f96a06eb2515bb89aa73ad4`
+
+Classification:
+
+`PRODUCT_PRESTAGE_COMPLETE / PRESERVE_FOR_FUTURE_INTEGRATION`
+
+Historical R1 repair:
+
+`builder/gate-b-run-authority-m1-m3-repair-2026-09-21@2d2ff4e32f239fb7ef41d9e44745005f5f5fb44a`
+
+Classification:
+
+`DELIVERED_REPAIR_EVIDENCE / PRESERVE_UNTIL_F11_CLOSURE`
+
+Historical R2 repair:
+
+`builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21@e19f45709b9e0c2a6d6d22c4d666b701a5bced86`
+
+Classification:
+
+`DELIVERED_REPAIR_EVIDENCE / PRESERVE_UNTIL_F11_CLOSURE`
+
+Next expected branch:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21`
+
+Status at this override:
+
+`NOT_YET_CREATED`
+
+Do not delete or repurpose any of the above refs until Blue records F11 closure and a subsequent branch-retirement decision.
+
