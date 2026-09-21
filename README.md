@@ -13,9 +13,11 @@ After the North Star, read:
 1. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
 2. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
 3. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
-4. the exact mission handoff/checkpoint referenced there
+4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`
+5. `governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`
+6. the exact mission handoff/checkpoint referenced there
 
-Resolve the live HEAD of `blue/master-v2-2026-09-20`. Repository default is currently a historical branch and is not authority.
+Resolve the live HEAD of `blue/master-v2-2026-09-20`. The repository default is now this Blue branch, but default-branch status alone is still not proof of the active mission or gate state.
 
 `STATE.md` and `CHIEF_BRIEF.md` describe generated/runtime/research state; they are not governance routing documents.
 
