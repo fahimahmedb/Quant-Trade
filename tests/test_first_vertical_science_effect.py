@@ -13,6 +13,7 @@ from quant.science.effect import (
     ALLOCATION_CONSTRUCTOR_ID,
     COHORT_GAP_VIOLATION,
     CONCENTRATION_GUARD_FAILED,
+    COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP,
     DEPENDENCE_MODEL_UNSUPPORTED,
     D19_INSUFFICIENT,
     EFFECT_UNAVAILABLE,
@@ -145,6 +146,21 @@ class FirstVerticalScientificEffectTests(unittest.TestCase):
             with self.assertRaises(ProtocolConflict):
                 store.register_cohort(changed, self._cohort(2), self.calendar)
 
+    def test_invalid_251_session_geometry_fails_closed(self):
+        cohort = self._cohort(1)
+        cohort = replace(
+            cohort, last_entry_session=self.calendar.at(self.starts[0] + 250)
+        )
+        decision = structural_stopping_decision((cohort,), self.calendar)
+        self.assertEqual(decision.state, STRUCTURAL_INSUFFICIENT)
+        self.assertIn("COHORT_ENTRY_SESSION_GEOMETRY_NOT_252", decision.reasons)
+
+    def test_protocol_hash_mismatch_fails_closed(self):
+        cohort = replace(self._cohort(1), protocol_hash="sha256:not-the-frozen-protocol")
+        decision = structural_stopping_decision((cohort,), self.calendar)
+        self.assertEqual(decision.state, STRUCTURAL_INSUFFICIENT)
+        self.assertIn("COHORT_PROTOCOL_HASH_MISMATCH", decision.reasons)
+
     def test_inter_cohort_gap_inside_80_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             store = CohortProtocolStore(Path(directory) / "protocol.json")
@@ -161,12 +177,32 @@ class FirstVerticalScientificEffectTests(unittest.TestCase):
             with self.assertRaisesRegex(ProtocolConflict, COHORT_GAP_VIOLATION):
                 store.register_cohort(self.config, bad, self.calendar)
 
+    def test_next_cohort_waits_for_previous_cohort_maturity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = CohortProtocolStore(Path(directory) / "protocol.json")
+            store.register_cohort(
+                self.config, self._cohort(1, matured=False), self.calendar
+            )
+            with self.assertRaisesRegex(ProtocolConflict, "PRIOR_COHORT_NOT_FULLY_MATURED"):
+                store.register_cohort(self.config, self._cohort(2), self.calendar)
+
     def test_valid_80_session_boundary_is_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             store = CohortProtocolStore(Path(directory) / "protocol.json")
             store.register_cohort(self.config, self._cohort(1), self.calendar)
             store.register_cohort(self.config, self._cohort(2), self.calendar)
             self.assertEqual(len(store.cohorts()), 2)
+
+    def test_accrual_stops_once_structural_guard_is_reached(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = CohortProtocolStore(Path(directory) / "protocol.json")
+            store.register_cohort(self.config, self._cohort(1), self.calendar)
+            store.register_cohort(self.config, self._cohort(2), self.calendar)
+            store.register_cohort(self.config, self._cohort(3), self.calendar)
+            with self.assertRaisesRegex(
+                ProtocolConflict, COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP
+            ):
+                store.register_cohort(self.config, self._cohort(4), self.calendar)
 
     def test_cross_cohort_repeated_issuer_merges_components(self):
         first = self._cohort(1)
@@ -196,6 +232,16 @@ class FirstVerticalScientificEffectTests(unittest.TestCase):
         self.assertEqual(two.state, STRUCTURAL_CONTINUE)
         self.assertIn(INSUFFICIENT_G, one.reasons)
         self.assertIn(INSUFFICIENT_G, two.reasons)
+
+    def test_pre_stop_assembler_does_not_read_target_outcomes(self):
+        artifact = assemble_form4_effect(
+            cohorts=(self._cohort(1), self._cohort(2)),
+            calendar=self.calendar,
+            outcomes=ExplodingOutcomes(),
+            method_qualification=qualify_method(self.config),
+        )
+        self.assertEqual(artifact.status, "REFUSED")
+        self.assertIn(INSUFFICIENT_G, artifact.reason_codes)
 
     def test_three_cohorts_reach_structural_guard(self):
         decision = structural_stopping_decision(self._eligible_cohorts(), self.calendar)

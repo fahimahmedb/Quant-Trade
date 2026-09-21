@@ -473,6 +473,13 @@ class CohortProtocolStore:
                 return cohort
 
         current = list(self.cohorts())
+        if current:
+            if any(not item.matured for item in current):
+                problems.append("PRIOR_COHORT_NOT_FULLY_MATURED")
+            elif structural_stopping_decision(
+                tuple(current), calendar, config
+            ).inference_eligible:
+                problems.append(COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP)
         expected_ordinal = len(current) + 1
         if cohort.ordinal != expected_ordinal:
             problems.append(
