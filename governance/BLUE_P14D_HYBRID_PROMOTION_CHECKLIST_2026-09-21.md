@@ -92,10 +92,10 @@ No moving branch name alone is admissible.
 
 - [x] candidate amendment V2 prepared.
 - [x] Gate-B-to-t0 binding supplement prepared.
-- [ ] reconcile candidate amendment with final Builder fault-matrix classifications;
+- [x] reconcile candidate amendment with final Builder fault-matrix classifications — `governance/BLUE_HYBRID_PROPERTY_COVERAGE_RECONCILIATION_2026-09-21.md` maps all 19 rows;
 - [ ] reconcile candidate amendment with Astra final findings;
-- [ ] ensure no current authority still requires a property omitted by the hybrid rule;
-- [ ] prepare atomic current-state updates that replace fixed P14D as active;
+- [x] ensure no current authority still requires a property omitted by the hybrid rule — no omission found across the current 19-row matrix and final P14D method Red Team;
+- [x] prepare atomic current-state updates that replace fixed P14D as active — `governance/BLUE_HYBRID_PROMOTION_ATOMIC_DRY_RUN_2026-09-21.md`;
 - [x] prepare post-qualification surveillance state — candidate amendment §8 defines `P0_POST_QUALIFICATION_SURVEILLANCE = ACTIVE` after Gate D;
 - [x] prepare explicit rollback/reopen semantics — candidate amendment §8 requires new Blue disposition and allows later defects to reopen eligibility without rewriting historical qualification.
 
@@ -109,7 +109,7 @@ This section does NOT need to execute before amendment promotion, but the method
   `governance/BLUE_GATE_B_TO_T0_ENTRANCE_BINDING_SPEC_2026-09-21.md`.
 - [x] stale V3 pinning / old t0 semantics identified.
 - [ ] authoritative target-host runbook reconciled AFTER amendment promotion and final candidate disposition.
-- [ ] exact target release selected for Gate B.
+- [x] exact target release selected for Gate B — frozen V4 `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`, prepared release path `/opt/quant-releases/4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072/`.
 
 Do not execute a hybrid qualifying start from the stale V3-pinned runbook.
 
