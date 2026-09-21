@@ -4,15 +4,10 @@
 
 Branch: `blue/gate-b-run-reservation-host-relay-preseal-2026-09-21`
 Mission HEAD (verified): `e117ddda2b20669f98419761e09490f30885d59e`
-Mission-head CI: `35637245376` on `SEC P0 pre-t0 gate` — **status observed: `in_progress`** at last check.
+Mission-head CI: `35637245376` on `SEC P0 pre-t0 gate`, head_sha `e117ddda2b20669f98419761e09490f30885d59e` — **status: `completed` / conclusion: `success`** (confirmed on recheck).
 
-Per mission section 3, this is:
-
-`GATE_B_RUN_RESERVATION_PRESEAL = WAITING_FOR_EXACT_HEAD_CI`
-
-This is NOT a Gate-B defect, host defect, or F11 reopen. All read-only preparation below
-is complete and durable; re-check CI 35637245376 before treating any field here as final,
-and before the owner runs the host relay.
+All read-only preparation below is complete. The host-relay command block in section 4 is
+now cleared to run.
 
 ## 1. External authority chain (verified)
 
@@ -289,18 +284,14 @@ reservation was created anywhere by this session.
 
 ## 9. Final disposition
 
-Mission-head CI `35637245376` was `in_progress` at last check (recheck required before use):
-
-`GATE_B_RUN_RESERVATION_PRESEAL = WAITING_FOR_EXACT_HEAD_CI`
-
-All read-only P1-P4 preparation is complete. Once CI 35637245376 resolves
-`COMPLETED / SUCCESS`, this disposition becomes:
+Mission-head CI `35637245376` resolved `completed` / `success` on head_sha
+`e117ddda2b20669f98419761e09490f30885d59e` (exact match to this mission's verified HEAD).
 
 `GATE_B_RUN_RESERVATION_PRESEAL = READY_FOR_OWNER_HOST_RELAY`
 
-and the owner may run the section 4 command block on the actual target host. If CI resolves
-`COMPLETED / FAILURE`, the disposition becomes
-`GATE_B_RUN_RESERVATION_PRESEAL = BLOCKED_MISSION_EXACT_HEAD_CI_FAILURE` and the host relay
-must not be run.
+The owner may now run the section 4 command block on the actual target host. All fields in
+section 6/7 marked `<PLACEHOLDER>` remain unfilled until the owner returns the real
+reservation output from the host relay; this mission does not seal or consume any
+activation.
 
 Returning control to Blue / owner.
