@@ -787,3 +787,43 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
 Do not infer stronger authority from prior green CI, prior Gate-B preparation, Antigravity planning, or the repaired A1-A10 matrix.
+
+## AA. F11 BUILDER HANDOFF RECEIVED — ASTRA DISPATCH STILL GATED
+
+Current Builder delivery:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Builder handoff:
+
+`handoff/BUILDER_GATE_B_LOCK_PATH_IDENTITY_REPAIR_2026-09-21.md`
+
+Pre-handoff implementation CI:
+
+`35608538693 = COMPLETED / SUCCESS`
+
+Final handoff-head CI:
+
+`35610033532 = IN_PROGRESS` at this checkpoint.
+
+Blue reception authority:
+
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+
+Disposition:
+
+`BUILDER_F11_ACCEPTED_FOR_ASTRA = FALSE`
+
+because the previously committed F11 parent-path closure gate remains open.
+
+Required before Astra:
+
+`F11-P1 + F11-P2 + F11-P3 = GREEN`
+
+then final exact-head Builder CI must be `COMPLETED / SUCCESS`.
+
+Current owner:
+
+`BUILDER_F11_PARENT_PATH_CLOSURE`
+
+Astra remains stopped.
