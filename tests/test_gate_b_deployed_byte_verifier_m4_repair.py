@@ -299,8 +299,9 @@ class SyntheticVerifierTests(unittest.TestCase):
         thread.start()
         try:
             with mock.patch.object(verifier.os, "read", side_effect=slow_read):
-                with self.assertRaisesRegex(verifier.VerifyError, "changed during inspection|identity raced"):
-                    self.verify()
+                report, _ = self.verify()
+            self.assertEqual(report["status"], "RED")
+            self.assertTrue(any(x["path"] == "src/main.py" for x in report["tracked_mismatches"]))
         finally:
             thread.join(timeout=2)
         self.assertFalse(thread.is_alive())
