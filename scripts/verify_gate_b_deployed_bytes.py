@@ -412,6 +412,9 @@ def _read_tracked_entry(root_fd: int, path: str, expected_mode: str) -> tuple[by
             _recheck_parent_chain(chain)
             return target, after_path
 
+        if not stat.S_ISREG(before_path.st_mode):
+            raise VerifyError(f"tracked path type changed: expected regular file at {path}")
+
         flags = os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
         try:
             fd = os.open(name, flags, dir_fd=parent_fd)
@@ -565,12 +568,28 @@ def verify(
                 missing.append(path)
                 continue
             except VerifyError as exc:
-                mismatches.append({
-                    "path": path,
-                    "kind": "inspection_race_or_type",
-                    "expected": expected_mode,
-                    "observed": str(exc),
-                })
+                detail = str(exc)
+                if detail.startswith("tracked path type changed: expected symlink"):
+                    mismatches.append({
+                        "path": path,
+                        "kind": "type",
+                        "expected": "symlink",
+                        "observed": "non-symlink",
+                    })
+                elif detail.startswith("tracked path type changed: expected regular file"):
+                    mismatches.append({
+                        "path": path,
+                        "kind": "type",
+                        "expected": "regular",
+                        "observed": "non-regular",
+                    })
+                else:
+                    mismatches.append({
+                        "path": path,
+                        "kind": "inspection_race_or_type",
+                        "expected": expected_mode,
+                        "observed": detail,
+                    })
                 continue
 
             if expected_mode == "120000":
@@ -663,6 +682,7 @@ def verify(
         "observed_head_tree": observed_head_tree,
         "git_optional_locks": "0",
         "replacement_objects_disabled": True,
+        "replacement_object_semantics_disabled": True,
         "replace_refs_absent": independence["replace_refs_absent"],
         "legacy_grafts_absent": independence["legacy_grafts_absent"],
         "git_independence": independence,
