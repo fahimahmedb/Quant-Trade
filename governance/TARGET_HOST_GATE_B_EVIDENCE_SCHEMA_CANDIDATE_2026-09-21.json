@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quant://governance/target-host-gate-b-evidence-candidate-2026-09-21",
+  "title": "Quant Target-Host Gate B Evidence Artifact Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "gate_b_run_id",
+    "candidate_sha",
+    "git_tree",
+    "verified_input_tree_digest",
+    "activation_digest",
+    "contract_digest",
+    "runbook_digest",
+    "target_host_opaque_id",
+    "time_authority",
+    "runtime_identity",
+    "mount_identity",
+    "systemd_identity",
+    "state_authority",
+    "single_writer_budget",
+    "fingerprint_materialization",
+    "filesystem_semantics",
+    "lifecycle_campaign",
+    "resource_baseline",
+    "evidence_retention",
+    "network_runtime_binding",
+    "sanitization",
+    "sub_artifacts",
+    "overall_verdict",
+    "t0_declared"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gate_b_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_sha": {
+      "const": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072"
+    },
+    "git_tree": {
+      "const": "4d15ef6f471213ee6ab56337b555d2906ef9bf16"
+    },
+    "verified_input_tree_digest": {
+      "const": "sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2"
+    },
+    "activation_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "contract_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "runbook_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "target_host_opaque_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time_authority": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "runtime_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "mount_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "systemd_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "state_authority": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "single_writer_budget": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "fingerprint_materialization": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "filesystem_semantics": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "lifecycle_campaign": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "resource_baseline": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "evidence_retention": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "network_runtime_binding": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "sanitization": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "sub_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "digest",
+          "classification"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "classification": {
+            "enum": [
+              "FACT",
+              "CLAIM",
+              "INFERENCE",
+              "UNKNOWN"
+            ]
+          },
+          "restricted_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "overall_verdict": {
+      "enum": [
+        "PASS",
+        "BLOCKED",
+        "FAILED_TERMINAL"
+      ]
+    },
+    "t0_declared": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "verdict_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "evidence_digest"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "evidence_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "classification": {
+          "enum": [
+            "FACT",
+            "CLAIM",
+            "INFERENCE",
+            "UNKNOWN"
+          ]
+        },
+        "defect_classification": {
+          "enum": [
+            "REAL_DEFECT",
+            "TEST_DEFECT",
+            "MISSING_PROOF",
+            "TARGET_HOST_ONLY",
+            "NON_ISSUE",
+            "NONE"
+          ]
+        }
+      }
+    }
+  }
+}
