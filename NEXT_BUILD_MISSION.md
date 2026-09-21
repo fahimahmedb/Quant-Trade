@@ -120,3 +120,42 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 This router is not proof that a branch, CI run, candidate or gate remains current.
 
 Exact live GitHub state and the current Blue governance index control.
+
+
+## LIVE F11 DISPATCH OVERRIDE — 2026-09-21
+
+This section supersedes the earlier statement that the F11 repair branch does not exist.
+
+Blue repair specification:
+
+`governance/BLUE_GATE_B_F11_LOCK_IDENTITY_REPAIR_SPEC_2026-09-21.md`
+
+Active Builder branch:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21`
+
+Audited implementation base:
+
+`644da76eb0227be275b8e3448118dac0cc7096ca`
+
+Blue spec-on-Builder dispatch commit:
+
+`113e60cb6ae9a56ffb4adb83c13a797e3563369e`
+
+Builder mission dispatch HEAD:
+
+`8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
+
+Mission:
+
+`handoff/BUILDER_GATE_B_F11_LOCK_IDENTITY_REPAIR_MISSION_2026-09-21.md`
+
+Current owner:
+
+`BUILDER_F11_REPAIR`
+
+Required return state:
+
+`READY_FOR_INDEPENDENT_REVIEW`
+
+No Gate-B, target-host, t0, Product or capital authority is implied.
