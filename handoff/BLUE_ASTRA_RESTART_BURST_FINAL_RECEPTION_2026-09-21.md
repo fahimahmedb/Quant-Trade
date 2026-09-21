@@ -2,11 +2,10 @@
 
 ## 0. Reception status
 
-`BLUE_ASTRA_RESTART_BURST_RECEPTION = SUBSTANTIVE_PASS / PENDING_EXACT_HEAD_ASTRA_CI`
+`BLUE_ASTRA_RESTART_BURST_RECEPTION = PASS`
 
 This reception records Blue's independent reading of the targeted Astra handoff.
-It does not yet execute hybrid promotion because the exact-head CI of the final
-Astra delivery commit must still complete successfully.
+The final Astra exact-head CI completed successfully. This reception therefore closes the targeted repository-side restart-burst proof blocker. Hybrid promotion remains a separate Blue authority transition.
 
 ## 1. Exact immutable inputs
 
@@ -109,19 +108,21 @@ Expected exact SHA:
 
 Current reception condition:
 
-`PENDING_COMPLETED_SUCCESS`
-
-Blue MUST NOT set final repository fault-matrix closure or execute hybrid
-promotion until this run is:
-
 `COMPLETED / SUCCESS`
 
-A substantive failure on this exact HEAD reopens reception.
+Observed final state:
 
-## 5. Conditional final Blue disposition
+`35551073229 = COMPLETED / SUCCESS`
 
-If and only if `35551073229 = COMPLETED / SUCCESS`, with no contradictory
-evidence and Astra HEAD unchanged, Blue may finalize:
+Exact audited/delivered SHA remained:
+
+`61facacdcdc499bd3e6680644c75c97fcff22656`
+
+No contradictory same-SHA failure was observed.
+
+## 5. Final Blue disposition
+
+All acceptance conditions are now satisfied. Blue finalizes:
 
 `FINAL_INDEPENDENT_FAULT_MATRIX_REVIEW = PASS`
 
@@ -130,6 +131,12 @@ evidence and Astra HEAD unchanged, Blue may finalize:
 `UNRESOLVED_REPOSITORY_MISSING_PROOF = 0`
 
 This closes the final repository-side blocker for hybrid-method promotion.
+
+`FINAL_INDEPENDENT_FAULT_MATRIX_REVIEW = PASS`
+
+`RESTART_BURST_LIMIT_REPOSITORY_MISSING_PROOF = CLOSED`
+
+`UNRESOLVED_REPOSITORY_MISSING_PROOF = 0`
 
 ## 6. What this still does not authorize
 
@@ -145,11 +152,10 @@ Even after exact-head CI succeeds, this reception alone does not:
 
 Those require their separate Blue transitions.
 
-## 7. Next action on exact-head CI success
+## 7. Next action
 
-1. finalize this reception as PASS;
-2. run the final hybrid consistency check against live blobs;
-3. if coherent, execute the atomic hybrid promotion transaction;
+1. run the final hybrid consistency check against live blobs;
+2. if coherent, execute the atomic hybrid promotion transaction;
 4. finish promotion with:
    - `GATE_B_MUTATION_AUTHORIZED = FALSE`;
    - `GATE_B = NOT_STARTED`;
