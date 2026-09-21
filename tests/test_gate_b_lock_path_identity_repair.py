@@ -169,6 +169,71 @@ except Exception as exc:
                 self.h.registry.lock.unlink()
                 self.h.registry.lock.write_bytes(b"replacement")
 
+    def test_coordinated_public_and_anchor_replacement_cannot_split_live_domain(self):
+        anchor = self.h.initialize()
+        contender = None
+        child = r"""
+import importlib.util, pathlib, sys
+root=pathlib.Path(sys.argv[1])
+registry_path=pathlib.Path(sys.argv[2])
+checkout=pathlib.Path(sys.argv[3])
+spec=importlib.util.spec_from_file_location("f11_dual_replace_runctl", root/"scripts"/"quant_gate_b_runctl.py")
+m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
+r=m.Registry(registry_path, checkout)
+try:
+    with r._locked():
+        print("ENTERED", flush=True)
+except Exception as exc:
+    print("REJECTED:"+type(exc).__name__+":"+str(exc), flush=True)
+"""
+        with self.assertRaises(runctl.AuthorityError):
+            with self.h.registry._locked():
+                # Replace both visible names with a fresh, internally consistent
+                # hard-link pair. Without the outer parent-directory lock this
+                # can form a second valid flock domain while the first holder is
+                # still inside its mutation window.
+                self.h.registry.lock.unlink()
+                anchor.unlink()
+                self.h.registry.lock.write_bytes(b"replacement-pair")
+                st = os.lstat(self.h.registry.lock)
+                replacement_anchor = self.h.registry.lock.parent / (
+                    f"{self.h.registry.lock.name}.authority.{st.st_dev:x}.{st.st_ino:x}"
+                )
+                os.link(self.h.registry.lock, replacement_anchor, follow_symlinks=False)
+
+                contender = subprocess.Popen(
+                    [
+                        sys.executable,
+                        "-c",
+                        child,
+                        str(ROOT),
+                        str(self.h.registry_path),
+                        str(self.h.checkout),
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                time.sleep(0.30)
+                self.assertIsNone(
+                    contender.poll(),
+                    "replacement authority pair must not create a concurrent mutation domain",
+                )
+
+        assert contender is not None
+        line = contender.stdout.readline().strip()
+        contender.wait(timeout=5)
+        self.assertEqual(contender.returncode, 0, contender.stderr.read())
+        self.assertEqual(line, "ENTERED")
+
+    def test_repeated_public_lock_replacement_remains_fail_closed(self):
+        self.h.initialize()
+        with self.assertRaises(runctl.AuthorityError):
+            with self.h.registry._locked():
+                for i in range(8):
+                    self.h.registry.lock.unlink()
+                    self.h.registry.lock.write_bytes(f"replacement-{i}".encode())
+
     def test_authority_anchor_replacement_is_rejected(self):
         anchor = self.h.initialize()
         anchor.unlink()
