@@ -683,3 +683,24 @@ Exact-head CI:
 
 Do not dispatch the targeted Astra recheck until this exact-head run is
 `COMPLETED / SUCCESS` and branch HEAD remains exactly `1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+
+## X. TARGETED ASTRA RECHECK PRESTAGED — 2026-09-21
+
+Owner authorized reversible anticipation while Builder exact-head CI remains in progress.
+
+Prestaged Astra branch:
+`astra/p0-restart-burst-proof-recheck-2026-09-21`.
+
+Audit input base:
+`1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+Mission-only prestage commit:
+`b922a108ddf906ff9a2a0c6f3c9800b76b754631`.
+
+This is NOT audit evidence yet.
+
+Activation condition:
+`Builder run 35549017908 = COMPLETED / SUCCESS` and Builder branch still points to `1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+If CI fails or Builder HEAD moves, abandon/rebase this prestage. No PASS or promotion may use it.
