@@ -171,3 +171,24 @@ After exact-head CI SUCCESS:
 `t0 = NOT_DECLARED`
 
 `REAL_CAPITAL_AUTHORIZED = FALSE`
+
+
+## 11. Independent Blue artifact recount
+
+Blue parsed the exact committed artifact at Builder delivery SHA
+`1fa82a75485661bf9bbb3de10b925126397dfec5` rather than relying on Builder's
+summary.
+
+Observed:
+- row count = `19`;
+- unique property names = `19`;
+- duplicate property names = `0`;
+- `EXISTING_DISCRIMINATING_PROOF = 15`;
+- `NEW_DISCRIMINATING_PROOF = 4`;
+- defect classifications = `NON_ISSUE: 19`;
+- restart row frozen candidate = `4d06bdbf...`;
+- restart contract expected value = `5`;
+- M1/M2/M3 = `true / true / true`;
+- residual remains target-host physical enforcement.
+
+`BLUE_INDEPENDENT_ARTIFACT_RECOUNT = PASS`.
