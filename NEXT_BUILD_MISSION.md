@@ -889,3 +889,30 @@ Next Rail-B action:
 - if SUCCESS, explicitly authorize/create exactly one Product Builder on
   `builder/post-p0-first-vertical-shadow-loop-2026-09-21`;
 - no additional architecture/science-design cycle is authorized absent a concrete contradiction.
+
+
+## ONE BIG BUILD DISPATCH OVERRIDE — 2026-09-21
+
+Frozen base:
+`aa6a5c17467d0da17482b88ab1dfcc362ec24d46`
+
+Exact-head CI:
+`35628638457 = COMPLETED / SUCCESS`
+
+Authorized Builder:
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
+
+Blue dispatch:
+`handoff/BLUE_ONE_BIG_BUILD_DISPATCH_2026-09-21.md`
+
+Current state:
+
+```text
+ONE_BIG_BUILD = AUTHORIZED
+PRODUCT_IMPLEMENTATION_AUTHORIZED = TRUE_FOR_ASSIGNED_BUILDER_ONLY
+VERTICAL_LOOP_BUILD_SPEC = FROZEN
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
+
+Do not create another Product Builder.
