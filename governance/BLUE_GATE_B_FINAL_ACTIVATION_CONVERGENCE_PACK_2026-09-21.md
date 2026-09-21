@@ -1,5 +1,31 @@
 # BLUE — GATE B FINAL ACTIVATION / CONVERGENCE PACK — 2026-09-21
 
+
+> **CURRENT POST-ASTRA OVERRIDE — 2026-09-21**
+>
+> Historical sections below describe the preparation state before final F11 closure.
+> Current controlling facts:
+>
+> ```text
+> F11_REPOSITORY_DEFECT = CLOSED
+> ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE
+> ASTRA_F11_FINAL_HEAD = 31acd7590dd1e5f505da0df3332fd12f838b6615
+> ASTRA_F11_FINAL_CI = 35624089971 = COMPLETED / SUCCESS
+> BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK =
+>   F11_PREREQUISITE_SATISFIED / POST_ASTRA_CONVERGENCE_DISPATCHED
+> ACTIVE_CONVERGENCE_BRANCH = blue/gate-b-post-astra-convergence-2026-09-21
+> ACTIVE_CONVERGENCE_MISSION_HEAD = a06bcefcaa8c3ddf3e879dff39f6583c2d89f400
+> GATE_B_MUTATION_AUTHORIZED = FALSE
+> GATE_B = NOT_STARTED
+> t0 = NOT_DECLARED
+> ```
+>
+> This pack remains non-authorizing. The active convergence mission must first verify
+> exact live refs/digests and may only return
+> `READY_FOR_TARGET_HOST_READ_ONLY_REBIND` or one precise blocker.
+>
+
+
 ## 0. Status
 
 `BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK = PREPARED / WAITING_FOR_FINAL_F11_ASTRA_PASS`
