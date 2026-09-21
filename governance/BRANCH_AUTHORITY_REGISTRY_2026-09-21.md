@@ -285,3 +285,73 @@ Astra recheck branch:
 `NOT_YET_DISPATCHED`
 
 Do not retire or repurpose the current Builder branch, original Astra blocker branch, integrated candidate branch, or prior R1/R2 evidence branches until F11 independent closure is durable.
+
+
+## CURRENT AUTHORITY OVERRIDE — 2026-09-21
+
+This section is the latest branch-authority routing override.
+
+### ACTIVE / CURRENT
+
+`blue/master-v2-2026-09-20`
+- role: BLUE / MISSION CONTROL
+- authority: current project governance and routing
+- latest reacquisition:
+  `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+
+`blue/gate-b-f11-final-integration-2026-09-21`
+- expected current HEAD at checkpoint:
+  `4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+- role: Blue final F11 integration candidate
+- CI at checkpoint: `35619545254 = IN_PROGRESS`
+- no Astra dispatch until exact-head success
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21`
+- mission HEAD:
+  `866e6c1e96ab7460a7cd6464ead922e710ce7b0b`
+- role: read-only scientific contract prestage
+- Product code mutation: forbidden
+
+### COMPLETE / PRESERVE
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21`
+- final HEAD:
+  `e600295b2aa7056e8176e0286f9d67f5c65b1c11`
+- exact-head CI:
+  `35617257622 = COMPLETED / SUCCESS`
+- role: completed F11 Builder
+- do not continue unless Blue reopens a concrete defect
+
+`parallel/claude-post-p0-vertical-build-prep-2026-09-21`
+- final HEAD:
+  `ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec`
+- role: completed Product/Economic build prep
+- consumed by Blue
+
+`claude/confident-mendel-h4qqo4`
+- final HEAD:
+  `9e6431dedaa621d58218f6ffb09ed1300de1bd1b`
+- role: completed advisory economic adversarial challenge
+- findings consumed into Blue correction spec
+- no continuing governance authority
+
+### NOT YET CREATED / NOT AUTHORIZED
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+- state: not yet durably created at checkpoint
+- may be created only after Blue final integration exact-head CI success
+- exact mission HEAD must be recorded by Blue
+- no local/ad-hoc Claude branch substitutes for this authority
+
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
+- state: not yet authorized
+- create only after scientific prestage reception and final Blue build-spec freeze
+- intended model: one large bounded Product build
+
+### SUPERSEDED / DO NOT USE FOR NEW WORK
+
+Any earlier duplicate F11 Builder mission branch or ad-hoc audit session branch not
+explicitly listed ACTIVE above remains non-authoritative unless later Blue governance
+reactivates it.
+
+Always re-resolve live HEAD before execution.
