@@ -81,3 +81,17 @@ C3  CALIBRATION DEBT
 ```
 
 These are owner decisions and measurement work, not open design questions.
+
+## 5. Closed in iteration 3
+
+```text
+INFORMATION-BUDGET LAUNDERING
+The separation of information-budget from economic P&L was a stated refusal
+with no enforcing precondition. Now structural: FUNDING_SOURCE is written at
+order-intent time, is immutable, propagates to the fill and the Book
+attribution bucket, and INFORMATION records are excluded from tau/v_eff
+calibration by P7. A record cannot be reclassified once its outcome is known.
+```
+
+Iteration 3 review found no remaining blocking defect, and independently
+re-derived the four arithmetic results above.

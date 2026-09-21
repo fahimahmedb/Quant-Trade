@@ -118,6 +118,29 @@ ECONOMIC DEPLOYMENT  requires f >= f_breakeven AND positive posterior EV net
                      of fixed costs. Governed by §3.
 ```
 
+### 4.2 Structural separation (not a stated intention)
+
+The refusal in §8 is worthless unless a record enforces it. Every order, fill
+and attribution bucket carries:
+
+```text
+FUNDING_SOURCE = INFORMATION | ECONOMIC     immutable once written
+```
+
+```text
+INFORMATION records  MAY     feed slippage(size), reject/latency/borrow stats,
+                             operational diagnostics
+                     MAY NOT enter IR_obs, tau or v_eff calibration (P7),
+                             any performance claim, or any lane's evidence
+ECONOMIC records     require f >= f_breakeven and positive posterior EV
+```
+
+Without the tag, an implementer could satisfy P1-P7 literally while feeding
+minimal-size information-budget P&L into the very calibration that decides
+future size — the reclassification §8 forbids, arriving through the back door.
+The tag is written at order-intent time and is never editable: a record cannot
+be reclassified after its outcome is known, which is the whole point.
+
 Two budgets, two justifications, never mixed. The information budget is how the
 system gets real fills years before economic deployment is defensible — the
 original objective — without a single false claim about edge.
@@ -170,13 +193,15 @@ KILL_SWITCH                      latched, manual re-arm
 ## 7. Preconditions for any non-zero real `f`
 
 ```text
-P1 order-intent record distinct from realized fill
-P2 realized-fill ingest (venue adapter)
+P1 order-intent record distinct from realized fill, carrying FUNDING_SOURCE
+P2 realized-fill ingest (venue adapter), FUNDING_SOURCE propagated to the fill
+   and to the Book attribution bucket
 P3 latched kill-switch and session-loss halt
 P4 post-session invariant recompute (cash + marked positions vs NAV)
 P5 owner authorization, dated, with an absolute notional cap
 P6 an INFORMATION BUDGET in currency, if exposure precedes f_breakeven
-P7 empirical calibration of tau and v_eff on this factory's own history
+P7 empirical calibration of tau and v_eff on this factory's own history,
+   with every FUNDING_SOURCE=INFORMATION record EXCLUDED from that history
 ```
 
 None exist today. `f = 0` until all five do. The difference from the ladder is
