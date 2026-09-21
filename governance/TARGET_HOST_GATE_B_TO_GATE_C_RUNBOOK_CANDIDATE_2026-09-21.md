@@ -405,3 +405,35 @@ Do not use:
 
 The launch-event artifact must bind the source of the timestamp and its
 InvocationID/boot identity.
+
+
+## Phase 0A — required governance references
+
+Before execution, resolve the activated forms of:
+
+- Blue Gate-B activation artifact;
+- Gate-B entrance contract;
+- Gate-B-to-Gate-C runbook;
+- Gate-B evidence JSON schema.
+
+The operator must record their canonical digests in the restricted evidence root.
+
+No mutating command may run until:
+
+`GATE_B_MUTATION_AUTHORIZED = TRUE`
+
+is present in the sealed activation artifact.
+
+## Phase 7C — machine validation
+
+Before Blue reception, validate the final Gate-B JSON artifact against the
+activated evidence schema.
+
+Validation failure means:
+
+`GATE_B = BLOCKED`
+
+even if every human-readable subtest note says PASS.
+
+The schema validation output itself becomes a hashed sub-artifact in the Gate-B
+evidence chain.
