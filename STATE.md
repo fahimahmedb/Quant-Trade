@@ -434,6 +434,72 @@ the system does not claim its rejection was vindicated. There were no false reje
 4. **Exercise the decay path.** Until a strategy is tradable, `SHADOW -> ACTIVE_SHADOW ->
    DECAYING -> RETIRED` is untested against real evidence.
 
+## Builder checkpoint — first vertical shadow loop (in progress, 2026-09-21)
+
+Mission: `governance/BLUE_FIRST_VERTICAL_ONE_BIG_BUILD_FROZEN_SPEC_2026-09-21.md`.
+Branch: `builder/post-p0-first-vertical-shadow-loop-2026-09-21`, HEAD `2bc80e4`
+(descends from frozen `aa6a5c1`; CI 35628638457 = COMPLETED/SUCCESS at that exact
+SHA; launch gate satisfied).
+
+Done: vendored the 30 REUSE_AS_IS files listed in
+`governance/BLUE_ONE_BIG_BUILD_IMPORT_MANIFEST_2026-09-21.md` §2-4 from
+`parallel/claude-forward-data-2026-09-20@83521dbf...` (dataplane admissibility/
+form4_parse/forward_admissibility/forward_recorder + full `science/` package) and
+`parallel/claude-economic-v2-2026-09-20@35dff27b...` (full `economics/` package,
+19 files). All 30 blob SHAs verified byte-identical to the manifest; all 30
+modules import cleanly. Committed/pushed at `2bc80e4`.
+
+Not yet done: `src/quant/science/effect.py` (assemble_form4_effect, net-new per
+manifest §3), cohort protocol state, method qualification, `src/quant/integration/`
+(forward_adapter.py, econ_bridge.py), removal of the auto VALIDATED->SHADOW
+transition in `src/quant/factory/workers.py::_finish` (lines 241-246: two
+back-to-back `.transition()` calls with no gate between), Desk/Risk/Fill/Book
+wiring, Learning idempotence, tests, final handoff.
+
+Key API facts recovered (to avoid re-deriving from scratch):
+- `quant.economics.decision.economic_gate(estimate, meue_result, theta,
+  interaction, capacity=None, consistency=None) -> EconomicVerdict` (CONTINUE/
+  NO_TRADE/KILL; never raises). No single "run everything" function exists;
+  intended chain is `MEUERecipe.evaluate(theta) -> MEUEResult -> economic_gate(...)
+  -> compute_input_fingerprint(...) -> AssessmentRecord.from_verdict(...) ->
+  EconomicAssessmentJournal.record(...)` (journal.py; raises `AssessmentConflict`
+  on same id + different fingerprint, idempotent no-op on same id + same
+  fingerprint).
+- `quant.economics.coordinate.evaluate_delta_coordinate(binding) ->
+  DeltaCoordinateVerdict` with distinct `DELTA_COORDINATE_UNRESOLVED` vs
+  `_MISMATCH` states.
+- No `economic_margin_notional` field exists anywhere; derive via
+  `capital * MarginSizingRule.fraction(margin_of_safety)` or
+  `quant.economics.sizing.size_lane(...)`.
+- Pre-size cost check: `quant.economics.consistency.verify_research_cost_
+  consistency(research_one_way_cost_bps, ExecutionCostModel.from_execution_model
+  (desk.execution.ExecutionModel), participation_used, subject)`.
+- `quant.economics.opening.OpeningExecutionModel.fill(...)` returns a plain dict,
+  no persistence/idempotency key — confirmed modelling-only, must not be wired as
+  a live Desk fill/booking path.
+- `src/quant/factory/workers.py::_finish` (~line 217-257): auto-promotes
+  RESEARCH->VALIDATED->SHADOW unconditionally on `verdict["passed"]`, no economic
+  gate in between — this is the exact interception point for M2.
+- `src/quant/desk/desk.py::CapitalDesk.actionable()` admits any strategy with
+  `lifecycle in TRADABLE` or `evaluation_track=True` — no economic-gate check
+  there either; economic admission must land before this selection, not inside it.
+- `src/quant/book/ledger.py::Ledger.apply_fill(..., operation_id)` already has a
+  true idempotent-replay guard (`operation_id in self._applied`) — reuse this
+  pattern for any new idempotence surfaces (Learning processed-ids, Economic
+  journal) rather than inventing a second mechanism.
+- `src/quant/economics/`, `src/quant/science/`, `src/quant/integration/` did not
+  exist on the pre-freeze Blue spine; `src/quant/learning/store.py`'s only true
+  permanent-membership idempotent dict is `build_tasks` (its `lessons` list is
+  truncated to last-200 on save, not a durable processed-id ledger).
+
+Next action on resume: read `src/quant/science/{eligibility,formation,inference,
+invariance,nulls,regimes}.py` and `src/quant/dataplane/{admissibility,form4_parse,
+forward_admissibility,forward_recorder}.py` in full (not yet digested as of this
+checkpoint) before writing `effect.py`, per
+`governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md` §10
+(exact frozen point estimator, D19 contract, DeltaCoordinateBinding field values
+already recorded there).
+
 ## Human boundary currently reached?
 
 No. Nothing in the current frontier requires human authority. The blocked lanes need datasets
