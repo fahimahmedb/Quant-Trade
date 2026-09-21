@@ -3,7 +3,9 @@
     "fault_matrix_rows": 19,
     "frozen_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
     "gate_a_v4_pass": "NOT_CLAIMED_BY_BUILDER",
-    "harness_input_tree_digest": "sha256:34d14e8b8bfec6088a66099a8f51b87ba52333f7027ecc1b9cbfcc2404de9de0",
+    "gate_a_v4_repository_disposition": "NOT_REDECIDED_BY_BUILDER",
+    "gate_b": "NOT_STARTED",
+    "harness_input_tree_digest": "sha256:c20b7eb5b0f4f8ddb26785547fbf67fc73ff7912fdf4fed5445faa08a0aee5f1",
     "non_issues": 19,
     "p14d_amendment": "NOT_CLAIMED_BY_BUILDER",
     "production_code_changed": false,
@@ -16,23 +18,37 @@
     "real_capital_authorized": false,
     "real_defects": 0,
     "restart_burst_limit_disposition": {
+      "contract_expected_value": 5,
+      "contract_source": "blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3",
       "defect_classification": "NON_ISSUE",
-      "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+      "detail": "contract_expected_value=5 contract_source=blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3 observed_launcher_constant=5 observed_unit_value=5 unit_declaration_count=1 loaded_5_accepted=True loaded_4_rejected=True m1_launcher_only_mutation_red=True m2_unit_only_mutation_red=True m3_simultaneous_mutation_red=True production_candidate_passed=True mutation_proof_passed=True paired_runtime_guard_resolves=True",
       "epistemic_classification": "FACT",
       "evidence_source": [
         "tools/p0_qualification/gate_a/fault_matrix.py",
         "deploy/quant_sec_supervisor.py:_effective_systemd_definition",
+        "deploy/quant-sec-capture.service",
+        "blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3",
         "tests/test_astra_pre_t0.py"
       ],
       "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "loaded_4_rejected": true,
+      "loaded_5_accepted": true,
+      "m1_launcher_only_mutation_red": true,
+      "m2_unit_only_mutation_red": true,
+      "m3_simultaneous_mutation_red": true,
+      "mutation_proof_passed": true,
+      "observed_launcher_constant": 5,
+      "observed_unit_value": 5,
+      "production_candidate_passed": true,
       "proof_class": "NEW_DISCRIMINATING_PROOF",
       "property": "restart_burst_limit",
       "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
-      "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+      "residual_proof_domain": "TARGET_HOST: physical service-manager restart-burst enforcement remains outside repository proof",
       "test_or_harness_function": [
         "tools.p0_qualification.gate_a.fault_matrix._restart_burst_limit_discriminant",
         "tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service"
-      ]
+      ],
+      "unit_declaration_count": 1
     },
     "rows": [
       {
@@ -334,23 +350,37 @@
         ]
       },
       {
+        "contract_expected_value": 5,
+        "contract_source": "blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3",
         "defect_classification": "NON_ISSUE",
-        "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+        "detail": "contract_expected_value=5 contract_source=blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3 observed_launcher_constant=5 observed_unit_value=5 unit_declaration_count=1 loaded_5_accepted=True loaded_4_rejected=True m1_launcher_only_mutation_red=True m2_unit_only_mutation_red=True m3_simultaneous_mutation_red=True production_candidate_passed=True mutation_proof_passed=True paired_runtime_guard_resolves=True",
         "epistemic_classification": "FACT",
         "evidence_source": [
           "tools/p0_qualification/gate_a/fault_matrix.py",
           "deploy/quant_sec_supervisor.py:_effective_systemd_definition",
+          "deploy/quant-sec-capture.service",
+          "blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3",
           "tests/test_astra_pre_t0.py"
         ],
         "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "loaded_4_rejected": true,
+        "loaded_5_accepted": true,
+        "m1_launcher_only_mutation_red": true,
+        "m2_unit_only_mutation_red": true,
+        "m3_simultaneous_mutation_red": true,
+        "mutation_proof_passed": true,
+        "observed_launcher_constant": 5,
+        "observed_unit_value": 5,
+        "production_candidate_passed": true,
         "proof_class": "NEW_DISCRIMINATING_PROOF",
         "property": "restart_burst_limit",
         "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
-        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+        "residual_proof_domain": "TARGET_HOST: physical service-manager restart-burst enforcement remains outside repository proof",
         "test_or_harness_function": [
           "tools.p0_qualification.gate_a.fault_matrix._restart_burst_limit_discriminant",
           "tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service"
-        ]
+        ],
+        "unit_declaration_count": 1
       }
     ],
     "t0": "NOT_DECLARED",
@@ -548,13 +578,13 @@
     {
       "classification": "FACT",
       "defect_class": "NON_ISSUE",
-      "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+      "detail": "contract_expected_value=5 contract_source=blue/master-v2-2026-09-20:governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md#3 observed_launcher_constant=5 observed_unit_value=5 unit_declaration_count=1 loaded_5_accepted=True loaded_4_rejected=True m1_launcher_only_mutation_red=True m2_unit_only_mutation_red=True m3_simultaneous_mutation_red=True production_candidate_passed=True mutation_proof_passed=True paired_runtime_guard_resolves=True",
       "domain": "REPOSITORY",
       "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
       "property": "fault_matrix:restart_burst_limit",
       "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
-      "residual": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof"
+      "residual": "TARGET_HOST: physical service-manager restart-burst enforcement remains outside repository proof"
     }
   ],
-  "report_digest": "sha256:bc7682fe22450ad63a84df1ac8443107056c4949dc07e58ff5335e260e832d73"
+  "report_digest": "sha256:9386fcce52ab605be223e3f597f23b7efd854a29bb535b02a8f2015cf70d561c"
 }
