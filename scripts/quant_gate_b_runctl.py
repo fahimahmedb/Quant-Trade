@@ -10,7 +10,9 @@ import hashlib
 import json
 import os
 import re
+import stat
 import tempfile
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Callable
@@ -440,21 +442,143 @@ class Registry:
         if _inside(self.path, self.checkout):
             raise AuthorityError("registry must be outside source checkout")
 
+    def _lock_authority_paths(self) -> list[Path]:
+        prefix = self.lock.name + ".authority."
+        try:
+            entries = list(self.lock.parent.iterdir())
+        except FileNotFoundError:
+            return []
+        return sorted((p for p in entries if p.name.startswith(prefix)), key=lambda p: p.name)
+
+    def _lock_authority_identity(self, anchor: Path) -> tuple[int, int]:
+        prefix = self.lock.name + ".authority."
+        suffix = anchor.name[len(prefix):]
+        pieces = suffix.split(".")
+        if len(pieces) != 2:
+            raise AuthorityError("lock authority anchor malformed")
+        try:
+            dev = int(pieces[0], 16)
+            ino = int(pieces[1], 16)
+        except ValueError as e:
+            raise AuthorityError("lock authority anchor malformed") from e
+        if dev < 0 or ino <= 0:
+            raise AuthorityError("lock authority anchor malformed")
+        return dev, ino
+
+    def _create_lock_authority(self) -> Path:
+        flags = os.O_RDWR | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            fd = os.open(self.lock, flags, 0o600)
+        except FileExistsError:
+            # A concurrent first initializer may have created the public name but
+            # not yet linked the authority anchor. Wait only for that bounded
+            # initialization window; never adopt an unanchored pre-existing lock.
+            for _ in range(100):
+                anchors = self._lock_authority_paths()
+                if len(anchors) == 1:
+                    return anchors[0]
+                if len(anchors) > 1:
+                    raise AuthorityError("multiple lock authority anchors")
+                time.sleep(0.005)
+            raise AuthorityError("pre-existing lock has no authority anchor")
+        except OSError as e:
+            raise AuthorityError("lock authority initialization failed") from e
+
+        try:
+            st = os.fstat(fd)
+            if not stat.S_ISREG(st.st_mode):
+                raise AuthorityError("lock authority must be regular file")
+            anchor = self.lock.parent / (
+                f"{self.lock.name}.authority.{st.st_dev:x}.{st.st_ino:x}"
+            )
+            try:
+                os.link(self.lock, anchor, follow_symlinks=False)
+            except OSError as e:
+                raise AuthorityError("lock authority anchor creation failed") from e
+            _fsync_dir(self.lock.parent)
+            return anchor
+        finally:
+            os.close(fd)
+
+    def _ensure_lock_authority(self) -> Path:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            pst = os.lstat(self.lock.parent)
+        except OSError as e:
+            raise AuthorityError("lock parent unavailable") from e
+        if not stat.S_ISDIR(pst.st_mode) or stat.S_ISLNK(pst.st_mode):
+            raise AuthorityError("lock parent must be real directory")
+
+        anchors = self._lock_authority_paths()
+        if len(anchors) > 1:
+            raise AuthorityError("multiple lock authority anchors")
+        if len(anchors) == 1:
+            return anchors[0]
+
+        # Once either authoritative registry state or a public lock pathname
+        # already exists, silently inventing a fresh lock inode would recreate
+        # F11. Only a truly fresh registry may bootstrap an authority anchor.
+        if os.path.lexists(self.path) or os.path.lexists(self.lock):
+            raise AuthorityError("pre-existing state has no lock authority anchor")
+        return self._create_lock_authority()
+
+    def _validate_lock_authority(
+        self, anchor: Path, fd: int, expected: tuple[int, int]
+    ) -> None:
+        try:
+            fst = os.fstat(fd)
+            ast = os.lstat(anchor)
+            lst = os.lstat(self.lock)
+        except OSError as e:
+            raise AuthorityError("lock authority identity unavailable") from e
+
+        if (
+            not stat.S_ISREG(fst.st_mode)
+            or not stat.S_ISREG(ast.st_mode)
+            or stat.S_ISLNK(ast.st_mode)
+            or not stat.S_ISREG(lst.st_mode)
+            or stat.S_ISLNK(lst.st_mode)
+        ):
+            raise AuthorityError("lock authority must remain regular non-symlink")
+
+        identities = {
+            (fst.st_dev, fst.st_ino),
+            (ast.st_dev, ast.st_ino),
+            (lst.st_dev, lst.st_ino),
+            expected,
+        }
+        if len(identities) != 1:
+            raise AuthorityError("lock pathname identity changed")
+        if fst.st_nlink < 2:
+            raise AuthorityError("lock authority link set changed")
+
     @contextlib.contextmanager
     def _locked(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(
-            self.lock,
-            os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0),
-            0o600,
-        )
+        anchor = self._ensure_lock_authority()
+        expected = self._lock_authority_identity(anchor)
+        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
         try:
-            if self.lock.is_symlink():
-                raise AuthorityError("lock symlink rejected")
+            fd = os.open(anchor, flags)
+        except OSError as e:
+            raise AuthorityError("lock authority open failed") from e
+        locked = False
+        try:
+            self._validate_lock_authority(anchor, fd, expected)
             fcntl.flock(fd, fcntl.LOCK_EX)
-            yield
+            locked = True
+            # Critical revalidation after acquisition closes the original F11
+            # window: if the public pathname was deleted/recreated while this
+            # process waited, it cannot continue under the replacement inode.
+            self._validate_lock_authority(anchor, fd, expected)
+            try:
+                yield
+            finally:
+                # A replacement during the mutation is surfaced as failure; no
+                # public success can escape an ambiguous lock identity.
+                self._validate_lock_authority(anchor, fd, expected)
         finally:
-            fcntl.flock(fd, fcntl.LOCK_UN)
+            if locked:
+                fcntl.flock(fd, fcntl.LOCK_UN)
             os.close(fd)
 
     def _append(self, es: list[dict[str, Any]], e: dict[str, Any]) -> dict[str, Any]:
