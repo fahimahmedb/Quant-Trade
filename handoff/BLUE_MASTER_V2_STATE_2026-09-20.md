@@ -521,3 +521,36 @@ Still:
 - `GATE_B = NOT_STARTED`;
 - `t0 = NOT_DECLARED`;
 - `TARGET_HOST_READY = FALSE`.
+
+
+## T. LATEST PRE-GATE-B HARDENING / ASTRA MATRIX HANDOFF — 2026-09-21
+
+Additional Gate-B hardening is now durable:
+- `governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_CANDIDATE_2026-09-21.md` closes the previously implicit release-provisioning step;
+- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md` makes target-host mutation require an explicit sealed Blue activation;
+- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json` makes a future Gate-B PASS machine-checkable and now requires every mandatory evidence domain to be PASS when overall verdict is PASS;
+- candidate contract/runbook require unique `GATE_B_RUN_ID`, terminal-failure semantics, host time/NTP binding, evidence-retention continuity, network/proxy/TLS binding, resource baselines, and safe synthetic-state separation.
+
+Independent fault-matrix final handoff now exists on Astra branch HEAD observed at:
+`441d4ecc3996bc3c948d556a0cdb9404a575dbe5`.
+
+Handoff verdict:
+`ASTRA_FAULT_MATRIX = PASS_REPOSITORY_EVIDENCE`.
+
+Three non-blocking TEST_DEFECT findings are preserved:
+1. restart-burst Codex helper is self-referential to the production constant, independently compensated by Astra's hard-coded 5-vs-4 check;
+2. artifact digest is Python-build-bound;
+3. harness_input_tree_digest omits directly exercised production paths, compensated by exact Git ancestry/no-production-delta plus separate V4 tree/input-tree binding.
+
+Blue reception is prepared at:
+`handoff/BLUE_ASTRA_HYBRID_FAULT_MATRIX_FINAL_RECEPTION_PREPARED_2026-09-21.md`.
+
+Do not close the blocker until exact-head workflows on Astra final HEAD `441d4ecc...` finish SUCCESS. At this checkpoint both final-head runs are queued.
+
+Still:
+- `P14D_PROMOTION_READY = FALSE`;
+- `GATE_B_MUTATION_AUTHORIZED = FALSE`;
+- `GATE_B = NOT_STARTED`;
+- `TARGET_HOST_READY = FALSE`;
+- `t0 = NOT_DECLARED`;
+- `REAL_CAPITAL_AUTHORIZED = FALSE`.
