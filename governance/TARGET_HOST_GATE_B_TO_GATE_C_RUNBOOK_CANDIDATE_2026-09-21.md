@@ -437,3 +437,20 @@ even if every human-readable subtest note says PASS.
 
 The schema validation output itself becomes a hashed sub-artifact in the Gate-B
 evidence chain.
+
+
+## Phase 0B — release existence / materialization decision
+
+Before Phase 1:
+
+If the exact SHA-addressed release already exists:
+- verify it against the activated release-materialization contract;
+- never overwrite it in place.
+
+If it does not exist:
+- require `ALLOW_RELEASE_MATERIALIZATION = TRUE` in the sealed Blue activation;
+- execute the activated release-materialization procedure;
+- seal its restricted artifact;
+- do not start the service.
+
+Only then may the read-only immutable-release preflight continue.
