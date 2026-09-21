@@ -827,3 +827,69 @@ Current owner:
 `BUILDER_F11_PARENT_PATH_CLOSURE`
 
 Astra remains stopped.
+
+
+## LATEST BLUE MASTER OVERRIDE — 2026-09-21
+
+For a new conversation, do not reconstruct current state by reading historical sections
+in chronological order.
+
+Read first:
+
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+
+at/after commit:
+
+`c248f23cae8d579261a3f43c6aca78463eccae92`
+
+Current operational shape:
+
+```text
+RAIL_A = F11 FINAL INTEGRATION -> TARGETED ASTRA -> GATE-B ACTIVATION
+RAIL_B = FROZEN-EFFECT-ESTIMATE SCIENCE PRESTAGE -> SPEC FREEZE -> ONE BIG BUILD
+```
+
+Rail A exact current objects:
+
+- Builder final:
+  `e600295b2aa7056e8176e0286f9d67f5c65b1c11`
+- Builder exact-head CI:
+  `35617257622 = COMPLETED / SUCCESS`
+- Blue integration candidate:
+  `blue/gate-b-f11-final-integration-2026-09-21@4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+- integration exact-head CI at checkpoint:
+  `35619545254 = IN_PROGRESS`
+- Astra final recheck:
+  `NOT YET AUTHORIZED`
+
+Rail B exact current objects:
+
+- build prep:
+  `ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec`
+- advisory challenge:
+  `9e6431dedaa621d58218f6ffb09ed1300de1bd1b`
+- Blue correction spec:
+  `governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`
+- scientific prestage:
+  `parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@866e6c1e96ab7460a7cd6464ead922e710ce7b0b`
+
+Current Product build state:
+
+```text
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+PRODUCT_INTEGRATION = PAUSED
+```
+
+Current Gate state remains:
+
+```text
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
+t0 = NOT_DECLARED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
+
+Live SHA/CI always overrides embedded checkpoint status after verification.
