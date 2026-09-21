@@ -1,0 +1,43 @@
+name: Astra P0 hybrid fault-matrix independent review
+
+on:
+  push:
+    branches:
+      - 'astra/p0-hybrid-fault-matrix-independent-review-2026-09-21'
+    paths:
+      - 'audit/astra_p0_hybrid_fault_matrix_independent_probe.py'
+      - '.github/workflows/astra-p0-hybrid-fault-matrix-independent-review.yml'
+      - 'handoff/ASTRA_P0_HYBRID_FAULT_MATRIX_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile independent probe
+        run: python3 -m py_compile audit/astra_p0_hybrid_fault_matrix_independent_probe.py
+
+      - name: Run independent F1-F10 fault-matrix probe
+        run: PYTHONPATH=. python3 audit/astra_p0_hybrid_fault_matrix_independent_probe.py
+
+      - name: Whitespace check
+        run: git diff --check
+
+      - name: Upload independent audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: astra-p0-hybrid-fault-matrix-independent-${{ github.sha }}
+          path: astra_p0_hybrid_fault_matrix_probe_results.json
+          if-no-files-found: error
+          retention-days: 90
