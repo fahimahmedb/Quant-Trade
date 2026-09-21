@@ -29,14 +29,34 @@ document weakens the first; it stops the second from waiting on it.
 ## 3. The sizing law
 
 ```text
-KELLY_FRACTION      f_kelly = IR_post / sigma_strategy
-DEPLOYED_FRACTION   f = lambda * f_kelly ,  lambda <= 0.25
-POSTERIOR SHRINKAGE IR_post = IR_obs * tau^2 / (tau^2 + 1/T_years)
-PRIOR               tau = 0.30   (sd of true IR across candidate strategies)
+KELLY_FRACTION      f_kelly = IR_post / sigma_floor
+DEPLOYED_FRACTION   f = lambda * f_kelly * min(1, T/T_min) ,  lambda <= 0.25
+POSTERIOR SHRINKAGE IR_post = IR_obs * tau^2 / (tau^2 + v_eff)
 ```
 
-`tau = 0.30` encodes the honest base rate: almost all candidate strategies have
-true IR near zero. Shrinkage at `IR_obs = 1.0`:
+Three corrections against the first draft (adversarial review, 2026-09-21):
+
+```text
+v_eff       NOT 1/T. The plug-in 1/T assumes IID Gaussian returns and ignores
+            estimation error in sigma itself, so it biases IR_post HIGH. Use a
+            Newey-West or block-bootstrap effective variance. Fat tails and
+            autocorrelation in strategy returns can make the true estimator
+            variance several multiples of 1/T.
+tau         NOT asserted. Calibrate empirically from this factory's own
+            distribution of IR_obs, and apply a selection correction: IR_obs on
+            an admitted lane is a best-of-N order statistic, not an unbiased
+            draw. For a search-driven factory the sd of *genuine* IR is
+            plausibly below 0.15, not 0.30.
+sigma_floor sigma_strategy is itself a noisy small-sample estimate in the
+            DENOMINATOR; a spuriously small value spikes f. Shrink sigma toward
+            a regime-conservative prior and floor it. The T-indexed term
+            min(1, T/T_min) caps f independently of the notional caps, so a
+            lucky early IR_obs cannot produce size.
+```
+
+Illustrative shrinkage below uses the uncorrected `v_eff = 1/T` and `tau = 0.30`
+purely to show the SHAPE. Both constants are placeholders pending calibration;
+the real ones shrink harder. At `IR_obs = 1.0`:
 
 ```text
 T = 0.25 yr -> IR_post = 0.02     T = 2 yr  -> IR_post = 0.15
@@ -46,26 +66,77 @@ T = 1    yr -> IR_post = 0.08     T = 10 yr -> IR_post = 0.47
 
 Exposure is then continuous in evidence. There is no promotion event.
 
-## 4. Why early deployment is cheap — the asymmetry
+Read the table honestly: two years of a *perfect-looking* track record
+(`IR_obs = 1.0`) still buys a posterior of 0.15. Evidence is expensive. This is
+the same conclusion the corrected power law reached from the other direction.
 
-Log-growth of a deployed fraction `f`:
+## 4. Early real exposure is an information purchase, not an investment
+
+The first draft argued: log-growth is `G(f) = f*mu - f^2*sigma^2/2`, so if the
+true edge is zero the loss is quadratic in `f` and a tiny `f` is nearly free.
+
+**That argument is wrong, because it omits fixed costs.** With `C_fix` per
+period (data, custody, commissions, minimum tickets, operations, reporting):
 
 ```text
-G(f) = f*mu - f^2*sigma^2/2
+G(f) = f*mu - f^2*sigma^2/2 - C_fix/Capital
 ```
 
-If the true edge is zero, the loss is `f^2*sigma^2/2` — **quadratic** in size.
-At `f = 0.02` of Kelly the economic cost of being wrong is second-order
-negligible. Meanwhile:
+Fixed cost per unit of deployed capital scales as `1/f`, so it dominates the
+quadratic risk term entirely at small `f`. Break-even requires
 
 ```text
-EXECUTION INFORMATION (slippage, rejects, partials, latency, borrow)
-  is learned per ORDER, not per dollar. It does not depend on size at all.
+f_breakeven = C_fix / (mu * Capital) ,  mu = IR_post * sigma
 ```
 
-So the first real order carries **full execution-information value at
-quadratically negligible economic cost**. This is the entire argument for real
-exposure years before any qualification, and it requires no protocol change.
+Evaluated at `sigma = 0.15`:
+
+```text
+Capital   C_fix/yr   IR_post=0.04   IR_post=0.15   IR_post=0.31
+ 10 000       600       10.0x           2.7x           1.3x
+ 10 000     1 500       25.0x           6.7x           3.2x
+ 50 000       600        2.0x           0.53x          0.26x
+250 000     1 500        1.0x           0.27x          0.13x
+```
+
+A break-even above `1.0x` is unreachable: it asks for more than the whole
+account. **At early evidence and small capital, real deployment is negative
+expected value by an order of magnitude, at any size.** No sizing rule repairs
+this; it is an arithmetic fact about fixed costs.
+
+The consequence is not to wait. It is to stop pretending the first real orders
+are an investment:
+
+```text
+INFORMATION BUDGET   an explicit R&D expense, owner-set, capped in currency
+                     purpose: buy execution reality (slippage, rejects,
+                     partials, latency, borrow, venue behaviour)
+                     expected P&L: NEGATIVE. Stated in advance.
+                     success metric: information obtained, never P&L
+
+ECONOMIC DEPLOYMENT  requires f >= f_breakeven AND positive posterior EV net
+                     of fixed costs. Governed by §3.
+```
+
+Two budgets, two justifications, never mixed. The information budget is how the
+system gets real fills years before economic deployment is defensible — the
+original objective — without a single false claim about edge.
+
+### 4.1 What canary-size fills do and do not teach
+
+Execution information is *not* fully size-independent. Slippage, queue position
+and adverse selection are convex in order size.
+
+```text
+LEARNED AT MINIMAL SIZE   venue plumbing, rejects, partials, latency,
+                          borrow availability, operational failure modes
+NOT LEARNED               the price-impact and adverse-selection regime at
+                          the size eventually wanted
+```
+
+Before any `f` above minimal size is treated as execution-validated, a
+documented `slippage(size)` function with at least two size points is required.
+A minimal-size fill history is not evidence about a larger one.
 
 ## 5. What replaces the stages
 
@@ -104,6 +175,8 @@ P2 realized-fill ingest (venue adapter)
 P3 latched kill-switch and session-loss halt
 P4 post-session invariant recompute (cash + marked positions vs NAV)
 P5 owner authorization, dated, with an absolute notional cap
+P6 an INFORMATION BUDGET in currency, if exposure precedes f_breakeven
+P7 empirical calibration of tau and v_eff on this factory's own history
 ```
 
 None exist today. `f = 0` until all five do. The difference from the ladder is
@@ -112,6 +185,8 @@ rather than **statistical** preconditions resolvable in builder-decades.
 
 ## 8. Refused
 
-Raising `lambda` to compensate for a weak posterior. Deploying before P1-P5.
+Raising `lambda` to compensate for a weak posterior. Deploying before P1-P7.
+Charging information-budget losses against an economic performance claim, or
+the reverse. Treating minimal-size execution data as valid at target size.
 Using a realized P&L series produced at small `f` as evidence of edge — it is
 underpowered by construction and §3 already prices that through `T`.
