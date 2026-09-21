@@ -147,9 +147,25 @@ class SyntheticVerifierTests(unittest.TestCase):
         self.assertEqual(report["status"], "GREEN")
 
     def test_invalid_allowed_extra_prefix_red(self):
-        for value in ("../src", "/tmp", "src/../deploy", "src/./nested", "src//nested", "src/"):
+        for value in (
+            "../src",
+            "/tmp",
+            "src/../deploy",
+            "src/./nested",
+            "src//nested",
+            "src/",
+            "src",
+            "src/runtime",
+            "deploy/extra",
+            "scripts/generated",
+        ):
             with self.subTest(value=value), self.assertRaises(verifier.VerifyError):
                 self.verify(allowed_extra_prefixes=(value,))
+
+    def test_allowed_prefix_cannot_hide_critical_untracked_bytes(self):
+        (self.repo / "src" / "shadow.py").write_text("pass\n")
+        with self.assertRaisesRegex(verifier.VerifyError, "overlaps execution-critical"):
+            self.verify(allowed_extra_prefixes=("src",))
 
     def test_linked_worktree_red(self):
         worktree = self.root / "linked"
@@ -194,6 +210,9 @@ class SyntheticVerifierTests(unittest.TestCase):
             ("GIT_OBJECT_DIRECTORY", str(self.root / "foreign")),
             ("GIT_ALTERNATE_OBJECT_DIRECTORIES", str(self.root / "foreign")),
             ("GIT_REPLACE_REF_BASE", "refs/evil/"),
+            ("GIT_GRAFT_FILE", str(self.root / "foreign-grafts")),
+            ("GIT_NAMESPACE", "evil"),
+            ("GIT_QUARANTINE_PATH", str(self.root / "quarantine")),
         ):
             with self.subTest(key=key), mock.patch.dict(os.environ, {key: value}, clear=False):
                 with self.assertRaisesRegex(verifier.VerifyError, "override environment"):
