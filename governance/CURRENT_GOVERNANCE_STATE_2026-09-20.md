@@ -860,3 +860,27 @@ Next Product implementation policy:
 
 For all exact sequencing, read:
 `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`.
+
+
+## FINAL LIVE OVERRIDE — 2026-09-21
+
+Read `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` section 16 as the current state.
+
+Current Rail A:
+- `PASS_FOR_INDEPENDENT_ASTRA_RECHECK = TRUE`
+- authorized branch:
+  `astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+- expected mission HEAD:
+  `15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+
+Current Rail B:
+- scientific prestage final:
+  `1226427082e55e7b3c51f96c5f091b90a6278447`
+- status:
+  `SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
+- `VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN`
+- `ONE_BIG_BUILD = NOT_YET_AUTHORIZED`
+
+Active frontier:
+
+`ASTRA F11 TARGETED RECHECK + SCIENTIFIC ESTIMATOR SPECIFICATION CLOSURE`
