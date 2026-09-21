@@ -71,6 +71,44 @@ intervening changes confined to qualification harness/evidence/handoff paths.
 
 No production fix was made by Astra.
 
+## 2A. Concurrent branch write detected and neutralized
+
+During the review, after Astra had pushed
+`398b76d2f739df7d7dd47ccda909a0b8ea2a7e85`, a concurrent audit-only commit
+appeared on the same mandated branch:
+
+`3e19e58d421ec8afb1d6d8cea25998df4768d128`
+
+It added:
+
+`tests/test_astra_fault_matrix_independent.py`
+
+Astra did not create that commit. Inspection found that the file was audit-only,
+but one test expected `audit_observation_window()` to raise on a torn SEC
+journal even though the production contract intentionally catches malformed
+evidence and returns the explicit failed verdict
+`ACQUISITION_EVIDENCE_INVALID`. Keeping the file under `tests/` also risked
+changing the ordinary gate's discovered-test/status-artifact contract.
+
+Classification:
+`TEST_DEFECT / AUDIT_HARNESS_ONLY`
+
+Astra therefore removed that concurrent audit test from the final tree in:
+
+`4e31708a57f8bfc9c6752dbc2dd4af0415371620`
+
+No production path was edited. The historical concurrent commit remains visible
+in Git history; it is not hidden or rewritten. Its useful review ideas are
+already covered by the independent `audit/` probe and the manual citation-body
+inspection documented below.
+
+Net Astra tree delta from mission start is again confined to:
+
+- `.github/workflows/astra-p0-hybrid-fault-matrix-independent-review.yml`;
+- `audit/astra_p0_hybrid_fault_matrix_independent_probe.py`;
+- `handoff/ASTRA_P0_HYBRID_FAULT_MATRIX_CHECKPOINT_2026-09-21.md`;
+- this final handoff.
+
 ## 3. Required row set
 
 Astra verified exactly the 19 required properties, in the required set, with no
