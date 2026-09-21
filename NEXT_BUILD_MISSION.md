@@ -916,3 +916,59 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
 Do not create another Product Builder.
+
+
+## ACCELERATION OVERRIDE — PARALLEL WORK WITHOUT DUPLICATION — 2026-09-21
+
+### Rail A
+
+Post-Astra convergence exact-head CI is GREEN:
+
+`blue/gate-b-post-astra-convergence-2026-09-21@c14f28466cf7aeaddfe265a8b8aaf77fd301d4d3`
+
+`35627516386 = COMPLETED / SUCCESS`
+
+Target-host read-only rebind mission is prepared on:
+
+`operator/gate-b-target-host-read-only-rebind-2026-09-21`
+
+Mission HEAD:
+
+`b5301bb53dc9e77b534050679eb7a3a8dd12bfdc`
+
+This mission may run in parallel with Product build.
+It performs no host mutation and stops before run reservation.
+
+### Rail B
+
+ONE BIG BUILD dispatch authority:
+
+`handoff/BLUE_ONE_BIG_BUILD_DISPATCH_2026-09-21.md`
+
+Authorized Builder:
+
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
+
+Build base:
+
+`aa6a5c17467d0da17482b88ab1dfcc362ec24d46`
+
+Build-base exact-head CI:
+
+`35628638457 = COMPLETED / SUCCESS`
+
+```text
+ONE_BIG_BUILD = AUTHORIZED
+PRODUCT_IMPLEMENTATION_AUTHORIZED = TRUE_FOR_ASSIGNED_BUILDER_ONLY
+PRODUCT_INTEGRATION = PAUSED
+```
+
+### Post-Builder review
+
+Review preparation exists at:
+
+`governance/BLUE_FIRST_VERTICAL_INDEPENDENT_REVIEW_PRESTAGE_2026-09-21.md`
+
+Do NOT dispatch the reviewer until the Builder final SHA + exact-head CI exist.
+
+No extra Product Builder and no extra S11/cohort/economic-question agent is authorized.
