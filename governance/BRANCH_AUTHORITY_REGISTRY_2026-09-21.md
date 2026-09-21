@@ -204,3 +204,33 @@ Status at this override:
 
 Do not delete or repurpose any of the above refs until Blue records F11 closure and a subsequent branch-retirement decision.
 
+
+
+## LIVE F11 BUILDER DISPATCH OVERRIDE — 2026-09-21
+
+This section supersedes the earlier `NOT_YET_CREATED` classification for the F11 repair branch.
+
+Active branch:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21@8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
+
+Exact audited implementation base:
+
+`644da76eb0227be275b8e3448118dac0cc7096ca`
+
+Blue F11 spec on Builder branch:
+
+`113e60cb6ae9a56ffb4adb83c13a797e3563369e`
+
+Classification:
+
+`ACTIVE_BOUNDED_F11_BUILDER_REPAIR / PRESERVE`
+
+Allowed mission scope is limited by:
+
+`governance/BLUE_GATE_B_F11_LOCK_IDENTITY_REPAIR_SPEC_2026-09-21.md`
+
+The Builder may return only `READY_FOR_INDEPENDENT_REVIEW` or an explicit blocker.
+
+Do not create a parallel/overlapping F11 repair branch.
+Do not delete or repurpose this branch until independent Astra closure and subsequent Blue retirement review.
