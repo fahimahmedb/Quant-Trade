@@ -1,0 +1,31 @@
+# quant-gate-b-egress-guard.service
+# schema: quant-gate-b-route1-mutation-pack/v1
+# run_id: gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811
+# attempt_number: 1
+#
+# One-shot unit that loads ONLY the exact sealed nft rules file
+# (/etc/quant/gate-b/quant-gate-b-egress.nft) and becomes active only if the
+# rule load succeeds. It orders before both the temporary synthetic-state
+# mount and the frozen collector service, so no destructive-lifecycle mutation
+# or collector start can occur while real SEC egress remains reachable. It
+# does not modify quant-sec-capture.service in any way.
+#
+# Removal (ExecStop) is a rollback-only action and MUST only be invoked by the
+# Operator rollback sequence after the collector service is already stopped
+# and the synthetic state mount has been detached.
+
+[Unit]
+Description=Quant Gate-B run-scoped TCP/443 egress-deny guard (gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811 attempt 1)
+Documentation=file:///etc/quant/gate-b/quant-gate-b-egress.nft
+DefaultDependencies=no
+Before=var-lib-quant\x2dp0.mount quant-sec-capture.service umount.target
+Conflicts=umount.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/nft -f /etc/quant/gate-b/quant-gate-b-egress.nft
+ExecStartPost=/usr/sbin/nft list table inet quant_gate_b
+ExecStop=/usr/sbin/nft delete table inet quant_gate_b
+TimeoutStartSec=30s
+TimeoutStopSec=30s

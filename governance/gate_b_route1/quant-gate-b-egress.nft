@@ -1,0 +1,24 @@
+#!/usr/sbin/nft -f
+#
+# quant-gate-b-egress.nft
+# schema: quant-gate-b-route1-mutation-pack/v1
+# run_id: gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811
+# attempt_number: 1
+#
+# Purpose: deterministically deny all outbound TCP/443 (HTTPS) egress, on both
+# IPv4 and IPv6, for the duration of the run-scoped Gate-B destructive lifecycle
+# campaign, so that the frozen V4 service cannot reach the real SEC endpoint
+# even if started by accident. This is the ONLY network-mutation object in the
+# pack. It creates its own dedicated table and does not modify any pre-existing
+# table, chain, or base OUTPUT policy.
+#
+# No allow exception for SEC exists in this file. There is no second chain,
+# jump target, or accept rule that can bypass this table for TCP/443 egress.
+
+table inet quant_gate_b {
+	chain output {
+		type filter hook output priority filter; policy accept;
+
+		tcp dport 443 drop
+	}
+}

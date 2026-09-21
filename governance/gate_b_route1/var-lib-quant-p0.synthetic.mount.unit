@@ -1,0 +1,43 @@
+# var-lib-quant-p0.synthetic.mount.unit
+# schema: quant-gate-b-route1-mutation-pack/v1
+# run_id: gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811
+# attempt_number: 1
+#
+# This file represents the EXACT future bytes to be installed, verbatim, as
+# the temporary target-host unit
+#   /etc/systemd/system/var-lib-quant\x2dp0.mount
+# for the duration of this run's destructive-lifecycle campaign only. It is
+# the run-scoped REPLACEMENT for the original var-lib-quant\x2dp0.mount unit,
+# whose original bytes must be preserved as restricted evidence (expected
+# SHA-256: fb37ed643fcb237fcb0c3ec54ee9ceada1e376ee88cc16f39cff47ef68a19875)
+# and restored verbatim during rollback.
+#
+# What= binds exactly the fixed run-scoped SYNTHETIC_RESERVOIR path. Where=
+# is unchanged (Where=/var/lib/quant-p0), so the frozen V4 service's
+# service-visible path never changes. This unit makes NO change to
+# opt-quant-var.mount and NO change to quant-sec-capture.service.
+#
+# NOTE (TARGET_HOST_ONLY): the exact escaped systemd unit name backing the
+# persistent /mnt/quant-data filesystem is not repository-verifiable and MUST
+# be re-resolved live on the target host (e.g. via `findmnt -no UNIT
+# /mnt/quant-data` or equivalent) before this unit is installed; the Requires=
+# / After= line below names the conventional escaped unit name as the
+# expected value, and the Operator relay must fail closed if the live-resolved
+# unit differs.
+
+[Unit]
+Description=Quant Gate-B run-scoped synthetic state reservoir for /var/lib/quant-p0 (gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811 attempt 1)
+DefaultDependencies=no
+Requires=quant-gate-b-egress-guard.service mnt-quant\x2ddata.mount
+After=quant-gate-b-egress-guard.service mnt-quant\x2ddata.mount
+Before=quant-sec-capture.service umount.target
+Conflicts=umount.target
+
+[Mount]
+What=/mnt/quant-data/gate-b-synthetic/gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811/state
+Where=/var/lib/quant-p0
+Type=none
+Options=bind,rw
+
+[Install]
+RequiredBy=quant-sec-capture.service
