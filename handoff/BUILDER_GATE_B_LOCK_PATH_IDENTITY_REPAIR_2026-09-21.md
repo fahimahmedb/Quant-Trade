@@ -4,7 +4,15 @@
 
 `GATE_B_LOCK_PATH_IDENTITY_REPAIR = READY_FOR_INDEPENDENT_REVIEW`
 
-This is a bounded Builder repair of Astra finding F11 only.
+This is a bounded Builder repair of Astra finding F11, now including closure
+of Blue's follow-on whole-parent-directory identity challenge
+(`governance/BLUE_GATE_B_F11_BRANCH_RECONCILIATION_PARENT_PATH_CHALLENGE_2026-09-21.md`,
+F11-P1/P2/P3). No further scope was added.
+
+`PASS_REPOSITORY_EVIDENCE` is not declared here. Independent closure of F11
+and A1-A10 non-regression remains Astra's authority; Blue reception must
+still gate Astra dispatch per
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`.
 
 Safety state:
 
@@ -91,6 +99,65 @@ This makes the parent directory inode the outer serialization domain and the loc
 
 Within one stable configured registry parent directory, replacing the public lock, replacing the anchor, or replacing both names cannot create a concurrently executable production mutation domain.
 
+## 3.3 Whole-parent-directory replacement closure (F11-P1/P2/P3)
+
+Blue's static review identified a remaining gap: the parent-directory `flock`
+above serializes on whatever inode the configured parent *pathname*
+currently resolves to. An adversary who renames the whole parent directory
+away and creates a fresh empty directory at the original pathname while a
+holder (A) remains active inside the original directory could previously let
+a second process (B) resolve the replacement pathname, treat it as a
+legitimately fresh registry, and bootstrap an independent mutation domain
+concurrently with A -- reproduced as RED against the pre-fix implementation
+(`B_MUTATED`).
+
+Two changes close this:
+
+1. **All name resolution inside the critical section is now anchored to the
+   held parent-directory file descriptor**, not the live pathname. The lock
+   file, its hard-link authority anchor, and the registry file itself are
+   opened, read, and appended via `dir_fd`-relative operations against the
+   `pfd` captured when the parent lock was acquired. A holder's own mutation
+   can therefore never be silently redirected into a replacement directory
+   swapped in during its critical section.
+2. **A grandparent-anchored parent-identity marker.** The first legitimate
+   bootstrap of a configured registry parent directory records that
+   directory's `(st_dev, st_ino)` in a marker file in the *grandparent*
+   directory (stable in this attack model; only the immediate parent is
+   replaced). Every subsequent `_locked()` call revalidates the current
+   parent directory's identity against that marker before doing anything
+   else. A replacement directory at the same pathname has a different
+   identity and is rejected with `AuthorityError` before any lock authority
+   or registry operation is attempted -- before entering a mutation critical
+   section, satisfying F11-P2 with zero partial mutation.
+
+Proven with real independent OS processes against disposable temporary
+directories in `tests/test_gate_b_lock_path_identity_repair.py`
+(`GateBF11ParentPathIdentityTests`):
+
+- **F11-P1**: while process A remains inside the real `Registry._locked()`
+  critical section under the original parent directory, the whole parent is
+  renamed away and a fresh directory is created at the configured pathname;
+  process B constructs the same logical `Registry` and invokes the actual
+  production mutation entrypoint (`set_revocation_epoch`). B is rejected
+  with `AuthorityError` while A is independently confirmed still active
+  (`holder.poll() is None`) at the moment B concludes.
+- **F11-P2**: the rejected replacement-parent contender leaves the
+  replacement directory empty -- no registry file, no lock file, no
+  authority anchor, no reservation, no event of any kind.
+- **F11-P3**: while the replacement persists, repeated independent attempts
+  deterministically fail closed (no second logical registry history is ever
+  bootstrapped under the replacement directory). After operator repair
+  (removing the replacement directory and restoring the original directory
+  at the configured pathname), a subsequent attempt is rejected only because
+  it duplicates the original epoch (non-monotonic) -- proof that recovery
+  resumes the single original registry history under the original stable
+  authority, not a fresh second one.
+
+Confirmed RED on the pre-fix implementation (checked out at the prior
+handoff HEAD `6ec12cd73de24b4a789d6abe9e292d8b616e3da1`) and GREEN after the
+repair, for all three new tests.
+
 ## 4. Fail-closed behavior
 
 If lock authority cannot be established or remains ambiguous, the implementation does not:
@@ -125,7 +192,10 @@ Covered discriminants include:
 10. FIFO/special-path negative control where supported;
 11. unanchored pre-existing lock;
 12. fresh bootstrap of exactly one hard-link authority;
-13. stable real independent-process contention positive control.
+13. stable real independent-process contention positive control;
+14. F11-P1 whole-parent-directory replacement while a live holder is inside the critical section, blocking a second process's concurrent mutation entry;
+15. F11-P2 no mutation of any kind escapes the rejected replacement-parent contender;
+16. F11-P3 persistent fail-closed while the replacement persists, then deterministic recovery under the single original stable authority after operator repair.
 
 At least the contention/replacement discriminants use independent OS processes and the real local `flock` primitive.
 
@@ -141,15 +211,22 @@ The full unit suite and SEC P0 lane suite passed at exact implementation HEAD `e
 
 ## 7. Changed paths versus audited baseline
 
-Implementation/test delta at pre-handoff implementation HEAD:
+Implementation/test delta at the prior handoff HEAD (`ed51cc4251f556482eca18e396cc1c0d932879fb` through `6ec12cd73de24b4a789d6abe9e292d8b616e3da1`):
 
 - `scripts/quant_gate_b_runctl.py`
 - `tests/test_gate_b_lock_path_identity_repair.py`
 - `tests/test_gate_b_run_authority_m1_m3_repair.py`
 - `STATE.md` — mechanical proof inventory only
 
+Additional delta for this parent-path closure (this handoff, on top of `6ec12cd73de24b4a789d6abe9e292d8b616e3da1`):
+
+- `scripts/quant_gate_b_runctl.py` — `Registry` name resolution during the critical section is now `dir_fd`-anchored to the held parent-directory fd, and a grandparent-anchored registry-parent identity marker closes F11-P1/P2/P3 (section 3.3 above). No M1-M5/A1-A10 method signature exposed outside `Registry` changed; `_lock_authority_paths()` keeps its existing zero-argument external call form used by test tooling.
+- `tests/test_gate_b_lock_path_identity_repair.py` — added `GateBF11ParentPathIdentityTests` (F11-P1/P2/P3, 3 new tests). All 13 pre-existing tests in this file pass unmodified.
+- `STATE.md` — mechanical proof inventory refresh only (`python3 scripts/status_artifacts.py --write`).
+
 No change to:
 
+- `tests/test_gate_b_run_authority_m1_m3_repair.py` (beyond the already-audited prior adaptation) — the two A2 directory-fsync injection tests in this file pass unmodified against the new implementation;
 - `scripts/verify_gate_b_deployed_bytes.py`
 - frozen V4 `src/`
 - target-host configuration
@@ -157,9 +234,9 @@ No change to:
 - mounts
 - firewall/network state
 
-Proof inventory after the final added F11 tests:
+Proof inventory after the added F11-P1/P2/P3 tests:
 
-`457 unit tests discovered`
+`460 unit tests discovered`
 
 ## 8. Exact-head implementation CI evidence
 
@@ -170,6 +247,10 @@ Pre-handoff implementation HEAD:
 Exact-head GitHub Actions run:
 
 `35608538693 = COMPLETED / SUCCESS`
+
+Prior final handoff HEAD (received but non-authorizing pending this closure):
+
+`6ec12cd73de24b4a789d6abe9e292d8b616e3da1` — exact-head CI `35610033532 = COMPLETED / SUCCESS`.
 
 Verified run head SHA:
 
@@ -197,17 +278,17 @@ Because this handoff itself changes the branch HEAD, the final branch HEAD must 
 
 ## 9. Adjacent findings and residual boundary
 
-The coordinated replacement of both the public lock and authority anchor was treated as inseparable from F11 and repaired in this lane.
+The coordinated replacement of both the public lock and authority anchor was treated as inseparable from F11 and repaired in this lane. The whole-parent-directory replacement Blue identified (F11-P1/P2/P3) was likewise treated as inseparable from F11 and repaired in this handoff per section 3.3 above.
 
 No new unrelated repository defect is declared by the Builder.
 
-Residual boundary:
+Residual boundary, narrowed by this handoff:
 
-`TARGET_HOST_ONLY: stability/ownership/mount identity of the configured external registry parent directory and its ancestor namespace.`
+`TARGET_HOST_ONLY: stability/ownership/mount identity of the registry GRANDPARENT directory and its own ancestor namespace above that.`
 
-Repository code validates the opened parent directory identity and fails public success on observed substitution. It cannot prove that a same-privilege external actor or mount-namespace authority is unable to replace the configured parent namespace itself throughout the real target-host authority window. That property must be established by target-host ownership/permissions/mount evidence.
+The repository-local whole-parent-path discriminant Blue required (replacing the immediate configured registry parent directory while a holder is active) is now closed for any actor operating within a stable grandparent directory: the grandparent-anchored identity marker makes a replacement immediate-parent directory ambiguous and rejects it before mutation, as proven in section 3.3. What remains target-host-only is one level further up: whether a same-privilege external actor or mount-namespace authority could also replace the *grandparent* directory (or its own ancestors) itself throughout the real target-host authority window. That property must still be established by target-host ownership/permissions/mount evidence; the grandparent-level anchor file cannot defend against an adversary who controls the grandparent's own namespace.
 
-This residual does not substitute for F11: the repository-local lock-file replacement and coordinated lock+anchor replacement paths are closed within a stable configured registry parent.
+This residual does not substitute for F11 or for the F11-P1/P2/P3 closure: the repository-local lock-file replacement, coordinated lock+anchor replacement, and whole-immediate-parent-directory replacement paths are all closed within a stable registry grandparent directory.
 
 Other target-host-only properties remain unchanged, including:
 
@@ -224,10 +305,19 @@ Other target-host-only properties remain unchanged, including:
 
 ## 10. Final disposition
 
+```text
+F11_PARENT_PATH_IDENTITY_CHALLENGE = CLOSED (repository-local, within a stable grandparent directory)
+F11_P1 = GREEN
+F11_P2 = GREEN
+F11_P3 = GREEN
+IMPLEMENTATION_CHANGED = TRUE (scripts/quant_gate_b_runctl.py :: Registry)
+A1_A10_NON_REGRESSION = GREEN (460 unit tests discovered; full suite + SEC P0 lane + V1 end-to-end regression all pass)
+```
+
 After this handoff commit, re-run exact-head CI on the resulting branch HEAD.
 
-If that exact-head run is `COMPLETED / SUCCESS`, the Builder disposition is:
+If that exact-head run is `COMPLETED / SUCCESS`, the Builder disposition remains only:
 
 `GATE_B_LOCK_PATH_IDENTITY_REPAIR = READY_FOR_INDEPENDENT_REVIEW`
 
-Return control to Blue/Astra for independent recheck of F11 and adjacent lock-domain assumptions.
+No `PASS_REPOSITORY_EVIDENCE`, Gate B PASS, production readiness, or t0 claim is made. Return control to Blue for reception, then to Astra for independent recheck of F11, the F11-P1/P2/P3 parent-path closure, and A1-A10 non-regression, per `handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md` section 8.
