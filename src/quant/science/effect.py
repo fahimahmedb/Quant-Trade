@@ -74,7 +74,7 @@ STRUCTURAL_INSUFFICIENT = "INSUFFICIENT_CLUSTER_INFORMATION"
 
 WAITING_FOR_OUTCOME = "WAITING_FOR_OUTCOME"
 DEPENDENCE_MODEL_UNSUPPORTED = "DEPENDENCE_MODEL_UNSUPPORTED"
-D19_INSUFFICIENT = "D19_TERMINAL_TREATMENT_UNRESOLVED_ESTIMATE_REFUSED"
+D19_INSUFFICIENT = "D19_INSUFFICIENT_UNRESOLVED_COMPLETIONS"
 EFFECT_UNAVAILABLE = "EFFECT_ESTIMATE_ON_FROZEN_COORDINATE_UNAVAILABLE"
 PROTOCOL_MISMATCH = "COHORT_PROTOCOL_HASH_MISMATCH"
 COHORT_GAP_VIOLATION = "INTER_COHORT_SEPARATION_LT_80"
@@ -83,7 +83,7 @@ CONCENTRATION_GUARD_FAILED = "COMPONENT_EXPOSURE_CONCENTRATION_EXCEEDS_0_10"
 INSUFFICIENT_G = "POSITIVE_EXPOSURE_COMPONENT_COUNT_BELOW_10"
 INVALID_SCIENTIFIC_INPUT = "INVALID_SCIENTIFIC_INPUT"
 COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP = "COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP"
-
+CONFIRMATORY_LOOK_ALREADY_CONSUMED = "CONFIRMATORY_LOOK_ALREADY_CONSUMED"\nCONFIRMATORY_LOOK_AUTHORITY_MISSING = "CONFIRMATORY_LOOK_AUTHORITY_MISSING"\n
 RETURN_DEFINITION = "SIMPLE_SINGLE_PERIOD"
 INTERVAL_SPEC = "PUBLIC_KNOWLEDGE_NEXT_OPEN_TO_20TH_CLOSE_V1"
 CORPORATE_ACTION_CONVENTION = "SHARE_ENTITLEMENTS_PLUS_UNREINVESTED_CASH_V1"
@@ -311,6 +311,7 @@ class MethodQualificationArtifact:
             self.numerical_qualification_passed
             and self.target_cohort_applicability_supported
             and bool(self.applicability_evidence_hash)
+            and not self.synthetic_only
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -465,13 +466,40 @@ class CohortProtocolStore:
             problems.append(PROTOCOL_MISMATCH)
 
         normalized = cohort.to_dict()
-        for existing in payload.get("cohorts", []):
-            if existing.get("cohort_id") == cohort.cohort_id:
-                if _sha256_document(existing) != _sha256_document(normalized):
-                    raise ProtocolConflict("COHORT_ID_REUSED_WITH_DIFFERENT_PAYLOAD")
+        stored_cohorts = list(payload.get("cohorts", []))
+        for index, existing in enumerate(stored_cohorts):
+            if existing.get("cohort_id") != cohort.cohort_id:
+                continue
+            if _sha256_document(existing) == _sha256_document(normalized):
                 if problems:
                     raise ProtocolConflict(";".join(sorted(set(problems))))
                 return cohort
+            immutable_fields = (
+                "cohort_id", "ordinal", "first_entry_session",
+                "last_entry_session", "protocol_hash",
+            )
+            activation_matches = all(
+                existing.get(key) == normalized.get(key) for key in immutable_fields
+            )
+            if (
+                activation_matches
+                and not bool(existing.get("matured"))
+                and cohort.matured
+            ):
+                problems.extend(cohort_geometry_violations(cohort, calendar, config))
+                if problems:
+                    raise ProtocolConflict(";".join(sorted(set(problems))))
+                stored_cohorts[index] = normalized
+                write_json(self.path, {
+                    **payload,
+                    "version": max(int(payload.get("version", 1)), 2),
+                    "protocol_id": config.protocol_id,
+                    "protocol_hash": config.protocol_hash,
+                    "protocol_config": config.to_dict(),
+                    "cohorts": stored_cohorts,
+                })
+                return cohort
+            raise ProtocolConflict("COHORT_ID_REUSED_WITH_DIFFERENT_PAYLOAD")
 
         current = list(self.cohorts())
         if current:
@@ -506,10 +534,53 @@ class CohortProtocolStore:
             "protocol_id": config.protocol_id,
             "protocol_hash": config.protocol_hash,
             "protocol_config": config.to_dict(),
-            "cohorts": payload.get("cohorts", []) + [normalized],
+            "cohorts": stored_cohorts + [normalized],
         }
         write_json(self.path, output)
         return cohort
+
+    def claim_confirmatory_look(
+        self,
+        config: ProtocolConfig,
+        *,
+        sample_id: str,
+        cohort_ids: Sequence[str],
+        outcome_manifest_hash: str,
+        qualification_id: str,
+        coordinate_hash: str,
+    ) -> str:
+        """Atomically bind the sole confirmatory look to exact frozen inputs.
+
+        Exact replay is idempotent. Any changed sample, outcomes, method
+        qualification or coordinate after a look was claimed fails closed.
+        """
+        payload = self.document()
+        if payload.get("protocol_hash") != config.protocol_hash:
+            raise ProtocolConflict(PROTOCOL_MISMATCH)
+        stored_ids = tuple(cohort.cohort_id for cohort in self.cohorts())
+        if tuple(cohort_ids) != stored_ids:
+            raise ProtocolConflict("CONFIRMATORY_LOOK_COHORT_SET_MISMATCH")
+        claim_core = {
+            "protocol_hash": config.protocol_hash,
+            "sample_id": sample_id,
+            "cohort_ids": list(cohort_ids),
+            "outcome_manifest_hash": outcome_manifest_hash,
+            "qualification_id": qualification_id,
+            "coordinate_hash": coordinate_hash,
+        }
+        look_id = _sha256_document(claim_core)
+        claim = {**claim_core, "look_id": look_id}
+        existing = payload.get("confirmatory_look")
+        if existing is not None:
+            if _sha256_document(existing) == _sha256_document(claim):
+                return look_id
+            raise ProtocolConflict(CONFIRMATORY_LOOK_ALREADY_CONSUMED)
+        write_json(self.path, {
+            **payload,
+            "version": max(int(payload.get("version", 1)), 2),
+            "confirmatory_look": claim,
+        })
+        return look_id
 
 
 class MethodQualificationStore:
@@ -1137,11 +1208,27 @@ def _sample_id(
                 "allocation_commitments": [
                     event.allocation_commitment_hash for event in cohort.events
                 ],
+                "content_addresses": sorted(
+                    address
+                    for event in cohort.events
+                    for address in event.content_addresses
+                ),
             }
             for cohort in cohorts
         ],
         "components": list(decision.component_assignments),
     })
+
+
+def scientific_sample_id(
+    cohorts: Sequence[CohortRecord],
+    calendar: SessionCalendar,
+    config: ProtocolConfig = ProtocolConfig(),
+    corporate_links: Mapping[str, str] | None = None,
+) -> str:
+    """Outcome-blind identity of the exact accrued structural sample."""
+    decision = structural_stopping_decision(cohorts, calendar, config, corporate_links)
+    return _sample_id(config, cohorts, decision)
 
 
 def _refusal(
@@ -1206,6 +1293,7 @@ def assemble_form4_effect(
     corporate_links: Mapping[str, str] | None = None,
     binding: DeltaCoordinateBinding | None = None,
     synthetic: bool = False,
+    look_store: CohortProtocolStore | None = None,
 ) -> ScientificEffectArtifact:
     """Assemble the frozen effect or refuse, preserving the one-look ordering."""
     decision = structural_stopping_decision(
@@ -1234,11 +1322,11 @@ def assemble_form4_effect(
             synthetic=synthetic,
         )
 
+    all_events = [event for cohort in cohorts for event in cohort.events]
     positive_events = [
-        event for cohort in cohorts for event in cohort.events
-        if event.allocation_weight > 0
+        event for event in all_events if event.allocation_weight > 0
     ]
-    d19_complete = all(event.d19_complete for event in positive_events)
+    d19_complete = all(event.d19_complete for event in all_events)
     if not d19_complete:
         return _refusal(
             config=config, cohorts=cohorts, decision=decision,
@@ -1292,6 +1380,40 @@ def assemble_form4_effect(
             binding_hash=coordinate.binding_hash, synthetic=synthetic,
         )
 
+    qualification_hash = _sha256_document(method_qualification.to_dict())
+    if not synthetic:
+        if not method_qualification.qualified_for_forward_confirmation:
+            return _refusal(
+                config=config, cohorts=cohorts, decision=decision,
+                reasons=(DEPENDENCE_MODEL_UNSUPPORTED, EFFECT_UNAVAILABLE),
+                sample_id=sample_id, d19_complete=True,
+                qualification=method_qualification, binding=binding,
+                binding_hash=coordinate.binding_hash, synthetic=False,
+            )
+        if forward_receipt is None or not forward_receipt.valid_for(
+            config.protocol_hash, sample_id
+        ):
+            reason = (
+                "FORWARD_CONFIRMATION_RECEIPT_MISSING"
+                if forward_receipt is None
+                else "FORWARD_CONFIRMATION_RECEIPT_INVALID"
+            )
+            return _refusal(
+                config=config, cohorts=cohorts, decision=decision,
+                reasons=(reason, EFFECT_UNAVAILABLE),
+                sample_id=sample_id, d19_complete=True,
+                qualification=method_qualification, binding=binding,
+                binding_hash=coordinate.binding_hash, synthetic=False,
+            )
+        if look_store is None:
+            return _refusal(
+                config=config, cohorts=cohorts, decision=decision,
+                reasons=(CONFIRMATORY_LOOK_AUTHORITY_MISSING, EFFECT_UNAVAILABLE),
+                sample_id=sample_id, d19_complete=True,
+                qualification=method_qualification, binding=binding,
+                binding_hash=coordinate.binding_hash, synthetic=False,
+            )
+
     weights: list[float] = []
     values: list[float] = []
     components: list[str] = []
@@ -1317,6 +1439,34 @@ def assemble_form4_effect(
             qualification=method_qualification, binding=binding,
             binding_hash=coordinate.binding_hash, synthetic=synthetic,
         )
+
+    outcome_manifest_hash = _sha256_document([
+        {
+            "event_id": event.event_id,
+            "weight": event.allocation_weight,
+            "outcome": values[index],
+            "component": components[index],
+        }
+        for index, event in enumerate(positive_events)
+    ])
+    if not synthetic:
+        try:
+            look_store.claim_confirmatory_look(
+                config,
+                sample_id=sample_id,
+                cohort_ids=tuple(cohort.cohort_id for cohort in cohorts),
+                outcome_manifest_hash=outcome_manifest_hash,
+                qualification_id=method_qualification.qualification_id,
+                coordinate_hash=coordinate.binding_hash or "",
+            )
+        except ProtocolConflict:
+            return _refusal(
+                config=config, cohorts=cohorts, decision=decision,
+                reasons=(CONFIRMATORY_LOOK_ALREADY_CONSUMED, EFFECT_UNAVAILABLE),
+                sample_id=sample_id, d19_complete=True,
+                qualification=method_qualification, binding=binding,
+                binding_hash=coordinate.binding_hash, synthetic=False,
+            )
 
     diagnostic = ratio_estimate(
         weights, values, components, confidence_level=CONFIDENCE_LEVEL
@@ -1344,13 +1494,7 @@ def assemble_form4_effect(
             binding_hash=coordinate.binding_hash, synthetic=synthetic,
         )
 
-    qualification_hash = _sha256_document(method_qualification.to_dict())
-    forward_ok = (
-        not synthetic
-        and method_qualification.qualified_for_forward_confirmation
-        and forward_receipt is not None
-        and forward_receipt.valid_for(config.protocol_hash, sample_id)
-    )
+    forward_ok = not synthetic
     evidence_label = EVIDENCE_FORWARD_CONFIRMATION if forward_ok else EVIDENCE_DEVELOPMENT
     reasons: list[str] = []
     if not method_qualification.qualified_for_forward_confirmation:
@@ -1366,15 +1510,7 @@ def assemble_form4_effect(
         "protocol_hash": config.protocol_hash,
         "sample_id": sample_id,
         "cohort_ids": [cohort.cohort_id for cohort in cohorts],
-        "row_digest": _sha256_document([
-            {
-                "event_id": event.event_id,
-                "weight": event.allocation_weight,
-                "outcome": outcomes[event.event_id],
-                "component": assignment[event.event_id],
-            }
-            for event in positive_events
-        ]),
+        "row_digest": outcome_manifest_hash,
         "qualification_hash": qualification_hash,
         "coordinate_hash": coordinate.binding_hash,
         "interval": interval.to_dict(),

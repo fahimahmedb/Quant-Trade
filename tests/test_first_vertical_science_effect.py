@@ -14,6 +14,7 @@ from quant.science.effect import (
     COHORT_GAP_VIOLATION,
     CONCENTRATION_GUARD_FAILED,
     COHORT_ACCRUAL_AFTER_STRUCTURAL_STOP,
+    CONFIRMATORY_LOOK_ALREADY_CONSUMED,
     DEPENDENCE_MODEL_UNSUPPORTED,
     D19_INSUFFICIENT,
     EFFECT_UNAVAILABLE,
@@ -26,6 +27,7 @@ from quant.science.effect import (
     STRUCTURAL_INSUFFICIENT,
     AllocationCandidate,
     CohortProtocolStore,
+    ForwardConfirmationReceipt,
     CohortRecord,
     MethodQualificationStore,
     ProtocolConfig,
@@ -37,6 +39,7 @@ from quant.science.effect import (
     connected_components,
     one_look_signature_proof,
     qualify_method,
+    scientific_sample_id,
     sign_flip_interval,
     structural_stopping_decision,
 )
@@ -385,6 +388,113 @@ class FirstVerticalScientificEffectTests(unittest.TestCase):
         self.assertIsNotNone(artifact.effect_estimate)
         self.assertIsNotNone(artifact.delta_coordinate_hash)
         self.assertIn("SYNTHETIC_FIXTURE_DEVELOPMENT_ONLY", artifact.reason_codes)
+
+    def test_activated_cohort_can_mature_without_rewriting_frozen_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = CohortProtocolStore(Path(directory) / "protocol.json")
+            active = self._cohort(1, matured=False)
+            store.register_cohort(self.config, active, self.calendar)
+            self.assertFalse(store.cohorts()[0].matured)
+            matured = self._cohort(1, matured=True)
+            store.register_cohort(self.config, matured, self.calendar)
+            self.assertTrue(store.cohorts()[0].matured)
+            self.assertEqual(store.document()["protocol_hash"], self.config.protocol_hash)
+
+    def test_zero_allocation_unresolved_d19_still_blocks_before_outcomes(self):
+        cohorts = list(self._eligible_cohorts())
+        zero = replace(
+            cohorts[0].events[0],
+            allocation_weight=0.0,
+            d19_complete=False,
+        )
+        cohorts[0] = replace(cohorts[0], events=(zero,) + cohorts[0].events[1:])
+        artifact = assemble_form4_effect(
+            cohorts=tuple(cohorts),
+            calendar=self.calendar,
+            outcomes=ExplodingOutcomes(),
+            method_qualification=qualify_method(self.config),
+        )
+        self.assertEqual(artifact.status, "REFUSED")
+        self.assertIn(D19_INSUFFICIENT, artifact.reason_codes)
+
+    def test_structural_sample_identity_binds_contributing_content_addresses(self):
+        cohorts = list(self._eligible_cohorts())
+        first = scientific_sample_id(tuple(cohorts), self.calendar)
+        changed_event = replace(
+            cohorts[0].events[0],
+            content_addresses=("sha256:different-content",),
+        )
+        cohorts[0] = replace(
+            cohorts[0], events=(changed_event,) + cohorts[0].events[1:]
+        )
+        second = scientific_sample_id(tuple(cohorts), self.calendar)
+        self.assertNotEqual(first, second)
+
+    def test_synthetic_method_qualification_cannot_self_authorize_forward(self):
+        qualification = qualify_method(
+            self.config,
+            target_cohort_applicability_supported=True,
+            applicability_evidence_hash="sha256:synthetic-only",
+            applicability_statement="synthetic-only fixture",
+        )
+        self.assertTrue(qualification.numerical_qualification_passed)
+        self.assertFalse(qualification.qualified_for_forward_confirmation)
+
+    def test_confirmatory_look_is_durable_idempotent_and_conflict_closed(self):
+        cohorts = self._eligible_cohorts()
+        qualification = replace(
+            qualify_method(self.config),
+            target_cohort_applicability_supported=True,
+            applicability_evidence_hash="sha256:independent-applicability-proof",
+            applicability_statement="fixture representing independently supplied applicability",
+            synthetic_only=False,
+        )
+        sample_id = scientific_sample_id(cohorts, self.calendar)
+        receipt = ForwardConfirmationReceipt(
+            receipt_id="receipt-1",
+            protocol_hash=self.config.protocol_hash,
+            sample_id=sample_id,
+            evidence_identity="scope-1",
+            session_seals_hash="sha256:session-seals",
+            allocation_seal_hash="sha256:allocation-seal",
+            use_ledger_receipt="sha256:use-ledger",
+            family_look_receipt="sha256:family-look",
+            post_freeze_recording_proven=True,
+            evidence_unconsumed=True,
+        )
+        outcomes = {
+            event.event_id: 0.01 + index * 0.0001
+            for index, event in enumerate(
+                event for cohort in cohorts for event in cohort.events
+            )
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            store = CohortProtocolStore(Path(directory) / "protocol.json")
+            for cohort in cohorts:
+                store.register_cohort(self.config, cohort, self.calendar)
+            first = assemble_form4_effect(
+                cohorts=cohorts, calendar=self.calendar, outcomes=outcomes,
+                method_qualification=qualification, forward_receipt=receipt,
+                look_store=store,
+            )
+            replay = assemble_form4_effect(
+                cohorts=cohorts, calendar=self.calendar, outcomes=outcomes,
+                method_qualification=qualification, forward_receipt=receipt,
+                look_store=store,
+            )
+            self.assertEqual(first.status, "ESTIMATE_RESOLVED")
+            self.assertEqual(first.evidence_label, "FORWARD_CONFIRMATION")
+            self.assertEqual(first.to_dict(), replay.to_dict())
+
+            changed = dict(outcomes)
+            changed[cohorts[0].events[0].event_id] += 0.001
+            refused = assemble_form4_effect(
+                cohorts=cohorts, calendar=self.calendar, outcomes=changed,
+                method_qualification=qualification, forward_receipt=receipt,
+                look_store=store,
+            )
+            self.assertEqual(refused.status, "REFUSED")
+            self.assertIn(CONFIRMATORY_LOOK_ALREADY_CONSUMED, refused.reason_codes)
 
     def test_no_manual_forward_confirmed_boolean_exists(self):
         parameters = inspect.signature(assemble_form4_effect).parameters
