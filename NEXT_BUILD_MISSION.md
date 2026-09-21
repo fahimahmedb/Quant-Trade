@@ -194,3 +194,37 @@ Current owner:
 `BUILDER_F11_PARENT_PATH_CHALLENGE`
 
 Astra remains stopped.
+
+## F11 BUILDER HANDOFF RECEPTION OVERRIDE — 2026-09-21
+
+Builder has now written a final handoff on the active implementation branch:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Pre-handoff implementation CI:
+
+`35608538693 = COMPLETED / SUCCESS`
+
+Final handoff CI:
+
+`35610033532 = IN_PROGRESS` at this update.
+
+Do NOT route to Astra yet.
+
+Blue reception:
+
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+
+Remaining mandatory Builder work:
+
+`F11-P1 / F11-P2 / F11-P3`
+
+for whole-parent-path identity replacement, no-mutation semantics, and deterministic recovery/fail-closed behavior.
+
+Current owner:
+
+`BUILDER_F11_PARENT_PATH_CLOSURE`
+
+Astra becomes next owner only after Blue records:
+
+`PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
