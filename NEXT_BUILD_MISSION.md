@@ -9,16 +9,16 @@ Do not infer the active task from historical content at this path.
 Read:
 
 1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`
-5. `governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`
-6. `governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`
-7. the exact active mission/handoff.
+2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
+3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
+4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
+5. `handoff/ASTRA_GATE_B_RUN_AUTHORITY_MECHANISMS_RECHECK_2026-09-21.md`
+6. `handoff/ANTIGRAVITY_POST_P0_VERTICAL_SHADOW_LOOP_DESIGN_2026-09-21.md`
+7. the exact active mission/handoff after verifying live GitHub state.
 
 Resolve the live HEAD of `blue/master-v2-2026-09-20` before acting.
 
-## Current routing at last update
+## Current routing
 
 Frozen V4 production candidate:
 
@@ -28,77 +28,95 @@ V4 repository disposition:
 
 `GATE_A_V4_REPOSITORY_DISPOSITION = PASS`
 
-Final independent hybrid fault-matrix review:
+Gate-B run-authority integrated candidate:
 
-`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
+`blue/gate-b-run-authority-repair-integration-2026-09-21@644da76eb0227be275b8e3448118dac0cc7096ca`
 
-Unresolved row:
+Integrated exact-head CI:
 
-`restart_burst_limit`
+- `35598077120 = SUCCESS`
+- `35598816973 = SUCCESS`
 
-Production REAL_DEFECT:
+Final independent Astra recheck:
 
-`0`
+`astra/gate-b-run-authority-mechanisms-recheck-2026-09-21@41c3f291f46b7b5849bdb702c09ccefbeecde691`
 
-Active Builder proof-only repair:
+Final verdict:
 
-`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`
+`ASTRA_GATE_B_RUN_AUTHORITY_REVIEW = BLOCKED_REAL_DEFECT_LOCK_PATH_IDENTITY`
 
-Prepared mission SHA:
+Current repository blocker:
 
-`6f0ca1d858d6937dc8199cc1690dce049ddb79a6`
+`F11 = REAL_DEFECT / LOCK_PATH_IDENTITY`
 
-Blue acceptance oracle:
+A1-A10 are independently GREEN after the prior repair.
 
-`EXPECTED_RESTART_BURST_LIMIT = 5`
+No second repository blocker was independently established.
 
-Mandatory RED mutations:
-- launcher 5 -> 4;
-- unit 5 -> 4;
-- launcher + unit 5 -> 4 simultaneously.
+## Current next mission
 
-After Builder delivery:
-Blue reception -> targeted Astra recheck -> Blue final fault-matrix disposition
--> final consistency review -> possible hybrid-method promotion.
+Owner:
 
-Do not use the known-bad replay branch as the repair base.
+`BLUE`
 
-## Repository hygiene
+Next action:
 
-Repository default:
-`blue/master-v2-2026-09-20`.
+`DISPATCH_BOUNDED_F11_REPAIR`
 
-Live branches:
-`45`.
+Recommended Builder branch:
 
-Open PRs/issues:
-`0 / 0`.
+`builder/gate-b-f11-lock-identity-repair-2026-09-21`
 
-Previous delete batch:
-`34 / 34 COMPLETE`.
+At the time this router was written, that branch did not yet exist.
 
-Deleted refs reappeared:
-`0`.
+Required bounded scope:
 
-No new branch deletion is currently authorized.
+- `scripts/quant_gate_b_runctl.py`;
+- F11-specific tests;
+- final Builder handoff;
+- mechanical proof-inventory refresh only if required.
 
-## Safety state
+Do not reopen M4, F1, F5, V4 prestage or A1-A10 unless a reproduced regression requires it.
 
-`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+Builder final status may be only:
 
-`P14D_PROMOTION_READY = FALSE`
+`READY_FOR_INDEPENDENT_REVIEW`
 
-`TARGET_HOST_READY = FALSE`
+Then:
 
-`GATE_B_MUTATION_AUTHORIZED = FALSE`
+`Blue integration -> independent Astra F11 + A1-A10 non-regression recheck -> possible PASS_REPOSITORY_EVIDENCE -> return to Gate-B activation path`.
 
-`GATE_B = NOT_STARTED`
+## Product / Antigravity
 
-`t0 = NOT_DECLARED`
+Antigravity Product prestage is complete:
 
-`PRODUCT_INTEGRATION = PAUSED`
+`parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21@568eea1e028302e14f96a06eb2515bb89aa73ad4`
 
-`REAL_CAPITAL_AUTHORIZED = FALSE`
+Status:
 
-This router is not proof that a branch, CI run, candidate or gate is current.
-The current governance index and exact GitHub state control.
+`ANTIGRAVITY_VERTICAL_PRESTAGE = READY_FOR_BLUE_REVIEW`
+
+The design is accepted as planning input only.
+
+Future Product mission remains parked:
+
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
+
+Do not start Product integration on the qualifying P0 path while F11 remains open.
+
+## Current authority state
+
+```text
+P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
+
+This router is not proof that a branch, CI run, candidate or gate remains current.
+
+Exact live GitHub state and the current Blue governance index control.
