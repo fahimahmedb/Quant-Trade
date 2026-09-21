@@ -722,3 +722,52 @@ Required flow:
 `Blue dispatch -> Builder F11 repair -> exact-head green CI -> Blue integration -> independent Astra F11 + A1-A10 non-regression recheck -> only then possible return to Gate-B activation`.
 
 Do not reopen F1, F5, V4 materialization prestage, or A1-A10 by default.
+
+## 21. F11 BUILDER RECEPTION OVERRIDE — PARENT-PATH CLOSURE REQUIRED
+
+Latest Blue checkpoint:
+
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+
+Builder final handoff currently observed:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Implementation checkpoint:
+
+`ed51cc4251f556482eca18e396cc1c0d932879fb`
+
+CI:
+
+`35608538693 = COMPLETED / SUCCESS`
+
+Handoff-head CI:
+
+`35610033532 = IN_PROGRESS` at this override.
+
+Blue does not yet authorize Astra.
+
+Reason:
+
+`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
+
+Required repository-local discriminants:
+
+- F11-P1 whole-parent-path replacement during a live Registry critical section;
+- F11-P2 no mutation by rejected replacement-parent contender;
+- F11-P3 deterministic recovery/fail-closed post-condition.
+
+Current routing:
+
+```text
+BUILDER_F11_HANDOFF_RECEIVED = TRUE
+BUILDER_F11_ACCEPTED_FOR_ASTRA = FALSE
+ASTRA_F11_RECHECK_AUTHORIZED = FALSE
+RETURN_CONTROL_TO = BUILDER_F11_PARENT_PATH_CLOSURE
+PASS_REPOSITORY_EVIDENCE = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+t0 = NOT_DECLARED
+```
+
+Antigravity Product prestage remains complete and parked.
