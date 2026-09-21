@@ -96,7 +96,7 @@ Gate A PASS must not be promoted into any stronger statement above.
 
 `MISSION = HYBRID P0 QUALIFICATION CLOSURE + TARGET-HOST GATE B PREPARATION`
 
-`STATUS = V4_REPOSITORY_PASS / FAULT_MATRIX_INDEPENDENT_REVIEW_OPEN / GATE_B_PREPARED_NOT_EXECUTED`
+`STATUS = V4_REPOSITORY_PASS / FAULT_MATRIX_BLOCKED_ONE_MISSING_PROOF / BUILDER_PROOF_REPAIR_PREPARED / GATE_B_PREPARED_NOT_EXECUTED`
 
 Mission handoff:
 `handoff/BLUE_TARGET_HOST_QUALIFICATION_MISSION_2026-09-20.md`
@@ -135,7 +135,7 @@ Open issues:
 `0`
 
 Current branch inventory:
-`40`
+`45`
 
 Single operational deletion authority:
 `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`
@@ -232,7 +232,7 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = EXECUTED / VERIFIED`
 
-`ACTIVE_FRONTIER = INDEPENDENT_HYBRID_FAULT_MATRIX_REVIEW + HYBRID_PROMOTION_READINESS + GATE_B_PREPARATION`
+`ACTIVE_FRONTIER = RESTART_BURST_PROOF_REPAIR + TARGETED_ASTRA_RECHECK + HYBRID_PROMOTION_READINESS`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
@@ -501,6 +501,70 @@ Prepared but NON-AUTHORITATIVE operator pack:
 Current safety state:
 - `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`;
 - `TARGET_HOST_READY = FALSE`;
+- `GATE_B = NOT_STARTED`;
+- `t0 = NOT_DECLARED`;
+- `PRODUCT_INTEGRATION = PAUSED`;
+- `REAL_CAPITAL_AUTHORIZED = FALSE`.
+
+
+## 20. Current routing override — context/hygiene reacquisition 2026-09-21
+
+This is the latest routing section and supersedes stale ACTIVE/OPEN wording above.
+
+Current restart checkpoint:
+`handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`.
+
+Current hygiene audit:
+`governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`.
+
+Current branch registry:
+`governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`.
+
+Repository facts at this audit:
+- default branch = `blue/master-v2-2026-09-20`;
+- live branches = `45`;
+- open PRs = `0`;
+- open issues = `0`;
+- protected branches = `0`;
+- repository rulesets = `0`;
+- prior 34-ref delete batch remains intact;
+- deleted refs reappeared = `0`.
+
+Current exact P0 state:
+- frozen V4 candidate = `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- `GATE_A_V4_REPOSITORY_DISPOSITION = PASS`;
+- final fault-matrix independent review =
+  `astra/p0-hybrid-fault-matrix-independent-review-2026-09-21@c6be804e99e409ab36a455f09ea2fccbe3d88252`;
+- `ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`;
+- production `REAL_DEFECT = 0`;
+- unresolved repository `MISSING_PROOF = 1`;
+- blocking row = `restart_burst_limit`.
+
+Current active Builder mission:
+`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`.
+
+Prepared mission SHA:
+`6f0ca1d858d6937dc8199cc1690dce049ddb79a6`.
+
+Blue repair contract:
+`governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`.
+
+Prepared targeted independent recheck:
+`governance/BLUE_ASTRA_RESTART_BURST_TARGETED_RECHECK_SPEC_2026-09-21.md`.
+
+Prepared final consistency precheck:
+`governance/BLUE_HYBRID_PROMOTION_FINAL_CONSISTENCY_PRECHECK_2026-09-21.md`.
+
+Current next sequence:
+Builder delivery + exact-head CI -> Blue reception -> targeted Astra recheck -> Blue final fault-matrix disposition -> final consistency review -> possible hybrid promotion.
+
+No new branch deletion is authorized during this proof-repair cycle.
+
+Safety remains:
+- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`;
+- `P14D_PROMOTION_READY = FALSE`;
+- `TARGET_HOST_READY = FALSE`;
+- `GATE_B_MUTATION_AUTHORIZED = FALSE`;
 - `GATE_B = NOT_STARTED`;
 - `t0 = NOT_DECLARED`;
 - `PRODUCT_INTEGRATION = PAUSED`;
