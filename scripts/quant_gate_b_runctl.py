@@ -552,17 +552,70 @@ class Registry:
         if fst.st_nlink < 2:
             raise AuthorityError("lock authority link set changed")
 
+    def _open_lock_parent(self) -> tuple[int, tuple[int, int]]:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        parent = self.lock.parent
+        try:
+            pst = os.lstat(parent)
+        except OSError as e:
+            raise AuthorityError("lock parent unavailable") from e
+        if not stat.S_ISDIR(pst.st_mode) or stat.S_ISLNK(pst.st_mode):
+            raise AuthorityError("lock parent must be real directory")
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            pfd = os.open(parent, flags)
+        except OSError as e:
+            raise AuthorityError("lock parent open failed") from e
+        try:
+            fst = os.fstat(pfd)
+            if not stat.S_ISDIR(fst.st_mode):
+                raise AuthorityError("lock parent must remain directory")
+            expected = (fst.st_dev, fst.st_ino)
+            if expected != (pst.st_dev, pst.st_ino):
+                raise AuthorityError("lock parent identity changed")
+            return pfd, expected
+        except Exception:
+            os.close(pfd)
+            raise
+
+    def _validate_lock_parent(self, pfd: int, expected: tuple[int, int]) -> None:
+        try:
+            fst = os.fstat(pfd)
+            pst = os.lstat(self.lock.parent)
+        except OSError as e:
+            raise AuthorityError("lock parent identity unavailable") from e
+        if (
+            not stat.S_ISDIR(fst.st_mode)
+            or not stat.S_ISDIR(pst.st_mode)
+            or stat.S_ISLNK(pst.st_mode)
+            or (fst.st_dev, fst.st_ino) != expected
+            or (pst.st_dev, pst.st_ino) != expected
+        ):
+            raise AuthorityError("lock parent identity changed")
+
     @contextlib.contextmanager
     def _locked(self):
-        anchor = self._ensure_lock_authority()
-        expected = self._lock_authority_identity(anchor)
-        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
-        try:
-            fd = os.open(anchor, flags)
-        except OSError as e:
-            raise AuthorityError("lock authority open failed") from e
+        # The directory inode is the outer serialization domain. This prevents a
+        # caller from creating a second live lock domain by replacing both the
+        # public lock pathname and its hard-link authority anchor while another
+        # production caller is inside the mutation window.
+        pfd, parent_expected = self._open_lock_parent()
+        parent_locked = False
+        fd = None
         locked = False
         try:
+            fcntl.flock(pfd, fcntl.LOCK_EX)
+            parent_locked = True
+            self._validate_lock_parent(pfd, parent_expected)
+
+            anchor = self._ensure_lock_authority()
+            expected = self._lock_authority_identity(anchor)
+            flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+            try:
+                fd = os.open(anchor, flags)
+            except OSError as e:
+                raise AuthorityError("lock authority open failed") from e
+
             self._validate_lock_authority(anchor, fd, expected)
             fcntl.flock(fd, fcntl.LOCK_EX)
             locked = True
@@ -570,16 +623,24 @@ class Registry:
             # window: if the public pathname was deleted/recreated while this
             # process waited, it cannot continue under the replacement inode.
             self._validate_lock_authority(anchor, fd, expected)
+            self._validate_lock_parent(pfd, parent_expected)
             try:
                 yield
             finally:
                 # A replacement during the mutation is surfaced as failure; no
-                # public success can escape an ambiguous lock identity.
+                # public success can escape an ambiguous lock identity. The
+                # parent-directory flock remains held through this check, so a
+                # replacement authority pair cannot run concurrently.
                 self._validate_lock_authority(anchor, fd, expected)
+                self._validate_lock_parent(pfd, parent_expected)
         finally:
-            if locked:
+            if locked and fd is not None:
                 fcntl.flock(fd, fcntl.LOCK_UN)
-            os.close(fd)
+            if fd is not None:
+                os.close(fd)
+            if parent_locked:
+                fcntl.flock(pfd, fcntl.LOCK_UN)
+            os.close(pfd)
 
     def _append(self, es: list[dict[str, Any]], e: dict[str, Any]) -> dict[str, Any]:
         payload = dict(e)
