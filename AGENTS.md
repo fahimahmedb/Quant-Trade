@@ -3,17 +3,16 @@
 Read in this order before acting:
 
 1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` — current project routing/authority
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` — current Blue durable state
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md` — current restart/context recovery map
-5. `governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md` — current namespace/routing audit
-6. `governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md` — current branch authority map
-7. the exact mission handoff/checkpoint for the branch being worked on
-6. `SYSTEM_ARCHITECTURE.md`
-7. `OPERATING_MODEL.md`
-10. `MISSION.md`
-9. `SOURCE_BASIS.md`
-12. `STATE.md` — runtime/research snapshot, **not** current governance authority
+2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact current route
+3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` — current project routing/authority
+4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` — current Blue durable state
+5. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
+6. the exact mission handoff/checkpoint for the branch being worked on
+7. `SYSTEM_ARCHITECTURE.md`
+8. `OPERATING_MODEL.md`
+9. `MISSION.md`
+10. `SOURCE_BASIS.md`
+11. `STATE.md` — runtime/research snapshot, **not** current governance authority
 
 For current work, do not infer the active mission from `STATE.md`, `CHIEF_BRIEF.md`, an old issue, the repository default branch, or historical `NEXT_BUILD_MISSION.md` content. Resolve the live Blue branch and exact mission SHA first.
 
