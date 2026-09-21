@@ -234,3 +234,34 @@ The Builder may return only `READY_FOR_INDEPENDENT_REVIEW` or an explicit blocke
 
 Do not create a parallel/overlapping F11 repair branch.
 Do not delete or repurpose this branch until independent Astra closure and subsequent Blue retirement review.
+
+
+## F11 BRANCH RECONCILIATION OVERRIDE — 2026-09-21
+
+Blue discovered that the implementation branch below predated the later mission-only dispatch branch.
+
+Active implementation branch:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@ed51cc4251f556482eca18e396cc1c0d932879fb`
+
+Classification:
+
+`ACTIVE_F11_BUILDER_REPAIR / PARENT_PATH_CHALLENGE_OPEN / PRESERVE`
+
+Mission-only duplicate:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21@8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
+
+Classification:
+
+`SUPERSEDED_MISSION_ONLY / DO_NOT_IMPLEMENT / PRESERVE_UNTIL_F11_CLOSURE`
+
+No third F11 repair branch is authorized.
+
+Current bounded blocker before Builder final handoff:
+
+`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
+
+Authority:
+
+`governance/BLUE_GATE_B_F11_BRANCH_RECONCILIATION_PARENT_PATH_CHALLENGE_2026-09-21.md`
