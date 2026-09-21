@@ -915,3 +915,44 @@ Blue must choose whether to:
 Any redesign must occur before target outcomes and preserve explicit provenance.
 
 No unrelated Product architecture is reopened by default.
+
+
+## RAIL B SPEC FREEZE OVERRIDE — 2026-09-21
+
+Cohort geometry delivery:
+
+`parallel/claude-first-slice-cohort-geometry-2026-09-21@6eb0c23da0c8f16a2dcc0c50bd1898baaa9b21d0`
+
+Blue reception:
+
+`handoff/BLUE_COHORT_GEOMETRY_RECEPTION_2026-09-21.md`
+
+Frozen Product specification:
+
+`governance/BLUE_FIRST_VERTICAL_ONE_BIG_BUILD_FROZEN_SPEC_2026-09-21.md`
+
+Selective import manifest:
+
+`governance/BLUE_ONE_BIG_BUILD_IMPORT_MANIFEST_2026-09-21.md`
+
+Current state:
+
+```text
+COHORT_GEOMETRY = FROZEN
+SCIENCE_SPEC_STATE = CLOSED_FOR_IMPLEMENTATION
+VERTICAL_LOOP_BUILD_SPEC = FROZEN
+ONE_BIG_BUILD_PRESTAGE = SUPERSEDED_BY_FROZEN_SPEC
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+PRODUCT_INTEGRATION = PAUSED
+```
+
+Blue one-look correction:
+- no target outcome/point-estimate/interval exposure during multi-cohort accrual;
+- structural G/component facts only may control stopping;
+- method qualification remains mandatory before FORWARD_CONFIRMATION.
+
+Next Rail-B action:
+- wait for exact-head CI of the Blue freeze commit;
+- if SUCCESS, explicitly authorize/create exactly one Product Builder on
+  `builder/post-p0-first-vertical-shadow-loop-2026-09-21`;
+- no additional architecture/science-design cycle is authorized absent a concrete contradiction.
