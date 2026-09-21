@@ -451,3 +451,74 @@ After that:
 
 then issue one consolidated large bounded Builder mission rather than multiple
 small implementation missions.
+
+
+## LATEST EXECUTION ROUTER — 2026-09-21 / TWO-RAIL STATE
+
+Highest current routing checkpoint:
+
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+
+### RAIL A — NEXT
+
+Current Blue integration:
+
+`blue/gate-b-f11-final-integration-2026-09-21@4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+
+Current CI at checkpoint:
+
+`35619545254 = IN_PROGRESS`
+
+Action:
+
+- if still running: wait / recheck only;
+- if failed: STOP and diagnose exact integration failure;
+- if `COMPLETED / SUCCESS`: Blue must immediately create the final Astra dispatch,
+  record `PASS_FOR_INDEPENDENT_ASTRA_RECHECK`, create the exact Astra branch, and
+  record `EXPECTED_ASTRA_MISSION_HEAD`.
+
+Do not restart Builder F11 unless Astra/CI establishes a new concrete defect.
+
+### RAIL B — NEXT
+
+Active branch:
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@866e6c1e96ab7460a7cd6464ead922e710ce7b0b`
+
+Mission:
+
+close the exact Research/science -> frozen Economic `EffectEstimate` output contract.
+
+On return:
+
+- Blue receives the scientific handoff;
+- reconcile with
+  `governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`;
+- if science contract is sufficient, freeze one final vertical build spec;
+- dispatch exactly one main Product Builder:
+  `builder/post-p0-first-vertical-shadow-loop-2026-09-21`.
+
+Do NOT dispatch the Product Builder before freeze.
+
+### CONCURRENCY
+
+Allowed substantial work:
+
+```text
+1. F11/Gate-B critical rail
+2. one Product/Economic scientific-prep rail
+```
+
+Completed design/adversarial sessions are not active build rails.
+
+### SAFETY
+
+```text
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
