@@ -595,6 +595,10 @@ def verify(
             if oid != entry["oid"]:
                 mismatches.append({"path": path, "kind": "blob", "expected": entry["oid"], "observed": oid})
 
+        observed_paths_after = walk_filesystem(root_fd, allowed_extra_prefixes)
+        if observed_paths_after != observed_paths:
+            raise VerifyError("release filesystem entry set changed during verification")
+
         root_after = os.fstat(root_fd)
         root_stable = _stat_identity(root_before) == _stat_identity(root_after)
     finally:
@@ -606,6 +610,17 @@ def verify(
     )
     critical_extra_set = set(critical_extras)
     noncritical_extras = sorted(path for path in extras if path not in critical_extra_set)
+
+    entries_after = expected_entries(release, expected_tree)
+    if entries_after != entries:
+        raise VerifyError("expected Git tree authority changed during verification")
+    observed_sha_after = git(release, "rev-parse", "--verify", "HEAD").decode().strip()
+    observed_tree_after = git(release, "rev-parse", "--verify", "HEAD^{tree}").decode().strip()
+    if observed_sha_after != observed_sha or observed_tree_after != observed_head_tree:
+        raise VerifyError("HEAD authority changed during verification")
+    independence_after = ensure_git_independence(release)
+    if independence_after != independence:
+        raise VerifyError("Git object authority changed during verification")
 
     git_write_after = git_write_snapshot(release)
     git_metadata_unchanged = git_write_before == git_write_after
