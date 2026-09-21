@@ -124,6 +124,23 @@ discovery/status accounting is not changed by audit-only instrumentation. The
 red finding remains durable in Git history, the strict checkpoint, and the
 independent `audit/astra_p0_hybrid_fault_matrix_independent_probe.py`.
 
+## 2C. Proof-inventory cleanup before final exact-head CI
+
+The temporary audit unittests briefly caused the generated `STATE.md` proof
+inventory to move from 423 to 428 discovered tests. After both temporary test
+files were removed from ordinary `tests/` discovery, that generated value was
+stale. Astra restored `STATE.md` byte-for-byte to the mission-start canonical
+423-test artifact in:
+
+`228e050212f274ce667bcdc4ddeb6c06def24e14`
+
+Independent net-diff verification from mission start now shows no `STATE.md`
+change and no `tests/` change. The remaining Astra delta is confined to the
+audit workflow, independent probe, checkpoints and this final handoff.
+
+Classification:
+`TEST_DEFECT / AUDIT_HARNESS_SIDE_EFFECT / RESOLVED`.
+
 ## 3. Required row set
 
 Astra verified exactly the 19 required properties, in the required set, with no
