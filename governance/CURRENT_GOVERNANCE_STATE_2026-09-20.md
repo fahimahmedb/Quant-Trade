@@ -648,3 +648,77 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
 Next: seal one concrete Gate-B activation artifact. The authority pack alone does not authorize mutation.
+
+## 20. LATEST ROUTING OVERRIDE — F11 FRONTIER — 2026-09-21
+
+This section supersedes stale active-frontier language above.
+
+Latest durable restart surface:
+
+`handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
+
+Current Blue predecessor verified before this override:
+
+`51981f490a4d51b969ab5694c9480a417c7f0418`
+
+Exact-head CI:
+
+`35603155680 = COMPLETED / SUCCESS`
+
+Gate-B run-authority integrated candidate:
+
+`blue/gate-b-run-authority-repair-integration-2026-09-21@644da76eb0227be275b8e3448118dac0cc7096ca`
+
+Independent Astra final recheck:
+
+`astra/gate-b-run-authority-mechanisms-recheck-2026-09-21@41c3f291f46b7b5849bdb702c09ccefbeecde691`
+
+Final verdict:
+
+`ASTRA_GATE_B_RUN_AUTHORITY_REVIEW = BLOCKED_REAL_DEFECT_LOCK_PATH_IDENTITY`
+
+A1-A10 are independently GREEN after repair. The remaining repository blocker is:
+
+`F11 = REAL_DEFECT / LOCK_PATH_IDENTITY`
+
+No second repository blocker was independently established by the final Astra handoff.
+
+Antigravity Product prestage is complete:
+
+`parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21@568eea1e028302e14f96a06eb2515bb89aa73ad4`
+
+`ANTIGRAVITY_VERTICAL_PRESTAGE = READY_FOR_BLUE_REVIEW`
+
+It is accepted as planning input only. Product integration remains paused.
+
+Current project state:
+
+```text
+P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
+GATE_A_V4_REPOSITORY_DISPOSITION = PASS
+F11_REPAIR_REQUIRED = TRUE
+PASS_REPOSITORY_EVIDENCE = FALSE
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
+
+Next action:
+
+`BLUE -> DISPATCH_BOUNDED_F11_REPAIR`
+
+Recommended future repair branch:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21`
+
+That branch does not yet exist at this override.
+
+Required flow:
+
+`Blue dispatch -> Builder F11 repair -> exact-head green CI -> Blue integration -> independent Astra F11 + A1-A10 non-regression recheck -> only then possible return to Gate-B activation`.
+
+Do not reopen F1, F5, V4 materialization prestage, or A1-A10 by default.
