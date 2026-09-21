@@ -431,3 +431,30 @@ Still unchanged:
 - `TARGET_HOST_READY = FALSE` until a corrected exact candidate passes the required independent/target-host gates;
 - `PRODUCT_INTEGRATION = PAUSED`;
 - `REAL_CAPITAL_AUTHORIZED = FALSE`.
+
+
+## Q. GATE A V4 INDEPENDENT AUDIT CLOSED — 2026-09-21
+
+Frozen candidate:
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`.
+
+Independent Astra final HEAD:
+`afe25984b0ddd261fda143d858106c3c71e45149`.
+
+Exact-head CI:
+- Astra audit `35545297473 = SUCCESS`;
+- SEC P0 pre-t0 `35545297451 = SUCCESS`.
+
+Independent verdict:
+`AUDIT_GATE_A_V4 = PASS_REPOSITORY_CORRECTION`.
+
+Blue reception:
+`handoff/BLUE_GATE_A_V4_FINAL_INDEPENDENT_RECEPTION_2026-09-21.md`.
+
+Blue decision:
+`GATE_A_V4_REPOSITORY_DISPOSITION = PASS`.
+
+This closes the independent repository-correction review only.
+`TARGET_HOST_READY = FALSE` and `GATE_B = NOT_STARTED` remain unchanged.
+
+Current P14D hybrid promotion blocker is now the separate bounded Gate-A fault-matrix evidence plus final exact-lineage/consistency binding. Astra is no longer a waiting lane for V4.
