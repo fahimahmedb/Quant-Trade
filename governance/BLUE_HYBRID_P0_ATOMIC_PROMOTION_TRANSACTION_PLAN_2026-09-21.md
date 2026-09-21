@@ -121,21 +121,54 @@ Update:
 
 Only checked evidence with exact refs may become complete.
 
-### E. Reissue target-host operational authority
+### E. Reissue the COMPLETE target-host operational authority pack
 
 Do NOT mutate the old V3-pinned runbook into looking historically V4.
 
-Prefer creating new current files, for example:
+The promotion transaction must not create a mixed-authority pack in which an
+authoritative contract/runbook points at auxiliary files still marked
+`CANDIDATE`.
 
-`governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_2026-09-21.md`
+Create new current authority files from the reviewed candidate pack:
 
-`governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_2026-09-21.md`
+- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_2026-09-21.md`
+  from
+  `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_2026-09-21.md`
+  from
+  `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`;
+- `governance/P0_T0_PRECOMMIT_TEMPLATE_2026-09-21.md`
+  from
+  `governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_2026-09-21.md`
+  from
+  `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_2026-09-21.json`
+  from
+  `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json`;
+- `governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_2026-09-21.md`
+  from
+  `governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_CANDIDATE_2026-09-21.md`.
 
-They must pin the exact accepted V4 lineage and incorporate the t0 precommit
-semantics.
+The authoritative pack must:
+- pin the exact accepted V4 lineage;
+- pin the authoritative hybrid amendment reference/digest where applicable;
+- preserve `PRECOMMITTED_NEXT_AUTHORIZED_QUALIFYING_LAUNCH`;
+- preserve unique `GATE_B_RUN_ID` and terminal-failure semantics;
+- preserve host-time/NTP, network/proxy/TLS, evidence-retention and resource
+  baselines;
+- preserve safe synthetic-state separation;
+- keep real SEC traffic disabled for destructive tests unless separately and
+  explicitly authorized;
+- keep `GATE_B_MUTATION_AUTHORIZED = FALSE` at the end of promotion.
+
+Promotion makes the pack authoritative as a procedure. It does NOT itself issue
+a one-use mutation activation.
 
 The old 2026-09-20 V3 runbook remains historical evidence and must be labeled
 superseded, not rewritten as if it always targeted V4.
+
+The candidate pack remains preserved as preparation history.
 
 ## 5. No implicit t0
 
