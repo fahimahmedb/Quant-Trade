@@ -913,3 +913,25 @@ Rail B scientific prestage has completed with:
 
 The Product large-build specification remains unfrozen pending exact scientific-estimator
 specification closure.
+
+
+## OBJECTIVE-FIRST BLUE OVERRIDE — 2026-09-21
+
+Blue must preserve project alignment by requiring every substantial mission to state:
+
+`ECONOMIC_PROGRESS`, `REMAINING_BLOCKER`, and `EXIT_CONDITION`.
+
+For Astra:
+- Blue coordinates only;
+- Blue does not self-perform the independent audit;
+- unchanged remote HEAD without checkpoint = `ASTRA_ACTIVITY = UNKNOWN`;
+- do not duplicate the audit.
+
+For science:
+- check for existing/newer mission before dispatch;
+- stop specification work once first-slice decisions/scope/acceptance/deferred limits are explicit;
+- challenge only concrete contradictions;
+- then freeze one coherent build spec and prefer one main large bounded Product Builder.
+
+Execution-cost consistency remains two-stage:
+pre-sizing model-envelope check and post-sizing/pre-fill implied-participation check.
