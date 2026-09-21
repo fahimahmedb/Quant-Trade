@@ -236,3 +236,26 @@ Exact-head workflow:
 At last Blue observation the workflow was `IN_PROGRESS`, currently executing
 the full unit suite. Dispatch remains blocked until the same SHA is still live
 and this run is `COMPLETED / SUCCESS`.
+
+
+## 9. Owner-authorized speculative pre-staging — 2026-09-21
+
+The owner authorized advancing reversible preparation while exact-head CI is still running.
+
+Allowed before CI success:
+- create the targeted Astra branch exactly from Builder delivery SHA
+  `1fa82a75485661bf9bbb3de10b925126397dfec5`;
+- commit only the audit mission/specification on top of that candidate;
+- prepare commands/checklists.
+
+Forbidden before CI success:
+- execute the independent audit as authoritative evidence;
+- classify PASS/BLOCK based on the prestaged branch;
+- promote hybrid governance;
+- authorize Gate B;
+- infer Builder acceptance.
+
+If exact-head CI `35549017908` fails or Builder HEAD moves, the prestaged branch is invalid as an audit input and must be abandoned/rebased from the newly accepted exact SHA.
+
+`PRESTAGING_AUTHORITY = REVERSIBLE_PREPARATION_ONLY`
+`AUDIT_AUTHORITY = BLOCKED_UNTIL_BUILDER_EXACT_HEAD_CI_SUCCESS`
