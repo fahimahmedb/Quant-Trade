@@ -265,3 +265,23 @@ Current bounded blocker before Builder final handoff:
 Authority:
 
 `governance/BLUE_GATE_B_F11_BRANCH_RECONCILIATION_PARENT_PATH_CHALLENGE_2026-09-21.md`
+
+## 5. F11 BUILDER HANDOFF / CURRENT CLASSIFICATION OVERRIDE
+
+Active Builder branch:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Classification:
+
+`BUILDER_HANDOFF_RECEIVED / PARENT_PATH_CLOSURE_REQUIRED / PRESERVE`
+
+Blue reception:
+
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+
+Astra recheck branch:
+
+`NOT_YET_DISPATCHED`
+
+Do not retire or repurpose the current Builder branch, original Astra blocker branch, integrated candidate branch, or prior R1/R2 evidence branches until F11 independent closure is durable.
