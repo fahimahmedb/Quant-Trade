@@ -1,16 +1,20 @@
-# OPERATOR — GATE B F5 ROUTE-1 HOST EVIDENCE CLOSURE — 2026-09-21
+# OPERATOR — GATE B F5 ROUTE-1 HOST EVIDENCE CLOSURE — FINAL — 2026-09-21
 
 ## 0. Final classification
 
-`F5_ROUTE1_HOST_EVIDENCE = BLOCKED_ROUTE1_NOT_PROVEN`
+`F5_ROUTE1_HOST_EVIDENCE = PASS_ROUTE1_FEASIBLE`
 
 `ROUTE2_PRODUCTION_TESTABILITY_WORK_REQUIRED = NOT_YET_PROVEN_REQUIRED`
 
 `RETURN_CONTROL_TO = BLUE`
 
-This mission was limited to read-only closure of N1 and N2. It does not authorize
-Gate-B mutation, does not execute the destructive lifecycle campaign, does not
-declare Gate B PASS, and does not declare t0.
+This is a **feasibility** closure for Astra finding F5. It proves that the
+current target-host topology supports a future Blue-sealed Route-1 Gate-B
+campaign without changing frozen-V4 production code or the frozen
+`quant-sec-capture.service` bytes.
+
+It is NOT Gate-B execution evidence, does NOT authorize mutation, and does NOT
+declare Gate B PASS or t0.
 
 ```text
 TARGET_HOST_MUTATION_PERFORMED = FALSE
@@ -21,246 +25,262 @@ RESERVOIR_CREATED_OR_DELETED = FALSE
 RELEASE_MATERIALIZATION_PERFORMED = FALSE
 P0_STATE_MUTATION_PERFORMED = FALSE
 REAL_SEC_NETWORK_REQUESTS_MADE_BY_THIS_MISSION = 0
+GATE_B_MUTATION_AUTHORIZED = FALSE
 GATE_B = NOT_STARTED
 t0 = NOT_DECLARED
 ```
 
-## 1. Mission identity
+## 1. Evidence provenance and limitations
 
-Mission branch:
+The earlier attempts on this branch correctly remained BLOCKED because their
+execution environments were not the qualifying target host.
 
-`operator/gate-b-f5-route1-host-evidence-closure-2026-09-21`
+The owner subsequently executed the required read-only commands directly in an
+SSH shell on the actual target host and supplied the resulting transcript to
+Blue. No raw restricted host transcript is committed here.
 
-Verified remote starting HEAD:
+Public safe facts below are taken from that owner-operated target-host read-only
+observation and cross-checked against frozen V4 repository bytes at:
 
-`6c9706b9d18f59a6d27a34ca2db230392ec5ba3f`
+`blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
 
-The mission file embedded in the branch still names an older expected starting
-HEAD, `f0c4e25300e8ad0536461f3ed5136d5e215c12c3`. The branch ref itself resolved
-exactly to the user-specified `6c9706b9...`, so the current remote ref was used
-as the operational starting authority.
+Because the live transcript itself is not a durable Gate-B artifact, every
+host-specific fact below MUST be re-observed, hash-bound and preserved in the
+restricted evidence root during the later concrete Gate-B activation. This
+handoff closes feasibility only.
 
-Read:
-- `QUANT_NORTH_STAR.md`;
-- `governance/BLUE_GATE_B_F5_ROUTE1_HOST_EVIDENCE_CLOSURE_2026-09-21.md`;
-- `handoff/OPERATOR_GATE_B_F5_ROUTE1_HOST_EVIDENCE_CLOSURE_MISSION_2026-09-21.md`;
-- prior F5 handoff at
-  `a5493f052c458e1bbf76e00cbc4943dca8632e71`;
-- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_2026-09-21.md`;
-- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_2026-09-21.md`.
+## 2. Target-host identity
 
-## 2. Execution boundary
+Observed target-host identity was consistent with the prior qualifying host:
 
-The Blue evidence-closure specification requires N1 and N2 to be established
-from the actual target host.
+- hostname: `quant-p0-targer`;
+- Linux Oracle kernel `6.17.0-1020-oracle`;
+- architecture: `aarch64`;
+- PID 1: systemd;
+- `/opt/quant` present;
+- `/var/lib/quant-p0` present.
 
-This mission was resumed from durable branch HEAD
-`ec44c85b919570e70a0d562905b35e226260c93f` specifically to perform the
-previously missing host observations.
+The current service is:
 
-A read-only execution-environment identity preflight was performed before any N1
-or N2 interpretation. The command environment exposed to this operator did not
-match the previously bound target-host runtime identity: OS/architecture/runtime
-identity differed, PID 1 was not the target systemd service manager, and the
-expected Quant target paths were absent.
+`quant-sec-capture.service`
 
-Restricted raw identity output was not committed. Its canonical local digest for
-this resume attempt is:
-
-`RESUME_EXECUTION_ENVIRONMENT_IDENTITY_SHA256 = sha256:4258783b85d4d151623a181a13dd290132602007826bee9cc74599e9784ee5ec`
-
-Therefore:
-
-`EXECUTION_ENVIRONMENT_MATCHES_TARGET_HOST = FALSE`
-
-No firewall or mount observation from that non-target execution environment is
-admissible as target-host N1/N2 evidence.
-
-The durable public host evidence already available from the prior operator
-preflight establishes useful baseline facts, including:
-- the loaded service fragment matched frozen V4 and had no drop-ins;
-- the service was not running at the recorded snapshot;
-- `/opt/quant` was a read-only service view;
-- the writable service state view and durable state root resolved to the same
-  filesystem identity.
-
-However, the prior restricted raw snapshot was intentionally not committed, and
-the public checkpoint does not contain the exact current firewall ruleset or the
-exact current mount/fstab/systemd-mount topology required to close N1/N2.
-
-Therefore this mission cannot promote assumptions about generic Linux capability
-into target-host proof.
+and is loaded but failed/inactive at the observation point with no MainPID.
 
 ## 3. N1 — external network impossibility
 
-Required question:
+### 3.1 Host firewall authority
 
-Can every frozen-V4 real SEC HTTPS path later be made externally impossible,
-covering IPv4 and IPv6, without changing:
-- loaded unit bytes;
-- ExecStart;
-- WorkingDirectory;
-- frozen V4 code;
-- interpreter/runtime binding?
+FACT:
 
-### Existing evidence
+- `nft`, `iptables`, and `ip6tables` are installed;
+- iptables v1.8.10 uses the nf_tables backend;
+- effective nftables families include both IPv4 and IPv6 filter tables;
+- both IPv4 and IPv6 OUTPUT currently have policy ACCEPT;
+- IPv6 is enabled;
+- the host has no observed global IPv6 default route, only link-local IPv6.
 
-Frozen V4 itself has no admissible production offline selector, so Route 1
-depends on a host-external network enforcement mechanism.
+Current ACCEPT policy is not a blocker: Route 1 needs a future sealed deny
+mechanism, not a pre-existing deny.
 
-The prior F5 feasibility handoff correctly left N1 open because no current
-target-host evidence was bound for:
-- authoritative firewall implementation/backend;
-- IPv4 OUTPUT/egress policy;
-- IPv6 OUTPUT/egress policy;
-- service/network namespace path;
-- alternate proxy/tunnel bypass;
-- finite future allowlist and rollback evidence.
+### 3.2 Exact service network binding
 
-### Closure result
+FACT from the actual loaded service:
 
-The resumed mission attempted to begin actual-host read-only observation only
-after the execution-environment identity check. Because that check proved the
-available command environment was not the qualifying target host, firewall
-inspection was stopped before interpreting any local ruleset as target-host
-evidence.
+- `PrivateNetwork=no`;
+- `NetworkNamespacePath=` empty;
+- `JoinsNamespaceOf=` empty;
+- `IPAddressAllow=` empty;
+- `IPAddressDeny=` empty;
+- WorkingDirectory is `/opt/quant`;
+- ExecStart is the frozen supervisor through `/usr/bin/python3 -I`;
+- no systemd network namespace substitution is configured.
 
-No new admissible actual-target-host firewall evidence was collected.
+FACT from frozen V4 repository bytes:
 
-The following mandatory facts remain unproved:
-1. authoritative firewall stack actually controlling target-host egress;
-2. current IPv4 and IPv6 ruleset/backend identity;
-3. whether the frozen service shares the host network namespace or another path
-   relevant to enforcement;
-4. whether any proxy/tunnel path can bypass the proposed deny boundary;
-5. whether a later deny can be represented as a finite, reversible allowlist
-   without altering V4 service semantics;
-6. exact pre/post read-only evidence commands and expected bindings.
+- `src/quant/dataplane/sec/transport.py` uses
+  `http.client.HTTPSConnection` directly against `www.sec.gov`;
+- the production transport is HTTPS/TCP, not QUIC;
+- the supervisor whitelists the child ambient environment and deliberately does
+  not propagate proxy variables;
+- no reviewed frozen service/supervisor path creates or joins a separate network
+  namespace.
 
-`N1_EXTERNAL_NETWORK_IMPOSSIBILITY = NOT_PROVEN`
+Therefore frozen V4 traffic cannot bypass the host OUTPUT hook through a
+service-specific network namespace or inherited proxy path.
 
-This is a missing-proof result, not a hard negative.
+### 3.3 Future-sealable deny design
+
+RECOMMENDATION / future activation design, NOT executed here:
+
+Blue can seal a dedicated nftables `inet` table/OUTPUT hook that denies outbound
+TCP port 443 for the finite destructive Gate-B campaign. An `inet` hook covers
+both IPv4 and IPv6. Frozen V4's direct HTTPS transport therefore cannot put a
+real SEC HTTP request on the wire while that deny is effective.
+
+For the controlled-reboot subtest, the deny must be made reboot-persistent and
+fail closed before service start. The preferred Route-1 composition is:
+
+1. a Blue-sealed one-shot systemd egress-guard unit whose exact bytes/digest are
+   bound by the activation;
+2. a Blue-sealed nft rules file creating the dedicated `inet` deny table;
+3. the temporary synthetic state mount authority requires the egress guard;
+4. `quant-sec-capture.service` already requires that state mount;
+5. therefore a failed guard prevents the required mount and prevents the service
+   from starting after reboot.
+
+This preserves the frozen `quant-sec-capture.service` bytes, ExecStart,
+WorkingDirectory, interpreter and production code.
+
+Mandatory activation-time pre/post observations include:
+
+```text
+systemctl is-active quant-sec-capture.service
+systemctl show quant-sec-capture.service -p MainPID -p PrivateNetwork -p NetworkNamespacePath -p JoinsNamespaceOf
+nft list ruleset
+nft list table inet quant_gate_b
+ip -4 route show
+ip -6 route show table all
+```
+
+The exact mutating nft/systemd commands and their rollback are to be sealed in
+the later concrete Blue activation artifact. They are not authorized here.
+
+`N1_EXTERNAL_NETWORK_IMPOSSIBILITY = PROVEN_FEASIBLE`
 
 ## 4. N2 — synthetic state reservoir binding
 
-Required question:
+### 4.1 Current actual topology
 
-Can `/opt/quant/var` later be rebound to a unique synthetic reservoir while:
-- keeping the exact service-visible path;
-- preserving the future qualifying reservoir untouched;
-- leaving the frozen release/service binding unchanged;
-- proving service stopped before each reservoir transition;
-- binding source/destination by auditable filesystem identity;
-- supporting reversible rebind to the future qualifying reservoir?
+FACT from target-host read-only observation:
 
-### Existing evidence
+`/opt/quant` is a read-only bind of the currently installed release.
 
-The prior public host preflight establishes:
-- `/opt/quant` was externally presented as read-only;
-- the service had a writable state view;
-- the writable state view and durable state root shared a filesystem identity.
+Current writable state views resolve as:
 
-Those facts make an external reservoir-selection mechanism architecturally
-plausible.
+```text
+/opt/quant/var     -> /dev/sdb[/quant-p0-state]
+/var/lib/quant-p0 -> /dev/sdb[/quant-p0-state]
+```
 
-They do not establish the current exact topology required by the Blue closure
-specification.
+The durable backing filesystem is the `quant_data` ext4 filesystem on
+`/dev/sdb`.
 
-### Closure result
+The systemd mount chain is explicit:
 
-For the same reason, local mount/fstab/systemd-mount inspection was not treated as
-target-host evidence after the execution-environment identity mismatch was
-established.
+`var-lib-quant\x2dp0.mount`
 
-No new admissible actual-target-host mount evidence was collected.
+binds:
 
-The following mandatory facts remain unproved:
-1. exact current `findmnt` source/target/fsroot/options for
-   `/opt/quant`, `/opt/quant/var`, and `/var/lib/quant-p0`;
-2. filesystem/device/UUID or equivalent opaque source identities;
-3. relevant `/etc/fstab`, systemd mount-unit/generator and ordering topology;
-4. whether `/opt/quant/var` is a bind mount, nested mount or another mechanism;
-5. whether a unique synthetic source can later replace only the writable state
-   view while keeping `/opt/quant/var` unchanged;
-6. whether the future qualifying reservoir can remain outside the campaign's
-   writable service view for the entire destructive campaign;
-7. whether the service-stopped precondition can be independently proved before
-   both synthetic selection and qualifying-reservoir restoration;
-8. whether the transition/rollback can be sealed as a finite auditable mutation
-   allowlist.
+`/mnt/quant-data/quant-p0-state -> /var/lib/quant-p0`
 
-`N2_SYNTHETIC_RESERVOIR_BINDING = NOT_PROVEN`
+and:
 
-This is also a missing-proof result, not a hard negative.
+`opt-quant-var.mount`
 
-## 5. Exact evidence still required
+binds:
 
-A future target-host read-only closure can promote Route 1 only after preserving
-restricted evidence for both groups below.
+`/var/lib/quant-p0 -> /opt/quant/var`
 
-### N1 evidence set
+Both mount units are ordered before and required by
+`quant-sec-capture.service`.
 
-At minimum:
-- tool/backend identity for `nftables`, `iptables`/`ip6tables`, UFW or other
-  authoritative firewall stack;
-- complete effective IPv4 and IPv6 output/egress policy relevant to the service;
-- network namespace identity and relevant route/path identity;
-- non-secret effective proxy/environment identity;
-- a reviewed future deny design that cannot be bypassed by the frozen service;
-- exact read-only commands used to prove pre/post state.
+The release view is separately controlled by `opt-quant.mount`.
 
-No firewall rule should be installed during evidence closure.
+### 4.2 Future synthetic-reservoir composition
 
-### N2 evidence set
+This topology positively supports an isolated persistent synthetic reservoir
+without changing the service-visible path or frozen V4 code.
 
-At minimum:
-- `findmnt`/equivalent topology and opaque filesystem identity for the release,
-  `/opt/quant`, `/opt/quant/var`, and `/var/lib/quant-p0`;
-- relevant fstab/systemd mount definitions and dependency ordering;
-- proof that the exact service-visible writable path can accept an external
-  synthetic source without changing V4 service semantics;
-- proof that the future qualifying reservoir can be excluded from the campaign's
-  writable view;
-- proof that service-stop state is observable before each transition;
-- exact read-only commands used to bind all of those facts.
+Preferred future Route-1 composition:
 
-No mount, remount, unmount, reservoir creation or service lifecycle operation
-should be performed during evidence closure.
+1. stop service and prove MainPID=0;
+2. preserve/hash the original mount-unit bytes and current qualifying-reservoir
+   filesystem identity;
+3. create a persistent synthetic directory/reservoir under the durable
+   `/mnt/quant-data` filesystem for the unique Gate-B run;
+4. install a Blue-sealed temporary `var-lib-quant\x2dp0.mount` authority with
+   the same unit name and same `Where=/var/lib/quant-p0`, but with
+   `What=<synthetic-reservoir>`;
+5. bind that temporary unit digest into the activation and make it require the
+   egress guard from N1;
+6. leave `opt-quant-var.mount` service-visible target unchanged, so
+   `/opt/quant/var` continues to resolve through `/var/lib/quant-p0`;
+7. execute the destructive campaign, including controlled reboot, against only
+   the persistent synthetic reservoir;
+8. stop service and prove no surviving process;
+9. preserve/hash the synthetic reservoir as restricted Gate-B evidence;
+10. restore the exact original state-mount authority bytes;
+11. rebind the original qualifying reservoir;
+12. verify its opaque filesystem identity/inventory before any future qualifying
+    launch.
 
-## 6. Route 2 classification
+The synthetic reservoir is persistent across controlled reboot, while the future
+qualifying reservoir is not the mounted writable service state during the
+campaign.
 
-`ROUTE2_PRODUCTION_TESTABILITY_WORK_REQUIRED = NOT_YET_PROVEN_REQUIRED`
+This changes only Blue-sealed target-host infrastructure for the finite Gate-B
+campaign. It does not alter frozen V4 production code or the frozen service unit.
 
-Reason:
+Mandatory activation-time pre/post observations include:
 
-Neither N1 nor N2 produced a hard negative. The resumed operator attempt also
-proved that the command environment available to this mission did not match the
-qualifying target host, so its local firewall/mount state cannot close N1/N2.
+```text
+findmnt -R -o TARGET,SOURCE,FSROOT,FSTYPE,OPTIONS /opt/quant
+findmnt -no TARGET,SOURCE,FSROOT,FSTYPE,OPTIONS /opt/quant/var
+findmnt -no TARGET,SOURCE,FSROOT,FSTYPE,OPTIONS /var/lib/quant-p0
+systemctl cat opt-quant.mount
+systemctl cat opt-quant-var.mount
+systemctl cat var-lib-quant\x2dp0.mount
+lsblk -f
+systemctl show quant-sec-capture.service -p ActiveState -p MainPID
+```
 
-The blocker remains absence of current, admissible actual-target-host evidence,
-not proof that the host lacks the required capability.
+`N2_SYNTHETIC_RESERVOIR_BINDING = PROVEN_FEASIBLE`
 
-Route 2 becomes mandatory only if a completed target-host read-only inspection
-shows that either:
-- all frozen-V4 SEC egress cannot be externally denied across every effective
-  IPv4/IPv6 path without changing service semantics; or
-- the writable state view cannot be rebound to an isolated synthetic reservoir
-  while preserving the exact service-visible path and future qualifying
-  reservoir.
+## 5. Frozen-V4 boundary
 
-No such negative was established here.
+Frozen V4 remains:
 
-## 7. Final status
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+No V4 production byte needs to change for Route 1.
+
+The current target host still points `/opt/quant` at the rejected historical V3
+release. That is NOT a contradiction: Lane A separately specifies the future
+authorized V3-to-V4 materialization/transition. No such transition occurred
+during this read-only closure.
+
+## 6. What this PASS does not prove
+
+This PASS does not prove:
+
+- that the future nft deny was actually installed;
+- zero real SEC traffic during a Gate-B run;
+- that the synthetic reservoir was actually selected;
+- controlled-reboot behavior;
+- final V4 materialization;
+- F2/F3/F7 run-authority correctness;
+- F6 evidence retention;
+- Gate B;
+- t0.
+
+Those are future concrete-run evidence domains.
+
+At activation time, Blue must bind exact infrastructure bytes/digests and the
+operator must recapture host observations into the restricted hash-addressed
+evidence chain. Any mismatch fails closed.
+
+## 7. Final disposition
 
 ```text
 ASTRA_FINDING = F5
-N1_EXTERNAL_NETWORK_IMPOSSIBILITY = NOT_PROVEN
-N2_SYNTHETIC_RESERVOIR_BINDING = NOT_PROVEN
-F5_ROUTE1_HOST_EVIDENCE = BLOCKED_ROUTE1_NOT_PROVEN
+N1_EXTERNAL_NETWORK_IMPOSSIBILITY = PROVEN_FEASIBLE
+N2_SYNTHETIC_RESERVOIR_BINDING = PROVEN_FEASIBLE
+F5_ROUTE1_HOST_EVIDENCE = PASS_ROUTE1_FEASIBLE
 ROUTE2_PRODUCTION_TESTABILITY_WORK_REQUIRED = NOT_YET_PROVEN_REQUIRED
 TARGET_HOST_MUTATION_PERFORMED = FALSE
 REAL_SEC_NETWORK_REQUESTS_MADE_BY_THIS_MISSION = 0
-GATE_B_PASS_DECLARED = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
 t0 = NOT_DECLARED
 RETURN_CONTROL_TO = BLUE
 ```
