@@ -574,3 +574,65 @@ t0 = NOT_DECLARED
 PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
 ```
+
+
+## ALIGNMENT GUARDRAIL ROUTER — 2026-09-21
+
+Before any new dispatch or extension, Blue must state:
+
+```text
+ECONOMIC_PROGRESS =
+REMAINING_BLOCKER =
+EXIT_CONDITION =
+```
+
+### Rail A
+
+Blue coordinates the already-authorized independent Astra F11 review.
+
+If the Astra remote HEAD is unchanged and no durable checkpoint/final handoff exists:
+
+`ASTRA_ACTIVITY = UNKNOWN`
+
+Do not infer the audit is idle.
+Do not start a second competing Astra session solely from an unchanged remote HEAD.
+Do not have Blue perform Astra's independent audit.
+
+Exit condition for F11 repository work:
+
+`ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE`
+
+or one precise reproduced blocker requiring bounded repair.
+
+After PASS, stop repository-level F11 iteration and proceed to the prepared Gate-B
+activation path.
+
+### Rail B
+
+Before dispatching scientific specification work, search for any existing/newer
+mission or handoff first.
+
+Scientific specification exit condition:
+
+- first-slice scientific decisions explicit;
+- exact first-slice scope explicit;
+- falsifiable acceptance criteria explicit;
+- deferred limitations explicit;
+- only true implementation blockers remain.
+
+No extra challenge is authorized without a concrete contradiction.
+
+After closure:
+
+`VERTICAL_LOOP_BUILD_SPEC = FROZEN`
+
+then prefer exactly one primary Product implementation owner on:
+
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
+
+with internal verifiable milestones rather than multiple competing small Builders.
+
+Retain both execution-cost controls:
+- pre-sizing model-envelope consistency vs authoritative Desk ExecutionModel;
+- post-sizing/pre-fill implied-participation consistency.
+
