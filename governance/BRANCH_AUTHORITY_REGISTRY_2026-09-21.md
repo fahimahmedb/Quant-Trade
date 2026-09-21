@@ -355,3 +355,26 @@ explicitly listed ACTIVE above remains non-authoritative unless later Blue gover
 reactivates it.
 
 Always re-resolve live HEAD before execution.
+
+
+## FINAL LIVE BRANCH OVERRIDE — 2026-09-21
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+- state: ACTIVE / AUTHORIZED
+- base audited integration:
+  `4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+- expected mission HEAD:
+  `15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+- role: independent targeted F11 recheck
+- may not modify audited implementation
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21`
+- final HEAD:
+  `1226427082e55e7b3c51f96c5f091b90a6278447`
+- state: COMPLETE / PRESERVE
+- verdict:
+  `BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
+- no further writes unless Blue explicitly reopens
+
+Next Product branch is NOT yet a Builder branch. Blue must first dispatch/close the
+scientific-estimator specification authority.
