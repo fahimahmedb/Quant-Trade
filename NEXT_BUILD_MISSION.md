@@ -207,7 +207,7 @@ Pre-handoff implementation CI:
 
 Final handoff CI:
 
-`35610033532 = IN_PROGRESS` at this update.
+`35610033532 = COMPLETED / SUCCESS`.
 
 Do NOT route to Astra yet.
 
@@ -310,3 +310,32 @@ Concurrency:
 `ONE P0 CRITICAL RAIL + ONE PRODUCT/ECONOMIC PREP RAIL`
 
 Do not launch a second substantial Product Builder while this Claude lane is active.
+
+
+## F11 FINAL-HANDOFF CI GREEN / PARENT-PATH STILL OPEN — 2026-09-21
+
+Builder remains at:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Exact-head CI:
+
+`35610033532 = COMPLETED / SUCCESS`
+
+However the current committed dedicated F11 tests still do NOT contain the Blue-mandated whole-parent-path discriminants:
+
+- `F11-P1` whole parent-directory replacement during live holder;
+- `F11-P2` no-mutation proof for rejected replacement-parent contender;
+- `F11-P3` deterministic recovery/fail-closed post-condition.
+
+Therefore:
+
+`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
+
+`BUILDER_F11_ACCEPTED_FOR_ASTRA = FALSE`
+
+`ASTRA_F11_RECHECK_AUTHORIZED = FALSE`
+
+The Builder must continue on the same active branch. Do not create the Astra recheck branch until Blue records:
+
+`PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
