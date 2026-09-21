@@ -89,6 +89,26 @@ quadratic risk term entirely at small `f`. Break-even requires
 f_breakeven = C_fix / (mu * Capital) ,  mu = IR_post * sigma
 ```
 
+### 4.0 The project's own parameters (found 2026-09-21, not assumed)
+
+```text
+src/quant/desk/execution.py   commission_bps            = 0.5
+                              half_spread_bps           = 1.0
+                              impact_bps_at_full_part.  = 10.0
+                              max_participation         = 0.05
+                              RESEARCH_ONE_WAY_COST_BPS = 5.0 (conservative envelope)
+src/quant/desk/desk.py        MIN_ORDER_NOTIONAL        = 500
+src/quant/book/ledger.py      initial_capital           = 1_000_000
+src/quant/desk/risk.py        max_gross 1.50 · max_symbol 0.25 · halt -0.20
+```
+
+**Every friction in the system is proportional. There is no fixed-cost term
+anywhere in the model.** `C_fix` is structurally absent, not set to a small
+value. The D09 cost contract states `OMITTED_COST_IS_NOT_IMPLICIT_ZERO`; the
+execution model omits fixed cost entirely, so all economic evidence produced so
+far silently assumes `C_fix = 0`. That omission is what let the first draft's
+"early deployment is nearly free" argument look sound.
+
 Evaluated at `sigma = 0.15`:
 
 ```text
@@ -101,8 +121,43 @@ Capital   C_fix/yr   IR_post=0.04   IR_post=0.15   IR_post=0.31
 
 A break-even above `1.0x` is unreachable: it asks for more than the whole
 account. **At early evidence and small capital, real deployment is negative
-expected value by an order of magnitude, at any size.** No sizing rule repairs
-this; it is an arithmetic fact about fixed costs.
+expected value by an order of magnitude, at any size.**
+
+### 4.0b But the closure is capital-dependent, and reverses at 1M
+
+At the capital the repository itself assumes (`initial_capital = 1_000_000`),
+`f_breakeven` falls inside the admissible range:
+
+```text
+IR_post = 0.04   C_fix=600 -> 0.10x Kelly   C_fix=1500 -> 0.25x   C_fix=3000 -> 0.50x
+IR_post = 0.15   C_fix=600 -> 0.03x Kelly   C_fix=1500 -> 0.07x   C_fix=3000 -> 0.13x
+```
+
+Crossover capital at which deployment becomes defensible (`f_breakeven <= lambda = 0.25`):
+
+```text
+IR_post   C_fix=600    C_fix=1500   C_fix=3000
+0.04       400 000     1 000 000    2 000 000
+0.08       200 000       500 000    1 000 000
+0.15       106 667       266 667      533 333
+0.31        51 613       129 032      258 065
+```
+
+So route R3 is **not closed in general — it is closed below roughly 100k-400k
+of real capital and open above it**, depending on the fixed-cost base. The
+earlier flat claim was an artefact of the 10 000 illustration.
+
+```text
+DECISIVE UNKNOWN = real capital and real annual fixed-cost base
+Until both are supplied, no statement about early real deployment is decidable.
+```
+
+### 4.0c Minimum-ticket concentration
+
+`MIN_ORDER_NOTIONAL = 500` against `max_symbol_ratio = 0.25` means small
+capital cannot express a diversified sleeve at all: the ticket floor forces
+concentration long before the risk limit binds. This interacts directly with
+the lane doctrine, which wants many small decorrelated positions.
 
 The consequence is not to wait. It is to stop pretending the first real orders
 are an investment:

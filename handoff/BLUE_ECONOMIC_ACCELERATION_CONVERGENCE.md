@@ -18,10 +18,14 @@ R2  MANY WEAK LANES          closed by this round
     k=25 at rho=0.2 gives 0.62, not 1.50; past k~10 the marginal lane is ~free
     and the adopted alpha-wealth process funds FOUR lanes, not twenty-five
 
-R3  DEPLOY TINY, EARLY       closed by this round
+R3  DEPLOY TINY, EARLY       CONDITIONALLY closed — corrected 2026-09-21
     fixed costs scale as 1/f and dominate the quadratic risk term
-    f_breakeven = C_fix/(mu*Capital); at 10k capital and IR_post=0.04 it is
-    10x the account. Negative EV at ANY size.
+    f_breakeven = C_fix/(mu*Capital)
+    at 10k capital, IR_post=0.04: 10x the account -> closed
+    at 1M capital (the repo's own initial_capital), same IR_post: 0.10-0.25x
+    Kelly -> OPEN
+    crossover ~100k-400k depending on the fixed-cost base
+    The flat "closed" claim was an artefact of the 10k illustration.
 ```
 
 Each was closed by arithmetic, not by opinion, and each closure was found by an
@@ -63,6 +67,20 @@ and M2, with M3 reported and never chased.
 Stating this plainly is the deliverable. A packet that had "succeeded" here
 would have been a packet that hid one of the three closures.
 
+## 3b. Correction to §1 and §3
+
+"All three routes closed" holds for R1 and R2 unconditionally. R3 is closed
+only below ~100k-400k of real capital. The statement "economic value at small
+capital does not arrive early" is therefore correct as written — but it is a
+statement about *small* capital, and the repository's own model assumes 1M,
+where the conclusion inverts.
+
+The system also contains no fixed-cost term at all
+(`src/quant/desk/execution.py` is proportional-only), while the D09 contract
+requires `OMITTED_COST_IS_NOT_IMPLICIT_ZERO`. All economic evidence produced so
+far silently assumes `C_fix = 0`. That is a friction-model defect independent
+of this packet, and it is what made the first draft's argument look sound.
+
 ## 4. Live contradictions remaining
 
 ```text
@@ -74,6 +92,17 @@ C1  ALPHA WEALTH vs LANE AMBITION
 C2  INFORMATION BUDGET SIZE
     Unset. Requires a currency figure from the owner; nothing proceeds to real
     orders without it, and it is an expense, not an allocation.
+
+C2b REAL CAPITAL AND FIXED-COST BASE
+    The single most decision-relevant unknown in this packet. It decides
+    whether R3 is open or closed. Not discoverable from the repository:
+    initial_capital = 1_000_000 is a simulation default, not a statement
+    about the owner's capital.
+
+C2c FIXED COST ABSENT FROM THE FRICTION MODEL
+    Builder work, independent of this packet: add a fixed/periodic cost
+    dimension to ExecutionModel and to the research cost envelope, per the
+    D09 invariant OMITTED_COST_IS_NOT_IMPLICIT_ZERO.
 
 C3  CALIBRATION DEBT
     tau, v_eff and IC(f) are all placeholders. Each must be measured on this
