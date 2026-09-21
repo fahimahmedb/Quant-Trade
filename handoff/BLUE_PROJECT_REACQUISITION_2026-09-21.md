@@ -658,3 +658,90 @@ RAIL_B = SCIENTIFIC ESTIMATOR SPECIFICATION CLOSURE
 ```
 
 No Product implementation or target-host Gate-B mutation is authorized.
+
+
+## 17. ALIGNMENT GUARDRAIL OVERRIDE — OBJECTIVE BEFORE GATES
+
+This section is the latest anti-drift governance rule.
+
+The project must not substitute endless infrastructure/audit perfection for the North
+Star objective.
+
+Before Blue dispatches, extends or reopens a mission, record:
+
+```text
+ECONOMIC_PROGRESS =
+REMAINING_BLOCKER =
+EXIT_CONDITION =
+```
+
+### Economic progress rule
+
+Every substantial mission must identify the concrete capability it unlocks toward:
+
+`Forward -> Research -> Economic -> SIZE -> RISK -> FILLS -> BOOK -> Learning`
+
+A gate/audit mission is justified when it closes a named safety, correctness or proof
+condition required for that system.
+
+It is not justified merely because another audit is possible.
+
+### Astra independence/activity rule
+
+Blue coordinates independent Astra work but must not perform the Astra adversarial
+review it will later receive as independent evidence.
+
+If the authorized Astra remote HEAD remains at the mission HEAD and no durable
+checkpoint/final handoff exists:
+
+`ASTRA_ACTIVITY = UNKNOWN`
+
+Do NOT infer `NOT_STARTED` solely from an unchanged remote HEAD.
+
+Do NOT dispatch a second competing Astra session without durable evidence the first
+mission is abandoned or explicitly superseded.
+
+### Scientific anti-duplication rule
+
+Before creating any scientific-estimator specification mission, search current durable
+branches/handoffs first.
+
+If an equivalent/newer mission exists, receive or continue it.
+
+Do not duplicate the mission because another conversation lacks local context.
+
+### Scientific specification exit condition
+
+The scientific-estimator specification work stops once it has produced:
+
+1. explicit first-slice scientific decisions;
+2. exact first-slice scope;
+3. falsifiable acceptance criteria;
+4. explicitly deferred limitations;
+5. only blockers that actually prevent implementation.
+
+A follow-on challenge must cite a concrete contradiction, not a desire for additional
+perfection.
+
+### ONE BIG BUILD discipline
+
+After science/spec freeze, prefer one implementation owner and one coherent large
+bounded build.
+
+The build may contain internal verifiable milestones, but do not fragment it into
+multiple competing Product Builders.
+
+A separate prerequisite implementation is allowed only when its proof must logically
+exist before the vertical Product integration can be evaluated independently.
+
+### Execution-cost closure
+
+The final vertical specification must retain both checks:
+
+1. pre-sizing: Research/Economic cost assumptions must not be cheaper than the
+   authoritative Desk `ExecutionModel` within the declared participation envelope;
+2. post-sizing, pre-fill: derive actual implied participation from final sized
+   notional/capacity and re-check the same consistency envelope.
+
+Any violation => fail closed before `ExecutionModel.fill`.
+
