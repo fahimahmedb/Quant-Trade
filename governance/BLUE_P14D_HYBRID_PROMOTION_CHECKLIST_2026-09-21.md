@@ -62,11 +62,11 @@ Current independent audit branch at checklist creation:
 `astra/p0-gate-a-v4-independent-audit-2026-09-20@b636a04b6f8f7786679907d01a4fa22bdfc4e329`
 
 Required:
-- [ ] independent Astra final handoff exists;
-- [ ] exact audited candidate remains `4d06bdbf...` or any successor is explicitly re-frozen;
-- [ ] Astra findings classified;
-- [ ] Blue final v4 disposition committed;
-- [ ] no proof silently transferred across SHA.
+- [x] independent Astra final handoff exists;
+- [x] exact audited candidate remains `4d06bdbf...` or any successor is explicitly re-frozen;
+- [x] Astra findings classified;
+- [x] Blue final v4 disposition committed;
+- [x] no proof silently transferred across SHA.
 
 Green CI without a final independent handoff does not close this section.
 
@@ -137,9 +137,14 @@ remains authoritative.
 
 Open blockers:
 - final Gate-A fault-matrix evidence;
-- final independent Astra v4 audit;
-- Blue final v4 disposition;
 - exact lineage binding;
 - final consistency merge.
+
+Closed independent-review evidence:
+- Astra final HEAD: `afe25984b0ddd261fda143d858106c3c71e45149`;
+- Astra audit exact-head CI: `35545297473 = SUCCESS`;
+- SEC P0 exact-head CI on same Astra HEAD: `35545297451 = SUCCESS`;
+- Blue reception: `handoff/BLUE_GATE_A_V4_FINAL_INDEPENDENT_RECEPTION_2026-09-21.md`;
+- `GATE_A_V4_REPOSITORY_DISPOSITION = PASS`.
 
 No capital or Product authority changes.
