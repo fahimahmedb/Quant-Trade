@@ -99,7 +99,7 @@ def assess_and_admit(
             decision="ADMISSION_REFUSED", capital_order_eligibility="",
             reason_codes=(reason,) + (tuple(effect_artifact.reason_codes)
                                       if effect_artifact is not None else ()),
-            code_sha=code_sha)
+            code_sha=code_sha, strategy_id=strategy_id)
         journal.record(record)  # AssessmentConflict propagates: fail closed.
         return AdmissionOutcome(status=REFUSED, reason=reason, assessment_id=assessment_id,
                                 strategy_id=strategy_id, ticket_id=ticket_id,
@@ -114,7 +114,7 @@ def assess_and_admit(
     record = AssessmentRecord.from_verdict(
         assessment_id, fingerprint, verdict, meue_result,
         effect_version=effect_artifact.sample_id, protocol_hash=effect_artifact.protocol_hash,
-        code_sha=code_sha)
+        code_sha=code_sha, strategy_id=strategy_id)
     journal.record(record)  # AssessmentConflict propagates: fail closed.
 
     eligible = (verdict.verdict == CONTINUE

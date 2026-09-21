@@ -30,12 +30,17 @@ from typing import Any
 from ..book.ledger import Ledger
 from ..dataplane.panel import PricePanel
 from ..dataplane.registry import DatasetRegistry
+from ..economics.consistency import AdvReference
+from ..economics.journal import EconomicAssessmentJournal
+from ..economics.sizing import MarginSizingRule, compute_final_size
 from ..events import EventLog
 from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl, read_jsonl
-from .execution import ExecutionModel
+from .economic_size import (OUTCOME_BOOKED, LaneEconomicAdmission,
+                            run_lane_scheduled_exit)
+from .execution import RESEARCH_ONE_WAY_COST_BPS, ExecutionModel
 from .journal import DeskJournal
 from .opportunity import OpportunityTicket
 from .risk import RiskLimits, evaluate as evaluate_risk, verify_final
@@ -48,7 +53,9 @@ class CapitalDesk:
     def __init__(self, paths: QuantPaths, strategies: StrategyRegistry,
                  datasets: DatasetRegistry, log: EventLog, components: ComponentRegistry,
                  execution: ExecutionModel | None = None, limits: RiskLimits | None = None,
-                 initial_capital: float = 1_000_000.0, strategy_allocation: float = 0.5):
+                 initial_capital: float = 1_000_000.0, strategy_allocation: float = 0.5,
+                 assessment_journal: EconomicAssessmentJournal | None = None,
+                 margin_rule: MarginSizingRule | None = None):
         self.paths = paths
         self.strategies = strategies
         self.datasets = datasets
@@ -61,10 +68,36 @@ class CapitalDesk:
         self.capital = Ledger(paths.book, "quant-shadow-book", "CAPITAL", initial_capital)
         self.evaluation = Ledger(paths.evaluation_ledger, "quant-evaluation-track",
                                  "EVALUATION", initial_capital)
+        # --- M3 SIZE splice onto the M2 Research -> Economic boundary -------
+        # The Economic-admitted, durable ``AssessmentRecord`` for a strategy
+        # (when one exists) is the sole source of ``margin_of_safety`` used
+        # to size that strategy's lane; see ``economic_size.py``'s M2
+        # reconciliation note. A strategy with no such record (for example
+        # one constructed directly by a test or demo without ever passing
+        # through ``econ_bridge.assess_and_admit``) falls back to the
+        # pre-M3 naive ``capital_fraction`` sizing, unchanged, rather than
+        # being silently zero-sized for a gap in test/demo wiring.
+        self.assessment_journal = assessment_journal or EconomicAssessmentJournal(
+            paths.economic_assessments)
+        self.margin_rule = margin_rule or MarginSizingRule(
+            rule_id="DESK_DEFAULT_MARGIN_RULE", reference_margin=0.05, max_fraction=1.0,
+            minimum_margin=0.0)
 
     # --- helpers -----------------------------------------------------------
     def ledger_for(self, definition: StrategyDefinition) -> Ledger:
         return self.capital if definition.tradable else self.evaluation
+
+    def _economic_admission(self, definition: StrategyDefinition) -> LaneEconomicAdmission | None:
+        """The real M2 durable admission for this strategy, if one exists.
+
+        Reads ``economics.journal.EconomicAssessmentJournal.latest_for_strategy``
+        directly -- never re-derives ``margin_of_safety`` and never calls
+        ``economic_gate``/constructs a second admission mechanism.
+        """
+        record = self.assessment_journal.latest_for_strategy(definition.strategy_id)
+        if record is None:
+            return None
+        return LaneEconomicAdmission.from_assessment_record(record, self.margin_rule)
 
     def actionable(self) -> list[StrategyDefinition]:
         return sorted((definition for definition in self.strategies.strategies.values()
@@ -160,6 +193,10 @@ class CapitalDesk:
         weights = weights_for(panel, spec, date)
         ticket.target_weights = weights
         if not weights:
+            exit_ticket = self._maybe_scheduled_exit(panel, date, next_date, definition,
+                                                      opportunity_id, ticket)
+            if exit_ticket is not None:
+                return exit_ticket
             self.components.set("SCAN", "IDLE", "no qualifying cross-sectional signal")
             return self._finish(definition, ticket.stop(
                 "SCAN", "NO_TRADE", "no symbol cleared the signal threshold at this session"))
@@ -187,7 +224,22 @@ class CapitalDesk:
 
         # --- SIZE ----------------------------------------------------------
         self.components.set("SIZE", "RUN", definition.strategy_id)
-        capital = decision_ledger.nav_at(decision_prices) * definition.capital_fraction * self.strategy_allocation
+        nav = decision_ledger.nav_at(decision_prices)
+        admission = self._economic_admission(definition)
+        economic_size = None
+        if admission is not None and admission.capital_order_eligible:
+            # The M3 splice: opportunity sizing is Economic's, the lifecycle
+            # capital fraction is only a ceiling (economic_size.py's
+            # LaneSizeResult contract). This is the same call
+            # ``desk.economic_size.run_lane_entry`` makes for its own SIZE
+            # stage, reused here rather than duplicated.
+            economic_size = compute_final_size(
+                definition.strategy_id, admission.margin_rule, admission.margin_of_safety,
+                current_decision_nav=nav, strategy_allocation=self.strategy_allocation,
+                lifecycle_capital_fraction=definition.capital_fraction)
+            capital = economic_size.final_size_notional
+        else:
+            capital = nav * definition.capital_fraction * self.strategy_allocation
         target_notional = {symbol: capital * weight for symbol, weight in weights.items()}
         # Legs the sleeve holds but no longer wants are targeted at zero, so RISK
         # scores the portfolio the fills will actually produce.
@@ -197,11 +249,19 @@ class CapitalDesk:
         entitlement = ("counterfactual size on the evaluation ledger"
                        if not definition.tradable else
                        f"{definition.lifecycle} capital entitlement")
-        ticket.record("SIZE", "SIZED",
-                      f"{entitlement}: {definition.capital_fraction:.0%} of a "
-                      f"{self.strategy_allocation:.0%} allocation",
-                      capital_fraction=definition.capital_fraction, allocation=capital,
-                      gross_notional=ticket.sized_notional)
+        detail: dict[str, Any] = {"capital_fraction": definition.capital_fraction,
+                                  "allocation": capital, "gross_notional": ticket.sized_notional}
+        if economic_size is not None:
+            detail["economic_size"] = economic_size.to_dict()
+            ticket.record(
+                "SIZE", "SIZED",
+                f"economic margin sizing from assessment {admission.assessment_id} "
+                f"(margin_of_safety={admission.margin_of_safety:.4f}), capped by "
+                f"{entitlement}", **detail)
+        else:
+            ticket.record("SIZE", "SIZED",
+                          f"{entitlement}: {definition.capital_fraction:.0%} of a "
+                          f"{self.strategy_allocation:.0%} allocation", **detail)
 
         # --- RISK ----------------------------------------------------------
         self.components.set("RISK", "RUN", definition.strategy_id)
@@ -297,6 +357,56 @@ class CapitalDesk:
                       fills=len(plan["fills"]))
         return self._apply(definition, ticket, plan["fills"],
                            ticket.execution_date or plan["session_date"])
+
+    def _maybe_scheduled_exit(self, panel: PricePanel, date: str, next_date: str | None,
+                              definition: StrategyDefinition, opportunity_id: str,
+                              ticket: OpportunityTicket) -> OpportunityTicket | None:
+        """Narrow scheduled-exit hook (M3).
+
+        Today's SCAN stage returns NO_TRADE the moment a session produces no
+        qualifying signal, even when the strategy still holds an open sleeve
+        -- there is no explicit exit phase at all. This checks, once per
+        strategy per cycle, whether the frozen holding period has elapsed
+        with an open sleeve and nothing to replace it, and if so flattens the
+        sleeve through ``economic_size.run_lane_scheduled_exit`` -- the same
+        authoritative Risk/Execution/Book chain, never a second one. It is
+        deliberately not a new scheduler: it reuses the existing
+        ``_sessions_since_rebalance``/``holding_days`` signal that already
+        governs VET, and does nothing when there is no open sleeve, no
+        elapsed holding period, or no durable economic admission to check
+        cost-consistency against.
+        """
+        if next_date is None:
+            return None
+        ledger = self.ledger_for(definition)
+        held = ledger.sleeve_exposures(definition.strategy_id)
+        if not held:
+            return None
+        spec = definition.to_spec()
+        sessions_held = self._sessions_since_rebalance(definition, panel, date)
+        if sessions_held is None or sessions_held < spec.holding_days:
+            return None
+        admission = self._economic_admission(definition)
+        if admission is None:
+            return None
+        adv_by_symbol = {symbol: AdvReference(symbol=symbol,
+                                              value=self.execution.adv(panel, symbol, date),
+                                              state="AVAILABLE")
+                         for symbol in held}
+        card = run_lane_scheduled_exit(
+            panel=panel, ledger=ledger, admission=admission, execution=self.execution,
+            limits=self.limits, adv_by_symbol=adv_by_symbol,
+            research_one_way_cost_bps=RESEARCH_ONE_WAY_COST_BPS,
+            opportunity_id=opportunity_id, signal_date=date, execution_date=next_date)
+        reason = "; ".join(card.reason_codes) or "scheduled exit"
+        ticket.stop("BOOK", card.action, reason, scheduled_exit=card.to_dict())
+        if card.fills:
+            ticket.fills = card.fills
+            ticket.book_effect = {"ledger": ledger.state.authority, "nav_after": ledger.nav,
+                                  "cash_after": ledger.state.cash}
+        self.log.emit("DESK", "BOOK", "scheduled_exit", opportunity_id,
+                      strategy=definition.strategy_id, outcome=card.action)
+        return self._finish(definition, ticket, rebalanced=card.action == OUTCOME_BOOKED)
 
     # --- stage helpers -----------------------------------------------------
     def _finish(self, definition: StrategyDefinition, ticket: OpportunityTicket,

@@ -106,6 +106,17 @@ class AssessmentRecord:
     portfolio_context_ref: str = ""
     code_sha: str = ""
     protocol_hash: str = ""
+    #: The strategy this assessment was made for. Added so downstream
+    #: consumers (M3 SIZE) can look up "the durable assessment for strategy
+    #: X" without decoding the content-addressed ``assessment_id``. Empty
+    #: string for any record persisted before this field existed.
+    strategy_id: str = ""
+    #: ``EconomicVerdict.margin_of_safety`` at the moment of assessment, so
+    #: M3 SIZE can size a lane from the same number Economic already computed
+    #: rather than re-deriving or inventing a parallel one. ``None`` exactly
+    #: when the verdict itself carried no margin (gate stopped before it was
+    #: computed) or for any record persisted before this field existed.
+    margin_of_safety: float | None = None
     recorded_at: str = field(default_factory=utc_now)
 
     @classmethod
@@ -114,7 +125,7 @@ class AssessmentRecord:
                      effect_version: str = "", parameter_provenance: str = "",
                      cost_scenario: str = "", capacity_state: str = "",
                      portfolio_context_ref: str = "", code_sha: str = "",
-                     protocol_hash: str = "") -> "AssessmentRecord":
+                     protocol_hash: str = "", strategy_id: str = "") -> "AssessmentRecord":
         return cls(
             assessment_id=assessment_id, input_fingerprint=input_fingerprint,
             decision=verdict.verdict, capital_order_eligibility=verdict.capital_order_eligibility,
@@ -122,7 +133,8 @@ class AssessmentRecord:
             recipe_version=meue_result.recipe_hash or "", effect_version=effect_version,
             parameter_provenance=parameter_provenance, cost_scenario=cost_scenario,
             capacity_state=capacity_state, portfolio_context_ref=portfolio_context_ref,
-            code_sha=code_sha, protocol_hash=protocol_hash)
+            code_sha=code_sha, protocol_hash=protocol_hash, strategy_id=strategy_id,
+            margin_of_safety=verdict.margin_of_safety)
 
     def to_dict(self) -> dict[str, Any]:
         document = asdict(self)
@@ -181,6 +193,21 @@ class EconomicAssessmentJournal:
 
     def get(self, assessment_id: str) -> dict[str, Any] | None:
         return self._by_id.get(assessment_id)
+
+    def latest_for_strategy(self, strategy_id: str) -> dict[str, Any] | None:
+        """The most recently recorded durable assessment for one strategy.
+
+        M3 SIZE's real splice point onto the boundary: rather than
+        re-deriving admission from a live ``EconomicVerdict`` (which SIZE
+        never sees directly), it reads the durable record M2 already wrote.
+        Records from before ``strategy_id`` was added to the schema cannot be
+        matched and are skipped rather than guessed at.
+        """
+        candidates = [record for record in self._by_id.values()
+                     if record.get("strategy_id") == strategy_id]
+        if not candidates:
+            return None
+        return max(candidates, key=lambda record: str(record.get("recorded_at", "")))
 
     def replay(self) -> dict[str, dict[str, Any]]:
         """Rebuild state from the file alone, ignoring in-memory cache.

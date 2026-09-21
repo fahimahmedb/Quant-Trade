@@ -142,3 +142,136 @@ def verify_research_cost_consistency(research_one_way_cost_bps: float,
                                      subject: str = "") -> ResearchExecutionConsistency:
     return ResearchExecutionConsistency(research_one_way_cost_bps, model,
                                         participation_used, subject)
+
+
+# --- post-size / pre-fill check (M3) ----------------------------------------
+#
+# The pre-size check above binds Research's declared participation envelope to
+# the executable ExecutionModel. It says nothing about what a *particular*
+# sized order will actually do once FINAL_SIZE, rounding and ADV-based
+# capacity transforms are applied to it. This second, mandatory check derives
+# the *actual* implied participation from the final sized notional and the
+# ADV/capacity input authorized for this fill, and re-runs the same cost
+# envelope against it. A violation here fails closed before
+# ``ExecutionModel.fill`` is ever called — no Book-feeding fill call is
+# permitted past this point once it has failed.
+
+ADV_AVAILABLE = "AVAILABLE"
+ADV_STALE = "STALE"
+ADV_MISSING = "MISSING"
+ADV_INVALID = "INVALID"
+ADV_STATES = (ADV_AVAILABLE, ADV_STALE, ADV_MISSING, ADV_INVALID)
+
+
+@dataclass(frozen=True)
+class AdvReference:
+    """One symbol's authorized ADV/capacity input for the post-size check.
+
+    Missing, stale or invalid ADV must fail closed rather than be treated as
+    unlimited capacity or silently skipped — the same rule
+    ``economics.capacity`` already applies to the SIZE-time liquidity
+    schedule. This is the same discipline applied a second time, downstream,
+    at the exact notional that will actually be sent to
+    ``ExecutionModel.fill``.
+    """
+
+    symbol: str
+    value: float
+    state: str
+    as_of: str | None = None
+    #: How many sessions old the reference is, when known.
+    staleness_sessions: int | None = None
+    max_staleness_sessions: int | None = None
+
+    def violations(self) -> list[str]:
+        problems: list[str] = []
+        if self.state not in ADV_STATES:
+            problems.append(f"{self.symbol}: ADV_STATE_NOT_RECOGNISED")
+            return problems
+        if self.state != ADV_AVAILABLE:
+            problems.append(f"{self.symbol}: ADV_{self.state}")
+            return problems
+        if self.value <= 0:
+            problems.append(f"{self.symbol}: ADV_NONPOSITIVE_DESPITE_AVAILABLE_STATE")
+        if (self.max_staleness_sessions is not None and self.staleness_sessions is not None
+                and self.staleness_sessions > self.max_staleness_sessions):
+            problems.append(f"{self.symbol}: ADV_STALE_BEYOND_MAX_STALENESS")
+        return problems
+
+    @property
+    def valid(self) -> bool:
+        return not self.violations()
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class PostSizeParticipationConsistency:
+    """§2.6 second (post-size/pre-fill) execution-cost consistency check."""
+
+    research_one_way_cost_bps: float
+    model: ExecutionCostModel
+    #: The final sized notional this specific order is about to request,
+    #: already reflecting rounding/minimum-order transforms if any were
+    #: applied before this check runs.
+    final_notional: float
+    adv: AdvReference
+    subject: str = ""
+
+    @property
+    def adv_valid(self) -> bool:
+        return self.adv.valid
+
+    @property
+    def implied_participation(self) -> float:
+        """Actual participation the final sized order implies.
+
+        An unusable ADV reference cannot certify *any* participation as safe,
+        so it reports ``inf`` rather than ``0`` — the fail-closed direction —
+        and :meth:`violations` reports the ADV defect directly rather than
+        relying on the participation ceiling comparison to catch it.
+        """
+        if not self.adv_valid or self.adv.value <= 0:
+            return float("inf")
+        return abs(self.final_notional) / self.adv.value
+
+    @property
+    def ceiling(self) -> float:
+        return implied_participation_ceiling(self.research_one_way_cost_bps, self.model)
+
+    def violations(self) -> list[str]:
+        label = self.subject or "POST_SIZE_EVIDENCE"
+        problems = list(self.adv.violations())
+        if not self.adv_valid:
+            problems.append(
+                f"{label}: EXECUTION_COST_CONSISTENCY_EXCEEDED_AFTER_SIZING_ADV_UNUSABLE")
+            return problems
+        if self.implied_participation > self.ceiling + 1e-15:
+            problems.append(f"{label}: EXECUTION_COST_CONSISTENCY_EXCEEDED_AFTER_SIZING")
+        if self.implied_participation > self.model.max_participation + 1e-15:
+            problems.append(
+                f"{label}: EXECUTION_COST_CONSISTENCY_PARTICIPATION_EXCEEDS_MODEL_MAX")
+        return problems
+
+    @property
+    def consistent(self) -> bool:
+        return not self.violations()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"subject": self.subject,
+                "research_one_way_cost_bps": self.research_one_way_cost_bps,
+                "final_notional": self.final_notional,
+                "adv": self.adv.to_dict(),
+                "implied_participation": self.implied_participation,
+                "implied_participation_ceiling": self.ceiling,
+                "execution_model": self.model.to_dict(),
+                "violations": self.violations()}
+
+
+def verify_post_size_participation_consistency(
+        research_one_way_cost_bps: float, model: ExecutionCostModel,
+        final_notional: float, adv: AdvReference,
+        subject: str = "") -> PostSizeParticipationConsistency:
+    return PostSizeParticipationConsistency(research_one_way_cost_bps, model, final_notional,
+                                            adv, subject)

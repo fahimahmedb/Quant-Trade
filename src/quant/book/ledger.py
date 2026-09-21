@@ -31,6 +31,7 @@ Two ledgers share this implementation:
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -43,6 +44,39 @@ AUTHORITIES = ("CAPITAL", "EVALUATION")
 
 class BackwardInTime(ValueError):
     """A mark was dated before the Book's last marked session."""
+
+
+class FillConflict(ValueError):
+    """Same Book ``operation_id``, a different fill fingerprint. Fails closed.
+
+    Mirrors ``quant.economics.journal.AssessmentConflict``: two different
+    fills cannot share one operation identity. Replaying the exact same fill
+    under the same id is an idempotent no-op (unchanged); a second, different
+    fill arriving under an id already applied is a conflict, not a silent
+    no-op, per frozen-spec acceptance case #26/#54.
+    """
+
+    def __init__(self, operation_id: str, existing_fingerprint: str, new_fingerprint: str):
+        super().__init__(
+            f"{operation_id}: existing fill fingerprint {existing_fingerprint!r} != "
+            f"new fingerprint {new_fingerprint!r}; refusing to apply a conflicting fill "
+            "under an operation id already recorded")
+        self.operation_id = operation_id
+        self.existing_fingerprint = existing_fingerprint
+        self.new_fingerprint = new_fingerprint
+
+
+def _fill_fingerprint(symbol: str, quantity: float, price: float, cost: float,
+                      date: str, strategy_id: str) -> str:
+    """A deterministic semantic fingerprint of one fill's economic content.
+
+    Two calls to ``apply_fill`` with the same ``operation_id`` are only ever
+    the same economic event if this fingerprint also matches; a mismatch
+    means the same id is being reused for a conflicting fill.
+    """
+    payload = "|".join([symbol, repr(round(quantity, 10)), repr(round(price, 10)),
+                        repr(round(cost, 10)), date, strategy_id])
+    return "sha256:" + hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 @dataclass
@@ -91,6 +125,12 @@ class LedgerState:
     fills: int = 0
     #: Deterministic ids of every mutation already applied, so replay is a no-op.
     applied_operations: list[str] = field(default_factory=list)
+    #: operation_id -> semantic fingerprint of the fill applied under it, so a
+    #: replay under the same id can be told apart from a conflicting fill
+    #: reusing that id (frozen-spec acceptance case #26/#54). Absent for any
+    #: operation persisted before this field existed; those are treated as
+    #: having no recorded fingerprint and are never used to detect conflict.
+    operation_fingerprints: dict[str, str] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -158,9 +198,16 @@ class Ledger:
 
         ``quantity`` is signed and ``cost`` is the total frictional charge.
         ``operation_id`` must be deterministic for the economic event, so that a
-        replay after a crash is recognised rather than applied twice.
+        replay after a crash is recognised rather than applied twice. A second
+        call with the same ``operation_id`` but different fill semantics
+        (symbol/quantity/price/cost/date/strategy) raises :class:`FillConflict`
+        rather than being silently treated as the same replay.
         """
+        fingerprint = _fill_fingerprint(symbol, quantity, price, cost, date, strategy_id)
         if operation_id in self._applied:
+            existing_fingerprint = self.state.operation_fingerprints.get(operation_id)
+            if existing_fingerprint is not None and existing_fingerprint != fingerprint:
+                raise FillConflict(operation_id, existing_fingerprint, fingerprint)
             return {"symbol": symbol, "quantity": 0.0, "price": price, "cost": 0.0,
                     "realized_pnl": 0.0, "cash_after": self.state.cash,
                     "operation_id": operation_id, "replayed": True}
@@ -199,6 +246,7 @@ class Ledger:
 
         self._applied.add(operation_id)
         self.state.applied_operations.append(operation_id)
+        self.state.operation_fingerprints[operation_id] = fingerprint
         self.save()
         return {"symbol": symbol, "quantity": quantity, "price": price, "cost": cost,
                 "realized_pnl": realized, "cash_after": self.state.cash,

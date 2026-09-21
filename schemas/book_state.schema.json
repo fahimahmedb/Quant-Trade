@@ -70,6 +70,12 @@
       },
       "type": "array"
     },
+    "operation_fingerprints": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
     "peak_nav": {
       "type": "number"
     },

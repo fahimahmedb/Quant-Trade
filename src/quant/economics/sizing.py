@@ -152,6 +152,98 @@ class SizingPlan:
 
 
 @dataclass(frozen=True)
+class LaneSizeResult:
+    """M3 SIZE authority — the one place ``FINAL_SIZE`` is computed.
+
+    Frozen spec (``governance/BLUE_ONE_BIG_BUILD_PRESTAGE_2026-09-21.md`` §2.3,
+    restated in the frozen build spec §5)::
+
+        available_lane_capital = current_decision_NAV * strategy_allocation
+        economic_margin_notional = MarginSizingRule(...)
+        desk_lifecycle_cap_notional = available_lane_capital * definition.capital_fraction
+        FINAL_SIZE = min(economic_margin_notional, desk_lifecycle_cap_notional)
+
+    Economic owns opportunity sizing; the lifecycle capital fraction is only a
+    ceiling. Because :meth:`MarginSizingRule.fraction` is clamped to
+    ``[0, max_fraction]``, ``economic_margin_notional`` is never negative, so
+    the lifecycle cap can only ever *reduce* ``FINAL_SIZE``, never manufacture
+    size the economic margin did not authorize: a zero economic margin makes
+    ``FINAL_SIZE`` zero regardless of how large the lifecycle fraction is.
+    """
+
+    strategy_id: str
+    available_lane_capital: float
+    margin_of_safety: float
+    economic_fraction: float
+    economic_margin_notional: float
+    lifecycle_capital_fraction: float
+    desk_lifecycle_cap_notional: float
+    final_size_notional: float
+    reason_codes: tuple[str, ...] = ()
+
+    @property
+    def zero_size(self) -> bool:
+        return self.final_size_notional <= 0.0
+
+    @property
+    def lifecycle_cap_binding(self) -> bool:
+        """True when the lifecycle ceiling, not the economic margin, decided size."""
+        return self.desk_lifecycle_cap_notional < self.economic_margin_notional
+
+    def to_dict(self) -> dict[str, Any]:
+        document = asdict(self)
+        document["reason_codes"] = list(self.reason_codes)
+        document["zero_size"] = self.zero_size
+        document["lifecycle_cap_binding"] = self.lifecycle_cap_binding
+        return document
+
+
+def compute_final_size(strategy_id: str, rule: MarginSizingRule, margin_of_safety: float,
+                       current_decision_nav: float, strategy_allocation: float,
+                       lifecycle_capital_fraction: float) -> LaneSizeResult:
+    """Compute ``FINAL_SIZE`` for one lane at one decision instant.
+
+    Fails closed to zero size (never to a fabricated positive size) on any
+    out-of-range input, and records why. A negative ``current_decision_nav``
+    or an allocation/fraction outside ``[0, 1]`` are input defects, not
+    reasons to guess: they are clamped toward zero and reported, so the
+    caller sees ``SIZE_*`` reason codes rather than a silently wrong number.
+    """
+    reasons: list[str] = []
+    nav = current_decision_nav
+    if nav < 0:
+        reasons.append("SIZE_NEGATIVE_DECISION_NAV")
+        nav = 0.0
+    allocation = strategy_allocation
+    if not 0.0 <= allocation <= 1.0:
+        reasons.append("SIZE_STRATEGY_ALLOCATION_OUT_OF_RANGE")
+        allocation = min(max(allocation, 0.0), 1.0)
+    lifecycle_fraction = lifecycle_capital_fraction
+    if not 0.0 <= lifecycle_fraction <= 1.0:
+        reasons.append("SIZE_LIFECYCLE_CAPITAL_FRACTION_OUT_OF_RANGE")
+        lifecycle_fraction = min(max(lifecycle_fraction, 0.0), 1.0)
+
+    available_lane_capital = nav * allocation
+    economic_fraction = rule.fraction(margin_of_safety)
+    economic_margin_notional = available_lane_capital * economic_fraction
+    desk_lifecycle_cap_notional = available_lane_capital * lifecycle_fraction
+    final_size = min(economic_margin_notional, desk_lifecycle_cap_notional)
+
+    if economic_margin_notional <= 0.0:
+        reasons.append("SIZE_ZERO_ECONOMIC_MARGIN")
+    elif final_size <= 0.0:
+        reasons.append("SIZE_LIFECYCLE_CAP_YIELDED_ZERO")
+
+    return LaneSizeResult(
+        strategy_id=strategy_id, available_lane_capital=available_lane_capital,
+        margin_of_safety=margin_of_safety, economic_fraction=economic_fraction,
+        economic_margin_notional=economic_margin_notional,
+        lifecycle_capital_fraction=lifecycle_fraction,
+        desk_lifecycle_cap_notional=desk_lifecycle_cap_notional,
+        final_size_notional=max(final_size, 0.0), reason_codes=tuple(reasons))
+
+
+@dataclass(frozen=True)
 class RiskApproval:
     """An approval bound to the exact portfolio state it examined."""
 

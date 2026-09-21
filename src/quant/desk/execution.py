@@ -21,6 +21,23 @@ from ..dataplane.panel import PricePanel
 #: conservative relative to modelled execution rather than flattering.
 RESEARCH_ONE_WAY_COST_BPS = 5.0
 
+#: Execution phases this one authority supports. Both are the same model,
+#: same cost mechanics, same fill call — only the label and the caller's
+#: chosen ``execution_date`` differ. ``ENTRY`` fills at the next session's
+#: open under the causal timeline already documented above. ``SCHEDULED_EXIT``
+#: fills the position the science protocol's frozen holding convention
+#: already determined must close, at that predetermined session's open. This
+#: is the "narrow explicit execution-phase extension for the same model"
+#: authorized by the frozen build spec (§5 / §2.5-2.6) precisely so a second
+#: ExecutionModel is never created to carry the exit leg.
+PHASE_ENTRY = "ENTRY"
+PHASE_SCHEDULED_EXIT = "SCHEDULED_EXIT"
+EXECUTION_PHASES = (PHASE_ENTRY, PHASE_SCHEDULED_EXIT)
+
+
+class UnknownExecutionPhase(ValueError):
+    """An execution phase outside :data:`EXECUTION_PHASES`. Fails closed."""
+
 
 @dataclass(frozen=True)
 class ExecutionModel:
@@ -43,8 +60,20 @@ class ExecutionModel:
                    for day in recent) / len(recent)
 
     def fill(self, panel: PricePanel, symbol: str, quantity: float, signal_date: str,
-             execution_date: str) -> dict[str, Any]:
-        """Model one order. Returns the (possibly capacity-truncated) fill."""
+             execution_date: str, phase: str = PHASE_ENTRY) -> dict[str, Any]:
+        """Model one order. Returns the (possibly capacity-truncated) fill.
+
+        ``phase`` must be one of :data:`EXECUTION_PHASES`; an unrecognised
+        phase fails closed with :class:`UnknownExecutionPhase` rather than
+        silently defaulting to entry semantics. The mechanics are identical
+        for both declared phases — the caller (Desk) is responsible for
+        supplying the correct ``execution_date`` for the phase, i.e. the next
+        session's open for ``ENTRY`` and the frozen scheduled-exit session's
+        open for ``SCHEDULED_EXIT``.
+        """
+        if phase not in EXECUTION_PHASES:
+            raise UnknownExecutionPhase(
+                f"UNKNOWN_EXECUTION_PHASE: {phase!r} not in {EXECUTION_PHASES}")
         reference = panel.adjusted(execution_date, symbol, "open")
         capacity = self.adv(panel, symbol, signal_date) * self.max_participation
         requested_notional = abs(quantity) * reference
@@ -66,5 +95,5 @@ class ExecutionModel:
                 "slippage_bps": slippage_bps, "impact_bps": impact_bps,
                 "participation": participation, "capacity_truncated": truncated,
                 "notional": abs(quantity) * price, "signal_date": signal_date,
-                "execution_date": execution_date,
+                "execution_date": execution_date, "phase": phase,
                 "implementation_shortfall": abs(quantity) * abs(price - reference) + cost}
