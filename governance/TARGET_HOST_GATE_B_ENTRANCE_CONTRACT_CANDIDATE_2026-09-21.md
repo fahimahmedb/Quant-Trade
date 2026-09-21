@@ -464,3 +464,19 @@ The final Gate-B artifact must include or reference:
 - final sanitization artifact digest.
 
 This creates a reviewable evidence chain rather than a bag of unrelated files.
+
+
+## 18. Activation and evidence-schema references
+
+Any activated successor must reference and bind an activated form of:
+
+- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json`.
+
+The activation artifact is the mutation authority boundary.
+
+The Gate-B final artifact must validate against the activated evidence schema or
+a later explicitly superseding schema.
+
+A prose “PASS” that cannot satisfy the machine-checkable evidence schema is not an
+admissible Gate-B PASS.
