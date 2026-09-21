@@ -364,7 +364,7 @@ Always re-resolve live HEAD before execution.
 - base audited integration:
   `4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
 - expected mission HEAD:
-  `15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+  `1340c1e8eefdbbcd11aece6506040336f448d38d`
 - role: independent targeted F11 recheck
 - may not modify audited implementation
 
