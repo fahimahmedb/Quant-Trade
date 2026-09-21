@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "quant://governance/target-host-gate-b-evidence-2026-09-21-v2",
-  "title": "Quant Target-Host Gate B Evidence Artifact v2",
+  "$id": "quant://governance/target-host-gate-b-evidence-2026-09-21-v3",
+  "title": "Quant Target-Host Gate B Evidence Artifact v3",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -42,7 +42,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "gate-b-evidence-v2"
+      "const": "gate-b-evidence-v3"
     },
     "created_at_utc": {
       "type": "string",
@@ -117,6 +117,7 @@
         },
         "ci_runs": {
           "type": "array",
+          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "type": "integer",
@@ -195,6 +196,7 @@
     "sub_artifacts": {
       "type": "array",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -698,6 +700,57 @@
               "verdict",
               "real_sec_requests_made"
             ]
+          },
+          "independent_review": {
+            "properties": {
+              "verdict": {
+                "const": "PASS"
+              },
+              "ci_runs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            },
+            "required": [
+              "verdict",
+              "ci_runs"
+            ]
+          },
+          "sub_artifacts": {
+            "items": {
+              "properties": {
+                "classification": {
+                  "enum": [
+                    "FACT",
+                    "CLAIM",
+                    "INFERENCE",
+                    "RECOMMENDATION"
+                  ]
+                },
+                "defect_classification": {
+                  "enum": [
+                    "TARGET_HOST_ONLY",
+                    "NON_ISSUE",
+                    "NONE"
+                  ]
+                },
+                "restricted_reference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "classification",
+                "defect_classification",
+                "restricted_reference"
+              ]
+            }
           }
         }
       }
