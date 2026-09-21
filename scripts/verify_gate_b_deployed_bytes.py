@@ -37,7 +37,9 @@ REJECTED_GIT_ENV = (
     "GIT_OBJECT_DIRECTORY",
     "GIT_ALTERNATE_OBJECT_DIRECTORIES",
     "GIT_REPLACE_REF_BASE",
+    "GIT_GRAFT_FILE",
     "GIT_NAMESPACE",
+    "GIT_QUARANTINE_PATH",
 )
 
 
@@ -275,6 +277,7 @@ def ensure_git_independence(repo: Path) -> dict[str, Any]:
         "alternates_absent": True,
         "replace_refs_absent": True,
         "replacement_objects_disabled": True,
+        "replacement_object_semantics_disabled": True,
         "legacy_grafts_absent": True,
         "rejected_git_authority_environment": list(REJECTED_GIT_ENV),
     }
@@ -486,6 +489,12 @@ def walk_filesystem_fd(root_fd: int, allowed_extra_prefixes: tuple[str, ...]) ->
     return observed
 
 
+# Compatibility surface retained for the adversarial discriminant that substitutes
+# a tracked pathname between enumeration and byte inspection.
+def walk_filesystem(root_fd: int, allowed_extra_prefixes: tuple[str, ...]) -> set[str]:
+    return walk_filesystem_fd(root_fd, allowed_extra_prefixes)
+
+
 def verify(
     release: Path,
     *,
@@ -512,6 +521,14 @@ def verify(
     validate_hex40(expected_tree, "expected_tree")
     critical_prefixes = tuple(normalize_prefix(p) for p in critical_prefixes)
     allowed_extra_prefixes = tuple(normalize_prefix(p) for p in allowed_extra_prefixes)
+    for allowed in allowed_extra_prefixes:
+        if any(
+            under_prefix(allowed, critical) or under_prefix(critical, allowed)
+            for critical in critical_prefixes
+        ):
+            raise VerifyError(
+                f"allowed-extra prefix overlaps execution-critical authority: {allowed}"
+            )
 
     independence = ensure_git_independence(release)
     git_write_before = git_write_snapshot(release)
@@ -532,7 +549,7 @@ def verify(
     root_fd = _open_dir_nofollow(release)
     try:
         root_before = os.fstat(root_fd)
-        observed_paths = walk_filesystem_fd(root_fd, allowed_extra_prefixes)
+        observed_paths = walk_filesystem(root_fd, allowed_extra_prefixes)
 
         mismatches: list[dict[str, str]] = []
         missing: list[str] = []
@@ -603,7 +620,7 @@ def verify(
         reasons.append("missing_tracked_file")
     if mismatches:
         status = "RED"
-        reasons.append("tracked_byte_mode_type_or_race_mismatch")
+        reasons.append("tracked_byte_or_mode_mismatch")
     if critical_extras:
         status = "RED"
         reasons.append("untracked_execution_critical_path")
@@ -657,6 +674,7 @@ def verify(
         "critical_prefixes": list(critical_prefixes),
         "allowed_extra_prefixes": list(allowed_extra_prefixes),
         "target_host_only_residual": TARGET_HOST_ONLY_IMMUTABILITY,
+        "residual_immutability_boundary": TARGET_HOST_ONLY_IMMUTABILITY,
     }
     digest = sha256_digest(canonical_json_bytes(report))
     return report, digest
