@@ -271,3 +271,30 @@ Do not reconstruct current project authority from chat history alone.
 Use GitHub durable state plus:
 
 `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
+
+
+## CURRENT CHECKPOINT OVERRIDE — 2026-09-21 / REACQUISITION V2
+
+The compact current project checkpoint is now:
+
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+
+This older checkpoint remains historical context.
+
+Current summary:
+
+```text
+RAIL_A_OWNER = BLUE / F11 FINAL INTEGRATION
+RAIL_A_NEXT = EXACT-HEAD CI -> ASTRA DISPATCH
+
+RAIL_B_OWNER = CLAUDE SCIENCE PRESTAGE
+RAIL_B_NEXT = EFFECT-ESTIMATE CONTRACT -> BLUE FREEZE -> ONE BIG BUILD
+
+PRODUCT_CODE_IMPLEMENTATION = NOT AUTHORIZED
+TARGET_HOST_GATE_B_MUTATION = NOT AUTHORIZED
+t0 = NOT DECLARED
+REAL_CAPITAL = NOT AUTHORIZED
+```
+
+Do not use any older mission owner/routing section in this file where it conflicts
+with the reacquisition checkpoint.
