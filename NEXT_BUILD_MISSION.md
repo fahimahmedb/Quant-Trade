@@ -1,37 +1,104 @@
 # Current Build / Mission Router
 
-This file is intentionally a **router**, not a frozen mission specification.
+This file is intentionally a router, not a frozen mission specification.
 
-Do not use historical content from this path to infer the current task.
+Do not infer the active task from historical content at this path.
 
-## Authority
+## Current restart order
 
-Read, in order:
+Read:
 
 1. `QUANT_NORTH_STAR.md`
 2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
 3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
-5. the exact branch-specific mission/handoff referenced by those current documents
+4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`
+5. `governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`
+6. `governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`
+7. the exact active mission/handoff.
 
 Resolve the live HEAD of `blue/master-v2-2026-09-20` before acting.
 
 ## Current routing at last update
 
-Blue currently owns multiple explicit workstreams rather than one global Builder mission:
+Frozen V4 production candidate:
 
-- Gate A v4 effective-unit-digest correction: Builder delivery / Blue reception / independent Astra review;
-- P14D hybrid qualification challenge: governance-method review, amendment still non-authoritative;
-- repository hygiene: 35 delete-ready refs physically pending plus default-branch migration pending;
-- target-host qualification: paused until a corrected independently accepted candidate exists;
-- Product integration: paused, with canonical Forward/Economic leaves preserved.
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
 
-Safety state remains:
+V4 repository disposition:
 
-- `t0 = NOT DECLARED`
-- `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
-- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
-- `REAL_CAPITAL_AUTHORIZED = FALSE`
-- `PRODUCT_INTEGRATION = PAUSED`
+`GATE_A_V4_REPOSITORY_DISPOSITION = PASS`
 
-This router must never be used as proof that a particular branch, CI run, candidate or gate is current. The current governance index and exact GitHub state control.
+Final independent hybrid fault-matrix review:
+
+`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
+
+Unresolved row:
+
+`restart_burst_limit`
+
+Production REAL_DEFECT:
+
+`0`
+
+Active Builder proof-only repair:
+
+`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`
+
+Prepared mission SHA:
+
+`6f0ca1d858d6937dc8199cc1690dce049ddb79a6`
+
+Blue acceptance oracle:
+
+`EXPECTED_RESTART_BURST_LIMIT = 5`
+
+Mandatory RED mutations:
+- launcher 5 -> 4;
+- unit 5 -> 4;
+- launcher + unit 5 -> 4 simultaneously.
+
+After Builder delivery:
+Blue reception -> targeted Astra recheck -> Blue final fault-matrix disposition
+-> final consistency review -> possible hybrid-method promotion.
+
+Do not use the known-bad replay branch as the repair base.
+
+## Repository hygiene
+
+Repository default:
+`blue/master-v2-2026-09-20`.
+
+Live branches:
+`45`.
+
+Open PRs/issues:
+`0 / 0`.
+
+Previous delete batch:
+`34 / 34 COMPLETE`.
+
+Deleted refs reappeared:
+`0`.
+
+No new branch deletion is currently authorized.
+
+## Safety state
+
+`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+
+`P14D_PROMOTION_READY = FALSE`
+
+`TARGET_HOST_READY = FALSE`
+
+`GATE_B_MUTATION_AUTHORIZED = FALSE`
+
+`GATE_B = NOT_STARTED`
+
+`t0 = NOT_DECLARED`
+
+`PRODUCT_INTEGRATION = PAUSED`
+
+`REAL_CAPITAL_AUTHORIZED = FALSE`
+
+This router is not proof that a branch, CI run, candidate or gate is current.
+The current governance index and exact GitHub state control.
