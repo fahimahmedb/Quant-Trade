@@ -45,11 +45,13 @@ Already closed:
 - [x] negative unanswered-obligation discriminant.
 
 Still required:
-- [ ] final fault matrix durably pushed;
-- [ ] every matrix row classified;
-- [ ] no unresolved repository-side capture/PIT/firewall blocker;
-- [ ] exact-head CI for the final Gate-A evidence delivery;
-- [ ] Blue inspection of final Builder/Codex checkpoint.
+- [x] final fault matrix durably pushed;
+- [x] every matrix row classified;
+- [ ] no unresolved repository-side proof blocker (currently restart_burst_limit);
+- [x] exact-head CI for original Codex Gate-A evidence delivery;
+- [x] Blue inspection of original Builder/Codex checkpoint.
+- [ ] proof-only restart-burst repair delivered with exact-head CI;
+- [ ] targeted Astra recheck closes restart_burst_limit with no unresolved MISSING_PROOF.
 
 Any REAL_DEFECT => STOP promotion and return to correction flow.
 
@@ -78,9 +80,9 @@ Before promotion Blue must bind one coherent lineage:
 - [x] Git tree;
 - [x] input-tree digest;
 - [x] candidate exact-head CI run;
-- [ ] Builder qualification-evidence SHA/run;
-- [ ] independent Astra audit SHA/run;
-- [ ] Blue final disposition SHA;
+- [ ] final repaired qualification-evidence SHA/run;
+- [ ] targeted independent restart-burst recheck SHA/run;
+- [ ] Blue final fault-matrix disposition SHA;
 - [ ] acquisition-critical fingerprint closure;
 - [ ] applicable source-calendar authority version.
 
@@ -136,7 +138,8 @@ remains authoritative.
 `P14D_PROMOTION_READY = FALSE`
 
 Open blockers:
-- final independent Gate-A fault-matrix review;
+- restart_burst_limit proof-only repair;
+- targeted independent Astra recheck;
 - final consistency merge.
 
 Closed independent-review evidence:
@@ -172,22 +175,48 @@ Verified input-tree digest:
 The stale committed verification placeholder was explicitly not reused.
 
 
-### Independent fault-matrix final handoff observed — pending final CI
+### Independent fault-matrix final disposition — BLOCKED_MISSING_PROOF
 
-Astra final handoff branch HEAD observed:
-`441d4ecc3996bc3c948d556a0cdb9404a575dbe5`.
+Final Astra branch:
+`astra/p0-hybrid-fault-matrix-independent-review-2026-09-21`
 
-Handoff verdict:
-`ASTRA_FAULT_MATRIX = PASS_REPOSITORY_EVIDENCE`.
+Final observed HEAD:
+`c6be804e99e409ab36a455f09ea2fccbe3d88252`
 
-Blue prepared reception:
-`handoff/BLUE_ASTRA_HYBRID_FAULT_MATRIX_FINAL_RECEPTION_PREPARED_2026-09-21.md`.
+Independent verdict:
+`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
 
-Do NOT check the independent-review promotion gate yet: final exact-head workflows for `441d4ecc...` must complete successfully first.
+Repository REAL_DEFECT:
+`0`
 
-Known non-blocking TEST_DEFECT debt from independent review:
-1. restart-burst Codex helper self-references the production constant; current value 5 independently compensated by Astra;
-2. artifact/report digest is Python-build-bound;
-3. harness_input_tree_digest omits exercised production paths; compensated by exact Git ancestry/no-production-delta plus separate V4 exact-tree/input-tree binding.
+Unresolved repository MISSING_PROOF:
+`1`
 
-No production REAL_DEFECT and no unresolved repository MISSING_PROOF are reported by the final handoff.
+Blocking row:
+`restart_burst_limit`
+
+Finding:
+- frozen V4 production property remains `NON_ISSUE / FACT`;
+- Codex restart-burst helper is `TEST_DEFECT` because its expected good value is derived from the production constant under test;
+- temporary launcher mutation `5 -> 4` leaves that helper GREEN;
+- therefore the required fourth `NEW_DISCRIMINATING_PROOF` is not independently discriminating;
+- physical restart-storm enforcement remains `TARGET_HOST_ONLY`.
+
+Blue response:
+- proof-only repair specification:
+  `governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`;
+- prepared Builder branch:
+  `builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`;
+- mission dispatch SHA:
+  `6f0ca1d858d6937dc8199cc1690dce049ddb79a6`;
+- mandatory independent oracle: `EXPECTED_RESTART_BURST_LIMIT = 5`;
+- mandatory M1/M2/M3 mutation sensitivity.
+
+Do NOT check the final independent fault-matrix gate until the proof-only repair is delivered, exact-head CI passes, and targeted independent Astra recheck closes the row.
+
+Other Astra evidence-quality debt remains non-blocking but durable:
+1. artifact/report digest is Python-build-bound;
+2. `harness_input_tree_digest` omits exercised production paths and cannot stand alone as production-byte proof.
+
+Current promotion consequence:
+`P14D_PROMOTION_READY = FALSE`.
