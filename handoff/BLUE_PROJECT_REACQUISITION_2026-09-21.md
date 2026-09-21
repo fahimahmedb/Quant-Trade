@@ -1,5 +1,50 @@
 # BLUE — PROJECT REACQUISITION / CURRENT FRONTIER — 2026-09-21
 
+> **CURRENT OVERRIDE — 2026-09-21**
+>
+> This block is the current routing/context authority for this file.
+> Historical sections below are preserved for traceability and MUST NOT be treated as
+> current state when they conflict with this block.
+>
+> ```text
+> ACTIVE_PRIMARY_RAILS = 2
+>
+> RAIL_A = GATE_B_POST_ASTRA_CONVERGENCE
+> RAIL_A_BRANCH = blue/gate-b-post-astra-convergence-2026-09-21
+> RAIL_A_MISSION_HEAD = a06bcefcaa8c3ddf3e879dff39f6583c2d89f400
+> F11_REPOSITORY_DEFECT = CLOSED
+> ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE
+> ASTRA_F11_EXACT_HEAD_CI = 35624089971 = COMPLETED / SUCCESS
+> RAIL_A_EXIT = POST_ASTRA_GATE_B_CONVERGENCE =
+>   READY_FOR_TARGET_HOST_READ_ONLY_REBIND | BLOCKED_<EXACT_REASON>
+>
+> RAIL_B = FIRST_SLICE_COHORT_INFORMATION_GEOMETRY_CLOSURE
+> RAIL_B_BRANCH = parallel/claude-first-slice-cohort-geometry-2026-09-21
+> RAIL_B_MISSION_HEAD = 58ce1f570131448e639cace47ee4f5d8e890458d
+> S11_METHODS_CHALLENGE = COMPLETE
+> S11_METHODS_VERDICT = BLOCKED_MAX_4_INDEPENDENT_COMPONENTS
+> SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_COHORT_INFORMATION_GEOMETRY
+> ECONOMIC_QUESTION_MAP = ACCEPTED
+> RAIL_B_EXIT = COHORT_GEOMETRY_READY_FOR_SPEC_FREEZE |
+>   COHORT_GEOMETRY_BLOCKED_<EXACT_REASON>
+>
+> PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+> PRODUCT_INTEGRATION = PAUSED
+> TARGET_HOST_READY = FALSE
+> GATE_B_MUTATION_AUTHORIZED = FALSE
+> GATE_B = NOT_STARTED
+> t0 = NOT_DECLARED
+> REAL_CAPITAL_AUTHORIZED = FALSE
+> ```
+>
+> Do not launch another F11 repair/recheck, another S11 interval-method review, or
+> another Economic Question Map mission unless a new concrete contradiction is
+> established.
+>
+> Before any state-changing action, re-resolve live branch HEADs and exact-head CI.
+>
+
+
 ## 0. Purpose and precedence
 
 This is the current Blue reacquisition checkpoint for a fresh conversation.
