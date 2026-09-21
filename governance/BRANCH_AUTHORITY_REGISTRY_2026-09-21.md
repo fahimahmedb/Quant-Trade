@@ -408,3 +408,43 @@ infer owner inactivity from unchanged remote HEADs. No target-host, qualifying P
 Gate-B, t0, restricted-data visibility, deployment or capital authority changes.
 After S11 closure, keep ONE BIG BUILD with one primary Product owner and internal
 milestones; no separate estimator implementation precursor is presently justified.
+
+
+## S11 METHODS CHALLENGE DISPATCHED — 2026-09-21
+
+Blue dispatch authority:
+
+`handoff/BLUE_S11_METHODS_CHALLENGE_DISPATCH_2026-09-21.md`
+
+Reviewer branch:
+
+`parallel/claude-s11-dependence-interval-challenge-2026-09-21`
+
+Mission base:
+
+`3f54cd5dd4ee879b4b10ff7052939e0fb0187437`
+
+Expected mission HEAD:
+
+`b851113b44083d38739088efdf17e8aff65b672e`
+
+Current state:
+
+```text
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
+SCIENCE_CHALLENGE = DISPATCHED
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+```
+
+Do not create another S11 reviewer.
+
+Next Rail-B action is to receive exactly one final S11 handoff:
+
+`S11_READY_FOR_BLUE_FREEZE`
+
+or:
+
+`S11_BLOCKED_<EXACT_REASON>`
+
+No Product build is authorized before Blue receives that result.
