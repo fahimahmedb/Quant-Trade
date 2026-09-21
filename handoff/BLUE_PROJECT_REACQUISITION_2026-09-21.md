@@ -561,3 +561,100 @@ A new Blue conversation should begin by reading:
 
 Then refresh GitHub and act from live HEAD/CI rather than stale embedded status.
 
+
+
+## 16. POST-REFRESH OVERRIDE — FINAL CURRENT STATE
+
+This section supersedes any earlier status values inside this same checkpoint.
+
+### Rail A — F11 is now formally dispatched to Astra
+
+Blue final integration:
+
+`blue/gate-b-f11-final-integration-2026-09-21@4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
+
+Exact-head CI:
+
+`35619545254 = COMPLETED / SUCCESS`
+
+Blue authorization:
+
+`handoff/BLUE_GATE_B_F11_PASS_FOR_INDEPENDENT_ASTRA_RECHECK_2026-09-21.md`
+
+Current durable decision:
+
+```text
+PASS_FOR_INDEPENDENT_ASTRA_RECHECK = TRUE
+ASTRA_F11_RECHECK_AUTHORIZED = TRUE
+```
+
+Authorized Astra branch:
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+
+EXPECTED_ASTRA_MISSION_HEAD:
+
+`15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+
+Mission:
+
+`handoff/ASTRA_GATE_B_F11_LOCK_IDENTITY_RECHECK_MISSION_2026-09-21.md`
+
+Immediate Rail-A next action:
+
+Astra performs the targeted independent F11/P1-P3/A1-A10-non-regression recheck.
+
+Do not run another F11 Builder unless Astra establishes a new concrete defect.
+
+### Rail B — scientific prestage returned a blocker
+
+Scientific-prestage final branch:
+
+`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@1226427082e55e7b3c51f96c5f091b90a6278447`
+
+Final status:
+
+`SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
+
+Blue reception:
+
+`handoff/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_RECEPTION_2026-09-21.md`
+
+Accepted finding:
+
+no existing repository path lawfully assembles real Form-4 qualifying events into the
+frozen Economic `ALLOCATION_WEIGHTED_RATIO` coordinate with complete interval,
+clustering, DeltaCoordinateBinding and provenance.
+
+Current live Research outputs remain the wrong coordinate for Economic delta.
+
+Therefore:
+
+```text
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN
+ONE_BIG_BUILD = NOT_YET_AUTHORIZED
+REAL_POSITIVE_RESEARCH_TO_ECONOMIC_PATH = NOT_YET_AVAILABLE
+```
+
+Next Rail-B work is specification closure for the missing scientific estimator:
+- D07-O4 overlap/clustering geometry;
+- pre-outcome allocation constructor;
+- security/SPY return conventions;
+- D19/terminal treatment;
+- interval/clustering semantics;
+- multiplicity/sample-use authority;
+- forward-admissibility/evidence-label binding.
+
+Owner preference remains:
+
+close this specification first, challenge it if needed, then issue one coherent large
+build rather than multiple small Product implementation cycles.
+
+### Current substantial concurrency
+
+```text
+RAIL_A = ASTRA F11 TARGETED RECHECK
+RAIL_B = SCIENTIFIC ESTIMATOR SPECIFICATION CLOSURE
+```
+
+No Product implementation or target-host Gate-B mutation is authorized.
