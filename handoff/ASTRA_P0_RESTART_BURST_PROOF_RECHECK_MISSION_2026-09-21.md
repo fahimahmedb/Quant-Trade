@@ -166,3 +166,41 @@ Do not declare:
 - capital authorization.
 
 After final handoff and exact-head Astra CI, STOP and return control to Blue.
+
+
+## 9. Immutable contract authority
+
+Do not treat a moving branch name as normative contract provenance.
+
+The exact Blue contract authority for this audit is:
+
+- commit:
+  `7d7bf6a27e4560951ec0fad58b69a99edf091a4b`
+- blob:
+  `e73013605c8e169a580aa1cd082f477bc5cd5722`
+- file:
+  `governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`
+- exact normative value:
+  `EXPECTED_RESTART_BURST_LIMIT = 5`
+
+Verify that the artifact's mutable branch/path provenance resolves historically
+to this immutable Blue contract. A changed current branch must not silently
+change the audited acceptance value.
+
+## 10. CI interpretation
+
+Selected Builder delivery run:
+`35549017908` on exact SHA
+`1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+Supplementary same-SHA run:
+`35549509130`, created when the Astra ref was created at the Builder SHA.
+
+Mission-only Astra prestage run:
+`35549511035` on
+`b922a108ddf906ff9a2a0c6f3c9800b76b754631`.
+
+Do not cite the mission-only prestage run as independent audit PASS.
+
+If any same-SHA run reveals a substantive contradictory test failure, STOP and
+report the contradiction rather than selecting whichever run is green.
