@@ -416,3 +416,39 @@ Current audit branch at this checkpoint:
 `DO_NOT_WAIT_FOR_OTHER_LANES_WHEN_WORK_IS_INDEPENDENT = TRUE`
 
 No lane may infer completion from another lane's green CI or chat claim.
+
+
+## 18. Gate A v4 independent audit closed — 2026-09-21
+
+Independent Astra final HEAD:
+`afe25984b0ddd261fda143d858106c3c71e45149`
+
+Frozen candidate audited:
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+Exact-head workflows:
+- Astra independent audit `35545297473 = COMPLETED / SUCCESS`;
+- SEC P0 pre-t0 gate `35545297451 = COMPLETED / SUCCESS`.
+
+Independent verdict:
+`AUDIT_GATE_A_V4 = PASS_REPOSITORY_CORRECTION`.
+
+Blue reception:
+`handoff/BLUE_GATE_A_V4_FINAL_INDEPENDENT_RECEPTION_2026-09-21.md`.
+
+Blue repository disposition:
+`GATE_A_V4_REPOSITORY_DISPOSITION = PASS`.
+
+Accepted non-blocking audit findings:
+- one over-named Builder lifecycle test = `TEST_DEFECT / NON_BLOCKING`, independently compensated by Astra A8 + existing authority tests;
+- five parser representation limitations = `NON_ISSUE / HYPOTHETICAL_FUTURE_UNIT_LIMITATION` for the exact frozen current unit.
+
+Still not established:
+- `TARGET_HOST_READY`;
+- Gate B;
+- t0;
+- P14D hybrid promotion;
+- Product integration;
+- real-capital authority.
+
+The remaining pre-promotion repository blocker is the separate final Gate-A hybrid fault matrix.
