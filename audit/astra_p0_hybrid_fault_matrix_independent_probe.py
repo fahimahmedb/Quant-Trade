@@ -8,6 +8,7 @@ monkeypatches are used only to falsify the claimed discriminating power.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 import subprocess
@@ -319,10 +320,16 @@ with tempfile.TemporaryDirectory(prefix="astra-fault-matrix-repro-") as director
     one_bytes = one_path.read_bytes()
     two_bytes = two_path.read_bytes()
 
+one_file_sha256 = "sha256:" + hashlib.sha256(one_bytes).hexdigest()
+two_file_sha256 = "sha256:" + hashlib.sha256(two_bytes).hexdigest()
 record(
     "F8_same_environment_byte_reproducible",
-    one_bytes == two_bytes and one["report_digest"] == two["report_digest"],
+    one_bytes == two_bytes
+    and one_file_sha256 == two_file_sha256
+    and one["report_digest"] == two["report_digest"],
     {
+        "file_sha256_one": one_file_sha256,
+        "file_sha256_two": two_file_sha256,
         "report_digest_one": one["report_digest"],
         "report_digest_two": two["report_digest"],
         "python_version": one["python_version"],
