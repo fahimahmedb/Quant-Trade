@@ -151,3 +151,81 @@ It does not itself prove Gate C.
 `T0_PRECOMMIT_TEMPLATE = PREPARED_CANDIDATE / NOT_YET_EXECUTABLE`
 
 `REAL_CAPITAL_AUTHORIZED = FALSE`
+
+
+## 9. Mandatory hardening fields
+
+Any activated successor to this template must additionally bind:
+
+```text
+BLUE_ACTIVATION_ARTIFACT_DIGEST =
+ACTIVATED_GATE_B_CONTRACT_DIGEST =
+ACTIVATED_RUNBOOK_DIGEST =
+GATE_B_RUN_ID =
+GATE_B_FINAL_ARTIFACT_DIGEST =
+
+TIME_AUTHORITY_SNAPSHOT_DIGEST =
+NTP_SYNCHRONIZED =
+BOOT_ID_AT_PRECOMMIT =
+REALTIME_MONOTONIC_CORRELATION_DIGEST =
+
+NETWORK_RUNTIME_BINDING_DIGEST =
+RESOURCE_BASELINE_DIGEST =
+EVIDENCE_RETENTION_BINDING_DIGEST =
+SOURCE_CALENDAR_PLAN_DIGEST =
+```
+
+If any required field is unknown:
+
+`PRECOMMIT_VALID = FALSE`
+
+## 10. One-attempt / one-authority anti-replay rule
+
+A precommit is valid for exactly one Gate-C attempt.
+
+It binds exactly one:
+- `GATE_B_RUN_ID`;
+- qualifying launch authority;
+- target state identity;
+- runtime/service/fingerprint set;
+- source-calendar plan.
+
+If the authority is consumed by a mismatched launch, or if a launch occurs before
+the precommit is sealed, the attempt is terminally invalid.
+
+Do not issue a replacement authority under the same precommit.
+
+Create a new precommit for a new attempt.
+
+## 11. Clock-step invalidation
+
+Between precommit seal and qualifying launch, a detected unexplained wall-clock
+step, NTP loss, boot change, or time-authority change invalidates the precommit.
+
+Result:
+
+`NO_T0`
+
+A new time-authority snapshot and new precommit are required.
+
+## 12. Launch timestamp provenance
+
+The launch-event artifact must identify the authoritative timestamp source and
+bind:
+
+- systemd InvocationID;
+- boot ID;
+- externally attributable launch timestamp;
+- corresponding monotonic time/reference if available;
+- consumed authority ID;
+- precommit digest.
+
+The UTC t0 value is accepted only after this provenance is verified.
+
+## 13. Evidence retention
+
+The precommit and launch-event artifact must live in the restricted evidence
+domain covered by the Gate-B evidence-retention binding.
+
+Loss of the precommit or launch event before Gate D invalidates the qualifying
+attempt.
