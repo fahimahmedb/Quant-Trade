@@ -884,3 +884,31 @@ Current Rail B:
 Active frontier:
 
 `ASTRA F11 TARGETED RECHECK + SCIENTIFIC ESTIMATOR SPECIFICATION CLOSURE`
+
+
+## OBJECTIVE-FIRST ALIGNMENT OVERRIDE — 2026-09-21
+
+Current anti-drift rule:
+
+```text
+ECONOMIC_PROGRESS =
+REMAINING_BLOCKER =
+EXIT_CONDITION =
+```
+
+must accompany substantial mission routing.
+
+Current work remains two rails only:
+
+`RAIL_A = independent targeted F11 closure -> Gate-B activation path`
+
+`RAIL_B = scientific-estimator specification closure -> spec freeze -> ONE BIG BUILD`
+
+Blue must not become Astra.
+An unchanged Astra remote HEAD means `ACTIVITY = UNKNOWN` absent a durable checkpoint.
+Do not duplicate science missions before checking live durable branches/handoffs.
+No new challenge cycle without a named contradiction.
+Gates/audits are means toward the first traceable economic loop, not terminal objectives.
+
+Read:
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` section 17.
