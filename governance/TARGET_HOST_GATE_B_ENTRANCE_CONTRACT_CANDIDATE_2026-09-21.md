@@ -480,3 +480,16 @@ a later explicitly superseding schema.
 
 A prose “PASS” that cannot satisfy the machine-checkable evidence schema is not an
 admissible Gate-B PASS.
+
+
+## 19. Release materialization prerequisite
+
+Before B1 may PASS, the exact SHA-addressed release must satisfy an activated
+successor of:
+
+`governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_CANDIDATE_2026-09-21.md`.
+
+A release path name, branch checkout or development worktree is not admissible
+identity evidence.
+
+The release-materialization artifact becomes a required Gate-B sub-artifact.
