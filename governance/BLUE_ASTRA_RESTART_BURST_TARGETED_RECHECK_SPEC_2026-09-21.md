@@ -2,7 +2,7 @@
 
 ## 0. Status
 
-`MISSION_STATUS = PREPARED / WAITING_FOR_BUILDER_DELIVERY_SHA`
+`MISSION_STATUS = PREPARED / BUILDER_SHA_BOUND / WAITING_FOR_EXACT_HEAD_CI`
 
 `SCOPE = TARGETED_INDEPENDENT_RECHECK_ONLY`
 
@@ -11,7 +11,7 @@
 This specification defines the independent review that follows the bounded
 Builder/Codex restart-burst proof repair.
 
-Do not create the Astra branch until the exact Builder delivery SHA exists.
+Do not create the Astra branch until the exact Builder delivery SHA exists AND its exact-head CI is COMPLETED / SUCCESS.
 
 ## 1. Prior independent blocker
 
@@ -59,7 +59,7 @@ Mission dispatch base:
 
 Exact Builder delivery SHA:
 
-`TO_BE_BOUND_AFTER_DELIVERY`
+`1fa82a75485661bf9bbb3de10b925126397dfec5`
 
 Astra must review the exact delivered SHA, never merely a branch name.
 
@@ -223,3 +223,16 @@ Blue may then evaluate:
 and proceed to the final hybrid consistency merge.
 
 No promotion occurs automatically.
+
+
+## 8. Bound delivery / CI wait — 2026-09-21
+
+Builder delivery is now bound to:
+`1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+Exact-head workflow:
+`35549017908`.
+
+At last Blue observation the workflow was `IN_PROGRESS`, currently executing
+the full unit suite. Dispatch remains blocked until the same SHA is still live
+and this run is `COMPLETED / SUCCESS`.
