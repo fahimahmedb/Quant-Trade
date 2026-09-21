@@ -240,8 +240,10 @@ def _finish(context: ResearchContext, ticket: ResearchTicket, lane_name: str,
                 dataset_id=dataset_id, dataset_fingerprint=fingerprint)
             if verdict["passed"]:
                 definition.transition("VALIDATED", "survived every declared falsification test")
-                definition.transition("SHADOW", "evidence accepted; shadow track record required "
-                                                "before full capital")
+                # VALIDATED never auto-promotes to SHADOW here. The Research -> Economic
+                # admission boundary (`quant.integration.econ_bridge.assess_and_admit`)
+                # is the only path that may transition VALIDATED -> SHADOW, and only
+                # after a durable CONTINUE + capital-order-eligible economic verdict.
             else:
                 definition.evaluation_track = True
             context.strategies.upsert(definition)

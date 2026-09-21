@@ -61,6 +61,16 @@ class QuantPaths:
         return self.var / "science" / "method_qualification.json"
 
     @property
+    def economic_assessments(self) -> Path:
+        """Durable Research -> Economic admission boundary journal.
+
+        One ``ASSESSMENT_RECORDED``/``ASSESSMENT_ID_CONFLICT_...`` line per
+        ``quant.economics.journal.EconomicAssessmentJournal`` record; see
+        ``quant.integration.econ_bridge.assess_and_admit``.
+        """
+        return self.var / "economic_assessments.jsonl"
+
+    @property
     def work_queue(self) -> Path:
         return self.var / "work_queue.json"
 
