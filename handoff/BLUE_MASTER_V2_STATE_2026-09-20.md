@@ -531,21 +531,32 @@ Additional Gate-B hardening is now durable:
 - `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json` makes a future Gate-B PASS machine-checkable and now requires every mandatory evidence domain to be PASS when overall verdict is PASS;
 - candidate contract/runbook require unique `GATE_B_RUN_ID`, terminal-failure semantics, host time/NTP binding, evidence-retention continuity, network/proxy/TLS binding, resource baselines, and safe synthetic-state separation.
 
-Independent fault-matrix final handoff now exists on Astra branch HEAD observed at:
-`441d4ecc3996bc3c948d556a0cdb9404a575dbe5`.
+Historical provisional observation at this point in the sequence:
 
-Handoff verdict:
-`ASTRA_FAULT_MATRIX = PASS_REPOSITORY_EVIDENCE`.
+Astra branch was then observed at:
+`441d4ecc3996bc3c948d556a0cdb9404a575dbe5`
 
-Three non-blocking TEST_DEFECT findings are preserved:
-1. restart-burst Codex helper is self-referential to the production constant, independently compensated by Astra's hard-coded 5-vs-4 check;
-2. artifact digest is Python-build-bound;
-3. harness_input_tree_digest omits directly exercised production paths, compensated by exact Git ancestry/no-production-delta plus separate V4 tree/input-tree binding.
+with a provisional handoff verdict:
+`PASS_REPOSITORY_EVIDENCE`.
 
-Blue reception is prepared at:
-`handoff/BLUE_ASTRA_HYBRID_FAULT_MATRIX_FINAL_RECEPTION_PREPARED_2026-09-21.md`.
+THIS OBSERVATION IS SUPERSEDED.
 
-Do not close the blocker until exact-head workflows on Astra final HEAD `441d4ecc...` finish SUCCESS. At this checkpoint both final-head runs are queued.
+Astra subsequently advanced and its final durable fault-matrix disposition is:
+
+`astra/p0-hybrid-fault-matrix-independent-review-2026-09-21@c6be804e99e409ab36a455f09ea2fccbe3d88252`
+
+`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
+
+`UNRESOLVED_REPOSITORY_MISSING_PROOF = 1`
+
+Blocking row:
+`restart_burst_limit`.
+
+The other evidence-quality findings remain non-blocking:
+1. artifact digest is Python-build-bound;
+2. `harness_input_tree_digest` omits directly exercised production paths and is not standalone production-byte proof.
+
+The old prepared PASS reception must not be used as current authority. Current routing is the restart-burst proof-only repair plus targeted Astra recheck.
 
 Still:
 - `P14D_PROMOTION_READY = FALSE`;
