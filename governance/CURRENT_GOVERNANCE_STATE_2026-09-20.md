@@ -60,7 +60,7 @@ Resolve live HEAD rather than copying a stale self-reference.
 
 `GATE_A_V3_TARGET_HOST_ELIGIBILITY = REJECTED_BY_NEW_REAL_DEFECT`
 
-`CORRECTIVE_GATE_A_V4_REQUIRED = TRUE`
+`CORRECTIVE_GATE_A_V4_REQUIRED = CLOSED / V4_REPOSITORY_PASS`
 
 Frozen candidate:
 `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
@@ -82,7 +82,7 @@ Blue final disposition:
 
 `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
 
-`TARGET_HOST_READY = FALSE / PENDING_FINAL_V4_INDEPENDENT_REVIEW_AND_BLUE_DISPOSITION`
+`TARGET_HOST_READY = FALSE / GATE_B_NOT_EXECUTED`
 
 `GATE_B = NOT_STARTED`
 
@@ -94,9 +94,9 @@ Gate A PASS must not be promoted into any stronger statement above.
 
 ## 4. Active mission
 
-`MISSION = TARGET-HOST QUALIFICATION / FINAL RODAGE ENTRANCE`
+`MISSION = HYBRID P0 QUALIFICATION CLOSURE + TARGET-HOST GATE B PREPARATION`
 
-`STATUS = EXECUTED / FAILED_REAL_DEFECT / BUILDER_CORRECTION_REQUIRED`
+`STATUS = V4_REPOSITORY_PASS / FAULT_MATRIX_INDEPENDENT_REVIEW_OPEN / GATE_B_PREPARED_NOT_EXECUTED`
 
 Mission handoff:
 `handoff/BLUE_TARGET_HOST_QUALIFICATION_MISSION_2026-09-20.md`
@@ -210,13 +210,13 @@ First:
 - verify live Blue HEAD and current repository deltas.
 
 Then:
-- treat the target-host effective-unit-digest instability finding as current blocking evidence;
-- dispatch/complete the corrective Builder mission from the exact frozen implementation baseline;
-- require exact-head CI, independent Astra reproduction/review and a new Blue disposition before any new target-host start;
-- preserve the failed target-host evidence and do not rematerialize/re-authorize v3 to make it appear clean;
-- do not reopen unrelated Gate A findings without new contradictory evidence;
+- treat Gate A v4 repository correction as CLOSED/PASS only for exact candidate `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- verify the live independent fault-matrix review branch and receive its final evidence before hybrid-method promotion;
+- keep fixed P14D authoritative until an explicit Blue superseding amendment commit exists;
+- keep the prepared Gate-B/t0 operator pack non-executable until hybrid promotion and explicit Blue activation;
+- preserve the failed v3 target-host evidence as historical REAL_DEFECT evidence and never rematerialize/re-authorize v3 to make it appear clean;
 - do not start Product integration without explicit Blue decision;
-- do not declare t0, P14D proof, Gate B completion or capital authorization by implication.
+- do not declare target-host readiness, Gate B, t0, Gate C, P14D replacement or capital authorization by implication.
 
 ## 11. Current governance verdict
 
@@ -232,7 +232,7 @@ Then:
 
 `DEFAULT_BRANCH_MIGRATION = EXECUTED / VERIFIED`
 
-`ACTIVE_FRONTIER = INDEPENDENT_GATE_A_V4_AUDIT + P14D_HYBRID_METHOD_REVIEW`
+`ACTIVE_FRONTIER = INDEPENDENT_HYBRID_FAULT_MATRIX_REVIEW + HYBRID_PROMOTION_READINESS + GATE_B_PREPARATION`
 
 Corrective Builder dispatch:
 - branch: `builder/p0-effective-unit-digest-stability-v4-2026-09-20`;
@@ -452,3 +452,56 @@ Still not established:
 - real-capital authority.
 
 The remaining pre-promotion repository blocker is the separate final Gate-A hybrid fault matrix.
+
+
+## 19. Current frontier override — 2026-09-21
+
+This section is the latest routing override for any stale historical language above.
+
+Exact V4 candidate:
+`blue/p0-gate-a-v4-frozen-2026-09-20@4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`.
+
+Repository disposition:
+`GATE_A_V4_REPOSITORY_DISPOSITION = PASS`.
+
+Independent V4 audit:
+`astra/p0-gate-a-v4-independent-audit-2026-09-20@afe25984b0ddd261fda143d858106c3c71e45149`.
+
+Exact-head audit runs:
+- `35545297473 = SUCCESS`;
+- `35545297451 = SUCCESS`.
+
+Codex fault-matrix package:
+- delivery `686f77a383fb0e8c7ecd1b4a737585bedb544701`;
+- final checkpoint `e5c4c720e758cd8ab3f0e04faf541b26e204be16`;
+- exact-head runs `35544777822 = SUCCESS`, `35545784230 = SUCCESS`;
+- Blue reception = `PASS_FOR_INDEPENDENT_REVIEW`.
+
+Independent fault-matrix review branch:
+`astra/p0-hybrid-fault-matrix-independent-review-2026-09-21`.
+
+Mission dispatch SHA:
+`2f6c134f1202c6e22943638379be4e3435ecded0`.
+
+Current blocker:
+`FINAL_INDEPENDENT_FAULT_MATRIX_REVIEW = OPEN`.
+
+Exact V4 repository identity already bound:
+- Git tree `4d15ef6f471213ee6ab56337b555d2906ef9bf16`;
+- verified input-tree digest `sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2`;
+- exact-head verification artifact id `10612758620`;
+- artifact archive digest `sha256:06c690203d589e389847cd345809480da2b99254fe7fd7f38b82c6bf5d54659a`.
+
+Prepared but NON-AUTHORITATIVE operator pack:
+- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`;
+- `governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- Red Team review `governance/BLUE_GATE_B_T0_OPERATOR_PACK_ADVERSARIAL_REVIEW_2026-09-21.md`.
+
+Current safety state:
+- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`;
+- `TARGET_HOST_READY = FALSE`;
+- `GATE_B = NOT_STARTED`;
+- `t0 = NOT_DECLARED`;
+- `PRODUCT_INTEGRATION = PAUSED`;
+- `REAL_CAPITAL_AUTHORIZED = FALSE`.
