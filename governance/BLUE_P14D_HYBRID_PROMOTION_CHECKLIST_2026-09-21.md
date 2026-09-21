@@ -83,8 +83,8 @@ Before promotion Blue must bind one coherent lineage:
 - [ ] final repaired qualification-evidence SHA/run;
 - [ ] targeted independent restart-burst recheck SHA/run;
 - [ ] Blue final fault-matrix disposition SHA;
-- [ ] acquisition-critical fingerprint closure;
-- [ ] applicable source-calendar authority version.
+- [x] acquisition-critical fingerprint closure — bound by `governance/BLUE_P0_FINGERPRINT_AND_SOURCE_CALENDAR_BINDING_2026-09-21.md`;
+- [x] applicable source-calendar authority version — SEC EDGAR 2026 bound to frozen V4 blob `b4fbd58b381e01ec882b60386cf73d4017e7db5c`.
 
 No moving branch name alone is admissible.
 
