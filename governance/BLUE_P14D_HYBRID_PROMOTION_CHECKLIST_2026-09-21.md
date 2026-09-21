@@ -96,8 +96,8 @@ No moving branch name alone is admissible.
 - [ ] reconcile candidate amendment with Astra final findings;
 - [ ] ensure no current authority still requires a property omitted by the hybrid rule;
 - [ ] prepare atomic current-state updates that replace fixed P14D as active;
-- [ ] prepare post-qualification surveillance state;
-- [ ] prepare explicit rollback/reopen semantics.
+- [x] prepare post-qualification surveillance state — candidate amendment §8 defines `P0_POST_QUALIFICATION_SURVEILLANCE = ACTIVE` after Gate D;
+- [x] prepare explicit rollback/reopen semantics — candidate amendment §8 requires new Blue disposition and allows later defects to reopen eligibility without rewriting historical qualification.
 
 ## F. Target-host operational readiness for later Gate B
 
