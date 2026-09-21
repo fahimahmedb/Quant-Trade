@@ -2,285 +2,272 @@
 
 ## 0. Purpose
 
-This checkpoint resumes Blue/Mission-Control governance from the current durable repository state after:
+This is the current durable Blue/Mission-Control checkpoint after:
 
-- completion of the two bounded Gate-B run-authority repair lanes;
-- Blue integration of those repairs;
-- start of the independent Astra recheck;
-- addition and completion of the Antigravity Product-prestage Builder lane.
+- R1 M1/M2/M3 repair completion;
+- R2 M4 repair completion;
+- Blue integration of both repair lanes;
+- final independent Astra recheck;
+- final Antigravity Product-prestage delivery;
+- current F11 blocker identification.
 
 This checkpoint is non-authorizing.
 
 ```text
+TARGET_HOST_READY = FALSE
 GATE_B_MUTATION_AUTHORIZED = FALSE
 GATE_B = NOT_STARTED
 GATE_B_PASS_DECLARED = FALSE
 t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
-TARGET_HOST_TOUCHED_BY_THIS_CHECKPOINT = FALSE
 ```
 
 ## 1. Current Blue authority
 
-Blue branch before this checkpoint:
+Current Blue branch:
 
-`blue/master-v2-2026-09-20@cadf9d71090dee27798c5fd61677aa728faafb16`
+`blue/master-v2-2026-09-20`
 
-Exact-head CI:
+Latest compact restart surface:
 
-`35599420283 = COMPLETED / SUCCESS`
+`handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
 
-Blue remains the sole project governance/integration authority.
+The last fully observed Blue checkpoint before this governance refresh was:
 
-## 2. Gate-B run-authority repair state
+`51981f490a4d51b969ab5694c9480a417c7f0418`
 
-### R1 — M1/M2/M3
+with exact-head CI:
 
-Builder:
+`35603155680 = COMPLETED / SUCCESS`
+
+Resolve the current live Blue HEAD before acting because this checkpoint update itself advances the branch.
+
+## 2. Completed Gate-B run-authority repair lanes
+
+R1:
 
 `builder/gate-b-run-authority-m1-m3-repair-2026-09-21@2d2ff4e32f239fb7ef41d9e44745005f5f5fb44a`
 
-Exact-head CI:
+CI:
 
 `35594389110 = COMPLETED / SUCCESS`
 
-### R2 — M4
-
-Builder:
+R2:
 
 `builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21@e19f45709b9e0c2a6d6d22c4d666b701a5bced86`
 
-Exact-head CI:
+CI:
 
 `35596726936 = COMPLETED / SUCCESS`
 
-### Integrated candidate
+Integrated audit candidate:
 
 `blue/gate-b-run-authority-repair-integration-2026-09-21@644da76eb0227be275b8e3448118dac0cc7096ca`
 
-Exact-head CI observed green:
+CI:
 
 - `35598077120 = COMPLETED / SUCCESS`
 - `35598816973 = COMPLETED / SUCCESS`
 
-Blue accepted this object only as an Astra audit candidate, not as Gate-B authority.
+The integrated candidate is not current Gate-B authority because the independent Astra recheck found F11.
 
-## 3. Astra independent recheck — current live state
+## 3. Final independent Astra recheck
 
-Assigned branch:
+Branch:
 
 `astra/gate-b-run-authority-mechanisms-recheck-2026-09-21`
 
-Audited object remains exactly:
+Final Astra HEAD:
 
-`644da76eb0227be275b8e3448118dac0cc7096ca`
+`41c3f291f46b7b5849bdb702c09ccefbeecde691`
 
-The Astra branch currently descends from that object and contains only Astra mission/audit/test material.
+Final handoff:
 
-Latest observed Astra HEAD at this checkpoint:
+`handoff/ASTRA_GATE_B_RUN_AUTHORITY_MECHANISMS_RECHECK_2026-09-21.md`
 
-`64457e10ea7294e1796a47ee85abf4d47629862a`
+Verdict:
 
-Latest exact-head workflow:
+`ASTRA_GATE_B_RUN_AUTHORITY_REVIEW = BLOCKED_REAL_DEFECT_LOCK_PATH_IDENTITY`
 
-`35602729254 = COMPLETED / FAILURE`
+`PASS_REPOSITORY_EVIDENCE = NOT_ESTABLISHED`
 
-The failure is not a Builder regression-suite noise signal. The independent Astra probe currently reproduces a new repository-level exclusivity defect:
+Independent matrix result:
+
+- A1-A10: GREEN / NON_ISSUE after repair;
+- F11: REAL_DEFECT;
+- no second repository blocker independently established.
+
+Final Astra workflow:
+
+`35603191803 = COMPLETED / FAILURE`
+
+The failure is deliberate audit evidence: the F11 negative control remains RED.
+
+Astra is stopped and has returned control to Blue.
+
+## 4. F11 — current sole repository blocker from this review
+
+Finding:
+
+`F11 = REAL_DEFECT / LOCK_PATH_IDENTITY`
+
+Affected implementation:
+
+`scripts/quant_gate_b_runctl.py :: Registry._locked()`
+
+Independent reproduction establishes that replacing the lock pathname while another process holds the original lock inode can split the intended exclusivity domain.
+
+Observed independent acquisition time after pathname replacement:
+
+`0.000036s`
+
+Required property:
+
+registry mutation authority must serialize on one stable lock identity or fail closed when identity is ambiguous.
+
+Current disposition:
 
 ```text
-REAL_DEFECT:
-lock pathname replacement created a second independently-lockable inode
-```
-
-Observed assertion:
-
-`elapsed = 3.5834e-05s < required 2.0s`
-
-Interpretation: while one process retains the original lock inode, replacement of the lock pathname allows a second process to acquire an exclusive lock on a different inode. Therefore pathname identity is not currently stable enough to prove one shared exclusivity domain.
-
-Blue disposition at this checkpoint:
-
-```text
-ASTRA_RECHECK_FINAL_HANDOFF_RECEIVED = FALSE
+F11_REPAIR_REQUIRED = TRUE
 PASS_REPOSITORY_EVIDENCE = FALSE
 CURRENT_INTEGRATED_RUN_AUTHORITY_ACCEPTED_FOR_GATE_B = FALSE
-LIKELY_NEW_REPAIR_REQUIRED = TRUE
 ```
 
-Blue must wait for Astra's final handoff/classification before issuing the exact repair mission, unless the Astra branch is explicitly stopped with this finding as its final result.
+## 5. Non-reopened work
 
-This finding does NOT reopen F1, F5, or completed V4 prestage work.
+F1 evidence-schema false-PASS:
 
-## 4. Antigravity Product-prestage Builder
+`REOPENED = FALSE`
 
-Blue allocated a separate non-runtime Product-prestage lane:
+F5 Route-1 host feasibility:
+
+`operator/gate-b-f5-route1-host-evidence-closure-2026-09-21@17d692beaa8013101670c0c0164c9bb204f471d9`
+
+`F5_ROUTE1_HOST_EVIDENCE = PASS_ROUTE1_FEASIBLE`
+
+V4 materialization / activation prestage:
+
+`builder/gate-b-v4-materialization-activation-prestage-2026-09-21@478735d5924df8bc79777b837e710c9083817512`
+
+`GATE_B_ACTIVATION_PRESTAGE = READY_FOR_BLUE_REVIEW`
+
+A1-A10 are not reopened by default. Recheck them only as non-regression evidence after F11 repair.
+
+## 6. Antigravity Product prestage
+
+Branch:
 
 `parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21`
 
-Dispatch checkpoint:
-
-`0455ae9955fc1e74c9d83ab625a99a619e676817`
-
-Antigravity final delivery:
+Final delivery:
 
 `568eea1e028302e14f96a06eb2515bb89aa73ad4`
 
-Changed path above dispatch:
+Handoff:
 
-- `handoff/ANTIGRAVITY_POST_P0_VERTICAL_SHADOW_LOOP_DESIGN_2026-09-21.md`
+`handoff/ANTIGRAVITY_POST_P0_VERTICAL_SHADOW_LOOP_DESIGN_2026-09-21.md`
 
-No Product implementation code was changed by this lane.
-
-Antigravity status:
+Status:
 
 `ANTIGRAVITY_VERTICAL_PRESTAGE = READY_FOR_BLUE_REVIEW`
 
-Blue reception:
+Blue accepts it as planning input only.
 
-```text
-ANTIGRAVITY_PRESTAGE_RECEIVED = TRUE
-ANTIGRAVITY_DESIGN_ACCEPTED_AS_PLANNING_INPUT = TRUE
-PRODUCT_IMPLEMENTATION_AUTHORIZED_BY_THIS_RECEPTION = FALSE
-PRODUCT_INTEGRATION = PAUSED
-```
+Accepted future Product rules:
 
-## 5. Blue decisions on the Antigravity packet
+1. Research -> Economic mapping is fail-closed.
+2. `FINAL_SIZE = min(ECONOMIC_MARGIN_SIZE, DESK_LIFECYCLE_CAP)`.
+3. Research `VALIDATED` does not auto-promote directly to `SHADOW`.
+4. Desk `ExecutionModel.fill` remains the single shadow-fill implementation feeding Book mutation.
+5. Preserve one durable provenance chain from Forward through Learning.
 
-Blue accepts the following Product-design rules for the future first vertical shadow loop.
-
-### D1 — Research -> Economic mapping
-
-Decision:
-
-`FAIL_CLOSED`
-
-A Research result may feed the Economic layer only when it can be mapped faithfully to the frozen economic coordinate with explicit provenance.
-
-Do not invent or heuristically manufacture an `EffectEstimate` merely to keep the path moving.
-
-If the required coordinate-compatible estimate is unavailable:
-
-`NO_TRADE / EFFECT_ESTIMATE_ON_FROZEN_COORDINATE_UNAVAILABLE`
-
-### D2 — SIZE authority composition
-
-Decision:
-
-```text
-FINAL_SIZE = min(ECONOMIC_MARGIN_SIZE, DESK_LIFECYCLE_CAP)
-```
-
-Economic margin sizing determines the requested opportunity allocation.
-
-The Desk lifecycle allocation remains an absolute ceiling.
-
-Portfolio Risk remains an independent downstream veto/throttle.
-
-Zero remains a valid size.
-
-### D3 — SHADOW promotion authority
-
-Decision:
-
-Research validation alone must not auto-promote a strategy to `SHADOW`.
-
-Required order:
-
-```text
-RESEARCH_VALIDATED
--> ELIGIBLE_FOR_ECONOMIC_ASSESSMENT
--> ECONOMIC_CONTINUE
--> DESK / SIZE / RISK
--> SHADOW EXECUTION PATH
-```
-
-A scientific validation result is evidence, not capital authority.
-
-### D4 — execution consistency
-
-Accepted design constraint:
-
-- the economic opening/cost model supplies economic assumptions;
-- `ExecutionModel.fill` remains the sole shadow-fill implementation that can feed Book mutation;
-- research/economic execution assumptions must be checked against the Desk execution model before a positive-size path is accepted.
-
-### D5 — durable provenance
-
-Accepted design constraint:
-
-The first vertical loop must preserve a deterministic provenance chain from:
-
-`ForwardObservation -> ResearchTicket -> EconomicAssessment -> OpportunityTicket -> DeskJournal -> Ledger -> LearningStore`
-
-No second Book or parallel execution ledger is authorized.
-
-## 6. Product lane timing
-
-Antigravity has completed its current mission.
-
-Do not ask it to implement the vertical loop yet on the qualifying P0 path.
-
-The future bounded Builder mission remains:
+Future Product implementation remains parked at:
 
 `builder/post-p0-first-vertical-shadow-loop-2026-09-21`
 
-Its intended minimum proof remains:
-
-```text
-one source observation
--> one research ticket / explicit claim
--> one VET disposition
--> one economic assessment
--> one SIZE/RISK result
--> one shadow fill OR legitimate NO_TRADE
--> one persistent Book transition
--> one durable Learning/Memory outcome
-```
-
-Implementation stays isolated from the qualifying P0 runtime and is not authorized by this checkpoint.
+No Product implementation is authorized by this checkpoint.
 
 ## 7. Immediate project order
 
-### Critical rail — now
+Current owner:
 
-1. Astra completes the independent run-authority recheck and writes its final handoff.
-2. Blue receives the exact final Astra classification.
-3. If the lock-path exclusivity finding remains `REAL_DEFECT`, Blue dispatches one bounded repair mission for that defect only plus any other new Astra blockers in the same final handoff.
-4. Builder repairs without reopening already-closed F1/F5/V4 work.
-5. Blue integrates the repair only after exact-head green CI.
-6. Astra independently rechecks the repaired object.
-7. Only after `PASS_REPOSITORY_EVIDENCE` may Blue return to the Gate-B activation path.
+`BLUE`
 
-### Product rail — queued
+Current next action:
 
-Antigravity design is accepted as planning input and parked.
+`DISPATCH_BOUNDED_F11_REPAIR`
 
-No broad Product architecture program is authorized.
+Recommended repair branch:
 
-When Product work is allowed, implement only the first end-to-end vertical shadow slice and let observed economic bottlenecks determine subsequent work.
+`builder/gate-b-f11-lock-identity-repair-2026-09-21`
 
-## 8. Explicit non-reopened state
+At the time of this checkpoint, that branch does not exist.
+
+Required scope:
+
+- `scripts/quant_gate_b_runctl.py`;
+- F11-specific tests;
+- handoff;
+- mechanical proof inventory only if required.
+
+Required sequence:
 
 ```text
-F1_SCHEMA_REPAIR_REOPENED = FALSE
-F5_ROUTE1_FEASIBILITY_REOPENED = FALSE
-V4_MATERIALIZATION_PRESTAGE_REOPENED = FALSE
-TARGET_HOST_TOUCHED = FALSE
+BLUE F11 DISPATCH
+-> Builder repair
+-> exact-head CI SUCCESS
+-> BLUE integration/reception
+-> independent ASTRA F11 + A1-A10 non-regression recheck
+-> PASS_REPOSITORY_EVIDENCE
+-> possible return to Gate-B activation path
+```
+
+Builder may not self-certify repository PASS.
+
+## 8. Current Product / Gate separation
+
+Antigravity planning must not be used to imply:
+
+- Gate-B readiness;
+- target-host readiness;
+- t0;
+- Product merge into qualifying P0 runtime;
+- capital authority.
+
+The Product vertical-loop design remains a separate queued lane.
+
+## 9. Current authoritative state
+
+```text
+P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
+GATE_A_V4_REPOSITORY_DISPOSITION = PASS
+
+F11_REPAIR_REQUIRED = TRUE
+PASS_REPOSITORY_EVIDENCE = FALSE
+
+F1_REOPENED = FALSE
+F5_REOPENED = FALSE
+V4_PRESTAGE_REOPENED = FALSE
+A1_A10_REOPENED_BY_DEFAULT = FALSE
+
+TARGET_HOST_READY = FALSE
 GATE_B_MUTATION_AUTHORIZED = FALSE
 GATE_B = NOT_STARTED
+GATE_B_PASS_DECLARED = FALSE
 t0 = NOT_DECLARED
+
+ANTIGRAVITY_VERTICAL_PRESTAGE = COMPLETE / RECEIVED_BY_BLUE
 PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
-## 9. Return control
+## 10. Return control
 
-Current active authority:
+`RETURN_CONTROL_TO = BLUE_F11_DISPATCH`
 
-`RETURN_CONTROL_TO = ASTRA_RECHECK`
+Do not reconstruct current project authority from chat history alone.
 
-Parallel planning authority:
+Use GitHub durable state plus:
 
-`ANTIGRAVITY_VERTICAL_PRESTAGE = COMPLETE / RECEIVED_BY_BLUE`
-
-Blue remains ready to issue the next bounded repair only after Astra's final handoff freezes the complete defect set.
+`handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
