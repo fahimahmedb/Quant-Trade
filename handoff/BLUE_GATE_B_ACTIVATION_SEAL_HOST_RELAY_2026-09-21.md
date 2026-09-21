@@ -5,14 +5,10 @@
 Branch: `blue/gate-b-activation-seal-host-relay-2026-09-21`
 Mission HEAD (verified): `698bfaef347477bbfac154cfd7752ea4fdfe3da4`
 Mission-head CI: `35639080368` on `SEC P0 pre-t0 gate`, head_sha `698bfaef347477bbfac154cfd7752ea4fdfe3da4` —
-**status observed: `in_progress`** at last check (rechecked twice).
+**status: `completed` / conclusion: `success`** (confirmed on recheck).
 
-Per mission section 11, this is:
-
-`GATE_B_ACTIVATION_SEAL_PREP = WAITING_FOR_EXACT_HEAD_CI`
-
-Not a Gate-B defect, host defect, or reservation reopen. All read-only preparation below is
-complete; recheck CI 35639080368 before running the host relay in section 8.
+All read-only preparation is complete and the host-seal relay in section 8 is cleared to
+run.
 
 ## 1. Exact reserved run authority (verified, not re-reserved)
 
@@ -436,16 +432,14 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 
 ## 12. Final disposition
 
-Mission-head CI `35639080368` was `in_progress` at last check (recheck required before the
-owner runs the host relay in section 8):
-
-`GATE_B_ACTIVATION_SEAL_PREP = WAITING_FOR_EXACT_HEAD_CI`
-
-All read-only construction (governance digest inventory, machine activation template,
-broader Blue envelope, host-seal relay script) is complete and durable. Once CI 35639080368
-resolves `COMPLETED / SUCCESS`, this disposition becomes:
+Mission-head CI `35639080368` resolved `completed` / `success` on head_sha
+`698bfaef347477bbfac154cfd7752ea4fdfe3da4` (exact match to this mission's verified HEAD).
 
 `GATE_B_ACTIVATION_SEAL_PREP = READY_FOR_OWNER_HOST_SEAL_RELAY`
+
+The owner may now run the section 8 command block on the actual target host. It will abort
+before any write if any of the section 6 prechecks (host, boot, NTP, service, runctl blob,
+authority-storage identity, registry head, reservation, revocation epoch) has drifted.
 
 Safety state held throughout:
 
