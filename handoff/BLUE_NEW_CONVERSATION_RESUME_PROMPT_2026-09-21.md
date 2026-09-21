@@ -37,6 +37,28 @@ Before making any new decision:
 
 North Star remains the highest authority.
 
+## 0A. Alignment discipline — objective before gates
+
+Before dispatching or extending any mission, Blue must answer:
+
+`WHAT CONCRETE CAPABILITY TOWARD THE FIRST TRACEABLE ECONOMIC LOOP DOES THIS UNLOCK?`
+
+The first traceable economic loop is:
+
+`Forward -> Research -> Economic -> SIZE -> RISK -> FILLS -> BOOK -> Learning`
+
+Gate, CI, audit and infrastructure work remain necessary only where they protect or
+enable that system. They must not become self-perpetuating objectives.
+
+For every active mission, Blue must record:
+
+- `ECONOMIC_PROGRESS`: what concrete capability becomes possible;
+- `REMAINING_BLOCKER`: the exact missing proof/decision;
+- `EXIT_CONDITION`: the observable condition under which work on this subject stops.
+
+A new audit/challenge cycle is authorized only when it closes a named contradiction,
+safety defect or proof gap. "Make it more perfect" is not sufficient authority.
+
 ## 1. Global safety state
 
 Preserve unless later exact evidence and Blue governance explicitly change it:
@@ -104,12 +126,15 @@ Mission:
 
 FIRST BLUE ACTION ON RAIL A:
 
-- verify the Astra branch still resolves exactly to the expected mission HEAD, or
-  determine whether Astra has advanced it with audit material;
-- if audit is not started, tell Astra to resume the existing mission on that same
-  branch;
-- if audit is in progress, do not interfere;
-- if final handoff exists, inspect exact Astra HEAD + exact-head CI + verdict;
+- verify the Astra branch live HEAD and mission authority;
+- if the HEAD is unchanged and no durable checkpoint/final handoff exists, record
+  `ASTRA_ACTIVITY = UNKNOWN`; an unchanged remote HEAD does NOT prove the local
+  independent session has not started;
+- do NOT launch a second Astra session merely because the remote HEAD is unchanged;
+- Blue coordinates the already-authorized independent Astra mission; Blue must not
+  execute Astra's adversarial audit itself;
+- if a durable Astra checkpoint/final handoff exists, inspect exact Astra HEAD +
+  exact-head CI + verdict;
 - if PASS, receive it and proceed to the already-prepared Gate-B activation convergence
   pack;
 - if blocker, classify and route only the precise repair.
@@ -191,8 +216,13 @@ REAL_POSITIVE_RESEARCH_TO_ECONOMIC_PATH = NOT_YET_AVAILABLE
 
 FIRST BLUE ACTION ON RAIL B:
 
-prepare/dispatch the smallest scientific-estimator **specification closure**, not
-Product implementation.
+Before creating anything, refresh GitHub and search for any scientific-estimator
+specification mission/handoff created after this checkpoint.
+
+If one already exists, receive/verify it rather than duplicating it.
+
+Only if none exists, prepare/dispatch the smallest scientific-estimator
+**specification closure**, not Product implementation.
 
 It must resolve at least:
 
@@ -228,13 +258,35 @@ qualifying Form-4 events
 
 Do not invent this contract from convenient existing metrics.
 
-If material ambiguity remains after the specification is proposed, challenge the
-science specification before coding.
+Scientific specification EXIT CONDITION:
+
+The mission stops when it has produced all of the following:
+
+1. explicit scientific decisions for the first vertical slice;
+2. the exact first-slice scope;
+3. falsifiable acceptance criteria;
+4. explicitly deferred limitations;
+5. only blockers that genuinely prevent implementation.
+
+No further challenge is justified unless it cites a concrete contradiction in those
+artifacts or exact code.
+
+If material ambiguity remains after the specification is proposed, one bounded
+challenge may test those named ambiguities before coding.
 
 Owner preference:
 
 close science specification first, then freeze one coherent vertical build spec, then
 issue **ONE LARGE BOUNDED BUILD** rather than several small Product Builders.
+
+The ONE BIG BUILD must have:
+- one implementation owner;
+- one coherent specification;
+- internal verifiable milestones/checkpoints;
+- one final integration/handoff surface.
+
+Exception: a scientifically independent prerequisite may remain separate only when its
+proof must logically exist before Product integration can be evaluated.
 
 ## 3. Product architecture already resolved by Blue
 
@@ -298,8 +350,12 @@ may feed shadow fills into the Book.
 Economic opening/execution models are modelling inputs only.
 
 Cost consistency requires both:
-- pre-sizing model-envelope consistency;
-- post-sizing implied-participation consistency.
+- BEFORE sizing: verify the Research/Economic execution-cost model is not cheaper than
+  the authoritative Desk `ExecutionModel` for the declared participation envelope;
+- AFTER sizing and BEFORE fill: derive the actual implied participation from the final
+  sized notional/capacity and verify it remains inside that same cost-consistency
+  envelope;
+- any violation fails closed to NO_TRADE before `ExecutionModel.fill`.
 
 ### Evidence/PIT
 
@@ -391,6 +447,10 @@ RAIL_B_STATE =
 SCIENCE_SPEC_STATE =
 VERTICAL_LOOP_BUILD_SPEC =
 RAIL_B_NEXT =
+
+ECONOMIC_PROGRESS =
+REMAINING_BLOCKER =
+EXIT_CONDITION =
 
 TARGET_HOST_READY =
 GATE_B_MUTATION_AUTHORIZED =
