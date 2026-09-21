@@ -1,0 +1,122 @@
+{
+  "schema_version": "gate-b-evidence-v3",
+  "created_at_utc": "2026-09-21T12:00:00Z",
+  "gate_b_run_id": "synthetic-gate-b-schema-pass-0001",
+  "gate_b_attempt_number": 1,
+  "candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+  "git_tree": "4d15ef6f471213ee6ab56337b555d2906ef9bf16",
+  "verified_input_tree_digest": "sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2",
+  "activation_reference": "restricted://synthetic/gate-b/activation",
+  "activation_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "contract_reference": "governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_2026-09-21.md",
+  "contract_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "runbook_reference": "governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_2026-09-21.md",
+  "runbook_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "target_host_opaque_id": "synthetic-host-not-real-evidence",
+  "repository_ci_runs": [
+    35500000001
+  ],
+  "independent_review": {
+    "review_head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "verdict": "PASS",
+    "ci_runs": [
+      35500000002
+    ]
+  },
+  "time_authority": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "runtime_identity": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "mount_identity": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "systemd_identity": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "state_authority": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "single_writer_budget": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "fingerprint_materialization": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "filesystem_semantics": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "lifecycle_campaign": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "resource_baseline": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "evidence_retention": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "network_runtime_binding": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "sanitization": {
+    "verdict": "PASS",
+    "evidence_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "classification": "FACT",
+    "defect_classification": "NONE"
+  },
+  "synthetic_campaign_network_activity": {
+    "real_sec_requests_made": 0,
+    "verdict": "PASS",
+    "evidence_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "sub_artifacts": [
+    {
+      "name": "synthetic-structural-proof-record",
+      "digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "classification": "FACT",
+      "defect_classification": "NONE",
+      "restricted_reference": "restricted://synthetic/gate-b/sub-artifact-01",
+      "detail": "Synthetic schema fixture only; not Gate-B evidence."
+    }
+  ],
+  "artifact_manifest_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+  "overall_verdict": "PASS",
+  "t0_declared": false
+}
