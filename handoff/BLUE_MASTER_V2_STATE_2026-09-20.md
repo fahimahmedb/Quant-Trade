@@ -554,3 +554,45 @@ Still:
 - `TARGET_HOST_READY = FALSE`;
 - `t0 = NOT_DECLARED`;
 - `REAL_CAPITAL_AUTHORIZED = FALSE`.
+
+
+## S. RESTART-BURST PROOF REPAIR PREPARED — 2026-09-21
+
+Independent Astra fault-matrix verdict currently blocks promotion on one proof row:
+
+`restart_burst_limit = TEST_DEFECT -> MISSING_PROOF`.
+
+No frozen-V4 production REAL_DEFECT was reproduced.
+
+Blue proof-repair specification:
+`governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`.
+
+Prepared Builder branch:
+`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`.
+
+Exact predecessor:
+`builder/codex-p0-hybrid-fault-matrix-2026-09-21@e5c4c720e758cd8ab3f0e04faf541b26e204be16`.
+
+Builder mission dispatch commit:
+`6f0ca1d858d6937dc8199cc1690dce049ddb79a6`.
+
+Required independent oracle:
+`EXPECTED_RESTART_BURST_LIMIT = 5` from Blue specification, never derived from production.
+
+Mandatory sensitivity:
+- launcher-only 5->4 = RED;
+- unit-only 5->4 = RED;
+- simultaneous launcher+unit 5->4 = RED.
+
+Current routing:
+- do not use the later known-bad replay branch as repair base;
+- do not advance to Gate B;
+- after Builder exact-head delivery, run a targeted Astra recheck only;
+- hybrid promotion remains blocked until that independent recheck closes.
+
+Safety:
+`P14D_PROMOTION_READY = FALSE`
+`TARGET_HOST_READY = FALSE`
+`GATE_B = NOT_STARTED`
+`t0 = NOT_DECLARED`
+`REAL_CAPITAL_AUTHORIZED = FALSE`.
