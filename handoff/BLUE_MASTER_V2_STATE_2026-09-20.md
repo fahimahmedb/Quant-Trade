@@ -893,3 +893,23 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
 Live SHA/CI always overrides embedded checkpoint status after verification.
+
+
+## FINAL LIVE BLUE OVERRIDE — 2026-09-21
+
+Authoritative current checkpoint:
+
+`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` section 16.
+
+Rail A has advanced from integration-wait to independent audit dispatch:
+
+`ASTRA_F11_RECHECK_AUTHORIZED = TRUE`
+
+`EXPECTED_ASTRA_MISSION_HEAD = 15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+
+Rail B scientific prestage has completed with:
+
+`SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
+
+The Product large-build specification remains unfrozen pending exact scientific-estimator
+specification closure.
