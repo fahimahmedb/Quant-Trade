@@ -90,15 +90,57 @@ class GateBLockPathIdentityRepairTests(unittest.TestCase):
             self.h.registry.lock.write_bytes(b"replacement")
             replacement = os.lstat(self.h.registry.lock)
             self.assertNotEqual((original.st_dev, original.st_ino), (replacement.st_dev, replacement.st_ino))
-            started = time.monotonic()
             with self.assertRaises(runctl.AuthorityError):
                 with self.h.registry._locked():
                     self.fail("replacement inode must never become a valid mutation domain")
-            elapsed = time.monotonic() - started
-            self.assertGreaterEqual(elapsed, 0.75)
+            # Immediate fail-closed is valid: prove the original inode is still
+            # locked by process A when the replacement is rejected.
+            self.assertIsNone(proc.poll())
         finally:
             proc.wait(timeout=5)
             self.assertEqual(proc.returncode, 0, proc.stderr.read())
+
+    def test_replacement_while_waiting_is_rejected_after_holder_releases(self):
+        self.h.initialize()
+        proc = self._holder()
+        child = r"""
+import importlib.util, pathlib, sys
+root=pathlib.Path(sys.argv[1])
+registry_path=pathlib.Path(sys.argv[2])
+checkout=pathlib.Path(sys.argv[3])
+spec=importlib.util.spec_from_file_location("f11_wait_runctl", root/"scripts"/"quant_gate_b_runctl.py")
+m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
+r=m.Registry(registry_path, checkout)
+try:
+    with r._locked():
+        print("ENTERED", flush=True)
+except Exception as exc:
+    print("REJECTED:"+type(exc).__name__+":"+str(exc), flush=True)
+"""
+        waiter = subprocess.Popen(
+            [sys.executable, "-c", child, str(ROOT), str(self.h.registry_path), str(self.h.checkout)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            # Give B time to validate the original identity and block on flock.
+            time.sleep(0.20)
+            self.h.registry.lock.unlink()
+            self.h.registry.lock.write_bytes(b"replacement-while-waiting")
+            proc.wait(timeout=5)
+            line = waiter.stdout.readline().strip()
+            waiter.wait(timeout=5)
+            self.assertTrue(line.startswith("REJECTED:AuthorityError:"), line)
+            self.assertNotIn("ENTERED", line)
+            self.assertEqual(waiter.returncode, 0, waiter.stderr.read())
+        finally:
+            if proc.poll() is None:
+                proc.wait(timeout=5)
+            if waiter.poll() is None:
+                waiter.kill()
+                waiter.wait(timeout=5)
+
 
     def test_stable_real_process_contention_serializes_normally(self):
         self.h.initialize()
