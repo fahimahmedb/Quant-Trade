@@ -70,18 +70,35 @@ MINIMUM_ECONOMICALLY_USEFUL_EFFECT (net, after all of the above) =
 ## 6. Power derivation (mandatory)
 
 ```text
-EFFECT_ASSUMED            =
-VARIANCE_ASSUMED          =
-INDEPENDENT_UNIT_DEFINITION =
-DEPENDENCE_TREATMENT      =
-INDEPENDENT_UNITS_PER_MONTH =
-UNITS_REQUIRED            =
-IMPLIED_TIME_TO_DECISION  =
+INDEPENDENT_UNIT          = one non-overlapping holding-period return of the
+                            executable portfolio (fixed by §3, not chosen here)
+IR_NET_ANN_ASSUMED        =   (annualised, AFTER all §5 frictions)
+IR_JUSTIFICATION          =   (IC assumed, breadth, residual correlation)
+IMPLIED_TIME_TO_DECISION  = (2.97 / IR_NET_ANN)^2 years
+POWER_SOURCE              = FORWARD_ONLY | PREREGISTERED_PIT_HISTORY | BOTH
+PIT_WINDOW (if used)      =   (declared before any look)
 ```
 
-`IMPLIED_TIME_TO_DECISION` is the lane's honest speed claim. If it is not
-materially shorter than `FORM4_CONFIRMATORY_V1`, the lane has no reason to
-exist and must not be admitted.
+Breadth is not sample size. Do not enter a units-per-month term; it cancels.
+
+Admission test: `IMPLIED_TIME_TO_DECISION` must be materially shorter than
+`FORM4_CONFIRMATORY_V1`. Forward-only lanes need `IR_NET_ANN >= ~1.5` to clear
+it — if the lane cannot honestly claim that, it must buy its power from
+pre-registered point-in-time history or it is not admissible.
+
+## 6b. Search accounting (mandatory, binds the digest)
+
+```text
+DATA_CUTOFF     =
+SEARCH_DEPTH    =   (count of variants inspected on data before cutoff)
+UNIVERSE_FILE_HASH =
+PARAMETER_FILE_HASH =
+LANE_SIGNATURE  = (universe hash, signal family, horizon bucket, side)
+ANCESTOR_SIGNATURE (if a re-test) =
+```
+
+The bid is multiplied by `SEARCH_DEPTH`. Undeclared inspection of post-cutoff
+data voids the lineage.
 
 ## 7. Stopping rule and looks
 
@@ -108,7 +125,9 @@ F3 =
 ## 9. Forward confirmation
 
 Even with a clean point-in-time reconstruction, a forward shadow/paper window
-is required before any exposure above `PAPER`.
+is required before any exposure above `PAPER`. Where `POWER_SOURCE` is
+point-in-time history, the forward window is a one-sided falsifier only: it can
+kill the lane, it cannot be re-used as independent qualification.
 
 ```text
 FORWARD_WINDOW_LENGTH =

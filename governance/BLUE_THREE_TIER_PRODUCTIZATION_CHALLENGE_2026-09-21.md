@@ -136,11 +136,19 @@ the behaviour behind `LIVE_CANARY` (broker adapter, kill-switch, realized-fill
 reconciliation) exists yet. Enumerating it in code now would assert a
 capability the system does not have.
 
-## 5. Open decisions for the project owner
+## 5. Decisions — RESOLVED 2026-09-21
 
-1. Confirm the T1 gate: does the fast lane start at t0, or at Rail-B
-   integration, whichever is later? (This packet assumes *later of the two*.)
-2. Confirm the family-wise budget for concurrent lanes (§3 of the registry
-   proposes 3 concurrent, alpha budget split at admission).
-3. Confirm that no step past `PAPER` may be taken without a dated authorization
-   artifact signed by the owner. (This packet assumes yes.)
+All three decisions listed here were taken after two independent adversarial
+reviews, which also produced a blocking correction to this document's own §2
+speed formula. See
+`governance/BLUE_THREE_TIER_ADVERSARIAL_REVIEW_DECISIONS_2026-09-21.md`.
+
+```text
+D1 Phase-1 gate            = RAIL_B_VERTICAL_INTEGRATED alone (not later-of)
+D2 concurrent lanes        = 2, mFDR 0.05 alpha-investing (not 3, not FWER)
+D3 authorization past PAPER= mandatory, expiring, enforcement owner-manual
+D4 source change now       = none; specified for after Rail-B integration
+```
+
+Note on §2 C2 above: the conclusion stands, the formula was wrong. Speed is
+`t(T) = IR_NET_ANN * sqrt(T_years)`; breadth is not sample size.

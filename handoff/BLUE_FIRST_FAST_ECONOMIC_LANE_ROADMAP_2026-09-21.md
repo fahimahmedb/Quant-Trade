@@ -22,7 +22,14 @@ unfilled pre-registration, touching Form-4 parameters, any real exposure.
 
 ## Phase 1 — Production-as-shadow
 
-Gate: `t0 DECLARED` **and** `RAIL_B_VERTICAL_INTEGRATED`, whichever is later.
+Gate: `RAIL_B_VERTICAL_INTEGRATED` **alone** (decided 2026-09-21).
+
+Phase 1 exercises `clock.py`, `desk/` and `book/` only. Rail A's t0 qualifies
+Form-4 *capture*, and gating runtime continuity on a currently blocked data item
+would park weeks of evidence behind it. Worse, the continuity evidence is
+exactly what should exist *before* t0 declares a capture cursor that must not be
+replayed twice. Form-4 accrual stays gated on `t0 DECLARED`; only Phase 1 is
+decoupled.
 
 ```text
 Quant runs continuously in paper/shadow
@@ -36,7 +43,9 @@ attribution.
 
 ## Phase 2 — Admit FAST_VERTICAL_V1
 
-Gate: Phase 1 exit criteria met.
+Gate: Phase 1 exit criteria met **and** `t0 DECLARED` (the later-of gate is
+retained here, where it belongs: admitting a competing lineage while Form-4
+accrual has not started would put the two lineages in schedule conflict).
 
 ```text
 1  fill the pre-registration template in full
@@ -52,16 +61,37 @@ this step is cheap and is the intended filter.
 
 ## Phase 3 — Execution-realism instrument
 
-Runs in parallel with Phase 2 accrual, and depends on no research outcome.
+`SIZE = 6-10 BUILDER_WEEKS + INDEPENDENT_REVIEW`
+`CLASSIFICATION = QUARTER_SCALE_WORKSTREAM, NOT A PARALLEL SIDE-QUEST`
+`OWNER = UNASSIGNED`
+
+An earlier draft priced this as one bullet of four and ran it in parallel with
+Phase 2. Both were wrong: that would be a third workstream under a cap of two,
+and the sizing was off by an order of magnitude.
 
 ```text
-build  kill-switch · daily-loss cap · position and notional caps
-build  expected-vs-realized fill reconciliation, recorded per order
-build  decay monitor per sleeve
-then   a LIVE_CANARY becomes technically possible
+kill-switch + latched caps          ~3-5 days   (restart-safe latch + replay test)
+post-session invariant recompute    ~3-5 days   (prerequisite for all demotion)
+ORDER_INTENT_RECORD                 ~3-5 days   (implementable now, useful in paper)
+REALIZED_FILL_INGEST + reconcile    ~2-4 weeks  (needs a broker adapter: none exists)
+per-sleeve decay monitor            ~2-3 weeks  (mostly research-integrity design)
 ```
 
-Until all four exist, `LIVE_CANARY` is unreachable regardless of evidence.
+`desk/execution.py` currently produces a single object that is simultaneously
+the expectation and the booked realization, and `journal.begin()` persists that
+same list as intent. There is nothing to reconcile against — the residual is
+identically zero by construction. So the requirement splits:
+
+```text
+ORDER_INTENT_RECORD   distinct from fill: reference price, expected slippage
+                      envelope, expected cost. Buildable now against execution.py.
+REALIZED_FILL_INGEST  broker adapter, partials, rejects, latency, tolerance
+                      policy tied to the lineage friction envelope. Out of scope
+                      until Phase 3 has a named owner.
+```
+
+Phase 3 starts only when a rail frees capacity. Until all of the above exist,
+`LIVE_CANARY` is unreachable regardless of evidence.
 
 ## Phase 4 — Exposure, only on independent proof
 
@@ -79,15 +109,24 @@ lineage QUALIFIED under its own stopping rule
 ## Honest timeline
 
 ```text
-weeks        Rail A + Rail B closed; Quant running 24/7 in shadow
+weeks        Rail B integrated; Quant running 24/7 in shadow (does not wait on t0)
 weeks        FAST_VERTICAL_V1 candidate proposed and power-tested
-1-3 months   first lanes FALSIFIED or INSUFFICIENT — the expected outcome
-6-18 months  plausible window for a first QUALIFIED fast lane, not guaranteed
+1-3 months   most candidates rejected AT ADMISSION on the power test alone —
+             the cheapest possible kill, and the expected outcome
+quarter      Phase 3 execution-realism build, once a rail frees capacity
+12-24 months plausible window for a first QUALIFIED fast lane, and only if it
+             draws power from pre-registered point-in-time history
 years        FORM4_CONFIRMATORY_V1 continues untouched in the background
 ```
 
 The `1-3 months` figure is a falsification horizon, not a qualification
 horizon. A quarter that kills three lanes cheaply is a successful quarter.
+
+The window widened from `6-18` to `12-24 months` because the corrected power law
+(registry §6) removes the speed the original plan expected from a wide
+cross-section. A forward-only fast lane needs net `IR >= ~1.5` to decide in
+~4 years, which is not a credible ask in crowded space. Point-in-time depth is
+now the only honest accelerator, and acquiring it is itself work.
 
 ## Invariants this roadmap must never break
 
@@ -97,6 +136,7 @@ horizon. A quarter that kills three lanes cheaply is a successful quarter.
 4. No real capital without a dated, expiring owner authorization.
 5. Demotion always precedes any further promotion.
 
-## Owner decisions still open
+## Decisions taken
 
-See §5 of `governance/BLUE_THREE_TIER_PRODUCTIZATION_CHALLENGE_2026-09-21.md`.
+All three formerly open decisions were resolved on 2026-09-21 after adversarial
+review. See `governance/BLUE_THREE_TIER_ADVERSARIAL_REVIEW_DECISIONS_2026-09-21.md`.

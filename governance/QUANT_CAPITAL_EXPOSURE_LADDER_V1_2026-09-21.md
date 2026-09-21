@@ -67,19 +67,37 @@ edge is a protocol violation.
 ## 4. Demotion
 
 Demotion is automatic, requires no authorization, and always executes before
-any further promotion anywhere in the system.
+any further promotion of the affected sleeve.
 
 ```text
 kill-switch fired                      -> immediate halt + SHADOW
 daily-loss cap breached                -> halt for session, review required
 realized frictions outside envelope    -> falsified on frictions -> SHADOW
 decay guard tripped on the lineage     -> one stage down
-restart/idempotency invariant violated -> whole desk to PAPER
 authorization artifact expired         -> one stage down
+restart/idempotency invariant violated -> HALT ALL SLEEVES; no sleeve may
+                                          promote until the invariant is
+                                          re-proven
 ```
 
-Absence of evidence of decay is not evidence of persistence. A sleeve with no
-live decay monitor may not hold a stage above `PAPER`.
+The last line is a halt, not a stage write. An earlier draft read "whole desk to
+`PAPER`", which contradicted §1 (the unit that occupies a stage is a sleeve,
+never the system) and would have performed a state mutation during exactly the
+condition in which state mutation is untrustworthy.
+
+Demotion is itself a Book mutation and carries its own deterministic
+`operation_id`, so a demotion written during a failed replay is not applied
+twice. A demotion is latched, never recomputed from current state.
+
+Each trigger above presumes a detector that does not exist yet. The prerequisite
+detector is a post-session invariant recompute (cash plus marked positions
+against NAV, `applied_operations` cardinality) raising a persistent fault.
+Without it these lines are intentions, not controls.
+
+**Operative safety today:** a sleeve with no live decay monitor may not hold a
+stage above `PAPER`. No decay monitor exists. `LIVE_CANARY` is therefore
+currently unreachable regardless of any evidence, and that is the intended
+state.
 
 ## 5. Authorization artifact
 
@@ -94,6 +112,12 @@ owner_signature
 ```
 
 Expiry is mandatory. An authorization without expiry is invalid.
+
+**Enforcing surface.** `clock.py::tick()` has no authorization scan and
+`ControlState` holds no authorization list, so nothing in the runtime can fire
+"authorization expired". Until that surface exists, expiry is **owner-manual**
+and this document says so rather than implying a control. Any expiring artifact
+added later must name the surface that enforces it.
 
 ## 6. Implementation note
 
