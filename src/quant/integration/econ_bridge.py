@@ -29,10 +29,17 @@ from ..economics.decision import EconomicVerdict, PortfolioInteraction, economic
 from ..economics.journal import (AssessmentRecord, EconomicAssessmentJournal,
                                  compute_input_fingerprint)
 from ..economics.recipe import MEUEResult
-from ..economics.states import CONTINUE, ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE
+from ..economics.states import (CONTINUE, KILL, NO_TRADE,
+                                ORDER_ELIGIBILITY_PORTFOLIO_CONSIDERATION_ELIGIBLE)
 from ..economics.theta import ThetaState
 from ..factory.strategies import StrategyRegistry
-from ..science.effect import ForwardConfirmationReceipt, ScientificEffectArtifact
+from ..learning.durable import DurableOutcomeStore
+from ..learning.durable import ECONOMIC_ASSESSMENT as LEARNING_ECONOMIC_ASSESSMENT
+from ..learning.durable import INSUFFICIENT as LEARNING_INSUFFICIENT
+from ..learning.durable import KILL as LEARNING_KILL
+from ..learning.durable import NO_TRADE as LEARNING_NO_TRADE
+from ..science.effect import (STRUCTURAL_INSUFFICIENT, ForwardConfirmationReceipt,
+                              ScientificEffectArtifact)
 from . import forward_adapter
 
 ADMITTED = "ADMITTED"
@@ -64,6 +71,28 @@ class AdmissionOutcome:
         return document
 
 
+def _record_admission_outcome(learning: DurableOutcomeStore | None, *, assessment_id: str,
+                              strategy_id: str, ticket_id: str, kind: str,
+                              status: str, reason: str,
+                              reason_codes: tuple[str, ...]) -> None:
+    """Durably record exactly one Learning outcome for one admission call.
+
+    ``processed_id`` is the assessment/refusal identity the boundary already
+    computed (``assessment_id``, for a resolved evaluation, or the refusal
+    identity seed for one that never resolved) -- the same identity
+    ``journal.record`` just durably accepted or NOOP'd, so a replay of the
+    same evidence lands an identical Learning NOOP rather than a duplicate.
+    A no-op when ``learning`` is not supplied.
+    """
+    if learning is None:
+        return
+    payload = {
+        "assessment_id": assessment_id, "strategy_id": strategy_id, "ticket_id": ticket_id,
+        "status": status, "reason": reason, "reason_codes": list(reason_codes),
+    }
+    learning.record(assessment_id, kind, payload)
+
+
 def assess_and_admit(
     *, journal: EconomicAssessmentJournal, strategies: StrategyRegistry, ticket_id: str,
     strategy_id: str, effect_artifact: ScientificEffectArtifact | None,
@@ -71,6 +100,7 @@ def assess_and_admit(
     capacity: CapacityOutcome | None = None,
     consistency: ResearchExecutionConsistency | None = None,
     forward_receipt: ForwardConfirmationReceipt | None = None, code_sha: str = "",
+    learning: DurableOutcomeStore | None = None,
 ) -> AdmissionOutcome:
     """Run the boundary once for one strategy and record the outcome durably.
 
@@ -94,13 +124,24 @@ def assess_and_admit(
         reason = forward_adapter.classify_effect_refusal(effect_artifact)
         assessment_id = forward_adapter.refusal_identity_seed(ticket_id, strategy_id,
                                                                effect_artifact)
+        reason_codes = (reason,) + (tuple(effect_artifact.reason_codes)
+                                    if effect_artifact is not None else ())
         record = AssessmentRecord(
             assessment_id=assessment_id, input_fingerprint=assessment_id,
             decision="ADMISSION_REFUSED", capital_order_eligibility="",
-            reason_codes=(reason,) + (tuple(effect_artifact.reason_codes)
-                                      if effect_artifact is not None else ()),
-            code_sha=code_sha, strategy_id=strategy_id)
+            reason_codes=reason_codes, code_sha=code_sha, strategy_id=strategy_id)
         journal.record(record)  # AssessmentConflict propagates: fail closed.
+        # The upstream science outcome -- STRUCTURAL_INSUFFICIENT
+        # ("INSUFFICIENT_CLUSTER_INFORMATION" in ``quant.science.effect``) --
+        # is recorded distinctly (LEARNING_INSUFFICIENT) rather than folded
+        # into the generic refusal kind: it is a different failure mode
+        # (evidence never existed) from a resolvable coordinate mismatch or
+        # an as-yet-unresolved coordinate.
+        kind = (LEARNING_INSUFFICIENT if STRUCTURAL_INSUFFICIENT in reason_codes
+               else LEARNING_ECONOMIC_ASSESSMENT)
+        _record_admission_outcome(learning, assessment_id=assessment_id, strategy_id=strategy_id,
+                                  ticket_id=ticket_id, kind=kind, status=REFUSED, reason=reason,
+                                  reason_codes=reason_codes)
         return AdmissionOutcome(status=REFUSED, reason=reason, assessment_id=assessment_id,
                                 strategy_id=strategy_id, ticket_id=ticket_id,
                                 promoted_to_shadow=False)
@@ -129,6 +170,21 @@ def assess_and_admit(
                           "capital-order-eligible")
             strategies.upsert(definition)
             promoted = True
+
+    if verdict.verdict == KILL:
+        outcome_kind = LEARNING_KILL
+    elif verdict.verdict == NO_TRADE:
+        outcome_kind = LEARNING_NO_TRADE
+    else:
+        # CONTINUE, whether or not it cleared capital-order eligibility: a
+        # development-signal-only CONTINUE is still a distinct, durable
+        # economic-assessment fact, never silently indistinguishable from a
+        # NO_TRADE.
+        outcome_kind = LEARNING_ECONOMIC_ASSESSMENT
+    _record_admission_outcome(
+        learning, assessment_id=assessment_id, strategy_id=strategy_id, ticket_id=ticket_id,
+        kind=outcome_kind, status=ADMITTED if eligible else REFUSED, reason=verdict.reason,
+        reason_codes=(verdict.verdict, verdict.capital_order_eligibility))
 
     return AdmissionOutcome(
         status=ADMITTED if eligible else REFUSED, reason=verdict.reason,

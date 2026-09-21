@@ -111,6 +111,20 @@ class QuantPaths:
         return self.var / "learning.json"
 
     @property
+    def learning_outcomes(self) -> Path:
+        """Durable Learning processed-id/payload-digest idempotence authority.
+
+        Separate from ``learning`` (``LearningStore``'s human-readable
+        ``lessons`` list, capped to the last 200 entries). That cap makes
+        ``lessons`` unsuitable as an idempotence authority on its own: a
+        replayed processed id can no longer be found there once 200 later
+        lessons have been appended. This document is never truncated and
+        never rewrites an accepted record; see
+        ``quant.learning.durable.DurableOutcomeStore``.
+        """
+        return self.var / "learning_outcomes.json"
+
+    @property
     def status_surface(self) -> Path:
         return self.var / "status.txt"
 

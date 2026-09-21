@@ -36,6 +36,7 @@ from ..economics.sizing import MarginSizingRule, compute_final_size
 from ..events import EventLog
 from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
+from ..learning.durable import DurableOutcomeStore
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl, read_jsonl
 from .economic_size import (OUTCOME_BOOKED, LaneEconomicAdmission,
@@ -55,7 +56,8 @@ class CapitalDesk:
                  execution: ExecutionModel | None = None, limits: RiskLimits | None = None,
                  initial_capital: float = 1_000_000.0, strategy_allocation: float = 0.5,
                  assessment_journal: EconomicAssessmentJournal | None = None,
-                 margin_rule: MarginSizingRule | None = None):
+                 margin_rule: MarginSizingRule | None = None,
+                 learning: DurableOutcomeStore | None = None):
         self.paths = paths
         self.strategies = strategies
         self.datasets = datasets
@@ -82,6 +84,11 @@ class CapitalDesk:
         self.margin_rule = margin_rule or MarginSizingRule(
             rule_id="DESK_DEFAULT_MARGIN_RULE", reference_margin=0.05, max_fraction=1.0,
             minimum_margin=0.0)
+        # M4: the durable Learning processed-id/payload-digest authority for
+        # every terminal Desk/Risk outcome. Optional so a caller/test that
+        # predates M4 (or does not care about Learning wiring) is unaffected;
+        # ``QuantSystem`` (``clock.py``) always supplies one in production.
+        self.learning = learning
 
     # --- helpers -----------------------------------------------------------
     def ledger_for(self, definition: StrategyDefinition) -> Ledger:
@@ -397,7 +404,8 @@ class CapitalDesk:
             panel=panel, ledger=ledger, admission=admission, execution=self.execution,
             limits=self.limits, adv_by_symbol=adv_by_symbol,
             research_one_way_cost_bps=RESEARCH_ONE_WAY_COST_BPS,
-            opportunity_id=opportunity_id, signal_date=date, execution_date=next_date)
+            opportunity_id=opportunity_id, signal_date=date, execution_date=next_date,
+            learning=self.learning)
         reason = "; ".join(card.reason_codes) or "scheduled exit"
         ticket.stop("BOOK", card.action, reason, scheduled_exit=card.to_dict())
         if card.fills:

@@ -31,6 +31,7 @@ from .events import EventLog  # noqa: E402
 from .factory.lanes import FOLLOWUP, WINDOWS, lane_definitions  # noqa: E402
 from .factory.strategies import StrategyRegistry  # noqa: E402
 from .factory.workers import ResearchContext, run_lane  # noqa: E402
+from .learning.durable import RESEARCH_RESULT, DurableOutcomeStore  # noqa: E402
 from .learning.store import BuildTask, LearningStore  # noqa: E402
 from .paths import QuantPaths  # noqa: E402
 from .state import (ComponentRegistry, parse_ts, read_json, read_jsonl,  # noqa: E402
@@ -120,9 +121,16 @@ class QuantSystem:
         self.datasets = DatasetRegistry(self.paths.dataset_registry, self.paths.root)
         self.strategies = StrategyRegistry(self.paths.strategies)
         self.learning = LearningStore(self.paths.learning)
+        # M4: the durable Learning processed-id/payload-digest authority,
+        # separate from ``self.learning``'s capped 200-lesson list (see
+        # ``quant.learning.durable``). Constructed once here and shared with
+        # ``self.desk`` so every terminal Desk/Risk outcome and every
+        # Research VALIDATED result durably records through the one store.
+        self.learning_outcomes = DurableOutcomeStore(self.paths.learning_outcomes)
         self.queue = PersistentQueue(self.paths.work_queue)
         self.desk = CapitalDesk(self.paths, self.strategies, self.datasets, self.log,
-                                self.components, initial_capital=initial_capital)
+                                self.components, initial_capital=initial_capital,
+                                learning=self.learning_outcomes)
         # The P0 SEC capture lane is owned by the Control Plane rather than by a
         # separate process, so its lifecycle, liveness and restart behaviour are
         # the ones the rest of the system already proves. It fails closed when
@@ -580,6 +588,17 @@ class QuantSystem:
         task.updated_at = utc_now()
         self.queue.save()
         self.learning.record_research(lane_name, task.lane, result)
+        if result.get("outcome") == "VALIDATED":
+            # The durable authority backs this specific Research terminal
+            # outcome too, so it survives past ``LearningStore``'s 200-lesson
+            # cap. ``ticket_id`` is the scientific identity already scoped to
+            # the frozen research cohort (``workers.run_lane``), so replaying
+            # the same ticket lands a NOOP rather than a duplicate.
+            self.learning_outcomes.record(
+                result["ticket_id"], RESEARCH_RESULT,
+                {"ticket_id": result["ticket_id"], "lane_name": lane_name,
+                 "lane": task.lane, "strategy_id": result.get("strategy_id"),
+                 "outcome": result.get("outcome")})
         self._promote_followup(lane_name, result)
         if task.execution_key not in self.state.completed_work:
             self.state.completed_work.append(task.execution_key)

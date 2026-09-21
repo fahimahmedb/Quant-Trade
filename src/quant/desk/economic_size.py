@@ -51,6 +51,10 @@ from ..economics.consistency import (AdvReference, ExecutionCostModel,
                                      verify_research_cost_consistency)
 from ..economics.sizing import LaneSizeResult, MarginSizingRule, compute_final_size
 from ..dataplane.panel import PricePanel
+from ..learning.durable import BOOKED as LEARNING_BOOKED
+from ..learning.durable import DurableOutcomeStore
+from ..learning.durable import NO_TRADE as LEARNING_NO_TRADE
+from ..learning.durable import RISK_VETO as LEARNING_RISK_VETO
 from . import risk as risk_mod
 from .execution import PHASE_ENTRY, PHASE_SCHEDULED_EXIT, ExecutionModel
 from .risk import RiskLimits
@@ -172,6 +176,47 @@ class LaneDecisionCard:
             "action": self.action, "reason_codes": list(self.reason_codes)}
 
 
+#: Every M3 terminal action, mapped to its durable Learning outcome kind.
+#: The science-side ``INSUFFICIENT_CLUSTER_INFORMATION`` outcome is recorded
+#: upstream, at ``quant.integration.econ_bridge.assess_and_admit`` -- a Desk
+#: ``LaneDecisionCard`` never itself reaches a literal INSUFFICIENT action.
+_LEARNING_KIND_FOR_ACTION = {
+    OUTCOME_NO_TRADE: LEARNING_NO_TRADE, OUTCOME_VETOED: LEARNING_RISK_VETO,
+    OUTCOME_BOOKED: LEARNING_BOOKED,
+}
+
+
+def _record_lane_outcome(learning: DurableOutcomeStore | None, card: "LaneDecisionCard",
+                         phase: str) -> None:
+    """Durably record exactly one Learning outcome for one terminal card.
+
+    ``processed_id`` is deterministic (``opportunity_id``:``phase``:``action``),
+    so a crash-and-replay of the same lane run records the identical id with
+    the identical payload and lands a NOOP rather than a duplicate. A no-op
+    when ``learning`` is not supplied, so callers that do not care about
+    Learning wiring (existing tests, callers that pre-date M4) are unaffected.
+    """
+    if learning is None:
+        return
+    kind = _LEARNING_KIND_FOR_ACTION[card.action]
+    processed_id = f"{card.opportunity_id}:{phase}:{card.action}"
+    payload = {
+        "opportunity_id": card.opportunity_id, "strategy_id": card.strategy_id,
+        "assessment_id": card.assessment_id, "phase": phase, "action": card.action,
+        "reason_codes": list(card.reason_codes),
+        "book_operation_ids": list(card.book_operation_ids),
+    }
+    learning.record(processed_id, kind, payload)
+
+
+def _terminal(card: "LaneDecisionCard", learning: DurableOutcomeStore | None, phase: str,
+             action: str, *reasons: str) -> "LaneDecisionCard":
+    """``card.stop(...)`` plus the one durable Learning outcome it produces."""
+    card.stop(action, *reasons)
+    _record_lane_outcome(learning, card, phase)
+    return card
+
+
 def _declared_participation_envelope(model: ExecutionModel) -> float:
     """The participation envelope Research/Economic evidence is checked
     against pre-size: the full width the desk model is authorized to use.
@@ -206,6 +251,7 @@ def run_lane_entry(
         execution: ExecutionModel, limits: RiskLimits,
         adv_by_symbol: Mapping[str, AdvReference], research_one_way_cost_bps: float,
         opportunity_id: str, signal_date: str, execution_date: str,
+        learning: DurableOutcomeStore | None = None,
 ) -> LaneDecisionCard:
     """Run SIZE -> pre-size check -> RISK -> post-size check -> FILLS -> BOOK
     for one strategy's entry, once M2 has already produced ``admission``.
@@ -224,7 +270,7 @@ def run_lane_entry(
     # additionally refuses to size anything that is not eligible, as a second
     # independent gate rather than trusting the caller filtered already.
     if not admission.capital_order_eligible:
-        return card.stop(OUTCOME_NO_TRADE, "ECONOMIC_ADMISSION_NOT_CAPITAL_ORDER_ELIGIBLE",
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_NO_TRADE, "ECONOMIC_ADMISSION_NOT_CAPITAL_ORDER_ELIGIBLE",
                          *admission.reason_codes)
 
     # --- SIZE ----------------------------------------------------------
@@ -233,13 +279,13 @@ def run_lane_entry(
         current_decision_nav, strategy_allocation, lifecycle_capital_fraction)
     card.economic_size = size
     if size.zero_size:
-        return card.stop(OUTCOME_NO_TRADE, *size.reason_codes)
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_NO_TRADE, *size.reason_codes)
 
     # --- pre-size execution-cost consistency (§15A / §2.6 first check) -
     pre_check = pre_size_cost_check(admission, execution, research_one_way_cost_bps)
     card.pre_size_cost_consistency = pre_check
     if not pre_check.consistent:
-        return card.stop(OUTCOME_NO_TRADE, *pre_check.violations())
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_NO_TRADE, *pre_check.violations())
 
     target_notional = {symbol: size.final_size_notional * weight
                        for symbol, weight in target_weights.items()}
@@ -254,7 +300,7 @@ def run_lane_entry(
     verdict = risk_mod.evaluate(ledger, admission.strategy_id, target_notional, limits)
     card.risk_verdict = verdict
     if not verdict["approved"]:
-        return card.stop(OUTCOME_VETOED, "RISK_VETOED_AFTER_ECONOMIC_CONTINUE",
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_VETOED, "RISK_VETOED_AFTER_ECONOMIC_CONTINUE",
                          *verdict["vetoes"])
 
     approved = verdict["scaled_target"]
@@ -277,7 +323,7 @@ def run_lane_entry(
             admission.strategy_id, symbol, notional, execution, research_one_way_cost_bps, adv)
         card.post_size_cost_consistency[symbol] = post_check
         if not post_check.consistent:
-            return card.stop(OUTCOME_NO_TRADE,
+            return _terminal(card, learning, PHASE_ENTRY, OUTCOME_NO_TRADE,
                              "EXECUTION_COST_CONSISTENCY_EXCEEDED_AFTER_SIZING",
                              *post_check.violations())
 
@@ -304,7 +350,7 @@ def run_lane_entry(
         fills.append(fill)
 
     if not fills:
-        return card.stop(OUTCOME_NO_TRADE, "NO_ORDER_CLEARED_MINIMUM_SIZE_AFTER_CHECKS")
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_NO_TRADE, "NO_ORDER_CLEARED_MINIMUM_SIZE_AFTER_CHECKS")
 
     card.fills = fills
     for fill in fills:
@@ -332,10 +378,10 @@ def run_lane_entry(
         # VETOED terminal outcome for Learning, exactly mirroring
         # ``desk.desk.CapitalDesk._run_strategy``'s existing post-fill check,
         # rather than attempting a nonexistent "unfill".
-        return card.stop(OUTCOME_VETOED, "EXECUTED_PORTFOLIO_BREACHES_HARD_LIMIT",
+        return _terminal(card, learning, PHASE_ENTRY, OUTCOME_VETOED, "EXECUTED_PORTFOLIO_BREACHES_HARD_LIMIT",
                          *final["vetoes"])
 
-    return card.stop(OUTCOME_BOOKED)
+    return _terminal(card, learning, PHASE_ENTRY, OUTCOME_BOOKED)
 
 
 def run_lane_scheduled_exit(
@@ -343,6 +389,7 @@ def run_lane_scheduled_exit(
         execution: ExecutionModel, limits: RiskLimits,
         adv_by_symbol: Mapping[str, AdvReference], research_one_way_cost_bps: float,
         opportunity_id: str, signal_date: str, execution_date: str,
+        learning: DurableOutcomeStore | None = None,
 ) -> LaneDecisionCard:
     """Close the strategy's whole sleeve at the frozen scheduled-exit session,
     through the same authoritative SIZE/RISK/FILLS/BOOK chain and the same
@@ -357,19 +404,19 @@ def run_lane_scheduled_exit(
     card = LaneDecisionCard(opportunity_id, admission.strategy_id, admission.assessment_id)
     held = ledger.sleeve_exposures(admission.strategy_id)
     if not held:
-        return card.stop(OUTCOME_NO_TRADE, "SCHEDULED_EXIT_NO_OPEN_SLEEVE")
+        return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_NO_TRADE, "SCHEDULED_EXIT_NO_OPEN_SLEEVE")
 
     target_notional = {symbol: 0.0 for symbol in held}
 
     pre_check = pre_size_cost_check(admission, execution, research_one_way_cost_bps)
     card.pre_size_cost_consistency = pre_check
     if not pre_check.consistent:
-        return card.stop(OUTCOME_NO_TRADE, *pre_check.violations())
+        return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_NO_TRADE, *pre_check.violations())
 
     verdict = risk_mod.evaluate(ledger, admission.strategy_id, target_notional, limits)
     card.risk_verdict = verdict
     if not verdict["approved"]:
-        return card.stop(OUTCOME_VETOED, "RISK_VETOED_SCHEDULED_EXIT", *verdict["vetoes"])
+        return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_VETOED, "RISK_VETOED_SCHEDULED_EXIT", *verdict["vetoes"])
 
     fills: list[dict[str, Any]] = []
     price_lookup: dict[str, float] = {}
@@ -385,7 +432,7 @@ def run_lane_scheduled_exit(
             admission.strategy_id, symbol, exposure, execution, research_one_way_cost_bps, adv)
         card.post_size_cost_consistency[symbol] = post_check
         if not post_check.consistent:
-            return card.stop(OUTCOME_NO_TRADE,
+            return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_NO_TRADE,
                              "EXECUTION_COST_CONSISTENCY_EXCEEDED_AFTER_SIZING",
                              *post_check.violations())
 
@@ -400,7 +447,7 @@ def run_lane_scheduled_exit(
         fills.append(fill)
 
     if not fills:
-        return card.stop(OUTCOME_NO_TRADE, "SCHEDULED_EXIT_NO_ORDER_CLEARED")
+        return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_NO_TRADE, "SCHEDULED_EXIT_NO_ORDER_CLEARED")
 
     card.fills = fills
     for fill in fills:
@@ -410,4 +457,4 @@ def run_lane_scheduled_exit(
                           operation_id=operation_id)
         card.book_operation_ids.append(operation_id)
 
-    return card.stop(OUTCOME_BOOKED)
+    return _terminal(card, learning, PHASE_SCHEDULED_EXIT, OUTCOME_BOOKED)
