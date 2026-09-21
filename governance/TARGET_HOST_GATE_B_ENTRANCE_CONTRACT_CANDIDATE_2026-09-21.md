@@ -322,3 +322,145 @@ Until Blue explicitly promotes this candidate contract:
 `CONTRACT_STATUS = PREPARED_CANDIDATE / NOT_AUTHORIZED_FOR_EXECUTION`
 
 `REAL_CAPITAL_AUTHORIZED = FALSE`
+
+
+## 17. Hardening addendum — mandatory before activation
+
+The following controls are mandatory parts of any activated successor.
+
+### 17.1 Explicit activation artifact
+
+No mutating Gate-B command is authorized merely because this candidate file
+exists.
+
+Before the first mutation, the operator must possess an explicit Blue activation
+record binding:
+
+- activated contract path/version;
+- activated contract digest;
+- exact frozen candidate SHA/tree/input-tree digest;
+- exact operator runbook version/digest;
+- allowed target host opaque identity;
+- authorization timestamp;
+- `GATE_B_RUN_ID`.
+
+Missing or mismatched activation:
+
+`GATE_B_MUTATION_AUTHORIZED = FALSE`
+
+### 17.2 Unique Gate-B attempt identity
+
+Every destructive qualification attempt must receive a unique:
+
+`GATE_B_RUN_ID`
+
+All sub-artifacts must bind that run ID.
+
+The first mandatory FAIL makes that run terminal:
+
+`GATE_B_RUN_STATUS = FAILED_TERMINAL`
+
+A repaired retry requires a NEW run ID. Red evidence from the failed run must be
+retained immutably.
+
+Blue decides whether prior PASS evidence is reusable; the operator cannot decide
+that locally.
+
+### 17.3 Host time authority
+
+Before lifecycle timing evidence is admissible, bind:
+
+- current UTC wall clock;
+- host timezone configuration;
+- boot ID;
+- NTP/synchronization status;
+- realtime-to-monotonic clock correlation snapshot;
+- time-service identity/configuration relevant to synchronization.
+
+A t0-capable launch later must use an externally attributable lifecycle timestamp
+(systemd/journal or equivalent), not an operator-typed timestamp.
+
+Unsynchronized or ambiguous time authority:
+
+`GATE_B = BLOCKED`
+
+### 17.4 Evidence-retention authority
+
+Bind and verify:
+
+- persistent/restricted evidence root;
+- filesystem and mount identity for that evidence root;
+- journald/log persistence/retention relevant to Gate C;
+- sufficient disk/inode headroom for the planned observation window;
+- hash-addressable manifest of every Gate-B sub-artifact.
+
+Evidence loss, truncation or unexplained rotation that destroys mandatory proof is:
+
+`GATE_B = BLOCKED`
+
+not “no defect observed”.
+
+### 17.5 Network / proxy / TLS binding
+
+Before any real-source qualifying phase, bind at an opaque/non-secret level:
+
+- effective proxy-related environment/configuration;
+- resolver identity/configuration relevant to the service;
+- TLS/OpenSSL trust/runtime identity;
+- requester network-path identity sufficient to detect drift;
+- any service environment file that can alter network behavior.
+
+Synthetic/destructive Gate-B tests must not make real SEC requests unless a
+specific test explicitly requires it and Blue has separately authorized that
+network activity.
+
+### 17.6 Resource-health baseline
+
+Before future Gate C, record at minimum:
+
+- filesystem free bytes;
+- inode usage/headroom;
+- P0 state-root size;
+- restricted evidence-root size;
+- process RSS/memory;
+- open file-descriptor count and limits;
+- relevant cgroup/process limits;
+- journald/evidence retention headroom.
+
+Do not invent arbitrary PASS thresholds.
+
+Unexpected monotonic growth or insufficient headroom is evidence requiring
+classification before t0.
+
+### 17.7 Safe synthetic-state fallback
+
+If the exact target topology cannot safely exercise a destructive property without
+contaminating preserved qualifying state, STOP.
+
+Do not improvise:
+- ad hoc path substitution;
+- manual journal deletion;
+- hidden bind-mount swaps;
+- hand-edited authority state.
+
+Classify:
+
+`MISSING_OPERATIONAL_PROOF / GATE_B_BLOCKER`
+
+until a reproducible safe mechanism exists.
+
+### 17.8 Artifact chain
+
+The final Gate-B artifact must include or reference:
+
+- `GATE_B_RUN_ID`;
+- Blue activation artifact digest;
+- contract digest;
+- runbook digest;
+- every sub-artifact digest;
+- time-authority snapshot digest;
+- resource-baseline digest;
+- network/runtime binding digest;
+- final sanitization artifact digest.
+
+This creates a reviewable evidence chain rather than a bag of unrelated files.
