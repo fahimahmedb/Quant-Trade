@@ -132,36 +132,46 @@ Current state:
 This is the remaining independent repository-evidence gate before method
 promotion can be considered.
 
-## 7. Exact input-tree proof — important non-transfer rule
+## 7. Exact input-tree proof — resolved from exact-head CI artifact
 
 The committed file:
 
 `handoff/SEC_FORM4_P0_VERIFICATION.json`
 
-at the V4/Codex lineage is NOT the exact-head V4 verification artifact.
+at the V4/Codex lineage is an intentionally restored historical placeholder and
+MUST NOT be used as the V4 exact-head artifact.
 
-Its committed contents still identify:
-- `verified_sha = 1450af4a7352ccbe938030a49f774c33b7d61a80`;
-- `verified_tree_digest = sha256:36e5f26720f907b40aac81b40a26bff05d155e305b00c2366fa1a71266ef6858`.
+Blue retrieved the actual GitHub Actions artifact produced by exact-head run
+`35536353538`:
 
-Therefore these values MUST NOT be attributed to candidate
-`4d06bdbf...`.
+- artifact id: `10612758620`;
+- artifact name:
+  `sec-p0-verification-4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- GitHub artifact archive digest:
+  `sha256:06c690203d589e389847cd345809480da2b99254fe7fd7f38b82c6bf5d54659a`;
+- workflow head SHA:
+  `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`.
 
-The candidate workflows generated exact-head verification artifacts at runtime.
-Their existence is execution evidence, but the exact candidate input-tree digest
-must be recovered from the exact-head CI artifact or regenerated under the
-authoritative verifier before a document claims that digest.
+The contained `SEC_FORM4_P0_VERIFICATION.json` records:
 
-Current classification:
+- `all_passed = true`;
+- `verified_sha = 4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`;
+- `tests_discovered = 423`;
+- `sec_p0_lane_tests_discovered = 287`;
+- `verified_tree_digest = sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2`.
 
-`CANDIDATE_EXACT_VERIFIED_INPUT_TREE_DIGEST = UNKNOWN_IN_DURABLE_PUBLIC_BINDER`
+Therefore:
 
-`CLASSIFICATION = MISSING_BINDING_METADATA / NOT_A_PRODUCTION_DEFECT`
+`CANDIDATE_EXACT_VERIFIED_INPUT_TREE_DIGEST = sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2`
 
-This does not negate the known Git tree
+`EXACT_INPUT_TREE_BINDING = CLOSED_FOR_REPOSITORY_LINEAGE`
+
+The independent Git tree remains:
+
 `4d15ef6f471213ee6ab56337b555d2906ef9bf16`.
 
-It prevents a stale verification artifact from being silently transferred to V4.
+This resolution explicitly avoids transferring the stale committed placeholder
+(`verified_sha = 1450af4a...`) to V4.
 
 ## 8. Hybrid method governance
 
@@ -186,11 +196,8 @@ No fixed P14D authority has yet been superseded.
 
 Before promotion:
 1. independent fault-matrix verdict must be received and Blue-disposed;
-2. exact candidate verification/input-tree binding metadata must be resolved
-   or the promotion contract must explicitly establish why Git-tree binding is
-   the relevant repository identity and defer verifier digest to Gate B;
-3. final consistency review must incorporate independent fault-matrix findings;
-4. current-state documents must be updated atomically with the superseding
+2. final consistency review must incorporate independent fault-matrix findings;
+3. current-state documents must be updated atomically with the superseding
    amendment.
 
 If Astra returns a REAL_DEFECT or blocking MISSING_PROOF, promotion stops.
