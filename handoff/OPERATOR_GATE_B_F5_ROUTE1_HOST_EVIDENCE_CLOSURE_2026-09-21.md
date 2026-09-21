@@ -54,9 +54,27 @@ Read:
 The Blue evidence-closure specification requires N1 and N2 to be established
 from the actual target host.
 
-This operator session exposes repository/GitHub evidence but no target-host
-shell/SSH/terminal execution channel. No admissible mechanism was available in
-this session to execute the required read-only host commands.
+This mission was resumed from durable branch HEAD
+`ec44c85b919570e70a0d562905b35e226260c93f` specifically to perform the
+previously missing host observations.
+
+A read-only execution-environment identity preflight was performed before any N1
+or N2 interpretation. The command environment exposed to this operator did not
+match the previously bound target-host runtime identity: OS/architecture/runtime
+identity differed, PID 1 was not the target systemd service manager, and the
+expected Quant target paths were absent.
+
+Restricted raw identity output was not committed. Its canonical local digest for
+this resume attempt is:
+
+`RESUME_EXECUTION_ENVIRONMENT_IDENTITY_SHA256 = sha256:4258783b85d4d151623a181a13dd290132602007826bee9cc74599e9784ee5ec`
+
+Therefore:
+
+`EXECUTION_ENVIRONMENT_MATCHES_TARGET_HOST = FALSE`
+
+No firewall or mount observation from that non-target execution environment is
+admissible as target-host N1/N2 evidence.
 
 The durable public host evidence already available from the prior operator
 preflight establishes useful baseline facts, including:
@@ -101,8 +119,13 @@ target-host evidence was bound for:
 
 ### Closure result
 
-No new actual-host read-only firewall evidence could be collected in this
-session.
+The resumed mission attempted to begin actual-host read-only observation only
+after the execution-environment identity check. Because that check proved the
+available command environment was not the qualifying target host, firewall
+inspection was stopped before interpreting any local ruleset as target-host
+evidence.
+
+No new admissible actual-target-host firewall evidence was collected.
 
 The following mandatory facts remain unproved:
 1. authoritative firewall stack actually controlling target-host egress;
@@ -145,7 +168,11 @@ specification.
 
 ### Closure result
 
-No new actual-host read-only mount evidence could be collected in this session.
+For the same reason, local mount/fstab/systemd-mount inspection was not treated as
+target-host evidence after the execution-environment identity mismatch was
+established.
+
+No new admissible actual-target-host mount evidence was collected.
 
 The following mandatory facts remain unproved:
 1. exact current `findmnt` source/target/fsroot/options for
@@ -206,8 +233,12 @@ should be performed during evidence closure.
 
 Reason:
 
-Neither N1 nor N2 produced a hard negative. The blocker is absence of current,
-actual-host evidence, not proof that the host lacks the required capability.
+Neither N1 nor N2 produced a hard negative. The resumed operator attempt also
+proved that the command environment available to this mission did not match the
+qualifying target host, so its local firewall/mount state cannot close N1/N2.
+
+The blocker remains absence of current, admissible actual-target-host evidence,
+not proof that the host lacks the required capability.
 
 Route 2 becomes mandatory only if a completed target-host read-only inspection
 shows that either:
