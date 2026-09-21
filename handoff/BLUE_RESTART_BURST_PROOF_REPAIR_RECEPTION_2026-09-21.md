@@ -192,3 +192,46 @@ Observed:
 - residual remains target-host physical enforcement.
 
 `BLUE_INDEPENDENT_ARTIFACT_RECOUNT = PASS`.
+
+
+## 12. Immutable contract provenance
+
+
+Immutable Blue contract provenance:
+- commit: `7d7bf6a27e4560951ec0fad58b69a99edf091a4b`;
+- spec blob: `e73013605c8e169a580aa1cd082f477bc5cd5722`;
+- file: `governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`;
+- normative value: `EXPECTED_RESTART_BURST_LIMIT = 5`.
+
+The mutable branch-qualified source string embedded in the Builder artifact is descriptive provenance only. The immutable commit/blob pair above is the audit authority for the value 5.
+
+
+## 13. CI role separation
+
+
+### CI role separation
+
+Three runs exist because prestaging created a new ref and then a mission-only commit:
+
+1. `35549017908`
+   - branch: `builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`;
+   - SHA: `1fa82a75485661bf9bbb3de10b925126397dfec5`;
+   - role: **AUTHORITATIVE BUILDER DELIVERY CI**.
+
+2. `35549509130`
+   - branch: `astra/p0-restart-burst-proof-recheck-2026-09-21`;
+   - SHA: same Builder delivery `1fa82a...`;
+   - role: duplicate/supplementary CI caused by creation of the Astra ref at the same SHA;
+   - it must not replace the selected Builder delivery run.
+
+3. `35549511035`
+   - branch: Astra prestage;
+   - SHA: `b922a108ddf906ff9a2a0c6f3c9800b76b754631`;
+   - role: CI for the **mission-only prestage commit**;
+   - it is NOT an independent Astra audit result.
+
+Activation rule:
+- selected Builder run `35549017908` must be `COMPLETED / SUCCESS`;
+- if another same-SHA SEC run exposes a substantive test failure, treat that as contradictory evidence and STOP rather than cherry-picking the successful run;
+- cancellation or infrastructure-only failure of a duplicate run does not by itself replace the selected exact-head delivery evidence, but must be recorded;
+- no run on the mission-only Astra prestage commit can be cited as `ASTRA_RESTART_BURST_RECHECK = PASS`.
