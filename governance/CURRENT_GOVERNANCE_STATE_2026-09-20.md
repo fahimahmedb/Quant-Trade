@@ -569,3 +569,30 @@ Safety remains:
 - `t0 = NOT_DECLARED`;
 - `PRODUCT_INTEGRATION = PAUSED`;
 - `REAL_CAPITAL_AUTHORIZED = FALSE`.
+
+
+## W. RESTART-BURST BUILDER DELIVERY OBSERVED — 2026-09-21
+
+Builder proof-repair branch now has an exact delivery:
+`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21@1fa82a75485661bf9bbb3de10b925126397dfec5`.
+
+Blue scope/design inspection:
+- proof/evidence/handoff paths only;
+- `PRODUCTION_CODE_CHANGED = FALSE`;
+- independent oracle = literal `EXPECTED_RESTART_BURST_LIMIT = 5` with Blue provenance;
+- M1 launcher-only 5->4 = RED;
+- M2 unit-only 5->4 = RED;
+- M3 launcher+unit simultaneous 5->4 = RED;
+- matrix = 19 rows / 15 existing / 4 new / 0 missing / 0 real defects.
+
+Blue reception:
+`handoff/BLUE_RESTART_BURST_PROOF_REPAIR_RECEPTION_2026-09-21.md`.
+
+Current reception state:
+`PRELIMINARY_PASS / PENDING_EXACT_HEAD_CI`.
+
+Exact-head CI:
+`35549017908 = IN_PROGRESS` at last observation.
+
+Do not dispatch the targeted Astra recheck until this exact-head run is
+`COMPLETED / SUCCESS` and branch HEAD remains exactly `1fa82a75485661bf9bbb3de10b925126397dfec5`.
