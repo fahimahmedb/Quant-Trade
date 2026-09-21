@@ -761,3 +761,43 @@ Do not dispatch another question-map mission.
 Current Rail-B next:
 receive exactly one S11 methods verdict, then Blue decides build-spec freeze.
 
+
+
+## S11 FINAL METHODS VERDICT — COHORT INFORMATION GEOMETRY BLOCKER — 2026-09-21
+
+Independent reviewer:
+
+`parallel/claude-s11-dependence-interval-challenge-2026-09-21@7080288b5c88cf70b9b908837f5fc859255d571a`
+
+Verdict:
+
+`S11_BLOCKED_MAX_4_INDEPENDENT_COMPONENTS_INSUFFICIENT_FOR_ANY_ESTABLISHED_INTERVAL_METHOD`
+
+Blue reception:
+
+`handoff/BLUE_S11_METHODS_CHALLENGE_RECEPTION_2026-09-21.md`
+
+Current scientific state:
+
+```text
+S11_METHODS_CHALLENGE = COMPLETE
+SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_COHORT_INFORMATION_GEOMETRY
+VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN
+PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
+```
+
+Do not dispatch another interval-method review on the same 252-entry-session geometry.
+
+The exact remaining design problem is now:
+
+`FIRST_SLICE_COHORT_INFORMATION_GEOMETRY_CLOSURE`
+
+Blue must choose whether to:
+- redesign the prospective cohort/dependence geometry so an established method has
+  attainable information; or
+- explicitly accept that the current first slice can only return scientific
+  INSUFFICIENT and therefore cannot provide a real positive Q1/Q2 path.
+
+Any redesign must occur before target outcomes and preserve explicit provenance.
+
+No unrelated Product architecture is reopened by default.
