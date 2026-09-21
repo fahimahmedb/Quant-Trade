@@ -74,10 +74,10 @@ Green CI without a final independent handoff does not close this section.
 
 Before promotion Blue must bind one coherent lineage:
 
-- [ ] candidate SHA;
-- [ ] Git tree;
-- [ ] input-tree digest;
-- [ ] candidate exact-head CI run;
+- [x] candidate SHA;
+- [x] Git tree;
+- [x] input-tree digest;
+- [x] candidate exact-head CI run;
 - [ ] Builder qualification-evidence SHA/run;
 - [ ] independent Astra audit SHA/run;
 - [ ] Blue final disposition SHA;
@@ -136,8 +136,7 @@ remains authoritative.
 `P14D_PROMOTION_READY = FALSE`
 
 Open blockers:
-- final Gate-A fault-matrix evidence;
-- exact lineage binding;
+- final independent Gate-A fault-matrix review;
 - final consistency merge.
 
 Closed independent-review evidence:
@@ -148,3 +147,26 @@ Closed independent-review evidence:
 - `GATE_A_V4_REPOSITORY_DISPOSITION = PASS`.
 
 No capital or Product authority changes.
+
+
+### Exact repository lineage binding resolved — 2026-09-21
+
+Frozen candidate:
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+Git tree:
+`4d15ef6f471213ee6ab56337b555d2906ef9bf16`
+
+Exact-head verification run:
+`35536353538 = COMPLETED / SUCCESS`
+
+Exact-head artifact:
+`10612758620 / sec-p0-verification-4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
+
+Artifact archive digest:
+`sha256:06c690203d589e389847cd345809480da2b99254fe7fd7f38b82c6bf5d54659a`
+
+Verified input-tree digest:
+`sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2`
+
+The stale committed verification placeholder was explicitly not reused.
