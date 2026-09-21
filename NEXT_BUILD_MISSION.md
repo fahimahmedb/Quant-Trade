@@ -228,3 +228,39 @@ Current owner:
 Astra becomes next owner only after Blue records:
 
 `PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
+
+
+## GATE-B FINAL ACTIVATION / CONVERGENCE PACK — PREPARED IN PARALLEL — 2026-09-21
+
+Blue has prepared:
+
+`governance/BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK_2026-09-21.md`
+
+Status:
+
+`BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK = PREPARED / WAITING_FOR_FINAL_F11_ASTRA_PASS`
+
+Purpose:
+
+- bind the already-promoted Gate-B authorities;
+- reuse the completed V4 activation prestage;
+- reuse F5 Route-1 host feasibility;
+- bind final accepted F11/A1-A10 independent evidence;
+- refresh dynamic host bindings;
+- reserve one unique Gate-B run;
+- generate/seal the canonical `quant-gate-b-activation/v1` object;
+- hand the already-authoritative Gate-B runbook to the Operator.
+
+This parallel preparation does NOT change the active F11 owner.
+
+Current active route remains:
+
+`BUILDER_F11_PARENT_PATH_CLOSURE -> BLUE RECEPTION/INTEGRATION -> ASTRA F11+A1-A10 -> possible PASS_REPOSITORY_EVIDENCE`
+
+The pack remains non-authorizing while:
+
+`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
+
+and while final Astra PASS is absent.
+
+No target-host mutation, Gate-B authorization, Gate-B PASS, t0, Product integration or real-capital authority follows from this preparation.
