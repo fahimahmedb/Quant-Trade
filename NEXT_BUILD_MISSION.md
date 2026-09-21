@@ -264,3 +264,49 @@ The pack remains non-authorizing while:
 and while final Astra PASS is absent.
 
 No target-host mutation, Gate-B authorization, Gate-B PASS, t0, Product integration or real-capital authority follows from this preparation.
+
+
+## PARALLEL ECONOMIC CLAUDE CODE LANE — 2026-09-21
+
+Blue has opened one isolated Product/Economic preparation lane while the P0/F11/Gate-B rail continues.
+
+Governance authority:
+
+`governance/BLUE_CLAUDE_POST_P0_VERTICAL_BUILD_PREP_2026-09-21.md`
+
+Blue decision commit:
+
+`c62f63219068373e759cb63c095d62084da584f3`
+
+Claude Code branch:
+
+`parallel/claude-post-p0-vertical-build-prep-2026-09-21`
+
+Mission HEAD:
+
+`674971836b4b4e118877905a70540dc48e3f2749`
+
+Mission:
+
+`handoff/CLAUDE_POST_P0_VERTICAL_BUILD_PREP_MISSION_2026-09-21.md`
+
+Mission type:
+
+`READ_ONLY_ANALYSIS + PATCH_PLAN + TEST_SPEC + FUTURE_BUILDER_HANDOFF_ONLY`
+
+Blue D1-D5 are fixed for planning:
+- Research -> Economic mapping fails closed rather than inventing EffectEstimate fields;
+- `FINAL_SIZE = min(ECONOMIC_MARGIN_SIZE, DESK_LIFECYCLE_CAP)`;
+- Research `VALIDATED` does not auto-promote to SHADOW;
+- `ExecutionModel.fill` is sole Book-feeding shadow-fill authority;
+- one durable Forward -> Research -> Economic -> Desk -> Book -> Learning provenance chain.
+
+This lane may prepare the exact future implementation patch/test mission but MUST NOT modify Product code yet.
+
+Future implementation remains phase-gated for isolated execution during Gate C.
+
+Concurrency:
+
+`ONE P0 CRITICAL RAIL + ONE PRODUCT/ECONOMIC PREP RAIL`
+
+Do not launch a second substantial Product Builder while this Claude lane is active.
