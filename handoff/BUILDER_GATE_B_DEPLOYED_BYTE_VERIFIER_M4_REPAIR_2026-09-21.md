@@ -62,11 +62,15 @@ Builder-authored repair paths:
 - `STATE.md` — mechanical proof-inventory refresh only;
 - this handoff.
 
-Implementation commits before this handoff:
+Implementation / hardening checkpoints before this corrected handoff include:
 
-- `804035304af0125f4ed2d1b0416b0bcd39f405a9` — hardened M4 verifier;
-- `afed5badea606ba2733d37cbde47274c4d507770` — dedicated M4 repair discriminants;
-- `2311b855c9692d82dfe463d5f7d004e67b08d3b6` — proof inventory 392 -> 415.
+- `804035304af0125f4ed2d1b0416b0bcd39f405a9` — initial M4 verifier hardening;
+- `afed5badea606ba2733d37cbde47274c4d507770` — dedicated M4 discriminants;
+- `2311b855c9692d82dfe463d5f7d004e67b08d3b6` — first green implementation checkpoint (415-test inventory);
+- `82b65663c92211af215b28daaf850c99498cf284` / `9db73932b8ae0c2b803091ca26d311bef1729e38` — additional authority-bypass and critical-allowlist controls;
+- `1ba1c2aae570812e43ba677f6e7a30eba06d948c` through `20243fba245190b8042d6e5ddc321b03d597a6b4` — verifier rewrite reconciliation, end-of-verification authority rechecks, type/race/report reconciliation;
+- `d37eee87976fb76fb5fffa2a86065d61dece4392` — empty Git-environment override rejection and symlinked release-ancestry rejection;
+- `81b82f47516704d640f2b59eadf219ae3079f4a4` — mechanical proof inventory refresh to 418 tests.
 
 Explicitly not modified:
 
@@ -95,12 +99,12 @@ The verifier now fails closed unless all of the following are true:
 - `.git/objects` is a real directory, not a symlink;
 - the complete object-store directory tree is recursively checked with no-follow semantics and contains no symlink indirection;
 - `.git/refs` is also checked for symlink indirection;
-- `.git/HEAD`, `.git/config`, and `.git/packed-refs`, where present, are real regular files;
+- `.git/HEAD`, `.git/config`, and `.git/packed-refs`, where present, must not be symlink-indirected, and Git authority reads must succeed against the local metadata;
 - the lexical absolute git-dir is exactly release-local `.git`;
 - common-dir is exactly the same release-local `.git`;
 - Git's object directory is exactly release-local `.git/objects`;
 - `.git/objects/info/alternates` is absent, including an empty file;
-- external `GIT_DIR`, `GIT_WORK_TREE`, `GIT_COMMON_DIR`, `GIT_OBJECT_DIRECTORY`, `GIT_ALTERNATE_OBJECT_DIRECTORIES`, and `GIT_REPLACE_REF_BASE` authority overrides are rejected;
+- external `GIT_DIR`, `GIT_WORK_TREE`, `GIT_COMMON_DIR`, `GIT_OBJECT_DIRECTORY`, `GIT_ALTERNATE_OBJECT_DIRECTORIES`, `GIT_REPLACE_REF_BASE`, `GIT_GRAFT_FILE`, `GIT_NAMESPACE`, and `GIT_QUARANTINE_PATH` authority overrides are rejected on presence, including an empty-valued override;
 - object authority is rechecked after byte inspection and any drift fails closed.
 
 No resolve-equality is used as locality proof.
@@ -122,7 +126,7 @@ The exact A6 attack copies a sufficient legitimate object store to a foreign dir
 
 ### Observed result
 
-All committed A6 discriminants were observed `ok` in the full GitHub Actions unit suite on implementation checkpoint `2311b855...`.
+All committed A6 discriminants, including empty override presence and symlinked release ancestry, were observed under the later 418-test full-suite checkpoint; the exact-head workflow for `81b82f47516704d640f2b59eadf219ae3079f4a4` had already completed Full unit suite and SEC P0 lane suite successfully when this corrected handoff was authored.
 
 ## 4. A7 — replacement-object poisoning
 
@@ -193,7 +197,7 @@ Therefore the committed positive control actually exercised the real frozen cand
 
 Classification entering repair: `MISSING_PROOF`.
 
-A dedicated M4 test file adds 23 committed tests. The repository proof inventory increased mechanically from 392 to 415 tests.
+A dedicated M4 test file adds 26 committed tests. The repository proof inventory increased mechanically from 392 to 418 tests.
 
 Coverage includes:
 
@@ -218,13 +222,16 @@ Coverage includes:
 | replace refs | RED |
 | legacy graft metadata | RED |
 | invalid/traversing allowed-extra prefix | RED |
+| allowed-extra prefix overlapping `src/deploy/scripts` authority | RED |
+| empty Git authority environment override | RED |
+| release path with symlinked ancestor | RED |
 | index bytes/mtime unchanged | GREEN positive assertion |
 | no new Git lock files | GREEN positive assertion |
 | exact frozen candidate/tree | GREEN |
 | substitution between enumeration/read | fail-closed |
 | concurrent content mutation during read | fail-closed |
 
-The full unit suite observed all 415 tests passing.
+The 418-test proof inventory was exercised by the full unit suite at implementation checkpoint `81b82f47516704d640f2b59eadf219ae3079f4a4`; that suite completed successfully before this corrected handoff was authored.
 
 ## 7. A10 — pathname / TOCTOU hardening
 
@@ -295,40 +302,36 @@ Any object-authority ambiguity raises a verifier precondition failure / RED.
 
 ## 9. Observed tests and CI
 
-Disposable Builder-local synthetic M4 run before push:
+Early disposable Builder-local synthetic execution observed the then-current synthetic M4 controls green. The authoritative real frozen candidate control is committed and is exercised only from a full repository checkout because it requires the historical object database.
 
-`22/22 synthetic M4 tests = OK`
+Earlier green checkpoint:
 
-The real frozen candidate control was intentionally left to the full repository checkout because the isolated Builder sandbox did not contain the repository object database.
+- implementation SHA: `2311b855c9692d82dfe463d5f7d004e67b08d3b6`;
+- GitHub Actions run `35594848962 = COMPLETED / SUCCESS`;
+- status freshness, full unit suite, SEC P0 lane, V1 regression, exact-head artifact, upload, and clean-working-tree steps all succeeded.
 
-Implementation exact-head:
+Final code/state checkpoint immediately before this corrected handoff:
 
-`2311b855c9692d82dfe463d5f7d004e67b08d3b6`
+`81b82f47516704d640f2b59eadf219ae3079f4a4`
 
-GitHub Actions:
+GitHub Actions run:
 
-`35594848962 = COMPLETED / SUCCESS`
+`35595954070`
 
-Observed workflow evidence:
+At handoff-authoring time the following had already completed successfully on that exact SHA:
 
-- status artifact freshness = SUCCESS;
-- full unit suite = SUCCESS;
-- `Ran 415 tests in 45.356s`;
-- `OK`;
-- SEC P0 lane suite = SUCCESS;
-- V1 end-to-end regression = SUCCESS;
-- exact-head verification artifact generation = SUCCESS;
-- artifact upload = SUCCESS;
-- clean working tree = SUCCESS;
-- exact verification record: `415 tests (267 in the SEC P0 lane), all passed`, recorded against `2311b855...`.
+- status artifact freshness;
+- Full unit suite against the 418-test proof inventory;
+- SEC P0 lane suite;
+- V1 end-to-end regression.
 
-A prior run at `afed5b...` failed only because `STATE.md` still stated 392 tests. Its log explicitly generated 415. Commit `2311b855...` made exactly the authorized mechanical 392 -> 415 refresh; the subsequent exact-head run is green.
+The exact-head artifact / upload / clean-tree tail was still executing when these handoff bytes were authored. This document therefore does not falsely self-assert completion of a future containing commit. The Builder final response must report the final remote branch SHA and exact-head CI only after that final run is actually observed `COMPLETED / SUCCESS`.
 
 ## 10. Delivery identity note
 
-A Git commit cannot truthfully embed its own final SHA inside the bytes that determine that SHA. Therefore this document records the exact implementation checkpoint immediately before the handoff commit:
+A Git commit cannot truthfully embed its own final SHA inside the bytes that determine that SHA. Therefore this corrected document records the exact implementation/code-state checkpoint immediately before the final handoff correction:
 
-`2311b855c9692d82dfe463d5f7d004e67b08d3b6`
+`81b82f47516704d640f2b59eadf219ae3079f4a4`
 
 The authoritative final delivery identity is the remote branch ref after this handoff is pushed:
 
