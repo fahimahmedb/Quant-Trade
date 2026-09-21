@@ -274,7 +274,17 @@ Artifact digest:
 
 `sha256:34b73de5a93241250e467f836f4dceab3b58ddaaa4d98a054f585047ddc47da0`
 
-Because this handoff itself changes the branch HEAD, the final branch HEAD must receive its own exact-head CI verification before the delivery is handed to Astra.
+### Final branch HEAD (this handoff)
+
+`54a7dd6ebf8e81d6dec06bd82d150dd7faef44e4`
+
+Exact-head GitHub Actions run:
+
+`35615746802 = COMPLETED / SUCCESS`
+
+Verified run head SHA: `54a7dd6ebf8e81d6dec06bd82d150dd7faef44e4`. All gate stages (status artifact freshness, full unit suite, SEC P0 lane suite, V1 end-to-end regression, exact-head verification artifact generation/upload, clean working tree) succeeded.
+
+`54a7dd6ebf8e81d6dec06bd82d150dd7faef44e4` carries every code/test change for this closure; no further implementation or test delta is pending. This present commit (recording that CI result) is documentation-only and does not reopen F11-P1/P2/P3 or A1-A10.
 
 ## 9. Adjacent findings and residual boundary
 
