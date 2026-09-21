@@ -556,7 +556,7 @@ Still:
 - `REAL_CAPITAL_AUTHORIZED = FALSE`.
 
 
-## S. RESTART-BURST PROOF REPAIR PREPARED — 2026-09-21
+## U. RESTART-BURST PROOF REPAIR PREPARED — 2026-09-21
 
 Independent Astra fault-matrix verdict currently blocks promotion on one proof row:
 
@@ -591,6 +591,55 @@ Current routing:
 - hybrid promotion remains blocked until that independent recheck closes.
 
 Safety:
+`P14D_PROMOTION_READY = FALSE`
+`TARGET_HOST_READY = FALSE`
+`GATE_B = NOT_STARTED`
+`t0 = NOT_DECLARED`
+`REAL_CAPITAL_AUTHORIZED = FALSE`.
+
+
+## V. CONTEXT REACQUISITION / HYGIENE AUDIT — 2026-09-21
+
+Latest restart checkpoint:
+`handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`.
+
+Latest hygiene audit:
+`governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`.
+
+Latest branch authority registry:
+`governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`.
+
+Verified namespace state:
+- default = `blue/master-v2-2026-09-20`;
+- live branches = 45;
+- open PRs/issues = 0/0;
+- protected branches = 0;
+- rulesets = 0;
+- prior delete batch = 34/34 still absent;
+- deleted refs resurrected = 0;
+- five branches were added after cleanup and all are attributable to the hybrid qualification campaign.
+
+Restart-surface defects repaired:
+- README no longer says the default branch is historical;
+- AGENTS routes through the 2026-09-21 reacquisition/hygiene/registry surfaces;
+- NEXT_BUILD_MISSION now routes to the restart-burst proof repair rather than old V4/cleanup work;
+- current governance now identifies the one unresolved proof blocker.
+
+Current blocker remains:
+`restart_burst_limit = TEST_DEFECT -> MISSING_PROOF`.
+
+Current Builder repair branch:
+`builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`.
+
+No physical branch deletion was performed in this audit.
+
+Next durable event expected:
+exact Builder proof-repair delivery SHA and exact-head CI.
+
+Then:
+Blue reception -> targeted Astra restart-burst recheck -> Blue final fault-matrix disposition -> final consistency review -> possible hybrid promotion.
+
+Safety remains unchanged:
 `P14D_PROMOTION_READY = FALSE`
 `TARGET_HOST_READY = FALSE`
 `GATE_B = NOT_STARTED`
