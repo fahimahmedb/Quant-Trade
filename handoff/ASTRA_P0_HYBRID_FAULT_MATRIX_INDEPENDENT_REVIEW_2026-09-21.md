@@ -33,8 +33,14 @@ Codex final checkpoint:
 Frozen production candidate:
 `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
 
-Final audit-evidence parent HEAD before this handoff:
-`398b76d2f739df7d7dd47ccda909a0b8ea2a7e85`
+Direct parent HEAD of the first final-handoff commit:
+`3e19e58d421ec8afb1d6d8cea25998df4768d128`
+
+The preceding audit-probe revision is:
+`398b76d2f739df7d7dd47ccda909a0b8ea2a7e85`.
+
+The extra direct-parent commit is audit-only and adds
+`tests/test_astra_fault_matrix_independent.py`; it does not alter production.
 
 The commit containing this handoff cannot truthfully embed its own SHA.
 Resolve the live head of
@@ -525,6 +531,12 @@ Artifact ZIP digest:
 The later audit-probe revision at
 `398b76d2f739df7d7dd47ccda909a0b8ea2a7e85`
 adds explicit full-file SHA-256 comparison for the two generated artifacts.
+
+The direct pre-handoff audit-only commit
+`3e19e58d421ec8afb1d6d8cea25998df4768d128`
+adds independent unittest falsifiers for citation fidelity, all four new
+discriminants, artifact self-consistency and two-run reproducibility. It is
+included in the final branch lineage and changes no production path.
 
 Final exact-head audit and ordinary SEC P0 CI runs are resolved after this
 handoff push because their run IDs do not exist until the push itself. Astra
