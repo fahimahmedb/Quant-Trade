@@ -414,3 +414,34 @@ t0 = NOT_DECLARED
 PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
 ```
+
+
+## 14. Required cloud output
+
+When the cloud preparation is complete and all required exact-head CI gates are green,
+write exactly:
+
+`handoff/BLUE_GATE_B_RUN_RESERVATION_HOST_RELAY_PRESEAL_2026-09-21.md`
+
+That handoff MUST contain:
+
+- exact mission HEAD and CI;
+- exact accepted runctl blob;
+- exact external host-rebind/Blue-reception refs;
+- authority-storage binding proposal and all read-only prerequisites;
+- exact copy/paste-safe OWNER HOST RELAY command block;
+- exact expected safe output fields;
+- preseal machine-activation field map with reservation fields left unfilled;
+- broader Blue activation-envelope field map;
+- mutation attestation;
+- one allowed final state from section 11.
+
+Do NOT add a new production executable or alternate run-authority implementation merely to
+make the relay convenient. The relay must call the accepted `Registry` API.
+
+If CI is still transiently running after read-only preparation, do NOT publish a false
+terminal blocker. Return:
+
+`GATE_B_RUN_RESERVATION_PRESEAL = WAITING_FOR_EXACT_HEAD_CI`
+
+and preserve all completed analysis for resume.
