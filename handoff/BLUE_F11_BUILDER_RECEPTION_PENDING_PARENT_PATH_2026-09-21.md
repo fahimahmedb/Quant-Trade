@@ -73,19 +73,15 @@ The Builder handoff moved the branch to:
 
 Exact-head handoff CI:
 
-`35610033532`
+`35610033532 = COMPLETED / SUCCESS`
 
-At this checkpoint it is still:
+Verified workflow head SHA:
 
-`IN_PROGRESS`
+`6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
 
-Observed completed stages already include:
+The final handoff CI gate is therefore closed.
 
-- status artifact freshness = SUCCESS;
-- full unit suite = SUCCESS;
-- SEC P0 lane suite = SUCCESS.
-
-Astra must not use the Builder handoff HEAD as final delivery evidence until `35610033532 = COMPLETED / SUCCESS`.
+This does NOT close the independent Blue parent-path requirement below. Green exact-head CI proves the current delivered object executed successfully; it does not establish F11-P1/P2/P3 because those discriminants are not present in that object.
 
 ## 3. What the Builder repair closes
 
@@ -144,7 +140,7 @@ Current Builder reception:
 ```text
 BUILDER_F11_HANDOFF_RECEIVED = TRUE
 BUILDER_F11_IMPLEMENTATION_CI_GREEN = TRUE
-BUILDER_F11_FINAL_HANDOFF_CI = IN_PROGRESS
+BUILDER_F11_FINAL_HANDOFF_CI = COMPLETED / SUCCESS
 F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN
 BUILDER_F11_ACCEPTED_FOR_ASTRA = FALSE
 ASTRA_F11_RECHECK_AUTHORIZED = FALSE
