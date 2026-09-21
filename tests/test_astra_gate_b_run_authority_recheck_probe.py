@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 import uuid
@@ -449,6 +450,363 @@ os.close(fd)
         finally:
             tmp.cleanup()
         print("ASTRA_A10_OK", flush=True)
+
+
+        # Independent completeness sweep for mission-mandated variants that are
+        # deliberately separate from the Builder-authored repair tests.
+
+        # A1: EINTR, zero-progress, receipt partial writes and receipt failure.
+        h = RunHarness()
+        try:
+            h.set_epoch()
+            real_write = os.write
+            state = {"raised": False}
+            def eintr_once(fd, data):
+                if fd_path(fd) == str(h.registry_path) and not state["raised"]:
+                    state["raised"] = True
+                    raise InterruptedError(errno.EINTR, "astra eintr")
+                return real_write(fd, data)
+            with mock.patch.object(runctl.os, "write", side_effect=eintr_once):
+                h.reserve()
+            self.assertTrue(state["raised"])
+            runctl.load_registry(h.registry_path)
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            h.set_epoch()
+            def zero_registry(fd, data):
+                if fd_path(fd) == str(h.registry_path):
+                    return 0
+                return os.write(fd, data)
+            with mock.patch.object(runctl.os, "write", side_effect=zero_registry):
+                with self.assertRaises(runctl.AuthorityError):
+                    h.reserve()
+            self.assertEqual(runctl.load_registry(h.registry_path)[-1]["event_type"], "REVOCATION_EPOCH_SET")
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            r, _, raw, digest = h.sealed()
+            real_write = os.write
+            receipt_calls = {"n": 0}
+            def partial_receipt(fd, data):
+                opened = fd_path(fd)
+                if opened.startswith(str(h.receipts)):
+                    receipt_calls["n"] += 1
+                    payload = bytes(data)
+                    return real_write(fd, payload[: max(1, min(7, len(payload)))])
+                return real_write(fd, data)
+            with mock.patch.object(runctl.os, "write", side_effect=partial_receipt):
+                _, receipt = h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            final_bytes = Path(receipt["path"]).read_bytes()
+            self.assertGreater(receipt_calls["n"], 1)
+            self.assertEqual(runctl.sha256_digest(final_bytes), receipt["digest"])
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            r, _, raw, digest = h.sealed()
+            real_write = os.write
+            def zero_receipt(fd, data):
+                if fd_path(fd).startswith(str(h.receipts)):
+                    return 0
+                return real_write(fd, data)
+            with mock.patch.object(runctl.os, "write", side_effect=zero_receipt):
+                with self.assertRaises(runctl.AuthorityError):
+                    h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            self.assertEqual(runctl.load_registry(h.registry_path)[-1]["event_type"], "ACTIVATION_CONSUMED")
+            with self.assertRaises(runctl.AuthorityError):
+                h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+        finally:
+            h.close()
+
+        # A2: existing-registry append, placement/link failure, final collision.
+        h = RunHarness()
+        try:
+            h.set_epoch()
+            with mock.patch.object(runctl, "_fsync_dir", side_effect=runctl.AuthorityError("unexpected directory fsync")):
+                h.reserve()
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            r, _, raw, digest = h.sealed()
+            with mock.patch.object(runctl.os, "link", side_effect=OSError(errno.EIO, "astra link failure")):
+                with self.assertRaises((runctl.AuthorityError, OSError)):
+                    h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            self.assertEqual(runctl.load_registry(h.registry_path)[-1]["event_type"], "ACTIVATION_CONSUMED")
+            with self.assertRaises(runctl.AuthorityError):
+                h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            r, a, raw, digest = h.sealed()
+            decision = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+            receipt_obj = {
+                "schema": runctl.RECEIPT_SCHEMA,
+                "run_id": a["run_id"],
+                "attempt_number": a["attempt_number"],
+                "activation_id": a["activation_id"],
+                "activation_digest": digest,
+                "reservation_digest": r["event_digest"],
+                "candidate_sha": a["candidate_sha"],
+                "git_tree": a["git_tree"],
+                "verified_input_tree_digest": a["verified_input_tree_digest"],
+                "target_host_opaque_id": a["target_host_opaque_id"],
+                "consumed_at_utc": runctl.utc_text(decision),
+            }
+            rb = runctl.canonical_json_bytes(receipt_obj) + b"\n"
+            rd = runctl.sha256_digest(rb)
+            final = h.receipts / (rd.split(":", 1)[1] + ".json")
+            final.parent.mkdir(parents=True, exist_ok=True)
+            final.write_bytes(b"preexisting")
+            with self.assertRaises(runctl.AuthorityError):
+                h.consume(raw, digest, r["run_id"], now=decision)
+            self.assertEqual(final.read_bytes(), b"preexisting")
+            self.assertEqual(runctl.load_registry(h.registry_path)[-1]["event_type"], "ACTIVATION_CONSUMED")
+            with self.assertRaises(runctl.AuthorityError):
+                h.consume(raw, digest, r["run_id"], now=decision)
+        finally:
+            h.close()
+
+        # A4: all remaining chronology/freshness boundaries.
+        fixed = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+        chronology_cases = [
+            ("future-not-before", fixed-dt.timedelta(seconds=2), fixed+dt.timedelta(seconds=1), fixed+dt.timedelta(minutes=1), fixed),
+            ("issued-after-not-before", fixed, fixed-dt.timedelta(seconds=1), fixed+dt.timedelta(minutes=1), fixed),
+            ("already-expired", fixed-dt.timedelta(seconds=3), fixed-dt.timedelta(seconds=2), fixed-dt.timedelta(seconds=1), fixed),
+            ("exact-expiry", fixed-dt.timedelta(seconds=2), fixed-dt.timedelta(seconds=1), fixed, fixed),
+        ]
+        for name, issued, not_before, expires, decision in chronology_cases:
+            h = RunHarness()
+            try:
+                h.set_epoch(fixed)
+                r = h.reserve(now=fixed)
+                _, raw, digest = h.activation(r, issued=issued, not_before=not_before, expires=expires)
+                h.registry.seal_activation(activation_bytes=raw, activation_digest=digest, event_time=fixed)
+                with self.assertRaises(runctl.AuthorityError, msg=name):
+                    h.consume(raw, digest, r["run_id"], now=decision)
+            finally:
+                h.close()
+
+        h = RunHarness()
+        try:
+            h.set_epoch(fixed); r = h.reserve(now=fixed)
+            _, raw, digest = h.activation(r, overrides={"expires_at_utc": "not-a-timestamp"})
+            with self.assertRaises(runctl.AuthorityError):
+                h.registry.seal_activation(activation_bytes=raw, activation_digest=digest, event_time=fixed)
+        finally:
+            h.close()
+
+        # A5: cross-run, sealed-unconsumed, unknown-field and malformed fields.
+        h = RunHarness()
+        try:
+            h.set_epoch()
+            r1 = h.reserve(run_id="gate-b-astra-one")
+            _, raw1, d1 = h.activation(r1, activation_id="act-astra-one")
+            h.registry.seal_activation(activation_bytes=raw1, activation_digest=d1)
+            h.consume(raw1, d1, r1["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            h.registry.terminal(run_id=r1["run_id"], status="FAILED_TERMINAL", reason="astra complete")
+            r2 = h.reserve(run_id="gate-b-astra-two")
+            _, raw2, d2 = h.activation(r2, activation_id="act-astra-two")
+            h.registry.seal_activation(activation_bytes=raw2, activation_digest=d2)
+            h.consume(raw2, d2, r2["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            braw, bd = h.binding(r2, d1, artifact_digest="sha256:"+"e"*64)
+            with self.assertRaises(runctl.AuthorityError):
+                h.registry.bind_evidence(binding_bytes=braw, binding_digest=bd)
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            h.set_epoch(); r = h.reserve()
+            _, raw, digest = h.activation(r)
+            h.registry.seal_activation(activation_bytes=raw, activation_digest=digest)
+            braw, bd = h.binding(r, digest)
+            with self.assertRaises(runctl.AuthorityError):
+                h.registry.bind_evidence(binding_bytes=braw, binding_digest=bd)
+        finally:
+            h.close()
+
+        h = RunHarness()
+        try:
+            r, _, raw, digest = h.sealed()
+            h.consume(raw, digest, r["run_id"], now=dt.datetime.now(dt.timezone.utc))
+            for kwargs in (
+                {"extra": {"unexpected_authority": "x"}},
+                {"artifact_digest": "sha256:bad"},
+                {"extra": {"artifact_type": "bad/type"}},
+            ):
+                braw, bd = h.binding(r, digest, **kwargs)
+                with self.assertRaises(runctl.AuthorityError):
+                    h.registry.bind_evidence(binding_bytes=braw, binding_digest=bd)
+        finally:
+            h.close()
+
+        # A6/A7: additional Git authority indirection / legacy replacement variants.
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            foreign = root / "foreign-git"
+            (repo2 / ".git").rename(foreign)
+            os.symlink(foreign, repo2 / ".git")
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            foreign = root / "foreign-git"
+            (repo2 / ".git").rename(foreign)
+            (repo2 / ".git").write_text(f"gitdir: {foreign}\n")
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            worktree = root / "linked"
+            git("worktree", "add", "--detach", str(worktree), sha)
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(worktree, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            foreign = root / "common"
+            shutil.copytree(repo2 / ".git", foreign, copy_function=shutil.copy2)
+            (repo2 / ".git" / "commondir").write_text(str(foreign) + "\n")
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            with mock.patch.dict(os.environ, {"GIT_ALTERNATE_OBJECT_DIRECTORIES": str(root / "foreign")}, clear=False):
+                with self.assertRaises(verifier.VerifyError):
+                    verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+            with mock.patch.dict(os.environ, {"GIT_OBJECT_DIRECTORY": ""}, clear=False):
+                with self.assertRaises(verifier.VerifyError):
+                    verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            alias = root / "alias"
+            os.symlink(root, alias)
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(alias / "release", expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            objects = repo2 / ".git" / "objects"
+            shard = next(p for p in objects.iterdir() if p.is_dir() and len(p.name) == 2)
+            foreign = root / "foreign-shard"
+            shutil.copytree(shard, foreign, copy_function=shutil.copy2)
+            shutil.rmtree(shard)
+            os.symlink(foreign, shard)
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            grafts = repo2 / ".git" / "info" / "grafts"
+            grafts.parent.mkdir(parents=True, exist_ok=True)
+            grafts.write_text(sha + "\n")
+            with self.assertRaises(verifier.VerifyError):
+                verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+        finally:
+            tmp.cleanup()
+
+        # A9: remaining byte/type and allowlist controls.
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            (repo2 / "src" / "main.py").write_text("print('changed')\n")
+            report, _ = verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+            self.assertEqual(report["status"], "RED")
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            (repo2 / "docs").mkdir()
+            (repo2 / "docs" / "target.txt").write_text("target\n")
+            os.symlink("target.txt", repo2 / "docs" / "link")
+            git("add", ".")
+            git("commit", "-qm", "tracked symlink")
+            sha2 = git("rev-parse", "HEAD").strip()
+            tree2 = git("rev-parse", "HEAD^{tree}").strip()
+            (repo2 / "docs" / "link").unlink()
+            (repo2 / "docs" / "link").write_text("target.txt")
+            report, _ = verifier.verify(repo2, expected_sha=sha2, expected_tree=tree2)
+            self.assertEqual(report["status"], "RED")
+        finally:
+            tmp.cleanup()
+
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            (repo2 / "var").mkdir()
+            (repo2 / "var" / "runtime.db").write_text("runtime")
+            report, _ = verifier.verify(repo2, expected_sha=sha, expected_tree=tree, allowed_extra_prefixes=("var",))
+            self.assertEqual(report["status"], "GREEN")
+        finally:
+            tmp.cleanup()
+
+        for bad_prefix in ("/tmp", "src/../deploy", "src", "scripts/generated"):
+            tmp, root, repo2, git, sha, tree = make_git_repo()
+            try:
+                with self.assertRaises(verifier.VerifyError, msg=bad_prefix):
+                    verifier.verify(repo2, expected_sha=sha, expected_tree=tree, allowed_extra_prefixes=(bad_prefix,))
+            finally:
+                tmp.cleanup()
+
+        # A10: concurrent content mutation during inspection.
+        tmp, root, repo2, git, sha, tree = make_git_repo()
+        try:
+            target = repo2 / "src" / "main.py"
+            original_read = verifier.os.read
+            started = threading.Event()
+            mutated = threading.Event()
+            first = {"done": False}
+            def mutate_target():
+                self.assertTrue(started.wait(2))
+                target.write_text("print('raced')\n")
+                mutated.set()
+            def slow_read(fd, size):
+                opened = fd_path(fd)
+                if not first["done"] and opened == str(target):
+                    first["done"] = True
+                    started.set()
+                    self.assertTrue(mutated.wait(2))
+                return original_read(fd, size)
+            thread = threading.Thread(target=mutate_target)
+            thread.start()
+            try:
+                with mock.patch.object(verifier.os, "read", side_effect=slow_read):
+                    report, _ = verifier.verify(repo2, expected_sha=sha, expected_tree=tree)
+                self.assertEqual(report["status"], "RED")
+            finally:
+                thread.join(timeout=2)
+            self.assertFalse(thread.is_alive())
+        finally:
+            tmp.cleanup()
+
+        print("ASTRA_MATRIX_COMPLETENESS_OK", flush=True)
 
         # Beyond A1-A10: lock pathname replacement must not split exclusivity.
         h = RunHarness()
