@@ -6,9 +6,9 @@ Decision authority after this handoff returns to Blue / Mission Control.
 
 ## 0. Final repository verdict
 
-`ASTRA_FAULT_MATRIX = PASS_REPOSITORY_EVIDENCE`
+`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
 
-This is a bounded repository-evidence verdict for the Gate-A hybrid fault matrix.
+This is a bounded repository-evidence verdict for the Gate-A hybrid fault matrix. No production REAL_DEFECT was reproduced; the blocker is a proof defect in one required new discriminant.
 It is not a Gate B authorization, target-host entrance result, t0 declaration,
 P14D amendment, Product-integration decision, scientific/economic readiness
 claim, or real-capital authorization.
@@ -108,6 +108,21 @@ Net Astra tree delta from mission start is again confined to:
 - `audit/astra_p0_hybrid_fault_matrix_independent_probe.py`;
 - `handoff/ASTRA_P0_HYBRID_FAULT_MATRIX_CHECKPOINT_2026-09-21.md`;
 - this final handoff.
+
+## 2B. Later strict F10 falsifier and cleanup
+
+A later audit-only commit
+`b9c8afefe296b6c6c7c8d8a9c6b929e4902ccf62` independently preserved the
+restart-burst 5 -> 4 oracle falsifier and the other new-proof mutations. Its
+checkpoint at
+`44a5ad6ae4cddd36ddfdac00cb356a0e208c350c` identified the consequence as
+`TEST_DEFECT -> MISSING_PROOF`.
+
+The temporary unittest file was removed again at
+`31b31c468406d46ef2256d459e6b9fc4c4cf7a93` so ordinary production test
+discovery/status accounting is not changed by audit-only instrumentation. The
+red finding remains durable in Git history, the strict checkpoint, and the
+independent `audit/astra_p0_hybrid_fault_matrix_independent_probe.py`.
 
 ## 3. Required row set
 
@@ -347,7 +362,7 @@ Physical filesystem/crash ordering remains `TARGET_HOST_ONLY`.
 
 ### D. restart_burst_limit
 
-Current frozen repository fact was independently reconstructed without deriving
+Current frozen repository facts were independently reconstructed without deriving
 the expected good fixture from the production constant:
 
 - `RESTART_BURST_LIMIT = 5`;
@@ -356,35 +371,39 @@ the expected good fixture from the production constant:
   `_effective_systemd_definition` path;
 - loaded value `4` is rejected by that same real path.
 
-Therefore the current repository property is proven.
+Those facts show that the frozen production candidate currently carries the
+intended value. They do **not** make the Codex helper itself discriminating.
 
-However, Astra found a discriminant-quality defect in the Codex helper. The
-helper derives its expected loaded value from
-`launcher.RESTART_BURST_LIMIT`. Astra mutated only that isolated production
-constant from `5` to `4`. The Codex discriminant remained GREEN:
+The Codex helper derives its accepted fixture from
+`launcher.RESTART_BURST_LIMIT` and its rejected fixture from
+`launcher.RESTART_BURST_LIMIT - 1`. Astra temporarily mutated only the isolated
+production constant from `5` to `4`. The Codex discriminant remained GREEN:
 
 `constant=4 exact_loaded_value_accepted=True one_below_rejected=True`
 
-Classification of the production property:
-`NON_ISSUE`
+The paired runtime citation
+`Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service`
+patches `RESTART_BURST_LIMIT=0` to exercise the unsolicited-child-exit guard;
+it does not pin or discriminate the required frozen numeric value `5`.
 
-Classification of the Codex test:
-`TEST_DEFECT / NON_BLOCKING_WITH_INDEPENDENT_ASTRA_COMPENSATION`
+Classification:
 
-Reason:
-the helper proves loaded-value consistency with whatever source constant exists,
-but does not itself lock the frozen numeric contract to five. Astra's separate
-static-5-vs-4 discriminant closes the current repository proof without modifying
-production.
+- production property at frozen candidate: `NON_ISSUE / FACT`;
+- Codex discriminant: `TEST_DEFECT`;
+- consequence for the required fault-matrix proof row: `MISSING_PROOF`;
+- physical service-manager enforcement: residual `TARGET_HOST_ONLY`.
 
-Physical service-manager enforcement of restart limits remains
-`TARGET_HOST_ONLY`.
+This follows mission F10 directly: each of the four new discriminants is required
+to turn RED under a minimal mutation violating its claimed invariant. The
+restart-burst helper does not. An independent Astra fact check is valid audit
+evidence about the current bytes, but it does not retroactively make the Codex
+`NEW_DISCRIMINATING_PROOF` claim true.
 
 ## 6. MISSING_PROOF challenge
 
 Astra did not accept `MISSING_PROOF_COUNT = 0` from the artifact.
 
-It attempted to force proof gaps through:
+It actively challenged:
 
 - all existing citations;
 - file-fsync mutation;
@@ -399,11 +418,19 @@ Result:
 
 `REAL_DEFECT = 0`
 
-`UNRESOLVED_REPOSITORY_MISSING_PROOF = 0`
+`UNRESOLVED_REPOSITORY_MISSING_PROOF = 1`
 
-The restart-burst Codex helper has a `TEST_DEFECT`, but the current numeric
-contract is independently proven by Astra. Therefore it does not leave an
-unresolved repository `MISSING_PROOF`.
+Unresolved row:
+
+`restart_burst_limit`
+
+Reason: the required Codex discriminant follows the production constant as its
+oracle and remains green under the minimal `5 -> 4` mutation. The frozen
+candidate itself still has value 5 and no production defect was reproduced, but
+the package does not contain four independently discriminating new proofs as
+claimed.
+
+Therefore the artifact's `MISSING_PROOF_COUNT = 0` is not accepted.
 
 ## 7. Artifact reproducibility
 
@@ -480,13 +507,14 @@ Verified:
 - no t0, target-host readiness, P14D amendment or capital authorization is
   claimed.
 
-`MISSING_PROOF_COUNT = 0` is accepted as the current repository-evidence
-conclusion after this independent review.
+`MISSING_PROOF_COUNT = 0` is **rejected** by this independent review.
 
-The statement `NEW_DISCRIMINATING_PROOF_COUNT = 4` requires the explicit
-qualification that one Codex discriminant has the restart-constant oracle
-`TEST_DEFECT`; Astra independently supplies the missing hard-coded 5-vs-4
-sensitivity for the current candidate.
+The artifact structurally emits `NEW_DISCRIMINATING_PROOF_COUNT = 4`, but one
+of those four — `restart_burst_limit` — does not satisfy mission F10's required
+mutation sensitivity. Independent Astra verification of the current value 5 is
+useful corroborating FACT evidence, not a repair of the audited Codex package.
+Accordingly the independent effective count is three discriminating new proofs
+plus one unresolved `MISSING_PROOF` row.
 
 ## 10. Classification summary
 
@@ -498,8 +526,8 @@ None reproduced.
 
 1. `restart_burst_limit` Codex discriminant uses the production constant as
    its own expected-value oracle; a temporary 5 -> 4 mutation remains green.
-   Non-blocking because Astra independently proves the current constant/unit
-   contract is 5 and the real validation path rejects 4.
+   This is blocking for the fault-matrix package because F10 requires the new
+   discriminant itself to demonstrate sensitivity to a violated invariant.
 
 2. Artifact report/file digest is Python-build-bound because `sys.version` is
    inside the hashed payload. Same-build generation is deterministic; cross-build
@@ -511,7 +539,11 @@ None reproduced.
 
 ### MISSING_PROOF
 
-None unresolved repository-side after independent compensation.
+One unresolved repository-side proof row:
+
+- `restart_burst_limit`: current production bytes are consistent with the
+  required value 5, but the Codex `NEW_DISCRIMINATING_PROOF` is circular with
+  respect to that numeric contract and remains green under 5 -> 4 mutation.
 
 ### TARGET_HOST_ONLY
 
@@ -601,16 +633,24 @@ All 19 required rows exist.
 All 15 existing proof citations were inspected and executed.
 The file-fsync and both state/journal discriminants demonstrate independent
 mutation sensitivity.
-The restart-burst repository property is correct and independently proven,
-while the Codex helper's self-referential expected-value construction is
-preserved as a non-blocking TEST_DEFECT.
-The artifact is internally consistent and deterministic within a fixed Python
-build, with the cross-build digest limitation explicitly classified.
 No production path changed.
 No repository REAL_DEFECT was reproduced.
-No unresolved repository MISSING_PROOF remains.
-Target-host residuals remain target-host residuals.
 
-`ASTRA_FAULT_MATRIX = PASS_REPOSITORY_EVIDENCE`
+However, the fourth new discriminant, `restart_burst_limit`, is not
+independently sensitive to the frozen numeric invariant: changing the isolated
+production constant from 5 to 4 leaves the Codex helper GREEN because the helper
+uses that same mutable constant as its oracle. The separate Astra check proves
+that the current frozen candidate is in fact 5 and rejects loaded 4, but the
+mission is auditing whether the Codex fault-matrix package honestly contains
+four new discriminating proofs. It does not.
+
+Therefore one repository proof row remains unresolved:
+
+`restart_burst_limit = TEST_DEFECT -> MISSING_PROOF`
+
+Target-host physical behavior remains outside this repository verdict and is not
+being reclassified as a production defect.
+
+`ASTRA_FAULT_MATRIX = BLOCKED_MISSING_PROOF`
 
 After final exact-head CI is observed, Astra stops and returns control to Blue.
