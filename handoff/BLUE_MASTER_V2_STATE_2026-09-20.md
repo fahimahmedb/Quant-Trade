@@ -490,3 +490,34 @@ Current status remains:
 - fixed P14D remains current authority until the hybrid promotion transaction is explicitly committed.
 
 No target-host command has been executed by Blue while preparing this pack.
+
+
+## S. OPERATOR PACK HARDENING — 2026-09-21
+
+Blue adversarially re-reviewed the prepared Gate-B/t0 operator pack before any target-host execution.
+
+New durable review:
+`governance/BLUE_GATE_B_T0_OPERATOR_PACK_ADVERSARIAL_REVIEW_2026-09-21.md`.
+
+Hardening added:
+- explicit host time/NTP/realtime↔monotonic authority;
+- evidence-retention/journald/disk/inode proof;
+- proxy/resolver/TLS/network-runtime binding;
+- resource-health baseline;
+- unique `GATE_B_RUN_ID`;
+- terminal-failure and new-run retry semantics;
+- fail-closed synthetic-state separation;
+- evidence hash chain;
+- anti-replay clock-step rules for t0.
+
+New candidate control artifacts:
+- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json`.
+
+The activation artifact is required before any mutating Gate-B command in the future authoritative runbook. A free-form prose PASS is insufficient; the final Gate-B artifact must satisfy the activated machine-checkable schema.
+
+Still:
+- `GATE_B_MUTATION_AUTHORIZED = FALSE`;
+- `GATE_B = NOT_STARTED`;
+- `t0 = NOT_DECLARED`;
+- `TARGET_HOST_READY = FALSE`.
