@@ -458,3 +458,35 @@ This closes the independent repository-correction review only.
 `TARGET_HOST_READY = FALSE` and `GATE_B = NOT_STARTED` remain unchanged.
 
 Current P14D hybrid promotion blocker is now the separate bounded Gate-A fault-matrix evidence plus final exact-lineage/consistency binding. Astra is no longer a waiting lane for V4.
+
+
+## R. TARGET-HOST GATE B / t0 OPERATOR PACK PREPARED — 2026-09-21
+
+Prepared candidate artifacts:
+- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`;
+- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`;
+- `governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`.
+
+These are pinned to frozen V4:
+`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`,
+Git tree `4d15ef6f471213ee6ab56337b555d2906ef9bf16`,
+verified input-tree digest
+`sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2`.
+
+The pack encodes:
+- B1–B10 target-host entrance proof;
+- explicit destructive-test / qualifying-state separation;
+- Gate-B artifact sealing;
+- `PRECOMMITTED_NEXT_AUTHORIZED_QUALIFYING_LAUNCH` t0 binding;
+- immediate Gate-C transition;
+- no retrospective t0 reselection;
+- Gate-D closure and post-qualification surveillance.
+
+Current status remains:
+- `CONTRACT_STATUS = PREPARED_CANDIDATE / NOT_AUTHORIZED_FOR_EXECUTION`;
+- `GATE_B = NOT_STARTED`;
+- `t0 = NOT_DECLARED`;
+- `TARGET_HOST_READY = FALSE`;
+- fixed P14D remains current authority until the hybrid promotion transaction is explicitly committed.
+
+No target-host command has been executed by Blue while preparing this pack.
