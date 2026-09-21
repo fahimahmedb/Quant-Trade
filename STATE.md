@@ -576,3 +576,28 @@ reproducibility (same seed -> same interval).
 No. Nothing in the current frontier requires human authority. The blocked lanes need datasets
 that are free but not yet written adapters for; the next research lane is choosable from
 evidence. The system is `IDLE` with a named next action, not finished.
+
+
+## Claude resume freeze checkpoint — 2026-09-21
+
+User-requested stop point. No further Product/science implementation was performed after
+commit `be5177fc8711c6aedb8e75cf61a9eb3243492362`.
+
+Resume contract for the next Claude Code Builder:
+
+- stay on `builder/post-p0-first-vertical-shadow-loop-2026-09-21`; do not create another branch;
+- treat `be5177f` and the checkpoint immediately above as the complete durable work state;
+- do not redo selective imports or digest verification;
+- the durable M1 paths `QuantPaths.science_cohort_protocol` and
+  `QuantPaths.science_method_qualification` are already committed;
+- the detailed `src/quant/science/effect.py` design/reuse plan immediately above is the direct
+  implementation starting point;
+- continue the frozen one-big-build mission from M1, beginning with `effect.py` and its targeted
+  deterministic tests;
+- preserve all Blue frozen authorities and mission prohibitions;
+- no target-host, P0, Gate-B, real-network, or real-capital mutation is authorized by this
+  checkpoint.
+
+CHECKPOINT_KIND = CLAUDE_RESUME_ONLY
+SEMANTIC_IMPLEMENTATION_AFTER_BE5177F = FALSE
+WORKTREE_STATE_AT_HANDOFF = REMOTE_DURABLE
