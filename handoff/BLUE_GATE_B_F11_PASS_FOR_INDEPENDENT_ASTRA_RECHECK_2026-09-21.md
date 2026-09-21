@@ -117,15 +117,43 @@ Mission file:
 
 EXPECTED_ASTRA_MISSION_HEAD:
 
-`15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9`
+`1340c1e8eefdbbcd11aece6506040336f448d38d`
 
 Blue final dispatch state:
 
 ```text
 PASS_FOR_INDEPENDENT_ASTRA_RECHECK = TRUE
 ASTRA_F11_RECHECK_AUTHORIZED = TRUE
-EXPECTED_ASTRA_MISSION_HEAD = 15ef2ca7df87f2c8a48ebee6010238a55d9ea2b9
+EXPECTED_ASTRA_MISSION_HEAD = 1340c1e8eefdbbcd11aece6506040336f448d38d
 ```
 
 Astra must verify its branch resolves exactly to that mission HEAD before substantive
 audit work.
+
+
+## 6. Astra branch self-containment correction
+
+Blue detected that the originally authorized Astra mission branch did not itself
+contain this authorization file, even though the mission required reading it locally.
+
+That launch-gate defect is now corrected.
+
+A branch-local read-only authorization snapshot was added to:
+
+`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
+
+New exact Astra mission/launch HEAD:
+
+`1340c1e8eefdbbcd11aece6506040336f448d38d`
+
+The added delta is governance/mission material only.
+
+Therefore the current binding is:
+
+```text
+EXPECTED_ASTRA_MISSION_HEAD = 1340c1e8eefdbbcd11aece6506040336f448d38d
+PASS_FOR_INDEPENDENT_ASTRA_RECHECK = TRUE
+ASTRA_F11_RECHECK_AUTHORIZED = TRUE
+```
+
+Astra must verify this new exact HEAD before substantive audit work.
