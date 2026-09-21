@@ -188,13 +188,6 @@ class AstraGateBRecheckProbe(unittest.TestCase):
 
         h = RunHarness()
         try:
-            h.set_epoch()
-            r, _, raw, digest = h.sealed()[0:4]
-        finally:
-            h.close()
-
-        h = RunHarness()
-        try:
             r, _, raw, digest = h.sealed()
             real_write = os.write
             state = {"n": 0}
