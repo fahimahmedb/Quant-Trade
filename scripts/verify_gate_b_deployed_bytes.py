@@ -27,6 +27,9 @@ REJECTED_GIT_ENV = (
     "GIT_OBJECT_DIRECTORY",
     "GIT_ALTERNATE_OBJECT_DIRECTORIES",
     "GIT_REPLACE_REF_BASE",
+    "GIT_GRAFT_FILE",
+    "GIT_NAMESPACE",
+    "GIT_QUARANTINE_PATH",
 )
 TARGET_HOST_ONLY_BOUNDARY = (
     "TARGET_HOST_ONLY: immutability of the frozen release for the "
@@ -523,6 +526,14 @@ def verify(
     validate_hex40(expected_tree, "expected_tree")
     critical_prefixes = tuple(normalize_prefix(p) for p in critical_prefixes)
     allowed_extra_prefixes = tuple(normalize_prefix(p) for p in allowed_extra_prefixes)
+    for allowed in allowed_extra_prefixes:
+        if any(
+            under_prefix(allowed, critical) or under_prefix(critical, allowed)
+            for critical in critical_prefixes
+        ):
+            raise VerifyError(
+                f"allowed-extra prefix overlaps execution-critical authority: {allowed}"
+            )
 
     root_fd = _open_dir_nofollow(release)
     root_initial = os.fstat(root_fd)
@@ -563,7 +574,11 @@ def verify(
             if oid != entry["oid"]:
                 mismatches.append({"path": path, "kind": "blob", "expected": entry["oid"], "observed": oid})
 
-        extras = sorted(observed_paths - expected_paths)
+        observed_paths_after = walk_filesystem(root_fd, allowed_extra_prefixes)
+        if observed_paths_after != observed_paths:
+            raise VerifyError("release filesystem entry set changed during verification")
+
+        extras = sorted(observed_paths_after - expected_paths)
         critical_extras = sorted(path for path in extras if any(under_prefix(path, p) for p in critical_prefixes))
         critical_extra_set = set(critical_extras)
         noncritical_extras = sorted(path for path in extras if path not in critical_extra_set)
