@@ -250,3 +250,158 @@ Do not touch:
 - reboot;
 
 on the basis of this candidate file alone.
+
+
+## Phase -1 — activation gate (mandatory)
+
+Before ANY mutating command, verify a Blue activation artifact exists and binds:
+
+```text
+ACTIVATED_CONTRACT_DIGEST =
+ACTIVATED_RUNBOOK_DIGEST =
+EXPECTED_SHA =
+EXPECTED_TREE =
+EXPECTED_INPUT_TREE_DIGEST =
+TARGET_HOST_OPAQUE_ID =
+GATE_B_RUN_ID =
+```
+
+If any field is missing or mismatched:
+
+STOP.
+
+Do not infer authorization from branch names, chat, file existence or green CI.
+
+## Phase 2A — time / evidence / network preflight
+
+Before destructive work, record and classify:
+
+### Time authority
+- UTC wall clock;
+- timezone;
+- NTP synchronization state;
+- boot ID;
+- realtime + monotonic correlation sample.
+
+### Evidence retention
+- evidence-root mount/filesystem;
+- free bytes/inodes;
+- journald persistence/retention relevant to the planned window;
+- permissions and ownership;
+- hash manifest seed for this `GATE_B_RUN_ID`.
+
+### Network path
+Record non-secret effective identity for:
+- proxy-related environment;
+- resolver configuration;
+- TLS/OpenSSL trust/runtime;
+- service EnvironmentFiles affecting network behavior.
+
+Do not print requester secrets.
+
+Any ambiguity blocks progression.
+
+## Phase 3A — pre-destructive resource baseline
+
+Capture:
+- disk/free bytes;
+- inodes;
+- state-root bytes;
+- evidence-root bytes;
+- RSS/memory;
+- open FDs + limits;
+- relevant cgroup/process limits.
+
+Store as:
+
+`GATE_B_RESOURCE_BASELINE_<RUN_ID>`
+
+No arbitrary threshold is implied; the purpose is attributable before/after
+comparison and headroom review.
+
+## Phase 4A — no-real-network rule for synthetic campaign
+
+Default rule for synthetic/destructive Gate-B tests:
+
+`REAL_SEC_NETWORK_REQUESTS_ALLOWED = FALSE`
+
+If a test unexpectedly attempts real SEC network access:
+- preserve evidence;
+- mark the subtest FAIL;
+- stop the current run;
+- return to Blue.
+
+Do not relax this rule locally.
+
+## Phase 6A — terminal-failure semantics
+
+All destructive substeps belong to one immutable `GATE_B_RUN_ID`.
+
+On the first mandatory FAIL:
+
+```text
+GATE_B_RUN_STATUS = FAILED_TERMINAL
+```
+
+Then:
+1. preserve the red artifact;
+2. stop further qualifying/destructive progression except evidence-safe shutdown;
+3. do not overwrite or “repair” the failed artifact;
+4. do not continue under the same run ID;
+5. return to Blue.
+
+A new attempt requires a new run ID and explicit Blue disposition on evidence
+reuse.
+
+## Phase 7A — safe-state-separation check
+
+Before sanitization, prove the synthetic/destructive reservoir can be separated
+from the future qualifying reservoir using an already-supported, auditable
+mechanism.
+
+If not provable:
+
+`MISSING_OPERATIONAL_PROOF / STOP`
+
+Do not invent a new mount/path/state trick during execution.
+
+## Phase 7B — evidence-chain seal
+
+Before Blue reception, produce a manifest binding:
+
+- `GATE_B_RUN_ID`;
+- activation digest;
+- contract/runbook digests;
+- all B1–B10 artifact digests;
+- time-authority digest;
+- resource-baseline digest;
+- network/runtime-binding digest;
+- pre/post state-inventory digests;
+- post-sanitization digest.
+
+The manifest itself receives a canonical digest.
+
+## Phase 9A — pre-t0 clock recheck
+
+Immediately before sealing a future t0 precommit:
+
+- recheck NTP/synchronization;
+- recheck boot ID;
+- record realtime/monotonic correlation;
+- confirm no unexplained clock step since Gate B closure.
+
+Clock ambiguity => no precommit.
+
+## Phase 10A — authoritative launch timestamp source
+
+The t0 timestamp must be derived from the externally attributable systemd/lifecycle
+launch record associated with the unique consumed authority.
+
+Do not use:
+- shell command start time;
+- operator-entered time;
+- chat time;
+- filesystem mtime alone.
+
+The launch-event artifact must bind the source of the timestamp and its
+InvocationID/boot identity.
