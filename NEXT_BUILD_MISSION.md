@@ -1,631 +1,136 @@
 # Current Build / Mission Router
 
-> **CURRENT OVERRIDE — 2026-09-21**
+> **CURRENT AUTHORITY — 2026-09-21**
 >
-> This block is the current routing/context authority for this file.
-> Historical sections below are preserved for traceability and MUST NOT be treated as
-> current state when they conflict with this block.
->
-> ```text
-> ACTIVE_PRIMARY_RAILS = 2
->
-> RAIL_A = GATE_B_POST_ASTRA_CONVERGENCE
-> RAIL_A_BRANCH = blue/gate-b-post-astra-convergence-2026-09-21
-> RAIL_A_MISSION_HEAD = a06bcefcaa8c3ddf3e879dff39f6583c2d89f400
-> F11_REPOSITORY_DEFECT = CLOSED
-> ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE
-> ASTRA_F11_EXACT_HEAD_CI = 35624089971 = COMPLETED / SUCCESS
-> RAIL_A_EXIT = POST_ASTRA_GATE_B_CONVERGENCE =
->   READY_FOR_TARGET_HOST_READ_ONLY_REBIND | BLOCKED_<EXACT_REASON>
->
-> RAIL_B = FIRST_SLICE_COHORT_INFORMATION_GEOMETRY_CLOSURE
-> RAIL_B_BRANCH = parallel/claude-first-slice-cohort-geometry-2026-09-21
-> RAIL_B_MISSION_HEAD = 58ce1f570131448e639cace47ee4f5d8e890458d
-> S11_METHODS_CHALLENGE = COMPLETE
-> S11_METHODS_VERDICT = BLOCKED_MAX_4_INDEPENDENT_COMPONENTS
-> SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_COHORT_INFORMATION_GEOMETRY
-> ECONOMIC_QUESTION_MAP = ACCEPTED
-> ONE_BIG_BUILD_PRESTAGE = READY_PENDING_COHORT_GEOMETRY
-> ONE_BIG_BUILD_PRESTAGE_AUTHORITY = governance/BLUE_ONE_BIG_BUILD_PRESTAGE_2026-09-21.md
-> RAIL_B_EXIT = COHORT_GEOMETRY_READY_FOR_SPEC_FREEZE |
->   COHORT_GEOMETRY_BLOCKED_<EXACT_REASON>
->
-> PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
-> PRODUCT_INTEGRATION = PAUSED
-> TARGET_HOST_READY = FALSE
-> GATE_B_MUTATION_AUTHORIZED = FALSE
-> GATE_B = NOT_STARTED
-> t0 = NOT_DECLARED
-> REAL_CAPITAL_AUTHORIZED = FALSE
-> ```
->
-> Do not launch another F11 repair/recheck, another S11 interval-method review, or
-> another Economic Question Map mission unless a new concrete contradiction is
-> established.
->
-> Before any state-changing action, re-resolve live branch HEADs and exact-head CI.
->
+> Historical routing remains available in Git history. This file is intentionally kept
+> compact and should describe only the live routing surface.
 
+## North Star
 
-This file is intentionally a router, not a frozen mission specification.
-
-Do not infer the active task from historical content at this path.
-
-## Current restart order
-
-Read:
+Read first:
 
 1. `QUANT_NORTH_STAR.md`
-2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`
-3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-5. `handoff/ASTRA_GATE_B_RUN_AUTHORITY_MECHANISMS_RECHECK_2026-09-21.md`
-6. `handoff/ANTIGRAVITY_POST_P0_VERTICAL_SHADOW_LOOP_DESIGN_2026-09-21.md`
-7. the exact active mission/handoff after verifying live GitHub state.
+2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
+3. the exact active mission/handoff after resolving its live branch HEAD and CI
 
-Resolve the live HEAD of `blue/master-v2-2026-09-20` before acting.
+## Active primary rails
 
-## Current routing
+### Rail A — Gate-B / target host
 
-Frozen V4 production candidate:
-
-`4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`
-
-V4 repository disposition:
-
-`GATE_A_V4_REPOSITORY_DISPOSITION = PASS`
-
-Gate-B run-authority integrated candidate:
-
-`blue/gate-b-run-authority-repair-integration-2026-09-21@644da76eb0227be275b8e3448118dac0cc7096ca`
-
-Integrated exact-head CI:
-
-- `35598077120 = SUCCESS`
-- `35598816973 = SUCCESS`
-
-Final independent Astra recheck:
-
-`astra/gate-b-run-authority-mechanisms-recheck-2026-09-21@41c3f291f46b7b5849bdb702c09ccefbeecde691`
-
-Final verdict:
-
-`ASTRA_GATE_B_RUN_AUTHORITY_REVIEW = BLOCKED_REAL_DEFECT_LOCK_PATH_IDENTITY`
-
-Current repository blocker:
-
-`F11 = REAL_DEFECT / LOCK_PATH_IDENTITY`
-
-A1-A10 are independently GREEN after the prior repair.
-
-No second repository blocker was independently established.
-
-## Current next mission
-
-Owner:
-
-`BLUE`
-
-Next action:
-
-`DISPATCH_BOUNDED_F11_REPAIR`
-
-Recommended Builder branch:
-
-`builder/gate-b-f11-lock-identity-repair-2026-09-21`
-
-At the time this router was written, that branch did not yet exist.
-
-Required bounded scope:
-
-- `scripts/quant_gate_b_runctl.py`;
-- F11-specific tests;
-- final Builder handoff;
-- mechanical proof-inventory refresh only if required.
-
-Do not reopen M4, F1, F5, V4 prestage or A1-A10 unless a reproduced regression requires it.
-
-Builder final status may be only:
-
-`READY_FOR_INDEPENDENT_REVIEW`
-
-Then:
-
-`Blue integration -> independent Astra F11 + A1-A10 non-regression recheck -> possible PASS_REPOSITORY_EVIDENCE -> return to Gate-B activation path`.
-
-## Product / Antigravity
-
-Antigravity Product prestage is complete:
-
-`parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21@568eea1e028302e14f96a06eb2515bb89aa73ad4`
-
-Status:
-
-`ANTIGRAVITY_VERTICAL_PRESTAGE = READY_FOR_BLUE_REVIEW`
-
-The design is accepted as planning input only.
-
-Future Product mission remains parked:
-
-`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
-
-Do not start Product integration on the qualifying P0 path while F11 remains open.
-
-## Current authority state
+Current state:
 
 ```text
-P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
-TARGET_HOST_READY = FALSE
+F11_REPOSITORY_DEFECT = CLOSED
+TARGET_HOST_READ_ONLY_REBIND = PASS
+GATE_B_RUN_RESERVED = TRUE
+
+GATE_B_RUN_ID =
+gate-b-31f4fa2e-e697-4c3a-b00e-98626f867811
+
+GATE_B_ATTEMPT_NUMBER = 1
+
+ACTIVATION_SEALED = FALSE
+ACTIVATION_CONSUMED = FALSE
 GATE_B_MUTATION_AUTHORIZED = FALSE
 GATE_B = NOT_STARTED
 GATE_B_PASS_DECLARED = FALSE
 t0 = NOT_DECLARED
-PRODUCT_INTEGRATION = PAUSED
-REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
-This router is not proof that a branch, CI run, candidate or gate remains current.
+Current blocker:
 
-Exact live GitHub state and the current Blue governance index control.
+`GATE_B_ACTIVATION_SEAL_PREP = BLOCKED_MISSING_CONCRETE_ROUTE1_MUTATION_PACK`
 
+Active bounded Builder:
 
-## LIVE F11 DISPATCH OVERRIDE — 2026-09-21
-
-This section supersedes the earlier statement that the F11 repair branch does not exist.
-
-Blue repair specification:
-
-`governance/BLUE_GATE_B_F11_LOCK_IDENTITY_REPAIR_SPEC_2026-09-21.md`
-
-Active Builder branch:
-
-`builder/gate-b-f11-lock-identity-repair-2026-09-21`
-
-Audited implementation base:
-
-`644da76eb0227be275b8e3448118dac0cc7096ca`
-
-Blue spec-on-Builder dispatch commit:
-
-`113e60cb6ae9a56ffb4adb83c13a797e3563369e`
-
-Builder mission dispatch HEAD:
-
-`8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
+`builder/gate-b-route1-concrete-mutation-pack-2026-09-21@6e4f37d77d8ddb7cab4e53133e6c8570d3e9fc25`
 
 Mission:
 
-`handoff/BUILDER_GATE_B_F11_LOCK_IDENTITY_REPAIR_MISSION_2026-09-21.md`
+`handoff/BUILDER_GATE_B_ROUTE1_CONCRETE_MUTATION_PACK_MISSION_2026-09-21.md`
 
-Current owner:
+Mission-head CI:
 
-`BUILDER_F11_REPAIR`
+`35641260071 = COMPLETED / SUCCESS`
 
-Required return state:
+Activation-correction authority:
 
-`READY_FOR_INDEPENDENT_REVIEW`
+`blue/gate-b-activation-seal-host-relay-2026-09-21@ad1b4d318c9e3657326e81b94cb9710b3953ffcd`
 
-No Gate-B, target-host, t0, Product or capital authority is implied.
+Next Rail-A flow:
 
+```text
+Route-1 concrete mutation pack
+-> Blue reception
+-> seal existing reserved run activation
+-> final host freshness check
+-> consume activation exactly once
+-> bounded Gate-B execution
+-> Blue Gate-B evidence reception
+-> possible Gate-B PASS
+-> later t0 boundary
+```
 
-## F11 BRANCH RECONCILIATION / PARENT-PATH CHALLENGE OVERRIDE — 2026-09-21
+Do NOT reserve another Gate-B run.
 
-Latest Blue authority:
+### Rail B — first economic vertical
 
-`governance/BLUE_GATE_B_F11_BRANCH_RECONCILIATION_PARENT_PATH_CHALLENGE_2026-09-21.md`
+Builder delivery:
 
-Active F11 implementation branch is now formally:
-
-`builder/gate-b-lock-path-identity-repair-2026-09-21@ed51cc4251f556482eca18e396cc1c0d932879fb`
-
-The later Blue-created mission-only branch:
-
-`builder/gate-b-f11-lock-identity-repair-2026-09-21@8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
-
-is:
-
-`SUPERSEDED_MISSION_ONLY / DO_NOT_IMPLEMENT`
-
-Do not create another F11 branch.
-
-Before final Builder handoff, the active implementation branch MUST close:
-
-`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
-
-Required discriminant: replace the entire registry parent directory pathname while process A holds the actual Registry critical section; process B must not enter a second mutation domain on the replacement parent inode.
-
-Even a green `35608538693` on `ed51cc42...` is insufficient for final reception while this challenge remains open.
-
-Current owner:
-
-`BUILDER_F11_PARENT_PATH_CHALLENGE`
-
-Astra remains stopped.
-
-## F11 BUILDER HANDOFF RECEPTION OVERRIDE — 2026-09-21
-
-Builder has now written a final handoff on the active implementation branch:
-
-`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
-
-Pre-handoff implementation CI:
-
-`35608538693 = COMPLETED / SUCCESS`
-
-Final handoff CI:
-
-`35610033532 = COMPLETED / SUCCESS`.
-
-Do NOT route to Astra yet.
-
-Blue reception:
-
-`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
-
-Remaining mandatory Builder work:
-
-`F11-P1 / F11-P2 / F11-P3`
-
-for whole-parent-path identity replacement, no-mutation semantics, and deterministic recovery/fail-closed behavior.
-
-Current owner:
-
-`BUILDER_F11_PARENT_PATH_CLOSURE`
-
-Astra becomes next owner only after Blue records:
-
-`PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
-
-
-## GATE-B FINAL ACTIVATION / CONVERGENCE PACK — PREPARED IN PARALLEL — 2026-09-21
-
-Blue has prepared:
-
-`governance/BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK_2026-09-21.md`
-
-Status:
-
-`BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK = PREPARED / WAITING_FOR_FINAL_F11_ASTRA_PASS`
-
-Purpose:
-
-- bind the already-promoted Gate-B authorities;
-- reuse the completed V4 activation prestage;
-- reuse F5 Route-1 host feasibility;
-- bind final accepted F11/A1-A10 independent evidence;
-- refresh dynamic host bindings;
-- reserve one unique Gate-B run;
-- generate/seal the canonical `quant-gate-b-activation/v1` object;
-- hand the already-authoritative Gate-B runbook to the Operator.
-
-This parallel preparation does NOT change the active F11 owner.
-
-Current active route remains:
-
-`BUILDER_F11_PARENT_PATH_CLOSURE -> BLUE RECEPTION/INTEGRATION -> ASTRA F11+A1-A10 -> possible PASS_REPOSITORY_EVIDENCE`
-
-The pack remains non-authorizing while:
-
-`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
-
-and while final Astra PASS is absent.
-
-No target-host mutation, Gate-B authorization, Gate-B PASS, t0, Product integration or real-capital authority follows from this preparation.
-
-
-## PARALLEL ECONOMIC CLAUDE CODE LANE — 2026-09-21
-
-Blue has opened one isolated Product/Economic preparation lane while the P0/F11/Gate-B rail continues.
-
-Governance authority:
-
-`governance/BLUE_CLAUDE_POST_P0_VERTICAL_BUILD_PREP_2026-09-21.md`
-
-Blue decision commit:
-
-`c62f63219068373e759cb63c095d62084da584f3`
-
-Claude Code branch:
-
-`parallel/claude-post-p0-vertical-build-prep-2026-09-21`
-
-Mission HEAD:
-
-`674971836b4b4e118877905a70540dc48e3f2749`
-
-Mission:
-
-`handoff/CLAUDE_POST_P0_VERTICAL_BUILD_PREP_MISSION_2026-09-21.md`
-
-Mission type:
-
-`READ_ONLY_ANALYSIS + PATCH_PLAN + TEST_SPEC + FUTURE_BUILDER_HANDOFF_ONLY`
-
-Blue D1-D5 are fixed for planning:
-- Research -> Economic mapping fails closed rather than inventing EffectEstimate fields;
-- `FINAL_SIZE = min(ECONOMIC_MARGIN_SIZE, DESK_LIFECYCLE_CAP)`;
-- Research `VALIDATED` does not auto-promote to SHADOW;
-- `ExecutionModel.fill` is sole Book-feeding shadow-fill authority;
-- one durable Forward -> Research -> Economic -> Desk -> Book -> Learning provenance chain.
-
-This lane may prepare the exact future implementation patch/test mission but MUST NOT modify Product code yet.
-
-Future implementation remains phase-gated for isolated execution during Gate C.
-
-Concurrency:
-
-`ONE P0 CRITICAL RAIL + ONE PRODUCT/ECONOMIC PREP RAIL`
-
-Do not launch a second substantial Product Builder while this Claude lane is active.
-
-
-## F11 FINAL-HANDOFF CI GREEN / PARENT-PATH STILL OPEN — 2026-09-21
-
-Builder remains at:
-
-`builder/gate-b-lock-path-identity-repair-2026-09-21@6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+`builder/post-p0-first-vertical-shadow-loop-2026-09-21@5c8b5b71ef627ac0ec0faa509edc40b7d9d0c4df`
 
 Exact-head CI:
 
-`35610033532 = COMPLETED / SUCCESS`
+`35639267629 = COMPLETED / SUCCESS`
 
-However the current committed dedicated F11 tests still do NOT contain the Blue-mandated whole-parent-path discriminants:
+Builder disposition:
 
-- `F11-P1` whole parent-directory replacement during live holder;
-- `F11-P2` no-mutation proof for rejected replacement-parent contender;
-- `F11-P3` deterministic recovery/fail-closed post-condition.
+`BUILDER_VERTICAL_SHADOW_LOOP = READY_FOR_INDEPENDENT_REVIEW`
 
-Therefore:
-
-`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
-
-`BUILDER_F11_ACCEPTED_FOR_ASTRA = FALSE`
-
-`ASTRA_F11_RECHECK_AUTHORIZED = FALSE`
-
-The Builder must continue on the same active branch. Do not create the Astra recheck branch until Blue records:
-
-`PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
-
-
-## CLAUDE ECONOMIC BUILD-PREP RETURN RECEIVED — 2026-09-21
-
-Claude final branch:
-
-`parallel/claude-post-p0-vertical-build-prep-2026-09-21@ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec`
-
-Blue reception:
-
-`handoff/BLUE_CLAUDE_POST_P0_VERTICAL_BUILD_PREP_RECEPTION_2026-09-21.md`
-
-Reception commit:
-
-`8979917eb8d329d27b719d91dec5448b898b3699`
-
-Disposition:
-
-`CLAUDE_VERTICAL_BUILD_PREP = ACCEPTED_AS_POST_P0_IMPLEMENTATION_PREP`
-
-Confirmed:
-- D1-D5 are implementation-ready;
-- exact D3 patch site is `src/quant/factory/workers.py::_finish`;
-- first vertical-loop patch plan and E2E test spec are ready;
-- no Product code was modified by the prep mission.
-
-Important remaining Product-side prerequisite:
-
-`REAL_RESEARCH_TO_FROZEN_EFFECT_ESTIMATE = MISSING_SCIENTIFIC_OUTPUT_CONTRACT`
-
-Current real Research output does not legally provide the frozen Economic
-`EffectEstimate` coordinate. Therefore the future fail-closed NO_TRADE path is valid,
-but a real non-fixture positive SHADOW path requires a scientifically valid upstream
-estimate contract.
-
-Recommended next parallel Product prep:
-
-`RESEARCH -> FROZEN EFFECT ESTIMATE SCIENTIFIC OUTPUT CONTRACT PRESTAGE`
-
-This remains non-implementing until separately dispatched by Blue.
-
-Future Product implementation branch remains:
-
-`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
-
-and remains phase-gated.
-
-Current critical P0/F11 rail is unchanged.
-
-
-## ECONOMIC ADVERSARIAL CHALLENGE RECEIVED / PRE-BIG-BUILD CORRECTION SPEC — 2026-09-21
-
-Advisory challenger:
-
-`claude/confident-mendel-h4qqo4@9e6431dedaa621d58218f6ffb09ed1300de1bd1b`
-
-Challenge handoff:
-
-`handoff/CLAUDE_POST_P0_VERTICAL_ADVERSARIAL_CHALLENGE_2026-09-21.md`
-
-Advisory verdict:
-
-`VERTICAL_CHALLENGE = PASS_WITH_REQUIRED_PREBUILD_CORRECTIONS`
-
-Blue consolidated authority:
-
-`governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`
-
-Blue consolidation commit:
-
-`02e5a00464aaf9cc66a44103812a58bac3d75ac4`
-
-Blue accepted and consolidated:
-
-- D2/D3 sizing/promotion circularity;
-- deeper fact that VALIDATED is not currently actionable in CapitalDesk;
-- delta-coordinate binding enforcement gap;
-- Forward whole-ledger admissibility identity defect;
-- pre/post-size execution-cost consistency;
-- LearningStore >200 restart-idempotence defect omitted from the challenger's own six-item correction list;
-- Antigravity conflict precedence;
-- expanded E2E false-positive/restart matrix.
-
-Blue resolution:
-
-`SHADOW` means scientifically validated + economically admitted for shadow trading.
-
-Required promotion:
-
-`VALIDATED -> durable Economic CONTINUE/capital-order-eligible -> SHADOW -> Desk SIZE -> Risk -> Fill|Veto`
-
-The initial Economic promotion gate must therefore complete before the current
-CapitalDesk actionable/ledger selection path.
-
-Current remaining non-code prerequisite:
-
-`REAL_RESEARCH_TO_FROZEN_EFFECT_ESTIMATE = MISSING_SCIENTIFIC_OUTPUT_CONTRACT`
-
-Do not issue Product implementation yet.
-
-Next Product prep:
-
-close the exact Research/science producer contract for frozen EffectEstimate,
-including DeltaCoordinateBinding, interval/clustering/sample provenance and
-allocation-weight-precedes-outcome proof.
-
-After that:
-
-`VERTICAL_LOOP_BUILD_SPEC = FROZEN`
-
-then issue one consolidated large bounded Builder mission rather than multiple
-small implementation missions.
-
-
-## LATEST EXECUTION ROUTER — 2026-09-21 / TWO-RAIL STATE
-
-Highest current routing checkpoint:
-
-`handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
-
-### RAIL A — NEXT
-
-Current Blue integration:
-
-`blue/gate-b-f11-final-integration-2026-09-21@4f26c1f015efb8c3530aeba8b3f87a81b0361a3f`
-
-Current CI at checkpoint:
-
-`35619545254 = IN_PROGRESS`
-
-Action:
-
-- if still running: wait / recheck only;
-- if failed: STOP and diagnose exact integration failure;
-- if `COMPLETED / SUCCESS`: Blue must immediately create the final Astra dispatch,
-  record `PASS_FOR_INDEPENDENT_ASTRA_RECHECK`, create the exact Astra branch, and
-  record `EXPECTED_ASTRA_MISSION_HEAD`.
-
-Do not restart Builder F11 unless Astra/CI establishes a new concrete defect.
-
-### RAIL B — NEXT
-
-Active branch:
-
-`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@866e6c1e96ab7460a7cd6464ead922e710ce7b0b`
-
-Mission:
-
-close the exact Research/science -> frozen Economic `EffectEstimate` output contract.
-
-On return:
-
-- Blue receives the scientific handoff;
-- reconcile with
-  `governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`;
-- if science contract is sufficient, freeze one final vertical build spec;
-- dispatch exactly one main Product Builder:
-  `builder/post-p0-first-vertical-shadow-loop-2026-09-21`.
-
-Do NOT dispatch the Product Builder before freeze.
-
-### CONCURRENCY
-
-Allowed substantial work:
+Delivered milestones:
 
 ```text
-1. F11/Gate-B critical rail
-2. one Product/Economic scientific-prep rail
+M1_SCIENTIFIC_ARTIFACT = GREEN
+M2_RESEARCH_ECONOMIC_BOUNDARY = GREEN
+M3_DESK_BOOK_BOUNDARY = GREEN
+M4_LEARNING_E2E = GREEN
+FULL_SUITE_RESULT = GREEN
 ```
 
-Completed design/adversarial sessions are not active build rails.
+Current next step:
 
-### SAFETY
+`BLUE_BUILDER_RECEPTION -> ONE_BOUNDED_INDEPENDENT_ASTRA_REVIEW -> BLUE_FINAL_RECEPTION`
+
+Do NOT reopen general science design, S11, cohort geometry, Economic Question Map,
+or launch another competing Product Builder absent a concrete contradiction.
+
+## Frozen production identity
 
 ```text
-TARGET_HOST_READY = FALSE
-GATE_B_MUTATION_AUTHORIZED = FALSE
-GATE_B = NOT_STARTED
-GATE_B_PASS_DECLARED = FALSE
-t0 = NOT_DECLARED
+CANDIDATE_SHA =
+4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072
+
+GIT_TREE =
+4d15ef6f471213ee6ab56337b555d2906ef9bf16
+
+VERIFIED_INPUT_TREE_DIGEST =
+sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2
+```
+
+## Global safety state
+
+```text
+P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1
 PRODUCT_INTEGRATION = PAUSED
 REAL_CAPITAL_AUTHORIZED = FALSE
-```
-
-
-## FINAL LIVE ROUTER — 2026-09-21
-
-### RAIL A — EXECUTE NOW
-
-Authorized Astra branch:
-
-`astra/gate-b-f11-lock-identity-recheck-2026-09-21`
-
-Expected mission HEAD:
-
-`1340c1e8eefdbbcd11aece6506040336f448d38d`
-
-Blue dispatch:
-
-`handoff/BLUE_GATE_B_F11_PASS_FOR_INDEPENDENT_ASTRA_RECHECK_2026-09-21.md`
-
-Action:
-
-run the targeted independent F11 recheck. Do not restart the entire run-authority audit.
-
-### RAIL B — NEXT
-
-Scientific prestage returned:
-
-`SCIENCE_EFFECT_ESTIMATE_CONTRACT = BLOCKED_MISSING_SCIENTIFIC_ESTIMATOR`
-
-Final handoff:
-
-`parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21@1226427082e55e7b3c51f96c5f091b90a6278447`
-
-Blue reception:
-
-`handoff/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_RECEPTION_2026-09-21.md`
-
-Action:
-
-close the exact scientific-estimator specification before freezing the vertical-loop
-Builder mission.
-
-Do NOT launch `builder/post-p0-first-vertical-shadow-loop-2026-09-21` yet.
-
-### SAFETY
-
-```text
 GATE_B_MUTATION_AUTHORIZED = FALSE
 GATE_B = NOT_STARTED
 t0 = NOT_DECLARED
-PRODUCT_INTEGRATION = PAUSED
-REAL_CAPITAL_AUTHORIZED = FALSE
 ```
 
+## Mission-dispatch discipline
 
-## ALIGNMENT GUARDRAIL ROUTER — 2026-09-21
-
-Before any new dispatch or extension, Blue must state:
+Before extending or reopening substantial work, record:
 
 ```text
 ECONOMIC_PROGRESS =
@@ -633,368 +138,13 @@ REMAINING_BLOCKER =
 EXIT_CONDITION =
 ```
 
-### Rail A
+Prefer one bounded owner and one exit condition. Do not dispatch another audit merely
+because another audit is possible.
 
-Blue coordinates the already-authorized independent Astra F11 review.
+## Branch hygiene
 
-If the Astra remote HEAD is unchanged and no durable checkpoint/final handoff exists:
+Use:
 
-`ASTRA_ACTIVITY = UNKNOWN`
+`governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md`
 
-Do not infer the audit is idle.
-Do not start a second competing Astra session solely from an unchanged remote HEAD.
-Do not have Blue perform Astra's independent audit.
-
-Exit condition for F11 repository work:
-
-`ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE`
-
-or one precise reproduced blocker requiring bounded repair.
-
-After PASS, stop repository-level F11 iteration and proceed to the prepared Gate-B
-activation path.
-
-### Rail B
-
-Before dispatching scientific specification work, search for any existing/newer
-mission or handoff first.
-
-Scientific specification exit condition:
-
-- first-slice scientific decisions explicit;
-- exact first-slice scope explicit;
-- falsifiable acceptance criteria explicit;
-- deferred limitations explicit;
-- only true implementation blockers remain.
-
-No extra challenge is authorized without a concrete contradiction.
-
-After closure:
-
-`VERTICAL_LOOP_BUILD_SPEC = FROZEN`
-
-then prefer exactly one primary Product implementation owner on:
-
-`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
-
-with internal verifiable milestones rather than multiple competing small Builders.
-
-Retain both execution-cost controls:
-- pre-sizing model-envelope consistency vs authoritative Desk ExecutionModel;
-- post-sizing/pre-fill implied-participation consistency.
-
-
-
-## LATEST RAIL-B SCIENTIFIC SPECIFICATION DISPOSITION — 2026-09-21
-
-This overrides earlier Rail-B instructions to create a new specification/prestage
-mission. Rail A and its existing independent owner are unchanged.
-
-Reuse the completed prestage at `1226427082e55e7b3c51f96c5f091b90a6278447`.
-Blue's resolved scientific decisions and exact remaining blocker are now in:
-`governance/BLUE_RESEARCH_FROZEN_EFFECT_ESTIMATE_PRESTAGE_2026-09-21.md` §§9–12.
-The single consolidated Product build disposition is:
-`governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md` §13.
-
-```
-SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
-VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
-PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
-PRODUCT_INTEGRATION = PAUSED
-SCIENCE_CHALLENGE = PREPARED / NOT_DISPATCHED
-ECONOMIC_PROGRESS = Producer decisions and vertical integration consequences persisted; an impossible inference candidate rejected before implementation.
-REMAINING_BLOCKER = S11 dependence/interval authority: the proposed 30-cluster method can have at most four components in the 252-session cohort.
-EXIT_CONDITION = One bounded independent methods delivery resolves S11 or states exact insufficiency; no reopening of settled Product architecture.
-NEXT_SINGLE_ACTION = Refresh ownership, then dispatch the single S11 methods challenge already specified in science-authority section 12.
-```
-
-No new branch/Builder/reviewer was dispatched by this specification mission. Do not
-infer owner inactivity from unchanged remote HEADs. No target-host, qualifying P0,
-Gate-B, t0, restricted-data visibility, deployment or capital authority changes.
-After S11 closure, keep ONE BIG BUILD with one primary Product owner and internal
-milestones; no separate estimator implementation precursor is presently justified.
-
-
-## S11 METHODS CHALLENGE DISPATCHED — 2026-09-21
-
-Blue dispatch authority:
-
-`handoff/BLUE_S11_METHODS_CHALLENGE_DISPATCH_2026-09-21.md`
-
-Reviewer branch:
-
-`parallel/claude-s11-dependence-interval-challenge-2026-09-21`
-
-Mission base:
-
-`3f54cd5dd4ee879b4b10ff7052939e0fb0187437`
-
-Expected mission HEAD:
-
-`b851113b44083d38739088efdf17e8aff65b672e`
-
-Current state:
-
-```text
-SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
-SCIENCE_CHALLENGE = DISPATCHED
-VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
-PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
-```
-
-Do not create another S11 reviewer.
-
-Next Rail-B action is to receive exactly one final S11 handoff:
-
-`S11_READY_FOR_BLUE_FREEZE`
-
-or:
-
-`S11_BLOCKED_<EXACT_REASON>`
-
-No Product build is authorized before Blue receives that result.
-
-
-## CURRENT TWO-RAIL OVERRIDE — F11 CLOSED / S11 ONLY — 2026-09-21
-
-### Rail A
-
-```text
-F11_REPOSITORY_DEFECT = CLOSED
-ASTRA_GATE_B_F11_RECHECK = PASS_REPOSITORY_EVIDENCE
-ASTRA_EXACT_HEAD_CI = 35624089971 = COMPLETED / SUCCESS
-```
-
-Final closure:
-`handoff/BLUE_FINAL_F11_REPOSITORY_CLOSURE_2026-09-21.md`
-
-Do not reopen repository F11 absent a new concrete defect.
-
-Rail A next:
-proceed through the already-prepared Gate-B activation/convergence authority.
-Target-host mutation is still NOT authorized by implication.
-
-### Rail B
-
-Scientific state:
-
-```text
-SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_S11_DEPENDENCE_INTERVAL
-VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN / ONLY_S11_OPEN
-```
-
-S11 independent methods challenge is already dispatched:
-`parallel/claude-s11-dependence-interval-challenge-2026-09-21`
-
-Economic question map received:
-`handoff/BLUE_ECONOMIC_QUESTION_MAP_RECEPTION_2026-09-21.md`
-
-Accepted map:
-Q1 effect existence;
-Q2 evidence validity;
-Q3 development/forward confirmation;
-Q4 friction survival;
-Q5 justified size;
-Q6 portfolio Risk;
-Q7 TRADE vs NO_TRADE;
-Q8 execution preservation;
-Q9 wealth contribution;
-Q10 decay;
-Q11 rejection correctness;
-Q12 next Research direction.
-
-Do not dispatch another question-map mission.
-
-Current Rail-B next:
-receive exactly one S11 methods verdict, then Blue decides build-spec freeze.
-
-
-
-## S11 FINAL METHODS VERDICT — COHORT INFORMATION GEOMETRY BLOCKER — 2026-09-21
-
-Independent reviewer:
-
-`parallel/claude-s11-dependence-interval-challenge-2026-09-21@7080288b5c88cf70b9b908837f5fc859255d571a`
-
-Verdict:
-
-`S11_BLOCKED_MAX_4_INDEPENDENT_COMPONENTS_INSUFFICIENT_FOR_ANY_ESTABLISHED_INTERVAL_METHOD`
-
-Blue reception:
-
-`handoff/BLUE_S11_METHODS_CHALLENGE_RECEPTION_2026-09-21.md`
-
-Current scientific state:
-
-```text
-S11_METHODS_CHALLENGE = COMPLETE
-SCIENCE_SPEC_STATE = PARTIALLY_CLOSED / BLOCKED_COHORT_INFORMATION_GEOMETRY
-VERTICAL_LOOP_BUILD_SPEC = NOT_FROZEN
-PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
-```
-
-Do not dispatch another interval-method review on the same 252-entry-session geometry.
-
-The exact remaining design problem is now:
-
-`FIRST_SLICE_COHORT_INFORMATION_GEOMETRY_CLOSURE`
-
-Blue must choose whether to:
-- redesign the prospective cohort/dependence geometry so an established method has
-  attainable information; or
-- explicitly accept that the current first slice can only return scientific
-  INSUFFICIENT and therefore cannot provide a real positive Q1/Q2 path.
-
-Any redesign must occur before target outcomes and preserve explicit provenance.
-
-No unrelated Product architecture is reopened by default.
-
-
-## RAIL B SPEC FREEZE OVERRIDE — 2026-09-21
-
-Cohort geometry delivery:
-
-`parallel/claude-first-slice-cohort-geometry-2026-09-21@6eb0c23da0c8f16a2dcc0c50bd1898baaa9b21d0`
-
-Blue reception:
-
-`handoff/BLUE_COHORT_GEOMETRY_RECEPTION_2026-09-21.md`
-
-Frozen Product specification:
-
-`governance/BLUE_FIRST_VERTICAL_ONE_BIG_BUILD_FROZEN_SPEC_2026-09-21.md`
-
-Selective import manifest:
-
-`governance/BLUE_ONE_BIG_BUILD_IMPORT_MANIFEST_2026-09-21.md`
-
-Current state:
-
-```text
-COHORT_GEOMETRY = FROZEN
-SCIENCE_SPEC_STATE = CLOSED_FOR_IMPLEMENTATION
-VERTICAL_LOOP_BUILD_SPEC = FROZEN
-ONE_BIG_BUILD_PRESTAGE = SUPERSEDED_BY_FROZEN_SPEC
-PRODUCT_IMPLEMENTATION_AUTHORIZED = FALSE
-PRODUCT_INTEGRATION = PAUSED
-```
-
-Blue one-look correction:
-- no target outcome/point-estimate/interval exposure during multi-cohort accrual;
-- structural G/component facts only may control stopping;
-- method qualification remains mandatory before FORWARD_CONFIRMATION.
-
-Next Rail-B action:
-- wait for exact-head CI of the Blue freeze commit;
-- if SUCCESS, explicitly authorize/create exactly one Product Builder on
-  `builder/post-p0-first-vertical-shadow-loop-2026-09-21`;
-- no additional architecture/science-design cycle is authorized absent a concrete contradiction.
-
-
-## ONE BIG BUILD DISPATCH OVERRIDE — 2026-09-21
-
-Frozen base:
-`aa6a5c17467d0da17482b88ab1dfcc362ec24d46`
-
-Exact-head CI:
-`35628638457 = COMPLETED / SUCCESS`
-
-Authorized Builder:
-`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
-
-Blue dispatch:
-`handoff/BLUE_ONE_BIG_BUILD_DISPATCH_2026-09-21.md`
-
-Current state:
-
-```text
-ONE_BIG_BUILD = AUTHORIZED
-PRODUCT_IMPLEMENTATION_AUTHORIZED = TRUE_FOR_ASSIGNED_BUILDER_ONLY
-VERTICAL_LOOP_BUILD_SPEC = FROZEN
-PRODUCT_INTEGRATION = PAUSED
-REAL_CAPITAL_AUTHORIZED = FALSE
-```
-
-Do not create another Product Builder.
-
-
-## ACCELERATION OVERRIDE — PARALLEL WORK WITHOUT DUPLICATION — 2026-09-21
-
-### Rail A
-
-Post-Astra convergence exact-head CI is GREEN:
-
-`blue/gate-b-post-astra-convergence-2026-09-21@c14f28466cf7aeaddfe265a8b8aaf77fd301d4d3`
-
-`35627516386 = COMPLETED / SUCCESS`
-
-Target-host read-only rebind mission is prepared on:
-
-`operator/gate-b-target-host-read-only-rebind-2026-09-21`
-
-Mission HEAD:
-
-`b5301bb53dc9e77b534050679eb7a3a8dd12bfdc`
-
-This mission may run in parallel with Product build.
-It performs no host mutation and stops before run reservation.
-
-### Rail B
-
-ONE BIG BUILD dispatch authority:
-
-`handoff/BLUE_ONE_BIG_BUILD_DISPATCH_2026-09-21.md`
-
-Authorized Builder:
-
-`builder/post-p0-first-vertical-shadow-loop-2026-09-21`
-
-Build base:
-
-`aa6a5c17467d0da17482b88ab1dfcc362ec24d46`
-
-Build-base exact-head CI:
-
-`35628638457 = COMPLETED / SUCCESS`
-
-```text
-ONE_BIG_BUILD = AUTHORIZED
-PRODUCT_IMPLEMENTATION_AUTHORIZED = TRUE_FOR_ASSIGNED_BUILDER_ONLY
-PRODUCT_INTEGRATION = PAUSED
-```
-
-### Post-Builder review
-
-Review preparation exists at:
-
-`governance/BLUE_FIRST_VERTICAL_INDEPENDENT_REVIEW_PRESTAGE_2026-09-21.md`
-
-Do NOT dispatch the reviewer until the Builder final SHA + exact-head CI exist.
-
-No extra Product Builder and no extra S11/cohort/economic-question agent is authorized.
-
-
-## TARGET-HOST REBIND ACCESS BLOCKER — 2026-09-21
-
-Operator delivery:
-
-`operator/gate-b-target-host-read-only-rebind-2026-09-21@9a53ed9ee8d2f0582753721bf6cf7b5d6d9e113e`
-
-Blue reception:
-
-`handoff/BLUE_TARGET_HOST_READ_ONLY_REBIND_ACCESS_BLOCKER_RECEPTION_2026-09-21.md`
-
-Classification:
-
-```text
-TARGET_HOST_TECHNICAL_DEFECT = NOT_ESTABLISHED
-TARGET_HOST_READ_ONLY_REBIND = NOT_EXECUTED
-OPERATOR_SESSION_ACCESS = INSUFFICIENT
-POST_ASTRA_GATE_B_CONVERGENCE = REMAINS_READY_FOR_TARGET_HOST_READ_ONLY_REBIND
-```
-
-Next Rail-A action:
-resume the SAME operator branch from a session with actual target-host access and
-replace the blocked conclusion only with fresh R1-R9 evidence.
-
-Do not reserve a Gate-B run before that actual-host rebind succeeds.
+for the authoritative list of active, frozen, historical and superseded branches.
