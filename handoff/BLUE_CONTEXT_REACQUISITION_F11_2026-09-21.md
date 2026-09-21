@@ -302,3 +302,35 @@ Astra is stopped after final handoff.
 Antigravity Product prestage is complete and parked.
 
 The next durable project event should be the bounded Blue F11 repair dispatch.
+
+## 12. LATEST OVERRIDE — BUILDER HANDOFF RECEIVED / PARENT-PATH CLOSURE STILL OPEN
+
+Latest Blue reception checkpoint:
+
+`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+
+Active Builder branch:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21`
+
+Current Builder handoff HEAD:
+
+`6ec12cd73de24b4a789d6abe9e292d8b616e3da1`
+
+Pre-handoff implementation CI:
+
+`35608538693 = COMPLETED / SUCCESS`
+
+Final handoff exact-head CI:
+
+`35610033532 = IN_PROGRESS` at the time of this override.
+
+Builder handoff is received but not yet accepted for Astra because the Blue-mandated whole-parent-path identity discriminants F11-P1/P2/P3 are not committed on the Builder branch.
+
+Current route:
+
+`RETURN_CONTROL_TO = BUILDER_F11_PARENT_PATH_CLOSURE`
+
+`ASTRA_F11_RECHECK_AUTHORIZED = FALSE`
+
+Do not dispatch Astra until F11-P1/P2/P3 are GREEN, the resulting final Builder HEAD has exact-head green CI, and Blue records `PASS_FOR_INDEPENDENT_ASTRA_RECHECK`.
