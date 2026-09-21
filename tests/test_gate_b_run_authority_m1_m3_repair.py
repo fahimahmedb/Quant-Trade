@@ -261,7 +261,20 @@ class GateBRunAuthorityM1M3RepairTests(unittest.TestCase):
         self.assertIn(self.h.state, seen)
 
     def test_first_registry_creation_parent_fsync_failure_is_visible(self):
-        with mock.patch.object(runctl, "_fsync_dir", side_effect=runctl.AuthorityError("dir fsync injected")):
+        real_fsync_dir = runctl._fsync_dir
+        calls = 0
+
+        def fail_registry_entry_fsync(path):
+            nonlocal calls
+            calls += 1
+            # F11 lock-authority bootstrap now durably creates its own directory
+            # entries before the registry append. Let that independent durability
+            # point succeed, then inject failure at the registry-entry fsync.
+            if calls == 1:
+                return real_fsync_dir(path)
+            raise runctl.AuthorityError("dir fsync injected")
+
+        with mock.patch.object(runctl, "_fsync_dir", side_effect=fail_registry_entry_fsync):
             with self.assertRaisesRegex(runctl.AuthorityError, "dir fsync injected"):
                 self.h.set_epoch()
         events = runctl.load_registry(self.h.registry_path)
