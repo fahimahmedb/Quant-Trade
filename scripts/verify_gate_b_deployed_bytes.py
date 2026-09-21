@@ -69,7 +69,9 @@ def _validate_platform_primitives() -> None:
 
 
 def _reject_git_environment_overrides() -> None:
-    present = [name for name in REJECTED_GIT_ENV if os.environ.get(name)]
+    # Presence itself is authority ambiguity: some Git environment variables
+    # assign semantics even when their value is empty.
+    present = [name for name in REJECTED_GIT_ENV if name in os.environ]
     if present:
         raise VerifyError("Git authority override environment is present: " + ",".join(sorted(present)))
 
@@ -81,6 +83,9 @@ def _git_env() -> dict[str, str]:
     env["GIT_NO_REPLACE_OBJECTS"] = "1"
     env["GIT_NO_LAZY_FETCH"] = "1"
     env["GIT_TERMINAL_PROMPT"] = "0"
+    # Global/system configuration is outside release-local authority.
+    env["GIT_CONFIG_NOSYSTEM"] = "1"
+    env["GIT_CONFIG_GLOBAL"] = os.devnull
     return env
 
 
@@ -175,6 +180,21 @@ def _lexical_abs(base: Path, value: str) -> Path:
     if os.path.isabs(value):
         return Path(os.path.abspath(value))
     return Path(os.path.abspath(os.path.join(str(base), value)))
+
+
+def _assert_absolute_path_components_nosymlink(path: Path) -> None:
+    """Reject symlinked ancestors before any resolve() dereference."""
+    if not path.is_absolute():
+        raise VerifyError("release path must be absolute after normalization")
+    current = Path(path.anchor)
+    for component in path.parts[1:]:
+        current = current / component
+        try:
+            st = current.lstat()
+        except FileNotFoundError as exc:
+            raise VerifyError(f"release path component disappeared: {current}") from exc
+        if stat.S_ISLNK(st.st_mode):
+            raise VerifyError(f"release path contains symlink component: {current}")
 
 
 def _reject_symlink(path: Path, label: str, *, allow_missing: bool = False) -> os.stat_result | None:
@@ -518,6 +538,7 @@ def verify(
         raise VerifyError("release root must not be a symlink")
     if not stat.S_ISDIR(supplied_st.st_mode):
         raise VerifyError("release path is not a directory")
+    _assert_absolute_path_components_nosymlink(supplied_release)
     release = supplied_release.resolve(strict=True)
 
     validate_hex40(expected_sha, "expected_sha")

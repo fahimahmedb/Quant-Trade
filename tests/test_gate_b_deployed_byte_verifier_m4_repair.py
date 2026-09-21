@@ -218,6 +218,18 @@ class SyntheticVerifierTests(unittest.TestCase):
                 with self.assertRaisesRegex(verifier.VerifyError, "override environment"):
                     self.verify()
 
+    def test_empty_git_authority_environment_override_red(self):
+        with mock.patch.dict(os.environ, {"GIT_OBJECT_DIRECTORY": ""}, clear=False):
+            with self.assertRaisesRegex(verifier.VerifyError, "override environment"):
+                self.verify()
+
+    def test_release_parent_symlink_red(self):
+        alias = self.root / "alias"
+        os.symlink(self.root, alias)
+        through_alias = alias / "release"
+        with self.assertRaisesRegex(verifier.VerifyError, "symlink component"):
+            verifier.verify(through_alias, expected_sha=self.sha, expected_tree=self.tree)
+
     def test_foreign_common_dir_indirection_red(self):
         foreign = self.root / "common"
         shutil.copytree(self.repo / ".git", foreign, copy_function=shutil.copy2)
