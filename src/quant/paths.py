@@ -47,6 +47,20 @@ class QuantPaths:
         return self.var / "control_state.json"
 
     @property
+    def science_cohort_protocol(self) -> Path:
+        """Durable FORM4_FIRST_VERTICAL_MULTI_COHORT_V1 protocol state.
+
+        One document per protocol_id. Frozen (geometry/method immutable) after
+        the first cohort activates; see ``quant.science.effect.CohortProtocolStore``.
+        """
+        return self.var / "science" / "cohort_protocol.json"
+
+    @property
+    def science_method_qualification(self) -> Path:
+        """Durable method-qualification artifacts, keyed by qualification id."""
+        return self.var / "science" / "method_qualification.json"
+
+    @property
     def work_queue(self) -> Path:
         return self.var / "work_queue.json"
 

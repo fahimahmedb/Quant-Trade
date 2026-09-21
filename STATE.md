@@ -500,6 +500,77 @@ checkpoint) before writing `effect.py`, per
 (exact frozen point estimator, D19 contract, DeltaCoordinateBinding field values
 already recorded there).
 
+### M1 design plan (not yet written) — `src/quant/science/effect.py`
+
+Reuse confirmed (do not reinvent): `quant.economics.coordinate.{DeltaCoordinateBinding,
+ReturnConvention, evaluate_delta_coordinate, ALLOCATION_WEIGHTED_RATIO}` (already
+vendored, exact fields read in full) for the DeltaCoordinateBinding step —
+`security`/`benchmark` are `ReturnConvention(return_definition="SIMPLE_SINGLE_PERIOD",
+interval_spec="PUBLIC_KNOWLEDGE_NEXT_OPEN_TO_20TH_CLOSE_V1",
+corporate_action_convention="SHARE_ENTITLEMENTS_PLUS_UNREINVESTED_CASH_V1",
+terminal_treatment=...)`, `benchmark_symbol="SPY"`,
+`aggregation=ALLOCATION_WEIGHTED_RATIO`, `allocation_constructor_id=
+"FORM4_SLOT20_ADV20_V1"`, `allocation_weight_precedes_outcome=True`,
+`d19_reference` set whenever `terminal_treatment` is set (else
+`_missing()` flags `TERMINAL_TREATMENT_WITHOUT_D19_REFERENCE`).
+Point/interval math: `quant.science.inference.ratio_estimate(weights, outcomes,
+clusters=component_ids, confidence_level)` for delta_hat (NOT
+`cluster_bootstrap_ratio` — that resamples clusters with replacement, not a wild/
+Rademacher sign-flip). `quant.science.nulls.cluster_sign_flip_null` is the closest
+existing sign-flip primitive but only produces a null distribution (not a CI) and
+only supports RNG draws, not deterministic exhaustive `2^G` enumeration — write a
+new `sign_flip_interval()` in effect.py: recenter each component's demeaned
+contribution `sum_j a_j*(T_j-point)` per component, enumerate all `2^G` sign
+vectors via `itertools.product((1,-1), repeat=G)` when G is small (cap ~20),
+else fall back to a fixed-size seeded sample: `random.Random(seed)` picks over
+`itertools.product`, take percentiles of `point + sum(sign*contribution)/denom`.
+
+New (nothing upstream provides these — confirmed by two independent research
+passes, safe to write without re-checking): 252-session/K<=4/80-gap cohort
+geometry and gap enforcement (reuse only `quant.science.formation.SessionCalendar
+.index_of/next_session` for session-index arithmetic — its `FormationEngine`
+10-session/threshold-2 state machine is a *different*, unrelated D07 geometry,
+do not repurpose it); union-find connected components across cohorts (issuer_cik
++ corporate predecessor/successor merge map); `FORM4_SLOT20_ADV20_V1` allocation
+(`weight_j = min(C0/SLOT_COUNT, 0.001*ADV20_j)`, C0=$10,000, SLOT_COUNT=20, so
+per-slot cap = $500); the structural one-look stopping decision (its function
+signature must take NO outcomes/T_j parameter at all — that is how "no target
+outcome read during structural stopping" gets proven, not by a runtime check);
+G>=10 and max-component-share<=0.10 guards; D19 fail-closed to
+`lower=-inf, upper=+inf` + reason `D19_TERMINAL_TREATMENT_UNRESOLVED_ESTIMATE_
+REFUSED` (no infinite-interval refusal object exists upstream); a
+`MethodQualificationArtifact` + `qualify_method()` running 10 deterministic
+synthetic stress cases (null/positive/common-shock/repeated-issuer/overlapping-
+window/unequal-allocation/random-denominator/one-dominant-component/insufficient-
+component-count/dependence-misspecification), gating on `DEPENDENCE_MODEL_
+UNSUPPORTED` when unqualified; `CohortProtocolStore` at the new paths.py
+properties `science_cohort_protocol` / `science_method_qualification` (added,
+committed) — first cohort activation freezes `protocol_hash =
+recipe_hash(geometry_constants_dict)` (reuse `quant.economics.fingerprint.
+recipe_hash`), later cohorts must match it or fail closed.
+
+`assemble_form4_effect(...)` orchestration order: structural stop decision (no
+outcomes touched) -> if CONTINUE, refuse "not yet eligible" (no artifact) -> if
+K_MAX exhausted below guard, refuse `INSUFFICIENT_CLUSTER_INFORMATION` -> if
+eligible: D19 check (fail closed first, before any point/interval math) ->
+method qualification check (`DEPENDENCE_MODEL_UNSUPPORTED` if missing/unqualified)
+-> build `DeltaCoordinateBinding`, `evaluate_delta_coordinate` (UNRESOLVED/
+MISMATCH refuse distinctly, before outcomes are read) -> only now read
+`outcomes: Mapping[event_id, float]` -> `ratio_estimate(...)` + `sign_flip_
+interval(...)` -> `ScientificEffectArtifact` with `evidence_label=
+FORWARD_CONFIRMATION` (guard+qualification both passed) or `DEVELOPMENT`
+otherwise, carrying `protocol_hash`, `delta_coordinate_hash`, `component_
+assignments`, `reason_codes`.
+
+Priority test subset for M1 (out of the mission's 20): protocol-freeze
+immutability, <80-session gap fail-closed, G<10-after-cohort-N continues
+structurally, K_MAX exhausted+G<10 -> INSUFFICIENT_CLUSTER_INFORMATION,
+concentration guard, D19 fail-closed before any estimate, missing/failed method
+qualification -> DEPENDENCE_MODEL_UNSUPPORTED, coordinate UNRESOLVED/MISMATCH
+refuse distinctly, structural-stopping function signature takes no outcomes
+parameter (proves one-look by construction), deterministic sign-flip
+reproducibility (same seed -> same interval).
+
 ## Human boundary currently reached?
 
 No. Nothing in the current frontier requires human authority. The blocked lanes need datasets
