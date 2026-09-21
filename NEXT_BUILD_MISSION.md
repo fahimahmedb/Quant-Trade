@@ -387,3 +387,67 @@ Future Product implementation branch remains:
 and remains phase-gated.
 
 Current critical P0/F11 rail is unchanged.
+
+
+## ECONOMIC ADVERSARIAL CHALLENGE RECEIVED / PRE-BIG-BUILD CORRECTION SPEC — 2026-09-21
+
+Advisory challenger:
+
+`claude/confident-mendel-h4qqo4@9e6431dedaa621d58218f6ffb09ed1300de1bd1b`
+
+Challenge handoff:
+
+`handoff/CLAUDE_POST_P0_VERTICAL_ADVERSARIAL_CHALLENGE_2026-09-21.md`
+
+Advisory verdict:
+
+`VERTICAL_CHALLENGE = PASS_WITH_REQUIRED_PREBUILD_CORRECTIONS`
+
+Blue consolidated authority:
+
+`governance/BLUE_POST_P0_VERTICAL_PREBIGBUILD_CORRECTION_SPEC_2026-09-21.md`
+
+Blue consolidation commit:
+
+`02e5a00464aaf9cc66a44103812a58bac3d75ac4`
+
+Blue accepted and consolidated:
+
+- D2/D3 sizing/promotion circularity;
+- deeper fact that VALIDATED is not currently actionable in CapitalDesk;
+- delta-coordinate binding enforcement gap;
+- Forward whole-ledger admissibility identity defect;
+- pre/post-size execution-cost consistency;
+- LearningStore >200 restart-idempotence defect omitted from the challenger's own six-item correction list;
+- Antigravity conflict precedence;
+- expanded E2E false-positive/restart matrix.
+
+Blue resolution:
+
+`SHADOW` means scientifically validated + economically admitted for shadow trading.
+
+Required promotion:
+
+`VALIDATED -> durable Economic CONTINUE/capital-order-eligible -> SHADOW -> Desk SIZE -> Risk -> Fill|Veto`
+
+The initial Economic promotion gate must therefore complete before the current
+CapitalDesk actionable/ledger selection path.
+
+Current remaining non-code prerequisite:
+
+`REAL_RESEARCH_TO_FROZEN_EFFECT_ESTIMATE = MISSING_SCIENTIFIC_OUTPUT_CONTRACT`
+
+Do not issue Product implementation yet.
+
+Next Product prep:
+
+close the exact Research/science producer contract for frozen EffectEstimate,
+including DeltaCoordinateBinding, interval/clustering/sample provenance and
+allocation-weight-precedes-outcome proof.
+
+After that:
+
+`VERTICAL_LOOP_BUILD_SPEC = FROZEN`
+
+then issue one consolidated large bounded Builder mission rather than multiple
+small implementation missions.
