@@ -159,3 +159,38 @@ Required return state:
 `READY_FOR_INDEPENDENT_REVIEW`
 
 No Gate-B, target-host, t0, Product or capital authority is implied.
+
+
+## F11 BRANCH RECONCILIATION / PARENT-PATH CHALLENGE OVERRIDE — 2026-09-21
+
+Latest Blue authority:
+
+`governance/BLUE_GATE_B_F11_BRANCH_RECONCILIATION_PARENT_PATH_CHALLENGE_2026-09-21.md`
+
+Active F11 implementation branch is now formally:
+
+`builder/gate-b-lock-path-identity-repair-2026-09-21@ed51cc4251f556482eca18e396cc1c0d932879fb`
+
+The later Blue-created mission-only branch:
+
+`builder/gate-b-f11-lock-identity-repair-2026-09-21@8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8`
+
+is:
+
+`SUPERSEDED_MISSION_ONLY / DO_NOT_IMPLEMENT`
+
+Do not create another F11 branch.
+
+Before final Builder handoff, the active implementation branch MUST close:
+
+`F11_PARENT_PATH_IDENTITY_CHALLENGE = OPEN`
+
+Required discriminant: replace the entire registry parent directory pathname while process A holds the actual Registry critical section; process B must not enter a second mutation domain on the replacement parent inode.
+
+Even a green `35608538693` on `ed51cc42...` is insufficient for final reception while this challenge remains open.
+
+Current owner:
+
+`BUILDER_F11_PARENT_PATH_CHALLENGE`
+
+Astra remains stopped.
