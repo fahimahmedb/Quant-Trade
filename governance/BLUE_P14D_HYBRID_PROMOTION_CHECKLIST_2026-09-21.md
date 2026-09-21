@@ -2,9 +2,9 @@
 
 ## Status
 
-`P14D_PROMOTION_READY = FALSE`
+`P14D_PROMOTION_READY = PROMOTED / COMPLETE`
 
-`P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+`P14D_GOVERNANCE_STATUS = HISTORICAL / SUPERSEDED_FOR_FUTURE_QUALIFICATION`
 
 `t0 = NOT DECLARED`
 
@@ -47,11 +47,11 @@ Already closed:
 Still required:
 - [x] final fault matrix durably pushed;
 - [x] every matrix row classified;
-- [ ] no unresolved repository-side proof blocker (currently restart_burst_limit);
+- [x] no unresolved repository-side proof blocker — restart_burst_limit closed;
 - [x] exact-head CI for original Codex Gate-A evidence delivery;
 - [x] Blue inspection of original Builder/Codex checkpoint.
-- [ ] proof-only restart-burst repair delivered with exact-head CI;
-- [ ] targeted Astra recheck closes restart_burst_limit with no unresolved MISSING_PROOF.
+- [x] proof-only restart-burst repair delivered — `1fa82a75485661bf9bbb3de10b925126397dfec5`, CI `35549017908 = SUCCESS`;
+- [x] targeted Astra recheck closes restart_burst_limit — `61facacdcdc499bd3e6680644c75c97fcff22656`, CI `35551073229 = SUCCESS`;
 
 Any REAL_DEFECT => STOP promotion and return to correction flow.
 
@@ -80,9 +80,9 @@ Before promotion Blue must bind one coherent lineage:
 - [x] Git tree;
 - [x] input-tree digest;
 - [x] candidate exact-head CI run;
-- [ ] final repaired qualification-evidence SHA/run;
-- [ ] targeted independent restart-burst recheck SHA/run;
-- [ ] Blue final fault-matrix disposition SHA;
+- [x] final repaired qualification-evidence SHA/run — `1fa82a75485661bf9bbb3de10b925126397dfec5` / `35549017908`;
+- [x] targeted independent restart-burst recheck SHA/run — `61facacdcdc499bd3e6680644c75c97fcff22656` / `35551073229`;
+- [x] Blue final fault-matrix disposition SHA — `0f4d6227c129a53793fb186db6a618d2a453e3ee`;
 - [x] acquisition-critical fingerprint closure — bound by `governance/BLUE_P0_FINGERPRINT_AND_SOURCE_CALENDAR_BINDING_2026-09-21.md`;
 - [x] applicable source-calendar authority version — SEC EDGAR 2026 bound to frozen V4 blob `b4fbd58b381e01ec882b60386cf73d4017e7db5c`.
 
@@ -93,7 +93,7 @@ No moving branch name alone is admissible.
 - [x] candidate amendment V2 prepared.
 - [x] Gate-B-to-t0 binding supplement prepared.
 - [x] reconcile candidate amendment with final Builder fault-matrix classifications — `governance/BLUE_HYBRID_PROPERTY_COVERAGE_RECONCILIATION_2026-09-21.md` maps all 19 rows;
-- [ ] reconcile candidate amendment with Astra final findings;
+- [x] reconcile candidate amendment with Astra final findings — final consistency PASS;
 - [x] ensure no current authority still requires a property omitted by the hybrid rule — no omission found across the current 19-row matrix and final P14D method Red Team;
 - [x] prepare atomic current-state updates that replace fixed P14D as active — `governance/BLUE_HYBRID_PROMOTION_ATOMIC_DRY_RUN_2026-09-21.md`;
 - [x] prepare post-qualification surveillance state — candidate amendment §8 defines `P0_POST_QUALIFICATION_SURVEILLANCE = ACTIVE` after Gate D;
@@ -108,7 +108,7 @@ This section does NOT need to execute before amendment promotion, but the method
 - [x] Gate-B-to-t0 binding supplement exists:
   `governance/BLUE_GATE_B_TO_T0_ENTRANCE_BINDING_SPEC_2026-09-21.md`.
 - [x] stale V3 pinning / old t0 semantics identified.
-- [ ] authoritative target-host runbook reconciled AFTER amendment promotion and final candidate disposition.
+- [x] authoritative target-host runbook reconciled in the atomic promotion transaction.
 - [x] exact target release selected for Gate B — frozen V4 `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`, prepared release path `/opt/quant-releases/4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072/`.
 
 Do not execute a hybrid qualifying start from the stale V3-pinned runbook.
@@ -135,12 +135,9 @@ remains authoritative.
 
 ## H. Current verdict
 
-`P14D_PROMOTION_READY = FALSE`
+`P14D_PROMOTION_READY = PROMOTED / COMPLETE`
 
-Open blockers:
-- restart_burst_limit proof-only repair;
-- targeted independent Astra recheck;
-- final consistency merge.
+Open promotion blockers: NONE.
 
 Closed independent-review evidence:
 - Astra final HEAD: `afe25984b0ddd261fda143d858106c3c71e45149`;
@@ -220,3 +217,18 @@ Other Astra evidence-quality debt remains non-blocking but durable:
 
 Current promotion consequence:
 `P14D_PROMOTION_READY = FALSE`.
+
+
+### Promotion closure
+
+`P0_CONTINUITY_QUALIFICATION = HYBRID_EVENT_BASED_V1`
+
+Promotion ends with:
+```text
+TARGET_HOST_READY = FALSE
+GATE_B_MUTATION_AUTHORIZED = FALSE
+GATE_B = NOT_STARTED
+t0 = NOT_DECLARED
+PRODUCT_INTEGRATION = PAUSED
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
