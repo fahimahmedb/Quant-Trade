@@ -151,12 +151,7 @@ def _read_exact_regular(path: Path) -> bytes:
         os.close(fd)
 
 
-def load_registry(p: Path) -> list[dict[str, Any]]:
-    if not p.exists():
-        return []
-    if p.is_symlink() or not p.is_file():
-        raise AuthorityError("registry must be regular non-symlink file")
-    b = p.read_bytes()
+def _parse_registry_bytes(b: bytes) -> list[dict[str, Any]]:
     if b and not b.endswith(b"\n"):
         raise AuthorityError("registry is truncated")
     out: list[dict[str, Any]] = []
@@ -170,6 +165,14 @@ def load_registry(p: Path) -> list[dict[str, Any]]:
         out.append(o)
     validate_registry(out)
     return out
+
+
+def load_registry(p: Path) -> list[dict[str, Any]]:
+    if not p.exists():
+        return []
+    if p.is_symlink() or not p.is_file():
+        raise AuthorityError("registry must be regular non-symlink file")
+    return _parse_registry_bytes(p.read_bytes())
 
 
 def validate_registry(es: list[dict[str, Any]]) -> None:
@@ -442,13 +445,30 @@ class Registry:
         if _inside(self.path, self.checkout):
             raise AuthorityError("registry must be outside source checkout")
 
-    def _lock_authority_paths(self) -> list[Path]:
+    def _lock_authority_paths(self, pfd: int | None = None) -> list[Path]:
         prefix = self.lock.name + ".authority."
+        if pfd is None:
+            try:
+                entries = list(self.lock.parent.iterdir())
+            except FileNotFoundError:
+                return []
+            return sorted((p for p in entries if p.name.startswith(prefix)), key=lambda p: p.name)
         try:
-            entries = list(self.lock.parent.iterdir())
+            names = os.listdir(pfd)
         except FileNotFoundError:
             return []
-        return sorted((p for p in entries if p.name.startswith(prefix)), key=lambda p: p.name)
+        return sorted(
+            (self.lock.parent / n for n in names if n.startswith(prefix)),
+            key=lambda p: p.name,
+        )
+
+    @staticmethod
+    def _exists_at(pfd: int, name: str) -> bool:
+        try:
+            os.lstat(name, dir_fd=pfd)
+            return True
+        except FileNotFoundError:
+            return False
 
     def _lock_authority_identity(self, anchor: Path) -> tuple[int, int]:
         prefix = self.lock.name + ".authority."
@@ -465,16 +485,16 @@ class Registry:
             raise AuthorityError("lock authority anchor malformed")
         return dev, ino
 
-    def _create_lock_authority(self) -> Path:
+    def _create_lock_authority(self, pfd: int) -> Path:
         flags = os.O_RDWR | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
         try:
-            fd = os.open(self.lock, flags, 0o600)
+            fd = os.open(self.lock.name, flags, 0o600, dir_fd=pfd)
         except FileExistsError:
             # A concurrent first initializer may have created the public name but
             # not yet linked the authority anchor. Wait only for that bounded
             # initialization window; never adopt an unanchored pre-existing lock.
             for _ in range(100):
-                anchors = self._lock_authority_paths()
+                anchors = self._lock_authority_paths(pfd)
                 if len(anchors) == 1:
                     return anchors[0]
                 if len(anchors) > 1:
@@ -488,28 +508,21 @@ class Registry:
             st = os.fstat(fd)
             if not stat.S_ISREG(st.st_mode):
                 raise AuthorityError("lock authority must be regular file")
-            anchor = self.lock.parent / (
-                f"{self.lock.name}.authority.{st.st_dev:x}.{st.st_ino:x}"
-            )
+            anchor_name = f"{self.lock.name}.authority.{st.st_dev:x}.{st.st_ino:x}"
             try:
-                os.link(self.lock, anchor, follow_symlinks=False)
+                os.link(
+                    self.lock.name, anchor_name,
+                    src_dir_fd=pfd, dst_dir_fd=pfd, follow_symlinks=False,
+                )
             except OSError as e:
                 raise AuthorityError("lock authority anchor creation failed") from e
             _fsync_dir(self.lock.parent)
-            return anchor
+            return self.lock.parent / anchor_name
         finally:
             os.close(fd)
 
-    def _ensure_lock_authority(self) -> Path:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            pst = os.lstat(self.lock.parent)
-        except OSError as e:
-            raise AuthorityError("lock parent unavailable") from e
-        if not stat.S_ISDIR(pst.st_mode) or stat.S_ISLNK(pst.st_mode):
-            raise AuthorityError("lock parent must be real directory")
-
-        anchors = self._lock_authority_paths()
+    def _ensure_lock_authority(self, pfd: int) -> Path:
+        anchors = self._lock_authority_paths(pfd)
         if len(anchors) > 1:
             raise AuthorityError("multiple lock authority anchors")
         if len(anchors) == 1:
@@ -518,17 +531,17 @@ class Registry:
         # Once either authoritative registry state or a public lock pathname
         # already exists, silently inventing a fresh lock inode would recreate
         # F11. Only a truly fresh registry may bootstrap an authority anchor.
-        if os.path.lexists(self.path) or os.path.lexists(self.lock):
+        if self._exists_at(pfd, self.path.name) or self._exists_at(pfd, self.lock.name):
             raise AuthorityError("pre-existing state has no lock authority anchor")
-        return self._create_lock_authority()
+        return self._create_lock_authority(pfd)
 
     def _validate_lock_authority(
-        self, anchor: Path, fd: int, expected: tuple[int, int]
+        self, pfd: int, anchor: Path, fd: int, expected: tuple[int, int]
     ) -> None:
         try:
             fst = os.fstat(fd)
-            ast = os.lstat(anchor)
-            lst = os.lstat(self.lock)
+            ast = os.stat(anchor.name, dir_fd=pfd, follow_symlinks=False)
+            lst = os.stat(self.lock.name, dir_fd=pfd, follow_symlinks=False)
         except OSError as e:
             raise AuthorityError("lock authority identity unavailable") from e
 
@@ -573,10 +586,91 @@ class Registry:
             expected = (fst.st_dev, fst.st_ino)
             if expected != (pst.st_dev, pst.st_ino):
                 raise AuthorityError("lock parent identity changed")
+            # Being the current pathname resolution of the configured parent is
+            # not enough: an adversary can replace the whole parent directory
+            # (F11-P1) and hand a fresh, legitimately-empty replacement to the
+            # next opener. The grandparent-anchored marker binds the configured
+            # pathname to the one directory inode first bootstrapped under it,
+            # so a replacement directory is recognized as ambiguous rather than
+            # silently adopted as a second logical registry history.
+            self._validate_registry_parent_authority(pfd, expected)
             return pfd, expected
         except Exception:
             os.close(pfd)
             raise
+
+    def _registry_parent_authority_marker_name(self) -> str:
+        return f".{self.lock.parent.name}.parent-authority"
+
+    def _read_registry_parent_authority(
+        self, gpfd: int, marker_name: str
+    ) -> tuple[int, int] | None:
+        try:
+            st = os.lstat(marker_name, dir_fd=gpfd)
+        except FileNotFoundError:
+            return None
+        if stat.S_ISLNK(st.st_mode) or not stat.S_ISREG(st.st_mode):
+            raise AuthorityError("registry parent authority marker malformed")
+        fd = os.open(marker_name, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0), dir_fd=gpfd)
+        try:
+            raw = os.read(fd, 256)
+        finally:
+            os.close(fd)
+        try:
+            dev_s, ino_s = raw.decode("ascii").strip().split(":")
+            recorded = (int(dev_s, 16), int(ino_s, 16))
+        except Exception as e:
+            raise AuthorityError("registry parent authority marker malformed") from e
+        if recorded[0] < 0 or recorded[1] <= 0:
+            raise AuthorityError("registry parent authority marker malformed")
+        return recorded
+
+    def _bootstrap_registry_parent_authority(
+        self, gpfd: int, marker_name: str, identity: tuple[int, int]
+    ) -> None:
+        content = f"{identity[0]:x}:{identity[1]:x}\n".encode("ascii")
+        fd, tmp_name = tempfile.mkstemp(dir=self.lock.parent.parent, prefix=f".{marker_name}.tmp-")
+        tmp_basename = os.path.basename(tmp_name)
+        try:
+            _write_all(fd, content)
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+        try:
+            try:
+                os.link(tmp_basename, marker_name, src_dir_fd=gpfd, dst_dir_fd=gpfd, follow_symlinks=False)
+                os.fsync(gpfd)
+            except FileExistsError:
+                pass
+        finally:
+            try:
+                os.unlink(tmp_basename, dir_fd=gpfd)
+            except FileNotFoundError:
+                pass
+
+    def _validate_registry_parent_authority(
+        self, pfd: int, expected: tuple[int, int]
+    ) -> None:
+        grandparent = self.lock.parent.parent
+        marker_name = self._registry_parent_authority_marker_name()
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            gpfd = os.open(grandparent, flags)
+        except OSError as e:
+            raise AuthorityError("registry grandparent unavailable") from e
+        try:
+            recorded = self._read_registry_parent_authority(gpfd, marker_name)
+            if recorded is None:
+                if self._exists_at(pfd, self.path.name) or self._exists_at(pfd, self.lock.name):
+                    raise AuthorityError("pre-existing registry parent has no authority marker")
+                self._bootstrap_registry_parent_authority(gpfd, marker_name, expected)
+                recorded = self._read_registry_parent_authority(gpfd, marker_name)
+                if recorded is None:
+                    raise AuthorityError("registry parent authority marker missing after bootstrap")
+            if recorded != expected:
+                raise AuthorityError("registry parent identity changed")
+        finally:
+            os.close(gpfd)
 
     def _validate_lock_parent(self, pfd: int, expected: tuple[int, int]) -> None:
         try:
@@ -608,30 +702,36 @@ class Registry:
             parent_locked = True
             self._validate_lock_parent(pfd, parent_expected)
 
-            anchor = self._ensure_lock_authority()
+            anchor = self._ensure_lock_authority(pfd)
             expected = self._lock_authority_identity(anchor)
             flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
             try:
-                fd = os.open(anchor, flags)
+                fd = os.open(anchor.name, flags, dir_fd=pfd)
             except OSError as e:
                 raise AuthorityError("lock authority open failed") from e
 
-            self._validate_lock_authority(anchor, fd, expected)
+            self._validate_lock_authority(pfd, anchor, fd, expected)
             fcntl.flock(fd, fcntl.LOCK_EX)
             locked = True
             # Critical revalidation after acquisition closes the original F11
             # window: if the public pathname was deleted/recreated while this
             # process waited, it cannot continue under the replacement inode.
-            self._validate_lock_authority(anchor, fd, expected)
+            self._validate_lock_authority(pfd, anchor, fd, expected)
             self._validate_lock_parent(pfd, parent_expected)
             try:
-                yield
+                # Every name lookup for the remainder of the critical section
+                # (authority checks, registry read, registry append) resolves
+                # relative to this held parent-directory fd, never the live
+                # pathname. A whole-parent replacement during the critical
+                # section therefore cannot redirect this holder's own mutation
+                # into the replacement directory.
+                yield pfd
             finally:
                 # A replacement during the mutation is surfaced as failure; no
                 # public success can escape an ambiguous lock identity. The
                 # parent-directory flock remains held through this check, so a
                 # replacement authority pair cannot run concurrently.
-                self._validate_lock_authority(anchor, fd, expected)
+                self._validate_lock_authority(pfd, anchor, fd, expected)
                 self._validate_lock_parent(pfd, parent_expected)
         finally:
             if locked and fd is not None:
@@ -642,7 +742,27 @@ class Registry:
                 fcntl.flock(pfd, fcntl.LOCK_UN)
             os.close(pfd)
 
-    def _append(self, es: list[dict[str, Any]], e: dict[str, Any]) -> dict[str, Any]:
+    def _load_registry_at(self, pfd: int) -> list[dict[str, Any]]:
+        name = self.path.name
+        try:
+            st = os.lstat(name, dir_fd=pfd)
+        except FileNotFoundError:
+            return []
+        if stat.S_ISLNK(st.st_mode) or not stat.S_ISREG(st.st_mode):
+            raise AuthorityError("registry must be regular non-symlink file")
+        fd = os.open(name, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0), dir_fd=pfd)
+        try:
+            chunks: list[bytes] = []
+            while True:
+                chunk = os.read(fd, 1024 * 1024)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+        finally:
+            os.close(fd)
+        return _parse_registry_bytes(b"".join(chunks))
+
+    def _append(self, pfd: int, es: list[dict[str, Any]], e: dict[str, Any]) -> dict[str, Any]:
         payload = dict(e)
         event_time_utc = payload.pop("event_time_utc", utc_text())
         x = {
@@ -659,11 +779,13 @@ class Registry:
         x = _seal(x)
         validate_registry(es + [x])
         data = canonical_json_bytes(x) + b"\n"
-        existed_before = os.path.lexists(self.path)
+        name = self.path.name
+        existed_before = self._exists_at(pfd, name)
         fd = os.open(
-            self.path,
+            name,
             os.O_WRONLY | os.O_CREAT | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0),
             0o600,
+            dir_fd=pfd,
         )
         try:
             _write_all(fd, data)
@@ -675,12 +797,13 @@ class Registry:
         return x
 
     def _mut(self, fn):
-        with self._locked():
-            return fn(load_registry(self.path))
+        with self._locked() as pfd:
+            return fn(self._load_registry_at(pfd), pfd)
 
     def set_revocation_epoch(self, *, epoch, reference, event_time=None):
         return self._mut(
-            lambda es: self._append(
+            lambda es, pfd: self._append(
+                pfd,
                 es,
                 {
                     "event_type": "REVOCATION_EPOCH_SET",
@@ -703,7 +826,7 @@ class Registry:
         run_id_factory: Callable[[], str] = lambda: f"gate-b-{uuid.uuid4()}",
         event_time=None,
     ):
-        def f(es):
+        def f(es, pfd):
             rid = run_id_factory()
             base = {
                 "candidate_sha": candidate_sha,
@@ -722,6 +845,7 @@ class Registry:
                 and (*_cand(x), x["target_host_opaque_id"]) == key
             ]
             return self._append(
+                pfd,
                 es,
                 {
                     "event_type": "RUN_RESERVED",
@@ -737,11 +861,12 @@ class Registry:
         return self._mut(f)
 
     def revoke_activation(self, *, activation_id, reference=None, event_time=None):
-        def f(es):
+        def f(es, pfd):
             ep = _epoch(es)
             if not ep:
                 raise AuthorityError("revocation authority not initialized")
             return self._append(
+                pfd,
                 es,
                 {
                     "event_type": "ACTIVATION_REVOKED",
@@ -757,7 +882,7 @@ class Registry:
     def seal_activation(self, *, activation_bytes, activation_digest, event_time=None):
         a = _activation(activation_bytes, activation_digest)
 
-        def f(es):
+        def f(es, pfd):
             r = _reserve(es, a["run_id"])
             if not r:
                 raise AuthorityError("reservation missing")
@@ -776,6 +901,7 @@ class Registry:
             ):
                 raise AuthorityError("activation stale/reservation mismatch")
             return self._append(
+                pfd,
                 es,
                 {
                     "event_type": "ACTIVATION_SEALED",
@@ -813,7 +939,7 @@ class Registry:
     ):
         a = _activation(activation_bytes, activation_digest)
 
-        def f(es):
+        def f(es, pfd):
             # Production time authority is acquired only after the exclusive flock is held.
             decision_now = (
                 now if now is not None else dt.datetime.now(dt.timezone.utc)
@@ -868,6 +994,7 @@ class Registry:
             rd = sha256_digest(rb)
             p = Path(receipt_dir) / (rd.split(":", 1)[1] + ".json")
             ev = self._append(
+                pfd,
                 es,
                 {
                     "event_type": "ACTIVATION_CONSUMED",
@@ -897,7 +1024,7 @@ class Registry:
     def bind_evidence(self, *, binding_bytes, binding_digest, event_time=None):
         b = _binding(binding_bytes, binding_digest)
 
-        def f(es):
+        def f(es, pfd):
             r = _reserve(es, b["run_id"])
             consumed = next(
                 (
@@ -940,6 +1067,7 @@ class Registry:
             ):
                 raise AuthorityError("duplicate evidence ordinal")
             return self._append(
+                pfd,
                 es,
                 {
                     "event_type": "EVIDENCE_BOUND",
@@ -970,11 +1098,12 @@ class Registry:
         if status not in TERMINAL:
             raise AuthorityError("invalid terminal status")
 
-        def f(es):
+        def f(es, pfd):
             r = _reserve(es, run_id)
             if not r or _state(es, run_id) in TERMINAL:
                 raise AuthorityError("terminal run invalid/already terminal")
             return self._append(
+                pfd,
                 es,
                 {
                     "event_type": status,
