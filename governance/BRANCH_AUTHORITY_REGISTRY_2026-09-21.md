@@ -7,6 +7,8 @@
 > current state when they conflict with this block.
 >
 > ```text
+> LIVE_BRANCHES_AT_ALIGNMENT = 78
+> HISTORICAL_FULL_INVENTORY_BELOW = STALE / DO_NOT_USE_FOR_LIVE_HEADS
 > ACTIVE_PRIMARY_RAILS = 2
 >
 > RAIL_A = GATE_B_POST_ASTRA_CONVERGENCE
