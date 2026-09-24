@@ -49,7 +49,18 @@ How to read these results:
 - **The most promising candidate is the speed-limited broad lane** (Sharpe 0.49 in validation, baseline 0.42, alpha t 1.49). It cannot be accepted on this history because the validation window is exhausted and contaminated. Only forward data (> 2024-03-28) can decide.
 - The rejected strategies still run in shadow on the **evaluation ledger** (zero authority). The Learning plane measures whether each rejection was wrong ("false reject").
 
-Shadow Desk results (evaluation ledger, rejected strategies, windows seen by the lab, **not evidence**): see §6.
+### Shadow Desk results
+
+The rejected strategies run on the evaluation ledger, which has zero capital authority. The windows were seen by the lab, so these results are **not evidence**.
+
+| Instance | Sessions | Simulated fills | Ledger NAV (1 M) | Shadow SR | Costs (incl. rolls) | SPRT (monitoring) |
+|---|---|---|---|---|---|---|
+| narrow (1 strategy) | 837 (2020-09 → 2024-03) | 3,903 | +2.9 % | 0.65 | 2.2 k$ (rolls 1.3 k$) | CONTINUE, ~24 years to reach a decision |
+| broad (2 strategies) | 1,304 (2019-02 → 2024-03) | 23,764 | +2.8 % | 0.24 | 49.5 k$ | CONTINUE |
+
+In the broad instance, the unlimited sleeve paid **40.8 k$ of costs, 39.0 k$ of them rolls**, against 8.8 k$ for the speed-limited sleeve. This confirms the research diagnosis: breadth only pays when the contracts are affordable to hold.
+
+Learning counts 1 "false reject" and 1 "undetermined". These are indicative only, because they are scored on a window the lab had already seen.
 
 ## 4. Red team and audit
 
@@ -104,6 +115,19 @@ What held up:
 | R7 | LOW | The `shadow` stats were sampled monthly and some fields stayed at zero. | The stats are now derived from the full per-mark `sleeve_pnl` path (costs, gross, wins/losses, peak, max drawdown). |
 | R8 | LOW | SEC: the futures instance opened a second SEC lifecycle, and `sec-*` commands ignored `--market`. | The SEC lifecycle is skipped outside the ETF instance, and `sec-*` refuses `--market` other than `etf`. |
 | R9 | LOW | Test gaps. | Added: end-to-end review (pristine data), liquidation + restart, tampered snapshot, orphan sweep, full-instance replay. |
+
+### 4.1c Final audit on head `e2d8ea1`
+
+The independent audit agent was **interrupted by the API session limit** before it could report, so the final audit was done by the lead:
+
+- Full suite: **402 tests OK**. `status_artifacts --check` is fresh (the canonical ETF replay is unchanged apart from the dataset and test counts) and `generate_schemas --check` is OK. V1 end-to-end demo: **35/35 checks passed**.
+- Rolls: charged idempotently (op-id `ROLL-<strategy>-<symbol>-<date>`) on the decision snapshot, so a replay sees the same positions. The research charge (|w| x `roll_cost` at the exit bar) and the Desk charge (|qty| x price(t) x `roll_cost(t+1)`) describe the same economic event.
+- Liquidation: only a strategy with **no** entitlement and an open **capital** sleeve can liquidate. Such a strategy produces no weights (it cannot re-enter), the RISK override only applies to it, and it leaves `actionable()` once it is flat. Tested with a restart.
+- Committed ETF snapshots: their sidecars carry the right fingerprints (status check fresh), so the new check does not invalidate them.
+- `pristine_after`: every lifecycle transition uses the filtered series, never the full one (tested). The full series is only reported as monitoring.
+- Speed limit: it reads `cost_bps` and the volatility **for that date**, so it is causal. Without a cost, the contract is excluded (conservative).
+
+Recommendation: re-run an independent audit agent once the API quota resets, before any promotion to a Builder mission.
 
 ### 4.2 My own audit (before and after the red team)
 
