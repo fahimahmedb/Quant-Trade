@@ -32,9 +32,24 @@ PYTHONPATH=src python3 scripts/quant.py brief --market futures-broad   # writes 
 
 To re-derive the datasets without network access to the vendor APIs, run `quant.dataplane.ingest.ingest_futures_panel(..., broad=True|False)`. The pinned commit is fetched through git.
 
-## 3. Results (paper/shadow, simulated)
+## 3. Results (paper/shadow, simulated; the protocol after all fixes)
 
-The detailed numbers are in §6, which is filled in from the final runs.
+Every expression was pre-registered, with costs by contract and rolls charged on |w|. Validation Sharpe (SR) values are annualised on daily returns.
+
+| Lane (dataset) | Discovery winner | Discovery SR | Validation | Validation SR / t | Required t (trials) | Alpha t vs baseline | Verdict |
+|---|---|---|---|---|---|---|---|
+| `ts_trend_carry_futures`: 31 aligned contracts | trend 0.5 + carry 0.5 | 0.82 (2002-2014) | 2014-05 → 2020-09 | **0.07 / 0.18** | 2.84 (11) | 0.11 | **REJECT** |
+| `ts_trend_carry_futures_broad`: 144 contracts, staggered | trend only | 0.58 (1990-2009) | 2009-03 → 2019-05 | **-0.52 / -1.69** (costs 128% > gross 108%) | 3.02 (20) | -1.66 | **REJECT** |
+| `..._broad_speed_limited`: cost ≤ 0.13 SR | trend 0.5 + carry 0.5 | 1.15 | 2009-03 → 2019-05 | **0.49 / 1.59** | 3.07 (23) | 1.49 | **REJECT** |
+
+How to read these results:
+
+- **The system works as its North Star demands.** It rejects, costs are counted, the trial budget is honest, and the reasons are traced in the ticket.
+- **The lab was optimistic.** The lab (Sharpe ~1.06 on 190 instruments) divided pysystemtrade's `SpreadCost` by 2, when it is already a half-spread (per the pysystemtrade docs, *"Slippage … Half the bid-ask spread"*). It also underestimated rolls on illiquid contracts. Breadth only pays when it is affordable: the vol targeting puts large notionals on low-volatility, expensive contracts, whose rolls then consume the edge.
+- **The most promising candidate is the speed-limited broad lane** (Sharpe 0.49 in validation, baseline 0.42, alpha t 1.49). It cannot be accepted on this history because the validation window is exhausted and contaminated. Only forward data (> 2024-03-28) can decide.
+- The rejected strategies still run in shadow on the **evaluation ledger** (zero authority). The Learning plane measures whether each rejection was wrong ("false reject").
+
+Shadow Desk results (evaluation ledger, rejected strategies, windows seen by the lab, **not evidence**): see §6.
 
 ## 4. Red team and audit
 
@@ -78,4 +93,17 @@ Verified clean by the red team:
 
 ## 5. Known limits
 
-The known limits are listed in §8.
+- The data is third-party (pysystemtrade repository). It is not an exchange feed and carries mild survivorship bias (contracts still quoted in 2024). Currency effects are not modelled. Volume is missing, so **capacity is not modelled**.
+- Current cost estimates are applied to the whole history, which likely understates early-2000s costs. Rolls are modelled as two outright trades, which is conservative because a calendar spread usually costs less.
+- Execution is modelled at close(t+1), because the dataset has no separate open/close. There is no ex-ante portfolio volatility limit, only a notional gross limit plus drawdown limits.
+- The SPRT only moves the lifecycle on data after 2024-03-28, so nothing has moved it yet. At a Sharpe of 0.5 it is monitoring (decades to reach a decision), not a fast kill switch. The `expected_sessions_to_accept_if_true` field says so.
+- The ledger rewrites its whole JSON with fsync on every fill (audit finding A5). The broad instance takes 3-5 s per session as a result.
+- The Learning plane's "FALSE_REJECT" rule (existing logic) scores the counterfactual on the replayed shadow window, which is also contaminated. Its verdicts on this data are indicative only.
+
+## 6. Recommended next steps
+
+1. **Real forward data.** Open network access to a daily futures source (for example Norgate, CSI or Databento, which need owner approval) and let the instances accumulate sessions after 2024-03-28. That is the only way to decide on the speed-limited lane.
+2. Include **roll costs in the speed-limit**. This is a new hypothesis and may only be tested on forward data.
+3. **Batch ledger writes** (one atomic write per session, with the same op-ids). This needs a dedicated mission with restart tests.
+4. Add an **ex-ante volatility limit** to RISK for vol-targeted books.
+5. Make the ETF/futures profiles a first-class configuration surface (for example in `STATE.md`/brief) rather than one hard-coded per dataset.
