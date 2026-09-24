@@ -1,0 +1,5194 @@
+{
+  "by_split": {
+    "discovery": {
+      "ALL_P": {
+        "accessions": 281559,
+        "cluster_formations": 44981,
+        "cluster_member_issuer_days": 82871,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 281559,
+          "negative": 100,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 251,
+          "share_gt_2d": 0.3668,
+          "share_gt_30d": 0.034,
+          "share_le_2d": 0.6329
+        },
+        "issuer_days": 193991,
+        "per_year": 14922.4,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 48746,
+          "DIRECTOR": 81148,
+          "OTHER": 4800,
+          "OTHER_OFFICER": 30541,
+          "TEN_PERCENT_OWNER": 28756
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 48746,
+          "any_director": 132306,
+          "any_other_officer": 39139,
+          "any_ten_percent_owner": 55399
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 6883,
+        "unique_issuers": 11101,
+        "value_tiers_issuer_days": {
+          "ge_100k": 55495,
+          "ge_10k": 136386,
+          "ge_1m": 15284
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 4268.8,
+          "ge_10k": 10491.2,
+          "ge_1m": 1175.7
+        }
+      },
+      "CEO_CFO": {
+        "accessions": 54012,
+        "cluster_formations": 5518,
+        "cluster_member_issuer_days": 6784,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 54012,
+          "negative": 29,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 189,
+          "share_gt_2d": 0.336,
+          "share_gt_30d": 0.0279,
+          "share_le_2d": 0.6635
+        },
+        "issuer_days": 48746,
+        "per_year": 3749.7,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 48746
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 48746,
+          "any_director": 36120,
+          "any_other_officer": 150,
+          "any_ten_percent_owner": 11176
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 1729,
+        "unique_issuers": 7021,
+        "value_tiers_issuer_days": {
+          "ge_100k": 11012,
+          "ge_10k": 30316,
+          "ge_1m": 1843
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 847.1,
+          "ge_10k": 2332.0,
+          "ge_1m": 141.8
+        }
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 84030,
+        "cluster_formations": 35222,
+        "cluster_member_issuer_days": 35222,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 84030,
+          "negative": 27,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 176,
+          "share_gt_2d": 0.3833,
+          "share_gt_30d": 0.0319,
+          "share_le_2d": 0.6164
+        },
+        "issuer_days": 35222,
+        "per_year": 2709.4,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 14092,
+          "DIRECTOR": 14516,
+          "OTHER_OFFICER": 6614
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 14092,
+          "any_director": 29679,
+          "any_other_officer": 13161,
+          "any_ten_percent_owner": 3865
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 1718,
+        "unique_issuers": 6871,
+        "value_tiers_issuer_days": {
+          "ge_100k": 13525,
+          "ge_10k": 29243,
+          "ge_1m": 3125
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 1040.4,
+          "ge_10k": 2249.5,
+          "ge_1m": 240.4
+        }
+      },
+      "OD": {
+        "accessions": 224260,
+        "cluster_formations": 35217,
+        "cluster_member_issuer_days": 58431,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 224260,
+          "negative": 91,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 227,
+          "share_gt_2d": 0.3563,
+          "share_gt_30d": 0.032,
+          "share_le_2d": 0.6433
+        },
+        "issuer_days": 160435,
+        "per_year": 12341.2,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 48746,
+          "DIRECTOR": 81148,
+          "OTHER_OFFICER": 30541
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 48746,
+          "any_director": 132306,
+          "any_other_officer": 39139,
+          "any_ten_percent_owner": 25368
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 5423,
+        "unique_issuers": 10264,
+        "value_tiers_issuer_days": {
+          "ge_100k": 37921,
+          "ge_10k": 108769,
+          "ge_1m": 7655
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 2917.0,
+          "ge_10k": 8366.8,
+          "ge_1m": 588.8
+        }
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 85784,
+        "cluster_formations": 35217,
+        "cluster_member_issuer_days": 35217,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 85784,
+          "negative": 27,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 172,
+          "share_gt_2d": 0.385,
+          "share_gt_30d": 0.0311,
+          "share_le_2d": 0.6147
+        },
+        "issuer_days": 35217,
+        "per_year": 2709.0,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 14278,
+          "DIRECTOR": 14226,
+          "OTHER_OFFICER": 6713
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 14278,
+          "any_director": 29776,
+          "any_other_officer": 13513,
+          "any_ten_percent_owner": 3988
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 1745,
+        "unique_issuers": 6757,
+        "value_tiers_issuer_days": {
+          "ge_100k": 13303,
+          "ge_10k": 29016,
+          "ge_1m": 3069
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 1023.3,
+          "ge_10k": 2232.0,
+          "ge_1m": 236.1
+        }
+      }
+    },
+    "holdout": {
+      "ALL_P": {
+        "accessions": 70643,
+        "cluster_formations": 12475,
+        "cluster_member_issuer_days": 23920,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 70643,
+          "negative": 7,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 232,
+          "share_gt_2d": 0.3586,
+          "share_gt_30d": 0.029,
+          "share_le_2d": 0.6413
+        },
+        "issuer_days": 54828,
+        "per_year": 10965.6,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 15911,
+          "DIRECTOR": 21771,
+          "OTHER": 1448,
+          "OTHER_OFFICER": 6742,
+          "TEN_PERCENT_OWNER": 8956
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 15911,
+          "any_director": 37291,
+          "any_other_officer": 8723,
+          "any_ten_percent_owner": 17461
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 2120,
+        "unique_issuers": 5698,
+        "value_tiers_issuer_days": {
+          "ge_100k": 21326,
+          "ge_10k": 42108,
+          "ge_1m": 6685
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 4265.2,
+          "ge_10k": 8421.6,
+          "ge_1m": 1337.0
+        }
+      },
+      "CEO_CFO": {
+        "accessions": 17478,
+        "cluster_formations": 1829,
+        "cluster_member_issuer_days": 2177,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 17478,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 163,
+          "share_gt_2d": 0.3334,
+          "share_gt_30d": 0.0265,
+          "share_le_2d": 0.6664
+        },
+        "issuer_days": 15911,
+        "per_year": 3182.2,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 15911
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 15911,
+          "any_director": 12198,
+          "any_other_officer": 35,
+          "any_ten_percent_owner": 3408
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 478,
+        "unique_issuers": 3209,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4695,
+          "ge_10k": 10675,
+          "ge_1m": 1029
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 939.0,
+          "ge_10k": 2135.0,
+          "ge_1m": 205.8
+        }
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 20228,
+        "cluster_formations": 9358,
+        "cluster_member_issuer_days": 9358,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 20228,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 147,
+          "share_gt_2d": 0.3759,
+          "share_gt_30d": 0.0266,
+          "share_le_2d": 0.6241
+        },
+        "issuer_days": 9358,
+        "per_year": 1871.6,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4121,
+          "DIRECTOR": 3772,
+          "OTHER_OFFICER": 1465
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4121,
+          "any_director": 8051,
+          "any_other_officer": 3009,
+          "any_ten_percent_owner": 1347
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 519,
+        "unique_issuers": 2988,
+        "value_tiers_issuer_days": {
+          "ge_100k": 5018,
+          "ge_10k": 8315,
+          "ge_1m": 1513
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 1003.6,
+          "ge_10k": 1663.0,
+          "ge_1m": 302.6
+        }
+      },
+      "OD": {
+        "accessions": 57979,
+        "cluster_formations": 9326,
+        "cluster_member_issuer_days": 15693,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 57979,
+          "negative": 7,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 220,
+          "share_gt_2d": 0.352,
+          "share_gt_30d": 0.0284,
+          "share_le_2d": 0.6479
+        },
+        "issuer_days": 44424,
+        "per_year": 8884.8,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 15911,
+          "DIRECTOR": 21771,
+          "OTHER_OFFICER": 6742
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 15911,
+          "any_director": 37291,
+          "any_other_officer": 8723,
+          "any_ten_percent_owner": 8162
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 1329,
+        "unique_issuers": 5224,
+        "value_tiers_issuer_days": {
+          "ge_100k": 14838,
+          "ge_10k": 33282,
+          "ge_1m": 3589
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 2967.6,
+          "ge_10k": 6656.4,
+          "ge_1m": 717.8
+        }
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 20499,
+        "cluster_formations": 9326,
+        "cluster_member_issuer_days": 9326,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 20499,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 147,
+          "share_gt_2d": 0.3779,
+          "share_gt_30d": 0.0263,
+          "share_le_2d": 0.622
+        },
+        "issuer_days": 9326,
+        "per_year": 1865.2,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4183,
+          "DIRECTOR": 3709,
+          "OTHER_OFFICER": 1434
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4183,
+          "any_director": 8076,
+          "any_other_officer": 3021,
+          "any_ten_percent_owner": 1387
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 484,
+        "unique_issuers": 2934,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4930,
+          "ge_10k": 8260,
+          "ge_1m": 1495
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 986.0,
+          "ge_10k": 1652.0,
+          "ge_1m": 299.0
+        }
+      }
+    },
+    "walk_forward": {
+      "ALL_P": {
+        "accessions": 41705,
+        "cluster_formations": 6975,
+        "cluster_member_issuer_days": 13124,
+        "filing_lag_days": {
+          "max": 6578,
+          "missing": 0,
+          "n": 41705,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 189,
+          "share_gt_2d": 0.3403,
+          "share_gt_30d": 0.0253,
+          "share_le_2d": 0.6597
+        },
+        "issuer_days": 28892,
+        "per_year": 11556.8,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 8365,
+          "DIRECTOR": 12005,
+          "OTHER": 605,
+          "OTHER_OFFICER": 4022,
+          "TEN_PERCENT_OWNER": 3895
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 8365,
+          "any_director": 20313,
+          "any_other_officer": 5337,
+          "any_ten_percent_owner": 8024
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 848,
+        "unique_issuers": 4381,
+        "value_tiers_issuer_days": {
+          "ge_100k": 10560,
+          "ge_10k": 22213,
+          "ge_1m": 3351
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 4224.0,
+          "ge_10k": 8885.2,
+          "ge_1m": 1340.4
+        }
+      },
+      "CEO_CFO": {
+        "accessions": 9277,
+        "cluster_formations": 1019,
+        "cluster_member_issuer_days": 1240,
+        "filing_lag_days": {
+          "max": 3764,
+          "missing": 0,
+          "n": 9277,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 112,
+          "share_gt_2d": 0.3278,
+          "share_gt_30d": 0.0229,
+          "share_le_2d": 0.6722
+        },
+        "issuer_days": 8365,
+        "per_year": 3346.0,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 8365
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 8365,
+          "any_director": 6313,
+          "any_other_officer": 23,
+          "any_ten_percent_owner": 1818
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 264,
+        "unique_issuers": 2190,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2254,
+          "ge_10k": 5619,
+          "ge_1m": 481
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 901.6,
+          "ge_10k": 2247.6,
+          "ge_1m": 192.4
+        }
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 12937,
+        "cluster_formations": 5592,
+        "cluster_member_issuer_days": 5592,
+        "filing_lag_days": {
+          "max": 4019,
+          "missing": 0,
+          "n": 12937,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 100,
+          "share_gt_2d": 0.3295,
+          "share_gt_30d": 0.0203,
+          "share_le_2d": 0.6705
+        },
+        "issuer_days": 5592,
+        "per_year": 2236.8,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2400,
+          "DIRECTOR": 2283,
+          "OTHER_OFFICER": 909
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2400,
+          "any_director": 4809,
+          "any_other_officer": 1881,
+          "any_ten_percent_owner": 737
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 242,
+        "unique_issuers": 2297,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2900,
+          "ge_10k": 4892,
+          "ge_1m": 843
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 1160.0,
+          "ge_10k": 1956.8,
+          "ge_1m": 337.2
+        }
+      },
+      "OD": {
+        "accessions": 33831,
+        "cluster_formations": 5667,
+        "cluster_member_issuer_days": 9764,
+        "filing_lag_days": {
+          "max": 6578,
+          "missing": 0,
+          "n": 33831,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 183,
+          "share_gt_2d": 0.3319,
+          "share_gt_30d": 0.0251,
+          "share_le_2d": 0.6681
+        },
+        "issuer_days": 24392,
+        "per_year": 9756.8,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 8365,
+          "DIRECTOR": 12005,
+          "OTHER_OFFICER": 4022
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 8365,
+          "any_director": 20313,
+          "any_other_officer": 5337,
+          "any_ten_percent_owner": 3888
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 635,
+        "unique_issuers": 4038,
+        "value_tiers_issuer_days": {
+          "ge_100k": 7758,
+          "ge_10k": 18301,
+          "ge_1m": 1889
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 3103.2,
+          "ge_10k": 7320.4,
+          "ge_1m": 755.6
+        }
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 13274,
+        "cluster_formations": 5667,
+        "cluster_member_issuer_days": 5667,
+        "filing_lag_days": {
+          "max": 4019,
+          "missing": 0,
+          "n": 13274,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 99,
+          "share_gt_2d": 0.3286,
+          "share_gt_30d": 0.0197,
+          "share_le_2d": 0.6714
+        },
+        "issuer_days": 5667,
+        "per_year": 2266.8,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2467,
+          "DIRECTOR": 2276,
+          "OTHER_OFFICER": 924
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2467,
+          "any_director": 4892,
+          "any_other_officer": 1941,
+          "any_ten_percent_owner": 748
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 244,
+        "unique_issuers": 2251,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2886,
+          "ge_10k": 4898,
+          "ge_1m": 844
+        },
+        "value_tiers_per_year": {
+          "ge_100k": 1154.4,
+          "ge_10k": 1959.2,
+          "ge_1m": 337.6
+        }
+      }
+    }
+  },
+  "by_year": {
+    "2006": {
+      "ALL_P": {
+        "accessions": 22790,
+        "cluster_formations": 3658,
+        "cluster_member_issuer_days": 6158,
+        "filing_lag_days": {
+          "max": 5661,
+          "missing": 0,
+          "n": 22790,
+          "negative": 16,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 366,
+          "share_gt_2d": 0.3804,
+          "share_gt_30d": 0.0487,
+          "share_le_2d": 0.6189
+        },
+        "issuer_days": 16387,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3603,
+          "DIRECTOR": 6826,
+          "OTHER": 403,
+          "OTHER_OFFICER": 2601,
+          "TEN_PERCENT_OWNER": 2954
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3603,
+          "any_director": 10758,
+          "any_other_officer": 3232,
+          "any_ten_percent_owner": 4732
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 902,
+        "unique_issuers": 4046,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4654,
+          "ge_10k": 11421,
+          "ge_1m": 1359
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3959,
+        "cluster_formations": 361,
+        "cluster_member_issuer_days": 414,
+        "filing_lag_days": {
+          "max": 4176,
+          "missing": 0,
+          "n": 3959,
+          "negative": 7,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 368,
+          "share_gt_2d": 0.3503,
+          "share_gt_30d": 0.0427,
+          "share_le_2d": 0.6479
+        },
+        "issuer_days": 3603,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3603
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3603,
+          "any_director": 2634,
+          "any_other_officer": 3,
+          "any_ten_percent_owner": 763
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 156,
+        "unique_issuers": 1475,
+        "value_tiers_issuer_days": {
+          "ge_100k": 734,
+          "ge_10k": 2168,
+          "ge_1m": 160
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 7076,
+        "cluster_formations": 2787,
+        "cluster_member_issuer_days": 2787,
+        "filing_lag_days": {
+          "max": 4542,
+          "missing": 0,
+          "n": 7076,
+          "negative": 6,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 274,
+          "share_gt_2d": 0.3876,
+          "share_gt_30d": 0.0469,
+          "share_le_2d": 0.6115
+        },
+        "issuer_days": 2787,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1056,
+          "DIRECTOR": 1186,
+          "OTHER_OFFICER": 545
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1056,
+          "any_director": 2350,
+          "any_other_officer": 1073,
+          "any_ten_percent_owner": 256
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 193,
+        "unique_issuers": 1516,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1004,
+          "ge_10k": 2279,
+          "ge_1m": 237
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 18431,
+        "cluster_formations": 2765,
+        "cluster_member_issuer_days": 4173,
+        "filing_lag_days": {
+          "max": 5661,
+          "missing": 0,
+          "n": 18431,
+          "negative": 16,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 365,
+          "share_gt_2d": 0.3642,
+          "share_gt_30d": 0.0475,
+          "share_le_2d": 0.6349
+        },
+        "issuer_days": 13030,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3603,
+          "DIRECTOR": 6826,
+          "OTHER_OFFICER": 2601
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3603,
+          "any_director": 10758,
+          "any_other_officer": 3232,
+          "any_ten_percent_owner": 1683
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 672,
+        "unique_issuers": 3633,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2879,
+          "ge_10k": 8683,
+          "ge_1m": 628
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 7270,
+        "cluster_formations": 2765,
+        "cluster_member_issuer_days": 2765,
+        "filing_lag_days": {
+          "max": 4542,
+          "missing": 0,
+          "n": 7270,
+          "negative": 6,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 257,
+          "share_gt_2d": 0.3912,
+          "share_gt_30d": 0.0462,
+          "share_le_2d": 0.608
+        },
+        "issuer_days": 2765,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1085,
+          "DIRECTOR": 1147,
+          "OTHER_OFFICER": 533
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1085,
+          "any_director": 2356,
+          "any_other_officer": 1088,
+          "any_ten_percent_owner": 260
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 187,
+        "unique_issuers": 1462,
+        "value_tiers_issuer_days": {
+          "ge_100k": 976,
+          "ge_10k": 2225,
+          "ge_1m": 232
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2007": {
+      "ALL_P": {
+        "accessions": 28746,
+        "cluster_formations": 4891,
+        "cluster_member_issuer_days": 8910,
+        "filing_lag_days": {
+          "max": 4880,
+          "missing": 0,
+          "n": 28746,
+          "negative": 22,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 252,
+          "share_gt_2d": 0.3804,
+          "share_gt_30d": 0.0417,
+          "share_le_2d": 0.6188
+        },
+        "issuer_days": 20189,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4524,
+          "DIRECTOR": 8357,
+          "OTHER": 540,
+          "OTHER_OFFICER": 3485,
+          "TEN_PERCENT_OWNER": 3283
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4524,
+          "any_director": 13265,
+          "any_other_officer": 4321,
+          "any_ten_percent_owner": 5358
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 887,
+        "unique_issuers": 4450,
+        "value_tiers_issuer_days": {
+          "ge_100k": 5876,
+          "ge_10k": 14773,
+          "ge_1m": 1734
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 5059,
+        "cluster_formations": 497,
+        "cluster_member_issuer_days": 652,
+        "filing_lag_days": {
+          "max": 3652,
+          "missing": 0,
+          "n": 5059,
+          "negative": 5,
+          "p10": 0,
+          "p25": 1,
+          "p50": 1,
+          "p75": 3,
+          "p90": 5,
+          "p99": 231,
+          "share_gt_2d": 0.3333,
+          "share_gt_30d": 0.0318,
+          "share_le_2d": 0.6657
+        },
+        "issuer_days": 4524,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4524
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4524,
+          "any_director": 3223,
+          "any_other_officer": 11,
+          "any_ten_percent_owner": 835
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 200,
+        "unique_issuers": 1814,
+        "value_tiers_issuer_days": {
+          "ge_100k": 961,
+          "ge_10k": 2943,
+          "ge_1m": 174
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 8759,
+        "cluster_formations": 3789,
+        "cluster_member_issuer_days": 3789,
+        "filing_lag_days": {
+          "max": 3652,
+          "missing": 0,
+          "n": 8759,
+          "negative": 7,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 246,
+          "share_gt_2d": 0.4113,
+          "share_gt_30d": 0.0557,
+          "share_le_2d": 0.5879
+        },
+        "issuer_days": 3789,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1374,
+          "DIRECTOR": 1608,
+          "OTHER_OFFICER": 807
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1374,
+          "any_director": 3189,
+          "any_other_officer": 1448,
+          "any_ten_percent_owner": 320
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 207,
+        "unique_issuers": 1932,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1432,
+          "ge_10k": 3218,
+          "ge_1m": 315
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 23239,
+        "cluster_formations": 3796,
+        "cluster_member_issuer_days": 6456,
+        "filing_lag_days": {
+          "max": 4880,
+          "missing": 0,
+          "n": 23239,
+          "negative": 19,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 244,
+          "share_gt_2d": 0.3662,
+          "share_gt_30d": 0.0409,
+          "share_le_2d": 0.6329
+        },
+        "issuer_days": 16366,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4524,
+          "DIRECTOR": 8357,
+          "OTHER_OFFICER": 3485
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4524,
+          "any_director": 13265,
+          "any_other_officer": 4321,
+          "any_ten_percent_owner": 1983
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 682,
+        "unique_issuers": 3965,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3766,
+          "ge_10k": 11546,
+          "ge_1m": 793
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 9006,
+        "cluster_formations": 3796,
+        "cluster_member_issuer_days": 3796,
+        "filing_lag_days": {
+          "max": 3652,
+          "missing": 0,
+          "n": 9006,
+          "negative": 7,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 244,
+          "share_gt_2d": 0.4119,
+          "share_gt_30d": 0.054,
+          "share_le_2d": 0.5873
+        },
+        "issuer_days": 3796,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1389,
+          "DIRECTOR": 1578,
+          "OTHER_OFFICER": 829
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1389,
+          "any_director": 3199,
+          "any_other_officer": 1492,
+          "any_ten_percent_owner": 329
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 209,
+        "unique_issuers": 1875,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1408,
+          "ge_10k": 3193,
+          "ge_1m": 311
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2008": {
+      "ALL_P": {
+        "accessions": 39397,
+        "cluster_formations": 5972,
+        "cluster_member_issuer_days": 12548,
+        "filing_lag_days": {
+          "max": 3883,
+          "missing": 0,
+          "n": 39397,
+          "negative": 13,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 147,
+          "share_gt_2d": 0.3547,
+          "share_gt_30d": 0.0265,
+          "share_le_2d": 0.6449
+        },
+        "issuer_days": 26636,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 6193,
+          "DIRECTOR": 10593,
+          "OTHER": 617,
+          "OTHER_OFFICER": 4616,
+          "TEN_PERCENT_OWNER": 4617
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 6193,
+          "any_director": 17332,
+          "any_other_officer": 5765,
+          "any_ten_percent_owner": 8110
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 948,
+        "unique_issuers": 4749,
+        "value_tiers_issuer_days": {
+          "ge_100k": 7165,
+          "ge_10k": 18198,
+          "ge_1m": 1891
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 6802,
+        "cluster_formations": 601,
+        "cluster_member_issuer_days": 782,
+        "filing_lag_days": {
+          "max": 3883,
+          "missing": 0,
+          "n": 6802,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 103,
+          "share_gt_2d": 0.3259,
+          "share_gt_30d": 0.0223,
+          "share_le_2d": 0.6736
+        },
+        "issuer_days": 6193,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 6193
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 6193,
+          "any_director": 4468,
+          "any_other_officer": 49,
+          "any_ten_percent_owner": 1341
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 234,
+        "unique_issuers": 2166,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1274,
+          "ge_10k": 3749,
+          "ge_1m": 217
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 9738,
+        "cluster_formations": 4577,
+        "cluster_member_issuer_days": 4577,
+        "filing_lag_days": {
+          "max": 2929,
+          "missing": 0,
+          "n": 9738,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 119,
+          "share_gt_2d": 0.3671,
+          "share_gt_30d": 0.0244,
+          "share_le_2d": 0.6328
+        },
+        "issuer_days": 4577,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1727,
+          "DIRECTOR": 1921,
+          "OTHER_OFFICER": 929
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1727,
+          "any_director": 3803,
+          "any_other_officer": 1684,
+          "any_ten_percent_owner": 447
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 167,
+        "unique_issuers": 2348,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1657,
+          "ge_10k": 3867,
+          "ge_1m": 331
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 29259,
+        "cluster_formations": 4609,
+        "cluster_member_issuer_days": 8795,
+        "filing_lag_days": {
+          "max": 3883,
+          "missing": 0,
+          "n": 29259,
+          "negative": 10,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 148,
+          "share_gt_2d": 0.347,
+          "share_gt_30d": 0.0262,
+          "share_le_2d": 0.6527
+        },
+        "issuer_days": 21402,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 6193,
+          "DIRECTOR": 10593,
+          "OTHER_OFFICER": 4616
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 6193,
+          "any_director": 17332,
+          "any_other_officer": 5765,
+          "any_ten_percent_owner": 3313
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 750,
+        "unique_issuers": 4328,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4544,
+          "ge_10k": 13992,
+          "ge_1m": 883
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 9978,
+        "cluster_formations": 4609,
+        "cluster_member_issuer_days": 4609,
+        "filing_lag_days": {
+          "max": 2929,
+          "missing": 0,
+          "n": 9978,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 109,
+          "share_gt_2d": 0.3673,
+          "share_gt_30d": 0.0228,
+          "share_le_2d": 0.6326
+        },
+        "issuer_days": 4609,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1760,
+          "DIRECTOR": 1873,
+          "OTHER_OFFICER": 976
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1760,
+          "any_director": 3809,
+          "any_other_officer": 1755,
+          "any_ten_percent_owner": 462
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 175,
+        "unique_issuers": 2261,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1626,
+          "ge_10k": 3893,
+          "ge_1m": 325
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2009": {
+      "ALL_P": {
+        "accessions": 25767,
+        "cluster_formations": 3943,
+        "cluster_member_issuer_days": 7512,
+        "filing_lag_days": {
+          "max": 7549,
+          "missing": 0,
+          "n": 25767,
+          "negative": 6,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 340,
+          "share_gt_2d": 0.3733,
+          "share_gt_30d": 0.0375,
+          "share_le_2d": 0.6264
+        },
+        "issuer_days": 17349,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4215,
+          "DIRECTOR": 7541,
+          "OTHER": 301,
+          "OTHER_OFFICER": 2869,
+          "TEN_PERCENT_OWNER": 2423
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4215,
+          "any_director": 12077,
+          "any_other_officer": 3638,
+          "any_ten_percent_owner": 4936
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 697,
+        "unique_issuers": 3762,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3239,
+          "ge_10k": 10305,
+          "ge_1m": 786
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 4594,
+        "cluster_formations": 415,
+        "cluster_member_issuer_days": 518,
+        "filing_lag_days": {
+          "max": 2696,
+          "missing": 0,
+          "n": 4594,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 253,
+          "share_gt_2d": 0.35,
+          "share_gt_30d": 0.034,
+          "share_le_2d": 0.6498
+        },
+        "issuer_days": 4215,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4215
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4215,
+          "any_director": 3162,
+          "any_other_officer": 12,
+          "any_ten_percent_owner": 1013
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 192,
+        "unique_issuers": 1552,
+        "value_tiers_issuer_days": {
+          "ge_100k": 601,
+          "ge_10k": 2082,
+          "ge_1m": 104
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 6918,
+        "cluster_formations": 3033,
+        "cluster_member_issuer_days": 3033,
+        "filing_lag_days": {
+          "max": 5850,
+          "missing": 0,
+          "n": 6918,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 260,
+          "share_gt_2d": 0.3781,
+          "share_gt_30d": 0.0289,
+          "share_le_2d": 0.6216
+        },
+        "issuer_days": 3033,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1147,
+          "DIRECTOR": 1260,
+          "OTHER_OFFICER": 626
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1147,
+          "any_director": 2538,
+          "any_other_officer": 1162,
+          "any_ten_percent_owner": 337
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 139,
+        "unique_issuers": 1583,
+        "value_tiers_issuer_days": {
+          "ge_100k": 788,
+          "ge_10k": 2319,
+          "ge_1m": 150
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 20069,
+        "cluster_formations": 3053,
+        "cluster_member_issuer_days": 5428,
+        "filing_lag_days": {
+          "max": 7549,
+          "missing": 0,
+          "n": 20069,
+          "negative": 6,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 294,
+          "share_gt_2d": 0.362,
+          "share_gt_30d": 0.0347,
+          "share_le_2d": 0.6377
+        },
+        "issuer_days": 14625,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 4215,
+          "DIRECTOR": 7541,
+          "OTHER_OFFICER": 2869
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 4215,
+          "any_director": 12077,
+          "any_other_officer": 3638,
+          "any_ten_percent_owner": 2405
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 562,
+        "unique_issuers": 3378,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2149,
+          "ge_10k": 8276,
+          "ge_1m": 396
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 7108,
+        "cluster_formations": 3053,
+        "cluster_member_issuer_days": 3053,
+        "filing_lag_days": {
+          "max": 5850,
+          "missing": 0,
+          "n": 7108,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 260,
+          "share_gt_2d": 0.3808,
+          "share_gt_30d": 0.0294,
+          "share_le_2d": 0.6189
+        },
+        "issuer_days": 3053,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1169,
+          "DIRECTOR": 1243,
+          "OTHER_OFFICER": 641
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1169,
+          "any_director": 2561,
+          "any_other_officer": 1199,
+          "any_ten_percent_owner": 351
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 145,
+        "unique_issuers": 1544,
+        "value_tiers_issuer_days": {
+          "ge_100k": 774,
+          "ge_10k": 2318,
+          "ge_1m": 146
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2010": {
+      "ALL_P": {
+        "accessions": 19841,
+        "cluster_formations": 3122,
+        "cluster_member_issuer_days": 5415,
+        "filing_lag_days": {
+          "max": 3790,
+          "missing": 0,
+          "n": 19841,
+          "negative": 10,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 266,
+          "share_gt_2d": 0.382,
+          "share_gt_30d": 0.0326,
+          "share_le_2d": 0.6175
+        },
+        "issuer_days": 13714,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3312,
+          "DIRECTOR": 6176,
+          "OTHER": 347,
+          "OTHER_OFFICER": 2044,
+          "TEN_PERCENT_OWNER": 1835
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3312,
+          "any_director": 9616,
+          "any_other_officer": 2591,
+          "any_ten_percent_owner": 3884
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 534,
+        "unique_issuers": 3315,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3220,
+          "ge_10k": 8899,
+          "ge_1m": 895
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3655,
+        "cluster_formations": 361,
+        "cluster_member_issuer_days": 412,
+        "filing_lag_days": {
+          "max": 2204,
+          "missing": 0,
+          "n": 3655,
+          "negative": 4,
+          "p10": 0,
+          "p25": 1,
+          "p50": 1,
+          "p75": 3,
+          "p90": 5,
+          "p99": 211,
+          "share_gt_2d": 0.336,
+          "share_gt_30d": 0.0315,
+          "share_le_2d": 0.6629
+        },
+        "issuer_days": 3312,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3312
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3312,
+          "any_director": 2411,
+          "any_other_officer": 1,
+          "any_ten_percent_owner": 828
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 121,
+        "unique_issuers": 1289,
+        "value_tiers_issuer_days": {
+          "ge_100k": 580,
+          "ge_10k": 1785,
+          "ge_1m": 126
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5829,
+        "cluster_formations": 2407,
+        "cluster_member_issuer_days": 2407,
+        "filing_lag_days": {
+          "max": 3288,
+          "missing": 0,
+          "n": 5829,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 178,
+          "share_gt_2d": 0.3884,
+          "share_gt_30d": 0.0297,
+          "share_le_2d": 0.6113
+        },
+        "issuer_days": 2407,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 937,
+          "DIRECTOR": 1035,
+          "OTHER_OFFICER": 435
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 937,
+          "any_director": 2062,
+          "any_other_officer": 878,
+          "any_ten_percent_owner": 259
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 116,
+        "unique_issuers": 1245,
+        "value_tiers_issuer_days": {
+          "ge_100k": 715,
+          "ge_10k": 1903,
+          "ge_1m": 175
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 15827,
+        "cluster_formations": 2411,
+        "cluster_member_issuer_days": 3779,
+        "filing_lag_days": {
+          "max": 3790,
+          "missing": 0,
+          "n": 15827,
+          "negative": 10,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 228,
+          "share_gt_2d": 0.3676,
+          "share_gt_30d": 0.031,
+          "share_le_2d": 0.6318
+        },
+        "issuer_days": 11532,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3312,
+          "DIRECTOR": 6176,
+          "OTHER_OFFICER": 2044
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3312,
+          "any_director": 9616,
+          "any_other_officer": 2591,
+          "any_ten_percent_owner": 1973
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 432,
+        "unique_issuers": 3020,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2164,
+          "ge_10k": 7131,
+          "ge_1m": 425
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5945,
+        "cluster_formations": 2411,
+        "cluster_member_issuer_days": 2411,
+        "filing_lag_days": {
+          "max": 3288,
+          "missing": 0,
+          "n": 5945,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 177,
+          "share_gt_2d": 0.3933,
+          "share_gt_30d": 0.0284,
+          "share_le_2d": 0.6064
+        },
+        "issuer_days": 2411,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 948,
+          "DIRECTOR": 1022,
+          "OTHER_OFFICER": 441
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 948,
+          "any_director": 2075,
+          "any_other_officer": 900,
+          "any_ten_percent_owner": 277
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 123,
+        "unique_issuers": 1205,
+        "value_tiers_issuer_days": {
+          "ge_100k": 704,
+          "ge_10k": 1883,
+          "ge_1m": 176
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2011": {
+      "ALL_P": {
+        "accessions": 21667,
+        "cluster_formations": 3788,
+        "cluster_member_issuer_days": 6609,
+        "filing_lag_days": {
+          "max": 6650,
+          "missing": 0,
+          "n": 21667,
+          "negative": 8,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 358,
+          "share_gt_2d": 0.3598,
+          "share_gt_30d": 0.0457,
+          "share_le_2d": 0.6399
+        },
+        "issuer_days": 15371,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3951,
+          "DIRECTOR": 6709,
+          "OTHER": 366,
+          "OTHER_OFFICER": 2457,
+          "TEN_PERCENT_OWNER": 1888
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3951,
+          "any_director": 10839,
+          "any_other_officer": 3133,
+          "any_ten_percent_owner": 4004
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 502,
+        "unique_issuers": 3598,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3923,
+          "ge_10k": 10589,
+          "ge_1m": 970
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 4350,
+        "cluster_formations": 486,
+        "cluster_member_issuer_days": 572,
+        "filing_lag_days": {
+          "max": 6650,
+          "missing": 0,
+          "n": 4350,
+          "negative": 4,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 229,
+          "share_gt_2d": 0.3375,
+          "share_gt_30d": 0.0287,
+          "share_le_2d": 0.6616
+        },
+        "issuer_days": 3951,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3951
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3951,
+          "any_director": 2809,
+          "any_other_officer": 0,
+          "any_ten_percent_owner": 794
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 138,
+        "unique_issuers": 1567,
+        "value_tiers_issuer_days": {
+          "ge_100k": 847,
+          "ge_10k": 2508,
+          "ge_1m": 108
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 6673,
+        "cluster_formations": 2935,
+        "cluster_member_issuer_days": 2935,
+        "filing_lag_days": {
+          "max": 1602,
+          "missing": 0,
+          "n": 6673,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 193,
+          "share_gt_2d": 0.3495,
+          "share_gt_30d": 0.0312,
+          "share_le_2d": 0.6502
+        },
+        "issuer_days": 2935,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1175,
+          "DIRECTOR": 1206,
+          "OTHER_OFFICER": 554
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1175,
+          "any_director": 2447,
+          "any_other_officer": 1107,
+          "any_ten_percent_owner": 330
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 148,
+        "unique_issuers": 1544,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1116,
+          "ge_10k": 2421,
+          "ge_1m": 217
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 18000,
+        "cluster_formations": 2931,
+        "cluster_member_issuer_days": 4899,
+        "filing_lag_days": {
+          "max": 6650,
+          "missing": 0,
+          "n": 18000,
+          "negative": 6,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 244,
+          "share_gt_2d": 0.3413,
+          "share_gt_30d": 0.0327,
+          "share_le_2d": 0.6583
+        },
+        "issuer_days": 13117,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3951,
+          "DIRECTOR": 6709,
+          "OTHER_OFFICER": 2457
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3951,
+          "any_director": 10839,
+          "any_other_officer": 3133,
+          "any_ten_percent_owner": 2026
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 425,
+        "unique_issuers": 3216,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2943,
+          "ge_10k": 8802,
+          "ge_1m": 527
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 6770,
+        "cluster_formations": 2931,
+        "cluster_member_issuer_days": 2931,
+        "filing_lag_days": {
+          "max": 1551,
+          "missing": 0,
+          "n": 6770,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 193,
+          "share_gt_2d": 0.3552,
+          "share_gt_30d": 0.0306,
+          "share_le_2d": 0.6445
+        },
+        "issuer_days": 2931,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1194,
+          "DIRECTOR": 1185,
+          "OTHER_OFFICER": 552
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1194,
+          "any_director": 2456,
+          "any_other_officer": 1121,
+          "any_ten_percent_owner": 337
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 153,
+        "unique_issuers": 1499,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1097,
+          "ge_10k": 2421,
+          "ge_1m": 215
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2012": {
+      "ALL_P": {
+        "accessions": 18444,
+        "cluster_formations": 3015,
+        "cluster_member_issuer_days": 5259,
+        "filing_lag_days": {
+          "max": 5219,
+          "missing": 0,
+          "n": 18444,
+          "negative": 10,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 197,
+          "share_gt_2d": 0.3619,
+          "share_gt_30d": 0.0332,
+          "share_le_2d": 0.6376
+        },
+        "issuer_days": 12972,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3402,
+          "DIRECTOR": 5500,
+          "OTHER": 275,
+          "OTHER_OFFICER": 2124,
+          "TEN_PERCENT_OWNER": 1671
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3402,
+          "any_director": 9078,
+          "any_other_officer": 2694,
+          "any_ten_percent_owner": 3535
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 394,
+        "unique_issuers": 3145,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3399,
+          "ge_10k": 8841,
+          "ge_1m": 958
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3745,
+        "cluster_formations": 354,
+        "cluster_member_issuer_days": 442,
+        "filing_lag_days": {
+          "max": 5219,
+          "missing": 0,
+          "n": 3745,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 152,
+          "share_gt_2d": 0.3356,
+          "share_gt_30d": 0.027,
+          "share_le_2d": 0.6641
+        },
+        "issuer_days": 3402,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3402
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3402,
+          "any_director": 2549,
+          "any_other_officer": 0,
+          "any_ten_percent_owner": 772
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 105,
+        "unique_issuers": 1261,
+        "value_tiers_issuer_days": {
+          "ge_100k": 706,
+          "ge_10k": 2006,
+          "ge_1m": 87
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 6002,
+        "cluster_formations": 2439,
+        "cluster_member_issuer_days": 2439,
+        "filing_lag_days": {
+          "max": 2780,
+          "missing": 0,
+          "n": 6002,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 94,
+          "share_gt_2d": 0.386,
+          "share_gt_30d": 0.0328,
+          "share_le_2d": 0.6135
+        },
+        "issuer_days": 2439,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 970,
+          "DIRECTOR": 1016,
+          "OTHER_OFFICER": 453
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 970,
+          "any_director": 2051,
+          "any_other_officer": 922,
+          "any_ten_percent_owner": 281
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 121,
+        "unique_issuers": 1250,
+        "value_tiers_issuer_days": {
+          "ge_100k": 817,
+          "ge_10k": 1988,
+          "ge_1m": 165
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 15514,
+        "cluster_formations": 2397,
+        "cluster_member_issuer_days": 3766,
+        "filing_lag_days": {
+          "max": 5219,
+          "missing": 0,
+          "n": 15514,
+          "negative": 10,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 181,
+          "share_gt_2d": 0.3528,
+          "share_gt_30d": 0.0309,
+          "share_le_2d": 0.6466
+        },
+        "issuer_days": 11026,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3402,
+          "DIRECTOR": 5500,
+          "OTHER_OFFICER": 2124
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3402,
+          "any_director": 9078,
+          "any_other_officer": 2694,
+          "any_ten_percent_owner": 1782
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 325,
+        "unique_issuers": 2839,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2388,
+          "ge_10k": 7257,
+          "ge_1m": 436
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 6044,
+        "cluster_formations": 2397,
+        "cluster_member_issuer_days": 2397,
+        "filing_lag_days": {
+          "max": 2780,
+          "missing": 0,
+          "n": 6044,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 91,
+          "share_gt_2d": 0.3868,
+          "share_gt_30d": 0.0321,
+          "share_le_2d": 0.6127
+        },
+        "issuer_days": 2397,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 964,
+          "DIRECTOR": 982,
+          "OTHER_OFFICER": 451
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 964,
+          "any_director": 2027,
+          "any_other_officer": 935,
+          "any_ten_percent_owner": 287
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 125,
+        "unique_issuers": 1216,
+        "value_tiers_issuer_days": {
+          "ge_100k": 809,
+          "ge_10k": 1948,
+          "ge_1m": 162
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2013": {
+      "ALL_P": {
+        "accessions": 15893,
+        "cluster_formations": 2589,
+        "cluster_member_issuer_days": 4349,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 15893,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 267,
+          "share_gt_2d": 0.3698,
+          "share_gt_30d": 0.0364,
+          "share_le_2d": 0.63
+        },
+        "issuer_days": 10869,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2739,
+          "DIRECTOR": 4809,
+          "OTHER": 439,
+          "OTHER_OFFICER": 1607,
+          "TEN_PERCENT_OWNER": 1275
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2739,
+          "any_director": 7649,
+          "any_other_officer": 2104,
+          "any_ten_percent_owner": 2795
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 380,
+        "unique_issuers": 2932,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3066,
+          "ge_10k": 7576,
+          "ge_1m": 826
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3043,
+        "cluster_formations": 341,
+        "cluster_member_issuer_days": 406,
+        "filing_lag_days": {
+          "max": 3966,
+          "missing": 0,
+          "n": 3043,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 193,
+          "share_gt_2d": 0.3503,
+          "share_gt_30d": 0.0315,
+          "share_le_2d": 0.6497
+        },
+        "issuer_days": 2739,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2739
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2739,
+          "any_director": 2049,
+          "any_other_officer": 8,
+          "any_ten_percent_owner": 612
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 109,
+        "unique_issuers": 1087,
+        "value_tiers_issuer_days": {
+          "ge_100k": 671,
+          "ge_10k": 1676,
+          "ge_1m": 79
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5537,
+        "cluster_formations": 2074,
+        "cluster_member_issuer_days": 2074,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 5537,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 111,
+          "share_gt_2d": 0.3937,
+          "share_gt_30d": 0.0352,
+          "share_le_2d": 0.6063
+        },
+        "issuer_days": 2074,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 841,
+          "DIRECTOR": 866,
+          "OTHER_OFFICER": 367
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 841,
+          "any_director": 1769,
+          "any_other_officer": 776,
+          "any_ten_percent_owner": 236
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 112,
+        "unique_issuers": 1109,
+        "value_tiers_issuer_days": {
+          "ge_100k": 787,
+          "ge_10k": 1693,
+          "ge_1m": 194
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 13258,
+        "cluster_formations": 2050,
+        "cluster_member_issuer_days": 3065,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 13258,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 232,
+          "share_gt_2d": 0.3662,
+          "share_gt_30d": 0.0354,
+          "share_le_2d": 0.6337
+        },
+        "issuer_days": 9155,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2739,
+          "DIRECTOR": 4809,
+          "OTHER_OFFICER": 1607
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2739,
+          "any_director": 7649,
+          "any_other_officer": 2104,
+          "any_ten_percent_owner": 1447
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 317,
+        "unique_issuers": 2645,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2253,
+          "ge_10k": 6254,
+          "ge_1m": 426
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5593,
+        "cluster_formations": 2050,
+        "cluster_member_issuer_days": 2050,
+        "filing_lag_days": {
+          "max": 730486,
+          "missing": 0,
+          "n": 5593,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 7,
+          "p99": 99,
+          "share_gt_2d": 0.3964,
+          "share_gt_30d": 0.0347,
+          "share_le_2d": 0.6036
+        },
+        "issuer_days": 2050,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 838,
+          "DIRECTOR": 845,
+          "OTHER_OFFICER": 367
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 838,
+          "any_director": 1755,
+          "any_other_officer": 784,
+          "any_ten_percent_owner": 234
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 115,
+        "unique_issuers": 1070,
+        "value_tiers_issuer_days": {
+          "ge_100k": 774,
+          "ge_10k": 1677,
+          "ge_1m": 185
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2014": {
+      "ALL_P": {
+        "accessions": 17412,
+        "cluster_formations": 2792,
+        "cluster_member_issuer_days": 4790,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 17412,
+          "negative": 4,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 301,
+          "share_gt_2d": 0.3455,
+          "share_gt_30d": 0.0314,
+          "share_le_2d": 0.6543
+        },
+        "issuer_days": 11641,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3317,
+          "DIRECTOR": 5025,
+          "OTHER": 386,
+          "OTHER_OFFICER": 1683,
+          "TEN_PERCENT_OWNER": 1230
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3317,
+          "any_director": 8306,
+          "any_other_officer": 2240,
+          "any_ten_percent_owner": 2959
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 312,
+        "unique_issuers": 3043,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3806,
+          "ge_10k": 8657,
+          "ge_1m": 992
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3698,
+        "cluster_formations": 405,
+        "cluster_member_issuer_days": 477,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 3698,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 1,
+          "p75": 3,
+          "p90": 5,
+          "p99": 247,
+          "share_gt_2d": 0.3188,
+          "share_gt_30d": 0.0243,
+          "share_le_2d": 0.6809
+        },
+        "issuer_days": 3317,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3317
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3317,
+          "any_director": 2492,
+          "any_other_officer": 4,
+          "any_ten_percent_owner": 859
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 79,
+        "unique_issuers": 1318,
+        "value_tiers_issuer_days": {
+          "ge_100k": 928,
+          "ge_10k": 2229,
+          "ge_1m": 131
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5894,
+        "cluster_formations": 2321,
+        "cluster_member_issuer_days": 2321,
+        "filing_lag_days": {
+          "max": 4748,
+          "missing": 0,
+          "n": 5894,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 134,
+          "share_gt_2d": 0.3789,
+          "share_gt_30d": 0.0258,
+          "share_le_2d": 0.621
+        },
+        "issuer_days": 2321,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 975,
+          "DIRECTOR": 959,
+          "OTHER_OFFICER": 387
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 975,
+          "any_director": 1990,
+          "any_other_officer": 851,
+          "any_ten_percent_owner": 274
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 97,
+        "unique_issuers": 1283,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1029,
+          "ge_10k": 1964,
+          "ge_1m": 248
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 14378,
+        "cluster_formations": 2324,
+        "cluster_member_issuer_days": 3580,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 14378,
+          "negative": 4,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 236,
+          "share_gt_2d": 0.3434,
+          "share_gt_30d": 0.0282,
+          "share_le_2d": 0.6563
+        },
+        "issuer_days": 10025,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3317,
+          "DIRECTOR": 5025,
+          "OTHER_OFFICER": 1683
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3317,
+          "any_director": 8306,
+          "any_other_officer": 2240,
+          "any_ten_percent_owner": 1655
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 242,
+        "unique_issuers": 2779,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2838,
+          "ge_10k": 7285,
+          "ge_1m": 500
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5989,
+        "cluster_formations": 2324,
+        "cluster_member_issuer_days": 2324,
+        "filing_lag_days": {
+          "max": 4748,
+          "missing": 0,
+          "n": 5989,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 134,
+          "share_gt_2d": 0.3795,
+          "share_gt_30d": 0.0252,
+          "share_le_2d": 0.6203
+        },
+        "issuer_days": 2324,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 981,
+          "DIRECTOR": 953,
+          "OTHER_OFFICER": 390
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 981,
+          "any_director": 1990,
+          "any_other_officer": 864,
+          "any_ten_percent_owner": 278
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 93,
+        "unique_issuers": 1245,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1014,
+          "ge_10k": 1943,
+          "ge_1m": 248
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2015": {
+      "ALL_P": {
+        "accessions": 20291,
+        "cluster_formations": 3292,
+        "cluster_member_issuer_days": 6418,
+        "filing_lag_days": {
+          "max": 8195,
+          "missing": 0,
+          "n": 20291,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 216,
+          "share_gt_2d": 0.348,
+          "share_gt_30d": 0.0289,
+          "share_le_2d": 0.6518
+        },
+        "issuer_days": 14326,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3994,
+          "DIRECTOR": 5667,
+          "OTHER": 384,
+          "OTHER_OFFICER": 2240,
+          "TEN_PERCENT_OWNER": 2041
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3994,
+          "any_director": 9853,
+          "any_other_officer": 2970,
+          "any_ten_percent_owner": 4258
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 370,
+        "unique_issuers": 3198,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4664,
+          "ge_10k": 10837,
+          "ge_1m": 1137
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 4428,
+        "cluster_formations": 460,
+        "cluster_member_issuer_days": 582,
+        "filing_lag_days": {
+          "max": 8195,
+          "missing": 0,
+          "n": 4428,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 177,
+          "share_gt_2d": 0.3308,
+          "share_gt_30d": 0.0262,
+          "share_le_2d": 0.6689
+        },
+        "issuer_days": 3994,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3994
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3994,
+          "any_director": 3027,
+          "any_other_officer": 18,
+          "any_ten_percent_owner": 988
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 85,
+        "unique_issuers": 1426,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1070,
+          "ge_10k": 2673,
+          "ge_1m": 142
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 6152,
+        "cluster_formations": 2620,
+        "cluster_member_issuer_days": 2620,
+        "filing_lag_days": {
+          "max": 5225,
+          "missing": 0,
+          "n": 6152,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 162,
+          "share_gt_2d": 0.3883,
+          "share_gt_30d": 0.0281,
+          "share_le_2d": 0.6115
+        },
+        "issuer_days": 2620,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1104,
+          "DIRECTOR": 1019,
+          "OTHER_OFFICER": 497
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1104,
+          "any_director": 2212,
+          "any_other_officer": 986,
+          "any_ten_percent_owner": 311
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 102,
+        "unique_issuers": 1393,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1200,
+          "ge_10k": 2242,
+          "ge_1m": 266
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 16656,
+        "cluster_formations": 2667,
+        "cluster_member_issuer_days": 4507,
+        "filing_lag_days": {
+          "max": 8195,
+          "missing": 0,
+          "n": 16656,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 188,
+          "share_gt_2d": 0.3433,
+          "share_gt_30d": 0.0266,
+          "share_le_2d": 0.6565
+        },
+        "issuer_days": 11901,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3994,
+          "DIRECTOR": 5667,
+          "OTHER_OFFICER": 2240
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3994,
+          "any_director": 9853,
+          "any_other_officer": 2970,
+          "any_ten_percent_owner": 2090
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 274,
+        "unique_issuers": 2926,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3383,
+          "ge_10k": 8779,
+          "ge_1m": 631
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 6381,
+        "cluster_formations": 2667,
+        "cluster_member_issuer_days": 2667,
+        "filing_lag_days": {
+          "max": 5225,
+          "missing": 0,
+          "n": 6381,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 161,
+          "share_gt_2d": 0.3887,
+          "share_gt_30d": 0.0262,
+          "share_le_2d": 0.6112
+        },
+        "issuer_days": 2667,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1141,
+          "DIRECTOR": 1016,
+          "OTHER_OFFICER": 510
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1141,
+          "any_director": 2253,
+          "any_other_officer": 1034,
+          "any_ten_percent_owner": 333
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 106,
+        "unique_issuers": 1347,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1188,
+          "ge_10k": 2249,
+          "ge_1m": 257
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2016": {
+      "ALL_P": {
+        "accessions": 17405,
+        "cluster_formations": 2782,
+        "cluster_member_issuer_days": 5485,
+        "filing_lag_days": {
+          "max": 2317,
+          "missing": 0,
+          "n": 17405,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 179,
+          "share_gt_2d": 0.3689,
+          "share_gt_30d": 0.0274,
+          "share_le_2d": 0.631
+        },
+        "issuer_days": 12191,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3184,
+          "DIRECTOR": 4997,
+          "OTHER": 241,
+          "OTHER_OFFICER": 1803,
+          "TEN_PERCENT_OWNER": 1966
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3184,
+          "any_director": 8405,
+          "any_other_officer": 2343,
+          "any_ten_percent_owner": 3862
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 317,
+        "unique_issuers": 2930,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4060,
+          "ge_10k": 9155,
+          "ge_1m": 1149
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3570,
+        "cluster_formations": 410,
+        "cluster_member_issuer_days": 479,
+        "filing_lag_days": {
+          "max": 2317,
+          "missing": 0,
+          "n": 3570,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 127,
+          "share_gt_2d": 0.3325,
+          "share_gt_30d": 0.0224,
+          "share_le_2d": 0.6672
+        },
+        "issuer_days": 3184,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3184
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3184,
+          "any_director": 2492,
+          "any_other_officer": 4,
+          "any_ten_percent_owner": 808
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 88,
+        "unique_issuers": 1201,
+        "value_tiers_issuer_days": {
+          "ge_100k": 875,
+          "ge_10k": 2130,
+          "ge_1m": 161
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5296,
+        "cluster_formations": 2162,
+        "cluster_member_issuer_days": 2162,
+        "filing_lag_days": {
+          "max": 2317,
+          "missing": 0,
+          "n": 5296,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 109,
+          "share_gt_2d": 0.3877,
+          "share_gt_30d": 0.0225,
+          "share_le_2d": 0.612
+        },
+        "issuer_days": 2162,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 932,
+          "DIRECTOR": 859,
+          "OTHER_OFFICER": 371
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 932,
+          "any_director": 1826,
+          "any_other_officer": 776,
+          "any_ten_percent_owner": 286
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 87,
+        "unique_issuers": 1199,
+        "value_tiers_issuer_days": {
+          "ge_100k": 988,
+          "ge_10k": 1841,
+          "ge_1m": 267
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 13955,
+        "cluster_formations": 2164,
+        "cluster_member_issuer_days": 3553,
+        "filing_lag_days": {
+          "max": 2317,
+          "missing": 0,
+          "n": 13955,
+          "negative": 3,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 166,
+          "share_gt_2d": 0.3572,
+          "share_gt_30d": 0.0253,
+          "share_le_2d": 0.6426
+        },
+        "issuer_days": 9984,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3184,
+          "DIRECTOR": 4997,
+          "OTHER_OFFICER": 1803
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3184,
+          "any_director": 8405,
+          "any_other_officer": 2343,
+          "any_ten_percent_owner": 1789
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 250,
+        "unique_issuers": 2653,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2846,
+          "ge_10k": 7280,
+          "ge_1m": 649
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5421,
+        "cluster_formations": 2164,
+        "cluster_member_issuer_days": 2164,
+        "filing_lag_days": {
+          "max": 2317,
+          "missing": 0,
+          "n": 5421,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 6,
+          "p99": 139,
+          "share_gt_2d": 0.3839,
+          "share_gt_30d": 0.0234,
+          "share_le_2d": 0.6158
+        },
+        "issuer_days": 2164,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 943,
+          "DIRECTOR": 844,
+          "OTHER_OFFICER": 377
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 943,
+          "any_director": 1849,
+          "any_other_officer": 802,
+          "any_ten_percent_owner": 294
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 86,
+        "unique_issuers": 1159,
+        "value_tiers_issuer_days": {
+          "ge_100k": 976,
+          "ge_10k": 1815,
+          "ge_1m": 261
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2017": {
+      "ALL_P": {
+        "accessions": 14940,
+        "cluster_formations": 2378,
+        "cluster_member_issuer_days": 4315,
+        "filing_lag_days": {
+          "max": 4074,
+          "missing": 0,
+          "n": 14940,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 169,
+          "share_gt_2d": 0.3734,
+          "share_gt_30d": 0.0259,
+          "share_le_2d": 0.6266
+        },
+        "issuer_days": 10525,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2984,
+          "DIRECTOR": 4212,
+          "OTHER": 231,
+          "OTHER_OFFICER": 1415,
+          "TEN_PERCENT_OWNER": 1683
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2984,
+          "any_director": 7139,
+          "any_other_officer": 1902,
+          "any_ten_percent_owner": 3336
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 315,
+        "unique_issuers": 2657,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3808,
+          "ge_10k": 7912,
+          "ge_1m": 1168
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3380,
+        "cluster_formations": 375,
+        "cluster_member_issuer_days": 465,
+        "filing_lag_days": {
+          "max": 1988,
+          "missing": 0,
+          "n": 3380,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 99,
+          "share_gt_2d": 0.3349,
+          "share_gt_30d": 0.0231,
+          "share_le_2d": 0.6651
+        },
+        "issuer_days": 2984,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2984
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2984,
+          "any_director": 2304,
+          "any_other_officer": 1,
+          "any_ten_percent_owner": 723
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 108,
+        "unique_issuers": 1085,
+        "value_tiers_issuer_days": {
+          "ge_100k": 854,
+          "ge_10k": 2037,
+          "ge_1m": 195
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 4842,
+        "cluster_formations": 1895,
+        "cluster_member_issuer_days": 1895,
+        "filing_lag_days": {
+          "max": 2300,
+          "missing": 0,
+          "n": 4842,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 79,
+          "share_gt_2d": 0.4027,
+          "share_gt_30d": 0.0209,
+          "share_le_2d": 0.5973
+        },
+        "issuer_days": 1895,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 870,
+          "DIRECTOR": 708,
+          "OTHER_OFFICER": 317
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 870,
+          "any_director": 1605,
+          "any_other_officer": 707,
+          "any_ten_percent_owner": 238
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 105,
+        "unique_issuers": 1043,
+        "value_tiers_issuer_days": {
+          "ge_100k": 891,
+          "ge_10k": 1618,
+          "ge_1m": 243
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 12139,
+        "cluster_formations": 1875,
+        "cluster_member_issuer_days": 2924,
+        "filing_lag_days": {
+          "max": 4074,
+          "missing": 0,
+          "n": 12139,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 188,
+          "share_gt_2d": 0.3699,
+          "share_gt_30d": 0.0267,
+          "share_le_2d": 0.6301
+        },
+        "issuer_days": 8611,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2984,
+          "DIRECTOR": 4212,
+          "OTHER_OFFICER": 1415
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2984,
+          "any_director": 7139,
+          "any_other_officer": 1902,
+          "any_ten_percent_owner": 1561
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 245,
+        "unique_issuers": 2408,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2561,
+          "ge_10k": 6207,
+          "ge_1m": 593
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 4889,
+        "cluster_formations": 1875,
+        "cluster_member_issuer_days": 1875,
+        "filing_lag_days": {
+          "max": 2300,
+          "missing": 0,
+          "n": 4889,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 79,
+          "share_gt_2d": 0.4029,
+          "share_gt_30d": 0.02,
+          "share_le_2d": 0.5971
+        },
+        "issuer_days": 1875,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 865,
+          "DIRECTOR": 691,
+          "OTHER_OFFICER": 319
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 865,
+          "any_director": 1598,
+          "any_other_officer": 723,
+          "any_ten_percent_owner": 244
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 106,
+        "unique_issuers": 1011,
+        "value_tiers_issuer_days": {
+          "ge_100k": 870,
+          "ge_10k": 1584,
+          "ge_1m": 234
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2018": {
+      "ALL_P": {
+        "accessions": 18966,
+        "cluster_formations": 2759,
+        "cluster_member_issuer_days": 5103,
+        "filing_lag_days": {
+          "max": 6209,
+          "missing": 0,
+          "n": 18966,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 148,
+          "share_gt_2d": 0.3726,
+          "share_gt_30d": 0.0226,
+          "share_le_2d": 0.6273
+        },
+        "issuer_days": 11821,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3328,
+          "DIRECTOR": 4736,
+          "OTHER": 270,
+          "OTHER_OFFICER": 1597,
+          "TEN_PERCENT_OWNER": 1890
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3328,
+          "any_director": 7989,
+          "any_other_officer": 2206,
+          "any_ten_percent_owner": 3630
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 325,
+        "unique_issuers": 2869,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4615,
+          "ge_10k": 9223,
+          "ge_1m": 1419
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3729,
+        "cluster_formations": 452,
+        "cluster_member_issuer_days": 583,
+        "filing_lag_days": {
+          "max": 3326,
+          "missing": 0,
+          "n": 3729,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 85,
+          "share_gt_2d": 0.34,
+          "share_gt_30d": 0.0177,
+          "share_le_2d": 0.6597
+        },
+        "issuer_days": 3328,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3328
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3328,
+          "any_director": 2500,
+          "any_other_officer": 39,
+          "any_ten_percent_owner": 840
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 114,
+        "unique_issuers": 1226,
+        "value_tiers_issuer_days": {
+          "ge_100k": 911,
+          "ge_10k": 2330,
+          "ge_1m": 159
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5314,
+        "cluster_formations": 2183,
+        "cluster_member_issuer_days": 2183,
+        "filing_lag_days": {
+          "max": 2458,
+          "missing": 0,
+          "n": 5314,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 98,
+          "share_gt_2d": 0.3673,
+          "share_gt_30d": 0.0196,
+          "share_le_2d": 0.6327
+        },
+        "issuer_days": 2183,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 984,
+          "DIRECTOR": 873,
+          "OTHER_OFFICER": 326
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 984,
+          "any_director": 1837,
+          "any_other_officer": 791,
+          "any_ten_percent_owner": 290
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 124,
+        "unique_issuers": 1203,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1101,
+          "ge_10k": 1890,
+          "ge_1m": 317
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 13535,
+        "cluster_formations": 2175,
+        "cluster_member_issuer_days": 3506,
+        "filing_lag_days": {
+          "max": 6209,
+          "missing": 0,
+          "n": 13535,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 168,
+          "share_gt_2d": 0.357,
+          "share_gt_30d": 0.0247,
+          "share_le_2d": 0.6429
+        },
+        "issuer_days": 9661,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3328,
+          "DIRECTOR": 4736,
+          "OTHER_OFFICER": 1597
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3328,
+          "any_director": 7989,
+          "any_other_officer": 2206,
+          "any_ten_percent_owner": 1661
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 247,
+        "unique_issuers": 2604,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3207,
+          "ge_10k": 7277,
+          "ge_1m": 768
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5390,
+        "cluster_formations": 2175,
+        "cluster_member_issuer_days": 2175,
+        "filing_lag_days": {
+          "max": 2458,
+          "missing": 0,
+          "n": 5390,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 98,
+          "share_gt_2d": 0.3709,
+          "share_gt_30d": 0.0195,
+          "share_le_2d": 0.6291
+        },
+        "issuer_days": 2175,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1001,
+          "DIRECTOR": 847,
+          "OTHER_OFFICER": 327
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1001,
+          "any_director": 1848,
+          "any_other_officer": 816,
+          "any_ten_percent_owner": 302
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 122,
+        "unique_issuers": 1167,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1087,
+          "ge_10k": 1867,
+          "ge_1m": 317
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2019": {
+      "ALL_P": {
+        "accessions": 17155,
+        "cluster_formations": 2646,
+        "cluster_member_issuer_days": 4868,
+        "filing_lag_days": {
+          "max": 5749,
+          "missing": 0,
+          "n": 17155,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 175,
+          "share_gt_2d": 0.3415,
+          "share_gt_30d": 0.0244,
+          "share_le_2d": 0.6585
+        },
+        "issuer_days": 11166,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3265,
+          "DIRECTOR": 4460,
+          "OTHER": 163,
+          "OTHER_OFFICER": 1546,
+          "TEN_PERCENT_OWNER": 1732
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3265,
+          "any_director": 7689,
+          "any_other_officer": 2015,
+          "any_ten_percent_owner": 3404
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 318,
+        "unique_issuers": 2724,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4101,
+          "ge_10k": 8550,
+          "ge_1m": 1245
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3651,
+        "cluster_formations": 407,
+        "cluster_member_issuer_days": 479,
+        "filing_lag_days": {
+          "max": 1883,
+          "missing": 0,
+          "n": 3651,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 5,
+          "p99": 175,
+          "share_gt_2d": 0.3416,
+          "share_gt_30d": 0.0307,
+          "share_le_2d": 0.6584
+        },
+        "issuer_days": 3265,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3265
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3265,
+          "any_director": 2480,
+          "any_other_officer": 10,
+          "any_ten_percent_owner": 836
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 101,
+        "unique_issuers": 1191,
+        "value_tiers_issuer_days": {
+          "ge_100k": 890,
+          "ge_10k": 2230,
+          "ge_1m": 172
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5034,
+        "cluster_formations": 2155,
+        "cluster_member_issuer_days": 2155,
+        "filing_lag_days": {
+          "max": 3656,
+          "missing": 0,
+          "n": 5034,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 98,
+          "share_gt_2d": 0.3339,
+          "share_gt_30d": 0.0191,
+          "share_le_2d": 0.6661
+        },
+        "issuer_days": 2155,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 945,
+          "DIRECTOR": 853,
+          "OTHER_OFFICER": 357
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 945,
+          "any_director": 1829,
+          "any_other_officer": 745,
+          "any_ten_percent_owner": 277
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 100,
+        "unique_issuers": 1176,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1093,
+          "ge_10k": 1864,
+          "ge_1m": 306
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 12849,
+        "cluster_formations": 2164,
+        "cluster_member_issuer_days": 3556,
+        "filing_lag_days": {
+          "max": 3656,
+          "missing": 0,
+          "n": 12849,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 175,
+          "share_gt_2d": 0.3385,
+          "share_gt_30d": 0.0258,
+          "share_le_2d": 0.6615
+        },
+        "issuer_days": 9271,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3265,
+          "DIRECTOR": 4460,
+          "OTHER_OFFICER": 1546
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3265,
+          "any_director": 7689,
+          "any_other_officer": 2015,
+          "any_ten_percent_owner": 1577
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 245,
+        "unique_issuers": 2506,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2954,
+          "ge_10k": 6858,
+          "ge_1m": 690
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5121,
+        "cluster_formations": 2164,
+        "cluster_member_issuer_days": 2164,
+        "filing_lag_days": {
+          "max": 3656,
+          "missing": 0,
+          "n": 5121,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 97,
+          "share_gt_2d": 0.3339,
+          "share_gt_30d": 0.0187,
+          "share_le_2d": 0.6661
+        },
+        "issuer_days": 2164,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 965,
+          "DIRECTOR": 834,
+          "OTHER_OFFICER": 365
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 965,
+          "any_director": 1839,
+          "any_other_officer": 768,
+          "any_ten_percent_owner": 285
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 100,
+        "unique_issuers": 1147,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1081,
+          "ge_10k": 1836,
+          "ge_1m": 300
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2020": {
+      "ALL_P": {
+        "accessions": 18348,
+        "cluster_formations": 3225,
+        "cluster_member_issuer_days": 6429,
+        "filing_lag_days": {
+          "max": 6578,
+          "missing": 0,
+          "n": 18348,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 139,
+          "share_gt_2d": 0.3346,
+          "share_gt_30d": 0.0223,
+          "share_le_2d": 0.6654
+        },
+        "issuer_days": 13438,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3890,
+          "DIRECTOR": 5642,
+          "OTHER": 301,
+          "OTHER_OFFICER": 1958,
+          "TEN_PERCENT_OWNER": 1647
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3890,
+          "any_director": 9549,
+          "any_other_officer": 2582,
+          "any_ten_percent_owner": 3496
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 353,
+        "unique_issuers": 3028,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4856,
+          "ge_10k": 10436,
+          "ge_1m": 1468
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 4284,
+        "cluster_formations": 468,
+        "cluster_member_issuer_days": 603,
+        "filing_lag_days": {
+          "max": 3764,
+          "missing": 0,
+          "n": 4284,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 90,
+          "share_gt_2d": 0.3128,
+          "share_gt_30d": 0.0159,
+          "share_le_2d": 0.6872
+        },
+        "issuer_days": 3890,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3890
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3890,
+          "any_director": 2889,
+          "any_other_officer": 10,
+          "any_ten_percent_owner": 786
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 115,
+        "unique_issuers": 1378,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1042,
+          "ge_10k": 2641,
+          "ge_1m": 202
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 5750,
+        "cluster_formations": 2601,
+        "cluster_member_issuer_days": 2601,
+        "filing_lag_days": {
+          "max": 4019,
+          "missing": 0,
+          "n": 5750,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 92,
+          "share_gt_2d": 0.3202,
+          "share_gt_30d": 0.0179,
+          "share_le_2d": 0.6798
+        },
+        "issuer_days": 2601,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1090,
+          "DIRECTOR": 1073,
+          "OTHER_OFFICER": 438
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1090,
+          "any_director": 2243,
+          "any_other_officer": 856,
+          "any_ten_percent_owner": 326
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 96,
+        "unique_issuers": 1484,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1386,
+          "ge_10k": 2322,
+          "ge_1m": 360
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 15793,
+        "cluster_formations": 2670,
+        "cluster_member_issuer_days": 4990,
+        "filing_lag_days": {
+          "max": 6578,
+          "missing": 0,
+          "n": 15793,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 120,
+          "share_gt_2d": 0.3232,
+          "share_gt_30d": 0.0207,
+          "share_le_2d": 0.6768
+        },
+        "issuer_days": 11490,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3890,
+          "DIRECTOR": 5642,
+          "OTHER_OFFICER": 1958
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3890,
+          "any_director": 9549,
+          "any_other_officer": 2582,
+          "any_ten_percent_owner": 1741
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 278,
+        "unique_issuers": 2765,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3630,
+          "ge_10k": 8772,
+          "ge_1m": 814
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 5956,
+        "cluster_formations": 2670,
+        "cluster_member_issuer_days": 2670,
+        "filing_lag_days": {
+          "max": 4019,
+          "missing": 0,
+          "n": 5956,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 88,
+          "share_gt_2d": 0.3219,
+          "share_gt_30d": 0.0173,
+          "share_le_2d": 0.6781
+        },
+        "issuer_days": 2670,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1127,
+          "DIRECTOR": 1093,
+          "OTHER_OFFICER": 450
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1127,
+          "any_director": 2313,
+          "any_other_officer": 890,
+          "any_ten_percent_owner": 326
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 97,
+        "unique_issuers": 1452,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1391,
+          "ge_10k": 2364,
+          "ge_1m": 367
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2021": {
+      "ALL_P": {
+        "accessions": 14344,
+        "cluster_formations": 2556,
+        "cluster_member_issuer_days": 4439,
+        "filing_lag_days": {
+          "max": 5288,
+          "missing": 0,
+          "n": 14344,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 274,
+          "share_gt_2d": 0.3479,
+          "share_gt_30d": 0.0317,
+          "share_le_2d": 0.652
+        },
+        "issuer_days": 10336,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3023,
+          "DIRECTOR": 4479,
+          "OTHER": 271,
+          "OTHER_OFFICER": 1253,
+          "TEN_PERCENT_OWNER": 1310
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3023,
+          "any_director": 7428,
+          "any_other_officer": 1738,
+          "any_ten_percent_owner": 2872
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 369,
+        "unique_issuers": 2768,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4048,
+          "ge_10k": 8088,
+          "ge_1m": 1450
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3356,
+        "cluster_formations": 360,
+        "cluster_member_issuer_days": 406,
+        "filing_lag_days": {
+          "max": 1273,
+          "missing": 0,
+          "n": 3356,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 147,
+          "share_gt_2d": 0.3218,
+          "share_gt_30d": 0.0238,
+          "share_le_2d": 0.6782
+        },
+        "issuer_days": 3023,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3023
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3023,
+          "any_director": 2346,
+          "any_other_officer": 13,
+          "any_ten_percent_owner": 529
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 93,
+        "unique_issuers": 1148,
+        "value_tiers_issuer_days": {
+          "ge_100k": 891,
+          "ge_10k": 2014,
+          "ge_1m": 233
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 4804,
+        "cluster_formations": 1973,
+        "cluster_member_issuer_days": 1973,
+        "filing_lag_days": {
+          "max": 2192,
+          "missing": 0,
+          "n": 4804,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 175,
+          "share_gt_2d": 0.3547,
+          "share_gt_30d": 0.0308,
+          "share_le_2d": 0.6453
+        },
+        "issuer_days": 1973,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 878,
+          "DIRECTOR": 817,
+          "OTHER_OFFICER": 278
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 878,
+          "any_director": 1731,
+          "any_other_officer": 642,
+          "any_ten_percent_owner": 304
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 97,
+        "unique_issuers": 1133,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1055,
+          "ge_10k": 1733,
+          "ge_1m": 390
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 12115,
+        "cluster_formations": 1988,
+        "cluster_member_issuer_days": 3041,
+        "filing_lag_days": {
+          "max": 5288,
+          "missing": 0,
+          "n": 12115,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 241,
+          "share_gt_2d": 0.3381,
+          "share_gt_30d": 0.0315,
+          "share_le_2d": 0.6619
+        },
+        "issuer_days": 8755,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3023,
+          "DIRECTOR": 4479,
+          "OTHER_OFFICER": 1253
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3023,
+          "any_director": 7428,
+          "any_other_officer": 1738,
+          "any_ten_percent_owner": 1474
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 239,
+        "unique_issuers": 2524,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2961,
+          "ge_10k": 6703,
+          "ge_1m": 824
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 4901,
+        "cluster_formations": 1988,
+        "cluster_member_issuer_days": 1988,
+        "filing_lag_days": {
+          "max": 2192,
+          "missing": 0,
+          "n": 4901,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 153,
+          "share_gt_2d": 0.3469,
+          "share_gt_30d": 0.0296,
+          "share_le_2d": 0.6531
+        },
+        "issuer_days": 1988,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 912,
+          "DIRECTOR": 803,
+          "OTHER_OFFICER": 273
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 912,
+          "any_director": 1752,
+          "any_other_officer": 652,
+          "any_ten_percent_owner": 309
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 99,
+        "unique_issuers": 1109,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1048,
+          "ge_10k": 1738,
+          "ge_1m": 395
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2022": {
+      "ALL_P": {
+        "accessions": 16904,
+        "cluster_formations": 2810,
+        "cluster_member_issuer_days": 5822,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 16904,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 155,
+          "share_gt_2d": 0.3542,
+          "share_gt_30d": 0.0234,
+          "share_le_2d": 0.6457
+        },
+        "issuer_days": 12977,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3891,
+          "DIRECTOR": 5367,
+          "OTHER": 329,
+          "OTHER_OFFICER": 1524,
+          "TEN_PERCENT_OWNER": 1866
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3891,
+          "any_director": 9223,
+          "any_other_officer": 2035,
+          "any_ten_percent_owner": 4089
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 343,
+        "unique_issuers": 2908,
+        "value_tiers_issuer_days": {
+          "ge_100k": 5071,
+          "ge_10k": 10229,
+          "ge_1m": 1513
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 4276,
+        "cluster_formations": 436,
+        "cluster_member_issuer_days": 539,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 4276,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 97,
+          "share_gt_2d": 0.322,
+          "share_gt_30d": 0.0164,
+          "share_le_2d": 0.678
+        },
+        "issuer_days": 3891,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3891
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3891,
+          "any_director": 3023,
+          "any_other_officer": 6,
+          "any_ten_percent_owner": 798
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 120,
+        "unique_issuers": 1301,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1094,
+          "ge_10k": 2682,
+          "ge_1m": 215
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 4705,
+        "cluster_formations": 2166,
+        "cluster_member_issuer_days": 2166,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 4705,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 172,
+          "share_gt_2d": 0.3841,
+          "share_gt_30d": 0.0306,
+          "share_le_2d": 0.6159
+        },
+        "issuer_days": 2166,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 968,
+          "DIRECTOR": 878,
+          "OTHER_OFFICER": 320
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 968,
+          "any_director": 1875,
+          "any_other_officer": 705,
+          "any_ten_percent_owner": 321
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 89,
+        "unique_issuers": 1197,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1141,
+          "ge_10k": 1957,
+          "ge_1m": 354
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 14136,
+        "cluster_formations": 2162,
+        "cluster_member_issuer_days": 3866,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 14136,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 168,
+          "share_gt_2d": 0.3479,
+          "share_gt_30d": 0.0245,
+          "share_le_2d": 0.652
+        },
+        "issuer_days": 10782,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3891,
+          "DIRECTOR": 5367,
+          "OTHER_OFFICER": 1524
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3891,
+          "any_director": 9223,
+          "any_other_officer": 2035,
+          "any_ten_percent_owner": 2130
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 236,
+        "unique_issuers": 2662,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3640,
+          "ge_10k": 8298,
+          "ge_1m": 857
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 4809,
+        "cluster_formations": 2162,
+        "cluster_member_issuer_days": 2162,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 4809,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 169,
+          "share_gt_2d": 0.3866,
+          "share_gt_30d": 0.0299,
+          "share_le_2d": 0.6134
+        },
+        "issuer_days": 2162,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 990,
+          "DIRECTOR": 858,
+          "OTHER_OFFICER": 314
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 990,
+          "any_director": 1886,
+          "any_other_officer": 713,
+          "any_ten_percent_owner": 342
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 87,
+        "unique_issuers": 1165,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1122,
+          "ge_10k": 1939,
+          "ge_1m": 349
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2023": {
+      "ALL_P": {
+        "accessions": 15218,
+        "cluster_formations": 2702,
+        "cluster_member_issuer_days": 5529,
+        "filing_lag_days": {
+          "max": 4789,
+          "missing": 0,
+          "n": 15218,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 258,
+          "share_gt_2d": 0.3527,
+          "share_gt_30d": 0.0322,
+          "share_le_2d": 0.6473
+        },
+        "issuer_days": 11824,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3498,
+          "DIRECTOR": 4690,
+          "OTHER": 269,
+          "OTHER_OFFICER": 1398,
+          "TEN_PERCENT_OWNER": 1969
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3498,
+          "any_director": 8105,
+          "any_other_officer": 1795,
+          "any_ten_percent_owner": 3684
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 361,
+        "unique_issuers": 2632,
+        "value_tiers_issuer_days": {
+          "ge_100k": 4103,
+          "ge_10k": 8877,
+          "ge_1m": 1251
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3825,
+        "cluster_formations": 356,
+        "cluster_member_issuer_days": 426,
+        "filing_lag_days": {
+          "max": 2344,
+          "missing": 0,
+          "n": 3825,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 191,
+          "share_gt_2d": 0.343,
+          "share_gt_30d": 0.0429,
+          "share_le_2d": 0.657
+        },
+        "issuer_days": 3498,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3498
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3498,
+          "any_director": 2701,
+          "any_other_officer": 1,
+          "any_ten_percent_owner": 740
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 101,
+        "unique_issuers": 1193,
+        "value_tiers_issuer_days": {
+          "ge_100k": 906,
+          "ge_10k": 2199,
+          "ge_1m": 206
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 4195,
+        "cluster_formations": 2009,
+        "cluster_member_issuer_days": 2009,
+        "filing_lag_days": {
+          "max": 2471,
+          "missing": 0,
+          "n": 4195,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 65,
+          "share_gt_2d": 0.3595,
+          "share_gt_30d": 0.0191,
+          "share_le_2d": 0.6405
+        },
+        "issuer_days": 2009,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 837,
+          "DIRECTOR": 847,
+          "OTHER_OFFICER": 325
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 837,
+          "any_director": 1736,
+          "any_other_officer": 635,
+          "any_ten_percent_owner": 294
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 92,
+        "unique_issuers": 1111,
+        "value_tiers_issuer_days": {
+          "ge_100k": 981,
+          "ge_10k": 1772,
+          "ge_1m": 258
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 12488,
+        "cluster_formations": 2023,
+        "cluster_member_issuer_days": 3578,
+        "filing_lag_days": {
+          "max": 4789,
+          "missing": 0,
+          "n": 12488,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 258,
+          "share_gt_2d": 0.3501,
+          "share_gt_30d": 0.031,
+          "share_le_2d": 0.6499
+        },
+        "issuer_days": 9586,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 3498,
+          "DIRECTOR": 4690,
+          "OTHER_OFFICER": 1398
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 3498,
+          "any_director": 8105,
+          "any_other_officer": 1795,
+          "any_ten_percent_owner": 1646
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 245,
+        "unique_issuers": 2374,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2819,
+          "ge_10k": 6989,
+          "ge_1m": 663
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 4269,
+        "cluster_formations": 2023,
+        "cluster_member_issuer_days": 2023,
+        "filing_lag_days": {
+          "max": 2471,
+          "missing": 0,
+          "n": 4269,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 65,
+          "share_gt_2d": 0.3624,
+          "share_gt_30d": 0.0187,
+          "share_le_2d": 0.6376
+        },
+        "issuer_days": 2023,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 858,
+          "DIRECTOR": 851,
+          "OTHER_OFFICER": 314
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 858,
+          "any_director": 1757,
+          "any_other_officer": 634,
+          "any_ten_percent_owner": 300
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 89,
+        "unique_issuers": 1088,
+        "value_tiers_issuer_days": {
+          "ge_100k": 969,
+          "ge_10k": 1778,
+          "ge_1m": 256
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2024": {
+      "ALL_P": {
+        "accessions": 12061,
+        "cluster_formations": 2222,
+        "cluster_member_issuer_days": 4285,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 12061,
+          "negative": 5,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 317,
+          "share_gt_2d": 0.3664,
+          "share_gt_30d": 0.0303,
+          "share_le_2d": 0.6332
+        },
+        "issuer_days": 9530,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2717,
+          "DIRECTOR": 3627,
+          "OTHER": 280,
+          "OTHER_OFFICER": 1040,
+          "TEN_PERCENT_OWNER": 1866
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2717,
+          "any_director": 6227,
+          "any_other_officer": 1393,
+          "any_ten_percent_owner": 3222
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 446,
+        "unique_issuers": 2403,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3623,
+          "ge_10k": 7035,
+          "ge_1m": 1178
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 2978,
+        "cluster_formations": 308,
+        "cluster_member_issuer_days": 363,
+        "filing_lag_days": {
+          "max": 1811,
+          "missing": 0,
+          "n": 2978,
+          "negative": 2,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 146,
+          "share_gt_2d": 0.3522,
+          "share_gt_30d": 0.0262,
+          "share_le_2d": 0.6471
+        },
+        "issuer_days": 2717,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2717
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2717,
+          "any_director": 2104,
+          "any_other_officer": 6,
+          "any_ten_percent_owner": 612
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 95,
+        "unique_issuers": 1030,
+        "value_tiers_issuer_days": {
+          "ge_100k": 749,
+          "ge_10k": 1677,
+          "ge_1m": 160
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 3362,
+        "cluster_formations": 1555,
+        "cluster_member_issuer_days": 1555,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 3362,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 90,
+          "share_gt_2d": 0.387,
+          "share_gt_30d": 0.0235,
+          "share_le_2d": 0.613
+        },
+        "issuer_days": 1555,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 718,
+          "DIRECTOR": 606,
+          "OTHER_OFFICER": 231
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 718,
+          "any_director": 1319,
+          "any_other_officer": 514,
+          "any_ten_percent_owner": 218
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 106,
+        "unique_issuers": 900,
+        "value_tiers_issuer_days": {
+          "ge_100k": 779,
+          "ge_10k": 1352,
+          "ge_1m": 233
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 9577,
+        "cluster_formations": 1542,
+        "cluster_member_issuer_days": 2512,
+        "filing_lag_days": {
+          "max": 730485,
+          "missing": 0,
+          "n": 9577,
+          "negative": 5,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 252,
+          "share_gt_2d": 0.3615,
+          "share_gt_30d": 0.0284,
+          "share_le_2d": 0.638
+        },
+        "issuer_days": 7384,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2717,
+          "DIRECTOR": 3627,
+          "OTHER_OFFICER": 1040
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2717,
+          "any_director": 6227,
+          "any_other_officer": 1393,
+          "any_ten_percent_owner": 1301
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 270,
+        "unique_issuers": 2129,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2201,
+          "ge_10k": 5161,
+          "ge_1m": 521
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 3390,
+        "cluster_formations": 1542,
+        "cluster_member_issuer_days": 1542,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 3390,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 90,
+          "share_gt_2d": 0.39,
+          "share_gt_30d": 0.0236,
+          "share_le_2d": 0.61
+        },
+        "issuer_days": 1542,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 723,
+          "DIRECTOR": 589,
+          "OTHER_OFFICER": 230
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 723,
+          "any_director": 1321,
+          "any_other_officer": 518,
+          "any_ten_percent_owner": 221
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 95,
+        "unique_issuers": 867,
+        "value_tiers_issuer_days": {
+          "ge_100k": 756,
+          "ge_10k": 1337,
+          "ge_1m": 225
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2025": {
+      "ALL_P": {
+        "accessions": 12130,
+        "cluster_formations": 2200,
+        "cluster_member_issuer_days": 3901,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 12130,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 239,
+          "share_gt_2d": 0.3589,
+          "share_gt_30d": 0.0294,
+          "share_le_2d": 0.6411
+        },
+        "issuer_days": 9653,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2754,
+          "DIRECTOR": 3648,
+          "OTHER": 329,
+          "OTHER_OFFICER": 1340,
+          "TEN_PERCENT_OWNER": 1582
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2754,
+          "any_director": 6281,
+          "any_other_officer": 1648,
+          "any_ten_percent_owner": 3177
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 523,
+        "unique_issuers": 2490,
+        "value_tiers_issuer_days": {
+          "ge_100k": 3891,
+          "ge_10k": 7314,
+          "ge_1m": 1195
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 3013,
+        "cluster_formations": 343,
+        "cluster_member_issuer_days": 416,
+        "filing_lag_days": {
+          "max": 748,
+          "missing": 0,
+          "n": 3013,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 189,
+          "share_gt_2d": 0.3233,
+          "share_gt_30d": 0.0249,
+          "share_le_2d": 0.6767
+        },
+        "issuer_days": 2754,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2754
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2754,
+          "any_director": 2033,
+          "any_other_officer": 8,
+          "any_ten_percent_owner": 681
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 91,
+        "unique_issuers": 1073,
+        "value_tiers_issuer_days": {
+          "ge_100k": 901,
+          "ge_10k": 1885,
+          "ge_1m": 188
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 3502,
+        "cluster_formations": 1673,
+        "cluster_member_issuer_days": 1673,
+        "filing_lag_days": {
+          "max": 4021,
+          "missing": 0,
+          "n": 3502,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 301,
+          "share_gt_2d": 0.3649,
+          "share_gt_30d": 0.0334,
+          "share_le_2d": 0.6348
+        },
+        "issuer_days": 1673,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 726,
+          "DIRECTOR": 673,
+          "OTHER_OFFICER": 274
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 726,
+          "any_director": 1444,
+          "any_other_officer": 519,
+          "any_ten_percent_owner": 234
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 127,
+        "unique_issuers": 1000,
+        "value_tiers_issuer_days": {
+          "ge_100k": 970,
+          "ge_10k": 1476,
+          "ge_1m": 281
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 9883,
+        "cluster_formations": 1644,
+        "cluster_member_issuer_days": 2653,
+        "filing_lag_days": {
+          "max": 7309,
+          "missing": 0,
+          "n": 9883,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 3,
+          "p90": 4,
+          "p99": 258,
+          "share_gt_2d": 0.3467,
+          "share_gt_30d": 0.03,
+          "share_le_2d": 0.6532
+        },
+        "issuer_days": 7742,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 2754,
+          "DIRECTOR": 3648,
+          "OTHER_OFFICER": 1340
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 2754,
+          "any_director": 6281,
+          "any_other_officer": 1648,
+          "any_ten_percent_owner": 1542
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 297,
+        "unique_issuers": 2231,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2773,
+          "ge_10k": 5781,
+          "ge_1m": 668
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 3492,
+        "cluster_formations": 1644,
+        "cluster_member_issuer_days": 1644,
+        "filing_lag_days": {
+          "max": 4021,
+          "missing": 0,
+          "n": 3492,
+          "negative": 1,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 301,
+          "share_gt_2d": 0.366,
+          "share_gt_30d": 0.0338,
+          "share_le_2d": 0.6337
+        },
+        "issuer_days": 1644,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 719,
+          "DIRECTOR": 654,
+          "OTHER_OFFICER": 271
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 719,
+          "any_director": 1422,
+          "any_other_officer": 519,
+          "any_ten_percent_owner": 240
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 112,
+        "unique_issuers": 971,
+        "value_tiers_issuer_days": {
+          "ge_100k": 948,
+          "ge_10k": 1447,
+          "ge_1m": 276
+        },
+        "value_tiers_per_year": null
+      }
+    },
+    "2026": {
+      "ALL_P": {
+        "accessions": 6188,
+        "cluster_formations": 1089,
+        "cluster_member_issuer_days": 1771,
+        "filing_lag_days": {
+          "max": 8767,
+          "missing": 0,
+          "n": 6188,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 279,
+          "share_gt_2d": 0.3891,
+          "share_gt_30d": 0.0341,
+          "share_le_2d": 0.6109
+        },
+        "issuer_days": 4796,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1238,
+          "DIRECTOR": 1863,
+          "OTHER": 111,
+          "OTHER_OFFICER": 705,
+          "TEN_PERCENT_OWNER": 879
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1238,
+          "any_director": 3102,
+          "any_other_officer": 854,
+          "any_ten_percent_owner": 1541
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 255,
+        "unique_issuers": 1815,
+        "value_tiers_issuer_days": {
+          "ge_100k": 2193,
+          "ge_10k": 3792,
+          "ge_1m": 736
+        },
+        "value_tiers_per_year": null
+      },
+      "CEO_CFO": {
+        "accessions": 1372,
+        "cluster_formations": 170,
+        "cluster_member_issuer_days": 185,
+        "filing_lag_days": {
+          "max": 3204,
+          "missing": 0,
+          "n": 1372,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 96,
+          "share_gt_2d": 0.3571,
+          "share_gt_30d": 0.0204,
+          "share_le_2d": 0.6429
+        },
+        "issuer_days": 1238,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1238
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1238,
+          "any_director": 935,
+          "any_other_officer": 4,
+          "any_ten_percent_owner": 244
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 26,
+        "unique_issuers": 695,
+        "value_tiers_issuer_days": {
+          "ge_100k": 476,
+          "ge_10k": 966,
+          "ge_1m": 134
+        },
+        "value_tiers_per_year": null
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "accessions": 1813,
+        "cluster_formations": 818,
+        "cluster_member_issuer_days": 818,
+        "filing_lag_days": {
+          "max": 1492,
+          "missing": 0,
+          "n": 1813,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 63,
+          "share_gt_2d": 0.4115,
+          "share_gt_30d": 0.0193,
+          "share_le_2d": 0.5885
+        },
+        "issuer_days": 818,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 359,
+          "DIRECTOR": 308,
+          "OTHER_OFFICER": 151
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 359,
+          "any_director": 683,
+          "any_other_officer": 274,
+          "any_ten_percent_owner": 110
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 54,
+        "unique_issuers": 601,
+        "value_tiers_issuer_days": {
+          "ge_100k": 513,
+          "ge_10k": 731,
+          "ge_1m": 174
+        },
+        "value_tiers_per_year": null
+      },
+      "OD": {
+        "accessions": 4969,
+        "cluster_formations": 800,
+        "cluster_member_issuer_days": 1261,
+        "filing_lag_days": {
+          "max": 8767,
+          "missing": 0,
+          "n": 4969,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 5,
+          "p99": 303,
+          "share_gt_2d": 0.3842,
+          "share_gt_30d": 0.0312,
+          "share_le_2d": 0.6158
+        },
+        "issuer_days": 3806,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 1238,
+          "DIRECTOR": 1863,
+          "OTHER_OFFICER": 705
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 1238,
+          "any_director": 3102,
+          "any_other_officer": 854,
+          "any_ten_percent_owner": 639
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 154,
+        "unique_issuers": 1619,
+        "value_tiers_issuer_days": {
+          "ge_100k": 1618,
+          "ge_10k": 3021,
+          "ge_1m": 441
+        },
+        "value_tiers_per_year": null
+      },
+      "OD_CLUSTER_10CD": {
+        "accessions": 1835,
+        "cluster_formations": 800,
+        "cluster_member_issuer_days": 800,
+        "filing_lag_days": {
+          "max": 1492,
+          "missing": 0,
+          "n": 1835,
+          "negative": 0,
+          "p10": 0,
+          "p25": 1,
+          "p50": 2,
+          "p75": 4,
+          "p90": 4,
+          "p99": 65,
+          "share_gt_2d": 0.4229,
+          "share_gt_30d": 0.0185,
+          "share_le_2d": 0.5771
+        },
+        "issuer_days": 800,
+        "per_year": null,
+        "primary_role_issuer_days": {
+          "CEO_CFO": 356,
+          "DIRECTOR": 303,
+          "OTHER_OFFICER": 141
+        },
+        "roles_issuer_days": {
+          "any_ceo_cfo": 356,
+          "any_director": 678,
+          "any_other_officer": 268,
+          "any_ten_percent_owner": 112
+        },
+        "ticker_as_filed_nonstandard_issuer_days": 49,
+        "unique_issuers": 585,
+        "value_tiers_issuer_days": {
+          "ge_100k": 501,
+          "ge_10k": 719,
+          "ge_1m": 171
+        },
+        "value_tiers_per_year": null
+      }
+    }
+  },
+  "coverage": {
+    "events_accession_level": 393907,
+    "first_filing_date": "2006-01-03",
+    "last_filing_date": "2026-06-30"
+  },
+  "definitions": {
+    "cluster_rule": "per family: >=2 distinct family-qualifying owner CIKs at one issuer over filing dates [d-9, d]; formations use <2 -> >=2 crossings with re-arm",
+    "entry_event_unit": "issuer CIK x FILING_DATE (available_after_date); entry at the first vendor session strictly after it",
+    "families": {
+      "ALL_P": "any original Form 4 non-derivative P/A purchase",
+      "CEO_CFO": "at least one owner whose title matches CEO or CFO",
+      "FROZEN_FV_PROXY_10WD": "frozen first-vertical signal (D07 2.1-2.2) with regular sessions approximated by weekdays (no holidays); rate estimate only, not the frozen object",
+      "OD": "at least one officer/director reporting owner (10%-only/Other-only excluded)",
+      "OD_CLUSTER_10CD": "crossing <2 -> >=2 distinct O/D owner CIKs over filing dates [d-9,d], re-armed only after the window count falls below 2"
+    },
+    "filing_lag": "FILING_DATE - earliest TRANS_DATE of the accession's qualifying rows, calendar days",
+    "frozen_definition_source": "governance/D07_OPEN_SPACE_BOUNDARY.md",
+    "roles": "CEO_CFO by title regex; OTHER_OFFICER = officer flag without CEO/CFO title; DIRECTOR; TEN_PERCENT_OWNER; OTHER. Role counts are non-exclusive; primary role uses that precedence",
+    "splits": {
+      "discovery": {
+        "end": "2018-12-31",
+        "start": "2006-01-01",
+        "years": 13.0
+      },
+      "holdout": {
+        "end": "2026-06-30",
+        "start": "2021-07-01",
+        "years": 5.0
+      },
+      "walk_forward": {
+        "end": "2021-06-30",
+        "start": "2019-01-01",
+        "years": 2.5
+      }
+    },
+    "value_basis": "sum of reported shares x reported transaction value per share on the issuer day (window sum for crossing families); rows without a reported per-share figure contribute 0",
+    "value_tiers": {
+      "ge_100k": 100000.0,
+      "ge_10k": 10000.0,
+      "ge_1m": 1000000.0
+    }
+  },
+  "headline": {
+    "discovery": {
+      "ALL_P": {
+        "cluster_formations": 44981,
+        "issuer_days": 193991,
+        "per_year": 14922.4,
+        "unique_issuers": 11101
+      },
+      "CEO_CFO": {
+        "cluster_formations": 5518,
+        "issuer_days": 48746,
+        "per_year": 3749.7,
+        "unique_issuers": 7021
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "cluster_formations": 35222,
+        "issuer_days": 35222,
+        "per_year": 2709.4,
+        "unique_issuers": 6871
+      },
+      "OD": {
+        "cluster_formations": 35217,
+        "issuer_days": 160435,
+        "per_year": 12341.2,
+        "unique_issuers": 10264
+      },
+      "OD_CLUSTER_10CD": {
+        "cluster_formations": 35217,
+        "issuer_days": 35217,
+        "per_year": 2709.0,
+        "unique_issuers": 6757
+      }
+    },
+    "holdout": {
+      "ALL_P": {
+        "cluster_formations": 12475,
+        "issuer_days": 54828,
+        "per_year": 10965.6,
+        "unique_issuers": 5698
+      },
+      "CEO_CFO": {
+        "cluster_formations": 1829,
+        "issuer_days": 15911,
+        "per_year": 3182.2,
+        "unique_issuers": 3209
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "cluster_formations": 9358,
+        "issuer_days": 9358,
+        "per_year": 1871.6,
+        "unique_issuers": 2988
+      },
+      "OD": {
+        "cluster_formations": 9326,
+        "issuer_days": 44424,
+        "per_year": 8884.8,
+        "unique_issuers": 5224
+      },
+      "OD_CLUSTER_10CD": {
+        "cluster_formations": 9326,
+        "issuer_days": 9326,
+        "per_year": 1865.2,
+        "unique_issuers": 2934
+      }
+    },
+    "walk_forward": {
+      "ALL_P": {
+        "cluster_formations": 6975,
+        "issuer_days": 28892,
+        "per_year": 11556.8,
+        "unique_issuers": 4381
+      },
+      "CEO_CFO": {
+        "cluster_formations": 1019,
+        "issuer_days": 8365,
+        "per_year": 3346.0,
+        "unique_issuers": 2190
+      },
+      "FROZEN_FV_PROXY_10WD": {
+        "cluster_formations": 5592,
+        "issuer_days": 5592,
+        "per_year": 2236.8,
+        "unique_issuers": 2297
+      },
+      "OD": {
+        "cluster_formations": 5667,
+        "issuer_days": 24392,
+        "per_year": 9756.8,
+        "unique_issuers": 4038
+      },
+      "OD_CLUSTER_10CD": {
+        "cluster_formations": 5667,
+        "issuer_days": 5667,
+        "per_year": 2266.8,
+        "unique_issuers": 2251
+      }
+    }
+  },
+  "input_fields_read": [
+    "accession",
+    "issuer_cik",
+    "filing_date",
+    "value_usd",
+    "filing_lag_days",
+    "ticker_as_filed",
+    "owners"
+  ],
+  "inputs": {
+    "events_code_fingerprint": "sha256:ba76ede02b89b415c615abaef214e73094b9101e5c8b3fd1b23356db37f754ef",
+    "events_rows": 393907,
+    "events_sha256": "071d48baed7c1f8c7a4e8b792651e6983d28750ccff43f05d6e6b894ab51a5e7",
+    "frozen_definition_sha256": "dc3467cf15deba3793a44d321b8365e88a6d1bb752a44217003f0818a69b5050",
+    "sec_manifest_set_fingerprint": "sha256:76f6ad974b6e37d000b062bc440f01e7ece97a9769b6805a8b1f86607b328ff3"
+  },
+  "lineage": "QUANT_FASTLANE_HPIT_V1",
+  "outcome_blind": true,
+  "outcome_fields_read": [],
+  "schema": "fastlane.census.v1"
+}
