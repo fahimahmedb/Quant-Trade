@@ -1,6 +1,6 @@
-# `QUANT_FASTLANE_HPIT_V1` protocol — DRAFT (not sealed)
+# `QUANT_FASTLANE_HPIT_V1` protocol — SEALED 2026-09-24T23:32:08Z
 
-Status `DRAFT_NOT_SEALED`; `open_decisions` = []. Canonical sha256 of this draft: `sha256:726b0db2e74d619943e30a7ffb3e0371df9c2893d28d17cbe91dd5e9024b666e`. Sealing requires flipping status to `FINAL_FOR_SEAL` by explicit decision, then `python3 scripts/fastlane.py seal-prereg --protocol research/fastlane/QUANT_FASTLANE_HPIT_V1_PROTOCOL.json`, then committing and pushing the sealed file (grants require it in a branch the remote advertises, in a complete clone: run `git fetch --unshallow` first if the clone is shallow).
+Status `FINAL_FOR_SEAL`, sealed in `research/fastlane/prereg/QUANT_FASTLANE_HPIT_V1_PREREG_SEALED.json`. Sealed protocol sha256: `sha256:78b3a501e609e135def64783f53f0f02ecbc8df2ea3d86e99c4d00fa206a6999` (the pre-flip draft sha was `sha256:726b0db2…`; only `status` differs). Seal readiness: independent adversarial review round 3 = SEAL_READY at 7387002. Accepted residual risks: request-only force-push rewrite, local remote-URL tampering, 300 s tip cache on verify_grant (all covered by the owner actions below), and 4,573 kept rows (0.6%) with a plan named in NATURE_OF_OWNERSHIP (kept by decision before seal). Grants need a complete clone (`git fetch --unshallow`).
 
 ## Frozen elements
 
