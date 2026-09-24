@@ -36,3 +36,14 @@ Note : certaines pages primaires étaient bloquées par le proxy ; ces chiffres 
 Le texte exact des 7 posts X n'a pas pu être récupéré (x.com et ses miroirs sont bloqués) ; leur contenu a été reconstitué et n'est pas vérifié.
 ed6a0faf1864d60161806b594b45a2642f6149f59b26b3d7b32c2ce38758dc6f  shiller_sp500_monthly.csv
 570e05630c9a5e7350d0c3dbe3acc58e793cb5248181ab0e949c121cc082fb83  vix_daily.csv
+
+## Lab v2 : datasets tiers (clonés, non vendorisés ; vérifier la licence de chaque dépôt)
+- Futures : github.com/pst-group/pysystemtrade (data/futures, 1980-2024-03)
+- Polymarket : shirleyshen0106/polymarket-calibration ; GitHubMagnus/polymarket-calibration ; marketlenstrade/polymarket-historical-data
+- Cotes de football : AnishKhetani/premier-league-data
+- Crypto : LorenzoBaggi/funding_arb ; guibvieira/freqtrade-hyperliquid-data ; d-glukhovskiy/Erdos_project ; VivekWar/Crypto-Funding-Rate-Arbitrage ; Jroc561/statArb
+- Facteurs : scotty-jackson/AQRFactorX (AQR, jusqu'en 2025-09) ; fernando-duarte/ERP (Kenneth French, jusqu'en 2021-11) ; fja05680/sp500 (composition point-in-time du S&P 500)
+- Microstructure Kalshi (Becker) : https://www.jbecker.dev/research/prediction-market-microstructure
+- Polymarket (Cardozo et al.) : https://arxiv.org/abs/2609.12878 ; arbitrage : https://arxiv.org/abs/2508.03474
+- ForecastBench : https://www.forecastbench.org/leaderboards/ ; Lopez-Lira & Tang : https://arxiv.org/abs/2304.07619
+- Biais de regard vers le futur des LLM : https://arxiv.org/abs/2309.17322 ; https://arxiv.org/abs/2512.23847

@@ -1,244 +1,224 @@
-# Recherche approfondie : démarrer vite, apprendre en marchant (2026-09-24)
+# Lab : démarrer vite en apprenant des gens qui ont réussi (v2, 2026-09-24)
 
-Statut : recherche uniquement, paper/shadow. Aucun capital réel n'est autorisé. Ce rapport ne modifie ni le code produit ni la gouvernance.
+Ce document est de la recherche de lab, en paper/shadow uniquement. Il ne modifie ni le code produit ni la gouvernance, et n'accorde aucune autorisation de capital réel. Il vit sur la branche de lab `claude/deep-research-project-6vr22g`.
 
-Pour chaque question, le rapport suit le même déroulé : **Process → Info → Test → Conclusion → Recommandation**.
+Chaque question suit le même déroulé : **Process → Info → Test → Conclusion → Recommandation**.
 
----
-
-## 0. Le diagnostic en une phrase
-
-Aujourd'hui, Quant a une architecture complète mais **0 fill**. La recherche est `BLOCKED` en attendant un panel d'actions sans biais de survivance. Les seules données sont 12 ETF très corrélés. Et le repo compte environ 190 fichiers de gouvernance et de handoff.
-
-Les gens qui ont réussi ont fait l'inverse. Ils ont choisi des marchés où **l'edge se mesure en semaines, pas en années**, et ils ont appris à petite taille sur le flux réel.
+Tous les tests sont reproductibles avec les scripts `exp_*.py` de ce dossier. Au total, **environ 140 configurations ont été testées**, et ce nombre sert à ajuster le seuil de significativité (correction pour tests multiples).
 
 ---
 
-## 1. Pourquoi « attendre 3-4 ans de données » est la mauvaise question
+## Synthèse en 10 lignes
 
-**Process** : calculer, pour une stratégie, la durée d'observation nécessaire pour distinguer son Sharpe de zéro. Deux approches : la formule du t-stat et la Minimum Track Record Length de Bailey & López de Prado.
-
-**Info** : le nombre d'années nécessaire vaut à peu près T ≈ (z / SR)².
-- Trader plus souvent n'aide que si les paris sont **indépendants**.
-- Poser un pari sur N instruments corrélés à ρ ne vaut que N / (1 + (N−1)ρ) instruments indépendants.
-
-**Test** (`exp_shiller_timing_power.py`) : années requises pour atteindre t = 2.
-
-| SR annuel réel | 0,3 | 0,5 | 1 | 2 | 3 |
-|---|---|---|---|---|---|
-| Années | 44 | 16 | 4 | 1 | 0,4 |
-
-Le calcul de breadth sur les données actuelles donne :
-- 11 ETF sectoriels à ρ ≈ 0,8 valent environ **1,2 instrument indépendant**.
-- 30 à 100 perpétuels crypto, ou des centaines de marchés de prédiction indépendants, valent un **N effectif de dizaines à centaines**.
-
-**Conclusion** : ceux qui réussissent sans années de données ne sont pas plus patients. Ils exploitent des edges à **SR élevé et forte breadth** : arbitrage, carry de funding, mispricing sur marchés de prédiction, market making. Ces edges se valident ou se réfutent en quelques semaines de shadow.
-
-Les edges « beta-like » à SR 0,3-0,5 (timing actions, momentum sectoriel) ne se valident **jamais** vite. On les prend pour la gestion du risque, sur la base de la littérature, pas comme preuve d'alpha.
-
-**Reco R1** : réorienter le Research Factory vers des **univers à grande breadth** (crypto perps, marchés de prédiction). Classer chaque hypothèse selon le temps de validation attendu, (2/SR)² divisé par le N effectif, avant de la tester.
+1. **La vitesse d'apprentissage dépend du Sharpe et du nombre de paris indépendants, pas de la patience.** Pour prouver une stratégie, il faut environ (2/SR)² années d'observation. En shadow, un test séquentiel (SPRT) tranche en **3 mois pour une stratégie à SR 4**, 13 mois pour SR 2, et 4 ans pour SR 1.
+2. **Les 12 ETF du repo ne valent qu'environ 1,2 pari indépendant.** Aucune stratégie n'y bat l'achat simple.
+3. **Sur 190 futures, trend + carry donne un SR de 1,28 (t = 8,7), positif dans chaque période depuis 1980.** Le Sharpe monte avec le nombre d'instruments : 0,29 avec 1 instrument, 0,75 avec 40. C'est l'edge le mieux prouvé. Il faut environ 150 à 300 k$ pour le trader réellement.
+4. Sur les marchés de prédiction, **acheter systématiquement les favoris ou les longshots n'est pas un edge stable** : le signe s'inverse selon l'échantillon. L'edge robuste est structurel : **être teneur de marché plutôt que preneur** (+1,1 % contre −1,1 % par trade sur 72 M de trades Kalshi).
+5. **Le « lag Binance → Polymarket » des posts X existe, mais seulement à ≤ 1 s de latence** (+32 % par $ misé, t = 3,1 avec regroupement par heure, sur 1 jour de données). Il disparaît dès 3 s. C'est une course d'infrastructure, pas un edge accessible à un opérateur solo sans colocalisation.
+6. **Le carry crypto s'est effondré.** Le funding BTC est passé de 20 %/an (2021) à 3 % (2025), puis 1 % (2026), sous le taux sans risque stablecoin ou T-bill d'environ 4 %. Le carry cross-sectionnel sur altcoins perd de l'argent après coûts.
+7. **Les facteurs actions classiques (taille, value, CMA) sont morts depuis 2000.** Seuls le low-risk (BAB) avec gestion de volatilité, la qualité et le momentum avec gestion de volatilité survivent, et ils faiblissent sur 2020-25.
+8. **Les LLM ne battent pas le prix de marché en prévision** (Brier 0,109 contre 0,096 pour le prix seul). Les concours de trading LLM en live sont surtout négatifs. Leur rôle utile : générer des hypothèses, lire les règles de résolution, compléter le prix de marché.
+9. **Le vol-targeting divise le drawdown par deux** sur SPY (−34 % → −18 %) avec un Sharpe au moins égal. C'est la couche RISK/SIZE par défaut.
+10. **Les données historiques longues existent déjà gratuitement**, via GitHub : 190 futures depuis 1980, facteurs AQR jusqu'en 2025, funding crypto, carnets d'ordres Polymarket, S&P 500 point-in-time. Il n'y a pas besoin d'attendre 3 à 4 ans.
 
 ---
 
-## 2. Ce que disent les données actuelles du repo (12 ETF, 2016-2026)
+## 1. Vitesse d'apprentissage : la vraie contrainte
 
-**Process** : 11 stratégies classiques issues de la littérature, **sans aucun paramètre ajusté**.
-- Signal causal : décision à la clôture t, détention en t+1.
-- Coût : 5 pb par unité de turnover.
-- Le Sharpe est coupé en deux moitiés de l'échantillon.
+**Process** : calculer la puissance statistique, puis simuler un test séquentiel SPRT en Monte Carlo avec des queues épaisses (t de Student à 4 degrés de liberté).
 
-**Test** (`exp_etf_baselines.py`) :
+**Tests** : `exp_shiller_timing_power.py` et `exp_sprt_kill_rule.py`.
 
-| Stratégie | SR | SR 1re moitié | SR 2e moitié | MDD |
+| SR réel | Années pour t = 2 | SPRT : mois médians pour décider | SPRT : p90 (mois) | Taux d'erreur |
 |---|---|---|---|---|
-| SPY buy & hold | 0,88 | 0,98 | 0,78 | −34 % |
-| Inverse-vol SPY/TLT/GLD | **0,93** | 1,14 | 0,77 | −22 % |
-| SPY > SMA200, sinon cash | 0,89 | 0,95 | 0,82 | **−21 %** |
-| Momentum sectoriel top 3 (12-1) | 0,73 | 0,53 | 0,95 | −30 % |
-| TSMOM 12m long/short, vol-target | 0,15 | −0,02 | 0,45 | −25 % |
-| Retournement sectoriel 1 semaine | 0,52 | 0,43 | 0,63 | −46 % |
-| Turn-of-month SPY | 0,31 | 0,45 | 0,17 | −11 % |
-| SPY overnight only (après coûts) | −0,27 | 0,01 | −0,60 | −39 % |
+| 1 | 4 | 51 | 120 | 3 % |
+| 2 | 1 | 13 | 32 | 5 % |
+| 4 | 0,25 | 3,3 | 8 | 4 % |
 
-Le test vol-managed (`exp_vol_managed.py`, Moreira-Muir) donne :
+**Conclusion** : le shadow ne peut pas confirmer vite un SR de 1. Il **tue vite** les stratégies à SR élevé qui ne tiennent pas leurs promesses. Ceux qui ont réussi vite ont démarré sur des edges structurels à SR élevé (arbitrage, market making), ou ont fondé leur a priori sur une histoire longue (Carver, AQR).
 
-| Variante | SR | MDD |
-|---|---|---|
-| Buy & hold | 0,89 | −34 % |
-| Vol-target sur vol réalisée | 1,01 | **−18 %** |
-| Vol-target sur VIX | 1,02 | −20 % |
+**Reco** :
+- Classer chaque ticket de recherche par temps de validation estimé, (2/SR)² / N_eff.
+- Brancher un SPRT mensuel qui arrête automatiquement les stratégies en shadow.
 
-**Conclusion** : sur cet univers, **aucune stratégie ne bat le beta** de façon significative, et 11 essais imposent de corriger pour le multiple testing (Deflated Sharpe). Seules deux familles sont robustes, et ce sont des overlays de risque :
-- le **vol-targeting**, qui divise le drawdown par deux avec un SR à peu près égal ou supérieur ;
-- les **filtres de tendance**.
+## 2. Breadth : la preuve par 190 futures
 
-La recherche n'était pas bloquée par un manque d'actions sans biais de survivance. Elle l'était par un **univers sans breadth**.
+**Test** (`exp_futures_trend_carry.py`) : données pysystemtrade (`git clone github.com/pst-group/pysystemtrade`), 1980-2024.
+- Signal trend : EWMAC 16/32/64.
+- Carry : calculé à partir de l'écart entre deux contrats.
+- Signaux causaux ; coût = demi-spread de chaque instrument.
 
-**Reco R2** : garder le vol-targeting et le filtre de tendance comme **couche RISK/SIZE par défaut** dans le Desk. C'est un gain de drawdown prouvé, pas de l'alpha. Arrêter de chercher de l'alpha sur les 12 ETF.
-
----
-
-## 3. Données longues disponibles tout de suite (pas besoin d'attendre)
-
-**Test** (`exp_shiller_timing_power.py`) : S&P 500 mensuel Shiller, 1871-2026, dividendes inclus.
-- Le signal est décalé de 2 mois, car les prix Shiller sont des moyennes mensuelles.
-- Coût : 10 pb.
-
-| Stratégie | SR total | MDD | SR 1872-1913 | SR 1914-45 | SR 1946-81 | SR 1982-07 | SR 2008-26 |
+| Stratégie | SR | t | 1980-99 | 2000-12 | 2013-19 | 2020-24 | MDD à 10 % de vol |
 |---|---|---|---|---|---|---|---|
-| Buy & hold | 0,50 | −82 % | 0,41 | 0,40 | 0,62 | 0,74 | 0,62 |
-| SMA10 timing | 0,63 | −49 % | 0,47 | 0,67 | 0,63 | 0,77 | 0,78 |
-| TSMOM12 timing | 0,56 | −42 % | 0,47 | 0,57 | 0,40 | 0,86 | 0,63 |
+| Trend EWMAC | 1,09 | 7,4 | 1,62 | 0,99 | 0,88 | 0,56 | −33 % |
+| Carry | 1,15 | 7,8 | 1,46 | 1,23 | 1,19 | 0,10 | −27 % |
+| **Trend + carry** | **1,28** | **8,7** | 1,76 | 1,27 | 1,12 | 0,46 | −27 % |
 
-Cependant, le timing SMA10 **perd face au buy & hold dans 66 % des fenêtres de 10 ans** en rendement brut.
+Courbe de breadth (trend + carry, 2000-2024) :
 
-**Conclusion** : 150 ans de données sont gratuits et confirment la conclusion du §2. Le filtre de tendance améliore le SR et le drawdown dans les 5 ères, mais c'est une **assurance, pas un alpha**. Il sous-performe la plupart du temps.
+| Nombre d'instruments | 1 | 3 | 5 | 10 | 20 | 40 | 63 |
+|---|---|---|---|---|---|---|---|
+| SR médian | 0,29 | 0,41 | 0,51 | 0,60 | 0,68 | 0,75 | 0,74 |
 
-Le point méthodologique est plus général : **l'histoire longue publique existe déjà pour la plupart des classes d'actifs** (crypto depuis 2017-2019, marchés de prédiction résolus depuis 2020-2021). Il n'y a pas à la collecter soi-même pendant des années.
+Pour comparaison, le même type de trend sur les 12 ETF du repo donne un SR de 0,15.
 
-**Reco R3** : ajouter au Data Plane des adapters d'**historique public long**. Chacun enregistre sa provenance et ses caveats point-in-time.
-- Binance Vision : klines et funding, y compris les paires délistées, donc quasi sans biais de survivance.
-- Marchés Polymarket et Kalshi résolus.
-- Kenneth French, pour les facteurs.
-- FRED/ALFRED, pour des données macro vintagées.
-- CFTC COT.
+**Capital minimum** (`exp_futures_min_capital.py`, avec micro-futures, 20 % de volatilité cible, au moins 4 contrats de granularité par instrument) :
+- 5 classes d'actifs : environ 160 k$ ;
+- 10 classes d'actifs : environ 320 k$.
 
----
+**Conclusion** : c'est l'edge le mieux documenté, depuis 1880 selon AQR, et le plus facile à mettre en shadow tout de suite. Il **décroît sur 2020-24**, avec un carry proche de 0.
 
-## 4. Le périmètre de tes liens (posts X de sept. 2026)
+**Reco** : **premier vertical shadow = trend + carry multi-actifs**, en réutilisant pysystemtrade comme référence indépendante, pour recouper les résultats.
 
-**Info** : le texte exact des posts n'a pas pu être récupéré, car l'egress vers x.com et les miroirs est bloqué. Leur contenu a été reconstitué par recherche sur les auteurs.
+## 3. Marchés de prédiction (le périmètre de tes posts X)
 
-Le fil commun :
-- des **bots Polymarket et marchés de prédiction**, avec de la crypto court terme (BTC/ETH Up/Down 5-15 min, lag Binance → Polymarket) ;
-- pilotés par des **LLM ou agents** : Claude, Grok, GPT-6, et récemment « Jev », un modèle de décision rapide.
+**Test du biais favori-longshot** (`exp_pm_favorite_longshot.py`) : trois échantillons Polymarket indépendants, plus 12 704 matchs de Premier League avec les cotes bookmakers.
 
-Les edges revendiqués :
-- arbitrage de complete set (YES + NO < 1 $) ;
-- latence ou lag sur la résolution et le flux ;
-- market making / spread farming ;
-- copy-trading de wallets gagnants ;
-- probabilité du modèle comparée au prix, avec un sizing Kelly.
-
-**Red flags** communs :
-- P&L en capture d'écran et biais de survivance, par exemple « 98,6 % des joueurs perdent » cité à côté d'un gagnant ;
-- ni frais, ni slippage, ni file d'attente, ni sélection adverse ;
-- échantillons de quelques centaines de trades ;
-- autorité mal attribuée, comme une « spec Anthropic » ;
-- incitations d'affiliation.
-
-**Conclusion** : le périmètre est bon, car c'est un marché à forte breadth, avec des edges structurels mesurables vite. Les preuves, elles, sont nulles. Il faut traiter ces posts comme des **hypothèses à falsifier**, jamais comme des résultats.
-
----
-
-## 5. Edges prouvés et accessibles à un opérateur solo
-
-**Process** : environ 20 recherches web sur les praticiens documentés et la littérature. Certaines pages primaires étaient bloquées par le proxy, donc certains chiffres viennent d'abstracts. Il faut les **vérifier sur le papier source** avant de s'en servir comme preuve de gouvernance.
-
-**Comment les praticiens ont démarré** :
-- **Kevin Davey** est passé en live à temps partiel en 2003. Il a fait +148 %, +107 %, puis +112 % au championnat Robbins, en partant de 15 k$. Son process : walk-forward, puis Monte Carlo, puis **incubation** en live-sim avant l'argent réel.
-- **Rob Carver** (pysystemtrade) conseille de construire son a priori sur **l'histoire longue et le mécanisme**. Son argument : aucun track record live ne prouvera jamais un SR de 0,4.
-- **Kris Longmore** (Robot Wealth) avait un système parfait en backtest qui s'est effondré en live. Sa leçon : partir de « qui est en face et pourquoi il me paie ». Il considère les petits edges « trop petits pour les institutions » comme le terrain naturel du solo.
-- **warproxxx** (poly-maker, market making Polymarket) annonçait environ 200 à 800 $/jour sur ~10 k$ grâce aux récompenses de liquidité. Il a ensuite reconnu **un P&L net nul, à cause de bugs**. C'est le risque opérationnel qui tue.
-- **Quantpedia** : attendre un SR hors échantillon plus bas d'un tiers à la moitié que dans l'échantillon.
-
-**Top 8 des edges pour un opérateur solo** (score = preuve × accessibilité × capacité à petite taille) :
-
-| # | Edge | Preuve | Risque principal | Temps de validation |
-|---|---|---|---|---|
-| 1 | Tendance + carry diversifiés (micro-futures / ETF) | Positif chaque décennie depuis 1880 (AQR) | Capital nécessaire pour diversifier | Années : se juge sur l'a priori et l'histoire longue |
-| 2 | **Market making sur marchés de prédiction, contrats à forte probabilité** | Kalshi, 300 k+ contrats : < 10c perdent > 60 %, > 50c légèrement positifs ; les makers perdent 10 %, les takers 32 % (Whelan) | Sélection adverse, bugs | **Semaines** |
-| 3 | Carry de funding crypto, levier faible, uniquement quand le funding est élevé | SR ≈ 6 sur 2020-25, mais ≈ 4 en 2024 et **négatif en 2025** | ADL / crash du 10/10/2025, risque d'exchange | Semaines à mois |
-| 4 | Arbitrage combinatoire ou logique entre marchés de prédiction liés (pas de latence) | 39,7 M$ extraits sur Polymarket (avril 2024 → avril 2025) | Concurrence, résolution | Semaines |
-| 5 | Arbitrage cross-venue Polymarket / Kalshi | Écarts fréquents | **Règles de settlement différentes** : une couverture « sans risque » peut payer YES d'un côté et NO de l'autre | Semaines |
-| 6 | Prime de volatilité à risque défini (put spreads, structure VIX) | Prime réelle | Queue gauche (Volmageddon 2018 : −90 % en un jour) | Mois |
-| 7 | Saisonnalité overnight du momentum, en overlay | Tout l'alpha momentum est overnight (Lou-Polk-Skouras) | Coûts. Notre test : overnight SPY seul = **−0,27 SR après coûts** | — |
-| 8 | PEAD sur micro-caps | Disparu sur les large caps depuis ~2006 | Spreads | — |
-
-Deux paires d'edges sont **morts ou mourants** (preuves datées 2025-26) :
-- La latence pure sur Polymarket : le délai de ~500 ms a été supprimé et des frais taker dynamiques allant jusqu'à ~3 % s'appliquent sur les marchés crypto courts. Le lag Binance → Polymarket vanté dans les posts X en fait partie.
-- Le carry de funding naïf en 2025.
-
-**Test sur les frais Kalshi** (formule publique 0,07·C·P·(1−P), maker = 25 % du taker) :
-
-| Prix du contrat | Frais taker (% du prix) | Frais maker (% du prix) |
+| Échantillon | Favoris > 0,9 | Longshots < 0,1 |
 |---|---|---|
-| P = 0,90 | 0,7 % | 0,18 % |
-| P = 0,05 | **6,7 %** | 1,7 % |
+| A (septembre 2026, prix mid) | −5,6 % (t −3,9) | +92 % (t +3,0) |
+| B (2025-26, 1 jour avant résolution) | +0,8 % (t 0,8) | −42 % (t −2,0) |
+| C (vrais prix ask exécutables, 7 événements) | +2,8 % (t 2,1) | −71 % (t −3,1) |
+| Foot, Bet365 (retail) | ≈ −2 % | −10 à −18 % (t −3,0) ; négatif 16 saisons sur 24 |
+| Foot, Pinnacle à la clôture (sharp) | ≈ 0 | ≈ 0 |
 
-**Conclusion** : les frais écrasent les longshots et les preneurs. **Il faut être maker sur les favoris**, ce qui rejoint exactement le biais favori-longshot.
+**Littérature** :
+- Kalshi, 72 M de trades : les teneurs de marché gagnent +1,12 % par trade, les preneurs −1,12 %.
+- Polymarket : environ 70 % des wallets perdent, et moins de 1 % des wallets prennent la moitié des profits.
+- 40 M$ extraits par arbitrage combinatoire entre avril 2024 et avril 2025.
+- Environ 1 % des marchés sont contestés à l'oracle UMA.
 
-**Reco R4** : premier vertical à haute breadth = **shadow market making / achat maker de favoris sur Kalshi et Polymarket**.
-- Utiliser les marchés résolus comme historique immédiat.
-- Modéliser explicitement les frais, la file d'attente et la sélection adverse.
+**Test de lag BTC Up/Down** (`exp_pm_btc_lag.py`) : vrais carnets L2 sur 405 marchés, confrontés au flux Binance.
 
-**Reco R5** : deuxième vertical = **carry de funding crypto conditionnel** (funding > seuil, levier ≤ 2, multi-venue).
-- Le stress test ADL et exchange fait partie du critère d'acceptation.
-- L'historique Binance Vision couvre 2019 à aujourd'hui, avec les paires délistées.
+| Latence | Seuil d'edge | n | Rendement par $ | t |
+|---|---|---|---|---|
+| 1 s | 10c | 337 | +33 % | 3,2 (3,1 regroupé par heure) |
+| 3 s | 10c | 373 | −4 % | −0,7 |
+| 5 s | 10c | 382 | −3 % | −0,5 |
 
----
+Brier du prix mid : 0,1557, du modèle : 0,1571, du mélange : 0,1549. Le marché est globalement efficient ; l'edge tient uniquement à la vitesse.
 
-## 6. Méthode d'apprentissage rapide et honnête
+Limites : 1 seul jour, profondeur du carnet non vérifiée, résolution Chainlink et non Binance. La ligne « latence 0 » est exclue parce qu'elle contient jusqu'à 1 s de regard vers le futur.
 
-Chaque méthode est à brancher sur l'étape existante du Research Factory.
+**Conclusion** :
+- Les posts X ont raison sur l'**existence** des edges, mais pas sur leur **accessibilité**.
+- La latence se joue à la sub-seconde.
+- Les biais de prix changent de signe selon l'échantillon.
+- Ce qui reste durable : **la tenue de marché, l'arbitrage combinatoire, et la comparaison avec une cote de référence fiable** (Pinnacle).
 
-1. **Pré-enregistrement et comptage des essais.** Le Deflated Sharpe doit être calculé sur *tous* les essais. Harvey-Liu fixent la barre à t > 3.
-2. **Pooling cross-sectionnel.** On teste une hypothèse sur tout le panel, pas un paramètre par instrument.
-3. **CPCV** (validation croisée combinatoire purgée) avec embargo, plus la **PBO**. On rejette si PBO > 0,2.
-4. **Block bootstrap** stationnaire, avec le test SPA de Hansen ou Romano-Wolf pour la famille de stratégies.
-5. **Shrinkage** : le SR retenu vaut environ 50 % du SR du backtest (décroissance post-publication de McLean-Pontiff).
-6. **Shadow + SPRT / PSR mensuel.** Le shadow sert à **tuer vite** ce qui ne marche pas, puisqu'il ne peut pas confirmer un SR de 1 en moins de 3 ans. Il détecte immédiatement les erreurs d'exécution et de coûts.
-7. **Données synthétiques** (Ornstein-Uhlenbeck / GARCH) pour régler les stops et les horizons **sans consommer l'échantillon réel**. Elles ne servent jamais à prouver un edge.
+**Reco** :
+- Vertical shadow n°2 : **market making plus scanner d'arbitrage combinatoire** sur Polymarket et Kalshi. Il faut modéliser la file d'attente, la sélection adverse, les rebates, les frais par catégorie, le coût de l'argent immobilisé et une décote de 1 % pour le risque de contestation UMA.
+- Statistiques toujours **regroupées par événement**.
+- Rejouer le test de lag sur 30 jours ou plus avant toute conclusion.
 
----
+## 4. Crypto
 
-## 7. Blocage d'environnement constaté
+**Test** (`exp_crypto_edges.py`) : 35 configurations sur des données Bybit, Hyperliquid et Binance récupérées sur GitHub.
 
-La politique réseau de cet environnement cloud refuse les connexions (CONNECT → 403) vers :
-- data.binance.vision, fapi.binance.com, api.bybit.com, okx.com ;
-- gamma-api.polymarket.com, api.elections.kalshi.com ;
-- query1.finance.yahoo.com, fred.stlouisfed.org, stooq.com ;
-- mba.tuck.dartmouth.edu (Kenneth French), data.sec.gov, publicreporting.cftc.gov ;
-- huggingface.co.
+| Stratégie | Rendement annuel | SR | t | 2025 |
+|---|---|---|---|---|
+| Carry BTC toujours actif (2020-26) | 7,9 % | 8,4 | 21,5 | +3,4 % |
+| Carry cross-sectionnel Bybit, top 10 | 1,0 % | 0,17 | 0,26 | −15 % |
+| Momentum 28 jours Hyperliquid | 22 % | 0,71 | 1,15 | +58 % (2026 : −83 %) |
 
-Seuls raw.githubusercontent.com et pypi.org passent.
+Funding BTC annualisé :
 
-Pour débloquer, il faut changer l'accès réseau dans les réglages de l'environnement, ou ajouter ces domaines à la liste autorisée.
+| Année | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|---|---|---|---|---|---|
+| Funding | 11 % | 20 % | 3 % | 5 % | 8 % | 3 % | 1 % |
 
----
+**Conclusion** : le carry est structurel, mais il est **aujourd'hui sous le taux sans risque**. Aucune stratégie de momentum ou de reversal n'atteint t > 3.
 
-## 8. Feuille de route recommandée (chaque étape a un test de sortie)
+**Reco** :
+- Utiliser le rendement stablecoin ou T-bill comme **hurdle explicite dans SIZE**.
+- Au plus une poche de carry BTC/ETH, qui ne s'active que si le rendement dépasse le hurdle de 3 points ou plus.
+- Garde-fous contre l'auto-déleveraging (ADL) et les liquidations dans RISK : plafond par venue, jambe courte à 2x maximum, stress test sur le scénario du 10/10/2025.
 
-| # | Action | Test de sortie (falsifiable) | Coût |
+## 5. Actions et facteurs (débloquer la voie `RESEARCH`)
+
+**Test** (`exp_equity_factor_lab.py`) : 65 configurations sur les facteurs AQR (jusqu'en 2025-09) et Kenneth French (jusqu'en 2021-11), via des miroirs GitHub LFS. Seuil de Bonferroni : |t| > 3,36.
+
+| Facteur | SR total | SR depuis 2000 | SR 2020-25 |
 |---|---|---|---|
-| R0 | Ouvrir le réseau vers les domaines listés au §7 | Les adapters téléchargent et enregistrent leur empreinte | 5 min de réglages |
-| R1 | Score de « temps de validation » (2/SR)²/N_eff sur chaque ticket de recherche | Les tickets sont ordonnés par ce score dans la file | Petit |
-| R2 | Overlay vol-target + filtre de tendance dans SIZE/RISK | MDD shadow < MDD du buy & hold, sans dégrader le SR | Petit |
-| R3 | Adapters historiques : Binance Vision (klines + funding), marchés Kalshi/Polymarket résolus | Panel ≥ 100 instruments, délistés inclus, avec provenance | Moyen |
-| R4 | Vertical shadow « maker favoris » sur les marchés de prédiction | Sur ≥ 500 marchés résolus hors échantillon : rendement net (frais, spread, rejets) > 0 avec t > 3 après DSR | Moyen |
-| R5 | Vertical shadow carry de funding conditionnel | SR net > 1 hors 2025, et survit au scénario ADL 10/10/2025 | Moyen |
-| R6 | Chaque stratégie en shadow passe un SPRT mensuel | Arrêt automatique si PSR(SR > 0) < 5 % | Petit |
-| R7 | Les posts X, LLM et « Jev » entrent comme **générateurs d'hypothèses** seulement, jamais comme preuve | Chaque idée devient un ticket avec un test pré-enregistré | Nul |
+| Taille (SMB) | 0,22 | 0,10 | −0,32 |
+| Value (HML) | 0,28 | 0,13 | 0,08 |
+| Momentum (UMD) | 0,51 | 0,18 | 0,12 |
+| Low-risk (BAB) | 0,71 | 0,64 | 0,12 |
+| Qualité (QMJ) | 0,51 | 0,41 | 0,03 |
+
+- Seul le **BAB avec gestion de volatilité** passe le seuil depuis 2000 (t = 4,8).
+- Le momentum sectoriel devient quasi nul net de coûts depuis 2000.
+
+**Conclusion** : il n'y a pas de nouvel alpha à chercher dans les facteurs publiés. Ce qui vaut la peine : une exposition bon marché, diversifiée et pilotée par le risque. Le vrai blocage n'est pas la liste des composants de l'indice (on la trouve sur `fja05680/sp500`) mais **les prix des titres délistés**, qui ne sont disponibles gratuitement nulle part.
+
+**Reco** :
+- Débloquer la voie actions avec les facteurs AQR et French (en enregistrant la provenance).
+- Pour un panel titre par titre, il faudra une source payante (CRSP, Norgate ou Sharadar). Cela demande l'accord du propriétaire du projet.
+
+## 6. LLM et agents IA : ce qui est prouvé
+
+- **ForecastBench** : superforecasters 0,081, meilleur LLM 0,101 ; la parité est projetée pour fin 2026. Sur les questions de marché, le **prix seul (0,096) bat le LLM (0,109)**.
+- **Alpha Arena S1** (trading live) : 4 modèles sur 6 perdent de 40 à 60 %.
+- **PolyBench** : 2 modèles sur 7 sont rentables.
+- **Signal de sentiment d'actualités GPT** : le SR passe de 6,5 à 1,2 entre 2021 et 2024.
+- **Piège n°1 : le biais de regard vers le futur des LLM** (mémoire des modèles, cutoffs peu fiables). Parades :
+  - n'évaluer que sur des questions ouvertes après le cutoff ;
+  - mesurer la contamination avec le « lookahead propensity » ;
+  - masquer les noms des entités ;
+  - utiliser une recherche documentaire strictement point-in-time.
+- « Jev », Hermes et consorts : aucune preuve indépendante d'edge. `Polymarket/agents` montre les anti-patterns : taille de position extraite par regex du texte du LLM, relances d'appel sans limite.
+
+**Reco (VET / Research Factory)**, chaque point avec son test falsifiable :
+1. **Masque causal** (modèle, cutoff, as-of) sur toute preuve produite par un LLM. Test : toute preuve antérieure au cutoff est rejetée.
+2. Le LLM prévoit **l'écart au prix de marché**, fusionné en log-odds, avec un poids initial de 0. Test : Brier du mélange < Brier du marché, sur 300 questions ou plus postérieures au cutoff.
+3. **Lecteur de règles de résolution**. Il alimente RISK (décote) et jamais la direction du trade.
+4. **Générateur d'hypothèses** avec registre des essais. Test : les idées du LLM doivent battre des facteurs aléatoires hors échantillon.
+5. **Sizing déterministe** : le LLM ne dimensionne jamais une position.
+6. **Cache hashé des sorties LLM** pour un replay idempotent, conforme aux invariants de Quant.
+
+## 7. Méthode (s'applique à tout)
+
+- Pré-enregistrer chaque test et tenir un **registre global des essais** (environ 140 à ce jour).
+- Deflated Sharpe, barre t > 3.
+- Tester le **même** signal sur tout le panel.
+- CPCV + PBO ; block bootstrap.
+- Shrinkage d'environ 50 % du SR de backtest (McLean-Pontiff).
+- Shadow + SPRT pour **tuer** vite.
+
+## 8. Feuille de route
+
+| # | Action | Test de sortie | Priorité |
+|---|---|---|---|
+| R0 | Ouvrir le réseau vers : data.binance.vision, Polymarket, Kalshi, FRED, Kenneth French, CFTC, SEC, s3.jbecker.dev (36 Go de trades Kalshi et Polymarket) | Les adapters téléchargent avec empreinte | **Immédiat** |
+| R1 | Adapters Data Plane pour les miroirs GitHub (pysystemtrade, AQR, fja05680, carnets Polymarket) avec provenance « tiers » | Panel ≥ 100 instruments enregistré | Immédiat |
+| R2 | Vertical shadow **trend + carry futures** (190 instruments) | Rejoue le SR ≥ 1 historique ; SPRT en shadow | **P1** |
+| R3 | Overlay vol-target + filtre de tendance dans SIZE/RISK | MDD shadow < MDD du buy & hold | P1 |
+| R4 | Hurdle explicite = taux sans risque, et `NO_TRADE` s'il n'est pas battu | Toute poche doit battre le hurdle net | P1 |
+| R5 | Vertical shadow **market making + arbitrage combinatoire** sur marchés de prédiction | Rendement net > 0, t > 3 regroupé par événement, sur ≥ 500 marchés | P2 |
+| R6 | SPRT mensuel et registre global des essais | Arrêt automatique si PSR < 5 % | P1 |
+| R7 | LLM = générateur d'hypothèses et lecteur de règles, sous masque causal | Tests du §6 | P2 |
+| R8 | Rejouer le test de lag BTC sur ≥ 30 jours, avec vérification de profondeur | Edge ≤ 1 s confirmé ou réfuté | P3 (infrastructure) |
+| R9 | Panel actions sans biais de survivance : **décision d'achat de données** (CRSP, Norgate, Sharadar) | Accord du propriétaire | Décision |
 
 **Garde-fous tirés des échecs documentés** :
-- les coûts réels (voir le test overnight) ;
-- la décroissance post-publication (−58 %) ;
-- les changements de règles des venues (frais, délais, ADL) ;
-- les bugs opérationnels (poly-maker).
+- poly-maker : P&L nul à cause de bugs ;
+- décroissance post-publication de −58 % ;
+- changements de règles des venues (frais dynamiques, ADL) ;
+- carry qui passe sous le hurdle.
 
-Ce dernier point justifie les invariants existants de Quant (idempotence, restart-safety). **Il faut les garder, mais cesser d'ajouter des couches de gouvernance avant le premier fill shadow.**
+## 9. Blocage d'environnement
 
-## Reproductibilité
+Le proxy refuse les API de marché (Binance, Bybit, OKX, Polymarket, Kalshi, Yahoo, FRED, Kenneth French, SEC, CFTC, Hugging Face, x.com). Ce qui passe : `git clone` GitHub, raw.githubusercontent.com, media.githubusercontent.com (LFS) et pypi. À ouvrir dans les réglages réseau de l'environnement.
 
-```bash
-python3 research/deep_research_2026-09-24/exp_etf_baselines.py
-python3 research/deep_research_2026-09-24/exp_shiller_timing_power.py
-python3 research/deep_research_2026-09-24/exp_vol_managed.py
-```
+## Fichiers
 
-- Dépendances : numpy, pandas.
-- Données : `data/datasets/us_sector_etf_daily.csv` (repo) et deux miroirs GitHub copiés ici :
-  - `datasets/s-and-p-500`, qui est le jeu de données Shiller ;
-  - `datasets/finance-vix`, qui vient du CBOE.
-- Leur provenance est déclarée dans `SOURCES.md`.
-- Caveat pour `exp_vol_managed.py` : la cible de volatilité est la médiane de l'échantillon complet. Cela n'affecte que le niveau de levier, pas le Sharpe.
+| Script | Sujet |
+|---|---|
+| `exp_etf_baselines.py`, `exp_vol_managed.py`, `exp_shiller_timing_power.py` | Données du repo et Shiller/VIX (inclus) |
+| `exp_futures_trend_carry.py`, `exp_futures_min_capital.py` | Argument = `pysystemtrade/data/futures` (git clone) |
+| `exp_sprt_kill_rule.py` | Simulation pure |
+| `exp_pm_favorite_longshot.py`, `exp_pm_btc_lag.py` | Dépôts GitHub listés en tête de chaque script (git clone) |
+| `exp_crypto_edges.py`, `exp_crypto_carry_decomp.py` | Dépôts crypto listés au §4 et dans `SOURCES.md` |
+| `exp_equity_factor_lab.py` | Miroirs AQR et French (media.githubusercontent.com) |
+
+Les résultats bruts sont dans les fichiers `*.results.*`. La provenance et les sources sont dans `SOURCES.md`. Les données tierces ne sont pas vendorisées, sauf Shiller et VIX (petits fichiers, sha256 indiqués).
