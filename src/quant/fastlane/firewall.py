@@ -130,15 +130,25 @@ class Firewall:
         return self.write_bytes_atomic(path, text.encode("utf-8"))
 
     def create_exclusive(self, path: Path | str, payload: bytes) -> Path:
-        """Write a file exactly once; raise FileExistsError if it exists."""
+        """Write a file exactly once, atomically; raise FileExistsError if it exists.
+
+        The bytes go to a private temp file (fsynced) which is then hard-linked
+        to the target: ``link`` fails if the target exists and never exposes a
+        partially written file, so a crash leaves either nothing or the whole file.
+        """
         target = self.guard(path, write=True)
         target.parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+        tmp = target.with_name(f".{target.name}.{os.getpid()}.{os.urandom(6).hex()}.tmp")
+        fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         try:
             os.write(fd, payload)
             os.fsync(fd)
         finally:
             os.close(fd)
+        try:
+            os.link(tmp, target)
+        finally:
+            os.unlink(tmp)
         _fsync_dir(target.parent)
         return target
 

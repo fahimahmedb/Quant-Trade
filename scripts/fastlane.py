@@ -10,6 +10,9 @@
         Write the DRAFT (unsealed) protocol from the census.
     python3 scripts/fastlane.py seal-prereg --protocol PATH
         Seal a FINAL_FOR_SEAL protocol once (refuses drafts and overwrites).
+    python3 scripts/fastlane.py refresh-manifest
+        Drop legacy User-Agent hashes from fetch manifests and rewrite the
+        consolidated manifest (no network).
 
 Raw data and derived tables live under var/fastlane/ (git-ignored); only small
 artifacts go to research/fastlane/.
@@ -67,13 +70,29 @@ def cmd_build_events(fw: Firewall, args) -> int:
     quarters = si.select_quarters([si.QuarterLink(q, "") for q in manifests], args.start, args.end)
     manifest = ev.build_all(fw, [q.quarter for q in quarters], log=_log)
     summary = {k: manifest[k] for k in ("lineage", "schema", "code_fingerprint", "population_rule",
-                                         "inputs", "outputs", "counts",
+                                         "primary_filters", "inputs", "outputs", "counts",
                                          "duplicate_accession_check")}
     summary["malformed_rows_total"] = {
         member: sum(q.get(member, 0) for q in manifest["malformed_rows_by_quarter"].values())
-        for member in ("SUBMISSION.tsv", "REPORTINGOWNER.tsv", "NONDERIV_TRANS.tsv")}
+        for member in ("SUBMISSION.tsv", "REPORTINGOWNER.tsv", "NONDERIV_TRANS.tsv",
+                       "FOOTNOTES.tsv")}
     fw.write_json_atomic(fw.artifact("events_build_manifest_v1.json"), summary)
     _log(json.dumps({"outputs": manifest["outputs"], "counts": manifest["counts"]}, indent=1))
+    return 0
+
+
+def cmd_refresh_manifest(fw: Firewall, args) -> int:
+    from quant.fastlane import sec_insider as si
+    changed = si.scrub_user_agent_bindings(fw)
+    discovery_path = fw.data("manifests", "sec_insider", "_discovery.json")
+    discovery = fw.read_json(discovery_path) if discovery_path.exists() else None
+    quarters = (discovery or {}).get("quarters_linked") or sorted(
+        p.stem for p in fw.iter_files(fw.data("manifests", "sec_insider"), "*.json")
+        if not p.stem.startswith("_"))
+    consolidated = si.consolidated_manifest(fw, quarters, discovery)
+    fw.write_json_atomic(fw.artifact("sec_insider_manifest_v1.json"), consolidated)
+    _log(json.dumps({"manifests_scrubbed": changed,
+                     "set_fingerprint": consolidated["set_fingerprint"]}))
     return 0
 
 
@@ -114,6 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     build.add_argument("--end", default=None)
     sub.add_parser("census")
     sub.add_parser("draft-protocol")
+    sub.add_parser("refresh-manifest")
     seal = sub.add_parser("seal-prereg")
     seal.add_argument("--protocol", required=True)
     args = parser.parse_args(argv)
@@ -123,6 +143,7 @@ def main(argv: list[str] | None = None) -> int:
         "build-events": cmd_build_events,
         "census": cmd_census,
         "draft-protocol": cmd_draft_protocol,
+        "refresh-manifest": cmd_refresh_manifest,
         "seal-prereg": cmd_seal_prereg,
     }[args.command]
     return handler(fw, args)

@@ -1,23 +1,31 @@
 """Point-in-time purchase-event builder for ``QUANT_FASTLANE_HPIT_V1``.
 
-Population (D5): original Form 4 only (``DOCUMENT_TYPE`` exactly ``"4"``;
+Base population (D5): original Form 4 only (``DOCUMENT_TYPE`` exactly ``"4"``;
 ``4/A``, ``3``, ``5`` and their amendments never create or modify an event),
 non-derivative rows with ``TRANS_CODE == "P"`` and acquired/disposed flag
-``"A"``.
+``"A"``. An accession whose sequence year is later than its ``FILING_DATE``
+year cannot have been filed on that date and is excluded (backdating guard).
+This base population is kept only as a sensitivity ("unfiltered").
+
+Primary population (the one the protocol evaluates) additionally requires:
+
+* ``SECURITY_TITLE`` matching :data:`SECURITY_TITLE_INCLUDE` and not
+  :data:`SECURITY_TITLE_EXCLUDE` (common equity only);
+* no footnote referenced by the row, and no filing ``REMARKS``, matching the
+  frozen :data:`FOOTNOTE_EXCLUSION` regexes (plan/DRIP/fees, IPO/underwritten,
+  conversion, private placement);
+* exact-duplicate removal, first-seen by (FILING_DATE, accession), on (issuer,
+  owner set, transaction tuples).
 
 Timing: ``available_after_date`` is the EDGAR ``FILING_DATE``. Entry is the
-open of the first *vendor* session strictly after that date; sessions are
-resolved later from the licensed price vendor's calendar
-(:func:`quant.fastlane.prices.first_session_strictly_after`), so no exchange
-calendar is invented here. ``TRANS_DATE`` is never a public date.
+open of the first *vendor* session strictly after that date; sessions come
+from the licensed vendor's calendar, so none is invented here. ``TRANS_DATE``
+is never a public date.
 
-The accession number is the unique key. A duplicate accession inside a
-quarter or across quarters is an error (the build fails loudly), never a
-silent drop. Every excluded transaction row is counted under exactly one
-reason (first failing rule in a fixed precedence).
-
-Issuer tickers are recorded *as filed* (``ISSUERTRADINGSYMBOL``) and flagged as
-such: they are not a point-in-time security mapping.
+The accession number is the unique key; duplicates inside or across quarters
+are build errors. Every excluded transaction row is counted under exactly one
+reason (first failing rule in a fixed precedence). Tickers are as filed and
+flagged as not being a point-in-time security mapping.
 """
 
 from __future__ import annotations
@@ -50,6 +58,26 @@ ACCESSION_RE = re.compile(r"(\d{10})-(\d{2})-(\d{6})")
 CEO_RE = re.compile(r"\bC\.?\s?E\.?\s?O\b|CHIEF\s+EXEC", re.IGNORECASE)
 CFO_RE = re.compile(r"\bC\.?\s?F\.?\s?O\b|CHIEF\s+FINANCIAL", re.IGNORECASE)
 
+# Frozen population filters (chosen from title counts / filing text only, never outcomes).
+SECURITY_TITLE_INCLUDE = r"(COMMON|ORDINARY|CL(ASS)? [A-Z] COMMON|COMMON STOCK)"
+SECURITY_TITLE_EXCLUDE = (r"\b(PREFERRED|UNITS?|FUNDS?|PLANS?|WARRANTS?|NOTES?|DEBENTURES?"
+                          r"|OPTIONS?|RIGHTS?)\b")
+_TITLE_INCLUDE_RE = re.compile(SECURITY_TITLE_INCLUDE)
+_TITLE_EXCLUDE_RE = re.compile(SECURITY_TITLE_EXCLUDE)
+FOOTNOTE_EXCLUSION = {
+    "plan_drip_fees": (r"dividend reinvestment|\bdrip\b|employee stock purchase|\bespp\b"
+                       r"|401\(k\)|deferred compensation"
+                       r"|in lieu of (cash )?(director|board|fees|compensation|salary)"
+                       r"|director'?s'? fee"),
+    "ipo_underwritten": r"initial public offering|\bipo\b|underwrit|directed share|registered direct",
+    "conversion": r"upon (the )?conversion|converted into|upon exercise of (the )?warrant",
+    "private_placement": (r"private placement|privately negotiated|subscription agreement"
+                          r"|securities purchase agreement|accredited investor"),
+}
+_FOOTNOTE_RES = tuple((name, re.compile(rx, re.IGNORECASE))
+                      for name, rx in FOOTNOTE_EXCLUSION.items())
+_FOOTNOTE_ID_RE = re.compile(r"F\d+")
+
 # Exclusion precedence for NONDERIV_TRANS rows (first failing rule wins).
 EXCLUSION_PRECEDENCE = (
     "accession_malformed",
@@ -60,7 +88,14 @@ EXCLUSION_PRECEDENCE = (
     "filing_date_missing_or_unparseable",
     "issuer_cik_missing",
     "shares_missing_nonpositive_or_unparseable",
+    "accession_year_after_filing_year",
     "no_reporting_owner_rows",
+)
+PRIMARY_EXCLUSION_PRECEDENCE = (
+    "security_title_not_common_equity",
+    "footnote_exclusion",                 # detailed by category below
+    "remarks_exclusion",
+    "exact_duplicate_of_earlier_accession",
 )
 
 
@@ -85,14 +120,18 @@ def normalize_cik(value: str | None) -> str | None:
 
 
 def classify_owner(relationship: str, title: str, other_text: str) -> dict[str, Any]:
+    """Role flags from the relationship field; a title never promotes a role.
+
+    CEO/CFO requires the Officer relationship flag plus a CEO/CFO title.
+    """
     rel = (relationship or "").upper()
     ttl = (title or "").strip()
     is_director = "DIRECTOR" in rel
     is_officer = "OFFICER" in rel
     is_ten = "TENPERCENTOWNER" in rel
     is_other = "OTHER" in rel
-    is_ceo = bool(CEO_RE.search(ttl))
-    is_cfo = bool(CFO_RE.search(ttl))
+    is_ceo = is_officer and bool(CEO_RE.search(ttl))
+    is_cfo = is_officer and bool(CFO_RE.search(ttl))
     if is_ceo or is_cfo:
         role_class = "CEO_CFO"
     elif is_officer:
@@ -105,7 +144,7 @@ def classify_owner(relationship: str, title: str, other_text: str) -> dict[str, 
         role_class = "OTHER"
     return {
         "is_director": is_director,
-        "is_officer": is_officer or is_ceo or is_cfo,
+        "is_officer": is_officer,
         "is_ten_percent_owner": is_ten,
         "is_other": is_other,
         "is_ceo": is_ceo,
@@ -114,14 +153,47 @@ def classify_owner(relationship: str, title: str, other_text: str) -> dict[str, 
         "other_text": (other_text or "").strip() or None,
         "role_class": role_class,
         # D07 §2.1: director and/or officer qualifies; 10% ownership alone does not.
-        "officer_or_director": is_director or is_officer or is_ceo or is_cfo,
+        "officer_or_director": is_director or is_officer,
     }
+
+
+def normalize_title(title: str) -> str:
+    return " ".join((title or "").upper().split())
+
+
+def title_is_common_equity(title: str) -> bool:
+    norm = normalize_title(title)
+    return bool(_TITLE_INCLUDE_RE.search(norm)) and not _TITLE_EXCLUDE_RE.search(norm)
+
+
+def footnote_category(texts: Iterable[str]) -> str | None:
+    """First frozen exclusion category matched by any text, else None."""
+    texts = [t for t in texts if t]
+    for name, rx in _FOOTNOTE_RES:
+        for text in texts:
+            if text and rx.search(text):
+                return name
+    return None
+
+
+def row_footnote_ids(row: Mapping[str, str]) -> set[str]:
+    ids: set[str] = set()
+    for key, value in row.items():
+        if key.endswith("_FN") and value:
+            ids.update(_FOOTNOTE_ID_RE.findall(value))
+    return ids
+
+
+def accession_year(accession: str) -> int:
+    return 2000 + int(accession[11:13])
 
 
 @dataclass
 class BuildCounters:
     exclusions: Counter = field(default_factory=Counter)
     excluded_by_document_type: Counter = field(default_factory=Counter)
+    primary_exclusions: Counter = field(default_factory=Counter)
+    footnote_categories: Counter = field(default_factory=Counter)
     flags: Counter = field(default_factory=Counter)
     population: Counter = field(default_factory=Counter)
 
@@ -131,6 +203,10 @@ class BuildCounters:
             "excluded_transaction_rows": dict(sorted(self.exclusions.items())),
             "excluded_P_A_rows_by_document_type": dict(sorted(
                 self.excluded_by_document_type.items())),
+            "primary_exclusion_precedence": list(PRIMARY_EXCLUSION_PRECEDENCE),
+            "primary_excluded_transaction_rows": dict(sorted(self.primary_exclusions.items())),
+            "primary_footnote_exclusion_rows_by_category": dict(sorted(
+                self.footnote_categories.items())),
             "flags": dict(sorted(self.flags.items())),
             "population": dict(sorted(self.population.items())),
         }
@@ -139,7 +215,8 @@ class BuildCounters:
 @dataclass
 class QuarterResult:
     quarter: str
-    events: list[dict]
+    events: list[dict]               # base (unfiltered) population
+    primary_events: list[dict]       # before cross-quarter dedupe
     accession_ints: array
     table_stats: list[dict]
 
@@ -181,15 +258,25 @@ def _load_owners(archive_source, wanted: set[str], stats: TableStats) -> dict[st
     return owners
 
 
+def _load_footnotes(archive_source, wanted: set[str], stats: TableStats) -> dict[tuple[str, str], str]:
+    notes: dict[tuple[str, str], str] = {}
+    for row in iter_table(archive_source, "FOOTNOTES.tsv", stats):
+        acc = row["ACCESSION_NUMBER"].strip()
+        if acc in wanted:
+            notes[(acc, row["FOOTNOTE_ID"].strip())] = row["FOOTNOTE_TXT"]
+    return notes
+
+
 def build_quarter(archive_source, quarter: str, counters: BuildCounters,
                   source_sha256: str | None = None) -> QuarterResult:
-    """Build original-Form-4 P/A events for one quarter's data set."""
+    """Build base and primary original-Form-4 P/A events for one quarter's data set."""
     own = not isinstance(archive_source, zipfile.ZipFile)
     archive = zipfile.ZipFile(archive_source) if own else archive_source
     try:
         sub_stats = TableStats("SUBMISSION.tsv")
         own_stats = TableStats("REPORTINGOWNER.tsv")
         tr_stats = TableStats("NONDERIV_TRANS.tsv")
+        fn_stats = TableStats("FOOTNOTES.tsv")
         submissions, accs = _load_submissions(archive, quarter, counters, sub_stats)
         q_start, q_end = quarter_bounds(quarter)
 
@@ -239,31 +326,83 @@ def build_quarter(archive_source, quarter: str, counters: BuildCounters,
             if shares is None or shares <= 0:
                 counters.exclusions["shares_missing_nonpositive_or_unparseable"] += 1
                 continue
+            if accession_year(acc) > filing_date.year:
+                # The accession sequence was assigned in a later year than the claimed
+                # FILING_DATE: the fact was not public on that date.
+                counters.exclusions["accession_year_after_filing_year"] += 1
+                continue
             rows_by_acc[acc].append(row)
 
-        owners = _load_owners(archive, set(rows_by_acc), own_stats)
+        wanted = set(rows_by_acc)
+        owners = _load_owners(archive, wanted, own_stats)
+        notes = _load_footnotes(archive, wanted, fn_stats)
         events: list[dict] = []
+        primary: list[dict] = []
         for acc in sorted(rows_by_acc):
             sub = submissions[acc]
+            rows = rows_by_acc[acc]
             acc_owners = sorted(owners.get(acc, []), key=lambda o: o["owner_cik"])
             if not acc_owners:
-                counters.exclusions["no_reporting_owner_rows"] += len(rows_by_acc[acc])
+                counters.exclusions["no_reporting_owner_rows"] += len(rows)
                 continue
-            counters.population["transaction_rows_in_events"] += len(rows_by_acc[acc])
-            events.append(_event(acc, sub, rows_by_acc[acc], acc_owners, quarter,
-                                 q_start, q_end, counters, source_sha256))
+            counters.population["transaction_rows_in_events"] += len(rows)
+            events.append(_event(acc, sub, rows, acc_owners, quarter, q_start, q_end,
+                                 counters, source_sha256, "UNFILTERED"))
+            remarks_cat = footnote_category([sub.get("REMARKS") or ""])
+            kept = []
+            for row in rows:
+                if not title_is_common_equity(row["SECURITY_TITLE"]):
+                    counters.primary_exclusions["security_title_not_common_equity"] += 1
+                    continue
+                cat = footnote_category(notes.get((acc, fid), "") for fid in sorted(row_footnote_ids(row)))
+                if cat is not None:
+                    counters.primary_exclusions["footnote_exclusion"] += 1
+                    counters.footnote_categories[cat] += 1
+                    continue
+                if remarks_cat is not None:
+                    counters.primary_exclusions["remarks_exclusion"] += 1
+                    counters.footnote_categories["remarks:" + remarks_cat] += 1
+                    continue
+                kept.append(row)
+            if kept:
+                primary.append(_event(acc, sub, kept, acc_owners, quarter, q_start, q_end,
+                                      BuildCounters(), source_sha256, "PRIMARY"))
         events.sort(key=lambda e: (e["filing_date"], e["accession"]))
+        primary.sort(key=lambda e: (e["filing_date"], e["accession"]))
         counters.population["events"] += len(events)
-        return QuarterResult(quarter, events, accs,
-                             [s.as_dict() for s in (sub_stats, own_stats, tr_stats)])
+        return QuarterResult(quarter, events, primary, accs,
+                             [s.as_dict() for s in (sub_stats, own_stats, tr_stats, fn_stats)])
     finally:
         if own:
             archive.close()
 
 
+def duplicate_signature(event: Mapping[str, Any]) -> tuple:
+    tx = tuple(sorted((t["trans_date"] or "", float(t["shares"]),
+                       -1.0 if t["price_per_share"] is None else float(t["price_per_share"]))
+                      for t in event["transactions"]))
+    return (event["issuer_cik"], tuple(sorted(event["owner_ciks"])), tx)
+
+
+def dedupe_first_seen(events: list[dict], counters: BuildCounters) -> tuple[list[dict], list[list[str]]]:
+    """Drop exact duplicates, keeping the earliest by (FILING_DATE, accession)."""
+    first: dict[tuple, str] = {}
+    kept, dropped = [], []
+    for event in sorted(events, key=lambda e: (e["filing_date"], e["accession"])):
+        sig = duplicate_signature(event)
+        if sig in first:
+            counters.primary_exclusions["exact_duplicate_of_earlier_accession"] += \
+                event["n_transactions"]
+            dropped.append([event["accession"], first[sig]])
+            continue
+        first[sig] = event["accession"]
+        kept.append(event)
+    return kept, dropped
+
+
 def _event(acc: str, sub: Mapping[str, str], rows: list[dict], owners: list[dict],
            quarter: str, q_start: date, q_end: date, counters: BuildCounters,
-           source_sha256: str | None) -> dict:
+           source_sha256: str | None, population: str) -> dict:
     filing_date = parse_sec_date(sub["FILING_DATE"])
     assert filing_date is not None
     if not (q_start <= filing_date <= q_end):
@@ -324,6 +463,7 @@ def _event(acc: str, sub: Mapping[str, str], rows: list[dict], owners: list[dict
     event = {
         "schema": EVENT_SCHEMA,
         "lineage": LINEAGE_ID,
+        "population": population,
         "accession": acc,
         "quarter": quarter,
         "source_zip_sha256": source_sha256,
@@ -452,10 +592,56 @@ def aggregate_issuer_days(events: Iterable[Mapping[str, Any]]) -> list[dict]:
     return out
 
 
+# --- compact primary table ------------------------------------------------------------
+
+COMPACT_SCHEMA = "fastlane.primary_event.compact.v1"
+COMPACT_FIELDS = {
+    "accession": "unique key",
+    "quarter": "source data-set quarter",
+    "issuer_cik": "issuer CIK (10 digits)",
+    "filing_date": "EDGAR FILING_DATE = available_after_date; entry at the first vendor "
+                   "session strictly after it",
+    "ticker_as_filed": "ISSUERTRADINGSYMBOL as filed; NOT a PIT security mapping",
+    "value_usd": "sum of shares x reported per-share figure over kept rows (0 if unreported)",
+    "shares": "sum of shares over kept rows",
+    "filing_lag_days": "FILING_DATE - earliest TRANS_DATE (calendar days)",
+    "owners": "[owner_cik, role_class, is_director, is_officer, is_ten_percent_owner]",
+    "tx": "[trans_date, shares, per-share figure or null, direct_indirect] per kept row",
+}
+DATA_EXPORT_LIMIT_BYTES = 25_000_000
+
+
+def to_compact(event: Mapping[str, Any]) -> dict:
+    return {
+        "accession": event["accession"],
+        "quarter": event["quarter"],
+        "issuer_cik": event["issuer_cik"],
+        "filing_date": event["filing_date"],
+        "ticker_as_filed": event["ticker_as_filed"],
+        "value_usd": event["value_usd"],
+        "shares": event["shares"],
+        "filing_lag_days": event["filing_lag_days"],
+        "owners": [[o["owner_cik"], o["role_class"], int(o["is_director"]), int(o["is_officer"]),
+                    int(o["is_ten_percent_owner"])] for o in event["owners"]],
+        "tx": [[t["trans_date"], t["shares"], t["price_per_share"], t["direct_indirect"]]
+               for t in event["transactions"]],
+    }
+
+
 # --- I/O --------------------------------------------------------------------------
 
 def events_path(fw: Firewall) -> Path:
+    """Unfiltered base population (sensitivity only)."""
     return fw.data("derived", "events_v1.jsonl.gz")
+
+
+def primary_full_path(fw: Firewall) -> Path:
+    return fw.data("derived", "events_primary_full_v1.jsonl.gz")
+
+
+def primary_table_candidates(fw: Firewall) -> tuple[Path, Path]:
+    return (fw.artifact("data", "events_primary_v1.jsonl.gz"),
+            fw.data("derived", "events_primary_v1.jsonl.gz"))
 
 
 def issuer_days_path(fw: Firewall) -> Path:
@@ -500,11 +686,30 @@ def code_fingerprint() -> str:
     return "sha256:" + sha256_bytes("|".join(parts).encode("utf-8"))
 
 
+def _write_primary_table(fw: Firewall, compact: list[dict]) -> dict:
+    """Write the compact primary table to research/ if small enough, else to var/."""
+    committed, local = primary_table_candidates(fw)
+    sha, rows = write_jsonl_gz(fw, local, compact)
+    size = local.stat().st_size
+    if size <= DATA_EXPORT_LIMIT_BYTES:
+        committed.parent.mkdir(parents=True, exist_ok=True)
+        os.replace(local, committed)
+        target, location = committed, "research/fastlane/data (committable)"
+    else:
+        if committed.exists():
+            committed.unlink()           # never leave a stale committed copy behind
+        target, location = local, "var/fastlane/derived (too large to commit)"
+    return {"relpath": target.relative_to(fw.repo_root).as_posix(), "sha256": sha, "rows": rows,
+            "bytes": size, "location": location, "limit_bytes": DATA_EXPORT_LIMIT_BYTES,
+            "schema": COMPACT_SCHEMA, "fields": COMPACT_FIELDS}
+
+
 def build_all(fw: Firewall, quarters: list[str], *, log=print) -> dict:
-    """Build the event and issuer-day tables from fetched, manifest-verified zips."""
+    """Build base and primary event tables from fetched, manifest-verified zips."""
     counters = BuildCounters()
     per_quarter_accs: dict[str, array] = {}
     all_events: list[dict] = []
+    primary_events: list[dict] = []
     inputs = []
     table_stats = {}
     for quarter in sorted(quarters, key=quarter_key):
@@ -518,10 +723,11 @@ def build_all(fw: Firewall, quarters: list[str], *, log=print) -> dict:
         result = build_quarter(zip_path, quarter, counters, digest)
         per_quarter_accs[quarter] = result.accession_ints
         all_events.extend(result.events)
+        primary_events.extend(result.primary_events)
         table_stats[quarter] = result.table_stats
         inputs.append({"quarter": quarter, "sha256": digest,
                        "fingerprint": manifest.get("fingerprint")})
-        log(f"{quarter}: {len(result.events)} events")
+        log(f"{quarter}: {len(result.events)} events, {len(result.primary_events)} primary")
     dup = check_cross_quarter_duplicates(per_quarter_accs)
     seen: dict[str, str] = {}
     for event in all_events:
@@ -531,30 +737,55 @@ def build_all(fw: Firewall, quarters: list[str], *, log=print) -> dict:
                 f"({seen[event['accession']]}, {event['quarter']})")
         seen[event["accession"]] = event["quarter"]
     all_events.sort(key=lambda e: (e["filing_date"], e["accession"]))
+    primary, dropped = dedupe_first_seen(primary_events, counters)
+    counters.population["primary_events"] = len(primary)
+    counters.population["primary_transaction_rows"] = sum(e["n_transactions"] for e in primary)
     ev_sha, ev_rows = write_jsonl_gz(fw, events_path(fw), all_events)
-    days = aggregate_issuer_days(all_events)
+    full_sha, full_rows = write_jsonl_gz(fw, primary_full_path(fw), primary)
+    table = _write_primary_table(fw, [to_compact(e) for e in primary])
+    days = aggregate_issuer_days(primary)
     day_sha, day_rows = write_jsonl_gz(fw, issuer_days_path(fw), days)
+    fw.write_json_atomic(fw.data("derived", "primary_duplicates_v1.json"),
+                         {"dropped_then_kept": dropped})
     malformed = {q: {s["member"]: s["malformed_rows"] for s in stats}
                  for q, stats in table_stats.items()}
     manifest = {
         "lineage": LINEAGE_ID,
-        "schema": {"events": EVENT_SCHEMA, "issuer_days": ISSUER_DAY_SCHEMA},
+        "schema": {"events": EVENT_SCHEMA, "issuer_days": ISSUER_DAY_SCHEMA,
+                   "primary_table": COMPACT_SCHEMA},
         "code_fingerprint": code_fingerprint(),
         "population_rule": {
             "document_type": "exactly '4' (4/A, 3, 3/A, 5, 5/A excluded)",
             "table": "NONDERIV_TRANS",
             "trans_code": "P",
             "acquired_disposed": "A",
+            "backdating": "accession sequence year > FILING_DATE year -> excluded; same-year "
+                          "backdating cannot be detected from the data sets (residual risk)",
             "available_after_date": "FILING_DATE",
             "entry_rule": ENTRY_RULE,
             "ticker": "as filed (ISSUERTRADINGSYMBOL); not a PIT security mapping",
             "unique_key": "ACCESSION_NUMBER; duplicates are errors",
+            "roles": "relationship flags only; CEO/CFO = Officer flag + CEO/CFO title",
+        },
+        "primary_filters": {
+            "security_title_include_regex": SECURITY_TITLE_INCLUDE,
+            "security_title_exclude_regex": SECURITY_TITLE_EXCLUDE,
+            "security_title_normalization": "upper case, whitespace collapsed; re.search",
+            "footnote_exclusion_regex": FOOTNOTE_EXCLUSION,
+            "footnote_scope": "footnotes referenced by any *_FN column of the row, plus the "
+                              "filing REMARKS; case-insensitive",
+            "dedupe": "first-seen by (FILING_DATE, accession) on (issuer, sorted owner CIKs, "
+                      "sorted (trans_date, shares, per-share figure) tuples)",
         },
         "inputs": inputs,
         "outputs": {
-            "events": {"path": str(events_path(fw).relative_to(fw.repo_root)),
-                       "sha256": ev_sha, "rows": ev_rows},
-            "issuer_days": {"path": str(issuer_days_path(fw).relative_to(fw.repo_root)),
+            "events_unfiltered": {"path": events_path(fw).relative_to(fw.repo_root).as_posix(),
+                                  "sha256": ev_sha, "rows": ev_rows},
+            "events_primary_full": {
+                "path": primary_full_path(fw).relative_to(fw.repo_root).as_posix(),
+                "sha256": full_sha, "rows": full_rows},
+            "primary_table": table,
+            "issuer_days": {"path": issuer_days_path(fw).relative_to(fw.repo_root).as_posix(),
                             "sha256": day_sha, "rows": day_rows},
         },
         "counts": counters.as_dict(),

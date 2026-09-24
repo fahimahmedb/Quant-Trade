@@ -1,20 +1,22 @@
-"""Fast-lane census: outcome blindness and PIT cluster semantics (synthetic events)."""
+"""Fast-lane census: outcome blindness and PIT cluster semantics (synthetic compact rows)."""
 
 import unittest
 from datetime import date, timedelta
 
 from quant.fastlane import census as cs
 
+ROLE_FLAGS = {"CEO_CFO": (0, 1, 0), "OTHER_OFFICER": (0, 1, 0), "DIRECTOR": (1, 0, 0),
+              "TEN_PERCENT_OWNER": (0, 0, 1), "OTHER": (0, 0, 0)}
 
-def event(acc, issuer, day, owners, value=50_000.0, lag=2, ticker="SYNA"):
+
+def event(acc, issuer, day, owners, value=50_000.0, lag=2, ticker="SYNA", tx=None):
+    """A synthetic compact primary-table row (events.COMPACT_FIELDS)."""
     return {
-        "accession": acc, "issuer_cik": issuer, "filing_date": day.isoformat(),
-        "value_usd": value, "filing_lag_days": lag, "ticker_as_filed": ticker,
-        "owners": [{"owner_cik": cik, "role_class": role,
-                    "officer_or_director": role in ("CEO_CFO", "OTHER_OFFICER", "DIRECTOR"),
-                    "is_director": role == "DIRECTOR",
-                    "is_ten_percent_owner": role == "TEN_PERCENT_OWNER"}
-                   for cik, role in owners],
+        "accession": acc, "quarter": "synthetic", "issuer_cik": issuer,
+        "filing_date": day.isoformat(), "ticker_as_filed": ticker, "value_usd": value,
+        "shares": 1000.0, "filing_lag_days": lag,
+        "owners": [[cik, role, *ROLE_FLAGS[role]] for cik, role in owners],
+        "tx": tx if tx is not None else [[day.isoformat(), 1000.0 + sum(map(ord, acc)), 10.0, "D"]],
     }
 
 
@@ -89,8 +91,6 @@ class ClusterSemanticsTests(unittest.TestCase):
         self.assertEqual([r.day for r in formed], [days(2), days(41)])
 
     def test_expiry_before_additions_rearms_within_the_same_day(self):
-        # D07 WINDOW_EXPIRY_PRECEDES_SESSION_ADDITIONS: at day 11 the day-0 owner expires,
-        # the count falls to 1 (re-arm), then the day-11 owner makes a genuine new crossing.
         d0 = date(2012, 6, 4)
         events = [event("a1", "I1", d0, [("O1", "DIRECTOR")]),
                   event("a2", "I1", d0 + timedelta(days=9), [("O2", "DIRECTOR")]),
@@ -111,6 +111,33 @@ class ClusterSemanticsTests(unittest.TestCase):
                   event("a2", "I1", d0 + timedelta(days=1), [("O1", "DIRECTOR")]),
                   event("a3", "I1", d0 + timedelta(days=2), [("O9", "TEN_PERCENT_OWNER")])]
         self.assertEqual(self.rows("OD_CLUSTER_10CD", events), [])
+
+    def test_joint_filing_is_one_decision_unit_except_in_the_literal_frozen_family(self):
+        # probe p4: one accession with two O/D owners is not two independent buyers
+        d0 = date(2012, 6, 4)
+        joint = [event("a1", "I1", d0, [("O1", "DIRECTOR"), ("O2", "OTHER_OFFICER")])]
+        self.assertEqual(self.rows("OD_CLUSTER_10CD", joint), [])
+        self.assertEqual(self.rows("FROZEN_FV_PROXY_10WD_MERGED", joint), [])
+        self.assertEqual(len(self.rows("FROZEN_FV_PROXY_10WD", joint)), 1)   # D07 2.1 literal
+
+    def test_identical_transactions_merge_owners(self):
+        # probe p4: the same trade reported by two related owners on separate accessions
+        d0 = date(2012, 6, 4)
+        same = [[d0.isoformat(), 5000.0, 12.5, "I"]]
+        events = [event("a1", "I1", d0, [("O1", "DIRECTOR")], tx=same),
+                  event("a2", "I1", d0 + timedelta(days=1), [("O2", "DIRECTOR")], tx=same)]
+        self.assertEqual(self.rows("OD_CLUSTER_10CD", events), [])
+        self.assertEqual(len(self.rows("FROZEN_FV_PROXY_10WD", events)), 1)
+
+    def test_merging_is_point_in_time(self):
+        # a later joint filing must not retroactively erase an earlier genuine crossing
+        d0 = date(2012, 6, 4)
+        events = [event("a1", "I1", d0, [("O1", "DIRECTOR")]),
+                  event("a2", "I1", d0 + timedelta(days=1), [("O2", "DIRECTOR")]),
+                  event("a3", "I1", d0 + timedelta(days=90),
+                        [("O1", "DIRECTOR"), ("O2", "DIRECTOR")])]
+        formed = self.rows("OD_CLUSTER_10CD", events)
+        self.assertEqual([r.day for r in formed], [d0 + timedelta(days=1)])
 
     def test_frozen_proxy_uses_ten_weekdays(self):
         monday = date(2012, 6, 4)

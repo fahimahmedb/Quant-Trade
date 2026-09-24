@@ -72,12 +72,24 @@ class UserAgentTests(unittest.TestCase):
             si.SecClient("")
         self.assertEqual(si.require_user_agent({si.USER_AGENT_ENV: SYNTH_UA}), SYNTH_UA)
 
-    def test_binding_never_contains_the_address(self):
-        binding = si.ua_binding(SYNTH_UA)
-        self.assertTrue(binding.startswith("sha256:"))
-        self.assertNotIn("example", binding)
-        self.assertEqual(binding, si.ua_binding(SYNTH_UA))
-        self.assertNotEqual(binding, si.ua_binding(SYNTH_UA + "x"))
+    def test_manifests_store_no_user_agent_value_or_hash(self):
+        self.assertFalse(hasattr(si, "ua_binding"))
+        self.assertEqual(si.USER_AGENT_RECORD,
+                         {"source_env": si.USER_AGENT_ENV, "declared": True, "value_stored": False})
+
+    def test_scrub_removes_legacy_bindings_without_touching_retrieval_facts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fw = Firewall(Path(tmp))
+            legacy = {"quarter": "2010q1", "sha256": "ab" * 32, "bytes": 3,
+                      "retrieved_at_utc": "2026-09-24T00:00:00Z", "ua_binding": "sha256:" + "1" * 64}
+            fw.write_json_atomic(si.manifest_path(fw, "2010q1"), legacy)
+            self.assertEqual(si.scrub_user_agent_bindings(fw), 1)
+            after = si.load_manifest(fw, "2010q1")
+            self.assertNotIn("ua_binding", after)
+            self.assertEqual(after["user_agent"], si.USER_AGENT_RECORD)
+            for key in ("quarter", "sha256", "bytes", "retrieved_at_utc"):
+                self.assertEqual(after[key], legacy[key])
+            self.assertEqual(si.scrub_user_agent_bindings(fw), 0)
 
     def test_request_carries_declared_agent(self):
         opener = FakeOpener([FakeResponse(b"ok")])
@@ -154,9 +166,9 @@ class ManifestTests(unittest.TestCase):
                 "bytes": 10, "sha256": "ab" * 32, "members": [{"name": "SUBMISSION.tsv",
                                                                "size": 5, "crc32": "00000001"}],
                 "retrieved_at_utc": "2026-09-24T00:00:00Z", "http_last_modified": "a",
-                "ua_binding": "sha256:1"}
+                "user_agent": si.USER_AGENT_RECORD}
         later = {**base, "retrieved_at_utc": "2027-01-01T00:00:00Z",
-                 "http_last_modified": "b", "http_etag": "z", "ua_binding": "sha256:2"}
+                 "http_last_modified": "b", "http_etag": "z"}
         self.assertEqual(si.manifest_fingerprint(base), si.manifest_fingerprint(later))
         self.assertNotEqual(si.manifest_fingerprint(base),
                             si.manifest_fingerprint({**base, "sha256": "cd" * 32}))
@@ -178,6 +190,7 @@ class ManifestTests(unittest.TestCase):
             self.assertEqual(manifest["bytes"], len(payload))
             self.assertEqual(manifest["http_last_modified"], "synthetic")
             self.assertNotIn("example", str(manifest))
+            self.assertNotIn("ua_binding", manifest)
             again, action = si.fetch_quarter(fw, client, link, budget_bytes=10**9, min_free_bytes=0)
             self.assertEqual(action, "skipped_sha256_match")
             self.assertEqual(len(opener.calls), 1)               # no second request

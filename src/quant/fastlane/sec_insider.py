@@ -16,8 +16,11 @@ readme. Dates are ``DD-MON-YYYY``. Quarters partition by EDGAR filing date.
 
 SEC fair access: sequential requests, at most 5 per second, backoff on
 403/429/5xx, and a declared User-Agent taken only from ``QUANT_SEC_USER_AGENT``
-(there is deliberately no default). Manifests record only a sha256 binding of
-the User-Agent, never the contact address itself.
+(there is deliberately no default). Manifests record only *that* a declared
+User-Agent was used (:data:`USER_AGENT_RECORD`), never the value or any hash of
+it: an unkeyed hash of a short known-format string is a guessable identifier
+for the contact address, and a keyed hash whose key lives in the ephemeral
+``var/`` could not be verified later anyway, so no binding is kept.
 """
 
 from __future__ import annotations
@@ -49,7 +52,8 @@ FIRST_QUARTER = "2006q1"
 # href="/files/<path>/2006q1_form345.zip"
 ZIP_LINK_RE = re.compile(r'href="(/files/[A-Za-z0-9_./-]+/((\d{4})q([1-4]))_form345\.zip)"')
 
-REQUIRED_MEMBERS = ("SUBMISSION.tsv", "REPORTINGOWNER.tsv", "NONDERIV_TRANS.tsv")
+REQUIRED_MEMBERS = ("SUBMISSION.tsv", "REPORTINGOWNER.tsv", "NONDERIV_TRANS.tsv",
+                    "FOOTNOTES.tsv")
 
 REQUIRED_COLUMNS: Mapping[str, tuple[str, ...]] = {
     "SUBMISSION.tsv": ("ACCESSION_NUMBER", "FILING_DATE", "PERIOD_OF_REPORT",
@@ -62,6 +66,7 @@ REQUIRED_COLUMNS: Mapping[str, tuple[str, ...]] = {
                            "TRANS_CODE", "EQUITY_SWAP_INVOLVED", "TRANS_SHARES",
                            "TRANS_PRICEPERSHARE", "TRANS_ACQUIRED_DISP_CD",
                            "SHRS_OWND_FOLWNG_TRANS", "DIRECT_INDIRECT_OWNERSHIP"),
+    "FOOTNOTES.tsv": ("ACCESSION_NUMBER", "FOOTNOTE_ID", "FOOTNOTE_TXT"),
 }
 
 MIN_REQUEST_INTERVAL_S = 0.25          # 4 req/s < SEC's 10 req/s and the 5 req/s rule here
@@ -103,9 +108,7 @@ def require_user_agent(env: Mapping[str, str] | None = None) -> str:
     return declared
 
 
-def ua_binding(user_agent: str) -> str:
-    """A sha256 binding of the declared User-Agent (the address is never stored)."""
-    return "sha256:" + sha256_bytes(f"{LINEAGE_ID}|user-agent|{user_agent}".encode("utf-8"))
+USER_AGENT_RECORD = {"source_env": USER_AGENT_ENV, "declared": True, "value_stored": False}
 
 
 def utc_now_iso() -> str:
@@ -137,10 +140,6 @@ class SecClient:
         self._timeout = timeout_s
         self._last_request = None  # type: float | None
         self.requests_made = 0
-
-    @property
-    def ua_binding(self) -> str:
-        return ua_binding(self._user_agent)
 
     def _pace(self) -> None:
         if self._last_request is not None:
@@ -264,7 +263,7 @@ def discover(fw: Firewall, client: SecClient) -> tuple[list[QuarterLink], dict]:
         "sha256": sha256_bytes(body),
         "http_last_modified": resp.headers.get("last-modified"),
         "http_etag": resp.headers.get("etag"),
-        "ua_binding": client.ua_binding,
+        "user_agent": USER_AGENT_RECORD,
         "quarters_linked": [link.quarter for link in links],
         "urls": {link.quarter: link.url for link in links},
     }
@@ -280,7 +279,7 @@ FINGERPRINT_FIELDS = ("source", "quarter", "url", "bytes", "sha256", "members")
 def manifest_fingerprint(manifest: Mapping[str, Any]) -> str:
     """Content identity of one fetched file.
 
-    Retrieval time, HTTP validators and the UA binding are provenance, not
+    Retrieval time, HTTP validators and the User-Agent record are provenance, not
     content, so they are excluded: refetching identical bytes yields the same
     fingerprint, and any byte change yields a different one.
     """
@@ -378,7 +377,7 @@ def fetch_quarter(fw: Firewall, client: SecClient, link: QuarterLink,
         "http_last_modified": resp.headers.get("last-modified"),
         "http_etag": resp.headers.get("etag"),
         "http_content_length": resp.headers.get("content-length"),
-        "ua_binding": client.ua_binding,
+        "user_agent": USER_AGENT_RECORD,
         "members": members,
         "local_path": str(target.relative_to(fw.repo_root)),
     }
@@ -412,20 +411,38 @@ def consolidated_manifest(fw: Firewall, quarters: list[str], discovery: Mapping 
             continue
         entries.append({k: manifest.get(k) for k in (
             "quarter", "url", "retrieved_at_utc", "bytes", "sha256", "http_last_modified",
-            "http_etag", "ua_binding", "fingerprint")})
+            "http_etag", "user_agent", "fingerprint")})
     from quant.fastlane.preregistration import canonical_json
     return {
         "lineage": LINEAGE_ID,
         "source": SOURCE_ID,
         "index_page": None if discovery is None else {
             k: discovery.get(k) for k in ("url", "retrieved_at_utc", "bytes", "sha256",
-                                         "http_last_modified", "http_etag", "ua_binding")},
+                                         "http_last_modified", "http_etag", "user_agent")},
         "quarters": entries,
         "quarter_count": len(entries),
         "total_bytes": sum(e["bytes"] for e in entries),
         "set_fingerprint": "sha256:" + sha256_bytes(canonical_json(
             [[e["quarter"], e["fingerprint"]] for e in entries])),
     }
+
+
+def scrub_user_agent_bindings(fw: Firewall) -> int:
+    """One-time migration: drop the former unkeyed ``ua_binding`` from manifests.
+
+    Retrieval facts (url, time, bytes, sha256, validators, fingerprint) are kept
+    unchanged; only the UA-derived hash is replaced by :data:`USER_AGENT_RECORD`.
+    """
+    changed = 0
+    for path in fw.iter_files(fw.data("manifests", "sec_insider"), "*.json"):
+        record = fw.read_json(path)
+        if "ua_binding" in record:
+            record.pop("ua_binding")
+            record["user_agent"] = USER_AGENT_RECORD
+            record["ua_binding_removed_at_utc"] = utc_now_iso()
+            fw.write_json_atomic(path, record)
+            changed += 1
+    return changed
 
 
 # --- parsing ------------------------------------------------------------------

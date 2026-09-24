@@ -9,8 +9,13 @@ Every numeric parameter comes from the protocol's ``frictions`` section via
 * Commission: per share with a minimum (and an optional cap as a fraction of
   notional).
 * Impact: square-root law ``Y * sigma_daily * sqrt(Q / ADV20)``.
-* Participation: notional capped at ``cap * ADV20`` (0.1 % in D5).
-* Missing delisting return: protocol base/stress values (-30 % / -100 % in D5).
+* Participation: notional capped at ``cap * ADV20`` (0.1 % in D5); a name
+  whose ADV20 is below the untradeable threshold is skipped.
+* Delisting: vendor-agnostic classes with base/stress extra returns.
+* Stress: all friction costs times the protocol multiplier (reported, not gating).
+
+The values live in the protocol and are frozen from literature/engineering;
+they are never calibrated on the data being evaluated.
 """
 
 from __future__ import annotations
@@ -46,7 +51,9 @@ class FrictionParams:
     commission_max_fraction_of_notional: float | None
     impact_coefficient: float
     participation_cap_adv20: float
-    missing_delisting_return: Mapping[str, float]
+    untradeable_adv20_below_usd: float
+    stress_multiplier: float
+    delisting_classes: Mapping[str, Mapping[str, float]]
 
     @classmethod
     def from_protocol(cls, frictions: Mapping[str, Any]) -> "FrictionParams":
@@ -63,7 +70,13 @@ class FrictionParams:
             raise ValueError("spread bucket bounds must increase")
         commission = frictions["commission"]
         cap = commission.get("max_fraction_of_notional")
-        delist = frictions["missing_delisting_return"]
+        from quant.fastlane.prices import DELISTING_CLASSES
+        delist = frictions["delisting_classes"]
+        if sorted(delist) != sorted(DELISTING_CLASSES):
+            raise ValueError(f"delisting classes must be exactly {DELISTING_CLASSES}")
+        stress = frictions["stress"]
+        if stress.get("gating") is not False:
+            raise ValueError("friction stress is reported, never gating")
         return cls(
             spread_variant=spread["variant"],
             spread_min_pairs=int(spread["min_pairs"]),
@@ -76,8 +89,13 @@ class FrictionParams:
                                        nonneg=True),
             participation_cap_adv20=_finite("participation_cap_adv20",
                                             frictions["participation_cap_adv20"], positive=True),
-            missing_delisting_return={k: _finite(f"delisting {k}", v)
-                                      for k, v in delist.items()},
+            untradeable_adv20_below_usd=_finite("untradeable_adv20_below_usd",
+                                                frictions["untradeable_adv20_below_usd"],
+                                                nonneg=True),
+            stress_multiplier=_finite("stress multiplier", stress["multiplier"], positive=True),
+            delisting_classes={c: {"base": _finite(f"{c} base", delist[c]["base"]),
+                                   "stress": _finite(f"{c} stress", delist[c]["stress"])}
+                               for c in DELISTING_CLASSES},
         )
 
 
@@ -164,20 +182,29 @@ def participation_capped_notional(target_notional_usd: float, adv20_usd: float,
     return min(target, _finite("cap_fraction", cap_fraction, positive=True) * adv)
 
 
+def is_tradeable(adv20_usd: float, params: FrictionParams) -> bool:
+    return _finite("adv20_usd", adv20_usd, nonneg=True) >= params.untradeable_adv20_below_usd
+
+
 def one_side_cost_usd(notional_usd: float, shares: float, adv20_usd: float,
                       daily_volatility: float, ar_spread: float | None,
-                      params: FrictionParams) -> dict:
+                      params: FrictionParams, *, stress: bool = False) -> dict:
+    if not is_tradeable(adv20_usd, params):
+        raise ValueError(f"ADV20 {adv20_usd} is below the untradeable threshold")
     spread = effective_spread(ar_spread, adv20_usd, params)
     half = half_spread_cost_usd(notional_usd, spread)
     fee = commission_usd(shares, notional_usd, params)
     impact = notional_usd * sqrt_impact_fraction(notional_usd, adv20_usd, daily_volatility,
                                                  params.impact_coefficient)
-    return {"spread": spread, "half_spread_usd": half, "commission_usd": fee,
-            "impact_usd": impact, "total_usd": half + fee + impact}
+    scale = params.stress_multiplier if stress else 1.0
+    return {"spread": spread, "half_spread_usd": half * scale, "commission_usd": fee * scale,
+            "impact_usd": impact * scale, "total_usd": (half + fee + impact) * scale,
+            "stress": stress}
 
 
-def missing_delisting_return(scenario: str, params: FrictionParams) -> float:
+def delisting_extra_return(delisting_class: str, scenario: str, params: FrictionParams) -> float:
+    """Extra return applied after the last traded price, by delisting class."""
     try:
-        return params.missing_delisting_return[scenario]
+        return params.delisting_classes[delisting_class][scenario]
     except KeyError as exc:
-        raise ValueError(f"no missing-delisting return declared for {scenario!r}") from exc
+        raise ValueError(f"no delisting treatment for {delisting_class!r}/{scenario!r}") from exc

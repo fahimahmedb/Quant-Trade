@@ -2,62 +2,81 @@
 
 Outcome-blind: built only from SEC Insider Transactions Data Sets filing fields. No prices, returns, market caps or delisting status were read.
 
-Coverage: 2006-01-03 → 2026-06-30, 393907 original Form 4 P/A accessions. Events input `071d48baed7c1f8c…`.
+Coverage: 2006-01-03 → 2026-06-30, 341213 primary accessions (`research/fastlane/data/events_primary_v1.jsonl.gz`, sha256 `1113a2058e854e16…`).
 
-Entry-event unit: issuer × filing date. Value tiers use the reported transaction value (window sum for the crossing families).
+Primary population: original Form 4 P/A, common-equity titles, frozen footnote/remarks exclusions, exact duplicates removed, backdated accessions excluded. Entry-event unit: issuer × filing date.
 
-## Entry events per year by split
+Row exclusions (base): P_acquired_disposed_not_A 3997, accession_year_after_filing_year 4, document_type_not_original_form4 280528, shares_missing_nonpositive_or_unparseable 3763, trans_code_not_P 6195978.
+
+Row exclusions (primary): exact_duplicate_of_earlier_accession 3247, footnote_exclusion 36012, remarks_exclusion 1550, security_title_not_common_equity 47195; footnote categories: conversion 683, ipo_underwritten 4733, plan_drip_fees 28368, private_placement 2228, remarks:conversion 11, remarks:ipo_underwritten 124, remarks:plan_drip_fees 1353, remarks:private_placement 62.
+
+## Primary entry events per year by split
 
 | Family | Split | Issuer-days/yr | Issuer-days | Unique issuers | ≥$10k/yr | ≥$100k/yr | ≥$1M/yr | Cluster formations | Lag p50/p90 (d) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| ALL_P | discovery | 14922.4 | 193991 | 11101 | 10491.2 | 4268.8 | 1175.7 | 44981 | 2/5 |
-| ALL_P | walk_forward | 11556.8 | 28892 | 4381 | 8885.2 | 4224.0 | 1340.4 | 6975 | 2/4 |
-| ALL_P | holdout | 10965.6 | 54828 | 5698 | 8421.6 | 4265.2 | 1337.0 | 12475 | 2/5 |
-| OD | discovery | 12341.2 | 160435 | 10264 | 8366.8 | 2917.0 | 588.8 | 35217 | 2/5 |
-| OD | walk_forward | 9756.8 | 24392 | 4038 | 7320.4 | 3103.2 | 755.6 | 5667 | 2/4 |
-| OD | holdout | 8884.8 | 44424 | 5224 | 6656.4 | 2967.6 | 717.8 | 9326 | 2/5 |
-| CEO_CFO | discovery | 3749.7 | 48746 | 7021 | 2332.0 | 847.1 | 141.8 | 5518 | 2/5 |
-| CEO_CFO | walk_forward | 3346.0 | 8365 | 2190 | 2247.6 | 901.6 | 192.4 | 1019 | 2/4 |
-| CEO_CFO | holdout | 3182.2 | 15911 | 3209 | 2135.0 | 939.0 | 205.8 | 1829 | 2/4 |
-| OD_CLUSTER_10CD | discovery | 2709.0 | 35217 | 6757 | 2232.0 | 1023.3 | 236.1 | 35217 | 2/6 |
-| OD_CLUSTER_10CD | walk_forward | 2266.8 | 5667 | 2251 | 1959.2 | 1154.4 | 337.6 | 5667 | 2/4 |
-| OD_CLUSTER_10CD | holdout | 1865.2 | 9326 | 2934 | 1652.0 | 986.0 | 299.0 | 9326 | 2/5 |
-| FROZEN_FV_PROXY_10WD | discovery | 2709.4 | 35222 | 6871 | 2249.5 | 1040.4 | 240.4 | 35222 | 2/6 |
-| FROZEN_FV_PROXY_10WD | walk_forward | 2236.8 | 5592 | 2297 | 1956.8 | 1160.0 | 337.2 | 5592 | 2/4 |
-| FROZEN_FV_PROXY_10WD | holdout | 1871.6 | 9358 | 2988 | 1663.0 | 1003.6 | 302.6 | 9358 | 2/5 |
+| ALL_P | discovery | 13412.5 | 174362 | 10392 | 9441.5 | 3797.2 | 1031.3 | 28894 | 2/5 |
+| ALL_P | walk_forward | 10360.0 | 25900 | 3983 | 8025.2 | 3772.8 | 1146.8 | 4535 | 2/4 |
+| ALL_P | holdout | 9783.4 | 48917 | 5182 | 7564.6 | 3774.6 | 1139.0 | 7548 | 2/4 |
+| OD | discovery | 11118.1 | 144535 | 9673 | 7538.5 | 2580.3 | 500.2 | 26873 | 2/5 |
+| OD | walk_forward | 8737.6 | 21844 | 3682 | 6608.4 | 2762.4 | 626.0 | 4211 | 2/4 |
+| OD | holdout | 7912.2 | 39561 | 4793 | 5981.8 | 2618.6 | 601.2 | 6881 | 2/4 |
+| CEO_CFO | discovery | 3349.9 | 43549 | 6557 | 2090.2 | 744.4 | 123.7 | 3942 | 1/5 |
+| CEO_CFO | walk_forward | 2993.6 | 7484 | 1967 | 2035.2 | 786.8 | 153.6 | 754 | 2/4 |
+| CEO_CFO | holdout | 2807.8 | 14039 | 2906 | 1912.8 | 823.6 | 172.2 | 1276 | 2/4 |
+| OD_CLUSTER_10CD | discovery | 2067.2 | 26873 | 5941 | 1773.2 | 810.1 | 161.5 | 26873 | 2/5 |
+| OD_CLUSTER_10CD | walk_forward | 1684.4 | 4211 | 1872 | 1520.4 | 897.6 | 201.2 | 4211 | 2/4 |
+| OD_CLUSTER_10CD | holdout | 1376.2 | 6881 | 2496 | 1270.6 | 741.2 | 171.4 | 6881 | 2/4 |
+| FROZEN_FV_PROXY_10WD | discovery | 2306.4 | 29983 | 6324 | 1959.0 | 899.0 | 198.6 | 29983 | 2/5 |
+| FROZEN_FV_PROXY_10WD | walk_forward | 1849.2 | 4623 | 2037 | 1676.0 | 1001.2 | 264.4 | 4623 | 2/4 |
+| FROZEN_FV_PROXY_10WD | holdout | 1552.6 | 7763 | 2682 | 1425.8 | 861.0 | 246.2 | 7763 | 2/4 |
+| FROZEN_FV_PROXY_10WD_MERGED | discovery | 2095.5 | 27241 | 6055 | 1805.7 | 831.8 | 167.2 | 27241 | 2/5 |
+| FROZEN_FV_PROXY_10WD_MERGED | walk_forward | 1685.2 | 4213 | 1924 | 1531.6 | 908.8 | 202.0 | 4213 | 2/4 |
+| FROZEN_FV_PROXY_10WD_MERGED | holdout | 1397.4 | 6987 | 2547 | 1289.2 | 761.2 | 177.2 | 6987 | 2/4 |
 
-## Issuer-days per calendar year
+## Sensitivity: unfiltered population (issuer-days/yr)
 
-| Year | ALL_P | OD | CEO_CFO | OD_CLUSTER_10CD | FROZEN_FV_PROXY_10WD |
-|---|---:|---:|---:|---:|---:|
-| 2006 | 16387 | 13030 | 3603 | 2765 | 2787 |
-| 2007 | 20189 | 16366 | 4524 | 3796 | 3789 |
-| 2008 | 26636 | 21402 | 6193 | 4609 | 4577 |
-| 2009 | 17349 | 14625 | 4215 | 3053 | 3033 |
-| 2010 | 13714 | 11532 | 3312 | 2411 | 2407 |
-| 2011 | 15371 | 13117 | 3951 | 2931 | 2935 |
-| 2012 | 12972 | 11026 | 3402 | 2397 | 2439 |
-| 2013 | 10869 | 9155 | 2739 | 2050 | 2074 |
-| 2014 | 11641 | 10025 | 3317 | 2324 | 2321 |
-| 2015 | 14326 | 11901 | 3994 | 2667 | 2620 |
-| 2016 | 12191 | 9984 | 3184 | 2164 | 2162 |
-| 2017 | 10525 | 8611 | 2984 | 1875 | 1895 |
-| 2018 | 11821 | 9661 | 3328 | 2175 | 2183 |
-| 2019 | 11166 | 9271 | 3265 | 2164 | 2155 |
-| 2020 | 13438 | 11490 | 3890 | 2670 | 2601 |
-| 2021 | 10336 | 8755 | 3023 | 1988 | 1973 |
-| 2022 | 12977 | 10782 | 3891 | 2162 | 2166 |
-| 2023 | 11824 | 9586 | 3498 | 2023 | 2009 |
-| 2024 | 9530 | 7384 | 2717 | 1542 | 1555 |
-| 2025 | 9653 | 7742 | 2754 | 1644 | 1673 |
-| 2026 | 4796 | 3806 | 1238 | 800 | 818 |
+| Family | discovery | walk_forward | holdout |
+|---|---:|---:|---:|
+| ALL_P | 14922.4 | 11556.8 | 10965.6 |
+| OD | 12341.2 | 9756.8 | 8884.6 |
+| CEO_CFO | 3741.1 | 3340.0 | 3179.0 |
+| OD_CLUSTER_10CD | 2419.0 | 2028.4 | 1643.2 |
+| FROZEN_FV_PROXY_10WD | 2708.3 | 2234.0 | 1869.6 |
+| FROZEN_FV_PROXY_10WD_MERGED | 2443.0 | 2013.2 | 1657.8 |
+
+## Primary issuer-days per calendar year
+
+| Year | ALL_P | OD | CEO_CFO | OD_CLUSTER_10CD | FROZEN_FV_PROXY_10WD | FROZEN_FV_PROXY_10WD_MERGED |
+|---|---:|---:|---:|---:|---:|---:|
+| 2006 | 14792 | 11823 | 3238 | 2157 | 2400 | 2205 |
+| 2007 | 18351 | 15025 | 4149 | 3087 | 3385 | 3121 |
+| 2008 | 24070 | 19359 | 5523 | 3796 | 4069 | 3798 |
+| 2009 | 15654 | 13216 | 3833 | 2375 | 2627 | 2376 |
+| 2010 | 12333 | 10376 | 2954 | 1774 | 2016 | 1814 |
+| 2011 | 13950 | 11890 | 3552 | 2267 | 2522 | 2299 |
+| 2012 | 11614 | 9903 | 3045 | 1762 | 2029 | 1816 |
+| 2013 | 9606 | 8101 | 2348 | 1417 | 1635 | 1448 |
+| 2014 | 10436 | 8981 | 2917 | 1713 | 1918 | 1737 |
+| 2015 | 12824 | 10660 | 3578 | 1997 | 2219 | 2009 |
+| 2016 | 10865 | 8863 | 2817 | 1546 | 1776 | 1574 |
+| 2017 | 9283 | 7672 | 2630 | 1356 | 1554 | 1387 |
+| 2018 | 10584 | 8666 | 2965 | 1626 | 1833 | 1657 |
+| 2019 | 10145 | 8402 | 2974 | 1603 | 1808 | 1635 |
+| 2020 | 12049 | 10276 | 3468 | 2059 | 2166 | 2010 |
+| 2021 | 9176 | 7817 | 2667 | 1412 | 1593 | 1420 |
+| 2022 | 11781 | 9796 | 3518 | 1613 | 1817 | 1637 |
+| 2023 | 10619 | 8527 | 3061 | 1527 | 1695 | 1528 |
+| 2024 | 8442 | 6510 | 2374 | 1095 | 1257 | 1116 |
+| 2025 | 8484 | 6824 | 2423 | 1198 | 1384 | 1244 |
+| 2026 | 4121 | 3253 | 1038 | 585 | 666 | 610 |
 
 ## Definitions
 
-- `ALL_P`: any original Form 4 non-derivative P/A purchase.
-- `OD`: at least one officer/director reporting owner (10%-only/Other-only excluded).
-- `CEO_CFO`: at least one owner whose title matches CEO or CFO.
-- `OD_CLUSTER_10CD`: crossing <2 -> >=2 distinct O/D owner CIKs over filing dates [d-9,d], re-armed only after the window count falls below 2.
-- `FROZEN_FV_PROXY_10WD`: frozen first-vertical signal (D07 2.1-2.2) with regular sessions approximated by weekdays (no holidays); rate estimate only, not the frozen object.
+- `ALL_P`: any primary purchase.
+- `OD`: at least one officer/director owner by relationship flag (10%-only and Other-only excluded; titles never promote).
+- `CEO_CFO`: at least one owner with the Officer relationship flag and a CEO/CFO title.
+- `OD_CLUSTER_10CD`: crossing <2 -> >=2 distinct O/D decision units over filing dates [d-9,d], re-armed below 2; owners on one accession or with an identical (date, shares, per-share) row are one unit (PIT merge).
+- `FROZEN_FV_PROXY_10WD`: frozen first-vertical signal taken literally (distinct O/D CIKs, D07 2.1-2.2) with regular sessions approximated by weekdays; rate estimate only, not the frozen object.
+- `FROZEN_FV_PROXY_10WD_MERGED`: SENSITIVITY: the frozen proxy with decision-unit merging; not a grid family.
 
-Caveats: tickers are as filed, not a point-in-time security mapping; the `FROZEN_FV_PROXY_10WD` family approximates regular sessions by weekdays; the data sets are SEC-published extracts (fingerprinted in `sec_insider_manifest_v1.json`), not the raw XML.
+Caveats: tickers are as filed, not a point-in-time security mapping; the frozen proxies approximate regular sessions by weekdays; counts precede PIT security mapping and liquidity eligibility; the data sets are SEC-published extracts (fingerprinted in `sec_insider_manifest_v1.json`), not the raw XML; same-year backdating cannot be detected from the data sets.

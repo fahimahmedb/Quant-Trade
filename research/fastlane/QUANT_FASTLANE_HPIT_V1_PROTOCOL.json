@@ -1,6 +1,6 @@
 {
   "authority": {
-    "decisions": "handoff/CLAUDE_DELEGATED_DECISIONS_AND_PLAN_2026-09-23.md §D5-D6",
+    "decisions": "handoff/CLAUDE_DELEGATED_DECISIONS_AND_PLAN_2026-09-23.md §D5-D6 plus the lead's repair-round decisions (2026-09-24)",
     "design": "handoff/CLAUDE_PROJECT_REVIEW_AUDIT_2026-09-23.md §4",
     "frozen_signal_definition": "governance/D07_OPEN_SPACE_BOUNDARY.md §2.1-2.3",
     "source_sha256": {
@@ -9,205 +9,278 @@
       "handoff/CLAUDE_PROJECT_REVIEW_AUDIT_2026-09-23.md": "sha256:faad58c672a8ee69d048499f8b4f214275f5636fef7e09bc6e42a04d6d0b9b93"
     }
   },
+  "benchmark": {
+    "fallback": "NONE",
+    "manifest": "research/fastlane/vendor/BENCHMARK_SOURCE.json (lineage, series SPY, return_type TOTAL_RETURN, vendor_id, dataset, fallback NONE)",
+    "rule": "the exact vendor dataset is recorded in the committed manifest before any grant; no other source may substitute",
+    "series": "SPY total return (dividends reinvested) from the licensed vendor"
+  },
   "capacity": {
     "multiples_of_C0": [
       1,
       10,
       100
     ],
-    "rule": "same constructor at each multiple with the 0.1% ADV20 cap; net excess return reported at each"
+    "rule": "same constructor at each multiple with the 0.1% ADV20 cap; net annualized alpha reported at each"
   },
   "census_binding": {
-    "census_sha256": "sha256:7129408682d994dd3d4d1f7fb6adfee2a9afb638dc7b8f4c5aad1c7c2a895a26",
-    "events_sha256": "071d48baed7c1f8c7a4e8b792651e6983d28750ccff43f05d6e6b894ab51a5e7",
-    "note": "variant grid chosen from outcome-blind counts only",
+    "census_sha256": "sha256:62b26ab5251c581ac19f438b467872caba7a6638e92729d2ba307d0eedcdc2db",
+    "events_relpath": "research/fastlane/data/events_primary_v1.jsonl.gz",
+    "events_rows": 341213,
+    "events_sha256": "1113a2058e854e16fa64a401555b3b902281b94c3b5e9d90227dcc29019b1ce9",
+    "grant_time_check": "require_outcome_access recomputes the sha256 of events_relpath and refuses on mismatch",
+    "grid_selection_disclosure": "the variant grid and its adequacy screen were chosen from outcome-blind event COUNTS that include holdout-period (2021-07..2026-06) counts; no outcome of any split was read",
     "sec_manifest_set_fingerprint": "sha256:76f6ad974b6e37d000b062bc440f01e7ece97a9769b6805a8b1f86607b328ff3"
   },
   "constructor": {
     "C0_usd": 100000.0,
-    "allocation": "a_j = min(C0/slots, participation_cap_adv20 * ADV20_j); ADV20 = mean of raw_close*raw_volume over the 20 completed vendor sessions before entry",
-    "alternative_audit_4_2": {
-      "C0_usd": 10000.0,
-      "slots": 20,
-      "source": "audit §4.2 / FORM4_SLOT20_ADV20_V1 geometry"
-    },
+    "allocation": "a_j = min(C0/slots, participation_cap_adv20 * ADV20_j); ADV20 = mean of raw_close*raw_volume over the 20 completed vendor sessions before entry; ADV20 below frictions.untradeable_adv20_below_usd -> skipped (counted)",
+    "book": "paper only",
     "id": "FASTLANE_SLOTK_ADV20_V1",
     "no_recycling": "realized P&L is not recycled into C0",
-    "order": "process entries by (entry_session, issuer_cik, accession-set digest); lowest free slot; if the issuer already holds an active slot or all slots are busy, a_j = 0 with the reason logged",
-    "owner_decision_required": true,
-    "rationale": "Power of the one-look holdout scales with concurrent positions, not event count: K=20 gives an annualized MDE of ~15%/yr on invested capital, K=100 ~7%/yr. C0 = USD 100,000 keeps a USD 1,000 slot so the USD 1 commission minimum costs 10 bp per side.",
+    "order": "entries are processed by (entry_session, tie_break); the lowest free slot is taken; an issuer with an active slot or a full book gets a_j = 0 (reason logged)",
     "slot_release": "time-based at the scheduled exit close; never early on gain, loss or delisting",
     "slot_target_notional": "C0 / slots",
-    "slots": 100
+    "slots": 100,
+    "tie_break": "sha256(utf8(str(inference.bootstrap_seed) + '|' + ','.join(sorted(accessions of the issuer-day)))) ascending hex (quant.fastlane.constructor.tie_break_key); never issuer CIK"
   },
   "delisting": {
-    "missing_return_base": -0.3,
-    "missing_return_stress": -1.0,
-    "rule": "a position whose security stops trading without a vendor delisting return takes the base value; stress is reported"
+    "classes": {
+      "BANKRUPTCY_OR_CAUSE": "-100 %",
+      "CASH_ACQUISITION": "last traded price, no extra loss",
+      "STOCK_MERGER": "last traded price",
+      "UNKNOWN": "-30 % (stress -100 %)"
+    },
+    "mapping_manifest": "research/fastlane/vendor/DELISTING_CLASS_MAP.json (vendor code -> class), committed by the vendor adapter before any grant",
+    "vendor_agnostic": true
   },
   "evidence_class_target": "HISTORICAL_PIT_VALIDATION (D6, pending ratification)",
   "excluded_cells": [
     {
-      "avg_concurrent_positions": 14.2,
+      "avg_concurrent_positions": 11.9,
       "census_issuer_days_per_year": {
-        "discovery": 588.8,
-        "holdout": 717.8,
-        "walk_forward": 755.6
+        "discovery": 500.2,
+        "holdout": 601.2,
+        "walk_forward": 626.0
       },
       "reasons": [
-        "holdout average concurrent positions 14.2 < 20"
+        "holdout average concurrent positions 11.9 < 20"
       ],
       "variant_id": "OD_V1M_H5"
     },
     {
-      "avg_concurrent_positions": 18.6,
-      "census_issuer_days_per_year": {
-        "discovery": 847.1,
-        "holdout": 939.0,
-        "walk_forward": 901.6
-      },
-      "reasons": [
-        "holdout average concurrent positions 18.6 < 20"
-      ],
-      "variant_id": "CEO_CFO_V100K_H5"
-    },
-    {
-      "avg_concurrent_positions": 4.1,
-      "census_issuer_days_per_year": {
-        "discovery": 141.8,
-        "holdout": 205.8,
-        "walk_forward": 192.4
-      },
-      "reasons": [
-        "holdout average concurrent positions 4.1 < 20"
-      ],
-      "variant_id": "CEO_CFO_V1M_H5"
-    },
-    {
       "avg_concurrent_positions": 16.3,
       "census_issuer_days_per_year": {
-        "discovery": 141.8,
-        "holdout": 205.8,
-        "walk_forward": 192.4
+        "discovery": 744.4,
+        "holdout": 823.6,
+        "walk_forward": 786.8
       },
       "reasons": [
         "holdout average concurrent positions 16.3 < 20"
       ],
+      "variant_id": "CEO_CFO_V100K_H5"
+    },
+    {
+      "avg_concurrent_positions": 3.4,
+      "census_issuer_days_per_year": {
+        "discovery": 123.7,
+        "holdout": 172.2,
+        "walk_forward": 153.6
+      },
+      "reasons": [
+        "holdout average concurrent positions 3.4 < 20"
+      ],
+      "variant_id": "CEO_CFO_V1M_H5"
+    },
+    {
+      "avg_concurrent_positions": 13.7,
+      "census_issuer_days_per_year": {
+        "discovery": 123.7,
+        "holdout": 172.2,
+        "walk_forward": 153.6
+      },
+      "reasons": [
+        "holdout average concurrent positions 13.7 < 20"
+      ],
       "variant_id": "CEO_CFO_V1M_H20"
     },
     {
-      "avg_concurrent_positions": 19.9,
+      "avg_concurrent_positions": 17.1,
       "census_issuer_days_per_year": {
-        "discovery": 1040.4,
-        "holdout": 1003.6,
-        "walk_forward": 1160.0
+        "discovery": 899.0,
+        "holdout": 861.0,
+        "walk_forward": 1001.2
       },
       "reasons": [
-        "holdout average concurrent positions 19.9 < 20"
+        "holdout average concurrent positions 17.1 < 20"
       ],
       "variant_id": "FROZEN_FV_10S_V100K_H5"
     },
     {
-      "avg_concurrent_positions": 6.0,
+      "avg_concurrent_positions": 4.9,
       "census_issuer_days_per_year": {
-        "discovery": 240.4,
-        "holdout": 302.6,
-        "walk_forward": 337.2
+        "discovery": 198.6,
+        "holdout": 246.2,
+        "walk_forward": 264.4
       },
       "reasons": [
-        "holdout average concurrent positions 6.0 < 20"
+        "holdout average concurrent positions 4.9 < 20"
       ],
       "variant_id": "FROZEN_FV_10S_V1M_H5"
+    },
+    {
+      "avg_concurrent_positions": 19.5,
+      "census_issuer_days_per_year": {
+        "discovery": 198.6,
+        "holdout": 246.2,
+        "walk_forward": 264.4
+      },
+      "reasons": [
+        "holdout average concurrent positions 19.5 < 20"
+      ],
+      "variant_id": "FROZEN_FV_10S_V1M_H20"
     }
   ],
+  "execution": {
+    "missing_entry_bar": "no vendor bar at the entry session -> no fill; the event is skipped and counted",
+    "missing_exit_bar": "no bar at the scheduled exit -> exit at the next available open; if none within 20 sessions, apply the delisting treatment from the last traded price"
+  },
   "firewall": {
     "frozen_lineage": "no read/write of FORM4_FIRST_VERTICAL_MULTI_COHORT_V1; its cohorts are prospective and were never activated, so the 2006-2026H1 fast-lane population cannot overlap them",
-    "outcome_access": "only via a sealed prereg whose sha256 matches; holdout via the one-look ledger",
-    "space": "var/fastlane/ (data, ledgers), research/fastlane/ (artifacts)"
+    "outcome_access": "only via require_outcome_access: seal reloaded and git-anchored (one adding commit, ancestor of HEAD, on a remote-tracking branch, bytes equal); vendor manifests committed; event table sha equal to census_binding; holdout via the committed write-once HOLDOUT_REQUEST.json (var/ ledger is a cache); grants are HMAC-tokenized and re-verified on every vendor call",
+    "space": "var/fastlane/ (data, ledger caches), research/fastlane/ (committed artifacts)"
   },
   "frictions": {
     "commission": {
-      "max_fraction_of_notional": 0.01,
-      "minimum_usd": 1.0,
-      "note": "draft; shaped like a published retail per-share schedule; owner to confirm against the actual paper broker",
-      "per_share_usd": 0.005
+      "max_fraction_of_notional": null,
+      "minimum_usd": 0.35,
+      "per_share_usd": 0.0035
+    },
+    "delisting_classes": {
+      "BANKRUPTCY_OR_CAUSE": {
+        "base": -1.0,
+        "stress": -1.0
+      },
+      "CASH_ACQUISITION": {
+        "base": 0.0,
+        "stress": 0.0
+      },
+      "STOCK_MERGER": {
+        "base": 0.0,
+        "stress": 0.0
+      },
+      "UNKNOWN": {
+        "base": -0.3,
+        "stress": -1.0
+      }
     },
     "impact": {
       "coefficient": 1.0,
+      "formula": "k * sigma_daily * sqrt(Q / ADV20)",
       "model": "SQUARE_ROOT",
       "volatility": "stdev of daily log close-to-close over the 20 sessions before the leg"
     },
-    "missing_delisting_return": {
-      "base": -0.3,
-      "stress": -1.0
-    },
     "participation_cap_adv20": 0.001,
+    "provenance": "frozen from literature/engineering choices; NOT calibrated on the data being evaluated",
     "spread": {
       "adv20_bucket_floor_bps": [
         {
-          "adv_below_usd": 1000000.0,
-          "floor_bps": 150.0
+          "adv_below_usd": 500000.0,
+          "floor_bps": 250.0
         },
         {
-          "adv_below_usd": 5000000.0,
-          "floor_bps": 75.0
+          "adv_below_usd": 2000000.0,
+          "floor_bps": 120.0
         },
         {
-          "adv_below_usd": 25000000.0,
-          "floor_bps": 35.0
+          "adv_below_usd": 10000000.0,
+          "floor_bps": 60.0
         },
         {
-          "adv_below_usd": 100000000.0,
-          "floor_bps": 15.0
+          "adv_below_usd": 50000000.0,
+          "floor_bps": 30.0
         },
         {
           "adv_below_usd": null,
-          "floor_bps": 5.0
+          "floor_bps": 10.0
         }
       ],
-      "cost_per_side": "half of max(Abdi-Ranaldo estimate over the 21 sessions before entry (before exit for the exit leg), ADV20 bucket floor)",
+      "effective": "max(Abdi-Ranaldo estimate over the 21 sessions before the leg, ADV20-bucket full-spread floor); cost per side = half of it",
       "estimator": "ABDI_RANALDO_2017_CHL",
       "min_pairs": 15,
-      "note": "Floors are draft engineering values (full quoted spread, bp), not calibration.",
       "variant": "two_day_corrected_mean",
       "window_sessions": 21
-    }
+    },
+    "stress": {
+      "gating": false,
+      "multiplier": 2.0,
+      "rule": "all friction costs x2, reported alongside; never part of GO"
+    },
+    "untradeable_adv20_below_usd": 100000.0
   },
   "go_criterion": {
     "all_of": [
       "annualized net alpha vs SPY >= 3%/yr at 1x C0 (base delisting)",
-      "Holm-adjusted p < 0.05",
+      "Holm-adjusted p < 0.05 for BOTH the studentized block bootstrap and the fixed-b HAC co-check",
       "net result positive at 1x C0 after frictions",
-      "DSR > 0.95",
+      "DSR > 0.95 (discovery, N = trial-ledger count)",
       "vendor attestation go_eligible (includes delisted, PIT mapping, raw prices plus actions, verified)"
     ],
-    "authority_if_go": "SHADOW_PROVISIONAL paper only (D6 caps); never FORWARD_CONFIRMATION or real capital",
-    "otherwise": "NO_GO recorded as a result"
+    "authority_if_go": "SHADOW_PROVISIONAL paper only (D6 caps); never FORWARD_CONFIRMATION or real capital"
   },
   "inference": {
-    "interval": "moving-block bootstrap, block 80 sessions, 9,999 draws, seed fixed in the sealed file",
-    "robustness": "FF5+UMD alpha (Ken French library, snapshot fingerprinted)",
-    "unit": "daily net return of the calendar-time portfolio in excess of SPY (simple total returns, same corporate-action convention on both legs)"
+    "block_length_sessions": 80,
+    "bootstrap_draws": 10000,
+    "bootstrap_seed": 20260924,
+    "co_check": {
+      "bandwidth_b": 0.1,
+      "critical_values": "Kiefer-Vogelsang (2005) fixed-b",
+      "kernel": "Bartlett",
+      "purpose": "valid with few effective 80-session blocks (~15 in the holdout)",
+      "test": "fixed-b HAC t-test of mean r_ex, one-sided"
+    },
+    "go_requires": "BOTH the bootstrap and the fixed-b HAC p-values below the Holm threshold",
+    "primary_test": "one-sided studentized moving-block bootstrap of mean r_ex (H1: > 0)",
+    "robustness": "FF5+UMD alpha (robustness only, never GO)",
+    "unit": "daily net r_ex,t of the calendar-time portfolio (return_object)"
   },
   "lineage": "QUANT_FASTLANE_HPIT_V1",
   "multiplicity": {
     "M_declared": 21,
-    "discovery": "Deflated Sharpe (N = trial-ledger count) ranking; Romano-Wolf stepdown (Hansen SPA as cross-check) on net excess returns",
-    "finalist_rule": "top <=3 by discovery DSR among variants with Romano-Wolf p<0.10 and positive walk-forward net excess return",
-    "holdout": "Holm at family alpha 0.05 over the finalists",
+    "discovery": "DSR ranking; Romano-Wolf stepdown (Hansen SPA as cross-check) on net r_ex",
+    "dsr": "Deflated Sharpe on discovery with N = trial-ledger trial count",
+    "finalist_rule": "top <=3 by discovery DSR among variants with Romano-Wolf p<0.10 and positive walk-forward net annualized alpha; finalists must have discovery and walk-forward trial-ledger records",
+    "holdout": "Holm at family alpha 0.05 over the finalists, applied to both tests",
     "max_finalists": 3,
-    "trial_ledger": "var/fastlane/ledgers/trials.jsonl; every evaluated variant appended"
+    "trial_ledger": "var/fastlane/ledgers/trials.jsonl (hash-chained); every evaluated variant appended; its head is stored in the committed holdout request"
   },
-  "open_decisions": [
-    "constructor slots/C0 (K=100, C0=USD 100k drafted; audit K=20, C0=USD 10k gives ~15%/yr holdout MDE)",
-    "commission schedule of the actual paper broker",
-    "spread floors by ADV20 bucket"
-  ],
+  "open_decisions": [],
+  "outcomes": {
+    "go": "all go_criterion legs hold",
+    "inconclusive": "GO fails but the one-sided 95% upper bound is >= 3%/yr; logged distinctly from NO_GO",
+    "no_go": "GO fails and the one-sided 95% upper bound of net annualized alpha is < 3%/yr; recorded as a result",
+    "sizing": "neither NO_GO nor INCONCLUSIVE authorizes any sizing",
+    "zero_finalists": "NO_GO; the holdout stays unopened"
+  },
   "population": {
+    "backdating_exclusion": "accession sequence year > FILING_DATE year -> excluded; residual risk: same-year backdating is undetectable in the data sets",
+    "dedupe": "exact duplicates dropped first-seen by (FILING_DATE, accession) on (issuer, sorted owner CIKs, sorted (trans_date, shares, per-share figure))",
     "document_type": "original Form 4 only ('4'); 4/A never creates or modifies an event",
     "entry_event": "issuer CIK x FILING_DATE",
+    "footnote_exclusion_regex": {
+      "conversion": "upon (the )?conversion|converted into|upon exercise of (the )?warrant",
+      "ipo_underwritten": "initial public offering|\\bipo\\b|underwrit|directed share|registered direct",
+      "plan_drip_fees": "dividend reinvestment|\\bdrip\\b|employee stock purchase|\\bespp\\b|401\\(k\\)|deferred compensation|in lieu of (cash )?(director|board|fees|compensation|salary)|director'?s'? fee",
+      "private_placement": "private placement|privately negotiated|subscription agreement|securities purchase agreement|accredited investor"
+    },
+    "footnote_rule": "a row is excluded if any footnote it references (any *_FN column) or the filing REMARKS matches a category (case-insensitive)",
+    "roles": "relationship flags only; CEO/CFO requires the Officer flag plus a CEO/CFO title; titles never promote a role",
     "rows": "NONDERIV_TRANS with TRANS_CODE 'P' and TRANS_ACQUIRED_DISP_CD 'A'",
+    "security_title_exclude_regex": "\\b(PREFERRED|UNITS?|FUNDS?|PLANS?|WARRANTS?|NOTES?|DEBENTURES?|OPTIONS?|RIGHTS?)\\b",
+    "security_title_include_regex": "(COMMON|ORDINARY|CL(ASS)? [A-Z] COMMON|COMMON STOCK)",
+    "security_title_rule": "upper-cased, whitespace-collapsed title must re.search the include regex and must not re.search the exclude regex; frozen from title counts only (word boundaries added so e.g. COMMUNITY/UNITED/FOOTNOTE do not trip UNIT/NOTE)",
     "source": "SEC Insider Transactions Data Sets (quarterly, 2006Q1 onward), as filed",
+    "unfiltered_role": "the population before title/footnote/dedupe filters is reported as sensitivity only and never enters GO",
     "unique_key": "ACCESSION_NUMBER (duplicates are build errors)"
   },
   "power": {
@@ -217,7 +290,8 @@
       "holdout_years": 5.0,
       "power": 0.8,
       "sigma_20d": 0.14,
-      "sigma_daily": "sigma_20d / sqrt(20)"
+      "sigma_daily": "sigma_20d / sqrt(20)",
+      "tracking_error_vs_spy": 0.08
     },
     "audit_table_reproduction_bp": {
       "1000": 60.3,
@@ -225,13 +299,34 @@
       "300": 110.1,
       "500": 85.3
     },
-    "reading": "per-event MDE is per trade at horizon h; portfolio MDE is annualized on invested capital and is the relevant scale for the 3%/yr GO bar"
+    "portfolio_mde_annual_pct": {
+      "K100": 11.18,
+      "K100_holm_first_step": 13.35,
+      "K20": 17.55
+    },
+    "reading": "per-event MDE is per trade at horizon h; portfolio MDE is annualized on invested capital including 8 %/yr tracking error vs SPY and is the relevant scale for the 3 %/yr GO bar; the significance legs, not the 3 % leg, bind"
   },
-  "protocol_version": "1.0-draft",
-  "purge": "in discovery and walk_forward, events whose scheduled exit session falls after the split end are excluded from that split (logged), so no holdout-period price is read before the one look",
+  "protocol_version": "1.1-draft",
+  "purge": "in discovery and walk_forward, events whose scheduled exit session falls after the split end are excluded from that split (logged); discovery and walk-forward price windows end at their split ends, so no holdout-period price is reachable before the one look",
+  "return_object": {
+    "annualized_alpha": "252 x arithmetic mean of r_ex,t over the split's sessions with at least one open position",
+    "formula": "r_ex,t = sum_i w_{i,t-1} (r_{i,t} - r_SPY,t) / sum_i w_{i,t-1}",
+    "idle_cash": "earns 0 %; reported separately as utilization; cash drag is never counted as alpha",
+    "net": "r_{i,t} net of the frozen frictions at 1x C0 (entry/exit legs booked on their sessions); stress 2x reported",
+    "weights": "buy-and-hold weights on INVESTED capital: w_i starts at the entry notional a_j and drifts with the position's value; no daily rebalancing"
+  },
+  "robustness": {
+    "ff5_umd_files": [
+      "Kenneth R. French Data Library: F-F_Research_Data_5_Factors_2x3_daily_CSV.zip",
+      "Kenneth R. French Data Library: F-F_Momentum_Factor_daily_CSV.zip"
+    ],
+    "role": "robustness only",
+    "snapshot": "downloaded once, sha256 recorded in a committed manifest before the look"
+  },
   "security_mapping": {
     "ambiguous": "multiple common share classes or no mapping -> unresolved, counted, never resolved with future prices or current tickers",
-    "rule": "issuer CIK -> vendor security as of the entry date (vendor PIT tickers table with CIK); as-filed ticker is a cross-check only"
+    "rule": "issuer CIK -> vendor security as of the entry date (vendor PIT tickers table with CIK); as-filed ticker is a cross-check only",
+    "window": "mapping validity is clipped to the grant's price window"
   },
   "splits": {
     "discovery": {
@@ -261,7 +356,7 @@
         "end": "2021-06-30",
         "start": "2018-10-01"
       },
-      "role": "out-of-sample check of discovery ranking; no re-tuning",
+      "role": "out-of-sample check of the discovery ranking; no re-tuning",
       "start": "2019-01-01"
     }
   },
@@ -275,7 +370,8 @@
   "universe_eligibility": {
     "bars": "20 complete vendor bars before entry; finite positive ADV20",
     "min_last_close_usd": 1.0,
-    "note": "eligibility uses only pre-entry data"
+    "note": "eligibility uses only pre-entry data",
+    "untradeable": "ADV20 < USD 100,000 -> skipped (counted)"
   },
   "variant_grid_rule": {
     "M_max": 48,
@@ -285,16 +381,17 @@
     },
     "census_caveat": "census counts precede security mapping and liquidity eligibility; eligible counts will be lower",
     "families": {
-      "CEO_CFO": "issuer-day value of accessions with >=1 CEO/CFO owner",
-      "FROZEN_FV_10S": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
-      "OD": "issuer-day value of accessions with >=1 officer/director owner"
+      "CEO_CFO": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
+      "FROZEN_FV_10S": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
+      "OD": "issuer-day value of primary accessions with >=1 officer/director owner"
     },
     "horizons_sessions": [
       5,
       20,
       60
     ],
-    "post_eligibility_recheck": "after the sealed grant and before any return is computed, PIT mapping and pre-entry eligibility are applied; a variant whose eligible counts then fail the adequacy rule is dropped and logged, never replaced",
+    "literal_frozen_cell": "FROZEN_FV_10S_V0_H20 (no value floor, 20-session hold) added as the literal D07 cell",
+    "post_eligibility_recheck": "after the discovery/walk-forward grants and before any return is computed, PIT mapping and pre-entry eligibility are applied to DISCOVERY AND WALK-FORWARD events only; a variant whose eligible counts then fail the adequacy rule is dropped and logged, never replaced; holdout eligibility is not inspected before the look",
     "value_floors_usd": [
       10000.0,
       100000.0,
@@ -305,548 +402,590 @@
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 8366.8,
-        "holdout": 6656.4,
-        "walk_forward": 7320.4
+        "discovery": 7538.5,
+        "holdout": 5981.8,
+        "walk_forward": 6608.4
       },
       "exit": "regular close of vendor session e+4 (5 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 5,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 16.0,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 6656.4,
+        "holdout_rate_per_year": 5981.8,
         "holdout_traded_events_upper_bound": 25200,
         "per_event_mde_bp": 13.4,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 5040.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 10000.0,
       "variant_id": "OD_V10K_H5"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 8366.8,
-        "holdout": 6656.4,
-        "walk_forward": 7320.4
+        "discovery": 7538.5,
+        "holdout": 5981.8,
+        "walk_forward": 6608.4
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 64.2,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 6656.4,
+        "holdout_rate_per_year": 5981.8,
         "holdout_traded_events_upper_bound": 6300,
         "per_event_mde_bp": 53.7,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 10000.0,
       "variant_id": "OD_V10K_H20"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 8366.8,
-        "holdout": 6656.4,
-        "walk_forward": 7320.4
+        "discovery": 7538.5,
+        "holdout": 5981.8,
+        "walk_forward": 6608.4
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 6656.4,
+        "holdout_rate_per_year": 5981.8,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 10000.0,
       "variant_id": "OD_V10K_H60"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 2917.0,
-        "holdout": 2967.6,
-        "walk_forward": 3103.2
+        "discovery": 2580.3,
+        "holdout": 2618.6,
+        "walk_forward": 2762.4
       },
       "exit": "regular close of vendor session e+4 (5 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 5,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 20.9,
-        "portfolio_mde_annual_pct": 10.53
+        "per_event_mde_bp": 22.3,
+        "portfolio_mde_annual_pct": 15.45
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 58.9,
-        "holdout_rate_per_year": 2967.6,
-        "holdout_traded_events_upper_bound": 14838,
-        "per_event_mde_bp": 17.5,
-        "portfolio_mde_annual_pct": 8.82,
+        "avg_concurrent_positions": 52.0,
+        "holdout_rate_per_year": 2618.6,
+        "holdout_traded_events_upper_bound": 13093,
+        "per_event_mde_bp": 18.6,
+        "portfolio_mde_annual_pct": 12.93,
+        "portfolio_mde_annual_pct_no_te": 9.39,
         "slot_capacity_entries_per_year": 5040.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 100000.0,
       "variant_id": "OD_V100K_H5"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 2917.0,
-        "holdout": 2967.6,
-        "walk_forward": 3103.2
+        "discovery": 2580.3,
+        "holdout": 2618.6,
+        "walk_forward": 2762.4
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 64.2,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 2967.6,
+        "holdout_rate_per_year": 2618.6,
         "holdout_traded_events_upper_bound": 6300,
         "per_event_mde_bp": 53.7,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 100000.0,
       "variant_id": "OD_V100K_H20"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 2917.0,
-        "holdout": 2967.6,
-        "walk_forward": 3103.2
+        "discovery": 2580.3,
+        "holdout": 2618.6,
+        "walk_forward": 2762.4
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 2967.6,
+        "holdout_rate_per_year": 2618.6,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 100000.0,
       "variant_id": "OD_V100K_H60"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 588.8,
-        "holdout": 717.8,
-        "walk_forward": 755.6
+        "discovery": 500.2,
+        "holdout": 601.2,
+        "walk_forward": 626.0
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 85.0,
-        "portfolio_mde_annual_pct": 10.71
+        "per_event_mde_bp": 92.9,
+        "portfolio_mde_annual_pct": 15.81
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 57.0,
-        "holdout_rate_per_year": 717.8,
-        "holdout_traded_events_upper_bound": 3589,
-        "per_event_mde_bp": 71.2,
-        "portfolio_mde_annual_pct": 8.97,
+        "avg_concurrent_positions": 47.7,
+        "holdout_rate_per_year": 601.2,
+        "holdout_traded_events_upper_bound": 3006,
+        "per_event_mde_bp": 77.8,
+        "portfolio_mde_annual_pct": 13.23,
+        "portfolio_mde_annual_pct_no_te": 9.8,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 1000000.0,
       "variant_id": "OD_V1M_H20"
     },
     {
       "census_family": "OD",
       "census_issuer_days_per_year": {
-        "discovery": 588.8,
-        "holdout": 717.8,
-        "walk_forward": 755.6
+        "discovery": 500.2,
+        "holdout": 601.2,
+        "walk_forward": 626.0
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "OD",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 717.8,
+        "holdout_rate_per_year": 601.2,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 officer/director owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 officer/director owner",
       "value_floor_usd": 1000000.0,
       "variant_id": "OD_V1M_H60"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 2332.0,
-        "holdout": 2135.0,
-        "walk_forward": 2247.6
+        "discovery": 2090.2,
+        "holdout": 1912.8,
+        "walk_forward": 2035.2
       },
       "exit": "regular close of vendor session e+4 (5 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 5,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 24.6,
-        "portfolio_mde_annual_pct": 12.42
+        "per_event_mde_bp": 26.0,
+        "portfolio_mde_annual_pct": 16.88
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 42.4,
-        "holdout_rate_per_year": 2135.0,
-        "holdout_traded_events_upper_bound": 10675,
-        "per_event_mde_bp": 20.6,
-        "portfolio_mde_annual_pct": 10.4,
+        "avg_concurrent_positions": 38.0,
+        "holdout_rate_per_year": 1912.8,
+        "holdout_traded_events_upper_bound": 9564,
+        "per_event_mde_bp": 21.8,
+        "portfolio_mde_annual_pct": 14.14,
+        "portfolio_mde_annual_pct_no_te": 10.99,
         "slot_capacity_entries_per_year": 5040.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 10000.0,
       "variant_id": "CEO_CFO_V10K_H5"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 2332.0,
-        "holdout": 2135.0,
-        "walk_forward": 2247.6
+        "discovery": 2090.2,
+        "holdout": 1912.8,
+        "walk_forward": 2035.2
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 64.2,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 2135.0,
+        "holdout_rate_per_year": 1912.8,
         "holdout_traded_events_upper_bound": 6300,
         "per_event_mde_bp": 53.7,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 10000.0,
       "variant_id": "CEO_CFO_V10K_H20"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 2332.0,
-        "holdout": 2135.0,
-        "walk_forward": 2247.6
+        "discovery": 2090.2,
+        "holdout": 1912.8,
+        "walk_forward": 2035.2
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 2135.0,
+        "holdout_rate_per_year": 1912.8,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 10000.0,
       "variant_id": "CEO_CFO_V10K_H60"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 847.1,
-        "holdout": 939.0,
-        "walk_forward": 901.6
+        "discovery": 744.4,
+        "holdout": 823.6,
+        "walk_forward": 786.8
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 74.3,
-        "portfolio_mde_annual_pct": 9.36
+        "per_event_mde_bp": 79.3,
+        "portfolio_mde_annual_pct": 14.59
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 74.5,
-        "holdout_rate_per_year": 939.0,
-        "holdout_traded_events_upper_bound": 4695,
-        "per_event_mde_bp": 62.2,
-        "portfolio_mde_annual_pct": 7.84,
+        "avg_concurrent_positions": 65.4,
+        "holdout_rate_per_year": 823.6,
+        "holdout_traded_events_upper_bound": 4118,
+        "per_event_mde_bp": 66.4,
+        "portfolio_mde_annual_pct": 12.22,
+        "portfolio_mde_annual_pct_no_te": 8.37,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 100000.0,
       "variant_id": "CEO_CFO_V100K_H20"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 847.1,
-        "holdout": 939.0,
-        "walk_forward": 901.6
+        "discovery": 744.4,
+        "holdout": 823.6,
+        "walk_forward": 786.8
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 939.0,
+        "holdout_rate_per_year": 823.6,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 100000.0,
       "variant_id": "CEO_CFO_V100K_H60"
     },
     {
       "census_family": "CEO_CFO",
       "census_issuer_days_per_year": {
-        "discovery": 141.8,
-        "holdout": 205.8,
-        "walk_forward": 192.4
+        "discovery": 123.7,
+        "holdout": 172.2,
+        "walk_forward": 153.6
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "CEO_CFO",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 274.9,
-        "portfolio_mde_annual_pct": 11.55
+        "per_event_mde_bp": 300.6,
+        "portfolio_mde_annual_pct": 16.5
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 49.0,
-        "holdout_rate_per_year": 205.8,
-        "holdout_traded_events_upper_bound": 1029,
-        "per_event_mde_bp": 230.2,
-        "portfolio_mde_annual_pct": 9.67,
+        "avg_concurrent_positions": 41.0,
+        "holdout_rate_per_year": 172.2,
+        "holdout_traded_events_upper_bound": 861,
+        "per_event_mde_bp": 251.7,
+        "portfolio_mde_annual_pct": 13.82,
+        "portfolio_mde_annual_pct_no_te": 10.57,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "issuer-day value of accessions with >=1 CEO/CFO owner",
+      "value_basis": "issuer-day value of primary accessions with >=1 CEO/CFO owner",
       "value_floor_usd": 1000000.0,
       "variant_id": "CEO_CFO_V1M_H60"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 2249.5,
-        "holdout": 1663.0,
-        "walk_forward": 1956.8
+        "discovery": 1959.0,
+        "holdout": 1425.8,
+        "walk_forward": 1676.0
       },
       "exit": "regular close of vendor session e+4 (5 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 5,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 27.9,
-        "portfolio_mde_annual_pct": 14.07
+        "per_event_mde_bp": 30.2,
+        "portfolio_mde_annual_pct": 18.54
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 33.0,
-        "holdout_rate_per_year": 1663.0,
-        "holdout_traded_events_upper_bound": 8315,
-        "per_event_mde_bp": 23.4,
-        "portfolio_mde_annual_pct": 11.78,
+        "avg_concurrent_positions": 28.3,
+        "holdout_rate_per_year": 1425.8,
+        "holdout_traded_events_upper_bound": 7129,
+        "per_event_mde_bp": 25.2,
+        "portfolio_mde_annual_pct": 15.53,
+        "portfolio_mde_annual_pct_no_te": 12.72,
         "slot_capacity_entries_per_year": 5040.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 10000.0,
       "variant_id": "FROZEN_FV_10S_V10K_H5"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 2249.5,
-        "holdout": 1663.0,
-        "walk_forward": 1956.8
+        "discovery": 1959.0,
+        "holdout": 1425.8,
+        "walk_forward": 1676.0
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 64.2,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 1663.0,
+        "holdout_rate_per_year": 1425.8,
         "holdout_traded_events_upper_bound": 6300,
         "per_event_mde_bp": 53.7,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 10000.0,
       "variant_id": "FROZEN_FV_10S_V10K_H20"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 2249.5,
-        "holdout": 1663.0,
-        "walk_forward": 1956.8
+        "discovery": 1959.0,
+        "holdout": 1425.8,
+        "walk_forward": 1676.0
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 1663.0,
+        "holdout_rate_per_year": 1425.8,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 10000.0,
       "variant_id": "FROZEN_FV_10S_V10K_H60"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 1040.4,
-        "holdout": 1003.6,
-        "walk_forward": 1160.0
+        "discovery": 899.0,
+        "holdout": 861.0,
+        "walk_forward": 1001.2
       },
       "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 20,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 71.9,
-        "portfolio_mde_annual_pct": 9.06
+        "per_event_mde_bp": 77.6,
+        "portfolio_mde_annual_pct": 14.44
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 79.7,
-        "holdout_rate_per_year": 1003.6,
-        "holdout_traded_events_upper_bound": 5018,
-        "per_event_mde_bp": 60.2,
-        "portfolio_mde_annual_pct": 7.58,
+        "avg_concurrent_positions": 68.3,
+        "holdout_rate_per_year": 861.0,
+        "holdout_traded_events_upper_bound": 4305,
+        "per_event_mde_bp": 65.0,
+        "portfolio_mde_annual_pct": 12.09,
+        "portfolio_mde_annual_pct_no_te": 8.19,
         "slot_capacity_entries_per_year": 1260.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 100000.0,
       "variant_id": "FROZEN_FV_10S_V100K_H20"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 1040.4,
-        "holdout": 1003.6,
-        "walk_forward": 1160.0
+        "discovery": 899.0,
+        "holdout": 861.0,
+        "walk_forward": 1001.2
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
         "per_event_mde_bp": 192.5,
-        "portfolio_mde_annual_pct": 8.08
+        "portfolio_mde_annual_pct": 13.35
       },
       "power_one_sided_0p05": {
         "avg_concurrent_positions": 100.0,
-        "holdout_rate_per_year": 1003.6,
+        "holdout_rate_per_year": 861.0,
         "holdout_traded_events_upper_bound": 2100,
         "per_event_mde_bp": 161.1,
-        "portfolio_mde_annual_pct": 6.77,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 100000.0,
       "variant_id": "FROZEN_FV_10S_V100K_H60"
     },
     {
       "census_family": "FROZEN_FV_PROXY_10WD",
       "census_issuer_days_per_year": {
-        "discovery": 240.4,
-        "holdout": 302.6,
-        "walk_forward": 337.2
-      },
-      "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
-      "family": "FROZEN_FV_10S",
-      "horizon_sessions": 20,
-      "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 130.9,
-        "portfolio_mde_annual_pct": 16.49
-      },
-      "power_one_sided_0p05": {
-        "avg_concurrent_positions": 24.0,
-        "holdout_rate_per_year": 302.6,
-        "holdout_traded_events_upper_bound": 1513,
-        "per_event_mde_bp": 109.6,
-        "portfolio_mde_annual_pct": 13.81,
-        "slot_capacity_entries_per_year": 1260.0
-      },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
-      "value_floor_usd": 1000000.0,
-      "variant_id": "FROZEN_FV_10S_V1M_H20"
-    },
-    {
-      "census_family": "FROZEN_FV_PROXY_10WD",
-      "census_issuer_days_per_year": {
-        "discovery": 240.4,
-        "holdout": 302.6,
-        "walk_forward": 337.2
+        "discovery": 198.6,
+        "holdout": 246.2,
+        "walk_forward": 264.4
       },
       "exit": "regular close of vendor session e+59 (60 sessions including entry session e)",
       "family": "FROZEN_FV_10S",
       "horizon_sessions": 60,
+      "literal_frozen_d07_cell": false,
       "power_holm_first_step_0p0167": {
-        "per_event_mde_bp": 226.7,
-        "portfolio_mde_annual_pct": 9.52
+        "per_event_mde_bp": 251.4,
+        "portfolio_mde_annual_pct": 14.98
       },
       "power_one_sided_0p05": {
-        "avg_concurrent_positions": 72.0,
-        "holdout_rate_per_year": 302.6,
-        "holdout_traded_events_upper_bound": 1513,
-        "per_event_mde_bp": 189.8,
-        "portfolio_mde_annual_pct": 7.97,
+        "avg_concurrent_positions": 58.6,
+        "holdout_rate_per_year": 246.2,
+        "holdout_traded_events_upper_bound": 1231,
+        "per_event_mde_bp": 210.5,
+        "portfolio_mde_annual_pct": 12.54,
+        "portfolio_mde_annual_pct_no_te": 8.84,
         "slot_capacity_entries_per_year": 420.0
       },
-      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions",
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
       "value_floor_usd": 1000000.0,
       "variant_id": "FROZEN_FV_10S_V1M_H60"
+    },
+    {
+      "census_family": "FROZEN_FV_PROXY_10WD",
+      "census_issuer_days_per_year": {
+        "discovery": 2306.4,
+        "holdout": 1552.6,
+        "walk_forward": 1849.2
+      },
+      "exit": "regular close of vendor session e+19 (20 sessions including entry session e)",
+      "family": "FROZEN_FV_10S",
+      "horizon_sessions": 20,
+      "literal_frozen_d07_cell": true,
+      "power_holm_first_step_0p0167": {
+        "per_event_mde_bp": 64.2,
+        "portfolio_mde_annual_pct": 13.35
+      },
+      "power_one_sided_0p05": {
+        "avg_concurrent_positions": 100.0,
+        "holdout_rate_per_year": 1552.6,
+        "holdout_traded_events_upper_bound": 6300,
+        "per_event_mde_bp": 53.7,
+        "portfolio_mde_annual_pct": 11.18,
+        "portfolio_mde_annual_pct_no_te": 6.77,
+        "slot_capacity_entries_per_year": 1260.0
+      },
+      "value_basis": "sum of O/D accession values in the 10-session formation window at the crossing; census counts use the weekday proxy, evaluation uses exact vendor sessions and literal distinct CIKs (D07 2.1)",
+      "value_floor_usd": 0.0,
+      "variant_id": "FROZEN_FV_10S_V0_H20"
     }
   ],
   "vendor": {
@@ -856,7 +995,7 @@
       "pit_security_mapping",
       "license_note"
     ],
-    "fallback": "EODHD",
+    "fallback": "EODHD for development only; the benchmark has no fallback",
     "primary": "Sharadar (Nasdaq Data Link SEP, ACTIONS, TICKERS with CIK)",
     "purchase": "owner action"
   }
