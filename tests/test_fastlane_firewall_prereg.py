@@ -256,15 +256,21 @@ class SealValidationTests(unittest.TestCase):
         b = json.loads('{"a": [1, {"x": 1, "y": 2}], "b": 1}')
         self.assertEqual(pr.protocol_sha256(a), pr.protocol_sha256(b))
 
-    def test_repository_draft_is_complete_but_unsealable_as_draft(self):
+    def test_repository_protocol_is_the_sealed_protocol(self):
         path = REPO / "research" / "fastlane" / "QUANT_FASTLANE_HPIT_V1_PROTOCOL.json"
-        if not path.exists():
-            self.skipTest("draft protocol not generated")
+        sealed = REPO / "research" / "fastlane" / "prereg" / "QUANT_FASTLANE_HPIT_V1_PREREG_SEALED.json"
+        if not path.exists() or not sealed.exists():
+            self.skipTest("protocol not generated or not sealed")
         protocol = json.loads(path.read_text())
-        self.assertEqual(protocol["status"], pr.STATUS_DRAFT)
+        record = json.loads(sealed.read_text())
+        self.assertEqual(protocol["status"], pr.STATUS_FINAL)
         self.assertEqual(protocol["open_decisions"], [])
-        self.assertUnsealable(protocol)
-        pr.validate_protocol({**protocol, "status": pr.STATUS_FINAL}, for_seal=True)
+        pr.validate_protocol(protocol, for_seal=True)
+        self.assertEqual(pr.protocol_sha256(protocol), record["protocol_sha256"])
+        self.assertEqual(pr.protocol_sha256(record["protocol"]), record["protocol_sha256"])
+        self.assertEqual(record["lineage"], LINEAGE_ID)
+        # The draft form of the same content stays unsealable.
+        self.assertUnsealable({**protocol, "status": pr.STATUS_DRAFT})
         ids = [v["variant_id"] for v in protocol["variants"]]
         self.assertEqual(protocol["multiplicity"]["M_declared"], len(ids))
         self.assertLessEqual(len(ids), pr.MAX_VARIANTS)

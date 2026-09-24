@@ -116,8 +116,54 @@ EXIT_CONDITION     = V4.1 scellé et Gate-B exécuté ; vertical réparé et re�
 | 2 | Ces décisions | Builder, sous délégation | FAIT (ce fichier) |
 | 3 | V4.1 (D1) | Builder | **En attente d'autorisation** : branche de livraison |
 | 4 | Réparation du vertical (D2) | Builder | **En attente d'autorisation** : branche de livraison |
-| 5 | Voie rapide, semaines 0–2 : pare-feu, ingestion EDGAR, recensement aveugle, interface prix | Builder | Prêt à démarrer sur cette branche |
-| 6 | Achat du fournisseur de prix | **Propriétaire** | À faire |
+| 5 | Voie rapide, semaines 0–2 : pare-feu, ingestion EDGAR, recensement aveugle, interface prix | Builder | **FAIT, puis protocole SCELLÉ** (`9c8350d`, voir ci-dessous) |
+| 6 | Achat du fournisseur de prix | **Propriétaire** | Reporté par le propriétaire le 2026-09-23 |
 | 7 | Scellement Gate-B, puis consommation | Blue, puis **propriétaire root** | Après 3 |
 | 8 | Voie rapide, semaines 3–10, lecture unique du holdout | Builder, puis revue indépendante | Après 5 et 6 |
 | 9 | Ratification D4/D6 et fichier d'état unique | Blue ou propriétaire | Ouvert |
+
+## État au 2026-09-24 — voie rapide scellée
+
+```text
+FASTLANE_PREREG = SEALED
+PROTOCOL_SHA256 = sha256:78b3a501e609e135def64783f53f0f02ecbc8df2ea3d86e99c4d00fa206a6999
+SEAL_COMMIT     = 9c8350d  (branche claude/project-review-audit-q5kfb9, poussée)
+SEALED_AT_UTC   = 2026-09-24T23:32:08Z
+OUTCOME_ACCESS  = NONE (aucun prix ni rendement lu)
+```
+
+**Ce qui est fait :**
+- Données SEC : 82 trimestres (2006T1–2026T2, 922 Mo), avec les liens lus sur la page d'index SEC. Le contact du User-Agent vient de l'environnement et n'est enregistré nulle part.
+- Table d'événements primaire commitée : `research/fastlane/data/events_primary_v1.jsonl.gz` (13,8 Mo, 360 115 lignes).
+- Événements après filtres (titre action ordinaire, notes de bas de page de transaction, doublons, antidatés) :
+
+| Split | Jours émetteur | Par an |
+|---|---|---|
+| Découverte | 182 071 | 14 006 |
+| Walk-forward | 27 173 | 10 869 |
+| Holdout | 51 274 | 10 255 |
+
+- Filtre gelé (proxy) : environ 1 550–2 300/an. C'est 3 à 7 fois plus que l'hypothèse de l'audit.
+- Quadrillage **M = 22**. Il inclut la cellule gelée littérale `FROZEN_FV_10S_V0_H20`. Six cellules sont écartées par la règle d'adéquation, qui ne regarde que les comptes.
+- Puissance recalculée avec 8 % de tracking error : l'effet minimal détectable sur le portefeuille est **≈ 11 %/an à K = 100** (13 % au premier pas de Holm).
+  - Conséquence : un edge réel de 3–8 %/an sortira probablement **INCONCLUSIVE**, pas GO.
+  - C'est une limite honnête du holdout de 5 ans, pas un défaut.
+- Revue adversariale indépendante en 3 tours :
+  - tour 1 : 9 bloquants, dont la falsification d'autorisation et l'annulation de la lecture unique ;
+  - tour 2 : 4 bloquants (comptage des essais, clone superficiel, faux « publié », force-push) ;
+  - tour 3 : **SEAL_READY**.
+- Tests : 485 OK. Demo 35/35. Schémas OK.
+
+**Actions du propriétaire pour sécuriser le sceau** (risques résiduels acceptés, qui ne se couvrent pas en code) :
+1. Protéger la branche `claude/project-review-audit-q5kfb9` sur GitHub : pas de force-push, pas de suppression.
+2. Consigner hors du dépôt (note datée, e-mail à soi-même…) : `SEAL_COMMIT = 9c8350d`, `PROTOCOL_SHA256 = sha256:78b3a501…`, puis plus tard le commit de `HOLDOUT_REQUEST.json`.
+
+**Prochaines étapes :**
+- **Sans achat, sans lire de rendement :** le constructeur de portefeuille et le moteur d'évaluation (période de découverte seulement) sont codés et testés sur fixtures.
+- **Dès que le fournisseur de prix est acheté** (clé Sharadar, secret `NASDAQ_DATA_LINK_API_KEY`) :
+  - manifestes vendeur et carte des délistings dérivée de la documentation, commités ;
+  - puis `git fetch --unshallow` ;
+  - criblage des 22 variantes sur la découverte et le walk-forward ;
+  - au plus 3 finalistes ;
+  - requête holdout commitée ;
+  - **lecture unique** → GO / INCONCLUSIVE / NO_GO.
