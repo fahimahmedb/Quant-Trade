@@ -79,9 +79,13 @@ class CapitalDesk:
                    for position in ledger.sleeves.get(strategy_id, {}).values())
 
     def liquidating(self, definition: StrategyDefinition) -> bool:
-        """No entitlement left, but a sleeve still open: it must be flattened."""
-        return (not definition.tradable and not definition.evaluation_track
-                and self._holds(self.capital, definition.strategy_id))
+        """No capital entitlement left, but a capital sleeve still open.
+
+        This includes a strategy re-registered on the evaluation track: it must
+        first flatten its capital sleeve and only then trade counterfactually on
+        the evaluation ledger (audit finding).
+        """
+        return not definition.tradable and self._holds(self.capital, definition.strategy_id)
 
     def actionable(self) -> list[StrategyDefinition]:
         return sorted((definition for definition in self.strategies.strategies.values()
@@ -109,6 +113,15 @@ class CapitalDesk:
                 self.components.set(name, "IDLE", "no opportunity reached this stage")
             self.log.emit("DESK", "SCAN", "session_no_candidates", date,
                           reason="no strategy holds a tradable lifecycle state")
+        # A plan made durable before a crash must be resumed even if its strategy
+        # is no longer actionable (a completed liquidation leaves it flat).
+        listed = {definition.strategy_id for definition in actionable}
+        for opportunity_id, plan in sorted(self.journal.pending.items()):
+            strategy = self.strategies.get(plan.get("strategy_id", ""))
+            if (plan.get("session_date") == date and strategy is not None
+                    and strategy.strategy_id not in listed):
+                tickets.append(self._resume(strategy, plan))
+                replayed.append(opportunity_id)
         for definition in actionable:
             opportunity_id = f"OPP-{definition.strategy_id}-{date}"
             if self.journal.is_processed(opportunity_id):
@@ -306,8 +319,14 @@ class CapitalDesk:
 
     def _apply(self, definition: StrategyDefinition, ticket: OpportunityTicket,
                fills: list[dict[str, Any]], execution_date: str) -> OpportunityTicket:
-        """Apply a recorded plan. Safe to call again after a crash."""
-        ledger = self.ledger_for(definition)
+        """Apply a recorded plan. Safe to call again after a crash.
+
+        The ledger is the one named in the ticket when the plan was decided, not
+        a fresh lookup: after a crash the strategy's current ledger can differ
+        (a completed liquidation leaves it on the evaluation track).
+        """
+        ledger = (self.capital if ticket.ledger == self.capital.state.authority
+                  else self.evaluation)
         effects = [ledger.apply_fill(fill["symbol"], fill["quantity"], fill["fill_price"],
                                      fill["commission"], execution_date,
                                      definition.strategy_id,

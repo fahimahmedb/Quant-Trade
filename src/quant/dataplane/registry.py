@@ -114,6 +114,12 @@ class DatasetRegistry:
             record.first_date = panel.dates[0] if panel.dates else None
             record.last_date = panel.dates[-1] if panel.dates else None
             declared = (record.validation or {}).get("sidecar_fingerprint")
+            sidecar = path.with_suffix(".meta.json")
+            if declared and sidecar.exists():
+                # The committed sidecar is the authority, not the copy cached in
+                # var/: a legitimately re-committed snapshot must become valid.
+                from ..state import read_json
+                declared = (read_json(sidecar) or {}).get("fingerprint") or declared
             if declared:
                 validation["sidecar_fingerprint"] = declared
                 if declared != after:

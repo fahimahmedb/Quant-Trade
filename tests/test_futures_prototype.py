@@ -647,5 +647,121 @@ class LifecycleRedTeamTests(unittest.TestCase):
             self.assertTrue(fresh.exists())
 
 
+
+class FinalAuditTests(unittest.TestCase):
+    """Defects found by the final independent audit."""
+
+    UNIVERSE = LifecycleRedTeamTests.UNIVERSE
+    _root = LifecycleRedTeamTests._root
+    _system = LifecycleRedTeamTests._system
+    _tradable = LifecycleRedTeamTests._tradable
+
+    def _held(self, ledger, strategy_id):
+        return sum(abs(p.quantity) for p in ledger.sleeves.get(strategy_id, {}).values())
+
+    def test_evaluation_track_redefinition_flattens_capital_first(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            system = self._system(root)
+            system.boot()
+            system.run(max_ticks=2)
+            self._tradable(system)
+            system.run(max_ticks=30)
+            self.assertGreater(self._held(system.desk.capital, "STR-TEST-TS"), 0)
+            # research re-runs and the same id fails: re-registered as evaluation track
+            definition = system.strategies.get("STR-TEST-TS")
+            from quant.factory.strategies import StrategyDefinition
+            again = StrategyDefinition(**{**definition.to_dict(), "lifecycle": "RESEARCH",
+                                          "evaluation_track": True, "version": 2,
+                                          "lifecycle_history": [], "previous_versions": []})
+            system.strategies.upsert(again)
+            self.assertTrue(system.desk.liquidating(again))
+            system.run(max_ticks=3)
+            self.assertEqual(self._held(system.desk.capital, "STR-TEST-TS"), 0)
+            system.run(max_ticks=20)
+            self.assertEqual(self._held(system.desk.capital, "STR-TEST-TS"), 0)
+            self.assertIs(system.desk.ledger_for(system.strategies.get("STR-TEST-TS")),
+                          system.desk.evaluation)
+
+    def test_crash_after_final_liquidation_fill_still_records_the_ticket(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            system = self._system(root)
+            system.boot()
+            system.run(max_ticks=2)
+            self._tradable(system)
+            system.run(max_ticks=30)
+            definition = system.strategies.get("STR-TEST-TS")
+            definition.transition("RETIRED", "fixture")
+            system.strategies.upsert(definition)
+            original = system.desk._finish
+
+            def crash(definition, ticket, rebalanced=False):
+                if ticket.status == "BOOKED":
+                    raise RuntimeError("simulated crash after fills, before commit")
+                return original(definition, ticket, rebalanced)
+
+            system.desk._finish = crash
+            with self.assertRaises(RuntimeError):
+                system.run(max_ticks=1)
+            capital_cash = system.desk.capital.state.cash
+            restarted = self._system(root)
+            restarted.boot()
+            restarted.run(max_ticks=2)
+            self.assertEqual(restarted.desk.journal.pending, {})
+            self.assertAlmostEqual(restarted.desk.capital.state.cash, capital_cash, places=6)
+            self.assertEqual(self._held(restarted.desk.capital, "STR-TEST-TS"), 0)
+            self.assertEqual(self._held(restarted.desk.evaluation, "STR-TEST-TS"), 0)
+            import json
+            booked = [json.loads(line) for line in
+                      (root / "var" / "futures" / "opportunities.jsonl").read_text().splitlines()
+                      if "STR-TEST-TS" in line and '"LIQUIDATE"' in line]
+            self.assertEqual(len([t for t in booked if t["status"] == "BOOKED"]), 1)
+
+    def test_recommitted_snapshot_becomes_valid_again(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            from quant.dataplane.registry import fingerprint_file
+            from quant.state import read_json, write_json
+            path = root / "data" / "datasets" / f"{FUTURES_DATASET}.csv.gz"
+            meta = path.with_suffix(".meta.json")
+            write_json(meta, read_json(meta) | {"fingerprint": fingerprint_file(path)})
+            self._system(root).boot()
+            _synthetic_panel(self.UNIVERSE, sessions=1001, seed=11).write(path)   # new bytes
+            write_json(meta, read_json(meta) | {"fingerprint": fingerprint_file(path)})
+            for _ in range(2):
+                system = self._system(root)
+                system.boot()
+            self.assertEqual(system.datasets.get(FUTURES_DATASET).availability, "AVAILABLE")
+
+    def test_staggered_breadth_counts_speed_limited_contracts_and_caps_idm(self):
+        from quant.factory.signals import live_breadth
+        universe = ["A", "B", "C", "D"]
+        rows = []
+        base = _synthetic_panel(universe)
+        for (d, sym), bar in base.bars.items():
+            extra = dict(base.features.get((d, sym), {}))
+            extra["cost_bps"] = 500.0 if sym == "D" else 1.0      # D too expensive
+            rows.append({"date": d, "symbol": sym, **bar, **extra})
+        panel = PricePanel(rows)
+        spec = StrategySpec(**{**_ts_spec(universe).to_dict(), "calendar_symbol": "A",
+                               "max_cost_sharpe": 0.13})
+        date = panel.dates[-1]
+        weights = time_series_weights(panel, spec, date)
+        self.assertNotIn("D", weights)
+        self.assertEqual(live_breadth(panel, spec, date), 4)
+        full = time_series_weights(panel, StrategySpec(**{**spec.to_dict(),
+                                                          "max_cost_sharpe": 0.0}), date)
+        for symbol in weights:           # survivors keep exactly their 1/4 share
+            self.assertAlmostEqual(weights[symbol], full[symbol], places=12)
+        one = StrategySpec(**{**spec.to_dict(), "universe": ["A"], "max_cost_sharpe": 0.0})
+        forecast_weight = time_series_weights(panel, one, date)["A"]
+        from quant.factory.signals import time_series_forecasts
+        item = time_series_forecasts(panel, one, date)["A"]
+        self.assertAlmostEqual(forecast_weight,
+                               max(-1.0, min(1.0, item["forecast"] * 0.15 * 1.0
+                                             / item["annual_vol"])), places=12)
+
+
 if __name__ == "__main__":
     unittest.main()

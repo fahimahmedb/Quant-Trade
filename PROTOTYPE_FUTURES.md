@@ -38,15 +38,15 @@ Every expression was pre-registered, with costs by contract and rolls charged on
 
 | Lane (dataset) | Discovery winner | Discovery SR | Validation | Validation SR / t | Required t (trials) | Alpha t vs baseline | Verdict |
 |---|---|---|---|---|---|---|---|
-| `ts_trend_carry_futures`: 31 aligned contracts | trend 0.5 + carry 0.5 | 0.82 (2002-2014) | 2014-05 → 2020-09 | **0.07 / 0.18** | 2.84 (11) | 0.11 | **REJECT** |
-| `ts_trend_carry_futures_broad`: 144 contracts, staggered | trend only | 0.58 (1990-2009) | 2009-03 → 2019-05 | **-0.52 / -1.69** (costs 128% > gross 108%) | 3.02 (20) | -1.66 | **REJECT** |
-| `..._broad_speed_limited`: cost ≤ 0.13 SR | trend 0.5 + carry 0.5 | 1.15 | 2009-03 → 2019-05 | **0.49 / 1.59** | 3.07 (23) | 1.49 | **REJECT** |
+| `ts_trend_carry_futures`: 31 aligned contracts | trend 0.5 + carry 0.5 | 0.82 (2002-2014) | 2014-03 → 2020-09 | **0.07 / 0.18** | 2.84 (11) | 0.11 | **REJECT** |
+| `ts_trend_carry_futures_broad`: 144 contracts, staggered | trend only | 0.58 (1990-2008) | 2008-11 → 2019-02 | **-0.52 / -1.69** (costs 128% > gross 108%) | 3.10 (26) | -1.66 | **REJECT** |
+| `..._broad_speed_limited`: cost ≤ 0.13 SR | trend 0.5 + carry 0.5 | 1.16 | 2008-11 → 2019-02 | **0.47 / 1.52** | 3.13 (29) | 1.45 | **REJECT** |
 
 How to read these results:
 
 - **The system works as its North Star demands.** It rejects, costs are counted, the trial budget is honest, and the reasons are traced in the ticket.
 - **The lab was optimistic.** The lab (Sharpe ~1.06 on 190 instruments) divided pysystemtrade's `SpreadCost` by 2, when it is already a half-spread (per the pysystemtrade docs, *"Slippage … Half the bid-ask spread"*). It also underestimated rolls on illiquid contracts. Breadth only pays when it is affordable: the vol targeting puts large notionals on low-volatility, expensive contracts, whose rolls then consume the edge.
-- **The most promising candidate is the speed-limited broad lane** (Sharpe 0.49 in validation, baseline 0.42, alpha t 1.49). It cannot be accepted on this history because the validation window is exhausted and contaminated. Only forward data (> 2024-03-28) can decide.
+- **The most promising candidate is the speed-limited broad lane** (Sharpe 0.47 in validation, baseline 0.43, alpha t 1.45). It cannot be accepted on this history because the validation window is exhausted and contaminated. Only forward data (> 2024-03-28) can decide.
 - The rejected strategies still run in shadow on the **evaluation ledger** (zero authority). The Learning plane measures whether each rejection was wrong ("false reject").
 
 ### Shadow Desk results
@@ -84,7 +84,7 @@ The process ran in this order:
 | E4 | MED | The SPRT is effectively inert at a Sharpe of 0.5 (decades to reach a decision). | The expected time to a decision is now published, and the SPRT is documented as **monitoring**. A decision only uses pristine data. |
 | E5 | LOW-MED | Carry could go stale (DAX/FTSE observed rarely). | Carry not refreshed for 20 sessions is dropped. |
 | E6 | LOW | There were 86 sessions on Sundays (Globex snapshots). | Weekends are removed from the calendar. A roll on a non-session day is charged on the next session. |
-| E7 | LOW | The flat 4 bp cost undercharged expensive commodities. | A per-contract `cost_bps` feature is added. Research and the Desk both charge max(uniform cost, contract cost). |
+| E7 | LOW | The flat 4 bp cost undercharged expensive commodities. | A per-contract `cost_bps` feature is added. Research charges max(4 bp, contract cost); a Desk fill charges max(model cost of 2 bp, contract cost). Research is therefore the more conservative of the two. |
 | E8 | LOW | Gross notional is not a risk measure for a vol-targeted book. | Declared as a limit (§5). No ex-ante volatility limit yet. |
 
 Verified clean by the red team:
@@ -106,7 +106,7 @@ What held up:
 
 | # | Severity | Finding | Fix |
 |---|---|---|---|
-| R1 | HIGH | A **RETIRED** sleeve kept its positions in the CAPITAL Book, and nothing managed them any more. | `CapitalDesk.liquidating()` / `ledger_for()`: a strategy with no entitlement that still holds a capital sleeve is flattened through the normal chain. There is a `SCAN LIQUIDATE` trace, a RISK throttle cannot trap the exit, closes are exact, and no minimum size blocks them. Tested with a restart mid-exit. |
+| R1 | HIGH | A **RETIRED** sleeve kept its positions in the CAPITAL Book, and nothing managed them any more. | `CapitalDesk.liquidating()` / `ledger_for()`: a strategy with no entitlement that still holds a capital sleeve is flattened through the normal chain. There is a `SCAN LIQUIDATE` trace, a RISK throttle cannot trap the exit, closes are exact, and no minimum size blocks them. Tested with a restart after the exit, and (after the final audit) with a crash after the fills but before the commit. |
 | R2 | MED | At boot, a committed snapshot was registered without checking the fingerprint in its sidecar. | A mismatch makes the dataset INVALID and emits a `snapshot_fingerprint_mismatch` FAULT, and the check still holds through `refresh_availability`. Tested with one tampered bar. |
 | R3 | MED perf | Whole files were rewritten on every session (`opportunities.jsonl` re-read, journal, ledger). | The opportunity-id set is now cached in memory. The journal and ledger rewrites are documented (A5), not fixed. |
 | R4 | LOW | SIGKILL left orphaned staging files behind (24 MB vs 11.5 MB). | Swept at boot, but only files older than 10 min, so a concurrent writer such as the SEC service is never hit. |
@@ -122,12 +122,25 @@ The independent audit agent was **interrupted by the API session limit** before 
 
 - Full suite: **402 tests OK**. `status_artifacts --check` is fresh (the canonical ETF replay is unchanged apart from the dataset and test counts) and `generate_schemas --check` is OK. V1 end-to-end demo: **35/35 checks passed**.
 - Rolls: charged idempotently (op-id `ROLL-<strategy>-<symbol>-<date>`) on the decision snapshot, so a replay sees the same positions. The research charge (|w| x `roll_cost` at the exit bar) and the Desk charge (|qty| x price(t) x `roll_cost(t+1)`) describe the same economic event.
-- Liquidation: only a strategy with **no** entitlement and an open **capital** sleeve can liquidate. Such a strategy produces no weights (it cannot re-enter), the RISK override only applies to it, and it leaves `actionable()` once it is flat. Tested with a restart.
+- Liquidation: any strategy with **no** capital entitlement (including one re-registered on the evaluation track) that still holds a **capital** sleeve is flattened before doing anything else. The RISK override only applies to it, and it leaves `actionable()` once it is flat.
 - Committed ETF snapshots: their sidecars carry the right fingerprints (status check fresh), so the new check does not invalidate them.
 - `pristine_after`: every lifecycle transition uses the filtered series, never the full one (tested). The full series is only reported as monitoring.
 - Speed limit: it reads `cost_bps` and the volatility **for that date**, so it is causal. Without a cost, the contract is excluded (conservative).
 
-Recommendation: re-run an independent audit agent once the API quota resets, before any promotion to a Builder mission.
+### 4.1d Final independent audit (on `40e73ea`, after the quota reset)
+
+The audit passed every item **except R2**, and it confirmed the figures in §3 for the narrow lane. Its summary: 402 tests OK, statuses fresh, and E1-E8, R3-R9 and A1-A4 PASS.
+
+It found 4 new defects, all fixed in the next commit with a test for each (`FinalAuditTests`):
+
+| # | Severity | Defect | Fix |
+|---|---|---|---|
+| F1 | MED | A strategy re-registered on the evaluation track kept trading on the **capital** ledger with no entitlement. | `liquidating()` now covers every strategy with no entitlement that holds a capital sleeve. It flattens first, then moves to the evaluation ledger. |
+| F2 | MED (R2 FAIL) | A snapshot legitimately re-committed stayed INVALID forever, because the check compared against the fingerprint cached in `var/`. | `_revalidate` now re-reads the committed sidecar on disk. |
+| F3 | LOW | A crash after the last liquidation fill but before the commit lost the ticket, because the plan never resumed once the sleeve was flat. | Every pending plan of the session is resumed, even for a strategy that is no longer actionable. `_apply` uses the **ledger recorded in the ticket**: a fresh lookup would have sent the replay to the evaluation ledger. |
+| F4 | LOW-MED | In a staggered universe the survivors were levered up (N = the contracts that passed the filter). | N now counts the contracts listed and past warmup, **before** the speed limit, and the IDM is capped at √N. The broad lanes were re-evaluated and **6 extra trials charged**. The verdicts are unchanged (REJECT). |
+
+Still open (documented): the Learning plane's FALSE/TRUE_REJECT verdict does not take `pristine_after` into account.
 
 ### 4.2 My own audit (before and after the red team)
 

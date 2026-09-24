@@ -114,7 +114,9 @@ FUTURES_BROAD_DATASET = "futures_excess_return_daily_broad"
 #: superseded run 3), the first broad run at uniform 4bp costs 3 (the audit
 #: found 52 of 144 contracts cost more) and the per-instrument-cost run 3
 #: (superseded by the red-team roll-cost fix).
-FUTURES_BROAD_PRIOR_TRIALS = FUTURES_PRIOR_LAB_TRIALS + 3 + 3 + 3 + 3
+FUTURES_BROAD_PRIOR_TRIALS = FUTURES_PRIOR_LAB_TRIALS + 3 + 3 + 3 + 3 + 6
+#: (+6: both broad lanes re-evaluated after the final audit corrected staggered
+#: sizing, so their earlier runs count as looks at this data.)
 #: Carver (2015): never spend more than about a third of a realistic Sharpe
 #: (~0.4) on costs.
 SPEED_LIMIT_SHARPE = 0.13

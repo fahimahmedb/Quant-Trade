@@ -271,6 +271,17 @@ def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, flo
     return out
 
 
+def live_breadth(panel: PricePanel, spec: StrategySpec, asof: str) -> int:
+    """Instruments quoted on ``asof`` and past warmup, before any cost filter.
+
+    Known at ``asof`` (listing and history length only), so using it is not
+    hindsight; counting contracts the speed limit excludes keeps the survivors
+    from being levered up to fill their budget.
+    """
+    return sum(1 for symbol in spec.universe
+               if panel.has(asof, symbol) and asof in _series(panel, symbol))
+
+
 def time_series_forecasts(panel: PricePanel, spec: StrategySpec,
                           asof: str) -> dict[str, dict[str, float]]:
     """Capped combined forecast and annual volatility per eligible instrument."""
@@ -302,14 +313,21 @@ def time_series_forecasts(panel: PricePanel, spec: StrategySpec,
 def time_series_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
     """Volatility-targeted notional weights: forecast x (target / instrument vol) / N x IDM.
 
-    ``N`` is the declared universe size, not the number of instruments with a
-    signal today, so a thin day cannot silently lever up the survivors.
+    Aligned universe: ``N`` is the declared universe size. Staggered universe
+    (``calendar_symbol``): ``N`` is ``live_breadth`` (quoted and past warmup,
+    counted *before* the speed-limit filter) and the diversification
+    multiplier is capped at ``sqrt(N)``, its value for N uncorrelated
+    instruments, so a thin early universe is never levered to a full book.
     """
     forecasts = time_series_forecasts(panel, spec, asof)
     if not forecasts or spec.vol_target <= 0:
         return {}
-    breadth = len(forecasts) if spec.calendar_symbol else len(spec.universe)
-    scale = spec.vol_target * spec.diversification_multiplier / breadth
+    if spec.calendar_symbol:
+        breadth = max(live_breadth(panel, spec, asof), 1)
+        idm = min(spec.diversification_multiplier, math.sqrt(breadth))
+    else:
+        breadth, idm = len(spec.universe), spec.diversification_multiplier
+    scale = spec.vol_target * idm / breadth
     weights = {}
     for symbol, item in forecasts.items():
         weight = item["forecast"] * scale / item["annual_vol"]
