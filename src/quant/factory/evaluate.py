@@ -43,7 +43,7 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
     future bar is not merely unused, it is unreachable.
     """
     visible = panel.restrict(end=window.end)
-    dates = visible.aligned_dates(spec.universe)
+    dates = visible.aligned_dates(session_symbols(spec))
     rows: list[dict[str, Any]] = []
     held: dict[str, float] = {}
     last_rebalance: int | None = None
@@ -60,19 +60,49 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
                     for symbol in set(target) | set(held))
         sessions_held = None if last_rebalance is None else len(rows) - last_rebalance
         turnover = 0.0
+        cost = 0.0
         if target and should_rebalance(sessions_held, drift, spec):
+            cost = _rebalance_cost(visible, date, target, held, drift, cost_bps)
             held, turnover, last_rebalance = target, drift, len(rows)
         gross = 0.0
         for symbol, weight in held.items():
+            if not (visible.has(entry_date, symbol) and visible.has(exit_date, symbol)):
+                continue  # staggered universe only: no executable interval
+            # Rolling the contract is paid by longs and shorts alike.
+            cost += abs(weight) * (visible.feature(exit_date, symbol, "roll_cost") or 0.0)
             entry = visible.adjusted(entry_date, symbol, "open")
             if entry <= 0:
                 continue
             gross += weight * (visible.adjusted(exit_date, symbol, "open") / entry - 1.0)
-        cost = turnover * cost_bps / 10_000.0
         rows.append({"signal_date": date, "entry_date": entry_date, "exit_date": exit_date,
                      "gross_return": gross, "cost": cost, "net_return": gross - cost,
                      "turnover": turnover, "positions": len(held), "weights": dict(held)})
     return rows
+
+
+def _rebalance_cost(panel: PricePanel, date: str, target: dict[str, float],
+                    held: dict[str, float], drift: float, cost_bps: float) -> float:
+    """Cost of one rebalance as a fraction of capital.
+
+    When the panel carries an instrument's own one-way cost (``cost_bps``
+    feature), each traded unit pays the larger of that and the declared
+    research cost, so an illiquid contract is never researched at a liquid
+    one's price. Without the feature this is exactly ``drift * cost_bps``.
+    """
+    owned = {symbol: panel.feature(date, symbol, "cost_bps")
+             for symbol in set(target) | set(held) if panel.has(date, symbol)}
+    if not any(value is not None for value in owned.values()):
+        return drift * cost_bps / 10_000.0
+    total = 0.0
+    for symbol in set(target) | set(held):
+        traded = abs(target.get(symbol, 0.0) - held.get(symbol, 0.0))
+        total += traded * max(cost_bps, owned.get(symbol) or 0.0)
+    return total / 10_000.0
+
+
+def session_symbols(spec: StrategySpec) -> list[str]:
+    """Symbols whose common trading days define the strategy's sessions."""
+    return [spec.calendar_symbol] if spec.calendar_symbol else list(spec.universe)
 
 
 def _max_drawdown(returns: list[float]) -> float:
@@ -161,6 +191,31 @@ def _sharpe(values: list[float]) -> float:
     return statistics.fmean(values) / deviation * math.sqrt(TRADING_DAYS) if deviation else 0.0
 
 
+def _alpha_t(strategy: list[dict[str, Any]], baseline: list[dict[str, Any]]) -> float:
+    """t-statistic of the intercept of strategy on baseline daily net returns."""
+    by_date = {row["signal_date"]: row["net_return"] for row in baseline}
+    pairs = [(row["net_return"], by_date[row["signal_date"]])
+             for row in strategy if row["signal_date"] in by_date]
+    n = len(pairs)
+    if n < 30:
+        return 0.0
+    ys, xs = [p[0] for p in pairs], [p[1] for p in pairs]
+    mean_x, mean_y = statistics.fmean(xs), statistics.fmean(ys)
+    sxx = sum((x - mean_x) ** 2 for x in xs)
+    beta = sum((x - mean_x) * (y - mean_y) for x, y in pairs) / sxx if sxx else 0.0
+    alpha = mean_y - beta * mean_x
+    residual = [y - alpha - beta * x for y, x in pairs]
+    sigma2 = sum(value * value for value in residual) / (n - 2)
+    se = math.sqrt(sigma2 * (1.0 / n + (mean_x ** 2 / sxx if sxx else 0.0)))
+    return alpha / se if se else 0.0
+
+
+#: Timing skill must show up as alpha over the passive baseline, not merely as
+#: a higher point-estimate Sharpe (red-team finding: a weak baseline made the
+#: point comparison pass trivially).
+BASELINE_ALPHA_T = 2.0
+
+
 def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePanel,
             benchmark: str, spec: StrategySpec, trials: int,
             stress_multiple: float = 2.0,
@@ -177,8 +232,7 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
         return {"passed": False, "decision": "REJECT_RESEARCH",
                 "tests": {}, "reason": "no observations produced"}
     net = [row["net_return"] for row in rows]
-    stressed = [row["gross_return"] - row["turnover"] * summary["cost_bps"]
-                * stress_multiple / 10_000.0 for row in rows]
+    stressed = [row["gross_return"] - row["cost"] * stress_multiple for row in rows]
     middle = len(rows) // 2
     halves = [compound(net[:middle]), compound(net[middle:])]
     positives = sorted((value for value in net if value > 0), reverse=True)
@@ -188,12 +242,15 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
 
     time_series = spec.family in TIME_SERIES_FAMILIES
     baseline_sharpe = None
+    baseline_alpha_t = None
     if time_series:
         if not baseline_rows:
             raise ValueError("time-series falsification requires baseline rows")
         baseline_sharpe = _sharpe([row["net_return"] for row in baseline_rows])
+        baseline_alpha_t = _alpha_t(rows, baseline_rows)
         exposure_tests = {
             "sharpe_exceeds_long_only_risk_parity": _sharpe(net) > baseline_sharpe,
+            "alpha_over_long_only_risk_parity_t_above_2": baseline_alpha_t >= BASELINE_ALPHA_T,
             "equity_beta_below_0_5": abs(summary["market_beta"]) < TIME_SERIES_MAX_EQUITY_BETA,
         }
     else:
@@ -222,6 +279,7 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
         "expressions_tested_on_dataset": trials,
         "strategy_sharpe": _sharpe(net),
         "baseline_sharpe": baseline_sharpe,
+        "baseline_alpha_t": baseline_alpha_t if time_series else None,
         "beta_attribution": {
             "market_beta": summary["market_beta"],
             "benchmark": benchmark,

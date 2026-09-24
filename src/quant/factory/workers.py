@@ -59,7 +59,7 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
     benchmark = definition.get("benchmark", BENCHMARK)
     cost_bps = definition.get("cost_bps", COST_BPS)
     panel = PricePanel.load(context.paths.root / record.path)
-    declared = panel.split(WINDOWS, symbols=universe)
+    declared = panel.split(WINDOWS, symbols=definition.get("calendar", universe))
     frozen = context.strategies.preserve_research_partition(dataset_id, declared)
     from ..dataplane.panel import Window
     partition = {name: Window(**value) for name, value in frozen.items()}
@@ -82,6 +82,8 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
         information_available_at=validation.end + "T21:00:00Z",
         source_refs=[record.path, record.fingerprint or ""])
     ticket.candidate_data = {"expressions_declared": len(definition["grid"]),
+                             "pristine_after": definition.get("pristine_after"),
+                             "prior_trials_charged": definition.get("prior_trials", 0),
                              "windows": windows, "benchmark": benchmark,
                              "cost_bps_one_way": cost_bps,
                              "research_cohort": cohort_key}
@@ -107,9 +109,15 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
     grid_document = [spec.to_dict() for spec in definition["grid"]]
     grid_hash = hashlib.sha256(json.dumps(grid_document, sort_keys=True).encode()).hexdigest()
     experiment_key = f"{dataset_key}:{lane_name}:{grid_hash}"
+    prior = definition.get("prior_trials", 0)
+    if prior:
+        # Expressions evaluated on this data outside the registry (exploratory
+        # lab, superseded runs) are a property of the dataset, reserved once
+        # however many lanes declare them.
+        context.strategies.record_trials(dataset_key, prior,
+                                         experiment_key=f"{dataset_key}:prior-trials")
     trials = context.strategies.record_trials(
-        dataset_key, len(definition["grid"]) + definition.get("prior_trials", 0),
-        experiment_key=experiment_key)
+        dataset_key, len(definition["grid"]), experiment_key=experiment_key)
     best = scanned[0]
     ticket.candidate_data["ranked_expressions"] = scanned[:5]
     ticket.candidate_data["cumulative_expressions_tested_on_dataset"] = trials
@@ -244,7 +252,8 @@ def _finish(context: ResearchContext, ticket: ResearchTicket, lane_name: str,
                 strategy_id=strategy_id, version=(existing.version + 1) if existing else 1,
                 lane=ticket.lane, spec=spec.to_dict(), hypothesis=ticket.hypothesis,
                 evidence={"validation": summary, "falsification": verdict,
-                          "research_ticket": ticket.ticket_id},
+                          "research_ticket": ticket.ticket_id,
+                          "pristine_after": ticket.candidate_data.get("pristine_after")},
                 dataset_id=dataset_id, dataset_fingerprint=fingerprint)
             if verdict["passed"]:
                 definition.transition("VALIDATED", "survived every declared falsification test")

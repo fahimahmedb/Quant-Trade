@@ -204,6 +204,27 @@ class Ledger:
                 "realized_pnl": realized, "cash_after": self.state.cash,
                 "operation_id": operation_id, "replayed": False}
 
+    def apply_charge(self, strategy_id: str, amount: float, date: str,
+                     operation_id: str, kind: str) -> dict[str, Any]:
+        """Book a cash-only friction (for example a futures roll) to one sleeve.
+
+        Idempotent on ``operation_id`` exactly like ``apply_fill``; it moves no
+        position, so it is not counted as a fill.
+        """
+        if operation_id in self._applied:
+            return {"amount": 0.0, "operation_id": operation_id, "replayed": True}
+        self.state.cash -= amount
+        self.state.fees_paid += amount
+        bucket = self.state.attribution.setdefault(
+            strategy_id, {"realized_pnl": 0.0, "costs": 0.0, "fills": 0.0, "notional": 0.0})
+        bucket["costs"] += amount
+        bucket[f"{kind}_costs"] = bucket.get(f"{kind}_costs", 0.0) + amount
+        self._applied.add(operation_id)
+        self.state.applied_operations.append(operation_id)
+        self.save()
+        return {"amount": amount, "operation_id": operation_id, "replayed": False,
+                "date": date}
+
     def mark_to_market(self, date: str, prices: dict[str, float]) -> dict[str, Any]:
         """Revalue every sleeve and record one point in the persistent NAV history."""
         if self.state.last_session_date and date < self.state.last_session_date:
@@ -262,13 +283,16 @@ class Ledger:
         out: list[tuple[str, float]] = []
         previous = None
         for point in self.state.nav_history:
-            pnl = (point.get("sleeve_pnl") or {}).get(strategy_id)
-            if pnl is None:
-                previous = None
+            if "sleeve_pnl" not in point:
+                previous = None      # mark written before per-sleeve attribution existed
                 continue
-            if previous is not None and previous[1] > 0 and (since is None or point["date"] > since):
+            pnl = point["sleeve_pnl"].get(strategy_id)
+            if pnl is not None and previous is not None and previous[1] > 0 and (
+                    since is None or point["date"] > since):
                 out.append((point["date"], (pnl - previous[0]) / previous[1]))
-            previous = (pnl, float(point["nav"]))
+            # A sleeve absent from a mark had no P&L yet, so its first booked day
+            # is measured from zero rather than silently dropped.
+            previous = (pnl if pnl is not None else 0.0, float(point["nav"]))
         return out
 
     def _positions(self) -> list[Position]:

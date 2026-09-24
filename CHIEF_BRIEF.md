@@ -15,7 +15,7 @@ Component state:
 - `BOOK`: **IDLE** - marked through 2026-09-11
 - `BUILD`: **BLOCKED** - 3 open capability gaps
 - `CONTROL`: **IDLE** - no work due
-- `DATA`: **IDLE** - 3 datasets available
+- `DATA`: **IDLE** - 4 datasets available
 - `FILLS`: **IDLE** - no session due
 - `LEARNING`: **IDLE** - 5 lessons recorded
 - `RESEARCH`: **BLOCKED** - no survivorship-controlled security and factor panel
@@ -27,9 +27,9 @@ Component state:
 
 ## Data
 
-Registry health: `{'AVAILABLE': 3, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
+Registry health: `{'AVAILABLE': 4, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
 
-- **futures_excess_return_daily** (AVAILABLE) - 177,419 rows, 31 symbols, 2002-01-02 to 2024-03-28, `sha256:9489b9cf4346ed3ecd389d4983c15380172985ef382945f411c841ead5a75981`
+- **futures_excess_return_daily** (AVAILABLE) - 174,774 rows, 31 symbols, 2002-01-02 to 2024-03-28, `sha256:2731a881292251f2f754256c0f6feb66ec3168f20a39003b4abe59f960e1b6a6`
   - source: https://github.com/pst-group/pysystemtrade data/futures (adjusted_prices_csv, multiple_prices_csv, csvconfig) @ 8958c49c38b1e4a8c07f0e4375d5e9cb68a087f7
   - caveat: third-party research data (pysystemtrade repository), not an exchange feed; not independently verified against exchange settlements
   - caveat: universe is today's liquid contract list: instruments that were delisted before the snapshot are absent (mild survivorship)
@@ -38,6 +38,17 @@ Registry health: `{'AVAILABLE': 3, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - caveat: index excludes collateral interest: every return is an excess return over cash
   - caveat: roll costs use the repository's current spread and commission estimates for the whole history, which likely understates early-2000s costs
   - caveat: a market closed on a shared session carries its last level forward for at most 5 sessions and is flagged stale=1
+- **futures_excess_return_daily_broad** (AVAILABLE) - 780,195 rows, 144 symbols, 1990-01-02 to 2024-03-28, `sha256:da1dc5a4d7130400f4fe945aab11a2555604a3155d258b8eaead06736d6c110d`
+  - source: https://github.com/pst-group/pysystemtrade data/futures (adjusted_prices_csv, multiple_prices_csv, csvconfig) @ 8958c49c38b1e4a8c07f0e4375d5e9cb68a087f7
+  - caveat: third-party research data (pysystemtrade repository), not an exchange feed; not independently verified against exchange settlements
+  - caveat: universe is today's liquid contract list: instruments that were delisted before the snapshot are absent (mild survivorship)
+  - caveat: returns are in each contract's local currency; P&L currency translation (second order for a margined futures position) is not modelled
+  - caveat: volume is unavailable and written as 0: execution capacity is NOT modelled
+  - caveat: index excludes collateral interest: every return is an excess return over cash
+  - caveat: roll costs use the repository's current spread and commission estimates for the whole history, which likely understates early-2000s costs
+  - caveat: a market closed on a shared session carries its last level forward for at most 5 sessions and is flagged stale=1
+  - caveat: sessions are the trading days of SP500; a contract trading on a day SP500 did not trade accrues that move to the next session (no return is lost, it is re-timed)
+  - caveat: staggered universe: each contract enters at its first observation
 - **nasdaq_composite_daily** (AVAILABLE) - 1,251 rows, 1 symbols, 2021-07-13 to 2026-07-10, `sha256:ba0a84803fee43f4b6b984d86a93d23c7b73e8a2630fa4e8e6e55290769d6a14`
   - source: operator-supplied historical export committed to the repository
   - caveat: price index without dividends; not a tradable instrument

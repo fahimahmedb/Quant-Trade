@@ -18,6 +18,7 @@ from .risk import RiskLimits
 
 
 FUTURES_DATASET = "futures_excess_return_daily"
+FUTURES_BROAD_DATASET = "futures_excess_return_daily_broad"
 
 
 @dataclass(frozen=True)
@@ -41,4 +42,6 @@ FUTURES_PROFILE = DeskProfile(
 
 
 def profile_for(dataset_id: str) -> DeskProfile:
-    return FUTURES_PROFILE if dataset_id == FUTURES_DATASET else DEFAULT_PROFILE
+    if dataset_id in (FUTURES_DATASET, FUTURES_BROAD_DATASET):
+        return FUTURES_PROFILE
+    return DEFAULT_PROFILE

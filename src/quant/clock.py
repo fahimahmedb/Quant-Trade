@@ -112,10 +112,15 @@ class QuantSystem:
 
     def __init__(self, root: Path, initial_capital: float = 1_000_000.0,
                  universe: list[str] | None = None, dataset_id: str = SECTOR_DATASET,
-                 timer: Timer | None = None, state_dir: str = "var"):
+                 timer: Timer | None = None, state_dir: str = "var",
+                 calendar: list[str] | None = None):
         self.paths = QuantPaths(Path(root), state=state_dir).ensure()
         self.timer = timer or Timer()
         self.universe = universe or SECTOR_UNIVERSE
+        #: Symbols whose common trading days are the system's sessions. The
+        #: default (the whole universe) is the ETF behaviour; a staggered
+        #: futures universe is sessioned on one reference contract instead.
+        self.calendar = calendar or self.universe
         self.dataset_id = dataset_id
         self.log = EventLog(self.paths.events)
         self.components = ComponentRegistry(self.paths.components)
@@ -398,16 +403,16 @@ class QuantSystem:
             return None
         frozen = self.strategies.research_partition(self.dataset_id)
         if frozen is None:
-            return panel.split(WINDOWS, symbols=self.universe)["SHADOW"]
+            return panel.split(WINDOWS, symbols=self.calendar)["SHADOW"]
         start = frozen["SHADOW"]["start"]
-        dates = [date for date in panel.aligned_dates(self.universe) if date >= start]
+        dates = [date for date in panel.aligned_dates(self.calendar) if date >= start]
         return Window("SHADOW", start, dates[-1]) if dates else None
 
     def _next_desk_session(self) -> tuple[str, str | None] | None:
         panel, window = self.panel(), self.shadow_window()
         if panel is None or window is None or self._frozen_cohort_status() is False:
             return None
-        dates = [date for date in panel.aligned_dates(self.universe) if window.contains(date)]
+        dates = [date for date in panel.aligned_dates(self.calendar) if window.contains(date)]
         pending = [date for date in dates
                    if self.state.desk_cursor is None or date > self.state.desk_cursor]
         # close(t) is a decision point only once open(t+1) actually exists. Leave
@@ -677,18 +682,26 @@ class QuantSystem:
             if review.get("reviewed_month") == month:
                 continue
             ledger = self.desk.ledger_for(definition)
-            series = ledger.sleeve_returns(definition.strategy_id, since=review.get("since"))
-            if not series:
+            full = ledger.sleeve_returns(definition.strategy_id, since=review.get("since"))
+            if not full:
                 continue
+            # Only evidence the research never saw may move the lifecycle. The
+            # whole series is still tested and reported, labelled as monitoring.
+            pristine = definition.evidence.get("pristine_after")
+            series = [item for item in full if not pristine or item[0] > pristine]
             validated = (definition.evidence.get("validation") or {}).get("sharpe_zero_rate")
-            verdict = sequential_test([value for _, value in series],
-                                      alternative_sharpe(validated))
+            alternative = alternative_sharpe(validated)
+            monitoring = sequential_test([value for _, value in full], alternative)
+            verdict = sequential_test([value for _, value in series], alternative)
             pnl = ledger.sleeve_pnl().get(definition.strategy_id, 0.0)
-            definition.shadow.update({"sessions": len(series), "net_pnl": pnl,
+            definition.shadow.update({"sessions": len(full), "net_pnl": pnl,
                                       "peak_pnl": max(definition.shadow.get("peak_pnl", 0.0), pnl)})
             definition.shadow["max_drawdown"] = min(definition.shadow.get("max_drawdown", 0.0),
                                                     pnl - definition.shadow["peak_pnl"])
-            review.update({"reviewed_month": month, "last": verdict, "through": series[-1][0]})
+            review.update({"reviewed_month": month, "last": verdict, "through": full[-1][0],
+                           "monitoring_including_seen_history": monitoring,
+                           "pristine_after": pristine,
+                           "pristine_sessions": len(series)})
             transition = None
             if definition.tradable and verdict["decision"] != "CONTINUE":
                 if verdict["decision"] == "ACCEPT_EDGE" and definition.lifecycle in (
@@ -703,9 +716,9 @@ class QuantSystem:
                           f"{verdict['log_likelihood_ratio']:.2f}, alternative Sharpe "
                           f"{verdict['alternative_sharpe']:.2f})")
                 definition.transition(transition, reason)
-                review["since"] = series[-1][0]
+                review["since"] = full[-1][0]
                 review.setdefault("history", []).append(
-                    {"at": series[-1][0], "to": transition, "verdict": verdict["decision"]})
+                    {"at": full[-1][0], "to": transition, "verdict": verdict["decision"]})
                 self.log.emit("LEARNING", "LEARNING", "lifecycle_evidence",
                               definition.strategy_id, severity="WARN", to=transition,
                               reason=reason)

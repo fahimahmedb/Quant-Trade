@@ -59,6 +59,11 @@ class ExecutionModel:
             min(participation, 1.0) / self.max_participation) if participation > 0 else 0.0
         side = 1.0 if quantity > 0 else -1.0
         slippage_bps = self.half_spread_bps + impact_bps
+        # A panel may carry the instrument's own one-way cost estimate. The fill
+        # never costs less than it (research charges the same floor).
+        own = panel.feature(signal_date, symbol, "cost_bps") if panel.has(signal_date, symbol) else None
+        if own is not None and own > slippage_bps + self.commission_bps:
+            slippage_bps = own - self.commission_bps
         price = reference * (1.0 + side * slippage_bps / 10_000.0)
         cost = abs(quantity) * price * self.commission_bps / 10_000.0
         return {"symbol": symbol, "quantity": quantity, "reference_price": reference,

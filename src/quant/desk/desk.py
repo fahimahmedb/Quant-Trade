@@ -125,6 +125,8 @@ class CapitalDesk:
                               session=date, error=ticket.reason)
                 tickets.append(self._finish(definition, ticket))
 
+        if next_date:
+            self._charge_rolls(panel, date, next_date, decision_ledgers)
         # The mark belongs to the session where the orders executed.
         marks = self._mark(panel, next_date or date)
         existing = {row.get("opportunity_id") for row in read_jsonl(self.paths.opportunities)}
@@ -310,7 +312,8 @@ class CapitalDesk:
         last = self.journal.stats_for(definition.strategy_id).get("last_rebalance_date")
         if not last:
             return None
-        universe = definition.to_spec().universe
+        spec = definition.to_spec()
+        universe = [spec.calendar_symbol] if spec.calendar_symbol else spec.universe
         previous = panel.aligned_index(universe, last)
         current = panel.aligned_index(universe, date)
         if previous is None or current is None:
@@ -354,6 +357,34 @@ class CapitalDesk:
                 continue
             fills.append(fill)
         return legs, fills
+
+    def _charge_rolls(self, panel: PricePanel, date: str, next_date: str,
+                      decision_ledgers: dict[str, Ledger]) -> float:
+        """Charge contract rolls to the positions that were held across them.
+
+        Positions entering the session (the durable decision snapshot, so a
+        replay sees the same holdings) are held through ``next_date``'s move
+        until that session's fills, so they pay any roll recorded on
+        ``next_date``. The charge is on absolute notional: longs and shorts
+        both pay to roll. Research charges the identical amount.
+        """
+        total = 0.0
+        for authority, snapshot in decision_ledgers.items():
+            ledger = self.capital if authority == self.capital.state.authority else self.evaluation
+            for strategy_id, holdings in sorted(snapshot.sleeves.items()):
+                for symbol, position in sorted(holdings.items()):
+                    if abs(position.quantity) <= 1e-9 or not panel.has(date, symbol):
+                        continue
+                    rate = (panel.feature(next_date, symbol, "roll_cost")
+                            if panel.has(next_date, symbol) else None)
+                    if not rate:
+                        continue
+                    amount = abs(position.quantity) * panel.price(date, symbol) * rate
+                    effect = ledger.apply_charge(
+                        strategy_id, amount, next_date,
+                        operation_id=f"ROLL-{strategy_id}-{symbol}-{next_date}", kind="roll")
+                    total += effect["amount"]
+        return total
 
     def _mark(self, panel: PricePanel, mark_date: str) -> dict[str, Any]:
         prices = {symbol: panel.price(mark_date, symbol) for symbol in panel.symbols

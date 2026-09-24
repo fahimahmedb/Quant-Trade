@@ -45,6 +45,16 @@ class StrategySpec:
     #: Fixed instrument-diversification multiplier (declared, never fitted).
     diversification_multiplier: float = 1.0
     forecast_cap: float = 2.0
+    #: When set, sessions are the trading days of this one symbol and the
+    #: universe is *staggered*: an instrument participates from the first
+    #: session its own history allows, and N is the count of instruments
+    #: eligible at that date (known at that date, so not hindsight). When
+    #: empty, sessions are the dates on which every universe member traded.
+    calendar_symbol: str = ""
+    #: Carver's "speed limit": an instrument is eligible on a date only if its
+    #: expected annual trading cost, in Sharpe units, is at most this value
+    #: (0 disables the rule). Uses that date's own cost and volatility.
+    max_cost_sharpe: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -53,7 +63,8 @@ class StrategySpec:
     def label(self) -> str:
         if self.family in TIME_SERIES_FAMILIES:
             return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
-                    f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}")
+                    f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}"
+                    + (f"_sl{self.max_cost_sharpe:g}" if self.max_cost_sharpe else ""))
         sign = "reversal" if self.direction < 0 else "momentum"
         return (f"xs_{sign}_l{self.lookback_days}_z{self.min_abs_score:g}"
                 f"_h{self.holding_days}_b{self.no_trade_band:g}")
@@ -193,8 +204,14 @@ VOL_FLOOR_SHARE = 0.3
 VOL_SLOW_SPAN = 500
 #: Sessions of history an instrument needs before it may carry a position.
 WARMUP_SESSIONS = 256
+#: A carry estimate not refreshed for this many sessions is dropped rather than
+#: used stale (some index futures report the adjacent contract rarely).
+CARRY_MAX_AGE_SESSIONS = 20
 ANNUALISATION = 16.0          # sqrt(256)
 MIN_WEIGHT = 1e-4
+#: Declared trades per year for a blended EWMAC/carry forecast (Carver 2015,
+#: ch. 12: ~5-15 for these speeds); used only by the speed-limit rule.
+ASSUMED_TRADES_PER_YEAR = 10.0
 
 
 def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, float | None]]:
@@ -215,6 +232,7 @@ def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, flo
     slow = [0.0] * len(EWMAC_RULES)
     variance = slow_variance = None
     carry_ewm: float | None = None
+    carry_age = CARRY_MAX_AGE_SESSIONS + 1
     previous: float | None = None
     a_vol, a_slow = 2.0 / (VOL_SPAN + 1), 2.0 / (VOL_SLOW_SPAN + 1)
     a_carry = 2.0 / (CARRY_SMOOTHING_SPAN + 1)
@@ -236,6 +254,9 @@ def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, flo
         raw_carry = panel.feature(date, symbol, "carry_ann")
         if raw_carry is not None and math.isfinite(raw_carry):
             carry_ewm = raw_carry if carry_ewm is None else carry_ewm + a_carry * (raw_carry - carry_ewm)
+            carry_age = 0
+        else:
+            carry_age += 1
         if variance is None or slow_variance is None or index < WARMUP_SESSIONS:
             continue
         daily_vol = max(math.sqrt(variance), VOL_FLOOR_SHARE * math.sqrt(slow_variance))
@@ -244,7 +265,7 @@ def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, flo
         trend = sum((fast[p] - slow[p]) / (price * daily_vol) * scalar
                     for p, (_, _, scalar) in enumerate(EWMAC_RULES)) / len(EWMAC_RULES) / 10.0
         carry = (carry_ewm / (daily_vol * ANNUALISATION) * CARRY_SCALAR / 10.0
-                 if carry_ewm is not None else None)
+                 if carry_ewm is not None and carry_age <= CARRY_MAX_AGE_SESSIONS else None)
         out[date] = (daily_vol * ANNUALISATION, trend, carry)
     panel.derived[key] = out
     return out
@@ -261,6 +282,10 @@ def time_series_forecasts(panel: PricePanel, spec: StrategySpec,
         if point is None:
             continue
         annual_vol, trend, carry = point
+        if spec.max_cost_sharpe > 0:
+            own = panel.feature(asof, symbol, "cost_bps")
+            if own is None or ASSUMED_TRADES_PER_YEAR * own / 10_000.0 / annual_vol > spec.max_cost_sharpe:
+                continue  # too expensive to trade at this speed, or cost unknown
         if spec.family == BASELINE_FAMILY:
             forecast = 1.0
         else:
@@ -283,7 +308,8 @@ def time_series_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dic
     forecasts = time_series_forecasts(panel, spec, asof)
     if not forecasts or spec.vol_target <= 0:
         return {}
-    scale = spec.vol_target * spec.diversification_multiplier / len(spec.universe)
+    breadth = len(forecasts) if spec.calendar_symbol else len(spec.universe)
+    scale = spec.vol_target * spec.diversification_multiplier / breadth
     weights = {}
     for symbol, item in forecasts.items():
         weight = item["forecast"] * scale / item["annual_vol"]

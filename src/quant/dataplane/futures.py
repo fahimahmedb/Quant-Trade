@@ -9,14 +9,19 @@ feeding it back-adjusted levels would make notional, gross exposure and returns
 all wrong. Instead each instrument becomes a fully collateralised excess-return
 index:
 
-``r_t = (A_t - A_{t-1}) / P_{t-1} - roll_cost_t``    ``X_t = X_{t-1} * (1 + r_t)``
+``r_t = (A_t - A_{t-1}) / P_{t-1}``    ``X_t = X_{t-1} * (1 + r_t)``
 
 where ``A`` is the back-adjusted price (so the P&L across a roll is the P&L of
-the contract actually held), ``P`` is the price of the contract held and
-``roll_cost`` charges two half-spreads plus two commissions whenever the held
-contract changes. ``X`` is positive, its percentage move is the economic return
-per unit of notional, and ``quantity * X`` is the notional exposure — which is
-exactly what the existing Book, RISK and research code already assume.
+the contract actually held) and ``P`` is the price of the contract held. ``X``
+is positive, its percentage move is the economic return per unit of notional,
+and ``quantity * X`` is the notional exposure — which is exactly what the
+existing Book, RISK and research code already assume.
+
+Roll costs are *not* inside ``X``: a cost subtracted from an index is credited
+to every short position (red-team finding). They are published as the
+``roll_cost`` feature (two half-spreads plus two commissions, as a fraction of
+notional, on the session the held contract changed) and charged on the
+absolute position by research (``walk_forward``) and by the Desk.
 
 The excess return excludes the collateral yield, so strategy returns over this
 panel are returns in excess of cash. That is the hurdle the Research Factory
@@ -70,6 +75,24 @@ FUTURES_UNIVERSE = [
     "CORN", "WHEAT", "SOYBEAN", "SUGAR11", "LIVECOW", "LEANHOG",
 ]
 FUTURES_BENCHMARK = "SP500"
+FUTURES_BROAD_DATASET = "futures_excess_return_daily_broad"
+BROAD_START = "1990-01-01"
+#: Declared before any broad-panel result was seen: the asset classes a
+#: diversified trend/carry programme trades, excluding volatility futures
+#: (structurally short-volatility carry), single stocks, sector/housing/weather
+#: and index-of-indices contracts.
+BROAD_ASSET_CLASSES = frozenset({"Equity", "Bond", "FX", "OilGas", "Metals", "Ags"})
+#: Same exposure in a different contract size would double-count one market.
+DUPLICATE_MARKERS = ("micro", "mini", "small", "_e-")
+BROAD_MIN_YEARS = 3.0
+#: Only contracts still quoted at the snapshot are available (survivorship,
+#: declared as a caveat); this is the date that defines "still quoted".
+BROAD_LIVE_AFTER = "2024-01-01"
+#: Data-quality rule: a move beyond this size that is undone (to within 25%)
+#: inside ``GLITCH_WINDOW`` observations is a price-scale error in the source,
+#: not a market event. The instrument is excluded, never "repaired".
+GLITCH_MOVE = 0.8
+GLITCH_WINDOW = 5
 DEFAULT_START = "2002-01-01"
 MAX_STALE_SESSIONS = 5
 #: A session enters the shared calendar only when most markets traded on it,
@@ -120,11 +143,57 @@ def _file_digest(paths: list[Path]) -> str:
     return "sha256:" + digest.hexdigest()
 
 
+def select_broad_universe(checkout: Path, start: str = BROAD_START) -> list[str]:
+    """Mechanical, pre-declared selection rule for the broad panel."""
+    import datetime as dt
+    root = checkout / "data" / "futures"
+    instruments, spreads = _config(root)
+    chosen = []
+    for path in sorted((root / "adjusted_prices_csv").glob("*.csv")):
+        symbol = path.stem
+        if any(marker in symbol.lower() for marker in DUPLICATE_MARKERS):
+            continue
+        config = instruments.get(symbol)
+        if (config is None or symbol not in spreads
+                or config["AssetClass"] not in BROAD_ASSET_CLASSES
+                or not (root / "multiple_prices_csv" / f"{symbol}.csv").exists()):
+            continue
+        with path.open(encoding="utf-8") as handle:
+            stamps = [row["DATETIME"][:10] for row in csv.DictReader(handle)]
+        if not stamps or stamps[-1] < BROAD_LIVE_AFTER:
+            continue
+        first = max(stamps[0], start)
+        years = (dt.date.fromisoformat(stamps[-1]) - dt.date.fromisoformat(first)).days / 365.25
+        if years >= BROAD_MIN_YEARS:
+            chosen.append(symbol)
+    return chosen
+
+
+def _scale_glitches(rows: dict[str, dict[str, Any]]) -> list[str]:
+    days = sorted(rows)
+    levels = [rows[day]["level"] for day in days]
+    found = []
+    for index in range(1, len(levels)):
+        move = levels[index] / levels[index - 1] - 1.0
+        if abs(move) < GLITCH_MOVE:
+            continue
+        for later in range(index + 1, min(index + 1 + GLITCH_WINDOW, len(levels))):
+            if 0.8 <= levels[later] / levels[index - 1] <= 1.25:
+                found.append(days[index])
+                break
+    return found
+
+
 def build_futures_panel(checkout: Path, universe: list[str] | None = None,
-                        start: str = DEFAULT_START) -> tuple[PricePanel, dict[str, Any]]:
+                        start: str = DEFAULT_START,
+                        calendar_symbol: str | None = None,
+                        cost_feature: bool = False) -> tuple[PricePanel, dict[str, Any]]:
     """Derive the excess-return panel from a pysystemtrade checkout.
 
     ``checkout`` is the repository root (the directory containing ``data/``).
+    With ``calendar_symbol`` the sessions are that contract's trading days and
+    every other contract enters at its own first observation (staggered);
+    without it, a session needs a quorum of the universe.
     """
     universe = list(universe or FUTURES_UNIVERSE)
     root = checkout / "data" / "futures"
@@ -151,14 +220,13 @@ def build_futures_panel(checkout: Path, universe: list[str] | None = None,
                 continue
             a_now, p_now = float(adjusted[day]["price"]), float(held["PRICE"])
             contract = held["PRICE_CONTRACT"]
-            roll = 0
+            roll_cost = 0.0
             if previous is not None and p_now > 0 and previous["price"] > 0:
                 ret = (a_now - previous["adjusted"]) / previous["price"]
                 if contract != previous["contract"]:
-                    roll = 1
                     # close the old contract and open the new one
-                    ret -= 2.0 * spread / previous["price"]
-                    ret -= 2.0 * per_block / (point_size * previous["price"])
+                    roll_cost = (2.0 * spread / previous["price"]
+                                 + 2.0 * per_block / (point_size * previous["price"]))
                 level *= 1.0 + ret
             carry = None
             if held["CARRY"] and held["CARRY_CONTRACT"] and p_now > 0:
@@ -167,25 +235,56 @@ def build_futures_panel(checkout: Path, universe: list[str] | None = None,
                     carry = (p_now - float(held["CARRY"])) / p_now / years
             previous = {"adjusted": a_now, "price": p_now, "contract": contract}
             if day >= start:
-                rows[day] = {"level": level, "carry": carry, "roll": roll}
+                # one-way cost of trading one unit of notional today: half-spread
+                # plus commission, both at the repository's current estimates
+                cost = ((spread + per_block / point_size) / p_now * 10_000.0
+                        if p_now > 0 else None)
+                rows[day] = {"level": level, "carry": carry, "roll_cost": roll_cost,
+                             "cost": cost}
         series[symbol] = rows
 
-    counts: dict[str, int] = {}
-    for rows in series.values():
-        for day in rows:
-            counts[day] = counts.get(day, 0) + 1
-    calendar = sorted(day for day, count in counts.items()
-                      if count >= CALENDAR_QUORUM * len(universe))
+    excluded: dict[str, list[str]] = {}
+    for symbol in list(series):
+        glitches = _scale_glitches(series[symbol])
+        if glitches:
+            excluded[symbol] = glitches
+            del series[symbol]
+    universe = [symbol for symbol in universe if symbol in series]
+    import datetime as _dt
+
+    def weekday(day: str) -> bool:
+        # Globex Sunday-evening snapshots are not sessions (red-team finding).
+        return _dt.date.fromisoformat(day).weekday() < 5
+
+    if calendar_symbol:
+        calendar = sorted(day for day in series[calendar_symbol] if weekday(day))
+    else:
+        counts: dict[str, int] = {}
+        for rows in series.values():
+            for day in rows:
+                counts[day] = counts.get(day, 0) + 1
+        calendar = sorted(day for day, count in counts.items()
+                          if count >= CALENDAR_QUORUM * len(universe) and weekday(day))
 
     panel_rows: list[dict[str, Any]] = []
     stale_bars = 0
     for symbol, rows in series.items():
         last: dict[str, Any] | None = None
         stale = 0
+        observed_days = sorted(rows)
+        cursor = 0
+        pending_roll = 0.0
         for day in calendar:
+            # A roll on a day that is not a session (weekend, the reference
+            # market's holiday) is charged on the next session, never dropped.
+            while cursor < len(observed_days) and observed_days[cursor] < day:
+                pending_roll += rows[observed_days[cursor]]["roll_cost"]
+                cursor += 1
             if day in rows:
                 last, stale = rows[day], 0
                 observed = True
+                pending_roll += rows[day]["roll_cost"]
+                cursor += 1
             elif last is not None and stale < MAX_STALE_SESSIONS:
                 stale += 1
                 observed = False
@@ -194,10 +293,14 @@ def build_futures_panel(checkout: Path, universe: list[str] | None = None,
             level = last["level"]
             row = {"date": day, "symbol": symbol, "open": level, "high": level, "low": level,
                    "close": level, "adj_close": level, "volume": 0.0,
-                   "stale": 0.0 if observed else 1.0,
-                   "roll": float(last["roll"]) if observed else 0.0}
+                   "stale": 0.0 if observed else 1.0}
+            if observed and pending_roll > 0:
+                row["roll_cost"] = pending_roll
+                pending_roll = 0.0
             if observed and last["carry"] is not None:
                 row["carry_ann"] = last["carry"]
+            if cost_feature and last.get("cost") is not None:
+                row["cost_bps"] = last["cost"]
             if not observed:
                 stale_bars += 1
             panel_rows.append(row)
@@ -211,9 +314,11 @@ def build_futures_panel(checkout: Path, universe: list[str] | None = None,
         "timestamp_semantics": "last intraday snapshot recorded for the calendar date in "
                                "the source files; treated as that session's close",
         "derivation": "excess-return index per instrument: back-adjusted daily change "
-                      "divided by the held contract's previous price, minus two "
-                      "half-spreads and two commissions on each roll (see "
-                      "quant.dataplane.futures)",
+                      "divided by the held contract's previous price; roll costs (two "
+                      "half-spreads and two commissions) published as the roll_cost "
+                      "feature and charged on absolute positions downstream; cost_bps "
+                      "is the one-way half-spread plus commission at that day's price "
+                      "(see quant.dataplane.futures)",
         "stale_bars_carried_forward": stale_bars,
         "caveats": [
             "third-party research data (pysystemtrade repository), not an exchange "
@@ -229,7 +334,14 @@ def build_futures_panel(checkout: Path, universe: list[str] | None = None,
             "for the whole history, which likely understates early-2000s costs",
             f"a market closed on a shared session carries its last level forward for at "
             f"most {MAX_STALE_SESSIONS} sessions and is flagged stale=1",
-        ],
+        ] + ([f"sessions are the trading days of {calendar_symbol}; a contract trading on "
+              f"a day {calendar_symbol} did not trade accrues that move to the next "
+              f"session (no return is lost, it is re-timed)",
+              "staggered universe: each contract enters at its first observation"]
+             if calendar_symbol else []),
+        "calendar_symbol": calendar_symbol,
+        "universe": universe,
+        "excluded_for_data_quality": excluded,
     }
     return panel, provenance
 

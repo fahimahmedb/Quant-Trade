@@ -56,6 +56,10 @@ def sequential_test(returns: list[float], sharpe_alternative: float,
     mean_z = statistics.fmean(returns) / deviation
     llr = n * (mu * mean_z - mu * mu / 2.0)
     result["log_likelihood_ratio"] = llr
+    # Expected sessions for the LLR to reach the accept bound if H1 is true
+    # (drift mu^2/2 per session). At a Sharpe of 0.5 this is decades: the test
+    # is then monitoring, not a fast kill switch, and is reported as such.
+    result["expected_sessions_to_accept_if_true"] = upper / (mu * mu / 2.0)
     result["realised_sharpe"] = mean_z * math.sqrt(TRADING_DAYS)
     if llr >= upper:
         result["decision"] = "ACCEPT_EDGE"

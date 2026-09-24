@@ -16,14 +16,15 @@ from quant.dataplane.futures import MAX_STALE_SESSIONS, build_futures_panel
 from quant.dataplane.panel import PricePanel
 from quant.desk.profiles import DEFAULT_PROFILE, FUTURES_PROFILE, profile_for
 from quant.factory.evaluate import falsify, summarize, walk_forward
-from quant.factory.lanes import (FUTURES_DATASET, FUTURES_PRIOR_LAB_TRIALS, baseline_spec,
-                                 lane_definitions)
+from quant.factory.lanes import (FUTURES_BROAD_DATASET, FUTURES_BROAD_PRIOR_TRIALS,
+                                 FUTURES_DATASET, FUTURES_PRIOR_TRIALS, FUTURES_PRISTINE_AFTER,
+                                 baseline_spec, lane_definitions)
 from quant.factory.signals import (BASELINE_FAMILY, TREND_FAMILY, StrategySpec,
                                    time_series_weights, weights_for)
 from quant.paths import QuantPaths
 
 
-def _weekdays(start_year: int, count: int) -> list[str]:
+def _weekdays(start_year: int, count: int) -> list[str]:  # noqa: D401
     import datetime as dt
     day, out = dt.date(start_year, 1, 1), []
     while len(out) < count:
@@ -135,14 +136,19 @@ class FuturesDerivationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             source = _write_source(Path(tmp), {"A": rows, "B": other, "C": gappy},
                                    spreads={"A": 0.5})
-            panel, provenance = build_futures_panel(source, ["A", "B", "C"], start="2000-01-01")
+            panel, provenance = build_futures_panel(source, ["A", "B", "C"], start="2000-01-01",
+                                                    cost_feature=True)
         a = [panel.price(date, "A") for date in dates]
         # ordinary day: +1 point on a 100-point contract
         self.assertAlmostEqual(a[1] / a[0] - 1.0, 1.0 / 100.0, places=9)
-        # roll day: the same +1 point, minus two half-spreads of 0.5 on the old price
-        roll_return = a[10] / a[9] - 1.0
-        self.assertAlmostEqual(roll_return, 1.0 / 109.0 - 2 * 0.5 / 109.0, places=9)
-        self.assertEqual(panel.feature(dates[10], "A", "roll"), 1.0)
+        # roll day: the index carries the market move only; the roll cost (two
+        # half-spreads of 0.5 on the old price) is a separate feature, so a short
+        # position can never be credited with it
+        self.assertAlmostEqual(a[10] / a[9] - 1.0, 1.0 / 109.0, places=9)
+        self.assertAlmostEqual(panel.feature(dates[10], "A", "roll_cost"), 2 * 0.5 / 109.0)
+        self.assertIsNone(panel.feature(dates[9], "A", "roll_cost"))
+        self.assertAlmostEqual(panel.feature(dates[0], "A", "cost_bps"),
+                               0.5 / 100.0 * 10_000.0)
         carry = panel.feature(dates[0], "A", "carry_ann")
         self.assertGreater(carry, 0.0)
         self.assertAlmostEqual(carry, (100.0 - 99.0) / 100.0 / 0.25, places=6)
@@ -153,6 +159,114 @@ class FuturesDerivationTests(unittest.TestCase):
         self.assertEqual(panel.price(stale[-1], "C"), panel.price(dates[4], "C"))
         self.assertIn("volume is unavailable and written as 0: execution capacity is NOT "
                       "modelled", provenance["caveats"])
+
+
+class RollCostTests(unittest.TestCase):
+    def test_roll_on_a_non_session_day_is_charged_on_the_next_session(self):
+        import datetime as dt
+        days, day = [], dt.date(2021, 1, 4)          # a Monday
+        while len(days) < 12:
+            days.append(day.isoformat())
+            day += dt.timedelta(days=1)             # includes a Saturday and Sunday
+        rows = [(d, 100.0, 100.0, "20210300" if i < 5 else "20210600", "", "")
+                for i, d in enumerate(days)]
+        with tempfile.TemporaryDirectory() as tmp:
+            source = _write_source(Path(tmp), {"A": rows}, spreads={"A": 0.5})
+            panel, _ = build_futures_panel(source, ["A"], start="2000-01-01",
+                                           calendar_symbol="A")
+        self.assertNotIn(days[5], panel.dates)       # Saturday: no session
+        self.assertNotIn(days[6], panel.dates)       # Sunday: no session
+        self.assertAlmostEqual(panel.feature(days[7], "A", "roll_cost"), 2 * 0.5 / 100.0)
+
+    def test_research_charges_roll_on_absolute_weight(self):
+        rows = []
+        dates = _weekdays(2015, 600)
+        for i, d in enumerate(dates):
+            for symbol, drift in (("L", 0.001), ("S", -0.001)):
+                level = 100.0 * (1 + drift) ** i
+                row = {"date": d, "symbol": symbol, "open": level, "high": level,
+                       "low": level, "close": level, "adj_close": level, "volume": 0}
+                if i % 20 == 0:
+                    row["roll_cost"] = 0.01
+                rows.append(row)
+        panel = PricePanel(rows)
+        from quant.dataplane.panel import Window
+        spec = _ts_spec(["L", "S"], trend=1.0, carry=0.0)
+        window = Window("W", dates[300], dates[-1])
+        charged = walk_forward(panel, spec, window, 0.0)
+        free = walk_forward(PricePanel([{k: v for k, v in r.items() if k != "roll_cost"}
+                                        for r in rows]), spec, window, 0.0)
+        extra = [a["cost"] - b["cost"] for a, b in zip(charged, free)]
+        paid = [(row, e) for row, e in zip(charged, extra) if e > 0]
+        self.assertTrue(paid)
+        for row, e in paid:
+            self.assertTrue(any(w < 0 for w in row["weights"].values()))
+            self.assertAlmostEqual(e, sum(abs(w) for w in row["weights"].values()) * 0.01)
+
+
+class BroadUniverseTests(unittest.TestCase):
+    def test_scale_glitch_excludes_instrument_and_is_recorded(self):
+        dates = _weekdays(2020, 30)
+        good = [(d, 100.0 + i * 0.1, 100.0 + i * 0.1, "20200300", "", "")
+                for i, d in enumerate(dates)]
+        bad = [(d, 10.0 if i == 12 else 100.0, 10.0 if i == 12 else 100.0, "20200300", "", "")
+               for i, d in enumerate(dates)]
+        with tempfile.TemporaryDirectory() as tmp:
+            source = _write_source(Path(tmp), {"GOOD": good, "BAD": bad})
+            panel, provenance = build_futures_panel(source, ["GOOD", "BAD"],
+                                                    start="2000-01-01")
+        self.assertEqual(panel.symbols, ["GOOD"])
+        self.assertEqual(provenance["excluded_for_data_quality"], {"BAD": [dates[12]]})
+        self.assertEqual(provenance["universe"], ["GOOD"])
+
+    def test_calendar_symbol_gives_staggered_entry(self):
+        dates = _weekdays(2020, 30)
+        anchor = [(d, 100.0, 100.0, "20200300", "", "") for d in dates]
+        late = [(d, 50.0, 50.0, "20200300", "", "") for d in dates[20:]]
+        with tempfile.TemporaryDirectory() as tmp:
+            source = _write_source(Path(tmp), {"REF": anchor, "LATE": late})
+            panel, _ = build_futures_panel(source, ["REF", "LATE"], start="2000-01-01",
+                                           calendar_symbol="REF")
+        self.assertEqual(panel.dates_for("REF"), dates)
+        self.assertEqual(panel.dates_for("LATE"), dates[20:])
+
+    def test_selection_rule_is_mechanical(self):
+        dates = _weekdays(2019, 1400)  # runs past BROAD_LIVE_AFTER
+        rows = [(d, 100.0, 100.0, "20200300", "", "") for d in dates]
+        with tempfile.TemporaryDirectory() as tmp:
+            source = _write_source(Path(tmp), {"GOLD": rows, "GOLD_micro": rows,
+                                               "SHORT": rows[-100:]})
+            from quant.dataplane.futures import select_broad_universe
+            # fixture asset class is "Test": nothing qualifies until it is a declared class
+            self.assertEqual(select_broad_universe(source, start="2000-01-01"), [])
+            config = source / "data" / "futures" / "csvconfig" / "instrumentconfig.csv"
+            config.write_text(config.read_text().replace(",Test,", ",Metals,"))
+            self.assertEqual(select_broad_universe(source, start="2000-01-01"), ["GOLD"])
+
+    def test_staggered_breadth_counts_only_eligible_instruments(self):
+        universe = ["A", "B", "C", "D"]
+        panel = _synthetic_panel(universe)
+        aligned = _ts_spec(universe)
+        staggered = StrategySpec(**{**aligned.to_dict(), "calendar_symbol": "A",
+                                    "universe": universe + ["LISTED_LATER"]})
+        date = panel.dates[-1]
+        a, b = time_series_weights(panel, aligned, date), time_series_weights(panel, staggered, date)
+        for symbol in a:
+            self.assertAlmostEqual(a[symbol], b[symbol], places=12)
+
+    def test_walk_forward_on_calendar_symbol_skips_unlisted(self):
+        universe = ["A", "B"]
+        panel = _synthetic_panel(universe, sessions=500)
+        rows = [{"date": d, "symbol": s, **bar, **panel.features.get((d, s), {})}
+                for (d, s), bar in panel.bars.items() if not (s == "B" and d < panel.dates[300])]
+        staggered = PricePanel(rows)
+        from quant.dataplane.panel import Window
+        spec = StrategySpec(**{**_ts_spec(universe).to_dict(), "calendar_symbol": "A"})
+        window = Window("W", staggered.dates[260], staggered.dates[-1])
+        out = walk_forward(staggered, spec, window, 4.0)
+        self.assertEqual(len(out), len([d for d in staggered.dates if window.contains(d)]) - 2)
+        early = [row for row in out if row["signal_date"] < staggered.dates[300]]
+        self.assertTrue(all("B" not in row["weights"] for row in early))
 
 
 class TimeSeriesSignalTests(unittest.TestCase):
@@ -222,8 +336,22 @@ class FalsificationTests(unittest.TestCase):
         lanes = lane_definitions(["A"], FUTURES_DATASET)
         (lane,) = lanes.values()
         self.assertEqual(len(lane["grid"]), 3)
-        self.assertEqual(lane["prior_trials"], FUTURES_PRIOR_LAB_TRIALS)
+        self.assertEqual(lane["prior_trials"], FUTURES_PRIOR_TRIALS)
+        self.assertEqual(lane["pristine_after"], FUTURES_PRISTINE_AFTER)
         self.assertNotIn("xs_daily_relative_value", lanes)
+        broad = lane_definitions(["A"], FUTURES_BROAD_DATASET)
+        # prior trials are a dataset fact: every lane declares the same number
+        self.assertEqual({lane["prior_trials"] for lane in broad.values()},
+                         {FUTURES_BROAD_PRIOR_TRIALS})
+
+    def test_prior_trials_are_reserved_once_per_dataset(self):
+        from quant.factory.strategies import StrategyRegistry
+        with tempfile.TemporaryDirectory() as tmp:
+            registry = StrategyRegistry(Path(tmp) / "s.json")
+            for lane in ("a", "b"):
+                registry.record_trials("ds@x", 17, experiment_key="ds@x:prior-trials")
+                total = registry.record_trials("ds@x", 3, experiment_key=f"ds@x:{lane}")
+            self.assertEqual(total, 17 + 3 + 3)
 
 
 class ProfileAndIsolationTests(unittest.TestCase):
@@ -250,3 +378,157 @@ class ProfileAndIsolationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SequentialTestTests(unittest.TestCase):
+    def test_no_decision_before_minimum_and_deterministic(self):
+        from quant.learning.sequential import MIN_OBSERVATIONS, sequential_test
+        short = [0.01] * (MIN_OBSERVATIONS - 1)
+        self.assertEqual(sequential_test(short, 1.0)["decision"], "CONTINUE")
+        import random
+        rng = random.Random(1)
+        noise = [rng.gauss(0.002, 0.01) for _ in range(400)]
+        self.assertEqual(sequential_test(noise, 1.0), sequential_test(list(noise), 1.0))
+
+    def test_decisive_evidence_both_ways(self):
+        from quant.learning.sequential import sequential_test
+        import random
+        rng = random.Random(5)
+        good = [rng.gauss(0.004, 0.01) for _ in range(500)]     # ~6 annual Sharpe
+        bad = [rng.gauss(-0.002, 0.01) for _ in range(500)]
+        self.assertEqual(sequential_test(good, 1.0)["decision"], "ACCEPT_EDGE")
+        self.assertEqual(sequential_test(bad, 1.0)["decision"], "REJECT_EDGE")
+
+    def test_scale_invariance(self):
+        from quant.learning.sequential import sequential_test
+        import random
+        rng = random.Random(9)
+        values = [rng.gauss(0.001, 0.01) for _ in range(300)]
+        a = sequential_test(values, 1.0)
+        b = sequential_test([value * 7.5 for value in values], 1.0)
+        self.assertAlmostEqual(a["log_likelihood_ratio"], b["log_likelihood_ratio"], places=9)
+
+
+class SleeveAttributionTests(unittest.TestCase):
+    def test_opposing_sleeves_on_one_symbol_sum_to_nav_change(self):
+        from quant.book.ledger import Ledger
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = Ledger(Path(tmp) / "book.json", initial_capital=1_000.0)
+            ledger.mark_to_market("2020-01-01", {"X": 100.0})
+            ledger.apply_fill("X", 3.0, 100.0, 0.5, "2020-01-02", "LONG", "op-long")
+            ledger.apply_fill("X", -1.0, 100.0, 0.25, "2020-01-02", "SHORT", "op-short")
+            ledger.mark_to_market("2020-01-02", {"X": 110.0})
+            pnl = ledger.sleeve_pnl()
+            self.assertAlmostEqual(pnl["LONG"], 30.0 - 0.5)
+            self.assertAlmostEqual(pnl["SHORT"], -10.0 - 0.25)
+            nav_change = ledger.state.nav_history[-1]["nav"] - 1_000.0
+            self.assertAlmostEqual(sum(pnl.values()), nav_change)
+            # replaying the same operation is a no-op for sleeve P&L as well
+            ledger.apply_fill("X", 3.0, 100.0, 0.5, "2020-01-02", "LONG", "op-long")
+            self.assertEqual(ledger.sleeve_pnl(), pnl)
+            reloaded = Ledger(Path(tmp) / "book.json")
+            self.assertEqual(reloaded.sleeve_returns("LONG"),
+                             [("2020-01-02", (30.0 - 0.5) / 1_000.0)])
+
+
+class TimelineTests(unittest.TestCase):
+    def test_jump_between_decision_and_first_fill_is_never_credited(self):
+        """The forbidden interval (close t -> first executable price) dominates here."""
+        universe = ["A", "B"]
+        base = _synthetic_panel(universe, sessions=400)
+        spec = _ts_spec(universe, trend=1.0, carry=0.0)
+        signal_day = base.dates[350]
+        weights = weights_for(base, spec, signal_day)
+        self.assertTrue(weights)
+        jump_day = base.dates[351]
+        rows = []
+        for (date, symbol), bar in base.bars.items():
+            factor = 1.5 if date >= jump_day else 1.0     # +50% on the entry session
+            rows.append({"date": date, "symbol": symbol,
+                         **{k: (v * factor if k != "volume" else v) for k, v in bar.items()}})
+        jumped = PricePanel(rows)
+        from quant.dataplane.panel import Window
+        window = Window("W", signal_day, base.dates[-1])
+        first = walk_forward(jumped, spec, window, 0.0)[0]
+        self.assertEqual(first["signal_date"], signal_day)
+        self.assertEqual(first["entry_date"], jump_day)
+        self.assertLess(abs(first["gross_return"]), 0.2)
+
+
+class FinalStateRiskTests(unittest.TestCase):
+    def test_futures_limits_bind_on_the_final_scaled_portfolio(self):
+        from quant.book.ledger import Ledger
+        from quant.desk.risk import evaluate
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = Ledger(Path(tmp) / "book.json", initial_capital=1_000_000.0)
+            prices = {f"S{i}": 100.0 for i in range(12)}
+            hedged = {f"S{i}": (500_000.0 if i % 2 else -500_000.0) for i in range(12)}
+            verdict = evaluate(ledger, "STR", hedged, FUTURES_PROFILE.limits, prices)
+            # all long: scaling for gross still leaves net above the directional cap
+            one_way = evaluate(ledger, "STR", {k: abs(v) for k, v in hedged.items()},
+                               FUTURES_PROFILE.limits, prices)
+        self.assertTrue(verdict["approved"])
+        self.assertLess(verdict["scale"], 1.0)
+        self.assertAlmostEqual(verdict["gross_ratio"], FUTURES_PROFILE.limits.max_gross_ratio,
+                               places=6)
+        self.assertFalse(one_way["approved"])
+        self.assertTrue(any("net exposure" in veto for veto in one_way["vetoes"]))
+
+
+class FuturesInstanceRestartTests(unittest.TestCase):
+    """Whole-instance replay on a synthetic fixture (never reported as evidence)."""
+
+    UNIVERSE = ["A", "B", "C", "D"]
+
+    def _root(self, tmp: Path) -> Path:
+        from quant.dataplane.registry import DatasetRecord
+        from quant.state import write_json
+        panel = _synthetic_panel(self.UNIVERSE, sessions=1000, seed=11)
+        path = tmp / "data" / "datasets" / f"{FUTURES_DATASET}.csv.gz"
+        panel.write(path)
+        record = DatasetRecord(dataset_id=FUTURES_DATASET, source="synthetic test fixture",
+                               adapter="fixture", path=f"data/datasets/{FUTURES_DATASET}.csv.gz",
+                               symbols=panel.symbols)
+        write_json(path.with_suffix(".meta.json"),
+                   record.to_dict() | {"expected_symbols": self.UNIVERSE})
+        return tmp
+
+    def _system(self, root: Path):
+        from quant.clock import QuantSystem
+        return QuantSystem(root, universe=self.UNIVERSE, dataset_id=FUTURES_DATASET,
+                           state_dir="var/futures")
+
+    def _economic_state(self, root: Path) -> dict:
+        import json
+        state = root / "var" / "futures"
+        book = json.loads((state / "book.json").read_text())
+        evaluation = json.loads((state / "evaluation_ledger.json").read_text())
+        strategies = json.loads((state / "strategies.json").read_text())
+        strip = lambda ledger: {k: ledger[k] for k in ("cash", "fills", "fees_paid",
+                                                      "realized_pnl", "sessions", "sleeves",
+                                                      "attribution", "applied_operations")}
+        return {"book": strip(book), "evaluation": strip(evaluation),
+                "nav": [(p["date"], round(p["nav"], 6)) for p in evaluation["nav_history"]],
+                "lifecycle": {k: (v["lifecycle"], v["shadow"].get("sequential", {}).get("history"))
+                              for k, v in strategies["strategies"].items()}}
+
+    def test_interrupted_run_replays_to_the_same_economic_state(self):
+        with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
+            straight = self._root(Path(a))
+            system = self._system(straight)
+            system.boot()
+            system.run()
+            self.assertEqual(system.state.status, "IDLE")
+            self.assertGreater(system.state.desk_sessions, 100)
+            self.assertFalse((straight / "var" / "book.json").exists(),
+                             "the futures instance must not create ETF state")
+
+            broken = self._root(Path(b))
+            for ticks in (1, 7, 40):          # stop, rebuild from disk, continue
+                system = self._system(broken)
+                system.boot()
+                system.run(max_ticks=ticks)
+            system = self._system(broken)
+            system.boot()
+            system.run()
+            self.assertEqual(self._economic_state(straight), self._economic_state(broken))

@@ -154,7 +154,7 @@ def main() -> None:
                                             "sec-serve", "sec-fingerprint",
                                             "sec-readiness", "sec-audit"))
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--market", choices=("etf", "futures"), default="etf",
+    parser.add_argument("--market", choices=("etf", "futures", "futures-broad"), default="etf",
                         help="which market instance to drive; futures keeps its own "
                              "state under var/futures and never touches the ETF Book")
     parser.add_argument("--max-ticks", type=int, default=10_000)
@@ -204,6 +204,16 @@ def main() -> None:
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=FUTURES_UNIVERSE, dataset_id=FUTURES_DATASET,
                              state_dir="var/futures")
+    elif args.market == "futures-broad":
+        from quant.dataplane.futures import FUTURES_BENCHMARK, FUTURES_BROAD_DATASET
+        from quant.dataplane.ingest import metadata_path  # noqa: F401  (documented path)
+        import json as _json
+        meta = _json.loads((args.root / "data" / "datasets"
+                            / f"{FUTURES_BROAD_DATASET}.csv.meta.json").read_text())
+        system = QuantSystem(args.root, initial_capital=args.capital,
+                             universe=meta["expected_symbols"],
+                             dataset_id=FUTURES_BROAD_DATASET,
+                             state_dir="var/futures_broad", calendar=[FUTURES_BENCHMARK])
     else:
         system = QuantSystem(args.root, initial_capital=args.capital)
 
@@ -240,7 +250,8 @@ def main() -> None:
         system.paths.status_surface.write_text(surface + "\n", encoding="utf-8")
         print(surface)
     elif args.command == "brief":
-        name = "CHIEF_BRIEF.md" if args.market == "etf" else "CHIEF_BRIEF_FUTURES.md"
+        name = {"etf": "CHIEF_BRIEF.md", "futures": "CHIEF_BRIEF_FUTURES.md",
+                "futures-broad": "CHIEF_BRIEF_FUTURES_BROAD.md"}[args.market]
         path = write_chief_brief(snapshot, args.root / name)
         print(f"wrote {path}")
     elif args.command == "health":
