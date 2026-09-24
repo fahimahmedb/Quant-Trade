@@ -229,7 +229,11 @@ class Ledger:
                  "realized_pnl": self.state.realized_pnl, "fees_paid": self.state.fees_paid,
                  "gross_exposure": gross, "net_exposure": net,
                  "open_positions": len(self.aggregate_positions()),
-                 "open_sleeves": len(self._open_sleeves())}
+                 "open_sleeves": len(self._open_sleeves()),
+                 # Cumulative economic P&L per strategy sleeve (realised +
+                 # unrealised - costs). Differences give the sleeve's own daily
+                 # P&L, which the Learning plane tests sequentially.
+                 "sleeve_pnl": self.sleeve_pnl()}
         if repeat:
             self.state.nav_history[-1] = point
         else:
@@ -242,6 +246,31 @@ class Ledger:
         return point
 
     # --- views -------------------------------------------------------------
+    def sleeve_pnl(self) -> dict[str, float]:
+        strategies = set(self.state.attribution) | set(self.sleeves)
+        out = {}
+        for strategy in sorted(strategies):
+            bucket = self.state.attribution.get(strategy, {})
+            unrealized = sum(position.unrealized_pnl
+                             for position in self.sleeves.get(strategy, {}).values())
+            out[strategy] = (bucket.get("realized_pnl", 0.0) + unrealized
+                             - bucket.get("costs", 0.0))
+        return out
+
+    def sleeve_returns(self, strategy_id: str, since: str | None = None) -> list[tuple[str, float]]:
+        """Daily sleeve P&L divided by the previous marked NAV, from the persistent history."""
+        out: list[tuple[str, float]] = []
+        previous = None
+        for point in self.state.nav_history:
+            pnl = (point.get("sleeve_pnl") or {}).get(strategy_id)
+            if pnl is None:
+                previous = None
+                continue
+            if previous is not None and previous[1] > 0 and (since is None or point["date"] > since):
+                out.append((point["date"], (pnl - previous[0]) / previous[1]))
+            previous = (pnl, float(point["nav"]))
+        return out
+
     def _positions(self) -> list[Position]:
         return [position for holdings in self.sleeves.values()
                 for position in holdings.values()]

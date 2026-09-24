@@ -15,7 +15,7 @@ from statistics import NormalDist
 from typing import Any
 
 from ..dataplane.panel import PricePanel, Window
-from .signals import StrategySpec, should_rebalance, weights_for
+from .signals import TIME_SERIES_FAMILIES, StrategySpec, should_rebalance, weights_for
 
 
 #: Family-wise error rate the factory is willing to accept across every
@@ -149,10 +149,30 @@ def required_t_statistic(trials: int) -> float:
     return NormalDist().inv_cdf(1.0 - FAMILY_WISE_ALPHA / (2.0 * trials))
 
 
+#: Directional families may carry equity beta, but not enough to be a disguised
+#: equity index position.
+TIME_SERIES_MAX_EQUITY_BETA = 0.5
+
+
+def _sharpe(values: list[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    deviation = statistics.stdev(values)
+    return statistics.fmean(values) / deviation * math.sqrt(TRADING_DAYS) if deviation else 0.0
+
+
 def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePanel,
             benchmark: str, spec: StrategySpec, trials: int,
-            stress_multiple: float = 2.0) -> dict[str, Any]:
-    """Try to kill the result. ``passed`` means every declared attempt failed."""
+            stress_multiple: float = 2.0,
+            baseline_rows: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """Try to kill the result. ``passed`` means every declared attempt failed.
+
+    Relative-value families must be market-neutral. Time-series families are
+    directional by construction, so neutrality is the wrong test; instead they
+    must beat a long-only risk-parity baseline on the same markets and
+    interval (``baseline_rows``, required for them) and keep equity beta below
+    ``TIME_SERIES_MAX_EQUITY_BETA``.
+    """
     if not rows:
         return {"passed": False, "decision": "REJECT_RESEARCH",
                 "tests": {}, "reason": "no observations produced"}
@@ -166,11 +186,23 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
     top_five_share = (sum(positives[:5]) / total_positive) if total_positive > 0 else 1.0
     threshold = required_t_statistic(trials)
 
+    time_series = spec.family in TIME_SERIES_FAMILIES
+    baseline_sharpe = None
+    if time_series:
+        if not baseline_rows:
+            raise ValueError("time-series falsification requires baseline rows")
+        baseline_sharpe = _sharpe([row["net_return"] for row in baseline_rows])
+        exposure_tests = {
+            "sharpe_exceeds_long_only_risk_parity": _sharpe(net) > baseline_sharpe,
+            "equity_beta_below_0_5": abs(summary["market_beta"]) < TIME_SERIES_MAX_EQUITY_BETA,
+        }
+    else:
+        exposure_tests = {"market_beta_below_0_15": abs(summary["market_beta"]) < 0.15}
     tests = {
         "net_profitable_after_modeled_costs": summary["net_return"] > 0,
         f"still_profitable_at_{stress_multiple:g}x_costs": compound(stressed) > 0,
         "profitable_in_both_subperiods": min(halves) > 0,
-        "market_beta_below_0_15": abs(summary["market_beta"]) < 0.15,
+        **exposure_tests,
         "top_5_days_below_half_of_gains": top_five_share < 0.5,
         "t_statistic_survives_multiple_testing": summary["t_statistic"] >= threshold,
         "at_least_100_active_observations": summary["active_observations"] >= 100,
@@ -188,6 +220,8 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
         "t_statistic": summary["t_statistic"],
         "required_t_statistic": threshold,
         "expressions_tested_on_dataset": trials,
+        "strategy_sharpe": _sharpe(net),
+        "baseline_sharpe": baseline_sharpe,
         "beta_attribution": {
             "market_beta": summary["market_beta"],
             "benchmark": benchmark,

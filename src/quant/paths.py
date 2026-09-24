@@ -19,10 +19,14 @@ from pathlib import Path
 @dataclass(frozen=True)
 class QuantPaths:
     root: Path
+    #: Live-state directory relative to ``root``. A second market instance (for
+    #: example the futures desk) shares the committed inputs but owns a separate
+    #: Book, journal and queue, so the two can never corrupt each other.
+    state: str = "var"
 
     @property
     def var(self) -> Path:
-        return self.root / "var"
+        return self.root / self.state
 
     # --- committed repository content -------------------------------------
     @property

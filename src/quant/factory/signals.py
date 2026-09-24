@@ -37,12 +37,23 @@ class StrategySpec:
     holding_days: int = 1
     no_trade_band: float = 0.0
     dataset_id: str = ""
+    # --- time-series (futures) families only; ignored by cross_sectional -----
+    #: Annualised volatility targeted for the whole sleeve.
+    vol_target: float = 0.0
+    trend_weight: float = 0.0
+    carry_weight: float = 0.0
+    #: Fixed instrument-diversification multiplier (declared, never fitted).
+    diversification_multiplier: float = 1.0
+    forecast_cap: float = 2.0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
     @property
     def label(self) -> str:
+        if self.family in TIME_SERIES_FAMILIES:
+            return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
+                    f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}")
         sign = "reversal" if self.direction < 0 else "momentum"
         return (f"xs_{sign}_l{self.lookback_days}_z{self.min_abs_score:g}"
                 f"_h{self.holding_days}_b{self.no_trade_band:g}")
@@ -148,5 +159,135 @@ def _project(weights: dict[str, float], cap: float) -> dict[str, float]:
 
 def weights_for(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
     """The complete signal path used identically by research and the desk."""
+    if spec.family in TIME_SERIES_FAMILIES:
+        return time_series_weights(panel, spec, asof)
     return target_weights(cross_sectional_scores(panel, spec.universe, asof,
                                                  spec.lookback_days), spec)
+
+
+# ---------------------------------------------------------------------------
+# Time-series trend / carry (futures)
+# ---------------------------------------------------------------------------
+#
+# Weights are *fractions of sleeve capital* (notional / capital), signed, and
+# are not dollar-neutral: these families take directional risk by design and
+# are judged against a long-only risk-parity baseline instead of against zero
+# beta (see ``evaluate.falsify``).
+#
+# Every constant below is declared from the published literature (Carver,
+# "Systematic Trading", 2015: EWMAC and carry forecast scalars) rather than
+# fitted on this dataset, so none of them is a hidden trial.
+
+TREND_FAMILY = "ts_trend_carry"
+BASELINE_FAMILY = "ts_long_risk_parity"
+TIME_SERIES_FAMILIES = frozenset({TREND_FAMILY, BASELINE_FAMILY})
+
+#: (fast span, slow span, scalar giving an average absolute forecast of 10)
+EWMAC_RULES = ((16, 64, 3.75), (32, 128, 2.65), (64, 256, 1.91))
+CARRY_SCALAR = 30.0
+CARRY_SMOOTHING_SPAN = 90
+VOL_SPAN = 35
+#: A volatility estimate is floored at this share of its slow average, so a
+#: stale or very quiet stretch cannot produce an enormous position.
+VOL_FLOOR_SHARE = 0.3
+VOL_SLOW_SPAN = 500
+#: Sessions of history an instrument needs before it may carry a position.
+WARMUP_SESSIONS = 256
+ANNUALISATION = 16.0          # sqrt(256)
+MIN_WEIGHT = 1e-4
+
+
+def _series(panel: PricePanel, symbol: str) -> dict[str, tuple[float, float, float | None]]:
+    """Per-session (annual vol, trend forecast, carry forecast) for one symbol.
+
+    One causal pass: each value at session ``i`` is computed from sessions
+    ``0..i`` only. The result is cached on the immutable panel; because every
+    recursion starts at the symbol's first bar, a truncated panel (research
+    windows) produces identical values on every date it shares.
+    """
+    key = ("ts_series", symbol)
+    cached = panel.derived.get(key)
+    if cached is not None:
+        return cached  # type: ignore[return-value]
+    dates = panel.dates_for(symbol)
+    out: dict[str, tuple[float, float, float | None]] = {}
+    fast = [0.0] * len(EWMAC_RULES)
+    slow = [0.0] * len(EWMAC_RULES)
+    variance = slow_variance = None
+    carry_ewm: float | None = None
+    previous: float | None = None
+    a_vol, a_slow = 2.0 / (VOL_SPAN + 1), 2.0 / (VOL_SLOW_SPAN + 1)
+    a_carry = 2.0 / (CARRY_SMOOTHING_SPAN + 1)
+    for index, date in enumerate(dates):
+        price = panel.price(date, symbol)
+        if index == 0:
+            fast = [price] * len(EWMAC_RULES)
+            slow = [price] * len(EWMAC_RULES)
+        else:
+            for position, (f_span, s_span, _) in enumerate(EWMAC_RULES):
+                fast[position] += 2.0 / (f_span + 1) * (price - fast[position])
+                slow[position] += 2.0 / (s_span + 1) * (price - slow[position])
+        if previous is not None and previous > 0:
+            ret = price / previous - 1.0
+            variance = ret * ret if variance is None else variance + a_vol * (ret * ret - variance)
+            slow_variance = (ret * ret if slow_variance is None
+                             else slow_variance + a_slow * (ret * ret - slow_variance))
+        previous = price
+        raw_carry = panel.feature(date, symbol, "carry_ann")
+        if raw_carry is not None and math.isfinite(raw_carry):
+            carry_ewm = raw_carry if carry_ewm is None else carry_ewm + a_carry * (raw_carry - carry_ewm)
+        if variance is None or slow_variance is None or index < WARMUP_SESSIONS:
+            continue
+        daily_vol = max(math.sqrt(variance), VOL_FLOOR_SHARE * math.sqrt(slow_variance))
+        if daily_vol <= 0:
+            continue
+        trend = sum((fast[p] - slow[p]) / (price * daily_vol) * scalar
+                    for p, (_, _, scalar) in enumerate(EWMAC_RULES)) / len(EWMAC_RULES) / 10.0
+        carry = (carry_ewm / (daily_vol * ANNUALISATION) * CARRY_SCALAR / 10.0
+                 if carry_ewm is not None else None)
+        out[date] = (daily_vol * ANNUALISATION, trend, carry)
+    panel.derived[key] = out
+    return out
+
+
+def time_series_forecasts(panel: PricePanel, spec: StrategySpec,
+                          asof: str) -> dict[str, dict[str, float]]:
+    """Capped combined forecast and annual volatility per eligible instrument."""
+    result: dict[str, dict[str, float]] = {}
+    for symbol in spec.universe:
+        if not panel.has(asof, symbol):
+            continue
+        point = _series(panel, symbol).get(asof)
+        if point is None:
+            continue
+        annual_vol, trend, carry = point
+        if spec.family == BASELINE_FAMILY:
+            forecast = 1.0
+        else:
+            weight_total = spec.trend_weight + (spec.carry_weight if carry is not None else 0.0)
+            if weight_total <= 0:
+                continue
+            forecast = (spec.trend_weight * trend
+                        + (spec.carry_weight * carry if carry is not None else 0.0)) / weight_total
+        forecast = max(-spec.forecast_cap, min(spec.forecast_cap, forecast))
+        result[symbol] = {"forecast": forecast, "annual_vol": annual_vol}
+    return result
+
+
+def time_series_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
+    """Volatility-targeted notional weights: forecast x (target / instrument vol) / N x IDM.
+
+    ``N`` is the declared universe size, not the number of instruments with a
+    signal today, so a thin day cannot silently lever up the survivors.
+    """
+    forecasts = time_series_forecasts(panel, spec, asof)
+    if not forecasts or spec.vol_target <= 0:
+        return {}
+    scale = spec.vol_target * spec.diversification_multiplier / len(spec.universe)
+    weights = {}
+    for symbol, item in forecasts.items():
+        weight = item["forecast"] * scale / item["annual_vol"]
+        weight = max(-spec.max_weight, min(spec.max_weight, weight))
+        if abs(weight) >= MIN_WEIGHT:
+            weights[symbol] = weight
+    return weights

@@ -27,10 +27,12 @@ from .dataplane.registry import DatasetRegistry  # noqa: E402
 from .dataplane.sec.collector import SecForm4Collector  # noqa: E402
 from .dataplane.sec.timebase import Timebase  # noqa: E402
 from .desk.desk import CapitalDesk  # noqa: E402
+from .desk.profiles import profile_for  # noqa: E402
 from .events import EventLog  # noqa: E402
 from .factory.lanes import FOLLOWUP, WINDOWS, lane_definitions  # noqa: E402
 from .factory.strategies import StrategyRegistry  # noqa: E402
 from .factory.workers import ResearchContext, run_lane  # noqa: E402
+from .learning.sequential import alternative_sharpe, sequential_test  # noqa: E402
 from .learning.store import BuildTask, LearningStore  # noqa: E402
 from .paths import QuantPaths  # noqa: E402
 from .state import (ComponentRegistry, parse_ts, read_json, read_jsonl,  # noqa: E402
@@ -110,8 +112,8 @@ class QuantSystem:
 
     def __init__(self, root: Path, initial_capital: float = 1_000_000.0,
                  universe: list[str] | None = None, dataset_id: str = SECTOR_DATASET,
-                 timer: Timer | None = None):
-        self.paths = QuantPaths(Path(root)).ensure()
+                 timer: Timer | None = None, state_dir: str = "var"):
+        self.paths = QuantPaths(Path(root), state=state_dir).ensure()
         self.timer = timer or Timer()
         self.universe = universe or SECTOR_UNIVERSE
         self.dataset_id = dataset_id
@@ -121,8 +123,10 @@ class QuantSystem:
         self.strategies = StrategyRegistry(self.paths.strategies)
         self.learning = LearningStore(self.paths.learning)
         self.queue = PersistentQueue(self.paths.work_queue)
+        self.profile = profile_for(dataset_id)
         self.desk = CapitalDesk(self.paths, self.strategies, self.datasets, self.log,
-                                self.components, initial_capital=initial_capital)
+                                self.components, execution=self.profile.execution,
+                                limits=self.profile.limits, initial_capital=initial_capital)
         # The P0 SEC capture lane is owned by the Control Plane rather than by a
         # separate process, so its lifecycle, liveness and restart behaviour are
         # the ones the rest of the system already proves. It fails closed when
@@ -150,6 +154,11 @@ class QuantSystem:
         self.components.set("CONTROL", "RUN", "booting")
         recovered = self._recover_interrupted()
         arrived = self.datasets.reload()
+        if self.dataset_id != SECTOR_DATASET and self.datasets.get(self.dataset_id) is None:
+            # A secondary market instance starts from the committed, fingerprinted
+            # snapshot; it never needs network access to reproduce its evidence.
+            from .dataplane.ingest import register_committed_snapshots
+            register_committed_snapshots(self.paths, self.datasets, self.log)
         changed = self.datasets.refresh_availability()
         # Task fingerprints are the durable comparison point.  The registry
         # may already contain the new version when this process is constructed,
@@ -309,6 +318,8 @@ class QuantSystem:
 
     def _legacy_blocked_lanes(self) -> list[dict[str, Any]]:
         """Research lanes the repository ranked but cannot execute without new data."""
+        if self.dataset_id != SECTOR_DATASET:
+            return []  # the ranked legacy map describes the equity instance only
         path = self.paths.root / "research" / "opportunity_map.json"
         payload = read_json(path)
         if not payload:
@@ -363,10 +374,23 @@ class QuantSystem:
                 if date <= end and symbol in self.universe]
 
     def _frozen_cohort_status(self) -> bool | None:
+        # Re-hashing the whole research cohort on every tick is O(panel) and made
+        # large panels (futures: ~180k bars) take seconds per desk session. The
+        # verdict is a pure function of (dataset bytes, frozen partition, frozen
+        # digest), so it is memoised on exactly that key and recomputed the
+        # moment any of them changes.
+        record = self.datasets.get(self.dataset_id)
+        key = (record.fingerprint if record else None,
+               repr(self.strategies.research_partition(self.dataset_id)),
+               self.strategies.research_cohorts.get(self.dataset_id))
+        cached = getattr(self, "_cohort_memo", None)
+        if cached is not None and cached[0] == key:
+            return cached[1]
         rows = self._research_cohort_rows()
-        if rows is None:
-            return None
-        return self.strategies.verify_research_cohort(self.dataset_id, rows)
+        status = None if rows is None else self.strategies.verify_research_cohort(
+            self.dataset_id, rows)
+        self._cohort_memo = (key, status)
+        return status
 
     def shadow_window(self):
         panel = self.panel()
@@ -623,6 +647,7 @@ class QuantSystem:
         summary = self.desk.run_session(panel, date, next_date)
         self.state.desk_cursor = date
         self.state.desk_sessions += 1
+        self._review_live_evidence(next_date or date)
         booked = [ticket for ticket in summary["tickets"] if ticket["status"] == "BOOKED"]
         if booked:
             self.log.emit("DESK", "BOOK", "session_booked", date, tickets=len(booked),
@@ -631,6 +656,63 @@ class QuantSystem:
         self.state.next_action = self._describe_next_action()
         self.heartbeat()
         return "SESSION"
+
+    def _review_live_evidence(self, mark_date: str) -> list[dict[str, Any]]:
+        """Monthly sequential test of every sleeve's own shadow P&L.
+
+        Evidence drives the lifecycle: a tradable strategy whose live returns
+        decisively accept the shrunk validated Sharpe is promoted, one whose
+        returns decisively reject it is demoted (ACTIVE_SHADOW -> DECAYING) or
+        retired. Evaluation-track strategies only accumulate the verdict: they
+        have no capital authority to lose or gain. The test restarts after
+        every lifecycle transition so one verdict is never counted twice.
+        """
+        month = mark_date[:7]
+        decisions = []
+        for definition in sorted(self.strategies.strategies.values(),
+                                 key=lambda item: item.strategy_id):
+            if not (definition.tradable or definition.evaluation_track):
+                continue
+            review = definition.shadow.setdefault("sequential", {})
+            if review.get("reviewed_month") == month:
+                continue
+            ledger = self.desk.ledger_for(definition)
+            series = ledger.sleeve_returns(definition.strategy_id, since=review.get("since"))
+            if not series:
+                continue
+            validated = (definition.evidence.get("validation") or {}).get("sharpe_zero_rate")
+            verdict = sequential_test([value for _, value in series],
+                                      alternative_sharpe(validated))
+            pnl = ledger.sleeve_pnl().get(definition.strategy_id, 0.0)
+            definition.shadow.update({"sessions": len(series), "net_pnl": pnl,
+                                      "peak_pnl": max(definition.shadow.get("peak_pnl", 0.0), pnl)})
+            definition.shadow["max_drawdown"] = min(definition.shadow.get("max_drawdown", 0.0),
+                                                    pnl - definition.shadow["peak_pnl"])
+            review.update({"reviewed_month": month, "last": verdict, "through": series[-1][0]})
+            transition = None
+            if definition.tradable and verdict["decision"] != "CONTINUE":
+                if verdict["decision"] == "ACCEPT_EDGE" and definition.lifecycle in (
+                        "SHADOW", "DECAYING"):
+                    transition = "ACTIVE_SHADOW"
+                elif verdict["decision"] == "REJECT_EDGE":
+                    transition = ("DECAYING" if definition.lifecycle == "ACTIVE_SHADOW"
+                                  else "RETIRED")
+            if transition:
+                reason = (f"sequential test {verdict['decision']} after "
+                          f"{verdict['observations']} live sessions (LLR "
+                          f"{verdict['log_likelihood_ratio']:.2f}, alternative Sharpe "
+                          f"{verdict['alternative_sharpe']:.2f})")
+                definition.transition(transition, reason)
+                review["since"] = series[-1][0]
+                review.setdefault("history", []).append(
+                    {"at": series[-1][0], "to": transition, "verdict": verdict["decision"]})
+                self.log.emit("LEARNING", "LEARNING", "lifecycle_evidence",
+                              definition.strategy_id, severity="WARN", to=transition,
+                              reason=reason)
+            self.strategies.upsert(definition)
+            decisions.append({"strategy_id": definition.strategy_id,
+                              "decision": verdict["decision"], "transition": transition})
+        return decisions
 
     def _assess_decision_quality(self) -> bool:
         """Once the desk has finished its window, score the system's own rejections."""

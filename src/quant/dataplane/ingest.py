@@ -15,6 +15,8 @@ from ..events import EventLog
 from ..paths import QuantPaths
 from ..state import read_json, utc_now, write_json
 from .adapters import DataUnavailable, fetch_yahoo_daily, load_local_tsv
+from .futures import (FUTURES_DATASET, FUTURES_UNIVERSE, build_futures_panel,
+                      fetch_source)
 from .panel import PricePanel
 from .registry import DatasetRecord, DatasetRegistry, fingerprint_file
 from .validation import validate_panel
@@ -128,6 +130,45 @@ def ingest_index(paths: QuantPaths, registry: DatasetRegistry, log: EventLog) ->
     log.emit("DATA", "DATA", "dataset_ingested", INDEX_DATASET, rows=registered.rows,
              first_date=registered.first_date, last_date=registered.last_date,
              fingerprint=registered.fingerprint, availability=registered.availability)
+    return registered
+
+
+def ingest_futures_panel(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
+                         checkout: Path | None = None) -> DatasetRecord:
+    """Derive and register the futures excess-return panel.
+
+    ``checkout`` is a local pysystemtrade clone; without one the pinned commit
+    is fetched through git into ``var/sources``.
+    """
+    if checkout is None:
+        try:
+            checkout = fetch_source(paths.var / "sources" / "pysystemtrade")
+        except Exception as exc:  # network or git unavailable
+            raise DataUnavailable(f"pysystemtrade source unavailable: {exc}") from exc
+    panel, provenance = build_futures_panel(checkout)
+    record = DatasetRecord(
+        dataset_id=FUTURES_DATASET, source=provenance["source"],
+        adapter="pysystemtrade_futures_excess_return",
+        path=f"data/datasets/{FUTURES_DATASET}.csv.gz",
+        point_in_time={
+            "timestamp_semantics": provenance["timestamp_semantics"],
+            "information_available_at": "the close of the dated session",
+            "minimum_decision_lag_days": 1,
+            "derivation": provenance["derivation"],
+            "source_commit": provenance["source_commit"],
+            "source_input_digest": provenance["source_input_digest"],
+            "stale_bars_carried_forward": provenance["stale_bars_carried_forward"]},
+        caveats=provenance["caveats"],
+        license_note="derived from data files in a GPL-3.0 open-source repository whose "
+                     "prices originate from commercial vendors; private research use only, "
+                     "not redistributed as a data product")
+    registered = _register(registry, record, panel, FUTURES_UNIVERSE, paths.root)
+    log.emit("DATA", "DATA", "dataset_ingested", FUTURES_DATASET,
+             severity="INFO" if registered.availability == "AVAILABLE" else "WARN",
+             rows=registered.rows, symbols=len(registered.symbols),
+             first_date=registered.first_date, last_date=registered.last_date,
+             fingerprint=registered.fingerprint, availability=registered.availability,
+             problems=registered.validation.get("problems", []))
     return registered
 
 

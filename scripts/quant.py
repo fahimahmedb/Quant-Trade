@@ -154,6 +154,9 @@ def main() -> None:
                                             "sec-serve", "sec-fingerprint",
                                             "sec-readiness", "sec-audit"))
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--market", choices=("etf", "futures"), default="etf",
+                        help="which market instance to drive; futures keeps its own "
+                             "state under var/futures and never touches the ETF Book")
     parser.add_argument("--max-ticks", type=int, default=10_000)
     parser.add_argument("--reason", default="operator-requested pause")
     parser.add_argument("--capital", type=float, default=1_000_000.0)
@@ -196,7 +199,13 @@ def main() -> None:
             if sec_lock_fd is not None:
                 os.close(sec_lock_fd)
 
-    system = QuantSystem(args.root, initial_capital=args.capital)
+    if args.market == "futures":
+        from quant.dataplane.futures import FUTURES_DATASET, FUTURES_UNIVERSE
+        system = QuantSystem(args.root, initial_capital=args.capital,
+                             universe=FUTURES_UNIVERSE, dataset_id=FUTURES_DATASET,
+                             state_dir="var/futures")
+    else:
+        system = QuantSystem(args.root, initial_capital=args.capital)
 
     if args.command == "boot":
         print(json.dumps(system.boot(), indent=2, sort_keys=True))
@@ -231,7 +240,8 @@ def main() -> None:
         system.paths.status_surface.write_text(surface + "\n", encoding="utf-8")
         print(surface)
     elif args.command == "brief":
-        path = write_chief_brief(snapshot, args.root / "CHIEF_BRIEF.md")
+        name = "CHIEF_BRIEF.md" if args.market == "etf" else "CHIEF_BRIEF_FUTURES.md"
+        path = write_chief_brief(snapshot, args.root / name)
         print(f"wrote {path}")
     elif args.command == "health":
         print(json.dumps({"alerts": snapshot["health"],

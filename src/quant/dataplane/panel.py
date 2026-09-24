@@ -12,6 +12,8 @@ two reasons:
 from __future__ import annotations
 
 import csv
+import gzip
+import io
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -39,23 +41,41 @@ class PricePanel:
     ``adj_close`` drives the adjusted price basis used by research, modelled
     execution and marks.  Duplicate input keys are retained as validation
     evidence instead of being silently overwritten by the mapping below.
+
+    Columns beyond ``FIELDS`` are point-in-time *features* observed on the same
+    ``(date, symbol)`` key (for example a futures carry estimate). They travel
+    with the bar through ``restrict``/``write`` so a feature can never be read
+    from a date the price itself could not be read from. An empty cell means
+    "not observed", never zero.
     """
 
     FIELDS = ("open", "high", "low", "close", "adj_close", "volume")
+    _KEYS = ("date", "symbol")
 
     def __init__(self, rows: list[dict[str, object]]):
         self.bars: dict[tuple[str, str], dict[str, float]] = {}
+        self.features: dict[tuple[str, str], dict[str, float]] = {}
         self.duplicate_keys: list[str] = []
         symbols: set[str] = set()
         dates: set[str] = set()
+        feature_names: set[str] = set()
         for row in rows:
             date, symbol = str(row["date"]), str(row["symbol"])
             key = (date, symbol)
             if key in self.bars:
                 self.duplicate_keys.append(f"{date}:{symbol}")
             self.bars[key] = {field: float(row[field]) for field in self.FIELDS}
+            extra = {name: float(value) for name, value in row.items()
+                     if name not in self.FIELDS and name not in self._KEYS
+                     and value not in (None, "")}
+            if extra:
+                self.features[key] = extra
+                feature_names.update(extra)
+            elif key in self.features:
+                del self.features[key]
             symbols.add(symbol)
             dates.add(date)
+        self.feature_names = sorted(feature_names)
         self.symbols = sorted(symbols)
         self.dates = sorted(dates)
         # Alignment is recomputed for every signal evaluation otherwise, which
@@ -64,9 +84,14 @@ class PricePanel:
         self._aligned: dict[tuple[str, ...], list[str]] = {}
         self._index: dict[tuple[str, ...], dict[str, int]] = {}
         self._symbol_dates: dict[str, list[str]] = {}
+        #: Derived per-symbol series (signals) computed once per immutable panel.
+        self.derived: dict[tuple, object] = {}
 
     @classmethod
     def load(cls, path: Path) -> "PricePanel":
+        if path.suffix == ".gz":
+            with gzip.open(path, "rt", encoding="utf-8", newline="") as handle:
+                return cls(list(csv.DictReader(handle)))
         with path.open(encoding="utf-8") as handle:
             return cls(list(csv.DictReader(handle)))
 
@@ -76,16 +101,29 @@ class PricePanel:
         return str(int(round(value))) if field == "volume" else f"{value:.6f}"
 
     def write(self, path: Path) -> None:
+        """Deterministic bytes: ``.gz`` output carries no timestamp, so the
+        fingerprint of a rewrite of identical data is identical."""
         path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.writer(handle)
-            writer.writerow(("date", "symbol") + self.FIELDS)
-            for date in self.dates:
-                for symbol in self.symbols:
-                    bar = self.bars.get((date, symbol))
-                    if bar is not None:
-                        writer.writerow([date, symbol]
-                                        + [self._format(f, bar[f]) for f in self.FIELDS])
+        buffer = io.StringIO(newline="")
+        writer = csv.writer(buffer, lineterminator="\r\n")
+        writer.writerow(self._KEYS + self.FIELDS + tuple(self.feature_names))
+        for date in self.dates:
+            for symbol in self.symbols:
+                bar = self.bars.get((date, symbol))
+                if bar is None:
+                    continue
+                extra = self.features.get((date, symbol), {})
+                writer.writerow([date, symbol]
+                                + [self._format(f, bar[f]) for f in self.FIELDS]
+                                + [f"{extra[name]:.6f}" if name in extra else ""
+                                   for name in self.feature_names])
+        payload = buffer.getvalue().encode("utf-8")
+        if path.suffix == ".gz":
+            with path.open("wb") as raw:
+                with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as handle:
+                    handle.write(payload)
+        else:
+            path.write_bytes(payload)
 
     # --- views -------------------------------------------------------------
     def aligned_dates(self, symbols: Iterable[str]) -> list[str]:
@@ -118,6 +156,10 @@ class PricePanel:
     def price(self, date: str, symbol: str, field: str = "adj_close") -> float:
         return self.bars[(date, symbol)][field]
 
+    def feature(self, date: str, symbol: str, name: str) -> float | None:
+        """A point-in-time feature, or None when it was not observed that session."""
+        return self.features.get((date, symbol), {}).get(name)
+
     def adjusted(self, date: str, symbol: str, field: str = "open") -> float:
         """Put raw open/high/low on the same adjusted basis as ``adj_close``.
 
@@ -141,7 +183,8 @@ class PricePanel:
                 continue
             if wanted is not None and symbol not in wanted:
                 continue
-            rows.append({"date": date, "symbol": symbol, **bar})
+            rows.append({"date": date, "symbol": symbol, **bar,
+                         **self.features.get((date, symbol), {})})
         return PricePanel(rows)
 
     def window(self, window: Window, symbols: Iterable[str] | None = None) -> "PricePanel":

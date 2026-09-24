@@ -24,8 +24,8 @@ from ..events import EventLog  # noqa: E402
 from ..paths import QuantPaths  # noqa: E402
 from ..state import append_jsonl, read_jsonl, write_json  # noqa: E402
 from .evaluate import falsify, summarize, walk_forward  # noqa: E402
-from .lanes import BENCHMARK, COST_BPS, WINDOWS, lane_definitions  # noqa: E402
-from .signals import StrategySpec  # noqa: E402
+from .lanes import BENCHMARK, COST_BPS, WINDOWS, baseline_spec, lane_definitions  # noqa: E402
+from .signals import TIME_SERIES_FAMILIES, StrategySpec  # noqa: E402
 from .strategies import StrategyDefinition, StrategyRegistry  # noqa: E402
 
 
@@ -56,6 +56,8 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
                 "lesson": None, "next_action_hint": f"ingest or repair {dataset_id}"}
 
     definition = lane_definitions(universe, dataset_id)[lane_name]
+    benchmark = definition.get("benchmark", BENCHMARK)
+    cost_bps = definition.get("cost_bps", COST_BPS)
     panel = PricePanel.load(context.paths.root / record.path)
     declared = panel.split(WINDOWS, symbols=universe)
     frozen = context.strategies.preserve_research_partition(dataset_id, declared)
@@ -73,21 +75,21 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
     # Appending forward shadow bars therefore cannot manufacture a new ticket.
     ticket = ResearchTicket(
         ticket_id=f"{lane_name.upper().replace('_', '-')}-{cohort_key[7:15]}",
-        lane=definition["lane"], market="US sector ETFs",
+        lane=definition["lane"], market=definition.get("market", "US sector ETFs"),
         instruments=list(universe),
         observation=definition["question"],
         observed_at=validation.end,
         information_available_at=validation.end + "T21:00:00Z",
         source_refs=[record.path, record.fingerprint or ""])
     ticket.candidate_data = {"expressions_declared": len(definition["grid"]),
-                             "windows": windows, "benchmark": BENCHMARK,
-                             "cost_bps_one_way": COST_BPS,
+                             "windows": windows, "benchmark": benchmark,
+                             "cost_bps_one_way": cost_bps,
                              "research_cohort": cohort_key}
 
     scanned = []
     for spec in definition["grid"]:
-        rows = walk_forward(visible, spec, discovery, COST_BPS)
-        summary = summarize(rows, visible, BENCHMARK, COST_BPS)
+        rows = walk_forward(visible, spec, discovery, cost_bps)
+        summary = summarize(rows, visible, benchmark, cost_bps)
         scanned.append({"expression": spec.label, "spec": spec.to_dict(),
                         "discovery": {key: summary.get(key) for key in
                                       ("net_return", "gross_return", "sharpe_zero_rate",
@@ -106,7 +108,8 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
     grid_hash = hashlib.sha256(json.dumps(grid_document, sort_keys=True).encode()).hexdigest()
     experiment_key = f"{dataset_key}:{lane_name}:{grid_hash}"
     trials = context.strategies.record_trials(
-        dataset_key, len(definition["grid"]), experiment_key=experiment_key)
+        dataset_key, len(definition["grid"]) + definition.get("prior_trials", 0),
+        experiment_key=experiment_key)
     best = scanned[0]
     ticket.candidate_data["ranked_expressions"] = scanned[:5]
     ticket.candidate_data["cumulative_expressions_tested_on_dataset"] = trials
@@ -141,15 +144,20 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
                          "selection_rule": "highest cost-adjusted Sharpe on the discovery "
                                            "window; selected before the validation window "
                                            "was read",
-                         "benchmark": f"zero-return cash, with {BENCHMARK} beta attributed",
+                         "benchmark": f"zero-return cash, with {benchmark} beta attributed",
                          "falsification": definition["falsification"],
                          "timing": "signal formed on the close of session t; orders execute "
                                    "at the open of t+1"}
 
     spec = StrategySpec(**best["spec"])
-    rows = walk_forward(visible, spec, validation, COST_BPS)
-    summary = summarize(rows, visible, BENCHMARK, COST_BPS)
-    verdict = falsify(rows, summary, visible, BENCHMARK, spec, trials)
+    rows = walk_forward(visible, spec, validation, cost_bps)
+    summary = summarize(rows, visible, benchmark, cost_bps)
+    baseline_rows = None
+    if spec.family in TIME_SERIES_FAMILIES:
+        baseline_rows = walk_forward(visible, baseline_spec(spec), validation, cost_bps)
+        ticket.candidate_data["baseline"] = summarize(baseline_rows, visible, benchmark, cost_bps)
+    verdict = falsify(rows, summary, visible, benchmark, spec, trials,
+                      baseline_rows=baseline_rows)
     ticket.test_result = summary
     ticket.validation_result = verdict
 
