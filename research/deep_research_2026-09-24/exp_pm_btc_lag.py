@@ -62,3 +62,14 @@ for L in [0,1,3,5]:
         res.append(dict(latency_s=L,threshold=th,n=len(pnl),ret_per_usd=pnl.mean() if len(pnl) else np.nan,
                         t=pnl.mean()/pnl.std()*np.sqrt(len(pnl)) if len(pnl)>2 else np.nan,hit=(pnl>0).mean() if len(pnl) else np.nan))
 print(pd.DataFrame(res).round(3).to_string(index=False)); print('trials=',len(res))
+# 3) Robustness for L=1, th=0.10: overlapping 5m/15m/hourly markets share one BTC path -> cluster by clock hour; per series.
+Y=X.copy(); Y[['bidL','askL']]=Y.groupby('mk')[['bid','ask']].shift(-1); tr=[]
+for mk,gm in Y.dropna().groupby('mk'):
+    up=gm[gm.p-gm.askL-fee(gm.askL)>0.10]; dn=gm[(1-gm.p)-(1-gm.bidL)-fee(1-gm.bidL)>0.10]; c=[]
+    if len(up): u=up.iloc[0]; c.append((u.t,(u.y-u.askL-fee(u.askL))/u.askL,gm.series.iloc[0]))
+    if len(dn): d_=dn.iloc[0]; q=1-d_.bidL; c.append((d_.t,((1-d_.y)-q-fee(q))/q,gm.series.iloc[0]))
+    if c: tr.append(min(c))
+T=pd.DataFrame(tr,columns=['t','r','series']); h=T.groupby(T.t//3600).r.mean()
+print(f"L=1 th=0.10: hour-clustered mean={h.mean():.3f} t={h.mean()/h.std()*np.sqrt(len(h)):.2f} clusters={len(h)}")
+print(T.groupby('series').r.agg(['count','mean']).round(3).to_string())
+print('median $ return per trade vs mean (skew check):',round(T.r.median(),3),round(T.r.mean(),3))
