@@ -113,6 +113,14 @@ class DatasetRegistry:
             record.symbols = list(panel.symbols)
             record.first_date = panel.dates[0] if panel.dates else None
             record.last_date = panel.dates[-1] if panel.dates else None
+            declared = (record.validation or {}).get("sidecar_fingerprint")
+            if declared:
+                validation["sidecar_fingerprint"] = declared
+                if declared != after:
+                    validation["passed"] = False
+                    validation.setdefault("problems", []).append(
+                        f"bytes {after} do not match the committed sidecar fingerprint "
+                        f"{declared}")
             if after != before:
                 validation = {"passed": False,
                               "problems": ["dataset bytes changed during validation"],

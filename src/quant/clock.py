@@ -48,6 +48,8 @@ HEARTBEAT_TIMEOUT_SECONDS = 900
 MAX_TASK_ATTEMPTS = 3
 #: How long a worker may hold a task before its lease is considered stale.
 TASK_LEASE_SECONDS = 600
+#: An atomic-write staging file older than this cannot belong to a live writer.
+STAGING_ORPHAN_SECONDS = 600
 #: Default wait between wake-ups when the system is IDLE.
 IDLE_POLL_SECONDS = 60.0
 
@@ -182,7 +184,15 @@ class QuantSystem:
         # Bind this process's externally attested lifecycle before any capture
         # work runs, so the observation audit can attribute every subsequent
         # scheduler transition to a known service instance.
-        lifecycle = self.sec.record_service_start()
+        swept = self._sweep_staging_files()
+        # The SEC capture lane belongs to the ETF/equity instance only; a second
+        # market instance must not open a parallel, never-enabled lifecycle.
+        lifecycle = (self.sec.record_service_start() if self.dataset_id == SECTOR_DATASET
+                     else {"lifecycle_cause": "NOT_APPLICABLE_FOR_MARKET_INSTANCE",
+                           "boot_id": None, "acquisition_critical_fingerprint": None})
+        if swept:
+            self.log.emit("CONTROL", "CONTROL", "staging_files_swept", str(len(swept)),
+                          severity="WARN", files=swept[:20])
         self.state.next_action = self._describe_next_action()
         self.components.set("CONTROL", "IDLE", "booted")
         self.save()
@@ -192,6 +202,28 @@ class QuantSystem:
                 "sec_boot_id": lifecycle["boot_id"],
                 "sec_acquisition_fingerprint": lifecycle[
                     "acquisition_critical_fingerprint"]}
+
+    def _sweep_staging_files(self) -> list[str]:
+        """Remove atomic-write staging files orphaned by a hard kill.
+
+        ``write_json`` stages ``.<name>.<random>`` beside its target and renames
+        it; a SIGKILL between the two leaves the stage behind. At boot no writer
+        is active (the instance is single-writer), so any such file is garbage.
+        """
+        removed = []
+        cutoff = time.time() - STAGING_ORPHAN_SECONDS
+        for path in self.paths.var.glob(".*.json*.*"):
+            try:
+                # Another process (e.g. the SEC service on the ETF instance) may
+                # be mid-write; a stage lives for milliseconds, so only files
+                # older than the cutoff can be orphans.
+                if (path.is_file() and not path.name.endswith(".lock")
+                        and path.stat().st_mtime < cutoff):
+                    path.unlink(missing_ok=True)
+                    removed.append(path.name)
+            except FileNotFoundError:
+                continue
+        return sorted(removed)
 
     def _recover_interrupted(self) -> list[str]:
         recovered = []
@@ -693,11 +725,7 @@ class QuantSystem:
             alternative = alternative_sharpe(validated)
             monitoring = sequential_test([value for _, value in full], alternative)
             verdict = sequential_test([value for _, value in series], alternative)
-            pnl = ledger.sleeve_pnl().get(definition.strategy_id, 0.0)
-            definition.shadow.update({"sessions": len(full), "net_pnl": pnl,
-                                      "peak_pnl": max(definition.shadow.get("peak_pnl", 0.0), pnl)})
-            definition.shadow["max_drawdown"] = min(definition.shadow.get("max_drawdown", 0.0),
-                                                    pnl - definition.shadow["peak_pnl"])
+            definition.shadow.update(self._sleeve_path_stats(ledger, definition.strategy_id))
             review.update({"reviewed_month": month, "last": verdict, "through": full[-1][0],
                            "monitoring_including_seen_history": monitoring,
                            "pristine_after": pristine,
@@ -726,6 +754,28 @@ class QuantSystem:
             decisions.append({"strategy_id": definition.strategy_id,
                               "decision": verdict["decision"], "transition": transition})
         return decisions
+
+    @staticmethod
+    def _sleeve_path_stats(ledger: Any, strategy_id: str) -> dict[str, Any]:
+        """Shadow statistics from the full per-mark sleeve P&L path, not samples."""
+        path = [(point.get("sleeve_pnl") or {}).get(strategy_id)
+                for point in ledger.state.nav_history if "sleeve_pnl" in point]
+        path = [value for value in path if value is not None]
+        peak, worst, previous, wins, losses = 0.0, 0.0, 0.0, 0, 0
+        for value in path:
+            peak = max(peak, value)
+            worst = min(worst, value - peak)
+            if value > previous:
+                wins += 1
+            elif value < previous:
+                losses += 1
+            previous = value
+        bucket = ledger.state.attribution.get(strategy_id, {})
+        net = path[-1] if path else 0.0
+        costs = bucket.get("costs", 0.0)
+        return {"sessions": len(path), "net_pnl": net, "costs": costs,
+                "gross_pnl": net + costs, "wins": wins, "losses": losses,
+                "peak_pnl": peak, "max_drawdown": worst}
 
     def _assess_decision_quality(self) -> bool:
         """Once the desk has finished its window, score the system's own rejections."""

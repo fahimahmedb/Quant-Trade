@@ -83,6 +83,28 @@ Verified clean by the red team:
 - The index math and the carry sign are correct.
 - No leakage through `panel.derived`.
 
+### 4.1b Runtime red team (restart, isolation): findings and actions
+
+What held up:
+
+- **75 `kill -9`** at random points (boot, research, mid-session, monthly review). The final economic state matches the uninterrupted run: identical `book.json`, NAV, cash and attribution within 2e-10, no duplicate tickets, identical `applied_operations`.
+- A crash injected right after a review-driven RETIRED transition still gives exactly one transition.
+- The dataset rebuilds byte-identically from the pinned commit.
+- The ETF and futures instances are isolated from each other.
+- The memo cannot return a stale result.
+
+| # | Severity | Finding | Fix |
+|---|---|---|---|
+| R1 | HIGH | A **RETIRED** sleeve kept its positions in the CAPITAL Book, and nothing managed them any more. | `CapitalDesk.liquidating()` / `ledger_for()`: a strategy with no entitlement that still holds a capital sleeve is flattened through the normal chain. There is a `SCAN LIQUIDATE` trace, a RISK throttle cannot trap the exit, closes are exact, and no minimum size blocks them. Tested with a restart mid-exit. |
+| R2 | MED | At boot, a committed snapshot was registered without checking the fingerprint in its sidecar. | A mismatch makes the dataset INVALID and emits a `snapshot_fingerprint_mismatch` FAULT, and the check still holds through `refresh_availability`. Tested with one tampered bar. |
+| R3 | MED perf | Whole files were rewritten on every session (`opportunities.jsonl` re-read, journal, ledger). | The opportunity-id set is now cached in memory. The journal and ledger rewrites are documented (A5), not fixed. |
+| R4 | LOW | SIGKILL left orphaned staging files behind (24 MB vs 11.5 MB). | Swept at boot, but only files older than 10 min, so a concurrent writer such as the SEC service is never hit. |
+| R5 | LOW | Position-level fields (`opened_at`, position `realized_pnl`) depend on crash history. | Existing ledger behaviour. Sleeve attribution and `sleeve_pnl` are unaffected. Documented. |
+| R6 | LOW | After a resume, the ticket's `book_effect` only counts the operations that were not replayed. | Existing behaviour. Documented; nothing reads it for decisions. |
+| R7 | LOW | The `shadow` stats were sampled monthly and some fields stayed at zero. | The stats are now derived from the full per-mark `sleeve_pnl` path (costs, gross, wins/losses, peak, max drawdown). |
+| R8 | LOW | SEC: the futures instance opened a second SEC lifecycle, and `sec-*` commands ignored `--market`. | The SEC lifecycle is skipped outside the ETF instance, and `sec-*` refuses `--market` other than `etf`. |
+| R9 | LOW | Test gaps. | Added: end-to-end review (pristine data), liquidation + restart, tampered snapshot, orphan sweep, full-instance replay. |
+
 ### 4.2 My own audit (before and after the red team)
 
 - **A1 BLOCKER**: on the broad universe, 52 of 144 contracts cost more than 4 bp (some 50-300 bp). The first "validation" (Sharpe 1.10, t 3.57) came from the cost assumption. After correction: Sharpe 0.65, t 2.11, **REJECT**. Fixed with the per-contract costs of E7.

@@ -376,9 +376,6 @@ class ProfileAndIsolationTests(unittest.TestCase):
             self.assertTrue(str(futures.book).startswith(str(Path(tmp) / "var" / "futures")))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class SequentialTestTests(unittest.TestCase):
     def test_no_decision_before_minimum_and_deterministic(self):
@@ -532,3 +529,123 @@ class FuturesInstanceRestartTests(unittest.TestCase):
             system.boot()
             system.run()
             self.assertEqual(self._economic_state(straight), self._economic_state(broken))
+
+
+
+class LifecycleRedTeamTests(unittest.TestCase):
+    """Runtime red-team findings: retired sleeves, tampered snapshots, orphans."""
+
+    UNIVERSE = ["A", "B", "C", "D"]
+
+    def _system(self, root: Path):
+        return FuturesInstanceRestartTests._system(self, root)
+
+    def _root(self, tmp: Path) -> Path:
+        return FuturesInstanceRestartTests._root(self, tmp)
+
+    def _tradable(self, system, lifecycle: str = "SHADOW"):
+        from quant.factory.strategies import StrategyDefinition
+        spec = _ts_spec(self.UNIVERSE)
+        spec = StrategySpec(**{**spec.to_dict(), "dataset_id": FUTURES_DATASET})
+        definition = StrategyDefinition(strategy_id="STR-TEST-TS", version=1,
+                                        lane="time_series_trend_carry", spec=spec.to_dict(),
+                                        dataset_id=FUTURES_DATASET)
+        definition.transition("VALIDATED", "fixture")
+        definition.transition("SHADOW", "fixture")
+        system.strategies.upsert(definition)
+        return definition
+
+    def test_retired_capital_sleeve_is_liquidated_once_and_restart_safe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            system = self._system(root)
+            system.boot()
+            system.run(max_ticks=2)                  # research
+            self._tradable(system)
+            system.run(max_ticks=30)
+            self.assertTrue(system.desk.capital.sleeves.get("STR-TEST-TS"))
+            held = sum(abs(p.quantity) for p in system.desk.capital.sleeves["STR-TEST-TS"].values())
+            self.assertGreater(held, 0)
+            definition = system.strategies.get("STR-TEST-TS")
+            definition.transition("RETIRED", "fixture: evidence rejected the edge")
+            system.strategies.upsert(definition)
+            self.assertTrue(system.desk.liquidating(definition))
+            system.run(max_ticks=1)                  # one session: the exit
+            restarted = self._system(root)           # rebuild from disk mid-life
+            restarted.boot()
+            restarted.run(max_ticks=5)
+            sleeve = restarted.desk.capital.sleeves.get("STR-TEST-TS", {})
+            self.assertTrue(all(abs(p.quantity) <= 1e-9 for p in sleeve.values()))
+            self.assertFalse(restarted.desk.liquidating(restarted.strategies.get("STR-TEST-TS")))
+            self.assertNotIn("STR-TEST-TS", [d.strategy_id for d in restarted.desk.actionable()])
+            import json
+            tickets = [json.loads(line) for line in
+                       (root / "var" / "futures" / "opportunities.jsonl").read_text().splitlines()
+                       if "STR-TEST-TS" in line]
+            exits = [t for t in tickets if any(stage.get("verdict") == "LIQUIDATE"
+                                              for stage in t.get("stage_trace", []))]
+            self.assertEqual(len([t for t in exits if t["status"] == "BOOKED"]), 1)
+
+    def test_review_moves_lifecycle_only_on_pristine_data(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            system = self._system(root)
+            system.boot()
+            system.run(max_ticks=2)
+            definition = self._tradable(system)
+            dates = system.panel().dates
+            # everything the fixture holds is "seen history": no transition allowed
+            definition.evidence["pristine_after"] = dates[-1]
+            system.strategies.upsert(definition)
+            system.run()
+            after = system.strategies.get("STR-TEST-TS")
+            self.assertEqual(after.lifecycle, "SHADOW")
+            review = after.shadow["sequential"]
+            self.assertEqual(review["pristine_sessions"], 0)
+            self.assertIn("monitoring_including_seen_history", review)
+            self.assertGreater(after.shadow["sessions"], 50)
+            self.assertLessEqual(after.shadow["max_drawdown"], 0.0)
+            self.assertGreater(after.shadow["costs"], 0.0)
+
+    def test_tampered_snapshot_is_not_registered_available(self):
+        import gzip
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            path = root / "data" / "datasets" / f"{FUTURES_DATASET}.csv.gz"
+            from quant.dataplane.registry import fingerprint_file
+            from quant.state import read_json, write_json
+            meta = path.with_suffix(".meta.json")
+            write_json(meta, read_json(meta) | {"fingerprint": fingerprint_file(path)})
+            text = gzip.decompress(path.read_bytes()).decode()
+            lines = text.split("\r\n")
+            parts = lines[500].split(",")
+            parts[6] = f"{float(parts[6]) * 1.01:.6f}"     # one adj_close changed by 1%
+            lines[500] = ",".join(parts)
+            path.write_bytes(gzip.compress("\r\n".join(lines).encode(), mtime=0))
+            system = self._system(root)
+            system.boot()
+            record = system.datasets.get(FUTURES_DATASET)
+            self.assertEqual(record.availability, "INVALID")
+            self.assertTrue(any("committed sidecar" in problem
+                                for problem in record.validation["problems"]))
+
+    def test_orphaned_staging_files_are_swept_only_when_old(self):
+        import os
+        import time
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(Path(tmp))
+            system = self._system(root)
+            system.boot()
+            old = system.paths.var / ".desk_journal.json.abc123"
+            fresh = system.paths.var / ".book.json.def456"
+            old.write_text("{}")
+            fresh.write_text("{}")
+            past = time.time() - 3600
+            os.utime(old, (past, past))
+            self._system(root).boot()
+            self.assertFalse(old.exists())
+            self.assertTrue(fresh.exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

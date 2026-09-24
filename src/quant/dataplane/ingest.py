@@ -77,9 +77,21 @@ def register_committed_snapshots(paths: QuantPaths, registry: DatasetRegistry,
         target = paths.root / record.path
         if not target.exists():
             continue
+        declared = payload.get("fingerprint")
         panel = PricePanel.load(target)
         record.fingerprint = fingerprint_file(target)
         record.validation = validate_panel(panel, expected or record.symbols)
+        if declared:
+            record.validation["sidecar_fingerprint"] = declared
+        if declared and declared != record.fingerprint:
+            # The sidecar is the committed provenance of these bytes. Bytes that
+            # no longer match it are unprovenanced and must not become research.
+            record.validation["passed"] = False
+            record.validation.setdefault("problems", []).append(
+                f"bytes {record.fingerprint} do not match the committed sidecar "
+                f"fingerprint {declared}")
+            log.emit("DATA", "DATA", "snapshot_fingerprint_mismatch", record.dataset_id,
+                     severity="FAULT", declared=declared, actual=record.fingerprint)
         record.availability = "AVAILABLE" if record.validation["passed"] else "INVALID"
         record.refreshed_at = utc_now()
         registry.register(record)

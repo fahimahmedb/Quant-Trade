@@ -191,6 +191,10 @@ def main() -> None:
                               "reason": "COLLECTOR_ALREADY_RUNNING"}))
             raise SystemExit(2)
 
+    if args.command.startswith("sec-") and args.market != "etf":
+        print(json.dumps({"state": "REFUSED",
+                          "reason": "the SEC capture lane belongs to the etf instance"}))
+        raise SystemExit(2)
     if args.command.startswith("sec-"):
         try:
             system = QuantSystem(args.root, initial_capital=args.capital)

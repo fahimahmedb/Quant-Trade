@@ -61,14 +61,32 @@ class CapitalDesk:
         self.capital = Ledger(paths.book, "quant-shadow-book", "CAPITAL", initial_capital)
         self.evaluation = Ledger(paths.evaluation_ledger, "quant-evaluation-track",
                                  "EVALUATION", initial_capital)
+        self._opportunity_ids: set[str] | None = None
 
     # --- helpers -----------------------------------------------------------
     def ledger_for(self, definition: StrategyDefinition) -> Ledger:
-        return self.capital if definition.tradable else self.evaluation
+        if definition.tradable:
+            return self.capital
+        # A strategy that lost its entitlement still owns its capital sleeve
+        # until that sleeve is flat; its exit must be booked where it lives.
+        if self._holds(self.capital, definition.strategy_id):
+            return self.capital
+        return self.evaluation
+
+    @staticmethod
+    def _holds(ledger: Ledger, strategy_id: str) -> bool:
+        return any(abs(position.quantity) > 1e-9
+                   for position in ledger.sleeves.get(strategy_id, {}).values())
+
+    def liquidating(self, definition: StrategyDefinition) -> bool:
+        """No entitlement left, but a sleeve still open: it must be flattened."""
+        return (not definition.tradable and not definition.evaluation_track
+                and self._holds(self.capital, definition.strategy_id))
 
     def actionable(self) -> list[StrategyDefinition]:
         return sorted((definition for definition in self.strategies.strategies.values()
-                       if definition.tradable or definition.evaluation_track),
+                       if definition.tradable or definition.evaluation_track
+                       or self.liquidating(definition)),
                       key=lambda item: item.strategy_id)
 
     # --- the chain ---------------------------------------------------------
@@ -129,10 +147,15 @@ class CapitalDesk:
             self._charge_rolls(panel, date, next_date, decision_ledgers)
         # The mark belongs to the session where the orders executed.
         marks = self._mark(panel, next_date or date)
-        existing = {row.get("opportunity_id") for row in read_jsonl(self.paths.opportunities)}
+        # Re-reading the whole append-only file every session was O(history)
+        # (red-team finding); the id set is loaded once and kept in step.
+        if self._opportunity_ids is None:
+            self._opportunity_ids = {row.get("opportunity_id")
+                                     for row in read_jsonl(self.paths.opportunities)}
         for ticket in tickets:
-            if ticket.opportunity_id not in existing:
+            if ticket.opportunity_id not in self._opportunity_ids:
                 append_jsonl(self.paths.opportunities, ticket.to_dict())
+                self._opportunity_ids.add(ticket.opportunity_id)
         self.journal.close_session(date)
         return {"date": date, "execution_date": next_date,
                 "tickets": [ticket.to_dict() for ticket in tickets], "replayed": replayed,
@@ -159,9 +182,14 @@ class CapitalDesk:
             self.components.set("SCAN", "BLOCKED", f"dataset unavailable: {missing}")
             return self._finish(definition, ticket.stop(
                 "SCAN", "BLOCKED", f"required dataset unavailable: {missing}", missing=missing))
-        weights = weights_for(panel, spec, date)
+        liquidating = self.liquidating(definition)
+        weights = {} if liquidating else weights_for(panel, spec, date)
         ticket.target_weights = weights
-        if not weights:
+        if liquidating:
+            ticket.record("SCAN", "LIQUIDATE",
+                          f"{definition.lifecycle}: no capital entitlement remains; the open "
+                          f"sleeve is flattened through the normal chain")
+        elif not weights:
             self.components.set("SCAN", "IDLE", "no qualifying cross-sectional signal")
             return self._finish(definition, ticket.stop(
                 "SCAN", "NO_TRADE", "no symbol cleared the signal threshold at this session"))
@@ -178,7 +206,7 @@ class CapitalDesk:
         current_weights = self._current_weights(decision_ledger, definition, decision_prices)
         drift = sum(abs(weights.get(symbol, 0.0) - current_weights.get(symbol, 0.0))
                     for symbol in set(weights) | set(current_weights))
-        if not should_rebalance(sessions_held, drift, spec):
+        if not liquidating and not should_rebalance(sessions_held, drift, spec):
             self.components.set("VET", "IDLE", "holding period or no-trade band")
             return self._finish(definition, ticket.stop(
                 "VET", "NO_TRADE", f"{sessions_held} sessions into a "
@@ -209,6 +237,12 @@ class CapitalDesk:
         self.components.set("RISK", "RUN", definition.strategy_id)
         verdict = evaluate_risk(decision_ledger, definition.strategy_id, target_notional,
                                 self.limits, decision_prices)
+        if liquidating:
+            # Flattening only removes exposure. A throttle or a breached floor
+            # must never trap a sleeve that has lost its entitlement.
+            verdict = {**verdict, "approved": True, "scale": 1.0,
+                       "scaled_target": dict(target_notional),
+                       "liquidation_override": verdict["vetoes"]}
         if not verdict["approved"]:
             self.components.set("RISK", "IDLE", "proposal vetoed")
             self.log.emit("DESK", "RISK", "opportunity_vetoed", ticket.opportunity_id,
@@ -222,7 +256,8 @@ class CapitalDesk:
 
         # --- FILLS ---------------------------------------------------------
         self.components.set("FILLS", "RUN", definition.strategy_id)
-        legs, fills = self._execute(panel, ledger, definition, date, next_date, approved)
+        legs, fills = self._execute(panel, ledger, definition, date, next_date, approved,
+                                    minimum=0.0 if liquidating else MIN_ORDER_NOTIONAL)
         ticket.legs = legs
         ticket.fills = fills
         if not fills:
@@ -244,6 +279,8 @@ class CapitalDesk:
         commission = sum(fill["commission"] for fill in fills)
         final = verify_final(ledger, definition.strategy_id, executed, self.limits,
                              final_prices, nav_adjustment=-commission)
+        if liquidating and not final["approved"]:
+            final = {**final, "approved": True, "liquidation_override": final["vetoes"]}
         if not final["approved"]:
             self.components.set("RISK", "IDLE", "executed portfolio vetoed")
             self.log.emit("DESK", "RISK", "execution_vetoed", ticket.opportunity_id,
@@ -329,7 +366,8 @@ class CapitalDesk:
         return {symbol: value / base for symbol, value in held.items()}
 
     def _execute(self, panel: PricePanel, ledger: Ledger, definition: StrategyDefinition,
-                 date: str, next_date: str, target_notional: dict[str, float]
+                 date: str, next_date: str, target_notional: dict[str, float],
+                 minimum: float = MIN_ORDER_NOTIONAL
                  ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         prices = {symbol: panel.adjusted(next_date, symbol, "open") for symbol in panel.symbols
                   if panel.has(next_date, symbol)}
@@ -348,11 +386,17 @@ class CapitalDesk:
             leg = {"symbol": symbol, "target_notional": target, "current_notional": current,
                    "delta_notional": delta_notional}
             legs.append(leg)
-            if abs(delta_notional) < MIN_ORDER_NOTIONAL:
+            if abs(delta_notional) < minimum or abs(delta_notional) <= 1e-9:
                 leg["skipped"] = "below minimum order size"
                 continue
-            fill = self.execution.fill(panel, symbol, delta_notional / price, date, next_date)
-            if abs(fill["quantity"]) * fill["fill_price"] < MIN_ORDER_NOTIONAL:
+            quantity = delta_notional / price
+            if target == 0.0:
+                # close exactly: price drift must not leave a residual sliver
+                position = ledger.sleeves.get(definition.strategy_id, {}).get(symbol)
+                if position is not None:
+                    quantity = -position.quantity
+            fill = self.execution.fill(panel, symbol, quantity, date, next_date)
+            if abs(fill["quantity"]) * fill["fill_price"] < minimum:
                 leg["skipped"] = "capacity truncation left the order below minimum size"
                 continue
             fills.append(fill)
