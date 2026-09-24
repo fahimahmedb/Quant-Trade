@@ -1,4 +1,6 @@
 # Minimum capital to run a diversified futures trend/carry book (Carver-style): per-instrument risk budget must hold
+# KNOWN LIMITS (adversarial review): currency not converted (e.g. JPY contracts inflate N=40), unadjusted-price vol
+# includes roll jumps, IDM=2.5 too high for small N. Review-corrected estimates: N=5 ~ $103k, N=40 ~ $3.8M.
 # >= 4 contracts' worth of annual $ risk so positions are not rounded to 0/1. Currency ignored (approx: non-USD ~ USD).
 import pandas as pd, numpy as np, glob, os, sys
 ROOT=sys.argv[1] if len(sys.argv)>1 else 'pst/data/futures'

@@ -11,14 +11,14 @@ Tous les tests sont reproductibles avec les scripts `exp_*.py` de ce dossier. Au
 ## Synthèse en 10 lignes
 
 1. **La vitesse d'apprentissage dépend du Sharpe et du nombre de paris indépendants, pas de la patience.** Pour prouver une stratégie, il faut environ (2/SR)² années d'observation. En shadow, un test séquentiel (SPRT) tranche en **3 mois pour une stratégie à SR 4**, 13 mois pour SR 2, et 4 ans pour SR 1.
-2. **Les 12 ETF du repo ne valent qu'environ 1,2 pari indépendant.** Aucune stratégie n'y bat l'achat simple.
-3. **Sur 190 futures, trend + carry donne un SR de 1,28 (t = 8,7), positif dans chaque période depuis 1980.** Le Sharpe monte avec le nombre d'instruments : 0,29 avec 1 instrument, 0,75 avec 40. C'est l'edge le mieux prouvé. Il faut environ 150 à 300 k$ pour le trader réellement.
+2. **Les 12 ETF du repo ne valent qu'environ 1,2 pari indépendant.** Aucune stratégie n'y bat significativement l'achat simple (meilleur : inverse-vol SPY/TLT/GLD, SR 1,00 contre 0,88).
+3. **Sur 190 futures, trend + carry donne un SR de 1,06 (t = 6,9), positif dans chaque période depuis 1980** (après spread, commissions et rolls, SR hebdomadaire). Le Sharpe monte avec le nombre d'instruments : 0,22 avec 1 instrument, 0,65 avec 40. C'est l'edge le mieux prouvé. Il faut environ 100 k$ pour 5 classes d'actifs.
 4. Sur les marchés de prédiction, **acheter systématiquement les favoris ou les longshots n'est pas un edge stable** : le signe s'inverse selon l'échantillon. L'edge robuste est structurel : **être teneur de marché plutôt que preneur** (+1,1 % contre −1,1 % par trade sur 72 M de trades Kalshi).
 5. **Le « lag Binance → Polymarket » des posts X existe, mais seulement à ≤ 1 s de latence** (+32 % par $ misé, t = 3,1 avec regroupement par heure, sur 1 jour de données). Il disparaît dès 3 s. C'est une course d'infrastructure, pas un edge accessible à un opérateur solo sans colocalisation.
 6. **Le carry crypto s'est effondré.** Le funding BTC est passé de 20 %/an (2021) à 3 % (2025), puis 1 % (2026), sous le taux sans risque stablecoin ou T-bill d'environ 4 %. Le carry cross-sectionnel sur altcoins perd de l'argent après coûts.
 7. **Les facteurs actions classiques (taille, value, CMA) sont morts depuis 2000.** Seuls le low-risk (BAB) avec gestion de volatilité, la qualité et le momentum avec gestion de volatilité survivent, et ils faiblissent sur 2020-25.
 8. **Les LLM ne battent pas le prix de marché en prévision** (Brier 0,109 contre 0,096 pour le prix seul). Les concours de trading LLM en live sont surtout négatifs. Leur rôle utile : générer des hypothèses, lire les règles de résolution, compléter le prix de marché.
-9. **Le vol-targeting divise le drawdown par deux** sur SPY (−34 % → −18 %) avec un Sharpe au moins égal. C'est la couche RISK/SIZE par défaut.
+9. **Le vol-targeting divise le drawdown par deux** sur SPY (−34 % → −16 %) **sans gain de Sharpe** (0,90 contre 0,89, cible causale). C'est un outil de risque, la couche RISK/SIZE par défaut.
 10. **Les données historiques longues existent déjà gratuitement**, via GitHub : 190 futures depuis 1980, facteurs AQR jusqu'en 2025, funding crypto, carnets d'ordres Polymarket, S&P 500 point-in-time. Il n'y a pas besoin d'attendre 3 à 4 ans.
 
 ---
@@ -31,9 +31,12 @@ Tous les tests sont reproductibles avec les scripts `exp_*.py` de ce dossier. Au
 
 | SR réel | Années pour t = 2 | SPRT : mois médians pour décider | SPRT : p90 (mois) | Taux d'erreur |
 |---|---|---|---|---|
-| 1 | 4 | 51 | 120 | 3 % |
+| 1 | 4 | 51 | 120 | 3 % (12 % indécis à 10 ans) |
 | 2 | 1 | 13 | 32 | 5 % |
-| 4 | 0,25 | 3,3 | 8 | 4 % |
+| 4 | 0,25 | 3,4 | 8 | 5 % |
+| moitié de la cible (ex. 2 pour H1 = 4) | – | 5,6 | 15 | 50 % acceptés |
+
+Limite : le test suppose σ connu. Si la volatilité réelle vaut 1,5 fois l'hypothèse, les faux positifs montent à 17-20 %. Il faut un t-SPRT.
 
 **Conclusion** : le shadow ne peut pas confirmer vite un SR de 1. Il **tue vite** les stratégies à SR élevé qui ne tiennent pas leurs promesses. Ceux qui ont réussi vite ont démarré sur des edges structurels à SR élevé (arbitrage, market making), ou ont fondé leur a priori sur une histoire longue (Carver, AQR).
 
@@ -50,23 +53,30 @@ Tous les tests sont reproductibles avec les scripts `exp_*.py` de ce dossier. Au
 
 | Stratégie | SR | t | 1980-99 | 2000-12 | 2013-19 | 2020-24 | MDD à 10 % de vol |
 |---|---|---|---|---|---|---|---|
-| Trend EWMAC | 1,09 | 7,4 | 1,62 | 0,99 | 0,88 | 0,56 | −33 % |
-| Carry | 1,15 | 7,8 | 1,46 | 1,23 | 1,19 | 0,10 | −27 % |
-| **Trend + carry** | **1,28** | **8,7** | 1,76 | 1,27 | 1,12 | 0,46 | −27 % |
+| Trend EWMAC | 0,88 | 5,8 | 1,43 | 0,79 | 0,67 | 0,42 | −34 % |
+| Carry | 0,94 | 6,2 | 1,28 | 1,01 | 0,94 | −0,02 | −28 % |
+| **Trend + carry** | **1,06** | **6,9** | 1,56 | 1,04 | 0,89 | 0,32 | −29 % |
 
 Courbe de breadth (trend + carry, 2000-2024) :
 
 | Nombre d'instruments | 1 | 3 | 5 | 10 | 20 | 40 | 63 |
 |---|---|---|---|---|---|---|---|
-| SR médian | 0,29 | 0,41 | 0,51 | 0,60 | 0,68 | 0,75 | 0,74 |
+| SR médian | 0,22 | 0,37 | 0,47 | 0,55 | 0,60 | 0,65 | 0,64 |
 
-Pour comparaison, le même type de trend sur les 12 ETF du repo donne un SR de 0,15.
+Pour comparaison, le même type de trend (TSMOM long/short) sur les 12 ETF du repo donne un SR de 0,34.
 
 **Capital minimum** (`exp_futures_min_capital.py`, avec micro-futures, 20 % de volatilité cible, au moins 4 contrats de granularité par instrument) :
-- 5 classes d'actifs : environ 160 k$ ;
-- 10 classes d'actifs : environ 320 k$.
+- 5 classes d'actifs : environ 100 k$ ;
+- 40 instruments : environ 3,8 M$.
 
-**Conclusion** : c'est l'edge le mieux documenté, depuis 1880 selon AQR, et le plus facile à mettre en shadow tout de suite. Il **décroît sur 2020-24**, avec un carry proche de 0.
+Ces deux chiffres viennent de la revue adversariale, avec conversion FX et volatilité ajustée ; le script de base ne convertit pas les devises.
+
+**Conclusion** : c'est l'edge le mieux documenté, depuis 1880 selon AQR, et le plus facile à mettre en shadow tout de suite.
+
+Réserves issues de la revue :
+- il **décroît sur 2020-24**, avec un carry proche de 0 ;
+- une partie du « trend » est du beta au rally obligataire 1980-2020 : un signal démoyenné donne un SR de 0,80 contre 1,09 ;
+- l'univers est celui d'aujourd'hui (biais de survivance modéré).
 
 **Reco** : **premier vertical shadow = trend + carry multi-actifs**, en réutilisant pysystemtrade comme référence indépendante, pour recouper les résultats.
 
@@ -205,6 +215,25 @@ Funding BTC annualisé :
 - décroissance post-publication de −58 % ;
 - changements de règles des venues (frais dynamiques, ADL) ;
 - carry qui passe sous le hurdle.
+
+## 8 bis. Revue adversariale (corrections appliquées)
+
+Un agent indépendant a relu les tests et trouvé 21 problèmes. Les corrections principales :
+
+| Problème | Correction | Effet sur les résultats |
+|---|---|---|
+| Fins de mois ETF prises au calendrier : 36 mois sur 121 perdus | Dernier jour de bourse | TSMOM : 0,15 → 0,34 ; momentum sectoriel : 0,73 → 0,80 |
+| Coûts de la stratégie overnight comptés à moitié | Coût complet | SR : −0,27 → −1,36 |
+| Cible de vol-management fixée avec les données futures | Médiane expanding (causale) | SR : 1,01 → 0,90 ; le gain de drawdown reste |
+| Futures sans commissions ni rolls, et annualisation quotidienne biaisée | +30 % de coûts, 4 rolls par an, SR hebdomadaire | Trend + carry : 1,28 → 1,06 |
+| Capital minimum sans conversion FX | Chiffres de la revue | N = 5 : 100 k$ au lieu de 160 k$ |
+| SPRT : σ supposé connu, cas intermédiaire absent | Cas intermédiaire et part d'indécis ajoutés, limite documentée | Voir §1 |
+
+Restent ouverts :
+- l'excès de rendement sur cash n'est pas utilisé dans le script ETF ;
+- le financement du levier n'est pas coûté dans le test vol-managed ;
+- le filtre `Dividend>0` coupe les données Shiller à 2023-06 ;
+- les doublons de contrats futures écrits avec un tiret (sans impact mesurable).
 
 ## 9. Blocage d'environnement
 
