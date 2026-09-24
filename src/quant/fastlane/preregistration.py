@@ -10,7 +10,8 @@ requires :func:`require_outcome_access`, which trusts nothing the caller built:
 * it reloads the seal from disk, re-validates it as sealable and re-derives the
   split's price window from the sealed protocol;
 * the seal must be anchored in git (:mod:`quant.fastlane.gitcheck`: exactly one
-  adding commit, ancestor of HEAD, on a remote-tracking branch, bytes equal);
+  commit ever touches it, complete clone, ancestor of HEAD, contained in a branch
+  tip advertised by ``git ls-remote origin``, bytes equal);
 * the vendor's delisting-class map and benchmark-source manifest must be
   committed the same way; the bound event table must match the sealed hash;
 * holdout access additionally needs the committed, write-once
@@ -74,16 +75,48 @@ REQUIRED_RULES = (
     "go_criterion.all_of", "frictions.stress", "frictions.untradeable_adv20_below_usd",
     "census_binding.events_sha256", "census_binding.events_relpath",
     "census_binding.grid_selection_disclosure", "variant_grid_rule.post_eligibility_recheck",
-    "firewall.outcome_access",
+    "firewall.outcome_access", "governance.external_anchor", "governance.branch_protection",
+    "governance.residual_risk", "inference.seed_robustness.role",
 )
+# D5 / lead-decision numbers: any deviation refuses the seal.
+FROZEN_SPREAD_FLOORS = [
+    {"adv_below_usd": 500_000.0, "floor_bps": 250.0},
+    {"adv_below_usd": 2_000_000.0, "floor_bps": 120.0},
+    {"adv_below_usd": 10_000_000.0, "floor_bps": 60.0},
+    {"adv_below_usd": 50_000_000.0, "floor_bps": 30.0},
+    {"adv_below_usd": None, "floor_bps": 10.0},
+]
+ROBUSTNESS_SEEDS = [BOOTSTRAP_SEED + i for i in range(1, 6)]
 PINNED_VALUES = {
     "inference.block_length_sessions": 80,
     "inference.bootstrap_draws": 10_000,
     "inference.bootstrap_seed": BOOTSTRAP_SEED,
+    "inference.co_check.kernel": "Bartlett",
     "inference.co_check.bandwidth_b": 0.1,
+    "inference.seed_robustness.seeds": ROBUSTNESS_SEEDS,
+    "inference.seed_robustness.gating": False,
     "benchmark.fallback": "NONE",
     "multiplicity.max_finalists": MAX_FINALISTS,
+    "multiplicity.n_trials_rule": "max(M_declared, trial_ledger_evaluations)",
+    "multiplicity.all_declared_need_discovery_trials": True,
+    "go_criterion.alpha_min_annual": 0.03,
+    "go_criterion.holm_family_alpha": 0.05,
+    "go_criterion.dsr_min": 0.95,
+    "outcomes.inconclusive_upper_bound_min_annual": 0.03,
+    "outcomes.inconclusive_ci_level_one_sided": 0.95,
+    "frictions.participation_cap_adv20": 0.001,
+    "frictions.untradeable_adv20_below_usd": 100_000.0,
+    "frictions.spread.adv20_bucket_floor_bps": FROZEN_SPREAD_FLOORS,
+    "frictions.commission.per_share_usd": 0.0035,
+    "frictions.commission.minimum_usd": 0.35,
+    "frictions.impact.coefficient": 1.0,
+    "frictions.delisting_classes.UNKNOWN": {"base": -0.30, "stress": -1.0},
+    "frictions.delisting_classes.BANKRUPTCY_OR_CAUSE": {"base": -1.0, "stress": -1.0},
+    "delisting.mapping_source": "VENDOR_DOCUMENTATION_ONLY",
+    "governance.branch_protection_required": True,
+    "governance.external_anchor_required": True,
 }
+DELISTING_CLASS_NAMES = ("BANKRUPTCY_OR_CAUSE", "CASH_ACQUISITION", "STOCK_MERGER", "UNKNOWN")
 
 
 class PreregError(RuntimeError):
@@ -147,6 +180,21 @@ def _get(obj: Mapping[str, Any], dotted: str) -> Any:
     return node
 
 
+def _same(actual: Any, expected: Any) -> bool:
+    """Structural equality; numbers compare by value but bool is never a number."""
+    if isinstance(expected, bool) or isinstance(actual, bool):
+        return type(actual) is type(expected) and actual == expected
+    if isinstance(expected, (int, float)) and isinstance(actual, (int, float)):
+        return float(actual) == float(expected)
+    if isinstance(expected, list):
+        return (isinstance(actual, list) and len(actual) == len(expected)
+                and all(_same(a, e) for a, e in zip(actual, expected)))
+    if isinstance(expected, dict):
+        return (isinstance(actual, dict) and set(actual) == set(expected)
+                and all(_same(actual[k], expected[k]) for k in expected))
+    return actual == expected
+
+
 def _empty(value: Any) -> bool:
     return value is None or (isinstance(value, (str, list, dict, tuple)) and len(value) == 0)
 
@@ -192,8 +240,11 @@ def validate_protocol(protocol: Mapping[str, Any], *, for_seal: bool) -> None:
         if _empty(_get(protocol, rule)):
             raise PreregInvalid(f"required rule {rule} is missing")
     for dotted, value in PINNED_VALUES.items():
-        if _get(protocol, dotted) != value:
+        if not _same(_get(protocol, dotted), value):
             raise PreregInvalid(f"{dotted} must be {value!r}")
+    for dotted in ("delisting.classes", "frictions.delisting_classes"):
+        if sorted(_get(protocol, dotted) or {}) != list(DELISTING_CLASS_NAMES):
+            raise PreregInvalid(f"{dotted} must hold exactly {DELISTING_CLASS_NAMES}")
     for name in SPLITS:
         start, end = price_window(protocol, name)
         if end < start:
@@ -326,10 +377,24 @@ def _vendor_manifests_ok(fw: Firewall) -> None:
         if not path.exists():
             raise OutcomeAccessRefused(f"vendor manifest {path.name} is not committed")
         try:
-            verify_committed(fw.repo_root, path, write_once=True)
+            verify_committed(fw.repo_root, path, write_once=True, max_age_s=60.0)
             validator(fw.read_json(path))
         except (GitCheckFailed, ValueError) as exc:
             raise OutcomeAccessRefused(f"vendor manifest {path.name}: {exc}") from exc
+
+
+# Remote tips older than this may be reused by verify_grant (each vendor call);
+# require_outcome_access (each grant) always queries the remote afresh.
+GRANT_RECHECK_TIPS_MAX_AGE_S = 300.0
+
+
+def _anchor_seal(fw: Firewall, *, max_age_s: float) -> str:
+    from quant.fastlane.gitcheck import GitCheckFailed, verify_committed
+    try:
+        return verify_committed(fw.repo_root, sealed_path(fw), write_once=True,
+                                max_age_s=max_age_s).commit
+    except GitCheckFailed as exc:
+        raise OutcomeAccessRefused(f"seal is not anchored in git: {exc}") from exc
 
 
 def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str, *,
@@ -337,7 +402,6 @@ def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str
                            holdout_variants: Sequence[str] | None = None,
                            eval_spec_digest: str | None = None) -> OutcomeAccessGrant:
     """Gate every outcome read. Raises OutcomeAccessRefused unless every check passes."""
-    from quant.fastlane.gitcheck import GitCheckFailed, verify_committed
     from quant.fastlane.holdout import (HoldoutLedger, LedgerCorrupted, TrialLedger,
                                         verify_holdout_request)
     if split not in SPLITS:
@@ -351,10 +415,7 @@ def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str
         validate_protocol(protocol, for_seal=True)
     except PreregInvalid as exc:
         raise OutcomeAccessRefused(f"sealed protocol is not sealable: {exc}") from exc
-    try:
-        verify_committed(fw.repo_root, sealed_path(fw), write_once=True)
-    except GitCheckFailed as exc:
-        raise OutcomeAccessRefused(f"seal is not anchored in git: {exc}") from exc
+    seal_commit = _anchor_seal(fw, max_age_s=0.0)
     _vendor_manifests_ok(fw)
     _bound_events_ok(fw, protocol)
     try:
@@ -365,7 +426,7 @@ def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str
     request_id = None
     if split == "holdout":
         request = verify_holdout_request(fw, sealed, holdout_request_id, holdout_variants,
-                                         eval_spec_digest)
+                                         eval_spec_digest, seal_commit=seal_commit)
         try:
             HoldoutLedger(fw).sync(request)
         except LedgerCorrupted as exc:
@@ -386,7 +447,7 @@ def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str
 
 def verify_grant(grant: Any, start: date, end: date) -> None:
     """Re-check a grant against the disk and the ledgers before any outcome read."""
-    from quant.fastlane.holdout import HoldoutLedger, LedgerCorrupted, read_holdout_request
+    from quant.fastlane.holdout import HoldoutLedger, LedgerCorrupted, verify_committed_request
     if type(grant) is not OutcomeAccessGrant:
         raise OutcomeAccessRefused("outcome data needs an OutcomeAccessGrant from a sealed prereg")
     expected = _token(grant.lineage, grant.split, grant.prereg_sha256, grant.price_window_start,
@@ -402,10 +463,12 @@ def verify_grant(grant: Any, start: date, end: date) -> None:
     if price_window(sealed["protocol"], grant.split) != (grant.price_window_start,
                                                          grant.price_window_end):
         raise OutcomeAccessRefused("grant window differs from the sealed protocol")
+    seal_commit = _anchor_seal(fw, max_age_s=GRANT_RECHECK_TIPS_MAX_AGE_S)
     if grant.split == "holdout":
         try:
-            request = read_holdout_request(fw)
-            if request is None or request.get("request_id") != grant.holdout_request_id:
+            request = verify_committed_request(fw, sealed, seal_commit,
+                                               max_age_s=GRANT_RECHECK_TIPS_MAX_AGE_S)
+            if request.get("request_id") != grant.holdout_request_id:
                 raise OutcomeAccessRefused("committed holdout request does not match the grant")
             HoldoutLedger(fw).sync(request)
         except LedgerCorrupted as exc:

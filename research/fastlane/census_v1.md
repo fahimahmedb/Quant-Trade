@@ -2,36 +2,36 @@
 
 Outcome-blind: built only from SEC Insider Transactions Data Sets filing fields. No prices, returns, market caps or delisting status were read.
 
-Coverage: 2006-01-03 → 2026-06-30, 341213 primary accessions (`research/fastlane/data/events_primary_v1.jsonl.gz`, sha256 `1113a2058e854e16…`).
+Coverage: 2006-01-03 → 2026-06-30, 360115 primary accessions (`research/fastlane/data/events_primary_v1.jsonl.gz`, sha256 `dc72010fefc2709b…`).
 
 Primary population: original Form 4 P/A, common-equity titles, frozen footnote/remarks exclusions, exact duplicates removed, backdated accessions excluded. Entry-event unit: issuer × filing date.
 
 Row exclusions (base): P_acquired_disposed_not_A 3997, accession_year_after_filing_year 4, document_type_not_original_form4 280528, shares_missing_nonpositive_or_unparseable 3763, trans_code_not_P 6195978.
 
-Row exclusions (primary): exact_duplicate_of_earlier_accession 3247, footnote_exclusion 36012, remarks_exclusion 1550, security_title_not_common_equity 47195; footnote categories: conversion 683, ipo_underwritten 4733, plan_drip_fees 28368, private_placement 2228, remarks:conversion 11, remarks:ipo_underwritten 124, remarks:plan_drip_fees 1353, remarks:private_placement 62.
+Row exclusions (primary): exact_duplicate_of_earlier_accession 3312, footnote_exclusion 20680, remarks_exclusion 1598, security_title_not_common_equity 28356; footnote categories: conversion 328, ipo_underwritten 4406, plan_drip_fees 13839, private_placement 2107, remarks:conversion 52, remarks:ipo_underwritten 129, remarks:plan_drip_fees 1355, remarks:private_placement 62.
 
 ## Primary entry events per year by split
 
 | Family | Split | Issuer-days/yr | Issuer-days | Unique issuers | ≥$10k/yr | ≥$100k/yr | ≥$1M/yr | Cluster formations | Lag p50/p90 (d) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| ALL_P | discovery | 13412.5 | 174362 | 10392 | 9441.5 | 3797.2 | 1031.3 | 28894 | 2/5 |
-| ALL_P | walk_forward | 10360.0 | 25900 | 3983 | 8025.2 | 3772.8 | 1146.8 | 4535 | 2/4 |
-| ALL_P | holdout | 9783.4 | 48917 | 5182 | 7564.6 | 3774.6 | 1139.0 | 7548 | 2/4 |
-| OD | discovery | 11118.1 | 144535 | 9673 | 7538.5 | 2580.3 | 500.2 | 26873 | 2/5 |
-| OD | walk_forward | 8737.6 | 21844 | 3682 | 6608.4 | 2762.4 | 626.0 | 4211 | 2/4 |
-| OD | holdout | 7912.2 | 39561 | 4793 | 5981.8 | 2618.6 | 601.2 | 6881 | 2/4 |
-| CEO_CFO | discovery | 3349.9 | 43549 | 6557 | 2090.2 | 744.4 | 123.7 | 3942 | 1/5 |
-| CEO_CFO | walk_forward | 2993.6 | 7484 | 1967 | 2035.2 | 786.8 | 153.6 | 754 | 2/4 |
-| CEO_CFO | holdout | 2807.8 | 14039 | 2906 | 1912.8 | 823.6 | 172.2 | 1276 | 2/4 |
-| OD_CLUSTER_10CD | discovery | 2067.2 | 26873 | 5941 | 1773.2 | 810.1 | 161.5 | 26873 | 2/5 |
-| OD_CLUSTER_10CD | walk_forward | 1684.4 | 4211 | 1872 | 1520.4 | 897.6 | 201.2 | 4211 | 2/4 |
-| OD_CLUSTER_10CD | holdout | 1376.2 | 6881 | 2496 | 1270.6 | 741.2 | 171.4 | 6881 | 2/4 |
-| FROZEN_FV_PROXY_10WD | discovery | 2306.4 | 29983 | 6324 | 1959.0 | 899.0 | 198.6 | 29983 | 2/5 |
-| FROZEN_FV_PROXY_10WD | walk_forward | 1849.2 | 4623 | 2037 | 1676.0 | 1001.2 | 264.4 | 4623 | 2/4 |
-| FROZEN_FV_PROXY_10WD | holdout | 1552.6 | 7763 | 2682 | 1425.8 | 861.0 | 246.2 | 7763 | 2/4 |
-| FROZEN_FV_PROXY_10WD_MERGED | discovery | 2095.5 | 27241 | 6055 | 1805.7 | 831.8 | 167.2 | 27241 | 2/5 |
-| FROZEN_FV_PROXY_10WD_MERGED | walk_forward | 1685.2 | 4213 | 1924 | 1531.6 | 908.8 | 202.0 | 4213 | 2/4 |
-| FROZEN_FV_PROXY_10WD_MERGED | holdout | 1397.4 | 6987 | 2547 | 1289.2 | 761.2 | 177.2 | 6987 | 2/4 |
+| ALL_P | discovery | 14005.5 | 182071 | 10645 | 9914.2 | 4020.8 | 1087.9 | 30694 | 2/5 |
+| ALL_P | walk_forward | 10869.2 | 27173 | 4117 | 8426.4 | 3970.8 | 1210.8 | 4866 | 2/4 |
+| ALL_P | holdout | 10254.8 | 51274 | 5340 | 7940.6 | 3991.4 | 1200.4 | 8082 | 2/4 |
+| OD | discovery | 11632.8 | 151226 | 9914 | 7945.8 | 2759.4 | 540.5 | 28591 | 2/5 |
+| OD | walk_forward | 9176.8 | 22942 | 3801 | 6950.0 | 2916.0 | 667.6 | 4528 | 2/4 |
+| OD | holdout | 8294.6 | 41473 | 4917 | 6277.0 | 2771.6 | 637.2 | 7397 | 2/4 |
+| CEO_CFO | discovery | 3506.5 | 45584 | 6750 | 2212.2 | 799.0 | 130.5 | 4334 | 2/5 |
+| CEO_CFO | walk_forward | 3122.8 | 7807 | 2032 | 2125.2 | 831.2 | 162.0 | 823 | 2/4 |
+| CEO_CFO | holdout | 2941.8 | 14709 | 2988 | 2003.8 | 873.6 | 178.8 | 1438 | 2/4 |
+| OD_CLUSTER_10CD | discovery | 2199.3 | 28591 | 6142 | 1888.7 | 868.8 | 174.2 | 28591 | 2/5 |
+| OD_CLUSTER_10CD | walk_forward | 1811.2 | 4528 | 1943 | 1619.6 | 950.4 | 216.0 | 4528 | 2/4 |
+| OD_CLUSTER_10CD | holdout | 1479.4 | 7397 | 2588 | 1355.8 | 789.8 | 186.2 | 7397 | 2/4 |
+| FROZEN_FV_PROXY_10WD | discovery | 2453.4 | 31894 | 6537 | 2086.7 | 962.3 | 214.0 | 31894 | 2/5 |
+| FROZEN_FV_PROXY_10WD | walk_forward | 1991.2 | 4978 | 2114 | 1791.6 | 1062.0 | 283.6 | 4978 | 2/4 |
+| FROZEN_FV_PROXY_10WD | holdout | 1671.4 | 8357 | 2782 | 1524.4 | 915.4 | 261.4 | 8357 | 2/4 |
+| FROZEN_FV_PROXY_10WD_MERGED | discovery | 2225.4 | 28930 | 6257 | 1919.5 | 890.7 | 180.0 | 28930 | 2/5 |
+| FROZEN_FV_PROXY_10WD_MERGED | walk_forward | 1809.2 | 4523 | 1996 | 1632.0 | 962.8 | 217.6 | 4523 | 2/4 |
+| FROZEN_FV_PROXY_10WD_MERGED | holdout | 1499.0 | 7495 | 2643 | 1375.2 | 811.8 | 192.4 | 7495 | 2/4 |
 
 ## Sensitivity: unfiltered population (issuer-days/yr)
 
@@ -48,27 +48,27 @@ Row exclusions (primary): exact_duplicate_of_earlier_accession 3247, footnote_ex
 
 | Year | ALL_P | OD | CEO_CFO | OD_CLUSTER_10CD | FROZEN_FV_PROXY_10WD | FROZEN_FV_PROXY_10WD_MERGED |
 |---|---:|---:|---:|---:|---:|---:|
-| 2006 | 14792 | 11823 | 3238 | 2157 | 2400 | 2205 |
-| 2007 | 18351 | 15025 | 4149 | 3087 | 3385 | 3121 |
-| 2008 | 24070 | 19359 | 5523 | 3796 | 4069 | 3798 |
-| 2009 | 15654 | 13216 | 3833 | 2375 | 2627 | 2376 |
-| 2010 | 12333 | 10376 | 2954 | 1774 | 2016 | 1814 |
-| 2011 | 13950 | 11890 | 3552 | 2267 | 2522 | 2299 |
-| 2012 | 11614 | 9903 | 3045 | 1762 | 2029 | 1816 |
-| 2013 | 9606 | 8101 | 2348 | 1417 | 1635 | 1448 |
-| 2014 | 10436 | 8981 | 2917 | 1713 | 1918 | 1737 |
-| 2015 | 12824 | 10660 | 3578 | 1997 | 2219 | 2009 |
-| 2016 | 10865 | 8863 | 2817 | 1546 | 1776 | 1574 |
-| 2017 | 9283 | 7672 | 2630 | 1356 | 1554 | 1387 |
-| 2018 | 10584 | 8666 | 2965 | 1626 | 1833 | 1657 |
-| 2019 | 10145 | 8402 | 2974 | 1603 | 1808 | 1635 |
-| 2020 | 12049 | 10276 | 3468 | 2059 | 2166 | 2010 |
-| 2021 | 9176 | 7817 | 2667 | 1412 | 1593 | 1420 |
-| 2022 | 11781 | 9796 | 3518 | 1613 | 1817 | 1637 |
-| 2023 | 10619 | 8527 | 3061 | 1527 | 1695 | 1528 |
-| 2024 | 8442 | 6510 | 2374 | 1095 | 1257 | 1116 |
-| 2025 | 8484 | 6824 | 2423 | 1198 | 1384 | 1244 |
-| 2026 | 4121 | 3253 | 1038 | 585 | 666 | 610 |
+| 2006 | 15186 | 12176 | 3355 | 2251 | 2512 | 2301 |
+| 2007 | 18917 | 15524 | 4287 | 3215 | 3513 | 3237 |
+| 2008 | 25112 | 20271 | 5796 | 3997 | 4278 | 3990 |
+| 2009 | 16204 | 13703 | 3956 | 2481 | 2765 | 2487 |
+| 2010 | 12793 | 10786 | 3080 | 1883 | 2136 | 1919 |
+| 2011 | 14495 | 12385 | 3718 | 2414 | 2668 | 2436 |
+| 2012 | 12145 | 10375 | 3184 | 1894 | 2175 | 1948 |
+| 2013 | 10061 | 8520 | 2483 | 1539 | 1785 | 1575 |
+| 2014 | 11026 | 9527 | 3108 | 1865 | 2087 | 1888 |
+| 2015 | 13657 | 11359 | 3779 | 2170 | 2396 | 2171 |
+| 2016 | 11483 | 9390 | 2949 | 1667 | 1925 | 1698 |
+| 2017 | 9835 | 8084 | 2781 | 1473 | 1693 | 1507 |
+| 2018 | 11157 | 9126 | 3108 | 1742 | 1961 | 1773 |
+| 2019 | 10602 | 8790 | 3087 | 1720 | 1937 | 1748 |
+| 2020 | 12691 | 10843 | 3639 | 2206 | 2341 | 2159 |
+| 2021 | 9589 | 8170 | 2776 | 1529 | 1716 | 1528 |
+| 2022 | 12267 | 10195 | 3675 | 1727 | 1956 | 1750 |
+| 2023 | 11067 | 8930 | 3195 | 1637 | 1826 | 1637 |
+| 2024 | 8888 | 6850 | 2495 | 1186 | 1369 | 1210 |
+| 2025 | 8969 | 7188 | 2556 | 1295 | 1483 | 1335 |
+| 2026 | 4374 | 3449 | 1093 | 625 | 707 | 651 |
 
 ## Definitions
 

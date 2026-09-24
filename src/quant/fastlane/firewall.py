@@ -138,6 +138,13 @@ class Firewall:
         """
         target = self.guard(path, write=True)
         target.parent.mkdir(parents=True, exist_ok=True)
+        # A crash between the temp write and the link leaves a dot-prefixed
+        # ``.<name>.*.tmp`` (git-ignored); clear such leftovers before each write.
+        for stale in target.parent.glob(f".{target.name}.*.tmp"):
+            try:
+                stale.unlink()
+            except FileNotFoundError:
+                pass
         tmp = target.with_name(f".{target.name}.{os.getpid()}.{os.urandom(6).hex()}.tmp")
         fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         try:

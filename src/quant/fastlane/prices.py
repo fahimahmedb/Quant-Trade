@@ -104,11 +104,26 @@ def resolve_verdict(attestation: VendorAttestation, criteria_met: bool, *,
 
 
 def validate_delisting_map(manifest: Mapping) -> dict:
-    """The adapter's committed vendor-code -> delisting-class map."""
+    """The adapter's committed vendor-code -> delisting-class map.
+
+    It must be derived only from vendor documentation (never from observed
+    returns): ``derivation`` = VENDOR_DOCUMENTATION_ONLY and ``source`` cites the
+    documentation URL and its retrieval date.
+    """
     if not isinstance(manifest, Mapping) or manifest.get("lineage") != LINEAGE_ID:
         raise ValueError("delisting map must name the fast-lane lineage")
     if not manifest.get("vendor_id"):
         raise ValueError("delisting map must name the vendor")
+    if manifest.get("derivation") != "VENDOR_DOCUMENTATION_ONLY":
+        raise ValueError("delisting map must be derived from vendor documentation only")
+    source = manifest.get("source") or {}
+    url = str(source.get("documentation_url") or "")
+    if not url.startswith("https://"):
+        raise ValueError("delisting map must cite the vendor documentation URL")
+    try:
+        date.fromisoformat(str(source.get("retrieved_on")))
+    except ValueError as exc:
+        raise ValueError("delisting map must record the documentation retrieval date") from exc
     mapping = manifest.get("mapping")
     if not isinstance(mapping, Mapping) or not mapping:
         raise ValueError("delisting map is empty")

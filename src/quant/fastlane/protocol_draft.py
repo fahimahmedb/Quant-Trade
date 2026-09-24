@@ -20,6 +20,7 @@ effect 1.5, one-sided alpha 0.05, power 80 %):
 
 from __future__ import annotations
 
+import copy
 import math
 from statistics import NormalDist
 from typing import Any, Mapping
@@ -27,7 +28,8 @@ from typing import Any, Mapping
 from quant.fastlane import events as ev
 from quant.fastlane.firewall import LINEAGE_ID, Firewall
 from quant.fastlane.frictions import FrictionParams
-from quant.fastlane.preregistration import (BOOTSTRAP_SEED, SPLITS, STATUS_DRAFT,
+from quant.fastlane.preregistration import (BOOTSTRAP_SEED, FROZEN_SPREAD_FLOORS,
+                                            ROBUSTNESS_SEEDS, SPLITS, STATUS_DRAFT,
                                             protocol_sha256, validate_protocol)
 
 SIGMA_20D = 0.14
@@ -80,13 +82,7 @@ FRICTIONS = {
         "variant": "two_day_corrected_mean",
         "window_sessions": 21,
         "min_pairs": 15,
-        "adv20_bucket_floor_bps": [
-            {"adv_below_usd": 500_000.0, "floor_bps": 250.0},
-            {"adv_below_usd": 2_000_000.0, "floor_bps": 120.0},
-            {"adv_below_usd": 10_000_000.0, "floor_bps": 60.0},
-            {"adv_below_usd": 50_000_000.0, "floor_bps": 30.0},
-            {"adv_below_usd": None, "floor_bps": 10.0},
-        ],
+        "adv20_bucket_floor_bps": [dict(b) for b in FROZEN_SPREAD_FLOORS],
         "effective": "max(Abdi-Ranaldo estimate over the 21 sessions before the leg, "
                      "ADV20-bucket full-spread floor); cost per side = half of it",
     },
@@ -268,14 +264,21 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "roles": "relationship flags only; CEO/CFO requires the Officer flag plus a CEO/CFO "
                      "title; titles never promote a role",
             "security_title_include_regex": ev.SECURITY_TITLE_INCLUDE,
+            "security_title_include_explicit_regex": ev.SECURITY_TITLE_INCLUDE_EXPLICIT,
             "security_title_exclude_regex": ev.SECURITY_TITLE_EXCLUDE,
+            "security_title_unit_exemption_regex": ev.SECURITY_TITLE_UNIT_EXEMPTION,
             "security_title_rule": "upper-cased, whitespace-collapsed title must re.search the "
-                                   "include regex and must not re.search the exclude regex; "
-                                   "frozen from title counts only (word boundaries added so "
-                                   "e.g. COMMUNITY/UNITED/FOOTNOTE do not trip UNIT/NOTE)",
+                                   "include or the explicit-include regex (COMMON UNITS, SHARES OF "
+                                   "BENEFICIAL INTEREST, CLASS X [COMMON] STOCK/SHARES, ORDINARY "
+                                   "SHARES, bare SHARES / CAPITAL STOCK) and must not re.search "
+                                   "the exclude regex, whose UNIT(S) token is waived for COMMON "
+                                   "UNIT(S); frozen from title counts only",
             "footnote_exclusion_regex": ev.FOOTNOTE_EXCLUSION,
-            "footnote_rule": "a row is excluded if any footnote it references (any *_FN column) "
-                             "or the filing REMARKS matches a category (case-insensitive)",
+            "footnote_rule": "a row is excluded if a footnote attached to its security title or "
+                             "a transaction field, or the filing REMARKS, matches a category "
+                             "(case-insensitive); holdings/ownership footnotes are never scanned",
+            "footnote_scanned_columns": list(ev.TRANSACTION_FOOTNOTE_COLUMNS),
+            "footnote_never_scanned_columns": list(ev.HOLDINGS_FOOTNOTE_COLUMNS),
             "dedupe": "exact duplicates dropped first-seen by (FILING_DATE, accession) on "
                       "(issuer, sorted owner CIKs, sorted (trans_date, shares, per-share figure))",
             "backdating_exclusion": "accession sequence year > FILING_DATE year -> excluded; "
@@ -310,7 +313,7 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "min_last_close_usd": 1.0,
             "note": "eligibility uses only pre-entry data",
         },
-        "constructor": CONSTRUCTOR,
+        "constructor": copy.deepcopy(CONSTRUCTOR),
         "execution": {
             "missing_entry_bar": "no vendor bar at the entry session -> no fill; the event is "
                                  "skipped and counted",
@@ -343,6 +346,13 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
                                     "(~15 in the holdout)"},
             "go_requires": "BOTH the bootstrap and the fixed-b HAC p-values below the Holm "
                            "threshold",
+            "seed_robustness": {
+                "seeds": list(ROBUSTNESS_SEEDS),
+                "gating": False,
+                "role": "REPORTING ONLY: the verdict statistics (bootstrap p-values, CI bounds, "
+                        "admitted sets) recomputed under seeds seed+1..seed+5 are published "
+                        "alongside; they never change the verdict",
+            },
             "robustness": "FF5+UMD alpha (robustness only, never GO)",
         },
         "robustness": {
@@ -369,7 +379,11 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
                 "UNKNOWN": "-30 % (stress -100 %)",
             },
             "mapping_manifest": "research/fastlane/vendor/DELISTING_CLASS_MAP.json (vendor code "
-                                "-> class), committed by the vendor adapter before any grant",
+                                "-> class) with derivation VENDOR_DOCUMENTATION_ONLY and source "
+                                "{documentation_url, retrieved_on}; committed AND pushed before "
+                                "ANY outcome grant in any split (enforced by "
+                                "require_outcome_access)",
+            "mapping_source": "VENDOR_DOCUMENTATION_ONLY",
             "vendor_agnostic": True,
         },
         "variant_grid_rule": {
@@ -415,7 +429,13 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "trial_ledger": "var/fastlane/ledgers/trials.jsonl (hash-chained); every evaluated "
                             "variant appended; its head is stored in the committed holdout "
                             "request",
-            "dsr": "Deflated Sharpe on discovery with N = trial-ledger trial count",
+            "dsr": "Deflated Sharpe on discovery with N = N_trials",
+            "n_trials_rule": "max(M_declared, trial_ledger_evaluations)",
+            "n_trials_context": "N_trials is the multiplicity count for DSR and the Holm context; "
+                                "it is recorded in the committed holdout request",
+            "all_declared_need_discovery_trials": True,
+            "screening_rule": "before a holdout request is accepted, ALL M_declared variants "
+                              "must have discovery trial-ledger records (not only finalists)",
             "discovery": "DSR ranking; Romano-Wolf stepdown (Hansen SPA as cross-check) on "
                          "net r_ex",
             "finalist_rule": "top <=3 by discovery DSR among variants with Romano-Wolf p<0.10 "
@@ -424,7 +444,7 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "max_finalists": 3,
             "holdout": "Holm at family alpha 0.05 over the finalists, applied to both tests",
         },
-        "frictions": FRICTIONS,
+        "frictions": copy.deepcopy(FRICTIONS),
         "capacity": {"multiples_of_C0": [1, 10, 100],
                      "rule": "same constructor at each multiple with the 0.1% ADV20 cap; "
                              "net annualized alpha reported at each"},
@@ -435,9 +455,14 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "inconclusive": "GO fails but the one-sided 95% upper bound is >= 3%/yr; logged "
                             "distinctly from NO_GO",
             "zero_finalists": "NO_GO; the holdout stays unopened",
+            "inconclusive_upper_bound_min_annual": 0.03,
+            "inconclusive_ci_level_one_sided": 0.95,
             "sizing": "neither NO_GO nor INCONCLUSIVE authorizes any sizing",
         },
         "go_criterion": {
+            "alpha_min_annual": 0.03,
+            "holm_family_alpha": 0.05,
+            "dsr_min": 0.95,
             "all_of": [
                 "annualized net alpha vs SPY >= 3%/yr at 1x C0 (base delisting)",
                 "Holm-adjusted p < 0.05 for BOTH the studentized block bootstrap and the "
@@ -456,12 +481,31 @@ def build_protocol(census: Mapping[str, Any], census_sha256: str,
             "frozen_lineage": "no read/write of FORM4_FIRST_VERTICAL_MULTI_COHORT_V1; its "
                               "cohorts are prospective and were never activated, so the "
                               "2006-2026H1 fast-lane population cannot overlap them",
-            "outcome_access": "only via require_outcome_access: seal reloaded and git-anchored "
-                              "(one adding commit, ancestor of HEAD, on a remote-tracking "
-                              "branch, bytes equal); vendor manifests committed; event table "
-                              "sha equal to census_binding; holdout via the committed "
-                              "write-once HOLDOUT_REQUEST.json (var/ ledger is a cache); grants "
-                              "are HMAC-tokenized and re-verified on every vendor call",
+            "outcome_access": "only via require_outcome_access: complete (non-shallow) clone; "
+                              "seal reloaded and git-anchored (one commit ever touches it, "
+                              "ancestor of HEAD, ancestor of a branch tip advertised by `git "
+                              "ls-remote origin` - local refs/remotes never count - bytes "
+                              "equal); vendor manifests anchored the same way; event table sha "
+                              "equal to census_binding; holdout via the committed write-once "
+                              "HOLDOUT_REQUEST.json which pins the seal commit (var/ ledger is "
+                              "a cache); grants are HMAC-tokenized and re-verified, including "
+                              "the git anchor, on every vendor call",
+        },
+        "governance": {
+            "external_anchor_required": True,
+            "external_anchor": "OWNER ACTION: record the seal commit hash and, later, the holdout "
+                               "request commit hash outside the repository (e.g. a dated message "
+                               "or note held by the owner) as soon as each is pushed; a later "
+                               "grant whose anchors differ from these records is void",
+            "branch_protection_required": True,
+            "branch_protection": "OWNER ACTION: protect the fast-lane branch on the remote (no "
+                                 "force-push, no deletion) before the seal is pushed",
+            "residual_risk": "code cannot prevent a force-push or branch deletion by someone "
+                             "with remote write access; it detects a rewrite of the seal commit "
+                             "(the request pins it and every grant re-checks it against the "
+                             "advertised tip) but a rewrite of only the request commit that "
+                             "keeps the seal commit is detectable only through the external "
+                             "anchor and branch protection",
         },
         "vendor": {"primary": "Sharadar (Nasdaq Data Link SEP, ACTIONS, TICKERS with CIK)",
                    "fallback": "EODHD for development only; the benchmark has no fallback",
@@ -480,7 +524,8 @@ def render_markdown(protocol: Mapping[str, Any], digest: str) -> str:
         f"Canonical sha256 of this draft: `{digest}`. Sealing requires flipping status to "
         "`FINAL_FOR_SEAL` by explicit decision, then `python3 scripts/fastlane.py seal-prereg "
         "--protocol research/fastlane/QUANT_FASTLANE_HPIT_V1_PROTOCOL.json`, then committing "
-        "and pushing the sealed file (grants require it on a remote-tracking branch).",
+        "and pushing the sealed file (grants require it in a branch the remote advertises, in "
+        "a complete clone: run `git fetch --unshallow` first if the clone is shallow).",
         "",
         "## Frozen elements",
         "",
@@ -497,9 +542,11 @@ def render_markdown(protocol: Mapping[str, Any], digest: str) -> str:
         f"- Inference: one-sided studentized moving-block bootstrap (80 sessions, B = 10,000, "
         f"seed {BOOTSTRAP_SEED}) AND fixed-b HAC t (Bartlett, b = 0.1, Kiefer–Vogelsang); both "
         "below the Holm threshold. FF5+UMD robustness only.",
-        "- Multiplicity: M declared below; DSR on discovery with N = trial-ledger count; "
-        "Romano-Wolf/SPA; ≤ 3 finalists with discovery and walk-forward trial records; Holm "
-        "α = 0.05. Zero finalists → NO_GO, holdout unopened.",
+        "- Multiplicity: M declared below; N_trials = max(M_declared, trial-ledger "
+        "evaluations) for DSR and the Holm context; ALL declared variants need discovery trial "
+        "records before a holdout request; Romano-Wolf/SPA; ≤ 3 finalists with discovery and "
+        "walk-forward trial records; Holm α = 0.05. Zero finalists → NO_GO, holdout unopened.",
+        f"- Seed robustness (reporting only, never gating): seeds {ROBUSTNESS_SEEDS}.",
         "- Constructor: K = 100 slots, C0 = USD 100,000 paper; tie-break sha256(seed|sorted "
         "accessions), never CIK.",
         "- Frictions (frozen, not calibrated): Abdi–Ranaldo with ADV20 floors 250/120/60/30/10 bp "
@@ -510,6 +557,11 @@ def render_markdown(protocol: Mapping[str, Any], digest: str) -> str:
         "grant. Benchmark: SPY total return from the vendor, committed manifest, no fallback.",
         "- Outcomes: GO (all legs), INCONCLUSIVE (GO fails, one-sided 95 % upper bound "
         "≥ 3 %/yr), NO_GO; only GO may authorize paper sizing.",
+        "- Anchoring: grants need a complete (non-shallow) clone and the seal, request and "
+        "vendor manifests contained in a branch the real remote advertises; the request pins "
+        "the seal commit. OWNER ACTIONS: branch protection (no force-push/deletion) and an "
+        "external record of the seal and request commit hashes. Residual risk: a force-push "
+        "that rewrites only the request commit is caught only by those owner actions.",
         "",
         f"## Variant grid (M = {len(protocol['variants'])})",
         "",

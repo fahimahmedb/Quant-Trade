@@ -9,3 +9,4 @@ runtime/*.json
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/agent-memory-local/
+research/fastlane/prereg/.*.tmp

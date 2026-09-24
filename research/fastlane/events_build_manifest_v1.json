@@ -1,5 +1,5 @@
 {
-  "code_fingerprint": "sha256:9b4ce71cac7592dd95f1a4d00a4b0fd9b1a5adc7a409d23a77214e141685a7f4",
+  "code_fingerprint": "sha256:d48fbd9a83d33a0a6b38ab9a739687f34b20ea778e7684a02005cff6fc60ecba",
   "counts": {
     "excluded_P_A_rows_by_document_type": {
       "4/A": 25044,
@@ -33,8 +33,8 @@
     "population": {
       "events": 393903,
       "nonderiv_trans_rows": 7293834,
-      "primary_events": 341213,
-      "primary_transaction_rows": 721560,
+      "primary_events": 360115,
+      "primary_transaction_rows": 755618,
       "submissions_document_type_3": 331258,
       "submissions_document_type_3/A": 15819,
       "submissions_document_type_4": 3934823,
@@ -44,10 +44,10 @@
       "transaction_rows_in_events": 809564
     },
     "primary_excluded_transaction_rows": {
-      "exact_duplicate_of_earlier_accession": 3247,
-      "footnote_exclusion": 36012,
-      "remarks_exclusion": 1550,
-      "security_title_not_common_equity": 47195
+      "exact_duplicate_of_earlier_accession": 3312,
+      "footnote_exclusion": 20680,
+      "remarks_exclusion": 1598,
+      "security_title_not_common_equity": 28356
     },
     "primary_exclusion_precedence": [
       "security_title_not_common_equity",
@@ -56,13 +56,13 @@
       "exact_duplicate_of_earlier_accession"
     ],
     "primary_footnote_exclusion_rows_by_category": {
-      "conversion": 683,
-      "ipo_underwritten": 4733,
-      "plan_drip_fees": 28368,
-      "private_placement": 2228,
-      "remarks:conversion": 11,
-      "remarks:ipo_underwritten": 124,
-      "remarks:plan_drip_fees": 1353,
+      "conversion": 328,
+      "ipo_underwritten": 4406,
+      "plan_drip_fees": 13839,
+      "private_placement": 2107,
+      "remarks:conversion": 52,
+      "remarks:ipo_underwritten": 129,
+      "remarks:plan_drip_fees": 1355,
       "remarks:private_placement": 62
     }
   },
@@ -492,8 +492,8 @@
   "outputs": {
     "events_primary_full": {
       "path": "var/fastlane/derived/events_primary_full_v1.jsonl.gz",
-      "rows": 341213,
-      "sha256": "473990bf244c98d44af877740712d8db00a83e120f5e5137ea4360fe20433c3e"
+      "rows": 360115,
+      "sha256": "5d849395605879fcf23cba0f86c4143b5c7c7fc1043867bc1af1843ba3a2664e"
     },
     "events_unfiltered": {
       "path": "var/fastlane/derived/events_v1.jsonl.gz",
@@ -502,11 +502,11 @@
     },
     "issuer_days": {
       "path": "var/fastlane/derived/issuer_days_v1.jsonl.gz",
-      "rows": 249179,
-      "sha256": "810035ac16a24659f77f4fc6e9e5269b0fef1db88ce542b02777e013872b7335"
+      "rows": 260518,
+      "sha256": "4a9b4b4820ef97905193ad882f3db07b52a7e244f8e1817318a22c97df4d45da"
     },
     "primary_table": {
-      "bytes": 13147643,
+      "bytes": 13840289,
       "fields": {
         "accession": "unique key",
         "filing_date": "EDGAR FILING_DATE = available_after_date; entry at the first vendor session strictly after it",
@@ -522,9 +522,9 @@
       "limit_bytes": 25000000,
       "location": "research/fastlane/data (committable)",
       "relpath": "research/fastlane/data/events_primary_v1.jsonl.gz",
-      "rows": 341213,
+      "rows": 360115,
       "schema": "fastlane.primary_event.compact.v1",
-      "sha256": "1113a2058e854e16fa64a401555b3b902281b94c3b5e9d90227dcc29019b1ce9"
+      "sha256": "dc72010fefc2709ba61702fb7b7d9a4bd63366fb448ddc538def9867436de980"
     }
   },
   "population_rule": {
@@ -547,10 +547,31 @@
       "plan_drip_fees": "dividend reinvestment|\\bdrip\\b|employee stock purchase|\\bespp\\b|401\\(k\\)|deferred compensation|in lieu of (cash )?(director|board|fees|compensation|salary)|director'?s'? fee",
       "private_placement": "private placement|privately negotiated|subscription agreement|securities purchase agreement|accredited investor"
     },
-    "footnote_scope": "footnotes referenced by any *_FN column of the row, plus the filing REMARKS; case-insensitive",
+    "footnote_scope": {
+      "case": "insensitive",
+      "never_scanned": [
+        "SHRS_OWND_FOLWNG_TRANS_FN",
+        "VALU_OWND_FOLWNG_TRANS_FN",
+        "DIRECT_INDIRECT_OWNERSHIP_FN",
+        "NATURE_OF_OWNERSHIP_FN"
+      ],
+      "remarks": "filing REMARKS scanned",
+      "scanned_columns": [
+        "SECURITY_TITLE_FN",
+        "TRANS_DATE_FN",
+        "DEEMED_EXECUTION_DATE_FN",
+        "EQUITY_SWAP_TRANS_CD_FN",
+        "TRANS_TIMELINESS_FN",
+        "TRANS_SHARES_FN",
+        "TRANS_PRICEPERSHARE_FN",
+        "TRANS_ACQUIRED_DISP_CD_FN"
+      ]
+    },
     "security_title_exclude_regex": "\\b(PREFERRED|UNITS?|FUNDS?|PLANS?|WARRANTS?|NOTES?|DEBENTURES?|OPTIONS?|RIGHTS?)\\b",
+    "security_title_include_explicit_regex": "\\bCOMMON UNITS?\\b|\\bSHARES OF BENEFICIAL INTEREST\\b|^CLASS [A-Z] (COMMON )?(STOCK|SHARES)$|\\bORDINARY SHARES?\\b|^SHARES$|^CAPITAL STOCK$",
     "security_title_include_regex": "(COMMON|ORDINARY|CL(ASS)? [A-Z] COMMON|COMMON STOCK)",
-    "security_title_normalization": "upper case, whitespace collapsed; re.search"
+    "security_title_normalization": "upper case, whitespace collapsed; re.search",
+    "security_title_unit_exemption_regex": "\\bCOMMON UNITS?\\b"
   },
   "schema": {
     "events": "fastlane.purchase_event.v1",

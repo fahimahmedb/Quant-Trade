@@ -19,7 +19,9 @@ from quant.fastlane.sec_insider import (REQUIRED_COLUMNS, SecParseError, parse_n
 SUB_COLS = list(REQUIRED_COLUMNS["SUBMISSION.tsv"]) + ["REMARKS"]
 OWN_COLS = list(REQUIRED_COLUMNS["REPORTINGOWNER.tsv"]) + ["RPTOWNERNAME"]
 TR_COLS = list(REQUIRED_COLUMNS["NONDERIV_TRANS.tsv"]) + ["TRANS_SHARES_FN",
-                                                          "TRANS_PRICEPERSHARE_FN"]
+                                                          "TRANS_PRICEPERSHARE_FN",
+                                                          "NATURE_OF_OWNERSHIP_FN",
+                                                          "SHRS_OWND_FOLWNG_TRANS_FN"]
 FN_COLS = list(REQUIRED_COLUMNS["FOOTNOTES.tsv"])
 
 
@@ -53,13 +55,14 @@ def owner(acc, cik="0000000100", rel="Officer", title="Chief Executive Officer")
 
 
 def trans(acc, sk, code="P", acq="A", shares="1000", price="10.5", tdate="11-FEB-2010",
-          title="Common Stock", shares_fn="", price_fn=""):
+          title="Common Stock", shares_fn="", price_fn="", nature_fn="", held_fn=""):
     return {"ACCESSION_NUMBER": acc, "NONDERIV_TRANS_SK": sk, "SECURITY_TITLE": title,
             "TRANS_DATE": tdate, "DEEMED_EXECUTION_DATE": "", "TRANS_FORM_TYPE": "4",
             "TRANS_CODE": code, "EQUITY_SWAP_INVOLVED": "0", "TRANS_SHARES": shares,
             "TRANS_PRICEPERSHARE": price, "TRANS_ACQUIRED_DISP_CD": acq,
             "SHRS_OWND_FOLWNG_TRANS": "5000", "DIRECT_INDIRECT_OWNERSHIP": "D",
-            "TRANS_SHARES_FN": shares_fn, "TRANS_PRICEPERSHARE_FN": price_fn}
+            "TRANS_SHARES_FN": shares_fn, "TRANS_PRICEPERSHARE_FN": price_fn,
+            "NATURE_OF_OWNERSHIP_FN": nature_fn, "SHRS_OWND_FOLWNG_TRANS_FN": held_fn}
 
 
 A1, A2, A3, A4, A5, A6 = (f"0000000009-10-00000{i}" for i in range(1, 7))
@@ -156,8 +159,40 @@ class PopulationRuleTests(unittest.TestCase):
         result, counters = self.build(subs, [owner(A1)], trs)
         self.assertEqual(result.events[0]["n_transactions"], 5)            # unfiltered
         kept = [t["sk"] for t in result.primary_events[0]["transactions"]]
-        self.assertEqual(kept, ["1", "4"])
-        self.assertEqual(counters.primary_exclusions["security_title_not_common_equity"], 3)
+        self.assertEqual(kept, ["1", "3", "4", "5"])
+        self.assertEqual(counters.primary_exclusions["security_title_not_common_equity"], 1)
+
+    def test_probe_p8_title_filter_explicit_includes_and_excludes(self):
+        keep = ["Common Stock", "COMMON UNITS", "Class A Common Units representing LP interests",
+                "Shares of Beneficial Interest", "Common Shares of Beneficial Interest",
+                "Class A Stock", "Class B Shares", "Class A Common Stock", "Ordinary Shares",
+                "Shares", "Capital Stock", "Cyanotech Corporation Common Stock",
+                "Community Bancorp. Common Stock", "Common Stock (see footnote 1)"]
+        drop = ["Series A Preferred Stock", "Class A Units", "Limited Partnership Units",
+                "Units of Beneficial Interest", "Common Stock Warrants",
+                "Teucrium Agricultural Fund - Common Units", "401(k) Company Stock Fund",
+                "Waccamaw Bankshares, Inc. Common Stock Direct Purchase Plan",
+                "Depositary Shares", "Stock Option (right to buy)", "Notes", "Class A Shares Rights"]
+        for title in keep:
+            self.assertTrue(ev.title_is_common_equity(title), title)
+        for title in drop:
+            self.assertFalse(ev.title_is_common_equity(title), title)
+
+    def test_probe_p8_holdings_footnotes_are_never_scanned(self):
+        note = (A1, "F1", "Includes shares acquired under the issuer's dividend reinvestment plan "
+                          "since the reporting person's last report.")
+        trs = [trans(A1, "1", nature_fn="F1"), trans(A1, "2", held_fn="F1"),
+               trans(A1, "3", shares_fn="F1")]
+        result, counters = self.build([sub(A1)], [owner(A1)], trs, footnotes=[note])
+        self.assertEqual([t["sk"] for t in result.primary_events[0]["transactions"]], ["1", "2"])
+        self.assertEqual(counters.footnote_categories["plan_drip_fees"], 1)
+        self.assertEqual(ev.row_footnote_ids({"NATURE_OF_OWNERSHIP_FN": "F1",
+                                              "SHRS_OWND_FOLWNG_TRANS_FN": "F2",
+                                              "DIRECT_INDIRECT_OWNERSHIP_FN": "F3",
+                                              "VALU_OWND_FOLWNG_TRANS_FN": "F4",
+                                              "SECURITY_TITLE_FN": "F5",
+                                              "TRANS_PRICEPERSHARE_FN": "F6, F7"}),
+                         {"F5", "F6", "F7"})
 
     def test_primary_footnote_and_remarks_exclusions(self):
         # probes p4c/p4d: plan/DRIP/fees, IPO/underwritten, conversion, private placement

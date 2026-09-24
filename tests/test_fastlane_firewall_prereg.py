@@ -50,12 +50,24 @@ def final_protocol(events_sha="0" * 64, relpath="research/fastlane/data/events_p
     return protocol
 
 
+DOC_SOURCE = {"documentation_url": "https://example.invalid/vendor/delisting-codes",
+              "retrieved_on": "2026-09-24"}
+
+
 class World:
-    """A temp git repo with a (optionally) sealed, committed and published protocol."""
+    """A temp git repo with a bare 'origin' remote and a sealed, committed, pushed protocol."""
 
     def __init__(self, tmp, *, seal=True, commit=True, publish=True, manifests=True):
-        self.root = Path(tmp)
+        base = Path(tmp)
+        self.remote = base / "remote.git"
+        self.root = base / "work"
+        self.root.mkdir()
+        git(base, "init", "-q", "--bare", "-b", "main", str(self.remote))
         git(self.root, "init", "-q", "-b", "main")
+        git(self.root, "remote", "add", "origin", str(self.remote))
+        (self.root / "README").write_text("synthetic fast-lane test repository\n")
+        self.commit_all("base")
+        self.publish()
         self.fw = Firewall(self.root)
         events = self.fw.artifact("data", "events_primary_v1.jsonl.gz")
         payload = gzip.compress(b'{"accession":"synthetic"}\n', mtime=0)
@@ -66,6 +78,7 @@ class World:
         if manifests:
             self.fw.write_json_atomic(pr.delisting_map_path(self.fw), {
                 "lineage": LINEAGE_ID, "vendor_id": "SYNTH",
+                "derivation": "VENDOR_DOCUMENTATION_ONLY", "source": DOC_SOURCE,
                 "mapping": {"A": "CASH_ACQUISITION", "B": "BANKRUPTCY_OR_CAUSE",
                             "Z": "UNKNOWN"}})
             self.fw.write_json_atomic(pr.benchmark_manifest_path(self.fw), {
@@ -86,11 +99,15 @@ class World:
         git(self.root, "add", "-A")
         git(self.root, "commit", "-q", "--allow-empty", "-m", msg)
 
-    def publish(self):
-        git(self.root, "update-ref", "refs/remotes/origin/main", "HEAD")
+    def publish(self, force=False):
+        git(self.root, "push", "-q", *(["-f"] if force else []), "origin", "HEAD:main")
 
-    def variants(self, n):
-        return [v["variant_id"] for v in self.protocol["variants"]][:n]
+    def head(self):
+        return git(self.root, "rev-parse", "HEAD").stdout.decode().strip()
+
+    def variants(self, n=None):
+        ids = [v["variant_id"] for v in self.protocol["variants"]]
+        return ids if n is None else ids[:n]
 
     def trials(self, variants, splits=("discovery", "walk_forward")):
         ledger = ho.TrialLedger(self.fw)
@@ -98,7 +115,11 @@ class World:
             for s in splits:
                 ledger.record(f"{v}-{s}", v, s, {"variant": v, "split": s})
 
+    def screen_all(self):
+        self.trials(self.variants(), splits=("discovery",))
+
     def request(self, request_id, variants, *, commit=True):
+        self.screen_all()
         self.trials(variants)
         record = ho.write_holdout_request(self.fw, request_id, variants, EVAL_SPEC)
         if commit:
@@ -257,12 +278,41 @@ class GitAnchorTests(unittest.TestCase):
             w = World(tmp, commit=False, publish=False)
             with self.assertRaises(pr.OutcomeAccessRefused):
                 pr.require_outcome_access(w.fw, "discovery", w.sha)
-            w.commit_all("seal")                     # committed but not on any remote branch
+            w.commit_all("seal")                     # committed but not pushed
             with self.assertRaises(pr.OutcomeAccessRefused):
                 pr.require_outcome_access(w.fw, "discovery", w.sha)
             w.publish()
             grant = pr.require_outcome_access(w.fw, "discovery", w.sha)
             self.assertEqual(grant.split, "discovery")
+
+    def test_probe_n1_local_remote_tracking_ref_does_not_count_as_published(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp, publish=False)
+            git(w.root, "update-ref", "refs/remotes/origin/fake", "HEAD")
+            git(w.root, "update-ref", "refs/remotes/origin/main", "HEAD")
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                pr.require_outcome_access(w.fw, "discovery", w.sha)
+            self.assertIn("(c)", str(ctx.exception))
+
+    def test_probe_n3_shallow_clone_is_refused_with_unshallow_advice(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp)
+            shallow = Path(tmp) / "shallow"
+            git(Path(tmp), "clone", "-q", "--depth", "1", "--branch", "main",
+                "file://" + str(w.remote), str(shallow))
+            fw = Firewall(shallow)
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                pr.require_outcome_access(fw, "discovery", w.sha)
+            self.assertIn("git fetch --unshallow", str(ctx.exception))
+            git(shallow, "fetch", "-q", "--unshallow")
+            self.assertEqual(pr.require_outcome_access(fw, "discovery", w.sha).split, "discovery")
+
+    def test_probe_n5_detached_head_is_fine(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp)
+            git(w.root, "checkout", "-q", "--detach")
+            self.assertEqual(pr.require_outcome_access(w.fw, "discovery", w.sha).split,
+                             "discovery")
 
     def test_probe_h_seal_outside_any_git_repository(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -286,7 +336,7 @@ class GitAnchorTests(unittest.TestCase):
                 pr.require_outcome_access(w.fw, "discovery", second)
             w.commit_all("reseal")
             w.publish()
-            # committed replacement: the seal path now has more than one commit
+            # committed and pushed replacement: the seal path now has more than one commit
             with self.assertRaises(pr.OutcomeAccessRefused):
                 pr.require_outcome_access(w.fw, "discovery", second)
 
@@ -399,6 +449,7 @@ class HoldoutTests(unittest.TestCase):
         with self.assertRaises(pr.OutcomeAccessRefused):
             ho.write_holdout_request(self.w.fw, "look-1", ["NOT_IN_GRID"], EVAL_SPEC)
         v = self.w.variants(3)[2]
+        self.w.screen_all()                                       # every variant screened
         self.w.trials([v], splits=("discovery",))                 # no walk-forward record
         with self.assertRaises(pr.OutcomeAccessRefused):
             ho.write_holdout_request(self.w.fw, "look-1", [v], EVAL_SPEC)
@@ -494,6 +545,171 @@ class HoldoutTests(unittest.TestCase):
             self.w.holdout("look-1", self.finalists)
 
 
+class SecondReviewTests(unittest.TestCase):
+    """Re-review probes A', N4, the force-push pin, pinned numbers, doc-derived map, crash temp."""
+
+    def test_probe_a_prime_in_process_token_on_uncommitted_seal_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp, commit=False, publish=False)
+            start, end = pr.price_window(w.protocol, "walk_forward")
+            token = pr._token(LINEAGE_ID, "walk_forward", w.sha, start, end, None, str(w.root))
+            forged = pr.OutcomeAccessGrant(LINEAGE_ID, "walk_forward", w.sha, start, end, None,
+                                           str(w.root), token)
+            with self.assertRaises(pr.OutcomeAccessRefused):
+                px.check_grant(forged, date(2019, 1, 2), date(2021, 6, 30))
+
+    def test_probe_n4_every_declared_variant_needs_a_discovery_trial(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp)
+            finalist = w.variants(1)
+            w.trials(finalist)                                   # finalist-only ledger
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                ho.write_holdout_request(w.fw, "look-1", finalist, EVAL_SPEC)
+            self.assertIn("declared variants have no discovery trial", str(ctx.exception))
+            w.screen_all()
+            request = ho.write_holdout_request(w.fw, "look-1", finalist, EVAL_SPEC)
+            m = w.protocol["multiplicity"]["M_declared"]
+            self.assertEqual(request["multiplicity"]["M_declared"], m)
+            self.assertEqual(request["multiplicity"]["n_trials_for_dsr"], max(m, m + 1))
+            self.assertEqual(ho.TrialLedger(w.fw).multiplicity()["n_trials_for_dsr"], m + 1)
+
+    def test_n_trials_is_at_least_m_declared(self):
+        sealed = {"protocol_sha256": "sha256:x",
+                  "protocol": {"multiplicity": {"M_declared": 21}}}
+        few = [{"trial_id": f"t{i}", "prereg_sha256": "sha256:x"} for i in range(3)]
+        many = [{"trial_id": f"t{i}", "prereg_sha256": "sha256:x"} for i in range(40)]
+        self.assertEqual(ho.n_trials_for_dsr(sealed, few), 21)
+        self.assertEqual(ho.n_trials_for_dsr(sealed, many), 40)
+
+    def test_force_push_rewriting_the_seal_commit_is_detected_at_the_next_grant(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp)
+            finalists = w.variants(2)
+            request = w.request("look-1", finalists)
+            self.assertEqual(len(request["seal_commit"]), 40)
+            grant = w.holdout("look-1", finalists)
+            # rewrite history: squash seal and request into a new commit, force-push
+            base = git(w.root, "rev-list", "--max-parents=0", "HEAD").stdout.decode().strip()
+            git(w.root, "reset", "-q", "--soft", base)
+            git(w.root, "commit", "-q", "-m", "rewritten history")
+            w.publish(force=True)
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                w.holdout("look-1", finalists)
+            self.assertIn("seal commit changed", str(ctx.exception))
+            with self.assertRaises(pr.OutcomeAccessRefused):
+                px.check_grant(grant, date(2021, 7, 1), date(2021, 8, 2))
+
+    def test_pinned_d5_numbers_refuse_any_deviation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fw = Firewall(Path(tmp))
+            changes = {
+                "frictions.participation_cap_adv20": 0.002,
+                "frictions.untradeable_adv20_below_usd": 50_000.0,
+                "frictions.commission.per_share_usd": 0.0,
+                "frictions.commission.minimum_usd": 0.0,
+                "frictions.impact.coefficient": 0.5,
+                "go_criterion.alpha_min_annual": 0.02,
+                "go_criterion.holm_family_alpha": 0.10,
+                "go_criterion.dsr_min": 0.90,
+                "inference.block_length_sessions": 40,
+                "inference.bootstrap_draws": 999,
+                "inference.co_check.kernel": "none",
+                "inference.co_check.bandwidth_b": 0.2,
+                "inference.seed_robustness.gating": True,
+                "outcomes.inconclusive_upper_bound_min_annual": 0.0,
+            }
+            for dotted, value in changes.items():
+                p = final_protocol()
+                node = p
+                *parents, leaf = dotted.split(".")
+                for part in parents:
+                    node = node[part]
+                node[leaf] = value
+                with self.assertRaises(pr.PreregInvalid, msg=dotted):
+                    pr.seal_protocol(fw, p)
+            p = final_protocol()
+            p["frictions"]["spread"]["adv20_bucket_floor_bps"][0]["floor_bps"] = 0.0
+            with self.assertRaises(pr.PreregInvalid):
+                pr.seal_protocol(fw, p)
+            p = final_protocol()
+            p["frictions"]["delisting_classes"]["UNKNOWN"]["base"] = 0.0
+            with self.assertRaises(pr.PreregInvalid):
+                pr.seal_protocol(fw, p)
+            p = final_protocol()
+            p["frictions"]["delisting_classes"]["BANKRUPTCY_OR_CAUSE"]["base"] = -0.5
+            with self.assertRaises(pr.PreregInvalid):
+                pr.seal_protocol(fw, p)
+            p = final_protocol()
+            p["delisting"]["classes"] = {"UNKNOWN": "0 %"}
+            with self.assertRaises(pr.PreregInvalid):
+                pr.seal_protocol(fw, p)
+            p = final_protocol()
+            p["governance"].pop("residual_risk")
+            with self.assertRaises(pr.PreregInvalid):
+                pr.seal_protocol(fw, p)
+            self.assertFalse(pr.sealed_path(fw).exists())
+            self.assertEqual(final_protocol()["inference"]["seed_robustness"]["seeds"],
+                             [20260925, 20260926, 20260927, 20260928, 20260929])
+
+    def test_delisting_map_must_cite_vendor_documentation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            w = World(tmp, commit=False, publish=False)
+            m = w.fw.read_json(pr.delisting_map_path(w.fw))
+            m.pop("source")
+            w.fw.write_json_atomic(pr.delisting_map_path(w.fw), m)
+            w.commit_all("seal")
+            w.publish()
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                pr.require_outcome_access(w.fw, "discovery", w.sha)
+            self.assertIn("documentation", str(ctx.exception))
+
+    def test_probe_p9_crash_during_seal_leaves_no_committable_or_valid_partial(self):
+        import fnmatch
+        import sys
+        child = (
+            "import os, sys, json\n"
+            "sys.path.insert(0, sys.argv[3])\n"
+            "from pathlib import Path\n"
+            "from quant.fastlane.firewall import Firewall\n"
+            "from quant.fastlane import preregistration as pr\n"
+            "p = json.loads(Path(sys.argv[2]).read_text())\n"
+            "if sys.argv[4] == 'before_link':\n"
+            "    os.link = lambda *a: os._exit(9)\n"
+            "else:\n"
+            "    os.unlink = lambda *a, **k: os._exit(9)\n"
+            "pr.seal_protocol(Firewall(Path(sys.argv[1])), p)\n")
+        src = str(REPO / "src")
+        for where in ("before_link", "after_link"):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp) / "root"
+                root.mkdir()
+                proto = Path(tmp) / "protocol.json"
+                proto.write_text(json.dumps(final_protocol()))
+                rc = subprocess.run([sys.executable, "-c", child, str(root), str(proto), src,
+                                     where]).returncode
+                self.assertEqual(rc, 9)
+                fw = Firewall(root)
+                folder = pr.sealed_path(fw).parent
+                leftovers = [p.name for p in folder.iterdir() if p.name.endswith(".tmp")]
+                self.assertEqual(len(leftovers), 1)
+                self.assertTrue(fnmatch.fnmatch(f"research/fastlane/prereg/{leftovers[0]}",
+                                                "research/fastlane/prereg/.*.tmp"))
+                if where == "before_link":
+                    with self.assertRaises(pr.PreregNotSealed):
+                        pr.load_sealed(fw)
+                else:
+                    self.assertTrue(pr.load_sealed(fw)["protocol_sha256"].startswith("sha256:"))
+                record = pr.seal_protocol(fw, final_protocol())       # recovery / replay
+                self.assertEqual(record["protocol_sha256"], pr.protocol_sha256(final_protocol()))
+                ho.request_path(fw).parent.mkdir(parents=True, exist_ok=True)
+                fw.create_exclusive(folder / "probe.json", b"{}\n")   # cleans stale temps
+                if where == "before_link":
+                    self.assertFalse([p for p in folder.iterdir()
+                                      if p.name.startswith(f".{pr.sealed_path(fw).name}")])
+        ignore = (REPO / ".gitignore").read_text().splitlines()
+        self.assertIn("research/fastlane/prereg/.*.tmp", ignore)
+
+
 class TrialLedgerTests(unittest.TestCase):
     def test_every_trial_is_recorded_once_and_chained(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -510,9 +726,11 @@ class TrialLedgerTests(unittest.TestCase):
                 ledger.record("t2", "UNDECLARED", "discovery", {})
             ledger.record("t2", b, "walk_forward", {})
             ledger.record("t3", a, "walk_forward", {})
+            m = w.protocol["multiplicity"]["M_declared"]
             self.assertEqual(ledger.multiplicity(), {
                 "trials": 3, "distinct_variants": 2,
-                "distinct_variants_by_split": {"discovery": 1, "walk_forward": 2}})
+                "distinct_variants_by_split": {"discovery": 1, "walk_forward": 2},
+                "n_trials_for_dsr": max(m, 3)})
             lines = ledger.path.read_bytes().split(b"\n")
             edited = json.loads(lines[1])
             edited["variant_id"] = a

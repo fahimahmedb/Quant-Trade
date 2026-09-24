@@ -7,9 +7,14 @@ Authority for the single holdout look is the committed, write-once file
   request cannot be written next to it;
 * it must pass the git checks of :mod:`quant.fastlane.gitcheck` (exactly one
   commit ever touches it, ancestor of HEAD, published, bytes equal);
-* its finalists must belong to the sealed grid and each must already have
-  discovery and walk-forward records in the trial ledger; it stores the fast-
-  lane code fingerprint, the evaluation-spec digest and the trial-ledger head.
+* every declared variant must already have a discovery trial record, and each
+  finalist must belong to the sealed grid with discovery and walk-forward
+  records; it stores the fast-lane code fingerprint, the evaluation-spec
+  digest, the trial-ledger head, the multiplicity count
+  ``N_trials = max(M_declared, trial-ledger evaluations)`` and the seal commit;
+* at every grant the seal's adding commit must still equal the pinned
+  ``seal_commit`` and be contained in a branch the real remote advertises, so a
+  force-push that rewrites the seal commit is detected.
 
 ``var/fastlane/ledgers/holdout_one_look.jsonl`` is a cache of that request: if
 it is deleted the committed request is re-cached; if it disagrees with the
@@ -176,11 +181,16 @@ class TrialLedger:
         by_split: dict[str, set[str]] = {}
         for rec in records:
             by_split.setdefault(rec["split"], set()).add(rec["variant_id"])
-        return {
+        out = {
             "trials": len(records),
             "distinct_variants": len({r["variant_id"] for r in records}),
             "distinct_variants_by_split": {k: len(v) for k, v in sorted(by_split.items())},
         }
+        try:
+            out["n_trials_for_dsr"] = n_trials_for_dsr(load_sealed(self.fw), records)
+        except Exception:
+            pass
+        return out
 
 
 # --- holdout request (committed authority) ------------------------------------------------
@@ -199,6 +209,14 @@ def read_holdout_request(fw: Firewall) -> dict | None:
         raise OutcomeAccessRefused(f"{REQUEST_NAME} is not valid JSON") from exc
 
 
+def n_trials_for_dsr(sealed: Mapping[str, Any], records: Sequence[Mapping[str, Any]]) -> int:
+    """N_trials = max(M_declared, number of trial-ledger evaluations)."""
+    declared = int(sealed["protocol"]["multiplicity"]["M_declared"])
+    evaluations = {r["trial_id"] for r in records
+                   if r.get("prereg_sha256") == sealed["protocol_sha256"]}
+    return max(declared, len(evaluations))
+
+
 def _check_finalists(fw: Firewall, sealed: Mapping[str, Any], finalists: Sequence[str]) -> list[dict]:
     if not finalists:
         raise NoFinalists("zero finalists: NO_GO is recorded and the holdout stays unopened")
@@ -210,6 +228,13 @@ def _check_finalists(fw: Firewall, sealed: Mapping[str, Any], finalists: Sequenc
     if unknown:
         raise OutcomeAccessRefused(f"finalists {unknown} are not in the sealed grid")
     records = TrialLedger(fw).records()
+    screened = {r["variant_id"] for r in records if r["split"] == "discovery"
+                and r["prereg_sha256"] == sealed["protocol_sha256"]}
+    unscreened = sorted(declared - screened)
+    if unscreened:
+        raise OutcomeAccessRefused(
+            f"{len(unscreened)} declared variants have no discovery trial record (all "
+            f"M_declared must be screened before a holdout request): {unscreened[:5]}")
     for variant in finalists:
         seen = {r["split"] for r in records if r["variant_id"] == variant
                 and r["prereg_sha256"] == sealed["protocol_sha256"]}
@@ -227,24 +252,27 @@ def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str
         raise ValueError("request_id and eval_spec_digest are required")
     sealed = load_sealed(fw)
     try:
-        verify_committed(fw.repo_root, sealed_path(fw), write_once=True)
+        seal = verify_committed(fw.repo_root, sealed_path(fw), write_once=True)
     except GitCheckFailed as exc:
         raise OutcomeAccessRefused(f"seal must be committed and published first: {exc}") from exc
+    path = request_path(fw)
+    if path.exists():
+        raise HoldoutAlreadyConsumed(f"{REQUEST_NAME} already exists; one look only")
     records = _check_finalists(fw, sealed, finalists)
     record = {
         "lineage": LINEAGE_ID,
         "kind": "HOLDOUT_ONE_LOOK_REQUEST",
         "request_id": request_id,
         "prereg_sha256": sealed["protocol_sha256"],
+        "seal_commit": seal.commit,
         "finalists": sorted(finalists),
         "code_fingerprint": code_fingerprint(),
         "eval_spec_digest": eval_spec_digest,
         "trial_ledger": {"head": TrialLedger(fw).head(), "count": len(records)},
+        "multiplicity": {"M_declared": sealed["protocol"]["multiplicity"]["M_declared"],
+                         "n_trials_for_dsr": n_trials_for_dsr(sealed, records)},
         "created_at_utc": _now(),
     }
-    path = request_path(fw)
-    if path.exists():
-        raise HoldoutAlreadyConsumed(f"{REQUEST_NAME} already exists; one look only")
     try:
         fw.create_exclusive(path, canonical_json(record) + b"\n")
     except FileExistsError as exc:
@@ -253,27 +281,40 @@ def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str
 
 
 def request_fingerprint(request: Mapping[str, Any]) -> str:
-    core = {k: request.get(k) for k in ("request_id", "prereg_sha256", "finalists",
-                                        "code_fingerprint", "eval_spec_digest", "trial_ledger")}
+    core = {k: request.get(k) for k in ("request_id", "prereg_sha256", "seal_commit",
+                                        "finalists", "code_fingerprint", "eval_spec_digest",
+                                        "trial_ledger", "multiplicity")}
     return "sha256:" + sha256_bytes(canonical_json(core))
 
 
-def verify_holdout_request(fw: Firewall, sealed: Mapping[str, Any], request_id: str | None,
-                           variants: Sequence[str] | None, eval_spec_digest: str | None) -> dict:
+def verify_committed_request(fw: Firewall, sealed: Mapping[str, Any], seal_commit: str, *,
+                             max_age_s: float = 0.0) -> dict:
+    """Git-anchor the request and check it pins the current seal commit."""
     from quant.fastlane.gitcheck import GitCheckFailed, verify_committed
-    if not request_id or not variants or not eval_spec_digest:
-        raise OutcomeAccessRefused("holdout access needs request_id, finalists and "
-                                   "eval_spec_digest")
-    path = request_path(fw)
     request = read_holdout_request(fw)
     if request is None:
         raise OutcomeAccessRefused(f"no committed {REQUEST_NAME}")
     try:
-        committed = verify_committed(fw.repo_root, path, write_once=True)
+        committed = verify_committed(fw.repo_root, request_path(fw), write_once=True,
+                                     max_age_s=max_age_s)
     except GitCheckFailed as exc:
         raise OutcomeAccessRefused(f"{REQUEST_NAME} is not anchored in git: {exc}") from exc
     if request.get("lineage") != LINEAGE_ID or request.get("prereg_sha256") != sealed["protocol_sha256"]:
         raise OutcomeAccessRefused(f"{REQUEST_NAME} does not belong to the sealed prereg")
+    if request.get("seal_commit") != seal_commit:
+        raise OutcomeAccessRefused(
+            f"the seal commit changed since the request was committed ({request.get('seal_commit')}"
+            f" -> {seal_commit}): history was rewritten")
+    return {**request, "commit": committed.commit}
+
+
+def verify_holdout_request(fw: Firewall, sealed: Mapping[str, Any], request_id: str | None,
+                           variants: Sequence[str] | None, eval_spec_digest: str | None, *,
+                           seal_commit: str) -> dict:
+    if not request_id or not variants or not eval_spec_digest:
+        raise OutcomeAccessRefused("holdout access needs request_id, finalists and "
+                                   "eval_spec_digest")
+    request = verify_committed_request(fw, sealed, seal_commit, max_age_s=60.0)
     if request.get("request_id") != request_id or request.get("finalists") != sorted(variants):
         raise HoldoutAlreadyConsumed(
             f"holdout is committed to request {request.get('request_id')} with finalists "
@@ -292,7 +333,7 @@ def verify_holdout_request(fw: Firewall, sealed: Mapping[str, Any], request_id: 
     head = GENESIS if count == 0 else sha256_bytes(lines[count - 1])
     if head != trial.get("head"):
         raise OutcomeAccessRefused("trial ledger was rewritten after the request was committed")
-    return {**request, "commit": committed.commit}
+    return request
 
 
 # --- holdout cache ledger -----------------------------------------------------------------

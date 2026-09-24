@@ -59,10 +59,15 @@ class AttestationAndVerdictTests(unittest.TestCase):
         self.assertEqual((verdict["verdict"], verdict["holdout"]), (px.VERDICT_NO_GO, "UNOPENED"))
 
     def test_vendor_manifests(self):
-        good = {"lineage": LINEAGE_ID, "vendor_id": "SYNTH", "mapping": {"A": "STOCK_MERGER"}}
+        good = {"lineage": LINEAGE_ID, "vendor_id": "SYNTH", "mapping": {"A": "STOCK_MERGER"},
+                "derivation": "VENDOR_DOCUMENTATION_ONLY",
+                "source": {"documentation_url": "https://example.invalid/doc",
+                           "retrieved_on": "2026-09-24"}}
         self.assertEqual(px.validate_delisting_map(good), {"A": "STOCK_MERGER"})
         for bad in ({**good, "mapping": {"A": "LIQUIDATION"}}, {**good, "mapping": {}},
-                    {**good, "lineage": "OTHER"}):
+                    {**good, "lineage": "OTHER"}, {**good, "derivation": "FITTED_ON_RETURNS"},
+                    {**good, "source": {"documentation_url": "https://x"}},
+                    {**good, "source": {"retrieved_on": "2026-09-24"}}):
             with self.assertRaises(ValueError):
                 px.validate_delisting_map(bad)
         bench = {"lineage": LINEAGE_ID, "series": "SPY", "return_type": "TOTAL_RETURN",
@@ -209,6 +214,17 @@ class TieBreakTests(unittest.TestCase):
         self.assertEqual(ciks, [int(e.issuer) for e in
                                 ct.admit(list(reversed(entries)), slots=100, horizon=20,
                                          seed=20260924)])
+
+    def test_probe_p5v2_seed_changes_ties_only(self):
+        entries = [ct.Entry(0, f"{cik:010d}", (f"{cik:010d}-10-{cik:06d}",))
+                   for cik in range(1, 401)]
+        a = {e.issuer for e in ct.admit(entries, slots=100, horizon=20, seed=20260924)}
+        b = {e.issuer for e in ct.admit(entries, slots=100, horizon=20, seed=20260925)}
+        self.assertEqual(len(a), 100)
+        self.assertLess(len(a & b), 60)                     # ties re-drawn by the seed
+        uncontested = [ct.Entry(i, f"{i:010d}", (f"x-{i}",)) for i in range(50)]
+        self.assertEqual(ct.admit(uncontested, slots=100, horizon=20, seed=1),
+                         ct.admit(uncontested, slots=100, horizon=20, seed=2))
 
     def test_slots_release_on_schedule_and_one_slot_per_issuer(self):
         entries = [ct.Entry(0, "A", ("a1",)), ct.Entry(0, "B", ("b1",)),

@@ -9,10 +9,11 @@ This base population is kept only as a sensitivity ("unfiltered").
 
 Primary population (the one the protocol evaluates) additionally requires:
 
-* ``SECURITY_TITLE`` matching :data:`SECURITY_TITLE_INCLUDE` and not
-  :data:`SECURITY_TITLE_EXCLUDE` (common equity only);
-* no footnote referenced by the row, and no filing ``REMARKS``, matching the
-  frozen :data:`FOOTNOTE_EXCLUSION` regexes (plan/DRIP/fees, IPO/underwritten,
+* a common-equity ``SECURITY_TITLE`` (:func:`title_is_common_equity`);
+* no footnote attached to the security title or a transaction field
+  (:data:`TRANSACTION_FOOTNOTE_COLUMNS`; holdings/ownership footnotes are never
+  scanned), and no filing ``REMARKS``, matching the frozen
+  :data:`FOOTNOTE_EXCLUSION` regexes (plan/DRIP/fees, IPO/underwritten,
   conversion, private placement);
 * exact-duplicate removal, first-seen by (FILING_DATE, accession), on (issuer,
   owner set, transaction tuples).
@@ -60,10 +61,30 @@ CFO_RE = re.compile(r"\bC\.?\s?F\.?\s?O\b|CHIEF\s+FINANCIAL", re.IGNORECASE)
 
 # Frozen population filters (chosen from title counts / filing text only, never outcomes).
 SECURITY_TITLE_INCLUDE = r"(COMMON|ORDINARY|CL(ASS)? [A-Z] COMMON|COMMON STOCK)"
+# Explicit common-equity titles without the word COMMON (MLP common units, REIT shares of
+# beneficial interest, class shares/stock, ordinary shares, bare shares/capital stock).
+SECURITY_TITLE_INCLUDE_EXPLICIT = (r"\bCOMMON UNITS?\b|\bSHARES OF BENEFICIAL INTEREST\b"
+                                   r"|^CLASS [A-Z] (COMMON )?(STOCK|SHARES)$|\bORDINARY SHARES?\b"
+                                   r"|^SHARES$|^CAPITAL STOCK$")
 SECURITY_TITLE_EXCLUDE = (r"\b(PREFERRED|UNITS?|FUNDS?|PLANS?|WARRANTS?|NOTES?|DEBENTURES?"
                           r"|OPTIONS?|RIGHTS?)\b")
+# The UNIT(S) token does not exclude an explicit COMMON UNIT(S) title (MLP common equity).
+SECURITY_TITLE_UNIT_EXEMPTION = r"\bCOMMON UNITS?\b"
 _TITLE_INCLUDE_RE = re.compile(SECURITY_TITLE_INCLUDE)
+_TITLE_INCLUDE_EXPLICIT_RE = re.compile(SECURITY_TITLE_INCLUDE_EXPLICIT)
 _TITLE_EXCLUDE_RE = re.compile(SECURITY_TITLE_EXCLUDE)
+_TITLE_EXCLUDE_NO_UNIT_RE = re.compile(r"\b(PREFERRED|FUNDS?|PLANS?|WARRANTS?|NOTES?"
+                                       r"|DEBENTURES?|OPTIONS?|RIGHTS?)\b")
+_TITLE_UNIT_EXEMPTION_RE = re.compile(SECURITY_TITLE_UNIT_EXEMPTION)
+# Footnotes are scanned only where they describe the security or the transaction;
+# holdings / ownership-nature footnotes (e.g. "includes shares acquired under the
+# DRIP since the last report") are never scanned.
+TRANSACTION_FOOTNOTE_COLUMNS = ("SECURITY_TITLE_FN", "TRANS_DATE_FN", "DEEMED_EXECUTION_DATE_FN",
+                                "EQUITY_SWAP_TRANS_CD_FN", "TRANS_TIMELINESS_FN",
+                                "TRANS_SHARES_FN", "TRANS_PRICEPERSHARE_FN",
+                                "TRANS_ACQUIRED_DISP_CD_FN")
+HOLDINGS_FOOTNOTE_COLUMNS = ("SHRS_OWND_FOLWNG_TRANS_FN", "VALU_OWND_FOLWNG_TRANS_FN",
+                             "DIRECT_INDIRECT_OWNERSHIP_FN", "NATURE_OF_OWNERSHIP_FN")
 FOOTNOTE_EXCLUSION = {
     "plan_drip_fees": (r"dividend reinvestment|\bdrip\b|employee stock purchase|\bespp\b"
                        r"|401\(k\)|deferred compensation"
@@ -163,7 +184,11 @@ def normalize_title(title: str) -> str:
 
 def title_is_common_equity(title: str) -> bool:
     norm = normalize_title(title)
-    return bool(_TITLE_INCLUDE_RE.search(norm)) and not _TITLE_EXCLUDE_RE.search(norm)
+    if not (_TITLE_INCLUDE_RE.search(norm) or _TITLE_INCLUDE_EXPLICIT_RE.search(norm)):
+        return False
+    if _TITLE_UNIT_EXEMPTION_RE.search(norm):
+        return not _TITLE_EXCLUDE_NO_UNIT_RE.search(norm)
+    return not _TITLE_EXCLUDE_RE.search(norm)
 
 
 def footnote_category(texts: Iterable[str]) -> str | None:
@@ -177,9 +202,11 @@ def footnote_category(texts: Iterable[str]) -> str | None:
 
 
 def row_footnote_ids(row: Mapping[str, str]) -> set[str]:
+    """Footnote ids attached to the security title or transaction fields only."""
     ids: set[str] = set()
-    for key, value in row.items():
-        if key.endswith("_FN") and value:
+    for key in TRANSACTION_FOOTNOTE_COLUMNS:
+        value = row.get(key)
+        if value:
             ids.update(_FOOTNOTE_ID_RE.findall(value))
     return ids
 
@@ -769,11 +796,14 @@ def build_all(fw: Firewall, quarters: list[str], *, log=print) -> dict:
         },
         "primary_filters": {
             "security_title_include_regex": SECURITY_TITLE_INCLUDE,
+            "security_title_include_explicit_regex": SECURITY_TITLE_INCLUDE_EXPLICIT,
             "security_title_exclude_regex": SECURITY_TITLE_EXCLUDE,
+            "security_title_unit_exemption_regex": SECURITY_TITLE_UNIT_EXEMPTION,
             "security_title_normalization": "upper case, whitespace collapsed; re.search",
             "footnote_exclusion_regex": FOOTNOTE_EXCLUSION,
-            "footnote_scope": "footnotes referenced by any *_FN column of the row, plus the "
-                              "filing REMARKS; case-insensitive",
+            "footnote_scope": {"scanned_columns": list(TRANSACTION_FOOTNOTE_COLUMNS),
+                               "never_scanned": list(HOLDINGS_FOOTNOTE_COLUMNS),
+                               "remarks": "filing REMARKS scanned", "case": "insensitive"},
             "dedupe": "first-seen by (FILING_DATE, accession) on (issuer, sorted owner CIKs, "
                       "sorted (trans_date, shares, per-share figure) tuples)",
         },
