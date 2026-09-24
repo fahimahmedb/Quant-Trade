@@ -14,11 +14,14 @@ No real-capital authority is granted by this file. Current engineering work rema
 
 Before substantial work:
 1. Read `QUANT_NORTH_STAR.md`.
-2. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`.
-3. Read `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`.
-4. Read `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`.
-5. Read the exact branch-specific mission/handoff named by current Blue governance.
-6. Read only the architecture, code and tests relevant to that exact mission.
+2. Read `NEXT_BUILD_MISSION.md` (compact live router).
+3. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` (live state file; its content is newer than its filename).
+4. Read `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`.
+5. Check pending, not-yet-ratified owner-delegated decisions: `handoff/CLAUDE_DELEGATED_DECISIONS_AND_PLAN_2026-09-23.md` (evidence: `handoff/CLAUDE_PROJECT_REVIEW_AUDIT_2026-09-23.md`).
+6. Read the exact branch-specific mission/handoff named by current Blue governance, after verifying its live branch HEAD and CI (branch heads can be newer than master governance).
+7. Read only the architecture, code and tests relevant to that exact mission.
+
+`handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` and `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md` are historical snapshots, not restart authority.
 
 `STATE.md` and `CHIEF_BRIEF.md` are runtime/research snapshots, not current project-routing authority.
 `CLAUDE_CURRENT_MISSION.md` is now a router and must not contain a frozen historical mission.
