@@ -28,7 +28,7 @@ Statuts vérifiés en réel par le workflow le 2026-09-25 :
 | `fomc_calendar` | Dates de décision des réunions programmées | documentée (page de la Fed) | OK : correspond exactement à `data/calendars/fomc_scheduled.csv` sur 2021-2026 ; ajoute 2027 |
 | `hyperliquid` | Univers, prix mark, volumes, funding horaire | documentée | OK |
 | `bybit`, `binance_futures` | Funding | documentée | **Bloqués depuis les US** (403/451) : à faire tourner depuis l'UE, ou utiliser OKX/dYdX |
-| `okx`, `dydx` | Funding | documentée | Ajoutés, statut à confirmer au prochain run |
+| `okx`, `dydx` | Funding | documentée | **OK depuis les US** : c'est la seconde plateforme disponible pour les écarts de funding |
 | `polymarket` | Marchés (règles de résolution incluses) et carnets CLOB | documentée | OK |
 | `kalshi` | Marchés (règles incluses), prix | documentée | OK (1 000 marchés par run) |
 | `odds_api` | Cotes h2h, Pinnacle compris | clé requise | Voir §4 |
@@ -61,7 +61,47 @@ Statuts vérifiés en réel par le workflow le 2026-09-25 :
    PYTHONPATH=src python3 scripts/status_artifacts.py --write   # si le dataset ETF a changé
    ```
 
-## 5. Garanties et limites
+## 5. Résultats des nouvelles lanes (protocole audité, après les red teams)
+
+| Lane | Données | Validation | Verdict | Commentaire |
+|---|---|---|---|---|
+| Veille de FOMC (`SPY_ON`) | SPY 2016-2026 + calendrier Fed | Sharpe 1,05, t 1,81, **24 événements** | REJECT | Il faut environ 100 événements ou plus : un verdict ne viendra qu'avec des années de données forward. Évaluée en shadow : premier trade réel le 2026-09-16 |
+| Fin de mois (rééquilibrage des fonds de pension) | SPY/TLT | Sharpe en discovery : **−0,08** | FILTRÉE | Le « Sharpe 0,73 » précédent venait d'un bug qui sautait 45 % des mois (trouvé par la red team, corrigé, test de régression 4 → 11 mois sur 11) |
+| Écart de funding HL vs BY, paires à prix réels | 36 coins 2023-2025 | Sharpe −1,96 (coûts > gross) | REJECT | Écart comprimé en 2024-25, rotation élevée. Hypothèse à tester en forward : sortie à mi-seuil, ordres maker, paire HL-vs-OKX |
+
+Chacune tourne en shadow sur le ledger d'évaluation, sans autorité de capital. Le test mensuel ne peut les faire évoluer que sur des données postérieures à `pristine_after`.
+
+### Red teams de ce lot
+
+- **Données et runtime** : 12 constats, tous corrigés. Les principaux :
+  - le funding pouvait enjamber un trou de 16 mois ; désormais on exige la contiguïté et on valide avant d'écrire ;
+  - le fichier Kalshi aurait atteint 100 Mo en 3 semaines ; les streams sont maintenant shardés par mois, le texte des règles est stocké une seule fois et le nombre de snapshots est plafonné ;
+  - une valeur révisée était ré-enregistrée à chaque run ;
+  - des journées de funding incomplètes étaient acceptées ;
+  - la clôture perp était prise à 18h UTC ; elle est désormais prise au premier snapshot après minuit ;
+  - des jambes à prix proxy étaient ajoutées en forward ;
+  - des barres intraday étaient conservées ;
+  - le parseur Yahoo complétait des valeurs manquantes ;
+  - une ligne tronquée faisait perdre l'enregistrement suivant ;
+  - une FOMC future déplacée ou annulée restait dans le calendrier ;
+  - des fichiers obsolètes restaient dans le checkout.
+- **Économie** : 3 HIGH et 4 MED, tous corrigés :
+  - un rebalance sans trade redémarrait le compteur de détention (mois sautés) ;
+  - les observations « actives » comptaient les jours à plat ;
+  - la capacité des perps était fausse d'un facteur égal au prix ;
+  - les paires dont une jambe n'a qu'un prix proxy sont désormais exclues ;
+  - la porte de conformité : liquidation jamais bloquée, vocabulaire fermé, preuve exigée pour les règles de règlement, détection des ordres internes opposés ;
+  - le test de concentration est proportionné pour les stratégies événementielles ;
+  - le devig est vérifié sur les marchés extrêmes, et l'arrondi des frais Kalshi est appliqué.
+- **Vérifié correct** :
+  - la timeline `SPY_ON` (MOC puis MOO) ;
+  - le calendrier NYSE (aucun écart sur 10 ans) ;
+  - le signe et le calendrier du funding, identiques entre recherche et Desk ;
+  - la comptabilité des essais ;
+  - les formules de Shin et power ;
+  - l'idempotence de `sync-feeds` (deux passages donnent les mêmes octets).
+
+## 6. Garanties et limites
 
 - **Point-in-time** :
   - une barre du jour n'est enregistrée qu'après la clôture US (plus une marge) ;
