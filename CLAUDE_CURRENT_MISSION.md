@@ -9,11 +9,10 @@ The former PR #12 corrective mission is historical and is no longer current auth
 Read in this order:
 
 1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
-5. `governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
-6. the exact mission/handoff referenced there for the branch you are on
+2. `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`
+3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
+4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
+5. the exact mission/handoff referenced there for the branch you are on
 
 Always resolve:
 - current branch;

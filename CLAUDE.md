@@ -14,9 +14,9 @@ No real-capital authority is granted by this file. Current engineering work rema
 
 Before substantial work:
 1. Read `QUANT_NORTH_STAR.md`.
-2. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`.
-3. Read `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`.
-4. Read `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`.
+2. Read `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md`.
+3. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`.
+4. Read `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`.
 5. Read the exact branch-specific mission/handoff named by current Blue governance.
 6. Read only the architecture, code and tests relevant to that exact mission.
 

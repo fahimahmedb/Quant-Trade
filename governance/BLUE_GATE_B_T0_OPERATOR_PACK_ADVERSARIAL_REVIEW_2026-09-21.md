@@ -15,9 +15,9 @@ execution. It does not certify the target host and does not activate the pack.
 
 ## 1. Scope reviewed
 
-- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`
-- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`
-- `governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`
+- `archive/governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`
+- `archive/governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`
+- `archive/governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`
 - existing deployment and historical target-host entrance contracts
 - current hybrid amendment candidate
 - exact frozen V4 repository lineage

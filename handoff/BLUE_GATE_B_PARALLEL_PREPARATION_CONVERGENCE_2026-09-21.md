@@ -11,7 +11,7 @@ North Star blob:
 `8295041a8d253636d8f8aab941b811dce64939d9`
 
 Parallel-dispatch authority:
-`governance/BLUE_GATE_B_PARALLEL_PREPARATION_DISPATCH_2026-09-21.md`
+`archive/governance/BLUE_GATE_B_PARALLEL_PREPARATION_DISPATCH_2026-09-21.md`
 
 Dispatch commit:
 `ba510bd5e3077c7e29b35aef9cf45c98a5fd128c`

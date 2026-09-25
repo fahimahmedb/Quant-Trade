@@ -39,7 +39,7 @@ Current Blue state:
 `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
 
 Historical whole-project recovery checkpoint:
-`handoff/BLUE_MASTER_PROJECT_CHECKPOINT_2026-09-20.md`
+`archive/handoff/BLUE_MASTER_PROJECT_CHECKPOINT_2026-09-20.md`
 
 Its Section 0 remains useful history, but later current-governance files and this checkpoint supersede stale branch heads/statuses in it.
 
@@ -58,7 +58,7 @@ Real target-host execution later found a new repository defect:
 `GATE_A_V3_TARGET_HOST_ELIGIBILITY = REJECTED_BY_NEW_REAL_DEFECT`
 
 Durable Blue finding:
-`handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
+`archive/handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
 
 Restricted target-host defect artifact binding:
 `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`

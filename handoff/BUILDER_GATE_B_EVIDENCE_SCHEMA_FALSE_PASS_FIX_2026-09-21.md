@@ -23,7 +23,7 @@ The mission file still records predecessor HEAD
 direct dispatch descendant and is the owner-specified current mission HEAD.
 
 Normative repair authority:
-`governance/BLUE_GATE_B_EVIDENCE_SCHEMA_FALSE_PASS_REPAIR_SPEC_2026-09-21.md`
+`archive/governance/BLUE_GATE_B_EVIDENCE_SCHEMA_FALSE_PASS_REPAIR_SPEC_2026-09-21.md`
 
 Defective authoritative schema blob:
 `649cb5093930651c0fbdc810563f491084cab896`

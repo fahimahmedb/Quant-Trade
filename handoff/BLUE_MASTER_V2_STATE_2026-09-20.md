@@ -55,7 +55,7 @@
 - 40 live branches remain;
 - `claude/restaurant-stock-management-mvp-6oq43e` retained by owner request;
 - open PRs/issues = 0/0;
-- execution handoff: `handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`;
+- execution handoff: `archive/handoff/BLUE_REPOSITORY_HYGIENE_EXECUTION_2026-09-20.md`;
 - restricted cleanup log SHA-256: `d9500fc9ec90871d7861932e5afb9b7729f59fec87e85bff1265f7655e285070`.
 
 This closure does not change the V4 audit, P14D, t0, Product-integration, target-host-readiness or capital states.
@@ -83,13 +83,13 @@ PRODUCT_INTEGRATION = PAUSED
 ## B. AUTHORITY MAP
 
 - Highest architecture authority: `QUANT_NORTH_STAR.md`.
-- Blue owner/governance: this branch/state plus `governance/BRANCH_AUTHORITY_REGISTRY_2026-09-20.md`.
+- Blue owner/governance: this branch/state plus `archive/governance/BRANCH_AUTHORITY_REGISTRY_2026-09-20.md`.
 - Frozen rejected v2: `blue/p0-gate-a-v2-final-2026-09-20@db166fd04c681e67a2c6d4440828af14ef58c48c`.
 - Canonical v2 audit: `astra/p0-gate-a-v2-independent-audit-2026-09-20@64b105f5a2cc1d798d1cf1e41e715b967c845a85` => BLOCKED; B1/B3 open, B2 closed.
 - P0 deployment contract source: `astra/p0-deep-adversarial-pre-t0@643deacdf5bbbdb1d2410c762eb20f72aff16bbf`.
-- Blue Gate A v3 reception: `handoff/BLUE_GATE_A_V3_RECEPTION_2026-09-20.md` => PASS_FOR_INDEPENDENT_ASTRA_REVIEW.
+- Blue Gate A v3 reception: `archive/handoff/BLUE_GATE_A_V3_RECEPTION_2026-09-20.md` => PASS_FOR_INDEPENDENT_ASTRA_REVIEW.
 - Frozen Gate A v3 candidate: `blue/p0-gate-a-v3-frozen-2026-09-20@2da079d8ad75c69eb3fc2990c512735cb4bdc02b`.
-- Astra Gate A v3 mission contract: `handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`.
+- Astra Gate A v3 mission contract: `archive/handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`.
 - Astra audit branch: `astra/p0-gate-a-v3-independent-audit-2026-09-20`, initialized exactly at the frozen candidate SHA.
 - Canonical Forward: `parallel/claude-forward-data-2026-09-20@83521dbfdd90027c90d04adfb7d814593c2355c5`.
 - Canonical Economic: `parallel/claude-economic-v2-2026-09-20@35dff27b8fac53618da434ee6d31febbddcc0e69`.
@@ -103,7 +103,7 @@ FROZEN_BASE = `db166fd04c681e67a2c6d4440828af14ef58c48c`
 FROZEN_CANDIDATE = `2da079d8ad75c69eb3fc2990c512735cb4bdc02b`
 FROZEN_REF = `blue/p0-gate-a-v3-frozen-2026-09-20`
 AUDIT_BRANCH = `astra/p0-gate-a-v3-independent-audit-2026-09-20`
-MISSION_CONTRACT = `handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`
+MISSION_CONTRACT = `archive/handoff/ASTRA_GATE_A_V3_MISSION_2026-09-20.md`
 BLUE_RECEPTION = PASS_FOR_INDEPENDENT_ASTRA_REVIEW
 BUILDER = STOPPED_AFTER_FINAL_HANDOFF
 BUILDER_HANDOFF = `handoff/BUILDER_GATE_A_V3_2026-09-20.md`
@@ -113,7 +113,7 @@ BUILDER_EXACT_HEAD_CI = `35514180655 COMPLETED / SUCCESS`
 ASTRA_AUDIT_HEAD = `33995d03c8632e5c3a7b77a12b87366fb06b4d30`
 ASTRA_DECLARED_VERDICT = PASS
 ASTRA_EXACT_HEAD_CI = `35517935710 COMPLETED / SUCCESS`
-BLUE_FINAL_GATE_A_DISPOSITION = `handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md`
+BLUE_FINAL_GATE_A_DISPOSITION = `archive/handoff/BLUE_GATE_A_V3_FINAL_DISPOSITION_2026-09-20.md`
 NEXT_OWNER = Astra/Red Team for final independent Gate A v4 review, then Blue disposition. Hybrid Gate-A fault-matrix evidence proceeds in parallel. No target-host re-entry is authorized before both proof lanes are received and Blue decides.
 
 ## D. EVENT INBOX
@@ -129,7 +129,7 @@ NEXT_OWNER = Astra/Red Team for final independent Gate A v4 review, then Blue di
 9. Creating the frozen/Astra refs triggered redundant workflow runs on the same SHA. They are operational duplicates, not new candidate SHAs and not substitutes for run `35514180655`.
 10. Process improvement retained: finalize the handoff before the last delivery CI so documentation does not create a needless extra HEAD/run.
 11. Repository-only continuation found that the mandatory deployment contract path was absent from Blue while cited by current target-host authorities. Exact source bytes from `astra/p0-deep-adversarial-pre-t0@643deacdf5bbbdb1d2410c762eb20f72aff16bbf` (Git blob `3ffe40107b7710c58de3b5a01b2e1574d611c5cb`) were restored at `governance/P0_QUALIFYING_DEPLOYMENT_CONTRACT_2026-09-20.md`; no frozen-candidate, Gate, target-host, t0, P14D, Product or capital state changed.
-12. Real target-host execution later disproved v3 target-host eligibility: `_effective_systemd_definition()` hashes mutable execution metadata embedded by systemd in the raw `ExecStart` property. Materialized effective-unit digest `sha256:33d166b68a337947f7737ae659b386df88545867012ce88d0b30bcdbcf070b3d` changed to `sha256:c6394ef740c3f66c35e2920ebd4f21d27ff1417d11be5ab93b457f0f7e355c22` without semantic unit drift. Restricted defect artifact SHA-256: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`. Classification: REAL_DEFECT. Durable disposition: `handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`.
+12. Real target-host execution later disproved v3 target-host eligibility: `_effective_systemd_definition()` hashes mutable execution metadata embedded by systemd in the raw `ExecStart` property. Materialized effective-unit digest `sha256:33d166b68a337947f7737ae659b386df88545867012ce88d0b30bcdbcf070b3d` changed to `sha256:c6394ef740c3f66c35e2920ebd4f21d27ff1417d11be5ab93b457f0f7e355c22` without semantic unit drift. Restricted defect artifact SHA-256: `sha256:cb402bb3151a59708c6e3b6406323fe8671680b0e2785c9bb92ff47064639442`. Classification: REAL_DEFECT. Durable disposition: `archive/handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`.
 
 ## E. WAITING FOR
 
@@ -168,8 +168,8 @@ GOVERNANCE_HYGIENE_STATUS = POST_GATE_ALIGNED / CURRENT_INDEX_ESTABLISHED.
 PRS_CLOSED_THIS_PASS = 10 (#7, #8, #9, #10, #11, #12, #13, #14, #15, #17).
 BRANCHES_DELETED_THIS_PASS = 0.
 CANDIDATE_FOR_PR_CLOSURE_COUNT = 0.
-BRANCH_CLEANUP_PLAN = `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md` = POST_GATE_HYGIENE_ALIGNED.
-BRANCH_DELETE_READY_INDEX = `governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`.
+BRANCH_CLEANUP_PLAN = `archive/governance/BRANCH_CLEANUP_PLAN_2026-09-20.md` = POST_GATE_HYGIENE_ALIGNED.
+BRANCH_DELETE_READY_INDEX = `archive/governance/BRANCH_DELETE_READY_INDEX_2026-09-20.md`.
 DELETE_READY_VERIFIED_COUNT = 35.
 DELETE_READY_EXACT_SHA_MATCH = 35/35.
 DELETE_READY_UNPROTECTED = 35/35.
@@ -224,7 +224,7 @@ DELETE_AFTER_BUILDER_REVIEW =
 
 PR_CLEANUP = COMPLETE / 0 OPEN PRS.
 
-Branch cleanup remains separate and more conservative. First-pass classification is now durable in `governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`. No branch deletion is implied by PR closure or classification.
+Branch cleanup remains separate and more conservative. First-pass classification is now durable in `archive/governance/BRANCH_CLEANUP_PLAN_2026-09-20.md`. No branch deletion is implied by PR closure or classification.
 
 Explicitly preserved regardless of cleanup pressure through independent Astra review:
 - `blue/p0-calendar-direct-reconcile-red-2026-09-20`;
@@ -264,10 +264,10 @@ Green CI and Blue reception do not establish target-host continuity, P14D proof,
 
 ## J. NEXT ACTION
 
-TARGET_HOST_ENTRANCE_CONTRACT = `governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md` = PREPARED / NOT_EXECUTED.
-TARGET_HOST_P0_RODAGE_RUNBOOK = `governance/TARGET_HOST_P0_RODAGE_RUNBOOK_2026-09-20.md` = PREPARED_ONLY / NOT_EXECUTED.
-BLUE_TARGET_HOST_QUALIFICATION_MISSION = `handoff/BLUE_TARGET_HOST_QUALIFICATION_MISSION_2026-09-20.md` = READY_TO_DISPATCH / NOT_EXECUTED.
-DEFAULT_BRANCH_MIGRATION_REVIEW = `governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
+TARGET_HOST_ENTRANCE_CONTRACT = `archive/governance/TARGET_HOST_RODAGE_ENTRANCE_CONTRACT_2026-09-20.md` = PREPARED / NOT_EXECUTED.
+TARGET_HOST_P0_RODAGE_RUNBOOK = `archive/governance/TARGET_HOST_P0_RODAGE_RUNBOOK_2026-09-20.md` = PREPARED_ONLY / NOT_EXECUTED.
+BLUE_TARGET_HOST_QUALIFICATION_MISSION = `archive/handoff/BLUE_TARGET_HOST_QUALIFICATION_MISSION_2026-09-20.md` = READY_TO_DISPATCH / NOT_EXECUTED.
+DEFAULT_BRANCH_MIGRATION_REVIEW = `archive/governance/DEFAULT_BRANCH_MIGRATION_REVIEW_2026-09-20.md` = REVIEW_COMPLETE / MIGRATION_NOT_EXECUTED.
 PROPOSED_INTERIM_DEFAULT = `blue/master-v2-2026-09-20`.
 
 NEXT_EXPECTED_EVENT = independent Astra Gate A v4 audit checkpoint/final handoff from `astra/p0-gate-a-v4-independent-audit-2026-09-20`; repository hygiene and P14D method review may execute in parallel.
@@ -281,7 +281,7 @@ Do not declare t0, P14D proof, target-host readiness, Gate B completion, or real
 ## K. TARGET-HOST REAL DEFECT — EFFECTIVE UNIT DIGEST INSTABILITY
 
 Durable disposition:
-`handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
+`archive/handoff/BLUE_TARGET_HOST_REAL_DEFECT_EFFECTIVE_UNIT_DIGEST_2026-09-20.md`
 
 Target-host evidence established:
 
@@ -369,10 +369,10 @@ No t0, continuity PASS, Product integration, Gate B completion or real-capital a
 ## N. ORGANIZATIONAL AUDIT / REPOSITORY HYGIENE ROUTE
 
 Durable audit:
-`governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
+`archive/governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
 
 Server execution runbook:
-`governance/REPOSITORY_HYGIENE_EXECUTION_RUNBOOK_2026-09-20.md`
+`archive/governance/REPOSITORY_HYGIENE_EXECUTION_RUNBOOK_2026-09-20.md`
 
 Current repository-hygiene facts at audit:
 - live branches = 72;
@@ -400,7 +400,7 @@ Current Builder v4 delivery:
 ## O. GATE A V4 RECEIVED / ASTRA DISPATCHED
 
 Blue reception:
-`handoff/BLUE_GATE_A_V4_RECEPTION_2026-09-20.md`
+`archive/handoff/BLUE_GATE_A_V4_RECEPTION_2026-09-20.md`
 
 Builder implementation:
 `0bdd397d7409b01529c1f958c68781499679a95e`
@@ -436,8 +436,8 @@ No Gate A v4 PASS or target-host readiness has been declared.
 Blue has completed the final method-level Red Team of fixed P14D sufficiently to prepare, but not yet promote, a superseding amendment.
 
 Durable records:
-- `governance/BLUE_P14D_FINAL_RED_TEAM_2026-09-21.md`;
-- `governance/BLUE_P14D_HYBRID_AMENDMENT_CANDIDATE_V2_2026-09-21.md`.
+- `archive/governance/BLUE_P14D_FINAL_RED_TEAM_2026-09-21.md`;
+- `archive/governance/BLUE_P14D_HYBRID_AMENDMENT_CANDIDATE_V2_2026-09-21.md`.
 
 Method conclusion:
 - no specific acceptance property was found that uniquely requires exactly fourteen real calendar days;
@@ -508,9 +508,9 @@ Current P14D hybrid promotion blocker is now the separate bounded Gate-A fault-m
 ## R. TARGET-HOST GATE B / t0 OPERATOR PACK PREPARED — 2026-09-21
 
 Prepared candidate artifacts:
-- `governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`;
-- `governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`;
-- `governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`.
+- `archive/governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_CANDIDATE_2026-09-21.md`;
+- `archive/governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_CANDIDATE_2026-09-21.md`;
+- `archive/governance/P0_T0_PRECOMMIT_TEMPLATE_CANDIDATE_2026-09-21.md`.
 
 These are pinned to frozen V4:
 `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`,
@@ -556,8 +556,8 @@ Hardening added:
 - anti-replay clock-step rules for t0.
 
 New candidate control artifacts:
-- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md`;
-- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json`.
+- `archive/governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md`;
+- `archive/governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json`.
 
 The activation artifact is required before any mutating Gate-B command in the future authoritative runbook. A free-form prose PASS is insufficient; the final Gate-B artifact must satisfy the activated machine-checkable schema.
 
@@ -571,9 +571,9 @@ Still:
 ## T. LATEST PRE-GATE-B HARDENING / ASTRA MATRIX HANDOFF — 2026-09-21
 
 Additional Gate-B hardening is now durable:
-- `governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_CANDIDATE_2026-09-21.md` closes the previously implicit release-provisioning step;
-- `governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md` makes target-host mutation require an explicit sealed Blue activation;
-- `governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json` makes a future Gate-B PASS machine-checkable and now requires every mandatory evidence domain to be PASS when overall verdict is PASS;
+- `archive/governance/TARGET_HOST_V4_RELEASE_MATERIALIZATION_CANDIDATE_2026-09-21.md` closes the previously implicit release-provisioning step;
+- `archive/governance/BLUE_GATE_B_ACTIVATION_TEMPLATE_CANDIDATE_2026-09-21.md` makes target-host mutation require an explicit sealed Blue activation;
+- `archive/governance/TARGET_HOST_GATE_B_EVIDENCE_SCHEMA_CANDIDATE_2026-09-21.json` makes a future Gate-B PASS machine-checkable and now requires every mandatory evidence domain to be PASS when overall verdict is PASS;
 - candidate contract/runbook require unique `GATE_B_RUN_ID`, terminal-failure semantics, host time/NTP binding, evidence-retention continuity, network/proxy/TLS binding, resource baselines, and safe synthetic-state separation.
 
 Historical provisional observation at this point in the sequence:
@@ -621,7 +621,7 @@ Independent Astra fault-matrix verdict currently blocks promotion on one proof r
 No frozen-V4 production REAL_DEFECT was reproduced.
 
 Blue proof-repair specification:
-`governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`.
+`archive/governance/BLUE_RESTART_BURST_PROOF_REPAIR_SPEC_2026-09-21.md`.
 
 Prepared Builder branch:
 `builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21`.
@@ -657,13 +657,13 @@ Safety:
 ## V. CONTEXT REACQUISITION / HYGIENE AUDIT — 2026-09-21
 
 Latest restart checkpoint:
-`handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`.
+`archive/handoff/BLUE_CONTEXT_REACQUISITION_2026-09-21.md`.
 
 Latest hygiene audit:
-`governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`.
+`archive/governance/BLUE_REPOSITORY_HYGIENE_AUDIT_2026-09-21.md`.
 
 Latest branch authority registry:
-`governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`.
+`archive/governance/BRANCH_AUTHORITY_REGISTRY_2026-09-21.md`.
 
 Verified namespace state:
 - default = `blue/master-v2-2026-09-20`;
@@ -718,7 +718,7 @@ Blue scope/design inspection:
 - matrix = 19 rows / 15 existing / 4 new / 0 missing / 0 real defects.
 
 Blue reception:
-`handoff/BLUE_RESTART_BURST_PROOF_REPAIR_RECEPTION_2026-09-21.md`.
+`archive/handoff/BLUE_RESTART_BURST_PROOF_REPAIR_RECEPTION_2026-09-21.md`.
 
 Current reception state:
 `PRELIMINARY_PASS / PENDING_EXACT_HEAD_CI`.
@@ -853,7 +853,7 @@ Final handoff-head CI:
 
 Blue reception authority:
 
-`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+`archive/handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
 
 Disposition:
 

@@ -10,7 +10,7 @@ For **current project work**, do not use the GitHub default branch, `STATE.md`, 
 
 After the North Star, read:
 
-1. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact restart surface
+1. `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` — latest compact restart surface
 2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
 3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
 4. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`

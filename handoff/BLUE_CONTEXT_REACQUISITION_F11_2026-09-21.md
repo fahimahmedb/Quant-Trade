@@ -307,7 +307,7 @@ The next durable project event should be the bounded Blue F11 repair dispatch.
 
 Latest Blue reception checkpoint:
 
-`handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
+`archive/handoff/BLUE_F11_BUILDER_RECEPTION_PENDING_PARENT_PATH_2026-09-21.md`
 
 Active Builder branch:
 

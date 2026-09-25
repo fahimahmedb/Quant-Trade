@@ -3,7 +3,7 @@
 Read in this order before acting:
 
 1. `QUANT_NORTH_STAR.md`
-2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact current route
+2. `handoff/BLUE_PROJECT_REACQUISITION_2026-09-21.md` — latest compact current route
 3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` — current project routing/authority
 4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` — current Blue durable state
 5. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
