@@ -1,0 +1,66 @@
+name: data feeds
+
+# The research sandbox has no general internet egress; GitHub runners do.
+# This workflow collects public market data with scripts/fetch_feeds.py and
+# commits the append-only JSONL files to the data branch, which Quant then
+# reads through git. It places no orders and needs no credentials except the
+# optional ODDS_API_KEY secret.
+#
+# Push trigger: only the dedicated data branch. The schedule only fires once
+# this file is on the default branch (GitHub rule).
+
+on:
+  push:
+    branches:
+      - 'claude/data-feeds-**'
+    paths:
+      - '.github/workflows/data-feeds.yml'
+      - 'scripts/fetch_feeds.py'
+      - 'src/quant/dataplane/connectors.py'
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-feeds
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'push' && github.ref_name || 'claude/data-feeds-6vr22g' }}
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Probe every connector
+        run: python3 scripts/fetch_feeds.py probe | tee probe.json
+
+      - name: Collect feeds
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python3 scripts/fetch_feeds.py collect --out data/feeds
+
+      - name: Commit data
+        run: |
+          set -euo pipefail
+          mkdir -p data/feeds && cp probe.json data/feeds/_last_probe.json
+          git config user.name "quant-data-feeds"
+          git config user.email "quant-data-feeds@users.noreply.github.com"
+          git add data/feeds
+          if git diff --cached --quiet; then echo "no new records"; exit 0; fi
+          git commit -m "data: feeds $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)" && git push && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
