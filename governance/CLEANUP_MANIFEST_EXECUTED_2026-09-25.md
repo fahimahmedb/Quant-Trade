@@ -125,3 +125,7 @@ Ordre de lecture : **corrigé** (voir Exécution). Les autres points restent **�
 - **`CLAUDE_CURRENT_MISSION.md`** et **`NEXT_BUILD_MISSION.md`** sont deux routeurs de mission. Réduire le premier à un simple pointeur.
 - **`RUNTIME.md`** (design) et **`RUNTIME_RUNBOOK.md`** (commandes) se recouvrent. On peut fusionner le design dans le runbook.
 - **Branches** : le dépôt en a 92. Le nettoyage des branches suit `governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md`. C'est une suppression irréversible : elle reste au propriétaire.
+
+## Suivi — dépendances de branches (2026-09-25)
+
+`governance/LINKED_DOC_BRANCH_DEPENDENCIES_2026-09-25.md` recense les 55 chemins cités mais absents de cette branche. Deux ne survivent que sur des branches listées SUPERSEDED (supprimables) dans `governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md` : `handoff/ASTRA_GATE_A_V2_INDEPENDENT_AUDIT_2026-09-20.md` et `handoff/BLUE_GATE_A_V2_AUDIT_CHECKPOINT_2026-09-20.md`. Cela contredit la phrase « their accepted evidence … is preserved in later branches ». **À décider** avant toute suppression : conserver ces deux refs ou poser un tag sur leur commit.
