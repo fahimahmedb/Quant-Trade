@@ -14,13 +14,13 @@ persistent replay of the committed V1 inputs. CI reconstructs the same state and
 either this checkpoint or `CHIEF_BRIEF.md` drifts from it.
 
 - Proof inventory: **446 unit tests discovered**; **35 end-to-end demo assertions**.
-- Control/Desk: status **IDLE**, desk cursor `2026-09-10`, **377 executable desk sessions**.
+- Control/Desk: status **IDLE**, desk cursor `2026-09-18`, **377 executable desk sessions**.
 - Data Plane: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
 - Research queue: `{'PENDING': 0, 'RUNNING': 0, 'BLOCKED': 3, 'COMPLETED': 2, 'FAILED': 0}`.
-- Capital Book: NAV **1,000,000.00 USD**, **377** marked sessions, **0** fills, **0** open positions; last mark `2026-09-11`.
-- Evaluation ledger (zero authority): NAV **993,757.74** (-0.62%) over **377** sessions; counterfactual P&L **-6,242.26**.
+- Capital Book: NAV **1,000,000.00 USD**, **377** marked sessions, **0** fills, **0** open positions; last mark `2026-09-21`.
+- Evaluation ledger (zero authority): NAV **988,369.90** (-1.16%) over **377** sessions; counterfactual P&L **-11,630.10**.
 - Desk tickets: `{'BOOKED': 76, 'NO_TRADE': 301}`.
-- Rejection quality: **1** evaluated, **0** true rejects, **0** false rejects, **1** undetermined.
+- Rejection quality: **1** evaluated, **1** true rejects, **0** false rejects, **0** undetermined.
 <!-- END GENERATED CANONICAL V1 STATUS -->
 
 ## Architectural state

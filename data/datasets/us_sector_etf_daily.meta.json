@@ -4,7 +4,8 @@
   "caveats": [
     "adj_close is restated retroactively for dividends and splits, so adjusted levels are not strictly point-in-time; returns are standard practice but embed later corporate-action information",
     "the endpoint is an undocumented public JSON API with no availability guarantee and no vendor support",
-    "prices are consolidated daily bars, not the venue-level quotes an execution model would eventually need"
+    "prices are consolidated daily bars, not the venue-level quotes an execution model would eventually need",
+    "sessions after the original snapshot were appended from data/feeds (Yahoo chart API via the data-feeds workflow), adj_close rebased at the seam"
   ],
   "dataset_id": "us_sector_etf_daily",
   "expected_symbols": [
@@ -21,11 +22,11 @@
     "TLT",
     "GLD"
   ],
-  "fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+  "fingerprint": "sha256:7f510dccab22aef3bcd34e57f6c8f0f6d6ba8490519e2615ce8a41591cb837ee",
   "first_date": "2016-09-12",
   "ingested_at": "2026-09-13T20:56:49.999598+00:00",
   "kind": "daily_bars",
-  "last_date": "2026-09-11",
+  "last_date": "2026-09-21",
   "license_note": "public endpoint, personal research use; not redistributed as a data product",
   "path": "data/datasets/us_sector_etf_daily.csv",
   "point_in_time": {
@@ -35,8 +36,8 @@
     "retrieved_at": "2026-09-13T20:56:49.959571+00:00",
     "timestamp_semantics": "bar timestamp is the session open; the date is the exchange session and the bar is complete only after that session's close"
   },
-  "refreshed_at": "2026-09-13T20:56:50.163428+00:00",
-  "rows": 30168,
+  "refreshed_at": "2026-09-25T13:55:00.025583+00:00",
+  "rows": 30240,
   "source": "Yahoo Finance chart API (public, credential-free)",
   "symbols": [
     "GLD",
@@ -53,24 +54,24 @@
     "XLY"
   ],
   "validation": {
-    "aligned_dates": 2514,
+    "aligned_dates": 2520,
     "bars_per_symbol": {
-      "GLD": 2514,
-      "SPY": 2514,
-      "TLT": 2514,
-      "XLB": 2514,
-      "XLE": 2514,
-      "XLF": 2514,
-      "XLI": 2514,
-      "XLK": 2514,
-      "XLP": 2514,
-      "XLU": 2514,
-      "XLV": 2514,
-      "XLY": 2514
+      "GLD": 2520,
+      "SPY": 2520,
+      "TLT": 2520,
+      "XLB": 2520,
+      "XLE": 2520,
+      "XLF": 2520,
+      "XLI": 2520,
+      "XLK": 2520,
+      "XLP": 2520,
+      "XLU": 2520,
+      "XLV": 2520,
+      "XLY": 2520
     },
     "passed": true,
     "problems": [],
-    "rows": 30168,
+    "rows": 30240,
     "warnings": []
   }
 }
