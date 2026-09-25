@@ -1,6 +1,6 @@
 # Proposition : recherche à deux vitesses
 
-Statut : **PROPOSÉE**. Le propriétaire doit l'accepter avant qu'elle prenne effet.
+Statut : **ACCEPTÉE — 2026-09-25**.
 Elle ne modifie ni `QUANT_NORTH_STAR.md`, ni la frontière paper/shadow, ni aucun gel existant (Gate A V4, P0, première verticale).
 
 ## 1. Le problème
@@ -96,7 +96,7 @@ Le rangement n'est **pas exécuté** : il touche l'autorité du rail sûr et att
 
 ## 9. Décision demandée au propriétaire
 
-- [ ] Accepter les deux rails et les invariants du §3.
-- [ ] Accepter l'échelle de preuve du §4, en particulier : le rail rapide ne touche jamais au capital.
-- [ ] Fixer le budget de lancement du rail rapide, par exemple 10 itérations ou 200 essais déclarés.
+- [x] Accepter les deux rails et les invariants du §3.
+- [x] Accepter l'échelle de preuve du §4, en particulier : le rail rapide ne touche jamais au capital.
+- [x] Fixer le budget de lancement du rail rapide : 10 itérations, 200 essais déclarés, 5 agents en parallèle.
 - [ ] Valider le rangement (`governance/CLEANUP_MANIFEST_PROPOSED.md`) et fusionner le prompt du builder (`governance/FAST_RAIL_BUILDER_PROMPT.md`).
