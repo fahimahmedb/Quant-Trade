@@ -7,11 +7,17 @@ Authority for the single holdout look is the committed, write-once file
   request cannot be written next to it;
 * it must pass the git checks of :mod:`quant.fastlane.gitcheck` (exactly one
   commit ever touches it, ancestor of HEAD, published, bytes equal);
-* every declared variant must already have a discovery trial record, and each
-  finalist must belong to the sealed grid with discovery and walk-forward
-  records; it stores the fast-lane code fingerprint, the evaluation-spec
-  digest, the trial-ledger head, the multiplicity count
-  ``N_trials = max(M_declared, trial-ledger evaluations)`` and the seal commit;
+* it can only be written through the verified path
+  (:func:`quant.fastlane.screen.request_holdout`), which re-runs the whole
+  discovery/walk-forward screen under normal grants and mints an in-process
+  receipt; :func:`_write_holdout_request` refuses without that receipt;
+* every declared variant must have discovery AND walk-forward trial records
+  matching the committed ``SCREEN_REPORT.json`` (write-once, git-anchored like
+  the request); it stores the fast-lane code fingerprint, the evaluation-spec
+  and screen-report digests, the trial- and access-ledger heads, the
+  multiplicity count (:func:`n_trials_conservative`) and the seal commit;
+* the holdout grant additionally needs a receipt minted by a fresh
+  recomputation of the screen in the same process (``verdict.evaluate_holdout``);
 * at every grant the seal's adding commit must still equal the pinned
   ``seal_commit`` and be contained in a branch the real remote advertises, so a
   force-push that rewrites the seal commit is detected.
@@ -27,6 +33,8 @@ line); an edited, reordered or torn ledger fails closed.
 from __future__ import annotations
 
 import fcntl
+import hashlib
+import hmac
 import json
 import os
 from contextlib import contextmanager
@@ -41,7 +49,10 @@ from quant.fastlane.preregistration import (MAX_FINALISTS, PREREG_DIR, SPLITS,
 
 GENESIS = "GENESIS"
 REQUEST_NAME = "HOLDOUT_REQUEST.json"
+SCREEN_REPORT_NAME = "SCREEN_REPORT.json"
+EVAL_SPEC_NAME = "HOLDOUT_EVAL_SPEC.json"
 REQUIRED_TRIAL_SPLITS = ("discovery", "walk_forward")
+ACCESS_SPLITS = ("discovery", "walk_forward")
 
 
 class HoldoutAlreadyConsumed(PermissionError):
@@ -193,10 +204,144 @@ class TrialLedger:
         return out
 
 
+# --- outcome-access ledger (exploratory reruns are counted) ---------------------------------
+
+class AccessLedger:
+    """One record per (variant, split, configuration, code) that read discovery or
+    walk-forward outcomes; idempotent, hash-chained, fail-closed like the trial ledger."""
+
+    def __init__(self, fw: Firewall) -> None:
+        self.fw = fw
+        self.path = fw.data("ledgers", "outcome_access.jsonl")
+
+    def records(self) -> list[dict]:
+        return read_ledger(self.fw.guard(self.path, write=False))
+
+    def head(self) -> str:
+        return ledger_head(self.fw.guard(self.path, write=False))
+
+    def record(self, *, variant_id: str, split: str, config_digest: str, prereg_sha256: str,
+               code: str | None = None) -> dict:
+        if split not in ACCESS_SPLITS:
+            raise TrialConflict(f"access records are for {ACCESS_SPLITS}, not {split!r}")
+        code = code or code_fingerprint()
+        access_id = "sha256:" + sha256_bytes(canonical_json(
+            [variant_id, split, config_digest, code, prereg_sha256]))
+        self.fw.mkdirs(self.path.parent)
+        with _locked(self.path):
+            for existing in self.records():
+                if existing.get("access_id") == access_id:
+                    return existing
+            return _append_chained(self.path, {
+                "lineage": LINEAGE_ID, "kind": "OUTCOME_ACCESS", "access_id": access_id,
+                "variant_id": variant_id, "split": split, "config_digest": config_digest,
+                "code_fingerprint": code, "prereg_sha256": prereg_sha256,
+                "recorded_at_utc": _now()})
+
+
+def n_trials_conservative(fw: Firewall, sealed: Mapping[str, Any]) -> dict:
+    """N_trials = max(sealed rule, 2 x M_declared, distinct configurations accessed).
+
+    The sealed rule is ``max(M_declared, trial-ledger evaluations)``; a screen evaluates every
+    declared variant in two splits, and any discovery/walk-forward read outside the screen
+    (another seed, capacity multiple, code or vendor configuration) is one more access
+    record (PROTOCOL_CLARIFICATIONS C22).
+    """
+    m_declared = int(sealed["protocol"]["multiplicity"]["M_declared"])
+    sealed_rule = n_trials_for_dsr(sealed, TrialLedger(fw).records())
+    accessed = {r["access_id"] for r in AccessLedger(fw).records()
+                if r.get("prereg_sha256") == sealed["protocol_sha256"]}
+    return {"n_trials_for_dsr": max(sealed_rule, 2 * m_declared, len(accessed)),
+            "sealed_rule": sealed_rule, "two_x_m_declared": 2 * m_declared,
+            "distinct_configurations_accessed": len(accessed)}
+
+
 # --- holdout request (committed authority) ------------------------------------------------
 
 def request_path(fw: Firewall) -> Path:
     return fw.artifact(*PREREG_DIR, REQUEST_NAME)
+
+
+def screen_report_path(fw: Firewall) -> Path:
+    return fw.artifact(*PREREG_DIR, SCREEN_REPORT_NAME)
+
+
+def eval_spec_path(fw: Firewall) -> Path:
+    return fw.artifact(*PREREG_DIR, EVAL_SPEC_NAME)
+
+
+def json_digest(obj: Any) -> str:
+    return "sha256:" + sha256_bytes(canonical_json(obj))
+
+
+def _screen_receipt(fw: Firewall, prereg_sha256: str, request_id: str, finalists: Sequence[str],
+                    eval_spec_digest: str, screen_report_digest: str) -> str:
+    """In-process proof that the screen was just recomputed and matched (never persisted).
+
+    Minted only by :mod:`quant.fastlane.screen` after a full recomputation; keyed by the
+    per-process secret nonce of :mod:`quant.fastlane.preregistration`.
+    """
+    from quant.fastlane.preregistration import _PROCESS_NONCE
+    message = canonical_json(["SCREEN_RECOMPUTED", str(fw.repo_root), prereg_sha256, request_id,
+                              sorted(finalists), eval_spec_digest, screen_report_digest])
+    return hmac.new(_PROCESS_NONCE + b"|screen-receipt", message, hashlib.sha256).hexdigest()
+
+
+def _check_receipt(fw: Firewall, receipt: Any, prereg_sha256: str, request_id: str,
+                   finalists: Sequence[str], eval_spec_digest: str,
+                   screen_report_digest: str) -> None:
+    expected = _screen_receipt(fw, prereg_sha256, request_id, finalists, eval_spec_digest,
+                               screen_report_digest)
+    if not isinstance(receipt, str) or not hmac.compare_digest(expected, receipt):
+        raise OutcomeAccessRefused(
+            "no receipt from a fresh recomputation of the screen in this process: the holdout "
+            "request and the look go only through screen.request_holdout / "
+            "verdict.evaluate_holdout")
+
+
+def _check_screen_report(fw: Firewall, sealed: Mapping[str, Any], screen_report_digest: str,
+                         eval_spec_digest: str, finalists: Sequence[str], *,
+                         anchored: bool, max_age_s: float = 0.0) -> dict:
+    """The committed screen report must match its digest, the spec, the finalists and every
+    declared variant's discovery AND walk-forward trial records."""
+    from quant.fastlane.gitcheck import GitCheckFailed, verify_committed
+    paths = (screen_report_path(fw), eval_spec_path(fw))
+    for path in paths:
+        if not path.exists():
+            raise OutcomeAccessRefused(f"{path.name} is missing")
+    try:
+        report = fw.read_json(paths[0])
+        spec = fw.read_json(paths[1])
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise OutcomeAccessRefused("screen report or evaluation spec is not valid JSON") from exc
+    if json_digest(report) != screen_report_digest:
+        raise OutcomeAccessRefused(f"{SCREEN_REPORT_NAME} differs from the pinned digest")
+    if json_digest(spec) != eval_spec_digest:
+        raise OutcomeAccessRefused(f"{EVAL_SPEC_NAME} differs from the pinned digest")
+    payload = report.get("holdout_request_payload") or {}
+    if (report.get("prereg_sha256") != sealed["protocol_sha256"]
+            or payload.get("eval_spec_digest") != eval_spec_digest
+            or sorted(report.get("finalists") or []) != sorted(finalists)
+            or sorted(spec.get("finalists") or []) != sorted(finalists)):
+        raise OutcomeAccessRefused("screen report, evaluation spec and finalists disagree")
+    listing = report.get("trials") or {}
+    records = {r["trial_id"]: r for r in TrialLedger(fw).records()
+               if r.get("prereg_sha256") == sealed["protocol_sha256"]}
+    for variant in [v["variant_id"] for v in sealed["protocol"]["variants"]]:
+        for split in REQUIRED_TRIAL_SPLITS:
+            entry = (listing.get(variant) or {}).get(split) or {}
+            rec = records.get(entry.get("trial_id"))
+            if (rec is None or rec.get("variant_id") != variant or rec.get("split") != split
+                    or rec.get("spec_digest") != entry.get("spec_digest")):
+                raise OutcomeAccessRefused(
+                    f"{variant} has no {split} trial record matching the screen report")
+    if anchored:
+        for path in paths:
+            try:
+                verify_committed(fw.repo_root, path, write_once=True, max_age_s=max_age_s)
+            except GitCheckFailed as exc:
+                raise OutcomeAccessRefused(f"{path.name} is not anchored in git: {exc}") from exc
+    return report
 
 
 def read_holdout_request(fw: Firewall) -> dict | None:
@@ -244,13 +389,20 @@ def _check_finalists(fw: Firewall, sealed: Mapping[str, Any], finalists: Sequenc
     return records
 
 
-def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str],
-                          eval_spec_digest: str) -> dict:
-    """Create the single holdout request (to be committed and pushed before access)."""
+def _write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str],
+                           eval_spec_digest: str, screen_report_digest: str, *,
+                           receipt: str) -> dict:
+    """Create the single holdout request (to be committed and pushed before access).
+
+    Private: only :func:`quant.fastlane.screen.request_holdout` calls it, after re-running the
+    screen and writing the matching SCREEN_REPORT.json and HOLDOUT_EVAL_SPEC.json.
+    """
     from quant.fastlane.gitcheck import GitCheckFailed, verify_committed
-    if not request_id or not eval_spec_digest:
-        raise ValueError("request_id and eval_spec_digest are required")
+    if not request_id or not eval_spec_digest or not screen_report_digest:
+        raise ValueError("request_id, eval_spec_digest and screen_report_digest are required")
     sealed = load_sealed(fw)
+    _check_receipt(fw, receipt, sealed["protocol_sha256"], request_id, finalists,
+                   eval_spec_digest, screen_report_digest)
     try:
         seal = verify_committed(fw.repo_root, sealed_path(fw), write_once=True)
     except GitCheckFailed as exc:
@@ -259,6 +411,13 @@ def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str
     if path.exists():
         raise HoldoutAlreadyConsumed(f"{REQUEST_NAME} already exists; one look only")
     records = _check_finalists(fw, sealed, finalists)
+    report = _check_screen_report(fw, sealed, screen_report_digest, eval_spec_digest, finalists,
+                                  anchored=False)
+    access = AccessLedger(fw).records()
+    n_trials = n_trials_conservative(fw, sealed)
+    if report.get("n_trials_for_dsr") != n_trials["n_trials_for_dsr"]:
+        raise OutcomeAccessRefused("the screen report was derived with another N_trials than "
+                                   "the ledgers give now; recompute it")
     record = {
         "lineage": LINEAGE_ID,
         "kind": "HOLDOUT_ONE_LOOK_REQUEST",
@@ -268,9 +427,11 @@ def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str
         "finalists": sorted(finalists),
         "code_fingerprint": code_fingerprint(),
         "eval_spec_digest": eval_spec_digest,
+        "screen_report_digest": screen_report_digest,
         "trial_ledger": {"head": TrialLedger(fw).head(), "count": len(records)},
+        "access_ledger": {"head": AccessLedger(fw).head(), "count": len(access)},
         "multiplicity": {"M_declared": sealed["protocol"]["multiplicity"]["M_declared"],
-                         "n_trials_for_dsr": n_trials_for_dsr(sealed, records)},
+                         **n_trials},
         "created_at_utc": _now(),
     }
     try:
@@ -283,7 +444,8 @@ def write_holdout_request(fw: Firewall, request_id: str, finalists: Sequence[str
 def request_fingerprint(request: Mapping[str, Any]) -> str:
     core = {k: request.get(k) for k in ("request_id", "prereg_sha256", "seal_commit",
                                         "finalists", "code_fingerprint", "eval_spec_digest",
-                                        "trial_ledger", "multiplicity")}
+                                        "screen_report_digest", "trial_ledger", "access_ledger",
+                                        "multiplicity")}
     return "sha256:" + sha256_bytes(canonical_json(core))
 
 
@@ -308,13 +470,28 @@ def verify_committed_request(fw: Firewall, sealed: Mapping[str, Any], seal_commi
     return {**request, "commit": committed.commit}
 
 
+def _ledger_prefix_ok(path: Path, pinned: Mapping[str, Any] | None, what: str) -> None:
+    pinned = pinned or {}
+    count = int(pinned.get("count", -1))
+    raw = path.read_bytes() if path.exists() else b""
+    lines = raw.split(b"\n")[:-1] if raw else []
+    if count < 0 or count > len(lines):
+        raise OutcomeAccessRefused(f"{what} is shorter than when the request was committed")
+    head = GENESIS if count == 0 else sha256_bytes(lines[count - 1])
+    if head != pinned.get("head"):
+        raise OutcomeAccessRefused(f"{what} was rewritten after the request was committed")
+
+
 def verify_holdout_request(fw: Firewall, sealed: Mapping[str, Any], request_id: str | None,
                            variants: Sequence[str] | None, eval_spec_digest: str | None, *,
-                           seal_commit: str) -> dict:
+                           seal_commit: str, receipt: str | None = None) -> dict:
     if not request_id or not variants or not eval_spec_digest:
         raise OutcomeAccessRefused("holdout access needs request_id, finalists and "
                                    "eval_spec_digest")
     request = verify_committed_request(fw, sealed, seal_commit, max_age_s=60.0)
+    _check_receipt(fw, receipt, sealed["protocol_sha256"], str(request.get("request_id")),
+                   request.get("finalists") or [], str(request.get("eval_spec_digest")),
+                   str(request.get("screen_report_digest")))
     if request.get("request_id") != request_id or request.get("finalists") != sorted(variants):
         raise HoldoutAlreadyConsumed(
             f"holdout is committed to request {request.get('request_id')} with finalists "
@@ -323,16 +500,12 @@ def verify_holdout_request(fw: Firewall, sealed: Mapping[str, Any], request_id: 
         raise OutcomeAccessRefused("evaluation-spec digest differs from the committed request")
     if request.get("code_fingerprint") != code_fingerprint():
         raise OutcomeAccessRefused("fast-lane code changed since the holdout request was committed")
-    records = _check_finalists(fw, sealed, request["finalists"])
-    trial = request.get("trial_ledger") or {}
-    count = int(trial.get("count", -1))
-    if count > len(records) or count < 0:
-        raise OutcomeAccessRefused("trial ledger is shorter than when the request was committed")
-    raw = TrialLedger(fw).path
-    lines = raw.read_bytes().split(b"\n")[:-1] if raw.exists() else []
-    head = GENESIS if count == 0 else sha256_bytes(lines[count - 1])
-    if head != trial.get("head"):
-        raise OutcomeAccessRefused("trial ledger was rewritten after the request was committed")
+    _check_finalists(fw, sealed, request["finalists"])
+    _ledger_prefix_ok(TrialLedger(fw).path, request.get("trial_ledger"), "trial ledger")
+    _ledger_prefix_ok(AccessLedger(fw).path, request.get("access_ledger"), "access ledger")
+    _check_screen_report(fw, sealed, str(request.get("screen_report_digest")),
+                         str(request["eval_spec_digest"]), request["finalists"],
+                         anchored=True, max_age_s=60.0)
     return request
 
 

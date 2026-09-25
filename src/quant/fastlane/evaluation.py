@@ -53,11 +53,13 @@ import statistics
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass, field
 from datetime import date, timedelta
+from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 from quant.fastlane import census
 from quant.fastlane import constructor as ct
 from quant.fastlane import frictions as fr
+from quant.fastlane import holdout as ho
 from quant.fastlane import prices as px
 from quant.fastlane.events import read_jsonl_gz
 from quant.fastlane.firewall import LINEAGE_ID, Firewall, sha256_bytes
@@ -329,6 +331,8 @@ class MarketData:
         start, end = grant.price_window_start, grant.price_window_end
         px.check_grant(grant, start, end)
         self.vendor, self.grant, self.split = vendor, grant, split
+        self.fw = Firewall(Path(grant.repo_root))
+        self.vendor_identity = VendorContext(self.fw, vendor).identity()
         self.window = (start, end)
         sessions = list(vendor.sessions(start, end, grant=grant))
         self.calendar = self._check_calendar(sessions, split, start, end)
@@ -339,6 +343,7 @@ class MarketData:
         self._delist: dict[str, list[px.CorporateAction]] = {}
         self._maps: dict[str, list[px.SecurityMapping]] = {}
         self._spy: dict[int, float] | None = None
+        self._spy_intraday: dict[int, float] | None = None
         self._candidates: dict[str, list[Candidate]] = {}
         self._legs: dict[tuple[str, int], dict] = {}
 
@@ -448,6 +453,21 @@ class MarketData:
             self._spy = out
         return self._spy
 
+    def spy_intraday(self) -> dict[int, float] | None:
+        """Optional SPY open-to-close returns (C2 bias diagnostic only; never gating)."""
+        fetch = getattr(self.vendor, "benchmark_intraday_returns", None)
+        if fetch is None:
+            return None
+        if self._spy_intraday is None:
+            out: dict[int, float] = {}
+            for day, value in fetch(*self.window, grant=self.grant).items():
+                i = self.index.get(day)
+                if (i is not None and isinstance(value, (int, float)) and math.isfinite(value)
+                        and value > -1):
+                    out[i] = float(value)
+            self._spy_intraday = out
+        return self._spy_intraday
+
     # -- total-return arithmetic on raw prices plus the action ledger --
     def gross_return(self, security_id: str, frm: int, frm_price: float, to: int,
                      to_price: float) -> float:
@@ -464,6 +484,31 @@ class MarketData:
         nxt = bars[t + 1].close
         g = self.gross_return(security_id, t, bars[t].close, t + 1, nxt)
         return nxt / ((1.0 + g) * bars[t].close)
+
+
+# --- outcome-access accounting --------------------------------------------------------------------
+
+def access_config_digest(market: MarketData, table: EventTable, seed: int,
+                         c0_multiple: float) -> str:
+    return digest({"prereg_sha256": market.grant.prereg_sha256, "events_digest": table.digest,
+                   "vendor": market.vendor_identity, "seed": int(seed),
+                   "c0_multiple": float(c0_multiple)})
+
+
+def record_access(market: MarketData, variant_id: str, table: EventTable, seed: int,
+                  c0_multiple: float) -> None:
+    """Append (idempotently) the discovery/walk-forward read BEFORE any outcome is read.
+
+    Keyed by (variant, split, configuration, code fingerprint); a screen and its
+    recomputations reuse one key per variant and split, while any other seed, capacity
+    multiple, code or vendor configuration is a new key and raises N_trials (C22).
+    """
+    if market.split == "holdout":
+        return                          # the holdout is governed by the one-look request
+    ho.AccessLedger(market.fw).record(
+        variant_id=variant_id, split=market.split,
+        config_digest=access_config_digest(market, table, seed, c0_multiple),
+        prereg_sha256=market.grant.prereg_sha256)
 
 
 # --- candidates and eligibility ------------------------------------------------------------------
@@ -519,6 +564,7 @@ def candidates(variant: Variant, table: EventTable, market: MarketData,
     cached = market._candidates.get(key)
     if cached is not None:
         return cached
+    record_access(market, variant.variant_id, table, params.tie_break_seed, 1.0)
     cal = market.calendar
     split_start, split_end = SPLITS[market.split]
     if variant.family == FROZEN_FAMILY:
@@ -787,6 +833,7 @@ def evaluate_variant(*, sealed: Mapping[str, Any], variant_id: str, table: Event
     seed = params.tie_break_seed if seed is None else int(seed)
     if not (isinstance(c0_multiple, (int, float)) and c0_multiple > 0):
         raise ValueError("c0_multiple must be positive")
+    record_access(market, variant_id, table, seed, float(c0_multiple))
     cands = candidates(variant, table, market, params)
     counts = Counter(c.reason for c in cands if c.reason)
     ready = [c for c in cands if c.reason is None]
@@ -809,8 +856,11 @@ def evaluate_variant(*, sealed: Mapping[str, Any], variant_id: str, table: Event
     summary: dict[str, dict] = {}
     pnl_by_plan: dict[str, list[float]] = {}
     c0 = float(c0_multiple) * params.c0_usd
+    primary_sims: list[dict] | None = None
     for scenario in scenarios:
         sims = [simulate(p, scenario, params) for p in plans]
+        if scenario == PRIMARY_SCENARIO:
+            primary_sims = sims
         s = _series((row for sim in sims for row in sim["rows"]), spy, market.calendar)
         active = [v for v in s["r_ex"] if v is not None]
         mean = sum(active) / len(active) if active else None
@@ -838,6 +888,8 @@ def evaluate_variant(*, sealed: Mapping[str, Any], variant_id: str, table: Event
             "note": "idle cash earns 0 %; reported here only, never in alpha",
         }
     start_index = primary["start_index"]
+    diagnostic = c2_bias_diagnostic(plans, primary_sims, series.get(PRIMARY_SCENARIO), spy,
+                                    market.spy_intraday())
     result = {
         "schema": SCHEMA, "lineage": LINEAGE_ID, "variant_id": variant_id,
         "split": market.split, "seed": seed, "c0_multiple": float(c0_multiple),
@@ -864,6 +916,7 @@ def evaluate_variant(*, sealed: Mapping[str, Any], variant_id: str, table: Event
         },
         "summary": summary,
         "idle_cash": idle,
+        "c2_bias_diagnostic": diagnostic,
     }
     if keep_positions:
         result["positions"] = [{
@@ -882,5 +935,59 @@ def evaluate_variant(*, sealed: Mapping[str, Any], variant_id: str, table: Event
         } for i, p in enumerate(plans)]
     result["output_digest"] = digest({k: result[k] for k in (
         "variant_id", "split", "seed", "c0_multiple", "counts", "exits", "delisting_classes",
-        "admitted_digest", "series", "summary", "idle_cash")})
+        "admitted_digest", "series", "summary", "idle_cash", "c2_bias_diagnostic")})
     return result
+
+
+def c2_bias_diagnostic(plans: Sequence[Plan], sims: Sequence[dict] | None,
+                       net: Mapping[str, Any] | None, spy: Mapping[int, float],
+                       intraday: Mapping[int, float] | None) -> dict:
+    """Realized size of the C2 benchmark-timing terms in net alpha (non-gating diagnostic).
+
+    Entry session: the position earns open->close but r_ex subtracts SPY close->close, i.e.
+    also the SPY overnight return. Next-open exit: the position earns close->open but r_ex
+    subtracts the whole SPY session, i.e. also r_SPY minus its overnight part. Each term is
+    ``-252/T sum_t (w_share_t x term_t)`` over the T sessions with invested capital, which is
+    the amount the literal sealed formula adds to alpha relative to a matched benchmark.
+    """
+    out: dict[str, Any] = {
+        "label": "C2 bias diagnostic (REPORTING ONLY, non-gating)", "gating": False,
+        "available": False, "entry_day_spy_overnight_term_annual": None,
+        "next_open_exit_spy_intraday_term_annual": None, "total_annual": None,
+        "sessions_missing_spy_open": 0}
+    if sims is None or net is None or net.get("start_index") is None:
+        out["reason"] = "no invested session in the primary scenario"
+        return out
+    if intraday is None:
+        out["reason"] = "the vendor provides no SPY open (benchmark_intraday_returns)"
+        return out
+    entry_w: dict[int, float] = defaultdict(float)
+    exit_w: dict[int, float] = defaultdict(float)
+    for plan, sim in zip(plans, sims):
+        for idx, w, _ in sim["rows"]:
+            if idx == plan.e:
+                entry_w[idx] += w
+            if plan.exit_kind == EXIT_NEXT_OPEN and idx == plan.exit_index:
+                exit_w[idx] += w
+    start = net["start_index"]
+    active, entry_sum, exit_sum, missing = 0, 0.0, 0.0, 0
+    for k, den in enumerate(net["invested"]):
+        if den <= 0:
+            continue
+        active += 1
+        t = start + k
+        if t not in entry_w and t not in exit_w:
+            continue
+        if t not in intraday:
+            missing += 1
+            continue
+        overnight = (1.0 + spy[t]) / (1.0 + intraday[t]) - 1.0
+        entry_sum += entry_w.get(t, 0.0) / den * overnight
+        exit_sum += exit_w.get(t, 0.0) / den * (spy[t] - overnight)
+    entry_term = -TRADING_DAYS * entry_sum / active
+    exit_term = -TRADING_DAYS * exit_sum / active
+    out.update({"available": missing == 0, "entry_day_spy_overnight_term_annual": entry_term,
+                "next_open_exit_spy_intraday_term_annual": exit_term,
+                "total_annual": entry_term + exit_term, "sessions_missing_spy_open": missing,
+                "sign": "negative = the literal formula understates alpha by that much"})
+    return out

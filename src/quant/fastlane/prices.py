@@ -288,6 +288,12 @@ class SharadarVendor:
         check_grant(grant, start, end)
         self._not_wired("benchmark_total_returns")
 
+    def benchmark_intraday_returns(self, start, end, *, grant):
+        """Optional capability (not in PriceVendor): SPY open->close per session, used only
+        by the non-gating C2 bias diagnostic."""
+        check_grant(grant, start, end)
+        self._not_wired("benchmark_intraday_returns")
+
     def _fetch_mappings(self, cik):
         self._not_wired("security_mappings")
 

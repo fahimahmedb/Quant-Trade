@@ -15,8 +15,10 @@ requires :func:`require_outcome_access`, which trusts nothing the caller built:
 * the vendor's delisting-class map and benchmark-source manifest must be
   committed the same way; the bound event table must match the sealed hash;
 * holdout access additionally needs the committed, write-once
-  ``research/fastlane/prereg/HOLDOUT_REQUEST.json`` (see
-  :mod:`quant.fastlane.holdout`); the ``var/`` ledger is only a cache.
+  ``research/fastlane/prereg/HOLDOUT_REQUEST.json`` with its committed screen
+  report and evaluation spec, plus an in-process receipt from a fresh
+  recomputation of the screen (see :mod:`quant.fastlane.holdout`); the ``var/``
+  ledger is only a cache.
 
 Grants carry an HMAC token keyed by the seal hash and a per-process secret
 nonce, so a hand-built :class:`OutcomeAccessGrant` is refused by
@@ -400,7 +402,8 @@ def _anchor_seal(fw: Firewall, *, max_age_s: float) -> str:
 def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str, *,
                            holdout_request_id: str | None = None,
                            holdout_variants: Sequence[str] | None = None,
-                           eval_spec_digest: str | None = None) -> OutcomeAccessGrant:
+                           eval_spec_digest: str | None = None,
+                           holdout_receipt: str | None = None) -> OutcomeAccessGrant:
     """Gate every outcome read. Raises OutcomeAccessRefused unless every check passes."""
     from quant.fastlane.holdout import (HoldoutLedger, LedgerCorrupted, TrialLedger,
                                         verify_holdout_request)
@@ -426,7 +429,8 @@ def require_outcome_access(fw: Firewall, split: str, expected_prereg_sha256: str
     request_id = None
     if split == "holdout":
         request = verify_holdout_request(fw, sealed, holdout_request_id, holdout_variants,
-                                         eval_spec_digest, seal_commit=seal_commit)
+                                         eval_spec_digest, seal_commit=seal_commit,
+                                         receipt=holdout_receipt)
         try:
             HoldoutLedger(fw).sync(request)
         except LedgerCorrupted as exc:

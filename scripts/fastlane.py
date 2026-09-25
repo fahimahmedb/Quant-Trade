@@ -17,8 +17,9 @@
         Discovery + walk-forward screen of every declared variant under the
         seal (needs the licensed vendor: NASDAQ_DATA_LINK_API_KEY). Writes one
         trial record per variant and split, ranks by DSR, selects <= 3
-        finalists; --write-request writes HOLDOUT_EVAL_SPEC.json and the
-        write-once HOLDOUT_REQUEST.json (commit and push both before the look).
+        finalists; --write-request re-runs the screen and writes
+        SCREEN_REPORT.json, HOLDOUT_EVAL_SPEC.json and the write-once
+        HOLDOUT_REQUEST.json (commit and push all three before the look).
     python3 scripts/fastlane.py evaluate-holdout
         The single holdout look (needs the committed request and the vendor):
         GO / INCONCLUSIVE / NO_GO -> research/fastlane/HOLDOUT_RESULT.json.
@@ -156,14 +157,16 @@ def cmd_screen(fw: Firewall, args) -> int:
                      "verdict": report.get("verdict")}, indent=1))
     if args.write_request:
         try:
-            request = sc.request_holdout(fw, report)
-        except (OutcomeAccessRefused, ho.NoFinalists, ho.HoldoutAlreadyConsumed) as exc:
+            request = sc.request_holdout(fw, vendor)
+        except (OutcomeAccessRefused, ho.NoFinalists, ho.HoldoutAlreadyConsumed,
+                ev.EvaluationError) as exc:
             return _refusal("holdout request", exc)
         _log(json.dumps({"holdout_request": request["request_id"],
                          "finalists": request["finalists"],
-                         "next": "commit and push research/fastlane/prereg/HOLDOUT_REQUEST.json "
-                                 "and HOLDOUT_EVAL_SPEC.json, record the commit hash outside "
-                                 "the repository, then run evaluate-holdout"}, indent=1))
+                         "next": "commit and push research/fastlane/prereg/HOLDOUT_REQUEST.json, "
+                                 "SCREEN_REPORT.json and HOLDOUT_EVAL_SPEC.json, record the "
+                                 "commit hash outside the repository, then run "
+                                 "evaluate-holdout"}, indent=1))
     return 0
 
 

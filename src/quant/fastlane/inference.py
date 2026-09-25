@@ -446,6 +446,14 @@ def sharpe_moments(values: Sequence[float | None]) -> dict:
             "skew": m3 / m2 ** 1.5, "kurtosis": m4 / (m2 * m2)}
 
 
+def floored_sr_variance(cross_variance: float, sr: float, n_obs: int) -> float:
+    """V[SR] for the DSR, floored at the sampling variance of the per-period SR estimate,
+    ``(1 + SR^2 / 2) / n`` (Lo 2002, i.i.d.), so N_trials always deflates (C21)."""
+    if n_obs < 1:
+        raise InsufficientData("need at least one observation")
+    return max(float(cross_variance), (1.0 + 0.5 * sr * sr) / n_obs)
+
+
 def expected_max_sharpe(sr_variance: float, n_trials: int) -> float:
     """SR_0 = sqrt(V) ((1 - g) Phi^-1(1 - 1/N) + g Phi^-1(1 - 1/(N e)))."""
     if n_trials < 2 or sr_variance <= 0:

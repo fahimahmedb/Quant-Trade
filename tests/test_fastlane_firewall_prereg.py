@@ -118,19 +118,55 @@ class World:
     def screen_all(self):
         self.trials(self.variants(), splits=("discovery",))
 
+    def write_request(self, request_id, variants):
+        """LOW-LEVEL: a structurally consistent screen report/spec plus an in-process receipt,
+        handed to the private writer, to test git anchoring and the one-look cache. The
+        verified path (full screen recomputation) is tested in test_fastlane_evaluation_screen."""
+        sealed = pr.load_sealed(self.fw)
+        records = {(r["variant_id"], r["split"]): r for r in ho.TrialLedger(self.fw).records()}
+        listing = {}
+        for v in self.variants():
+            for s in ho.REQUIRED_TRIAL_SPLITS:
+                if (v, s) in records:
+                    listing.setdefault(v, {})[s] = {"trial_id": records[(v, s)]["trial_id"],
+                                                    "spec_digest": records[(v, s)]["spec_digest"]}
+        spec = {"kind": "SYNTHETIC_LOW_LEVEL_SPEC", "finalists": sorted(variants)}
+        spec_digest = ho.json_digest(spec)
+        report = {"prereg_sha256": self.sha, "finalists": sorted(variants), "trials": listing,
+                  "holdout_request_payload": {"eval_spec_digest": spec_digest},
+                  "n_trials_for_dsr": ho.n_trials_conservative(self.fw, sealed)["n_trials_for_dsr"]}
+        report_digest = ho.json_digest(report)
+        if not ho.request_path(self.fw).exists():
+            for path, obj in ((ho.screen_report_path(self.fw), report),
+                              (ho.eval_spec_path(self.fw), spec)):
+                self.fw.write_bytes_atomic(path, pr.canonical_json(obj) + b"\n")
+        receipt = ho._screen_receipt(self.fw, self.sha, request_id, variants, spec_digest,
+                                     report_digest)
+        record = ho._write_holdout_request(self.fw, request_id, variants, spec_digest,
+                                           report_digest, receipt=receipt)
+        self.spec_digest = spec_digest
+        return record
+
     def request(self, request_id, variants, *, commit=True):
-        self.screen_all()
-        self.trials(variants)
-        record = ho.write_holdout_request(self.fw, request_id, variants, EVAL_SPEC)
+        self.trials(self.variants())                  # every declared variant, both splits
+        record = self.write_request(request_id, variants)
         if commit:
             self.commit_all("holdout request")
             self.publish()
         return record
 
-    def holdout(self, request_id, variants, spec=EVAL_SPEC):
-        return pr.require_outcome_access(self.fw, "holdout", self.sha,
-                                         holdout_request_id=request_id,
-                                         holdout_variants=variants, eval_spec_digest=spec)
+    def receipt(self):
+        req = ho.read_holdout_request(self.fw) or {}
+        return ho._screen_receipt(self.fw, self.sha, str(req.get("request_id")),
+                                  req.get("finalists") or [], str(req.get("eval_spec_digest")),
+                                  str(req.get("screen_report_digest")))
+
+    def holdout(self, request_id, variants, spec=None, receipt=True):
+        return pr.require_outcome_access(
+            self.fw, "holdout", self.sha, holdout_request_id=request_id,
+            holdout_variants=variants,
+            eval_spec_digest=spec or getattr(self, "spec_digest", EVAL_SPEC),
+            holdout_receipt=self.receipt() if receipt else None)
 
 
 class FirewallTests(unittest.TestCase):
@@ -453,14 +489,14 @@ class HoldoutTests(unittest.TestCase):
 
     def test_probe_e1_finalists_must_be_in_the_sealed_grid_with_trials(self):
         with self.assertRaises(pr.OutcomeAccessRefused):
-            ho.write_holdout_request(self.w.fw, "look-1", ["NOT_IN_GRID"], EVAL_SPEC)
+            self.w.write_request("look-1", ["NOT_IN_GRID"])
         v = self.w.variants(3)[2]
         self.w.screen_all()                                       # every variant screened
         self.w.trials([v], splits=("discovery",))                 # no walk-forward record
         with self.assertRaises(pr.OutcomeAccessRefused):
-            ho.write_holdout_request(self.w.fw, "look-1", [v], EVAL_SPEC)
+            self.w.write_request("look-1", [v])
         with self.assertRaises(ho.NoFinalists):
-            ho.write_holdout_request(self.w.fw, "look-1", [], EVAL_SPEC)
+            self.w.write_request("look-1", [])
         self.assertFalse(ho.request_path(self.w.fw).exists())
 
     def test_probe_e2_replay_returns_the_same_grant(self):
@@ -488,7 +524,7 @@ class HoldoutTests(unittest.TestCase):
         with self.assertRaises(ho.HoldoutAlreadyConsumed):
             self.w.holdout("look-2", other)
         with self.assertRaises(ho.HoldoutAlreadyConsumed):
-            ho.write_holdout_request(self.w.fw, "look-2", other, EVAL_SPEC)
+            self.w.write_request("look-2", other)
         # overwrite the committed request on disk: git bytes check refuses it
         path = ho.request_path(self.w.fw)
         forged = json.loads(path.read_text())
@@ -542,6 +578,37 @@ class HoldoutTests(unittest.TestCase):
         with self.assertRaises(pr.OutcomeAccessRefused):
             self.w.holdout("look-1", self.finalists)
 
+    def test_request_and_look_need_the_recomputation_receipt(self):
+        self.assertFalse(hasattr(ho, "write_holdout_request"))   # no public bypass
+        self.w.trials(self.w.variants())
+        with self.assertRaises(pr.OutcomeAccessRefused):
+            ho._write_holdout_request(self.w.fw, "look-1", self.finalists, EVAL_SPEC,
+                                      "sha256:" + "0" * 64, receipt="0" * 64)
+        self.assertFalse(ho.request_path(self.w.fw).exists())
+        self.w.request("look-1", self.finalists)
+        for forged in (False, "0" * 64):
+            with self.assertRaises(pr.OutcomeAccessRefused):
+                pr.require_outcome_access(self.w.fw, "holdout", self.w.sha,
+                                          holdout_request_id="look-1",
+                                          holdout_variants=self.finalists,
+                                          eval_spec_digest=self.w.spec_digest,
+                                          holdout_receipt=forged or None)
+        self.assertEqual(ho.HoldoutLedger(self.w.fw).records(), [])   # look not consumed
+        self.assertEqual(self.w.holdout("look-1", self.finalists).holdout_request_id, "look-1")
+
+    def test_screen_report_must_match_every_declared_trial(self):
+        self.w.request("look-1", self.finalists)
+        path = ho.TrialLedger(self.w.fw).path
+        lines = path.read_bytes().split(b"\n")[:-1]
+        forged = json.loads(lines[-1])
+        forged["spec_digest"] = "sha256:" + "9" * 64            # swap one record's content
+        prev = forged["prev_sha"]
+        path.write_bytes(b"\n".join(lines[:-1]) + b"\n" + pr.canonical_json(
+            {**forged, "prev_sha": prev}) + b"\n")
+        with self.assertRaises(pr.OutcomeAccessRefused):
+            self.w.holdout("look-1", self.finalists)
+        self.assertEqual(ho.HoldoutLedger(self.w.fw).records(), [])
+
     def test_trial_ledger_rewrite_after_request_is_detected(self):
         self.w.request("look-1", self.finalists)
         path = ho.TrialLedger(self.w.fw).path
@@ -570,14 +637,19 @@ class SecondReviewTests(unittest.TestCase):
             finalist = w.variants(1)
             w.trials(finalist)                                   # finalist-only ledger
             with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
-                ho.write_holdout_request(w.fw, "look-1", finalist, EVAL_SPEC)
+                w.write_request("look-1", finalist)
             self.assertIn("declared variants have no discovery trial", str(ctx.exception))
-            w.screen_all()
-            request = ho.write_holdout_request(w.fw, "look-1", finalist, EVAL_SPEC)
+            w.screen_all()                                       # discovery only
+            with self.assertRaises(pr.OutcomeAccessRefused) as ctx:
+                w.write_request("look-1", finalist)
+            self.assertIn("walk_forward trial record", str(ctx.exception))
+            w.trials(w.variants(), splits=("walk_forward",))
+            request = w.write_request("look-1", finalist)
             m = w.protocol["multiplicity"]["M_declared"]
             self.assertEqual(request["multiplicity"]["M_declared"], m)
-            self.assertEqual(request["multiplicity"]["n_trials_for_dsr"], max(m, m + 1))
-            self.assertEqual(ho.TrialLedger(w.fw).multiplicity()["n_trials_for_dsr"], m + 1)
+            self.assertEqual(request["multiplicity"]["sealed_rule"], 2 * m)
+            self.assertEqual(request["multiplicity"]["n_trials_for_dsr"], 2 * m)
+            self.assertEqual(ho.TrialLedger(w.fw).multiplicity()["n_trials_for_dsr"], 2 * m)
 
     def test_n_trials_is_at_least_m_declared(self):
         sealed = {"protocol_sha256": "sha256:x",

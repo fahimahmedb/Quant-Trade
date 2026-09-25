@@ -20,9 +20,13 @@ cap, the 2x friction stress, the UNKNOWN -100 % delisting stress and the seed
 robustness under seeds seed+1..seed+5.
 
 :func:`evaluate_holdout` performs the one look: it refuses without the
-committed request, a matching evaluation spec, the same vendor identity as the
-screen, and a ``go_eligible`` attestation, and only then asks
-:func:`quant.fastlane.preregistration.require_outcome_access` for the grant.
+committed request, screen report and evaluation spec, the same vendor identity
+as the screen, and a ``go_eligible`` attestation; it then re-runs the whole
+discovery/walk-forward screen (C25), refuses on any mismatch with the committed
+files or the trial records, and only then asks
+:func:`quant.fastlane.preregistration.require_outcome_access` for the grant with
+the in-process recomputation receipt. DSR inputs come from that recomputation.
+The C2 bias diagnostic (C23) is reported per finalist, never gating.
 """
 
 from __future__ import annotations
@@ -148,7 +152,13 @@ def result_path(fw: Firewall):
 
 def evaluate_holdout(fw: Firewall, vendor: px.PriceVendor, *,
                      table: ev.EventTable | None = None) -> dict:
-    """The single holdout look (refuses unless every precondition holds)."""
+    """The single holdout look (refuses unless every precondition holds).
+
+    Nothing is trusted from a file: the committed request, screen report and evaluation
+    spec are only compared against a full recomputation of the discovery/walk-forward
+    screen under normal grants (finalists, DSR inputs, V[SR], trial records). Only after
+    they match is the holdout grant requested, with the in-process recomputation receipt.
+    """
     from quant.fastlane import screen as sc
     sealed = load_sealed(fw)
     protocol = sealed["protocol"]
@@ -156,33 +166,41 @@ def evaluate_holdout(fw: Firewall, vendor: px.PriceVendor, *,
     if request is None:
         raise OutcomeAccessRefused("no committed HOLDOUT_REQUEST.json: run the screen, write the "
                                    "request, commit and push it first")
-    spec_path = sc.eval_spec_path(fw)
-    if not spec_path.exists():
-        raise OutcomeAccessRefused(f"{spec_path.name} is missing")
-    spec = fw.read_json(spec_path)
-    spec_digest = ev.digest(spec)
-    if spec_digest != request.get("eval_spec_digest"):
-        raise OutcomeAccessRefused("evaluation spec differs from the one pinned by the request")
-    if sorted(spec.get("finalists") or []) != request.get("finalists"):
-        raise OutcomeAccessRefused("evaluation spec and request name different finalists")
+    committed = ho._check_screen_report(fw, sealed, str(request.get("screen_report_digest")),
+                                        str(request.get("eval_spec_digest")),
+                                        request.get("finalists") or [], anchored=True)
+    config = committed.get("config")
+    if not isinstance(config, Mapping) or "vendor" not in config:
+        raise OutcomeAccessRefused("committed SCREEN_REPORT.json carries no screen configuration")
     context = ev.VendorContext(fw, vendor)
-    if context.identity() != spec["screen_config"]["vendor"]:
+    if context.identity() != config["vendor"]:
         raise ev.VendorMismatch("vendor identity or manifests changed since the screen")
     if not context.attestation.go_eligible:
         raise OutcomeAccessRefused(
             f"vendor evidence is {context.attestation.evidence_label}: it can never yield GO, so "
             "the one holdout look is not spent on it")
+    table = table or ev.EventTable.load_bound(fw, protocol)
+    request_n = int(request["multiplicity"]["n_trials_for_dsr"])
+    screen, derived = sc.recompute_and_verify(fw, vendor, table=table, n_trials=request_n)
+    if canonical_json(sanitize(derived)) != canonical_json(committed):
+        raise OutcomeAccessRefused("the recomputed screen differs from the committed "
+                                   "SCREEN_REPORT.json; the look is refused")
+    payload = derived.get("holdout_request_payload") or {}
+    spec_digest = payload.get("eval_spec_digest")
+    if (payload.get("request_id") != request["request_id"]
+            or sorted(payload.get("finalists") or []) != request["finalists"]
+            or spec_digest != request["eval_spec_digest"]
+            or ho.json_digest(derived) != request["screen_report_digest"]):
+        raise OutcomeAccessRefused("the recomputed screen does not reproduce the committed request")
+    receipt = ho._screen_receipt(fw, sealed["protocol_sha256"], request["request_id"],
+                                 request["finalists"], spec_digest, request["screen_report_digest"])
     grant = require_outcome_access(fw, "holdout", sealed["protocol_sha256"],
                                    holdout_request_id=request["request_id"],
                                    holdout_variants=request["finalists"],
-                                   eval_spec_digest=spec_digest)
-    table = table or ev.EventTable.load_bound(fw, protocol)
-    if table.digest != spec["screen_config"]["events_digest"]:
-        raise OutcomeAccessRefused("event table differs from the screened one")
+                                   eval_spec_digest=spec_digest, holdout_receipt=receipt)
     market = ev.MarketData(vendor, grant, "holdout")
     seed = int(protocol["inference"]["bootstrap_seed"])
-    n_trials = max(int(request["multiplicity"]["n_trials_for_dsr"]),
-                   ho.n_trials_for_dsr(sealed, ho.TrialLedger(fw).records()))
+    n_trials = max(request_n, ho.n_trials_conservative(fw, sealed)["n_trials_for_dsr"])
     rules = criteria(protocol)
     stats: dict[str, dict] = {}
     details: dict[str, dict] = {}
@@ -191,10 +209,12 @@ def evaluate_holdout(fw: Firewall, vendor: px.PriceVendor, *,
                                          context=context)
         net = evaluation["series"]["r_ex"]["net"]
         tests = finalist_statistics(net, protocol, seed)
-        disc = spec["discovery_stats"][v]
-        dsr = inf.deflated_sharpe(sr=disc["sr"], n_obs=disc["n"], skew=disc["skew"],
-                                  kurtosis=disc["kurtosis"], sr_variance=spec["sr_variance"],
-                                  n_trials=n_trials)
+        moments = inf.sharpe_moments(screen["variants"][v]["evaluations"]["discovery"]["net_r_ex"])
+        used = inf.floored_sr_variance(derived["sr_variance"], moments["sr"], moments["n"])
+        dsr = {**inf.deflated_sharpe(sr=moments["sr"], n_obs=moments["n"],
+                                     skew=moments["skew"], kurtosis=moments["kurtosis"],
+                                     sr_variance=used, n_trials=n_trials),
+               "sr_variance_used": used, "source": "recomputed discovery screen"}
         capacity = {1.0: evaluation["summary"]["net"]["alpha_annual"]}
         for m in protocol["capacity"]["multiples_of_C0"]:
             if float(m) != 1.0:
@@ -220,6 +240,7 @@ def evaluate_holdout(fw: Firewall, vendor: px.PriceVendor, *,
                       "counts": evaluation["counts"], "exits": evaluation["exits"],
                       "delisting_classes": evaluation["delisting_classes"],
                       "idle_cash": evaluation["idle_cash"],
+                      "c2_bias_diagnostic": evaluation["c2_bias_diagnostic"],
                       "bootstrap": tests["bootstrap"], "hac": tests["hac"], "dsr": dsr,
                       "stress": stress_report(evaluation["summary"]),
                       "capacity": capacity_report(capacity),
@@ -228,7 +249,8 @@ def evaluate_holdout(fw: Firewall, vendor: px.PriceVendor, *,
     result = sanitize({
         "schema": SCHEMA, "lineage": LINEAGE_ID, "kind": "HOLDOUT_ONE_LOOK_RESULT",
         "prereg_sha256": sealed["protocol_sha256"], "request_id": request["request_id"],
-        "eval_spec_digest": spec_digest, "n_trials_for_dsr": n_trials, "criteria": rules,
+        "eval_spec_digest": spec_digest, "screen_report_digest": request["screen_report_digest"],
+        "n_trials_for_dsr": n_trials, "criteria": rules,
         "finalist_statistics": stats, "finalists": details, "decision": decision,
         "data_quality": dict(sorted(market.quality.items())),
     })

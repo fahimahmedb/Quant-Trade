@@ -61,12 +61,13 @@ class SynthVendor:
     vendor_id = SYNTH
 
     def __init__(self, bars, actions=None, mappings=None, spy=None, att=None,
-                 calendar=CALENDAR):
+                 calendar=CALENDAR, spy_intraday=None):
         self.calendar = list(calendar)
         self._bars = bars
         self._actions = actions or {}
         self._maps = mappings or {}
         self._spy = spy or {}
+        self._spy_intraday = spy_intraday or {}
         self._att = att or attestation()
         self.calls = 0
 
@@ -96,6 +97,10 @@ class SynthVendor:
     def benchmark_total_returns(self, start, end, *, grant):
         self._check(grant, start, end)
         return {d: r for d, r in self._spy.items() if start <= d <= end}
+
+    def benchmark_intraday_returns(self, start, end, *, grant):
+        self._check(grant, start, end)
+        return {d: r for d, r in self._spy_intraday.items() if start <= d <= end}
 
 
 def cik(i):
@@ -418,6 +423,52 @@ class EngineTests(unittest.TestCase):
         self.assertTrue(all(abs(v) < 1e-12 for v in result["series"]["r_ex"]["gross"]
                             if v is not None))                               # ...but not in r_ex
 
+    def test_discovery_reads_are_counted_as_access_records(self):
+        from quant.fastlane import holdout as ho
+        ledger = ho.AccessLedger(self.w.fw)
+        keys = {r["access_id"] for r in ledger.records()}
+        self.assertTrue(any(r["variant_id"] == "OD_V10K_H20" and r["split"] == "discovery"
+                            for r in ledger.records()))
+        before = ho.n_trials_conservative(self.w.fw, self.w.sealed)
+        self.w.evaluate(self.vendor, "OD_V10K_H20", market=self.market, scenarios=("net",))
+        self.assertEqual({r["access_id"] for r in ledger.records()}, keys)   # same config: no-op
+        self.w.evaluate(self.vendor, "OD_V10K_H20", market=self.market, scenarios=("net",),
+                        seed=424242)                                      # exploratory rerun
+        after = ho.n_trials_conservative(self.w.fw, self.w.sealed)
+        self.assertEqual(after["distinct_configurations_accessed"],
+                         before["distinct_configurations_accessed"] + 1)
+        self.assertGreaterEqual(after["n_trials_for_dsr"], 2 * len(ENGINE_VARIANTS))
+        self.assertGreaterEqual(after["n_trials_for_dsr"], after["distinct_configurations_accessed"])
+
+    def test_c2_bias_diagnostic_is_reported_and_non_gating(self):
+        intraday = {d: 0.5 * r - 0.0004 for d, r in self.spy.items()}      # SYNTHETIC
+        vendor = SynthVendor(self.bars, mappings=mappings_for(N_ISSUERS), spy=self.spy,
+                             spy_intraday=intraday)
+        result = self.w.evaluate(vendor, "OD_V10K_H20", keep_positions=True, scenarios=("net",))
+        diag = result["c2_bias_diagnostic"]
+        self.assertTrue(diag["available"])
+        self.assertIs(diag["gating"], False)
+        sessions = result["series"]["sessions"]
+        invested = result["series"]["invested_usd"]
+        share = {}
+        for p in result["positions"]:
+            share[p["entry_session"]] = share.get(p["entry_session"], 0.0) + p["notional_usd"]
+        total, active = 0.0, 0
+        for day, den in zip(sessions, invested):
+            if den <= 0:
+                continue
+            active += 1
+            if day in share:
+                d = date.fromisoformat(day)
+                overnight = (1 + self.spy[d]) / (1 + intraday[d]) - 1
+                total += share[day] / den * overnight
+        self.assertAlmostEqual(diag["entry_day_spy_overnight_term_annual"], -252 * total / active)
+        self.assertEqual(diag["next_open_exit_spy_intraday_term_annual"], 0.0)   # no such exit
+        plain = self.w.evaluate(SynthVendor(self.bars, mappings=mappings_for(N_ISSUERS),
+                                            spy=self.spy), "OD_V10K_H20", scenarios=("net",))
+        self.assertFalse(plain["c2_bias_diagnostic"]["available"])
+        self.assertEqual(plain["summary"], result["summary"])                  # never gating
+
     def test_benchmark_has_no_fallback(self):
         spy = dict(self.spy)
         del spy[CALENDAR[entry_index(date(2017, 3, 1)) + 3]]
@@ -655,6 +706,18 @@ class InferenceTests(unittest.TestCase):
             self.assertGreaterEqual(inf.fixed_b_pvalue(inf._simulated_quantile(tail)), tail - 1e-9)
         self.assertAlmostEqual(inf.fixed_b_critical_value(0.05), inf._kv_poly(0.05, b), places=3)
         self.assertGreater(inf.fixed_b_pvalue(1.8373), 0.05)   # the raw simulated cv no longer rejects
+
+    def test_dsr_variance_floor_makes_n_trials_bite(self):
+        m = inf.sharpe_moments(ar1(500, 0.0, 3, mu=0.001))
+        floor = inf.floored_sr_variance(0.0, m["sr"], m["n"])
+        self.assertAlmostEqual(floor, (1 + m["sr"] ** 2 / 2) / m["n"])
+        self.assertEqual(inf.floored_sr_variance(1.0, m["sr"], m["n"]), 1.0)
+        few = inf.deflated_sharpe(sr=m["sr"], n_obs=m["n"], skew=m["skew"],
+                                  kurtosis=m["kurtosis"], sr_variance=floor, n_trials=22)
+        many = inf.deflated_sharpe(sr=m["sr"], n_obs=m["n"], skew=m["skew"],
+                                   kurtosis=m["kurtosis"], sr_variance=floor, n_trials=440)
+        self.assertGreater(few["sr0"], 0.0)
+        self.assertLess(many["dsr"], few["dsr"])
 
     def test_holm_and_dsr(self):
         adj = inf.holm({"a": 0.01, "b": 0.04, "c": 0.03})
