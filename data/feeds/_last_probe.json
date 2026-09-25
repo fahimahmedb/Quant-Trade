@@ -9,27 +9,33 @@
     "status": "UNREACHABLE",
     "terms": "documented"
   },
+  "dydx": {
+    "records": 100,
+    "seconds": 0.87,
+    "status": "OK",
+    "terms": "documented"
+  },
   "fomc_calendar": {
     "records": 56,
-    "seconds": 0.05,
+    "seconds": 0.3,
     "status": "OK",
     "terms": "documented"
   },
   "fred": {
     "records": 11265,
-    "seconds": 0.17,
+    "seconds": 0.41,
     "status": "OK",
     "terms": "documented"
   },
   "hyperliquid": {
     "records": 234,
-    "seconds": 0.4,
+    "seconds": 0.44,
     "status": "OK",
     "terms": "documented"
   },
   "kalshi": {
     "records": 5,
-    "seconds": 0.14,
+    "seconds": 0.15,
     "status": "OK",
     "terms": "documented"
   },
@@ -40,21 +46,27 @@
     "status": "NOT_CONFIGURED",
     "terms": "keyed"
   },
+  "okx": {
+    "records": 100,
+    "seconds": 0.27,
+    "status": "OK",
+    "terms": "documented"
+  },
   "polymarket": {
     "records": 5,
-    "seconds": 0.11,
+    "seconds": 0.35,
     "status": "OK",
     "terms": "documented"
   },
   "stooq": {
     "records": 0,
-    "seconds": 0.52,
+    "seconds": 0.57,
     "status": "EMPTY",
     "terms": "grey"
   },
   "yahoo_chart": {
     "records": 5,
-    "seconds": 0.1,
+    "seconds": 0.19,
     "status": "OK",
     "terms": "grey"
   }
