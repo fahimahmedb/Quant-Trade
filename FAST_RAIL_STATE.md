@@ -22,7 +22,7 @@ Le sandbox a un accès direct aux API publiques : HL, dYdX, OKX (seulement 3 moi
 ## Verdicts de l'itération 1
 | H | niveau | chiffres nets (validation) | motif |
 |---|---|---|---|
-| H-001 | BLOCKED | — | données : `ODDS_API_KEY` absente |
+| H-001 | DÉBLOQUÉE (forward uniquement) | — | clé fournie, offre gratuite de 500 req/mois, sans historique ; lire la variable d'environnement `ODDS_API_KEY` |
 | H-002 | EN COURS | — | patch WIP sauvegardé ; dataset non construit |
 | H-003 | REJECT | +1,09 %/évt, t 7,15 (dégénéré), seuil 2,64, N=34 | 0 perte sur 48 contrats : test binomial p=0,71 ; ≈0 à 2x frais ; quotes jusqu'à 24h périmées |
 | H-004 | REJECT | −0,10 c/contrat, t −0,55, seuil 2,50, N=105 | la sélection adverse mange ~94 % du demi-spread |
@@ -38,12 +38,11 @@ Les 15 % les plus récents de chaque jeu H-003/4/5 sont intacts : réutilisables
 4. H-005bis : fade des listings avec stop anti-squeeze (uniquement sur les 15 % intacts, pré-enregistré).
 5. Kalshi macro (CPI/NFP) contre nowcast : vérifier d'abord le point-in-time du consensus.
 BLOCKED :
-- H-001 : clé Odds API ;
 - SPAC / merger arb : UA de contact EDGAR ;
 - déblocages de tokens : aucun calendrier point-in-time gratuit.
 
 ## Actions propriétaire en attente
-- Clé The Odds API.
+- Mettre la clé Odds API en variable d'environnement `ODDS_API_KEY` (réglages de l'environnement) ET en secret GitHub `ODDS_API_KEY` (relais `data-feeds.yml`). Ne jamais la committer.
 - UA de contact pour EDGAR.
 
 ## Leçon de l'itération
