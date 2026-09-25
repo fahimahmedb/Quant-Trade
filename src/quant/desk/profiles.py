@@ -53,7 +53,21 @@ CALENDAR_PROFILE = DeskProfile(
 )
 
 
+PERP_DATASET = "perp_funding_pairs_daily"
+
+#: Market-neutral pairs: neutrality stays binding; per-leg cap; taker fees ~5bp
+#: plus spread on thin listings; capacity from each venue's daily notional.
+PERP_PROFILE = DeskProfile(
+    "perp_funding_spread",
+    RiskLimits(max_gross_ratio=1.5, max_net_ratio=0.10, max_symbol_ratio=0.10),
+    ExecutionModel(commission_bps=5.0, half_spread_bps=2.5,
+                   impact_bps_at_full_participation=15.0, max_participation=0.01),
+)
+
+
 def profile_for(dataset_id: str) -> DeskProfile:
+    if dataset_id == PERP_DATASET:
+        return PERP_PROFILE
     if dataset_id == CALENDAR_DATASET:
         return CALENDAR_PROFILE
     if dataset_id in (FUTURES_DATASET, FUTURES_BROAD_DATASET):

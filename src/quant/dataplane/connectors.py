@@ -303,6 +303,53 @@ def fetch_binance_funding(coin: str) -> list[dict[str, Any]]:
     return parse_binance_funding(get_json(BINANCE_FUNDING.format(symbol=f"{coin}USDT")))
 
 
+OKX_FUNDING = ("https://www.okx.com/api/v5/public/funding-rate-history?instId={coin}-USDT-SWAP"
+               "&limit=100")
+
+
+def parse_okx_funding(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    if str((payload or {}).get("code", "0")) != "0":
+        return []
+    out = []
+    for item in payload.get("data") or []:
+        rate = _float(item.get("realizedRate") or item.get("fundingRate"))
+        stamp = _float(item.get("fundingTime"))
+        inst = item.get("instId") or ""
+        if rate is None or stamp is None or not inst.endswith("-USDT-SWAP"):
+            continue
+        out.append({"venue": "OKX", "coin": inst.split("-")[0], "time_ms": int(stamp),
+                    "rate": rate, "interval_hours": 8})
+    return out
+
+
+def fetch_okx_funding(coin: str) -> list[dict[str, Any]]:
+    return parse_okx_funding(get_json(OKX_FUNDING.format(coin=coin)))
+
+
+DYDX_FUNDING = "https://indexer.dydx.trade/v4/historicalFunding/{coin}-USD?limit=100"
+
+
+def parse_dydx_funding(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """dYdX v4 indexer: hourly rates with ISO ``effectiveAt`` timestamps."""
+    out = []
+    for item in (payload or {}).get("historicalFunding") or []:
+        rate = _float(item.get("rate"))
+        ticker = item.get("ticker") or ""
+        try:
+            stamp = datetime.fromisoformat(str(item.get("effectiveAt")).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if rate is None or not ticker.endswith("-USD"):
+            continue
+        out.append({"venue": "DYDX", "coin": ticker[:-4], "time_ms": int(stamp.timestamp() * 1000),
+                    "rate": rate, "interval_hours": 1})
+    return out
+
+
+def fetch_dydx_funding(coin: str) -> list[dict[str, Any]]:
+    return parse_dydx_funding(get_json(DYDX_FUNDING.format(coin=coin)))
+
+
 # --- prediction markets -------------------------------------------------------------
 POLYMARKET_MARKETS = ("https://gamma-api.polymarket.com/markets?active=true&closed=false"
                       "&limit={limit}&offset={offset}")
@@ -446,6 +493,11 @@ CONNECTORS: dict[str, ConnectorSpec] = {spec.name: spec for spec in [
                   lambda: fetch_bybit_funding("BTC")),
     ConnectorSpec("binance_futures", "fapi.binance.com", "documented",
                   "public market API; HTTP 451 from US IPs", lambda: fetch_binance_funding("BTC")),
+    ConnectorSpec("okx", "www.okx.com", "documented",
+                  "public market API; reachable from more jurisdictions than Binance/Bybit",
+                  lambda: fetch_okx_funding("BTC")),
+    ConnectorSpec("dydx", "indexer.dydx.trade", "documented",
+                  "public indexer of a decentralised exchange", lambda: fetch_dydx_funding("BTC")),
     ConnectorSpec("polymarket", "gamma-api.polymarket.com", "documented",
                   "public read API; trading restricted by jurisdiction",
                   lambda: fetch_polymarket_markets(5)),

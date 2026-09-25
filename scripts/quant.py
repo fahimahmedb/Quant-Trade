@@ -152,13 +152,16 @@ def main() -> None:
                                             "sec-status", "sec-enable", "sec-disable",
                                             "sec-probe", "sec-reconcile", "sec-verify",
                                             "sec-serve", "sec-fingerprint",
-                                            "sec-readiness", "sec-audit"))
+                                            "sec-readiness", "sec-audit", "sync-feeds"))
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--market", choices=("etf", "futures", "futures-broad", "calendar"),
+    parser.add_argument("--market", choices=("etf", "futures", "futures-broad", "calendar",
+                                             "perp-funding"),
                         default="etf",
                         help="which market instance to drive; futures keeps its own "
                              "state under var/futures and never touches the ETF Book")
     parser.add_argument("--max-ticks", type=int, default=10_000)
+    parser.add_argument("--feeds", type=Path,
+                        help="sync-feeds: a local data/feeds directory instead of the git branch")
     parser.add_argument("--reason", default="operator-requested pause")
     parser.add_argument("--capital", type=float, default=1_000_000.0)
     parser.add_argument("--poll-seconds", type=float, default=60.0,
@@ -192,6 +195,18 @@ def main() -> None:
                               "reason": "COLLECTOR_ALREADY_RUNNING"}))
             raise SystemExit(2)
 
+    if args.command == "sync-feeds":
+        from quant.dataplane.feeds import checkout_feeds
+        from quant.dataplane.ingest import sync_feeds
+        from quant.dataplane.registry import DatasetRegistry
+        from quant.events import EventLog
+        from quant.paths import QuantPaths
+        paths = QuantPaths(args.root).ensure()
+        feeds = args.feeds or checkout_feeds(args.root, paths.var / "feeds_checkout")
+        print(json.dumps(sync_feeds(paths, DatasetRegistry(paths.dataset_registry, paths.root),
+                                    EventLog(paths.events), Path(feeds)), indent=2))
+        return
+
     if args.command.startswith("sec-") and args.market != "etf":
         print(json.dumps({"state": "REFUSED",
                           "reason": "the SEC capture lane belongs to the etf instance"}))
@@ -209,6 +224,13 @@ def main() -> None:
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=FUTURES_UNIVERSE, dataset_id=FUTURES_DATASET,
                              state_dir="var/futures")
+    elif args.market == "perp-funding":
+        import json as _json
+        meta = _json.loads((args.root / "data" / "datasets"
+                            / "perp_funding_pairs_daily.csv.meta.json").read_text())
+        system = QuantSystem(args.root, initial_capital=args.capital,
+                             universe=meta["symbols"], dataset_id="perp_funding_pairs_daily",
+                             state_dir="var/perp_funding", calendar=["HL.BTC"])
     elif args.market == "calendar":
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=["SPY", "TLT", "SPY_ON"],
@@ -262,6 +284,7 @@ def main() -> None:
     elif args.command == "brief":
         name = {"etf": "CHIEF_BRIEF.md", "futures": "CHIEF_BRIEF_FUTURES.md",
                 "calendar": "CHIEF_BRIEF_CALENDAR.md",
+                "perp-funding": "CHIEF_BRIEF_PERP_FUNDING.md",
                 "futures-broad": "CHIEF_BRIEF_FUTURES_BROAD.md"}[args.market]
         path = write_chief_brief(snapshot, args.root / name)
         print(f"wrote {path}")

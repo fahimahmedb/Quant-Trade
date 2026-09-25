@@ -18,6 +18,20 @@ from .panel import PricePanel
 MAX_PLAUSIBLE_DAILY_MOVE = 0.35
 
 
+def validation_policy(record: Any) -> dict[str, Any]:
+    """Per-dataset validation declared in its point-in-time metadata.
+
+    A staggered universe (coins listed and delisted over time) must not be
+    forced to a common history or to all-symbols-present-today: that would
+    silently drop delisted instruments (survivorship). Such a dataset declares
+    ``required_symbols`` (anchors that must be current) and a smaller
+    ``min_rows_per_symbol``; everything else stays the default.
+    """
+    declared = (getattr(record, "point_in_time", None) or {})
+    return {"required": declared.get("required_symbols"),
+            "min_rows": int(declared.get("min_rows_per_symbol", 250))}
+
+
 def validate_panel(panel: PricePanel, expected_symbols: list[str],
                    min_rows_per_symbol: int = 250) -> dict[str, Any]:
     problems: list[str] = []

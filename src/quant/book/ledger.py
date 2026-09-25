@@ -225,6 +225,27 @@ class Ledger:
         return {"amount": amount, "operation_id": operation_id, "replayed": False,
                 "date": date}
 
+    def apply_carry(self, strategy_id: str, amount: float, date: str,
+                    operation_id: str, kind: str = "funding") -> dict[str, Any]:
+        """Book a signed carry cash flow (e.g. perpetual funding) to one sleeve.
+
+        ``amount`` > 0 is received, < 0 is paid. Carry is economic P&L, not a
+        trading friction, so it is attributed as ``<kind>_pnl`` rather than to
+        costs. Idempotent on ``operation_id``.
+        """
+        if operation_id in self._applied:
+            return {"amount": 0.0, "operation_id": operation_id, "replayed": True}
+        self.state.cash += amount
+        bucket = self.state.attribution.setdefault(
+            strategy_id, {"realized_pnl": 0.0, "costs": 0.0, "fills": 0.0, "notional": 0.0})
+        bucket["carry_pnl"] = bucket.get("carry_pnl", 0.0) + amount
+        bucket[f"{kind}_pnl"] = bucket.get(f"{kind}_pnl", 0.0) + amount
+        self._applied.add(operation_id)
+        self.state.applied_operations.append(operation_id)
+        self.save()
+        return {"amount": amount, "operation_id": operation_id, "replayed": False,
+                "date": date}
+
     def mark_to_market(self, date: str, prices: dict[str, float]) -> dict[str, Any]:
         """Revalue every sleeve and record one point in the persistent NAV history."""
         if self.state.last_session_date and date < self.state.last_session_date:
@@ -275,7 +296,7 @@ class Ledger:
             unrealized = sum(position.unrealized_pnl
                              for position in self.sleeves.get(strategy, {}).values())
             out[strategy] = (bucket.get("realized_pnl", 0.0) + unrealized
-                             - bucket.get("costs", 0.0))
+                             - bucket.get("costs", 0.0) + bucket.get("carry_pnl", 0.0))
         return out
 
     def sleeve_returns(self, strategy_id: str, since: str | None = None) -> list[tuple[str, float]]:
