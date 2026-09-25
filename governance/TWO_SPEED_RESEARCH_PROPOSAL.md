@@ -20,7 +20,7 @@ Aujourd'hui, une seule procédure de très haute assurance, conçue pour le capi
 | | **Rail SÛR** (lent) | **Rail RAPIDE** (accéléré) |
 |---|---|---|
 | But | Qualifier ce qui peut un jour toucher du capital | Trouver vite des candidats d'edge et les soumettre à des données forward |
-| Périmètre | P0 / Form 4, Gate B, hôte cible, première verticale, tout passage au capital réel | Recherche papier/shadow sur tout autre jeu de données ou marché |
+| Périmètre | P0 / Form 4, Gate A / B / C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés, tout passage au capital réel | Recherche papier/shadow sur tout autre jeu de données ou marché, hors périmètre du rail sûr |
 | Autorité | Gouvernance Blue actuelle (inchangée) | Le builder décide seul, dans les invariants du §3 |
 | Preuves | Sceaux, digests, revues Astra indépendantes | Tests, journal d'essais, red team par vague |
 | Documentation | Inchangée, mais plafonnée (voir §5) | **Un seul** fichier d'état vivant, `FAST_RAIL_STATE.md`, et un registre JSONL |
@@ -39,6 +39,8 @@ Le rail rapide n'est pas « moins honnête » : il garde tous les invariants éc
 6. **Hold-out forward intouchable** : seules les données postérieures à `pristine_after` peuvent faire évoluer le cycle de vie d'une stratégie.
 7. **Légalité** : la porte `desk/compliance.py` s'applique ; les pratiques interdites restent interdites.
 8. **Aucun capital réel** sur le rail rapide, quel que soit le résultat.
+9. **Manchons par stratégie** : plusieurs stratégies peuvent partager un instrument ; l'attribution reste par stratégie, agrégée à part pour le portefeuille.
+10. **Risque sur le portefeuille final** : l'approbation RISK porte sur le portefeuille post-transformation et post-mise à l'échelle réellement simulé.
 
 ## 4. L'échelle de preuve du rail rapide
 

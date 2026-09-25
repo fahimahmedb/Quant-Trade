@@ -30,7 +30,7 @@ BRANCH                  = fast/rail-01        # ou la branche imposée par la se
 
 **Interdit, sans exception**
 - Capital réel, clés de trading, ordres réels.
-- Le rail sûr : `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, tout ce qui touche P0 / Form 4 / Gate A / Gate B / hôte cible / première verticale, les SHA figés.
+- Le rail sûr : `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, tout ce qui touche P0 / Form 4 / Gate A / Gate B / Gate C / hôte cible / première verticale, les SHA figés.
 - Les branches `blue/*`, `astra/*`, `builder/*` et la branche par défaut. Merge, force-push, suppression de branche.
 - Les pratiques illégales : wash trading, spoofing, manipulation d'oracle, information privilégiée, multi-comptes ou sybil, contournement géographique, exploit de contrat, MEV nuisible.
 - Côté données : scraping derrière un login, rotation d'IP ou d'identité, contournement de limites de débit, extraction de clés d'API embarquées dans un site.
@@ -65,6 +65,7 @@ Crée ensuite `FAST_RAIL_STATE.md` (format au §8) et `research/fast_rail/regist
 6. **Forward intouchable.** Seules les données postérieures à `pristine_after` font bouger le cycle de vie. On ne regarde jamais le forward pour choisir un paramètre.
 7. **Manchons par stratégie.** Plusieurs stratégies peuvent partager un instrument ; l'attribution reste par stratégie.
 8. **Conformité.** Chaque nouvelle lane déclare ses pratiques (`desk/compliance.py`). Une pratique inconnue est refusée.
+9. **Risque sur le portefeuille final.** RISK approuve le portefeuille post-transformation et post-mise à l'échelle réellement simulé, pas un objet intermédiaire.
 
 ## 4. ÉCHELLE DE PREUVE
 
