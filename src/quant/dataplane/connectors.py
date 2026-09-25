@@ -65,6 +65,8 @@ def _request(url: str, *, method: str = "GET", body: Any = None,
                 break                      # 4xx other than rate-limit: do not hammer
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last = exc
+            if "Tunnel connection failed: 403" in str(exc):
+                break                      # egress policy refusal: permanent here
         if attempt < retries:
             time.sleep(backoff * (2 ** attempt))
     raise DataUnavailable(f"{url.split('?')[0]}: {type(last).__name__}: {last}")

@@ -10,7 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from .signals import BASELINE_FAMILY, TREND_FAMILY, StrategySpec
+from .signals import (BASELINE_FAMILY, FOMC_BASELINE, FOMC_OVERNIGHT, MONTH_END,
+                      MONTH_END_BASELINE, TREND_FAMILY, StrategySpec)
 
 
 #: Point-in-time partition of the panel. SHADOW is reserved for the Capital
@@ -69,6 +70,9 @@ def baseline_spec(spec: StrategySpec) -> StrategySpec:
     equal risk has not demonstrated timing skill, only exposure to the drift of
     the asset classes it trades (for example the 2002-2020 bond rally).
     """
+    calendar_baselines = {FOMC_OVERNIGHT: FOMC_BASELINE, MONTH_END: MONTH_END_BASELINE}
+    if spec.family in calendar_baselines:
+        return StrategySpec(**{**spec.to_dict(), "family": calendar_baselines[spec.family]})
     return _ts_spec(spec.universe, spec.dataset_id, 0.0, 0.0, family=BASELINE_FAMILY,
                     calendar_symbol=spec.calendar_symbol,
                     max_cost_sharpe=spec.max_cost_sharpe)
@@ -184,7 +188,53 @@ def futures_broad_lane_definitions(universe: list[str], dataset_id: str
     }
 
 
+CALENDAR_DATASET = "us_calendar_legs_daily"
+#: Variants the structural-edges lab (research/structural_edges_2026-09-25)
+#: evaluated on this same SPY/TLT history before these lanes were declared.
+CALENDAR_PRIOR_TRIALS = 20
+#: Every committed bar was seen by that lab; only later sessions are pristine.
+CALENDAR_PRISTINE_AFTER = "2026-09-11"
+CALENDAR_COST_BPS = 2.0
+
+
+def _calendar_spec(universe: list[str], dataset_id: str, family: str,
+                   holding: int) -> StrategySpec:
+    return StrategySpec(family=family, universe=universe, lookback_days=0, direction=1,
+                        min_abs_score=0.0, max_weight=1.0, gross_exposure=1.0,
+                        holding_days=holding, no_trade_band=0.0, dataset_id=dataset_id,
+                        calendar_symbol="SPY")
+
+
+def calendar_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    common = {"prior_trials": CALENDAR_PRIOR_TRIALS, "pristine_after": CALENDAR_PRISTINE_AFTER,
+              "benchmark": "SPY", "cost_bps": CALENDAR_COST_BPS, "calendar": ["SPY"],
+              "market": "SPY/TLT session legs (calendar effects)"}
+    return {
+        "calendar_fomc_overnight": {
+            "lane": "calendar_flows", "priority": 36.0,
+            "question": "Does SPY's close-to-open return into a scheduled FOMC decision day "
+                        "exceed its ordinary overnight return, net of a MOC/MOO round trip?",
+            "mechanism": "Uncertainty-resolution premium ahead of scheduled monetary-policy "
+                         "news (Lucca & Moench 2015). The schedule is public a year ahead.",
+            "falsification": "Declared tests; the passive baseline is holding the overnight leg "
+                             "every night. Contaminated history (lab): lifecycle only moves on "
+                             "sessions after the pristine date.",
+            "grid": [_calendar_spec(universe, dataset_id, FOMC_OVERNIGHT, 1)], **common},
+        "calendar_month_end_rebalance": {
+            "lane": "calendar_flows", "priority": 35.0,
+            "question": "Do fixed-weight rebalancers push SPY against its month-to-date "
+                        "performance relative to TLT over the last two sessions of the month?",
+            "mechanism": "About $20T follows fixed-weight policies; month-end rebalancing sells "
+                         "the month's winner (Harvey, Mazzoleni & Melone 2025).",
+            "falsification": "Declared tests; the passive baseline is long SPY over the same "
+                             "last two sessions of every month.",
+            "grid": [_calendar_spec(universe, dataset_id, MONTH_END, 2)], **common},
+    }
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    if dataset_id == CALENDAR_DATASET:
+        return calendar_lane_definitions(universe, dataset_id)
     if dataset_id == FUTURES_DATASET:
         return futures_lane_definitions(universe, dataset_id)
     if dataset_id == FUTURES_BROAD_DATASET:

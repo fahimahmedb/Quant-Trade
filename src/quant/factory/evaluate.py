@@ -15,7 +15,7 @@ from statistics import NormalDist
 from typing import Any
 
 from ..dataplane.panel import PricePanel, Window
-from .signals import TIME_SERIES_FAMILIES, StrategySpec, should_rebalance, weights_for
+from .signals import DIRECTIONAL_FAMILIES, StrategySpec, should_rebalance, weights_for
 
 
 #: Family-wise error rate the factory is willing to accept across every
@@ -240,7 +240,7 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
     top_five_share = (sum(positives[:5]) / total_positive) if total_positive > 0 else 1.0
     threshold = required_t_statistic(trials)
 
-    time_series = spec.family in TIME_SERIES_FAMILIES
+    time_series = spec.family in DIRECTIONAL_FAMILIES
     baseline_sharpe = None
     baseline_alpha_t = None
     if time_series:

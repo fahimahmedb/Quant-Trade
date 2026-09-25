@@ -61,6 +61,8 @@ class StrategySpec:
 
     @property
     def label(self) -> str:
+        if self.family in CALENDAR_FAMILIES:
+            return f"{self.family}_x{self.gross_exposure:g}_h{self.holding_days}"
         if self.family in TIME_SERIES_FAMILIES:
             return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
                     f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}"
@@ -170,6 +172,8 @@ def _project(weights: dict[str, float], cap: float) -> dict[str, float]:
 
 def weights_for(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
     """The complete signal path used identically by research and the desk."""
+    if spec.family in CALENDAR_FAMILIES:
+        return calendar_weights(panel, spec, asof)
     if spec.family in TIME_SERIES_FAMILIES:
         return time_series_weights(panel, spec, asof)
     return target_weights(cross_sectional_scores(panel, spec.universe, asof,
@@ -335,3 +339,63 @@ def time_series_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dic
         if abs(weight) >= MIN_WEIGHT:
             weights[symbol] = weight
     return weights
+
+
+# ---------------------------------------------------------------------------
+# Calendar effects (flows known in advance)
+# ---------------------------------------------------------------------------
+#
+# These families always return an explicit target, including an explicit zero
+# when flat, so the shared rebalance rule closes the position on schedule
+# instead of reading "no signal" as "keep holding". Every input is a feature on
+# the ``asof`` row (sessions until the next scheduled FOMC decision, sessions
+# left in the month) or a price at or before ``asof``.
+
+FOMC_OVERNIGHT = "calendar_fomc_overnight"
+FOMC_BASELINE = "calendar_overnight_always"
+MONTH_END = "calendar_month_end_rebalance"
+MONTH_END_BASELINE = "calendar_month_end_long"
+CALENDAR_FAMILIES = frozenset({FOMC_OVERNIGHT, FOMC_BASELINE, MONTH_END, MONTH_END_BASELINE})
+#: Symbols the calendar families trade (see ``dataplane.calendar_legs``).
+OVERNIGHT_LEG = "SPY_ON"
+EQUITY, BONDS = "SPY", "TLT"
+#: Hold the last two sessions of the month: decide with two sessions left.
+MONTH_END_DECISION_SESSIONS_LEFT = 2
+
+
+def _month_to_date(panel: PricePanel, symbol: str, asof: str) -> float | None:
+    dates = [day for day in panel.dates_for(symbol) if day <= asof]
+    before = [day for day in dates if day[:7] < asof[:7]]
+    if not before or not panel.has(asof, symbol):
+        return None
+    start = panel.price(before[-1], symbol)
+    return panel.price(asof, symbol) / start - 1.0 if start > 0 else None
+
+
+def calendar_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
+    if not panel.has(asof, EQUITY):
+        return {}
+    exposure = spec.gross_exposure or 1.0
+    if spec.family in (FOMC_OVERNIGHT, FOMC_BASELINE):
+        # Entry at the next fill (MOC on the session before the decision day),
+        # exit one session later (MOO on the decision day).
+        due = panel.feature(asof, EQUITY, "fomc_in_sessions") == 2.0
+        on = due or spec.family == FOMC_BASELINE
+        return {OVERNIGHT_LEG: exposure if on else 0.0}
+    left = panel.feature(asof, EQUITY, "sessions_left_in_month")
+    if left != MONTH_END_DECISION_SESSIONS_LEFT:
+        return {EQUITY: 0.0}
+    if spec.family == MONTH_END_BASELINE:
+        return {EQUITY: exposure}
+    equity, bonds = _month_to_date(panel, EQUITY, asof), _month_to_date(panel, BONDS, asof)
+    if equity is None or bonds is None or equity == bonds:
+        return {EQUITY: 0.0}
+    # Fixed-weight balanced funds sell the month's winner and buy the loser at
+    # month end (Harvey, Mazzoleni & Melone 2025): lean against equities when
+    # they outperformed bonds month to date, with them when they lagged.
+    return {EQUITY: -exposure if equity > bonds else exposure}
+
+
+#: Families that take directional risk by design: judged against a passive
+#: baseline of the same exposure instead of against zero market beta.
+DIRECTIONAL_FAMILIES = TIME_SERIES_FAMILIES | CALENDAR_FAMILIES

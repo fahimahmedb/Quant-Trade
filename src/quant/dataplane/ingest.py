@@ -197,6 +197,35 @@ def ingest_futures_panel(paths: QuantPaths, registry: DatasetRegistry, log: Even
     return registered
 
 
+def ingest_calendar_panel(paths: QuantPaths, registry: DatasetRegistry,
+                          log: EventLog) -> DatasetRecord:
+    """Derive the calendar-legs panel from the committed ETF snapshot."""
+    from .calendar_legs import (CALENDAR_BASE, CALENDAR_DATASET, OVERNIGHT_SUFFIX,
+                                build_calendar_panel, load_fomc_days)
+    source_path = paths.datasets / f"{SECTOR_DATASET}.csv"
+    if not source_path.exists():
+        raise DataUnavailable(f"{SECTOR_DATASET} snapshot missing")
+    fomc = load_fomc_days(paths.root)
+    panel, provenance = build_calendar_panel(PricePanel.load(source_path), CALENDAR_BASE, fomc)
+    symbols = CALENDAR_BASE + [symbol + OVERNIGHT_SUFFIX for symbol in CALENDAR_BASE]
+    record = DatasetRecord(
+        dataset_id=CALENDAR_DATASET,
+        source=f"derived from {SECTOR_DATASET} ({fingerprint_file(source_path)}) and the "
+               f"scheduled FOMC calendar ({len(fomc)} decision days)",
+        adapter="calendar_legs_derivation", path=f"data/datasets/{CALENDAR_DATASET}.csv.gz",
+        point_in_time={"information_available_at": "the close of the dated session",
+                       "minimum_decision_lag_days": 1, "derivation": provenance["derivation"],
+                       "calendar_features": "sessions_left_in_month and fomc_in_sessions are "
+                                            "computed from the NYSE holiday rules and the "
+                                            "published FOMC schedule, both known in advance"},
+        caveats=provenance["caveats"] + ["inherits every caveat of the source ETF snapshot"],
+        license_note="derived research dataset")
+    registered = _register(registry, record, panel, symbols, paths.root)
+    log.emit("DATA", "DATA", "dataset_ingested", CALENDAR_DATASET, rows=registered.rows,
+             fingerprint=registered.fingerprint, availability=registered.availability)
+    return registered
+
+
 def ingest_all(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
                range_: str = "10y", network: bool = True) -> dict[str, Any]:
     """Ingest everything available. A blocked source never stops the others."""

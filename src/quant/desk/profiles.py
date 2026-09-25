@@ -41,7 +41,21 @@ FUTURES_PROFILE = DeskProfile(
 )
 
 
+CALENDAR_DATASET = "us_calendar_legs_daily"
+
+#: One directional SPY (or SPY overnight-leg) sleeve: net exposure is the
+#: strategy, so the neutrality limit is lifted; SPY costs ~0.3bp half-spread.
+CALENDAR_PROFILE = DeskProfile(
+    "calendar_flows",
+    RiskLimits(max_gross_ratio=1.5, max_net_ratio=1.0, max_symbol_ratio=1.0),
+    ExecutionModel(commission_bps=0.3, half_spread_bps=0.5,
+                   impact_bps_at_full_participation=10.0),
+)
+
+
 def profile_for(dataset_id: str) -> DeskProfile:
+    if dataset_id == CALENDAR_DATASET:
+        return CALENDAR_PROFILE
     if dataset_id in (FUTURES_DATASET, FUTURES_BROAD_DATASET):
         return FUTURES_PROFILE
     return DEFAULT_PROFILE

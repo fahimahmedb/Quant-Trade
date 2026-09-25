@@ -154,7 +154,8 @@ def main() -> None:
                                             "sec-serve", "sec-fingerprint",
                                             "sec-readiness", "sec-audit"))
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--market", choices=("etf", "futures", "futures-broad"), default="etf",
+    parser.add_argument("--market", choices=("etf", "futures", "futures-broad", "calendar"),
+                        default="etf",
                         help="which market instance to drive; futures keeps its own "
                              "state under var/futures and never touches the ETF Book")
     parser.add_argument("--max-ticks", type=int, default=10_000)
@@ -208,6 +209,11 @@ def main() -> None:
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=FUTURES_UNIVERSE, dataset_id=FUTURES_DATASET,
                              state_dir="var/futures")
+    elif args.market == "calendar":
+        system = QuantSystem(args.root, initial_capital=args.capital,
+                             universe=["SPY", "TLT", "SPY_ON"],
+                             dataset_id="us_calendar_legs_daily", state_dir="var/calendar",
+                             calendar=["SPY"])
     elif args.market == "futures-broad":
         from quant.dataplane.futures import FUTURES_BENCHMARK, FUTURES_BROAD_DATASET
         from quant.dataplane.ingest import metadata_path  # noqa: F401  (documented path)
@@ -255,6 +261,7 @@ def main() -> None:
         print(surface)
     elif args.command == "brief":
         name = {"etf": "CHIEF_BRIEF.md", "futures": "CHIEF_BRIEF_FUTURES.md",
+                "calendar": "CHIEF_BRIEF_CALENDAR.md",
                 "futures-broad": "CHIEF_BRIEF_FUTURES_BROAD.md"}[args.market]
         path = write_chief_brief(snapshot, args.root / name)
         print(f"wrote {path}")

@@ -25,7 +25,7 @@ from ..paths import QuantPaths  # noqa: E402
 from ..state import append_jsonl, read_jsonl, write_json  # noqa: E402
 from .evaluate import falsify, summarize, walk_forward  # noqa: E402
 from .lanes import BENCHMARK, COST_BPS, WINDOWS, baseline_spec, lane_definitions  # noqa: E402
-from .signals import TIME_SERIES_FAMILIES, StrategySpec  # noqa: E402
+from .signals import DIRECTIONAL_FAMILIES, StrategySpec  # noqa: E402
 from .strategies import StrategyDefinition, StrategyRegistry  # noqa: E402
 
 
@@ -161,7 +161,7 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
     rows = walk_forward(visible, spec, validation, cost_bps)
     summary = summarize(rows, visible, benchmark, cost_bps)
     baseline_rows = None
-    if spec.family in TIME_SERIES_FAMILIES:
+    if spec.family in DIRECTIONAL_FAMILIES:
         baseline_rows = walk_forward(visible, baseline_spec(spec), validation, cost_bps)
         ticket.candidate_data["baseline"] = summarize(baseline_rows, visible, benchmark, cost_bps)
     verdict = falsify(rows, summary, visible, benchmark, spec, trials,
