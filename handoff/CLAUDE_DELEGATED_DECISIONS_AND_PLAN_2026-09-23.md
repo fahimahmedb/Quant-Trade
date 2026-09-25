@@ -167,3 +167,31 @@ OUTCOME_ACCESS  = NONE (aucun prix ni rendement lu)
   - au plus 3 finalistes ;
   - requête holdout commitée ;
   - **lecture unique** → GO / INCONCLUSIVE / NO_GO.
+
+## État au 2026-09-25 — moteur d'évaluation prêt à être épinglé
+
+```text
+EVALUATION_ENGINE = PIN_READY (revue indépendante, 290d8c7)
+TESTS             = 525 OK ; demo 35/35 ; schémas OK
+OUTCOME_ACCESS    = NONE
+```
+
+**Livré :**
+- `evaluation.py` : portefeuille en temps calendaire, ADV20 point-in-time, slots, frictions, sorties, délistings, purges.
+- `inference.py` : bootstrap par blocs studentisé, HAC fixed-b, DSR avec plancher de variance, Holm, Romano–Wolf/SPA.
+- `screen.py` : les 22 variantes, essais sûrs en cas de crash, au plus 3 finalistes.
+- `verdict.py` : GO / INCONCLUSIVE / NO_GO, capacité, stress, robustesse aux seeds.
+- La lecture unique **recalcule** le criblage. Rapport, spec et requête sont commités ensemble.
+- 25 clarifications déposées avant tout rendement : `research/fastlane/PROTOCOL_CLARIFICATIONS_PRE_OUTCOME.md`.
+- C16 : valeur critique fixed-b = la plus conservatrice entre la simulation et Kiefer–Vogelsang, soit 1,8663.
+
+**Lot « avant criblage »** (à faire quand la clé fournisseur existera, **avant** le premier `screen`) :
+1. Brancher l'adaptateur Sharadar :
+   - SEP, ACTIONS converties en SPLIT/CASH_DIVIDEND ;
+   - TICKERS pour le mapping CIK → titre point-in-time ;
+   - SPY total return ;
+   - carte des délistings dérivée de la documentation.
+   Puis une **revue indépendante** de cet adaptateur, qui fait partie de l'empreinte de code.
+2. La grant holdout appelle elle-même `screen.recompute_and_verify` (au lieu d'accepter un reçu en processus).
+3. Des checkpoints append-only du ledger d'accès sont commités dans `research/fastlane/`. Chaque checkpoint prolonge le précédent, ce qui survit au conteneur éphémère.
+4. `git fetch --unshallow`, puis le criblage (découverte et walk-forward), puis la requête holdout commitée, puis **une seule lecture**.
