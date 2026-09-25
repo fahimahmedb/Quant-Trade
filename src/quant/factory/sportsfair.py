@@ -33,15 +33,15 @@ def devig_multiplicative(prices: dict[str, float]) -> dict[str, float]:
 def devig_power(prices: dict[str, float]) -> dict[str, float]:
     """p_i = (1/o_i)^k with k chosen so the probabilities sum to one."""
     implied = _implied(prices)
-    low, high = 0.5, 3.0
-    for _ in range(100):
+    low, high = 1e-3, 50.0
+    for _ in range(200):
         k = (low + high) / 2.0
         if sum(value ** k for value in implied.values()) > 1.0:
             low = k
         else:
             high = k
     k = (low + high) / 2.0
-    return {name: value ** k for name, value in implied.items()}
+    return _checked({name: value ** k for name, value in implied.items()}, "power")
 
 
 def devig_shin(prices: dict[str, float]) -> dict[str, float]:
@@ -53,14 +53,21 @@ def devig_shin(prices: dict[str, float]) -> dict[str, float]:
         return {name: (math.sqrt(z * z + 4 * (1 - z) * value * value / booksum) - z)
                 / (2 * (1 - z)) for name, value in implied.items()}
 
-    low, high = 0.0, 0.5
-    for _ in range(100):
+    low, high = 0.0, 0.999
+    for _ in range(200):
         z = (low + high) / 2.0
         if sum(probabilities(z).values()) > 1.0:
             low = z
         else:
             high = z
-    return probabilities((low + high) / 2.0)
+    return _checked(probabilities((low + high) / 2.0), "shin")
+
+
+def _checked(probabilities: dict[str, float], method: str) -> dict[str, float]:
+    total = sum(probabilities.values())
+    if abs(total - 1.0) > 1e-6:
+        raise ValueError(f"{method} devig did not converge (probabilities sum to {total:.4f})")
+    return probabilities
 
 
 DEVIG: dict[str, Callable[[dict[str, float]], dict[str, float]]] = {
@@ -79,6 +86,11 @@ def closing_line_value(price_taken: float, closing_prices: dict[str, float], out
     return expected_value(price_taken, fair)
 
 
+def kalshi_taker_fee(price: float, contracts: int) -> float:
+    """Kalshi's published taker fee for one order, rounded up to the cent."""
+    return math.ceil(0.07 * contracts * price * (1 - price) * 100 - 1e-9) / 100
+
+
 def binary_contract_edge(ask: float, fair_probability: float,
                          fee: Callable[[float], float] | None = None) -> float:
     """Expected return per dollar of buying a $1 binary contract at ``ask``.
@@ -88,3 +100,10 @@ def binary_contract_edge(ask: float, fair_probability: float,
     """
     cost = ask + (fee(ask) if fee else 0.0)
     return (fair_probability - cost) / cost
+
+
+def binary_order_edge(ask: float, fair_probability: float, contracts: int) -> float:
+    """Per-dollar edge of a whole Kalshi taker order, with the fee's cent rounding
+    (small orders at extreme prices pay far more than the formula's average)."""
+    cost = contracts * ask + kalshi_taker_fee(ask, contracts)
+    return (contracts * fair_probability - cost) / cost

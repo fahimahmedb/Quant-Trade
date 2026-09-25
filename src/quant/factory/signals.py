@@ -449,6 +449,8 @@ def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> 
         a, b = f"{first}.{coin}", f"{second}.{coin}"
         if not (panel.has(asof, a) and panel.has(asof, b)):
             continue
+        if panel.feature(asof, a, "price_proxy") or panel.feature(asof, b, "price_proxy"):
+            continue      # a leg valued at the other venue's price hides the hedge risk
         carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
         carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
         if carry_a is None or carry_b is None:

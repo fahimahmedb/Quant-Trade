@@ -61,7 +61,8 @@ PERP_PROFILE = DeskProfile(
     "perp_funding_spread",
     RiskLimits(max_gross_ratio=1.5, max_net_ratio=0.10, max_symbol_ratio=0.10),
     ExecutionModel(commission_bps=5.0, half_spread_bps=2.5,
-                   impact_bps_at_full_participation=15.0, max_participation=0.01),
+                   impact_bps_at_full_participation=15.0, max_participation=0.01,
+                   volume_is_notional=True),
 )
 
 

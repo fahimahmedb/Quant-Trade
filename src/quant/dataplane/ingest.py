@@ -238,30 +238,52 @@ def _committed_record(paths: QuantPaths, dataset_id: str,
     return DatasetRecord(**payload), expected
 
 
+def _append_if_valid(registry: DatasetRegistry, record: DatasetRecord, panel: PricePanel,
+                     rows: list[dict[str, Any]], expected: list[str], root: Path,
+                     next_expected: str) -> dict[str, Any]:
+    """Append forward rows only if they start at the next session and the
+    extended panel validates; otherwise write nothing and report why."""
+    from .feeds import extend_panel
+    first = min(row["date"] for row in rows)
+    if first != next_expected:
+        return {"blocked": f"gap: first new session {first} but the next expected is "
+                           f"{next_expected}; nothing appended"}
+    candidate = extend_panel(panel, rows)
+    policy = validation_policy(record)
+    verdict = validate_panel(candidate, policy["required"] or expected, policy["min_rows"])
+    if not verdict["passed"]:
+        return {"blocked": "extended panel fails validation; nothing appended",
+                "problems": verdict["problems"]}
+    registered = _register(registry, record, candidate, expected, root)
+    return {"appended_bars": len(rows), "last_date": registered.last_date,
+            "availability": registered.availability}
+
+
 def sync_feeds(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
                feeds: Path) -> dict[str, Any]:
     """Append forward sessions from collected feeds; never rewrite history."""
-    from .calendar_legs import FOMC_FILE, load_fomc_days
-    from .feeds import (daily_funding, daily_marks, etf_forward_rows, extend_panel,
-                        merged_fomc_days, perp_forward_rows, read_latest, write_fomc_days)
+    from datetime import date, timedelta
+    from .calendar_legs import FOMC_FILE, load_fomc_days, next_sessions
+    from .feeds import (daily_funding, daily_marks, etf_forward_rows, merged_fomc_days,
+                        perp_forward_rows, read_latest, write_fomc_days)
     report: dict[str, Any] = {}
     etf_path = paths.datasets / f"{SECTOR_DATASET}.csv"
     changed_calendar = False
     if etf_path.exists():
         record, expected = _committed_record(paths, SECTOR_DATASET, ".csv")
         panel = PricePanel.load(etf_path)
-        rows = etf_forward_rows(panel, read_latest(feeds / "yahoo" / "daily_bars.jsonl"),
-                                expected or panel.symbols)
+        symbols = expected or panel.symbols
+        rows, info = etf_forward_rows(panel, read_latest(feeds / "yahoo" / "daily_bars.jsonl"),
+                                      symbols)
+        outcome: dict[str, Any] = dict(info)
         if rows:
             record.caveats = list(dict.fromkeys(list(record.caveats) + [
                 "sessions after the original snapshot were appended from data/feeds (Yahoo "
                 "chart API via the data-feeds workflow), adj_close rebased at the seam"]))
-            registered = _register(registry, record, extend_panel(panel, rows),
-                                   expected or panel.symbols, paths.root)
-            changed_calendar = True
-            report[SECTOR_DATASET] = {"appended_bars": len(rows),
-                                      "last_date": registered.last_date,
-                                      "availability": registered.availability}
+            outcome.update(_append_if_valid(registry, record, panel, rows, symbols, paths.root,
+                                            next_sessions(panel.dates[-1], 1)[0]))
+            changed_calendar = "appended_bars" in outcome
+        report[SECTOR_DATASET] = outcome or {"appended_bars": 0}
     fomc_feed = read_latest(feeds / "fomc" / "scheduled.jsonl")
     if fomc_feed:
         committed = load_fomc_days(paths.root)
@@ -269,7 +291,8 @@ def sync_feeds(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
         if merged != committed:
             write_fomc_days(paths.root / FOMC_FILE, merged)
             changed_calendar = True
-            report["fomc_schedule"] = {"added": sorted(set(merged) - set(committed))}
+            report["fomc_schedule"] = {"added": sorted(set(merged) - set(committed)),
+                                       "removed": sorted(set(committed) - set(merged))}
     if changed_calendar and (paths.datasets / "us_calendar_legs_daily.csv.meta.json").exists():
         registered = ingest_calendar_panel(paths, registry, log)
         report["us_calendar_legs_daily"] = {"rebuilt": True, "last_date": registered.last_date}
@@ -281,11 +304,14 @@ def sync_feeds(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
             panel, daily_funding(read_latest(feeds / "funding" / "rates.jsonl").values()),
             daily_marks(read_latest(feeds / "hyperliquid" / "universe.jsonl").items()))
         if rows:
-            registered = _register(registry, record, extend_panel(panel, rows), expected,
-                                   paths.root)
-            report["perp_funding_pairs_daily"] = {"appended_bars": len(rows),
-                                                  "last_date": registered.last_date}
-    log.emit("DATA", "DATA", "feeds_synced", "data/feeds", **{"report": report})
+            following = (date.fromisoformat(panel.dates[-1]) + timedelta(days=1)).isoformat()
+            report["perp_funding_pairs_daily"] = _append_if_valid(
+                registry, record, panel, rows, expected, paths.root, following)
+        else:
+            report["perp_funding_pairs_daily"] = {"appended_bars": 0}
+    log.emit("DATA", "DATA", "feeds_synced", "data/feeds",
+             severity="WARN" if any("blocked" in str(value) for value in report.values())
+             else "INFO", report=report)
     return report
 
 

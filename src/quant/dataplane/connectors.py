@@ -114,12 +114,14 @@ def parse_yahoo_chart(payload: dict[str, Any], symbol: str) -> list[dict[str, An
         values = {name: _float((quote.get(name) or [None] * (index + 1))[index])
                   for name in ("open", "high", "low", "close", "volume")}
         adj = _float(adjusted[index]) if adjusted and index < len(adjusted) else None
-        if None in (values["open"], values["close"], adj) or values["close"] <= 0:
+        if None in (values["open"], values["high"], values["low"], values["close"], adj) \
+                or values["close"] <= 0:
             continue                         # incomplete bar: dropped, never filled
         rows.append({"date": _iso_day(stamp + offset), "symbol": symbol,
-                     "open": values["open"], "high": values["high"] or values["close"],
-                     "low": values["low"] or values["close"], "close": values["close"],
-                     "adj_close": adj, "volume": values["volume"] or 0.0})
+                     "open": values["open"], "high": values["high"], "low": values["low"],
+                     "close": values["close"], "adj_close": adj,
+                     "volume": values["volume"] if values["volume"] is not None else 0.0,
+                     "volume_reported": values["volume"] is not None})
     return rows
 
 
@@ -137,10 +139,12 @@ def parse_stooq_csv(text: str, symbol: str) -> list[dict[str, Any]]:
     for record in csv.DictReader(io.StringIO(text)):
         values = {key: _float(record.get(key.capitalize()))
                   for key in ("open", "high", "low", "close", "volume")}
-        if not record.get("Date") or None in (values["open"], values["close"]):
-            continue
+        if not record.get("Date") or None in (values["open"], values["high"], values["low"],
+                                              values["close"]):
+            continue                         # incomplete row: dropped, never filled
         rows.append({"date": record["Date"], "symbol": symbol, **values,
-                     "adj_close": values["close"], "volume": values["volume"] or 0.0})
+                     "adj_close": values["close"],
+                     "volume": values["volume"] if values["volume"] is not None else 0.0})
     return rows
 
 

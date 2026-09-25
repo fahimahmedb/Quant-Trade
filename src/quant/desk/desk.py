@@ -35,7 +35,7 @@ from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl, read_jsonl
-from .compliance import assess as assess_compliance
+from .compliance import assess as assess_compliance, internal_crosses
 from .execution import ExecutionModel
 from .journal import DeskJournal
 from .opportunity import OpportunityTicket
@@ -157,6 +157,12 @@ class CapitalDesk:
                               session=date, error=ticket.reason)
                 tickets.append(self._finish(definition, ticket))
 
+        crosses = internal_crosses({ticket.strategy_id: ticket.fills for ticket in tickets
+                                    if ticket.fills})
+        if crosses:
+            self.log.emit("DESK", "FILLS", "internal_cross_detected", date, severity="WARN",
+                          crosses=crosses,
+                          note="paper fills are independent; a live executor must net these")
         if next_date:
             self._charge_rolls(panel, date, next_date, decision_ledgers)
         # The mark belongs to the session where the orders executed.
@@ -213,7 +219,8 @@ class CapitalDesk:
         # --- VET -----------------------------------------------------------
         self.components.set("VET", "RUN", definition.strategy_id)
         compliance = assess_compliance(definition.evidence)
-        if not compliance["approved"]:
+        # Flattening a sleeve is never refused: a refusal must not trap the exit.
+        if not compliance["approved"] and not liquidating:
             self.components.set("VET", "IDLE", "compliance refusal")
             self.log.emit("DESK", "VET", "compliance_refused", ticket.opportunity_id,
                           severity="WARN", reasons=compliance["reasons"])

@@ -29,6 +29,9 @@ class ExecutionModel:
     impact_bps_at_full_participation: float = 10.0
     max_participation: float = 0.05
     adv_lookback_days: int = 20
+    #: The panel's ``volume`` is already traded notional (e.g. perpetuals),
+    #: not a share count to be multiplied by price.
+    volume_is_notional: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -39,6 +42,8 @@ class ExecutionModel:
         recent = [value for value in available if value <= date][-self.adv_lookback_days:]
         if not recent:
             return 0.0
+        if self.volume_is_notional:
+            return sum(panel.price(day, symbol, "volume") for day in recent) / len(recent)
         return sum(panel.price(day, symbol, "close") * panel.price(day, symbol, "volume")
                    for day in recent) / len(recent)
 

@@ -61,7 +61,11 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
         sessions_held = None if last_rebalance is None else len(rows) - last_rebalance
         turnover = 0.0
         cost = 0.0
-        if target and should_rebalance(sessions_held, drift, spec):
+        # A target identical to the holding trades nothing, so it must not restart
+        # the holding clock: the Desk only records a rebalance when it books
+        # fills, and research must describe that same object (red-team finding:
+        # month-end sleeves silently skipped ~45% of months).
+        if target and drift > 1e-12 and should_rebalance(sessions_held, drift, spec):
             cost = _rebalance_cost(visible, date, target, held, drift, cost_bps)
             held, turnover, last_rebalance = target, drift, len(rows)
         gross = 0.0
@@ -78,7 +82,9 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
             gross += weight * (visible.adjusted(exit_date, symbol, "open") / entry - 1.0)
         rows.append({"signal_date": date, "entry_date": entry_date, "exit_date": exit_date,
                      "gross_return": gross, "cost": cost, "net_return": gross - cost,
-                     "turnover": turnover, "positions": len(held), "weights": dict(held)})
+                     "turnover": turnover,
+                     "positions": sum(1 for weight in held.values() if abs(weight) > 1e-12),
+                     "weights": dict(held)})
     return rows
 
 
@@ -239,7 +245,13 @@ def falsify(rows: list[dict[str, Any]], summary: dict[str, Any], panel: PricePan
     halves = [compound(net[:middle]), compound(net[middle:])]
     positives = sorted((value for value in net if value > 0), reverse=True)
     total_positive = sum(positives)
-    top_five_share = (sum(positives[:5]) / total_positive) if total_positive > 0 else 1.0
+    # Concentration: the top 5 days for daily strategies; for sparse event
+    # strategies (fewer than 100 active sessions) the top 10% of active
+    # sessions, since 5 of ~24 events can never hold under half the gains.
+    active_rows = sum(1 for row in rows if row["positions"] > 0)
+    top_k = 5 if active_rows >= 100 or spec.family not in DIRECTIONAL_FAMILIES \
+        else max(1, math.ceil(0.1 * active_rows))
+    top_five_share = (sum(positives[:top_k]) / total_positive) if total_positive > 0 else 1.0
     threshold = required_t_statistic(trials)
 
     time_series = spec.family in DIRECTIONAL_FAMILIES
