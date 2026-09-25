@@ -1,0 +1,176 @@
+{
+ "split": {
+  "discovery": [
+   "2025-09-25",
+   "2026-04-09",
+   29
+  ],
+  "validation": [
+   "2026-04-16",
+   "2026-07-23",
+   15
+  ],
+  "untouched": [
+   "2026-07-30",
+   "2026-09-17",
+   8
+  ]
+ },
+ "trials": 4,
+ "required_t": 2.4977054744123737,
+ "discovery": {
+  "weather/markout": {
+   "n": 203,
+   "mean_net_c": 0.05956665838376092,
+   "mean_gross_c": 0.2487021460284544,
+   "mean_net_fee2x_c": -0.12956882926093252,
+   "t_net": 0.7026495721443341,
+   "t_net_fee2x": -1.5270112719305475,
+   "contracts": 28075440.279999997,
+   "half_means_c": [
+    0.12260262191592183,
+    -0.0028513055059278263
+   ],
+   "net_dollars": 28293.29741405171,
+   "top_decile_share": 2.062865648675429
+  },
+  "weather/settlement": {
+   "n": 203,
+   "mean_net_c": 0.7519576023814714,
+   "mean_gross_c": 0.9100826102317746,
+   "mean_net_fee2x_c": 0.5938325945311683,
+   "t_net": 4.870259494695675,
+   "t_net_fee2x": 3.8413763209808858,
+   "contracts": 40563885.179999985,
+   "half_means_c": [
+    1.1409038392210527,
+    0.3668245639422782
+   ],
+   "net_dollars": 451601.412505115,
+   "top_decile_share": 0.6037363022356851
+  },
+  "weather/decomposition": {
+   "half_spread_proxy_c": 2.8016768440600015,
+   "markout_same_prints_c": 0.38853705406365935,
+   "contracts": 15198559.37
+  },
+  "other/markout": {
+   "n": 81,
+   "mean_net_c": 3.7394695054864298,
+   "mean_gross_c": 4.033119004689059,
+   "mean_net_fee2x_c": 3.4458200062838005,
+   "t_net": 2.4682981117772496,
+   "t_net_fee2x": 2.2683788907896067,
+   "contracts": 4000745.97,
+   "half_means_c": [
+    2.926489689420093,
+    4.532620545551149
+   ],
+   "net_dollars": 41323.566456337416,
+   "top_decile_share": 1.228921734090598
+  },
+  "other/settlement": {
+   "n": 93,
+   "mean_net_c": 4.056135501687106,
+   "mean_gross_c": 4.289148440904076,
+   "mean_net_fee2x_c": 3.8231225624701355,
+   "t_net": 2.7404974984798716,
+   "t_net_fee2x": 2.5812156727962683,
+   "contracts": 5939697.11,
+   "half_means_c": [
+    5.668870523405533,
+    2.4777139910690704
+   ],
+   "net_dollars": -22803.390059232464,
+   "top_decile_share": null
+  },
+  "other/decomposition": {
+   "half_spread_proxy_c": 3.664281685608239,
+   "markout_same_prints_c": 1.5419746938097576,
+   "contracts": 3128126.8700000006
+  }
+ },
+ "validation": {
+  "weather/markout": {
+   "n": 105,
+   "mean_net_c": -0.18701014204156985,
+   "mean_gross_c": -0.00105738761383137,
+   "mean_net_fee2x_c": -0.3729628964693083,
+   "t_net": -1.26005563356446,
+   "t_net_fee2x": -2.503697852592803,
+   "contracts": 14764642.890000006,
+   "half_means_c": [
+    -0.007331328221511496,
+    -0.36329878956313655
+   ],
+   "net_dollars": -7310.339462968736,
+   "top_decile_share": null
+  },
+  "weather/settlement": {
+   "n": 105,
+   "mean_net_c": -0.09763475455047214,
+   "mean_gross_c": 0.056738421608794984,
+   "mean_net_fee2x_c": -0.25200793070973926,
+   "t_net": -0.5540581502131999,
+   "t_net_fee2x": -1.4211575770923979,
+   "contracts": 20184459.290000003,
+   "half_means_c": [
+    -0.1344611584866674,
+    -0.06150318842439378
+   ],
+   "net_dollars": 85370.5432778951,
+   "top_decile_share": 0.9214991092120306
+  },
+  "weather/decomposition": {
+   "half_spread_proxy_c": 2.5521093752804944,
+   "markout_same_prints_c": 0.14972804105874876,
+   "contracts": 9233552.550000003
+  },
+  "other/markout": {
+   "n": 66,
+   "mean_net_c": 0.1464528330166466,
+   "mean_gross_c": 0.39383379960874393,
+   "mean_net_fee2x_c": -0.10092813357545063,
+   "t_net": 0.15123095452061955,
+   "t_net_fee2x": -0.10404336011130369,
+   "contracts": 8087629.099999996,
+   "half_means_c": [
+    -0.4067221420457328,
+    0.699627808079026
+   ],
+   "net_dollars": -8658.670788733572,
+   "top_decile_share": null
+  },
+  "other/settlement": {
+   "n": 75,
+   "mean_net_c": -1.600539755521134,
+   "mean_gross_c": -1.3876190651234896,
+   "mean_net_fee2x_c": -1.8134604459187786,
+   "t_net": -1.2403274674426863,
+   "t_net_fee2x": -1.405442382452584,
+   "contracts": 11166652.23999999,
+   "half_means_c": [
+    -2.477494423717238,
+    -0.746662841751244
+   ],
+   "net_dollars": 152244.8467626471,
+   "top_decile_share": 1.9073791286555102
+  },
+  "other/decomposition": {
+   "half_spread_proxy_c": 1.8463109399282125,
+   "markout_same_prints_c": 0.12083399476311088,
+   "contracts": 6382449.469999999
+  }
+ },
+ "best_discovery_expression": "weather/settlement",
+ "capacity_usd_month": 2936057.0727429623,
+ "checks": {
+  "t_ge_required": false,
+  "mean_net_pos": false,
+  "mean_net_fee2x_pos": false,
+  "both_halves_pos": false,
+  "top_decile_lt_half": false,
+  "capacity_ok": true
+ },
+ "verdict": "REJECT"
+}
