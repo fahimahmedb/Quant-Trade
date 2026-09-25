@@ -35,6 +35,7 @@ from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl, read_jsonl
+from .compliance import assess as assess_compliance
 from .execution import ExecutionModel
 from .journal import DeskJournal
 from .opportunity import OpportunityTicket
@@ -211,6 +212,13 @@ class CapitalDesk:
 
         # --- VET -----------------------------------------------------------
         self.components.set("VET", "RUN", definition.strategy_id)
+        compliance = assess_compliance(definition.evidence)
+        if not compliance["approved"]:
+            self.components.set("VET", "IDLE", "compliance refusal")
+            self.log.emit("DESK", "VET", "compliance_refused", ticket.opportunity_id,
+                          severity="WARN", reasons=compliance["reasons"])
+            return self._finish(definition, ticket.stop(
+                "VET", "REFUSED", "; ".join(compliance["reasons"]), **compliance))
         if next_date is None:
             self.components.set("VET", "BLOCKED", "no execution session follows this one")
             return self._finish(definition, ticket.stop(
@@ -438,15 +446,22 @@ class CapitalDesk:
                 for symbol, position in sorted(holdings.items()):
                     if abs(position.quantity) <= 1e-9 or not panel.has(date, symbol):
                         continue
-                    rate = (panel.feature(next_date, symbol, "roll_cost")
-                            if panel.has(next_date, symbol) else None)
-                    if not rate:
+                    if not panel.has(next_date, symbol):
                         continue
-                    amount = abs(position.quantity) * panel.price(date, symbol) * rate
-                    effect = ledger.apply_charge(
-                        strategy_id, amount, next_date,
-                        operation_id=f"ROLL-{strategy_id}-{symbol}-{next_date}", kind="roll")
-                    total += effect["amount"]
+                    notional = position.quantity * panel.price(date, symbol)
+                    rate = panel.feature(next_date, symbol, "roll_cost")
+                    if rate:
+                        effect = ledger.apply_charge(
+                            strategy_id, abs(notional) * rate, next_date,
+                            operation_id=f"ROLL-{strategy_id}-{symbol}-{next_date}", kind="roll")
+                        total += effect["amount"]
+                    # Perpetual funding over the session: longs pay a positive rate,
+                    # shorts receive it (``carry_rate`` = fraction paid by longs).
+                    carry = panel.feature(next_date, symbol, "carry_rate")
+                    if carry:
+                        ledger.apply_carry(
+                            strategy_id, -notional * carry, next_date,
+                            operation_id=f"CARRY-{strategy_id}-{symbol}-{next_date}")
         return total
 
     def _mark(self, panel: PricePanel, mark_date: str) -> dict[str, Any]:

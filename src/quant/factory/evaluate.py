@@ -70,6 +70,8 @@ def walk_forward(panel: PricePanel, spec: StrategySpec, window: Window,
                 continue  # staggered universe only: no executable interval
             # Rolling the contract is paid by longs and shorts alike.
             cost += abs(weight) * (visible.feature(exit_date, symbol, "roll_cost") or 0.0)
+            # Perpetual funding over the held session: longs pay, shorts receive.
+            gross -= weight * (visible.feature(exit_date, symbol, "carry_rate") or 0.0)
             entry = visible.adjusted(entry_date, symbol, "open")
             if entry <= 0:
                 continue

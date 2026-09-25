@@ -195,6 +195,13 @@ def run_lane(context: ResearchContext, lane_name: str, universe: list[str],
                    record.fingerprint)
 
 
+def lane_compliance(lane_name: str, dataset_id: str) -> dict[str, Any]:
+    from .lanes import lane_definitions
+    definition = lane_definitions([], dataset_id).get(lane_name) or {}
+    return dict(definition.get("compliance") or {
+        "practices": ["public_market_data", "exchange_execution"]})
+
+
 def _diagnose(spec: StrategySpec, summary: dict[str, Any], verdict: dict[str, Any]) -> str:
     gross, net = summary["gross_return"], summary["net_return"]
     costs = gross - net
@@ -253,7 +260,8 @@ def _finish(context: ResearchContext, ticket: ResearchTicket, lane_name: str,
                 lane=ticket.lane, spec=spec.to_dict(), hypothesis=ticket.hypothesis,
                 evidence={"validation": summary, "falsification": verdict,
                           "research_ticket": ticket.ticket_id,
-                          "pristine_after": ticket.candidate_data.get("pristine_after")},
+                          "pristine_after": ticket.candidate_data.get("pristine_after"),
+                          "compliance": lane_compliance(lane_name, dataset_id)},
                 dataset_id=dataset_id, dataset_fingerprint=fingerprint)
             if verdict["passed"]:
                 definition.transition("VALIDATED", "survived every declared falsification test")

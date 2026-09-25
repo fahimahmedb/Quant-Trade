@@ -20,7 +20,7 @@ from .futures import (BROAD_START, FUTURES_BENCHMARK, FUTURES_BROAD_DATASET,
                       select_broad_universe)
 from .panel import PricePanel
 from .registry import DatasetRecord, DatasetRegistry, fingerprint_file
-from .validation import validate_panel
+from .validation import validate_panel, validation_policy
 
 
 #: Cross-sectional relative-value universe. Nine SPDR sector funds share one
@@ -44,7 +44,8 @@ def _register(registry: DatasetRegistry, record: DatasetRecord, panel: PricePane
               expected: list[str], root: Path) -> DatasetRecord:
     target = root / record.path
     panel.write(target)
-    validation = validate_panel(panel, expected)
+    policy = validation_policy(record)
+    validation = validate_panel(panel, policy["required"] or expected, policy["min_rows"])
     record.rows = len(panel.bars)
     record.symbols = panel.symbols
     record.first_date = panel.dates[0] if panel.dates else None
@@ -80,7 +81,9 @@ def register_committed_snapshots(paths: QuantPaths, registry: DatasetRegistry,
         declared = payload.get("fingerprint")
         panel = PricePanel.load(target)
         record.fingerprint = fingerprint_file(target)
-        record.validation = validate_panel(panel, expected or record.symbols)
+        policy = validation_policy(record)
+        record.validation = validate_panel(panel, policy["required"] or expected or record.symbols,
+                                           policy["min_rows"])
         if declared:
             record.validation["sidecar_fingerprint"] = declared
         if declared and declared != record.fingerprint:
@@ -224,6 +227,66 @@ def ingest_calendar_panel(paths: QuantPaths, registry: DatasetRegistry,
     log.emit("DATA", "DATA", "dataset_ingested", CALENDAR_DATASET, rows=registered.rows,
              fingerprint=registered.fingerprint, availability=registered.availability)
     return registered
+
+
+def _committed_record(paths: QuantPaths, dataset_id: str,
+                      suffix: str) -> tuple[DatasetRecord, list[str]]:
+    data_path = paths.datasets / f"{dataset_id}{suffix}"
+    payload = dict(read_json(data_path.with_suffix(".meta.json")) or {})
+    expected = payload.pop("expected_symbols", [])
+    payload.pop("availability", None)
+    return DatasetRecord(**payload), expected
+
+
+def sync_feeds(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,
+               feeds: Path) -> dict[str, Any]:
+    """Append forward sessions from collected feeds; never rewrite history."""
+    from .calendar_legs import FOMC_FILE, load_fomc_days
+    from .feeds import (daily_funding, daily_marks, etf_forward_rows, extend_panel,
+                        merged_fomc_days, perp_forward_rows, read_latest, write_fomc_days)
+    report: dict[str, Any] = {}
+    etf_path = paths.datasets / f"{SECTOR_DATASET}.csv"
+    changed_calendar = False
+    if etf_path.exists():
+        record, expected = _committed_record(paths, SECTOR_DATASET, ".csv")
+        panel = PricePanel.load(etf_path)
+        rows = etf_forward_rows(panel, read_latest(feeds / "yahoo" / "daily_bars.jsonl"),
+                                expected or panel.symbols)
+        if rows:
+            record.caveats = list(dict.fromkeys(list(record.caveats) + [
+                "sessions after the original snapshot were appended from data/feeds (Yahoo "
+                "chart API via the data-feeds workflow), adj_close rebased at the seam"]))
+            registered = _register(registry, record, extend_panel(panel, rows),
+                                   expected or panel.symbols, paths.root)
+            changed_calendar = True
+            report[SECTOR_DATASET] = {"appended_bars": len(rows),
+                                      "last_date": registered.last_date,
+                                      "availability": registered.availability}
+    fomc_feed = read_latest(feeds / "fomc" / "scheduled.jsonl")
+    if fomc_feed:
+        committed = load_fomc_days(paths.root)
+        merged = merged_fomc_days(committed, fomc_feed)
+        if merged != committed:
+            write_fomc_days(paths.root / FOMC_FILE, merged)
+            changed_calendar = True
+            report["fomc_schedule"] = {"added": sorted(set(merged) - set(committed))}
+    if changed_calendar and (paths.datasets / "us_calendar_legs_daily.csv.meta.json").exists():
+        registered = ingest_calendar_panel(paths, registry, log)
+        report["us_calendar_legs_daily"] = {"rebuilt": True, "last_date": registered.last_date}
+    perp_path = paths.datasets / "perp_funding_pairs_daily.csv.gz"
+    if perp_path.exists():
+        record, expected = _committed_record(paths, "perp_funding_pairs_daily", ".csv.gz")
+        panel = PricePanel.load(perp_path)
+        rows = perp_forward_rows(
+            panel, daily_funding(read_latest(feeds / "funding" / "rates.jsonl").values()),
+            daily_marks(read_latest(feeds / "hyperliquid" / "universe.jsonl").items()))
+        if rows:
+            registered = _register(registry, record, extend_panel(panel, rows), expected,
+                                   paths.root)
+            report["perp_funding_pairs_daily"] = {"appended_bars": len(rows),
+                                                  "last_date": registered.last_date}
+    log.emit("DATA", "DATA", "feeds_synced", "data/feeds", **{"report": report})
+    return report
 
 
 def ingest_all(paths: QuantPaths, registry: DatasetRegistry, log: EventLog,

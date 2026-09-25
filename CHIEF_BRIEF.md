@@ -15,7 +15,7 @@ Component state:
 - `BOOK`: **IDLE** - marked through 2026-09-11
 - `BUILD`: **BLOCKED** - 3 open capability gaps
 - `CONTROL`: **IDLE** - no work due
-- `DATA`: **IDLE** - 4 datasets available
+- `DATA`: **IDLE** - 6 datasets available
 - `FILLS`: **IDLE** - no session due
 - `LEARNING`: **IDLE** - 5 lessons recorded
 - `RESEARCH`: **BLOCKED** - no survivorship-controlled security and factor panel
@@ -27,7 +27,7 @@ Component state:
 
 ## Data
 
-Registry health: `{'AVAILABLE': 4, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
+Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
 
 - **futures_excess_return_daily** (AVAILABLE) - 174,774 rows, 31 symbols, 2002-01-02 to 2024-03-28, `sha256:2731a881292251f2f754256c0f6feb66ec3168f20a39003b4abe59f960e1b6a6`
   - source: https://github.com/pst-group/pysystemtrade data/futures (adjusted_prices_csv, multiple_prices_csv, csvconfig) @ 8958c49c38b1e4a8c07f0e4375d5e9cb68a087f7
@@ -53,6 +53,19 @@ Registry health: `{'AVAILABLE': 4, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - source: operator-supplied historical export committed to the repository
   - caveat: price index without dividends; not a tradable instrument
   - caveat: no corporate-action or constituent history
+- **perp_funding_pairs_daily** (AVAILABLE) - 108,874 rows, 244 symbols, 2023-06-08 to 2025-05-15, `sha256:55bbf2946f8886d2ec7643f52b38dbd23676d1b208b249e1098d855a1234a361`
+  - source: github.com/guibvieira/freqtrade-hyperliquid-data (Hyperliquid 1h funding, 1d bars) + github.com/LorenzoBaggi/funding_arb (Bybit funding, 1h klines)
+  - caveat: third-party snapshots, not verified against the venues
+  - caveat: survivorship: only coins still listed when the snapshots were taken
+  - caveat: no intraday margin, liquidation or auto-deleveraging modelling in the data
+  - caveat: Bybit coverage ends 2025-05; forward data comes from data/feeds/funding
+  - caveat: where the Bybit kline snapshot is missing the Bybit leg is valued at the Hyperliquid close (price_proxy=1): cross-venue price divergence is then not modelled for that coin
+- **us_calendar_legs_daily** (AVAILABLE) - 10,056 rows, 4 symbols, 2016-09-12 to 2026-09-11, `sha256:29bc4d1820540d4bd5ef3b2d16d9fe5406a44db2830390493c066e2d8668ab3b`
+  - source: derived from us_sector_etf_daily (sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1) and the scheduled FOMC calendar (82 decision days)
+  - caveat: open prices are consolidated opening prints, not executable MOO fills
+  - caveat: the overnight leg includes ex-dividend gaps through the adjusted basis
+  - caveat: holding <SYMBOL>_ON from open(d) to open(d+1) represents a MOC buy on d and a MOO sell on d+1; the Book charges both fills
+  - caveat: inherits every caveat of the source ETF snapshot
 - **us_sector_etf_daily** (AVAILABLE) - 30,168 rows, 12 symbols, 2016-09-12 to 2026-09-11, `sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1`
   - source: Yahoo Finance chart API (public, credential-free)
   - caveat: adj_close is restated retroactively for dividends and splits, so adjusted levels are not strictly point-in-time; returns are standard practice but embed later corporate-action information

@@ -100,13 +100,14 @@ class DatasetRegistry:
         """Refresh structural metadata and bind validation to the actual bytes."""
         # Local imports keep the registry primitive free of an import cycle.
         from .panel import PricePanel
-        from .validation import validate_panel
+        from .validation import validate_panel, validation_policy
 
         before = fingerprint_file(path)
         try:
             panel = PricePanel.load(path)
-            expected = list(record.symbols) or list(panel.symbols)
-            validation = validate_panel(panel, expected)
+            policy = validation_policy(record)
+            expected = policy["required"] or list(record.symbols) or list(panel.symbols)
+            validation = validate_panel(panel, expected, policy["min_rows"])
             after = fingerprint_file(path)
             record.fingerprint = after
             record.rows = len(panel.bars)

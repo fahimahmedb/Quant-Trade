@@ -152,3 +152,27 @@ class TransportAndCollector(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VenueParsers(unittest.TestCase):
+    def test_okx_and_dydx(self):
+        okx = c.parse_okx_funding({"code": "0", "data": [
+            {"instId": "ETH-USDT-SWAP", "fundingRate": "0.0001", "realizedRate": "0.00009",
+             "fundingTime": "1727000000000"}]})
+        self.assertEqual((okx[0]["coin"], okx[0]["rate"]), ("ETH", 0.00009))
+        self.assertEqual(c.parse_okx_funding({"code": "51001", "data": []}), [])
+        dydx = c.parse_dydx_funding({"historicalFunding": [
+            {"ticker": "BTC-USD", "rate": "0.0000125", "effectiveAt": "2026-09-24T10:00:00.000Z"},
+            {"ticker": "BTC-USD", "rate": "0.1", "effectiveAt": "not a date"}]})
+        self.assertEqual(len(dydx), 1)
+        self.assertEqual(dydx[0]["venue"], "DYDX")
+
+
+class SessionClosedTests(unittest.TestCase):
+    def test_partial_us_session_is_not_recorded(self):
+        import fetch_feeds
+        from datetime import datetime, timezone
+        self.assertFalse(fetch_feeds.session_closed(
+            "2026-09-25", datetime(2026, 9, 25, 18, 17, tzinfo=timezone.utc)))
+        self.assertTrue(fetch_feeds.session_closed(
+            "2026-09-24", datetime(2026, 9, 25, 0, 17, tzinfo=timezone.utc)))

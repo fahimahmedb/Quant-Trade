@@ -63,6 +63,9 @@ class StrategySpec:
     def label(self) -> str:
         if self.family in CALENDAR_FAMILIES:
             return f"{self.family}_x{self.gross_exposure:g}_h{self.holding_days}"
+        if self.family == "funding_spread":
+            return (f"funding_spread_l{self.lookback_days}_z{self.min_abs_score:g}"
+                    f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}")
         if self.family in TIME_SERIES_FAMILIES:
             return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
                     f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}"
@@ -174,6 +177,8 @@ def weights_for(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, f
     """The complete signal path used identically by research and the desk."""
     if spec.family in CALENDAR_FAMILIES:
         return calendar_weights(panel, spec, asof)
+    if spec.family == FUNDING_SPREAD:
+        return funding_spread_weights(panel, spec, asof)
     if spec.family in TIME_SERIES_FAMILIES:
         return time_series_weights(panel, spec, asof)
     return target_weights(cross_sectional_scores(panel, spec.universe, asof,
@@ -394,6 +399,78 @@ def calendar_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[s
     # month end (Harvey, Mazzoleni & Melone 2025): lean against equities when
     # they outperformed bonds month to date, with them when they lagged.
     return {EQUITY: -exposure if equity > bonds else exposure}
+
+
+# ---------------------------------------------------------------------------
+# Cross-venue perpetual funding spread (market-neutral per coin)
+# ---------------------------------------------------------------------------
+#
+# Universe symbols are ``<VENUE>.<COIN>`` (e.g. ``HL.ETH``, ``BY.ETH``) with a
+# ``carry_rate`` feature: funding paid by longs over that session. For a coin
+# quoted on both venues, when the trailing mean funding difference exceeds the
+# entry threshold (annualised), the sleeve is short the venue that charges
+# longs more and long the other, one unit notional per leg, so price exposure
+# cancels and the position collects the funding difference. Stateless: the
+# position is held while the trailing spread stays above the threshold, and the
+# shared no-trade band limits churn.
+
+FUNDING_SPREAD = "funding_spread"
+FUNDING_VENUES = ("HL", "BY")
+FUNDING_LOOKBACK = 3
+DAYS_PER_YEAR = 365.0
+
+
+def _trailing_carry(panel: PricePanel, symbol: str, asof: str, sessions: int) -> float | None:
+    key = ("carry_prefix", symbol)
+    cached = panel.derived.get(key)
+    if cached is None:
+        dates = panel.dates_for(symbol)
+        values = [panel.feature(day, symbol, "carry_rate") for day in dates]
+        cached = (dates, {day: index for index, day in enumerate(dates)}, values)
+        panel.derived[key] = cached
+    dates, index, values = cached
+    position = index.get(asof)
+    if position is None or position + 1 < sessions:
+        return None
+    window = values[position + 1 - sessions: position + 1]
+    if any(value is None for value in window):
+        return None
+    return sum(window) / sessions
+
+
+def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
+    first, second = FUNDING_VENUES
+    coins = sorted({symbol.split(".", 1)[1] for symbol in spec.universe
+                    if symbol.startswith(first + ".")}
+                   & {symbol.split(".", 1)[1] for symbol in spec.universe
+                      if symbol.startswith(second + ".")})
+    candidates = []
+    for coin in coins:
+        a, b = f"{first}.{coin}", f"{second}.{coin}"
+        if not (panel.has(asof, a) and panel.has(asof, b)):
+            continue
+        carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
+        carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
+        if carry_a is None or carry_b is None:
+            continue
+        spread = (carry_a - carry_b) * DAYS_PER_YEAR
+        if abs(spread) >= spec.min_abs_score:
+            candidates.append((abs(spread), coin, a, b, spread))
+    candidates.sort(reverse=True)
+    limit = max(1, int(round(spec.gross_exposure / (2 * spec.max_weight)))) if spec.max_weight else 0
+    weights: dict[str, float] = {}
+    for _, coin, a, b, spread in candidates[:limit]:
+        side = 1.0 if spread > 0 else -1.0          # venue a charges longs more: short a
+        weights[a] = -side * spec.max_weight
+        weights[b] = side * spec.max_weight
+    if not weights:
+        # Nothing qualifies: an explicit flat target (one zero leg) so research
+        # and the Desk close every held pair instead of reading "no signal" as
+        # "keep holding". Unselected legs of a non-empty target are closed by
+        # the same rule (walk_forward replaces holdings; SIZE zeroes them).
+        present = next((symbol for symbol in spec.universe if panel.has(asof, symbol)), None)
+        return {present: 0.0} if present else {}
+    return weights
 
 
 #: Families that take directional risk by design: judged against a passive

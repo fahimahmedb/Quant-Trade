@@ -232,7 +232,48 @@ def calendar_lane_definitions(universe: list[str], dataset_id: str) -> dict[str,
     }
 
 
+PERP_DATASET = "perp_funding_pairs_daily"
+#: Crypto lab expressions on overlapping Bybit/Hyperliquid data (35 in the first
+#: lab, ~5 threshold/fee variants in the structural-edges lab).
+PERP_PRIOR_TRIALS = 40
+PERP_PRISTINE_AFTER = "2025-05-15"
+#: One-way research cost: taker ~4.5-5.5bp plus spread on thin listings.
+PERP_COST_BPS = 8.0
+
+
+def _funding_spec(universe: list[str], dataset_id: str, threshold: float) -> StrategySpec:
+    return StrategySpec(family="funding_spread", universe=universe, lookback_days=3,
+                        direction=1, min_abs_score=threshold, max_weight=0.05,
+                        gross_exposure=1.0, holding_days=1, no_trade_band=0.02,
+                        dataset_id=dataset_id, calendar_symbol="HL.BTC")
+
+
+def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    return {"perp_funding_spread": {
+        "lane": "crypto_funding_carry", "priority": 38.0,
+        "question": "Does a same-coin short-high-funding / long-low-funding pair across "
+                    "Hyperliquid and Bybit earn the funding difference net of taker costs?",
+        "mechanism": "Segmented leverage demand: retail longs on the DEX pay funding the CEX "
+                     "arbitrageurs cannot fully compete away (capital, venue and ADL risk). "
+                     "Price exposure cancels within the pair.",
+        "falsification": "Declared relative-value tests (market-neutral: beta to HL.BTC below "
+                         "0.15). Contaminated by two crypto labs on overlapping data: 40 "
+                         "prior trials charged; lifecycle only moves after 2025-05-15.",
+        "grid": [_funding_spec(universe, dataset_id, 0.2), _funding_spec(universe, dataset_id, 0.5)],
+        "prior_trials": PERP_PRIOR_TRIALS, "pristine_after": PERP_PRISTINE_AFTER,
+        "benchmark": "HL.BTC", "cost_bps": PERP_COST_BPS, "calendar": ["HL.BTC"],
+        # Both legs are the same coin's perpetual: nothing settles, so there is
+        # no settlement-rule basis to match (unlike prediction-market hedges).
+        "compliance": {"practices": ["public_market_data", "exchange_execution"],
+                       "cross_venue_hedge": True, "settlement_rules_matched": True,
+                       "note": "perpetuals never settle; venue access must be lawful "
+                               "in the operator's jurisdiction"},
+        "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    if dataset_id == PERP_DATASET:
+        return perp_lane_definitions(universe, dataset_id)
     if dataset_id == CALENDAR_DATASET:
         return calendar_lane_definitions(universe, dataset_id)
     if dataset_id == FUTURES_DATASET:

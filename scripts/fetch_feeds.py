@@ -37,6 +37,14 @@ FUNDING_COINS = 40          # Hyperliquid coins by 24h notional volume
 POLYMARKET_BOOKS = 20       # order-book snapshots per run (repository growth budget)
 
 
+def session_closed(day: str, now: datetime) -> bool:
+    """A US session's daily bar is final only after the close (21:00 UTC in
+    winter, 20:00 in summer) plus a buffer; earlier it is an intraday partial
+    that would otherwise become the 'first observation' of that day."""
+    close = datetime.fromisoformat(day).replace(tzinfo=timezone.utc) + timedelta(hours=22)
+    return now >= close
+
+
 class Stream:
     """Append-only JSONL with an in-memory key index."""
 
@@ -91,7 +99,8 @@ def _collect(out: Path, now: datetime) -> dict:
     def yahoo():
         for symbol in ETF_SYMBOLS + FUTURES_PROXIES:
             for bar in c.fetch_yahoo(symbol, "1mo"):
-                yield "yahoo/daily_bars.jsonl", f"{bar['date']}|{symbol}", bar
+                if session_closed(bar["date"], now):
+                    yield "yahoo/daily_bars.jsonl", f"{bar['date']}|{symbol}", bar
 
     def fred():
         for series in FRED_SERIES:
@@ -114,7 +123,9 @@ def _collect(out: Path, now: datetime) -> dict:
             for rate in c.fetch_hyperliquid_funding(coin, since):
                 yield "funding/rates.jsonl", f"HL|{coin}|{rate['time_ms']}", rate
             for fetch, venue in ((c.fetch_bybit_funding, "BYBIT"),
-                                 (c.fetch_binance_funding, "BINANCE")):
+                                 (c.fetch_binance_funding, "BINANCE"),
+                                 (c.fetch_okx_funding, "OKX"),
+                                 (c.fetch_dydx_funding, "DYDX")):
                 try:
                     for rate in fetch(coin):
                         yield "funding/rates.jsonl", f"{venue}|{coin}|{rate['time_ms']}", rate
