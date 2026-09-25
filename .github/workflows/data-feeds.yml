@@ -13,10 +13,6 @@ on:
   push:
     branches:
       - 'claude/data-feeds-**'
-    paths:
-      - '.github/workflows/data-feeds.yml'
-      - 'scripts/fetch_feeds.py'
-      - 'src/quant/dataplane/connectors.py'
   schedule:
     - cron: '17 */6 * * *'
   workflow_dispatch:
