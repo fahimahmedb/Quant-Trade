@@ -157,12 +157,21 @@ class DailyBar:
     volume: float
 
 
+ACTION_SPLIT = "SPLIT"                  # value = new shares per old share (> 0)
+ACTION_CASH_DIVIDEND = "CASH_DIVIDEND"  # value = cash (or cash-equivalent) per share held
+ACTION_DELISTING = "DELISTING"          # code = vendor delisting code (DELISTING_CLASS_MAP)
+
+
 @dataclass(frozen=True)
 class CorporateAction:
+    """One vendor action. The adapter converts every distribution into SPLIT or
+    CASH_DIVIDEND terms; other kinds are counted by the evaluation, never applied."""
+
     security_id: str
     ex_date: date
     kind: str            # SPLIT | CASH_DIVIDEND | DELISTING | ...
     value: float | None
+    code: str | None = None
 
 
 @dataclass(frozen=True)
@@ -189,6 +198,13 @@ class PriceVendor(Protocol):
                           grant: OutcomeAccessGrant) -> list[CorporateAction]: ...
 
     def security_mappings(self, cik: str, *, grant: OutcomeAccessGrant) -> list[SecurityMapping]: ...
+
+    def benchmark_total_returns(self, start: date, end: date, *,
+                                grant: OutcomeAccessGrant) -> Mapping[date, float]:
+        """SPY daily total return (close to close, dividends reinvested) per vendor
+        session in [start, end], from the dataset named in the committed
+        benchmark manifest; no fallback source."""
+        ...
 
 
 def check_grant(grant: OutcomeAccessGrant, start: date, end: date) -> None:
@@ -267,6 +283,10 @@ class SharadarVendor:
     def corporate_actions(self, security_id, start, end, *, grant):
         check_grant(grant, start, end)
         self._not_wired("corporate_actions")
+
+    def benchmark_total_returns(self, start, end, *, grant):
+        check_grant(grant, start, end)
+        self._not_wired("benchmark_total_returns")
 
     def _fetch_mappings(self, cik):
         self._not_wired("security_mappings")

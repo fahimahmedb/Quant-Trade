@@ -38,23 +38,50 @@ def admit(entries: Sequence[Entry], *, slots: int, horizon: int, seed: int) -> l
     A slot taken at entry session e is busy through e + horizon - 1 and is
     released at the start of session e + horizon. Weights/outcomes play no role.
     """
+    return [a.entry for a in admit_detailed(entries, slots=slots, horizon=horizon,
+                                            seed=seed)[0]]
+
+
+REJECT_ISSUER_ACTIVE = "issuer_active_slot"
+REJECT_BOOK_FULL = "book_full"
+
+
+@dataclass(frozen=True)
+class Admission:
+    entry: Entry
+    slot: int                    # lowest free slot number (0-based) at admission
+
+
+def admit_detailed(entries: Sequence[Entry], *, slots: int, horizon: int,
+                   seed: int) -> tuple[list[Admission], list[tuple[Entry, str]]]:
+    """:func:`admit` plus slot numbers and the logged reason for every a_j = 0.
+
+    Entries are processed by (entry_session, tie_break); the lowest free slot is
+    taken; an issuer with an active slot (including a second issuer-day of the
+    same issuer in the same session) or a full book is rejected with its reason.
+    """
+    if slots < 1 or horizon < 1:
+        raise ValueError("slots and horizon must be >= 1")
     by_session: dict[int, list[Entry]] = {}
     for entry in entries:
         by_session.setdefault(entry.entry_index, []).append(entry)
-    active: dict[str, int] = {}          # issuer -> last busy session
-    admitted: list[Entry] = []
+    active: dict[str, tuple[int, int]] = {}      # issuer -> (last busy session, slot)
+    admitted: list[Admission] = []
+    rejected: list[tuple[Entry, str]] = []
     for session in sorted(by_session):
-        for issuer in [i for i, last in active.items() if last < session]:
+        for issuer in [i for i, (last, _) in active.items() if last < session]:
             del active[issuer]
-        candidates = sorted((e for e in by_session[session] if e.issuer not in active),
-                            key=lambda e: tie_break_key(seed, e.accessions))
-        seen: set[str] = set()
-        for entry in candidates:
-            if len(active) >= slots:
-                break
-            if entry.issuer in seen:
+        ordered = sorted(by_session[session],
+                         key=lambda e: (tie_break_key(seed, e.accessions), e.issuer))
+        for entry in ordered:
+            if entry.issuer in active:
+                rejected.append((entry, REJECT_ISSUER_ACTIVE))
                 continue
-            seen.add(entry.issuer)
-            active[entry.issuer] = session + horizon - 1
-            admitted.append(entry)
-    return admitted
+            if len(active) >= slots:
+                rejected.append((entry, REJECT_BOOK_FULL))
+                continue
+            used = {slot for _, slot in active.values()}
+            slot = next(i for i in range(slots) if i not in used)
+            active[entry.issuer] = (session + horizon - 1, slot)
+            admitted.append(Admission(entry, slot))
+    return admitted, rejected

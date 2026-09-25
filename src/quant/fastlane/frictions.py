@@ -188,8 +188,12 @@ def is_tradeable(adv20_usd: float, params: FrictionParams) -> bool:
 
 def one_side_cost_usd(notional_usd: float, shares: float, adv20_usd: float,
                       daily_volatility: float, ar_spread: float | None,
-                      params: FrictionParams, *, stress: bool = False) -> dict:
-    if not is_tradeable(adv20_usd, params):
+                      params: FrictionParams, *, stress: bool = False,
+                      require_tradeable: bool = True) -> dict:
+    """Cost of one leg. ``require_tradeable=False`` is for exit legs only: a held
+    position must still be closed (and pay frictions) if its ADV20 fell below the
+    untradeable threshold after entry."""
+    if require_tradeable and not is_tradeable(adv20_usd, params):
         raise ValueError(f"ADV20 {adv20_usd} is below the untradeable threshold")
     spread = effective_spread(ar_spread, adv20_usd, params)
     half = half_spread_cost_usd(notional_usd, spread)

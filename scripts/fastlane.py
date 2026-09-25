@@ -13,6 +13,15 @@
     python3 scripts/fastlane.py refresh-manifest
         Drop legacy User-Agent hashes from fetch manifests and rewrite the
         consolidated manifest (no network).
+    python3 scripts/fastlane.py screen [--write-request]
+        Discovery + walk-forward screen of every declared variant under the
+        seal (needs the licensed vendor: NASDAQ_DATA_LINK_API_KEY). Writes one
+        trial record per variant and split, ranks by DSR, selects <= 3
+        finalists; --write-request writes HOLDOUT_EVAL_SPEC.json and the
+        write-once HOLDOUT_REQUEST.json (commit and push both before the look).
+    python3 scripts/fastlane.py evaluate-holdout
+        The single holdout look (needs the committed request and the vendor):
+        GO / INCONCLUSIVE / NO_GO -> research/fastlane/HOLDOUT_RESULT.json.
 
 Raw data and derived tables live under var/fastlane/ (git-ignored); only small
 artifacts go to research/fastlane/.
@@ -119,6 +128,62 @@ def cmd_seal_prereg(fw: Firewall, args) -> int:
     return 0
 
 
+def _refusal(what: str, exc: BaseException) -> int:
+    _log(f"{what} refused: {type(exc).__name__}: {exc}")
+    return 2
+
+
+def _vendor(env=None):
+    from quant.fastlane import prices as px
+    return px.SharadarVendor(env)
+
+
+def cmd_screen(fw: Firewall, args) -> int:
+    from quant.fastlane import evaluation as ev
+    from quant.fastlane import holdout as ho
+    from quant.fastlane import prices as px
+    from quant.fastlane import screen as sc
+    from quant.fastlane.preregistration import OutcomeAccessRefused, PreregError
+    try:
+        vendor = _vendor()
+        report = sc.run_screen(fw, vendor, log=_log)
+    except (px.VendorUnavailable, OutcomeAccessRefused, PreregError, ev.EvaluationError,
+            ho.TrialConflict, ho.LedgerCorrupted) as exc:
+        return _refusal("screen", exc)
+    _log(json.dumps({"finalists": report["finalists"],
+                     "n_trials_for_dsr": report["n_trials_for_dsr"],
+                     "report": str(sc.report_path(fw, report["config"]["digest"])),
+                     "verdict": report.get("verdict")}, indent=1))
+    if args.write_request:
+        try:
+            request = sc.request_holdout(fw, report)
+        except (OutcomeAccessRefused, ho.NoFinalists, ho.HoldoutAlreadyConsumed) as exc:
+            return _refusal("holdout request", exc)
+        _log(json.dumps({"holdout_request": request["request_id"],
+                         "finalists": request["finalists"],
+                         "next": "commit and push research/fastlane/prereg/HOLDOUT_REQUEST.json "
+                                 "and HOLDOUT_EVAL_SPEC.json, record the commit hash outside "
+                                 "the repository, then run evaluate-holdout"}, indent=1))
+    return 0
+
+
+def cmd_evaluate_holdout(fw: Firewall, args) -> int:
+    from quant.fastlane import evaluation as ev
+    from quant.fastlane import holdout as ho
+    from quant.fastlane import prices as px
+    from quant.fastlane import verdict as vd
+    from quant.fastlane.preregistration import OutcomeAccessRefused, PreregError
+    try:
+        vendor = _vendor()
+        result = vd.evaluate_holdout(fw, vendor)
+    except (px.VendorUnavailable, OutcomeAccessRefused, PreregError, ev.EvaluationError,
+            ho.HoldoutAlreadyConsumed) as exc:
+        return _refusal("holdout evaluation", exc)
+    _log(json.dumps({"verdict": result["decision"]["verdict"],
+                     "result": str(vd.result_path(fw))}, indent=1))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -136,6 +201,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("refresh-manifest")
     seal = sub.add_parser("seal-prereg")
     seal.add_argument("--protocol", required=True)
+    screen = sub.add_parser("screen")
+    screen.add_argument("--write-request", action="store_true")
+    sub.add_parser("evaluate-holdout")
     args = parser.parse_args(argv)
     fw = Firewall(Path(args.root))
     handler = {
@@ -145,6 +213,8 @@ def main(argv: list[str] | None = None) -> int:
         "draft-protocol": cmd_draft_protocol,
         "refresh-manifest": cmd_refresh_manifest,
         "seal-prereg": cmd_seal_prereg,
+        "screen": cmd_screen,
+        "evaluate-holdout": cmd_evaluate_holdout,
     }[args.command]
     return handler(fw, args)
 
