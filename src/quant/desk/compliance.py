@@ -22,11 +22,42 @@ PROHIBITED = frozenset({
 })
 
 
+#: Practices a lane may declare. Anything else (including a misspelling of a
+#: prohibited tag) is refused rather than silently passed.
+KNOWN_PRACTICES = frozenset({
+    "public_market_data", "exchange_execution", "passive_liquidity_provision",
+    "cross_venue_hedge", "event_study", "calendar_flow", "sharp_reference_pricing",
+})
+
+
 def assess(evidence: dict[str, Any]) -> dict[str, Any]:
     declared = (evidence or {}).get("compliance") or {}
-    tags = set(declared.get("practices", []))
-    problems = sorted(tags & PROHIBITED)
-    reasons = [f"declares prohibited practice: {tag}" for tag in problems]
-    if declared.get("cross_venue_hedge") and not declared.get("settlement_rules_matched"):
-        reasons.append("cross-venue hedge without a clause-by-clause settlement-rule match")
+    tags = {str(tag) for tag in declared.get("practices", [])}
+    normalised = {tag.lower().replace("-", "_").replace(" ", "_") for tag in tags}
+    reasons = [f"declares prohibited practice: {tag}" for tag in sorted(normalised & PROHIBITED)]
+    unknown = sorted(tag for tag in tags if tag not in KNOWN_PRACTICES
+                     and tag.lower().replace("-", "_").replace(" ", "_") not in PROHIBITED)
+    reasons += [f"undeclared practice vocabulary: {tag}" for tag in unknown]
+    if declared.get("cross_venue_hedge") and not (declared.get("settlement_rules_matched")
+                                                  and declared.get("settlement_evidence")):
+        reasons.append("cross-venue hedge without an evidenced clause-by-clause "
+                       "settlement-rule match")
     return {"approved": not reasons, "reasons": reasons, "declared": declared}
+
+
+def internal_crosses(fills_by_strategy: dict[str, list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    """Opposite fills on one symbol in one session from different sleeves.
+
+    On a real venue these two orders could match each other (a self-trade); a
+    live executor must net them into one portfolio order first.
+    """
+    sides: dict[tuple[str, str], dict[str, float]] = {}
+    for strategy, fills in fills_by_strategy.items():
+        for fill in fills:
+            key = (fill["symbol"], fill["execution_date"])
+            sides.setdefault(key, {})[strategy] = sides.get(key, {}).get(strategy, 0.0) + fill["quantity"]
+    crosses = []
+    for (symbol, day), by_strategy in sorted(sides.items()):
+        if any(q > 0 for q in by_strategy.values()) and any(q < 0 for q in by_strategy.values()):
+            crosses.append({"symbol": symbol, "execution_date": day, "sleeves": by_strategy})
+    return crosses

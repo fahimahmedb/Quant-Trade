@@ -51,7 +51,8 @@ class ComplianceTests(unittest.TestCase):
     def test_unmatched_cross_venue_hedge_is_refused(self):
         self.assertFalse(assess({"compliance": {"cross_venue_hedge": True}})["approved"])
         self.assertTrue(assess({"compliance": {"cross_venue_hedge": True,
-                                               "settlement_rules_matched": True}})["approved"])
+                                               "settlement_rules_matched": True,
+                                               "settlement_evidence": "clause map v1"}})["approved"])
 
     def test_legacy_strategy_without_declaration_is_not_blocked(self):
         self.assertTrue(assess({})["approved"])
@@ -59,3 +60,31 @@ class ComplianceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RedTeamFollowUps(unittest.TestCase):
+    def test_devig_converges_or_raises_on_extreme_books(self):
+        extreme = {"a": 1.2, "b": 1.2}                   # 67% margin
+        for method in (devig_power, devig_shin):
+            self.assertAlmostEqual(sum(method(extreme).values()), 1.0, places=6)
+
+    def test_kalshi_fee_rounding_on_small_orders(self):
+        from quant.factory.sportsfair import binary_order_edge, kalshi_taker_fee
+        self.assertEqual(kalshi_taker_fee(0.05, 1), 0.01)             # 0.33c rounds up
+        self.assertLess(binary_order_edge(0.05, 0.07, 1), 0.2)
+        self.assertGreater(binary_order_edge(0.05, 0.07, 1000), 0.3)
+
+    def test_unknown_or_misspelled_practices_are_refused(self):
+        self.assertFalse(assess({"compliance": {"practices": ["wash-trading"]}})["approved"])
+        self.assertFalse(assess({"compliance": {"practices": ["Spoofing"]}})["approved"])
+        self.assertFalse(assess({"compliance": {"practices": ["something_new"]}})["approved"])
+        self.assertFalse(assess({"compliance": {"cross_venue_hedge": True,
+                                                "settlement_rules_matched": True}})["approved"])
+
+    def test_internal_crosses_are_detected(self):
+        from quant.desk.compliance import internal_crosses
+        fills = {"S1": [{"symbol": "X", "execution_date": "d", "quantity": 5.0}],
+                 "S2": [{"symbol": "X", "execution_date": "d", "quantity": -3.0}],
+                 "S3": [{"symbol": "Y", "execution_date": "d", "quantity": 1.0}]}
+        crosses = internal_crosses(fills)
+        self.assertEqual([c["symbol"] for c in crosses], ["X"])

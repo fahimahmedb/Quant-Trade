@@ -114,3 +114,34 @@ class CalendarSignalTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MonthEndCoverageTests(unittest.TestCase):
+    """Red-team finding: zero-drift flat targets reset the holding clock and
+    silently skipped months in research while the Desk traded every month."""
+
+    def test_every_month_with_a_prior_close_trades_in_research(self):
+        import random
+        rng = random.Random(4)
+        day, days = date(2025, 1, 1), []
+        while day <= date(2025, 12, 31):
+            if is_session(day):
+                days.append(day.isoformat())
+            day = date.fromordinal(day.toordinal() + 1)
+        spy, tlt, level, bond = [], [], 100.0, 50.0
+        for _ in days:
+            level *= 1 + rng.gauss(0, 0.01)
+            bond *= 1 + rng.gauss(0, 0.005)
+            spy.append((level, level))
+            tlt.append((bond, bond))
+        panel, _ = build_calendar_panel(_panel(days, {"SPY": spy, "TLT": tlt}), ["SPY", "TLT"], [])
+        spec = lane_definitions(["SPY", "TLT", "SPY_ON"], CALENDAR_DATASET)[
+            "calendar_month_end_rebalance"]["grid"][0]
+        rows = walk_forward(panel, spec, Window("W", days[0], days[-1]), 2.0)
+        entries = {row["signal_date"][:7] for row in rows if row["turnover"] > 0
+                   and any(abs(w) > 0 for w in row["weights"].values())}
+        # January has no prior month-end close in the fixture; every other month
+        # (February..December) must trade.
+        self.assertEqual(len(entries), 11)
+        active = sum(1 for row in rows if row["positions"] > 0)
+        self.assertLess(active, 40)                       # flat days are not "active"

@@ -235,7 +235,7 @@ def calendar_lane_definitions(universe: list[str], dataset_id: str) -> dict[str,
 PERP_DATASET = "perp_funding_pairs_daily"
 #: Crypto lab expressions on overlapping Bybit/Hyperliquid data (35 in the first
 #: lab, ~5 threshold/fee variants in the structural-edges lab).
-PERP_PRIOR_TRIALS = 40
+PERP_PRIOR_TRIALS = 42          # + the 2 expressions of the superseded first run
 PERP_PRISTINE_AFTER = "2025-05-15"
 #: One-way research cost: taker ~4.5-5.5bp plus spread on thin listings.
 PERP_COST_BPS = 8.0
@@ -266,8 +266,10 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
         # no settlement-rule basis to match (unlike prediction-market hedges).
         "compliance": {"practices": ["public_market_data", "exchange_execution"],
                        "cross_venue_hedge": True, "settlement_rules_matched": True,
-                       "note": "perpetuals never settle; venue access must be lawful "
-                               "in the operator's jurisdiction"},
+                       "settlement_evidence": "both legs are the same coin's perpetual swap; "
+                                              "perpetuals never settle, so there is no "
+                                              "settlement clause to mismatch",
+                       "note": "venue access must be lawful in the operator's jurisdiction"},
         "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
 
 

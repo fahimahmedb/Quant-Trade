@@ -35,29 +35,45 @@ FUTURES_PROXIES = ["ES=F", "NQ=F", "ZN=F", "ZB=F", "GC=F", "CL=F", "6E=F", "6J=F
 FRED_SERIES = ["DGS3MO", "DGS2", "DGS10"]
 FUNDING_COINS = 40          # Hyperliquid coins by 24h notional volume
 POLYMARKET_BOOKS = 20       # order-book snapshots per run (repository growth budget)
+SNAPSHOT_MARKETS = 200      # price snapshots per venue per run, most active first
+RULE_FIELDS = ("question", "description", "resolution_source", "rules_primary", "title",
+               "end_date", "close_time", "category", "event_slug", "event_ticker", "neg_risk")
 
 
 def session_closed(day: str, now: datetime) -> bool:
-    """A US session's daily bar is final only after the close (21:00 UTC in
-    winter, 20:00 in summer) plus a buffer; earlier it is an intraday partial
+    """A daily bar is final only after its venue's close plus a buffer: US
+    equities close 20:00/21:00 UTC and CME futures settle by 21:00/22:00 UTC,
+    so 23:00 UTC covers both with an hour to spare; earlier it is a partial
     that would otherwise become the 'first observation' of that day."""
-    close = datetime.fromisoformat(day).replace(tzinfo=timezone.utc) + timedelta(hours=22)
+    close = datetime.fromisoformat(day).replace(tzinfo=timezone.utc) + timedelta(hours=23)
     return now >= close
 
 
 class Stream:
-    """Append-only JSONL with an in-memory key index."""
+    """Append-only JSONL, sharded by observation month, with a key index.
+
+    ``<stream>.jsonl`` is written as ``<stream>/<YYYY-MM>.jsonl`` so no file
+    grows past GitHub's per-file limit; the index spans every shard so a value
+    first seen last month is still recognised. The index keeps the *latest*
+    digest per key, so a restated value is recorded once, not on every run.
+    """
 
     def __init__(self, path: Path):
-        self.path = path
+        self.base = path.with_suffix("")          # e.g. out/kalshi/markets
         self.keys: dict[str, str] = {}
-        if path.exists():
-            for line in path.read_text(encoding="utf-8").splitlines():
+        legacy = [path] if path.exists() else []
+        for shard in legacy + sorted(self.base.glob("*.jsonl")):
+            text = shard.read_text(encoding="utf-8")
+            if text and not text.endswith("\n"):
+                with shard.open("a", encoding="utf-8") as handle:
+                    handle.write("\n")            # isolate a torn last line
+            for line in text.splitlines():
                 try:
-                    record = json.loads(line)
+                    item = json.loads(line)
                 except json.JSONDecodeError:
-                    continue            # a torn last line from a killed run
-                self.keys[record["key"]] = record.get("digest", "")
+                    continue
+                base_key = item["key"].split("#restated@")[0]
+                self.keys[base_key] = json.dumps(item["record"], sort_keys=True)
 
     def add(self, key: str, record: dict, observed_at: str) -> str:
         digest = json.dumps(record, sort_keys=True)
@@ -65,15 +81,12 @@ class Stream:
         if previous == digest:
             return "duplicate"
         kind = "observation" if previous is None else "restatement"
-        if kind == "restatement":
-            key = f"{key}#restated@{observed_at}"
-            if key in self.keys:
-                return "duplicate"
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps({"key": key, "kind": kind, "observed_at": observed_at,
-                                     "digest": digest, "record": record},
-                                    sort_keys=True) + "\n")
+        stored_key = key if kind == "observation" else f"{key}#restated@{observed_at}"
+        shard = self.base / f"{observed_at[:7]}.jsonl"
+        shard.parent.mkdir(parents=True, exist_ok=True)
+        with shard.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps({"key": stored_key, "kind": kind, "observed_at": observed_at,
+                                     "record": record}, sort_keys=True) + "\n")
         self.keys[key] = digest
         return kind
 
@@ -132,11 +145,20 @@ def _collect(out: Path, now: datetime) -> dict:
                 except DataUnavailable:
                     continue      # coin not listed there, or venue geo-blocked
 
+    def split(item: dict) -> tuple[dict, dict]:
+        rules = {key: item.get(key) for key in RULE_FIELDS if key in item}
+        prices = {key: value for key, value in item.items() if key not in RULE_FIELDS}
+        return rules, prices
+
     def polymarket():
-        markets = c.fetch_polymarket_markets(500)
+        markets = sorted(c.fetch_polymarket_markets(500),
+                         key=lambda item: -(item["volume_24h"] or 0))
         hour = now.strftime("%Y-%m-%dT%H")
-        for item in markets:
-            yield "polymarket/markets.jsonl", f"{hour}|{item['market_id']}", item
+        for item in markets[:SNAPSHOT_MARKETS]:
+            rules, prices = split(item)
+            # rule text is stored once per market (and again only if it changes)
+            yield "polymarket/rules.jsonl", item["market_id"], rules
+            yield "polymarket/markets.jsonl", f"{hour}|{item['market_id']}", prices
         liquid = sorted(markets, key=lambda item: -(item["volume_24h"] or 0))[:POLYMARKET_BOOKS]
         for item in liquid:
             for token in item["tokens"][:1]:
@@ -147,8 +169,12 @@ def _collect(out: Path, now: datetime) -> dict:
 
     def kalshi():
         hour = now.strftime("%Y-%m-%dT%H")
-        for item in c.fetch_kalshi_markets(1000):
-            yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", item
+        markets = sorted(c.fetch_kalshi_markets(1000),
+                         key=lambda item: -(item["volume_24h"] or 0))
+        for item in markets[:SNAPSHOT_MARKETS]:
+            rules, prices = split(item)
+            yield "kalshi/rules.jsonl", item["market_id"], rules
+            yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", prices
 
     def odds():
         for sport in ("soccer_epl", "soccer_spain_la_liga", "basketball_nba",

@@ -27,7 +27,7 @@ class EquityParsers(unittest.TestCase):
                                       "volume": [100, 200, 300]}],
                            "adjclose": [{"adjclose": [10.4, 11.4, 12.4]}]}}]}}
         rows = c.parse_yahoo_chart(payload, "SPY")
-        self.assertEqual([r["date"] for r in rows], ["2024-09-12", "2024-09-14"])
+        self.assertEqual([r["date"] for r in rows], ["2024-09-12", "2024-09-14"])  # open missing: dropped
         self.assertEqual(rows[1]["adj_close"], 12.4)
         self.assertEqual(c.parse_yahoo_chart({"chart": {"error": {"code": "x"}}}, "SPY"), [])
 
@@ -133,25 +133,26 @@ class TransportAndCollector(unittest.TestCase):
         self.assertEqual(set(report), set(c.CONNECTORS))
         self.assertTrue(all("status" in item for item in report.values()))
 
-    def test_stream_is_append_only_and_keeps_restatements_separately(self):
+    def test_stream_is_append_only_sharded_and_records_a_restatement_once(self):
         import fetch_feeds
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "s.jsonl"
             stream = fetch_feeds.Stream(path)
-            self.assertEqual(stream.add("k", {"v": 1}, "t1"), "observation")
-            self.assertEqual(stream.add("k", {"v": 1}, "t2"), "duplicate")
-            self.assertEqual(stream.add("k", {"v": 2}, "t3"), "restatement")
-            with path.open("a") as handle:
-                handle.write('{"torn": ')           # a killed run's partial line
+            self.assertEqual(stream.add("k", {"v": 1}, "2026-09-01T00:00:00"), "observation")
+            self.assertEqual(stream.add("k", {"v": 1}, "2026-09-02T00:00:00"), "duplicate")
+            self.assertEqual(stream.add("k", {"v": 2}, "2026-10-03T00:00:00"), "restatement")
             reopened = fetch_feeds.Stream(path)
-            self.assertEqual(reopened.add("k", {"v": 1}, "t4"), "duplicate")
-            lines = [json.loads(line) for line in path.read_text().splitlines()[:2]]
-            self.assertEqual([line["kind"] for line in lines], ["observation", "restatement"])
-            self.assertEqual(lines[0]["record"], {"v": 1})
-
-
-if __name__ == "__main__":
-    unittest.main()
+            for day in ("04", "05", "06"):                  # no churn on unchanged B
+                self.assertEqual(reopened.add("k", {"v": 2}, f"2026-10-{day}T00:00:00"),
+                                 "duplicate")
+            shards = sorted(p.name for p in (Path(tmp) / "s").glob("*.jsonl"))
+            self.assertEqual(shards, ["2026-09.jsonl", "2026-10.jsonl"])
+            with (Path(tmp) / "s" / "2026-10.jsonl").open("a") as handle:
+                handle.write('{"torn": ')                   # a killed run's partial line
+            again = fetch_feeds.Stream(path)
+            self.assertEqual(again.add("j", {"v": 3}, "2026-10-07T00:00:00"), "observation")
+            last = (Path(tmp) / "s" / "2026-10.jsonl").read_text().splitlines()[-1]
+            self.assertEqual(json.loads(last)["key"], "j")  # not glued to the torn line
 
 
 class VenueParsers(unittest.TestCase):
