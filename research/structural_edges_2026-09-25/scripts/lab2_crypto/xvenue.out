@@ -1,0 +1,18 @@
+coins 149 days 708 2023-06-08 2025-05-15
+mean |spread| ann %: 16.5  median: 6.5
+pooled corr(spread_d, spread_d+1)=0.54
+ |prev|>10%/yr: n=24375, sign persists 0.86, mean next captured ann 26.1%
+ |prev|>30%/yr: n=10208, sign persists 0.91, mean next captured ann 43.3%
+ |prev|>100%/yr: n=1093, sign persists 0.90, mean next captured ann 84.8%
+--- price-leg coverage coins 139 47
+thr=20% look=3 fee/leg=0.07% univ=149 price=False: ann_net=19.4% SR=19.57 fundOnly=26.9% priceLeg=0.0% avgPairs=24.5 days=705 2025ann=6.9% (n=135) byYr=2023:34% 2024:16% 2025:7%
+thr=20% look=3 fee/leg=0.07% univ=149 price=True: ann_net=20.1% SR=18.45 fundOnly=26.9% priceLeg=0.7% avgPairs=24.5 days=705 2025ann=7.6% (n=135) byYr=2023:35% 2024:16% 2025:8%
+thr=50% look=3 fee/leg=0.07% univ=149 price=False: ann_net=33.7% SR=16.22 fundOnly=42.2% priceLeg=0.0% avgPairs=10.2 days=626 2025ann=19.3% (n=132) byYr=2023:46% 2024:31% 2025:19%
+thr=50% look=3 fee/leg=0.07% univ=149 price=True: ann_net=34.6% SR=14.62 fundOnly=42.2% priceLeg=0.9% avgPairs=10.2 days=626 2025ann=19.3% (n=132) byYr=2023:47% 2024:33% 2025:19%
+thr=100% look=3 fee/leg=0.07% univ=149 price=False: ann_net=55.3% SR=13.16 fundOnly=64.7% priceLeg=0.0% avgPairs=3.6 days=392 2025ann=32.7% (n=81) byYr=2023:66% 2024:55% 2025:33%
+thr=100% look=3 fee/leg=0.07% univ=149 price=True: ann_net=56.5% SR=12.81 fundOnly=64.7% priceLeg=1.1% avgPairs=3.6 days=392 2025ann=33.7% (n=81) byYr=2023:67% 2024:57% 2025:34%
+thr=20% look=3 fee/leg=0.07% univ=17 price=True: ann_net=19.0% SR=14.72 fundOnly=25.2% priceLeg=1.0% avgPairs=6.4 days=602 2025ann=0.9% (n=74) byYr=2023:30% 2024:16% 2025:1%
+thr=50% look=3 fee/leg=0.07% univ=17 price=True: ann_net=41.3% SR=23.37 fundOnly=47.7% priceLeg=0.5% avgPairs=4.5 days=297 2025ann=nan% (n=0) byYr=2023:48% 2024:34%
+thr=50% look=3 fee/leg=0.03% univ=149 price=True: ann_net=39.4% SR=17.22 fundOnly=42.2% priceLeg=0.9% avgPairs=10.2 days=626 2025ann=26.3% (n=132) byYr=2023:50% 2024:38% 2025:26%
+thr=50% look=1 fee/leg=0.07% univ=149 price=True: ann_net=27.5% SR=10.45 fundOnly=45.5% priceLeg=0.2% avgPairs=11.0 days=645 2025ann=10.6% (n=133) byYr=2023:47% 2024:22% 2025:11%
+thr=50% look=7 fee/leg=0.07% univ=149 price=True: ann_net=32.9% SR=11.41 fundOnly=37.6% priceLeg=-0.1% avgPairs=9.7 days=590 2025ann=13.7% (n=127) byYr=2023:45% 2024:33% 2025:14%
