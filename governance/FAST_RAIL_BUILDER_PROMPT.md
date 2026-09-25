@@ -41,8 +41,9 @@ BRANCH                  = fast/rail-01        # ou la branche imposée par la se
 ```bash
 git fetch origin claude/prototype-futures-trend-carry-6vr22g claude/data-feeds-6vr22g
 git checkout -b fast/rail-01 origin/claude/prototype-futures-trend-carry-6vr22g
-# si la proposition a été acceptée (contient la proposition, le prompt et le manifeste de rangement) :
-git fetch origin claude/two-speed-cleanup-6vr22g && git merge --no-edit origin/claude/two-speed-cleanup-6vr22g
+# proposition corrigée et adoptée par Blue (bd19712 : 10 invariants, Gate C, section Rail C) :
+git fetch origin claude/new-session-z4pdlx && git merge --no-edit origin/claude/new-session-z4pdlx
+git merge-base --is-ancestor bd19712 HEAD || { echo "adoption Blue absente : arrêt"; exit 1; }
 PYTHONPATH=src python3 -m unittest discover -s tests -q
 ```
 
