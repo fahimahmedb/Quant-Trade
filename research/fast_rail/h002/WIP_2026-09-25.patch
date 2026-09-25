@@ -1,0 +1,949 @@
+diff --git a/scripts/build_perp_funding_hl_dydx.py b/scripts/build_perp_funding_hl_dydx.py
+new file mode 100644
+index 0000000..9bb6334
+--- /dev/null
++++ b/scripts/build_perp_funding_hl_dydx.py
+@@ -0,0 +1,353 @@
++"""Build the Hyperliquid-vs-dYdX v4 perpetual funding panel from the venues' public APIs.
++
++    python3 scripts/build_perp_funding_hl_dydx.py [--end YYYY-MM-DD] [--offline]
++
++Standard library only. Every raw response is cached (gzip) under
++``data/fast_rail/h002/raw/`` keyed by its request, so a rerun is offline and
++byte-reproducible; ``data/fast_rail/h002/provenance.jsonl.gz`` records the URL,
++request body, fetch time and sha256 of every response the panel was built from.
++
++Sources (public, no keys):
++
++* Hyperliquid ``POST https://api.hyperliquid.xyz/info``: ``meta`` (incl. delisted
++  coins), ``fundingHistory`` (hourly rate paid by longs), ``candleSnapshot`` 1d.
++* dYdX v4 indexer ``https://indexer.dydx.trade/v4``: ``perpetualMarkets`` (incl.
++  FINAL_SETTLEMENT markets), ``historicalFunding/{T}-USD`` (hourly rate, same
++  units and sign as Hyperliquid: positive = longs pay; paginated with
++  ``effectiveBeforeOrAt``), ``candles/perpetualMarkets/{T}-USD?resolution=1DAY``.
++
++Output ``data/datasets/perp_funding_hl_dydx_daily.csv.gz`` (PricePanel), symbols
++``HL.<COIN>`` and ``DY.<COIN>``. For UTC day d:
++
++* open = close = the venue's last price of day d (daily candle close), so a
++  fill "at open(d+1)" happens one full day after the decision;
++* ``carry_rate`` = funding paid by longs over day d: the sum of the hourly rates
++  settled at 01:00 .. 24:00 of d (a settlement at hour H pays for [H-1h, H));
++* volume = daily notional traded on that venue (HL: base volume x close; dYdX:
++  ``usdVolume``).
++
++A day is kept only when both venues have >= 22 distinct hourly settlements and
++a traded (volume > 0) daily candle. Nothing is filled in. Coins are the
++intersection of Hyperliquid and dYdX markets, delisted ones included; the six
++Hyperliquid ``k``-coins (kPEPE = 1000 PEPE) are paired with the dYdX token.
++Prices are expressed per ``price_scale`` tokens (a power of ten chosen per coin
++so the smallest close is >= 1; returns are unchanged) because the panel stores
++six decimals.
++"""
++
++from __future__ import annotations
++
++import argparse
++import gzip
++import hashlib
++import json
++import math
++import sys
++import time
++import urllib.error
++import urllib.request
++from concurrent.futures import ThreadPoolExecutor
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from quant.dataplane.ingest import _register  # noqa: E402
++from quant.dataplane.panel import PricePanel  # noqa: E402
++from quant.dataplane.registry import DatasetRecord, DatasetRegistry  # noqa: E402
++from quant.paths import QuantPaths  # noqa: E402
++
++DATASET = "perp_funding_hl_dydx_daily"
++HL_INFO = "https://api.hyperliquid.xyz/info"
++DYDX = "https://indexer.dydx.trade/v4"
++RAW = ROOT / "data" / "fast_rail" / "h002" / "raw"
++PROVENANCE = ROOT / "data" / "fast_rail" / "h002" / "provenance.jsonl.gz"
++MIN_PRINTS = 22
++MIN_DAYS = 60
++HOUR_MS = 3_600_000
++#: Hyperliquid info weight budget is 1200/min per IP; fundingHistory costs
++#: 20 + 1 per 20 items (~45 for a full page), so ~26 pages/min. Stay under it.
++HL_PAUSE = 2.6
++DYDX_PAUSE = 0.35
++
++
++class Fetcher:
++    def __init__(self, offline: bool):
++        self.offline = offline
++        self.provenance: dict[str, dict] = {}
++        self.last_call: dict[str, float] = {}
++
++    def get(self, url: str, body: dict | None = None) -> object:
++        key = json.dumps({"url": url, "body": body}, sort_keys=True)
++        digest = hashlib.sha1(key.encode()).hexdigest()
++        path = RAW / digest[:2] / f"{digest}.json.gz"
++        meta_path = path.with_suffix("").with_suffix(".meta.json")
++        if path.exists() and meta_path.exists():
++            payload = gzip.decompress(path.read_bytes())
++            meta = json.loads(meta_path.read_text())
++        else:
++            if self.offline:
++                raise SystemExit(f"offline and not cached: {key}")
++            payload = self._fetch(url, body)
++            path.parent.mkdir(parents=True, exist_ok=True)
++            with path.open("wb") as raw:
++                with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as handle:
++                    handle.write(payload)
++            meta = {"url": url, "body": body,
++                    "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
++                    "sha256": hashlib.sha256(payload).hexdigest(), "bytes": len(payload),
++                    "cache": str(path.relative_to(ROOT))}
++            meta_path.write_text(json.dumps(meta, sort_keys=True))
++        self.provenance[key] = meta
++        return json.loads(payload)
++
++    def _fetch(self, url: str, body: dict | None) -> bytes:
++        host = "hl" if body is not None else "dydx"
++        pause = HL_PAUSE if host == "hl" else DYDX_PAUSE
++        for attempt in range(8):
++            wait = self.last_call.get(host, 0.0) + pause - time.monotonic()
++            if wait > 0:
++                time.sleep(wait)
++            self.last_call[host] = time.monotonic()
++            data = json.dumps(body).encode() if body is not None else None
++            request = urllib.request.Request(url, data=data, headers={
++                "Content-Type": "application/json", "User-Agent": "quant-research/1.0"})
++            try:
++                with urllib.request.urlopen(request, timeout=60) as response:
++                    return response.read()
++            except urllib.error.HTTPError as exc:
++                if exc.code not in (429, 500, 502, 503, 504):
++                    raise
++            except (urllib.error.URLError, TimeoutError, ConnectionError):
++                pass
++            time.sleep(min(120.0, 5.0 * 2 ** attempt))
++        raise RuntimeError(f"giving up on {url} {body}")
++
++
++def iso_ms(value: str) -> int:
++    return int(datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp() * 1000)
++
++
++def ms_iso(value: int) -> str:
++    return datetime.fromtimestamp(value / 1000, timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")[:-4] + "Z"
++
++
++def day_of(ms: int) -> str:
++    return datetime.fromtimestamp(ms / 1000, timezone.utc).date().isoformat()
++
++
++def settlement_day(ms: int) -> tuple[str, int]:
++    """(day the payment accrues to, settlement hour in ms): a payment settled at
++    hour H covers [H-1h, H), so the 00:00 settlement belongs to the previous day."""
++    hour = int(round(ms / HOUR_MS)) * HOUR_MS
++    return day_of(hour - HOUR_MS), hour
++
++
++def daily_carry(prints: list[tuple[int, float]]) -> dict[str, float]:
++    """Sum of hourly rates per day, only for days with >= MIN_PRINTS distinct hours."""
++    by_hour: dict[int, tuple[str, float]] = {}
++    for ms, rate in prints:
++        day, hour = settlement_day(ms)
++        by_hour[hour] = (day, rate)          # one settlement per hour
++    sums: dict[str, float] = {}
++    counts: dict[str, int] = {}
++    for day, rate in by_hour.values():
++        sums[day] = sums.get(day, 0.0) + rate
++        counts[day] = counts.get(day, 0) + 1
++    return {day: value for day, value in sums.items() if counts[day] >= MIN_PRINTS}
++
++
++def coin_pairs(fetcher: Fetcher) -> list[tuple[str, str, str, float]]:
++    """(coin, Hyperliquid name, dYdX ticker, HL tokens per contract)."""
++    hl = fetcher.get(HL_INFO, {"type": "meta"})["universe"]
++    dy = fetcher.get(f"{DYDX}/perpetualMarkets?limit=1000")["markets"]
++    hl_names = {}
++    for item in hl:
++        name = item["name"]
++        if name.startswith("k") and name[1:].isupper():
++            hl_names[name[1:]] = (name, 1000.0)
++        else:
++            hl_names.setdefault(name, (name, 1.0))
++    dy_names = {ticker.rsplit("-", 1)[0]: ticker for ticker in dy if ticker.endswith("-USD")}
++    return [(coin, *hl_names[coin][:1], dy_names[coin], hl_names[coin][1])
++            for coin in sorted(set(hl_names) & set(dy_names))]
++
++
++def dydx_funding(fetcher: Fetcher, ticker: str, end_ms: int) -> list[tuple[int, float]]:
++    prints, cursor = [], end_ms - 1
++    while True:
++        page = fetcher.get(f"{DYDX}/historicalFunding/{ticker}?limit=1000"
++                           f"&effectiveBeforeOrAt={ms_iso(cursor)}")["historicalFunding"]
++        prints += [(iso_ms(item["effectiveAt"]), float(item["rate"])) for item in page]
++        if len(page) < 1000:
++            return prints
++        cursor = min(iso_ms(item["effectiveAt"]) for item in page) - 1
++
++
++def dydx_candles(fetcher: Fetcher, ticker: str, end_ms: int) -> dict[str, tuple[float, float]]:
++    bars, cursor = {}, end_ms - 1
++    while True:
++        page = fetcher.get(f"{DYDX}/candles/perpetualMarkets/{ticker}?resolution=1DAY"
++                           f"&limit=1000&toISO={ms_iso(cursor)}")["candles"]
++        for item in page:
++            started = iso_ms(item["startedAt"])
++            if started + 86_400_000 <= end_ms and float(item["usdVolume"]) > 0:
++                bars[day_of(started)] = (float(item["close"]), float(item["usdVolume"]))
++        if len(page) < 1000:
++            return bars
++        cursor = min(iso_ms(item["startedAt"]) for item in page) - 1
++
++
++def hl_funding(fetcher: Fetcher, name: str, start_ms: int, end_ms: int) -> list[tuple[int, float]]:
++    prints, cursor = [], start_ms
++    while cursor < end_ms:
++        page = fetcher.get(HL_INFO, {"type": "fundingHistory", "coin": name,
++                                     "startTime": cursor, "endTime": end_ms})
++        prints += [(int(item["time"]), float(item["fundingRate"])) for item in page]
++        if len(page) < 500:
++            return prints
++        cursor = max(int(item["time"]) for item in page) + 1
++    return prints
++
++
++def hl_candles(fetcher: Fetcher, name: str, start_ms: int, end_ms: int) -> dict[str, tuple[float, float]]:
++    page = fetcher.get(HL_INFO, {"type": "candleSnapshot", "req": {
++        "coin": name, "interval": "1d", "startTime": start_ms, "endTime": end_ms}})
++    bars = {}
++    for item in page:
++        close, volume = float(item["c"]), float(item["v"])
++        if int(item["t"]) + 86_400_000 <= end_ms and volume > 0:
++            bars[day_of(int(item["t"]))] = (close, volume * close)
++    return bars
++
++
++def build(fetcher: Fetcher, end_ms: int, log=print,
++          only: set[str] | None = None) -> tuple[list[dict], list[str], dict]:
++    rows, symbols, coins = [], [], {}
++    pairs = [pair for pair in coin_pairs(fetcher) if not only or pair[0] in only]
++
++    def dydx_side(ticker: str) -> tuple[dict, dict]:
++        return daily_carry(dydx_funding(fetcher, ticker, end_ms)), dydx_candles(fetcher, ticker,
++                                                                                 end_ms)
++
++    # The dYdX indexer is fetched ahead in a worker thread while the (slower,
++    # weight-limited) Hyperliquid requests run here; each host keeps its own pause.
++    with ThreadPoolExecutor(max_workers=1) as pool:
++        ahead = [pool.submit(dydx_side, pair[2]) for pair in pairs]
++        for position, ((coin, hl_name, dy_ticker, per_contract), future) in enumerate(
++                zip(pairs, ahead)):
++            dy_carry, dy_bars = future.result()
++            usable = sorted(set(dy_carry) & set(dy_bars))
++            if len(usable) < MIN_DAYS:
++                log(f"[{position + 1}/{len(pairs)}] {coin}: {len(usable)} dYdX days, skipped")
++                continue
++            start_ms = iso_ms(usable[0] + "T00:00:00Z") - 86_400_000
++            stop_ms = min(end_ms, iso_ms(usable[-1] + "T00:00:00Z") + 2 * 86_400_000)
++            hl_bars = hl_candles(fetcher, hl_name, start_ms, stop_ms)
++            hl_carry = {}
++            if len(hl_bars) >= MIN_DAYS:
++                # Only where Hyperliquid traded: delisted coins keep printing funding.
++                hl_carry = daily_carry(hl_funding(
++                    fetcher, hl_name, max(start_ms, iso_ms(min(hl_bars) + "T00:00:00Z")),
++                    min(stop_ms, iso_ms(max(hl_bars) + "T00:00:00Z") + 2 * 86_400_000)))
++            rows_added = _pair_rows(coin, hl_name, dy_ticker, per_contract, dy_carry, dy_bars,
++                                    hl_carry, hl_bars, log, f"[{position + 1}/{len(pairs)}]")
++            if rows_added:
++                rows += rows_added[0]
++                coins[coin] = rows_added[1]
++                symbols += [f"HL.{coin}", f"DY.{coin}"]
++    return rows, symbols, coins
++
++
++def _pair_rows(coin, hl_name, dy_ticker, per_contract, dy_carry, dy_bars, hl_carry, hl_bars,
++               log, tag):
++    """Panel rows for one coin, or None when fewer than MIN_DAYS complete days."""
++    days = sorted(day for day in set(dy_carry) & set(dy_bars) & set(hl_carry) & set(hl_bars)
++                  if hl_bars[day][0] > 0 and dy_bars[day][0] > 0)
++    log(f"{tag} {coin}: {len(days)} common days")
++    if len(days) < MIN_DAYS:
++        return None
++    # HL quotes k-coins per 1000 tokens; express both legs per token first.
++    low = min([hl_bars[d][0] / per_contract for d in days] + [dy_bars[d][0] for d in days])
++    scale = 10.0 ** max(0, math.ceil(-math.log10(low))) if low < 1 else 1.0
++    info = {"hyperliquid": hl_name, "dydx": dy_ticker, "hl_tokens_per_contract": per_contract,
++            "price_scale_tokens": scale, "first_day": days[0], "last_day": days[-1],
++            "days": len(days)}
++    rows = []
++    for day in days:
++        for venue, price, volume, carry in (
++                ("HL", hl_bars[day][0] / per_contract * scale, hl_bars[day][1], hl_carry[day]),
++                ("DY", dy_bars[day][0] * scale, dy_bars[day][1], dy_carry[day])):
++            rows.append({"date": day, "symbol": f"{venue}.{coin}", "open": price,
++                         "high": price, "low": price, "close": price, "adj_close": price,
++                         "volume": volume, "carry_rate": carry})
++    return rows, info
++
++
++def main() -> None:
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--end", help="exclusive UTC end day (default: today)")
++    parser.add_argument("--offline", action="store_true", help="use the raw cache only")
++    parser.add_argument("--state", default="var/perp_hl_dydx_build")
++    parser.add_argument("--coins", help="comma-separated subset (smoke test only; no registration)")
++    args = parser.parse_args()
++    end_day = (datetime.fromisoformat(args.end).replace(tzinfo=timezone.utc) if args.end
++               else datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0))
++    end_ms = int(end_day.timestamp() * 1000)
++    fetcher = Fetcher(args.offline)
++    only = set(args.coins.split(",")) if args.coins else None
++    rows, symbols, coins = build(fetcher, end_ms, log=lambda line: print(line, flush=True),
++                                 only=only)
++    if only:
++        print(json.dumps(coins, indent=1), len(rows))
++        return
++    panel = PricePanel(rows)
++    manifest = sorted(fetcher.provenance.values(), key=lambda item: item["cache"])
++    PROVENANCE.parent.mkdir(parents=True, exist_ok=True)
++    with PROVENANCE.open("wb") as raw:
++        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as handle:
++            handle.write("".join(json.dumps(item, sort_keys=True) + "\n"
++                                 for item in manifest).encode())
++    (PROVENANCE.parent / "coins.json").write_text(json.dumps(coins, indent=1, sort_keys=True))
++    paths = QuantPaths(ROOT, state=args.state).ensure()
++    record = DatasetRecord(
++        dataset_id=DATASET,
++        source="Hyperliquid public info API (meta, fundingHistory, candleSnapshot 1d) + dYdX v4 "
++               "public indexer (perpetualMarkets, historicalFunding, candles 1DAY); "
++               f"{len(manifest)} responses, sha256 per response in "
++               f"{PROVENANCE.relative_to(ROOT)}",
++        adapter="perp_funding_hl_dydx_derivation", path=f"data/datasets/{DATASET}.csv.gz",
++        point_in_time={"information_available_at": "00:00 UTC after the dated day",
++                       "minimum_decision_lag_days": 1,
++                       "fill_convention": "open(d+1) = close(d+1): one full day of execution lag",
++                       "funding_day": "hourly settlements at 01:00..24:00 UTC of the dated day",
++                       "funding_units": "rate per hourly settlement, positive = longs pay; "
++                                        "dYdX v4 and Hyperliquid use the same convention",
++                       "required_symbols": ["HL.BTC", "DY.BTC", "HL.ETH", "DY.ETH",
++                                            "HL.SOL", "DY.SOL"],
++                       "min_rows_per_symbol": MIN_DAYS,
++                       "fetched_through": end_day.date().isoformat()},
++        caveats=["venue APIs queried directly; not independently cross-checked against a "
++                 "third-party archive",
++                 "delisted coins are included where both venues still serve history "
++                 "(Hyperliquid meta isDelisted, dYdX FINAL_SETTLEMENT)",
++                 "a day is kept only with >= 22 hourly settlements and a traded daily candle "
++                 "on both venues; nothing is filled in",
++                 "close is the daily candle's last trade; thin dYdX markets can print stale "
++                 "closes, which adds cross-venue price noise to the pair",
++                 "prices are per price_scale tokens (data/fast_rail/h002/coins.json) and "
++                 "Hyperliquid k-coins are converted to per-token; returns are unaffected",
++                 "HL volume notional = base volume x daily close (approximation)",
++                 "no intraday margin, liquidation or auto-deleveraging modelling in the data",
++                 "coin names are matched by ticker; a re-used ticker would pair different assets"],
++        license_note="public venue APIs; research use")
++    registered = _register(DatasetRegistry(paths.dataset_registry, paths.root), record, panel,
++                           sorted(set(symbols)), paths.root)
++    print(registered.dataset_id, registered.availability, registered.rows,
++          len(registered.symbols), registered.first_date, registered.last_date,
++          registered.fingerprint, registered.validation.get("problems"))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/quant.py b/scripts/quant.py
+index 3a7fc64..b0e4c8b 100644
+--- a/scripts/quant.py
++++ b/scripts/quant.py
+@@ -155,7 +155,7 @@ def main() -> None:
+                                             "sec-readiness", "sec-audit", "sync-feeds"))
+     parser.add_argument("--root", type=Path, default=ROOT)
+     parser.add_argument("--market", choices=("etf", "futures", "futures-broad", "calendar",
+-                                             "perp-funding"),
++                                             "perp-funding", "perp-funding-dydx"),
+                         default="etf",
+                         help="which market instance to drive; futures keeps its own "
+                              "state under var/futures and never touches the ETF Book")
+@@ -231,6 +231,13 @@ def main() -> None:
+         system = QuantSystem(args.root, initial_capital=args.capital,
+                              universe=meta["symbols"], dataset_id="perp_funding_pairs_daily",
+                              state_dir="var/perp_funding", calendar=["HL.BTC"])
++    elif args.market == "perp-funding-dydx":
++        import json as _json
++        meta = _json.loads((args.root / "data" / "datasets"
++                            / "perp_funding_hl_dydx_daily.csv.meta.json").read_text())
++        system = QuantSystem(args.root, initial_capital=args.capital,
++                             universe=meta["symbols"], dataset_id="perp_funding_hl_dydx_daily",
++                             state_dir="var/perp_funding_dydx", calendar=["HL.BTC"])
+     elif args.market == "calendar":
+         system = QuantSystem(args.root, initial_capital=args.capital,
+                              universe=["SPY", "TLT", "SPY_ON"],
+@@ -285,6 +292,7 @@ def main() -> None:
+         name = {"etf": "CHIEF_BRIEF.md", "futures": "CHIEF_BRIEF_FUTURES.md",
+                 "calendar": "CHIEF_BRIEF_CALENDAR.md",
+                 "perp-funding": "CHIEF_BRIEF_PERP_FUNDING.md",
++                "perp-funding-dydx": "CHIEF_BRIEF_PERP_FUNDING_DYDX.md",
+                 "futures-broad": "CHIEF_BRIEF_FUTURES_BROAD.md"}[args.market]
+         path = write_chief_brief(snapshot, args.root / name)
+         print(f"wrote {path}")
+diff --git a/src/quant/desk/profiles.py b/src/quant/desk/profiles.py
+index c7382bc..2157961 100644
+--- a/src/quant/desk/profiles.py
++++ b/src/quant/desk/profiles.py
+@@ -66,8 +66,12 @@ PERP_PROFILE = DeskProfile(
+ )
+ 
+ 
++#: Fast-rail H-002 panel: same pair structure and execution venue class.
++PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
++
++
+ def profile_for(dataset_id: str) -> DeskProfile:
+-    if dataset_id == PERP_DATASET:
++    if dataset_id in (PERP_DATASET, PERP_DYDX_DATASET):
+         return PERP_PROFILE
+     if dataset_id == CALENDAR_DATASET:
+         return CALENDAR_PROFILE
+diff --git a/src/quant/factory/lanes.py b/src/quant/factory/lanes.py
+index d8d9513..3d429e1 100644
+--- a/src/quant/factory/lanes.py
++++ b/src/quant/factory/lanes.py
+@@ -273,9 +273,57 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
+         "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
+ 
+ 
++#: Fast-rail H-002 (research/fast_rail/registry.jsonl): Hyperliquid vs dYdX v4.
++PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
++#: Separate venue pair and dataset; the HL-vs-BY lab tested a different hypothesis.
++PERP_DYDX_PRIOR_TRIALS = 0
++PERP_DYDX_PRISTINE_AFTER = "2026-09-25"
++#: One-way research cost at maker level; falsify() stresses at 2x (taker level).
++PERP_DYDX_COST_BPS = 4.0
++
++
++def _hysteresis_spec(universe: list[str], dataset_id: str, entry: float,
++                     lookback: int) -> StrategySpec:
++    return StrategySpec(family="funding_spread", universe=universe, lookback_days=lookback,
++                        direction=1, min_abs_score=entry, exit_abs_score=entry / 2,
++                        max_weight=0.05, gross_exposure=1.0, holding_days=1,
++                        no_trade_band=0.02, dataset_id=dataset_id, calendar_symbol="HL.BTC")
++
++
++def perp_dydx_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
++    return {"perp_funding_spread_hl_dydx": {
++        "lane": "crypto_funding_carry", "priority": 38.0,
++        "question": "Does a same-coin short-high-funding / long-low-funding pair across "
++                    "Hyperliquid and dYdX v4, entered at a trailing spread threshold and held "
++                    "until the spread halves, earn the funding difference net of maker costs?",
++        "mechanism": "Segmented leverage demand: HL and dYdX have different retail/levered "
++                     "populations; the venue whose longs are more crowded pays funding that "
++                     "cross-venue arbitrageurs do not fully compete away (capital lock-up, "
++                     "two-venue margin, ADL risk). Hysteresis exit cuts the turnover that "
++                     "killed HL-vs-BY.",
++        "falsification": "Pre-registered H-002: declared relative-value tests (beta to HL.BTC "
++                         "below 0.15, positive at 2x = taker cost, both halves positive, top-5 "
++                         "days below half of gains, t above the multiple-testing threshold); "
++                         "capacity >= 10k$ at 1% of min-leg ADV checked separately.",
++        "grid": [_hysteresis_spec(universe, dataset_id, entry, lookback)
++                 for entry in (0.25, 0.5, 1.0) for lookback in (1, 3)],
++        "prior_trials": PERP_DYDX_PRIOR_TRIALS, "pristine_after": PERP_DYDX_PRISTINE_AFTER,
++        "benchmark": "HL.BTC", "cost_bps": PERP_DYDX_COST_BPS, "calendar": ["HL.BTC"],
++        "compliance": {"practices": ["public_market_data", "exchange_execution"],
++                       "cross_venue_hedge": True, "settlement_rules_matched": True,
++                       "settlement_evidence": "both legs are the same coin's perpetual swap; "
++                                              "perpetuals never settle, so there is no "
++                                              "settlement clause to mismatch (a dYdX final "
++                                              "settlement ends the pair's data instead)",
++                       "note": "venue access must be lawful in the operator's jurisdiction"},
++        "market": "crypto perpetuals, Hyperliquid vs dYdX v4"}}
++
++
+ def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+     if dataset_id == PERP_DATASET:
+         return perp_lane_definitions(universe, dataset_id)
++    if dataset_id == PERP_DYDX_DATASET:
++        return perp_dydx_lane_definitions(universe, dataset_id)
+     if dataset_id == CALENDAR_DATASET:
+         return calendar_lane_definitions(universe, dataset_id)
+     if dataset_id == FUTURES_DATASET:
+diff --git a/src/quant/factory/signals.py b/src/quant/factory/signals.py
+index 90afe29..8d83003 100644
+--- a/src/quant/factory/signals.py
++++ b/src/quant/factory/signals.py
+@@ -55,9 +55,18 @@ class StrategySpec:
+     #: expected annual trading cost, in Sharpe units, is at most this value
+     #: (0 disables the rule). Uses that date's own cost and volatility.
+     max_cost_sharpe: float = 0.0
++    # --- funding_spread only -------------------------------------------------
++    #: Hysteresis exit (annualised): a pair entered at ``min_abs_score`` is held
++    #: while its same-sign spread stays at or above this level. 0 keeps the
++    #: original stateless rule (held only while above the entry threshold).
++    exit_abs_score: float = 0.0
+ 
+     def to_dict(self) -> dict[str, Any]:
+-        return asdict(self)
++        data = asdict(self)
++        if not data["exit_abs_score"]:
++            # Specs predating the field serialise (and hash) exactly as before.
++            del data["exit_abs_score"]
++        return data
+ 
+     @property
+     def label(self) -> str:
+@@ -65,7 +74,8 @@ class StrategySpec:
+             return f"{self.family}_x{self.gross_exposure:g}_h{self.holding_days}"
+         if self.family == "funding_spread":
+             return (f"funding_spread_l{self.lookback_days}_z{self.min_abs_score:g}"
+-                    f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}")
++                    f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}"
++                    + (f"_x{self.exit_abs_score:g}" if self.exit_abs_score else ""))
+         if self.family in TIME_SERIES_FAMILIES:
+             return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
+                     f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}"
+@@ -405,14 +415,24 @@ def calendar_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[s
+ # Cross-venue perpetual funding spread (market-neutral per coin)
+ # ---------------------------------------------------------------------------
+ #
+-# Universe symbols are ``<VENUE>.<COIN>`` (e.g. ``HL.ETH``, ``BY.ETH``) with a
+-# ``carry_rate`` feature: funding paid by longs over that session. For a coin
+-# quoted on both venues, when the trailing mean funding difference exceeds the
+-# entry threshold (annualised), the sleeve is short the venue that charges
+-# longs more and long the other, one unit notional per leg, so price exposure
+-# cancels and the position collects the funding difference. Stateless: the
+-# position is held while the trailing spread stays above the threshold, and the
+-# shared no-trade band limits churn.
++# Universe symbols are ``<VENUE>.<COIN>`` (e.g. ``HL.ETH``, ``BY.ETH``,
++# ``DY.ETH``) with a ``carry_rate`` feature: funding paid by longs over that
++# session. The two venues are the universe's two symbol prefixes (Hyperliquid
++# first when present). For a coin quoted on both venues, when the trailing mean
++# funding difference exceeds the entry threshold (annualised), the sleeve is
++# short the venue that charges longs more and long the other, one unit notional
++# per leg, so price exposure cancels and the position collects the funding
++# difference.
++#
++# Without ``exit_abs_score`` the rule is stateless: a pair is held while the
++# trailing spread stays above the entry threshold, and the shared no-trade band
++# limits churn. With it, a pair entered at the threshold is held until its
++# same-sign spread falls below the exit level (hysteresis). ``weights_for`` must
++# stay a pure function of the panel up to ``asof`` so research and the Desk
++# compute the same target, so the held state is reconstructed from history: a
++# state machine run forward over the strategy's sessions, where state(d)
++# depends only on state(d-1) and the spread at d. A session on which the pair
++# has no valid spread resets it, so no future bar can reach a past state.
+ 
+ FUNDING_SPREAD = "funding_spread"
+ FUNDING_VENUES = ("HL", "BY")
+@@ -420,6 +440,17 @@ FUNDING_LOOKBACK = 3
+ DAYS_PER_YEAR = 365.0
+ 
+ 
++def funding_venues(universe: list[str]) -> tuple[str, str]:
++    """The two venue prefixes of a funding universe, Hyperliquid first."""
++    prefixes = list(dict.fromkeys(symbol.split(".", 1)[0] for symbol in universe
++                                  if "." in symbol))
++    if len(prefixes) != 2:
++        raise ValueError(f"funding_spread needs exactly two venue prefixes, got {prefixes}")
++    first, second = sorted(prefixes, key=lambda prefix: (prefix != FUNDING_VENUES[0],
++                                                         prefixes.index(prefix)))
++    return first, second
++
++
+ def _trailing_carry(panel: PricePanel, symbol: str, asof: str, sessions: int) -> float | None:
+     key = ("carry_prefix", symbol)
+     cached = panel.derived.get(key)
+@@ -438,8 +469,48 @@ def _trailing_carry(panel: PricePanel, symbol: str, asof: str, sessions: int) ->
+     return sum(window) / sessions
+ 
+ 
++def _pair_spread(panel: PricePanel, spec: StrategySpec, a: str, b: str,
++                 asof: str) -> float | None:
++    """Annualised trailing funding spread (a minus b), or None when not tradable."""
++    if not (panel.has(asof, a) and panel.has(asof, b)):
++        return None
++    if panel.feature(asof, a, "price_proxy") or panel.feature(asof, b, "price_proxy"):
++        return None       # a leg valued at the other venue's price hides the hedge risk
++    carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
++    carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
++    if carry_a is None or carry_b is None:
++        return None
++    return (carry_a - carry_b) * DAYS_PER_YEAR
++
++
++def _hysteresis_states(panel: PricePanel, spec: StrategySpec, a: str,
++                       b: str) -> dict[str, tuple[int, float | None]]:
++    """Per session: (held side, spread); side +1 = short a / long b, -1 the reverse."""
++    sessions = [spec.calendar_symbol] if spec.calendar_symbol else list(spec.universe)
++    key = ("funding_hysteresis", a, b, spec.lookback_days, spec.min_abs_score,
++           spec.exit_abs_score, tuple(sorted(set(sessions))))
++    cached = panel.derived.get(key)
++    if cached is not None:
++        return cached
++    entry, exit_ = spec.min_abs_score, min(spec.exit_abs_score, spec.min_abs_score)
++    state, states = 0, {}
++    for day in panel.aligned_dates(sessions):
++        spread = _pair_spread(panel, spec, a, b, day)
++        if spread is None:
++            state = 0
++        elif state and spread * state > 0 and abs(spread) >= exit_:
++            pass                                  # held: still at or above the exit level
++        elif abs(spread) >= entry:
++            state = 1 if spread > 0 else -1
++        else:
++            state = 0
++        states[day] = (state, spread)
++    panel.derived[key] = states
++    return states
++
++
+ def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
+-    first, second = FUNDING_VENUES
++    first, second = funding_venues(spec.universe)
+     coins = sorted({symbol.split(".", 1)[1] for symbol in spec.universe
+                     if symbol.startswith(first + ".")}
+                    & {symbol.split(".", 1)[1] for symbol in spec.universe
+@@ -447,16 +518,18 @@ def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) ->
+     candidates = []
+     for coin in coins:
+         a, b = f"{first}.{coin}", f"{second}.{coin}"
+-        if not (panel.has(asof, a) and panel.has(asof, b)):
+-            continue
+-        if panel.feature(asof, a, "price_proxy") or panel.feature(asof, b, "price_proxy"):
+-            continue      # a leg valued at the other venue's price hides the hedge risk
+-        carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
+-        carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
+-        if carry_a is None or carry_b is None:
++        if spec.exit_abs_score > 0:
++            held = _hysteresis_states(panel, spec, a, b).get(asof)
++            if held is None:      # not a session: no carried state, entry rule only
++                spread = _pair_spread(panel, spec, a, b, asof)
++                held = ((1 if spread > 0 else -1)
++                        if spread is not None and abs(spread) >= spec.min_abs_score else 0,
++                        spread)
++            if held[0]:
++                candidates.append((abs(held[1]), coin, a, b, held[1]))
+             continue
+-        spread = (carry_a - carry_b) * DAYS_PER_YEAR
+-        if abs(spread) >= spec.min_abs_score:
++        spread = _pair_spread(panel, spec, a, b, asof)
++        if spread is not None and abs(spread) >= spec.min_abs_score:
+             candidates.append((abs(spread), coin, a, b, spread))
+     candidates.sort(reverse=True)
+     limit = max(1, int(round(spec.gross_exposure / (2 * spec.max_weight)))) if spec.max_weight else 0
+diff --git a/tests/test_fast_rail_h002.py b/tests/test_fast_rail_h002.py
+new file mode 100644
+index 0000000..28cbbf1
+--- /dev/null
++++ b/tests/test_fast_rail_h002.py
+@@ -0,0 +1,306 @@
++"""Fast-rail H-002: Hyperliquid vs dYdX funding spread with a hysteresis exit.
++
++Every number in these fixtures is INVENTED for the test (funding rates, prices,
++venue listings). They are test fixtures, never evidence.
++"""
++
++from __future__ import annotations
++
++import importlib.util
++import random
++import unittest
++from datetime import date, timedelta
++from pathlib import Path
++
++from quant.dataplane.panel import PricePanel, Window
++from quant.factory.evaluate import walk_forward
++from quant.factory.lanes import (PERP_DYDX_DATASET, lane_definitions)
++from quant.factory.signals import (DAYS_PER_YEAR, StrategySpec, funding_venues, weights_for)
++from quant.factory.strategies import StrategyDefinition
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def _builder():
++    spec = importlib.util.spec_from_file_location(
++        "build_perp_funding_hl_dydx", ROOT / "scripts" / "build_perp_funding_hl_dydx.py")
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def _days(count: int) -> list[str]:
++    start = date(2025, 1, 1)
++    return [(start + timedelta(days=offset)).isoformat() for offset in range(count)]
++
++
++def _panel(days: list[str], carry: dict[str, list[float | None]],
++           prices: dict[str, list[float]] | None = None) -> PricePanel:
++    """INVENTED fixture panel: flat prices unless given; carry None = no bar."""
++    rows = []
++    for symbol, series in carry.items():
++        for position, (day, rate) in enumerate(zip(days, series)):
++            if rate is None:
++                continue
++            price = prices[symbol][position] if prices and symbol in prices else 100.0
++            rows.append({"date": day, "symbol": symbol, "open": price, "high": price,
++                         "low": price, "close": price, "adj_close": price, "volume": 1e7,
++                         "carry_rate": rate})
++    return PricePanel(rows)
++
++
++def _spec(universe: list[str], entry: float = 0.5, exit_: float = 0.25,
++          lookback: int = 1) -> StrategySpec:
++    return StrategySpec(family="funding_spread", universe=universe, lookback_days=lookback,
++                        direction=1, min_abs_score=entry, exit_abs_score=exit_,
++                        max_weight=0.05, gross_exposure=1.0, holding_days=1,
++                        no_trade_band=0.02, dataset_id=PERP_DYDX_DATASET,
++                        calendar_symbol="HL.BTC")
++
++
++def _nonzero(weights: dict[str, float]) -> dict[str, float]:
++    return {symbol: value for symbol, value in weights.items() if abs(value) > 1e-12}
++
++
++UNIVERSE = ["DY.BTC", "DY.X", "DY.Y", "HL.BTC", "HL.X", "HL.Y"]
++#: INVENTED annualised HL-minus-dYdX spread path for coin X.
++PATH = [0.0, 0.0, 0.6, 0.4, 0.3, 0.26, 0.2, 0.4, 0.6, -0.3, -0.6, 0.1]
++
++
++def _path_panel(path: list[float] = PATH) -> PricePanel:
++    n = len(path)
++    return _panel(_days(n), {"HL.BTC": [0.0] * n, "DY.BTC": [0.0] * n,
++                             "HL.X": [value / DAYS_PER_YEAR for value in path],
++                             "DY.X": [0.0] * n, "HL.Y": [0.0] * n, "DY.Y": [0.0] * n})
++
++
++def _random_panel(seed: int = 7, n: int = 60) -> PricePanel:
++    rng = random.Random(seed)
++    carry, prices = {}, {}
++    for coin in ("BTC", "X", "Y", "Z"):
++        level = 100.0
++        for venue in ("HL", "DY"):
++            carry[f"{venue}.{coin}"] = [rng.gauss(0.0, 0.004) for _ in range(n)]
++        path = []
++        for _ in range(n):
++            level *= 1.0 + rng.gauss(0.0, 0.02)
++            path.append(level)
++        prices[f"HL.{coin}"] = path
++        prices[f"DY.{coin}"] = [value * (1.0 + rng.gauss(0.0, 0.001)) for value in path]
++    carry["DY.Z"][25] = None             # a missing dYdX day inside the history
++    return _panel(_days(n), carry, prices)
++
++
++class HysteresisRuleTests(unittest.TestCase):
++    def test_holds_between_exit_and_entry_and_exits_below_half(self):
++        panel = _path_panel()
++        days = panel.dates
++        held = [weights_for(panel, _spec(UNIVERSE), day).get("HL.X", 0.0) for day in days]
++        # short HL (it charges longs more) while held; flip to long HL after -0.6
++        expected = [0, 0, -1, -1, -1, -1, 0, 0, -1, 0, 1, 0]
++        self.assertEqual([round(value / 0.05) for value in held], expected)
++        stateless = [weights_for(panel, _spec(UNIVERSE, exit_=0.0), day).get("HL.X", 0.0)
++                     for day in days]
++        self.assertEqual([round(value / 0.05) for value in stateless],
++                         [0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 1, 0])
++
++    def test_exit_above_entry_cannot_loosen_the_entry(self):
++        panel = _path_panel()
++        loose = [weights_for(panel, _spec(UNIVERSE, exit_=0.9), day) for day in panel.dates]
++        strict = [weights_for(panel, _spec(UNIVERSE, exit_=0.0), day) for day in panel.dates]
++        self.assertEqual(loose, strict)
++
++    def test_hysteresis_is_causal(self):
++        panel = _random_panel()
++        spec = _spec(UNIVERSE + ["DY.Z", "HL.Z"], entry=0.8, exit_=0.4, lookback=3)
++        full = {day: weights_for(panel, spec, day) for day in panel.dates}
++        self.assertTrue(any(_nonzero(value) for value in full.values()))
++        for cut in panel.dates[5::6]:
++            truncated = panel.restrict(end=cut)
++            for day in truncated.dates:
++                self.assertEqual(weights_for(truncated, spec, day), full[day], (cut, day))
++            # A shocked future (every later funding print reversed and inflated)
++            # must not change a single past weight.
++            rows = []
++            for (day, symbol), bar in panel.bars.items():
++                rate = panel.feature(day, symbol, "carry_rate")
++                if day > cut:
++                    rate = -50.0 * rate
++                rows.append({"date": day, "symbol": symbol, **bar, "carry_rate": rate})
++            shocked = PricePanel(rows)
++            for day in truncated.dates:
++                self.assertEqual(weights_for(shocked, spec, day), full[day], (cut, day))
++
++    def test_research_weights_equal_desk_weights(self):
++        panel = _random_panel(seed=11, n=80)
++        spec = _spec(UNIVERSE + ["DY.Z", "HL.Z"], entry=0.8, exit_=0.4, lookback=3)
++        # The Desk executes the registered spec document, not the object.
++        desk_spec = StrategyDefinition(strategy_id="S", version=1, lane="l",
++                                       spec=spec.to_dict(), hypothesis={}, evidence={},
++                                       dataset_id=PERP_DYDX_DATASET,
++                                       dataset_fingerprint=None).to_spec()
++        self.assertEqual(desk_spec, spec)
++        window = Window("VALIDATION", panel.dates[40], panel.dates[70])
++        visible = panel.restrict(end=window.end)
++        rows = walk_forward(visible, spec, window, 4.0)
++        self.assertTrue(any(row["positions"] for row in rows))
++        for row in rows:
++            # holding_days=1 and a 0.02 band below one pair's 0.1 drift: research
++            # holds exactly the target the Desk computes on its full panel.
++            self.assertEqual(_nonzero(row["weights"]),
++                             _nonzero(weights_for(panel, desk_spec, row["signal_date"])),
++                             row["signal_date"])
++
++
++class FundingFamilyTests(unittest.TestCase):
++    def test_hl_vs_by_spec_serialises_and_labels_exactly_as_before(self):
++        universe = ["BY.BTC", "BY.X", "HL.BTC", "HL.X"]
++        spec = StrategySpec(family="funding_spread", universe=universe, lookback_days=3,
++                            direction=1, min_abs_score=0.2, max_weight=0.05,
++                            gross_exposure=1.0, holding_days=1, no_trade_band=0.02,
++                            dataset_id="perp_funding_pairs_daily", calendar_symbol="HL.BTC")
++        self.assertNotIn("exit_abs_score", spec.to_dict())
++        self.assertEqual(spec.label, "funding_spread_l3_z0.2_w0.05_g1_b0.02")
++        self.assertEqual(funding_venues(universe), ("HL", "BY"))
++        self.assertEqual(funding_venues(["DY.X", "HL.X"]), ("HL", "DY"))
++        with self.assertRaises(ValueError):
++            funding_venues(["BY.X", "DY.X", "HL.X"])
++        grid = lane_definitions(universe, "perp_funding_pairs_daily")["perp_funding_spread"]["grid"]
++        self.assertTrue(all(item.exit_abs_score == 0.0 for item in grid))
++
++    def test_hl_vs_by_weights_match_the_original_stateless_rule(self):
++        rng = random.Random(3)
++        n, coins = 30, ("BTC", "A", "B", "C")
++        carry = {f"{venue}.{coin}": [rng.gauss(0.0, 0.003) for _ in range(n)]
++                 for venue in ("HL", "BY") for coin in coins}
++        panel = _panel(_days(n), carry)
++        universe = sorted(carry)
++        spec = StrategySpec(family="funding_spread", universe=universe, lookback_days=3,
++                            direction=1, min_abs_score=0.5, max_weight=0.05,
++                            gross_exposure=0.1, holding_days=1, no_trade_band=0.02,
++                            dataset_id="perp_funding_pairs_daily", calendar_symbol="HL.BTC")
++        for position, day in enumerate(panel.dates):
++            # the pre-generalisation rule, restated: trailing 3-day mean, best pair only
++            if position < 2:
++                continue
++            best = None
++            for coin in coins:
++                spread = sum(carry[f"HL.{coin}"][position - k] - carry[f"BY.{coin}"][position - k]
++                             for k in range(3)) / 3 * DAYS_PER_YEAR
++                if abs(spread) >= 0.5 and (best is None or abs(spread) > abs(best[1])):
++                    best = (coin, spread)
++            weights = weights_for(panel, spec, day)
++            if best is None:
++                self.assertFalse(_nonzero(weights))
++                continue
++            side = 1.0 if best[1] > 0 else -1.0
++            self.assertEqual(weights, {f"HL.{best[0]}": -side * 0.05,
++                                       f"BY.{best[0]}": side * 0.05})
++
++    def test_short_leg_on_the_venue_whose_longs_pay_receives_funding(self):
++        n = 8
++        panel = _panel(_days(n), {"HL.BTC": [0.0] * n, "DY.BTC": [0.0] * n,
++                                  "HL.X": [0.002] * n, "DY.X": [0.0005] * n})
++        spec = _spec(["DY.BTC", "DY.X", "HL.BTC", "HL.X"], entry=0.25, exit_=0.125)
++        weights = weights_for(panel, spec, panel.dates[3])
++        self.assertEqual(weights, {"HL.X": -0.05, "DY.X": 0.05})
++        rows = walk_forward(panel, spec, Window("ALL", panel.dates[0], panel.dates[-1]), 0.0)
++        # flat prices: the pair earns exactly the funding difference on its notional
++        for row in rows:
++            self.assertAlmostEqual(row["gross_return"], 0.05 * (0.002 - 0.0005), places=12)
++
++    def test_legs_pair_only_the_same_coin_across_the_two_venues(self):
++        n = 6
++        panel = _panel(_days(n), {"HL.BTC": [0.0] * n, "DY.BTC": [0.0] * n,
++                                  "HL.X": [0.01] * n, "DY.X": [0.0] * n,
++                                  "DY.Y": [0.02] * n, "HL.Z": [0.03] * n})
++        spec = _spec(["DY.BTC", "DY.X", "DY.Y", "HL.BTC", "HL.X", "HL.Z"])
++        weights = weights_for(panel, spec, panel.dates[-1])
++        self.assertEqual(weights, {"HL.X": -0.05, "DY.X": 0.05})
++
++    def test_lane_declares_the_pre_registered_grid(self):
++        definition = lane_definitions(UNIVERSE, PERP_DYDX_DATASET)["perp_funding_spread_hl_dydx"]
++        grid = {(spec.min_abs_score, spec.lookback_days, spec.exit_abs_score)
++                for spec in definition["grid"]}
++        self.assertEqual(grid, {(entry, lookback, entry / 2)
++                                for entry in (0.25, 0.5, 1.0) for lookback in (1, 3)})
++        self.assertEqual(len(definition["grid"]), 6)
++        self.assertEqual(definition["prior_trials"], 0)
++        self.assertEqual(definition["pristine_after"], "2026-09-25")
++        self.assertEqual(definition["cost_bps"], 4.0)
++        self.assertEqual(definition["benchmark"], "HL.BTC")
++        self.assertTrue(all(spec.max_weight == 0.05 and spec.gross_exposure == 1.0
++                            for spec in definition["grid"]))
++        self.assertTrue(definition["compliance"]["cross_venue_hedge"])
++
++
++class DatasetBuilderTests(unittest.TestCase):
++    HOUR = 3_600_000
++
++    def _prints(self, day: str, hours: range, rate: float = 0.0001) -> list[tuple[int, float]]:
++        builder = _builder()
++        base = builder.iso_ms(day + "T00:00:00Z")
++        return [(base + hour * self.HOUR + 250, rate) for hour in hours]   # +250ms latency
++
++    def test_incomplete_funding_day_is_excluded_and_nothing_is_filled(self):
++        builder = _builder()
++        # 2025-01-02 settlements 01:00..24:00 complete; 2025-01-03 only 21 of them
++        prints = self._prints("2025-01-02", range(1, 25)) + self._prints("2025-01-03",
++                                                                         range(1, 22))
++        carry = builder.daily_carry(prints)
++        self.assertEqual(set(carry), {"2025-01-02"})
++        self.assertAlmostEqual(carry["2025-01-02"], 24 * 0.0001)
++        # 22 prints is the declared minimum; a duplicated hour is counted once
++        prints = self._prints("2025-01-03", range(1, 23))
++        self.assertIn("2025-01-03", builder.daily_carry(prints))
++        duplicated = self._prints("2025-01-03", range(1, 22)) + self._prints("2025-01-03",
++                                                                             range(21, 22))
++        self.assertNotIn("2025-01-03", builder.daily_carry(duplicated))
++
++    def test_midnight_settlement_belongs_to_the_previous_day(self):
++        builder = _builder()
++        self.assertEqual(builder.settlement_day(builder.iso_ms("2025-01-03T00:00:00.400Z"))[0],
++                         "2025-01-02")
++        self.assertEqual(builder.settlement_day(builder.iso_ms("2025-01-03T01:00:00.100Z"))[0],
++                         "2025-01-03")
++
++    def test_coin_pairing_includes_delisted_and_k_contracts(self):
++        builder = _builder()
++
++        class FakeFetcher:           # INVENTED venue listings
++            def get(self, url, body=None):
++                if body is not None:
++                    return {"universe": [{"name": "BTC"}, {"name": "kPEPE"},
++                                         {"name": "OLD", "isDelisted": True},
++                                         {"name": "HLONLY"}]}
++                return {"markets": {"BTC-USD": {"status": "ACTIVE"},
++                                    "PEPE-USD": {"status": "ACTIVE"},
++                                    "OLD-USD": {"status": "FINAL_SETTLEMENT"},
++                                    "DYONLY-USD": {"status": "ACTIVE"}}}
++
++        self.assertEqual(builder.coin_pairs(FakeFetcher()),
++                         [("BTC", "BTC", "BTC-USD", 1.0), ("OLD", "OLD", "OLD-USD", 1.0),
++                          ("PEPE", "kPEPE", "PEPE-USD", 1000.0)])
++
++    def test_pair_rows_align_days_and_rescale_both_legs(self):
++        builder = _builder()
++        days = _days(61)
++        hl_bars = {day: (0.02, 5e6) for day in days}          # kPEPE-style, per 1000
++        dy_bars = {day: (0.00002, 1e5) for day in days[1:]}   # one dYdX day missing
++        carry = {day: 0.0001 for day in days}
++        out = builder._pair_rows("PEPE", "kPEPE", "PEPE-USD", 1000.0, carry, dy_bars, carry,
++                                 hl_bars, lambda line: None, "")
++        rows, info = out
++        self.assertEqual(info["days"], 60)
++        self.assertEqual(info["price_scale_tokens"], 1e5)
++        by_symbol = {(row["symbol"], row["date"]): row["close"] for row in rows}
++        self.assertNotIn(("HL.PEPE", days[0]), by_symbol)
++        self.assertAlmostEqual(by_symbol[("HL.PEPE", days[5])], 2.0)
++        self.assertAlmostEqual(by_symbol[("DY.PEPE", days[5])], 2.0)
++        self.assertIsNone(builder._pair_rows("PEPE", "kPEPE", "PEPE-USD", 1000.0, carry,
++                                             dict(list(dy_bars.items())[:59]), carry, hl_bars,
++                                             lambda line: None, ""))
++
++
++if __name__ == "__main__":
++    unittest.main()
