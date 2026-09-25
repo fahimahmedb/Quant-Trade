@@ -1,0 +1,61 @@
+{
+  "binance_futures": {
+    "error": "https://fapi.binance.com/fapi/v1/fundingRate: HTTPError: HTTP Error 451: ",
+    "status": "UNREACHABLE",
+    "terms": "documented"
+  },
+  "bybit": {
+    "error": "https://api.bybit.com/v5/market/funding/history: HTTPError: HTTP Error 403: Forbidden",
+    "status": "UNREACHABLE",
+    "terms": "documented"
+  },
+  "fomc_calendar": {
+    "records": 56,
+    "seconds": 0.06,
+    "status": "OK",
+    "terms": "documented"
+  },
+  "fred": {
+    "records": 11265,
+    "seconds": 0.23,
+    "status": "OK",
+    "terms": "documented"
+  },
+  "hyperliquid": {
+    "records": 234,
+    "seconds": 0.18,
+    "status": "OK",
+    "terms": "documented"
+  },
+  "kalshi": {
+    "records": 5,
+    "seconds": 0.08,
+    "status": "OK",
+    "terms": "documented"
+  },
+  "odds_api": {
+    "missing": [
+      "ODDS_API_KEY"
+    ],
+    "status": "NOT_CONFIGURED",
+    "terms": "keyed"
+  },
+  "polymarket": {
+    "records": 5,
+    "seconds": 0.06,
+    "status": "OK",
+    "terms": "documented"
+  },
+  "stooq": {
+    "records": 0,
+    "seconds": 0.55,
+    "status": "EMPTY",
+    "terms": "grey"
+  },
+  "yahoo_chart": {
+    "records": 5,
+    "seconds": 0.11,
+    "status": "OK",
+    "terms": "grey"
+  }
+}
