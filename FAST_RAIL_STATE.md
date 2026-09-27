@@ -22,7 +22,7 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
 ## En SHADOW
 | stratégie | depuis | forward | P&L éval. | t-SPRT | ETA |
 |---|---|---|---|---|---|
-| calendar_fomc_overnight (SPY_ON) | 2026-09-11 | 1 événement | +0,26 % | CONTINUE | années |
+| calendar_fomc_overnight (SPY_ON) | 2026-09-25 | 0 événement (le 16/09 est exclu : antérieur au commit de la lane) | — | CONTINUE (0 session pristine) | années |
 
 ## Verdicts (cause)
 | H | niveau | chiffres nets | cause |
@@ -36,6 +36,7 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
 **À reprendre en forward seulement (REJECT PUISSANCE)** : fade des listings HL (H-005). Aucun nouvel essai historique.
 
 ## Constats red team : HIGH ouverts 0
+- RT-2026-09-27-01 (invariant 6) CORRIGÉ : `pristine_after` était antérieur au 1er commit sur 4 familles de lanes (calendaires, perp HL-BY, futures, HL-dYdX), et les lanes ETF n'en avaient pas. Désormais `pristine_after` ≥ date du 1er commit (`LANE_DECLARED_ON`), le cycle de vie prend max(date stockée, date déclarée) et échoue fermé sans date, avec un test de non-régression.
 Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manchon par stratégie, RISK sur le portefeuille final. Le red team de la vague reste à faire sur les prochains CANDIDATE.
 
 ## Backlog et BLOCKED

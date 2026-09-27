@@ -43,7 +43,7 @@ Statuts vérifiés en réel par le workflow le 2026-09-25 :
 
 | Instance | Dataset | Mise à jour forward | Démontré |
 |---|---|---|---|
-| `calendar` : veille de FOMC, fin de mois | `us_calendar_legs_daily`, dérivé de l'ETF | Oui (Yahoo, puis dérivation) | **Premier trade papier sur donnée nouvelle** : jambe overnight SPY, MOC du 2026-09-15 → MOO du 2026-09-16 (jour de FOMC), +0,26 % |
+| `calendar` : veille de FOMC, fin de mois | `us_calendar_legs_daily`, dérivé de l'ETF | Oui (Yahoo, puis dérivation) | Trade papier du 2026-09-15 → 09-16 (FOMC), +0,26 %, **non prospectif** : il précède le 1er commit de la lane (2026-09-25) ; il est exclu du forward et du t-SPRT (invariant 6) |
 | `etf` | `us_sector_etf_daily` | Oui (Yahoo, ajustement re-chaîné à la jointure) | 72 barres (2026-09-14 → 09-21) ajoutées sur une copie |
 | `perp-funding` | `perp_funding_pairs_daily` (HL vs BY, 2023-06 → 2025-05) | Hyperliquid oui. Bybit uniquement si le collecteur tourne hors US | Accrual du funding vérifié : +481 $ encaissés en shadow |
 | `futures`, `futures-broad` | pysystemtrade (jusqu'en 2024-03) | Non : il faut une source de futures back-adjustés (voir §4) | — |

@@ -49,7 +49,7 @@ FUTURES_PRIOR_TRIALS = FUTURES_PRIOR_LAB_TRIALS + 3
 #: Every session of the committed futures history was visible to the lab
 #: (red-team finding), so no historical window is pristine out-of-sample. The
 #: lifecycle may only act on shadow evidence dated after this.
-FUTURES_PRISTINE_AFTER = "2024-03-28"
+FUTURES_PRISTINE_AFTER = "2026-09-24"   # first commit of the lanes (c124c3b/44c7934); data horizon was 2024-03-28
 
 
 def _ts_spec(universe: list[str], dataset_id: str, trend: float, carry: float,
@@ -193,7 +193,7 @@ CALENDAR_DATASET = "us_calendar_legs_daily"
 #: evaluated on this same SPY/TLT history before these lanes were declared.
 CALENDAR_PRIOR_TRIALS = 20
 #: Every committed bar was seen by that lab; only later sessions are pristine.
-CALENDAR_PRISTINE_AFTER = "2026-09-11"
+CALENDAR_PRISTINE_AFTER = "2026-09-25"   # first commit of the lanes (076391c)
 CALENDAR_COST_BPS = 2.0
 
 
@@ -236,7 +236,7 @@ PERP_DATASET = "perp_funding_pairs_daily"
 #: Crypto lab expressions on overlapping Bybit/Hyperliquid data (35 in the first
 #: lab, ~5 threshold/fee variants in the structural-edges lab).
 PERP_PRIOR_TRIALS = 42          # + the 2 expressions of the superseded first run
-PERP_PRISTINE_AFTER = "2025-05-15"
+PERP_PRISTINE_AFTER = "2026-09-25"   # first commit of the lane (8b5f11d)
 #: One-way research cost: taker ~4.5-5.5bp plus spread on thin listings.
 PERP_COST_BPS = 8.0
 
@@ -277,7 +277,7 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
 PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
 #: Separate venue pair and dataset; the HL-vs-BY lab tested a different hypothesis.
 PERP_DYDX_PRIOR_TRIALS = 50  # 3ujgeu: 44 prior + 6 run (REJECT) -> burned for history
-PERP_DYDX_PRISTINE_AFTER = "2026-09-25"
+PERP_DYDX_PRISTINE_AFTER = "2026-09-27"   # first commit of the lane (b752dbb)
 #: One-way research cost at maker level; falsify() stresses at 2x (taker level).
 PERP_DYDX_COST_BPS = 4.0
 
@@ -319,7 +319,51 @@ def perp_dydx_lane_definitions(universe: list[str], dataset_id: str) -> dict[str
         "market": "crypto perpetuals, Hyperliquid vs dYdX v4"}}
 
 
+#: Date of each lane's first commit. Invariant 6 (forward hold-out untouchable):
+#: evidence is prospective only if it was observed after the rule was fixed, so
+#: ``pristine_after`` may never precede this date (red-team HIGH: the calendar
+#: lanes were committed on 2026-09-25 but declared pristine from 2026-09-11,
+#: which admitted the 2026-09-16 FOMC event as "forward"). Dates come from
+#: ``git log --reverse -S'"<lane>"' -- src/quant/factory/lanes.py``.
+LANE_DECLARED_ON = {
+    "xs_daily_relative_value": "2026-09-21",
+    "xs_execution_aware_relative_value": "2026-09-21",
+    "ts_trend_carry_futures": "2026-09-24",
+    "ts_trend_carry_futures_broad": "2026-09-24",
+    "ts_trend_carry_futures_broad_speed_limited": "2026-09-24",
+    "calendar_fomc_overnight": "2026-09-25",
+    "calendar_month_end_rebalance": "2026-09-25",
+    "perp_funding_spread": "2026-09-25",
+    "perp_funding_spread_hl_dydx": "2026-09-27",
+}
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    definitions = _lane_definitions(universe, dataset_id)
+    for name, definition in definitions.items():
+        declared = LANE_DECLARED_ON[name]
+        definition["declared_on"] = declared
+        # A lane without its own forward date (the sector-ETF lanes) is gated
+        # at its declaration date: nothing seen before the rule existed counts.
+        definition["pristine_after"] = max(definition.get("pristine_after") or declared,
+                                           declared)
+    return definitions
+
+
+def declared_pristine_after(dataset_id: str, strategy_id: str) -> str | None:
+    """The lane's current forward date for a registered strategy, if any.
+
+    Strategies persisted before a ``pristine_after`` correction keep the old
+    date in their evidence; the lifecycle takes the later of the two.
+    """
+    for name, definition in _lane_definitions([], dataset_id).items():
+        if strategy_id.startswith(f"STR-{name.upper().replace('_', '-')}-"):
+            return max(definition.get("pristine_after") or LANE_DECLARED_ON[name],
+                       LANE_DECLARED_ON[name])
+    return None
+
+
+def _lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
     if dataset_id == PERP_DATASET:
         return perp_lane_definitions(universe, dataset_id)
     if dataset_id == PERP_DYDX_DATASET:
