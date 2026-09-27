@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from .signals import (BASELINE_FAMILY, FOMC_BASELINE, FOMC_OVERNIGHT, MONTH_END,
-                      MONTH_END_BASELINE, TREND_FAMILY, StrategySpec)
+from .signals import (BASELINE_FAMILY, FOMC_BASELINE, FOMC_OVERNIGHT, LISTING_FADE,
+                      MONTH_END, MONTH_END_BASELINE, TREND_FAMILY, StrategySpec)
 
 
 #: Point-in-time partition of the panel. SHADOW is reserved for the Capital
@@ -273,7 +273,53 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
         "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
 
 
+HL_LISTINGS_DATASET = "hl_listings_daily"
+#: Pre-registered as H-006 (research/fast_rail/registry.jsonl, 2026-09-25):
+#: 3 holding windows x {unhedged, long HL.BTC} = 6 trials, no earlier looks.
+HL_LISTINGS_PRIOR_TRIALS = 0
+HL_LISTINGS_PRISTINE_AFTER = "2026-09-25"
+#: HL taker 4.5bp + ~5.5bp spread/impact on new listings, one way.
+HL_LISTINGS_COST_BPS = 10.0
+LISTING_HOLD_DAYS = (7, 14, 30)
+LISTING_HEDGES = ("", "HL.BTC")
+
+
+def _listing_spec(universe: list[str], dataset_id: str, hold: int, hedge: str) -> StrategySpec:
+    # Per-name cap 10% and gross 1.0 are declared with the grid, not searched.
+    return StrategySpec(family=LISTING_FADE, universe=universe, lookback_days=hold,
+                        direction=-1, min_abs_score=0.0, max_weight=0.10,
+                        gross_exposure=1.0, holding_days=1, no_trade_band=0.0,
+                        dataset_id=dataset_id, calendar_symbol="HL.BTC", hedge_symbol=hedge)
+
+
+def hl_listings_lane_definitions(universe: list[str], dataset_id: str
+                                 ) -> dict[str, dict[str, Any]]:
+    return {"hl_listing_fade": {
+        "lane": "crypto_listing_fade", "priority": 37.0,
+        "question": "Does shorting every new Hyperliquid perpetual from the first full UTC "
+                    "day after listing for N days earn a net return after taker costs and "
+                    "funding, with or without a long HL.BTC hedge?",
+        "mechanism": "New perps list into airdrop/unlock supply and a burst of retail long "
+                     "demand; price discovery overshoots and longs pay funding to shorts. "
+                     "Shorts are paid for absorbing that demand.",
+        "falsification": "H-006: reject unless validation net t >= required_t_statistic(6), "
+                         "both halves positive, profitable at 2x cost, top 10% of events < "
+                         "half of gains, delisted coins included, capacity >= 10k$ at 1% "
+                         "ADV. Evaluated by the relative-value branch of falsify (family "
+                         "not directional: beta to HL.BTC below 0.15).",
+        "grid": [_listing_spec(universe, dataset_id, hold, hedge)
+                 for hold in LISTING_HOLD_DAYS for hedge in LISTING_HEDGES],
+        "prior_trials": HL_LISTINGS_PRIOR_TRIALS,
+        "pristine_after": HL_LISTINGS_PRISTINE_AFTER,
+        "benchmark": "HL.BTC", "cost_bps": HL_LISTINGS_COST_BPS, "calendar": ["HL.BTC"],
+        "compliance": {"practices": ["public_market_data", "exchange_execution"],
+                       "note": "venue access must be lawful in the operator's jurisdiction"},
+        "market": "crypto perpetuals, Hyperliquid new listings"}}
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    if dataset_id == HL_LISTINGS_DATASET:
+        return hl_listings_lane_definitions(universe, dataset_id)
     if dataset_id == PERP_DATASET:
         return perp_lane_definitions(universe, dataset_id)
     if dataset_id == CALENDAR_DATASET:
