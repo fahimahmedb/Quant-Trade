@@ -129,3 +129,5 @@ Ordre de lecture : **corrigé** (voir Exécution). Les autres points restent **�
 ## Suivi — dépendances de branches (2026-09-25)
 
 `governance/LINKED_DOC_BRANCH_DEPENDENCIES_2026-09-25.md` recense les 55 chemins cités mais absents de cette branche. Deux ne survivent que sur des branches listées SUPERSEDED (supprimables) dans `governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md` : `handoff/ASTRA_GATE_A_V2_INDEPENDENT_AUDIT_2026-09-20.md` et `handoff/BLUE_GATE_A_V2_AUDIT_CHECKPOINT_2026-09-20.md`. Cela contredit la phrase « their accepted evidence … is preserved in later branches ». **À décider** avant toute suppression : conserver ces deux refs ou poser un tag sur leur commit.
+
+**Décision du propriétaire (2026-09-27)** : supprimer les 5 branches SUPERSEDED. Les tags n'ont pas pu être poussés depuis la session ; à la place, le contenu propre à ces branches est conservé octet pour octet dans `archive/branches/` (voir `archive/branches/INDEX.md`). Les refs peuvent être supprimées sans perte de contenu.
