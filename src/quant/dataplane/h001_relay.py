@@ -181,6 +181,11 @@ def plan_requests(now: datetime, ledger: Iterable[dict[str, Any]],
         return [], {**info, "blocked": "daily/monthly cap reached"}
     last_seen: dict[str, datetime] = {}
     upcoming: dict[str, set[datetime]] = {}
+    for row in ledger:                      # a fetch that returned no events still counts
+        if row.get("status") == "OK" and row.get("sport"):
+            seen = parse_time(row["fetched_at"])
+            if row["sport"] not in last_seen or seen > last_seen[row["sport"]]:
+                last_seen[row["sport"]] = seen
     for row in snapshots:
         seen = parse_time(row["observed_at"])
         sport = row["sport"]
@@ -245,7 +250,7 @@ def parse_pinnacle(payload: list[dict[str, Any]], sport: str) -> list[dict[str, 
                 prices = {o.get("name"): _float(o.get("price")) for o in market.get("outcomes") or []}
                 if not prices or any(v is None or v <= 1 for v in prices.values()):
                     continue
-                out.append({"event_id": event.get("id"), "sport": event.get("sport_key") or sport,
+                out.append({"event_id": event.get("id"), "sport": sport,
                             "commence_time": event.get("commence_time"),
                             "home": event.get("home_team"), "away": event.get("away_team"),
                             "bookmaker": "pinnacle",
