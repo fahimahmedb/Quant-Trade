@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from quant.dataplane import connectors as c  # noqa: E402
+from quant.dataplane import h001_relay  # noqa: E402
 from quant.dataplane.adapters import DataUnavailable  # noqa: E402
 
 ETF_SYMBOLS = ["SPY", "TLT", "GLD", "XLB", "XLE", "XLF", "XLI", "XLK", "XLP", "XLU", "XLV",
@@ -91,7 +92,7 @@ class Stream:
         return kind
 
 
-def _collect(out: Path, now: datetime) -> dict:
+def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
     stamp = now.isoformat(timespec="seconds")
     report: dict[str, dict] = {}
 
@@ -177,16 +178,15 @@ def _collect(out: Path, now: datetime) -> dict:
             yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", prices
 
     def odds():
-        for sport in ("soccer_epl", "soccer_spain_la_liga", "basketball_nba",
-                      "americanfootball_nfl"):
-            for item in c.fetch_odds(sport):
-                yield ("odds/h2h.jsonl", f"{item['event_id']}|{item['bookmaker']}|"
-                       f"{item['quote_time']}", item)
+        # H-001: Pinnacle h2h under a request budget + same-run Polymarket/Kalshi quotes
+        yield from h001_relay.collect(out, now)
 
-    for name, work in (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
-                       ("crypto_funding", crypto), ("polymarket", polymarket),
-                       ("kalshi", kalshi), ("odds_api", odds)):
-        run(name, work)
+    lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
+             ("crypto_funding", crypto), ("polymarket", polymarket),
+             ("kalshi", kalshi), ("odds_api", odds))
+    for name, work in lanes:
+        if only is None or name in only:
+            run(name, work)
     return report
 
 
@@ -195,12 +195,15 @@ def main() -> None:
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", choices=("probe", "collect"))
     parser.add_argument("--out", type=Path, default=ROOT / "data" / "feeds")
+    parser.add_argument("--only", default=None,
+                        help="comma-separated lanes to run (e.g. odds_api for the hourly "
+                             "H-001 closing-line run)")
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
     if args.command == "probe":
         print(json.dumps(c.probe_all(), indent=2, sort_keys=True))
         return
-    report = _collect(args.out, now)
+    report = _collect(args.out, now, set(args.only.split(",")) if args.only else None)
     args.out.mkdir(parents=True, exist_ok=True)
     with (args.out / "_runs.jsonl").open("a", encoding="utf-8") as handle:
         handle.write(json.dumps({"run_at": now.isoformat(), "report": report},
