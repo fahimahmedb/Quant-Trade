@@ -54,7 +54,7 @@ CLOSE_WINDOW_MIN = 75       # an event kicking off within this many minutes is "
 CLOSE_TARGET_MIN = 60       # ...and needs a snapshot inside its last 60 minutes
 CLOSE_LAG_FLAG_MIN = 60     # CLV against a snapshot older than this is flagged
 KICKOFF_SKEW_S = 15 * 60
-QUOTE_HORIZON_H = 72        # prediction-market quotes only for events kicking off soon
+QUOTE_HORIZON_H = 168       # prediction-market quotes for events kicking off within a week
 
 LEDGER = "odds/requests"
 PINNACLE = "odds/pinnacle_h2h"
@@ -66,7 +66,7 @@ PM_TAG = {"soccer_epl": "premier-league", "basketball_nba": "nba"}
 PM_SLUG = {"soccer_epl": re.compile(r"^epl-[a-z]+-[a-z]+-\d{4}-\d{2}-\d{2}$"),
            "basketball_nba": re.compile(r"^nba-[a-z]+-[a-z]+-\d{4}-\d{2}-\d{2}$")}
 PM_EVENTS = ("https://gamma-api.polymarket.com/events?tag_slug={tag}&closed=false"
-             "&limit=500&start_date_min={start}")
+             "&limit=500&offset={offset}&end_date_min={start}")
 PM_BOOK = "https://clob.polymarket.com/book?token_id={token}"
 KALSHI_SERIES = {"soccer_epl": "KXEPLGAME", "basketball_nba": "KXNBAGAME"}
 KALSHI_MARKETS = ("https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker={series}"
@@ -424,11 +424,15 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher 
 
 def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp: str,
                   get: Callable[[str], Any]) -> Iterator[tuple[str, str, dict[str, Any]]]:
-    start = (now - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    pm_url = PM_EVENTS.format(tag=PM_TAG[sport], start=start)
+    start = now.strftime("%Y-%m-%dT%H:%M:%SZ")   # gamma game events end at kickoff
     k_url = KALSHI_MARKETS.format(series=KALSHI_SERIES[sport])
+    pm_events, pm_error = [], None
     try:
-        pm_events, pm_error = get(pm_url) or [], None
+        for offset in (0, 500, 1000):          # game events carry many prop sub-events
+            page = get(PM_EVENTS.format(tag=PM_TAG[sport], start=start, offset=offset)) or []
+            pm_events.extend(page)
+            if len(page) < 500:
+                break
     except DataUnavailable as exc:
         pm_events, pm_error = [], str(exc)[:200]
     try:
