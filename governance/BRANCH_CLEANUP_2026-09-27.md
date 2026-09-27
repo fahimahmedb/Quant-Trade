@@ -172,3 +172,64 @@ Pour une branche DÉCISION, tag puis suppression :
 ```bash
 b=<branche>; git tag -a "archive/$b" "origin/$b" -m "archived before deletion" && git push origin "refs/tags/archive/$b" && git push origin --delete "$b"
 ```
+
+## DÉCISION FINALE DU PROPRIÉTAIRE — 2026-09-27
+
+Règle donnée par le propriétaire : « si je supprimais ça, est-ce que cela aurait un impact négatif sur le projet ? » Oui → on ne touche pas. Non → poubelle. `claude/restaurant-stock-management-mvp-6oq43e` : ne pas toucher.
+
+Impact négatif retenu si : du code ou une preuve n'existe que sur la branche (les 30 branches DÉCISION ci-dessus, sauf `codex/test`, hors projet), **ou** la branche est citée par nom dans la CI, le code, une doc `governance/` vivante ou un document d'état courant (`BLUE_MASTER_V2_STATE`, `BLUE_PROJECT_REACQUISITION`, `BLUE_CONTEXT_REACQUISITION*`). Dans le doute : on garde.
+
+### POUBELLE (21) — supprimer
+
+```bash
+for b in \
+  astra/first-vertical-independent-review-2026-09-21 \
+  astra/gate-b-evidence-schema-false-pass-recheck-2026-09-21 \
+  astra/gate-b-run-authority-mechanisms-independent-review-2026-09-21 \
+  astra/gate-b-v4-transition-independent-preactivation-review-2026-09-21 \
+  blue/gate-b-route1-seal-integration-2026-09-21 \
+  blue/gate-b-run-authority-repair-dispatch-2026-09-21 \
+  blue/gate-b-run-reservation-activation-preseal-2026-09-21 \
+  builder/gate-b-evidence-reception-prestage-2026-09-21 \
+  builder/gate-b-evidence-schema-false-pass-fix-2026-09-21 \
+  builder/gate-b-offline-lifecycle-sanitization-prestage-2026-09-21 \
+  builder/gate-b-run-authority-mechanisms-2026-09-21 \
+  builder/gate-b-run-authority-retention-prestage-2026-09-21 \
+  builder/gate-c-prospective-event-plan-prestage-2026-09-21 \
+  builder/p0-gate-a-v3-2026-09-20 \
+  claude/confident-allen-xw7eb6 \
+  codex/test \
+  operator/gate-b-f5-route1-host-feasibility-2026-09-21 \
+  operator/gate-b-read-only-preflight-2026-09-21 \
+  parallel/claude-economic-question-falsification-map-2026-09-21 \
+  parallel/claude-s11-dependence-interval-challenge-2026-09-21 \
+  parallel/economic-acceleration-2026-09-21 \
+  ; do git push origin --delete "$b"; done
+```
+
+### Gardées malgré contenu sauvegardé (18) — citées par une autorité vivante
+
+| Branche | Citée par |
+|---|---|
+| `astra/p0-deep-adversarial-pre-t0` | `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/checkpoint-gate-a-v2-audit-2026-09-20` | `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/gate-b-run-authority-repair-integration-2026-09-21` | `governance/BLUE_AUXILIARY_AI_BUILD_REVIEW_POLICY_2026-09-21.md`, `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` |
+| `blue/integration-readiness-2026-09-20` | `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/long-horizon-research-2026-09-20` | `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/p0-calendar-dst-proof-2026-09-20` | `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/p0-gate-a-v2-final-2026-09-20` | `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `blue/p0-gate-a-v3-frozen-2026-09-20` | `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21` | `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` |
+| `builder/gate-b-f11-lock-identity-repair-2026-09-21` | `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` |
+| `builder/gate-b-lock-path-identity-repair-2026-09-21` | `governance/BLUE_GATE_B_FINAL_ACTIVATION_CONVERGENCE_PACK_2026-09-21.md`, `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `builder/gate-b-run-authority-m1-m3-repair-2026-09-21` | `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` |
+| `builder/p0-effective-unit-digest-stability-v4-2026-09-20` | `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `claude/nasdaq-trading-model-design-h3mp4n` | `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md` |
+| `parallel/antigravity-gate-b-run-authority-adversarial-precheck-2026-09-21` | `governance/BLUE_AUXILIARY_AI_BUILD_REVIEW_POLICY_2026-09-21.md` |
+| `parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21` | `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21` | `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` |
+| `reviewer/v1-final-red-team` | `.github/workflows/v1-proof-gate.yml` |
+
+Toutes les autres branches (CONSERVER, DÉCISION avec code/preuve unique, restaurant) : on ne touche pas.
+
+Suppression non exécutée par la session : le proxy Git refuse toute écriture hors de `claude/new-session-8msq33`, et l'outil GitHub disponible ne sait pas supprimer une branche.
