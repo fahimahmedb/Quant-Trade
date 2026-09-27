@@ -1,0 +1,488 @@
+{
+ "rule": "listed on both venues today; median daily notional over common traded days >= 1000000 USD on each venue; top 16 by min-leg median; decided from volume only before any funding was fetched",
+ "chosen": [
+  "BTC",
+  "ETH",
+  "SOL",
+  "XRP",
+  "DOGE"
+ ],
+ "ranked": [
+  {
+   "coin": "BTC",
+   "days": 1050,
+   "hl_median_notional": 1519946157.8498502,
+   "dx_median_notional": 105560485.48875,
+   "min_leg_median": 105560485.48875
+  },
+  {
+   "coin": "ETH",
+   "days": 1050,
+   "hl_median_notional": 792776391.5621051,
+   "dx_median_notional": 78947109.44825,
+   "min_leg_median": 78947109.44825
+  },
+  {
+   "coin": "SOL",
+   "days": 1049,
+   "hl_median_notional": 241435791.74099997,
+   "dx_median_notional": 25512468.397,
+   "min_leg_median": 25512468.397
+  },
+  {
+   "coin": "XRP",
+   "days": 1035,
+   "hl_median_notional": 41146717.756000005,
+   "dx_median_notional": 2037887.197,
+   "min_leg_median": 2037887.197
+  },
+  {
+   "coin": "DOGE",
+   "days": 1034,
+   "hl_median_notional": 15049499.565694999,
+   "dx_median_notional": 1664641.274,
+   "min_leg_median": 1664641.274
+  },
+  {
+   "coin": "LINK",
+   "days": 1044,
+   "hl_median_notional": 6348190.91062,
+   "dx_median_notional": 957649.36,
+   "min_leg_median": 957649.36
+  },
+  {
+   "coin": "SUI",
+   "days": 1035,
+   "hl_median_notional": 19352235.434403002,
+   "dx_median_notional": 929015.996,
+   "min_leg_median": 929015.996
+  },
+  {
+   "coin": "AVAX",
+   "days": 1038,
+   "hl_median_notional": 7636063.52141,
+   "dx_median_notional": 771150.432,
+   "min_leg_median": 771150.432
+  },
+  {
+   "coin": "ADA",
+   "days": 1040,
+   "hl_median_notional": 4327919.0149799995,
+   "dx_median_notional": 629670.0975,
+   "min_leg_median": 629670.0975
+  },
+  {
+   "coin": "BCH",
+   "days": 1033,
+   "hl_median_notional": 2444683.2422800004,
+   "dx_median_notional": 391089.406,
+   "min_leg_median": 391089.406
+  },
+  {
+   "coin": "LTC",
+   "days": 1035,
+   "hl_median_notional": 3267129.34181,
+   "dx_median_notional": 377531.884,
+   "min_leg_median": 377531.884
+  },
+  {
+   "coin": "UNI",
+   "days": 1034,
+   "hl_median_notional": 3158293.095735,
+   "dx_median_notional": 371598.7425,
+   "min_leg_median": 371598.7425
+  },
+  {
+   "coin": "APT",
+   "days": 1036,
+   "hl_median_notional": 2701473.8123589996,
+   "dx_median_notional": 297607.4275,
+   "min_leg_median": 297607.4275
+  },
+  {
+   "coin": "NEAR",
+   "days": 1036,
+   "hl_median_notional": 3715926.8628950003,
+   "dx_median_notional": 294459.01399999997,
+   "min_leg_median": 294459.01399999997
+  },
+  {
+   "coin": "WLD",
+   "days": 1034,
+   "hl_median_notional": 7019826.329502,
+   "dx_median_notional": 282110.15025,
+   "min_leg_median": 282110.15025
+  },
+  {
+   "coin": "TIA",
+   "days": 1004,
+   "hl_median_notional": 5148155.738296,
+   "dx_median_notional": 271632.958,
+   "min_leg_median": 271632.958
+  },
+  {
+   "coin": "DOT",
+   "days": 1034,
+   "hl_median_notional": 1441508.73648,
+   "dx_median_notional": 266558.497,
+   "min_leg_median": 266558.497
+  },
+  {
+   "coin": "AAVE",
+   "days": 954,
+   "hl_median_notional": 8916577.5998,
+   "dx_median_notional": 246883.7895,
+   "min_leg_median": 246883.7895
+  },
+  {
+   "coin": "ATOM",
+   "days": 1034,
+   "hl_median_notional": 802843.430839,
+   "dx_median_notional": 240898.286,
+   "min_leg_median": 240898.286
+  },
+  {
+   "coin": "BNB",
+   "days": 958,
+   "hl_median_notional": 8133089.531780001,
+   "dx_median_notional": 229943.6655,
+   "min_leg_median": 229943.6655
+  },
+  {
+   "coin": "TRX",
+   "days": 1030,
+   "hl_median_notional": 1542260.584915,
+   "dx_median_notional": 225070.347,
+   "min_leg_median": 225070.347
+  },
+  {
+   "coin": "ARB",
+   "days": 1035,
+   "hl_median_notional": 3888189.7538,
+   "dx_median_notional": 217926.55,
+   "min_leg_median": 217926.55
+  },
+  {
+   "coin": "SEI",
+   "days": 1031,
+   "hl_median_notional": 2902615.32881,
+   "dx_median_notional": 204731.549,
+   "min_leg_median": 204731.549
+  },
+  {
+   "coin": "FIL",
+   "days": 1035,
+   "hl_median_notional": 623899.23942,
+   "dx_median_notional": 200156.913,
+   "min_leg_median": 200156.913
+  },
+  {
+   "coin": "CRV",
+   "days": 994,
+   "hl_median_notional": 3430004.1264629997,
+   "dx_median_notional": 190129.386,
+   "min_leg_median": 190129.386
+  },
+  {
+   "coin": "OP",
+   "days": 1030,
+   "hl_median_notional": 1823763.032442,
+   "dx_median_notional": 182380.2645,
+   "min_leg_median": 182380.2645
+  },
+  {
+   "coin": "ETC",
+   "days": 985,
+   "hl_median_notional": 462887.94065,
+   "dx_median_notional": 159823.953,
+   "min_leg_median": 159823.953
+  },
+  {
+   "coin": "WIF",
+   "days": 838,
+   "hl_median_notional": 8009094.67038,
+   "dx_median_notional": 152295.392185,
+   "min_leg_median": 152295.392185
+  },
+  {
+   "coin": "ZEC",
+   "days": 360,
+   "hl_median_notional": 98705418.9099,
+   "dx_median_notional": 87549.639,
+   "min_leg_median": 87549.639
+  },
+  {
+   "coin": "INJ",
+   "days": 938,
+   "hl_median_notional": 2462156.66705,
+   "dx_median_notional": 75066.12640000001,
+   "min_leg_median": 75066.12640000001
+  },
+  {
+   "coin": "ORDI",
+   "days": 896,
+   "hl_median_notional": 761105.2090525001,
+   "dx_median_notional": 63788.628,
+   "min_leg_median": 63788.628
+  },
+  {
+   "coin": "APE",
+   "days": 930,
+   "hl_median_notional": 658583.0385189999,
+   "dx_median_notional": 57219.4735,
+   "min_leg_median": 57219.4735
+  },
+  {
+   "coin": "BLUR",
+   "days": 916,
+   "hl_median_notional": 457163.123575,
+   "dx_median_notional": 51769.681,
+   "min_leg_median": 51769.681
+  },
+  {
+   "coin": "COMP",
+   "days": 950,
+   "hl_median_notional": 314796.835875,
+   "dx_median_notional": 50712.820999999996,
+   "min_leg_median": 50712.820999999996
+  },
+  {
+   "coin": "JUP",
+   "days": 962,
+   "hl_median_notional": 2547523.6730150003,
+   "dx_median_notional": 47691.224,
+   "min_leg_median": 47691.224
+  },
+  {
+   "coin": "LDO",
+   "days": 998,
+   "hl_median_notional": 3300523.1611090004,
+   "dx_median_notional": 44513.7345,
+   "min_leg_median": 44513.7345
+  },
+  {
+   "coin": "XLM",
+   "days": 670,
+   "hl_median_notional": 1459452.706825,
+   "dx_median_notional": 43255.906,
+   "min_leg_median": 43255.906
+  },
+  {
+   "coin": "HYPE",
+   "days": 568,
+   "hl_median_notional": 336952120.44860506,
+   "dx_median_notional": 42292.883499999996,
+   "min_leg_median": 42292.883499999996
+  },
+  {
+   "coin": "JTO",
+   "days": 892,
+   "hl_median_notional": 1354900.3400599998,
+   "dx_median_notional": 30591.206,
+   "min_leg_median": 30591.206
+  },
+  {
+   "coin": "DYDX",
+   "days": 875,
+   "hl_median_notional": 404551.37509000005,
+   "dx_median_notional": 26584.506,
+   "min_leg_median": 26584.506
+  },
+  {
+   "coin": "STRK",
+   "days": 884,
+   "hl_median_notional": 1049733.846571,
+   "dx_median_notional": 24951.248,
+   "min_leg_median": 24951.248
+  },
+  {
+   "coin": "RUNE",
+   "days": 857,
+   "hl_median_notional": 788897.64912,
+   "dx_median_notional": 21054.0779,
+   "min_leg_median": 21054.0779
+  },
+  {
+   "coin": "PYTH",
+   "days": 917,
+   "hl_median_notional": 505131.400856,
+   "dx_median_notional": 18703.363,
+   "min_leg_median": 18703.363
+  },
+  {
+   "coin": "HBAR",
+   "days": 878,
+   "hl_median_notional": 983629.0589835001,
+   "dx_median_notional": 18547.201999999997,
+   "min_leg_median": 18547.201999999997
+  },
+  {
+   "coin": "ALGO",
+   "days": 661,
+   "hl_median_notional": 490285.09386300005,
+   "dx_median_notional": 16401.935,
+   "min_leg_median": 16401.935
+  },
+  {
+   "coin": "ENA",
+   "days": 775,
+   "hl_median_notional": 12469874.216249999,
+   "dx_median_notional": 13136.8537,
+   "min_leg_median": 13136.8537
+  },
+  {
+   "coin": "DYM",
+   "days": 768,
+   "hl_median_notional": 290851.392918,
+   "dx_median_notional": 12892.512,
+   "min_leg_median": 12892.512
+  },
+  {
+   "coin": "PUMP",
+   "days": 425,
+   "hl_median_notional": 32851685.882154003,
+   "dx_median_notional": 12162.9021,
+   "min_leg_median": 12162.9021
+  },
+  {
+   "coin": "IMX",
+   "days": 865,
+   "hl_median_notional": 440404.20696499996,
+   "dx_median_notional": 10695.691,
+   "min_leg_median": 10695.691
+  },
+  {
+   "coin": "TAO",
+   "days": 792,
+   "hl_median_notional": 7445305.280185001,
+   "dx_median_notional": 10655.139,
+   "min_leg_median": 10655.139
+  },
+  {
+   "coin": "PAXG",
+   "days": 526,
+   "hl_median_notional": 5090743.8464,
+   "dx_median_notional": 10164.32,
+   "min_leg_median": 10164.32
+  },
+  {
+   "coin": "XMR",
+   "days": 250,
+   "hl_median_notional": 5885121.80284,
+   "dx_median_notional": 9206.8469,
+   "min_leg_median": 9206.8469
+  },
+  {
+   "coin": "RENDER",
+   "days": 760,
+   "hl_median_notional": 752759.019995,
+   "dx_median_notional": 8755.331999999999,
+   "min_leg_median": 8755.331999999999
+  },
+  {
+   "coin": "ONDO",
+   "days": 768,
+   "hl_median_notional": 4138520.12408,
+   "dx_median_notional": 8264.020499999999,
+   "min_leg_median": 8264.020499999999
+  },
+  {
+   "coin": "XPL",
+   "days": 296,
+   "hl_median_notional": 14185663.512079999,
+   "dx_median_notional": 7828.9777,
+   "min_leg_median": 7828.9777
+  },
+  {
+   "coin": "ICP",
+   "days": 320,
+   "hl_median_notional": 831756.3728499999,
+   "dx_median_notional": 7243.786425,
+   "min_leg_median": 7243.786425
+  },
+  {
+   "coin": "ASTER",
+   "days": 352,
+   "hl_median_notional": 6805400.36908,
+   "dx_median_notional": 5961.995129999999,
+   "min_leg_median": 5961.995129999999
+  },
+  {
+   "coin": "TRUMP",
+   "days": 597,
+   "hl_median_notional": 6569092.593960001,
+   "dx_median_notional": 5864.809,
+   "min_leg_median": 5864.809
+  },
+  {
+   "coin": "PENGU",
+   "days": 578,
+   "hl_median_notional": 4296859.83084,
+   "dx_median_notional": 4813.20585,
+   "min_leg_median": 4813.20585
+  },
+  {
+   "coin": "WLFI",
+   "days": 376,
+   "hl_median_notional": 3027311.934293,
+   "dx_median_notional": 4623.56905,
+   "min_leg_median": 4623.56905
+  },
+  {
+   "coin": "POL",
+   "days": 656,
+   "hl_median_notional": 805704.659725,
+   "dx_median_notional": 4384.44295,
+   "min_leg_median": 4384.44295
+  },
+  {
+   "coin": "ZRO",
+   "days": 742,
+   "hl_median_notional": 2042877.58232,
+   "dx_median_notional": 4383.407999999999,
+   "min_leg_median": 4383.407999999999
+  },
+  {
+   "coin": "MON",
+   "days": 222,
+   "hl_median_notional": 6302724.042338999,
+   "dx_median_notional": 3382.78595,
+   "min_leg_median": 3382.78595
+  },
+  {
+   "coin": "PENDLE",
+   "days": 700,
+   "hl_median_notional": 2256939.05565,
+   "dx_median_notional": 2811.2235,
+   "min_leg_median": 2811.2235
+  },
+  {
+   "coin": "ZORA",
+   "days": 327,
+   "hl_median_notional": 590508.41017,
+   "dx_median_notional": 2765.403,
+   "min_leg_median": 2765.403
+  },
+  {
+   "coin": "LIT",
+   "days": 192,
+   "hl_median_notional": 16886950.30625,
+   "dx_median_notional": 2452.84695,
+   "min_leg_median": 2452.84695
+  },
+  {
+   "coin": "EIGEN",
+   "days": 513,
+   "hl_median_notional": 1512326.456221,
+   "dx_median_notional": 2367.884,
+   "min_leg_median": 2367.884
+  },
+  {
+   "coin": "ZEN",
+   "days": 354,
+   "hl_median_notional": 449225.90983200003,
+   "dx_median_notional": 745.6555,
+   "min_leg_median": 745.6555
+  }
+ ]
+}
