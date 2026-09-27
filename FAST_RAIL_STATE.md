@@ -1,3 +1,17 @@
+# ARRÊTÉ (STOP_OWNER) — unifié dans claude/new-session-0ydmkg
+
+Essais consommés par ce builder : **14** (tous sur `claude/new-session-3ujgeu`, registre `research/fast_rail/registry.jsonl`).
+| H-id | verdict | essais | travail |
+|---|---|---|---|
+| H-001 Pinnacle vs sport PM | BLOCKED(data) ici | 0 | registre seulement |
+| H-002 HL vs dYdX funding (hystérésis) | REJECT (val t −0,03 < 3,29) | 6 (+44 prior) | fusionné ; origine `claude/new-session-3ujgeu-wip-h002` @1903aed ; `scripts/build_hl_dydx_funding_dataset.py`, `research/fast_rail/run_h002.py`, `h002_result.json`, `tests/test_fast_rail_h002.py` |
+| H-004 Kalshi météo, P&L maker | REJECT (t 1,34 / 0,86 < 2,24 ; concentration) | 2 | fusionné ; origine `-wip-h004` @fd1d2e1 ; `src/quant/factory/kalshi_maker.py`, `scripts/{build_kalshi_weather_trades,evaluate_h004}.py`, `data/fast_rail/kalshi_weather_trades.*`, `h004_result.json` |
+| H-006 fade listings HL | REJECT (val t 1,82 < 2,64) | 6 | fusionné ; origine `-wip-h006` @bc9974d ; `scripts/{build_hl_listings_dataset,evaluate_h006}.py`, `h006_result.json`, `tests/test_fast_rail_h006.py` |
+Note : les numéros H-00x de ce registre ne correspondent pas à ceux de 0ydmkg (renuméroter à l'unification). Descriptif non compté (H-004) : KXBTCD maker +2,77 ¢/contrat, t 4,02 sur 12 événements — idée à pré-enregistrer.
+Dernière vérif. complète : 470 tests OK avant la fusion H-004 ; après fusion H-004, suite complète non relancée (arrêt propriétaire) — `status_artifacts --write` OK, 485 tests découverts. `kalshi_weather_trades` déplacé de `data/datasets/` vers `data/fast_rail/` (ce n'est pas un PricePanel : cassait `register_committed_snapshots`).
+
+---
+
 # Fast Rail State — itération 1 (en cours) — 2026-09-27
 
 ## REPRISE (lire en premier après une coupure)
