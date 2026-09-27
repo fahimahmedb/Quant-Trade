@@ -7,5 +7,5 @@ Done:
 - lanes.py: perp_funding_spread_hl_dydx_hold (6 specs, prior 44, cost 6bp, pristine 2026-09-25)
 - tests/test_fast_rail_h002.py (12 tests pass)
 
-Next: finish fetch-funding (raw in data/raw/fast_rail/h002), run `build`, commit dataset,
-then run workers.run_lane on the new dataset (one run only; trials count) and record verdict.
+- dataset built: 10416 rows, 10 symbols, 2023-11-13..2026-09-26 (raw 9.5MB gz + manifest)
+Next: run workers.run_lane once on perp_funding_hl_dydx_daily (trials count), record verdict.
