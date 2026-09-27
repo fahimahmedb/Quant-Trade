@@ -76,6 +76,7 @@ Crée ensuite `FAST_RAIL_STATE.md` (format au §8) et `research/fast_rail/regist
 | `EXPLORE` | Discovery exécutée, grille comptée |
 | `CANDIDATE` | Validation : t de l'alpha net ≥ `required_t_statistic`, signe stable sur les deux moitiés, pas de concentration (test existant), capacité ≥ 10 k$ |
 | `SHADOW` | Lane déclarée avec `pristine_after` = date du jour, tourne via `quant.py run --market …` et `sync-feeds` |
+| `SHADOW_DIRECT` | Hypothèse UNDERPOWERED, une expression aux paramètres fixés par la source, déclarée (statistique, H1 = effet source × 0,5, horizon) avant la première décision forward ; α = 0,05/(k·(k+1)), 5 ouvertes au plus, 0 essai historique. Conditions complètes : §4 de `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` |
 | `FORWARD_PASS` | t-SPRT accepté sur le forward pristine, avec N ≥ N déclaré. **Stop : transfert au rail sûr** |
 | `REJECT` / `FILTERED` / `BLOCKED` | Motif obligatoire : signal, coûts, capacité, données, conformité |
 

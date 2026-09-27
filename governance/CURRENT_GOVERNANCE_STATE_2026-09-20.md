@@ -175,4 +175,5 @@ Adopté le 2026-09-25 : `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` (ACCEPTÉE).
 - Aucune autorité de capital ; transfert au rail sûr sur `FORWARD_PASS`, décision du propriétaire.
 - Périmètre interdit : tout le rail sûr (P0/Form 4, Gates A/B/C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés) — voir §2 de la proposition.
 - Anti-bureaucratie : un document par décision réelle ; un candidat remplacé par sa version finale part dans `archive/`.
+- Amendement SHADOW_DIRECT adopté le 2026-09-27 (α forward = 0,05/(k·(k+1)) pour la k-ième entrée, Σ < 0,05 ; 5 slots au plus) : voir §4 de la proposition.
 - `REAL_CAPITAL_AUTHORIZED = FALSE` (inchangé).

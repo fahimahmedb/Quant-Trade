@@ -50,8 +50,28 @@ Le rail rapide n'est pas « moins honnête » : il garde tous les invariants éc
 | `EXPLORE` | Discovery sur l'historique, grille déclarée et comptée | Le builder | Un essai consommé |
 | `CANDIDATE` | Validation hors échantillon : t de l'alpha net ≥ seuil corrigé du nombre d'essais, stabilité par sous-période, coûts inclus | Le builder, après la red team de la vague | Un slot de shadow |
 | `SHADOW` | Tourne sur le ledger d'évaluation avec les données forward du relais (`sync-feeds`) | Automatique | Nul (papier) |
+| `SHADOW_DIRECT` | Hypothèse UNDERPOWERED à une expression, paramètres fixés par la source ; entrée en `SHADOW` sans `CANDIDATE`, jugée par le seul t-SPRT forward (conditions ci-dessous) | Le builder, dans les conditions ci-dessous | Un slot de shadow, 0 essai historique |
 | `FORWARD_PASS` | Test séquentiel (t-SPRT) accepté sur des données forward *pristine*, avec au moins N événements indépendants (N déclaré à l'entrée en `SHADOW`) | Automatique, puis audit indépendant | — |
 | **Transfert** | Dossier de candidature remis au rail sûr | **Le propriétaire** | — |
+
+**`SHADOW_DIRECT`** (amendement du 2026-09-27) : entrée en `SHADOW` sans passer par `CANDIDATE`, si toutes ces conditions sont réunies.
+1. **Une seule expression.** Ses paramètres sont fixés par une source citée ou par le mécanisme, et écrits au registre avant toute donnée.
+2. **Historique sans puissance.** Soit `expected_t` < `required_t` est documenté au registre, soit l'historique n'existe pas.
+3. **Déclaration avant la première décision forward.** On y fixe :
+   - la statistique de test (P&L net, CLV, markouts…) ;
+   - l'effet H1, égal à l'effet de la source × 0,5 (même réduction que `SHRINKAGE`) ;
+   - l'horizon maximal.
+   `pristine_after` doit être postérieur ou égal à la date du commit de la règle.
+4. **Multiplicité forward.** Le α du t-SPRT de la k-ième stratégie entrée en `SHADOW_DIRECT` depuis l'amendement vaut 0,05 / (k·(k+1)) ; k n'est jamais décrémenté, donc Σ α < 0,05 quel que soit le nombre cumulé M d'entrées (correction Blue : 0,05/M par entrée cumulerait 0,05 × (1 + 1/2 + … + 1/M)). Au plus 5 stratégies `SHADOW_DIRECT` peuvent être ouvertes en même temps.
+5. **Statistique proxy.** Si la statistique de test n'est pas le P&L net (CLV, markouts), `FORWARD_PASS` exige en plus un P&L net papier positif sur la même période.
+6. **Sortie.**
+   - Frontière de rejet du t-SPRT atteinte : `REJECT(FORWARD)`.
+   - Horizon atteint sans décision : `INCONCLUSIVE`.
+   - Jamais de relance sur le même forward avec d'autres paramètres.
+7. **Coût.** 0 essai historique ; `MAX_DECLARED_TRIALS` n'est pas consommé.
+8. **Capital : inchangé.** Aucune autorité de capital. Un `FORWARD_PASS` produit un dossier de transfert au rail sûr, et c'est le propriétaire qui décide.
+
+Écart d'implémentation (pour le builder) : `sequential_test` accepte `alpha`, mais annualise sur 252 jours (`mu = SR/√252`), borne H1 à [0,5 ; 2,0] via `alternative_sharpe` et n'a pas d'horizon ; il faut une variante indexée par événement avec H1 déclaré non borné (effet/σ par observation) et un `max_observations` qui renvoie `INCONCLUSIVE`.
 
 Le rail rapide s'arrête au transfert. Le rail sûr seul décide s'il y a lieu de qualifier davantage, puis de demander une autorisation de capital.
 
