@@ -102,6 +102,14 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | S92 | https://docs.kalshi.com/api-reference/communications/create-quote | 5 | A | Répondre à un RFQ exige les en-têtes d'authentification KALSHI-ACCESS-KEY/SIGNATURE/TIMESTAMP (donc un compte) |
 | S93 | https://github.com/bond-labs-dev/hyperliquid-data | 2 | B | Fills HL ≈ 0,8-1,0 Gio/jour ; 30 jours ≈ 2,21 $ d'egress ; chaque trade apparaît deux fois (taker et maker) ; format changé le 2025-07-27 |
 | S94 | https://www.tradermath.org/articles/prediction-markets-trading-at-quant-firms | 8 | B | Concurrence : SIG « flagship market maker » de Kalshi (desk depuis 2023) avec frais réduits et limites de position plus hautes ; Jump ≈ 20 personnes ; DRW, Akuna recrutent pour le sport |
+| S95 | https://www.coindesk.com/markets/2025/12/03/polymarket-launches-app-with-cftc-green-light-in-u-s-return | 8 (légal US) | B | 2025-12-03 : app Polymarket US sous supervision CFTC (échange intermédié), iOS sur liste d'attente, sport seulement au départ |
+| S96 | https://www.dlapiper.com/en-us/insights/publications/2026/09/legal-status-at-odds-tracking-developments-in-prediction-markets-and-sports-betting | 8 (légal US) | A | Sept. 2026 : 3e Circuit pour Kalshi (préemption CFTC) ; **9e Circuit contre Kalshi le 2026-08-28** (contrats sport ≠ swaps) → scission ; poursuites de WA, MA, MI, NV ; pénal en AZ ; Kalshi poursuivi par NV, NJ, MD, OH, NY, UT ; injonction fédérale protégeant les DCM en Arizona (mai 2026) |
+| S97 | https://help.kalshi.com/en/articles/13823782-what-information-is-required-to-verify-my-kalshi-account | 5 | A | KYC Kalshi : pièce d'identité photo (permis ou passeport), nom et date de naissance, adresse résidentielle physique ; justificatifs supplémentaires possibles (adresse, emploi, origine des fonds) ; SSN et statut de visa non précisés dans cet article |
+| S98 | https://hyperliquidguide.com/privacy/hyperliquid-us-availability | 8 (légal US) | B | Vérifié le 2026-08-19 : les CGU Hyperliquid restreignent les US persons ; blocage IP du frontend |
+| S99 | https://www.datawallet.com/crypto/is-hyperliquid-available-in-the-usa | 8 (légal US) | B | 2026-06-18 : les résidents, citoyens et sociétés US sont « Restricted Persons » ; les CGU interdisent expressément VPN et fausse déclaration de résidence |
+| S100 | https://www.polymarketexchange.com/developers.html | 5 | A | API Polymarket US : candidature, tests en sandbox, puis identifiants de production après évaluation technique et réglementaire |
+| S101 | https://oddlotarbitrage.com/tender-offer-tracker/ | 3 | B | Tracker : 7 offres récentes (févr. 2025-août 2026), dont **2 seulement avec clause odd-lot** (Tile Shop, Lennar) ; profit maximal 120-1 216 $ par lot de 99 actions ; Frontera a retiré la priorité odd-lot en cours d'offre |
+| S102 | https://www.eaglepointcap.com/blog/odd-lot-arbitrage-opportunity-in-xbiotech-shares | 3 | B | XBiotech 2020 : offre à 30 $ contre 23 $ en bourse, +693 $ par 99 actions (30 %) ; « No one's getting rich with these » |
 
 ## Pages inaccessibles (ne comptent pas)
 
@@ -109,7 +117,7 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 |---|---|---|
 | old.reddit.com, www.reddit.com, api.reddit.com (recherches r/sportsbook, r/algotrading) | « unable to fetch » | miroirs essayés ci-dessous |
 | WebSearch `allowed_domains: reddit.com` | erreur 400 « not accessible to our user agent » | — |
-| api.pullpush.io (recherche Reddit) | 429 | à réessayer |
+| api.pullpush.io (recherche Reddit) | 429 (4 tentatives espacées, la dernière en fin de session) | aucun |
 | arctic-shift.photon-reddit.com | 500 | — |
 | safereddit.com | page anti-bot Anubis | — |
 | redlib.catsarch.com / l.opnxng.com / rl.bloat.cat | 429 / 503 / 502 | — |
@@ -130,6 +138,8 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | medium.com/coinmonks (backtest déblocages) | 403 | S75 |
 | archive.pmxt.dev | 503 | S79 (Polymarket-v1) |
 | finance.yahoo.com (perte SIG Knicks) | 404 | S94 |
+| app.hyperliquid.xyz/terms | rendu JS, vide | S98, S99 |
+| wallstreetoasis.com (WebMD odd lot) | 403 | S101, S102 |
 | medium.com/@wanguolin (post-mortem récompenses PM) | 403 ; scribe.rip 404 ; freedium DNS | — |
 | bitmex.com/blog/harvest-funding-payments-on-hyperliquid | 404 | — |
 | cybernews.com (bots IA perdants), cnbc.com 2026-08-01 | 403 | — |
@@ -211,3 +221,11 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 66. « Hyperliquid historical fills S3 user addresses » → S89, S90, S93.
 67. « Kalshi historical trades API free download » → S88, S92.
 68. « Susquehanna market maker Kalshi sports competition » → S94.
+69-72. (Juridiction Maroc, remplacée ensuite par les USA sur instruction du coordinateur) : quatre recherches (« projet de loi 42.25 », « Office des Changes 2017 », « gains jeux en ligne 30 % », « IGOC 2024 ») ; aucune page ouverte, non comptées comme sources.
+73. « Polymarket US app CFTC launch KYC » → S95.
+74. « Kalshi sports contracts state lawsuits 2026 » → S96.
+75. « Kalshi account verification SSN » → S97.
+76. « Hyperliquid terms restricted US persons » → S98, S99.
+77. « Polymarket US API market makers fees » → S100 ; extrait de recherche non ouvert : barème US au 2026-04-03, taker 0,05, rebate maker −0,0125 (à vérifier).
+78. « odd lot tender offer arbitrage returns » → S102.
+79. « odd-lot tender offer arbitrage no longer works » → S101.
