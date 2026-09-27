@@ -82,6 +82,10 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | S72 | https://www.pokerscout.com/kalshi-announces-international-service-which-countries-excluded/ | 8 (légal) | B | Liste Kalshi des pays exclus (10 oct. 2025, 45 pays) : **France incluse** |
 | S73 | https://www.coindesk.com/opinion/2026/07/01/europe-is-closing-the-door-on-offshore-crypto-but-it-s-leaving-the-riskiest-window-open | 6 | B | Perps crypto hors MiCA ; l'ESMA les rapproche des CFD ; un Européen peut ouvrir un compte Hyperliquid à 50x sans agrément local ; 74-89 % des comptes CFD retail perdent |
 | S74 | https://anj.fr/offre-de-jeu-et-marche/operateurs-agrees | 8 (légal) | A | Liste officielle ANJ : ni Pinnacle ni Betfair ne sont agréés en France |
+| S75 | https://insights.unlocks.app/do-token-unlocks-crash-prices/ | 8 | A | Tokenomist 2026-06-29 : 236 déblocages (juin 2024-mars 2026) ; médiane 1 mois −16,3 % brut mais **−4,85 % contre pairs** ; −14,7 % déjà un mois AVANT (prix anticipé) ; établis −2,6 % ; non-insiders gros −26 % |
+| S76 | https://techcrunch.com/2025/11/01/coinbase-ceo-brian-armstrong-trolls-the-prediction-markets | 8 | B | Armstrong prononce à dessein les mots pariés sur l'appel de résultats (84 000 $ misés sur Kalshi/PM) : risque de manipulation par l'orateur dans les mention markets |
+| S77 | https://www.dechert.com/knowledge/publication/2026/1/damitt-2025-annual-report.html | 6 | A | DAMITT 2025 : 16 enquêtes significatives US (2e plus bas en 15 ans), 1 abandon (vs 9 record en 2024), durée 12,3 mois ; UE : aucun deal bloqué en 2025 vs 20 % en 2024 |
+| S78 | https://startpolymarket.com/strategies/reward-farming/ | 3 | C | Exemple : un seul fill adverse (53 ¢ → 2 ¢ sur 100 parts = −51 $) efface une journée de récompenses (50 $) ; aucune donnée empirique |
 
 ## Pages inaccessibles (ne comptent pas)
 
@@ -178,3 +182,7 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 56. « Kalshi international countries France » → S72.
 57. « Hyperliquid restricted jurisdictions France AMF MiCA » → S73.
 58. « ANJ liste opérateurs agréés Pinnacle Betfair » → S74.
+59. « Coinbase CEO mention market manipulation » → S76.
+60. « token unlock short strategy backtest priced in » → S75 (medium Tigro Blanc listé, non ouvert).
+61. « Polymarket liquidity rewards farming not profitable adverse selection » → S78.
+62. « merger arbitrage 2025 deal breaks FTC » → S77.
