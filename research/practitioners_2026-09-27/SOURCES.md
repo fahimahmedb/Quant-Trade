@@ -70,6 +70,18 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | S60 | https://news.ycombinator.com/item?id=47753472 | 7 | C | Bot « Nothing Ever Happens » (acheter NO hors sport) : 73 % des marchés PM résolvent NO, mais essai réel 100 $ → −5 $ sur un mois ; backtest 100 % APR seulement « by knowing when things are going to resolve » (biais d'anticipation) |
 | S61 | https://www.sportsbookreview.com/forum/handicapper-think-tank/1726344-crushing-the-no-vig-closing-line-but-still-losing-badly/page2 | 7 | B | Fullkelly : 108-142 sur 250 paris tout en battant la clôture sans marge ~80 % du temps ; réponse : probabilité 5-7 % (variance), convergence vers l'équilibre ensuite |
 | S62 | https://www.elitetrader.com/et/threads/trading-with-futures-prop-firms-2025.382648/ | 7 | C | Fil prop firms 2025 : aucun chiffre de taux de réussite ni de rentabilité ; anecdotes de retraits |
+| S63 | https://www.sportstradingnetwork.com/article/do-pinnacle-closing-prices-in-tennis-tell-the-full-story-can-you-win-in-the-long-run-without-beating-them/ | 3 | B | @nishikoripicks : 3 000 paris ATP, ROI réel +8,9 % vs ROI attendu par la clôture −0,2 % ; CLV corrélée au résultat par quartile mais pas parfaite (contre-exemple à « CLV = ROI ») |
+| S64 | https://anthonyleezhang.substack.com/p/automated-market-making-and-loss | 3 | A (renvoie à arXiv 2208.06046) | LVR : « ignoring fees, your AMM LP position always does worse than the rebalancing strategy » (2023-06-27) |
+| S65 | https://arxiv.org/html/2608.04373 | 4 | A | Venue = Hyperliquid, juillet 2026, 17,1 Md de messages L4 ; classement des wallets par markout 10 s, Spearman 0,52 d'une fenêtre de 10 jours à l'autre ; les auteurs disent qu'il faut un modèle d'exécution (latence, file, frais) pour en faire un profit |
+| S66 | https://www.oddpool.com/research/kalshi-rfq-market-makers | 5 | A (expérience reproductible) | 270 RFQ test (mai 2026) : 13 quoteurs sport, 0 sur 96 RFQ non-sport ; 2 bots ≈ la moitié des réponses ; quasi toutes < 200 ms ; un seul maker prix la corrélation (1,4-4,4 s) |
+| S67 | https://www.arcamax.com/business/businessnews/s-4263507 (Bloomberg, 2026-07-29) | 6 | B | Combos = 36 % des contrats Kalshi du mois ; retail −294 M$ net sur les combos janv.-juil. 2026 ; perte 19 ¢/$ en combos vs 6 ¢ en simples ; Mastrokostas (ex-FanDuel, indépendant) « seven figures a month » |
+| S68 | https://www.ingame.com/kalshis-parlay-maker-fees/ | 6 | B | Frais makers sur combos depuis 2026-08-20 : 26 M$ en 4 semaines ; majoration moyenne des prix de combo 0,64 % → 2,76 % ; record 68,4 M$ de volume taker combos le 2026-09-13 (≈ 11 %) |
+| S69 | https://docs.kalshi.com/getting_started/rfqs | 5 | A | RFQ : les makers renvoient yes_bid/no_bid pour la taille entière ; fenêtre de confirmation 30 s (3 s en marché très volatil) ; aucune restriction d'éligibilité explicite |
+| S70 | https://verdadcap.com/archive/merger-arbitrage | 6 | B | 835 deals 2000-2020 (> 100 M$, acquéreurs stratégiques) : 89 % conclus ; +2,0 % si conclu, −2,8 % si annulé, ≈ 1,5 % en moyenne ; spreads 5-7,5 % → 4,0 %, spreads 0-2,5 % → 0,9 % |
+| S71 | https://anj.fr/promotion-dune-offre-de-jeux-dargent-illegale-blocage-du-site-polymarket | 8 (légal) | A | 2026-07-16 : blocage de Polymarket en France ; « les sites de prédiction ne sont pas autorisés en France et… sont considérés comme des sites de jeux d'argent illégaux » |
+| S72 | https://www.pokerscout.com/kalshi-announces-international-service-which-countries-excluded/ | 8 (légal) | B | Liste Kalshi des pays exclus (10 oct. 2025, 45 pays) : **France incluse** |
+| S73 | https://www.coindesk.com/opinion/2026/07/01/europe-is-closing-the-door-on-offshore-crypto-but-it-s-leaving-the-riskiest-window-open | 6 | B | Perps crypto hors MiCA ; l'ESMA les rapproche des CFD ; un Européen peut ouvrir un compte Hyperliquid à 50x sans agrément local ; 74-89 % des comptes CFD retail perdent |
+| S74 | https://anj.fr/offre-de-jeu-et-marche/operateurs-agrees | 8 (légal) | A | Liste officielle ANJ : ni Pinnacle ni Betfair ne sont agréés en France |
 
 ## Pages inaccessibles (ne comptent pas)
 
@@ -89,6 +101,12 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | redlib.nadeko.net / red.artemislena.eu / redlib.privacyredirect.com, pullpush (2e essai) | 502 / Anubis / 403 / 429 | — |
 | quantnet.com/threads/individual-retail-quant.59345 | 403 | — |
 | sportsbookreview.com « Is CLV a Farce? » | redirection vers l'index | S61 |
+| blog.pyckio.com | DNS introuvable | S63 |
+| si.com parlays Kalshi | 410 | S67 |
+| sportico.com (parlays) | redirection tollbit, DNS | S67 |
+| gamblinginsider.com (parlays) | 403 | S68 |
+| kalshi.com/docs/kalshi-member-agreement.pdf | 429 | S72 |
+| fintelegram.com (Hyperliquid MiCA) | 403 | S73 |
 | medium.com/@wanguolin (post-mortem récompenses PM) | 403 ; scribe.rip 404 ; freedium DNS | — |
 | bitmex.com/blog/harvest-funding-payments-on-hyperliquid | 404 | — |
 | cybernews.com (bots IA perdants), cnbc.com 2026-08-01 | 403 | — |
@@ -147,3 +165,16 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 43. « Show HN sports betting arbitrage bot » → S58, S59, S60.
 44. « sportsbookreview think tank closing line value » → S61 (« CLV farce » inaccessible).
 45. « quantnet OR wilmott retail quant » → QuantNet 403 ; S62 (Elite Trader).
+46. « Milionis LVR Uniswap LPs lose » → S64.
+47. « thetagang post mortem blew up » → aucun post-mortem ouvrable (Reddit inaccessible).
+48. « Flirting with Models transcript prediction markets » → pas de transcription ouverte.
+49. « Pyckio tipsters Pinnacle closing odds » → S63 (Pyckio DNS).
+50. arXiv 2608.04373 HTML → S65.
+51. « Kalshi combos parlays RFQ market makers » → S66, S67.
+52. « merger arbitrage small deals higher returns » → S70.
+53. « Kalshi API RFQ create quote » → S69.
+54. « Mastrokostas Kalshi parlay » → S68.
+55. « ANJ Polymarket France blocage » → S71.
+56. « Kalshi international countries France » → S72.
+57. « Hyperliquid restricted jurisdictions France AMF MiCA » → S73.
+58. « ANJ liste opérateurs agréés Pinnacle Betfair » → S74.
