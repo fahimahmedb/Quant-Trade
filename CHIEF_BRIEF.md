@@ -15,7 +15,7 @@ Component state:
 - `BOOK`: **IDLE** - marked through 2026-09-21
 - `BUILD`: **BLOCKED** - 3 open capability gaps
 - `CONTROL`: **IDLE** - no work due
-- `DATA`: **IDLE** - 6 datasets available
+- `DATA`: **IDLE** - 7 datasets available
 - `FILLS`: **IDLE** - no session due
 - `LEARNING`: **IDLE** - 5 lessons recorded
 - `RESEARCH`: **BLOCKED** - no survivorship-controlled security and factor panel
@@ -27,7 +27,7 @@ Component state:
 
 ## Data
 
-Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
+Registry health: `{'AVAILABLE': 7, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
 
 - **futures_excess_return_daily** (AVAILABLE) - 174,774 rows, 31 symbols, 2002-01-02 to 2024-03-28, `sha256:2731a881292251f2f754256c0f6feb66ec3168f20a39003b4abe59f960e1b6a6`
   - source: https://github.com/pst-group/pysystemtrade data/futures (adjusted_prices_csv, multiple_prices_csv, csvconfig) @ 8958c49c38b1e4a8c07f0e4375d5e9cb68a087f7
@@ -53,6 +53,16 @@ Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - source: operator-supplied historical export committed to the repository
   - caveat: price index without dividends; not a tradable instrument
   - caveat: no corporate-action or constituent history
+- **perp_funding_hl_dydx_daily** (AVAILABLE) - 156,628 rows, 286 symbols, 2023-11-13 to 2026-09-24, `sha256:68a2ac4be84a133dcbb7af2aba28fc21b58eac7ca51ddd443cf15396475a8e22`
+  - source: Hyperliquid public info API (meta, fundingHistory, candleSnapshot 1d) + dYdX v4 public indexer (perpetualMarkets, historicalFunding, candles 1DAY); 7959 responses, sha256 per response in data/fast_rail/h002/provenance.jsonl.gz
+  - caveat: venue APIs queried directly; not independently cross-checked against a third-party archive
+  - caveat: delisted coins are included where both venues still serve history (Hyperliquid meta isDelisted, dYdX FINAL_SETTLEMENT)
+  - caveat: a day is kept only with >= 22 hourly settlements and a traded daily candle on both venues; nothing is filled in
+  - caveat: close is the daily candle's last trade; thin dYdX markets can print stale closes, which adds cross-venue price noise to the pair
+  - caveat: prices are per price_scale tokens (data/fast_rail/h002/coins.json) and Hyperliquid k-coins are converted to per-token; returns are unaffected
+  - caveat: HL volume notional = base volume x daily close (approximation)
+  - caveat: no intraday margin, liquidation or auto-deleveraging modelling in the data
+  - caveat: coin names are matched by ticker; a re-used ticker would pair different assets
 - **perp_funding_pairs_daily** (AVAILABLE) - 108,874 rows, 244 symbols, 2023-06-08 to 2025-05-15, `sha256:55bbf2946f8886d2ec7643f52b38dbd23676d1b208b249e1098d855a1234a361`
   - source: github.com/guibvieira/freqtrade-hyperliquid-data (Hyperliquid 1h funding, 1d bars) + github.com/LorenzoBaggi/funding_arb (Bybit funding, 1h klines)
   - caveat: third-party snapshots, not verified against the venues

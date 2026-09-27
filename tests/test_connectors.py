@@ -177,3 +177,16 @@ class SessionClosedTests(unittest.TestCase):
             "2026-09-25", datetime(2026, 9, 25, 18, 17, tzinfo=timezone.utc)))
         self.assertTrue(fetch_feeds.session_closed(
             "2026-09-24", datetime(2026, 9, 25, 0, 17, tzinfo=timezone.utc)))
+
+
+class KalshiDollarQuoteTests(__import__("unittest").TestCase):
+    def test_dollar_fields_are_read_and_legacy_cents_still_work(self):
+        from quant.dataplane.connectors import parse_kalshi_markets
+        # invented fixture values
+        rows = parse_kalshi_markets({"markets": [
+            {"ticker": "T1", "yes_bid_dollars": "0.4200", "yes_ask_dollars": "0.4500"},
+            {"ticker": "T2", "yes_bid": 42, "yes_ask": 45},
+            {"ticker": "T3"}]})
+        self.assertEqual((rows[0]["yes_bid"], rows[0]["yes_ask"]), (0.42, 0.45))
+        self.assertEqual((rows[1]["yes_bid"], rows[1]["yes_ask"]), (0.42, 0.45))
+        self.assertEqual((rows[2]["yes_bid"], rows[2]["yes_ask"]), (None, None))
