@@ -4,7 +4,7 @@
 - Branche : `claude/new-session-3ujgeu` (= rail rapide ; base prototype + adoption Blue bd19712 vérifiée).
 - Étape en cours : **it.1, étape B** (vague parallèle). Les 4 agents de la vague 1 (H-002, H-004, H-006, Données) ont été tués par la limite de session le 2026-09-25 **avant tout commit** : aucun essai consommé, rien à récupérer.
 - Vague 1 relancée le 2026-09-27 02:22Z avec 2 agents (H-006, H-002). WIP poussé sur `claude/new-session-3ujgeu-wip-h006` / `-wip-h002` (+ `research/fast_rail/wip_h00x.md` = prochaine étape exacte). Après coupure : fetch ces branches, reprendre depuis leur wip_*.md, puis étape C (red team) et D.
-- Watchdog : `send_later` programmé à 07:22Z (re-programmer +5 h à chaque reprise).
+- Watchdog : routine horaire (xx:27 UTC) « Fast rail hourly resume » ; la supprimer quand le rail s'arrête (§9).
 - Registre : `research/fast_rail/registry.jsonl` (déclarations H-001..H-006 faites avant données).
 
 ## Budget : itérations 1/10, essais 0/200 consommés (14 déclarés : H-002 6, H-004 2, H-006 6)
