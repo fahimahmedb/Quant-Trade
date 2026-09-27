@@ -175,6 +175,10 @@ def build(raw: Path) -> tuple[list[dict], list[str], dict]:
             for item in _load(page):
                 prints.setdefault(_day(int(item["time"])), {})[int(item["time"])] = \
                     float(item["fundingRate"])
+        # Six-decimal storage would quantise a sub-dollar coin's returns; quote
+        # such a coin per 1000 units (Hyperliquid's own "k" convention). Returns,
+        # notional volume and funding are unchanged; ``price_scale`` records it.
+        scale = 1000.0 if min(float(c["c"]) for c in candles) < 1.0 else 1.0
         kept = 0
         for candle in candles:
             day = _day(candle["t"])
@@ -185,15 +189,19 @@ def build(raw: Path) -> tuple[list[dict], list[str], dict]:
             age = (dt.date.fromisoformat(day) - dt.date.fromisoformat(listing)).days
             if coin != "BTC" and age > COVERAGE_DAYS:
                 continue
-            rows.append({"date": day, "symbol": f"HL.{coin}", "open": close, "high": close,
-                         "low": close, "close": close, "adj_close": close,
-                         "volume": float(candle["v"]) * close,
-                         "carry_rate": sum(rates.values()), "listing_age_days": float(age),
-                         "listing_eligible": 1.0 if eligible else 0.0})
+            quote = close * scale
+            row = {"date": day, "symbol": f"HL.{coin}", "open": quote, "high": quote,
+                   "low": quote, "close": quote, "adj_close": quote,
+                   "volume": float(candle["v"]) * close,
+                   "carry_rate": sum(rates.values()), "listing_age_days": float(age),
+                   "listing_eligible": 1.0 if eligible else 0.0}
+            if scale != 1.0:
+                row["price_scale"] = scale
+            rows.append(row)
             kept += 1
         listings[coin] = {"listing_date": listing, "eligible": eligible,
                           "delisted": bool(asset.get("isDelisted", False)),
-                          "rows": kept,
+                          "rows": kept, "price_scale": scale,
                           "min_close": min((float(c["c"]) for c in candles), default=None)}
         if kept:
             symbols.append(f"HL.{coin}")
@@ -240,7 +248,9 @@ def main() -> None:
                  "the whole funding history",
                  f"delisted coins included ({delisted} with rows): no survivorship by construction",
                  "listing day itself is partial and usually dropped (< 22 funding prints)",
-                 "prices stored with six decimals (PricePanel): sub-cent coins lose precision",
+                 "coins that ever closed below 1 USD are quoted per 1000 units "
+                 "(price_scale=1000) so six-decimal storage keeps return precision; "
+                 "volume is USD notional",
                  "no intraday margin, liquidation, auto-deleveraging or borrow modelling",
                  f"{eligible} eligible listings in meta"],
         license_note="public exchange API; research use")
