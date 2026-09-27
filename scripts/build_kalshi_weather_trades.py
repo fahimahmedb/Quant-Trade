@@ -126,8 +126,14 @@ def _save_verbatim(rel: str, url: str, body: bytes) -> None:
                "bytes": len(body), "stored": rel, "stored_as": "verbatim"})
 
 
-def _paged(path: str, params: dict, key: str, rel_prefix: str) -> list[dict]:
-    """Fetch every page (verbatim) unless already stored; return the items."""
+def _paged(path: str, params: dict, key: str, rel_prefix: str,
+           stop_before: str | None = None) -> list[dict]:
+    """Fetch every page (verbatim) unless already stored; return the items.
+
+    ``stop_before``: listings come newest close first; stop once a page reaches
+    markets that closed before this ISO time (the historical listing ignores
+    ``min_close_ts``, and older history is outside the declared window).
+    """
     items: list[dict] = []
     cursor, page = "", 0
     while True:
@@ -146,21 +152,30 @@ def _paged(path: str, params: dict, key: str, rel_prefix: str) -> list[dict]:
         page += 1
         if not cursor or not data.get(key):
             return items
+        if stop_before and min(x["close_time"] for x in data[key]) < stop_before:
+            return items
 
 
 def _ts(day: dt.date) -> int:
     return int(dt.datetime(day.year, day.month, day.day, tzinfo=dt.timezone.utc).timestamp())
 
 
+def _date_or_none(event_ticker: str) -> dt.date | None:
+    try:
+        return km.event_date(event_ticker)
+    except (KeyError, ValueError, IndexError):
+        return None  # legacy tickers such as HIGHCHI-2-24FEB28 (outside the window)
+
+
 def _in_sample(event_ticker: str) -> bool:
-    d = km.event_date(event_ticker)
-    return WINDOW[0] <= d <= WINDOW[1] and d.day in DAYS
+    d = _date_or_none(event_ticker)
+    return d is not None and WINDOW[0] <= d <= WINDOW[1] and d.day in DAYS
 
 
 def _in_comparison(event_ticker: str) -> bool:
     code = event_ticker.split("-")[1]
-    d = km.event_date(event_ticker)
-    return (WINDOW[0] <= d <= WINDOW[1] and d.day == COMPARISON_DAY
+    d = _date_or_none(event_ticker)
+    return (d is not None and WINDOW[0] <= d <= WINDOW[1] and d.day == COMPARISON_DAY
             and code[7:] == COMPARISON_HOUR)
 
 
@@ -223,7 +238,8 @@ def fetch() -> None:
         else:
             markets = _paged("/historical/markets",
                              {"series_ticker": s, "min_close_ts": lo, "max_close_ts": hi},
-                             "markets", f"markets/{s}_hist")
+                             "markets", f"markets/{s}_hist",
+                             stop_before=f"{WINDOW[0]}T00:00:00Z")
             markets += _paged("/markets", {"series_ticker": s, "status": "settled",
                                            "min_close_ts": lo, "max_close_ts": hi},
                               "markets", f"markets/{s}_live")
@@ -264,8 +280,8 @@ def build() -> dict:
     for m in markets.values():
         s = m["ticker"].split("-")[0]
         if s in SERIES and m.get("result") in ("yes", "no"):
-            d = km.event_date(m["event_ticker"])
-            if WINDOW[0] <= d <= WINDOW[1]:
+            d = _date_or_none(m["event_ticker"])
+            if d is not None and WINDOW[0] <= d <= WINDOW[1]:
                 universe[f"{s}|{d:%Y-%m}"] += float(m.get("volume_fp") or 0)
     agg: dict[tuple, list] = {}
     excluded = defaultdict(int)

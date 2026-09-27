@@ -5,4 +5,4 @@
   comparison KXBTCD 17:00 ET event on the 15th (descriptive only).
 - Pure logic: src/quant/factory/kalshi_maker.py.
 
-Next step: run `python3 scripts/build_kalshi_weather_trades.py --fetch` (resumable), then evaluate.
+Next step: fetch in progress (resumable: rerun `python3 scripts/build_kalshi_weather_trades.py --fetch`), then `PYTHONPATH=src python3 scripts/evaluate_h004.py` ONCE.
