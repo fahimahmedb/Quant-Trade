@@ -1,8 +1,10 @@
-# H-004 WIP (Kalshi weather maker-side settlement P&L)
+# H-004 WIP (Kalshi weather maker-side settlement P&L) — DONE
 
-- Sample rule declared in scripts/build_kalshi_weather_trades.py docstring BEFORE fetching trades:
-  7 KXHIGH series (NY,CHI,MIA,AUS,LAX,DEN,PHIL), event dates 2025-09-01..2026-08-31 with day in {5,15,25};
-  comparison KXBTCD 17:00 ET event on the 15th (descriptive only).
-- Pure logic: src/quant/factory/kalshi_maker.py.
+- Sample declared before fetch (builder docstring, commit 0950c72): 7 KXHIGH series, event days 5/15/25,
+  2025-09-05..2026-08-25; 252 events, 1507 weather markets, 1.30M trades; raw + manifest data/raw/fast_rail/h004.
+- Dataset kalshi_weather_trades (fingerprint a3ccad2c...), logic src/quant/factory/kalshi_maker.py,
+  evaluator scripts/evaluate_h004.py run ONCE -> research/fast_rail/h004_result.json (2 trials).
+- Verdict REJECTED: 1-99c +0.46c/contract t 1.34 < 2.24; 10-90c t 0.86, 2nd half negative; top-10% markets > P&L.
+- Comparison KXBTCD (descriptive only): +2.77c, date-clustered t 4.0 on 12 events -> could be a NEW pre-registered hypothesis.
 
-Next step: fetch in progress (resumable: rerun `python3 scripts/build_kalshi_weather_trades.py --fetch`), then `PYTHONPATH=src python3 scripts/evaluate_h004.py` ONCE.
+Next step: none on this history. A crypto-maker hypothesis would need its own declaration + fresh sample.
