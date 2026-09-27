@@ -1,0 +1,531 @@
+{
+ "cumulative_trials": 6,
+ "dataset": "hl_listings_daily",
+ "dataset_fingerprint": "sha256:875483cc9343b113b6d7a7592c4241c34a6739eff884df3bc7047509ff8e02a6",
+ "event_view": {
+  "DISCOVERY": {
+   "capacity_test_passed": true,
+   "capacity_usd_at_1pct_adv": {
+    "median": 263898.21166666667,
+    "min": 1130.9993333333334,
+    "p10": 50586.11066666667
+   },
+   "events": 162,
+   "hit_rate": 0.4876543209876543,
+   "mean_net_per_event": 0.07430332312446505,
+   "median_net_per_event": -0.011083407735190839,
+   "top_10pct_share_of_gains": 0.635003362927661
+  },
+  "VALIDATION": {
+   "capacity_test_passed": true,
+   "capacity_usd_at_1pct_adv": {
+    "median": 499138.09233333333,
+    "min": 34743.74333333333,
+    "p10": 159244.93999999997
+   },
+   "events": 42,
+   "hit_rate": 0.6190476190476191,
+   "mean_net_per_event": 0.18394184057860907,
+   "median_net_per_event": 0.18573286974023018,
+   "top_10pct_share_of_gains": 0.4015590011188771
+  }
+ },
+ "expressions_declared": 6,
+ "falsification": {
+  "baseline_alpha_t": null,
+  "baseline_sharpe": null,
+  "beta_attribution": {
+   "benchmark": "HL.BTC",
+   "benchmark_return_same_window": -0.19556520052373916,
+   "market_beta": -0.06202877265637905,
+   "residual_return": 0.8395505344247155,
+   "return_explained_by_beta": 0.012130669362786197
+  },
+  "decision": "REJECT_RESEARCH",
+  "expressions_tested_on_dataset": 6,
+  "failed_tests": [
+   "t_statistic_survives_multiple_testing"
+  ],
+  "net_return_at_stress_costs": 0.8263591901526648,
+  "passed": false,
+  "required_t_statistic": 2.638257273476751,
+  "strategy_sharpe": 1.5214665688902658,
+  "stress_cost_bps": 20.0,
+  "subperiod_returns": [
+   0.5606471630605265,
+   0.18648292042913606
+  ],
+  "t_statistic": 1.8185003712834835,
+  "tests": {
+   "at_least_100_active_observations": true,
+   "market_beta_below_0_15": true,
+   "net_profitable_after_modeled_costs": true,
+   "profitable_in_both_subperiods": true,
+   "still_profitable_at_2x_costs": true,
+   "t_statistic_survives_multiple_testing": false,
+   "top_5_days_below_half_of_gains": true
+  },
+  "top_5_day_share_of_gains": 0.1201463801416128
+ },
+ "hypothesis": "H-006",
+ "lane": "hl_listing_fade",
+ "listings_per_window_age1_row": {
+  "DISCOVERY": 162,
+  "SHADOW": 5,
+  "VALIDATION": 42
+ },
+ "outcome": {
+  "cost_bound": false,
+  "cost_diagnosis": {
+   "cost_is_binding_constraint": false,
+   "expressions_gross_positive_but_net_negative": 0,
+   "median_annual_turnover": 13.724371901687016
+  },
+  "lesson": "listing_fade_n30_hedge_HL.BTC_w0.1_g1 was rejected out of sample (+85.17% net). Its t-statistic of 1.82 is far below the 2.64 required after 6 expressions were tried on this dataset, so the result is indistinguishable from search luck. Market beta was -0.062 against a benchmark that returned -19.56%, so +1.21% of the result is passive exposure rather than skill.",
+  "next_action_hint": "move to an independent lane rather than re-rolling parameters on this evidence",
+  "outcome": "REJECT_RESEARCH",
+  "status": "LEARNED",
+  "strategy_id": "STR-HL-LISTING-FADE-listing_fade_n30_hedge_HL.BTC_w0.1_g1",
+  "ticket_id": "HL-LISTING-FADE-3aca6260"
+ },
+ "ranked_discovery": [
+  {
+   "discovery": {
+    "annual_turnover": 13.080945406214134,
+    "gross_return": 0.3276945797354651,
+    "market_beta": -0.14184107346469532,
+    "net_return": 0.2828773272576013,
+    "observations": 661,
+    "sharpe_zero_rate": 0.44602636953228036,
+    "t_statistic": 0.7223721511871103
+   },
+   "expression": "listing_fade_n30_hedge_HL.BTC_w0.1_g1"
+  },
+  {
+   "discovery": {
+    "annual_turnover": 13.724371901687016,
+    "gross_return": -0.520199332426986,
+    "market_beta": -0.8300851714831271,
+    "net_return": -0.5372740397068564,
+    "observations": 661,
+    "sharpe_zero_rate": -0.09675831266648609,
+    "t_statistic": -0.15670712594732814
+   },
+   "expression": "listing_fade_n30_unhedged_w0.1_g1"
+  },
+  {
+   "discovery": {
+    "annual_turnover": 18.528064069062587,
+    "gross_return": -0.25158373389394884,
+    "market_beta": -0.13444748589125732,
+    "net_return": -0.2870997175065385,
+    "observations": 661,
+    "sharpe_zero_rate": -0.1761082713517719,
+    "t_statistic": -0.28522015626929387
+   },
+   "expression": "listing_fade_n14_hedge_HL.BTC_w0.1_g1"
+  },
+  {
+   "discovery": {
+    "annual_turnover": 21.584871406959234,
+    "gross_return": -0.24819196250317477,
+    "market_beta": -0.07690527448014862,
+    "net_return": -0.2896366684924083,
+    "observations": 661,
+    "sharpe_zero_rate": -0.3698111818422804,
+    "t_statistic": -0.5989361105277025
+   },
+   "expression": "listing_fade_n7_hedge_HL.BTC_w0.1_g1"
+  },
+  {
+   "discovery": {
+    "annual_turnover": 12.497580483057076,
+    "gross_return": -0.6209893729270681,
+    "market_beta": -0.4701394777721399,
+    "net_return": -0.633270896853466,
+    "observations": 661,
+    "sharpe_zero_rate": -0.5932583740366462,
+    "t_statistic": -0.960825092722693
+   },
+   "expression": "listing_fade_n14_unhedged_w0.1_g1"
+  }
+ ],
+ "selected": "listing_fade_n30_hedge_HL.BTC_w0.1_g1",
+ "validation_events": [
+  {
+   "adv_usd": 6538034.0,
+   "capacity_usd": 653803.4,
+   "first_decision": "2025-04-07",
+   "intervals": 30,
+   "net_unit": 0.21298017704255057,
+   "symbol": "HL.PAXG"
+  },
+  {
+   "adv_usd": 1592449.4,
+   "capacity_usd": 159244.93999999997,
+   "first_decision": "2025-04-13",
+   "intervals": 30,
+   "net_unit": 0.08501079200402861,
+   "symbol": "HL.BABY"
+  },
+  {
+   "adv_usd": 4032243.1333333333,
+   "capacity_usd": 403224.3133333333,
+   "first_decision": "2025-04-13",
+   "intervals": 30,
+   "net_unit": 0.16908608346442922,
+   "symbol": "HL.PROMPT"
+  },
+  {
+   "adv_usd": 2169399.8,
+   "capacity_usd": 216939.97999999998,
+   "first_decision": "2025-04-16",
+   "intervals": 30,
+   "net_unit": -0.3182204507128622,
+   "symbol": "HL.WCT"
+  },
+  {
+   "adv_usd": 852904.8666666667,
+   "capacity_usd": 85290.48666666666,
+   "first_decision": "2025-04-23",
+   "intervals": 30,
+   "net_unit": 0.3640461475986301,
+   "symbol": "HL.HYPER"
+  },
+  {
+   "adv_usd": 2483916.566666667,
+   "capacity_usd": 248391.65666666668,
+   "first_decision": "2025-04-24",
+   "intervals": 30,
+   "net_unit": 0.6429240540017316,
+   "symbol": "HL.ZORA"
+  },
+  {
+   "adv_usd": 15753234.333333334,
+   "capacity_usd": 1575323.4333333333,
+   "first_decision": "2025-04-25",
+   "intervals": 30,
+   "net_unit": -0.3283297753010206,
+   "symbol": "HL.INIT"
+  },
+  {
+   "adv_usd": 896741.1,
+   "capacity_usd": 89674.11,
+   "first_decision": "2025-05-10",
+   "intervals": 30,
+   "net_unit": 1.0006735847617825,
+   "symbol": "HL.DOOD"
+  },
+  {
+   "adv_usd": 30494955.7,
+   "capacity_usd": 3049495.5699999994,
+   "first_decision": "2025-05-15",
+   "intervals": 30,
+   "net_unit": -0.41119582531397914,
+   "symbol": "HL.LAUNCHCOIN"
+  },
+  {
+   "adv_usd": 4550550.766666667,
+   "capacity_usd": 455055.0766666666,
+   "first_decision": "2025-05-16",
+   "intervals": 30,
+   "net_unit": 0.6041868750907893,
+   "symbol": "HL.NXPC"
+  },
+  {
+   "adv_usd": 5015848.766666667,
+   "capacity_usd": 501584.87666666665,
+   "first_decision": "2025-05-29",
+   "intervals": 30,
+   "net_unit": 0.42839825312906843,
+   "symbol": "HL.SOPH"
+  },
+  {
+   "adv_usd": 8739380.433333334,
+   "capacity_usd": 873938.0433333333,
+   "first_decision": "2025-06-11",
+   "intervals": 30,
+   "net_unit": 0.3516739247614984,
+   "symbol": "HL.RESOLV"
+  },
+  {
+   "adv_usd": 8317387.6,
+   "capacity_usd": 831738.76,
+   "first_decision": "2025-06-27",
+   "intervals": 30,
+   "net_unit": 0.18592504754746209,
+   "symbol": "HL.SYRUP"
+  },
+  {
+   "adv_usd": 234637112.33333334,
+   "capacity_usd": 23463711.233333334,
+   "first_decision": "2025-07-11",
+   "intervals": 30,
+   "net_unit": 0.5851947062208918,
+   "symbol": "HL.PUMP"
+  },
+  {
+   "adv_usd": 3007528.6,
+   "capacity_usd": 300752.86,
+   "first_decision": "2025-08-07",
+   "intervals": 30,
+   "net_unit": -0.1573825515029461,
+   "symbol": "HL.PROVE"
+  },
+  {
+   "adv_usd": 5086789.833333333,
+   "capacity_usd": 508678.9833333333,
+   "first_decision": "2025-08-22",
+   "intervals": 30,
+   "net_unit": 0.4104489124587021,
+   "symbol": "HL.YZY"
+  },
+  {
+   "adv_usd": 34604998.333333336,
+   "capacity_usd": 3460499.833333333,
+   "first_decision": "2025-08-23",
+   "intervals": 30,
+   "net_unit": -0.5182522884449399,
+   "symbol": "HL.XPL"
+  },
+  {
+   "adv_usd": 93670142.1,
+   "capacity_usd": 9367014.209999999,
+   "first_decision": "2025-08-24",
+   "intervals": 30,
+   "net_unit": -0.03578236207315122,
+   "symbol": "HL.WLFI"
+  },
+  {
+   "adv_usd": 13767799.8,
+   "capacity_usd": 1376779.9800000002,
+   "first_decision": "2025-09-02",
+   "intervals": 30,
+   "net_unit": 0.0015744132109241117,
+   "symbol": "HL.LINEA"
+  },
+  {
+   "adv_usd": 933542.6,
+   "capacity_usd": 93354.26,
+   "first_decision": "2025-09-18",
+   "intervals": 30,
+   "net_unit": 0.1137393528448154,
+   "symbol": "HL.SKY"
+  },
+  {
+   "adv_usd": 344677430.7,
+   "capacity_usd": 34467743.07,
+   "first_decision": "2025-09-20",
+   "intervals": 30,
+   "net_unit": -0.10360253620337112,
+   "symbol": "HL.ASTER"
+  },
+  {
+   "adv_usd": 27447735.733333334,
+   "capacity_usd": 2744773.5733333332,
+   "first_decision": "2025-09-22",
+   "intervals": 30,
+   "net_unit": 0.6121405427944551,
+   "symbol": "HL.AVNT"
+  },
+  {
+   "adv_usd": 4139094.2333333334,
+   "capacity_usd": 496691.308,
+   "first_decision": "2025-09-23",
+   "intervals": 30,
+   "net_unit": 0.715253233817861,
+   "symbol": "HL.0G"
+  },
+  {
+   "adv_usd": 20970696.633333333,
+   "capacity_usd": 2516483.5960000004,
+   "first_decision": "2025-09-23",
+   "intervals": 30,
+   "net_unit": 1.2990692579182297,
+   "symbol": "HL.STBL"
+  },
+  {
+   "adv_usd": 2013506.1333333333,
+   "capacity_usd": 281890.8586666667,
+   "first_decision": "2025-09-25",
+   "intervals": 30,
+   "net_unit": 0.8013154529157593,
+   "symbol": "HL.HEMI"
+  },
+  {
+   "adv_usd": 13996258.3,
+   "capacity_usd": 1679550.9960000003,
+   "first_decision": "2025-09-28",
+   "intervals": 30,
+   "net_unit": -0.005238249490339571,
+   "symbol": "HL.APEX"
+  },
+  {
+   "adv_usd": 3232076.7333333334,
+   "capacity_usd": 323207.67333333334,
+   "first_decision": "2025-10-03",
+   "intervals": 30,
+   "net_unit": 1.2285695906501592,
+   "symbol": "HL.2Z"
+  },
+  {
+   "adv_usd": 111972770.6,
+   "capacity_usd": 11197277.059999999,
+   "first_decision": "2025-10-03",
+   "intervals": 30,
+   "net_unit": -0.8126077693828,
+   "symbol": "HL.ZEC"
+  },
+  {
+   "adv_usd": 4418818.566666666,
+   "capacity_usd": 441881.85666666663,
+   "first_decision": "2025-10-09",
+   "intervals": 30,
+   "net_unit": -0.1749203403686802,
+   "symbol": "HL.MON"
+  },
+  {
+   "adv_usd": 5081552.933333334,
+   "capacity_usd": 508155.2933333334,
+   "first_decision": "2025-10-11",
+   "intervals": 30,
+   "net_unit": 1.044719083107272,
+   "symbol": "HL.MET"
+  },
+  {
+   "adv_usd": 2719867.1333333333,
+   "capacity_usd": 271986.7133333333,
+   "first_decision": "2025-10-23",
+   "intervals": 30,
+   "net_unit": -0.23357890652081859,
+   "symbol": "HL.MEGA"
+  },
+  {
+   "adv_usd": 2445830.2666666666,
+   "capacity_usd": 244583.02666666664,
+   "first_decision": "2025-11-01",
+   "intervals": 30,
+   "net_unit": 0.3402692651518877,
+   "symbol": "HL.CC"
+  },
+  {
+   "adv_usd": 5489398.3,
+   "capacity_usd": 548939.83,
+   "first_decision": "2025-11-09",
+   "intervals": 30,
+   "net_unit": 0.5420081835728583,
+   "symbol": "HL.ICP"
+  },
+  {
+   "adv_usd": 2439524.966666667,
+   "capacity_usd": 243952.49666666664,
+   "first_decision": "2025-11-12",
+   "intervals": 30,
+   "net_unit": 0.2939052234638775,
+   "symbol": "HL.AERO"
+  },
+  {
+   "adv_usd": 2499711.1333333333,
+   "capacity_usd": 249971.11333333334,
+   "first_decision": "2025-12-09",
+   "intervals": 30,
+   "net_unit": -0.03786664367076109,
+   "symbol": "HL.STABLE"
+  },
+  {
+   "adv_usd": 347437.43333333335,
+   "capacity_usd": 34743.74333333333,
+   "first_decision": "2025-12-12",
+   "intervals": 30,
+   "net_unit": -0.9803961313189316,
+   "symbol": "HL.FOGO"
+  },
+  {
+   "adv_usd": 38740403.2,
+   "capacity_usd": 3874040.3200000003,
+   "first_decision": "2025-12-23",
+   "intervals": 30,
+   "net_unit": 0.7678430104181253,
+   "symbol": "HL.LIT"
+  },
+  {
+   "adv_usd": 17987121.466666665,
+   "capacity_usd": 1798712.1466666665,
+   "first_decision": "2026-01-16",
+   "intervals": 30,
+   "net_unit": 0.18554069193299827,
+   "symbol": "HL.XMR"
+  },
+  {
+   "adv_usd": 9809289.833333334,
+   "capacity_usd": 980928.9833333334,
+   "first_decision": "2026-01-19",
+   "intervals": 30,
+   "net_unit": -0.4242605580886618,
+   "symbol": "HL.AXS"
+  },
+  {
+   "adv_usd": 3118063.566666667,
+   "capacity_usd": 311806.3566666667,
+   "first_decision": "2026-01-19",
+   "intervals": 30,
+   "net_unit": 0.3972085381740045,
+   "symbol": "HL.DASH"
+  },
+  {
+   "adv_usd": 3121340.4,
+   "capacity_usd": 312134.04,
+   "first_decision": "2026-01-23",
+   "intervals": 30,
+   "net_unit": -0.30533126185191006,
+   "symbol": "HL.SKR"
+  },
+  {
+   "adv_usd": 3005112.3666666667,
+   "capacity_usd": 300511.23666666663,
+   "first_decision": "2026-02-13",
+   "intervals": 30,
+   "net_unit": -0.8111814435080376,
+   "symbol": "HL.AZTEC"
+  }
+ ],
+ "validation_summary": {
+  "active_observations": 348,
+  "annual_mean_return": 0.4821098479074277,
+  "annual_turnover": 9.647272727272721,
+  "annual_volatility": 0.31687179841162816,
+  "beta_explained_return": 0.012130669362786197,
+  "cost_bps": 10.0,
+  "first_entry_date": "2025-04-02",
+  "first_signal_date": "2025-04-01",
+  "gross_return": 0.8773487059807459,
+  "hit_rate": 0.5777777777777777,
+  "last_exit_date": "2026-03-28",
+  "market_beta": -0.06202877265637905,
+  "market_return_same_window": -0.19556520052373916,
+  "max_drawdown": -0.18978319150834055,
+  "net_return": 0.8516812037875017,
+  "observations": 360,
+  "sharpe_zero_rate": 1.5214665688902653,
+  "t_statistic": 1.8185003712834835,
+  "timeline": "signal at close(t); entry at open(t+1); exit at open(t+2)",
+  "total_costs": 0.013781818181818185
+ },
+ "windows": {
+  "DISCOVERY": {
+   "end": "2025-03-31",
+   "name": "DISCOVERY",
+   "start": "2023-06-08"
+  },
+  "SHADOW": {
+   "end": "2026-09-26",
+   "name": "SHADOW",
+   "start": "2026-03-29"
+  },
+  "VALIDATION": {
+   "end": "2026-03-28",
+   "name": "VALIDATION",
+   "start": "2025-04-01"
+  }
+ }
+}

@@ -55,14 +55,25 @@ class StrategySpec:
     #: expected annual trading cost, in Sharpe units, is at most this value
     #: (0 disables the rule). Uses that date's own cost and volatility.
     max_cost_sharpe: float = 0.0
+    #: listing_fade only: when set, a long leg in this symbol offsets the
+    #: short notional one for one. Omitted from ``to_dict`` while empty so
+    #: every earlier lane keeps its grid hash (and trial accounting).
+    hedge_symbol: str = ""
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        document = asdict(self)
+        if not document["hedge_symbol"]:
+            del document["hedge_symbol"]
+        return document
 
     @property
     def label(self) -> str:
         if self.family in CALENDAR_FAMILIES:
             return f"{self.family}_x{self.gross_exposure:g}_h{self.holding_days}"
+        if self.family == LISTING_FADE:
+            return (f"listing_fade_n{self.lookback_days}"
+                    + (f"_hedge_{self.hedge_symbol}" if self.hedge_symbol else "_unhedged")
+                    + f"_w{self.max_weight:g}_g{self.gross_exposure:g}")
         if self.family == "funding_spread":
             return (f"funding_spread_l{self.lookback_days}_z{self.min_abs_score:g}"
                     f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}")
@@ -179,6 +190,8 @@ def weights_for(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, f
         return calendar_weights(panel, spec, asof)
     if spec.family == FUNDING_SPREAD:
         return funding_spread_weights(panel, spec, asof)
+    if spec.family == LISTING_FADE:
+        return listing_fade_weights(panel, spec, asof)
     if spec.family in TIME_SERIES_FAMILIES:
         return time_series_weights(panel, spec, asof)
     return target_weights(cross_sectional_scores(panel, spec.universe, asof,
@@ -472,6 +485,48 @@ def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> 
         # the same rule (walk_forward replaces holdings; SIZE zeroes them).
         present = next((symbol for symbol in spec.universe if panel.has(asof, symbol)), None)
         return {present: 0.0} if present else {}
+    return weights
+
+
+# ---------------------------------------------------------------------------
+# New-listing fade (Hyperliquid perpetuals)
+# ---------------------------------------------------------------------------
+#
+# Universe symbols are ``HL.<COIN>`` rows carrying two point-in-time features
+# (``build_hl_listings_dataset``): ``listing_age_days`` = asof - first
+# Hyperliquid-traded day, and ``listing_eligible`` = 1 only for coins listed
+# after the API history cutoff (incumbents at history start never count).
+# A coin is in its window on ``asof`` when it is quoted that day and
+# 1 <= age <= N (``lookback_days``): the decision is formed on the close of the
+# first full UTC day after listing, and the shared timeline fills it one full
+# day later. Every in-window coin is short an equal weight, capped per name;
+# with ``hedge_symbol`` set a long leg in that symbol offsets the short
+# notional one for one. Nothing qualifying is an explicit flat target.
+
+LISTING_FADE = "listing_fade"
+
+
+def listing_fade_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
+    window = spec.lookback_days
+    shorts = []
+    for symbol in spec.universe:
+        if symbol in (spec.hedge_symbol, spec.calendar_symbol) or not panel.has(asof, symbol):
+            continue
+        if panel.feature(asof, symbol, "listing_eligible") != 1.0:
+            continue
+        age = panel.feature(asof, symbol, "listing_age_days")
+        if age is not None and 1 <= age <= window:
+            shorts.append(symbol)
+    legs = 2 if spec.hedge_symbol else 1
+    if not shorts or (spec.hedge_symbol and not panel.has(asof, spec.hedge_symbol)):
+        anchor = spec.hedge_symbol or spec.calendar_symbol
+        present = anchor if anchor and panel.has(asof, anchor) else next(
+            (symbol for symbol in spec.universe if panel.has(asof, symbol)), None)
+        return {present: 0.0} if present else {}
+    each = min(spec.max_weight, spec.gross_exposure / (legs * len(shorts)))
+    weights = {symbol: -each for symbol in sorted(shorts)}
+    if spec.hedge_symbol:
+        weights[spec.hedge_symbol] = each * len(shorts)
     return weights
 
 
