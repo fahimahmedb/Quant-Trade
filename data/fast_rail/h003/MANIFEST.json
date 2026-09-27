@@ -1,0 +1,42 @@
+{
+ "hypothesis": "H-003",
+ "dataset_key": "kalshi_settled_markets_candles",
+ "source": "https://api.elections.kalshi.com/trade-api/v2",
+ "sampling": "see research/fast_rail/h003/PREREG.md",
+ "series": {
+  "KXHIGHNY": 120,
+  "KXHIGHCHI": 120,
+  "KXHIGHMIA": 120,
+  "KXHIGHAUS": 120,
+  "KXHIGHDEN": 120,
+  "KXHIGHLAX": 120,
+  "KXHIGHPHIL": 120,
+  "KXINX": 60,
+  "KXINXU": 60,
+  "KXNASDAQ100": 60,
+  "KXNASDAQ100U": 60,
+  "KXBTC": 60,
+  "KXBTCD": 60,
+  "KXETH": 60,
+  "KXETHD": 60,
+  "KXFED": 120,
+  "KXCPI": 120,
+  "KXCPIYOY": 120,
+  "KXPAYROLLS": 120,
+  "KXU3": 120,
+  "KXGDP": 120
+ },
+ "max_markets_per_event": 25,
+ "candle_lookback_h": 49,
+ "finalized_at": "2026-09-25T15:00:18Z",
+ "files": {
+  "events.jsonl.gz": {
+   "rows": 1595,
+   "sha256": "33a55dc48deee41c73101cb133195d2e9ff0a28e8c3becc3f381ca7ee74fd44e"
+  },
+  "markets.jsonl.gz": {
+   "rows": 18591,
+   "sha256": "4f088374309dc1d27aeec693f249b70c6717cd726e6efdd91cabb076180192c5"
+  }
+ }
+}

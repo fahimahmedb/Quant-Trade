@@ -1,0 +1,15 @@
+diff --git a/research/fast_rail/h006/probe_tmp.py b/research/fast_rail/h006/probe_tmp.py
+new file mode 100644
+index 0000000..344bb8b
+--- /dev/null
++++ b/research/fast_rail/h006/probe_tmp.py
+@@ -0,0 +1,9 @@
++import json,urllib.request
++def g(u): return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={"User-Agent":"quant-research/0.1"})))
++e=g("https://gamma-api.polymarket.com/events?slug=epl-ars-che-2025-03-16")[0]
++print([(s['id'],s['slug'],s.get('title')) for s in e['series']])
++print(e.get('tags') and [(t['id'],t['slug']) for t in e['tags']])
++for off in (0,100,200,300,400,500,600,700,800):
++    d=g(f"https://gamma-api.polymarket.com/events?series_id=10188&closed=true&limit=100&offset={off}")
++    if not d: print('end',off);break
++    xs=sorted(e.get('startTime') or '' for e in d); print(off,len(d),xs[0],xs[-1])

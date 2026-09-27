@@ -2,7 +2,7 @@
 
 Generated from persistent system state. Do not edit by hand: `python3 scripts/quant.py brief` regenerates it.
 
-- canonical state basis: clean persistent replay of committed inputs through 2026-09-11
+- canonical state basis: clean persistent replay of committed inputs through 2026-09-21
 - system: `quant-system-v1` in `paper_shadow` mode, status `IDLE`
 - boots: 1, ticks: 381, research runs: 2, desk sessions: 377
 
@@ -12,10 +12,10 @@ No open faults.
 
 Component state:
 
-- `BOOK`: **IDLE** - marked through 2026-09-11
+- `BOOK`: **IDLE** - marked through 2026-09-21
 - `BUILD`: **BLOCKED** - 3 open capability gaps
 - `CONTROL`: **IDLE** - no work due
-- `DATA`: **IDLE** - 6 datasets available
+- `DATA`: **IDLE** - 7 datasets available
 - `FILLS`: **IDLE** - no session due
 - `LEARNING`: **IDLE** - 5 lessons recorded
 - `RESEARCH`: **BLOCKED** - no survivorship-controlled security and factor panel
@@ -27,7 +27,7 @@ Component state:
 
 ## Data
 
-Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
+Registry health: `{'AVAILABLE': 7, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
 
 - **futures_excess_return_daily** (AVAILABLE) - 174,774 rows, 31 symbols, 2002-01-02 to 2024-03-28, `sha256:2731a881292251f2f754256c0f6feb66ec3168f20a39003b4abe59f960e1b6a6`
   - source: https://github.com/pst-group/pysystemtrade data/futures (adjusted_prices_csv, multiple_prices_csv, csvconfig) @ 8958c49c38b1e4a8c07f0e4375d5e9cb68a087f7
@@ -53,6 +53,16 @@ Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - source: operator-supplied historical export committed to the repository
   - caveat: price index without dividends; not a tradable instrument
   - caveat: no corporate-action or constituent history
+- **perp_funding_hl_dydx_daily** (AVAILABLE) - 156,628 rows, 286 symbols, 2023-11-13 to 2026-09-24, `sha256:68a2ac4be84a133dcbb7af2aba28fc21b58eac7ca51ddd443cf15396475a8e22`
+  - source: Hyperliquid public info API (meta, fundingHistory, candleSnapshot 1d) + dYdX v4 public indexer (perpetualMarkets, historicalFunding, candles 1DAY); 7959 responses, sha256 per response in data/fast_rail/h002/provenance.jsonl.gz
+  - caveat: venue APIs queried directly; not independently cross-checked against a third-party archive
+  - caveat: delisted coins are included where both venues still serve history (Hyperliquid meta isDelisted, dYdX FINAL_SETTLEMENT)
+  - caveat: a day is kept only with >= 22 hourly settlements and a traded daily candle on both venues; nothing is filled in
+  - caveat: close is the daily candle's last trade; thin dYdX markets can print stale closes, which adds cross-venue price noise to the pair
+  - caveat: prices are per price_scale tokens (data/fast_rail/h002/coins.json) and Hyperliquid k-coins are converted to per-token; returns are unaffected
+  - caveat: HL volume notional = base volume x daily close (approximation)
+  - caveat: no intraday margin, liquidation or auto-deleveraging modelling in the data
+  - caveat: coin names are matched by ticker; a re-used ticker would pair different assets
 - **perp_funding_pairs_daily** (AVAILABLE) - 108,874 rows, 244 symbols, 2023-06-08 to 2025-05-15, `sha256:55bbf2946f8886d2ec7643f52b38dbd23676d1b208b249e1098d855a1234a361`
   - source: github.com/guibvieira/freqtrade-hyperliquid-data (Hyperliquid 1h funding, 1d bars) + github.com/LorenzoBaggi/funding_arb (Bybit funding, 1h klines)
   - caveat: third-party snapshots, not verified against the venues
@@ -60,17 +70,18 @@ Registry health: `{'AVAILABLE': 6, 'STALE': 0, 'INVALID': 0, 'MISSING': 0}`.
   - caveat: no intraday margin, liquidation or auto-deleveraging modelling in the data
   - caveat: Bybit coverage ends 2025-05; forward data comes from data/feeds/funding
   - caveat: where the Bybit kline snapshot is missing the Bybit leg is valued at the Hyperliquid close (price_proxy=1): cross-venue price divergence is then not modelled for that coin
-- **us_calendar_legs_daily** (AVAILABLE) - 10,056 rows, 4 symbols, 2016-09-12 to 2026-09-11, `sha256:29bc4d1820540d4bd5ef3b2d16d9fe5406a44db2830390493c066e2d8668ab3b`
-  - source: derived from us_sector_etf_daily (sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1) and the scheduled FOMC calendar (82 decision days)
+- **us_calendar_legs_daily** (AVAILABLE) - 10,080 rows, 4 symbols, 2016-09-12 to 2026-09-21, `sha256:36928a7b313ca8993b171f6ef56e939332cc0ddc76ad009115018f9eab9041da`
+  - source: derived from us_sector_etf_daily (sha256:7f510dccab22aef3bcd34e57f6c8f0f6d6ba8490519e2615ce8a41591cb837ee) and the scheduled FOMC calendar (90 decision days)
   - caveat: open prices are consolidated opening prints, not executable MOO fills
   - caveat: the overnight leg includes ex-dividend gaps through the adjusted basis
   - caveat: holding <SYMBOL>_ON from open(d) to open(d+1) represents a MOC buy on d and a MOO sell on d+1; the Book charges both fills
   - caveat: inherits every caveat of the source ETF snapshot
-- **us_sector_etf_daily** (AVAILABLE) - 30,168 rows, 12 symbols, 2016-09-12 to 2026-09-11, `sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1`
+- **us_sector_etf_daily** (AVAILABLE) - 30,240 rows, 12 symbols, 2016-09-12 to 2026-09-21, `sha256:7f510dccab22aef3bcd34e57f6c8f0f6d6ba8490519e2615ce8a41591cb837ee`
   - source: Yahoo Finance chart API (public, credential-free)
   - caveat: adj_close is restated retroactively for dividends and splits, so adjusted levels are not strictly point-in-time; returns are standard practice but embed later corporate-action information
   - caveat: the endpoint is an undocumented public JSON API with no availability guarantee and no vendor support
   - caveat: prices are consolidated daily bars, not the venue-level quotes an execution model would eventually need
+  - caveat: sessions after the original snapshot were appended from data/feeds (Yahoo chart API via the data-feeds workflow), adj_close rebased at the seam
 
 ## SEC Form-4 raw capture (P0 acquisition lane)
 
@@ -96,13 +107,13 @@ Queue: `{'PENDING': 0, 'RUNNING': 0, 'BLOCKED': 3, 'COMPLETED': 2, 'FAILED': 0}`
 Strategy lifecycle: `RESEARCH` 1
 
 - **STR-XS-EXECUTION-AWARE-RELATIVE-VALUE-xs_momentum_l21_z0.5_h5_b0.05** - lifecycle `RESEARCH`, evaluation track
-  - out of sample: -6.08% net, beta -0.062, turnover 33x/yr, t=-0.39 against a required 3.20
+  - out of sample: -5.56% net, beta -0.058, turnover 33x/yr, t=-0.35 against a required 3.20
   - failed: net_profitable_after_modeled_costs, profitable_in_both_subperiods, still_profitable_at_2x_costs, t_statistic_survives_multiple_testing
   - desk: 76 rebalances, 301 no-trade, 0 vetoed
 
 ## Strongest evidence and rejections
 
-Latest lesson: xs_momentum_l21_z0.5_h5_b0.05 was rejected out of sample (-6.08% net). The signal was gross-negative (-1.37%), so the hypothesis itself is wrong here, not merely too expensive to trade. Its t-statistic of -0.39 is far below the 3.20 required after 36 expressions were tried on this dataset, so the result is indistinguishable from search luck. Market beta was -0.062 against a benchmark that returned +38.34%, so -2.37% of the result is passive exposure rather than skill.
+Latest lesson: xs_momentum_l21_z0.5_h5_b0.05 was rejected out of sample (-5.56% net). The signal was gross-negative (-0.78%), so the hypothesis itself is wrong here, not merely too expensive to trade. Its t-statistic of -0.35 is far below the 3.20 required after 36 expressions were tried on this dataset, so the result is indistinguishable from search luck. Market beta was -0.058 against a benchmark that returned +36.80%, so -2.13% of the result is passive exposure rather than skill.
 
 Lessons recorded: 5.
 
@@ -114,13 +125,13 @@ Lane priorities after learning: `xs_daily_relative_value` 24.0, `xs_execution_aw
 - NAV 1,000,000.00 USD from 1,000,000.00 initial (+0.00%)
 - cash 1,000,000.00, realized 0.00, fees 0.00
 - 0 open positions, gross 0.00x, net +0.000x
-- 377 sessions marked, 0 fills, inception 2025-03-13, last 2026-09-11
+- 377 sessions marked, 0 fills, inception 2025-03-21, last 2026-09-21
 
 ## Decision quality
 
-- evaluation ledger NAV 993,757.74 (-0.62%) over 377 sessions and 521 fills
-- rejections scored: 1 (true rejects 0, false rejects 0, undetermined 1)
-- counterfactual P&L of rejected strategies: -6,242.26
+- evaluation ledger NAV 988,369.90 (-1.16%) over 377 sessions and 503 fills
+- rejections scored: 1 (true rejects 1, false rejects 0, undetermined 0)
+- counterfactual P&L of rejected strategies: -11,630.10
 - desk tickets: {'BOOKED': 76, 'NO_TRADE': 301}
 
 ## Blockers and capability gaps

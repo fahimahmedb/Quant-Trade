@@ -14,11 +14,11 @@
     "SPY_ON",
     "TLT_ON"
   ],
-  "fingerprint": "sha256:29bc4d1820540d4bd5ef3b2d16d9fe5406a44db2830390493c066e2d8668ab3b",
+  "fingerprint": "sha256:36928a7b313ca8993b171f6ef56e939332cc0ddc76ad009115018f9eab9041da",
   "first_date": "2016-09-12",
-  "ingested_at": "2026-09-25T10:54:53.093186+00:00",
+  "ingested_at": "2026-09-25T13:55:01.095278+00:00",
   "kind": "daily_bars",
-  "last_date": "2026-09-11",
+  "last_date": "2026-09-21",
   "license_note": "derived research dataset",
   "path": "data/datasets/us_calendar_legs_daily.csv.gz",
   "point_in_time": {
@@ -27,9 +27,9 @@
     "information_available_at": "the close of the dated session",
     "minimum_decision_lag_days": 1
   },
-  "refreshed_at": "2026-09-25T10:54:53.266390+00:00",
-  "rows": 10056,
-  "source": "derived from us_sector_etf_daily (sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1) and the scheduled FOMC calendar (82 decision days)",
+  "refreshed_at": "2026-09-25T13:55:01.265249+00:00",
+  "rows": 10080,
+  "source": "derived from us_sector_etf_daily (sha256:7f510dccab22aef3bcd34e57f6c8f0f6d6ba8490519e2615ce8a41591cb837ee) and the scheduled FOMC calendar (90 decision days)",
   "symbols": [
     "SPY",
     "SPY_ON",
@@ -37,16 +37,16 @@
     "TLT_ON"
   ],
   "validation": {
-    "aligned_dates": 2514,
+    "aligned_dates": 2520,
     "bars_per_symbol": {
-      "SPY": 2514,
-      "SPY_ON": 2514,
-      "TLT": 2514,
-      "TLT_ON": 2514
+      "SPY": 2520,
+      "SPY_ON": 2520,
+      "TLT": 2520,
+      "TLT_ON": 2520
     },
     "passed": true,
     "problems": [],
-    "rows": 10056,
+    "rows": 10080,
     "warnings": []
   }
 }

@@ -155,7 +155,7 @@ def main() -> None:
                                             "sec-readiness", "sec-audit", "sync-feeds"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--market", choices=("etf", "futures", "futures-broad", "calendar",
-                                             "perp-funding"),
+                                             "perp-funding", "perp-funding-dydx"),
                         default="etf",
                         help="which market instance to drive; futures keeps its own "
                              "state under var/futures and never touches the ETF Book")
@@ -231,6 +231,13 @@ def main() -> None:
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=meta["symbols"], dataset_id="perp_funding_pairs_daily",
                              state_dir="var/perp_funding", calendar=["HL.BTC"])
+    elif args.market == "perp-funding-dydx":
+        import json as _json
+        meta = _json.loads((args.root / "data" / "datasets"
+                            / "perp_funding_hl_dydx_daily.csv.meta.json").read_text())
+        system = QuantSystem(args.root, initial_capital=args.capital,
+                             universe=meta["symbols"], dataset_id="perp_funding_hl_dydx_daily",
+                             state_dir="var/perp_funding_dydx", calendar=["HL.BTC"])
     elif args.market == "calendar":
         system = QuantSystem(args.root, initial_capital=args.capital,
                              universe=["SPY", "TLT", "SPY_ON"],
@@ -285,6 +292,7 @@ def main() -> None:
         name = {"etf": "CHIEF_BRIEF.md", "futures": "CHIEF_BRIEF_FUTURES.md",
                 "calendar": "CHIEF_BRIEF_CALENDAR.md",
                 "perp-funding": "CHIEF_BRIEF_PERP_FUNDING.md",
+                "perp-funding-dydx": "CHIEF_BRIEF_PERP_FUNDING_DYDX.md",
                 "futures-broad": "CHIEF_BRIEF_FUTURES_BROAD.md"}[args.market]
         path = write_chief_brief(snapshot, args.root / name)
         print(f"wrote {path}")

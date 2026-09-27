@@ -273,9 +273,57 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
         "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
 
 
+#: Fast-rail H-002 (research/fast_rail/registry.jsonl): Hyperliquid vs dYdX v4.
+PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
+#: Separate venue pair and dataset; the HL-vs-BY lab tested a different hypothesis.
+PERP_DYDX_PRIOR_TRIALS = 50  # 3ujgeu: 44 prior + 6 run (REJECT) -> burned for history
+PERP_DYDX_PRISTINE_AFTER = "2026-09-25"
+#: One-way research cost at maker level; falsify() stresses at 2x (taker level).
+PERP_DYDX_COST_BPS = 4.0
+
+
+def _hysteresis_spec(universe: list[str], dataset_id: str, entry: float,
+                     lookback: int) -> StrategySpec:
+    return StrategySpec(family="funding_spread", universe=universe, lookback_days=lookback,
+                        direction=1, min_abs_score=entry, exit_abs_score=entry / 2,
+                        max_weight=0.05, gross_exposure=1.0, holding_days=1,
+                        no_trade_band=0.02, dataset_id=dataset_id, calendar_symbol="HL.BTC")
+
+
+def perp_dydx_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
+    return {"perp_funding_spread_hl_dydx": {
+        "lane": "crypto_funding_carry", "priority": 38.0,
+        "question": "Does a same-coin short-high-funding / long-low-funding pair across "
+                    "Hyperliquid and dYdX v4, entered at a trailing spread threshold and held "
+                    "until the spread halves, earn the funding difference net of maker costs?",
+        "mechanism": "Segmented leverage demand: HL and dYdX have different retail/levered "
+                     "populations; the venue whose longs are more crowded pays funding that "
+                     "cross-venue arbitrageurs do not fully compete away (capital lock-up, "
+                     "two-venue margin, ADL risk). Hysteresis exit cuts the turnover that "
+                     "killed HL-vs-BY.",
+        "falsification": "Pre-registered H-002: declared relative-value tests (beta to HL.BTC "
+                         "below 0.15, positive at 2x = taker cost, both halves positive, top-5 "
+                         "days below half of gains, t above the multiple-testing threshold); "
+                         "capacity >= 10k$ at 1% of min-leg ADV checked separately.",
+        "grid": [_hysteresis_spec(universe, dataset_id, entry, lookback)
+                 for entry in (0.25, 0.5, 1.0) for lookback in (1, 3)],
+        "prior_trials": PERP_DYDX_PRIOR_TRIALS, "pristine_after": PERP_DYDX_PRISTINE_AFTER,
+        "benchmark": "HL.BTC", "cost_bps": PERP_DYDX_COST_BPS, "calendar": ["HL.BTC"],
+        "compliance": {"practices": ["public_market_data", "exchange_execution"],
+                       "cross_venue_hedge": True, "settlement_rules_matched": True,
+                       "settlement_evidence": "both legs are the same coin's perpetual swap; "
+                                              "perpetuals never settle, so there is no "
+                                              "settlement clause to mismatch (a dYdX final "
+                                              "settlement ends the pair's data instead)",
+                       "note": "venue access must be lawful in the operator's jurisdiction"},
+        "market": "crypto perpetuals, Hyperliquid vs dYdX v4"}}
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
     if dataset_id == PERP_DATASET:
         return perp_lane_definitions(universe, dataset_id)
+    if dataset_id == PERP_DYDX_DATASET:
+        return perp_dydx_lane_definitions(universe, dataset_id)
     if dataset_id == CALENDAR_DATASET:
         return calendar_lane_definitions(universe, dataset_id)
     if dataset_id == FUTURES_DATASET:

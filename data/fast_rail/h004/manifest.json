@@ -1,0 +1,65 @@
+{
+ "hypothesis": "H-004",
+ "dataset_key": "kalshi_trades_daily_series",
+ "base_url": "https://api.elections.kalshi.com/trade-api/v2",
+ "sample_step_days": 7,
+ "window": [
+  "2025-09-25",
+  "2026-09-23"
+ ],
+ "written_at": "2026-09-25T14:17:56.355132+00:00",
+ "files": {
+  "markets.jsonl.gz": {
+   "sha256": "f62c6ac4f410ce4c7ea7c985aa5dec85faca60c4fb9a3d39c48f212c0a70160b",
+   "bytes": 94180
+  },
+  "trades_KXEURUSD.jsonl.gz": {
+   "sha256": "1e1e694abcf58a237debe7f702a57b69526b2407b5b84dcd1a4cd4c5544dd382",
+   "bytes": 49179
+  },
+  "trades_KXHIGHAUS.jsonl.gz": {
+   "sha256": "ca5e9015f9d0affdb1d136f94f377909c17698597ff66db4be36d55057eed358",
+   "bytes": 789471
+  },
+  "trades_KXHIGHCHI.jsonl.gz": {
+   "sha256": "67ff43001f9dd35662701ff047aef5e2ef7837fc8082b4295a65fa80f1de2ad8",
+   "bytes": 1093720
+  },
+  "trades_KXHIGHDEN.jsonl.gz": {
+   "sha256": "2bb86dae96e09d73580357bc31b452b5d66f76dbc4736fff85994b03d813735b",
+   "bytes": 633835
+  },
+  "trades_KXHIGHLAX.jsonl.gz": {
+   "sha256": "4f0202a8588f9f3444fb092d2d3f1d6baedd67258c5559f40ea75a0fe807c28d",
+   "bytes": 1890613
+  },
+  "trades_KXHIGHMIA.jsonl.gz": {
+   "sha256": "1f16870bb1baa51458f55216d650cf48877d0679eef3bce22f278e88d03c5671",
+   "bytes": 992323
+  },
+  "trades_KXHIGHNY.jsonl.gz": {
+   "sha256": "4710121eec7e0c5a96e9168d560134fc9e500576752ae249a93ece48cf517a15",
+   "bytes": 1489824
+  },
+  "trades_KXHIGHPHIL.jsonl.gz": {
+   "sha256": "18a4ea5f2b5d33aa751e9381cfbef1892c36673a02dd0d93ab4a0b854a48d2c6",
+   "bytes": 551819
+  },
+  "trades_KXINX.jsonl.gz": {
+   "sha256": "9c7cf667a481952d64f453441e23498550308cb27f27a8cecc1dfe3126428bd3",
+   "bytes": 184855
+  },
+  "trades_KXNASDAQ100.jsonl.gz": {
+   "sha256": "9616d312c3056a18ab5f5b7148d28d70ee2468b95b29e12efc727f3fb2017c34",
+   "bytes": 95089
+  },
+  "trades_KXUSDJPY.jsonl.gz": {
+   "sha256": "cca7f3b9519f935dc8a15a5125dd8f2cddaf737b8aaf4d0735a60dc9b2b2c735",
+   "bytes": 45951
+  },
+  "trades_KXWTI.jsonl.gz": {
+   "sha256": "d3c50b6a8d85a8e007e78006fdfc186b44b9583de02fa230ca89c0dfce31373d",
+   "bytes": 1549696
+  }
+ }
+}

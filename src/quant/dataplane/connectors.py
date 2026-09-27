@@ -418,13 +418,17 @@ def parse_kalshi_markets(payload: dict[str, Any]) -> list[dict[str, Any]]:
     for item in (payload or {}).get("markets") or []:
         if not item.get("ticker"):
             continue
-        cents = {key: _float(item.get(key)) for key in ("yes_bid", "yes_ask", "no_bid", "no_ask")}
+        # The API now publishes quotes as ``*_dollars`` strings; the legacy
+        # integer-cent fields are read only when the dollar field is absent.
+        price = {key: (_float(item.get(key + "_dollars")) if item.get(key + "_dollars") is not None
+                       else (_float(item.get(key)) / 100 if _float(item.get(key)) is not None
+                             else None))
+                 for key in ("yes_bid", "yes_ask")}
         out.append({"venue": "KALSHI", "market_id": item["ticker"],
                     "event_ticker": item.get("event_ticker"), "title": item.get("title"),
                     "close_time": item.get("close_time"),
                     "rules_primary": item.get("rules_primary"),
-                    "yes_bid": cents["yes_bid"] / 100 if cents["yes_bid"] is not None else None,
-                    "yes_ask": cents["yes_ask"] / 100 if cents["yes_ask"] is not None else None,
+                    "yes_bid": price["yes_bid"], "yes_ask": price["yes_ask"],
                     "volume_24h": _float(item.get("volume_24h")),
                     "open_interest": _float(item.get("open_interest"))})
     return out
