@@ -13,9 +13,9 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
 0. `bash scripts/fast_rail_checkpoint.sh`. Des hooks Stop, SubagentStop et PreCompact le lancent automatiquement. Au plus 2 agents par vague, avec un commit par sous-étape.
 1. Calcul de puissance AVANT toute déclaration : `expected_t` contre `required_t`. Si c'est insuffisant : UNDERPOWERED, sans consommer d'essai. Grille : 1 expression par défaut, 3 au plus.
 2. Ordre de reprise :
-   - (a) Collecteur H-001 : cotes Pinnacle via la variable d'environnement `ODDS_API_KEY` (500 req/mois) et quotes PM/Kalshi, relevées dans le même run.
+   - (a) Collecteur H-001 (KPI : CLV contre la juste valeur Pinnacle de clôture, marge retirée ; le P&L confirme) : cotes Pinnacle via la variable d'environnement `ODDS_API_KEY` (500 req/mois) et quotes PM/Kalshi, relevées dans le même run.
    - (b) H-006, foot Pinnacle (football-data) contre Polymarket : pré-enregistré, 4 essais. À ramener à 1 expression (power, 0,02) selon la règle 2 avant exécution, ou à marquer UNDERPOWERED.
-   - (c) Funding HL contre Binance/Bybit sur les archives publiques (`data.binance.vision`, `public.bybit.com`) : nouveau jeu de données, plus de 4 ans.
+   - (c) Cycle des adjudications du Trésor (Lou, Yan, Zhang 2013), H-009. Une seule expression, avec N tiré de l'article. Validation 2014 → aujourd'hui. Calcul de puissance d'abord. Funding HL contre Binance/Bybit : H-008, UNDERPOWERED, forward seulement.
    - (d) Construire le jeu HL-dYdX pour le forward seulement : `python3 scripts/build_perp_funding_hl_dydx.py --offline --end <date>`. Le cache brut est local (non versionné). Aucun `run_lane` historique.
 3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
 
@@ -41,7 +41,7 @@ Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manch
 ## Backlog et BLOCKED
 - Voir REPRISE §2.
 - BLOCKED : déblocages de tokens (DefiLlama payant, 402).
-- Kalshi CPI contre nowcast de la Cleveland Fed : le point-in-time reste à vérifier.
+- Ne pas tester (preuve externe négative) : juste valeur météo Kalshi (arXiv 2609.23969), Kalshi CPI contre nowcast, longshot Kalshi, catégorie Finance de Kalshi.
 
 ## Actions propriétaire en attente
 - Secret GitHub `ODDS_API_KEY`, pour la collecte quotidienne par le relais.
