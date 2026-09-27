@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from .signals import (BASELINE_FAMILY, FOMC_BASELINE, FOMC_OVERNIGHT, MONTH_END,
-                      MONTH_END_BASELINE, TREND_FAMILY, StrategySpec)
+from .signals import (BASELINE_FAMILY, FOMC_BASELINE, FOMC_OVERNIGHT, FUNDING_SPREAD_HOLD,
+                      MONTH_END, MONTH_END_BASELINE, TREND_FAMILY, StrategySpec)
 
 
 #: Point-in-time partition of the panel. SHADOW is reserved for the Capital
@@ -273,9 +273,56 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
         "market": "crypto perpetuals, Hyperliquid vs Bybit"}}
 
 
+PERP_HL_DYDX_DATASET = "perp_funding_hl_dydx_daily"
+#: Fast-rail H-002 (research/fast_rail/registry.jsonl): the HL leg, the
+#: mechanism and the hysteresis idea were all formed while searching
+#: HL-vs-Bybit (PERP_PRIOR_TRIALS 42 + its 2 lane expressions).
+PERP_HL_DYDX_PRIOR_TRIALS = PERP_PRIOR_TRIALS + 2
+PERP_HL_DYDX_PRISTINE_AFTER = "2026-09-25"
+#: HL maker 1.5bp + dYdX maker 1.0bp + ~3.5bp half-spread/non-fill allowance.
+PERP_HL_DYDX_COST_BPS = 6.0
+
+
+def _funding_hold_spec(universe: list[str], dataset_id: str, threshold: float,
+                       lookback: int) -> StrategySpec:
+    return StrategySpec(family=FUNDING_SPREAD_HOLD, universe=universe,
+                        lookback_days=lookback, direction=1, min_abs_score=threshold,
+                        max_weight=0.05, gross_exposure=1.0, holding_days=1,
+                        no_trade_band=0.02, dataset_id=dataset_id, calendar_symbol="HL.BTC")
+
+
+def perp_hl_dydx_lane_definitions(universe: list[str], dataset_id: str
+                                  ) -> dict[str, dict[str, Any]]:
+    lane = perp_lane_definitions(universe, dataset_id)["perp_funding_spread"]
+    return {"perp_funding_spread_hl_dydx_hold": {
+        "lane": "crypto_funding_carry", "priority": 38.5,
+        "question": "Does a same-coin short-high-funding / long-low-funding pair across "
+                    "Hyperliquid and dYdX v4, entered at an annualised trailing spread E "
+                    "and held until it falls below E/2, earn the funding difference net of "
+                    "maker costs?",
+        "mechanism": "Segmented leverage demand: retail longs on HL pay funding that "
+                     "dYdX-side arbitrageurs cannot fully compete away (capital lock-up, "
+                     "two-venue margin, ADL risk). Holding until the spread halves cuts the "
+                     "turnover that killed HL-vs-Bybit. Price exposure cancels in the pair.",
+        "falsification": "Pre-registered H-002: reject unless validation net alpha t >= "
+                         "required_t_statistic(50), both halves positive, profitable at 2x "
+                         "cost, |beta to HL.BTC| < 0.15, unconcentrated; capacity >= 10k$ at "
+                         "1% of min-leg ADV. 44 prior trials charged; lifecycle only moves "
+                         "after 2026-09-25.",
+        "grid": [_funding_hold_spec(universe, dataset_id, threshold, lookback)
+                 for threshold in (0.25, 0.5, 1.0) for lookback in (3, 7)],
+        "prior_trials": PERP_HL_DYDX_PRIOR_TRIALS,
+        "pristine_after": PERP_HL_DYDX_PRISTINE_AFTER,
+        "benchmark": "HL.BTC", "cost_bps": PERP_HL_DYDX_COST_BPS, "calendar": ["HL.BTC"],
+        "compliance": lane["compliance"],
+        "market": "crypto perpetuals, Hyperliquid vs dYdX v4"}}
+
+
 def lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dict[str, Any]]:
     if dataset_id == PERP_DATASET:
         return perp_lane_definitions(universe, dataset_id)
+    if dataset_id == PERP_HL_DYDX_DATASET:
+        return perp_hl_dydx_lane_definitions(universe, dataset_id)
     if dataset_id == CALENDAR_DATASET:
         return calendar_lane_definitions(universe, dataset_id)
     if dataset_id == FUTURES_DATASET:
