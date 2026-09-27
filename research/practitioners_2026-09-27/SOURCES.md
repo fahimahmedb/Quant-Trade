@@ -86,6 +86,22 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | S76 | https://techcrunch.com/2025/11/01/coinbase-ceo-brian-armstrong-trolls-the-prediction-markets | 8 | B | Armstrong prononce à dessein les mots pariés sur l'appel de résultats (84 000 $ misés sur Kalshi/PM) : risque de manipulation par l'orateur dans les mention markets |
 | S77 | https://www.dechert.com/knowledge/publication/2026/1/damitt-2025-annual-report.html | 6 | A | DAMITT 2025 : 16 enquêtes significatives US (2e plus bas en 15 ans), 1 abandon (vs 9 record en 2024), durée 12,3 mois ; UE : aucun deal bloqué en 2025 vs 20 % en 2024 |
 | S78 | https://startpolymarket.com/strategies/reward-farming/ | 3 | C | Exemple : un seul fill adverse (53 ¢ → 2 ¢ sur 100 parts = −51 $) efface une journée de récompenses (50 $) ; aucune donnée empirique |
+| S79 | https://arxiv.org/abs/2606.04217 | 5 | A | Jeu de données Polymarket-v1 (Hugging Face TimeSeventeen/Polymarket-v1, CC BY-SA 4.0) : 1,20 Md de trades, 1,30 M de marchés, 61 Md$, 2022-11-21 → 2026-04-28, direction de l'agresseur issue de la blockchain (100 %) |
+| S80 | https://arxiv.org/abs/2606.05882 | 4 | B (modèle agent) | Modèle multi-agents : le flux informé nuit surtout aux MM quand l'informativité agrégée est faible ; pas de données de marché réelles |
+| S81 | https://arxiv.org/abs/2605.00864 | 4 | A | NBA Polymarket, 173 matchs, 75 M de snapshots : 7 anomalies exécutables en match (persistance médiane 3,6 s) ; 290 combinatoires, rendement médian 101 bp ; 77 % limitées en profondeur, 14,8 parts en moyenne |
+| S82 | https://whirligigbear.substack.com/p/are-traders-on-kalshi-being-profiled | 3 | B | 2026-03-17 : sur RFQ Kalshi, un répondeur peut refuser de coter un contrepartiste gagnant ; à 50 ¢, ≈ 1,75 ¢ de frais taker → il faut 2,75 ¢ de désaccord pour avoir un edge |
+| S83 | https://networked.substack.com/p/a-view-from-the-pinnacle | 3 | B (données football-data reproductibles) | Jay Pinho 2025-12-22 : paris EV contre Pinnacle, 31 247 paris sur 14 saisons, ROI 3,6 % vs 3,8 % attendu ; **depuis 2023/24 : 1,9 % réel vs 4,2 % attendu sur 6 806 paris** (décroissance) |
+| S84 | https://www.turbinefi.com/blog/why-prediction-market-trades-get-picked-off-2026 | 3 | C (compilation) | Bots > 30 % de l'activité wallet PM ; 14 des 20 wallets les plus rentables sont des bots ; un bot aurait extrait 271 500 $ en 30 j sur la latence avant les frais dynamiques |
+| S85 | https://arxiv.org/abs/2508.03474 | 4 | A | Arbitrage Polymarket (rééquilibrage + combinatoire) : ≈ 40 M$ de profit réalisé extrait (avril 2024-avril 2025) |
+| S86 | https://law.stanford.edu/publications/adverse-selection-in-prediction-markets-evidence-from-kalshi/ | 4 | A | Bartlett-O'Hara (avril 2026), 41,6 M de trades Kalshi : impact informé plus fort dans les marchés « single-name », les makers y gagnent deux fois plus par contrat ; sur-achat de YES = surplus comportemental |
+| S87 | https://www.ingame.com/study-kalshi-betting-yes/ | 6 | B | Bartlett-O'Hara : makers +1,91 ¢/contrat (single-name) vs +0,82 ¢ (broad) ; YES acheté 60,9 % du volume, réglé YES 32,5 % ; 478 167 marchés |
+| S88 | https://docs.kalshi.com/getting_started/historical_data | 5 | A | Endpoints GET /historical/trades, /historical/markets, /historical/markets/{ticker}/candlesticks ; coupure live/historique via GET /historical/cutoff |
+| S89 | https://hyperliquid.gitbook.io/hyperliquid-docs/historical-data | 5 | A | Buckets S3 hyperliquid-archive (L2, asset ctx) et hl-mainnet-node-data (node_fills_by_block…) ; « no guarantee of timely updates and data may be missing » ; requester-pays |
+| S90 | https://hydromancer.xyz/resources/hyperliquid-historical-s3-archive | 5 | B | Archive « Reservoir » : fills avec adresse de wallet (27 colonnes), Parquet, depuis le lancement de chaque marché, bucket requester-pays |
+| S91 | https://www.insidearbitrage.com/2025/04/merger-arbitrage-risk-analysis/ | 8 | C | Exemples de ruptures : Nvidia-Arm (2022), Apollo-Tegna (2023, −40 % sur Tegna) ; aucun chiffre de rendement |
+| S92 | https://docs.kalshi.com/api-reference/communications/create-quote | 5 | A | Répondre à un RFQ exige les en-têtes d'authentification KALSHI-ACCESS-KEY/SIGNATURE/TIMESTAMP (donc un compte) |
+| S93 | https://github.com/bond-labs-dev/hyperliquid-data | 2 | B | Fills HL ≈ 0,8-1,0 Gio/jour ; 30 jours ≈ 2,21 $ d'egress ; chaque trade apparaît deux fois (taker et maker) ; format changé le 2025-07-27 |
+| S94 | https://www.tradermath.org/articles/prediction-markets-trading-at-quant-firms | 8 | B | Concurrence : SIG « flagship market maker » de Kalshi (desk depuis 2023) avec frais réduits et limites de position plus hautes ; Jump ≈ 20 personnes ; DRW, Akuna recrutent pour le sport |
 
 ## Pages inaccessibles (ne comptent pas)
 
@@ -111,6 +127,9 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 | gamblinginsider.com (parlays) | 403 | S68 |
 | kalshi.com/docs/kalshi-member-agreement.pdf | 429 | S72 |
 | fintelegram.com (Hyperliquid MiCA) | 403 | S73 |
+| medium.com/coinmonks (backtest déblocages) | 403 | S75 |
+| archive.pmxt.dev | 503 | S79 (Polymarket-v1) |
+| finance.yahoo.com (perte SIG Knicks) | 404 | S94 |
 | medium.com/@wanguolin (post-mortem récompenses PM) | 403 ; scribe.rip 404 ; freedium DNS | — |
 | bitmex.com/blog/harvest-funding-payments-on-hyperliquid | 404 | — |
 | cybernews.com (bots IA perdants), cnbc.com 2026-08-01 | 403 | — |
@@ -186,3 +205,9 @@ Une source n'est listée ici que si elle a été réellement ouverte (WebFetch o
 60. « token unlock short strategy backtest priced in » → S75 (medium Tigro Blanc listé, non ouvert).
 61. « Polymarket liquidity rewards farming not profitable adverse selection » → S78.
 62. « merger arbitrage 2025 deal breaks FTC » → S77.
+63. arXiv (Polymarket-v1, MM informedness, NBA arbitrage) → S79, S80, S81.
+64. Blogs praticiens (whirligigbear, networked, turbinefi) → S82, S83, S84.
+65. « Bartlett Stanford Kalshi adverse selection » → S86, S87 (SSRN non ouvert) ; S85.
+66. « Hyperliquid historical fills S3 user addresses » → S89, S90, S93.
+67. « Kalshi historical trades API free download » → S88, S92.
+68. « Susquehanna market maker Kalshi sports competition » → S94.
