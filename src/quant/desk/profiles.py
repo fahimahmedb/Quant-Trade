@@ -66,8 +66,12 @@ PERP_PROFILE = DeskProfile(
 )
 
 
+#: Fast-rail H-002 panel: same pair structure and execution venue class.
+PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
+
+
 def profile_for(dataset_id: str) -> DeskProfile:
-    if dataset_id == PERP_DATASET:
+    if dataset_id in (PERP_DATASET, PERP_DYDX_DATASET):
         return PERP_PROFILE
     if dataset_id == CALENDAR_DATASET:
         return CALENDAR_PROFILE

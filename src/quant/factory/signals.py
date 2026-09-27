@@ -55,9 +55,18 @@ class StrategySpec:
     #: expected annual trading cost, in Sharpe units, is at most this value
     #: (0 disables the rule). Uses that date's own cost and volatility.
     max_cost_sharpe: float = 0.0
+    # --- funding_spread only -------------------------------------------------
+    #: Hysteresis exit (annualised): a pair entered at ``min_abs_score`` is held
+    #: while its same-sign spread stays at or above this level. 0 keeps the
+    #: original stateless rule (held only while above the entry threshold).
+    exit_abs_score: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        data = asdict(self)
+        if not data["exit_abs_score"]:
+            # Specs predating the field serialise (and hash) exactly as before.
+            del data["exit_abs_score"]
+        return data
 
     @property
     def label(self) -> str:
@@ -65,7 +74,8 @@ class StrategySpec:
             return f"{self.family}_x{self.gross_exposure:g}_h{self.holding_days}"
         if self.family == "funding_spread":
             return (f"funding_spread_l{self.lookback_days}_z{self.min_abs_score:g}"
-                    f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}")
+                    f"_w{self.max_weight:g}_g{self.gross_exposure:g}_b{self.no_trade_band:g}"
+                    + (f"_x{self.exit_abs_score:g}" if self.exit_abs_score else ""))
         if self.family in TIME_SERIES_FAMILIES:
             return (f"{self.family}_t{self.trend_weight:g}_c{self.carry_weight:g}"
                     f"_v{self.vol_target:g}_h{self.holding_days}_b{self.no_trade_band:g}"
@@ -405,19 +415,40 @@ def calendar_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[s
 # Cross-venue perpetual funding spread (market-neutral per coin)
 # ---------------------------------------------------------------------------
 #
-# Universe symbols are ``<VENUE>.<COIN>`` (e.g. ``HL.ETH``, ``BY.ETH``) with a
-# ``carry_rate`` feature: funding paid by longs over that session. For a coin
-# quoted on both venues, when the trailing mean funding difference exceeds the
-# entry threshold (annualised), the sleeve is short the venue that charges
-# longs more and long the other, one unit notional per leg, so price exposure
-# cancels and the position collects the funding difference. Stateless: the
-# position is held while the trailing spread stays above the threshold, and the
-# shared no-trade band limits churn.
+# Universe symbols are ``<VENUE>.<COIN>`` (e.g. ``HL.ETH``, ``BY.ETH``,
+# ``DY.ETH``) with a ``carry_rate`` feature: funding paid by longs over that
+# session. The two venues are the universe's two symbol prefixes (Hyperliquid
+# first when present). For a coin quoted on both venues, when the trailing mean
+# funding difference exceeds the entry threshold (annualised), the sleeve is
+# short the venue that charges longs more and long the other, one unit notional
+# per leg, so price exposure cancels and the position collects the funding
+# difference.
+#
+# Without ``exit_abs_score`` the rule is stateless: a pair is held while the
+# trailing spread stays above the entry threshold, and the shared no-trade band
+# limits churn. With it, a pair entered at the threshold is held until its
+# same-sign spread falls below the exit level (hysteresis). ``weights_for`` must
+# stay a pure function of the panel up to ``asof`` so research and the Desk
+# compute the same target, so the held state is reconstructed from history: a
+# state machine run forward over the strategy's sessions, where state(d)
+# depends only on state(d-1) and the spread at d. A session on which the pair
+# has no valid spread resets it, so no future bar can reach a past state.
 
 FUNDING_SPREAD = "funding_spread"
 FUNDING_VENUES = ("HL", "BY")
 FUNDING_LOOKBACK = 3
 DAYS_PER_YEAR = 365.0
+
+
+def funding_venues(universe: list[str]) -> tuple[str, str]:
+    """The two venue prefixes of a funding universe, Hyperliquid first."""
+    prefixes = list(dict.fromkeys(symbol.split(".", 1)[0] for symbol in universe
+                                  if "." in symbol))
+    if len(prefixes) != 2:
+        raise ValueError(f"funding_spread needs exactly two venue prefixes, got {prefixes}")
+    first, second = sorted(prefixes, key=lambda prefix: (prefix != FUNDING_VENUES[0],
+                                                         prefixes.index(prefix)))
+    return first, second
 
 
 def _trailing_carry(panel: PricePanel, symbol: str, asof: str, sessions: int) -> float | None:
@@ -438,8 +469,48 @@ def _trailing_carry(panel: PricePanel, symbol: str, asof: str, sessions: int) ->
     return sum(window) / sessions
 
 
+def _pair_spread(panel: PricePanel, spec: StrategySpec, a: str, b: str,
+                 asof: str) -> float | None:
+    """Annualised trailing funding spread (a minus b), or None when not tradable."""
+    if not (panel.has(asof, a) and panel.has(asof, b)):
+        return None
+    if panel.feature(asof, a, "price_proxy") or panel.feature(asof, b, "price_proxy"):
+        return None       # a leg valued at the other venue's price hides the hedge risk
+    carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
+    carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
+    if carry_a is None or carry_b is None:
+        return None
+    return (carry_a - carry_b) * DAYS_PER_YEAR
+
+
+def _hysteresis_states(panel: PricePanel, spec: StrategySpec, a: str,
+                       b: str) -> dict[str, tuple[int, float | None]]:
+    """Per session: (held side, spread); side +1 = short a / long b, -1 the reverse."""
+    sessions = [spec.calendar_symbol] if spec.calendar_symbol else list(spec.universe)
+    key = ("funding_hysteresis", a, b, spec.lookback_days, spec.min_abs_score,
+           spec.exit_abs_score, tuple(sorted(set(sessions))))
+    cached = panel.derived.get(key)
+    if cached is not None:
+        return cached
+    entry, exit_ = spec.min_abs_score, min(spec.exit_abs_score, spec.min_abs_score)
+    state, states = 0, {}
+    for day in panel.aligned_dates(sessions):
+        spread = _pair_spread(panel, spec, a, b, day)
+        if spread is None:
+            state = 0
+        elif state and spread * state > 0 and abs(spread) >= exit_:
+            pass                                  # held: still at or above the exit level
+        elif abs(spread) >= entry:
+            state = 1 if spread > 0 else -1
+        else:
+            state = 0
+        states[day] = (state, spread)
+    panel.derived[key] = states
+    return states
+
+
 def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> dict[str, float]:
-    first, second = FUNDING_VENUES
+    first, second = funding_venues(spec.universe)
     coins = sorted({symbol.split(".", 1)[1] for symbol in spec.universe
                     if symbol.startswith(first + ".")}
                    & {symbol.split(".", 1)[1] for symbol in spec.universe
@@ -447,16 +518,18 @@ def funding_spread_weights(panel: PricePanel, spec: StrategySpec, asof: str) -> 
     candidates = []
     for coin in coins:
         a, b = f"{first}.{coin}", f"{second}.{coin}"
-        if not (panel.has(asof, a) and panel.has(asof, b)):
+        if spec.exit_abs_score > 0:
+            held = _hysteresis_states(panel, spec, a, b).get(asof)
+            if held is None:      # not a session: no carried state, entry rule only
+                spread = _pair_spread(panel, spec, a, b, asof)
+                held = ((1 if spread > 0 else -1)
+                        if spread is not None and abs(spread) >= spec.min_abs_score else 0,
+                        spread)
+            if held[0]:
+                candidates.append((abs(held[1]), coin, a, b, held[1]))
             continue
-        if panel.feature(asof, a, "price_proxy") or panel.feature(asof, b, "price_proxy"):
-            continue      # a leg valued at the other venue's price hides the hedge risk
-        carry_a = _trailing_carry(panel, a, asof, spec.lookback_days or FUNDING_LOOKBACK)
-        carry_b = _trailing_carry(panel, b, asof, spec.lookback_days or FUNDING_LOOKBACK)
-        if carry_a is None or carry_b is None:
-            continue
-        spread = (carry_a - carry_b) * DAYS_PER_YEAR
-        if abs(spread) >= spec.min_abs_score:
+        spread = _pair_spread(panel, spec, a, b, asof)
+        if spread is not None and abs(spread) >= spec.min_abs_score:
             candidates.append((abs(spread), coin, a, b, spread))
     candidates.sort(reverse=True)
     limit = max(1, int(round(spec.gross_exposure / (2 * spec.max_weight)))) if spec.max_weight else 0
