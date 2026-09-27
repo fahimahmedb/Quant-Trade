@@ -1,0 +1,1027 @@
+{
+ "date": "2026-09-27",
+ "methode": "citation normalisée recherchée dans le texte brut (curl + extraction HTML/PDF) ; FOUND si ≥ 80 % des 6-grammes, PARTIAL si ≥ 30 % ; les réponses d'API datées ne sont pas re-téléchargées",
+ "resultats": [
+  {
+   "lane": "A_sport",
+   "id": "A-01",
+   "status": "FOUND",
+   "score": 0.92,
+   "url": "https://arxiv.org/pdf/1710.02824",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-02",
+   "status": "API(skip)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/series?category=Sports"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-03",
+   "status": "API(skip)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/series/fee_changes?series_ticker=KXMLBGAME&show_historical=true"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-04",
+   "status": "API(skip)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/incentive_programs?status=active&limit=10000"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-05",
+   "status": "FOUND",
+   "score": 0.85,
+   "url": "https://www2.gwu.edu/~forcpgm/2026-001.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-06",
+   "status": "PARTIAL",
+   "score": 0.7,
+   "url": "https://www.betfair.com.au/hub/help/premium-charge-faq/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-07",
+   "status": "FOUND",
+   "score": 0.84,
+   "url": "https://www.peterwebb.com/betfair-premium-charge-explained-part-one/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-08",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.ingame.com/kalshi-in-house-trading-arm-not-profitable/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-09",
+   "status": "FOUND",
+   "score": 0.88,
+   "url": "https://x.com/luanalopeslara/status/1994418071629336978",
+   "methode": "fxtwitter"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-10",
+   "status": "FOUND",
+   "score": 0.92,
+   "url": "https://x.com/RufusPeabody/status/2050059856682389960",
+   "methode": "fxtwitter"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-11",
+   "status": "API(skip)",
+   "url": "https://docs.polymarket.com/trading/fees.md"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-12",
+   "status": "API(skip)",
+   "url": "https://docs.polymarket.us/fees.md"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-13",
+   "status": "FOUND",
+   "score": 0.89,
+   "url": "https://www.football-data.co.uk/blog/wisdom_of_crowd_betting_system_closing_odds.php",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-14",
+   "status": "API(skip)",
+   "url": "https://www.football-data.co.uk/Wisdom_of_crowd_bets.xlsx"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-15",
+   "status": "FOUND",
+   "score": 0.86,
+   "url": "https://www.football-data.co.uk/blog/opening_price_wisdom.php",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-16",
+   "status": "NOT_FOUND",
+   "score": 0.0,
+   "url": "https://www.pinnacle.com/betting-resources/en/educational/how-to-solve-a-problem-like-efficiency-part-one/rn8j5rnqj2p8t68p",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : phrase présente dans le JSON embarqué de la page Pinnacle (HTML sauvegardé par le couloir A)"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-17",
+   "status": "NOT_FOUND",
+   "score": 0.0,
+   "url": "https://www.pinnacle.com/betting-resources/en/educational/how-to-solve-a-problem-like-efficiency-part-two/KS5JTMY67W9XFGGM",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : phrase présente dans le JSON embarqué de la page Pinnacle (HTML sauvegardé par le couloir A)"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-18",
+   "status": "FOUND",
+   "score": 0.92,
+   "url": "https://www.sportsbettingdime.com/news/betting/analysis-massachusetts-sports-betting-player-limitation-numbers-are-low-but-consistent-winners-more-likely-to-be-limited/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-19",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://arxiv.org/pdf/2609.06739",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-20",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/betcode-org/flumine",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-21",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/georgedouzas/sports-betting",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-22",
+   "status": "PARTIAL",
+   "score": 0.46,
+   "url": "https://forum.betangel.com/viewtopic.php?t=23716",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-23",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/Lisandro79/BeatTheBookie",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-24",
+   "status": "FOUND",
+   "score": 0.8,
+   "url": "https://www.gamblingcommission.gov.uk/blog/post/commercial-restrictions-by-betting-operators",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-25",
+   "status": "FOUND",
+   "score": 0.8,
+   "url": "https://support.novig.com/en/articles/16195057-fees-on-novig",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-26",
+   "status": "FOUND",
+   "score": 0.88,
+   "url": "https://datagolf.com/how-sharp-are-bookmakers",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "A_sport",
+   "id": "A-27",
+   "status": "API(skip)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KXNFLLADDERRECYDS&status=open&limit=1000"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-01",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v1/leaderboard?timePeriod=all&orderBy=PNL&limit=50"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-02",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v1/leaderboard?timePeriod=all&orderBy=VOL&limit=50"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-03",
+   "status": "PARTIAL",
+   "score": 0.71,
+   "url": "https://docs.polymarket.com/trading/fees",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-04",
+   "status": "API(skip)",
+   "url": "https://docs.polymarket.com/changelog/predictions.md"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-05",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "https://docs.polymarket.com/programs/maker-rebates",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-06",
+   "status": "API(skip)",
+   "url": "https://docs.polymarket.com/programs/taker-rebates.md"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-07",
+   "status": "API(skip)",
+   "url": "https://docs.polymarket.com/programs/liquidity-rewards.md"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-08",
+   "status": "PARTIAL",
+   "score": 0.75,
+   "url": "https://docs.polymarket.com/polymarket-learn/trading/holding-rewards",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-09",
+   "status": "FOUND",
+   "score": 0.88,
+   "url": "https://www.financemagnates.com/cryptocurrency/polymarket-introduces-dynamic-fees-to-curb-latency-arbitrage-in-short-term-crypto-markets/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-10",
+   "status": "API(skip)",
+   "url": "https://api.fxtwitter.com/DextersSolab/status/2008285935650181231"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-11",
+   "status": "API(skip)",
+   "url": "https://api.fxtwitter.com/browomo/status/2006390264982573195"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-12",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v2/user-pnl?user=0x63ce342161250d705dc0b16df89036c8e5f9ba9a&interval=max&fidelity=1d"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-13",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v2/leaderboard?time_period=all&category=crypto&limit=25"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-14",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v2/user-pnl?user=0x6031b6eed1c97e853c6e0f03ad3ce3529351f96d&interval=max&fidelity=1d"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-15",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/activity?user=0x2005d16a84ceefa912d4e380cd32e7ff827875ea&type=MAKER_REBATE&limit=500&start=1"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-16",
+   "status": "PARTIAL",
+   "score": 0.64,
+   "url": "https://raw.githubusercontent.com/warproxxx/poly-maker/bfacef3/README.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-17",
+   "status": "API(skip)",
+   "url": "https://api.fxtwitter.com/defiance_cr/status/1906774862254800934"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-18",
+   "status": "FOUND",
+   "score": 0.82,
+   "url": "https://pineanalytics.substack.com/p/polymarket-fee-rollout",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-19",
+   "status": "PARTIAL",
+   "score": 0.74,
+   "url": "https://arxiv.org/pdf/2508.03474",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-20",
+   "status": "FOUND",
+   "score": 0.89,
+   "url": "https://arxiv.org/pdf/2609.12878",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-21",
+   "status": "PARTIAL",
+   "score": 0.78,
+   "url": "https://www.carf.e.u-tokyo.ac.jp/wp/wp-content/uploads/2026/06/260714_polymarket.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-22",
+   "status": "PARTIAL",
+   "score": 0.77,
+   "url": "https://raw.githubusercontent.com/shirleyshen0106/polymarket-calibration/main/README.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-23",
+   "status": "NOT_FOUND",
+   "score": 0.14,
+   "url": "https://raw.githubusercontent.com/ryanfrigo/kalshi-ai-trading-bot/main/docs/TRACK_RECORD.md",
+   "methode": "fetch_text",
+   "manuel": "PARTIAL (manuel) : citations du README exactes ; chiffres 170 marchés / +128,56 $ / NO -25,40 $ / CPI -66,57 $ introuvables dans README, TRACK_RECORD, JEV et CHANGELOG, donc retirés du rapport"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-24",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "https://raw.githubusercontent.com/maximumskif/polycopytrade/master/README.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-25",
+   "status": "PARTIAL",
+   "score": 0.72,
+   "url": "https://www.paradigm.xyz/writing/polymarket-volume-is-being-double-counted",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "B_pm",
+   "id": "B-26",
+   "status": "PARTIAL",
+   "score": 0.62,
+   "url": "https://help.kalshi.com/en/articles/13823851-liquidity-incentive-program",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-01",
+   "status": "API(skip)",
+   "url": "https://api.hyperliquid.xyz/info (POST {\"type\":\"vaultDetails\",\"vaultAddress\":\"0xdfc24b077bc1425ad1dea75bcb6f8158e10df303\"})"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-02",
+   "status": "API(skip)",
+   "url": "https://stats-data.hyperliquid.xyz/Mainnet/leaderboard"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-03",
+   "status": "API(skip)",
+   "url": "https://stats-data.hyperliquid.xyz/Mainnet/vaults"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-04",
+   "status": "PARTIAL",
+   "score": 0.68,
+   "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-05",
+   "status": "PARTIAL",
+   "score": 0.46,
+   "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/vaults/for-vault-leaders",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-06",
+   "status": "UNOPENABLE",
+   "url": "https://www.coingecko.com/learn/hyperliquid-hlp-vault-analysis",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-07",
+   "status": "PARTIAL",
+   "score": 0.65,
+   "url": "https://arxiv.org/pdf/2608.04373",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-08",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "https://arxiv.org/abs/2606.15715",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-09",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "https://arxiv.org/abs/2512.01112",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-10",
+   "status": "PARTIAL",
+   "score": 0.65,
+   "url": "https://keyrock.com/from-locked-to-liquidity-what-16000-token-unlocks-teach-us/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-11",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://crypto.news/token-unlocks-almost-always-negative-for-price-keyrocks-study-reveals/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-12",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/hummingbot/hummingbot/issues/7402",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-13",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/hummingbot/hummingbot/issues/7301 (+ liste https://github.com/hummingbot/hummingbot/issues?q=is%3Aissue+profitable)",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-14",
+   "status": "PARTIAL",
+   "score": 0.69,
+   "url": "https://raw.githubusercontent.com/freqtrade/freqtrade/develop/docs/faq.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-15",
+   "status": "PARTIAL",
+   "score": 0.49,
+   "url": "https://arxiv.org/pdf/2208.06046",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-16",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://arxiv.org/abs/2401.01622",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-17",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.bis.org/publ/bisbull69.htm",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-18",
+   "status": "UNOPENABLE",
+   "url": "https://www.wintermute.com/insights/market-color/market-update/market-update-13-oct-2025 (+ https://www.wintermute.com/insights/market-color/market-update/market-update-8-december-2025)",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : 19 G$, 10,3 G$ et « largest single-day » présents dans la page du 13 oct. 2025 (le champ URL contenait deux adresses)"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-19",
+   "status": "API(skip)",
+   "url": "https://yields.llama.fi/chart/66985a81-9c51-46ca-9977-42b4fe7bc6df"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-20",
+   "status": "API(skip)",
+   "url": "https://defillama-datasets.llama.fi/emissions/<protocole> (liste: https://defillama-datasets.llama.fi/emissionsProtocolsList ; API officielle https://api.llama.fi/emissions = HTTP 402)"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-21",
+   "status": "API(skip)",
+   "url": "https://api.hyperliquid.xyz/info (POST candleSnapshot 1d et fundingHistory)"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-22",
+   "status": "PARTIAL",
+   "score": 0.8,
+   "url": "https://wublock.substack.com/p/odaily-interviews-airdrop-farmers",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-23",
+   "status": "API(skip)",
+   "url": "https://x.com/stablealt/status/2003495652668399803 (lu via https://api.fxtwitter.com/stablealt/status/2003495652668399803)"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-24",
+   "status": "API(skip)",
+   "url": "https://news.ycombinator.com/item?id=22086393 (lu via https://hn.algolia.com/api/v1/items/22086393)"
+  },
+  {
+   "lane": "C_crypto",
+   "id": "C-25",
+   "status": "API(skip)",
+   "url": "https://api.hyperliquid.xyz/info (POST {\"type\":\"fundingHistory\",\"coin\":\"BTC\"|\"ETH\",\"startTime\":...})"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-01",
+   "status": "API(skip)",
+   "url": "https://api.crossref.org/works/10.1111/jofi.12365"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-02",
+   "status": "PARTIAL",
+   "score": 0.55,
+   "url": "https://www.ivey.uwo.ca/media/2827306/bengraham3rdsymposium-pontiff-paper-2014.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-03",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://arxiv.org/pdf/2212.10317",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-04",
+   "status": "PARTIAL",
+   "score": 0.73,
+   "url": "https://arxiv.org/pdf/2105.01380",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-05",
+   "status": "FOUND",
+   "score": 0.91,
+   "url": "https://www.federalreserve.gov/econres/feds/files/2020039pap.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-06",
+   "status": "FOUND",
+   "score": 0.86,
+   "url": "https://www.nber.org/system/files/working_papers/w28432/w28432.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-07",
+   "status": "FOUND",
+   "score": 0.86,
+   "url": "https://wp.lancs.ac.uk/fofi2018/files/2018/03/FoFI-2018-0174-Sebastian-M%C3%BCller2.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-08",
+   "status": "PARTIAL",
+   "score": 0.62,
+   "url": "https://arxiv.org/pdf/2607.06502",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-09",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://arxiv.org/abs/2512.11913",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-10",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2019rfs.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-11",
+   "status": "API(skip)",
+   "url": "https://api.crossref.org/works/10.31235/osf.io/z7k3p"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-12",
+   "status": "FOUND",
+   "score": 0.83,
+   "url": "https://www.bus.umich.edu/pdf/mitsui/workshopdocs/ZhengJanuaryEffect.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-13",
+   "status": "API(skip)",
+   "url": "https://api.crossref.org/works/10.1111/jfir.12384"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-14",
+   "status": "UNOPENABLE",
+   "url": "https://www.ici.org/system/files/2024-05/cef-activism.pdf",
+   "methode": "WebFetch"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-15",
+   "status": "API(skip)",
+   "url": "https://query1.finance.yahoo.com/v8/finance/chart/XNEAX?range=10y&interval=1d"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-16",
+   "status": "API(skip)",
+   "url": "https://api.fxtwitter.com/boazweinstein/status/1702333209252610338"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-17",
+   "status": "API(skip)",
+   "url": "https://api.fxtwitter.com/boazweinstein/status/2001010698319798633"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-18",
+   "status": "FOUND",
+   "score": 0.89,
+   "url": "https://www.analysisgroup.com/globalassets/content/insights/publishing/jetley_and_ji_shrinking_merger_arbitrage_spread2.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-19",
+   "status": "FOUND",
+   "score": 0.91,
+   "url": "https://site.warrington.ufl.edu/ritter/files/SPACs.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-20",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://site.warrington.ufl.edu/ritter/files/going-public-with-IPOs-and-SPAC-mergers.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-21",
+   "status": "NOT_FOUND",
+   "score": 0.18,
+   "url": "https://www.hbs.edu/ris/Publication%20Files/arbitrage_af05900b-acd4-44db-8210-70a9fbc3cf6c.pdf",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : phrase présente, PDF extrait sans espaces (« Adiversiﬁedportfolio… 0.6–0.9% »)"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-22",
+   "status": "FOUND",
+   "score": 0.93,
+   "url": "https://wp.lancs.ac.uk/fofi2024/files/2024/04/FoFI-2024-146-Leander-Gayda.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-23",
+   "status": "FOUND",
+   "score": 0.92,
+   "url": "https://www.nber.org/system/files/working_papers/w30748/w30748.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-24",
+   "status": "FOUND",
+   "score": 0.81,
+   "url": "https://www.timdesilva.me/files/papers/losing_optional.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-25",
+   "status": "FOUND",
+   "score": 0.95,
+   "url": "https://quantpedia.com/www/Anticipating_Uncertainty-Straddles_Around_Earnings_Announcements.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-26",
+   "status": "API(skip)",
+   "url": "https://cdn.cboe.com/api/global/delayed_quotes/options/SPY.json"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-27",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "http://www.repec.eae.fea.usp.br/documentos/Chague_Losso_Giovannetti_47WP.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-28",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.esma.europa.eu/sites/default/files/library/esma71-98-128_press_release_product_intervention.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-29",
+   "status": "API(skip)",
+   "url": "https://news.ycombinator.com/item?id=16922538"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-30",
+   "status": "FOUND",
+   "score": 0.82,
+   "url": "https://www.elitetrader.com/et/threads/optionsellers-com-goes-bust-and-the-apology-video-is-painful-to-watch.327091/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-31",
+   "status": "FOUND",
+   "score": 0.87,
+   "url": "https://www.elitetrader.com/et/threads/thinking-about-starting-a-small-hedge-fund.381002/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-32",
+   "status": "API(skip)",
+   "url": "https://www.flirtingwithmodels.com/episodes/1iIqmQ7piJd"
+  },
+  {
+   "lane": "D_actions",
+   "id": "D-33",
+   "status": "PARTIAL",
+   "score": 0.79,
+   "url": "https://www.toptradersunplugged.com/podcast/volatilitys-blueprint-how-markets-really-move-ft-mandy-xu-ed-tom/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-01",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.jbecker.dev/research/prediction-market-microstructure",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-02",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://moontower.substack.com/p/primer-3-the-nature-of-edge",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-03",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7525326/",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-04",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.quantseeker.com/p/trading-the-fed-the-pre-fomc-drift",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-05",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://tradeinformer.com/prop-weekly/what-ftmo-tells-us-about-prop-firm-finances",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-06",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://www.topstep.com/our-program",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-07",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://resonanzcapital.com/insights/hedge-fund-investing-does-size-really-matter",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-08",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/sterlingcrispin/nothing-ever-happens",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : README lu en brut via raw.githubusercontent.com (github.com renvoie 403 au proxy)"
+  },
+  {
+   "lane": "lead",
+   "id": "L-09",
+   "status": "API(skip)",
+   "url": "https://news.ycombinator.com/item?id=47753472"
+  },
+  {
+   "lane": "lead",
+   "id": "L-10",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://x.com/sterlingcrispin/status/2043723823678382254",
+   "methode": "fxtwitter"
+  },
+  {
+   "lane": "lead",
+   "id": "L-11",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://kacho.io/polymarket-arbitrage-real-numbers",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-12",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v1/leaderboard?timePeriod=month&orderBy=PNL&limit=1&user=0x1c5575dc20e4ea54d1bb09ccda72ccf8a3b684ce"
+  },
+  {
+   "lane": "lead",
+   "id": "L-13",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://uruguabot.com/blog/we-lost-270-building-a-polymarket-bot.html",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-14",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://kacho.io/why-my-polymarket-arbitrage-bot-lost-money",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-15",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://rlafuente.com/posts/2025-3-5-i-lost-150-market-making-on-kalshi",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-16",
+   "status": "API(skip)",
+   "url": "https://news.ycombinator.com/item?id=43073377"
+  },
+  {
+   "lane": "lead",
+   "id": "L-17",
+   "status": "FOUND",
+   "score": 0.82,
+   "url": "https://tevgeniou.github.io/EquityRiskFactors/bibliography/AcademicReviewFactor.pdf",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-18",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://huggingface.co/datasets/SII-WANGZJ/Polymarket_data",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-19",
+   "status": "UNOPENABLE",
+   "url": "https://github.com/kachence/polymm",
+   "methode": "fetch_text",
+   "manuel": "FOUND (manuel) : README lu en brut via raw.githubusercontent.com (github.com renvoie 403 au proxy)"
+  },
+  {
+   "lane": "lead",
+   "id": "L-20",
+   "status": "API(skip)",
+   "url": "https://www.football-data.co.uk/Wisdom_of_crowd_bets.xlsx"
+  },
+  {
+   "lane": "lead",
+   "id": "L-21",
+   "status": "API(skip)",
+   "url": "https://huggingface.co/datasets/SII-WANGZJ/Polymarket_data/resolve/main/trades.parquet"
+  },
+  {
+   "lane": "lead",
+   "id": "L-22",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://docs.polymarket.com/changelog/predictions.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-23",
+   "status": "API(skip)",
+   "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=10y&interval=1d"
+  },
+  {
+   "lane": "lead",
+   "id": "L-24",
+   "status": "API(skip)",
+   "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&start_timestamp=1609459200000&resolution=1D"
+  },
+  {
+   "lane": "lead",
+   "id": "L-25",
+   "status": "API(skip)",
+   "url": "https://huggingface.co/datasets/SII-WANGZJ/Polymarket_data/resolve/main/markets.parquet"
+  },
+  {
+   "lane": "lead",
+   "id": "L-26",
+   "status": "API(skip)",
+   "url": "https://huggingface.co/datasets/SII-WANGZJ/Polymarket_data/resolve/main/markets.parquet#echeances-horaires-2026-05-01"
+  },
+  {
+   "lane": "lead",
+   "id": "L-27",
+   "status": "FOUND",
+   "score": 1.0,
+   "url": "https://raw.githubusercontent.com/ryanfrigo/kalshi-ai-trading-bot/main/docs/JEV.md",
+   "methode": "fetch_text"
+  },
+  {
+   "lane": "lead",
+   "id": "L-28",
+   "status": "API(skip)",
+   "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=ETH&resolution=3600"
+  },
+  {
+   "lane": "lead",
+   "id": "L-29",
+   "status": "API(skip)",
+   "url": "https://data-api.polymarket.com/v2/user-pnl?user=0xcc500cbcc8b7cf5bd21975ebbea34f21b5644c82&interval=max&fidelity=1d"
+  }
+ ]
+}
