@@ -176,4 +176,7 @@ Adopté le 2026-09-25 : `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` (ACCEPTÉE).
 - Périmètre interdit : tout le rail sûr (P0/Form 4, Gates A/B/C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés) — voir §2 de la proposition.
 - Anti-bureaucratie : un document par décision réelle ; un candidat remplacé par sa version finale part dans `archive/`.
 - Amendement SHADOW_DIRECT adopté le 2026-09-27 (α forward = 0,05/(k·(k+1)) pour la k-ième entrée, Σ < 0,05 ; 5 slots au plus) : voir §4 de la proposition.
+- Point d'étape propriétaire le 2026-10-05 (décision du 2026-09-27) : on décide alors de la suite. C'est une décision de ressources, pas un verdict : seul le t-SPRT déclaré peut produire un `FORWARD_PASS`.
+- Juridiction : aucune restriction de pays pour la recherche papier/shadow ; un point juridique avec le propriétaire, pour le pays d'exécution, précède toute exécution. `desk/compliance.py` reste appliqué (les pratiques illégales restent interdites partout).
+- Pistes maker (tenue de marché) : le P&L papier n'est qu'une borne haute ; pas de `FORWARD_PASS` sur des fills papier sans modèle de file d'attente et de sélection adverse.
 - `REAL_CAPITAL_AUTHORIZED = FALSE` (inchangé).
