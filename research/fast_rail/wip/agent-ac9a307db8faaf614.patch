@@ -1,0 +1,1045 @@
+diff --git a/research/fast_rail/h010/analysis.py b/research/fast_rail/h010/analysis.py
+new file mode 100644
+index 0000000..af5a0b2
+--- /dev/null
++++ b/research/fast_rail/h010/analysis.py
+@@ -0,0 +1,246 @@
++"""H-010 analysis: Kalshi maker rent by category.
++
++Measurement only, paper/shadow. Pure functions (tested offline in
++tests/test_fast_rail_h010.py) plus ``main`` which reads the stored sample under
++data/fast_rail/h010/ and writes results.json. No discovery/validation split: the registry
++falsification is evaluated once on the whole sampled window (no free parameter).
++
++Sign convention (taker_side is the AGGRESSOR's side): taker_side "no" means the taker
++bought NO, so the maker (resting order) bought YES at p -> maker P&L = ref - p. taker_side
++"yes" means the maker sold YES at p -> maker P&L = p - ref.
++"""
++from __future__ import annotations
++
++import bisect
++import datetime as dt
++import gzip
++import json
++import math
++import statistics
++import sys
++from dataclasses import dataclass, field
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import config  # noqa: E402
++
++ROOT = Path(__file__).resolve().parents[3]
++DATA = ROOT / "data" / "fast_rail" / "h010"
++
++
++@dataclass(frozen=True)
++class Print:
++    t: float          # epoch seconds
++    price: float      # YES price, dollars
++    count: float      # contracts
++    taker_side: str   # "yes" | "no"
++
++
++def maker_sign(taker_side: str) -> int:
++    """+1 if the maker bought YES (taker sold YES / bought NO), -1 if the maker sold YES."""
++    if taker_side == "no":
++        return 1
++    if taker_side == "yes":
++        return -1
++    raise ValueError(taker_side)
++
++
++def maker_pnl(price: float, reference: float, taker_side: str) -> float:
++    return maker_sign(taker_side) * (reference - price)
++
++
++def _ceil_cent(dollars: float) -> float:
++    """Round up to the nearest cent, tolerant of float noise on exact-cent amounts."""
++    cents = round(dollars * 100, 6)
++    return math.ceil(cents) / 100.0
++
++
++def maker_fee_dollars(price: float, contracts: float, fee_type: str | None,
++                       fee_multiplier: float | None) -> float:
++    """Total (not per-contract) maker fee for one print. 0 unless the series' fee_type is
++    one that charges makers (config.MAKER_FEE_TYPES); see config.py for the empirical
++    fee_type survey behind this assumption."""
++    if fee_type not in config.MAKER_FEE_TYPES:
++        return 0.0
++    mult = fee_multiplier if fee_multiplier is not None else 1.0
++    raw = config.MAKER_FEE_RATE * mult * contracts * price * (1.0 - price)
++    return _ceil_cent(raw)
++
++
++def markout_reference(prints: list[Print], times: list[float], i: int,
++                       start_s: float = config.MARKOUT_START_S,
++                       end_s: float = config.MARKOUT_END_S) -> float | None:
++    """VWAP of the same market's prints in [t_i + start, t_i + end); None if none (no fill-in:
++    a print with no later same-market print in that window is simply skipped, never imputed)."""
++    t0 = prints[i].t
++    lo = bisect.bisect_left(times, t0 + start_s)
++    hi = bisect.bisect_left(times, t0 + end_s)
++    num = den = 0.0
++    for j in range(lo, hi):
++        num += prints[j].price * prints[j].count
++        den += prints[j].count
++    return num / den if den > 0 else None
++
++
++@dataclass
++class MarketUnit:
++    """One sampled market == one event (the sample is one market per event by construction,
++    so clustering by market and clustering by event coincide)."""
++    category: str
++    ticker: str
++    event_ticker: str
++    close_ts: float
++    sums: dict = field(default_factory=dict)
++
++    def add(self, key: str, contracts: float, gross: float, fee: float) -> None:
++        s = self.sums.setdefault(key, {"c": 0.0, "gross": 0.0, "fee": 0.0})
++        s["c"] += contracts
++        s["gross"] += gross * contracts
++        s["fee"] += fee * contracts
++
++    def per_contract(self, key: str, fee_mult: float = 1.0) -> float | None:
++        s = self.sums.get(key)
++        if not s or s["c"] <= 0:
++            return None
++        return (s["gross"] - fee_mult * s["fee"]) / s["c"]
++
++    def dollars(self, key: str, fee_mult: float = 1.0) -> float:
++        s = self.sums.get(key)
++        return 0.0 if not s else s["gross"] - fee_mult * s["fee"]
++
++
++def process_market(unit: MarketUnit, prints: list[Print], result: str | None,
++                    fee_type: str | None, fee_multiplier: float | None) -> None:
++    prints = sorted(prints, key=lambda p: p.t)
++    times = [p.t for p in prints]
++    settle = {"yes": 1.0, "no": 0.0}.get(result or "")
++    for i, p in enumerate(prints):
++        fee_total = maker_fee_dollars(p.price, p.count, fee_type, fee_multiplier)
++        fee_pc = fee_total / p.count if p.count > 0 else 0.0
++        if settle is not None:
++            unit.add("settlement", p.count, maker_pnl(p.price, settle, p.taker_side), fee_pc)
++        ref = markout_reference(prints, times, i)
++        if ref is None:
++            continue  # no same-market print in [t+1h, t+2h): skipped, never filled in
++        unit.add("markout", p.count, maker_pnl(p.price, ref, p.taker_side), fee_pc)
++
++
++def t_stat(xs: list[float]) -> float:
++    if len(xs) < 2:
++        return 0.0
++    sd = statistics.stdev(xs)
++    return statistics.fmean(xs) / (sd / math.sqrt(len(xs))) if sd > 0 else 0.0
++
++
++def evaluate(units: list[MarketUnit], key: str) -> dict:
++    us = sorted((u for u in units if u.per_contract(key) is not None), key=lambda u: u.close_ts)
++    x1 = [u.per_contract(key) for u in us]
++    x2 = [u.per_contract(key, 2.0) for u in us]
++    x0 = [u.per_contract(key, 0.0) for u in us]
++    out = {"n": len(us),
++           "mean_gross_c": 100 * statistics.fmean(x0) if x0 else None,
++           "mean_net_c": 100 * statistics.fmean(x1) if x1 else None,
++           "mean_net_fee2x_c": 100 * statistics.fmean(x2) if x2 else None,
++           "stdev_net_c": 100 * statistics.stdev(x1) if len(x1) > 1 else None,
++           "t_net": t_stat(x1), "t_net_fee2x": t_stat(x2),
++           "contracts": sum(u.sums[key]["c"] for u in us)}
++    half = len(us) // 2
++    out["half_means_c"] = [100 * statistics.fmean(x1[:half]) if x1[:half] else None,
++                           100 * statistics.fmean(x1[half:]) if x1[half:] else None]
++    dollars = sorted((u.dollars(key) for u in us), reverse=True)
++    total = sum(dollars)
++    k = max(1, math.ceil(0.10 * len(dollars))) if dollars else 0
++    out["top_decile_share"] = (sum(dollars[:k]) / total) if total > 0 else None
++    return out
++
++
++def verdict_for_category(markout: dict) -> tuple[str, list[str]]:
++    """Registry falsification, evaluated once (no discovery split). Returns (level, causes).
++
++    The registry's four explicit gates are t/2x-fees/halves/top-decile. POWER (n below the
++    registry's own pre-registered markets_needed_markout=58) additionally gates CANDIDATE
++    here, not just labels a cause: per FAST_RAIL_STATE.md's standing lesson ("the bottleneck
++    is the power of the test, not the trial count") and H-003's precedent (a mechanically
++    "passing" but degenerate/underpowered t was still REJECTed), a "significant" t from an
++    underpowered sample is not treated as a trustworthy CANDIDATE.
++    """
++    causes = []
++    t_ok = markout["t_net"] >= config.REQUIRED_T
++    halves_ok = all((h or 0) > 0 for h in markout["half_means_c"])
++    if not t_ok or not halves_ok:
++        causes.append("SIGNAL")
++    power_ok = markout["n"] >= config.MARKETS_NEEDED_MARKOUT
++    if not power_ok:
++        causes.append("POWER")
++    fee2x_ok = (markout["mean_net_fee2x_c"] or 0) > 0
++    if t_ok and not fee2x_ok:
++        causes.append("COSTS")
++    conc_ok = markout["top_decile_share"] is not None and markout["top_decile_share"] < config.MAX_TOP_DECILE_SHARE
++    if not conc_ok:
++        causes.append("CONCENTRATION")
++    level = "CANDIDATE" if (t_ok and halves_ok and fee2x_ok and conc_ok and power_ok) else "REJECT"
++    return level, causes
++
++
++def decode(rec: dict) -> list[Print]:
++    out, t = [], 0
++    for dtm, p, c, s in zip(rec["t"], rec["p"], rec["c"], rec["s"]):
++        t += dtm
++        out.append(Print(t / 1000.0, p / 1e4, c / 100.0, "yes" if s == "y" else "no"))
++    return out
++
++
++def load() -> tuple[list[dict], dict[str, dict]]:
++    with gzip.open(DATA / "markets.jsonl.gz", "rt") as f:
++        markets = [json.loads(line) for line in f]
++    trades: dict[str, dict] = {}
++    for cat in config.CATEGORIES:
++        path = DATA / f"trades_{cat}.jsonl.gz"
++        if not path.exists():
++            continue
++        with gzip.open(path, "rt") as f:
++            for line in f:
++                rec = json.loads(line)
++                trades[rec["ticker"]] = rec
++    return markets, trades
++
++
++def build_units(markets: list[dict], trades: dict[str, dict]) -> list[MarketUnit]:
++    units = []
++    for m in markets:
++        rec = trades.get(m["ticker"])
++        if rec is None:
++            continue
++        u = MarketUnit(m["category"], m["ticker"], m["event_ticker"],
++                       dt.datetime.fromisoformat(m["close_time"].replace("Z", "+00:00")).timestamp())
++        process_market(u, decode(rec), rec.get("result"), rec.get("fee_type"), rec.get("fee_multiplier"))
++        units.append(u)
++    return units
++
++
++def main() -> None:
++    markets, trades = load()
++    units = build_units(markets, trades)
++    res: dict = {"hypothesis": config.HYPOTHESIS_ID, "trials": config.TRIALS,
++                 "required_t": config.REQUIRED_T, "categories": {}}
++    for cat in config.CATEGORIES:
++        us = [u for u in units if u.category == cat]
++        markout = evaluate(us, "markout")
++        settlement = evaluate(us, "settlement")
++        level, causes = verdict_for_category(markout)
++        res["categories"][cat] = {
++            "n_markets_with_trades": len(us),
++            "markout": markout,
++            "settlement": settlement,
++            "assumed_sigma_markout_c": config.ASSUMED_SIGMA_MARKOUT_C,
++            "power_flag_markout": markout["n"] < config.MARKETS_NEEDED_MARKOUT,
++            "power_flag_settlement": settlement["n"] < config.EVENTS_NEEDED_SETTLEMENT,
++            "verdict": level, "causes": causes,
++        }
++    out = Path(__file__).resolve().parent / "results.json"
++    out.write_text(json.dumps(res, indent=1, default=str) + "\n")
++    print(json.dumps(res, indent=1, default=str))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/research/fast_rail/h010/config.py b/research/fast_rail/h010/config.py
+new file mode 100644
+index 0000000..d897c0e
+--- /dev/null
++++ b/research/fast_rail/h010/config.py
+@@ -0,0 +1,67 @@
++"""H-010 frozen design. Declared in research/fast_rail/registry.jsonl (id "H-010", event
++"declared", 2026-09-27T10:00:00Z) BEFORE any market or trade was read. Nothing here may
++change after sampling runs; a change is a rerun and consumes trials.
++
++Grid, sampling rule, KPI and thresholds are copied verbatim from that registry line; this
++file only turns them into runnable constants. See RESULT.md for the fee_type/fee_multiplier
++survey that backs the maker-fee assumption below.
++"""
++from __future__ import annotations
++
++import datetime as dt
++
++HYPOTHESIS_ID = "H-010"
++DATASET_KEY = "kalshi_trades_by_category_2026h2"
++DECLARED_TRIALS = 3
++RERUNS = 0  # bump on every rerun after a bug fix; TRIALS = DECLARED_TRIALS + RERUNS
++TRIALS = DECLARED_TRIALS + RERUNS
++REQUIRED_T = 2.394  # required_t_statistic(3) (quant.factory.evaluate); checked in tests
++
++CATEGORIES = ("Sports", "Entertainment", "World")  # Kalshi event/series `category`, verbatim
++
++WINDOW_START = dt.date(2026, 4, 17)
++WINDOW_END = dt.date(2026, 9, 26)  # inclusive
++
++SEED = 20260927
++MAX_EVENTS_PER_CATEGORY = 400
++
++# "Settled markets ... with >= 1 trade", decided from market METADATA only, before any
++# trade print is read: volume_fp > 0 is the metadata-only proxy for ">=1 trade" (Kalshi's
++# volume field is a running count of contracts traded and cannot be > 0 with zero prints).
++SETTLED_STATUSES = ("finalized", "settled")
++SETTLED_RESULTS = ("yes", "no")
++
++# KPI primary: markout at t+1h, reference = VWAP of prints in [t+1h, t+2h).
++MARKOUT_START_S = 3600.0
++MARKOUT_END_S = 7200.0
++
++# Kalshi maker fee (state assumption). Empirical /series survey on 2026-09-27 of every
++# series in the 3 target categories found exactly two fee_type values:
++#   "quadratic"                -> Kalshi's standard, taker-only schedule -> maker fee 0.
++#   "quadratic_with_maker_fees" -> makers are charged too.
++# Where charged: fee = ceil_to_cent(0.0175 * fee_multiplier * C * P * (1-P)) per print
++# (registry formula; fee_multiplier is the series' own API field, e.g. some series charge
++# at 0.5x). "also at 2x" means this whole fee (post-multiplier) doubled.
++MAKER_FEE_RATE = 0.0175
++NO_MAKER_FEE_TYPES = ("quadratic",)
++MAKER_FEE_TYPES = ("quadratic_with_maker_fees",)
++
++# Cap on prints read per sampled market, committed BEFORE any trade is fetched or KPI
++# computed (huge-volume-market rule required by the mission brief).
++CAP_PRINTS_PER_MARKET = 2000  # keep the first 2000 prints in chronological order
++
++# Pre-registered power assumptions (registry "power" block) -- for reporting only.
++ASSUMED_EFFECT_C = 0.95
++ASSUMED_SIGMA_MARKOUT_C = 3.0
++ASSUMED_SIGMA_SETTLEMENT_C = 45.0
++MARKETS_NEEDED_MARKOUT = 58
++EVENTS_NEEDED_SETTLEMENT = 12860
++
++MAX_TOP_DECILE_SHARE = 0.50
++
++
++def window_ts() -> tuple[int, int]:
++    """[start, end) as epoch seconds on Kalshi close_time; end is exclusive (day after WINDOW_END)."""
++    start = dt.datetime.combine(WINDOW_START, dt.time(), dt.timezone.utc)
++    end = dt.datetime.combine(WINDOW_END + dt.timedelta(days=1), dt.time(), dt.timezone.utc)
++    return int(start.timestamp()), int(end.timestamp())
+diff --git a/research/fast_rail/h010/fetch.py b/research/fast_rail/h010/fetch.py
+new file mode 100644
+index 0000000..9c22db0
+--- /dev/null
++++ b/research/fast_rail/h010/fetch.py
+@@ -0,0 +1,207 @@
++"""H-010 trade fetch: every print for the frozen sample (data/fast_rail/h010/markets.jsonl.gz).
++
++Public, unauthenticated Kalshi endpoints only. A single global rate limiter (shared across
++worker threads) keeps requests paced; 429s are slept through and retried, never bypassed.
++/historical/cutoff decides, per market, whether /historical/trades alone suffices (its
++close_time is at or before the cutoff, so every print necessarily predates it) or whether
++/markets/trades must also be queried (the market may have kept trading past the cutoff);
++results from both are merged and de-duplicated by trade_id.
++
++Huge-volume rule, stated and committed BEFORE any KPI is computed (config.CAP_PRINTS_PER_MARKET
++= 2000): keep only the first 2000 prints in chronological order per market.
++
++Storage (data/fast_rail/h010/):
++  trades_<CATEGORY>.jsonl.gz  one line per sampled market: ticker, n_prints (kept),
++                              n_prints_total (before the cap), fee_type/fee_multiplier,
++                              prints stored column-wise (t = epoch-ms deltas, p = YES price
++                              in 1e-4 $, c = contracts x100, s = taker_side "y"/"n"),
++                              plus provenance (urls sample, page count, fetched_at, sha256
++                              of the raw page bodies).
++  manifest.json               sha256 of every stored file + fetch parameters.
++
++Progress is checkpointed under data/fast_rail/h010/raw/ (gitignored) so a re-run resumes
++without re-fetching markets already done.
++
++Usage: python3 research/fast_rail/h010/fetch.py
++"""
++from __future__ import annotations
++
++import datetime as dt
++import gzip
++import hashlib
++import json
++import os
++import sys
++import threading
++import time
++import urllib.error
++import urllib.request
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import config  # noqa: E402
++
++BASE = "https://api.elections.kalshi.com/trade-api/v2"
++ROOT = Path(__file__).resolve().parents[3]
++OUT = ROOT / "data" / "fast_rail" / "h010"
++RAW = OUT / "raw"
++PROGRESS = RAW / "trades_progress.jsonl"
++MIN_INTERVAL_S = 1.0 / 6.0  # <= 6 requests/second across all threads (matches H-004)
++
++_lock = threading.Lock()
++_last = [0.0]
++_series_fee_cache: dict[str, dict] = {}
++_series_lock = threading.Lock()
++
++
++def get(path: str) -> tuple[dict, bytes]:
++    for attempt in range(10):
++        with _lock:
++            wait = _last[0] + MIN_INTERVAL_S - time.monotonic()
++            if wait > 0:
++                time.sleep(wait)
++            _last[0] = time.monotonic()
++        try:
++            with urllib.request.urlopen(BASE + path, timeout=60) as r:
++                body = r.read()
++            return json.loads(body), body
++        except urllib.error.HTTPError as e:
++            if e.code == 404:
++                return {}, b""
++            time.sleep(5 * (attempt + 1) if e.code == 429 else min(30, 2 ** attempt))
++        except Exception:
++            time.sleep(min(30, 2 ** attempt))
++    raise RuntimeError(f"failed: {path}")
++
++
++def series_fee(series_ticker: str) -> dict:
++    """fee_type/fee_multiplier for a series, fetched once and cached (small, fixed set)."""
++    with _series_lock:
++        if series_ticker in _series_fee_cache:
++            return _series_fee_cache[series_ticker]
++    d, _ = get(f"/series/{series_ticker}")
++    info = {"fee_type": d.get("series", {}).get("fee_type"),
++            "fee_multiplier": d.get("series", {}).get("fee_multiplier")}
++    with _series_lock:
++        _series_fee_cache[series_ticker] = info
++    return info
++
++
++def fetch_trades(market: dict, cutoff_ts: float) -> dict:
++    use_historical = True
++    use_live = market["close_ts"] > cutoff_ts
++    urls, h, by_id = [], hashlib.sha256(), {}
++    for prefix, flag in (("/historical/trades", use_historical), ("/markets/trades", use_live)):
++        if not flag:
++            continue
++        cursor = ""
++        while True:
++            q = f"{prefix}?ticker={market['ticker']}&limit=1000" + (f"&cursor={cursor}" if cursor else "")
++            d, body = get(q)
++            urls.append(BASE + q)
++            h.update(body)
++            tr = d.get("trades", [])
++            for t in tr:
++                by_id[t["trade_id"]] = t
++            cursor = d.get("cursor")
++            if not cursor or not tr:
++                break
++    rows = sorted(by_id.values(), key=lambda t: t["created_time"])
++    n_total = len(rows)
++    rows = rows[:config.CAP_PRINTS_PER_MARKET]
++    fee = series_fee(market["series_ticker"])
++    t_delta, prev, p, c, s = [], 0, [], [], []
++    for t in rows:
++        ts_ms = int(dt.datetime.fromisoformat(t["created_time"].replace("Z", "+00:00")).timestamp() * 1000)
++        t_delta.append(ts_ms - prev)
++        prev = ts_ms
++        p.append(round(float(t["yes_price_dollars"]) * 1e4))
++        c.append(round(float(t["count_fp"]) * 100))
++        s.append("y" if t["taker_side"] == "yes" else "n")
++    return {"ticker": market["ticker"], "event_ticker": market["event_ticker"],
++            "category": market["category"], "series_ticker": market["series_ticker"],
++            "result": market["result"], "close_time": market["close_time"],
++            "fee_type": fee["fee_type"], "fee_multiplier": fee["fee_multiplier"],
++            "n_prints": len(rows), "n_prints_total": n_total, "capped": n_total > len(rows),
++            "t": t_delta, "p": p, "c": c, "s": "".join(s),
++            "provenance": {"urls_sample": urls[:2], "n_pages": len(urls),
++                           "fetched_at": dt.datetime.now(dt.timezone.utc).isoformat(),
++                           "sha256_raw_pages": h.hexdigest()}}
++
++
++def load_sample() -> list[dict]:
++    with gzip.open(OUT / "markets.jsonl.gz", "rt") as f:
++        return [json.loads(line) for line in f]
++
++
++def load_progress() -> dict[str, dict]:
++    done: dict[str, dict] = {}
++    if PROGRESS.exists():
++        with PROGRESS.open() as f:
++            for line in f:
++                r = json.loads(line)
++                done[r["ticker"]] = r
++    return done
++
++
++def sha256_file(path: Path) -> str:
++    return hashlib.sha256(path.read_bytes()).hexdigest()
++
++
++def main() -> None:
++    RAW.mkdir(parents=True, exist_ok=True)
++    cutoff, _ = get("/historical/cutoff")
++    cutoff_ts = dt.datetime.fromisoformat(cutoff["trades_created_ts"].replace("Z", "+00:00")).timestamp()
++    sample = load_sample()
++    done = load_progress()
++    todo = [m for m in sample if m["ticker"] not in done]
++    print(f"sample {len(sample)} markets, {len(done)} already fetched, {len(todo)} to go", flush=True)
++    if todo:
++        pfh = PROGRESS.open("a")
++        plock = threading.Lock()
++        n = [0]
++
++        def work(m: dict) -> None:
++            rec = fetch_trades(m, cutoff_ts)
++            with plock:
++                pfh.write(json.dumps(rec, separators=(",", ":")) + "\n")
++                pfh.flush()
++                n[0] += 1
++                if n[0] % 50 == 0:
++                    print(n[0], "/", len(todo), flush=True)
++
++        with ThreadPoolExecutor(6) as ex:
++            list(ex.map(work, todo))
++        pfh.close()
++        done = load_progress()
++
++    OUT.mkdir(parents=True, exist_ok=True)
++    by_cat: dict[str, list[dict]] = {c: [] for c in config.CATEGORIES}
++    for m in sample:
++        rec = done.get(m["ticker"])
++        if rec is not None:
++            by_cat[m["category"]].append(rec)
++    files: dict[str, dict] = {}
++    for cat, recs in by_cat.items():
++        recs.sort(key=lambda r: r["ticker"])
++        path = OUT / f"trades_{cat}.jsonl.gz"
++        tmp = path.with_suffix(".tmp")
++        with gzip.open(tmp, "wt", compresslevel=9) as f:
++            for r in recs:
++                f.write(json.dumps(r, separators=(",", ":")) + "\n")
++        os.replace(tmp, path)
++        files[path.name] = {"sha256": sha256_file(path), "bytes": path.stat().st_size, "n_markets": len(recs)}
++        print(cat, "markets", len(recs), "prints", sum(r["n_prints"] for r in recs),
++              "bytes", files[path.name]["bytes"], flush=True)
++    manifest = {"hypothesis": config.HYPOTHESIS_ID, "dataset_key": config.DATASET_KEY,
++                "base_url": BASE, "cutoff": cutoff, "cap_prints_per_market": config.CAP_PRINTS_PER_MARKET,
++                "window": [config.WINDOW_START.isoformat(), config.WINDOW_END.isoformat()],
++                "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(), "files": files,
++                "total_bytes": sum(v["bytes"] for v in files.values())}
++    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n")
++    print("total bytes", manifest["total_bytes"])
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/research/fast_rail/h010/sample.py b/research/fast_rail/h010/sample.py
+new file mode 100644
+index 0000000..3534877
+--- /dev/null
++++ b/research/fast_rail/h010/sample.py
+@@ -0,0 +1,252 @@
++"""H-010 sampling: settled markets by category, decided from market METADATA ONLY.
++
++No trade print is read anywhere in this file. Three phases, run in order:
++
++  python3 research/fast_rail/h010/sample.py index    # paginate /events WITHOUT nested
++                                                       # markets (light payload) for the
++                                                       # whole window; keep (event_ticker,
++                                                       # category, series_ticker) for our
++                                                       # 3 categories
++  python3 research/fast_rail/h010/sample.py detail    # for each qualifying event ticker
++                                                       # from `index`, fetch its markets
++                                                       # (with_nested_markets=true) and keep
++                                                       # the ones that qualify
++  python3 research/fast_rail/h010/sample.py build     # group by event, apply the declared
++                                                       # seeded sampling rule, write the
++                                                       # frozen sample
++
++Each phase is resumable (checkpointed cursor / done-set) and idempotent. Raw output lives
++under data/fast_rail/h010/raw/ (gitignored: data/fast_rail/*/raw/); only `build`'s output
++(the frozen sample) is committed.
++
++Kalshi does not let /events filter by category server-side (checked empirically: passing
++category=<x> returns identical results regardless of <x>), so every settled event in the
++window must be scanned and category read from the event's own (authoritative) `category`
++field. Doing that scan WITHOUT nested markets first (this is what made a first attempt with
++with_nested_markets=true directly degrade to several seconds/page: a minority of events --
++large multi-leg combo/exotic products -- carry huge nested-market arrays) keeps each index
++page small and fast; the heavier per-event detail fetch then only runs for the events that
++are actually in Sports/Entertainment/World.
++"""
++from __future__ import annotations
++
++import datetime as dt
++import gzip
++import hashlib
++import json
++import random
++import sys
++import threading
++import time
++import urllib.error
++import urllib.request
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import config  # noqa: E402
++
++BASE = "https://api.elections.kalshi.com/trade-api/v2"
++ROOT = Path(__file__).resolve().parents[3]
++OUT = ROOT / "data" / "fast_rail" / "h010"
++RAW = OUT / "raw"
++IDX_CKPT = RAW / "index_checkpoint.json"
++IDX_JL = RAW / "events_index.jsonl"
++DETAIL_DONE = RAW / "detail_done.jsonl"
++EVENTS_JL = RAW / "events_settled.jsonl"
++
++_interval = [0.15]  # adaptive, only ever grows (never bypass 429; see _get)
++_lock = threading.Lock()
++
++
++def _get(path: str) -> dict:
++    for attempt in range(12):
++        with _lock:
++            time.sleep(_interval[0])
++        try:
++            with urllib.request.urlopen(BASE + path, timeout=30) as r:
++                return json.loads(r.read())
++        except urllib.error.HTTPError as e:
++            if e.code == 429:
++                with _lock:
++                    _interval[0] = min(5.0, _interval[0] * 1.5 + 0.15)
++                time.sleep(3 * (attempt + 1))
++                continue
++            time.sleep(min(20, 2 ** attempt))
++        except Exception:
++            time.sleep(min(20, 2 ** attempt))
++    raise RuntimeError("failed: " + path)
++
++
++def _parse_ts(s: str) -> float:
++    return dt.datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp()
++
++
++def qualifying_row(event: dict, market: dict, start_ts: int, end_ts: int) -> dict | None:
++    """Pure predicate + projection: metadata-only (no trade endpoint touched).
++
++    ">=1 trade" is read off ``volume_fp`` (contracts traded to date): it is a running
++    count derived from the exchange's own trade log and cannot be > 0 with zero prints.
++    """
++    if market.get("status") not in config.SETTLED_STATUSES:
++        return None
++    if market.get("result") not in config.SETTLED_RESULTS:
++        return None
++    ct = market.get("close_time")
++    if not ct:
++        return None
++    ts = _parse_ts(ct)
++    if not (start_ts <= ts < end_ts):
++        return None
++    vol = float(market.get("volume_fp") or 0)
++    if vol <= 0:
++        return None
++    return {
++        "category": event["category"],
++        "series_ticker": event.get("series_ticker"),
++        "event_ticker": event["event_ticker"],
++        "ticker": market["ticker"],
++        "close_time": ct,
++        "close_ts": ts,
++        "volume_fp": vol,
++        "result": market["result"],
++        "status": market["status"],
++    }
++
++
++def index_events() -> None:
++    """Phase 1: light (no nested markets) full scan of settled events in the window."""
++    RAW.mkdir(parents=True, exist_ok=True)
++    start_ts, end_ts = config.window_ts()
++    ckpt = {"cursor": "", "pages": 0, "events_scanned": 0,
++            "kept": {c: 0 for c in config.CATEGORIES}}
++    if IDX_CKPT.exists():
++        ckpt = json.loads(IDX_CKPT.read_text())
++    fh = IDX_JL.open("a")
++    t0 = time.monotonic()
++    while True:
++        q = (f"/events?status=settled&min_close_ts={start_ts}&max_close_ts={end_ts}"
++             f"&with_nested_markets=false&limit=200")
++        if ckpt["cursor"]:
++            q += f"&cursor={ckpt['cursor']}"
++        d = _get(q)
++        evs = d.get("events", [])
++        for ev in evs:
++            cat = ev.get("category")
++            if cat in config.CATEGORIES:
++                fh.write(json.dumps({"event_ticker": ev["event_ticker"], "category": cat,
++                                     "series_ticker": ev.get("series_ticker")},
++                                    sort_keys=True) + "\n")
++                ckpt["kept"][cat] += 1
++        ckpt["events_scanned"] += len(evs)
++        ckpt["pages"] += 1
++        fh.flush()
++        cursor = d.get("cursor")
++        ckpt["cursor"] = cursor or ""
++        IDX_CKPT.write_text(json.dumps(ckpt))
++        if ckpt["pages"] % 20 == 0:
++            print(ckpt["pages"], "pages", ckpt["events_scanned"], "events scanned",
++                  ckpt["kept"], round(time.monotonic() - t0, 1), "s", flush=True)
++        if not cursor or not evs:
++            break
++    fh.close()
++    print("INDEX DONE", json.dumps(ckpt), flush=True)
++
++
++def fetch_detail() -> None:
++    """Phase 2: for each qualifying event ticker, fetch its markets and filter."""
++    start_ts, end_ts = config.window_ts()
++    wanted: dict[str, dict] = {}
++    with IDX_JL.open() as f:
++        for line in f:
++            r = json.loads(line)
++            wanted[r["event_ticker"]] = r
++    done = set()
++    if DETAIL_DONE.exists():
++        with DETAIL_DONE.open() as f:
++            for line in f:
++                done.add(json.loads(line)["event_ticker"])
++    todo = [et for et in wanted if et not in done]
++    print(f"{len(wanted)} qualifying events, {len(done)} already fetched, {len(todo)} to go", flush=True)
++    dfh = DETAIL_DONE.open("a")
++    efh = EVENTS_JL.open("a")
++    plock = threading.Lock()
++    n = [0]
++
++    def work(et: str) -> None:
++        d = _get(f"/events/{et}?with_nested_markets=true")
++        ev = d.get("event", {})
++        rows = [qualifying_row(ev, m, start_ts, end_ts) for m in ev.get("markets", [])]
++        rows = [r for r in rows if r is not None]
++        with plock:
++            for r in rows:
++                efh.write(json.dumps(r, sort_keys=True) + "\n")
++            efh.flush()
++            dfh.write(json.dumps({"event_ticker": et, "n_kept": len(rows)}) + "\n")
++            dfh.flush()
++            n[0] += 1
++            if n[0] % 100 == 0:
++                print(n[0], "/", len(todo), flush=True)
++
++    with ThreadPoolExecutor(6) as ex:
++        list(ex.map(work, todo))
++    dfh.close()
++    efh.close()
++    print("DETAIL DONE", n[0], "events fetched", flush=True)
++
++
++def pick_sample(rows: list[dict], seed: int = config.SEED,
++                 max_events: int = config.MAX_EVENTS_PER_CATEGORY) -> list[dict]:
++    """Declared rule: ONE market per event (uniform, random.Random(seed)), then at most
++    ``max_events`` events (uniform, same seed). Deterministic regardless of input order."""
++    by_event: dict[str, list[dict]] = {}
++    for r in rows:
++        by_event.setdefault(r["event_ticker"], []).append(r)
++    events = sorted(by_event)
++    rng1 = random.Random(seed)
++    chosen = {ev: rng1.choice(sorted(by_event[ev], key=lambda r: r["ticker"])) for ev in events}
++    rng2 = random.Random(seed)
++    sampled_events = rng2.sample(events, max_events) if len(events) > max_events else events
++    return [chosen[ev] for ev in sorted(sampled_events)]
++
++
++def build_sample() -> dict:
++    rows_by_cat: dict[str, list[dict]] = {c: [] for c in config.CATEGORIES}
++    events_by_cat: dict[str, set] = {c: set() for c in config.CATEGORIES}
++    with EVENTS_JL.open() as f:
++        for line in f:
++            r = json.loads(line)
++            c = r["category"]
++            if c in rows_by_cat:
++                rows_by_cat[c].append(r)
++                events_by_cat[c].add(r["event_ticker"])
++    OUT.mkdir(parents=True, exist_ok=True)
++    summary = {"hypothesis": config.HYPOTHESIS_ID, "dataset_key": config.DATASET_KEY,
++               "window": [config.WINDOW_START.isoformat(), config.WINDOW_END.isoformat()],
++               "seed": config.SEED, "max_events_per_category": config.MAX_EVENTS_PER_CATEGORY,
++               "categories": {}}
++    all_sampled: list[dict] = []
++    for c in config.CATEGORIES:
++        sample = pick_sample(rows_by_cat[c])
++        summary["categories"][c] = {
++            "n_qualifying_markets": len(rows_by_cat[c]),
++            "n_qualifying_events": len(events_by_cat[c]),
++            "n_sampled_events": len(sample),
++        }
++        all_sampled.extend(sample)
++    all_sampled.sort(key=lambda r: (r["category"], r["ticker"]))
++    path = OUT / "markets.jsonl.gz"
++    tmp = path.with_suffix(".tmp")
++    with gzip.open(tmp, "wt", compresslevel=9) as f:
++        for r in all_sampled:
++            f.write(json.dumps(r, sort_keys=True) + "\n")
++    tmp.replace(path)
++    summary["sha256_markets_jsonl_gz"] = hashlib.sha256(path.read_bytes()).hexdigest()
++    summary["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
++    (OUT / "sample_summary.json").write_text(json.dumps(summary, indent=1) + "\n")
++    print(json.dumps(summary, indent=1))
++    return summary
++
++
++if __name__ == "__main__":
++    {"index": index_events, "detail": fetch_detail, "build": build_sample}[sys.argv[1]]()
+diff --git a/tests/test_fast_rail_h010.py b/tests/test_fast_rail_h010.py
+new file mode 100644
+index 0000000..08e28e4
+--- /dev/null
++++ b/tests/test_fast_rail_h010.py
+@@ -0,0 +1,243 @@
++"""Offline adversarial tests for fast-rail H-010 (Kalshi maker rent by category).
++
++All fixture numbers and tickers are INVENTED for testing and are not market data.
++"""
++from __future__ import annotations
++
++import importlib.util
++import random
++import sys
++import unittest
++from pathlib import Path
++
++_DIR = Path(__file__).resolve().parents[1] / "research" / "fast_rail" / "h010"
++sys.path.insert(0, str(_DIR))
++
++
++def _load(name: str, filename: str):
++    spec = importlib.util.spec_from_file_location(name, _DIR / filename)
++    mod = importlib.util.module_from_spec(spec)
++    sys.modules[name] = mod
++    spec.loader.exec_module(mod)
++    return mod
++
++
++config = _load("h010_config", "config.py")
++a = _load("h010_analysis", "analysis.py")
++s = _load("h010_sample", "sample.py")
++
++P = a.Print
++
++
++class MarkoutReferenceWindow(unittest.TestCase):
++    """The reference must never use prints before t+1h or at/after t+2h."""
++
++    def test_never_uses_prints_before_t_plus_3600(self):
++        # INVENTED: prints at +0, +1000, +3599.999 are extreme and must be ignored.
++        ps = [P(0, 0.50, 1, "yes"), P(1000, 0.99, 50, "no"), P(3599.999, 0.01, 50, "yes"),
++              P(3600, 0.60, 2, "yes"), P(5000, 0.70, 2, "no"), P(7199.999, 0.20, 6, "no")]
++        ref = a.markout_reference(ps, [p.t for p in ps], 0)
++        # only [3600, 7200) counts: (0.60*2 + 0.70*2 + 0.20*6) / 10
++        self.assertAlmostEqual(ref, (0.60 * 2 + 0.70 * 2 + 0.20 * 6) / 10.0)
++
++    def test_window_excludes_t_plus_7200_exactly(self):
++        ps = [P(0, 0.50, 1, "yes"), P(7200, 0.90, 1, "no")]
++        self.assertIsNone(a.markout_reference(ps, [p.t for p in ps], 0))
++
++    def test_window_includes_t_plus_3600_exactly(self):
++        ps = [P(0, 0.50, 1, "yes"), P(3600, 0.42, 1, "no")]
++        self.assertAlmostEqual(a.markout_reference(ps, [p.t for p in ps], 0), 0.42)
++
++
++class MakerSign(unittest.TestCase):
++    def test_taker_sells_yes_maker_bought_yes(self):
++        # taker_side "no": taker bought NO -> maker bought YES at 0.30
++        self.assertAlmostEqual(a.maker_pnl(0.30, 1.0, "no"), 0.70)
++        self.assertAlmostEqual(a.maker_pnl(0.30, 0.0, "no"), -0.30)
++
++    def test_taker_buys_yes_maker_sold_yes(self):
++        # taker_side "yes": taker bought YES -> maker sold YES at 0.30
++        self.assertAlmostEqual(a.maker_pnl(0.30, 0.0, "yes"), 0.30)
++        self.assertAlmostEqual(a.maker_pnl(0.30, 1.0, "yes"), -0.70)
++
++    def test_invalid_side_raises(self):
++        with self.assertRaises(ValueError):
++            a.maker_sign("buy")
++
++
++class NoFillIn(unittest.TestCase):
++    def test_no_later_print_skips_markout_never_imputed(self):
++        u = a.MarketUnit("Sports", "T-1", "EV-1", 0.0)
++        # second print has no [t+1h, t+2h) follower at all
++        a.process_market(u, [P(0, 0.40, 10, "no"), P(50, 0.45, 10, "yes")], None, "quadratic", 1)
++        self.assertIsNone(u.per_contract("markout"))
++        self.assertIsNone(u.per_contract("settlement"))  # unknown result: no settlement either
++
++    def test_settlement_still_computed_when_markout_has_no_fill(self):
++        u = a.MarketUnit("Sports", "T-1", "EV-1", 0.0)
++        a.process_market(u, [P(0, 0.40, 10, "no")], "yes", "quadratic", 1)
++        self.assertIsNone(u.per_contract("markout"))  # no later print at all
++        self.assertAlmostEqual(u.per_contract("settlement", 0.0), 0.60)  # maker bought YES at .40, settles 1
++
++    def test_partial_fill_only_qualifying_prints_skipped(self):
++        u = a.MarketUnit("Sports", "T-1", "EV-1", 0.0)
++        # print 0 has a follower in-window (print 1); print 1 (t=4000) does not.
++        a.process_market(u, [P(0, 0.50, 1, "no"), P(4000, 0.60, 1, "no")], None, "quadratic", 1)
++        self.assertEqual(u.sums["markout"]["c"], 1.0)  # only print 0 contributed
++
++
++class OneMarketPerEvent(unittest.TestCase):
++    def _rows(self):
++        # INVENTED: event EV-A has 3 candidate markets, EV-B has 1.
++        return [
++            {"event_ticker": "EV-A", "ticker": "A-1", "category": "Sports"},
++            {"event_ticker": "EV-A", "ticker": "A-2", "category": "Sports"},
++            {"event_ticker": "EV-A", "ticker": "A-3", "category": "Sports"},
++            {"event_ticker": "EV-B", "ticker": "B-1", "category": "Sports"},
++        ]
++
++    def test_exactly_one_row_per_event(self):
++        sample = s.pick_sample(self._rows(), seed=1, max_events=100)
++        events = [r["event_ticker"] for r in sample]
++        self.assertEqual(sorted(events), ["EV-A", "EV-B"])
++        self.assertEqual(len(sample), len(set(events)))
++
++    def test_chosen_market_is_one_of_the_events_own_candidates(self):
++        sample = s.pick_sample(self._rows(), seed=1, max_events=100)
++        chosen_a = next(r["ticker"] for r in sample if r["event_ticker"] == "EV-A")
++        self.assertIn(chosen_a, {"A-1", "A-2", "A-3"})
++
++
++class SamplingReproducible(unittest.TestCase):
++    def _rows(self, n_events=20, seed=99):
++        rng = random.Random(seed)
++        rows = []
++        for i in range(n_events):
++            n_markets = rng.randint(1, 3)
++            for j in range(n_markets):
++                rows.append({"event_ticker": f"EV-{i:03d}", "ticker": f"EV-{i:03d}-M{j}",
++                            "category": "World"})
++        return rows
++
++    def test_same_seed_same_result_regardless_of_input_order(self):
++        rows = self._rows()
++        shuffled = rows[:]
++        random.Random(7).shuffle(shuffled)
++        out1 = s.pick_sample(rows, seed=config.SEED, max_events=10)
++        out2 = s.pick_sample(shuffled, seed=config.SEED, max_events=10)
++        self.assertEqual(out1, out2)
++
++    def test_declared_seed_reproduces_across_independent_calls(self):
++        rows = self._rows()
++        out1 = s.pick_sample(rows, seed=config.SEED, max_events=10)
++        out2 = s.pick_sample(rows, seed=config.SEED, max_events=10)
++        self.assertEqual(out1, out2)
++        self.assertEqual(len(out1), 10)
++
++    def test_caps_at_max_events_and_is_a_true_subset(self):
++        rows = self._rows(n_events=50)
++        sample = s.pick_sample(rows, seed=config.SEED, max_events=12)
++        self.assertEqual(len(sample), 12)
++        all_events = {r["event_ticker"] for r in rows}
++        self.assertTrue({r["event_ticker"] for r in sample} <= all_events)
++
++    def test_below_cap_takes_every_event(self):
++        rows = self._rows(n_events=5)
++        sample = s.pick_sample(rows, seed=config.SEED, max_events=400)
++        self.assertEqual(len(sample), 5)
++
++
++class QualifyingRowFilter(unittest.TestCase):
++    def test_settled_in_window_with_volume_qualifies(self):
++        event = {"category": "Sports", "series_ticker": "KXFAKE", "event_ticker": "EV-1"}
++        start, end = 1000, 2000
++        good = {"ticker": "M-1", "status": "finalized", "result": "yes",
++                "close_time": "1970-01-01T00:25:00Z", "volume_fp": "5.0"}  # ts=1500
++        row = s.qualifying_row(event, good, start, end)
++        self.assertIsNotNone(row)
++        self.assertEqual(row["ticker"], "M-1")
++
++    def test_open_status_is_rejected(self):
++        event = {"category": "Sports", "series_ticker": "KXFAKE", "event_ticker": "EV-1"}
++        good = {"ticker": "M-1", "status": "open", "result": "yes",
++                "close_time": "1970-01-01T00:25:00Z", "volume_fp": "5.0"}
++        self.assertIsNone(s.qualifying_row(event, good, 1000, 2000))
++
++    def test_void_result_is_rejected(self):
++        event = {"category": "Sports", "series_ticker": "KXFAKE", "event_ticker": "EV-1"}
++        good = {"ticker": "M-1", "status": "finalized", "result": "",
++                "close_time": "1970-01-01T00:25:00Z", "volume_fp": "5.0"}
++        self.assertIsNone(s.qualifying_row(event, good, 1000, 2000))
++
++    def test_zero_volume_is_rejected(self):
++        event = {"category": "Sports", "series_ticker": "KXFAKE", "event_ticker": "EV-1"}
++        good = {"ticker": "M-1", "status": "finalized", "result": "yes",
++                "close_time": "1970-01-01T00:25:00Z", "volume_fp": "0"}
++        self.assertIsNone(s.qualifying_row(event, good, 1000, 2000))
++
++    def test_close_time_outside_window_is_rejected(self):
++        event = {"category": "Sports", "series_ticker": "KXFAKE", "event_ticker": "EV-1"}
++        good = {"ticker": "M-1", "status": "finalized", "result": "yes",
++                "close_time": "1970-01-01T01:00:00Z", "volume_fp": "5.0"}  # ts=3600 >= end
++        self.assertIsNone(s.qualifying_row(event, good, 1000, 2000))
++
++
++class MakerFee(unittest.TestCase):
++    def test_zero_for_taker_only_fee_type(self):
++        self.assertEqual(a.maker_fee_dollars(0.50, 100, "quadratic", 1), 0.0)
++
++    def test_ceil_to_cent_with_multiplier(self):
++        # raw = 0.0175 * 1 * 100 * 0.5 * 0.5 = 0.4375 -> ceil to 0.44
++        self.assertAlmostEqual(a.maker_fee_dollars(0.50, 100, "quadratic_with_maker_fees", 1), 0.44)
++        # raw = 0.0175 * 0.5 * 100 * 0.5 * 0.5 = 0.21875 -> ceil to 0.22
++        self.assertAlmostEqual(a.maker_fee_dollars(0.50, 100, "quadratic_with_maker_fees", 0.5), 0.22)
++
++    def test_fee_is_subtracted_and_doubles(self):
++        u = a.MarketUnit("Sports", "T-1", "EV-1", 0.0)
++        a.process_market(u, [P(0, 0.50, 100, "yes")], "no", "quadratic_with_maker_fees", 1)
++        fee_pc = 0.44 / 100.0
++        self.assertAlmostEqual(u.per_contract("settlement", 0.0), 0.50)
++        self.assertAlmostEqual(u.per_contract("settlement"), 0.50 - fee_pc)
++        self.assertAlmostEqual(u.per_contract("settlement", 2.0), 0.50 - 2 * fee_pc)
++
++
++class VerdictCauses(unittest.TestCase):
++    def _base(self, **over):
++        d = {"t_net": config.REQUIRED_T + 1, "n": config.MARKETS_NEEDED_MARKOUT + 10,
++             "mean_net_fee2x_c": 1.0, "half_means_c": [1.0, 1.0], "top_decile_share": 0.2}
++        d.update(over)
++        return d
++
++    def test_candidate_when_everything_passes(self):
++        level, causes = a.verdict_for_category(self._base())
++        self.assertEqual(level, "CANDIDATE")
++        self.assertEqual(causes, [])
++
++    def test_signal_cause_below_required_t(self):
++        level, causes = a.verdict_for_category(self._base(t_net=0.1))
++        self.assertEqual(level, "REJECT")
++        self.assertIn("SIGNAL", causes)
++
++    def test_signal_cause_when_a_half_is_negative(self):
++        level, causes = a.verdict_for_category(self._base(half_means_c=[1.0, -1.0]))
++        self.assertEqual(level, "REJECT")
++        self.assertIn("SIGNAL", causes)
++
++    def test_power_cause_when_n_below_registered_threshold(self):
++        level, causes = a.verdict_for_category(self._base(n=5))
++        self.assertEqual(level, "REJECT")
++        self.assertIn("POWER", causes)
++
++    def test_costs_cause_when_2x_fees_flip_sign(self):
++        level, causes = a.verdict_for_category(self._base(mean_net_fee2x_c=-0.5))
++        self.assertEqual(level, "REJECT")
++        self.assertIn("COSTS", causes)
++
++    def test_concentration_cause_when_top_decile_dominates(self):
++        level, causes = a.verdict_for_category(self._base(top_decile_share=0.9))
++        self.assertEqual(level, "REJECT")
++        self.assertIn("CONCENTRATION", causes)
++
++
++if __name__ == "__main__":
++    unittest.main()
