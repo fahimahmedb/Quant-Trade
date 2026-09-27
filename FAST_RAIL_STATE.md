@@ -1,7 +1,8 @@
 # Fast Rail State — itération 1 (unifiée) — 2026-09-27
 Unifié avec `claude/new-session-3ujgeu` (arrêté, SHA final `5255ba2`) le 2026-09-27. Adoption Blue `bd19712` intégrée (via `kfwf1b`).
 Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_RAPIDE.md` (corrigé) + `prompts/5_ECONOMIE_DES_ESSAIS.md`.
-## Budget : itérations 1/10, essais consommés 30/200 (0ydmkg 16 + 3ujgeu 14)
+## Budget : itérations 1/10, essais consommés 30/200 (0ydmkg 16 + 3ujgeu 14) ; engagés en cours : H-006 (1) et H-010 (3), soit 34/200
+**Portée (propriétaire, 2026-09-27)** : phase de test. On teste TOUT en papier/shadow, sur toutes les venues, sans se limiter à ce qui est déployable. Restent en vigueur : invariants du §3, économie des essais, aucun capital et aucun ordre réels. Les σ sont des hypothèses, à calibrer après 2 semaines de forward.
 | jeu de données | essais cumulés | required_t |
 |---|---|---|
 | perp_funding_hl_dydx_daily | 50 → **BRÛLÉ** (historique interdit) | 3,29 |
@@ -17,6 +18,12 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
    - (b) H-006, foot Pinnacle (football-data) contre Polymarket : pré-enregistré, 4 essais. À ramener à 1 expression (power, 0,02) selon la règle 2 avant exécution, ou à marquer UNDERPOWERED.
    - (c) H-009, adjudications du Trésor : **UNDERPOWERED**, 0 essai. Avec N=5 (article) et un effet réduit de moitié à 7,5 bp sur ≈153 adjudications à 10 ans, expected_t = 0,99 contre 1,96, et 1,39 au mieux en ajoutant les 2 et 5 ans. Candidat SHADOW_DIRECT si Blue l'adopte. Funding HL contre Binance/Bybit : H-008, UNDERPOWERED, forward seulement.
    - (d) Construire le jeu HL-dYdX pour le forward seulement : `python3 scripts/build_perp_funding_hl_dydx.py --offline --end <date>`. Le cache brut est local (non versionné). Aucun `run_lane` historique.
+   - (e) Pistes de l'étude praticiens (déclarées au registre avant toute donnée) :
+     - H-010 = R1, rente maker Kalshi par catégorie (Sports, Entertainment, World ; fenêtre 2026-04-17 → 09-26 ; 3 essais ; KPI markout +1h) : **EN COURS**.
+     - H-011 = R2, maker papier sur le sport de niche contre la clôture Pinnacle : forward seulement, t ≈ 1,96 après ≈ 306 marchés.
+     - H-012 = R3, combos RFQ Kalshi : **BLOCKED (accès)**, car les RFQ exigent un compte Kalshi (401).
+     - H-013 = R4, récompenses de liquidité (Kalshi LIP et Polymarket, endpoints publics) : forward seulement, en ligne séparée.
+     - Collecteur R2/R4 : à lancer dès que H-006 rend. Il ajoute les ligues de niche au plan Odds API, les snapshots de carnets et de récompenses, et la récupération après coup des trades pour les fills « trade-through ».
 3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
 
 ## En SHADOW
@@ -45,6 +52,8 @@ Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manch
 - Ne pas tester (preuve externe négative) : juste valeur météo Kalshi (arXiv 2609.23969), Kalshi CPI contre nowcast, longshot Kalshi, catégorie Finance de Kalshi.
 
 ## Actions propriétaire en attente
+- **CRITIQUE pour tout le forward** : fusionner `.github/workflows/data-feeds.yml` sur la branche par défaut. Sans ça, aucun run planifié : la collecte ne tourne qu'à chaque push sur la branche de données.
+- Compte Kalshi et clé API en lecture pour H-012 (flux RFQ).
 - Secret GitHub `ODDS_API_KEY`, pour la collecte quotidienne par le relais.
 - Décision Blue sur la voie `SHADOW_DIRECT` (`prompts/5`).
 
