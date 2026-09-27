@@ -165,3 +165,14 @@ One concrete blocker -> one bounded owner -> one exit condition.
 See:
 
 `governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md`
+
+## 9. Rail C — recherche rapide (paper/shadow)
+
+Adopté le 2026-09-25 : `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` (ACCEPTÉE).
+
+- Branche : `fast/rail-01` ; état unique : `FAST_RAIL_STATE.md` ; prompt : `governance/FAST_RAIL_BUILDER_PROMPT.md`.
+- Budget : `MAX_ITERATIONS = 10`, `MAX_DECLARED_TRIALS = 200`, `MAX_PARALLEL_AGENTS = 5`.
+- Aucune autorité de capital ; transfert au rail sûr sur `FORWARD_PASS`, décision du propriétaire.
+- Périmètre interdit : tout le rail sûr (P0/Form 4, Gates A/B/C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés) — voir §2 de la proposition.
+- Anti-bureaucratie : un document par décision réelle ; un candidat remplacé par sa version finale part dans `archive/`.
+- `REAL_CAPITAL_AUTHORIZED = FALSE` (inchangé).

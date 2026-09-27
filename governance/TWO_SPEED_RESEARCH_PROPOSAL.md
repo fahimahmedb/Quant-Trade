@@ -1,6 +1,6 @@
 # Proposition : recherche à deux vitesses
 
-Statut : **PROPOSÉE**. Le propriétaire doit l'accepter avant qu'elle prenne effet.
+Statut : **ACCEPTÉE — 2026-09-25**.
 Elle ne modifie ni `QUANT_NORTH_STAR.md`, ni la frontière paper/shadow, ni aucun gel existant (Gate A V4, P0, première verticale).
 
 ## 1. Le problème
@@ -20,7 +20,7 @@ Aujourd'hui, une seule procédure de très haute assurance, conçue pour le capi
 | | **Rail SÛR** (lent) | **Rail RAPIDE** (accéléré) |
 |---|---|---|
 | But | Qualifier ce qui peut un jour toucher du capital | Trouver vite des candidats d'edge et les soumettre à des données forward |
-| Périmètre | P0 / Form 4, Gate B, hôte cible, première verticale, tout passage au capital réel | Recherche papier/shadow sur tout autre jeu de données ou marché |
+| Périmètre | P0 / Form 4, Gate A / B / C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés, tout passage au capital réel | Recherche papier/shadow sur tout autre jeu de données ou marché, hors périmètre du rail sûr |
 | Autorité | Gouvernance Blue actuelle (inchangée) | Le builder décide seul, dans les invariants du §3 |
 | Preuves | Sceaux, digests, revues Astra indépendantes | Tests, journal d'essais, red team par vague |
 | Documentation | Inchangée, mais plafonnée (voir §5) | **Un seul** fichier d'état vivant, `FAST_RAIL_STATE.md`, et un registre JSONL |
@@ -39,6 +39,8 @@ Le rail rapide n'est pas « moins honnête » : il garde tous les invariants éc
 6. **Hold-out forward intouchable** : seules les données postérieures à `pristine_after` peuvent faire évoluer le cycle de vie d'une stratégie.
 7. **Légalité** : la porte `desk/compliance.py` s'applique ; les pratiques interdites restent interdites.
 8. **Aucun capital réel** sur le rail rapide, quel que soit le résultat.
+9. **Manchons par stratégie** : plusieurs stratégies peuvent partager un instrument ; l'attribution reste par stratégie, agrégée à part pour le portefeuille.
+10. **Risque sur le portefeuille final** : l'approbation RISK porte sur le portefeuille post-transformation et post-mise à l'échelle réellement simulé.
 
 ## 4. L'échelle de preuve du rail rapide
 
@@ -94,7 +96,7 @@ Le rangement n'est **pas exécuté** : il touche l'autorité du rail sûr et att
 
 ## 9. Décision demandée au propriétaire
 
-- [ ] Accepter les deux rails et les invariants du §3.
-- [ ] Accepter l'échelle de preuve du §4, en particulier : le rail rapide ne touche jamais au capital.
-- [ ] Fixer le budget de lancement du rail rapide, par exemple 10 itérations ou 200 essais déclarés.
+- [x] Accepter les deux rails et les invariants du §3.
+- [x] Accepter l'échelle de preuve du §4, en particulier : le rail rapide ne touche jamais au capital.
+- [x] Fixer le budget de lancement du rail rapide : 10 itérations, 200 essais déclarés, 5 agents en parallèle.
 - [ ] Valider le rangement (`governance/CLEANUP_MANIFEST_PROPOSED.md`) et fusionner le prompt du builder (`governance/FAST_RAIL_BUILDER_PROMPT.md`).

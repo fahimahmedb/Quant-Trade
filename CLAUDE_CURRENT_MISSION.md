@@ -36,6 +36,7 @@ Do not infer the mission from:
 - Repository hygiene: default migration + 35 pinned delete-ready refs prepared for server/admin execution.
 - Target-host qualification: paused until independent v4 acceptance.
 - Product integration: paused; canonical Forward/Economic leaves preserved.
+- Rail C (fast research, paper/shadow): branch `fast/rail-01`, state `FAST_RAIL_STATE.md`, prompt `governance/FAST_RAIL_BUILDER_PROMPT.md`; no capital authority.
 
 Safety:
 - `t0 = NOT DECLARED`

@@ -30,7 +30,7 @@ BRANCH                  = fast/rail-01        # ou la branche imposée par la se
 
 **Interdit, sans exception**
 - Capital réel, clés de trading, ordres réels.
-- Le rail sûr : `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, tout ce qui touche P0 / Form 4 / Gate A / Gate B / hôte cible / première verticale, les SHA figés.
+- Le rail sûr : `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, tout ce qui touche P0 / Form 4 / Gate A / Gate B / Gate C / hôte cible / première verticale, les SHA figés.
 - Les branches `blue/*`, `astra/*`, `builder/*` et la branche par défaut. Merge, force-push, suppression de branche.
 - Les pratiques illégales : wash trading, spoofing, manipulation d'oracle, information privilégiée, multi-comptes ou sybil, contournement géographique, exploit de contrat, MEV nuisible.
 - Côté données : scraping derrière un login, rotation d'IP ou d'identité, contournement de limites de débit, extraction de clés d'API embarquées dans un site.
@@ -41,8 +41,9 @@ BRANCH                  = fast/rail-01        # ou la branche imposée par la se
 ```bash
 git fetch origin claude/prototype-futures-trend-carry-6vr22g claude/data-feeds-6vr22g
 git checkout -b fast/rail-01 origin/claude/prototype-futures-trend-carry-6vr22g
-# si la proposition a été acceptée (contient la proposition, le prompt et le manifeste de rangement) :
-git fetch origin claude/two-speed-cleanup-6vr22g && git merge --no-edit origin/claude/two-speed-cleanup-6vr22g
+# proposition corrigée et adoptée par Blue (bd19712 : 10 invariants, Gate C, section Rail C) :
+git fetch origin claude/new-session-z4pdlx && git merge --no-edit origin/claude/new-session-z4pdlx
+git merge-base --is-ancestor bd19712 HEAD || { echo "adoption Blue absente : arrêt"; exit 1; }
 PYTHONPATH=src python3 -m unittest discover -s tests -q
 ```
 
@@ -65,6 +66,7 @@ Crée ensuite `FAST_RAIL_STATE.md` (format au §8) et `research/fast_rail/regist
 6. **Forward intouchable.** Seules les données postérieures à `pristine_after` font bouger le cycle de vie. On ne regarde jamais le forward pour choisir un paramètre.
 7. **Manchons par stratégie.** Plusieurs stratégies peuvent partager un instrument ; l'attribution reste par stratégie.
 8. **Conformité.** Chaque nouvelle lane déclare ses pratiques (`desk/compliance.py`). Une pratique inconnue est refusée.
+9. **Risque sur le portefeuille final.** RISK approuve le portefeuille post-transformation et post-mise à l'échelle réellement simulé, pas un objet intermédiaire.
 
 ## 4. ÉCHELLE DE PREUVE
 
