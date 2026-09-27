@@ -276,7 +276,7 @@ def perp_lane_definitions(universe: list[str], dataset_id: str) -> dict[str, dic
 #: Fast-rail H-002 (research/fast_rail/registry.jsonl): Hyperliquid vs dYdX v4.
 PERP_DYDX_DATASET = "perp_funding_hl_dydx_daily"
 #: Separate venue pair and dataset; the HL-vs-BY lab tested a different hypothesis.
-PERP_DYDX_PRIOR_TRIALS = 0
+PERP_DYDX_PRIOR_TRIALS = 50  # 3ujgeu: 44 prior + 6 run (REJECT) -> burned for history
 PERP_DYDX_PRISTINE_AFTER = "2026-09-25"
 #: One-way research cost at maker level; falsify() stresses at 2x (taker level).
 PERP_DYDX_COST_BPS = 4.0

@@ -225,7 +225,7 @@ class FundingFamilyTests(unittest.TestCase):
         self.assertEqual(grid, {(entry, lookback, entry / 2)
                                 for entry in (0.25, 0.5, 1.0) for lookback in (1, 3)})
         self.assertEqual(len(definition["grid"]), 6)
-        self.assertEqual(definition["prior_trials"], 0)
+        self.assertEqual(definition["prior_trials"], 50)  # burned: 3ujgeu 44 prior + 6 run
         self.assertEqual(definition["pristine_after"], "2026-09-25")
         self.assertEqual(definition["cost_bps"], 4.0)
         self.assertEqual(definition["benchmark"], "HL.BTC")

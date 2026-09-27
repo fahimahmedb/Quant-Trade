@@ -1,61 +1,51 @@
-# Fast Rail State — itération 1 (vague 1 : 4/5 tranchées) — 2026-09-25
-## Budget : itérations 1/10, essais 16 consommés / 22 déclarés / 200 max
-Branche : `claude/new-session-0ydmkg`. Prompt source : `prompts/2_BUILDER_RAIL_RAPIDE.md`. Registre : `research/fast_rail/registry.jsonl`.
-Le sandbox a un accès direct aux API publiques : HL, dYdX, OKX (seulement 3 mois de funding), Polymarket, Kalshi, football-data.co.uk. Yahoo répond 429. EDGAR répond 403 sans UA de contact.
+# Fast Rail State — itération 1 (unifiée) — 2026-09-27
+Unifié avec `claude/new-session-3ujgeu` (arrêté, SHA final `5255ba2`) le 2026-09-27. Adoption Blue `bd19712` intégrée (via `kfwf1b`).
+Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_RAPIDE.md` (corrigé) + `prompts/5_ECONOMIE_DES_ESSAIS.md`.
+## Budget : itérations 1/10, essais consommés 30/200 (0ydmkg 16 + 3ujgeu 14)
+| jeu de données | essais cumulés | required_t |
+|---|---|---|
+| perp_funding_hl_dydx_daily | 50 → **BRÛLÉ** (historique interdit) | 3,29 |
+| HL listings (H-005 + ex-3ujgeu H-006) | 12 | 2,87 |
+| Kalshi météo, carnet de trades (H-004 + H-007) | 6 | — |
+| Kalshi settled + candles (H-003) | 6 | 2,64 |
 
-## REPRISE (nouvelle session, peu de tokens)
-0. RÈGLE DE CHECKPOINT : lancer `bash scripts/fast_rail_checkpoint.sh` après chaque étape et avant de lancer des agents. Le script sauvegarde le travail de chaque worktree d'agent en patch dans `research/fast_rail/wip/`, puis commit et push. Au plus 2 agents par vague, et chaque agent doit committer après chaque sous-étape.
-1. `git checkout claude/new-session-0ydmkg && PYTHONPATH=src python3 -m unittest discover -s tests -q`
-2. H-002 (funding HL-dYdX) : `git apply research/fast_rail/wip/agent-a3193714a9c100166.patch`, qui contient le signal avec hystérésis, la lane, `--market`, le builder et les tests (non vérifiés). Ensuite :
-   - `python3 scripts/build_perp_funding_hl_dydx.py` (refait le fetch, environ 110 Mo bruts, jamais committés) ;
-   - lancer `run_lane` ;
-   - faire passer les tests ;
-   - noter le verdict au registre.
-   Grille fixe, 6 essais.
-3. H-006 (foot Pinnacle vs Polymarket) : pré-enregistrée, 4 essais, rien d'exécuté. Relancer l'agent avec le mandat du registre.
-4. Collecteur H-001 : l'agent est mort avant d'écrire du code. Il faut étendre `scripts/fetch_feeds.py` avec les cotes Pinnacle (clé en variable d'environnement `ODDS_API_KEY`, 500 req/mois) et les cotes PM/Kalshi du même run.
-5. Red team de la vague, puis `status_artifacts.py --write`, puis commit.
-
-## Sources de données trouvées (2026-09-27)
-- `data.binance.vision` (archives publiques du funding Binance USDⓈ-M) : 200 depuis le sandbox. Débloque HL vs Binance en historique.
-- `public.bybit.com` (archives publiques Bybit) : 200.
-- Cleveland Fed inflation nowcasting : page accessible, point-in-time à vérifier pour Kalshi CPI.
-- football-data.co.uk (Pinnacle pré-match) et `fixtures.csv` (forward) : OK.
-- Toujours bloqués :
-  - EDGAR : il faut un User-Agent avec un e-mail de contact (décision du propriétaire) ;
-  - DefiLlama emissions : payant (402) ;
-  - Yahoo : 429 depuis le sandbox, donc passer par le relais GitHub.
+## REPRISE
+0. `bash scripts/fast_rail_checkpoint.sh`. Des hooks Stop, SubagentStop et PreCompact le lancent automatiquement. Au plus 2 agents par vague, avec un commit par sous-étape.
+1. Calcul de puissance AVANT toute déclaration : `expected_t` contre `required_t`. Si c'est insuffisant : UNDERPOWERED, sans consommer d'essai. Grille : 1 expression par défaut, 3 au plus.
+2. Ordre de reprise :
+   - (a) Collecteur H-001 : cotes Pinnacle via la variable d'environnement `ODDS_API_KEY` (500 req/mois) et quotes PM/Kalshi, relevées dans le même run.
+   - (b) H-006, foot Pinnacle (football-data) contre Polymarket : pré-enregistré, 4 essais. À ramener à 1 expression (power, 0,02) selon la règle 2 avant exécution, ou à marquer UNDERPOWERED.
+   - (c) Funding HL contre Binance/Bybit sur les archives publiques (`data.binance.vision`, `public.bybit.com`) : nouveau jeu de données, plus de 4 ans.
+   - (d) Construire le jeu HL-dYdX pour le forward seulement : `python3 scripts/build_perp_funding_hl_dydx.py --offline --end <date>`. Le cache brut est local (non versionné). Aucun `run_lane` historique.
+3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
 
 ## En SHADOW
 | stratégie | depuis | forward | P&L éval. | t-SPRT | ETA |
 |---|---|---|---|---|---|
 | calendar_fomc_overnight (SPY_ON) | 2026-09-11 | 1 événement | +0,26 % | CONTINUE | années |
 
-## Verdicts de l'itération 1
-| H | niveau | chiffres nets (validation) | motif |
+## Verdicts (cause)
+| H | niveau | chiffres nets | cause |
 |---|---|---|---|
-| H-001 | DÉBLOQUÉE (forward uniquement) | — | clé fournie, offre gratuite de 500 req/mois, sans historique ; lire la variable d'environnement `ODDS_API_KEY` |
-| H-002 | INTERROMPU (limite de session) | — | patch `wip/agent-a3193714…` ; dataset non construit |
-| H-003 | REJECT | +1,09 %/évt, t 7,15 (dégénéré), seuil 2,64, N=34 | 0 perte sur 48 contrats : test binomial p=0,71 ; ≈0 à 2x frais ; quotes jusqu'à 24h périmées |
-| H-004 | REJECT | −0,10 c/contrat, t −0,55, seuil 2,50, N=105 | la sélection adverse mange ~94 % du demi-spread |
-| H-005 | REJECT | +6,4 %/évt, t clusterisé 0,86, seuil 2,64, N=69 | moitiés −2,7/+15,2 % ; top 10 % = 98 % ; squeeze (GRASS −262 %) |
-Les 15 % les plus récents de chaque jeu H-003/4/5 sont intacts : réutilisables pour une variante nouvelle et pré-enregistrée.
+| H-001 | DÉBLOQUÉE, forward seulement | — | clé fournie ; sans historique |
+| H-002 | REJECT (importé de 3ujgeu) | SR −0,03, t −0,03 contre 3,29, 70 jours actifs | SIGNAL + COÛTS ; la grille de 0ydmkg est retirée sans avoir tourné |
+| H-003 | REJECT | t 7,15 dégénéré, binomial p = 0,71 | SIGNAL (0 perte sur 48 contrats) |
+| H-004 | REJECT | −0,10 c/contrat, t −0,55 | SIGNAL (sélection adverse ≈ 94 %) |
+| H-005 | REJECT | ici t 0,86 ; 3ujgeu SR 1,52, t 1,82 contre 2,87 (12 essais) | PUISSANCE (3ujgeu) / CONCENTRATION (ici) |
+| H-007 | REJECT (importé : ex-3ujgeu H-004) | +0,46 c/contrat, t clusterisé 1,34 | CONCENTRATION |
+**À reprendre en forward seulement (REJECT PUISSANCE)** : fade des listings HL (H-005). Aucun nouvel essai historique.
 
-## Constats red team : ouverts HIGH 0 (red team de la vague pas encore lancée) | reportés : aucun
+## Constats red team : HIGH ouverts 0
+Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manchon par stratégie, RISK sur le portefeuille final. Le red team de la vague reste à faire sur les prochains CANDIDATE.
 
-## Backlog (5 suivants, classés)
-1. H-006 : cote Pinnacle pré-match (football-data.co.uk, colonnes PSH/PSD/PSA, relevées avant les matchs) contre les prix des matchs EPL sur Polymarket (slugs `epl-xxx-yyy-date`, CLOB `prices-history`). Forward possible via `fixtures.csv`, sans clé.
-2. H-007 : fourchettes quotidiennes S&P de Kalshi (KXINX) contre une lognormale implicite du VIX (FRED VIXCLS, clôture de la veille).
-3. HL vs OKX funding, en forward uniquement (selon H-002).
-4. H-005bis : fade des listings avec stop anti-squeeze (uniquement sur les 15 % intacts, pré-enregistré).
-5. Kalshi macro (CPI/NFP) contre nowcast : vérifier d'abord le point-in-time du consensus.
-BLOCKED :
-- SPAC / merger arb : UA de contact EDGAR ;
-- déblocages de tokens : aucun calendrier point-in-time gratuit.
+## Backlog et BLOCKED
+- Voir REPRISE §2.
+- BLOCKED : déblocages de tokens (DefiLlama payant, 402).
+- Kalshi CPI contre nowcast de la Cleveland Fed : le point-in-time reste à vérifier.
 
 ## Actions propriétaire en attente
-- Mettre la clé Odds API en variable d'environnement `ODDS_API_KEY` (réglages de l'environnement) ET en secret GitHub `ODDS_API_KEY` (relais `data-feeds.yml`). Ne jamais la committer.
-- UA de contact pour EDGAR.
+- Secret GitHub `ODDS_API_KEY`, pour la collecte quotidienne par le relais.
+- Décision Blue sur la voie `SHADOW_DIRECT` (`prompts/5`).
 
-## Leçon de l'itération
-Les edges « faciles » des marchés de prédiction disparaissent en validation (sélection adverse, biais longshot non significatif). Un t élevé sans aucune perte est un artefact : exiger un test binomial pour les paris à gain asymétrique.
+## Leçon
+Le goulot est la puissance du test, pas le nombre d'essais. Deux builders en parallèle sur le même jeu de données en ont brûlé l'historique : un seul builder désormais.
