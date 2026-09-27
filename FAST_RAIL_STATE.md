@@ -15,7 +15,7 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
 2. Ordre de reprise :
    - (a) Collecteur H-001 (KPI : CLV contre la juste valeur Pinnacle de clôture, marge retirée ; le P&L confirme) : cotes Pinnacle via la variable d'environnement `ODDS_API_KEY` (500 req/mois) et quotes PM/Kalshi, relevées dans le même run.
    - (b) H-006, foot Pinnacle (football-data) contre Polymarket : pré-enregistré, 4 essais. À ramener à 1 expression (power, 0,02) selon la règle 2 avant exécution, ou à marquer UNDERPOWERED.
-   - (c) Cycle des adjudications du Trésor (Lou, Yan, Zhang 2013), H-009. Une seule expression, avec N tiré de l'article. Validation 2014 → aujourd'hui. Calcul de puissance d'abord. Funding HL contre Binance/Bybit : H-008, UNDERPOWERED, forward seulement.
+   - (c) H-009, adjudications du Trésor : **UNDERPOWERED**, 0 essai. Avec N=5 (article) et un effet réduit de moitié à 7,5 bp sur ≈153 adjudications à 10 ans, expected_t = 0,99 contre 1,96, et 1,39 au mieux en ajoutant les 2 et 5 ans. Candidat SHADOW_DIRECT si Blue l'adopte. Funding HL contre Binance/Bybit : H-008, UNDERPOWERED, forward seulement.
    - (d) Construire le jeu HL-dYdX pour le forward seulement : `python3 scripts/build_perp_funding_hl_dydx.py --offline --end <date>`. Le cache brut est local (non versionné). Aucun `run_lane` historique.
 3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
 
