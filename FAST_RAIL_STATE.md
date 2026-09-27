@@ -52,9 +52,9 @@ Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manch
 - Ne pas tester (preuve externe négative) : juste valeur météo Kalshi (arXiv 2609.23969), Kalshi CPI contre nowcast, longshot Kalshi, catégorie Finance de Kalshi.
 
 ## Actions propriétaire en attente
-- **CRITIQUE pour tout le forward** : fusionner `.github/workflows/data-feeds.yml` sur la branche par défaut. Sans ça, aucun run planifié : la collecte ne tourne qu'à chaque push sur la branche de données.
+- FAIT (2026-09-27, `09ba64b` sur `blue/master-v2-2026-09-20`, fichier du workflow seul) : le planning des données est actif. Collecte complète toutes les 6 h (:17), relevé Pinnacle toutes les heures (:47). Dépôt public : minutes Actions gratuites.
+- **Secret GitHub `ODDS_API_KEY` toujours absent** : le run du 27/09 03:58 répond « ODDS_API_KEY is not configured ». Sans lui, H-001, H-011 et H-013 n'ont pas de cotes Pinnacle.
 - Compte Kalshi et clé API en lecture pour H-012 (flux RFQ).
-- Secret GitHub `ODDS_API_KEY`, pour la collecte quotidienne par le relais.
 - Décision Blue sur la voie `SHADOW_DIRECT` (`prompts/5`).
 
 ## Leçon
