@@ -66,3 +66,87 @@ def sequential_test(returns: list[float], sharpe_alternative: float,
     elif llr <= lower:
         result["decision"] = "REJECT_EDGE"
     return result
+
+
+#: Event-indexed variant (SHADOW_DIRECT, TWO_SPEED_RESEARCH_PROPOSAL §4).
+#: Fewest observations before any decision: the plug-in sigma is unreliable
+#: on a handful of events and would inflate false acceptance.
+EVENT_MIN_OBSERVATIONS = 30
+
+
+def event_sequential_test(values: list[float], h1_effect_over_sigma: float, alpha: float,
+                          beta: float = BETA, max_observations: int | None = None,
+                          min_observations: int = EVENT_MIN_OBSERVATIONS,
+                          sigma_floor: float | None = None) -> dict[str, Any]:
+    """t-SPRT on one statistic per independent event, walked in event order.
+
+    H0: mean = 0          H1: mean = ``h1_effect_over_sigma`` x sigma
+    H1 is declared per observation (effect / sigma of the declared statistic),
+    with no annualisation and no clamp, unlike ``alternative_sharpe``. Sigma is
+    the running sample deviation (plug-in). The walk stops at the FIRST bound
+    crossing after ``min_observations`` events (a monitored test decides once);
+    reaching ``max_observations`` without a crossing is INCONCLUSIVE and later
+    events are ignored. Pure: the same history always gives the same verdict.
+
+    ``sigma_floor`` is the statistic's sigma DECLARED in the power calculation;
+    the plug-in sigma never goes below it. Without it, rare-loss statistics
+    (many small wins, few large losses: favourites, systematic NO) collapse the
+    early sigma before the first loss appears and falsely accept ~12% of the
+    time at alpha 2.5% (adversarial test). SHADOW_DIRECT entries must pass it,
+    and it must be conservative: an underestimated floor (half the true sigma)
+    brings the inflation back, so calibration may RAISE it, never lower it. For
+    a binary payoff bought at price p the structural value is
+    ``binary_payoff_sigma(p)``.
+    """
+    if h1_effect_over_sigma <= 0 or not 0 < alpha < 1 or not 0 < beta < 1:
+        raise ValueError("h1 must be positive and alpha, beta in (0, 1)")
+    upper = math.log((1.0 - beta) / alpha)
+    lower = math.log(beta / (1.0 - alpha))
+    d = h1_effect_over_sigma
+    horizon = len(values) if max_observations is None else min(len(values), max_observations)
+    result: dict[str, Any] = {"h1_effect_over_sigma": d, "alpha": alpha, "beta": beta,
+                              "sigma_floor": sigma_floor,
+                              "upper_bound": upper, "lower_bound": lower,
+                              "max_observations": max_observations,
+                              "expected_events_to_accept_if_true": upper / (d * d / 2.0),
+                              "observations": 0, "log_likelihood_ratio": 0.0,
+                              "decision": "CONTINUE"}
+    total = total_sq = 0.0
+    for n in range(1, horizon + 1):
+        value = values[n - 1]
+        total += value
+        total_sq += value * value
+        if n < min_observations:
+            continue
+        mean = total / n
+        variance = max(total_sq / n - mean * mean, 0.0)
+        if sigma_floor:
+            variance = max(variance, sigma_floor * sigma_floor)
+        if variance <= 0:
+            continue
+        llr = n * (d * mean / math.sqrt(variance) - d * d / 2.0)
+        result.update(observations=n, log_likelihood_ratio=llr)
+        if llr >= upper:
+            result["decision"] = "ACCEPT_EDGE"
+            return result
+        if llr <= lower:
+            result["decision"] = "REJECT_EDGE"
+            return result
+    result["observations"] = horizon
+    if max_observations is not None and horizon >= max_observations:
+        result["decision"] = "INCONCLUSIVE"
+    return result
+
+
+def shadow_direct_alpha(k: int) -> float:
+    """Forward alpha of the k-th SHADOW_DIRECT entry: 0.05/(k(k+1)), sum < 0.05."""
+    if k < 1:
+        raise ValueError("k starts at 1 and is never decremented")
+    return 0.05 / (k * (k + 1))
+
+
+def binary_payoff_sigma(price: float) -> float:
+    """Per-contract return sigma of a binary bought at ``price`` if fairly priced."""
+    if not 0 < price < 1:
+        raise ValueError("price must be in (0, 1)")
+    return math.sqrt(price * (1.0 - price)) / price

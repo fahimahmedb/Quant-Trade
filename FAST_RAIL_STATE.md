@@ -1,4 +1,6 @@
-# Fast Rail State — itération 1 (unifiée) — 2026-09-27
+# Fast Rail State — itération 2 (autonomie, prompt 11) — 2026-09-29
+Prompt 11 appliqué : gouvernance z4pdlx fusionnée (SHADOW_DIRECT `b883031`, §9 `5a527b8`). SPAC et merger arb sont RETIRÉS (l'ordre 10 prime). Point d'étape le 2026-10-05.
+**Étape 1 FAITE** : `event_sequential_test` (H1 par observation, sans borne ; alpha ; horizon → INCONCLUSIVE), `shadow_direct_alpha(k)`, `binary_payoff_sigma`. Constat HIGH RT-2026-09-29-01 corrigé : un plancher de σ déclaré est obligatoire (8 tests).
 Unifié avec `claude/new-session-3ujgeu` (arrêté, SHA final `5255ba2`) le 2026-09-27. Adoption Blue `bd19712` intégrée (via `kfwf1b`).
 Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_RAPIDE.md` (corrigé) + `prompts/5_ECONOMIE_DES_ESSAIS.md`.
 ## Budget : itérations 1/10, essais consommés 31/200 (0ydmkg 17 + 3ujgeu 14) ; engagés en cours : H-010 (3), soit 34/200
@@ -28,7 +30,7 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
      - H-012 = R3, combos RFQ Kalshi : **BLOCKED (accès)**, car les RFQ exigent un compte Kalshi (401).
      - H-013 = R4, récompenses de liquidité (Kalshi LIP et Polymarket, endpoints publics) : forward seulement, en ligne séparée.
      - Collecteur R2/R4 : **INTERROMPU**. 2 commits : ligues de niche dans le planner et balayage des trades après le coup d'envoi. Travail non committé : snapshots récompenses/carnets, évaluateurs, 24 tests. Patch : `wip/agent-ae1e43ef74c5516a4.patch`. À finir, tester, puis fusionner dans la branche de données.
-3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
+3. SPAC / merger arb : RETIRÉS (ordre 10).
 
 ## En SHADOW
 | stratégie | depuis | forward | P&L éval. | t-SPRT | ETA |
