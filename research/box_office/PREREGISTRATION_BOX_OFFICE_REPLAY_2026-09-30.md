@@ -73,3 +73,15 @@ Quarterly: identical rule in 2025Q4 / 2026Q1 / 2026Q2 / 2026Q3, with no per-quar
 - **NEGATIVE:** no lane under R1-E1 has a positive point estimate, OR every lane's 95% upper bound is < +3% per $.
 - **INDETERMINATE_POWER_LIMITED:** neither of the above, with PIT+execution coverage ≥ 50% of U1 film-weekends in at least one lane.
 - **INDETERMINATE_DATA_LIMITED:** coverage < 50% of U1 film-weekends in every lane.
+
+## Addendum 1: value-extraction protocol (frozen 2026-09-29 ~23:45 UTC, still before any P&L)
+
+This addendum makes §2–§3 operational; it changes none of their rules.
+- Lane blocks: `scripts/digest_lanes.py` tags each source block with the lane it can feed.
+  - Deadline sections: FRIDAY + AM → A; other FRIDAY → B; SATURDAY + AM → C; SUNDAY + AM → D. SATURDAY/SUNDAY PM sections become available after their anchor and are unused.
+  - Variety posts: the lane whose anchor window (previous anchor, anchor] contains `date_gmt`. The post is flagged STRICT if `modified_gmt ≤ anchor`, else REVISABLE.
+- Value: the film's own 3-day (Fri–Sun) figure in that block. A range gives its midpoint; "$X+ / north of $X" gives X (flag PLUS); "under $X" is unusable.
+- Never used: comparables, daily grosses, previews amounts, global/overseas figures, running totals, budgets.
+- Priority within a lane: (1) the Deadline section of that lane with the latest availability ≤ anchor, preferring its chart "3-day" line over prose when the two differ; (2) Variety STRICT; (3) Variety REVISABLE, flagged. The primary replay uses only (1)+(2). Sensitivity: (1)+(2)+(3).
+- A "Saturday numbers" chart embedded inside a SUNDAY AM section is not a Sunday estimate, and is not usable for lane C, because it was only verifiably available at the Sunday label.
+- Manual adjudication writes one row per film-weekend × lane to `data/adjudicated_part*.csv`. Rows with no usable release are kept with an empty value (NO_RELEASE). A random ≥10% of rows is re-checked by the lead against the digest.
