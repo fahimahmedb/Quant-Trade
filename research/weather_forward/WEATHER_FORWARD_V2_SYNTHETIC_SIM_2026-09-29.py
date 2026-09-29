@@ -12,8 +12,16 @@ Modes (RNG consumption is identical across modes, so seeds reproduce the tabulat
   python3 WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py fable 200   # run A: Fable-style (engine conjunction + gate)
   python3 WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py v2 200      # run B: V2 engines, product partition
   python3 WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py size 400 SEED   # run C: CR-only null size (seeds 1-4, 11-14)
+  python3 WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py d4           # run D: D4 repair R1 validation (power table 4.5)
 Run B in the power table used NEG at one-sided 0.05 (NEG_ALPHA = 0.05); the frozen V2 rule is 0.025,
 checked by run C with NEG_ALPHA = 0.025 (seeds 11-14) and NEG_ALPHA = 0.05 (seeds 1-4).
+
+D4 repair R1 (after Astra V2 re-audit @7d95c00): `U` is now the repaired exclusion bound
+w_core * U_core + M_tail (tail_worst_case); `U_retired` is the V2@94b5934 TPM v SHR bound, now computed with the
+exact frozen numerical contract (LAMBDA_RANGE, MU_RANGE, BISECTION_ITERS; Astra MP1). Runs A/B in the power table
+were produced by the 94b5934 version of this script (bisection 200 / 20 / 30); re-running them here reproduces every
+non-bound column bit-for-bit (bisection consumes no randomness), while bound-driven states use the repaired U.
+Run D uses the exact frozen PINM draw contract (B = 20,000, SeedSequence([20260929, 1]), per-draw order).
 Requires numpy and scipy.
 """
 import json
@@ -82,6 +90,31 @@ def cr_se(e, groups_list, denom):
     return math.sqrt(max(vb, vst, v2)), min(Gs[0], Gs[1]) - 1, math.sqrt(max(vb, 1e-300))
 
 
+LAMBDA_RANGE = (0.05, 1000.0)   # frozen V2@94b5934 numerical contract of the RETIRED tail models
+MU_RANGE = (0.0, 50.0)
+BISECTION_ITERS = 40
+
+
+def retired_sup(ok, lo, hi, log):
+    """Exact frozen contract of the retired TPM/SHR bound: sup{x in [lo, hi] : ok(x)} by 40-step bisection
+    (log-scale for lambda); a sup at an interval end is reported as that end."""
+    if ok(hi):
+        return hi
+    if not ok(lo):
+        return lo
+    for _ in range(BISECTION_ITERS):
+        mid = math.sqrt(lo * hi) if log else (lo + hi) / 2
+        if ok(mid): lo = mid
+        else: hi = mid
+    return lo
+
+
+def tail_worst_case(n, C, tail):
+    """REPAIRED tail term (D4 repair R1): contribution of the TAIL stratum to theta if every TAIL leg wins,
+    M_tail = sum_TAIL (n_j - C_j) / sum_all C_j. Valid for every p in [0,1]^TAIL and every dependence."""
+    return float((n[tail] - C[tail]).sum() / C.sum()) if tail.any() else 0.0
+
+
 def poibin_sf(probs, k):
     """P(X >= k) for a Poisson-binomial variable."""
     pmf = np.zeros(len(probs) + 1); pmf[0] = 1
@@ -138,41 +171,20 @@ def analyse(d, y, rng, B=1000):
         T1a, T1b, T2 = T1a_cr and T1a_p, T1b_p and T1b_blk, T2cr and T2p
         NEG = NEG_cr and (p_k_lo <= 0.05)
     T1 = T1a or T1b
-    # structured upper bound (spec 8.5)
+    # upper bounds for exclusion claims
     wc = C[core].sum() / C.sum(); wt = 1 - wc
     Uc = thc + tq(0.975, df_tc) * se_tc
-    Ut = 0.0
+    Ut = 0.0   # RETIRED V2@94b5934 model-conditional tail term (TPM v SHR), exact frozen numerical contract
     if tail.sum() > 0:
         Ut_ = U[:, tail]
         ct, nt, qt, Ct = c[tail], n[tail], q[tail], C[tail].sum()
-
-        def ok_l(lam):
-            return ((Ut_ < np.minimum(1, lam * ct)).sum(1) <= W).mean() > 0.025
-        lo, hi = 0.05, 200.0
-        if not ok_l(lo):
-            lamU = lo
-        else:
-            for _ in range(30):
-                mid = math.sqrt(lo * hi)
-                if ok_l(mid): lo = mid
-                else: hi = mid
-            lamU = lo
+        lamU = retired_sup(lambda lam: ((Ut_ < np.minimum(1, lam * ct)).sum(1) <= W).mean() > 0.025, *LAMBDA_RANGE, log=True)
         th_tpm = (nt * np.minimum(1, lamU * ct)).sum() / Ct - 1
-
-        def ok_m(mu):
-            return ((Ut_ < np.minimum(1, ct + mu * (qt - ct))).sum(1) <= W).mean() > 0.025
-        lo, hi = 0.0, 20.0
-        if not ok_m(lo):
-            muU = 0.0
-        else:
-            for _ in range(30):
-                mid = (lo + hi) / 2
-                if ok_m(mid): lo = mid
-                else: hi = mid
-            muU = lo
+        muU = retired_sup(lambda mu: ((Ut_ < np.minimum(1, ct + mu * (qt - ct))).sum(1) <= W).mean() > 0.025, *MU_RANGE, log=False)
         th_shr = (nt * (np.minimum(1, ct + muU * (qt - ct)) - ct)).sum() / Ct
         Ut = max(th_tpm, th_shr)
-    Ubound = wc * Uc + wt * Ut
+    U_retired = wc * Uc + wt * Ut
+    Ubound = wc * Uc + tail_worst_case(n, C, tail)   # REPAIRED bound (spec 8.5, D4 repair R1)
     Unaive = th + tq(0.95, df_t) * se_t
     top5 = np.sort(N)[-5:].sum()
     gross = N[N > 0].sum()
@@ -181,7 +193,7 @@ def analyse(d, y, rng, B=1000):
     gate = ((N.sum() - top5) / C.sum() > 0) and dshare <= 0.25 and sshare <= 0.20
     T1a_dateonly = kap - tq(0.975, df_k) * se_k_date > 0
     return dict(theta=th, kap=kap, se_k=se_k, se_t=se_t, T1a_cr=T1a_cr, T1a_p=T1a_p, T1b_p=T1b_p, T1b_blk=T1b_blk,
-                NEG_cr=NEG_cr, T1a=T1a, T1b=T1b, T1=T1, T2cr=T2cr, T2p=T2p, T2=T2, NEG=NEG, U=Ubound,
+                NEG_cr=NEG_cr, T1a=T1a, T1b=T1b, T1=T1, T2cr=T2cr, T2p=T2p, T2=T2, NEG=NEG, U=Ubound, U_retired=U_retired,
                 Unaive=Unaive, gate=gate, T1a_dateonly=T1a_dateonly, W=W, Lam=Lam, wt=wt)
 
 
@@ -293,6 +305,250 @@ def size_only(seed, reps):
     return out
 
 
+# ------------------------------------------------------------------------------------------------------------------
+# Run D — D4 repair validation (Astra V2 re-audit @7d95c00, finding C1 and MP1). Synthetic only.
+# ------------------------------------------------------------------------------------------------------------------
+Z80 = 2.4865
+
+
+def op_readiness(d, op_dates=14):
+    """Spec 10.2 / 10.3 on the first 14 dates of a fixed design (prices, capital and stations only)."""
+    sel = d['date'] < op_dates
+    c, C, st = d['c'][sel], d['C'][sel], d['st'][sel]
+    mbar = sel.sum() / op_dates
+    s2 = sel.sum() * (C ** 2 * (1 - c) / c).sum() / C.sum() ** 2
+    deff = 1.5 * (1 + 0.03 * (mbar - 1))
+    se0 = math.sqrt(s2) * math.sqrt(deff / (120 * mbar))
+    core = c >= TAIL_CUT
+    se0k = math.sqrt((c[core] * (1 - c[core])).mean()) * math.sqrt(deff / (120 * core.sum() / op_dates))
+    cnt = np.bincount(st)
+    cnt = cnt[cnt > 0]
+    return dict(pce=math.ceil(100 * Z80 * se0) / 100, se0_theta=round(se0, 5), se0_kappa=round(se0k, 5),
+                sigma0_sq=round(s2, 5), stations=int(cnt.size), kish=round(float(cnt.sum() ** 2 / (cnt ** 2).sum()), 2))
+
+
+def astra_design(seed, D=120, m=35, S=48, n_tail_op=9, n_tail_rest=75, n_cheap=2, c_tail=0.039, c_cheap=0.001,
+                 op_dates=14):
+    """Astra C1 geometry: 35 trades/date, 48 gamma-activity stations, C = 50, 84 tail legs at 0.039 (9 inside the
+    14 PRE_T0 dates) and 2 legs at 0.001 after the OP; core c ~ U(0.35, 0.80); q = min(0.999, c + 0.12)."""
+    rng = np.random.default_rng(seed)
+    act = rng.gamma(2.0, 1.0, S); act /= act.sum()
+    date = np.repeat(np.arange(D), m)
+    N = date.size
+    st = rng.choice(S, N, p=act)
+    c = rng.uniform(0.35, 0.80, N)
+    op = np.flatnonzero(date < op_dates); rest = np.flatnonzero(date >= op_dates)
+    t_op = rng.choice(op, n_tail_op, replace=False)
+    pick = rng.choice(rest, n_tail_rest + n_cheap, replace=False)
+    c[t_op] = c_tail; c[pick[:n_tail_rest]] = c_tail; c[pick[n_tail_rest:]] = c_cheap
+    C = np.full(N, 50.0)
+    cheap = np.zeros(N, bool); cheap[pick[n_tail_rest:]] = True
+    return dict(date=date, st=st, c=c, C=C, n=C / c, q=np.minimum(0.999, c + 0.12), tail=c < TAIL_CUT,
+                cheap=cheap, S=S, D=D)
+
+
+def frozen_pinm_uniforms(d, cols, B=20000, chunk=1000):
+    """Spec 8.2 exactly: Generator(PCG64(SeedSequence([20260929, 1]))), B = 20,000 in 20 chunks of 1,000; per draw the
+    standard normals are laid out dates (asc), stations (asc), cells (asc date, ICAO), trades (canonical order = design
+    order here); returns the copula uniforms of the requested trade columns."""
+    rng = np.random.Generator(np.random.PCG64(np.random.SeedSequence([20260929, 1])))
+    ud, di = np.unique(d['date'], return_inverse=True)
+    us, si = np.unique(d['st'], return_inverse=True)
+    uc, ci = np.unique(d['date'] * 1000 + d['st'], return_inverse=True)
+    nD, nS, nC, N = len(ud), len(us), len(uc), d['date'].size
+    rd, rs, rc = DECL
+    out = []
+    for _ in range(B // chunk):
+        Z = rng.standard_normal((chunk, nD + nS + nC + N))
+        lat = (math.sqrt(rd) * Z[:, di[cols]] + math.sqrt(rs) * Z[:, nD + si[cols]] + math.sqrt(rc) * Z[:, nD + nS + ci[cols]]
+               + math.sqrt(1 - rd - rs - rc) * Z[:, nD + nS + nC + cols])
+        out.append(ndtr(lat))
+    return np.vstack(out)
+
+
+def retired_tail_lookup(d, Ut):
+    """RETIRED V2@94b5934 tail term U_tail(W) for W = 0..K under the exact frozen contract (lambda in [0.05, 1000]
+    log-bisection, mu in [0, 50], 40 iterations, P* from 20,000 frozen PINM draws). ok(x) is evaluated through the
+    per-draw order statistic of the trade thresholds, which is identical to counting W*(x) <= W."""
+    tail = d['tail']
+    ct, nt, qt, Ct = d['c'][tail], d['n'][tail], d['q'][tail], d['C'][tail].sum()
+    T_l = np.sort(Ut / ct, axis=1)                      # y*_j(lambda) = 1{U < lambda c}
+    T_m = np.sort((Ut - ct) / (qt - ct), axis=1)        # y*_j(mu) = 1{U < c + mu (q - c)}
+    K = ct.size
+    table = np.empty(K + 1)
+    for w in range(K + 1):
+        ok_l = (lambda x: True) if w >= K else (lambda x, col=T_l[:, w]: (col >= x).mean() > 0.025)
+        ok_m = (lambda x: True) if w >= K else (lambda x, col=T_m[:, w]: (col >= x).mean() > 0.025)
+        lamU = retired_sup(ok_l, *LAMBDA_RANGE, log=True)
+        muU = retired_sup(ok_m, *MU_RANGE, log=False)
+        table[w] = max((nt * np.minimum(1, lamU * ct)).sum() / Ct - 1,
+                       (nt * (np.minimum(1, ct + muU * (qt - ct)) - ct)).sum() / Ct)
+    return table
+
+
+def attack_truth(d, name):
+    c = d['c']; p = c.copy()
+    if name == 'A1_positive_tail_negative_core':
+        p[~d['tail']] = 0.95 * c[~d['tail']]; p[d['cheap']] = 0.170
+    elif name == 'A2_pure_hidden_lottery':
+        p[d['cheap']] = 0.18
+    elif name == 'P3_negative_core_fair_tail':
+        p[~d['tail']] = 0.90 * c[~d['tail']]
+    return p
+
+
+def core_stats(d, y, tq=stats.t.ppf):
+    c, C, n, tail = d['c'], d['C'], d['n'], d['tail']
+    blk = d['date'] // 5; st = d['st']; cell = blk * 1000 + st; core = ~tail
+    N = n * (y - c)
+    x = (y - c)[core]; kap = x.mean()
+    se_k, df_k, _ = cr_se(x - kap, [blk[core], st[core], cell[core]], core.sum())
+    thc = N[core].sum() / C[core].sum()
+    se_tc, df_tc, _ = cr_se(N[core] - thc * C[core], [blk[core], st[core], cell[core]], C[core].sum())
+    th = N.sum() / C.sum()
+    se_t, df_t, _ = cr_se(N - th * C, [blk, st, cell], C.sum())
+    wc = C[core].sum() / C.sum()
+    top5 = np.sort(N)[-5:].sum(); gross = N[N > 0].sum()
+    dsh = np.bincount(d['date'], weights=np.maximum(N, 0)).max() / gross if gross > 0 else 1
+    ssh = np.bincount(st, weights=np.maximum(N, 0)).max() / gross if gross > 0 else 1
+    return dict(theta=th, T1a=kap - tq(0.975, df_k) * se_k > 0, NEG=kap + tq(0.975, df_k) * se_k < 0,
+                T2=th - tq(0.95, df_t) * se_t > 0, core_part=wc * (thc + tq(0.975, df_tc) * se_tc),
+                gate=((N.sum() - top5) / C.sum() > 0) and dsh <= 0.25 and ssh <= 0.20, W=int(y[tail].sum()))
+
+
+def econ_result(U, T2, theta_hat, gate):
+    if U < ERT: return 'EXCL'
+    if T2 and theta_hat >= ERT: return 'CONF' if gate else 'NROB'
+    return 'IND'
+
+
+def run_attack(name, reps, seed, design_seed=424242):
+    d = astra_design(design_seed)
+    ready = op_readiness(d)
+    tailcols = np.flatnonzero(d['tail'])
+    Ut = frozen_pinm_uniforms(d, tailcols)
+    lookup = retired_tail_lookup(d, Ut)
+    W0 = (Ut < d['c'][tailcols]).sum(1)                 # sharp-null tail counts for T1b
+    M_tail = tail_worst_case(d['n'], d['C'], d['tail'])
+    p = attack_truth(d, name)
+    th_true = float((d['n'] * (p - d['c'])).sum() / d['C'].sum())
+    pce = ready['pce']
+    rng = np.random.default_rng(seed)
+    acc = {k: 0 for k in ['cov_old', 'cov_new', 'exERT_old', 'exERT_new', 'exPCE_old', 'exPCE_new',
+                          'rej_old', 'rej_new', 'T2', 'NEG', 'T1']}
+    for _ in range(reps):
+        y = (latent_u(rng, d, 1, TRUE)[0] < p).astype(float)
+        s = core_stats(d, y)
+        T1 = s['T1a'] or ((1 + (W0 >= s['W']).sum()) / (W0.size + 1) <= 0.025)
+        U_old = s['core_part'] + (1 - d['C'][~d['tail']].sum() / d['C'].sum()) * lookup[s['W']]
+        U_new = s['core_part'] + M_tail
+        e_old = econ_result(U_old, s['T2'], s['theta'], s['gate'])
+        e_new = econ_result(U_new, s['T2'], s['theta'], s['gate'])
+        info_neg = (not T1) and s['NEG']
+        acc['cov_old'] += th_true <= U_old; acc['cov_new'] += th_true <= U_new
+        acc['exERT_old'] += U_old < ERT; acc['exERT_new'] += U_new < ERT
+        acc['exPCE_old'] += U_old < max(pce, ERT); acc['exPCE_new'] += U_new < max(pce, ERT)
+        acc['rej_old'] += (e_old == 'EXCL') or (info_neg and e_old != 'CONF')   # V2@94b5934 rule 17.6
+        acc['rej_new'] += e_new == 'EXCL'                                         # repaired rule 17.6
+        acc['T2'] += s['T2']; acc['NEG'] += s['NEG']; acc['T1'] += T1
+    out = {k: round(v / reps, 4) for k, v in acc.items()}
+    out.update(scenario=name, reps=reps, theta_true=round(th_true, 4), pce=pce, M_tail=round(M_tail, 4),
+               readiness=ready, GO=ready['pce'] <= 0.10 and ready['se0_kappa'] <= 0.020 and ready['stations'] >= 25
+               and ready['kish'] >= 15, lookup_W0_to_4=[round(v, 4) for v in lookup[:5]])
+    return out
+
+
+def core_class_design(rng, kind, D=120, S=48, m=35):
+    """Adversarial CORE geometries for the repaired bound (TAIL empty unless stated)."""
+    act = rng.gamma(2.0, 1.0, S); act /= act.sum()
+    date = np.repeat(np.arange(D), rng.poisson(m, D)); N = date.size
+    st = rng.choice(S, N, p=act)
+    if kind == 'favourite':
+        c = rng.uniform(0.60, 0.90, N)
+    else:
+        c = rng.uniform(0.35, 0.80, N)
+        if kind in ('boundary_hidden', 'boundary_diffuse'):
+            b = rng.random(N) < 0.06
+            c[b] = rng.uniform(0.04, 0.06, b.sum())
+        elif kind == 'mid5':
+            b = rng.random(N) < 0.05
+            c[b] = rng.uniform(0.04, 0.35, b.sum())
+        elif kind == 'small_tail_allwin':
+            t = rng.choice(N, 3, replace=False); c[t] = 0.039
+    C = np.where(rng.random(N) < 0.68, 50.0, rng.uniform(10, 50, N))
+    return dict(date=date, st=st, c=c, C=C, n=C / c, q=np.minimum(0.999, c + 0.12), tail=c < TAIL_CUT, S=S, D=D)
+
+
+def core_class_truth(d, kind, target):
+    c, n, C = d['c'], d['n'], d['C']
+    if kind in ('uniform', 'favourite', 'min_geometry', 'mid5'):
+        return c * (1 + target)
+    if kind in ('boundary_hidden', 'boundary_diffuse'):
+        p = 0.95 * c
+        b = (c < 0.06) & (c >= TAIL_CUT)
+        if kind == 'boundary_hidden':   # the edge sits in the first 10% of boundary legs only
+            b = b & (np.cumsum(b) <= max(1, int(0.1 * b.sum())))
+        base = (n * (p - c)).sum()
+        need = target * C.sum() - base    # extra sum n (p - c) required on the chosen legs
+        k = 1 + need / (n[b] * 0.95 * c[b]).sum() * 1.0
+        p[b] = np.minimum(1.0, 0.95 * c[b] * k)
+        return p
+    if kind == 'small_tail_allwin':
+        p = c * (1 + target); p[d['tail']] = 1.0
+        return p
+    raise ValueError(kind)
+
+
+def run_core_class(kind, target, rho, reps, seed, D=120, S=48):
+    rng = np.random.default_rng(seed)
+    acc = dict(cov=0, exERT=0, exERT_false=0, T2=0); th_list = []; pce_list = []
+    for _ in range(reps):
+        d = core_class_design(rng, 'uniform' if kind == 'min_geometry' else kind, D=D, S=S)
+        p = core_class_truth(d, kind, target)
+        th_true = float((d['n'] * (p - d['c'])).sum() / d['C'].sum())
+        y = (latent_u(rng, d, 1, rho)[0] < p).astype(float)
+        s = core_stats(d, y)
+        U = s['core_part'] + tail_worst_case(d['n'], d['C'], d['tail'])
+        acc['cov'] += th_true <= U; acc['exERT'] += U < ERT
+        acc['exERT_false'] += (U < ERT) and (th_true >= ERT); acc['T2'] += s['T2']
+        th_list.append(th_true); pce_list.append(op_readiness(d)['pce'])
+    out = {k: round(v / reps, 4) for k, v in acc.items()}
+    out.update(kind=kind, target=target, rho=rho, reps=reps, D=D, S=S,
+               theta_true_mean=round(float(np.mean(th_list)), 4), pce_median=float(np.median(pce_list)))
+    return out
+
+
+PLAN_D = [  # (label, callable args)
+    ('attack', 'A1_positive_tail_negative_core', 8000),
+    ('attack', 'A2_pure_hidden_lottery', 5000),
+    ('attack', 'P3_negative_core_fair_tail', 2000),
+    ('core', ('uniform', 0.02, 'TRUE'), 4000),
+    ('core', ('uniform', 0.02, 'STRESS'), 4000),
+    ('core', ('uniform', 0.02, 'SST'), 4000),
+    ('core', ('favourite', 0.02, 'TRUE'), 4000),
+    ('core', ('mid5', 0.02, 'TRUE'), 4000),
+    ('core', ('boundary_hidden', 0.025, 'TRUE'), 4000),
+    ('core', ('boundary_diffuse', 0.025, 'TRUE'), 4000),
+    ('core', ('min_geometry', 0.02, 'TRUE'), 4000),
+    ('core', ('min_geometry', 0.02, 'SST'), 4000),
+    ('core', ('small_tail_allwin', -0.05, 'TRUE'), 4000),
+    ('core', ('uniform', -0.05, 'TRUE'), 2000),
+    ('core', ('uniform', -0.10, 'TRUE'), 2000),
+]
+
+
+def _job_d(i):
+    rho_map = {'TRUE': TRUE, 'STRESS': STRESS, 'SST': SST}
+    kind, arg, reps = PLAN_D[i]
+    if kind == 'attack':
+        return json.dumps(run_attack(arg, reps, 5000 + i))
+    k, target, rho = arg
+    D, S = (60, 25) if k == 'min_geometry' else (120, 48)
+    out = run_core_class(k, target, rho_map[rho], reps, 5000 + i, D=D, S=S)
+    out['rho_name'] = rho
+    return json.dumps(out)
+
+
 TRUE = (0.05, 0.05, 0.10)
 STRESS = (0.15, 0.15, 0.10)
 SST = (0.02, 0.15, 0.10)
@@ -330,6 +586,11 @@ if __name__ == '__main__':
     if MODE == 'size':
         if len(sys.argv) > 4: NEG_ALPHA = float(sys.argv[4])
         print(json.dumps(size_only(int(sys.argv[3]), REPS)))
+    elif MODE == 'd4':   # run D: python3 ... d4   (replication counts are fixed in PLAN_D)
+        from multiprocessing import Pool
+        with Pool(4) as pool:
+            for line in pool.imap(_job_d, range(len(PLAN_D))):
+                print(line, flush=True)
     else:
         from multiprocessing import Pool
         plan = PLAN_B if MODE == 'v2' else PLAN_A

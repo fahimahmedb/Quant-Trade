@@ -4,7 +4,8 @@
 MANIFEST_ROLE            = enumeration of every quantity that must be immutable before t0 (V2)
 SPEC                     = research/weather_forward/WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md
 SUPERSEDES               = WEATHER_FORWARD_FREEZE_MANIFEST_2026-09-29.md @ 726070a (kept immutable as V1)
-WEATHER_FORWARD_SPEC_V2  = READY_FOR_INDEPENDENT_REAUDIT
+WEATHER_FORWARD_SPEC_V2  = AUDITED @94b59348; ASTRA_WEATHER_V2_REAUDIT = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION (@7d95c00)
+WEATHER_FORWARD_SPEC_V2_D4_REPAIR = READY_FOR_ASTRA_D4_RECHECK   (rows marked D4-R1 below; section C)
 BUILDER_AUTHORIZED       = FALSE
 REAL_CAPITAL_AUTHORIZED  = FALSE
 LIVE_TRADING_AUTHORIZED  = FALSE
@@ -77,7 +78,7 @@ STATUS COLUMN            = UNCHANGED (V1 value carried) / CLARIFIED (V1 silent o
 | FRESH_READY | BIAS_HISTORY_READY ∧ BIAS_SPAN ≤ 40 days (readiness only) | NEW | 11.1 |
 | GLOBAL_READY | GR1 ≥ 80% of table stations FRESH_READY both kinds and ≥ 30 stations ≥ 1 kind; GR2 trailing-14 completeness ≥ 95%; GR3 parser ≥ 98% over ≥ 30 dates; GR4 forecast access closed; GR5 replay 100% trailing 14; GR6 mechanics codes < 10% trailing 7 | NEW | 11.2 |
 | PRE_T0_OBSERVATION_PHASE | first 14 consecutive target dates with GLOBAL_READY (restart on failure); decision-only; may inspect forecasts, q, edges, triggers, prices, ticks, depth, hypothetical fills, capital demand, station/stratum shares; must not inspect any outcome, settlement or payout of a PRE_T0 decision, P&L, hit rate or winner | NEW (replaces V1 30-day burn-in) | 11.2 |
-| READINESS_REPORT | committed + hashed; fields fixed in spec §11.2; no outcome field | NEW | 11.2 |
+| READINESS_REPORT | committed + hashed; fields fixed in spec §11.2 (incl. descriptive OP TAIL_MAX_CONTRIBUTION, D4-R1); no outcome field | NEW | 11.2 |
 | t0_PRECONDITIONS | Astra re-audit pass on this exact V2 commit; BUILDER_AUTHORIZED; Builder verification suite green; GLOBAL_READY + OP complete; readiness report with GO; STATION_TABLE / PARAMS / ENGINE / MANIFEST hashes recorded; t0 declared by Blue within 21 days after the last OP date (else OP re-run and θ_PCE recomputed by the same formula) | CHANGED | 11.2 |
 | D_0 | first local target date D with T_entry(e) ≥ t0 for every table event of D | NEW | 11.3 |
 
@@ -94,14 +95,15 @@ STATUS COLUMN            = UNCHANGED (V1 value carried) / CLARIFIED (V1 silent o
 | PCE_CEILING | 0.10 | NEW | 10.3 |
 | SE_KAPPA_CEILING | 0.020 | NEW | 10.3 |
 | GO / NO_GO | GO iff θ_PCE ≤ 0.10 ∧ SE0_κ ≤ 0.020 ∧ OP traded stations ≥ 25 ∧ Kish ≥ 15 ∧ GLOBAL_READY on all 14 OP dates; else NO_GO_<PCE_ABOVE_CEILING \| KAPPA_UNDERPOWERED \| STATION_DIVERSITY \| READINESS> (first failing) | NEW | 10.3 |
-| NULLS / ALTERNATIVES | T1a κ_core ≤ 0 vs > 0 (0.025); T1b λ_tail ≤ 1 (sharp p = c on TAIL) vs > 1 (0.025); T2 θ ≤ 0 vs > 0 (0.05); NEG κ_core ≥ 0 vs < 0 (0.025); EXCL θ ≥ threshold vs < threshold (structured bound, 0.025 + 0.025) | NEW (T2 = V1 H0/H1) | 6.1 |
-| ALPHA | 0.05 one-sided; T1a, T1b at 0.025 each (Bonferroni); T2 at 0.05 unconditionally (no gate); NEG at 0.025; structured bound 0.025 core + 0.025 tail; joint claims by intersection-union | CHANGED | 6.3 |
+| NULLS / ALTERNATIVES | T1a κ_core ≤ 0 vs > 0 (0.025); T1b λ_tail ≤ 1 (sharp p = c on TAIL) vs > 1 (0.025); T2 θ ≤ 0 vs > 0 (0.05); NEG κ_core ≥ 0 vs < 0 (0.025); EXCL θ ≥ threshold vs < threshold (repaired bound: core CR 0.025 per side + assumption-free tail supremum, D4-R1) | NEW (T2 = V1 H0/H1) | 6.1 |
+| ALPHA | 0.05 one-sided; T1a, T1b at 0.025 each (Bonferroni); T2 at 0.05 unconditionally (no gate); NEG at 0.025; exclusion bound: core CR at 0.025 per side + deterministic tail supremum (D4-R1); joint claims by intersection-union | CHANGED | 6.3 |
 | TARGET_POWER | 0.80 at θ_PCE (nominal) | NEW | 6.2 |
 | PRIMARY_INFERENCE (κ_core, θ_core, θ) | two-way cluster-robust t-test: residuals `e_j` per spec §8.1; `V_g = G/(G−1) Σ (Σ e)² / Q²` for g ∈ {block, station, block×station}; `SE = √max(V_B, V_S, V_B + V_S − V_BS)`; df = min(G_B, G_S) − 1 | CHANGED (was date-block percentile bootstrap) | 8.1 |
-| AUXILIARY / TAIL ENGINE (PINM) | sharp null `p = c`; latent Gaussian copula date / station / cell (date, ICAO) with ρ = 0.10 / 0.10 / 0.10 (ASSUMED); B = 20,000 in 20 chunks of 1,000; `Generator(PCG64(SeedSequence([20260929, 1])))`; draw order dates, stations, cells, trades (T_entry, event_id, decision_id); p = (1 + #extreme)/(B + 1); gating only for T1b and the tail bound; reported for θ, κ | NEW | 8.2 |
+| AUXILIARY / TAIL ENGINE (PINM) | sharp null `p = c`; latent Gaussian copula date / station / cell (date, ICAO) with ρ = 0.10 / 0.10 / 0.10 (ASSUMED); B = 20,000 in 20 chunks of 1,000; `Generator(PCG64(SeedSequence([20260929, 1])))`; draw order dates, stations, cells, trades (T_entry, event_id, decision_id); p = (1 + #extreme)/(B + 1); gating only for T1b (no longer part of any bound, D4-R1); reported for θ, κ | NEW | 8.2 |
 | T1b RULE | PINM `W_tail` upper-tail p ≤ 0.025; empty TAIL → no rejection; Poisson-binomial and block-collapsed p reported | NEW | 8.3 |
 | NEG RULE | `κ̂_core + t_{df,0.975} SE < 0` (one-sided 0.025) | NEW | 8.4 |
-| STRUCTURED_UPPER_BOUND | `U(θ) = w_core (θ̂_core + t_{df,0.975} SE) + w_tail max(θ^TPM(λ_U), θ^SHR(μ_U))`; λ_U, μ_U = sup of parameter with `P*(W* ≤ W) > 0.025` under the PINM copula with tilted marginals, common random numbers, bisection 40 iterations (λ log-scale on [0.05, 1000], μ on [0, 50]); tagged MODEL_CONDITIONAL_TAIL(TPM ∨ SHR) | NEW | 8.5 |
+| EXCLUSION_UPPER_BOUND (D4-R1) | `U(θ) = w_core (θ̂_core + t_{df,0.975} SE_CR(θ̂_core)) + M_tail`, `M_tail = Σ_TAIL (n_j − C_j) / Σ_all C_j` (every TAIL leg wins; 0 if TAIL empty); valid for every `p ∈ [0,1]^TAIL` under any dependence; drives E1 and ECONOMIC_BOUND; reported with w_tail, M_tail, w_core·U_core, EXCLUSION_BLOCKED_BY_TAIL (= w_core·U_core < θ_ERT ≤ U) | CHANGED (D4-R1; replaces the V2@94b5934 STRUCTURED_UPPER_BOUND) | 8.5 |
+| RETIRED: TPM / SHR TAIL MODELS | V2@94b5934 structured tail term (λ ∈ [0.05, 1000], μ ∈ [0, 50], 40 bisection iterations) — retired from every role; not computed, not reported | RETIRED (D4-R1) | 8.5 |
 | UNRESOLVED_AT_ANALYSIS | adverse imputation per claim (payout 0 for favourable tests, win for adverse tests / bounds) | NEW | 8.6 |
 | DEPENDENCE_MODEL | date = local target date; block = floor((D − D_0)/5) calendar days; station = ICAO; intersection = (block, ICAO); PINM cell = (date, ICAO); never IID, never date-only | CHANGED | 9 |
 | SENSITIVITY_SET (non-gating) | spec §8.7 list, exactly | NEW | 8.7 |
@@ -121,7 +123,7 @@ STATUS COLUMN            = UNCHANGED (V1 value carried) / CLARIFIED (V1 silent o
 | GATES (economic robustness) | G1 θ̂_CONSERVATIVE > 0; G2 θ̂ without top-5 N_j > 0, no date > 25%, no station > 20% of gross profit; G3 θ̂ over NOAA-mode settlements > 0 | CHANGED (V1 c2, c6 kept; c5, c9 retired; c7, c8 moved to OPERABILITY; c3 → VALIDITY; c4 → MIN_INFORMATION) | 17.2 |
 | SCIENCE / OPERABILITY / VALIDITY SEPARATION | three orthogonal axes; operability never pre-empts science | NEW | 17 |
 | FORWARD_SIGNAL_RULE | VALID_COMPLETE ∧ NET_VALUE_CONFIRMED ∧ INFORMATION ≠ NEGATIVE ∧ ACCESSIBLE | CHANGED | 17.5 |
-| REJECTION_RULE | NET_VALUE_EXCLUDED, or NEGATIVE_INFORMATION with economics ≠ CONFIRMED | CHANGED | 17.6 |
+| REJECTION_RULE (D4-R1) | `R*_REJECTED_AS_NET_STRATEGY` iff ECONOMIC_RESULT = NET_VALUE_EXCLUDED; `R*_CORE_INFORMATION_REJECTED` iff INFORMATION_RESULT = NEGATIVE_INFORMATION (information-level, never economic) | CHANGED (D4-R1; V2@94b5934 also rejected on NEGATIVE_INFORMATION ∧ economics ≠ CONFIRMED) | 17.6 |
 | MANDATORY_SENTENCE | "θ in [θ_ERT, θ_PCE) is neither confirmed nor excluded by this experiment; this is not evidence of zero edge." (conditions spec §17.3) | NEW | 17.3 |
 | PLACEBO / ATTRIBUTION | B0–B6 as V1, all descriptive; V1 criterion 9 retired; ATTRIBUTION_NOT_ESTABLISHED and PLACEBO_ANOMALY flags | CHANGED | 18 |
 | EXPLORATORY_FAMILY | V1 E1–E15, Holm 0.05; E8 uses tick-aware CONSERVATIVE | UNCHANGED (E8 clarified) | 23 |
@@ -134,7 +136,7 @@ STATUS COLUMN            = UNCHANGED (V1 value carried) / CLARIFIED (V1 silent o
 
 | FIELD | STATE | CLOSURE CONDITION |
 |---|---|---|
-| INDEPENDENT_REAUDIT | PENDING | Astra re-audits this exact V2 commit and issues its own EXPERIMENT_FEASIBILITY verdict |
+| INDEPENDENT_REAUDIT | V2@94b5934 BLOCKED by Astra (D4, @7d95c00); D4 repair R1 PENDING | Astra bounded D4 recheck of the exact repair commit |
 | BUILDER_AUTHORIZED | FALSE | governance decision after a passing re-audit |
 | STATION_TABLE (rows, bytes, hash) | BLOCKED_BY_PROCEDURE | compiled by the frozen membership rule before capture day 1; OurAirports snapshot bytes committed with sha256 |
 | SETTLEMENT_PARSER | BLOCKED_BY_PROCEDURE | GR3 met |
@@ -145,3 +147,14 @@ STATUS COLUMN            = UNCHANGED (V1 value carried) / CLARIFIED (V1 silent o
 | t0 | NOT_DECLARED | Blue, after every row above closes |
 
 No value in section A was chosen using settlement outcomes, resolved winners, P&L, hit rates, wallet or leaderboard data. The only live data read by the V2 Architect were market metadata fields (titles, bucket labels, descriptions, tick size, minimum size, fee schedule, resolution source) of `closed=false` events.
+
+## C. D4 repair R1 record (after Astra re-audit @7d95c00)
+
+| Item | Frozen value | Outcome information used | Trading rule changed |
+|---|---|---|---|
+| Admissible tail outcome class | every `p ∈ [0,1]` per TAIL trade, any dependence | NO | NO |
+| Exclusion bound | EXCLUSION_UPPER_BOUND above; coverage ≥ core CR coverage by construction | NO | NO |
+| Economic rejection | only via `U(θ) < θ_ERT` | NO | NO |
+| Unchanged | R*, cohort, strata, θ, κ_core, T1a, T1b, T2, NEG, engines, dependence, PCE formula, GO / NO_GO, gates G1–G3, 14-value SCIENTIFIC partition, validity, operability, forward-signal rule, analysis time | NO | NO |
+| Simulation contract | committed script implements the retired bound exactly (λ ≤ 1000, μ ≤ 50, 40 iterations, B = 20,000, frozen seed and per-draw order) for the reproduction, and the repaired bound | NO | NO |
+

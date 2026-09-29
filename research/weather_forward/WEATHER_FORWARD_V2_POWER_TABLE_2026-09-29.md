@@ -70,11 +70,11 @@ Raising trades per date beyond `≈ 1/ρ_d` buys almost nothing; only dates (or 
 | 2.0 | 0.0537 | 0.14 | 0.05 / 0.10 / 0.83 | 0.10 / 0.05 / 0.72 | 0.24 / 0.01 / 0.51 | 0.59 / 0.00 / 0.18 |
 | 2.9 | 0.0779 | 0.20 | 0.05 / 0.08 / 0.82 | 0.08 / 0.05 / 0.75 | 0.16 / 0.02 / 0.61 | 0.36 / 0.00 / 0.36 |
 
-Cells: `P(T2 rejects) / P(U < θ_ERT) / P(U < θ_PCE)`. These are core-only bounds; with lottery legs the structured bound makes `P(U < θ_ERT) ≈ 0` (section 4). At σ_eff = 1, a true θ = 0.02 is confirmed 18% and excluded 5% of the time: the ERT band is unresolved by construction.
+Cells: `P(T2 rejects) / P(U < θ_ERT) / P(U < θ_PCE)`. These are core-only bounds; with lottery legs the exclusion bound makes `P(U < θ_ERT) ≈ 0` (section 4; after D4 repair R1 exactly 0 whenever `M_tail` alone exceeds the threshold). At σ_eff = 1, a true θ = 0.02 is confirmed 18% and excluded 5% of the time: the ERT band is unresolved by construction.
 
 ## 4. Synthetic Monte Carlo (SIMULATED)
 
-Script: `WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py`. Design per replication: 120 dates, Poisson(35) trades/date, 48 stations with gamma(2, 1) activity, 5-date blocks; price mixes **M00** (95% core c ~ U(0.35, 0.80), 5% mid c ~ U(0.04, 0.35), no tail), **M05** (5% tail, 5% mid), **M16** (16% tail log-U(0.002, 0.04), Fable's mix); capital 50 USD w.p. 0.68 else U(10, 50); true dependence latent Gaussian (date, station, station-day cell) = **TRUE** (0.05, 0.05, 0.10), **STRESS** (0.15, 0.15, 0.10), **SST** strong station (0.02, 0.15, 0.10); PINM declared (0.10, 0.10, 0.10), B = 1,000 in simulation. 200 replications per row (Monte-Carlo SE ≈ 0.015 near 0.05, ≈ 0.035 near 0.5). Scenario "uniform(θ)": every leg `p = c (1 + θ)`; "tail_mult(k)": core fair, tail `p = k c`; "core_plus_tail_over": core `p = 1.05 c`, tail `p = 0.5 c`; "hidden_lottery(10)": only legs with `c < 0.005` at `p = 10 c`; "shrink(μ)": `p = c + μ (q − c)`.
+Script: `WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py`. Design per replication: 120 dates, Poisson(35) trades/date, 48 stations with gamma(2, 1) activity, 5-date blocks; price mixes **M00** (95% core c ~ U(0.35, 0.80), 5% mid c ~ U(0.04, 0.35), no tail), **M05** (5% tail, 5% mid), **M16** (16% tail log-U(0.002, 0.04), Fable's mix); capital 50 USD w.p. 0.68 else U(10, 50); true dependence latent Gaussian (date, station, station-day cell) = **TRUE** (0.05, 0.05, 0.10), **STRESS** (0.15, 0.15, 0.10), **SST** strong station (0.02, 0.15, 0.10); PINM declared (0.10, 0.10, 0.10), B = 1,000 in simulation. **Runs A and B were produced by the script at V2@94b5934; their U(θ) columns ("struct.", U<ERT, False U<PCE) refer to the RETIRED TPM ∨ SHR bound computed with that script's bisection (λ ≤ 200, μ ≤ 20, 30 iterations — Astra MP1). They are kept as the record. The repaired bound satisfies U_repaired ≥ U_retired pointwise, so every repaired exclusion rate is ≤ the tabulated one and every repaired coverage ≥ it; in tail-free rows (M00) the two bounds are identical. Exact-contract evidence and the repair are in §4.5 (run D).** 200 replications per row (Monte-Carlo SE ≈ 0.015 near 0.05, ≈ 0.035 near 0.5). Scenario "uniform(θ)": every leg `p = c (1 + θ)`; "tail_mult(k)": core fair, tail `p = k c`; "core_plus_tail_over": core `p = 1.05 c`, tail `p = 0.5 c`; "hidden_lottery(10)": only legs with `c < 0.005` at `p = 10 c`; "shrink(μ)": `p = c + μ (q − c)`.
 
 ### 4.1 Run A — Fable-style configuration (engine conjunction + fixed-sequence gate), seeds 1000–1016
 
@@ -135,18 +135,51 @@ Monte-Carlo SE ≈ 0.003–0.004 (pooled 3,200 for T1a and T2). Reading: T2 is a
 1. **PINM with a declared dependence must not gate core statistics** (4.1: 0.755 vs 0.91; 4.2: 0.73 vs 0.855; M05 0.28 vs 0.54). It is valuable for the rare tail count (T1b 0.975 at 3×, 0.585 at 2×), where the declared dependence barely matters.
 2. **No gate on θ**: a payout-concentrated edge (hidden lottery, θ = 0.44) is claimed 0.535 ungated vs 0.30 gated (run B; run A 0.61 vs 0.23).
 3. **Two-way CR holds size** where date-only fails (0.095–0.205 at nominal 0.025).
-4. **Naive pooled upper bounds under-cover with lottery legs** (0.79–0.91); the structured bound covers ≥ 0.945 everywhere except the adversarial hidden-lottery scenario (0.86–0.89), where it wrongly excludes the LARGE band 4–6% of the time (MAJOR, disclosed).
+4. **Naive pooled upper bounds under-cover with lottery legs** (0.79–0.91); the retired structured bound under-covered in hidden-lottery geometries (0.86–0.89 here; Astra C1 and run D show a GO-compatible false ERT exclusion of 7.4%) — **retired by D4 repair R1** (§4.5).
 5. **With any material lottery share, relevance (0.02) cannot be excluded** (U < ERT = 0 in every tail scenario) and θ_PCE exceeds the 0.10 ceiling → NO_GO. The information axis keeps full power in every mix (T1a 0.865–0.875 at κ ≈ 0.056).
 6. **A public-bot-like loss rate is detected**: NEG 0.94 at κ = −0.058 (0.05 level; ≈ 0.9 at the frozen 0.025).
+
+### 4.5 Run D — D4 repair R1 validation (after Astra V2 re-audit @7d95c00), fresh seeds 5000–5014, design seed 424242
+
+Command: `python3 WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py d4`. The **retired** bound is computed with the exact frozen V2@94b5934 contract: λ ∈ [0.05, 1000] log-bisection, μ ∈ [0, 50], 40 iterations, interval-end rule, P* from B = 20,000 PINM draws in 20 chunks of 1,000 with `SeedSequence([20260929, 1])` and the per-draw normal order dates → stations → cells → trades (Astra MP1 closed). The fixed attack design reproduces Astra C1: 120 dates × 35 trades, 48 gamma-activity stations, C = 50, core c ~ U(0.35, 0.80), 84 tail legs at 0.039 (9 inside the 14 OP dates) and 2 legs at 0.001 after the OP, q = min(0.999, c + 0.12), true latent dependence (0.05, 0.05, 0.10). Outcome-free readiness of that design: σ0² = 1.326, SE0_θ = 0.0309, **θ_PCE = 0.08**, SE0_κ = 0.01296, 46 stations, Kish 26.2 → **GO** (identical to Astra's figures to the third decimal). `M_tail = 0.9685`.
+
+| Scenario | Reps | θ_true | Retired: coverage | Retired: false U<θ_ERT | Retired: false U<θ_PCE | Retired rule 17.6: false economic rejection | **Repaired: coverage** | **Repaired: false exclusion (ERT / PCE)** | **Repaired: false economic rejection** | T2 | NEG | T1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A1 positive tail / negative core (Astra C1) | 8,000 | **0.0315** | 0.8885 | **0.0742** (Astra 0.0746) | 0.4119 (θ_true < PCE: not false) | **0.3204** | **1.000** | **0 / 0** | **0** | 0.001 | 0.322 | 0.032 |
+| A2 pure hidden lottery (Astra C1 §6.3) | 5,000 | **0.0852** | 0.8632 (Astra 0.8682) | 0.0082 | **0.1126** (Astra 0.1120) | 0.0292 | **1.000** | **0 / 0** | **0** | 0.032 | 0.026 | 0.056 |
+| P3 cost check: negative core, fair tail, same design | 2,000 | −0.0980 | 0.9985 | (true exclusion) 0.3815 | 0.7975 | (true) 0.829 | 1.000 | exclusion power **0.000** | 0 | 0 | 0.842 | 0.019 |
+
+Adversarial CORE class for the repaired bound (random designs per replication; θ_true set at or just above θ_ERT so every exclusion is false):
+
+| Geometry | Dependence | Reps | θ_true | θ_PCE (median) | Coverage | False U < θ_ERT | T2 |
+|---|---|---|---|---|---|---|---|
+| uniform edge, c ~ U(0.35, 0.80) | TRUE | 4,000 | 0.020 | 0.07 | 0.9782 | 0.0217 | 0.153 |
+| uniform edge | STRESS (0.15, 0.15, 0.10) | 4,000 | 0.020 | 0.07 | 0.9705 | 0.0295 | 0.108 |
+| uniform edge | SST (0.02, 0.15, 0.10) | 4,000 | 0.020 | 0.07 | 0.9762 | 0.0238 | 0.119 |
+| favourite NO legs, c ~ U(0.60, 0.90) (negative skew) | TRUE | 4,000 | 0.020 | 0.05 | 0.9810 | 0.0190 | 0.276 |
+| 5% mid legs c ~ U(0.04, 0.35) | TRUE | 4,000 | 0.020 | 0.08 | 0.9745 | 0.0255 | 0.136 |
+| 6% boundary legs c ~ U(0.04, 0.06), edge hidden in 10% of them, bulk p = 0.95 c | TRUE | 4,000 | 0.025 | 0.10 | 0.9930 | 0.0052 | 0.030 |
+| 6% boundary legs, diffuse edge, bulk p = 0.95 c | TRUE | 4,000 | 0.025 | 0.10 | 0.9705 | 0.0248 | 0.107 |
+| minimum geometry 60 dates / 25 stations | TRUE | 4,000 | 0.020 | 0.07 | 0.9748 | 0.0253 | 0.119 |
+| minimum geometry 60 dates / 25 stations | SST | 4,000 | 0.020 | 0.07 | 0.9740 | 0.0260 | 0.104 |
+| 3 tail legs at 0.039 that **all win**, core −0.05 | TRUE | 4,000 | −0.032 | 0.07 | 0.9730 | (true) 0.3388 | 0.006 |
+| tail-free, uniform −0.05 (power) | TRUE | 2,000 | −0.050 | 0.07 | 0.9680 | (true) 0.513 | 0.002 |
+| tail-free, uniform −0.10 (power) | TRUE | 2,000 | −0.100 | 0.07 | 0.9730 | (true) 0.926 | 0.000 |
+
+Monte-Carlo SE ≈ 0.003 at 4,000 replications near 0.03. Readings:
+1. **Both Astra attacks reproduce** with independent code and fresh seeds, and the retired rule 17.6 is worse than the bound alone: its NEG clause turns a true θ = 0.0315 into "R* rejected as a net strategy" 32% of the time.
+2. **The repaired bound cannot false-exclude either attack** (coverage 1.0: `M_tail` = 0.97 exceeds every threshold); the repaired rule 17.6 issues no false economic rejection; T2, NEG (now `R*_CORE_INFORMATION_REJECTED`), T1 and the decomposition are unchanged.
+3. **Coverage no longer depends on the tail.** Over the adversarial core class it is 0.9705–0.993 and the false ERT exclusion rate is 0.019–0.0295 (≤ 0.05), including hidden edges at the 0.04 boundary, negatively skewed favourites, the minimum truncated geometry and stress dependence.
+4. **Cost:** exclusion power is unchanged for tail-free runs (0.51 / 0.93 at θ = −0.05 / −0.10) and small tails (0.34 with three 0.039 legs that all win), but is **zero whenever sub-cent legs are held** (P3), because the sample cannot price them. Such runs are economically INDETERMINATE for exclusion; information-level falsification (NEG 0.84 in P3) remains.
 
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
 
 | True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
 |---|---|---|---|
 | 0.00 | ND\|IND ≈ 0.85–0.92; false CONFIRMED ≈ 0.03–0.06; false NEG ≈ 0.03 (at 0.025) | would not start | would not start |
-| 0.02 (= ERT) | CONFIRMED ≈ 0.12–0.18 (analytic 0.18 before gates); EXCLUDED ≈ 0.05; otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
+| 0.02 (= ERT) | CONFIRMED ≈ 0.12–0.18 (analytic 0.18 before gates); EXCLUDED ≈ 0.02–0.05 (run D: 0.0217); otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
 | 0.05 | CONFIRMED ≈ 0.43; information DETECTED ≈ 0.39; INDETERMINATE ≈ 0.55 | (if run: CONFIRMED 0.10, DET 0.345) | (if run: CONFIRMED ≈ 0.01) |
 | 0.10 | CONFIRMED ≈ 0.86; information DETECTED ≈ 0.87 | (if run: CONFIRMED 0.52) | (if run: CONFIRMED 0.17, DET 0.875) |
-| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); relevance EXCLUDED ≈ 0.41 | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10) |
+| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); relevance EXCLUDED ≈ 0.41–0.51 (−0.05), 0.93 (−0.10) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); economic exclusion 0 after R1 (tail supremum) |
 
 Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.

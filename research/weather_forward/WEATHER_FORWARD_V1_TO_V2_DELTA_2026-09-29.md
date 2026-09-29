@@ -4,7 +4,8 @@
 V1     = claude/intelligent-gates-msidml @ 726070a199957a6fc05515ebb3027e945028fddc  (immutable; unchanged in this branch)
 ASTRA  = claude/dreamy-franklin-1vki4t  @ e1cf4ca0851eace2912ce8a9bcd4a8400ebf4250  (immutable)
 FABLE  = claude/zen-einstein-9moyry     @ 5760ffa5b5da2a988cfe6d1503c86c561acf9b1f  (immutable, advisory)
-V2     = WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md (+ manifest, state, power table, synthetic sim)
+V2     = WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md (+ manifest, state, power table, synthetic sim); audited @94b59348
+V2-R1  = D4 repair R1 after Astra V2 re-audit @7d95c00abccfbc805c0d8abca65a6b93268741a2 (section D4.d / D4.e)
 SUMMARY: OUTCOME_INFORMATION_USED = FALSE for every item · TRADING_RULE_CHANGED = FALSE for every item ·
          EXECUTION_MODEL_CHANGED = TRUE for one item (X1, CONSERVATIVE only) · COHORT_CHANGED = TRUE for one item (D7)
 ```
@@ -76,7 +77,7 @@ Each block: OLD / NEW / WHY / ASTRA_FINDING / FABLE_RECOMMENDATION / ARCHITECT_D
 - OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE.
 - BUILDER_IMPACT: CR engine; PINM with exact seed and draw order; bisection for λ_U, μ_U.
 
-**D4.c Exclusion bound**
+**D4.c Exclusion bound** — *SUPERSEDED by D4.d (repair R1); kept as the record of V2@94b5934*
 - OLD: U95 of the percentile bootstrap used for REJECTED.
 - NEW: structured bound `U(θ) = w_core U_core + w_tail max(θ^TPM, θ^SHR)`, tagged MODEL_CONDITIONAL_TAIL.
 - WHY (SIMULATED): naive pooled U95 covers 0.79–0.91 with lottery legs; the structured bound ≥ 0.945 except in a deliberately adversarial hidden-lottery scenario (disclosed as a MAJOR non-blocking limitation).
@@ -84,6 +85,21 @@ Each block: OLD / NEW / WHY / ASTRA_FINDING / FABLE_RECOMMENDATION / ARCHITECT_D
 - ARCHITECT_DECISION: new; exclusions are model-conditional and labelled.
 - OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE.
 - BUILDER_IMPACT: implement spec §8.5 exactly.
+
+**D4.d D4 REPAIR R1 — exclusion bound and rejection rule (after Astra V2 re-audit @7d95c00; delta V2@94b5934 → V2-R1)**
+- OLD (V2@94b5934): `U(θ) = w_core U_core + w_tail max(θ^TPM(λ_U), θ^SHR(μ_U))`, tail term from the observed win count under two ASSUMED tail models, tagged MODEL_CONDITIONAL_TAIL; rule 17.6 rejected R* as a net strategy on `NET_VALUE_EXCLUDED` **or** on `NEGATIVE_INFORMATION ∧ ECONOMIC_RESULT ≠ NET_VALUE_CONFIRMED`.
+- NEW: `U(θ) = w_core U_core + M_tail`, `M_tail = Σ_TAIL (n_j − C_j) / Σ C_j` (every TAIL leg wins) — the identified-set supremum over the full admissible tail class (all `p ∈ [0,1]`, any dependence); TPM / SHR retired from every role; PINM gates only T1b; rule 17.6: `R*_REJECTED_AS_NET_STRATEGY` iff `NET_VALUE_EXCLUDED`, and `NEGATIVE_INFORMATION` is reported as the information-level `R*_CORE_INFORMATION_REJECTED`; report fields `M_tail`, `w_core·U_core`, `EXCLUSION_BLOCKED_BY_TAIL`; OP readiness report adds the descriptive TAIL_MAX_CONTRIBUTION.
+- WHY: coverage of the new bound is at least the core CR coverage for every tail geometry (proof in spec §8.5). Run D (fresh seeds, exact frozen contract for the retired bound) reproduces both Astra attacks — positive-tail / negative-core, true θ = 0.0315: retired coverage 0.8885, false ERT exclusion 0.0742, false economic rejection 0.320 (mostly through the NEG clause); pure hidden lottery, true θ = 0.0852 > θ_PCE = 0.08: retired coverage 0.8632, false LARGE exclusion 0.1126 — and gives coverage 1.0 and zero false exclusions or rejections under the repair. Over nine adversarial core geometries the repaired bound covers 0.9705–0.993 with false ERT exclusion 0.019–0.0295.
+- Routes evaluated (spec §8.5; power table §4.5): **A** (remove exclusion when tail exposure is material) needs an arbitrary materiality threshold and still a valid bound below it — subsumed by the continuous `M_tail`; **B** (partial identification over the full class) — adopted in its assumption-free form; a count-tightened version needs a dependence assumption and, under arbitrary dependence, collapses to ≈ (1 − α) Σ n, so it buys nothing valid; **C** (stricter pre-t0 tail admissibility) cannot work: a price condition on the OP does not restrict true tail probabilities, and Astra's attack puts the sub-cent legs after a GO observation phase; **D** (other) — none smaller is valid.
+- COST (disclosed): exclusion is unattainable whenever sub-cent legs are held at S_ref (P3 in run D: true θ = −0.098 with 2 sub-cent legs, retired ERT exclusion 0.38, repaired 0.00); tail-free runs keep full exclusion power (0.51 at θ = −0.05, 0.93 at θ = −0.10).
+- ASTRA_FINDING: V2 re-audit C1 CRITICAL and MP1. FABLE_RECOMMENDATION: — (Fable proposed PINM tail inference, not a full-class bound). ARCHITECT_DECISION: R1 as above.
+- OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE. D2 partition unchanged (14 values; only the E1 bound and rule 17.6 changed).
+- BUILDER_IMPACT: compute `M_tail` from fills (no simulation, no bisection); drop the TPM / SHR implementation; implement the two rejection labels.
+
+**D4.e MP1 — simulation contract**
+- OLD: committed script bisection λ ≤ 200, μ ≤ 20, 30 iterations (frozen spec: 1000, 50, 40).
+- NEW: the committed script implements the retired bound exactly as frozen (λ ∈ [0.05, 1000] log-bisection, μ ∈ [0, 50], 40 iterations, interval-end rule, B = 20,000 in 20 chunks of 1,000, SeedSequence([20260929, 1]), per-draw normal order) for the reproduction in run D, plus the repaired bound. Runs A/B in the power table were produced by the 94b5934 script; their retired-bound columns are labelled as such, and every repaired exclusion rate is ≤ the tabulated retired one (repaired U ≥ retired U pointwise).
+- OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE. BUILDER_IMPACT: none.
 
 ## D5 — Science vs operability (MAJOR → CLOSED)
 
