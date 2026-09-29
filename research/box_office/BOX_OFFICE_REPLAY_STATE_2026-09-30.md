@@ -3,7 +3,7 @@
 REAL_CAPITAL_AUTHORIZED = FALSE. Research only.
 BRANCH: `claude/relaxed-johnson-mqca45` (the harness-assigned single branch; `research/box-office-strict-replay-2026-09-30` was not created)
 STATUS: IN_PROGRESS
-PHASE: CP3 in progress — adjudication of dated figures (parallel workers) + replay engine (CP4 code)
+PHASE: CP4 done (verdict NEGATIVE per pre-reg) — writing report (CP5)
 
 ## Resume protocol (after a token or session cut)
 
@@ -17,8 +17,8 @@ PHASE: CP3 in progress — adjudication of dated figures (parallel workers) + re
 |---|---|---|---|
 | CP1 | Box-office universe (226 events since 2025-10-01), Variety + Deadline box-office archives (WP REST API, `date_gmt`/`modified_gmt`), pre-registration | `data/events_full.json.gz`, `data/variety_bo.json.gz`, `data/deadline_bo.json.gz`, `scripts/*.py`, pre-reg | DONE |
 | CP2 | Contemporaneous taker trades for every bracket (1,000 markets, 454,188 taker trades; 396,692 within Wed..Tue windows; 2 Avatar brackets hit the 10k offset cap but cover the weekend) | `data/trades_window.json.gz` (compact [ts, side, outcomeIndex, price, size]); full pull in scratch, re-runnable via `scripts/fetch_trades.py` | DONE |
-| CP3 | PIT info table. Done so far: `scripts/sections.py` (Deadline label splitter, availability = end of the labelled PT window), `scripts/digest_lanes.py` → `data/digest_part0..5.txt`, 153 film-weekends (86 OPEN, 67 NTH) in `data/film_weekends.json`. Adjudicated figures go to `data/adjudicated_part01,2,3,4,5.csv` (one row per film-weekend × lane). If a part file is missing after a cut, re-adjudicate that digest part with the rules in pre-reg Addendum 1 | `data/adjudicated_part*.csv` → `data/pit_releases.csv` | IN_PROGRESS |
-| CP4 | Replay lanes A–D × R1/R2 × E1/E2/E3, quarterly decay, flips, capacity | `data/replay_trades.csv`, `data/replay_summary.json` | TODO |
+| CP3 | PIT info table. Done so far: `scripts/sections.py` (Deadline label splitter, availability = end of the labelled PT window), `scripts/digest_lanes.py` → `data/digest_part0..5.txt`, 153 film-weekends (86 OPEN, 67 NTH) in `data/film_weekends.json`. Adjudicated figures go to `data/adjudicated_part01,2,3,4,5.csv` (one row per film-weekend × lane). If a part file is missing after a cut, re-adjudicate that digest part with the rules in pre-reg Addendum 1 | `data/adjudicated_part*.csv` → `data/pit_releases.csv` | DONE |
+| CP4 | Replay lanes A–D × R1/R2 × E1/E2/E3, quarterly decay, flips, capacity | `data/replay_trades*.csv`, `data/replay_summary*.json` (primary + _rev/_off15/_off180/_feeall) | DONE |
 | CP5 | Report + final state + verdict | `BOX_OFFICE_STRICT_TIMESTAMP_REPLAY_2026-09-30.md`, this file | TODO |
 
 ## Facts established so far (CP1)

@@ -1,0 +1,358 @@
+wk,film,univ,lane,event_id,title,W,bracket,b_lo,b_hi,winner,flip,margin_ok,truncated,exec,p_E1,p_E2,fee_rate,fee_ps,payoff,gross_ret,net_E1,net_E2,net_E3,traded,cap_usd_60m,cap_usd_to_next,p_next_anchor,n_fills_60
+2025-10-17,Black Phone 2,U1,B,59596,"""Black Phone 2"" Opening Weekend Box Office (Lower Strikes)",23.0,23-26m,23.0,26.0,>26m,1,0,0,EXT180,0.64,0.64,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,18.12,,1
+2025-10-17,Black Phone 2,U1,C,59596,"""Black Phone 2"" Opening Weekend Box Office (Lower Strikes)",24.4,23-26m,23.0,26.0,>26m,1,1,0,W60,0.3233,0.32,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,194.0,350.16,,6
+2025-10-17,Black Phone 2,U1,D,59596,"""Black Phone 2"" Opening Weekend Box Office (Lower Strikes)",26.5,>26m,26.0,inf,>26m,0,0,0,NONE,,,,,,,,,,,,,,
+2025-10-17,Good Fortune,U1,A,59597,"""Good Fortune"" Opening Weekend Box Office (Lower Strikes)",7.0,>7m,7.0,inf,6-7m,1,0,0,EXT180,0.13,0.13,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,10.4,0.1,1
+2025-10-17,Good Fortune,U1,B,59597,"""Good Fortune"" Opening Weekend Box Office (Lower Strikes)",6.0,6-7m,6.0,7.0,6-7m,0,0,0,W60,0.32,0.32,0.0,0.0,1.0,2.125,2.125,2.125,2.0303,1,1.5,1.5,,1
+2025-10-17,Good Fortune,U1,C,59597,"""Good Fortune"" Opening Weekend Box Office (Lower Strikes)",5.9,5-6m,5.0,6.0,6-7m,1,0,0,EXT180,0.7598,0.76,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,219.12,,2
+2025-10-17,Good Fortune,U1,D,59597,"""Good Fortune"" Opening Weekend Box Office (Lower Strikes)",6.2,6-7m,6.0,7.0,6-7m,0,1,0,W60,0.9895,0.9891,0.0,0.0,1.0,0.01059,0.01059,0.01105,0.001,0,1998.73,10081.75,,3
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,U1,B,63132,"""Chainsaw Man – The Movie: Reze Arc"" Opening Weekend Box Office",14.0,>14m,14.0,inf,>14m,0,0,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,U1,C,63132,"""Chainsaw Man – The Movie: Reze Arc"" Opening Weekend Box Office",16.0,>14m,14.0,inf,>14m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,U1,D,63132,"""Chainsaw Man – The Movie: Reze Arc"" Opening Weekend Box Office",17.2,>14m,14.0,inf,>14m,0,1,0,EXT180,0.999,0.999,0.0,0.0,1.0,0.001,0.001,0.001,0.001,0,0,890.08,,1
+2025-10-24,Regretting You,U1,A,63131,"""Regretting You"" Opening Weekend Box Office",10.0,>9m,9.0,inf,>9m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Regretting You,U1,B,63131,"""Regretting You"" Opening Weekend Box Office",11.4,>9m,9.0,inf,>9m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Regretting You,U1,C,63131,"""Regretting You"" Opening Weekend Box Office",13.0,>9m,9.0,inf,>9m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Regretting You,U1,D,63131,"""Regretting You"" Opening Weekend Box Office",12.85,>9m,9.0,inf,>9m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-10-24,Springsteen: Deliver Me from Nowhere,U1,B,63133,"""Springsteen: Deliver Me from Nowhere"" Opening Weekend Box Office",11.4,>9m,9.0,inf,8-9m,1,1,0,EXT180,0.14,0.14,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,7.7,0.1918,2
+2025-10-24,Springsteen: Deliver Me from Nowhere,U1,C,63133,"""Springsteen: Deliver Me from Nowhere"" Opening Weekend Box Office",9.5,>9m,9.0,inf,8-9m,1,1,0,EXT180,0.08,0.08,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1526.4,0.2588,1
+2025-10-24,Springsteen: Deliver Me from Nowhere,U1,D,63133,"""Springsteen: Deliver Me from Nowhere"" Opening Weekend Box Office",9.1,>9m,9.0,inf,8-9m,1,0,0,W60,0.2092,0.2092,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,288.39,1238.72,,3
+2025-11-07,Predator: Badlands,U1,B,72382,"""Predator: Badlands"" Opening Weekend Box Office",33.0,>26m,26.0,inf,>26m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-11-07,Predator: Badlands,U1,B,75131,"""Predator: Badlands"" Opening Weekend Box Office (Higher Brackets)",33.0,>33m,33.0,inf,>33m,0,0,0,W60,0.994,0.994,0.0,0.0,1.0,0.00604,0.00604,0.00604,0.001,0,1.0,1.0,,1
+2025-11-07,Predator: Badlands,U1,B,75425,"""Predator: Badlands"" Opening Weekend Box Office (Highest Brackets)",33.0,33-35m,33.0,35.0,>37m,1,0,0,EXT180,0.0174,0.0164,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,29.05,,2
+2025-11-07,Predator: Badlands,U1,C,72382,"""Predator: Badlands"" Opening Weekend Box Office",37.0,>26m,26.0,inf,>26m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-11-07,Predator: Badlands,U1,C,75131,"""Predator: Badlands"" Opening Weekend Box Office (Higher Brackets)",37.0,>33m,33.0,inf,>33m,0,1,0,EXT180,0.9962,0.995,0.0,0.0,1.0,0.00378,0.00378,0.00503,0.001,0,0,8829.64,,3
+2025-11-07,Predator: Badlands,U1,C,75425,"""Predator: Badlands"" Opening Weekend Box Office (Highest Brackets)",37.0,>37m,37.0,inf,>37m,0,0,0,EXT180,0.924,0.92,0.0,0.0,1.0,0.08228,0.08228,0.08696,0.07069,1,0,6291.72,,3
+2025-11-07,Predator: Badlands,U1,D,72382,"""Predator: Badlands"" Opening Weekend Box Office",40.0,>26m,26.0,inf,>26m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-11-07,Predator: Badlands,U1,D,75131,"""Predator: Badlands"" Opening Weekend Box Office (Higher Brackets)",40.0,>33m,33.0,inf,>33m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-11-07,Predator: Badlands,U1,D,75425,"""Predator: Badlands"" Opening Weekend Box Office (Highest Brackets)",40.0,>37m,37.0,inf,>37m,0,1,0,W60,0.999,0.999,0.0,0.0,1.0,0.001,0.001,0.001,0.001,0,5.78,6090.85,,1
+2025-11-14,Keeper,U1,C,78952,"""Keeper"" Opening Weekend Box Office",2.5,<4m,0.0,4.0,<4m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-11-14,Now You See Me: Now You Don't,U1,A,78951,"""Now You See Me: Now You Don't"" Opening Weekend Box Office",22.5,21-24m,21.0,24.0,21-24m,0,1,0,EXT180,0.62,0.62,0.0,0.0,1.0,0.6129,0.6129,0.6129,0.5873,1,0,56.51,0.6,1
+2025-11-14,Now You See Me: Now You Don't,U1,C,78951,"""Now You See Me: Now You Don't"" Opening Weekend Box Office",22.5,21-24m,21.0,24.0,21-24m,0,1,0,W60,0.849,0.849,0.0,0.0,1.0,0.17784,0.17784,0.17784,0.16413,1,499.42,2612.69,,1
+2025-11-14,Now You See Me: Now You Don't,U1,D,78951,"""Now You See Me: Now You Don't"" Opening Weekend Box Office",21.3,21-24m,21.0,24.0,21-24m,0,0,0,W60,0.96,0.96,0.0,0.0,1.0,0.04167,0.04167,0.04167,0.03093,0,67.2,4102.09,,1
+2025-11-14,The Running Man,U1,A,78944,"""The Running Man"" Opening Weekend Box Office",22.5,21-24m,21.0,24.0,<21m,1,1,0,NONE,,,,,,,,,,,,,,
+2025-11-14,The Running Man,U1,A,81422,"""The Running Man"" Opening Weekend Box Office (lower strikes)",22.5,>21m,21.0,inf,15-17m,1,1,0,W60,0.0179,0.0179,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,9.0,14.56,,1
+2025-11-14,The Running Man,U1,D,78944,"""The Running Man"" Opening Weekend Box Office",17.0,<21m,0.0,21.0,<21m,0,1,0,EXT180,0.999,0.999,0.0,0.0,1.0,0.001,0.001,0.001,0.001,0,0,12032.91,,2
+2025-11-14,The Running Man,U1,D,81422,"""The Running Man"" Opening Weekend Box Office (lower strikes)",17.0,17-19m,17.0,19.0,15-17m,1,0,0,W60,0.1401,0.095,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,173.74,9417.04,0.001,3
+2025-11-21,Wicked: For Good,U1,A,74636,"""Wicked: For Good"" Opening Weekend Box Office",165.0,163-175m,163.0,175.0,137-150m,1,0,0,W60,0.1184,0.12,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,89.45,349.78,0.0358,7
+2025-11-21,Wicked: For Good,U1,B,74636,"""Wicked: For Good"" Opening Weekend Box Office",150.0,150-163m,150.0,163.0,137-150m,1,0,0,W60,0.25,0.24,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,233.34,1603.26,0.4383,10
+2025-11-21,Wicked: For Good,U1,D,74636,"""Wicked: For Good"" Opening Weekend Box Office",150.0,150-163m,150.0,163.0,137-150m,1,0,0,W60,0.1492,0.1498,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,97.13,4687.64,,3
+2025-12-05,Five Nights at Freddy's 2,U1,A,95159,"""Five Nights at Freddy's 2"" Opening Weekend Box Office",37.5,<42m,0.0,42.0,>57m,1,1,0,EXT180,0.031,0.031,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,89.58,0.0141,7
+2025-12-05,Five Nights at Freddy's 2,U1,B,95159,"""Five Nights at Freddy's 2"" Opening Weekend Box Office",46.0,42-47m,42.0,47.0,>57m,1,0,0,W60,0.0115,0.0119,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,58.09,59.33,,22
+2025-12-05,Five Nights at Freddy's 2,U1,C,95159,"""Five Nights at Freddy's 2"" Opening Weekend Box Office",56.5,52-57m,52.0,57.0,>57m,1,0,0,W60,0.048,0.048,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,2.4,58.47,,1
+2025-12-05,Five Nights at Freddy's 2,U1,D,95159,"""Five Nights at Freddy's 2"" Opening Weekend Box Office",63.0,>57m,57.0,inf,>57m,0,1,0,EXT180,0.9987,0.998,0.0,0.0,1.0,0.00128,0.00128,0.002,0.001,0,0,9591.98,,3
+2025-12-05,Jujutsu Kaisen: Execution,U1,B,95238,"""Jujutsu Kaisen: Execution"" Opening Weekend Box Office",9.0,9-11m,9.0,11.0,9-11m,0,0,0,W60,0.7407,0.7407,0.0,0.0,1.0,0.3501,0.3501,0.3501,0.33212,1,218.64,687.82,,1
+2025-12-05,Jujutsu Kaisen: Execution,U1,C,95238,"""Jujutsu Kaisen: Execution"" Opening Weekend Box Office",9.7,9-11m,9.0,11.0,9-11m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-12-12,Ella McCay,U1,B,101091,"""Ella McCay"" Opening Weekend Box Office",3.0,3-3.5m,3.0,3.5,<2.5m,1,0,0,NONE,,,,,,,,,,,,,,
+2025-12-19,Avatar: Fire and Ash,U1,A,95180,"""Avatar: Fire and Ash"" Opening Weekend Box Office",97.5,90-101m,90.0,101.0,<90m,1,1,1,W60,0.3486,0.35,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,467.11,18875.55,0.6567,13
+2025-12-19,Avatar: Fire and Ash,U1,A,110406,"""Avatar: Fire and Ash"" Opening Weekend Box Office (Lower Strikes)",97.5,>90m,90.0,inf,85-90m,1,1,0,EXT180,0.3514,0.36,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,2570.21,0.7288,12
+2025-12-19,Avatar: Fire and Ash,U1,C,95180,"""Avatar: Fire and Ash"" Opening Weekend Box Office",87.5,<90m,0.0,90.0,<90m,0,1,1,W60,0.5919,0.5829,0.0,0.0,1.0,0.68956,0.68956,0.71543,0.66149,1,3318.4,111151.85,0.9386,14
+2025-12-19,Avatar: Fire and Ash,U1,C,110406,"""Avatar: Fire and Ash"" Opening Weekend Box Office (Lower Strikes)",87.5,85-90m,85.0,90.0,85-90m,0,1,0,EXT180,0.7023,0.54,0.0,0.0,1.0,0.42396,0.42396,0.85185,0.40397,1,0,15621.06,0.9315,6
+2025-12-19,Avatar: Fire and Ash,U1,D,95180,"""Avatar: Fire and Ash"" Opening Weekend Box Office",88.0,<90m,0.0,90.0,<90m,0,0,1,W60,0.8449,0.877,0.0,0.0,1.0,0.18357,0.18357,0.14025,0.16972,1,3007.41,479177.44,,39
+2025-12-19,Avatar: Fire and Ash,U1,D,110406,"""Avatar: Fire and Ash"" Opening Weekend Box Office (Lower Strikes)",88.0,85-90m,85.0,90.0,85-90m,0,0,0,W60,0.8327,0.84,0.0,0.0,1.0,0.20087,0.20087,0.19048,0.18663,1,81.28,14588.58,,5
+2025-12-19,David,U1,C,101099,"""David"" Opening Weekend Box Office",25.0,24-28m,24.0,28.0,20-24m,1,1,0,W60,0.4,0.4,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,3.0,199.06,0.0149,2
+2025-12-19,David,U1,D,101099,"""David"" Opening Weekend Box Office",22.0,20-24m,20.0,24.0,20-24m,0,1,0,W60,0.987,0.987,0.0,0.0,1.0,0.01317,0.01317,0.01317,0.00301,0,1.98,6223.68,0.999,1
+2025-12-19,The Housemaid,U1,C,101100,"""The Housemaid"" Opening Weekend Box Office",20.5,20-23m,20.0,23.0,17-20m,1,0,0,EXT180,0.1203,0.1203,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,24.88,0.0284,1
+2025-12-19,The Housemaid,U1,D,101100,"""The Housemaid"" Opening Weekend Box Office",19.0,17-20m,17.0,20.0,17-20m,0,1,0,W60,0.931,0.931,0.0,0.0,1.0,0.07411,0.07411,0.07411,0.0627,1,7.38,9055.49,,1
+2025-12-19,The Spongebob Movie: Search for SquarePants,U1,A,101098,"""The Spongebob Movie: Search for SquarePants"" Opening Weekend Box Office",17.5,15-18m,15.0,18.0,15-18m,0,1,0,EXT180,0.5889,0.59,0.0,0.0,1.0,0.6981,0.6981,0.69492,0.66974,1,0,193.64,,2
+2025-12-19,The Spongebob Movie: Search for SquarePants,U1,B,101098,"""The Spongebob Movie: Search for SquarePants"" Opening Weekend Box Office",17.0,15-18m,15.0,18.0,15-18m,0,1,0,NONE,,,,,,,,,,,,,,
+2025-12-19,The Spongebob Movie: Search for SquarePants,U1,C,101098,"""The Spongebob Movie: Search for SquarePants"" Opening Weekend Box Office",17.0,15-18m,15.0,18.0,15-18m,0,1,0,EXT180,0.72,0.72,0.0,0.0,1.0,0.38889,0.38889,0.38889,0.36986,1,0,695.14,0.9845,2
+2025-12-19,The Spongebob Movie: Search for SquarePants,U1,D,101098,"""The Spongebob Movie: Search for SquarePants"" Opening Weekend Box Office",16.0,15-18m,15.0,18.0,15-18m,0,1,0,W60,0.9848,0.9848,0.0,0.0,1.0,0.01542,0.01542,0.01542,0.00521,0,100.0,3119.77,,1
+2025-12-26,Avatar: Fire and Ash,U2,D,119860,"""Avatar: Fire and Ash"" Second 3-Day Weekend Box Office",64.0,62-67m,62.0,67.0,62-67m,0,1,0,W60,0.9796,0.977,0.0,0.0,1.0,0.02079,0.02079,0.0235,0.01047,0,2682.53,34489.88,,5
+2026-01-02,Avatar: Fire and Ash,U2,D,135315,"""Avatar: Fire and Ash"" 3rd Weekend Box Office",40.0,40-45m,40.0,45.0,40-45m,0,0,0,W60,0.8489,0.82,0.0,0.0,1.0,0.17806,0.17806,0.21951,0.16434,1,665.71,48254.39,,13
+2026-01-09,Avatar: Fire and Ash,U2,B,145376,"""Avatar: Fire and Ash"" 4th Weekend Box Office",24.0,<27m,0.0,27.0,<27m,0,1,0,W60,0.995,0.995,0.0,0.0,1.0,0.00503,0.00503,0.00503,0.001,0,1382.65,1834.53,,4
+2026-01-09,Avatar: Fire and Ash,U2,B,151352,"""Avatar: Fire and Ash"" 4th Weekend Box Office (Lower Strikes)",24.0,>23m,23.0,inf,21-23m,1,1,0,W60,0.0354,0.035,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,4.5,167.62,0.0618,2
+2026-01-09,Avatar: Fire and Ash,U2,D,145376,"""Avatar: Fire and Ash"" 4th Weekend Box Office",21.3,<27m,0.0,27.0,<27m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-01-09,Avatar: Fire and Ash,U2,D,151352,"""Avatar: Fire and Ash"" 4th Weekend Box Office (Lower Strikes)",21.3,21-23m,21.0,23.0,21-23m,0,0,0,W60,0.9467,0.9467,0.0,0.0,1.0,0.05632,0.05632,0.05632,0.04528,1,29.0,11408.46,0.999,1
+2026-01-09,Greenland 2: Migration,U1,A,133250,"""Greenland 2: Migration"" Opening Weekend Box Office",9.0,9-10.5m,9.0,10.5,<9m,1,0,0,EXT180,0.383,0.3719,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,290.51,,2
+2026-01-09,Greenland 2: Migration,U1,B,133250,"""Greenland 2: Migration"" Opening Weekend Box Office",10.0,9-10.5m,9.0,10.5,<9m,1,1,0,EXT180,0.4761,0.4734,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,158.46,,6
+2026-01-09,Greenland 2: Migration,U1,D,133250,"""Greenland 2: Migration"" Opening Weekend Box Office",8.5,<9m,0.0,9.0,<9m,0,1,0,EXT180,0.9897,0.9896,0.0,0.0,1.0,0.01041,0.01041,0.01049,0.001,0,0,10129.31,,4
+2026-01-09,Primate,U1,A,147190,"""Primate"" Opening Weekend Box Office",9.0,9-11m,9.0,11.0,11-13m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-01-09,Primate,U1,B,147190,"""Primate"" Opening Weekend Box Office",10.5,9-11m,9.0,11.0,11-13m,1,1,0,W60,0.39,0.39,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,3.9,43.9,,1
+2026-01-09,Primate,U1,D,147190,"""Primate"" Opening Weekend Box Office",11.3,11-13m,11.0,13.0,11-13m,0,1,0,W60,0.9167,0.9,0.0,0.0,1.0,0.09085,0.09085,0.11111,0.07908,1,741.35,7438.43,,2
+2026-01-16,28 Years Later: Bone Temple,U1,B,159944,"""28 Years Later: Bone Temple"" Opening Weekend Box Office",13.0,<16m,0.0,16.0,<16m,0,1,0,W60,0.9717,0.968,0.0,0.0,1.0,0.02912,0.02912,0.03306,0.01864,0,977.01,1434.2,0.9756,5
+2026-01-16,28 Years Later: Bone Temple,U1,D,159944,"""28 Years Later: Bone Temple"" Opening Weekend Box Office",13.0,<16m,0.0,16.0,<16m,0,1,0,W60,0.9956,0.995,0.0,0.0,1.0,0.00446,0.00446,0.00503,0.001,0,150.01,6637.97,,3
+2026-01-16,Avatar: Fire and Ash,U2,B,159943,"""Avatar: Fire and Ash"" 5th Weekend Box Office",13.7,13-14.5m,13.0,14.5,13-14.5m,0,1,0,W60,0.55,0.55,0.0,0.0,1.0,0.81818,0.81818,0.81818,0.78571,1,1.0,458.16,0.5921,1
+2026-01-16,Avatar: Fire and Ash,U2,D,159943,"""Avatar: Fire and Ash"" 5th Weekend Box Office",13.3,13-14.5m,13.0,14.5,13-14.5m,0,0,0,W60,0.8325,0.799,0.0,0.0,1.0,0.20118,0.20118,0.25156,0.18692,1,1511.26,14912.82,0.16,10
+2026-01-23,Avatar: Fire and Ash,U2,B,176951,"""Avatar: Fire and Ash"" 6th Weekend Box Office",8.0,<8.5m,0.0,8.5,<8.5m,0,1,0,EXT180,0.9632,0.963,0.0,0.0,1.0,0.03822,0.03822,0.03842,0.02755,0,0,3490.01,0.9848,2
+2026-01-23,Mercy,U1,A,176940,"""Mercy"" Opening Weekend Box Office",13.5,11-14m,11.0,14.0,8-11m,1,1,0,W60,0.4077,0.36,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,560.47,4048.49,0.4675,7
+2026-01-23,Mercy,U1,B,176940,"""Mercy"" Opening Weekend Box Office",12.6,11-14m,11.0,14.0,8-11m,1,1,0,W60,0.7,0.7,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,18.97,234.08,0.3349,1
+2026-01-23,Return to Silent Hill,U1,B,174762,"""Return to Silent Hill"" Opening Weekend Box Office",3.2,>2.5m,2.5,inf,>2.5m,0,1,0,W60,0.9314,0.9234,0.0,0.0,1.0,0.07369,0.07369,0.0829,0.06229,1,277.77,788.9,0.8571,6
+2026-01-30,Iron Lung,U1,A,190412,"""Iron Lung"" Opening Weekend Box Office",10.0,<11m,0.0,11.0,>15m,1,1,0,EXT180,0.0208,0.0208,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,52.36,0.008,1
+2026-01-30,Iron Lung,U1,C,190412,"""Iron Lung"" Opening Weekend Box Office",16.0,>15m,15.0,inf,>15m,0,1,0,EXT180,0.9775,0.9699,0.0,0.0,1.0,0.02303,0.02303,0.03101,0.01267,0,0,6583.73,0.997,12
+2026-01-30,Iron Lung,U1,D,190412,"""Iron Lung"" Opening Weekend Box Office",17.8,>15m,15.0,inf,>15m,0,1,0,W60,0.9983,0.9983,0.0,0.0,1.0,0.00175,0.00175,0.00175,0.001,0,3100.11,4984.47,,1
+2026-01-30,Melania,U1,C,166899,"""Melania"" Opening Weekend Box Office",8.1,>3m,3.0,inf,>3m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-01-30,Melania,U1,C,192682,"""Melania"" Opening Weekend Box Office (Higher Strikes)",8.1,>5m,5.0,inf,>5m,0,1,0,W60,0.9874,0.988,0.0,0.0,1.0,0.01272,0.01272,0.01215,0.00257,0,794.99,9593.0,0.996,6
+2026-01-30,Melania,U1,D,166899,"""Melania"" Opening Weekend Box Office",7.0,>3m,3.0,inf,>3m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-01-30,Melania,U1,D,192682,"""Melania"" Opening Weekend Box Office (Higher Strikes)",7.0,>5m,5.0,inf,>5m,0,1,0,W60,0.996,0.996,0.0,0.0,1.0,0.00402,0.00402,0.00402,0.001,0,29.29,3771.95,,1
+2026-01-30,Send Help,U1,C,189535,"""Send Help"" Opening Weekend Box Office",18.0,>15m,15.0,inf,>15m,0,1,0,EXT180,0.9947,0.9945,0.0,0.0,1.0,0.00534,0.00534,0.00554,0.001,0,0,1609.28,,3
+2026-01-30,Send Help,U1,D,189535,"""Send Help"" Opening Weekend Box Office",20.0,>15m,15.0,inf,>15m,0,1,0,EXT180,0.9989,0.998,0.0,0.0,1.0,0.00112,0.00112,0.002,0.001,0,0,4045.33,,3
+2026-01-30,Shelter,U1,A,190375,"""Shelter"" Opening Weekend Box Office",6.0,>3.5m,3.5,inf,>3.5m,0,1,0,W60,0.8773,0.83,0.0,0.0,1.0,0.13991,0.13991,0.20482,0.12706,1,888.13,4477.87,0.96,6
+2026-02-06,Solo Mio,U1,B,197012,"""Solo Mio"" Opening Weekend Box Office",7.6,7-8.5m,7.0,8.5,7-8.5m,0,1,0,W60,0.8481,0.8479,0.0,0.0,1.0,0.17916,0.17916,0.17935,0.16542,1,67.64,665.63,,2
+2026-02-06,Solo Mio,U1,D,197012,"""Solo Mio"" Opening Weekend Box Office",7.2,7-8.5m,7.0,8.5,7-8.5m,0,1,0,W60,0.2972,0.33,0.0,0.0,1.0,2.36434,2.36434,2.0303,2.25484,1,23.56,12605.04,,3
+2026-02-06,Stray Kids: The dominATE Experience,U1,D,200575,"""Stray Kids: The dominATE Experience"" Opening Weekend Box Office",5.5,>3.25m,3.25,inf,>3.25m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-02-06,The Strangers - Chapter 3,U1,B,197013,"""The Strangers - Chapter 3"" Opening Weekend Box Office",3.7,3.5-5m,3.5,5.0,<3.5m,1,1,0,W60,0.1202,0.09,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,46.3,1707.26,0.5442,6
+2026-02-06,The Strangers - Chapter 3,U1,D,197013,"""The Strangers - Chapter 3"" Opening Weekend Box Office",3.5,3.5-5m,3.5,5.0,<3.5m,1,0,0,W60,0.2068,0.2,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,9.56,10990.63,0.001,2
+2026-02-20,Crime 101,U2,B,212960,"""Crime 101"" Second Weekend Box Office",5.5,<8m,0.0,8.0,<8m,0,1,0,W60,0.9892,0.987,0.0,0.0,1.0,0.01096,0.01096,0.01317,0.001,0,3773.41,3773.41,,9
+2026-02-20,GOAT,U2,B,212958,"""GOAT"" Second Weekend Box Office",13.0,<15m,0.0,15.0,15-17.5m,1,1,0,W60,0.1042,0.13,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,194.85,215.89,0.0569,4
+2026-02-20,GOAT,U2,D,212958,"""GOAT"" Second Weekend Box Office",17.0,15-17.5m,15.0,17.5,15-17.5m,0,1,0,W60,0.9678,0.968,0.0,0.0,1.0,0.0333,0.0333,0.03306,0.02273,0,110.01,5912.47,,4
+2026-02-20,How to Make a Killing,U1,B,212951,"""How to Make a Killing"" Opening Weekend Box Office",3.0,<3.5m,0.0,3.5,<3.5m,0,1,0,W60,0.4493,0.4402,0.0,0.0,1.0,1.22592,1.22592,1.27191,1.17745,1,52.53,232.34,0.2773,3
+2026-02-20,How to Make a Killing,U1,B,217576,"""How to Make a Killing"" Opening Weekend Box Office (Lower Strikes)",3.0,3-3.5m,3.0,3.5,3-3.5m,0,0,0,W60,0.43,0.43,0.0,0.0,1.0,1.32558,1.32558,1.32558,1.27273,1,2.92,2.92,0.39,1
+2026-02-20,How to Make a Killing,U1,D,212951,"""How to Make a Killing"" Opening Weekend Box Office",3.5,3.5-5m,3.5,5.0,<3.5m,1,0,0,W60,0.7385,0.7,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,83.25,4182.82,0.8973,4
+2026-02-20,How to Make a Killing,U1,D,217576,"""How to Make a Killing"" Opening Weekend Box Office (Lower Strikes)",3.5,>3.5m,3.5,inf,3-3.5m,1,0,0,W60,0.88,0.88,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0.81,1345.73,,1
+2026-02-20,I Can Only Imagine 2,U1,D,212949,"""I Can Only Imagine 2"" Opening Weekend Box Office",8.0,<10m,0.0,10.0,<10m,0,1,0,W60,0.998,0.998,0.0,0.0,1.0,0.002,0.002,0.002,0.001,0,701.23,3368.35,,2
+2026-02-20,I Can Only Imagine 2,U1,D,217571,"""I Can Only Imagine 2"" Opening Weekend Box Office (Lower Strikes)",8.0,8-8.5m,8.0,8.5,7.5-8m,1,0,0,EXT180,0.0634,0.0589,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,48.6,0.001,2
+2026-02-20,Wuthering Heights,U2,B,212952,"""Wuthering Heights"" Second Weekend Box Office",13.0,<18m,0.0,18.0,<18m,0,1,0,W60,0.993,0.993,0.0,0.0,1.0,0.00705,0.00705,0.00705,0.001,0,38.97,236.1,0.9887,1
+2026-02-20,Wuthering Heights,U2,D,212952,"""Wuthering Heights"" Second Weekend Box Office",14.2,<18m,0.0,18.0,<18m,0,1,0,W60,0.999,0.999,0.0,0.0,1.0,0.001,0.001,0.001,0.001,0,64.0,1568.34,,1
+2026-02-27,GOAT,U2,C,227935,"""GOAT"" Third Weekend Box Office",11.75,11-12m,11.0,12.0,>12m,1,0,0,EXT180,0.646,0.634,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1424.91,0.735,5
+2026-02-27,GOAT,U2,D,227935,"""GOAT"" Third Weekend Box Office",12.0,>12m,12.0,inf,>12m,0,0,0,W60,0.5413,0.5008,0.0,0.0,1.0,0.84745,0.84745,0.99674,0.81394,1,104.04,5199.24,,4
+2026-02-27,Scream 7,U1,B,217626,"""Scream 7"" Opening Weekend Box Office",59.0,55-60m,55.0,60.0,60-65m,1,0,0,W60,0.0634,0.0646,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,24.5,202.89,0.0638,3
+2026-02-27,Scream 7,U1,C,217626,"""Scream 7"" Opening Weekend Box Office",60.0,60-65m,60.0,65.0,60-65m,0,0,0,W60,0.583,0.636,0.0,0.0,1.0,0.71518,0.71518,0.57233,0.68626,1,29.85,3804.75,0.855,5
+2026-02-27,Scream 7,U1,D,217626,"""Scream 7"" Opening Weekend Box Office",64.1,60-65m,60.0,65.0,60-65m,0,0,0,W60,0.8238,0.824,0.0,0.0,1.0,0.21385,0.21385,0.21359,0.19929,1,210.71,5011.57,,3
+2026-02-27,Wuthering Heights,U2,C,228002,"""Wuthering Heights"" Third Weekend Box Office",7.0,7-8m,7.0,8.0,6-7m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-02-27,Wuthering Heights,U2,D,228002,"""Wuthering Heights"" Third Weekend Box Office",6.95,6-7m,6.0,7.0,6-7m,0,0,0,W60,0.9464,0.9464,0.0,0.0,1.0,0.05668,0.05668,0.05668,0.04563,1,100.0,3541.8,,1
+2026-03-06,Hoppers,U1,B,242109,"""Hoppers"" Opening Weekend Box Office",40.0,>31m,31.0,inf,>31m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-03-06,Hoppers,U1,B,243751,"""Hoppers"" Opening Weekend Box Office (Higher Strikes)",40.0,38-42m,38.0,42.0,42-46m,1,1,0,W60,0.1795,0.1827,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,48.75,64.23,0.1236,4
+2026-03-06,Hoppers,U1,D,242109,"""Hoppers"" Opening Weekend Box Office",46.0,>31m,31.0,inf,>31m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-03-06,Hoppers,U1,D,243751,"""Hoppers"" Opening Weekend Box Office (Higher Strikes)",46.0,46-50m,46.0,50.0,42-46m,1,0,0,W60,0.4419,0.44,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,776.94,8222.44,0.0217,5
+2026-03-06,Scream 7,U2,B,242139,"""Scream 7"" Second Weekend Box Office",18.0,<19m,0.0,19.0,<19m,0,1,0,W60,0.9531,0.938,0.0,0.0,1.0,0.0492,0.0492,0.0661,0.03831,0,591.93,638.01,,12
+2026-03-06,Scream 7,U2,D,242139,"""Scream 7"" Second Weekend Box Office",17.3,<19m,0.0,19.0,<19m,0,1,0,W60,0.996,0.996,0.0,0.0,1.0,0.00402,0.00402,0.00402,0.001,0,21.0,7441.81,,2
+2026-03-06,The Bride!,U1,B,242110,"""The Bride!"" Opening Weekend Box Office",9.0,<10m,0.0,10.0,<10m,0,1,0,W60,0.96,0.96,0.0,0.0,1.0,0.04167,0.04167,0.04167,0.03093,0,1.0,49.51,,1
+2026-03-06,The Bride!,U1,D,242110,"""The Bride!"" Opening Weekend Box Office",7.3,<10m,0.0,10.0,<10m,0,1,0,W60,0.9903,0.989,0.0,0.0,1.0,0.00981,0.00981,0.01112,0.001,0,69.31,11677.04,,4
+2026-03-13,Hoppers,U2,B,256948,"""Hoppers"" 2nd Weekend Box Office",30.0,29-32m,29.0,32.0,26-29m,1,1,0,W60,0.39,0.39,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,6.63,83.46,,1
+2026-03-13,Hoppers,U2,C,256948,"""Hoppers"" 2nd Weekend Box Office",30.0,29-32m,29.0,32.0,26-29m,1,1,0,EXT180,0.3629,0.2991,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1791.23,0.238,6
+2026-03-13,Hoppers,U2,D,256948,"""Hoppers"" 2nd Weekend Box Office",28.5,26-29m,26.0,29.0,26-29m,0,0,0,W60,0.9393,0.9396,0.0,0.0,1.0,0.06461,0.06461,0.06433,0.0534,1,362.81,5883.47,,3
+2026-03-13,Reminders of Him,U1,B,256942,"""Reminders of Him"" Opening Weekend Box Office",18.0,16-19m,16.0,19.0,16-19m,0,1,0,EXT180,0.3436,0.31,0.0,0.0,1.0,1.91069,1.91069,2.22581,1.82836,1,0,255.2,0.5106,25
+2026-03-13,Reminders of Him,U1,C,256942,"""Reminders of Him"" Opening Weekend Box Office",19.0,19-22m,19.0,22.0,16-19m,1,0,0,W60,0.4024,0.39,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,9.07,5902.14,0.0158,3
+2026-03-13,Reminders of Him,U1,D,256942,"""Reminders of Him"" Opening Weekend Box Office",18.2,16-19m,16.0,19.0,16-19m,0,1,0,EXT180,0.987,0.9857,0.0,0.0,1.0,0.01315,0.01315,0.01448,0.00299,0,0,8203.69,,9
+2026-03-13,Scream 7,U2,B,257006,"""Scream 7"" 3rd Weekend Box Office",7.5,7.5-8m,7.5,8.0,8.5-9m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-03-13,Scream 7,U2,D,257006,"""Scream 7"" 3rd Weekend Box Office",8.35,8-8.5m,8.0,8.5,8.5-9m,1,0,0,W60,0.6613,0.68,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,9.92,1614.24,,2
+2026-03-13,Undertone,U1,B,256943,"""Undertone"" Opening Weekend Box Office",9.5,9-10m,9.0,10.0,9-10m,0,1,0,W60,0.5963,0.5905,0.0,0.0,1.0,0.67695,0.67695,0.69355,0.6493,1,46.64,387.3,0.3009,4
+2026-03-13,Undertone,U1,C,256943,"""Undertone"" Opening Weekend Box Office",10.0,>10m,10.0,inf,9-10m,1,0,0,W60,0.0975,0.0861,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,886.87,1184.76,,16
+2026-03-13,Undertone,U1,D,256943,"""Undertone"" Opening Weekend Box Office",9.3,9-10m,9.0,10.0,9-10m,0,1,0,W60,0.7374,0.69,0.0,0.0,1.0,0.35606,0.35606,0.44928,0.33792,1,311.15,2773.12,,12
+2026-03-20,Project Hail Mary,U1,D,257015,"""Project Hail Mary"" Opening Weekend Box Office",80.5,80-85m,80.0,85.0,80-85m,0,0,0,W60,0.93,0.93,0.0,0.0,1.0,0.07527,0.07527,0.07527,0.06383,1,187.2,11667.4,,7
+2026-03-20,Ready or Not 2: Here I Come,U1,D,277360,"""Ready or Not 2: Here I Come"" Opening Weekend Box Office",9.0,8.5-10m,8.5,10.0,8.5-10m,0,1,0,W60,0.976,0.976,0.0,0.0,1.0,0.02459,0.02459,0.02459,0.0142,0,100.85,4814.96,,1
+2026-03-27,Project Hail Mary,U2,D,300221,"""Project Hail Mary"" 2nd Weekend Box Office",54.5,>54m,54.0,inf,>54m,0,0,0,W60,0.883,0.883,0.0,0.0,1.0,0.1325,0.1325,0.1325,0.11982,1,5.0,6989.68,,1
+2026-03-27,They Will Kill You,U1,D,300220,"""They Will Kill You"" Opening Weekend Box Office",5.0,5-6m,5.0,6.0,<5m,1,0,0,W60,0.245,0.245,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,5.0,1358.66,0.3011,1
+2026-04-03,Project Hail Mary,U2,B,325552,"""Project Hail Mary"" 3rd Weekend Box Office",33.2,<35m,0.0,35.0,<35m,0,1,0,W60,0.7867,0.7861,0.0,0.0,1.0,0.27111,0.27111,0.27217,0.25516,1,58.54,242.47,0.9523,2
+2026-04-03,Project Hail Mary,U2,C,325552,"""Project Hail Mary"" 3rd Weekend Box Office",32.6,<35m,0.0,35.0,<35m,0,1,0,EXT180,0.9593,0.958,0.0,0.0,1.0,0.04248,0.04248,0.04384,0.03172,0,0,5881.87,,3
+2026-04-03,Project Hail Mary,U2,D,325552,"""Project Hail Mary"" 3rd Weekend Box Office",30.6,<35m,0.0,35.0,<35m,0,1,0,W60,0.9975,0.9975,0.0,0.0,1.0,0.00249,0.00249,0.00249,0.001,0,14.0,2037.82,0.999,1
+2026-04-03,The Drama,U1,B,325551,"""The Drama"" Opening Weekend Box Office",13.0,>10m,10.0,inf,>10m,0,1,0,W60,0.992,0.992,0.0,0.0,1.0,0.00806,0.00806,0.00806,0.001,0,1.98,1.98,,1
+2026-04-03,The Drama,U1,B,330030,"""The Drama"" Opening Weekend Box Office (Higher Strikes)",13.0,13-14m,13.0,14.0,14-15m,1,0,0,EXT180,0.4553,0.32,0.05,0.0124,0.0,-1.0,-1.0,-1.0,-1.0,1,0,374.59,0.3861,8
+2026-04-03,The Drama,U1,C,325551,"""The Drama"" Opening Weekend Box Office",14.0,>10m,10.0,inf,>10m,0,1,0,EXT180,0.995,0.995,0.0,0.0,1.0,0.00503,0.00503,0.00503,0.001,0,0,5179.67,,1
+2026-04-03,The Drama,U1,C,330030,"""The Drama"" Opening Weekend Box Office (Higher Strikes)",14.0,14-15m,14.0,15.0,14-15m,0,0,0,W60,0.5322,0.47,0.05,0.01245,1.0,0.87906,0.83612,1.07273,0.80313,1,30.68,2459.33,0.97,2
+2026-04-03,The Drama,U1,D,325551,"""The Drama"" Opening Weekend Box Office",14.4,>10m,10.0,inf,>10m,0,1,0,EXT180,0.9987,0.9983,0.0,0.0,1.0,0.00129,0.00129,0.00168,0.001,0,0,39.92,,2
+2026-04-03,The Drama,U1,D,330030,"""The Drama"" Opening Weekend Box Office (Higher Strikes)",14.4,14-15m,14.0,15.0,14-15m,0,1,0,W60,0.98,0.98,0.05,0.00098,1.0,0.02041,0.01939,0.01939,0.0096,0,40.22,3038.76,,7
+2026-04-24,Michael,U1,A,361961,"""Michael"" Opening Weekend Box Office",70.0,70-75m,70.0,75.0,>80m,1,0,0,W60,0.006,0.006,0.05,0.0003,0.0,-1.0,-1.0,-1.0,-1.0,1,0.1,6.51,0.001,1
+2026-04-24,Michael,U1,A,378633,"""Michael"" Opening Weekend Box Office (Higher Strikes)",70.0,<80m,0.0,80.0,95-100m,1,1,0,EXT180,0.014,0.0125,0.05,0.00069,0.0,-1.0,-1.0,-1.0,-1.0,1,0,32.39,,2
+2026-04-24,Michael,U1,C,361961,"""Michael"" Opening Weekend Box Office",95.0,>80m,80.0,inf,>80m,0,1,0,W60,0.998,0.998,0.05,0.0001,1.0,0.002,0.0019,0.0019,0.00095,0,32.04,9278.31,0.9984,4
+2026-04-24,Michael,U1,C,378633,"""Michael"" Opening Weekend Box Office (Higher Strikes)",95.0,95-100m,95.0,100.0,95-100m,0,0,0,W60,0.5526,0.49,0.05,0.01236,1.0,0.80968,0.77009,0.99007,0.73947,1,448.54,8828.84,0.9125,12
+2026-04-24,Michael,U1,D,361961,"""Michael"" Opening Weekend Box Office",97.0,>80m,80.0,inf,>80m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-04-24,Michael,U1,D,378633,"""Michael"" Opening Weekend Box Office (Higher Strikes)",97.0,95-100m,95.0,100.0,95-100m,0,0,0,W60,0.9754,0.97,0.05,0.0012,1.0,0.02523,0.02397,0.02938,0.01409,0,48.47,5904.61,,5
+2026-04-24,The Super Mario Galaxy Movie,U2,B,406723,"""The Super Mario Galaxy Movie"" 4th Weekend Box Office",20.5,>20.5m,20.5,inf,>20.5m,0,0,0,W60,0.8325,0.8409,0.05,0.00697,1.0,0.20125,0.19127,0.17981,0.17772,1,23.36,198.49,0.73,2
+2026-04-24,The Super Mario Galaxy Movie,U2,C,406723,"""The Super Mario Galaxy Movie"" 4th Weekend Box Office",20.5,>20.5m,20.5,inf,>20.5m,0,0,0,EXT180,0.8466,0.7775,0.05,0.00649,1.0,0.18121,0.17222,0.27202,0.15911,1,0,8553.2,0.6904,18
+2026-04-24,The Super Mario Galaxy Movie,U2,D,406723,"""The Super Mario Galaxy Movie"" 4th Weekend Box Office",21.2,>20.5m,20.5,inf,>20.5m,0,1,0,W60,0.8698,0.8375,0.05,0.00566,1.0,0.14964,0.14221,0.18441,0.12978,1,351.65,10158.51,,58
+2026-05-01,Animal Farm,U1,C,424880,"""Animal Farm"" Opening Weekend Box Office",3.3,3-3.5m,3.0,3.5,3-3.5m,0,1,0,W60,0.64,0.64,0.0,0.0,1.0,0.5625,0.5625,0.5625,0.53846,1,35.74,737.99,0.84,2
+2026-05-01,Animal Farm,U1,D,424880,"""Animal Farm"" Opening Weekend Box Office",3.4,3-3.5m,3.0,3.5,3-3.5m,0,1,0,EXT180,0.89,0.89,0.0,0.0,1.0,0.1236,0.1236,0.1236,0.11111,1,0,1861.95,,1
+2026-05-01,Hokum,U1,B,434565,"""Hokum"" Opening Weekend Box Office",6.0,6-7m,6.0,7.0,6-7m,0,0,0,EXT180,0.6012,0.51,0.0,0.0,1.0,0.66344,0.66344,0.96078,0.63623,1,0,133.85,,2
+2026-05-01,Hokum,U1,C,434565,"""Hokum"" Opening Weekend Box Office",6.0,6-7m,6.0,7.0,6-7m,0,0,0,NONE,,,,,,,,,,,,,,
+2026-05-01,Hokum,U1,D,434565,"""Hokum"" Opening Weekend Box Office",6.4,6-7m,6.0,7.0,6-7m,0,1,0,W60,0.979,0.979,0.0,0.0,1.0,0.02145,0.02145,0.02145,0.01112,0,7.09,1108.07,,1
+2026-05-01,Michael,U2,C,434562,"""Michael"" 2nd Weekend Box Office",51.0,50-55m,50.0,55.0,50-55m,0,0,0,W60,0.28,0.28,0.05,0.01008,1.0,2.57143,2.44732,2.44732,2.33006,1,4.7,4814.94,0.5762,1
+2026-05-01,Michael,U2,D,434562,"""Michael"" 2nd Weekend Box Office",54.0,50-55m,50.0,55.0,50-55m,0,0,0,W60,0.4,0.4,0.05,0.012,1.0,1.5,1.42718,1.42718,1.36913,1,7.14,12020.6,,1
+2026-05-01,The Devil Wears Prada 2,U1,A,361004,"""The Devil Wears Prada 2"" Opening Weekend Box Office",77.5,70-80m,70.0,80.0,70-80m,0,1,0,W60,0.734,0.734,0.05,0.00976,1.0,0.3624,0.34452,0.34452,0.3271,1,2.0,2047.39,0.9039,1
+2026-05-01,The Devil Wears Prada 2,U1,B,361004,"""The Devil Wears Prada 2"" Opening Weekend Box Office",77.5,70-80m,70.0,80.0,70-80m,0,1,0,W60,0.8807,0.87,0.05,0.00525,1.0,0.13546,0.12873,0.142,0.11661,1,41.96,1510.69,0.8983,4
+2026-05-01,The Devil Wears Prada 2,U1,C,361004,"""The Devil Wears Prada 2"" Opening Weekend Box Office",77.5,70-80m,70.0,80.0,70-80m,0,1,0,W60,0.8664,0.864,0.05,0.00579,1.0,0.15419,0.14653,0.14959,0.13401,1,96.71,16266.36,0.986,3
+2026-05-01,The Devil Wears Prada 2,U1,D,361004,"""The Devil Wears Prada 2"" Opening Weekend Box Office",77.0,70-80m,70.0,80.0,70-80m,0,1,0,W60,0.987,0.987,0.05,0.00064,1.0,0.01317,0.01251,0.01251,0.00286,0,5.0,2667.49,,1
+2026-05-01,The Super Mario Galaxy Movie,U2,B,434574,"""The Super Mario Galaxy Movie"" 5th Weekend Box Office",11.2,<11.5m,0.0,11.5,11.5-12.5m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-05-01,The Super Mario Galaxy Movie,U2,C,434574,"""The Super Mario Galaxy Movie"" 5th Weekend Box Office",12.1,11.5-12.5m,11.5,12.5,11.5-12.5m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-01,The Super Mario Galaxy Movie,U2,D,434574,"""The Super Mario Galaxy Movie"" 5th Weekend Box Office",12.1,11.5-12.5m,11.5,12.5,11.5-12.5m,0,1,0,EXT180,0.8974,0.91,0.05,0.0046,1.0,0.11429,0.10861,0.09398,0.09693,1,0,785.36,,2
+2026-05-08,Michael,U2,B,452217,"""Michael"" 3rd Weekend Box Office",35.0,35-38m,35.0,38.0,35-38m,0,0,0,W60,0.2868,0.269,0.05,0.01023,1.0,2.48678,2.36672,2.58576,2.25486,1,310.18,458.76,,8
+2026-05-08,Michael,U2,C,452217,"""Michael"" 3rd Weekend Box Office",35.0,35-38m,35.0,38.0,35-38m,0,0,0,EXT180,0.5439,0.5336,0.05,0.0124,1.0,0.8387,0.7977,0.83142,0.76611,1,0,8864.67,0.605,21
+2026-05-08,Michael,U2,D,452217,"""Michael"" 3rd Weekend Box Office",36.5,35-38m,35.0,38.0,35-38m,0,1,0,W60,0.4463,0.521,0.05,0.01236,1.0,1.24062,1.18026,0.87449,1.13351,1,420.23,20320.15,,17
+2026-05-08,Mortal Kombat II,U1,A,449511,"""Mortal Kombat II"" Opening Weekend Box Office",40.0,40-45m,40.0,45.0,35-40m,1,0,0,W60,0.21,0.21,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,5.0,1711.44,0.0893,1
+2026-05-08,Mortal Kombat II,U1,B,449511,"""Mortal Kombat II"" Opening Weekend Box Office",41.0,40-45m,40.0,45.0,35-40m,1,0,0,W60,0.274,0.27,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,156.14,503.3,0.2861,8
+2026-05-08,Mortal Kombat II,U1,C,449511,"""Mortal Kombat II"" Opening Weekend Box Office",41.0,40-45m,40.0,45.0,35-40m,1,0,0,W60,0.2878,0.24,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,58.3,3977.41,0.0934,8
+2026-05-08,Mortal Kombat II,U1,D,449511,"""Mortal Kombat II"" Opening Weekend Box Office",38.7,35-40m,35.0,40.0,35-40m,0,1,0,W60,0.8815,0.88,0.0,0.0,1.0,0.13439,0.13439,0.13636,0.12167,1,57.71,18743.27,,5
+2026-05-08,The Devil Wears Prada 2,U2,B,452216,"""The Devil Wears Prada 2"" 2nd Weekend Box Office",41.0,<50m,0.0,50.0,<50m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-08,The Devil Wears Prada 2,U2,C,452216,"""The Devil Wears Prada 2"" 2nd Weekend Box Office",41.0,<50m,0.0,50.0,<50m,0,1,0,EXT180,0.997,0.997,0.05,0.00015,1.0,0.003,0.00285,0.00286,0.00095,0,0,9838.13,,2
+2026-05-08,The Devil Wears Prada 2,U2,D,452216,"""The Devil Wears Prada 2"" 2nd Weekend Box Office",43.0,<50m,0.0,50.0,<50m,0,1,0,EXT180,0.9982,0.998,0.05,9e-05,1.0,0.00181,0.00172,0.0019,0.00095,0,0,75.92,,2
+2026-05-08,The Sheep Detectives,U1,A,452208,"""The Sheep Detectives"" Opening Weekend Box Office",13.5,12-15m,12.0,15.0,15-18m,1,1,0,W60,0.39,0.39,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,30.0,1310.68,,1
+2026-05-08,The Sheep Detectives,U1,B,452208,"""The Sheep Detectives"" Opening Weekend Box Office",13.6,12-15m,12.0,15.0,15-18m,1,1,0,W60,0.4366,0.43,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,270.76,388.81,0.1914,20
+2026-05-08,The Sheep Detectives,U1,C,452208,"""The Sheep Detectives"" Opening Weekend Box Office",14.9,12-15m,12.0,15.0,15-18m,1,0,0,EXT180,0.1633,0.15,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1040.51,0.0424,5
+2026-05-08,The Sheep Detectives,U1,D,452208,"""The Sheep Detectives"" Opening Weekend Box Office",14.8,12-15m,12.0,15.0,15-18m,1,0,0,W60,0.0632,0.052,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,38.79,398.69,,11
+2026-05-15,In the Grey,U1,D,481326,"""In the Grey"" Opening Weekend Box Office",3.0,<3.5m,0.0,3.5,<3.5m,0,1,0,W60,0.9907,0.991,0.05,0.00046,1.0,0.00937,0.0089,0.00863,0.00095,0,7.0,8730.06,,2
+2026-05-15,Michael,U2,D,478056,"""Michael"" 4th Weekend Box Office",26.1,>25m,25.0,inf,>25m,0,1,0,W60,0.992,0.992,0.05,0.0004,1.0,0.00806,0.00766,0.00766,0.00095,0,7.96,3764.36,,1
+2026-05-15,Mortal Kombat II,U2,D,478039,"""Mortal Kombat II"" 2nd Weekend Box Office",13.4,<20m,0.0,20.0,<20m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-15,Obsession,U1,D,478037,"""Obsession"" Opening Weekend Box Office",16.1,>15m,15.0,inf,>15m,0,1,0,W60,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,32.51,1399.94,,2
+2026-05-15,The Devil Wears Prada 2,U2,D,478054,"""The Devil Wears Prada 2"" 3rd Weekend Box Office",18.0,<23m,0.0,23.0,<23m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-22,I Love Boosters,U1,B,506874,"""I Love Boosters"" Opening Weekend Box Office",4.0,4-5m,4.0,5.0,3-4m,1,0,0,W60,0.44,0.44,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,8.8,8.8,,1
+2026-05-22,I Love Boosters,U1,C,506874,"""I Love Boosters"" Opening Weekend Box Office",3.9,3-4m,3.0,4.0,3-4m,0,1,0,W60,0.8897,0.8769,0.0,0.0,1.0,0.12396,0.12396,0.14041,0.11146,1,430.96,699.46,0.96,9
+2026-05-22,Michael,U2,B,509877,"""Michael"" 5th Weekend Box Office",18.5,18-19m,18.0,19.0,>19m,1,1,0,W60,0.18,0.18,0.05,0.00738,0.0,-1.0,-1.0,-1.0,-1.0,1,3.62,44.49,,2
+2026-05-22,Michael,U2,C,509877,"""Michael"" 5th Weekend Box Office",18.5,18-19m,18.0,19.0,>19m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-05-22,The Devil Wears Prada 2,U2,B,506042,"""The Devil Wears Prada 2"" 4th Weekend Box Office",10.5,10.5-11.5m,10.5,11.5,12.5-13.5m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,B,478336,"""Backrooms"" Opening Weekend Box Office",77.5,>35m,35.0,inf,>35m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,B,527165,"""Backrooms"" Opening Weekend Box Office (Higher Strikes)",77.5,>61m,61.0,inf,>61m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,B,534458,"""Backrooms"" Opening Weekend Box Office (Even Higher Strikes)",77.5,73-79m,73.0,79.0,>79m,1,0,0,EXT180,0.0489,0.026,0.05,0.00233,0.0,-1.0,-1.0,-1.0,-1.0,1,0,134.83,0.1017,13
+2026-05-29,Backrooms,U1,C,478336,"""Backrooms"" Opening Weekend Box Office",86.5,>35m,35.0,inf,>35m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,C,527165,"""Backrooms"" Opening Weekend Box Office (Higher Strikes)",86.5,>61m,61.0,inf,>61m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,C,534458,"""Backrooms"" Opening Weekend Box Office (Even Higher Strikes)",86.5,>79m,79.0,inf,>79m,0,1,0,W60,0.8581,0.8083,0.05,0.00609,1.0,0.16535,0.15715,0.22537,0.14438,1,1255.72,30766.87,0.96,12
+2026-05-29,Backrooms,U1,D,478336,"""Backrooms"" Opening Weekend Box Office",81.4,>35m,35.0,inf,>35m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,D,527165,"""Backrooms"" Opening Weekend Box Office (Higher Strikes)",81.4,>61m,61.0,inf,>61m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Backrooms,U1,D,534458,"""Backrooms"" Opening Weekend Box Office (Even Higher Strikes)",81.4,>79m,79.0,inf,>79m,0,1,0,W60,0.97,0.97,0.05,0.00146,1.0,0.03093,0.02938,0.02938,0.01939,0,3801.19,16183.4,,2
+2026-05-29,Obsession,U2,C,527175,"""Obsession"" 3rd Weekend Box Office",28.5,>19m,19.0,inf,>19m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,Obsession,U2,D,527175,"""Obsession"" 3rd Weekend Box Office",26.4,>19m,19.0,inf,>19m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,The Breadwinner,U1,B,527173,"""The Breadwinner"" Opening Weekend Box Office",7.75,>7m,7.0,inf,>7m,0,1,0,W60,0.8366,0.78,0.0,0.0,1.0,0.19525,0.19525,0.28205,0.18113,1,4580.21,12536.08,0.9,36
+2026-05-29,The Breadwinner,U1,C,527173,"""The Breadwinner"" Opening Weekend Box Office",7.5,>7m,7.0,inf,>7m,0,1,0,W60,0.8996,0.9,0.0,0.0,1.0,0.11162,0.11162,0.11111,0.0994,1,1414.45,16274.37,0.9302,4
+2026-05-29,The Mandalorian and Grogu,U2,B,527174,"""The Mandalorian and Grogu"" 2nd Weekend Box Office",24.0,<25m,0.0,25.0,<25m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-05-29,The Mandalorian and Grogu,U2,C,527174,"""The Mandalorian and Grogu"" 2nd Weekend Box Office",25.0,25-28m,25.0,28.0,<25m,1,0,0,W60,0.1379,0.1377,0.05,0.00594,0.0,-1.0,-1.0,-1.0,-1.0,1,9.65,829.49,0.0627,2
+2026-05-29,The Mandalorian and Grogu,U2,D,527174,"""The Mandalorian and Grogu"" 2nd Weekend Box Office",25.0,25-28m,25.0,28.0,<25m,1,0,0,W60,0.0605,0.0583,0.05,0.00284,0.0,-1.0,-1.0,-1.0,-1.0,1,25.25,817.54,,5
+2026-06-05,Backrooms,U2,C,555379,"""Backrooms"" 2nd Weekend Box Office",25.7,<50m,0.0,50.0,<50m,0,1,0,EXT180,0.998,0.998,0.05,0.0001,1.0,0.002,0.0019,0.0019,0.00095,0,0,280.12,,1
+2026-06-05,Backrooms,U2,C,563627,"""Backrooms"" 2nd Weekend Box Office (Lower Strikes)",25.7,<27m,0.0,27.0,<27m,0,1,0,W60,0.9177,0.9307,0.05,0.00378,1.0,0.0897,0.08524,0.07076,0.07407,1,13.28,502.1,0.97,2
+2026-06-05,Backrooms,U2,D,555379,"""Backrooms"" 2nd Weekend Box Office",25.9,<50m,0.0,50.0,<50m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-05,Backrooms,U2,D,563627,"""Backrooms"" 2nd Weekend Box Office (Lower Strikes)",25.9,<27m,0.0,27.0,<27m,0,1,0,W60,0.986,0.986,0.05,0.00069,1.0,0.0142,0.01349,0.01349,0.00382,0,9.86,647.75,,1
+2026-06-05,Masters of the Universe,U1,B,552897,"""Masters of the Universe"" Opening Weekend Box Office",31.1,30-33m,30.0,33.0,27-30m,1,1,0,W60,0.0984,0.0977,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,118.3,400.33,0.3474,3
+2026-06-05,Masters of the Universe,U1,C,552897,"""Masters of the Universe"" Opening Weekend Box Office",30.1,30-33m,30.0,33.0,27-30m,1,0,0,EXT180,0.3966,0.3752,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1381.39,,11
+2026-06-05,Masters of the Universe,U1,D,552897,"""Masters of the Universe"" Opening Weekend Box Office",29.3,27-30m,27.0,30.0,27-30m,0,0,0,W60,0.8716,0.9,0.0,0.0,1.0,0.14726,0.14726,0.11111,0.13425,1,18.08,1827.18,,2
+2026-06-05,Obsession,U2,B,555370,"""Obsession"" 4th Weekend Box Office",24.8,24-27m,24.0,27.0,24-27m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-05,Obsession,U2,C,555370,"""Obsession"" 4th Weekend Box Office",24.8,24-27m,24.0,27.0,24-27m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-05,Scary Movie,U1,B,552162,"""Scary Movie"" Opening Weekend Box Office",52.7,52m+,52.0,inf,52m+,0,0,0,W60,0.6011,0.593,0.05,0.01199,1.0,0.66359,0.63106,0.65271,0.60515,1,756.2,1291.4,0.6228,5
+2026-06-05,Scary Movie,U1,C,552162,"""Scary Movie"" Opening Weekend Box Office",56.0,52m+,52.0,inf,52m+,0,1,0,W60,0.603,0.603,0.05,0.01197,1.0,0.65851,0.62623,0.62623,0.60048,1,97.8,26773.4,0.9777,1
+2026-06-05,Scary Movie,U1,D,552162,"""Scary Movie"" Opening Weekend Box Office",55.0,52m+,52.0,inf,52m+,0,1,0,W60,0.988,0.988,0.05,0.00059,1.0,0.01215,0.01154,0.01154,0.0019,0,5.0,7262.72,,1
+2026-06-12,Backrooms,U2,B,580483,"""Backrooms"" 3rd Weekend Box Office",12.4,12-13m,12.0,13.0,11-12m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-06-12,Backrooms,U2,D,580483,"""Backrooms"" 3rd Weekend Box Office",11.26,11-12m,11.0,12.0,11-12m,0,0,0,EXT180,0.9492,0.949,0.05,0.00241,1.0,0.05354,0.05087,0.05106,0.04043,1,0,3188.73,,18
+2026-06-12,Disclosure Day,U1,B,573049,"""Disclosure Day"" Opening Weekend Box Office",42.5,39-43m,39.0,43.0,43-47m,1,0,0,W60,0.0149,0.0205,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,5.65,488.93,0.1532,5
+2026-06-12,Disclosure Day,U1,C,573049,"""Disclosure Day"" Opening Weekend Box Office",44.0,43-47m,43.0,47.0,43-47m,0,0,0,EXT180,0.8087,0.81,0.0,0.0,1.0,0.23652,0.23652,0.23457,0.22141,1,0,8627.24,0.973,18
+2026-06-12,Disclosure Day,U1,D,573049,"""Disclosure Day"" Opening Weekend Box Office",44.0,43-47m,43.0,47.0,43-47m,0,0,0,W60,0.979,0.979,0.0,0.0,1.0,0.02145,0.02145,0.02145,0.01112,0,4.98,11730.94,,1
+2026-06-12,Obsession,U2,C,573058,"""Obsession"" 5th Weekend Box Office",21.0,>19m,19.0,inf,>19m,0,1,0,EXT180,0.768,0.8,0.05,0.00891,1.0,0.3021,0.28717,0.23762,0.27125,1,0,2013.84,0.801,4
+2026-06-12,Obsession,U2,D,573058,"""Obsession"" 5th Weekend Box Office",19.0,>19m,19.0,inf,>19m,0,0,0,EXT180,0.8572,0.859,0.05,0.00612,1.0,0.16654,0.15828,0.15599,0.14549,1,0,14920.84,,9
+2026-06-12,Scary Movie,U2,B,580491,"""Scary Movie"" 2nd Weekend Box Office",15.2,15-16m,15.0,16.0,14-15m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-06-12,Scary Movie,U2,C,580491,"""Scary Movie"" 2nd Weekend Box Office",14.6,14-15m,14.0,15.0,14-15m,0,1,0,W60,0.4499,0.4499,0.05,0.01237,1.0,1.22288,1.16337,1.16337,1.11736,1,129.79,1698.52,0.876,1
+2026-06-12,Scary Movie,U2,D,580491,"""Scary Movie"" 2nd Weekend Box Office",14.5,14-15m,14.0,15.0,14-15m,0,1,0,EXT180,0.8954,0.876,0.05,0.00468,1.0,0.11683,0.11102,0.13452,0.09929,1,0,6074.26,,6
+2026-06-19,Disclosure Day,U2,B,606338,"""Disclosure Day"" 2nd Weekend Box Office",16.5,<20m,0.0,20.0,<20m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-19,Disclosure Day,U2,C,606338,"""Disclosure Day"" 2nd Weekend Box Office",17.2,<20m,0.0,20.0,<20m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-19,Disclosure Day,U2,D,606338,"""Disclosure Day"" 2nd Weekend Box Office",17.0,<20m,0.0,20.0,<20m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-19,Obsession,U2,C,606337,"""Obsession"" 6th Weekend Box Office",14.2,14-15m,14.0,15.0,<14m,1,0,0,EXT180,0.6529,0.5946,0.05,0.01133,0.0,-1.0,-1.0,-1.0,-1.0,1,0,4231.35,0.61,17
+2026-06-19,Obsession,U2,D,606337,"""Obsession"" 6th Weekend Box Office",14.2,14-15m,14.0,15.0,<14m,1,0,0,W60,0.5114,0.47,0.05,0.01249,0.0,-1.0,-1.0,-1.0,-1.0,1,324.77,1725.19,,8
+2026-06-19,The Death of Robin Hood,U1,A,608671,"""The Death of Robin Hood"" Opening Weekend Box Office ",3.5,<5m,0.0,5.0,<5m,0,1,0,W60,0.9758,0.9758,0.05,0.00118,1.0,0.02484,0.0236,0.0236,0.01372,0,108.39,153.62,,1
+2026-06-19,The Death of Robin Hood,U1,C,608671,"""The Death of Robin Hood"" Opening Weekend Box Office ",2.5,<5m,0.0,5.0,<5m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-19,Toy Story 5,U1,A,578306,"""Toy Story 5"" Opening Weekend Box Office",147.5,145-158m,145.0,158.0,158-171m,1,0,0,EXT180,0.0771,0.045,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,0,1361.95,0.2216,50
+2026-06-19,Toy Story 5,U1,B,578306,"""Toy Story 5"" Opening Weekend Box Office",165.0,158-171m,158.0,171.0,158-171m,0,1,0,W60,0.7406,0.739,0.0,0.0,1.0,0.35023,0.35023,0.35325,0.33224,1,1677.95,3535.92,0.7187,3
+2026-06-19,Toy Story 5,U1,C,578306,"""Toy Story 5"" Opening Weekend Box Office",165.0,158-171m,158.0,171.0,158-171m,0,1,0,W60,0.78,0.78,0.0,0.0,1.0,0.28203,0.28203,0.28205,0.26581,1,15.66,29101.54,0.8899,4
+2026-06-19,Toy Story 5,U1,D,578306,"""Toy Story 5"" Opening Weekend Box Office",160.0,158-171m,158.0,171.0,158-171m,0,0,0,W60,0.9327,0.91,0.0,0.0,1.0,0.07216,0.07216,0.0989,0.06079,1,5105.26,20500.95,,13
+2026-06-26,Jackass: Best and Last,U1,B,626959,"""Jackass: Best and Last"" Opening Weekend Box Office",9.0,9-10m,9.0,10.0,8-9m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Jackass: Best and Last,U1,C,626959,"""Jackass: Best and Last"" Opening Weekend Box Office",8.5,8-9m,8.0,9.0,8-9m,0,1,0,W60,0.9285,0.9285,0.05,0.00332,1.0,0.07697,0.07314,0.07314,0.06223,1,50.0,385.21,,1
+2026-06-26,Jackass: Best and Last,U1,D,626959,"""Jackass: Best and Last"" Opening Weekend Box Office",8.4,8-9m,8.0,9.0,8-9m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Obsession,U2,B,633655,"""Obsession"" 7th Weekend Box Office",8.5,8-9m,8.0,9.0,9-10m,1,1,0,EXT180,0.1907,0.22,0.05,0.00772,0.0,-1.0,-1.0,-1.0,-1.0,1,0,5.86,,2
+2026-06-26,Obsession,U2,C,633655,"""Obsession"" 7th Weekend Box Office",9.4,9-10m,9.0,10.0,9-10m,0,1,0,W60,0.7413,0.67,0.05,0.00959,1.0,0.349,0.33177,0.46831,0.31469,1,1027.78,5420.72,0.97,9
+2026-06-26,Obsession,U2,D,633655,"""Obsession"" 7th Weekend Box Office",9.8,9-10m,9.0,10.0,9-10m,0,0,0,EXT180,0.97,0.97,0.05,0.00146,1.0,0.03093,0.02938,0.02938,0.01939,0,0,650.23,,1
+2026-06-26,Supergirl,U1,A,606353,"""Supergirl"" Opening Weekend Box Office",48.5,<52m,0.0,52.0,<52m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Supergirl,U1,A,623462,"""Supergirl"" Opening Weekend Box Office (Lower Brackets)",48.5,>47m,47.0,inf,35-39m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Supergirl,U1,B,606353,"""Supergirl"" Opening Weekend Box Office",40.0,<52m,0.0,52.0,<52m,0,1,0,W60,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,38.96,44.46,0.999,1
+2026-06-26,Supergirl,U1,B,623462,"""Supergirl"" Opening Weekend Box Office (Lower Brackets)",40.0,39-43m,39.0,43.0,35-39m,1,1,0,EXT180,0.1372,0.1478,0.05,0.00592,0.0,-1.0,-1.0,-1.0,-1.0,1,0,30.0,0.1,2
+2026-06-26,Supergirl,U1,C,606353,"""Supergirl"" Opening Weekend Box Office",40.0,<52m,0.0,52.0,<52m,0,1,0,EXT180,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,0,3764.22,,1
+2026-06-26,Supergirl,U1,C,623462,"""Supergirl"" Opening Weekend Box Office (Lower Brackets)",40.0,39-43m,39.0,43.0,35-39m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Supergirl,U1,D,606353,"""Supergirl"" Opening Weekend Box Office",38.0,<52m,0.0,52.0,<52m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-06-26,Supergirl,U1,D,623462,"""Supergirl"" Opening Weekend Box Office (Lower Brackets)",38.0,35-39m,35.0,39.0,35-39m,0,1,0,EXT180,0.9849,0.9849,0.05,0.00074,1.0,0.01533,0.01457,0.01457,0.00487,0,0,530.81,,1
+2026-06-26,Toy Story 5,U2,C,631613,"""Toy Story 5"" 2nd Weekend Box Office",70.0,69-73m,69.0,73.0,69-73m,0,0,0,W60,0.71,0.71,0.05,0.0103,1.0,0.40845,0.38832,0.38832,0.36971,1,96.56,3795.04,0.9,3
+2026-06-26,Toy Story 5,U2,D,631613,"""Toy Story 5"" 2nd Weekend Box Office",70.0,69-73m,69.0,73.0,69-73m,0,0,0,W60,0.9424,0.93,0.05,0.00272,1.0,0.06117,0.05812,0.07152,0.04753,1,40.03,4916.38,,6
+2026-07-03,Supergirl,U2,B,655693,"""Supergirl"" 2nd Weekend Box Office",10.0,<17m,0.0,17.0,<17m,0,1,0,EXT180,0.9969,0.995,0.05,0.00015,1.0,0.00309,0.00293,0.00477,0.00095,0,0,250.23,,2
+2026-07-03,Supergirl,U2,D,655693,"""Supergirl"" 2nd Weekend Box Office",9.6,<17m,0.0,17.0,<17m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-07-03,Toy Story 5,U2,B,655697,"""Toy Story 5"" 3rd Weekend Box Office",30.0,<39m,0.0,39.0,<39m,0,1,0,W60,0.9804,0.988,0.05,0.00096,1.0,0.01995,0.01895,0.01154,0.00917,0,32.29,32.29,,5
+2026-07-03,Toy Story 5,U2,D,655697,"""Toy Story 5"" 3rd Weekend Box Office",31.0,<39m,0.0,39.0,<39m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-07-03,Young Washington,U1,B,651635,"""Young Washington"" Opening Weekend Box Office",16.5,16-18m,16.0,18.0,18-20m,1,1,0,W60,0.1344,0.0657,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,31.19,105.28,,2
+2026-07-03,Young Washington,U1,D,651635,"""Young Washington"" Opening Weekend Box Office",20.8,20-22m,20.0,22.0,18-20m,1,1,0,W60,0.0899,0.0856,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,1,6.99,266.02,,2
+2026-07-10,Evil Dead Burn,U1,B,673994,"""Evil Dead Burn"" Opening Weekend Box Office",15.0,<20m,0.0,20.0,<20m,0,1,0,EXT180,0.997,0.997,0.05,0.00015,1.0,0.00301,0.00286,0.00286,0.00095,0,0,53.05,,2
+2026-07-10,Evil Dead Burn,U1,B,688075,"""Evil Dead Burn"" Opening Weekend Box Office (Lower Brackets)",15.0,<16m,0.0,16.0,<16m,0,1,0,EXT180,0.9757,0.9757,0.05,0.00118,1.0,0.02485,0.02361,0.02361,0.01373,0,0,722.97,,1
+2026-07-10,Evil Dead Burn,U1,D,673994,"""Evil Dead Burn"" Opening Weekend Box Office",13.7,<20m,0.0,20.0,<20m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-07-10,Evil Dead Burn,U1,D,688075,"""Evil Dead Burn"" Opening Weekend Box Office (Lower Brackets)",13.7,<16m,0.0,16.0,<16m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-07-10,Minions & Monsters,U2,B,684453,"""Minions & Monsters"" 2nd Weekend Box Office",20.0,20m+,20.0,inf,20m+,0,0,0,W60,0.9201,0.92,0.05,0.00368,1.0,0.08686,0.08253,0.08263,0.07143,1,2653.28,2696.77,0.9241,5
+2026-07-10,Minions & Monsters,U2,D,684453,"""Minions & Monsters"" 2nd Weekend Box Office",20.5,20m+,20.0,inf,20m+,0,0,0,W60,0.99,0.99,0.05,0.0005,1.0,0.0101,0.0096,0.0096,0.00095,0,224.73,1410.31,,1
+2026-07-10,Moana (2026),U1,B,673990,"""Moana (2026)"" Opening Weekend Box Office",42.5,39-44m,39.0,44.0,39-44m,0,1,0,W60,0.7692,0.77,0.05,0.00888,1.0,0.30012,0.28529,0.28394,0.26942,1,91.3,252.77,,3
+2026-07-10,Moana (2026),U1,C,673990,"""Moana (2026)"" Opening Weekend Box Office",45.0,>44m,44.0,inf,39-44m,1,0,0,W60,0.0704,0.08,0.05,0.00327,0.0,-1.0,-1.0,-1.0,-1.0,1,3.5,149.11,0.002,3
+2026-07-10,Moana (2026),U1,D,673990,"""Moana (2026)"" Opening Weekend Box Office",43.0,39-44m,39.0,44.0,39-44m,0,0,0,NONE,,,,,,,,,,,,,,
+2026-07-10,Toy Story 5,U2,B,684445,"""Toy Story 5"" 4th Weekend Box Office",18.0,<19m,0.0,19.0,19-21m,1,1,0,EXT180,0.8498,0.861,0.05,0.00638,0.0,-1.0,-1.0,-1.0,-1.0,1,0,78.52,0.788,6
+2026-07-10,Toy Story 5,U2,D,684445,"""Toy Story 5"" 4th Weekend Box Office",18.5,<19m,0.0,19.0,19-21m,1,1,0,W60,0.8559,0.8371,0.05,0.00617,0.0,-1.0,-1.0,-1.0,-1.0,1,322.62,2766.89,,4
+2026-07-17,Minions & Monsters,U2,B,712169,"""Minions & Monsters"" 3rd Weekend Box Office",14.5,14m+,14.0,inf,13-14m,1,1,0,W60,0.69,0.69,0.05,0.0107,0.0,-1.0,-1.0,-1.0,-1.0,1,16.0,16.0,0.6534,1
+2026-07-17,Moana (2026),U2,B,712153,"""Moana (2026)"" 2nd Weekend Box Office",19.0,19-20.5m,19.0,20.5,17.5-19m,1,0,0,EXT180,0.2579,0.2548,0.05,0.00957,0.0,-1.0,-1.0,-1.0,-1.0,1,0,31.41,,3
+2026-07-17,Moana (2026),U2,C,712153,"""Moana (2026)"" 2nd Weekend Box Office",18.8,17.5-19m,17.5,19.0,17.5-19m,0,0,0,EXT180,0.7422,0.7332,0.05,0.00957,1.0,0.34731,0.33016,0.34596,0.31313,1,0,651.52,,3
+2026-07-17,Moana (2026),U2,D,712153,"""Moana (2026)"" 2nd Weekend Box Office",19.0,19-20.5m,19.0,20.5,17.5-19m,1,0,0,W60,0.0472,0.0472,0.05,0.00225,0.0,-1.0,-1.0,-1.0,-1.0,1,2.39,63.85,,1
+2026-07-17,The Odyssey,U1,A,626857,"""The Odyssey"" Opening Weekend Box Office",95.0,95-105m,95.0,105.0,>115m,1,0,0,W60,0.01,0.01,0.05,0.0005,0.0,-1.0,-1.0,-1.0,-1.0,1,0.03,104.19,,1
+2026-07-17,The Odyssey,U1,A,707270,"""The Odyssey"" Opening Weekend Box Office (Higher Strikes)",95.0,<115m,0.0,115.0,120-125m,1,1,0,W60,0.22,0.22,0.05,0.00858,0.0,-1.0,-1.0,-1.0,-1.0,1,1.0,107.57,,1
+2026-07-17,The Odyssey,U1,B,626857,"""The Odyssey"" Opening Weekend Box Office",117.0,>115m,115.0,inf,>115m,0,0,0,W60,0.977,0.977,0.05,0.00112,1.0,0.02352,0.02234,0.02237,0.01249,0,150.48,15473.31,,3
+2026-07-17,The Odyssey,U1,B,707270,"""The Odyssey"" Opening Weekend Box Office (Higher Strikes)",117.0,115-120m,115.0,120.0,120-125m,1,0,0,W60,0.1413,0.1355,0.05,0.00607,0.0,-1.0,-1.0,-1.0,-1.0,1,57.0,59.0,,3
+2026-07-17,The Odyssey,U1,C,626857,"""The Odyssey"" Opening Weekend Box Office",120.5,>115m,115.0,inf,>115m,0,1,0,W60,0.986,0.986,0.05,0.00069,1.0,0.0142,0.01349,0.01349,0.00382,0,3.17,4391.87,,3
+2026-07-17,The Odyssey,U1,C,707270,"""The Odyssey"" Opening Weekend Box Office (Higher Strikes)",120.5,120-125m,120.0,125.0,120-125m,0,0,0,W60,0.2996,0.2941,0.05,0.01049,1.0,2.33733,2.22442,2.28409,2.12179,1,29.47,12833.02,0.8531,4
+2026-07-17,The Odyssey,U1,D,626857,"""The Odyssey"" Opening Weekend Box Office",124.5,>115m,115.0,inf,>115m,0,1,0,W60,0.9983,0.999,0.05,8e-05,1.0,0.00166,0.00158,0.00095,0.00095,0,6877.32,6959.26,,2
+2026-07-17,The Odyssey,U1,D,707270,"""The Odyssey"" Opening Weekend Box Office (Higher Strikes)",124.5,120-125m,120.0,125.0,120-125m,0,0,0,W60,0.84,0.84,0.05,0.00672,1.0,0.19048,0.18103,0.18103,0.16771,1,43.67,16639.62,,5
+2026-07-17,Toy Story 5,U2,B,712161,"""Toy Story 5"" 5th Weekend Box Office",13.0,13-14m,13.0,14.0,13-14m,0,0,0,W60,0.46,0.46,0.05,0.01242,1.0,1.17391,1.11676,1.11676,1.07273,1,16.0,16.0,,1
+2026-07-24,Moana (2026),U2,B,745760,"""Moana (2026)"" 3rd Weekend Box Office",10.0,10-11m,10.0,11.0,10-11m,0,0,0,NONE,,,,,,,,,,,,,,
+2026-07-24,Moana (2026),U2,D,745760,"""Moana (2026)"" 3rd Weekend Box Office",10.5,10-11m,10.0,11.0,10-11m,0,1,0,EXT180,0.9334,0.9334,0.05,0.00311,1.0,0.07138,0.06783,0.06783,0.05703,1,0,679.04,,1
+2026-07-24,The Odyssey,U2,B,726189,"""The Odyssey"" 2nd Weekend Box Office",84.5,80-86m,80.0,86.0,86-92m,1,0,0,W60,0.1484,0.13,0.05,0.00632,0.0,-1.0,-1.0,-1.0,-1.0,1,29.77,86.82,0.105,6
+2026-07-24,The Odyssey,U2,D,726189,"""The Odyssey"" 2nd Weekend Box Office",87.0,86-92m,86.0,92.0,86-92m,0,0,0,W60,0.9858,0.9696,0.05,0.0007,1.0,0.01442,0.0137,0.02976,0.00402,0,2335.53,12602.25,,18
+2026-07-31,Spider-Man: Brand New Day,U1,A,608709,"""Spider-Man: Brand New Day"" Opening Weekend Box Office",270.0,260-280m,260.0,280.0,>280m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-07-31,Spider-Man: Brand New Day,U1,A,745759,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Higher Strikes)",270.0,<280m,0.0,280.0,350m+,1,1,0,W60,0.01,0.01,0.05,0.00049,0.0,-1.0,-1.0,-1.0,-1.0,1,5.41,9.59,,1
+2026-07-31,Spider-Man: Brand New Day,U1,A,778535,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Even Higher Strikes)",270.0,<350m,0.0,350.0,360-370m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-07-31,Spider-Man: Brand New Day,U1,C,608709,"""Spider-Man: Brand New Day"" Opening Weekend Box Office",337.5,>280m,280.0,inf,>280m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-07-31,Spider-Man: Brand New Day,U1,C,745759,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Higher Strikes)",337.5,330-340m,330.0,340.0,350m+,1,0,0,EXT180,0.0092,0.01,0.05,0.00046,0.0,-1.0,-1.0,-1.0,-1.0,1,0,17.82,,4
+2026-07-31,Spider-Man: Brand New Day,U1,C,778535,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Even Higher Strikes)",337.5,<350m,0.0,350.0,360-370m,1,1,0,W60,0.16,0.16,0.05,0.00672,0.0,-1.0,-1.0,-1.0,-1.0,1,2.47,196.15,0.001,2
+2026-07-31,Spider-Man: Brand New Day,U1,D,608709,"""Spider-Man: Brand New Day"" Opening Weekend Box Office",355.0,>280m,280.0,inf,>280m,0,1,0,EXT180,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,0,5602.48,,5
+2026-07-31,Spider-Man: Brand New Day,U1,D,745759,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Higher Strikes)",355.0,350m+,350.0,inf,350m+,0,0,0,W60,0.995,0.995,0.05,0.00025,1.0,0.00503,0.00477,0.00477,0.00095,0,1.0,10231.08,0.999,1
+2026-07-31,Spider-Man: Brand New Day,U1,D,778535,"""Spider-Man: Brand New Day"" Opening Weekend Box Office (Even Higher Strikes)",355.0,350-360m,350.0,360.0,360-370m,1,0,0,W60,0.788,0.788,0.05,0.00835,0.0,-1.0,-1.0,-1.0,-1.0,1,30.08,6745.79,0.001,3
+2026-07-31,The Odyssey,U2,B,758897,"""The Odyssey"" 3rd Weekend Box Office",52.0,52-57m,52.0,57.0,47-52m,1,0,0,EXT180,0.2053,0.197,0.05,0.00816,0.0,-1.0,-1.0,-1.0,-1.0,1,0,252.9,0.251,4
+2026-07-31,The Odyssey,U2,C,758897,"""The Odyssey"" 3rd Weekend Box Office",51.0,47-52m,47.0,52.0,47-52m,0,0,0,EXT180,0.577,0.5302,0.05,0.0122,1.0,0.733,0.69711,0.84293,0.66902,1,0,4908.15,,5
+2026-07-31,The Odyssey,U2,D,758897,"""The Odyssey"" 3rd Weekend Box Office",51.0,47-52m,47.0,52.0,47-52m,0,0,0,W60,0.929,0.929,0.05,0.0033,1.0,0.07643,0.07262,0.07262,0.06172,1,20.8,3541.79,0.999,2
+2026-08-07,One Night Only,U1,B,803523,"""One Night Only"" Opening Weekend Box Office",6.0,6-7m,6.0,7.0,<6m,1,0,0,W60,0.0864,0.08,0.05,0.00395,0.0,-1.0,-1.0,-1.0,-1.0,1,1.19,6.61,,2
+2026-08-07,One Night Only,U1,D,803523,"""One Night Only"" Opening Weekend Box Office",5.7,<6m,0.0,6.0,<6m,0,1,0,W60,0.99,0.99,0.05,0.0005,1.0,0.0101,0.0096,0.0096,0.00095,0,1.08,206.52,,1
+2026-08-07,Spider-Man: Brand New Day,U2,B,793712,"""Spider-Man: Brand New Day"" 2nd Weekend Box Office",137.5,<180m,0.0,180.0,<180m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-08-07,Spider-Man: Brand New Day,U2,B,803818,"""Spider-Man: Brand New Day"" 2nd Weekend Box Office (Lower Strikes)",137.5,130-140m,130.0,140.0,140-150m,1,0,0,W60,0.1179,0.117,0.05,0.0052,0.0,-1.0,-1.0,-1.0,-1.0,1,89.1,89.1,,4
+2026-08-07,Spider-Man: Brand New Day,U2,D,793712,"""Spider-Man: Brand New Day"" 2nd Weekend Box Office",145.0,<180m,0.0,180.0,<180m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-08-07,Spider-Man: Brand New Day,U2,D,803818,"""Spider-Man: Brand New Day"" 2nd Weekend Box Office (Lower Strikes)",145.0,140-150m,140.0,150.0,140-150m,0,1,0,W60,0.92,0.92,0.05,0.00368,1.0,0.08694,0.08261,0.08263,0.07151,1,2095.97,5087.81,,5
+2026-08-07,Super Troopers 3,U1,B,803532,"""Super Troopers 3"" Opening Weekend Box Office",4.0,<6m,0.0,6.0,<6m,0,1,0,EXT180,0.9897,0.9887,0.05,0.00051,1.0,0.01043,0.00991,0.0109,0.00095,0,0,88.15,,2
+2026-08-07,Super Troopers 3,U1,D,803532,"""Super Troopers 3"" Opening Weekend Box Office",4.0,<6m,0.0,6.0,<6m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-08-07,The Odyssey,U2,B,793711,"""The Odyssey"" 4th Weekend Box Office",28.5,28-30m,28.0,30.0,30-32m,1,0,0,NONE,,,,,,,,,,,,,,
+2026-08-07,The Odyssey,U2,D,793711,"""The Odyssey"" 4th Weekend Box Office",31.5,30-32m,30.0,32.0,30-32m,0,0,0,EXT180,0.68,0.68,0.05,0.01088,1.0,0.47059,0.44743,0.44743,0.42715,1,0,4564.04,,1
+2026-08-14,"""PAW Patrol: The Dino Movie"" Opening Weekend Box Office",U1,A,682591,“PAW Patrol: The Dino Movie” Opening Weekend Box Office,20.0,20-25m,20.0,25.0,20-25m,0,0,0,NONE,,,,,,,,,,,,,,
+2026-08-21,Spider-Man: Brand New Day,U2,D,872452,"""Spider-Man: Brand New Day"" 4th Weekend Box Office",39.0,38-41m,38.0,41.0,38-41m,0,1,0,EXT180,0.985,0.985,0.05,0.00074,1.0,0.01524,0.01448,0.01447,0.00479,0,0,4534.73,,2
+2026-08-21,The Odyssey,U2,D,872451,"""The Odyssey"" 6th Weekend Box Office",19.5,18.5-20m,18.5,20.0,18.5-20m,0,1,0,W60,0.975,0.97,0.05,0.00122,1.0,0.02562,0.02434,0.02938,0.01445,0,19.82,3325.93,,2
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",U1,A,872461,“Insidious: Out of the Further” Opening Weekend Box Office,25.0,25-28m,25.0,28.0,25-28m,0,0,0,W60,0.16,0.16,0.05,0.00672,1.0,5.25,4.99808,4.99808,4.64796,1,0.6,93.77,,2
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",U1,D,872461,“Insidious: Out of the Further” Opening Weekend Box Office,25.3,25-28m,25.0,28.0,25-28m,0,0,0,EXT180,0.594,0.75,0.05,0.01206,1.0,0.68359,0.65009,0.31687,0.62357,1,0,3163.81,,7
+2026-08-28,Coyote vs. Acme,U1,D,913390,"""Coyote vs. Acme"" Opening Weekend Box Office",15.4,14-17m,14.0,17.0,14-17m,0,1,0,EXT180,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,0,19.98,,1
+2026-08-28,Spider-Man: Brand New Day,U2,D,913392,"""Spider-Man: Brand New Day"" 5th Weekend Box Office",22.2,22-24m,22.0,24.0,22-24m,0,0,0,W60,0.9,0.9,0.05,0.0045,1.0,0.11111,0.10558,0.10558,0.09398,1,4.73,725.78,,1
+2026-08-28,The Dog Stars,U1,D,918337,"""The Dog Stars"" Opening Weekend Box Office",8.0,8-9m,8.0,9.0,<8m,1,0,0,W60,0.0135,0.013,0.05,0.00067,0.0,-1.0,-1.0,-1.0,-1.0,1,0.22,11.46,0.257,2
+2026-08-28,The Odyssey,U2,D,913391,"""The Odyssey"" 7th Weekend Box Office",14.3,13-14.5m,13.0,14.5,13-14.5m,0,0,0,W60,0.83,0.83,0.05,0.00706,1.0,0.20482,0.19466,0.19466,0.18103,1,277.89,869.54,,1
+2026-09-04,By Any Means,U1,B,942923,"""By Any Means"" Opening Weekend Box Office",6.5,6-7m,6.0,7.0,7-8m,1,1,0,W60,0.2404,0.245,0.05,0.00913,0.0,-1.0,-1.0,-1.0,-1.0,1,5.9,703.42,,2
+2026-09-04,By Any Means,U1,C,942923,"""By Any Means"" Opening Weekend Box Office",7.0,7-8m,7.0,8.0,7-8m,0,0,0,W60,0.8352,0.82,0.05,0.00688,1.0,0.19736,0.18758,0.20863,0.17411,1,11.7,931.53,0.989,4
+2026-09-04,By Any Means,U1,D,942923,"""By Any Means"" Opening Weekend Box Office",7.4,7-8m,7.0,8.0,7-8m,0,1,0,W60,0.99,0.99,0.05,0.0005,1.0,0.0101,0.0096,0.0096,0.00095,0,30.0,162.3,,2
+2026-09-04,Onslaught,U1,B,942922,"""Onslaught"" Opening Weekend Box Office",1.9,<2m,0.0,2.0,<2m,0,1,0,EXT180,0.8557,0.83,0.05,0.00618,1.0,0.16869,0.16031,0.19466,0.14748,1,0,1185.19,,2
+2026-09-04,Onslaught,U1,C,942922,"""Onslaught"" Opening Weekend Box Office",2.0,2-3m,2.0,3.0,<2m,1,0,0,EXT180,0.17,0.17,0.05,0.00705,0.0,-1.0,-1.0,-1.0,-1.0,1,0,25.85,,1
+2026-09-04,Spider-Man: Brand New Day,U2,B,956522,"""Spider-Man: Brand New Day"" 6th Weekend Box Office",16.7,15m+,15.0,inf,15m+,0,1,0,EXT180,0.989,0.989,0.05,0.00054,1.0,0.01112,0.01057,0.01057,0.00095,0,0,15.0,,1
+2026-09-04,Spider-Man: Brand New Day,U2,C,956522,"""Spider-Man: Brand New Day"" 6th Weekend Box Office",17.25,15m+,15.0,inf,15m+,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-04,Spider-Man: Brand New Day,U2,D,956522,"""Spider-Man: Brand New Day"" 6th Weekend Box Office",18.0,15m+,15.0,inf,15m+,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-04,The Odyssey,U2,B,956521,"""The Odyssey"" 8th Weekend Box Office",11.5,11m+,11.0,inf,11m+,0,1,0,W60,0.9895,0.989,0.05,0.00052,1.0,0.01061,0.01008,0.01057,0.00095,0,30.0,129.49,0.99,2
+2026-09-04,The Odyssey,U2,C,956521,"""The Odyssey"" 8th Weekend Box Office",12.4,11m+,11.0,inf,11m+,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-04,The Odyssey,U2,D,956521,"""The Odyssey"" 8th Weekend Box Office",13.0,11m+,11.0,inf,11m+,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-11,Hope,U1,B,994077,"""Hope"" Opening Weekend Box Office",3.6,<6m,0.0,6.0,<6m,0,1,0,W60,0.989,0.989,0.05,0.00054,1.0,0.01112,0.01057,0.01057,0.00095,0,15.0,1368.95,,1
+2026-09-11,Practical Magic 2,U1,A,956493,"""Practical Magic 2"" Opening Weekend Box Office",35.0,<38m,0.0,38.0,<38m,0,1,0,W60,0.9669,0.9649,0.05,0.0016,1.0,0.03426,0.03255,0.03461,0.02249,0,763.45,1096.01,,6
+2026-09-11,Practical Magic 2,U1,A,999376,"""Practical Magic 2"" Opening Weekend Box Office (Lower Strikes)",35.0,34-36m,34.0,36.0,<32m,1,1,0,NONE,,,,,,,,,,,,,,
+2026-09-11,Practical Magic 2,U1,B,956493,"""Practical Magic 2"" Opening Weekend Box Office",30.0,<38m,0.0,38.0,<38m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-11,Practical Magic 2,U1,B,999376,"""Practical Magic 2"" Opening Weekend Box Office (Lower Strikes)",30.0,<32m,0.0,32.0,<32m,0,1,0,W60,0.9473,0.954,0.05,0.0025,1.0,0.05568,0.0529,0.04581,0.04243,1,81.11,303.03,0.984,4
+2026-09-11,Runner,U1,B,990714,"""Runner"" Opening Weekend Box Office",5.4,5-6m,5.0,6.0,6m+,1,1,0,NONE,,,,,,,,,,,,,,
+2026-09-11,The Uprising,U1,B,990710,"""The Uprising"" Opening Weekend Box Office",3.0,<4.5m,0.0,4.5,<4.5m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-18,Practical Magic 2,U2,C,1040096,"""Practical Magic 2"" 2nd Weekend Box Office",10.85,10-11m,10.0,11.0,12-13m,1,0,0,EXT180,0.0338,0.08,0.05,0.00163,0.0,-1.0,-1.0,-1.0,-1.0,1,0,2.97,,2
+2026-09-18,Practical Magic 2,U2,D,1040096,"""Practical Magic 2"" 2nd Weekend Box Office",12.1,12-13m,12.0,13.0,12-13m,0,0,0,NONE,,,,,,,,,,,,,,
+2026-09-18,Resident Evil,U1,B,956520,"""Resident Evil"" Opening Weekend Box Office",50.0,50-55m,50.0,55.0,60-65m,1,0,0,W60,0.0195,0.0212,0.05,0.00096,0.0,-1.0,-1.0,-1.0,-1.0,1,5.93,5.93,,7
+2026-09-18,Resident Evil,U1,B,1040095,"""Resident Evil"" Opening Weekend Box Office (Higher Brackets)",50.0,<70m,0.0,70.0,<70m,0,1,0,W60,0.9754,0.9707,0.05,0.0012,1.0,0.02523,0.02397,0.02866,0.01409,0,378.87,378.87,,2
+2026-09-18,Resident Evil,U1,C,956520,"""Resident Evil"" Opening Weekend Box Office",56.5,55-60m,55.0,60.0,60-65m,1,1,0,W60,0.2326,0.232,0.05,0.00893,0.0,-1.0,-1.0,-1.0,-1.0,1,1.21,3411.7,0.1488,2
+2026-09-18,Resident Evil,U1,C,1040095,"""Resident Evil"" Opening Weekend Box Office (Higher Brackets)",56.5,<70m,0.0,70.0,<70m,0,1,0,W60,0.9907,0.99,0.05,0.00046,1.0,0.00935,0.00888,0.0096,0.00095,0,110.78,483.32,,3
+2026-09-18,Resident Evil,U1,D,956520,"""Resident Evil"" Opening Weekend Box Office",60.0,60-65m,60.0,65.0,60-65m,0,0,0,W60,0.8257,0.8272,0.05,0.0072,1.0,0.21116,0.20069,0.1986,0.18691,1,456.36,4406.95,0.9973,2
+2026-09-18,Resident Evil,U1,D,1040095,"""Resident Evil"" Opening Weekend Box Office (Higher Brackets)",60.0,<70m,0.0,70.0,<70m,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-18,Spider-Man: Brand New Day,U2,B,1040097,"""Spider-Man: Brand New Day"" 8th Weekend Box Office",6.0,6m+,6.0,inf,6m+,0,0,0,W60,0.9876,0.989,0.05,0.00061,1.0,0.01257,0.01194,0.01057,0.0023,0,324.15,329.08,,2
+2026-09-18,Spider-Man: Brand New Day,U2,C,1040097,"""Spider-Man: Brand New Day"" 8th Weekend Box Office",6.3,6m+,6.0,inf,6m+,0,1,0,NONE,,,,,,,,,,,,,,
+2026-09-18,Spider-Man: Brand New Day,U2,D,1040097,"""Spider-Man: Brand New Day"" 8th Weekend Box Office",6.5,6m+,6.0,inf,6m+,0,1,0,EXT180,0.999,0.999,0.05,5e-05,1.0,0.001,0.00095,0.00095,0.00095,0,0,1072.97,,1
+2026-09-25,Avengers: Endgame Encore,U1,B,1071224,"""Avengers: Endgame Encore"" Opening Weekend Box Office",24.5,22-25m,22.0,25.0,25-28m,1,0,0,W60,0.5011,0.5067,0.05,0.0125,0.0,-1.0,-1.0,-1.0,-1.0,1,149.28,158.82,,3
+2026-09-25,Avengers: Endgame Encore,U1,D,1071224,"""Avengers: Endgame Encore"" Opening Weekend Box Office",26.0,25-28m,25.0,28.0,25-28m,0,1,0,EXT180,0.9531,0.95,0.05,0.00223,1.0,0.04917,0.04672,0.05001,0.03637,0,0,74.08,,2
+2026-09-25,Forgotten Island,U1,B,1030970,"""Forgotten Island"" Opening Weekend Box Office",10.1,<13m,0.0,13.0,13-16m,1,1,0,W60,0.835,0.835,0.05,0.00689,0.0,-1.0,-1.0,-1.0,-1.0,1,7.7,87.7,,1
+2026-09-25,Forgotten Island,U1,D,1030970,"""Forgotten Island"" Opening Weekend Box Office",12.8,<13m,0.0,13.0,13-16m,1,0,0,W60,0.75,0.75,0.05,0.00938,0.0,-1.0,-1.0,-1.0,-1.0,1,283.91,1717.4,,1
+2026-09-25,Heart of the Beast,U1,B,1030971,"""Heart of the Beast"" Opening Weekend Box Office",20.5,20-23m,20.0,23.0,20-23m,0,0,0,W60,0.37,0.37,0.05,0.01165,1.0,1.7027,1.62017,1.62017,1.55245,1,1.85,149.04,,1
+2026-09-25,Heart of the Beast,U1,D,1030971,"""Heart of the Beast"" Opening Weekend Box Office",20.0,20-23m,20.0,23.0,20-23m,0,0,0,W60,0.19,0.19,0.05,0.00769,1.0,4.26316,4.0583,4.0583,3.80769,1,20.42,1344.45,,1
+2026-09-25,Resident Evil,U2,B,1071223,"""Resident Evil"" 2nd Weekend Box Office",22.0,<26m,0.0,26.0,<26m,0,1,0,W60,0.93,0.93,0.05,0.00326,1.0,0.07527,0.07152,0.07152,0.06065,1,17.48,493.01,,2
+2026-09-25,Resident Evil,U2,D,1071223,"""Resident Evil"" 2nd Weekend Box Office",23.3,<26m,0.0,26.0,<26m,0,1,0,NONE,,,,,,,,,,,,,,

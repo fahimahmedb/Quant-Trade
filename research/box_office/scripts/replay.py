@@ -45,7 +45,8 @@ rows=[]
 cov=collections.defaultdict(collections.Counter)
 for fw in FW:
     fam='U1' if fw['family']=='OPEN' else 'U2'
-    evs=[U[e] for e in fw['events'] if U[e]['closed'] and U[e]['n_winners']==1 and U[e]['unparsed_brackets']==0]
+    evs=[U[e] for e in fw['events'] if U[e]['closed'] and U[e]['n_winners']==1 and U[e]['unparsed_brackets']==0
+         and len({b['label'] for b in U[e]['brackets']})==len(U[e]['brackets'])]  # malformed duplicate-listing events excluded
     if not evs: continue
     A=anchors(fw['wk'])
     for lane in 'ABCD':
