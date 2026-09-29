@@ -178,12 +178,32 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
             yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", prices
 
     def odds():
-        # H-001: Pinnacle h2h under a request budget + same-run Polymarket/Kalshi quotes
-        yield from h001_relay.collect(out, now)
+        # H-001 (EPL/NBA, 12h anchor) + H-011 (3 niche leagues, 24h anchor) share one
+        # budget-guarded Pinnacle relay; see h001_relay's docstring for the arithmetic.
+        yield from h001_relay.collect(out, now, sports=h001_relay.ALL_SPORTS,
+                                      anchor_hours=h001_relay.ANCHOR_HOURS_BY_SPORT)
+
+    def sports_fills():
+        # R2 (H-011): one retrospective trade-tape sweep per matched market, kickoff
+        # 1-72h ago. Deliberately NOT in the odds_api lane (hourly): a full sweep is
+        # resource-heavier than a Pinnacle poll and only needs the 6h full-collect
+        # cadence, since it runs once per market regardless of how often it is offered.
+        yield from h001_relay.collect_trades(out, now)
+
+    def sports_rewards():
+        # R4 (H-013): venue-wide reward-program snapshots + order books of matched
+        # markets kicking off within 48h, for H-013's separate liquidity-reward P&L
+        # line. Also full-collect only: Kalshi/Polymarket rewards terms and books
+        # change slowly relative to the 6h cadence.
+        yield from h001_relay.collect_rewards(out, now)
 
     lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
              ("crypto_funding", crypto), ("polymarket", polymarket),
-             ("kalshi", kalshi), ("odds_api", odds))
+             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills))
+    # ``sports_rewards`` (R4 / LIP as an edge) is deliberately NOT collected: removed
+    # by prompt 11 (do-not-test). Kept callable via ``--only sports_rewards``.
+    if only and "sports_rewards" in only:
+        lanes += (("sports_rewards", sports_rewards),)
     for name, work in lanes:
         if only is None or name in only:
             run(name, work)

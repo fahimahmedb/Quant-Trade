@@ -1,0 +1,81 @@
+diff --git a/research/fast_rail/h014/INVENTORY.json b/research/fast_rail/h014/INVENTORY.json
+new file mode 100644
+index 0000000..5c0415d
+--- /dev/null
++++ b/research/fast_rail/h014/INVENTORY.json
+@@ -0,0 +1,33 @@
++{
++ "h014_inventory_metadata_only": true,
++ "fetched_at": "2026-09-29",
++ "source": "gamma-api.polymarket.com/events?series_id=<id>&closed=true",
++ "hourly_btc": {
++  "series_id": 11372,
++  "events": 4419,
++  "first_end": "2026-03-20T01:00:00Z",
++  "last_end": "2026-09-29T09:00:00Z",
++  "strikes_per_event": {
++   "10": 1614,
++   "20": 2805
++  }
++ },
++ "hourly_eth": {
++  "series_id": 11373,
++  "events": 4411,
++  "first_end": "2026-03-20T03:00:00Z",
++  "last_end": "2026-09-29T09:00:00Z",
++  "strikes_per_event": {
++   "10": 1613,
++   "16": 2798
++  }
++ },
++ "daily_btc_11strike": {
++  "series_id": 45,
++  "events": 367,
++  "first_end": "2025-09-03T16:00:00Z",
++  "last_end": "2026-09-28T16:00:00Z"
++ },
++ "distinct_hourly_resolution_times_btc_or_eth": 4429,
++ "resolution_source": "Binance BTCUSDT/ETHUSDT 1h candle Close (hourly, candle ending at title time ET); daily: Binance 1m candle Close at 12:00 ET"
++}
+\ No newline at end of file
+diff --git a/research/fast_rail/h014/RESULT.md b/research/fast_rail/h014/RESULT.md
+new file mode 100644
+index 0000000..561cb99
+--- /dev/null
++++ b/research/fast_rail/h014/RESULT.md
+@@ -0,0 +1,25 @@
++# H-014 Polymarket crypto "above K" vs DVOL digital fair value: UNDERPOWERED
++
++Verdict: UNDERPOWERED (cause POWER). No Polymarket price or outcome was fetched. No dataset was built.
++
++## Inventory (metadata only, see INVENTORY.json)
++- Hourly BTC (series 11372): 4419 events, 10 or 20 strikes, ends 2026-03-20..2026-09-29.
++- Hourly ETH (series 11373): 4411 events, 10 or 16 strikes, same span.
++- Daily BTC (series 45): 367 events x 11 strikes, ends 2025-09-03..2026-09-28 (ETH daily: same structure, not enumerated).
++- Distinct hourly resolution times (BTC or ETH): 4429.
++- Resolution source: Binance BTCUSDT/ETHUSDT. Hourly = 1h candle Close ending at the title time (ET). Daily = 1m candle Close at 12:00 ET.
++- Hourly markets are created only ~1-2h before end, so entry at T-30min is the latest liquid point with history.
++
++## Declared expression (see registry.jsonl)
++Hourly, entry T-30min, fair N(d2) with sigma = DVOL/100 and S = Binance spot at entry. Buy YES if fair-ask-fee >= 0.02, buy NO if (1-fair)-no_ask-fee >= 0.02. Prices only in [0.10, 0.90]. ask = history price + 0.01. Fee C*0.07*p*(1-p), C=100, rounded up to 0.0001. Cluster = resolution hour (BTC and ETH of one hour = one unit).
++
++## Power
++- Assumed effect 0.01 per contract (1 probability point net; an assumption, no source effect exists).
++- sigma = binary_payoff_sigma(0.5) = 1.0 per event. Validation units = 30% of 4429 = 1329.
++- expected_t = 0.01/1.0 * sqrt(1329) = 0.36. required_t(1 trial) = 1.96.
++- Units needed for t=1.96 at this effect: 38,416, about 29x the available history.
++
++## Consequence
++Historical validation cannot resolve a 1-point effect. Only a large effect (>= ~5.4 points) would be detectable in 1329 units. Forward SHADOW_DIRECT with a declared sigma floor is the remaining route. The lead decides.
++
++Caveat: hourly events are heavily cross-correlated (same spot path across strikes), which is why one unit per resolution hour is used. Multiple bets per unit would raise per-unit sigma above 1.0 and lower expected_t further.
+diff --git a/research/fast_rail/registry.jsonl b/research/fast_rail/registry.jsonl
+index 126d2f8..80b70f4 100644
+--- a/research/fast_rail/registry.jsonl
++++ b/research/fast_rail/registry.jsonl
+@@ -38,3 +38,5 @@
+ {"id": "H-006", "at": "2026-09-27T22:15:00Z", "event": "verdict", "level": "REJECT", "cause": "POWER+CONCENTRATION", "net": {"clv_mean": 0.0215, "clv_t_clustered": 2.51, "required_t": 1.96, "n_bets": 3, "n_matches": 378, "pnl_mean_match": -0.055, "clv_t_at_2x_costs": 0.75}, "reason": "validation: only 3 bets triggered in 378 matches (power assumed ~227): the 2-point edge vs Pinnacle pre-match almost never appears once Polymarket soccer is liquid (validation 2025-10..2025-12). CLV t 2.51 on 3 bets is degenerate; league concentration 66% (SP1) > 50%; P&L negative; at 2x costs 2 bets, CLV t 0.75. Discovery (2024-08..2025-10, 694 matches) had 32 bets, CLV +8.6% t 3.52 but P&L t 0.12 \u2014 consistent with early illiquid/stale Polymarket prices rather than an executable edge. football-data stopped Pinnacle PS*/PSC* in mid-Jan 2026, so the historical twin cannot be extended; H-001 (forward, Odds API) remains the test. 189 matches (2025-12-12..2026-01-14) untouched. Result computed by the agent before its usage-limit kill; verdict written by the lead.", "trials_consumed": 1, "commit": null}
+ {"id": "RT-2026-09-29-01", "at": "2026-09-29T10:00:00Z", "event": "red_team", "severity": "HIGH", "scope": "learning/sequential.event_sequential_test (SHADOW_DIRECT prerequisite)", "finding": "plug-in sigma collapses on rare-loss statistics before the first loss: false acceptance 11.7% (favourite p=0.9) and 12% (NO at 97c) at alpha 2.5%, 400 events, 3000 seeded sims", "fix": "sigma_floor = declared sigma of the statistic (raise-only at calibration; binary_payoff_sigma(p) for binary P&L): false acceptance 0.03-0.17% with a correct floor; still inflated if the floor is halved -> floor must be conservative", "status": "FIXED", "tests": "tests/test_event_sequential.py"}
+ {"id": "H-001", "at": "2026-09-29T10:00:00Z", "event": "shadow_direct", "k": 1, "alpha": 0.025, "expression": "power devig of the same-run Pinnacle snapshot; buy an outcome where fee_per_contract < fair - ask and fair - ask - fee >= 0.02; Kalshi priority when both venues qualify in one run; one bet per (match, outcome)", "statistic": "NET CLV per match in probability points = p_close(power devig, last pre-kickoff Pinnacle snapshot) - ask - fee, 2026 venue fees with per-order rounding on a declared 100-contract paper order (Kalshi ceil_to_cent(0.07*C*P*(1-P)); Polymarket sports C*0.05*p*(1-p), rounded up to 0.0001 USDC - assumption)", "h1": {"source_effect": 0.019, "source": "S83 (Pinho 2025-12): EV bets vs Pinnacle realised 1.9% since 2023/24", "shrink": 0.5, "effect": 0.0095, "sigma_declared": 0.05, "sigma_source": "practitioners study R2 (Buchdahl S15 sigma CLV ~0.10 in odds ratio at p~0.5 -> 5pp)", "h1_effect_over_sigma": 0.19}, "horizon_max_matches": 1000, "min_observations": 30, "expected_matches_to_accept_if_true": 202, "pristine_after": "2026-09-29T12:00:00+00:00", "proxy_rule": "FORWARD_PASS also requires mean net paper P&L > 0 on the same bets, settled by the venue's own resolution", "automation": "scripts/fetch_feeds.py full run -> research/fast_rail/h001/forward.py -> data/feeds/eval/h001_shadow_direct.json (GitHub Actions, data branch)", "historical_trials": 0, "priority": "Kalshi and niche leagues (collector budget)", "commit": null}
++{"id": "H-014", "at": "2026-09-29T11:00:00Z", "event": "declared", "title": "Polymarket BTC/ETH hourly 'above K' digitals vs DVOL digital fair value N(d2)", "mechanism": "Retail-priced digitals may deviate from a lognormal digital fair value using implied vol; buy the side whose fair value exceeds ask+fee by >= 2 points.", "data": ["polymarket gamma/clob (hourly series 11372 BTC, 11373 ETH; daily series 45 as fallback)", "deribit DVOL (BTC, ETH)", "binance.vision klines 1m (resolution source)"], "expression": {"type_chosen": "HOURLY (4429 distinct resolution hours 2026-03-20..2026-09-29 vs 367 daily BTC events; hourly maximises units and matches the 1h Binance Close resolution)", "entry": "T-30min before resolution (hourly markets exist only ~1-2h before end, so T-30min is the latest liquid decision point with history)", "fair": "N(d2), d2=(ln(S/K)-sigma^2*T/2)/(sigma*sqrt(T)), sigma=DVOL/100 at entry (latest DVOL bar closed <= entry), S=Binance spot last 1m close <= entry, T in years", "rule": "buy YES if fair-ask-fee>=0.02; buy NO if (1-fair)-no_ask-fee>=0.02; only prices in [0.10,0.90]", "ask": "prices-history price + 0.01 half-spread (assumption)", "fee": "C*0.07*p*(1-p), C=100, round up to 0.0001 USDC (assumption)", "statistic": "net P&L per contract at settlement, clustered by resolution hour (BTC+ETH same hour = one unit, conservative); diagnostic: gap to fair at T-5min minus cost", "split": "time 55/30/15 by resolution time, last 15% untouched; validation once"}, "power": {"assumed_effect": 0.01, "effect_note": "1 probability point net per contract; assumption, no source effect exists", "sigma": 1.0, "sigma_source": "binary_payoff_sigma(0.5)", "n_units_total": 4429, "validation_units": 1329, "expected_t": 0.3645, "required_t": 1.96, "units_needed_for_1.96": 38416}, "trials": 1, "dataset_key": "crypto_digital_dvol"}
++{"id": "H-014", "at": "2026-09-29T11:05:00Z", "event": "verdict", "level": "UNDERPOWERED", "cause": "POWER", "reason": "expected_t 0.36 < 1.96: 1-point effect needs ~38,416 validation units; the whole available history (4,429 hourly resolution hours, ~1,329 validation units) is ~29x too small. No Polymarket price or outcome was touched. Lead may decide SHADOW_DIRECT (forward, sequential test with sigma floor)."}
