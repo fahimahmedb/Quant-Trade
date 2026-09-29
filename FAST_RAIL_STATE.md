@@ -2,7 +2,7 @@
 Branche unique : `claude/new-session-0ydmkg`. Ordre de travail : `prompts/11_BUILDER_REPRISE_AUTONOME.md`, jusqu'au point d'étape du **2026-10-05**.
 Gouvernance fusionnée depuis `z4pdlx` : SHADOW_DIRECT (`b883031`) et §9 (`5a527b8`). SPAC et merger arb sont retirés (ordre 10).
 Portée : phase de test, TOUT en papier/shadow, toutes venues. Aucun capital ni ordre réel. Les σ déclarés ne peuvent qu'être relevés.
-## Budget : itérations 2/10 ; essais consommés 31/200, 34 engagés avec H-010 (3) ; SHADOW_DIRECT ouvertes 1/5 (k utilisé : 1)
+## Budget : itérations 2/10 ; essais consommés 32/200 (dont B6 : 1, session recherche), 34 engagés avec H-010 (3) ; SHADOW_DIRECT ouvertes 1/5 (k utilisé : 1)
 | jeu de données | essais | required_t |
 |---|---|---|
 | perp HL-dYdX | 50, **BRÛLÉ** | 3,29 |
