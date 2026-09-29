@@ -76,3 +76,26 @@ Classement final en fin de document.
 | Vérif 1 jour données publiques | Oui : télécharger trades et résolutions des marchés météo des 60 derniers jours (data-api), prévisions archivées Open-Meteo (Previous Runs / Historical Forecast API), simuler la règle d'ensemble aux prix de l'époque avec les frais V2 ; en parallèle, P&L de TOUS les portefeuilles actifs (pas seulement le top) pour mesurer le biais du survivant. |
 | Plafond petite taille | Estimation : **0–1 500 €/mois** (le 30ᵉ du top 50 fait ~5 k$/mois ; profondeur limitée ; edge non démontré hors top). |
 | Confiance | **probable** que ces marchés paient des spécialistes après frais ; lien recette ↔ reçu **non vérifié** (aucun gagnant ne publie sa méthode). Sous-type « favoris ≥ 0,90 $ » (HighTempTation) : reçu récent, mais c'est une information d'observation, pas un biais des favoris ; le rejet « favoris > 90 ¢ » tient en général. |
+
+---
+
+## F4 — Subventions maker Polymarket : récompenses de liquidité + rebates maker (2026)
+
+| Champ | Contenu |
+|---|---|
+| ID | F4 |
+| Titre | Coter des deux côtés pour toucher les récompenses quotidiennes de liquidité et la part des frais preneur reversée aux makers |
+| Type | maker |
+| Mécanisme : qui paie | (1) Polymarket, via un budget de récompenses de liquidité (formule quadratique selon la distance au milieu, payée chaque jour à 00:00 UTC, minimum 1 $/jour) ; (2) les preneurs, via les frais V2 (depuis le 2026-03-30), dont 25 % sont reversés aux makers (20 % crypto, 15 % sports depuis juillet 2026). Les preneurs ne s'arrêtent pas (flux récréatif) ; Polymarket peut couper le budget à tout moment. |
+| RECETTE | Règles officielles : https://docs.polymarket.com/market-makers/liquidity-rewards , https://help.polymarket.com/en/articles/13364471-maker-rebates-program . Code : https://github.com/warproxxx/poly-maker (réécrit 2026-07 pour CLOB V2 : classe les marchés politiques par « reward + rebate income vs volatility/spread risk », ordres post-only, coupe-circuit). Code d'origine : https://github.com/Polymarket/poly-market-maker . |
+| REÇU | Chaque paiement est public : `data-api.polymarket.com/activity?user=<adresse>&type=REWARD` et `type=MAKER_REBATE`. Relevé de l'agent (30 j au 2026-09-29, 40 plus gros volumes du mois) : RN1 `0x2005d16a84ceefa912d4e380cd32e7ff827875ea` récompenses 43,9 k$ + rebates 166,6 k$ pour 183 M$ de volume ; `0xb27bc932bf8110d8f78e55da7d5f0497a18b5b82` 14,9 k$ + 117,0 k$ pour 29,4 M$ (0,45 % du volume) ; CrouchPrediction `0x21f4c1a1be34a39a7bc20985df4b7e5a39fb691d` 0 + 43,3 k$ pour 27,0 M$. Médiane du panel ≈ **0,10 % du volume** en subvention. Petite taille : @b00k13 (F1) = 5 $ de rebates sur 30 j. |
+| Période / dernière date gagnante | Subventions payées chaque jour jusqu'au 2026-09-29 (vérifié). Le P&L net (subvention + trading) des makers n'est **pas** lisible de façon fiable : pour les gros portefeuilles, le P&L 30 j de `lb-api` est incohérent (ex. `0xfe787d…0319` : −58,6 M$ sur 30 j mais +1,19 M$ tout temps, avec 0,21 M$ de positions), probablement à cause de la comptabilité split/merge. |
+| Ampleur | Subvention ≈ 0,05–0,45 % du volume maker. Pour 5 k$ de capital qui tournent ~40× par mois (200 k$ de volume), cela fait ~200 $/mois de subvention **avant** sélection adverse. |
+| Frais 2026 inclus ? | Oui : les makers ne paient pas de frais ; les rebates existent précisément grâce aux frais 2026. |
+| Pour reproduire | 2–20 k$ ; bot post-only (poly-maker V2) ; VPS ; latence de l'ordre de la seconde pour retirer les ordres sur nouvelle (le « heartbeat » du CLOB aide) ; choisir des marchés de niche à récompense élevée par dollar. |
+| Pourquoi pas encore fermé | Il est fermé en grande partie pour le trading lui-même : l'auteur de poly-maker écrivait en janvier 2026 « In today's market, this bot is not profitable and will lose money… increased competition » (historique git du README). Les récompenses restent parce que Polymarket achète de la liquidité ; la subvention est partagée au prorata, donc diluée par chaque nouveau bot. |
+| Risque extrême caché | Sélection adverse sur une nouvelle (le maker est pris juste avant un saut à 0 ou 1) ; changement unilatéral des barèmes (déjà modifiés en mars et en juillet 2026) ; risque de résolution UMA. |
+| Venues / accès | Polymarket international : US bloqué, **France bloquée (ANJ)**. Polymarket US (CFTC) : autre carnet, autres règles. |
+| Vérif 1 jour données publiques | Oui : pour 200 portefeuilles, sommer REWARD + MAKER_REBATE par jour, recalculer le P&L de trading à partir des TRADE/REDEEM/MERGE (sans passer par `lb-api`), en déduire la distribution de « subvention − sélection adverse » par taille de portefeuille. |
+| Plafond petite taille | Subvention brute ~50–300 €/mois pour 5–10 k$ ; net après sélection adverse : **inconnu, probablement ≤ 0**. |
+| Confiance | subventions **vérifiées** ; rentabilité nette à petite taille **non vérifiée** (seul témoignage direct : négatif). |
