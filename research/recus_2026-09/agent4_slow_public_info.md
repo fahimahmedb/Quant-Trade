@@ -263,3 +263,52 @@ Monthly family-realized series (closed-pos, attribution only, last six active mo
 | CHEAPEST FALSIFICATION EXPERIMENT | that replay; falsified if net return after flips and fees is < 0.5 % per lock-up |
 | CONFIDENCE | **PROBABLE** for tweets/box/music at ≥ 0.90; **negative** for AI |
 
+<!-- SURV -->
+
+## 5. Final self-attack (per surviving card)
+
+| Attack | SPI-1 box office | SPI-2 tweet counts | SPI-3 music | SPI-4 AI leaderboard | SPI-5 post-determination |
+|---|---|---|---|---|---|
+| 1. Winner selection only? | Yes by construction; §4 sample partially corrects it: see loser share there | Yes, and the artefact is severe: the "hot" wallets (dddtrips, sb911) are net losers | Yes; only two wallets, no loser sample | Yes; two wallets, lumpy | Yes; aggregates are from selected wallets |
+| 2. Needs information Quant lacks? | No: all inputs are public and timestamped | No: the counter is the resolution source | No | Partly: release timing is insider-adjacent for lab employees | No |
+| 3. Latency explains the profit? | No: winners' brackets traded 0.15–0.39 for two days after the public numbers (V) | Partly: the maker variant (Annica, 35 % two-sided, split-and-sell) is order-management in seconds; the late-NO variant is slow | No | For "debut score" siblings yes; for month-end rank no | Partly: bots sweep the larger markets first |
+| 4. Fees erase it? | Fee 0.05·p(1−p) ≤ 1.25 % per share; receipts are post-fee (as booked) | The large receipts are pre-fee and their authors exited around the fee rollout; the small post-fee receipts are ≈ 2–4 k$/month | Post-fee receipts, small | Post-fee, small | ≈ 0.1–0.4 % at p ≥ 0.9; not the binding constraint |
+| 5. One extreme event? | No: monthly series of +0.5 to +13 k$ across four months for three wallets | Annica: Feb–Mar 2026 = 57 % of its 12-m closed realized; small wallets are steady | No | **Yes**: orac07 = two events; Hauchn = one event (excluded) | No, but one resolution flip can erase many gains |
+| 6. Accounting semantics exaggerate? | Checked: unredeemed losers ≤ 1.9 k$; user-pnl ≈ closed + live | **Yes, badly**, corrected: dddtrips +217 k → −29 k; Mac-Gyver +172 k → ≈ +9 k on closed+dead; Annica ×4.6 split inflation | Checked: negligible | Checked: negligible for the two kept; thanksforplayin excluded (100 % "win rate") | Aggregates upper-biased; 0xf14e is user-pnl-verified |
+| 7. Capacity exhausted? | Yes at small size only: 25–30 k$ winning-bracket volume per film-week; a few k$ per event for a new entrant | No (1–2 M$ weekly events) | Yes (hundreds of $ per market) | No | Yes (a few k$ per market) |
+| 8. Public disclosure killed it? | Box-office markets are public but un-hyped; no bot ecosystem found | **Largely yes**: Polymarket's own newsletter, xtracker tools, "skills" and bots exist; the four large winners left | No | No specific disclosure | The mechanism is a well-known "late favourite" pattern; small markets keep some residual |
+| Verdict | **kept, PROBABLE** | **downgraded**: receipts verified but the exploitable edge is small and mostly closed | **kept, PROBABLE, tiny** | **downgraded to UNVERIFIED** | **kept, PROBABLE, small; negative for AI** |
+
+## 6. Final ranking (receipt quality > mechanism clarity > speed independence > public data > small capital > verification cost)
+
+| Rank | ID | Why |
+|---|---|---|
+| 1 | SPI-1 BOX-OFFICE | three wallets with consistent post-fee monthly gains through September 2026 and negligible unredeemed losers; the information timeline is fully public and archived; verification is a one-day replay; capacity and boundary cases are the honest limits |
+| 2 | SPI-5 POST-DETERMINATION | one small user-pnl-verified wallet plus positive ≥ 0.90 aggregates in three families; mechanism is structural and fee-cheap; risk is resolution flips; verification is one day |
+| 3 | SPI-2 TWEET-COUNT | the largest receipts of the whole search (0.7–3 M$ per wallet in 12 m) but their owners are gone and the public "star" is net negative; what remains is small and bot-contested |
+| 4 | SPI-3 MUSIC-COUNTS | clean, slow, public, but capacity in the hundreds of dollars per market and only two wallets |
+| 5 | SPI-4 AI-LEADERBOARD | large liquid markets, lumpy receipts, information partly insider-adjacent |
+
+Receipt evidence ≠ reproducibility evidence: none of the five cards includes a public method tied to a public wallet. The only public methods found are a Polymarket-authored backtest (tweets) and hobbyist bots without P&L (Kalshi TSA). Quant does not know how to reproduce any of these; §3's "cheapest falsification experiment" fields are the next step, not a strategy.
+
+## 7. NEGATIFS UTILES
+
+1. **Tweet-count "stars" are an artefact**: closed-position P&L excludes unredeemed losing buckets; dddtrips (+217 k$ "realized") is −29 k$ mark-to-market, sb911 (+106 k$ month) is −31 k$ lifetime; the four real 2025-26 winners all exited Jan–Apr 2026 (V).
+2. **Mention markets ("what will X say")**: all specialist receipts date from Aug 2024–Jan 2025; 12-month user-pnl ≤ 0 for four of five; information is speech-time, not slow (V).
+3. **AI/TECH leaderboard winners are mostly not slow-information**: the largest (Hauchn +205 k$) is one market-cap-ranking event; thanksforplayin trades daily stock-close markets with a 100 % closed-position "win rate" (artefact); hi-price (≥ 0.90) entries in AI markets lost 16.5 % (V).
+4. **Post-determination in box office is not free**: both September-2026 winners' Sunday estimates sat on a bracket boundary; the two-day 0.15–0.39 pricing was genuine boundary risk, not lag (V + S).
+5. **Kalshi measurement series** (TSA, gas, RT, Netflix): no per-account receipts exist; the one public bot write-up publishes no P&L; aggregate takers lose 31 % (agent 2).
+6. **Airdrop farming**: measured per-address rewards < 350 $ and mostly < 10 k$ per group on 2021-24 data; sybil filtering tightened since; labour, not edge.
+7. **Listing-announcement effect**: Coinbase-only, seconds-scale, insider-prone; **stETH discount capture**: episodic and ETH-beta; **election-night count lag**: one event per cycle with whale/arbitrage receipts only.
+8. **Closed-positions and leaderboard windows must never be used as receipts without `positions` (dead losers) and `user-pnl` cross-checks** (V, 10 of 10 wallets consistent only after correction).
+
+## 8. Terminal status
+
+SLOW_PUBLIC_INFO_SEARCH = CANDIDATES_WITH_RECEIPTS
+
+Five cards carry recent, third-party-verifiable receipts (SPI-1, SPI-2, SPI-3, SPI-5 realized and post-fee; SPI-4 weak). None is declared profitable for Quant; none has reproducibility evidence.
+
+REAL_CAPITAL_AUTHORIZED = FALSE.
+
+Next cheapest falsification mission: SPI-1 one-day replay — every Polymarket box-office bracket event of the last 26 weeks, hourly bracket VWAPs from `trades`, joined to the dated public release timeline (Thursday previews, Friday actuals, Sunday estimate, The Numbers final), returns net of 0.05·p(1−p) for buying the bracket implied by each release at the prevailing ask, plus the frequency of estimate-to-final bracket flips.
+
