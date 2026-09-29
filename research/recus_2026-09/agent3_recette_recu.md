@@ -71,8 +71,8 @@ Classement final en fin de document.
 | Frais 2026 inclus ? | Oui : P&L Polymarket après frais preneur « weather » (taux 0,05 depuis le 2026-03-30 ; frais quasi nuls près de 0 ou 1). Les récompenses de liquidité et rebates sont faibles pour ces portefeuilles (0–1,3 k$/30 j), donc le gain vient bien du trading. |
 | Pour reproduire | Capital 1–30 k$ (le capital tourne chaque jour) ; prévisions d'ensemble gratuites (Open-Meteo) + METAR/Weather Underground (source de résolution) ; automatisation 24 h/24 sur des dizaines de villes et fuseaux horaires ; latence : minutes, pas millisecondes. Colle bien à nos atouts (lecture, automatisation, petite taille). |
 | Pourquoi pas encore fermé | Marchés petits et nombreux (profondeur de quelques k$ par tranche) → pas assez gros pour les fonds ; création quotidienne ; frais faibles aux extrêmes. Mais la concurrence de bots météo croît vite (nombreux bots publics depuis 2026). |
-| Risque extrême caché | Biais du survivant : on ne voit que les gagnants (le classement ne liste pas les perdants). Risque de résolution : la station et l'arrondi de Weather Underground peuvent différer du modèle ; correction ou retard de données ; faible profondeur → le prix bouge contre soi. |
-| Venues / accès | Polymarket international : US bloqué, **France bloquée (ANJ)** ; Kalshi (séries KXHIGH) : US, international à vérifier, France inconnu. |
+| Risque extrême caché | **Manipulation de la source de résolution** : en avril 2026, le capteur Météo-France de Roissy (LFPG) a été trafiqué les 6 et 15 avril (+4 à +5 °C le soir) ; des paris « 22 °C » ont rapporté 14 k$ et 20 k$ ; Météo-France a porté plainte (Bloomberg / NPR / CNN, 2026-04-23). Un modèle honnête perd face à un tricheur. Biais du survivant : on ne voit que les gagnants (le classement ne liste pas les perdants). Risque de résolution : la station et l'arrondi de Weather Underground peuvent différer du modèle ; correction ou retard de données ; faible profondeur → le prix bouge contre soi. |
+| Venues / accès | Polymarket international : US bloqué, **France bloquée (ANJ : blocage total par les FAI ordonné le 2026-07-16)** ; Kalshi (séries KXHIGH) : US, international à vérifier, France inconnu. |
 | Vérif 1 jour données publiques | Oui : télécharger trades et résolutions des marchés météo des 60 derniers jours (data-api), prévisions archivées Open-Meteo (Previous Runs / Historical Forecast API), simuler la règle d'ensemble aux prix de l'époque avec les frais V2 ; en parallèle, P&L de TOUS les portefeuilles actifs (pas seulement le top) pour mesurer le biais du survivant. |
 | Plafond petite taille | Estimation : **0–1 500 €/mois** (le 30ᵉ du top 50 fait ~5 k$/mois ; profondeur limitée ; edge non démontré hors top). |
 | Confiance | **probable** que ces marchés paient des spécialistes après frais ; lien recette ↔ reçu **non vérifié** (aucun gagnant ne publie sa méthode). Sous-type « favoris ≥ 0,90 $ » (HighTempTation) : reçu récent, mais c'est une information d'observation, pas un biais des favoris ; le rejet « favoris > 90 ¢ » tient en général. |
@@ -99,3 +99,26 @@ Classement final en fin de document.
 | Vérif 1 jour données publiques | Oui : pour 200 portefeuilles, sommer REWARD + MAKER_REBATE par jour, recalculer le P&L de trading à partir des TRADE/REDEEM/MERGE (sans passer par `lb-api`), en déduire la distribution de « subvention − sélection adverse » par taille de portefeuille. |
 | Plafond petite taille | Subvention brute ~50–300 €/mois pour 5–10 k$ ; net après sélection adverse : **inconnu, probablement ≤ 0**. |
 | Confiance | subventions **vérifiées** ; rentabilité nette à petite taille **non vérifiée** (seul témoignage direct : négatif). |
+
+---
+
+## F5 — Arbitrage de rééquilibrage Polymarket (somme des issues ≠ 1 $, marchés NegRisk)
+
+| Champ | Contenu |
+|---|---|
+| ID | F5 |
+| Titre | Acheter (ou vendre) toutes les issues d'un événement quand leur somme s'écarte de 1 $, puis fusionner/convertir ou attendre la résolution |
+| Type | arbitrage |
+| Mécanisme : qui paie | Des preneurs impatients qui déséquilibrent une seule issue d'un événement à N issues ; le carnet des autres issues ne suit pas immédiatement. |
+| RECETTE | Saguillo, Ghafouri, Kiffer, Suarez-Tangil, « Unravelling the Probabilistic Forest: Arbitrage in Prediction Markets », AFT 2025, https://arxiv.org/abs/2508.03474 (méthode de détection complète : single-condition, NegRisk multi-condition, combinatoire). Mécanismes publics de Polymarket : `MERGE`, `CONVERSION` (NegRisk). Pas de code publié par les auteurs. |
+| REÇU | On-chain (Polygon), mesure reproductible du papier : ~39,6 M$ réalisés du 2024-04-01 au 2025-04-01 (NegRisk « buy NO » 17,3 M$, « buy YES » 11,1 M$ ; single-condition long 5,9 M$ + short 4,7 M$ ; combinatoire 0,1 M$). Top 10 des comptes ≈ 7,8 M$ ; n°1 2,0 M$ en 4 049 transactions. Adresses complètes retrouvées par l'agent via le classement public : `0x63d43bbb87f85af03b8f2f9e2fad7b54334fa2f1` (n°2), `0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1` (n°4, aujourd'hui aussi n°2 du classement météo), `0x4a64afa45a44a01890c2161be88d2b44751d4430` (n°7), `0x53d2d3c78597a78402d4db455a680da7ef560c3f` (n°9), `0x3cf3e8d5427aed066a7a5926980600f6c3cf87b3` (n°10). |
+| Période / dernière date gagnante | Reçu d'arbitrage : avril 2024 → avril 2025 (**hors fenêtre des 12 derniers mois**). Relecture API 2026-09-29 : 3 des 5 comptes retrouvés ne tradent plus depuis 2025 (dernières activités 2025-03-23, 2025-05-18, 2025-07-09) ; 2 sont actifs et gagnants sur 30 j (n°2 +12,5 k$, n°4 +83,9 k$), mais leur activité récente est surtout du trading directionnel et du market making (rebates, quelques MERGE et CONVERSION), pas de l'arbitrage pur démontré. |
+| Ampleur | 2024-25 : ~40 M$/an pour l'ensemble des arbitragistes ; ~1 % des opportunités single-condition détectées ont été exploitées ; fenêtre médiane ≈ 950 blocs (~1 h) selon le papier. 2026 : inconnu. Une source secondaire non vérifiée parle d'une durée moyenne de 2,7 s et de 73 % du profit capté par des bots < 100 ms. |
+| Frais 2026 inclus ? | Non : le papier précise que Polymarket ne facturait pas de frais. Depuis 2026, chaque jambe preneuse paie jusqu'à ~1–1,8 % au prix de 0,50 $ (moins aux extrêmes), sauf la catégorie **géopolitique (sans frais)**. Un arbitrage à N jambes prises en taker devient négatif sauf gros écart ou géopolitique. |
+| Pour reproduire | 5–50 k$ (capital immobilisé jusqu'à la résolution sauf MERGE) ; flux WebSocket de tous les carnets d'un événement ; exécution quasi atomique multi-jambes (latence < 1 s pour la concurrence actuelle). |
+| Pourquoi pas encore fermé | Il l'est largement : sortie de la majorité des gros comptes de 2024-25 et arrivée des frais. Reste plausible : événements géopolitiques NegRisk sans frais, et variante maker (poster sur les jambes en retard). |
+| Risque extrême caché | Jambe non exécutée = position directionnelle ; issues « autre » ou ajoutées en cours de route dans les NegRisk ; litige de résolution UMA ; capital bloqué des mois. |
+| Venues / accès | Polymarket international : US bloqué, **France bloquée (ANJ)**. |
+| Vérif 1 jour données publiques | Oui : rejouer 30 jours de carnets et de trades des événements NegRisk géopolitiques (data-api + CLOB), compter les fenêtres où la somme des meilleurs asks < 1 − frais, leur durée et leur profondeur ; vérifier qui les a prises (adresses). |
+| Plafond petite taille | 2026 : **inconnu, probablement < 100 €/mois** hors géopolitique. |
+| Confiance | reçu **vérifié mais ancien** (2024-25) ; version 2026 **non vérifiée**. |

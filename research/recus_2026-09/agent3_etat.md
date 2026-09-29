@@ -20,8 +20,9 @@
 - F2 vaults HL L/S émission (reçu vérifié, edge = bêta)
 - F3 météo Polymarket (probable, survivant)
 - F4 subventions maker Polymarket (subventions vérifiées, net inconnu)
+- F5 arb rééquilibrage Polymarket (reçu 2024-25, fermé en grande partie)
 
 ## Prochaine étape
-F5: arb académique 2024-25 + géopolitique sans frais; puis négatifs, classement, DONE. Autres idées: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
+Prochaine: négatifs utiles + classement + statut DONE + delete_trigger. (ancien: négatifs, classement, DONE. Autres idées: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
 
 ## (ancienne) Repérage rapide (≤20 candidats) : bots OSS avec P&L relié à une adresse, vaults Hyperliquid documentés, bilans de market makers petite taille, dashboards building in public.
