@@ -165,3 +165,20 @@ One concrete blocker -> one bounded owner -> one exit condition.
 See:
 
 `governance/GITHUB_BRANCH_HYGIENE_2026-09-21.md`
+
+## 9. Rail C — recherche rapide (paper/shadow)
+
+Adopté le 2026-09-25 : `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` (ACCEPTÉE).
+
+- Branche : `fast/rail-01` ; état unique : `FAST_RAIL_STATE.md` ; prompt : `governance/FAST_RAIL_BUILDER_PROMPT.md`.
+- Budget : `MAX_ITERATIONS = 10`, `MAX_DECLARED_TRIALS = 200`, `MAX_PARALLEL_AGENTS = 5`.
+- Aucune autorité de capital ; transfert au rail sûr sur `FORWARD_PASS`, décision du propriétaire.
+- Périmètre interdit : tout le rail sûr (P0/Form 4, Gates A/B/C, hôte cible, première verticale, `src/quant/dataplane/sec/`, `deploy/`, `handoff/*.json`, SHA figés) — voir §2 de la proposition.
+- Anti-bureaucratie : un document par décision réelle ; un candidat remplacé par sa version finale part dans `archive/`.
+- Amendement SHADOW_DIRECT adopté le 2026-09-27 (α forward = 0,05/(k·(k+1)) pour la k-ième entrée, Σ < 0,05 ; 5 slots au plus) : voir §4 de la proposition.
+- Point d'étape propriétaire le 2026-10-05 (décision du 2026-09-27) : on décide alors de la suite. C'est une décision de ressources, pas un verdict : seul le t-SPRT déclaré peut produire un `FORWARD_PASS`.
+- Juridiction : aucune restriction de pays pour la recherche papier/shadow ; un point juridique avec le propriétaire, pour le pays d'exécution, précède toute exécution. `desk/compliance.py` reste appliqué (les pratiques illégales restent interdites partout).
+- Pistes maker (tenue de marché) : le P&L papier n'est qu'une borne haute ; pas de `FORWARD_PASS` sur des fills papier sans modèle de file d'attente et de sélection adverse.
+- Proxy (CLV, markouts) : un FORWARD_PASS obtenu sur une statistique proxy prouve un edge de PRIX, pas un gain encaissable. Il exige que tous les engagements soient réglés et comptés, y compris ceux sans clôture ou reportés, et un test à α garanti (anytime-valid). La preuve de gain relève d'un micro-test réel, décidé par le propriétaire (2026-09-29, audit Astra ; ordres 12 et 12b).
+- Test forward (2026-09-29, ordre 12b, `claude/order-12b-anytime-valid`) : toute décision forward (FORWARD_PASS, REJECT, promotion, retrait) utilise `anytime_valid_mean_test` avec `groups` = une ronde par soirée ou unité corrélée. L'ancien t-SPRT plug-in (`sequential_test`, `event_sequential_test`) n'est plus qu'un indicateur, sans pouvoir de décision, y compris dans le cycle de vie futures et FOMC (19,5 % de faux ACCEPT sous chocs communs, contre 0 par soirée).
+- `REAL_CAPITAL_AUTHORIZED = FALSE` (inchangé).
