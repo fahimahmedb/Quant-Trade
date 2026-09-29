@@ -588,6 +588,17 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
                       "book_fetched_at": book_at,
                       "asks": book["asks"][:5] if book else None,
                       "ask_depth": book["ask_depth"] if book else None}
+            # Blue 2026-09-29 diagnostic (no verdict): Kalshi mid - Pinnacle no-vig fair.
+            try:
+                from ..factory.sportsfair import devig_power
+                fair = devig_power(event["prices"]).get(outcome)
+            except (KeyError, ValueError, TypeError):
+                fair = None
+            bid, ask = record.get("best_bid"), record.get("best_ask")
+            record.update({"pinnacle_fair": fair,
+                           "pinnacle_observed_at": event.get("observed_at", stamp),
+                           "mid_minus_fair": ((bid + ask) / 2 - fair) if None not in (bid, ask, fair)
+                           else None})
             yield f"{QUOTES_KALSHI}.jsonl", f"{stamp}|{event['event_id']}|{outcome}", record
 
 
