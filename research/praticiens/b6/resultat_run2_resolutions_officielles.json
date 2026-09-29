@@ -1,0 +1,52 @@
+{
+ "required_t_2_trials": 2.241,
+ "truncated_events": 3,
+ "skipped": {},
+ "fill_sides_in_window": 10414,
+ "A": {
+  "all": {
+   "trades": 8005,
+   "clusters": 2838,
+   "mean_pnl_per_$": 0.0205,
+   "t": 1.47
+  },
+  "BTC": {
+   "trades": 4399,
+   "clusters": 1516,
+   "mean_pnl_per_$": 0.0259,
+   "t": 1.08
+  },
+  "ETH": {
+   "trades": 3606,
+   "clusters": 1322,
+   "mean_pnl_per_$": 0.0143,
+   "t": 1.17
+  }
+ },
+ "B": {
+  "all": {
+   "trades": 385,
+   "clusters": 303,
+   "mean_pnl_per_$": 0.1414,
+   "t": 1.63
+  },
+  "BTC": {
+   "trades": 274,
+   "clusters": 218,
+   "mean_pnl_per_$": 0.0514,
+   "t": 0.52
+  },
+  "ETH": {
+   "trades": 111,
+   "clusters": 85,
+   "mean_pnl_per_$": 0.3722,
+   "t": 2.16
+  }
+ },
+ "secondary_brier": {
+  "n": 10414,
+  "market_fill_price": 0.0297,
+  "p_star": 0.0277
+ },
+ "verdict": "INCONCLUSIVE -> forward SHADOW_DIRECT"
+}
