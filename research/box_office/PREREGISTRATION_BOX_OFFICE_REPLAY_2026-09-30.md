@@ -85,3 +85,12 @@ This addendum makes §2–§3 operational; it changes none of their rules.
 - Priority within a lane: (1) the Deadline section of that lane with the latest availability ≤ anchor, preferring its chart "3-day" line over prose when the two differ; (2) Variety STRICT; (3) Variety REVISABLE, flagged. The primary replay uses only (1)+(2). Sensitivity: (1)+(2)+(3).
 - A "Saturday numbers" chart embedded inside a SUNDAY AM section is not a Sunday estimate, and is not usable for lane C, because it was only verifiably available at the Sunday label.
 - Manual adjudication writes one row per film-weekend × lane to `data/adjudicated_part*.csv`. Rows with no usable release are kept with an empty value (NO_RELEASE). A random ≥10% of rows is re-checked by the lead against the digest.
+
+## Addendum 2: frozen after adjudication, before any P&L (2026-09-30 ~00:30 UTC)
+
+- `data/pit_releases.csv` holds 612 rows (153 film-weekends × 4 lanes). 342 carry a value.
+- QA:
+  - Automated check: 340/342 values equal a number, or the midpoint of two numbers, in the quoted source span. The 2 exceptions were checked by hand and are valid (a shared range; "$25 . 6 million" tokenization).
+  - Manual check: a random 40-row sample (12%, seed 20260930) was compared with the digest, with no error found.
+- Primary signal set: strictness ∈ {LABEL, STRICT}, excluding rows whose note contains AMBIGUOUS (8 rows: hopes/wishes rather than projections, e.g. "hope ... will exceed $10M"). Sensitivity: add REVISABLE and AMBIGUOUS rows.
+- Known coverage loss: digest sentences were cut at 350 characters, so 17 rows note a truncated chart. They stay empty; no value is imputed.

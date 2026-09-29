@@ -1,0 +1,137 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2026-05-01,Animal Farm,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-05-01,Animal Farm,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-05-01,Animal Farm,OPEN,C,3.3,3.3,3.3,,D,1236877817,SATURDAY AM,LABEL,"Animal Farm ( Angel) 2,600 theaters, Fri $1.1M, 3-day $3.3M /Wk 1",
+2026-05-01,Animal Farm,OPEN,D,3.4,3.4,3.4,,D,1236877817,SUNDAY AM,LABEL,"Fri $1.1M, Sat $1.3M Sun $949K 3-day $3.4M /Wk 1",V:3.3 REVISABLE
+2026-05-01,Hokum,OPEN,A,,,,,,,,,,PREVIEWS_ONLY (previews $900K)
+2026-05-01,Hokum,OPEN,B,6,6,6,PLUS,D,1236877817,FRIDAY AFTERNOON,LABEL,an estimated $2.6M today and north of $6M for the weekend,
+2026-05-01,Hokum,OPEN,C,6,6,6,,D,1236877817,SATURDAY AM,LABEL,"Hokum (NEON) 1,860 theaters, Fri $2.6M, 3-day $6M /Wk 1",V: daily only (Fri $2.6M) STRICT
+2026-05-01,Hokum,OPEN,D,6.4,6.4,6.4,,D,1236877817,SUNDAY AM,LABEL,"Hokum (NEON) 1,860 theaters, Fri $2.6M, Sat $2.2M Sun $1.55M 3-day $6.4M /Wk 1",V:6.4 REVISABLE
+2026-05-01,Michael,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-01,Michael,NTH,B,,,,,,,,,,NO_FIGURE (Deadline FRIDAY AFTERNOON prose truncated before any Michael figure)
+2026-05-01,Michael,NTH,C,51,51,51,,D,1236877817,SATURDAY AM,LABEL,"Michael (LG) 3,955 theaters, Fri $14.4M (-63%), 3-day $51M (-48%), Total $180.8M /Wk 2",prose also -48% or $51M; V: daily only STRICT
+2026-05-01,Michael,NTH,D,54,54,54,,D,1236877817,SUNDAY AM,LABEL,"Michael (LG) 3,955 theaters, Fri $14.4M (-63%) Sat $23.2M Sun $16.4M 3-day $54M (-44%)",V:54 REVISABLE
+2026-05-01,The Devil Wears Prada 2,OPEN,A,77.5,75,80,RANGE,V,1236734300,Box Office: ‘The Devil Wears Prada 2’ Makes $10 Million in Previews,STRICT,It's projected to earn between $75 million and $80 million in its opening weekend,Deadline FRIDAY AM previews only ($10M); sentence listed in Michael block of same Variety post (refers to DWP2); same post adds 'some estimates' $90M-$100M
+2026-05-01,The Devil Wears Prada 2,OPEN,B,77.5,75,80,RANGE,D,1236877817,FRIDAY AFTERNOON,LABEL,with an eye on a 3-day of $75M-$80M after a $33M Friday (including previews),
+2026-05-01,The Devil Wears Prada 2,OPEN,C,77.5,75,80,RANGE,D,1236877817,SATURDAY AM,LABEL,respectively with $75M-$80M and an excellent hold,prose only (no DWP2 chart line in digest); V: daily only STRICT
+2026-05-01,The Devil Wears Prada 2,OPEN,D,77,77,77,,D,1236877817,SUNDAY AM,LABEL,"Devil Wears Prada 2 (20th/Dis) 4,150 theaters, Fri $32.5M, Sat $25M, Sun $19.5M 3-day $77M/ Wk 1",V:77 REVISABLE
+2026-05-01,The Super Mario Galaxy Movie,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-01,The Super Mario Galaxy Movie,NTH,B,11.2,11.2,11.2,,D,1236877817,FRIDAY AFTERNOON,LABEL,"with $2.5M today and a fifth weekend of $11.2M , -45%",
+2026-05-01,The Super Mario Galaxy Movie,NTH,C,12.1,12.1,12.1,,D,1236877817,SATURDAY AM,LABEL,"Super Mario Galaxy Movie (Uni) 3,419 (-313) theaters Fri $2.7M (-41%), 3-day $12.1M (-41%)",
+2026-05-01,The Super Mario Galaxy Movie,NTH,D,12.1,12.1,12.1,,D,1236877817,SUNDAY AM,LABEL,"Fri $2.7M (-41%) Sat $5.6M Sun $3.7M 3-day $12.1M (-41%), Total $402.6M /Wk 5",V:12.1 REVISABLE
+2026-05-08,Michael,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-08,Michael,NTH,B,35,35,35,APPROX,D,1236887876,FRIDAY PM UPDATE,LABEL,"with a third weekend around $35M at 3,550 theaters after a third Friday of $9M",
+2026-05-08,Michael,NTH,C,35,35,35,,D,1236887876,SATURDAY AM,LABEL,"Michael (LG) 3,550 (-405) theaters, Fri $8.8M (-38%) 3-day $35M (-36%)",prose $35M (maybe more); V:35 REVISABLE
+2026-05-08,Michael,NTH,D,36.5,36.5,36.5,,D,1236887876,SUNDAY EARLY AM,LABEL,"Michael 's third weekend at $36.5M , -33%",V:36.5 STRICT
+2026-05-08,Mortal Kombat II,OPEN,A,40,40,40,PLUS,D,1236887876,FRIDAY AM,LABEL,a $40M+ start for the Simon McQuoid-directed sequel,"also 'Forecasts ... came down into the $40Ms'; V:42.5 (40-45) STRICT, WB $35M"
+2026-05-08,Mortal Kombat II,OPEN,B,41,40,42,RANGE;APPROX,D,1236887876,FRIDAY PM UPDATE,LABEL,vying for No. 1 with around $40M-$42M apiece,
+2026-05-08,Mortal Kombat II,OPEN,C,41,40,42,RANGE,D,1236887876,SATURDAY AM,LABEL,"Mortal Kombat II (NL) 3,503 theaters, Fri $17M (-70%), 3-day $40M-$42M/Wk 1",
+2026-05-08,Mortal Kombat II,OPEN,D,38.7,38.7,38.7,,D,1236887876,SUNDAY EARLY AM,LABEL,This will put Mortal Kombat II 's opening at $38.7M,V:40 STRICT (differs >2%)
+2026-05-08,The Devil Wears Prada 2,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-08,The Devil Wears Prada 2,NTH,B,41,40,42,RANGE;APPROX,D,1236887876,FRIDAY PM UPDATE,LABEL,vying for No. 1 with around $40M-$42M apiece,same section: 45%-48% decline
+2026-05-08,The Devil Wears Prada 2,NTH,C,41,40,42,RANGE,D,1236887876,SATURDAY AM,LABEL,"Devil Wears Prada 2 (20th) 4,200 (+50) theaters, Fri $9.8M, 3-day $40M-$42M (-47%)",V:41 REVISABLE
+2026-05-08,The Devil Wears Prada 2,NTH,D,43,43,43,,V,1236743920,"Box Office: ‘Devil Wears Prada 2’ Remains No. 1 With $43 Million, ‘Mortal Kombat II’ Launc",STRICT,"The ""Devil Wears Prada"" sequel added $43 million from 4,200 North American theaters",Deadline SUNDAY EARLY AM gives only Saturday daily ($14.9M)
+2026-05-08,The Sheep Detectives,OPEN,A,13.5,12,15,RANGE,V,1236740576,Box Office: ‘Mortal Kombat II’ Makes $5.2 Million in Previews,STRICT,which made $1.03 million in previews and aims to make $12 million to $15 million in its opening,no Deadline lane-A figure
+2026-05-08,The Sheep Detectives,OPEN,B,13.6,13.6,13.6,,D,1236887876,FRIDAY PM UPDATE,LABEL,"with $3.7M today including previews, and $13.6M over three days at 3,457 theaters",
+2026-05-08,The Sheep Detectives,OPEN,C,14.9,14.9,14.9,,D,1236887876,SATURDAY AM,LABEL,Sheep Detectives at 56% female ( $14.9M opening),"prose parenthetical; chart line truncated at ""Fri $4M 3-""; V: daily only REVISABLE"
+2026-05-08,The Sheep Detectives,OPEN,D,14.8,14.8,14.8,,D,1236887876,SUNDAY EARLY AM,LABEL,did $5.2M on Saturday for what's shaping up to be a $14.8M opening,
+2026-05-15,In the Grey,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-05-15,In the Grey,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-05-15,In the Grey,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-05-15,In the Grey,OPEN,D,3,3,3,,V,1236751550,"Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $",STRICT,"opened at No. 9 with a muted $3 million from 2,018 locations","Deadline SUNDAY AM chart truncated; Deadline prose ""around $1.2M Friday and $3M for the weekend"" (D:3 APPROX) looks like earlier Friday write-thru text"
+2026-05-15,Michael,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-15,Michael,NTH,B,,,,,,,,,,NO_RELEASE
+2026-05-15,Michael,NTH,C,,,,,,,,,,NO_RELEASE (only an EARLY SATURDAY AM writethru $27M embedded in SUNDAY AM; not usable)
+2026-05-15,Michael,NTH,D,26.1,26.1,26.1,,D,1236906122,SUNDAY AM,LABEL,"Michael (LG) 3,560 (+10) theaters, Fri $7M Sat $10.9M Sun $8.1M 3-day $26.1M (-31%)",V:26 STRICT
+2026-05-15,Mortal Kombat II,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-15,Mortal Kombat II,NTH,B,,,,,,,,,,NO_RELEASE
+2026-05-15,Mortal Kombat II,NTH,C,,,,,,,,,,NO_RELEASE
+2026-05-15,Mortal Kombat II,NTH,D,13.4,13.4,13.4,,V,1236751550,"Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $",STRICT,"""Mortal Kombat II"" tumbled to fourth place with $13.4 million from 3,534 theaters","Deadline chart truncated before MK2; Deadline prose ""$3.5M Friday and an estimated $12.7M - $13M 3-day"" (D:12.85) is Friday-style earlier write-thru text"
+2026-05-15,Obsession,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($2.6M previews; $15M+ is acquisition price)
+2026-05-15,Obsession,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-05-15,Obsession,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-05-15,Obsession,OPEN,D,16.1,16.1,16.1,,D,1236906122,SUNDAY AM,LABEL,"Obsession (Foc) 2,615 theaters, Fri $6.97M Sat $5.4M Sun $3.7M, 3-day $16.1M/Wk 1",prose $14M is earlier write-thru; V:16 STRICT
+2026-05-15,The Devil Wears Prada 2,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-15,The Devil Wears Prada 2,NTH,B,,,,,,,,,,NO_RELEASE
+2026-05-15,The Devil Wears Prada 2,NTH,C,,,,,,,,,,NO_RELEASE
+2026-05-15,The Devil Wears Prada 2,NTH,D,18,18,18,,D,1236906122,SUNDAY AM,LABEL,"Devil Wears Prada 2 (20th) 3,830 (-370) theaters, Fri $5.3M Sat $7.1M Sun $5.6M 3-day $18M (-57%)","prose ""could be a $20M third w"" is earlier write-thru; V: totals only"
+2026-05-22,I Love Boosters,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-05-22,I Love Boosters,OPEN,B,4,4,4,,D,1236918713,FRIDAY AFTERNOON,LABEL,"I Love Boosters is at $1.5M today/previews, $4M 3-day, $5M for the Friday-Monday span",
+2026-05-22,I Love Boosters,OPEN,C,3.9,3.9,3.9,,D,1236918713,SATURDAY AM,LABEL,"I Love Boosters (Neon) 1,750 theaters, Fri $1.5M 3-day $3.9M 4-day $4.6M /Wk 1",
+2026-05-22,I Love Boosters,OPEN,D,3.8,3.8,3.8,,V,1236757827,"Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,",REVISABLE,"""I Love Boosters"" debuted in eighth place with $3.8 million over the weekend",no Deadline lane-D section
+2026-05-22,Michael,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-22,Michael,NTH,B,18.5,17,20,RANGE,D,1236918713,FRIDAY AFTERNOON,LABEL,"a $17M - $20M fifth weekend, easing by 23%-35%",
+2026-05-22,Michael,NTH,C,18.5,18.5,18.5,,D,1236918713,SATURDAY AM,LABEL,"Michael (LG) 3,306 (-254) theaters, Fri $5M (-29%) 3-day $18.5M (-29%) 4-day $23.6M",
+2026-05-22,Michael,NTH,D,20,20,20,,V,1236757827,"Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,",REVISABLE,Lionsgate's Michael Jackson biopic brought in $20 million over the weekend,no Deadline lane-D section; STRICT Variety post has overseas only
+2026-05-22,The Devil Wears Prada 2,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-22,The Devil Wears Prada 2,NTH,B,10.5,10,11,RANGE,D,1236918713,FRIDAY AFTERNOON,LABEL,"with a $3M Friday, $10M-$11M 3-day, -37% to -43%, and $13M-$14M 4-day",
+2026-05-22,The Devil Wears Prada 2,NTH,C,,,,,,,,,,"TRUNCATED (SATURDAY AM chart cut at ""Devil Wears Prada 2 (20th) 3,300 ("")"
+2026-05-22,The Devil Wears Prada 2,NTH,D,12.6,12.6,12.6,,V,1236757827,"Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,",REVISABLE,dropped to fourth place with $12.6 million over the weekend,no Deadline lane-D section
+2026-05-29,Backrooms,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($10.4M previews; Civil War $25.5M is a comparable); V REVISABLE budget only
+2026-05-29,Backrooms,OPEN,B,77.5,76,79,RANGE,D,1236929953,FRIDAY AFTERNOON UPDATE,LABEL,Backrooms now on track to hoard a $76M to $79M after a $33M-$35M Friday,
+2026-05-29,Backrooms,OPEN,C,86.5,85,88,RANGE,D,1236929953,SATURDAY AM,LABEL,"Backrooms (A24) 3,442 theaters, $38.4M Fri, 3-day $85M-$88M /Wk 1",chart line from Obsession/Mandalorian block same section; prose agrees $85M-$88M
+2026-05-29,Backrooms,OPEN,D,81.4,81.4,81.4,,D,1236929953,SUNDAY AM,LABEL,"Backrooms (A24) 3,442 theaters, $38.4M Sat $24.7M Sun $18.3M Fri, 3-day $81.4M /Wk 1",V:81 REVISABLE
+2026-05-29,Obsession,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-29,Obsession,NTH,B,,,,,,,,,,NO_FIGURE (FRIDAY AFTERNOON UPDATE text truncated; no Obsession 3-day)
+2026-05-29,Obsession,NTH,C,28.5,28.5,28.5,,D,1236929953,SATURDAY AM,LABEL,"Obsession (Foc) 2,781 (+126) theaters, Fri $8.1M (+34%) 3-day $28.5M (+19%)",prose agrees $28.5M
+2026-05-29,Obsession,NTH,D,26.4,26.4,26.4,,D,1236929953,SUNDAY AM,LABEL,Fri $8.2M Sat $10.1M Sun $8M 3-day $26.4M (+10%) Total $104.7M /Wk 3,V:26.4 REVISABLE
+2026-05-29,The Breadwinner,OPEN,A,8,8,8,,V,1236761452,"Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record",REVISABLE,"""The Breadwinner,"" which is aiming to debut with $8 million after making $750,000 in previews",no Deadline lane-A figure
+2026-05-29,The Breadwinner,OPEN,B,7.75,7.5,8,RANGE,D,1236929953,FRIDAY AFTERNOON UPDATE,LABEL,"is seeing $2.5M-$3M today, and $7.5M to $8M for the weekend at 3,252 sites",
+2026-05-29,The Breadwinner,OPEN,C,7.5,7.5,7.5,,D,1236929953,SATURDAY AM,LABEL,"The Breadwinner ( $7.5M in fifth place at 3,252 sites",prose; chart truncated before Breadwinner
+2026-05-29,The Breadwinner,OPEN,D,7.5,7.5,7.5,,V,1236763355,"Box Office: ‘Backrooms’ Stuns With $81 Million Debut, ‘Obsession’ Has Another Unprecedente",REVISABLE,"""The Breadwinner"" rounded out the top five on North American charts with $7.5 million",Deadline SUNDAY AM chart truncated before Breadwinner
+2026-05-29,The Mandalorian and Grogu,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-05-29,The Mandalorian and Grogu,NTH,B,24,24,24,,D,1236929953,FRIDAY AFTERNOON UPDATE,LABEL,"is eyeing third with a second weekend of $24M after a $6.5M Friday at 4,300",
+2026-05-29,The Mandalorian and Grogu,NTH,C,25,25,25,,D,1236929953,SATURDAY AM,LABEL,"Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M (-81%) 3-day $25M (-69%)","prose $25M, -69%, maybe steeper"
+2026-05-29,The Mandalorian and Grogu,NTH,D,25,25,25,,D,1236929953,SUNDAY AM,LABEL,"Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M Sat $10.3M Sun $8.2M 3-day $25M (-69%)",V:25 REVISABLE
+2026-06-05,Backrooms,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-05,Backrooms,NTH,B,,,,,,,,,,"TRUNCATED (prose cut at ""a second weekend around"")"
+2026-06-05,Backrooms,NTH,C,25.7,25.7,25.7,,D,1236941701,SATURDAY AM UPDATE,LABEL,"Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%)",SATURDAY AM EXCLUSIVE (1236942792) also 25.7; V: daily only STRICT
+2026-06-05,Backrooms,NTH,D,25.9,25.9,25.9,,D,1236941701,SUNDAY AM,LABEL,"Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2",V: total only
+2026-06-05,Masters of the Universe,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($4.4M previews, V REVISABLE)"
+2026-06-05,Masters of the Universe,OPEN,B,31.1,31.1,31.1,,D,1236941701,FRIDAY AFTERNOON UPDATE,LABEL,Masters of the Universe is calling dibs on second with $31.1M after a Friday/previews take of $12.1M,
+2026-06-05,Masters of the Universe,OPEN,C,30.1,30.1,30.1,,D,1236941701,SATURDAY AM UPDATE,LABEL,"Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1",V: daily only STRICT
+2026-06-05,Masters of the Universe,OPEN,D,29.3,29.3,29.3,,D,1236941701,SUNDAY AM,LABEL,"Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1",V:29.3 REVISABLE
+2026-06-05,Obsession,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-05,Obsession,NTH,B,24.8,24.8,24.8,,D,1236941701,FRIDAY AFTERNOON UPDATE,LABEL,"with an estimated fourth Friday of $7.5M and 3-day of $24.8M , -9% dip","later lane-B section FRIDAY UPDATE (1236942231, avail 06:59Z) has totals only, no 3-day"
+2026-06-05,Obsession,NTH,C,24.8,24.8,24.8,,D,1236941701,SATURDAY AM UPDATE,LABEL,"Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%)",V: daily only STRICT
+2026-06-05,Obsession,NTH,D,25.6,25.6,25.6,,V,1236765638,"Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive",REVISABLE,"Fourth place went to ""Obsession"" with $25 . 6 million in its fourth weekend of release",Deadline SUNDAY AM chart truncated at Obsession
+2026-06-05,Scary Movie,OPEN,A,40,40,40,,V,1236767709,"Box Office: ‘Scary Movie’ Makes $7.7 Million in Previews, ‘Masters of the Universe’ at $4.",REVISABLE,"Paramount is projecting a $40 million opening for ""Scary Movie,"" though other estimates are between $45 million and $50",studio projection taken; same sentence gives other estimates $45M-$50M (mid 47.5); no Deadline lane-A section
+2026-06-05,Scary Movie,OPEN,B,52.7,52.7,52.7,,D,1236941701,FRIDAY AFTERNOON UPDATE,LABEL,bound for a franchise opening record of $52.7M per middays estimates,
+2026-06-05,Scary Movie,OPEN,C,56,56,56,,D,1236941701,SATURDAY AM UPDATE,LABEL,"Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1",V:56 STRICT
+2026-06-05,Scary Movie,OPEN,D,55,55,55,,D,1236941701,SUNDAY AM,LABEL,"Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1",V:55 REVISABLE
+2026-06-05,The Amazing Digital Circus: The Last Act,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($7.8M previews, V REVISABLE)"
+2026-06-05,The Amazing Digital Circus: The Last Act,OPEN,B,,,,,,,,,,PRIOR_FORECAST_ONLY (section restates pre-weekend forecast $15M-$18M; no Friday projection)
+2026-06-05,The Amazing Digital Circus: The Last Act,OPEN,C,,,,,,,,,,DAILY_ONLY ($4.3M second day)
+2026-06-05,The Amazing Digital Circus: The Last Act,OPEN,D,19.4,19.4,19.4,,V,1236765638,"Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive",REVISABLE,"rounded out the top five, earning earning $19.4 million from 2,221 theaters",Deadline SUNDAY AM chart truncated; no figure
+2026-06-12,Backrooms,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-12,Backrooms,NTH,B,12.4,12.4,12.4,,D,1236954426,FRIDAY MIDDAY,LABEL,"Backrooms (A24) 3,404 theaters, Fri $3.8M, 3-day $12.4M (-53%)",
+2026-06-12,Backrooms,NTH,C,,,,,,,,,,"TRUNCATED (SATURDAY AM chart cut at ""3-day $1"")"
+2026-06-12,Backrooms,NTH,D,11.26,11.26,11.26,,D,1236954426,SUNDAY AM,LABEL,"Fri $3.6M (-54%) Sat $4.3M Sun $3.3M 3-day $11.26M (-57%), Total $160M /Wk 3",V:12 STRICT (differs >2%)
+2026-06-12,Disclosure Day,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($6.5M previews; V STRICT ""$50M to justify its cost"" is not a projection)"
+2026-06-12,Disclosure Day,OPEN,B,42.5,42.5,42.5,,D,1236954426,FRIDAY MIDDAY,LABEL,"with a $42.5M three-day cume at 3,824 screens",chart line truncated; prior expectation $35M
+2026-06-12,Disclosure Day,OPEN,C,44,44,44,,D,1236954426,SATURDAY AM,LABEL,"Disclosure Day (Uni) 3,824 theaters, Fri $19M, 3-day $44M/Wk 1",prose expected $44M
+2026-06-12,Disclosure Day,OPEN,D,44,44,44,,D,1236954426,SUNDAY AM,LABEL,"Disclosure Day (Uni) 3,824 theaters, Fri $19.2M, Sat $13.8M Sun $10.95M 3-day $44M /Wk 1",V:44 STRICT
+2026-06-12,Obsession,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-12,Obsession,NTH,B,,,,,,,,,,TRUNCATED (FRIDAY MIDDAY chart cut before Obsession)
+2026-06-12,Obsession,NTH,C,21,21,21,,D,1236954426,SATURDAY AM,LABEL,"Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), 3-day $21M (-17%)",
+2026-06-12,Obsession,NTH,D,19,19,19,,D,1236954426,SUNDAY AM,LABEL,"Sat $6.9M Sun $5.86M 3-day $19M (-25%), Total $188.3M /Wk 5",V:19 STRICT
+2026-06-12,Scary Movie,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-12,Scary Movie,NTH,B,15.2,15.2,15.2,,D,1236954426,FRIDAY MIDDAY,LABEL,"Scary Movie (Par) 3,504 theaters, Fri $5M, 3-day $15.2M (-72%)",
+2026-06-12,Scary Movie,NTH,C,14.6,14.6,14.6,,D,1236954426,SATURDAY AM,LABEL,"Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%), 3-day $14.6M (-73%)",
+2026-06-12,Scary Movie,NTH,D,14.5,14.5,14.5,,D,1236954426,SUNDAY AM,LABEL,"Fri $4.8M (-80%) Sat $5.5M Sun $4.1M, 3-day $14.5M (-73%), Total $84.5M /Wk 2",V:14.5 STRICT
+2026-06-19,Disclosure Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-19,Disclosure Day,NTH,B,16.5,16.5,16.5,,D,1236962629,FRIDAY AFTERNOON UPDATE,LABEL,"Disclosure Day (Uni) 3,824 theaters, Fri $4.6M, 3-day $16.5M (-63%)",
+2026-06-19,Disclosure Day,NTH,C,17.2,17.2,17.2,,D,1236962629,SATURDAY AM,LABEL,"Disclosure Day (Uni) 3,824 theaters, Fri $4.9M (-74% from last Friday), 3-day $17.2M (-61%)",V: daily only STRICT
+2026-06-19,Disclosure Day,NTH,D,17,17,17,,D,1236962629,SUNDAY AM,LABEL,"Sat $6.19M Sun $5.8M, 3-day $17M (-62%), Total $78.2M /Wk 2",Deadline 1236963295 also $17M stateside; V:17 REVISABLE
+2026-06-19,Obsession,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-19,Obsession,NTH,B,,,,,,,,,,"TRUNCATED (chart cut at ""Obsession (Fo"")"
+2026-06-19,Obsession,NTH,C,14.2,14.2,14.2,,D,1236962629,SATURDAY AM,LABEL,"Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), 3-day $14.2M (-25%)",
+2026-06-19,Obsession,NTH,D,14.2,14.2,14.2,,D,1236962629,SUNDAY AM,LABEL,"Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), Sat $5.1M Sun $4.3M 3-day $14.2M (-25%)",V:14.2 REVISABLE
+2026-06-19,The Death of Robin Hood,OPEN,A,3.5,3,4,RANGE,V,1236785315,"Box Office: ‘Toy Story 5’ Opens to $17.5 Million, Best Preview Performance of 2026",STRICT,"""Leviticus,"" which are both predicted to make $3 million to $4 million",range $3M-$4M stated jointly for two films; no Deadline lane-A section
+2026-06-19,The Death of Robin Hood,OPEN,B,,,,,,,,,,TRUNCATED (FRIDAY AFTERNOON top-5 chart cut before Death of Robin Hood)
+2026-06-19,The Death of Robin Hood,OPEN,C,2.5,2.5,2.5,,D,1236962629,SATURDAY AM,LABEL,"Death of Robin Hood (A24) 1762 theaters, Fri $1.1M, 3-day $ 2.5M /Wk 1",
+2026-06-19,The Death of Robin Hood,OPEN,D,2.65,2.65,2.65,,V,1236786574,"Box Office: ‘Toy Story 5’ Scores Year’s Biggest Debut With $160 Million, Shattering Franch",REVISABLE,"""The Death of Robin Hood,"" starring Hugh Jackman, was close behind in ninth place with $2.65 million",Deadline SUNDAY AM chart truncated before this film
+2026-06-19,Toy Story 5,OPEN,A,147.5,145,150,RANGE,V,1236785315,"Box Office: ‘Toy Story 5’ Opens to $17.5 Million, Best Preview Performance of 2026",STRICT,"""Toy Story 5"" is on track to make $145 million to $150 million this weekend",same sentence: some estimates $160M-$175M; no Deadline lane-A section
+2026-06-19,Toy Story 5,OPEN,B,165,160,170,RANGE,D,1236962629,FRIDAY AFTERNOON UPDATE,LABEL,"Toy Story 5 (Dis) 4,425 theaters, Fri $71M, 3-day $160M-$170M/Wk 1",prose $160M-$170M+ (RANGE;PLUS); chart preferred
+2026-06-19,Toy Story 5,OPEN,C,165,160,170,RANGE,D,1236962629,SATURDAY AM,LABEL,"Toy Story 5 (Dis) 4,425 theaters, Fri $71M , 3-day $160M-$170M /Wk 1",chart line from other films' blocks same section; prose guidance still $160M-$170M
+2026-06-19,Toy Story 5,OPEN,D,160,160,160,,D,1236962629,SUNDAY AM,LABEL,"Toy Story 5 (Dis) 4,425 theaters, Fri $71M, Sat $47.5M, Sun $41.5M 3-day $160M /Wk 1",V:160 REVISABLE

@@ -21,7 +21,7 @@ NEXT={'A':'B','B':'C','C':'D','D':'X'}
 sig={}
 for r in PIT:
     if not r['value']: continue
-    if r['strictness']=='REVISABLE' and not INCLUDE_REV: continue
+    if (r['strictness']=='REVISABLE' or 'AMBIG' in r['note'].upper()) and not INCLUDE_REV: continue
     sig[(r['wk'],r['film'],r['lane'])]=float(r['value'])
 def yes_fills(cond,t0,t1):
     """taker fills that bought YES in (t0,t1]: BUY outcome0 at p, or SELL outcome1 at q -> 1-q. returns [(ts,price,shares)]"""
