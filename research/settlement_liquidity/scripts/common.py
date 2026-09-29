@@ -23,14 +23,15 @@ PRIMARY_START = dt.datetime(2026, 8, 30, tzinfo=dt.timezone.utc)
 PRIMARY_END = dt.datetime(2026, 9, 29, tzinfo=dt.timezone.utc)  # exclusive; 30 complete days
 MIN_VOLUME = 1000.0  # lifetime USDC volume (gamma volumeNum), same as A5/A7 screens
 
-UA = {"User-Agent": "Mozilla/5.0 (quant-research; settlement-liquidity falsification)"}
+UA = {"User-Agent": "Mozilla/5.0"}
+UA_PLAIN = {"User-Agent": "Python-urllib/3.12"}  # ESPN rejects browser-like UAs from this host (403)
 
 
 def get(url, tries=6, timeout=60, allow_404=False):
     last = None
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers=UA)
+            req = urllib.request.Request(url, headers=UA_PLAIN if "espn.com" in url else UA)
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return json.load(r)
         except urllib.error.HTTPError as e:

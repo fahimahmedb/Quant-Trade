@@ -46,10 +46,13 @@ only costs re-fetch time (all APIs are public and free).
 | Step | Script | Output (committed) | Status |
 |---|---|---|---|
 | S0 | orientation, source probes | this file | DONE (CKPT-0) |
-| S1 | `s01_enumerate_markets.py 2026-08-30 2026-09-29 markets_primary` | `data/raw/markets_primary.jsonl.gz` → compact cohort in S2 | RUNNING |
+| S1 | `s01_enumerate_markets.py 2026-08-30 2026-09-29 markets_primary` (resumable: cursor + partial file) | `data/raw/markets_primary.jsonl.gz` → compact cohort in S2 | RUNNING (first run lost at interruption; restarted resumable) |
 | S2 | metadata survey + exclusion/category classifier (outcome-blind) | `data/cohort_primary.csv.gz` | TODO |
-| S3 | freeze protocol (before any economics) | `PROTOCOL_PREDECLARED_2026-09-29.md` | TODO (CKPT-1) |
-| S4 | T_DETERMINED verifiers (MLB statsapi, ESPN wallclock, NWS CLI) | `data/determination_primary.csv.gz` | TODO (CKPT-2) |
+| S3 | freeze protocol (before any economics) | `PROTOCOL_PREDECLARED_2026-09-29.md` | DONE (CKPT-1) |
+| S4a | MLB verifier `s04a_mlb.py 2026-08-29 2026-09-28` | `data/mlb_games.csv.gz` (404 games, 403 Final, 1 rain-cancelled) | DONE |
+| S4b | ESPN verifier `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | CODE DONE; rerun after S1 completes |
+| S4c | weather METAR verifier (IEM ASOS) | `data/wx_*` | TODO |
+| S4d | per-market T_DET assembly | `data/determination_primary.csv.gz` | TODO (CKPT-2) |
 | S5 | trade fetch (data-api, takerOnly true+false → maker/taker split) | `data/window_trades_primary.jsonl.gz` | TODO (CKPT-3) |
 | S6 | fill accounting (all ≥0.998 buys in [T_DET, T_RES), losers kept) | `data/fills_primary.csv.gz`, summary json | TODO (CKPT-4) |
 | S7 | newcomer queue model (LB / central / UB) + capital sims €100/500/1k/5k | `data/newcomer_*.json` | TODO (CKPT-5) |
@@ -83,6 +86,13 @@ only costs re-fetch time (all APIs are public and free).
   determined-side trade at winning-equivalent price ≤ 0.998 after placement implies the 0.999 bid level was
   empty at that instant (price priority), so a resting newcomer bid would have been first in queue.
 
+## Operational notes
+
+- ESPN returns 403 to browser-like User-Agents from this host; `common.get` uses `Python-urllib/3.12` for espn.com.
+- IEM ASOS endpoint intermittently answers "server over capacity"; retry.
+- ESPN lower-tier soccer summaries lack timestamped terminal events → UNVERIFIABLE by protocol.
+- Weather markets: 5.7k/6.1k resolve on NOAA `weather.gov/wrh/timeseries?site=<ICAO>` (METAR), whole degrees.
+
 ## Findings so far
 
 None economic yet (protocol not frozen; no fills evaluated).
@@ -90,3 +100,4 @@ None economic yet (protocol not frozen; no fills evaluated).
 ## Checkpoint log
 
 - CKPT-0 (2026-09-29 ~22:50Z): orientation, source probes, scripts `common.py`, `s01_enumerate_markets.py`.
+- CKPT-1 (2026-09-29 ~23:45Z): protocol frozen before economics; MLB timeline; ESPN verifier code; classifier.
