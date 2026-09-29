@@ -37,9 +37,9 @@ REAL_CAPITAL_AUTHORIZED = FALSE
   "arbitrage profit" (4.98 M$) is larger than lifetime P&L (~1.0 M$) on both Polymarket measures.
 - #5 undertaker, complete lifetime (2024-02-17 → 2024-12-01, 314,848 actions, 0 open positions):
   net cash +122,362 $ (in-window +140,316 $), against 749,796 $ attributed by Saguillo.
-- #8 marksman is a pure NegRisk converter. Its first 400,662 actions (20 Oct → 27 Dec 2024) net
-  +15,223 $. The fetch hit its cap, and the account is still active. Polymarket MTM is +10.8 k$ at
-  2025-04-01, against 468,392 $ attributed by Saguillo.
+- #8 marksman is a pure NegRisk converter. Over its whole in-window life (2024-10-20 → 2025-04-01,
+  532,608 actions) net cash is +17,353 $ (Polymarket MTM +10.8 k$ at 2025-04-01), against
+  468,392 $ attributed by Saguillo. A first fetch hit a 400k cap; it was re-fetched uncapped.
 - Same-condition replication on #9 and #4: legs are a median 394–1,014 s apart, and netting flips #9 to −18.6 k$.
 - 45 of 525 top monthly accounts converted in the last 30 days. The sampled 2026 conversions use
   accumulated inventory; none is a ≤60 s bundle.
@@ -53,8 +53,8 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 ## Not done / limits
 
 - The ~100× factor inside NegRisk is not split by cause (Saguillo's code is not public).
-- Independent cash reconstruction: #5 over its complete lifetime; #8 over its first 400k actions
-  (the rest of its window, 2024-12-27 → 2025-04-01, may be added if the uncapped fetch completes).
+- Independent cash reconstruction: #5 over its complete lifetime; #8 over its whole window
+  (positions still open at 2025-04-01 not valued).
 - 2026 realized profit for S1 was not measured. For S2, 30-day net P&L including disputes and
   newcomer fill share were not measured.
 

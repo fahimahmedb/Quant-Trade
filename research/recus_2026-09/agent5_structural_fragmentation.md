@@ -127,16 +127,18 @@ Findings:
    | Account | Actions reconstructed | Composition | Net cash | Open positions | Saguillo "arbitrage" | Ratio |
    |---|---:|---|---:|---:|---:|---:|
    | **#5 undertaker**: **complete lifetime** (2024-02-17 → 2024-12-01; no action afterwards, checked) | 314,848 | splits 25.36 M$, conversions 21.70 M$ of collateral, buys 25.76 M$, sells 29.27 M$ | **+122,362 $** lifetime (in-window: +140,316 $) | 0 $ | **749,796 $** | **5.3–6.1×** |
-   | **#8 marksman**: inception → 2024-12-27 (the first 400,662 actions; **the account is still active**, see note) | 400,662 | 231,342 NO buys, **0 YES buys**, 32,788 conversions over 414 long-dated events, 134,257 sales of the returned YES | **+15,223 $** on this sub-period | n/a for this sub-period | **468,392 $** | ≥ 30× on the sub-period |
+   | **#8 marksman**: **its whole in-window life**, inception 2024-10-20 → 2025-04-01 (the account is still active afterwards, see note) | 532,608 | buys 10.55 M$ (first 400k actions: 231,342 NO buys, **0 YES buys**), conversions 10.23 M$ of collateral, sales of the returned YES 0.34 M$ | **+17,353 $** in-window | not reconstructed at 2025-04-01 | **468,392 $** | **≈27×** |
 
    Notes:
    - #5: the reconstruction (+122.4 k$) agrees with the Polymarket leaderboard (+117.0 k$). The
      `user-pnl` series (+286.5 k$) overstates it.
    - #8: Polymarket's mark-to-market series gives **+10.8 k$ cumulative at 2025-04-01** (the end of
-     the window, account created 2024-10-20), with a peak of +11.8 k$ in Jan 2025.
+     the window, account created 2024-10-20), with a peak of +11.8 k$ in Jan 2025. This is consistent
+     with the reconstructed +17.4 k$ of net cash. Monthly net cash: Oct +1.7 k$, Nov +10.3 k$,
+     Dec +3.3 k$, Jan +1.9 k$, Feb +0.1 k$, Mar +0.1 k$. The margin dried up within 3 months.
 
    Both accounts are **real** NegRisk arbitrageurs / converters with several to tens of millions of
-   dollars of turnover. Their actual economic result is **~0.2–0.5% of turnover**, and **5 to 30 times smaller**
+   dollars of turnover. Their actual economic result is **~0.2–0.5% of turnover**, and **5 to 27 times smaller**
    than the "realized profit" Saguillo attributes to them.
 
 3. **These are not specialised arbitrage bots.** #9 has 80,512 on-chain actions in the window
@@ -334,9 +336,8 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 3. **"Realized profit of top arbitrageurs" — confusion between gross, one-sided "locked-in"
    profit and cash.** #5 undertaker, a converter and split/sell trader with a **complete**
    lifetime (Feb–Dec 2024), cashed **+122 k$** on ~25 M$ of buys, not the **750 k$** attributed
-   to it. #8 marksman, a pure NegRisk converter, cashed **+15.2 k$** over its first 400,662 actions
-   (8.75 M$ of NO bought), and Polymarket marks it at +10.8 k$ cumulative at the end of the window,
-   not **468 k$**. Real margin: **~0.2–0.5% of turnover**. Across 5 of the top 10,
+   to it. #8 marksman, a pure NegRisk converter, cashed **+17.4 k$** over its whole in-window life
+   (10.55 M$ bought, 532,608 actions), not **468 k$**. Real margin: **~0.2–0.5% of turnover**. Across 5 of the top 10,
    4.98 M$ of "arbitrage" sits against ~1.0 M$ of lifetime P&L (V). Any 2024–25 "arbitrage bot"
    success story built on the 40 M$ figure rests on this bias.
 4. **Combinatorial arbitrage (election pairs, NBA) — capacity.** 95 k$ gross over 13 pairs, all
@@ -359,12 +360,12 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 
 | Attack | Target | Result | Action |
 |---|---|---|---|
-| Gross taken for net | 39.59 M$ | Confirmed: one-sided, locked-in, imputed legs. #5 → complete lifetime cash 5.3× smaller; #8 → ≥30× on the reconstructed sub-period | Figure reclassified as "gross upper bound", never to be cited as realized profit |
+| Gross taken for net | 39.59 M$ | Confirmed: one-sided, locked-in, imputed legs. #5 → complete lifetime cash 5.3× smaller; #8 → in-window cash ≈27× smaller | Figure reclassified as "gross upper bound", never to be cited as realized profit |
 | Gross taken for net | Gebele 1.118 M$ | Partly true: residual YES valued "at the estimated ask" (generous), settlement baskets conditional. Only 205.5 k$ (full set) is immediate cash | Presented as a lower bound **and** partly marked-to-model |
 | Opportunity taken for execution | S1 | 2026 evidence = **market states** (fee-adjusted episodes), not realized trades. Realized stops in Oct 2025 | S1 stays **PROBABLE**, "realized 2026: not measured" stated explicitly |
 | Circular wallet attribution | Top 10 Saguillo | Prefixes of 22 hex characters (88 bits) matched **one** proxy wallet each on the public leaderboard; negligible collision risk. The #5/#8 cash tests use the raw activity feed, not Saguillo's method and not Polymarket's P&L engine | No circularity. Remaining risk: one operator can run several wallets (no clustering on either side) |
 | Double counting | Saguillo | Components 39,692,372 $ vs total 39,587,585 $ (gap 104,787 $); fill exclusivity across strategies not documented | Reported as an unresolved internal inconsistency (0.26%) |
-| Open positions / truncation | #8, #5 | **Error found and fixed during the audit:** the #8 fetch hit a 400,000-action cap and stopped at 2024-12-27, but the account is still active (last action 29/09/2026). Its figure was first described as "lifetime" | #8 scoped back to the reconstructed sub-period. #5 checked complete (no action after 2024-12-01, 0 open positions) and used as the main example |
+| Open positions / truncation | #8, #5 | **Error found and fixed during the audit:** the #8 fetch hit a 400,000-action cap and stopped at 2024-12-27, but the account is still active (last action 29/09/2026). Its figure was first described as "lifetime" | #8 re-fetched without a cap over its whole window (532,608 actions → +17,353 $). #5 checked complete (no action after 2024-12-01, 0 open positions) |
 | Hidden speed | S1 | Episodes that close within the window: median **16 s**. The "> 50 min" episodes are probably the shallowest | Speed class kept at "SECONDS/MINUTES" with this caveat |
 | Hidden speed | S2 | Price-time priority at 0.999: being **first in the queue** matters (a queue race, not a ms race) | Stated. Test: fill share for a new bid |
 | Hidden capital | S1 | Capital locked until resolution (months) → negligible return on locked capital | Reflected in €/month |
@@ -380,8 +381,8 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 **Part A.** The "contradiction" 39.59 M$ vs 291 k$ is a definition gap. Saguillo measures gross,
 one-sided, partly imputed gains from complementary trading. Gebele measures profit tied to a
 realization mechanism. The raw account data (V) confirm it: #5, reconstructed over its **complete** lifetime,
-**cashed 122 k$, not 750 k$**. #8, a pure converter, cashed 15 k$ over its first 400k
-actions (Polymarket: +10.8 k$ at the end of the window), not 468 k$.
+**cashed 122 k$, not 750 k$**. #8, a pure converter, cashed 17 k$ over its whole window
+(532,608 actions), not 468 k$.
 Structural arbitrage on Polymarket is real, but small (~0.3 M$/year at platform scale in
 2024–25), concentrated (top 10 ≈ 75%), and in 2026 it has become an inventory tool for market
 makers. The NO/converter side is a seconds-level race. The YES/settlement side is slow but
