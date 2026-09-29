@@ -5,7 +5,7 @@ REAL_CAPITAL_AUTHORIZED = FALSE. No orders, no accounts, no production strategy 
 
 **Branch:** `claude/epic-cannon-1sy39m`, the mission branch assigned to this session. The prompt's default branch `research/agent6-small-player-rents-2026-09-29` applies only when no other branch has been assigned, so it is not used.
 
-**STATUS: IN_PROGRESS.** The measurement is running. Cohort A is complete; cohort B is partly done. No outcome has been analysed yet, and no terminal status has been chosen.
+**STATUS: IN_PROGRESS.** Sampling is complete for both cohorts. Outcomes have not been analysed yet, and no terminal status has been chosen.
 
 ## 1. Inputs read
 - `QUANT_NORTH_STAR.md`.
@@ -83,8 +83,9 @@ The decay series script (1st and 15th of each month, Mar–Sep) stopped on an RP
 
 ## 5. Sampling script and status
 - Scripts are in `agent6_scripts/` (`sample_cohorts.py`, `pmapi.py`, `rpc.py`). The runner reads the frame JSONs in the session scratchpad; the committed `agent6_data/frame_*.csv` files hold the same data.
-- **Cohort A: COMPLETE**, 160/160 → `agent6_data/results_A.jsonl`, raw and not yet analysed.
-- **Cohort B: RUNNING** at checkpoint (≥ 95/160). `agent6_data/results_B_partial_checkpoint.jsonl` is a partial snapshot. The final file will be `results_B.jsonl`.
+- **Cohort A: COMPLETE**, 160/160 → `agent6_data/results_A.jsonl`, raw and not yet analysed. 1 wallet has no user-pnl series (`err`), so 159 are usable.
+- **Cohort B: COMPLETE**, 160/160 → `agent6_data/results_B.jsonl`, raw and not yet analysed. No errors.
+- The background shell exited with code 1. That came only from a trailing `tail -3` syntax error after both runs had finished; the sampler logged `done A` and `done B`.
 - To reproduce: `python3 sample_cohorts.py A|B` (about 15–25 min per cohort, 4 threads, public endpoints only).
 
 ## 6. Other workstreams
@@ -105,7 +106,7 @@ The decay series script (1st and 15th of each month, Mar–Sep) stopped on an RP
   - **There is no per-account data.** Public trades carry no account or maker ID, so net maker P&L after rewards cannot be measured.
 
 ## 7. NEXT_ACTION
-1. When cohort B finishes (`results_B.jsonl`, 160 rows), copy it to `agent6_data/`. If the container is lost, re-run `sample_cohorts.py B`; the draw is deterministic.
+1. (Done) Cohort B is complete and committed.
 2. Analyse A and B per tier:
    - N, fraction net > 0, fraction trading > 0;
    - median, mean, p25 and p75 of trading, rewards, rebates and net;
