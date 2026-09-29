@@ -199,8 +199,11 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
 
     lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
              ("crypto_funding", crypto), ("polymarket", polymarket),
-             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills),
-             ("sports_rewards", sports_rewards))
+             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills))
+    # ``sports_rewards`` (R4 / LIP as an edge) is deliberately NOT collected: removed
+    # by prompt 11 (do-not-test). Kept callable via ``--only sports_rewards``.
+    if only and "sports_rewards" in only:
+        lanes += (("sports_rewards", sports_rewards),)
     for name, work in lanes:
         if only is None or name in only:
             run(name, work)
