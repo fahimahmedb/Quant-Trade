@@ -122,3 +122,30 @@ Classement final en fin de document.
 | Vérif 1 jour données publiques | Oui : rejouer 30 jours de carnets et de trades des événements NegRisk géopolitiques (data-api + CLOB), compter les fenêtres où la somme des meilleurs asks < 1 − frais, leur durée et leur profondeur ; vérifier qui les a prises (adresses). |
 | Plafond petite taille | 2026 : **inconnu, probablement < 100 €/mois** hors géopolitique. |
 | Confiance | reçu **vérifié mais ancien** (2024-25) ; version 2026 **non vérifiée**. |
+
+---
+
+## Classement final (par intérêt pour Quant : petite taille, IA + automatisation, pas de vitesse)
+
+| Rang | ID | Pourquoi | Confiance |
+|---|---|---|---|
+| 1 | F3 | Seul flux où des reçus **récents, après frais 2026** montrent des gains de preneurs sans vitesse ; l'information (prévisions d'ensemble, METAR) est gratuite et à lire à grande échelle. Premier test à faire : la vérification d'un jour (règle d'ensemble rejouée + P&L de tous les portefeuilles, pas seulement du top). | probable |
+| 2 | F1 | Paire recette + reçu la plus propre (code MIT + portefeuille déclaré par l'auteur + blog chiffré mois par mois) ; montre comment un edge maker se ferme en 3 mois. À réutiliser comme gabarit de mesure et comme contre-exemple. | vérifié (edge mort/marginal) |
+| 3 | F4 | Subvention réelle et lisible par portefeuille (~0,1 % du volume) ; ne vaut que si la sélection adverse est maîtrisée, ce qui n'est pas prouvé à petite taille. | subventions vérifiées / net non vérifié |
+| 4 | F5 | Méthode académique complète et reçu on-chain massif, mais ancien et d'avant les frais ; piste résiduelle : NegRisk géopolitiques sans frais. | vérifié-ancien / 2026 non vérifié |
+| 5 | F2 | Reçu solide mais gain = bêta HYPE et baisse des altcoins ; ne relance pas le short de déblocage. | reçu vérifié / edge non vérifié |
+
+Frontière d'accès commune : F1, F3, F4 et F5 reposent sur Polymarket international, **bloqué en France (ANJ, blocage FAI du 2026-07-16)** et pour les résidents US. Toute exécution même papier doit utiliser des données publiques seulement ; aucun contournement de géoblocage.
+
+## Négatifs utiles
+
+- Market making Polymarket « brut » : l'auteur de poly-maker écrivait en 2026-01 « not profitable and will lose money » ; polymm passe de 37 % à 1 % de remplissage des deux jambes entre janvier et avril 2026.
+- Arbitrage de rééquilibrage Polymarket 2024-25 : 3 des 5 gros comptes retrouvés ont cessé de trader en 2025, et les frais 2026 taxent chaque jambe preneuse (sauf géopolitique).
+- Vaults Hyperliquid : sur 112 vaults (> 30 k$ de TVL, > 200 j), aucun ne relie une méthode reproductible à son reçu ; le plus gros reçu documenté (Long HYPE/Short Garbage) est du bêta.
+- « Bots météo » et « bots d'arbitrage » vendus en ligne ou sur GitHub : simulation seulement ou pages marketing/affiliées, aucun portefeuille ; arbitrage Polymarket ↔ Kalshi : aucun reçu vérifiable trouvé.
+- Le P&L 30 j public (`lb-api`) des gros market makers est incohérent (ex. −58,6 M$ sur 30 j contre +1,19 M$ tout temps) : ne jamais l'utiliser comme reçu sans recalcul à partir des trades.
+
+## Notes de méthode
+
+- Entonnoir : ~20 candidats repérés, 5 fiches retenues ; écartés faute de lien vérifiable entre recette et reçu : Growi HF (reçu +2,7 M$ sur 12 m, méthode « mean-reversion » non détaillée), drkmttr, Silentist, les bots GitHub sans portefeuille, 0x8dxd (latence crypto 5/15 min, déjà rejeté).
+- Scripts de relecture API utilisés (non commités, reproductibles) : `vaultDetails`/`clearinghouseState`/`userFillsByTime`/`userFunding` (Hyperliquid) ; `v1/leaderboard?category=…`, `activity?type=REWARD|MAKER_REBATE|TRADE`, `lb-api…/profit` (Polymarket).

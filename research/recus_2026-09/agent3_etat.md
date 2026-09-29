@@ -1,6 +1,6 @@
 # Ordre 13 — AGENT 3 « RECETTE ET REÇU » — état
 
-- statut: EN_COURS
+- statut: DONE
 - trigger_id: trig_017Mo7PhDqQRfCP3LgkPM57m (cron horaire, self-bind)
 - branche: claude/exciting-edison-w68tos
 - REAL_CAPITAL_AUTHORIZED = FALSE
@@ -23,6 +23,4 @@
 - F5 arb rééquilibrage Polymarket (reçu 2024-25, fermé en grande partie)
 
 ## Prochaine étape
-Prochaine: négatifs utiles + classement + statut DONE + delete_trigger. (ancien: négatifs, classement, DONE. Autres idées: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
-
-## (ancienne) Repérage rapide (≤20 candidats) : bots OSS avec P&L relié à une adresse, vaults Hyperliquid documentés, bilans de market makers petite taille, dashboards building in public.
+Aucune. Livrable complet : research/recus_2026-09/agent3_recette_recu.md (F1–F5, classement, négatifs). Routine à supprimer (delete_trigger) si encore présent.
