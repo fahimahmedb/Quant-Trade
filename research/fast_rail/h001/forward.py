@@ -1,5 +1,11 @@
 """H-001 (corrected, SHADOW_DIRECT k=1): automated forward evaluation.
 
+ORDER 12 (declared 2026-09-29, registry "declared"): engagements stay in P&L until the
+venue settles; >10% missing closes -> INCONCLUSIVE(data); the decision test is the
+order-12b e-process (until delivered: status SHADOW_DIRECT, t-SPRT indicator only);
+terminal FORWARD_PASS(PRICE) needs every engagement of the prefix settled and
+P&L not significantly below CLV. It proves a PRICE edge, not a cashable gain.
+
 Declared in research/fast_rail/registry.jsonl (event "shadow_direct") BEFORE any
 forward decision; only quotes observed at/after ``PRISTINE_AFTER`` count.
 
@@ -38,7 +44,7 @@ from quant.factory.sportsfair import devig_power  # noqa: E402
 from quant.learning.sequential import event_sequential_test, shadow_direct_alpha  # noqa: E402
 from clv import closing_snapshot, load  # noqa: E402
 
-PRISTINE_AFTER = "2026-09-29T14:00:00+00:00"   # >= commit of the amended declaration
+PRISTINE_AFTER = "2026-09-29T14:00:00+00:00"   # order 12: commit time rounded up to the hour
 K = 1
 ALPHA = shadow_direct_alpha(K)                  # 0.025
 SOURCE_EFFECT = 0.019        # S83: EV bets vs Pinnacle, realised 1.9% ROI since 2023/24
