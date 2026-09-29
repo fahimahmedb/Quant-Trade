@@ -34,8 +34,8 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | P0 | fetch; read North Star, V2 @94b5934, Astra re-audit + state; fast-forward branch onto 7d95c00 (Astra files byte-identical) | DONE | local ff to 7d95c00 |
 | P1 | committed sim: exact frozen contract for the retired bound (λ ≤ 1000, μ ≤ 50, 40 iterations, B = 20,000, frozen seed and per-draw order); repaired bound; run D (`python3 research/weather_forward/WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py d4`, ≈ 3 min on 4 cores) | DONE | raw output in section 6 |
 | P2 | spec §8.2 / §8.5 / §6 / §17.3 / §17.6 / §20–21 / §24 / §27; manifest A + C; delta D4.d / D4.e; power table §4.5; architect state | DONE | 05836143a249f5571a29403727c6d90df2c8b7c8 (local commit, repair content) |
-| P3 | this checkpoint file committed; push; verify remote == local | IN PROGRESS | the commit adding this file |
-| P4 | final report to the user (≤ 10 lines): branch, exact SHA, repair, exclusion semantics, D4 bound status, reproductions, files, D1–D12 carry-forward, next action | PENDING | — |
+| P3 | this checkpoint file committed; push; verify remote == local | DONE | 020ec60444e0425ce01a59d5db91c5f0a397f814 (pushed; remote == local verified; Astra files and North Star unchanged) |
+| P4 | final report to the user (≤ 10 lines): branch, exact SHA, repair, exclusion semantics, D4 bound status, reproductions, files, D1–D12 carry-forward, next action | DONE with the commit that marks this row | recheck target = branch tip (scientific content identical to 0583614) |
 
 If P3 is found incomplete on resume: run `git log origin/claude/charming-allen-948kd8..HEAD --oneline`; if 0583614 and the checkpoint commit are local only, push them (`git push -u origin claude/charming-allen-948kd8`, retry 2 / 4 / 8 / 16 s on network errors only), then verify. If the container was lost before the push, the local commits are gone: rebuild from this file only if it exists on the remote; otherwise redo P1–P2 from the decisions in section 4 (they need no new research).
 
