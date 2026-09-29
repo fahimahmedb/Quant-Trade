@@ -55,7 +55,7 @@ and has known causes, but it cannot be split among them without the authors' cod
 | WHAT COUNTS AS AN ARBITRAGE | Any window where the address's legs imply a favorable sum. For NegRisk, missing low-probability legs are **estimated**: "we use the approach from Section 6 to estimate the price of the missing positions" (P) | An observed Adapter call whose full input coverage was bought ≤5 blocks (~10 s) earlier, or a complete basket over **all** active outcomes formed within ≤10 min (P) |
 | WHAT COUNTS AS REALIZED | Executed fills, with profit "locked in" at resolution for the matched quantity. What happens to the positions afterwards is not tracked (P) | Converter: collateral released + actual sale proceeds of the returned YES over 150 blocks (~5 min) + **estimated** value of merged or residual positions, valued "at the estimated ask". Settlement: terminal profit, provided the basket is held to resolution (P) |
 | EXECUTIONS OBSERVED? | Yes (on-chain fills) | Yes (fills + conversion calls) |
-| COUNTERFACTUAL OPPORTUNITIES INCLUDED? | Not in the 39.59 M$ itself, but the missing NegRisk legs are **priced counterfactually** from VWAPs carried forward up to 5,000 blocks, or set to 0 when a token stops trading (P) | No in the 1.12 M$. The market-state analysis counts episodes only, with no $ figure (P) |
+| COUNTERFACTUAL OPPORTUNITIES INCLUDED? | Not in the 39.59 M$ itself, but the missing NegRisk legs are **priced counterfactually** from VWAPs carried forward up to 5,000 blocks, or set to 0 when a token stops trading (P) | No in the 1.12 M$. The market-state analysis is kept separate: episodes (CLOB) plus a 5,185 $ benchmark (FPMM, maximum executable gap per event) (P) |
 | CAPITAL ASSUMPTION | None. No return on capital (P) | None. Return on capital is used only as an anomaly diagnostic (P) |
 | FEES | None: "Polymarket currently does not charge per trade executed" (P) | Market-state analysis: taker fees on every leg. Actor analysis: fees are not stated explicitly (period largely fee-free). The Adapter has a `feeBips` parameter (P) |
 | GAS / CHAIN COSTS | Not counted | Not counted: "routed through Polymarket's relayer" (P) |
@@ -136,7 +136,7 @@ Findings:
 3. **These are not specialised arbitrage bots.** #9 has 80,512 on-chain actions in the window
    (76,797 trades, 1,096 merges, 378 conversions, 115 liquidity-reward payments), versus the 200
    "transactions" Saguillo counts. #4 (aenews2) has 31,391 actions, including 289 conversions,
-   and is a well-known weather trader today. Both are market makers or directional traders who
+   and is a well-known weather/geopolitics trader today (agents 1 and 3). Both are market makers or directional traders who
    also use merge and conversion.
 4. **Replicating the same-condition rule** (bids ≥ $2, 1-hour window, min quantity × (1 − sum of
    average prices)) on #9 and #4:
@@ -233,7 +233,7 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 | NUMBER OF ACTORS | Not reported for CLOB. FPMM: 35 actors |
 | PROFIT CONCENTRATION | FPMM: one actor ≈ "76" (% lost in the source). CLOB: not reported |
 | LOSER POPULATION | Unknown: failed attempts and incomplete baskets are not counted |
-| SPEED REQUIREMENT | **SECONDS/MINUTES SUFFICIENT.** 58.7% of observed 2026 episodes last longer than 50 min. But episodes that close within the window have a median of **16 s** (n=253), so the long ones are probably the shallowest |
+| SPEED REQUIREMENT | **SECONDS/MINUTES SUFFICIENT.** 58.7% of the 624 episodes in the 2026 persistence sample last longer than 50 min (that sample is smaller than the 2,134 positive episodes of Fig. 2; the source does not explain the gap). But episodes that close within the window have a median of **16 s** (n=253), so the long ones are probably the shallowest |
 | CAPITAL REQUIREMENT | A few tens of $ per basket |
 | CAPITAL LOCK | Until resolution (days to months) |
 | INFRASTRUCTURE | Collector for all books of NegRisk events + `feeSchedule` per market; multi-leg taker execution. No colocation |
@@ -253,26 +253,26 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 | ID | A5-S2 |
 | TITLE | Post-event settlement liquidity on Polymarket: buy (resting bid) the winning claim of an already-decided event at 0.998–0.999, redeem at 1 after UMA resolution |
 | TYPE | settlement |
-| MECHANISM | Once the real event is decided, the claim is still not redeemable until UMA finalizes (2 h minimum if undisputed). Holders who want their cash immediately sell into bids at 0.999 because the **0.001 tick** allows no better price. The buyer earns 0.1–0.2% over a few hours (P, Gebele & Matthes, App. 9.3: "settlement-liquidity trade") |
+| MECHANISM | Once the real event is decided, the claim is still not redeemable until UMA finalizes (2 h minimum if undisputed). Holders who want their cash immediately sell into bids at 0.999 because the **0.001 tick** allows no better price. The buyer earns 0.1–0.2% over a few hours (P, Gebele & Matthes, App. 9.3: "settlement-liquidity trade"). **Distinct from the rejected "favorites > 90¢"** (a bet before the event is decided): here the outcome is known, and the only risk left is settlement/resolution. The 0.995–0.998 fills taken before the final observation (weather) fall back into the rejected category and are **not** part of S2 |
 | WHO PAYS | Holders of winning claims who want to recycle capital immediately (bots, active traders): they pay 0.1% to skip a few hours of settlement delay |
 | WHY IT PERSISTS | Settlement latency (UMA) + **tick floor**: at the 0.999 level the discount cannot compress below 0.1%, so competition shifts to the queue, not the price. Capacity is too small for large players. The trade uses balance sheet |
-| RECEIPT | (P) Gebele & Matthes 2026, arXiv 2605.31431, Table 6: top 10 identified liquidity providers, e.g. `0x751a…` **+23,616 $ over 34,994 trades** (median 0.04 $/trade, median hold 1.06 h); top-10 total ≈ **104 k$**. Median APY per trade 6.22%. Sample from inception to 31 Dec 2025, "latest 1,500 trades per market", **disputes excluded**. (V) Live slice today: 300 binary markets (volume ≥ 1 k$) closed 29/09/2026 between 15:07 and 16:39 UTC → **5,692 BUY fills at ≥ 0.995 in the 24 h before close, 1.17 M$ notional, net +1,680.51 $ (0.14%)**, **1 losing fill** (−9.99 $, CS2 match), **1,155 distinct buyers**, top buyer +143 $ on 139 k$ |
+| RECEIPT | (P) Gebele & Matthes 2026, arXiv 2605.31431, Table 6: top 10 identified liquidity providers, e.g. `0x751a…` **+23,616 $ over 34,994 trades** (median 0.04 $/trade, median hold 1.06 h); top-10 total ≈ **104 k$**. Median APY per trade 6.22%. Sample from inception to 31 Dec 2025, "latest 1,500 trades per market", **disputes excluded**. (V) Live slice today: 300 binary markets (volume ≥ 1 k$) closed 29/09/2026 between 15:07 and 16:39 UTC → **5,692 BUY fills at ≥ 0.995 in the 24 h before close, 1.17 M$ notional, net +1,680.51 $ (0.14%)**, **1 losing fill** (−9.99 $, CS2 match), **1,155 distinct buyers**, top buyer +143 $ on 139 k$. **Second independent slice** (300 other markets, later): ≈1.07 M$ notional, ≈+1,564 $. At ≥0.999 the return is **exactly the 0.1% tick floor** in every category. Median hold: esports 0.99 h, other 1.83 h, weather 9.3 h, **crypto "Up or Down" 0.04 h** (latency territory, excluded). At 0.995–0.998: 0.25–0.30% for holds of 8–11 h (residual risk before the final observation). 2 losing fills (esports) |
 | PERIOD | Through Dec 2025 (P) + 29/09/2026 (V) |
 | LAST PROFITABLE DATE | 2026-09-29 (V) |
-| REALIZED PROFIT | Top 10 ≈ 104 k$ cumulative (P). 2026 slice: 1,680 $ in 1.5 h of closes, all buyers combined (V) |
+| REALIZED PROFIT | Top 10 ≈ 104 k$ cumulative (P). 2026: two slices of 300 markets each → +1,680 $ and +1,564 $ (~0.14–0.15% of notional), all buyers combined (V) |
 | GROSS / NET | Net of fees (makers pay 0; seller's taker fee ≈ rate × 0.999 × 0.001 ≈ 0.00005 $/share). **Mis-resolution losses: absent from the academic screen** (disputes excluded) → survivorship |
 | FEES INCLUDED? | Yes (P&L computed from executed prices and final payout) |
 | NUMBER OF ACTORS | 1,155 distinct buyers in 1.5 h of closes (V): **very fragmented** |
 | PROFIT CONCENTRATION | Low in the V slice (top buyer 8.5% of profit). Top 10 academic: the n°1 ≈ 23% of the top-10 total |
-| LOSER POPULATION | Sellers (by choice: they pay for liquidity). On the buyer side: rare losers when "certainty" flips (1/5,692 fills in the slice) |
-| SPEED REQUIREMENT | **SECONDS/MINUTES SUFFICIENT**, but with a **queue race** at 0.999 (price-time priority): being in the queue before the sellers arrive decides fills |
+| LOSER POPULATION | Sellers (by choice: they pay for liquidity). On the buyer side: rare losers when "certainty" flips (3 fills out of ~11,000 across the two slices) |
+| SPEED REQUIREMENT | **SECONDS/MINUTES SUFFICIENT** for esports / other / weather (holds of 1–11 h), but with a **queue race** at 0.999 (price-time priority): being in the queue before the sellers arrive decides fills. **Crypto "Up or Down" markets excluded** (hold 2.4 min → LOW-LATENCY) |
 | CAPITAL REQUIREMENT | Small (fills of a few to a few hundred shares) |
-| CAPITAL LOCK | Hours (median 1–2 h in Table 6); days if disputed |
+| CAPITAL LOCK | Hours: 1–2 h (Table 6; esports/other V), ~9–11 h (weather V); days if disputed |
 | INFRASTRUCTURE | Watcher for event ends / resolution sources + resting bids across many markets; checks on the resolution rule. No colocation |
 | PUBLIC DATA REQUIRED | Gamma (`endDate`, `closedTime`, `umaResolutionStatus`), books, `data-api/trades`, resolution sources |
 | CAPACITY | Low per market; aggregate ~1.2 M$ of near-certain notional per 1.5 h of closes, shared among >1,000 buyers |
 | ESTIMATED SMALL-SIZE €/MONTH | **UNKNOWN** (depends on fill share in the queue). Upper bound: capital × 0.1–0.14% × 2 cycles/day × utilization. At 10–30% utilization: €500 ≈ 3–9 €, €1,000 ≈ 6–18 €, €5,000 ≈ 30–90 €, **before** tail losses |
-| TAIL RISK | A single flip or mis-resolution costs ~99.9% of the position, i.e. ~1,000 profitable trades. UMA vote against the facts or a disputed rule; revision of the resolution data (weather station, cf. agent 3 on Roissy); a "certain" state misjudged (case: 1 loss in the V slice) |
+| TAIL RISK | A single flip or mis-resolution costs ~99.9% of the position, i.e. ~1,000 profitable trades. UMA vote against the facts or a disputed rule; revision of the resolution data (weather station, cf. agent 3 on Roissy); a "certain" state misjudged (3 losing fills across the two V slices) |
 | VENUE ACCESS | Polymarket international (as S1) |
 | ONE-DAY PUBLIC VERIFICATION POSSIBLE? | **Yes** (partly done: V slice) |
 | CHEAPEST FALSIFICATION TEST | 30 days of closed markets: for each buyer at ≥ 0.998, net P&L **including** disputed or flipped markets; plus a shadow queue simulation (a bid posted at 0.999 at time t: what fill share given the queue ahead?). If net per buyer ≤ 0 over 30 days, or expected fill share for a new bid < 5% → **reject** |
@@ -363,4 +363,46 @@ stated: the ~100× factor left inside NegRisk is explained qualitatively but not
 | Survivorship | S2 | Gebele & Matthes' screen **excludes disputes**, so tail losses are absent from the P&L; Table 6 = top 10 only | Confidence capped at PROBABLE; falsification test includes losers |
 | Survivorship | Saguillo top 10 | These are "winners" of a gross measure; their lifetime P&L is often below it | Used as proof of bias, not as edge evidence |
 | 2024 assumed alive in 2026 | Arbitrage | Saguillo's 2024–25 results are **not** extrapolated. Converter 2026: activity observed, standalone profit not established | 2026 = "active as an MM tool, standalone profit unverified" |
-| Misattributed secondary claims | "73% to bots < 100 ms", "2.7 s average duration" | **Absent from Saguillo's text** (read in full) | Treated as (S) false, not reused |
+| Misattributed secondary claims | "73% to bots < 100 ms", "2.7 s average duration" (cited by agent 3 as S and by blogs as coming from the IMDEA study) | **Absent from Saguillo's text**: no occurrence of "millisecond", "latency", "73%" or "2.7 s" in the arXiv, HTML or LIPIcs versions (V, grep) | Treated as (S) false, not reused |
+
+---
+
+## Synthesis
+
+**Part A.** The "contradiction" 39.59 M$ vs 291 k$ is a definition gap. Saguillo measures gross,
+one-sided, partly imputed gains from complementary trading. Gebele measures profit tied to a
+realization mechanism. The raw account data (V) confirm it: the Saguillo top-10 account verified here as a
+pure arbitrageur (#8, 32,788 conversions) **cashed 15 k$ in its lifetime, not 468 k$**.
+Structural arbitrage on Polymarket is real, but small (~0.3 M$/year at platform scale in
+2024–25), concentrated (top 10 ≈ 75%), and in 2026 it has become an inventory tool for market
+makers. The NO/converter side is a seconds-level race. The YES/settlement side is slow but
+microscopic.
+
+**Part B.** Three mechanisms pass the receipt, speed and capital gates. All three are
+**economically marginal** at Quant's size:
+- **S2 (settlement liquidity at the 0.001 tick)** is the only one that is **alive, realized and
+  measurable in 2026** with small capital and no speed. It is structural, not predictive: the
+  0.001 tick sets a floor on the discount. Unknowns: the fill share for a newcomer, and the net
+  after disputes.
+- **S1** (NegRisk YES basket) is realized but microscopic (~700 $/month for the whole platform
+  in 2024–25).
+- **S3** (HLP) has a verified receipt, but about 0% over 6 months. It is delegated insurance
+  against liquidations, not an edge Quant runs itself.
+
+No candidate justifies real capital. REAL_CAPITAL_AUTHORIZED stays FALSE.
+
+**POLYMARKET_ARBITRAGE_RECONCILIATION = RESOLVED**
+
+**STRUCTURAL_RECEIPT_SEARCH = VALID_SMALL_PLAYER_CANDIDATES_FOUND**
+(qualifier: the 3 candidates pass the receipt, speed and capital gates, but the realistic value is
+≤ ~90 €/month at €5,000 before tail losses. None is a large edge.)
+
+## Final report (7 lines)
+
+1. Branch: `claude/hopeful-hamilton-81rab1`
+2. SHA: see `git log -1` on the branch (also recorded in `agent5_structural_etat.md`)
+3. POLYMARKET_ARBITRAGE_RECONCILIATION = RESOLVED
+4. 39.59 M$ is a gross, one-sided, partly imputed sum of favorable complementary baskets (per address, ~1 h windows, no netting); 291 k$ counts only profit tied to an observed NegRisk conversion or a complete basket formed within minutes. Different estimands: Saguillo's #8, a pure converter, cashed +15 k$ in its lifetime vs 468 k$ attributed.
+5. STRUCTURAL_RECEIPT_SEARCH = VALID_SMALL_PLAYER_CANDIDATES_FOUND (marginal: ≤ ~90 €/month at €5k)
+6. A5-S2 (settlement liquidity at 0.999), A5-S1 (NegRisk YES basket < 1), A5-S3 (HLP)
+7. Cheapest next falsification: 30-day on-chain census of all ≥0.998 buys on closed Polymarket markets (excluding crypto "Up or Down"), net P&L per buyer **including** disputed or flipped markets, plus a shadow simulation of the fill share for a new 0.999 bid.
