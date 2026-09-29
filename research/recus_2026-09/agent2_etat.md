@@ -1,6 +1,6 @@
 # AGENT 2 — PROFITS MESURÉS — état
 
-- statut : EN_COURS
+- statut : DONE
 - trigger_id : trig_015bpoUMiyu4dVxAYPZVfmMp (Routine « Ordre 13 — AGENT 2 », cron horaire, session session_01ThTVkeUm93EKjk6vUsNzcj)
 - branche : claude/gallant-cerf-e0rpao
 - livrable : research/recus_2026-09/agent2_profits_mesures.md
@@ -21,11 +21,11 @@
 - ScienceDirect funding-rate arb S2096720925000818 : 403 (non consulté)
 
 ## Fiches terminées (ID)
-(aucune — rédaction en cours)
+R1, R2, R3, R4, R5, R6, R7 + Négatifs utiles — livrable poussé, commit 5daa657 (fiches R5-R7), commit précédent = fiches R1-R4.
 
 ## Décisions
 - Découverte STOPPÉE (≥6 candidats solides). Pas de nouvelle source sauf vérification d'un chiffre.
 - Fiches prévues : R1 Polymarket arb intra-marché (Saguillo + Gebele contre-preuve) ; R2 Kalshi makers (Bürgi/Deng/Whelan) ; R3 Betfair makers (Whelan) ; R4 Metaculus bots ; R5 Numerai payouts ; R6 Polymarket cross-venue (négatif structuré) ; R7 LP DEX (négatif mesuré) ; carry crypto → Négatifs utiles.
 
 ## Prochaine étape
-Phase 3 : écrire research/recus_2026-09/agent2_profits_mesures.md (fiches R1→R7 + Négatifs utiles), commit, push, statut DONE, delete_trigger, rapport final.
+Aucune. Mission terminée le 2026-09-29 ~15:50 UTC. Routine trig_015bpoUMiyu4dVxAYPZVfmMp supprimé (delete_trigger). Au réveil : ne rien faire.
