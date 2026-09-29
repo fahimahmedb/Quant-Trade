@@ -1,0 +1,152 @@
+# WEATHER FORWARD V2 — POWER, FEASIBILITY AND SIMULATION TABLE — 2026-09-29
+
+```text
+ROLE    = Builder-readable power / feasibility evidence for WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md
+LABELS  = DERIVED (arithmetic) · SIMULATED (synthetic Monte Carlo, script committed alongside) · ASSUMED (scenario input)
+DATA    = no outcome, settlement, P&L, winner, wallet or price-history data used; throughput scenarios are Astra's
+          measured pre-outcome trigger rates rescaled to the V2 cohort
+```
+
+## 1. Conventions
+
+- `z_{0.95} + z_{0.80} = 2.4865` (MDE80), `z_{0.95} + z_{0.90} = 2.9264` (MDE90), one-sided α = 0.05.
+- `SE(θ̂) = σ_eff √(DEFF / n)`; `SE(κ̂_core) = 0.48 √(DEFF / n_core)` (per-share SD at the core price mix c ~ U(0.35, 0.80)).
+- Planning dependence `DEFF(m) = 1.5 × (1 + 0.03 (m − 1))`: date factor with latent-scale ρ_d = 0.03 (the date ceiling), station factor 1.5. It lies inside Astra's 2–4 range and rises with trades per date.
+- V2 cohort throughput (°C + °F): ≈ 66 °C + 21 °F entry-expected events/day at 95% completeness ≈ 87/day; Astra's trigger rates 20% / 40% / 63% → **PESSIMISTIC 17, CONSERVATIVE 35, CENTRAL 55 trades/day**. Astra's °C-only 13 / 27 / 42 are shown in 2.2 for reference.
+- Tail share 16% of trades (Astra: 6 of 38 triggers below 0.05), mean tail all-in cost 0.0127 (log-uniform 0.002–0.04).
+
+## 2. Analytic feasibility (DERIVED)
+
+### 2.1 Feasibility grid, V2 cohort
+
+| Dates | Scenario | m | RAW trades | CORE | TAIL | Λ_tail (fair-null wins) | Date blocks | Station clusters (traded / Kish, ASSUMED) | DEFF | n_eff | SE κ_core | MDE80 κ_core | SE θ σ=1.0 | MDE80 / MDE90 θ σ=1.0 | SE θ σ=2.0 | MDE80 / MDE90 θ σ=2.0 | SE θ σ=2.9 | MDE80 / MDE90 θ σ=2.9 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 60 | PESSIMISTIC | 17 | 1,020 | 857 | 163 | 2.1 | 12 | ≈ 38 / ≈ 28 | 2.22 | 459 | 0.0244 | 0.061 | 0.0467 | 0.116 / 0.137 | 0.0933 | 0.232 / 0.273 | 0.1353 | 0.336 / 0.396 |
+| 60 | CONSERVATIVE | 35 | 2,100 | 1,764 | 336 | 4.3 | 12 | ≈ 44 / ≈ 32 | 3.03 | 693 | 0.0199 | 0.049 | 0.0380 | 0.094 / 0.111 | 0.0760 | 0.189 / 0.222 | 0.1102 | 0.274 / 0.322 |
+| 60 | CENTRAL | 55 | 3,300 | 2,772 | 528 | 6.7 | 12 | ≈ 46 / ≈ 34 | 3.93 | 840 | 0.0181 | 0.045 | 0.0345 | 0.086 / 0.101 | 0.0690 | 0.172 / 0.202 | 0.1001 | 0.249 / 0.293 |
+| 90 | PESSIMISTIC | 17 | 1,530 | 1,285 | 245 | 3.1 | 18 | ≈ 38 / ≈ 28 | 2.22 | 689 | 0.0199 | 0.050 | 0.0381 | 0.095 / 0.111 | 0.0762 | 0.189 / 0.223 | 0.1105 | 0.275 / 0.323 |
+| 90 | CONSERVATIVE | 35 | 3,150 | 2,646 | 504 | 6.4 | 18 | ≈ 44 / ≈ 32 | 3.03 | 1,040 | 0.0162 | 0.040 | 0.0310 | 0.077 / 0.091 | 0.0620 | 0.154 / 0.182 | 0.0899 | 0.224 / 0.263 |
+| 90 | CENTRAL | 55 | 4,950 | 4,158 | 792 | 10.1 | 18 | ≈ 46 / ≈ 34 | 3.93 | 1,260 | 0.0148 | 0.037 | 0.0282 | 0.070 / 0.082 | 0.0564 | 0.140 / 0.165 | 0.0817 | 0.203 / 0.239 |
+| **120** | PESSIMISTIC | 17 | 2,040 | 1,714 | 326 | 4.1 | 24 | ≈ 38 / ≈ 28 | 2.22 | 919 | 0.0173 | 0.043 | 0.0330 | 0.082 / 0.097 | 0.0660 | 0.164 / 0.193 | 0.0957 | 0.238 / 0.280 |
+| **120** | CONSERVATIVE | 35 | 4,200 | 3,528 | 672 | 8.5 | 24 | ≈ 44 / ≈ 32 | 3.03 | 1,386 | 0.0141 | 0.035 | 0.0269 | 0.067 / 0.079 | 0.0537 | 0.134 / 0.157 | 0.0779 | 0.194 / 0.228 |
+| **120** | CENTRAL | 55 | 6,600 | 5,544 | 1,056 | 13.4 | 24 | ≈ 46 / ≈ 34 | 3.93 | 1,679 | 0.0128 | 0.032 | 0.0244 | 0.061 / 0.071 | 0.0488 | 0.121 / 0.143 | 0.0708 | 0.176 / 0.207 |
+
+120 counted dates is the only analysed horizon (spec §11.3); 60 and 90 are shown to make the information growth visible, not as analysis options. Station-cluster counts are projections (48 NOAA stations, gamma-distributed activity); the observation phase measures them.
+
+### 2.2 Astra °C-only throughput at 120 dates (reference)
+
+| Scenario | m | RAW | DEFF | SE θ σ=1.0 | MDE80 σ=1.0 | SE θ σ=2.9 | MDE80 σ=2.9 | SE κ_core | MDE80 κ_core |
+|---|---|---|---|---|---|---|---|---|---|
+| PESSIMISTIC | 13 | 1,560 | 2.04 | 0.0362 | 0.090 | 0.1049 | 0.261 | 0.0189 | 0.047 |
+| CONSERVATIVE | 27 | 3,240 | 2.67 | 0.0287 | 0.071 | 0.0832 | 0.207 | 0.0150 | 0.037 |
+| CENTRAL | 42 | 5,040 | 3.34 | 0.0258 | 0.064 | 0.0747 | 0.186 | 0.0135 | 0.034 |
+
+### 2.3 Required independent trades and calendar
+
+| θ | N_naive σ=1.0 | σ=2.0 | σ=2.9 | dates at 35/day, DEFF 3.03, σ=1.0 | σ=2.0 | σ=2.9 |
+|---|---|---|---|---|---|---|
+| 0.02 | 15,457 | 61,827 | 129,991 | 1,338 | 5,352 | 11,253 |
+| 0.05 | 2,473 | 9,892 | 20,799 | 214 | 856 | 1,801 |
+| 0.10 | 618 | 2,473 | 5,200 | 54 | 214 | 450 |
+
+Reproduces Astra §6.3 and Fable §1.1. **θ = 0.02 is a 3.7-year quantity at σ = 1 and a 31-year quantity at σ = 2.9.**
+
+### 2.4 Binding constraint: target dates (date ceiling `n_eff ≤ D / ρ_d`)
+
+| ρ_d | 60 dates | 90 | 120 | 240 |
+|---|---|---|---|---|
+| 0.02 | 3,000 | 4,500 | 6,000 | 12,000 |
+| 0.03 | 2,000 | 3,000 | 4,000 | 8,000 |
+| 0.05 | 1,200 | 1,800 | 2,400 | 4,800 |
+| 0.10 | 600 | 900 | 1,200 | 2,400 |
+
+Raising trades per date beyond `≈ 1/ρ_d` buys almost nothing; only dates (or a lower-variance statistic, κ) buy information. The table in 2.1 shows it directly: going from 35 to 55 trades/day (+57% trades) raises n_eff by only 21%.
+
+## 3. θ label probabilities at 120 dates, CONSERVATIVE throughput (DERIVED, normal approximation, CR engine, before gates)
+
+| σ_eff | SE θ | θ_PCE (formula) | θ = 0.00 | θ = 0.02 | θ = 0.05 | θ = 0.10 |
+|---|---|---|---|---|---|---|
+| 1.0 | 0.0269 | 0.07 | 0.05 / 0.18 / 0.83 | 0.18 / 0.05 / 0.59 | 0.59 / 0.00 / 0.18 | 0.98 / 0.00 / 0.00 |
+| 2.0 | 0.0537 | 0.14 | 0.05 / 0.10 / 0.83 | 0.10 / 0.05 / 0.72 | 0.24 / 0.01 / 0.51 | 0.59 / 0.00 / 0.18 |
+| 2.9 | 0.0779 | 0.20 | 0.05 / 0.08 / 0.82 | 0.08 / 0.05 / 0.75 | 0.16 / 0.02 / 0.61 | 0.36 / 0.00 / 0.36 |
+
+Cells: `P(T2 rejects) / P(U < θ_ERT) / P(U < θ_PCE)`. These are core-only bounds; with lottery legs the structured bound makes `P(U < θ_ERT) ≈ 0` (section 4). At σ_eff = 1, a true θ = 0.02 is confirmed 18% and excluded 5% of the time: the ERT band is unresolved by construction.
+
+## 4. Synthetic Monte Carlo (SIMULATED)
+
+Script: `WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py`. Design per replication: 120 dates, Poisson(35) trades/date, 48 stations with gamma(2, 1) activity, 5-date blocks; price mixes **M00** (95% core c ~ U(0.35, 0.80), 5% mid c ~ U(0.04, 0.35), no tail), **M05** (5% tail, 5% mid), **M16** (16% tail log-U(0.002, 0.04), Fable's mix); capital 50 USD w.p. 0.68 else U(10, 50); true dependence latent Gaussian (date, station, station-day cell) = **TRUE** (0.05, 0.05, 0.10), **STRESS** (0.15, 0.15, 0.10), **SST** strong station (0.02, 0.15, 0.10); PINM declared (0.10, 0.10, 0.10), B = 1,000 in simulation. 200 replications per row (Monte-Carlo SE ≈ 0.015 near 0.05, ≈ 0.035 near 0.5). Scenario "uniform(θ)": every leg `p = c (1 + θ)`; "tail_mult(k)": core fair, tail `p = k c`; "core_plus_tail_over": core `p = 1.05 c`, tail `p = 0.5 c`; "hidden_lottery(10)": only legs with `c < 0.005` at `p = 10 c`; "shrink(μ)": `p = c + μ (q − c)`.
+
+### 4.1 Run A — Fable-style configuration (engine conjunction + fixed-sequence gate), seeds 1000–1016
+
+| Scenario | Mix | θ_true | T1 (conj.) | T2 CR | T2 PINM | T2 conj. | Gated net-value claim (S3+S4) | U(θ) coverage (struct. / naive) | Notes |
+|---|---|---|---|---|---|---|---|---|---|
+| uniform(0) | M00 | 0 | 0.000 | 0.060 | 0.010 | 0.010 | 0.00 | 0.975 / 0.915 | date-only κ 0.105 |
+| uniform(0.02) | M00 | 0.02 | 0.005 | 0.115 | 0.030 | 0.030 | 0.005 | 0.985 / 0.955 | |
+| uniform(0.05) | M00 | 0.05 | 0.125 | 0.395 | 0.150 | 0.150 | 0.12 | 0.975 / 0.925 | |
+| uniform(0.10) | M00 | 0.10 | 0.725 | **0.910** | **0.755** | 0.755 | 0.70 | 0.98 / 0.955 | PINM power loss |
+| uniform(0) | M05 | 0 | 0.015 | 0.010 | 0.040 | 0.005 | 0.00 | 1.00 / 0.87 | |
+| uniform(0.10) | M05 | 0.10 | 0.69 | 0.52 | 0.275 | 0.205 | 0.185 | 1.00 / 0.845 | |
+| uniform(0) | M16 | 0 | 0.010 | 0.015 | 0.065 | 0.010 | 0.00 | 1.00 / 0.83 | |
+| uniform(0.10) | M16 | 0.10 | 0.70 | 0.185 | 0.195 | 0.110 | 0.10 | 1.00 / 0.825 | |
+| tail_mult(3) | M16 | 0.32 | 0.915 | 0.645 | 0.77 | 0.615 | 0.615 | 1.00 / 0.87 | |
+| hidden_lottery(10) | M16 | 0.44 | 0.23 | **0.61** | 0.885 | 0.61 | **0.23** | **0.89** / 0.885 | gate blocks 2/3 |
+| uniform(−0.10) | M16 | −0.10 | 0 | 0 | 0 | 0 | 0 | 1.00 / 0.83 | NEG (conj.) 0.83 |
+| core_plus_tail_over | M16 | −0.038 | 0.155 | 0.000 | 0.015 | 0 | 0 | 1.00 / 0.79 | κ_core = +0.029 |
+
+### 4.2 Run B — V2 configuration (spec §6–8; NEG shown at 0.05, see 4.3), seeds 1000–1017
+
+| Scenario | Mix / dep. | θ_true | κ_true | T1a CR | T1b PINM (block) | T1 | T2 CR (PINM aux.) | NEG@0.05 | U cover (struct. / naive) | U<ERT | False U<PCE | Main states (INFORMATION \| ECONOMIC) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| uniform(0) | M00 TRUE | 0 | 0 | 0.025 | – | 0.025 | 0.060 (0.010) | 0.070 | 0.975 / 0.915 | 0.095 | 0 | ND\|IND 0.845, ADV\|EXCL 0.07, ND\|CONF 0.035, DET\|CONF 0.025 |
+| uniform(0) | M00 STRESS | 0 | 0 | 0.015 | – | 0.015 | 0.030 (0.065) | 0.045 | 0.98 / 0.945 | 0.055 | 0 | ND\|IND 0.915 |
+| uniform(0) | M00 SST | 0 | 0 | 0.025 | – | 0.025 | 0.055 (0.050) | 0.040 | 0.98 / 0.945 | 0.055 | 0 | ND\|IND 0.89 |
+| uniform(0.05) | M00 | 0.05 | 0.028 | 0.39 | – | 0.39 | 0.43 (0.23) | 0 | 0.975 / 0.955 | 0 | 0 | DET\|CONF 0.365, ND\|CONF 0.065, ND\|IND 0.545 |
+| uniform(0.10) | M00 | 0.10 | 0.056 | 0.865 | – | 0.865 | **0.855 (0.73)** | 0 | 0.945 / 0.93 | 0.005 | 0.01 | DET\|CONF 0.855 |
+| uniform(0) | M05 | 0 | 0 | 0.030 | 0.020 (0.015) | 0.050 | 0.015 (0.035) | 0.065 | 1.00 / 0.91 | 0 | 0 | ND\|IND 0.885 |
+| uniform(0.05) | M05 | 0.05 | 0.028 | 0.34 | 0.015 | 0.345 | 0.11 (0.09) | 0 | 1.00 / 0.85 | 0 | 0 | DET\|IND 0.24, DET\|CONF 0.10, ND\|IND 0.65 |
+| uniform(0.10) | M05 | 0.10 | 0.056 | 0.87 | 0.010 | 0.87 | 0.54 (0.28) | 0 | 1.00 / 0.825 | 0 | 0 | DET\|CONF 0.52, DET\|IND 0.335 |
+| uniform(0) | M16 | 0 | 0 | 0.030 | 0.010 (0.005) | 0.040 | 0.000 (0.045) | 0.055 | 1.00 / 0.82 | 0 | 0 | ND\|IND 0.905 |
+| uniform(0.10) | M16 | 0.10 | 0.058 | 0.875 | 0.025 | 0.875 | 0.185 (0.195) | 0 | 1.00 / 0.825 | 0 | 0 | DET\|IND 0.69, DET\|CONF 0.17 |
+| tail_mult(3) | M16 | 0.32 | 0 | 0.035 | **0.975 (0.925)** | 0.975 | 0.645 (0.77) | 0.035 | 1.00 / 0.87 | 0 | 0 | DET\|CONF 0.62, DET\|IND 0.33 |
+| tail_mult(2) | M16 | 0.16 | 0 | 0.020 | **0.585 (0.455)** | 0.585 | 0.24 (0.38) | 0.050 | 1.00 / 0.90 | 0 | 0 | ND\|IND 0.38, DET\|IND 0.355, DET\|CONF 0.185 |
+| tail_mult(1) | M16 STRESS | 0 | 0 | 0.020 | 0.030 (0.025) | 0.050 | 0.020 (0.065) | 0.070 | 0.995 / 0.83 | 0.005 | 0 | ND\|IND 0.875 |
+| core_plus_tail_over | M16 | −0.038 | 0.029 | 0.375 | 0 | 0.375 | 0 (0.01) | 0 | 1.00 / 0.80 | 0 | 0 | ND\|IND 0.625, DET\|IND 0.375 |
+| hidden_lottery(10) | M16 | 0.44 | 0 | 0.040 | 0.305 (0.21) | 0.325 | **0.535** (0.85) | 0.065 | **0.86** / 0.885 | 0 | **0.06** | ND\|IND 0.385, DET\|CONF 0.245, ND\|CONF 0.145, NROB 0.15 |
+| uniform(−0.10) | M16 | −0.10 | −0.058 | 0 | 0 | 0 | 0 | **0.94** | 1.00 / 0.875 | 0.07 | 0 | ADV\|IND 0.87, ADV\|EXCL 0.07 |
+| uniform(−0.05) | M00 | −0.05 | −0.028 | 0.005 | – | 0.005 | 0.01 | 0.44 | 0.98 / 0.94 | 0.41 | 0 | ADV\|EXCL 0.395, ND\|IND 0.535 |
+| shrink(0.1) | M16 | 0.47 | 0.018 | 0.15 | 0.77 (0.715) | 0.78 | 0.765 (0.905) | 0.005 | 0.985 / 0.84 | 0 | 0.005 | DET\|CONF 0.635, DET\|NROB 0.09 |
+
+Date-only κ test (nominal 0.025) under the null: 0.095–0.205 across run B null rows (0.105 TRUE, 0.13 STRESS, **0.205 SST**, 0.105 M16, 0.175 M16 STRESS).
+
+θ_PCE by the frozen formula on the first 14 synthetic dates (median over replications): **M00 0.08 (σ0 1.08) → GO; M05 0.21 (σ0 3.07) → NO_GO; M16 0.35–0.36 (σ0 5.2–5.3) → NO_GO.** Planned `SE0_κ` ≈ 0.013–0.014 in every mix (κ is immune to the tail); realised `SE(κ̂_core)` 0.016–0.018 under TRUE dependence, 0.025–0.028 under STRESS (IF4 floor 0.025 binds only under the extreme STRESS setting).
+
+### 4.3 Run C — CR engine null size, M00, 1,600 replications per cell per setting (seeds 1–4 with NEG at 0.05; seeds 11–14 with NEG at 0.025)
+
+| True dependence | T1a (nominal 0.025) | T2 (nominal 0.05) | NEG at 0.05 | NEG at 0.025 (frozen) |
+|---|---|---|---|---|
+| TRUE (0.05, 0.05, 0.10) | 0.032 | 0.053 | 0.068 | **0.028** |
+| SST (0.02, 0.15, 0.10) | 0.031 | 0.051 | 0.061 | **0.022** |
+| independence | 0.020 | 0.041 | 0.033 | **0.013** |
+
+Monte-Carlo SE ≈ 0.003–0.004 (pooled 3,200 for T1a and T2). Reading: T2 is at nominal; T1a runs ≈ 1.3× nominal but the T1 union stays ≤ 0.05 in run B (0.015–0.05) because T1b is conservative; NEG at 0.05 over-rejects through negative skew of `y − c` on favourite-bucket NO legs, hence the frozen 0.025.
+
+### 4.4 What the simulation settles
+
+1. **PINM with a declared dependence must not gate core statistics** (4.1: 0.755 vs 0.91; 4.2: 0.73 vs 0.855; M05 0.28 vs 0.54). It is valuable for the rare tail count (T1b 0.975 at 3×, 0.585 at 2×), where the declared dependence barely matters.
+2. **No gate on θ**: a payout-concentrated edge (hidden lottery, θ = 0.44) is claimed 0.535 ungated vs 0.30 gated (run B; run A 0.61 vs 0.23).
+3. **Two-way CR holds size** where date-only fails (0.095–0.205 at nominal 0.025).
+4. **Naive pooled upper bounds under-cover with lottery legs** (0.79–0.91); the structured bound covers ≥ 0.945 everywhere except the adversarial hidden-lottery scenario (0.86–0.89), where it wrongly excludes the LARGE band 4–6% of the time (MAJOR, disclosed).
+5. **With any material lottery share, relevance (0.02) cannot be excluded** (U < ERT = 0 in every tail scenario) and θ_PCE exceeds the 0.10 ceiling → NO_GO. The information axis keeps full power in every mix (T1a 0.865–0.875 at κ ≈ 0.056).
+6. **A public-bot-like loss rate is detected**: NEG 0.94 at κ = −0.058 (0.05 level; ≈ 0.9 at the frozen 0.025).
+
+## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
+
+| True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
+|---|---|---|---|
+| 0.00 | ND\|IND ≈ 0.85–0.92; false CONFIRMED ≈ 0.03–0.06; false NEG ≈ 0.03 (at 0.025) | would not start | would not start |
+| 0.02 (= ERT) | CONFIRMED ≈ 0.12–0.18 (analytic 0.18 before gates); EXCLUDED ≈ 0.05; otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
+| 0.05 | CONFIRMED ≈ 0.43; information DETECTED ≈ 0.39; INDETERMINATE ≈ 0.55 | (if run: CONFIRMED 0.10, DET 0.345) | (if run: CONFIRMED ≈ 0.01) |
+| 0.10 | CONFIRMED ≈ 0.86; information DETECTED ≈ 0.87 | (if run: CONFIRMED 0.52) | (if run: CONFIRMED 0.17, DET 0.875) |
+| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); relevance EXCLUDED ≈ 0.41 | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10) |
+
+Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
