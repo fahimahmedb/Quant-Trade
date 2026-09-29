@@ -1,0 +1,69 @@
+
+######## TOURNAMENT 8 rounds 1213 - 1341 R= 129 mid 1277 meanpx 8.651 p0 7.927 p1 10.335 pnow 12.402
+platform window return (sum totalPayout/mean totalAtStake) 10.21%
+pf range (0.08765844394955354, 0.13223958975116273) stakes/round (3896, 4341) mean totalAtStake 745590 sum totalPayout 76148.6 missing_settled 0 [{'displayName': 'v2_corr20', 'multiplier': 0.75}, {'displayName': 'mmc', 'multiplier': 2.25}]
+N models staked>=1 round 5981 full-window 2851 sum model payouts 76148.6
+mean-stake quantiles NMR p10..p90 [0.01, 0.07, 0.94, 5.71, 77.59, 2542.44] max 109391
+-- all
+tier N fracPos medRet meanRet p25 p75 medPayNMR medPayUSD medNegRnds medRndsStaked | medUSDhold fracPosUSD
+<$500 5321 70.5% 4.9% 6.2% -0.9% 14.1% 0.005 0.04 42 107 | 45.8% 99.2% now: 74.9% stakeW ret 7.3%
+$500-2k 305 78.0% 6.7% 7.8% 0.9% 16.0% 7.128 61.66 42 123 | 44.2% 100.0% now: 73.0% stakeW ret 7.4%
+$2k-10k 227 70.9% 5.0% 7.2% -0.7% 15.6% 25.454 220.19 45 124 | 43.4% 100.0% now: 72.1% stakeW ret 8.0%
+>$10k 128 79.7% 9.0% 10.8% 1.7% 21.1% 279.644 2419.11 39.0 124.0 | 51.8% 100.0% now: 82.2% stakeW ret 9.1%
+  sub:<$50 dust 4488 69.8% 4.5% 5.9% -1.1% 13.9% 0.003 0.03 42.0 107.0 | 45.8% 99.3% now: 74.9% stakeW ret 4.1%
+  sub:$50-500 833 74.5% 6.6% 7.8% -0.0% 14.9% 0.871 7.53 42 121 | 46.2% 98.9% now: 75.5% stakeW ret 8.1%
+-- full
+tier N fracPos medRet meanRet p25 p75 medPayNMR medPayUSD medNegRnds medRndsStaked | medUSDhold fracPosUSD
+<$500 2469 81.3% 11.8% 10.9% 3.3% 18.8% 0.010 0.09 53 129 | 45.8% 99.2% now: 74.9% stakeW ret 12.5%
+$500-2k 172 84.3% 10.6% 11.0% 4.2% 18.3% 11.394 98.57 52.0 128.0 | 44.2% 100.0% now: 73.0% stakeW ret 10.5%
+$2k-10k 130 76.2% 10.0% 9.8% 2.0% 17.4% 45.224 391.22 54.0 128.0 | 43.4% 100.0% now: 72.1% stakeW ret 10.6%
+>$10k 80 86.2% 16.4% 13.6% 5.8% 22.5% 407.040 3521.17 49.5 128.0 | 51.8% 100.0% now: 82.2% stakeW ret 10.0%
+  sub:<$50 dust 2010 79.8% 11.8% 10.5% 2.6% 18.6% 0.006 0.05 54.0 129.0 | 45.8% 99.3% now: 74.9% stakeW ret 9.4%
+  sub:$50-500 459 88.0% 12.1% 12.6% 5.2% 19.9% 1.494 12.93 51 129 | 46.2% 98.9% now: 75.5% stakeW ret 13.0%
+positive-net models 4253 sum pos 83578.6 sum neg -7429.9 top1/5/10/100 share of positive: ['8.5%', '22.4%', '33.4%', '83.6%']
+stake share top1/5/10/100: ['12.7%', '29.6%', '36.8%', '75.5%']
+small tier share of positive payouts 2.2%
+persistence all N 4396 fracPos h1 46.0% h2 83.4% medRet h1 -0.7% h2 10.1%
+    <$500 3850 fracPos h1/h2 45.0% 85.0% med h1/h2 -1.0% 10.2% corr -0.11 P(h2>0|h1>0) 80.5% P(h2>0|h1<=0) 88.7%
+    $500-2k 245 fracPos h1/h2 50.6% 75.5% med h1/h2 0.2% 9.2% corr -0.287 P(h2>0|h1>0) 68.5% P(h2>0|h1<=0) 82.6%
+    $2k-10k 186 fracPos h1/h2 51.6% 67.2% med h1/h2 0.5% 7.5% corr -0.134 P(h2>0|h1>0) 60.4% P(h2>0|h1<=0) 74.4%
+    >$10k 115 fracPos h1/h2 63.5% 73.9% med h1/h2 3.9% 9.3% corr -0.203 P(h2>0|h1>0) 69.9% P(h2>0|h1<=0) 81.0%
+persistence full N 2851 fracPos h1 50.3% h2 86.3% medRet h1 0.1% h2 11.8%
+    <$500 2469 fracPos h1/h2 49.4% 88.0% med h1/h2 -0.1% 12.0% corr -0.175 P(h2>0|h1>0) 82.5% P(h2>0|h1<=0) 93.4%
+    $500-2k 172 fracPos h1/h2 52.3% 77.3% med h1/h2 1.3% 10.6% corr -0.352 P(h2>0|h1>0) 68.9% P(h2>0|h1<=0) 86.6%
+    $2k-10k 130 fracPos h1/h2 53.8% 71.5% med h1/h2 0.9% 9.9% corr -0.008 P(h2>0|h1>0) 72.9% P(h2>0|h1<=0) 70.0%
+    >$10k 80 fracPos h1/h2 67.5% 77.5% med h1/h2 4.5% 11.6% corr -0.039 P(h2>0|h1>0) 79.6% P(h2>0|h1<=0) 73.1%
+
+######## TOURNAMENT 11 rounds 1173 - 1301 R= 129 mid 1237 meanpx 8.756 p0 9.624 p1 10.335 pnow 12.402
+platform window return (sum totalPayout/mean totalAtStake) 38.46%
+pf range (0.2811623222718441, 0.6324408416072894) stakes/round (245, 491) mean totalAtStake 94170 sum totalPayout 36216.3 missing_settled 0 [{'displayName': 'alpha', 'multiplier': 0.3}, {'displayName': 'mpc', 'multiplier': 0.8}]
+N models staked>=1 round 912 full-window 44 sum model payouts 36216.3
+mean-stake quantiles NMR p10..p90 [0.01, 0.1, 1.0, 10.45, 158.47, 1591.4] max 20000
+-- all
+tier N fracPos medRet meanRet p25 p75 medPayNMR medPayUSD medNegRnds medRndsStaked | medUSDhold fracPosUSD
+<$500 764 46.2% -0.9% -6.4% -16.7% 10.7% -0.000 -0.00 14.0 40.0 | 69.9% 77.8% now: 103.9% stakeW ret -16.5%
+$500-2k 75 65.3% 8.8% 11.3% -5.2% 34.5% 7.063 61.84 27 87 | 63.9% 100.0% now: 96.7% stakeW ret 11.9%
+$2k-10k 58 67.2% 33.8% 22.5% -31.2% 84.0% 127.295 1114.53 26.0 104.5 | 97.9% 100.0% now: 137.5% stakeW ret 23.9%
+>$10k 15 46.7% -2.5% 0.8% -40.8% 40.4% -40.678 -356.16 22 85 | 79.5% 100.0% now: 115.4% stakeW ret 35.2%
+  sub:<$50 dust 634 47.6% -0.5% -3.3% -11.8% 10.3% -0.000 -0.00 12.0 30.5 | 69.9% 78.6% now: 103.9% stakeW ret -1.8%
+  sub:$50-500 130 39.2% -10.6% -21.9% -39.4% 12.7% -1.090 -9.55 43.0 85.0 | 70.8% 75.0% now: 104.9% stakeW ret -19.5%
+-- full
+tier N fracPos medRet meanRet p25 p75 medPayNMR medPayUSD medNegRnds medRndsStaked | medUSDhold fracPosUSD
+<$500 18 66.7% 58.2% 43.5% -4.9% 100.0% 0.624 5.46 31.5 126.0 | 69.9% 77.8% now: 103.9% stakeW ret 61.1%
+$500-2k 9 100.0% 52.6% 61.8% 46.3% 67.7% 71.923 629.73 23 126 | 63.9% 100.0% now: 96.7% stakeW ret 63.5%
+$2k-10k 13 100.0% 84.3% 77.8% 60.4% 89.7% 326.569 2859.29 22 120 | 97.9% 100.0% now: 137.5% stakeW ret 73.7%
+>$10k 4 100.0% 67.1% 67.9% 39.9% 95.1% 4655.362 40760.19 22.0 128.0 | 79.5% 100.0% now: 115.4% stakeW ret 62.4%
+  sub:<$50 dust 14 64.3% 58.2% 46.2% -4.9% 100.0% 0.350 3.07 31.5 124.5 | 69.9% 78.6% now: 103.9% stakeW ret 11.4%
+  sub:$50-500 4 75.0% 59.0% 33.7% -13.6% 106.4% 14.362 125.75 36.0 128.5 | 70.8% 75.0% now: 104.9% stakeW ret 72.1%
+positive-net models 448 sum pos 51204.6 sum neg -14988.3 top1/5/10/100 share of positive: ['31.0%', '73.5%', '79.4%', '99.7%']
+stake share top1/5/10/100: ['16.3%', '52.6%', '62.2%', '93.8%']
+small tier share of positive payouts 0.9%
+persistence all N 542 fracPos h1 46.5% h2 57.7% medRet h1 -1.4% h2 3.3%
+    <$500 418 fracPos h1/h2 41.1% 56.2% med h1/h2 -4.9% 2.1% corr 0.356 P(h2>0|h1>0) 71.5% P(h2>0|h1<=0) 45.5%
+    $500-2k 58 fracPos h1/h2 62.1% 56.9% med h1/h2 13.7% 1.3% corr 0.195 P(h2>0|h1>0) 58.3% P(h2>0|h1<=0) 54.5%
+    $2k-10k 55 fracPos h1/h2 67.3% 67.3% med h1/h2 21.3% 12.3% corr 0.657 P(h2>0|h1>0) 83.8% P(h2>0|h1<=0) 33.3%
+    >$10k 11 fracPos h1/h2 63.6% 72.7% med h1/h2 25.8% 9.7% corr 0.438 P(h2>0|h1>0) 85.7% P(h2>0|h1<=0) 50.0%
+persistence full N 44 fracPos h1 88.6% h2 79.5% medRet h1 52.8% h2 21.3%
+    <$500 18 fracPos h1/h2 72.2% 66.7% med h1/h2 36.7% 29.8% corr 0.727 P(h2>0|h1>0) 76.9% P(h2>0|h1<=0) 40.0%
+    $500-2k 9 fracPos h1/h2 100.0% 66.7% med h1/h2 53.3% 18.4% corr -0.472 P(h2>0|h1>0) 66.7% P(h2>0|h1<=0) NA
+    $2k-10k 13 fracPos h1/h2 100.0% 100.0% med h1/h2 66.2% 22.4% corr -0.062 P(h2>0|h1>0) 100.0% P(h2>0|h1<=0) NA

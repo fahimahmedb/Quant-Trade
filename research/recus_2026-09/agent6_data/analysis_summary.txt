@@ -1,0 +1,200 @@
+
+######## Cohort A: usable 159, unusable 1 [('T2', '0xd059c842433967cc27a3cffe2c2fc0e544be42c6', 'no pnl series')]
+
+Cohort A T1: N usable = 40
+   net>0 23/40 (57%) | trading>0 22/40 (55%) | trading+rewards>0 22/40 (55%) | trading+rebates>0 22/40 (55%)
+   NET      med          1  mean     -112744  p25      -133  p75        71
+   TRADING  med          0  mean     -113720  p25      -284  p75        41
+   REWARDS  med        0.8  mean         262   | REBATES med      0.0  mean       714
+   SUMS     trading     -4548788 + rewards      10483 + rebates      28548 = net     -4509757
+   positive-net concentration top1/top5/top10 = 68% / 93% / 100%  (n positive 23)
+   trading losers 18: subsidy flips to net>0 in 1; subsidy sum 20937 vs their trading loss -4747744
+   month1: net>0 26/40 (65%) med        1 | med reward     0.7 med rebate     0.0 | sum reward      3064 sum rebate      8259
+   month2: net>0 19/40 (48%) med        0 | med reward     0.0 med rebate     0.0 | sum reward      3098 sum rebate      7297
+   month3: net>0 22/40 (55%) med        0 | med reward     0.0 med rebate     0.0 | sum reward      4321 sum rebate     12992
+   net>0 in all 3 months 10/40 (25%); in 0 of 3 months 5/40 (12%)
+   net/cash_d0 (cash>=$100, n=20): med +2.5%  p25 -146.4%  p75 +72.3%
+   per volume (uncapped, vol>=$1k, n=19): net med -5 bp | trading med -19 bp | subsidy med +2 bp
+   cash_d0 med 109 (p25 9, p75 1353); window vol med 7129
+   flags: F_START 0, F_VOLCAP 8, F_CASH0 10, F_LB 1
+   [robustness, excluding F_LB] n=39 net>0 23/39 (59%) med 1 mean 5217
+
+Cohort A T2: N usable = 39
+   net>0 14/39 (36%) | trading>0 10/39 (26%) | trading+rewards>0 14/39 (36%) | trading+rebates>0 11/39 (28%)
+   NET      med       -106  mean        1428  p25     -2521  p75       119
+   TRADING  med       -199  mean         597  p25     -2779  p75        37
+   REWARDS  med       51.7  mean         274   | REBATES med     22.5  mean       557
+   SUMS     trading        23280 + rewards      10695 + rebates      21722 = net        55697
+   positive-net concentration top1/top5/top10 = 44% / 99% / 100%  (n positive 14)
+   trading losers 29: subsidy flips to net>0 in 4; subsidy sum 15386 vs their trading loss -233980
+   month1: net>0 17/39 (44%) med       -4 | med reward    27.4 med rebate     9.9 | sum reward      4907 sum rebate      5993
+   month2: net>0 14/39 (36%) med       -6 | med reward     3.6 med rebate     4.0 | sum reward      3101 sum rebate     11253
+   month3: net>0 9/39 (23%) med       -2 | med reward     0.0 med rebate     1.2 | sum reward      2687 sum rebate      4476
+   net>0 in all 3 months 4/39 (10%); in 0 of 3 months 14/39 (36%)
+   net/cash_d0 (cash>=$100, n=28): med -40.4%  p25 -202.9%  p75 +38.1%
+   per volume (uncapped, vol>=$1k, n=29): net med -96 bp | trading med -168 bp | subsidy med +21 bp
+   cash_d0 med 1153 (p25 87, p75 3909); window vol med 20908
+   flags: F_START 0, F_VOLCAP 6, F_CASH0 5, F_LB 7
+   [robustness, excluding F_LB] n=32 net>0 11/32 (34%) med -69 mean -3708
+
+Cohort A T3: N usable = 40
+   net>0 21/40 (52%) | trading>0 19/40 (48%) | trading+rewards>0 21/40 (52%) | trading+rebates>0 19/40 (48%)
+   NET      med         62  mean      -23643  p25     -3077  p75     10436
+   TRADING  med       -149  mean      -27927  p25     -3408  p75      9035
+   REWARDS  med      414.8  mean        2813   | REBATES med     82.2  mean      1471
+   SUMS     trading     -1117085 + rewards     112509 + rebates      58848 = net      -945729
+   positive-net concentration top1/top5/top10 = 37% / 79% / 97%  (n positive 21)
+   trading losers 21: subsidy flips to net>0 in 2; subsidy sum 108880 vs their trading loss -1755551
+   month1: net>0 24/40 (60%) med      165 | med reward   243.2 med rebate    53.3 | sum reward     39705 sum rebate     25843
+   month2: net>0 20/40 (50%) med        0 | med reward    20.6 med rebate    16.4 | sum reward     49139 sum rebate     17287
+   month3: net>0 15/40 (38%) med       -2 | med reward     7.7 med rebate    12.2 | sum reward     23665 sum rebate     15718
+   net>0 in all 3 months 6/40 (15%); in 0 of 3 months 9/40 (22%)
+   net/cash_d0 (cash>=$100, n=38): med +4.4%  p25 -43.6%  p75 +44.2%
+   per volume (uncapped, vol>=$1k, n=27): net med -22 bp | trading med -134 bp | subsidy med +35 bp
+   cash_d0 med 5946 (p25 1254, p75 31442); window vol med 114087
+   flags: F_START 0, F_VOLCAP 13, F_CASH0 1, F_LB 8
+   [robustness, excluding F_LB] n=32 net>0 16/32 (50%) med 14 mean -34277
+
+Cohort A T4: N usable = 40
+   net>0 31/40 (78%) | trading>0 20/40 (50%) | trading+rewards>0 30/40 (75%) | trading+rebates>0 22/40 (55%)
+   NET      med       9051  mean      218068  p25       740  p75    106145
+   TRADING  med        -32  mean      185309  p25     -6869  p75     89808
+   REWARDS  med     4531.7  mean       21072   | REBATES med    964.5  mean     11687
+   SUMS     trading      7412368 + rewards     842863 + rebates     467500 = net      8722730
+   positive-net concentration top1/top5/top10 = 28% / 75% / 95%  (n positive 31)
+   trading losers 20: subsidy flips to net>0 in 11; subsidy sum 615831 vs their trading loss -640711
+   month1: net>0 31/40 (78%) med     8412 | med reward  2812.4 med rebate   579.2 | sum reward    425027 sum rebate    283752
+   month2: net>0 25/40 (62%) med      872 | med reward   411.1 med rebate    98.6 | sum reward    149282 sum rebate    120017
+   month3: net>0 20/40 (50%) med        0 | med reward   145.0 med rebate    38.6 | sum reward    268553 sum rebate     63731
+   net>0 in all 3 months 9/40 (22%); in 0 of 3 months 2/40 (5%)
+   net/cash_d0 (cash>=$100, n=40): med +89.1%  p25 +1.2%  p75 +275.5%
+   per volume (uncapped, vol>=$1k, n=17): net med +28 bp | trading med -24 bp | subsidy med +81 bp
+   cash_d0 med 14138 (p25 2527, p75 80055); window vol med 600372
+   flags: F_START 0, F_VOLCAP 23, F_CASH0 0, F_LB 7
+   [robustness, excluding F_LB] n=33 net>0 27/33 (82%) med 13788 mean 262929
+
+Cohort A ALL (equal 40/tier sample, NOT frame-weighted): N usable = 159
+   net>0 89/159 (56%) | trading>0 71/159 (45%) | trading+rewards>0 87/159 (55%) | trading+rebates>0 74/159 (47%)
+   NET      med          6  mean       20899  p25     -1129  p75      9051
+   TRADING  med        -25  mean       11131  p25     -2583  p75      3802
+   REWARDS  med      257.1  mean        6142   | REBATES med     64.4  mean      3627
+   SUMS     trading      1769774 + rewards     976549 + rebates     576617 = net      3322941
+   positive-net concentration top1/top5/top10 = 25% / 66% / 85%  (n positive 89)
+   trading losers 88: subsidy flips to net>0 in 18; subsidy sum 761035 vs their trading loss -7377985
+   month1: net>0 98/159 (62%) med       52 | med reward   138.9 med rebate    26.3 | sum reward    472703 sum rebate    323846
+   month2: net>0 78/159 (49%) med        0 | med reward     5.2 med rebate     5.9 | sum reward    204619 sum rebate    155854
+   month3: net>0 66/159 (42%) med        0 | med reward     0.0 med rebate     1.0 | sum reward    299227 sum rebate     96917
+   net>0 in all 3 months 29/159 (18%); in 0 of 3 months 30/159 (19%)
+   net/cash_d0 (cash>=$100, n=126): med +10.3%  p25 -56.9%  p75 +109.6%
+   per volume (uncapped, vol>=$1k, n=92): net med -19 bp | trading med -92 bp | subsidy med +29 bp
+   cash_d0 med 2204 (p25 260, p75 26206); window vol med 76537
+   flags: F_START 0, F_VOLCAP 50, F_CASH0 16, F_LB 23
+   [robustness, excluding F_LB] n=136 net>0 77/136 (57%) med 6 mean 56357
+
+   FRAME-WEIGHTED population estimate (cohort A, frame 4180 wallets): fraction net>0 44%; fraction trading>0 36%
+
+   SECONDARY view by cash_d0 (cohort A; cash is a lower bound on capital, positions excluded):
+     cash<$500  n= 50 net>0  44% med net        -4 mean       -928 | trading>0  36% med trading      -23 | med subsidy       5
+     $500-2k    n= 27 net>0  56% med net        44 mean       3089 | trading>0  41% med trading     -176 | med subsidy     278
+     $2k-10k    n= 30 net>0  43% med net       -93 mean       2153 | trading>0  30% med trading    -1678 | med subsidy     810
+     >$10k      n= 52 net>0  75% med net     18945 mean      61949 | trading>0  63% med trading    18420 | med subsidy    5019
+
+######## Cohort B: usable 160, unusable 0 []
+
+Cohort B T1: N usable = 40
+   net>0 23/40 (57%) | trading>0 20/40 (50%) | trading+rewards>0 22/40 (55%) | trading+rebates>0 21/40 (52%)
+   NET      med          6  mean       12133  p25      -106  p75      5216
+   TRADING  med          0  mean        9095  p25      -453  p75      3203
+   REWARDS  med       24.7  mean         187   | REBATES med     29.7  mean      2852
+   SUMS     trading       363784 + rewards       7468 + rebates     114085 = net       485338
+   positive-net concentration top1/top5/top10 = 46% / 84% / 98%  (n positive 23)
+   trading losers 20: subsidy flips to net>0 in 3; subsidy sum 47785 vs their trading loss -224190
+   month1: net>0 23/40 (57%) med        3 | med reward    11.8 med rebate    16.9 | sum reward      2041 sum rebate     34750
+   month2: net>0 20/40 (50%) med        0 | med reward     0.2 med rebate     0.0 | sum reward      4002 sum rebate     39816
+   month3: net>0 17/40 (42%) med        0 | med reward     0.0 med rebate     0.6 | sum reward      1424 sum rebate     39520
+   net>0 in all 3 months 11/40 (28%); in 0 of 3 months 12/40 (30%)
+   net/cash_d0 (cash>=$100, n=26): med +21.0%  p25 -22.7%  p75 +73.2%
+   per volume (uncapped, vol>=$1k, n=19): net med +34 bp | trading med +1 bp | subsidy med +20 bp
+   cash_d0 med 1710 (p25 61, p75 24779); window vol med 20565
+   flags: F_START 0, F_VOLCAP 9, F_CASH0 7, F_LB 10
+   [robustness, excluding F_LB] n=30 net>0 16/30 (53%) med 0 mean 14119
+
+Cohort B T2: N usable = 40
+   net>0 17/40 (42%) | trading>0 12/40 (30%) | trading+rewards>0 17/40 (42%) | trading+rebates>0 14/40 (35%)
+   NET      med         -3  mean       -8718  p25      -669  p75       287
+   TRADING  med        -74  mean       -9425  p25     -1334  p75         7
+   REWARDS  med       68.0  mean         246   | REBATES med     20.1  mean       461
+   SUMS     trading      -376997 + rewards       9833 + rebates      18437 = net      -348727
+   positive-net concentration top1/top5/top10 = 26% / 85% / 100%  (n positive 17)
+   trading losers 27: subsidy flips to net>0 in 5; subsidy sum 21931 vs their trading loss -531305
+   month1: net>0 17/40 (42%) med       -3 | med reward    53.4 med rebate    15.7 | sum reward      4496 sum rebate      5589
+   month2: net>0 18/40 (45%) med        0 | med reward    10.0 med rebate     0.0 | sum reward      2921 sum rebate      6002
+   month3: net>0 15/40 (38%) med        0 | med reward     0.0 med rebate     0.0 | sum reward      2416 sum rebate      6846
+   net>0 in all 3 months 3/40 (8%); in 0 of 3 months 10/40 (25%)
+   net/cash_d0 (cash>=$100, n=32): med -1.8%  p25 -96.9%  p75 +71.4%
+   per volume (uncapped, vol>=$1k, n=26): net med -93 bp | trading med -215 bp | subsidy med +32 bp
+   cash_d0 med 990 (p25 180, p75 4220); window vol med 28175
+   flags: F_START 0, F_VOLCAP 7, F_CASH0 2, F_LB 8
+   [robustness, excluding F_LB] n=32 net>0 12/32 (38%) med -4 mean 1000
+
+Cohort B T3: N usable = 40
+   net>0 22/40 (55%) | trading>0 16/40 (40%) | trading+rewards>0 22/40 (55%) | trading+rebates>0 16/40 (40%)
+   NET      med        172  mean       58565  p25      -701  p75      6678
+   TRADING  med       -164  mean       56237  p25     -1695  p75      2651
+   REWARDS  med      296.9  mean        1234   | REBATES med     80.1  mean      1094
+   SUMS     trading      2249464 + rewards      49366 + rebates      43755 = net      2342585
+   positive-net concentration top1/top5/top10 = 89% / 97% / 99%  (n positive 22)
+   trading losers 24: subsidy flips to net>0 in 6; subsidy sum 52855 vs their trading loss -142300
+   month1: net>0 19/40 (48%) med      -43 | med reward   166.8 med rebate    35.9 | sum reward     14186 sum rebate     27382
+   month2: net>0 26/40 (65%) med       42 | med reward    48.4 med rebate    15.8 | sum reward     15550 sum rebate      9510
+   month3: net>0 18/40 (45%) med        0 | med reward     1.9 med rebate     1.8 | sum reward     19629 sum rebate      6864
+   net>0 in all 3 months 6/40 (15%); in 0 of 3 months 5/40 (12%)
+   net/cash_d0 (cash>=$100, n=33): med +10.5%  p25 -32.1%  p75 +150.3%
+   per volume (uncapped, vol>=$1k, n=26): net med -196 bp | trading med -388 bp | subsidy med +117 bp
+   cash_d0 med 3486 (p25 677, p75 14391); window vol med 46302
+   flags: F_START 0, F_VOLCAP 11, F_CASH0 1, F_LB 8
+   [robustness, excluding F_LB] n=32 net>0 18/32 (56%) med 172 mean 72353
+
+Cohort B T4: N usable = 40
+   net>0 36/40 (90%) | trading>0 19/40 (48%) | trading+rewards>0 35/40 (88%) | trading+rebates>0 19/40 (48%)
+   NET      med      23468  mean      156353  p25      2307  p75     83186
+   TRADING  med       -133  mean      114078  p25    -13783  p75     56848
+   REWARDS  med    14201.5  mean       29922   | REBATES med   1678.3  mean     12353
+   SUMS     trading      4563127 + rewards    1196870 + rebates     494119 = net      6254115
+   positive-net concentration top1/top5/top10 = 43% / 81% / 91%  (n positive 36)
+   trading losers 21: subsidy flips to net>0 in 17; subsidy sum 805336 vs their trading loss -951206
+   month1: net>0 35/40 (88%) med     5420 | med reward  5922.5 med rebate   593.9 | sum reward    504113 sum rebate    286522
+   month2: net>0 32/40 (80%) med     7178 | med reward  4868.8 med rebate   420.2 | sum reward    399859 sum rebate    102414
+   month3: net>0 30/40 (75%) med     4601 | med reward  3462.2 med rebate   397.7 | sum reward    292897 sum rebate    105183
+   net>0 in all 3 months 22/40 (55%); in 0 of 3 months 0/40 (0%)
+   net/cash_d0 (cash>=$100, n=39): med +192.3%  p25 +41.2%  p75 +654.2%
+   per volume (uncapped, vol>=$1k, n=10): net med +158 bp | trading med -189 bp | subsidy med +291 bp
+   cash_d0 med 11653 (p25 2100, p75 48483); window vol med 317142
+   flags: F_START 0, F_VOLCAP 30, F_CASH0 1, F_LB 11
+   [robustness, excluding F_LB] n=29 net>0 25/29 (86%) med 10622 mean 119725
+
+Cohort B ALL (equal 40/tier sample, NOT frame-weighted): N usable = 160
+   net>0 98/160 (61%) | trading>0 67/160 (42%) | trading+rewards>0 96/160 (60%) | trading+rebates>0 70/160 (44%)
+   NET      med        172  mean       54583  p25      -372  p75     15378
+   TRADING  med        -35  mean       42496  p25     -2408  p75      5688
+   REWARDS  med      209.7  mean        7897   | REBATES med    119.1  mean      4190
+   SUMS     trading      6799378 + rewards    1263537 + rebates     670396 = net      8733311
+   positive-net concentration top1/top5/top10 = 29% / 75% / 84%  (n positive 98)
+   trading losers 92: subsidy flips to net>0 in 31; subsidy sum 927907 vs their trading loss -1849001
+   month1: net>0 94/160 (59%) med       91 | med reward   116.4 med rebate    67.7 | sum reward    524837 sum rebate    354243
+   month2: net>0 96/160 (60%) med       38 | med reward    48.4 med rebate    15.8 | sum reward    422333 sum rebate    157741
+   month3: net>0 80/160 (50%) med        0 | med reward     2.8 med rebate     7.5 | sum reward    316366 sum rebate    158412
+   net>0 in all 3 months 42/160 (26%); in 0 of 3 months 27/160 (17%)
+   net/cash_d0 (cash>=$100, n=130): med +32.1%  p25 -24.4%  p75 +235.8%
+   per volume (uncapped, vol>=$1k, n=81): net med -15 bp | trading med -200 bp | subsidy med +47 bp
+   cash_d0 med 2948 (p25 321, p75 23522); window vol med 80374
+   flags: F_START 0, F_VOLCAP 57, F_CASH0 11, F_LB 37
+   [robustness, excluding F_LB] n=123 net>0 71/123 (58%) med 29 mean 50755
+
+   FRAME-WEIGHTED population estimate (cohort B, frame 3259 wallets): fraction net>0 49%; fraction trading>0 34%
+
+   SECONDARY view by cash_d0 (cohort B; cash is a lower bound on capital, positions excluded):
+     cash<$500  n= 43 net>0  56% med net         0 mean       2159 | trading>0  30% med trading      -14 | med subsidy      30
+     $500-2k    n= 27 net>0  56% med net       125 mean       2893 | trading>0  22% med trading     -781 | med subsidy     406
+     $2k-10k    n= 36 net>0  61% med net      2471 mean      13497 | trading>0  39% med trading     -729 | med subsidy     826
+     >$10k      n= 54 net>0  69% med net     12953 mean     149564 | trading>0  63% med trading     4942 | med subsidy    6487

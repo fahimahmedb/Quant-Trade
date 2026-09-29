@@ -1,0 +1,9 @@
+2026-04-01 REWARD n=3298 $30002 med=1.5 top10=21.8% | REBATE n=5203 $915293 med=3.25 top10=87.1%
+2026-04-15 REWARD n=4180 $128087 med=3.28 top10=27.0% | REBATE n=7125 $1035744 med=3.73 top10=82.5%
+2026-05-01 UNKNOWN window +223324s..+252820s does not cover payout hour
+2026-05-15 UNKNOWN window +285107s..+310916s does not cover payout hour
+2026-06-01 UNKNOWN window +306891s..+329013s does not cover payout hour
+2026-06-15 UNKNOWN window +159143s..+181269s does not cover payout hour
+2026-07-01 REWARD n=3266 $136946 med=4.23 top10=28.1% | REBATE n=7522 $1643540 med=4.44 top10=81.2%
+2026-07-15 REWARD n=5352 $265933 med=5.57 top10=22.7% | REBATE n=7522 $2299043 med=4.65 top10=87.1%
+exit 124

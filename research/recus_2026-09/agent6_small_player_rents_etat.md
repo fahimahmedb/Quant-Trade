@@ -5,7 +5,13 @@ REAL_CAPITAL_AUTHORIZED = FALSE. No orders, no accounts, no production strategy 
 
 **Branch:** `claude/epic-cannon-1sy39m`, the mission branch assigned to this session. The prompt's default branch `research/agent6-small-player-rents-2026-09-29` applies only when no other branch has been assigned, so it is not used.
 
-**STATUS: IN_PROGRESS.** Sampling is complete for both cohorts. Outcomes have not been analysed yet, and no terminal status has been chosen.
+**STATUS: DONE.** Deliverable: `agent6_small_player_rents.md`.
+**SMALL_PLAYER_RENTS = VERIFIED_NET_CANDIDATES_FOUND** (narrow).
+- Polymarket liquidity rewards are net positive only for the top reward tier (≥ $100/day at D0): 78% (cohort A) and 90% (cohort B) of wallets.
+- The small tiers are about $0 or negative.
+- Frame-weighted, 44–49% of all reward recipients are net positive.
+- Numerai Classic is net positive in NMR in every stake tier; USD results are dominated by the NMR price.
+- REAL_CAPITAL_AUTHORIZED = FALSE.
 
 ## 1. Inputs read
 - `QUANT_NORTH_STAR.md`.
@@ -83,13 +89,17 @@ The decay series script (1st and 15th of each month, Mar–Sep) stopped on an RP
 
 ## 5. Sampling script and status
 - Scripts are in `agent6_scripts/` (`sample_cohorts.py`, `pmapi.py`, `rpc.py`). The runner reads the frame JSONs in the session scratchpad; the committed `agent6_data/frame_*.csv` files hold the same data.
-- **Cohort A: COMPLETE**, 160/160 → `agent6_data/results_A.jsonl`, raw and not yet analysed. 1 wallet has no user-pnl series (`err`), so 159 are usable.
-- **Cohort B: COMPLETE**, 160/160 → `agent6_data/results_B.jsonl`, raw and not yet analysed. No errors.
+- **Cohort A: COMPLETE**, 160/160 → `agent6_data/results_A.jsonl`, analysed (`agent6_data/analysis_summary.txt`). 1 wallet has no user-pnl series (`err`), so 159 are usable.
+- **Cohort B: COMPLETE**, 160/160 → `agent6_data/results_B.jsonl`, analysed. No errors.
 - The background shell exited with code 1. That came only from a trailing `tail -3` syntax error after both runs had finished; the sampler logged `done A` and `done B`.
 - To reproduce: `python3 sample_cohorts.py A|B` (about 15–25 min per cohort, 4 threads, public endpoints only).
 
 ## 6. Other workstreams
-- **Numerai payout dispersion:** a background worker is still running (GraphQL `api-tournament.numer.ai` works; `api.numer.ai` is blocked by the proxy). No result yet.
+- **Numerai payout dispersion: DONE.**
+  - A census via GraphQL `roundDetails` covered 129 resolved rounds for Classic and for Signals.
+  - The worker never sent its hand-back message, but its output files were complete. The lead recomputed the Classic tiers from the CSV and they match.
+  - The window is entirely the legacy regime: no break in total stake, payout factor 0.087–0.132. v3 (round ~1363 onward) is UNKNOWN.
+  - Receipts: `agent6_data/numerai/`.
 - **Metaculus AIB (worker result; V = verified, S = secondary):**
   - The API and tournament pages return 403. Notebooks are readable.
   - **Q1 2025:** 45 entrants, 10 paid, pool $30k, top-1 25.6%, top-3 57.5%.
@@ -105,15 +115,15 @@ The decay series script (1st and 15th of each month, Mar–Sep) stopped on an RP
   - `GET /trade-api/v2/incentive_programs?status=active` (no auth) listed 5,562 active programs worth $711,975 in total period rewards.
   - **There is no per-account data.** Public trades carry no account or maker ID, so net maker P&L after rewards cannot be measured.
 
-## 7. NEXT_ACTION
-1. (Done) Cohort B is complete and committed.
-2. Analyse A and B per tier:
-   - N, fraction net > 0, fraction trading > 0;
-   - median, mean, p25 and p75 of trading, rewards, rebates and net;
-   - concentration (top-1/5/10 share of positive net);
-   - persistence (A vs B, and month by month);
-   - net / cash_d0 and net / volume;
-   - sanity flags (missing start P&L, capped volume, user-pnl vs leaderboard divergence).
-3. Re-run the decay series with a smaller `getLogs` step and retries (1st and 15th of each month, Mar–Sep). Explain the drop in the rebate pool.
-4. Collect the Numerai worker result.
-5. Adversarial self-audit, then at most 5 cards, useful negatives, a terminal status, and the final deliverable `agent6_small_player_rents.md`. Commit and push.
+## 7. Decay series (DONE)
+- Script: `agent6_scripts/decay_series.py`. Output: `agent6_data/decay_series.json`; logs `decay_series.log` and `decay_series_run2.log`.
+- Method: block numbers interpolated between on-chain anchors, corrected with real block timestamps. Every window was validated to cover midnight −3h to +4h.
+- Attempt 1 used a binary search whose bracket failed before April. It produced a wrong 03-01 row, which was discarded (`decay_series_attempt1_INVALID.log`).
+- **Rebate pool:** $0.84–2.30M/day from April to 09-01. It collapsed to $162k (09-15) and $124k (09-29) as the top-10 share fell from 86% to 22%.
+- **Reward pool:** $101–112k/day since August, with 2.2–2.6k recipients. Change from 07-01 to 09-29: pool −23%, recipients −32%.
+
+## 8. NEXT_ACTION
+- **Mission complete.** Pre-registered follow-up (not authorized to run live; public data only):
+  - On 2026-10-29, measure 30-day net for the committed 2026-09-29 frame (cohort C), with the same tiers.
+  - C1 is falsified if T4 net>0 < 60% or median ≤ 0.
+  - Recompute Numerai on the first 20 resolved v3 rounds.
