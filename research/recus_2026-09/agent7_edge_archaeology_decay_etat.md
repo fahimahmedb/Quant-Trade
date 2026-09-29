@@ -32,13 +32,13 @@ REAL_BUT_NOT_ACTIONABLE (C) count: 6.
 
 ## SOURCES_CHECKED
 - Quant: `QUANT_NORTH_STAR.md`; reorientation checkpoint `0f8f2d1`; Agents 1–6 at the mission-named heads (deliverables + state files); Weather V1 spec `726070a`, Astra `e1cf4ca`, Fable V2 memo `5760ffa` (latency facts only); fast rail `claude/new-session-0ydmkg` (`TWO_SPEED_RESEARCH_PROPOSAL.md`, `FAST_RAIL_STATE.md`, `registry.jsonl`); repo git history.
-- Public data (MEASURED): Hyperliquid `vaultDetails`; Polygon logs of Polymarket rebate payers (13 dates); Polymarket `data-api` (activity, trades, closed-positions), `user-pnl-api`, gamma events/markets, CLOB `prices-history` (152 box-office events; 1,223 NYC/London weather events; 1,499 markets / 29,160 near-certain fills in 8 windows); Numerai GraphQL `roundDetails` (rounds 250–1365).
+- Public data (MEASURED): Hyperliquid `vaultDetails`; Polygon logs of Polymarket rebate payers (13 dates); Polymarket `data-api` (activity, trades, closed-positions), `user-pnl-api`, gamma events/markets, CLOB `prices-history` (152 box-office events; 1,223 NYC/London weather events; 1,499 markets / 31,064 near-certain fills in 8 windows); Numerai GraphQL `roundDetails` (rounds 250–1365).
 - External archaeology (three bounded workstreams): Polymarket docs/changelog/help centre; arXiv 2508.03474, 2608.00666, 2605.31431, 2510.14435, 2111.09192, 2208.06046; Kalshi replication repo; GitHub first-commit dates of public repos (polymm, poly-maker, poly-market-maker, neg-risk-ctf-adapter, uma-ctf-adapter, clob-client, simmer-sdk, metac-bot-template, numerai docs); press (The Block, CoinDesk, Decrypt, DL News, Cryptopolitan, KuCoin/Odaily); practitioner blogs (kacho.io). Wayback Machine unreachable.
 
 ## KEY_EMPIRICAL_FINDINGS
 1. Statistical latency (months–years) dominates engineering latency (hours–weeks) by ≈ 10×; Quant's own fast rail recorded the same ("le goulot est le forward").
 2. Receipt-first discovery is late: median edge age at discovery ≈ 20 months; principal decay already happened before discovery in 5 of 8 dated cases.
-3. Decay onset preceded the first detailed public disclosure in 6 of 6 measurable competitive cases (median lead ≈ 6 months, range 2–11): disclosure is lagging/endogenous; no case shows publication-caused decay.
+3. In 5 measurable competitive cases, decay onset preceded (4) or coincided with (1, weather vs a niche 16★ repo) the first detailed public disclosure; median lead ≈ 6 months (range 2–11) where it preceded. Disclosure is lagging/endogenous; no case shows publication-caused decay (funding carry was public for years before decaying).
 4. HLP return half-life 5.1 months (95% CI 4.0–7.2); elasticity to vault size −0.98 (dilution).
 5. The Polymarket rebate "13× collapse" is one non-trading recipient (165.3 M$, 2026-01-16 → 09-10); all other recipients' pool −30% in September.
 6. Box office: no absorption speed-up over 12 months; Sunday estimates priced within ≈ 3 h; prospective validation ≈ 9–22 months for +10%/$.
