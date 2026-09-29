@@ -19,11 +19,15 @@ Branche unique : `claude/new-session-0ydmkg`. Règles : `prompts/2_BUILDER_RAIL_
    - (c) H-009, adjudications du Trésor : **UNDERPOWERED**, 0 essai. Avec N=5 (article) et un effet réduit de moitié à 7,5 bp sur ≈153 adjudications à 10 ans, expected_t = 0,99 contre 1,96, et 1,39 au mieux en ajoutant les 2 et 5 ans. Candidat SHADOW_DIRECT si Blue l'adopte. Funding HL contre Binance/Bybit : H-008, UNDERPOWERED, forward seulement.
    - (d) Construire le jeu HL-dYdX pour le forward seulement : `python3 scripts/build_perp_funding_hl_dydx.py --offline --end <date>`. Le cache brut est local (non versionné). Aucun `run_lane` historique.
    - (e) Pistes de l'étude praticiens (déclarées au registre avant toute donnée) :
-     - H-010 = R1, rente maker Kalshi par catégorie (Sports, Entertainment, World ; fenêtre 2026-04-17 → 09-26 ; 3 essais ; KPI markout +1h) : **EN COURS** (relancé en Sonnet après la coupure à la limite de session).
+     - H-010 = R1, rente maker Kalshi par catégorie : **INTERROMPU** par la limite hebdomadaire.
+       - Code complet et testé (29 tests). Patch : `wip/agent-ac9a307db8faaf614.patch`.
+       - Scan des métadonnées arrêté à 337 pages (67 400 événements ; retenus : Sports 36 517, Entertainment 702, World 1). Index et curseur sauvés dans `wip/h010_index/`.
+       - Pour reprendre : `git apply` du patch ; copier `wip/h010_index/*` (index décompressé) dans `data/fast_rail/h010/raw/` ; `python3 research/fast_rail/h010/sample.py index` jusqu'à épuisement du curseur ; puis `sample.py detail`, `sample.py build`, `fetch.py`, `analysis.py`, verdicts au registre.
+       - World ≈ 1 marché : la catégorie tombera en REJECT(POWER).
      - H-011 = R2, maker papier sur le sport de niche contre la clôture Pinnacle : forward seulement, t ≈ 1,96 après ≈ 306 marchés.
      - H-012 = R3, combos RFQ Kalshi : **BLOCKED (accès)**, car les RFQ exigent un compte Kalshi (401).
      - H-013 = R4, récompenses de liquidité (Kalshi LIP et Polymarket, endpoints publics) : forward seulement, en ligne séparée.
-     - Collecteur R2/R4 : **EN COURS** (Sonnet). Il ajoute les ligues de niche (K-League, Liga MX, NCAAF) au plan Odds API, les snapshots de carnets et de récompenses, la récupération des trades après le coup d'envoi, et des évaluateurs purs (maker trade-through et récompenses).
+     - Collecteur R2/R4 : **INTERROMPU**. 2 commits : ligues de niche dans le planner et balayage des trades après le coup d'envoi. Travail non committé : snapshots récompenses/carnets, évaluateurs, 24 tests. Patch : `wip/agent-ae1e43ef74c5516a4.patch`. À finir, tester, puis fusionner dans la branche de données.
 3. EDGAR : l'UA de contact est approuvé par le propriétaire (dans le scratchpad, jamais versionné). Le SPAC / merger arb est débloqué ; module hors `sec/`.
 
 ## En SHADOW
@@ -54,7 +58,7 @@ Invariants 9 et 10 vérifiés sur la lane HL-dYdX : chemin Desk inchangé, manch
 
 ## Actions propriétaire en attente
 - FAIT (2026-09-27, `09ba64b` sur `blue/master-v2-2026-09-20`, fichier du workflow seul) : le planning des données est actif. Collecte complète toutes les 6 h (:17), relevé Pinnacle toutes les heures (:47). Dépôt public : minutes Actions gratuites.
-- **Secret GitHub `ODDS_API_KEY` toujours absent** : le run du 27/09 03:58 répond « ODDS_API_KEY is not configured ». Sans lui, H-001, H-011 et H-013 n'ont pas de cotes Pinnacle.
+- FAIT : secret `ODDS_API_KEY` ajouté. Vérifié : le run du 29/09 09:07 renvoie odds_api OK, et le flux `data/feeds/odds/pinnacle_h2h` existe. La CLV H-001 s'accumule.
 - Compte Kalshi et clé API en lecture pour H-012 (flux RFQ).
 - Décision Blue sur la voie `SHADOW_DIRECT` (`prompts/5`).
 
