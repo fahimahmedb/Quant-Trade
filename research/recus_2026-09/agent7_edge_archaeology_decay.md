@@ -9,7 +9,7 @@ Supporting data and scripts: `agent7_data/`.
 Central question: *when a real, publicly observable edge exists, does it survive long enough for Quant's
 DISCOVERY → VERIFICATION → FALSIFICATION → SHADOW VALIDATION process to reach it before it decays?*
 
-> Section 0 (terminal answers) is at the end of this file (§17), after the evidence.
+> Terminal answers are in §11 at the end of this file, after the evidence.
 
 ---
 
@@ -61,6 +61,8 @@ DISCOVERY → VERIFICATION → FALSIFICATION → SHADOW VALIDATION process to re
 | M7 | Monthly `user-pnl` deltas and weather-only realized P&L for already-public wallets (b00k13, gopfan2, aenews2, BeefSlayer, russell110320, HighTempTation, Bilberry) | `user-pnl-api`, `data-api /closed-positions` | §4.7 |
 | M8 | Numerai Classic payout-rule regimes and round-level payout/stake, rounds 250 → 1365 (every 5th round) | `api-tournament.numer.ai` GraphQL `roundDetails` | §4.8 |
 | M9 | Quant's own validation latency from git history and fast-rail registry timestamps | local `git log`, `registry.jsonl` | §3 |
+
+Files: `agent7_data/m1_hlp_periods.json`, `m2_rebate_pool_by_recipient.csv`, `m3_box_office_anchors.csv`, `m4_weather_nyc_london_anchors.csv`, `m5_settlement_summary.json`, `m6_tweet_count_monthly_volume.csv`, `m7_wallet_monthly_userpnl.json`, `m8_numerai_rounds.json`, and `measurement_outputs.txt` (printed results of the analysis scripts). Scripts: `agent7_data/scripts/` (`hlp.py`, `rebate_by_recipient.py` + `rpc.py`, `box.py` + `box_analyze.py`, `wx_list.py` + `wx2.py` + `wx_analyze.py`, `settle_sample.py` + `settle_split.py`, `nmr.py`, `tweets_and_wallets.py`). All endpoints are public and unauthenticated; re-runs drift slightly with the live APIs.
 
 ### 2.3 External archaeology (WS-A informational, WS-B structural, WS-C subsidies/tournaments)
 
@@ -313,7 +315,7 @@ Each case: (1) chronology table (built first), (2) decay-vs-variance discriminat
 | T_DECAY_START | 2025-05 (first cohort); price-internal bias gone by 2025Q3–Q4 |
 | T_EDGE_END | UNKNOWN (mechanism alive) |
 | RIGHT_CENSORED | TRUE |
-| PRE_DISCLOSURE_LIFETIME | ≈ 11 months (T0 → broad disclosure); first-cohort peak ≈ 4–8 months |
+| PRE_DISCLOSURE_LIFETIME | ≈ 11 months (T0 → broad disclosure); first cohort's run in daily markets ≈ 4 months (2025-01 → 04), weather-wide ≈ 8–12 months |
 | POST_DISCLOSURE_SURVIVAL | ≥ 9 months (right-censored; new-cohort receipts in 2026-09) |
 | CURRENT_STATE | Mechanism pays a turning-over cohort; easiest inefficiency decayed; NYC sharper YoY; ≥ 4 mechanics changes in 8 months |
 | RECEIPT_EVIDENCE | Strong-but-selected (A1: +87–96k 12m; 36% losers among top 1,050 by volume; median sampled +264 $) |
@@ -781,3 +783,208 @@ Pool per external entrant ≈ 882 $ → ≈ 450 $ in ≈ 15 months (A6) while th
 | X7 | Crypto funding-rate carry | Sharpe 6.45 (2020-08 → 2025-05), 4.06 "beginning in 2024", negative in 2025 (Borri et al., 2025-10-23; no cause stated); Quant fast-rail H-002 REJECT (SR −0.03) | ≈ 4 years real; decayed / regime-specific (USDe launch 2024-02-19, spot ETFs 2024-01 concurrent) | **C** (as a current candidate) |
 
 ---
+
+## 7. Cross-case comparison (evidence status, not attractiveness)
+
+RC = right-censored. L_val from §3.3. Actionability = LOWER / CENTRAL / UPPER where defensible.
+
+| CASE | TYPE | REAL RECEIPT? | PUBLIC DATE | DECAY DATE | PUBLIC SURVIVAL | CURRENT? | SMALL-CAP? | LIKELY VALIDATION LATENCY | ACTIONABILITY | STATUS |
+|---|---|---|---|---|---|---|---|---|---|---|
+| A Weather | I | Yes (selected, post-fee) | 2025-12-30 broad (2025-05-07 niche) | 2025-05 (1st cohort); price bias gone 2025Q3 | ≥ 9 mo (RC) | Yes, cohort turnover | Yes | 6–8 mo | 0.4 / 1–1.8 / > 3 | **B** |
+| B polymm | I/IV | Yes (code + wallet) | 2026-06-06 | 2026-02/03 | ≤ 0 | No | Yes, speed-contested | ≥ 1–3 mo, not paper-measurable | 0 now | **C** |
+| C1 LR T4 | III | Yes (T4 only) | 2022-02 (by design) | none (program) | ≥ 4.6 y (RC) | Yes | No | 1 mo (incumbents) | N/A (access) | **H** |
+| C2 Maker rebates | III | Payments yes; net edge no | 2026-01-05 | 2026-09-10 one recipient; broad −30% in Sep | ≥ 9 mo (RC) | Yes | ∝ volume | N/A | N/A | **H** |
+| D Settlement 0.999 | II | Yes | 2025-12-04 / 2026-05-29 | none (tick floor) | ≥ 9 mo (RC) | Yes | Yes (queue UNKNOWN) | 1–2 mo | ≥ 6 / ≥ 12 / ≫ | **A** |
+| E NegRisk | IV | Yes (strict) | 2025-08-05 | late 2024 | 5–8 mo (residual) | MM tool only | No (speed) | 1–2 mo + infra | 0 now | **C** |
+| F Box office | I | Yes | not found | none measured | N/A | Yes | Yes | days (replay) / 9–22 mo (prospective) | 0.3 / ≈ 1 / > 3 | **D** |
+| G Tweet counts | I | Yes (historical, large) | 2026-03-19 | 2026-01 | 0–4 mo (large); ≥ 6 mo residual | Residual only | Yes | 3–9 mo | 0 / ≈ 1 (residual) | **C** |
+| H HLP | II | Yes | 2023-05-10 (by design) | 2024H2 | 14–18 mo to decay; 24–36 to cash-like | Episodic only | Yes (delegated) | ≥ 12–24 mo | < 0.5 | **C** |
+| I Kalshi maker | II | Yes (aggregate) | 2026-01 | none (gross) | ≥ 5 mo (RC) | Yes | No (US-only) | weeks | N/A (access) | **H** |
+| J Numerai | V | Yes (NMR, legacy) | by design | regime end 2026-08-28 | ≈ 32 mo (MMC family) | New regime | Yes | 3–5 mo | 1.6 / 3 / 8 | **F** |
+| K Metaculus AIB | V | Yes (prizes) | 2024-06-25 (template) | per-entrant halving ≈ 15 mo | ≥ 27 mo (RC) | Yes | Yes (0 capital) | 4 mo | ≈ 3–4 | **E** |
+| X1 39.59 M$ arb | VI | No (construct) | 2025-08-05 | — | NOT_APPLICABLE | — | — | — | — | **G** |
+| X2 closed-P&L stars | VI | No | — | — | NOT_APPLICABLE | — | — | — | — | **G** |
+| X3 HL small MM | — | Incumbents only | — | — | — | — | No | — | — | **H** |
+| X4 HL user vaults | VI | No (net −61.3 M$) | — | — | NOT_APPLICABLE | — | — | — | — | **G** |
+| X5 Passive LP | VI (LP) | No for LP | 2021-11 | — | NOT_APPLICABLE | — | — | — | — | **G** |
+| X6 Mentions | I | Yes (2024–25) | ≈ 2025-12 | 2025-01 | ≤ 0 | No | — | — | 0 | **C** |
+| X7 Funding carry | II / regime | Yes (2020–24) | practitioner years earlier; paper 2025-10-23 | 2024 → 2025 | years (practitioner) | No | — | — | 0 | **C** |
+
+**REAL_BUT_NOT_ACTIONABLE (C): 6** (B polymm, E NegRisk, G tweet counts, H HLP, X6 mentions, X7 funding carry).
+
+---
+
+## 8. Cross-case synthesis
+
+### 8.1 Archetypes observed (only where the evidence supports them)
+
+| Archetype | Cases | Observed lifetime pattern | Dominant decay mode |
+|---|---|---|---|
+| I Informational inefficiency | A, B, F, G, X6 | **Trader/rule-level edges 3–15 months** (polymm ≈ 3, mentions ≈ 6, weather first cohort ≈ 8–12, tweets ≈ 12); mechanism-level can persist with cohort turnover (weather ≥ 20 months, box office ≥ 12) | Competition / better pricing; mispricing regenerates at mechanism changes |
+| II Structural liquidity premium | D, I, H, (X7) | Floor-protected premia persist (settlement ≥ 21 months, Kalshi ≥ 4 years); **open-capacity structural returns dilute** (HLP half-life ≈ 5 months) | Capacity dilution when capital can enter freely; none when a tick floor binds |
+| III Platform subsidy / fee share | C1, C2 | Programs live for years; parameters change every 1–4 months (Polymarket fee/rebate entries 01-05, 01-16, 02-18, 03-06, 03-30, 05-28, 07-10); counterparty-specific breaks | Discretionary rule/budget steps; rent accrues to incumbents |
+| IV Mechanical arbitrage | E | Rich phase ≈ 8–12 months; per-conversion profit ≈ −80% within ≈ 6 months | Automation / competition before any publication |
+| V Service / tournament payment | J, K | Payer persistent; **rule regimes 8–24 months**; per-entrant pool halves in ≈ 15 months under open templates | Rule change (J), entry dilution (K) |
+| VI Accounting illusion | X1, X2, X4, X5 | Not an edge | — |
+
+### 8.2 Answers to the mission's questions
+
+**Q1. Do public strategy disclosures typically precede decay?** **No — in the cases where both dates are measurable, decay onset preceded the first detailed public disclosure in 6 of 6**: NegRisk (≈ 9 months earlier), weather first cohort (≈ 7), mentions (≈ 11), polymm (≈ 3), tweet counts (≈ 2), funding carry vs its academic paper (≈ 6+). Median lead of decay over disclosure ≈ 6 months (range 2–11). Disclosure is **lagging and endogenous**: academic papers carry 6–18-month data lags; practitioners publish after they stop. Exceptions are mechanisms public *by design* (HLP, reward programs, tournaments).
+
+**Q2. How often can causality be established?** Rarely. HIGH only for **documented rule changes** (Numerai v3; Kalshi maker fees; Polymarket rebate-rate cuts) and for the **mechanical absence of decay** at the settlement tick floor. MEDIUM for competition where a direct symptom is measured (polymm fill rate; NegRisk per-conversion profit falling while fee-free; HLP dilution elasticity; Metaculus entrants). LOW in every attempt to attribute decay to publication.
+
+**Q3. Post-publication survival where measurable.** Bimodal:
+- **Competitive edges (I, IV)**: the original edge's survival after its first detailed disclosure is **≈ 0** (median decay-lead ≈ 6 months; residuals survive 0–8 months: tweets 0–4, NegRisk residual 5–8).
+- **Public-by-design structural / subsidy / tournament mechanisms (II, III, V)**: ≥ 5 months (Kalshi) to ≥ 4.6 years (liquidity rewards), mostly right-censored; they decay by dilution or rule change rather than by disappearing.
+A single pooled median would be misleading and is not reported.
+
+**Q4. Small-capacity vs large-capacity persistence?** Capacity alone does not decide it. **Small-capacity *slow* edges look more persistent** (box office: no measured compression in 12 months; settlement floor: none in 21 months); **small-capacity *speed* edges do not** (polymm died in ≈ 3 months); **open-capacity edges that passive capital can enter decay by dilution** (HLP median daily return ≈ −99%, 20.5 → 0.2 bp, as AV rose ≈ 60×). CONFIDENCE LOW (n small).
+
+**Q5. Are subsidy edges more fragile than informational edges?** Different fragility: subsidies carry **jump risk by decree** (every Type III/V case shows discretionary parameter changes within months), while informational edges suffer **continuous competitive erosion** at the trader level. Subsidy programs themselves have lasted longer than any informational edge measured here; the *rent to a small entrant* has not been shown to exist (A6).
+
+**Q6. Do rule/fee changes destroy more edges than competition?** In this sample, **competition/dilution is the primary decay mode more often** (NegRisk, polymm, HLP, weather first cohort, Metaculus, poly-maker; 6) than rule/fee changes (Numerai v3, Kalshi maker net; 2), with tweet counts and the rebate discontinuity UNKNOWN. Rule changes create *discontinuities that require a new experiment* (status F); competition creates *gradual decay* (status B/C).
+
+**Q7. Does open-source publication materially accelerate decay?** Not demonstrably in any case studied. polymm's repo appeared ≈ 3 months after death; NegRisk repos exploded (4 → 94 → 397) after most compression; weather's bot wave (Jan–Apr 2026) came after the first cohort's decay and the market still pays a new cohort. The one plausible case is **Metaculus**, where the *payer* publishes and actively lowers entry cost, and the effect is dilution of a fixed pool. CAUSE_CONFIDENCE LOW overall, MEDIUM for Metaculus.
+
+**Q8. Which candidates look slow enough for the current validation method?** Settlement liquidity 0.999 (A: premium floored, L_val 1–2 months — but economically tiny and tail-dominated); Numerai v3 (F: regime ≈ 8–24 months vs L_val 3–5 months, in NMR); box office **only via historical replay** (prospective alone is marginal); Kalshi maker and T4 rewards would be slow enough but fail access.
+
+**Q9. Which look too fast?** NegRisk / complete-set taker arbitrage; esports/sports requote market making (polymm type); tweet-count large-maker and cheap-bucket variants; mention markets; crypto "Up or Down" latency; HLP as a "strategy" (validation ≥ 12 months vs half-life ≈ 5); new-maker reward farming in contested markets.
+
+**Q10. Is Weather validation likely slower than Weather edge decay?** **Comparable or slower, for any specific frozen rule.** Weather's first powered label needs ≈ 6–8 months (MEUE-level confirmation 3–6 years); measured trader-level weather edges ran for ≈ 8–12 months (gopfan2 2024-09 → 2025-04; aenews2 2024-05 → 2025-05); the launch-quarter bias decayed within ≈ 2–3 quarters; venue mechanics changed ≥ 4 times in 8 months (a MECHANICS_CHANGE stop is likely inside a 120-date window). The *mechanism* (recreational flow vs public forecasts) has persisted ≥ 20 months with turnover, which is why the classification is B, not C.
+
+**Q11. Does box office look structurally more durable?** It **looks** durable — no measurable absorption speed-up in 12 months, small capacity, almost no public diffusion — but the same property (≈ 2–6 events/week) makes prospective validation slow (≈ 9–22 months for +10%/$). The Sunday-estimate information is absorbed within ≈ 3 h; any residual edge sits in the Friday-actuals → Sunday window and in boundary judgement. Durability is **not established**, only undecayed so far (D).
+
+**Q12. Does settlement liquidity persist because it compensates impatience/capital lock rather than ignorance?** **Yes.** Gross return at ≥ 0.999 equals the tick floor in all 8 windows over 21 months; the floor share of near-certain notional is stable; holds shortened with faster resolution. Competition compresses queue share/capacity, not the premium. The economics hinge on correctly identifying *decided* states: pooled naive in-window net is −0.115% because of in-play sports fills (§4.5).
+
+**Q13. Did Polymarket rebates demonstrate a regime break rather than normal competitive decay?** **Neither, program-wide.** The "13×" drop is **one non-trading recipient address** whose 165.3 M$ rebate stream (2026-01-16 → 09-10) stopped. All other recipients' pool fell ≈ 30% in September after a World-Cup peak — within the range of seasonality and crypto-volume changes. Classification: COUNTERPARTY_SPECIFIC_DISCONTINUITY, cause UNKNOWN.
+
+**Q14. Is Agent 6's T4 reward result a strategy candidate, a temporary subsidy harvest, or an incumbent-scale rent?** **An incumbent-scale rent on a persistent-but-discretionary subsidy** (§5.C1). Not a Quant strategy candidate at current capital; not shown to be temporary in the observable window.
+
+**Q15. Lanes to stop spending validation time on** (likely half-life shorter than validation, or no small-player access): NegRisk / complete-set taker arbitrage; requote-race market making (polymm type); tweet-count large-maker and cheap-bucket variants; mention markets; crypto up/down latency; HLP as an edge; copy trading / user vaults; small Hyperliquid MM; Kalshi (access); small-tier reward farming; and **any confirmatory design targeting small effects on daily/weekly markets** (e.g. θ = 0.02/$ weather: 3–6 years vs trader-level lifetimes of months).
+
+### 8.3 Special checks (mission §§18–22), explicit verdicts
+
+- **Weather (§18)**: first specialist receipts ≤ 2024-09; first public detailed descriptions 2025-12-30 → 2026-02-06; open-source bots from 2025-05 (niche) and 2026-01 → 04 (mass, 768★/319★); fee 2026-03-30; settlement source WU → NOAA 2026-08-22; publicly named wallets decayed from 2025-05 (activity migration, not wallet death); participation widened (2 → 51 cities, per-event volume up then down); the simple price bias compressed by 2025Q3–Q4; NYC sharper YoY. The edge plausibly **migrated** from "any forecast beats the launch-quarter crowd" toward new cities / post-change windows / execution — consistent with new-cohort receipts, not proven. **WEATHER_EDGE_DECAY_STATE = DECAYING (confidence LOW–MEDIUM)**. Contextual only; the frozen Weather rule and experiment are untouched.
+- **Box office (§19)**: liquid weekly regime since 2025-10-14; practitioners active from 2025-10-15; no absorption speed-up; participants and volumes not rising (median event volume 208 k$ → 83 k$ Q2 → Q3); continued 2026 receipts; capacity a few k$/event; disclosure footprint ≈ nil. Structural delay vs undercompeted niche: **not discriminable yet**. **BOX_OFFICE_DECAY_STATE = PERSISTENT** (no measured decay; 12-month right-censored; confidence LOW–MEDIUM).
+- **Settlement liquidity (§20)**: liquidity/time-value premium, tick-floored; payout delay ≈ 2 h (undisputed), 4–6 days disputed; dispute rate ≈ 1.3% (UMA, Aug 2025); queue competition real; resolution speeding up. **SETTLEMENT_LIQUIDITY_DECAY_STATE = PERSISTENT** (confidence HIGH for the premium; tail economics unresolved).
+- **Maker rewards (§21)**: LIQUIDITY_REWARD_PROGRAM persistent at program level (≈ 100–110 k$/day since August; discretionary steps), rent concentrated in incumbents; MAKER_REBATE_PROGRAM: single-recipient discontinuity plus ≈ −30% September for everyone else. T4 = INCUMBENT_ADVANTAGE on a structural-need, discretionary subsidy; entrant scale ≥ 12–14 k$ cash (lower bound on capital). **MAKER_REWARD_DECAY_STATE = PERSISTENT** (program level; confidence MEDIUM), with the rebate "regime break" reading corrected.
+- **Numerai (§22)**: OLD_EDGE_LIFETIME ≈ 32 months for the 2024–26 MMC regime family (parameter regimes 8–24 months); NEW_REGIME from round ≈ 1343 (2026-08-28), unmeasured; legacy profitability is not transferred. **MECHANISM_CHANGED_NEW_EXPERIMENT_REQUIRED.**
+
+### 8.4 Change-point / decay-measurement summary
+
+| Series | Method | Result | Label |
+|---|---|---|---|
+| HLP median daily return (quarterly) | Log-linear regression, 12 quarters | Half-life 5.1 months (95% CI 4.0–7.2); elasticity to AV −0.98 | MEASURED / DERIVED |
+| Polymarket rebate pool | Decomposition by recipient, 13 dates | Discontinuity = one recipient (last paid 2026-09-10); others −30% in Sep | MEASURED |
+| Box-office winner price at anchors | Spearman trend, 117 events | No trend (|z| < 0.6) | MEASURED |
+| Box-office Saturday favourite (diagnostic) | Quarterly bootstrap CIs + trend | +25% → −14%, ρ = −0.14 (z −1.47): not significant | MEASURED |
+| Weather calibration / favourite return | Quarterly ECE + bootstrap CIs; same-month YoY Brier | Launch-quarter bias gone by 2025Q3; NYC Brier 0.769 → 0.664 | MEASURED |
+| Settlement ≥ 0.999 | 8 windows, gross vs losses | Gross = tick floor throughout; net set by rare in-play losers | MEASURED |
+| Tweet-count volume | Monthly series | Peak 2026-01, −87% by 2026-09 | MEASURED |
+| Named-wallet P&L | Monthly realized / `user-pnl` | Cohort turnover (2025-05 decay onset for first cohort) | MEASURED |
+| Numerai rules | Round-API regime boundaries | 5 changes in 5.6 years | MEASURED |
+| Formal Bayesian change-point | — | Not run: series too short/sparse relative to the discontinuities, which are already identified exactly (single recipient, documented rule dates) | — |
+
+---
+
+## 9. Validation-latency implications for Quant
+
+### 9.1 Is the current process "scientifically correct but too slow"?
+
+**Yes, for part of the edge population — but mostly not for engineering reasons.** Decomposition (from §3):
+
+| Latency | Observed scale | Dominance |
+|---|---|---|
+| A. Research (discovery, receipts, mechanism) | hours – days | small |
+| B. Engineering (collectors, adapters) | 1–3 days (fast rail) to weeks (full vertical) | small–moderate |
+| C. **Statistical** (forward observations to a powered verdict) | **months – years** | **dominant** |
+| D. Governance (freeze → audit → redesign → re-audit loops) | days – weeks per failed freeze | second |
+| E. Integration (chassis gaps) | UNKNOWN (bounded) | unknown |
+| (upstream) **Discovery lag** (age of the edge when receipts make it visible) | **median ≈ 20 months** | often decisive |
+
+Two structural facts follow. (1) The fast rail cannot make a weekly-frequency edge validate faster; only more independent observations, lower-variance statistics that still equal the executable economics, or admissible historical evidence can. (2) Receipt-first discovery conditions on visible success and therefore finds edges after their peak in 5 of 8 dated cases.
+
+### 9.2 Do FAST / STANDARD / SLOW rails need to exist?
+
+Quant already has a **two-speed split by governance and capital proximity** (SAFE vs FAST rail, accepted 2026-09-25) and a `SHADOW_DIRECT` ladder that already implements the honest fast-rail ingredients: one frozen expression, parameters fixed by source or mechanism, immediate forward shadow, no capital, pre-declared kill boundaries and horizon, anytime-valid sequential test, α-spending across entries. What it lacks is **routing by edge half-life versus statistical latency**. The evidence here says such routing is economically necessary:
+
+| Route (recommendation) | Admission condition | Evidence standard (unchanged) | Typical decision time |
+|---|---|---|---|
+| **FAST** | ≥ tens of independent observations per day **and** a test statistic that *is* the executable net economics (not a proxy); queue/adverse-selection unknowns either observable in paper or explicitly carried as unvalidated | Same α, fees, PIT; sequential t-SPRT/e-process; FORWARD_PASS needs net P&L | weeks |
+| **STANDARD** | Daily/weekly markets with τ_rem ≥ 2 × L_val on the lower bound, or a replay-first path | Strict-PIT historical replay as falsification + forward screen powered for large effects (θ_PCE) | 4–8 months |
+| **SLOW SCIENCE** | Structural, capacity-limited mechanisms with evidence that competition cannot erode them (floors, payer-side need) | Full design; multi-period | years |
+| **DO NOT VALIDATE** | τ_rem (central) < L_val and no faster valid path | — | record as C and stop |
+
+FAST never means lower evidence quality; it means more independent observations per unit time plus sequential stopping.
+
+### 9.3 Architectural responses (recommendations only; nothing is implemented here)
+
+1. **Move discovery upstream (T0, not T1).** Watch for *mechanism births and changes* — new market families, new cities, new ladders/templates, new fee/reward regimes — instead of waiting for leaderboard receipts. Evidence: mispricing appeared at the weather launch (2025Q1) and around the 2026Q1 ladder change, and decayed within 1–2 quarters; box-office specialists entered within 1–5 days of the 2025-10-14 regime start.
+2. **Power/latency-first triage before any design or build**: compute L_val (statistical) from observation rate, dispersion and plausible effect before freezing; the Weather V1 failure (power below MEUE) was detectable by this arithmetic alone.
+3. **Prebuilt Polymarket venue capture** (books, trades, resolution states, fee schedules) shared across weather, box office and settlement, so collection starts at freeze rather than after a build.
+4. **Replay-first for archived public-information markets**: strict-timestamp historical replay counts as falsification (never as confirmation), cutting the statistical clock for weekly edges from months to days for large effects.
+5. **Standing decay monitors per live candidate** (the measurements in §4 are directly reusable): absorption at release anchors, calibration/favourite returns, cohort turnover of receipt wallets, pool-by-recipient decomposition, return half-life fits.
+6. **Templated pre-registration** for recurring archetypes (bracket markets, settlement census, reward cohorts, tournament re-scoring) to shorten freeze → audit → redesign loops.
+
+### 9.4 Decay-aware research gate (pre-build test)
+
+Definitions: `L_val = L_eng + L_burn_in + L_forward(effect, σ, observation rate) (+ L_integration)`; `τ_rem` estimated with LOWER / CENTRAL bounds from (a) archetype base rates (§8.1), (b) decay evidence at discovery (absorption trend, cohort turnover, volume/pool trend), (c) the edge's age at discovery, (d) the venue's mechanics-change hazard.
+
+```text
+if   τ_rem.CENTRAL <  L_val                       -> DO_NOT_BUILD_FULL_VERTICAL; zero-build falsification only; record status C
+elif τ_rem.LOWER   <  SF × L_val                  -> BUILD ONLY VIA A FASTER VALID PATH (FAST route or replay-first); no full vertical yet
+else                                              -> STANDARD path allowed
+```
+
+**Safety factor SF = 2** (DERIVED heuristic, not calibrated): the post-validation exploitation window must at least equal the validation period to repay it, and the lifetime estimates here carry roughly ×2 uncertainty (HLP half-life CI 4–7 months; weather τ_rem 3–24 months). Recalibrate SF from Quant's own realized validation-vs-decay outcomes; until then SF is ASSUMED at 2.
+
+Illustration on current candidates (not decisions): settlement (1–2 vs ≥ 12 months) passes; Numerai v3 passes (3–5 vs 8–24, in NMR); box office passes **only** replay-first; weather sits in the middle branch (6–8 vs 3–12 on the lower-to-central range), which is the Weather rail's own design decision; NegRisk, polymm-type MM, tweet counts and HLP fail.
+
+---
+
+## 10. Self-audit (mission §38)
+
+| # | Attack | Finding | Correction made |
+|---|---|---|---|
+| 1 | Public disclosure confused with wide diffusion? | Kept separate: first niche mention, first detailed method, first open source, broad publicity are distinct columns (e.g. weather 2025-05-07 / 2025-12-30 / 2026-01 → 02) | — |
+| 2 | Causality from chronology? | No publication-caused decay is claimed; CAUSE_CONFIDENCE LOW wherever only timing exists | — |
+| 3 | Survivor wallets as persistence evidence? | Mechanism persistence is argued from market-level series (M3, M4, M5) and A6's pre-declared cohorts; named wallets used only for cohort turnover | — |
+| 4 | Regime change called competition? | Rebate drop re-labelled from "regime break/decay" to single-recipient discontinuity; Numerai labelled RULE_CHANGE | **Corrected A6's reading** |
+| 5 | Lower recent P&L called decay without statistics? | Box-office Saturday diagnostic decline reported as non-significant; weather claims rest on CI-excluding-zero launch quarter and same-month YoY | — |
+| 6 | Accounting artefact used as edge? | X1, X2, X4 classified G; `user-pnl` used for receipts | — |
+| 7 | Historical evidence transferred to 2026? | NegRisk, tweets, Numerai legacy explicitly not transferred | — |
+| 8 | Right-censored treated as ended? | Weather, box office, settlement, rewards, Kalshi marked RC with minimum lifetimes | — |
+| 9 | Invented precise edge-start dates? | Dates only from gamma/on-chain/git/docs; intervals otherwise (e.g. dynamic tick UNKNOWN; LR start year inferred, MEDIUM) | — |
+| 10 | Capacity changes ignored? | HLP dilution, weather/box-office per-event volume, mention fragmentation, reward recipients reported | — |
+| 11 | Fee/rule changes ignored? | Every chronology lists them | — |
+| 12 | Gross vs net? | Settlement gross (tick) vs net (tails) separated; Kalshi +2.40% flagged gross | — |
+| 13 | Time for independent observations ignored? | Statistical clock is the central result (§3, §9) | — |
+| 14 | Fast rail that lowers standards? | FAST keeps α, fees, PIT; admission requires observation rate and an executable statistic | — |
+| 15 | Silent promotion to validated? | None: A/D/F statuses are lifetime/actionability labels only | — |
+| 16 | Real edges dying before validation overlooked? | Six C cases listed | — |
+| 17 | Mechanism decay vs one trader's decay? | Weather: trader exit (gopfan2 still active elsewhere) distinguished from mechanism (new cohort, market-level calibration) | **Corrected A1's "stars ≈ 0 since April 2026" window: first-cohort decay starts 2025-05** |
+| 18 | Temporary subsidy vs structural rent? | T4 = incumbent rent on a persistent-but-discretionary subsidy | — |
+| 19 | Endogenous publication? | Q1: disclosure lags decay in 6/6 measurable cases | — |
+| 20 | Reproducibility? | Every MEASURED figure has an endpoint and script in `agent7_data/`; WS-A/B/C facts carry URLs | — |
+
+Other corrections to prior agents recorded here: Numerai v3 starts at round ≈ 1343 (2026-08-28), not ≈ 1363 (A6); tweet-count events start 2024-05-03, not June 2024 (A4); A5's settlement +0.14–0.15% holds in 6 of 8 windows but the 2025–26 pooled naive in-window result is −0.115%.
+
+**Known limits (not fixable here):** weather measured on NYC + London only and without forecast archives (by design); gamma `volume` is unaudited (WS-A's box-office monthly volumes differ from mine; only direction is used); ECE has a small-sample floor; settlement windows are 3 days × 8, so tail frequency is estimated from 34 losing fills; the dominant rebate recipient's economics and the cause of its stop are unknown; Wayback was unreachable, so older doc versions (rebate shares in January 2026, dynamic-tick activation) could not be dated.
+
+---
+
+## 11. Terminal answers
+
+```text
+EDGE_DECAY_IS_A_FIRST_CLASS_QUANT_RISK                    = TRUE
+CURRENT_VALIDATION_PROCESS_TOO_SLOW_FOR_SOME_REAL_EDGES   = TRUE
+FAST_VALIDATION_RAIL_ECONOMICALLY_JUSTIFIED               = TRUE   (for high-observation-rate mechanisms with an executable statistic; largely already present as SHADOW_DIRECT; cannot rescue low-frequency short-lived edges)
+WEATHER_EDGE_DECAY_STATE                                  = DECAYING        (confidence LOW–MEDIUM; contextual only)
+BOX_OFFICE_DECAY_STATE                                    = PERSISTENT      (no decay observed over 12 months; future persistence UNKNOWN → case status D; LOW–MEDIUM)
+SETTLEMENT_LIQUIDITY_DECAY_STATE                          = PERSISTENT      (tick-floored premium; HIGH; tail economics unresolved)
+MAKER_REWARD_DECAY_STATE                                  = PERSISTENT      (program level, discretionary; rebate "collapse" = single-recipient discontinuity, not a regime break)
+BEST_NEXT_DECAY_AWARE_RESEARCH_ACTION                     = Run A4's strict-timestamp box-office replay over the whole templated regime (2025-10-14 → T_NOW), reporting the Friday-actuals→Sunday-window return per quarter, so one run is both the falsification and the decay series of the only current candidate whose validation can finish faster than its plausible decay.
+REAL_CAPITAL_AUTHORIZED                                   = FALSE
+```
+
+Nothing in this file is a trading recommendation, and no candidate is promoted to VALIDATED.

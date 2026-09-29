@@ -1,0 +1,126 @@
+# Agent 7 measurement outputs (generated 2026-09-29 UTC from the scripts in scripts/; public APIs drift slightly between runs)
+
+## M1 hlp.py
+half | median AV M$ | ann. all | ann. ex-best period | median bp/day | best share
+2023H1 1 489.7% 179.3% 23.38 66% 2023-05-24
+2023H2 7 158.5% 137.3% 20.52 42% 2023-11-22
+2024H1 84 153.7% 135.9% 13.25 18% 2024-03-20
+2024H2 179 28.0% 23.3% 6.17 19% 2024-12-11
+2025H1 356 11.8% 8.4% 2.57 34% 2025-01-29
+2025H2 448 26.1% 5.1% 1.64 82% 2025-10-15
+2026H1 372 14.8% 0.2% 0.18 101% 2026-02-04
+2026H2 202 3.0% 1.8% 0.80 49% 2026-09-01
+slope/yr -1.62 +- 0.24; half-life months 5.1 (95% CI 4.0-7.2)
+elasticity of median return to AV -0.98
+
+## M3 box_analyze.py
+period | n | median vol | winner median by anchor | winner=fav sat14/sun14
+2023-11..2025-09 35 248k 0.51/0.67/0.95/0.99/1.00 91%/97%
+2025Q4 26 134k 0.45/0.52/0.78/0.95/1.00 92%/96%
+2026Q1 31 179k 0.44/0.46/0.83/0.96/1.00 84%/90%
+2026Q2 30 208k 0.40/0.60/0.84/0.97/1.00 87%/93%
+2026Q3 30 83k 0.35/0.42/0.78/0.98/1.00 73%/90%
+fri14 spearman(time, winner price) -0.053 z -0.56 n 112
+sat14 spearman(time, winner price) -0.032 z -0.34 n 117
+sun14 spearman(time, winner price) -0.049 z -0.53 n 117
+sat14 2025Q4 fav ret 0.250 [0.024, 0.444] n=22
+sat14 2026Q1 fav ret 0.071 [-0.139, 0.274] n=28
+sat14 2026Q2 fav ret 0.148 [-0.080, 0.375] n=27
+sat14 2026Q3 fav ret -0.144 [-0.352, 0.052] n=29
+sat14 ALL 0.069 [-0.044, 0.178] n=106
+sun14 2025Q4 fav ret 0.052 [-0.097, 0.162] n=17
+sun14 2026Q1 fav ret -0.040 [-0.224, 0.109] n=22
+sun14 2026Q2 fav ret 0.017 [-0.133, 0.141] n=26
+sun14 2026Q3 fav ret 0.014 [-0.164, 0.177] n=25
+sun14 ALL 0.009 [-0.072, 0.083] n=90
+sat14 fav return trend spearman -0.143 z -1.47; sd 0.580; events/week 2.16
+effect 0.05/$ -> events 832 -> weeks 385
+effect 0.10/$ -> events 208 -> weeks 96
+effect 0.15/$ -> events 92 -> weeks 43
+effect 0.25/$ -> events 33 -> weeks 15
+
+## M4 wx_analyze.py
+usable events 1223 of 1223
+
+city month | n | nbuckets med | vol med | winner median Dm1_12/D_00/D_09/D_15 | brier D_00 | fav=win D_00
+London 2025-01 9 7 61k 0.33/0.42/0.56/0.97 0.587 50%
+London 2025-02 27 7 93k 0.39/0.49/0.59/0.96 0.418 56%
+London 2025-03 31 7 81k 0.33/0.36/0.38/0.73 0.619 35%
+London 2025-04 30 7.0 69k 0.33/0.38/0.42/0.66 0.623 43%
+London 2025-05 31 7 106k 0.33/0.34/0.41/0.69 0.628 45%
+London 2025-06 30 7.0 62k 0.29/0.34/0.41/0.58 0.676 37%
+London 2025-07 31 7 60k 0.30/0.36/0.42/0.55 0.618 45%
+London 2025-08 31 7 70k 0.34/0.41/0.48/0.68 0.579 58%
+London 2025-09 30 7.0 65k 0.37/0.41/0.43/0.75 0.546 50%
+London 2025-10 31 7 79k 0.34/0.35/0.35/0.81 0.695 45%
+London 2025-11 30 7.0 281k 0.41/0.46/0.53/0.96 0.527 47%
+London 2025-12 31 7 154k 0.47/0.45/0.45/0.97 0.547 52%
+London 2026-01 31 7 198k 0.52/0.60/0.66/0.96 0.289 77%
+London 2026-02 28 9.0 280k 0.44/0.46/0.41/0.97 0.462 61%
+London 2026-03 30 10.0 14k 0.38/0.40/0.49/0.93 0.500 63%
+London 2026-04 30 11.0 308k 0.32/0.38/0.40/0.59 0.584 47%
+London 2026-05 32 11.0 271k 0.28/0.26/0.33/0.59 0.783 39%
+London 2026-06 30 11.0 211k 0.26/0.32/0.32/0.47 0.671 40%
+London 2026-07 31 11 170k 0.32/0.35/0.34/0.41 0.632 35%
+London 2026-08 31 11 139k 0.35/0.38/0.38/0.61 0.584 42%
+London 2026-09 28 11.0 79k 0.33/0.42/0.44/0.67 0.500 54%
+NYC 2025-01 9 7 48k 0.07/0.35/0.37/0.49 0.824 22%
+NYC 2025-02 27 7 107k 0.30/0.40/0.49/0.68 0.638 33%
+NYC 2025-03 31 7 69k 0.28/0.33/0.33/0.46 0.722 26%
+NYC 2025-04 28 7.0 45k 0.29/0.33/0.38/0.67 0.684 46%
+NYC 2025-05 30 7.0 81k 0.28/0.28/0.34/0.65 0.733 38%
+NYC 2025-06 30 7.0 43k 0.28/0.33/0.36/0.49 0.695 33%
+NYC 2025-07 31 7 41k 0.29/0.30/0.40/0.54 0.734 42%
+NYC 2025-08 31 7 46k 0.34/0.40/0.47/0.60 0.625 52%
+NYC 2025-09 30 7.0 54k 0.33/0.41/0.50/0.60 0.569 63%
+NYC 2025-10 31 7 67k 0.35/0.42/0.51/0.73 0.566 52%
+NYC 2025-11 30 7.0 315k 0.43/0.47/0.58/0.75 0.459 73%
+NYC 2025-12 31 7 193k 0.45/0.52/0.63/0.91 0.437 61%
+NYC 2026-01 31 7 172k 0.42/0.46/0.64/0.92 0.491 52%
+NYC 2026-02 28 9.0 249k 0.37/0.35/0.37/0.55 0.604 39%
+NYC 2026-03 31 11 0k 0.32/0.36/0.51/0.74 0.538 57%
+NYC 2026-04 30 11.0 241k 0.28/0.38/0.37/0.59 0.551 63%
+NYC 2026-05 32 11.0 142k 0.30/0.32/0.39/0.52 0.649 42%
+NYC 2026-06 29 11 127k 0.34/0.38/0.48/0.55 0.574 45%
+NYC 2026-07 31 11 148k 0.28/0.33/0.39/0.54 0.682 42%
+NYC 2026-08 31 11 94k 0.35/0.40/0.40/0.61 0.524 55%
+NYC 2026-09 28 11.0 63k 0.38/0.38/0.38/0.60 0.639 43%
+
+YoY same months (Feb-Sep), per city and anchor: median winner price 2025 vs 2026, mean brier, fav hit, fav return
+NYC Dm1_12 | 2025 n=228 win_med=0.30 brier=0.769 favhit=34% favret=-0.143 [-0.307,0.023] | 2026 n=234 win_med=0.33 brier=0.664 favhit=47% favret=0.085 [-0.081,0.240]
+NYC D_00 | 2025 n=237 win_med=0.34 brier=0.706 favhit=42% favret=-0.076 [-0.223,0.082] | 2026 n=238 win_med=0.34 brier=0.630 favhit=48% favret=0.010 [-0.132,0.153]
+NYC D_09 | 2025 n=237 win_med=0.40 brier=0.630 favhit=49% favret=-0.098 [-0.224,0.028] | 2026 n=239 win_med=0.39 brier=0.593 favhit=52% favret=-0.057 [-0.183,0.067]
+NYC D_15 | 2025 n=238 win_med=0.56 brier=0.435 favhit=67% favret=-0.030 [-0.128,0.065] | 2026 n=239 win_med=0.57 brier=0.389 favhit=71% favret=0.047 [-0.057,0.151]
+London Dm1_12 | 2025 n=233 win_med=0.33 brier=0.739 favhit=39% favret=-0.032 [-0.199,0.139] | 2026 n=233 win_med=0.33 brier=0.689 favhit=42% favret=-0.055 [-0.192,0.097]
+London D_00 | 2025 n=241 win_med=0.38 brier=0.653 favhit=46% favret=-0.055 [-0.186,0.091] | 2026 n=239 win_med=0.38 brier=0.657 favhit=47% favret=-0.016 [-0.153,0.123]
+London D_09 | 2025 n=241 win_med=0.43 brier=0.609 favhit=51% favret=-0.074 [-0.194,0.044] | 2026 n=239 win_med=0.38 brier=0.643 favhit=43% favret=-0.189 [-0.306,-0.068]
+London D_15 | 2025 n=241 win_med=0.71 brier=0.353 favhit=72% favret=-0.056 [-0.142,0.032] | 2026 n=239 win_med=0.66 brier=0.346 favhit=72% favret=-0.016 [-0.101,0.075]
+
+Quarterly favourite return at D_00 and Dm1_12 (both cities)
+2025Q1 Dm1_12 n 105 fav ret -0.349 [-0.541,-0.148]
+2025Q1 D_00 n 133 fav ret -0.298 [-0.449,-0.127]
+2025Q2 Dm1_12 n 178 fav ret -0.071 [-0.262,0.115]
+2025Q2 D_00 n 178 fav ret -0.084 [-0.259,0.091]
+2025Q3 Dm1_12 n 184 fav ret 0.042 [-0.124,0.237]
+2025Q3 D_00 n 184 fav ret 0.106 [-0.052,0.254]
+2025Q4 Dm1_12 n 179 fav ret -0.002 [-0.160,0.142]
+2025Q4 D_00 n 184 fav ret -0.006 [-0.138,0.127]
+2026Q1 Dm1_12 n 172 fav ret 0.206 [0.047,0.366]
+2026Q1 D_00 n 178 fav ret 0.035 [-0.109,0.169]
+2026Q2 Dm1_12 n 177 fav ret -0.090 [-0.281,0.088]
+2026Q2 D_00 n 180 fav ret -0.024 [-0.181,0.134]
+2026Q3 Dm1_12 n 179 fav ret -0.043 [-0.210,0.124]
+2026Q3 D_00 n 180 fav ret -0.023 [-0.181,0.140]
+
+## M5 settle_split.py
+samples ['2025-01', '2025-04', '2025-07', '2025-10', '2026-01', '2026-04', '2026-07', '2026-09']
+2025-01 mkts 116 with>=.999 114 | >=0.999: fills 1615 notional 1321441 gross 1323 loss 7 net 0.100% losers 1 distinct takers 834 med hold 2.14h | 0.995-0.998: notional 376178 net 0.225% losers 0
+2025-04 mkts 200 with>=.999 168 | >=0.999: fills 2933 notional 1215469 gross 1197 loss 19171 net -1.479% losers 6 distinct takers 2131 med hold 2.66h | 0.995-0.998: notional 376740 net -0.063% losers 10
+2025-07 mkts 200 with>=.999 182 | >=0.999: fills 1474 notional 1052599 gross 1054 loss 0 net 0.100% losers 0 distinct takers 836 med hold 2.60h | 0.995-0.998: notional 288188 net -0.058% losers 53
+2025-10 mkts 200 with>=.999 182 | >=0.999: fills 6477 notional 4619875 gross 4624 loss 0 net 0.100% losers 0 distinct takers 4402 med hold 10.66h | 0.995-0.998: notional 587052 net -0.214% losers 4
+2026-01 mkts 199 with>=.999 185 | >=0.999: fills 3359 notional 1304036 gross 1297 loss 8237 net -0.532% losers 27 distinct takers 1980 med hold 2.39h | 0.995-0.998: notional 410741 net -0.095% losers 9
+2026-04 mkts 191 with>=.999 169 | >=0.999: fills 5383 notional 2360440 gross 2363 loss 0 net 0.100% losers 0 distinct takers 3635 med hold 2.99h | 0.995-0.998: notional 287834 net 0.201% losers 0
+2026-07 mkts 196 with>=.999 165 | >=0.999: fills 1103 notional 273968 gross 274 loss 0 net 0.100% losers 0 distinct takers 741 med hold 0.55h | 0.995-0.998: notional 162857 net 0.293% losers 0
+2026-09 mkts 197 with>=.999 139 | >=0.999: fills 1208 notional 626118 gross 627 loss 0 net 0.100% losers 0 distinct takers 825 med hold 0.64h | 0.995-0.998: notional 80383 net 0.270% losers 0
+ALL >=0.999 notional 12773947 gross 12759 loss 27415 net -0.1147% losing fills 34
+ALL 0.995-0.998 notional 2569973 gross 5875 loss 5807 net 0.0026% losing fills 76
