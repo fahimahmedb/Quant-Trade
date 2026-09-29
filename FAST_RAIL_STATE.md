@@ -14,7 +14,7 @@ Portée : phase de test, TOUT en papier/shadow, toutes venues. Aucun capital ni 
 
 ## REPRISE
 0. `bash scripts/fast_rail_checkpoint.sh` avant toute tâche longue. Hooks Stop, SubagentStop et PreCompact actifs. Au plus 2 agents par vague, en Sonnet. Un commit par sous-étape.
-1. **Red team H-001 SHADOW_DIRECT** : 2 agents en cours (économie, runtime). Tout HIGH doit être corrigé avant le 1er pari forward, vers le 3 octobre (EPL le 10/10, prix relevés à J-7).
+1. **Red team H-001 faite**, 3 HIGH corrigés (RT-2026-09-29-02). Statistique amendée avant tout forward : CLV mesurée sur le prix de la venue elle-même (Pinnacle ne fait que sélectionner). H1 0,095σ, ≈ 806 matchs, horizon 1 500. MED encore ouverts : profondeur Kalshi, workflow `if: always()`, taille des shards.
 2. **H-010 (R1)** : le scan d'index tourne dans `.claude/worktrees/agent-ac9a307db8faaf614` (≈ 140 000 événements ; Sports 79 289, Entertainment 970, World 2).
    - Si le conteneur est perdu : `git apply research/fast_rail/wip/agent-ac9a307db8faaf614.patch`, puis décompresser `wip/h010_index/events_index.jsonl.gz` et copier `index_checkpoint.json` dans `data/fast_rail/h010/raw/`.
    - Ensuite : `python3 research/fast_rail/h010/sample.py index` jusqu'à épuisement du curseur, puis `detail`, `build`, `fetch.py`, `analysis.py`, et les verdicts au registre.
@@ -25,7 +25,7 @@ Portée : phase de test, TOUT en papier/shadow, toutes venues. Aucun capital ni 
 ## En SHADOW / SHADOW_DIRECT
 | stratégie | k / α | statistique | depuis | N forward | état |
 |---|---|---|---|---|---|
-| H-001 corrigée (Pinnacle vs Kalshi/PM) | 1 / 0,025 | CLV nette de frais par match ; proxy P&L > 0 | 2026-09-29T12:00Z | 0 (prochain match EPL le 10/10) | CONTINUE ; ≈ 202 matchs attendus si H1 est vraie ; horizon 1 000 |
+| H-001 corrigée (Pinnacle vs Kalshi/PM) | 1 / 0,025 | CLV nette de frais mesurée sur la venue, par match ; proxy P&L > 0 (≥ 30 paris réglés, figé à l'arrêt) | 2026-09-29T14:00Z | 0 | CONTINUE ; ≈ 806 matchs attendus si H1 est vraie |
 | calendar_fomc_overnight | — | P&L | 2026-09-25 | 0 | CONTINUE (des années) |
 L'évaluation H-001 tourne toute seule : collecte complète GitHub Actions (toutes les 6 h), puis `research/fast_rail/h001/forward.py`, qui écrit `data/feeds/eval/h001_shadow_direct.json`.
 
@@ -46,7 +46,7 @@ L'évaluation H-001 tourne toute seule : collecte complète GitHub Actions (tout
 ## Constats red team
 - RT-2026-09-27-01 (invariant 6, `pristine_after`) : CORRIGÉ.
 - RT-2026-09-29-01 (t-SPRT, pertes rares : 12 % de fausses acceptations à α 2,5 %) : CORRIGÉ par un plancher de σ déclaré.
-- Red team H-001 SHADOW_DIRECT : en cours.
+- RT-2026-09-29-02 (H-001) : 3 HIGH corrigés ; MED ouverts listés au registre.
 
 ## Collecte (GitHub Actions, branche de données, `ae51f91`)
 - Pinnacle EPL et NBA, avec quotes Kalshi et PM au même instant.

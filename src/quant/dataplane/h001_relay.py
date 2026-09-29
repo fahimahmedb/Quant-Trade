@@ -334,8 +334,17 @@ def fetch_pinnacle(sport: str, key: str, fetch: Fetcher = http_fetch
     except OddsHTTPError as exc:
         meta = _ledger_row(sport, fetched_at, url, exc.headers, status=str(exc))
         return [], meta
+    except DataUnavailable as exc:
+        # Timeout / network / bad JSON after the server may have charged the request:
+        # counted as used (no x-requests-used header => charged), never retried free.
+        meta = _ledger_row(sport, fetched_at, url, {}, status=f"UNREACHABLE: {exc}"[:120])
+        return [], meta
     meta = _ledger_row(sport, fetched_at, url, headers, status="OK")
-    records = parse_pinnacle(payload, sport)
+    try:
+        records = parse_pinnacle(payload, sport)
+    except (TypeError, KeyError, ValueError) as exc:
+        meta["status"] = f"BAD_PAYLOAD: {type(exc).__name__}"
+        return [], meta
     meta["events"] = len(records)
     return records, meta
 

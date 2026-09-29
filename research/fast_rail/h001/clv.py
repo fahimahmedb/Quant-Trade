@@ -32,7 +32,7 @@ from quant.factory.sportsfair import devig_power  # noqa: E402
 
 #: ASSUMPTION (verify against the venue schedule before a verdict): Polymarket sports
 #: taker fee modelled like Kalshi's, rate * p * (1 - p) per contract.
-POLYMARKET_FEE_RATE = 0.03
+POLYMARKET_FEE_RATE = 0.05   # S17 sports rate (diagnostic module; forward.py is authoritative)
 KALSHI_FEE_RATE = 0.07
 
 
