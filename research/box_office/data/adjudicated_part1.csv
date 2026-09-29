@@ -1,0 +1,105 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2025-12-19,Avatar: Fire and Ash,OPEN,A,97.5,90,105,RANGE,V,1236612125,Box Office: ‘Avatar: Fire and Ash’ Makes $12 Million in Previews,STRICT,expected to lead the pre-Christmas box office with $90 million to $105 million in its opening weekend,"Deadline FRIDAY AM gives only $12M previews, no 3-day"
+2025-12-19,Avatar: Fire and Ash,OPEN,B,,,,,,,,,,DAILY_ONLY: Deadline FRIDAY PM gives $37M today incl previews; no 3-day
+2025-12-19,Avatar: Fire and Ash,OPEN,C,87.5,85,90,RANGE,D,1236653423,SATURDAY AM,LABEL,"Avatar: Fire and Ash (20th) 3,800 theaters, Fri $36.5M, 3-day $85M-$90M/Wk 1",chart preferred; prose only conditional path to $90M+/north of $90M
+2025-12-19,Avatar: Fire and Ash,OPEN,D,88,,,,D,1236653423,SUNDAY AM UPDATE WITH CHART,LABEL,"Fri $36.5M, Sat $28M Sun $23M 3-day $88M /Wk 1",prose $88M agrees; V:88 STRICT
+2025-12-19,David,OPEN,A,,,,,,,,,,PREVIEWS_ONLY: ~$1.8M previews; no 3-day
+2025-12-19,David,OPEN,B,,,,,,,,,,NO_FIGURE: only presales $14M; no 3-day for David
+2025-12-19,David,OPEN,C,25,,,,D,1236653423,SATURDAY AM,LABEL,"David (Angel) 3,118 theaters, Fri $9.66M, 3-day $25M/Wk 1",prose 'set to do $25M' agrees
+2025-12-19,David,OPEN,D,22,,,,D,1236653423,SUNDAY AM UPDATE WITH CHART,LABEL,"David (Angel) 3,118 theaters, Fri $9.66M Sat $6.7M Sun $5.65M 3-day $22M /Wk 1",V text truncated before figure
+2025-12-19,The Housemaid,OPEN,A,,,,,,,,,,PREVIEWS_ONLY: $2.2M-$2.3M previews; no 3-day
+2025-12-19,The Housemaid,OPEN,B,,,,,,,,,,NO_FIGURE
+2025-12-19,The Housemaid,OPEN,C,20.5,20,21,RANGE,D,1236653423,SATURDAY AM,LABEL,"The Housemaid (LG) 3,015 theaters, Fri $8M, 3-day $20M-$21M/Wk 1",prose '$20M-$21M' agrees
+2025-12-19,The Housemaid,OPEN,D,19,,,,D,1236653423,SUNDAY AM UPDATE WITH CHART,LABEL,"The Housemaid (LG) 3,015 theaters, Fri $8M, Sat $5.8M Sun $5.1M 3-day $19M /Wk 1",V:19 STRICT
+2025-12-19,The Spongebob Movie: Search for SquarePants,OPEN,A,17.5,15,20,RANGE,V,1236612125,Box Office: ‘Avatar: Fire and Ash’ Makes $12 Million in Previews,STRICT,tracking for the No. 4 spot with $15 million to $20 million,Deadline FRIDAY AM 'teens to $20M' not numeric (unusable); previews $1.3-1.4M ignored
+2025-12-19,The Spongebob Movie: Search for SquarePants,OPEN,B,17,16,18,RANGE,D,1236653423,FRIDAY PM UPDATE,LABEL,soaking up $5.6M today and $16M-$18M for the weekend,
+2025-12-19,The Spongebob Movie: Search for SquarePants,OPEN,C,17,,,,D,1236653423,SATURDAY AM,LABEL,"SpongeBob Movie..(Par) 3,557 theaters, Fri $6M, 3-day $17M/Wk 1",prose '$17M opening' agrees
+2025-12-19,The Spongebob Movie: Search for SquarePants,OPEN,D,16,,,,D,1236653423,SUNDAY AM UPDATE WITH CHART,LABEL,"S pongeBob Movie. .(Par) 3,557 theaters, Fri $6M, Sat $5.3M Sun $4.7M 3-day $16M",chart line from same Deadline SUNDAY AM section shown in Avatar/David/Housemaid blocks (name split 'S pongeBob'); own block only V comparables
+2025-12-26,Avatar: Fire and Ash,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2025-12-26,Avatar: Fire and Ash,NTH,B,,,,,,,,,,NO_RELEASE
+2025-12-26,Avatar: Fire and Ash,NTH,C,,,,,,,,,,NO_RELEASE (Saturday-AM estimate $60M exists only embedded in SUNDAY AM section; not usable for C)
+2025-12-26,Avatar: Fire and Ash,NTH,D,64,,,,D,1236657345,SUNDAY AM UPDATE,LABEL,Sat $22.2M (excellent hold) Sun $19.2M Sun  3-day $64M (-28%),embedded 'Weekend estimates as of Saturday AM' $60M ignored; V:64 REVISABLE
+2026-01-02,Avatar: Fire and Ash,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-01-02,Avatar: Fire and Ash,NTH,B,,,,,,,,,,NO_FIGURE: FRIDAY PM only comparables/cume threshold
+2026-01-02,Avatar: Fire and Ash,NTH,C,,,,,,,,,,NO_RELEASE
+2026-01-02,Avatar: Fire and Ash,NTH,D,40,,,,D,1236660722,SUNDAY AM WRITETHRU,LABEL,Fri $14M (-38%) 3-day $40M (-37%) Total $305.9M /Wk 3,prose $40M agrees; V:40 STRICT (title)
+2026-01-09,Avatar: Fire and Ash,NTH,A,,,,,,,,,,NTH_NO_LANE_A (Deadline FRIDAY AM had $20M-$22M)
+2026-01-09,Avatar: Fire and Ash,NTH,B,24,,,,D,1236677406,FRIDAY PM UPDATE,LABEL,what's expected to be a $24 million fourth weekend,
+2026-01-09,Avatar: Fire and Ash,NTH,C,,,,,,,,,,DAILY_ONLY: V STRICT gives $5M Friday only
+2026-01-09,Avatar: Fire and Ash,NTH,D,21.3,,,,D,1236677406,SUNDAY AM WRITETHRU,LABEL,Fri $5.1M (-64% from last Friday) Sat $9.8M Sun $6.4M Wk $21.3M (-49%),Sunday chart labels the 3-day 'Wk' (Fri+Sat+Sun=21.3); V:21 REVISABLE (title)
+2026-01-09,Greenland 2: Migration,OPEN,A,9,8,10,RANGE,D,1236677406,FRIDAY AM UPDATE,LABEL,Primate and Greenland 2 were forecast to make $8M-$10M heading into this weekend,"pre-weekend forecast restated in FRIDAY AM, shared wording with Primate (read as each); previews $900K ignored"
+2026-01-09,Greenland 2: Migration,OPEN,B,10,,,,D,1236677406,FRIDAY PM UPDATE,LABEL,with $3.8M today and $10M for the weekend,
+2026-01-09,Greenland 2: Migration,OPEN,C,,,,,,,,,,DAILY_ONLY: V STRICT gives $3.2M Friday only
+2026-01-09,Greenland 2: Migration,OPEN,D,8.5,,,,D,1236677406,SUNDAY AM WRITETHRU,LABEL,coming in at the lower end of its $8M-$10M projection with $8.5M,prose (chart truncated before this film); V:8.5 REVISABLE
+2026-01-09,Primate,OPEN,A,9,8,10,RANGE,D,1236677406,FRIDAY AM UPDATE,LABEL,Primate and Greenland 2 were forecast to make $8M-$10M heading into this weekend,"pre-weekend forecast restated in FRIDAY AM, shared wording with Greenland 2 (read as each); Monkey $14M comparable ignored"
+2026-01-09,Primate,OPEN,B,10.5,,,,D,1236677406,FRIDAY PM UPDATE,LABEL,is seeing $4.4M today and $10.5M for the weekend,
+2026-01-09,Primate,OPEN,C,,,,,,,,,,DAILY_ONLY: V STRICT gives $4.5M Friday only
+2026-01-09,Primate,OPEN,D,11.3,,,,D,1236677406,SUNDAY AM WRITETHRU,LABEL,"Primate (Par) 2,964 theaters, Fri $4.56M, Sat $4.1M Sun $2.6M Wk $11.3M /Wk 1",chart 'Wk'=3-day; prose $11M+; V:11.3 REVISABLE
+2026-01-16,28 Years Later: Bone Temple,OPEN,A,,,,,,,,,,FOUR_DAY_ONLY: Deadline $20M-$22M over four days (MLK); no 3-day; V no figure
+2026-01-16,28 Years Later: Bone Temple,OPEN,B,13,,,,D,1236685165,FRIDAY PM,LABEL,"28 Years Later: The Bone Temple (Sony) 3,506 theaters, Fri $5.8M, 3-day $13M, 4-day $15M/Wk 1",
+2026-01-16,28 Years Later: Bone Temple,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-01-16,28 Years Later: Bone Temple,OPEN,D,13,,,,D,1236685165,SUNDAY AM WRITETHRU,LABEL,"Sat $4.1M Sun $3.3M Mon $2M 3-day $13M , 4-day $15M /Wk 1",prose 'three-day at $13M' agrees; 4-day $15M ignored
+2026-01-16,Avatar: Fire and Ash,NTH,A,,,,,,,,,,NTH_NO_LANE_A (lane A had only 4-day ~$19M / V $18-19M)
+2026-01-16,Avatar: Fire and Ash,NTH,B,13.7,,,,D,1236685165,FRIDAY PM,LABEL,"Avatar: Fire & Ash (20th) 3,300 theaters, Fri $3M, 3-day $13.7M (-36%)",
+2026-01-16,Avatar: Fire and Ash,NTH,C,,,,,,,,,,NO_RELEASE
+2026-01-16,Avatar: Fire and Ash,NTH,D,13.3,,,,D,1236685165,SUNDAY AM WRITETHRU,LABEL,"Sun $4.1M Mon $3.88M 3-day $13.3M (-38%), 4-day $17.2M",4-day $17.2M ignored; V:13.3 REVISABLE
+2026-01-23,Avatar: Fire and Ash,NTH,A,,,,,,,,,,NTH_NO_LANE_A (Deadline FRIDAY AM had around $7M)
+2026-01-23,Avatar: Fire and Ash,NTH,B,8,,,,D,1236694631,FRIDAY PM,LABEL,Avatar: Fire and Ash notches $8M in weekend 6,
+2026-01-23,Avatar: Fire and Ash,NTH,C,,,,,,,,,,NO_RELEASE
+2026-01-23,Avatar: Fire and Ash,NTH,D,7,,,,V,1236639941,Box Office: ‘Mercy’ Ends ‘Avatar: Fire and Ash’ Five-Weekend Reign With $10.8 Million Debu,REVISABLE,slid to second place with $7 million over the weekend,no Deadline lane D block
+2026-01-23,Mercy,OPEN,A,13.5,12,15,RANGE,D,1236694631,FRIDAY AM,LABEL,is looking at $12M-$15M domestic for a No. 1 win,line sits in Avatar block of same Deadline FRIDAY AM section; subject is the Bekmambetov/Rebecca Ferguson film = Mercy; Mercy block itself only previews $1.5M
+2026-01-23,Mercy,OPEN,B,12.6,,,,D,1236694631,FRIDAY PM,LABEL,This puts Amazon MGM Studios' Mercy at $12.6M for the weekend,
+2026-01-23,Mercy,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-01-23,Mercy,OPEN,D,10.8,,,,V,1236639941,Box Office: ‘Mercy’ Ends ‘Avatar: Fire and Ash’ Five-Weekend Reign With $10.8 Million Debu,REVISABLE,collected $10.8 million in its North American debut,no Deadline lane D block; V post marked UPDATED
+2026-01-23,Return to Silent Hill,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-01-23,Return to Silent Hill,OPEN,B,3.2,,,,D,1236694631,FRIDAY PM,LABEL,on its way to a 3-day of $3.2M,
+2026-01-23,Return to Silent Hill,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-01-23,Return to Silent Hill,OPEN,D,3.2,,,,V,1236639941,Box Office: ‘Mercy’ Ends ‘Avatar: Fire and Ash’ Five-Weekend Reign With $10.8 Million Debu,REVISABLE,"debuted in the No. 7 slot with $3.2 million from 1,850 locations",no Deadline lane D block
+2026-01-30,Iron Lung,OPEN,A,10,,,,V,1236645810,Box Office: Sam Raimi’s ‘Send Help’ Makes $2.2 Million in Previews,STRICT,on track for second place this weekend with a $10 million bow,no Deadline lane A block
+2026-01-30,Iron Lung,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-01-30,Iron Lung,OPEN,C,16,15,17,RANGE,D,1236703378,SATURDAY AM,LABEL,"Iron Lung (Inde) 3,015 theaters, Fri $9M , 3-day $15M-$17M /Wk 1",prose '$15M-$17M' and '$14M-$17M'; chart preferred; V STRICT Friday $8.9M only
+2026-01-30,Iron Lung,OPEN,D,17.8,,,,D,1236703378,SUNDAY AM,LABEL,"Iron Lung (Inde) 3,015 theaters, Fri $9M, Sat $5.3M Sun $3.5M 3-day $17.8M /Wk 1",V:17.8 REVISABLE; other V REVISABLE says 17.5
+2026-01-30,Melania,OPEN,A,,,,,,,,,,NO_FIGURE: V lane A only marketing cost
+2026-01-30,Melania,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-01-30,Melania,OPEN,C,8.1,,,,D,1236703378,SATURDAY AM,LABEL,"Melania (AMZ) 1,778 theaters, Fri $2.9M , 3-day $8.1M /Wk 1",prose 'still seeing $8.1M' agrees
+2026-01-30,Melania,OPEN,D,7,,,,D,1236703378,SUNDAY AM,LABEL,"Melania (AMZ) 1,778 theaters, Fri $2.9M, Sat $2.3M Sun $1.8M 3-day $7M /Wk 1",prose $7M agrees; V:7 REVISABLE (title)
+2026-01-30,Send Help,OPEN,A,,,,,,,,,,NO_FIGURE: no Send Help 3-day in any lane A block (V post is previews $2.2M)
+2026-01-30,Send Help,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-01-30,Send Help,OPEN,C,18,17.5,18.5,RANGE,D,1236703378,SATURDAY AM,LABEL,"Send Help (20th) 3,475 theaters Fri $7.2M , 3-day $17.5M-$18.5M /Wk 1",chart preferred; prose gives $17.5M-$18.1M and $16M-$18M
+2026-01-30,Send Help,OPEN,D,20,,,,D,1236703378,SUNDAY AM,LABEL,"Send Help (20th) 3,475 theaters Fri $7.2M, Sat $7.1M, Sun $5.7M, 3-day $20M /Wk 1",Disney call; rivals see $18M; V:20 REVISABLE
+2026-01-30,Shelter,OPEN,A,6,5,7,RANGE,V,1236645810,Box Office: Sam Raimi’s ‘Send Help’ Makes $2.2 Million in Previews,STRICT,is targeting a $5 million to $7 million launch,no Deadline lane A block; previews $385K ignored
+2026-01-30,Shelter,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-01-30,Shelter,OPEN,C,5,,,CONFLICT,D,1236703378,SATURDAY AM,LABEL,Shelter with $5M in 6th place after a $1.5M Friday/previews,AMBIGUOUS: same section also says 'around $4M for the weekend'; chart truncated before Shelter
+2026-01-30,Shelter,OPEN,D,5.5,,,,V,1236645970,"Box Office: ‘Melania’ Doc Beats Expectations With $7 Million Debut, Sam Raimi’s ‘Send Help",REVISABLE,"tumbled to the No. 6 spot with $5.5 million from 2,726 theaters",Deadline SUNDAY AM chart truncated before Shelter
+2026-02-06,Solo Mio,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-02-06,Solo Mio,OPEN,B,7.6,,,,D,1236711737,FRIDAY PM,LABEL,"for a $7.6M opening at 3,052 theaters",
+2026-02-06,Solo Mio,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-02-06,Solo Mio,OPEN,D,7.2,,,,V,1236656120,"Box Office: ‘Melania’ Plunges 67% to Ninth Place, ‘Send Help’ Remains No. 1 in Glacial Sup",STRICT,"Second place went to ""Solo Mio"" with $7.2 million from 3,052 venues",no Deadline lane D block
+2026-02-06,Stray Kids: The dominATE Experience,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-02-06,Stray Kids: The dominATE Experience,OPEN,B,,,,,,,,,,DAILY_ONLY: '$3.2M today' only (text truncated)
+2026-02-06,Stray Kids: The dominATE Experience,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-02-06,Stray Kids: The dominATE Experience,OPEN,D,5.5,,,,V,1236656120,"Box Office: ‘Melania’ Plunges 67% to Ninth Place, ‘Send Help’ Remains No. 1 in Glacial Sup",STRICT,"opened to a solid $5.5 million from 1,724 theaters",global $19.9M (V REVISABLE) ignored
+2026-02-06,The Strangers - Chapter 3,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-02-06,The Strangers - Chapter 3,OPEN,B,3.7,,,APPROX,D,1236711737,FRIDAY PM,LABEL,looking at $1.7M today and about a $3.7M opening,Strangers 2 $5.8M / Chapter 1 $11.8M comparables ignored
+2026-02-06,The Strangers - Chapter 3,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-02-06,The Strangers - Chapter 3,OPEN,D,3.5,,,,V,1236656120,"Box Office: ‘Melania’ Plunges 67% to Ninth Place, ‘Send Help’ Remains No. 1 in Glacial Sup",STRICT,"crash-landed at No. 7 with $3.5 million from 2,565 locations",no Deadline lane D block
+2026-02-20,Crime 101,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-02-20,Crime 101,NTH,B,5.5,5,6,RANGE,D,1236730748,"UPDATED, FRIDAY PM",LABEL,for a $5M-$6M second weekend,
+2026-02-20,Crime 101,NTH,C,,,,,,,,,,NO_RELEASE
+2026-02-20,Crime 101,NTH,D,,,,,,,,,,INTL_ONLY: V STRICT gives $6.2M international only
+2026-02-20,GOAT,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-02-20,GOAT,NTH,B,13,12,14,RANGE,D,1236730748,"UPDATED, FRIDAY PM",LABEL,with $12 million-$14 million apiece,'apiece' = GOAT and Wuthering Heights each
+2026-02-20,GOAT,NTH,C,13.5,13,14,RANGE,V,1236669138,Box Office: ‘Wuthering Heights’ Leads Again With $4.6 Million; ‘How to Make a Killing’ Tak,REVISABLE,looks to earn $13 million to $14 million through Sunday,V REVISABLE only; running total $54-55M ignored
+2026-02-20,GOAT,NTH,D,17,,,,V,1236669470,Box Office: ‘GOAT’ Unseats ‘Wuthering Heights’ After Close Race for No. 1 in Quiet Winter,STRICT,"""GOAT"" pulled ahead with $17 million from 3,863 theaters","domestic (3,863 theaters, -36%); the other V '$17 million from 51 territories' is international, ignored"
+2026-02-20,How to Make a Killing,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-02-20,How to Make a Killing,OPEN,B,3,,,APPROX,D,1236730748,"UPDATED, FRIDAY PM",LABEL,around $3M for the three days,
+2026-02-20,How to Make a Killing,OPEN,C,,,,,,,,,,DAILY_ONLY: V REVISABLE gives $1.6M opening day only
+2026-02-20,How to Make a Killing,OPEN,D,3.5,,,,V,1236669470,Box Office: ‘GOAT’ Unseats ‘Wuthering Heights’ After Close Race for No. 1 in Quiet Winter,STRICT,in sixth place with $3.5 million,no Deadline lane D block
+2026-02-20,I Can Only Imagine 2,OPEN,A,,,,,,,,,,PREVIEWS_ONLY: $1.8M previews; 2018 original $17.1M comparable ignored
+2026-02-20,I Can Only Imagine 2,OPEN,B,,,,,,,,,,DAILY_ONLY: $3.75M today incl previews
+2026-02-20,I Can Only Imagine 2,OPEN,C,8.5,8,9,RANGE,V,1236669138,Box Office: ‘Wuthering Heights’ Leads Again With $4.6 Million; ‘How to Make a Killing’ Tak,REVISABLE,should round up $8 million to $9 million by Sunday,V REVISABLE only
+2026-02-20,I Can Only Imagine 2,OPEN,D,8,,,,V,1236669470,Box Office: ‘GOAT’ Unseats ‘Wuthering Heights’ After Close Race for No. 1 in Quiet Winter,STRICT,"captured the No. 3 spot with $8 million from 3,105 venues",no Deadline lane D block
+2026-02-20,Wuthering Heights,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-02-20,Wuthering Heights,NTH,B,13,12,14,RANGE,D,1236730748,"UPDATED, FRIDAY PM",LABEL,with $12 million-$14 million apiece,'apiece' = GOAT and Wuthering Heights each
+2026-02-20,Wuthering Heights,NTH,C,,,,,,,,,,DAILY_ONLY: V REVISABLE gives $4.6M Friday only
+2026-02-20,Wuthering Heights,NTH,D,14.2,,,,V,1236669470,Box Office: ‘GOAT’ Unseats ‘Wuthering Heights’ After Close Race for No. 1 in Quiet Winter,STRICT,"wasn't far behind with $14.2 million from 3,682 venues",no Deadline lane D block; $59.5M cume ignored

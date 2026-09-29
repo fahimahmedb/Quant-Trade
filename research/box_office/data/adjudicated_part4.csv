@@ -1,0 +1,81 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2026-06-26,Jackass: Best and Last,OPEN,A,,,,,,,,,,NO_RELEASE: Deadline FRIDAY AM gives previews $1.2M only; no 3-day projection
+2026-06-26,Jackass: Best and Last,OPEN,B,9,8,10,RANGE,D,1236968254,FRIDAY PM,LABEL,3-day between $8M-$10M,
+2026-06-26,Jackass: Best and Last,OPEN,C,8.5,8.5,8.5,,D,1236968254,SATURDAY AM,LABEL,"Jackass: Best and Last (Par) 2,855 theaters, Fri $3.8M 3-day $8.5M/Wk 1",V STRICT gives Friday $3.8M only (daily)
+2026-06-26,Jackass: Best and Last,OPEN,D,8.4,8.4,8.4,,D,1236968254,SUNDAY AM,LABEL,the lowest start ever in the franchise at $8.4M,chart line truncated before this film 3-day; prose used; V:8.4 REVISABLE (1236797777)
+2026-06-26,Obsession,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-26,Obsession,NTH,B,8.5,8.5,8.5,,D,1236968254,FRIDAY PM,LABEL,"seventh weekend of Obsession at 2,965 sites is looking at $8.5M , -37%",
+2026-06-26,Obsession,NTH,C,9.4,9.4,9.4,,D,1236968254,SATURDAY AM,LABEL,"Obsession (Foc) 2,965 (-88) theaters, Fri $2.97M (-37%) 3-day $9.4M (-30%)",V:9.4 STRICT (1236789996)
+2026-06-26,Obsession,NTH,D,9.8,9.8,9.8,,D,1236968254,SUNDAY AM,LABEL,"Obsession (Foc) 2,965 (-88) theaters, Fri $3M (-36%) Sat $3.7M Sun $3M 3-day $9.8M (-27%)",V:9.8 REVISABLE (1236797777)
+2026-06-26,Supergirl,OPEN,A,48.5,47,50,RANGE,V,1236790790,Box Office: ‘Supergirl’ Takes Off With $7.8 Million in Previews,STRICT,"""Supergirl"" is projected to make between $47 million and $50 million this weekend",Deadline FRIDAY AM has global first-day/foreign figures only
+2026-06-26,Supergirl,OPEN,B,40,40,40,,D,1236968254,FRIDAY PM,LABEL,"Supergirl right now is coming in at the low end with $40M at 3,602",
+2026-06-26,Supergirl,OPEN,C,40,40,40,,D,1236968254,SATURDAY AM,LABEL,"Supergirl (WB) 3,602 theaters, Fri $18M, 3-day $40M/Wk 1",chart line appears in other films' blocks of same SATURDAY AM section; own-block prose 'filing $40M domestic' agrees; V STRICT Friday $18M only
+2026-06-26,Supergirl,OPEN,D,38,38,38,,D,1236968254,SUNDAY AM,LABEL,"Supergirl (WB) 3,602 theaters, Fri $18M, Sat $10.7M Sun $9.1M 3-day $38M",chart line from other films' blocks of same SUNDAY AM section; own-block prose 'turning into a $38M domestic opening' agrees; V:37.1 REVISABLE (1236797821)
+2026-06-26,Toy Story 5,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-06-26,Toy Story 5,NTH,B,,,,,,,,,,NO_RELEASE: no lane B figure for this film
+2026-06-26,Toy Story 5,NTH,C,70,70,70,PLUS,D,1236968254,SATURDAY AM,LABEL,"Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), 3-day $70M+ (-56%)",prose 'around $70M+' agrees; V STRICT Friday $21M only
+2026-06-26,Toy Story 5,NTH,D,70,70,70,,D,1236968254,SUNDAY AM,LABEL,"Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), Sat $27M Sun $21.9M 3-day $70M (-56%)",prose $70M agrees; V:70 REVISABLE (1236797777)
+2026-07-03,Supergirl,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-03,Supergirl,NTH,B,10,10,10,,D,1236972754,FRIDAY PM UPDATE,LABEL,a second estimated weekend of $10M,
+2026-07-03,Supergirl,NTH,C,,,,,,,,,,NO_RELEASE
+2026-07-03,Supergirl,NTH,D,9.6,9.6,9.6,,D,1236972754,SUNDAY AM WRITETHRU,LABEL,$9.6M domestic second weekend,chart truncated before this film 3-day; prose used; V:8.6 REVISABLE (1236801905)
+2026-07-03,Toy Story 5,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-03,Toy Story 5,NTH,B,30,30,30,,D,1236972754,FRIDAY PM UPDATE,LABEL,"an estimated 3-day of $30M , -58%",
+2026-07-03,Toy Story 5,NTH,C,,,,,,,,,,NO_RELEASE
+2026-07-03,Toy Story 5,NTH,D,31,31,31,,D,1236972754,SUNDAY AM WRITETHRU,LABEL,"Toy Story 5 (Dis) 3,975 (-450) theaters Fri $13.7M (-36% from prev Friday) Sat $7.5M Sun $9.8M, 3-day $31M (-56%)",prose $31M agrees; V:31 REVISABLE (1236801905)
+2026-07-03,Young Washington,OPEN,A,,,,,,,,,,NO_RELEASE: no lane A block
+2026-07-03,Young Washington,OPEN,B,16.5,16,17,RANGE,D,1236972754,FRIDAY PM UPDATE,LABEL,ahead of its $15M projection with an estimated $16M-$17M,
+2026-07-03,Young Washington,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-07-03,Young Washington,OPEN,D,20.8,20.8,20.8,,D,1236972754,SUNDAY AM WRITETHRU,LABEL,"Young Washington (Angel) 2,700 theaters, Fri $7.5M Sat $7.6M Sun $5.6M 3-day $20.8M /Wk 1",prose $20.8M agrees; D post 1236974374 SUNDAY AM (same availability) 20.8; V:19.3 REVISABLE (1236801905)
+2026-07-10,Evil Dead Burn,OPEN,A,,,,,,,,,,NO_RELEASE: no lane A block (previews $2.3M appear only in lane B)
+2026-07-10,Evil Dead Burn,OPEN,B,15,15,15,,D,1236979144,FRIDAY PM,LABEL,a $6M+ Friday including previews and a 3-day of $15M,prose names film 'Evil Dead Burns' (misspelling); own block
+2026-07-10,Evil Dead Burn,OPEN,C,,,,,,,,,,DAILY_ONLY: no Deadline SATURDAY AM section; V STRICT Friday $6.7M only
+2026-07-10,Evil Dead Burn,OPEN,D,13.7,13.7,13.7,,V,1236808979,"Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio",STRICT,"""Evil Dead Burn,"" opened in fourth place with just $13.7 million from 3,004 theaters",no Deadline SUNDAY AM section; V REVISABLE 1236809109 $13.3M is overseas (ignored)
+2026-07-10,Minions & Monsters,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-10,Minions & Monsters,NTH,B,20,20,20,,D,1236979144,FRIDAY PM,LABEL,"second weekend of Minions & Monsters with a solid hold of -46%, or $20M",
+2026-07-10,Minions & Monsters,NTH,C,,,,,,,,,,DAILY_ONLY: no Deadline SATURDAY AM section; V STRICT Friday $6.5M only
+2026-07-10,Minions & Monsters,NTH,D,20.5,20.5,20.5,,V,1236808979,"Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio",STRICT,"Second place went to ""Minions and Monsters"" with $20.5 million from 4,244 venues in its second weekend",line taken from Toy Story 5 block of same weekend/lane/post (film spelled 'Minions and Monsters'); no Deadline SUNDAY AM section
+2026-07-10,Moana (2026),OPEN,A,,,,,,,,,,NO_RELEASE: no lane A block (previews $4.5M only)
+2026-07-10,Moana (2026),OPEN,B,42.5,40,45,RANGE,D,1236979144,FRIDAY PM,LABEL,for a 3-day between $40M-$45M,
+2026-07-10,Moana (2026),OPEN,C,45,45,45,,V,1236805237,Box Office: ‘Moana’ Makes $18 Million on Opening Day,STRICT,Rival estimates have it grossing $45 million through opening weekend,rival (non-studio) estimate; no Deadline SATURDAY AM section
+2026-07-10,Moana (2026),OPEN,D,43,43,43,,V,1236808979,"Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio",STRICT,"earning $43 million from 3,827 North American theaters in its opening weekend",no Deadline SUNDAY AM section
+2026-07-10,Toy Story 5,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-10,Toy Story 5,NTH,B,18,18,18,,D,1236979144,FRIDAY PM,LABEL,"3-day of $18M , off 40%",
+2026-07-10,Toy Story 5,NTH,C,,,,,,,,,,DAILY_ONLY: no Deadline SATURDAY AM section; V STRICT Friday $5.7M only
+2026-07-10,Toy Story 5,NTH,D,18.5,18.5,18.5,,V,1236808979,"Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio",STRICT,secured the No. 3 spot with $18.5 million in its fourth outing,no Deadline SUNDAY AM section; V 1236809109 $45M is international (ignored)
+2026-07-17,Minions & Monsters,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-17,Minions & Monsters,NTH,B,14.5,14.5,14.5,,D,1236993792,FRIDAY PM,LABEL,"3.) Minions & Monsters (Uni) 3,505 theaters, Fri $4.6M, 3-day $14.5M (-31%)",
+2026-07-17,Minions & Monsters,NTH,C,,,,,,,,,,CHART_TRUNCATED: Deadline SATURDAY AM chart cut before this film; V STRICT Friday $4.3M only (DAILY_ONLY)
+2026-07-17,Minions & Monsters,NTH,D,14.8,14.8,14.8,,V,1236815861,"Box Office: ‘The Odyssey’ Stuns With $124 Million Opening Weekend, Third-Biggest Debut of ",REVISABLE,"""Minions and Monsters"" tied with ""Toy Story 5"" for third place, with each film bringing in $14.8 million",Deadline SUNDAY AM chart truncated before this film; line from Toy Story 5 block of same post/lane (film spelled 'Minions and Monsters')
+2026-07-17,Moana (2026),NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-17,Moana (2026),NTH,B,19,19,19,,D,1236993792,FRIDAY PM,LABEL,"2.) Moana (Dis) 4,200 theaters, Fri $6M, 3-day $19M (-56%)",
+2026-07-17,Moana (2026),NTH,C,18.8,18.8,18.8,,D,1236993792,SATURDAY AM,LABEL,"2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday), 3-day $18.8M (-56%)",V STRICT Friday $5.5M only
+2026-07-17,Moana (2026),NTH,D,19,19,19,,D,1236993792,SUNDAY AM,LABEL,"Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday) Sat $7.6M Sun $5.9M 3-day $19M (-56%)",V:19 REVISABLE (1236815861)
+2026-07-17,The Odyssey,OPEN,A,95,90,100,RANGE,V,1236812480,Box Office: ‘The Odyssey’ Kicks Off With an Epic $17.6 Million in Previews,STRICT,estimated to make between $90 million and $100 million in its opening weekend,no Deadline FRIDAY AM section
+2026-07-17,The Odyssey,OPEN,B,117,117,117,,D,1236993792,FRIDAY PM,LABEL,"1.) The Odyssey (Uni) 3,919 theaters, Fri $50M, 3-day $117M/Wk 1",prose $117M agrees (rivals ~$120M); D 1236996979 FRIDAY UPDATE (same availability) international only
+2026-07-17,The Odyssey,OPEN,C,120.5,120.5,120.5,,D,1236993792,SATURDAY AM,LABEL,"1.) The Odyssey (Uni) 3,919 theaters, Fri $51.2M, 3-day $120.5M /Wk 1",prose $120.5M agrees; V:120 STRICT (1236815411)
+2026-07-17,The Odyssey,OPEN,D,124.5,124.5,124.5,,D,1236993792,SUNDAY AM,LABEL,"1.) The Odyssey (Uni) 3,919 theaters, Fri $51.1M, Sat $41.66M Sun $31.7M 3-day $124.5M /Wk 1",prose $124.5M agrees; D 1236996979 SUNDAY AM worldwide/intl only; V:124.5 REVISABLE (1236815861)
+2026-07-17,Toy Story 5,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-17,Toy Story 5,NTH,B,13,13,13,,D,1236993792,FRIDAY PM,LABEL,"4.) Toy Story 5 (Dis) 3,400 theaters, Fri $4M, 3-day $13M (-32%)",
+2026-07-17,Toy Story 5,NTH,C,,,,,,,,,,CHART_TRUNCATED: Deadline SATURDAY AM chart cut before this film; V STRICT Friday $4.2M only (DAILY_ONLY)
+2026-07-17,Toy Story 5,NTH,D,14.8,14.8,14.8,,V,1236815861,"Box Office: ‘The Odyssey’ Stuns With $124 Million Opening Weekend, Third-Biggest Debut of ",REVISABLE,"""Minions and Monsters"" tied with ""Toy Story 5"" for third place, with each film bringing in $14.8 million",Deadline SUNDAY AM chart truncated at '3-day $' (not computed from dailies)
+2026-07-24,Minions & Monsters,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-24,Minions & Monsters,NTH,B,,,,,,,,,,NO_RELEASE
+2026-07-24,Minions & Monsters,NTH,C,,,,,,,,,,DAILY_ONLY: V REVISABLE Friday $2.8M only
+2026-07-24,Minions & Monsters,NTH,D,,,,,,,,,,CHART_TRUNCATED: Deadline SUNDAY AM chart cut before this film; no Variety weekend figure
+2026-07-24,Moana (2026),NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-24,Moana (2026),NTH,B,10,10,10,APPROX,D,1237002537,"UPDATED, FRIDAY PM",LABEL,"a third weekend around $10M , -44%",
+2026-07-24,Moana (2026),NTH,C,10.8,10.8,10.8,,V,1236820845,Box Office: ‘The Odyssey’ Holds Strong With $25 Million on Friday,REVISABLE,"Through its third weekend, ""Moana"" is eyeing an estimated $10.8 million",no Deadline SATURDAY AM section; REVISABLE only
+2026-07-24,Moana (2026),NTH,D,10.5,10.5,10.5,,D,1237002537,SUNDAY AM WRITETHRU,LABEL,"Moana (Dis) 4,015 (-185) theaters, Fri $3.1M (-45%), Sat $4.1M, Sun $3.3M 3-day $10.5M (-41%)",V:10.5 REVISABLE (1236821417)
+2026-07-24,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-24,The Odyssey,NTH,B,84.5,84.5,84.5,,D,1237002537,"UPDATED, FRIDAY PM",LABEL,headed for a second frame of $84.5 million,
+2026-07-24,The Odyssey,NTH,C,84.5,84.5,84.5,,V,1236820845,Box Office: ‘The Odyssey’ Holds Strong With $25 Million on Friday,REVISABLE,by Sunday it's expected to make $84.5 million,no Deadline SATURDAY AM section; REVISABLE only
+2026-07-24,The Odyssey,NTH,D,87,87,87,,D,1237002537,SUNDAY AM WRITETHRU,LABEL,"The Odyssey (Uni) 3,924 (+23) theaters, Fri $25.9M (-49% from last Friday), 3-day $87M (-30%)","chart line from other films' blocks of same section; prose $87 million agrees; V:90 REVISABLE (1236821417, updated)"
+2026-07-31,Spider-Man: Brand New Day,OPEN,A,270,260,280,RANGE,V,1236824394,"‘Spider-Man: Brand New Day’ Sets Box Office Record With $72 Million in Previews, Beating ‘",STRICT,is aiming to make between $260 million and $280 million in its opening weekend,Deadline FRIDAY AM gives previews $72M / $100M+ first Friday only (daily); V notes some estimates above $300M
+2026-07-31,Spider-Man: Brand New Day,OPEN,B,,,,,,,,,,DAILY_ONLY: Deadline FRIDAY MIDDAY UPDATE gives opening day $167M-$173M only
+2026-07-31,Spider-Man: Brand New Day,OPEN,C,337.5,325,350,RANGE;PLUS,D,1237014268,SATURDAY AM,LABEL,"1.) Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, 3-day $325M-$350M+ /Wk 1",
+2026-07-31,Spider-Man: Brand New Day,OPEN,D,355,355,355,,D,1237014268,SUNDAY AM,LABEL,"Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, Sat $101.5M Sun $84.2M 3-day $355M /Wk 1",prose $355M agrees; V:355 REVISABLE (1236825953)
+2026-07-31,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-07-31,The Odyssey,NTH,B,52,52,52,,D,1237014268,FRIDAY MIDDAY UPDATE,LABEL,"with an expected $52M weekend, -42%",
+2026-07-31,The Odyssey,NTH,C,51,51,51,,D,1237014268,SATURDAY AM,LABEL,"2.) The Odyssey (Uni)  3,861 (-81) Fri $14.5M (-44% from last Friday), 3-day $51M (-43%)",
+2026-07-31,The Odyssey,NTH,D,51,51,51,,D,1237014268,SUNDAY AM,LABEL,"2.) The Odyssey (Uni)  3,861 (-81) Fri $14.3M Sat $19.66M Sun $17M  3-day $51M (-43%)",V:51 REVISABLE (1236825953)

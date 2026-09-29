@@ -1,10 +1,10 @@
 wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
-2026-08-07,One Night Only,OPEN,A,10,10,,PLUS,D,1237028481,FRIDAY AM,LABEL,"One Night Only ... is a first choice for women over/under 25, will exceed $10M.","AMBIGUOUS: stated as a hope (""The hope here is that ... will exceed $10M""), treated as lower bound"
+2026-08-07,One Night Only,OPEN,A,10,10,,PLUS,D,1237028481,FRIDAY AM,LABEL,"is a first choice for women over/under 25, will exceed $10M.","AMBIGUOUS: stated as a hope (""The hope here is that ... will exceed $10M""), treated as lower bound"
 2026-08-07,One Night Only,OPEN,B,6,,,,D,1237028481,FRIDAY AFTERNOON,LABEL,$2.9M Friday including $1.35M previews and a 3-day of $6M,
 2026-08-07,One Night Only,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $2.8M only)
 2026-08-07,One Night Only,OPEN,D,5.7,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,"""One Night Only"" debuted below expectations with $5.7 million from 3,012 theaters",
 2026-08-07,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
-2026-08-07,Spider-Man: Brand New Day,NTH,B,137.5,135,140,RANGE;PLUS,D,1237028481,FRIDAY AFTERNOON,LABEL,sophomore session of Spider-Man: Brand New Day ... is looking at $135M-$140M +,
+2026-08-07,Spider-Man: Brand New Day,NTH,B,137.5,135,140,RANGE;PLUS,D,1237028481,FRIDAY AFTERNOON,LABEL,"armed with PLF and now Imax screens, is looking at $135M-$140M +",
 2026-08-07,Spider-Man: Brand New Day,NTH,C,,,,,,,,,,NO_RELEASE (Variety lane C post only has Friday $43M in title)
 2026-08-07,Spider-Man: Brand New Day,NTH,D,145,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,scoring another $145 million domestically during its second weekend in theaters,V 1236830845 also 145 STRICT
 2026-08-07,Super Troopers 3,OPEN,A,,,,,,,,,,NO_RELEASE
@@ -30,7 +30,7 @@ wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,
 2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,A,,,,,,,,,,"NO_RELEASE (film block empty; Variety previews post title $2.5M previews, projection sentence not in digest)"
 2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,B,,,,,,,,,,NO_RELEASE
 2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,C,,,,,,,,,,DAILY_ONLY (Variety lane C title: $8.1M Friday)
-2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,D,20,20,,PLUS,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,"""The End of Oak Street"" ... and ""PAW Patrol: The Dino Movie,"" each debuted above $20 million.","AMBIGUOUS: from PAW Patrol block prose (film block empty); lower bound only, exact figure not in digest; Variety REVISABLE"
+2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,D,20,20,,PLUS,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,"""PAW Patrol: The Dino Movie,"" each debuted above $20 million.","AMBIGUOUS: from PAW Patrol block prose (film block empty); lower bound only, exact figure not in digest; Variety REVISABLE"
 2026-08-21,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
 2026-08-21,Spider-Man: Brand New Day,NTH,B,,,,,,,,,,NO_RELEASE
 2026-08-21,Spider-Man: Brand New Day,NTH,C,36.5,,,,V,1236840803,Box Office: ‘Insidious: Out of the Further’ Takes First Place on Friday With $10.6 Million,REVISABLE,it's eyeing a first-place finish through the weekend with $36.5 million,Variety REVISABLE only
@@ -62,11 +62,11 @@ wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,
 2026-08-28,The Dog Stars,OPEN,A,,,,,,,,,,PREVIEWS_ONLY (Thursday $850K)
 2026-08-28,The Dog Stars,OPEN,B,,,,,,,,,,NO_RELEASE
 2026-08-28,The Dog Stars,OPEN,C,,,,,,,,,,NO_RELEASE
-2026-08-28,The Dog Stars,OPEN,D,8,,,,D,1237061934,SUNDAY AM,LABEL,The Dog Stars ... which ate scraps with an $8M opening off a $70M production cost,"chart line truncated, prose used; V:8 STRICT"
+2026-08-28,The Dog Stars,OPEN,D,8,,,,D,1237061934,SUNDAY AM,LABEL,which ate scraps with an $8M opening off a $70M production cost,"chart line truncated, prose used; V:8 STRICT"
 2026-08-28,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
 2026-08-28,The Odyssey,NTH,B,,,,,,,,,,NO_RELEASE
 2026-08-28,The Odyssey,NTH,C,,,,,,,,,,"NO_RELEASE (earlier ""chart as of this AM"" 3-day $14.6M sits inside SUNDAY AM section; not usable for C)"
-2026-08-28,The Odyssey,NTH,D,14.3,,,,D,1237061934,SUNDAY AM,LABEL,"The Odyssey (Uni) 2,617 (-474) theaters Fri $3.7M (-27% ), Sat $5.8M Sun $4.6M 3-day $14.3M (-27%)",ignored earlier-chart 3-day $14.6M in same section
+2026-08-28,The Odyssey,NTH,D,14.3,,,,D,1237061934,SUNDAY AM,LABEL,"Fri $3.7M (-27% ), Sat $5.8M Sun $4.6M 3-day $14.3M (-27%)",ignored earlier-chart 3-day $14.6M in same section
 2026-09-04,By Any Means,OPEN,A,,,,,,,,,,NO_RELEASE
 2026-09-04,By Any Means,OPEN,B,6.5,,,,D,1237068549,FRIDAY PM,LABEL,"an eye at $8M over 4-days at 2,903 theaters after a 3-day of $6.5M",
 2026-09-04,By Any Means,OPEN,C,7,,,,D,1237068549,SATURDAY AM,LABEL,"By Any Means (Par) 2,903 theaters, Fri $2.67M, 3-day $7M, 4-day $8.55M /Wk 1",chart 3-day used; $8.5M prose is 4-day
