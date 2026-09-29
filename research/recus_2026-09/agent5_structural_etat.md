@@ -1,46 +1,65 @@
 # AGENT 5 — STRUCTURAL / FRAGMENTATION RECEIPTS — state
 
 Date: 2026-09-29. External research only. REAL_CAPITAL_AUTHORIZED = FALSE.
-Branch: `claude/hopeful-hamilton-81rab1` (harness-assigned; replaces the suggested
-`research/agent5-structural-fragmentation-2026-09-29`).
+Branch: `claude/hopeful-hamilton-81rab1`. This is the harness-assigned branch; it is used instead
+of the suggested `research/agent5-structural-fragmentation-2026-09-29`.
+Deliverable: `research/recus_2026-09/agent5_structural_fragmentation.md`.
 
 ## Status
 
-`IN_PROGRESS` — Part A reconciliation written (RESOLVED); account #5 cash check running; Part B cards next.
+`DONE`
+
+```text
+POLYMARKET_ARBITRAGE_RECONCILIATION = RESOLVED
+STRUCTURAL_RECEIPT_SEARCH = VALID_SMALL_PLAYER_CANDIDATES_FOUND   (economically marginal: <= ~90 EUR/month at 5k EUR)
+BEST_CANDIDATES = A5-S2 (settlement liquidity at 0.999), A5-S1 (NegRisk YES basket < 1), A5-S3 (HLP)
+REAL_CAPITAL_AUTHORIZED = FALSE
+```
 
 ## Inputs read
 
-- `QUANT_NORTH_STAR.md` (main).
-- `agent1_registres.md` (branch `claude/dazzling-dirac-foklrv`), `agent2_profits_mesures.md`
-  (`claude/gallant-cerf-e0rpao`), `agent3_recette_recu.md` (`claude/exciting-edison-w68tos`).
-- Primary sources, read in full:
-  - Saguillo, Ghafouri, Kiffer, Suarez-Tangil, arXiv 2508.03474 v1 (5 Aug 2025) and the AFT 2025
-    LIPIcs version (vol. 354, 27:1–27:24, published 2025-10-06). The key numbers are the same in both.
-  - Gebele, Mutzel, Matthes, arXiv 2608.00666 v1 (1 Aug 2026). Its HTML and PDF both lose the text
-    after each `%` sign (unescaped in the authors' source).
+- `QUANT_NORTH_STAR.md`; current governance routing files (router only, not used as research input).
+- Deliverables from earlier agents:
+  - `agent1_registres.md` (`claude/dazzling-dirac-foklrv`)
+  - `agent2_profits_mesures.md` (`claude/gallant-cerf-e0rpao`)
+  - `agent3_recette_recu.md` (`claude/exciting-edison-w68tos`)
+- Primary sources read in full:
+  - Saguillo et al., arXiv 2508.03474 v1, plus the AFT 2025 LIPIcs version.
+  - Gebele, Mutzel, Matthes, arXiv 2608.00666 v1.
+  - Gebele & Matthes, arXiv 2605.31431 (settlement discount, App. 9.3 / Table 6).
+- Abstracts read: 2605.00864 (Cheng et al., NBA), 2604.24366 (Dubach), 2603.03136 (Tsang & Yang),
+  2601.01706 (Gebele & Matthes, cross-venue).
 
-## Part A — established so far
+## Key verified facts (V = recomputed from public APIs on 2026-09-29)
 
-- The two figures measure different things: Saguillo = executed fills grouped by address in
-  950-block windows, basket = min leg quantity, missing low-probability NegRisk legs imputed,
-  no netting; Gebele = only strategies with an identifiable realization path (Adapter call with
-  inputs acquired ≤5 blocks before; complete baskets formed ≤10 min).
-- Saguillo component sum = 39,692,372.19 vs stated total 39,587,585.02 (gap 104,787; probably the ε = $1 filter).
-- Same-condition channel (10.58 M$) is set to zero by Gebele (unified YES/NO book; WebSocket validation).
-- NegRisk channel 29.02 M$ (Saguillo) vs 0.29 M$ (Gebele, same window) → factor ≈100 left after removing same-condition.
-- Saguillo top-10 addresses fully resolved via public leaderboard (file in scratchpad; to be listed in deliverable).
-- Polymarket's own leaderboard P&L and user-pnl series disagree strongly for merge/conversion-heavy
-  accounts (e.g. #1: −31.6 k$ vs +806 k$), so neither is used as ground truth.
+- Saguillo components sum to 39,692,372.19 $; the stated total is 39,587,585.02 $.
+- Saguillo top 10 were resolved to full proxy wallets via the public leaderboard. For 5 of 10, the one-year
+  "arbitrage profit" (4.98 M$) is larger than lifetime P&L (~1.0 M$) on both Polymarket measures.
+- #5 undertaker, complete lifetime (2024-02-17 → 2024-12-01, 314,848 actions, 0 open positions):
+  net cash +122,362 $ (in-window +140,316 $), against 749,796 $ attributed by Saguillo.
+- #8 marksman is a pure NegRisk converter. Its first 400,662 actions (20 Oct → 27 Dec 2024) net
+  +15,223 $. The fetch hit its cap, and the account is still active. Polymarket MTM is +10.8 k$ at
+  2025-04-01, against 468,392 $ attributed by Saguillo.
+- Same-condition replication on #9 and #4: legs are a median 394–1,014 s apart, and netting flips #9 to −18.6 k$.
+- 45 of 525 top monthly accounts converted in the last 30 days. The sampled 2026 conversions use
+  accumulated inventory; none is a ≤60 s bundle.
+- Settlement-liquidity trade is live today. Two slices of 300 closed markets each gave
+  +1,680 $ and +1,564 $ (~0.14–0.15% of notional), with 3 losing fills out of ~11,000 and
+  1,155 distinct buyers in the first slice.
+- HLP: +60.7 M$ over 12 months, ≈0 over 6 months, API APR 3.94%, TVL 183 M$.
+- Polymarket fee schedule: taker only, rate × p(1−p); geopolitics is fee-free.
+  Holding rewards are 3.25%, computed on YES+NO at mid.
 
-## Part A — account-level evidence (V)
+## Not done / limits
 
-- #8 marksman: lifetime net cash +15,223 $ (≤62.1 k$ with open positions) vs Saguillo 468,392 $.
-- 5/10 top accounts: Saguillo one-year profit > lifetime P&L on both Polymarket measures (4.98 M$ vs ~1.0 M$).
-- Same-condition replication on #9/#4: legs minutes apart; netting flips #9 negative.
-- 45/525 top monthly accounts converted in last 30 days; sampled 2026 conversions use accumulated inventory (no ≤60 s bundles).
+- The ~100× factor inside NegRisk is not split by cause (Saguillo's code is not public).
+- Independent cash reconstruction: #5 over its complete lifetime; #8 over its first 400k actions
+  (the rest of its window, 2024-12-27 → 2025-04-01, may be added if the uncapped fetch completes).
+- 2026 realized profit for S1 was not measured. For S2, 30-day net P&L including disputes and
+  newcomer fill share were not measured.
 
-## Next
+## Next mission (cheapest falsification)
 
-1. Replicate Saguillo's same-condition rule on 2–3 addresses from raw activity (gross vs net, simultaneity).
-2. Write the Part A reconciliation table.
-3. Part B discovery (≤10 preliminary, ≤5 deep, ≤4 cards).
+Take 30 days of closed Polymarket markets, excluding crypto "Up or Down". For every buy at ≥0.998,
+compute net P&L per buyer, including disputed or flipped markets. Then run a shadow simulation of
+the fill share a new 0.999 bid would get. Reject S2 if net ≤ 0 or newcomer fill share < 5%.
