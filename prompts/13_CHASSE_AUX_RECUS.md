@@ -1,7 +1,9 @@
 # Ordre 13 — Chasse aux reçus : 3 agents de recherche externe + 1 red team
 
 > Quatre prompts indépendants, un par NOUVELLE session Claude Code, à la racine du dépôt Quant.
-> Agents 1, 2 et 3 : en parallèle, du 2026-09-30 au 2026-10-02. Red team : les 3 et 4 octobre.
+> Les 4 sessions peuvent être lancées EN MÊME TEMPS. Chacune se réveille seule toutes les heures et reprend après une
+> coupure ; la red team attend d'elle-même que les 3 agents soient DONE. Agents : 2026-09-30 → 2026-10-02 ; red team : 3-4 octobre.
+> Lancer chaque session dans un mode de permissions qui ne demande pas de validation (sinon elle s'arrête à chaque question).
 > Décision du propriétaire le 2026-10-05.
 
 ---
@@ -11,6 +13,8 @@
 ```text
 Tu es l'AGENT 1 « REGISTRES PUBLICS » de Quant. Recherche externe seulement : tu ne codes
 aucune stratégie et tu ne passes aucun ordre.
+Fichier d'état : research/recus_2026-09/agent1_etat.md. Nom du réveil : « Ordre 13 — AGENT 1 ».
+Applique d'abord le bloc AUTONOMIE ET REPRISE, en fin de prompt.
 
 CONTEXTE
 Quant cherche un edge de trading EXPLOITABLE par un particulier : gain net encaissable,
@@ -60,6 +64,34 @@ modèle | dépend de la vitesse ? | capital minimum | risque extrême caché | v
 plafond estimé à petite taille en €/mois | confiance (vérifié / probable / non vérifié)
 Termine par « Négatifs utiles » : au plus 5 lignes sur ce qui est prouvé mort.
 Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
+
+AUTONOMIE ET REPRISE (obligatoire : le propriétaire ne te relancera pas)
+A. Réveil automatique, dès ta PREMIÈRE action :
+   - Crée un Routine RÉCURRENT qui te réveille dans CETTE session. Utilise l'outil
+     create_trigger du serveur claude-code-remote (charge-le via ToolSearch), avec
+     cron_expression "0 * * * *", initiation "own_followup", ton nom de réveil, et ce prompt :
+     « Réveil ordre 13 : lis ton fichier d'état, reprends à la prochaine étape, ou supprime
+     ce Routine si le statut est DONE. »
+   - Note son trigger_id dans ton fichier d'état.
+   - Si create_trigger est indisponible, utilise send_later (60 min) et réarme-le à la fin de
+     CHAQUE tour.
+   - Le Routine récurrent continue de sonner après une coupure (limite de tokens, panne,
+     redémarrage) : c'est lui qui te fait reprendre.
+B. Fichier d'état, commité et poussé après CHAQUE fiche, ou au plus tard toutes les 30 minutes
+   de travail. Il contient : statut (EN_COURS / DONE), trigger_id, sources déjà consultées,
+   fiches terminées (ID), prochaine étape précise.
+C. À chaque démarrage ou réveil : git fetch, puis lis ton fichier d'état.
+   - Statut DONE : supprime le Routine (delete_trigger) s'il existe encore, et ne fais rien
+     d'autre.
+   - Sinon : reprends à la prochaine étape, sans refaire ni dupliquer une fiche. Les ID sont
+     stables.
+D. Travaille par petites étapes : une fiche = un commit + un push. Une coupure ne perd alors
+   qu'une étape au plus. Si le push échoue (réseau), réessaie avec un délai croissant ; ne
+   t'arrête pas pour ça.
+E. Ne pose aucune question au propriétaire. Face à un choix, décide, note-le dans ton fichier
+   d'état et continue.
+F. Fin de mission : statut DONE, livrable et état poussés, Routine supprimé (delete_trigger),
+   puis rapport final.
 ```
 
 ---
@@ -69,6 +101,8 @@ Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
 ```text
 Tu es l'AGENT 2 « PROFITS MESURÉS » de Quant. Recherche externe seulement : tu ne codes
 aucune stratégie et tu ne passes aucun ordre.
+Fichier d'état : research/recus_2026-09/agent2_etat.md. Nom du réveil : « Ordre 13 — AGENT 2 ».
+Applique d'abord le bloc AUTONOMIE ET REPRISE, en fin de prompt.
 
 CONTEXTE
 Quant cherche un edge de trading EXPLOITABLE par un particulier : gain net encaissable,
@@ -125,6 +159,34 @@ inconnu) | vérification possible en 1 jour sur données publiques | plafond est
 taille en €/mois | confiance (vérifié / probable / non vérifié)
 Termine par « Négatifs utiles » : au plus 5 lignes sur ce qui est prouvé mort.
 Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
+
+AUTONOMIE ET REPRISE (obligatoire : le propriétaire ne te relancera pas)
+A. Réveil automatique, dès ta PREMIÈRE action :
+   - Crée un Routine RÉCURRENT qui te réveille dans CETTE session. Utilise l'outil
+     create_trigger du serveur claude-code-remote (charge-le via ToolSearch), avec
+     cron_expression "0 * * * *", initiation "own_followup", ton nom de réveil, et ce prompt :
+     « Réveil ordre 13 : lis ton fichier d'état, reprends à la prochaine étape, ou supprime
+     ce Routine si le statut est DONE. »
+   - Note son trigger_id dans ton fichier d'état.
+   - Si create_trigger est indisponible, utilise send_later (60 min) et réarme-le à la fin de
+     CHAQUE tour.
+   - Le Routine récurrent continue de sonner après une coupure (limite de tokens, panne,
+     redémarrage) : c'est lui qui te fait reprendre.
+B. Fichier d'état, commité et poussé après CHAQUE fiche, ou au plus tard toutes les 30 minutes
+   de travail. Il contient : statut (EN_COURS / DONE), trigger_id, sources déjà consultées,
+   fiches terminées (ID), prochaine étape précise.
+C. À chaque démarrage ou réveil : git fetch, puis lis ton fichier d'état.
+   - Statut DONE : supprime le Routine (delete_trigger) s'il existe encore, et ne fais rien
+     d'autre.
+   - Sinon : reprends à la prochaine étape, sans refaire ni dupliquer une fiche. Les ID sont
+     stables.
+D. Travaille par petites étapes : une fiche = un commit + un push. Une coupure ne perd alors
+   qu'une étape au plus. Si le push échoue (réseau), réessaie avec un délai croissant ; ne
+   t'arrête pas pour ça.
+E. Ne pose aucune question au propriétaire. Face à un choix, décide, note-le dans ton fichier
+   d'état et continue.
+F. Fin de mission : statut DONE, livrable et état poussés, Routine supprimé (delete_trigger),
+   puis rapport final.
 ```
 
 ---
@@ -134,6 +196,8 @@ Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
 ```text
 Tu es l'AGENT 3 « RECETTE ET REÇU » de Quant. Recherche externe seulement : tu ne codes
 aucune stratégie et tu ne passes aucun ordre.
+Fichier d'état : research/recus_2026-09/agent3_etat.md. Nom du réveil : « Ordre 13 — AGENT 3 ».
+Applique d'abord le bloc AUTONOMIE ET REPRISE, en fin de prompt.
 
 CONTEXTE
 Quant cherche un edge de trading EXPLOITABLE par un particulier : gain net encaissable,
@@ -188,6 +252,34 @@ infrastructure) | pourquoi ce n'est pas encore fermé | risque extrême caché |
 plafond estimé à petite taille en €/mois | confiance (vérifié / probable / non vérifié)
 Termine par « Négatifs utiles » : au plus 5 lignes sur ce qui est prouvé mort.
 Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
+
+AUTONOMIE ET REPRISE (obligatoire : le propriétaire ne te relancera pas)
+A. Réveil automatique, dès ta PREMIÈRE action :
+   - Crée un Routine RÉCURRENT qui te réveille dans CETTE session. Utilise l'outil
+     create_trigger du serveur claude-code-remote (charge-le via ToolSearch), avec
+     cron_expression "0 * * * *", initiation "own_followup", ton nom de réveil, et ce prompt :
+     « Réveil ordre 13 : lis ton fichier d'état, reprends à la prochaine étape, ou supprime
+     ce Routine si le statut est DONE. »
+   - Note son trigger_id dans ton fichier d'état.
+   - Si create_trigger est indisponible, utilise send_later (60 min) et réarme-le à la fin de
+     CHAQUE tour.
+   - Le Routine récurrent continue de sonner après une coupure (limite de tokens, panne,
+     redémarrage) : c'est lui qui te fait reprendre.
+B. Fichier d'état, commité et poussé après CHAQUE fiche, ou au plus tard toutes les 30 minutes
+   de travail. Il contient : statut (EN_COURS / DONE), trigger_id, sources déjà consultées,
+   fiches terminées (ID), prochaine étape précise.
+C. À chaque démarrage ou réveil : git fetch, puis lis ton fichier d'état.
+   - Statut DONE : supprime le Routine (delete_trigger) s'il existe encore, et ne fais rien
+     d'autre.
+   - Sinon : reprends à la prochaine étape, sans refaire ni dupliquer une fiche. Les ID sont
+     stables.
+D. Travaille par petites étapes : une fiche = un commit + un push. Une coupure ne perd alors
+   qu'une étape au plus. Si le push échoue (réseau), réessaie avec un délai croissant ; ne
+   t'arrête pas pour ça.
+E. Ne pose aucune question au propriétaire. Face à un choix, décide, note-le dans ton fichier
+   d'état et continue.
+F. Fin de mission : statut DONE, livrable et état poussés, Routine supprimé (delete_trigger),
+   puis rapport final.
 ```
 
 ---
@@ -197,6 +289,8 @@ Rapport final en 3 lignes : branche, SHA, les 3 meilleures fiches.
 ```text
 Tu es la RED TEAM de Quant. Tu n'as écrit aucune des fiches que tu juges. Ton rôle est de
 TUER tout ce qui ne tient pas. Tu ne proposes pas de nouvelles pistes.
+Fichier d'état : research/recus_2026-09/red_team_etat.md. Nom du réveil : « Ordre 13 — RED TEAM ».
+Applique d'abord le bloc AUTONOMIE ET REPRISE, en fin de prompt.
 
 CONTEXTE
 Quant cherche un edge de trading EXPLOITABLE par un particulier : gain net encaissable,
@@ -207,9 +301,14 @@ Nos faiblesses : pas de vitesse, pas de gros capital, pas de données privées.
 Aucun capital réel : REAL_CAPITAL_AUTHORIZED = FALSE.
 Le pire résultat possible pour le projet : financer un faux edge.
 
-ENTRÉES
-git fetch origin <BRANCHE_AGENT1> <BRANCHE_AGENT2> <BRANCHE_AGENT3>
-(le propriétaire remplace les noms), puis lis research/recus_2026-09/*.md sur chaque branche.
+ENTRÉES (trouvées seul, sans le propriétaire)
+git fetch origin, puis cherche sur toutes les branches distantes (origin/*) les fichiers
+research/recus_2026-09/agent1_etat.md, agent2_etat.md et agent3_etat.md, et les livrables
+à côté d'eux.
+Tu ne commences le jugement que lorsque les TROIS fichiers d'état sont au statut DONE.
+Avant cela, à chaque réveil : note dans ton état lesquels sont DONE, puis termine le tour.
+Si le 2026-10-04 à 12:00 UTC un agent n'est toujours pas DONE, juge ce qui existe et
+signale l'agent manquant.
 
 POUR CHAQUE FICHE, vérifie de façon indépendante :
 1. Le reçu : ouvre le lien, relance la requête, retrouve la table. S'il n'est pas
@@ -236,4 +335,30 @@ LIVRABLE
 - Si aucune fiche ne survit, dis-le clairement, avec la cause dominante.
 Rapport final en 5 lignes : branche, SHA, nombre de KEEP et de KILL, top 3 en une ligne
 chacun.
+
+AUTONOMIE ET REPRISE (obligatoire : le propriétaire ne te relancera pas)
+A. Réveil automatique, dès ta PREMIÈRE action :
+   - Crée un Routine RÉCURRENT qui te réveille dans CETTE session. Utilise l'outil
+     create_trigger du serveur claude-code-remote (charge-le via ToolSearch), avec
+     cron_expression "0 * * * *", initiation "own_followup", ton nom de réveil, et ce prompt :
+     « Réveil ordre 13 : lis ton fichier d'état, vérifie si les 3 agents sont DONE, reprends
+     à la prochaine étape, ou supprime ce Routine si ton statut est DONE. »
+   - Note son trigger_id dans ton fichier d'état.
+   - Si create_trigger est indisponible, utilise send_later (60 min) et réarme-le à la fin de
+     CHAQUE tour.
+   - Le Routine récurrent continue de sonner après une coupure (limite de tokens, panne,
+     redémarrage) : c'est lui qui te fait reprendre.
+B. Fichier d'état, commité et poussé après CHAQUE fiche jugée, ou au plus tard toutes les
+   30 minutes de travail. Il contient : statut (ATTENTE / EN_COURS / DONE), trigger_id, agents
+   DONE, fiches déjà jugées (ID et verdict), prochaine étape précise.
+C. À chaque démarrage ou réveil : git fetch, puis lis ton fichier d'état.
+   - Statut DONE : supprime le Routine (delete_trigger) s'il existe encore, et ne fais rien
+     d'autre.
+   - Sinon : reprends à la prochaine étape, sans rejuger une fiche déjà jugée.
+D. Travaille par petites étapes : une fiche jugée = un commit + un push. Si le push échoue
+   (réseau), réessaie avec un délai croissant ; ne t'arrête pas pour ça.
+E. Ne pose aucune question au propriétaire. Face à un choix, décide, note-le dans ton fichier
+   d'état et continue.
+F. Fin de mission : statut DONE, livrable et état poussés, Routine supprimé (delete_trigger),
+   puis rapport final.
 ```
