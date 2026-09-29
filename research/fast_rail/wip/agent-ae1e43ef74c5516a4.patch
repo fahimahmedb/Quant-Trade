@@ -1,0 +1,1080 @@
+diff --git a/scripts/fetch_feeds.py b/scripts/fetch_feeds.py
+index 3115fec..9b5f293 100644
+--- a/scripts/fetch_feeds.py
++++ b/scripts/fetch_feeds.py
+@@ -178,12 +178,29 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
+             yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", prices
+ 
+     def odds():
+-        # H-001: Pinnacle h2h under a request budget + same-run Polymarket/Kalshi quotes
+-        yield from h001_relay.collect(out, now)
++        # H-001 (EPL/NBA, 12h anchor) + H-011 (3 niche leagues, 24h anchor) share one
++        # budget-guarded Pinnacle relay; see h001_relay's docstring for the arithmetic.
++        yield from h001_relay.collect(out, now, sports=h001_relay.ALL_SPORTS,
++                                      anchor_hours=h001_relay.ANCHOR_HOURS_BY_SPORT)
++
++    def sports_fills():
++        # R2 (H-011): one retrospective trade-tape sweep per matched market, kickoff
++        # 1-72h ago. Deliberately NOT in the odds_api lane (hourly): a full sweep is
++        # resource-heavier than a Pinnacle poll and only needs the 6h full-collect
++        # cadence, since it runs once per market regardless of how often it is offered.
++        yield from h001_relay.collect_trades(out, now)
++
++    def sports_rewards():
++        # R4 (H-013): venue-wide reward-program snapshots + order books of matched
++        # markets kicking off within 48h, for H-013's separate liquidity-reward P&L
++        # line. Also full-collect only: Kalshi/Polymarket rewards terms and books
++        # change slowly relative to the 6h cadence.
++        yield from h001_relay.collect_rewards(out, now)
+ 
+     lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
+              ("crypto_funding", crypto), ("polymarket", polymarket),
+-             ("kalshi", kalshi), ("odds_api", odds))
++             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills),
++             ("sports_rewards", sports_rewards))
+     for name, work in lanes:
+         if only is None or name in only:
+             run(name, work)
+diff --git a/src/quant/dataplane/h001_relay.py b/src/quant/dataplane/h001_relay.py
+index 70da89b..27be547 100644
+--- a/src/quant/dataplane/h001_relay.py
++++ b/src/quant/dataplane/h001_relay.py
+@@ -25,6 +25,52 @@ the day before.
+ 
+ The API key is read from ``ODDS_API_KEY`` and never written: stored URLs pass through
+ ``strip_key`` and error messages never contain the query string.
++
++H-011 niche leagues (budget arithmetic)
++----------------------------------------
++H-011 reuses this SAME budget-guarded relay for three niche leagues (``NICHE_SPORTS``):
++K-League 1, Liga MX and NCAA football (ITF tennis has no Odds API key and is excluded
++per the registry). They are the ex-ante picks the mission named, to be confirmed by
++name against the Odds API's own ``/v4/sports`` listing (free, no quota cost) whenever
++a key is available; this build had none (``ODDS_API_KEY`` unset here and, per
++``FAST_RAIL_STATE.md``, still unset in production), so the hard-coded list is used, as
++the mission explicitly allows. Niche sports anchor at ``NICHE_ANCHOR_HOURS`` (24h,
++half H-001's own 12h) via a per-sport mapping (``ANCHOR_HOURS_BY_SPORT``); the
++closing-line logic and every hard cap (``MAX_PER_RUN``/``DAILY_MAX``/``MONTHLY_MAX``/
++``REMAINING_FLOOR``) are UNCHANGED and shared GLOBALLY across all 5 sports, not
++per-sport, so adding niche sports only competes for the existing budget, never raises
++its ceiling.
++
++Budget arithmetic (2026-09-27 design estimate; the ``odds/requests`` ledger is the
++source of truth once this runs live, and should update these numbers, not be argued
++with by them):
++
++* absolute ceiling, independent of sport count: ``min(DAILY_MAX*30, MONTHLY_MAX)``
++  = ``min(14*30, 430)`` = 420/month -- the daily cap is already binding over a
++  30-day month, ``MONTHLY_MAX`` is a slightly looser second backstop, and
++  ``REMAINING_FLOOR`` (25) is a final brake against a mis-estimated month;
++* pure-anchor floor, if no sport ever has a fixture near kickoff (worst case for
++  coverage, best case for spend): H-001's 2 sports at 12h anchor cost up to
++  ``2 * 24/12`` = 4/day; the 3 niche sports at 24h cost up to ``3 * 24/24`` = 3/day;
++  combined 7/day = ~210/month;
++* closing captures add to that floor only on days a sport has a fixture near
++  kickoff, and a capture also refreshes that sport's ``last_seen`` (so it partly
++  substitutes for, rather than stacks on, the next anchor request). EPL/NBA are
++  in-season most days and dominate this extra spend (assume ~1-2/day combined);
++  K-League/Liga MX/NCAAF are weekly-cadence leagues and add less (assume ~1/day
++  combined on an average week);
++* expected steady state: ~7-11 requests/day => **~250-400/month**, inside the
++  mission's target band and comfortably under the unchanged 420-430 ceiling. This
++  is a design estimate from the planner's own rules, not measured usage.
++
++R2 (``collect_trades``) and R4 (``collect_rewards``), below, read the
++``sports_quotes/{polymarket,kalshi}`` streams this module already writes for
++MATCHED markets. Niche sports have no ``TEAMS``/``PM_TAG``/``KALSHI_SERIES`` entries
++yet: inventing them without an observed Polymarket/Kalshi listing for these leagues
++would be a fabricated match, which the existing "no fuzzy fill-in" contract already
++forbids, so niche events report unmatched until those tables are populated from real
++venue data. ``_venue_quotes`` degrades to an explicit unmatched reason instead of
++raising when a sport has no venue mapping at all.
+ """
+ 
+ from __future__ import annotations
+@@ -43,6 +89,12 @@ from .adapters import DataUnavailable
+ from .connectors import USER_AGENT, get_json, parse_order_book, _float
+ 
+ SPORTS = ("soccer_epl", "basketball_nba")
++#: H-011 ex-ante niche-league list (hard-coded: no key was available in this build to
++#: confirm names against GET /v4/sports, which the mission allows as a fallback).
++#: ITF tennis is not on the Odds API and is excluded.
++NICHE_SPORTS = ("soccer_korea_kleague1", "soccer_mexico_ligamx", "americanfootball_ncaaf")
++ALL_SPORTS = SPORTS + NICHE_SPORTS
++SPORTS_LISTING_URL = "https://api.the-odds-api.com/v4/sports?apiKey={key}"
+ ODDS_URL = ("https://api.the-odds-api.com/v4/sports/{sport}/odds?apiKey={key}&regions=eu"
+             "&markets=h2h&bookmakers=pinnacle&oddsFormat=decimal&dateFormat=iso")
+ MAX_PER_RUN = 2
+@@ -50,6 +102,12 @@ DAILY_MAX = 14
+ MONTHLY_MAX = 430
+ REMAINING_FLOOR = 25
+ ANCHOR_HOURS = 12.0
++NICHE_ANCHOR_HOURS = 24.0
++#: per-sport anchor override for the combined H-001 + H-011 planner (see module
++#: docstring "H-011 niche leagues"); ``plan_requests``/``collect`` still default to
++#: the flat ``ANCHOR_HOURS`` for backward compatibility with a bare sport list.
++ANCHOR_HOURS_BY_SPORT: dict[str, float] = {**{s: ANCHOR_HOURS for s in SPORTS},
++                                           **{s: NICHE_ANCHOR_HOURS for s in NICHE_SPORTS}}
+ CLOSE_WINDOW_MIN = 75       # an event kicking off within this many minutes is "closing"
+ CLOSE_TARGET_MIN = 60       # ...and needs a snapshot inside its last 60 minutes
+ CLOSE_LAG_FLAG_MIN = 60     # CLV against a snapshot older than this is flagged
+@@ -157,12 +215,20 @@ def plan_requests(now: datetime, ledger: Iterable[dict[str, Any]],
+                   snapshots: Iterable[dict[str, Any]], sports: Iterable[str] = SPORTS, *,
+                   max_per_run: int = MAX_PER_RUN, daily_max: int = DAILY_MAX,
+                   monthly_max: int = MONTHLY_MAX, floor: int = REMAINING_FLOOR,
+-                  anchor_hours: float = ANCHOR_HOURS) -> tuple[list[tuple[str, str]], dict]:
++                  anchor_hours: float | dict[str, float] = ANCHOR_HOURS
++                  ) -> tuple[list[tuple[str, str]], dict]:
+     """Which sports to request now, and why (pure; ``ledger``/``snapshots`` are records).
+ 
+     ``ledger`` rows: {fetched_at, sport, charged(bool), remaining(int|None)}.
+     ``snapshots`` rows: Pinnacle records {sport, commence_time, observed_at}.
++    ``anchor_hours`` is either one value for every sport, or a per-sport mapping
++    (missing sports fall back to ``ANCHOR_HOURS``) -- see ``ANCHOR_HOURS_BY_SPORT``,
++    used to give H-011's niche leagues a lower anchor frequency than H-001's own
++    sports while sharing every cap below globally, across all sports at once.
+     """
++    def anchor_for(sport: str) -> float:
++        return anchor_hours.get(sport, ANCHOR_HOURS) if isinstance(anchor_hours, dict) \
++            else anchor_hours
+     ledger = sorted(ledger, key=lambda row: row["fetched_at"])
+     charged = [row for row in ledger if row.get("charged", True)]
+     today = now.strftime("%Y-%m-%d")
+@@ -201,7 +267,7 @@ def plan_requests(now: datetime, ledger: Iterable[dict[str, Any]],
+                 closing.append((sport, f"closing:{kickoff.isoformat()}"))
+                 break
+         else:
+-            if last is None or now - last >= timedelta(hours=anchor_hours):
++            if last is None or now - last >= timedelta(hours=anchor_for(sport)):
+                 anchor.append((sport, "anchor"))
+     return (closing + anchor)[:allowance], info
+ 
+@@ -364,7 +430,7 @@ def match_kalshi(event: dict[str, Any], markets: list[dict[str, Any]]
+         mapped = {name: suffix[code] for name, code in codes.items() if code in suffix}
+         if "TIE" in suffix:
+             mapped[DRAW] = suffix["TIE"]
+-        needed = {home, away} | ({DRAW} if sport == "soccer_epl" else set())
++        needed = {home, away} | ({DRAW} if sport.startswith("soccer_") else set())
+         if set(mapped) != needed:
+             return {}, {"status": "unmatched", "reason": "kalshi event lacks an outcome",
+                         "event_ticker": event_ticker}
+@@ -390,11 +456,15 @@ def kalshi_quote(market: dict[str, Any]) -> dict[str, Any]:
+ 
+ # --- the run -----------------------------------------------------------------------------
+ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher = http_fetch,
+-            get: Callable[[str], Any] = get_json, sports: Iterable[str] = SPORTS
++            get: Callable[[str], Any] = get_json, sports: Iterable[str] = SPORTS,
++            anchor_hours: float | dict[str, float] = ANCHOR_HOURS
+             ) -> Iterator[tuple[str, str, dict[str, Any]]]:
+     """Yield ``(stream, key, record)`` for one run; all share the caller's ``observed_at``.
+ 
+-    Raises DataUnavailable when no key is configured (nothing is requested).
++    Raises DataUnavailable when no key is configured (nothing is requested). Pass
++    ``sports=ALL_SPORTS, anchor_hours=ANCHOR_HOURS_BY_SPORT`` to also plan H-011's
++    niche leagues (this is what ``scripts/fetch_feeds.py`` does); the bare defaults
++    keep H-001's own 2-sport, flat-12h-anchor behaviour unchanged.
+     """
+     key = key if key is not None else os.environ.get("ODDS_API_KEY")
+     if not key:
+@@ -403,7 +473,7 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher
+     ledger = [item["record"] for item in read_stream(out, LEDGER)]
+     snapshots = [{**item["record"], "observed_at": item["observed_at"]}
+                  for item in read_stream(out, PINNACLE)]
+-    plan, info = plan_requests(now, ledger, snapshots, sports)
++    plan, info = plan_requests(now, ledger, snapshots, sports, anchor_hours=anchor_hours)
+     yield "odds/plans.jsonl", stamp, {"plan": plan, **info}
+     for sport, reason in plan:
+         records, meta = fetch_pinnacle(sport, key, fetch)
+@@ -424,21 +494,35 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher
+ 
+ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp: str,
+                   get: Callable[[str], Any]) -> Iterator[tuple[str, str, dict[str, Any]]]:
++    """Polymarket/Kalshi quotes for one sport's ``live`` events.
++
++    ``PM_TAG``/``KALSHI_SERIES`` only cover H-001's own sports today; a sport absent
++    from one (a niche H-011 league, until real venue names/tickers are observed and
++    added) degrades to an explicit "sport not wired to a venue" unmatched reason
++    for that venue instead of a ``KeyError`` -- the whole run must not fail just
++    because one sport has no mapping yet.
++    """
+     start = now.strftime("%Y-%m-%dT%H:%M:%SZ")   # gamma game events end at kickoff
+-    k_url = KALSHI_MARKETS.format(series=KALSHI_SERIES[sport])
+-    pm_events, pm_error = [], None
+-    try:
+-        for offset in (0, 500, 1000):          # game events carry many prop sub-events
+-            page = get(PM_EVENTS.format(tag=PM_TAG[sport], start=start, offset=offset)) or []
+-            pm_events.extend(page)
+-            if len(page) < 500:
+-                break
+-    except DataUnavailable as exc:
+-        pm_events, pm_error = [], str(exc)[:200]
+-    try:
+-        k_markets, k_error = (get(k_url) or {}).get("markets") or [], None
+-    except DataUnavailable as exc:
+-        k_markets, k_error = [], str(exc)[:200]
++    pm_tag, kalshi_series = PM_TAG.get(sport), KALSHI_SERIES.get(sport)
++    pm_events: list[dict[str, Any]] = []
++    pm_error = None if pm_tag else "sport not wired to a Polymarket tag"
++    if pm_tag:
++        try:
++            for offset in (0, 500, 1000):      # game events carry many prop sub-events
++                page = get(PM_EVENTS.format(tag=pm_tag, start=start, offset=offset)) or []
++                pm_events.extend(page)
++                if len(page) < 500:
++                    break
++        except DataUnavailable as exc:
++            pm_events, pm_error = [], str(exc)[:200]
++    k_markets: list[dict[str, Any]] = []
++    k_url = KALSHI_MARKETS.format(series=kalshi_series) if kalshi_series else None
++    k_error = None if kalshi_series else "sport not wired to a Kalshi series"
++    if kalshi_series:
++        try:
++            k_markets, k_error = (get(k_url) or {}).get("markets") or [], None
++        except DataUnavailable as exc:
++            k_markets, k_error = [], str(exc)[:200]
+     for event in events:
+         base = {"odds_event_id": event["event_id"], "sport": sport,
+                 "commence_time": event["commence_time"], "home": event["home"],
+@@ -470,3 +554,318 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
+             record = {**base, "venue": "KALSHI", "outcome": outcome, **kalshi_quote(market),
+                       "fetched_at": stamp, "source_url": k_url}
+             yield f"{QUOTES_KALSHI}.jsonl", f"{stamp}|{event['event_id']}|{outcome}", record
++
++
++# --- R2 (H-011): fill data ------------------------------------------------------------
++# Trades are retained indefinitely by both venues, so this is a single retrospective
++# sweep per matched market rather than a live poll: the first time (and only the
++# first time) a market's kickoff falls between TRADE_MIN_AGE_H and TRADE_MAX_AGE_H
++# hours in the past, pull its whole trade tape in one paginated pull, covering
++# everything from that market's own history through settlement in one go. A market
++# outside that window (too soon: trades may still be printing; too late: it never
++# got its one sweep) is left alone rather than queued -- a deliberate simplification
++# (see the module docstring) that trades a small chance of missing a very late print
++# for not polling a settled market's trade tape for three days straight.
++TRADES = "sports_quotes/trades"
++TRADES_LEDGER = "sports_quotes/trades_ledger"
++TRADE_MIN_AGE_H = 1.0
++TRADE_MAX_AGE_H = 72.0
++POLYMARKET_TRADES = ("https://data-api.polymarket.com/trades?market={market}"
++                     "&limit={limit}&offset={offset}")
++KALSHI_TRADES = "https://api.elections.kalshi.com/trade-api/v2/markets/trades?ticker={ticker}&limit=1000"
++
++
++def _latest_matched_markets(out: Path) -> list[tuple[str, str, dict[str, Any]]]:
++    """Every distinct matched (venue, market_id) seen in the quotes streams, each with
++    its latest record (kickoff/outcome/event id do not change across a market's own
++    snapshots, so "latest" is just a convenient, cheap pick). Shared by R2 (trades)
++    and R4 (order-book snapshots): both act on "matched markets", which here means
++    "appears in sports_quotes/{polymarket,kalshi}" -- those streams are only ever
++    written for an outcome that ``_venue_quotes`` actually mapped."""
++    seen: dict[tuple[str, str], dict[str, Any]] = {}
++    for stream, venue, id_field in ((QUOTES_PM, "POLYMARKET", "market_id"),
++                                     (QUOTES_KALSHI, "KALSHI", "ticker")):
++        for item in read_stream(out, stream):
++            record = item["record"]
++            market_id = record.get(id_field)
++            if market_id:
++                seen[(venue, market_id)] = record
++    return [(venue, market_id, record) for (venue, market_id), record in seen.items()]
++
++
++def _as_iso(value: Any) -> str:
++    """Accept either unix-seconds or an ISO string (Polymarket's data-api endpoints
++    are not consistent with each other about which one they use)."""
++    if isinstance(value, (int, float)) or (isinstance(value, str) and value.strip("-").isdigit()):
++        return datetime.fromtimestamp(float(value), tz=timezone.utc).isoformat(timespec="seconds")
++    return str(value)
++
++
++def parse_polymarket_trades(payload: list[dict[str, Any]]) -> list[dict[str, Any]]:
++    """One record per print (ASSUMPTION: field names per Polymarket's public data-api
++    docs, not yet verified against a live response). A print with no discoverable id,
++    price or size is dropped -- never given a fabricated id -- so a wrong assumption
++    here shows up as fewer trades, not corrupted ones."""
++    out = []
++    for item in payload or []:
++        trade_id = item.get("transactionHash") or item.get("id")
++        price, size = _float(item.get("price")), _float(item.get("size"))
++        traded_at = item.get("timestamp") if item.get("timestamp") is not None else item.get("match_time")
++        if not trade_id or price is None or size is None or size <= 0 or traded_at is None:
++            continue
++        out.append({"trade_id": str(trade_id), "price": price, "size": size,
++                    "side": item.get("side"), "outcome": item.get("outcome"),
++                    "traded_at": _as_iso(traded_at)})
++    return out
++
++
++def fetch_polymarket_trades(market_id: str, get: Callable[[str], Any] = get_json,
++                            page_size: int = 500, max_pages: int = 20) -> list[dict[str, Any]]:
++    out: list[dict[str, Any]] = []
++    for page_index in range(max_pages):
++        offset = page_index * page_size
++        page = get(POLYMARKET_TRADES.format(market=market_id, limit=page_size, offset=offset)) or []
++        out.extend(parse_polymarket_trades(page))
++        if len(page) < page_size:
++            break
++    return out
++
++
++def parse_kalshi_trades(payload: dict[str, Any]) -> tuple[list[dict[str, Any]], str | None]:
++    """One record per print, plus the pagination cursor (Kalshi trade-api v2;
++    ASSUMPTION: field names per Kalshi's public docs, not yet verified live)."""
++    trades = []
++    for item in (payload or {}).get("trades") or []:
++        trade_id = item.get("trade_id")
++        if not trade_id:
++            continue
++        trades.append({"trade_id": str(trade_id), "yes_price": _float(item.get("yes_price")),
++                       "no_price": _float(item.get("no_price")), "count": _float(item.get("count")),
++                       "taker_side": item.get("taker_side"), "traded_at": item.get("created_time")})
++    cursor = (payload or {}).get("cursor") or None
++    return trades, cursor
++
++
++def fetch_kalshi_trades(ticker: str, get: Callable[[str], Any] = get_json,
++                        max_pages: int = 20) -> list[dict[str, Any]]:
++    out: list[dict[str, Any]] = []
++    cursor = ""
++    for _ in range(max_pages):
++        url = KALSHI_TRADES.format(ticker=ticker) + (f"&cursor={cursor}" if cursor else "")
++        trades, next_cursor = parse_kalshi_trades(get(url))
++        out.extend(trades)
++        if not next_cursor or not trades or next_cursor == cursor:
++            break
++        cursor = next_cursor
++    return out
++
++
++def collect_trades(out: Path, now: datetime, get: Callable[[str], Any] = get_json,
++                   min_age_h: float = TRADE_MIN_AGE_H, max_age_h: float = TRADE_MAX_AGE_H
++                   ) -> Iterator[tuple[str, str, dict[str, Any]]]:
++    """R2 (H-011): one paginated trade-tape sweep per matched market, done once, the
++    first time its kickoff is between ``min_age_h`` and ``max_age_h`` hours in the
++    past. Append-only and deduplicated by ``trade_id`` (the record key); a market
++    already in ``TRADES_LEDGER`` (fetched or permanently errored) is never retried.
++    """
++    stamp = now.isoformat(timespec="seconds")
++    fetched = {(row["record"]["venue"], row["record"]["market_id"])
++              for row in read_stream(out, TRADES_LEDGER)}
++    for venue, market_id, info in _latest_matched_markets(out):
++        if (venue, market_id) in fetched:
++            continue
++        kickoff = parse_time(info["commence_time"])
++        age_h = (now - kickoff).total_seconds() / 3600
++        if not (min_age_h <= age_h <= max_age_h):
++            continue
++        try:
++            trades = (fetch_polymarket_trades(market_id, get) if venue == "POLYMARKET"
++                      else fetch_kalshi_trades(market_id, get))
++            status = "OK"
++        except DataUnavailable as exc:
++            trades, status = [], str(exc)[:200]
++        for trade in trades:
++            yield (f"{TRADES}.jsonl", f"{venue}|{market_id}|{trade['trade_id']}",
++                  {**trade, "venue": venue, "market_id": market_id,
++                   "odds_event_id": info.get("odds_event_id"), "outcome": info.get("outcome"),
++                   "commence_time": info["commence_time"], "fetched_at": stamp,
++                   "source": "polymarket_data_api" if venue == "POLYMARKET" else "kalshi_trade_api"})
++        yield (f"{TRADES_LEDGER}.jsonl", f"{venue}|{market_id}",
++              {"venue": venue, "market_id": market_id, "odds_event_id": info.get("odds_event_id"),
++               "outcome": info.get("outcome"), "commence_time": info["commence_time"],
++               "fetched_at": stamp, "status": status, "trade_count": len(trades),
++               "age_at_fetch_h": round(age_h, 2)})
++
++
++# --- R4 (H-013): liquidity rewards ------------------------------------------------------
++# The TRUE venue programs sample far more often than this collector can (Polymarket
++# ~1/minute, Kalshi LIP ~1/second per the registry S16/S35). A 6-hourly full collect
++# can only take a sparse snapshot of the reward-eligible book, so research/fast_rail/
++# h013/rewards.py's theoretical reward from these snapshots is a coarse, sparsely-
++# sampled proxy for the venue's real daily payout, not a replication of it -- treat it
++# as directional. Program-snapshot streams are append-only with restatements kept
++# (Stream's default: a changed value under the same key is stored as a restatement,
++# never overwrites); order books are always a fresh key (one per run) since a book is
++# never "the same value observed twice" in the way a program's terms are.
++REWARDS_POLYMARKET = "rewards/polymarket"
++REWARDS_KALSHI = "rewards/kalshi"
++REWARDS_ORDERBOOKS = "rewards/orderbooks"
++ORDERBOOK_HORIZON_H = 48.0
++KALSHI_INCENTIVE_PROGRAMS = "https://api.elections.kalshi.com/trade-api/v2/incentive_programs"
++POLYMARKET_REWARDS = "https://clob.polymarket.com/rewards/markets/current"
++KALSHI_ORDERBOOK = "https://api.elections.kalshi.com/trade-api/v2/markets/{ticker}/orderbook"
++
++
++def parse_kalshi_incentive_programs(payload: Any) -> list[dict[str, Any]]:
++    """One record per program (ASSUMPTION: Kalshi's public docs describe the
++    mechanism -- a per-market/day pool, S35 -- but this build has no live key to
++    confirm the response's exact field names; every extracted field is best-effort
++    and the raw item is kept alongside so a wrong assumption is still recoverable).
++    A program with no discoverable identifying key is dropped, not fabricated one."""
++    items = payload.get("incentive_programs") if isinstance(payload, dict) else payload
++    out = []
++    for item in items or []:
++        if not isinstance(item, dict):
++            continue
++        key = (item.get("series_ticker") or item.get("market_ticker") or item.get("ticker")
++              or item.get("id") or item.get("product_id"))
++        if key is None:
++            continue
++        out.append({"program_key": str(key), "series_ticker": item.get("series_ticker"),
++                    "market_ticker": item.get("market_ticker") or item.get("ticker"),
++                    "start_date": item.get("start_date"), "end_date": item.get("end_date"),
++                    "daily_pool_dollars": _float(item.get("daily_pool_dollars")
++                                                 if item.get("daily_pool_dollars") is not None
++                                                 else item.get("pool_dollars")),
++                    "raw": item})
++    return out
++
++
++def fetch_kalshi_incentive_programs(get: Callable[[str], Any] = get_json) -> list[dict[str, Any]]:
++    return parse_kalshi_incentive_programs(get(KALSHI_INCENTIVE_PROGRAMS))
++
++
++def parse_polymarket_rewards(payload: Any) -> tuple[list[dict[str, Any]], str | None]:
++    """One record per rewarded market plus the ``next_cursor`` (ASSUMPTION: field
++    names per Polymarket CLOB's public docs -- ``rewards_min_size``/
++    ``rewards_max_spread`` govern the quadratic-score band used in
++    ``research/fast_rail/h013/rewards.py`` -- not yet verified against a live
++    response; the raw item is always kept)."""
++    items = payload.get("data") if isinstance(payload, dict) else payload
++    out = []
++    for item in items or []:
++        if not isinstance(item, dict):
++            continue
++        market = item.get("condition_id") or item.get("market") or item.get("id")
++        if market is None:
++            continue
++        rewards = item.get("rewards_config") or item.get("rewards") or {}
++        out.append({"market_id": str(market),
++                    "min_size": _float(rewards.get("rewards_min_size")
++                                       if rewards.get("rewards_min_size") is not None
++                                       else item.get("rewards_min_size")),
++                    "max_spread": _float(rewards.get("rewards_max_spread")
++                                         if rewards.get("rewards_max_spread") is not None
++                                         else item.get("rewards_max_spread")),
++                    "daily_rate": _float(item.get("rewards_daily_rate")
++                                         if item.get("rewards_daily_rate") is not None
++                                         else item.get("daily_rate")),
++                    "raw": item})
++    cursor = payload.get("next_cursor") if isinstance(payload, dict) else None
++    return out, (cursor or None)
++
++
++def fetch_polymarket_rewards(get: Callable[[str], Any] = get_json,
++                             max_pages: int = 50) -> list[dict[str, Any]]:
++    out: list[dict[str, Any]] = []
++    cursor, seen_cursors = "", set()
++    for _ in range(max_pages):
++        url = POLYMARKET_REWARDS + (f"?next_cursor={cursor}" if cursor else "")
++        page, next_cursor = parse_polymarket_rewards(get(url))
++        out.extend(page)
++        if not next_cursor or next_cursor in seen_cursors or next_cursor == "LTE=":
++            break                                    # "LTE=" is the CLOB's own end-of-list cursor
++        seen_cursors.add(next_cursor)
++        cursor = next_cursor
++    return out
++
++
++def parse_kalshi_orderbook(payload: Any, ticker: str) -> dict[str, Any] | None:
++    """Normalise Kalshi's complementary yes/no resting-order book (cents, 1-99) into
++    the same {best_bid, best_ask, bids, asks, ...} shape ``parse_order_book`` returns
++    for Polymarket. Kalshi's ``/orderbook`` publishes each side's own resting BUY
++    orders only; a resting no-buy at price ``p`` is a resting yes-SELL at ``1-p``
++    (the same complementary-pricing mechanic ``kalshi_quote``/``sportsfair`` already
++    assume elsewhere in this codebase, not a new one)."""
++    book = (payload or {}).get("orderbook") or {}
++
++    def side(name: str) -> list[tuple[float, float]]:
++        levels = [(_float(p), _float(s)) for p, s in (book.get(name) or [])]
++        return [(p / 100, s) for p, s in levels if p is not None and s is not None and s > 0]
++
++    yes_bids = sorted(side("yes"), reverse=True)
++    no_bids = sorted(side("no"), reverse=True)
++    yes_asks = sorted((round(1 - p, 4), s) for p, s in no_bids)
++    if not yes_bids and not yes_asks:
++        return None
++    return {"venue": "KALSHI", "market": ticker,
++            "best_bid": yes_bids[0][0] if yes_bids else None,
++            "best_ask": yes_asks[0][0] if yes_asks else None,
++            "bid_depth": sum(s for _, s in yes_bids), "ask_depth": sum(s for _, s in yes_asks),
++            "bids": yes_bids[:10], "asks": yes_asks[:10]}
++
++
++def fetch_kalshi_orderbook(ticker: str, get: Callable[[str], Any] = get_json
++                           ) -> dict[str, Any] | None:
++    return parse_kalshi_orderbook(get(KALSHI_ORDERBOOK.format(ticker=ticker)), ticker)
++
++
++def collect_rewards(out: Path, now: datetime, get: Callable[[str], Any] = get_json,
++                    orderbook_horizon_h: float = ORDERBOOK_HORIZON_H
++                    ) -> Iterator[tuple[str, str, dict[str, Any]]]:
++    """R4 (H-013): venue-wide reward-program snapshots, every run, plus an order-book
++    snapshot of every matched market kicking off within ``orderbook_horizon_h``.
++
++    Program terms (pool size, dates, spread band) change slowly, like the existing
++    ``polymarket/rules.jsonl``/``kalshi/rules.jsonl`` streams: each program/market
++    keeps ONE stable key (``program_key``/``market_id``) across runs, with NO
++    per-run field (a timestamp, a status) inside the record itself -- that field
++    would change on every call regardless of the program's real terms and defeat
++    the whole point of a stable key, turning every run into a spurious
++    "restatement". An unchanged term is then a cheap ``Stream``-level "duplicate"
++    and a changed one IS recorded as a real "restatement" (mission: "append-only,
++    restatements kept"); "when was this last (re)observed" is exactly what the
++    Stream wrapper's own ``observed_at`` (and a restatement's ``#restated@...``
++    key suffix) already carries, so it is not duplicated here. A fetch failure
++    yields nothing this run (no programs to attach a status to) and is visible in
++    fetch_feeds.py's own per-lane run report instead. Order books are the
++    opposite: a fresh, timestamped key every run, like ``QUOTES_PM``/
++    ``QUOTES_KALSHI``, since a book is never "the same value observed twice".
++    """
++    stamp = now.isoformat(timespec="seconds")
++    try:
++        programs = fetch_kalshi_incentive_programs(get)
++    except DataUnavailable:
++        programs = []
++    for program in programs:
++        yield f"{REWARDS_KALSHI}.jsonl", program["program_key"], program
++    try:
++        rewards = fetch_polymarket_rewards(get)
++    except DataUnavailable:
++        rewards = []
++    for reward in rewards:
++        yield f"{REWARDS_POLYMARKET}.jsonl", reward["market_id"], reward
++    for venue, market_id, info in _latest_matched_markets(out):
++        kickoff = parse_time(info["commence_time"])
++        if not (now < kickoff <= now + timedelta(hours=orderbook_horizon_h)):
++            continue
++        try:
++            book = (parse_order_book(get(PM_BOOK.format(token=market_id)), "POLYMARKET", market_id)
++                    if venue == "POLYMARKET" else fetch_kalshi_orderbook(market_id, get))
++        except DataUnavailable:
++            book = None
++        if book is None:
++            continue
++        yield (f"{REWARDS_ORDERBOOKS}.jsonl", f"{stamp}|{venue}|{market_id}",
++              {**book, "odds_event_id": info.get("odds_event_id"), "outcome": info.get("outcome"),
++               "commence_time": info["commence_time"], "fetched_at": stamp})
+diff --git a/tests/test_fast_rail_h011_h013_collector.py b/tests/test_fast_rail_h011_h013_collector.py
+new file mode 100644
+index 0000000..56130db
+--- /dev/null
++++ b/tests/test_fast_rail_h011_h013_collector.py
+@@ -0,0 +1,377 @@
++"""Offline tests for H-011's R2 (trades) and H-013's R4 (rewards) collectors, both
++extending ``h001_relay``. All prices, ids, tickers and keys below are INVENTED
++FIXTURES, not market data. No network is used: fetchers are stubbed.
++"""
++from __future__ import annotations
++
++import sys
++import tempfile
++import unittest
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++from quant.dataplane import h001_relay as R  # noqa: E402
++import importlib.util  # noqa: E402
++
++_spec = importlib.util.spec_from_file_location("fetch_feeds", ROOT / "scripts" / "fetch_feeds.py")
++fetch_feeds = importlib.util.module_from_spec(_spec)
++_spec.loader.exec_module(fetch_feeds)
++
++NOW = datetime(2026, 10, 10, 12, 0, tzinfo=timezone.utc)
++
++
++def write(out: Path, stream: str, key: str, record: dict, observed_at: str) -> None:
++    # ``Stream`` must be built from the SAME "<stream>.jsonl" spelling collect()
++    # yields (see its own module docstring): that keeps its legacy-file check
++    # (``path``, with the suffix) distinct from its shard directory (``self.base``,
++    # without it) -- passing the bare stream name here collapses the two and makes
++    # a second write see the first write's shard directory as a "legacy" flat file.
++    fetch_feeds.Stream(out / f"{stream}.jsonl").add(key, record, observed_at)
++
++
++def seed_matched_pm_quote(out: Path, market_id: str, event_id: str, outcome: str,
++                          kickoff: str, observed_at: str) -> None:
++    write(out, R.QUOTES_PM, f"{observed_at}|{event_id}|{outcome}",
++         {"odds_event_id": event_id, "sport": "basketball_nba", "commence_time": kickoff,
++          "venue": "POLYMARKET", "outcome": outcome, "market_id": market_id,
++          "token_id": f"tok-{outcome}", "best_bid": 0.5, "best_ask": 0.52}, observed_at)
++
++
++def seed_matched_kalshi_quote(out: Path, ticker: str, event_id: str, outcome: str,
++                              kickoff: str, observed_at: str) -> None:
++    write(out, R.QUOTES_KALSHI, f"{observed_at}|{event_id}|{outcome}",
++         {"odds_event_id": event_id, "sport": "basketball_nba", "commence_time": kickoff,
++          "venue": "KALSHI", "outcome": outcome, "ticker": ticker,
++          "best_bid": 0.40, "best_ask": 0.42}, observed_at)
++
++
++# =====================================================================================
++# R2: trades
++# =====================================================================================
++class LatestMatchedMarkets(unittest.TestCase):
++    def test_dedups_across_snapshots_and_carries_both_venues(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat", "2026-10-10T00:00:00Z",
++                                  "2026-10-09T12:00:00+00:00")
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat", "2026-10-10T00:00:00Z",
++                                  "2026-10-09T18:00:00+00:00")   # later snapshot, same market
++            seed_matched_kalshi_quote(out, "KXNBA-HEAT", "evt1", "Heat",
++                                      "2026-10-10T00:00:00Z", "2026-10-09T18:00:00+00:00")
++            markets = R._latest_matched_markets(out)
++            self.assertEqual(len(markets), 2)      # one PM, one Kalshi -- not 3
++            venues = {venue for venue, _, _ in markets}
++            self.assertEqual(venues, {"POLYMARKET", "KALSHI"})
++
++
++class PolymarketTradesParsing(unittest.TestCase):
++    def test_drops_prints_with_no_id_price_or_size(self):
++        payload = [{"id": "t1", "price": "0.55", "size": "10", "side": "BUY",
++                   "timestamp": 1760000000},
++                  {"id": "t2", "price": None, "size": "10", "timestamp": 1760000001},
++                  {"price": "0.5", "size": "5", "timestamp": 1760000002},   # no id at all
++                  {"id": "t3", "price": "0.5", "size": "0", "timestamp": 1760000003}]
++        parsed = R.parse_polymarket_trades(payload)
++        self.assertEqual([t["trade_id"] for t in parsed], ["t1"])
++        self.assertEqual(parsed[0]["price"], 0.55)
++        self.assertEqual(parsed[0]["size"], 10.0)
++
++    def test_pagination_stops_on_short_page(self):
++        pages = {0: [{"id": f"t{i}", "price": "0.5", "size": "1", "timestamp": 1}
++                    for i in range(3)],
++                 3: []}
++
++        def get(url):
++            offset = int(url.split("offset=")[1].split("&")[0])
++            return pages.get(offset, [])
++
++        trades = R.fetch_polymarket_trades("0xabc", get=get, page_size=3, max_pages=5)
++        self.assertEqual(len(trades), 3)
++
++
++class KalshiTradesParsing(unittest.TestCase):
++    def test_cursor_pagination(self):
++        pages = {"": {"trades": [{"trade_id": "a", "yes_price": 40, "taker_side": "yes",
++                                  "created_time": "2026-10-10T00:00:00Z"}], "cursor": "p2"},
++                 "p2": {"trades": [{"trade_id": "b", "yes_price": 41, "taker_side": "no",
++                                    "created_time": "2026-10-10T00:01:00Z"}], "cursor": None}}
++
++        def get(url):
++            cursor = url.split("cursor=")[1] if "cursor=" in url else ""
++            return pages[cursor]
++
++        trades = R.fetch_kalshi_trades("KXNBA-HEAT", get=get)
++        self.assertEqual([t["trade_id"] for t in trades], ["a", "b"])
++
++    def test_missing_trade_id_dropped(self):
++        trades, cursor = R.parse_kalshi_trades({"trades": [{"yes_price": 40}], "cursor": None})
++        self.assertEqual(trades, [])
++        self.assertIsNone(cursor)
++
++
++class CollectTrades(unittest.TestCase):
++    KICKOFF = "2026-10-10T00:00:00Z"   # 12h before NOW
++
++    def seed(self, out: Path) -> None:
++        seed_matched_pm_quote(out, "0xabc", "evt1", "Heat", self.KICKOFF,
++                              "2026-10-09T12:00:00+00:00")
++        seed_matched_kalshi_quote(out, "KXNBA-HEAT", "evt1", "Heat", self.KICKOFF,
++                                  "2026-10-09T12:00:00+00:00")
++
++    def test_sweeps_a_market_1_72h_post_kickoff(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            self.seed(out)
++
++            def get(url):
++                if "polymarket" in url:
++                    return [{"id": "pmt1", "price": "0.6", "size": "20", "side": "BUY",
++                            "timestamp": 1760000000}] if "offset=0" in url else []
++                return {"trades": [{"trade_id": "kt1", "yes_price": 60, "taker_side": "yes",
++                                    "created_time": "2026-10-10T01:00:00Z"}], "cursor": None}
++
++            items = list(R.collect_trades(out, NOW, get=get))
++            trades = [r for s, _, r in items if s == f"{R.TRADES}.jsonl"]
++            ledger = [r for s, _, r in items if s == f"{R.TRADES_LEDGER}.jsonl"]
++            self.assertEqual({t["trade_id"] for t in trades}, {"pmt1", "kt1"})
++            self.assertEqual(len(ledger), 2)
++            for row in ledger:
++                self.assertEqual(row["status"], "OK")
++                self.assertEqual(row["odds_event_id"], "evt1")
++
++    def test_already_fetched_market_is_skipped(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            self.seed(out)
++            write(out, R.TRADES_LEDGER, "POLYMARKET|0xabc",
++                 {"venue": "POLYMARKET", "market_id": "0xabc", "status": "OK"},
++                 "2026-10-10T06:00:00+00:00")
++
++            def get(url):
++                if "polymarket" in url:
++                    raise AssertionError("must not fetch an already-swept market")
++                return {"trades": [], "cursor": None}
++
++            items = list(R.collect_trades(out, NOW, get=get))
++            # only the still-unswept Kalshi side should attempt anything
++            touched_venues = {r["venue"] for s, _, r in items if s == f"{R.TRADES_LEDGER}.jsonl"}
++            self.assertNotIn("POLYMARKET", touched_venues)
++            self.assertIn("KALSHI", touched_venues)
++
++    def test_too_soon_after_kickoff_is_skipped(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            kickoff = (NOW - timedelta(minutes=30)).isoformat().replace("+00:00", "Z")
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat", kickoff,
++                                  "2026-10-10T11:00:00+00:00")
++
++            def get(url):
++                raise AssertionError("must not fetch before TRADE_MIN_AGE_H")
++
++            items = list(R.collect_trades(out, NOW, get=get))
++            self.assertEqual(items, [])
++
++    def test_too_long_after_kickoff_is_skipped(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            kickoff = (NOW - timedelta(hours=100)).isoformat().replace("+00:00", "Z")
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat", kickoff,
++                                  "2026-10-06T00:00:00+00:00")
++
++            def get(url):
++                raise AssertionError("must not fetch past TRADE_MAX_AGE_H, ever")
++
++            items = list(R.collect_trades(out, NOW, get=get))
++            self.assertEqual(items, [])
++
++    def test_trade_ids_dedup_via_the_shared_stream_writer(self):
++        """Same market fetched via two separate collect_trades() generators (as two
++        separate runs would) must not duplicate a trade already stored."""
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            self.seed(out)
++            calls = {"n": 0}
++
++            def get(url):
++                calls["n"] += 1
++                if "polymarket" in url and "offset=0" in url:
++                    return [{"id": "pmt1", "price": "0.6", "size": "20", "side": "BUY",
++                            "timestamp": 1760000000}]
++                if "polymarket" in url:
++                    return []
++                return {"trades": [], "cursor": None}
++
++            items = list(R.collect_trades(out, NOW, get=get))
++            streams: dict[str, "fetch_feeds.Stream"] = {}
++            for stream, key, record in items:
++                streams.setdefault(stream, fetch_feeds.Stream(out / stream)).add(
++                    key, record, NOW.isoformat(timespec="seconds"))
++            stored = fetch_feeds.Stream(out / f"{R.TRADES}.jsonl").keys
++            self.assertEqual(len(stored), 1)
++
++
++# =====================================================================================
++# R4: rewards
++# =====================================================================================
++class KalshiIncentivePrograms(unittest.TestCase):
++    def test_extracts_and_keeps_raw(self):
++        payload = {"incentive_programs": [
++            {"series_ticker": "KXNBAGAME", "start_date": "2026-01-01", "end_date": "2027-01-01",
++             "daily_pool_dollars": 500}]}
++        out = R.parse_kalshi_incentive_programs(payload)
++        self.assertEqual(out[0]["program_key"], "KXNBAGAME")
++        self.assertEqual(out[0]["daily_pool_dollars"], 500.0)
++        self.assertEqual(out[0]["raw"]["series_ticker"], "KXNBAGAME")
++
++    def test_bare_list_payload_also_accepted(self):
++        out = R.parse_kalshi_incentive_programs([{"ticker": "T1", "daily_pool_dollars": 10}])
++        self.assertEqual(out[0]["program_key"], "T1")
++
++    def test_program_with_no_identifying_key_is_dropped(self):
++        out = R.parse_kalshi_incentive_programs({"incentive_programs": [{"daily_pool_dollars": 1}]})
++        self.assertEqual(out, [])
++
++
++class PolymarketRewardsParsing(unittest.TestCase):
++    def test_extracts_min_size_and_max_spread(self):
++        payload = {"data": [{"condition_id": "0xabc",
++                             "rewards_config": {"rewards_min_size": 100, "rewards_max_spread": 0.03},
++                             "rewards_daily_rate": 50}], "next_cursor": None}
++        out, cursor = R.parse_polymarket_rewards(payload)
++        self.assertEqual(out[0]["market_id"], "0xabc")
++        self.assertEqual(out[0]["min_size"], 100.0)
++        self.assertEqual(out[0]["max_spread"], 0.03)
++        self.assertIsNone(cursor)
++
++    def test_pagination_stops_at_lte_cursor(self):
++        pages = {"": {"data": [{"condition_id": "0x1"}], "next_cursor": "c2"},
++                 "c2": {"data": [{"condition_id": "0x2"}], "next_cursor": "LTE="}}
++
++        def get(url):
++            cursor = url.split("next_cursor=")[1] if "next_cursor=" in url else ""
++            return pages[cursor]
++
++        out = R.fetch_polymarket_rewards(get=get)
++        self.assertEqual({r["market_id"] for r in out}, {"0x1", "0x2"})
++
++    def test_market_with_no_id_dropped(self):
++        out, _ = R.parse_polymarket_rewards({"data": [{"rewards_daily_rate": 1}]})
++        self.assertEqual(out, [])
++
++
++class KalshiOrderbookParsing(unittest.TestCase):
++    def test_no_bids_become_yes_asks(self):
++        payload = {"orderbook": {"yes": [[40, 100], [38, 50]], "no": [[57, 80], [55, 40]]}}
++        book = R.parse_kalshi_orderbook(payload, "KXNBA-HEAT")
++        self.assertAlmostEqual(book["best_bid"], 0.40)
++        self.assertAlmostEqual(book["best_ask"], 0.43)     # 1 - 0.57
++        self.assertEqual(book["venue"], "KALSHI")
++        self.assertAlmostEqual(book["bid_depth"], 150.0)
++
++    def test_empty_book_returns_none(self):
++        self.assertIsNone(R.parse_kalshi_orderbook({"orderbook": {"yes": [], "no": []}}, "T"))
++        self.assertIsNone(R.parse_kalshi_orderbook({}, "T"))
++
++
++class CollectRewards(unittest.TestCase):
++    def stub_get(self, kalshi_programs=None, pm_rewards=None, pm_book=None, kalshi_book=None):
++        kalshi_programs = kalshi_programs if kalshi_programs is not None else {
++            "incentive_programs": [{"series_ticker": "KXNBAGAME", "daily_pool_dollars": 500}]}
++        pm_rewards = pm_rewards if pm_rewards is not None else {
++            "data": [{"condition_id": "0xabc", "rewards_max_spread": 0.03}], "next_cursor": None}
++
++        def get(url):
++            if "incentive_programs" in url:
++                return kalshi_programs
++            if "rewards/markets/current" in url:
++                return pm_rewards
++            if "clob.polymarket.com/book" in url:
++                return pm_book or {"bids": [{"price": "0.5", "size": "10"}],
++                                   "asks": [{"price": "0.52", "size": "10"}]}
++            if "orderbook" in url:
++                return kalshi_book or {"orderbook": {"yes": [[40, 10]], "no": [[55, 10]]}}
++            raise AssertionError(f"unexpected url {url}")
++        return get
++
++    def test_program_and_reward_snapshots_written(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            items = list(R.collect_rewards(Path(tmp), NOW, get=self.stub_get()))
++            kalshi_rows = [r for s, _, r in items if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            pm_rows = [r for s, _, r in items if s == f"{R.REWARDS_POLYMARKET}.jsonl"]
++            self.assertEqual(kalshi_rows[0]["program_key"], "KXNBAGAME")
++            self.assertEqual(pm_rows[0]["market_id"], "0xabc")
++
++    def test_orderbook_only_for_matched_markets_within_horizon(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat",
++                                  (NOW + timedelta(hours=40)).isoformat(), "2026-10-10T00:00:00+00:00")
++            seed_matched_kalshi_quote(out, "KXNBA-HEAT", "evt2", "Bulls",
++                                      (NOW + timedelta(hours=60)).isoformat(),  # outside 48h
++                                      "2026-10-10T00:00:00+00:00")
++            items = list(R.collect_rewards(out, NOW, get=self.stub_get()))
++            books = [(r["odds_event_id"]) for s, _, r in items if s == f"{R.REWARDS_ORDERBOOKS}.jsonl"]
++            self.assertEqual(books, ["evt1"])       # evt2's market kicks off too far out
++
++    def test_past_kickoff_market_gets_no_orderbook(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat",
++                                  (NOW - timedelta(hours=1)).isoformat(), "2026-10-09T00:00:00+00:00")
++            items = list(R.collect_rewards(out, NOW, get=self.stub_get()))
++            books = [r for s, _, r in items if s == f"{R.REWARDS_ORDERBOOKS}.jsonl"]
++            self.assertEqual(books, [])
++
++    def test_a_fetch_failure_yields_nothing_for_that_venue_but_not_the_other(self):
++        def get(url):
++            if "incentive_programs" in url:
++                raise R.DataUnavailable("kalshi is down")
++            if "rewards/markets/current" in url:
++                return {"data": [{"condition_id": "0xabc"}], "next_cursor": None}
++            raise AssertionError(url)
++
++        with tempfile.TemporaryDirectory() as tmp:
++            items = list(R.collect_rewards(Path(tmp), NOW, get=get))
++        self.assertEqual([r for s, _, r in items if s == f"{R.REWARDS_KALSHI}.jsonl"], [])
++        self.assertEqual(len([r for s, _, r in items if s == f"{R.REWARDS_POLYMARKET}.jsonl"]), 1)
++
++    def test_unchanged_program_terms_are_a_duplicate_not_a_restatement(self):
++        """Stable keys are the whole point: an unmoved program across two runs must
++        not bloat the stream with an identical row every 6h."""
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            get = self.stub_get()
++            stream = fetch_feeds.Stream(out / f"{R.REWARDS_KALSHI}.jsonl")
++            first_run = [r for s, k, r in R.collect_rewards(out, NOW, get=get)
++                        if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            for r in first_run:
++                self.assertEqual(stream.add(r["program_key"], r, NOW.isoformat(timespec="seconds")),
++                                 "observation")
++            later = NOW + timedelta(hours=6)
++            second_run = [r for s, k, r in R.collect_rewards(out, later, get=get)
++                         if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            for r in second_run:
++                self.assertEqual(stream.add(r["program_key"], r, later.isoformat(timespec="seconds")),
++                                 "duplicate")
++
++    def test_changed_pool_is_a_restatement(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            stream = fetch_feeds.Stream(out / f"{R.REWARDS_KALSHI}.jsonl")
++            first = next(r for s, k, r in R.collect_rewards(out, NOW, get=self.stub_get())
++                        if s == f"{R.REWARDS_KALSHI}.jsonl")
++            stream.add(first["program_key"], first, NOW.isoformat(timespec="seconds"))
++            raised_pool = self.stub_get(kalshi_programs={
++                "incentive_programs": [{"series_ticker": "KXNBAGAME", "daily_pool_dollars": 900}]})
++            later = NOW + timedelta(hours=6)
++            second = next(r for s, k, r in R.collect_rewards(out, later, get=raised_pool)
++                         if s == f"{R.REWARDS_KALSHI}.jsonl")
++            self.assertEqual(stream.add(second["program_key"], second,
++                                        later.isoformat(timespec="seconds")), "restatement")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_fast_rail_h011_planner.py b/tests/test_fast_rail_h011_planner.py
+new file mode 100644
+index 0000000..236fde3
+--- /dev/null
++++ b/tests/test_fast_rail_h011_planner.py
+@@ -0,0 +1,135 @@
++"""Offline tests for H-011's niche-league extension of the H-001 planner.
++
++All prices, teams-at-times, ids and keys below are INVENTED FIXTURES, not market data.
++No network is used: fetchers are stubbed.
++"""
++from __future__ import annotations
++
++import sys
++import tempfile
++import unittest
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++from quant.dataplane import h001_relay as R  # noqa: E402
++
++NOW = datetime(2026, 10, 3, 22, 0, tzinfo=timezone.utc)
++
++
++def niche_odds_payload(sport: str, kick: str):
++    return [{"id": f"evt-{sport}", "sport_key": sport, "commence_time": kick,
++             "home_team": "Home FC", "away_team": "Away FC",
++             "bookmakers": [{"key": "pinnacle", "last_update": "2026-10-03T21:55:00Z",
++                             "markets": [{"key": "h2h", "outcomes": [
++                                 {"name": "Home FC", "price": 1.8},
++                                 {"name": "Away FC", "price": 2.1}]}]}]}]
++
++
++class NicheSportsConstants(unittest.TestCase):
++    def test_niche_sports_are_the_ex_ante_list(self):
++        self.assertEqual(R.NICHE_SPORTS,
++                         ("soccer_korea_kleague1", "soccer_mexico_ligamx",
++                          "americanfootball_ncaaf"))
++        self.assertEqual(R.ALL_SPORTS, R.SPORTS + R.NICHE_SPORTS)
++
++    def test_anchor_hours_by_sport_matches_the_mission(self):
++        for sport in R.SPORTS:
++            self.assertEqual(R.ANCHOR_HOURS_BY_SPORT[sport], R.ANCHOR_HOURS)
++        for sport in R.NICHE_SPORTS:
++            self.assertEqual(R.ANCHOR_HOURS_BY_SPORT[sport], 24.0)
++        self.assertGreater(R.NICHE_ANCHOR_HOURS, R.ANCHOR_HOURS)
++
++    def test_hard_caps_unchanged_by_niche_addition(self):
++        # the mission requires every existing cap untouched
++        self.assertEqual(R.MAX_PER_RUN, 2)
++        self.assertEqual(R.DAILY_MAX, 14)
++        self.assertEqual(R.MONTHLY_MAX, 430)
++        self.assertEqual(R.REMAINING_FLOOR, 25)
++
++
++class PerSportAnchor(unittest.TestCase):
++    def test_niche_sport_not_yet_due_at_12h_but_h001_sport_is(self):
++        """At 13h since last fetch: an H-001 sport (12h anchor) is due, a niche
++        sport (24h anchor) is not, when both are offered together."""
++        last = (NOW - timedelta(hours=13)).isoformat()
++        ledger = [{"fetched_at": last, "sport": s, "status": "OK", "charged": True,
++                  "remaining": 300} for s in R.ALL_SPORTS]
++        plan, _ = R.plan_requests(NOW, ledger, [], R.ALL_SPORTS,
++                                  anchor_hours=R.ANCHOR_HOURS_BY_SPORT)
++        planned = {s for s, _ in plan}
++        self.assertTrue(planned & set(R.SPORTS), "an H-001 sport should be due at 13h")
++        self.assertFalse(planned & set(R.NICHE_SPORTS), "no niche sport is due before 24h")
++
++    def test_niche_sport_due_at_25h(self):
++        last = (NOW - timedelta(hours=25)).isoformat()
++        ledger = [{"fetched_at": last, "sport": s, "status": "OK", "charged": True,
++                  "remaining": 300} for s in R.ALL_SPORTS]
++        plan, _ = R.plan_requests(NOW, ledger, [], R.ALL_SPORTS,
++                                  anchor_hours=R.ANCHOR_HOURS_BY_SPORT, max_per_run=10)
++        planned = {s for s, _ in plan}
++        self.assertTrue(planned & set(R.NICHE_SPORTS))
++
++    def test_bare_anchor_hours_float_still_works(self):
++        """Backward compatibility: a plain float still applies to every sport."""
++        plan, _ = R.plan_requests(NOW, [], [], R.SPORTS, anchor_hours=6.0)
++        self.assertEqual({s for s, _ in plan}, set(R.SPORTS))
++
++    def test_combined_five_sports_still_capped_at_max_per_run(self):
++        """All 5 sports wanting a request at once is still capped at MAX_PER_RUN."""
++        plan, _ = R.plan_requests(NOW, [], [], R.ALL_SPORTS,
++                                  anchor_hours=R.ANCHOR_HOURS_BY_SPORT)
++        self.assertLessEqual(len(plan), R.MAX_PER_RUN)
++        # H-001 sports keep priority when the shared budget is scarce
++        self.assertEqual([s for s, _ in plan], list(R.SPORTS))
++
++
++class NicheSportDoesNotCrashTheRun(unittest.TestCase):
++    """Regression: PM_TAG/KALSHI_SERIES only cover H-001's own sports; a niche
++    sport with a 'live' event must degrade to unmatched, never raise KeyError
++    and truncate the whole run (which would also lose that run's EPL/NBA data)."""
++
++    def test_venue_quotes_does_not_raise_for_an_unwired_sport(self):
++        event = {"event_id": "evt-x", "sport": "soccer_korea_kleague1",
++                 "commence_time": (NOW + timedelta(hours=2)).isoformat(),
++                 "home": "Ulsan", "away": "Jeonbuk"}
++        records = list(R._venue_quotes("soccer_korea_kleague1", [event], NOW,
++                                       NOW.isoformat(timespec="seconds"), lambda url: []))
++        matches = {(key.split("|")[1]): record for _, key, record in records
++                  if _ == "sports_quotes/matches.jsonl"}
++        # "unreachable" is the same status a real network failure gets; the reason
++        # tells the two apart, and neither raises.
++        self.assertEqual(matches["POLYMARKET"]["status"], "unreachable")
++        self.assertIn("not wired", matches["POLYMARKET"]["reason"])
++        self.assertEqual(matches["KALSHI"]["status"], "unreachable")
++        self.assertIn("not wired", matches["KALSHI"]["reason"])
++
++    def test_full_collect_with_all_sports_does_not_crash(self):
++        kick = (NOW + timedelta(hours=1)).isoformat().replace("+00:00", "Z")
++
++        class Stub:
++            def fetch(self, url):
++                for sport in R.ALL_SPORTS:
++                    if f"/{sport}/odds" in url:
++                        payload = niche_odds_payload(sport, kick)
++                        return payload, {"x-requests-remaining": "300", "x-requests-used": "5",
++                                        "x-requests-last": "1"}
++                raise AssertionError(f"unexpected url {url}")
++
++            def get(self, url):
++                return [] if "gamma-api" in url else {"markets": []}
++
++        stub = Stub()
++        with tempfile.TemporaryDirectory() as tmp:
++            items = list(R.collect(Path(tmp), NOW, key="FIXTURE-KEY", fetch=stub.fetch,
++                                   get=stub.get, sports=R.ALL_SPORTS,
++                                   anchor_hours=R.ANCHOR_HOURS_BY_SPORT))
++        # H-001 sports win the shared 2/run budget; niche sports still degrade cleanly
++        # rather than raising, whenever they do get a turn.
++        self.assertTrue(any(s.startswith("odds/pinnacle") for s, _, _ in items))
++
++
++if __name__ == "__main__":
++    unittest.main()

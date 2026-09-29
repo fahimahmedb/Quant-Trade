@@ -29,7 +29,7 @@ from .dataplane.sec.timebase import Timebase  # noqa: E402
 from .desk.desk import CapitalDesk  # noqa: E402
 from .desk.profiles import profile_for  # noqa: E402
 from .events import EventLog  # noqa: E402
-from .factory.lanes import FOLLOWUP, WINDOWS, lane_definitions  # noqa: E402
+from .factory.lanes import FOLLOWUP, WINDOWS, declared_pristine_after, lane_definitions  # noqa: E402
 from .factory.strategies import StrategyRegistry  # noqa: E402
 from .factory.workers import ResearchContext, run_lane  # noqa: E402
 from .learning.sequential import alternative_sharpe, sequential_test  # noqa: E402
@@ -719,8 +719,16 @@ class QuantSystem:
                 continue
             # Only evidence the research never saw may move the lifecycle. The
             # whole series is still tested and reported, labelled as monitoring.
-            pristine = definition.evidence.get("pristine_after")
-            series = [item for item in full if not pristine or item[0] > pristine]
+            # The later of the stored date and the lane's current declaration:
+            # a corrected (later) pristine date must also bind strategies that
+            # were registered before the correction. No date -> nothing moves
+            # the lifecycle (fail closed; invariant 6).
+            dates = [value for value in (definition.evidence.get("pristine_after"),
+                                         declared_pristine_after(definition.dataset_id,
+                                                                 definition.strategy_id))
+                     if value]
+            pristine = max(dates) if dates else None
+            series = [item for item in full if pristine and item[0] > pristine]
             validated = (definition.evidence.get("validation") or {}).get("sharpe_zero_rate")
             alternative = alternative_sharpe(validated)
             monitoring = sequential_test([value for _, value in full], alternative)
