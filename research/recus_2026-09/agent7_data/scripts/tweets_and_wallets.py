@@ -48,7 +48,8 @@ for n, a in W.items():
     for k, v in last.items():
         deltas[k] = v - prev; prev = v
     print(n, " ".join(f"{k}:{v/1e3:+.1f}k" for k, v in deltas.items() if k >= "2025-06"))
-WX = re.compile(r"temperature|°|weather|rain|snow|hurricane|heat|degrees", re.I)
+# word-boundary filter (a loose filter matched "Ukraine"/"Bahrain"/"Miami Heat"; corrected after review)
+WX = re.compile(r"\btemperature\b|°[CF]|\bweather\b|\brain(fall)?\b|\bsnow(fall)?\b|\bhurricanes?\b|\bheat ?wave\b|\bhottest\b|\bdegrees\b|\bnamed storms\b", re.I)
 for n in ("gopfan2", "aenews2"):
     allp, off = [], 0
     while off < 10000:

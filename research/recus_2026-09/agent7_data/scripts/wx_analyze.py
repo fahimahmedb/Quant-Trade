@@ -78,3 +78,22 @@ for k in sorted(q):
             continue
         bs = sorted(st.mean(random.choices(R, k=len(R))) for _ in range(1000))
         print(k, a, 'n', len(R), 'fav ret %.3f [%.3f,%.3f]' % (st.mean(R), bs[25], bs[974]))
+
+# bucket-level calibration error (ECE) at D 00:00 local, 7 price bins
+bins = [0, 0.05, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0001]
+print('\nquarter | n buckets | ECE at D_00 | per-bin mean price:hit rate(n)')
+qq = collections.defaultdict(list)
+for e in d:
+    y, m = e['date'][:4], int(e['date'][5:7])
+    for r in e['rows']:
+        if r['p']['D_00'] is not None:
+            qq[f'{y}Q{(m - 1) // 3 + 1}'].append((r['p']['D_00'], 1 if r['won'] else 0))
+for k in sorted(qq):
+    Lq = qq[k]; ece = 0; parts = []
+    for i in range(len(bins) - 1):
+        B = [x for x in Lq if bins[i] <= x[0] < bins[i + 1]]
+        if not B:
+            continue
+        mp = st.mean(x[0] for x in B); hr = st.mean(x[1] for x in B)
+        ece += len(B) / len(Lq) * abs(mp - hr); parts.append('%.2f:%.2f(%d)' % (mp, hr, len(B)))
+    print(k, len(Lq), '%.3f' % ece, ' '.join(parts))

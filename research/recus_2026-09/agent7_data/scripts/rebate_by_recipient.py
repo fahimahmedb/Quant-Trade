@@ -2,12 +2,15 @@
 # then fetch the dominant recipient's full MAKER_REBATE history from the public data-api.
 # Inputs: Agent 6's decay_series.json (block windows per date), rpc.py (public Polygon RPC helpers).
 #   git show fff0cca0773f542e9039be726d9b49519fe2b56e:research/recus_2026-09/agent6_data/decay_series.json > decay_series.json
-import json, collections, urllib.request, datetime as dt
-from rpc import logs_range, TRANSFER, PUSD, REBATE_EOA, pad
+import json, collections, urllib.request, datetime as dt, sys
+# usage: python3 rebate_by_recipient.py            (RPC decomposition + API history)
+#        python3 rebate_by_recipient.py --api-only (dominant recipient history only)
 
 USDCE = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"
 REB_OLD = "0x3a9418b2651c8164db5ebc56f12008137865e0f7"
-d = json.load(open("decay_series.json"))
+d = {} if "--api-only" in sys.argv else json.load(open("decay_series.json"))
+if d:
+    from rpc import logs_range, TRANSFER, PUSD, REBATE_EOA, pad
 out = {}
 for day in sorted(d):
     b0, b1 = d[day]["blocks"]
@@ -18,7 +21,8 @@ for day in sorted(d):
     out[day] = dict(a)
     top = a.most_common(3)
     print(day, "n", len(a), "total %.0f" % sum(a.values()), "top3", [(k[:8], round(v)) for k, v in top])
-json.dump(out, open("rebate_by_wallet.json", "w"))
+if out:
+    json.dump(out, open("rebate_by_wallet.json", "w"))
 
 DOM = "0x2d507657ca4ebcc8f9a38f6764c07310b66dea54"   # dominant recipient (no trades/positions/P&L in public API)
 def get(u):
