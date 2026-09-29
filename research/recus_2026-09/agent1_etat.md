@@ -1,6 +1,6 @@
 # Ordre 13 — AGENT 1 « REGISTRES PUBLICS » — fichier d'état
 
-- Statut : EN_COURS
+- Statut : DONE
 - trigger_id : trig_01V9PXek4Q8R9FQuLXPcotnR (cron horaire, minute 17, session courante)
 - Branche : claude/dazzling-dirac-foklrv
 - Livrable : research/recus_2026-09/agent1_registres.md
@@ -24,15 +24,14 @@
 - Arbitrage Polymarket (arXiv 2508.03474) : 01/04/2024–01/04/2025, ~40 M$ réalisés (10,6 M$ single-condition, 28,9 M$ NegRisk rebalancing, 95 k$ combinatoire), top adresse 2,0 M$, zéro frais à l'époque.
 - Uniswap v3 : ~49,5 % des positions à rendement négatif (source secondaire) ; LVR > frais sur les grands pools (arXiv 2404.05803).
 
-## Scripts (scratchpad, non commités)
-- cat_pnl.py : P&L réalisé 12 mois par catégorie (météo en cours).
-- maker.py : REWARD + MAKER_REBATE + P&L 12 mois sur 1 159 portefeuilles échantillonnés (en cours).
-
-## Fiches prévues (ID stables)
-R1 PM-METEO (information) · R2 PM-MAKER-RECOMPENSES (maker) · R3 PM-MENTIONS/ECO (information) · R4 PM-SPORTS-MM (maker, hors de portée) · R5 HL-MM (maker, hors de portée) · R6 PM-ARB (arbitrage, non récent) · R7 HL-VAULTS (délégation, négatif) · R8 DEX-LP (maker passif, négatif)
+## Décisions de finalisation (ordre du propriétaire : MODE FINALISATION)
+- cat_pnl.py (météo, non borné) arrêté après ~50 min sans sortie ; remplacé par wx_bounded.py : top 10 par P&L + 20 portefeuilles échantillonnés, 30 pages max, tronqués signalés.
+- maker.py (1 159 portefeuilles) arrêté à ~200/1 159 sans sortie exploitable ; part de makers perdants = « inconnu » dans R2 et R3.
+- Livrable écrit en un seul commit (toutes les données étaient déjà collectées) au lieu d'un commit par fiche.
+- R7 DEX-LP réduit à une ligne des « Négatifs utiles » (pas de vérification directe).
 
 ## Fiches terminées
-(aucune)
+R1 PM-METEO · R2 PM-MAKER-RECOMPENSES · R3 PM-SPORTS-MM · R4 HL-MM · R5 PM-ARB · R6 HL-VAULTS · Négatifs utiles.
 
 ## Prochaine étape
-Attendre la sortie de cat_pnl.py (météo) et maker.py, puis rédiger R1, R2 et les suivantes.
+Aucune. Statut DONE : au réveil, supprimer le Routine trig_01V9PXek4Q8R9FQuLXPcotnR s'il existe encore, sans rien faire d'autre.
