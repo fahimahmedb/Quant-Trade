@@ -150,3 +150,128 @@ def binary_payoff_sigma(price: float) -> float:
     if not 0 < price < 1:
         raise ValueError("price must be in (0, 1)")
     return math.sqrt(price * (1.0 - price)) / price
+
+
+#: Anytime-valid test by betting (ORDRE 12b). Fixed in code before any data.
+#: Fraction of the admissible bet range used: lambda <= AV_BET_CAP / -lower.
+AV_BET_CAP = 0.9
+
+
+def anytime_valid_mean_test(values: list[float], lower: float, upper: float, alpha: float,
+                            beta: float, h1_mean: float, max_observations: int, *,
+                            groups: list[Any] | None = None) -> dict[str, Any]:
+    """Sequential test of a bounded mean by betting (Waudby-Smith & Ramdas 2023).
+
+    ACCEPT_EDGE rejects H0: mean <= 0.   REJECT_EDGE rejects H0': mean >= ``h1_mean``.
+
+    Two wealth processes are walked in order, one bet per ROUND (a round is one
+    value, or one block of consecutive values sharing a ``groups`` key):
+        K_A = prod(1 + lam_r * xbar_r)              (bets against H0)
+        K_R = prod(1 + gam_r * (h1_mean - xbar_r))  (bets against H0')
+    where xbar_r is the round mean. ACCEPT_EDGE at the first round where
+    K_A >= 1/alpha, REJECT_EDGE where K_R >= 1/beta (REJECT wins a tie: the
+    costly error is a false pass), INCONCLUSIVE once ``max_observations``
+    values are consumed, CONTINUE before that. A decision is final: later values
+    are never read, so appending events cannot change it.
+
+    Guarantee (Ville's inequality; no independence, no known variance, no
+    minimum sample): if every value lies in [lower, upper] and, under H0, each
+    value has conditional expectation <= 0 given all values of EARLIER rounds,
+    then K_A is a nonnegative supermartingale over rounds and
+    P(ACCEPT_EDGE) <= alpha at any data-dependent stopping time; symmetrically
+    P(REJECT_EDGE) <= beta when every conditional mean is >= ``h1_mean``.
+    Dependence INSIDE a round is unrestricted. Without ``groups`` each value is
+    its own round, so the condition must hold given every earlier value: a
+    shock common to several matches of one evening breaks it (simulated
+    rho = 0.3: false ACCEPT ~9% at alpha 2.5%). Pass the evening/batch key as
+    ``groups`` whenever values can share such a shock. No bet on dependent
+    values can do better: any valid multiplier of a round is bounded by one
+    bet on its mean (all values at ``lower`` together is a feasible H0 law).
+
+    Bet: truncated aGRAPA (approximate growth-rate adaptive, the paper's
+    plug-in Kelly), predictable from earlier rounds only:
+        lam = clip(m / (v + m^2), 0, AV_BET_CAP / -lower),  m = running mean
+        gam = clip(g / (v + g^2), 0, AV_BET_CAP / (upper - h1_mean)),  g = h1 - m
+    with one prior pseudo-round at h1/2 (half-way between the hypotheses) and
+    variance ((upper - lower) / 2)^2, the paper's regularisation. Why: for H-001
+    the Kelly bet (h1/sigma^2 ~ 1.9) lies beyond the admissible range, so the
+    cap binds under H1 and a high cap buys power; 0.9 rather than 1 keeps 10%
+    of wealth if a value hits ``lower`` instead of killing the test forever.
+    Unlike a constant bet at the cap, aGRAPA shrinks its stake when the
+    variance is larger than expected (sigma 0.1: 76% vs 64% power at 6000).
+
+    Validation (tests/test_anytime_valid_sequential.py, seeded, alpha 0.025,
+    20 000 H0 paths per scenario): false ACCEPT per evening 0.0000 in all five
+    scenarios (horizon 2000 and 12 000); per match <= 0.0052 except common
+    evening shocks (0.083; old t-SPRT 0.195). Under H1 (0.00475, sigma 0.05)
+    per match: power 0.99, median 1254 matches (old t-SPRT 648); per evening
+    with shocks: power 1.00 by 16 000, median 8159 matches, 82% by 10 000. Pure: the same values
+    and groups always give the same verdict (crash-and-replay safe).
+    """
+    if not 0 < alpha < 1 or not 0 < beta < 1:
+        raise ValueError("alpha and beta must be in (0, 1)")
+    if not lower < 0 < h1_mean < upper:
+        raise ValueError("need lower < 0 < h1_mean < upper")
+    if isinstance(max_observations, bool) or not isinstance(max_observations, int) \
+            or max_observations < 1:
+        raise ValueError("max_observations must be a positive integer")
+    for value in values:
+        if not (math.isfinite(value) and lower <= value <= upper):
+            raise ValueError(f"value {value!r} outside [{lower}, {upper}]")
+    if groups is not None:
+        if len(groups) != len(values):
+            raise ValueError("groups must have one key per value")
+        closed: set[Any] = set()
+        for previous, key in zip(groups, groups[1:]):
+            if key != previous:
+                closed.add(previous)
+                if key in closed:
+                    raise ValueError(f"group {key!r} is not contiguous")
+    accept_threshold = math.log(1.0 / alpha)
+    reject_threshold = math.log(1.0 / beta)
+    lam_cap = AV_BET_CAP / -lower
+    gam_cap = AV_BET_CAP / (upper - h1_mean)
+    prior_mean = h1_mean / 2.0
+    prior_var = ((upper - lower) / 2.0) ** 2
+    horizon = min(len(values), max_observations)
+    result: dict[str, Any] = {"method": "betting_agrapa", "lower": lower, "upper": upper,
+                              "alpha": alpha, "beta": beta, "h1_mean": h1_mean,
+                              "bet_cap": AV_BET_CAP, "max_observations": max_observations,
+                              "grouped": groups is not None,
+                              "accept_log_threshold": accept_threshold,
+                              "reject_log_threshold": reject_threshold,
+                              "observations": 0, "rounds": 0, "log_wealth_accept": 0.0,
+                              "log_wealth_reject": 0.0, "decision": "CONTINUE"}
+    log_a = log_r = 0.0
+    rounds = 0
+    total = total_sq = 0.0          # of round means
+    start = 0
+    while start < horizon:
+        end = start + 1
+        if groups is not None:
+            while end < horizon and groups[end] == groups[start]:
+                end += 1
+        mean = (prior_mean + total) / (rounds + 1)
+        spread = total_sq - total * total / rounds if rounds else 0.0
+        var = (prior_var + max(spread, 0.0)) / (rounds + 1)
+        lam = min(max(mean / (var + mean * mean), 0.0), lam_cap)
+        gap = h1_mean - mean
+        gam = min(max(gap / (var + gap * gap), 0.0), gam_cap)
+        xbar = math.fsum(values[start:end]) / (end - start)
+        log_a += math.log1p(lam * xbar)
+        log_r += math.log1p(gam * (h1_mean - xbar))
+        rounds += 1
+        total += xbar
+        total_sq += xbar * xbar
+        start = end
+        result.update(observations=end, rounds=rounds, log_wealth_accept=log_a,
+                      log_wealth_reject=log_r)
+        if log_r >= reject_threshold:
+            result["decision"] = "REJECT_EDGE"
+            return result
+        if log_a >= accept_threshold:
+            result["decision"] = "ACCEPT_EDGE"
+            return result
+    if horizon >= max_observations:
+        result["decision"] = "INCONCLUSIVE"
+    return result
