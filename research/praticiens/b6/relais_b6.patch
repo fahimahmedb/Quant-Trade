@@ -1,0 +1,417 @@
+diff --git a/scripts/b6_shadow_eval.py b/scripts/b6_shadow_eval.py
+new file mode 100644
+index 0000000..abb1df3
+--- /dev/null
++++ b/scripts/b6_shadow_eval.py
+@@ -0,0 +1,118 @@
++"""Paper evaluation of the P7-B6 / H-014 shadow lane from the relay files only.
++
++    python3 scripts/b6_shadow_eval.py [--feeds data/feeds] [--out b6_report.json]
++
++Forward protocol (declared in research/praticiens/declarations_registre.jsonl before the
++first snapshot): for each market, the FIRST snapshot taken 40-60 minutes before expiry
++with a Hyperliquid mid and a closed DVOL candle; p* = N(d2) with sigma = DVOL/100 over
++the remaining minutes; buy YES if ask_yes + fee(ask_yes) < p*, NO if
++ask_no + fee(ask_no) < 1 - p*, fee = rate * p * (1 - p) from the market's own fee
++schedule; one share at the displayed best ask; hold to the official resolution.
++Statistic: net P&L per dollar, t clustered by (asset, expiry). Grid A (all) and B
++(0.15 <= price <= 0.85). Horizon: 12,194 grid-A trades or 2026-12-31; earlier reports
++are informative only. Verdict at the horizon: FORWARD_PASS if t >= required_t(2) with
++the same sign on BTC and ETH, else REJECT.
++"""
++from __future__ import annotations
++
++import argparse
++import collections
++import json
++import math
++import statistics
++from datetime import datetime, timezone
++from pathlib import Path
++
++REQUIRED_T_2_TRIALS = 2.241          # quant.factory.evaluate.required_t_statistic(2)
++HORIZON_TRADES, HORIZON_DATE = 12194, "2026-12-31"
++
++
++def read(base: Path) -> list[dict]:
++    items = []
++    for shard in sorted(base.glob("*.jsonl")) if base.is_dir() else []:
++        for line in shard.read_text(encoding="utf-8").splitlines():
++            try:
++                items.append(json.loads(line))
++            except json.JSONDecodeError:
++                continue
++    return items
++
++
++def fair_yes(spot: float, strike: float, dvol: float, minutes: float) -> float:
++    sigma, tau = dvol / 100.0, minutes / (365 * 24 * 60)
++    d2 = (math.log(spot / strike) - sigma * sigma * tau / 2) / (sigma * math.sqrt(tau))
++    return 0.5 * (1 + math.erf(d2 / math.sqrt(2)))
++
++
++def decisions(snapshots: list[dict], resolutions: dict[str, bool]) -> list[dict]:
++    first: dict[str, dict] = {}
++    for item in sorted(snapshots, key=lambda i: i["observed_at"]):
++        r = item["record"]
++        if not (40 <= (r.get("minutes_to_expiry") or -1) <= 60):
++            continue
++        if not r.get("hl_mid") or not (r.get("dvol") or {}).get("close"):
++            continue
++        first.setdefault(r["condition_id"], {**r, "observed_at": item["observed_at"]})
++    trades = []
++    for cid, r in first.items():
++        p_yes = fair_yes(r["hl_mid"], r["strike"], r["dvol"]["close"], r["minutes_to_expiry"])
++        rate = ((r.get("fee_schedule") or {}).get("rate")) or 0.07
++        for side, fair in (("yes", p_yes), ("no", 1 - p_yes)):
++            ask = ((r.get(f"{side}_book") or {}).get("best_ask"))
++            if ask is None or not 0 < ask < 1:
++                continue
++            fee = rate * ask * (1 - ask)
++            if ask + fee >= fair:
++                continue
++            won = resolutions.get(cid)
++            pnl = None if won is None else ((1.0 if (won if side == "yes" else not won) else 0.0)
++                                            - ask - fee) / (ask + fee)
++            trades.append({"cluster": f"{r['asset']}|{r['expiry_utc']}", "asset": r["asset"],
++                           "side": side, "price": ask, "fair": fair, "pnl": pnl,
++                           "observed_at": r["observed_at"]})
++    return trades
++
++
++def tstat(rows: list[dict]) -> dict:
++    by = collections.defaultdict(list)
++    for r in rows:
++        if r["pnl"] is not None:
++            by[r["cluster"]].append(r["pnl"])
++    means = [statistics.mean(v) for v in by.values()]
++    out = {"trades": sum(len(v) for v in by.values()), "clusters": len(means)}
++    if len(means) >= 3 and statistics.stdev(means) > 0:
++        out["mean_pnl_per_dollar"] = round(statistics.mean(means), 4)
++        out["t"] = round(statistics.mean(means) / (statistics.stdev(means) / math.sqrt(len(means))), 2)
++    return out
++
++
++def report(feeds: Path) -> dict:
++    snaps = read(feeds / "b6" / "snapshots")
++    res = {i["record"]["condition_id"]: i["record"]["yes_won"] for i in read(feeds / "b6" / "resolutions")}
++    trades = decisions(snaps, res)
++    grids = {"A": trades, "B": [t for t in trades if 0.15 <= t["price"] <= 0.85]}
++    out = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
++           "pristine_after": min((i["observed_at"] for i in snaps), default=None),
++           "snapshots": len(snaps), "resolved_markets": len(res),
++           "open_trades": sum(1 for t in trades if t["pnl"] is None)}
++    for name, rows in grids.items():
++        out[name] = {"all": tstat(rows), **{a: tstat([r for r in rows if r["asset"] == a])
++                                            for a in ("BTC", "ETH")}}
++    done = out["A"]["all"]["trades"] >= HORIZON_TRADES or out["generated_at"][:10] > HORIZON_DATE
++    a = out["A"]
++    same = all(a[x].get("mean_pnl_per_dollar", 0) * a["all"].get("mean_pnl_per_dollar", 0) > 0
++               for x in ("BTC", "ETH"))
++    out["status"] = ("horizon not reached (informative only)" if not done else
++                     "FORWARD_PASS" if a["all"].get("t", 0) >= REQUIRED_T_2_TRIALS and same else "REJECT")
++    return out
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--feeds", type=Path, default=Path(__file__).resolve().parents[1] / "data" / "feeds")
++    parser.add_argument("--out", type=Path, default=None)
++    args = parser.parse_args()
++    result = report(args.feeds)
++    if args.out:
++        args.out.write_text(json.dumps(result, indent=1), encoding="utf-8")
++    print(json.dumps(result, indent=1))
+diff --git a/scripts/fetch_feeds.py b/scripts/fetch_feeds.py
+index 3115fec..3254ce4 100644
+--- a/scripts/fetch_feeds.py
++++ b/scripts/fetch_feeds.py
+@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
+ sys.path.insert(0, str(ROOT / "src"))
+ 
+ from quant.dataplane import connectors as c  # noqa: E402
+-from quant.dataplane import h001_relay  # noqa: E402
++from quant.dataplane import b6_relay, h001_relay  # noqa: E402
+ from quant.dataplane.adapters import DataUnavailable  # noqa: E402
+ 
+ ETF_SYMBOLS = ["SPY", "TLT", "GLD", "XLB", "XLE", "XLF", "XLI", "XLK", "XLP", "XLU", "XLV",
+@@ -181,9 +181,12 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
+         # H-001: Pinnacle h2h under a request budget + same-run Polymarket/Kalshi quotes
+         yield from h001_relay.collect(out, now)
+ 
++    def b6():
++        # P7-B6 / H-014 shadow: hourly crypto "above K" books + fair-value inputs
++        yield from b6_relay.collect(out, now)
+     lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
+              ("crypto_funding", crypto), ("polymarket", polymarket),
+-             ("kalshi", kalshi), ("odds_api", odds))
++             ("kalshi", kalshi), ("odds_api", odds), ("b6", b6))
+     for name, work in lanes:
+         if only is None or name in only:
+             run(name, work)
+diff --git a/src/quant/dataplane/b6_relay.py b/src/quant/dataplane/b6_relay.py
+new file mode 100644
+index 0000000..61ca358
+--- /dev/null
++++ b/src/quant/dataplane/b6_relay.py
+@@ -0,0 +1,162 @@
++"""B6 forward collector: Polymarket hourly crypto "above K" books + fair-value inputs.
++
++Research lane P7-B6 / H-014 (research/praticiens on claude/prompt-recherche-praticiens-dfy1l0):
++hourly BTC/ETH "above K" markets are 1-hour digital options; the shadow rule buys the
++side whose ask plus the taker fee is below p* = N(d2) computed from the Hyperliquid
++mid and the latest hourly Deribit DVOL. This module only COLLECTS, point in time:
++
++* ``b6/snapshots``: for every market of the event expiring ``WINDOW_MIN`` minutes
++  ahead, both order books (top 5 levels), the market's own fee schedule, and the
++  same-run inputs (Hyperliquid mid, last closed hourly DVOL candle);
++* ``b6/resolutions``: the official outcome of every snapshotted market, fetched once
++  it has closed.
++
++Everything is public and needs no key. Decisions, P&L and statistics are computed
++later by ``scripts/b6_shadow_eval.py`` from these files only.
++"""
++
++from __future__ import annotations
++
++import json
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++from typing import Any, Callable, Iterator
++from zoneinfo import ZoneInfo
++
++from .adapters import DataUnavailable
++from .connectors import get_json, parse_order_book, _float
++
++ASSETS = {"bitcoin": "BTC", "ethereum": "ETH"}
++WINDOW_MIN = (40, 60)                 # books fill only once the last hour opens
++GAMMA_EVENT = "https://gamma-api.polymarket.com/events?slug={slug}"
++GAMMA_MARKETS = "https://gamma-api.polymarket.com/markets?{ids}&closed=true&limit=100"
++CLOB_BOOK = "https://clob.polymarket.com/book?token_id={token}"
++HL_INFO = "https://api.hyperliquid.xyz/info"
++DVOL = ("https://www.deribit.com/api/v2/public/get_volatility_index_data?currency={cur}"
++        "&start_timestamp={start}&end_timestamp={end}&resolution=3600")
++SNAPSHOTS, RESOLUTIONS = "b6/snapshots", "b6/resolutions"
++ET = ZoneInfo("America/New_York")
++
++
++def event_slug(asset: str, expiry_utc: datetime) -> str:
++    """``bitcoin-above-on-september-29-2026-6am-et`` for an expiry at 10:00 UTC (EDT)."""
++    local = expiry_utc.astimezone(ET)
++    hour = local.hour % 12 or 12
++    return (f"{asset}-above-on-{local.strftime('%B').lower()}-{local.day}-{local.year}"
++            f"-{hour}{'am' if local.hour < 12 else 'pm'}-et")
++
++
++def target_expiries(now: datetime) -> list[datetime]:
++    """Whole-hour expiries between ``WINDOW_MIN`` minutes ahead of ``now``."""
++    first = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
++    lo, hi = (now + timedelta(minutes=m) for m in WINDOW_MIN)
++    return [first + timedelta(hours=h) for h in range(3) if lo <= first + timedelta(hours=h) <= hi]
++
++
++def parse_event(payload: Any, asset_code: str) -> list[dict[str, Any]]:
++    """Markets of one gamma event, with strike parsed from the question."""
++    out = []
++    for event in payload or []:
++        for m in event.get("markets") or []:
++            question = m.get("question") or ""
++            try:
++                strike = float(question.split(" above ")[1].split(" on ")[0].replace(",", ""))
++                tokens = json.loads(m.get("clobTokenIds") or "[]")
++                outcomes = json.loads(m.get("outcomes") or "[]")
++                yes = tokens[outcomes.index("Yes")]
++                no = tokens[outcomes.index("No")]
++            except (IndexError, ValueError, TypeError):
++                continue
++            out.append({"asset": asset_code, "event_slug": event.get("slug"),
++                        "condition_id": m.get("conditionId"), "question": question,
++                        "strike": strike, "end_date": m.get("endDate"),
++                        "yes_token": yes, "no_token": no,
++                        "fee_schedule": m.get("feeSchedule"), "fees_enabled": m.get("feesEnabled"),
++                        "accepting_orders": m.get("acceptingOrders")})
++    return out
++
++
++def top(book: dict[str, Any] | None, levels: int = 5) -> dict[str, Any] | None:
++    if not book:
++        return None
++    return {"best_bid": book["best_bid"], "best_ask": book["best_ask"],
++            "bids": book["bids"][:levels], "asks": book["asks"][:levels]}
++
++
++def last_closed_dvol(payload: Any, now: datetime) -> dict[str, Any] | None:
++    """Close of the latest hourly DVOL candle that has fully closed before ``now``."""
++    cutoff = now.timestamp() * 1000 - 3_600_000
++    rows = [r for r in ((payload or {}).get("result") or {}).get("data") or [] if r[0] <= cutoff]
++    if not rows:
++        return None
++    ts, *_, close = max(rows, key=lambda r: r[0])
++    return {"candle_start_ms": int(ts), "close": _float(close)}
++
++
++def parse_resolution(market: dict[str, Any]) -> dict[str, Any] | None:
++    if not market.get("closed"):
++        return None
++    try:
++        prices = [float(x) for x in json.loads(market.get("outcomePrices") or "[]")]
++        outcomes = json.loads(market.get("outcomes") or "[]")
++    except (ValueError, TypeError):
++        return None
++    if sorted(prices) != [0.0, 1.0] or "Yes" not in outcomes:
++        return None
++    return {"condition_id": market.get("conditionId"),
++            "yes_won": prices[outcomes.index("Yes")] == 1.0,
++            "uma_status": market.get("umaResolutionStatus")}
++
++
++def _read(out: Path, stream: str) -> list[dict[str, Any]]:
++    items = []
++    base = out / stream
++    for shard in sorted(base.glob("*.jsonl")) if base.is_dir() else []:
++        for line in shard.read_text(encoding="utf-8").splitlines():
++            try:
++                items.append(json.loads(line))
++            except json.JSONDecodeError:
++                continue
++    return items
++
++
++def collect(out: Path, now: datetime, *, get: Callable[..., Any] = get_json
++            ) -> Iterator[tuple[str, str, dict[str, Any]]]:
++    """Yield ``(stream, key, record)`` for one run (all share the caller's observed_at)."""
++    minute = now.strftime("%Y-%m-%dT%H:%M")
++    expiries = target_expiries(now)
++    if expiries:
++        mids = get(HL_INFO, method="POST", body={"type": "allMids"})
++        start = int((now - timedelta(hours=4)).timestamp() * 1000)
++        end = int(now.timestamp() * 1000)
++        dvol = {code: last_closed_dvol(get(DVOL.format(cur=code, start=start, end=end)), now)
++                for code in ASSETS.values()}
++        for expiry in expiries:
++            for asset, code in ASSETS.items():
++                markets = parse_event(get(GAMMA_EVENT.format(slug=event_slug(asset, expiry))), code)
++                for m in markets:
++                    books = {}
++                    for side in ("yes", "no"):
++                        try:
++                            books[side] = top(parse_order_book(
++                                get(CLOB_BOOK.format(token=m[f"{side}_token"])), "POLYMARKET",
++                                m[f"{side}_token"]))
++                        except DataUnavailable:
++                            books[side] = None
++                    yield SNAPSHOTS, f"{m['condition_id']}|{minute}", {
++                        **m, "expiry_utc": expiry.isoformat(), "minutes_to_expiry":
++                        round((expiry - now).total_seconds() / 60, 1),
++                        "yes_book": books["yes"], "no_book": books["no"],
++                        "hl_mid": _float((mids or {}).get(code)), "dvol": dvol[code]}
++    # resolutions for snapshotted markets that have closed and are not yet recorded
++    done = {item["key"] for item in _read(out, RESOLUTIONS)}
++    pending = sorted({item["record"]["condition_id"] for item in _read(out, SNAPSHOTS)
++                      if item["record"].get("end_date") and item["record"]["condition_id"] not in done
++                      and datetime.fromisoformat(item["record"]["end_date"].replace("Z", "+00:00"))
++                      < now - timedelta(minutes=30)})
++    for i in range(0, len(pending), 40):
++        ids = "&".join(f"condition_ids={cid}" for cid in pending[i:i + 40])
++        for market in get(GAMMA_MARKETS.format(ids=ids)) or []:
++            res = parse_resolution(market)
++            if res:
++                yield RESOLUTIONS, res["condition_id"], res
+diff --git a/tests/test_b6_relay.py b/tests/test_b6_relay.py
+new file mode 100644
+index 0000000..9aa4a2b
+--- /dev/null
++++ b/tests/test_b6_relay.py
+@@ -0,0 +1,92 @@
++"""Offline tests for the P7-B6 collector and shadow evaluator.
++
++Every number below is INVENTED for the tests (fixtures), not market data.
++"""
++import importlib.util
++import json
++import tempfile
++import unittest
++from datetime import datetime, timezone
++from pathlib import Path
++
++from quant.dataplane import b6_relay
++
++ROOT = Path(__file__).resolve().parents[1]
++_spec = importlib.util.spec_from_file_location("b6_shadow_eval", ROOT / "scripts" / "b6_shadow_eval.py")
++ev = importlib.util.module_from_spec(_spec)
++_spec.loader.exec_module(ev)
++
++
++class SlugAndWindow(unittest.TestCase):
++    def test_slug_uses_new_york_time_and_year(self):
++        self.assertEqual(b6_relay.event_slug("bitcoin", datetime(2026, 9, 29, 10, tzinfo=timezone.utc)),
++                         "bitcoin-above-on-september-29-2026-6am-et")          # EDT, UTC-4
++        self.assertEqual(b6_relay.event_slug("ethereum", datetime(2026, 12, 1, 17, tzinfo=timezone.utc)),
++                         "ethereum-above-on-december-1-2026-12pm-et")          # EST, UTC-5
++
++    def test_window_selects_only_the_expiry_40_to_60_minutes_ahead(self):
++        at_17 = datetime(2026, 9, 29, 9, 17, tzinfo=timezone.utc)
++        self.assertEqual(b6_relay.target_expiries(at_17), [datetime(2026, 9, 29, 10, tzinfo=timezone.utc)])
++        at_47 = datetime(2026, 9, 29, 9, 47, tzinfo=timezone.utc)
++        self.assertEqual(b6_relay.target_expiries(at_47), [])                   # 13 and 73 min: both outside
++
++
++class Parsers(unittest.TestCase):
++    def test_parse_event_maps_yes_and_no_tokens_by_outcome_name(self):
++        payload = [{"slug": "s", "markets": [{"question": "Bitcoin above 84,000 on September 29, 7AM ET?",
++                                              "conditionId": "0xc", "endDate": "2026-09-29T11:00:00Z",
++                                              "clobTokenIds": '["n", "y"]', "outcomes": '["No", "Yes"]',
++                                              "feeSchedule": {"rate": 0.07}}]}]
++        m = b6_relay.parse_event(payload, "BTC")[0]
++        self.assertEqual((m["strike"], m["yes_token"], m["no_token"]), (84000.0, "y", "n"))
++
++    def test_dvol_uses_only_candles_closed_before_now(self):
++        now = datetime(2026, 9, 29, 9, 50, tzinfo=timezone.utc)
++        t9 = int(datetime(2026, 9, 29, 9, tzinfo=timezone.utc).timestamp() * 1000)
++        payload = {"result": {"data": [[t9 - 3_600_000, 1, 1, 1, 40.0], [t9, 1, 1, 1, 50.0]]}}
++        self.assertEqual(b6_relay.last_closed_dvol(payload, now)["close"], 40.0)   # 09:00 candle still open
++
++    def test_resolution_requires_a_closed_zero_one_outcome(self):
++        self.assertIsNone(b6_relay.parse_resolution({"closed": False}))
++        self.assertIsNone(b6_relay.parse_resolution({"closed": True, "outcomePrices": '["0.5","0.5"]',
++                                                     "outcomes": '["Yes","No"]'}))
++        r = b6_relay.parse_resolution({"closed": True, "conditionId": "c", "outcomePrices": '["0","1"]',
++                                       "outcomes": '["Yes","No"]'})
++        self.assertFalse(r["yes_won"])
++
++
++def snap(cid, minutes, ask_yes, ask_no, observed="2026-10-01T10:15:00+00:00", mid=100.0, strike=100.0):
++    return {"observed_at": observed, "record": {
++        "condition_id": cid, "asset": "BTC", "expiry_utc": "2026-10-01T11:00:00+00:00", "strike": strike,
++        "minutes_to_expiry": minutes, "hl_mid": mid, "dvol": {"close": 50.0}, "fee_schedule": {"rate": 0.07},
++        "yes_book": {"best_ask": ask_yes}, "no_book": {"best_ask": ask_no}}}
++
++
++class Evaluator(unittest.TestCase):
++    def test_at_the_money_fair_is_one_half(self):
++        self.assertAlmostEqual(ev.fair_yes(100, 100, 50, 60), 0.5, places=2)
++
++    def test_buys_only_when_ask_plus_fee_is_below_fair(self):
++        # ATM: fair ~ 0.4996 on both sides; 0.45 + fee(0.45)=0.4673 buys, 0.49 + 0.0175 does not.
++        trades = ev.decisions([snap("c", 55, 0.45, 0.49)], {"c": True})
++        self.assertEqual([t["side"] for t in trades], ["yes"])
++        self.assertAlmostEqual(trades[0]["pnl"], (1 - 0.45 - 0.07 * 0.45 * 0.55) / (0.45 + 0.07 * 0.45 * 0.55))
++
++    def test_ignores_snapshots_outside_the_window_and_keeps_the_first_inside(self):
++        s = [snap("c", 70, 0.10, 0.10, "2026-10-01T09:50:00+00:00"),        # too early: ignored
++             snap("c", 55, 0.45, 0.60, "2026-10-01T10:05:00+00:00"),
++             snap("c", 45, 0.01, 0.01, "2026-10-01T10:15:00+00:00")]        # later: never used
++        trades = ev.decisions(s, {})
++        self.assertEqual([(t["side"], t["price"], t["pnl"]) for t in trades], [("yes", 0.45, None)])
++
++    def test_unresolved_trades_do_not_enter_the_statistic(self):
++        rows = [{"cluster": "a", "pnl": None}, {"cluster": "b", "pnl": 0.1}]
++        self.assertEqual(ev.tstat(rows)["trades"], 1)
++
++    def test_report_on_empty_feeds_is_informative_only(self):
++        with tempfile.TemporaryDirectory() as d:
++            self.assertEqual(ev.report(Path(d))["status"], "horizon not reached (informative only)")
++
++
++if __name__ == "__main__":
++    unittest.main()
