@@ -1,0 +1,138 @@
+{
+ "U1_2025Q4": {
+  "winner_price_median": {
+   "D": 0.968,
+   "B": 0.605,
+   "A": 0.59,
+   "C": 0.818
+  },
+  "n": {
+   "D": 11,
+   "B": 12,
+   "A": 6,
+   "C": 6
+  },
+  "weekend_taker_usd_median": 73834.0,
+  "weekend_taker_usd_sum": 5740013.0,
+  "n_fw": 18
+ },
+ "U1_2026Q1": {
+  "winner_price_median": {
+   "B": 0.561,
+   "C": 0.657,
+   "D": 0.866,
+   "A": 0.716
+  },
+  "n": {
+   "B": 15,
+   "C": 16,
+   "D": 15,
+   "A": 12
+  },
+  "weekend_taker_usd_median": 120552.0,
+  "weekend_taker_usd_sum": 3399086.0,
+  "n_fw": 22
+ },
+ "U1_2026Q2": {
+  "winner_price_median": {
+   "A": 0.633,
+   "B": 0.712,
+   "C": 0.751,
+   "D": 0.96
+  },
+  "n": {
+   "A": 13,
+   "B": 16,
+   "C": 16,
+   "D": 15
+  },
+  "weekend_taker_usd_median": 103678.0,
+  "weekend_taker_usd_sum": 2660233.0,
+  "n_fw": 22
+ },
+ "U1_2026Q3": {
+  "winner_price_median": {
+   "A": 0.385,
+   "C": 0.637,
+   "D": 0.805,
+   "B": 0.763
+  },
+  "n": {
+   "A": 12,
+   "C": 9,
+   "D": 12,
+   "B": 12
+  },
+  "weekend_taker_usd_median": 28397.0,
+  "weekend_taker_usd_sum": 1826804.0,
+  "n_fw": 23
+ },
+ "U2_2025Q4": {
+  "winner_price_median": {
+   "A": 0.352,
+   "B": 0.218,
+   "C": 0.525,
+   "D": 0.976
+  },
+  "n": {
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1
+  },
+  "weekend_taker_usd_median": 314996.0,
+  "weekend_taker_usd_sum": 314996.0,
+  "n_fw": 1
+ },
+ "U2_2026Q1": {
+  "winner_price_median": {
+   "A": 0.51,
+   "B": 0.458,
+   "D": 0.782,
+   "C": 0.551
+  },
+  "n": {
+   "A": 3,
+   "B": 10,
+   "D": 11,
+   "C": 8
+  },
+  "weekend_taker_usd_median": 69264.0,
+  "weekend_taker_usd_sum": 2047213.0,
+  "n_fw": 15
+ },
+ "U2_2026Q2": {
+  "winner_price_median": {
+   "B": 0.694,
+   "C": 0.73,
+   "D": 0.876,
+   "A": 0.55
+  },
+  "n": {
+   "B": 10,
+   "C": 9,
+   "D": 15,
+   "A": 11
+  },
+  "weekend_taker_usd_median": 26292.0,
+  "weekend_taker_usd_sum": 1447620.0,
+  "n_fw": 25
+ },
+ "U2_2026Q3": {
+  "winner_price_median": {
+   "A": 0.534,
+   "B": 0.671,
+   "C": 0.58,
+   "D": 0.848
+  },
+  "n": {
+   "A": 6,
+   "B": 12,
+   "C": 11,
+   "D": 10
+  },
+  "weekend_taker_usd_median": 21876.0,
+  "weekend_taker_usd_sum": 926605.0,
+  "n_fw": 26
+ }
+}
