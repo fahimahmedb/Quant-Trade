@@ -11,11 +11,13 @@
 - pineanalytics fee rollout; docs frais Polymarket V2 (30/03/2026)
 - kacho.io x3, github kachence/polymm, API Polymarket wallet 0x1c55…84ce
 - suislanchez weather bot (paper only → rejeté)
+- stats-data.hyperliquid.xyz/Mainnet/vaults (9476 vaults) + vaultDetails top-TVL >1 an ; Growi HF (méthode vague: mean-reversion), Systemic, Long HYPE/Short Garbage
 
 ## Fiches terminées
 - F1 polymm/@b00k13 (vérifié, edge mort/marginal)
+- F2 vaults HL L/S émission (reçu vérifié, edge = bêta)
 
 ## Prochaine étape
-F2 candidats: vaults Hyperliquid documentés; arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
+F3 candidats: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
 
 ## (ancienne) Repérage rapide (≤20 candidats) : bots OSS avec P&L relié à une adresse, vaults Hyperliquid documentés, bilans de market makers petite taille, dashboards building in public.
