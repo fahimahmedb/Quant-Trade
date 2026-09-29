@@ -1,8 +1,8 @@
 diff --git a/scripts/fetch_feeds.py b/scripts/fetch_feeds.py
-index 3115fec..23fea4f 100644
+index 3115fec..9b5f293 100644
 --- a/scripts/fetch_feeds.py
 +++ b/scripts/fetch_feeds.py
-@@ -178,12 +178,21 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
+@@ -178,12 +178,29 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
              yield "kalshi/markets.jsonl", f"{hour}|{item['market_id']}", prices
  
      def odds():
@@ -19,16 +19,24 @@ index 3115fec..23fea4f 100644
 +        # resource-heavier than a Pinnacle poll and only needs the 6h full-collect
 +        # cadence, since it runs once per market regardless of how often it is offered.
 +        yield from h001_relay.collect_trades(out, now)
++
++    def sports_rewards():
++        # R4 (H-013): venue-wide reward-program snapshots + order books of matched
++        # markets kicking off within 48h, for H-013's separate liquidity-reward P&L
++        # line. Also full-collect only: Kalshi/Polymarket rewards terms and books
++        # change slowly relative to the 6h cadence.
++        yield from h001_relay.collect_rewards(out, now)
  
      lanes = (("yahoo_chart", yahoo), ("fred", fred), ("fomc_calendar", fomc),
               ("crypto_funding", crypto), ("polymarket", polymarket),
 -             ("kalshi", kalshi), ("odds_api", odds))
-+             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills))
++             ("kalshi", kalshi), ("odds_api", odds), ("sports_fills", sports_fills),
++             ("sports_rewards", sports_rewards))
      for name, work in lanes:
          if only is None or name in only:
              run(name, work)
 diff --git a/src/quant/dataplane/h001_relay.py b/src/quant/dataplane/h001_relay.py
-index 70da89b..7450f80 100644
+index 70da89b..27be547 100644
 --- a/src/quant/dataplane/h001_relay.py
 +++ b/src/quant/dataplane/h001_relay.py
 @@ -25,6 +25,52 @@ the day before.
@@ -227,7 +235,7 @@ index 70da89b..7450f80 100644
      for event in events:
          base = {"odds_event_id": event["event_id"], "sport": sport,
                  "commence_time": event["commence_time"], "home": event["home"],
-@@ -470,3 +554,144 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
+@@ -470,3 +554,318 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
              record = {**base, "venue": "KALSHI", "outcome": outcome, **kalshi_quote(market),
                        "fetched_at": stamp, "source_url": k_url}
              yield f"{QUOTES_KALSHI}.jsonl", f"{stamp}|{event['event_id']}|{outcome}", record
@@ -372,12 +380,186 @@ index 70da89b..7450f80 100644
 +               "outcome": info.get("outcome"), "commence_time": info["commence_time"],
 +               "fetched_at": stamp, "status": status, "trade_count": len(trades),
 +               "age_at_fetch_h": round(age_h, 2)})
++
++
++# --- R4 (H-013): liquidity rewards ------------------------------------------------------
++# The TRUE venue programs sample far more often than this collector can (Polymarket
++# ~1/minute, Kalshi LIP ~1/second per the registry S16/S35). A 6-hourly full collect
++# can only take a sparse snapshot of the reward-eligible book, so research/fast_rail/
++# h013/rewards.py's theoretical reward from these snapshots is a coarse, sparsely-
++# sampled proxy for the venue's real daily payout, not a replication of it -- treat it
++# as directional. Program-snapshot streams are append-only with restatements kept
++# (Stream's default: a changed value under the same key is stored as a restatement,
++# never overwrites); order books are always a fresh key (one per run) since a book is
++# never "the same value observed twice" in the way a program's terms are.
++REWARDS_POLYMARKET = "rewards/polymarket"
++REWARDS_KALSHI = "rewards/kalshi"
++REWARDS_ORDERBOOKS = "rewards/orderbooks"
++ORDERBOOK_HORIZON_H = 48.0
++KALSHI_INCENTIVE_PROGRAMS = "https://api.elections.kalshi.com/trade-api/v2/incentive_programs"
++POLYMARKET_REWARDS = "https://clob.polymarket.com/rewards/markets/current"
++KALSHI_ORDERBOOK = "https://api.elections.kalshi.com/trade-api/v2/markets/{ticker}/orderbook"
++
++
++def parse_kalshi_incentive_programs(payload: Any) -> list[dict[str, Any]]:
++    """One record per program (ASSUMPTION: Kalshi's public docs describe the
++    mechanism -- a per-market/day pool, S35 -- but this build has no live key to
++    confirm the response's exact field names; every extracted field is best-effort
++    and the raw item is kept alongside so a wrong assumption is still recoverable).
++    A program with no discoverable identifying key is dropped, not fabricated one."""
++    items = payload.get("incentive_programs") if isinstance(payload, dict) else payload
++    out = []
++    for item in items or []:
++        if not isinstance(item, dict):
++            continue
++        key = (item.get("series_ticker") or item.get("market_ticker") or item.get("ticker")
++              or item.get("id") or item.get("product_id"))
++        if key is None:
++            continue
++        out.append({"program_key": str(key), "series_ticker": item.get("series_ticker"),
++                    "market_ticker": item.get("market_ticker") or item.get("ticker"),
++                    "start_date": item.get("start_date"), "end_date": item.get("end_date"),
++                    "daily_pool_dollars": _float(item.get("daily_pool_dollars")
++                                                 if item.get("daily_pool_dollars") is not None
++                                                 else item.get("pool_dollars")),
++                    "raw": item})
++    return out
++
++
++def fetch_kalshi_incentive_programs(get: Callable[[str], Any] = get_json) -> list[dict[str, Any]]:
++    return parse_kalshi_incentive_programs(get(KALSHI_INCENTIVE_PROGRAMS))
++
++
++def parse_polymarket_rewards(payload: Any) -> tuple[list[dict[str, Any]], str | None]:
++    """One record per rewarded market plus the ``next_cursor`` (ASSUMPTION: field
++    names per Polymarket CLOB's public docs -- ``rewards_min_size``/
++    ``rewards_max_spread`` govern the quadratic-score band used in
++    ``research/fast_rail/h013/rewards.py`` -- not yet verified against a live
++    response; the raw item is always kept)."""
++    items = payload.get("data") if isinstance(payload, dict) else payload
++    out = []
++    for item in items or []:
++        if not isinstance(item, dict):
++            continue
++        market = item.get("condition_id") or item.get("market") or item.get("id")
++        if market is None:
++            continue
++        rewards = item.get("rewards_config") or item.get("rewards") or {}
++        out.append({"market_id": str(market),
++                    "min_size": _float(rewards.get("rewards_min_size")
++                                       if rewards.get("rewards_min_size") is not None
++                                       else item.get("rewards_min_size")),
++                    "max_spread": _float(rewards.get("rewards_max_spread")
++                                         if rewards.get("rewards_max_spread") is not None
++                                         else item.get("rewards_max_spread")),
++                    "daily_rate": _float(item.get("rewards_daily_rate")
++                                         if item.get("rewards_daily_rate") is not None
++                                         else item.get("daily_rate")),
++                    "raw": item})
++    cursor = payload.get("next_cursor") if isinstance(payload, dict) else None
++    return out, (cursor or None)
++
++
++def fetch_polymarket_rewards(get: Callable[[str], Any] = get_json,
++                             max_pages: int = 50) -> list[dict[str, Any]]:
++    out: list[dict[str, Any]] = []
++    cursor, seen_cursors = "", set()
++    for _ in range(max_pages):
++        url = POLYMARKET_REWARDS + (f"?next_cursor={cursor}" if cursor else "")
++        page, next_cursor = parse_polymarket_rewards(get(url))
++        out.extend(page)
++        if not next_cursor or next_cursor in seen_cursors or next_cursor == "LTE=":
++            break                                    # "LTE=" is the CLOB's own end-of-list cursor
++        seen_cursors.add(next_cursor)
++        cursor = next_cursor
++    return out
++
++
++def parse_kalshi_orderbook(payload: Any, ticker: str) -> dict[str, Any] | None:
++    """Normalise Kalshi's complementary yes/no resting-order book (cents, 1-99) into
++    the same {best_bid, best_ask, bids, asks, ...} shape ``parse_order_book`` returns
++    for Polymarket. Kalshi's ``/orderbook`` publishes each side's own resting BUY
++    orders only; a resting no-buy at price ``p`` is a resting yes-SELL at ``1-p``
++    (the same complementary-pricing mechanic ``kalshi_quote``/``sportsfair`` already
++    assume elsewhere in this codebase, not a new one)."""
++    book = (payload or {}).get("orderbook") or {}
++
++    def side(name: str) -> list[tuple[float, float]]:
++        levels = [(_float(p), _float(s)) for p, s in (book.get(name) or [])]
++        return [(p / 100, s) for p, s in levels if p is not None and s is not None and s > 0]
++
++    yes_bids = sorted(side("yes"), reverse=True)
++    no_bids = sorted(side("no"), reverse=True)
++    yes_asks = sorted((round(1 - p, 4), s) for p, s in no_bids)
++    if not yes_bids and not yes_asks:
++        return None
++    return {"venue": "KALSHI", "market": ticker,
++            "best_bid": yes_bids[0][0] if yes_bids else None,
++            "best_ask": yes_asks[0][0] if yes_asks else None,
++            "bid_depth": sum(s for _, s in yes_bids), "ask_depth": sum(s for _, s in yes_asks),
++            "bids": yes_bids[:10], "asks": yes_asks[:10]}
++
++
++def fetch_kalshi_orderbook(ticker: str, get: Callable[[str], Any] = get_json
++                           ) -> dict[str, Any] | None:
++    return parse_kalshi_orderbook(get(KALSHI_ORDERBOOK.format(ticker=ticker)), ticker)
++
++
++def collect_rewards(out: Path, now: datetime, get: Callable[[str], Any] = get_json,
++                    orderbook_horizon_h: float = ORDERBOOK_HORIZON_H
++                    ) -> Iterator[tuple[str, str, dict[str, Any]]]:
++    """R4 (H-013): venue-wide reward-program snapshots, every run, plus an order-book
++    snapshot of every matched market kicking off within ``orderbook_horizon_h``.
++
++    Program terms (pool size, dates, spread band) change slowly, like the existing
++    ``polymarket/rules.jsonl``/``kalshi/rules.jsonl`` streams: each program/market
++    keeps ONE stable key (``program_key``/``market_id``) across runs, with NO
++    per-run field (a timestamp, a status) inside the record itself -- that field
++    would change on every call regardless of the program's real terms and defeat
++    the whole point of a stable key, turning every run into a spurious
++    "restatement". An unchanged term is then a cheap ``Stream``-level "duplicate"
++    and a changed one IS recorded as a real "restatement" (mission: "append-only,
++    restatements kept"); "when was this last (re)observed" is exactly what the
++    Stream wrapper's own ``observed_at`` (and a restatement's ``#restated@...``
++    key suffix) already carries, so it is not duplicated here. A fetch failure
++    yields nothing this run (no programs to attach a status to) and is visible in
++    fetch_feeds.py's own per-lane run report instead. Order books are the
++    opposite: a fresh, timestamped key every run, like ``QUOTES_PM``/
++    ``QUOTES_KALSHI``, since a book is never "the same value observed twice".
++    """
++    stamp = now.isoformat(timespec="seconds")
++    try:
++        programs = fetch_kalshi_incentive_programs(get)
++    except DataUnavailable:
++        programs = []
++    for program in programs:
++        yield f"{REWARDS_KALSHI}.jsonl", program["program_key"], program
++    try:
++        rewards = fetch_polymarket_rewards(get)
++    except DataUnavailable:
++        rewards = []
++    for reward in rewards:
++        yield f"{REWARDS_POLYMARKET}.jsonl", reward["market_id"], reward
++    for venue, market_id, info in _latest_matched_markets(out):
++        kickoff = parse_time(info["commence_time"])
++        if not (now < kickoff <= now + timedelta(hours=orderbook_horizon_h)):
++            continue
++        try:
++            book = (parse_order_book(get(PM_BOOK.format(token=market_id)), "POLYMARKET", market_id)
++                    if venue == "POLYMARKET" else fetch_kalshi_orderbook(market_id, get))
++        except DataUnavailable:
++            book = None
++        if book is None:
++            continue
++        yield (f"{REWARDS_ORDERBOOKS}.jsonl", f"{stamp}|{venue}|{market_id}",
++              {**book, "odds_event_id": info.get("odds_event_id"), "outcome": info.get("outcome"),
++               "commence_time": info["commence_time"], "fetched_at": stamp})
 diff --git a/tests/test_fast_rail_h011_h013_collector.py b/tests/test_fast_rail_h011_h013_collector.py
 new file mode 100644
-index 0000000..25b8736
+index 0000000..56130db
 --- /dev/null
 +++ b/tests/test_fast_rail_h011_h013_collector.py
-@@ -0,0 +1,217 @@
+@@ -0,0 +1,377 @@
 +"""Offline tests for H-011's R2 (trades) and H-013's R4 (rewards) collectors, both
 +extending ``h001_relay``. All prices, ids, tickers and keys below are INVENTED
 +FIXTURES, not market data. No network is used: fetchers are stubbed.
@@ -591,6 +773,166 @@ index 0000000..25b8736
 +                    key, record, NOW.isoformat(timespec="seconds"))
 +            stored = fetch_feeds.Stream(out / f"{R.TRADES}.jsonl").keys
 +            self.assertEqual(len(stored), 1)
++
++
++# =====================================================================================
++# R4: rewards
++# =====================================================================================
++class KalshiIncentivePrograms(unittest.TestCase):
++    def test_extracts_and_keeps_raw(self):
++        payload = {"incentive_programs": [
++            {"series_ticker": "KXNBAGAME", "start_date": "2026-01-01", "end_date": "2027-01-01",
++             "daily_pool_dollars": 500}]}
++        out = R.parse_kalshi_incentive_programs(payload)
++        self.assertEqual(out[0]["program_key"], "KXNBAGAME")
++        self.assertEqual(out[0]["daily_pool_dollars"], 500.0)
++        self.assertEqual(out[0]["raw"]["series_ticker"], "KXNBAGAME")
++
++    def test_bare_list_payload_also_accepted(self):
++        out = R.parse_kalshi_incentive_programs([{"ticker": "T1", "daily_pool_dollars": 10}])
++        self.assertEqual(out[0]["program_key"], "T1")
++
++    def test_program_with_no_identifying_key_is_dropped(self):
++        out = R.parse_kalshi_incentive_programs({"incentive_programs": [{"daily_pool_dollars": 1}]})
++        self.assertEqual(out, [])
++
++
++class PolymarketRewardsParsing(unittest.TestCase):
++    def test_extracts_min_size_and_max_spread(self):
++        payload = {"data": [{"condition_id": "0xabc",
++                             "rewards_config": {"rewards_min_size": 100, "rewards_max_spread": 0.03},
++                             "rewards_daily_rate": 50}], "next_cursor": None}
++        out, cursor = R.parse_polymarket_rewards(payload)
++        self.assertEqual(out[0]["market_id"], "0xabc")
++        self.assertEqual(out[0]["min_size"], 100.0)
++        self.assertEqual(out[0]["max_spread"], 0.03)
++        self.assertIsNone(cursor)
++
++    def test_pagination_stops_at_lte_cursor(self):
++        pages = {"": {"data": [{"condition_id": "0x1"}], "next_cursor": "c2"},
++                 "c2": {"data": [{"condition_id": "0x2"}], "next_cursor": "LTE="}}
++
++        def get(url):
++            cursor = url.split("next_cursor=")[1] if "next_cursor=" in url else ""
++            return pages[cursor]
++
++        out = R.fetch_polymarket_rewards(get=get)
++        self.assertEqual({r["market_id"] for r in out}, {"0x1", "0x2"})
++
++    def test_market_with_no_id_dropped(self):
++        out, _ = R.parse_polymarket_rewards({"data": [{"rewards_daily_rate": 1}]})
++        self.assertEqual(out, [])
++
++
++class KalshiOrderbookParsing(unittest.TestCase):
++    def test_no_bids_become_yes_asks(self):
++        payload = {"orderbook": {"yes": [[40, 100], [38, 50]], "no": [[57, 80], [55, 40]]}}
++        book = R.parse_kalshi_orderbook(payload, "KXNBA-HEAT")
++        self.assertAlmostEqual(book["best_bid"], 0.40)
++        self.assertAlmostEqual(book["best_ask"], 0.43)     # 1 - 0.57
++        self.assertEqual(book["venue"], "KALSHI")
++        self.assertAlmostEqual(book["bid_depth"], 150.0)
++
++    def test_empty_book_returns_none(self):
++        self.assertIsNone(R.parse_kalshi_orderbook({"orderbook": {"yes": [], "no": []}}, "T"))
++        self.assertIsNone(R.parse_kalshi_orderbook({}, "T"))
++
++
++class CollectRewards(unittest.TestCase):
++    def stub_get(self, kalshi_programs=None, pm_rewards=None, pm_book=None, kalshi_book=None):
++        kalshi_programs = kalshi_programs if kalshi_programs is not None else {
++            "incentive_programs": [{"series_ticker": "KXNBAGAME", "daily_pool_dollars": 500}]}
++        pm_rewards = pm_rewards if pm_rewards is not None else {
++            "data": [{"condition_id": "0xabc", "rewards_max_spread": 0.03}], "next_cursor": None}
++
++        def get(url):
++            if "incentive_programs" in url:
++                return kalshi_programs
++            if "rewards/markets/current" in url:
++                return pm_rewards
++            if "clob.polymarket.com/book" in url:
++                return pm_book or {"bids": [{"price": "0.5", "size": "10"}],
++                                   "asks": [{"price": "0.52", "size": "10"}]}
++            if "orderbook" in url:
++                return kalshi_book or {"orderbook": {"yes": [[40, 10]], "no": [[55, 10]]}}
++            raise AssertionError(f"unexpected url {url}")
++        return get
++
++    def test_program_and_reward_snapshots_written(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            items = list(R.collect_rewards(Path(tmp), NOW, get=self.stub_get()))
++            kalshi_rows = [r for s, _, r in items if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            pm_rows = [r for s, _, r in items if s == f"{R.REWARDS_POLYMARKET}.jsonl"]
++            self.assertEqual(kalshi_rows[0]["program_key"], "KXNBAGAME")
++            self.assertEqual(pm_rows[0]["market_id"], "0xabc")
++
++    def test_orderbook_only_for_matched_markets_within_horizon(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat",
++                                  (NOW + timedelta(hours=40)).isoformat(), "2026-10-10T00:00:00+00:00")
++            seed_matched_kalshi_quote(out, "KXNBA-HEAT", "evt2", "Bulls",
++                                      (NOW + timedelta(hours=60)).isoformat(),  # outside 48h
++                                      "2026-10-10T00:00:00+00:00")
++            items = list(R.collect_rewards(out, NOW, get=self.stub_get()))
++            books = [(r["odds_event_id"]) for s, _, r in items if s == f"{R.REWARDS_ORDERBOOKS}.jsonl"]
++            self.assertEqual(books, ["evt1"])       # evt2's market kicks off too far out
++
++    def test_past_kickoff_market_gets_no_orderbook(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            seed_matched_pm_quote(out, "0xabc", "evt1", "Heat",
++                                  (NOW - timedelta(hours=1)).isoformat(), "2026-10-09T00:00:00+00:00")
++            items = list(R.collect_rewards(out, NOW, get=self.stub_get()))
++            books = [r for s, _, r in items if s == f"{R.REWARDS_ORDERBOOKS}.jsonl"]
++            self.assertEqual(books, [])
++
++    def test_a_fetch_failure_yields_nothing_for_that_venue_but_not_the_other(self):
++        def get(url):
++            if "incentive_programs" in url:
++                raise R.DataUnavailable("kalshi is down")
++            if "rewards/markets/current" in url:
++                return {"data": [{"condition_id": "0xabc"}], "next_cursor": None}
++            raise AssertionError(url)
++
++        with tempfile.TemporaryDirectory() as tmp:
++            items = list(R.collect_rewards(Path(tmp), NOW, get=get))
++        self.assertEqual([r for s, _, r in items if s == f"{R.REWARDS_KALSHI}.jsonl"], [])
++        self.assertEqual(len([r for s, _, r in items if s == f"{R.REWARDS_POLYMARKET}.jsonl"]), 1)
++
++    def test_unchanged_program_terms_are_a_duplicate_not_a_restatement(self):
++        """Stable keys are the whole point: an unmoved program across two runs must
++        not bloat the stream with an identical row every 6h."""
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            get = self.stub_get()
++            stream = fetch_feeds.Stream(out / f"{R.REWARDS_KALSHI}.jsonl")
++            first_run = [r for s, k, r in R.collect_rewards(out, NOW, get=get)
++                        if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            for r in first_run:
++                self.assertEqual(stream.add(r["program_key"], r, NOW.isoformat(timespec="seconds")),
++                                 "observation")
++            later = NOW + timedelta(hours=6)
++            second_run = [r for s, k, r in R.collect_rewards(out, later, get=get)
++                         if s == f"{R.REWARDS_KALSHI}.jsonl"]
++            for r in second_run:
++                self.assertEqual(stream.add(r["program_key"], r, later.isoformat(timespec="seconds")),
++                                 "duplicate")
++
++    def test_changed_pool_is_a_restatement(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            out = Path(tmp)
++            stream = fetch_feeds.Stream(out / f"{R.REWARDS_KALSHI}.jsonl")
++            first = next(r for s, k, r in R.collect_rewards(out, NOW, get=self.stub_get())
++                        if s == f"{R.REWARDS_KALSHI}.jsonl")
++            stream.add(first["program_key"], first, NOW.isoformat(timespec="seconds"))
++            raised_pool = self.stub_get(kalshi_programs={
++                "incentive_programs": [{"series_ticker": "KXNBAGAME", "daily_pool_dollars": 900}]})
++            later = NOW + timedelta(hours=6)
++            second = next(r for s, k, r in R.collect_rewards(out, later, get=raised_pool)
++                         if s == f"{R.REWARDS_KALSHI}.jsonl")
++            self.assertEqual(stream.add(second["program_key"], second,
++                                        later.isoformat(timespec="seconds")), "restatement")
 +
 +
 +if __name__ == "__main__":
