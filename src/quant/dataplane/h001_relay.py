@@ -581,8 +581,8 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
             try:
                 book = fetch_kalshi_orderbook(market["ticker"], get)
                 book_status = "OK" if book else "EMPTY"
-            except DataUnavailable as exc:
-                book, book_status = None, f"UNAVAILABLE: {exc}"[:120]
+            except Exception as exc:  # noqa: BLE001 - malformed book never kills the stream
+                book, book_status = None, f"UNAVAILABLE: {type(exc).__name__}: {exc}"[:120]
             record = {**base, "venue": "KALSHI", "outcome": outcome, **kalshi_quote(market),
                       "fetched_at": stamp, "source_url": k_url, "book_status": book_status,
                       "book_fetched_at": book_at,

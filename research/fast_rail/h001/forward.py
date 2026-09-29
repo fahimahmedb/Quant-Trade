@@ -155,8 +155,10 @@ def _venue_close(quotes: list[dict[str, Any]], bet: dict[str, Any]) -> float | N
         seen = parse_time(quote["observed_at"])
         if not parse_time(bet["entry_observed_at"]) < seen < kickoff:
             continue
+        if (kickoff - seen).total_seconds() > CLOSE_MAX_AGE_H * 3600:
+            continue
         bid, ask = quote.get("best_bid"), quote.get("best_ask")
-        if bid is None or ask is None or not 0 <= bid <= ask <= 1:
+        if bid is None or ask is None or not 0 <= bid <= ask <= 1 or ask - bid > CLOSE_MAX_SPREAD:
             continue
         if best is None or seen > best[0]:
             best = (seen, (bid + ask) / 2.0)
@@ -164,6 +166,9 @@ def _venue_close(quotes: list[dict[str, Any]], bet: dict[str, Any]) -> float | N
 
 
 MAX_MISSING_CLOSE = 0.10
+CLOSE_MAX_SPREAD = 0.10       # venue close quote: bid/ask spread cap
+CLOSE_MAX_AGE_H = 6.0         # venue close quote: at most 6 h before kickoff
+ENGAGEMENTS = "sports_quotes/h001_engagements"
 
 
 def _clv_indicator(series: list[float]) -> dict[str, Any]:
@@ -176,8 +181,8 @@ def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
              settled: dict[str, float], now: datetime,
              frozen: dict[str, Any] | None = None,
              settled_at: dict[str, str] | None = None,
-             decision_test: Callable[[list[float]], dict[str, Any]] | None = None
-             ) -> dict[str, Any]:
+             decision_test: Callable[[list[float]], dict[str, Any]] | None = None,
+             ledger: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     """Order 12. Every entered bet is an engagement kept until the venue settles it.
 
     ``decision_test`` is the order-12b anytime-valid e-process over the match CLV
@@ -189,7 +194,9 @@ def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
     for row in pinnacle:
         kickoffs.setdefault(row["event_id"], set()).add(row["commence_time"])
     engagements, matches = [], {}
-    for bet in find_bets(pinnacle, quotes):
+    # Engagements come from the append-only ledger written at entry (run()), so a later
+    # code or filter change can never drop one; tests may pass none (derived here).
+    for bet in (ledger if ledger is not None else find_bets(pinnacle, quotes)):
         if parse_time(bet["commence_time"]) > now:
             continue                                  # not yet played: not scored yet
         rescheduled = len(kickoffs.get(bet["odds_event_id"], ())) > 1
@@ -215,8 +222,8 @@ def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
     missing_frac = missing / len(engagements) if engagements else 0.0
     indicator = _clv_indicator(clv_series)
     decision = decision_test(clv_series) if decision_test else None
-    status = "SHADOW_DIRECT"
-    if engagements and len(engagements) >= 20 and missing_frac > MAX_MISSING_CLOSE:
+    status, accept_stop = "SHADOW_DIRECT", None
+    if engagements and missing_frac > MAX_MISSING_CLOSE:
         status = "INCONCLUSIVE(DATA)"
     elif decision is not None:
         if decision["decision"] == "REJECT_EDGE":
@@ -224,16 +231,23 @@ def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
         elif decision["decision"] == "INCONCLUSIVE":
             status = "INCONCLUSIVE"
         elif decision["decision"] == "ACCEPT_EDGE":
-            stop = set(clv_units[:decision["observations"]])
-            prefix = [e for e in engagements if e["odds_event_id"] in stop]
-            if any(e["pnl"] is None for e in prefix):
+            # The first ACCEPT stop is frozen (no optional stopping across runs); the
+            # prefix is EVERY engagement up to the stopping match's kickoff, including
+            # engagements whose match has no CLV.
+            stop_event = (frozen or {}).get("accept_stop_event") or \
+                clv_units[decision["observations"] - 1]
+            stop_kick = matches[stop_event]["kickoff"]
+            prefix = [e for e in engagements if (e["commence_time"], e["odds_event_id"])
+                      <= (stop_kick, stop_event)]
+            pnl = [e["pnl"] for e in prefix if e["pnl"] is not None]
+            clv = [e["clv"] for e in prefix if e["clv"] is not None and e["pnl"] is not None]
+            if len(pnl) < len(prefix) or len(pnl) < 2 or not clv:
                 status = "ACCEPT_PENDING_SETTLEMENT"      # never frozen before settlement
             else:
-                pnl = [e["pnl"] for e in prefix]
-                clv = [e["clv"] for e in prefix if e["clv"] is not None]
                 se = _se(pnl)
                 ok = (sum(pnl) / len(pnl)) >= (sum(clv) / len(clv)) - 1.96 * se
                 status = "FORWARD_PASS(PRICE)" if ok else "REJECT(PNL_BELOW_CLV)"
+            accept_stop = stop_event
     report = {"hypothesis": "H-001", "k": K, "alpha": ALPHA, "pristine_after": PRISTINE_AFTER,
               "statistic": "net venue CLV per match (prob points)",
               "engagements": len(engagements), "matches_with_clv": len(clv_series),
@@ -245,6 +259,7 @@ def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
               "disclaimer": ("FORWARD_PASS(PRICE) proves a price edge, not a cashable gain; "
                              "proving P&L needs about (1.96*sigma/edge)^2 ~ 2,400 bets; proof "
                              "of gain is a real micro-test, an owner decision."),
+              "accept_stop_event": accept_stop,
               "evaluated_at": now.isoformat(timespec="seconds")}
     terminal = ("FORWARD_PASS(PRICE)", "REJECT(FORWARD)", "INCONCLUSIVE",
                 "INCONCLUSIVE(DATA)", "REJECT(PNL_BELOW_CLV)")
@@ -319,14 +334,35 @@ def run(out: Path, now: datetime | None = None, fetch: Callable[[str], Any] | No
                                          "observed_at": now.isoformat(timespec="seconds"),
                                          "record": record}, sort_keys=True) + "\n")
     target = out / EVAL_FILE
-    frozen = json.loads(target.read_text()) if target.exists() else None
+    try:
+        frozen = json.loads(target.read_text()) if target.exists() else None
+    except (OSError, ValueError):
+        frozen = None                         # corrupt file: keep a copy, rebuild
+        target.replace(target.with_suffix(".corrupt"))
     target.parent.mkdir(parents=True, exist_ok=True)
     try:
-        report = evaluate(pinnacle, quotes, settled, now, frozen, settled_at)
+        ledger = [item["record"] for item in read_stream(out, ENGAGEMENTS)]
+        known = {(e["odds_event_id"], e["outcome"]) for e in ledger}
+        fresh = [b for b in find_bets(pinnacle, quotes) if (b["odds_event_id"], b["outcome"]) not in known]
+        if fresh:
+            path = out / ENGAGEMENTS / f"{now:%Y-%m}.jsonl"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a") as handle:
+                for bet in fresh:
+                    handle.write(json.dumps({"key": f"{bet['odds_event_id']}|{bet['outcome']}",
+                                             "kind": "observation",
+                                             "observed_at": now.isoformat(timespec="seconds"),
+                                             "record": bet}, sort_keys=True) + "\n")
+            ledger += fresh
+        report = evaluate(pinnacle, quotes, settled, now, frozen, settled_at, ledger=ledger)
     except Exception as exc:                # visible in the eval file, not only _runs
-        report = {**(frozen or {}), "status": "EVAL_ERROR",
-                  "error": f"{type(exc).__name__}: {exc}"[:200],
+        error = f"{type(exc).__name__}: {exc}"[:200]
+        terminal = (frozen or {}).get("status", "").startswith(("FORWARD_PASS", "REJECT",
+                                                                  "INCONCLUSIVE"))
+        report = {**(frozen or {}), "eval_error": error,
                   "evaluated_at": now.isoformat(timespec="seconds")}
+        if not terminal:
+            report["status"] = "EVAL_ERROR"    # a terminal verdict is never overwritten
     tmp = target.with_suffix(".tmp")
     tmp.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
     os.replace(tmp, target)                 # atomic
