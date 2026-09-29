@@ -88,7 +88,12 @@ def main():
         rows.append({"id": m["id"], "conditionId": m["conditionId"], "closedTime": m["closedTime"],
                      "volumeNum": round(float(m.get("volumeNum") or 0), 2), "excl": excl, "family": fam,
                      "smt": m.get("sportsMarketType") or "", "series": ev.get("seriesSlug") or "",
-                     "evslug": ev.get("slug") or "", "question": (m.get("question") or "")[:140]})
+                     "evslug": ev.get("slug") or "", "question": (m.get("question") or "")[:140],
+                     "outcomes": m.get("outcomes"), "outcomePrices": m.get("outcomePrices"),
+                     "fee_rate": (m.get("feeSchedule") or {}).get("rate"), "fee_exp": (m.get("feeSchedule") or {}).get("exponent"),
+                     "feesEnabled": m.get("feesEnabled"), "tick": m.get("orderPriceMinTickSize"),
+                     "umaResolutionStatuses": m.get("umaResolutionStatuses"), "event_id": ev.get("id"),
+                     "event_title": (ev.get("title") or "")[:100], "gameStartTime": m.get("gameStartTime")})
     if "--survey" in sys.argv:
         print("markets", len(rows))
         c = collections.Counter(r["excl"] or "KEEP" for r in rows)

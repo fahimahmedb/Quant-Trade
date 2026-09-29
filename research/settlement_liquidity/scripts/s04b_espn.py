@@ -114,7 +114,7 @@ def timeline(path, eid):
 def derive(rec):
     """Terminal wall-clock timestamps from ESPN timeline."""
     evs = [(t or "", p, parse_ts(w)) for t, p, w in rec["events"] if w]
-    out = {"t_final": None, "t_half": None, "t_q1": None, "t_last": None, "method": ""}
+    out = {"t_final": None, "t_half": None, "t_q1": None, "t_last": None, "t_end_all": None, "method": ""}
     if not evs:
         return out
     out["t_last"] = max(w for _, _, w in evs)
@@ -133,6 +133,8 @@ def derive(rec):
         out["method"] = "end_regular_time" if er else ""
         ht = tl("halftime")
         out["t_half"] = min(ht) if ht else None
+        term = [w for t, _, w in evs if (t.lower().startswith("end-") and t.lower() != "end-delay") or "shootout" in t.lower()]
+        out["t_end_all"] = max(term) if term else None
     else:  # basketball / hockey: last play of the game
         eg = [w for t, _, w in evs if t.lower() in ("end game", "end of game", "game end")]
         out["t_final"] = max(eg) if eg else None

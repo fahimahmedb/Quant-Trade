@@ -46,19 +46,22 @@ only costs re-fetch time (all APIs are public and free).
 | Step | Script | Output (committed) | Status |
 |---|---|---|---|
 | S0 | orientation, source probes | this file | DONE (CKPT-0) |
-| S1 | `s01_enumerate_markets.py 2026-08-30 2026-09-29 markets_primary` (resumable: cursor + partial file) | `data/raw/markets_primary.jsonl.gz` → compact cohort in S2 | RUNNING (first run lost at interruption; restarted resumable) |
-| S2 | metadata survey + exclusion/category classifier (outcome-blind) | `data/cohort_primary.csv.gz` | TODO |
+| S1 | `s01_enumerate_markets.py 2026-08-30 2026-09-29 markets_primary` (resumable) | `data/raw/markets_primary.jsonl.gz` (41 MB, not committed) | DONE: 115,574 markets |
+| S2 | `s02_classify.py markets_primary` (outcome-blind) | `data/cohort_primary.csv.gz` (all markets + payout/fee/tick fields; self-sufficient for S6) | DONE: 79,589 kept; E1 31,466; E2 4,519 |
 | S3 | freeze protocol (before any economics) | `PROTOCOL_PREDECLARED_2026-09-29.md` | DONE (CKPT-1) |
-| S4a | MLB verifier `s04a_mlb.py 2026-08-29 2026-09-28` | `data/mlb_games.csv.gz` (404 games, 403 Final, 1 rain-cancelled) | DONE |
-| S4b | ESPN verifier `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | CODE DONE; rerun after S1 completes |
-| S4c | weather METAR verifier (IEM ASOS) | `data/wx_*` | TODO |
-| S4d | per-market T_DET assembly | `data/determination_primary.csv.gz` | TODO (CKPT-2) |
-| S5 | trade fetch (data-api, takerOnly true+false → maker/taker split) | `data/window_trades_primary.jsonl.gz` | TODO (CKPT-3) |
-| S6 | fill accounting (all ≥0.998 buys in [T_DET, T_RES), losers kept) | `data/fills_primary.csv.gz`, summary json | TODO (CKPT-4) |
-| S7 | newcomer queue model (LB / central / UB) + capital sims €100/500/1k/5k | `data/newcomer_*.json` | TODO (CKPT-5) |
-| S8 | live book shadow monitor (queue depth at 0.999 on post-final markets, read-only) | `data/live_queue_*.jsonl.gz` | TODO (optional, CKPT-6) |
-| S9 | decay / multi-window (weekly within 30d; optional 2nd 30d window) | in report | TODO |
-| S10 | report + terminal state + push + verify remote HEAD | both deliverables | TODO (CKPT-final) |
+| S4a | `s04a_mlb.py 2026-08-29 2026-09-28` | `data/mlb_games.csv.gz` | DONE: 404 games |
+| S4b | `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | DONE: 6,609 PM events → 2,382 ESPN events (1,238 with terminal wallclock) |
+| S4c | `s04c_weather.py markets_primary 2026-08-27 2026-10-01` | `data/weather_determination_primary.csv.gz` | DONE: 10,643 / 12,221 verified |
+| S4d | `s04d_assemble.py markets_primary` | `data/determination_primary.csv.gz` | DONE (CKPT-2): 36,991 VERIFIED, 36,074 with non-empty window; 42,598 UNVERIFIABLE |
+| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING |
+| S6 | `s06_accounting.py primary 60` | `data/fills_primary.csv.gz`, `data/fills_contrast_primary.csv.gz`, `data/newcomer_inputs_primary.jsonl.gz`, `data/accounting_summary_primary.json` | CODE DONE; run after S5 |
+| S7 | newcomer queue model + capital sims (`s07_newcomer.py`) | `data/newcomer_*.json` | TODO |
+| S8 | `s08_live_queue_monitor.py 14` (read-only, detached, started 23:38Z) | `data/raw/live/*.jsonl` → summary `data/live_queue_summary.json` | RUNNING |
+| S9 | decay / weekly | in report | TODO |
+| S10 | report + terminal state + push + verify remote HEAD | both deliverables | TODO |
+
+Validation of T_DET (independent source vs Polymarket venue `finishedTimestamp`): source precedes venue by a
+median 62–102 s across MLB, NFL/NCAAF, soccer, WNBA, NHL; 5–95% range within about −8.8 to +1 min.
 
 ## Established facts (verified this session, 2026-09-29)
 
@@ -100,4 +103,6 @@ None economic yet (protocol not frozen; no fills evaluated).
 ## Checkpoint log
 
 - CKPT-0 (2026-09-29 ~22:50Z): orientation, source probes, scripts `common.py`, `s01_enumerate_markets.py`.
-- CKPT-1 (2026-09-29 ~23:45Z): protocol frozen before economics; MLB timeline; ESPN verifier code; classifier.
+- CKPT-1 (2026-09-29 ~23:25Z): protocol frozen before economics; MLB timeline; ESPN verifier code; classifier.
+- CKPT-2 (2026-09-29 ~23:50Z): full cohort, all verifiers, per-market T_DET assembled; S5 trade fetch and S8 live monitor running.
+  If cut here: re-run `s05_fetch_trades.py primary 14 7200` (needs only committed `data/determination_primary.csv.gz`), then S6.
