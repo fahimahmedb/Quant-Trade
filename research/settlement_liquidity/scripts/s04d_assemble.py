@@ -38,13 +38,20 @@ def fnum(x):
 
 
 def team_side(outcomes, home, away):
-    """Map a team name to outcome index via similarity; returns dict name->idx."""
-    res = {}
-    for nm, lab in ((home, "home"), (away, "away")):
-        best = max(range(len(outcomes)), key=lambda i: sim([nm], outcomes[i]))
-        if sim([nm], outcomes[best]) >= 0.99:
-            res[lab] = best
-    return res
+    """Map teams to outcome indices; DEVIATION D2: mapping must be unique and one-to-one, else {}."""
+    if len(outcomes) != 2:
+        return {}
+    s = [[sim([nm], o) for o in outcomes] for nm in (home, away)]
+    # home->0/away->1 or home->1/away->0 must be the only assignment with both sims >= 0.99
+    a = s[0][0] >= 0.99 and s[1][1] >= 0.99
+    b = s[0][1] >= 0.99 and s[1][0] >= 0.99
+    if a == b:
+        return {}
+    if a and (s[0][1] >= 0.99 or s[1][0] >= 0.99):
+        return {}
+    if b and (s[0][0] >= 0.99 or s[1][1] >= 0.99):
+        return {}
+    return {"home": 0, "away": 1} if a else {"home": 1, "away": 0}
 
 
 def source_side(m, sc_home, sc_away, h1_home=None, h1_away=None):
@@ -63,9 +70,10 @@ def source_side(m, sc_home, sc_away, h1_home=None, h1_away=None):
             # soccer 3-way binary: "Will X win ...?" / "... end in a draw?"
             if re.search(r"draw", q, re.I):
                 return 0 if sc_home == sc_away else 1
-            if sim([home], q) >= 0.99 and sim([away], q) < 0.99:
+            # DEVIATION D2: the named team must match uniquely (other team's similarity <= 0.5)
+            if sim([home], q) >= 0.99 and sim([away], q) <= 0.5:
                 return 0 if sc_home > sc_away else 1
-            if sim([away], q) >= 0.99 and sim([home], q) < 0.99:
+            if sim([away], q) >= 0.99 and sim([home], q) <= 0.5:
                 return 0 if sc_away > sc_home else 1
             return None
         ts = team_side(outs, home, away)
@@ -137,8 +145,10 @@ def main():
                         continue
                     s = max(sim([g["away"]], parts[0]) + sim([g["home"]], parts[1]),
                             sim([g["home"]], parts[0]) + sim([g["away"]], parts[1]))
-                    if s >= 1.5 and (best is None or s > best[0]):
-                        best = (s, g)
+                    # DEVIATION D1: tie-break equal team scores by closest scheduled start (doubleheaders)
+                    key = (s, -abs(g["_start"] - st))
+                    if s >= 1.5 and (best is None or key > best[0]):
+                        best = (key, g)
             if not best:
                 r["status"] = "UNVERIFIABLE_MLB_UNMATCHED"
             else:

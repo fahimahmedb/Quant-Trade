@@ -53,7 +53,7 @@ only costs re-fetch time (all APIs are public and free).
 | S4b | `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | DONE: 6,609 PM events → 2,382 ESPN events (1,238 with terminal wallclock) |
 | S4c | `s04c_weather.py markets_primary 2026-08-27 2026-10-01` | `data/weather_determination_primary.csv.gz` | DONE: 10,643 / 12,221 verified |
 | S4d | `s04d_assemble.py markets_primary` | `data/determination_primary.csv.gz` | DONE (CKPT-2): 36,991 VERIFIED, 36,074 with non-empty window; 42,598 UNVERIFIABLE |
-| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING |
+| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING (started on as-frozen T_DET; after D1/D2 run `s05b_refresh.py` then re-run S5 to fetch changed/new markets) |
 | S6 | `s06_accounting.py primary 60` | `data/fills_primary.csv.gz`, `data/fills_contrast_primary.csv.gz`, `data/newcomer_inputs_primary.jsonl.gz`, `data/accounting_summary_primary.json` | CODE DONE; run after S5 |
 | S7 | newcomer queue model + capital sims (`s07_newcomer.py`) | `data/newcomer_*.json` | TODO |
 | S8 | `s08_live_queue_monitor.py 14` (read-only, detached, started 23:38Z) | `data/raw/live/*.jsonl` → summary `data/live_queue_summary.json` | RUNNING |
@@ -95,6 +95,24 @@ median 62–102 s across MLB, NFL/NCAAF, soccer, WNBA, NHL; 5–95% range within
 - IEM ASOS endpoint intermittently answers "server over capacity"; retry.
 - ESPN lower-tier soccer summaries lack timestamped terminal events → UNVERIFIABLE by protocol.
 - Weather markets: 5.7k/6.1k resolve on NOAA `weather.gov/wrh/timeseries?site=<ICAO>` (METAR), whole degrees.
+
+
+## Protocol deviations (disclosed; generic rules, no per-market overrides)
+
+Found by checking source-derived side vs final payout over all 28,967 source-determined markets (classifier QA,
+before any fill/P&L of the window was used in a decision). As-frozen output kept as
+`data/determination_primary_asfrozen.csv.gz` (35 mismatches); corrected output `data/determination_primary.csv.gz`.
+
+- D1 (MLB matcher): doubleheaders — statsapi lists game 2 at a placeholder start (e.g. 20:10Z); ties in team
+  similarity are now broken by the closest scheduled start. Fixed 8 mismatches (BAL@NYY 2026-09-25).
+- D2 (team → outcome mapper): mapping must be unique and one-to-one (e.g. "Utah" vs "Utah State",
+  "New York City FC" vs "New York Red Bulls", "Real Madrid" vs "Rayo Vallecano de Madrid"); ambiguous → no source
+  side (newcomer then falls back to consensus per protocol). Fixed 6 mismatches.
+- Residual 21 mismatches / 28,889 (0.073%) are genuine classifier risk and stay in: 18 weather (METAR proxy vs
+  NOAA timeseries, mostly daily lows), 3 NHL preseason (MTL–OTT, MTL–TOR; 2 of them disputed on Polymarket).
+- Planned sensitivity S1 (not the protocol rule): newcomer bids only when source side == market consensus at t_p.
+- S8 monitor: first launch's closed-market check lacked `closed=true` (gamma hides closed markets by default);
+  patched and restarted 23:50Z; snapshots before the patch remain valid.
 
 ## Findings so far
 

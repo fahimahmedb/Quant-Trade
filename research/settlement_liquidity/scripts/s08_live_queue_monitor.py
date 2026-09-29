@@ -189,7 +189,7 @@ def main():
             for k in range(0, len(cids), 40):
                 chunk = cids[k:k + 40]
                 try:
-                    g = get("https://gamma-api.polymarket.com/markets?limit=100&" + "&".join(f"condition_ids={c}" for c in chunk))
+                    g = get("https://gamma-api.polymarket.com/markets?closed=true&limit=100&" + "&".join(f"condition_ids={c}" for c in chunk))
                 except Exception:
                     continue
                 for mm in g or []:
