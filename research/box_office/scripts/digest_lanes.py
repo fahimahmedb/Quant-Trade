@@ -22,9 +22,10 @@ def dlane(label):
     if 'SUNDAY' in L: return 'D' if am else None
     return None
 def vlane(pub,mod,A):
-    prev={'A':None,'B':A['A'],'C':A['B'],'D':A['C']}
+    fri0=A['A'].replace(hour=0)
+    prev={'A':fri0,'B':A['A'],'C':A['B'],'D':A['C']}
     for l in 'ABCD':
-        if pub<=A[l] and (prev[l] is None or pub>prev[l]):
+        if prev[l]<pub<=A[l]:
             return l,('STRICT' if mod<=A[l] else 'REVISABLE(modified after anchor)')
     return None,None
 def sents(text,k):
@@ -51,7 +52,8 @@ for w,fws in byw.items():
         if re.search(r'(?i)(china|korea|u\.k\.|ireland|japan|france|india)',tt): continue
         l,flag=vlane(pub,mod,A)
         if l: blocks.append((l,f"Variety post {p['id']} pub {p['date_gmt']}Z mod {p['modified_gmt']}Z {flag} :: {tt[:90]}",flat(txt(p))))
-    fh=files.setdefault(Q(w),open(f'../data/digest_{Q(w)}.txt','w'))
+    if Q(w) not in files: files[Q(w)]=open(f'../data/digest_{Q(w)}.txt','w')
+    fh=files[Q(w)]
     fh.write(f"\n==================== WEEKEND {w} | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00\n")
     for fw in fws:
         k=key(fw['film'])
