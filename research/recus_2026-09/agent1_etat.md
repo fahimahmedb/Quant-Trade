@@ -35,3 +35,5 @@ R1 PM-METEO · R2 PM-MAKER-RECOMPENSES · R3 PM-SPORTS-MM · R4 HL-MM · R5 PM-A
 
 ## Prochaine étape
 Aucune. Statut DONE : au réveil, supprimer le Routine trig_01V9PXek4Q8R9FQuLXPcotnR s'il existe encore, sans rien faire d'autre.
+
+- 29/09/2026 : le propriétaire déclare avoir accès à Polymarket depuis sa localisation. Livrable mis à jour : plus de plafond « France : 0 € » ; contrôle `/api/geoblock` à faire depuis le poste réel. Statut toujours DONE, aucune nouvelle collecte.

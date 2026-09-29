@@ -3,12 +3,13 @@
 Date des mesures : 29/09/2026. Recherche externe uniquement : aucune stratégie codée, aucun ordre.
 REAL_CAPITAL_AUTHORIZED = FALSE.
 
-## Avertissement transversal (à lire avant les fiches)
+## Accès (mis à jour le 29/09/2026 après déclaration du propriétaire)
 
-**Polymarket international n'est pas accessible légalement depuis la France.**
-- La doc officielle de géoblocage classe la France en « close-only » : aucune nouvelle position, uniquement la clôture ([docs.polymarket.com/api-reference/geoblock](https://docs.polymarket.com/api-reference/geoblock)). L'Allemagne, l'Italie, la Belgique, la Pologne, le Royaume-Uni et les États-Unis le sont aussi.
-- De plus, le président de l'ANJ a ordonné le 16/07/2026 le blocage du site par les FAI (source secondaire : cryptoslate / financefeeds).
-- Les fiches R1 à R3 décrivent donc des modèles **réels mais hors de portée légale pour un résident français**. Contourner le blocage (VPN) violerait les CGU et exposerait à une confiscation.
+**Le propriétaire déclare avoir accès à Polymarket depuis sa localisation.** Les plafonds des fiches R1 à R3 sont donc exprimés sans la contrainte « France : 0 € » de la première version.
+- Polymarket décide de l'accès selon la **localisation au moment de l'ordre**, pas selon la nationalité. Les ordres venant d'une zone restreinte sont rejetés.
+- Pays en « close-only » selon la doc officielle : ouverture interdite, clôture seulement ([docs.polymarket.com/api-reference/geoblock](https://docs.polymarket.com/api-reference/geoblock)). La liste comprend notamment les États-Unis, la France, l'Allemagne, l'Italie, la Belgique, la Pologne et le Royaume-Uni. Pour la France, l'ANJ a en outre ordonné le blocage par les FAI le 16/07/2026 (source secondaire).
+- Contrôle à faire depuis le poste réel avant tout usage : `GET https://polymarket.com/api/geoblock` doit répondre `blocked: false`. Ce contrôle n'a pas été fait ici : le conteneur de recherche n'est pas à la localisation du propriétaire.
+- Passer par un VPN depuis une zone restreinte violerait les CGU et exposerait à un gel des fonds. Cette voie est exclue.
 
 ## Méthode et vérifications directes
 
@@ -50,9 +51,9 @@ Aucune identité n'a été recherchée derrière les adresses. Les pseudonymes c
 | Dépend de la vitesse ? | Modérément. Il faut réagir aux runs de modèles, pas à la milliseconde. En revanche, la concurrence de bots est publique depuis 2026 (guides et « skills » de bots météo). |
 | Capital minimum | Faible techniquement (quelques dizaines de $). La profondeur par marché est limitée ; capacité exacte inconnue. |
 | Risque extrême caché | Règle de résolution sur une station précise (Weather Underground, arrondis) ; litige UMA ; erreur de donnée de station ; corrélation (un même front touche plusieurs villes) ; décroissance rapide par publicité ; risque juridique ou de compte en pays restreint. |
-| Venues et accès | Polymarket international. US : close-only. UE : variable (DE, IT, BE, PL : close-only). **France : close-only et blocage FAI (hors de portée légale).** |
+| Venues et accès | Polymarket international. **Accessible pour le propriétaire (déclaratif ; à confirmer par `/api/geoblock`).** Close-only notamment aux US, en France, en Allemagne, en Italie, en Belgique, en Pologne et au Royaume-Uni. |
 | Vérification possible en 1 jour | **Oui** pour les reçus (API publiques, calcul reproduit ici). Un backtest avec archives de prévisions publiques n'est pas vérifié ici. |
-| Plafond estimé à petite taille | **France : 0 €/mois (accès interdit).** Hors contrainte d'accès, l'ordre de grandeur est déduit de l'échantillon : médiane ≈ 20 $/mois, quartile supérieur ≈ 300 à 1 000 $/mois, meilleurs ≈ 6 à 15 k$/mois après frais. Non démontré pour nous. |
+| Plafond estimé à petite taille | Ordre de grandeur déduit de l'échantillon : médiane ≈ 20 $/mois, quartile supérieur ≈ 300 à 1 000 $/mois, meilleurs ≈ 6 à 15 k$/mois après frais. Non démontré pour nous. |
 | Confiance | **Vérifié** pour l'existence d'un reçu récent après frais ; **probable** pour la survie de l'edge (décroissance visible chez les pionniers). |
 
 ## R2 — Récompenses de liquidité et rebates makers sur la longue traîne Polymarket
@@ -71,9 +72,9 @@ Aucune identité n'a été recherchée derrière les adresses. Les pseudonymes c
 | Dépend de la vitesse ? | Moyennement. Il faut retirer les cotes avant une nouvelle, un run météo ou la résolution. Sinon les traders informés de R1 ramassent les ordres. |
 | Capital minimum | ≈ 10 à 200 $ par marché (taille minimale qualifiante). Une diversification sur 50 marchés demande ≈ 10 k$. |
 | Risque extrême caché | Sélection adverse par des traders informés (météo, « Trump dira X ») ; perte binaire d'inventaire à la résolution ; subvention réduite ou supprimée ; marchés périmés encore récompensés ; lavage de volume (≈ 15 % du volume de certains marchés selon Solidus). |
-| Venues et accès | Identiques à R1. **France : hors de portée légale.** |
+| Venues et accès | Identiques à R1 (accessible pour le propriétaire, déclaratif). |
 | Vérification possible en 1 jour | Partielle. Les récompenses et rebates par portefeuille sont publics. Le P&L net « maker seulement » demande le flag maker/taker au niveau des fills (subgraph) : plus d'un jour probablement. |
-| Plafond estimé à petite taille | **France : 0 €.** Ailleurs, borne haute brute théorique ≈ 50 marchés × 0,8 $/jour ≈ 1 200 $/mois, avant sélection adverse. Net inconnu. |
+| Plafond estimé à petite taille | Borne haute brute théorique ≈ 50 marchés × 0,8 $/jour ≈ 1 200 $/mois, avant sélection adverse. Net inconnu. |
 | Confiance | Pool **vérifié** ; rentabilité nette à petite taille **non vérifiée**. |
 
 ## R3 — Tenue de marché sports Polymarket à grande échelle
@@ -92,9 +93,9 @@ Aucune identité n'a été recherchée derrière les adresses. Les pseudonymes c
 | Dépend de la vitesse ? | **Oui** : live, retrait des cotes avant but ou point, flux de données sportives. |
 | Capital minimum | Millions de $ (inféré des volumes). Inconnu précisément. |
 | Risque extrême caché | Snipe en direct par des joueurs à information plus rapide (courtsiders) ; erreurs de résolution ; événements annulés. |
-| Venues et accès | **France : hors de portée** (géoblocage, et les paris sportifs requièrent une licence ANJ). US : close-only. |
+| Venues et accès | Comme R1 (accessible pour le propriétaire, déclaratif). La réglementation locale des paris sportifs est à vérifier selon la localisation : inconnu. |
 | Vérification possible en 1 jour | P&L 12 mois par user-pnl : oui. Part maker du P&L : non. |
-| Plafond estimé à petite taille | ≈ 0 € (vitesse et capital hors de portée ; accès interdit en France). |
+| Plafond estimé à petite taille | ≈ 0 € (vitesse et capital hors de portée). |
 | Confiance | **Probable** (reçu ALL vérifié, récence 12 mois non vérifiée). |
 
 ## R4 — Tenue de marché perps Hyperliquid
@@ -134,7 +135,7 @@ Aucune identité n'a été recherchée derrière les adresses. Les pseudonymes c
 | Dépend de la vitesse ? | **Oui** (compétition de bots, fenêtres courtes). |
 | Capital minimum | Faible par opportunité ; inconnu en pratique. |
 | Risque extrême caché | Jambes non exécutées ; résolutions incohérentes entre marchés liés ; litige UMA. |
-| Venues et accès | France : hors de portée légale (voir l'avertissement). |
+| Venues et accès | Comme R1 (accessible pour le propriétaire, déclaratif). |
 | Vérification possible en 1 jour | Oui pour l'existence d'écarts actuels (carnets publics). Rentabilité nette de frais : non. |
 | Plafond estimé à petite taille | ≈ 0 € en taker après frais 2026 (inféré). Inconnu en maker. |
 | Confiance | **Vérifié historiquement, non récent.** Échoue au critère 2 du reçu. |
