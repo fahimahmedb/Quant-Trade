@@ -6,7 +6,7 @@ Branch: `claude/hopeful-hamilton-81rab1` (harness-assigned; replaces the suggest
 
 ## Status
 
-`IN_PROGRESS` — Part A (Polymarket reconciliation) reading done, account-level sample check running.
+`IN_PROGRESS` — Part A reconciliation written (RESOLVED); account #5 cash check running; Part B cards next.
 
 ## Inputs read
 
@@ -31,6 +31,13 @@ Branch: `claude/hopeful-hamilton-81rab1` (harness-assigned; replaces the suggest
 - Saguillo top-10 addresses fully resolved via public leaderboard (file in scratchpad; to be listed in deliverable).
 - Polymarket's own leaderboard P&L and user-pnl series disagree strongly for merge/conversion-heavy
   accounts (e.g. #1: −31.6 k$ vs +806 k$), so neither is used as ground truth.
+
+## Part A — account-level evidence (V)
+
+- #8 marksman: lifetime net cash +15,223 $ (≤62.1 k$ with open positions) vs Saguillo 468,392 $.
+- 5/10 top accounts: Saguillo one-year profit > lifetime P&L on both Polymarket measures (4.98 M$ vs ~1.0 M$).
+- Same-condition replication on #9/#4: legs minutes apart; netting flips #9 negative.
+- 45/525 top monthly accounts converted in last 30 days; sampled 2026 conversions use accumulated inventory (no ≤60 s bundles).
 
 ## Next
 
