@@ -53,3 +53,26 @@ Classement final en fin de document.
 | Vérif 1 jour données publiques | Oui : rejouer 12 mois de fills et de funding par jambe (script de l'agent : `vaultDetails` + `userFillsByTime` + `userFunding`), puis régresser la jambe short sur un indice altcoin équipondéré. |
 | Plafond petite taille | Inconnu. Sans preuve d'alpha, l'espérance de la jambe short au-delà du bêta est **~0 €/mois démontré**. |
 | Confiance | reçu **vérifié** ; edge = **non vérifié** (gain dominé par le bêta HYPE et par la baisse des altcoins). Ne contredit PAS le rejet « short avant déblocage ». |
+
+---
+
+## F3 — Marchés météo Polymarket (température max journalière par ville) : prévision d'ensemble vs prix des tranches
+
+| Champ | Contenu |
+|---|---|
+| ID | F3 |
+| Titre | Spécialistes « météo » Polymarket : acheter les tranches de température mal pricées vs prévisions d'ensemble et observations du jour |
+| Type | information |
+| Mécanisme : qui paie | Parieurs récréatifs sur des marchés journaliers « Highest temperature in <ville> on <date> » (tranches de 1–2 °). Ils pricent à l'intuition ; les prévisions d'ensemble (GFS 31 membres, ECMWF 51) et les observations METAR du jour sont publiques et gratuites. Ils ne s'arrêtent pas : nouveau marché chaque jour, dans des dizaines de villes. |
+| RECETTE | Méthode publique générique : proba par tranche = part des membres d'ensemble (Open-Meteo) dans la tranche, trade si écart ≥ 8 % (ex. code https://github.com/suislanchez/polymarket-kalshi-weather-bot — **simulation seulement, aucun reçu**). Aucun gagnant n'a publié son code. Styles déduits du carnet d'ordres public (calcul de l'agent, 500 derniers trades) : 0x13f9… achète des queues (prix médian 0,02 $) ; 0x9c95… prix médian 0,21 $ ; Bilberry prix médian 0,40 $ ; HighTempTation ≥ 0,90 $ (favoris confirmés par l'observation du jour). |
+| REÇU | Classement public par catégorie : `data-api.polymarket.com/v1/leaderboard?category=WEATHER&timePeriod=MONTH` ; portefeuilles : Bilberry `0xbf13934a1fec7d3211fc15c138d84ac2a691b91a`, `0x9c95da0c1ec3394330998296582c2739cfa752db`, `0x13f995ad154da3e078ac2a1dd923bf2b265dd352`, TunSahur `0x95d381e71dba6f1c3199fd9bc040383d6fae6eff`, HighTempTation `0x6011655c4afb76f36dd1b08a137a1ba73466b31e`, gopfan2 `0xf2f6af4f27ec2dcf4072095ab804016e14cd5817`. |
+| Période / dernière date gagnante | API 2026-09-29 : top 50 météo sur 30 j = +427 k$ pour 15,6 M$ de volume (+2,7 %) ; sur 7 j +159 k$. Dernière date gagnante : semaine du 2026-09-22. |
+| Ampleur | 30 j : Bilberry +46,7 k$ (volume 1,53 M$, valeur des positions 27,7 k$, 0 $ de rebate → preneur, paie les frais) ; 0x9c95 +30,8 k$ ; 0x13f9 +25,7 k$ ; HighTempTation +16,0 k$. Tout temps top 20 météo ≈ +2,2 M$ pour ~95 M$ de volume. **Persistance faible** : Bilberry actif depuis 2025-12-29 mais cumul tout temps (+43,1 k$) < 30 j (+46,7 k$), donc négatif avant ; 0x9c95 et 0x13f9 ont < 6 semaines. Parmi les 20 meilleurs tout temps, le dernier mois est mitigé (gopfan2 +10,8 k$, opopv +10,0 k$, Poligarch −32,3 k$, russell −2,0 k$, plusieurs ≈ 0). |
+| Frais 2026 inclus ? | Oui : P&L Polymarket après frais preneur « weather » (taux 0,05 depuis le 2026-03-30 ; frais quasi nuls près de 0 ou 1). Les récompenses de liquidité et rebates sont faibles pour ces portefeuilles (0–1,3 k$/30 j), donc le gain vient bien du trading. |
+| Pour reproduire | Capital 1–30 k$ (le capital tourne chaque jour) ; prévisions d'ensemble gratuites (Open-Meteo) + METAR/Weather Underground (source de résolution) ; automatisation 24 h/24 sur des dizaines de villes et fuseaux horaires ; latence : minutes, pas millisecondes. Colle bien à nos atouts (lecture, automatisation, petite taille). |
+| Pourquoi pas encore fermé | Marchés petits et nombreux (profondeur de quelques k$ par tranche) → pas assez gros pour les fonds ; création quotidienne ; frais faibles aux extrêmes. Mais la concurrence de bots météo croît vite (nombreux bots publics depuis 2026). |
+| Risque extrême caché | Biais du survivant : on ne voit que les gagnants (le classement ne liste pas les perdants). Risque de résolution : la station et l'arrondi de Weather Underground peuvent différer du modèle ; correction ou retard de données ; faible profondeur → le prix bouge contre soi. |
+| Venues / accès | Polymarket international : US bloqué, **France bloquée (ANJ)** ; Kalshi (séries KXHIGH) : US, international à vérifier, France inconnu. |
+| Vérif 1 jour données publiques | Oui : télécharger trades et résolutions des marchés météo des 60 derniers jours (data-api), prévisions archivées Open-Meteo (Previous Runs / Historical Forecast API), simuler la règle d'ensemble aux prix de l'époque avec les frais V2 ; en parallèle, P&L de TOUS les portefeuilles actifs (pas seulement le top) pour mesurer le biais du survivant. |
+| Plafond petite taille | Estimation : **0–1 500 €/mois** (le 30ᵉ du top 50 fait ~5 k$/mois ; profondeur limitée ; edge non démontré hors top). |
+| Confiance | **probable** que ces marchés paient des spécialistes après frais ; lien recette ↔ reçu **non vérifié** (aucun gagnant ne publie sa méthode). Sous-type « favoris ≥ 0,90 $ » (HighTempTation) : reçu récent, mais c'est une information d'observation, pas un biais des favoris ; le rejet « favoris > 90 ¢ » tient en général. |

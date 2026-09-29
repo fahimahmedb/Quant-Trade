@@ -11,13 +11,16 @@
 - pineanalytics fee rollout; docs frais Polymarket V2 (30/03/2026)
 - kacho.io x3, github kachence/polymm, API Polymarket wallet 0x1c55…84ce
 - suislanchez weather bot (paper only → rejeté)
-- stats-data.hyperliquid.xyz/Mainnet/vaults (9476 vaults) + vaultDetails top-TVL >1 an ; Growi HF (méthode vague: mean-reversion), Systemic, Long HYPE/Short Garbage
+- stats-data.hyperliquid.xyz/Mainnet/vaults (9476 vaults) + vaultDetails top-TVL >1 an ; Growi HF (méthode vague: mean-reversion), Systemic, Long HYPE/Short Garbage; descriptions de 112 vaults TVL>30k: aucune méthode reproductible liée
+- data-api leaderboard category=WEATHER + activity type REWARD/MAKER_REBATE (lisibles publiquement)
+- polytrading.app/market-makers (RN1 reward 43,9k/30j)
 
 ## Fiches terminées
 - F1 polymm/@b00k13 (vérifié, edge mort/marginal)
 - F2 vaults HL L/S émission (reçu vérifié, edge = bêta)
+- F3 météo Polymarket (probable, survivant)
 
 ## Prochaine étape
-F3 candidats: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
+F4: rewards+rebates Polymarket (mesurer REWARD/MAKER_REBATE vs P&L sur MMs); F5: arb académique 2024-25 + géopolitique sans frais; puis négatifs, classement, DONE. Autres idées: arbitrage NegRisk Polymarket récent (géopolitique sans frais); liquidations; météo Polymarket avec wallet+méthode; rewards Polymarket.
 
 ## (ancienne) Repérage rapide (≤20 candidats) : bots OSS avec P&L relié à une adresse, vaults Hyperliquid documentés, bilans de market makers petite taille, dashboards building in public.
