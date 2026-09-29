@@ -204,6 +204,18 @@ def main() -> None:
         print(json.dumps(c.probe_all(), indent=2, sort_keys=True))
         return
     report = _collect(args.out, now, set(args.only.split(",")) if args.only else None)
+    if args.only is None:
+        # Forward SHADOW_DIRECT evaluation (H-001), in the full run only. A failure
+        # is recorded, never allowed to break the collection commit.
+        try:
+            sys.path.insert(0, str(ROOT / "research" / "fast_rail" / "h001"))
+            import forward as h001_forward
+            status = h001_forward.run(args.out, now)
+            report["h001_forward_eval"] = {"status": "OK", "verdict": status["status"],
+                                           "matches": status["matches"]}
+        except Exception as exc:  # noqa: BLE001 - reported, not raised
+            report["h001_forward_eval"] = {"status": "ERROR",
+                                           "error": f"{type(exc).__name__}: {exc}"[:200]}
     args.out.mkdir(parents=True, exist_ok=True)
     with (args.out / "_runs.jsonl").open("a", encoding="utf-8") as handle:
         handle.write(json.dumps({"run_at": now.isoformat(), "report": report},
