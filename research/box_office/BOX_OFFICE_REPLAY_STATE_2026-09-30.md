@@ -3,7 +3,7 @@
 REAL_CAPITAL_AUTHORIZED = FALSE. Research only.
 BRANCH: `claude/relaxed-johnson-mqca45` (the harness-assigned single branch; `research/box-office-strict-replay-2026-09-30` was not created)
 STATUS: IN_PROGRESS
-PHASE: CP1 — universe + news archives + pre-registration frozen; replay not yet run
+PHASE: CP2 done — PIT release extraction (CP3) next
 
 ## Resume protocol (after a token or session cut)
 
@@ -16,7 +16,7 @@ PHASE: CP1 — universe + news archives + pre-registration frozen; replay not ye
 | CP | Content | Output | State |
 |---|---|---|---|
 | CP1 | Box-office universe (226 events since 2025-10-01), Variety + Deadline box-office archives (WP REST API, `date_gmt`/`modified_gmt`), pre-registration | `data/events_full.json.gz`, `data/variety_bo.json.gz`, `data/deadline_bo.json.gz`, `scripts/*.py`, pre-reg | DONE |
-| CP2 | Contemporaneous taker trades for every bracket of U1+U2 (data-api `/trades`, takerOnly) | `data/trades_u.json.gz` | TODO |
+| CP2 | Contemporaneous taker trades for every bracket (1,000 markets, 454,188 taker trades; 396,692 within Wed..Tue windows; 2 Avatar brackets hit the 10k offset cap but cover the weekend) | `data/trades_window.json.gz` (compact [ts, side, outcomeIndex, price, size]); full pull in scratch, re-runnable via `scripts/fetch_trades.py` | DONE |
 | CP3 | PIT info table: per film-weekend × release, with value, source, availability time and strictness flag | `data/pit_releases.csv` | TODO |
 | CP4 | Replay lanes A–D × R1/R2 × E1/E2/E3, quarterly decay, flips, capacity | `data/replay_trades.csv`, `data/replay_summary.json` | TODO |
 | CP5 | Report + final state + verdict | `BOX_OFFICE_STRICT_TIMESTAMP_REPLAY_2026-09-30.md`, this file | TODO |
