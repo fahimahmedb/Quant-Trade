@@ -179,4 +179,5 @@ Adopté le 2026-09-25 : `governance/TWO_SPEED_RESEARCH_PROPOSAL.md` (ACCEPTÉE).
 - Point d'étape propriétaire le 2026-10-05 (décision du 2026-09-27) : on décide alors de la suite. C'est une décision de ressources, pas un verdict : seul le t-SPRT déclaré peut produire un `FORWARD_PASS`.
 - Juridiction : aucune restriction de pays pour la recherche papier/shadow ; un point juridique avec le propriétaire, pour le pays d'exécution, précède toute exécution. `desk/compliance.py` reste appliqué (les pratiques illégales restent interdites partout).
 - Pistes maker (tenue de marché) : le P&L papier n'est qu'une borne haute ; pas de `FORWARD_PASS` sur des fills papier sans modèle de file d'attente et de sélection adverse.
+- Proxy (CLV, markouts) : un FORWARD_PASS obtenu sur une statistique proxy prouve un edge de PRIX, pas un gain encaissable. Il exige que tous les engagements soient réglés et comptés, y compris ceux sans clôture ou reportés, et un test à α garanti (anytime-valid). La preuve de gain relève d'un micro-test réel, décidé par le propriétaire (2026-09-29, audit Astra ; ordres 12 et 12b).
 - `REAL_CAPITAL_AUTHORIZED = FALSE` (inchangé).
