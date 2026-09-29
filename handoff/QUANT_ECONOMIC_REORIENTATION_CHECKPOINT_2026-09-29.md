@@ -426,7 +426,7 @@ So this is a mechanism family requiring resolution-tail falsification, not a fre
 Source:
 
 - Agent 5:
-  `claude/hopeful-hamilton-81rab1@d0cddae77ff8ec4e657a49d37474ba22bd87d1fd`
+  `claude/hopeful-hamilton-81rab1@85483fb9f85c6beea36e0af969e3f0a3e939e07f`
 
 Earlier literature appeared to report approximately **$39.59M** of Polymarket arbitrage profit.
 
@@ -443,7 +443,17 @@ For one top account (#5):
 - independent complete-lifetime cash result ≈ **+$122k**
 - paper-attributed “arbitrage” ≈ **+$750k**
 
-For another NegRisk converter (#8), the partial independently reconstructed cash economics were orders of magnitude below the paper-attributed number.
+For another NegRisk converter (#8), the now-complete in-window reconstruction covers 2024-10-20 -> 2025-04-01 and 532,608 unique actions:
+
+- ~$10.55M buys;
+- ~$10.23M conversion collateral;
+- ~$0.34M sales;
+- net cash approximately **+$17,353**;
+- paper-attributed "arbitrage" approximately **+$468,392**.
+
+That is roughly a **27x gap** between independently reconstructed cash and the paper-attributed figure for this account/window.
+
+Together with account #5 (+$122k complete-lifetime cash vs ~$750k attributed), this materially strengthens the conclusion that the large $39.59M estimate should not be treated as directly cashable realized profit.
 
 ### Why this matters
 
@@ -1039,7 +1049,7 @@ Research:
   `claude/magical-ramanujan-wsktyr@501093d1f6760201a5d81e638e74aa16ff75c3a8`
 
 - Agent 5 — structural / fragmentation:
-  `claude/hopeful-hamilton-81rab1@d0cddae77ff8ec4e657a49d37474ba22bd87d1fd`
+  `claude/hopeful-hamilton-81rab1@85483fb9f85c6beea36e0af969e3f0a3e939e07f`
 
 - Agent 6 — small-player rents checkpoint:
   `claude/epic-cannon-1sy39m@cf9db0b8aeeef120155e2735b0e88b078447cea4`
