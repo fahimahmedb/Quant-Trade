@@ -1,0 +1,137 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2026-08-07,One Night Only,OPEN,A,10,10,,PLUS,D,1237028481,FRIDAY AM,LABEL,"One Night Only ... is a first choice for women over/under 25, will exceed $10M.","AMBIGUOUS: stated as a hope (""The hope here is that ... will exceed $10M""), treated as lower bound"
+2026-08-07,One Night Only,OPEN,B,6,,,,D,1237028481,FRIDAY AFTERNOON,LABEL,$2.9M Friday including $1.35M previews and a 3-day of $6M,
+2026-08-07,One Night Only,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $2.8M only)
+2026-08-07,One Night Only,OPEN,D,5.7,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,"""One Night Only"" debuted below expectations with $5.7 million from 3,012 theaters",
+2026-08-07,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-07,Spider-Man: Brand New Day,NTH,B,137.5,135,140,RANGE;PLUS,D,1237028481,FRIDAY AFTERNOON,LABEL,sophomore session of Spider-Man: Brand New Day ... is looking at $135M-$140M +,
+2026-08-07,Spider-Man: Brand New Day,NTH,C,,,,,,,,,,NO_RELEASE (Variety lane C post only has Friday $43M in title)
+2026-08-07,Spider-Man: Brand New Day,NTH,D,145,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,scoring another $145 million domestically during its second weekend in theaters,V 1236830845 also 145 STRICT
+2026-08-07,Super Troopers 3,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-08-07,Super Troopers 3,OPEN,B,4,,,,D,1237028481,FRIDAY AFTERNOON,LABEL,"an estimated $1.8M Friday, and 3-day of $4M",
+2026-08-07,Super Troopers 3,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $1.7M only)
+2026-08-07,Super Troopers 3,OPEN,D,4,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,"""Super Troopers 3"" launched at No. 4 with $4 million from 2,760 venues",
+2026-08-07,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-07,The Odyssey,NTH,B,28.5,,,,D,1237028481,FRIDAY AFTERNOON,LABEL,"fourth frame of Universal's The Odyssey at 3,603 theaters with $28.5M , -44%",
+2026-08-07,The Odyssey,NTH,C,,,,,,,,,,DAILY_ONLY (Variety Friday $8.8M; $460M is running total)
+2026-08-07,The Odyssey,NTH,D,31.5,,,,V,1236830807,Box Office: ‘Spider-Man: Brand New Day’ Flies to Third-Biggest Second Weekend of All Time ,STRICT,"""The Odyssey"" remained muscular with $31.5 million in its fourth weekend of release",V 1236830845 also 31.5 STRICT
+2026-08-14,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-14,Spider-Man: Brand New Day,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-14,Spider-Man: Brand New Day,NTH,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $19M only)
+2026-08-14,Spider-Man: Brand New Day,NTH,D,70,,,,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,remained No. 1 in North America with $70 million in its third weekend of release,Variety REVISABLE only
+2026-08-14,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-14,The Odyssey,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-14,The Odyssey,NTH,C,,,,,,,,,,NO_RELEASE
+2026-08-14,The Odyssey,NTH,D,23.2,,,,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,"""The Odyssey"" stayed in second place with $23.2 million in its fifth weekend of release",Variety REVISABLE only
+2026-08-14,"""PAW Patrol: The Dino Movie"" Opening Weekend Box Office",OPEN,A,20,,,,V,1236833323,Box Office: ‘End of Oak Street’ Makes $2.5 Million in Previews,STRICT,made $1.9 million in previews and is projected to make $20 million this weekend,
+2026-08-14,"""PAW Patrol: The Dino Movie"" Opening Weekend Box Office",OPEN,B,,,,,,,,,,NO_RELEASE
+2026-08-14,"""PAW Patrol: The Dino Movie"" Opening Weekend Box Office",OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $7.35M only)
+2026-08-14,"""PAW Patrol: The Dino Movie"" Opening Weekend Box Office",OPEN,D,20.5,,,,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,"Fourth place went to ""PAW Patrol: The Dino Movie"" with $20.5 million from 3,500 North American theaters",Variety REVISABLE only
+2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,A,,,,,,,,,,"NO_RELEASE (film block empty; Variety previews post title $2.5M previews, projection sentence not in digest)"
+2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,B,,,,,,,,,,NO_RELEASE
+2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,C,,,,,,,,,,DAILY_ONLY (Variety lane C title: $8.1M Friday)
+2026-08-14,"""The End of Oak Street"" Opening Weekend Box Office",OPEN,D,20,20,,PLUS,V,1236834084,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 With $70 Million, ‘End of Oak Street",REVISABLE,"""The End of Oak Street"" ... and ""PAW Patrol: The Dino Movie,"" each debuted above $20 million.","AMBIGUOUS: from PAW Patrol block prose (film block empty); lower bound only, exact figure not in digest; Variety REVISABLE"
+2026-08-21,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-21,Spider-Man: Brand New Day,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-21,Spider-Man: Brand New Day,NTH,C,36.5,,,,V,1236840803,Box Office: ‘Insidious: Out of the Further’ Takes First Place on Friday With $10.6 Million,REVISABLE,it's eyeing a first-place finish through the weekend with $36.5 million,Variety REVISABLE only
+2026-08-21,Spider-Man: Brand New Day,NTH,D,39,,,,V,1236838324,"Box Office: ‘Spider-Man: Brand New Day’ Triumphs Again in Fourth Weekend With $39 Million,",STRICT,collecting $39 million in its fourth weekend of release,
+2026-08-21,The End of Oak Street,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-21,The End of Oak Street,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-21,The End of Oak Street,NTH,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $2.2M only)
+2026-08-21,The End of Oak Street,NTH,D,,,,,,,,,,CUMULATIVE_ONLY (Variety $38M domestic running total)
+2026-08-21,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-21,The Odyssey,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-21,The Odyssey,NTH,C,18,,,,V,1236840803,Box Office: ‘Insidious: Out of the Further’ Takes First Place on Friday With $10.6 Million,REVISABLE,it looks to add $18 million through the end of its sixth weekend,Variety REVISABLE only
+2026-08-21,The Odyssey,NTH,D,19.5,,,,V,1236838324,"Box Office: ‘Spider-Man: Brand New Day’ Triumphs Again in Fourth Weekend With $39 Million,",STRICT,"""The Odyssey"" landed at No. 3 with a remarkable $19.5 million in its sixth frame",
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",OPEN,A,25,23,27,RANGE,V,1236839269,Box Office: ‘Insidious: Out of the Further’ Makes $3 Million in Previews,STRICT,is aiming for a debut between $23 million to $27 million,
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",OPEN,B,,,,,,,,,,NO_RELEASE
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",OPEN,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $10.6M only)
+2026-08-21,"""Insidious: Out of the Further"" Opening Weekend Box Office",OPEN,D,25.3,,,,V,1236838324,"Box Office: ‘Spider-Man: Brand New Day’ Triumphs Again in Fourth Weekend With $39 Million,",STRICT,"Second place went to ""Insidious: Out of the Further"" with $25.3 million from 3,303 theaters",
+2026-08-21,"""Mutiny"" Opening Weekend Box Office",OPEN,A,,,,,,,,,,NO_RELEASE (film block empty; not mentioned in other blocks)
+2026-08-21,"""Mutiny"" Opening Weekend Box Office",OPEN,B,,,,,,,,,,NO_RELEASE (film block empty; not mentioned in other blocks)
+2026-08-21,"""Mutiny"" Opening Weekend Box Office",OPEN,C,,,,,,,,,,NO_RELEASE (film block empty; not mentioned in other blocks)
+2026-08-21,"""Mutiny"" Opening Weekend Box Office",OPEN,D,,,,,,,,,,NO_RELEASE (film block empty; not mentioned in other blocks)
+2026-08-28,Coyote vs. Acme,OPEN,A,,,,,,,,,,NO_RELEASE (film block empty)
+2026-08-28,Coyote vs. Acme,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-08-28,Coyote vs. Acme,OPEN,C,,,,,,,,,,NO_RELEASE (earlier chart inside SUNDAY AM section not usable for C)
+2026-08-28,Coyote vs. Acme,OPEN,D,15.4,,,,D,1237061934,SUNDAY AM,LABEL,"Acme (Ketch) 3,575 theaters, Fri $5.3M Sat $5.8M Sun $4.3M, 3-day $15.4M/Wk 1","chart line taken from Dog Stars/Odyssey block of same SUNDAY AM section (name split ""Coyote vs."" / ""Acme""); prose in Spider-Man block: $15.4M opening"
+2026-08-28,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-28,Spider-Man: Brand New Day,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-28,Spider-Man: Brand New Day,NTH,C,,,,,,,,,,"NO_RELEASE (earlier ""chart as of this AM"" 3-day $21M sits inside SUNDAY AM section; not usable for C)"
+2026-08-28,Spider-Man: Brand New Day,NTH,D,22.2,,,,D,1237061934,SUNDAY AM,LABEL,"Fri $5.5M (-44% from last Friday), Sat $10M Sun $6.6M 3-day $22.2M (-43%), Total $891.5M/Wk 5",ignored earlier $21M chart/prose in same section; V:22.2 STRICT
+2026-08-28,The Dog Stars,OPEN,A,,,,,,,,,,PREVIEWS_ONLY (Thursday $850K)
+2026-08-28,The Dog Stars,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-08-28,The Dog Stars,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-08-28,The Dog Stars,OPEN,D,8,,,,D,1237061934,SUNDAY AM,LABEL,The Dog Stars ... which ate scraps with an $8M opening off a $70M production cost,"chart line truncated, prose used; V:8 STRICT"
+2026-08-28,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-08-28,The Odyssey,NTH,B,,,,,,,,,,NO_RELEASE
+2026-08-28,The Odyssey,NTH,C,,,,,,,,,,"NO_RELEASE (earlier ""chart as of this AM"" 3-day $14.6M sits inside SUNDAY AM section; not usable for C)"
+2026-08-28,The Odyssey,NTH,D,14.3,,,,D,1237061934,SUNDAY AM,LABEL,"The Odyssey (Uni) 2,617 (-474) theaters Fri $3.7M (-27% ), Sat $5.8M Sun $4.6M 3-day $14.3M (-27%)",ignored earlier-chart 3-day $14.6M in same section
+2026-09-04,By Any Means,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-04,By Any Means,OPEN,B,6.5,,,,D,1237068549,FRIDAY PM,LABEL,"an eye at $8M over 4-days at 2,903 theaters after a 3-day of $6.5M",
+2026-09-04,By Any Means,OPEN,C,7,,,,D,1237068549,SATURDAY AM,LABEL,"By Any Means (Par) 2,903 theaters, Fri $2.67M, 3-day $7M, 4-day $8.55M /Wk 1",chart 3-day used; $8.5M prose is 4-day
+2026-09-04,By Any Means,OPEN,D,7.4,,,,D,1237068549,SUNDAY AM,LABEL,"Fri $2.67M, Sat $2.4M Sun $2.3M Mon $1.7M 3-day $7.4M, 4-day $9.1M /Wk 1",V:7.4 STRICT
+2026-09-04,Onslaught,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-04,Onslaught,OPEN,B,1.9,1.6,2.2,RANGE,D,1237068549,FRIDAY PM,LABEL,around $800K today (including $275K yesterday) for a $1.6M-$2.2M 3-day,
+2026-09-04,Onslaught,OPEN,C,2,,,,D,1237068549,SATURDAY AM,LABEL,"Onslaught (A24) 1,918 theaters, Fri $782K, 3-day $2M 4-day $2.3M /Wk 1",
+2026-09-04,Onslaught,OPEN,D,1.8,,,,V,1236852435,"Box Office: ‘Spider-Man: Brand New Day’ Remains No. 1 in Sixth Weekend, Nears ‘Avengers: E",STRICT,"debuting in 13th place on domestic charts with $1.8 million from 1,918 theaters over the weekend","AMBIGUOUS: Deadline SUNDAY AM Onslaught line (3-day $2M) is identical to SAT AM chart with no Sat/Sun dailies, treated as stale earlier-day figure; D:2 LABEL"
+2026-09-04,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-04,Spider-Man: Brand New Day,NTH,B,16.7,,,,D,1237068549,FRIDAY PM,LABEL,"is looking at $3.7M today, and a sixth 3-day of $16.7M, -26%",4-day ~$21M ignored
+2026-09-04,Spider-Man: Brand New Day,NTH,C,17.25,,,,D,1237068549,SATURDAY AM,LABEL,"Fri $3.86M (-30% from previous Friday), 3-day $17.25M (-23%), 4-day $22M",
+2026-09-04,Spider-Man: Brand New Day,NTH,D,18,,,,D,1237068549,SUNDAY AM,LABEL,"Sat $6.96M, Sun $7.1M, Mon $5.3M 3-day $18M (-20%), 4-day $23.3M",
+2026-09-04,The Odyssey,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-04,The Odyssey,NTH,B,11.5,,,,D,1237068549,FRIDAY PM,LABEL,"with a Friday of $2.8M, 3-day of $11.5M, -20%, a 4-day of $15.2M",
+2026-09-04,The Odyssey,NTH,C,12.4,,,,D,1237068549,SATURDAY AM,LABEL,"The Odyssey (Uni) 2,312 (-305) theaters, Fri $3M (-19%), 3-day $12.4M (-13%), 4-day $16.4M",chart line in Spider-Man/Odyssey block
+2026-09-04,The Odyssey,NTH,D,13,,,,D,1237068549,SUNDAY AM,LABEL,"Fri $3M (-19%) Sat $4.7M Sun $5.1M 3-day $13M (-9%), Mon $4.2M 4-day $17.2M",
+2026-09-11,Hope,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-11,Hope,OPEN,B,3.6,,,,D,1237098516,FRIDAY PM,LABEL,"NEON's Hope is seeing $1M Friday for a 3-day of $3.6M, and five-day of $5.3M",
+2026-09-11,Hope,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-09-11,Hope,OPEN,D,3.3,,,,V,1236860432,Box Office: ‘Practical Magic 2’ Fizzles With $30 Million Debut,REVISABLE,"""Hope"" debuted at No. 7 with $3.3 million from 1,560 locations over the weekend",Variety REVISABLE only
+2026-09-11,Practical Magic 2,OPEN,A,35,30,40,RANGE,V,1236857703,Box Office: ‘Practical Magic 2’ Makes $4.7 Million in Previews,STRICT,"""Practical Magic 2"" is anticipated to make $30 million to $40 million in its debut","Deadline FRIDAY AM UPDATE has previews $4.7M only, no 3-day"
+2026-09-11,Practical Magic 2,OPEN,B,30,,,,D,1237098516,FRIDAY PM,LABEL,is looking at a $12.5M Friday on its way to a $30M weekend opening stateside,
+2026-09-11,Practical Magic 2,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $13M only)
+2026-09-11,Practical Magic 2,OPEN,D,30,,,,V,1236860432,Box Office: ‘Practical Magic 2’ Fizzles With $30 Million Debut,REVISABLE,"disappointed in its box office debut with $30 million from 4,146 North American theaters",Variety REVISABLE only
+2026-09-11,Runner,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-11,Runner,OPEN,B,5.4,,,,D,1237098516,FRIDAY PM,LABEL,is looking at $2.1M today for a $5.4M opening in fifth,
+2026-09-11,Runner,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety STRICT Friday $2.5M only)
+2026-09-11,Runner,OPEN,D,6,,,,V,1236860432,Box Office: ‘Practical Magic 2’ Fizzles With $30 Million Debut,REVISABLE,"""Runner"" rounded out the top five with a lackluster $6 million from 2,568 venues",Variety REVISABLE only
+2026-09-11,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-11,Spider-Man: Brand New Day,NTH,B,,,,,,,,,,NO_RELEASE (only running-total/record prose)
+2026-09-11,Spider-Man: Brand New Day,NTH,C,,,,,,,,,,NO_RELEASE (only record prose)
+2026-09-11,Spider-Man: Brand New Day,NTH,D,8.6,,,,V,1236860432,Box Office: ‘Practical Magic 2’ Fizzles With $30 Million Debut,REVISABLE,"""Spider-Man: Brand New Day"" slid to No. 2 with $8.6 million in its seventh weekend of release",Variety REVISABLE only
+2026-09-11,The Uprising,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-11,The Uprising,OPEN,B,3,,,,D,1237098516,FRIDAY PM,LABEL,The Uprising is looking at $1.3M today for a $3M opening,
+2026-09-11,The Uprising,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-09-11,The Uprising,OPEN,D,3.25,,,,V,1236860432,Box Office: ‘Practical Magic 2’ Fizzles With $30 Million Debut,REVISABLE,"""The Uprising"" misfired with $3.25 million from 2,068 theaters in its debut",Variety REVISABLE only
+2026-09-18,Practical Magic 2,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-18,Practical Magic 2,NTH,B,,,,,,,,,,"DAILY_ONLY (Deadline FRIDAY PM UPDATE: $4M second Friday; sentence truncated, no 3-day)"
+2026-09-18,Practical Magic 2,NTH,C,10.85,,,,D,1237107316,SATURDAY AM,LABEL,"Practical Magic 2 (WB) 4,163 (+17) theaters, Fri $3.3M (-75% from last Friday), 3-day $10.85M (-64%)",
+2026-09-18,Practical Magic 2,NTH,D,12.1,,,,D,1237107316,SUNDAY AM,LABEL,"Fri $3.3M (-75% from last Friday), Sat $5.2M Sun $3.655M 3-day $12.1M (-59%)",V:12 STRICT
+2026-09-18,Resident Evil,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-09-18,Resident Evil,OPEN,B,50,50,,PLUS,D,1237107316,FRIDAY PM UPDATE,LABEL,"this weekend armed up with at least $50M , and a chance for more",
+2026-09-18,Resident Evil,OPEN,C,56.5,53,60,RANGE,D,1237107316,SATURDAY AM,LABEL,"Resident Evil (Sony) 3,684 theaters, Fri $26.3M , 3-day $53M-$60M/ Wk 1","chart over prose (""could approach $60M""); V:55 STRICT APPROX"
+2026-09-18,Resident Evil,OPEN,D,60,,,,D,1237107316,SUNDAY AM,LABEL,"Resident Evil (Sony) 3,684 theaters, Fri $26.55M, Sat $20.25M Sun $13.2M, 3-day $60M/ Wk 1",V:60 STRICT
+2026-09-18,Spider-Man: Brand New Day,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-18,Spider-Man: Brand New Day,NTH,B,6,,,,D,1237107316,FRIDAY PM UPDATE,LABEL,"Spider-Man: Brand New Day appears ahead of Universal's The Odyssey for the weekend, $6M to $5M","$6M is Spider-Man, $5M is Odyssey"
+2026-09-18,Spider-Man: Brand New Day,NTH,C,6.3,,,,D,1237107316,SATURDAY AM,LABEL,"Spider-Man: Brand New Day (Sony) 3,017 (-286) theaters Fri $1.53M (-23%), 3-day $6.3M (-25%)",
+2026-09-18,Spider-Man: Brand New Day,NTH,D,6.5,,,,D,1237107316,SUNDAY AM,LABEL,"Fri $1.53M (-23%) Sat $2.9M Sun $2M, 3-day $6.5M (-23%)",V:6.5 STRICT
+2026-09-25,Avengers: Endgame Encore,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($3.8M); ""north of $20M"" is a hypothetical wish for four films, not a projection"
+2026-09-25,Avengers: Endgame Encore,OPEN,B,24.5,23,26,RANGE,D,1237111302,FRIDAY PM,LABEL,"an estimated $11M today and between $23M-$26M at 3,060 theater",sentence truncated; range read as 3-day
+2026-09-25,Avengers: Endgame Encore,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $11.2M only)
+2026-09-25,Avengers: Endgame Encore,OPEN,D,26,,,,D,1237111302,SUNDAY AM WRITETHRU,LABEL,"Fri $11.2M, Sat $8.6M Sun $6.2M 3-day $26M /Lifetime cume $884.3M",V:26 STRICT
+2026-09-25,Forgotten Island,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($1.48M)
+2026-09-25,Forgotten Island,OPEN,B,10.1,,,,D,1237111302,FRIDAY PM,LABEL,filing $3.9M today (including previews) and $10.1M 3-day for the weekend,"$13M-$15M is prior tracking range, not used"
+2026-09-25,Forgotten Island,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $4.38M only)
+2026-09-25,Forgotten Island,OPEN,D,12.8,,,,V,1236876819,"Box Office: ‘Avengers: Endgame Encore’ Returns to No. 1 With $26 Million, ‘Primetime’ Scor",STRICT,"""Forgotten Island"" stumbled in fifth place with $12.8 million from 4,548 venues",Deadline SUNDAY AM chart truncated before this film; V REVISABLE 1236876861 also 12.8
+2026-09-25,Heart of the Beast,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($2M); ""north of $20M"" is a hypothetical wish for four films, not a projection"
+2026-09-25,Heart of the Beast,OPEN,B,20.5,,,,D,1237111302,FRIDAY PM,LABEL,"Heart of the Beast at 3,435 sites is seeing a Friday of $7.5M, 3-day of $20.5M",
+2026-09-25,Heart of the Beast,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $7.45M only)
+2026-09-25,Heart of the Beast,OPEN,D,20,,,,D,1237111302,SUNDAY AM WRITETHRU,LABEL,"even on Sunday AM, is still eyeing a solid $20M start in third",prose (chart truncated); V:20 STRICT; $30.1M is international
+2026-09-25,Primetime,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY ($2.7M); ""north of $20M"" is a hypothetical wish for four films, not a projection"
+2026-09-25,Primetime,OPEN,B,20,20,,PLUS,D,1237111302,FRIDAY PM,LABEL,"Primetime is around $8.5M today, with many optimistic that it gets past $20M",AMBIGUOUS: optimism statement treated as lower bound
+2026-09-25,Primetime,OPEN,C,,,,,,,,,,DAILY_ONLY (Variety REVISABLE Friday $8.49M only)
+2026-09-25,Primetime,OPEN,D,19.1,,,,D,1237111302,SUNDAY AM WRITETHRU,LABEL,It came in at $19.1M off a B CinemaScore,prose (chart truncated); V:19.2 STRICT
+2026-09-25,Resident Evil,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-09-25,Resident Evil,NTH,B,22,,,,D,1237111302,FRIDAY PM,LABEL,"second frame of Resident Evil at 3,684 locations with a 3-day of $22M , -63%",
+2026-09-25,Resident Evil,NTH,C,23.5,,,,V,1236876380,Box Office: ‘Avengers: Endgame Encore’ Leads With $11.2 Million on Friday as A24’s ‘Primet,REVISABLE,should bring in another $23.5 million through its second weekend in theaters,Variety REVISABLE only
+2026-09-25,Resident Evil,NTH,D,23.3,,,,D,1237111302,SUNDAY AM WRITETHRU,LABEL,"Fri $7M (-73%) Sat $9.8M Sun $6.5M 3-day $23.3M (-61%), Total $103.4",V:23 STRICT
