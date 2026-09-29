@@ -135,8 +135,8 @@ Findings:
    - #8: Polymarket's mark-to-market series gives **+10.8 k$ cumulative at 2025-04-01** (the end of
      the window, account created 2024-10-20), with a peak of +11.8 k$ in Jan 2025.
 
-   Both accounts are **real** NegRisk arbitrageurs / converters with tens of millions of dollars of
-   turnover. Their actual economic result is **~0.2–0.5% of turnover**, and **5 to 30 times smaller**
+   Both accounts are **real** NegRisk arbitrageurs / converters with several to tens of millions of
+   dollars of turnover. Their actual economic result is **~0.2–0.5% of turnover**, and **5 to 30 times smaller**
    than the "realized profit" Saguillo attributes to them.
 
 3. **These are not specialised arbitrage bots.** #9 has 80,512 on-chain actions in the window
