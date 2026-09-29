@@ -37,7 +37,7 @@ def book(n, close_mid=0.48, settle=1.0, with_close=True):
     pins, quotes, settled, at = [], [], {}, {}
     for i in range(n):
         ev, day = f"E{i}", f"2026-{10 + i // 250:02d}-{1 + (i % 250) // 10:02d}"
-        entry, later, kick = (f"{day}T0{i % 10}:00:00+00:00", f"{day}T1{i % 10}:00:00+00:00",
+        entry, later, kick = (f"{day}T0{i % 10}:00:00+00:00", f"{day}T19:{i % 4}0:00+00:00",
                               f"{day}T2{i % 4}:00:00+00:00")
         pins += [pin(entry, ev, kick), pin(later, ev, kick)]
         quotes.append(quote(entry, "KALSHI", 0.40, ev, f"K{i}"))
@@ -116,6 +116,20 @@ class Order12Tests(unittest.TestCase):
                                          settled_at=dict(at)))
         frozen = {"status": "REJECT(FORWARD)"}
         self.assertTrue(f.evaluate(pins, quotes, settled, LATE, frozen, at)["sticky"])
+
+    def test_prefix_includes_engagements_without_clv_and_n_ge_2(self):
+        pins, quotes, settled, at = book(40)
+        # match E3 loses its close quote: its engagement must still be in the prefix
+        quotes = [q for q in quotes if not (q.get("best_bid") is not None and q["ticker"] == "K3")]
+        del settled["KALSHI|K3|None"]
+        report = f.evaluate(pins, quotes, settled, LATE, settled_at=at, decision_test=ACCEPT)
+        self.assertEqual(report["status"], "ACCEPT_PENDING_SETTLEMENT")
+
+    def test_ledger_engagements_cannot_be_dropped_later(self):
+        pins, quotes, settled, at = book(5, settle=0.0)
+        ledger = f.find_bets(pins, quotes)
+        report = f.evaluate(pins, [], settled, LATE, settled_at=at, ledger=ledger)
+        self.assertEqual(report["engagements"], 5)       # quotes gone, engagements kept
 
     def test_economics_reported(self):
         pins, quotes, settled, at = book(10)
