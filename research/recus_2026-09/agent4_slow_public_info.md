@@ -113,7 +113,7 @@ Monthly family-realized series (closed-pos, attribution only, last six active mo
 | FEES INCLUDED? | yes for trades since the fee rollout (rate 0.05 on these events, V); the endpoint no longer exposes the fee field, so the netting is inherited from agent 1's same-day check, not re-verified |
 | CAPITAL ACTUALLY IMMOBILIZED | estimated from live open positions: The-Joker ≈ 100 k$, denzeldumfries ≈ 28 k$, fanat12 ≈ 4 k$ (V, snapshot). Turnover: The-Joker bought 1.14 M$ of box-office positions in 12 m |
 | OBSERVED P&L / RETURN | family realized / family bought: The-Joker 5.3 %, fanat12 3.7 %, denzeldumfries 12.4 %, Big.Chungus 5.3 % per dollar traded (V); ≈ 0.5–13 k$/month per wallet in the last four months |
-| LOSERS | see §4: sample of the 70 most active participants of three September-2026 events, corrected for unredeemed losers and cross-checked with user-pnl |
+| LOSERS | §4 (V): of the 70 most active participants in three September-2026 box-office events, 34 % have a negative 12-month whole-wallet user-pnl (median +11.5 k$); family-corrected box-office P&L negative for 5/70 (lower bound), median +1.4 k$, P90 +28 k$ |
 | SURVIVORSHIP RISK | High by construction (wallets found via the P&L leaderboard). Mitigated only by §4. Big.Chungus exiting after March 2026 is a warning |
 | SPEED REQUIREMENT | none below minutes: the two September winners' brackets traded at 0.15–0.39 VWAP all Saturday and Sunday and converged only Monday (V) |
 | DATA REQUIREMENT | The Numbers / Box Office Mojo pages, Deadline/Variety estimate posts, Polymarket CLOB; an archive of estimates vs finals for calibration |
@@ -147,7 +147,7 @@ Monthly family-realized series (closed-pos, attribution only, last six active mo
 | FEES INCLUDED? | fee rate 0.04 applies to 2026 events (V); the large receipts are mostly pre-fee |
 | CAPITAL ACTUALLY IMMOBILIZED | unknown for the large wallets (they turned 20–50 M$/yr); live open positions ≈ 64 k$ (Mac-Gyver), 14 k$ (0xf14e), 0 (EffyBig turns over fully each week) (V) |
 | OBSERVED P&L / RETURN | large winners: 0.3–6.6 % per dollar traded (V, closed-pos, upper-biased); active small wallets: ≈ 2–4 k$/month (EffyBig), +8.6 k$ over ten weeks (0xf14e) |
-| LOSERS | see §4 (70 most active participants of the September-2026 monthly event). Public secondary case: "sb911", celebrated in April–May 2026 for +106 k$ in one month on cheap buckets, now shows −31.4 k$ lifetime on its public profile (S, polymarket.com/@sb911, 2026-09-29) |
+| LOSERS | §4 (V): of the 70 most active participants in the September-2026 monthly tweet event, 46 % have a negative 12-month whole-wallet user-pnl (median +74 $); family-corrected tweet P&L negative for 11/67 (lower bound), median +1.6 k$; 42 % of raw closed gains were unbooked losses. Public secondary case: "sb911", celebrated in April–May 2026 for +106 k$ in one month on cheap buckets, now shows −31.4 k$ lifetime on its public profile (S, polymarket.com/@sb911, 2026-09-29) |
 | SURVIVORSHIP RISK | very high: leaderboard selection + the unredeemed-loser artefact makes cheap-bucket buyers look profitable when they are not |
 | SPEED REQUIREMENT | low for pace-based selling of dead buckets; the maker variant needs order-management in seconds |
 | DATA REQUIREMENT | xtracker.io counter (also via elon-tracker / xtracker APIs, S), Polymarket CLOB, history of bucket prices |
@@ -263,7 +263,26 @@ Monthly family-realized series (closed-pos, attribution only, last six active mo
 | CHEAPEST FALSIFICATION EXPERIMENT | that replay; falsified if net return after flips and fees is < 0.5 % per lock-up |
 | CONFIDENCE | **PROBABLE** for tweets/box/music at ≥ 0.90; **negative** for AI |
 
-<!-- SURV -->
+## 4. Survivorship sample (losers of the same mechanism)
+
+Method (V): every wallet that traded in three September-2026 box-office events (Forgotten Island, Heart of the Beast, Primetime opening weekends) and in the September-2026 monthly tweet-count event was enumerated from `trades`; the 70 most active per family were pulled (`closed-positions` up to 300, `positions` for unredeemed losers, `user-pnl` 12 m). Selection is by activity, not by P&L, so it includes losers; it still over-weights active accounts.
+
+**BOXOFFICE** — participants in the sampled events: 509; sampled: 70 most active by trade count (closed-position history capped at 300 per wallet for 66 of them, so family P&L below is a lower bound on activity, not on losses).
+- Family P&L, closed realized + unredeemed losers (V): losers 5/70 (7 %), quartiles P10/P25/P50/P75/P90 = 21 / 188 / 1385 / 4377 / 28078 $, sum 553,094 $ (raw closed-only sum was 687,753 $, i.e. 20 % was unbooked losses).
+- Whole-wallet user-pnl over 12 months (all families, V): losers 24/70 (34 %), quartiles = -34610 / -3788 / 11523 / 154208 / 352425 $, sum 10,003,548 $.
+- Top 5 corrected family P&L: `0xb028…8686` 139,167 $ (u12 48812); `0x33f8…c5e4` 67,766 $ (u12 36042); `0xd218…b5c9` 52,370 $ (u12 190923); `0xab21…c521` 42,083 $ (u12 -1083); `0x0380…073d` 37,806 $ (u12 1804633).
+- Bottom 3: `0x5a21…9318` -25,420 $ (u12 2498494); `0x43cb…84df` -3,883 $ (u12 79571); `0xc518…2594` -2,339 $ (u12 257279).
+
+**TWEETS** — participants in the sampled events: 893; sampled: 70 most active by trade count (closed-position history capped at 300 per wallet for 62 of them, so family P&L below is a lower bound on activity, not on losses).
+- Family P&L, closed realized + unredeemed losers (V): losers 11/67 (16 %), quartiles P10/P25/P50/P75/P90 = -103 / 36 / 1626 / 9678 / 20372 $, sum 991,550 $ (raw closed-only sum was 1,710,621 $, i.e. 42 % was unbooked losses).
+- Whole-wallet user-pnl over 12 months (all families, V): losers 32/70 (46 %), quartiles = -40521 / -16001 / 74 / 18708 / 235528 $, sum 7,688,542 $.
+- Top 5 corrected family P&L: `0x6864…294b` 474,483 $ (u12 31232); `0x1e1a…7690` 297,780 $ (u12 88366); `0x5b24…f36a` 49,609 $ (u12 -8520); `0x0130…fb49` 34,753 $ (u12 35033); `0xa2d7…e3b7` 22,134 $ (u12 411).
+- Bottom 3: `0x5a21…9318` -79,399 $ (u12 2498494); `0x511f…cbe1` -62,004 $ (u12 847536); `0x4f1d…8de2` -18,432 $ (u12 1978123).
+
+Caveats (V): (1) closed-position history was capped at 300 per wallet, while unredeemed losers come from the complete open-position list, so "family P&L corrected" mixes a partial gain history with complete dead losses; treat the family loser shares (7 % box office, 16 % tweets) as lower bounds and the whole-wallet user-pnl shares (34 % and 46 % negative over 12 months) as the honest survivorship measure. (2) The two largest "family-corrected" tweet wallets (+474 k$ and +298 k$ on closed positions) show only +31 k$ and +88 k$ on user-pnl: the split/maker inflation again. (3) Whole-wallet figures include other families (sports, politics) for the multi-market accounts in the sample. (4) Unbooked losses were 20 % of raw closed gains in box office and 42 % in tweets: cheap-bucket lottery buying is where the artefact lives.
+
+Reading: among the most active participants, roughly one in three box-office traders and one in two tweet-count traders lost money over the last 12 months across their whole Polymarket activity; the median active box-office wallet is modestly positive (+11.5 k$ whole-wallet, +1.4 k$ family-corrected), the median active tweet wallet is ≈ 0 (+74 $ whole-wallet, +1.6 k$ family-corrected).
+
 
 ## 5. Final self-attack (per surviving card)
 
@@ -312,3 +331,7 @@ REAL_CAPITAL_AUTHORIZED = FALSE.
 
 Next cheapest falsification mission: SPI-1 one-day replay — every Polymarket box-office bracket event of the last 26 weeks, hourly bracket VWAPs from `trades`, joined to the dated public release timeline (Thursday previews, Friday actuals, Sunday estimate, The Numbers final), returns net of 0.05·p(1−p) for buying the bracket implied by each release at the prevailing ask, plus the frequency of estimate-to-final bracket flips.
 
+
+## 9. Reproducibility
+
+Scripts used for every (V) figure are committed under `research/recus_2026-09/agent4_scripts/` (read-only public-API pulls; no trading logic): `pm_receipts.py` (category leaderboards → closed positions by mechanism class), `pm_deep.py` + `analyze_deep.py` (full histories, monthly series, two-sided share, ≥ 0.90 entries), `pm_positions.py` (unredeemed losers), `pm_surv.py` + `surv_userpnl.py` + `surv_report.py` (survivorship sample), `classes.py` (title classifier). Raw JSON pulls were not committed (size); re-running the scripts on 2026-09-29 reproduces the tables up to API drift.
