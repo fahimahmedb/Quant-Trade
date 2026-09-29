@@ -484,6 +484,7 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher 
                  for item in read_stream(out, PINNACLE)]
     plan, info = plan_requests(now, ledger, snapshots, sports, anchor_hours=anchor_hours)
     yield "odds/plans.jsonl", stamp, {"plan": plan, **info}
+    quoted: set[str] = set()
     for sport, reason in plan:
         records, meta = fetch_pinnacle(sport, key, fetch)
         meta["reason"] = reason
@@ -499,6 +500,21 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher 
                 if now < parse_time(r["commence_time"]) <= now + timedelta(hours=QUOTE_HORIZON_H)]
         if live:
             yield from _venue_quotes(sport, live, now, stamp, get)
+            quoted.update(r["event_id"] for r in live)
+    # Blue 2026-09-29: venue prices are written EVERY run (no Odds API cost) for matches
+    # known from the latest stored Pinnacle snapshot, not only in runs that poll Pinnacle.
+    latest: dict[str, dict[str, Any]] = {}
+    for row in snapshots:
+        if row["event_id"] not in latest or row["observed_at"] > latest[row["event_id"]]["observed_at"]:
+            latest[row["event_id"]] = row
+    by_sport: dict[str, list[dict[str, Any]]] = {}
+    for row in latest.values():
+        if row["event_id"] in quoted or row.get("sport") not in set(sports):
+            continue
+        if now < parse_time(row["commence_time"]) <= now + timedelta(hours=QUOTE_HORIZON_H):
+            by_sport.setdefault(row["sport"], []).append(row)
+    for sport, rows in by_sport.items():
+        yield from _venue_quotes(sport, rows, now, stamp, get)
 
 
 def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp: str,
@@ -560,8 +576,18 @@ def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp
                       "bids": book and book["bids"][:5], "book_empty": book is None}
             yield f"{QUOTES_PM}.jsonl", f"{stamp}|{event['event_id']}|{outcome}", record
         for outcome, market in k_map.items():
+            # Order 12: the public book at entry decides executability (never assume a fill).
+            book_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            try:
+                book = fetch_kalshi_orderbook(market["ticker"], get)
+                book_status = "OK" if book else "EMPTY"
+            except DataUnavailable as exc:
+                book, book_status = None, f"UNAVAILABLE: {exc}"[:120]
             record = {**base, "venue": "KALSHI", "outcome": outcome, **kalshi_quote(market),
-                      "fetched_at": stamp, "source_url": k_url}
+                      "fetched_at": stamp, "source_url": k_url, "book_status": book_status,
+                      "book_fetched_at": book_at,
+                      "asks": book["asks"][:5] if book else None,
+                      "ask_depth": book["ask_depth"] if book else None}
             yield f"{QUOTES_KALSHI}.jsonl", f"{stamp}|{event['event_id']}|{outcome}", record
 
 
@@ -806,11 +832,16 @@ def parse_kalshi_orderbook(payload: Any, ticker: str) -> dict[str, Any] | None:
     orders only; a resting no-buy at price ``p`` is a resting yes-SELL at ``1-p``
     (the same complementary-pricing mechanic ``kalshi_quote``/``sportsfair`` already
     assume elsewhere in this codebase, not a new one)."""
-    book = (payload or {}).get("orderbook") or {}
+    payload = payload or {}
+    # Live API (2026): ``orderbook_fp`` with ``yes_dollars``/``no_dollars`` [price $, size];
+    # legacy: ``orderbook`` with ``yes``/``no`` [price cents, size].
+    fp = payload.get("orderbook_fp")
+    book = fp if isinstance(fp, dict) else (payload.get("orderbook") or {})
+    scale, suffix = (1.0, "_dollars") if isinstance(fp, dict) else (100.0, "")
 
     def side(name: str) -> list[tuple[float, float]]:
-        levels = [(_float(p), _float(s)) for p, s in (book.get(name) or [])]
-        return [(p / 100, s) for p, s in levels if p is not None and s is not None and s > 0]
+        levels = [(_float(p), _float(s)) for p, s in (book.get(name + suffix) or [])]
+        return [(p / scale, s) for p, s in levels if p is not None and s is not None and s > 0]
 
     yes_bids = sorted(side("yes"), reverse=True)
     no_bids = sorted(side("no"), reverse=True)

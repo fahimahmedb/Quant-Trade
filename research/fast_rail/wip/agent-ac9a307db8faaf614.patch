@@ -323,6 +323,65 @@ index 0000000..d897c0e
 +    start = dt.datetime.combine(WINDOW_START, dt.time(), dt.timezone.utc)
 +    end = dt.datetime.combine(WINDOW_END + dt.timedelta(days=1), dt.time(), dt.timezone.utc)
 +    return int(start.timestamp()), int(end.timestamp())
+diff --git a/research/fast_rail/h010/detail_sampled.py b/research/fast_rail/h010/detail_sampled.py
+new file mode 100644
+index 0000000..e25d8a2
+--- /dev/null
++++ b/research/fast_rail/h010/detail_sampled.py
+@@ -0,0 +1,53 @@
++"""Phase 2 (economical): detail only a seeded permutation prefix per category.
++
++Equivalent to the declared rule (uniform over qualifying events, seed 20260927,
++<= 400 events per category): walk each category's events in a seeded random
++order and fetch details until 400 events with a qualifying market are found.
++Decided before any trade is read; avoids fetching all ~257k indexed events.
++"""
++import json
++import random
++import sys
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import config  # noqa: E402
++import sample as s  # noqa: E402
++
++
++def main() -> None:
++    start_ts, end_ts = config.window_ts()
++    by_cat: dict[str, list[str]] = {}
++    with s.IDX_JL.open() as f:
++        for line in f:
++            r = json.loads(line)
++            by_cat.setdefault(r["category"], []).append(r["event_ticker"])
++    done = {}
++    if s.DETAIL_DONE.exists():
++        for line in s.DETAIL_DONE.open():
++            d = json.loads(line)
++            done[d["event_ticker"]] = d["n_kept"]
++    with s.DETAIL_DONE.open("a") as dfh, s.EVENTS_JL.open("a") as efh:
++        for cat in config.CATEGORIES:
++            order = sorted(set(by_cat.get(cat, [])))
++            random.Random(config.SEED).shuffle(order)
++            found = 0
++            for et in order:
++                if found >= config.MAX_EVENTS_PER_CATEGORY:
++                    break
++                if et not in done:
++                    ev = s._get(f"/events/{et}?with_nested_markets=true").get("event", {})
++                    rows = [x for x in (s.qualifying_row(ev, m, start_ts, end_ts)
++                                        for m in ev.get("markets", [])) if x is not None]
++                    for x in rows:
++                        efh.write(json.dumps(x, sort_keys=True) + "\n")
++                    dfh.write(json.dumps({"event_ticker": et, "n_kept": len(rows)}) + "\n")
++                    efh.flush(); dfh.flush()
++                    done[et] = len(rows)
++                found += 1 if done[et] else 0
++            print(cat, "qualifying events found", found, "of", len(order), flush=True)
++    print("DETAIL_SAMPLED DONE", flush=True)
++
++
++if __name__ == "__main__":
++    main()
 diff --git a/research/fast_rail/h010/fetch.py b/research/fast_rail/h010/fetch.py
 new file mode 100644
 index 0000000..9c22db0
