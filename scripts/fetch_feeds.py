@@ -180,7 +180,10 @@ def _collect(out: Path, now: datetime, only: set[str] | None = None) -> dict:
     def odds():
         # H-001 (EPL/NBA, 12h anchor) + H-011 (3 niche leagues, 24h anchor) share one
         # budget-guarded Pinnacle relay; see h001_relay's docstring for the arithmetic.
-        yield from h001_relay.collect(out, now, sports=h001_relay.ALL_SPORTS,
+        # Stamp at the lane's own start (it runs after slower lanes in a full run): a
+        # run-start stamp could label an in-play snapshot "pre-kickoff" (runtime red team).
+        lane_now = datetime.now(timezone.utc).replace(microsecond=0)
+        yield from h001_relay.collect(out, lane_now, sports=h001_relay.ALL_SPORTS,
                                       anchor_hours=h001_relay.ANCHOR_HOURS_BY_SPORT)
 
     def sports_fills():

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 import unittest
 from datetime import datetime, timezone
@@ -61,32 +62,82 @@ class ForwardTests(unittest.TestCase):
         rows = [{"closed": True, "clobTokenIds": '["t1","t2"]', "outcomePrices": '["1","0"]'}]
         self.assertEqual(f._settlement(pm, lambda url: rows), 0.0)
         rows[0]["outcomePrices"] = '["0.5","0.5"]'
+        self.assertEqual(f._settlement(pm, lambda url: rows), 0.5)      # void settles at 0.5
+        rows[0]["outcomePrices"] = '["0.7","0.3"]'
         self.assertIsNone(f._settlement(pm, lambda url: rows))
 
-    def test_proxy_rule_requires_positive_pnl(self):
-        now = datetime(2026, 12, 1, tzinfo=timezone.utc)
+    def _book(self, venue_close_mid, pnl_value, n=500):
+        """Invented: n matches, entry ask 0.40 vs fair 0.5, later venue quote at mid."""
         pins, quotes, settled = [], [], {}
-        for i in range(400):                               # invented: 400 matches with CLV
-            ev, day = f"E{i}", f"2026-10-{1 + i % 28:02d}T{i % 20:02d}:00:00+00:00"
-            kick = f"2026-10-{1 + i % 28:02d}T{i % 20 + 3:02d}:00:00+00:00"
-            pins += [{"event_id": ev, "observed_at": day, "commence_time": kick,
-                      "prices": {"Home": 2.0, "Away": 2.0}},
-                     {"event_id": ev, "observed_at": day.replace("T", "T") , "commence_time": kick,
-                      "prices": {"Home": 2.0, "Away": 2.0}}]
-            quotes.append(quote(day, "KALSHI", 0.40 + (i % 5) * 0.005, event=ev, market=f"K{i}"))
-            settled[f"KALSHI|K{i}|None"] = 0.0             # every bet loses: P&L < 0
+        for i in range(n):
+            ev = f"E{i}"
+            day = f"2026-{10 + i // 250:02d}-{1 + (i % 250) // 10:02d}"
+            entry, later, kick = (f"{day}T0{i % 10}:00:00+00:00", f"{day}T1{i % 10}:00:00+00:00",
+                                  f"{day}T2{i % 4}:00:00+00:00")
+            for stamp in (entry, later):
+                pins.append({"event_id": ev, "observed_at": stamp, "commence_time": kick,
+                             "prices": {"Home": 2.0, "Away": 2.0}})
+            quotes.append(quote(entry, "KALSHI", 0.40, event=ev, market=f"K{i}"))
+            quotes.append({**quote(later, "KALSHI", venue_close_mid + 0.01, event=ev,
+                                   market=f"K{i}"), "best_bid": venue_close_mid - 0.01})
+            settled[f"KALSHI|K{i}|None"] = pnl_value
+        return pins, quotes, settled
+
+    def test_statistic_is_not_positive_by_construction(self):
+        # Red-team HIGH: Pinnacle unchanged, venue price unchanged -> mean = -fee < 0.
+        pins, quotes, settled = self._book(venue_close_mid=0.40, pnl_value=0.0, n=60)
+        report = f.evaluate(pins, quotes, settled, datetime(2027, 1, 1, tzinfo=timezone.utc))
+        self.assertLess(report["mean_net_clv"], 0)
+
+    def test_proxy_rule_frozen_and_needs_positive_pnl(self):
+        now = datetime(2027, 1, 1, tzinfo=timezone.utc)
+        pins, quotes, settled = self._book(venue_close_mid=0.48, pnl_value=0.0)
         report = f.evaluate(pins, quotes, settled, now)
         self.assertEqual(report["t_sprt"]["decision"], "ACCEPT_EDGE")
         self.assertEqual(report["status"], "ACCEPT_PENDING_PNL")
-        for key in settled:
-            settled[key] = 1.0
+        pins, quotes, settled = self._book(venue_close_mid=0.48, pnl_value=1.0)
         self.assertEqual(f.evaluate(pins, quotes, settled, now)["status"], "FORWARD_PASS")
+
+    def test_terminal_decision_is_sticky(self):
+        frozen = {"status": "REJECT(FORWARD)", "matches": 40}
+        pins, quotes, settled = self._book(venue_close_mid=0.48, pnl_value=1.0)
+        out = f.evaluate(pins, quotes, settled, datetime(2027, 1, 1, tzinfo=timezone.utc), frozen)
+        self.assertEqual(out["status"], "REJECT(FORWARD)")
+        self.assertTrue(out["sticky"])
+
+    def test_rescheduled_match_is_dropped(self):
+        pins, quotes, settled = self._book(venue_close_mid=0.48, pnl_value=1.0, n=1)
+        pins.append({**pins[0], "observed_at": pins[0]["observed_at"],
+                     "commence_time": "2026-10-09T20:00:00+00:00"})
+        report = f.evaluate(pins, quotes, settled, datetime(2027, 1, 1, tzinfo=timezone.utc))
+        self.assertEqual(report["matches"], 0)
+
+    def test_polymarket_depth_and_staleness(self):
+        base = {**quote(T0, "POLYMARKET", 0.40), "fetched_at": T0}
+        thin = {**base, "asks": [[0.40, 5]]}
+        deep = {**base, "asks": [[0.40, 150]]}
+        stale = {**deep, "fetched_at": "2026-10-01T12:10:00+00:00"}
+        self.assertEqual(f.find_bets([pin(T0)], [thin]), [])
+        self.assertEqual(len(f.find_bets([pin(T0)], [deep])), 1)
+        self.assertEqual(f.find_bets([pin(T0)], [stale]), [])
 
     def test_declaration_constants(self):
         self.assertAlmostEqual(f.ALPHA, 0.025)
-        self.assertAlmostEqual(f.H1_EFFECT, 0.0095)
-        self.assertGreaterEqual(f.PRISTINE_AFTER, "2026-09-29T12:00:00+00:00")
+        self.assertAlmostEqual(f.H1_EFFECT, 0.00475)
+        self.assertGreaterEqual(f.PRISTINE_AFTER, "2026-09-29T14:00:00+00:00")
 
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BudgetLedgerTests(unittest.TestCase):
+    def test_unreachable_pinnacle_fetch_is_still_counted(self):
+        from quant.dataplane.adapters import DataUnavailable
+        from quant.dataplane.h001_relay import fetch_pinnacle
+        def boom(url):
+            raise DataUnavailable("timeout")
+        records, meta = fetch_pinnacle("soccer_epl", "KEY-NOT-REAL", fetch=boom)
+        self.assertEqual(records, [])
+        self.assertTrue(meta.get("charged"))
+        self.assertNotIn("KEY-NOT-REAL", json.dumps(meta))
