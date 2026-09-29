@@ -235,7 +235,7 @@ def main() -> None:
             import forward as h001_forward
             status = h001_forward.run(args.out, now)
             report["h001_forward_eval"] = {"status": "OK", "verdict": status["status"],
-                                           "matches": status["matches"]}
+                                           "engagements": status.get("engagements")}
         except Exception as exc:  # noqa: BLE001 - reported, not raised
             report["h001_forward_eval"] = {"status": "ERROR",
                                            "error": f"{type(exc).__name__}: {exc}"[:200]}

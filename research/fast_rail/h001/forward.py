@@ -99,15 +99,16 @@ def find_bets(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
             fair = devig_power(pin["prices"]).get(quote["outcome"])
             if fair is None:
                 continue
-            if quote["venue"] != "KALSHI":
-                fetched = quote.get("fetched_at")
-                if fetched and (parse_time(fetched) - parse_time(stamp)).total_seconds() \
-                        > MAX_QUOTE_AGE_S:
-                    continue                  # stale relative to the Pinnacle snapshot
-                depth = sum(size for price, size in (quote.get("asks") or [])
-                            if price <= ask + 1e-9)
-                if depth < ORDER_CONTRACTS:
-                    continue                  # the declared order would not fill at ask
+            seen_at = quote.get("book_fetched_at") or quote.get("fetched_at")
+            if seen_at and (parse_time(seen_at) - parse_time(stamp)).total_seconds() \
+                    > MAX_QUOTE_AGE_S:
+                continue                      # stale relative to the Pinnacle snapshot
+            if quote["venue"] == "KALSHI" and quote.get("book_status") != "OK":
+                continue                      # order 12: no readable book -> no bet
+            depth = sum(size for price, size in (quote.get("asks") or [])
+                        if price <= ask + 1e-9)
+            if depth < ORDER_CONTRACTS:
+                continue                      # the declared order would not fill at ask
             fee = fee_per_contract(quote["venue"], ask)
             net_edge = fair - ask - fee
             slot = (event, quote["outcome"])
@@ -118,7 +119,8 @@ def find_bets(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
                               "net_edge_at_entry": net_edge,
                               "commence_time": pin["commence_time"],
                               "market": quote.get("ticker") or quote.get("market_id"),
-                              "token_id": quote.get("token_id")}
+                              "token_id": quote.get("token_id"), "depth_seen": depth,
+                              "book_seen_at": seen_at}
     return list(bets.values())
 
 
@@ -161,52 +163,123 @@ def _venue_close(quotes: list[dict[str, Any]], bet: dict[str, Any]) -> float | N
     return None if best is None else best[1]
 
 
+MAX_MISSING_CLOSE = 0.10
+
+
+def _clv_indicator(series: list[float]) -> dict[str, Any]:
+    """Plug-in t-SPRT: INDICATOR ONLY since order 12 (alpha not guaranteed)."""
+    return event_sequential_test(series, H1_OVER_SIGMA, ALPHA, max_observations=MAX_MATCHES,
+                                 sigma_floor=SIGMA_DECLARED)
+
+
 def evaluate(pinnacle: list[dict[str, Any]], quotes: Iterable[dict[str, Any]],
              settled: dict[str, float], now: datetime,
-             frozen: dict[str, Any] | None = None) -> dict[str, Any]:
+             frozen: dict[str, Any] | None = None,
+             settled_at: dict[str, str] | None = None,
+             decision_test: Callable[[list[float]], dict[str, Any]] | None = None
+             ) -> dict[str, Any]:
+    """Order 12. Every entered bet is an engagement kept until the venue settles it.
+
+    ``decision_test`` is the order-12b anytime-valid e-process over the match CLV
+    series; while it is None the status stays SHADOW_DIRECT (no decision possible).
+    """
     quotes = list(quotes)
+    settled_at = settled_at or {}
     kickoffs: dict[str, set[str]] = {}
     for row in pinnacle:
         kickoffs.setdefault(row["event_id"], set()).add(row["commence_time"])
-    matches: dict[str, dict[str, Any]] = {}
+    engagements, matches = [], {}
     for bet in find_bets(pinnacle, quotes):
-        if len(kickoffs.get(bet["odds_event_id"], ())) > 1:
-            continue                      # rescheduled match: dropped from CLV and P&L
         if parse_time(bet["commence_time"]) > now:
-            continue
-        close = _venue_close(quotes, bet)
-        if close is None:
-            continue                      # no later venue quote: never scored at entry
-        unit = matches.setdefault(bet["odds_event_id"], {"kickoff": bet["commence_time"],
-                                                         "clv": [], "pnl": []})
-        unit["clv"].append(close - bet["ask"] - bet["fee"])
+            continue                                  # not yet played: not scored yet
+        rescheduled = len(kickoffs.get(bet["odds_event_id"], ())) > 1
+        close = None if rescheduled else _venue_close(quotes, bet)
         key = f"{bet['venue']}|{bet['market']}|{bet.get('token_id')}"
-        if key in settled:
-            unit["pnl"].append(settled[key] - bet["ask"] - bet["fee"])
+        cost = bet["ask"] + bet["fee"]
+        eng = {**bet, "key": key, "rescheduled": rescheduled,
+               "clv": None if close is None else close - cost,
+               "settlement": settled.get(key), "settled_at": settled_at.get(key)}
+        eng["pnl"] = None if eng["settlement"] is None else eng["settlement"] - cost
+        engagements.append(eng)
+        unit = matches.setdefault(bet["odds_event_id"], {"kickoff": bet["commence_time"],
+                                                         "engagements": []})
+        unit["engagements"].append(eng)
     ordered = sorted(matches.items(), key=lambda item: (item[1]["kickoff"], item[0]))
-    series = [sum(u["clv"]) / len(u["clv"]) for _, u in ordered]
-    test = event_sequential_test(series, H1_OVER_SIGMA, ALPHA, max_observations=MAX_MATCHES,
-                                 sigma_floor=SIGMA_DECLARED)
-    # Proxy P&L frozen at the SPRT stopping point (no optional stopping on the gate).
-    prefix = ordered[:test["observations"]] if test["decision"] != "CONTINUE" else ordered
-    pnl = [value for _, u in prefix for value in u["pnl"]]
-    pnl_mean = sum(pnl) / len(pnl) if pnl else None
-    if test["decision"] == "ACCEPT_EDGE":
-        status = ("FORWARD_PASS" if len(pnl) >= MIN_SETTLED and (pnl_mean or 0) > 0
-                  else "ACCEPT_PENDING_PNL")
-    else:
-        status = {"REJECT_EDGE": "REJECT(FORWARD)", "INCONCLUSIVE": "INCONCLUSIVE",
-                  "CONTINUE": "SHADOW_DIRECT"}[test["decision"]]
+    clv_series, clv_units = [], []
+    for event, unit in ordered:
+        clvs = [e["clv"] for e in unit["engagements"] if e["clv"] is not None]
+        if clvs:
+            clv_series.append(sum(clvs) / len(clvs))
+            clv_units.append(event)
+    missing = sum(1 for e in engagements if e["clv"] is None)
+    missing_frac = missing / len(engagements) if engagements else 0.0
+    indicator = _clv_indicator(clv_series)
+    decision = decision_test(clv_series) if decision_test else None
+    status = "SHADOW_DIRECT"
+    if engagements and len(engagements) >= 20 and missing_frac > MAX_MISSING_CLOSE:
+        status = "INCONCLUSIVE(DATA)"
+    elif decision is not None:
+        if decision["decision"] == "REJECT_EDGE":
+            status = "REJECT(FORWARD)"
+        elif decision["decision"] == "INCONCLUSIVE":
+            status = "INCONCLUSIVE"
+        elif decision["decision"] == "ACCEPT_EDGE":
+            stop = set(clv_units[:decision["observations"]])
+            prefix = [e for e in engagements if e["odds_event_id"] in stop]
+            if any(e["pnl"] is None for e in prefix):
+                status = "ACCEPT_PENDING_SETTLEMENT"      # never frozen before settlement
+            else:
+                pnl = [e["pnl"] for e in prefix]
+                clv = [e["clv"] for e in prefix if e["clv"] is not None]
+                se = _se(pnl)
+                ok = (sum(pnl) / len(pnl)) >= (sum(clv) / len(clv)) - 1.96 * se
+                status = "FORWARD_PASS(PRICE)" if ok else "REJECT(PNL_BELOW_CLV)"
     report = {"hypothesis": "H-001", "k": K, "alpha": ALPHA, "pristine_after": PRISTINE_AFTER,
-              "statistic": "net venue CLV per match (prob points)", "matches": len(series),
-              "mean_net_clv": sum(series) / len(series) if series else None,
-              "settled_bets": len(pnl), "mean_net_pnl": pnl_mean, "t_sprt": test,
-              "status": status, "evaluated_at": now.isoformat(timespec="seconds")}
-    # Sticky: a terminal decision is never re-decided by later or late-arriving data.
-    if frozen and frozen.get("status") in ("FORWARD_PASS", "REJECT(FORWARD)", "INCONCLUSIVE"):
+              "statistic": "net venue CLV per match (prob points)",
+              "engagements": len(engagements), "matches_with_clv": len(clv_series),
+              "missing_close_fraction": missing_frac,
+              "mean_net_clv": sum(clv_series) / len(clv_series) if clv_series else None,
+              "decision_test": decision or "order-12b e-process not delivered: no decision",
+              "t_sprt_indicator_only": indicator, "status": status,
+              "economics": _economics(engagements),
+              "disclaimer": ("FORWARD_PASS(PRICE) proves a price edge, not a cashable gain; "
+                             "proving P&L needs about (1.96*sigma/edge)^2 ~ 2,400 bets; proof "
+                             "of gain is a real micro-test, an owner decision."),
+              "evaluated_at": now.isoformat(timespec="seconds")}
+    terminal = ("FORWARD_PASS(PRICE)", "REJECT(FORWARD)", "INCONCLUSIVE",
+                "INCONCLUSIVE(DATA)", "REJECT(PNL_BELOW_CLV)")
+    if frozen and frozen.get("status") in terminal:
         return {**frozen, "evaluated_at": report["evaluated_at"], "sticky": True,
-                "matches_since": report["matches"]}
+                "engagements_since": report["engagements"]}
     return report
+
+
+def _se(values: list[float]) -> float:
+    n = len(values)
+    if n < 2:
+        return float("inf")
+    mean = sum(values) / n
+    return math.sqrt(sum((v - mean) ** 2 for v in values) / (n - 1) / n)
+
+
+def _economics(engagements: list[dict[str, Any]]) -> dict[str, Any]:
+    """Reported, never a pass condition (order 12 §3). Per declared 100-contract order."""
+    done = [e for e in engagements if e["pnl"] is not None and e.get("settled_at")]
+    total = sum(e["pnl"] for e in done) * ORDER_CONTRACTS
+    capital_years = sum((e["ask"] + e["fee"]) * ORDER_CONTRACTS
+                        * max((parse_time(e["settled_at"]) - parse_time(e["entry_observed_at"])
+                               ).total_seconds(), 3600.0) / (365.25 * 86400) for e in done)
+    pnl = [e["pnl"] for e in done]
+    mean = sum(pnl) / len(pnl) if pnl else None
+    se = _se(pnl) if pnl else None
+    return {"settled_engagements": len(done),
+            "unsettled_engagements": sum(1 for e in engagements if e["pnl"] is None),
+            "net_pnl_total_usd": total,
+            "capital_locked_usd_years": capital_years,
+            "annualised_return_on_locked_capital": total / capital_years if capital_years else None,
+            "mean_pnl_per_contract": mean,
+            "pnl_ci95_per_contract": None if mean is None or se == float("inf")
+            else [mean - 1.96 * se, mean + 1.96 * se]}
 
 
 def run(out: Path, now: datetime | None = None, fetch: Callable[[str], Any] | None = None
@@ -215,8 +288,9 @@ def run(out: Path, now: datetime | None = None, fetch: Callable[[str], Any] | No
     now = now or datetime.now(timezone.utc)
     fetch = fetch or (lambda url: http_fetch(url)[0])
     pinnacle, quotes = load(out)
-    settled = {item["record"]["key"]: item["record"]["value"]
-               for item in read_stream(out, SETTLEMENTS)}
+    items = read_stream(out, SETTLEMENTS)
+    settled = {item["record"]["key"]: item["record"]["value"] for item in items}
+    settled_at = {item["record"]["key"]: item["observed_at"] for item in items}
     new = []
     deadline = datetime.now(timezone.utc).timestamp() + SETTLE_BUDGET_S
     for bet in find_bets(pinnacle, quotes):
@@ -231,6 +305,7 @@ def run(out: Path, now: datetime | None = None, fetch: Callable[[str], Any] | No
             value = None
         if value is not None:
             settled[key] = value
+            settled_at[key] = now.isoformat(timespec="seconds")
             new.append({"key": key, "value": value})
     if new:
         path = out / SETTLEMENTS / f"{now:%Y-%m}.jsonl"
@@ -247,7 +322,7 @@ def run(out: Path, now: datetime | None = None, fetch: Callable[[str], Any] | No
     frozen = json.loads(target.read_text()) if target.exists() else None
     target.parent.mkdir(parents=True, exist_ok=True)
     try:
-        report = evaluate(pinnacle, quotes, settled, now, frozen)
+        report = evaluate(pinnacle, quotes, settled, now, frozen, settled_at)
     except Exception as exc:                # visible in the eval file, not only _runs
         report = {**(frozen or {}), "status": "EVAL_ERROR",
                   "error": f"{type(exc).__name__}: {exc}"[:200],
