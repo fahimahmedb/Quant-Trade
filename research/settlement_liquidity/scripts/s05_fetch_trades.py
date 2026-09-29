@@ -46,9 +46,16 @@ def key(x):
 def fetch(row, pre):
     cid = row["conditionId"]
     fn = os.path.join(CACHE, f"{cid}.json.gz")
-    if os.path.exists(fn):
-        return "cached"
     t_det, t_res = float(row["t_det"]), float(row["t_res"])
+    if os.path.exists(fn):
+        try:
+            with gzip.open(fn, "rt") as f:
+                old = json.load(f)
+            if abs(old["t_det"] - t_det) < 1 and abs(old["t_res"] - t_res) < 1:
+                return "cached"
+        except Exception:
+            pass
+        os.remove(fn)  # T_DET changed (deviation D1/D2) or corrupt cache -> refetch
     t_from = t_det - pre
     tk, cov_t = pages(cid, True, t_from)
     in_win = [x for x in tk if t_det <= x["timestamp"] < t_res]

@@ -53,7 +53,7 @@ only costs re-fetch time (all APIs are public and free).
 | S4b | `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | DONE: 6,609 PM events → 2,382 ESPN events (1,238 with terminal wallclock) |
 | S4c | `s04c_weather.py markets_primary 2026-08-27 2026-10-01` | `data/weather_determination_primary.csv.gz` | DONE: 10,643 / 12,221 verified |
 | S4d | `s04d_assemble.py markets_primary` | `data/determination_primary.csv.gz` | DONE (CKPT-2): 36,991 VERIFIED, 36,074 with non-empty window; 42,598 UNVERIFIABLE |
-| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING (started on as-frozen T_DET; after D1/D2 run `s05b_refresh.py` then re-run S5 to fetch changed/new markets) |
+| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING (started on as-frozen T_DET; after D1/D2 simply re-run S5: it refetches cached markets whose T_DET changed and fetches new ones) |
 | S6 | `s06_accounting.py primary 60` | `data/fills_primary.csv.gz`, `data/fills_contrast_primary.csv.gz`, `data/newcomer_inputs_primary.jsonl.gz`, `data/accounting_summary_primary.json` | CODE DONE; run after S5 |
 | S7 | newcomer queue model + capital sims (`s07_newcomer.py`) | `data/newcomer_*.json` | TODO |
 | S8 | `s08_live_queue_monitor.py 14` (read-only, detached, started 23:38Z) | `data/raw/live/*.jsonl` → summary `data/live_queue_summary.json` | RUNNING |
