@@ -484,6 +484,7 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher 
                  for item in read_stream(out, PINNACLE)]
     plan, info = plan_requests(now, ledger, snapshots, sports, anchor_hours=anchor_hours)
     yield "odds/plans.jsonl", stamp, {"plan": plan, **info}
+    quoted: set[str] = set()
     for sport, reason in plan:
         records, meta = fetch_pinnacle(sport, key, fetch)
         meta["reason"] = reason
@@ -499,6 +500,21 @@ def collect(out: Path, now: datetime, *, key: str | None = None, fetch: Fetcher 
                 if now < parse_time(r["commence_time"]) <= now + timedelta(hours=QUOTE_HORIZON_H)]
         if live:
             yield from _venue_quotes(sport, live, now, stamp, get)
+            quoted.update(r["event_id"] for r in live)
+    # Blue 2026-09-29: venue prices are written EVERY run (no Odds API cost) for matches
+    # known from the latest stored Pinnacle snapshot, not only in runs that poll Pinnacle.
+    latest: dict[str, dict[str, Any]] = {}
+    for row in snapshots:
+        if row["event_id"] not in latest or row["observed_at"] > latest[row["event_id"]]["observed_at"]:
+            latest[row["event_id"]] = row
+    by_sport: dict[str, list[dict[str, Any]]] = {}
+    for row in latest.values():
+        if row["event_id"] in quoted or row.get("sport") not in set(sports):
+            continue
+        if now < parse_time(row["commence_time"]) <= now + timedelta(hours=QUOTE_HORIZON_H):
+            by_sport.setdefault(row["sport"], []).append(row)
+    for sport, rows in by_sport.items():
+        yield from _venue_quotes(sport, rows, now, stamp, get)
 
 
 def _venue_quotes(sport: str, events: list[dict[str, Any]], now: datetime, stamp: str,
