@@ -10,3 +10,4 @@
 {"key": "2026-09-29T05:52:35+00:00", "kind": "observation", "observed_at": "2026-09-29T05:52:35+00:00", "record": {"last_remaining": 494, "plan": [], "used_month": 6, "used_today": 2}}
 {"key": "2026-09-29T09:07:24+00:00", "kind": "observation", "observed_at": "2026-09-29T09:07:24+00:00", "record": {"last_remaining": 494, "plan": [], "used_month": 6, "used_today": 2}}
 {"key": "2026-09-29T09:52:40+00:00", "kind": "observation", "observed_at": "2026-09-29T09:52:40+00:00", "record": {"last_remaining": 494, "plan": [], "used_month": 6, "used_today": 2}}
+{"key": "2026-09-29T16:09:09+00:00", "kind": "observation", "observed_at": "2026-09-29T16:09:09+00:00", "record": {"last_remaining": 494, "plan": [["soccer_epl", "anchor"], ["basketball_nba", "anchor"]], "used_month": 6, "used_today": 2}}
