@@ -1,0 +1,101 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2026-02-27,GOAT,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-02-27,GOAT,NTH,B,,,,,,,,,,NO_RELEASE: only prior-week 7-day Wk $20.66M chart (not a 3-day projection)
+2026-02-27,GOAT,NTH,C,11.75,11.75,11.75,,D,1236738417,SATURDAY AM,LABEL,"GOAT (Sony) 3,707 (-156) theaters, Fri $2.6M (-32%), 3-day $11.75M (-30%)",chart line
+2026-02-27,GOAT,NTH,D,12,12,12,,D,1236738417,SUNDAY AM,LABEL,"Sat $5.5M Sun $3.7M, 3-day $12M (-29%)",V:12 STRICT (1236675830)
+2026-02-27,Scream 7,OPEN,A,,,,,,,,,,NO_USABLE_FIGURE: only Variety STRICT previews/budget sentences; no 3-day projection
+2026-02-27,Scream 7,OPEN,B,59,59,59,,D,1236738417,UPDATED FRIDAY MIDDAY,LABEL,Scream 7 is heading to a franchise opening record of $59M after a $28M Friday,
+2026-02-27,Scream 7,OPEN,C,60,60,60,,D,1236738417,SATURDAY AM,LABEL,"Scream 7 (Par) 3,540 theaters, Fri $28.8M, 3-day $60M/Wk 1","chart line taken from GOAT/Wuthering block same section; prose ""$60M weekend ... maybe more"" agrees"
+2026-02-27,Scream 7,OPEN,D,64.1,64.1,64.1,,D,1236738417,SUNDAY AM,LABEL,"Scream 7 (Par) 3,540 theaters, Fri $28.8M, Sat $21.7M Sun $13.6M 3-day $64.1M",V:64.1 STRICT (1236675830)
+2026-02-27,Wuthering Heights,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-02-27,Wuthering Heights,NTH,B,,,,,,,,,,NO_RELEASE: only truncated prior-week chart
+2026-02-27,Wuthering Heights,NTH,C,7,7,7,,D,1236738417,SATURDAY AM,LABEL,"Wuthering Heights (WB) 3,221 (-461), Fri $2.2M (-53%), 3-day $7M (-50%)",chart line
+2026-02-27,Wuthering Heights,NTH,D,6.95,6.95,6.95,,D,1236738417,SUNDAY AM,LABEL,"Sat $2.7M Sun $2M, 3-day $6.95M (-53%)",V:7 STRICT (1236675830)
+2026-03-06,Hoppers,OPEN,A,,,,,,,,,,"VAGUE: Deadline FRIDAY AM says ""high-$30M+ range"" (no numeric point; not converted). Lead to decide"
+2026-03-06,Hoppers,OPEN,B,40,40,40,,D,1236745894,FRIDAY PM,LABEL,"Hoppers springing to a wonderful $40M weekend opening at 4,000 locations",
+2026-03-06,Hoppers,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-03-06,Hoppers,OPEN,D,46,46,46,,D,1236745894,SUNDAY AM WRITETHRU,LABEL,"Hoppers (Dis) 4,000 theaters, Fri $13.2M, Sat $19.1M Sun $13.7M 3-day $46M",V:46 STRICT (1236681863); V:46 REVISABLE (1236681832)
+2026-03-06,Scream 7,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-03-06,Scream 7,NTH,B,18,18,18,,D,1236745894,FRIDAY PM,LABEL,"$18M (-72%) at 3,540 over Friday-Sunday",
+2026-03-06,Scream 7,NTH,C,,,,,,,,,,NO_RELEASE
+2026-03-06,Scream 7,NTH,D,17.3,17.3,17.3,,D,1236745894,SUNDAY AM WRITETHRU,LABEL,"Scream 7 (Par) 3,540 theaters, Fri $5M (-83%), Sat $7.66M Sun $4.64M 3-day $17.3M (-73%)",chart line in Hoppers block same section; Variety gives only totals/overseas
+2026-03-06,The Bride!,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($1M previews)
+2026-03-06,The Bride!,OPEN,B,9,8,10,RANGE,D,1236745894,FRIDAY PM,LABEL,"seeing $3M today for a potential $8M-$10M opening at 3,304 sites",
+2026-03-06,The Bride!,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-03-06,The Bride!,OPEN,D,7.3,7.3,7.3,,V,1236681863,"Box Office: 'Hoppers' Powers to $88 Million Globally, 'The Bride!' Flatlines",STRICT,as well as $7.3 million in North America,"Deadline SUNDAY AM WRITETHRU chart truncated at ""The Bride!"" (no figure); V:7.3 REVISABLE (1236681832, 1236681873)"
+2026-03-13,Hoppers,NTH,A,,,,,,,,,,NTH_NO_LANE_A (Deadline FRIDAY AM said around $27M)
+2026-03-13,Hoppers,NTH,B,30,30,30,APPROX,D,1236752613,FRIDAY PM,LABEL,"Hoppers is leading with a second frame around $30M , -34%",
+2026-03-13,Hoppers,NTH,C,30,30,30,APPROX,D,1236752613,SATURDAY AM,LABEL,"Hoppers is holding in, still bouncing toward $30M",V:30 STRICT approx (1236687949)
+2026-03-13,Hoppers,NTH,D,28.5,28.5,28.5,,D,1236752613,SUNDAY AM,LABEL,"Hoppers (Dis) 4,000 theaters, Fri $7.1M Sat $12.3M Sun $9.1M 3-day $28.5M",V:28.5 STRICT (1236688430)
+2026-03-13,Reminders of Him,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($1.9M previews)
+2026-03-13,Reminders of Him,OPEN,B,18,18,18,,D,1236752613,FRIDAY PM,LABEL,"overindexing with an $18M opening, maybe more","soft upside ""maybe more"" (not flagged PLUS)"
+2026-03-13,Reminders of Him,OPEN,C,19,19,19,,D,1236752613,SATURDAY AM,LABEL,"overperforming with $19M, maybe even $20M, for the weekend",point $19M with soft upside to $20M (not treated as range); Variety C only Friday daily
+2026-03-13,Reminders of Him,OPEN,D,18.2,18.2,18.2,,D,1236752613,SUNDAY AM,LABEL,"Reminders of Him (Uni) 3,402 theaters, Fri $8.1M Sat $5.8M Sun $4.2M, 3-day $18.2M",V:18.2 STRICT (1236688430)
+2026-03-13,Scream 7,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-03-13,Scream 7,NTH,B,7.5,7.5,7.5,,D,1236752613,FRIDAY PM,LABEL,"third weekend of Paramount/Spyglass' Scream 7 with $7.5M , -56%, at 3,243 sites",
+2026-03-13,Scream 7,NTH,C,,,,,,,,,,DAILY_ONLY: Variety STRICT gives only Friday $2.6M
+2026-03-13,Scream 7,NTH,D,8.35,8.35,8.35,,D,1236752613,SUNDAY AM,LABEL,"Scream 7 (Par) 3,243 (-297) theaters Fri $2.6M Sat $3.7M Sun 3-day $8.35M (-51%)",V:8.3 STRICT (1236688430)
+2026-03-13,Undertone,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($1M Thursday)
+2026-03-13,Undertone,OPEN,B,9.5,8.5,10.5,RANGE,D,1236752613,FRIDAY PM,LABEL,"undertone with $4.3M today, and $8.5M to $10.5M at 2,570 locations",
+2026-03-13,Undertone,OPEN,C,10,10,10,,D,1236752613,SATURDAY AM,LABEL,it's still gunning for $10M in third place,Variety C only Friday daily
+2026-03-13,Undertone,OPEN,D,9.3,9.3,9.3,,D,1236752613,SUNDAY AM,LABEL,"undertone (A24) 2,570 theaters, Fri $4.3M Sat $2.88M Sun $2M 3-day $9.3M",V:9.3 STRICT (1236688430)
+2026-03-20,Hoppers,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-03-20,Hoppers,NTH,B,,,,,,,,,,NO_RELEASE
+2026-03-20,Hoppers,NTH,C,,,,,,,,,,NO_RELEASE
+2026-03-20,Hoppers,NTH,D,,,,,,,,,,NO_DOMESTIC_FIGURE: Variety gives only international $34.2M
+2026-03-20,Project Hail Mary,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-03-20,Project Hail Mary,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-03-20,Project Hail Mary,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-03-20,Project Hail Mary,OPEN,D,80.5,80.5,80.5,,V,1236696247,Box Office: Ryan Gosling's 'Project Hail Mary' Scores Biggest Debut of Year,STRICT,collecting a stellar $80.5 million in its box office launch,"no Deadline block; pre-weekend ""$65 million or more"" ignored"
+2026-03-20,Ready or Not 2: Here I Come,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-03-20,Ready or Not 2: Here I Come,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-03-20,Ready or Not 2: Here I Come,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-03-20,Ready or Not 2: Here I Come,OPEN,D,9,9,9,,V,1236696247,Box Office: Ryan Gosling's 'Project Hail Mary' Scores Biggest Debut of Year,STRICT,"opened in fourth place with $9 million from 3,0",no Deadline block; REVISABLE post gives only overseas $2.8M
+2026-03-27,Hoppers,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-03-27,Hoppers,NTH,B,,,,,,,,,,NO_RELEASE
+2026-03-27,Hoppers,NTH,C,,,,,,,,,,NO_RELEASE
+2026-03-27,Hoppers,NTH,D,12.2,12.2,12.2,,D,1236767718,"UPDATED, SUNDAY AM",LABEL,"Hoppers (Dis) 3,650 (-25) theaters, Fri $3.1M (-42%) Sat $5.3M Sun $3.8M 3-day $12.2M (-31%)","AMBIGUOUS: same section also has Fri-only chart + prose 3-day $11.3M (earlier Saturday-era figure, rule 5); used Sunday chart with Sat/Sun"
+2026-03-27,Project Hail Mary,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-03-27,Project Hail Mary,NTH,B,,,,,,,,,,NO_RELEASE
+2026-03-27,Project Hail Mary,NTH,C,,,,,,,,,,NO_RELEASE
+2026-03-27,Project Hail Mary,NTH,D,54.5,54.5,54.5,,D,1236767718,"UPDATED, SUNDAY AM",LABEL,"Fri $14.6M (-56%), Sat $22.7M Sun $17M 3-day $54.5M (-32%)",prose agrees 54.5
+2026-03-27,They Will Kill You,OPEN,A,,,,,,,,,,NO_RELEASE
+2026-03-27,They Will Kill You,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-03-27,They Will Kill You,OPEN,C,,,,,,,,,,NO_RELEASE
+2026-03-27,They Will Kill You,OPEN,D,5,5,5,,D,1236767718,"UPDATED, SUNDAY AM",LABEL,"They Will Kill You didn't do well with $5M domestic, $9M global","chart line (Fri $2.3M, 3-day $5M) lacks Sat/Sun like the Saturday-era Hoppers line; prose with global figure agrees at 5"
+2026-04-03,Project Hail Mary,NTH,A,,,,,,,,,,NTH_NO_LANE_A
+2026-04-03,Project Hail Mary,NTH,B,33.2,33.2,33.2,,D,1236771415,FRIDAY PM,LABEL,"Second place belongs to Amazon MGM Studios' Project Hail Mary with $33.2M at 3,907 sites",other lane-B Deadline section (1236772345 FRIDAY UPDATE) gives only China daily
+2026-04-03,Project Hail Mary,NTH,C,32.6,32.6,32.6,,D,1236771415,SATURDAY AM,LABEL,"Project Hail Mary (Amz) 3,907 (-170) theaters, Fri $10.3M (-29%) 3-day $32.6M (-40%)",chart line
+2026-04-03,Project Hail Mary,NTH,D,30.6,30.6,30.6,,D,1236771415,SUNDAY AM,LABEL,Fri $10.3M (-29%) Sat $12.2M Sun $8M 3-day $30.6M (-43%),V:30 STRICT (1236708742)
+2026-04-03,The Drama,OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($1.7M previews; Materialists comparable ignored)
+2026-04-03,The Drama,OPEN,B,13,13,13,,D,1236771415,FRIDAY PM,LABEL,"The Drama with $6M today (including last night's previews) and $13M at 3,087 theaters",
+2026-04-03,The Drama,OPEN,C,14,14,14,,D,1236771415,SATURDAY AM,LABEL,"The Drama (A24) 3,087 theaters, Fri $6.4M, 3-day $14M /Wk 1","prose ""heading toward a $14M opening"" agrees"
+2026-04-03,The Drama,OPEN,D,14.4,14.4,14.4,,D,1236771415,SUNDAY AM,LABEL,"The Drama (A24) 3,087 theaters, Fri $6.4M, 3-day $14.4M /Wk 1","prose ""coming in at $14.4M"" agrees; V:14.4 STRICT (1236708742)"
+2026-04-10,Project Hail Mary,NTH,A,,,,,,,,,,NTH_NO_LANE_A (FRIDAY AM chart is prior-week Wk $45.4M)
+2026-04-10,Project Hail Mary,NTH,B,,,,,,,,,,NO_RELEASE
+2026-04-10,Project Hail Mary,NTH,C,,,,,,,,,,NO_RELEASE
+2026-04-10,Project Hail Mary,NTH,D,24.5,24.5,24.5,,V,1236719765,Box Office: 'Super Mario Galaxy Movie' Scores $69 Million in Second Weekend,REVISABLE,remained a box office force in second place with $24.5 million in its fourth outing,REVISABLE only; no Deadline D; Variety STRICT 1236719782 has only international/global
+2026-04-10,The Super Mario Galaxy Movie,NTH,A,,,,,,,,,,NTH_NO_LANE_A (Deadline FRIDAY AM: second weekend $60M-$70M)
+2026-04-10,The Super Mario Galaxy Movie,NTH,B,,,,,,,,,,NO_RELEASE
+2026-04-10,The Super Mario Galaxy Movie,NTH,C,,,,,,,,,,NO_RELEASE
+2026-04-10,The Super Mario Galaxy Movie,NTH,D,69,69,69,,V,1236719765,Box Office: 'Super Mario Galaxy Movie' Scores $69 Million in Second Weekend,REVISABLE,"collecting $69 million from 4,284 North American theaters in its second weekend of release",REVISABLE only; no Deadline D; Variety STRICT 1236719782 only global $629M
+2026-04-10,"You, Me & Tuscany",OPEN,A,,,,,,,,,,PREVIEWS_ONLY ($750K previews)
+2026-04-10,"You, Me & Tuscany",OPEN,B,,,,,,,,,,NO_RELEASE
+2026-04-10,"You, Me & Tuscany",OPEN,C,,,,,,,,,,NO_RELEASE
+2026-04-10,"You, Me & Tuscany",OPEN,D,,,,,,,,,,NO_RELEASE
+2026-04-17,Lee Cronin's The Mummy,OPEN,A,12,12,12,APPROX,D,1236864337,FRIDAY AM,LABEL,The horror pic is eyeing an opening around $12M,"AMBIGUOUS: prose found in Super Mario block same section; ""the horror pic"" = Mummy by context (prior sentence); own block only $1.5M previews"
+2026-04-17,Lee Cronin's The Mummy,OPEN,B,,,,,,,,,,NO_RELEASE
+2026-04-17,Lee Cronin's The Mummy,OPEN,C,,,,,,,,,,DAILY_ONLY: Variety STRICT opening day $5.2M
+2026-04-17,Lee Cronin's The Mummy,OPEN,D,,,,,,,,,,NO_RELEASE
+2026-04-17,The Super Mario Galaxy Movie,NTH,A,,,,,,,,,,NTH_NO_LANE_A (Deadline FRIDAY AM: third weekend around $44M)
+2026-04-17,The Super Mario Galaxy Movie,NTH,B,,,,,,,,,,NO_RELEASE
+2026-04-17,The Super Mario Galaxy Movie,NTH,C,,,,,,,,,,DAILY_ONLY: Variety STRICT Friday $7.4M
+2026-04-17,The Super Mario Galaxy Movie,NTH,D,,,,,,,,,,NO_RELEASE
+2026-04-24,Michael,OPEN,A,70,65,75,RANGE,V,1236728765,Box Office: 'Michael' Moonwalks to $12.6 Million in Previews,STRICT,"""Michael"" is expected to earn $65 million to $75 million in its opening weekend","Deadline FRIDAY AM sections (1236870542, 1236870083) give only previews/global totals; exhibitors ""closer to $80M"" not used"
+2026-04-24,Michael,OPEN,B,,,,,,,,,,DAILY_ONLY: Deadline FRIDAY MIDDAY gives $35M-$40M Friday only
+2026-04-24,Michael,OPEN,C,95,95,95,,D,1236870542,SATURDAY AM,LABEL,"Michael (LG) 3,955 theaters, Fri $39.5M 3-day $95M /Wk 1","chart line in Super Mario block same section; prose ""$95M opening ... maybe even an epic $100M"" agrees"
+2026-04-24,Michael,OPEN,D,97,97,97,,D,1236870542,SUNDAY AM,LABEL,"Michael (LG) 3,955 theaters, Fri $39.5M Sat $32.5M Sun $25M 3-day $97M","chart line in Super Mario block same section; prose ""$97M domestic"" agrees; V:97 STRICT (1236730805)"
+2026-04-24,The Super Mario Galaxy Movie,NTH,A,,,,,,,,,,NTH_NO_LANE_A (FRIDAY AM chart is prior-week Wk $45M)
+2026-04-24,The Super Mario Galaxy Movie,NTH,B,20.5,20.5,20.5,,D,1236870542,FRIDAY MIDDAY,LABEL,"Super Mario Galaxy Movie (Uni) 3,732 theaters Fri $4.6M 3-day $20.5M (-44%)",chart line
+2026-04-24,The Super Mario Galaxy Movie,NTH,C,20.5,20.5,20.5,,D,1236870542,SATURDAY AM,LABEL,"Super Mario Galaxy Movie (Uni) 3,732 (-552) theaters Fri $4.5M (-40%), 3-day $20.5M (-44%)",chart line
+2026-04-24,The Super Mario Galaxy Movie,NTH,D,21.2,21.2,21.2,,D,1236870542,SUNDAY AM,LABEL,"Fri $4.5M (-40%) Sat $9.6M Sun $7M, 3-day $21.2M (-42%)","UPDATED, SUNDAY AM (1236870083) prose $21.2M domestic agrees"
