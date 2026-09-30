@@ -59,9 +59,9 @@ def main(S_usd=100.0):
     for cid, m in meta.items():
         if cid not in closed or cid not in snaps:
             continue
-        timed = not m.get("first_poll")
         s_all = sorted(snaps[cid], key=lambda r: r["ts"])
-        t_p = (m["t_seen_final"] + 60) if timed else s_all[0]["ts"]
+        timed = (not m.get("first_poll")) and s_all[0]["ts"] <= m["t_seen_final"] + 180
+        t_p = (m["t_seen_final"] + 60) if timed else s_all[0]["ts"]  # untimed -> "late" placement at first snapshot
         after = [r for r in s_all if r["ts"] >= t_p]
         if not after:
             continue

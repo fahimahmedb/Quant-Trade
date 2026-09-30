@@ -53,10 +53,10 @@ only costs re-fetch time (all APIs are public and free).
 | S4b | `s04b_espn.py markets_primary 2026-08-28 2026-09-29` | `data/espn_events_primary.csv.gz`, `data/pm_espn_map_primary.csv.gz` | DONE: 6,609 PM events → 2,382 ESPN events (1,238 with terminal wallclock) |
 | S4c | `s04c_weather.py markets_primary 2026-08-27 2026-10-01` | `data/weather_determination_primary.csv.gz` | DONE: 10,643 / 12,221 verified |
 | S4d | `s04d_assemble.py markets_primary` | `data/determination_primary.csv.gz` | DONE (CKPT-2): 36,991 VERIFIED, 36,074 with non-empty window; 42,598 UNVERIFIABLE |
-| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | RUNNING (started on as-frozen T_DET; after D1/D2 simply re-run S5: it refetches cached markets whose T_DET changed and fetches new ones) |
-| S6 | `s06_accounting.py primary 60` | `data/fills_primary.csv.gz`, `data/fills_contrast_primary.csv.gz`, `data/newcomer_inputs_primary.jsonl.gz`, `data/accounting_summary_primary.json` | CODE DONE; run after S5 |
-| S7 | newcomer queue model + capital sims (`s07_newcomer.py`) | `data/newcomer_*.json` | TODO |
-| S8 | `s08_live_queue_monitor.py 14` (read-only, detached, started 23:38Z) | `data/raw/live/*.jsonl` → summary `data/live_queue_summary.json` | RUNNING |
+| S5 | `s05_fetch_trades.py primary 14 7200` (resumable per market) | `data/raw/trades/<cid>.json.gz` (not committed; compact extracts in S6) | DONE: 36,087 markets, 0 errors |
+| S6 | `s06_accounting.py primary 60` | `data/fills_primary.csv.gz`, `data/fills_contrast_primary.csv.gz`, `data/newcomer_inputs_primary.jsonl.gz`, `data/accounting_summary_primary.json` | DONE (CKPT-4) |
+| S7 | `s07_newcomer.py primary` (variants P / S1 / S2) | `data/newcomer_results_primary.json` | DONE (CKPT-4); re-run after S8b if live timed sample >= 20 |
+| S8 | `s08_live_queue_monitor.py 30` (read-only, detached; restarted 00:31Z 2026-09-30 with game-start filter fix) | `data/raw/live/*.jsonl` (not committed) → `s08b_live_summary.py` → `data/live_queue_summary.json`, `data/live_queue_markets.csv.gz` | RUNNING. After any worker restart: `cd scripts && (setsid nohup python3 s08_live_queue_monitor.py 30 >> /tmp/claude-0/live_monitor.log 2>&1 < /dev/null &)` — it resumes from finals.jsonl. Needs >= 20 timed post-final markets (UCL + MLB Wild Card 2026-09-30) |
 | S9 | decay / weekly | in report | TODO |
 | S10 | report + terminal state + push + verify remote HEAD | both deliverables | TODO |
 
@@ -114,9 +114,21 @@ before any fill/P&L of the window was used in a decision). As-frozen output kept
 - S8 monitor: first launch's closed-market check lacked `closed=true` (gamma hides closed markets by default);
   patched and restarted 23:50Z; snapshots before the patch remain valid.
 
-## Findings so far
+## Findings so far (CKPT-4, 2026-09-30 ~00:35Z)
 
-None economic yet (protocol not frozen; no fills evaluated).
+- Rule 1 (all BUY fills >= 0.998 in [T_DET, T_RES), primary cohort): 119,737 fills, 13,371 markets, 55.62 M$ notional,
+  net **+55,810 $ = +0.1003%** (market-cluster 95% CI 0.1002–0.1005%); **6 losing fills / 3 markets, −27 $**
+  (Denmark starting-XI flipped after 2 disputes; MLB strikeout prop voided 50/50 after disputes); median lock 0.42 h;
+  maker share 97.4% of notional; 3,658 distinct buyers; 9 disputed markets with fills.
+  Contrast [T_DET−2h, T_DET): +0.063% with 30 losing fills / 14 markets (−13.6 k$), CI includes 0.
+- Newcomer (S100 reference, frozen side rule P): LB fill share 3.23%, CENTRAL 22.9%, UB 26.8%; P&L negative in
+  every model (23 losing markets: 15 weather METAR-proxy vs NOAA, 3 contested NHL preseason, 5 stale-consensus).
+  Capital sims: ruin (−100%) at every capital level/model. Adverse selection: right side → back of queue; wrong
+  side → filled 100%.
+- Sensitivity S1 (source ∧ consensus agree; 14,157 markets): LB 3.15% / CENTRAL 35.1% / UB 40.5%; EUR 1k per 30 d:
+  LB +9.8, CENTRAL +96, UB +118; EUR 5k: +28 / +256 / +381.
+- Protocol state pending live calibration: rule 1 passes; LB < 5% <= UB → INDETERMINATE_QUEUE unless live
+  conservative on >= 20 timed markets < 5% (→ REJECTED_FILL_ACCESS).
 
 ## Checkpoint log
 
@@ -124,3 +136,4 @@ None economic yet (protocol not frozen; no fills evaluated).
 - CKPT-1 (2026-09-29 ~23:25Z): protocol frozen before economics; MLB timeline; ESPN verifier code; classifier.
 - CKPT-2 (2026-09-29 ~23:50Z): full cohort, all verifiers, per-market T_DET assembled; S5 trade fetch and S8 live monitor running.
   If cut here: re-run `s05_fetch_trades.py primary 14 7200` (needs only committed `data/determination_primary.csv.gz`), then S6.
+- CKPT-4 (2026-09-30 ~00:35Z): S5 done, S6/S7 results committed; S8 monitor restarted (30 h). Next: S8b when >= 20 timed markets, S7 re-run, report.

@@ -86,18 +86,21 @@ def main():
             tick = min(tick, 0.001)
         floor = 1 - tick
         t_p = t_det + L
-        X = int(d["det_side"]) if d["det_side"] != "" else None
-        xm = "source" if X is not None else ""
+        xs = int(d["det_side"]) if d["det_side"] != "" else None
+        xc, cons_age = None, None
+        prev = [r for r in recs if r[7] == 1 and r[0] < t_p]
+        if prev:
+            last = max(prev, key=lambda r: r[0])
+            cons_age = t_p - last[0]
+            if last[3] >= 0.99 - EPS:
+                xc = last[1]
+            elif last[3] <= 0.01 + EPS:
+                xc = 1 - last[1]
+        # protocol rule: source side, else consensus
+        X, xm = (xs, "source") if xs is not None else ((xc, "consensus") if xc is not None else (None, ""))
         if X is None:
-            prev = [r for r in recs if r[7] == 1 and r[0] < t_p]
-            if prev:
-                last = max(prev, key=lambda r: r[0])
-                if last[3] >= 0.99 - EPS:
-                    X, xm = last[1], "consensus"
-                elif last[3] <= 0.01 + EPS:
-                    X, xm = 1 - last[1], "consensus"
-        if X is None:
-            newc.append({"cid": cid, "family": d["family"].split(":")[0], "t_p": t_p, "t_res": t_res, "X": None})
+            newc.append({"cid": cid, "family": d["family"].split(":")[0], "t_p": t_p, "t_res": t_res, "X": None,
+                         "x_source": xs, "x_consensus": xc})
             continue
         ev = []
         makers = set()
@@ -114,7 +117,8 @@ def main():
                 if abs(wep - floor) < EPS and ((oi == X and side == 0) or (oi != X and side == 1)):
                     makers.add(wallet)
         newc.append({"cid": cid, "family": d["family"].split(":")[0], "smt": d["smt"], "t_det": t_det, "t_p": t_p,
-                     "t_res": t_res, "X": X, "x_method": xm, "payout_X": payout[X], "floor": floor, "k": len(makers),
+                     "t_res": t_res, "X": X, "x_method": xm, "x_source": xs, "x_consensus": xc, "cons_age_s": cons_age,
+                     "payout": payout, "payout_X": payout[X], "floor": floor, "k": len(makers),
                      "disputes": disputes, "ev": ev})
     cols = ["cid", "family", "smt", "ts", "outcome", "price", "size", "taker", "wallet", "payout", "fee", "net",
             "notional", "lock_s", "disputes", "reversal", "win"]

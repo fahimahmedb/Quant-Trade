@@ -120,9 +120,20 @@ def main():
         ratio = live["central_floor_hit_capture_ratio"]
     res = {"n_inputs": len(inputs), "x_method": dict(collections.Counter(x.get("x_method") or "none" for x in inputs)),
            "eurusd": EURUSD, "live_ratio_used": ratio}
-    res["reference_S100"] = reference(inputs, 100.0, ratio)
-    res["reference_S1000"] = reference(inputs, 1000.0, ratio)
-    res["reference_S100_source_side_only"] = reference([x for x in inputs if x.get("x_method") == "source"], 100.0, ratio)
+    variants = {
+        "P_protocol": inputs,  # source side, else consensus (frozen rule)
+        "S1_source_and_consensus_agree": [x for x in inputs if x.get("x_source") is not None
+                                          and x.get("x_consensus") == x.get("x_source")],
+        "S2_source_only": [x for x in inputs if x.get("x_method") == "source"],
+    }
+    res["variants"] = {}
+    for vn, vin in variants.items():
+        res["variants"][vn] = {"reference_S100": reference(vin, 100.0, ratio),
+                               "reference_S1000": reference(vin, 1000.0, ratio),
+                               "capital": [capital_sim(vin, c, fr, mdl, ratio) for c in (100, 500, 1000, 5000)
+                                           for fr in (0.25, 1.0) for mdl in MODELS]}
+    res["reference_S100"] = res["variants"]["P_protocol"]["reference_S100"]
+    res["reference_S1000"] = res["variants"]["P_protocol"]["reference_S1000"]
     res["reference_S100_by_family"] = {f: reference([x for x in inputs if x["family"] == f], 100.0, ratio)
                                        for f in sorted({x["family"] for x in inputs})}
     elig = [x for x in inputs if x.get("X") is not None and x["t_res"] > x["t_p"]]
@@ -133,8 +144,7 @@ def main():
                         "markets_with_any_Fsub": sum(1 for x in elig if any(e[1] == 0 for e in x["ev"])),
                         "markets_with_any_hit": sum(1 for x in elig if any(e[1] == 1 for e in x["ev"])),
                         "median_k_given_hits": st.median([x["k"] for x in elig if any(e[1] == 1 for e in x["ev"])] or [0])}
-    res["capital"] = [capital_sim(inputs, c, fr, mdl, ratio) for c in (100, 500, 1000, 5000) for fr in (0.25, 1.0)
-                      for mdl in MODELS]
+    res["capital"] = res["variants"]["P_protocol"]["capital"]
     # weekly decay
     fills = list(csv.DictReader(gzip.open(os.path.join(DATA, f"fills_{tag}.csv.gz"), "rt")))
     det = {r["conditionId"]: r for r in csv.DictReader(gzip.open(os.path.join(DATA, f"determination_{tag}.csv.gz"), "rt"))}
@@ -167,10 +177,13 @@ def main():
     res["weekly"] = dec
     json.dump(res, open(os.path.join(DATA, f"newcomer_results_{tag}.json"), "w"), indent=1)
     print(json.dumps({k: res[k] for k in ("reference_S100", "flows_usd", "eligible_time_h")}, indent=1))
-    for c in res["capital"]:
-        if c["frac"] == 0.25:
-            print(c["capital_eur"], c["model"], "net_eur/30d %.2f" % c["net_eur_per_30d"], "posted", c["markets_posted"],
-                  "filled", c["markets_filled"], "util %.3f" % c["avg_utilization"], "worst %.2f" % c["worst_market_usd"])
+    for vn, v in res["variants"].items():
+        print("==", vn, {m: (v["reference_S100"][m]["eligible_markets"], round(v["reference_S100"][m]["fill_share"], 4),
+                              round(v["reference_S100"][m]["pnl_usd"], 2), v["reference_S100"][m]["losing_markets"]) for m in MODELS})
+        for c in v["capital"]:
+            if c["frac"] == 0.25:
+                print("  ", c["capital_eur"], c["model"], "net_eur/30d %.2f" % c["net_eur_per_30d"], "posted", c["markets_posted"],
+                      "filled", c["markets_filled"], "util %.3f" % c["avg_utilization"], "worst %.2f" % c["worst_market_usd"])
 
 
 if __name__ == "__main__":

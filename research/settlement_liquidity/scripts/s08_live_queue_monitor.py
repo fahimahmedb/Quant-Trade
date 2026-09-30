@@ -39,7 +39,7 @@ def open_sports_events(now):
     for off in range(0, 3000, 100):
         try:
             d = get(f"https://gamma-api.polymarket.com/events?closed=false&tag_id=1&limit=100&offset={off}"
-                    f"&start_date_min={smin}&start_date_max={smax}")
+                    f"&start_time_min={smin}&start_time_max={smax}")  # game start (start_date_* is event creation)
         except Exception:
             break
         out += d
