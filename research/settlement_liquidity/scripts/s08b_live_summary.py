@@ -85,12 +85,14 @@ def main(S_usd=100.0):
             dn = sum(sz for p, sz in (snapgroup.get(1 - X, {}).get("la") or []) if p <= 0.001 + EPS)
             return dx, dn
         q_bid, q_mirror = depth(first)
-        Q0 = q_bid + q_mirror
+        # /books already shows the unified (mirrored) book: X bids @0.999 == notX asks @0.001 in every snapshot,
+        # so the queue is one side, not the sum (summing would double count).
+        Q0 = max(q_bid, q_mirror)
         # depth path (one value per snapshot time)
         groups = collections.defaultdict(dict)
         for r in after:
             groups[round(r["ts"])][r["i"]] = r
-        path = sorted((t, sum(depth(g))) for t, g in groups.items() if len(g) == 2)
+        path = sorted((t, max(depth(g))) for t, g in groups.items() if len(g) == 2)
         t_res = closed[cid].get("closedTime")
         tr = trades(cid)
         ev = []
@@ -130,7 +132,8 @@ def main(S_usd=100.0):
             res[mode] = got
         H = sum(z for _, k, z in ev if k == 1)
         Sub = sum(z for _, k, z in ev if k == 0)
-        rows.append({"cid": cid, "event": m.get("event"), "smt": m.get("smt"), "timed": int(timed), "X": X,
+        rows.append({"cid": cid, "event": m.get("event"), "game": m.get("final_key"), "smt": m.get("smt"),
+                     "timed": int(timed), "X": X,
                      "t_p": t_p, "Q0_shares": Q0, "Q0_bid": q_bid, "Q0_mirror": q_mirror, "hits": H, "sub": Sub,
                      "fill_cons": res["conservative"], "fill_opt": res["optimistic"], "S": S,
                      "n_snaps": len(path), "closedTime": t_res})
@@ -146,7 +149,9 @@ def main(S_usd=100.0):
             return {"n": 0}
         posted = sum(r["S"] for r in rs)
         H = sum(r["hits"] for r in rs)
-        return {"n": len(rs), "fill_share_conservative": sum(r["fill_cons"] for r in rs) / posted,
+        return {"n": len(rs), "n_games": len({r["game"] for r in rs}),
+                "n_with_floor_flow": sum(1 for r in rs if r["hits"] + r["sub"] > 0),
+                "fill_share_conservative": sum(r["fill_cons"] for r in rs) / posted,
                 "fill_share_optimistic": sum(r["fill_opt"] for r in rs) / posted,
                 "fill_prob_conservative": sum(1 for r in rs if r["fill_cons"] > 0) / len(rs),
                 "fill_prob_optimistic": sum(1 for r in rs if r["fill_opt"] > 0) / len(rs),
@@ -158,7 +163,11 @@ def main(S_usd=100.0):
                 "hit_capture_ratio_conservative": (sum(max(0.0, r["fill_cons"] - min(r["S"], r["sub"])) for r in rs) / H) if H else None}
     timed = [r for r in rows if r["timed"]]
     late = [r for r in rows if not r["timed"]]
-    s = {"timed": summ(timed), "late": summ(late), "all": summ(rows), "n_markets_timed": len(timed),
+    main_types = {"moneyline", "spreads", "totals", "team_totals", "both_teams_to_score", "soccer_halftime_result",
+                  "first_half_totals", "first_half_spreads", "first_half_moneyline", "nrfi", "child_moneyline"}
+    s = {"timed": summ(timed), "timed_main_markets": summ([r for r in timed if r["smt"] in main_types]),
+         "timed_with_floor_flow": summ([r for r in timed if r["hits"] + r["sub"] > 0]),
+         "late": summ(late), "all": summ(rows), "n_markets_timed": len(timed),
          "central_floor_hit_capture_ratio": summ(timed).get("hit_capture_ratio_conservative") if len(timed) >= 20 else None,
          "note": "READ-ONLY public book snapshots every ~20 s; queue position of a hypothetical order simulated; no orders placed."}
     json.dump(s, open(os.path.join(DATA, "live_queue_summary.json"), "w"), indent=1)

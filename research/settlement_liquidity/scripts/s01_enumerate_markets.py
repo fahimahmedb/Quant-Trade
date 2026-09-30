@@ -12,6 +12,7 @@ import datetime as dt
 import json
 import os
 import sys
+import time
 import urllib.parse
 
 from common import MIN_VOLUME, RAW, get, parse_ts, write_jsonl_gz
@@ -46,7 +47,14 @@ def main():
     pages = 0
     with open(part, "a") as out:
         while True:
-            d = get(base + (f"&after_cursor={urllib.parse.quote(cur)}" if cur else ""))
+            for attempt in range(30):  # gamma keyset returns transient HTTP 500s; wait and retry
+                try:
+                    d = get(base + (f"&after_cursor={urllib.parse.quote(cur)}" if cur else ""))
+                    break
+                except RuntimeError:
+                    time.sleep(30)
+            else:
+                raise RuntimeError("keyset page failed 30 times")
             ms = d.get("markets") or []
             pages += 1
             stop = False
