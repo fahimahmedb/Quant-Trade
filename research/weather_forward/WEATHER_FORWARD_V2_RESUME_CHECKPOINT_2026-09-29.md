@@ -1,11 +1,11 @@
-# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repair R1) — 2026-09-29
+# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repair R1 + D4-C2 repair R2) — 2026-09-29 / 2026-09-30
 
 ```text
-ROLE                 = Weather Forward V2 Architect — bounded D4 repair only
+ROLE                 = Weather Forward V2 Architect — bounded D4 repair (R1) and bounded D4-C2 repair (R2) only
 PURPOSE              = durable restart surface: a fresh session (after token / context / container loss) resumes from
                        THIS FILE, never from chat memory
 BRANCH               = claude/charming-allen-948kd8
-STATUS               = WEATHER_FORWARD_SPEC_V2_D4_REPAIR = READY_FOR_ASTRA_D4_RECHECK
+STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = READY_FOR_ASTRA_D4_C2_RECHECK   (R1: AUDITED @24d2342, BLOCKED C2 by Astra @3d18085)
 REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_DECLARED · BUILDER_AUTHORIZED = FALSE
 ```
 
@@ -26,6 +26,8 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | Fable design challenge (advisory) | claude/zen-einstein-9moyry | 5760ffa5b5da2a988cfe6d1503c86c561acf9b1f |
 | V2 audited object | claude/charming-allen-948kd8 | 94b59348d5b79cd3c53dcba0b791ce1daeb75d60 |
 | Astra V2 re-audit (BLOCKED D4) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 7d95c00abccfbc805c0d8abca65a6b93268741a2 |
+| D4 repair R1 head (audited) | claude/charming-allen-948kd8 | 24d2342fcff8fd78a769a9ecaf7551ab2578e2ef |
+| Astra D4 recheck (BLOCKED C2) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 3d18085862f239a81936345989b4e26414cedcf3 (read only; not merged into this branch) |
 
 ## 3. Phase ledger (checkpoints)
 
@@ -38,6 +40,17 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | P4 | final report to the user (≤ 10 lines): branch, exact SHA, repair, exclusion semantics, D4 bound status, reproductions, files, D1–D12 carry-forward, next action | DONE with the commit that marks this row | recheck target = branch tip (scientific content identical to 0583614) |
 
 If P3 is found incomplete on resume: run `git log origin/claude/charming-allen-948kd8..HEAD --oneline`; if 0583614 and the checkpoint commit are local only, push them (`git push -u origin claude/charming-allen-948kd8`, retry 2 / 4 / 8 / 16 s on network errors only), then verify. If the container was lost before the push, the local commits are gone: rebuild from this file only if it exists on the remote; otherwise redo P1–P2 from the decisions in section 4 (they need no new research).
+
+## 3b. Phase ledger — D4-C2 repair R2 (2026-09-30)
+
+| Phase | Content | Status | Checkpoint |
+|---|---|---|---|
+| Q0 | fetch; verify remote head = 24d2342; read North Star, this file, Astra D4 recheck + state @3d18085 | DONE | — |
+| Q1 | `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py` modes ceiling / scenarios 4000 / counts 4000 / confirm 4000 / grid 200 (≈ 15 min on 4 cores); raw output `WEATHER_FORWARD_V2_D4_C2_RUN_E_OUTPUT_2026-09-30.jsonl` | DONE | 4845d32 |
+| Q2 | spec (5.1, 6, 8.5, 8.5b, 8.6, 10.3, 11.2, 17.2–17.8, 20, 21, 24, 26, 27), manifest (A rows + D), delta D4-C2, power table 4.6 / 5, architect state (incl. self-attack) | DONE | 4845d32 |
+| Q3 | this ledger; commit; push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
+
+R2 decisions (do not re-derive): identification theorem 8.5b ⇒ PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2; economic axis PROSPECTIVE_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE}; R1 bound kept as θ_W report field REALIZED_WINDOW_BOUND; R*_REJECTED_AS_NET_STRATEGY never issued; CORE_ADVERSE drives R*_CORE_INFORMATION_REJECTED and the forward signal (Astra m2); R2-A rejected (independence assumption, never excludes), R2-C only as report field. Evidence: power table §4.6. Next: ASTRA BOUNDED D4-C2 RECHECK ONLY.
 
 ## 4. Decisions already made (do not re-derive)
 

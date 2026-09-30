@@ -74,7 +74,7 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 |---|---|---|
 | 1 | Can θ_P > θ_ERT while zero relevant tails appear? | Yes. Spec 8.5b construction; run E: 16–99% of windows contain no rare leg in the C2 scenarios |
 | 2 | Can the protocol still output a prospective exclusion then? | **No.** No prospective exclusion label exists; 0 in 268,400 replications |
-| 3 | Can a rare 0.001 type be absent from both the OP and the window yet economically important? | Yes. That is the theorem's jackpot-date alternative (P(absent) = (1 − η*)^134 ≥ 0.87) |
+| 3 | Can a rare 0.001 type be absent from both the OP and the window yet economically important? | Yes. That is the theorem's jackpot-date alternative (P(absent) = (1 − η*)^134 ≥ 0.85) |
 | 4 | Does an arrival bound cover it? | No arrival bound is used. R2-A was evaluated and rejected: it is invalid under date clustering and never excludes |
 | 5 | Does dependence invalidate the argument? | No. The theorem allows any dependence and uses a date common mode, which V2 itself declares |
 | 6 | Does fill selection alter the population estimand? | No. θ_P is over executed trades by the frozen estimand (8.5b); NO_FILL contributes nothing to N or C |
