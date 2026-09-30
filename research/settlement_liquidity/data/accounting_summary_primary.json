@@ -202,24 +202,24 @@
   }
  },
  "contrast_pre_det_2h": {
-  "n_fills": 48520,
-  "n_markets": 7590,
-  "notional": 31699110.50829743,
-  "gross_win": 34116.497011380336,
+  "n_fills": 48517,
+  "n_markets": 7588,
+  "notional": 31696894.615508325,
+  "gross_win": 34114.27901138037,
   "loss": 13626.551675091547,
-  "fees": 418.76068702002186,
-  "net": 20071.184649628773,
-  "net_per_notional": 0.0006331781658155683,
+  "fees": 418.64989792002183,
+  "net": 20069.07743872877,
+  "net_per_notional": 0.0006331559505172971,
   "ci95_net_per_notional": [
-   -4.579643767294939e-05,
-   0.0010283904185395055
+   -9.093410608571762e-05,
+   0.0010270274462397004
   ],
   "losing_fills": 30,
   "losing_markets": 14,
   "median_lock_h": 0.8441666666666666,
   "p90_lock_h": 2.826111111111111,
   "distinct_buyers": 4778,
-  "maker_share_notional": 0.7551943965456723,
+  "maker_share_notional": 0.7552471913016878,
   "disputed_markets": 1,
   "reversal_fills": 32
  },

@@ -193,11 +193,18 @@ def main():
         a = re.sub(r"^.*?:\s*", "", a)
         best = None
         h = int(pe["start"] // 3600)
+        # DEVIATION D3: same-sport candidates only, and no city-only / abbreviation name variants
+        fam = pe["family"]
+        want = fam.split(":", 1)[1] if fam.startswith("espn:") else "soccer"
+        want_path = "soccer" if want.startswith("soccer") else want
         for hh in (h - 1, h, h + 1):
             for e in by_hour.get(hh, []):
                 if abs(e["t"] - pe["start"]) > 1200:
                     continue
-                t0, t1 = e["teams"][0]["names"], e["teams"][1]["names"]
+                e_path = "soccer" if e["path"].startswith("soccer") else e["path"]
+                if e_path != want_path:
+                    continue
+                t0, t1 = e["teams"][0]["names"][:3], e["teams"][1]["names"][:3]
                 s = max(sim(t0, a) + sim(t1, b), sim(t0, b) + sim(t1, a))
                 if best is None or s > best[0]:
                     best = (s, e)

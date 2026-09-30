@@ -53,6 +53,39 @@ def main(S_usd=100.0):
                 meta[r["conditionId"]]["final_key"] = r["final_key"]
         else:
             meta.setdefault(r["conditionId"], r)
+    # DEVIATION D3 (live): drop cross-sport pairings (e.g. MLB BOS@NYY event matched to NHL NYR@BOS final)
+    pfile = os.path.join(LIVE, "espn_paths.json")
+    paths = json.load(open(pfile)) if os.path.exists(pfile) else {}
+    for cid, m in list(meta.items()):
+        fk = m.get("final_key") or ""
+        if not fk.startswith("espn:"):
+            continue
+        eid = fk[5:]
+        if eid not in paths:
+            paths[eid] = None
+            for pth in ("hockey/nhl", "basketball/wnba", "football/nfl", "football/college-football", "soccer/all"):
+                try:
+                    d = get(f"https://site.api.espn.com/apis/site/v2/sports/{pth}/summary?event={eid}")
+                    if d.get("header", {}).get("competitions"):
+                        paths[eid] = pth
+                        break
+                except Exception:
+                    continue
+    json.dump(paths, open(pfile, "w"))
+    sport_of = {"hockey/nhl": "nhl", "basketball/wnba": "wnba", "football/nfl": "nfl",
+                "football/college-football": "cfb", "soccer/all": "soccer"}
+    dropped = 0
+    for cid, m in list(meta.items()):
+        fk = m.get("final_key") or ""
+        if not fk:
+            continue
+        fs = "mlb" if fk.startswith("mlb:") else sport_of.get(paths.get(fk[5:]) or "", "?")
+        pref = (m.get("event") or "").split("-")[0]
+        ok = (fs == pref) if pref in ("mlb", "nhl", "wnba", "nfl", "cfb", "nba") else (fs == "soccer")
+        if not ok:
+            meta.pop(cid)
+            dropped += 1
+    print("D3 cross-sport pairings dropped:", dropped)
     snaps = collections.defaultdict(list)
     for l in open(os.path.join(LIVE, "books.jsonl")):
         r = json.loads(l)
