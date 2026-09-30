@@ -6,6 +6,7 @@ ASTRA  = claude/dreamy-franklin-1vki4t  @ e1cf4ca0851eace2912ce8a9bcd4a8400ebf42
 FABLE  = claude/zen-einstein-9moyry     @ 5760ffa5b5da2a988cfe6d1503c86c561acf9b1f  (immutable, advisory)
 V2     = WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md (+ manifest, state, power table, synthetic sim); audited @94b59348
 V2-R1  = D4 repair R1 after Astra V2 re-audit @7d95c00abccfbc805c0d8abca65a6b93268741a2 (section D4.d / D4.e)
+V2-R2  = D4 repair R2 after Astra D4 recheck @3d18085862f239a81936345989b4e26414cedcf3 (section D4-C2; D4.d / D4.e kept as the R1 record)
 SUMMARY: OUTCOME_INFORMATION_USED = FALSE for every item · TRADING_RULE_CHANGED = FALSE for every item ·
          EXECUTION_MODEL_CHANGED = TRUE for one item (X1, CONSERVATIVE only) · COHORT_CHANGED = TRUE for one item (D7)
 ```
@@ -100,6 +101,26 @@ Each block: OLD / NEW / WHY / ASTRA_FINDING / FABLE_RECOMMENDATION / ARCHITECT_D
 - OLD: committed script bisection λ ≤ 200, μ ≤ 20, 30 iterations (frozen spec: 1000, 50, 40).
 - NEW: the committed script implements the retired bound exactly as frozen (λ ∈ [0.05, 1000] log-bisection, μ ∈ [0, 50], 40 iterations, interval-end rule, B = 20,000 in 20 chunks of 1,000, SeedSequence([20260929, 1]), per-draw normal order) for the reproduction in run D, plus the repaired bound. Runs A/B in the power table were produced by the 94b5934 script; their retired-bound columns are labelled as such, and every repaired exclusion rate is ≤ the tabulated retired one (repaired U ≥ retired U pointwise).
 - OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE. BUILDER_IMPACT: none.
+
+**D4-C2 D4 REPAIR R2 — prospective estimand vs unsampled rare tail arrivals (after Astra D4 recheck @3d18085; delta V2-R1 @24d2342 → V2-R2)**
+- OLD CLAIM (V2-R1): `U(θ) = w_core U_core + M_tail < θ_ERT` → `NET_VALUE_EXCLUDED` → `R*_REJECTED_AS_NET_STRATEGY`; `U < max(θ_PCE, θ_ERT)` → `LARGE_VALUE_EXCLUDED`; read as statements about the §5.1 prospective θ.
+- ASTRA COUNTEREXAMPLE (C2, CRITICAL): GO-compatible designs with rare 0.001 legs (p = 0.17, E[count] 1.86, core −0.05, θ_P = 0.025): false `NET_VALUE_EXCLUDED` 0.0592 [0.0519, 0.0666]; p = 0.5–1.0: 0.19–0.35; θ_P = 0.10: false `LARGE_VALUE_EXCLUDED` 0.153; GO passes 82–94%. REPRODUCED here with independent code and fresh seeds (run E): 0.0475 [0.0409, 0.0541] joint and 0.098 given a reachable analysis state (GO ∧ INFO_SUFFICIENT) for S1; 0.165–0.176 at p = 0.5; 0.314 at p = 1.0; 0.56 with date-clustered arrivals; false LARGE 0.147 at θ_P = 0.10; dangerous-region grid 414 of 1,002 cells > 0.05 (max 0.64).
+- ROOT CAUSE: the R1 proof conditions on the realised trade set, so `M_tail` bounds only the tail legs that occurred (θ_W). θ_P also depends on the arrival process of executed trade types; a rare type with payoff up to 951 per dollar can be absent from every observed date while carrying θ_P above any threshold. Zero observed arrivals were implicitly treated as a zero prospective rate.
+- NEW INVARIANT: no label may claim `θ_P < θ_ERT` or `θ_P < θ_PCE` unless a valid bound covers both tail-outcome uncertainty on observed types and tail-arrival uncertainty; where no such bound exists, prospective exclusion is not issued. Identification theorem (spec 8.5b): under the frozen admissible class (p ∈ [0,1], 0.001 tick, date common modes) any level-0.05 prospective exclusion test has power ≤ α (1 − η*)^−134 ≤ 0.0584 at every θ_0 ≥ −1. So no valid bound with useful power exists in V2.
+- REPAIR (R2 = R2_B_PROSPECTIVE_EXCLUSION_INDETERMINATE_WHEN_UNIDENTIFIED, hybrid):
+  - PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2 (constant).
+  - ECONOMIC_RESULT = PROSPECTIVE_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE}; the EXCLUDED row is deleted and the SCIENTIFIC partition has 11 values.
+  - R1's bound is kept unchanged but re-scoped to the report-only estimand θ_W: `REALIZED_WINDOW_BOUND` with REALIZED_WINDOW_{LOSS_CONFIRMED, RELEVANT_VALUE_EXCLUDED, LARGE_VALUE_EXCLUDED, NOT_EXCLUDED}.
+  - `R*_REJECTED_AS_NET_STRATEGY` is never issued.
+  - `R*_CORE_INFORMATION_REJECTED` and the forward-signal rule read `CORE_ADVERSE` (Astra minor m2), and the stale "model-conditional" wording in §24 is fixed (Astra minor m1).
+  - The opportunity chain is defined, with a TAIL_ARRIVAL_REPORT, a zero-count rule, the claim matrix (17.8) and mandatory sentence (b).
+- REPAIR FAMILIES: R2-A (arrival bound) needs trade-level independence that V2 does not grant, and even granted it never excludes (allowance ≈ 1.2 at zero observed sub-cent legs; run E P(exclusion) = 0 everywhere), so it is R2-B plus an assumption. R2-C (θ_W only) does not answer the prospective question, so it is used only as a report field, never for rejection. Trading-rule fixes (sub-cent exclusion, price floor) need broader authority and are V3 material.
+- CLAIM STRENGTH AFTER REPAIR: PROSPECTIVE_VALUE_CONFIRMED = T2 at 0.05 (IUT), unchanged; with bounded downside, prospective confirmation has no structural non-identification (run E: false confirmation at θ_P = 0 under catastrophic-date alternatives ≤ 0.0378, upper MC 0.0437). REALIZED_WINDOW_* = θ_W below a threshold at declared 95%, never θ_P and never a rejection. No prospective exclusion exists.
+- POWER COST: prospective exclusion power drops from the R1 values (0.51 at θ = −0.05, 0.93 at θ = −0.10 in tail-free runs) to none. The theorem shows no valid test could exceed 0.058. Realised-window exclusion keeps R1's power (run E tail-free: 0.36 at θ_W = −0.05, 0.57 at −0.10, joint with GO ∧ INFO). No capital decision changes, because deployment always required confirmation.
+- ASTRA_FINDING: D4 recheck C2 CRITICAL, minors m1 and m2. FABLE_RECOMMENDATION: —. ARCHITECT_DECISION: R2 as above.
+- OUTCOME_INFORMATION_USED: FALSE (synthetic run E and algebra only). TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE (by R2). COHORT_CHANGED: FALSE (by R2).
+- BUILDER_IMPACT: compute U_W exactly as R1; print PROSPECTIVE_EXCLUSION constant, REALIZED_WINDOW_BOUND and TAIL_ARRIVAL_REPORT; implement the 3-value economic axis, the renamed labels, the CORE_ADVERSE-based forward signal and flag; no TPM / SHR, no arrival bound.
+- FILES CHANGED: spec (header, §2 D4-C2 / D2-SM / D4-REJ notes, §4.1, §5.1, §6.1, §6.3, §8.5, new §8.5b, §8.6, §10.3, §11.2, §17.2, §17.3, §17.5, §17.6, §17.7, new §17.8, §20, §21 items 7 / 19 / 21 / 23 / 25–29, §24, §26, §27); manifest (header, A rows ECONOMIC_ESTIMAND / REALIZED_WINDOW_ESTIMAND / NULLS / ALPHA / REALIZED_WINDOW_UPPER_BOUND / PROSPECTIVE_EXCLUSION / OPPORTUNITY_CHAIN / TAIL_ARRIVAL_REPORT / TERMINAL_STATE_MACHINE / FORWARD_SIGNAL_RULE / REJECTION_RULE / MANDATORY_SENTENCES, B INDEPENDENT_REAUDIT, new section D); this delta; power table §4.6; architect state; resume checkpoint; new `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py` and its raw output `WEATHER_FORWARD_V2_D4_C2_RUN_E_OUTPUT_2026-09-30.jsonl`.
 
 ## D5 — Science vs operability (MAJOR → CLOSED)
 

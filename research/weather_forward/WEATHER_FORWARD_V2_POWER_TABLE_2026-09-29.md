@@ -172,14 +172,83 @@ Monte-Carlo SE ≈ 0.003 at 4,000 replications near 0.03. Readings:
 3. **Coverage no longer depends on the tail.** Over the adversarial core class it is 0.9705–0.993 and the false ERT exclusion rate is 0.019–0.0295 (≤ 0.05), including hidden edges at the 0.04 boundary, negatively skewed favourites, the minimum truncated geometry and stress dependence.
 4. **Cost:** exclusion power is unchanged for tail-free runs (0.51 / 0.93 at θ = −0.05 / −0.10) and small tails (0.34 with three 0.039 legs that all win), but is **zero whenever sub-cent legs are held** (P3), because the sample cannot price them. Such runs are economically INDETERMINATE for exclusion; information-level falsification (NEG 0.84 in P3) remains.
 
+### 4.6 Run E — D4 repair R2 validation (prospective estimand vs unsampled rare tail arrivals; after Astra D4 recheck @3d18085)
+
+Script: `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py` (independent of run D; seeds 20260930+). Raw output: `WEATHER_FORWARD_V2_D4_C2_RUN_E_OUTPUT_2026-09-30.jsonl`.
+
+Design per replication (a fresh prospective realisation each time):
+- 14 observation-phase dates + 120 window dates, Poisson(35) executed trades per date, 48 gamma(2) stations, C = 50.
+- CORE c ~ U(0.35, 0.80) with p = c(1 + θ_core).
+- A rare TAIL type at all-in cost c_t with win probability p_t arrives per trade (rate r) or per date ("date": a tail date with probability η, on which every trade is of that type).
+- Outcomes follow the latent copula (0.05, 0.05, 0.10).
+- θ_P is the exact E[N]/E[C] of the generating process.
+
+"Reach" = GO (OP, spec 10.3) ∧ INFO_SUFFICIENT (IF2–IF5). "Old" = the V2-R1 rule at 24d2342 (E1: U < θ_ERT → NET_VALUE_EXCLUDED → R* rejected). "New" = frozen R2. False exclusion = reach ∧ label ∧ θ_P ≥ threshold. 4,000 replications per row, with 95% MC intervals.
+
+| Scenario | θ_P | E[rare legs in window] | GO | INFO | Old false ERT exclusion (joint) | Old, given reach | Old false LARGE exclusion | **New prospective exclusions / R* rejections** | New CONFIRMED | Realised-window excl. (true for θ_W) | Coverage of θ_W by U_W | R2-A candidate exclusions |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| C2-S1 p_t=0.17 core=-0.05 thP=0.025 | 0.025 | 1.86 | 0.804 | 0.603 | 0.0475 [0.0409, 0.0541] | 0.0981 | 0.0000 | **0 / 0** | 0.0010 | 0.0475 (false 0.0000) | 0.9962 | 0 |
+| C2 p_t=0.50 core=-0.10 thP=0.025 | 0.025 | 1.05 | 0.887 | 0.603 | 0.1755 [0.1637, 0.1873] | 0.3293 | 0.0000 | **0 / 0** | 0.0000 | 0.1755 (false 0.0000) | 0.9885 | 0 |
+| C2 p_t=0.50 core=-0.05 thP=0.025 | 0.025 | 0.63 | 0.930 | 0.598 | 0.1650 [0.1535, 0.1765] | 0.2964 | 0.0000 | **0 / 0** | 0.0010 | 0.1650 (false 0.0000) | 0.9848 | 0 |
+| C2 p_t=1.00 core=-0.10 thP=0.025 | 0.025 | 0.53 | 0.942 | 0.596 | 0.3137 [0.2994, 0.3281] | 0.5593 | 0.0000 | **0 / 0** | 0.0000 | 0.3137 (false 0.0000) | 0.9738 | 0 |
+| C2 PCE p_t=0.50 core=0 thP=0.10 | 0.1 | 0.84 | 0.906 | 0.623 | 0.0292 [0.0240, 0.0345] | 0.0516 | 0.1468 | **0 / 0** | 0.0245 | 0.0292 (false 0.0000) | 0.9872 | 0 |
+| date-clustered jackpot p_t=1 core=-0.10 thP=0.025 | 0.025 | 0.53 | 0.998 | 0.602 | 0.5635 [0.5481, 0.5789] | 0.9384 | 0.0000 | **0 / 0** | 0.0000 | 0.5635 (false 0.0000) | 0.9745 | 0 |
+| C2 p_t=1.00 core=-0.10 thP=0.025 (independent replicate seed) | 0.025 | 0.53 | 0.937 | 0.610 | 0.3260 [0.3115, 0.3405] | 0.5704 | 0.0000 | **0 / 0** | 0.0000 | 0.3260 (false 0.0000) | 0.9705 | 0 |
+| frequent tail: c_t=0.01 p_t=0.05 core=-0.05 thP=0.025 | 0.025 | 77.78 | 0.270 | 0.637 | 0.0000 [0.0000, 0.0000] | 0.0000 | 0.0000 | **0 / 0** | 0.0100 | 0.0000 (false 0.0000) | 1.0000 | 0 |
+| Astra C1-like: 84 fair 0.039 legs + rare 0.001 p=0.17, core=-0.05 | 0.025 | 1.86 | 0.806 | 0.636 | 0.0000 [0.0000, 0.0000] | 0.0000 | 0.0000 | **0 / 0** | 0.0005 | 0.0000 (false 0.0000) | 1.0000 | 0 |
+| tail-free regression core=-0.05 | -0.05 | 0.0 | 1.000 | 0.614 | 0.0000 [0.0000, 0.0000] | 0.0000 | 0.0000 | **0 / 0** | 0.0010 | 0.3615 (false 0.0000) | 0.9735 | 0 |
+| tail-free regression core=-0.10 | -0.1 | 0.0 | 1.000 | 0.606 | 0.0000 [0.0000, 0.0000] | 0.0000 | 0.0000 | **0 / 0** | 0.0000 | 0.5732 (false 0.0000) | 0.9728 | 0 |
+| tail-free regression core=+0.02 (ERT boundary) | 0.02 | 0.0 | 1.000 | 0.626 | 0.0213 [0.0168, 0.0257] | 0.0339 | 0.0000 | **0 / 0** | 0.1108 | 0.0213 (false 0.0213) | 0.9740 | 0 |
+| tail-free core=+0.10 (confirmation power) | 0.1 | 0.0 | 1.000 | 0.666 | 0.0000 [0.0000, 0.0000] | 0.0000 | 0.0015 | **0 / 0** | 0.6242 | 0.0000 (false 0.0000) | 0.9770 | 0 |
+
+Tail-free rows: the "old false" columns are false only where θ_P ≥ θ_ERT (the +0.02 row). In the negative rows the realised-window exclusion is a true statement about θ_W.
+
+Old rule by observed count of rare 0.001 legs (p_t = 1, θ_core = −0.10; ungated label frequency; 4,000 replications per λ):
+
+| E[rare legs] | θ_P | observed 0 | 1 | 2 | 5 | ≥ 10 | New prospective exclusions (all counts) |
+|---|---|---|---|---|---|---|---|
+| 0.5 | 0.0189 | 0.930 (n=2426) | 0.000 (n=1223) | 0.000 (n=294) | — | — | 0 |
+| 2.0 | 0.3758 | 0.929 (n=575) | 0.000 (n=1099) | 0.000 (n=1017) | 0.000 (n=155) | 0.000 (n=1) | 0 |
+| 5.0 | 1.0894 | 0.920 (n=25) | 0.000 (n=150) | 0.000 (n=306) | 0.000 (n=673) | 0.000 (n=139) | 0 |
+| 10.0 | 2.2788 | — | 0.000 (n=4) | 0.000 (n=11) | 0.000 (n=143) | 0.000 (n=2151) | 0 |
+
+Prospective confirmation under rare catastrophic dates (every trade loses on a catastrophic date; η = θ_0/(1+θ_0), so θ_P = 0):
+
+| θ_core (θ_0) | η per date | GO | reach | False PROSPECTIVE_VALUE_CONFIRMED (joint) |
+|---|---|---|---|---|
+| 0.02 | 0.0196 | 1.000 | 0.469 | 0.0378 [0.0318, 0.0437] |
+| 0.03 | 0.0291 | 1.000 | 0.397 | 0.0372 [0.0314, 0.0431] |
+| 0.05 | 0.0476 | 1.000 | 0.276 | 0.0315 [0.0261, 0.0369] |
+| 0.1 | 0.0909 | 1.000 | 0.097 | 0.0177 [0.0137, 0.0218] |
+
+Dangerous-region grid (spec mission §14): c_t ∈ {0.001, 0.002, 0.005, 0.01, 0.02, 0.039} × p_t ∈ {0, implied, 0.05, 0.17, 0.50, 1.00} × θ_core ∈ {−0.15, −0.10, −0.05, 0, +0.02} × target θ_P ∈ {0.02, 0.021, 0.025, 0.05, 0.08, 0.10} × arrival ∈ {per trade, per date}.
+- Feasible rare-region cells: the tail type can lift θ_P to the target and E[rare legs] ≤ 30.
+- Scale: 1002 cells × 200 replications = 200,400.
+- Old rule: false ERT exclusion > 0.05 in 414 cells (max 0.64, date-clustered arrivals); false LARGE exclusion > 0.05 in 206 cells (max 0.60).
+- **New rule: 0 prospective exclusions and 0 R* rejections in all 200,400 replications.**
+- R2-A candidate: 0 exclusions.
+- Realised-window bound: coverage of θ_W ≥ 0.945 and false θ_W exclusion ≤ 0.055 (200 replications per cell, MC SE ≈ 0.016).
+
+Identification ceiling (DERIVED; `... ceiling`): any level-0.05 prospective exclusion test over D = 134 dates has power ≤ 0.0577 (θ_ERT) / 0.0584 (θ = 0.10) at every θ_0 ≥ −1, and ≤ 0.0509 at θ_0 = −0.10 (spec 8.5b).
+
+Readings:
+1. **C2 reproduces** with independent code: the V2-R1 rule false-excludes θ_P ≥ θ_ERT whenever rare, high-payoff types are absent from the window. For S1 the joint rate is 0.0475, below Astra's 0.0592 because the OP dates are separate from the window here, and 0.098 given a reachable analysis state. The rate is 0.17 at p_t = 0.5, 0.31 at p_t = 1, 0.56 with date-clustered arrivals, and 0.15 for false LARGE exclusion at θ_P = 0.10.
+2. The old rule's failure is entirely the zero-count case: 92–93% exclusion with 0 observed rare legs whatever θ_P was (0.019 to 1.09), 0% with ≥ 1.
+3. **R2 issues no prospective exclusion and no R* rejection anywhere.** Its realised-window statements are true for θ_W (coverage ≥ 0.97 in every scenario row).
+4. R2-A never excludes, so it would add an assumption and no power.
+5. Prospective confirmation remains valid: false confirmation at θ_P = 0 is ≤ 0.0378 under the catastrophic-date alternative, and confirmation power is unchanged (0.62 at θ_P = 0.10 tail-free, jointly with GO ∧ INFO).
+
+
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
 
 | True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
 |---|---|---|---|
 | 0.00 | ND\|IND ≈ 0.85–0.92; false CONFIRMED ≈ 0.03–0.06; false NEG ≈ 0.03 (at 0.025) | would not start | would not start |
-| 0.02 (= ERT) | CONFIRMED ≈ 0.12–0.18 (analytic 0.18 before gates); EXCLUDED ≈ 0.02–0.05 (run D: 0.0217); otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
+| 0.02 (= ERT) | PROSPECTIVE_VALUE_CONFIRMED ≈ 0.11–0.18 (analytic 0.18 before gates; run E 0.11); prospective exclusion not identified (R2); REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED ≈ 0.02 (run E 0.0213); otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
 | 0.05 | CONFIRMED ≈ 0.43; information DETECTED ≈ 0.39; INDETERMINATE ≈ 0.55 | (if run: CONFIRMED 0.10, DET 0.345) | (if run: CONFIRMED ≈ 0.01) |
 | 0.10 | CONFIRMED ≈ 0.86; information DETECTED ≈ 0.87 | (if run: CONFIRMED 0.52) | (if run: CONFIRMED 0.17, DET 0.875) |
-| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); relevance EXCLUDED ≈ 0.41–0.51 (−0.05), 0.93 (−0.10) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); economic exclusion 0 after R1 (tail supremum) |
+| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); prospective exclusion not identified (R2); REALIZED_WINDOW exclusion (θ_W) ≈ 0.36–0.51 (−0.05), 0.57–0.93 (−0.10) (run E joint with GO ∧ INFO / run D unconditional) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); realised-window exclusion 0 (tail supremum) |
+
+Label names after D4 repair R2: CONFIRMED = PROSPECTIVE_VALUE_CONFIRMED, INDETERMINATE = PROSPECTIVE_VALUE_INDETERMINATE; no prospective EXCLUDED label exists (spec 8.5b). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
 
 Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
