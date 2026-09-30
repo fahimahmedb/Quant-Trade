@@ -1,0 +1,82 @@
+{
+ "markets_with_floor_maker_fills": 11912,
+ "floor_maker_notional_usd": 53965196.92754995,
+ "distinct_floor_makers": 3591,
+ "top1_share": 0.1729350506521667,
+ "top5_share": 0.44979775040361414,
+ "top10_share": 0.5795958759696874,
+ "top10": [
+  {
+   "wallet": "0x2c335066fe58fe9237c3d3dc7b275c2a034a0563",
+   "notional_usd": 9332474.06,
+   "share": 0.1729350506521667,
+   "markets": 12
+  },
+  {
+   "wallet": "0xfc25f141ed27bb1787338d2c4e7f51e3a15e1f7f",
+   "notional_usd": 5645823.53,
+   "share": 0.10461971504671252,
+   "markets": 398
+  },
+  {
+   "wallet": "0xa16a1302ca05463f30faebeb5c045767fde233a1",
+   "notional_usd": 3996740.8,
+   "share": 0.07406145119466079,
+   "markets": 1307
+  },
+  {
+   "wallet": "0x751a2b86cab503496efd325c8344e10159349ea1",
+   "notional_usd": 2929723.8,
+   "share": 0.05428913392965563,
+   "markets": 35
+  },
+  {
+   "wallet": "0xba8c5fbcc5f58b0e4ae0c1413e0413f8c803e77d",
+   "notional_usd": 2368661.99,
+   "share": 0.04389239958041857,
+   "markets": 98
+  },
+  {
+   "wallet": "0xc96aeabae8c81faf8d803201da1d2461cefc396a",
+   "notional_usd": 1991125.07,
+   "share": 0.03689646633705701,
+   "markets": 88
+  },
+  {
+   "wallet": "0x73b18f50526851ac8e52f07ae0f3cc665bfdbd8b",
+   "notional_usd": 1329685.75,
+   "share": 0.02463969055862331,
+   "markets": 56
+  },
+  {
+   "wallet": "0x731a241767938bb23d1b2fac4c9cd2f3cea9033f",
+   "notional_usd": 1297383.25,
+   "share": 0.024041110232800204,
+   "markets": 116
+  },
+  {
+   "wallet": "0xcc77f32616a96f696a3850ad48c0e378eddcc035",
+   "notional_usd": 1287487.33,
+   "share": 0.023857734376815005,
+   "markets": 221
+  },
+  {
+   "wallet": "0x1dd46abe1feff9501b1a335b67baf0b2bbfda4ad",
+   "notional_usd": 1098900.0,
+   "share": 0.020363124060777716,
+   "markets": 1
+  }
+ ],
+ "median_top_maker_share_per_market": 1.0,
+ "first_floor_fill_delay_s": {
+  "median": 206.0,
+  "p10": 23.0,
+  "share_within_60s": 0.21482538616521155
+ },
+ "floor_hit_volume_share_before_t_p": 0.11441874280487874,
+ "maker_notional_by_resting_status": {
+  "new_after_T_DET": 40454507.27141223,
+  "resting_before_T_DET": 13510689.656130005
+ },
+ "distinct_floor_sellers": 11461
+}

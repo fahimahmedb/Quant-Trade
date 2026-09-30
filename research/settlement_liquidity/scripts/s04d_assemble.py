@@ -110,7 +110,7 @@ def main():
     name = sys.argv[1]
     tag = name.replace("markets_", "")
     ms = load(name)
-    mlb = rcsv(os.path.join(DATA, "mlb_games.csv.gz"))
+    mlb = rcsv(os.path.join(DATA, "mlb_games.csv.gz" if tag == "primary" else f"mlb_games_{tag}.csv.gz"))
     for g in mlb:
         g["_start"] = parse_ts(g["start"])
         g["_half"] = json.loads(g["half_end"])

@@ -5,7 +5,7 @@ For every MLB game on dates [D0-1, D1] extracts, from the official live feed:
   t_final = endTime of the last play (game-over transition).
 Cached per game in data/raw/mlb/<gamePk>.json (resumable). Output: data/mlb_games.csv.gz
 
-Usage: python3 s04a_mlb.py 2026-08-29 2026-09-28
+Usage: python3 s04a_mlb.py 2026-08-29 2026-09-28 [tag]
 """
 import concurrent.futures as cf
 import csv
@@ -82,7 +82,8 @@ def main():
     print("games", len(pks), flush=True)
     with cf.ThreadPoolExecutor(8) as ex:
         recs = list(ex.map(extract, pks))
-    out = os.path.join(DATA, "mlb_games.csv.gz")
+    tag = sys.argv[3] if len(sys.argv) > 3 else "primary"
+    out = os.path.join(DATA, "mlb_games.csv.gz" if tag == "primary" else f"mlb_games_{tag}.csv.gz")
     cols = ["gamePk", "officialDate", "start", "status", "coded", "away", "home", "away_abbr", "home_abbr",
             "away_runs", "home_runs", "t_final", "first_inning_run_t", "n_plays", "innings", "half_end"]
     with gzip.open(out, "wt", newline="") as f:
