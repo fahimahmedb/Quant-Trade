@@ -4,3 +4,9 @@
 {"key": "2026-09-25|DGS3MO", "kind": "observation", "observed_at": "2026-09-29T05:52:35+00:00", "record": {"date": "2026-09-25", "series": "DGS3MO", "value": 4.24}}
 {"key": "2026-09-25|DGS2", "kind": "observation", "observed_at": "2026-09-29T05:52:35+00:00", "record": {"date": "2026-09-25", "series": "DGS2", "value": 4.81}}
 {"key": "2026-09-25|DGS10", "kind": "observation", "observed_at": "2026-09-29T05:52:35+00:00", "record": {"date": "2026-09-25", "series": "DGS10", "value": 5.17}}
+{"key": "2026-09-28|DGS3MO", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-28", "series": "DGS3MO", "value": 4.28}}
+{"key": "2026-09-29|DGS3MO", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-29", "series": "DGS3MO", "value": 4.25}}
+{"key": "2026-09-28|DGS2", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-28", "series": "DGS2", "value": 4.92}}
+{"key": "2026-09-29|DGS2", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-29", "series": "DGS2", "value": 4.89}}
+{"key": "2026-09-28|DGS10", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-28", "series": "DGS10", "value": 5.24}}
+{"key": "2026-09-29|DGS10", "kind": "observation", "observed_at": "2026-09-30T22:21:03+00:00", "record": {"date": "2026-09-29", "series": "DGS10", "value": 5.26}}
