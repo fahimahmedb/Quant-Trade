@@ -47,6 +47,10 @@ def main(S_usd=100.0):
         r = json.loads(l)
         if "closed_seen" in r:
             closed[r["conditionId"]] = r
+        elif r.get("upd"):
+            if r["conditionId"] in meta and meta[r["conditionId"]].get("t_seen_final") is None:
+                meta[r["conditionId"]]["t_seen_final"] = r["t_seen_final"]
+                meta[r["conditionId"]]["final_key"] = r["final_key"]
         else:
             meta.setdefault(r["conditionId"], r)
     snaps = collections.defaultdict(list)
@@ -60,6 +64,8 @@ def main(S_usd=100.0):
         if cid not in closed or cid not in snaps:
             continue
         s_all = sorted(snaps[cid], key=lambda r: r["ts"])
+        if m.get("t_seen_final") is None:
+            continue  # tracked in-play but no authoritative final observed
         timed = (not m.get("first_poll")) and s_all[0]["ts"] <= m["t_seen_final"] + 180
         t_p = (m["t_seen_final"] + 60) if timed else s_all[0]["ts"]  # untimed -> "late" placement at first snapshot
         after = [r for r in s_all if r["ts"] >= t_p]

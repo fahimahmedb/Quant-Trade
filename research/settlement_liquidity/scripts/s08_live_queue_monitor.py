@@ -23,6 +23,8 @@ from s04b_espn import sim
 
 LIVE = os.path.join(RAW, "live")
 os.makedirs(LIVE, exist_ok=True)
+MAIN = {"moneyline", "spreads", "totals", "team_totals", "both_teams_to_score", "soccer_halftime_result",
+        "first_half_totals", "first_half_spreads", "first_half_moneyline", "nrfi", "child_moneyline"}
 FEEDS = [("soccer/all", ""), ("football/nfl", ""), ("football/college-football", "&groups=80"),
          ("football/college-football", "&groups=81"), ("basketball/wnba", ""), ("hockey/nhl", "")]
 
@@ -136,7 +138,18 @@ def main():
             except Exception as ex:
                 print("events err", ex, flush=True)
             t_evs = now
-        if now - t_fin > 60:
+            # v2: track main markets from game start so the queue is observed before and at determination
+            for e in evs:
+                if not (e["start"] <= now <= e["start"] + 5 * 3600):
+                    continue
+                for m in e["markets"]:
+                    if m["conditionId"] in tracked or (m.get("smt") or "") not in MAIN:
+                        continue
+                    meta = {**m, "event": e["slug"], "final_key": None, "t_seen_final": None, "first_poll": False,
+                            "t_track": now, "pre": True, "start": e["start"]}
+                    tracked[m["conditionId"]] = meta
+                    jl("tracked.jsonl", meta)
+        if now - t_fin > 30:
             try:
                 fs = finals(now)
             except Exception as ex:
@@ -154,7 +167,12 @@ def main():
             for f in seen_final.values():
                 for e in match(f, evs):
                     for m in e["markets"]:
-                        if m["conditionId"] in tracked:
+                        tm = tracked.get(m["conditionId"])
+                        if tm is not None:
+                            if tm.get("t_seen_final") is None and not f.get("first_poll"):
+                                tm["t_seen_final"], tm["final_key"] = f["t_seen_final"], f["key"]
+                                jl("tracked.jsonl", {"conditionId": m["conditionId"], "upd": 1, "t_seen_final": f["t_seen_final"],
+                                                     "final_key": f["key"]})
                             continue
                         meta = {**m, "event": e["slug"], "final_key": f["key"], "t_seen_final": f["t_seen_final"],
                                 "first_poll": f.get("first_poll", False), "t_track": now}
@@ -198,7 +216,9 @@ def main():
                         jl("tracked.jsonl", {"conditionId": cid, "closed_seen": now, "closedTime": mm.get("closedTime")})
                         tracked.pop(cid)
             for cid in list(tracked):
-                if now - tracked[cid]["t_track"] > 12 * 3600 or gone.get(cid, 0) >= 6:
+                tmeta = tracked[cid]
+                stale_pre = tmeta.get("pre") and tmeta.get("t_seen_final") is None and now - tmeta["t_track"] > 6 * 3600
+                if now - tmeta["t_track"] > 12 * 3600 or gone.get(cid, 0) >= 6 or stale_pre:
                     tracked.pop(cid)
             t_chk = now
         print(time.strftime("%H:%M:%S"), "tracked", len(tracked), "finals", len(seen_final), flush=True)
