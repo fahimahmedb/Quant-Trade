@@ -1,3 +1,83 @@
+# ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-09-30 (D4-C2 recheck)
+
+CURRENT STATE (supersedes the 2026-09-30 D4-recheck state below; all history preserved verbatim in section H2)
+
+AUDIT_ROLE = ASTRA independent adversarial reviewer
+AUDIT_BRANCH = astra/weather-forward-v2-independent-reaudit-2026-09-29
+AUDIT_ARTIFACT = research/weather_forward/ASTRA_WEATHER_V2_D4_C2_RECHECK_2026-09-30.md
+AUDIT_EVIDENCE = research/weather_forward/astra_d4_c2_recheck_2026-09-30/ (independent synthetic code + raw outputs)
+
+AUDITED_BRANCH = claude/charming-allen-948kd8
+AUDITED_SHA = e45d2ce7e2605a4136804d2c1b31efa3aa8120e1
+AUDITED_TREE = 5d750291710f8261d55e96ae5c02e35146940bee
+PREVIOUS_ASTRA_SHA = 3d18085862f239a81936345989b4e26414cedcf3
+PREVIOUS_ARCHITECT_HEAD = 24d2342fcff8fd78a769a9ecaf7551ab2578e2ef
+
+ASTRA_WEATHER_V2_D4_C2_RECHECK = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION
+
+D4_R1_REALIZED_WINDOW_BOUND = PASS (U_W formula identical to R1; proof correctly scoped to theta_W)
+D4_C2_PROSPECTIVE_EXCLUSION_REMOVAL = PASS (C2 reproduced: retired rule false ERT exclusion 0.0415 S1 / 0.1785 p=0.5 /
+  0.327 p=1 / 0.558 jackpot dates, false LARGE 0.1332 at theta_P=0.10, all from zero-count windows; R2: 0 prospective
+  exclusions, 0 R* rejections, no alias; forward signal never from INDETERMINATE)
+D4_PROSPECTIVE_CONFIRMATION = BLOCKED (C3 CRITICAL)
+D4_STATE_MACHINE = PASS (exhaustive: 9,216 combinations -> 11 SCIENTIFIC values, total, deterministic; EXCLUDED unreachable)
+D4_IDENTIFICATION_THEOREM = OVERSTATED (construction valid and reproduced; ceiling ~0.060 once pre-t0 resolved dates are
+  counted, not 0.058; a finite-horizon power ceiling, not asymptotic non-identification; its confirmation-asymmetry
+  corollary is false in general)
+
+CRITICAL_FINDINGS =
+C3: PROSPECTIVE_VALUE_CONFIRMED (and WEATHER_EDGE_FORWARD_SIGNAL) is issued with theta_P = -0.005 far above alpha = 0.05
+  inside the admissible class R2 freezes for theta_P: rare date-level loss regimes (R* triggers on all 96 events at full
+  S_ref, every leg loses) need only a 0.3-1% per-date rate and are missed by 120 dates 30-80% of the time. 20,000 reps each:
+  0.4266 [0.4198, 0.4335] (m=17, thin ordinary fills); 0.2652; 0.1764; 0.1245 [0.1200, 0.1291] (full fills);
+  0.0599 [0.0566, 0.0632] (LOWEST-template regime). Scan: 65/88 cells > 0.05. Mirror of R2's own theorem: any valid
+  level-0.05 confirmation test has power <= 0.094 at theta=0.10 with 17 x 15 USD ordinary dates, T2 has ~0.43.
+MAJOR_FINDINGS = NONE separate from C3
+MISSING_PROOF = MP2: no frozen bridge assumption from the 120-date window to prospective theta_P for T2 (subsumed by C3)
+MINOR = m3 manifest section C (R1 record) not marked superseded; m4 checkpoint section 4 still lists R1 rule 17.6 and the
+  14-value partition as frozen decisions; m5 REALIZED_WINDOW_* wording could be misread prospectively (mitigated);
+  m6 theorem D omits pre-t0 resolved dates; m7 "not identified" should read "no useful power within V2's horizon"
+REGRESSIONS = NONE in D1-D3, D5-D12 (D10 still CLOSED_ACCEPTED_AND_DISCLOSED); trading rule, PCE / GO unchanged
+RUN_E_INTEGRITY = Architect modes ceiling / confirm / counts / scenarios re-run at e45d2ce7: byte-identical to raw output
+OUTCOME_LEAKAGE = NONE FOUND
+INDEPENDENCE_DISCLOSURE = the D4 recheck, the R2 repair and this recheck ran in one agent session under different roles
+
+D1_D12_SUMMARY =
+D1 CLOSED
+D2 CLOSED
+D3 CLOSED
+D4 OPEN_CRITICAL (C1 closed; C2 closed by R2; C3 open: prospective confirmation)
+D5 CLOSED
+D6 CLOSED
+D7 CLOSED
+D8 CLOSED
+D9 CLOSED
+D10 CLOSED_ACCEPTED_AND_DISCLOSED
+D11 CLOSED
+D12 CLOSED
+
+PRIMARY_BLOCKER = D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION
+EXACT_INVARIANT_TO_ADD = No label may claim theta_P > 0 (or any prospective positive value) at level alpha unless its size
+  is <= alpha over the admissible class the protocol declares for theta_P; a narrower confirmation class must be frozen,
+  named in the label and disclosed next to the exclusion class.
+MINIMAL_REPAIR_SURFACE = confirmation side only: (a) frozen outcome-blind confirmation assumption + qualified label, or
+  (b) distribution-free unsampled-loss allowance (downside mirror of M_tail, per-date capital cap 96 x S_ref, declared date
+  independence), or (c) no prospective confirmation in V2; plus m3-m7. Keep the R2 exclusion removal and the R1 theta_W bound.
+AFFECTED_FILES = spec 6.1 (T2), 6.3, 8.5b confirmation paragraph, 17.2 E1/E2, 17.5, 17.8, 21 item 27, 24, 27; manifest A rows
+  NULLS / ALPHA / TERMINAL_STATE_MACHINE / FORWARD_SIGNAL_RULE, sections C and D; delta D4-C2; power table 4.6; resume
+  checkpoint section 4; a synthetic confirmation-size run
+REQUIRED_REAUDIT_SURFACE = prospective confirmation size over the declared class (96-event loss dates, thin ordinary depth,
+  template- and station-comonotone regimes, m in {17, 35}); forward-signal rule; claim matrix 17.8; m3-m7
+
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION
+NEXT_AUTHORIZED_ACTION = BOUNDED ARCHITECT REPAIR ONLY
+BUILDER_AUTHORIZED = FALSE
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+t0 = NOT_DECLARED
+
+## H2. HISTORY — superseded state of 2026-09-30 (D4 recheck of 24d2342, commit 3d18085), preserved verbatim
+
 # ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-09-30 (D4 recheck)
 
 CURRENT STATE (supersedes the 2026-09-29 D4 state below; history preserved verbatim in section H)
