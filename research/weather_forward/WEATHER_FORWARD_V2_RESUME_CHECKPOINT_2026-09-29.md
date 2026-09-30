@@ -59,8 +59,8 @@ R2 decisions (do not re-derive): identification theorem 8.5b ⇒ PROSPECTIVE_EXC
 | Phase | Content | Status | Checkpoint |
 |---|---|---|---|
 | S0 | fetch; verify remote head = e45d2ce7; read North Star, this file, architect state, Astra D4-C2 recheck + state @92c2f706 | DONE | — |
-| S1 | `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py` modes frontier / c3 20000 / scenarios 4000 / grid 1000 / coverage 20000 (≈ 25 min on 4 cores); raw output `WEATHER_FORWARD_V2_D4_C3_RUN_F_OUTPUT_2026-09-30.jsonl` | DONE | R3 content commit |
-| S2 | spec (header, 1, 2, 4.1, 5.1, 6.1, 6.3, 8.5b wording, new 8.5c, 17.2, 17.3, 17.5–17.8, 21, 24, 26, 27), manifest (A rows + C / D markers + E), delta D4-C3, power table 4.7, architect state, this file (m4) | DONE | R3 content commit |
+| S1 | `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py` modes frontier / c3 20000 / scenarios 4000 / grid 1000 / coverage 20000 (≈ 25 min on 4 cores); raw output `WEATHER_FORWARD_V2_D4_C3_RUN_F_OUTPUT_2026-09-30.jsonl`; frontier / scenarios / c3 re-run byte-identical | DONE | 3086efb |
+| S2 | spec (header, 1, 2, 4.1, 5.1, 6.1, 6.3, 8.5b wording, new 8.5c, 17.2, 17.3, 17.5–17.8, 21, 24, 26, 27), manifest (A rows + C / D markers + E), delta D4-C3, power table 4.7, architect state, this file (m4) | DONE | 3086efb |
 | S3 | this ledger; commit; push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
 
 R3 decisions (do not re-derive without new evidence):
