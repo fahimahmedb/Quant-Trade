@@ -7,6 +7,7 @@ FABLE  = claude/zen-einstein-9moyry     @ 5760ffa5b5da2a988cfe6d1503c86c561acf9b
 V2     = WEATHER_FORWARD_FALSIFICATION_SPEC_V2_2026-09-29.md (+ manifest, state, power table, synthetic sim); audited @94b59348
 V2-R1  = D4 repair R1 after Astra V2 re-audit @7d95c00abccfbc805c0d8abca65a6b93268741a2 (section D4.d / D4.e)
 V2-R2  = D4 repair R2 after Astra D4 recheck @3d18085862f239a81936345989b4e26414cedcf3 (section D4-C2; D4.d / D4.e kept as the R1 record)
+V2-R3  = D4 repair R3 after Astra D4-C2 recheck @92c2f706d2ac75af9ae9710061c60df520234410 (section D4-C3; D4-C2 kept as the R2 record)
 SUMMARY: OUTCOME_INFORMATION_USED = FALSE for every item · TRADING_RULE_CHANGED = FALSE for every item ·
          EXECUTION_MODEL_CHANGED = TRUE for one item (X1, CONSERVATIVE only) · COHORT_CHANGED = TRUE for one item (D7)
 ```
@@ -121,6 +122,80 @@ Each block: OLD / NEW / WHY / ASTRA_FINDING / FABLE_RECOMMENDATION / ARCHITECT_D
 - OUTCOME_INFORMATION_USED: FALSE (synthetic run E and algebra only). TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE (by R2). COHORT_CHANGED: FALSE (by R2).
 - BUILDER_IMPACT: compute U_W exactly as R1; print PROSPECTIVE_EXCLUSION constant, REALIZED_WINDOW_BOUND and TAIL_ARRIVAL_REPORT; implement the 3-value economic axis, the renamed labels, the CORE_ADVERSE-based forward signal and flag; no TPM / SHR, no arrival bound.
 - FILES CHANGED: spec (header, §2 D4-C2 / D2-SM / D4-REJ notes, §4.1, §5.1, §6.1, §6.3, §8.5, new §8.5b, §8.6, §10.3, §11.2, §17.2, §17.3, §17.5, §17.6, §17.7, new §17.8, §20, §21 items 7 / 19 / 21 / 23 / 25–29, §24, §26, §27); manifest (header, A rows ECONOMIC_ESTIMAND / REALIZED_WINDOW_ESTIMAND / NULLS / ALPHA / REALIZED_WINDOW_UPPER_BOUND / PROSPECTIVE_EXCLUSION / OPPORTUNITY_CHAIN / TAIL_ARRIVAL_REPORT / TERMINAL_STATE_MACHINE / FORWARD_SIGNAL_RULE / REJECTION_RULE / MANDATORY_SENTENCES, B INDEPENDENT_REAUDIT, new section D); this delta; power table §4.6; architect state; resume checkpoint; new `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py` and its raw output `WEATHER_FORWARD_V2_D4_C2_RUN_E_OUTPUT_2026-09-30.jsonl`.
+
+**D4-C3 D4 REPAIR R3 — transportability: finite realised evidence → prospective claim (after Astra D4-C2 recheck @92c2f706; delta V2-R2 @e45d2ce7 → V2-R3)**
+
+ASTRA_FINDING: C3 (CRITICAL). The R2 label `PROSPECTIVE_VALUE_CONFIRMED` (T2 + θ̂ ≥ θ_ERT + gates) and the forward signal were issued at θ_P = −0.005: 0.4266 (thin fills) and 0.1245 (full fills). Rare loss dates carrying the 96-event cost cap were absent from most 120-date windows, inside the class R2 itself declared for θ_P. MP2: no frozen bridge from the window to θ_P. Minors m3–m7.
+
+ROOT_CAUSE: V2 froze no relation between the observed law and the future law, yet read T2 as a statement about θ_P. R2's "bounded downside" argument compared regimes by date frequency, not cost mass. A loss date can carry `C_CAP_DATE / C̄_d` (≈ 2.9–20 in run F) times an ordinary date's cost, so the date frequency needed to cancel a positive θ can be small enough to go unseen.
+
+WHY_T2_WAS_NOT_ENOUGH: T2 is sampling inference. It quantifies the uncertainty of the process that produced the observed trades, which here is θ_W, conditional on the realised trade set. A cluster-robust SE cannot see types or regimes that did not occur. Transport from θ_W to a future law is a separate, non-statistical step.
+
+SOURCE_VS_FUTURE_DISTRIBUTION: `P_obs` (window + OP + resolved pre-t0 history) versus `Q_H` (executed-trade law of a future epoch of H counted dates). The frozen relation is now explicit:
+- the mechanics `N_j ≥ −C_j` and `C_d ≤ C_CAP_DATE`;
+- the declared, unverified transport class 𝒯_H(ε, δ);
+- nothing else.
+
+SELECTED_TRANSPORT_ARCHITECTURE: hybrid **C3_C + C3_A**.
+- C3_C: no unconditional prospective label in either direction. The mirror theorem (8.5c) shows any valid unconditional confirmation test has power ≤ 0.06–0.12 in thin geometries.
+- C3_A: a cost-mass robustness frontier with no chosen threshold.
+- C3_B (explicit stationarity) was evaluated and rejected. It would be exactly the hidden assumption Astra found, and no observable check can certify it (8.5c: a hidden regime with identical covariates trips no flag).
+- Falsification attempt on C3_A: the conditional claim can be false only through the sampling event θ_W < L_W. Run F confirms this (cond. claim false = L_W miss).
+
+FORMAL_ESTIMAND:
+- empirical: θ_W (ECONOMIC_RESULT, T2 unchanged; U_W unchanged);
+- strategic: θ_P (not a V2 estimand);
+- conditional prospective: `θ_F(Q_H) = E_Q[N]/E_Q[C]` over the next H counted dates, for Q_H ∈ 𝒯_H(ε, δ).
+
+ROBUSTNESS_CONTRACT:
+- Proposition 1 (exact cost-mass mixture identity for E[N]/E[C]) and `WORST_CASE_REGIME_RETURN = −1` per dollar of C (exact).
+- Theorem 2: on {θ_W ≥ L_W}, `θ_F ≥ L_T(ε, δ) = (1 − ε)(L_W − δ) − ε` for all Q ∈ 𝒯_H(ε, δ), simultaneously for all (ε, δ, H).
+- Frontier `ε*(δ, τ) = max(0, (L_W − δ − τ)/(1 + L_W − δ))`.
+- Reporting grids only: δ ∈ {0, 0.01, 0.02, 0.05}, τ ∈ {0, θ_ERT}, H ∈ {14, 30, 60, 120} (existing constants). No ε, δ, H or τ threshold is chosen in V2.
+- Reported with it: k*(H), cost-mass concentration (n_eff,C, cap ratio, ε_1(H)), and observable invalidation flags that can only revoke.
+- Rolling-epoch fields (design only).
+
+CLAIM_STRENGTH:
+- REALIZED_WINDOW_VALUE_SUPPORTED: θ_W > 0 (size ≤ 0.05, IUT) with θ̂ ≥ θ_ERT and robust to G1–G3.
+- CONDITIONAL_PROSPECTIVE_SUPPORT(ε*, δ): if the premise holds, θ_F ≥ L_T. Its only probability is the sampling event (0.95 nominal; simulated 0.9448–0.9502).
+- PROSPECTIVE_CONFIRMATION = NOT_ESTABLISHED_UNCONDITIONALLY.
+- PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON.
+
+FALSE-CONFIRMATION_RESULT (run F, power table §4.7):
+- C3 reproduced: retired label false 0.4334 [0.4265, 0.4403] (thin) and 0.1175 [0.1130, 0.1220] (full); in the grid, above 0.05 in 55 of 148 non-positive cells (max 0.36).
+- R3: 0 unconditional prospective labels and 0 prospective exclusions in all 443,000 scenario / C3 / grid / coverage replications.
+- R3 false window claims ≤ 0.043 (grid, 1,000 replications per cell).
+- L_W miss 0.044–0.0552 at 20,000 replications (carried D8 limitation, disclosed).
+- In every C3 design the frontier lies below the true adverse cost share: median ε* 0.011–0.045 against ε_true 0.034–0.096.
+
+POWER / INFORMATION COST:
+- No unconditional prospective verdict in either direction.
+- The positive realised-window claim keeps T2's power (0.62 at θ = 0.10 thick; 0.83 thin, stable).
+- The prospective content is only as strong as the reader's belief that at most ε* of a future epoch's cost mass is adverse. In C3-like geometries the evidence absorbs well under one maximum-exposure adverse date per 120-date epoch (k*(120) medians 0.14–0.86; 2.2 in a thick, stable design).
+
+FORWARD-SIGNAL_CHANGE: `WEATHER_EDGE_FORWARD_SIGNAL` is renamed `SHADOW_CONTINUATION_SIGNAL`, with the same conditions. Its meaning is restricted to "propose a further paper/shadow epoch". It is not an edge verdict and has no capital path.
+
+MINORS m3–m7:
+- m3: manifest §C / §D rows marked SUPERSEDED, and section A declared authoritative.
+- m4: checkpoint §4 items 1, 3 and 5 marked superseded.
+- m5: mandatory REALIZED_WINDOW_ prefix note in 17.3, and the economic labels now carry the same prefix.
+- m6: D_obs ≈ 174 (window + OP + pre-t0 resolved history); the ceiling becomes 0.0602 / 0.0611.
+- m7: "not identified" becomes "not usefully testable within V2's horizon (finite-horizon power ceiling)"; the constant and printed value are renamed.
+
+FILES CHANGED:
+- spec (header, §1, §2 D4-C3, §4.1, §5.1, §6.1, §6.3, §8.5b wording, new §8.5c, §17.2, §17.3, §17.5–17.8, §21 items 27 and 30–35, §24, §26, §27);
+- manifest (A rows, C / D markers, new E);
+- this delta; power table §4.7 / §5; architect state; resume checkpoint;
+- new `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py` and `WEATHER_FORWARD_V2_D4_C3_RUN_F_OUTPUT_2026-09-30.jsonl`.
+
+OUTCOME_INFORMATION_USED: FALSE (synthetic run F, algebra and the Astra audit only).
+
+TRADING_RULE_CHANGED: FALSE. R*, h, W, signal, cohort, entry rule, T_entry, S_ref sizing, execution and the 0.04 strata are byte-identical in the spec. EXECUTION_MODEL_CHANGED: FALSE (by R3).
+
+BUILDER_IMPACT:
+- print L_W, the ε* grid, k*(H), concentration fields, the two constants and sentence (c);
+- rename the economic labels and the signal;
+- implement no transport threshold and no capital logic.
 
 ## D5 — Science vs operability (MAJOR → CLOSED)
 

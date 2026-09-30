@@ -239,16 +239,90 @@ Readings:
 5. Prospective confirmation remains valid: false confirmation at θ_P = 0 is ≤ 0.0378 under the catastrophic-date alternative, and confirmation power is unchanged (0.62 at θ_P = 0.10 tail-free, jointly with GO ∧ INFO).
 
 
+### 4.7 Run F — D4 repair R3 validation (prospective confirmation vs unsampled loss regimes; transport frontier; after Astra D4-C2 recheck @92c2f706)
+
+Script: `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py` (independent of Astra's code; seeds 20261001+). Raw output: `WEATHER_FORWARD_V2_D4_C3_RUN_F_OUTPUT_2026-09-30.jsonl`.
+
+Design per replication (a fresh prospective realisation each time):
+- 14 OP + 120 window dates.
+- Ordinary dates: Poisson(m) executed trades, 48 gamma(2) stations, CORE c ~ U(0.35, 0.80), p = c(1 + θ_core), capital "full" (50 USD) or "thin" (U(5, 25)).
+- Loss-regime dates (probability η, independent): `cap96` (all 96 events at 50 USD, all lose), `template` (48 LOWEST legs), `stations` (both events of 24 stations), `hidden` (ordinary count and fills, all lose: identical observable covariates).
+- η is solved so that θ_P, the exact E[N]/E[C] of the process, hits the stated target.
+
+Definitions:
+- "R2 false CONFIRMED": the retired @e45d2ce7 label `PROSPECTIVE_VALUE_CONFIRMED` issued while θ_P ≤ 0.
+- "R3 false window claim": REALIZED_WINDOW_VALUE_SUPPORTED or NOT_ROBUST issued while θ_W ≤ 0.
+- "L_W miss": P(reach ∧ L_W > θ_W), the only way any R3 prospective (conditional) statement can be false.
+- "Cond. claim false": `(1 − ε_true) L_W − ε_true > θ_P` at the true loss-regime cost share, with δ = 0.
+
+**Astra C3 reproduction (20,000 replications each):**
+
+| Cell | θ_P | true adverse cost share ε | R2 false CONFIRMED (joint, 95% MC) | R2 forward signal | R3 false window claim | L_W miss | Cond. claim false | ε*(0,0) median when SUPPORTED | k*(120) median | cap-date flag would fire |
+|---|---|---|---|---|---|---|---|---|---|---|
+| C3-thin: cap96, m=17, thin, core 0.10, thP=-0.005 | -0.005 | 0.0955 | 0.4334 [0.4265, 0.4403] | 0.4334 | 0.0000 | 0.0265 [0.0243, 0.0287] | 0.0265 | 0.0442 | 0.2813 | 1.00 |
+| C3-full: cap96, m=17, full, core 0.05, thP=-0.005 | -0.005 | 0.0524 | 0.1175 [0.1130, 0.1220] | 0.1175 | 0.0000 | 0.0172 [0.0154, 0.0189] | 0.0172 | 0.0229 | 0.4734 | 1.00 |
+
+**Mission scenario set (4,000 replications each):**
+
+| Scenario | θ_P | ε_true | E[loss dates in window] | reach | R2 CONFIRMED (false if θ_P ≤ 0) | R3 window claim (SUPPORTED + NOT_ROBUST) | R3 false window claim | L_W miss | unconditional / prospective-exclusion labels | ε*(0,0) median | k*(120) median | cap ratio C_CAP_DATE/C̄_d | ε_1(120) | cap-date flag |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01 C2 regression: rare 0.001 tail p=0.17, core -0.05, thP=0.025, no loss regime | 0.025 | 0.0 | 0.0 | 0.498 | 0.0010 | 0.0018 | 0.0005 | 0.0055 [0.0032, 0.0078] | 0 / 0 | 0.0097 | 0.4103 | 2.88 | 0.0236 | 0.00 |
+| 02 C3 thin fills: cap96 loss dates, m=17, core 0.10, thP=-0.005 | -0.005 | 0.0955 | 0.67 | 0.511 | 0.4338 (false) | 0.4338 | 0.0000 | 0.0258 [0.0208, 0.0307] | 0 / 0 | 0.0451 | 0.2876 | 18.9168 | 0.1372 | 1.00 |
+| 03 C3 full fills: cap96 loss dates, m=17, core 0.05, thP=-0.005 | -0.005 | 0.0524 | 1.16 | 0.298 | 0.1143 (false) | 0.1143 | 0.0000 | 0.0155 [0.0117, 0.0193] | 0 / 0 | 0.0214 | 0.4395 | 5.6976 | 0.0457 | 1.00 |
+| 04 thP=0 exactly: cap96, m=35, thin, core 0.08 | 0.0 | 0.0741 | 1.04 | 0.244 | 0.1850 (false) | 0.1850 | 0.0000 | 0.0160 [0.0121, 0.0199] | 0 / 0 | 0.0347 | 0.4485 | 9.0197 | 0.0705 | 1.00 |
+| 05 strong positive stable: core 0.10, m=35, full, no loss regime | 0.1 | 0.0 | 0.0 | 0.664 | 0.6210 | 0.6210 | 0.0000 | 0.0470 [0.0404, 0.0536] | 0 / 0 | 0.0511 | 2.2134 | 2.8779 | 0.0236 | 0.00 |
+| 06 hidden catastrophe (identical covariates), m=17, full, core 0.04, thP=-0.005 | -0.005 | 0.0433 | 5.19 | 0.897 | 0.0455 (false) | 0.0455 | 0.0070 | 0.0290 [0.0238, 0.0342] | 0 / 0 | 0.011 | 0.2216 | 5.9294 | 0.0475 | 0.00 |
+| 07 high date concentration: cap96, m=17, thin, core 0.05, thP=-0.005 | -0.005 | 0.0524 | 0.35 | 0.684 | 0.2590 (false) | 0.2590 | 0.0000 | 0.0392 [0.0332, 0.0453] | 0 / 0 | 0.0226 | 0.1426 | 19.5132 | 0.1409 | 1.00 |
+| 08 low date concentration: cap96, m=35, full, core 0.03, thP=-0.005 | -0.005 | 0.034 | 1.52 | 0.150 | 0.0387 (false) | 0.0387 | 0.0000 | 0.0110 [0.0078, 0.0142] | 0 / 0 | 0.0199 | 0.8562 | 2.8212 | 0.0232 | 1.00 |
+| 09 template-comonotone (48 LOWEST), m=17, full, core 0.04, thP=-0.005 | -0.005 | 0.0433 | 1.89 | 0.504 | 0.0600 (false) | 0.0600 | 0.0005 | 0.0180 [0.0139, 0.0221] | 0 / 0 | 0.0174 | 0.358 | 5.7682 | 0.0462 | 1.00 |
+| 10 station-cluster (24 stations x 2), m=17, full, core 0.04, thP=-0.005 | -0.005 | 0.0433 | 1.89 | 0.496 | 0.0597 (false) | 0.0597 | 0.0010 | 0.0142 [0.0106, 0.0179] | 0 / 0 | 0.0139 | 0.2859 | 5.771 | 0.0463 | 1.00 |
+| 11 frequent loss regime (E=10 in window): cap96, m=35, full, thP=0 | 0.0 | 0.1996 | 10.0 | 0.000 | 0.0000 (false) | 0.0000 | 0.0000 | 0.0000 [0.0000, 0.0000] | 0 / 0 | None | None | 2.5174 | 0.0207 | 1.00 |
+| 12 tail-free stable baseline, core 0.00 (thP=0) | 0.0 | 0.0 | 0.0 | 0.617 | 0.0398 (false) | 0.0398 | 0.0398 | 0.0398 [0.0337, 0.0458] | 0 / 0 | 0.0109 | 0.4607 | 2.8793 | 0.0236 | 0.00 |
+| 13 tail-free stable baseline, core 0.10, m=17, thin (confirmation power, thin) | 0.1 | 0.0 | 0.0 | 0.992 | 0.8303 | 0.8303 | 0.0000 | 0.0538 [0.0468, 0.0607] | 0 / 0 | 0.0447 | 0.2827 | 19.7693 | 0.1425 | 0.00 |
+
+**By observed loss dates in the window** (scenario 03, C3 full fills, R2 CONFIRMED rate / R3 false window claim):
+0 dates: n = 1201, R2 0.3797, R3 0.0 · 1 dates: n = 1482, R2 0.0007, R3 0.0 · 2 dates: n = 866, R2 0.0, R3 0.0 · 3 dates: n = 322, R2 0.0, R3 0.0 · 4 dates: n = 103, R2 0.0, R3 0.0 · 5 dates: n = 19, R2 0.0, R3 0.0 · 6 dates: n = 6, R2 0.0, R3 0.0 · 9 dates: n = 1, R2 0.0, R3 0.0
+
+**Source-bound sampling coverage (20,000 replications each; nominal one-sided 0.95):**
+
+| Design | P(reach ∧ L_W > θ_W) (95% MC) |
+|---|---|
+| 05 strong positive stable: core 0.10, m=35, full, no loss regime | 0.0498 [0.0468, 0.0529] |
+| 12 tail-free stable baseline, core 0.00 (thP=0) | 0.0440 [0.0412, 0.0468] |
+| 13 tail-free stable baseline, core 0.10, m=17, thin (confirmation power, thin) | 0.0552 [0.0520, 0.0584] |
+
+**Loss-regime grid:**
+- Axes: E[loss dates in window] ∈ {0.25, 1, 2, 5, 10} × kind ∈ {cap96, template, stations, hidden} × (m, fills) ∈ {17, 35} × {thin, full} × θ_P ∈ {−0.005, 0, θ_ERT, 0.08}. Cells whose ordinary effect would exceed 0.5 are skipped.
+- Scale: 291 cells × 1,000 replications = 291,000.
+- **R2 false CONFIRMED** at θ_P ≤ 0: above 0.05 in 55 of 148 cells, with the whole MC interval above 0.05 in 38. Maximum 0.36 (E = 1 cap96 loss date, m = 17, thin fills).
+- R2 false CONFIRMED by kind: cap96 0.36, template 0.26, stations 0.26, hidden 0.057.
+- **R3: 0 unconditional prospective labels and 0 prospective exclusions** in all 291,000 replications.
+- R3 false window claims ≤ 0.043; L_W miss ≤ 0.061 (MC SE ≈ 0.007 at 1,000 replications; the largest cells are sparse m = 17 designs, see the coverage table).
+- The outcome-blind `COST_EXCEEDS_EVIDENCE` flag would fire for a future loss date in 100% of cap96, ≈ 75% of template / stations and 0% of hidden designs.
+
+**Frontier algebra** (`frontier` mode):
+- `L_T(ε, δ)` is decreasing in ε for every tested L_W ∈ {−0.5, −0.05, 0, 0.03, 0.10, 0.30} and δ in the grid, with `L_T(0) = L_W − δ` and `L_T(1) = −1`.
+- ε*(0, 0) = 0.0909 at L_W = 0.10 (the sanity example) and 0 when L_W ≤ 0.
+- One maximum-exposure date carries cost mass ε_1(120) = 0.142 (17 × 15 USD dates), 0.048 (17 × 50) and 0.024 (35 × 50). At H = 14 the figures are 0.60 / 0.31 / 0.18.
+
+Readings:
+1. **C3 reproduces** with independent code. The retired `PROSPECTIVE_VALUE_CONFIRMED` was false at θ_P = −0.005 in 43% (thin) and 11–12% (full) of runs, and in up to 36% of grid cells. The forward signal fired at the same rates.
+2. **R3 issues no unconditional prospective label.** Its economic labels are true statements about θ_W: false-claim rate ≤ α.
+3. Every prospective statement R3 makes is conditional on the transport premise and can be false only through the sampling miss of L_W. In C3 designs the frontier ε* lies *below* the true adverse cost share, so the conditional claim correctly does not cover the loss regime. k*(120) medians of 0.14–0.86 show the evidence cannot absorb even one maximum-exposure loss date per 120-date epoch.
+4. The source bound's sampling coverage is nominal in thick designs (0.9502) and ≈ 0.5 pp liberal in sparse, heterogeneous-fill designs (0.9448). This is the carried D8 finite-cluster property of the unchanged T2 engine, disclosed as a MINOR limitation.
+5. Hidden loss regimes with identical covariates trip no observable flag. Only the ε budget covers them.
+
+
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
 
 | True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
 |---|---|---|---|
 | 0.00 | ND\|IND ≈ 0.85–0.92; false CONFIRMED ≈ 0.03–0.06; false NEG ≈ 0.03 (at 0.025) | would not start | would not start |
-| 0.02 (= ERT) | PROSPECTIVE_VALUE_CONFIRMED ≈ 0.11–0.18 (analytic 0.18 before gates; run E 0.11); prospective exclusion not identified (R2); REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED ≈ 0.02 (run E 0.0213); otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
+| 0.02 (= ERT) | REALIZED_WINDOW_VALUE_SUPPORTED ≈ 0.11–0.18 (analytic 0.18 before gates; run E 0.11); prospective exclusion not usefully testable (R2); REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED ≈ 0.02 (run E 0.0213); otherwise INDETERMINATE: **unresolved band** | would not start | would not start |
 | 0.05 | CONFIRMED ≈ 0.43; information DETECTED ≈ 0.39; INDETERMINATE ≈ 0.55 | (if run: CONFIRMED 0.10, DET 0.345) | (if run: CONFIRMED ≈ 0.01) |
 | 0.10 | CONFIRMED ≈ 0.86; information DETECTED ≈ 0.87 | (if run: CONFIRMED 0.52) | (if run: CONFIRMED 0.17, DET 0.875) |
-| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); prospective exclusion not identified (R2); REALIZED_WINDOW exclusion (θ_W) ≈ 0.36–0.51 (−0.05), 0.57–0.93 (−0.10) (run E joint with GO ∧ INFO / run D unconditional) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); realised-window exclusion 0 (tail supremum) |
+| −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); prospective exclusion not usefully testable (R2); REALIZED_WINDOW exclusion (θ_W) ≈ 0.36–0.51 (−0.05), 0.57–0.93 (−0.10) (run E joint with GO ∧ INFO / run D unconditional) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); realised-window exclusion 0 (tail supremum) |
 
-Label names after D4 repair R2: CONFIRMED = PROSPECTIVE_VALUE_CONFIRMED, INDETERMINATE = PROSPECTIVE_VALUE_INDETERMINATE; no prospective EXCLUDED label exists (spec 8.5b). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
+Label names after D4 repair R3: CONFIRMED = REALIZED_WINDOW_VALUE_SUPPORTED (estimand θ_W; the conditions are those of T2 and are unchanged, so the powers above stand), INDETERMINATE = REALIZED_WINDOW_VALUE_INDETERMINATE. No unconditional prospective label exists in either direction (spec 8.5b, 8.5c); prospective content is the transport frontier (§4.7). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
 
 Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.

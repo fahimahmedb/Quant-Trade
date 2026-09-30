@@ -1,11 +1,11 @@
-# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repair R1 + D4-C2 repair R2) — 2026-09-29 / 2026-09-30
+# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3) — 2026-09-29 / 2026-09-30
 
 ```text
-ROLE                 = Weather Forward V2 Architect — bounded D4 repair (R1) and bounded D4-C2 repair (R2) only
+ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability)
 PURPOSE              = durable restart surface: a fresh session (after token / context / container loss) resumes from
                        THIS FILE, never from chat memory
 BRANCH               = claude/charming-allen-948kd8
-STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = READY_FOR_ASTRA_D4_C2_RECHECK   (R1: AUDITED @24d2342, BLOCKED C2 by Astra @3d18085)
+STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK   (R2 @e45d2ce7 BLOCKED C3 by Astra @92c2f706)
 REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_DECLARED · BUILDER_AUTHORIZED = FALSE
 ```
 
@@ -28,6 +28,8 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | Astra V2 re-audit (BLOCKED D4) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 7d95c00abccfbc805c0d8abca65a6b93268741a2 |
 | D4 repair R1 head (audited) | claude/charming-allen-948kd8 | 24d2342fcff8fd78a769a9ecaf7551ab2578e2ef |
 | Astra D4 recheck (BLOCKED C2) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 3d18085862f239a81936345989b4e26414cedcf3 (read only; not merged into this branch) |
+| D4-C2 repair R2 head (audited) | claude/charming-allen-948kd8 | e45d2ce7e2605a4136804d2c1b31efa3aa8120e1 |
+| Astra D4-C2 recheck (BLOCKED C3) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 92c2f706d2ac75af9ae9710061c60df520234410 (read only; not merged into this branch) |
 
 ## 3. Phase ledger (checkpoints)
 
@@ -52,13 +54,30 @@ If P3 is found incomplete on resume: run `git log origin/claude/charming-allen-9
 
 R2 decisions (do not re-derive): identification theorem 8.5b ⇒ PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2; economic axis PROSPECTIVE_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE}; R1 bound kept as θ_W report field REALIZED_WINDOW_BOUND; R*_REJECTED_AS_NET_STRATEGY never issued; CORE_ADVERSE drives R*_CORE_INFORMATION_REJECTED and the forward signal (Astra m2); R2-A rejected (independence assumption, never excludes), R2-C only as report field. Evidence: power table §4.6. Next: ASTRA BOUNDED D4-C2 RECHECK ONLY.
 
+## 3c. Phase ledger — D4-C3 transport repair R3 (2026-09-30)
+
+| Phase | Content | Status | Checkpoint |
+|---|---|---|---|
+| S0 | fetch; verify remote head = e45d2ce7; read North Star, this file, architect state, Astra D4-C2 recheck + state @92c2f706 | DONE | — |
+| S1 | `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py` modes frontier / c3 20000 / scenarios 4000 / grid 1000 / coverage 20000 (≈ 25 min on 4 cores); raw output `WEATHER_FORWARD_V2_D4_C3_RUN_F_OUTPUT_2026-09-30.jsonl` | DONE | R3 content commit |
+| S2 | spec (header, 1, 2, 4.1, 5.1, 6.1, 6.3, 8.5b wording, new 8.5c, 17.2, 17.3, 17.5–17.8, 21, 24, 26, 27), manifest (A rows + C / D markers + E), delta D4-C3, power table 4.7, architect state, this file (m4) | DONE | R3 content commit |
+| S3 | this ledger; commit; push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
+
+R3 decisions (do not re-derive without new evidence):
+- θ_P is a strategic target, not a V2 estimand. No unconditional label in either direction: exclusion has the 8.5b ceiling; confirmation has the 8.5c mirror theorem.
+- ECONOMIC_RESULT is REALIZED_WINDOW_VALUE_{SUPPORTED, NOT_ROBUST, INDETERMINATE} on θ_W, with T2 unchanged.
+- Transport uses the cost-mass class 𝒯_H(ε, δ), the deductive bound L_T = (1 − ε)(L_W − δ) − ε (Proposition 1 exact), and the frontier ε*(δ, τ), k*(H) and concentration report. Only reporting grids exist; no threshold is chosen.
+- Observable invalidation can only revoke.
+- SHADOW_CONTINUATION_SIGNAL replaces the forward signal.
+- Minors m3–m7 fixed.
+
 ## 4. Decisions already made (do not re-derive)
 
-1. Repair R1 = exclusion bound `U(θ) = w_core (θ̂_core + t_{df,0.975} SE_CR(θ̂_core)) + M_tail`, `M_tail = Σ_TAIL (n_j − C_j) / Σ C_j` (every TAIL leg wins). Coverage ≥ core coverage for every tail geometry and dependence (spec §8.5 proof).
+1. (SUPERSEDED in scope by R2: the bound is the θ_W report field REALIZED_WINDOW_BOUND; Astra m4) Repair R1 = exclusion bound `U(θ) = w_core (θ̂_core + t_{df,0.975} SE_CR(θ̂_core)) + M_tail`, `M_tail = Σ_TAIL (n_j − C_j) / Σ C_j` (every TAIL leg wins). Coverage ≥ core coverage for every tail geometry and dependence (spec §8.5 proof).
 2. TPM / SHR tail models retired from every role; PINM gates only T1b.
-3. Rule 17.6: `R*_REJECTED_AS_NET_STRATEGY` iff `NET_VALUE_EXCLUDED`; `NEGATIVE_INFORMATION` → `R*_CORE_INFORMATION_REJECTED` (information-level). Reason: the old NEG clause false-rejected θ = 0.0315 in 32% of Astra A1 runs.
+3. (SUPERSEDED by R2: R*_REJECTED_AS_NET_STRATEGY is never issued; Astra m4) Rule 17.6: `R*_REJECTED_AS_NET_STRATEGY` iff `NET_VALUE_EXCLUDED`; `NEGATIVE_INFORMATION` → `R*_CORE_INFORMATION_REJECTED` (information-level). Reason: the old NEG clause false-rejected θ = 0.0315 in 32% of Astra A1 runs.
 4. Routes: A subsumed by `M_tail`; B adopted in assumption-free form; C cannot restrict true tail probabilities; nothing smaller is valid.
-5. Unchanged: R*, h, W, model, T_entry, cohort, strata, θ, κ_core, T1a, T1b, T2, NEG test, engines, dependence, PCE / GO, gates G1–G3, 14-value SCIENTIFIC partition, validity, operability, forward-signal rule, analysis time. D1, D2, D3, D5–D9, D11, D12 CLOSED; D10 CLOSED_ACCEPTED_AND_DISCLOSED.
+5. (Partly SUPERSEDED: the SCIENTIFIC partition has 11 values since R2; the forward signal is SHADOW_CONTINUATION_SIGNAL since R3; Astra m4) Unchanged: R*, h, W, model, T_entry, cohort, strata, θ, κ_core, T1a, T1b, T2, NEG test, engines, dependence, PCE / GO, gates G1–G3, 14-value SCIENTIFIC partition, validity, operability, forward-signal rule, analysis time. D1, D2, D3, D5–D9, D11, D12 CLOSED; D10 CLOSED_ACCEPTED_AND_DISCLOSED.
 6. No live data, no outcomes, no wallet data used in the repair (synthetic only).
 
 ## 5. Where the repair lives (targeted reading only)

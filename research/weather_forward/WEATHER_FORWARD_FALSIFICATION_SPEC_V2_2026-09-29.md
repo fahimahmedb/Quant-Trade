@@ -14,14 +14,17 @@ COMPANION_FILES          = WEATHER_FORWARD_FREEZE_MANIFEST_V2_2026-09-29.md
                            WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md
                            WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py   (synthetic Monte Carlo, no market data)
                            WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py      (D4 repair R2 validation, synthetic only)
+                           WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py      (D4 repair R3 validation, synthetic only)
 WEATHER_FORWARD_SPEC_V2  = AUDITED @94b59348 → ASTRA_WEATHER_V2_REAUDIT = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION (@7d95c00)
 WEATHER_FORWARD_SPEC_V2_D4_REPAIR = AUDITED @24d2342 → ASTRA_WEATHER_V2_D4_RECHECK = BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (@3d18085)
-WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = READY_FOR_ASTRA_D4_C2_RECHECK   (D4 repair R2: sections 5.1, 6, 8.5, 8.5b, 17; section 27)
+WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = AUDITED @e45d2ce7 → ASTRA_WEATHER_V2_D4_C2_RECHECK = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (@92c2f706)
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK   (D4 repair R3: sections 1, 5.1, 6, 8.5b, 8.5c, 17; section 27)
 ASTRA_REAUDIT            = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 7d95c00abccfbc805c0d8abca65a6b93268741a2
 ASTRA_D4_RECHECK         = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 3d18085862f239a81936345989b4e26414cedcf3
+ASTRA_D4_C2_RECHECK      = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 92c2f706d2ac75af9ae9710061c60df520234410
 WEATHER_FORWARD_SPEC_V1  = HISTORICAL_FROZEN_OBJECT
 EXPERIMENT_FEASIBILITY   = BLOCKED_POWER_BELOW_DECLARED_MEUE   (Astra's verdict on V1; only Astra may change it)
-EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION   (Astra's verdict on 24d2342; only Astra may change it)
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION   (Astra's verdict on e45d2ce7; only Astra may change it)
 HURDLE_SAMPLE_INCOMPATIBILITY = FALSE
 FABLE_DESIGN_CHALLENGE   = DONE_ADVISORY
 BUILDER_AUTHORIZED       = FALSE
@@ -55,6 +58,12 @@ Incorporation by reference. Every V1 section not amended here stays in force **v
 | Can a 120-date design confirm **or** exclude θ = 0.02? | **No.** Both need `SE(θ̂) ≤ 0.008` (≈ 15,500 independent trades at σ = 1; ≈ 1,300 dates at 35 trades/day) | DERIVED, reproduced from Astra and Fable |
 | Can it detect an **executable mispricing** in the rule's chosen legs, including a real negative result? | Yes for the core stratum: SE(κ_core) ≈ 0.013–0.017, MDE80 ≈ 0.032–0.043 per share, independent of the lottery share; tail stratum by an exact win-count test | DERIVED + SIMULATED |
 
+**What V2 can answer about the primary question after D4 repair R3 (section 8.5c).** No finite window can settle the prospective question unconditionally, in either direction (8.5b, 8.5c). V2 answers it in two explicit layers:
+1. a sampling-inference verdict on the realised-window value θ_W of the trades R* actually executed;
+2. a transport frontier: how much of a future epoch's expected executed cost could come from an arbitrarily adverse regime (worst case −1 per dollar) before positivity is lost.
+
+No label asserts unconditional prospective value or its absence.
+
 Therefore V2 does **not** pretend 0.02 is adjudicable. It keeps θ as the only economic estimand, separates `θ_ERT` (what matters economically) from `θ_PCE` (what the design can confirm), adds a well-powered, stratified information axis (not a gate) that can say "the rule's chosen legs are not underpriced", and labels the band `[θ_ERT, θ_PCE)` explicitly **unresolved** — never "zero edge".
 
 ---
@@ -73,6 +82,7 @@ Therefore V2 does **not** pretend 0.02 is adjudicable. It keeps θ as the only e
 | D4-UB (REPAIRED, R1) | V2 re-audit C1 (CRITICAL): the TPM ∨ SHR structured bound false-excludes θ = 0.0315 > θ_ERT at 7.46% (coverage 0.885) and θ = 0.085 > θ_PCE at 11.2% in a GO-compatible design; MP1 committed sim ≠ frozen bisection contract | (Fable: PINM tail engine; no full-class bound proposed) | **Exclusion bound = core two-way CR bound + assumption-free tail supremum `M_tail` (every TAIL leg wins); TPM / SHR retired from every role; pooled naive bounds never used** | the tail's admissible class is all `p ∈ [0,1]` under any dependence; the only bound valid over it is the identified-set supremum; coverage then equals core coverage (run D: 0.9705–0.993 over nine adversarial core geometries; both Astra attacks: coverage 1.0, false exclusion 0) | NO | NO |
 | D4-REJ (REPAIRED, R1) | consequence of C1: V2 rule 17.6 also rejected R* as a net strategy on NEGATIVE_INFORMATION alone | — | **Economic rejection only through `U(θ) < θ_ERT`; NEGATIVE_INFORMATION becomes the information-level `R*_CORE_INFORMATION_REJECTED`** (superseded by D4-C2: no economic rejection of R* is issued in V2) | run D: in Astra's positive-tail / negative-core geometry the NEG clause produced a false economic rejection in 32.0% of runs | NO | NO |
 | D4-C2 (REPAIRED, R2) | V2 D4 recheck C2 (CRITICAL, Astra @3d18085): R1's bound covers only the realised-window value θ_W; when rare 0.001 legs are absent from a GO-compatible window, prospective θ_P = 0.025 > θ_ERT is falsely excluded 5.92% of runs (0.19–0.35 at p_tail 0.5–1.0) and θ_P = 0.10 is falsely LARGE-excluded 15.3% | — | **Prospective exclusion is NOT IDENTIFIED in V2: no prospective exclusion label exists; ECONOMIC_RESULT = PROSPECTIVE_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE}; R1's bound is kept, re-scoped to θ_W and reported only as REALIZED_WINDOW_BOUND; R*_REJECTED_AS_NET_STRATEGY is never issued** | identification theorem (8.5b): under V2's own admissible class (p ∈ [0,1], 0.001 tick, date common modes) every level-0.05 test of θ_P ≥ θ_ERT or θ_P ≥ θ_PCE has power ≤ 0.058 against every admissible truth over the 134 observed dates; the arrival-bound alternative (R2-A) needs trade-level independence V2 does not grant and, even granted, never excludes (allowance ≈ 1.2 at zero observed sub-cent legs) | NO | NO |
+| D4-C3 (REPAIRED, R3) | V2 D4-C2 recheck C3 (CRITICAL, Astra @92c2f706): `PROSPECTIVE_VALUE_CONFIRMED` and the forward signal fired at θ_P = −0.005 in 43% (thin fills) and 12% (full fills) of runs, because rare loss dates carrying the 96-event cost cap are absent from most windows; R2's "bounded downside" asymmetry argument was false in general | — (Astra options a / b / c) | **Hybrid: no unconditional prospective label in either direction; ECONOMIC_RESULT is about θ_W (T2 unchanged); prospective content = cost-mass transport class 𝒯_H(ε, δ) with the deductive robust bound `L_T = (1 − ε)(L_W − δ) − ε` and the frontier ε*(δ, τ); forward signal renamed SHADOW_CONTINUATION_SIGNAL; no ε, δ, H or τ threshold chosen in V2** | mirror theorem (8.5c): any valid unconditional confirmation test has power ≤ 0.06–0.12 in thin geometries; Proposition 1 makes cost-mass contamination exact for θ = E[N]/E[C]; run F: 0 false realised-window claims; conditional claim false only through the sampling miss of L_W (≤ 0.027) | NO | NO |
 | D8-DEP | D8 MAJOR: date-only primary ignores station persistence | two-way date-block × station, max of three SEs | **Adopt** (section 9) | SIMULATED here and by Fable: date-only κ test rejects 0.095–0.205 at nominal 0.025 | NO | NO |
 | D2-SM | D2 CRITICAL: undefined regions, unpinned analysis date | six-label partition + orthogonal validity/accessibility | **Adopt with modifications**: three orthogonal axes (VALIDITY, SCIENTIFIC, OPERABILITY); SCIENTIFIC is the product INFORMATION_RESULT × ECONOMIC_RESULT (Fable's six labels are six of its twelve cells); INFORMATION_INSUFFICIENT added; relevance exclusion evaluated before confirmation; ECONOMIC_BOUND report field; one analysis time (D4 repair R2: the economic axis loses its exclusion row — 3 × 3 + 2 = 11 values — and ECONOMIC_BOUND becomes the θ_W report field REALIZED_WINDOW_BOUND; D4-C2) | proves totality by construction (section 17) | NO | NO |
 | D3-BOOK | D3 CRITICAL (operational): CLOB `timestamp` is last change, not observation | window on `captured_at` | **Adopt** with clock tolerance, retries, provenance and a new completeness denominator (section 12) | quiet books are valid books | NO | NO |
@@ -115,7 +125,7 @@ Clarifications that are **not** changes (V1 was silent; these are the only deter
 1. For every event V1 would have admitted, R*'s inputs, parameters, leg choice, REALISTIC fills, capital, hold rule and contribution to θ are identical to V1; the replay invariant (V1 §24.14) is unchanged. The only domain change is the °F cohort (D7), decided from ladder mechanics, not from the information axis.
 2. κ_core and the tail win count are computed **from the same trades** R* already opened; no leg is added, removed, resized or re-timed. The stratum label is a deterministic function of the chosen leg's best ask at T_entry, recorded before any outcome exists.
 3. θ is the only quantity that enters a net-value label; κ is never reported as R*'s return. κ is, exactly, the average net P&L per share of a *constant-payout* (one share per leg) version of R* on the core stratum; the spec names it as an information statistic only.
-4. The information axis can neither create nor withhold a net-value claim: the economic axis is decided by θ alone (T2, θ̂, gates; prospective exclusion is not identified, 8.5b); the information axis only adds diagnostic claims about which legs are mispriced and the real negative result. No trade exists or disappears because of it.
+4. The information axis can neither create nor withhold a net-value claim: the economic axis is decided by θ alone (T2, θ̂, gates on the realised-window value θ_W; prospective content only through the transport frontier, 8.5c); the information axis only adds diagnostic claims about which legs are mispriced and the real negative result. No trade exists or disappears because of it.
 
 ---
 
@@ -131,14 +141,14 @@ N_j = n_j · (y_j − c_j),  C_j = V_j + F_j,  c_j = C_j / n_j (all-in cost per 
 
 No winsorising, trimming, capping or leg deletion inside θ, ever. Winsorised or trimmed θ may appear only in the sensitivity section with the label `NOT_THE_ESTIMAND`.
 
-**Prospective vs realised-window value (D4 repair R2, after Astra D4 recheck C2).** The estimand above is **prospective** and is written `θ_P` wherever the distinction matters: the expectation is over the executed-trade process of R* (market opportunity process × R* × REALISTIC fill at S_ref, section 8.5b), so it includes opportunity types — in particular rare sub-4¢ TAIL legs — that a finite window may not contain. `θ_P` is the only strategic economic quantity; every `PROSPECTIVE_*` label refers to it. A second, **report-only** estimand is frozen:
+**Prospective vs realised-window value (D4 repair R2, after Astra D4 recheck C2).** The estimand above is **prospective** and is written `θ_P` wherever the distinction matters: the expectation is over the executed-trade process of R* (market opportunity process × R* × REALISTIC fill at S_ref, section 8.5b), so it includes opportunity types — in particular rare sub-4¢ TAIL legs — that a finite window may not contain. `θ_P` is the only strategic economic quantity. After D4 repair R3 it is **not an empirical estimand of V2**: no label asserts it unconditionally (8.5c). A second estimand is frozen. It is report-only under R2, and under R3 it is the **empirical economic estimand** of ECONOMIC_RESULT:
 
 ```text
 θ_W = Σ_{j∈WINDOW} n_j (p_j − c_j) / Σ_{j∈WINDOW} C_j
       p_j = true settlement probability of trade j's token given the information at T_entry(j)
 ```
 
-`θ_W` is the expected net value per dollar of the trades R* actually executed in the window, conditional on which trades occurred. It is neither the realised P&L `Σ N_j / Σ C_j` nor `θ_P`. It is reported only through `REALIZED_WINDOW_BOUND` (17.3), never enters a `PROSPECTIVE_*` label and never rejects R*.
+`θ_W` is the expected net value per dollar of the trades R* actually executed in the window, conditional on which trades occurred. It is neither the realised P&L `Σ N_j / Σ C_j` nor `θ_P`. Under R3 it is tested by T2 (lower side) and bounded by U_W (upper side, `REALIZED_WINDOW_BOUND`). It never rejects R*, and it reaches the future only through the declared transport class of 8.5c.
 
 ### 5.2 Price strata (frozen, outcome-independent)
 
@@ -173,9 +183,11 @@ Reported decomposition (not separate claims): `θ = w_core θ_core + w_tail θ_t
 | T1a core information | κ_core ≤ 0 | κ_core > 0 | α/2 = 0.025 | two-way CR t-test on κ̂_core |
 | T1b tail information | λ_tail ≤ 1 (sharp null `p_j = c_j` on TAIL) | λ_tail > 1 | α/2 = 0.025 | PINM exact win-count test |
 | **T1 information** | both T1a and T1b nulls | information exists in core **or** tail | α = 0.05 (Bonferroni) | rejects iff T1a or T1b rejects |
-| **T2 economic (primary)** | θ ≤ 0 | θ > 0 | α = 0.05, **evaluated unconditionally** (no gate) | two-way CR t-test on θ̂ |
+| **T2 economic (primary)** | θ_W ≤ 0 | θ_W > 0 | α = 0.05, **evaluated unconditionally** (no gate) | two-way CR t-test on θ̂; equivalently `L_W = θ̂ − t_{df,0.95} SE > 0` (estimand θ_W after D4 repair R3, 8.5c) |
 | NEG core adverse | κ_core ≥ 0 | κ_core < 0 | **0.025** (absorbs the documented lower-tail skew inflation, 8.4) | two-way CR t-test |
-| EXCL-P prospective exclusion | θ_P ≥ threshold | θ_P < threshold | — | **none: not identified in V2 (section 8.5b); no test is run and no label exists** |
+| EXCL-P prospective exclusion | θ_P ≥ threshold | θ_P < threshold | — | **none: not usefully testable within V2's observable horizon (8.5b); no test is run and no label exists** |
+| CONF-P unconditional prospective confirmation | θ_P ≤ 0 | θ_P > 0 | — | **none: not usefully testable without a transport restriction (8.5c mirror theorem); no label exists** |
+| TRANSPORT (report) | — | — | no α (assumption-indexed) | deductive robust bound `L_T(ε, δ) = (1 − ε)(L_W − δ) − ε` over 𝒯_H(ε, δ); frontier ε*(δ, τ) (8.5c) |
 | EXCL-W realised-window bound (report field) | θ_W ≥ threshold | θ_W < threshold | declared 0.05 (core CR at one-sided 0.025 + deterministic tail supremum) | U_W = w_core U_core + M_tail (section 8.5) |
 
 ### 6.2 Powered claim
@@ -189,9 +201,9 @@ TARGET_POWER                   0.80 at θ_PCE (nominal, normal approximation, be
 ### 6.3 Error control
 
 - **T1** is a union test at familywise α = 0.05 over its two strata: T1a and T1b at α/2 each (Bonferroni; valid under any dependence between core and tail; with two tests Holm's first step is identical and Simes' gain is confined to both p in (0.025, 0.05]).
-- **T2** is the single primary economic test at α = 0.05, tested whether or not T1 rejects. Every scientific state that asserts more than one favourable claim (for example INFORMATION_DETECTED together with PROSPECTIVE_VALUE_CONFIRMED) asserts an **intersection** of claims, each tested at α; by the intersection-union principle the probability that such a state is issued while any of its claims is false is ≤ α. No α is spent twice and none is recycled.
-- Adverse claims: NEG at 0.025 on κ_core (information axis). There is **no adverse prospective economic claim** (D4 repair R2, section 8.5b). The realised-window bound U_W (section 8.5) is a report field on θ_W at declared level 0.05; it is never part of a SCIENTIFIC_STATE label and cannot reject R*, so no α is shared with T2.
-- Why not Fable's fixed-sequence gate: under IUT the joint claim needs no gate for error control, and the gate's only other effect is to withhold a confirmed θ when the count-based information statistic is less efficient than θ itself (SIMULATED, D1-GATE). A confirmed θ without detected information is reported as it is (`NO_INFORMATION_DETECTED__PROSPECTIVE_VALUE_CONFIRMED`), and the forward-signal rule (17.5) still requires that the core not be significantly adverse.
+- **T2** is the single primary economic test at α = 0.05, tested whether or not T1 rejects. Every scientific state that asserts more than one favourable claim (for example INFORMATION_DETECTED together with REALIZED_WINDOW_VALUE_SUPPORTED) asserts an **intersection** of claims, each tested at α; by the intersection-union principle the probability that such a state is issued while any of its claims is false is ≤ α. No α is spent twice and none is recycled.
+- Adverse claims: NEG at 0.025 on κ_core (information axis). There is **no adverse prospective economic claim** (D4 repair R2, section 8.5b) and **no unconditional favourable prospective claim** (D4 repair R3, 8.5c). The transport frontier adds no α: its only probability is T2's own sampling coverage of θ_W. The realised-window bound U_W (section 8.5) is a report field on θ_W at declared level 0.05; it is never part of a SCIENTIFIC_STATE label and cannot reject R*, so no α is shared with T2.
+- Why not Fable's fixed-sequence gate: under IUT the joint claim needs no gate for error control, and the gate's only other effect is to withhold a confirmed θ when the count-based information statistic is less efficient than θ itself (SIMULATED, D1-GATE). A confirmed θ without detected information is reported as it is (`NO_INFORMATION_DETECTED__REALIZED_WINDOW_VALUE_SUPPORTED`), and the forward-signal rule (17.5) still requires that the core not be significantly adverse.
 - Exploratory family (V1 §15, E1–E15): Holm at α = 0.05 within the family, never promoted (unchanged).
 
 ---
@@ -294,7 +306,7 @@ Consequences:
 - `U_W ≥ θ̂`, because `M_tail ≥ w_tail θ̂_tail` and §8.6 imputes unresolved trades as wins for U_W.
 - U_W never drives ECONOMIC_RESULT, never rejects R*, and never states anything about θ_P.
 
-### 8.5b Prospective exclusion is not identified in V2 (D4 repair R2)
+### 8.5b Prospective exclusion is not usefully testable within V2's horizon (D4 repair R2; wording and D corrected by R3, Astra m6 / m7)
 
 **Population of θ_P.** θ_P = E[N]/E[C] is a ratio over **executed** trades. It is induced by the market opportunity process × R* × the REALISTIC fill model at S_ref. The opportunity chain is frozen for reporting:
 
@@ -317,9 +329,9 @@ The random object C2 is about is therefore the **arrival process of executed tra
 
 **Maximum payoff.** R* may execute any leg whose ask `a ≥ 0.001` (the venue tick) satisfies `q − a − f(a) ≥ h`, and nothing in R* bounds `a` from below. The all-in cost per share is at least `c_min = 0.001 + 0.05 · 0.001 · 0.999 = 0.00104995`, so a winning executed leg returns at most `1/c_min − 1 = 951.4` per dollar committed.
 
-**Theorem (non-identification of prospective exclusion).**
+**Theorem (finite-horizon power ceiling for prospective exclusion).** This is a finite-horizon power ceiling, not non-identification in the asymptotic sense: the ceiling grows without bound as D grows (Astra m7).
 
-- Setup. Let 𝒫 be the admissible class: stationary executed-trade processes consistent with R*'s frozen mechanics, with any win probabilities `p ∈ [0, 1]`, executable prices ≥ the 0.001 tick, and any dependence, including the date / regime common modes that V2's own dependence model declares (section 9). Fix a threshold `θ* ∈ {θ_ERT, θ_PCE}`. Let φ be any test, possibly randomised, that uses the data V2 can observe (the 14 OP dates and the 120 window dates, `D = 134` target dates, plus anything independent of them). Suppose φ has level α over the null: `P_Q(φ = 1) ≤ α` for every `Q ∈ 𝒫` with `θ_P(Q) ≥ θ*`.
+- Setup. Let 𝒫 be the admissible class: stationary executed-trade processes consistent with R*'s frozen mechanics, with any win probabilities `p ∈ [0, 1]`, executable prices ≥ the 0.001 tick, and any dependence, including the date / regime common modes that V2's own dependence model declares (section 9). Fix a threshold `θ* ∈ {θ_ERT, θ_PCE}`. Let φ be any test, possibly randomised, that uses the data V2 can observe. These are all target dates whose outcomes V2 can see before ANALYSIS_TIME: the 120 window dates, the 14 OP dates, and the resolved pre-t0 history (BIAS_HISTORY ≤ 40 dates span, GR3 parser history), so `D = D_obs ≈ 174` (Astra m6), plus anything independent of them. Suppose φ has level α over the null: `P_Q(φ = 1) ≤ α` for every `Q ∈ 𝒫` with `θ_P(Q) ≥ θ*`.
 - Claim. Then for every `P ∈ 𝒫` with `θ_P(P) = θ_0 < θ*`:
 
 ```text
@@ -334,22 +346,23 @@ P_P(φ = 1)  ≤  α · (1 − η*)^(−D),        η* = (θ* − θ_0) / (1/c_m
 
 The construction needs only one admissible Q. It uses no information about real markets.
 
-Numbers (DERIVED; `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py ceiling`), with α = 0.05 and D = 134:
-- The power ceiling is ≤ **0.0577** for θ* = θ_ERT and ≤ **0.0584** for θ* = 0.10, at every θ_0 ≥ −1 (−1 is the minimum possible θ: every leg loses). At θ_0 = −0.10 it is 0.0509 (ERT) and 0.0514 (θ_PCE = 0.10).
+Numbers (DERIVED), with α = 0.05:
+- With D = 174 (m6 correction), the power ceiling is ≤ **0.0602** for θ* = θ_ERT and ≤ **0.0611** for θ* = 0.10, at every θ_0 ≥ −1 (−1 is the minimum possible θ: every leg loses). At θ_0 = −0.10 it is 0.0511 (ERT) and 0.0519 (0.10).
+- The earlier R2 numbers at D = 134 (0.0577 / 0.0584; `WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py ceiling`) omitted the pre-t0 resolved history.
 - So a valid prospective exclusion test can have at most ≈ 0.8 percentage points more power than a coin that rejects with probability 0.05, against every admissible truth, including an R* that loses everything.
 - Even under trade-level independence of arrivals, which V2's dependence model does **not** grant, the ceiling over N = 4,200 trades is 0.085 at θ_0 = −0.10 and 0.50 at θ_0 = −0.5. That is still no useful exclusion in the plausible range.
 
 **Zero-count rule (frozen).** The theorem does not depend on how many tail legs the window contains. Whether it has 0, 1, 2, 5 or 10 observed sub-cent legs, or no tail leg of any price, the unobserved jackpot-date type stays equally possible. **Zero observed TAIL arrivals never implies a zero prospective tail rate.** SIMULATED (run E, counts): with 0 observed sub-cent legs, the retired rule excluded in 92–93% of runs whatever θ_P was (0.019, 0.376 or 1.089), and with ≥ 1 observed leg in 0%. The frozen rule issues no prospective exclusion at any count.
 
-**Frozen consequence.** `PROSPECTIVE_EXCLUSION_IDENTIFIABLE = FALSE`. This is a constant derived above from frozen quantities (tick, fee, the h-rule's admissible asks, D = 134, α = 0.05) and the frozen dependence class, so no run-time gate and no discretion exist. V2 contains **no prospective exclusion label**:
+**Frozen consequence.** `PROSPECTIVE_EXCLUSION_USEFULLY_TESTABLE = FALSE` (named `PROSPECTIVE_EXCLUSION_IDENTIFIABLE` before R3). This is a constant derived above from frozen quantities (tick, fee, the h-rule's admissible asks, D_obs, α = 0.05) and the frozen dependence class, so no run-time gate and no discretion exist. V2 contains **no prospective exclusion label**:
 - ECONOMIC_RESULT has no EXCLUDED value (17.2).
 - `R*_REJECTED_AS_NET_STRATEGY` is never issued (17.6).
-- Every result prints `PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2`.
+- Every result prints `PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON` (printed `NOT_IDENTIFIED_IN_V2` before R3).
 
 This is loss of power, not a validity defect: by the theorem no valid alternative has materially more.
 
 **Error guarantee after R2.**
-- Prospective claims are confirmatory only. T2 at one-sided α = 0.05 (8.1), combined with the information claims by intersection-union (6.3). The effective α of every `PROSPECTIVE_*` label is ≤ 0.05.
+- (Superseded by R3, 8.5c.) Under R2 the positive claim was `PROSPECTIVE_VALUE_CONFIRMED` via T2. After R3 T2 tests θ_W, at one-sided α = 0.05, combined with the information claims by intersection-union (6.3). No label is prospective.
 - No prospective adverse claim is issued, so no arrival-uncertainty component needs an α share.
 - The realised-window bound U_W has a single stochastic component (the core CR bound at nominal one-sided 0.025) plus a deterministic tail term, at declared level 95%. No two stochastic bounds are combined anywhere.
 
@@ -361,16 +374,148 @@ This is loss of power, not a validity defect: by the theorem no valid alternativ
 - *R2-C, realised-window estimand only.* θ_W exclusion answers "were the trades R* happened to execute worth less than 0.02 per dollar", not the North Star question. It is adopted **only** as the report field `REALIZED_WINDOW_BOUND`, never as a prospective claim and never as a rejection of R*.
 - Excluding sub-cent legs, raising h, or a price floor would be trading-rule changes. They are not authorised and would be V3 material.
 
-**Finite horizon vs long run (structural non-identification region).**
-- A mechanism whose arrival interval materially exceeds the observed dates, but whose payoff per dollar can reach 951, cannot be excluded by 134 dates. The whole region `θ_P ≥ θ_ERT` is non-excludable in V2.
+**Finite horizon vs long run (finite-horizon non-testability region).**
+- A mechanism whose arrival interval materially exceeds the observed dates, but whose payoff per dollar can reach 951, cannot usefully be excluded by the ≈ 174 observed dates. The whole region `θ_P ≥ θ_ERT` is non-excludable in V2.
 - Excluding it would need either a declared and independently audited arrival model, or a horizon with `D · η* ≫ 1`. For θ_0 = −0.10 that is `1/η* ≈ 7,900` dates per unit of the exponent. Both are outside V2.
 
-**Why no capital decision is weakened.** Deployment requires `WEATHER_EDGE_FORWARD_SIGNAL` (17.5), i.e. prospective confirmation. "Not confirmed" already means no capital, so the absence of prospective exclusion changes no capital decision. Governance may retire R* using the information-level (`R*_CORE_INFORMATION_REJECTED`) and realised-window evidence. That is a governance judgement, not a V2 statistical claim.
+**Why no capital decision is weakened.** Deployment was never authorised by V2. After R3 the only forward-looking output is `SHADOW_CONTINUATION_SIGNAL` (17.5) plus the transport frontier (8.5c), and capital needs a separate governance decision. "Not confirmed" already means no capital, so the absence of prospective exclusion changes no capital decision. Governance may retire R* using the information-level (`R*_CORE_INFORMATION_REJECTED`) and realised-window evidence. That is a governance judgement, not a V2 statistical claim.
 
-**Prospective confirmation (unchanged; asymmetry).**
-- The same construction against confirmation needs "catastrophic dates", on which every trade loses (at worst −1 per dollar). Pulling θ_P from θ_0 down to 0 takes `η = θ_0 / (1 + θ_0)`.
-- For θ_0 ≥ θ_ERT that is ≥ 0.0196 per date, so the probability that 134 dates contain no such date is ≤ 0.071 at θ_0 = 0.02 and ≤ 0.0015 at θ_0 = 0.05. Bounded downside makes an unsampled type that could overturn a confirmation visible, so confirmation has no structural non-identification.
-- Residual finite-sample risk under exactly this alternative with θ_P = 0 (SIMULATED run E, confirm; 4,000 replications each): false `PROSPECTIVE_VALUE_CONFIRMED` is 0.0378 [0.0318, 0.0437] at θ_0 = 0.02, 0.0372 at 0.03, 0.0315 at 0.05 and 0.0177 at 0.10. All are ≤ α = 0.05.
+**Prospective confirmation: superseded by D4 repair R3 (8.5c).** The R2 text here argued that bounded downside made unconditional prospective confirmation safe. It compared loss regimes by date frequency (`η = θ_0/(1 + θ_0)`) instead of cost mass. A loss date can carry up to `C_CAP_DATE / C̄_d` times an ordinary date's cost, so the argument is false in general (Astra C3: false confirmation 0.43 / 0.12). The R2 run-E confirm rows (0.0378 at θ_0 = 0.02, …) are correct for their equal-capital design only. The correct treatment is 8.5c.
+
+### 8.5c Transport contract and robustness frontier (D4 repair R3, after Astra D4-C2 recheck C3 @92c2f706)
+
+**What "prospective" means.** Let `P_obs` be the joint law of everything V2 observes before ANALYSIS_TIME: the window, the OP, and the resolved pre-t0 history. Let `Q_H` be the law of R*'s executed-trade process over a future deployment epoch of H counted dates. Apart from mechanics, V2 freezes **no** relation between `P_obs` and `Q_H`. The mechanics are: R* frozen, REALISTIC execution at S_ref, `N_j ≥ −C_j`, and a per-date cost cap.
+
+Under that class, finite data cannot establish an unconditional statement about `θ_P = E_Q[N]/E_Q[C]` in either direction:
+- Exclusion: the ceiling theorem of 8.5b.
+- Confirmation: the mirror theorem below. Astra C3 showed the realised consequence: the retired R2 label `PROSPECTIVE_VALUE_CONFIRMED` was issued at θ_P = −0.005 in 43% (thin fills) and 12% (full fills) of runs.
+
+`θ_P` therefore remains the strategic target, but it is **not an empirical estimand of V2**. V2 separates two layers:
+- **Sampling inference** on the realised-window value θ_W (5.1), by the unchanged T2 / CR engine. It asks: given the process that produced these trades, what is the uncertainty about their expected value?
+- **Transport**: an explicit, assumption-indexed, deductive map from θ_W to a finite future epoch. It is never estimated from data.
+
+A cluster-robust SE answers the first question only.
+
+**Mirror theorem (unconditional prospective confirmation is not usefully testable).** Let P ∈ 𝒫 (the 8.5b class) have `θ_P = θ_0 > 0` and expected executed cost per date `A = E_P[C_d]`. Build Q: independently of everything else, each date is, with probability η, a loss date on which all `2·|STATION_TABLE|` events execute at the per-trade cost cap and every leg loses. With `B = C_CAP_DATE` (defined below):
+
+```text
+θ_P(Q) = ((1 − η) A θ_0 − η B) / ((1 − η) A + η B) = 0   for   η = A θ_0 / (A θ_0 + B)
+```
+
+On "no loss date among the D observed dates" (probability `(1 − η)^D`), Q's data law equals P's. Hence any level-α test of `θ_P ≤ 0` has power at P of at most `α (1 − η)^(−D)`. With α = 0.05, D = 174 (DERIVED; `D_obs` in m6 below):
+
+| Ordinary expected date cost A (USD) | θ_0 = 0.02 | θ_0 = 0.05 | θ_0 = 0.10 |
+|---|---|---|---|
+| 255 (17 trades × 15 USD) | 0.060 | 0.078 | 0.120 |
+| 525 (35 × 15) | 0.072 | 0.123 | 0.303 |
+| 850 (17 × 50) | 0.090 | 0.216 | 0.918 |
+| 1,750 (35 × 50) | 0.167 | 0.999 | 1 |
+
+Unconditional confirmation is therefore powerless whenever ordinary dates carry little cost relative to the date cap. It is not excluded in thick geometries, but no test is valid over the whole class without a transport restriction. **V2 issues no unconditional prospective label** (17.2, 17.3). The asymmetry with exclusion is only one of degree:
+- An unseen *positive* regime needs cost mass of only `(θ* − θ_0)/(951 − θ_0)`, because payoff can reach 951 per dollar. Exclusion is powerless in every geometry.
+- An unseen *negative* regime needs cost mass `θ_0 / (1 + θ_0)`, because loss is at most −1 per dollar. That is a larger mass, but a date can carry up to `B / A` times an ordinary date's cost, so the required date *frequency* can still be small enough to go unseen.
+
+**Worst-case return per unit of the θ denominator (exact).** For every executed trade `N_j = n_j (y_j − c_j)`, `C_j = n_j c_j` and `y_j ∈ [0, 1]`, so `N_j ≥ −C_j`. This holds exactly because:
+- `c_j` is the all-in cost per share (walked levels and fee included);
+- partial fills scale `n_j` and `C_j` together;
+- void / 50-50 settlement has `y ≥ 0`;
+- an unresolved trade is imputed `y = 0` for favourable claims (8.6);
+- V1 charges no settlement-time fee;
+- positions are unlevered and held to settlement;
+- simultaneous positions sum.
+
+Hence for any set of trades, `Σ N ≥ −Σ C`, and `WORST_CASE_REGIME_RETURN = −1` per dollar of C, with no approximation. A fee or settlement mechanics change (D11 codes M3, M5) would break this and invalidates the contract (below).
+
+**Cost cap.** `C_TRADE_MAX = 1.05 × S_ref = 52.5 USD`: notional ≤ S_ref, and the fee `0.05 p (1 − p)` per share is ≤ 0.05 per dollar of notional. `C_CAP_DATE = 2 · |STATION_TABLE| · C_TRADE_MAX` (5,040 USD at 48 stations). Both are derived from frozen mechanics.
+
+**Proposition 1 (cost-mass mixture identity).** For any epoch law Q and any partition of the epoch's executed trades into a *represented* set A and an *adverse* set B (the partition may depend on anything, including outcomes), let `ε_Q = E_Q[C_B] / E_Q[C]`. Then exactly
+
+```text
+θ_F(Q) := E_Q[N] / E_Q[C] = (1 − ε_Q) θ_A + ε_Q θ_B,   θ_A = E_Q[N_A]/E_Q[C_A],   θ_B = E_Q[N_B]/E_Q[C_B] ≥ −1
+```
+
+*Proof.* `E[N] = E[C_A] θ_A + E[C_B] θ_B`; divide by `E[C] = E[C_A] + E[C_B]`. `θ_B ≥ −1` follows from `N_j ≥ −C_j`. ∎
+
+The contamination parameter must be **cost mass**, not dates, trades or stations. A single maximum-exposure date in an epoch of H dates carries `ε_1(H) = C_CAP_DATE / (C_CAP_DATE + (H − 1) C̄_d)`: 0.142 at H = 120 with 17 × 15 USD ordinary dates, but 1/H = 0.008 by date count. This is exactly the lever of Astra C3.
+
+**Transport class (frozen).** `𝒯_H(ε, δ)` is the set of epoch laws `Q_H` over the next H counted dates for which some partition (A, B) satisfies:
+
+```text
+(T1)  E_Q[C_B] ≤ ε · E_Q[C]                      at most a fraction ε of expected executed cost is adverse (any return ≥ −1)
+(T2)  θ_A(Q) ≥ θ_W − δ                            the represented cost earns at least the window's expected value, less δ
+```
+
+ε covers concentrated regimes: loss dates, template or station catastrophes, unseen trade types, anything. δ covers diffuse degradation of the whole book. The class is a **declared assumption** indexed by (ε, δ). V2 neither estimates nor verifies it.
+
+**Theorem 2 (robust lower bound).** Let `L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)` be T2's one-sided 95% lower bound (T2 ⟺ L_W > 0; 6.1, 8.1). On the event `{θ_W ≥ L_W}`, for every H, every (ε, δ) with `δ < 1 + L_W`, and every `Q ∈ 𝒯_H(ε, δ)`:
+
+```text
+θ_F(Q) ≥ L_T(ε, δ) := (1 − ε)(L_W − δ) − ε
+```
+
+*Proof.*
+1. By Proposition 1 with `ε' = ε_Q ≤ ε`: `θ_F ≥ (1 − ε')(θ_W − δ) − ε'`.
+2. The right side is decreasing in ε' because `∂/∂ε' = −(1 + θ_W − δ) < 0`, so it is ≥ `(1 − ε)(θ_W − δ) − ε`.
+3. `θ_W ≥ L_W` gives the result. ∎
+
+**Error statement (exact).** The only probability in any prospective statement is `P(θ_W ≥ L_W) ≥ 0.95`. This is the sampling coverage of the D8-accepted two-way CR engine for the realised-window value, conditional on the realised trade set. The class parameters (ε, δ) are not estimated and carry no α. The statement holds simultaneously for all (ε, δ, H), because it rests on the single event above. No second 95% is combined with it.
+
+The 95% is an unconditional repeated-experiment coverage. It is not the probability that the bound holds given that a favourable label was issued. SIMULATED (run F, 20,000 replications per design): `P(L_W > θ_W)` is 0.0498 [0.0468, 0.0529] in a thick design (35 trades/date, full fills), 0.044 at θ = 0, and 0.0552 [0.0520, 0.0584] in a sparse, heterogeneous-fill design (17 trades/date, fills U(5, 25)). The ≈ 0.5 pp shortfall is the carried D8 finite-cluster property of the unchanged T2 engine (Astra: T2 0.0497–0.0573 under stress). It is disclosed and not corrected here.
+
+**Robustness frontier (the scientific output).** For a threshold τ:
+
+```text
+ε*(δ, τ) = max{ε ∈ [0, 1] : L_T(ε, δ) ≥ τ} = (L_W − δ − τ) / (1 + L_W − δ)   if L_W − δ > τ,   else 0 (no support)
+```
+
+Properties (DERIVED; `WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py frontier`):
+- `L_T` is strictly decreasing in ε, δ and τ: a larger adverse budget never yields stronger support.
+- `L_T(0, δ) = L_W − δ` and `L_T(1, δ) = −1` (the mechanical worst case).
+- `ε* < 1`, and ε* is decreasing in δ and τ.
+
+Sanity check: `L_W = 0.10` gives `ε*(0, 0) = 0.10 / 1.10 = 0.091`. **No ε threshold is frozen in V2.** The frontier is reported on a fixed, outcome-blind reporting grid `δ ∈ {0, 0.01, 0.02, 0.05}` × `τ ∈ {0, θ_ERT}`, together with the formula, and is never compared with a required value. Any required ε, δ or H is a capital-governance choice outside V2 (see "Science vs capital" below).
+
+**Epoch translation k*(H).** For a reporting grid `H ∈ {14, 30, 60, 120}` counted dates (existing V2 constants: OP length, W, IF1 floor, window; none selected), V2 prints how many **maximum-exposure fully-adverse dates** an H-date epoch could contain before positivity is lost:
+
+```text
+k*(H) = ε* H C̄_d / (C_CAP_DATE (1 − ε*) + ε* C̄_d),   ε* = ε*(0, 0)
+```
+
+C̄_d is the window's mean executed cost per counted date, and the translation assumes ordinary future dates carry C̄_d. This is a labelled volume-translation assumption. ε* itself does not depend on H: the expected-return bound is per unit of cost. What H changes is:
+- the scope and expiry of the conditional claim;
+- how much adverse mass one date represents (`ε_1(H)`);
+- the observation cadence of the invalidation rules below.
+
+A longer epoch leaves more room for regime shift. That is a governance judgement V2 does not make.
+
+**Date-level economic concentration (always reported).**
+- `C̄_d`, the maximum window date cost and the top-date cost share;
+- `n_eff,C = (Σ_d C_d)² / Σ_d C_d²`, the effective number of economic dates (120 dates are not 120 equally informative economic units);
+- `C_CAP_DATE`, the cap ratio `C_CAP_DATE / C̄_d`, and `ε_1(H)` on the H grid.
+
+**Observable invalidation (future epochs; for a future Builder contract, not part of the single V2 analysis).** An epoch's transport status becomes `INVALIDATED`, with reason, from the first date on which any outcome-blind flag fires. The rules use only the window's own observed ranges, so there are no tuning constants:
+- `MECHANICS`: any D11 code.
+- `STATION_UNIVERSE`: station set differs from the frozen STATION_TABLE.
+- `TICK_FEE_REGIME`: tick or fee schedule differs.
+- `NEW_TAIL_BIN`: an executed arrival in a TAIL price bin with zero window arrivals.
+- `COST_EXCEEDS_EVIDENCE`: a date's executed cost > the window maximum.
+- `TRIGGER_COUNT_OUT_OF_RANGE`: a date's trigger count is outside the window's [min, max].
+- `FILL_DEPTH_OUT_OF_RANGE`: a date's share of partially filled legs is outside the window's [min, max].
+
+These flags **can only revoke** a contract. They cannot certify it. A loss regime with identical observable covariates until it occurs (run F scenario 06: same trade counts and fills, every leg loses) trips no flag. The only protection against it is the ε budget, which V2 reports and does not verify (`TRANSPORT_ASSUMPTION_STATUS = DECLARED_UNVERIFIED`). Astra C3's 96-event loss dates would trip `COST_EXCEEDS_EVIDENCE` at T_entry in 100% of simulated designs (run F). That is useful, but not a proof of transport.
+
+**Rolling finite-epoch architecture (design only; not implemented; no authority granted).** A future Builder contract that consumes this frontier should carry:
+- `EPOCH_START`, `EPOCH_END` (H counted dates);
+- `EVIDENCE_VERSION` (window, hashes, θ̂, L_W);
+- `TRANSPORT_CONTRACT_VERSION` (this section);
+- `ROBUSTNESS_CERTIFICATE` (ε* grid, k*(H), concentration);
+- `REGIME_INVALIDATION_REASON` (first flag, if any).
+
+At `EPOCH_END` or invalidation the strategy returns to shadow and is reassessed with the enlarged evidence. That enlargement is how a rare loss regime eventually gets sampled.
+
+**Science vs capital.** The scientific layer reports θ_W evidence, the frontier and concentration. Choosing a required ε, δ, H or τ for any capital size or risk budget is **capital governance**, a separate layer that V2 does not contain. `REAL_CAPITAL_AUTHORIZED = FALSE` is unaffected by any value of ε*.
+
+**Quant-wide note (recommendation only; not implemented).** The finding is generic: any Quant strategy validated on a finite window faces the same θ_W → θ_P gap. A small interface between VET and SIZE, `TRANSPORT_CERTIFICATE {estimand, L_source, worst_case_return_per_denominator, frontier(ε, δ), concentration, observable_reference_ranges, contract_version, epoch, invalidation_reason}`, would let SIZE / RISK consume conditional evidence without reading it as unconditional edge. This mission does not refactor Quant.
 
 ### 8.6 Unresolved trades at analysis time
 
@@ -694,7 +839,7 @@ Three orthogonal axes plus three report fields. Each axis is evaluated by an ord
 
 ### 17.2 SCIENTIFIC_STATE (product of two ordered axes)
 
-Definitions: `T1`, `T2`, `NEG` from sections 6 and 8 (`T2` tests the prospective θ_P); `GATES = G1 ∧ G2 ∧ G3` with
+Definitions: `T1`, `T2`, `NEG` from sections 6 and 8 (`T2` tests the realised-window value θ_W, D4 repair R3); `GATES = G1 ∧ G2 ∧ G3` with
 G1 `θ̂_CONSERVATIVE > 0` (tick-aware, section 15.2); G2 `(Σ N_j − Σ top-5 N_j) / Σ C_j > 0` and no single target date > 25% and no single station > 20% of gross profit `Σ max(N_j, 0)`; G3 θ̂ over NOAA-mode settlements only > 0.
 
 Pre-emption (ordered):
@@ -713,24 +858,38 @@ INFORMATION_RESULT (ordered, first match):
 | I2 | NEG | NEGATIVE_INFORMATION |
 | I3 | otherwise | NO_INFORMATION_DETECTED |
 
-ECONOMIC_RESULT (prospective, estimand θ_P; ordered, first match; D4 repair R2):
+ECONOMIC_RESULT (estimand θ_W, the realised-window value; ordered, first match; D4 repair R3 — same conditions as R2, re-scoped and renamed):
 
 | Order | Condition | Value |
 |---|---|---|
-| E1 | T2 ∧ θ̂ ≥ θ_ERT ∧ GATES | PROSPECTIVE_VALUE_CONFIRMED |
-| E2 | T2 ∧ θ̂ ≥ θ_ERT ∧ ¬GATES | PROSPECTIVE_VALUE_NOT_ROBUST (lists failing gates) |
-| E3 | otherwise | PROSPECTIVE_VALUE_INDETERMINATE |
+| E1 | T2 ∧ θ̂ ≥ θ_ERT ∧ GATES | REALIZED_WINDOW_VALUE_SUPPORTED |
+| E2 | T2 ∧ θ̂ ≥ θ_ERT ∧ ¬GATES | REALIZED_WINDOW_VALUE_NOT_ROBUST (lists failing gates) |
+| E3 | otherwise | REALIZED_WINDOW_VALUE_INDETERMINATE |
 
-There is no EXCLUDED value: prospective exclusion is not identified in V2 (8.5b). The V2@24d2342 row `E1: U < θ_ERT → NET_VALUE_EXCLUDED` is deleted. No confirmable result is lost by the deletion, because `U_W ≥ θ̂` (8.5) means the old row could never pre-empt a run with `θ̂ ≥ θ_ERT`. The realised-window statement it used to make is kept, with its correct estimand θ_W, in the `REALIZED_WINDOW_BOUND` report field (17.3).
+No value asserts anything unconditional about θ_P (8.5c). The R2 names PROSPECTIVE_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE} are retired because their conditions test θ_W, not θ_P (Astra C3). There is no EXCLUDED value, because prospective exclusion is not usefully testable (8.5b). The V2@24d2342 row `E1: U < θ_ERT → NET_VALUE_EXCLUDED` is deleted. No confirmable result is lost by the deletion, because `U_W ≥ θ̂` (8.5) means the old row could never pre-empt a run with `θ̂ ≥ θ_ERT`. The realised-window statement it used to make is kept, with its correct estimand θ_W, in the `REALIZED_WINDOW_BOUND` report field (17.3).
 
-Totality and exclusivity: each axis is an ordered list whose last row is "otherwise", so every reachable state has exactly one INFORMATION_RESULT and one ECONOMIC_RESULT. The 3 × 3 = 9 products plus the two pre-empting values are the complete SCIENTIFIC_STATE space (**11 values** after D4 repair R2; 14 before). A positive but economically irrelevant θ̂ (`θ̂ < θ_ERT`) is never CONFIRMED because E1 and E2 require `θ̂ ≥ θ_ERT`. I1 precedes I2, so a tail-detected run with an adverse core is INFORMATION_DETECTED with `CORE_ADVERSE = TRUE`; the forward-signal rule and `R*_CORE_INFORMATION_REJECTED` read `CORE_ADVERSE`, not INFORMATION_RESULT (17.5, 17.6).
+Totality and exclusivity: each axis is an ordered list whose last row is "otherwise", so every reachable state has exactly one INFORMATION_RESULT and one ECONOMIC_RESULT. The 3 × 3 = 9 products plus the two pre-empting values are the complete SCIENTIFIC_STATE space (**11 values** after D4 repair R2; 14 before). A positive but economically irrelevant θ̂ (`θ̂ < θ_ERT`) is never SUPPORTED because E1 and E2 require `θ̂ ≥ θ_ERT`. I1 precedes I2, so a tail-detected run with an adverse core is INFORMATION_DETECTED with `CORE_ADVERSE = TRUE`; the forward-signal rule and `R*_CORE_INFORMATION_REJECTED` read `CORE_ADVERSE`, not INFORMATION_RESULT (17.5, 17.6).
 
-Relation to Fable's six-label partition (mission §16): Fable's NEGATIVE_INFORMATION and NO_INFORMATION_DETECTED are V2's I2 and I3 rows (with the economic column now always reported); Fable's INFORMATION_CONFIRMED_NET_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE} are V2's I1 × {E1, E2, E3}; Fable's INFORMATION_CONFIRMED_NET_VALUE_EXCLUDED has no prospective counterpart after D4 repair R2 (8.5b) — its realised-window analogue is INFORMATION_DETECTED with a `REALIZED_WINDOW_*_EXCLUDED` report field. **Modified**: V2 also evaluates the economic column when information is not detected (six cells Fable's gate left unevaluated), because θ is the North Star quantity and must not be withheld by a less efficient statistic (D1-GATE); and INFORMATION_INSUFFICIENT is added as a pre-empting non-result. Validity and operability stay orthogonal, as Fable proposed.
+Relation to Fable's six-label partition (mission §16): Fable's NEGATIVE_INFORMATION and NO_INFORMATION_DETECTED are V2's I2 and I3 rows (with the economic column now always reported); Fable's INFORMATION_CONFIRMED_NET_VALUE_{CONFIRMED, NOT_ROBUST, INDETERMINATE} map to V2's I1 × {E1, E2, E3} with the estimand made explicit (θ_W; prospective reading only via 8.5c); Fable's INFORMATION_CONFIRMED_NET_VALUE_EXCLUDED has no prospective counterpart after D4 repair R2 (8.5b) — its realised-window analogue is INFORMATION_DETECTED with a `REALIZED_WINDOW_*_EXCLUDED` report field. **Modified**: V2 also evaluates the economic column when information is not detected (six cells Fable's gate left unevaluated), because θ is the North Star quantity and must not be withheld by a less efficient statistic (D1-GATE); and INFORMATION_INSUFFICIENT is added as a pre-empting non-result. Validity and operability stay orthogonal, as Fable proposed.
 
 ### 17.3 Report fields (evaluated whenever SCIENTIFIC_STATE ∉ {NOT_EVALUATED, INFORMATION_INSUFFICIENT}; else NOT_EVALUATED)
 
 ```text
-PROSPECTIVE_EXCLUSION  = NOT_IDENTIFIED_IN_V2   (constant, section 8.5b; always printed)
+PROSPECTIVE_EXCLUSION     = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON   (constant, section 8.5b; always printed)
+PROSPECTIVE_CONFIRMATION  = NOT_ESTABLISHED_UNCONDITIONALLY        (constant, section 8.5c; always printed)
+TRANSPORT_ROBUSTNESS_REPORT (section 8.5c; always printed when SCIENTIFIC_STATE is evaluated)
+    SOURCE_ESTIMAND            θ_W (5.1)
+    SOURCE_LOWER_BOUND         L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)   (T2 ⟺ L_W > 0; one-sided 95% sampling coverage of θ_W)
+    WORST_CASE_REGIME_RETURN   −1 per dollar of C (exact, 8.5c)
+    ROBUSTNESS_FRONTIER        ε*(δ, τ) = max(0, (L_W − δ − τ)/(1 + L_W − δ)) printed for δ ∈ {0, 0.01, 0.02, 0.05} × τ ∈ {0, θ_ERT},
+                               with the formula and L_T(ε, δ) = (1 − ε)(L_W − δ) − ε; reporting grid only, never a decision threshold
+    EPOCH_TRANSLATION          k*(H) for H ∈ {14, 30, 60, 120} counted dates (maximum-exposure adverse dates absorbed; volume-translation
+                               assumption C̄_d labelled)
+    COST_MASS_CONCENTRATION    C̄_d, max date cost, top-date cost share, n_eff,C, C_CAP_DATE, cap ratio, ε_1(H) on the H grid
+    OBSERVABLE_REGIME_REFERENCE window ranges for the 8.5c invalidation flags (trigger count, date cost, fill depth, tail bins, stations, tick / fee)
+    TRANSPORT_ASSUMPTION_STATUS DECLARED_UNVERIFIED (constant for the V2 analysis)
+    CONDITIONAL_PROSPECTIVE_CLAIM  if ECONOMIC_RESULT = REALIZED_WINDOW_VALUE_SUPPORTED:
+                               CONDITIONAL_PROSPECTIVE_SUPPORT(ε ≤ ε*(δ, 0), δ) — the sentence (c) below with the numbers; else NONE
 REALIZED_WINDOW_BOUND  estimand θ_W (5.1), bound U_W (8.5); a report field — never a prospective claim, never a rejection of R*
                  ordered on U_W:  U_W < 0 → REALIZED_WINDOW_LOSS_CONFIRMED;  U_W < θ_ERT → REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED;
                                   U_W < max(θ_PCE, θ_ERT) → REALIZED_WINDOW_LARGE_VALUE_EXCLUDED;  else REALIZED_WINDOW_NOT_EXCLUDED
@@ -744,10 +903,13 @@ CORE_ADVERSE     NEG (TRUE / FALSE), printed even when T1 passes via the tail
 ```
 
 Mandatory sentences:
-- (a) Whenever ECONOMIC_RESULT ∈ {PROSPECTIVE_VALUE_INDETERMINATE, PROSPECTIVE_VALUE_NOT_ROBUST}: **"θ in [θ_ERT, θ_PCE) is neither confirmed nor excluded by this experiment; this is not evidence of zero edge."**
-- (b) Always: **"V2 cannot exclude prospective net value (section 8.5b): a rare, high-payoff opportunity type absent from the observed dates cannot be ruled out. REALIZED_WINDOW statements describe only the expected value of the trades executed in the window."**
+- (a) Whenever ECONOMIC_RESULT ∈ {REALIZED_WINDOW_VALUE_INDETERMINATE, REALIZED_WINDOW_VALUE_NOT_ROBUST}: **"θ in [θ_ERT, θ_PCE) is neither confirmed nor excluded by this experiment; this is not evidence of zero edge."**
+- (b) Always: **"V2 cannot usefully test prospective net value in either direction within its horizon (sections 8.5b, 8.5c): a rare, high-payoff or high-loss regime absent from the observed dates cannot be ruled out. REALIZED_WINDOW statements describe only the expected value of the trades executed in the window."**
+- (c) Whenever ECONOMIC_RESULT ∈ {REALIZED_WINDOW_VALUE_SUPPORTED, REALIZED_WINDOW_VALUE_NOT_ROBUST}: **"This is evidence about the trades executed in the window. It becomes a prospective statement only under the declared transport class: with 95% sampling confidence, R*'s expected return per dollar in a future epoch stays ≥ 0 if at most ε*(δ) of that epoch's expected executed cost comes from any worse regime (worst case −1 per dollar) and the rest earns at least θ_W − δ. V2 does not verify this premise and establishes no unconditional prospective edge."**
 
-The result headline always prints θ̂, the two-way 90% interval, `PROSPECTIVE_EXCLUSION`, U_W (labelled "realised-window bound"), θ_ERT and θ_PCE.
+The result headline always prints θ̂, the two-way 90% interval, L_W and U_W (labelled "realised-window bounds"), `PROSPECTIVE_EXCLUSION`, `PROSPECTIVE_CONFIRMATION`, ε*(0, 0), θ_ERT and θ_PCE.
+
+Naming note (Astra m5): every `REALIZED_WINDOW_*` value, whether economic axis or bound, is a statement about θ_W only. The prefix is mandatory in every printed or stored field name.
 
 ### 17.4 OPERABILITY_STATE (orthogonal; never replaces or pre-empts the scientific label)
 
@@ -762,24 +924,26 @@ The result headline always prints θ̂, the two-way 90% interval, `PROSPECTIVE_E
 
 Flag `ACCESS_UNCONFIRMED = TRUE` while LEGAL_ACCESS_CONFIRMED = UNKNOWN. Row 5 uses outcomes and describes deployability at small capital only; it is not a scientific quantity.
 
-### 17.5 Forward-signal rule
+### 17.5 Shadow-continuation rule (was the forward-signal rule)
 
 ```text
-WEATHER_EDGE_FORWARD_SIGNAL = TRUE  iff  VALIDITY = VALID_COMPLETE
-                                     and ECONOMIC_RESULT = PROSPECTIVE_VALUE_CONFIRMED
-                                     and CORE_ADVERSE = FALSE
-                                     and OPERABILITY_STATE = ACCESSIBLE
-                              FALSE otherwise
+SHADOW_CONTINUATION_SIGNAL = TRUE  iff  VALIDITY = VALID_COMPLETE
+                                    and ECONOMIC_RESULT = REALIZED_WINDOW_VALUE_SUPPORTED
+                                    and CORE_ADVERSE = FALSE
+                                    and OPERABILITY_STATE = ACCESSIBLE
+                             FALSE otherwise
 ```
 
-TRUE authorises nothing beyond proposing a further paper/shadow phase to governance. No capital, no live trading.
+TRUE means only: propose to governance a further **paper / shadow evidence epoch** (8.5c rolling architecture). It is **not** a statement that an economic edge exists, it grants no capital and no live trading, and it carries the transport frontier as context. Continuing shadow evidence is also how a rare regime missing from this window eventually gets sampled.
 
-D4 repair R2 (Astra D4 recheck, minor m2): the rule now reads `CORE_ADVERSE = FALSE` instead of `INFORMATION_RESULT ≠ NEGATIVE_INFORMATION`. Under I1 precedence, a run detected through the tail with an adverse core used to pass; now it does not. This is strictly tighter, and the economic label names are the only other change.
+History:
+- D4 repair R3: renamed from `WEATHER_EDGE_FORWARD_SIGNAL`, whose name implied a prospective edge and which fired in Astra C3's false-confirmation runs. The conditions are unchanged apart from the label rename.
+- D4 repair R2 (Astra minor m2): `CORE_ADVERSE = FALSE` replaced `INFORMATION_RESULT ≠ NEGATIVE_INFORMATION`.
 
 ### 17.6 Rejection rule
 
 ```text
-R*_REJECTED_AS_NET_STRATEGY   never issued by V2; printed as NOT_IDENTIFIED_IN_V2   (prospective exclusion not identified, 8.5b)
+R*_REJECTED_AS_NET_STRATEGY   never issued by V2; printed as NOT_USEFULLY_TESTABLE_IN_V2_HORIZON   (8.5b)
 R*_CORE_INFORMATION_REJECTED  iff  CORE_ADVERSE = TRUE (NEG)                       (information-level, not economic)
 ```
 
@@ -795,29 +959,32 @@ A REALIZED_WINDOW_* value is a statement about θ_W only: "the trades executed i
 
 | V1 label | V2 equivalent |
 |---|---|
-| WEATHER_EDGE_FORWARD_SIGNAL | FORWARD_SIGNAL = TRUE (17.5) |
-| WEATHER_EDGE_REJECTED | no prospective economic equivalent (17.6: R*_REJECTED_AS_NET_STRATEGY = NOT_IDENTIFIED_IN_V2); information-level R*_CORE_INFORMATION_REJECTED; realised-window REALIZED_WINDOW_* report field |
-| WEATHER_EDGE_NOT_PROVEN | PROSPECTIVE_VALUE_NOT_ROBUST / PROSPECTIVE_VALUE_INDETERMINATE (with the information column) |
-| WEATHER_EDGE_REQUIRES_MORE_DATA | retired (PROSPECTIVE_VALUE_INDETERMINATE plus mandatory sentences (a) and (b)) |
+| WEATHER_EDGE_FORWARD_SIGNAL | SHADOW_CONTINUATION_SIGNAL = TRUE (17.5; not an edge verdict) |
+| WEATHER_EDGE_REJECTED | no prospective economic equivalent (17.6: R*_REJECTED_AS_NET_STRATEGY = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON); information-level R*_CORE_INFORMATION_REJECTED; realised-window REALIZED_WINDOW_* report field |
+| WEATHER_EDGE_NOT_PROVEN | REALIZED_WINDOW_VALUE_NOT_ROBUST / REALIZED_WINDOW_VALUE_INDETERMINATE (with the information column) |
+| WEATHER_EDGE_REQUIRES_MORE_DATA | retired (REALIZED_WINDOW_VALUE_INDETERMINATE plus mandatory sentences (a) and (b)) |
 | WEATHER_EDGE_OPERATIONALLY_INACCESSIBLE | OPERABILITY_STATE axis (never a scientific label) |
 | WEATHER_FORWARD_TEST_INVALID | VALIDITY_STATE = INVALID_* |
 
-### 17.8 Claim matrix (D4 repair R2)
+### 17.8 Claim matrix (D4 repair R3; supersedes the R2 matrix)
 
-| Label / field | Axis | Estimand | Null | Test / bound | Level / coverage | May claim | May not claim |
-|---|---|---|---|---|---|---|---|
-| PROSPECTIVE_VALUE_CONFIRMED | economic (prospective) | θ_P | θ_P ≤ 0 | T2 two-way CR + θ̂ ≥ θ_ERT + G1–G3 | size ≤ 0.05 (IUT with information claims) | R*'s prospective net value per dollar is positive; point estimate ≥ θ_ERT; robust to G1–G3 | "θ_P ≥ θ_ERT with 95% confidence"; deployment; capital |
-| PROSPECTIVE_VALUE_NOT_ROBUST | economic (prospective) | θ_P | θ_P ≤ 0 | T2 + θ̂ ≥ θ_ERT, a gate fails | size ≤ 0.05 | a positive θ_P that fails the listed robustness gates | a forward signal; deployment |
-| PROSPECTIVE_VALUE_INDETERMINATE | economic (prospective) | θ_P | — | — | — | neither confirmed nor excluded (sentences a, b) | "no edge"; "edge excluded"; "edge exists" |
-| PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2 | economic (prospective) | θ_P | θ_P ≥ θ_ERT / θ_PCE | none; theorem 8.5b | any valid test has power ≤ 0.058 | V2 cannot exclude prospective value at any threshold | any exclusion of θ_P |
-| R*_REJECTED_AS_NET_STRATEGY | economic (prospective) | θ_P | — | not identified | — | never issued | — |
-| REALIZED_WINDOW_{LOSS_CONFIRMED, RELEVANT_VALUE_EXCLUDED, LARGE_VALUE_EXCLUDED} | realised window (report) | θ_W | θ_W ≥ 0 / θ_ERT / max(θ_PCE, θ_ERT) | U_W < threshold | declared 95% (core CR one-sided 0.975 nominal; tail term deterministic) | the trades executed in the window had expected net value below the threshold per dollar | anything about θ_P or R*'s future value; a rejection of R*; "the observed return was negative" (it bounds the expected value of those trades, not the realised P&L) |
-| REALIZED_WINDOW_NOT_EXCLUDED | realised window (report) | θ_W | — | U_W ≥ threshold | — | no realised-window exclusion (EXCLUSION_BLOCKED_BY_TAIL says whether the realised tail is the reason) | evidence of value |
-| INFORMATION_DETECTED (INFO_SOURCE) | information | κ_core; λ_tail | κ_core ≤ 0 ∧ λ_tail ≤ 1 | T1a (CR) ∪ T1b (PINM) | FWER 0.05 | R*'s chosen legs are underpriced net of all-in cost (core and/or tail) | net value; θ_P |
-| NEGATIVE_INFORMATION / CORE_ADVERSE / R*_CORE_INFORMATION_REJECTED | information | κ_core | κ_core ≥ 0 | NEG (CR) | 0.025 | the core legs are overpriced net of executable costs | anything about the tail, θ_W or θ_P; "R* has no net value" |
-| NO_INFORMATION_DETECTED | information | κ_core, λ_tail | — | — | — | no information detected | no information exists |
-| WEATHER_EDGE_FORWARD_SIGNAL | combined | θ_P, κ_core, validity, operability | — | 17.5 | IUT ≤ 0.05 | a further paper/shadow phase may be proposed to governance | capital; live trading |
-| OPERABILITY_STATE | operability | depth, ρ_30, mechanics, access | — | 17.4 | descriptive | accessibility at small capital | any scientific label |
+| Label / field | Axis | Estimand | Null | Test / bound | Level / coverage | Assumptions | May claim | May not claim | Rejects R*? | Builder? | Capital? |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| REALIZED_WINDOW_VALUE_SUPPORTED | economic | θ_W | θ_W ≤ 0 | T2 (L_W > 0) + θ̂ ≥ θ_ERT + G1–G3 | size ≤ 0.05 (IUT with information claims) | CR adequacy for θ_W (D8) | the executed window trades had positive expected value, point estimate ≥ θ_ERT, robust to G1–G3 | anything unconditional about θ_P; "edge exists"; deployment | no | no | no |
+| REALIZED_WINDOW_VALUE_NOT_ROBUST | economic | θ_W | θ_W ≤ 0 | T2 + θ̂ ≥ θ_ERT, a gate fails | size ≤ 0.05 | as above | positive θ_W failing the listed gates | shadow continuation; any prospective claim | no | no | no |
+| REALIZED_WINDOW_VALUE_INDETERMINATE | economic | θ_W | — | — | — | — | not supported (sentences a, b) | "no edge"; "edge excluded" | no | no | no |
+| TRANSPORT_ROBUSTNESS_REPORT / CONDITIONAL_PROSPECTIVE_SUPPORT(ε*, δ) | transport (report) | θ_F over a future H-epoch | — | deductive: `L_T(ε, δ) = (1 − ε)(L_W − δ) − ε` over 𝒯_H(ε, δ) | the single sampling event θ_W ≥ L_W (0.95); ε, δ carry no α | the declared class 𝒯_H(ε, δ) (8.5c), unverified | if the premise holds, θ_F ≥ L_T(ε, δ); frontier ε* | that the premise holds; an unconditional θ_P claim; that any ε is "enough" | no | no | no |
+| PROSPECTIVE_CONFIRMATION = NOT_ESTABLISHED_UNCONDITIONALLY | prospective | θ_P | θ_P ≤ 0 | none (mirror theorem 8.5c) | — | — | no unconditional positive claim is made | any unconditional positive claim | no | no | no |
+| PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON | prospective | θ_P | θ_P ≥ θ_ERT / θ_PCE | none (8.5b ceiling ≈ 0.06) | — | — | no exclusion is made | any exclusion of θ_P | no | no | no |
+| R*_REJECTED_AS_NET_STRATEGY | prospective | θ_P | — | not usefully testable | — | — | never issued | — | — | no | no |
+| REALIZED_WINDOW_BOUND (LOSS_CONFIRMED / RELEVANT / LARGE / NOT_EXCLUDED) | realised window (report) | θ_W | θ_W ≥ 0 / θ_ERT / max(θ_PCE, θ_ERT) | U_W | declared 95% (core CR one-sided 0.975 nominal; tail term deterministic) | CR adequacy for the core | the executed window trades had expected value below the threshold | anything about θ_P; a rejection of R*; "the observed return was negative" | no | no | no |
+| INFORMATION_DETECTED (INFO_SOURCE) | information | κ_core; λ_tail | κ_core ≤ 0 ∧ λ_tail ≤ 1 | T1a (CR) ∪ T1b (PINM) | FWER 0.05 | PINM copula for T1b | chosen legs underpriced net of all-in cost | net value; θ_W; θ_P | no | no | no |
+| NEGATIVE_INFORMATION / CORE_ADVERSE / R*_CORE_INFORMATION_REJECTED | information | κ_core | κ_core ≥ 0 | NEG (CR) | 0.025 | CR adequacy | core legs overpriced net of executable costs | tail, θ_W, θ_P; "R* has no net value" | no (information-level) | no | no |
+| NO_INFORMATION_DETECTED | information | κ_core, λ_tail | — | — | — | — | no information detected | no information exists | no | no | no |
+| SHADOW_CONTINUATION_SIGNAL | routing | — | — | 17.5 | inherits the labels it reads | — | a further paper/shadow epoch may be proposed | an edge exists; capital; live trading | no | no | no |
+| OPERABILITY_STATE | operability | depth, ρ_30, mechanics, access | — | 17.4 | descriptive | — | accessibility at small capital | any scientific label | no | no | no |
+
+No V2 label authorises the Builder or capital: Builder authority comes only from governance after an Astra pass, and capital only from separate capital governance.
 
 ---
 
@@ -844,11 +1011,11 @@ SIMULATED numbers: `WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md` §4 (script co
 
 | # | Failure mode | Status | How |
 |---|---|---|---|
-| 1 | κ_core detects calibration but not net value | CLOSED | κ uses all-in executable cost, so κ > 0 is net per share; net value for R* is only ever claimed through θ (T2, θ̂, gates); after D4 repair R2 V2 cannot state prospectively "the chosen legs are underpriced, yet R* has no relevant net value" (8.5b); its realised-window analogue is INFORMATION_DETECTED with REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED |
+| 1 | κ_core detects calibration but not net value | CLOSED | κ uses all-in executable cost, so κ > 0 is net per share; net value for R* is only ever claimed through θ (T2, θ̂, gates; estimand θ_W after R3); after D4 repair R2 V2 cannot state prospectively "the chosen legs are underpriced, yet R* has no relevant net value" (8.5b); its realised-window analogue is INFORMATION_DETECTED with REALIZED_WINDOW_RELEVANT_VALUE_EXCLUDED |
 | 2 | a tail-only edge blocked by a pooled gate | CLOSED | there is no gate on θ at all (D1-GATE); the information axis is stratified with an exact tail win-count test (SIMULATED power in the power table §4) |
 | 3 | "either core or tail" rejection inflates FWER | CLOSED | Bonferroni α/2 + α/2 ≤ α under any dependence; SIMULATED T1 null rejection ≤ 0.05 within Monte-Carlo error (power table §4) |
 | 4 | Bonferroni inside T1 too weak / too conservative | BOUNDED | with two tests Holm = Bonferroni for the union rejection; Simes' gain limited to both p in (0.025, 0.05]; accepted |
-| 5 | θ tested only after T1 changes its interpretation | CLOSED (by design change) | θ is not gated (D1-GATE); joint claims use intersection-union; a θ-only edge is reported in the NO_INFORMATION_DETECTED__PROSPECTIVE_VALUE_* cells, never hidden |
+| 5 | θ tested only after T1 changes its interpretation | CLOSED (by design change) | θ is not gated (D1-GATE); joint claims use intersection-union; a θ-only edge is reported in the NO_INFORMATION_DETECTED__REALIZED_WINDOW_VALUE_* cells, never hidden |
 | 6 | requiring PINM and bootstrap agreement kills power | CLOSED (by design change) | agreement is not required; engines assigned by where each is valid (8.2) |
 | 7 | assumed PINM copula wrong | BOUNDED | PINM gates only rare-event tail counts, where observed-scale dependence is ≈ 0.01 under latent 0.10; declared values conservative; ×0.5 / ×2 sensitivity reported; residual risk MINOR |
 | 8 | ≈ 25–35 effective station clusters | BOUNDED | 48 NOAA stations after D7; max-of-three SE; t with `min(G_B, G_S) − 1` df; floor Kish ≥ 15; SIMULATED size under strong station dependence in the power table §4 |
@@ -879,7 +1046,7 @@ SIMULATED numbers: `WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md` §4 (script co
 | 16 | optional stopping | Refuted: one analysis time; no interim; analysis module time-locked | — |
 | 17 | Builder still makes a scientific decision | Refuted: section 26 lists every scientific item as frozen; residual Builder choices are engineering only | — |
 | 18 | a trading-rule parameter changed because of feasibility | Refuted: R* unchanged; only CONSERVATIVE slippage (execution robustness) and the cohort domain changed, both mechanically motivated | — |
-| 19 | the 0.02–PCE band treated rhetorically as zero | Refuted: mandatory sentences (a) and (b), PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2, REALIZED_WINDOW_BOUND field clearly scoped to θ_W | — |
+| 19 | the 0.02–PCE band treated rhetorically as zero | Refuted: mandatory sentences (a) and (b), PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON, REALIZED_WINDOW_BOUND field clearly scoped to θ_W | — |
 | 20 | silent mutation under venue drift | Refuted: automated mechanics codes, truncation rule, new-experiment policy (22) | — |
 | 21 | (added) exclusions rest on a tail model | **Resolved by D4 repair R1**: the tail term is the assumption-free supremum `M_tail`; coverage over the whole admissible tail class is at least the core coverage; Astra's two attacks give coverage 1.0 and zero false exclusions (power table §4.5). Scope after D4 repair R2: θ_W only (item 25) | — (cost: MINOR, disclosed) |
 | 22 | (added) GO/NO_GO likely NO_GO at Astra's measured mix | Carried: an honest pre-declared outcome, not a defect; V2 does not pretend otherwise | MINOR |
@@ -887,9 +1054,15 @@ SIMULATED numbers: `WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md` §4 (script co
 | 24 | (added, D4 repair) the core bound itself under-covers for hidden edges at the 0.04 boundary | Refuted by run D: boundary-hidden coverage 0.993, boundary-diffuse 0.9705, false exclusion ≤ 0.0295; core payouts are capped at 25 per dollar by the stratum boundary | — |
 | 25 | (added, D4 repair R2) prospective exclusion from a bound that sees only the sampled tail (Astra C2) | **Resolved by D4 repair R2**: identification theorem (8.5b); no prospective exclusion label; R1 bound re-scoped to θ_W. Run E: 0 prospective exclusions and 0 R* rejections in every scenario (retired rule 4.75–56% false) | — (cost: exclusion power ≤ 0.058 for any valid test; disclosed) |
 | 26 | (added, R2) a θ_W exclusion read as a prospective rejection | Refuted: separate REALIZED_WINDOW_* vocabulary, mandatory sentence (b), claim matrix 17.8; no rule reads REALIZED_WINDOW_BOUND | — |
-| 27 | (added, R2) prospective confirmation has the same sampling problem | Bounded: bounded downside (≥ −1 per dollar) makes an overturning unsampled type visible with probability ≥ 0.93 over 134 dates at θ_0 = 0.02; run E false PROSPECTIVE_VALUE_CONFIRMED at θ_P = 0 under catastrophic-date alternatives ≤ 0.0378 (upper MC 0.0437) | MINOR |
+| 27 | (added, R2) prospective confirmation has the same sampling problem | **R2 answer refuted by Astra C3** (loss dates carrying the 96-event cap: false confirmation 0.43 / 0.12). **Resolved by D4 repair R3**: no unconditional prospective label; items 30–35 | — |
 | 28 | (added, R2) GO / PCE relied on to rule out rare tail arrivals | Refuted: PCE and GO unchanged and not used for that; C2 designs pass GO 80–100% (run E) | — |
 | 29 | (added, R2) zero observed tail legs read as a zero prospective tail rate | Refuted: zero-count rule (8.5b); retired rule excluded 92–93% at zero observed legs whatever θ_P was; frozen rule 0 | — |
+| 30 | (added, R3) a realised-window positive read as a prospective edge | Refuted: economic labels renamed REALIZED_WINDOW_VALUE_*; PROSPECTIVE_CONFIRMATION = NOT_ESTABLISHED_UNCONDITIONALLY; sentence (c); claim matrix 17.8 | — |
+| 31 | (added, R3) contamination measured in dates or trades, so a rare cap-date slips through | Refuted: ε is cost mass (Proposition 1, exact for E[N]/E[C]); ε_1(H) and k*(H) printed; one cap-date = 0.142 of cost mass at H = 120 with 17 × 15 USD dates | — |
+| 32 | (added, R3) hidden loss regime with identical observable covariates | Bounded, not refuted: no flag can see it (run F scenario 06); only the ε budget covers it, and it is reported as DECLARED_UNVERIFIED | MINOR (disclosed; irreducible) |
+| 33 | (added, R3) ε, δ or H chosen after seeing results | Refuted: none is chosen; frontier printed on fixed outcome-blind grids of existing constants; required values are capital-governance choices outside V2 | — |
+| 34 | (added, R3) two confidence levels combined as one | Refuted: only θ_W ≥ L_W is stochastic; (ε, δ) index an assumption set; the bound is simultaneous over them | — |
+| 35 | (added, R3) shadow continuation read as an edge verdict | Refuted: renamed SHADOW_CONTINUATION_SIGNAL; meaning restricted to another paper/shadow epoch; no capital path | — |
 
 No CRITICAL issue survives.
 
@@ -909,9 +1082,9 @@ Economic accounting and full ledger (V1 §11); settlement controls, anomaly flag
 
 ## 24. What V2 can and cannot conclude
 
-Can: whether R*'s chosen legs are underpriced net of executable costs, in the core and in the tail (including a real negative result); whether a net edge of at least θ_PCE exists (80% nominal power); an interval for θ with its core/tail decomposition; an assumption-free upper bound on the realised-window value θ_W of the trades actually executed; the information actually collected; operability at small capital.
+Can: whether R*'s chosen legs are underpriced net of executable costs, in the core and in the tail (including a real negative result); whether the trades R* executed in the window had positive expected net value, with θ̂ ≥ θ_ERT (T2 on θ_W; 80% nominal power at θ_PCE); how much adverse future cost mass that evidence could absorb (transport frontier ε*, 8.5c); an interval for θ with its core/tail decomposition; an assumption-free upper bound on the realised-window value θ_W of the trades actually executed; the information actually collected; operability at small capital.
 
-Cannot: confirm θ in [0.02, θ_PCE); exclude prospective net value at any threshold (8.5b: no valid test has more than 0.058 power at α = 0.05); reject R* as a net strategy; exclude realised-window value whenever `M_tail` keeps U_W above the threshold (in practice: any sub-cent leg held at S_ref); reject R* economically from core information alone; attribute an edge to NWP information rather than structure beyond the descriptive baselines; say anything about the venue after a mechanics change.
+Cannot: confirm θ in [0.02, θ_PCE); establish or exclude prospective net value unconditionally (8.5b ceiling ≈ 0.06; 8.5c mirror theorem); certify that a future epoch satisfies the transport premise; reject R* as a net strategy; exclude realised-window value whenever `M_tail` keeps U_W above the threshold (in practice: any sub-cent leg held at S_ref); reject R* economically from core information alone; attribute an edge to NWP information rather than structure beyond the descriptive baselines; say anything about the venue after a mechanics change.
 
 ---
 
@@ -929,33 +1102,34 @@ Builder may decide: languages, storage engines, process layout, scheduling mecha
 
 Builder may **not** decide (all frozen here and in the manifest): estimands, strata, cohort, °F arithmetic, station-table membership, thresholds, PCE formula and ceilings, power claims, inference engines, dependence declaration, seeds and draw order, terminal labels and their order, readiness and GLOBAL_READY, OP length, t0, capture windows and validity, completeness definitions, allocation order, mechanics semantics, analysis time, sensitivity list.
 
-Verification required before a t0 request (in addition to V1 §28): unit tests for the four title regexes and E4 (°C and °F, negative temperatures, malformed titles); interval arithmetic against hand-computed q for a 2 °F ladder; CONSERVATIVE tick rule in both regimes; VALID_CAPTURE with a quiet book (old exchange timestamp) and with a future timestamp; completeness denominator; USABLE / BIAS_HISTORY_READY with a correction hold and a missing vintage; the two-way CR engine against a hand-worked 3 × 3 example including a negative `V_2w`; PINM reproducibility (same seed → identical p-values); `M_tail` and `EXCLUSION_BLOCKED_BY_TAIL` against hand-worked examples (empty tail, one 0.001 leg, several 0.039 legs); REALIZED_WINDOW_BOUND ordering; PROSPECTIVE_EXCLUSION printed as NOT_IDENTIFIED_IN_V2 and R*_REJECTED_AS_NET_STRATEGY never TRUE in any synthetic run; TAIL_ARRIVAL_REPORT bins including zero counts; the 11-value SCIENTIFIC partition; adverse imputation; every row of every state table reachable in a synthetic test; PRE_T0 outcome-blind and ANALYSIS_TIME_LOCK enforcement; restart/replay idempotence (no duplicated fills, P&L or sessions after crash and replay).
+Verification required before a t0 request (in addition to V1 §28): unit tests for the four title regexes and E4 (°C and °F, negative temperatures, malformed titles); interval arithmetic against hand-computed q for a 2 °F ladder; CONSERVATIVE tick rule in both regimes; VALID_CAPTURE with a quiet book (old exchange timestamp) and with a future timestamp; completeness denominator; USABLE / BIAS_HISTORY_READY with a correction hold and a missing vintage; the two-way CR engine against a hand-worked 3 × 3 example including a negative `V_2w`; PINM reproducibility (same seed → identical p-values); `M_tail` and `EXCLUSION_BLOCKED_BY_TAIL` against hand-worked examples (empty tail, one 0.001 leg, several 0.039 legs); REALIZED_WINDOW_BOUND ordering; PROSPECTIVE_EXCLUSION / PROSPECTIVE_CONFIRMATION constants printed and R*_REJECTED_AS_NET_STRATEGY never TRUE in any synthetic run; L_W, ε*(δ, τ) grid, k*(H) grid, ε_1(H) and n_eff,C against hand-worked examples (L_W ≤ 0, L_W = 0.10, a single cap-date window); SHADOW_CONTINUATION_SIGNAL truth table; TAIL_ARRIVAL_REPORT bins including zero counts; the 11-value SCIENTIFIC partition; adverse imputation; every row of every state table reachable in a synthetic test; PRE_T0 outcome-blind and ANALYSIS_TIME_LOCK enforcement; restart/replay idempotence (no duplicated fills, P&L or sessions after crash and replay).
 
 ---
 
 ## 27. Status
 
 ```text
-WEATHER_FORWARD_SPEC_V2              = AUDITED @94b59348 (immutable ancestor of this commit)
-ASTRA_WEATHER_V2_REAUDIT             = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION   (Astra @7d95c00)
-WEATHER_FORWARD_SPEC_V2_D4_REPAIR    = R1 @0583614 / 24d2342 → ASTRA_WEATHER_V2_D4_RECHECK =
-                                       BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (Astra @3d18085)
-EXPERIMENT_FEASIBILITY_V2            = BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION   (Astra's; unchanged until Astra rechecks)
-WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = READY_FOR_ASTRA_D4_C2_RECHECK
-D4_C2_REPAIR                         = R2 = R2_B_PROSPECTIVE_EXCLUSION_INDETERMINATE_WHEN_UNIDENTIFIED (hybrid: R1 bound kept as
-                                       the θ_W report field REALIZED_WINDOW_BOUND). Identification theorem 8.5b: under the frozen
-                                       admissible class no valid prospective exclusion test has power > 0.058 over 134 dates, so
-                                       PROSPECTIVE_EXCLUSION = NOT_IDENTIFIED_IN_V2; ECONOMIC_RESULT ∈ PROSPECTIVE_VALUE_{CONFIRMED,
-                                       NOT_ROBUST, INDETERMINATE}; R*_REJECTED_AS_NET_STRATEGY never issued; R*_CORE_INFORMATION_REJECTED
-                                       and the forward-signal rule read CORE_ADVERSE (Astra minor m2); §24 wording fixed (Astra minor m1)
-D4_R1_STATUS                         = KEPT: U_W = w_core·U_core + M_tail valid for θ_W (C1 closed for the realised trade set)
-MP1                                  = CLOSED (Astra @3d18085)
-CARRIED CLOSED                       = D1 D2 D3 D5 D6 D7 D8 D9 D11 D12 CLOSED; D10 CLOSED_ACCEPTED_AND_DISCLOSED
-                                       (D2 partition re-derived: 11 values, total by construction; only the economic axis changed)
-NOT_MEANING                          = EXPERIMENT_FEASIBILITY = PASS / BUILDER_AUTHORIZED / t0 / edge / capital
-NEXT_AUTHORIZED_ACTION               = ASTRA BOUNDED D4-C2 RECHECK ONLY
-BUILDER_AUTHORIZED                   = FALSE
-REAL_CAPITAL_AUTHORIZED              = FALSE
-LIVE_TRADING_AUTHORIZED              = FALSE
-t0                                   = NOT_DECLARED
+WEATHER_FORWARD_SPEC_V2                  = AUDITED @94b59348 (immutable ancestor of this commit)
+ASTRA_WEATHER_V2_REAUDIT                 = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION   (Astra @7d95c00)
+WEATHER_FORWARD_SPEC_V2_D4_REPAIR        = R1 @24d2342 → BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (Astra @3d18085)
+WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR     = R2 @e45d2ce7 → BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION
+                                           (Astra @92c2f706; R2 exclusion removal PASS, R1 θ_W bound PASS, state machine PASS)
+EXPERIMENT_FEASIBILITY_V2                = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (Astra's; unchanged until Astra rechecks)
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK
+D4_C3_REPAIR                             = R3 = hybrid C3_C (no unconditional prospective label in either direction) + C3_A (cost-mass transport
+                                           class 𝒯_H(ε, δ), deductive bound L_T = (1 − ε)(L_W − δ) − ε, frontier ε*(δ, τ), k*(H), concentration,
+                                           observable invalidation that can only revoke); ECONOMIC_RESULT = REALIZED_WINDOW_VALUE_{SUPPORTED,
+                                           NOT_ROBUST, INDETERMINATE} on θ_W with T2 unchanged; SHADOW_CONTINUATION_SIGNAL replaces the forward
+                                           signal; no ε / δ / H / τ threshold chosen in V2
+MINORS m3–m7                             = fixed (manifest §C superseded markers; checkpoint §4; REALIZED_WINDOW prefix note; D_obs ≈ 174;
+                                           "not usefully testable" wording)
+D4_R1 / D4_R2                            = KEPT (θ_W upper bound unchanged; no prospective exclusion; no R* rejection)
+CARRIED CLOSED                           = D1 D2 D3 D5 D6 D7 D8 D9 D11 D12 CLOSED; D10 CLOSED_ACCEPTED_AND_DISCLOSED (11-value partition unchanged
+                                           in structure; economic labels renamed)
+NOT_MEANING                              = EXPERIMENT_FEASIBILITY = PASS / BUILDER_AUTHORIZED / t0 / edge / capital
+NEXT_AUTHORIZED_ACTION                   = ASTRA BOUNDED D4-C3 + TRANSPORTABILITY RECHECK ONLY
+BUILDER_AUTHORIZED                       = FALSE
+REAL_CAPITAL_AUTHORIZED                  = FALSE
+LIVE_TRADING_AUTHORIZED                  = FALSE
+t0                                       = NOT_DECLARED
 ```
