@@ -8,16 +8,17 @@ in a FRESH sub-agent context; earlier reviewer conclusions are immutable history
 CURRENT_ROLE            = ORCHESTRATOR (no review, no repair authority)
 ARCHITECT_BRANCH        = claude/charming-allen-948kd8
 ASTRA_BRANCH            = astra/weather-forward-v2-independent-reaudit-2026-09-29
-CURRENT_SHA (candidate) = 4423c5c3fe36c1d425b832ef87a9a774913377b4   (BLOCKED by cycle-1 fresh Astra)
+CURRENT_SHA (candidate) = 61f4904f94f8662084fa5245c92b647c061148ae   (cycle-2 Architect; READY_FOR_ASTRA_RECHECK)
 LAST_ASTRA_SHA          = ac777a870e7f6b09636f06fe7720194d257427eb   (cycle-1 fresh Astra recheck; BLOCKED M1-R + M2)
-LAST_ARCHITECT_SHA      = 4423c5c3fe36c1d425b832ef87a9a774913377b4   (cycle-1 M1 repair; content 81929e4)
+LAST_ARCHITECT_SHA      = 61f4904f94f8662084fa5245c92b647c061148ae   (cycle-2 M1-R + M2 repair; WIP 791083d..d5fc379)
 OPEN_BLOCKER            = M1-R (MAJOR) + M2 (MAJOR) + minors m10, m11, T1b-under-persistence proof gap
 CLOSED_FINDINGS         = C1 (R1), C2 (R2), C3 unconditional confirmation (R3), MP1, MP2 (via R3), m1–m9;
                           M1 on the simulated 156-cell grid (worst 0.0471 @100k); R3 surfaces independently re-verified PASS
 CYCLE                   = 2 of max 5
-CURRENT_PHASE           = CYCLE 2 / FRESH ARCHITECT REPAIR from 4423c5c3 — pending
-NEXT_EXACT_ACTION       = fresh Architect sub-agent repairs M1-R, M2, m10, m11 (+ T1b persistence measurement) on
-                          claude/charming-allen-948kd8 from 4423c5c3; then a fresh Astra sub-agent rechecks
+CURRENT_PHASE           = CYCLE 2 / FRESH ASTRA RECHECK of 61f4904f — pending
+NEXT_EXACT_ACTION       = fresh Astra sub-agent rechecks claude/charming-allen-948kd8 @ 61f4904f (reproduce M1-R / M2 on
+                          4423c5c3 and 61f4904f; verify §8.1c λ calibration over 𝒟_P*; judge power / feasibility collapse;
+                          R1 / R2 / R3 + D1–D12 regression); progress file ASTRA_PROGRESS_CYCLE2.md on the Astra branch
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 t0                      = NOT_DECLARED
@@ -54,7 +55,8 @@ surfaces it passed (transport algebra, frontier, semantics, state machine), not 
 | 0 | Astra R3 audit | orchestrator context (not independent of R3 author) | astra @ 5bb57eb2 | BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE |
 | 1 | Architect repair | fresh sub-agent | arch @ 4423c5c3 (content 81929e4) | READY_FOR_ASTRA_RECHECK. Option (a): L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95}·SE_2w(b); declared persistence class 𝒟_P (φ ∈ {0.5,0.7,0.8,0.9} × var ∈ {0.02,0.05,0.10}); Architect-reported worst joint miss 0.0465 [0.0436,0.0494]; power cost disclosed; m8, m9 fixed. Architect-flagged, not repaired: T1a / NEG / U_W still 5-date blocks and overshoot under persistence (φ 0.9: T1a 0.089, NEG 0.069, U_W miss 0.077) |
 | 1 | Astra recheck | fresh sub-agent (resumed once after an API rate-limit interruption, same context) | astra @ ac777a87 | BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE. M1 old→new: 0.0799→0.0274 (false positive), 0.0916→0.0333 (miss); grid worst 0.0471 [0.0457,0.0484] @100k. M1-R: inside the class as frozen (CORE prices, pauses): c~U(0.70,0.90) φ0.9 rv0.05 m17 thin 0.0605 / miss 0.0635 @100k; rv0.10 miss 0.0852; 30 paused dates 0.0531; literal §9 trailing-mean lag 0.0597. M2: T1a 0.0888 / NEG 0.0707 / U_W miss 0.0755 inside 𝒟_P vs 0.025/0.025/0.05. R3 re-verified PASS; run G reproduced byte-identical. REPAIRABLE_BOUNDED |
-| 2 | Architect repair | fresh sub-agent | pending | pending |
+| 2 | Architect repair | fresh sub-agent (resumed once after rate limit, same context; WIP checkpoints 791083d, 8feb3b2, 01a5b5d, d5fc379) | arch @ 61f4904f | READY_FOR_ASTRA_RECHECK. Option (a) for M1-R and M2, one frozen rule (spec §8.1c): bound = stat ∓ λ·max_{b∈{5,10,20,30}} t_{df_b,q}·SE_2w(b); λ_θ = 1.70 (L_W q 0.95, U_W core q 0.975), λ_κ = 1.60 (T1a, NEG q 0.975); headline interval = [L_W, U_W]; IF/GO gates unchanged. Class 𝒟_P* declared before runs (AR φ≤0.9, two-state, trailing-mean 15/30, hemisphere/station regimes, rv≤0.10, ≤30 paused dates, favourite CORE to 0.90, TAIL mixes, m 17/35, thin/full). Selection: smallest λ meeting 80% of nominal in all 1,183 reached cells @20k, 100k confirm. Worst joint: L_W miss 0.0415 [0.0403,0.0427], T2 0.0353, U_W 0.0089, T1a 0.0193, NEG 0.0100, T1b ≤ 0.0077. Architect-flagged MAJOR feasibility cost: P(T2) at θ_PCE 0.07–0.11 (was 0.47–0.55); 80%-power effect ≈ 0.18; NEG power at −0.07 ≈ 0.12 (was 0.89). Conditional-on-reach rates up to 0.182. PINM 2,000 draws in sim vs 20,000 spec |
+| 2 | Astra recheck | fresh sub-agent | pending | pending |
 
 ## Blocker handed to cycle-1 Architect (frozen)
 
