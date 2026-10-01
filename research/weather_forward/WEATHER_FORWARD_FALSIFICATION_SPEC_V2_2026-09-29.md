@@ -249,7 +249,14 @@ one-sided upper / lower bounds at level 1 − a:   stat ± t_{df, 1−a} · SE
 
 The max-of-three rule also resolves the non-PSD case: `V_2w` can be negative in finite samples; the maximum then selects the larger one-way variance, never zero and never IID.
 
-### 8.1b Source lower bound L_W for T2: multi-block calibration (D4-C3-M1, after Astra D4-C3 recheck M1 @5bb57eb2)
+### 8.1b Source lower bound L_W for T2: multi-block calibration (D4-C3-M1, after Astra D4-C3 recheck M1 @5bb57eb2) — cycle-1 record
+
+**SUPERSEDED IN PART by 8.1c (D4-C3-M2, after Astra D4-C3-M1 recheck @ac777a87: M1-R, M2).** The derivation and the run-G evidence below are kept as the cycle-1 record. The authoritative rules are in 8.1c:
+- L_W is the bound below multiplied by the frozen constant λ_θ = 1.70;
+- κ̂_core (T1a, NEG) and θ̂_core (U_W) use the same multi-block construction with λ_κ = 1.60 / λ_θ = 1.70;
+- the class is the completely stated 𝒟_P* (8.1c).
+
+The level statements of this section ("≤ 0.05 over 𝒟_P") are SUPERSEDED. They held only on the run-G grid (c ~ U(0.35, 0.80), no pauses, Gaussian AR(1)). Inside the class as the spec wrote it, the cycle-1 rule reaches a joint miss of 0.1176 (run H, 8.1c).
 
 **Defect repaired.** Section 8.1 counts covariance only inside a 5-date block. A date-common shock that persists across blocks is therefore under-counted. Section 9 itself names two such mechanisms: the lag of the 30-date trailing bias through a seasonal transition, and hemisphere/season common modes. Under them, R3's `L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)` undercovers θ_W.
 
@@ -267,7 +274,7 @@ Astra M1 measured, at φ = 0.8 with latent regime variance 0.05 and 17 trades pe
 
 Run G reproduces both with fresh code and seeds: false positive 0.0789 [0.0752, 0.0826] and full-fill miss 0.0889 [0.0850, 0.0928] on the R3 engine; 0.0271 and 0.0319 under the rule below. Over the declared class below, the R3 engine reaches a joint miss of 0.1287 [0.1241, 0.1333] and a size of 0.1195 [0.1150, 0.1240] (φ = 0.9). It already exceeds 0.05 at φ = 0.5 (0.0621).
 
-**Rule (frozen; replaces the 5-date-block bound for T2 only).**
+**Rule (cycle-1 form; in force only as the λ = 1 member of the 8.1c family, i.e. SUPERSEDED by 8.1c).**
 
 ```text
 L_W      = θ̂ − max_{b ∈ {5, 10, 20, 30}} t_{df_b, 0.95} · SE_2w(b)
@@ -279,12 +286,12 @@ T2       ⟺ L_W > 0
 HEADLINE   two-sided 90% interval  θ̂ ± max_b t_{df_b, 0.95} · SE_2w(b)   (its lower end is L_W)
 ```
 
-- **Scope.** Only the pooled-θ lower bound changes: T2, L_W, the headline interval, and everything in 8.5c and 17.3 that reads L_W. κ̂_core (T1a, NEG, IF4, IF5), θ̂_core (U_W, 8.5) and every other use of 8.1 keep 5-date blocks. Those surfaces are frozen; their behaviour under persistence is disclosed at the end of this section.
+- **Scope.** Only the pooled-θ lower bound changes: T2, L_W, the headline interval, and everything in 8.5c and 17.3 that reads L_W. κ̂_core (T1a, NEG, IF4, IF5), θ̂_core (U_W, 8.5) and every other use of 8.1 keep 5-date blocks. Those surfaces are frozen; their behaviour under persistence is disclosed at the end of this section. *SUPERSEDED by 8.1c:* κ̂_core and θ̂_core now use the same multi-block construction; IF4 / IF5 keep 5-date blocks.
 - **Always defined when evaluated.** INFO_SUFFICIENT requires ≥ 12 non-empty 5-date blocks (IF2). The b-date blocks nest the 5-date blocks, so there are at least 6 / 3 / 2 non-empty 10- / 20- / 30-date blocks, and df_b ≥ 1. With 120 consecutive counted dates and ≥ 25 stations, df = 23 / 11 / 5 / 3 for b = 5 / 10 / 20 / 30.
 - **Monotone.** b = 5 is one of the four bounds, so L_W is never above the R3 bound. T2 can only become harder to pass. No label, threshold or constant changes.
 - **Outcome-blind.** b = 30 is W, the 30-date trailing-bias window whose seasonal lag is the mechanism §9 names; 10 and 20 are the intermediate doublings. Nothing is estimated from or selected on data.
 
-**Declared persistence class 𝒟_P (frozen; the class over which the level is stated).**
+**Declared persistence class 𝒟_P (cycle-1 grid; SUPERSEDED by the completely stated class 𝒟_P* of 8.1c).**
 - V2's simulation dependence: latent Gaussian copula (date, station, cell) = (0.05, 0.05, 0.10).
 - Plus a stationary daily AR(1) date regime `e_t = φ e_{t−1} + √(1 − φ²) z_t`, shared by every trade of date t and added on the latent scale with variance rv.
 - φ ∈ {0.5, 0.7, 0.8, 0.9} and rv ∈ {0.02, 0.05, 0.10}, plus the no-persistence baseline.
@@ -303,7 +310,7 @@ In plain words, φ = 0.9 is a date-level shock whose correlation decays by 10% p
 | 𝒟_P, φ = 0.9 | 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills) | 0.0423 [0.0395, 0.0451] | **≤ 0.05** | 0.1287 [0.1241, 0.1333] |
 | outside 𝒟_P (φ 0.95–0.97, or rv 0.20) | up to 0.0721 [0.0685, 0.0757] (φ = 0.95) and 0.1098 [0.1055, 0.1141] (φ = 0.97), latent variance 0.05, m = 17; rv 0.20 is screened by IF5 (≤ 0.010) | — | **none claimed; the miss is higher (coverage lower)** | up to 0.1728 (φ = 0.95) and 0.2130 (φ = 0.97) |
 
-So, over the whole declared class 𝒟_P: `P(reach ∧ L_W > θ_W) ≤ 0.05`, and the positive REALIZED_WINDOW claim has size ≤ 0.05.
+*SUPERSEDED (Astra M1-R):* So, over the whole declared class 𝒟_P: `P(reach ∧ L_W > θ_W) ≤ 0.05`, and the positive REALIZED_WINDOW claim has size ≤ 0.05. This held on the run-G grid only. Under favourite CORE prices, paused dates, two-state regimes or the 30-date trailing-mean mechanism, the cycle-1 rule exceeds 0.05 (Astra @ac777a87: 0.0605–0.0852; run H: up to 0.1176, 8.1c).
 
 The rate conditional on reach is larger, because IF5 screens high-dispersion windows rather than slow drifts. Over cells with reach ≥ 0.10 it reaches 0.085 (φ ≤ 0.8) and 0.136 (φ = 0.9) for this rule, against 0.189 / 0.281 for the R3 engine. This is the R3 caveat ("not the probability given that a label was issued"), now quantified.
 
@@ -318,7 +325,7 @@ The rate conditional on reach is larger, because IF5 screens high-dispersion win
 
 Only the adopted rule is valid over 𝒟_P, so it is adopted. With integrated memory ≈ 19 days, a 120-date window holds only about six independent date units. Any bound that is valid at φ = 0.9 must therefore work with few effective date degrees of freedom; the power cost below comes from persistence of that length, not from this particular estimator. RM and RE are published, not adopted.
 
-**Power cost (stated, not retuned).**
+**Power cost of the cycle-1 rule (stated, not retuned; superseded by the 8.1c power cost).**
 
 SUPPORTED, joint with reach, no persistence; R3 engine → this rule:
 
@@ -335,7 +342,7 @@ At the information floor (60 dates, 25 stations), df_30 = 1. Positive claims bec
 - **Effect confirmed with 80% T2 power:** ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence).
 - **θ_PCE.** Its frozen formula, GO / NO_GO and its nominal (normal-approximation) meaning are unchanged; it is not retuned (6.2, 10.3). An INDETERMINATE result is more likely than under R3; that is the price of a stated level that holds under the persistence §9 names.
 
-**Frozen surfaces under persistence (disclosed; not repaired by D4-C3-M1).** T1a, NEG and U_W run on the unchanged 5-date-block engine. They are frozen and outside this bounded repair. On the same run-G replications:
+**Frozen surfaces under persistence (cycle-1 disclosure; REPAIRED by D4-C3-M2, 8.1c).** T1a, NEG and U_W run on the unchanged 5-date-block engine. They are frozen and outside this bounded repair. On the same run-G replications:
 
 | Surface | Nominal level | Baseline | 𝒟_P, φ ≤ 0.8 (worst) | 𝒟_P, φ = 0.9 (worst) |
 |---|---|---|---|---|
@@ -343,7 +350,188 @@ At the information floor (60 dates, 25 stations), df_30 = 1. Positive claims bec
 | NEG false rejection | 0.025 | 0.0249 | 0.0400 | 0.0694 |
 | U_W miss | 0.05 (declared) | 0.0269 | 0.0454 | 0.0765 |
 
-Claim matrix 17.8 qualifies their stated levels accordingly. That is a statement change only: the tests are byte-identical. Calibrating them would need governance authority, so this is flagged to Astra and governance as an open observation.
+Claim matrix 17.8 qualifies their stated levels accordingly. That is a statement change only: the tests are byte-identical. Calibrating them would need governance authority, so this is flagged to Astra and governance as an open observation. *SUPERSEDED:* the orchestrator ledger (cycle 2) records that these surfaces were a cycle-1 orchestrator bound, not an owner freeze. D4-C3-M2 calibrates them (8.1c).
+
+### 8.1c Calibrated multi-block bounds for T2, U_W, T1a and NEG (D4-C3-M2, after Astra D4-C3-M1 recheck @ac777a87; authoritative)
+
+**Defects repaired.**
+- **M1-R.** The 8.1b bound held ≤ 0.05 only on the run-G grid: c ~ U(0.35, 0.80), no pauses, Gaussian AR(1). Inside the class as the spec wrote it, it failed: favourite CORE prices, up to 30 paused dates, a two-state regime, and the literal 30-date trailing-mean mechanism that §9 names (Astra @ac777a87: 0.0531–0.0852).
+- **M2.** T1a / NEG (κ̂_core) and U_W (θ̂_core) kept 5-date blocks. They undercovered inside the persistence class (Astra: 0.0888 / 0.0707 / 0.0755 against 0.025 / 0.025 / 0.05) while §6.1, §6.3, §8.4, §8.5, §9, §10.1, §10.3, §24, the 17.3 fields and the manifest asserted nominal levels.
+
+Both are repaired by one construction, calibrated over one completely stated class (option (a) for both).
+
+**Rule (frozen; D4-C3-M2).** For a statistic with the section-8.1 residuals and denominator (θ̂ pooled, κ̂_core, θ̂_core):
+
+```text
+H_q(stat)  = max_{b ∈ {5, 10, 20, 30}} t_{df_b, q} · SE_2w(b; stat)        (8.1b blocks: calendar floor((D − D_0)/b), df_b = min(G_B(b), G_S) − 1)
+L_W        = θ̂ − λ_θ · H_0.95(θ̂)                                          T2 ⟺ L_W > 0
+U_W        = w_core · (θ̂_core + λ_θ · H_0.975(θ̂_core)) + M_tail          (8.5 structure and M_tail unchanged)
+T1a        ⟺ κ̂_core − λ_κ · H_0.975(κ̂_core) > 0
+NEG        ⟺ κ̂_core + λ_κ · H_0.975(κ̂_core) < 0
+HEADLINE   = realised-window interval [L_W, U_W]
+λ_θ = 1.70,  λ_κ = 1.60                                                   (frozen constants; section 10.1)
+```
+
+- **Unchanged.** IF4 (`SE_CR(κ̂_core) ≤ 0.025`) and IF5 (`DEFF_2w(κ̂_core) ≤ 6`) keep their frozen 5-date-block definitions, and GO / NO_GO is unchanged, so **reach is numerically unchanged**. IF4 keeps its meaning: a reliability floor on the 5-date-block SE. It is no longer the test's half-width scale. The median ratio of T1a's half-width to the 5-date-block half-width `t_{df5,0.975} SE_κ(5)` is 1.52 × 1.60 ≈ 2.4 without persistence (run H).
+- **Monotone.** b = 5 is one of the four blocks and λ ≥ 1, so every bound is at least as wide as its 5-date-block (R3) form, and as the cycle-1 form of 8.1b. Every favourable and adverse test can only become harder to pass.
+- **Always defined when evaluated.** IF2 gives df_b ≥ 1 (8.1b).
+- **Headline consistency (Astra M2 second-order).** The headline interval is now `[L_W, U_W]`, so REALIZED_WINDOW_LOSS_CONFIRMED (U_W < 0) is printed only when the headline interval lies below 0. Its two ends are the two calibrated one-sided bounds. By the union bound its joint non-coverage is ≤ 0.05 + 0.05, so it is a two-sided interval at stated joint level ≥ 0.90. Measured joint non-coverage in run H: ≤ 0.0429 [0.0417, 0.0442] at 100,000. Under the cycle-1 symmetric interval the inconsistency could occur; under this rule it cannot.
+
+**Declared class 𝒟_P* (frozen; completely stated; the only class over which any level of T2, L_W, U_W, T1a, NEG, T1b or T1 is stated).** It was declared in the run-H script header before any run of that script.
+- **Dependence.** V2's latent copula (date, station, cell) = (0.05, 0.05, 0.10), plus at most one persistent date-level component of latent variance rv ∈ {0.02, 0.05, 0.10}. The component runs on calendar days, paused days included, and is shared by every trade of the date. Its shape is one of:
+  - (i) stationary Gaussian AR(1), φ ∈ {0.5, 0.7, 0.8, 0.9};
+  - (ii) two-state ±1 Markov regime with autocorrelation φ^k, φ ∈ {0.8, 0.9} (non-Gaussian; same second moments as (i));
+  - (iii) trailing L-date mean of iid date shocks, L ∈ {15, 30}. **L = 30 is the literal error of the 30-date trailing-mean bias correction that §9 names, so that mechanism is inside 𝒟_P*;**
+  - (iv) two hemisphere AR(1) regimes (φ 0.9);
+  - (v) station-specific AR(1) drifts (φ 0.9);
+  - or none (the 5-date-block model).
+  Latent thresholds are exact for every shape (P(y = 1) = p).
+- **Calendar.** D ∈ {120, 90, 60} counted dates (60 = the IF1 floor of a truncated window) plus P ∈ {0, 30} paused calendar dates. 30 is the DATA_FAILURE limit of 11.3. Pauses sit at uniformly random interior positions or as one contiguous run.
+- **Geometry.** 14 OP dates; 48 stations with gamma(2) activity; Poisson(m) trades per counted date (cap 96), m ∈ {17, 35}; thin (C ~ U(5, 25)) or full (C = 50) fills.
+- **Prices.** OP and window share the same law:
+  - c ~ U(0.35, 0.80);
+  - favourite-heavy CORE c ~ U(0.70, 0.90). R* cannot buy above 0.90 (5.2), and this is the left-skewed case of 8.4;
+  - a 50/50 mix of the two;
+  - log-uniform CORE [0.04, 0.90] and U(0.04, 0.35). Both are NO_GO in every run (reach 0; measured, not assumed);
+  - the U(0.35, 0.80) law with a 1% (m 17, thin) or 3% (m 35, full) TAIL share c ~ U(0.02, 0.039).
+- **Effect.** p = min(1, c(1 + θ)), θ ∈ {0, 0.05, 0.10}. Information power cells also use −0.12, −0.06 and 0.06.
+- **Grid.** Shapes (i)–(iii) × rv × the three GO-feasible CORE price laws × {P 0, 30 random, 30 contiguous} × fills × θ ∈ {0, 0.10} at m = 17 is the full factorial (900 cells), because every run-G and Astra worst cell lies at m = 17. The other dimensions are run on the worst-shape slices (fav35 160 cells, geo 72, astra 12, power 36, t1b 12). In total there are 1,183 in-class cells with reach > 0 plus 8 NO_GO cells, all at 20,000 replications.
+- **Outside 𝒟_P*** (disclosure only, never claimed): φ ≥ 0.95, a 60-date trailing mean, rv > 0.10, more than one persistent component.
+- **No level is claimed between grid points beyond what the grid shows.** A real experiment is not on the grid. The stated class is therefore a declared reference family, broad enough to contain every mechanism the spec names, and is not a proof about every dependence law.
+
+**Selection (declared before any run; nothing chosen afterwards).**
+- **Family.** The construction above with λ on the grid {1.00, 1.05, …, 2.50}. λ = 1 for L_W is the cycle-1 rule of 8.1b.
+- **Criterion.**
+  - λ_θ is the smallest grid value with joint L_W miss ≤ 0.040, false REALIZED_WINDOW positive ≤ 0.040 and U_W miss ≤ 0.040 in every 𝒟_P* cell at 20,000 replications.
+  - λ_κ is the smallest grid value with joint T1a and NEG false rejection ≤ 0.020 in every cell.
+  - Confirmation: the three worst cells per surface are re-run at 100,000 fresh replications, and their 95% Wilson upper bounds must be ≤ 0.050 (L_W, U_W) or ≤ 0.025 (T1a, NEG). If a confirmation failed, λ would move up the grid, never down.
+  - The targets 0.040 / 0.020 are 80% of the nominal levels. That margin is deliberate: Astra showed that a thin margin on one grid (0.3 pp) was the symptom of overfitting.
+- **Result.** λ_θ = 1.70 and λ_κ = 1.60. Every confirmation passed on the first pass (below).
+- **Pilot.** The only pre-run use of the engine was one 4,000-replication pilot of the Astra cells, to check that the engine reproduces Astra's numbers (it does). The class, family and criterion were not changed after it.
+
+**Level (what holds; run H).** Each error below is the repeated-experiment joint rate with reach (reach = GO ∧ INFO_SUFFICIENT), worst over the cells shown, at the frozen λ_θ = 1.70 / λ_κ = 1.60, with 20,000 replications per cell.
+
+| Dependence in 𝒟_P* | L_W miss | False positive (size) | U_W miss | T1a false | NEG false | cycle-1 L_W miss (λ = 1) | 5-date T1a / NEG / U_W (pre-repair) |
+|---|---|---|---|---|---|---|---|
+| none (5-date-block model) | 0.0026 | 0.0021 | 0.0002 | 0.0004 | 0.0002 | 0.0360 | 0.038 / 0.027 / 0.029 |
+| AR(1) φ 0.5 / 0.7 / 0.8 | 0.0050 / 0.0081 / 0.0121 | ≤ 0.0107 | ≤ 0.0009 | ≤ 0.0043 | ≤ 0.0012 | 0.046 / 0.054 / 0.066 | up to 0.082 / 0.046 / 0.047 |
+| AR(1) φ 0.9 | 0.0268 | 0.0220 | 0.0028 | 0.0115 | 0.0031 | 0.0954 | 0.158 / 0.079 / 0.081 |
+| two-state φ 0.8 / 0.9 | 0.0115 / 0.0279 | ≤ 0.0255 | ≤ 0.0089 | ≤ 0.0163 | ≤ 0.0106 | 0.057 / 0.086 | up to 0.119 / 0.094 / 0.105 |
+| trailing mean L = 15 | 0.0211 | 0.0155 | 0.0013 | 0.0080 | 0.0014 | 0.0811 | 0.110 / 0.059 / 0.062 |
+| trailing mean L = 30 (§9 mechanism) | **0.0395** | **0.0353** | 0.0044 | **0.0198** | 0.0057 | 0.1176 | 0.175 / 0.103 / 0.108 |
+| hemisphere / station AR φ 0.9 | 0.0100 / 0.0008 | ≤ 0.0094 | ≤ 0.0007 | ≤ 0.0032 | ≤ 0.0008 | 0.061 / 0.022 | up to 0.107 / 0.063 / 0.064 |
+| **all of 𝒟_P*** | **0.0395** | **0.0353** | **0.0089** | **0.0198** | **0.0106** | 0.1176 | 0.175 / 0.103 / 0.108 |
+
+By the other dimensions (worst L_W miss):
+- prices: favourite 0.0395, mix 0.0241, U(0.35, 0.80) 0.0194, TAIL mixes ≤ 0.0108;
+- calendars: P 0 0.0350, 30 random 0.0359, 30 contiguous 0.0395;
+- D 90 0.0168, D 60 0.0011;
+- m 35 ≤ 0.0344.
+
+**Confirmation at 100,000 fresh replications (streams 1–5; 95% Wilson).**
+
+| Surface | Worst cell | Joint rate | Bound required | Pass |
+|---|---|---|---|---|
+| L_W miss | trailing mean 30, rv 0.10, favourite prices, 30 contiguous paused dates, m 17 full, θ 0.10 | 0.0415 [0.0403, 0.0427] | ≤ 0.050 | yes |
+| L_W miss | same, thin fills | 0.0400 [0.0388, 0.0413] | ≤ 0.050 | yes |
+| false positive (size) | same geometry, θ_W = 0, full / thin | 0.0336 [0.0325, 0.0347] / 0.0336 [0.0325, 0.0347] | ≤ 0.050 | yes |
+| U_W miss | two-state φ 0.9, rv 0.10, 30 contiguous paused, m 17 full, θ 0 | 0.0085 [0.0079, 0.0091] | ≤ 0.050 | yes |
+| T1a false rejection | trailing mean 30, rv 0.10, favourite, 30 contiguous paused, m 17 thin, κ_core = 0 | 0.0193 [0.0185, 0.0202] | ≤ 0.025 | yes |
+| NEG false rejection | two-state φ 0.9, rv 0.10, 30 contiguous paused, m 17 full, κ_core = 0 | 0.0100 [0.0095, 0.0107] | ≤ 0.025 | yes |
+| headline [L_W, U_W] joint non-coverage | trailing mean 30 cell above | 0.0429 [0.0417, 0.0442] | ≤ 0.10 (stated level ≥ 0.90) | yes |
+
+**Astra @ac777a87 counterexample cells under this rule** (cycle-1 rule or pre-repair 5-date test in brackets; 100,000 replications at the first three, 20,000 otherwise):
+- favourite CORE, φ 0.9, rv 0.05, thin:
+  - L_W miss 0.0114 [0.0108, 0.0121] (0.0639);
+  - false positive 0.0100 [0.0094, 0.0106] (0.0595);
+- 30 random paused dates: 0.0069 [0.0064, 0.0074] (0.0534);
+- favourite rv 0.10: miss 0.0209, size 0.0168 (0.0845 / 0.0724);
+- two-state: 0.0107 (0.0547);
+- literal §9 trailing mean 30, rv 0.05: miss 0.0114, size 0.0097 (0.0610 / 0.0556);
+- φ 0.95 (outside 𝒟_P*): 0.0303 (0.1047);
+- M2 cells, φ 0.9, rv 0.05 / 0.10, κ_core = 0:
+  - T1a 0.0018 / 0.0037 (0.0881 / 0.0606);
+  - NEG 0.0009 / 0.0019 (0.0707 / 0.0358);
+  - U_W miss 0.0008 / 0.0014 (0.0698 / 0.0360).
+
+Every pre-repair value reproduces Astra's within Monte-Carlo error.
+
+**Stated levels (D4-C3-M2).** Over 𝒟_P*, as repeated-experiment rates jointly with reach:
+- `P(reach ∧ L_W > θ_W) ≤ 0.05`, and the positive REALIZED_WINDOW claim has size ≤ 0.05;
+- `P(reach ∧ U_W < θ_W) ≤ 0.05`;
+- T1a false rejection ≤ 0.025 and NEG false rejection ≤ 0.025;
+- T1b ≤ 0.025 (below), so T1 FWER ≤ 0.05;
+- headline `[L_W, U_W]` joint coverage ≥ 0.90.
+
+Measured worst values: 0.0415 / 0.0353 / 0.0089 / 0.0198 / 0.0106; T1b 0.0077; T1 0.0089; headline non-coverage 0.0429. No level is claimed outside 𝒟_P*.
+
+**Conditional on reach (disclosed; not the stated level).** IF5 screens high-dispersion windows, not slow drifts, so rates given reach are larger. Over cells with reach ≥ 0.10 the worst values are:
+- L_W miss 0.182 (two-state φ 0.9, rv 0.10, favourite prices, m 35 full, reach 0.11; 0.120 at m 17 with reach 0.16);
+- size 0.112;
+- U_W miss 0.054;
+- T1a 0.069;
+- NEG 0.065.
+In the worst joint cells (reach 0.59–0.81) the conditional L_W miss is 0.044–0.057. A printed label is therefore not "wrong with probability ≤ 0.05 given that it was printed".
+
+**T1b (PINM) under persistence (proof gap closed by measurement; T1b unchanged).** The test is spec 8.3 with the declared copula (0.10, 0.10, 0.10) and B = 2,000 draws per replication. A finite-B p-value is valid under the declared model for any B; the spec's B is 20,000. Designs: 1% TAIL share at m 17 thin (≈ 20 TAIL trades) and 3% at m 35 full (≈ 126). Sharp null p = c on TAIL, κ_core = 0, 20,000 replications.
+
+| Persistence | T1b joint (1% / 3%) | T1 = T1a ∪ T1b, this rule (1% / 3%) | T1 with the pre-repair 5-date T1a (1% / 3%) |
+|---|---|---|---|
+| none | 0.0076 / 0.0077 | 0.0076 / 0.0079 | 0.0286 / 0.0303 |
+| AR φ 0.8, rv 0.05 | 0.0060 / 0.0011 | 0.0066 / 0.0012 | 0.0452 / 0.0098 |
+| AR φ 0.9, rv 0.05 / 0.10 | 0.0063 / 0.0033 (1%); 0.0013 / 0.0001 (3%) | ≤ 0.0076 | up to 0.0662 |
+| two-state φ 0.9, rv 0.10 | 0.0018 / 0.0003 | 0.0089 / 0.0037 | 0.0460 / 0.0046 |
+| trailing mean 30, rv 0.10 | 0.0036 / 0.0003 | 0.0081 / 0.0013 | 0.0713 / 0.0054 |
+
+T1b is conservative throughout 𝒟_P* (≤ 0.0077 against 0.025). The declared copula over-states the latent dependence of rare wins, so persistence does not inflate it. The T1 FWER is ≤ 0.0089 under this rule; before the repair it reached 0.0713.
+
+**Failed and published candidates (same replications, worst over 𝒟_P*).**
+
+| Candidate | Worst L_W miss | Worst size | Status |
+|---|---|---|---|
+| R3 engine (5-date blocks) | 0.2439 | — | retired |
+| cycle-1 rule (8.1b; λ = 1) | 0.1176 [0.1132, 0.1221] | 0.1035 | fails |
+| blocks {5, 10, 20, 30, 40}, λ = 1 | 0.0968 [0.0928, 0.1010] | 0.0854 | fails |
+| reference quantile 0.975 for L_W, λ = 1 | 0.0742 [0.0706, 0.0779] | 0.0658 | fails |
+| family members λ_θ = 1.00 … 1.65 | > 0.040 in at least one cell (1.65: trailing mean 30, favourite) | — | fail the declared criterion |
+| **adopted λ_θ = 1.70** | 0.0395 (100,000: 0.0415 [0.0403, 0.0427]) | 0.0353 | criterion met |
+| κ family λ_κ = 1.00 … 1.55 | T1a > 0.020 in at least one cell | — | fail |
+| **adopted λ_κ = 1.60** | T1a 0.0198 (100,000: 0.0193 [0.0185, 0.0202]); NEG 0.0106 | — | criterion met |
+| 5-date T1a / NEG / U_W (pre-repair) | 0.1752 / 0.1025 / 0.1077 | — | retired |
+
+**What drives λ (disclosure; not a level claim and not a selection).** Run on the same replications, the smallest λ meeting the same criterion within each sub-family is:
+
+| Sub-family | λ_θ | λ_κ |
+|---|---|---|
+| none | 1.00 | 1.00 |
+| AR(1) φ ≤ 0.8 | ≤ 1.25 | ≤ 1.15 |
+| AR(1) φ 0.9 | 1.50 | 1.40 |
+| two-state φ 0.9 | 1.50 | 1.50 |
+| trailing mean 15 / 30 | 1.35 / 1.70 | 1.30 / 1.60 |
+| run-G-like (U(0.35, 0.80) prices, no pauses, AR only) | 1.10 | 1.00 |
+
+The 30-date trailing-mean mechanism at rv 0.10 with favourite prices sets both constants. A narrower class would be cheaper, but choosing one now, after seeing these numbers, would be selection on results. V2 does not do it. Any narrower class needs its own outcome-blind declaration and audit (governance / V3).
+
+**Power and feasibility cost (stated, not retuned; power table §4.9).** Joint with reach; no persistence; 20,000 replications.
+
+| Quantity | R3 engine | cycle-1 (8.1b) | **D4-C3-M2** |
+|---|---|---|---|
+| P(T2) at θ_PCE: m 17 thin / 17 full / 35 thin / 35 full | 0.774 / 0.705 / 0.477 / 0.481 (SUPPORTED) | 0.551 / 0.473 / 0.343 / 0.349 | **0.109 / 0.084 / 0.067 / 0.070** |
+| SUPPORTED at θ = 0.10, m 17 thin / full | 0.840 / 0.856 | 0.648 / 0.669 | **0.161 / 0.181** |
+| SUPPORTED at θ = 0.15 / 0.20, m 17 thin | 0.984 / 0.995 | 0.948 / 0.994 | **0.596 / 0.922** |
+| 80%-power effect for T2 (m 17; linear interpolation) | ≈ 0.09–0.10 | ≈ 0.11–0.12 | **≈ 0.18** (m 35: reach-limited, 0.75–0.76 at θ = 0.20) |
+| T1a power at κ_core ≈ +0.035 / +0.058 / +0.115 (θ 0.06 / 0.10 / 0.20, m 17 thin) | 0.426 / 0.836 / 0.995 (5-date) | — | **0.007 / 0.079 / 0.888** |
+| T1a MDE80 per share (m 17) | ≈ 0.035 | — | **≈ 0.11** |
+| NEG power at κ_core ≈ −0.069 / −0.035 (θ −0.12 / −0.06, m 17) | 0.889 / 0.386 (5-date) | — | **0.116 / 0.004** (m 35: 0.166 / 0.008) |
+| REALIZED_WINDOW_LOSS_CONFIRMED at θ_W = −0.12 (m 17 thin) | 0.505 (λ = 1, multi-block) | — | **0.053** |
+| GO / NO_GO and INFO_SUFFICIENT (reach) | — | — | **unchanged numerically** (no gate or threshold changed) |
+
+**Feasibility consequence (stated plainly).**
+- **The repair buys validity over 𝒟_P* at the cost of most of V2's power.**
+- **θ_PCE.** The frozen θ_PCE / GO no longer imply useful T2 power: P(T2) at θ_PCE is ≈ 0.07–0.11.
+- **NEG and T1a.** NEG, "the only real negative-result instrument" (10.3), has power ≈ 0.12 against a public-bot-like −0.07 per share. T1a needs κ_core ≈ 0.11 per share for 80% power.
+- **Not retuned.** No threshold, gate or constant is retuned to recover power. GO's PCE_CEILING and SE_KAPPA_CEILING keep their frozen meanings, which are design reference values (nominal, normal approximation, 5-date-block SE) and no longer the power of the tests actually run.
+- **Whether a valid but this weakly powered V2 is worth running** is an EXPERIMENT_FEASIBILITY question for Astra and governance, not an Architect decision. It is flagged as such (27).
 
 ### 8.2 PINM (price-implied null Monte Carlo): primary for the tail count, auxiliary elsewhere
 
