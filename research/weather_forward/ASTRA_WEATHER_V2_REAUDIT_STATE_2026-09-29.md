@@ -1,3 +1,89 @@
+# ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-10-01 (D4-C3 + transportability recheck)
+
+CURRENT STATE (supersedes the 2026-09-30 D4-C2-recheck state below; all history preserved verbatim in section H3)
+
+AUDIT_ROLE = ASTRA independent adversarial reviewer
+AUDIT_BRANCH = astra/weather-forward-v2-independent-reaudit-2026-09-29
+AUDIT_ARTIFACT = research/weather_forward/ASTRA_WEATHER_V2_D4_C3_TRANSPORT_RECHECK_2026-09-30.md
+AUDIT_EVIDENCE = research/weather_forward/astra_d4_c3_recheck_2026-10-01/ (independent synthetic code + raw outputs)
+
+AUDITED_BRANCH = claude/charming-allen-948kd8
+AUDITED_SHA = 341e0b7aede716fdb68e2c9806cc1a09fdd50b82
+AUDITED_TREE = 37412bdc3e0307ec3073f091552d6ab2d5332783
+PREVIOUS_ASTRA_SHA = 92c2f706d2ac75af9ae9710061c60df520234410
+ASTRA_START_SHA = 92c2f706d2ac75af9ae9710061c60df520234410
+C3_REPRODUCED = TRUE (retired R2 label false 0.4324 [0.4255, 0.4393] thin / 0.1193 [0.1148, 0.1238] full; fresh seeds)
+
+ASTRA_WEATHER_V2_D4_C3_TRANSPORT_RECHECK = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE
+
+D4_R1_REALIZED_WINDOW_BOUND = PASS (spec 8.5 byte-identical to e45d2ce7)
+D4_R2_PROSPECTIVE_EXCLUSION_REMOVAL = PASS
+D4_C3_UNCONDITIONAL_CONFIRMATION_REMOVAL = PASS (0 unconditional prospective labels / exclusions / R* rejections by construction)
+D4_R3_COST_MASS_TRANSPORT_BOUND = PASS (exact for E[N]/E[C]; 99,239 fuzz cases 0 violations; worst N/C = -1 exactly;
+  date- and trade-count epsilon fail on a one-cap-date counterexample, cost-mass epsilon is exact)
+D4_R3_ROBUSTNESS_FRONTIER = PASS (closed form and monotonicity verified in domain; m8)
+D4_R3_LW_CALIBRATION = BLOCKED (M1)
+D4_R3_CLAIM_SEMANTICS = PASS (no unconditional future verdict; SHADOW_CONTINUATION_SIGNAL shadow-only; m9)
+D4_R3_STATE_MACHINE = PASS (3,072 combinations -> 11 values, total, deterministic)
+D4_R3_POWER_CEILING_THEOREM = SUPPORTED (finite-horizon wording; D_obs ~174 consistent; ceilings reproduced)
+
+m3 = CLOSED
+m4 = CLOSED
+m5 = CLOSED
+m6 = CLOSED
+m7 = CLOSED
+
+CRITICAL_FINDINGS = NONE
+MAJOR_FINDINGS =
+M1: L_W (T2's bound) is the only probability behind REALIZED_WINDOW_VALUE_* (claimed size <= 0.05) and every conditional
+  prospective statement (claimed P(theta_W >= L_W) >= 0.95). Under the cross-block persistence that spec 9 itself names
+  (30-date trailing-bias lag through seasonal transitions; latent var 0.05, daily AR phi 0.8), in 17-trades/date
+  geometries passing the information floor 72-82% of the time, 20,000 reps each:
+  false REALIZED_WINDOW positive claim at theta_W = 0: 0.0805 [0.0767, 0.0843];
+  L_W miss: 0.0828 [0.0790, 0.0867] (thin), 0.0902 [0.0863, 0.0942] (full).
+  Without persistence: 0.0524-0.0534 (the 0.5 pp R3 disclosed). R3 discloses only the 0.5 pp.
+MINOR_FINDINGS =
+m8: spec 17.3 ROBUSTNESS_FRONTIER and manifest ROBUST_BOUND / FRONTIER omit the 8.5c domain guard (L_W - delta > tau); prints
+  epsilon* > 0 (e.g. 3) when L_W - delta < -1 and divides by zero at -1
+m9: power table 4.6 reading 5 and delta D4-C2 "CLAIM STRENGTH AFTER REPAIR" still assert R2's refuted
+  prospective-confirmation validity without a SUPERSEDED marker
+MISSING_PROOF = NONE beyond M1
+REGRESSIONS = NONE in D1-D3, D5-D12; trading rule unchanged; outcome leakage none
+RUN_F_INTEGRITY = Architect modes frontier and c3 20000 re-run at 341e0b7a: byte-identical
+INDEPENDENCE_DISCLOSURE = all repairs and rechecks in this chain ran in one agent session under different roles
+
+D1_D12_SUMMARY =
+D1 CLOSED
+D2 CLOSED
+D3 CLOSED
+D4 OPEN_MAJOR (C1, C2, C3 closed; M1 open: source-bound calibration under cross-block persistence)
+D5 CLOSED
+D6 CLOSED
+D7 CLOSED
+D8 CLOSED (finite-cluster limitation carried; quantified more sharply by M1)
+D9 CLOSED
+D10 CLOSED_ACCEPTED_AND_DISCLOSED
+D11 CLOSED
+D12 CLOSED
+
+PRIMARY_BLOCKER = D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE
+MINIMAL_REPAIR_SURFACE = (a) calibrate L_W robustly to cross-block persistence (frozen outcome-blind rule, e.g. max CR
+  variance over block lengths {5, 10, 20}; re-show coverage >= 0.95 over a declared persistence class; disclose the D1 / PCE
+  power change) OR (b) weaken the stated level honestly (nominal 95% under the 5-date-block model; >= 0.90 under tested
+  persistence) everywhere it appears; plus m8, m9. Keep the R3 transport algebra, vocabulary, shadow signal, R1, R2.
+AFFECTED_FILES = spec 8.5c error statement (6.1 / 8.1 under a), 17.3, 17.8, 21; manifest ROBUST_BOUND / FRONTIER (ALPHA / NULLS
+  under a); delta; power table 4.6 / 4.7; C3 simulation (persistence mode)
+REQUIRED_REAUDIT_SURFACE = L_W coverage over the declared persistence class (>= 20,000 reps per cell); stated level everywhere; m8, m9
+
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE
+NEXT_AUTHORIZED_ACTION = BOUNDED ARCHITECT REPAIR ONLY
+BUILDER_AUTHORIZED = FALSE
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+t0 = NOT_DECLARED
+
+## H3. HISTORY — superseded state of 2026-09-30 (D4-C2 recheck of e45d2ce7, commit 92c2f706), preserved verbatim
+
 # ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-09-30 (D4-C2 recheck)
 
 CURRENT STATE (supersedes the 2026-09-30 D4-recheck state below; all history preserved verbatim in section H2)
