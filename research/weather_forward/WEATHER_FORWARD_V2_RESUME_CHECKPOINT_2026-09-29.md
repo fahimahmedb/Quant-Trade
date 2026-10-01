@@ -1,18 +1,18 @@
-# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3) — 2026-09-29 / 2026-09-30
+# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3, D4-C3-M1) — 2026-09-29 / 2026-10-01
 
 ```text
-ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability)
+ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability), D4-C3-M1 (M1, m8, m9)
 PURPOSE              = durable restart surface: a fresh session (after token / context / container loss) resumes from
                        THIS FILE, never from chat memory
 BRANCH               = claude/charming-allen-948kd8
-STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK   (R2 @e45d2ce7 BLOCKED C3 by Astra @92c2f706)
+STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR = READY_FOR_ASTRA_RECHECK   (R3 @341e0b7a BLOCKED M1 by Astra @5bb57eb2)
 REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_DECLARED · BUILDER_AUTHORIZED = FALSE
 ```
 
 ## 1. Resume protocol (do this first, in order; stop at the first mismatch)
 
 1. `git fetch origin --prune && git checkout claude/charming-allen-948kd8 && git pull --ff-only origin claude/charming-allen-948kd8`
-2. Verify the authority chain (section 2): `git merge-base --is-ancestor <sha> HEAD` for 726070a, e1cf4ca, 5760ffa, 94b59348, 7d95c00.
+2. Verify the authority chain (section 2): `git merge-base --is-ancestor <sha> HEAD` for 726070a, e1cf4ca, 5760ffa, 94b59348, 7d95c00, 24d2342, e45d2ce7, 341e0b7a.
 3. Read, in this order: `QUANT_NORTH_STAR.md`; this file; `WEATHER_FORWARD_ARCHITECT_STATE_V2_2026-09-29.md`; Astra `ASTRA_WEATHER_V2_REAUDIT_STATE_2026-09-29.md`. Read the spec only in the sections named in section 5.
 4. Find the first phase in section 3 whose status is not DONE and continue exactly there. Do not redo a DONE phase; do not re-derive a decision in section 4 unless new evidence contradicts it.
 5. After finishing any phase: update its row in section 3, commit (message prefix `checkpoint(weather_forward):`), push, verify `git rev-parse HEAD == git rev-parse origin/claude/charming-allen-948kd8`.
@@ -30,6 +30,9 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | Astra D4 recheck (BLOCKED C2) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 3d18085862f239a81936345989b4e26414cedcf3 (read only; not merged into this branch) |
 | D4-C2 repair R2 head (audited) | claude/charming-allen-948kd8 | e45d2ce7e2605a4136804d2c1b31efa3aa8120e1 |
 | Astra D4-C2 recheck (BLOCKED C3) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 92c2f706d2ac75af9ae9710061c60df520234410 (read only; not merged into this branch) |
+| D4-C3 repair R3 head (audited) | claude/charming-allen-948kd8 | 341e0b7aede716fdb68e2c9806cc1a09fdd50b82 |
+| Astra D4-C3 + transportability recheck (BLOCKED M1) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 5bb57eb2adf4cff35378f2c0e53e0316d45a4229 (read only; not merged into this branch) |
+| Orchestrator D4 convergence ledger (cycle 1) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | c47080bc1741d91e0f7e23a41b3752291658b4df (read only) |
 
 ## 3. Phase ledger (checkpoints)
 
@@ -70,6 +73,24 @@ R3 decisions (do not re-derive without new evidence):
 - Observable invalidation can only revoke.
 - SHADOW_CONTINUATION_SIGNAL replaces the forward signal.
 - Minors m3–m7 fixed.
+
+## 3d. Phase ledger — D4-C3-M1 source-bound calibration (2026-10-01; fresh Architect context, convergence cycle 1)
+
+| Phase | Content | Status | Checkpoint |
+|---|---|---|---|
+| M0 | fetch; verify local HEAD = origin = 341e0b7a; read North Star, this file, architect state, spec §6.1 / 6.3 / 8.1 / 8.5c / 9 / 10 / 11.4 / 17.3 / 17.8 / 21 / 27, manifest, delta D4-C2 / D4-C3, power table §4.6 / 4.7 / 5, run F script, Astra recheck @5bb57eb2 (§1, 6, 8, 10, 12, 13) + evidence + ledger @c47080bc | DONE | — |
+| M1 | `WEATHER_FORWARD_V2_D4_C3_LW_CAL_SIM_2026-10-01.py` (run G): class 156 cells × 20,000; boundary 36; stress 15; c3 2; repro 5; power 16; cells 1037 / 1076 / 1073 × 100,000 (≈ 2 h on 4 cores). Raw output `WEATHER_FORWARD_V2_D4_C3_M1_RUN_G_OUTPUT_2026-10-01.jsonl` = concatenation in that order. Verification: repro lines = class lines byte-identical; stress, c3, boundary and cell 1073 re-run from the committed script byte-identical | DONE | 81929e4764e500d3385467e00d37e7779f0e865b (content commit) |
+| M2 | spec (header, 1, 6.1, 6.2, 7, new 8.1b, 8.5c Theorem 2 definition + error statement, 10.3, 17.3, 17.8, 21 items 36–42, 24, 26, 27); manifest (header, NULLS, ALPHA, TARGET_POWER, PRIMARY_INFERENCE, new T2_SOURCE_BOUND, ROBUST_BOUND / FRONTIER, DEPENDENCE_MODEL, MANDATORY_SENTENCES, INDEPENDENT_REAUDIT, new F); delta D4-C3-M1 (+ m8 / m9 markers); power table §4.6 / 4.7 markers, new §4.8, §5 notes; architect state | DONE | 81929e4764e500d3385467e00d37e7779f0e865b (content commit) |
+| M3 | this ledger; commit; push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
+
+D4-C3-M1 decisions (do not re-derive without new evidence):
+- **Option (a), calibrate.** `L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} SE_2w(b)` (spec 8.1b). It is never above the R3 bound and is defined whenever INFO_SUFFICIENT. It holds 0.05 over the declared persistence class 𝒟_P; no level is claimed outside it.
+- **Selection.** RM ({5, 10, 20}) was declared first and failed at φ = 0.9. RE (two-way EWC) also fails at φ = 0.9. Only the adopted rule is valid over 𝒟_P. Do not retune any of them.
+- **Disclosed, not retuned.** The power cost, the θ_PCE shortfall, the information-floor powerlessness, and the miss given reach.
+- **Open observation (frozen surfaces; not repaired).** T1a / NEG / U_W keep 5-date blocks and exceed their nominal levels under 𝒟_P. Spec 17.8 is qualified at statement level only. This is governance's call.
+- m8 guard and m9 markers are applied.
+
+Next: ASTRA BOUNDED D4-C3-M1 RECHECK ONLY.
 
 ## 4. Decisions already made (do not re-derive)
 
