@@ -1,0 +1,56 @@
+{
+ "P1_T2": {
+  "cases": 59600,
+  "identity_violations": 0,
+  "max_rel_error": 6.0214378448538366e-12,
+  "theorem2_violations": 0,
+  "min_theta_B": -0.999754
+ },
+ "W": {
+  "trades": 300000,
+  "min_N_over_C": -1.0,
+  "all_ge_minus1": true
+ },
+ "C": {
+  "theta_F": -0.0567,
+  "rows": {
+   "dates": {
+    "eps": 0.0083,
+    "bound": 0.0908,
+    "valid": false
+   },
+   "trades": {
+    "eps": 0.0453,
+    "bound": 0.0502,
+    "valid": false
+   },
+   "cost_mass": {
+    "eps": 0.1424,
+    "bound": -0.0567,
+    "valid": true
+   }
+  }
+ },
+ "F": {
+  "cases": 3000,
+  "closed_form_mismatches": 0,
+  "monotonicity_violations": 0,
+  "unguarded_vs_guarded_at_LW_lt_minus1": [
+   {
+    "L_W": -1.5,
+    "unguarded": 3.0,
+    "guarded": 0.0
+   },
+   {
+    "L_W": -1.2,
+    "unguarded": 6.0,
+    "guarded": 0.0
+   }
+  ],
+  "sanity_LW_0p10": 0.0909
+ },
+ "K": {
+  "cases": 3000,
+  "mismatches": 0
+ }
+}

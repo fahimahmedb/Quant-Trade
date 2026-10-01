@@ -1,3 +1,84 @@
+# ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-10-01 (D4-C3-M1 recheck, cycle 1, fresh Astra context)
+
+CURRENT STATE (supersedes the 2026-10-01 D4-C3 + transportability state below; prior file preserved verbatim under section H4)
+
+AUDIT_ROLE = ASTRA independent adversarial reviewer (fresh context; did not write the repair or any earlier audit)
+AUDIT_BRANCH = astra/weather-forward-v2-independent-reaudit-2026-09-29
+AUDIT_ARTIFACT = research/weather_forward/ASTRA_WEATHER_V2_D4_C3_M1_RECHECK_2026-10-01.md
+AUDIT_EVIDENCE = research/weather_forward/astra_d4_c3_m1_recheck_2026-10-01/ (independent synthetic engine + raw outputs)
+
+AUDITED_BRANCH = claude/charming-allen-948kd8
+AUDITED_SHA = 4423c5c3fe36c1d425b832ef87a9a774913377b4 (content commit 81929e4)
+AUDITED_TREE = 82d0500ed7c91de7af7f9b3125c57d90199776bd
+PREVIOUS_ASTRA_SHA = 5bb57eb2adf4cff35378f2c0e53e0316d45a4229
+ASTRA_START_SHA = 0a088356b84f85f287e471503d4635293c5bd5ff
+
+ASTRA_WEATHER_V2_D4_C3_M1_RECHECK = BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE
+
+M1_REPRODUCED_ON_OLD_RULE = TRUE (341e0b7a rule: size 0.0799 [0.0761, 0.0836]; miss 0.0916 [0.0876, 0.0956]; new rule same cells 0.0274 / 0.0333)
+D4_M1_SOURCE_BOUND_CALIBRATION = BLOCKED (M1-R): holds on the exact run-G grid (worst 0.0471 [0.0457, 0.0484] at 100,000);
+  fails over D_P as frozen ("CORE prices", pauses allowed): favourite CORE c~U(0.70,0.90), phi 0.9, rv 0.05, m 17 thin:
+  size 0.0605 [0.0591, 0.0620], miss 0.0635 [0.0620, 0.0650] (100,000); rv 0.10: 0.0721 / 0.0852 [0.0813, 0.0891];
+  30 paused dates 0.0531 [0.0517, 0.0544] (100,000); two-state regime with AR(0.9) autocorrelation 0.0526; literal spec-9
+  30-date trailing-mean (boxcar) mechanism 0.0597 (outside AR class, but spec claims the level holds under that mechanism)
+D4_INFORMATION_AND_UW_CALIBRATION = BLOCKED (M2): inside D_P (phi 0.9) T1a 0.0888, NEG 0.0707, U_W miss 0.0755 (joint; given
+  reach 0.131 / 0.105 / 0.106) vs declared 0.025 / 0.025 / 0.05; nominal control still asserted in spec 6.1, 6.3 (FWER, IUT),
+  8.4, 8.5, 9, 10.1, 10.3, 24 and in the 17.3 printed fields; qualified only in 17.8 / 8.1b / 21 / 27 / manifest ALPHA
+D4_R1_REALIZED_WINDOW_BOUND = PASS (algebra / tail supremum; 8.5 byte-identical); core level part of M2
+D4_R2_PROSPECTIVE_EXCLUSION_REMOVAL = PASS
+D4_C3_UNCONDITIONAL_CONFIRMATION_REMOVAL = PASS
+D4_R3_COST_MASS_TRANSPORT_BOUND = PASS (independent fuzz 59,600 laws, 0 identity / Theorem-2 violations; min N/C = -1 exactly)
+D4_R3_ROBUSTNESS_FRONTIER = PASS (closed form vs brute force 0 mismatches; guard; monotone; k*(H) exact)
+D4_R3_CLAIM_SEMANTICS = PASS for prospective / capital language (0 forbidden hits); level statements carried by M1-R / M2; m10, m11
+D4_R3_STATE_MACHINE = PASS (4,608 combinations -> 11 values; shadow only from SUPPORTED and not CORE_ADVERSE)
+D4_R3_POWER_CEILING_THEOREM = SUPPORTED (unchanged)
+m8 = CLOSED
+m9 = CLOSED
+RAW_OUTPUT_REPRODUCTION = PASS (Architect script repro / c3 modes byte-identical to committed run-G output)
+TRADING_RULE_CHANGED = FALSE
+OUTCOME_LEAKAGE = NONE
+
+CRITICAL_FINDINGS = NONE
+MAJOR_FINDINGS =
+M1-R: the 8.1b multi-block L_W attains joint miss / size <= 0.05 only on the simulated grid (c ~ U(0.35, 0.80), no pauses,
+  Gaussian AR(1)), with ~0.3 pp margin; the frozen class text ("CORE prices", pauses permitted) is not covered: false
+  REALIZED_WINDOW positive 0.0605 [0.0591, 0.0620] and L_W miss 0.0635 [0.0620, 0.0650] at a declared grid point with
+  favourite-heavy CORE prices (100,000 reps), up to 0.0852 at phi 0.9 / rv 0.10; 30 paused dates 0.0531 [0.0517, 0.0544].
+M2: T1a / NEG / U_W (frozen 5-date blocks) at 0.089 / 0.071 / 0.076 inside D_P vs 0.025 / 0.025 / 0.05 while 6.3 / 8.4 /
+  8.5 / 9 / printed fields still assert nominal control; NEG drives R*_CORE_INFORMATION_REJECTED and vetoes the shadow signal.
+MINOR_FINDINGS =
+m10: stale "unchanged T2 / CR engine" (8.5c), unmarked delta D4-C3 size line, no section-2 decision row for D4-C3-M1,
+  ambiguous "the level is lower"
+m11: sentence (c) prints "95% sampling confidence" in reached runs without the joint-with-reach qualifier (given reach up to 0.138)
+MISSING_PROOF = T1b (PINM) under cross-block persistence unmeasured; L_W level for CORE price mixes other than U(0.35, 0.80)
+REPAIR_CLASS = REPAIRABLE_BOUNDED (calibrate over a completely stated class, or state the class and measured levels
+  completely and propagate; same for T1a / NEG / U_W; governance authority needed to touch the frozen T1a / NEG / U_W tests)
+
+D1_D12_SUMMARY =
+D1 CLOSED (power shortfall of calibrated T2 disclosed)
+D2 CLOSED
+D3 CLOSED
+D4 OPEN_MAJOR (C1, C2, C3 closed; M1 repaired on the grid only -> M1-R; M2 frozen-surface undercoverage)
+D5 CLOSED
+D6 CLOSED
+D7 CLOSED
+D8 CLOSED with disclosed limitation (T2 engine re-qualified by 8.1b; kappa / theta_core limitation now M2)
+D9 CLOSED
+D10 CLOSED_ACCEPTED_AND_DISCLOSED
+D11 CLOSED
+D12 CLOSED
+
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE
+NEXT_AUTHORIZED_ACTION = BOUNDED ARCHITECT REPAIR ONLY
+BUILDER_AUTHORIZED = FALSE
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+t0 = NOT_DECLARED
+
+---
+
+## H4. History — state file as it stood at 0a088356 (verbatim)
+
 # ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-10-01 (D4-C3 + transportability recheck)
 
 CURRENT STATE (supersedes the 2026-09-30 D4-C2-recheck state below; all history preserved verbatim in section H3)

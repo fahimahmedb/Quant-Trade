@@ -1,0 +1,18 @@
+IDENTICAL: 2 3 4 4.1 5 5.1 5.2 5.3 6 6.3 8 8.1 8.2 8.3 8.4 8.5 8.5b 8.6 8.7 9 10 10.1 10.2 11 11.1 11.2 11.3 11.4 11.5 12 12.1 12.2 12.3 12.4 13 14 14.1 14.2 14.3 15 15.1 15.2 15.3 16 17 17.1 17.2 17.4 17.5 17.6 17.7 18 19 20 22 23 25
+CHANGED/NEW: HEADER 1 6.1 6.2 7 8.5c 10.3 17.3 17.8 21 24 26 27 8.1b
+3 identical
+5.2 identical
+8.5 identical
+9 identical
+10.2 identical
+14 identical
+15 identical
+8.1 identical
+8.4 identical
+8.5b identical
+17.2 identical
+17.5 identical
+17.6 identical
+10.1 identical
+11.4 identical
+6.3 identical
