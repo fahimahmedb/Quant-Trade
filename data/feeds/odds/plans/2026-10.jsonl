@@ -1,1 +1,2 @@
 {"key": "2026-10-01T01:36:21+00:00", "kind": "observation", "observed_at": "2026-10-01T01:36:21+00:00", "record": {"last_remaining": 485, "plan": [["americanfootball_ncaaf", "anchor"]], "used_month": 0, "used_today": 0}}
+{"key": "2026-10-01T07:50:04+00:00", "kind": "observation", "observed_at": "2026-10-01T07:50:04+00:00", "record": {"last_remaining": 499, "plan": [["soccer_epl", "anchor"], ["basketball_nba", "anchor"]], "used_month": 1, "used_today": 1}}
