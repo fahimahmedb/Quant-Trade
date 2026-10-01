@@ -546,7 +546,7 @@ Readings:
 3. **Boundary designs: valid everywhere.**
    - Worst 0.0381: one 96-trade date at φ = 0.9.
    - At the information floor (60 dates, 25 stations) the rule is valid but nearly powerless: SUPPORTED 0.001–0.005 at θ = 0.10, because df_30 = 1.
-4. **Outside 𝒟_P the level is lower and is not claimed:** up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97 (R3 engine 0.173 / 0.213). At latent variance 0.20, IF5 screens almost every run.
+4. **Outside 𝒟_P the miss is higher (coverage lower) and no level is claimed:** up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97 (R3 engine 0.173 / 0.213). At latent variance 0.20, IF5 screens almost every run.
 5. **Power cost (disclosed, not retuned).**
    - SUPPORTED at θ = 0.10 falls by 0.07–0.19, most in thin 17-trades/date designs. At θ = 0.05 it falls by 0.13–0.19.
    - P(T2) at the design's own θ_PCE is 0.46–0.55, against 0.67–0.78 for the R3 engine.

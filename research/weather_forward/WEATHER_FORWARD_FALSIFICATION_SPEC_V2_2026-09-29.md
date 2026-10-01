@@ -301,7 +301,7 @@ In plain words, φ = 0.9 is a date-level shock whose correlation decays by 10% p
 | 5-date-block model (no cross-block persistence) | 0.0174 [0.0155, 0.0192] | 0.0163 | ≤ 0.05 (conservative) | 0.0559 [0.0527, 0.0591] |
 | 𝒟_P, φ ≤ 0.8 | 0.0319 [0.0295, 0.0343] | 0.0293 | ≤ 0.05 | 0.0889 [0.0850, 0.0928] |
 | 𝒟_P, φ = 0.9 | 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills) | 0.0423 [0.0395, 0.0451] | **≤ 0.05** | 0.1287 [0.1241, 0.1333] |
-| outside 𝒟_P (φ 0.95–0.97, or rv 0.20) | up to 0.0721 [0.0685, 0.0757] (φ = 0.95) and 0.1098 [0.1055, 0.1141] (φ = 0.97), latent variance 0.05, m = 17; rv 0.20 is screened by IF5 (≤ 0.010) | — | **none claimed; the level is lower** | up to 0.1728 (φ = 0.95) and 0.2130 (φ = 0.97) |
+| outside 𝒟_P (φ 0.95–0.97, or rv 0.20) | up to 0.0721 [0.0685, 0.0757] (φ = 0.95) and 0.1098 [0.1055, 0.1141] (φ = 0.97), latent variance 0.05, m = 17; rv 0.20 is screened by IF5 (≤ 0.010) | — | **none claimed; the miss is higher (coverage lower)** | up to 0.1728 (φ = 0.95) and 0.2130 (φ = 0.97) |
 
 So, over the whole declared class 𝒟_P: `P(reach ∧ L_W > θ_W) ≤ 0.05`, and the positive REALIZED_WINDOW claim has size ≤ 0.05.
 
@@ -492,7 +492,7 @@ Under that class, finite data cannot establish an unconditional statement about 
 - Confirmation: the mirror theorem below. Astra C3 showed the realised consequence: the retired R2 label `PROSPECTIVE_VALUE_CONFIRMED` was issued at θ_P = −0.005 in 43% (thin fills) and 12% (full fills) of runs.
 
 `θ_P` therefore remains the strategic target, but it is **not an empirical estimand of V2**. V2 separates two layers:
-- **Sampling inference** on the realised-window value θ_W (5.1), by the unchanged T2 / CR engine. It asks: given the process that produced these trades, what is the uncertainty about their expected value?
+- **Sampling inference** on the realised-window value θ_W (5.1), by T2's calibrated multi-block source bound L_W (8.1c; D4-C3-M2). The R3 5-date-block engine is retired for T2 (Astra M1, M1-R; m10). It asks: given the process that produced these trades, what is the uncertainty about their expected value?
 - **Transport**: an explicit, assumption-indexed, deductive map from θ_W to a finite future epoch. It is never estimated from data.
 
 A cluster-robust SE answers the first question only.
@@ -561,7 +561,7 @@ The contamination parameter must be **cost mass**, not dates, trades or stations
 
 **Error statement (D4-C3-M1; supersedes the R3 wording kept below as history).** The only probability in any prospective statement is the sampling event `{θ_W ≥ L_W}` for the multi-block bound of 8.1b. Its stated level is indexed by a declared dependence class.
 - `P(reach ∧ L_W > θ_W) ≤ 0.05` under the 5-date-block model, and over the whole declared persistence class 𝒟_P: daily AR(1) date regimes with φ ≤ 0.9 and latent variance ≤ 0.10, across the 8.1b geometries. Run G worst cell: 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills).
-- Outside 𝒟_P no level is claimed, and the level is lower (up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97).
+- Outside 𝒟_P no level is claimed, and the miss is higher (coverage lower): up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97.
 
 The class parameters (ε, δ) are not estimated and carry no α. The statement holds simultaneously for all (ε, δ, H), because it rests on the single event above. No second probability is combined with it.
 

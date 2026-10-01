@@ -157,7 +157,7 @@ ROBUSTNESS_CONTRACT:
 - Rolling-epoch fields (design only).
 
 CLAIM_STRENGTH:
-- REALIZED_WINDOW_VALUE_SUPPORTED: θ_W > 0 (size ≤ 0.05, IUT) with θ̂ ≥ θ_ERT and robust to G1–G3.
+- REALIZED_WINDOW_VALUE_SUPPORTED: θ_W > 0 (size ≤ 0.05, IUT) with θ̂ ≥ θ_ERT and robust to G1–G3. **SUPERSEDED (m10): this size held only without cross-block persistence; the level is restated over a declared class by D4-C3-M1 and, after Astra M1-R, by D4-C3-M2 (spec 8.1c).**
 - CONDITIONAL_PROSPECTIVE_SUPPORT(ε*, δ): if the premise holds, θ_F ≥ L_T. Its only probability is the sampling event (0.95 nominal; simulated 0.9448–0.9502). **SUPERSEDED by D4-C3-M1: those designs had no cross-block persistence; the attained level is now stated by dependence class (spec 8.1b).**
 - PROSPECTIVE_CONFIRMATION = NOT_ESTABLISHED_UNCONDITIONALLY.
 - PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON.
