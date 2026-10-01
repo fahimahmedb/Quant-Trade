@@ -12,7 +12,7 @@ from multiprocessing import Pool
 import astra_m2_engine as E
 
 SEED = 77200201
-CODES = dict(repro=1, repro100=2, class_=3, slice=4, probe=5, worst100=6, power=7, probe100=8, sample=9, probe2=10)
+CODES = dict(repro=1, repro100=2, class_=3, slice=4, probe=5, worst100=6, power=7, probe100=8, sample=9, probe2=10, power2=11)
 
 
 def G(**kw):
@@ -176,6 +176,16 @@ def plan_probe2():
     return [(key(g), g) for g in cells]
 
 
+def plan_power2():
+    """Power under other GO-feasible price laws (no persistence): favourite and 50/50 mixes; NEG at negative effects."""
+    cells = []
+    for pr in ('fav', 'favmix'):
+        for cap in ('thin', 'full'):
+            for th in (-0.12, -0.08, -0.06, 0.03, 0.05, 0.06, 0.07, 0.08, 0.10, 0.12, 0.15):
+                cells.append(G(m=17, cap=cap, th=th, pr=pr))
+    return [(key(g), g) for g in cells]
+
+
 def plan_power():
     cells = []
     for m, cap in ((17, 'thin'), (17, 'full'), (35, 'thin'), (35, 'full')):
@@ -204,7 +214,7 @@ def plan_from_file(name):
 
 
 PLANS = dict(repro=plan_repro, repro100=plan_repro100, class_=plan_class, slice=plan_slice, probe=plan_probe,
-             power=plan_power, probe2=plan_probe2)
+             power=plan_power, probe2=plan_probe2, power2=plan_power2)
 
 
 def _job(a):
