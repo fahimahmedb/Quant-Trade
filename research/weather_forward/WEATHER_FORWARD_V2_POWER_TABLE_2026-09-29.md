@@ -212,7 +212,7 @@ Old rule by observed count of rare 0.001 legs (p_t = 1, θ_core = −0.10; ungat
 | 5.0 | 1.0894 | 0.920 (n=25) | 0.000 (n=150) | 0.000 (n=306) | 0.000 (n=673) | 0.000 (n=139) | 0 |
 | 10.0 | 2.2788 | — | 0.000 (n=4) | 0.000 (n=11) | 0.000 (n=143) | 0.000 (n=2151) | 0 |
 
-Prospective confirmation under rare catastrophic dates (every trade loses on a catastrophic date; η = θ_0/(1+θ_0), so θ_P = 0):
+Prospective confirmation under rare catastrophic dates (every trade loses on a catastrophic date; η = θ_0/(1+θ_0), so θ_P = 0) — **SUPERSEDED as evidence of prospective validity: this date-frequency construction is not the worst case (Astra C3, cost mass; §4.7); kept as history (Astra m9):**
 
 | θ_core (θ_0) | η per date | GO | reach | False PROSPECTIVE_VALUE_CONFIRMED (joint) |
 |---|---|---|---|---|
@@ -236,7 +236,7 @@ Readings:
 2. The old rule's failure is entirely the zero-count case: 92–93% exclusion with 0 observed rare legs whatever θ_P was (0.019 to 1.09), 0% with ≥ 1.
 3. **R2 issues no prospective exclusion and no R* rejection anywhere.** Its realised-window statements are true for θ_W (coverage ≥ 0.97 in every scenario row).
 4. R2-A never excludes, so it would add an assumption and no power.
-5. Prospective confirmation remains valid: false confirmation at θ_P = 0 is ≤ 0.0378 under the catastrophic-date alternative, and confirmation power is unchanged (0.62 at θ_P = 0.10 tail-free, jointly with GO ∧ INFO).
+5. **SUPERSEDED — R2 reading refuted by Astra C3 (@92c2f706; false confirmation 0.43 / 0.12 under cost-capped loss dates) and replaced by D4 repair R3 (§4.7); no unconditional prospective confirmation exists in V2 (spec 8.5c). Kept as history (Astra m9, D4-C3-M1):** Prospective confirmation remains valid: false confirmation at θ_P = 0 is ≤ 0.0378 under the catastrophic-date alternative, and confirmation power is unchanged (0.62 at θ_P = 0.10 tail-free, jointly with GO ∧ INFO).
 
 
 ### 4.7 Run F — D4 repair R3 validation (prospective confirmation vs unsampled loss regimes; transport frontier; after Astra D4-C2 recheck @92c2f706)
@@ -307,10 +307,254 @@ Definitions:
 
 Readings:
 1. **C3 reproduces** with independent code. The retired `PROSPECTIVE_VALUE_CONFIRMED` was false at θ_P = −0.005 in 43% (thin) and 11–12% (full) of runs, and in up to 36% of grid cells. The forward signal fired at the same rates.
-2. **R3 issues no unconditional prospective label.** Its economic labels are true statements about θ_W: false-claim rate ≤ α.
+2. **R3 issues no unconditional prospective label.** Its economic labels are true statements about θ_W: false-claim rate ≤ α (in the run-F designs, which have no cross-block persistence; re-qualified by D4-C3-M1, §4.8).
 3. Every prospective statement R3 makes is conditional on the transport premise and can be false only through the sampling miss of L_W. In C3 designs the frontier ε* lies *below* the true adverse cost share, so the conditional claim correctly does not cover the loss regime. k*(120) medians of 0.14–0.86 show the evidence cannot absorb even one maximum-exposure loss date per 120-date epoch.
-4. The source bound's sampling coverage is nominal in thick designs (0.9502) and ≈ 0.5 pp liberal in sparse, heterogeneous-fill designs (0.9448). This is the carried D8 finite-cluster property of the unchanged T2 engine, disclosed as a MINOR limitation.
+4. **SUPERSEDED by D4-C3-M1 (Astra M1 @5bb57eb2; §4.8): this reading holds only without cross-block date persistence; under the spec-§9 persistence mechanism the R3 bound's joint miss reached 0.08–0.12. Kept as history:** The source bound's sampling coverage is nominal in thick designs (0.9502) and ≈ 0.5 pp liberal in sparse, heterogeneous-fill designs (0.9448). This is the carried D8 finite-cluster property of the unchanged T2 engine, disclosed as a MINOR limitation.
 5. Hidden loss regimes with identical covariates trip no observable flag. Only the ε budget covers them.
+
+
+### 4.8 Run G — D4-C3-M1 source-bound calibration (L_W under cross-block date persistence; after Astra D4-C3 recheck @5bb57eb2)
+
+Script: `WEATHER_FORWARD_V2_D4_C3_LW_CAL_SIM_2026-10-01.py` (fresh code, independent of Astra's `astra_lw.py` and of run F; seeds `SeedSequence([20261017, cell_id])`, re-runs `[20261017, cell_id, 1..4]`). Raw output: `WEATHER_FORWARD_V2_D4_C3_M1_RUN_G_OUTPUT_2026-10-01.jsonl`. It is the concatenation, in this order, of the stdout of:
+- `class 20000`
+- `boundary 20000`
+- `stress 20000`
+- `c3 20000`
+- `repro 20000`
+- `power 20000`
+- `cell 1037 100000`, `cell 1076 100000`, `cell 1073 100000`
+
+Each mode re-runs byte-identically.
+
+Design per replication:
+- 14 OP + D window dates. Gamma(2) station activity. Poisson(m) trades per date, capped at 2S.
+- CORE prices c ~ U(0.35, 0.80) with p = c(1 + θ). Fills thin (C ~ U(5, 25)) or full (C = 50).
+- Outcomes from V2's latent copula (date, station, cell) = (0.05, 0.05, 0.10), plus an optional stationary daily AR(1) date regime with autocorrelation φ and latent variance rv.
+- reach = GO (OP, spec 10.3) ∧ INFO_SUFFICIENT (IF2–IF5). θ_W is computed exactly from the true p.
+- Joint miss = P(reach ∧ L_W > θ_W). Size = P(reach ∧ T2 ∧ θ̂ ≥ θ_ERT) at θ_W = 0. SUPPORTED additionally requires gates G1–G2; G3 is implied, since every synthetic settlement is NOAA-mode.
+
+Rules, all computed on the same replications:
+- **R3 engine**: 5-date blocks; retired for L_W.
+- **RM**: blocks {5, 10, 20}; the first candidate, declared before any run.
+- **RE**: two-way equally-weighted-cosine HAR estimator with K = max(2, ⌊T ω_h/π⌋) (4 at 120 dates) and a t_K reference; a comparator.
+- **adopted**: blocks {5, 10, 20, 30}; spec 8.1b.
+
+Declaration record: the class, the pass criterion and RM were declared before any run. A preliminary RM pass on 45 class cells showed RM failing at φ = 0.9; nothing in RM was changed. Its counts equal, cell for cell, the R3-engine and RM columns of the committed class run (same seeds). RE and the adopted rule were then declared, with the criterion "validity over the whole class first", before their own first run.
+
+**Astra M1 reproduction (R3 engine; 20,000 replications per cell, fresh seeds).**
+
+| Astra cell (φ, latent regime variance, geometry, θ) | Astra @5bb57eb2 | Run G, R3 engine (95% MC) | Run G, adopted rule | reach |
+|---|---|---|---|---|
+| false REALIZED_WINDOW positive: 0.8, 0.05, m 17 thin, θ_W = 0 | 0.0805 [0.0767, 0.0843] | 0.0789 [0.0752, 0.0826] | 0.0271 [0.0248, 0.0293] | 0.712 |
+| L_W miss: 0.8, 0.05, m 17 full, θ = 0.10 | 0.0902 [0.0863, 0.0942] | 0.0889 [0.0850, 0.0928] | 0.0319 [0.0295, 0.0343] | 0.826 |
+| L_W miss: 0.8, 0.05, m 17 thin, θ = 0.05 | 0.0828 [0.0790, 0.0867] | 0.0866 [0.0827, 0.0905] | 0.0297 [0.0274, 0.0321] | 0.774 |
+| L_W miss: 0.9, 0.10, m 17 thin, θ = 0.05 | 0.0866 [0.0827, 0.0905] | 0.0844 [0.0806, 0.0883] | 0.0382 [0.0355, 0.0408] | 0.322 |
+| false positive: 0.9, 0.10, m 17 thin, θ_W = 0 | 0.0761 [0.0724, 0.0797] | 0.0737 [0.0701, 0.0774] | 0.0348 [0.0322, 0.0373] | 0.271 |
+
+**Declared class 𝒟_P (156 cells × 20,000 replications): worst cell per persistence level and rule.** Joint miss = P(reach ∧ L_W > θ_W); size = P(reach ∧ positive REALIZED_WINDOW claim) at θ_W = 0.
+
+| Persistence | cells | R3 engine worst joint miss | RM worst joint miss | RE worst joint miss | **adopted** worst joint miss | R3 engine worst size | **adopted** worst size |
+|---|---|---|---|---|---|---|---|
+| none (5-date-block model) | 12 | 0.0559 [0.0527, 0.0591] (m 17, full, θ 0.1) | 0.0324 | 0.0256 | 0.0174 [0.0155, 0.0192] (m 17, full, θ 0.1) | 0.0553 [0.0521, 0.0584] | 0.0163 [0.0146, 0.0181] |
+| AR φ = 0.5 | 36 | 0.0621 [0.0588, 0.0655] (φ 0.5, rv 0.05, m 17, full, θ 0.1) | 0.0387 | 0.0331 | 0.0237 [0.0216, 0.0258] (φ 0.5, rv 0.05, m 17, thin, θ 0.05) | 0.0587 [0.0555, 0.0620] | 0.0219 [0.0198, 0.0239] |
+| AR φ = 0.7 | 36 | 0.0735 [0.0699, 0.0771] (φ 0.7, rv 0.05, m 17, full, θ 0.1) | 0.0412 | 0.0372 | 0.0284 [0.0261, 0.0307] (φ 0.7, rv 0.1, m 17, full, θ 0.1) | 0.0680 [0.0646, 0.0715] | 0.0233 [0.0213, 0.0254] |
+| AR φ = 0.8 | 36 | 0.0889 [0.0850, 0.0928] (φ 0.8, rv 0.05, m 17, full, θ 0.1) | 0.0477 | 0.0396 | 0.0319 [0.0295, 0.0343] (φ 0.8, rv 0.05, m 17, full, θ 0.1) | 0.0807 [0.0769, 0.0845] | 0.0293 [0.0270, 0.0316] |
+| AR φ = 0.9 | 36 | 0.1287 [0.1241, 0.1333] (φ 0.9, rv 0.05, m 17, full, θ 0.1) | 0.0711 | 0.0574 | 0.0465 [0.0436, 0.0494] (φ 0.9, rv 0.05, m 17, thin, θ 0.1) | 0.1195 [0.1150, 0.1240] | 0.0423 [0.0395, 0.0451] |
+
+**Per-cell listing: no-persistence baseline and φ = 0.9 (all 156 cells are in the raw output).**
+
+| id | Cell | reach | R3 engine | RM | RE | adopted (95% MC) | adopted, given reach |
+|---|---|---|---|---|---|---|---|
+| 1000 | m 17, thin, θ 0.0 | 0.978 | 0.0524 | 0.0283 | 0.0213 | 0.0144 [0.0128, 0.0161] | 0.015 |
+| 1010 | φ 0.9, rv 0.02, m 17, thin, θ 0.0 | 0.919 | 0.0960 | 0.0542 | 0.0418 | 0.0331 [0.0306, 0.0356] | 0.036 |
+| 1011 | φ 0.9, rv 0.05, m 17, thin, θ 0.0 | 0.672 | 0.1099 | 0.0624 | 0.0507 | 0.0420 [0.0392, 0.0448] | 0.063 |
+| 1012 | φ 0.9, rv 0.1, m 17, thin, θ 0.0 | 0.271 | 0.0737 | 0.0466 | 0.0406 | 0.0348 [0.0322, 0.0373] | 0.128 |
+| 1013 | m 17, thin, θ 0.05 | 0.985 | 0.0528 | 0.0303 | 0.0238 | 0.0149 [0.0132, 0.0165] | 0.015 |
+| 1023 | φ 0.9, rv 0.02, m 17, thin, θ 0.05 | 0.940 | 0.0989 | 0.0539 | 0.0405 | 0.0330 [0.0305, 0.0355] | 0.035 |
+| 1024 | φ 0.9, rv 0.05, m 17, thin, θ 0.05 | 0.729 | 0.1209 | 0.0666 | 0.0508 | 0.0433 [0.0405, 0.0462] | 0.059 |
+| 1025 | φ 0.9, rv 0.1, m 17, thin, θ 0.05 | 0.322 | 0.0844 | 0.0512 | 0.0445 | 0.0382 [0.0355, 0.0408] | 0.118 |
+| 1026 | m 17, thin, θ 0.1 | 0.989 | 0.0541 | 0.0307 | 0.0249 | 0.0168 [0.0150, 0.0185] | 0.017 |
+| 1036 | φ 0.9, rv 0.02, m 17, thin, θ 0.1 | 0.960 | 0.1043 | 0.0592 | 0.0459 | 0.0357 [0.0332, 0.0383] | 0.037 |
+| 1037 | φ 0.9, rv 0.05, m 17, thin, θ 0.1 | 0.785 | 0.1241 | 0.0702 | 0.0547 | 0.0465 [0.0436, 0.0494] | 0.059 |
+| 1038 | φ 0.9, rv 0.1, m 17, thin, θ 0.1 | 0.377 | 0.0959 | 0.0599 | 0.0496 | 0.0413 [0.0385, 0.0440] | 0.109 |
+| 1039 | m 17, full, θ 0.0 | 0.981 | 0.0553 | 0.0324 | 0.0236 | 0.0163 [0.0146, 0.0181] | 0.017 |
+| 1049 | φ 0.9, rv 0.02, m 17, full, θ 0.0 | 0.917 | 0.0998 | 0.0563 | 0.0428 | 0.0350 [0.0325, 0.0376] | 0.038 |
+| 1050 | φ 0.9, rv 0.05, m 17, full, θ 0.0 | 0.676 | 0.1195 | 0.0648 | 0.0515 | 0.0423 [0.0395, 0.0451] | 0.063 |
+| 1051 | φ 0.9, rv 0.1, m 17, full, θ 0.0 | 0.269 | 0.0757 | 0.0510 | 0.0435 | 0.0367 [0.0341, 0.0393] | 0.136 |
+| 1052 | m 17, full, θ 0.05 | 0.986 | 0.0528 | 0.0316 | 0.0237 | 0.0159 [0.0142, 0.0176] | 0.016 |
+| 1062 | φ 0.9, rv 0.02, m 17, full, θ 0.05 | 0.942 | 0.1048 | 0.0569 | 0.0439 | 0.0338 [0.0313, 0.0364] | 0.036 |
+| 1063 | φ 0.9, rv 0.05, m 17, full, θ 0.05 | 0.730 | 0.1227 | 0.0684 | 0.0527 | 0.0449 [0.0421, 0.0478] | 0.062 |
+| 1064 | φ 0.9, rv 0.1, m 17, full, θ 0.05 | 0.317 | 0.0835 | 0.0524 | 0.0445 | 0.0384 [0.0358, 0.0411] | 0.121 |
+| 1065 | m 17, full, θ 0.1 | 0.991 | 0.0559 | 0.0319 | 0.0256 | 0.0174 [0.0155, 0.0192] | 0.018 |
+| 1075 | φ 0.9, rv 0.02, m 17, full, θ 0.1 | 0.959 | 0.1075 | 0.0590 | 0.0461 | 0.0379 [0.0352, 0.0405] | 0.039 |
+| 1076 | φ 0.9, rv 0.05, m 17, full, θ 0.1 | 0.786 | 0.1287 | 0.0711 | 0.0574 | 0.0461 [0.0432, 0.0490] | 0.059 |
+| 1077 | φ 0.9, rv 0.1, m 17, full, θ 0.1 | 0.375 | 0.0979 | 0.0612 | 0.0532 | 0.0447 [0.0418, 0.0476] | 0.119 |
+| 1078 | m 35, thin, θ 0.0 | 0.622 | 0.0439 | 0.0278 | 0.0206 | 0.0152 [0.0135, 0.0168] | 0.024 |
+| 1088 | φ 0.9, rv 0.02, m 35, thin, θ 0.0 | 0.267 | 0.0435 | 0.0291 | 0.0239 | 0.0204 [0.0184, 0.0223] | 0.076 |
+| 1089 | φ 0.9, rv 0.05, m 35, thin, θ 0.0 | 0.055 | 0.0135 | 0.0099 | 0.0091 | 0.0077 [0.0065, 0.0090] | 0.140 |
+| 1090 | φ 0.9, rv 0.1, m 35, thin, θ 0.0 | 0.005 | 0.0021 | 0.0018 | 0.0018 | 0.0016 [0.0011, 0.0022] | 0.355 |
+| 1091 | m 35, thin, θ 0.05 | 0.645 | 0.0449 | 0.0278 | 0.0204 | 0.0159 [0.0142, 0.0177] | 0.025 |
+| 1101 | φ 0.9, rv 0.02, m 35, thin, θ 0.05 | 0.294 | 0.0459 | 0.0291 | 0.0232 | 0.0200 [0.0181, 0.0220] | 0.068 |
+| 1102 | φ 0.9, rv 0.05, m 35, thin, θ 0.05 | 0.066 | 0.0179 | 0.0132 | 0.0114 | 0.0101 [0.0087, 0.0115] | 0.154 |
+| 1103 | φ 0.9, rv 0.1, m 35, thin, θ 0.05 | 0.005 | 0.0020 | 0.0017 | 0.0016 | 0.0015 [0.0010, 0.0021] | 0.287 |
+| 1104 | m 35, thin, θ 0.1 | 0.672 | 0.0418 | 0.0269 | 0.0209 | 0.0149 [0.0133, 0.0166] | 0.022 |
+| 1114 | φ 0.9, rv 0.02, m 35, thin, θ 0.1 | 0.329 | 0.0512 | 0.0324 | 0.0250 | 0.0217 [0.0197, 0.0238] | 0.066 |
+| 1115 | φ 0.9, rv 0.05, m 35, thin, θ 0.1 | 0.078 | 0.0221 | 0.0158 | 0.0138 | 0.0119 [0.0104, 0.0134] | 0.153 |
+| 1116 | φ 0.9, rv 0.1, m 35, thin, θ 0.1 | 0.008 | 0.0027 | 0.0024 | 0.0024 | 0.0022 [0.0016, 0.0029] | 0.290 |
+| 1117 | m 35, full, θ 0.0 | 0.623 | 0.0464 | 0.0290 | 0.0210 | 0.0157 [0.0140, 0.0174] | 0.025 |
+| 1127 | φ 0.9, rv 0.02, m 35, full, θ 0.0 | 0.269 | 0.0445 | 0.0288 | 0.0231 | 0.0190 [0.0171, 0.0209] | 0.071 |
+| 1128 | φ 0.9, rv 0.05, m 35, full, θ 0.0 | 0.056 | 0.0134 | 0.0095 | 0.0083 | 0.0073 [0.0062, 0.0085] | 0.131 |
+| 1129 | φ 0.9, rv 0.1, m 35, full, θ 0.0 | 0.004 | 0.0010 | 0.0008 | 0.0008 | 0.0007 [0.0003, 0.0011] | 0.192 |
+| 1130 | m 35, full, θ 0.05 | 0.641 | 0.0455 | 0.0290 | 0.0227 | 0.0165 [0.0147, 0.0183] | 0.026 |
+| 1140 | φ 0.9, rv 0.02, m 35, full, θ 0.05 | 0.293 | 0.0480 | 0.0318 | 0.0250 | 0.0217 [0.0197, 0.0237] | 0.074 |
+| 1141 | φ 0.9, rv 0.05, m 35, full, θ 0.05 | 0.065 | 0.0173 | 0.0125 | 0.0110 | 0.0100 [0.0086, 0.0114] | 0.153 |
+| 1142 | φ 0.9, rv 0.1, m 35, full, θ 0.05 | 0.005 | 0.0022 | 0.0019 | 0.0019 | 0.0016 [0.0010, 0.0022] | 0.302 |
+| 1143 | m 35, full, θ 0.1 | 0.673 | 0.0476 | 0.0292 | 0.0223 | 0.0163 [0.0146, 0.0181] | 0.024 |
+| 1153 | φ 0.9, rv 0.02, m 35, full, θ 0.1 | 0.323 | 0.0517 | 0.0323 | 0.0251 | 0.0220 [0.0200, 0.0240] | 0.068 |
+| 1154 | φ 0.9, rv 0.05, m 35, full, θ 0.1 | 0.074 | 0.0204 | 0.0138 | 0.0116 | 0.0101 [0.0087, 0.0115] | 0.137 |
+| 1155 | φ 0.9, rv 0.1, m 35, full, θ 0.1 | 0.007 | 0.0026 | 0.0020 | 0.0019 | 0.0019 [0.0013, 0.0025] | 0.259 |
+
+**Independent re-runs at 100,000 replications (four streams of 25,000; seeds [20261017, id, 1..4]).**
+
+| id | Cell | R3 engine joint miss | RM joint miss | RE joint miss | **adopted** joint miss |
+|---|---|---|---|---|---|
+| 1037 | φ 0.9, rv 0.05, m 17, thin, θ 0.1 | 0.1273 [0.1253, 0.1294] | 0.0703 [0.0687, 0.0718] | 0.0556 [0.0542, 0.0570] | 0.0458 [0.0445, 0.0471] |
+| 1076 | φ 0.9, rv 0.05, m 17, full, θ 0.1 | 0.1282 [0.1262, 0.1303] | 0.0708 [0.0692, 0.0724] | 0.0557 [0.0542, 0.0571] | 0.0464 [0.0451, 0.0477] |
+| 1073 | φ 0.8, rv 0.05, m 17, full, θ 0.1 | 0.0877 [0.0860, 0.0895] | 0.0474 [0.0461, 0.0487] | 0.0399 [0.0386, 0.0411] | 0.0302 [0.0292, 0.0313] |
+
+**Boundary designs (20,000 replications each).**
+
+| id | Cell | reach | R3 engine | RM | RE | adopted (95% MC) | SUPPORTED: R3 engine / adopted |
+|---|---|---|---|---|---|---|---|
+| 2000 | min geometry 60/25 m=17 thin th=0.0 no persistence | 0.165 | 0.0132 | 0.0019 | 0.0019 | 0.0000 [0.0000, 0.0000] | 0.0132 / 0.0000 |
+| 2001 | min geometry 60/25 m=17 thin th=0.0 AR phi=0.8 rv=0.05 | 0.046 | 0.0104 | 0.0040 | 0.0035 | 0.0000 [0.0000, 0.0000] | 0.0104 / 0.0000 |
+| 2002 | min geometry 60/25 m=17 thin th=0.0 AR phi=0.9 rv=0.1 | 0.019 | 0.0082 | 0.0047 | 0.0047 | 0.0008 [0.0004, 0.0012] | 0.0082 / 0.0008 |
+| 2003 | min geometry 60/25 m=17 thin th=0.1 no persistence | 0.202 | 0.0143 | 0.0021 | 0.0021 | 0.0000 [0.0000, 0.0000] | 0.1429 / 0.0013 |
+| 2004 | min geometry 60/25 m=17 thin th=0.1 AR phi=0.8 rv=0.05 | 0.075 | 0.0164 | 0.0053 | 0.0052 | 0.0002 [0.0000, 0.0004] | 0.0529 / 0.0032 |
+| 2005 | min geometry 60/25 m=17 thin th=0.1 AR phi=0.9 rv=0.1 | 0.034 | 0.0163 | 0.0103 | 0.0098 | 0.0016 [0.0010, 0.0022] | 0.0253 / 0.0063 |
+| 2006 | min geometry 60/25 m=35 full th=0.0 no persistence | 0.440 | 0.0318 | 0.0065 | 0.0057 | 0.0000 [0.0000, 0.0000] | 0.0318 / 0.0000 |
+| 2007 | min geometry 60/25 m=35 full th=0.0 AR phi=0.8 rv=0.05 | 0.117 | 0.0243 | 0.0077 | 0.0069 | 0.0004 [0.0001, 0.0007] | 0.0243 / 0.0004 |
+| 2008 | min geometry 60/25 m=35 full th=0.0 AR phi=0.9 rv=0.1 | 0.037 | 0.0135 | 0.0086 | 0.0081 | 0.0017 [0.0011, 0.0023] | 0.0135 / 0.0017 |
+| 2009 | min geometry 60/25 m=35 full th=0.1 no persistence | 0.486 | 0.0315 | 0.0057 | 0.0055 | 0.0001 [0.0000, 0.0001] | 0.3656 / 0.0053 |
+| 2010 | min geometry 60/25 m=35 full th=0.1 AR phi=0.8 rv=0.05 | 0.155 | 0.0286 | 0.0118 | 0.0111 | 0.0008 [0.0004, 0.0011] | 0.1057 / 0.0103 |
+| 2011 | min geometry 60/25 m=35 full th=0.1 AR phi=0.9 rv=0.1 | 0.051 | 0.0178 | 0.0107 | 0.0102 | 0.0024 [0.0017, 0.0031] | 0.0347 / 0.0086 |
+| 2012 | dominant station 20% m=17 thin th=0.0 no persistence | 0.484 | 0.0384 | 0.0239 | 0.0186 | 0.0132 [0.0117, 0.0148] | 0.0105 / 0.0040 |
+| 2013 | dominant station 20% m=17 thin th=0.0 AR phi=0.8 rv=0.05 | 0.349 | 0.0450 | 0.0260 | 0.0223 | 0.0171 [0.0153, 0.0189] | 0.0163 / 0.0056 |
+| 2014 | dominant station 20% m=17 thin th=0.0 AR phi=0.9 rv=0.1 | 0.150 | 0.0377 | 0.0234 | 0.0204 | 0.0178 [0.0160, 0.0196] | 0.0175 / 0.0083 |
+| 2015 | dominant station 20% m=17 thin th=0.1 no persistence | 0.506 | 0.0377 | 0.0236 | 0.0195 | 0.0136 [0.0120, 0.0152] | 0.1868 / 0.1338 |
+| 2016 | dominant station 20% m=17 thin th=0.1 AR phi=0.8 rv=0.05 | 0.398 | 0.0488 | 0.0287 | 0.0238 | 0.0179 [0.0161, 0.0197] | 0.1341 / 0.0795 |
+| 2017 | dominant station 20% m=17 thin th=0.1 AR phi=0.9 rv=0.1 | 0.190 | 0.0498 | 0.0311 | 0.0263 | 0.0232 [0.0211, 0.0253] | 0.0640 / 0.0390 |
+| 2018 | one dominant date (96 trades) m=17 thin th=0.0 no persistence | 0.977 | 0.0542 | 0.0301 | 0.0234 | 0.0158 [0.0140, 0.0175] | 0.0542 / 0.0158 |
+| 2019 | one dominant date (96 trades) m=17 thin th=0.0 AR phi=0.8 rv=0.05 | 0.684 | 0.0753 | 0.0420 | 0.0361 | 0.0273 [0.0250, 0.0296] | 0.0753 / 0.0273 |
+| 2020 | one dominant date (96 trades) m=17 thin th=0.0 AR phi=0.9 rv=0.1 | 0.257 | 0.0691 | 0.0440 | 0.0365 | 0.0321 [0.0296, 0.0345] | 0.0691 / 0.0321 |
+| 2021 | one dominant date (96 trades) m=17 thin th=0.1 no persistence | 0.983 | 0.0566 | 0.0311 | 0.0242 | 0.0164 [0.0146, 0.0182] | 0.8339 / 0.6472 |
+| 2022 | one dominant date (96 trades) m=17 thin th=0.1 AR phi=0.8 rv=0.05 | 0.770 | 0.0859 | 0.0469 | 0.0379 | 0.0293 [0.0269, 0.0316] | 0.5536 / 0.3548 |
+| 2023 | one dominant date (96 trades) m=17 thin th=0.1 AR phi=0.9 rv=0.1 | 0.326 | 0.0824 | 0.0531 | 0.0440 | 0.0381 [0.0355, 0.0408] | 0.2188 / 0.1477 |
+| 2024 | thick m=35 full th=0.0 no persistence | 0.624 | 0.0411 | 0.0246 | 0.0185 | 0.0144 [0.0127, 0.0160] | 0.0411 / 0.0144 |
+| 2025 | thick m=35 full th=0.0 AR phi=0.8 rv=0.05 | 0.056 | 0.0096 | 0.0067 | 0.0061 | 0.0050 [0.0040, 0.0060] | 0.0096 / 0.0050 |
+| 2026 | thick m=35 full th=0.0 AR phi=0.9 rv=0.1 | 0.005 | 0.0015 | 0.0014 | 0.0013 | 0.0013 [0.0008, 0.0018] | 0.0015 / 0.0013 |
+| 2027 | thick m=35 full th=0.1 no persistence | 0.675 | 0.0479 | 0.0300 | 0.0220 | 0.0165 [0.0147, 0.0183] | 0.6345 / 0.5626 |
+| 2028 | thick m=35 full th=0.1 AR phi=0.8 rv=0.05 | 0.076 | 0.0155 | 0.0106 | 0.0092 | 0.0082 [0.0069, 0.0095] | 0.0664 / 0.0537 |
+| 2029 | thick m=35 full th=0.1 AR phi=0.9 rv=0.1 | 0.007 | 0.0029 | 0.0026 | 0.0024 | 0.0025 [0.0018, 0.0032] | 0.0054 / 0.0049 |
+| 2030 | thick m=35 thin th=0.0 no persistence | 0.622 | 0.0435 | 0.0280 | 0.0215 | 0.0152 [0.0135, 0.0168] | 0.0435 / 0.0152 |
+| 2031 | thick m=35 thin th=0.0 AR phi=0.8 rv=0.05 | 0.057 | 0.0094 | 0.0065 | 0.0063 | 0.0049 [0.0039, 0.0059] | 0.0094 / 0.0049 |
+| 2032 | thick m=35 thin th=0.0 AR phi=0.9 rv=0.1 | 0.005 | 0.0018 | 0.0014 | 0.0014 | 0.0010 [0.0006, 0.0015] | 0.0018 / 0.0010 |
+| 2033 | thick m=35 thin th=0.1 no persistence | 0.677 | 0.0464 | 0.0302 | 0.0230 | 0.0167 [0.0149, 0.0184] | 0.6325 / 0.5565 |
+| 2034 | thick m=35 thin th=0.1 AR phi=0.8 rv=0.05 | 0.078 | 0.0155 | 0.0104 | 0.0091 | 0.0076 [0.0064, 0.0088] | 0.0673 / 0.0554 |
+| 2035 | thick m=35 thin th=0.1 AR phi=0.9 rv=0.1 | 0.007 | 0.0026 | 0.0021 | 0.0020 | 0.0018 [0.0012, 0.0024] | 0.0053 / 0.0047 |
+
+**Outside the declared class (disclosure only; no level claimed; 20,000 replications each; θ_W = 0).**
+
+| id | Cell | reach | R3 engine | RM | RE | adopted (95% MC) |
+|---|---|---|---|---|---|---|
+| 3000 | AR phi=0.95 rv=0.05 m=17 thin th=0.0 | 0.708 | 0.1636 | 0.1035 | 0.0830 | 0.0717 [0.0682, 0.0753] |
+| 3001 | AR phi=0.95 rv=0.05 m=17 full th=0.0 | 0.703 | 0.1728 | 0.1076 | 0.0839 | 0.0721 [0.0685, 0.0757] |
+| 3002 | AR phi=0.95 rv=0.05 m=35 full th=0.0 | 0.085 | 0.0278 | 0.0223 | 0.0190 | 0.0171 [0.0154, 0.0190] |
+| 3003 | AR phi=0.95 rv=0.1 m=17 thin th=0.0 | 0.354 | 0.1225 | 0.0877 | 0.0741 | 0.0665 [0.0630, 0.0699] |
+| 3004 | AR phi=0.95 rv=0.1 m=17 full th=0.0 | 0.347 | 0.1208 | 0.0878 | 0.0764 | 0.0675 [0.0641, 0.0710] |
+| 3005 | AR phi=0.95 rv=0.1 m=35 full th=0.0 | 0.011 | 0.0044 | 0.0037 | 0.0036 | 0.0033 [0.0025, 0.0041] |
+| 3006 | AR phi=0.97 rv=0.05 m=17 thin th=0.0 | 0.762 | 0.2109 | 0.1474 | 0.1242 | 0.1089 [0.1045, 0.1132] |
+| 3007 | AR phi=0.97 rv=0.05 m=17 full th=0.0 | 0.765 | 0.2130 | 0.1506 | 0.1260 | 0.1098 [0.1054, 0.1141] |
+| 3008 | AR phi=0.97 rv=0.05 m=35 full th=0.0 | 0.122 | 0.0426 | 0.0348 | 0.0314 | 0.0289 [0.0266, 0.0312] |
+| 3009 | AR phi=0.97 rv=0.1 m=17 thin th=0.0 | 0.464 | 0.1745 | 0.1343 | 0.1168 | 0.1072 [0.1030, 0.1115] |
+| 3010 | AR phi=0.97 rv=0.1 m=17 full th=0.0 | 0.462 | 0.1718 | 0.1302 | 0.1147 | 0.1048 [0.1006, 0.1091] |
+| 3011 | AR phi=0.97 rv=0.1 m=35 full th=0.0 | 0.027 | 0.0120 | 0.0108 | 0.0103 | 0.0100 [0.0086, 0.0114] |
+| 3012 | AR phi=0.9 rv=0.2 m=17 thin th=0.0 | 0.030 | 0.0144 | 0.0117 | 0.0106 | 0.0097 [0.0084, 0.0111] |
+| 3013 | AR phi=0.9 rv=0.2 m=17 full th=0.0 | 0.029 | 0.0129 | 0.0110 | 0.0099 | 0.0092 [0.0079, 0.0105] |
+| 3014 | AR phi=0.9 rv=0.2 m=35 full th=0.0 | 0.000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 [0.0000, 0.0000] |
+
+**Power cost — REALIZED_WINDOW_VALUE_SUPPORTED (joint with reach; gates G1–G2 applied), no persistence.**
+
+| Geometry | θ | R3 engine | RM | RE | **adopted** |
+|---|---|---|---|---|---|
+| m 17, thin | 0.05 | 0.3789 | 0.2753 | 0.2351 | 0.1868 |
+| m 17, thin | 0.1 | 0.8432 | 0.7609 | 0.7156 | 0.6539 |
+| m 17, full | 0.05 | 0.3864 | 0.2867 | 0.2414 | 0.1950 |
+| m 17, full | 0.1 | 0.8508 | 0.7708 | 0.7229 | 0.6681 |
+| m 35, thin | 0.05 | 0.3226 | 0.2562 | 0.2221 | 0.1923 |
+| m 35, thin | 0.1 | 0.6291 | 0.5999 | 0.5771 | 0.5538 |
+| m 35, full | 0.05 | 0.3226 | 0.2601 | 0.2268 | 0.1950 |
+| m 35, full | 0.1 | 0.6331 | 0.6086 | 0.5873 | 0.5649 |
+
+**T2 power at the design's own θ_PCE and at 0.12 / 0.15 (P(L_W > 0), unconditional, the D1 / θ_PCE notion; 20,000 replications each).**
+
+| Cell | θ_PCE (OP median) | P(T2) R3 engine | P(T2) RM | P(T2) RE | P(T2) **adopted** | SUPPORTED joint: R3 engine / adopted |
+|---|---|---|---|---|---|---|
+| theta_PCE=0.09 m=17 thin no persistence | 0.09 | 0.7790 | 0.6812 | 0.6256 | 0.5540 | 0.7741 / 0.5522 |
+| theta=0.12 m=17 thin no persistence | 0.09 | 0.9456 | 0.8982 | 0.8628 | 0.8188 | 0.9399 / 0.8161 |
+| theta=0.15 m=17 thin no persistence | 0.09 | 0.9922 | 0.9802 | 0.9684 | 0.9529 | 0.9850 / 0.9474 |
+| theta_PCE=0.09 m=17 thin AR phi=0.8 rv=0.05 | 0.09 | 0.6119 | 0.4506 | 0.3969 | 0.3471 | 0.5312 / 0.3181 |
+| theta_PCE=0.08 m=17 full no persistence | 0.08 | 0.7015 | 0.5977 | 0.5377 | 0.4759 | 0.6979 / 0.4747 |
+| theta=0.12 m=17 full no persistence | 0.08 | 0.9509 | 0.9056 | 0.8758 | 0.8379 | 0.9446 / 0.8345 |
+| theta=0.15 m=17 full no persistence | 0.08 | 0.9940 | 0.9847 | 0.9755 | 0.9631 | 0.9874 / 0.9580 |
+| theta_PCE=0.08 m=17 full AR phi=0.8 rv=0.05 | 0.08 | 0.5554 | 0.3921 | 0.3412 | 0.2931 | 0.4820 / 0.2697 |
+| theta_PCE=0.07 m=35 thin no persistence | 0.07 | 0.6730 | 0.5722 | 0.5110 | 0.4555 | 0.4807 / 0.3421 |
+| theta=0.12 m=35 thin no persistence | 0.07 | 0.9696 | 0.9445 | 0.9215 | 0.8958 | 0.6769 / 0.6431 |
+| theta=0.15 m=35 thin no persistence | 0.07 | 0.9978 | 0.9940 | 0.9888 | 0.9835 | 0.7129 / 0.7078 |
+| theta_PCE=0.07 m=35 thin AR phi=0.8 rv=0.05 | 0.07 | 0.5103 | 0.3468 | 0.2960 | 0.2550 | 0.0466 / 0.0334 |
+| theta_PCE=0.07 m=35 full no persistence | 0.07 | 0.6754 | 0.5758 | 0.5142 | 0.4588 | 0.4794 / 0.3469 |
+| theta=0.12 m=35 full no persistence | 0.07 | 0.9752 | 0.9529 | 0.9338 | 0.9120 | 0.6874 / 0.6574 |
+| theta=0.15 m=35 full no persistence | 0.07 | 0.9980 | 0.9951 | 0.9915 | 0.9877 | 0.7125 / 0.7092 |
+| theta_PCE=0.07 m=35 full AR phi=0.8 rv=0.05 | 0.07 | 0.5061 | 0.3452 | 0.2954 | 0.2553 | 0.0452 / 0.0322 |
+
+**Frozen 5-date-block surfaces on the same replications (not repaired; disclosure).**
+
+| Persistence | T1a false rejection, θ = 0 (nominal 0.025) | NEG false rejection (nominal 0.025) | U_W miss (declared 0.05) |
+|---|---|---|---|
+| none | 0.0293 [0.0270, 0.0316] | 0.0249 [0.0228, 0.0271] | 0.0269 [0.0247, 0.0291] |
+| AR φ = 0.5 | 0.0331 [0.0306, 0.0355] | 0.0267 [0.0245, 0.0290] | 0.0286 [0.0263, 0.0309] |
+| AR φ = 0.7 | 0.0407 [0.0380, 0.0434] | 0.0340 [0.0314, 0.0365] | 0.0362 [0.0336, 0.0388] |
+| AR φ = 0.8 | 0.0532 [0.0501, 0.0563] | 0.0400 [0.0373, 0.0427] | 0.0454 [0.0425, 0.0482] |
+| AR φ = 0.9 | 0.0893 [0.0853, 0.0932] | 0.0694 [0.0659, 0.0730] | 0.0765 [0.0728, 0.0801] |
+
+**Astra C3 cells on run F's own loss-date process (20,000 replications each).** Window-positive = SUPPORTED ∪ NOT_ROBUST, a true statement about θ_W in these runs; conditional claim false = `(1 − ε_true) L_W − ε_true > θ_P` with δ = 0.
+
+| Cell | θ_P | ε_true | reach | window-positive R3 engine / adopted | false window claim R3 / adopted | L_W miss R3 / adopted | conditional claim false R3 / adopted |
+|---|---|---|---|---|---|---|---|
+| C3-thin: cap96, m=17, thin, core 0.10, thP=-0.005 | -0.005 | 0.0955 | 0.503 | 0.4279 / 0.3286 | 0.0000 / 0.0000 | 0.0263 / 0.0080 | 0.0263 / 0.0080 |
+| C3-full: cap96, m=17, full, core 0.05, thP=-0.005 | -0.005 | 0.0524 | 0.307 | 0.1206 / 0.0605 | 0.0000 / 0.0000 | 0.0163 / 0.0053 | 0.0163 / 0.0053 |
+
+Readings:
+1. **M1 reproduces with independent code.**
+   - R3 engine at Astra's cells: false positive 0.0789 and full-fill miss 0.0889 (Astra 0.0805 / 0.0902; every Astra value lies inside the run-G interval).
+   - Over the declared class the R3 engine exceeds 0.05 from φ = 0.5, and reaches 0.1287 (joint miss) and 0.1195 (size) at φ = 0.9.
+   - Without persistence it is ≈ 0.5 pp liberal (0.0559), as R3 disclosed.
+2. **The adopted rule holds 0.05 over the whole declared class 𝒟_P.**
+   - Worst cell 0.0465 [0.0436, 0.0494] at 20,000 replications; independent 100,000-replication re-runs give 0.0458 [0.0445, 0.0471] and 0.0464 [0.0451, 0.0477].
+   - Worst size 0.0423. It is conservative without persistence (≤ 0.0174).
+   - RM and RE pass for φ ≤ 0.8 (RM worst 0.0474 at 100,000) but fail at φ = 0.9: RM 0.0708 [0.0692, 0.0724], RE 0.0557 [0.0542, 0.0571] at 100,000.
+3. **Boundary designs: valid everywhere.**
+   - Worst 0.0381: one 96-trade date at φ = 0.9.
+   - At the information floor (60 dates, 25 stations) the rule is valid but nearly powerless: SUPPORTED 0.001–0.005 at θ = 0.10, because df_30 = 1.
+4. **Outside 𝒟_P the level is lower and is not claimed:** up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97 (R3 engine 0.173 / 0.213). At latent variance 0.20, IF5 screens almost every run.
+5. **Power cost (disclosed, not retuned).**
+   - SUPPORTED at θ = 0.10 falls by 0.07–0.19, most in thin 17-trades/date designs. At θ = 0.05 it falls by 0.13–0.19.
+   - P(T2) at the design's own θ_PCE is 0.46–0.55, against 0.67–0.78 for the R3 engine.
+   - The 80%-power effect rises from ≈ 0.09–0.10 to ≈ 0.11–0.12.
+   - INDETERMINATE becomes more likely.
+6. **Conditional on reach, the miss is larger.** IF5 screens high-dispersion windows, not slow drifts. In cells with reach ≥ 0.10 it reaches 0.085 (φ ≤ 0.8) and 0.136 (φ = 0.9), against 0.189 / 0.281 for the R3 engine. The stated level is the repeated-experiment joint rate, as in R3.
+7. **Frozen 5-date-block surfaces exceed their nominal levels under persistence:** T1a up to 0.089 at nominal 0.025, NEG 0.069, U_W miss 0.077. They are not repaired (frozen; outside the bounded mission). Spec 17.8 qualifies their stated levels, and the observation is flagged.
+8. **C3 regression.** On run F's own process the adopted rule issues the window-positive label (a true statement about θ_W there) in 0.329 / 0.061 of runs (R3 engine 0.428 / 0.121). It never issues a false window claim. The conditional claim is false only through the L_W miss (0.008 / 0.005). Structurally, no unconditional prospective label can be issued, because the vocabulary has none.
 
 
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
@@ -323,6 +567,6 @@ Readings:
 | 0.10 | CONFIRMED ≈ 0.86; information DETECTED ≈ 0.87 | (if run: CONFIRMED 0.52) | (if run: CONFIRMED 0.17, DET 0.875) |
 | −0.05 / −0.10 | NEGATIVE_INFORMATION ≈ 0.44 (−0.05, at 0.05); prospective exclusion not usefully testable (R2); REALIZED_WINDOW exclusion (θ_W) ≈ 0.36–0.51 (−0.05), 0.57–0.93 (−0.10) (run E joint with GO ∧ INFO / run D unconditional) | — | NEGATIVE_INFORMATION ≈ 0.94 (−0.10); realised-window exclusion 0 (tail supremum) |
 
-Label names after D4 repair R3: CONFIRMED = REALIZED_WINDOW_VALUE_SUPPORTED (estimand θ_W; the conditions are those of T2 and are unchanged, so the powers above stand), INDETERMINATE = REALIZED_WINDOW_VALUE_INDETERMINATE. No unconditional prospective label exists in either direction (spec 8.5b, 8.5c); prospective content is the transport frontier (§4.7). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
+Label names after D4 repair R3: CONFIRMED = REALIZED_WINDOW_VALUE_SUPPORTED (estimand θ_W; the conditions are those of T2 and are unchanged, so the powers above stand for the R3 engine — **D4-C3-M1: T2 now uses the multi-block bound of spec 8.1b, which lowers these confirmation powers; see §4.8, e.g. SUPPORTED at θ = 0.10, m = 17 thin, 0.843 → 0.654; θ = 0.05 0.379 → 0.187**), INDETERMINATE = REALIZED_WINDOW_VALUE_INDETERMINATE. No unconditional prospective label exists in either direction (spec 8.5b, 8.5c); prospective content is the transport frontier (§4.7). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
 
-Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
+Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 with the R3 engine, and θ ≳ 0.11–0.12 with the persistence-calibrated T2 of D4-C3-M1 (§4.8), and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.

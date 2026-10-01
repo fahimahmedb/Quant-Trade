@@ -15,16 +15,19 @@ COMPANION_FILES          = WEATHER_FORWARD_FREEZE_MANIFEST_V2_2026-09-29.md
                            WEATHER_FORWARD_V2_SYNTHETIC_SIM_2026-09-29.py   (synthetic Monte Carlo, no market data)
                            WEATHER_FORWARD_V2_D4_C2_SIM_2026-09-30.py      (D4 repair R2 validation, synthetic only)
                            WEATHER_FORWARD_V2_D4_C3_SIM_2026-09-30.py      (D4 repair R3 validation, synthetic only)
+                           WEATHER_FORWARD_V2_D4_C3_LW_CAL_SIM_2026-10-01.py (D4-C3-M1 source-bound calibration, run G, synthetic only)
 WEATHER_FORWARD_SPEC_V2  = AUDITED @94b59348 → ASTRA_WEATHER_V2_REAUDIT = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION (@7d95c00)
 WEATHER_FORWARD_SPEC_V2_D4_REPAIR = AUDITED @24d2342 → ASTRA_WEATHER_V2_D4_RECHECK = BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (@3d18085)
 WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = AUDITED @e45d2ce7 → ASTRA_WEATHER_V2_D4_C2_RECHECK = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (@92c2f706)
-WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK   (D4 repair R3: sections 1, 5.1, 6, 8.5b, 8.5c, 17; section 27)
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = AUDITED @341e0b7a → ASTRA_WEATHER_V2_D4_C3_TRANSPORT_RECHECK = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE (@5bb57eb2)
+WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR = READY_FOR_ASTRA_RECHECK   (D4-C3-M1: sections 1, 6.1, 6.2, 7, new 8.1b, 8.5c, 10.3, 17.3, 17.8, 21, 24, 26; section 27)
 ASTRA_REAUDIT            = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 7d95c00abccfbc805c0d8abca65a6b93268741a2
 ASTRA_D4_RECHECK         = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 3d18085862f239a81936345989b4e26414cedcf3
 ASTRA_D4_C2_RECHECK      = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 92c2f706d2ac75af9ae9710061c60df520234410
+ASTRA_D4_C3_RECHECK      = astra/weather-forward-v2-independent-reaudit-2026-09-29 @ 5bb57eb2adf4cff35378f2c0e53e0316d45a4229
 WEATHER_FORWARD_SPEC_V1  = HISTORICAL_FROZEN_OBJECT
 EXPERIMENT_FEASIBILITY   = BLOCKED_POWER_BELOW_DECLARED_MEUE   (Astra's verdict on V1; only Astra may change it)
-EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION   (Astra's verdict on e45d2ce7; only Astra may change it)
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE   (Astra's verdict on 341e0b7a; only Astra may change it)
 HURDLE_SAMPLE_INCOMPATIBILITY = FALSE
 FABLE_DESIGN_CHALLENGE   = DONE_ADVISORY
 BUILDER_AUTHORIZED       = FALSE
@@ -54,7 +57,7 @@ Incorporation by reference. Every V1 section not amended here stays in force **v
 | Quantity | Value | Status |
 |---|---|---|
 | Economic relevance threshold `θ_ERT` | **0.02** net per dollar committed per trade (V1's MEUE, renamed, meaning unchanged) | FROZEN |
-| Effect 120 dates can confirm with 80% power (`θ_PCE`) | ≈ 0.06–0.08 if the executable mix has no material sub-4¢ share; ≈ 0.12–0.36 if lottery legs persist (power table §2, §4.2) — above the 0.10 ceiling, V2 does not start (section 10.3) | FORMULA FROZEN; value populated pre-t0 from outcome-free prices (section 10) |
+| Effect 120 dates can confirm with 80% power (`θ_PCE`) | ≈ 0.06–0.08 if the executable mix has no material sub-4¢ share; ≈ 0.12–0.36 if lottery legs persist (power table §2, §4.2) — above the 0.10 ceiling, V2 does not start (section 10.3). **Nominal (normal approximation).** Under the persistence-calibrated T2 of 8.1b (D4-C3-M1) the simulated 80%-power effect is larger: ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence) (power table §4.8) | FORMULA FROZEN; value populated pre-t0 from outcome-free prices (section 10) |
 | Can a 120-date design confirm **or** exclude θ = 0.02? | **No.** Both need `SE(θ̂) ≤ 0.008` (≈ 15,500 independent trades at σ = 1; ≈ 1,300 dates at 35 trades/day) | DERIVED, reproduced from Astra and Fable |
 | Can it detect an **executable mispricing** in the rule's chosen legs, including a real negative result? | Yes for the core stratum: SE(κ_core) ≈ 0.013–0.017, MDE80 ≈ 0.032–0.043 per share, independent of the lottery share; tail stratum by an exact win-count test | DERIVED + SIMULATED |
 
@@ -183,7 +186,7 @@ Reported decomposition (not separate claims): `θ = w_core θ_core + w_tail θ_t
 | T1a core information | κ_core ≤ 0 | κ_core > 0 | α/2 = 0.025 | two-way CR t-test on κ̂_core |
 | T1b tail information | λ_tail ≤ 1 (sharp null `p_j = c_j` on TAIL) | λ_tail > 1 | α/2 = 0.025 | PINM exact win-count test |
 | **T1 information** | both T1a and T1b nulls | information exists in core **or** tail | α = 0.05 (Bonferroni) | rejects iff T1a or T1b rejects |
-| **T2 economic (primary)** | θ_W ≤ 0 | θ_W > 0 | α = 0.05, **evaluated unconditionally** (no gate) | two-way CR t-test on θ̂; equivalently `L_W = θ̂ − t_{df,0.95} SE > 0` (estimand θ_W after D4 repair R3, 8.5c) |
+| **T2 economic (primary)** | θ_W ≤ 0 | θ_W > 0 | α = 0.05, **evaluated unconditionally** (no gate); attained over the declared persistence class 𝒟_P (8.1b) | `L_W > 0` with the multi-block two-way CR bound `L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} SE_2w(b)` (D4-C3-M1, 8.1b; R3 used 5-date blocks only); estimand θ_W after D4 repair R3 (8.5c) |
 | NEG core adverse | κ_core ≥ 0 | κ_core < 0 | **0.025** (absorbs the documented lower-tail skew inflation, 8.4) | two-way CR t-test |
 | EXCL-P prospective exclusion | θ_P ≥ threshold | θ_P < threshold | — | **none: not usefully testable within V2's observable horizon (8.5b); no test is run and no label exists** |
 | CONF-P unconditional prospective confirmation | θ_P ≤ 0 | θ_P > 0 | — | **none: not usefully testable without a transport restriction (8.5c mirror theorem); no label exists** |
@@ -197,6 +200,8 @@ ECONOMIC_RELEVANCE_THRESHOLD   θ_ERT = 0.02            (economic reporting thre
 PRIMARY_CONFIRMABLE_EFFECT     θ_PCE = frozen formula    (section 10; nominal 80% power for T2 at α = 0.05)
 TARGET_POWER                   0.80 at θ_PCE (nominal, normal approximation, before the robustness gates G1–G3)
 ```
+
+D4-C3-M1 disclosure: θ_PCE's formula, its nominal meaning and GO / NO_GO are unchanged and not retuned. The persistence-calibrated T2 (8.1b) is more conservative than the normal-approximation reference, so its simulated power at the design's own θ_PCE is below 0.80: P(T2) at θ_PCE is 0.554 / 0.476 / 0.456 / 0.459 for m = 17 thin / 17 full / 35 thin / 35 full (θ_PCE = 0.09 / 0.08 / 0.07 / 0.07), against 0.779 / 0.701 / 0.673 / 0.675 for the R3 engine (no persistence). The simulated 80%-power effect is ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence) (power table §4.8).
 
 ### 6.3 Error control
 
@@ -214,7 +219,7 @@ DERIVED with `z_{0.95} + z_{0.80} = 2.4865`, `z_{0.95} + z_{0.90} = 2.9264`:
 
 - Independent trades for 80% power: θ = 0.02 → 15,456 / 61,826 / 129,988 at σ_eff = 1.0 / 2.0 / 2.9; θ = 0.05 → 2,473 / 9,892 / 20,798; θ = 0.10 → 618 / 2,473 / 5,200 (reproduces Astra §6.3 and Fable §1.1 to the unit).
 - **Binding constraint = target dates.** With `m` trades per date and latent within-date correlation, the date design effect is `1 + (m − 1) ρ_d`, so `n_eff ≤ D / ρ_d`: at ρ_d = 0.03, 120 dates cap `n_eff` at 4,000 regardless of throughput; at 0.05, 2,400. The planning dependence model is `DEFF(m) = 1.5 × (1 + 0.03 (m − 1))` (station factor 1.5 × date factor), giving DEFF 2.2 / 3.0 / 3.9 at 17 / 35 / 55 trades per date — inside Astra's 2–4 range and rising with throughput as the date ceiling requires.
-- At 120 counted dates and the conservative V2 throughput (35/day, °C + °F): `SE(θ̂)` = 0.027 / 0.054 / 0.078 at σ_eff 1.0 / 2.0 / 2.9 → **MDE80 = 0.067 / 0.134 / 0.194**; `SE(κ_core)` ≈ 0.014 → MDE80 ≈ 0.035 per share.
+- At 120 counted dates and the conservative V2 throughput (35/day, °C + °F): `SE(θ̂)` = 0.027 / 0.054 / 0.078 at σ_eff 1.0 / 2.0 / 2.9 → **MDE80 = 0.067 / 0.134 / 0.194**; `SE(κ_core)` ≈ 0.014 → MDE80 ≈ 0.035 per share. (These θ MDEs are for the normal-approximation reference. The persistence-calibrated T2 of 8.1b needs larger effects for 80% power; SIMULATED in power table §4.8, D4-C3-M1.)
 - θ = 0.02 requires ≈ 1,340 dates at σ_eff = 1 (≈ 3.7 years) and ≈ 11,250 dates at σ_eff = 2.9 at that throughput (DERIVED).
 - The information needed to **exclude** 0.02 when θ = 0 is identical to that needed to confirm it (Fable §1.6, reproduced): the 120-date outcome space is three-valued at the ERT scale by construction.
 
@@ -243,6 +248,102 @@ one-sided upper / lower bounds at level 1 − a:   stat ± t_{df, 1−a} · SE
 ```
 
 The max-of-three rule also resolves the non-PSD case: `V_2w` can be negative in finite samples; the maximum then selects the larger one-way variance, never zero and never IID.
+
+### 8.1b Source lower bound L_W for T2: multi-block calibration (D4-C3-M1, after Astra D4-C3 recheck M1 @5bb57eb2)
+
+**Defect repaired.** Section 8.1 counts covariance only inside a 5-date block. A date-common shock that persists across blocks is therefore under-counted. Section 9 itself names two such mechanisms: the lag of the 30-date trailing bias through a seasonal transition, and hemisphere/season common modes. Under them, R3's `L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)` undercovers θ_W.
+
+DERIVED (a stationary AR(1) date component over 120 dates, demeaned, CR1 factor; 20,000 draws): the share of that component's variance that a b-date block estimator captures is
+
+| Daily autocorrelation φ | b = 5 | b = 10 | b = 20 | b = 30 |
+|---|---|---|---|---|
+| 0.5 | 0.73 | 0.85 | 0.93 | 0.95 |
+| 0.8 | 0.39 | 0.58 | 0.76 | 0.83 |
+| 0.9 | 0.21 | 0.36 | 0.56 | 0.68 |
+
+Astra M1 measured, at φ = 0.8 with latent regime variance 0.05 and 17 trades per date:
+- a false REALIZED_WINDOW positive claim of 0.0805 at θ_W = 0;
+- an L_W miss of 0.0902.
+
+Run G reproduces both with fresh code and seeds: false positive 0.0789 [0.0752, 0.0826] and full-fill miss 0.0889 [0.0850, 0.0928] on the R3 engine; 0.0271 and 0.0319 under the rule below. Over the declared class below, the R3 engine reaches a joint miss of 0.1287 [0.1241, 0.1333] and a size of 0.1195 [0.1150, 0.1240] (φ = 0.9). It already exceeds 0.05 at φ = 0.5 (0.0621).
+
+**Rule (frozen; replaces the 5-date-block bound for T2 only).**
+
+```text
+L_W      = θ̂ − max_{b ∈ {5, 10, 20, 30}} t_{df_b, 0.95} · SE_2w(b)
+SE_2w(b) = the section-8.1 two-way max-of-three SE of θ̂ (e_j = N_j − θ̂ C_j, Q = Σ C_j), with
+           date block   block_b(D) = floor((D − D_0) / b) in calendar days   (b = 5 is the section-9 block),
+           station = ICAO, intersection = (block_b, ICAO)
+df_b     = min(G_B(b), G_S) − 1          (G = number of clusters with ≥ 1 trade)
+T2       ⟺ L_W > 0
+HEADLINE   two-sided 90% interval  θ̂ ± max_b t_{df_b, 0.95} · SE_2w(b)   (its lower end is L_W)
+```
+
+- **Scope.** Only the pooled-θ lower bound changes: T2, L_W, the headline interval, and everything in 8.5c and 17.3 that reads L_W. κ̂_core (T1a, NEG, IF4, IF5), θ̂_core (U_W, 8.5) and every other use of 8.1 keep 5-date blocks. Those surfaces are frozen; their behaviour under persistence is disclosed at the end of this section.
+- **Always defined when evaluated.** INFO_SUFFICIENT requires ≥ 12 non-empty 5-date blocks (IF2). The b-date blocks nest the 5-date blocks, so there are at least 6 / 3 / 2 non-empty 10- / 20- / 30-date blocks, and df_b ≥ 1. With 120 consecutive counted dates and ≥ 25 stations, df = 23 / 11 / 5 / 3 for b = 5 / 10 / 20 / 30.
+- **Monotone.** b = 5 is one of the four bounds, so L_W is never above the R3 bound. T2 can only become harder to pass. No label, threshold or constant changes.
+- **Outcome-blind.** b = 30 is W, the 30-date trailing-bias window whose seasonal lag is the mechanism §9 names; 10 and 20 are the intermediate doublings. Nothing is estimated from or selected on data.
+
+**Declared persistence class 𝒟_P (frozen; the class over which the level is stated).**
+- V2's simulation dependence: latent Gaussian copula (date, station, cell) = (0.05, 0.05, 0.10).
+- Plus a stationary daily AR(1) date regime `e_t = φ e_{t−1} + √(1 − φ²) z_t`, shared by every trade of date t and added on the latent scale with variance rv.
+- φ ∈ {0.5, 0.7, 0.8, 0.9} and rv ∈ {0.02, 0.05, 0.10}, plus the no-persistence baseline.
+- Geometry: 14 OP + 120 window dates; 48 stations with gamma(2) activity; Poisson(m) trades per date with m ∈ {17, 35}; fills thin (C ~ U(5, 25)) or full (C = 50); CORE prices; θ ∈ {0, 0.05, 0.10}.
+
+In plain words, φ = 0.9 is a date-level shock whose correlation decays by 10% per day (integrated memory ≈ 19 days). That is the order of the 30-date trailing-bias lag that §9 names.
+
+𝒟_P is this declared grid. Wherever this spec writes "φ ≤ 0.9, latent variance ≤ 0.10", it means the grid, and no level is claimed between grid points beyond what the grid shows. In every 17-trades/date slice, where the worst cells are, run G's miss rises monotonically with φ. Every 35-trades/date cell is ≤ 0.012.
+
+**Level (what holds).** The error is the repeated-experiment joint rate `P(reach ∧ L_W > θ_W)`, with reach = GO ∧ INFO_SUFFICIENT. At θ_W = 0 it is the size of the positive REALIZED_WINDOW claim. Run G used 20,000 replications per cell over the 156 class cells, with ≥ 100,000 independent replications for the cells nearest 0.05 (power table §4.8).
+
+| Dependence | This rule: worst joint miss (95% MC) | Worst size at θ_W = 0 | Stated level | R3 engine, same cells |
+|---|---|---|---|---|
+| 5-date-block model (no cross-block persistence) | 0.0174 [0.0155, 0.0192] | 0.0163 | ≤ 0.05 (conservative) | 0.0559 [0.0527, 0.0591] |
+| 𝒟_P, φ ≤ 0.8 | 0.0319 [0.0295, 0.0343] | 0.0293 | ≤ 0.05 | 0.0889 [0.0850, 0.0928] |
+| 𝒟_P, φ = 0.9 | 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills) | 0.0423 [0.0395, 0.0451] | **≤ 0.05** | 0.1287 [0.1241, 0.1333] |
+| outside 𝒟_P (φ 0.95–0.97, or rv 0.20) | up to 0.0721 [0.0685, 0.0757] (φ = 0.95) and 0.1098 [0.1055, 0.1141] (φ = 0.97), latent variance 0.05, m = 17; rv 0.20 is screened by IF5 (≤ 0.010) | — | **none claimed; the level is lower** | up to 0.1728 (φ = 0.95) and 0.2130 (φ = 0.97) |
+
+So, over the whole declared class 𝒟_P: `P(reach ∧ L_W > θ_W) ≤ 0.05`, and the positive REALIZED_WINDOW claim has size ≤ 0.05.
+
+The rate conditional on reach is larger, because IF5 screens high-dispersion windows rather than slow drifts. Over cells with reach ≥ 0.10 it reaches 0.085 (φ ≤ 0.8) and 0.136 (φ = 0.9) for this rule, against 0.189 / 0.281 for the R3 engine. This is the R3 caveat ("not the probability given that a label was issued"), now quantified.
+
+**Why this rule.** The rule and the class were declared before any run. A first candidate, RM (blocks {5, 10, 20}), was declared first. A preliminary run showed it failing at φ = 0.9. Two comparators were then declared, each before its own first run, together with the selection criterion: validity over the whole class first, then power and information-floor behaviour. All four rules are reported on the same replications (power table §4.8):
+
+| Rule | Worst joint miss, φ ≤ 0.8 | Worst joint miss, φ = 0.9 | Valid over 𝒟_P? | SUPPORTED at θ = 0.10, m = 17 thin, no persistence |
+|---|---|---|---|---|
+| R3 engine (5-date blocks) | 0.0889 | 0.1287 | no (fails from φ = 0.5) | 0.843 |
+| RM {5, 10, 20} | 0.0477 | 0.0711 [0.0675, 0.0747] | no (φ ≤ 0.8 only) | 0.761 |
+| RE two-way EWC, K = 4 (fixed-K t) | 0.0396 | 0.0574 [0.0542, 0.0606] | no (φ ≤ 0.8 only) | 0.716 |
+| **adopted {5, 10, 20, 30}** | 0.0319 | 0.0465 (100,000-replication re-runs 0.0458 / 0.0464) | **yes** | 0.654 |
+
+Only the adopted rule is valid over 𝒟_P, so it is adopted. With integrated memory ≈ 19 days, a 120-date window holds only about six independent date units. Any bound that is valid at φ = 0.9 must therefore work with few effective date degrees of freedom; the power cost below comes from persistence of that length, not from this particular estimator. RM and RE are published, not adopted.
+
+**Power cost (stated, not retuned).**
+
+SUPPORTED, joint with reach, no persistence; R3 engine → this rule:
+
+| Fills, trades per date | θ = 0.10 | θ = 0.05 |
+|---|---|---|
+| thin, 17 | 0.843 → 0.654 | 0.379 → 0.187 |
+| full, 17 | 0.851 → 0.668 | 0.386 → 0.195 |
+| thin, 35 | 0.629 → 0.554 | 0.323 → 0.192 |
+| full, 35 | 0.633 → 0.565 | 0.323 → 0.195 |
+
+At the information floor (60 dates, 25 stations), df_30 = 1. Positive claims become nearly impossible there: SUPPORTED at θ = 0.10 is 0.001 (m = 17, thin) and 0.005 (m = 35, full), against 0.143 / 0.366 for the R3 engine.
+
+- **T2 at the design's own θ_PCE:** P(T2) at θ_PCE is 0.554 / 0.476 / 0.456 / 0.459 for m = 17 thin / 17 full / 35 thin / 35 full (θ_PCE = 0.09 / 0.08 / 0.07 / 0.07), against 0.779 / 0.701 / 0.673 / 0.675 for the R3 engine (no persistence).
+- **Effect confirmed with 80% T2 power:** ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence).
+- **θ_PCE.** Its frozen formula, GO / NO_GO and its nominal (normal-approximation) meaning are unchanged; it is not retuned (6.2, 10.3). An INDETERMINATE result is more likely than under R3; that is the price of a stated level that holds under the persistence §9 names.
+
+**Frozen surfaces under persistence (disclosed; not repaired by D4-C3-M1).** T1a, NEG and U_W run on the unchanged 5-date-block engine. They are frozen and outside this bounded repair. On the same run-G replications:
+
+| Surface | Nominal level | Baseline | 𝒟_P, φ ≤ 0.8 (worst) | 𝒟_P, φ = 0.9 (worst) |
+|---|---|---|---|---|
+| T1a false rejection (θ = 0) | 0.025 | 0.0293 | 0.0532 | 0.0893 |
+| NEG false rejection | 0.025 | 0.0249 | 0.0400 | 0.0694 |
+| U_W miss | 0.05 (declared) | 0.0269 | 0.0454 | 0.0765 |
+
+Claim matrix 17.8 qualifies their stated levels accordingly. That is a statement change only: the tests are byte-identical. Calibrating them would need governance authority, so this is flagged to Astra and governance as an open observation.
 
 ### 8.2 PINM (price-implied null Monte Carlo): primary for the tail count, auxiliary elsewhere
 
@@ -447,7 +548,7 @@ The contamination parameter must be **cost mass**, not dates, trades or stations
 
 ε covers concentrated regimes: loss dates, template or station catastrophes, unseen trade types, anything. δ covers diffuse degradation of the whole book. The class is a **declared assumption** indexed by (ε, δ). V2 neither estimates nor verifies it.
 
-**Theorem 2 (robust lower bound).** Let `L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)` be T2's one-sided 95% lower bound (T2 ⟺ L_W > 0; 6.1, 8.1). On the event `{θ_W ≥ L_W}`, for every H, every (ε, δ) with `δ < 1 + L_W`, and every `Q ∈ 𝒯_H(ε, δ)`:
+**Theorem 2 (robust lower bound).** Let `L_W` be T2's one-sided lower bound (T2 ⟺ L_W > 0; 6.1). Since D4-C3-M1 this is the multi-block bound of 8.1b, `θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} · SE_2w(b)`; R3 used the 5-date-block `θ̂ − t_{df,0.95} · SE_CR(θ̂)` of 8.1. The algebra below holds for any L_W. On the event `{θ_W ≥ L_W}`, for every H, every (ε, δ) with `δ < 1 + L_W`, and every `Q ∈ 𝒯_H(ε, δ)`:
 
 ```text
 θ_F(Q) ≥ L_T(ε, δ) := (1 − ε)(L_W − δ) − ε
@@ -457,6 +558,16 @@ The contamination parameter must be **cost mass**, not dates, trades or stations
 1. By Proposition 1 with `ε' = ε_Q ≤ ε`: `θ_F ≥ (1 − ε')(θ_W − δ) − ε'`.
 2. The right side is decreasing in ε' because `∂/∂ε' = −(1 + θ_W − δ) < 0`, so it is ≥ `(1 − ε)(θ_W − δ) − ε`.
 3. `θ_W ≥ L_W` gives the result. ∎
+
+**Error statement (D4-C3-M1; supersedes the R3 wording kept below as history).** The only probability in any prospective statement is the sampling event `{θ_W ≥ L_W}` for the multi-block bound of 8.1b. Its stated level is indexed by a declared dependence class.
+- `P(reach ∧ L_W > θ_W) ≤ 0.05` under the 5-date-block model, and over the whole declared persistence class 𝒟_P: daily AR(1) date regimes with φ ≤ 0.9 and latent variance ≤ 0.10, across the 8.1b geometries. Run G worst cell: 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills).
+- Outside 𝒟_P no level is claimed, and the level is lower (up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97).
+
+The class parameters (ε, δ) are not estimated and carry no α. The statement holds simultaneously for all (ε, δ, H), because it rests on the single event above. No second probability is combined with it.
+
+The level is a repeated-experiment rate, counted jointly with reaching an evaluated state. It is not the probability that the bound holds given that a favourable label was issued. Given reach, the miss can be larger: up to 0.136 at φ = 0.9 and 0.085 for φ ≤ 0.8 (8.1b).
+
+*R3 wording, SUPERSEDED by D4-C3-M1.* Astra M1 (@5bb57eb2) showed that its 0.95 fails under the cross-block persistence §9 names; the R3 engine's joint miss reaches 0.08–0.13 over 𝒟_P (run G). Kept as history:
 
 **Error statement (exact).** The only probability in any prospective statement is `P(θ_W ≥ L_W) ≥ 0.95`. This is the sampling coverage of the D8-accepted two-way CR engine for the realised-window value, conditional on the realised trade set. The class parameters (ε, δ) are not estimated and carry no α. The statement holds simultaneously for all (ε, δ, H), because it rests on the single event above. No second 95% is combined with it.
 
@@ -593,6 +704,8 @@ Rationale for `PCE_CEILING = 0.10`: it is 5 × θ_ERT and the lower end of the c
 Honest consequence (DERIVED + SIMULATED, power table §2 and §4.2): at Astra's measured all-trigger dispersion (σ_eff ≈ 2.93) the formula gives θ_PCE ≈ 0.18–0.26 → **NO_GO**; at the no-lottery dispersion (σ_eff ≈ 0.96) it gives ≈ 0.06–0.08 → GO; in synthetic mixes, θ_PCE = 0.08 with no sub-4¢ legs (GO), 0.21 with 5% (NO_GO), 0.36 with 16% (NO_GO). **Because a single sub-cent leg carries the variance of hundreds of core legs, even a small lottery share makes the economic arm unpowerable in 120 dates.** Which case applies depends on how the frozen bias correction changes the executable leg mix, which only the observation phase can measure; the most likely pre-declared outcome, given Astra's b = 0 cross-section, is NO_GO_PCE_ABOVE_CEILING. A NO_GO is a design finding recorded as `WEATHER_FORWARD_SPEC_V2 = NO_GO_<reason>`, not a strategy result. It returns the decision to governance, which may (outcome-blind, since no outcome will have been observed) retire the Weather candidate or commission a new pre-registration (V3) — for example an information-primary experiment, or constant-payout sizing (which would make θ ≈ κ) or a tail-leg exclusion. Those are **trading-rule or design changes** that need their own freeze and independent audit; none is an amendment of V2.
 
 Drift (mission §28 item 10): θ_PCE is frozen at t0 and labels always use the frozen value. At analysis the outcome-free realised `SE0_θ` over the whole window is reported; if it exceeds 1.5 × the planned value the report carries `PCE_DRIFT = TRUE` (descriptive; no label changes). After D4 repair R1, a post-OP drift of the tail price mix (Astra: 2 sub-cent legs appearing after a GO observation phase) can no longer create a false exclusion; it can only raise `M_tail` and make exclusion unattainable, which is reported. After D4 repair R2 there is no prospective exclusion at all; θ_PCE and GO keep only their confirmability role and are **not** an arrival-sufficiency check for rare tail types (Astra D4 recheck: GO passes 82–94% of the C2 designs).
+
+Power under the calibrated T2 (D4-C3-M1, 8.1b; SIMULATED, power table §4.8): P(T2) at θ_PCE is 0.554 / 0.476 / 0.456 / 0.459 for m = 17 thin / 17 full / 35 thin / 35 full (θ_PCE = 0.09 / 0.08 / 0.07 / 0.07), against 0.779 / 0.701 / 0.673 / 0.675 for the R3 engine (no persistence). The 80%-power effect is ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence). θ_PCE, PCE_CEILING and GO / NO_GO are frozen and are **not** retuned to this. A GO therefore no longer means "nominal 80% power at θ_PCE" for the T2 actually run. It means the design passes the frozen pre-registration ceiling, and the shortfall is disclosed here.
 
 ---
 
@@ -879,9 +992,14 @@ PROSPECTIVE_EXCLUSION     = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON   (constant, sec
 PROSPECTIVE_CONFIRMATION  = NOT_ESTABLISHED_UNCONDITIONALLY        (constant, section 8.5c; always printed)
 TRANSPORT_ROBUSTNESS_REPORT (section 8.5c; always printed when SCIENTIFIC_STATE is evaluated)
     SOURCE_ESTIMAND            θ_W (5.1)
-    SOURCE_LOWER_BOUND         L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂)   (T2 ⟺ L_W > 0; one-sided 95% sampling coverage of θ_W)
+    SOURCE_LOWER_BOUND         L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} · SE_2w(b)   (8.1b, D4-C3-M1; T2 ⟺ L_W > 0), printed
+                               with the constant level text: "joint sampling miss P(reach ∧ L_W > θ_W) ≤ 0.05 under the
+                               5-date-block model and the declared persistence class 𝒟_P (daily AR(1) date regimes, φ ≤ 0.9,
+                               latent variance ≤ 0.10); no level is claimed outside 𝒟_P"
+                               (R3: L_W = θ̂ − t_{df,0.95} · SE_CR(θ̂), "one-sided 95% sampling coverage of θ_W"; SUPERSEDED, Astra M1)
     WORST_CASE_REGIME_RETURN   −1 per dollar of C (exact, 8.5c)
-    ROBUSTNESS_FRONTIER        ε*(δ, τ) = max(0, (L_W − δ − τ)/(1 + L_W − δ)) printed for δ ∈ {0, 0.01, 0.02, 0.05} × τ ∈ {0, θ_ERT},
+    ROBUSTNESS_FRONTIER        ε*(δ, τ) = (L_W − δ − τ)/(1 + L_W − δ) if L_W − δ > τ, else 0 (8.5c domain guard; Astra m8)
+                               printed for δ ∈ {0, 0.01, 0.02, 0.05} × τ ∈ {0, θ_ERT},
                                with the formula and L_T(ε, δ) = (1 − ε)(L_W − δ) − ε; reporting grid only, never a decision threshold
     EPOCH_TRANSLATION          k*(H) for H ∈ {14, 30, 60, 120} counted dates (maximum-exposure adverse dates absorbed; volume-translation
                                assumption C̄_d labelled)
@@ -905,9 +1023,9 @@ CORE_ADVERSE     NEG (TRUE / FALSE), printed even when T1 passes via the tail
 Mandatory sentences:
 - (a) Whenever ECONOMIC_RESULT ∈ {REALIZED_WINDOW_VALUE_INDETERMINATE, REALIZED_WINDOW_VALUE_NOT_ROBUST}: **"θ in [θ_ERT, θ_PCE) is neither confirmed nor excluded by this experiment; this is not evidence of zero edge."**
 - (b) Always: **"V2 cannot usefully test prospective net value in either direction within its horizon (sections 8.5b, 8.5c): a rare, high-payoff or high-loss regime absent from the observed dates cannot be ruled out. REALIZED_WINDOW statements describe only the expected value of the trades executed in the window."**
-- (c) Whenever ECONOMIC_RESULT ∈ {REALIZED_WINDOW_VALUE_SUPPORTED, REALIZED_WINDOW_VALUE_NOT_ROBUST}: **"This is evidence about the trades executed in the window. It becomes a prospective statement only under the declared transport class: with 95% sampling confidence, R*'s expected return per dollar in a future epoch stays ≥ 0 if at most ε*(δ) of that epoch's expected executed cost comes from any worse regime (worst case −1 per dollar) and the rest earns at least θ_W − δ. V2 does not verify this premise and establishes no unconditional prospective edge."**
+- (c) Whenever ECONOMIC_RESULT ∈ {REALIZED_WINDOW_VALUE_SUPPORTED, REALIZED_WINDOW_VALUE_NOT_ROBUST}: **"This is evidence about the trades executed in the window. It becomes a prospective statement only under the declared transport class: with 95% sampling confidence (stated level of the source bound: it holds under the 5-date-block model and under date-level persistence up to daily autocorrelation 0.9, and is lower beyond), R*'s expected return per dollar in a future epoch stays ≥ 0 if at most ε*(δ) of that epoch's expected executed cost comes from any worse regime (worst case −1 per dollar) and the rest earns at least θ_W − δ. V2 does not verify this premise and establishes no unconditional prospective edge."**
 
-The result headline always prints θ̂, the two-way 90% interval, L_W and U_W (labelled "realised-window bounds"), `PROSPECTIVE_EXCLUSION`, `PROSPECTIVE_CONFIRMATION`, ε*(0, 0), θ_ERT and θ_PCE.
+The result headline always prints θ̂, the two-sided 90% interval of 8.1b, L_W and U_W (labelled "realised-window bounds"), `PROSPECTIVE_EXCLUSION`, `PROSPECTIVE_CONFIRMATION`, ε*(0, 0), θ_ERT and θ_PCE.
 
 Naming note (Astra m5): every `REALIZED_WINDOW_*` value, whether economic axis or bound, is a statement about θ_W only. The prefix is mandatory in every printed or stored field name.
 
@@ -970,21 +1088,23 @@ A REALIZED_WINDOW_* value is a statement about θ_W only: "the trades executed i
 
 | Label / field | Axis | Estimand | Null | Test / bound | Level / coverage | Assumptions | May claim | May not claim | Rejects R*? | Builder? | Capital? |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| REALIZED_WINDOW_VALUE_SUPPORTED | economic | θ_W | θ_W ≤ 0 | T2 (L_W > 0) + θ̂ ≥ θ_ERT + G1–G3 | size ≤ 0.05 (IUT with information claims) | CR adequacy for θ_W (D8) | the executed window trades had positive expected value, point estimate ≥ θ_ERT, robust to G1–G3 | anything unconditional about θ_P; "edge exists"; deployment | no | no | no |
-| REALIZED_WINDOW_VALUE_NOT_ROBUST | economic | θ_W | θ_W ≤ 0 | T2 + θ̂ ≥ θ_ERT, a gate fails | size ≤ 0.05 | as above | positive θ_W failing the listed gates | shadow continuation; any prospective claim | no | no | no |
+| REALIZED_WINDOW_VALUE_SUPPORTED | economic | θ_W | θ_W ≤ 0 | T2 (L_W > 0, multi-block bound 8.1b) + θ̂ ≥ θ_ERT + G1–G3 | size ≤ 0.05 under the 5-date-block model and over the declared persistence class 𝒟_P (φ ≤ 0.9, latent variance ≤ 0.10; 8.1b); none claimed outside 𝒟_P (IUT with information claims) | CR adequacy for θ_W (D8) with date persistence inside 𝒟_P | the executed window trades had positive expected value, point estimate ≥ θ_ERT, robust to G1–G3 | anything unconditional about θ_P; "edge exists"; deployment | no | no | no |
+| REALIZED_WINDOW_VALUE_NOT_ROBUST | economic | θ_W | θ_W ≤ 0 | T2 (8.1b) + θ̂ ≥ θ_ERT, a gate fails | size ≤ 0.05 over the 5-date-block model and 𝒟_P (8.1b); none claimed outside 𝒟_P | as above | positive θ_W failing the listed gates | shadow continuation; any prospective claim | no | no | no |
 | REALIZED_WINDOW_VALUE_INDETERMINATE | economic | θ_W | — | — | — | — | not supported (sentences a, b) | "no edge"; "edge excluded" | no | no | no |
-| TRANSPORT_ROBUSTNESS_REPORT / CONDITIONAL_PROSPECTIVE_SUPPORT(ε*, δ) | transport (report) | θ_F over a future H-epoch | — | deductive: `L_T(ε, δ) = (1 − ε)(L_W − δ) − ε` over 𝒯_H(ε, δ) | the single sampling event θ_W ≥ L_W (0.95); ε, δ carry no α | the declared class 𝒯_H(ε, δ) (8.5c), unverified | if the premise holds, θ_F ≥ L_T(ε, δ); frontier ε* | that the premise holds; an unconditional θ_P claim; that any ε is "enough" | no | no | no |
+| TRANSPORT_ROBUSTNESS_REPORT / CONDITIONAL_PROSPECTIVE_SUPPORT(ε*, δ) | transport (report) | θ_F over a future H-epoch | — | deductive: `L_T(ε, δ) = (1 − ε)(L_W − δ) − ε` over 𝒯_H(ε, δ) | the single sampling event θ_W ≥ L_W, at the class-indexed level of 8.1b (0.95 over the 5-date-block model and 𝒟_P; none claimed outside 𝒟_P); ε, δ carry no α | the declared class 𝒯_H(ε, δ) (8.5c), unverified | if the premise holds, θ_F ≥ L_T(ε, δ); frontier ε* | that the premise holds; an unconditional θ_P claim; that any ε is "enough" | no | no | no |
 | PROSPECTIVE_CONFIRMATION = NOT_ESTABLISHED_UNCONDITIONALLY | prospective | θ_P | θ_P ≤ 0 | none (mirror theorem 8.5c) | — | — | no unconditional positive claim is made | any unconditional positive claim | no | no | no |
 | PROSPECTIVE_EXCLUSION = NOT_USEFULLY_TESTABLE_IN_V2_HORIZON | prospective | θ_P | θ_P ≥ θ_ERT / θ_PCE | none (8.5b ceiling ≈ 0.06) | — | — | no exclusion is made | any exclusion of θ_P | no | no | no |
 | R*_REJECTED_AS_NET_STRATEGY | prospective | θ_P | — | not usefully testable | — | — | never issued | — | — | no | no |
-| REALIZED_WINDOW_BOUND (LOSS_CONFIRMED / RELEVANT / LARGE / NOT_EXCLUDED) | realised window (report) | θ_W | θ_W ≥ 0 / θ_ERT / max(θ_PCE, θ_ERT) | U_W | declared 95% (core CR one-sided 0.975 nominal; tail term deterministic) | CR adequacy for the core | the executed window trades had expected value below the threshold | anything about θ_P; a rejection of R*; "the observed return was negative" | no | no | no |
-| INFORMATION_DETECTED (INFO_SOURCE) | information | κ_core; λ_tail | κ_core ≤ 0 ∧ λ_tail ≤ 1 | T1a (CR) ∪ T1b (PINM) | FWER 0.05 | PINM copula for T1b | chosen legs underpriced net of all-in cost | net value; θ_W; θ_P | no | no | no |
-| NEGATIVE_INFORMATION / CORE_ADVERSE / R*_CORE_INFORMATION_REJECTED | information | κ_core | κ_core ≥ 0 | NEG (CR) | 0.025 | CR adequacy | core legs overpriced net of executable costs | tail, θ_W, θ_P; "R* has no net value" | no (information-level) | no | no |
+| REALIZED_WINDOW_BOUND (LOSS_CONFIRMED / RELEVANT / LARGE / NOT_EXCLUDED) | realised window (report) | θ_W | θ_W ≥ 0 / θ_ERT / max(θ_PCE, θ_ERT) | U_W | declared 95% (core CR one-sided 0.975 nominal; tail term deterministic) under the 5-date-block model; under 𝒟_P the U_W miss reaches 0.0454 (φ ≤ 0.8) / 0.0765 (φ = 0.9) (8.1b; frozen surface, not repaired by D4-C3-M1) | CR adequacy for the core | the executed window trades had expected value below the threshold | anything about θ_P; a rejection of R*; "the observed return was negative" | no | no | no |
+| INFORMATION_DETECTED (INFO_SOURCE) | information | κ_core; λ_tail | κ_core ≤ 0 ∧ λ_tail ≤ 1 | T1a (CR) ∪ T1b (PINM) | FWER 0.05 nominal (5-date-block model); under 𝒟_P, T1a alone reaches 0.053 (φ ≤ 0.8) / 0.089 (φ = 0.9) at nominal 0.025 (8.1b; frozen surface, not repaired by D4-C3-M1) | PINM copula for T1b; no cross-block date persistence | chosen legs underpriced net of all-in cost | net value; θ_W; θ_P | no | no | no |
+| NEGATIVE_INFORMATION / CORE_ADVERSE / R*_CORE_INFORMATION_REJECTED | information | κ_core | κ_core ≥ 0 | NEG (CR) | 0.025 nominal (5-date-block model); under 𝒟_P up to 0.040 (φ ≤ 0.8) / 0.070 (φ = 0.9) (8.1b; frozen surface, not repaired) | CR adequacy | core legs overpriced net of executable costs | tail, θ_W, θ_P; "R* has no net value" | no (information-level) | no | no |
 | NO_INFORMATION_DETECTED | information | κ_core, λ_tail | — | — | — | — | no information detected | no information exists | no | no | no |
 | SHADOW_CONTINUATION_SIGNAL | routing | — | — | 17.5 | inherits the labels it reads | — | a further paper/shadow epoch may be proposed | an edge exists; capital; live trading | no | no | no |
 | OPERABILITY_STATE | operability | depth, ρ_30, mechanics, access | — | 17.4 | descriptive | — | accessibility at small capital | any scientific label | no | no | no |
 
 No V2 label authorises the Builder or capital: Builder authority comes only from governance after an Astra pass, and capital only from separate capital governance.
+
+Persistence note (D4-C3-M1). The economic rows' levels rest on the multi-block bound of 8.1b and are stated over the declared persistence class 𝒟_P. The information rows and REALIZED_WINDOW_BOUND rest on frozen 5-date-block tests, which are not recalibrated. Their qualifiers above state what run G measured, so that no row claims more than holds over 𝒟_P. Calibrating those tests is outside the bounded D4-C3-M1 mission and is flagged to Astra and governance.
 
 ---
 
@@ -1063,6 +1183,13 @@ SIMULATED numbers: `WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md` §4 (script co
 | 33 | (added, R3) ε, δ or H chosen after seeing results | Refuted: none is chosen; frontier printed on fixed outcome-blind grids of existing constants; required values are capital-governance choices outside V2 | — |
 | 34 | (added, R3) two confidence levels combined as one | Refuted: only θ_W ≥ L_W is stochastic; (ε, δ) index an assumption set; the bound is simultaneous over them | — |
 | 35 | (added, R3) shadow continuation read as an edge verdict | Refuted: renamed SHADOW_CONTINUATION_SIGNAL; meaning restricted to another paper/shadow epoch; no capital path | — |
+| 36 | (added, D4-C3-M1) the source bound's 95% holds only under the 5-date-block model, while §9 names cross-block persistence (Astra M1) | **Resolved by D4-C3-M1**: multi-block bound (8.1b). Joint miss / size ≤ 0.05 over the 5-date-block model and the declared class 𝒟_P (φ ≤ 0.9, latent variance ≤ 0.10); worst cell 0.0465 [0.0436, 0.0494] at 20,000 replications (φ 0.9, latent variance 0.05, m = 17 thin, θ = 0.10); independent 100,000-replication re-runs 0.0458 [0.0445, 0.0471] (that cell) and 0.0464 [0.0451, 0.0477] (full fills). No level is claimed outside 𝒟_P (up to 0.072 at φ = 0.95 and 0.110 at φ = 0.97). The R3 engine at the same cells reaches 0.1287 | MINOR (disclosed: outside-𝒟_P degradation; power cost) |
+| 37 | (added, M1) the calibration tuned until a synthetic number passed | Refuted. The class, the pass criterion and the first candidate RM were declared before any run. RM's φ = 0.9 failure is published; no constant of RM was changed. The comparators and the selection criterion (validity over 𝒟_P first) were declared before their own first run. The adopted 30-date block is W, the 30-date trailing-bias window that §9 names | — |
+| 38 | (added, M1) the repair makes a positive claim easier | Refuted: b = 5 is one of the four bounds, so L_W ≤ the R3 bound pointwise; no label, threshold or constant changed | — |
+| 39 | (added, M1) the power cost is hidden, or θ_PCE silently retuned | Refuted: power table §4.8 (SUPPORTED, and P(T2) at θ_PCE and at 0.12 / 0.15, R3 vs M1). θ_PCE formula and GO / NO_GO are unchanged. The nominal-80% wording is qualified in 1, 6.2, 7, 10.3 and 24 | MINOR (disclosed: INDETERMINATE more likely) |
+| 40 | (added, M1) the reach-inclusive (joint) rate hides a larger miss among reached runs | Disclosed. The error is the repeated-experiment joint rate, as in R3. Given reach, the miss is larger (up to 0.085 for φ ≤ 0.8 and 0.136 at φ = 0.9 in cells with reach ≥ 0.10), because IF5 screens high-dispersion windows, not slow drifts (8.1b, 8.5c) | MINOR (disclosed) |
+| 41 | (added, M1) the frozen 5-date-block surfaces (T1a, NEG, U_W) carry the same persistence defect | **Not repaired** (frozen; outside the bounded M1 mission). Measured on the run-G replications: T1a up to 0.089 at nominal 0.025; NEG up to 0.070; U_W miss up to 0.0765 (φ = 0.9). 17.8 qualifies their stated levels at statement level only. Flagged to Astra / governance | open observation (severity for Astra / governance) |
+| 42 | (added, M1) the information floor or a dominant date breaks the new bound | Refuted. The bound is always defined when INFO_SUFFICIENT (df_30 ≥ 1). Boundary designs: worst joint miss 0.0381 (one 96-trade date, φ = 0.9). At 60 dates / 25 stations it is valid but nearly powerless (0.001 (m = 17, thin) and 0.005 (m = 35, full), against 0.143 / 0.366 for the R3 engine), which is disclosed | MINOR (disclosed) |
 
 No CRITICAL issue survives.
 
@@ -1082,7 +1209,7 @@ Economic accounting and full ledger (V1 §11); settlement controls, anomaly flag
 
 ## 24. What V2 can and cannot conclude
 
-Can: whether R*'s chosen legs are underpriced net of executable costs, in the core and in the tail (including a real negative result); whether the trades R* executed in the window had positive expected net value, with θ̂ ≥ θ_ERT (T2 on θ_W; 80% nominal power at θ_PCE); how much adverse future cost mass that evidence could absorb (transport frontier ε*, 8.5c); an interval for θ with its core/tail decomposition; an assumption-free upper bound on the realised-window value θ_W of the trades actually executed; the information actually collected; operability at small capital.
+Can: whether R*'s chosen legs are underpriced net of executable costs, in the core and in the tail (including a real negative result); whether the trades R* executed in the window had positive expected net value, with θ̂ ≥ θ_ERT (T2 on θ_W with the persistence-calibrated bound of 8.1b, size ≤ 0.05 over the declared class 𝒟_P; θ_PCE keeps its nominal 80% meaning, while the simulated power of the calibrated T2 at θ_PCE is 0.46–0.55 (R3 engine 0.67–0.78)); how much adverse future cost mass that evidence could absorb (transport frontier ε*, 8.5c); an interval for θ with its core/tail decomposition; an assumption-free upper bound on the realised-window value θ_W of the trades actually executed; the information actually collected; operability at small capital.
 
 Cannot: confirm θ in [0.02, θ_PCE); establish or exclude prospective net value unconditionally (8.5b ceiling ≈ 0.06; 8.5c mirror theorem); certify that a future epoch satisfies the transport premise; reject R* as a net strategy; exclude realised-window value whenever `M_tail` keeps U_W above the threshold (in practice: any sub-cent leg held at S_ref); reject R* economically from core information alone; attribute an edge to NWP information rather than structure beyond the descriptive baselines; say anything about the venue after a mechanics change.
 
@@ -1102,7 +1229,7 @@ Builder may decide: languages, storage engines, process layout, scheduling mecha
 
 Builder may **not** decide (all frozen here and in the manifest): estimands, strata, cohort, °F arithmetic, station-table membership, thresholds, PCE formula and ceilings, power claims, inference engines, dependence declaration, seeds and draw order, terminal labels and their order, readiness and GLOBAL_READY, OP length, t0, capture windows and validity, completeness definitions, allocation order, mechanics semantics, analysis time, sensitivity list.
 
-Verification required before a t0 request (in addition to V1 §28): unit tests for the four title regexes and E4 (°C and °F, negative temperatures, malformed titles); interval arithmetic against hand-computed q for a 2 °F ladder; CONSERVATIVE tick rule in both regimes; VALID_CAPTURE with a quiet book (old exchange timestamp) and with a future timestamp; completeness denominator; USABLE / BIAS_HISTORY_READY with a correction hold and a missing vintage; the two-way CR engine against a hand-worked 3 × 3 example including a negative `V_2w`; PINM reproducibility (same seed → identical p-values); `M_tail` and `EXCLUSION_BLOCKED_BY_TAIL` against hand-worked examples (empty tail, one 0.001 leg, several 0.039 legs); REALIZED_WINDOW_BOUND ordering; PROSPECTIVE_EXCLUSION / PROSPECTIVE_CONFIRMATION constants printed and R*_REJECTED_AS_NET_STRATEGY never TRUE in any synthetic run; L_W, ε*(δ, τ) grid, k*(H) grid, ε_1(H) and n_eff,C against hand-worked examples (L_W ≤ 0, L_W = 0.10, a single cap-date window); SHADOW_CONTINUATION_SIGNAL truth table; TAIL_ARRIVAL_REPORT bins including zero counts; the 11-value SCIENTIFIC partition; adverse imputation; every row of every state table reachable in a synthetic test; PRE_T0 outcome-blind and ANALYSIS_TIME_LOCK enforcement; restart/replay idempotence (no duplicated fills, P&L or sessions after crash and replay).
+Verification required before a t0 request (in addition to V1 §28): unit tests for the four title regexes and E4 (°C and °F, negative temperatures, malformed titles); interval arithmetic against hand-computed q for a 2 °F ladder; CONSERVATIVE tick rule in both regimes; VALID_CAPTURE with a quiet book (old exchange timestamp) and with a future timestamp; completeness denominator; USABLE / BIAS_HISTORY_READY with a correction hold and a missing vintage; the two-way CR engine against a hand-worked 3 × 3 example including a negative `V_2w`; PINM reproducibility (same seed → identical p-values); `M_tail` and `EXCLUSION_BLOCKED_BY_TAIL` against hand-worked examples (empty tail, one 0.001 leg, several 0.039 legs); REALIZED_WINDOW_BOUND ordering; PROSPECTIVE_EXCLUSION / PROSPECTIVE_CONFIRMATION constants printed and R*_REJECTED_AS_NET_STRATEGY never TRUE in any synthetic run; L_W, ε*(δ, τ) grid, k*(H) grid, ε_1(H) and n_eff,C against hand-worked examples (L_W ≤ 0, L_W = 0.10, a single cap-date window); the multi-block L_W of 8.1b against a hand-worked example with 5-, 10-, 20- and 30-date calendar blocks, including df_30 = 1 on a 60-date window and a paused date inside a block, plus the property L_W ≤ the 5-date-block bound; SHADOW_CONTINUATION_SIGNAL truth table; TAIL_ARRIVAL_REPORT bins including zero counts; the 11-value SCIENTIFIC partition; adverse imputation; every row of every state table reachable in a synthetic test; PRE_T0 outcome-blind and ANALYSIS_TIME_LOCK enforcement; restart/replay idempotence (no duplicated fills, P&L or sessions after crash and replay).
 
 ---
 
@@ -1114,20 +1241,30 @@ ASTRA_WEATHER_V2_REAUDIT                 = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECO
 WEATHER_FORWARD_SPEC_V2_D4_REPAIR        = R1 @24d2342 → BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (Astra @3d18085)
 WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR     = R2 @e45d2ce7 → BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION
                                            (Astra @92c2f706; R2 exclusion removal PASS, R1 θ_W bound PASS, state machine PASS)
-EXPERIMENT_FEASIBILITY_V2                = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (Astra's; unchanged until Astra rechecks)
-WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = R3 @341e0b7a → BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE
+                                           (Astra @5bb57eb2; R1 / R2 / C3 removal / transport bound / frontier / semantics / state machine PASS; M1 MAJOR; m8, m9)
+EXPERIMENT_FEASIBILITY_V2                = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE (Astra's; unchanged until Astra rechecks)
+WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR  = READY_FOR_ASTRA_RECHECK
+D4_C3_M1_REPAIR                          = option (a), calibrate: T2's source bound L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} SE_2w(b)
+                                           (8.1b; never above the R3 bound); stated level P(reach ∧ L_W > θ_W) ≤ 0.05 over the
+                                           5-date-block model and the declared persistence class 𝒟_P (daily AR(1) φ ≤ 0.9, latent
+                                           variance ≤ 0.10, m ∈ {17, 35}, thin / full fills); none claimed outside 𝒟_P; power cost and
+                                           θ_PCE shortfall disclosed, not retuned; m8 (frontier domain guard) and m9 (SUPERSEDED markers) fixed
+OPEN_OBSERVATION (not repaired; frozen)  = T1a / NEG / U_W keep 5-date blocks and exceed their nominal levels under 𝒟_P (8.1b, 17.8)
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR (history) = READY_FOR_ASTRA_D4_C3_RECHECK at 341e0b7a (superseded by the line above)
 D4_C3_REPAIR                             = R3 = hybrid C3_C (no unconditional prospective label in either direction) + C3_A (cost-mass transport
                                            class 𝒯_H(ε, δ), deductive bound L_T = (1 − ε)(L_W − δ) − ε, frontier ε*(δ, τ), k*(H), concentration,
                                            observable invalidation that can only revoke); ECONOMIC_RESULT = REALIZED_WINDOW_VALUE_{SUPPORTED,
-                                           NOT_ROBUST, INDETERMINATE} on θ_W with T2 unchanged; SHADOW_CONTINUATION_SIGNAL replaces the forward
+                                           NOT_ROBUST, INDETERMINATE} on θ_W with T2 unchanged (its source bound recalibrated by D4-C3-M1, 8.1b);
+                                           SHADOW_CONTINUATION_SIGNAL replaces the forward
                                            signal; no ε / δ / H / τ threshold chosen in V2
 MINORS m3–m7                             = fixed (manifest §C superseded markers; checkpoint §4; REALIZED_WINDOW prefix note; D_obs ≈ 174;
                                            "not usefully testable" wording)
 D4_R1 / D4_R2                            = KEPT (θ_W upper bound unchanged; no prospective exclusion; no R* rejection)
 CARRIED CLOSED                           = D1 D2 D3 D5 D6 D7 D8 D9 D11 D12 CLOSED; D10 CLOSED_ACCEPTED_AND_DISCLOSED (11-value partition unchanged
-                                           in structure; economic labels renamed)
+                                           in structure; economic labels renamed; D1 power and D8 engine for T2 re-qualified by D4-C3-M1)
 NOT_MEANING                              = EXPERIMENT_FEASIBILITY = PASS / BUILDER_AUTHORIZED / t0 / edge / capital
-NEXT_AUTHORIZED_ACTION                   = ASTRA BOUNDED D4-C3 + TRANSPORTABILITY RECHECK ONLY
+NEXT_AUTHORIZED_ACTION                   = ASTRA BOUNDED D4-C3-M1 RECHECK ONLY (M1, m8, m9; R1 / R2 / R3 regression)
 BUILDER_AUTHORIZED                       = FALSE
 REAL_CAPITAL_AUTHORIZED                  = FALSE
 LIVE_TRADING_AUTHORIZED                  = FALSE

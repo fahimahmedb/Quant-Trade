@@ -2,17 +2,18 @@
 
 ```text
 ROLE                          = Weather Forward V2 Architect / convergence authority
-STATUS                        = DONE — bounded D4-C3 transport repair R3 committed and pushed on top of R2 (e45d2ce7) after Astra's D4-C2 recheck (92c2f706)
+STATUS                        = DONE — bounded D4-C3-M1 source-bound calibration committed and pushed on top of R3 (341e0b7a) after Astra's D4-C3 recheck (5bb57eb2)
 BRANCH                        = claude/charming-allen-948kd8
 WEATHER_FORWARD_SPEC_V2       = AUDITED @94b59348d5b79cd3c53dcba0b791ce1daeb75d60 (immutable ancestor)
 ASTRA_WEATHER_V2_REAUDIT      = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION
                                 (astra/weather-forward-v2-independent-reaudit-2026-09-29 @7d95c00abccfbc805c0d8abca65a6b93268741a2)
 WEATHER_FORWARD_SPEC_V2_D4_REPAIR = AUDITED @24d2342 → ASTRA_WEATHER_V2_D4_RECHECK = BLOCKED_D4_PROSPECTIVE_ESTIMAND_UNSAMPLED_TAIL_FALSE_EXCLUSION (@3d18085)
 WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = AUDITED @e45d2ce7 → ASTRA_WEATHER_V2_D4_C2_RECHECK = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (@92c2f706)
-WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = READY_FOR_ASTRA_D4_C3_RECHECK
+WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = AUDITED @341e0b7a → ASTRA_WEATHER_V2_D4_C3_TRANSPORT_RECHECK = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE (@5bb57eb2)
+WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR = READY_FOR_ASTRA_RECHECK
 WEATHER_FORWARD_SPEC_V1       = HISTORICAL_FROZEN_OBJECT (726070a, byte-identical in this branch)
 EXPERIMENT_FEASIBILITY        = BLOCKED_POWER_BELOW_DECLARED_MEUE   (Astra's V1 verdict)
-EXPERIMENT_FEASIBILITY_V2     = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION   (Astra's @92c2f706; unchanged until Astra rechecks)
+EXPERIMENT_FEASIBILITY_V2     = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE   (Astra's @5bb57eb2; unchanged until Astra rechecks)
 HURDLE_SAMPLE_INCOMPATIBILITY = FALSE
 FABLE_DESIGN_CHALLENGE        = DONE_ADVISORY
 BUILDER_AUTHORIZED            = FALSE
@@ -22,9 +23,9 @@ t0                            = NOT_DECLARED
 ACCESS_USER_REPORTED          = TRUE
 LEGAL_ACCESS_CONFIRMED        = UNKNOWN
 TRADING_RULE_CHANGED          = FALSE
-EXECUTION_MODEL_CHANGED       = TRUE (CONSERVATIVE slippage only; unchanged by R1, R2 and R3)
+EXECUTION_MODEL_CHANGED       = TRUE (CONSERVATIVE slippage only; unchanged by R1, R2, R3 and D4-C3-M1)
 OUTCOME_INFORMATION_USED      = FALSE
-NEXT_AUTHORIZED_ACTION        = ASTRA BOUNDED D4-C3 + TRANSPORTABILITY RECHECK ONLY (not Builder, not t0, not capital)
+NEXT_AUTHORIZED_ACTION        = ASTRA BOUNDED D4-C3-M1 RECHECK ONLY (M1, m8, m9; R1 / R2 / R3 regression; not Builder, not t0, not capital)
 ```
 
 ## Inputs read (exact objects; none modified)
@@ -38,10 +39,12 @@ NEXT_AUTHORIZED_ACTION        = ASTRA BOUNDED D4-C3 + TRANSPORTABILITY RECHECK O
 - Astra D4 recheck and updated re-audit state @ `3d18085862f239a81936345989b4e26414cedcf3` (read from the Astra branch; not merged here, not modified).
 - D4-C2 repair R2 head @ `e45d2ce7e2605a4136804d2c1b31efa3aa8120e1` (verified as the remote head before R3).
 - Astra D4-C2 recheck and updated re-audit state @ `92c2f706d2ac75af9ae9710061c60df520234410` (read in full from the Astra branch; not merged here, not modified).
+- D4-C3 repair R3 head @ `341e0b7aede716fdb68e2c9806cc1a09fdd50b82` (verified as local and remote head before D4-C3-M1).
+- Astra D4-C3 + transportability recheck @ `5bb57eb2adf4cff35378f2c0e53e0316d45a4229` (§1, §6, §8, §10, §12, §13; evidence `astra_d4_c3_recheck_2026-10-01/`) and the orchestrator convergence ledger @ `c47080bc1741d91e0f7e23a41b3752291658b4df` (read from the Astra worktree; not merged here, not modified).
 
 ## Live data read by this Architect (pre-outcome metadata only)
 
-V2 (unchanged): `gamma-api.polymarket.com/events?tag_slug=weather&closed=false` metadata only (titles, bucket labels, descriptions, tick, minimum size, fee schedule, resolution source). D4 repairs R1, R2 and R3: **no live data read at all**; synthetic Monte Carlo and algebra only.
+V2 (unchanged): `gamma-api.polymarket.com/events?tag_slug=weather&closed=false` metadata only (titles, bucket labels, descriptions, tick, minimum size, fee schedule, resolution source). D4 repairs R1, R2, R3 and D4-C3-M1: **no live data read at all**; synthetic Monte Carlo and algebra only.
 
 ## Decisions frozen (see manifest V2 sections A and C)
 
@@ -76,6 +79,29 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 - **Unchanged.** R*, h, W, signal, cohort, entry, T_entry, S_ref sizing, execution, 0.04 strata, κ_core, T1a, T1b, the T2 statistic and level, NEG, engines, dependence, PCE / GO, gates, validity, operability, analysis time, the R1 U_W, and the R2 exclusion removal.
 - **Role-independence disclosure.** Every step from the Astra D4 recheck @3d18085 to this R3 repair (Astra rechecks and Architect repairs alike) was produced in one agent session under different role instructions. Run F is fresh code with fresh seeds. Governance should treat the next Astra recheck as the independent check, and may prefer a separate reviewer session.
 
+## D4-C3-M1 source-bound calibration (bounded; Astra M1 + minors m8 / m9, after the D4-C3 recheck @5bb57eb2)
+
+- **Defect.** After R3, `L_W` (two-way CR, 5-date blocks) is the only probability behind the positive REALIZED_WINDOW labels and every conditional prospective statement. Date persistence across blocks, which spec §9 names, makes it undercover in sparse designs that pass the information floor.
+- **Reproduced** (run G, fresh code and seeds, 20,000 replications per cell): false positive 0.0789 [0.0752, 0.0826] (Astra 0.0805) and full-fill miss 0.0889 [0.0850, 0.0928] (Astra 0.0902). Over the declared class the R3 engine reaches 0.1287 at φ = 0.9 and exceeds 0.05 from φ = 0.5.
+- **Decision.** Option (a), calibrate: `L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95} SE_2w(b)` (spec 8.1b).
+  - It is never above the R3 bound, and defined whenever INFO_SUFFICIENT.
+  - The 30-date block is W, the trailing-bias window whose seasonal lag §9 names.
+  - Stated level: P(reach ∧ L_W > θ_W) ≤ 0.05, with size ≤ 0.05, over the 5-date-block model and the declared persistence class 𝒟_P (daily AR(1) φ ≤ 0.9, latent variance ≤ 0.10, m ∈ {17, 35}, thin / full). Worst cell 0.0465 [0.0436, 0.0494]; 100,000-replication re-runs 0.0458 / 0.0464.
+  - No level is claimed outside 𝒟_P: φ = 0.95 gives up to 0.072, φ = 0.97 up to 0.110.
+- **Selection, disclosed.** The class, the pass criterion and the first candidate RM ({5, 10, 20}) were declared before any run. RM's preliminary run failed at φ = 0.9 (0.0708 at 100,000) and was not retuned. Comparators RE (two-way EWC, K = 4; φ = 0.9: 0.0557) and the adopted rule were then declared, with the criterion "validity over the whole class first". Only the adopted rule is valid over 𝒟_P.
+- **Power cost** (no persistence, disclosed, not retuned):
+  - SUPPORTED at θ = 0.10: 0.843 → 0.654 (thin, 17) and 0.633 → 0.565 (full, 35).
+  - P(T2) at θ_PCE: 0.46–0.55 (R3 engine 0.67–0.78).
+  - 80%-power effect ≈ 0.11–0.12 (R3 ≈ 0.09–0.10).
+  - Information floor (60 / 25): nearly powerless (0.001–0.005).
+- **Open observation (not repaired; frozen; outside the bounded mission).** T1a, NEG and U_W keep 5-date blocks. Under 𝒟_P they reach 0.089 (T1a, nominal 0.025), 0.069 (NEG, nominal 0.025) and 0.077 (U_W miss, declared 0.05). Spec 17.8 qualifies their stated levels at statement level only. Flagged for Astra / governance.
+- **m8 / m9.**
+  - m8: the frontier domain guard is now in spec 17.3, the manifest row and delta D4-C3.
+  - m9: SUPERSEDED markers on power table §4.6 reading 5 (and its catastrophic-date table) and on delta D4-C2 "CLAIM STRENGTH".
+  - R3-era coverage readings (power table §4.7 reading 4; delta D4-C3) are re-qualified.
+- **Unchanged:** R*, h, W, signal, cohort, entry, T_entry, S_ref sizing, execution, 0.04 strata, κ_core, T1a, T1b, NEG, the PCE formula, GO / NO_GO, U_W (R1), R2's exclusion removal, the R3 transport algebra (Proposition 1, Theorem 2), the cost-mass ε, the frontier definition, the constants, the label vocabulary, SHADOW_CONTINUATION_SIGNAL, and the 11-value state machine.
+- **Role independence.** This repair was produced in a fresh Architect context that wrote none of R1–R3 and none of the Astra audits. Run G is new code with new seeds. Astra's evidence directory was read, not reused.
+
 ## Independent checks performed
 
 - Analytic: N_naive, MDE, date ceiling, label probabilities (power table §2–3), reproducing Astra §6.3 and Fable §1.1 exactly.
@@ -90,6 +116,26 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
   - The frontier lies below the true adverse cost share in every C3 design.
   - The cap-date observable flag fires 100% (cap96), ≈ 75% (template / stations) and 0% (hidden).
   - Frontier algebra verified: monotone decreasing; endpoints L_W − δ and −1.
+
+- Run G (power table §4.8, `WEATHER_FORWARD_V2_D4_C3_LW_CAL_SIM_2026-10-01.py`, fresh code and seeds):
+  - Astra M1 reproduced.
+  - 156 class cells × 20,000 replications, 36 boundary, 15 outside-class, 16 power, 2 C3 and 3 × 100,000 re-runs.
+  - Adopted rule: worst joint miss 0.0465 (re-runs 0.0458 / 0.0464), worst size 0.0423, boundary worst 0.0381.
+  - C3 cells: 0 false window claims; conditional claim false only through the L_W miss (0.008 / 0.005).
+  - repro-mode lines byte-identical to the class lines.
+
+## Self-attack before READY — D4-C3-M1 (orchestrator mission)
+
+| # | Required check | Result |
+|---|---|---|
+| 1 | Reproduce Astra M1 with fresh code and seeds (≥ 20,000) | PASS: 0.0789 [0.0752, 0.0826] vs 0.0805; 0.0889 [0.0850, 0.0928] vs 0.0902; three further Astra cells inside the run-G intervals |
+| 2 | Repair on the counterexample cells and over the declared class (≥ 20,000 per cell; ≥ 100,000 near 0.05) | PASS: adopted rule ≤ 0.05 in all 156 cells (worst 0.0465 [0.0436, 0.0494]; 100,000-replication re-runs 0.0458 [0.0445, 0.0471] and 0.0464 [0.0451, 0.0477]); size ≤ 0.0423; Astra cells 0.0271 / 0.0319 / 0.0297 / 0.0382 / 0.0348 |
+| 3 | Boundary: 60 / 25, dominant station, dominant date, no-persistence baseline, thick 35 / date | PASS: worst 0.0381; baseline ≤ 0.0174 (conservative, never anti-conservative: L_W ≤ R3's bound pointwise); 60 / 25 valid but nearly powerless (disclosed) |
+| 4 | Regression: R1 / R2 / R3 surfaces byte-identical, 11 states, no unconditional prospective label, C3 cells | PASS: section-level byte comparison against 341e0b7a (delta D4-C3-M1 REGRESSION); C3 cells 0 false window claims, conditional claim false only via the L_W miss |
+| 5 | Power cost reported honestly | PASS: power table §4.8; spec 1, 6.2, 7, 8.1b, 10.3, 24 |
+| 6 | Committed script reproduces the committed output | PASS: repro mode = class lines byte-identical; stress / C3 / boundary / re-run cell 1073 re-run from the committed script byte-identical (resume checkpoint §3d) |
+| 7 | No threshold, no tuning to a synthetic number | PASS: class and criterion declared first; RM failure published; no ε, δ, H or τ introduced |
+| 8 | Capital / live / t0 / Builder | unchanged: FALSE / FALSE / NOT_DECLARED / FALSE |
 
 ## Self-attack before READY — R3 (mission §42)
 
@@ -138,7 +184,9 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 
 ## Remaining limitations (none CRITICAL)
 
-0. **MINOR (cost of R3, disclosed):** no unconditional prospective verdict in either direction. Prospective content is conditional on the declared, unverified transport class. The source bound's sampling coverage is ≈ 0.5 pp liberal in sparse heterogeneous-fill designs (0.9448 [0.9416, 0.9480]; carried D8). Hidden regimes with identical covariates are covered only by the ε budget.
+0. **MINOR (cost of R3, disclosed):** no unconditional prospective verdict in either direction. Prospective content is conditional on the declared, unverified transport class. Hidden regimes with identical covariates are covered only by the ε budget. (The R3 statement "source bound ≈ 0.5 pp liberal" is SUPERSEDED by D4-C3-M1: the calibrated bound holds 0.05 over the declared persistence class 𝒟_P and no level is claimed outside it.)
+0a. **MINOR (cost of D4-C3-M1, disclosed):** the calibrated T2 costs confirmation power (80%-power effect ≈ 0.11–0.12 instead of ≈ 0.09–0.10; nearly powerless at the 60-date floor). Outside 𝒟_P (φ ≥ 0.95) the source bound's level is lower (up to 0.110) and is not claimed. Given reach, the miss is larger than the joint rate (disclosed).
+0b. **OPEN OBSERVATION (frozen surfaces; not repaired by D4-C3-M1):** T1a, NEG and U_W keep 5-date blocks and exceed their nominal levels under 𝒟_P (T1a 0.089 at nominal 0.025; NEG 0.069; U_W miss 0.077 at φ = 0.9). Their 17.8 statements are qualified. Calibrating them needs governance authority; the same multi-block construction would apply.
 1. **MINOR (cost of R2, disclosed):** prospective economic exclusion is not usefully testable within V2's horizon (no valid test has power > ≈ 0.06); V2's negative results are information-level (NEG / R*_CORE_INFORMATION_REJECTED) and realised-window (θ_W, attainable only when the realised tail is small). No capital decision changes, because deployment always required prospective confirmation.
 2. **MINOR:** GO/NO_GO will likely be NO_GO if the post-bias-correction leg mix resembles Astra's b = 0 cross-section (σ_eff ≈ 2.9 → θ_PCE ≈ 0.18–0.26); an honest pre-declared outcome.
 3. **MINOR:** CR engine size with ≈ 24 date blocks and ≈ 40 stations runs near nominal; T1a ≈ 1.3× its 0.025 component level (Astra: PASS for T1 union and T2).
@@ -147,8 +195,8 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 
 ## Blockers
 
-None scientific on the Architect side. Astra's V2 verdict remains BLOCKED until Astra rechecks R3. Procedure items before t0: manifest V2 section B.
+None within the bounded M1 mission. Astra's V2 verdict remains BLOCKED until Astra rechecks D4-C3-M1. Open observation 0b (frozen surfaces) is for Astra / governance. Procedure items before t0: manifest V2 section B.
 
 ## Next action
 
-ASTRA BOUNDED D4-C3 + TRANSPORTABILITY RECHECK ONLY, of the exact R3 commit. Builder remains unauthorised; t0 is not declared; no capital.
+ASTRA BOUNDED D4-C3-M1 RECHECK ONLY, of the exact D4-C3-M1 commit (M1, m8, m9; regression of the R1 / R2 / R3 surfaces). Builder remains unauthorised; t0 is not declared; no capital.
