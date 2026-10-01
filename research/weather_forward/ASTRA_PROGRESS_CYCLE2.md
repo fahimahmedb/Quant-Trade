@@ -21,9 +21,13 @@ Simulations append one JSONL line per completed cell and skip completed cells on
       L_W miss 0.053-0.071, T1a 0.027-0.029 (> 0.05 / 0.025). Needs probe2 sweep + 100k confirmation.
 - [x] Architect selection re-derived from its raw output: lambda 1.70 / 1.60 over 1,183 cells (out_verify_arch_selection.txt)
 
+- [x] 4b. probe2 stopped deliberately at 311/394 cells (fav80, fav85 complete; pt90 partial — pt90 is beyond R*'s
+      admissible range since a = 0.90 needs q > 1). fav85 x box30 rv0.10: L_W miss 0.051-0.060 at 20k (also without pauses).
+- [x] 4c. Power plan partial (m17 thin, 10 cells): reproduces Architect (P(T2) 0.111 @0.09; 0.825 @0.18; NEG 0.116 @-0.12)
+
 ## In progress
-- [ ] chain2.sh: probe2 (394 cells x 20k, price concentration across declared shapes). Resumable.
-- chain1 paused after power cell 10 (resume: ./chain1.sh — skips completed cells).
+- [ ] chain3.sh: probe100 (6 cells x 100k) -> power (rest) -> sample (175 class/slice cells incl. Architect worst cells) -> T1b.
+      chain1 (full class_/slice) superseded by the 175-cell sample (cells_sample.json).
 
 ## Next
 - probe100 confirmations (cells_probe100.json) of worst probe/probe2 cells at 100k
