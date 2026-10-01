@@ -12,7 +12,7 @@ from multiprocessing import Pool
 import astra_m2_engine as E
 
 SEED = 77200201
-CODES = dict(repro=1, repro100=2, class_=3, slice=4, probe=5, worst100=6, power=7, probe100=8, sample=9)
+CODES = dict(repro=1, repro100=2, class_=3, slice=4, probe=5, worst100=6, power=7, probe100=8, sample=9, probe2=10)
 
 
 def G(**kw):
@@ -157,6 +157,25 @@ def plan_probe():
     return [(key(g), g) for g in cells]
 
 
+def plan_probe2():
+    """Follow-up to probe: favourite price concentration within 'CORE prices to 0.90' (spec 17.3 / 8.5c wording) across
+    the declared dependence shapes and calendars (declared rv / phi / L values only)."""
+    cells = []
+    deps = [(), AR(0.9, 0.10), MK(0.9, 0.10), BOX(30, 0.10), BOX(30, 0.05), BOX(15, 0.10), AR(0.8, 0.10)]
+    for pr in ('fav80', 'fav85', 'pt90'):
+        for dep in deps:
+            for cal in (dict(P=0), dict(P=30, lay='rand'), dict(P=30, lay='run')):
+                for cap in ('thin', 'full'):
+                    for th in (0.0, 0.05, 0.10):
+                        cells.append(G(pr=pr, cap=cap, th=th, comps=dep, **cal))
+    for pr in ('fav85', 'pt90'):
+        for dep in (BOX(30, 0.10), MK(0.9, 0.10)):
+            for th in (0.0, 0.10):
+                cells.append(G(pr=pr, m=35, cap='full', th=th, comps=dep, P=30, lay='run'))
+                cells.append(G(pr=pr, D=90, cap='full', th=th, comps=dep, P=30, lay='run'))
+    return [(key(g), g) for g in cells]
+
+
 def plan_power():
     cells = []
     for m, cap in ((17, 'thin'), (17, 'full'), (35, 'thin'), (35, 'full')):
@@ -185,7 +204,7 @@ def plan_from_file(name):
 
 
 PLANS = dict(repro=plan_repro, repro100=plan_repro100, class_=plan_class, slice=plan_slice, probe=plan_probe,
-             power=plan_power)
+             power=plan_power, probe2=plan_probe2)
 
 
 def _job(a):
