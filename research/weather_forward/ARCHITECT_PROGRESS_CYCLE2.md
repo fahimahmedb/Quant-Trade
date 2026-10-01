@@ -23,11 +23,17 @@ SYNTHETIC ONLY; OUTCOME_INFORMATION_USED = FALSE.
   sentence (c) and level texts, 17.8, 20, 21 items 36/41/43-48, 24, 26, 27).
 - Reproducibility: `astra 20000` re-run byte-identical to RUN_H lines 1-12; `cell astra 4 100000` byte-identical to the confirm line.
 
+- Manifest (CALIBRATED_BOUNDS, PERSISTENCE_CLASS_DP_STAR, T1a RULE, NEG RULE, U_W, ALPHA, NULLS, section G); delta D4-C3-M2;
+  power table 4.9; architect state; resume checkpoint 3e.
+- Adversarial re-read: owner-frozen spec sections (3, 5.1, 5.2, 14, 15, 17.2, 17.5) byte-identical to 4423c5c3; nothing outside
+  research/weather_forward changed; Astra / Fable artifacts and North Star untouched.
+
 ## In progress
-- Manifest; delta D4-C3-M2; power table 4.9; architect state; resume checkpoint 3e.
+- none
 
 ## Next
-- Final commit marked READY_FOR_ASTRA_RECHECK (only if every stated level equals a measured level).
+- Final candidate commit (READY_FOR_ASTRA_RECHECK); then ASTRA BOUNDED D4-C3-M2 RECHECK ONLY.
+- Flag for Astra / governance: feasibility consequence (P(T2) at theta_PCE 0.07-0.11; NEG power ~0.12 at -0.07).
 
 ## Seeds
 - Run H: SeedSequence([20261101, plan_code, cell_index, stream]); plan codes class_=1, fav35=2, geo=3, outside=4, t1b=5, power=6,

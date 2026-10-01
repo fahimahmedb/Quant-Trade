@@ -1,11 +1,11 @@
-# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3, D4-C3-M1) — 2026-09-29 / 2026-10-01
+# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3, D4-C3-M1, D4-C3-M2) — 2026-09-29 / 2026-10-01
 
 ```text
-ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability), D4-C3-M1 (M1, m8, m9)
+ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability), D4-C3-M1 (M1, m8, m9), D4-C3-M2 (M1-R, M2, m10, m11, T1b)
 PURPOSE              = durable restart surface: a fresh session (after token / context / container loss) resumes from
                        THIS FILE, never from chat memory
 BRANCH               = claude/charming-allen-948kd8
-STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR = READY_FOR_ASTRA_RECHECK   (R3 @341e0b7a BLOCKED M1 by Astra @5bb57eb2)
+STATUS               = WEATHER_FORWARD_SPEC_V2_D4_C3_M2_REPAIR = READY_FOR_ASTRA_RECHECK   (D4-C3-M1 @4423c5c3 BLOCKED M1-R / M2 by Astra @ac777a87)
 REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_DECLARED · BUILDER_AUTHORIZED = FALSE
 ```
 
@@ -33,6 +33,9 @@ REAL_CAPITAL_AUTHORIZED = FALSE · LIVE_TRADING_AUTHORIZED = FALSE · t0 = NOT_D
 | D4-C3 repair R3 head (audited) | claude/charming-allen-948kd8 | 341e0b7aede716fdb68e2c9806cc1a09fdd50b82 |
 | Astra D4-C3 + transportability recheck (BLOCKED M1) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | 5bb57eb2adf4cff35378f2c0e53e0316d45a4229 (read only; not merged into this branch) |
 | Orchestrator D4 convergence ledger (cycle 1) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | c47080bc1741d91e0f7e23a41b3752291658b4df (read only) |
+| D4-C3-M1 head (cycle 1, audited) | claude/charming-allen-948kd8 | 4423c5c3fe36c1d425b832ef87a9a774913377b4 |
+| Astra D4-C3-M1 recheck (BLOCKED M1-R, M2) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | ac777a870e7f6b09636f06fe7720194d257427eb (read only; not merged into this branch) |
+| Orchestrator ledger (cycle 2 mandate) | astra/weather-forward-v2-independent-reaudit-2026-09-29 | e3f6cf9ec301ce2f09e6054e34c19066bcf04e8e (read only) |
 
 ## 3. Phase ledger (checkpoints)
 
@@ -90,7 +93,30 @@ D4-C3-M1 decisions (do not re-derive without new evidence):
 - **Open observation (frozen surfaces; not repaired).** T1a / NEG / U_W keep 5-date blocks and exceed their nominal levels under 𝒟_P. Spec 17.8 is qualified at statement level only. This is governance's call.
 - m8 guard and m9 markers are applied.
 
-Next: ASTRA BOUNDED D4-C3-M1 RECHECK ONLY.
+Next (cycle 1): ASTRA BOUNDED D4-C3-M1 RECHECK ONLY — done @ac777a87: BLOCKED (M1-R, M2); see 3e.
+
+## 3e. Phase ledger — D4-C3-M2 calibration (2026-10-01; fresh Architect context, convergence cycle 2)
+
+| Phase | Content | Status | Checkpoint |
+|---|---|---|---|
+| N0 | verify origin head = 4423c5c3 and ac777a87 on the Astra branch; read Astra @ac777a87 (§§1–15) + evidence, ledger "Blocker handed to cycle-2 Architect", spec §§ listed in the mission, manifest, delta, power table §4.8, state, this file, run-G script | DONE | — |
+| N1 | `WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py` (run H) declared (class 𝒟_P*, family, λ grid, criterion, comparators) before any run; plans astra / class / fav35 / geo / outside / power / t1b × 20,000 (≈ 2 h on 4 cores); 14 confirmation cells × 100,000 (≈ 10 min) | DONE | raw output committed in WIP 791083d3 |
+| N2 | spec 8.1c + propagation; manifest (CALIBRATED_BOUNDS, PERSISTENCE_CLASS_DP_STAR, section G); delta D4-C3-M2; power table §4.9; architect state; this ledger; progress file `ARCHITECT_PROGRESS_CYCLE2.md` | DONE | WIP checkpoints 8feb3b25, 01a5b5d5, d5fc379f |
+| N3 | final candidate commit (READY_FOR_ASTRA_RECHECK); push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
+
+D4-C3-M2 decisions (do not re-derive without new evidence):
+- **Option (a) for M1-R and M2.** `stat ∓ λ · max_{b∈{5,10,20,30}} t_{df_b,q} SE_2w(b)`:
+  - λ_θ = 1.70 for L_W (q 0.95) and U_W's core term (q 0.975);
+  - λ_κ = 1.60 for T1a / NEG (q 0.975);
+  - headline [L_W, U_W];
+  - IF4 / IF5 / GO unchanged.
+- **Class 𝒟_P*** as in spec 8.1c / manifest PERSISTENCE_CLASS_DP_STAR. Do not narrow it after seeing results; a narrower class needs its own outcome-blind declaration and audit (V3 / governance).
+- **Disclosed, not retuned.** Power cost: P(T2) at θ_PCE 0.07–0.11; 80%-power effect ≈ 0.18; T1a MDE80 ≈ 0.11; NEG power ≈ 0.12 at −0.07. These are a feasibility question for Astra / governance.
+- **Re-run commands.**
+  - `OMP_NUM_THREADS=1 python3 research/weather_forward/WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py <plan> 20000`, for plan in astra, class, fav35, geo, outside, power, t1b; the raw output is their concatenation in that order.
+  - `… cell <plan> <idx> 100000` for the confirmation cells: class 887, 885, 883, 886, 884, 878, 658, 656, 657, 880, 648; astra 0, 1, 4.
+
+Next: ASTRA BOUNDED D4-C3-M2 RECHECK ONLY.
 
 ## 4. Decisions already made (do not re-derive)
 
