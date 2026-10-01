@@ -1,0 +1,6 @@
+mid prices, m17 thin: sd_none 0.0364  sd_worst(P0|box30_0.1) 0.1077  ratio 2.96
+   oracle non-adaptive test valid under worst truth: critical value 0.1772; power at theta_PCE 0.09 under no persistence = 0.008; 80%-power effect = 0.208
+   unrestricted oracle (truth = no persistence, sd known): power at theta_PCE = 0.795
+fav prices, m17 thin: sd_none 0.0154  sd_worst(P30run|box30_0.1) 0.0387  ratio 2.52
+   oracle non-adaptive test valid under worst truth: critical value 0.0637; power at theta_PCE 0.05 under no persistence = 0.187; 80%-power effect = 0.077
+   unrestricted oracle (truth = no persistence, sd known): power at theta_PCE = 0.946

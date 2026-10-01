@@ -25,6 +25,11 @@ Simulations append one JSONL line per completed cell and skip completed cells on
       admissible range since a = 0.90 needs q > 1). fav85 x box30 rv0.10: L_W miss 0.051-0.060 at 20k (also without pauses).
 - [x] 4c. Power plan partial (m17 thin, 10 cells): reproduces Architect (P(T2) 0.111 @0.09; 0.825 @0.18; NEG 0.116 @-0.12)
 
+- [x] probe100 (6 x 100k): fav85 box30 rv0.10 L_W miss 0.0587 [0.0573,0.0602] (P30 run, full), 0.0557 (thin),
+      0.0523 [0.0509,0.0537] (no pauses); T1a 0.0262 [0.0253,0.0273]; fav80 0.0506 [0.0492,0.0520]
+- [x] power plan complete (52 cells); oracle benchmark out_oracle_benchmark.txt (sd ratio worst/none 2.96 mid prices;
+      non-adaptive oracle power at theta_PCE 0.008) => power shortfall intrinsic to 120 dates x D_P*
+
 ## In progress
 - [ ] chain3.sh: probe100 (6 cells x 100k) -> power (rest) -> sample (175 class/slice cells incl. Architect worst cells) -> T1b.
       chain1 (full class_/slice) superseded by the 175-cell sample (cells_sample.json).
