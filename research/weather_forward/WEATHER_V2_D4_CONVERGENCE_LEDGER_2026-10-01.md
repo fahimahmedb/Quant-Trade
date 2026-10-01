@@ -8,15 +8,15 @@ in a FRESH sub-agent context; earlier reviewer conclusions are immutable history
 CURRENT_ROLE            = ORCHESTRATOR (no review, no repair authority)
 ARCHITECT_BRANCH        = claude/charming-allen-948kd8
 ASTRA_BRANCH            = astra/weather-forward-v2-independent-reaudit-2026-09-29
-CURRENT_SHA (candidate) = 341e0b7aede716fdb68e2c9806cc1a09fdd50b82
+CURRENT_SHA (candidate) = 4423c5c3fe36c1d425b832ef87a9a774913377b4
 LAST_ASTRA_SHA          = 5bb57eb2adf4cff35378f2c0e53e0316d45a4229   (R3 audit; BLOCKED M1)
-LAST_ARCHITECT_SHA      = 341e0b7aede716fdb68e2c9806cc1a09fdd50b82   (R3)
+LAST_ARCHITECT_SHA      = 4423c5c3fe36c1d425b832ef87a9a774913377b4   (cycle-1 M1 repair; content 81929e4)
 OPEN_BLOCKER            = D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE (M1, MAJOR) + minors m8, m9
 CLOSED_FINDINGS         = C1 (R1), C2 (R2), C3 unconditional confirmation (R3), MP1, MP2 (via R3), m1–m7
 CYCLE                   = 1 of max 5
-CURRENT_PHASE           = CYCLE 1 / ARCHITECT REPAIR (fresh sub-agent) — pending
-NEXT_EXACT_ACTION       = fresh Architect sub-agent repairs M1 + m8 + m9 on claude/charming-allen-948kd8 from 341e0b7a;
-                          then a fresh Astra sub-agent rechecks the new exact SHA
+CURRENT_PHASE           = CYCLE 1 / FRESH ASTRA RECHECK of 4423c5c3 — pending
+NEXT_EXACT_ACTION       = fresh Astra sub-agent rechecks claude/charming-allen-948kd8 @ 4423c5c3 (reproduce M1 on 341e0b7a and on
+                          4423c5c3; second-order search; judge the Architect-flagged T1a / NEG / U_W persistence issue)
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 t0                      = NOT_DECLARED
@@ -34,7 +34,7 @@ surfaces it passed (transport algebra, frontier, semantics, state machine), not 
 | Cycle | Phase | Context | Branch @ SHA | Verdict / status |
 |---|---|---|---|---|
 | 0 | Astra R3 audit | orchestrator context (not independent of R3 author) | astra @ 5bb57eb2 | BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE |
-| 1 | Architect repair | fresh sub-agent | pending | pending |
+| 1 | Architect repair | fresh sub-agent | arch @ 4423c5c3 (content 81929e4) | READY_FOR_ASTRA_RECHECK. Option (a): L_W = θ̂ − max_{b∈{5,10,20,30}} t_{df_b,0.95}·SE_2w(b); declared persistence class 𝒟_P (φ ∈ {0.5,0.7,0.8,0.9} × var ∈ {0.02,0.05,0.10}); Architect-reported worst joint miss 0.0465 [0.0436,0.0494]; power cost disclosed; m8, m9 fixed. Architect-flagged, not repaired: T1a / NEG / U_W still 5-date blocks and overshoot under persistence (φ 0.9: T1a 0.089, NEG 0.069, U_W miss 0.077) |
 | 1 | Astra recheck | fresh sub-agent | pending | pending |
 
 ## Blocker handed to cycle-1 Architect (frozen)
