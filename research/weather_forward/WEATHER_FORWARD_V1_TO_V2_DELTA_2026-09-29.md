@@ -9,6 +9,7 @@ V2-R1  = D4 repair R1 after Astra V2 re-audit @7d95c00abccfbc805c0d8abca65a6b932
 V2-R2  = D4 repair R2 after Astra D4 recheck @3d18085862f239a81936345989b4e26414cedcf3 (section D4-C2; D4.d / D4.e kept as the R1 record)
 V2-R3  = D4 repair R3 after Astra D4-C2 recheck @92c2f706d2ac75af9ae9710061c60df520234410 (section D4-C3; D4-C2 kept as the R2 record)
 V2-R3-M1 = D4-C3-M1 source-bound calibration after Astra D4-C3 recheck @5bb57eb2adf4cff35378f2c0e53e0316d45a4229 (section D4-C3-M1; D4-C3 kept as the R3 record)
+V2-R3-M2 = D4-C3-M2 calibration (convergence cycle 2) after Astra D4-C3-M1 recheck @ac777a870e7f6b09636f06fe7720194d257427eb (section D4-C3-M2; D4-C3-M1 kept as the cycle-1 record)
 SUMMARY: OUTCOME_INFORMATION_USED = FALSE for every item · TRADING_RULE_CHANGED = FALSE for every item ·
          EXECUTION_MODEL_CHANGED = TRUE for one item (X1, CONSERVATIVE only) · COHORT_CHANGED = TRUE for one item (D7)
 ```
@@ -200,6 +201,8 @@ BUILDER_IMPACT:
 
 **D4-C3-M1 — source-bound calibration under cross-block date persistence (after Astra D4-C3 + transportability recheck @5bb57eb2; delta V2-R3 @341e0b7a → V2-R3-M1)**
 
+*SUPERSEDED IN PART by D4-C3-M2 (Astra M1-R / M2 @ac777a87): the stated level below held only on the run-G grid, and the frozen-surface observation is repaired there.*
+
 ASTRA_FINDING: M1 (MAJOR, blocking), plus minors m8 and m9.
 - After R3, `L_W = θ̂ − t_{df,0.95} SE_CR(θ̂)` (two-way CR, 5-date blocks × ICAO) is the only probability behind REALIZED_WINDOW_VALUE_SUPPORTED / NOT_ROBUST ("size ≤ 0.05") and behind every conditional prospective statement (8.5c).
 - Under date persistence across 5-date blocks — a mechanism spec §9 names — it undercovers in sparse designs that pass the information floor. Astra measured a false window positive of 0.0805 [0.0767, 0.0843] at θ_W = 0 and an L_W miss of 0.0902 [0.0863, 0.0942] (φ = 0.8, latent regime variance 0.05, m = 17).
@@ -288,6 +291,94 @@ OUTCOME_INFORMATION_USED = FALSE (synthetic run G, algebra and the Astra audit o
 TRADING_RULE_CHANGED = FALSE. EXECUTION_MODEL_CHANGED = FALSE (by M1). COHORT_CHANGED = FALSE (by M1).
 
 BUILDER_IMPACT: compute the 8.1 two-way SE of θ̂ at 5-, 10-, 20- and 30-date calendar blocks, and set L_W = θ̂ − max_b t_{df_b,0.95}·SE_2w(b). Print the class-indexed level text with L_W. Everything else is unchanged.
+
+**D4-C3-M2 — calibrated multi-block bounds for L_W, U_W, T1a and NEG over a completely stated class (convergence cycle 2; after Astra D4-C3-M1 recheck @ac777a87; delta V2-R3-M1 @4423c5c3 → V2-R3-M2)**
+
+ASTRA_FINDING: M1-R (MAJOR), M2 (MAJOR), minors m10 and m11, and a T1b proof gap.
+- **M1-R.** The cycle-1 L_W held ≤ 0.05 only on the run-G grid. Inside the class as written it failed:
+  - favourite CORE prices: 0.0605 / 0.0635 at 100,000, and 0.0852 at rv 0.10;
+  - 30 paused dates: 0.0531;
+  - the literal §9 30-date trailing mean: 0.0597;
+  - two-state regime: 0.0526.
+- **M2.** T1a / NEG / U_W kept 5-date blocks (0.0888 / 0.0707 / 0.0755 inside 𝒟_P) while several sections asserted nominal levels. The U_W / headline-interval inconsistency was also flagged.
+- **Orchestrator scope note (ledger, cycle 2).** The κ̂_core / θ̂_core SE construction is in the repair surface; it was a cycle-1 orchestrator bound, not an owner freeze.
+
+REPRODUCED (run H; fresh seeds; 20,000 per cell, 100,000 where stated): cycle-1 rule:
+- favourite miss 0.0639 [100,000], size 0.0595 [100,000];
+- rv 0.10: 0.0845 / 0.0724;
+- 30 random paused dates: 0.0534 [100,000];
+- two-state: 0.0547;
+- trailing mean 30: 0.0610 / 0.0556.
+
+Pre-repair 5-date T1a / NEG / U_W at Astra's M2 cell: 0.0881 / 0.0707 / 0.0698. Every value lies within Monte-Carlo error of Astra's. Over the completely stated class the cycle-1 rule reaches 0.1176, and the 5-date T1a / NEG / U_W reach 0.1752 / 0.1025 / 0.1077.
+
+REPAIR (option (a) for both blockers; spec 8.1c):
+- **Construction.** `stat ∓ λ · max_{b∈{5,10,20,30}} t_{df_b,q} SE_2w(b)`:
+  - L_W at q 0.95 and U_W's core term at q 0.975, both with λ_θ = 1.70;
+  - T1a and NEG at q 0.975 with λ_κ = 1.60.
+- **Headline.** The headline interval is `[L_W, U_W]`, so REALIZED_WINDOW_LOSS_CONFIRMED and the interval always agree.
+- **Unchanged.** IF4 / IF5 stay on 5-date blocks and GO is unchanged, so reach is numerically unchanged.
+- **Class.** 𝒟_P* is completely stated (spec 8.1c; manifest row PERSISTENCE_CLASS_DP_STAR):
+  - AR(1), two-state, 15- and 30-date trailing-mean (the §9 mechanism), hemisphere and station regimes, latent variance ≤ 0.10;
+  - ≤ 30 paused dates, random or contiguous;
+  - 60–120 counted dates;
+  - CORE prices including favourites to 0.90, and TAIL mixes;
+  - m ∈ {17, 35}; thin / full fills.
+- **Selection** (declared in the run-H header before any run):
+  - λ is the smallest value on {1.00, …, 2.50} with joint L_W miss / size / U_W miss ≤ 0.040 and T1a / NEG ≤ 0.020 in every cell;
+  - the three worst cells per surface are confirmed at 100,000 with Wilson upper bounds ≤ 0.050 / 0.025, moving λ up if a confirmation fails;
+  - all confirmations passed first time.
+- **Stated levels.** Jointly with reach over 𝒟_P*: L_W miss / T2 size ≤ 0.05, U_W miss ≤ 0.05, T1a ≤ 0.025, NEG ≤ 0.025, T1b ≤ 0.025, T1 ≤ 0.05, headline ≥ 0.90.
+  - Measured worst: 0.0415 [0.0403, 0.0427] / 0.0353 / 0.0089 / 0.0198 [100,000: 0.0193 [0.0185, 0.0202]] / 0.0106 [100,000: 0.0100 [0.0095, 0.0107]] / 0.0077 / 0.0089 / 0.0429 non-coverage.
+  - None is claimed outside 𝒟_P* or given a printed label. Given reach, in cells with reach ≥ 0.10, L_W miss reaches up to 0.182 (disclosed).
+- **Propagated** to spec header, 1, 2 (rows D4-C3-M1, D4-C3-M2), 6.1, 6.2, 6.3, 7, 8.1, 8.1b (SUPERSEDED-in-part markers), 8.3, 8.4, 8.5, 8.5b, 8.5c (Theorem 2 definition, error statement), 9, 10.1 (BLOCK_SET, LAMBDA_THETA, LAMBDA_KAPPA, LEVEL_CONVENTION), 10.3, 11.4, 17.3 (level texts for SOURCE_LOWER_BOUND, REALIZED_WINDOW_BOUND, INFO_SOURCE, CORE_ADVERSE; sentence (c); headline), 17.8, 20, 21 (items 36, 41, 43–48), 24, 26 and 27, and to the manifest.
+- **m10.**
+  - 8.5c "unchanged T2 / CR engine" is replaced;
+  - the D4-C3 CLAIM_STRENGTH size line is marked SUPERSEDED;
+  - §2 rows are added;
+  - "the level is lower" becomes "the miss is higher (coverage lower)" in spec 8.1b / 8.5c, power table §4.8 and architect state.
+- **m11.** Sentence (c) says "a repeated-experiment rate counted jointly with reaching an evaluated state, not a confidence given that this label was printed".
+- **T1b.** Measured, unchanged: ≤ 0.0077; T1 ≤ 0.0089 (pre-repair T1 up to 0.0713).
+
+FAILED / PUBLISHED CANDIDATES (same replications; worst L_W miss over 𝒟_P*):
+- cycle-1 rule 0.1176;
+- blocks {5, 10, 20, 30, 40} 0.0968;
+- quantile 0.975 0.0742;
+- R3 engine 0.2439;
+- λ_θ 1.00–1.65 and λ_κ 1.00–1.55 fail the criterion.
+
+The smallest passing λ by sub-family is published as disclosure, for example run-G-like 1.10 / 1.00 and AR-only 1.50 / 1.40. It is not used for selection.
+
+POWER / FEASIBILITY COST (disclosed, not retuned; power table §4.9). Joint with reach, no persistence.
+- P(T2) at θ_PCE: 0.109 / 0.084 / 0.067 / 0.070 (cycle-1 0.551 / 0.473 / 0.343 / 0.349).
+- SUPPORTED at θ = 0.10, m 17: 0.161 / 0.181.
+- 80%-power effect ≈ 0.18.
+- T1a MDE80 ≈ 0.11 per share (was ≈ 0.035).
+- NEG power at −0.07 per share: ≈ 0.12 (m 17) / 0.16–0.17 (m 35), against 0.89 / 0.58 for the 5-date test.
+- REALIZED_WINDOW_LOSS_CONFIRMED at θ_W = −0.12: 0.05–0.09.
+
+GO, θ_PCE, PCE_CEILING, SE_KAPPA_CEILING and IF1–IF5 are unchanged. A GO no longer implies material T2 power, nor a usable negative-result instrument. **This is a feasibility consequence for Astra and governance, not a validity defect.**
+
+REGRESSION:
+- Unchanged: trading rule (spec §3, §5.2, §14, §15), estimands, accounting, M_tail, R2 exclusion removal, R3 transport algebra (Proposition 1, Theorem 2 algebra), cost-mass ε, frontier definition and grids, label vocabulary, 11-value state machine, SHADOW_CONTINUATION_SIGNAL, PINM / T1b, PCE formula, GO / NO_GO, IF1–IF5.
+- Theorem 2 holds for any L_W, so the calibrated L_W is a valid input.
+- No unconditional prospective label exists.
+
+FILES_CHANGED:
+- spec;
+- manifest (header, NULLS, ALPHA, TARGET_POWER, PRIMARY_INFERENCE, T2_SOURCE_BOUND marker, new CALIBRATED_BOUNDS and PERSISTENCE_CLASS_DP_STAR, NEG RULE, new T1a RULE, REALIZED_WINDOW_UPPER_BOUND, ROBUST_BOUND / FRONTIER, DEPENDENCE_MODEL, MANDATORY_SENTENCES, MIN_INFORMATION, INDEPENDENT_REAUDIT, section F marker, new section G);
+- this delta (new entry; D4-C3 marker);
+- power table (new §4.9; §4.8 reading 4 wording; §5 reading);
+- architect state;
+- resume checkpoint (ledger 3e);
+- progress file `ARCHITECT_PROGRESS_CYCLE2.md`;
+- new `WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py`, `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_OUTPUT_2026-10-01.jsonl` and `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_CONFIRM_100K_2026-10-01.jsonl`.
+
+OUTCOME_INFORMATION_USED = FALSE (synthetic run H, algebra and the Astra audit only).
+
+TRADING_RULE_CHANGED = FALSE. EXECUTION_MODEL_CHANGED = FALSE (by M2). COHORT_CHANGED = FALSE (by M2).
+
+BUILDER_IMPACT: compute the 8.1 two-way SE at 5-, 10-, 20- and 30-date calendar blocks for θ̂, θ̂_core and κ̂_core; apply λ_θ = 1.70 (L_W, U_W) and λ_κ = 1.60 (T1a, NEG); print the headline [L_W, U_W] and the 17.3 level texts. IF4 / IF5 are unchanged.
 
 ## D5 — Science vs operability (MAJOR → CLOSED)
 

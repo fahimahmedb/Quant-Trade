@@ -557,6 +557,118 @@ Readings:
 8. **C3 regression.** On run F's own process the adopted rule issues the window-positive label (a true statement about θ_W there) in 0.329 / 0.061 of runs (R3 engine 0.428 / 0.121). It never issues a false window claim. The conditional claim is false only through the L_W miss (0.008 / 0.005). Structurally, no unconditional prospective label can be issued, because the vocabulary has none.
 
 
+### 4.9 Run H — D4-C3-M2 calibration of L_W, U_W, T1a and NEG over the completely stated class 𝒟_P* (after Astra D4-C3-M1 recheck @ac777a87)
+
+Script `WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py` (fresh code; seeds `SeedSequence([20261101, plan, cell, stream])`; synthetic only). Raw output:
+- `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_OUTPUT_2026-10-01.jsonl`: plans astra 12, class 900, fav35 160, geo 72, outside 20, power 36 and t1b 12 cells, each at 20,000 replications;
+- `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_CONFIRM_100K_2026-10-01.jsonl`: 14 cells at 100,000 replications (streams 1–5).
+
+The class, construction family, λ grid, selection criterion and comparators were declared in the script header before any run (spec 8.1c). Each line stores, for every λ on the grid, the joint counts of:
+- L_W miss, false positive, SUPPORTED and T2;
+- U_W miss and loss, headline non-coverage;
+- T1a / NEG (all and false).
+
+It also stores the comparators and the pre-repair 5-date objects. Re-run check: `astra 20000` and `cell astra 4 100000` reproduce the committed lines byte-for-byte.
+
+**Selection.** λ_θ = 1.70 and λ_κ = 1.60 are the smallest grid values meeting the declared targets (joint L_W miss, size and U_W miss ≤ 0.040; T1a, NEG ≤ 0.020) in all 1,183 reached in-class cells. Eight cells (log-uniform and U(0.04, 0.35) prices) are NO_GO in every run.
+
+**Smallest passing λ by sub-family** (disclosure only; not a selection):
+
+| Sub-family | λ_θ | λ_κ |
+|---|---|---|
+| none | 1.00 | 1.00 |
+| AR φ 0.5 / 0.7 / 0.8 / 0.9 | 1.05 / 1.15 / 1.25 / 1.50 | 1.00 / 1.05 / 1.15 / 1.40 |
+| two-state φ 0.8 / 0.9 | 1.15 / 1.50 | 1.10 / 1.50 |
+| trailing mean 15 / 30 | 1.35 / 1.70 | 1.30 / 1.60 |
+| hemisphere / station φ 0.9 | 1.20 / 1.00 | 1.10 / 1.00 |
+| prices U(0.35, 0.80) / mix / favourite | 1.30 / 1.45 / 1.70 | 1.30 / 1.50 / 1.60 |
+| run-G-like (U(0.35, 0.80), no pauses, AR only) | 1.10 | 1.00 |
+
+**Worst joint rates at the adopted constants (20,000 per cell).**
+
+| Dependence | L_W miss | size | U_W miss | T1a | NEG | cycle-1 L_W (λ 1) | pre-repair 5-date T1a / NEG / U_W |
+|---|---|---|---|---|---|---|---|
+| none | 0.0026 | 0.0021 | 0.0002 | 0.0004 | 0.0002 | 0.0360 | 0.0380 / 0.0274 / 0.0290 |
+| AR φ 0.5 | 0.0050 | 0.0043 | 0.0003 | 0.0014 | 0.0003 | 0.0459 | 0.0466 / 0.0288 / 0.0301 |
+| AR φ 0.7 | 0.0081 | 0.0072 | 0.0006 | 0.0027 | 0.0007 | 0.0537 | 0.0641 / 0.0349 / 0.0361 |
+| AR φ 0.8 | 0.0121 | 0.0107 | 0.0009 | 0.0043 | 0.0012 | 0.0655 | 0.0820 / 0.0455 / 0.0471 |
+| AR φ 0.9 | 0.0268 | 0.0220 | 0.0028 | 0.0115 | 0.0031 | 0.0954 | 0.1577 / 0.0792 / 0.0814 |
+| two-state φ 0.8 | 0.0115 | 0.0095 | 0.0014 | 0.0050 | 0.0018 | 0.0568 | 0.0741 / 0.0498 / 0.0561 |
+| two-state φ 0.9 | 0.0279 | 0.0255 | 0.0089 | 0.0163 | 0.0106 | 0.0856 | 0.1187 / 0.0937 / 0.1054 |
+| trailing mean 15 | 0.0211 | 0.0155 | 0.0013 | 0.0080 | 0.0014 | 0.0811 | 0.1100 / 0.0593 / 0.0624 |
+| trailing mean 30 | 0.0395 | 0.0353 | 0.0044 | 0.0198 | 0.0057 | 0.1176 | 0.1752 / 0.1025 / 0.1077 |
+| hemisphere φ 0.9 | 0.0100 | 0.0094 | 0.0007 | 0.0032 | 0.0008 | 0.0612 | 0.1071 / 0.0627 / 0.0641 |
+| station φ 0.9 | 0.0008 | 0.0007 | 0.0000 | 0.0001 | 0.0001 | 0.0222 | 0.0354 / 0.0238 / 0.0245 |
+
+By other dimensions (worst L_W miss):
+- calendars: P 0 0.0350, 30 random 0.0359, 30 contiguous 0.0395;
+- truncated windows: D 90 0.0168, D 60 0.0011;
+- m 35: 0.0344 (thin) / 0.0321 (full);
+- TAIL mixes: 1% 0.0108, 3% 0.0039.
+
+Comparators at λ = 1 (worst L_W miss / size): blocks {5, …, 40} 0.0968 / 0.0854; quantile 0.975 0.0742 / 0.0658; R3 engine 0.2439. All fail.
+
+**100,000-replication confirmations (95% Wilson).**
+
+| Cell (m 17) | L_W miss | size | U_W miss | T1a | NEG | headline non-coverage | cycle-1 L_W |
+|---|---|---|---|---|---|---|---|
+| trailing 30, rv 0.10, favourite, 30 contiguous paused, full, θ 0.10 | 0.0415 [0.0403, 0.0427] | — | 0.0014 | — | — | 0.0429 | 0.1219 |
+| same, thin | 0.0400 [0.0388, 0.0413] | — | 0.0011 | — | — | 0.0411 | 0.1213 |
+| trailing 30, rv 0.10, favourite, 30 random paused, full, θ 0.10 | 0.0352 [0.0341, 0.0364] | — | 0.0008 | — | — | 0.0360 | 0.1117 |
+| trailing 30, rv 0.10, favourite, 30 contiguous paused, full, θ 0 | 0.0336 | 0.0336 [0.0325, 0.0347] | 0.0021 | 0.0188 [0.0180, 0.0197] | 0.0027 | 0.0356 | 0.1031 |
+| same, thin, θ 0 | 0.0336 | 0.0336 [0.0325, 0.0347] | 0.0018 | 0.0193 [0.0185, 0.0202] | 0.0025 | 0.0354 | 0.1023 |
+| trailing 30, rv 0.10, favourite, no pause, full, θ 0 | 0.0297 | 0.0297 | 0.0013 | 0.0148 | 0.0017 | 0.0310 | 0.0943 |
+| trailing 30, rv 0.10, favourite, 30 random paused, thin, θ 0 | 0.0292 | 0.0292 | 0.0015 | 0.0165 | 0.0019 | 0.0307 | 0.0965 |
+| two-state 0.9, rv 0.10, U(0.35, 0.80), 30 contiguous paused, full, θ 0 | 0.0194 | 0.0194 | 0.0085 [0.0079, 0.0091] | 0.0125 | 0.0100 [0.0095, 0.0107] | 0.0279 | 0.0464 |
+| same, thin, θ 0 | 0.0186 | 0.0186 | 0.0082 | 0.0121 | 0.0098 | 0.0268 | 0.0459 |
+| same, thin, θ 0.10 | 0.0193 | — | 0.0069 | — | 0.0003 | 0.0263 | 0.0512 |
+| two-state 0.9, rv 0.10, no pause, thin, θ 0 | 0.0171 | 0.0171 | 0.0064 | 0.0105 | 0.0079 | 0.0236 | 0.0440 |
+| Astra: favourite AR 0.9 rv 0.05 thin θ 0.10 | 0.0114 [0.0108, 0.0121] | — | 0.0001 | — | — | 0.0116 | 0.0639 |
+| Astra: same, θ 0 | 0.0100 | 0.0100 [0.0094, 0.0106] | 0.0002 | 0.0036 | 0.0005 | 0.0102 | 0.0595 |
+| Astra: 30 random paused, AR 0.9 rv 0.05, θ 0.10 | 0.0069 [0.0064, 0.0074] | — | 0.0010 | — | — | 0.0079 | 0.0534 |
+
+Every confirmation upper bound is inside its requirement (≤ 0.050 for L_W / U_W; ≤ 0.025 for T1a / NEG). Given reach, the rates are larger: in cells with reach ≥ 0.10 the worst are L_W 0.182, size 0.112, U_W 0.054, T1a 0.069 and NEG 0.065.
+
+**T1b and T1 (proof gap).** PINM is spec 8.3 with B = 2,000 per replication; sharp null; κ_core = 0; 20,000 replications.
+- T1b: ≤ 0.0077 in all 12 TAIL cells (none / AR 0.8–0.9 / two-state / trailing 30).
+- T1 under the calibrated T1a: ≤ 0.0089. With the pre-repair 5-date T1a it reached 0.0713.
+
+**Outside 𝒟_P*** (disclosure only, no level claimed): calibrated L_W miss up to 0.0494 (60-date trailing mean, favourite prices); φ 0.97 0.0486; φ 0.95 0.0478; rv 0.20 ≤ 0.0341.
+
+**Power and feasibility (joint with reach, no persistence unless stated).**
+
+| Cell | reach | P(T2) R3 engine / cycle-1 / **M2** | SUPPORTED M2 | T1a pre-repair / **M2** | NEG pre-repair / **M2** | LOSS_CONFIRMED λ 1 / **M2** |
+|---|---|---|---|---|---|---|
+| m 17 thin θ_PCE 0.09 | 0.989 | 0.774 / 0.551 / **0.109** | 0.109 | 0.757 / 0.048 | — | — |
+| m 17 thin θ 0.10 | 0.990 | 0.840 / 0.648 / **0.161** | 0.161 | 0.836 / 0.079 | — | — |
+| m 17 thin θ 0.12 / 0.15 / 0.20 | 0.99 | 0.935 / 0.810 / **0.312**; 0.984 / 0.948 / **0.596**; 0.995 / 0.994 / **0.922** | same | 0.938 / 0.198; 0.987 / 0.466; 0.995 / 0.888 | — | — |
+| m 17 thin θ 0.06 (κ ≈ 0.035) | 0.986 | 0.480 / 0.260 / **0.026** | 0.026 | 0.426 / **0.007** | — | — |
+| m 17 thin θ −0.12 (κ ≈ −0.069) / −0.06 | 0.97 | — | — | — | 0.889 / **0.116**; 0.386 / **0.004** | 0.505 / **0.053**; 0.087 / **0.002** |
+| m 17 full θ_PCE 0.08 / 0.10 / 0.15 / 0.20 | 0.99 | 0.705 / 0.473 / **0.084**; 0.856 / 0.669 / **0.181**; 0.987 / 0.958 / **0.635**; 0.995 / 0.994 / **0.936** | same | 0.660 / 0.028 (θ_PCE) | — | — |
+| m 17 full θ −0.12 | 0.967 | — | — | — | 0.885 / **0.116** | 0.537 / **0.059** |
+| m 35 thin θ_PCE 0.07 / 0.10 / 0.20 | 0.66–0.76 | 0.477 / 0.343 / **0.067**; 0.635 / 0.558 / **0.231**; 0.759 / 0.759 / **0.752** | same | 0.458 / 0.024 (θ_PCE) | — | — |
+| m 35 thin / full θ −0.12 | 0.60 | — | — | — | 0.581 / **0.166**; 0.580 / **0.160** | 0.441 / **0.088**; 0.450 / **0.092** |
+| m 35 full θ_PCE 0.07 / 0.10 | 0.66–0.67 | 0.481 / 0.349 / **0.070**; 0.634 / 0.565 / **0.239** | same | 0.453 / 0.024 | — | — |
+| m 17 thin θ_PCE, AR 0.8 rv 0.05 | 0.814 | 0.537 / 0.323 / **0.075** | 0.075 | 0.513 / 0.040 | — | — |
+
+Columns:
+- The R3 engine column is SUPPORTED (gates applied). The cycle-1 and M2 columns are T2 joint with reach.
+- The "pre-repair" T1a / NEG are the 5-date-block tests.
+
+Readings:
+1. The cycle-1 rule's class failure reproduces and is larger inside the completely stated class than in Astra's cells: 0.1176 against 0.0605–0.0852. The worst case is the literal §9 30-date trailing mean with favourite prices.
+2. The calibrated construction holds every stated level over 𝒟_P* with the declared 80% margin, and the 100,000-replication confirmations sit inside the requirements.
+3. **The cost is most of V2's power:**
+   - P(T2) at θ_PCE 0.07–0.11;
+   - 80%-power effect ≈ 0.18 (m 17; m 35 is reach-limited at ≈ 0.75);
+   - T1a MDE80 ≈ 0.11 per share;
+   - NEG power ≈ 0.12–0.17 against −0.07 per share;
+   - REALIZED_WINDOW_LOSS_CONFIRMED ≈ 0.05–0.09 at θ_W = −0.12.
+
+   GO, θ_PCE, PCE_CEILING, SE_KAPPA_CEILING and IF1–IF5 are not retuned. This is a feasibility consequence for Astra and governance (spec 8.1c, 27), not a validity defect.
+4. λ is set by the 30-date trailing-mean regime at latent variance 0.10 with favourite prices. A narrower, separately declared and audited class (for example AR-only: λ_θ 1.50 / λ_κ 1.40) would be cheaper. V2 does not adopt one after seeing these numbers.
+
+
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
 
 | True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
@@ -569,4 +681,4 @@ Readings:
 
 Label names after D4 repair R3: CONFIRMED = REALIZED_WINDOW_VALUE_SUPPORTED (estimand θ_W; the conditions are those of T2 and are unchanged, so the powers above stand for the R3 engine — **D4-C3-M1: T2 now uses the multi-block bound of spec 8.1b, which lowers these confirmation powers; see §4.8, e.g. SUPPORTED at θ = 0.10, m = 17 thin, 0.843 → 0.654; θ = 0.05 0.379 → 0.187**), INDETERMINATE = REALIZED_WINDOW_VALUE_INDETERMINATE. No unconditional prospective label exists in either direction (spec 8.5b, 8.5c); prospective content is the transport frontier (§4.7). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
 
-Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 with the R3 engine, and θ ≳ 0.11–0.12 with the persistence-calibrated T2 of D4-C3-M1 (§4.8), and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
+Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 with the R3 engine, θ ≳ 0.11–0.12 with the cycle-1 T2 of D4-C3-M1 (§4.8), and only θ ≳ 0.18 with the T2 calibrated over 𝒟_P* by D4-C3-M2 (§4.9; NEG power ≈ 0.12 at −0.07 per share), and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
