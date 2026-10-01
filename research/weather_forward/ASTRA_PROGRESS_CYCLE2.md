@@ -30,19 +30,14 @@ Simulations append one JSONL line per completed cell and skip completed cells on
 - [x] power plan complete (52 cells); oracle benchmark out_oracle_benchmark.txt (sd ratio worst/none 2.96 mid prices;
       non-adaptive oracle power at theta_PCE 0.008) => power shortfall intrinsic to 120 dates x D_P*
 
+- [x] power2 (44 cells), sample (175 cells), T1b (8 cells, B 2,000), Architect rerun byte-identical
+- [x] 7. Audit written (ASTRA_WEATHER_V2_D4_C3_M2_RECHECK_2026-10-01.md), state file updated (history verbatim under H5)
+
 ## In progress
-- [ ] chain3.sh: probe100 (6 cells x 100k) -> power (rest) -> sample (175 class/slice cells incl. Architect worst cells) -> T1b.
-      chain1 (full class_/slice) superseded by the 175-cell sample (cells_sample.json).
+- none
 
 ## Next
-- probe100 confirmations (cells_probe100.json) of worst probe/probe2 cells at 100k
-- resume chain1 (power, class_, slice); T1b (astra_t1b.py 20000 2000); Architect rerun 'astra 20000' (byte compare)
-- 2. Engine (own, from spec text) + tests
-- 3. A: old vs new counterexample reproduction (20k, worst 100k)
-- 4. B: class verification + second-order search
-- 5. D: power check
-- 6. E/F/G: R3, frozen bytes, raw-output reproduction, m10/m11, D1–D12
-- 7. Write audit, update state file, final commit + push
+- final verdict commit + push (verdict: BLOCKED_D4_M2_GO_GATE_CONTRADICTED_BY_CALIBRATED_POWER_AND_LEVEL_EXCEEDED_AT_FAVOURITE_PRICE_CONCENTRATION)
 
 ## Output files
-(none yet)
+- see astra_d4_c3_m2_recheck_2026-10-01/README.md

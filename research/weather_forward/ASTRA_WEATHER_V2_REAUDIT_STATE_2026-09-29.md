@@ -1,3 +1,68 @@
+# ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-10-01 (D4-C3-M2 recheck, convergence cycle 2, fresh Astra context)
+
+CURRENT STATE (supersedes the D4-C3-M1 state below; prior file preserved verbatim under section H5)
+
+AUDIT_ROLE = ASTRA independent adversarial reviewer (fresh context; did not write the repair or any earlier audit)
+AUDIT_BRANCH = astra/weather-forward-v2-independent-reaudit-2026-09-29
+AUDIT_ARTIFACT = research/weather_forward/ASTRA_WEATHER_V2_D4_C3_M2_RECHECK_2026-10-01.md
+AUDIT_EVIDENCE = research/weather_forward/astra_d4_c3_m2_recheck_2026-10-01/ (independent synthetic engine + raw outputs)
+PROGRESS_FILE = research/weather_forward/ASTRA_PROGRESS_CYCLE2.md
+
+AUDITED_BRANCH = claude/charming-allen-948kd8
+AUDITED_SHA = 61f4904f94f8662084fa5245c92b647c061148ae (ancestor 4423c5c3 verified)
+ASTRA_START_SHA = 7408c0c58fb0869c9f14ab686cbc7b0074cbf185
+
+ASTRA_WEATHER_V2_D4_C3_M2_RECHECK = BLOCKED_D4_M2_GO_GATE_CONTRADICTED_BY_CALIBRATED_POWER_AND_LEVEL_EXCEEDED_AT_FAVOURITE_PRICE_CONCENTRATION
+ASTRA_WEATHER_V2_SCIENTIFIC_CONTRACT = BLOCKED
+EXPERIMENT_FEASIBILITY_V2 = BLOCKED_POWER_NEGATIVE_RESULT_INSTRUMENT_INFEASIBLE_AND_T2_POWER_BELOW_FROZEN_GO_RATIONALE
+NEXT_AUTHORIZED_ACTION = GOVERNANCE FEASIBILITY DECISION + BOUNDED ARCHITECT GATE-AND-STATEMENT REPAIR (P1, M3, m12, m13); NO BUILDER
+
+M1R_M2_REPRODUCED_ON_OLD_RULE = TRUE (fav phi0.9 rv0.05: miss 0.0633 / size 0.0600 @100k; 30 paused 0.0540 @100k; M2 0.0891 / 0.0679 / 0.0685 @100k)
+M1R_M2_REPAIRED_ON_NEW_RULE = TRUE (0.0114 [0.0107,0.0120] / 0.0107 / 0.0077 @100k; M2 0.0018 / 0.0012 / 0.0007 @100k)
+D4_M1_SOURCE_BOUND_CALIBRATION = PASS over the enumerated D_P* grid (independent 175-cell sample worst 0.0418 [0.0391,0.0446];
+  Architect 0.0415 @100k reproduced byte-identically); BLOCKED (M3) under printed "CORE prices to 0.90": c~U(0.85,0.90),
+  trailing-mean 30 rv 0.10: 0.0587 [0.0573,0.0602] (30 contiguous paused), 0.0523 [0.0509,0.0537] (no pauses) @100k
+D4_INFORMATION_AND_UW_CALIBRATION = PASS on the grid (T1a <= 0.0199, NEG <= 0.0110, U_W <= 0.0093, T1b <= 0.0071, T1 <= 0.0095,
+  headline non-coverage <= 0.0429); T1a 0.0262 [0.0253,0.0273] under favourite concentration (M3)
+D4_R1_REALIZED_WINDOW_BOUND = PASS (headline [L_W,U_W] consistent: 0 inversions / 0 loss-vs-headline in 11.98M reached reps)
+D4_R2_PROSPECTIVE_EXCLUSION_REMOVAL = PASS
+D4_R3_TRANSPORT = PASS (algebra fuzz 0 violations, frontier + guard, k*(H), 11-state machine, shadow signal, claim language)
+FROZEN_OWNER_SURFACES = UNCHANGED (byte-identical to 4423c5c3); QUANT_NORTH_STAR unchanged
+RAW_OUTPUT_REPRODUCTION = PASS (astra plan lines 1-12 and confirm line 1 byte-identical)
+SELECTION_ARITHMETIC = REPRODUCED (lambda 1.70 / 1.60 over 1,183 cells); pre-declaration self-attested (one commit)
+POWER (independent, joint with reach, no persistence) = P(T2) at theta_PCE 0.07-0.23 across GO-feasible price laws (mid 0.11);
+  80%-power effect 0.08 (favourite) - 0.18 (mid); NEG power at -0.064..-0.07/share 0.12-0.13 in every law (pre-repair 0.89-0.95);
+  oracle benchmark: worst-member SD 2.5-3.0x; non-adaptive oracle power at theta_PCE 0.008 (mid) / 0.19 (fav) => intrinsic at 120 dates
+TRADING_RULE_CHANGED = FALSE
+OUTCOME_LEAKAGE = NONE
+
+CRITICAL_FINDINGS = NONE
+MAJOR_FINDINGS =
+P1 (primary): GO / theta_PCE (Z_80 2.4865) / SE_KAPPA_CEILING keep a frozen 10.3 rationale contradicted by the calibrated tests:
+  GO starts mid-price designs with 80%-power effect ~0.18 > PCE_CEILING 0.10 and designs whose NEG ("only real negative-result
+  instrument") has power 0.12-0.13 at -0.07/share vs the ~0.9 the ceiling is frozen to guarantee; the spec says GO "no longer
+  implies" power but does not define what GO certifies (contract markets a start decision / capability it cannot make).
+M3: printed level text (17.3, 8.5c) claims L_W / T1a levels over "CORE prices to 0.90"; calibrated only on U(0.35,0.80),
+  U(0.70,0.90), mix; near-cap favourite concentration at the declared section-9 mechanism exceeds (see above).
+MINOR_FINDINGS = m12 (section 1 "well-powered" information axis; section 21 item 1 "Refuted" contradicts item 46);
+  m13 (conditional-on-reach "up to 0.182" is a grid figure; in-class off-grid 0.203); m14 informational (0.040 target selection
+  MC-noise sensitive: independent reps select 1.75). m10, m11, T1b proof gap CLOSED.
+REPAIR_CLASS = REPAIRABLE_BOUNDED (gate / statement layer, outcome-free, stricter-only); negative-result instrument at 120 dates
+  over D_P* is FUNDAMENTAL at this horizon -> governance / resource decision (horizon, outcome-blind class evidence, or retire)
+
+D1_D12_SUMMARY =
+D1 REOPENED (MAJOR P1: design gate vs calibrated power)
+D2 D3 D5 D6 D7 D9 D11 D12 CLOSED
+D4 OPEN_MAJOR (M3 residual; M1-R / M2 repaired on the enumerated grid)
+D8 CLOSED (engine re-qualified by 8.1c, verified)
+D10 CLOSED_ACCEPTED_AND_DISCLOSED
+
+AUTHORITY_FLAGS = REAL_CAPITAL_AUTHORIZED FALSE; LIVE_TRADING_AUTHORIZED FALSE; t0 NOT_DECLARED; BUILDER_AUTHORIZED FALSE
+
+---
+
+## H5. History — state file as it stood at 7408c0c5 (verbatim)
+
 # ASTRA — WEATHER FORWARD V2 RE-AUDIT STATE — updated 2026-10-01 (D4-C3-M1 recheck, cycle 1, fresh Astra context)
 
 CURRENT STATE (supersedes the 2026-10-01 D4-C3 + transportability state below; prior file preserved verbatim under section H4)
