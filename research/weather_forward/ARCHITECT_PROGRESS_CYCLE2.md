@@ -19,9 +19,12 @@ SYNTHETIC ONLY; OUTCOME_INFORMATION_USED = FALSE.
 - Spec: 8.1b marked SUPERSEDED IN PART; new 8.1c (rule, class D_P*, selection, levels, 100k confirmation, T1b, failed candidates,
   power / feasibility cost).
 
+- Spec propagation done (header, 1, 2 rows D4-C3-M1 / D4-C3-M2, 6.1-6.3, 7, 8.1, 8.3-8.5c, 9, 10.1, 10.3, 11.4, 17.3 incl. m11
+  sentence (c) and level texts, 17.8, 20, 21 items 36/41/43-48, 24, 26, 27).
+- Reproducibility: `astra 20000` re-run byte-identical to RUN_H lines 1-12; `cell astra 4 100000` byte-identical to the confirm line.
+
 ## In progress
-- Spec propagation (header, 1, 2, 6.1-6.3, 7, 8.3-8.5c, 9, 10, 11.4, 17.3, 17.8, 20, 21, 24, 26, 27); manifest; delta; power table 4.9;
-  architect state; resume checkpoint 3e.
+- Manifest; delta D4-C3-M2; power table 4.9; architect state; resume checkpoint 3e.
 
 ## Next
 - Final commit marked READY_FOR_ASTRA_RECHECK (only if every stated level equals a measured level).
