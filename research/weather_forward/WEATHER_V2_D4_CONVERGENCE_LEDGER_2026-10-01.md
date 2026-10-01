@@ -24,6 +24,23 @@ t0                      = NOT_DECLARED
 BUILDER_AUTHORIZED      = FALSE
 ```
 
+## Resume protocol (owner instruction 2026-10-01; applies from cycle-2 Astra onward, current phase not restarted)
+
+Goal: an interruption (token / rate limit, container loss) must never force a phase to restart from zero.
+
+1. Interrupted sub-agent → resume the SAME sub-agent context (SendMessage) after the limit resets; never respawn a
+   duplicate. Same context keeps role independence intact.
+2. Every new sub-agent brief requires:
+   - a progress file `<ROLE>_PROGRESS_<cycle>.md` in its own worktree (steps done / in progress / next, artefacts written,
+     seeds), updated after each step;
+   - simulations that append one JSONL line per completed cell and skip already-completed cells on rerun (resumable by
+     seed + cell key; never re-draw a finished cell);
+   - a pushed WIP checkpoint commit on its own branch after each major step (e.g. reproduction done, class run done),
+     message prefixed `wip(...)`; only the final commit is the audited candidate / verdict.
+3. Orchestrator after a session restart: read this ledger + both remote heads + the sub-agent's progress file, then
+   resume at NEXT_EXACT_ACTION (a fresh context continues from the progress file and committed outputs, not from scratch).
+4. On a known reset time, the orchestrator schedules a self check-in to resume automatically.
+
 ## Independence note
 
 The R3 audit @5bb57eb2 was produced in the same agent context that authored R3. Its blocking finding is
