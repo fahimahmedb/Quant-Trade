@@ -2,7 +2,7 @@
 
 ```text
 ROLE                          = Weather Forward V2 Architect / convergence authority
-STATUS                        = DONE — bounded D4-C3-M2 calibration (convergence cycle 2) committed and pushed on top of D4-C3-M1 (4423c5c3) after Astra's D4-C3-M1 recheck (ac777a87)
+STATUS                        = DONE — bounded D4-C3-P1 gate recalibration and enlarged-class recalibration (convergence cycle 3) committed and pushed on top of D4-C3-M2 (61f4904f) after Astra's D4-C3-M2 recheck (8874dc54)
 BRANCH                        = claude/charming-allen-948kd8
 WEATHER_FORWARD_SPEC_V2       = AUDITED @94b59348d5b79cd3c53dcba0b791ce1daeb75d60 (immutable ancestor)
 ASTRA_WEATHER_V2_REAUDIT      = BLOCKED_D4_STRUCTURED_BOUND_FALSE_ECONOMIC_EXCLUSION
@@ -11,10 +11,12 @@ WEATHER_FORWARD_SPEC_V2_D4_REPAIR = AUDITED @24d2342 → ASTRA_WEATHER_V2_D4_REC
 WEATHER_FORWARD_SPEC_V2_D4_C2_REPAIR = AUDITED @e45d2ce7 → ASTRA_WEATHER_V2_D4_C2_RECHECK = BLOCKED_D4_PROSPECTIVE_CONFIRMATION_UNSAMPLED_LOSS_REGIME_FALSE_CONFIRMATION (@92c2f706)
 WEATHER_FORWARD_SPEC_V2_D4_C3_TRANSPORT_REPAIR = AUDITED @341e0b7a → ASTRA_WEATHER_V2_D4_C3_TRANSPORT_RECHECK = BLOCKED_D4_R3_SOURCE_BOUND_UNDERCOVERAGE_CROSS_BLOCK_PERSISTENCE (@5bb57eb2)
 WEATHER_FORWARD_SPEC_V2_D4_C3_M1_REPAIR = AUDITED @4423c5c3 → ASTRA_WEATHER_V2_D4_C3_M1_RECHECK = BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE (@ac777a87)
-WEATHER_FORWARD_SPEC_V2_D4_C3_M2_REPAIR = READY_FOR_ASTRA_RECHECK
+WEATHER_FORWARD_SPEC_V2_D4_C3_M2_REPAIR = AUDITED @61f4904f → ASTRA_WEATHER_V2_D4_C3_M2_RECHECK = BLOCKED_D4_M2_GO_GATE_CONTRADICTED_BY_CALIBRATED_POWER_AND_LEVEL_EXCEEDED_AT_FAVOURITE_PRICE_CONCENTRATION (@8874dc54)
+WEATHER_FORWARD_SPEC_V2_D4_C3_P1_REPAIR = READY_FOR_ASTRA_RECHECK
+GO_STATUS_ON_DECLARED_LAWS    = NO_GO_KAPPA_UNDERPOWERED for every declared design (measured; owner decision)
 WEATHER_FORWARD_SPEC_V1       = HISTORICAL_FROZEN_OBJECT (726070a, byte-identical in this branch)
 EXPERIMENT_FEASIBILITY        = BLOCKED_POWER_BELOW_DECLARED_MEUE   (Astra's V1 verdict)
-EXPERIMENT_FEASIBILITY_V2     = BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE   (Astra's @ac777a87; unchanged until Astra rechecks)
+EXPERIMENT_FEASIBILITY_V2     = BLOCKED_POWER_NEGATIVE_RESULT_INSTRUMENT_INFEASIBLE_AND_T2_POWER_BELOW_FROZEN_GO_RATIONALE   (Astra's @8874dc54; unchanged until Astra rechecks)
 HURDLE_SAMPLE_INCOMPATIBILITY = FALSE
 FABLE_DESIGN_CHALLENGE        = DONE_ADVISORY
 BUILDER_AUTHORIZED            = FALSE
@@ -24,9 +26,9 @@ t0                            = NOT_DECLARED
 ACCESS_USER_REPORTED          = TRUE
 LEGAL_ACCESS_CONFIRMED        = UNKNOWN
 TRADING_RULE_CHANGED          = FALSE
-EXECUTION_MODEL_CHANGED       = TRUE (CONSERVATIVE slippage only; unchanged by R1, R2, R3, D4-C3-M1 and D4-C3-M2)
+EXECUTION_MODEL_CHANGED       = TRUE (CONSERVATIVE slippage only; unchanged by R1, R2, R3, D4-C3-M1, D4-C3-M2 and D4-C3-P1)
 OUTCOME_INFORMATION_USED      = FALSE
-NEXT_AUTHORIZED_ACTION        = ASTRA BOUNDED D4-C3-M2 RECHECK ONLY (M1-R, M2, m10, m11, T1b; every stated level vs measured; R1 / R2 / R3 and D1–D12 regression; not Builder, not t0, not capital)
+NEXT_AUTHORIZED_ACTION        = ASTRA BOUNDED D4-C3-P1 RECHECK ONLY (P1 gate meaning vs simulated power over the declared laws; M3 levels at U(0.85, 0.90) and the enlarged class; m12, m13; R1 / R2 / R3 and D1–D12 regression; not Builder, not t0, not capital); then the FEASIBILITY finding to the owner
 ```
 
 ## Inputs read (exact objects; none modified)
@@ -79,6 +81,15 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 - **Also added.** k*(H), cost-mass concentration, revoke-only observable invalidation, and the rolling-epoch contract fields (design only). SHADOW_CONTINUATION_SIGNAL replaces the forward signal. Minors m3–m7 are fixed.
 - **Unchanged.** R*, h, W, signal, cohort, entry, T_entry, S_ref sizing, execution, 0.04 strata, κ_core, T1a, T1b, the T2 statistic and level, NEG, engines, dependence, PCE / GO, gates, validity, operability, analysis time, the R1 U_W, and the R2 exclusion removal.
 - **Role-independence disclosure.** Every step from the Astra D4 recheck @3d18085 to this R3 repair (Astra rechecks and Architect repairs alike) was produced in one agent session under different role instructions. Run F is fresh code with fresh seeds. Governance should treat the next Astra recheck as the independent check, and may prefer a separate reviewer session.
+
+## D4-C3-P1 gate recalibration and enlarged class (convergence cycle 3; Astra P1 + M3 + m12 / m13, after the D4-C3-M2 recheck @8874dc54)
+
+- **Scope.** Statement- and gate-layer repair only; no owner-frozen surface touched (R*, h, W, signal, cohort, entry, T_entry, S_ref sizing, execution, 0.04 split); no outcome information; no level lowered.
+- **P1, option (a) only.** θ_PCE multiplier Z_80 = 2.4865 → **Z_EFF = 7.2**; SE_KAPPA_CEILING 0.020 → **0.005**; derived by a synthetic rule declared and committed before the run (03640425; spec 10.4). Verified: P(T2 at the design's own θ_PCE | θ-side GO ∧ INFO) 0.976–1.000 (old 0.014–0.51). GO's meaning is unchanged; both changes are stricter-only.
+- **M3, option (i).** Class enlarged (U(0.80, 0.90), U(0.85, 0.90), a point mass at 0.89, mixes); λ_θ 2.15, λ_κ 1.80 (smallest grid values meeting the declared criterion over the new-law cells); worst 100,000-replication cells L_W miss 0.0397 [0.0385, 0.0409], T1a 0.0190 [0.0182, 0.0199]; Astra's cells 0.0312 [0.0302, 0.0323] and T1a 0.0167. "CORE prices to 0.90" is no longer printed as a class.
+- **m12 / m13.** §1 and §21 item 1 no longer say "well-powered" / "Refuted"; the conditional-on-reach figures are labelled grid figures (0.148 at the adopted constants; Astra's off-grid cell 0.203 at the cycle-2 λ, 0.086 at the adopted).
+- **Finding (not repaired).** GO_new = 0 for every declared design at every throughput 8–96: the NEG clause is unreachable (smallest SE0_κ ≈ 0.0070 > 0.005; joint NEG power at −0.07 per share ≤ 0.44). The missing negative-result instrument at 120 dates is fundamental for feasibility; W and the owner-frozen surfaces are untouched; reported to the owner at loop end.
+- **Evidence.** Run J (power table §4.10; spec 8.1d, 10.4): 1,288 enlarged-class cells, 684 derivation cells, 256 verification / GO-rate cells, 27 cells at 100,000; failed candidates published. Resume protocol file `ARCHITECT_PROGRESS_CYCLE3.md` holds the pre-run declaration and the post-crash script change (viid guard).
 
 ## D4-C3-M2 calibration (convergence cycle 2; Astra M1-R + M2 + m10 / m11 + T1b proof gap, after the D4-C3-M1 recheck @ac777a87)
 
@@ -224,7 +235,9 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 
 0. **MINOR (cost of R3, disclosed):** no unconditional prospective verdict in either direction. Prospective content is conditional on the declared, unverified transport class. Hidden regimes with identical covariates are covered only by the ε budget. (The R3 statement "source bound ≈ 0.5 pp liberal" is SUPERSEDED by D4-C3-M1: the calibrated bound holds 0.05 over the declared persistence class 𝒟_P and no level is claimed outside it.)
 0a. **MINOR (cost of D4-C3-M1, disclosed):** the calibrated T2 costs confirmation power (80%-power effect ≈ 0.11–0.12 instead of ≈ 0.09–0.10; nearly powerless at the 60-date floor). Outside 𝒟_P (φ ≥ 0.95) the source bound's miss is higher (up to 0.110) and is not claimed. Given reach, the miss is larger than the joint rate (disclosed).
-0c. **MAJOR FEASIBILITY CONSEQUENCE (D4-C3-M2; for Astra / governance; not a validity defect):** calibrated over 𝒟_P*, V2 is nearly powerless: P(T2) at θ_PCE 0.07–0.11, 80%-power effect ≈ 0.18, T1a MDE80 ≈ 0.11 per share, NEG power ≈ 0.12 at −0.07 per share. Nothing is retuned. Whether a valid but this weakly powered V2 should run is EXPERIMENT_FEASIBILITY (Astra) and governance; a narrower, separately declared class would be V3 material.
+0d. **MAJOR FEASIBILITY FINDING (D4-C3-P1; for Astra / the OWNER; not a validity defect; not repaired):** no declared design passes the recalibrated GO (NEG clause unreachable); the negative-result instrument at 120 dates over 𝒟_P* is fundamental for feasibility (oracle benchmark); W and every owner-frozen surface unchanged. Spec 1, 10.3, 10.4, 21 item 52, 24, 27.
+0e. **MINOR (D4-C3-P1, disclosed):** the single Z_EFF over-certifies favourite-concentrated designs (T2 power ≈ 1 at their θ_PCE); the extremality of the point mass 0.89 among near-cap laws is empirical; conditional-on-reach rates are grid figures.
+0c. **MAJOR FEASIBILITY CONSEQUENCE (D4-C3-M2, cycle-2 record, superseded by 0d; for Astra / governance; not a validity defect):** calibrated over 𝒟_P*, V2 is nearly powerless: P(T2) at θ_PCE 0.07–0.11, 80%-power effect ≈ 0.18, T1a MDE80 ≈ 0.11 per share, NEG power ≈ 0.12 at −0.07 per share. Nothing is retuned. Whether a valid but this weakly powered V2 should run is EXPERIMENT_FEASIBILITY (Astra) and governance; a narrower, separately declared class would be V3 material.
 0b. **CLOSED by D4-C3-M2 (was OPEN OBSERVATION; frozen surfaces; not repaired by D4-C3-M1):** T1a, NEG and U_W keep 5-date blocks and exceed their nominal levels under 𝒟_P (T1a 0.089 at nominal 0.025; NEG 0.069; U_W miss 0.077 at φ = 0.9). Their 17.8 statements are qualified. Calibrating them needs governance authority; the same multi-block construction would apply.
 1. **MINOR (cost of R2, disclosed):** prospective economic exclusion is not usefully testable within V2's horizon (no valid test has power > ≈ 0.06); V2's negative results are information-level (NEG / R*_CORE_INFORMATION_REJECTED) and realised-window (θ_W, attainable only when the realised tail is small). No capital decision changes, because deployment always required prospective confirmation.
 2. **MINOR:** GO/NO_GO will likely be NO_GO if the post-bias-correction leg mix resembles Astra's b = 0 cross-section (σ_eff ≈ 2.9 → θ_PCE ≈ 0.18–0.26); an honest pre-declared outcome.
@@ -234,8 +247,8 @@ Route = Family D + B hybrid, **without the gate**: θ (economic, unchanged, two-
 
 ## Blockers
 
-None within the bounded cycle-2 mission (no FUNDAMENTAL stop: validity is attained over the stated class without lowering any standard; the power cost is disclosed as item 0c). Astra's V2 verdict remains BLOCKED until Astra rechecks D4-C3-M2. (Cycle 1: none within the bounded M1 mission.) Open observation 0b (frozen surfaces) is for Astra / governance. Procedure items before t0: manifest V2 section B.
+None within the bounded cycle-3 mission (no FUNDAMENTAL stop: P1 and M3 are repaired without lowering any standard and without touching an owner-frozen surface; the feasibility finding is item 0d). Cycle-2 record: None within the bounded cycle-2 mission (no FUNDAMENTAL stop: validity is attained over the stated class without lowering any standard; the power cost is disclosed as item 0c). Astra's V2 verdict remains BLOCKED until Astra rechecks D4-C3-M2. (Cycle 1: none within the bounded M1 mission.) Open observation 0b (frozen surfaces) is for Astra / governance. Procedure items before t0: manifest V2 section B.
 
 ## Next action
 
-ASTRA BOUNDED D4-C3-M2 RECHECK ONLY, of the exact D4-C3-M2 commit (M1-R, M2, m10, m11, T1b; every stated level vs measured; regression of the R1 / R2 / R3 surfaces and D1–D12). (Cycle 1: ASTRA BOUNDED D4-C3-M1 RECHECK, done @ac777a87, BLOCKED.) Builder remains unauthorised; t0 is not declared; no capital.
+ASTRA BOUNDED D4-C3-P1 RECHECK ONLY, of the exact D4-C3-P1 commit (P1, M3, m12, m13; R1 / R2 / R3 and D1–D12 regression), then the feasibility finding to the owner. (Cycle 2: ASTRA BOUNDED D4-C3-M2 RECHECK ONLY, of the exact D4-C3-M2 commit (M1-R, M2, m10, m11, T1b; every stated level vs measured; regression of the R1 / R2 / R3 surfaces and D1–D12). (Cycle 1: ASTRA BOUNDED D4-C3-M1 RECHECK, done @ac777a87, BLOCKED.) Builder remains unauthorised; t0 is not declared; no capital.

@@ -559,6 +559,8 @@ Readings:
 
 ### 4.9 Run H — D4-C3-M2 calibration of L_W, U_W, T1a and NEG over the completely stated class 𝒟_P* (after Astra D4-C3-M1 recheck @ac777a87)
 
+**SUPERSEDED IN PART by §4.10 (D4-C3-P1, after Astra @8874dc54): the constants λ_θ = 1.70 / λ_κ = 1.60, the price laws of the class, the levels, and the statement that GO / θ_PCE / SE_KAPPA_CEILING are "not retuned" are the cycle-2 record; §4.10 and spec 8.1d / 10.4 govern.**
+
 Script `WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py` (fresh code; seeds `SeedSequence([20261101, plan, cell, stream])`; synthetic only). Raw output:
 - `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_OUTPUT_2026-10-01.jsonl`: plans astra 12, class 900, fav35 160, geo 72, outside 20, power 36 and t1b 12 cells, each at 20,000 replications;
 - `WEATHER_FORWARD_V2_D4_C3_M2_RUN_H_CONFIRM_100K_2026-10-01.jsonl`: 14 cells at 100,000 replications (streams 1–5).
@@ -669,6 +671,48 @@ Readings:
 4. λ is set by the 30-date trailing-mean regime at latent variance 0.10 with favourite prices. A narrower, separately declared and audited class (for example AR-only: λ_θ 1.50 / λ_κ 1.40) would be cheaper. V2 does not adopt one after seeing these numbers.
 
 
+### 4.10 Run J — D4-C3-P1: enlarged price class, recalibrated λ and the recalibrated design gate (after Astra D4-C3-M2 recheck @8874dc54)
+
+Script `WEATHER_FORWARD_V2_D4_C3_P1_GATE_SIM_2026-10-02.py` (imports the cycle-2 engine unchanged; `check` mode asserts record-for-record equivalence with it; seeds `SeedSequence([20261102, plan, cell, stream])`; synthetic only; 20,000 replications per cell, worst cells 100,000). Summaries: `WEATHER_FORWARD_V2_D4_C3_P1_SUMMARIZE_2026-10-02.py` (mechanical; no randomness). Raw output and text summaries:
+- `..._P1_RUN_J_M3_OUTPUT_2026-10-02.jsonl` (m3_astra 10, m3_mix 60, m3_geo 72, m3_m35 240, m3_class 900; probes m3_probe 30, m3_probe3 6) and `..._M3_SUMMARY_...txt`;
+- `..._P1_RUN_J_P1_DERIVE_OUTPUT_2026-10-02.jsonl` (p1_hi 36, p1_t2 360, p1_neg 288) and `..._P1_DERIVE_SUMMARY_...txt`;
+- `..._P1_RUN_J_P1_VERIFY_OUTPUT_2026-10-02.jsonl` (p1_go 160 OP-only cells, p1_verify 96) and `..._P1_VERIFY_SUMMARY_...txt`;
+- `..._P1_RUN_J_CONFIRM_100K_2026-10-02.jsonl` (20 M3 confirmations, 4 addendum probes m3_probe2, 3 gate-verification cells) and the two confirmation summaries.
+
+The procedures were declared and committed (`ARCHITECT_PROGRESS_CYCLE3.md`, 03640425) before any run. Two small addenda were declared before their own runs (m3_probe2, m3_probe3). One bug fix after a crash (p1_t2 cell 305, an all-win replication, 0/0 in the IF5 ratio): `sek5² / viid <= 6.0` became `(viid <= 0.0 or sek5² / viid <= 6.0)`; it changes no completed cell, and in the saturated cells (p = 1 for every trade, θ ≥ 0.14 for the point mass 0.89) floating-point rounding leaves viid ≈ 1e-33 > 0, so those replications still fail IF5 (INFO_SUFFICIENT ≈ 0 there). Those cells lie beyond every θ a GO design can have (θ_PCE ≤ 0.10) and do not enter Z_EFF or the ceiling.
+
+**M3 (spec 8.1d).** λ_θ = 2.15, λ_κ = 1.80 over 1,288 enlarged-class cells; worst 20,000-replication joint rates L_W miss 0.0394, size 0.0253, U_W 0.0034, T1a 0.0199, NEG 0.0073; 100,000-replication worst cells L_W 0.0397 [0.0385, 0.0409], size 0.0240 [0.0231, 0.0250], T1a 0.0190 [0.0182, 0.0199]. The cycle-2 constants fail (L_W 0.0683, size 0.0469, T1a 0.0289 at 20,000).
+
+**P1 — power curves behind Z_EFF and the ceiling (planning model, no persistence, 120 dates, 20,000 per cell; T2 at λ_θ 2.15, NEG at λ_κ 1.80; power given INFO_SUFFICIENT; P(INFO) is the reach in the second line).**
+
+| Design, thin fills, m 17 | θ = 0.04 | 0.06 | 0.08 | 0.10 | 0.12 | 0.14 | 0.16 | 0.20 | 0.25 |
+|---|---|---|---|---|---|---|---|---|---|
+| U(0.35, 0.80): P(T2) | 0.00 | 0.00 | 0.02 | 0.04 | 0.11 | 0.22 | 0.38 | 0.73 | 0.96 |
+| U(0.70, 0.90): P(T2) | 0.03 | 0.17 | 0.51 | 0.85 | 0.98 | 1.00 | 1.00 | 1.00 | 1.00 |
+| U(0.85, 0.90): P(T2) | 0.16 | 0.70 | 0.98 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| point mass 0.89: P(T2) | 0.26 | 0.85 | 1.00 | 1.00 | 1.00 | (saturated: p = 1) | | | |
+| U(0.35, 0.80), m 35: P(T2) | 0.00 | 0.01 | 0.04 | 0.11 | 0.26 | 0.46 | 0.66 | 0.93 | 1.00 |
+| U(0.35, 0.80), m 35: P(INFO) | 0.64 | 0.65 | 0.66 | 0.68 | 0.69 | 0.70 | 0.72 | 0.76 | 0.82 |
+
+| κ_core | −0.03 | −0.05 | −0.07 | −0.09 | −0.12 | −0.16 | −0.20 |
+|---|---|---|---|---|---|---|---|
+| NEG, U(0.35, 0.80), m 17 | 0.00 | 0.01 | **0.06** | 0.22 | 0.63 | 0.95 | 1.00 |
+| NEG, U(0.70, 0.90), m 17 | 0.00 | 0.01 | **0.10** | 0.32 | 0.75 | 0.97 | 1.00 |
+| NEG, point mass 0.89, m 35 | 0.00 | 0.12 | **0.52** | 0.86 | 0.99 | 1.00 | 1.00 |
+
+Per-law ratios (θ80 / SE0_θ, κ90 / SE0_κ), the derived Z_EFF = 7.2 and SE_KAPPA_CEILING = 0.005 are in spec 10.4. Reading:
+1. The nominal Z_80 = 2.4865 understated the multiplier of the T2 actually run by a factor of 2.9 (mid prices) to 1.9 (near-cap favourites); NEG needs |κ| ≈ 10–12 × SE0_κ, not the ≈ 3 × SE0_κ of a 5-date-block normal test.
+2. Near-cap favourite designs are much better powered than mid-price designs (the per-share variance of a 0.89-priced leg is 0.1 against 0.25), but their NEG power at −0.07 per share is still only 0.25 (m 17) to 0.52 (m 35).
+3. P(INFO_SUFFICIENT) falls with throughput (IF5 screens high-dispersion windows): ≈ 1.00 at m 17, 0.59–0.84 at m 35, 0.12–0.38 at m 55, 0.002–0.055 at m 80 / 96.
+
+**Verification at the design's own θ_PCE** (spec 10.4; given θ-side GO and INFO_SUFFICIENT): new rule 0.976–1.000 over 28 cells (100,000: 0.9744 [0.9734, 0.9754] U(0.70, 0.90) m 35 full; 0.9825 [0.9815, 0.9835] m 55 full; 0.9969 [0.9963, 0.9974] U(0.80, 0.90) m 17 full); old rule 0.014–0.51 over 40 cells.
+
+**GO / NO_GO rates** (spec 10.4 table): new GO = 0 on every declared price law at every m ∈ {8, 12, 17, 25, 35, 55, 80, 96} and both fills; θ-side clause passes only for favourite-concentrated laws (U(0.70, 0.90) from m 35–55, U(0.80, 0.90) from m 17–25, U(0.85, 0.90) from m 12–17, point mass 0.89 from m 12–17); the NEG clause never (smallest SE0_κ ≈ 0.0070).
+
+**Best-case NEG power at κ = −0.07 per share** (p1_neg and p1_hi, 48 law × throughput × fill cells): joint with INFO_SUFFICIENT at most 0.44 (point mass 0.89, m 35); 0.06–0.25 at m 17; ≤ 0.047 at m 80 / 96 because INFO_SUFFICIENT is attained in 0.2–5.5% of windows there.
+
+**Feasibility reading.** The missing negative-result instrument at 120 counted dates over 𝒟_P* is fundamental for feasibility (Astra's oracle benchmark: a worst-case-valid non-adaptive test that knows the dependence exactly has power 0.008 (mid) / 0.19 (favourite) at the cycle-2 θ_PCE; the calibrated construction does about as well). It cannot be recovered by recalibration inside V2 and is not recovered by changing W or any owner-frozen surface; it goes to the owner at loop end.
+
 ## 5. Terminal-state implications at 120 dates (DERIVED + SIMULATED)
 
 | True θ | Core-dominated mix (M00, θ_PCE ≈ 0.08, GO) | 5% lottery (M05, θ_PCE ≈ 0.21, NO_GO) | 16% lottery (M16, θ_PCE ≈ 0.36, NO_GO) |
@@ -681,4 +725,4 @@ Readings:
 
 Label names after D4 repair R3: CONFIRMED = REALIZED_WINDOW_VALUE_SUPPORTED (estimand θ_W; the conditions are those of T2 and are unchanged, so the powers above stand for the R3 engine — **D4-C3-M1: T2 now uses the multi-block bound of spec 8.1b, which lowers these confirmation powers; see §4.8, e.g. SUPPORTED at θ = 0.10, m = 17 thin, 0.843 → 0.654; θ = 0.05 0.379 → 0.187**), INDETERMINATE = REALIZED_WINDOW_VALUE_INDETERMINATE. No unconditional prospective label exists in either direction (spec 8.5b, 8.5c); prospective content is the transport frontier (§4.7). Runs A–D above used the pre-R2 vocabulary and are kept as historical evidence.
 
-Reading for governance: V2 is a well-powered screen for θ ≳ 0.08–0.10 with the R3 engine, θ ≳ 0.11–0.12 with the cycle-1 T2 of D4-C3-M1 (§4.8), and only θ ≳ 0.18 with the T2 calibrated over 𝒟_P* by D4-C3-M2 (§4.9; NEG power ≈ 0.12 at −0.07 per share), and for executable mispricing of ≳ 0.035 per share **only if** the post-bias-correction executable mix is core-dominated; otherwise its pre-declared outcome is NO_GO before t0, which is an outcome-free design finding, not a strategy result.
+Reading for governance (D4-C3-P1): the earlier reading described V2 as a screen for θ ≳ 0.08–0.10 with the R3 engine, θ ≳ 0.11–0.12 with the cycle-1 T2 and θ ≳ 0.18 with the cycle-2 T2. With the T2 calibrated over the enlarged 𝒟_P* (λ_θ 2.15, §4.10) the 80%-power effect is about 7.2 × SE0_θ (≈ 0.15–0.21 mid-price, ≈ 0.05–0.10 favourite-concentrated), the information axis has no usable negative-result instrument (NEG power at −0.07 per share ≤ 0.44 jointly over every declared design), and **no declared design passes the recalibrated GO** (spec 10.4): the pre-declared outcome is NO_GO_KAPPA_UNDERPOWERED before t0, an outcome-free design finding, not a strategy result. V2 is not a well-powered screen; the earlier sentence is withdrawn. Whether to continue the Weather candidate (longer horizon, narrower outcome-blind class, a different design, retirement) is for the owner.

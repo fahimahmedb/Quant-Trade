@@ -1,4 +1,4 @@
-# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3, D4-C3-M1, D4-C3-M2) — 2026-09-29 / 2026-10-01
+# WEATHER FORWARD V2 — RESUME CHECKPOINT (D4 repairs R1, R2, R3, D4-C3-M1, D4-C3-M2, D4-C3-P1) — 2026-09-29 / 2026-10-02
 
 ```text
 ROLE                 = Weather Forward V2 Architect — bounded D4 repairs only: R1 (C1), R2 (C2), R3 (C3 + transportability), D4-C3-M1 (M1, m8, m9), D4-C3-M2 (M1-R, M2, m10, m11, T1b)
@@ -116,7 +116,27 @@ D4-C3-M2 decisions (do not re-derive without new evidence):
   - `OMP_NUM_THREADS=1 python3 research/weather_forward/WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py <plan> 20000`, for plan in astra, class, fav35, geo, outside, power, t1b; the raw output is their concatenation in that order.
   - `… cell <plan> <idx> 100000` for the confirmation cells: class 887, 885, 883, 886, 884, 878, 658, 656, 657, 880, 648; astra 0, 1, 4.
 
-Next: ASTRA BOUNDED D4-C3-M2 RECHECK ONLY.
+Next: ASTRA BOUNDED D4-C3-M2 RECHECK ONLY — done @8874dc54: BLOCKED (P1, M3); see 3f.
+
+## 3f. Phase ledger — D4-C3-P1 gate recalibration and enlarged class (2026-10-02; fresh Architect context, convergence cycle 3)
+
+| Phase | Content | Status | Checkpoint |
+|---|---|---|---|
+| P0 | verify origin head = 61f4904f and 8874dc54 on the Astra branch; read Astra @8874dc54 (§§5.1, 7, 15) + ledger "Blocker handed to cycle-3 Architect" + spec / manifest / delta / power table / state; create `ARCHITECT_PROGRESS_CYCLE3.md` | DONE | — |
+| P1 | declare (progress file) the M3 class and selection rule and the P1 derivation / verification rules; script `WEATHER_FORWARD_V2_D4_C3_P1_GATE_SIM_2026-10-02.py` + `check` equivalence; commit BEFORE any run | DONE | WIP 03640425 |
+| P2 | run J M3 plans (1,282 cells) -> declared selection λ_θ 2.15, λ_κ 1.80 -> 100,000 confirmations (20 cells) | DONE | WIP 7d7d75ae, b1ca9488 |
+| P3 | P1 derive plans (684 cells); p1_t2 crashed at cell 305 (all-win replication, 0/0 in IF5), `viid` guard added, resumed; derivation rule -> Z_EFF 7.2, SE_KAPPA_CEILING 0.005 | DONE | WIP 898795c3, aec8cfc2 |
+| P4 | p1_go (160) and p1_verify (96) + 3 cells at 100,000; addenda m3_probe2 / m3_probe3 declared before their runs | DONE | WIP 1b6f63d5, f65c0c89 |
+| P5 | spec 8.1d, 10.4 + propagation; manifest rows and section H; delta D4-C3-P1; power table §4.10; architect state; this ledger | DONE | WIP c5e3124d and the final commit |
+| P6 | final candidate commit (READY_FOR_ASTRA_RECHECK); push; verify remote == local | DONE with the commit that marks this row | recheck target = branch tip |
+
+D4-C3-P1 decisions (do not re-derive without new evidence):
+- **P1 option (a).** Z_EFF = 7.2 and SE_KAPPA_CEILING = 0.005, both mechanical outputs of the declared rule (spec 10.4); stricter-only; GO's meaning not redefined (option (b) is governance and not taken in the loop).
+- **M3 option (i).** Enlarged class (spec 8.1d); λ_θ = 2.15, λ_κ = 1.80. Do not narrow the class after seeing results.
+- **Finding, not repaired.** GO_new = 0 for every declared design; NEG clause unreachable; missing negative-result instrument is fundamental for feasibility at 120 dates; W and owner-frozen surfaces untouched; goes to the owner at loop end.
+- **Re-run commands.** `OMP_NUM_THREADS=1 python3 research/weather_forward/WEATHER_FORWARD_V2_D4_C3_P1_GATE_SIM_2026-10-02.py run <plan> 20000 --out FILE` for plan in m3_astra, m3_mix, m3_geo, m3_m35, m3_class, m3_probe, m3_probe3, p1_hi, p1_t2, p1_neg, p1_go, p1_verify (the last two after the constants file exists); `... cell <plan> <idx> 100000 --out FILE` for the confirmations (M3: m3_astra 0–9, m3_class 884 / 896 / 898, m3_m35 231 / 233 / 238, m3_mix 8 / 10 / 11 / 30; probes m3_probe2 0–3; gate: p1_verify 67 / 69 / 73). Summaries: `python3 research/weather_forward/WEATHER_FORWARD_V2_D4_C3_P1_SUMMARIZE_2026-10-02.py {m3, confirm L_T L_K, p1derive L_T L_K, verify, go}`.
+
+Next: ASTRA BOUNDED D4-C3-P1 RECHECK ONLY.
 
 ## 4. Decisions already made (do not re-derive)
 

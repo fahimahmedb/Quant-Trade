@@ -212,7 +212,7 @@ Reported decomposition (not separate claims): `θ = w_core θ_core + w_tail θ_t
 
 ```text
 ECONOMIC_RELEVANCE_THRESHOLD   θ_ERT = 0.02            (economic reporting threshold; not a powered claim)
-PRIMARY_CONFIRMABLE_EFFECT     θ_PCE = frozen formula    (section 10; nominal 80% power for T2 at α = 0.05)
+PRIMARY_CONFIRMABLE_EFFECT     θ_PCE = frozen formula    (section 10; 80% power for the calibrated T2 actually run, via Z_EFF = 7.2, under the planning model and given INFO_SUFFICIENT; D4-C3-P1, 10.4)
 TARGET_POWER                   0.80 at θ_PCE (nominal, normal approximation, before the robustness gates G1–G3)
 ```
 
@@ -362,7 +362,7 @@ At the information floor (60 dates, 25 stations), df_30 = 1. Positive claims bec
 
 - **T2 at the design's own θ_PCE:** P(T2) at θ_PCE is 0.554 / 0.476 / 0.456 / 0.459 for m = 17 thin / 17 full / 35 thin / 35 full (θ_PCE = 0.09 / 0.08 / 0.07 / 0.07), against 0.779 / 0.701 / 0.673 / 0.675 for the R3 engine (no persistence).
 - **Effect confirmed with 80% T2 power:** ≈ 0.11–0.12 (R3 engine ≈ 0.09–0.10; linear interpolation of P(T2) between θ_PCE and 0.12, no persistence).
-- **θ_PCE.** Its frozen formula, GO / NO_GO and its nominal (normal-approximation) meaning are unchanged; it is not retuned (6.2, 10.3). An INDETERMINATE result is more likely than under R3; that is the price of a stated level that holds under the persistence §9 names.
+- **θ_PCE.** (Cycle-1 statement, SUPERSEDED by D4-C3-P1: the gate is now recalibrated to the tests actually run, 10.2–10.4.) Its frozen formula, GO / NO_GO and its nominal (normal-approximation) meaning were unchanged; it was not retuned (6.2, 10.3). An INDETERMINATE result is more likely than under R3; that is the price of a stated level that holds under the persistence §9 names.
 
 **Frozen surfaces under persistence (cycle-1 disclosure; REPAIRED by D4-C3-M2, 8.1c).** T1a, NEG and U_W run on the unchanged 5-date-block engine. They are frozen and outside this bounded repair. On the same run-G replications:
 

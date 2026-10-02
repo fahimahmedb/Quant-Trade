@@ -10,6 +10,7 @@ V2-R2  = D4 repair R2 after Astra D4 recheck @3d18085862f239a81936345989b4e26414
 V2-R3  = D4 repair R3 after Astra D4-C2 recheck @92c2f706d2ac75af9ae9710061c60df520234410 (section D4-C3; D4-C2 kept as the R2 record)
 V2-R3-M1 = D4-C3-M1 source-bound calibration after Astra D4-C3 recheck @5bb57eb2adf4cff35378f2c0e53e0316d45a4229 (section D4-C3-M1; D4-C3 kept as the R3 record)
 V2-R3-M2 = D4-C3-M2 calibration (convergence cycle 2) after Astra D4-C3-M1 recheck @ac777a870e7f6b09636f06fe7720194d257427eb (section D4-C3-M2; D4-C3-M1 kept as the cycle-1 record)
+V2-R3-P1 = D4-C3-P1 gate recalibration and enlarged class (convergence cycle 3) after Astra D4-C3-M2 recheck @8874dc5422eecf432869894cb2098e1fc13fe50f (section D4-C3-P1; D4-C3-M2 kept as the cycle-2 record)
 SUMMARY: OUTCOME_INFORMATION_USED = FALSE for every item · TRADING_RULE_CHANGED = FALSE for every item ·
          EXECUTION_MODEL_CHANGED = TRUE for one item (X1, CONSERVATIVE only) · COHORT_CHANGED = TRUE for one item (D7)
 ```
@@ -378,7 +379,26 @@ OUTCOME_INFORMATION_USED = FALSE (synthetic run H, algebra and the Astra audit o
 
 TRADING_RULE_CHANGED = FALSE. EXECUTION_MODEL_CHANGED = FALSE (by M2). COHORT_CHANGED = FALSE (by M2).
 
-BUILDER_IMPACT: compute the 8.1 two-way SE at 5-, 10-, 20- and 30-date calendar blocks for θ̂, θ̂_core and κ̂_core; apply λ_θ = 1.70 (L_W, U_W) and λ_κ = 1.60 (T1a, NEG); print the headline [L_W, U_W] and the 17.3 level texts. IF4 / IF5 are unchanged.
+BUILDER_IMPACT (cycle 2; constants SUPERSEDED by D4-C3-P1 below: λ_θ = 2.15, λ_κ = 1.80): compute the 8.1 two-way SE at 5-, 10-, 20- and 30-date calendar blocks for θ̂, θ̂_core and κ̂_core; apply λ_θ = 1.70 (L_W, U_W) and λ_κ = 1.60 (T1a, NEG); print the headline [L_W, U_W] and the 17.3 level texts. IF4 / IF5 are unchanged.
+
+**D4-C3-P1 — design-gate recalibration to the tests actually run, and an enlarged price class with recalibrated λ (convergence cycle 3; after Astra D4-C3-M2 recheck @8874dc54; delta V2-R3-M2 @61f4904f → V2-R3-P1)**
+
+ASTRA_FINDING: P1 (MAJOR), M3 (MAJOR, statement-level), minors m12, m13; feasibility BLOCKED.
+- **P1.** GO / θ_PCE (Z_80 = 2.4865) / SE_KAPPA_CEILING (0.020) kept the 10.3 rationale (do not start designs that can only confirm edges > 0.10; NEG must reject ≈ −0.07 per share with power ≈ 0.9) that the calibrated tests contradict: mid-price designs GO with an 80%-power effect ≈ 0.18, P(T2) at θ_PCE 0.111, NEG power 0.116–0.13.
+- **M3.** The printed class "CORE prices to 0.90" was calibrated only on U(0.35, 0.80), U(0.70, 0.90) and their mix; at c ~ U(0.85, 0.90), trailing-mean-30 rv 0.10, m 17: L_W miss 0.0587 [0.0573, 0.0602] (100,000), 0.0523 without pauses, T1a 0.0262.
+- **m12.** §1 "well-powered" information axis; §21 item 1 "Refuted" contradicting item 46. **m13.** The conditional-on-reach "up to 0.182" is a grid figure (Astra found 0.203).
+
+OLD: Z_80 in θ_PCE; SE_KAPPA_CEILING 0.020; λ_θ 1.70, λ_κ 1.60; class prices up to U(0.70, 0.90) printed as "CORE prices to 0.90".
+NEW:
+- **P1 (option (a) only).** θ_PCE = ceil(100 · Z_EFF · SE0_θ)/100 with **Z_EFF = 7.2** and **SE_KAPPA_CEILING = 0.005**, derived by a synthetic rule declared and committed before the run (spec 10.4): Z_EFF = the maximum over six price laws × m 17–55 × fills of θ80 / SE0_θ (T2 at λ_θ 2.15, given INFO_SUFFICIENT, planning model), rounded up to 0.1; the ceiling = 0.07 / max(κ90 / SE0_κ) rounded down to 0.001 (NEG power ≥ 0.90 at −0.07 per share). Both only stricter. Verified: P(T2 at the design's own θ_PCE | θ-side GO ∧ INFO) 0.976–1.000 (old formula 0.014–0.51).
+- **M3 (option (i)).** Class 𝒟_P* enlarged to U(0.80, 0.90), U(0.85, 0.90), a point mass at 0.89 and 10 / 50 / 90% mixes; **λ_θ = 2.15, λ_κ = 1.80** (smallest grid values meeting the declared criterion over the new-law cells; the cycle-2 values fail: 0.0568 [0.0554, 0.0583] at U(0.85, 0.90) at 100,000). Class printed as the enumerated laws.
+- Statements: spec 1, 2 (row D4-C3-P1), 6.1–6.3, 7, 8.1 / 8.1b markers, 8.1c STATUS marker, new 8.1d, 8.4, 8.5, 8.5c (Theorem 2, error statement), 9, 10.1–10.3, new 10.4, 17.3 (level texts), 17.8, 20, 21 (item 1; items 43, 46, 47 updated; items 49–53), 24, 26, 27; manifest rows and section H; power table §4.10; architect state; resume checkpoint 3f.
+- **Not changed:** R*, h, W, signal, cohort, entry rule, T_entry, S_ref sizing, execution rule, the 0.04 CORE / TAIL split; estimands; accounting; R1 / R2 / R3 algebra; label vocabulary; the 11-state machine; SHADOW_CONTINUATION_SIGNAL; IF1–IF5; the 8.1c construction; no stated level lowered.
+
+WHY: Astra's P1 and M3 counterexamples reproduce (run J) and are repaired by the stricter-only gate and the enlarged class. MEASURED: L_W miss ≤ 0.0397 [0.0385, 0.0409], size ≤ 0.0253, U_W ≤ 0.0034, T1a ≤ 0.0199, NEG ≤ 0.0073, headline ≤ 0.0397 over 1,288 enlarged-class cells; Astra's cells 0.0312 / 0.0313 / 0.0278 / 0.0266 / 0.0273, T1a 0.0167.
+CONSEQUENCE (not repaired; stated): GO_new = 0 for every declared design at every throughput 8–96 trades per date, because NEG at −0.07 per share has joint power ≤ 0.44 (smallest SE0_κ ≈ 0.0070 > 0.005). The missing negative-result instrument at 120 dates over 𝒟_P* is fundamental for feasibility (Astra's oracle benchmark); W and every owner-frozen surface are untouched; reported to the owner at loop end.
+ARCHITECT_DECISION: option (a) for P1, option (i) for M3; no real outcome, price, P&L or settlement used. OUTCOME_INFORMATION_USED: FALSE. TRADING_RULE_CHANGED: FALSE. EXECUTION_MODEL_CHANGED: FALSE. COHORT_CHANGED: FALSE.
+BUILDER_IMPACT (if V2 is ever built): θ_PCE with Z_EFF = 7.2; GO clause SE0_κ ≤ 0.005; λ_θ = 2.15 and λ_κ = 1.80; print the enumerated-class level texts of spec 17.3.
 
 ## D5 — Science vs operability (MAJOR → CLOSED)
 
