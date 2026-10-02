@@ -83,6 +83,10 @@ The missing negative-result instrument at 120 dates over D_P* is fundamental (As
 - m3_probe (30 cells at 20,000) done: in-between and outside laws all <= 0.0372 (pm899, m 17).
 - ADDENDUM DECLARED NOW, BEFORE ITS RUN: plan m3_probe2 (plan code 17): pm899 and fav88 at m 35, trailing-30 rv 0.10, no pauses, theta 0.10, thin and full, run with `cell` at 100,000 (disclosure of the geometry that binds pm89; no selection depends on it).
 
+- P1 derive run: p1_hi 36/36 and p1_neg 288/288 complete; p1_t2 crashed at cell 305 (pm89, m 17 thin, theta 0.14: p = min(1, 0.89 x 1.14) = 1, every trade wins, so the IF5 ratio sek5^2 / viid was 0/0 -> ZeroDivisionError). The pool is ordered, so cells 0..304 were written intact; 55 cells (305..359) are missing.
+- SCRIPT CHANGE after the crash (only change; committed in the next WIP): in one_rep_p1 the INFO test `sek5*sek5/viid <= 6.0` became `(viid <= 0.0 or sek5*sek5/viid <= 6.0)`. It differs from the old expression ONLY when viid == 0 (all outcomes identical), where the old code raised; so it cannot alter any cell already written (a completed cell never hit viid == 0, otherwise it would have crashed). `check` mode (record-for-record equivalence with the cycle-2 engine, 4 cells x 60 reps, plus GO equivalence) re-run after the change: PASS. The cycle-2 engine file is untouched. Effect of the new branch: an all-win replication counts as INFO_SUFFICIENT if sek5 <= 0.025 (it is 0), i.e. power 1 at saturated effects (p = 1); these saturated points lie beyond the theta used by any GO design (theta_PCE <= 0.10) and only affect the high end of the power curve of pm89 / fav85.
+- Resume (after an API session limit): no sim process running; P1 derive resumed for p1_t2 (skips completed cells).
+
 ## In progress
 - 100k confirmations of 20 cells (3 worst per surface + all m3_astra) -> `..._RUN_J_CONFIRM_100K_2026-10-02.jsonl`; P1 derive plans (p1_hi, p1_t2, p1_neg) running in the queue.
 

@@ -186,7 +186,7 @@ def one_rep_p1(rng, g, K):
     blocks5 = hw[5][2]
     sc = np.bincount(st, minlength=S); sc = sc[sc > 0]
     info = bool(g['D'] >= 60 and blocks5 >= 12 and sc.size >= 25 and sc.sum() ** 2 / float((sc * sc).sum()) >= 15
-                and sek5 <= 0.025 and sek5 * sek5 / viid <= 6.0)
+                and sek5 <= 0.025 and (viid <= 0.0 or sek5 * sek5 / viid <= 6.0))   # viid = 0: every trade identical (all-win cell, p = 1)
     if not info:
         return d, None
     if tail.any():
