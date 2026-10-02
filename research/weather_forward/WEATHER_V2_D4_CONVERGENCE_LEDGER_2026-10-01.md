@@ -46,6 +46,26 @@ Goal: an interruption (token / rate limit, container loss) must never force a ph
 5. Owner instruction 2026-10-02: every Architect (repair / architecture) sub-agent runs on the Sonnet model under the
    project's Ultracode settings; Astra reviewer and orchestrator contexts are unchanged.
 
+## Compute-speed protocol (owner instruction 2026-10-02; applies from the next sub-agent brief, not to running work)
+
+Goal: shorten simulation wall-clock without altering the science.
+
+1. Vectorise the hot loops in numpy (no new dependencies unless already installed). An optimised engine may be used for
+   large runs ONLY after an equivalence check against the engine it replaces: same seeds, same cells, record-for-record
+   identical outputs (or, if floating-point reduction order forces it, identical within a declared tolerance with identical
+   decisions/flags) on a declared sample of cells, committed as evidence before the large run.
+2. Split work by cell: every plan can be run in disjoint slices (`--slice i/n` or equivalent); each slice appends one JSONL
+   line per cell to its own file; slices are concatenated and sorted by cell key. Slicing never changes seeds
+   (seed = f(plan, cell, stream), not f(slice)).
+3. Same standards: same replication counts (20,000 per cell, worst cells >= 100,000), same criteria, same declared plans.
+   Speed-ups may not reduce reps, drop cells or loosen criteria.
+4. Astra keeps its OWN engine for independence; it may optimise it under rule 1 but must not reuse the Architect's engine
+   or outputs for its verdicts (reproduction of Architect raw output stays a separate check).
+5. Extra hardware is optional and never required for a verdict: parallel cloud sessions are possible (each ~4 vCPU, but
+   they consume session rate limits); the owner's Oracle host `quant-p0-targer` is the P0 qualification target and is NOT
+   used for Weather simulations; any extra x86 compute VM is an owner cost decision. Cross-architecture runs (ARM vs x86)
+   may differ in last bits, so byte-identical reproduction checks must run on the same architecture as the original.
+
 ## Independence note
 
 The R3 audit @5bb57eb2 was produced in the same agent context that authored R3. Its blocking finding is
