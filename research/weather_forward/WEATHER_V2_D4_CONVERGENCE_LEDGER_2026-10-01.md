@@ -8,19 +8,20 @@ in a FRESH sub-agent context; earlier reviewer conclusions are immutable history
 CURRENT_ROLE            = ORCHESTRATOR (no review, no repair authority)
 ARCHITECT_BRANCH        = claude/charming-allen-948kd8
 ASTRA_BRANCH            = astra/weather-forward-v2-independent-reaudit-2026-09-29
-CURRENT_SHA (candidate) = 61f4904f94f8662084fa5245c92b647c061148ae   (BLOCKED by cycle-2 fresh Astra)
+CURRENT_SHA (candidate) = 0cfdd4d25ef74e8158403ed6037fccc341fb7639   (cycle-3 Architect; READY_FOR_ASTRA_RECHECK; WIP 0364042..2f204fa2)
 LAST_ASTRA_SHA          = 8874dc5422eecf432869894cb2098e1fc13fe50f   (cycle-2 fresh Astra recheck; BLOCKED P1 + M3)
-LAST_ARCHITECT_SHA      = 61f4904f94f8662084fa5245c92b647c061148ae   (cycle-2 M1-R + M2 repair; WIP 791083d..d5fc379)
+LAST_ARCHITECT_SHA      = 0cfdd4d25ef74e8158403ed6037fccc341fb7639   (cycle-3 P1 + M3 repair, Sonnet)
 OPEN_BLOCKER            = P1 (MAJOR, GO / θ_PCE / SE_KAPPA_CEILING gate contradicted by calibrated power) + M3 (MAJOR,
                           level exceeded at favourite price concentration U(0.85,0.90)) + minors m12, m13
 CLOSED_FINDINGS         = C1, C2, C3, MP1, MP2, m1–m11, M1, M1-R and M2 on 𝒟_P* grid (Astra 175-cell independent sample),
                           T1b gap; R1 / R2 / R3 re-verified PASS (cycle 1 and cycle 2)
 FEASIBILITY_FLAG        = negative-result instrument (NEG at −0.07/share) unattainable at 120 dates over 𝒟_P* (oracle
                           benchmark) — FUNDAMENTAL for feasibility, OWNER / GOVERNANCE decision (horizon W is owner-frozen)
-CYCLE                   = 3 of max 5
-CURRENT_PHASE           = CYCLE 3 / FRESH ARCHITECT REPAIR from 61f4904f — pending
-NEXT_EXACT_ACTION       = fresh Architect sub-agent repairs P1 (option a: outcome-free stricter-only gate recalibration),
-                          M3, m12, m13 on claude/charming-allen-948kd8 from 61f4904f; then a fresh Astra recheck
+CYCLE                   = 3 of max 5 (Astra recheck of cycle-3 candidate pending)
+CURRENT_PHASE           = CYCLE 3 / FRESH ASTRA RECHECK of 0cfdd4d2 — pending
+NEXT_EXACT_ACTION       = fresh Astra rechecks claude/charming-allen-948kd8 @ 0cfdd4d2 (old vs new on P1 / M3 counterexamples;
+                          independent re-derivation of Z_EFF / SE_KAPPA_CEILING; lambda 2.15 / 1.80 over the enlarged class;
+                          judge GO_new = 0 on every declared design; R1 / R2 / R3 + D1-D12 regression)
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 t0                      = NOT_DECLARED
@@ -90,7 +91,8 @@ surfaces it passed (transport algebra, frontier, semantics, state machine), not 
 | 1 | Astra recheck | fresh sub-agent (resumed once after an API rate-limit interruption, same context) | astra @ ac777a87 | BLOCKED_D4_M1_SOURCE_BOUND_LEVEL_NOT_ATTAINED_OVER_DECLARED_CLASS_AND_FROZEN_SURFACE_UNDERCOVERAGE. M1 old→new: 0.0799→0.0274 (false positive), 0.0916→0.0333 (miss); grid worst 0.0471 [0.0457,0.0484] @100k. M1-R: inside the class as frozen (CORE prices, pauses): c~U(0.70,0.90) φ0.9 rv0.05 m17 thin 0.0605 / miss 0.0635 @100k; rv0.10 miss 0.0852; 30 paused dates 0.0531; literal §9 trailing-mean lag 0.0597. M2: T1a 0.0888 / NEG 0.0707 / U_W miss 0.0755 inside 𝒟_P vs 0.025/0.025/0.05. R3 re-verified PASS; run G reproduced byte-identical. REPAIRABLE_BOUNDED |
 | 2 | Architect repair | fresh sub-agent (resumed once after rate limit, same context; WIP checkpoints 791083d, 8feb3b2, 01a5b5d, d5fc379) | arch @ 61f4904f | READY_FOR_ASTRA_RECHECK. Option (a) for M1-R and M2, one frozen rule (spec §8.1c): bound = stat ∓ λ·max_{b∈{5,10,20,30}} t_{df_b,q}·SE_2w(b); λ_θ = 1.70 (L_W q 0.95, U_W core q 0.975), λ_κ = 1.60 (T1a, NEG q 0.975); headline interval = [L_W, U_W]; IF/GO gates unchanged. Class 𝒟_P* declared before runs (AR φ≤0.9, two-state, trailing-mean 15/30, hemisphere/station regimes, rv≤0.10, ≤30 paused dates, favourite CORE to 0.90, TAIL mixes, m 17/35, thin/full). Selection: smallest λ meeting 80% of nominal in all 1,183 reached cells @20k, 100k confirm. Worst joint: L_W miss 0.0415 [0.0403,0.0427], T2 0.0353, U_W 0.0089, T1a 0.0193, NEG 0.0100, T1b ≤ 0.0077. Architect-flagged MAJOR feasibility cost: P(T2) at θ_PCE 0.07–0.11 (was 0.47–0.55); 80%-power effect ≈ 0.18; NEG power at −0.07 ≈ 0.12 (was 0.89). Conditional-on-reach rates up to 0.182. PINM 2,000 draws in sim vs 20,000 spec |
 | 2 | Astra recheck | fresh sub-agent (WIP checkpoints on Astra branch) | astra @ 8874dc54 | BLOCKED_D4_M2_GO_GATE_CONTRADICTED_BY_CALIBRATED_POWER_AND_LEVEL_EXCEEDED_AT_FAVOURITE_PRICE_CONCENTRATION. Old→new: favourite miss 0.0633→0.0114, 30 paused 0.0540→0.0077, M2 cell T1a/NEG/U_W 0.0891/0.0679/0.0685→0.0018/0.0012/0.0007 (100k). In-class worst (175 cells × 20k): L_W 0.0418, T1a 0.0199, NEG 0.0110, U_W 0.0093, T1b 0.0071. P1: GO still starts mid-price designs with 80%-power effect ≈ 0.18 > PCE_CEILING 0.10, NEG power 0.12–0.13 vs ≈ 0.9 rationale. M3: c~U(0.85,0.90), trailing-mean 30 rv 0.10: L_W miss 0.0587 [0.0573,0.0602] (30 contiguous pauses), 0.0523 (none), T1a 0.0262. Oracle check: power loss intrinsic at 120 dates. R1/R2/R3 PASS; frozen sections byte-identical. Contract REPAIRABLE_BOUNDED; feasibility FUNDAMENTAL → governance |
-| 3 | Architect repair | first fresh sub-agent hit the API session limit before writing anything (no files, no commits); relaunched as a fresh Sonnet Architect per owner instruction | pending | pending |
+| 3 | Architect repair | first fresh sub-agent hit the API session limit before writing anything; relaunched as a fresh Sonnet Architect per owner instruction (resumed once after a second limit; crash in p1_t2 cell 305, all-win 0/0 in IF5 ratio, fixed without altering completed cells) | arch @ 0cfdd4d2 | READY_FOR_ASTRA_RECHECK. P1 option (a), stricter-only: Z_EFF = 7.2 (was 2.4865), SE_KAPPA_CEILING = 0.005 (was 0.020), rule declared+committed before run (WIP 0364042); GO_new = 0 on every declared price law at m 8–96 (mid/mix/TAIL/wide/low fail θ_PCE; favourite laws pass θ, fail the κ clause: smallest reachable SE0_κ ≈ 0.0070; joint NEG power at −0.07 ≤ 0.44). M3 option (i): class enlarged (U(.80,.90), U(.85,.90), point mass 0.89, 10/50/90% mixes), λ_θ 1.70→2.15, λ_κ 1.60→1.80 over 1,288 cells; 100k worst: L_W miss 0.0397, size 0.0240, T1a 0.0190, U_W 0.0027, NEG 0.0062; Astra cells U(.85,.90) 0.0312 (was 0.0568). Probe pm .899 m35 0.0411 (> 0.040 target, < 0.05). Feasibility stated plainly: V2 as specified cannot start on any declared design; negative-result instrument fundamental at 120 dates. m12, m13 fixed |
+| 3 | Astra recheck | fresh sub-agent | pending | pending |
 
 ## Blocker handed to cycle-1 Architect (frozen)
 
