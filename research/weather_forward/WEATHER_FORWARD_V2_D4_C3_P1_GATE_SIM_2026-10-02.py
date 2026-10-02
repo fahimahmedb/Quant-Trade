@@ -44,7 +44,7 @@ ERT, CUT, Z80, OPD = m.ERT, m.CUT, m.Z80, m.OPD
 BL = m.BL
 GRID3 = tuple(round(1.0 + 0.05 * i, 2) for i in range(51))          # 1.00 .. 3.50
 SEED_BASE = 20261102
-PLAN_CODE = dict(m3_class=11, m3_mix=12, m3_m35=13, m3_geo=14, m3_astra=15, m3_probe=16, m3_probe2=17,
+PLAN_CODE = dict(m3_class=11, m3_mix=12, m3_m35=13, m3_geo=14, m3_astra=15, m3_probe=16, m3_probe2=17, m3_probe3=18,
                  p1_t2=21, p1_neg=22, p1_hi=23, p1_verify=24, p1_go=25)
 CONST_FILE = os.path.join(HERE, 'WEATHER_FORWARD_V2_D4_C3_P1_CONSTANTS_2026-10-02.json')
 
@@ -376,6 +376,16 @@ def plan_m3_probe2():
     return cells
 
 
+def plan_m3_probe3():
+    """Addendum (m13): Astra's off-grid conditional-on-reach cell, D 60 counted dates + 30 contiguous paused, two-state phi 0.9
+    rv 0.10, at the adopted lambda; three price laws, theta {0, 0.10}, thin, m 17."""
+    cells = []
+    for pr in ('mid', 'fav', 'pm89'):
+        for th in (0.0, 0.10):
+            cells.append(G(D=60, m=17, cap='thin', th=th, pr=pr, P=30, lay='run', pk='mk', pp=0.9, rv=0.10))
+    return cells
+
+
 P1_LAWS = ('mid', 'favmix', 'fav', 'fav80', 'fav85', 'pm89')
 P1_DESIGNS = ((17, 'thin'), (17, 'full'), (35, 'thin'), (35, 'full'), (55, 'thin'), (55, 'full'))
 P1_THETA = (0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.20, 0.25, 0.30)
@@ -426,7 +436,7 @@ def plan_p1_verify():
 
 
 PLANS = dict(m3_class=plan_m3_class, m3_mix=plan_m3_mix, m3_m35=plan_m3_m35, m3_geo=plan_m3_geo, m3_astra=plan_m3_astra,
-             m3_probe=plan_m3_probe, m3_probe2=plan_m3_probe2, p1_t2=plan_p1_t2, p1_neg=plan_p1_neg, p1_hi=plan_p1_hi, p1_verify=plan_p1_verify)
+             m3_probe=plan_m3_probe, m3_probe2=plan_m3_probe2, m3_probe3=plan_m3_probe3, p1_t2=plan_p1_t2, p1_neg=plan_p1_neg, p1_hi=plan_p1_hi, p1_verify=plan_p1_verify)
 
 
 # ------------------------------------------------------------------------------------------------ OP-only GO rates

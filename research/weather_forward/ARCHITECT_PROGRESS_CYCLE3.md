@@ -91,6 +91,9 @@ The missing negative-result instrument at 120 dates over D_P* is fundamental (As
 - Declared derivation rule applied (summariser `p1derive 2.15 1.80`, output committed as `..._RUN_J_P1_DERIVE_SUMMARY_2026-10-02.txt`): max R_theta = 7.193 (mid, m 35, full) -> Z_EFF = 7.2 (Z_80 = 2.4865 was a 2.9x understatement); max R_kappa = 11.85 (fav85, m 35) -> SE_KAPPA_CEILING = floor(1000 x 0.07 / 11.85)/1000 = 0.005. No law is T2-uncertifiable (no PRICE clause needed). Constants file `WEATHER_FORWARD_V2_D4_C3_P1_CONSTANTS_2026-10-02.json`.
   The smallest SE0_kappa reachable at <= 96 trades per date (pm89, m 96) is about 0.0070 > 0.005, so the kappa clause cannot be met by any executable design on the declared laws.
 
+- p1_go (160 OP-only cells) and p1_verify (96 cells) done -> `..._RUN_J_P1_VERIFY_OUTPUT_2026-10-02.jsonl`. Result: GO_new = 0 for every declared price law and every throughput m 8..96 (kappa clause unreachable: SE0_kappa >= 0.0070 > 0.005). Verification: new rule P(T2 | theta-side GO and INFO) >= 0.976 in every cell with >= 2,000 GO&INFO reps; old rule 0.014-0.51 (the P1 defect).
+- ADDENDUM DECLARED NOW, BEFORE ITS RUN (m13 disclosure): plan m3_probe3 (plan code 18): D 60 + 30 contiguous paused, two-state phi 0.9 rv 0.10, laws mid / fav / pm89, theta {0, 0.10}, thin, m 17, 20,000 replications (Astra's off-grid conditional-on-reach cell, at the adopted lambda). 100k verify cells (p1_verify idx 67, 69, 73 = the three lowest new-rule cells) were declared as "worst cells at 100,000" in the P1 declaration.
+
 ## In progress
 - 100k confirmations of 20 cells (3 worst per surface + all m3_astra) -> `..._RUN_J_CONFIRM_100K_2026-10-02.jsonl`; P1 derive plans (p1_hi, p1_t2, p1_neg) running in the queue.
 
