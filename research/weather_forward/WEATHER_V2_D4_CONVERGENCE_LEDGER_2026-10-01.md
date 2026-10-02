@@ -73,7 +73,7 @@ Goal: shorten simulation wall-clock without altering the science.
 3. Progress file + WIP commit per major step (already in the Resume protocol).
 4. Architect / implementation / simulation work on Sonnet; independent Astra audits and arbitration stay on the stronger model.
 5. One distinct question per session; review scope limited to REQUIRED_REAUDIT_SURFACE; no duplicated exploration.
-6. Orchestrator messages stay short; durable facts live in this ledger. V3 planning lives in handoff/WEATHER_V3_BLUE_WORK_BREAKDOWN_2026-10-02.md (uncommitted planning file in the main checkout).
+6. Orchestrator messages stay short; durable facts live in this ledger. V3 planning lives in research/weather_forward/WEATHER_V3_BLUE_WORK_BREAKDOWN_2026-10-02.md (research/weather_forward/WEATHER_V3_BLUE_WORK_BREAKDOWN_2026-10-02.md on this branch).
 
 ## Independence note
 
