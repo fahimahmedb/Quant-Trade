@@ -1,0 +1,81 @@
+cells: t2 laws 36 neg laws 36
+
+== T2 power given INFO_SUFFICIENT (lambda_theta 2.15) ==
+  ('fav', 17, 'full')          SE0 0.0167 reach(INFO @theta 0.10) 0.998  theta80 0.0952  R 5.692  maxpow 1.000  joint-maxpow 1.000
+  ('fav', 17, 'thin')          SE0 0.0179 reach(INFO @theta 0.10) 0.999  theta80 0.0971  R 5.415  maxpow 1.000  joint-maxpow 1.000
+  ('fav', 35, 'full')          SE0 0.0136 reach(INFO @theta 0.10) 0.949  theta80 0.0827  R 6.075  maxpow 1.000  joint-maxpow 1.000
+  ('fav', 35, 'thin')          SE0 0.0146 reach(INFO @theta 0.10) 0.951  theta80 0.0855  R 5.863  maxpow 1.000  joint-maxpow 1.000
+  ('fav', 55, 'full')          SE0 0.0124 reach(INFO @theta 0.10) 0.692  theta80 0.0735  R 5.950  maxpow 1.000  joint-maxpow 1.000
+  ('fav', 55, 'thin')          SE0 0.0132 reach(INFO @theta 0.10) 0.696  theta80 0.0746  R 5.631  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 17, 'full')        SE0 0.0139 reach(INFO @theta 0.10) 0.999  theta80 0.0747  R 5.362  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 17, 'thin')        SE0 0.0149 reach(INFO @theta 0.10) 0.999  theta80 0.0762  R 5.107  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 35, 'full')        SE0 0.0113 reach(INFO @theta 0.10) 0.986  theta80 0.0664  R 5.863  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 35, 'thin')        SE0 0.0121 reach(INFO @theta 0.10) 0.986  theta80 0.0680  R 5.601  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 55, 'full')        SE0 0.0103 reach(INFO @theta 0.10) 0.907  theta80 0.0575  R 5.590  maxpow 1.000  joint-maxpow 1.000
+  ('fav80', 55, 'thin')        SE0 0.0110 reach(INFO @theta 0.10) 0.907  theta80 0.0584  R 5.295  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 17, 'full')        SE0 0.0125 reach(INFO @theta 0.10) 1.000  theta80 0.0644  R 5.152  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 17, 'thin')        SE0 0.0134 reach(INFO @theta 0.10) 1.000  theta80 0.0669  R 4.994  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 35, 'full')        SE0 0.0102 reach(INFO @theta 0.10) 0.995  theta80 0.0562  R 5.531  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 35, 'thin')        SE0 0.0109 reach(INFO @theta 0.10) 0.995  theta80 0.0570  R 5.235  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 55, 'full')        SE0 0.0092 reach(INFO @theta 0.10) 0.971  theta80 0.0529  R 5.725  maxpow 1.000  joint-maxpow 1.000
+  ('fav85', 55, 'thin')        SE0 0.0099 reach(INFO @theta 0.10) 0.972  theta80 0.0534  R 5.401  maxpow 1.000  joint-maxpow 1.000
+  ('favmix', 17, 'full')       SE0 0.0244 reach(INFO @theta 0.10) 0.997  theta80 0.1490  R 6.102  maxpow 1.000  joint-maxpow 1.000
+  ('favmix', 17, 'thin')       SE0 0.0261 reach(INFO @theta 0.10) 0.997  theta80 0.1528  R 5.845  maxpow 1.000  joint-maxpow 1.000
+  ('favmix', 35, 'full')       SE0 0.0199 reach(INFO @theta 0.10) 0.857  theta80 0.1286  R 6.472  maxpow 1.000  joint-maxpow 0.994
+  ('favmix', 35, 'thin')       SE0 0.0213 reach(INFO @theta 0.10) 0.859  theta80 0.1311  R 6.159  maxpow 1.000  joint-maxpow 0.994
+  ('favmix', 55, 'full')       SE0 0.0180 reach(INFO @theta 0.10) 0.398  theta80 0.1117  R 6.188  maxpow 1.000  joint-maxpow 0.925
+  ('favmix', 55, 'thin')       SE0 0.0193 reach(INFO @theta 0.10) 0.395  theta80 0.1135  R 5.873  maxpow 1.000  joint-maxpow 0.925
+  ('mid', 17, 'full')          SE0 0.0302 reach(INFO @theta 0.10) 0.990  theta80 0.2083  R 6.894  maxpow 0.998  joint-maxpow 0.996
+  ('mid', 17, 'thin')          SE0 0.0324 reach(INFO @theta 0.10) 0.990  theta80 0.2153  R 6.652  maxpow 0.997  joint-maxpow 0.994
+  ('mid', 35, 'full')          SE0 0.0246 reach(INFO @theta 0.10) 0.674  theta80 0.1769  R 7.193  maxpow 1.000  joint-maxpow 0.865
+  ('mid', 35, 'thin')          SE0 0.0263 reach(INFO @theta 0.10) 0.675  theta80 0.1803  R 6.845  maxpow 1.000  joint-maxpow 0.869
+  ('mid', 55, 'full')          SE0 0.0223 reach(INFO @theta 0.10) 0.164  theta80 0.1471  R 6.589  maxpow 1.000  joint-maxpow 0.421
+  ('mid', 55, 'thin')          SE0 0.0239 reach(INFO @theta 0.10) 0.168  theta80 0.1503  R 6.285  maxpow 1.000  joint-maxpow 0.415
+  ('pm89', 17, 'full')         SE0 0.0116 reach(INFO @theta 0.10) 1.000  theta80 0.0570  R 4.908  maxpow 1.000  joint-maxpow 1.000
+  ('pm89', 17, 'thin')         SE0 0.0124 reach(INFO @theta 0.10) 1.000  theta80 0.0581  R 4.674  maxpow 1.000  joint-maxpow 1.000
+  ('pm89', 35, 'full')         SE0 0.0094 reach(INFO @theta 0.10) 0.998  theta80 0.0529  R 5.606  maxpow 1.000  joint-maxpow 1.000
+  ('pm89', 35, 'thin')         SE0 0.0101 reach(INFO @theta 0.10) 0.998  theta80 0.0536  R 5.298  maxpow 1.000  joint-maxpow 1.000
+  ('pm89', 55, 'full')         SE0 0.0086 reach(INFO @theta 0.10) 0.991  theta80 0.0489  R 5.696  maxpow 1.000  joint-maxpow 1.000
+  ('pm89', 55, 'thin')         SE0 0.0092 reach(INFO @theta 0.10) 0.990  theta80 0.0499  R 5.433  maxpow 1.000  joint-maxpow 0.999
+max R_l (attainable laws): 7.193399602074174 -> Z_EFF 7.2 | unattainable laws: []
+
+== NEG power given INFO_SUFFICIENT (lambda_kappa 1.80) ==
+  ('fav', 17, 'full')          SE0k 0.0131 kappa90 0.1475  R 11.29  NEG power at -0.07 0.096
+  ('fav', 17, 'thin')          SE0k 0.0131 kappa90 0.1473  R 11.27  NEG power at -0.07 0.097
+  ('fav', 35, 'full')          SE0k 0.0106 kappa90 0.1161  R 10.92  NEG power at -0.07 0.242
+  ('fav', 35, 'thin')          SE0k 0.0106 kappa90 0.1159  R 10.90  NEG power at -0.07 0.232
+  ('fav', 55, 'full')          SE0k 0.0097 kappa90 0.1011  R 10.47  NEG power at -0.07 0.459
+  ('fav', 55, 'thin')          SE0k 0.0097 kappa90 0.1017  R 10.53  NEG power at -0.07 0.450
+  ('fav80', 17, 'full')        SE0k 0.0118 kappa90 0.1372  R 11.67  NEG power at -0.07 0.145
+  ('fav80', 17, 'thin')        SE0k 0.0118 kappa90 0.1376  R 11.71  NEG power at -0.07 0.147
+  ('fav80', 35, 'full')        SE0k 0.0096 kappa90 0.1109  R 11.59  NEG power at -0.07 0.348
+  ('fav80', 35, 'thin')        SE0k 0.0096 kappa90 0.1104  R 11.55  NEG power at -0.07 0.349
+  ('fav80', 55, 'full')        SE0k 0.0087 kappa90 0.0894  R 10.30  NEG power at -0.07 0.587
+  ('fav80', 55, 'thin')        SE0k 0.0087 kappa90 0.0895  R 10.31  NEG power at -0.07 0.577
+  ('fav85', 17, 'full')        SE0k 0.0109 kappa90 0.1258  R 11.53  NEG power at -0.07 0.201
+  ('fav85', 17, 'thin')        SE0k 0.0109 kappa90 0.1267  R 11.61  NEG power at -0.07 0.202
+  ('fav85', 35, 'full')        SE0k 0.0089 kappa90 0.1052  R 11.85  NEG power at -0.07 0.436
+  ('fav85', 35, 'thin')        SE0k 0.0089 kappa90 0.1047  R 11.80  NEG power at -0.07 0.437
+  ('fav85', 55, 'full')        SE0k 0.0081 kappa90 0.0864  R 10.72  NEG power at -0.07 0.693
+  ('fav85', 55, 'thin')        SE0k 0.0081 kappa90 0.0865  R 10.72  NEG power at -0.07 0.682
+  ('favmix', 17, 'full')       SE0k 0.0145 kappa90 0.1520  R 10.50  NEG power at -0.07 0.069
+  ('favmix', 17, 'thin')       SE0k 0.0145 kappa90 0.1517  R 10.48  NEG power at -0.07 0.071
+  ('favmix', 35, 'full')       SE0k 0.0118 kappa90 0.1193  R 10.13  NEG power at -0.07 0.178
+  ('favmix', 35, 'thin')       SE0k 0.0118 kappa90 0.1192  R 10.13  NEG power at -0.07 0.180
+  ('favmix', 55, 'full')       SE0k 0.0107 kappa90 0.1082  R 10.12  NEG power at -0.07 0.384
+  ('favmix', 55, 'thin')       SE0k 0.0107 kappa90 0.1075  R 10.05  NEG power at -0.07 0.399
+  ('mid', 17, 'full')          SE0k 0.0158 kappa90 0.1531  R 9.72  NEG power at -0.07 0.060
+  ('mid', 17, 'thin')          SE0k 0.0158 kappa90 0.1533  R 9.73  NEG power at -0.07 0.061
+  ('mid', 35, 'full')          SE0k 0.0128 kappa90 0.1245  R 9.72  NEG power at -0.07 0.162
+  ('mid', 35, 'thin')          SE0k 0.0128 kappa90 0.1246  R 9.72  NEG power at -0.07 0.156
+  ('mid', 55, 'full')          SE0k 0.0116 kappa90 0.1104  R 9.48  NEG power at -0.07 0.333
+  ('mid', 55, 'thin')          SE0k 0.0116 kappa90 0.1097  R 9.43  NEG power at -0.07 0.352
+  ('pm89', 17, 'full')         SE0k 0.0103 kappa90 0.1190  R 11.51  NEG power at -0.07 0.250
+  ('pm89', 17, 'thin')         SE0k 0.0103 kappa90 0.1187  R 11.49  NEG power at -0.07 0.255
+  ('pm89', 35, 'full')         SE0k 0.0084 kappa90 0.0989  R 11.76  NEG power at -0.07 0.511
+  ('pm89', 35, 'thin')         SE0k 0.0084 kappa90 0.0996  R 11.84  NEG power at -0.07 0.522
+  ('pm89', 55, 'full')         SE0k 0.0076 kappa90 0.0841  R 11.02  NEG power at -0.07 0.753
+  ('pm89', 55, 'thin')         SE0k 0.0076 kappa90 0.0842  R 11.03  NEG power at -0.07 0.750
+max R^k_l: 11.85353472745481 -> SE_KAPPA_CEILING 0.005 | unattainable: []
+
+CONSTANTS_JSON {"z_eff": 7.2, "se_kappa_ceiling": 0.005, "lambda_theta": 2.15, "lambda_kappa": 1.8, "max_R_theta": 7.193399602074174, "max_R_kappa": 11.85353472745481, "unattainable_t2": [], "unattainable_neg": []}

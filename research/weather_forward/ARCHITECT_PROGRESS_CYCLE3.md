@@ -87,6 +87,10 @@ The missing negative-result instrument at 120 dates over D_P* is fundamental (As
 - SCRIPT CHANGE after the crash (only change; committed in the next WIP): in one_rep_p1 the INFO test `sek5*sek5/viid <= 6.0` became `(viid <= 0.0 or sek5*sek5/viid <= 6.0)`. It differs from the old expression ONLY when viid == 0 (all outcomes identical), where the old code raised; so it cannot alter any cell already written (a completed cell never hit viid == 0, otherwise it would have crashed). `check` mode (record-for-record equivalence with the cycle-2 engine, 4 cells x 60 reps, plus GO equivalence) re-run after the change: PASS. The cycle-2 engine file is untouched. Effect of the new branch: an all-win replication counts as INFO_SUFFICIENT if sek5 <= 0.025 (it is 0), i.e. power 1 at saturated effects (p = 1); these saturated points lie beyond the theta used by any GO design (theta_PCE <= 0.10) and only affect the high end of the power curve of pm89 / fav85.
 - Resume (after an API session limit): no sim process running; P1 derive resumed for p1_t2 (skips completed cells).
 
+- p1_t2 resumed and completed (55 missing cells); P1 derive complete: 684 cells.
+- Declared derivation rule applied (summariser `p1derive 2.15 1.80`, output committed as `..._RUN_J_P1_DERIVE_SUMMARY_2026-10-02.txt`): max R_theta = 7.193 (mid, m 35, full) -> Z_EFF = 7.2 (Z_80 = 2.4865 was a 2.9x understatement); max R_kappa = 11.85 (fav85, m 35) -> SE_KAPPA_CEILING = floor(1000 x 0.07 / 11.85)/1000 = 0.005. No law is T2-uncertifiable (no PRICE clause needed). Constants file `WEATHER_FORWARD_V2_D4_C3_P1_CONSTANTS_2026-10-02.json`.
+  The smallest SE0_kappa reachable at <= 96 trades per date (pm89, m 96) is about 0.0070 > 0.005, so the kappa clause cannot be met by any executable design on the declared laws.
+
 ## In progress
 - 100k confirmations of 20 cells (3 worst per surface + all m3_astra) -> `..._RUN_J_CONFIRM_100K_2026-10-02.jsonl`; P1 derive plans (p1_hi, p1_t2, p1_neg) running in the queue.
 

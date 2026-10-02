@@ -240,7 +240,8 @@ def p1derive(args):
         xs = [r['mean']['thW'] for r in cells]
         ys = [r['by_lam']['t2'][it] / max(1, r['reach']['k']) for r in cells]
         joint = [r['by_lam']['t2'][it] / r['reps'] for r in cells]
-        reach = cells[-1]['reach']['p'] if cells else 0
+        mid = min(cells, key=lambda r: abs(r['g']['th'] - 0.10))
+        reach = mid['reach']['p']                                   # P(INFO_SUFFICIENT) at theta 0.10
         se0 = cells[0]['design']['se0'] / cells[0]['design']['n']
         t80 = interp(xs, ys, 0.80)
         if t80 is None:
@@ -248,7 +249,7 @@ def p1derive(args):
         else:
             Rs[key] = t80 / se0
         # monotone-safety: also report max y
-        print('  %-28s SE0 %.4f reach(INFO) %.3f  theta80 %s  R %s  maxpow %.3f  joint-maxpow %.3f' % (str(key), se0, reach, 'None' if t80 is None else '%.4f' % t80,
+        print('  %-28s SE0 %.4f reach(INFO @theta 0.10) %.3f  theta80 %s  R %s  maxpow %.3f  joint-maxpow %.3f' % (str(key), se0, reach, 'None' if t80 is None else '%.4f' % t80,
               'NA' if t80 is None else '%.3f' % (t80 / se0), max(ys) if ys else 0, max(joint) if joint else 0))
     zmax = max(Rs.values()) if Rs else None
     z_eff = max(2.4865, math.ceil(10 * zmax - 1e-9) / 10) if zmax else None
