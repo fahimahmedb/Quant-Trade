@@ -345,8 +345,12 @@ def simulate_block(rng, g, K, R):
     c_op = prices(rng, g['pr'], rep_op.size)
     C_op = fills(rng, g['cap'], rep_op.size)
     zeff = K.get('z_eff') if K else None
-    d = design_arrays(rep_op, c_op, C_op, st_op, R, S, zeff)
     mode = g.get('go', 'old')
+    if (mode in ('th_new', 'new') or g['th'] == 'pce_new') and not zeff:
+        raise ValueError('gate mode / theta needs constants K with z_eff (pass --K)')
+    if mode == 'new' and not (K and K.get('se_kappa_ceiling')):
+        raise ValueError("go='new' needs K['se_kappa_ceiling']")
+    d = design_arrays(rep_op, c_op, C_op, st_op, R, S, zeff)
     go = go_pass(mode, d, K)
     if not go.any():
         return d, None
