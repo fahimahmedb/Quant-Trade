@@ -73,8 +73,14 @@ The missing negative-result instrument at 120 dates over D_P* is fundamental (As
 - Read: Astra recheck (5.1, 7, 15), ledger blocker, spec sections, cycle-2 script.
 - Script written; `check` PASS (engine and GO equivalence with cycle 2).
 
+- WIP1 03640425: declaration + script committed before any run (`check` only).
+- M3 plans run (m3_astra 10, m3_mix 60, m3_geo 72, m3_m35 240, m3_class 900 = 1,282 cells at 20,000) -> `WEATHER_FORWARD_V2_D4_C3_P1_RUN_J_M3_OUTPUT_2026-10-02.jsonl`.
+  (Disclosure: a preview of the first 272 cells was read by the summariser while the rest ran, to test the summariser; no plan, rule or cell was changed.)
+- Declared selection applied (summariser `m3`): lambda_theta = 2.15 (2.10 fails: worst 0.0405+, see output), lambda_kappa = 1.80; binding cells pm89 trailing-30 rv 0.10 m 35 (L_W miss 0.0394), pm89 m 17 P30-run (size 0.0253, T1a 0.0199).
+  Cycle-2 lambda (1.70/1.60) over the enlarged class FAILS the declared criterion: worst L_W miss 0.0683, size 0.0469, T1a 0.0289 at 20,000 (published failed candidate).
+
 ## In progress
-- Declaration commit (this file + script), then M3 runs.
+- 100k confirmations of 20 cells (3 worst per surface + all m3_astra) -> `..._RUN_J_CONFIRM_100K_2026-10-02.jsonl`; P1 derive plans (p1_hi, p1_t2, p1_neg) running in the queue.
 
 ## Next
 - Run plans in the order above; selection; confirmations; probes; P1 derive; constants file; verification; GO rates; documents; final candidate commit.
