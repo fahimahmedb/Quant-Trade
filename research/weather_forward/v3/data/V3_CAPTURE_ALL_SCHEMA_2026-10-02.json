@@ -1,0 +1,249 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "V3 capture-all schema 2026-10-02 (DESIGN; no data fabricated)",
+ "schema_version": "v1",
+ "authority": {
+  "DATA_T0": "NOT_DECLARED",
+  "EXPERIMENT_T0": "NOT_DECLARED",
+  "CAPITAL_T0": "NOT_DECLARED",
+  "BUILDER_AUTHORIZED": false
+ },
+ "record_types": {
+  "envelope_common": {
+   "unique_key": [
+    "capture_id"
+   ],
+   "required": [
+    "capture_id",
+    "stream",
+    "source_id",
+    "request_url",
+    "request_method",
+    "request_params",
+    "slot_id",
+    "attempt_no",
+    "request_sent_at_ns",
+    "captured_at_ns",
+    "request_sent_mono_ns",
+    "captured_mono_ns",
+    "http_status",
+    "transport_error",
+    "body_sha256",
+    "body_bytes",
+    "content_encoding_received",
+    "response_headers_sha256",
+    "clock_offset_ms",
+    "clock_check_at_ns",
+    "clock_check_id",
+    "collector_run_id",
+    "manifest_sha256",
+    "engine_version",
+    "host_id",
+    "phase_label",
+    "class",
+    "record_sha256"
+   ],
+   "fields": {
+    "capture_id": "sha256 hex",
+    "stream": [
+     "S-MKT",
+     "S-BOOK",
+     "S-FCST",
+     "S-REF"
+    ],
+    "request_sent_at_ns": {
+     "type": "integer",
+     "description": "UTC epoch nanoseconds"
+    },
+    "captured_at_ns": {
+     "type": "integer",
+     "description": "UTC epoch nanoseconds"
+    },
+    "http_status": "int|null",
+    "transport_error": "null|TIMEOUT|DNS|TLS|CONN_RESET|OTHER",
+    "body_sha256": "sha256 of transport-decoded raw bytes|null if no body",
+    "phase_label": "DATA_CAPTURE",
+    "class": [
+     "MARKET_STATE",
+     "FORECAST",
+     "REFERENCE",
+     "OUTCOME_BEARING"
+    ],
+    "supersedes": "capture_id|null"
+   }
+  },
+  "envelope_book_ext": {
+   "required": [
+    "token_id",
+    "method",
+    "batch_index",
+    "exchange_book_timestamp_raw",
+    "exchange_book_timestamp_ms",
+    "book_age_ms",
+    "tick_size_recorded",
+    "asset_id_returned",
+    "valid_capture",
+    "invalid_reason"
+   ],
+   "fields": {
+    "method": [
+     "GET_BOOK",
+     "POST_BOOKS"
+    ],
+    "batch_index": "int|null",
+    "book_age_ms": "captured_at-exchange_book_timestamp; diagnostic only, never gating",
+    "valid_capture": "bool per SPEC V2 s12.3; recomputable",
+    "invalid_reason": [
+     "NONE",
+     "HTTP_NOT_200",
+     "PARSE_ERROR",
+     "ASSET_ID_MISMATCH",
+     "FUTURE_TIMESTAMP",
+     "CLOCK_UNVERIFIED",
+     "PROVENANCE_INCOMPLETE",
+     "TRANSPORT_ERROR"
+    ],
+    "book_hash_returned": "as received, unverified"
+   }
+  },
+  "envelope_forecast_ext": {
+   "required": [
+    "station_icao",
+    "model_id",
+    "latitude_requested",
+    "longitude_requested",
+    "elevation_requested",
+    "timezone_requested",
+    "unit_requested",
+    "forecast_days",
+    "forecast_issue_time"
+   ],
+   "fields": {
+    "forecast_issue_time": "parsed value or UNKNOWN_NOT_PROVIDED; never imputed",
+    "grid_latitude_returned": "nullable",
+    "grid_longitude_returned": "nullable",
+    "grid_elevation_returned": "nullable",
+    "station_status": [
+     "TABLE",
+     "EXPLORATORY_NEW_STATION"
+    ]
+   }
+  },
+  "slot_ledger": {
+   "unique_key": [
+    "slot_id",
+    "event",
+    "attempt_no"
+   ],
+   "events": [
+    "SLOT_PLANNED",
+    "ATTEMPT_STARTED",
+    "ATTEMPT_COMPLETED",
+    "ATTEMPT_ABORTED_BY_CRASH",
+    "SLOT_CLOSED"
+   ],
+   "slot_closed_status": [
+    "OK",
+    "FAILED_RETRIES_EXHAUSTED",
+    "MISSED_CRASH",
+    "SCHEDULE_OVERRUN",
+    "OPERATOR_PAUSE"
+   ]
+  },
+  "run_ledger": {
+   "events": [
+    "RUN_START",
+    "RUN_HEARTBEAT",
+    "RUN_STOP"
+   ],
+   "restart_class": [
+    "CLEAN_RESTART",
+    "CRASH_RECOVERY",
+    "MANIFEST_CHANGED",
+    "HOST_CHANGED",
+    "MANUAL"
+   ]
+  },
+  "clock_record": {
+   "required": [
+    "clock_check_id",
+    "checked_at_ns",
+    "offset_ms_abs",
+    "rtt_ms",
+    "sources",
+    "step_detected"
+   ]
+  },
+  "gap_record": {
+   "unique_key": [
+    "gap_id"
+   ],
+   "gap_reason": [
+    "COLLECTOR_DOWN",
+    "HOST_CLOCK_UNVERIFIED",
+    "SOURCE_HTTP_ERROR",
+    "RATE_LIMITED",
+    "MISSED_CRASH",
+    "SCHEDULE_OVERRUN",
+    "UNIVERSE_UNKNOWN",
+    "OPERATOR_PAUSE",
+    "MANIFEST_TRANSITION"
+   ],
+   "required": [
+    "gap_id",
+    "stream",
+    "target_key",
+    "start_ns",
+    "end_ns",
+    "gap_reason"
+   ]
+  },
+  "seal": {
+   "required": [
+    "segment_path",
+    "record_count",
+    "first_capture_id",
+    "last_capture_id",
+    "first_captured_at_ns",
+    "last_captured_at_ns",
+    "segment_sha256",
+    "prev_seal_sha256",
+    "sealed_at_ns",
+    "manifest_sha256"
+   ]
+  },
+  "manifest": {
+   "required": [
+    "lineage_id",
+    "schema_version",
+    "streams",
+    "endpoints_verified",
+    "operational_parameters",
+    "inherited_spec_constants",
+    "station_table_sha256",
+    "airports_snapshot_sha256",
+    "engine_code_sha256",
+    "storage_config",
+    "host_id"
+   ],
+   "note": "operational_parameters entries are labelled OPERATIONAL; inherited_spec_constants are labelled INHERITED_FROM_SPEC with section ref; no scientific-threshold field type exists"
+  },
+  "data_t0_ledger": {
+   "writer": "governance step only (not collector)",
+   "required": [
+    "data_t0_utc",
+    "manifest_sha256",
+    "host_id",
+    "authorised_by"
+   ]
+  }
+ },
+ "invariants": [
+  "capture_id unique across all segments",
+  "raw bytes never modified or deleted",
+  "body_sha256 equals sha256 of stored blob",
+  "no observation dedup in RAW",
+  "derived tables rebuild byte-identically",
+  "collector writes phase_label DATA_CAPTURE only"
+ ]
+}
