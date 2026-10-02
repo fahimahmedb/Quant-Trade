@@ -5,7 +5,8 @@ never from chat memory. The orchestrator neither reviews nor repairs: each Archi
 in a FRESH sub-agent context; earlier reviewer conclusions are immutable history.
 
 ```text
-CURRENT_ROLE            = ORCHESTRATOR (no review, no repair authority)
+CURRENT_ROLE            = COORDINATOR (owner instruction 2026-10-02: BUILD PAUSED; no new Architect / Builder / implementation launches;
+                          running review / analysis agents may finish; next: write session prompts with auto-relaunch alerts)
 ARCHITECT_BRANCH        = claude/charming-allen-948kd8
 ASTRA_BRANCH            = astra/weather-forward-v2-independent-reaudit-2026-09-29
 CURRENT_SHA (candidate) = 0cfdd4d25ef74e8158403ed6037fccc341fb7639   (cycle-3 Architect; READY_FOR_ASTRA_RECHECK; WIP 0364042..2f204fa2)
