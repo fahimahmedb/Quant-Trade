@@ -1043,7 +1043,7 @@ Drift (mission §28 item 10): θ_PCE is frozen at t0 and labels always use the f
 | U(0.85, 0.90) | 4.99–5.73 (0.053–0.067) | 10.72–**11.85** | 0.0092–0.0134 | 0.0081–0.0109 |
 | point mass 0.89 | 4.67–5.70 (0.049–0.058) | 11.02–11.84 | 0.0086–0.0124 | 0.0076–0.0103 |
 
-- **Z_EFF = 7.2** (the maximum, mid prices at m 35, full fills, 7.193; Astra's "about 5.0" is the favourite-law value). Z_80 = 2.4865 understated the multiplier of the T2 actually run by a factor 2.9. Z_EFF ≥ Z_80 always, so every design's θ_PCE can only rise: stricter-only.
+- **Z_EFF = 7.2** (the maximum, mid prices at m 35, full fills, 7.193; Astra's "about 5.0" is close to the favourite-law values, 5.0–6.1). Z_80 = 2.4865 understated the multiplier of the T2 actually run by a factor 2.9. Z_EFF ≥ Z_80 always, so every design's θ_PCE can only rise: stricter-only.
 - **SE_KAPPA_CEILING = 0.005** (max R^κ = 11.85 at U(0.85, 0.90), m 35: 0.07 / 11.85 = 0.0059 → 0.005). It is stricter than 0.020. Its meaning is the 10.3 rationale and nothing else.
 
 **Verification: power at the design's own θ_PCE (θ-side clause, given INFO_SUFFICIENT; 20,000 per cell).**

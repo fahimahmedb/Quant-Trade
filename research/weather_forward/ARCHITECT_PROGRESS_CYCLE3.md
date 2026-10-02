@@ -94,11 +94,15 @@ The missing negative-result instrument at 120 dates over D_P* is fundamental (As
 - p1_go (160 OP-only cells) and p1_verify (96 cells) done -> `..._RUN_J_P1_VERIFY_OUTPUT_2026-10-02.jsonl`. Result: GO_new = 0 for every declared price law and every throughput m 8..96 (kappa clause unreachable: SE0_kappa >= 0.0070 > 0.005). Verification: new rule P(T2 | theta-side GO and INFO) >= 0.976 in every cell with >= 2,000 GO&INFO reps; old rule 0.014-0.51 (the P1 defect).
 - ADDENDUM DECLARED NOW, BEFORE ITS RUN (m13 disclosure): plan m3_probe3 (plan code 18): D 60 + 30 contiguous paused, two-state phi 0.9 rv 0.10, laws mid / fav / pm89, theta {0, 0.10}, thin, m 17, 20,000 replications (Astra's off-grid conditional-on-reach cell, at the adopted lambda). 100k verify cells (p1_verify idx 67, 69, 73 = the three lowest new-rule cells) were declared as "worst cells at 100,000" in the P1 declaration.
 
+- Reproduction check (after all runs): m3_astra rerun byte-identical except the diagnostic field `design.pce_new` (0 in the committed M3 output because the constants file did not yet exist; non-zero on rerun); p1_neg 100, p1_hi 5, p1_t2 305 (post-fix) and p1_verify 67 rerun record-identical. Owner-frozen spec sections (3, 5, 6 heading, 8.2, 8.3, 8.5b, 8.6, 8.7, 11-16, 17.1, 17.2, 17.4-17.7, 18, 19, 22, 23, 25) byte-identical to 61f4904f; only research/weather_forward changed.
+- Documents done: spec (8.1d, 10.4, propagation), manifest (rows, section H), delta D4-C3-P1, power table 4.10, architect state, resume checkpoint 3f.
+
 ## In progress
-- 100k confirmations of 20 cells (3 worst per surface + all m3_astra) -> `..._RUN_J_CONFIRM_100K_2026-10-02.jsonl`; P1 derive plans (p1_hi, p1_t2, p1_neg) running in the queue.
+- none
 
 ## Next
-- Run plans in the order above; selection; confirmations; probes; P1 derive; constants file; verification; GO rates; documents; final candidate commit.
+- ASTRA BOUNDED D4-C3-P1 RECHECK ONLY (final candidate commit = branch tip, status READY_FOR_ASTRA_RECHECK); then the feasibility finding (no declared design passes GO; no usable negative-result instrument at 120 dates) goes to the owner at loop end.
+- Self-flags: (1) Z_EFF is a single maximum over laws and over-certifies favourites; (2) extremality of the point mass 0.89 among near-cap laws is empirical (probes <= 0.0411); (3) conditional-on-reach rates are grid figures; (4) gate derivation uses the planning model (no persistence), so power under persistence is lower; (5) a rerun of the M3 cells shows design.pce_new non-zero (diagnostic only).
 
 ## Seeds / outputs
 - Outputs (committed raw JSONL, one line per completed cell, resumable by rerunning the same command):
