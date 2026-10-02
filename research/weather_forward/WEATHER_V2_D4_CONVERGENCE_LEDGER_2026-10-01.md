@@ -66,6 +66,15 @@ Goal: shorten simulation wall-clock without altering the science.
    used for Weather simulations; any extra x86 compute VM is an owner cost decision. Cross-architecture runs (ARM vs x86)
    may differ in last bits, so byte-identical reproduction checks must run on the same architecture as the original.
 
+## Token-efficiency protocol (owner instruction 2026-10-02; applies from the next brief)
+
+1. Briefs reference file paths and section numbers; they do not paste spec text. Sessions slice the spec with grep/sed.
+2. Hand-back <= 12 lines; details only in committed files; raw outputs are JSONL, summaries are read instead of raw.
+3. Progress file + WIP commit per major step (already in the Resume protocol).
+4. Architect / implementation / simulation work on Sonnet; independent Astra audits and arbitration stay on the stronger model.
+5. One distinct question per session; review scope limited to REQUIRED_REAUDIT_SURFACE; no duplicated exploration.
+6. Orchestrator messages stay short; durable facts live in this ledger. V3 planning lives in handoff/WEATHER_V3_BLUE_WORK_BREAKDOWN_2026-10-02.md (uncommitted planning file in the main checkout).
+
 ## Independence note
 
 The R3 audit @5bb57eb2 was produced in the same agent context that authored R3. Its blocking finding is
