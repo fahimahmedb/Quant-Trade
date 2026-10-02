@@ -6,3 +6,4 @@
 {"key": "2026-10-02T00:15:51+00:00", "kind": "observation", "observed_at": "2026-10-02T00:15:51+00:00", "record": {"last_remaining": 494, "plan": [["americanfootball_ncaaf", "closing:2026-10-02T01:00:00+00:00"], ["soccer_mexico_ligamx", "anchor"]], "used_month": 6, "used_today": 0}}
 {"key": "2026-10-02T06:17:06+00:00", "kind": "observation", "observed_at": "2026-10-02T06:17:06+00:00", "record": {"last_remaining": 492, "plan": [], "used_month": 8, "used_today": 2}}
 {"key": "2026-10-02T13:15:31+00:00", "kind": "observation", "observed_at": "2026-10-02T13:15:31+00:00", "record": {"last_remaining": 492, "plan": [["soccer_epl", "anchor"], ["basketball_nba", "anchor"]], "used_month": 8, "used_today": 2}}
+{"key": "2026-10-02T18:43:22+00:00", "kind": "observation", "observed_at": "2026-10-02T18:43:22+00:00", "record": {"last_remaining": 490, "plan": [], "used_month": 10, "used_today": 4}}
