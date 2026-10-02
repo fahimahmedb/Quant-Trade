@@ -44,7 +44,7 @@ ERT, CUT, Z80, OPD = m.ERT, m.CUT, m.Z80, m.OPD
 BL = m.BL
 GRID3 = tuple(round(1.0 + 0.05 * i, 2) for i in range(51))          # 1.00 .. 3.50
 SEED_BASE = 20261102
-PLAN_CODE = dict(m3_class=11, m3_mix=12, m3_m35=13, m3_geo=14, m3_astra=15, m3_probe=16,
+PLAN_CODE = dict(m3_class=11, m3_mix=12, m3_m35=13, m3_geo=14, m3_astra=15, m3_probe=16, m3_probe2=17,
                  p1_t2=21, p1_neg=22, p1_hi=23, p1_verify=24, p1_go=25)
 CONST_FILE = os.path.join(HERE, 'WEATHER_FORWARD_V2_D4_C3_P1_CONSTANTS_2026-10-02.json')
 
@@ -365,6 +365,17 @@ def plan_m3_probe():
     return cells
 
 
+def plan_m3_probe2():
+    """Addendum probe (declared after the 20,000-replication m3_probe, before it was run): the m 35 geometry that binds
+    the adopted lambda for pm89, now for the outside / neighbouring laws pm899 and fav88."""
+    cells = []
+    b = dict(pk='box', pp=30, rv=0.10)
+    for pr in ('pm899', 'fav88'):
+        for cap in ('thin', 'full'):
+            cells.append(G(m=35, cap=cap, th=0.10, pr=pr, P=0, **b))
+    return cells
+
+
 P1_LAWS = ('mid', 'favmix', 'fav', 'fav80', 'fav85', 'pm89')
 P1_DESIGNS = ((17, 'thin'), (17, 'full'), (35, 'thin'), (35, 'full'), (55, 'thin'), (55, 'full'))
 P1_THETA = (0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.20, 0.25, 0.30)
@@ -415,7 +426,7 @@ def plan_p1_verify():
 
 
 PLANS = dict(m3_class=plan_m3_class, m3_mix=plan_m3_mix, m3_m35=plan_m3_m35, m3_geo=plan_m3_geo, m3_astra=plan_m3_astra,
-             m3_probe=plan_m3_probe, p1_t2=plan_p1_t2, p1_neg=plan_p1_neg, p1_hi=plan_p1_hi, p1_verify=plan_p1_verify)
+             m3_probe=plan_m3_probe, m3_probe2=plan_m3_probe2, p1_t2=plan_p1_t2, p1_neg=plan_p1_neg, p1_hi=plan_p1_hi, p1_verify=plan_p1_verify)
 
 
 # ------------------------------------------------------------------------------------------------ OP-only GO rates
