@@ -213,6 +213,10 @@ def plan_probe():
             for th in (0.0, 0.10):
                 for cal in (dict(P=0, m=35), dict(P=30, lay='run', m=17)):
                     cells.append(G(pr=pr, cap=cap, th=th, **W, **cal))
+    # m13: Astra's off-grid conditional-on-reach cell (D 60 + 30 contiguous paused, two-state phi 0.9 rv 0.10), mid / fav / pm89, thin, m 17
+    for pr in ('mid', 'fav', 'pm89'):
+        for th in (0.0, 0.10):
+            cells.append(G(D=60, pr=pr, cap='thin', th=th, comps=MK(0.9, 0.10), P=30, lay='run'))
     return [(key(g), g) for g in cells]
 
 

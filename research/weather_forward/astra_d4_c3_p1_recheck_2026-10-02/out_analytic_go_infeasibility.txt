@@ -1,0 +1,5 @@
+min over two-point CORE mixtures, m<=96, of max(7.2*SE0_theta/0.10, SE0_kappa/0.005) = 1.365  (GO needs <= 1)
+  at m=96, c1=0.080, c2=0.895, w=0.05: SE0_kappa=0.0068, SE0_theta=0.0186, 7.2*SE0_theta=0.134
+exact asymptote m->inf, point mass 0.89: SE0_kappa -> 0.00606 (> 0.005)
+SE0_kappa needs mean c(1-c) <= 0.0667 at the asymptotic slope 0.045; c(1-c) >= 0.0979 for every c in [0.0725, 0.89]
+m=96 point mass 0.89: SE0_kappa = 0.00701, SE0_theta = 0.00787, theta_PCE = 0.06
