@@ -11,7 +11,7 @@ New V3 plans register through `register_plan(name, base_seed, plan_code, builder
 import hashlib
 import json
 
-from wf_engine import G, ENGINE_VERSION, SCHEMA_VERSION, rep_block
+from wf_engine import G, ENGINE_VERSION, SCHEMA_VERSION, rep_block, go_cells, GO_BLOCK
 
 # ---------------------------------------------------------------- M2 (run H) builders
 def DEPS(full=True):
@@ -308,6 +308,9 @@ for _n, _c, _f in (('m3_class', 11, plan_m3_class), ('m3_mix', 12, plan_m3_mix),
     register_plan('p1:' + _n, 20261102, _c, _f)
 
 
+register_plan('p1:p1_go', 20261102, 25, go_cells, kind='go')
+
+
 def plan_cells(name):
     return PLAN_DEFS[name]['builder']()
 
@@ -322,5 +325,5 @@ def plan_hash(name, K=None):
     d = PLAN_DEFS[name]
     cells = plan_cells(name)
     payload = dict(name=name, base_seed=d['base_seed'], plan_code=d['plan_code'], cells=cells, K=K or {},
-                   engine=ENGINE_VERSION, schema=SCHEMA_VERSION, rep_blocks=[rep_block(g) for g in cells])
+                   engine=ENGINE_VERSION, schema=SCHEMA_VERSION, rep_blocks=[GO_BLOCK if d['kind'] == 'go' else rep_block(g) for g in cells])
     return hashlib.sha256(canonical(payload).encode()).hexdigest()

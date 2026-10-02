@@ -47,7 +47,10 @@ def compute_record(plan, cell_id, reps, streams, K):
     """Pure function of (plan, cell_id, reps, streams, K). This is the unit of determinism."""
     d = P.PLAN_DEFS[plan]
     g = P.plan_cells(plan)[cell_id]
-    if streams == 1:
+    if d['kind'] == 'go':
+        assert streams == 1
+        rec = E.run_go_cell(g, K, d['base_seed'], d['plan_code'], cell_id, reps)
+    elif streams == 1:
         seed, rb, dsum, A = E.run_cell_stream(g, K, d['base_seed'], d['plan_code'], cell_id, 0, reps)
         rec = E.stream_record(plan, cell_id, g, reps, seed, rb, dsum, A)
     else:
@@ -56,6 +59,7 @@ def compute_record(plan, cell_id, reps, streams, K):
             seed, rb, dsum, A = E.run_cell_stream(g, K, d['base_seed'], d['plan_code'], cell_id, s, reps // streams)
             parts.append(E.stream_record(plan, cell_id, g, reps // streams, seed, rb, dsum, A))
         rec = E.combine(parts, plan, cell_id, g)
+    rec['plan'] = plan
     rec['schema'] = E.SCHEMA_VERSION
     rec['engine'] = E.ENGINE_VERSION
     rec['plan_hash'] = P.plan_hash(plan, K)

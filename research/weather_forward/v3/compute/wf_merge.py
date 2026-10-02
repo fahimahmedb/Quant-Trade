@@ -54,7 +54,7 @@ def verify(plan, reps, streams, cells, K, files):
                 errs.append(f'{where} cell id out of range'); continue
             if x.get('g') != specs[i]:
                 errs.append(f'{where} cell spec differs from plan')
-            if x.get('rep_block') != E.rep_block(specs[i]):
+            if x.get('rep_block') != (E.GO_BLOCK if d['kind'] == 'go' else E.rep_block(specs[i])):
                 errs.append(f'{where} rep_block differs')
             want = [[d['base_seed'], d['plan_code'], i, 0]] if streams == 1 else \
                 [[d['base_seed'], d['plan_code'], i, s] for s in range(1, streams + 1)]

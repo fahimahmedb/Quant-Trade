@@ -485,3 +485,48 @@ def combine(parts, plan, idx, g):
     tot = max(1, sum(x['reach']['k'] for x in ok))
     comb['mean'] = {k: round(sum(x['mean'][k] * x['reach']['k'] for x in ok) / tot, 5) for k in ok[0]['mean']}
     return comb
+
+
+# ------------------------------------------------------------------------------------------------ OP-only GO-rate cells (P1 `p1_go`)
+GO_BLOCK = 200
+
+
+def go_cells():
+    GO_LAWS = ('mid', 'favmix', 'fav', 'fav80', 'fav85', 'pm89', 'tail1', 'tail3', 'wide', 'low')
+    GO_M = (8, 12, 17, 25, 35, 55, 80, 96)
+    return [dict(S=48, m=mm, cap=cap, pr=pr) for pr in GO_LAWS for mm in GO_M for cap in ('thin', 'full')]
+
+
+def run_go_cell(g, K, base_seed, plan_id, cell_id, reps):
+    seed = [int(base_seed), int(plan_id), int(cell_id), 0]
+    S = g['S']
+    ct = dict(old=0, th_new=0, k_new=0, new=0, rsn_pce=0, rsn_kappa=0, rsn_stn=0)
+    vals = {k: [] for k in ('se0', 'se0k', 'pce_old', 'pce_new')}
+    for b in range(-(-reps // GO_BLOCK)):
+        R = min(GO_BLOCK, reps - b * GO_BLOCK)
+        rng = np.random.default_rng(np.random.SeedSequence(entropy=seed, spawn_key=(b,)))
+        n_op_rep = np.minimum(rng.poisson(g['m'], (R, OPD)), 2 * S).sum(axis=1)
+        act = rng.gamma(2.0, 1.0, (R, S))
+        act /= act.sum(axis=1, keepdims=True)
+        rep = np.repeat(np.arange(R), n_op_rep)
+        st = draw_stations(rng, rep, act, R)
+        c = prices(rng, g['pr'], rep.size)
+        C = fills(rng, g['cap'], rep.size)
+        d = design_arrays(rep, c, C, st, R, S, K['z_eff'])
+        v = d['valid']
+        ct['rsn_pce'] += int((~v).sum())
+        ct['old'] += int(go_pass('old', d, K).sum())
+        ct['th_new'] += int(go_pass('th_new', d, K).sum())
+        ct['k_new'] += int((v & (d['se0k'] <= K['se_kappa_ceiling'])).sum())
+        ct['new'] += int(go_pass('new', d, K).sum())
+        with np.errstate(invalid='ignore'):
+            r_pce = v & (d['pce_new'] > 0.10)
+            r_kap = v & ~r_pce & (d['se0k'] > K['se_kappa_ceiling'])
+            r_stn = v & ~r_pce & ~r_kap & ~d['stn']
+        ct['rsn_pce'] += int(r_pce.sum()); ct['rsn_kappa'] += int(r_kap.sum()); ct['rsn_stn'] += int(r_stn.sum())
+        for k in vals:
+            vals[k].append(d[k][v])
+    q = lambda a: [round(float(np.quantile(a, x)), 5) for x in (0.05, 0.5, 0.95)] if a.size else None
+    V = {k: np.concatenate(v) for k, v in vals.items()}
+    return dict(plan='p1_go', idx=cell_id, g=g, reps=reps, seed=seed, rep_block=GO_BLOCK, counts=ct, se0_q=q(V['se0']),
+                se0k_q=q(V['se0k']), pce_old_q=q(V['pce_old']), pce_new_q=q(V['pce_new']))
