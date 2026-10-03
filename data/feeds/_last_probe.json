@@ -11,31 +11,31 @@
   },
   "dydx": {
     "records": 100,
-    "seconds": 0.7,
+    "seconds": 0.53,
     "status": "OK",
     "terms": "documented"
   },
   "fomc_calendar": {
     "records": 56,
-    "seconds": 0.19,
+    "seconds": 0.13,
     "status": "OK",
     "terms": "documented"
   },
   "fred": {
-    "records": 11270,
-    "seconds": 0.12,
+    "records": 11271,
+    "seconds": 0.25,
     "status": "OK",
     "terms": "documented"
   },
   "hyperliquid": {
     "records": 234,
-    "seconds": 0.16,
+    "seconds": 0.25,
     "status": "OK",
     "terms": "documented"
   },
   "kalshi": {
     "records": 5,
-    "seconds": 0.12,
+    "seconds": 0.09,
     "status": "OK",
     "terms": "documented"
   },
@@ -54,19 +54,19 @@
   },
   "polymarket": {
     "records": 5,
-    "seconds": 0.29,
+    "seconds": 0.14,
     "status": "OK",
     "terms": "documented"
   },
   "stooq": {
     "records": 0,
-    "seconds": 0.7,
+    "seconds": 0.71,
     "status": "EMPTY",
     "terms": "grey"
   },
   "yahoo_chart": {
     "records": 5,
-    "seconds": 0.23,
+    "seconds": 0.14,
     "status": "OK",
     "terms": "grey"
   }
