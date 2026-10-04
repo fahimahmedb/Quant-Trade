@@ -20,6 +20,11 @@ class ReleaseState(str, Enum):
     AUTHORIZED = "AUTHORIZED"
 
 
+class CompletionState(str, Enum):
+    COMPLETED = "COMPLETED"
+    NOT_COMPLETED = "NOT_COMPLETED"
+
+
 class QuarantineState(str, Enum):
     CLEAR = "CLEAR"
     QUARANTINED = "QUARANTINED"
@@ -105,8 +110,16 @@ class Action(str, Enum):
     HANDLE_INCIDENT = "HANDLE_INCIDENT"
 
 
+class TargetKind(str, Enum):
+    INPUT_MANIFEST = "INPUT_MANIFEST"
+    FIXTURE_PROVENANCE = "FIXTURE_PROVENANCE"
+    OUTPUT_MANIFEST = "OUTPUT_MANIFEST"
+
+
 class StopReason(str, Enum):
     MISSING_AUTHORITY = "MISSING_AUTHORITY"
+    MISSING_EXECUTION_POLICY_ROOT = "MISSING_EXECUTION_POLICY_ROOT"
+    EXECUTION_POLICY_ROOT_MISMATCH = "EXECUTION_POLICY_ROOT_MISMATCH"
     AUTHORITY_MISMATCH = "AUTHORITY_MISMATCH"
     UNKNOWN_PROVENANCE = "UNKNOWN_PROVENANCE"
     PROHIBITED_INPUT_CLASS = "PROHIBITED_INPUT_CLASS"
@@ -115,10 +128,13 @@ class StopReason(str, Enum):
     UNAUTHORIZED_READER = "UNAUTHORIZED_READER"
     UNAUTHORIZED_RECIPIENT = "UNAUTHORIZED_RECIPIENT"
     FIXTURE_LINEAGE_AMBIGUITY = "FIXTURE_LINEAGE_AMBIGUITY"
+    FIXTURE_PROVENANCE_MISMATCH = "FIXTURE_PROVENANCE_MISMATCH"
     UNEXPECTED_EFFICACY_LEAKAGE = "UNEXPECTED_EFFICACY_LEAKAGE"
     CUMULATIVE_DISCLOSURE_AMBIGUITY = "CUMULATIVE_DISCLOSURE_AMBIGUITY"
     RESOURCE_BOUNDARY_UNRESOLVED = "RESOURCE_BOUNDARY_UNRESOLVED"
     RELEASE_NOT_AUTHORIZED = "RELEASE_NOT_AUTHORIZED"
+    RELEASE_INDEPENDENCE_VIOLATION = "RELEASE_INDEPENDENCE_VIOLATION"
+    LOGGING_REQUIRED = "LOGGING_REQUIRED"
     INVALID_DECLARATION = "INVALID_DECLARATION"
 
 
@@ -181,6 +197,27 @@ class FixtureProvenance:
 
 
 @dataclass(frozen=True, slots=True)
+class FixtureProvenanceContract:
+    expected_fixture_id: str
+    expected_generator_identity: str
+    expected_generator_version: str
+    expected_construction_input_classes: tuple[InputClassification, ...]
+    expected_lineage_references: tuple[str, ...]
+    required_reproducibility_keys: tuple[str, ...]
+    allowed_reproducibility_keys: tuple[str, ...]
+    expected_fixture_provenance_identity: str
+
+
+@dataclass(frozen=True, slots=True)
+class TrustedExecutionPolicyRoot:
+    execution_policy_authority_sha: str
+    expected_construction_authority_sha: str
+    expected_harness_identity: str
+    expected_harness_version_or_commit_identity: str
+    expected_policy_identity: str
+
+
+@dataclass(frozen=True, slots=True)
 class RoleDeclaration:
     actor_id: str
     declared_role: Role
@@ -199,23 +236,43 @@ class ActionAuthorization:
 @dataclass(frozen=True, slots=True)
 class LogRecord:
     record_id: str
-    authority_identity: str
+    construction_authority_identity: str
+    execution_policy_authority_identity: str | None
+    authorization_authority_identity: str
     manifest_identity: str
+    actor_id: str
     actor_role: Role
+    authorization_id: str
     attempted_action: Action
+    target_kind: TargetKind
+    target_id: str
     permit_or_deny_state: PermitState
     quarantine_state: QuarantineState
     release_state: ReleaseState
-    incident_identifier: str
-    cumulative_disclosure_state: CumulativeDisclosureState
+    incident_identifier: str | None
+    cumulative_disclosure_state: CumulativeDisclosureState | None
+    recipient_actor_id: str | None
+    recipient_role: Role | None
+
+
+@dataclass(frozen=True, slots=True)
+class LogAppendAcknowledgement:
+    appended: bool
+    record_id: str
+    log: "StructuredAuditLog"
 
 
 @dataclass(frozen=True, slots=True)
 class StructuredAuditLog:
     records: tuple[LogRecord, ...]
 
-    def append(self, record: LogRecord) -> "StructuredAuditLog":
-        return StructuredAuditLog(records=self.records + (record,))
+    def append(self, record: LogRecord) -> LogAppendAcknowledgement:
+        if not record.record_id or not record.record_id.strip():
+            return LogAppendAcknowledgement(False, record.record_id, self)
+        if any(existing.record_id == record.record_id for existing in self.records):
+            return LogAppendAcknowledgement(False, record.record_id, self)
+        updated = StructuredAuditLog(records=self.records + (record,))
+        return LogAppendAcknowledgement(True, record.record_id, updated)
 
 
 _AMBIGUOUS_RECIPIENT_IDENTITIES = frozenset(
@@ -307,5 +364,14 @@ class HarnessDecision:
     permit_or_deny_state: PermitState
     quarantine_state: QuarantineState
     release_state: ReleaseState
+    completion_state: CompletionState
     stop_reason: StopReason | None
     detail_code: str
+
+
+@dataclass(frozen=True, slots=True)
+class LoggedActionResult:
+    decision: HarnessDecision
+    log: StructuredAuditLog
+    log_record: LogRecord | None
+    log_acknowledged: bool

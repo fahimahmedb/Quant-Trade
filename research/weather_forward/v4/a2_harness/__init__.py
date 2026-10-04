@@ -1,7 +1,7 @@
 """Dedicated offline Weather V4 A2 governance harness.
 
-Construction-only package. Importing or executing it was not authorized or
-performed by the construction mission that created these sources.
+Static construction/repair only.  This package contains no permissive current
+execution-policy root and does not authorize A2 execution.
 """
 
 from .contract import (
@@ -10,15 +10,19 @@ from .contract import (
     AdmissibilityState,
     AuthorityBinding,
     AuthorizationState,
+    CompletionState,
     ContaminationState,
     CumulativeDisclosureLedger,
     CumulativeDisclosureState,
     DisclosureRecord,
     FixtureProvenance,
+    FixtureProvenanceContract,
     HarnessDecision,
     InputClassification,
     InputManifest,
     LeakageAssessment,
+    LoggedActionResult,
+    LogAppendAcknowledgement,
     LogRecord,
     OutputManifest,
     PermissionState,
@@ -31,6 +35,8 @@ from .contract import (
     RoleDeclaration,
     StopReason,
     StructuredAuditLog,
+    TargetKind,
+    TrustedExecutionPolicyRoot,
     ValidationResult,
     ValidationState,
     VisibilityState,
@@ -38,12 +44,21 @@ from .contract import (
 from .harness import (
     A2Harness,
     HarnessPolicy,
+    fixture_provenance_identity,
+    harness_policy_identity,
+    input_manifest_identity,
+    output_manifest_identity,
     validate_authority,
     validate_fixture_provenance,
     validate_input_manifest,
     validate_output_manifest,
     validate_policy,
     validate_role_authorization,
+)
+from .trusted_root import (
+    CURRENT_OWNER_EXECUTION_POLICY_AUTHORITY,
+    CURRENT_PERMISSIVE_EXECUTION_POLICY_ROOT,
+    get_trusted_execution_policy_root,
 )
 
 __all__ = (
@@ -53,16 +68,22 @@ __all__ = (
     "AdmissibilityState",
     "AuthorityBinding",
     "AuthorizationState",
+    "CompletionState",
     "ContaminationState",
     "CumulativeDisclosureLedger",
     "CumulativeDisclosureState",
+    "CURRENT_OWNER_EXECUTION_POLICY_AUTHORITY",
+    "CURRENT_PERMISSIVE_EXECUTION_POLICY_ROOT",
     "DisclosureRecord",
     "FixtureProvenance",
+    "FixtureProvenanceContract",
     "HarnessDecision",
     "HarnessPolicy",
     "InputClassification",
     "InputManifest",
     "LeakageAssessment",
+    "LoggedActionResult",
+    "LogAppendAcknowledgement",
     "LogRecord",
     "OutputManifest",
     "PermissionState",
@@ -75,9 +96,16 @@ __all__ = (
     "RoleDeclaration",
     "StopReason",
     "StructuredAuditLog",
+    "TargetKind",
+    "TrustedExecutionPolicyRoot",
     "ValidationResult",
     "ValidationState",
     "VisibilityState",
+    "fixture_provenance_identity",
+    "get_trusted_execution_policy_root",
+    "harness_policy_identity",
+    "input_manifest_identity",
+    "output_manifest_identity",
     "validate_authority",
     "validate_fixture_provenance",
     "validate_input_manifest",

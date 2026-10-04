@@ -1,24 +1,24 @@
 # Weather V4 A2 dedicated offline harness
 
-## Authority
+## Authority and current governance state
 
-This static implementation was constructed under exact Owner authority:
+This static repair is bounded by Owner repair authority:
+
+`08b40c41bdadb05b572a88fc1279310c436d32f7`
+
+and addresses the exact Astra audit:
+
+`07405b3c20168014993f1616c19e7d47f5e2a41f`
+
+against audited Builder target:
+
+`649be59e69d8e0724d61352cc76abcac7f3f588e`
+
+The original construction authority remains documentary construction authority only:
 
 `37e3b25f17a7c5d3b3bc8d37df730aa988585b6c`
 
-Owner artifact:
-
-`research/weather_forward/v4/owner/OWNER_V4_A2_DEDICATED_HARNESS_BUILDER_DECISION_2026-10-04.md`
-
-Design basis:
-
-`9b65151c6840cff9d6cad4b6ba897e329862d292`
-
-The historical Gate-B runner is not part of this implementation and must remain unchanged:
-
-`governance/run_gate_b_evidence_schema_discriminants_2026-09-21.py`
-
-## Construction status
+`CONSTRUCTION_AUTHORITY != EXECUTION_POLICY_AUTHORITY`
 
 `IMPLEMENTATION_COMPLETE != CONTROL_EFFECTIVENESS_VERIFIED`
 
@@ -34,153 +34,201 @@ The historical Gate-B runner is not part of this implementation and must remain 
 
 `ECONOMIC_AUTHORITY = 0`
 
-The completion meaning of these sources is only:
+`CAPTURE_AUTHORIZATION = NONE`
 
-`DEDICATED_A2_HARNESS_STATIC_IMPLEMENTATION_COMPLETE`
+`DATA_T0 = NOT_DECLARED`
 
-It is not `A2_VALIDATED`, `A2_EXECUTION_READY`, or an approval of any future fixture, input, output, actor, source, endpoint, station, city, forecast model, market universe, cadence, resource bound, or economic assumption.
+`EXPERIMENT_T0 = NOT_DECLARED`
 
-## Scope and properties
+## D1 — independently anchored trusted execution-policy root
 
-The harness is an offline, standard-library-only governance contract implementation. It provides source-level representations and deterministic decision logic for:
+`CURRENT_OWNER_EXECUTION_POLICY_AUTHORITY = NONE`
 
-- exact Owner authority, harness identity/version, manifest-version, and full manifest-content binding;
-- explicit input manifests and fail-closed field/class/reader validation;
-- explicit output manifests and release restriction;
-- future fixture provenance/lineage metadata only;
-- declared roles separated from independently supplied action authorization;
-- immutable in-memory structured log records with functional append semantics;
-- explicit quarantine states;
-- explicit STOP reasons and DENY behavior;
-- cumulative-disclosure records whose empty, unrelated, unresolved, or recipient-mismatched history is not treated as safe;
-- deterministic output decisions from explicit declared objects and state.
+`CURRENT_PERMISSIVE_EXECUTION_POLICY_ROOT = NONE`
 
-The code deliberately has no wall-clock reads, randomness, network access, environment-variable authority, hidden mutable global state, database integration, credential integration, collector logic, source selection, economic scoring, backtesting, PnL calculation, paper-trading logic, or live-trading logic.
+`NO_TRUSTED_EXECUTION_POLICY_ROOT = DENY_ALL_PERMIT_RELEASE_ADMISSION_PATHS`
 
-## Manifest and authority behavior
+`trusted_root.py` is the static trust-anchor boundary.  It intentionally returns
+`None` and exposes no caller-supplied active-root setter.  `HarnessPolicy`
+remains a caller-supplied contract object, but it is not a root of trust.
+Future permissive use would require a separately authorized source-level trusted
+root carrying an execution-policy authority SHA and exact `HarnessPolicy`
+identity.  The trusted root must bind the construction authority, harness
+identity/version and deterministic policy identity.  Without that independent
+root, input read, fixture admission, output release and resource-boundary
+permission all fail closed.
 
-`AuthorityBinding` requires an explicit Owner SHA, harness identity, harness version/commit identity interface, and manifest version identity. `HarnessPolicy` separately declares the exact expected authority, harness version, manifest version, manifest IDs, and exact SHA-256 structural identities for the approved input and output manifests. Missing, ambiguous, or mismatched authority fails closed.
+The same caller supplying manifests, bindings, roles or action authorizations
+cannot make the current trusted-root resolver return a permissive root merely by
+coordinating those objects.
 
-`input_manifest_identity()` and `output_manifest_identity()` use deterministic standard-library JSON canonicalization plus SHA-256. The canonical payloads cover every material field of their respective manifest dataclasses. Set-like allowlists and role lists are sorted before serialization; JSON keys are sorted and compact separators are fixed. Any material manifest-content change therefore produces an identity mismatch against the policy unless the expected identity is separately changed under future authority.
+## Exact manifests preserved
 
-`InputManifest` contains the required A2 structural fields:
+Input and output manifests retain deterministic SHA-256 identities over
+canonical JSON.  Every material manifest dataclass field is represented in its
+canonical identity.  Set-like tuples are sorted for canonicalization while
+duplicate entries are not silently deduplicated.
 
-- `input_id`
-- `input_classification`
-- `source_provenance_class`
-- `exact_permitted_fields`
-- `exact_prohibited_fields`
-- `permitted_reader_roles`
-- `raw_values_visible`
-- `timestamps_visible`
-- `frequency_or_count_information_visible`
-- `longitudinal_observation_allowed`
-- `aggregation_allowed`
-- `cross_source_comparison_allowed`
-- `efficacy_leakage_assessment`
-- `access_logging_requirement`
-- `quarantine_on_ambiguity`
-- `owner_approval_required`
+`HarnessPolicy` carries the exact expected input and output manifest identities.
+A structural identity mismatch fails closed.
 
-It also carries the manifest-version identity used for exact binding. Wildcard field permissions are rejected. Unknown or explicitly prohibited input classes are denied. A structurally valid input manifest is still denied if its recomputed full structural identity does not equal `HarnessPolicy.expected_input_manifest_identity`.
+## D2 — exact fixture provenance / lineage contract
 
-`OutputManifest` contains the required structural fields:
+`FixtureProvenance` has a deterministic SHA-256 structural identity covering:
 
-- `output_id`
-- `output_type`
-- `exact_metric_or_artifact`
-- `granularity`
-- `permitted_recipients`
-- `exportability`
-- `quarantine_status`
-- `cumulative_disclosure_risk`
-- `efficacy_leakage_assessment`
-- `release_approval_requirement`
-- `retention_rule`
-- `incident_if_unexpected_information_revealed`
+- fixture ID;
+- construction input classes;
+- generator identity;
+- generator version;
+- lineage references;
+- reproducibility metadata keys and values;
+- contamination state;
+- admissibility state.
 
-It also carries the manifest-version identity used for exact binding. A structurally valid output manifest is still denied if its recomputed full structural identity does not equal `HarnessPolicy.expected_output_manifest_identity`. Release additionally requires an explicitly permitted recipient role, an exact non-ambiguous recipient actor identity, a distinct release actor with an exact action authorization bound to the same Owner SHA, exportability explicitly allowed, quarantine `CLEAR`, leakage assessment `CLEAR`, cumulative-disclosure state `CLEAR` for the exact output/recipient actor/recipient-role context, and a resolved release-approval requirement. If approval is required, the release actor must declare `RELEASE_APPROVER`. A role declaration by itself never grants release capability.
+`FixtureProvenanceContract` supplies future exact expected generator/fixture
+identity, exact construction classes, exact lineage set, required and allowed
+reproducibility keys, and the exact expected provenance digest.  Validation
+fails closed on missing/ambiguous values, duplicate lineage, duplicate metadata
+keys, missing required keys, forbidden unexpected keys, wrong generator,
+wrong construction classes, unknown/contaminated state, non-admissibility or
+digest mismatch.
 
-## Fixture provenance interface
+`CURRENT_APPROVED_FIXTURE_PROVENANCE_IDENTITY = NONE`
 
-`FixtureProvenance` is metadata structure only. It contains:
+The current `HarnessPolicy` may therefore carry no fixture provenance contract;
+fixture admission remains non-permissive.  No fixture or sample fixture is
+contained here.
 
-- `fixture_id`
-- `construction_input_classes`
-- `generator_identity`
-- `generator_version`
-- `lineage_references`
-- `reproducibility_metadata`
-- `contamination_state`
-- `admissibility_state`
+## D3 — exact recipient authorization
 
-No fixture payload, sample fixture, generator output, or fixture-derived value is included here. Unknown or ambiguous provenance, missing lineage, unknown contamination, blocked/unresolved admissibility, or non-allowed construction input classes fail closed.
+A role allowlist in `OutputManifest` is necessary but not sufficient.
+`HarnessPolicy.permitted_recipient_actor_roles` is the future exact
+actor-ID-to-role authorization map and is covered by the deterministic
+`HarnessPolicy` identity that a future trusted root must bind.
 
-## Roles and authorization
+Current approved recipient identities do not exist:
 
-The declared roles include:
+`CURRENT_APPROVED_RECIPIENT_ACTOR_IDS = NONE`
 
-- `PHASE_OWNER`
-- `EXECUTOR`
-- `CUSTODY_ADMIN`
-- `RESEARCH_VIEWER`
-- `RELEASE_APPROVER`
-- `INCIDENT_AUTHORITY`
+`CURRENT_APPROVED_ACTOR_ROLE_MAP = NONE`
 
-`RoleDeclaration` is intentionally distinct from `ActionAuthorization`. A declared role is only an identity statement. An action is permitted only when an explicit authorization object matches the actor, role, exact action, exact authority SHA, and `AUTHORIZED` state.
+Therefore an arbitrary actor with a valid role cannot satisfy release.
+Cumulative disclosure remains an independent necessary condition and cannot
+substitute for exact recipient authorization.
 
-## Logging
+Exact cumulative-disclosure matching remains:
 
-`StructuredAuditLog` is an immutable in-memory record sequence. Appending returns a new log value and does not mutate hidden global state. Each `LogRecord` includes:
+`output_id + recipient_actor_id + recipient_role`
 
-- `authority_identity`
-- `manifest_identity`
-- `actor_role`
-- `attempted_action`
-- `permit_or_deny_state`
-- `quarantine_state`
-- `release_state`
-- `incident_identifier`
-- `cumulative_disclosure_state`
+Global `BLOCKED` state keeps precedence over `UNRESOLVED` and `CLEAR`; empty
+history remains `UNRESOLVED`.
 
-This is not cryptographic immutability and does not claim to be a deployed logging service.
+## D4 — minimum release independence
 
-## Fail-closed STOP semantics
+For outputs where `release_approval_requirement = REQUIRED`, the enforced
+minimum rule is:
 
-Explicit STOP reasons include at least:
+`RELEASE_ACTOR_ID_MUST_DIFFER_FROM_RECIPIENT_ACTOR_ID`
 
-- `MISSING_AUTHORITY`
-- `UNKNOWN_PROVENANCE`
-- `PROHIBITED_INPUT_CLASS`
-- `INPUT_MANIFEST_MISMATCH`
-- `OUTPUT_MANIFEST_MISMATCH`
-- `UNAUTHORIZED_READER`
-- `UNAUTHORIZED_RECIPIENT`
-- `FIXTURE_LINEAGE_AMBIGUITY`
-- `UNEXPECTED_EFFICACY_LEAKAGE`
-- `CUMULATIVE_DISCLOSURE_AMBIGUITY`
-- `RESOURCE_BOUNDARY_UNRESOLVED`
-- `RELEASE_NOT_AUTHORIZED`
+The release actor must additionally satisfy exact actor ID, `RELEASE_APPROVER`
+role, `RELEASE_OUTPUT` action, execution-policy authority identity and
+`AUTHORIZED` authorization state.  The identity-separation rule is additive;
+it does not replace any of those checks or any future stronger Owner rule.
 
-Additional exact mismatch/declaration STOP reasons may be used for clearer diagnostics. Unknown values are not silently coerced into permission.
+## D5 — exact logging attribution
 
-## Cumulative disclosure
+Each `LogRecord` can bind:
 
-`DisclosureRecord` binds each prior assessment to `output_id + recipient_actor_id + recipient_role`. `CumulativeDisclosureLedger` evaluates prior declared disclosure records only. An empty ledger evaluates to `UNRESOLVED`, not `CLEAR`. Any blocked record yields `BLOCKED`; any unresolved record or record with missing/ambiguous recipient actor identity yields `UNRESOLVED`; only explicit clear history can reach `CLEAR`. Output release additionally requires at least one explicit clear disclosure assessment for the exact output identifier, exact recipient actor ID, and recipient role, so a CLEAR assessment for another actor sharing the same role cannot authorize release.
+- exact actor ID and role;
+- exact authorization ID and authorization authority identity;
+- construction authority identity;
+- execution-policy authority identity when one exists;
+- exact attempted action;
+- exact target kind and target ID;
+- exact manifest/provenance structural identity;
+- permit/deny state;
+- quarantine state;
+- release state;
+- incident ID when applicable;
+- cumulative-disclosure state when applicable;
+- exact recipient actor ID and role for release.
 
-## Construction-mission non-actions
+Two actors sharing one role are therefore distinguishable by `actor_id`.
+Logging remains only an immutable-value/in-memory functional interface.  It is
+not cryptographically immutable, deployed immutable storage or tamper-proof.
 
-During this construction and static-repair mission:
+## D5 — logging required for completion
 
-- no harness code was executed or imported;
-- no tests, pytest, smoke tests, linters, type checkers, or CI were run;
+Action APIs use atomic evaluate-and-log semantics.  Input read, fixture
+admission and output release take an immutable `StructuredAuditLog` plus a
+unique exact log record ID and return `LoggedActionResult`.
+
+The harness first computes only a private eligibility assessment.  No public
+final `PERMIT` / `AUTHORIZED` action decision is produced from that assessment.
+The exact log record is appended and acknowledged first.  Only after successful
+append acknowledgement is the final `HarnessDecision` constructed with
+`completion_state = COMPLETED` and, where eligible, `PERMIT` / `AUTHORIZED`.
+
+Missing, ambiguous or duplicate required log record identity, or failed append
+acknowledgement, yields:
+
+`permit_or_deny_state = DENY`
+
+`release_state = BLOCKED`
+
+`completion_state = NOT_COMPLETED`
+
+`stop_reason = LOGGING_REQUIRED`
+
+There is no separate optional `append_log_record()` permission path.
+
+## Fail-closed properties preserved
+
+The static contract preserves:
+
+- exact input and output manifest canonicalization;
+- exact recipient cumulative-disclosure matching;
+- `BLOCKED` disclosure precedence;
+- empty disclosure history = `UNRESOLVED`;
+- actor mismatch denial;
+- role mismatch denial;
+- action mismatch denial;
+- execution-authority mismatch denial;
+- authorization-state mismatch denial;
+- unresolved visibility denial;
+- unresolved permission denial;
+- unknown/prohibited input-class denial;
+- output exportability restrictions;
+- quarantine restrictions;
+- efficacy-leakage restrictions;
+- resource-boundary fail-closed behavior;
+- no permissive fallback.
+
+The implementation uses only Python standard-library modules and has no wall
+clock, randomness, environment-derived authority, network calls, endpoint
+queries, credential management, database integration, filesystem writes,
+collector logic, source/station/city/model selection, economic scoring,
+backtesting, PnL, paper trading or live trading.
+
+## Construction / repair non-actions
+
+During this repair mission:
+
+- no harness source was executed or imported;
+- no tests, pytest, syntax checks, linters, type checkers or CI were run;
 - no fixture content was opened;
-- no fixture was created, generated, or tested;
+- no fixture or sample fixture was created;
 - no real data was accessed;
-- no real operational/efficacy metadata was accessed;
+- no real operational or efficacy metadata was accessed;
 - no endpoint was queried;
 - no credential was used;
-- no operational source, city, station, model, cadence, or trading universe was selected;
-- no economic validation, backtest, PnL calculation, paper trade, or live trade was performed.
+- no `src/` file was changed;
+- the historical Gate-B runner was not changed;
+- no economic validation or trading activity occurred.
 
-Future fixture generation, fixture testing, or harness execution requires separate exact authority. Static implementation does not activate those permissions.
+Successful source repair means only:
+
+`ASTRA_D1_D5_STATIC_REPAIR_IMPLEMENTATION_COMPLETE`
+
+It does not mean runtime verification, control effectiveness, harness approval,
+execution readiness, fixture approval or economic validation.
