@@ -218,10 +218,24 @@ class StructuredAuditLog:
         return StructuredAuditLog(records=self.records + (record,))
 
 
+_AMBIGUOUS_RECIPIENT_IDENTITIES = frozenset(
+    {"UNKNOWN", "UNRESOLVED", "AMBIGUOUS", "NOT_ATTESTED"}
+)
+
+
+def _recipient_identity_is_resolved(actor_id: str) -> bool:
+    return bool(
+        actor_id
+        and actor_id.strip()
+        and actor_id.strip().upper() not in _AMBIGUOUS_RECIPIENT_IDENTITIES
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class DisclosureRecord:
     disclosure_id: str
     output_id: str
+    recipient_actor_id: str
     recipient_role: Role
     cumulative_safety: CumulativeDisclosureState
 
@@ -232,6 +246,11 @@ class CumulativeDisclosureLedger:
 
     def evaluate(self) -> CumulativeDisclosureState:
         if not self.records:
+            return CumulativeDisclosureState.UNRESOLVED
+        if any(
+            not _recipient_identity_is_resolved(record.recipient_actor_id)
+            for record in self.records
+        ):
             return CumulativeDisclosureState.UNRESOLVED
         if any(
             record.cumulative_safety is CumulativeDisclosureState.BLOCKED
@@ -248,15 +267,22 @@ class CumulativeDisclosureLedger:
     def evaluate_for(
         self,
         output_id: str,
+        recipient_actor_id: str,
         recipient_role: Role,
     ) -> CumulativeDisclosureState:
+        if not _recipient_identity_is_resolved(recipient_actor_id):
+            return CumulativeDisclosureState.UNRESOLVED
+
         overall = self.evaluate()
         if overall is not CumulativeDisclosureState.CLEAR:
             return overall
+
         relevant_records = tuple(
             record
             for record in self.records
-            if record.output_id == output_id and record.recipient_role is recipient_role
+            if record.output_id == output_id
+            and record.recipient_actor_id == recipient_actor_id
+            and record.recipient_role is recipient_role
         )
         if not relevant_records:
             return CumulativeDisclosureState.UNRESOLVED

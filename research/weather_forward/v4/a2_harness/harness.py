@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from dataclasses import dataclass
 
@@ -36,6 +38,7 @@ from .contract import (
 
 
 _SHA40 = re.compile(r"^[0-9a-f]{40}$")
+_SHA256_IDENTITY = re.compile(r"^sha256:[0-9a-f]{64}$")
 _AMBIGUOUS_TOKENS = frozenset({"UNKNOWN", "UNRESOLVED", "AMBIGUOUS", "NOT_ATTESTED"})
 
 
@@ -46,7 +49,9 @@ class HarnessPolicy:
     expected_harness_version_or_commit_identity: str
     expected_manifest_version_identity: str
     expected_input_manifest_id: str
+    expected_input_manifest_identity: str
     expected_output_manifest_id: str
+    expected_output_manifest_identity: str
     allowed_input_classifications: tuple[InputClassification, ...]
     prohibited_input_classifications: tuple[InputClassification, ...]
 
@@ -113,6 +118,78 @@ def _has_wildcard(values: tuple[str, ...]) -> bool:
     return any("*" in value for value in values)
 
 
+def _canonical_digest(payload: dict[str, object]) -> str:
+    canonical = json.dumps(
+        payload,
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return f"sha256:{hashlib.sha256(canonical).hexdigest()}"
+
+
+def input_manifest_identity(manifest: InputManifest) -> str:
+    """Return a deterministic identity covering every material input-manifest field."""
+    return _canonical_digest(
+        {
+            "manifest_kind": "InputManifest",
+            "input_id": manifest.input_id,
+            "manifest_version_identity": manifest.manifest_version_identity,
+            "input_classification": manifest.input_classification.value,
+            "source_provenance_class": manifest.source_provenance_class,
+            "exact_permitted_fields": sorted(manifest.exact_permitted_fields),
+            "exact_prohibited_fields": sorted(manifest.exact_prohibited_fields),
+            "permitted_reader_roles": sorted(
+                role.value for role in manifest.permitted_reader_roles
+            ),
+            "raw_values_visible": manifest.raw_values_visible.value,
+            "timestamps_visible": manifest.timestamps_visible.value,
+            "frequency_or_count_information_visible": (
+                manifest.frequency_or_count_information_visible.value
+            ),
+            "longitudinal_observation_allowed": (
+                manifest.longitudinal_observation_allowed.value
+            ),
+            "aggregation_allowed": manifest.aggregation_allowed.value,
+            "cross_source_comparison_allowed": (
+                manifest.cross_source_comparison_allowed.value
+            ),
+            "efficacy_leakage_assessment": manifest.efficacy_leakage_assessment.value,
+            "access_logging_requirement": manifest.access_logging_requirement.value,
+            "quarantine_on_ambiguity": manifest.quarantine_on_ambiguity.value,
+            "owner_approval_required": manifest.owner_approval_required.value,
+        }
+    )
+
+
+def output_manifest_identity(manifest: OutputManifest) -> str:
+    """Return a deterministic identity covering every material output-manifest field."""
+    return _canonical_digest(
+        {
+            "manifest_kind": "OutputManifest",
+            "output_id": manifest.output_id,
+            "manifest_version_identity": manifest.manifest_version_identity,
+            "output_type": manifest.output_type,
+            "exact_metric_or_artifact": manifest.exact_metric_or_artifact,
+            "granularity": manifest.granularity,
+            "permitted_recipients": sorted(
+                role.value for role in manifest.permitted_recipients
+            ),
+            "exportability": manifest.exportability.value,
+            "quarantine_status": manifest.quarantine_status.value,
+            "cumulative_disclosure_risk": manifest.cumulative_disclosure_risk.value,
+            "efficacy_leakage_assessment": manifest.efficacy_leakage_assessment.value,
+            "release_approval_requirement": (
+                manifest.release_approval_requirement.value
+            ),
+            "retention_rule": manifest.retention_rule,
+            "incident_if_unexpected_information_revealed": (
+                manifest.incident_if_unexpected_information_revealed
+            ),
+        }
+    )
+
+
 def validate_policy(policy: HarnessPolicy) -> ValidationResult:
     required_strings = (
         policy.expected_owner_authority_sha,
@@ -120,7 +197,9 @@ def validate_policy(policy: HarnessPolicy) -> ValidationResult:
         policy.expected_harness_version_or_commit_identity,
         policy.expected_manifest_version_identity,
         policy.expected_input_manifest_id,
+        policy.expected_input_manifest_identity,
         policy.expected_output_manifest_id,
+        policy.expected_output_manifest_identity,
     )
     if any(not _nonempty(value) for value in required_strings):
         return _blocked(StopReason.MISSING_AUTHORITY, "POLICY_REQUIRED_IDENTITY_MISSING")
@@ -128,6 +207,16 @@ def validate_policy(policy: HarnessPolicy) -> ValidationResult:
         return _blocked(StopReason.MISSING_AUTHORITY, "POLICY_REQUIRED_IDENTITY_AMBIGUOUS")
     if _SHA40.fullmatch(policy.expected_owner_authority_sha) is None:
         return _invalid(StopReason.MISSING_AUTHORITY, "POLICY_OWNER_SHA_NOT_EXACT_40_HEX")
+    if _SHA256_IDENTITY.fullmatch(policy.expected_input_manifest_identity) is None:
+        return _invalid(
+            StopReason.INPUT_MANIFEST_MISMATCH,
+            "POLICY_EXPECTED_INPUT_MANIFEST_IDENTITY_NOT_SHA256",
+        )
+    if _SHA256_IDENTITY.fullmatch(policy.expected_output_manifest_identity) is None:
+        return _invalid(
+            StopReason.OUTPUT_MANIFEST_MISMATCH,
+            "POLICY_EXPECTED_OUTPUT_MANIFEST_IDENTITY_NOT_SHA256",
+        )
     if not policy.allowed_input_classifications:
         return _blocked(StopReason.PROHIBITED_INPUT_CLASS, "POLICY_ALLOWED_INPUT_CLASSES_EMPTY")
     if not policy.prohibited_input_classifications:
@@ -235,6 +324,11 @@ def validate_input_manifest(
         return _blocked(StopReason.INPUT_MANIFEST_MISMATCH, "INPUT_QUARANTINE_ON_AMBIGUITY_NOT_REQUIRED")
     if manifest.owner_approval_required is RequirementState.UNRESOLVED:
         return _blocked(StopReason.MISSING_AUTHORITY, "INPUT_OWNER_APPROVAL_REQUIREMENT_UNRESOLVED")
+    if input_manifest_identity(manifest) != policy.expected_input_manifest_identity:
+        return _blocked(
+            StopReason.INPUT_MANIFEST_MISMATCH,
+            "INPUT_MANIFEST_STRUCTURAL_IDENTITY_MISMATCH",
+        )
     return _valid("INPUT_MANIFEST_VALID")
 
 
@@ -267,6 +361,11 @@ def validate_output_manifest(
         return _blocked(StopReason.OUTPUT_MANIFEST_MISMATCH, "OUTPUT_EXPORTABILITY_UNRESOLVED")
     if manifest.release_approval_requirement is RequirementState.UNRESOLVED:
         return _blocked(StopReason.RELEASE_NOT_AUTHORIZED, "OUTPUT_RELEASE_REQUIREMENT_UNRESOLVED")
+    if output_manifest_identity(manifest) != policy.expected_output_manifest_identity:
+        return _blocked(
+            StopReason.OUTPUT_MANIFEST_MISMATCH,
+            "OUTPUT_MANIFEST_STRUCTURAL_IDENTITY_MISMATCH",
+        )
     return _valid("OUTPUT_MANIFEST_VALID")
 
 
@@ -509,12 +608,13 @@ class A2Harness:
 
         cumulative_state = disclosure_ledger.evaluate_for(
             output_id=manifest.output_id,
+            recipient_actor_id=recipient.actor_id,
             recipient_role=recipient.declared_role,
         )
         if cumulative_state is not CumulativeDisclosureState.CLEAR:
             return _deny(
                 StopReason.CUMULATIVE_DISCLOSURE_AMBIGUITY,
-                "DISCLOSURE_LEDGER_NOT_CLEAR_FOR_OUTPUT_AND_RECIPIENT",
+                "DISCLOSURE_LEDGER_NOT_CLEAR_FOR_EXACT_OUTPUT_AND_RECIPIENT_ACTOR_ROLE",
             )
 
         if manifest.release_approval_requirement is RequirementState.REQUIRED:
