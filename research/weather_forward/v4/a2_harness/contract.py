@@ -248,15 +248,15 @@ class CumulativeDisclosureLedger:
         if not self.records:
             return CumulativeDisclosureState.UNRESOLVED
         if any(
-            not _recipient_identity_is_resolved(record.recipient_actor_id)
-            for record in self.records
-        ):
-            return CumulativeDisclosureState.UNRESOLVED
-        if any(
             record.cumulative_safety is CumulativeDisclosureState.BLOCKED
             for record in self.records
         ):
             return CumulativeDisclosureState.BLOCKED
+        if any(
+            not _recipient_identity_is_resolved(record.recipient_actor_id)
+            for record in self.records
+        ):
+            return CumulativeDisclosureState.UNRESOLVED
         if any(
             record.cumulative_safety is CumulativeDisclosureState.UNRESOLVED
             for record in self.records
