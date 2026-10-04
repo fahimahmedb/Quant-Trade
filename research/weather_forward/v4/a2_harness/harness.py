@@ -43,6 +43,7 @@ _AMBIGUOUS_TOKENS = frozenset({"UNKNOWN", "UNRESOLVED", "AMBIGUOUS", "NOT_ATTEST
 class HarnessPolicy:
     expected_owner_authority_sha: str
     expected_harness_identity: str
+    expected_harness_version_or_commit_identity: str
     expected_manifest_version_identity: str
     expected_input_manifest_id: str
     expected_output_manifest_id: str
@@ -116,6 +117,7 @@ def validate_policy(policy: HarnessPolicy) -> ValidationResult:
     required_strings = (
         policy.expected_owner_authority_sha,
         policy.expected_harness_identity,
+        policy.expected_harness_version_or_commit_identity,
         policy.expected_manifest_version_identity,
         policy.expected_input_manifest_id,
         policy.expected_output_manifest_id,
@@ -165,6 +167,11 @@ def validate_authority(
         return _blocked(StopReason.AUTHORITY_MISMATCH, "OWNER_AUTHORITY_SHA_MISMATCH")
     if binding.harness_identity != policy.expected_harness_identity:
         return _blocked(StopReason.AUTHORITY_MISMATCH, "HARNESS_IDENTITY_MISMATCH")
+    if (
+        binding.harness_version_or_commit_identity
+        != policy.expected_harness_version_or_commit_identity
+    ):
+        return _blocked(StopReason.AUTHORITY_MISMATCH, "HARNESS_VERSION_OR_COMMIT_IDENTITY_MISMATCH")
     if binding.manifest_version_identity != policy.expected_manifest_version_identity:
         return _blocked(StopReason.AUTHORITY_MISMATCH, "MANIFEST_VERSION_IDENTITY_MISMATCH")
     return _valid("AUTHORITY_BINDING_VALID")
