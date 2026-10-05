@@ -6,6 +6,7 @@ The in-process audit boundary is test evidence, not a deployed security control.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -48,8 +49,15 @@ allowed_local_reads = {
     (DIRECTORY / name).resolve() for name in
     ("__init__.py", "contract.py", "harness.py", "trusted_root.py", "test_bounded_runtime.py")
 }
+blocked_code_paths = []
+blocked_cache_paths = []
+expected_cache_paths = {
+    Path(importlib.util.cache_from_source(str(source))).resolve()
+    for source in allowed_local_reads
+}
 audit_counts = {"network_attempts": 0, "subprocess_attempts": 0,
-                "forbidden_file_attempts": 0, "allowed_code_reads": 0}
+                "forbidden_file_attempts": 0, "allowed_code_reads": 0,
+                "code_cache_reads_blocked": 0}
 
 def audit_boundary(event, args):
     if event.startswith("socket.") or event.startswith("http.client.") or event.startswith("urllib."):
@@ -73,7 +81,14 @@ def audit_boundary(event, args):
     is_stdlib = (candidate.is_relative_to(stdlib)
                  and "site-packages" not in candidate.parts
                  and candidate.suffix in (".py", ".pyc", ".so"))
+    if candidate in expected_cache_paths:
+        # importlib handles this denial by loading the exact allowlisted .py.
+        # Never read local bytecode or allow an unverified cache to replace source.
+        blocked_cache_paths.append(str(candidate))
+        audit_counts["code_cache_reads_blocked"] += 1
+        raise PermissionError("OFFLINE_TEST_LOAD_VERIFIED_SOURCE_ONLY")
     if candidate not in allowed_local_reads and not is_stdlib:
+        blocked_code_paths.append(str(candidate))
         audit_counts["forbidden_file_attempts"] += 1
         raise PermissionError("OFFLINE_TEST_UNALLOWLISTED_FILE_READ")
     audit_counts["allowed_code_reads"] += 1
@@ -94,6 +109,8 @@ summary = {
     "expected_failures": len(result.expectedFailures),
     "unexpected_successes": len(result.unexpectedSuccesses),
     "offline_audit": audit_counts,
+    "denied_read_paths": blocked_code_paths,
+    "blocked_code_cache_paths": blocked_cache_paths,
 }
 print("BOUNDED_TEST_SUMMARY=" + json.dumps(summary, sort_keys=True))
 guards_clear = all(audit_counts[key] == 0 for key in

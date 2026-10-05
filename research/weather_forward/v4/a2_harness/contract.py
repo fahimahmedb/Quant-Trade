@@ -327,12 +327,12 @@ class CumulativeDisclosureLedger:
         recipient_actor_id: str,
         recipient_role: Role,
     ) -> CumulativeDisclosureState:
-        if not _recipient_identity_is_resolved(recipient_actor_id):
-            return CumulativeDisclosureState.UNRESOLVED
-
         overall = self.evaluate()
         if overall is not CumulativeDisclosureState.CLEAR:
             return overall
+
+        if not _recipient_identity_is_resolved(recipient_actor_id):
+            return CumulativeDisclosureState.UNRESOLVED
 
         relevant_records = tuple(
             record
