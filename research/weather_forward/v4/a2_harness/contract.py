@@ -358,10 +358,36 @@ class ValidationResult:
     detail_code: str
 
 
+def _validate_decision_state_types(
+    validation_state: ValidationState,
+    permit_or_deny_state: PermitState,
+    quarantine_state: QuarantineState,
+    release_state: ReleaseState,
+    completion_state: CompletionState,
+    stop_reason: StopReason | None,
+) -> None:
+    """Reject runtime type substitution; never coerce strings into state enums."""
+    for name, value, enum in (
+        ("validation_state", validation_state, ValidationState),
+        ("permit_or_deny_state", permit_or_deny_state, PermitState),
+        ("quarantine_state", quarantine_state, QuarantineState),
+        ("release_state", release_state, ReleaseState),
+        ("completion_state", completion_state, CompletionState),
+    ):
+        if not isinstance(value, enum):
+            raise TypeError("INVALID_DECISION_STATE_TYPE: " + name)
+    if stop_reason is not None and not isinstance(stop_reason, StopReason):
+        raise TypeError("INVALID_DECISION_STATE_TYPE: stop_reason")
+
+
 def _decision_is_permissive(
     permit_or_deny_state: PermitState,
     release_state: ReleaseState,
 ) -> bool:
+    if not isinstance(permit_or_deny_state, PermitState):
+        raise TypeError("INVALID_DECISION_STATE_TYPE: permit_or_deny_state")
+    if not isinstance(release_state, ReleaseState):
+        raise TypeError("INVALID_DECISION_STATE_TYPE: release_state")
     return (
         permit_or_deny_state is PermitState.PERMIT
         or release_state is ReleaseState.AUTHORIZED
@@ -390,7 +416,12 @@ class HarnessDecision:
         stop_reason: StopReason | None,
         detail_code: str,
     ) -> None:
-        if _decision_is_permissive(permit_or_deny_state, release_state):
+        _validate_decision_state_types(
+            validation_state, permit_or_deny_state, quarantine_state,
+            release_state, completion_state, stop_reason,
+        )
+        if (permit_or_deny_state is not PermitState.DENY
+                or release_state is not ReleaseState.BLOCKED):
             raise ValueError(
                 "FINAL_PERMISSIVE_HARNESS_DECISION_REQUIRES_ACKNOWLEDGED_LOG_FINALIZATION"
             )
@@ -413,6 +444,10 @@ def _new_guarded_harness_decision(
     stop_reason: StopReason | None,
     detail_code: str,
 ) -> HarnessDecision:
+    _validate_decision_state_types(
+        validation_state, permit_or_deny_state, quarantine_state,
+        release_state, completion_state, stop_reason,
+    )
     decision = object.__new__(HarnessDecision)
     object.__setattr__(decision, "validation_state", validation_state)
     object.__setattr__(decision, "permit_or_deny_state", permit_or_deny_state)
@@ -440,6 +475,17 @@ class LoggedActionResult:
         log_record: LogRecord | None,
         log_acknowledged: bool,
     ) -> None:
+        if type(decision) is not HarnessDecision:
+            raise TypeError("EXACT_HARNESS_DECISION_REQUIRED")
+        _validate_decision_state_types(
+            decision.validation_state, decision.permit_or_deny_state,
+            decision.quarantine_state, decision.release_state,
+            decision.completion_state, decision.stop_reason,
+        )
+        if type(log) is not StructuredAuditLog:
+            raise TypeError("STRUCTURED_AUDIT_LOG_REQUIRED")
+        if type(log_acknowledged) is not bool:
+            raise TypeError("BOOLEAN_LOG_ACKNOWLEDGEMENT_REQUIRED")
         if _decision_is_permissive(
             decision.permit_or_deny_state,
             decision.release_state,
@@ -447,7 +493,7 @@ class LoggedActionResult:
             raise ValueError(
                 "PERMISSIVE_LOGGED_ACTION_RESULT_REQUIRES_GUARDED_FINALIZER"
             )
-        if log_acknowledged or log_record is not None:
+        if log_acknowledged is not False or log_record is not None:
             raise ValueError(
                 "ACKNOWLEDGED_LOG_LINK_REQUIRES_GUARDED_FINALIZER"
             )
@@ -482,7 +528,30 @@ def _finalize_logged_action_result(
 ) -> LoggedActionResult | None:
     """Private exact acknowledged-log finalizer for authority-bearing actions."""
 
-    if not acknowledgement.appended:
+    try:
+        _validate_decision_state_types(
+            validation_state, permit_or_deny_state, quarantine_state,
+            release_state, completion_state, stop_reason,
+        )
+    except TypeError:
+        return None
+    if type(acknowledgement) is not LogAppendAcknowledgement:
+        return None
+    if acknowledgement.appended is not True:
+        return None
+    if type(acknowledgement.log) is not StructuredAuditLog:
+        return None
+    if type(log_record) is not LogRecord:
+        return None
+    if type(acknowledgement.log.records) is not tuple:
+        return None
+    if any(type(record) is not LogRecord for record in acknowledgement.log.records):
+        return None
+    if not isinstance(log_record.permit_or_deny_state, PermitState):
+        return None
+    if not isinstance(log_record.quarantine_state, QuarantineState):
+        return None
+    if not isinstance(log_record.release_state, ReleaseState):
         return None
     if acknowledgement.record_id != log_record.record_id:
         return None
