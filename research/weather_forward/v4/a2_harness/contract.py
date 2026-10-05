@@ -68,7 +68,7 @@ class AuthorizationState(str, Enum):
 
 
 class ResourceBoundaryState(str, Enum):
-    WITHIN_AUTHORITY = "WITH_AUTHORITY"
+    WITHIN_AUTHORITY = "WITHIN_AUTHORITY"
     UNRESOLVED = "UNRESOLVED"
     EXCEEDED = "EXCEEDED"
 
