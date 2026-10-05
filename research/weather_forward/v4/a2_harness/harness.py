@@ -39,6 +39,7 @@ from .contract import (
     ValidationResult,
     ValidationState,
     VisibilityState,
+    _finalize_logged_action_result,
 )
 from .trusted_root import get_trusted_execution_policy_root
 
@@ -866,12 +867,13 @@ class A2Harness:
             if assessment.allowed and assessment.release_authorized
             else ReleaseState.BLOCKED
         )
+        execution_policy_authority_identity = (
+            trusted_root.execution_policy_authority_sha if trusted_root is not None else None
+        )
         record = LogRecord(
             record_id=log_record_id,
             construction_authority_identity=self.authority.owner_authority_sha,
-            execution_policy_authority_identity=(
-                trusted_root.execution_policy_authority_sha if trusted_root is not None else None
-            ),
+            execution_policy_authority_identity=execution_policy_authority_identity,
             authorization_authority_identity=authorization.authority_sha,
             manifest_identity=manifest_identity,
             actor_id=actor.actor_id,
@@ -897,7 +899,9 @@ class A2Harness:
                 False,
             )
 
-        final_decision = HarnessDecision(
+        final_result = _finalize_logged_action_result(
+            acknowledgement=acknowledgement,
+            log_record=record,
             validation_state=(ValidationState.VALID if assessment.allowed else ValidationState.BLOCKED),
             permit_or_deny_state=predicted_permit,
             quarantine_state=assessment.quarantine_state,
@@ -905,13 +909,26 @@ class A2Harness:
             completion_state=CompletionState.COMPLETED,
             stop_reason=assessment.stop_reason,
             detail_code=assessment.detail_code.replace("PENDING_REQUIRED_LOG", "LOGGED_AND_COMPLETED"),
+            expected_construction_authority_identity=self.authority.owner_authority_sha,
+            expected_execution_policy_authority_identity=execution_policy_authority_identity,
+            expected_actor=actor,
+            expected_authorization=authorization,
+            expected_action=attempted_action,
+            expected_target_kind=target_kind,
+            expected_target_id=target_id,
+            expected_manifest_identity=manifest_identity,
+            expected_incident_identifier=incident_identifier,
+            expected_cumulative_disclosure_state=assessment.cumulative_disclosure_state,
+            expected_recipient=recipient,
         )
-        return LoggedActionResult(
-            decision=final_decision,
-            log=acknowledgement.log,
-            log_record=record,
-            log_acknowledged=True,
-        )
+        if final_result is None:
+            return LoggedActionResult(
+                _logging_failure("FINAL_STATE_LOG_LINKAGE_INVARIANT_FAILED"),
+                acknowledgement.log,
+                None,
+                False,
+            )
+        return final_result
 
     def evaluate_input_read(
         self,
