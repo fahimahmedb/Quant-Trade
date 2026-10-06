@@ -561,3 +561,41 @@ EXPERIMENT_T0 = NOT_DECLARED
 ```
 
 NEXT_SAFE_ACTION = PREPARE_BOUNDED_OWNER_DISCLOSURE_INVENTORY_AND_TARGETED_DOCUMENTARY_REVIEW_ONLY
+
+## 11. Ratification de l'attestation documentaire §10
+
+Autorité déclarante : PROJECT_OWNER, utilisateur de cette conversation.  
+Approbation : « Je ratifie ».  
+Date de soumission : 2026-10-06T08:22:15+02:00 — Europe/Paris.  
+Objet ratifié : §10 au commit `7ea1aecc7d47b9ceadfc64b3190646c689c9d4fc`, fichier Owner existant, blob `eb0f51b7d5c397a018aa858d88e45a9c848d6745`.
+
+Owner accepte l'attestation préparatoire, ses constats, ses limites et sa conclusion CLEAR_NOT_ESTABLISHED. Cette ratification ne transforme pas une inconnue en preuve, ne vaut pas signature ou revue indépendante d'Astra et ne dispense aucun critère de §8.6. Le contenu de §10 demeure inchangé.
+
+La preuve d'un inventaire borné des disclosures pertinentes, l'évaluation indépendante désignée, les bindings documentaires complets et le périmètre des diagnostics divulgables restent à établir. La dépendance du critère 3 aux valeurs dérivées et aux futurs grants doit être clarifiée documentairement ; cette ratification n'accorde ni calcul de digest ni permission opérationnelle pour la contourner.
+
+```text
+SECTION_10_ATTESTATION_OWNER_RATIFIED = TRUE
+ATTESTATION_RESULT = CLEAR_NOT_ESTABLISHED
+CLEAR_DOCUMENTARY_BASIS_ESTABLISHED = FALSE
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_ATTESTATION
+INPUT_LEAKAGE_ASSESSMENT = UNRESOLVED
+OUTPUT_LEAKAGE_ASSESSMENT = UNRESOLVED
+CUMULATIVE_DISCLOSURE = UNRESOLVED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+SECTION_8_RATIFIED = TRUE
+OWNER_CONFIGURATION_DECISION = PARTIALLY_RATIFIED_WITH_BLOCKERS
+DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+Cette publication est documentaire uniquement : aucun changement de source, import/appel du harnais, test, calcul d'identité, création/inspection de fixture ou activation de root. Aucun merge.
+
+NEXT_SAFE_ACTION = PREPARE_BOUNDED_OWNER_DISCLOSURE_INVENTORY_AND_TARGETED_DOCUMENTARY_REVIEW_ONLY
