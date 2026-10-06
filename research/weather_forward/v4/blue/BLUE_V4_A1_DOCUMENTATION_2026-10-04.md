@@ -735,3 +735,589 @@ A later exact Owner authority artifact is needed for any future action; that doe
 
 TERMINAL_STATE = A2_INTEGRATION_CONFIGURATION_DRAFT_COMPLETE  
 NEXT_SAFE_ACTION = OWNER_REVIEW_AND_RATIFICATION_OF_CONCRETE_CONFIGURATION
+
+## 14. Consolidated A2 documentary preparation and conditional work packages — 2026-10-06
+
+MISSION_CLASS = CONSOLIDATED_ONE_PASS_PREPARATION_DOCUMENTARY_ONLY
+
+This addition is prepared by the authorized orchestration assistant, not by Builder and not as Astra's independent evaluator. It preserves §§1–13 verbatim. It reuses already-ratified content and supplies targeted missing evidence, limitations, dependency recipes and conditional packages. No new general preparation phase, fixture plan, execution evidence or runtime object is created. New source findings and interpretations below are attributable preparation, not silently ratified content or independent approval.
+
+### 14.1 Exact authority, content precedence and publication scope
+
+All repository paths in this section are relative to `research/weather_forward/v4/` unless written in full. Reference aliases expand to this repository, exact commit, path and section; no alias is a runtime identity.
+
+| Reference | Exact commit | Path | Git-returned blob | Applicable effect |
+|---|---|---|---|---|
+| A1 | 728cf23e7d69a373306f3c1a3fb5d11240210cda | owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md | 483907e4f719ec8bcb3851af0f184690cea96279 | §§3–4, 9–10: documentary specifications, consistency, prerequisites and persistence; §5 reserves later execution |
+| S8 | 6bba1e2fc4b44d817726187d8aa62182efe1ec3c | owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | 0d018b7527ea6957bdf2e3395810ef5ac0c1777a | §§8–9: exact documentary ratification with reservations |
+| O | 08fe3a1d9e0ab27c3e6cdf8fa717dd58ae2a334d | owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | 8530a0d344f6dd18993cce5b4f48c887b20dada8 | §§8–11: governing current values, method, negative finding and ratification; §7 permits targeted dossier preparation |
+| B | 92088b83dd47799c6d413bb747138c05fdb0e420 | blue/BLUE_V4_A1_DOCUMENTATION_2026-10-04.md | 44eff971f29b50f2d514b0e02917ad7cff9bb3f7 | §13 incorporated by O §8.7, only where not superseded by O |
+| A | 31215914a7e11daa20ca0189d859bb69827a055c | audit/ASTRA_V4_A2_D5_TYPE_REPAIR_RUNTIME_EVIDENCE_AUDIT_2026-10-05.md | 0deae36fba1962fe9249cffbe787f0680b5abfd8 | bounded runtime-evidence PASS only; neither documentary CLEAR nor permission |
+| C | 37e3b25f17a7c5d3b3bc8d37df730aa988585b6c | owner/OWNER_V4_A2_DEDICATED_HARNESS_BUILDER_DECISION_2026-10-04.md | 81d2ad4dac7ed50173442448437c9a23cc1ef51e | historical implementation-only construction authority; no new root modification, tests, activation or integration grant |
+
+H = `78d537de681363ed83a6c7787aba4319f3c73c4d`, the reviewed source reference. Its source blobs were retrieved as text:
+
+| H source path | Git-returned blob |
+|---|---|
+| a2_harness/contract.py | f6f94a4a472e3f6652a1502f6afb5825721364d0 |
+| a2_harness/harness.py | 00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4 |
+| a2_harness/trusted_root.py | 9d8adeca4b61e42c40bd7f9ec85e4f3b676b1b94 |
+| a2_harness/__init__.py | bf9a2bdba7658454ea10009a28c975024365cfe1 |
+
+These are Git-returned content identities, not manifest/policy digest computations. Exact commit objects resolved. Git comparisons establish A1 as ancestor of C (6 commits), C as ancestor of H (20 commits), and O as a descendant of B (5 commits). A has sole parent H and adds only the cited audit. B has sole parent A. The later sole-parent chain is B → 11b81f0f5de444b43b8f12babb07636ef9fca213 → 9c0edb58ece7568bb56a5b67bd03a2e7abd4f29a → S8 → 7ea1aecc7d47b9ceadfc64b3190646c689c9d4fc → O. B-to-O changes only the Owner configuration document. The dossier at O is byte-equal to B, and the four production source blobs at O equal H. O §8 is byte-equal to S8 §8.
+
+O §9 records the ratification of §8 presented at 9c0edb58ece7568bb56a5b67bd03a2e7abd4f29a, blob 3fe5bb949fe9108aff0827595f4b72dbbc8bf5d4. O §11 records ratification of §10 presented at 7ea1aecc7d47b9ceadfc64b3190646c689c9d4fc, blob eb0f51b7d5c397a018aa858d88e45a9c848d6745. Both historical document versions and blobs resolve. These recorded conversational approvals are documentary attribution, not cryptographic actor authentication.
+
+A1 §§3–4, 9–10 apply to the present manifest/role/schema/logging/provenance/resource/STOP and later-prerequisite specification. O §§7–11 continue that targeted documentary work. The current mission authorizes this consolidated persistence, not technical activity. Root AGENTS.md was reviewed; no more-specific AGENTS applies to this path. Broad Builder/operational routing does not override this exact documentary mission; runtime/research snapshots and operational sources are outside this review.
+
+Precedence is O §§8–11, retaining S8 as its own exact ratification reference, then the applicable exact B §13 strings incorporated by O §8.7. The historical open choices in B and O §§2–3 are preserved as history; they do not reopen actors, exportability, retention, incident text, limits or the logical version resolved by O §§8–9. The prompt's configuration values match that combined basis; no ratified string discrepancy was found. The token in the historical B policy version is superseded by the ratified logical version below, and its unresolved recipient is superseded by Owner's exact pair. No unchanged value is submitted for re-ratification.
+
+DOCUMENTARY_RATIFICATION, FACTUAL_EVIDENCE, TECHNICAL_ENFORCEMENT and EXECUTION_AUTHORIZATION remain separate. C is a construction reference, not execution authority; historical tests have their historical authority and do not grant tests now; A is evidence, not permission or a new CLEAR finding. No later action grant is resolved or substituted in this mission.
+
+Publication scope: one appended addition in this existing Blue dossier on `blue/weather-v4-a2-consolidated-preparation-2026-10-06`, exact base O. No merge; no Owner artifact, audit, code, runner, root, fixture, payload, infrastructure or separate file changes. The resulting documentary commit/blob are recorded externally after publication, without a self-referential commit inside this text.
+
+### 14.2 Consolidated ratified declarations
+
+A2_OPERATION = DOCUMENTARY_INPUT_READ_THEN_STRUCTURAL_REPORT_RELEASE_CANDIDATE  
+A2_INTEGRATION_MODE = DOCUMENTATION_ONLY_NO_FIXTURE  
+FIXTURE_REQUIRED_FOR_IMMEDIATE_MODE = FALSE
+
+The proposed future operation is one evaluate_input_read on the exact documentary InputManifest, inspect its decision and returned journal, then at most one evaluate_output_release only after the exact input predicate and separate release prerequisites hold. No retry. These calls evaluate declarations, bindings and authorizations: no document-body read, parser, report creation, serialization, transport, export, source feasibility or economic inference. Inputs are four documentary authority-reference fields; the output declaration is confined to structural states, fixed reasons and safe integrity references. One finite operation, at most two evaluations, has the external boundaries in §14.6. STOP, quarantine and non-authorizations remain effective.
+
+The following are text transcriptions only. No dataclass, enum, ledger, acknowledgement or result is instantiated. Every actual field is represented; explanatory constraints remain outside canonical strings.
+
+#### 14.2A InputManifest — 17 actual fields
+
+| Actual field | Exact documentary value |
+|---|---|
+| `input_id` | `A2-DOC-IN-OWNER-A1-V1` |
+| `manifest_version_identity` | `A2-DOC-INTEGRATION-MANIFEST-V1` |
+| `input_classification` | `InputClassification.DOCUMENTATION_ONLY` |
+| `source_provenance_class` | `OWNER_GOVERNANCE_DECISION; commit=728cf23e7d69a373306f3c1a3fb5d11240210cda; path=research/weather_forward/v4/owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md; blob=483907e4f719ec8bcb3851af0f184690cea96279` |
+| `exact_permitted_fields` | `(document_commit_sha, document_path, document_blob_sha, authorized_documentary_scope_reference)` |
+| `exact_prohibited_fields` | `(document_body, fixture_payload, real_observation, real_technical_metadata, operational_endpoint, operational_credential, actual_timestamp, cadence, latency, availability, delivery_pattern, efficacy, economic_outcome, performance_distribution, pnl, ranking, source_preference, station_preference, city_preference, model_preference)` |
+| `permitted_reader_roles` | `(Role.EXECUTOR,)` |
+| `raw_values_visible` | `VisibilityState.VISIBLE` |
+| `timestamps_visible` | `VisibilityState.HIDDEN` |
+| `frequency_or_count_information_visible` | `VisibilityState.HIDDEN` |
+| `longitudinal_observation_allowed` | `PermissionState.DENIED` |
+| `aggregation_allowed` | `PermissionState.DENIED` |
+| `cross_source_comparison_allowed` | `PermissionState.DENIED` |
+| `efficacy_leakage_assessment` | `LeakageAssessment.UNRESOLVED` |
+| `access_logging_requirement` | `RequirementState.REQUIRED` |
+| `quarantine_on_ambiguity` | `RequirementState.REQUIRED` |
+| `owner_approval_required` | `RequirementState.REQUIRED` |
+
+Authority: O §§2.2, 8.6–8.7 and incorporated B §13.4. Visibility applies exclusively to the four permitted reference fields, a DOCUMENTARY_CONSTRAINT rather than an implemented payload filter. The canonical provenance text is not runtime-authenticated provenance. REQUIRED owner approval is a declaration, not approval evidence. The real UNRESOLVED leakage enum is a documented blocking state, not an unknown placeholder.
+
+#### 14.2B OutputManifest — 13 actual fields
+
+| Actual field | Exact documentary value |
+|---|---|
+| `output_id` | `A2-DOC-OUT-STRUCTURAL-REPORT-V1` |
+| `manifest_version_identity` | `A2-DOC-INTEGRATION-MANIFEST-V1` |
+| `output_type` | `DOCUMENTATION_ONLY_STRUCTURAL_REPORT` |
+| `exact_metric_or_artifact` | `STRUCTURAL_REPORT_ONLY: validation_state; permit_or_deny_state; quarantine_state; release_state; completion_state; stop_reason; detail_code; input_manifest_reference; output_manifest_reference; policy_reference; construction_authority_reference; execution_authority_reference; actor_role_bindings; acknowledged_log_record_references; structural_linkage_status` |
+| `granularity` | `ONE_DOCUMENTARY_OPERATION; exact structural identifiers, enum states and fixed reason codes only; no observations, measurements, payload text, operational timing or event counts` |
+| `permitted_recipients` | `(Role.RESEARCH_VIEWER,)` |
+| `exportability` | `PermissionState.ALLOWED` |
+| `quarantine_status` | `QuarantineState.BLOCKED_PENDING_OWNER_REVIEW` |
+| `cumulative_disclosure_risk` | `CumulativeDisclosureState.UNRESOLVED` |
+| `efficacy_leakage_assessment` | `LeakageAssessment.UNRESOLVED` |
+| `release_approval_requirement` | `RequirementState.REQUIRED` |
+| `retention_rule` | `STRUCTURAL_EVIDENCE_ONLY; 30 calendar days from authorized operation closure; custodian PROJECT_OWNER; evidence destination existing Owner document libfile_4f09286d65ac8191a6e343b85aff696e / EVIDENCE_A2_DOC_INTEGRATION_V1; no public release; retention and deletion capabilities verified before custody; no automatic extension; governance decisions retained separately` |
+| `incident_if_unexpected_information_revealed` | `STOP; DENY and BLOCKED release; withhold affected content through an already-authorized mechanism; record safe incident class/reference only; escalate to PROJECT_OWNER; no payload investigation, retry or automatic resume; separate exact Owner direction required before recovery` |
+
+Authority: O §§2.3, 8.4–8.7 and incorporated B §13.5. ALLOWED exportability is a decision condition only; no actual writing, export or transport is authorized. The destination is incorporated in canonical retention text and is not a new dataclass field.
+
+RETENTION_DOCUMENTARY_VALUE = RATIFIED  
+RETENTION_ENFORCEMENT_STATUS = NOT_VERIFIED  
+INCIDENT_DOCUMENTARY_VALUE = RATIFIED  
+INCIDENT_ENFORCEMENT_STATUS = NOT_VERIFIED
+
+Quarantine stays BLOCKED_PENDING_OWNER_REVIEW; leakage and disclosure stay UNRESOLVED. Ratification does not establish CLEAR. A future evidence-backed change to a canonical state or string must be explicitly recorded, reviewed under applicable authority and invalidate affected identities; it is not applied here.
+
+#### 14.2C HarnessPolicy — 12 actual fields and a derived-value recipe
+
+| Actual field | Exact documentary value |
+|---|---|
+| `expected_owner_authority_sha` | `37e3b25f17a7c5d3b3bc8d37df730aa988585b6c` |
+| `expected_harness_identity` | `research/weather_forward/v4/a2_harness` |
+| `expected_harness_version_or_commit_identity` | `weather-v4-a2-doc-integration-v1` |
+| `expected_manifest_version_identity` | `A2-DOC-INTEGRATION-MANIFEST-V1` |
+| `expected_input_manifest_id` | `A2-DOC-IN-OWNER-A1-V1` |
+| `expected_input_manifest_identity` | `DERIVE_FROM_FROZEN_INPUT_MANIFEST_ONLY_WHEN_AUTHORIZED` |
+| `expected_output_manifest_id` | `A2-DOC-OUT-STRUCTURAL-REPORT-V1` |
+| `expected_output_manifest_identity` | `DERIVE_FROM_FROZEN_OUTPUT_MANIFEST_ONLY_WHEN_AUTHORIZED` |
+| `allowed_input_classifications` | `(InputClassification.DOCUMENTATION_ONLY,)` |
+| `prohibited_input_classifications` | `(InputClassification.NON_ECONOMIC_SYNTHETIC, InputClassification.REAL_TECHNICAL_METADATA, InputClassification.PROHIBITED, InputClassification.UNKNOWN)` |
+| `fixture_provenance_contract` | `None` |
+| `permitted_recipient_actor_roles` | `((project-owner.weather-v4.a2.doc-integration.v1, Role.RESEARCH_VIEWER),)` |
+
+Authority: O §§2.4, 8.7–8.9 and incorporated B §13.6. The two DERIVE labels are documentary dependency labels only, not strings accepted as digest fields or values to submit to an API. Policy materialization waits for both final manifest identities and fixed remaining content. `expected_owner_authority_sha` is construction authority in this schema, never the future execution-policy grant. `None` is the canonical absence of a fixture contract, not an admission grant. The policy label `A2-DOC-GOVERNANCE-POLICY-V1` is documentary only.
+
+No policy_id, policy_version, allowed_actions, denied_actions, role-declaration, logging-rule, release-workflow, STOP-rule or resource-limit fields exist in HarnessPolicy. None is invented.
+
+#### 14.2D Actors, bindings and separate action declarations
+
+| Actor | Exact documentary actor_id | Role | Ratified function |
+|---|---|---|---|
+| Blue | blue.weather-v4.a2.doc-integration.v1 | Role.EXECUTOR | executor/orchestrator and input reader |
+| Astra | astra.weather-v4.a2.doc-integration.v1 | Role.RELEASE_APPROVER | independent documentary evaluator and release approver |
+| PROJECT_OWNER | project-owner.weather-v4.a2.doc-integration.v1 | Role.RESEARCH_VIEWER | sole output recipient; externally Owner, custodian, incident/quarantine/recovery authority |
+
+O §§8.1–8.2 and §9 ratify these assignments. They are not authenticated process identities. Astra remains distinct from both Blue and Owner and must not serve as Builder for the implementation it reviews. The weaker harness minimum approver != recipient does not relax this assignment. The preparer neither signs for Astra nor simulates independent review.
+
+| ActionAuthorization actual field | READ_INPUT declaration | RELEASE_OUTPUT declaration |
+|---|---|---|
+| authorization_id | a2-doc-v1-read-input-blue | a2-doc-v1-release-output-astra |
+| authority_sha | FUTURE_EXACT_EXECUTION_POLICY_AUTHORITY_REQUIRED | FUTURE_EXACT_EXECUTION_POLICY_AUTHORITY_REQUIRED |
+| actor_id | blue.weather-v4.a2.doc-integration.v1 | astra.weather-v4.a2.doc-integration.v1 |
+| declared_role | Role.EXECUTOR | Role.RELEASE_APPROVER |
+| action | Action.READ_INPUT | Action.RELEASE_OUTPUT |
+| state | AuthorizationState.UNRESOLVED | AuthorizationState.UNRESOLVED |
+
+The authority labels are documentary unresolved dependencies, not runtime SHA values. Future AUTHORIZED requires an exact applicable execution grant, evidence, matching root and controls for that specific action. Blue may orchestrate the second call carrying Astra's attributable authorization; the harness does not authenticate Astra as calling process.
+
+AuthorityBinding's four actual fields are documentary recipes: owner_authority_sha = C; harness_identity = research/weather_forward/v4/a2_harness; harness_version_or_commit_identity = weather-v4-a2-doc-integration-v1; manifest_version_identity = A2-DOC-INTEGRATION-MANIFEST-V1. Root construction/harness/version fields and policy must match these exactly. No AuthorityBinding is created.
+
+
+### 14.3 Actual representations and control separation
+
+The schema was read as text at H. The field tables in §14.2 contain all 17/13/12 manifest/policy canonical fields, each SUPPORTED_SCHEMA_FIELD; the recipe cells name derived dependencies without supplying invalid runtime values. The following targeted representation register separates atomic obligations. Authority/scope classification is separate from representation, ratification, implementation and verification; no new general prerequisite matrix replaces the existing dossier.
+
+| Atomic requirement / representation | Representation classification | Authority/scope | Ratification, implementation and verification |
+|---|---|---|---|
+| AuthorityBinding's four fields | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | OWNER_DECISION: O §8.7; historical C | Documentary tuple specified; existing comparison code; future runtime binding absent |
+| TrustedExecutionPolicyRoot's five fields | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | OWNER_DECISION: O §8.8 | Design only; current permissive root absent |
+| RoleDeclaration.actor_id, declared_role | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | OWNER_DECISION: O §8.1 | Exact documentary tokens ratified; process authentication not established |
+| ActionAuthorization.authorization_id, authority_sha, actor_id, declared_role, action, state | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | OWNER_DECISION: O §8.2 | Exact non-authorizing declarations; future authority absent, state UNRESOLVED |
+| Blue/Astra/Owner functions and stricter independence | DOCUMENTARY_CONSTRAINT | OWNER_DECISION: O §§8.1, 9 | Ratified; approver/recipient code check exists, broader assignment verified externally in future |
+| Caller/session authentication | EXTERNAL_CONTROL | OWNER_DECISION: O §8.1 | NOT_VERIFIED; actor tokens are not authentication |
+| Four-field visibility and twenty-field exclusion | DOCUMENTARY_CONSTRAINT | A1_COVERED; O §2.2 | Ratified scope; no actual payload read/filter created |
+| Runtime payload allowlist, parser, sanitizer and actual document-body read | UNSUPPORTED_BY_CURRENT_SCHEMA | NOT_REQUIRED_FOR_DEFINED_OPERATION | Absent; outside this declaration-evaluation operation; no redesign demanded |
+| Output information allowlist and fixed diagnostic scope | DOCUMENTARY_CONSTRAINT | OWNER_DECISION: O §§2.3, 8.6.2 | Ratified output elements; newly enumerated codes in §14.5 await attributable independent review |
+| Report generation, serialization, transport/export | UNSUPPORTED_BY_CURRENT_SCHEMA | NOT_REQUIRED_FOR_DEFINED_OPERATION | Absent and excluded; ALLOWED is not transport authority |
+| DisclosureRecord.disclosure_id, output_id, recipient_actor_id, recipient_role, cumulative_safety; CumulativeDisclosureLedger.records | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | OWNER_DECISION: O §8.6.4–5 | Existing supplied-state tuple checks; no ledger instantiated, no history completeness proof |
+| Evidence of exposure history coverage and cumulative factual safety | DOCUMENTARY_CONSTRAINT | A1_CLARIFICATION: O §8.6.4–5 | Documentary evidence can precede execution; unavailable receipt/coverage remains unresolved, not a fabricated journal |
+| Bounded receipt/exposure inventory and criteria findings | DOCUMENTARY_CONSTRAINT | A1_CLARIFICATION: O §§8.6, 10–11 | Prepared in §14.4 with attributed records and explicit unknowns; not independently approved |
+| Full disclosure-history completeness enforcement | UNSUPPORTED_BY_CURRENT_SCHEMA | OWNER_DECISION: O §8.6.4–5 | Not supplied by ledger; external evidence/disposition required, no new mechanism implied |
+| LogRecord's 18 fields | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | A1_COVERED; O §2.5 | Existing exact-context checking; no new record created or observed |
+| LogAppendAcknowledgement.appended, record_id, log; StructuredAuditLog.records | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | A1_COVERED; O §2.5 | Existing tuple append interface and exact linkage; not durable storage/isolation |
+| HarnessDecision's seven fields; LoggedActionResult.decision, log, log_record, log_acknowledged | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | A1_COVERED; A evidence only | Existing guarded finalization; no new D5 verdict or runtime result |
+| Approved input-to-release sequencing, reuse of first log, distinct record IDs | DOCUMENTARY_CONSTRAINT | OWNER_DECISION: O §2.5 | Recipe §14.9D; not an automatic harness prerequisite |
+| LogRecord policy digest or preceding-read-record field | UNSUPPORTED_BY_CURRENT_SCHEMA | A1_CLARIFICATION: O §8.6.3 | Neither exists; bind policy through exact root comparison and external documentary context; verify preservation of first record externally |
+| Actual returned decisions, acknowledgements, unique exact record/content/context and first-record preservation | EXECUTION_EVIDENCE_REQUIREMENT | RUNTIME_TEST | Pending authorized candidate verification or integration; not demanded as an existing preparation artifact |
+| retention_rule exact text | SUPPORTED_SCHEMA_FIELD | OWNER_DECISION: O §8.4 | RATIFIED_DOCUMENTARY_VALUE; canonical, retained unchanged |
+| Custody/access and retention/deletion capability | EXTERNAL_CONTROL | OWNER_DECISION: O §8.4 | NOT_VERIFIED; no durable journal, ACL or deletion engine provided by source |
+| Actual custody/access/deletion behavior evidence | EXECUTION_EVIDENCE_REQUIREMENT | OWNER_DECISION: O §8.4 | Must resolve capability before custody, no complete historical purge claim |
+| incident_if_unexpected_information_revealed exact text | SUPPORTED_SCHEMA_FIELD | OWNER_DECISION: O §8.5 | RATIFIED_DOCUMENTARY_VALUE; canonical, retained unchanged |
+| External withholding, STOP, escalation and authorized recovery | EXTERNAL_CONTROL | OWNER_DECISION: O §8.5 | NOT_VERIFIED; declaration does not isolate storage or revoke access |
+| ResourceBoundaryState declaration | SUPPORTED_SEPARATE_AUTHORIZATION_STRUCTURE | A1_COVERED; O §8.3 | Existing enum-state validation, not numeric control |
+| Numeric resource measurement and stopping | EXTERNAL_CONTROL | OWNER_DECISION: O §8.3 | NOT_VERIFIED; required semantics/responsibility unresolved |
+| Loaded source/reference/candidate reconciliation | DOCUMENTARY_CONSTRAINT | OWNER_DECISION: O §8.8 | Exact source references specified; matching logical token is not integrity proof |
+| Proof of code actually loaded in target context | EXECUTION_EVIDENCE_REQUIREMENT | OWNER_DECISION: O §8.8 | Pending separately authorized verification, outside token comparisons |
+| Durable cryptographically immutable journal, ACL/deletion engine, automatic sequencing, global action allowlist in HarnessPolicy | UNSUPPORTED_BY_CURRENT_SCHEMA | A1_CLARIFICATION | No such mechanisms; no immutable deployed storage obligation inferred from tuple append semantics |
+| Root candidate source constants/annotations/resolver | FUTURE_IMPLEMENTATION_REQUIREMENT | TECHNICAL_IMPLEMENTATION: separate exact grant | Required transition, not implemented or activated |
+| New resource/storage/authentication/containment infrastructure if existing capabilities cannot satisfy the chosen action | FUTURE_IMPLEMENTATION_REQUIREMENT | TECHNICAL_IMPLEMENTATION | Conditional need only, absent authority; do not build or assume mandatory unrelated infrastructure |
+| Fixture qualification/generation/testing, operational sources, economics | DOCUMENTARY_CONSTRAINT | NOT_REQUIRED_FOR_DEFINED_OPERATION | Excluded; historical structural test objects do not become A2 research fixtures; no fixture package prepared |
+
+LogRecord's actual fields: record_id; construction_authority_identity; execution_policy_authority_identity; authorization_authority_identity; manifest_identity; actor_id; actor_role; authorization_id; attempted_action; target_kind; target_id; permit_or_deny_state; quarantine_state; release_state; incident_identifier; cumulative_disclosure_state; recipient_actor_id; recipient_role. HarnessDecision has validation_state, permit_or_deny_state, quarantine_state, release_state, completion_state, stop_reason, detail_code. It has no manifest_identity, actor_id or action. LogRecord has no validation_state, completion_state, stop_reason or detail_code. These distinctions govern the verification recipe.
+
+Representation does not prove ratification; ratification does not prove factual safety; existing code does not prove deployed controls; an authority grant does not prove prerequisites/control availability; successful verification does not activate or authorize integration.
+
+### 14.4 Bounded disclosure evidence inventory and material unknowns
+
+Exact assessment tuple: output_id = A2-DOC-OUT-STRUCTURAL-REPORT-V1; recipient_actor_id = project-owner.weather-v4.a2.doc-integration.v1; recipient_role = Role.RESEARCH_VIEWER.
+
+Inventory boundary: governance information relevant to this proposed structural declaration and the available Owner ratification records. It is neither a complete recipient history nor a list of every consulted document as if received. No endpoint, operational history, fixture, payload or mailbox is accessed. Attribution is the cited Owner artifact/user mission; external receipt authentication is unavailable.
+
+| Inventory item | Exact reference / attribution | Information covered | Receipt/coverage evidence and limitation |
+|---|---|---|---|
+| A1 authority | A1 §§2–5, 9–12; artifact attributed to PROJECT_OWNER | Documentary scope, non-authorizations, later prerequisite boundary | Authorship/authority record, not independent proof of all later receipt/exposure |
+| Initial partial configuration presented and accepted | O §7; approval recorded as “Oui”, 2026-10-06T00:04:40+02:00; B cited there | Presentation of partial §2 and link; approval under §§1, 3–6 reservations | Recorded approval scope only; does not prove Owner read all B §13 or every linked document |
+| Section 8 configuration presentation and ratification | O §9 / S8; “Je ratifie”, 2026-10-06T08:12:30+02:00; presented commit 9c0edb58ece7568bb56a5b67bd03a2e7abd4f29a, blob 3fe5bb949fe9108aff0827595f4b72dbbc8bf5d4 | Exact actors, declarations, limits, custody, retention, incident, method, logical version and future transition with reservations | Exact presented content/ratification recorded and document resolved; not cryptographic receipt, not positive CLEAR |
+| Negative attestation presentation and ratification | O §§10–11; “Je ratifie”, 2026-10-06T08:22:15+02:00; presented commit 7ea1aecc7d47b9ceadfc64b3190646c689c9d4fc, blob eb0f51b7d5c397a018aa858d88e45a9c848d6745 | CLEAR_NOT_ESTABLISHED, missing disclosure/diagnostic/binding/independent-review evidence and control limits | Attributed Owner acceptance of negative finding; no independent Astra conclusion |
+| Current preparation instruction | PROJECT_OWNER's current mission, sections 1, 3, 9–12, 18, 25; not assigned a fabricated Git SHA | Exact references/configuration, existing negative status, operational exclusions and detailed recipes requested | Information supplied by Owner in this conversation; does not prove earlier consultation of every referenced source or completeness of exposure history |
+| Previously bounded test/audit evidence reference | O §1 and A | Source/tests PASS and limitations referenced in configuration | The reference is known; no inference that Owner received every transcript or reconstructed historical source |
+| Documents consulted by this preparer | Exact reference register §14.1 and H schema/diagnostic text | Authority verification, source interpretation and this addition's basis | Consultation by preparer only; NOT evidence of receipt by Owner |
+
+Material unknowns: other relevant disclosures, timing/order and combinations of prior information, full bodies/attachments actually received, completeness and accuracy of any supplied inventory, unrecorded indirect disclosures, global BLOCKED history, and recipient identity authentication. No empty inventory or missing item is treated as absence of exposure. Source safety of fixed tokens alone cannot establish safety of their combination with unknown prior knowledge.
+
+Minimum closure: Owner supplies or attributes a bounded inventory covering relevant prior information, exact references, coverage boundary and remaining unknowns; the designated independent Astra evaluator reviews cumulative old + proposed information for the exact tuple, identifies material unknowns, global BLOCKED entries and justifies findings under the unchanged method. No operational or payload investigation is requested. This inventory can be refined within existing A1 documentary authority; no new general document per item is required.
+
+DISCLOSURE_HISTORY_EVIDENCE = PARTIAL_ATTRIBUTED_GOVERNANCE_RECORDS_WITH_MATERIAL_COVERAGE_UNKNOWNS  
+CUMULATIVE_DISCLOSURE = UNRESOLVED  
+CLEAR = NOT_ESTABLISHED  
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_PREPARATION
+
+### 14.5 Ratified method, diagnostic scope and documentary linkage interpretation
+
+The ratified O §8.6 cumulative method is reused verbatim:
+
+1. Input limité aux quatre références documentaires approuvées ; provenance A1 exact commit/chemin/blob vérifiée ; aucune observation ou métadonnée opérationnelle admise.
+2. Output limité aux quinze éléments de §2.3 ; motifs et codes de détail examinés dans leur source exacte ; pas de texte libre, chiffre économique, préférence ou assertion issue d'un payload.
+3. Acteurs, destinataire, manifests, policy, autorisations et journal explicitement liés ; aucun placeholder opérationnel et aucune différence matérielle non revue.
+4. Pour la disclosure, inventaire borné des informations pertinentes déjà divulguées au destinataire, fourni dans le périmètre de gouvernance autorisé ; références exactes et inconnues explicites. Aucun endpoint, historique opérationnel ou payload n'est consulté pour le compléter.
+5. Évaluer le cumul ancien + proposé pour le tuple exact `output_id + recipient_actor_id + recipient_role`. Une histoire vide, non fournie ou matériellement inconnue reste UNRESOLVED ; tout BLOCKED global prévaut.
+6. Documenter chaque conclusion : critère, référence vérifiée, périmètre, constat et limitation. Une ratification ou une simple déclaration de sécurité n'est pas la preuve.
+
+Evaluator: Astra, with the minimum evidence specified in O §8.6: six-criterion findings/references, separate input/output results, cumulative assessment for the exact Owner tuple, justified nonmaterial unknowns if any, and attributable documentary approval through Astra's governance identity. No signature or positive finding is supplied here. O §§10–11 continue to attest CLEAR_NOT_ESTABLISHED and NOT_PERFORMED_BY_THIS_ATTESTATION; ratifying this negative finding did not independently approve new evidence.
+
+Targeted preparation findings:
+- Criterion 1: the four-field specification and exact A1 commit/path/blob resolve. No payload filter, object qualification or actual read is proven.
+- Criterion 2: fifteen output elements and the following finite constant-code scope are source reviewed. No actual output, report or trace is observed; independent disclosure approval is pending.
+- Criterion 3: §14.2 declarations and §§14.7–14.9 recipes explicitly link every documentary component and future journal context. Derived identities, execution authority and actual acknowledged records remain future action dependencies. No placeholder is submitted, no actual linkage is claimed.
+- Criteria 4–5: §14.4 adds bounded attributed records, but material history completeness/cumulative unknowns remain UNRESOLVED; any global BLOCKED prevails over exact-tuple CLEAR.
+- Criterion 6: references, findings and limits are attributable to this preparer; independent Astra review remains absent.
+
+#### Finite source-reviewed diagnostic disclosure proposal
+
+Scope: only fixed detail-code literals reaching the two candidate evaluation methods through policy/root/authority/manifest/role/recipient assessment and required logging at H. Successful assessment codes are statically transformed by _complete_with_required_log from PENDING_REQUIRED_LOG to LOGGED_AND_COMPLETED. These are source-derived expected names, not observed execution. The following list includes refusal/error codes, not just success. Each carries only a structural gate/state/identity category and no interpolated operational value. Approval of disclosure remains pending independent evaluation of the exact tuple and history; this is not a ratified allowlist or runtime sanitizer.
+
+| Source scope | Finite candidate final detail codes | Documentary content assessment |
+|---|---|---|
+| policy; H harness.py 307–347 | `POLICY_REQUIRED_IDENTITY_MISSING_OR_AMBIGUOUS`; `POLICY_OWNER_SHA_NOT_EXACT_40_HEX`; `POLICY_EXPECTED_INPUT_MANIFEST_IDENTITY_NOT_SHA256`; `POLICY_EXPECTED_OUTPUT_MANIFEST_IDENTITY_NOT_SHA256`; `POLICY_INPUT_CLASS_SET_EMPTY`; `POLICY_INPUT_CLASS_OVERLAP`; `POLICY_UNKNOWN_CLASS_NOT_PROHIBITED`; `POLICY_PROHIBITED_CLASS_NOT_PROHIBITED`; `POLICY_DUPLICATE_RECIPIENT_ACTOR_ID`; `POLICY_RECIPIENT_ACTOR_ID_AMBIGUOUS` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| root; H harness.py 348–388 | `NO_TRUSTED_EXECUTION_POLICY_ROOT_DENY_ALL`; `TRUSTED_ROOT_REQUIRED_FIELD_MISSING_OR_AMBIGUOUS`; `EXECUTION_POLICY_AUTHORITY_SHA_NOT_EXACT_40_HEX`; `ROOT_CONSTRUCTION_AUTHORITY_SHA_NOT_EXACT_40_HEX`; `ROOT_POLICY_IDENTITY_NOT_SHA256`; `TRUSTED_ROOT_POLICY_IDENTITY_MISMATCH`; `TRUSTED_ROOT_CONSTRUCTION_AUTHORITY_MISMATCH`; `TRUSTED_ROOT_HARNESS_IDENTITY_MISMATCH`; `TRUSTED_ROOT_HARNESS_VERSION_MISMATCH` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| authority; H harness.py 389–414 | `AUTHORITY_BINDING_REQUIRED_FIELD_MISSING_OR_AMBIGUOUS`; `OWNER_AUTHORITY_SHA_NOT_EXACT_40_HEX`; `OWNER_AUTHORITY_SHA_MISMATCH`; `HARNESS_IDENTITY_MISMATCH`; `HARNESS_VERSION_OR_COMMIT_IDENTITY_MISMATCH`; `MANIFEST_VERSION_IDENTITY_MISMATCH` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| inputManifest; H harness.py 415–469 | `INPUT_ID_MISMATCH`; `INPUT_MANIFEST_VERSION_MISMATCH`; `INPUT_PROVENANCE_CLASS_MISSING_OR_AMBIGUOUS`; `INPUT_FIELD_ALLOW_OR_DENY_LIST_EMPTY`; `INPUT_PERMITTED_FIELD_EMPTY_OR_AMBIGUOUS`; `INPUT_PROHIBITED_FIELD_EMPTY_OR_AMBIGUOUS`; `INPUT_WILDCARD_FIELD_RULE_PROHIBITED`; `INPUT_FIELD_ALLOW_DENY_OVERLAP`; `INPUT_READER_ROLE_SET_EMPTY`; `INPUT_CLASS_EXPLICITLY_PROHIBITED`; `INPUT_CLASS_NOT_EXPLICITLY_ALLOWED`; `INPUT_VISIBILITY_UNRESOLVED`; `INPUT_PERMISSION_UNRESOLVED`; `INPUT_EFFICACY_LEAKAGE_NOT_CLEAR`; `INPUT_ACCESS_LOGGING_NOT_EXPLICITLY_REQUIRED`; `INPUT_QUARANTINE_ON_AMBIGUITY_NOT_REQUIRED`; `INPUT_OWNER_APPROVAL_REQUIREMENT_UNRESOLVED`; `INPUT_MANIFEST_STRUCTURAL_IDENTITY_MISMATCH` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| outputManifest; H harness.py 470–500 | `OUTPUT_ID_MISMATCH`; `OUTPUT_MANIFEST_VERSION_MISMATCH`; `OUTPUT_REQUIRED_FIELD_MISSING_OR_AMBIGUOUS`; `OUTPUT_WILDCARD_RULE_PROHIBITED`; `OUTPUT_RECIPIENT_ROLE_SET_EMPTY`; `OUTPUT_EXPORTABILITY_UNRESOLVED`; `OUTPUT_RELEASE_REQUIREMENT_UNRESOLVED`; `OUTPUT_MANIFEST_STRUCTURAL_IDENTITY_MISMATCH` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| roleAuthorization; H harness.py 575–600 | `DECLARED_ACTOR_ID_MISSING_OR_AMBIGUOUS`; `ACTION_AUTHORIZATION_ID_MISSING_OR_AMBIGUOUS`; `ACTION_AUTHORIZATION_ACTOR_ID_MISSING_OR_AMBIGUOUS`; `ACTION_AUTHORIZATION_ACTOR_MISMATCH`; `ACTION_AUTHORIZATION_ROLE_MISMATCH`; `ACTION_AUTHORIZATION_ACTION_MISMATCH`; `ACTION_AUTHORIZATION_EXECUTION_POLICY_AUTHORITY_MISMATCH`; `ACTION_AUTHORIZATION_NOT_AUTHORIZED` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| recipient; H harness.py 601–609 | `RECIPIENT_ACTOR_ID_MISSING_OR_AMBIGUOUS`; `RECIPIENT_ACTOR_ROLE_NOT_EXACTLY_AUTHORIZED` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| inputAssessment; H harness.py 620–669 | `DECLARED_ROLE_NOT_IN_INPUT_READER_ALLOWLIST`; `INPUT_READ_ELIGIBLE_LOGGED_AND_COMPLETED` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| releaseAssessment; H harness.py 719–833 | `RECIPIENT_ROLE_NOT_IN_OUTPUT_MANIFEST_ALLOWLIST`; `RELEASE_ACTOR_ID_MISSING_OR_AMBIGUOUS`; `RELEASE_ACTOR_ID_MUST_DIFFER_FROM_RECIPIENT_ACTOR_ID`; `REQUIRED_RELEASE_APPROVER_ROLE_MISSING`; `OUTPUT_EXPORTABILITY_NOT_ALLOWED`; `OUTPUT_QUARANTINE_STATE_BLOCKS_RELEASE`; `OUTPUT_EFFICACY_LEAKAGE_NOT_CLEAR`; `OUTPUT_MANIFEST_CUMULATIVE_DISCLOSURE_NOT_CLEAR`; `DISCLOSURE_LEDGER_NOT_CLEAR_FOR_EXACT_OUTPUT_RECIPIENT_ACTOR_ROLE`; `RELEASE_APPROVAL_REQUIREMENT_NOT_RESOLVED`; `OUTPUT_RELEASE_ELIGIBLE_LOGGED_AND_COMPLETED` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+| logging; H harness.py 834–932 | `REQUIRED_LOG_RECORD_ID_MISSING_OR_AMBIGUOUS`; `REQUIRED_LOG_RECORD_ID_ALREADY_EXISTS`; `REQUIRED_LOG_APPEND_NOT_ACKNOWLEDGED`; `FINAL_STATE_LOG_LINKAGE_INVARIANT_FAILED` | Fixed structural declaration/control status only; candidate disclosure scope, independent approval pending |
+
+The internal positive validation codes (POLICY_STRUCTURALLY_VALID, TRUSTED_EXECUTION_POLICY_ROOT_RESOLVED, AUTHORITY_AND_TRUSTED_ROOT_VALID, INPUT_MANIFEST_VALID, OUTPUT_MANIFEST_VALID, ROLE_ACTION_EXECUTION_AUTHORITY_VALID, EXACT_RECIPIENT_ACTOR_ROLE_AUTHORIZED) are identified in source but are not final success codes of these evaluations. PENDING_REQUIRED_LOG and LOGGED_AND_COMPLETED alone are replacement fragments, not report codes. Fixture/provenance-admission diagnostics are excluded because this operation has fixture_provenance_contract None and no fixture admission call. No unknown code, arbitrary detail text, traceback, exception message, free-form incident description, runtime measurements, object repr or body text is approved by this list. Unexpected code/exception fails the external proceed predicate and requires STOP; it is not automatically converted to a safe released diagnostic. The harness itself does not catch and sanitize every possible exception.
+
+Optional structural STOP references outside the two evaluation calls are source literals RESOURCE_BOUNDARY_NOT_EXPLICITLY_WITHIN_AUTHORITY, RESOURCE_BOUNDARY_WITHIN_AUTHORITY and UNEXPECTED_EFFICACY_LEAKAGE_FAIL_CLOSED_STOP (H harness.py 1020–1035). This source inventory does not add a third call to the operation or permit numerical resource results in its output. StopReason and state enums are the closed, literal names in H contract.py; no free text is admitted.
+
+#### Interpretation of O §8.6.3, without waiver or circular fabrication
+
+Documentary linkage at preparation consists of exact source/authority references, ratified tokens/IDs, canonical content tables, explicit unresolved derivation cells, final tuple recipes, action dependencies and the future record/context predicates. A recipe label is visibly unresolved documentary notation, never an operational placeholder. A missing future journal/digest/grant does not make this dependency recipe incomplete. Execution linkage later requires actual computed identities, applicable authority, typed results and acknowledged exact unique records.
+
+This interpretation supplements rather than replaces the ratified criterion; the method still requires no material unreviewed difference and attributable independent findings before CLEAR. If the designated evaluator or Owner construes criterion 3 as demanding actual future journal records/digests before documentary clearance/freeze, the exact dependency cycle is a local documentary blocker for that finding/freeze. It cannot justify unauthorized computation, fabricated records or waiving the criterion. The current mission explicitly distinguishes preparation from materialization and defines §14.9D sequencing; no new ratification of unchanged method or values is requested.
+
+Independent-review handoff: exact refs/blobs §14.1, complete declarations §14.2, atomic limitations §14.3, inventory/unknowns §14.4, six unchanged criteria and finite diagnostics here, external capability dispositions §14.6, and recipes/packages §§14.7–14.10. Reviewer must attribute findings to exact versions, separate specification safety from actual control behavior, keep input/output conclusions distinct, address each material unknown and cumulative exact tuple, and not attest hypothetical runtime evidence. No independent review is simulated or signed by the orchestrator.
+
+
+### 14.6 Ratified external rules and actual control availability
+
+In this table, O always expands to `fahimahmedb/Quant-Trade`, `research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md`, commit `08fe3a1d9e0ab27c3e6cdf8fa717dd58ae2a334d` and the specified section, blob `8530a0d344f6dd18993cce5b4f48c887b20dada8`. S8 remains the earlier ratification identity; O §§9–11 preserve the same reservations. A1 expands through §14.1. Owner status for each constraint below is RATIFIED_DOCUMENTARY_VALUE, except a conditional new implementation/verification action is only a reserved future requirement. NOT_VERIFIED means no attributable evidence of the external capability was available in this review, not proof it cannot exist.
+
+| Requirement | Exact reference | Ratified condition / reservation | OWNER_STATUS | CONTROL_IMPLEMENTED | CONTROL_VERIFIED | ACTION_BLOCKED if absent | Representation | Scope classification |
+|---|---|---|---|---|---|---|---|---|
+| Elapsed duration | O §8.3 | 60 seconds maximum; process, at most two calls and verification; prior Owner/Astra review excluded | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Candidate verification under its own relevant bound; integration | EXTERNAL_CONTROL | OWNER_DECISION |
+| CPU/processes | O §8.3 | 5 cumulative user + system CPU seconds; one process/all threads, no children | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Integration; any separately scoped runtime verification requiring controls | EXTERNAL_CONTROL | OWNER_DECISION |
+| Memory | O §8.3 | 128 MiB = 134217728 bytes peak process memory; measurement semantics and stop mechanism unresolved | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Integration; memory-control acceptance | EXTERNAL_CONTROL | OWNER_DECISION |
+| Artifact/temp storage | O §8.3 | 1 MiB = 1048576 bytes total structural artifacts including temporaries | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Future operation writes/custody; integration | EXTERNAL_CONTROL | OWNER_DECISION |
+| Output volume | O §8.3 | 64 KiB = 65536 UTF-8 bytes; decisions/log/verification/diagnostics total | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Integration and actual permitted evidence preservation | EXTERNAL_CONTROL | OWNER_DECISION |
+| Evaluation count/no retry | O §§2.1, 8.3 | Exactly one input, at most one release; omit release on input failure; no retry | RATIFIED_DOCUMENTARY_VALUE | NOT_IMPLEMENTED (automatic sequencing) | NOT_VERIFIED | Integration orchestration | DOCUMENTARY_CONSTRAINT | OWNER_DECISION |
+| Operational network/source calls | O §§2.1, 8.3; A1 §3 | Zero operational/source calls, no credentials/real access | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Integration in context without evidenced exclusion controls | EXTERNAL_CONTROL | A1_COVERED |
+| New expenditure | O §8.3 | 0 EUR; no purchase, subscription, provisioning or commitment | RATIFIED_DOCUMENTARY_VALUE | NOT_REQUIRED_FOR_THIS_ACTION | NOT_REQUIRED_FOR_THIS_ACTION | Any future proposed spending; none permitted | DOCUMENTARY_CONSTRAINT | OWNER_DECISION |
+| Access boundary | O §§8.1, 8.3–8.4 | Only Blue/Astra/Owner in ratified functions; operational token authentication not inferred | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Future actual access/custody and integration | EXTERNAL_CONTROL | OWNER_DECISION |
+| Evidence destination/custodian | O §8.4 | Existing native OWNER_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md; libfile_4f09286d65ac8191a6e343b85aff696e; future EVIDENCE_A2_DOC_INTEGRATION_V1; PROJECT_OWNER | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Future evidence custody; section creation only with actual authorized evidence | DOCUMENTARY_CONSTRAINT | OWNER_DECISION |
+| Effective ACL and access evidence | O §8.4 | Access must match approved actors before custody; no GitHub/external publication of future runtime evidence | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Custody/actual evidence transmission; integration evidence handling | EXTERNAL_CONTROL | OWNER_DECISION |
+| Retention text | O §8.4; §14.2B exact canonical transcription | 30 calendar days after authorized operation closure; no automatic extension; governance decisions retained separately | RATIFIED_DOCUMENTARY_VALUE | AVAILABLE_WITH_EXACT_EVIDENCE: canonical field exists as text | NOT_VERIFIED: enforcement | Custody until capability-compatible disposition established | SUPPORTED_SCHEMA_FIELD | OWNER_DECISION |
+| Deletion/access blocking capability | O §8.4 | Owner removal/access block at expiry only within actual capabilities; no complete purge of historical versions claimed | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Custody under an unachievable purge guarantee | EXTERNAL_CONTROL | OWNER_DECISION |
+| Retention/deletion capability disposition | O §§8.4, 9 | If complete deletion cannot be shown, Owner chooses a compatible rule before custody; this would be actual new/changed content, not re-ratification of unchanged 30-day text | RATIFIED_DOCUMENTARY_VALUE | NOT_REQUIRED_FOR_THIS_ACTION | NOT_VERIFIED | Future custody where capabilities conflict with ratified constraints | DOCUMENTARY_CONSTRAINT | OWNER_DECISION |
+| Incident text | O §8.5; §14.2B exact canonical transcription | STOP; DENY/BLOCKED; safe class/reference only; no payload investigation/retry/resume | RATIFIED_DOCUMENTARY_VALUE | AVAILABLE_WITH_EXACT_EVIDENCE: canonical field exists as text | NOT_VERIFIED: external effect | Future operation until incident capability disposition | SUPPORTED_SCHEMA_FIELD | OWNER_DECISION |
+| Withholding/containment and escalation | O §8.5 | Already-authorized mechanism; stop sequence/release, notify PROJECT_OWNER via existing governance channel; no message sent now | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Integration and unsafe-content handling | EXTERNAL_CONTROL | OWNER_DECISION |
+| Quarantine/recovery authority | O §§8.5–8.6 | PROJECT_OWNER; maintain BLOCKED_PENDING_OWNER_REVIEW; separate exact direction before recovery | RATIFIED_DOCUMENTARY_VALUE | NOT_REQUIRED_FOR_THIS_ACTION: declaration only | NOT_VERIFIED: future recovery | Release/recovery without evidence and direction | DOCUMENTARY_CONSTRAINT | OWNER_DECISION |
+| Loaded-source integrity disposition | O §8.8 | Exact H logic, candidate diff/commit/parent and actual loaded target context; logical-token equality alone insufficient | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Candidate activation/integration integrity claim | EXECUTION_EVIDENCE_REQUIREMENT | OWNER_DECISION |
+| Observed enforcement evidence | O §§8.3–8.5, 8.8 | Attributable evidence of relevant measure/stop, access/custody/containment and source controls before dependent action; historical state tests insufficient | RATIFIED_DOCUMENTARY_VALUE | NOT_VERIFIED | NOT_VERIFIED | Candidate runtime verification/integration as scoped | EXECUTION_EVIDENCE_REQUIREMENT | RUNTIME_TEST |
+| New control construction, if required | A1 §§3, 5, 9; O §§8.3–8.5, 8.8 | No infrastructure authorized; exact bounded scope/authority needed if no existing capability satisfies the action | RESERVED_FUTURE_REQUIREMENT; NOT_AUTHORIZED | NOT_IMPLEMENTED (by this mission) | NOT_VERIFIED | Only the action requiring that missing control | FUTURE_IMPLEMENTATION_REQUIREMENT | TECHNICAL_IMPLEMENTATION |
+
+No new mechanism, resource runner, deletion service, immutable storage, ACL, authenticator or containment infrastructure is built. Source has no numeric measurement/enforcement. Resource-state tests establish declaration-state behavior only; they do not validate 60 seconds, 5 CPU seconds, 128 MiB, 1 MiB or 64 KiB.
+
+The ratified bounds describe the future operation, not elapsed time of this documentary mission or a separately scoped historical/new test process. A later candidate verification authority must specify its relevant bounds rather than blindly using these integration timing claims. Existing measurement/stop evidence must identify memory semantics, process/thread aggregation, responsible actor, failure handling and available stop mechanism. If absent, the relevant runtime action is blocked; independent documentary preparation and independently authorized content-identity computation need only their own applicable controls.
+
+The future native evidence section is not created now. This Git documentary publication is governance persistence only. It neither performs future report release nor authorizes GitHub publication or external sharing of future runtime evidence. The named native destination is a ratified choice, not proof of its ACL, version deletion or availability. Complete historical purge is not asserted. A mandatory immutable deployed journal is not inferred from in-memory append-only value semantics; the actual guarantee is exact acknowledged record/content/context within the supplied/returned tuple, with no certified global completeness or durable storage.
+
+Owner values do not change because enforcement is unverified. Where real capability conflicts with a rule, record the exact limitation and request only the necessary new/changed disposition under future Owner authority; do not reopen unchanged ratified actors, token, retention duration, method or limits.
+
+
+### 14.7 Independent content/identity branches and exact derivation recipe
+
+All freezes/computations below are conditional future acts, not carried out or authorized by this preparation. Content transcription is not content freeze. UNRESOLVED is an actual enum declaration that can remain in a clearly described blocked configuration; it is not an unknown string to coerce. That fact supplies no freeze/computation authority.
+
+**Input content freeze recipe.** Pin §14.2A's exact 17 values, source/version references and all material documentary findings/dispositions to an exact content revision under an explicit applicable freeze authority. Resolve O §8.7's documentary findings/capability reservations for the intended frozen content. Record whether the frozen declaration remains blocked or evidence-backed clearance changes it; no automatic CLEAR. No output identity, root implementation or integration grant is a prerequisite for this independent input branch. Record attributable freeze evidence only after the act is authorized and performed.
+
+**Output content freeze recipe.** Independently pin §14.2B's exact 13 values, including every character of retention and incident text, exact recipient role and associated documentary actor tuple, findings/disclosure/quarantine disposition and relevant custody limitations. Obtain its own applicable freeze authority and evidence. Input freeze/identity or unrelated later grants are not prerequisites. A future permissive output cannot omit factual clearance/cumulative/quarantine prerequisites; they are not replaced by ratification.
+
+For both branches, O §8.7's requirement to fix all actual fields is preserved. The current mission explicitly separates independent manifest freezes/computations from the policy join: the policy's derived cells are fixed as derivation recipes during preparation and as actual identities only at the later policy freeze. This is not a claim that all 12 final policy values are already frozen or an exemption from the final policy freeze. If a literal “all policy identities before any manifest computation” interpretation is maintained, record that circular interpretation as a local clarification blocker rather than invent a digest or perform an unauthorized computation.
+
+**Derived computation package A.**
+- Reviewed reference H; source `a2_harness/harness.py`, blob 00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4; functions _canonical_digest, input_manifest_identity, output_manifest_identity, harness_policy_identity and the None branch of _fixture_contract_payload.
+- Required grant must name each authorized identity action and the actual chosen method. If it includes imports, dataclass construction, helper/runner creation, source execution or independent recomputation, those activities/files must be explicitly within that action's authority. A documentary tooling permission does not provide them. No helper or runner is created here.
+- Use frozen source-pinned content, not historical open candidate values. Record exact input/output content reference, freeze evidence, applicable computation authority, method/tooling/files/control evidence, resulting identity and attributable verification only when performed. Only authority-relevant controls apply; no unrelated output branch, root activation, integration grant or future journal is required for input computation, and conversely for output.
+- All fields in §14.2A enter the input payload; add the existing `manifest_kind: InputManifest` discriminator. All §14.2B fields enter output; add `manifest_kind: OutputManifest`. All §14.2C fields enter policy after actual manifest identities are inserted; add `contract_kind: HarnessPolicy`.
+- These are exactly the source payload keys, including discriminators which are not dataclass fields. No additional authority/action/log/resource/destination fields are invented in canonical JSON.
+- Input .value conversion applies to input_classification; the three visibility states; three permission states; efficacy_leakage_assessment; access_logging_requirement; quarantine_on_ambiguity; owner_approval_required. Sort exact_permitted_fields and exact_prohibited_fields as strings; sort permitted_reader_roles by enum .value. Other input strings are preserved exactly.
+- Output .value conversion applies to exportability, quarantine_status, cumulative_disclosure_risk, efficacy_leakage_assessment, release_approval_requirement. Sort permitted_recipients by enum .value. Preserve output_type, exact_metric_or_artifact, granularity, retention_rule, incident_if_unexpected_information_revealed and other strings exactly.
+- Policy: sort allowed/prohibited classification enum .value lists; sort `[[actor_id, role.value], ...]` recipient pairs by actor_id then role.value; retain duplicates exactly as the source canonicalization does. fixture_provenance_contract None maps through _fixture_contract_payload to JSON null. All eight expected identity/version/ID strings are preserved; two manifest identity fields are actual approved derived outputs, not recipe labels.
+- Canonical JSON: json.dumps(..., ensure_ascii=True, separators=(",", ":"), sort_keys=True), UTF-8 encoding, SHA-256, prefix `sha256:`. Match escaping, ordering and payload construction exactly. Do not deduplicate tuples, normalize whitespace/case, substitute enum names freely, remove discriminator keys or manually choose a hash.
+- Independent authorized verification checks source rule/payload coverage and exact resulting identity. It does not infer provenance truth or operational safety from a hash.
+
+**Policy completion/freeze/computation recipe.** Prepare all ten non-derived fields now; wait independently for both final manifest identities, insert each into its actual field, then complete/reconcile all 12 actual values against O and the precise intended configuration. Planned insertion of approved derived identities follows the reviewed recipe, not an arbitrary new selection. Document the two content/freeze/computation lineages. Under explicit applicable policy freeze authority, freeze the complete policy content only after the identities exist; under applicable policy identity computation authority, derive/verify its identity. Policy completion, freeze and computation remain separate statuses. A policy label, unrelated execution grant or an arbitrary sha256-looking string is not a policy digest.
+
+**Invalidation.** Any non-recipe canonical change stops affected computation/materialization: input change invalidates input identity, policy identity and root binding; output change invalidates output identity, policy identity and root binding; policy-only change invalidates policy identity/root binding. Actor-role recipient pair changes policy; retention/incident text, embedded destination or CLEAR/quarantine state changes output; relevant input state changes input. Record actual change, obtain applicable review/freeze/computation authority and update dependent bindings. External noncanonical rule changes require their own review/disposition but do not automatically alter a digest unless canonical text changes. Role/action authorization and journal context are separate and not automatically policy fields.
+
+| Branch/object | CONTENT_STATUS | IDENTITY_STATUS | Local blockers | Unrelated prerequisites not imposed |
+|---|---|---|---|---|
+| Input | RATIFIED_DECLARATIONS_TRANSCRIBED; NOT_FROZEN; leakage UNRESOLVED | NOT_COMPUTED; pending input freeze and computation authority | Applicable freeze/condition disposition and factual findings for intended final content; no computation grant/method/control evidence | Output completion/digest, Builder, root activation, integration authority, future journal |
+| Output | RATIFIED_DECLARATIONS_TRANSCRIBED; NOT_FROZEN; leakage/disclosure UNRESOLVED and quarantine BLOCKED_PENDING_OWNER_REVIEW | NOT_COMPUTED; pending output freeze and computation authority | Applicable freeze/condition disposition, exact disclosure/clearance/retention-capability findings; no computation grant/method/control evidence | Input completion/digest, Builder, root activation, integration authority, future journal |
+| Policy | NON_DERIVED_CONTENT_AND_JOIN_RECIPE_PREPARED; FINAL_CONTENT_INCOMPLETE; NOT_FROZEN | NOT_COMPUTED | Both actual manifest identities; final content reconciliation; own freeze/computation authority/method/control evidence | Future journal, candidate implementation/activation and integration execution grant for preparing the recipe |
+
+DIGEST_STATUS = ALL_THREE_NOT_COMPUTED_WITH_SEPARATE_FREEZE_AUTHORITY_AND_DEPENDENCY_BLOCKERS
+
+### 14.8 Early root design versus later binding/implementation/activation
+
+PRODUCTION_TRUSTED_ROOT = ABSENT_OR_NOT_AVAILABLE_FOR_A2  
+TRUSTED_ROOT_TRANSITION_REQUIRED = TRUE  
+FUTURE_ACTION_REQUIRES_SEPARATE_AUTHORIZATION = TRUE
+
+At H and O, both current root/authority constants are None and get_trusted_execution_policy_root returns None. A test-injected root is not this operation's execution authority. The design can be prepared before any digest exists.
+
+| TrustedExecutionPolicyRoot actual field | Final binding recipe |
+|---|---|
+| execution_policy_authority_sha | Exact future applicable Owner execution-policy authority for this operation; unresolved, not O/S8/A1/A/C |
+| expected_construction_authority_sha | 37e3b25f17a7c5d3b3bc8d37df730aa988585b6c |
+| expected_harness_identity | research/weather_forward/v4/a2_harness |
+| expected_harness_version_or_commit_identity | weather-v4-a2-doc-integration-v1 |
+| expected_policy_identity | Authorized final derived harness_policy_identity after policy freeze/computation/verification |
+
+No root object or populated final binding is materialized. Root design is complete as a recipe; final policy identity and exact execution authority remain unavailable. Materialization needs its own applicable authority, exact values and approved reconciliation, not placeholders.
+
+**Trusted-root package B.** Proposed future candidate is on a new branch `builder/weather-v4-a2-doc-integration-root-candidate` (documentary proposed branch label, not created), with proposed exact base O = 08fe3a1d9e0ab27c3e6cdf8fa717dd58ae2a334d, whose production blobs equal H. These proposed branch/base values must be explicitly adopted by the future scoped authority. If that grant selects another base, record its exact identity and reviewed-source equality without silent substitution. H remains the immutable reviewed-logic reference for the production diff. Allowed source file only: `research/weather_forward/v4/a2_harness/trusted_root.py`, two root/authority constants, appropriate annotations and resolver. Expected diff: change the current None-only authority constant to the exact applicable execution SHA, the root constant to the final five-field binding, adjust annotations to represent those resolved types, and make the resolver return that independently anchored source constant. No caller-controlled setter, environment/config override, permissive fallback, test-root promotion or arbitrary runtime caller-supplied root.
+
+No contract.py/harness.py/__init__.py change, class/action widening, operational endpoint/credential, fixtures, runner change, helper/test creation, resource control or storage infrastructure is implied by a root modification grant. If another need is real, record it with exact separate scope/authority; do not add it to this diff.
+
+Reconciliation package: future exact construction/implementation grant and allowed paths; exact base and parent; reviewed H logic blobs; unchanged other production sources; logical token in policy, AuthorityBinding and root; exact execution SHA; final policy and manifest identities; root tuple equality; actual changed-file list; independent review and authorized verification references; future candidate/transition commit recorded after construction. Never put the resulting source commit SHA into that source as a self-reference.
+
+**Version strategy.** Logical token weather-v4-a2-doc-integration-v1 is ratified and retained in policy, AuthorityBinding and root. H remains the reviewed logic reference. Record construction C, future execution grant, final policy identity, candidate branch/base/parent/commit, verified loaded-source evidence and eventual exact activation target separately. A token match is a comparison result, not evidence of loaded code integrity.
+
+Mismatch conditions: absent/unresolved root, execution/construction authority mismatch, component/version/policy mismatch, wrong manifest identity, actor/role/action/recipient tuple mismatch, unresolved permission, failed independence, blocked/unresolved leakage/disclosure/quarantine or failed acknowledged exact linkage must deny/block. Expected mismatch denial in authorized verification is correct; a mismatch that permits is a fail-closed control failure requiring mission/affected-execution STOP, not automatic repair.
+
+Candidate implementation, candidate verification/independent review, target activation and integration are four separate acts. A modification grant is not a test grant; verification may load a candidate only in its exact authorized isolated context, never infer production activation; activation requires explicit exact-target authority; activation is not integration permission. This package supplies design, not any of those acts.
+
+
+### 14.9 Conditional candidate verification and integration packages
+
+No package below grants its own implementation, verification, review, activation or execution. Package A is §14.7; package B is §14.8.
+
+#### 14.9C Candidate verification and independent review
+
+Required authority: exact action-scoped candidate verification activities, source loading/import/object construction/tests if used, isolated target context, allowed files/tooling and relevant resources/custody/STOP controls; separate attributable independent review. Astra must not be candidate Builder. Existing historical test authority and the bounded PASS do not authorize running tests on this transition.
+
+| Verification case | Intended gate and method requirement | Required evidence after authorized verification |
+|---|---|---|
+| Wrong execution authority | Keep real candidate root/policy/binding/manifests valid; change READ_INPUT or RELEASE_OUTPUT authorization.authority_sha to another exact SHA | Exact authority-mismatch denial; no earlier absent-root gate masking it |
+| Wrong construction authority | Keep legitimate root; change binding construction SHA while preserving otherwise valid context | Exact root construction mismatch denial; source constants independently reconciled to grant |
+| Wrong harness identity | Keep real root and otherwise valid content; mismatch binding component identity | Exact component/root mismatch denial |
+| Wrong logical version | Keep real root and valid policy; mismatch binding version | Exact version/root mismatch denial |
+| Wrong policy identity | Keep real root; use a well-formed modified policy identity/content while other fields are valid | Exact policy-root mismatch denial; final materialized root digest remains fixed |
+| Missing acknowledgement or record | Use otherwise eligible action; authorized malicious append dependency or finalizer-context cases only if grant allows them | DENY/BLOCKED; no acknowledged permission; exact failed gate, positive control |
+| Unresolved actor/action authorization | Valid earlier gates, correct target/context; unresolved/ambiguous actor or non-AUTHORIZED action | Exact actor/action/state denial, not masked by root or manifest mismatch |
+| Global BLOCKED precedence | Otherwise valid output/recipient/approver/context and ledger with exact-tuple CLEAR plus global BLOCKED | Denial despite local CLEAR; no release permission |
+| Record ID/content/context linkage | Positive acknowledged context, then one targeted duplicate/content/context mismatch; preserve unrelated prerequisites | Exact unique-record and full-content/context rejection and concordance of shared states |
+| Guarded positive input and output | Only within explicitly authorized verification scope, with exact source/declarations/permissions/disclosure evidence or authorized structural test dependencies | Correct typed states, exact True acknowledgement, unique content/context-exact records, independent controls and source evidence |
+
+A negative case must reach its intended gate; otherwise it cannot certify that gate. Record expected/actual reason/detail and positive controls, changes/mocks and their scope/restoration. Mocks may replace only authorized test dependencies, never the production check being evaluated. Structural test dependencies remain synthetic control objects, not research fixtures, permissive deployment roots or positive documentary CLEAR evidence.
+
+Existing bounded runners were reviewed through A's evidence: cache paths remain denied; network/subprocess/unrelated forbidden-file attempts remain fatal counters; hooks are in-process checks, not deployed isolation. Their repair flag covers contract.py only, reports source identities and does not authorize root changes. A root candidate cannot bypass those pinned source guards or rewrite the historical Gate-B runner. A root modification grant does not authorize new tests/runner. If candidate verification needs a dedicated test module/runner, new scoped files, imports, test objects or measurement/custody controls, identify and obtain exact applicable authority first; this mission creates none. No unrelated full D5/static audit is reopened absent relevant change.
+
+Independent review evidence must include the exact allowed diff, preserved H production blobs apart from trusted_root.py, final tuple and authority/version/policy reconciliation, actual candidate/base/parent/commit, scoped verification transcripts and source identities, limitation of counters/hooks, relevant control availability and no permission widening. Source integrity of what was loaded is separately evidenced in the verification context; token equality is insufficient. A passing candidate review does not activate it or authorize integration.
+
+#### 14.9D Precise future integration sequence — at most two evaluations, no retry
+
+Prerequisites before the first call: exact applicable integration/READ_INPUT authority and separate conditional RELEASE_OUTPUT authority; final frozen manifests/policy and verified derived identities; reconciled root and approved target activation; exact declarations; reviewed diagnostic disclosure scope and independent findings; incident context and distinct log record IDs fixed under the applicable operation grant; documentary disclosure-evidence disposition and evidence-backed ledger for any later release; available action-relevant external resource/stop/access/custody controls. No object, ledger, journal or record is constructed here. A grant does not demonstrate these controls.
+
+Future sequence only:
+1. evaluate_input_read once.
+2. Inspect first_result.decision, first_result.log_record and first_result.log.
+3. Verify every item of the following input proceed predicate and record context.
+4. Only if it holds and the independent release prerequisites also hold, evaluate_output_release at most once.
+5. Pass `log = first_result.log` to the second call.
+6. Inspect the second result and returned log; preserve only safe evidence under exact authorized custody. No retry or additional target.
+
+**INPUT_PROCEED_PREDICATE — all required.**
+- Expected LoggedActionResult structure; type(first_result.decision) is HarnessDecision.
+- decision.validation_state is ValidationState.VALID.
+- decision.permit_or_deny_state is PermitState.PERMIT.
+- decision.quarantine_state is QuarantineState.CLEAR.
+- decision.release_state is ReleaseState.BLOCKED.
+- decision.completion_state is CompletionState.COMPLETED.
+- decision.stop_reason is None.
+- detail_code is the approved fixed INPUT_READ_ELIGIBLE_LOGGED_AND_COMPLETED code.
+- first_result.log_acknowledged is exactly True.
+- log_record exists and is the exact expected LogRecord; exactly one record with its record_id exists in first_result.log.records; that record's full content equals the returned expected record.
+- Record permit_or_deny_state, quarantine_state and release_state equal the decision's corresponding shared fields.
+- Every record context field matches the approved input call context listed below.
+- All controls required for continuing are available and no applicable STOP condition exists.
+
+BLOCKED release is normal on successful input: it does not mean input denial or quarantine. A blanket “no BLOCKED anywhere” test is invalid.
+
+| Input LogRecord context field | Required exact expected value |
+|---|---|
+| record_id | Fixed future INPUT_LOG_RECORD_ID, resolved before execution; not assigned here |
+| construction_authority_identity | C |
+| execution_policy_authority_identity | Exact approved future execution-policy SHA |
+| authorization_authority_identity | Same applicable execution-policy SHA in the exact READ_INPUT authorization |
+| manifest_identity | Final authorized input_manifest_identity |
+| actor_id / actor_role | blue.weather-v4.a2.doc-integration.v1 / Role.EXECUTOR |
+| authorization_id | a2-doc-v1-read-input-blue |
+| attempted_action | Action.READ_INPUT |
+| target_kind / target_id | TargetKind.INPUT_MANIFEST / A2-DOC-IN-OWNER-A1-V1 |
+| incident_identifier | Exact incident context fixed under the future action authority; no fabricated incident |
+| cumulative_disclosure_state | None |
+| recipient_actor_id / recipient_role | None / None |
+
+INPUT_LOG_RECORD_ID != OUTPUT_LOG_RECORD_ID; each must be resolved, fixed before execution and unique within the supplied/returned log. No specific ID is invented as proof. The initial supplied log and incident context must be explicitly fixed; no global durable-journal uniqueness/completeness is certified. Decision and log are not full-object-equal: validate decision's seven fields separately and compare only the three shared state fields plus the log's full approved record content/context.
+
+If any input predicate or control fails: omit release; retain returned result and permitted safe evidence through authorized custody; end the sequence denied/blocked without retry. A mere expected denial during separately authorized verification is not a scope violation; permission on a mismatch is a control failure.
+
+Before release, independently establish required exact output/recipient/disclosure evidence and Astra authorization. Input success alone does not clear output leakage/quarantine/disclosure, authenticate Astra or authorize release. Current §14.2 declarations are blocked/unresolved and cannot supply a permissive path.
+
+The second call uses the exact output manifest, Owner RoleDeclaration, Astra release declaration and exact RELEASE_OUTPUT ActionAuthorization, evidence-supported CumulativeDisclosureLedger for output_id A2-DOC-OUT-STRUCTURAL-REPORT-V1 + project-owner.weather-v4.a2.doc-integration.v1 + Role.RESEARCH_VIEWER, first_result.log, distinct fixed OUTPUT_LOG_RECORD_ID and approved incident context. No empty/invented history is silently CLEAR; global BLOCKED precedes an exact-recipient CLEAR entry.
+
+**Output success predicate — all required.** Expected typed result/decision, ValidationState.VALID, PermitState.PERMIT, QuarantineState.CLEAR, ReleaseState.AUTHORIZED, CompletionState.COMPLETED, stop_reason None, detail_code OUTPUT_RELEASE_ELIGIBLE_LOGGED_AND_COMPLETED within approved scope, log_acknowledged exactly True. Verify unique second record ID/full content; shared-state concordance; exact output manifest_identity and target A2-DOC-OUT-STRUCTURAL-REPORT-V1 / TargetKind.OUTPUT_MANIFEST; construction/execution/authorization identities; Astra actor_id and Role.RELEASE_APPROVER; Action.RELEASE_OUTPUT; a2-doc-v1-release-output-astra; exact Owner recipient actor/Role.RESEARCH_VIEWER; expected cumulative disclosure state and incident context; preservation of the first exact record in the second returned log; all continuing controls and absence of STOP.
+
+The two success names are static deductions from H, not observed results or a substitute for the full proposed refusal/error disclosure scope. The harness has no automatic cross-call sequencing, policy digest or prior-read field in LogRecord, authenticated calling actor, actual read/report/export, numeric resources or durable custody. External sequencing, authenticated authority attribution, source integrity and custody are not credited to the APIs. No future execution-evidence section is written during this preparation.
+
+### 14.10 Action-scoped authorization register
+
+Each row is a distinct action. Preparation of a recipe is not its materialization. “Resolved” is always limited to the stated activities; absent downstream grants do not invalidate resolved documentary authority. Applicable controls are action-local. Multiple explicitly covered actions may share one exact future grant; no one-file/decision-per-action requirement is imposed.
+
+| ACTION | REQUIRED_AUTHORITY | AUTHORITY_RESOLVED | PREREQUISITES | CONTROL_AVAILABILITY | STATUS | DEPENDENT_ACTIONS_BLOCKED |
+|---|---|---|---|---|---|---|
+| DOCUMENTARY_CONFIGURATION | A1 §§3–4, 9–10; O §§7–11; current documentary persistence mission | YES, documentary only | Exact refs/schema/precedence | AVAILABLE_WITH_EXACT_EVIDENCE: governance text access | COMPLETE_TRANSCRIPTION_AND_RECIPES | None for independent documentary work; no technical grant inferred |
+| INPUT_CONTENT_FREEZE | Explicit applicable input freeze within O §8.7 reservations | NO explicit actionable freeze resolved | Exact final 17 values; findings/disposition for intended state; no unreviewed canonical change | Relevant documentary/freeze evidence pending; no runtime controls unnecessarily demanded | STAGE_BLOCKED; recipe complete | Input identity, policy finalization and dependent root bindings |
+| OUTPUT_CONTENT_FREEZE | Explicit applicable output freeze within O §8.7 reservations | NO explicit actionable freeze resolved | Exact final 13 values; leakage/disclosure/quarantine/custody disposition | Relevant findings/capabilities pending | STAGE_BLOCKED; recipe complete | Output identity, policy finalization and dependent root bindings |
+| INPUT_IDENTITY_COMPUTATION | Exact grant for input computation/verification and actual method/files | NO | Its input freeze/source rules/content; own permitted tooling and controls | NOT_VERIFIED for ungranted method | STAGE_BLOCKED independently | Input-derived policy cell, policy identity/root; not output preparation |
+| OUTPUT_IDENTITY_COMPUTATION | Exact grant for output computation/verification and actual method/files | NO | Its output freeze/source rules/content; own permitted tooling and controls | NOT_VERIFIED for ungranted method | STAGE_BLOCKED independently | Output-derived policy cell, policy identity/root; not input preparation |
+| POLICY_COMPLETION | A1/O for documentary recipe; exact applicable material-completion authority for actual values | YES for recipe only; material completion not resolved | Both final manifest identities; ten ratified non-derived fields, reconciliation | Documentary preparation available; final derived evidence absent | RECIPE_COMPLETE; FINAL_CONTENT_BLOCKED | Policy freeze/computation/root binding |
+| POLICY_CONTENT_FREEZE | Exact applicable policy freeze authority | NO | All 12 actual values, both identities, version/recipient/content reconciliation | Required freeze evidence pending | STAGE_BLOCKED | Policy identity/root binding |
+| POLICY_IDENTITY_COMPUTATION | Exact grant for policy computation/verification and chosen method/files | NO | Policy freeze; correct canonical source; own relevant controls | NOT_VERIFIED for ungranted method | STAGE_BLOCKED | Root final binding/candidate reconciliation |
+| TRUSTED_ROOT_DESIGN_PREPARATION | A1 specification/prerequisite scope; O §8.8; current mission | YES, design only | H schema and exact ratified non-derived tuple values | AVAILABLE_WITH_EXACT_EVIDENCE: text/source review | COMPLETE_DESIGN_AND_CONDITIONAL_DIFF | None for independent design; no implementation inferred |
+| TRUSTED_ROOT_BINDING_MATERIALIZATION | Exact applicable materialization authority, exact execution-policy grant, verified final identities | NO | Final policy identity; exact execution SHA; C/component/logical-version reconciliation | Values/authority evidence missing | STAGE_BLOCKED; full tuple recipe complete | Candidate source binding/verification/activation |
+| TRUSTED_ROOT_CANDIDATE_IMPLEMENTATION | New exact Builder grant, branch/base/allowed-file/activity scope | NO; historical C not reused as new grant | Materialized approved root tuple, reconciled source/base | No control implementation grant; implementation-specific evidence pending | STAGE_BLOCKED; package complete | Candidate verification/review and target transition |
+| TRUSTED_ROOT_CANDIDATE_VERIFICATION | Exact scoped verification/test/import/object/tool/file grant, independent review assignment | NO new technical verification grant | Actual candidate/commit/diff, final bindings, valid targeted cases/positive controls | Relevant resources/stop/custody/source controls NOT_VERIFIED | STAGE_BLOCKED; package complete | Activation/integration evidence |
+| TRUSTED_ROOT_ACTIVATION | Explicit authority for exact candidate and exact target context | NO | Candidate review/verification, loaded-source reconciliation, required controls | Target context/control evidence absent | STAGE_BLOCKED; NOT_ACTIVATED | Integration permissive operation |
+| INTEGRATION_EXECUTION | Exact operation execution grant and READ_INPUT/conditional RELEASE_OUTPUT authority | NO | Complete exact inputs/policy/root/actors; input predicate; independent output evidence; diagnostics/record IDs; target activation | External resource/access/custody/incident controls NOT_VERIFIED | STAGE_BLOCKED; sequence package complete; NOT_EXECUTED | No call, read/release journal or runtime evidence produced |
+| INDEPENDENT_DOCUMENTARY_EVIDENCE_REVIEW | A1 documentary scope and O §8.6's exact Astra assignment | YES for designated independent documentary actor; preparer is not that actor | This versioned evidence package, bounded history/unknowns, six unchanged criteria | Governance review possible; recipient-history completeness remains unknown | PENDING_ATTRIBUTABLE_INDEPENDENT_REVIEW; not simulated | Positive documentary CLEAR/freeze disposition and later release |
+
+No technical action became authorized by finishing this dossier. No global prohibition is inferred from absent future grants beyond their actual blocked actions. The present state's missing technical authorities are local blockers, not unresolved governing documentary authority.
+
+
+### 14.11 Dependency graph, exact blockers and completion state
+
+```mermaid
+flowchart TD
+  D["Documentary configuration and evidence"]
+  IF["Input freeze: own authority"]
+  OF["Output freeze: own authority"]
+  II["Input identity: own authority"]
+  OI["Output identity: own authority"]
+  PC["Policy completion: both identities"]
+  PF["Policy freeze: own authority"]
+  PI["Policy identity: own authority"]
+  RD["Root design preparation"]
+  RB["Root materialization: final policy and execution grant"]
+  RC["Root candidate: scoped Builder grant"]
+  RV["Candidate verification and independent review"]
+  RA["Exact target activation: own grant"]
+  IE["Integration: own grant and available controls"]
+  D --> IF --> II --> PC
+  D --> OF --> OI --> PC
+  PC --> PF --> PI --> RB
+  D --> RD --> RB
+  RB --> RC --> RV --> RA --> IE
+```
+
+Every technical node requires its own explicit applicable authority and relevant prerequisites/controls; arrows are data dependencies, not permission grants. An earlier completion never authorizes the next node. Root design and independent documentary evidence preparation continue despite blocked digest/runtime nodes. Integration's input predicate and separate release prerequisites are in §14.9D; successful input is not release permission.
+
+| Blocker class | Exact unresolved item | Locally blocked action / closure evidence |
+|---|---|---|
+| Documentary | Material recipient-disclosure coverage/history unknowns | Independent cumulative/CLEAR finding; attributable bounded Owner inventory with scope/references/unknowns and Astra assessment |
+| Documentary | Independent Astra findings on unchanged six criteria, finite diagnostics and exact cumulative tuple absent | Positive documentary CLEAR and related freeze disposition; actual independent attributed review, not preparer's signature |
+| Documentary | Criterion 8.6.3 and 8.7 interpretation if actual future values/journals are required before their authorized derivation | Affected documentary clearance/freeze only; explicit compatible documentary interpretation, no waiver/fabricated journal/digest |
+| Documentary/capability | Resource memory/measure/stop semantics, actual access/custody/deletion/incident/loaded-source capability dispositions absent | Only related execution/custody/activation action; attributable existing capability evidence or exact separately authorized changed disposition/implementation |
+| Technical authority | Input/output/policy freeze/computation method/action grants absent | Each independent branch's act; exact grant covering method/files plus its own freeze/content/control evidence |
+| Dependency | Input/output not frozen or computed | Actual policy completion and downstream final identity/binding; approved frozen content and attributable authorized derived values |
+| Dependency | Final policy not completed/frozen/computed | Root materialization; actual complete policy lineage and identity |
+| Dependency/authority | Exact execution-policy grant absent | Final root execution field and AUTHORIZED action declarations; applicable exact authority, not C/A1/A/O |
+| Technical authority | New root Builder candidate grant/file/base scope absent | Source modification only; precise future grant, tuple and reconciled source |
+| Technical authority/control | Candidate verification scope, test/runner/tool permission if needed, control availability and review evidence absent | Loading/tests/review-dependent activation; scoped authority and actual attributable verification/review/control evidence |
+| Technical authority/context | Exact target activation grant/context absent | Target activation, then integration permissive path; exact candidate/target authority and prerequisites |
+| Technical authority/control | Integration grant, final evidence-supported action declarations/ledger, fixed distinct record IDs, incident/log context and external controls absent | Either evaluation; exact action prerequisites and available controls; no retry or runtime fabrication |
+
+OPEN_OWNER_CHOICES do not include actors, actor combinations, logical version, exportability, numeric bounds, 30-day duration, custodian/destination, incident text or method already ratified. Remaining Owner decisions are action-scoped freeze/computation/materialization/Builder/verification/activation/integration grants as needed, exact future execution authority/target, disposition of actual unsupported/unavailable capabilities and any actual newly changed canonical content. Record IDs, initial supplied log and incident context must be fixed in the future authorized operation context; they are not proof supplied now. No unrelated fixture/economic decision is solicited.
+
+DOCUMENTARY_CONFIGURATION_STATUS = COMPLETE_RATIFIED_TRANSCRIPTION_WITH_EXPLICIT_UNRESOLVED_STATES  
+DOCUMENTARY_EVIDENCE_STATUS = COMPLETE_PREPARATORY_PACKAGE_WITH_ATTRIBUTED_PARTIAL_HISTORY_AND_LIMITATIONS  
+DOCUMENTARY_CLEAR_STATUS = NOT_ESTABLISHED  
+INPUT_CONTENT_STATUS = RATIFIED_DECLARATIONS_TRANSCRIBED_NOT_FROZEN  
+INPUT_IDENTITY_STATUS = NOT_COMPUTED_PENDING_OWN_FREEZE_AND_COMPUTATION_AUTHORITY  
+OUTPUT_CONTENT_STATUS = RATIFIED_DECLARATIONS_TRANSCRIBED_NOT_FROZEN  
+OUTPUT_IDENTITY_STATUS = NOT_COMPUTED_PENDING_OWN_FREEZE_AND_COMPUTATION_AUTHORITY  
+POLICY_CONTENT_STATUS = NON_DERIVED_FIELDS_AND_JOIN_RECIPE_COMPLETE_FINAL_IDENTITIES_PENDING_NOT_FROZEN  
+POLICY_IDENTITY_STATUS = NOT_COMPUTED_PENDING_JOIN_FREEZE_AND_AUTHORITY  
+ROOT_DESIGN_STATUS = COMPLETE_DOCUMENTARY_DESIGN  
+ROOT_BINDING_STATUS = RECIPE_COMPLETE_NOT_MATERIALIZED  
+ROOT_CANDIDATE_STATUS = NOT_IMPLEMENTED_STAGE_BLOCKED  
+ROOT_VERIFICATION_STATUS = NOT_PERFORMED_STAGE_BLOCKED  
+ROOT_ACTIVATION_STATUS = NOT_ACTIVATED_STAGE_BLOCKED  
+TECHNICAL_PACKAGE_STATUS = A_B_C_D_COMPLETE_CONDITIONAL_ONLY  
+INTEGRATION_EXECUTION_STATUS = NOT_PERFORMED_STAGE_BLOCKED
+
+Available documentary evidence: independently retrieved commit/parent/path/blob metadata; H schema and exact canonicalization text; unchanged ratification content; Owner-attributed approval records; complete declaration transcription; finite source-derived diagnostics; bounded inventory/unknowns; exact representation/guarantee limitations and dependency packages. Repository bytes/references are verified; recipient receipt and history coverage remain attributed/unknown. Source deductions are not executed facts. This mission has no independent replay, exhaustive correctness, new D5/static PASS or positive CLEAR claim.
+
+Execution evidence pending until its own authorized act: actual source/identity computation verification, actual candidate commit/diff and loaded-source evidence, actual candidate tests/control verification, attributable independent review, exact target activation evidence, actual read/release results, acknowledged journal records with full exact linkage/preservation, and externally evidenced control/custody behavior. A future journal is not required to complete this documentary recipe.
+
+### 14.12 Persistence, non-authorizations and terminal state
+
+Only this appended section of the existing dossier is changed. Historical §§1–13 and all ratified Owner artifacts remain untouched. No separate requirement/package files, runtime helper, test object or evidence section are created.
+
+GOVERNANCE_REPOSITORY_ACCESSED = YES  
+DOCUMENTARY_TOOLING_USED = GitHub governance metadata/text retrieval and publication; JavaScript text extraction/comparison/transcription only  
+HARNESS_IMPORTED = NO  
+HARNESS_EXECUTED = NO  
+TESTS_RUN = NO  
+BUILDER_USED = NO  
+FIXTURES_CREATED = NONE  
+FIXTURES_ACCESSED = NONE  
+REAL_DATA_ACCESSED = NONE  
+REAL_METADATA_ACCESSED = NONE  
+OPERATIONAL_ENDPOINTS_QUERIED = NONE  
+OPERATIONAL_CREDENTIALS_USED = NONE  
+INPUT_DIGEST_COMPUTED = FALSE  
+OUTPUT_DIGEST_COMPUTED = FALSE  
+POLICY_DIGEST_COMPUTED = FALSE  
+INPUT_CONTENT_FROZEN = FALSE  
+OUTPUT_CONTENT_FROZEN = FALSE  
+POLICY_CONTENT_FROZEN = FALSE  
+TRUSTED_ROOT_ACTIVATED = FALSE  
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE  
+BUILDER_AUTHORIZED = FALSE  
+A2_RESEARCH_FIXTURE_AUTHORIZED = FALSE  
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE  
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE  
+A2_EXECUTION_AUTHORIZED = FALSE  
+ECONOMIC_AUTHORITY = 0  
+CAPTURE_AUTHORIZATION = NONE  
+DATA_T0 = NOT_DECLARED  
+EXPERIMENT_T0 = NOT_DECLARED  
+REAL_CAPITAL_AUTHORIZED = FALSE  
+LIVE_TRADING_AUTHORIZED = FALSE  
+MISSION_HARD_STOP = FALSE  
+STAGE_BLOCKED = TRUE_FOR_IDENTIFIED_ACTIONS  
+FILES_CREATED = NONE  
+FILES_MODIFIED_OUTSIDE_SCOPE = NONE
+
+Governance retrieval/publication and text tooling are documentary acts, not harness execution or operational source collection. No manifest/policy hash, execution result, acknowledgement, independent approval or identity was manufactured. Root candidate/transition/activation and execution are unperformed, not merely claimed safe. No scope or required control violation was observed or attempted.
+
+Preparation completion does not depend on an unavailable future journal, digest, grant or positive finding when the exact missing evidence/dependency is recorded. The consolidated dossier includes ratified declarations/method, bounded evidence/unknowns, actual schema/control limits, independent derivation and root recipes, conditional verification/integration packages and action-local blockers. It therefore completes this documentary mission without enabling later actions.
+
+TERMINAL_STATE = CONSOLIDATED_PREPARATION_COMPLETE_WITH_DOCUMENTARY_AND_TECHNICAL_BLOCKERS  
+NEXT_SAFE_ACTION = OWNER_SUPPLIED_BOUNDED_DISCLOSURE_INVENTORY_AND_ATTRIBUTABLE_ASTRA_DOCUMENTARY_REVIEW_UNDER_EXISTING_A1_SCOPE_ONLY
