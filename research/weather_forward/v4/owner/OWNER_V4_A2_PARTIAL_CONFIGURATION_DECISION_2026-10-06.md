@@ -2,12 +2,13 @@
 ## Intégration documentaire uniquement, sans fixture
 
 Date de préparation : 2026-10-05  
-Date de ratification : 2026-10-06T00:04:40+02:00 — Europe/Paris  
+Date de ratification initiale (§2) : 2026-10-06T00:04:40+02:00 — Europe/Paris  
+Date de ratification complémentaire (§8) : 2026-10-06T08:12:30+02:00 — Europe/Paris  
 Autorité déclarante : PROJECT_OWNER — utilisateur de cette conversation  
 Statut du document : PARTIALLY_RATIFIED_WITH_BLOCKERS  
-Effet actuel : ratification documentaire limitée aux clauses déterminées de §2 ; aucune autorisation d'exécution.
+Effet actuel : ratification documentaire des clauses déterminées de §§2 et 8, sous leurs réserves ; aucune autorisation d'exécution.
 
-Cette décision enregistre le « Oui » d'Owner en réponse au projet exact présenté dans cette conversation. La ratification porte uniquement sur les clauses déterminées de §2, sous les réserves des §§1 et 3–6. Les sections 3 et 4 restent bloquantes. La portée ne comprend ni ratification finale de configuration ni permission technique ou d'exécution. L'approbation et son contexte sont consignés en §7.
+Cette décision enregistre la ratification initiale de §2 puis la ratification complémentaire de §8 dans cette conversation. Les approbations et leur portée sont consignées en §§7 et 9. Les réserves, preuves manquantes et prérequis techniques demeurent bloquants. Aucune ratification finale de configuration ni permission technique ou d'exécution n'est accordée.
 
 ## 1. Base exacte et portée
 
@@ -194,13 +195,13 @@ Les références aux propositions Blue servent à localiser les exigences et les
 
 ## 6. Effet d'autorité et états
 
-Cette décision enregistre la ratification partielle d'Owner. Les clauses déterminées de §2 sont approuvées sans modification des §§2.1–2.5 ; les réserves, blocages et limites des autres sections restent applicables. Elle n'attribue aucun acteur opérationnel ni permission par action et n'autorise aucun travail technique.
+Cette décision enregistre la ratification documentaire de §§2 et 8. Les valeurs et critères de §8 sont approuvés sous leurs réserves ; les conditions factuelles et techniques restent non établies. Elle n'authentifie aucun acteur opérationnel, n'accorde aucune permission par action et n'autorise aucun travail technique. Les déclarations non attribuées du dossier initial restent historiques ; les associations documentaires de §8 et le périmètre de §9 font foi après la ratification complémentaire.
 
 État effectif après ratification :
 ```text
 DRAFT_ACCEPTED_FOR_OWNER_DECISION = TRUE
 OWNER_CONFIGURATION_DECISION = PARTIALLY_RATIFIED_WITH_BLOCKERS
-RATIFIED_SCOPE = SECTION_2_ONLY_SUBJECT_TO_SECTIONS_1_AND_3_TO_6
+RATIFIED_SCOPE = SECTIONS_2_AND_8_DOCUMENTARY_ONLY_SUBJECT_TO_ALL_RECORDED_RESERVATIONS
 DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
 FINAL_CONFIGURATION_RATIFIED = FALSE
 CANONICAL_CONTENT_FULLY_FROZEN = FALSE
@@ -248,16 +249,16 @@ Publication documentaire :
 
 Prochaine action : résoudre les items bloquants de §3 dans le dossier existant, sous le périmètre documentaire A1, puis soumettre les décisions ou preuves nouvelles à Owner. Le calcul des identités, Builder, toute transition de root et toute exécution restent soumis à une autorité distincte non accordée ici. Aucune boucle générale Blue → Astra n'est déclenchée ; une revue indépendante ultérieure peut viser un changement technique ou une preuve nouvelle, sous autorité appropriée.
 
-## 8. Configuration renseignée proposée — 2026-10-06
+## 8. Configuration documentaire renseignée ratifiée — 2026-10-06
 
-STATUT_DE_CETTE_SECTION = PROPOSED_FOR_OWNER_RATIFICATION  
-SECTION_8_RATIFIED = FALSE  
+STATUT_DE_CETTE_SECTION = RATIFIED_DOCUMENTARY_CONFIGURATION_WITH_RESERVATIONS  
+SECTION_8_RATIFIED = TRUE  
 OWNER_CONFIGURATION_DECISION = PARTIALLY_RATIFIED_WITH_BLOCKERS  
 A2_EXECUTION_AUTHORIZED = FALSE  
 BUILDER_AUTHORIZED = FALSE  
 TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
 
-Cette section fournit des valeurs concrètes pour décision. Elle ne modifie pas les clauses déjà ratifiées de §2 et n'accorde aucun droit technique. Les plafonds sont des propositions choisies pour une seule opération structurelle minimale ; ils ne sont ni mesurés, ni dérivés d'un benchmark, ni actuellement imposés par le harnais.
+Cette section fournit les valeurs documentaires ratifiées par Owner, sous toutes les réserves qu'elle contient. Elle ne modifie pas le contenu des §§2.1–2.5 et n'accorde aucun droit technique. Les plafonds approuvés concernent une seule opération structurelle minimale future ; ils ne sont ni mesurés, ni dérivés d'un benchmark, ni actuellement imposés par le harnais. Les mentions « proposé » conservées dans les tableaux désignent les choix maintenant ratifiés documentairement ; les tokens ne constituent toujours pas des identités techniques authentifiées.
 
 ### 8.1 Acteurs et responsabilités
 
@@ -379,7 +380,7 @@ STOP si changement hors périmètre, autorité/digest/version discordant, racine
 ```text
 TRUSTED_ROOT_TRANSITION = REQUIRES_SEPARATE_TECHNICAL_AND_BUILDER_AUTHORIZATION
 DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
-SECTION_8_RATIFIED = FALSE
+SECTION_8_RATIFIED = TRUE
 A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
 A2_FIXTURE_TESTING_AUTHORIZED = FALSE
 A2_EXECUTION_AUTHORIZED = FALSE
@@ -391,4 +392,52 @@ DATA_T0 = NOT_DECLARED
 EXPERIMENT_T0 = NOT_DECLARED
 ```
 
-Prochaine action : Owner ratifie, ajuste ou refuse les valeurs proposées de §8 ; les preuves documentaires sont ensuite établies dans le scope autorisé. La ratification des valeurs seule ne produit pas CLEAR et ne débloque ni calculation, Builder, trusted root ni exécution.
+Prochaine action : établir les preuves documentaires selon §8.6 dans le périmètre autorisé et documenter les capacités ou limites des moyens externes. La ratification des valeurs seule ne produit pas CLEAR et ne débloque ni calcul des digests, Builder, trusted root ni exécution.
+
+## 9. Ratification complémentaire de la section 8
+
+Autorité déclarante : PROJECT_OWNER, utilisateur de cette conversation.  
+Message d'approbation : « Je ratifie ».  
+Date de soumission : 2026-10-06T08:12:30+02:00 — Europe/Paris.  
+Objet exact présenté : §8 publiée au commit `9c0edb58ece7568bb56a5b67bd03a2e7abd4f29a`, fichier `research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md`, blob `3fe5bb949fe9108aff0827595f4b72dbbc8bf5d4`.
+
+L'approbation suit la proposition explicite de ratifier §8 avec ses réserves et toutes les autorisations techniques et A2 maintenues à FALSE. Elle ratifie les associations documentaires d'acteurs et tokens, les permissions candidates sans grant, les plafonds, la destination, la rétention conditionnée aux capacités réelles, les responsabilités, la méthode et le format de preuve CLEAR/disclosure, la politique de recalcul et le plan de transition non exécuté.
+
+Aucun chiffre, token, critère ou périmètre technique de §§8.1–8.8 n'est changé par cette ratification. Les propositions deviennent des choix documentaires approuvés ; les faits restent à établir. La référence publiée de §8 rend ces règles externes identifiables exactement, sans inclure automatiquement chaque règle dans la canonicalisation du harnais.
+
+En particulier :
+- identité documentaire != identité technique authentifiée ;
+- READ_INPUT et RELEASE_OUTPUT restent UNRESOLVED ;
+- leakage input/output et disclosure restent UNRESOLVED ;
+- quarantine reste BLOCKED_PENDING_OWNER_REVIEW ;
+- aucune preuve d'ACL, de purge complète, de mesure/arrêt des ressources ou d'intégrité du code chargé n'est déclarée ;
+- la rétention de 30 jours conserve toutes ses réserves sur les capacités réelles et les versions historiques ;
+- la version cible est un token documentaire, pas un commit implémenté ;
+- la ratification de méthode ne vaut pas application ni conclusion CLEAR ;
+- le contenu canonique n'est pas complètement figé et aucun digest de manifest/policy n'est calculé.
+
+```text
+SECTION_8_RATIFIED = TRUE
+OWNER_CONFIGURATION_DECISION = PARTIALLY_RATIFIED_WITH_BLOCKERS
+DOCUMENTARY_VALUES_RATIFIED = TRUE
+FINAL_CONFIGURATION_RATIFIED = FALSE
+CANONICAL_CONTENT_FULLY_FROZEN = FALSE
+DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
+CLEAR = NOT_ESTABLISHED
+READ_INPUT_AUTHORIZATION_STATE = UNRESOLVED
+RELEASE_OUTPUT_AUTHORIZATION_STATE = UNRESOLVED
+A2_RESEARCH_FIXTURE_AUTHORIZED = FALSE
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+L'enregistrement reste documentaire, sans signature cryptographique ou grant opérationnel. La publication modifie uniquement le présent fichier Owner, sans merge ni modification de source. Aucun import/appel du harnais, test, fixture, calcul d'identité ou activation de root n'est effectué.
+
+NEXT_SAFE_ACTION = TARGETED_DOCUMENTARY_EVIDENCE_REVIEW_UNDER_EXISTING_A1_SCOPE_ONLY
