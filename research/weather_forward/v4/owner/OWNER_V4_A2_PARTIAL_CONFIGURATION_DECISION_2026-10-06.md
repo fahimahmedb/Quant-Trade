@@ -441,3 +441,123 @@ EXPERIMENT_T0 = NOT_DECLARED
 L'enregistrement reste documentaire, sans signature cryptographique ou grant opérationnel. La publication modifie uniquement le présent fichier Owner, sans merge ni modification de source. Aucun import/appel du harnais, test, fixture, calcul d'identité ou activation de root n'est effectué.
 
 NEXT_SAFE_ACTION = TARGETED_DOCUMENTARY_EVIDENCE_REVIEW_UNDER_EXISTING_A1_SCOPE_ONLY
+
+## 10. Attestation documentaire ciblée — preuves de §8.6
+
+Date : 2026-10-06.  
+MISSION = DOCUMENTARY_EVIDENCE_PREPARATION_ONLY.  
+SNAPSHOT = 6bba1e2fc4b44d817726187d8aa62182efe1ec3c.  
+Émetteur : assistant ayant participé à la préparation de la configuration.  
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_ATTESTATION.
+
+Cette attestation prépare les preuves et évalue leur complétude. Elle n'est pas une signature Astra ni un nouveau PASS indépendant. Elle ne modifie aucune clause ratifiée. Les accès sont limités aux lectures/publications de gouvernance ; aucun accès opérationnel, fixture ou payload.
+
+### 10.1 Sources vérifiées
+
+Tous les chemins sont relatifs à research/weather_forward/v4/.
+
+| Source | Commit exact | Chemin et section | Blob retourné par Git |
+|---|---|---|---|
+| Décision ratifiée | `6bba1e2fc4b44d817726187d8aa62182efe1ec3c` | `owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md`, §§2, 8–9 | `0d018b7527ea6957bdf2e3395810ef5ac0c1777a` |
+| Déclarations de manifests/policy | `92088b83dd47799c6d413bb747138c05fdb0e420` | `blue/BLUE_V4_A1_DOCUMENTATION_2026-10-04.md`, §§13.4–13.8 | `44eff971f29b50f2d514b0e02917ad7cff9bb3f7` |
+| Autorité/provenance A1 | `728cf23e7d69a373306f3c1a3fb5d11240210cda` | `owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md`, §§3–5 et 9–10 | `483907e4f719ec8bcb3851af0f184690cea96279` |
+| Interfaces et motifs | `78d537de681363ed83a6c7787aba4319f3c73c4d` | `a2_harness/harness.py`, _assess_input_read, _assess_output_release, _complete_with_required_log | `00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4` |
+
+Les blobs sont des identités retournées par le dépôt, pas des digests calculés pendant cette mission. La source des interfaces a été lue comme texte ; aucun import, appel ou test. Aucun audit D5 clos n'est relancé.
+
+### 10.2 Matrice des critères ratifiés
+
+| Critère de §8.6 | Preuve examinée | Constat | Limitation / preuve absente |
+|---|---|---|---|
+| 1 — input/provenance | Owner §2.2 ; Blue §13.4 ; A1 exact | Exactement quatre champs permis : document_commit_sha, document_path, document_blob_sha, authorized_documentary_scope_reference. Le commit, chemin et blob A1 référencés sont résolus | Vérification de la spécification uniquement ; aucune instance créée ou inspectée |
+| 2 — output/motifs | Owner §2.3 ; Blue §13.5 ; interfaces exactes | Quinze éléments structurels ; observations, performance économique, préférences et textes libres exclus. Deux motifs de succès identifiés textuellement ci-dessous | Aucun résultat/rapport réel ; inventaire complet des diagnostics de refus/erreur divulgables absent |
+| 3 — liaisons | Owner §§8.1–8.2 et 8.7–8.8 ; Blue §§13.6–13.7 | Les acteurs documentaires, rôles/actions, IDs de manifests et version cible sont explicites ; approbateur distinct du destinataire | Identités dérivées non calculées ; autorité d'exécution absente ; autorisations UNRESOLVED ; IDs de journal non fixés ; configuration finale non figée ; identité technique non authentifiée |
+| 4 — inventaire des expositions | Méthode Owner §8.6 ; sources de §10.1 | Les références utilisées pour cette attestation sont exactes | Aucun inventaire fourni par le destinataire ni preuve de couverture des expositions pertinentes. Une source consultée n'est pas une preuve de disclosure à Owner |
+| 5 — cumul pour tuple exact | Owner §§8.1 et 8.6–8.7 | Tuple univoque reproduit ci-dessous ; aucun destinataire déduit du seul rôle | Historique pertinent absent ; évaluation cumulative Astra et justification CLEAR non fournies ; aucun ledger créé ou appelé |
+| 6 — conclusion/provenance/limites | Présente matrice et sources | Constats et inconnues séparés ; aucune ratification substituée à la preuve | Signature/revue documentaire Astra non produite par le préparateur. Le précédent PASS technique ne porte pas sur cette nouvelle évaluation |
+
+### 10.3 Portée du constat et motifs
+
+L'entrée déclarée n'admet que les quatre références de gouvernance de §2.2 ; les 20 champs interdits restent exclus. Les noms de catégories interdites, tels que PnL ou cadence, ne sont pas des valeurs opérationnelles admises.
+
+Constat étayé : **aucun contenu opérationnel n'est admis par la spécification examinée**. Cela ne certifie ni l'absence de données dans un futur objet ni l'enforcement du contenu. Aucune ouverture de payload n'est nécessaire ou autorisée pour ce constat documentaire.
+
+La sortie déclarée reste limitée aux quinze éléments de §2.3. Le harnais ne produit pas ce rapport, ne sanitise pas un payload et ne réalise pas un export. Les contraintes de visibilité et de transport restent externes.
+
+La source porte les deux motifs de succès avant logging :
+- INPUT_READ_ELIGIBLE_PENDING_REQUIRED_LOG ;
+- OUTPUT_RELEASE_ELIGIBLE_PENDING_REQUIRED_LOG.
+
+La finalisation remplace textuellement PENDING_REQUIRED_LOG par LOGGED_AND_COMPLETED. Les motifs finaux attendus sont donc, par **déduction statique non exécutée** :
+- INPUT_READ_ELIGIBLE_LOGGED_AND_COMPLETED ;
+- OUTPUT_RELEASE_ELIGIBLE_LOGGED_AND_COMPLETED.
+
+Ces codes décrivent un résultat structurel, sans mesure économique ou opérationnelle. Cette liste n'est pas une allowlist exhaustive ratifiée : les diagnostics de refus/erreur non recensés ne sont pas déclarés sûrs à divulguer. Leur inventaire ciblé reste à compléter à partir de la source autorisée, sans exécution.
+
+### 10.4 Disclosure cumulative
+
+```text
+output_id = A2-DOC-OUT-STRUCTURAL-REPORT-V1
+recipient_actor_id = project-owner.weather-v4.a2.doc-integration.v1
+recipient_role = RESEARCH_VIEWER
+```
+
+Le tuple correspond à la configuration ratifiée. Il ne prouve aucune réception, exposition passée, authentification ou release.
+
+Il manque un inventaire borné des informations pertinentes déjà reçues par ce destinataire, les sources/couverture de cet inventaire, ses inconnues matérielles et l'appréciation du cumul ancien + proposé par l'évaluateur désigné. Les seules références de §10.1 ne constituent pas un historique d'exposition.
+
+Une histoire vide, non fournie ou non couverte reste UNRESOLVED. Aucune absence d'exposition ou absence de BLOCKED global n'est inférée. Tout BLOCKED global constaté ultérieurement conserve sa priorité.
+
+### 10.5 Inconnues et résolution minimale
+
+| Inconnue | Effet | Résolution documentaire minimale |
+|---|---|---|
+| Expositions pertinentes d'Owner | Empêche la preuve des critères 4–5 | Inventaire borné fourni/attesté par Owner, références, couverture et inconnues |
+| Évaluation indépendante désignée | Critère 6 non complet | Revue documentaire ciblée d'Astra sur ces preuves, sans fixtures, digests ni runtime |
+| Motifs de refus/erreur divulgables | Critère 2 partiellement étayé | Liste finie issue de la source et appréciation documentaire des motifs |
+| Bindings finaux et journal | Critère 3 partiellement documenté | Distinguer contenu/références documentaires, valeurs dérivées non calculées, futurs grants et preuves d'exécution ; aucun placeholder soumis à une API |
+| ACL, purge, mesure/arrêt, identité chargée | Prérequis externes non vérifiés | Références à des capacités déjà attestées ; sinon blocage et éventuelle autorité technique distincte |
+
+Si le critère 3 est interprété comme exigeant des digests ou permissions effectives pour obtenir une conclusion documentaire avant leur calcul/activation, il crée une dépendance incompatible avec le scope courant. Cette interprétation doit être clarifiée documentairement ; cette attestation ne modifie ni ne dispense le critère. Aucun calcul ou grant opérationnel n'est demandé pour combler artificiellement une preuve documentaire.
+
+Ces actions restent ciblées : aucune nouvelle matrice générale, reprise A1 ou recheck D5. Les moyens externes ne sont pas construits ou certifiés ici.
+
+### 10.6 Conclusion
+
+Les frontières de la spécification input/output sont étayées. Les preuves exigées ne sont pas complètes, principalement pour le cumul, les bindings finaux et la revue indépendante. La conclusion CLEAR ne peut pas être établie.
+
+```text
+ATTESTATION_RESULT = CLEAR_NOT_ESTABLISHED
+CLEAR_DOCUMENTARY_BASIS_ESTABLISHED = FALSE
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_ATTESTATION
+INPUT_SPECIFICATION_SCOPE = DOCUMENTARY_ONLY_SUPPORTED_BY_REVIEWED_TEXT
+OUTPUT_SPECIFICATION_SCOPE = STRUCTURAL_ONLY_SUPPORTED_BY_REVIEWED_TEXT
+INPUT_LEAKAGE_ASSESSMENT = UNRESOLVED
+OUTPUT_LEAKAGE_ASSESSMENT = UNRESOLVED
+CUMULATIVE_DISCLOSURE = UNRESOLVED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+SECTION_8_RATIFIED = TRUE
+DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
+HARNESS_IMPORTED = NO
+HARNESS_CALLS = NONE
+TESTS_RUN = NO
+MANIFEST_POLICY_DIGESTS_COMPUTED = NO
+FIXTURES_CREATED = NONE
+FIXTURES_ACCESSED = NONE
+REAL_DATA_ACCESSED = NONE
+REAL_OPERATIONAL_METADATA_ACCESSED = NONE
+OPERATIONAL_ENDPOINTS_QUERIED = NONE
+OPERATIONAL_CREDENTIALS_USED = NONE
+RUNTIME_CODE_MODIFIED = NO
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+BUILDER_AUTHORIZED = FALSE
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+NEXT_SAFE_ACTION = PREPARE_BOUNDED_OWNER_DISCLOSURE_INVENTORY_AND_TARGETED_DOCUMENTARY_REVIEW_ONLY
