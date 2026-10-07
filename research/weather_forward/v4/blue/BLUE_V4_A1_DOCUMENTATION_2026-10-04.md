@@ -1636,3 +1636,57 @@ LIVE_TRADING_AUTHORIZED = FALSE
 Seul ce §14.14 est ajouté au dossier Blue existant sur la branche blue/weather-v4-a2-consolidated-preparation-2026-10-06, parent attendu 5f129ec1657ce07cc6ae126747560d462cce5220. Aucun merge, changement de source, autre fichier ou reclassification du registre d'exposition. Le commit et le blob de publication sont enregistrés après création, sans identité auto-référentielle inventée.
 
 NEXT_SAFE_ACTION = ATTRIBUTABLE_ASTRA_TARGETED_DOCUMENTARY_REVIEW_OF_SECTIONS_14_1_TO_14_14_UNDER_EXISTING_A1_SCOPE
+
+### 14.15 Référence à la désignation Owner du moyen de contrôle des ressources — 2026-10-07
+
+Addition préparée par l'assistant documentaire d'Owner, à la demande expresse d'Owner. Ni Blue exécutant, ni Astra, ni Builder. Base exacte : 77766db60eaca40f0cd9b1531cb65df3e080f2e5, blob c764f3999c6734ecd51822f7cd22eb011a76872c. Tout le contenu précédent reste conservé.
+
+Référence gouvernante : fichier Owner `research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md`, branche `owner/weather-v4-a2-partial-configuration-decision-2026-10-06`, commit `3ed9607add11618862043e707c687053d208dff6`, blob `3c67f6b3b33ab76d1ebd1ecf3b11c1591023f751`, §12. Son parent unique est O = `08fe3a1d9e0ab27c3e6cdf8fa717dd58ae2a334d` ; les §§1–11 y sont inchangés. Le §12 n'est pas reproduit ici.
+
+Effet sur ce dossier, limité aux lignes de contrôle des ressources de §§14.3 et 14.6 (durée, CPU/processus, mémoire, stockage, volume de sortie, appels réseau) et aux blocages correspondants de §14.11 :
+
+| Élément | Avant | Après Owner §12 |
+|---|---|---|
+| Moyen de mesure et d'arrêt | Non identifié | Désigné : VM Oracle Cloud existante d'Owner, unité transitoire systemd externe au harnais, utilisateur dédié sans privilège |
+| Responsable | Non résolu | PROJECT_OWNER, opérateur de l'hôte |
+| Sémantique mémoire | Non résolue | Mémoire réelle du cgroup de l'unité, pic mesuré, sans swap |
+| CONTROL_IMPLEMENTED | NOT_VERIFIED | NOT_VERIFIED (inchangé) |
+| CONTROL_VERIFIED | NOT_VERIFIED | NOT_VERIFIED (inchangé) |
+
+La ligne « Numeric resource measurement and stopping » de §14.3 se lit désormais : moyen, responsable et sémantique désignés documentairement par Owner §12 ; mise en œuvre et vérification non établies. Le blocage de §14.11 sur la sémantique mémoire, la mesure et l'arrêt est réduit à la vérification des capacités désignées. Les autres capacités de cette ligne de §14.11 (accès, custody, suppression, incident, identité du code chargé) restent inchangées. Owner §12.5 propose un moyen candidat pour l'identité du code chargé, sans affirmation d'intégrité.
+
+Owner §12.3 enregistre aussi qu'Owner déclare sans objet la restriction antérieure « hôte de qualification P0, non utilisé pour Weather ». Ce dossier ne modifie ni les documents historiques qui la portent ni le statut général de P0.
+
+Aucune valeur de §8.3 n'est modifiée. Les points ouverts d'Owner §12.5 restent ouverts, notamment la visibilité de l'opérateur, qui est aussi l'unique destinataire. La vérification des contrôles est un acte technique distinct, soumis à autorisation Owner explicite (plan Owner §12.6, non autorisé).
+
+Revue Astra : son périmètre reste celui de §14.14.7, soit §§14.1–14.14 au commit 77766db60eaca40f0cd9b1531cb65df3e080f2e5. Le présent §14.15 n'en fait pas partie et la revue n'en dépend pas.
+
+```text
+RESOURCE_CONTROL_MEANS_DESIGNATED = TRUE_BY_OWNER_SECTION_12
+RESOURCE_CONTROL_RESPONSIBLE = PROJECT_OWNER
+MEMORY_SEMANTICS = CGROUP_UNIT_REAL_MEMORY_PEAK_NO_SWAP
+CONTROL_IMPLEMENTED = NOT_VERIFIED
+CONTROL_VERIFIED = NOT_VERIFIED
+CONTROL_VERIFICATION_AUTHORIZED = FALSE
+HOST_ACCESSED = NO
+ASTRA_REVIEW_SCOPE = SECTIONS_14_1_TO_14_14_AT_77766db_UNCHANGED
+CLEAR = NOT_ESTABLISHED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+INPUT_DIGEST_COMPUTED = FALSE
+OUTPUT_DIGEST_COMPUTED = FALSE
+POLICY_DIGEST_COMPUTED = FALSE
+HARNESS_IMPORTED = NO
+HARNESS_EXECUTED = NO
+TESTS_RUN = NO
+FIXTURES_CREATED = NONE
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+Seul ce §14.15 est ajouté au dossier Blue, parent attendu 77766db60eaca40f0cd9b1531cb65df3e080f2e5. Aucun merge, autre fichier, changement de source, accès à l'hôte ou calcul.
+
+NEXT_SAFE_ACTION = ASTRA_TARGETED_DOCUMENTARY_REVIEW_OF_SECTIONS_14_1_TO_14_14_AND_LATER_OWNER_AUTHORIZED_CONTROL_VERIFICATION
