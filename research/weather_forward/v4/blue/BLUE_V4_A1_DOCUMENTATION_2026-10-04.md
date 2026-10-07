@@ -1321,3 +1321,132 @@ Preparation completion does not depend on an unavailable future journal, digest,
 
 TERMINAL_STATE = CONSOLIDATED_PREPARATION_COMPLETE_WITH_DOCUMENTARY_AND_TECHNICAL_BLOCKERS  
 NEXT_SAFE_ACTION = OWNER_SUPPLIED_BOUNDED_DISCLOSURE_INVENTORY_AND_ATTRIBUTABLE_ASTRA_DOCUMENTARY_REVIEW_UNDER_EXISTING_A1_SCOPE_ONLY
+
+
+### 14.13 Complément borné de l'inventaire de disclosure — 2026-10-07
+
+Cette addition complète uniquement §14.4. Elle est préparée par l'orchestrateur documentaire, sans se substituer à Astra. Elle conserve les déclarations canoniques, la méthode Owner §8.6 et toutes les sections précédentes. La directive Owner reproduite ci-dessous précise la couverture de l'inventaire ; elle ne ratifie pas un résultat CLEAR et n'accorde aucune autorité technique.
+
+#### 14.13.1 Directive Owner et périmètre
+
+Source : message PROJECT_OWNER explicitement fourni dans cette conversation, soumis le 2026-10-07T02:29:47+02:00, Europe/Paris. Attribution documentaire conversationnelle ; aucune signature cryptographique ni identité de processus n'est établie. Le message n'est pas présenté comme un commit préexistant.
+
+Owner déclare : « Je ne peux pas fournir un inventaire exhaustif et vérifiable de tout ce que le destinataire a éventuellement lu dans d’autres conversations ou contextes qui ne sont pas représentés dans le dépôt. »
+
+Les états expressément demandés sont conservés :
+
+```text
+HISTORIQUE = PARTIEL
+COUVERTURE = INCONNUE
+DISCLOSURE_STATUS = UNRESOLVED
+```
+
+Périmètre vérifiable demandé :
+
+- documents et artefacts présents dans le dépôt, limités ici aux références de gouvernance pertinentes déjà identifiées ;
+- références et décisions Owner publiées ;
+- échanges explicitement fournis dans le contexte autorisé ;
+- inventaire documentaire déjà établi pour le destinataire exact.
+
+L'absence d'une disclosure dans le dépôt n'établit pas son absence. Un fichier résolu, un lien publié ou une consultation par l'agent ne prouve pas sa lecture par Owner. Le contexte fourni permet d'attribuer une présentation ou une déclaration dans cet échange, sans certifier une réception authentifiée, une lecture intégrale ou l'exhaustivité d'autres contextes. La déclaration Owner est une preuve attribuée de la limite de couverture, pas une preuve d'absence d'exposition.
+
+Tuple inchangé :
+
+```text
+output_id = A2-DOC-OUT-STRUCTURAL-REPORT-V1
+recipient_actor_id = project-owner.weather-v4.a2.doc-integration.v1
+recipient_role = Role.RESEARCH_VIEWER
+```
+
+#### 14.13.2 Références exactes vérifiées pour ce complément
+
+Dépôt : fahimahmedb/Quant-Trade. Les blobs ci-dessous sont retournés par GitHub ; aucun digest de manifest ou policy n'est calculé.
+
+| Référence | Commit exact | Chemin exact | Blob retourné |
+|---|---|---|---|
+| Autorité A1 | 728cf23e7d69a373306f3c1a3fb5d11240210cda | research/weather_forward/v4/owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md | 483907e4f719ec8bcb3851af0f184690cea96279 |
+| Décision partielle initiale publiée | 11b81f0f5de444b43b8f12babb07636ef9fca213 | research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | ed54c7e1f206167a9dcf3b62e2e25ccabda7e96b |
+| Proposition §8 présentée | 9c0edb58ece7568bb56a5b67bd03a2e7abd4f29a | research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | 3fe5bb949fe9108aff0827595f4b72dbbc8bf5d4 |
+| Ratification §8 | 6bba1e2fc4b44d817726187d8aa62182efe1ec3c | research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | 0d018b7527ea6957bdf2e3395810ef5ac0c1777a |
+| Attestation négative présentée | 7ea1aecc7d47b9ceadfc64b3190646c689c9d4fc | research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | eb0f51b7d5c397a018aa858d88e45a9c848d6745 |
+| Snapshot Owner gouvernant | 08fe3a1d9e0ab27c3e6cdf8fa717dd58ae2a334d | research/weather_forward/v4/owner/OWNER_V4_A2_PARTIAL_CONFIGURATION_DECISION_2026-10-06.md | 8530a0d344f6dd18993cce5b4f48c887b20dada8 |
+| Draft Blue antérieur | 92088b83dd47799c6d413bb747138c05fdb0e420 | research/weather_forward/v4/blue/BLUE_V4_A1_DOCUMENTATION_2026-10-04.md | 44eff971f29b50f2d514b0e02917ad7cff9bb3f7 |
+| Préparation consolidée Blue | 8ee801a3c8d7f5dc56601ed17f23d1ce8303f6fe | research/weather_forward/v4/blue/BLUE_V4_A1_DOCUMENTATION_2026-10-04.md | f262d35a7913206cf87bab257292970fcefd0b6b |
+| Evidence PASS Astra historique | 31215914a7e11daa20ca0189d859bb69827a055c | research/weather_forward/v4/audit/ASTRA_V4_A2_D5_TYPE_REPAIR_RUNTIME_EVIDENCE_AUDIT_2026-10-05.md | 0deae36fba1962fe9249cffbe787f0680b5abfd8 |
+
+A1 est ancêtre du snapshot Owner gouvernant ; la ratification §8 est son ancêtre à deux commits. La préparation Blue a pour parent unique ce snapshot Owner. La branche documentaire résolue avant préparation est blue/weather-v4-a2-consolidated-preparation-2026-10-06, HEAD 8ee801a3c8d7f5dc56601ed17f23d1ce8303f6fe. Ces constats portent sur des références de gouvernance, sans nouvelle recherche de payload, source opérationnelle ou métadonnée réelle.
+
+#### 14.13.3 Inventaire complété : présentation, déclaration et simple référence distinguées
+
+| Élément | Informations couvertes | Preuve vérifiable / attribution | Limite de réception et de couverture |
+|---|---|---|---|
+| Autorité A1 | Périmètre documentaire et exclusions | Artefact A1 exact résolu ; attribution PROJECT_OWNER | L'existence de l'autorité n'établit pas la lecture intégrale de son texte par le destinataire |
+| Décision partielle initiale | Configuration documentaire et réserves | Snapshot Owner §7 : présentation et approbation « Oui » enregistrée au 2026-10-06T00:04:40+02:00 | Attribution de l'approbation dans son périmètre ; aucun constat que tous les documents liés ont été lus |
+| Configuration §8 | Acteurs, déclarations d'actions, limites, destination, rétention, incident, méthode et version logique | Proposition §8 et ratification §9 résolues ; approbation enregistrée au 2026-10-06T08:12:30+02:00 | Ratification documentaire attribuée ; absence de preuve de réception authentifiée de chaque source ou annexe |
+| Attestation négative | CLEAR non établi et preuves manquantes | Proposition §10 et acceptation §11 résolues ; approbation enregistrée au 2026-10-06T08:22:15+02:00 | Acceptation d'un constat négatif ; aucun résultat CLEAR ni signature indépendante Astra |
+| Prompts et corrections de préparation | Séparation des autorités, schémas, dépendances, evidence et contrôles | Textes explicitement fournis dans le contexte autorisé | Présentation contextuelle attribuée ; aucune couverture d'autres conversations ou fichiers déduite |
+| Retour Blue consolidé | Statuts préparatoires, acteurs, bindings, limites et blocages | Retour commençant par MISSION_CLASS: CONSOLIDATED_ONE_PASS_PREPARATION_DOCUMENTARY_ONLY, explicitement fourni par Owner dans cet échange ; dossier exact 8ee801a3c8d7f5dc56601ed17f23d1ce8303f6fe résolu | Résumé fourni vérifiable dans le contexte ; la lecture intégrale de §§14.1–14.12 n'est pas attestée |
+| Échanges de clarification actuels | Inventaire prérempli, distinction document cité / document lu, couverture partielle et poursuite de la revue | Échanges explicitement fournis précédant la directive de §14.13.1 | Leur présence contextuelle n'établit pas l'exhaustivité d'une histoire personnelle ou externe |
+| Directive Owner actuelle | HISTORIQUE PARTIEL, COUVERTURE INCONNUE, disclosure UNRESOLVED, périmètre permis et blocage local | Message exact attribué en §14.13.1 | Owner ne déclare ni absence d'autres disclosures ni couverture exhaustive |
+| Référence PASS Astra historique | Evidence bornée et limites de son autorité | Artefact d'audit exact résolu ; référence présente dans Owner et le retour Blue | La référence présentée ne prouve pas la réception de tous les transcripts ; aucune nouvelle revue ou répétition de tests |
+| Références techniques du registre §14.1 | Source de la préparation et des diagnostics de §14.5 | Références documentées dans le dossier existant | Ni la référence ni leur consultation antérieure par un agent ne prouvent leur lecture par Owner |
+| Lectures de gouvernance réalisées pour ce complément | Identités, textes et constats de référence ci-dessus | Retours du connecteur de gouvernance, utilisés par le préparateur | Ces consultations sont des preuves de référence pour l'agent ; elles ne sont pas ajoutées comme disclosures reçues par Owner |
+
+Aucune liste de fichiers du dépôt n'est transformée en historique de receipt. Les contenus opérationnels, rapports effectifs, payloads, valeurs économiques, sources et observations ne sont ni recherchés ni examinés. Le périmètre actuel n'inclut pas une exploration d'autres conversations ou comptes non fournis.
+
+#### 14.13.4 Inconnues susceptibles d'affecter le cumul
+
+| Inconnue conservée | Effet possible sur l'évaluation | Traitement dans le périmètre actuel |
+|---|---|---|
+| Autres informations reçues hors du contexte fourni | Leur combinaison avec les statuts ou diagnostics proposés peut changer l'appréciation cumulative | Présence et contenu inconnus ; aucune absence déduite du dépôt ; revue Astra explicite de la matérialité |
+| Corps complets, annexes ou transcripts effectivement lus | Le contenu connu du destinataire peut dépasser les résumés et références documentés | Ne pas assimiler citation, approbation ou consultation d'agent à lecture intégrale |
+| Ordre, répétition et combinaison des expositions pertinentes | Peuvent modifier le risque cumulatif même si chaque élément isolé est structurel | Seules les dates de décisions attribuées sont connues ; aucun historique opérationnel ou mesure de cadence recherché |
+| Disclosures indirectes ou autres constats globaux BLOCKED | Un état global pertinent BLOCKED doit prévaloir sur une appréciation locale | Couverture inconnue ; aucun ledger vide, global CLEAR ou absence de BLOCKED déclaré |
+| Attribution technique du destinataire | Le token documentaire ne certifie pas la personne ou le processus recevant une future sortie | Attribution conversationnelle conservée ; authentification reste un contrôle externe non vérifié |
+| Périmètre futur exact des diagnostics et des nouvelles informations | Un changement matériel peut demander une nouvelle appréciation du cumul | Proposition finie de §14.5 inchangée ; approbation indépendante et résultat effectif non simulés |
+
+Le dossier ne qualifie pas lui-même ces inconnues de non matérielles. Astra doit motiver leur matérialité ou non-matérialité pour le tuple exact, à partir des seules preuves autorisées. Une histoire vide, non fournie ou matériellement inconnue reste UNRESOLVED conformément à Owner §8.6 ; un BLOCKED pertinent conserve sa priorité. La quarantaine déclarée de l'OutputManifest reste BLOCKED_PENDING_OWNER_REVIEW indépendamment de toute supposition sur un historique global.
+
+Cette incertitude n'arrête pas globalement la revue documentaire ni les préparations indépendantes autorisées. Elle bloque une conclusion CLEAR et une release permissive dans la mesure où une inconnue matérielle ou une preuve exigée demeure non résolue. Aucun critère ratifié n'est dispensé ; aucune permission de release n'est créée par une simple qualification de non-matérialité.
+
+#### 14.13.5 Effet et suite ciblée
+
+```text
+INVENTORY_UPDATE_STATUS = COMPLETED_WITH_VERIFIABLE_REFERENCES_AND_EXPLICIT_UNKNOWNS
+HISTORIQUE = PARTIEL
+COUVERTURE = INCONNUE
+DISCLOSURE_STATUS = UNRESOLVED
+CUMULATIVE_DISCLOSURE = UNRESOLVED
+CLEAR = NOT_ESTABLISHED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+MATERIALITY_ASSESSMENT = PENDING_ATTRIBUTABLE_ASTRA_DOCUMENTARY_REVIEW
+DOCUMENTARY_REVIEW = MAY_CONTINUE_WITH_RECORDED_LIMITATIONS_UNDER_EXISTING_A1_SCOPE
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_COMPLEMENT
+HARNESS_IMPORTED = NO
+HARNESS_EXECUTED = NO
+TESTS_RUN = NO
+MANIFEST_POLICY_DIGESTS_COMPUTED = NO
+FIXTURES_CREATED = NONE
+FIXTURES_ACCESSED = NONE
+REAL_DATA_ACCESSED = NONE
+REAL_METADATA_ACCESSED = NONE
+OPERATIONAL_ENDPOINTS_QUERIED = NONE
+OPERATIONAL_CREDENTIALS_USED = NONE
+BUILDER_USED = NO
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+A2_RESEARCH_FIXTURE_AUTHORIZED = FALSE
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+La prochaine revue Astra porte sur l'inventaire existant §14.4 complété par §14.13, la méthode Owner §8.6, les preuves de §14.5 et leurs limites. Les critères déjà ratifiés restent inchangés. Aucun inventaire exhaustif hors périmètre, nouveau gate de ratification, recheck D5, calcul, test ou exécution n'est requis pour commencer cette revue documentaire. La conclusion demeure attribuable à Astra ; l'orchestrateur ne la produit ni ne la signe à sa place.
+
+Persistence : ajout de cette seule sous-section dans le dossier Blue existant, sur sa branche documentaire, sans merge et sans modification d'une autre section ou d'un autre fichier. Le commit et le blob de cet ajout seront ceux retournés après publication, sans valeur auto-référentielle inventée.
+
+NEXT_SAFE_ACTION = ATTRIBUTABLE_ASTRA_TARGETED_DOCUMENTARY_REVIEW_OF_UPDATED_INVENTORY_UNDER_EXISTING_A1_SCOPE
