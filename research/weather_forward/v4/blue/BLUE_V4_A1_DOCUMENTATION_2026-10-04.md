@@ -1450,3 +1450,189 @@ La prochaine revue Astra porte sur l'inventaire existant §14.4 complété par �
 Persistence : ajout de cette seule sous-section dans le dossier Blue existant, sur sa branche documentaire, sans merge et sans modification d'une autre section ou d'un autre fichier. Le commit et le blob de cet ajout seront ceux retournés après publication, sans valeur auto-référentielle inventée.
 
 NEXT_SAFE_ACTION = ATTRIBUTABLE_ASTRA_TARGETED_DOCUMENTARY_REVIEW_OF_UPDATED_INVENTORY_UNDER_EXISTING_A1_SCOPE
+
+
+### 14.14 Addendum Owner — inventaire élargi, question cumulative et séquence par action — 2026-10-07
+
+Cet addendum est demandé par PROJECT_OWNER dans le message explicitement fourni au contexte autorisé le 2026-10-07T02:36:37+02:00, Europe/Paris. Il est préparé par l'orchestrateur documentaire ; il ne constitue ni un constat ni une signature d'Astra. Base exacte : 5f129ec1657ce07cc6ae126747560d462cce5220, blob a89e14100e4a76b47ebcaa79ac5be8fd9361ca16, branche blue/weather-v4-a2-consolidated-preparation-2026-10-06.
+
+Tout le contenu précédent reste conservé. En cas de divergence, cet addendum corrige uniquement la restriction du périmètre de dépôt en §14.13.1, précise la question Owner §8.6.5 et rectifie par complément les prérequis d'appels de §§14.9D et 14.10. Aucun champ canonique, règle de dérivation, contenu historique du registre d'exposition ou décision OD09 n'est modifié.
+
+#### 14.14.1 Confirmation Owner du caractère attribuable de §14.13
+
+Owner fournit la confirmation suivante dans son instruction actuelle :
+
+> Je confirme le §14.13 comme inventaire qui m'est attribuable, dans ses limites.
+
+Cette confirmation attribue l'inventaire borné et sa limite de couverture à Owner. Elle ne déclare pas la lecture intégrale de chaque artefact, ne complète pas un historique extérieur inconnu et ne vaut pas conclusion de sécurité. Aucune attestation individuelle supplémentaire de lecture des artefacts d'efficacité n'est fournie dans ce message ; les statuts par défaut ci-dessous sont donc conservés.
+
+```text
+HISTORIQUE = PARTIEL
+COUVERTURE = INCONNUE
+DISCLOSURE_STATUS = UNRESOLVED
+SECTION_14_13_OWNER_ATTRIBUTION = CONFIRMED_WITH_RECORDED_LIMITATIONS
+CLEAR = NOT_ESTABLISHED
+```
+
+La confirmation actuelle couvre l'attribution documentaire attendue par Owner §10.5 sans nouveau cycle de ratification. Elle ne remplace aucune preuve exigée par §8.6.
+
+#### 14.14.2 Périmètre de dépôt complété et références exactes
+
+La directive Owner vise les documents et artefacts pertinents présents dans le dépôt ; elle n'est pas limitée aux références de gouvernance déjà recensées. Les éléments ci-dessous complètent le contexte documentaire du cumul, y compris les artefacts d'efficacité Weather identifiés par Owner. Leur inclusion dans cet inventaire ne les rend pas admissibles comme nouveaux contenus de l'InputManifest, de l'OutputManifest, d'une fixture ou d'un payload.
+
+Dépôt : fahimahmedb/Quant-Trade. Tous les préfixes de commits fournis ont été résolus par GitHub en identités complètes ; les chemins et blobs proviennent des arbres Git exacts, sans arbre tronqué. Chaque artefact est aussi présent à la base 5f129ec1657ce07cc6ae126747560d462cce5220, avec le même blob que sa référence historique ci-dessous.
+
+| Artefact | Commit exact de référence | Chemin exact | Blob Git exact |
+|---|---|---|---|
+| Registre d'exposition et de custody | 06c0c8cf7e0a16b63940d1b2167642dd9dcf889e | research/weather_forward/v4/blue/BLUE_V4_EXPOSURE_CUSTODY_LEDGER_2026-10-04.json | bfc005265a27b34de8fd272a64c134dae57b2759 |
+| Ledger d'hypothèses et surfaces | 06c0c8cf7e0a16b63940d1b2167642dd9dcf889e | research/weather_forward/v4/blue/BLUE_V4_HYPOTHESIS_LEDGER_2026-10-04.json | 931ca3e9903f60a81f31be43c70120e23faf4db2 |
+| Gold Map Weather V4 | 5747f11cb87c59bea32d2cb38c9e2c4c06db08ea | research/weather_forward/v4/WEATHER_V4_EDGE_ARCHAEOLOGY_GOLD_MAP_2026-10-04.md | c10b3f85c919a8f35bc119dbd4c4d6accba7ca87 |
+| Audit Astra de surapprentissage | 042002f06dd1d146e7a0b9a3e433891bc7352f94 | research/weather_forward/v4/audit/ASTRA_V4_EDGE_MAP_OVERFIT_AUDIT_2026-10-04.md | ec356c7b5826012d1934ee2dde019c2d6ad91f8b |
+| Support de décision Phase Gate | d669e603b87ac95c85c80861646de859df1b8819 | research/weather_forward/v4/blue/BLUE_V4_PHASE_GATE_DECISION_SUPPORT_2026-10-04.md | db0ae4ba933041f0c1d89cb3a9f8fdbacb913aeb |
+| Table de puissance Weather V2 | 021c869987f48e63bb5835557970675530bbfa72 | research/weather_forward/WEATHER_FORWARD_V2_POWER_TABLE_2026-09-29.md | fba29637886912adb6cdfb9d08c45fce323f1c36 |
+| Décisions OD01–OD03 | 377af70116f24f486feac7b4da5d2873107822a2 | research/weather_forward/v4/owner/OWNER_OD01_OD03_DECISION_2026-10-04.md | a64a29069d6a3b8a6e4166f27a3d9159b86fd3d7 |
+| Décisions OD04–OD12, dont OD09 | 9391ce7a3f66cfc5bff2c745ca2dbb1072bba954 | research/weather_forward/v4/owner/OWNER_OD04_OD12_STRUCTURAL_DECISION_2026-10-04.md | 3df739532e262b50ac29f56f86526d94ca694b93 |
+| Addendum de conception, instructions Owner | db7007af0b939e5beb41f59121d2557df391bc74 | research/weather_forward/v4/audit/BLUE_RESEARCH_DESIGN_REPAIR_OWNER_ADDENDUM_2026-10-04.md | 6f2d11b7e0e53e7401e3357f2e3e1846893ccdf5 |
+
+Statuts de présence, attribution et réception :
+
+| Artefact | Statut documentaire conservé | Pertinence pour la revue cumulative / limite |
+|---|---|---|
+| Registre d'exposition | Présent, réception non attestée | Registre du projet, historique non reconstitué et classifications de surfaces ; ce n'est pas un historique exhaustif du destinataire A2 |
+| Gold Map | Présent, réception non attestée | Artefact d'efficacité désigné par Owner ; aucun constat de lecture intégrale ou d'absence d'exposition |
+| Audit de surapprentissage Astra | Présent, réception non attestée | Évaluation antérieure de la Gold Map ; référence documentaire, aucun nouveau PASS ou replay |
+| Ledger d'hypothèses | Présent, réception non attestée | Hypothèses et surfaces associées ; présence du fichier distincte de réception personnelle |
+| Support Phase Gate | Présent, réception non attestée | Présentation pour décision rapportée dans le contexte fourni ; aucune attestation supplémentaire de lecture intégrale |
+| Table de puissance V2 | Présent, réception non attestée | Référence Weather antérieure signalée par Owner pour le cumul ; pas de réanalyse de puissance ou d'efficacité |
+| Décisions OD01–OD03 | Attribuées à l'Owner | Artefact Author: PROJECT_OWNER, type OWNER_DECISION ; attribution plus forte que la seule présence du fichier, sans preuve de lecture de chaque source liée |
+| Décisions OD04–OD12 | Attribuées à l'Owner | Artefact Author: PROJECT_OWNER, type OWNER_DECISION ; OD09 régit les expositions/custody, sans autoriser le présent runtime |
+| Addendum de conception | Instructions attribuées à l'Owner | Le document identifie Owner-provided instructions et un bloc Owner fourni dans la conversation ; attribution des instructions, sans prétendre que tous les autres textes d'audit ont été lus |
+
+Les corps de la Gold Map, de l'audit de surapprentissage, du ledger d'hypothèses et de la table de puissance ne sont pas ouverts pour analyser des résultats ou reproduire de l'information d'efficacité. Leur présence et identité sont vérifiées dans les arbres Git. Le registre d'exposition est lu comme document de governance pour ses champs de statut ; les textes de décisions/addendum sont consultés pour l'attribution et OD09. Les consultations du préparateur ne sont pas converties en preuves de réception par Owner. Aucune nouvelle source opérationnelle, observation, sealed surface ou fichier de données n'est consulté.
+
+#### 14.14.3 Historique non reconstitué et contamination préexistante
+
+Dans le registre d'exposition exact, le champ record_kind vaut :
+
+```text
+SCHEMA_AND_KNOWN_SCOPE_SEED_NOT_RECOVERED_EXPOSURE_HISTORY
+```
+
+Le registre ne prétend donc pas reconstituer un historique complet d'exposition. Il indique notamment SURF_V2V3_HISTORY = UNKNOWN, avec la raison « Complete access history missing ».
+
+Les trois surfaces suivantes sont explicitement classées DISCOVERY_CONTAMINATED dans surfaces[].AUDIT_CLASSIFICATION :
+
+| Identifiant de surface documentaire | Classification enregistrée |
+|---|---|
+| SURF_COMMAND_CENTER | DISCOVERY_CONTAMINATED |
+| SURF_PONDLETTER | DISCOVERY_CONTAMINATED |
+| SURF_WINNER_INCIDENTS | DISCOVERY_CONTAMINATED |
+
+Ces identifiants sont repris comme états du registre, sans sélectionner une source, une station, une ville ou un modèle et sans analyser leurs résultats. Le registre distingue CONTENT_READ_BY_BLUE = false pour ces surfaces et l'exposition déclarée aux résumés publiés : blue_access.OUTCOME_VIEWING = PUBLISHED_ASTRA_SUMMARIES_ONLY_NO_DATASET_OR_HOLDOUT. Son implication documentaire précise que lire ces résumés est une exposition à des agrégats publiés, pas une reproduction indépendante, et n'entraîne aucune promotion de propreté. Ces déclarations concernent la session Blue enregistrée ; elles n'attestent pas le passé du destinataire Owner.
+
+OD09, au commit exact ci-dessus, impose la reclassification des surfaces concernées par un accès exceptionnel selon la taxonomie d'exposition. L'addendum de conception maintient la propreté spécifique à chaque hypothèse, la prise en compte des expositions directes/indirectes et l'absence de promotion automatique d'une surface scellée en preuve confirmatoire. Ces règles et classifications restent inchangées.
+
+#### 14.14.4 Question évaluée — clarification Owner avant revue
+
+Tuple inchangé :
+
+```text
+output_id = A2-DOC-OUT-STRUCTURAL-REPORT-V1
+recipient_actor_id = project-owner.weather-v4.a2.doc-integration.v1
+recipient_role = Role.RESEARCH_VIEWER
+```
+
+Owner précise avant la revue, sans remplacer la méthode de §8.6 :
+
+> Pour le tuple exact, l'évaluation cumulative porte sur la contribution de la sortie proposée à l'information d'efficacité disponible pour le destinataire. Elle se fait compte tenu d'un historique partiel, de couverture inconnue et partiellement contaminé. L'exposition antérieure aux surfaces de recherche relève du registre d'exposition et d'OD09. Elle n'est ni assainie ni aggravée par cette évaluation. Astra reste libre de conclure UNRESOLVED et doit motiver toute non-matérialité.
+
+La question porte sur la contribution de la sortie proposée, compte tenu des connaissances/expositions antérieures documentées et inconnues. Elle ne demande pas une certification absolue de propreté de tout le passé du destinataire. Elle ne certifie pas à l'avance que la contribution marginale serait nulle : un statut, diagnostic ou ensemble de références peut devoir être évalué en combinaison avec l'information déjà disponible.
+
+L'évaluation actuelle ne requalifie aucune surface historique, n'efface aucune contamination, ne révoque ni ne complète OD09 et n'accorde aucune autorité inférentielle ou économique. Les six critères ratifiés restent cumulatifs. Astra doit examiner l'ancien + proposé, expliciter les inconnues matériellement pertinentes et justifier toute non-matérialité ; il reste libre de maintenir UNRESOLVED/BLOCKED. L'orchestrateur ne porte aucun constat de non-matérialité ou CLEAR.
+
+Les classifications du registre d'exposition et les états de CumulativeDisclosureLedger sont des structures distinctes. DISCOVERY_CONTAMINATED n'est pas silencieusement converti en une nouvelle règle du harness. Inversement, la clarification n'annule pas un CumulativeDisclosureState.BLOCKED effectivement présent dans le ledger applicable : sa priorité globale reste celle de l'interface existante. Aucun ledger ni conversion entre ces structures n'est construit.
+
+#### 14.14.5 Rectification de §§14.9D et 14.10 par addendum — prérequis par appel
+
+Les deux appels restent des évaluations de déclarations/bindings/autorisations, sans lecture d'un document, génération ou export de rapport. Le terme « lecture » ci-dessous désigne uniquement evaluate_input_read.
+
+Les prérequis de release conditionnent uniquement le second appel. L'autorisation RELEASE_OUTPUT, les conditions de release du manifeste output, l'approbation indépendante et le ledger de disclosure nécessaire à la release ne deviennent pas des prérequis du premier appel du seul fait que la séquence prévoit un second appel conditionnel.
+
+Avant toute future première évaluation : appliquer les prérequis effectivement nécessaires à READ_INPUT, dont son autorité exacte, le contenu/policy/root cohérents, les identités dérivées nécessaires, les bindings/acteurs, le journal et les contrôles requis pour cette action. Aucun prérequis réel de policy/root n'est dispensé. La présente rectification n'accorde aucune autorisation READ_INPUT.
+
+Après la première évaluation autorisée :
+
+- vérifier le résultat et la liaison de journal selon le prédicat input exact de §14.9D ;
+- examiner extérieurement l'autorité et les prérequis propres à RELEASE_OUTPUT avant de décider d'un second appel ;
+- si RELEASE_OUTPUT est absent, UNRESOLVED ou non applicable, ne pas appeler evaluate_output_release ; le prédicat externe empêche l'appel, sans lancer un appel destiné à être refusé ;
+- si la première évaluation s'est achevée normalement, terminer la séquence après cette évaluation input, sans STOP ni incident du seul fait de cette absence de grant ;
+- les autres causes réelles de STOP/incident, d'échec de binding, de contrôle ou du prédicat input restent applicables ;
+- si l'autorité et tous les prérequis de release sont satisfaits, le second appel demeure conditionnel au prédicat input et à ses propres contrôles, avec first_result.log et un record_id distinct ; au plus un second appel, aucun retry.
+
+Pour input seul, le record_id et le contexte de journal nécessaires sont ceux du premier appel. Les valeurs propres au second appel sont fixées avant celui-ci lorsqu'il est effectivement autorisé ; son record_id doit alors être distinct. L'identité canonique output exigée par la policy reste une dépendance différente, signalée ci-dessous.
+
+Dans le prédicat externe, les contrôles de réussite et de liaison de la première action concernent READ_INPUT. Les contrôles nécessaires uniquement à une continuation RELEASE_OUTPUT restent des conditions de cette continuation ; leur absence ne requalifie pas rétroactivement un résultat input valide en incident. Une défaillance réellement applicable à READ_INPUT conserve son effet.
+
+La fin normale après input seul ne modifie ni la décision ni ses états et ne fabrique pas un nouveau code de détail runtime. ReleaseState.BLOCKED sur un succès input reste le comportement décrit en §14.9D ; il ne constitue pas un incident du seul fait qu'aucune release n'est tentée.
+
+Pour §14.10 : l'absence de grant RELEASE_OUTPUT bloque l'action RELEASE_OUTPUT uniquement, sans bloquer une action READ_INPUT explicitement autorisée et satisfaisant ses prérequis. Les états actuels de ces deux actions restent non autorisés/non exécutés. L'autorité d'un appel ne dispense pas les contrôles nécessaires à cet appel et n'autorise aucune action ultérieure. Les vérifications négatives éventuellement autorisées séparément restent un autre périmètre ; elles ne sont pas ajoutées à cette séquence.
+
+#### 14.14.6 Trois points de dépendance signalés, sans résolution
+
+Lecture statique de source seulement à HARNESS_REFERENCE_SHA = 78d537de681363ed83a6c7787aba4319f3c73c4d : harness.py blob 00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4 ; contract.py blob f6f94a4a472e3f6652a1502f6afb5825721364d0. Aucun import ni appel.
+
+| Point signalé | Base documentaire / technique existante | Disposition restant ouverte |
+|---|---|---|
+| Input seul exige néanmoins une identité output calculée | validate_policy exige expected_input_manifest_identity et expected_output_manifest_identity ; _resolve_trusted_root valide la policy entière et son identité ; _assess_input_read passe par cette root | Quel contenu output sera approuvé/figé et calculé sous ses propres autorités pour cette action limitée reste à décider ; aucun output alternatif ou digest n'est choisi ici |
+| Un CLEAR output ultérieur invaliderait l'identité output, puis les bindings de policy et de root | output_manifest_identity couvre les états de leakage/disclosure/quarantaine ; harness_policy_identity couvre expected_output_manifest_identity ; root.expected_policy_identity lie la policy | Tout changement canonique correspondant exige re-freeze, recalcul autorisé et réconciliation des bindings dépendants ; aucune stratégie de transition ou activation n'est tranchée |
+| La garde par Owner des preuves de l'évaluation input ne vaut pas release du rapport | Les champs du journal et la custody externe de §14.6/Owner §8.4 sont distincts de l'appel RELEASE_OUTPUT et de sa déclaration OutputManifest | Le périmètre exact des preuves conservables et les capacités de custody doivent relever de l'autorité applicable ; aucun transport, export, ACL ou stockage permissif nouveau n'est autorisé |
+
+Aucun de ces points n'est résolu par anticipation. L'inventaire plus large et la clarification marginale ne dispensent pas le gel, les computations autorisées, la cohérence policy/root ou la custody réellement disponible.
+
+#### 14.14.7 Périmètre de la revue Astra et invariants
+
+Après publication, la revue documentaire ciblée Astra porte sur §§14.1–14.14 du présent dossier à son commit exact. Elle reprend Owner §8.6, la clarification actuelle, les références du registre d'exposition/OD09 et l'inventaire élargi. Elle conserve l'historique PARTIEL et la couverture INCONNUE, distingue présence/attribution/réception et motive l'effet matériel des inconnues pour le tuple exact. L'orchestrateur ne signe pas à la place d'Astra.
+
+```text
+SECTION_14_13_OWNER_ATTRIBUTION = CONFIRMED_WITH_RECORDED_LIMITATIONS
+HISTORIQUE = PARTIEL
+COUVERTURE = INCONNUE
+DISCLOSURE_STATUS = UNRESOLVED
+CUMULATIVE_DISCLOSURE = UNRESOLVED
+CLEAR = NOT_ESTABLISHED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+ASTRA_INDEPENDENT_DOCUMENTARY_REVIEW = NOT_PERFORMED_BY_THIS_ADDENDUM
+INPUT_CONTENT_FROZEN = FALSE
+OUTPUT_CONTENT_FROZEN = FALSE
+POLICY_CONTENT_FROZEN = FALSE
+INPUT_DIGEST_COMPUTED = FALSE
+OUTPUT_DIGEST_COMPUTED = FALSE
+POLICY_DIGEST_COMPUTED = FALSE
+HARNESS_IMPORTED = NO
+HARNESS_EXECUTED = NO
+TESTS_RUN = NO
+FIXTURES_CREATED = NONE
+FIXTURES_ACCESSED = NONE
+REAL_DATA_ACCESSED = NONE
+REAL_METADATA_ACCESSED = NONE
+OPERATIONAL_ENDPOINTS_QUERIED = NONE
+OPERATIONAL_CREDENTIALS_USED = NONE
+BUILDER_USED = NO
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+A2_RESEARCH_FIXTURE_AUTHORIZED = FALSE
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+```
+
+Seul ce §14.14 est ajouté au dossier Blue existant sur la branche blue/weather-v4-a2-consolidated-preparation-2026-10-06, parent attendu 5f129ec1657ce07cc6ae126747560d462cce5220. Aucun merge, changement de source, autre fichier ou reclassification du registre d'exposition. Le commit et le blob de publication sont enregistrés après création, sans identité auto-référentielle inventée.
+
+NEXT_SAFE_ACTION = ATTRIBUTABLE_ASTRA_TARGETED_DOCUMENTARY_REVIEW_OF_SECTIONS_14_1_TO_14_14_UNDER_EXISTING_A1_SCOPE
