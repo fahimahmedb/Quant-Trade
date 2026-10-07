@@ -44,4 +44,4 @@ Session Builder précédente (`session_016Mii9xHWUhsB3DEuB88zpz`) : environ 37 $
 | Agent | Statut | Remise à zéro | Modèle | Coût du lot |
 |---|---|---|---|---|
 | Claude Code (cette session) | `allowed`, contexte 64 % | 2026-10-08T04:40Z (fenêtre de 5 h) | Sonnet, sous-agents Haiku/Opus | environ 57 $ au total |
-| Codex | NON_VISIBLE : question posée sur la PR #22 | inconnue | inconnu | inconnu |
+| Codex | `NON_VISIBLE` (réponse de Codex sur la PR #22 : il ne voit pas son quota, ses autres modèles ni comment en choisir un) ; à lire par Owner dans la page d'usage de Codex | inconnue | GPT-5.6 Sol (déclaré par Codex) | inconnu |
