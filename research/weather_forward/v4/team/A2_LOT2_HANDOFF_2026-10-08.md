@@ -38,3 +38,10 @@ Q1 à Q3 terminées. Gels input/output/policy consignés (`245f193`, `79f6e92`) 
 ## Coût
 
 Session Builder précédente (`session_016Mii9xHWUhsB3DEuB88zpz`) : environ 37 $. Session Astra lot 1 : environ 21 $. Budget recommandé par lot : 15 $.
+
+## Quotas (mise à jour 2026-10-08)
+
+| Agent | Statut | Remise à zéro | Modèle | Coût du lot |
+|---|---|---|---|---|
+| Claude Code (cette session) | `allowed`, contexte 64 % | 2026-10-08T04:40Z (fenêtre de 5 h) | Sonnet, sous-agents Haiku/Opus | environ 57 $ au total |
+| Codex | NON_VISIBLE : question posée sur la PR #22 | inconnue | inconnu | inconnu |
