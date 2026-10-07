@@ -76,6 +76,18 @@ Alerte : un commentaire sur la PR commençant par `[A2-TEAM] OWNER_DECISION_REQU
 - **Traçabilité :** chaque livrable cite l'autorité qui le couvre. Aucun SHA, digest, approbation ou résultat n'est inventé.
 - **Arrêt :** Owner peut arrêter l'équipe à tout moment par un commentaire `STOP` sur la PR, sans l'en-tête `[A2-TEAM] DE:`.
 
+## 6 bis. Efficience des tokens
+
+Principe : ne pas rationner, supprimer le gaspillage et concentrer la dépense sur ce qui change le résultat.
+
+1. **Un lot = une session neuve.** Chaque session repart d'une fiche de reprise d'une page sous `research/weather_forward/v4/team/` (état, décisions, prochaine action, références exactes, coût). Compacter vers 60 % de remplissage.
+2. **Lecture ciblée.** Citer chemin et SHA ; lire le passage utile, ne jamais recopier un document.
+3. **Modèle adapté.** Opus : conception, arbitrage, revue délicate. Sonnet : construction et rédaction courante. Haiku ou script : extraction, comptages, contrôles simples. Codex : tâches mécaniques sur le dépôt.
+4. **Script avant agent.** Comparaisons d'octets, blobs, comptages : par script. Les agents vérificateurs sont réservés au jugement.
+5. **Vérification proportionnée au risque.** Niveau 0 (transcription, consignation) : script. Niveau 1 (outillage, documents de travail) : auto-vérification et tests. Niveau 2 (gels, identités, policy) : un vérificateur indépendant léger. Niveau 3 (root candidate, activation, opération) : revue complète d'Astra ; multi-agents autorisé.
+6. **Écrire court.** Un acte tient en une page : contexte, décision, références, statut. Un seul bloc de statut, aucune redite.
+7. **Mesurer.** Chaque fiche de reprise indique le coût du lot. Budget par défaut : 15 $ par lot ; au-delà, arrêt et alerte Owner.
+
 ## 7. Ratification
 
 Owner ratifie en écrivant lui-même, en commentaire de la PR sans l'en-tête `[A2-TEAM] DE:` ou dans une conversation avec un agent : « Je ratifie la charte d'équipe A2 au commit <sha> ». L'agent qui reçoit la ratification la consigne dans un fichier Owner, à son commit et à son blob exacts.
