@@ -110,3 +110,52 @@ NEXT_SAFE_ACTION = FINISH_AUTHORIZED_L2_A0_L2_B_AND_REQUIRED_OWNER_DISPOSITIONS_
 ## 5. Activité de cet acte
 
 Lecture de références, arbres, textes et diff Git, puis publication de cette consignation. Aucun import ou appel de harnais, test, calcul d'identité de manifest/policy, accès VM, fixture, donnée ou credential opérationnel n'a été effectué par l'assistant pour cette vérification. Aucun fichier Builder, Astra ou de production n'est modifié.
+
+## 6. Actualisation — livraison Builder publiée pendant la vérification
+
+Cette actualisation remplace uniquement les statuts d'avancement du §3 pour le nouveau snapshot. Le §3 reste la trace du premier contrôle, réalisé avant ce push. La décision ratifiée, sa portée et ses non-autorisations restent inchangées.
+
+| Nouveau snapshot vérifié | Identité |
+|---|---|
+| Branche | `builder/weather-v4-a2-lot2-tooling-2026-10-07` |
+| Commit | `1910994f3141d20b10547a0f35e73d012b011a38` |
+| Parent unique | `112933c5bd2dc511f91bd5500850c5a084eb772e` |
+| Arbre | `7a8e3926c162954095724acd8889ec8f855a3401` |
+| Fichiers publiés sous a2_operation/ | 30 |
+| Périmètre de la nouvelle livraison | Modifications et ajouts confinés à a2_operation/ ; aucun fichier de production modifié |
+
+Références de preuve à ce commit, chemins relatifs à `research/weather_forward/v4/a2_operation/` :
+
+| Fichier | Blob exact |
+|---|---|
+| evidence/BUILDER_L2B_VERIFICATION_HANDOFF_2026-10-07.md | `2d7a2520d097afa271d5bad1cfa4fe84a4517657` |
+| evidence/L2_B_SYNTHETIC_TEST_OUTPUT_2026-10-07.txt | `ddb1036226fb65b2ccec9568a7ffa893642333dc` |
+| evidence/L2_B_SYNTHETIC_TEST_SUMMARY_2026-10-07.json | `c7fd20e59d82f829376740ba6043f42e07d1939b` |
+| evidence/L2_B_LOCAL_EVIDENCE_MANIFEST_2026-10-07.json | `f0b791e2236fa769bc0dfd1cab887de6741999d5` |
+| verification/source_pins.json | `cbad2196a07de0d06669c9a5a96cf09a859a9e7e` |
+| qualification/COMMANDS_VM_QUALIFICATION_2026-10-07.md | `42d953c19cb09dc3390b19f44f69adda0c2139ef` |
+
+Le transcript Builder rapporte **343 tests réussis : 279 anciens H et 64 nouveaux synthétiques**, zéro échec, erreur, skip, expectedFailure ou unexpectedSuccess, code de runner 0. Les 343 lignes de succès sont distinctes ; le résumé JSON incorporé au transcript concorde avec le fichier résumé.
+
+Les trente épingles de source concordent avec les blobs Git du snapshot. Le manifest lie les blobs exacts des preuves et du paquet de qualification ; les épingles de ses onze fichiers concordent également. Les quatre blobs H de production sont toujours ceux du §3.
+
+Les deux voies d'étalonnage retrouvent la valeur synthétique publiée `sha256:54bfcafcca4d87b9771b905efe9fb12023fdce061fbccda155bcecb3a62253bf`. Ce résultat concerne le seul vecteur de test, pas une identité de manifest réel. Les compteurs rapportés sont zéro tentative réseau/sous-processus/fichier interdit, 96 lectures permises et 61 refus attendus de caches.
+
+La présente vérification recoupe les preuves publiées et leurs identités. Elle ne relance pas les tests, ne produit pas un PASS indépendant Astra et ne démontre pas l'efficacité des contrôles sur l'hôte. Environnement Builder déclaré : CPython 3.12.14, x86_64 ; environnement VM non observé, compatibilité non démontrée.
+
+```text
+L2_B_RUNNER_AND_SYNTHETIC_TEST_EVIDENCE = PUBLISHED_AND_DOCUMENTARILY_CROSS_CHECKED
+L2_B_SYNTHETIC_VERIFICATION = PASS_REPORTED_BY_BUILDER
+CALIBRATION_BOTH_ROUTES = MATCHED_IN_PUBLISHED_EVIDENCE
+L2_A_OWNER_COMMAND_PACKAGE = PUBLISHED_NOT_EXECUTED
+HOST_QUALIFICATION = NOT_PERFORMED_IN_THIS_DELIVERY
+FROZEN_CONTENT_FILES = NONE_IN_INSPECTED_SNAPSHOT
+REAL_MANIFEST_AND_POLICY_IDENTITIES = NOT_COMPUTED_IN_THIS_DELIVERY
+TRUSTED_ROOT_CANDIDATE = NOT_CONSTRUCTED_IN_THIS_DELIVERY
+L2_I_CANDIDATE_VERIFICATION = NOT_PERFORMED
+LOT2_CANDIDATE_AND_EVIDENCE_READY_FOR_ASTRA_LOT3 = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED_BY_THIS_RECORD = FALSE
+```
+
+Suite actuelle : Owner peut traiter la procédure publiée de qualification L2-A sous ses conditions existantes ; les dispositions documentaires L2-C/L2-D restent à résoudre en parallèle. Le calcul des identités et les bindings attendent leurs gels exacts. La livraison L2-B ne devient ni une qualification VM ni une activation. Aucune ratification supplémentaire des valeurs déjà ratifiées n'est introduite.
