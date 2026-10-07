@@ -88,6 +88,29 @@ Principe : ne pas rationner, supprimer le gaspillage et concentrer la dépense s
 6. **Écrire court.** Un acte tient en une page : contexte, décision, références, statut. Un seul bloc de statut, aucune redite.
 7. **Mesurer.** Chaque fiche de reprise indique le coût du lot. Budget par défaut : 15 $ par lot ; au-delà, arrêt et alerte Owner.
 
+## 6 ter. Pilotage automatique
+
+**a) Choix du modèle.** Un agent ne change pas son propre modèle en cours de session. Il délègue la tâche à un sous-agent avec le modèle voulu (paramètre `model` de l'outil Agent), ou ouvre une session neuve avec ce modèle (`create_session`) quand un lot entier relève d'un seul niveau.
+
+| Niveau | Modèle | Tâches |
+|---|---|---|
+| Réflexion | Opus | conception, arbitrage, projet de décision Owner, préparation d'une revue critique |
+| Construction | Sonnet | code, outillage, rédaction courante, consignations |
+| Mécanique | Haiku ou script | extraction, comptages, comparaisons d'octets, mise en forme |
+
+**b) File de travail.** `team/A2_WORK_QUEUE.md` liste les tâches (identifiant, autorité qui la couvre, dépendances, agent, niveau, statut). Un agent prend la première tâche `READY` : dépendances terminées, autorité ratifiée, non réservée à Owner. Il la marque `IN_PROGRESS` par un commit, la livre, la marque `DONE` avec les commits et blobs exacts, puis n'envoie un message à l'autre agent que si cela le débloque. Une tâche réservée à Owner passe en `OWNER_GATED` avec une seule alerte. Quand il n'y a plus de tâche `READY`, l'agent s'arrête sans interroger le dépôt en boucle.
+
+**c) Anti-boucle.** Réveil par événements uniquement. Un agent qui s'est réveillé trois fois en 60 minutes sans nouveau commit ni message de l'autre agent se met en pause (voir d). Une demande restée sans réponse est relancée **une seule fois** après 50 minutes (`RAPPEL`), puis alerte Owner (quota ou panne possible de l'autre côté). On ne sonde pas.
+
+**d) Pause par épuisement.** Si le budget du lot est atteint, ou si `rate_limit_info.status` de `get_session` n'est plus `allowed`, ou si la plateforme signale une limite atteinte, l'agent :
+1. écrit une entrée `PARKED` dans la fiche de reprise : état, prochaine action, coût ;
+2. lit `resetsAt` dans `get_session` (`external_metadata.rate_limit_info`) et arme **un seul** rappel (`send_later`) à `resetsAt` + 5 minutes ;
+3. alerte Owner une fois, puis s'arrête.
+
+Au réveil, il relit la fiche de reprise et la limite. Si elle n'est pas levée, il se met de nouveau en pause, deux fois au plus, puis alerte Owner. Jamais plus d'un rappel en attente par session.
+
+**e) Reprise.** Chaque pause ou fin de lot met à jour la fiche de reprise. Une session neuve repart d'elle et de la file de travail, sans autre lecture préalable.
+
 ## 7. Ratification
 
 Owner ratifie en écrivant lui-même, en commentaire de la PR sans l'en-tête `[A2-TEAM] DE:` ou dans une conversation avec un agent : « Je ratifie la charte d'équipe A2 au commit <sha> ». L'agent qui reçoit la ratification la consigne dans un fichier Owner, à son commit et à son blob exacts.
