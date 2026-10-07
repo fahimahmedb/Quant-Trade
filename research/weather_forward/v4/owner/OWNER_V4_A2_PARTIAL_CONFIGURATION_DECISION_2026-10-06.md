@@ -599,3 +599,107 @@ EXPERIMENT_T0 = NOT_DECLARED
 Cette publication est documentaire uniquement : aucun changement de source, import/appel du harnais, test, calcul d'identité, création/inspection de fixture ou activation de root. Aucun merge.
 
 NEXT_SAFE_ACTION = PREPARE_BOUNDED_OWNER_DISCLOSURE_INVENTORY_AND_TARGETED_DOCUMENTARY_REVIEW_ONLY
+
+## 12. Désignation Owner du moyen de mesure et d'arrêt des ressources — 2026-10-07
+
+Autorité déclarante : PROJECT_OWNER, utilisateur de cette conversation.  
+Date d'enregistrement : 2026-10-07T02:46+02:00 — Europe/Paris (heure de rédaction ; l'horodatage exact des messages Owner n'est pas disponible).  
+Rédaction : assistant documentaire de cette conversation, à la demande expresse d'Owner (« Tu peux le faire toi ? »). Ni Blue, ni Astra, ni Builder.  
+Statut : DÉSIGNATION DOCUMENTAIRE. Aucun accès à l'hôte, aucune vérification, aucune autorisation technique.
+
+### 12.1 Objet
+
+§8.3 exige, avant tout grant, d'identifier le moyen existant et autorisé de mesure et d'arrêt, sa sémantique mémoire et son responsable. Le dossier Blue (branche `blue/weather-v4-a2-consolidated-preparation-2026-10-06`, commit `8ee801a3c8d7f5dc56601ed17f23d1ce8303f6fe`, §14.6) enregistre ces contrôles NOT_VERIFIED. La présente section désigne le moyen. Elle ne modifie aucune valeur de §8.3 et ne rouvre aucun choix ratifié.
+
+### 12.2 Déclarations Owner enregistrées
+
+Owner a déclaré dans cette conversation, le 2026-10-07 :
+
+- l'hôte désigné est sa VM Oracle Cloud existante, celle que le dépôt nomme `quant-p0-targer` (2 OCPU ARM, 12 Go) ;
+- système : Ubuntu (version non précisée) ;
+- « rien d'important tourne sur cette vm et aucune donnée » ;
+- aucun terminal disponible pour l'instant ;
+- sur la règle antérieure citée ci-dessous : « On oublie l'ancien projet c'était des données de marchés donc pas utilisé par quant p0 ».
+
+Ces déclarations sont attribuées, non vérifiées. L'absence de données réelles et de credentials opérationnels sur l'hôte sera constatée lors de la vérification autorisée.
+
+### 12.3 Règle antérieure sur l'hôte
+
+Deux documents du dépôt, au commit `021c869987f48e63bb5835557970675530bbfa72`, indiquent que `quant-p0-targer` est la cible de qualification P0 et n'est pas utilisé pour Weather :
+
+- `research/weather_forward/WEATHER_V3_BLUE_WORK_BREAKDOWN_2026-10-02.md`, §5.5, blob `41fea7bceca640f81f807eefcbd11db804067532` ;
+- `research/weather_forward/WEATHER_V2_D4_CONVERGENCE_LEDGER_2026-10-01.md`, règle de calcul 5, blob `25771529d836138bbfc1d3f149b24d1a0cc4ec1c`.
+
+Owner déclare cette restriction sans objet, l'hôte n'étant plus utilisé par P0 (§12.2). Effet enregistré ici : la restriction ne fait plus obstacle à l'usage de l'hôte pour le contrôle des ressources A2. Les deux documents historiques restent inchangés. Cette section ne modifie pas le statut général de P0 dans les fichiers de gouvernance ; une telle mise à jour relève d'une décision distincte.
+
+### 12.4 Moyen désigné et correspondance avec §8.3
+
+Contrôle externe au harnais, appliqué par systemd sur l'hôte désigné : unité transitoire `systemd-run`, exécutée sous un utilisateur dédié sans privilège (nom proposé : `a2runner`). Les propriétés ci-dessous sont la correspondance technique proposée ; leur valeur exacte est établie lors de la vérification autorisée.
+
+| Limite §8.3 | Mécanisme candidat | Sémantique retenue |
+|---|---|---|
+| 60 s écoulées | `RuntimeMaxSec=60` | Arrêt de l'unité entière au-delà |
+| 5 s CPU, un processus, aucun enfant | `LimitCPU=5` ; `TasksMax` | Temps user + système du processus, tous threads ; création d'enfant refusée |
+| 128 MiB | `MemoryMax=128M` ; `MemorySwapMax=0` | Mémoire réelle du cgroup de l'unité (pic mesuré), sans swap ; pas la mémoire virtuelle |
+| 1 MiB d'artefacts, temporaires inclus | Un seul système de fichiers temporaire de 1 MiB comme unique emplacement inscriptible ; `ProtectSystem=strict` ; `ProtectHome=yes` | Le traitement exact de `/tmp`, `/var/tmp` et `/dev/shm` est établi lors de la vérification |
+| 64 KiB de sortie | Sortie écrite dans un fichier de l'emplacement inscriptible ; taille contrôlée après l'arrêt | Tout dépassement vaut STOP |
+| 0 appel réseau | `PrivateNetwork=yes` | Aucune interface hors boucle locale |
+| Mesure | Comptabilité de l'unité systemd ; à défaut, `memory.peak` du cgroup | Disponibilité selon les versions de systemd et du noyau, à constater |
+| 0 EUR | Hôte existant | Aucun provisionnement, achat ou engagement |
+
+Responsable des contrôles : PROJECT_OWNER, opérateur de l'hôte, en cohérence avec ses fonctions de §8.1. Blue reste exécutant et orchestrateur des évaluations ; Astra reste approbateur.
+
+Les valeurs mesurées sont des preuves de contrôle. Elles ne deviennent pas des champs du rapport structurel et ne sont pas transformées en résultat économique (§8.3).
+
+### 12.5 Points ouverts, non tranchés
+
+- **Visibilité de l'opérateur.** Owner opère l'hôte et est aussi l'unique destinataire. La sortie de l'opération réelle ne doit pas s'afficher dans le terminal de l'opérateur avant la release : seuls le code de sortie et les mesures de contrôle lui sont montrés. Le mode exact relève du futur package d'intégration.
+- **Accès sudo** de l'opérateur, à confirmer.
+- **Versions** d'Ubuntu, de systemd et du noyau ; cgroup v2 actif ; disponibilité de la mesure du pic mémoire.
+- **Modifications de l'hôte** (utilisateur dédié, fichiers copiés) : à consigner lors de leur réalisation autorisée.
+- **Identité du code chargé.** Moyen candidat pour §8.8 : comparer, sur l'hôte, `git hash-object` des fichiers du harnais avec les blobs revus enregistrés au §14.1 du dossier Blue. Candidat seulement ; aucune affirmation d'intégrité n'est faite.
+
+### 12.6 Plan de vérification proposé, non autorisé
+
+Exécutable seulement sous autorisation Owner explicite, lorsqu'un terminal est disponible. Il n'importe ni n'exécute le harnais ; seuls des scripts factices sont utilisés.
+
+1. Constater l'environnement : versions d'Ubuntu, de systemd, du noyau et de Python ; cgroup v2 ; architecture ; absence de données réelles et de credentials opérationnels.
+2. Créer l'utilisateur dédié sans privilège et vérifier qu'il ne lit pas les autres répertoires.
+3. Tests de dépassement, chacun devant aboutir à l'arrêt ou au refus attendu : attente de 120 s ; boucle CPU ; allocation de 200 MiB ; création d'un processus enfant ; connexion réseau ; écriture de 2 MiB ; sortie de 100 KiB.
+4. Témoin positif : un script conforme rapporte sa durée, son temps CPU et son pic mémoire.
+5. Facultatif, pour §8.8 : comparaison des identités de fichiers du harnais copiés avec les blobs revus.
+
+Les transcripts de ces tests constitueraient la preuve de `CONTROL_VERIFIED`. Un dépassement non arrêté vaut échec du contrôle et STOP.
+
+### 12.7 États
+
+```text
+RESOURCE_CONTROL_MEANS_DESIGNATED = TRUE
+RESOURCE_CONTROL_HOST = OWNER_EXISTING_ORACLE_CLOUD_VM_QUANT_P0_TARGER_UBUNTU
+RESOURCE_CONTROL_MECHANISM = SYSTEMD_TRANSIENT_UNIT_EXTERNAL_TO_HARNESS
+RESOURCE_CONTROL_RESPONSIBLE = PROJECT_OWNER
+MEMORY_SEMANTICS = CGROUP_UNIT_REAL_MEMORY_PEAK_NO_SWAP
+PRIOR_HOST_RESTRICTION = DECLARED_OBSOLETE_BY_OWNER_P0_NO_LONGER_USING_HOST
+P0_GOVERNANCE_STATUS_CHANGED_BY_THIS_SECTION = NO
+CONTROL_IMPLEMENTED = NOT_VERIFIED
+CONTROL_VERIFIED = NOT_VERIFIED
+CONTROL_VERIFICATION_AUTHORIZED = FALSE
+HOST_ACCESSED = NO
+SECTION_8_VALUES_CHANGED = NO
+CLEAR = NOT_ESTABLISHED
+QUARANTINE = BLOCKED_PENDING_OWNER_REVIEW
+DIGESTS = PENDING_FROZEN_CONTENT_AND_COMPUTATION
+A2_FIXTURE_GENERATION_AUTHORIZED = FALSE
+A2_FIXTURE_TESTING_AUTHORIZED = FALSE
+A2_EXECUTION_AUTHORIZED = FALSE
+BUILDER_AUTHORIZED = FALSE
+TRUSTED_ROOT_ACTIVATION_AUTHORIZED = FALSE
+ECONOMIC_AUTHORITY = 0
+CAPTURE_AUTHORIZATION = NONE
+DATA_T0 = NOT_DECLARED
+EXPERIMENT_T0 = NOT_DECLARED
+```
+
+Publication documentaire uniquement : ajout de cette section au fichier Owner, sans merge, sans modification d'une autre section ou d'un autre fichier, sans accès à l'hôte, test, import ou appel du harnais, calcul d'identité ou fixture. La revue documentaire d'Astra n'en dépend pas.
+
+NEXT_SAFE_ACTION = OWNER_AUTHORIZED_CONTROL_VERIFICATION_WHEN_TERMINAL_AVAILABLE_INDEPENDENT_OF_ASTRA_REVIEW
