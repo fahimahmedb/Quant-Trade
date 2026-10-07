@@ -16,8 +16,8 @@ command -v mount >/dev/null || stop "mount absent"
 
 getent passwd a2runner >/dev/null && stop "l'utilisateur a2runner existe deja"
 getent group a2runner >/dev/null && stop "le groupe a2runner existe deja"
-[ -e /opt/a2 ] && stop "/opt/a2 existe deja"
-[ -e /srv/a2out ] && stop "/srv/a2out existe deja"
+{ [ -e /opt/a2 ] || [ -L /opt/a2 ]; } && stop "/opt/a2 existe deja"
+{ [ -e /srv/a2out ] || [ -L /srv/a2out ]; } && stop "/srv/a2out existe deja"
 
 useradd --system --user-group --no-create-home --home-dir /nonexistent \
         --shell /usr/sbin/nologin a2runner

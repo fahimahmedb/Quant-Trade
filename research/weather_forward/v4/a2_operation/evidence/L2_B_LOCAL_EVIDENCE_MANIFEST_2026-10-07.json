@@ -1,0 +1,44 @@
+{
+  "bash_syntax_checks": {
+    "research/weather_forward/v4/a2_operation/common/a2_unit_profile.sh": "PASS",
+    "research/weather_forward/v4/a2_operation/qualification/deploy_files.sh": "PASS",
+    "research/weather_forward/v4/a2_operation/qualification/host_facts.sh": "PASS",
+    "research/weather_forward/v4/a2_operation/qualification/run_qualification.sh": "PASS",
+    "research/weather_forward/v4/a2_operation/qualification/setup_host.sh": "PASS"
+  },
+  "command": "timeout 600s python -I -S -B research/weather_forward/v4/a2_operation/verification/run_tooling_tests.py",
+  "environment": {
+    "architecture": "x86_64",
+    "external_limit_seconds": 600,
+    "flags": "-I -S -B",
+    "implementation": "cpython",
+    "python": "3.12.14"
+  },
+  "exit_code": 0,
+  "host_architecture": "NOT_OBSERVED",
+  "host_python_version": "NOT_OBSERVED",
+  "production_files_modified": [],
+  "publication_scope": "SYNTHETIC_L2_B_TECHNICAL_EVIDENCE_ONLY",
+  "qualification_pins_blob": "e718b284982a0f8c5c119be6a44cd1b803651f9b",
+  "qualification_script_blobs": {
+    "research/weather_forward/v4/a2_operation/__init__.py": "7a660047ed0e2f871905f6313e411305ea9b5a0b",
+    "research/weather_forward/v4/a2_operation/common/__init__.py": "af0d1060459ed178c47fdbe76c68442adcd2f7ce",
+    "research/weather_forward/v4/a2_operation/common/a2_unit_profile.sh": "ec58a081cfa1fee0a1dfbe51b9930ab65cd13cac",
+    "research/weather_forward/v4/a2_operation/common/bounded_output.py": "5734e9b175c28f3790caa1fab2682d08f0bd4528",
+    "research/weather_forward/v4/a2_operation/qualification/__init__.py": "a2ffab2492c7496d944241a1a37bae388a3a127c",
+    "research/weather_forward/v4/a2_operation/qualification/deploy_files.sh": "597df37dc82e1f09956e800a630e1b384a562be6",
+    "research/weather_forward/v4/a2_operation/qualification/host_facts.sh": "c7ef4d2bbcb872af85e777867c897715c2462cc4",
+    "research/weather_forward/v4/a2_operation/qualification/qualification_probes.py": "4aa01a84b0a87e9e000cfab864b9646c94d6cdbf",
+    "research/weather_forward/v4/a2_operation/qualification/run_qualification.sh": "6be21e1cc65eb16be9a0a7152b65f42a0217a8f5",
+    "research/weather_forward/v4/a2_operation/qualification/setup_host.sh": "930dbab1aafd4e37ede76950f3a6387d7f828c44",
+    "research/weather_forward/v4/a2_operation/qualification/summarize_qualification.py": "3961888b736405749ce328c9105fe26f361cc3f7"
+  },
+  "ratification_record_commit": "ccd4747e4bb9e2a4d93c552ba10e081f254af1e7",
+  "ratified_base": "276fd995fe494e1734bba13827e6103864ce68da",
+  "schema": "A2_L2_B_LOCAL_EVIDENCE_V1",
+  "source_base_commit": "112933c5bd2dc511f91bd5500850c5a084eb772e",
+  "source_pins_blob": "cbad2196a07de0d06669c9a5a96cf09a859a9e7e",
+  "test_summary_blob": "c7fd20e59d82f829376740ba6043f42e07d1939b",
+  "test_transcript_blob": "ddb1036226fb65b2ccec9568a7ffa893642333dc",
+  "vm_commands_executed": []
+}

@@ -155,12 +155,25 @@ def identity(api, document) -> str:
     return api.harness_policy_identity(obj)
 
 
+def load_document(text):
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise FrozenContentError("DUPLICATE_JSON_KEY")
+            result[key] = value
+        return result
+    def reject_constant(value):
+        raise FrozenContentError("NON_JSON_NUMBER")
+    return json.loads(text, object_pairs_hook=unique, parse_constant=reject_constant)
+
+
 def main(argv) -> int:
     if len(argv) != 3 or argv[0] != "--repo-root":
         raise SystemExit("usage: identity_via_harness.py --repo-root <root> <frozen.json>")
     sys.path.insert(0, str(Path(argv[1]).resolve()))
     from research.weather_forward.v4 import a2_harness as api
-    document = json.loads(Path(argv[2]).read_text(encoding="utf-8"))
+    document = load_document(Path(argv[2]).read_text(encoding="utf-8"))
     print(json.dumps({"kind": document.get("kind"), "identity": identity(api, document),
                       "way": "H"}, sort_keys=True))
     return 0

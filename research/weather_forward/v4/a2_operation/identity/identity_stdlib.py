@@ -166,10 +166,23 @@ def identity(document) -> str:
     return digest(canonical_payload(document))
 
 
+def load_document(text):
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise FrozenContentError("DUPLICATE_JSON_KEY")
+            result[key] = value
+        return result
+    def reject_constant(value):
+        raise FrozenContentError("NON_JSON_NUMBER")
+    return json.loads(text, object_pairs_hook=unique, parse_constant=reject_constant)
+
+
 def main(argv) -> int:
     if len(argv) != 1:
         raise SystemExit("usage: identity_stdlib.py <frozen.json>")
-    document = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
+    document = load_document(Path(argv[0]).read_text(encoding="utf-8"))
     print(json.dumps({"kind": document.get("kind"), "identity": identity(document),
                       "way": "STDLIB"}, sort_keys=True))
     return 0

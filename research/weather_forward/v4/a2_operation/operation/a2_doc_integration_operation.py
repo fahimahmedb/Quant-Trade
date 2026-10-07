@@ -82,6 +82,19 @@ class StopOperation(Exception):
     """A predicate, linkage or code check failed; stop without writing a result."""
 
 
+def decode_context(text):
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ContextError("DUPLICATE_JSON_KEY")
+            result[key] = value
+        return result
+    def reject_constant(value):
+        raise ContextError("NON_JSON_NUMBER")
+    return json.loads(text, object_pairs_hook=unique, parse_constant=reject_constant)
+
+
 # --------------------------------------------------------------------------- context
 
 def _require_keys(value, keys, name):
@@ -97,13 +110,13 @@ def _require_text(value, name):
 
 
 def _require_sha40(value, name):
-    if type(value) is not str or not _SHA40.match(value):
+    if type(value) is not str or not _SHA40.fullmatch(value):
         raise ContextError(f"{name}:LOWERCASE_40_HEX_REQUIRED")
     return value
 
 
 def _require_record_id(value, name):
-    if type(value) is not str or not _RECORD_ID.match(value):
+    if type(value) is not str or not _RECORD_ID.fullmatch(value):
         raise ContextError(f"{name}:RECORD_ID_FORMAT")
     return value
 
@@ -115,8 +128,11 @@ def validate_context(context) -> dict:
         raise ContextError("context:UNSUPPORTED_SCHEMA")
     if context["branch"] not in ("D1", "D2"):
         raise ContextError("branch:D1_OR_D2_REQUIRED")
-    _require_text(context["output_directory"], "output_directory")
-    _require_text(context["result_file_name"], "result_file_name")
+    if context["output_directory"] != "/srv/a2out":
+        raise ContextError("output_directory:EXACT_AUTHORIZED_DIRECTORY_REQUIRED")
+    name = context["result_file_name"]
+    if type(name) is not str or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", name) is None:
+        raise ContextError("result_file_name:SINGLE_SAFE_FILE_NAME_REQUIRED")
     blobs = _require_keys(context["harness_source_blobs"], HARNESS_PRODUCTION_FILES,
                           "harness_source_blobs")
     for name in HARNESS_PRODUCTION_FILES:
@@ -150,25 +166,29 @@ def validate_context(context) -> dict:
             raise ContextError("D2:NO_RELEASE_SECTION_OR_OUTPUT_RECORD_ALLOWED")
     if release is not None:
         _require_keys(release, ("authorization", "approval_artifact", "ledger"), "release")
-        _validate_authorization(release["authorization"], "release.authorization")
-        artifact = _require_keys(release["approval_artifact"],
+        if release["authorization"] is not None:
+            _validate_authorization(release["authorization"], "release.authorization")
+        artifact = release["approval_artifact"]
+        if artifact is not None:
+            artifact = _require_keys(artifact,
                                  ("repository", "path", "commit", "blob"),
                                  "release.approval_artifact")
-        _require_text(artifact["repository"], "release.approval_artifact.repository")
-        _require_text(artifact["path"], "release.approval_artifact.path")
-        _require_sha40(artifact["commit"], "release.approval_artifact.commit")
-        _require_sha40(artifact["blob"], "release.approval_artifact.blob")
-        if type(release["ledger"]) is not list or not release["ledger"]:
-            raise ContextError("release.ledger:NON_EMPTY_ARRAY_REQUIRED")
-        for index, record in enumerate(release["ledger"]):
+            _require_text(artifact["repository"], "release.approval_artifact.repository")
+            _require_text(artifact["path"], "release.approval_artifact.path")
+            _require_sha40(artifact["commit"], "release.approval_artifact.commit")
+            _require_sha40(artifact["blob"], "release.approval_artifact.blob")
+        if release["ledger"] is not None and type(release["ledger"]) is not list:
+            raise ContextError("release.ledger:ARRAY_OR_ABSENT_REQUIRED")
+        for index, record in enumerate(release["ledger"] or []):
             _require_keys(record, ("disclosure_id", "output_id", "recipient_actor_id",
                                    "recipient_role", "cumulative_safety"),
                           f"release.ledger[{index}]")
             for key in record:
                 _require_text(record[key], f"release.ledger[{index}].{key}")
-        _require_record_id(log["output_record_id"], "log.output_record_id")
-        if log["output_record_id"] == log["input_record_id"]:
-            raise ContextError("log:OUTPUT_RECORD_ID_MUST_DIFFER")
+        if log["output_record_id"] is not None:
+            _require_record_id(log["output_record_id"], "log.output_record_id")
+            if log["output_record_id"] == log["input_record_id"]:
+                raise ContextError("log:OUTPUT_RECORD_ID_MUST_DIFFER")
     codes = context["accepted_detail_codes"]
     if type(codes) is not list or not codes or any(type(c) is not str or not c for c in codes):
         raise ContextError("accepted_detail_codes:NON_EMPTY_STRING_ARRAY_REQUIRED")
@@ -208,7 +228,7 @@ class Objects:
     __slots__ = ("binding", "input", "output", "policy", "executor", "recipient",
                  "approver", "read_authorization", "release_authorization", "ledger",
                  "execution_authority_sha", "input_record_id", "output_record_id",
-                 "incident_identifier", "accepted_codes", "branch")
+                 "incident_identifier", "accepted_codes", "branch", "approval_artifact")
 
 
 def _authorization(api, value):
@@ -247,18 +267,24 @@ def build_objects(api, build_object, context) -> Objects:
     objects.accepted_codes = frozenset(context["accepted_detail_codes"])
     objects.branch = context["branch"]
     release = context["release"]
+    objects.approval_artifact = None if release is None else release["approval_artifact"]
     if release is None:
         objects.release_authorization = None
         objects.ledger = None
     else:
-        objects.release_authorization = _authorization(api, release["authorization"])
-        if objects.release_authorization.action is not api.Action.RELEASE_OUTPUT:
+        # No AUTHORIZED release object is constructed when the proof is absent.
+        objects.release_authorization = (
+            _authorization(api, release["authorization"])
+            if release["authorization"] is not None and objects.approval_artifact is not None
+            else None
+        )
+        if objects.release_authorization is not None and objects.release_authorization.action is not api.Action.RELEASE_OUTPUT:
             raise ContextError("release.authorization:RELEASE_OUTPUT_REQUIRED")
         objects.ledger = api.CumulativeDisclosureLedger(tuple(
             api.DisclosureRecord(r["disclosure_id"], r["output_id"], r["recipient_actor_id"],
                                  api.Role(r["recipient_role"]),
                                  api.CumulativeDisclosureState(r["cumulative_safety"]))
-            for r in release["ledger"]
+            for r in (release["ledger"] or [])
         ))
     return objects
 
@@ -333,15 +359,27 @@ def release_prerequisites_present(api, objects) -> bool:
     decision are verified outside the process before launch; here only their
     presence and exact binding to the context are checked.
     """
-    if objects.branch != "D1" or objects.release_authorization is None:
+    if (objects.branch != "D1" or objects.release_authorization is None
+            or objects.approval_artifact is None):
         return False
     auth = objects.release_authorization
     return (auth.state is api.AuthorizationState.AUTHORIZED
             and auth.actor_id == objects.approver.actor_id
             and auth.declared_role is api.Role.RELEASE_APPROVER
+            and objects.approver.declared_role is api.Role.RELEASE_APPROVER
+            and objects.approver.actor_id != objects.recipient.actor_id
             and auth.authority_sha == objects.execution_authority_sha
-            and objects.ledger is not None and len(objects.ledger.records) > 0
-            and objects.output_record_id is not None)
+            and auth.action is api.Action.RELEASE_OUTPUT
+            and objects.ledger is not None
+            and objects.ledger.evaluate_for(objects.output.output_id, objects.recipient.actor_id,
+                                            objects.recipient.declared_role) is api.CumulativeDisclosureState.CLEAR
+            and objects.output.exportability is api.PermissionState.ALLOWED
+            and objects.output.quarantine_status is api.QuarantineState.CLEAR
+            and objects.output.efficacy_leakage_assessment is api.LeakageAssessment.CLEAR
+            and objects.output.cumulative_disclosure_risk is api.CumulativeDisclosureState.CLEAR
+            and objects.output_record_id is not None
+            and objects.output_record_id != objects.input_record_id
+            and OUTPUT_SUCCESS_CODE in objects.accepted_codes)
 
 
 # --------------------------------------------------------------------- execution
@@ -364,6 +402,8 @@ def execute(api, objects):
         record_id=objects.input_record_id,
     )
     _check_linkage(api, first, first_expected, ())
+    if first.decision.detail_code not in objects.accepted_codes:
+        raise StopOperation("DETAIL_CODE_OUTSIDE_ACCEPTED_SCOPE")
     evaluations = [first]
     if not release_prerequisites_present(api, objects):
         return EXIT_NORMAL_NO_RELEASE, evaluations, "INPUT_LINKED_RELEASE_NOT_ATTEMPTED"
@@ -453,7 +493,7 @@ def audit_decision(event, args, *, allowed_reads, blocked_caches, write_partial,
         return "DENY_CACHE"
     if text in allowed_reads:
         return "ALLOW"
-    if text.startswith(stdlib_root + "/") and "site-packages" not in text \
+    if text.startswith(stdlib_root + "/") and not {"site-packages", "dist-packages"}.intersection(text.split("/")) \
             and text.endswith((".py", ".pyc", ".so")):
         return "ALLOW"
     return "DENY_READ"
@@ -462,7 +502,6 @@ def audit_decision(event, args, *, allowed_reads, blocked_caches, write_partial,
 def _install_audit_hook(repo_root: Path, output_directory: str, result_name: str):
     import importlib.util
     import sysconfig
-    from research.weather_forward.v4.a2_operation.common.bounded_output import partial_name
     harness_dir = repo_root.joinpath(*HARNESS_PACKAGE_PATH)
     sources = [harness_dir / name for name in HARNESS_PRODUCTION_FILES]
     sources += [repo_root.joinpath(*parts) for parts in OPERATION_SOURCE_FILES]
@@ -470,7 +509,9 @@ def _install_audit_hook(repo_root: Path, output_directory: str, result_name: str
     caches = frozenset(str(Path(importlib.util.cache_from_source(p)).resolve()) for p in allowed)
     stdlib_root = str(Path(sysconfig.get_path("stdlib")).resolve())
     out_dir = Path(output_directory).resolve()
-    write_partial = str(out_dir / partial_name(result_name))
+    # Do not import a local helper before the cache-denying hook is installed.
+    # This spelling matches bounded_output.PARTIAL_PREFIX (covered by tests).
+    write_partial = str(out_dir / (".partial-" + result_name))
     final_path = str(out_dir / result_name)
 
     def normalized(value):
@@ -500,7 +541,7 @@ def run(argv) -> int:
         return EXIT_STOP
     repo_root = Path(argv[1]).resolve()
     try:
-        context = validate_context(json.loads(Path(argv[3]).read_text(encoding="ascii")))
+        context = validate_context(decode_context(Path(argv[3]).read_text(encoding="ascii")))
         harness_dir = repo_root.joinpath(*HARNESS_PACKAGE_PATH)
         verify_harness_blobs(lambda name: (harness_dir / name).read_bytes(),
                              context["harness_source_blobs"])
@@ -513,15 +554,30 @@ def run(argv) -> int:
     from research.weather_forward.v4.a2_operation.identity.identity_via_harness import build_object
     try:
         objects = build_objects(api, build_object, context)
+    except (ContextError, StopOperation, ValueError):
+        return EXIT_STOP
+    return finish(api, objects, bounded_output,
+                  context["output_directory"], context["result_file_name"])
+
+
+def finish(api, objects, bounded_output, directory, name) -> int:
+    """Shared sequence and bounded publication; tests provide an in-memory writer."""
+    try:
         code, evaluations, linkage = execute(api, objects)
+        if type(code) is not int or (code, len(evaluations), linkage) not in (
+            (EXIT_NORMAL_NO_RELEASE, 1, "INPUT_LINKED_RELEASE_NOT_ATTEMPTED"),
+            (EXIT_RELEASE_AUTHORIZED, 2, "INPUT_AND_RELEASE_LINKED"),
+        ):
+            raise StopOperation("UNEXPECTED_SEQUENCE_CODE_OR_SHAPE")
         payload = bounded_output.encode_result(build_result(api, objects, evaluations, linkage))
     except (ContextError, StopOperation, ValueError):
         return EXIT_STOP
     try:
-        bounded_output.write_bounded(context["output_directory"], context["result_file_name"],
-                                     payload)
+        bounded_output.write_bounded(directory, name, payload)
     except bounded_output.OutputLimitExceeded:
         return EXIT_OUTPUT_LIMIT
+    except (bounded_output.OutputTargetExists, bounded_output.InvalidOutputName):
+        return EXIT_STOP
     return code
 
 
@@ -531,9 +587,9 @@ def guarded(function, *args) -> int:
         code = function(*args)
     except BaseException:  # noqa: BLE001 - no traceback may reach stdout/stderr
         return EXIT_EXCEPTION
-    if code not in (EXIT_NORMAL_NO_RELEASE, EXIT_RELEASE_AUTHORIZED, EXIT_STOP,
+    if type(code) is not int or code not in (EXIT_NORMAL_NO_RELEASE, EXIT_RELEASE_AUTHORIZED, EXIT_STOP,
                     EXIT_EXCEPTION, EXIT_OUTPUT_LIMIT):
-        return EXIT_EXCEPTION
+        return EXIT_STOP
     return code
 
 

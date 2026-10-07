@@ -88,7 +88,7 @@ def probe_child(out_dir):
     except (RuntimeError, OSError) as error:
         observation["thread"] = type(error).__name__
     record(out_dir, "child", observation)
-    return EXIT_FORBIDDEN_COMPLETED if observation["fork"] == "CREATED" else EXIT_REFUSED_AS_EXPECTED
+    return EXIT_FORBIDDEN_COMPLETED if "CREATED" in observation.values() else EXIT_REFUSED_AS_EXPECTED
 
 
 def _attempt(family, kind, target):
@@ -109,11 +109,19 @@ def _attempt(family, kind, target):
         sock.close()
 
 
-def probe_network(out_dir):
+def probe_network(out_dir, host_netns_inode=None):
     try:
         interfaces = sorted(os.listdir("/sys/class/net"))
     except OSError as error:
         interfaces = ["UNREADABLE_" + errno.errorcode.get(error.errno, "?")]
+    isolated = (type(host_netns_inode) is int and host_netns_inode > 0
+                and os.stat("/proc/self/ns/net").st_ino != host_netns_inode)
+    # Check namespace separation before any socket is created. A documentation
+    # address is not intrinsically incapable of routing on an arbitrary host.
+    if interfaces != ["lo"] or not isolated:
+        record(out_dir, "network", {"interfaces": ["UNVERIFIED_LAYOUT"],
+                                    "namespace_isolated": False, "attempts": {}})
+        return EXIT_PROBE_ERROR
     attempts = {}
     for host, port in DOCUMENTATION_TARGETS:
         attempts[f"udp:{host}"] = _attempt(socket.AF_INET, socket.SOCK_DGRAM, (host, port))
@@ -121,7 +129,8 @@ def probe_network(out_dir):
     attempts["udp6:" + DOCUMENTATION_TARGET_V6[0]] = _attempt(
         socket.AF_INET6, socket.SOCK_DGRAM, DOCUMENTATION_TARGET_V6)
     reached = any(value in ("SENT", "CONNECTED") for value in attempts.values())
-    record(out_dir, "network", {"interfaces": interfaces, "attempts": attempts})
+    record(out_dir, "network", {"interfaces": interfaces, "namespace_isolated": isolated,
+                                "attempts": attempts})
     return EXIT_FORBIDDEN_COMPLETED if reached else EXIT_REFUSED_AS_EXPECTED
 
 
@@ -211,7 +220,10 @@ def probe_read(out_dir):
             if allowed is not None:
                 breached = True  # required path not visible: profile not as designed
             continue
-        observation[directory] = names
+        # Never serialize names from foreign directories or an unexpected layout.
+        observation[directory] = (names if allowed is not None and names == allowed
+                                  else "UNEXPECTED_LAYOUT" if allowed is not None
+                                  else "VISIBLE_ENTRIES" if names else "EMPTY")
         if allowed is None:
             breached = breached or bool(names)
         else:
@@ -264,8 +276,13 @@ def main(argv) -> int:
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--probe", required=True, choices=sorted(PROBES))
     parser.add_argument("--out-dir", default="/srv/a2out")
+    parser.add_argument("--host-netns-inode", type=int)
     options = parser.parse_args(argv)
     try:
+        bounded_output.write_bounded(options.out_dir, f"qual-{options.probe}-started.json",
+            bounded_output.encode_result({"probe": options.probe, "phase": "ENTERED"}))
+        if options.probe == "network":
+            return probe_network(options.out_dir, options.host_netns_inode)
         return PROBES[options.probe](options.out_dir)
     except Exception:  # noqa: BLE001 - reported only through the exit code
         return EXIT_PROBE_ERROR

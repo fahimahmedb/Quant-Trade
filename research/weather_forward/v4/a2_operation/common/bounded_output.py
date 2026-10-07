@@ -48,11 +48,11 @@ def write_bounded(directory: str, final_name: str, payload: bytes, *,
     """
     if type(payload) is not bytes:
         raise TypeError("BYTES_PAYLOAD_REQUIRED")
-    if type(max_bytes) is not int or max_bytes < 0:
-        raise ValueError("NON_NEGATIVE_INTEGER_BOUND_REQUIRED")
+    if type(max_bytes) is not int or not 0 <= max_bytes <= MAX_RESULT_BYTES:
+        raise ValueError("BOUND_MUST_NOT_EXCEED_64_KIB")
     if len(payload) > max_bytes:
         raise OutputLimitExceeded(f"PAYLOAD_{len(payload)}_EXCEEDS_{max_bytes}")
-    if type(final_name) is not str or not _NAME_PATTERN.match(final_name):
+    if type(final_name) is not str or not _NAME_PATTERN.fullmatch(final_name):
         raise InvalidOutputName("SINGLE_SAFE_FILE_NAME_REQUIRED")
     final_path = _os.path.join(directory, final_name)
     partial_path = _os.path.join(directory, partial_name(final_name))

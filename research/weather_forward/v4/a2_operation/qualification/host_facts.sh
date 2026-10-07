@@ -16,7 +16,7 @@ echo "SYSTEMD=$(systemctl --version | head -n 1)"
 echo "CGROUP_FS=$(stat -fc %T /sys/fs/cgroup)"
 echo "CGROUP_MEMORY_PEAK_FILE=$(ls /sys/fs/cgroup/system.slice/*/memory.peak >/dev/null 2>&1 && echo PRESENT || echo ABSENT)"
 echo "PYTHON3=$(command -v python3 || echo ABSENT)"
-python3 -c 'import sys; print("PYTHON_VERSION=" + sys.version.split()[0])' 2>/dev/null || echo "PYTHON_VERSION=UNAVAILABLE"
+python3 -I -S -B -c 'import sys; print("PYTHON_VERSION=" + sys.version.split()[0])' 2>/dev/null || echo "PYTHON_VERSION=UNAVAILABLE"
 echo "GIT=$(command -v git >/dev/null && echo PRESENT || echo ABSENT)"
 
 section "USERS_UID_GE_1000_NAMES"
