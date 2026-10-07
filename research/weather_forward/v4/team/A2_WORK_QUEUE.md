@@ -5,10 +5,10 @@ Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haik
 
 | Id | Tâche | Autorité | Dépend de | Agent | Niv. | Statut |
 |---|---|---|---|---|---|---|
-| Q1 | Consigner les gels L2-C (input) et L2-D (output D2) sur les blobs `f85205f3` et `7651de7e` | Acte Owner `9d0698b` §5, délégation | rien | orchestrateur | M | READY |
-| Q2 | L2-E : identités input et output par les deux voies, comparaison | Décision lot 2 `276fd99` | Q1 | builder | B | BLOCKED |
-| Q3 | L2-F : policy D2 (12 champs), gel, identité par les deux voies | idem | Q2 | builder | B | BLOCKED |
-| Q4 | L2-G : projet de configuration finale et d'autorité d'exécution E | idem, annexe A | Q3 | orchestrateur | T | BLOCKED |
+| Q1 | Consigner les gels L2-C (input) et L2-D (output D2) sur les blobs `f85205f3` et `7651de7e` | Acte Owner `9d0698b` §5, délégation | rien | builder (Codex n'a pas pu publier) | M | DONE : `245f193` |
+| Q2 | L2-E : identités input et output par les deux voies, comparaison | Décision lot 2 `276fd99` | Q1 | builder | B | DONE : identités input `5c55b855…`, output `b8157e4e…`, `1b6416b` |
+| Q3 | L2-F : policy D2 (12 champs), gel, identité par les deux voies | idem | Q2 | builder | B | DONE : gel `79f6e92`, identité `2f761da5…`, `51f49c8` |
+| Q4 | L2-G : projet de configuration finale et d'autorité d'exécution E | idem, annexe A | Q3 | builder (sous-agent Opus) | T | IN_PROGRESS |
 | Q5 | L2-G : ratifier la configuration finale, émettre E | Owner | Q4 | Owner | - | OWNER_GATED |
 | Q6 | L2-H : candidat trusted root (`trusted_root.py` seul) | idem | Q5 | builder | B | BLOCKED |
 | Q7 | L2-I : vérifications du candidat | idem | Q6 | builder | B | BLOCKED |

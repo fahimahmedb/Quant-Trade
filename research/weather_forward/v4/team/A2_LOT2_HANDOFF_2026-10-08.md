@@ -13,7 +13,11 @@ Lire cette fiche, puis seulement les passages cités. Chemins relatifs à `resea
 | Qualification VM (L2-A) | Reportée, non faite | commandes : `a2_operation/qualification/COMMANDS_VM_QUALIFICATION_2026-10-07.md` @ `1910994` |
 | Charte d'équipe | Projet, à ratifier | `team/A2_TEAM_CHARTER_DRAFT_2026-10-08.md`, PR #22 |
 
-## Prochaines actions
+## Mise à jour 2026-10-08 (charte ratifiée, `ca65c1b`)
+
+Q1 à Q3 terminées. Gels input/output/policy consignés (`245f193`, `79f6e92`) ; identités par deux voies concordantes : input `sha256:5c55b855…bbd00`, output `sha256:b8157e4e…90976`, policy `sha256:2f761da5…3de60` (preuves `a2_operation/evidence/` @ `51f49c8`). Q4 (projet E) en cours. **Limite connue : une tâche Codex ne publie rien sur GitHub sans « Create PR » ; ne pas lui confier d'écriture de fichiers.**
+
+## Prochaines actions (état antérieur)
 
 1. **Owner (ou son délégué)** : consigner les gels L2-C et L2-D sur les blobs `f85205f3` et `7651de7e`.
 2. **Builder, après les gels** : L2-E, identités input et output par les deux voies (`a2_operation/identity/`), puis L2-F : policy D2 avec les 10 valeurs non dérivées de D §14.2C (dossier `blue/BLUE_V4_A1_DOCUMENTATION_2026-10-04.md` @ `49d3d00`).
