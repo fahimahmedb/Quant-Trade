@@ -10,315 +10,57 @@ on:
 permissions:
   contents: read
 
-env:
-  PINNED_SHA: 45a431ec0c25abb70a6ee7e6409ab813d8635efc
-  MOD_PATH: research/edge_search/scouts/polymarket_neg_risk/neg_risk_collector.py
-
 jobs:
   screen:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout pinned implementation
+      - name: Checkout rerun implementation
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.PINNED_SHA }}
           fetch-depth: 1
 
-      - name: Verify exact implementation SHA
+      - name: Verify frozen economic collector is byte-identical
         shell: bash
         run: |
-          test "$(git rev-parse HEAD)" = "$PINNED_SHA"
+          test "$(git hash-object research/edge_search/scouts/polymarket_neg_risk/neg_risk_collector.py)" = "faffb23fc0c0fce0ad498b05681e2608d0f5b347"
           git diff --exit-code
 
-      - name: Run frozen synthetic tests
+      - name: Run frozen and measurement regression tests
         working-directory: research/edge_search/scouts/polymarket_neg_risk
-        run: python -m unittest -v test_neg_risk_collector.py
+        run: python -m unittest -v test_neg_risk_collector.py test_frozen_screen_measurement.py
 
-      - name: Execute frozen read-only screen
+      - name: Exact-entrypoint forced-failure diagnostic smoke
+        continue-on-error: true
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode smoke --simulate-failure --out-dir "$GITHUB_WORKSPACE/neg_risk_smoke_failure"
+
+      - name: Verify forced-failure diagnostic exists
+        if: always()
         shell: bash
         run: |
-          python - <<'PY'
-          from __future__ import annotations
-          import hashlib, json, os, sys, time, traceback
-          from collections import defaultdict
-          from decimal import Decimal
-          from pathlib import Path
-          from datetime import datetime, timezone
+          test -s neg_risk_smoke_failure/diagnostic.json
+          grep -q 'SIMULATED_ENTRYPOINT_FAILURE_FOR_DIAGNOSTIC_TEST' neg_risk_smoke_failure/diagnostic.json
 
-          PINNED_SHA = os.environ["PINNED_SHA"]
-          MOD_PATH = os.environ["MOD_PATH"]
-          OUT = Path("neg_risk_screen_output")
-          OUT.mkdir(exist_ok=False)
+      - name: Exact-entrypoint live smoke
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode smoke --out-dir "$GITHUB_WORKSPACE/neg_risk_smoke"
 
-          sys.path.insert(0, str(Path(MOD_PATH).parent))
-          import neg_risk_collector as nr
+      - name: Execute same frozen 60x10s read-only screen
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode run --out-dir "$GITHUB_WORKSPACE/neg_risk_rerun"
 
-          SNAPSHOTS = 60
-          INTERVAL_S = 10.0
-          MAX_EVENTS = 10
-          MAX_SKEW_MS = 1000
-          THRESHOLD_USDC = Decimal("0.10")
-          THRESHOLD_BPS = Decimal("10")
-
-          def now_utc():
-              return datetime.now(timezone.utc).isoformat()
-
-          def event_key(s):
-              return (0, int(s.event_id)) if s.event_id.isdigit() else (1, s.event_id)
-
-          def fee_obj(f):
-              return {"rate": str(f.rate), "exponent": str(f.exponent)}
-
-          def extra_book_contract(books):
-              for token, b in books.items():
-                  for k in ("bids", "asks", "timestamp", "hash", "min_order_size", "tick_size", "neg_risk"):
-                      if k not in b:
-                          raise nr.DataContractError(f"book missing required field {k}")
-                  if not isinstance(b["bids"], list) or not isinstance(b["asks"], list):
-                      raise nr.DataContractError("book bids/asks are not lists")
-                  nr.dec(b["tick_size"], "tick_size")
-                  if not str(b["hash"]):
-                      raise nr.DataContractError("empty book hash")
-
-          def depth_for_route(event, books, source_market_id):
-              src = next(m for m in event.markets if m.market_id == source_market_id)
-              buy_book = books[src.no_token]
-              buy_avail = sum(nr.dec(x["size"], "size") for x in buy_book.get("asks", []))
-              sells = {}
-              for m in event.markets:
-                  if m.market_id == source_market_id:
-                      continue
-                  sells[m.market_id] = str(sum(nr.dec(x["size"], "size") for x in books[m.yes_token].get("bids", [])))
-              return {"buy_no_available_shares": str(buy_avail), "sell_yes_available_shares": sells}
-
-          manifest = {
-              "run_started_utc": now_utc(),
-              "pinned_implementation_sha": PINNED_SHA,
-              "implementation_path": MOD_PATH,
-              "real_capital_authorized": False,
-              "live_trading_authorized": False,
-              "wallet_used": False,
-              "orders_used": False,
-              "conversion_used": False,
-              "settlement_outcomes_used": False,
-              "universe_rule": "standard neg-risk, exactly 3 component markets, deterministic event-id order, max 10",
-              "snapshots_requested": SNAPSHOTS,
-              "interval_s": INTERVAL_S,
-              "max_skew_ms": MAX_SKEW_MS,
-              "threshold_rule": "max(0.10 pUSD, 10 bp * total traded gross notional)",
-          }
-
-          audit_rows = []
-          all_route_rows = []
-          data_contract_blocker = False
-          blocker = None
-
-          try:
-              raw_probe, probe = nr._request("GET", f"{nr.GAMMA}/events?closed=false&order=id&ascending=true&limit=1&offset=0")
-              if not isinstance(probe, list):
-                  raise nr.DataContractError("Gamma preflight events response is not a list")
-              manifest["gamma_preflight_sha256"] = hashlib.sha256(raw_probe).hexdigest()
-
-              events_payload = nr.list_open_events()
-              manifest["gamma_discovery_sha256"] = hashlib.sha256(json.dumps(events_payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-
-              eligible = []
-              reject_counts = defaultdict(int)
-              for e in events_payload:
-                  try:
-                      s = nr.normalize_standard_neg_risk_event(e)
-                      if len(s.markets) != 3:
-                          reject_counts["component_count_not_exactly_3"] += 1
-                          continue
-                      eligible.append(s)
-                  except nr.DataContractError as ex:
-                      reject_counts[str(ex)] += 1
-              eligible.sort(key=event_key)
-              selected0 = eligible[:MAX_EVENTS]
-
-              selected = []
-              for first in selected0:
-                  current = nr.refetch_event(first.event_id)
-                  if len(current.markets) != 3:
-                      raise nr.DataContractError(f"event component count changed from exactly 3: {first.event_id}")
-                  if {m.condition_id for m in current.markets} != {m.condition_id for m in first.markets}:
-                      raise nr.DataContractError(f"event component set changed during completeness refetch: {first.event_id}")
-                  selected.append(current)
-
-              manifest["events_eligible"] = len(eligible)
-              manifest["events_sampled"] = len(selected)
-              manifest["selected_event_ids"] = [e.event_id for e in selected]
-              manifest["rejection_counts"] = dict(sorted(reject_counts.items()))
-
-              if not selected:
-                  blocker = "NO_ELIGIBLE_EXACTLY_3_STANDARD_NEG_RISK_EVENTS"
-              else:
-                  pre_raw, pre_payload = nr.snapshot_event(selected[0])
-                  pre_books = nr.index_books(pre_payload, selected[0].token_ids)
-                  extra_book_contract(pre_books)
-                  manifest["clob_books_preflight_sha256"] = hashlib.sha256(pre_raw).hexdigest()
-                  manifest["clob_books_preflight_event_id"] = selected[0].event_id
-                  manifest["preflight"] = "PASS"
-
-                  for n in range(SNAPSHOTS):
-                      cycle_start = time.monotonic()
-                      cycle_valid = 0
-                      for event in selected:
-                          request_utc = now_utc()
-                          try:
-                              raw, payload = nr.snapshot_event(event)
-                              raw_sha = hashlib.sha256(raw).hexdigest()
-                              books = nr.index_books(payload, event.token_ids)
-                              extra_book_contract(books)
-                              tss = [nr.timestamp_ms(b) for b in books.values()]
-                              skew = max(tss) - min(tss)
-                              record_base = {
-                                  "snapshot_n": n,
-                                  "request_utc": request_utc,
-                                  "event_id": event.event_id,
-                                  "token_ids": list(event.token_ids),
-                                  "raw_sha256": raw_sha,
-                                  "book_timestamps_ms": {t: nr.timestamp_ms(b) for t, b in books.items()},
-                                  "book_hashes": {t: str(b["hash"]) for t, b in books.items()},
-                                  "max_timestamp_skew_ms": skew,
-                                  "fee_schedules": {m.market_id: fee_obj(m.fee) for m in event.markets},
-                              }
-                              if skew > MAX_SKEW_MS:
-                                  record_base["valid"] = False
-                                  record_base["invalid_reason"] = "TIMESTAMP_SKEW_GT_1000MS"
-                                  audit_rows.append(record_base)
-                                  continue
-                              routes = nr.evaluate_routes(event, payload, max_skew_ms=MAX_SKEW_MS)
-                              cycle_valid += 1
-                              route_objs = []
-                              for r in routes:
-                                  rbps = (r.gap / r.gross_traded_notional * Decimal("10000")) if r.gross_traded_notional else None
-                                  row = {
-                                      "snapshot_n": n,
-                                      "request_utc": request_utc,
-                                      "event_id": r.event_id,
-                                      "source_market": r.source_market_id,
-                                      "q": str(r.q),
-                                      "buy_cost": str(r.buy_cost),
-                                      "sell_proceeds": str(r.sell_proceeds),
-                                      "taker_fees": str(r.taker_fees),
-                                      "net_gap": str(r.gap),
-                                      "gross_traded_notional": str(r.gross_traded_notional),
-                                      "net_gap_bps": str(rbps) if rbps is not None else None,
-                                      "threshold": str(r.threshold),
-                                      "threshold_exceeded": bool(r.violation),
-                                      "max_timestamp_skew_ms": skew,
-                                      "depth": depth_for_route(event, books, r.source_market_id),
-                                  }
-                                  route_objs.append(row)
-                                  all_route_rows.append(row)
-                              record_base["valid"] = True
-                              record_base["routes"] = route_objs
-                              audit_rows.append(record_base)
-                          except nr.DataContractError as ex:
-                              data_contract_blocker = True
-                              blocker = f"DATA_CONTRACT_ERROR: {ex}"
-                              audit_rows.append({"snapshot_n": n, "request_utc": request_utc, "event_id": event.event_id, "valid": False, "fatal_data_contract_error": str(ex)})
-                              raise
-                      audit_rows.append({"snapshot_n": n, "cycle_summary": True, "events_valid": cycle_valid, "events_sampled": len(selected)})
-                      if n + 1 < SNAPSHOTS:
-                          elapsed = time.monotonic() - cycle_start
-                          time.sleep(max(0.0, INTERVAL_S - elapsed))
-
-          except nr.DataContractError:
-              data_contract_blocker = True
-          except Exception as ex:
-              blocker = f"UNEXPECTED_RUNTIME_ERROR: {type(ex).__name__}: {ex}"
-              manifest["unexpected_traceback"] = traceback.format_exc()
-
-          by_route = defaultdict(list)
-          exceedance_events = set()
-          for row in all_route_rows:
-              key = (row["event_id"], row["source_market"])
-              by_route[key].append(row)
-              if row["threshold_exceeded"]:
-                  exceedance_events.add(row["event_id"])
-
-          persistence = {}
-          persistent_routes = []
-          for key, rows in by_route.items():
-              idx = sorted({int(r["snapshot_n"]) for r in rows if r["threshold_exceeded"]})
-              chosen = []
-              last = -10**9
-              for i in idx:
-                  if i - last >= 2:
-                      chosen.append(i)
-                      last = i
-              persistence[key] = len(chosen)
-              if len(chosen) >= 3:
-                  persistent_routes.append(key)
-
-          structural = bool(persistent_routes or len(exceedance_events) >= 2)
-          best = max(all_route_rows, key=lambda r: Decimal(r["net_gap"])) if all_route_rows else None
-          if data_contract_blocker:
-              decision = "KEEP_AS_RESERVE"
-              primary_state = "SCREEN_STOPPED_DATA_CONTRACT_BLOCKER"
-          elif blocker:
-              decision = "KEEP_AS_RESERVE"
-              primary_state = "SCREEN_NOT_COMPLETED"
-          elif structural:
-              decision = "PROMOTE_TO_CONVERSION_COST_LATENCY_VALIDATION"
-              primary_state = "STRUCTURAL_VIOLATION"
-          else:
-              decision = "KILL"
-              primary_state = "NO_MATERIAL_QUOTE_SPACE_VIOLATION_IN_SCREEN"
-
-          cycle_summaries = [r for r in audit_rows if r.get("cycle_summary")]
-          valid_rounds = sum(1 for r in cycle_summaries if r["events_valid"] == r["events_sampled"] and r["events_sampled"] > 0)
-          valid_event_snapshots = sum(1 for r in audit_rows if r.get("valid") is True)
-          threshold_exceedances = sum(1 for r in all_route_rows if r["threshold_exceeded"])
-
-          best_out = None
-          if best:
-              key = (best["event_id"], best["source_market"])
-              best_out = dict(best)
-              best_out["persistence_count"] = persistence.get(key, 0)
-
-          summary = {
-              "preflight": manifest.get("preflight", "BLOCKED" if data_contract_blocker else "NO_SAMPLE"),
-              "events_eligible": manifest.get("events_eligible", 0),
-              "events_sampled": manifest.get("events_sampled", 0),
-              "snapshots_requested": SNAPSHOTS,
-              "snapshot_rounds_valid": valid_rounds,
-              "valid_event_snapshots": valid_event_snapshots,
-              "routes_evaluated": len(all_route_rows),
-              "threshold_exceedances": threshold_exceedances,
-              "persistent_routes": len(persistent_routes),
-              "events_with_exceedance": sorted(exceedance_events),
-              "best_route": best_out,
-              "structural_violation": structural,
-              "primary_state": primary_state,
-              "decision": decision,
-              "data_contract_blocker": data_contract_blocker,
-              "blocker": blocker,
-              "real_capital_authorized": False,
-              "live_trading_authorized": False,
-              "run_finished_utc": now_utc(),
-          }
-
-          manifest["run_finished_utc"] = summary["run_finished_utc"]
-          manifest["data_contract_blocker"] = data_contract_blocker
-          manifest["blocker"] = blocker
-
-          (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True, default=str) + "\n")
-          (OUT / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True, default=str) + "\n")
-          with (OUT / "snapshot_audit.jsonl").open("w") as f:
-              for row in audit_rows:
-                  f.write(json.dumps(row, sort_keys=True, default=str, separators=(",", ":")) + "\n")
-          print(json.dumps(summary, indent=2, sort_keys=True, default=str))
-          PY
-
-      - name: Upload compact audit evidence
+      - name: Upload scientific audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: polymarket-neg-risk-readonly-screen
-          path: neg_risk_screen_output/
+          name: polymarket-neg-risk-readonly-screen-v2
+          path: |
+            neg_risk_smoke_failure/
+            neg_risk_smoke/
+            neg_risk_rerun/
           if-no-files-found: error
           retention-days: 30
