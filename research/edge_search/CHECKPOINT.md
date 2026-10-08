@@ -1,11 +1,10 @@
-# CHECKPOINT (overwritten at each significant batch; resume from this + exact refs)
+# CHECKPOINT (overwritten at each significant batch)
 
-STATE (2026-10-08 ~15:45Z): Owner reset = FIND A REAL EDGE. Boards: Codex `d85c5df`, Claude `c413057` + erratum `aa1222b`. TOP 3 provisional: F1 CRYPTO-CARRY, F2 KALSHI-FLB-OOS, F3 FORM4-HIST. Nothing downloaded.
-F1 (`research/crypto_carry_f1/`): prereg Rev1+R11-R13, analysis harness + 21 synthetic tests, acquisition script, 471-symbol candidate list (sha `f586b666…`); independent prereg and code reviews applied (`d36f137`).
-F2 (`research/kalshi_flb_f2/`): prereg Rev1+R16, analysis harness (11 tests), acquisition stages list/candles/meta/assemble (6 offline tests); independent prereg review applied. Developer Agreement UNREAD (429) -> acquisition gated.
+STATE (2026-10-08 16:16Z): Owner EDGE-FLOW baseline (PR comment 6064142254). PRIMARY = FIND_OR_FALSIFY_REAL_EDGE. ACTIVE_WIP = 1: F1 CRYPTO-CARRY-001. F2 = BLOCKED (Kalshi Developer Agreement unreadable, 429). F3 and any new family: not before the F1 verdict. A2 frozen.
+F1: harness frozen `a895e1a` (worktree scratchpad/f1_frozen); Stage A acquisition running (~21.1k files, ~2.3 h, out dir scratchpad/f1data/stageA); Stage B download running in parallel, no decompression (R14, `97378c1`, out dir scratchpad/f1data/stageB_sealed).
 
-OPEN QUESTIONS: (1) Codex challenge `ATTENTE[EB2]` to 16:30Z (Codex quota-limited). (2) F2: proceed on documented key-free endpoints without the agreement text, or wait? Default: wait. (3) F3 blocked: SEC User-Agent needs an Owner-approved contact string (never the Owner's e-mail unprompted); no delisting-inclusive free price source. Fallback third family: BREADTH-TSMOM (Yahoo ETFs 2008+, grey ToS).
+OPEN: Codex = FALSIFIER at return (quota-limited). F3 SEC contact string (Owner), only after F1 verdict.
 
-LAST VERIFIED SHA: remote branch head `d36f137` + F2 stages (next commit).
+LAST VERIFIED SHA: `97378c1`.
 
-NEXT: (a) after 16:30Z, freeze F1 harness, run Stage A acquisition (sequential 5 rps, ~2-3 h), run Stage A harness once; (b) independent review of acquire_f2 + run_f2; (c) record RESULT->LESSON->PRIORITY->NEXT for each.
+NEXT: (1) Stage A harness single run -> publish verbatim + RESULT block; (2) falsifier pass (max 2 rounds) -> Stage B single run -> FAMILY_STATUS.
