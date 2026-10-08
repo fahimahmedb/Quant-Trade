@@ -73,3 +73,31 @@ Decision at 00:00 UTC of day t+1 using funding settled through the end of day t.
 ## 7. Known limits (disclosed)
 
 Daily bars cannot represent intraday liquidation paths; the proxy is conservative on direction but coarse. Exchange-failure and withdrawal risk (FTX-type) are not in the sample. The effective sample is days, not symbols. A positive result is a research screen for shadow follow-up, not authority for the Book, and the dataset's licence forbids live proprietary use. A reversal expression (Codex P1) is **not** part of this registration.
+
+---
+
+# Revision 1 (supersedes any conflicting text above; written before any outcome data was read)
+
+Source: independent adversarial review (no P0; ten P1 ambiguities, several P2). Arithmetic was re-verified: z = 2.539 / 2.773 (two-sided) / F2 2.128; window 1,004 days = 2.751 years; MDE Sharpe 1.53; 80% power needs 2.04; exclusion cutoff 0.51. Note from the review: power at a true Sharpe of 1.5 is only about 48%.
+
+**R1. Funding-row timing.** The decision at the close of day t (00:00 UTC of day t+1) uses rows with timestamp ≤ that instant minus one second, i.e. through day t. A position entered at that instant earns only funding rows with timestamp **strictly greater** than the entry timestamp and **at or before** the exit timestamp. The 00:00:00 row at entry is not earned; the 00:00:00 row at exit is earned.
+
+**R2. Portfolio mechanics.** Weight at entry = min(10%, 1/k) of current NAV, where k is the number of positions open after that day's entries; weights are **never resized**; the cap is checked at entry only. NAV compounds daily; days with no exposure are included in the return series with r = 0. Positions still open at 2026-09-30 are closed at that day's close with exit costs.
+
+**R3. Ledger and liquidation.** Positions are held in coin quantities: spot quantity = perp quantity = q, fixed at entry, with perp notional N = weight × NAV × 3/4 (capital = 4/3 N). Daily P&L = q × (Δ spot close − Δ perp close) + funding, where funding = realised rate × q × that day's perp close (declared approximation of mark). Liquidation check starts with the first daily bar **after** the entry close, against `entry_perp_close × 1.25`. On a trigger day, perp P&L for that day is `−q × (1.25 × ref − previous perp close)` (replacing, not adding to, the close-to-close perp P&L), the spot leg is sold at that day's close with the spot fee and slippage, a 1% penalty on perp notional applies, and the symbol is barred for 30 days.
+
+**R4. Standard error.** The gate uses `max(SE_NW(7 lags), SE_NW(21 lags))`. The reference distribution stays normal; it cannot be changed after observation.
+
+**R5. Labels.** The "REJECTED" status is renamed `NOT_CONFIRMED_EXCLUDES_SR_1.5` and is computed with the same SE as the gate: `SR_hat + 1.645 · SE_SR < 1.5`, where `SE_SR = SE_mean / sd_daily × √365`. It means only that a Sharpe of 1.5 is excluded, not that no edge exists. Other outcomes: `CONFIRMED` (statistical screen against zero), `INCONCLUSIVE_UNDERPOWERED`.
+
+**R6. Cash hurdle (reporting).** The gate remains a test against zero. The report headline also shows the mean excess over an assumed cash yield of 4.0% annualised (ASSUMED for 2024–2026, not verified), and states that a confirmed carry below that hurdle has no economic value after cost of capital. Any later discussion of promotion uses the excess figure.
+
+**R7. Format safety.** Before freezing, the harness has unit tests with synthetic fixtures covering: second and microsecond/millisecond timestamps, files with and without header rows, funding intervals of 1/4/8 hours, missing days. It **fails closed**: an unrecognised timestamp magnitude, header, column count or checksum aborts the run without printing or persisting any statistic. An aborted run with no statistic is an infrastructure failure and is re-runnable after a fix published with its reason; any run that printed or persisted a statistic is an outcome read and is not re-runnable. No Stage B file is opened to inspect formats.
+
+**R8. Warm-up.** The Stage B manifest lists the 2023-11 and 2023-12 funding and bar files as warm-up only. Trading is flat until 2024-01-01 and P&L counts only from that date.
+
+**R9. Quarter criterion.** At least 6 of the 11 calendar quarters in the sealed window must have positive net return; a quarter with zero exposure counts as not positive.
+
+**R10. Terms.** The primary Binance Vision terms text is re-read at freeze time and its sha256 recorded; the earlier "permitted non-commercial" reading comes from a summary and is not relied on until then. If the repository is public, derived statistics carry the CC BY-NC-SA attribution.
+
+**P2 dispositions.** (a) Report the exposure fraction (share of days with at least one open position) for each cell; a cell with exposure under 10% of days in Stage B is flagged `DEGENERATE_EXPOSURE` and is not eligible for `CONFIRMED`. (b) The Bonferroni m = 3 is conservative (only the cell selected on Stage A is eligible, so 2.539 is not a required minimum for a single pre-selected cell); the stricter value is kept on purpose. (c) Exact string matching between spot and perp symbols can pair different assets after a rename or relaunch; the bias is disclosed, and 1000-prefixed names are excluded, which removes many high-funding memecoins. (d) A spot delisting while the perp lives is not modelled beyond the 30-day bar. (e) Only complete 7-day funding windows (7 daily sums) generate a signal. (f) The BNB fee discount is not assumed. (g) The claim that the premium turned negative in 2025 and the 11%/year shrinkage figure are literature claims not verified by this project's reviewers.
