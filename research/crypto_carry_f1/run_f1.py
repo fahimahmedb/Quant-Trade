@@ -235,8 +235,17 @@ def simulate(syms, theta, cost_mult, d_first, d_last):
     rets, exposure_days, liqs, forced = [], 0, 0, 0
     parts = {"funding": 0.0, "basis": 0.0, "fees": 0.0, "liquidation_penalty": 0.0}
 
-    def exit_cost(p, s, dd, mult):
-        return mult * p["q"] * (s.spot[dd]["close"] * (FEE_SPOT + p["slip"]) + s.perp[dd]["close"] * (FEE_PERP + p["slip"]))
+    def top20_on(dd):
+        el = {}
+        for k, sd in syms.items():
+            ok, m = sd.eligible(dd)
+            if ok:
+                el[k] = m
+        return set(sorted(el, key=lambda k: (-el[k], k))[:20])
+
+    def exit_cost(p, s, dd, mult, sym):
+        slip = SLIP_TOP if sym in top20_on(dd) else SLIP_REST   # R12: exit-day (dd) liquidity rank
+        return mult * p["q"] * (s.spot[dd]["close"] * (FEE_SPOT + slip) + s.perp[dd]["close"] * (FEE_PERP + slip))
 
     for d in range(d_first, d_last + 1):
         nav_start = nav
@@ -247,7 +256,7 @@ def simulate(syms, theta, cost_mult, d_first, d_last):
             p, s = pos[sym], syms[sym]
             if d not in s.spot or d not in s.perp:
                 # R12: bar gap/delisting while open -> forced exit at the last available close (day d-1)
-                c = exit_cost(p, s, d - 1, cost_mult)
+                c = exit_cost(p, s, d - 1, cost_mult, sym)
                 nav -= c
                 parts["fees"] += c
                 barred[sym] = d + BAR_DAYS
@@ -413,17 +422,27 @@ def snapshot(data_dir):
     return sorted(snap)
 
 
-def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None):
+def select_theta(cells):
+    """Stage A selection rule: highest base Sharpe, ties -> larger theta."""
+    return max(THETAS, key=lambda th: (round(cells[str(th)]["base"]["sharpe_annual"], 12), th))
+
+
+def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None, stage_a_sha256=None):
     cfg = STAGES[stage]
     me = sha256_file(os.path.abspath(__file__))
     snap0 = snapshot(data_dir)
     selected = None
     if stage == "STAGE_B":
+        # Authenticate the published Stage A result before any Stage B byte is read.
+        if not stage_a_sha256 or sha256_file(stage_a_result) != stage_a_sha256:
+            raise FormatError("Stage A result missing or does not match the published sha256")
         with open(stage_a_result) as f:
             sa = json.load(f)
-        if sa.get("stage") != "STAGE_A" or sa.get("selected_theta") not in THETAS:
-            raise FormatError("invalid Stage A result")
-        selected = sa["selected_theta"]
+        if sa.get("stage") != "STAGE_A" or sa.get("harness_sha256") != me:
+            raise FormatError("Stage A result produced by a different harness")
+        selected = select_theta(sa["cells"])
+        if sa.get("selected_theta") != selected:
+            raise FormatError("Stage A selected_theta inconsistent with its cells")
     names = manifest_names or [f"manifest_{stage}.jsonl"]
     allowed = read_manifest(data_dir, names)
     syms_list = sorted(os.listdir(os.path.join(data_dir, "funding")))
@@ -451,8 +470,7 @@ def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None):
                           "excess_over_cash_annualised_base": b["excess_over_cash_daily"] * 365.0}
     out = {"stage": stage, "harness_sha256": me, "n_symbols": len(syms), "cells": cells}
     if stage == "STAGE_A":
-        best = max(THETAS, key=lambda th: (round(cells[str(th)]["base"]["sharpe_annual"], 12), th))
-        out["selected_theta"] = best
+        out["selected_theta"] = select_theta(cells)
     else:
         out["selected_theta"] = selected
     # late-mutation invalidation: harness source and data directory must be unchanged
@@ -471,5 +489,5 @@ def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None):
 
 if __name__ == "__main__":
     a = sys.argv[1:]
-    res = run(a[0], a[1], a[2], a[3] if len(a) > 3 else None)
+    res = run(a[0], a[1], a[2], a[3] if len(a) > 3 else None, None, a[4] if len(a) > 4 else None)
     print(json.dumps({"stage": res["stage"], "written": a[2]}))

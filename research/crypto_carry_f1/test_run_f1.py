@@ -323,5 +323,88 @@ class Extra(unittest.TestCase):
         self.assertAlmostEqual(diag["final_nav"], 1 - cost + 3 * N * 0.0009 - cost, places=12)
 
 
+
+
+class StageAuth(Patched):
+    def _stage_a(self, t, n=100):
+        data = fixture(t, n)
+        write_manifest(data, "STAGE_A")
+        self.patch(n)
+        p = os.path.join(t, "res", "a.json")
+        r.run("STAGE_A", data, p)
+        return data, p
+
+    def test_stage_b_rejects_missing_or_wrong_sha(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as t:
+            data, p = self._stage_a(t)
+            write_manifest(data, "STAGE_B")
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_B", data, os.path.join(t, "res", "b.json"), p)
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_B", data, os.path.join(t, "res", "b.json"), p, None, "0" * 64)
+
+    def test_stage_b_rejects_tampered_selection(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as t:
+            data, p = self._stage_a(t)
+            sa = json.load(open(p))
+            sa["selected_theta"] = [x for x in r.THETAS if x != sa["selected_theta"]][0]
+            q = os.path.join(t, "tampered.json")
+            with open(q, "w") as f:
+                json.dump(sa, f)
+            h = hashlib.sha256(open(q, "rb").read()).hexdigest()
+            write_manifest(data, "STAGE_B")
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_B", data, os.path.join(t, "res", "b.json"), q, None, h)
+
+    def test_stage_b_rejects_other_harness(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as t:
+            data, p = self._stage_a(t)
+            sa = json.load(open(p))
+            sa["harness_sha256"] = "f" * 64
+            q = os.path.join(t, "other.json")
+            with open(q, "w") as f:
+                json.dump(sa, f)
+            h = hashlib.sha256(open(q, "rb").read()).hexdigest()
+            write_manifest(data, "STAGE_B")
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_B", data, os.path.join(t, "res", "b.json"), q, None, h)
+
+
+class ForcedExitSlip(unittest.TestCase):
+    def test_forced_exit_uses_exit_day_rank(self):
+        # 21 liquid symbols; the traded one becomes the least liquid before its delisting gap,
+        # so its forced-exit slippage must be the 10 bp rate, not the 2 bp entry rate.
+        from collections import defaultdict
+        n = 120
+        e = D0 + 59
+        syms = {}
+        for i in range(21):
+            name = f"S{i:02d}USDT"
+            rr = {"funding": defaultdict(list), "spot": {}, "perp": {}}
+            for d in range(D0, D0 + n):
+                qv = 1e9 - i * 1e6
+                if i == 0 and d >= e + 5:
+                    qv = 6e6          # still eligible (median >= 5e6) but ranked last afterwards
+                rr["spot"][d] = {"high": 100.0, "close": 100.0, "qv": qv}
+                rr["perp"][d] = {"high": 100.0, "close": 100.0, "qv": qv}
+            rate = 0.0003 if i == 0 else 0.0
+            for d in range(D0, D0 + n + 1):
+                for h in (0, 8, 16):
+                    rr["funding"][d * r.DAY_MS + h * 3_600_000].append(rate)
+            syms[name] = r.SymData(name, rr)
+        gap = e + 60
+        for d in range(gap, D0 + n):
+            del syms["S00USDT"].spot[d]
+            del syms["S00USDT"].perp[d]
+        _, diag = r.simulate(syms, 0.20, 1.0, D0, D0 + n - 1)
+        self.assertEqual(diag["forced_exits"], 1)
+        N = 0.1 * 0.75
+        entry = N * (0.001 + 0.0002 + 0.0005 + 0.0002)
+        exit_rest = N * (0.001 + 0.0010 + 0.0005 + 0.0010)
+        self.assertAlmostEqual(diag["components"]["fees"], entry + exit_rest, places=12)
+
 if __name__ == "__main__":
     unittest.main()
