@@ -156,6 +156,13 @@ class Selection(unittest.TestCase):
         self.assertEqual(b4.select_lookback({21: 0.1, 63: 0.2, 126: 0.15, 252: 0.3}), 252)
         self.assertEqual(b4.select_lookback({21: 0.1, 63: 0.2 + 1e-9, 126: 0.15, 252: 0.1}), 63)
 
+    def test_tie_is_measured_from_the_maximum_not_chained(self):
+        # 21 is within 1e-12 of 63 but 63 is the smallest L within 1e-12 of the MAXIMUM (126): must be 63, not 21 or 126.
+        scores = {21: 0.0, 63: 0.6e-12, 126: 1.2e-12, 252: -1.0}
+        self.assertEqual(b4.select_lookback(scores), 63)
+        self.assertEqual(b4.select_lookback({21: 0.0, 63: 0.5e-12, 126: 0.9e-12, 252: -1.0}), 21)
+        self.assertEqual(b4.select_lookback({21: 0.0, 63: 2e-12, 126: 0.0, 252: 0.0}), 63)
+
 
 class Criteria(unittest.TestCase):
     def good(self, **over):
@@ -353,6 +360,42 @@ class WritePolicy(unittest.TestCase):
             self.assertFalse(missing.parent.exists())
         for sub in ("data", "var", "src"):
             self.assertEqual(b4.main(["run_b4.py", str(ROOT / sub / "b4.json")]), 2)
+
+    def _stub_compute(self):
+        original = b4.compute
+        b4.compute = lambda *a, **k: {"all_criteria_true": False, "x": 1.0}
+        return original
+
+    def test_main_writes_a_valid_result_with_a_stubbed_computation(self):
+        import json
+        original = self._stub_compute()
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp) / "r.json"
+                self.assertEqual(b4.main(["run_b4.py", str(target)]), 0)
+                doc = json.loads(target.read_text())
+                self.assertEqual((doc["RESULT"], doc["return_code"], doc["DISCOVERY_CLAIM"]), ("FAMILY_REJECTED", 0, False))
+        finally:
+            b4.compute = original
+
+    def test_a_late_filesystem_change_invalidates_the_persisted_result(self):
+        import json
+        original, original_delta = self._stub_compute(), b4.delta
+        calls = []
+
+        def fake_delta(before, after):
+            calls.append(1)
+            return [] if len(calls) == 1 else ["/repo/unexpected"]
+        b4.delta = fake_delta
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp) / "r.json"
+                self.assertEqual(b4.main(["run_b4.py", str(target)]), 3)
+                doc = json.loads(target.read_text())
+                self.assertEqual((doc["RESULT"], doc["return_code"]), ("INVALID_INPUT", 3))
+                self.assertIn("after the result write", doc["problems"][-1])
+        finally:
+            b4.compute, b4.delta = original, original_delta
 
     def test_snapshot_delta_and_bytecode_flag(self):
         self.assertTrue(sys.dont_write_bytecode)

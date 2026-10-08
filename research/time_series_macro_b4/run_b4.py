@@ -264,12 +264,9 @@ def common_discovery_rows(rows: list[dict], bounds: tuple[str, str]) -> list[dic
 
 
 def select_lookback(scores: dict) -> int:
-    """Highest net central discovery Sharpe; ties within 1e-12 go to the smaller L (a later L must win by more than TIE)."""
-    best = None
-    for L in sorted(scores):
-        if best is None or scores[L] > scores[best] + TIE:
-            best = L
-    return best
+    """Highest net central discovery Sharpe; among all scores within 1e-12 of that maximum, the smallest L."""
+    top = max(scores.values())
+    return min(L for L, score in scores.items() if score >= top - TIE)
 
 
 def evaluate_family(panel: PricePanel, bounds=BOUNDS) -> dict:
@@ -418,6 +415,12 @@ def main(argv: list[str]) -> int:
     if unexpected:
         print(f"FILESYSTEM DELTA BEYOND THE RESULT FILE: {unexpected[:5]}")
         rc = 3
+        # The only persistent artefact must not claim a valid trial: rewrite our own file as invalid.
+        result.update({"RESULT": "INVALID_INPUT", "return_code": 3,
+                       "problems": result.get("problems", []) + [f"filesystem change after the result write: {unexpected[:5]}"]})
+        with open(target, "w", encoding="utf-8") as handle:
+            json.dump(result, handle, indent=2, sort_keys=True)
+            handle.write("\n")
     print(f"RESULT: {result['RESULT']}")
     for p in result["problems"]:
         print(f"  - {p}")
