@@ -142,12 +142,19 @@ def fetch_one(job, out_dir):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         if os.path.exists(path):
             with open(path, "rb") as f:
-                if hashlib.sha256(f.read()).hexdigest() != got:
-                    raise RuntimeError(f"existing file differs from download: {path}")
-            rec["already_present"] = True
-        else:
-            with open(path, "xb") as f:
+                same = hashlib.sha256(f.read()).hexdigest() == got
+            if same:
+                rec["already_present"] = True
+            else:
+                os.remove(path)   # partial file from a killed run; replaced by the verified download
+                rec["replaced_partial"] = True
+        if not rec.get("already_present"):
+            tmp = path + ".tmp"
+            with open(tmp, "wb") as f:
                 f.write(zbody)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, path)
     return rec
 
 
@@ -175,13 +182,38 @@ def main(argv):
         assert lo <= month_of(k) <= hi, "window violation"
     import os
     os.makedirs(out_dir, exist_ok=True)
-    with open(f"{out_dir}/listing_{stage}.json", "x") as f:
+    # Resume support (infra restarts): keys already recorded ok whose file is present with the same sha256 are skipped.
+    mpath = f"{out_dir}/manifest_{stage}.jsonl"
+    done = set()
+    if os.path.exists(mpath):
+        with open(mpath) as f:
+            for line in f:
+                try:
+                    rec = json.loads(line)
+                except ValueError:
+                    continue  # a truncated last line from a killed process
+                p = f"{out_dir}/{rec['dataset']}/{rec['symbol']}/{rec['key'].rsplit('/', 1)[-1]}"
+                if rec.get("ok") and os.path.exists(p):
+                    with open(p, "rb") as zf:
+                        if hashlib.sha256(zf.read()).hexdigest() == rec["sha256"]:
+                            done.add(rec["key"])
+    jobs = [j for j in jobs if j[2] not in done]
+    n = 0
+    while os.path.exists(f"{out_dir}/listing_{stage}{'' if n == 0 else '_resume' + str(n)}.json"):
+        n += 1
+    with open(f"{out_dir}/listing_{stage}{'' if n == 0 else '_resume' + str(n)}.json", "x") as f:
         json.dump({"prefixes": listing_log, "persistent_404_prefixes": LISTING_404}, f)
-    with open(f"{out_dir}/manifest_{stage}.jsonl", "x") as mf:
+    if os.path.exists(mpath):
+        with open(mpath, "rb+") as f:   # drop a truncated trailing line, if any
+            data = f.read()
+            if data and not data.endswith(b"\n"):
+                f.seek(0)
+                f.truncate(data.rfind(b"\n") + 1)
+    with open(mpath, "a") as mf:
         for j in jobs:   # sequential: the first repeated 403/429 raises and stops everything
             mf.write(json.dumps(fetch_one(j, out_dir), sort_keys=True) + "\n")
             mf.flush()
-    print(f"{stage}: {len(jobs)} jobs")
+    print(f"{stage}: {len(jobs)} jobs fetched this run; {len(done)} already present")
 
 
 if __name__ == "__main__":
