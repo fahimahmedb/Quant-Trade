@@ -24,8 +24,10 @@ Every workflow attempt uploads artifact
 `f1-stage-a-capture-<run-id>-<attempt>` (30-day retention), including an
 interrupted capture when possible. A subsequent attempt restores the most
 recent artifact and downloads only missing or damaged planned archives. The
-workflow serializes its own attempts; the acquisition plus Claude's possible
-5/s detached acquisition remain within the registered combined 10/s ceiling.
+workflow serializes its own attempts and limits this worker to 5 requests/s.
+Claude's private detached-process status is unknown here; this workflow cannot
+measure or assert the aggregate rate of those private workers. Do not launch
+another copy of this capture while its job is active.
 The full capture needs hours, not a live LLM session. A failed attempt can be
 retried from Actions; its capture is not an economic look.
 
