@@ -11,18 +11,23 @@ Usage: PYTHONPATH=src python3 research/sector_xrev_b2/run_b2.py <result.json>
 """
 from __future__ import annotations
 
+import sys
+
+sys.dont_write_bytecode = True  # before any project import: no __pycache__ may be created
+
+import csv
 import hashlib
 import json
 import math
+import os
 import platform
 import subprocess
-import sys
 from pathlib import Path
 
 from quant.dataplane.ingest import SECTOR_DATASET, SECTOR_UNIVERSE
-from quant.dataplane.panel import PricePanel
+from quant.dataplane.panel import PricePanel, Window
 from quant.factory.evaluate import falsify, summarize, walk_forward
-from quant.factory.lanes import BENCHMARK, COST_BPS, WINDOWS, lane_definitions
+from quant.factory.lanes import BENCHMARK, COST_BPS, lane_definitions
 from quant.factory.signals import StrategySpec
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -65,16 +70,39 @@ def file_fingerprint(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def build_research_panel(path: Path) -> tuple[PricePanel, int]:
+    """Parse the CSV row by row and drop every row dated from FIRST_FORBIDDEN_DATE BEFORE any numeric conversion
+    or PricePanel construction, so no post-boundary bar is ever materialised. Returns (panel, rows_skipped)."""
+    kept, skipped = [], 0
+    with path.open(encoding="utf-8", newline="") as handle:
+        for record in csv.DictReader(handle):
+            if record["date"] >= FIRST_FORBIDDEN_DATE:
+                skipped += 1
+                continue
+            kept.append(record)
+    return PricePanel(kept), skipped
+
+
+def snapshot(root: Path) -> dict:
+    """(path -> size, mtime_ns) for every file and directory under root, .git excluded."""
+    seen = {}
+    for base, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d != ".git"]
+        for name in dirs + files:
+            full = os.path.join(base, name)
+            st = os.lstat(full)
+            seen[full] = (st.st_size, st.st_mtime_ns)
+    return seen
+
+
+def delta(before: dict, after: dict) -> list:
+    return sorted([p for p in after if p not in before] + [p for p in before if p not in after or before[p] != after[p]])
+
+
 def assert_no_shadow(panel: PricePanel) -> None:
     late = [d for d in panel.dates if d >= FIRST_FORBIDDEN_DATE]
     if late:
         raise InvalidInput(f"research view contains {len(late)} date(s) from {FIRST_FORBIDDEN_DATE}: {late[:3]}")
-
-
-def assert_windows(windows) -> None:
-    got = {name: (w.start, w.end) for name, w in windows.items()}
-    if got != EXPECTED_WINDOWS:
-        raise InvalidInput(f"window bounds {got} differ from pre-registered {EXPECTED_WINDOWS}")
 
 
 def _scan(visible, grid, discovery):
@@ -88,21 +116,25 @@ def _scan(visible, grid, discovery):
     return scanned
 
 
-def compute(data_path: Path = DATA, lane_defs=lane_definitions, windows_spec=WINDOWS,
+def compute(data_path: Path = DATA, lane_defs=lane_definitions, bounds=EXPECTED_WINDOWS,
             fingerprint: str = FINGERPRINT) -> dict:
-    """Pure computation. Raises InvalidInput on any pre-registered precondition failure."""
-    before = file_fingerprint(data_path)
+    """Pure computation. Raises InvalidInput on any pre-registered precondition failure.
+    Window bounds are the pre-registered constants (PREREG section 3), not recomputed from the full file, because
+    recomputing the 55/30/15 split needs the total date count, i.e. shadow-period rows."""
+    before = file_fingerprint(data_path)  # raw-byte hash; no bar is parsed for it
     if before != fingerprint:
         raise InvalidInput(f"dataset fingerprint {before} != {fingerprint}")
     if list(SECTOR_UNIVERSE) != UNIVERSE or SECTOR_DATASET != "us_sector_etf_daily":
         raise InvalidInput("universe or dataset id differs from the pre-registration")
-    panel = PricePanel.load(data_path)
-    if sorted(panel.symbols) != sorted(UNIVERSE + ["GLD", "SPY", "TLT"]):
-        raise InvalidInput(f"symbols {panel.symbols}")
-    windows = panel.split(windows_spec, symbols=UNIVERSE)
-    assert_windows(windows)
-    visible = panel.restrict(end=windows["VALIDATION"].end)
+    if dict(bounds) != EXPECTED_WINDOWS:
+        raise InvalidInput(f"window bounds {dict(bounds)} differ from pre-registered {EXPECTED_WINDOWS}")
+    visible, skipped = build_research_panel(data_path)
+    if sorted(visible.symbols) != sorted(UNIVERSE + ["GLD", "SPY", "TLT"]):
+        raise InvalidInput(f"symbols {visible.symbols}")
     assert_no_shadow(visible)
+    if visible.dates[0] != EXPECTED_WINDOWS["DISCOVERY"][0] or visible.dates[-1] != LAST_RESEARCH_DATE:
+        raise InvalidInput(f"research view spans {visible.dates[0]}..{visible.dates[-1]}")
+    windows = {name: Window(name, *span) for name, span in bounds.items() if name != "SHADOW"}
     defs = lane_defs(UNIVERSE, SECTOR_DATASET)
     for lane, size in GRID_SIZES.items():
         if len(defs[lane]["grid"]) != size:
@@ -135,6 +167,7 @@ def compute(data_path: Path = DATA, lane_defs=lane_definitions, windows_spec=WIN
         raise InvalidInput("dataset changed during the run")
     out["fingerprint_before"], out["fingerprint_after"] = before, after
     out["last_date_read"] = max(visible.dates)
+    out["rows_skipped_before_parsing"] = skipped
     out["windows"] = {name: list(w) for name, w in EXPECTED_WINDOWS.items()}
     out["family_size"] = "36 EXISTING + 0 DISCOVERY CLAIMS"
     return out
@@ -197,6 +230,10 @@ def main(argv: list[str]) -> int:
     if any(str(target).startswith(str(p) + "/") for p in forbidden):
         print("STOP: the result may not be written under data/, var/ or src/")
         return 2
+    if not target.parent.is_dir():
+        print(f"STOP: the result directory {target.parent} must already exist (the harness creates no directory)")
+        return 2
+    snap_before = snapshot(ROOT)
     command = " ".join(argv)
     commit = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     result = {"preregistration_sha256": PREREG_SHA256, "command": command, "git_commit": commit,
@@ -215,15 +252,25 @@ def main(argv: list[str]) -> int:
     except InvalidInput as exc:
         result.update({"result": "INVALID_INPUT", "problems": [str(exc)]})
         rc = 1
+    spurious = delta(snap_before, snapshot(ROOT))
+    result["filesystem_delta_before_result_write"] = spurious
+    if spurious:
+        result["result"] = "INVALID_INPUT"
+        result["problems"] = result.get("problems", []) + [f"unexpected filesystem change before the result write: {spurious[:5]}"]
+        rc = 1
+    result["raw_bytes_hashed_for_fingerprint_only"] = True
     result.update({"LESSON": "The re-execution establishes whether recorded figures reproduce; it claims no discovery.",
                    "PRIORITY_UPDATE": "abandon or audit the family; do not recycle the validation window",
                    "NEXT_ACTION": "choose a family outside cross-sectional relative value with a clean window, or improve the cost model",
                    "DISCOVERY_CLAIM": False, "VALIDATION_CLAIM": False, "SHADOW_READ": False,
                    "TRADABLE_STRATEGY": False, "REAL_CAPITAL_AUTHORIZED": False, "return_code": rc})
-    target.parent.mkdir(parents=True, exist_ok=True)
     with open(target, "x", encoding="utf-8") as handle:  # 'x': never overwrite
         json.dump(result, handle, indent=2, sort_keys=True)
         handle.write("\n")
+    unexpected = [p for p in delta(snap_before, snapshot(ROOT)) if p not in (str(target), str(target.parent))]
+    if unexpected:
+        print(f"FILESYSTEM DELTA BEYOND THE RESULT FILE: {unexpected[:5]}")
+        rc = 3
     print(f"RESULT: {result['result']}")
     for p in result["problems"]:
         print(f"  - {p}")

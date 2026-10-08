@@ -41,17 +41,34 @@ class FingerprintAndBounds(unittest.TestCase):
             run_b2.assert_no_shadow(PricePanel(rows))
         run_b2.assert_no_shadow(PricePanel(rows[:1]))
 
-    def test_real_research_view_ends_on_the_boundary(self):
-        panel = PricePanel.load(run_b2.DATA)
-        windows = panel.split(WINDOWS, symbols=run_b2.UNIVERSE)
-        run_b2.assert_windows(windows)
-        visible = panel.restrict(end=windows["VALIDATION"].end)
-        run_b2.assert_no_shadow(visible)
+    def test_no_post_boundary_bar_is_ever_materialised(self):
+        seen = []
+        original = PricePanel.__init__
+
+        def spy(self, rows):
+            seen.extend(str(r["date"]) for r in rows)
+            original(self, rows)
+        PricePanel.__init__ = spy
+        try:
+            visible, skipped = run_b2.build_research_panel(run_b2.DATA)
+        finally:
+            PricePanel.__init__ = original
+        self.assertTrue(seen)
+        self.assertLess(max(seen), run_b2.FIRST_FORBIDDEN_DATE)
         self.assertEqual(max(visible.dates), run_b2.LAST_RESEARCH_DATE)
+        self.assertGreater(skipped, 0)
+        self.assertEqual(len(seen) + skipped, 30168)
+
+    def test_window_bounds_equal_the_frozen_partition(self):
+        # Computed once from the full file, offline from the harness; the harness itself never recomputes them.
+        panel = PricePanel.load(run_b2.DATA)
+        got = {n: (w.start, w.end) for n, w in panel.split(WINDOWS, symbols=run_b2.UNIVERSE).items()}
+        self.assertEqual(got, run_b2.EXPECTED_WINDOWS)
 
     def test_moved_window_bounds_are_refused(self):
         with self.assertRaisesRegex(run_b2.InvalidInput, "window bounds"):
-            run_b2.compute(windows_spec={"DISCOVERY": 0.50, "VALIDATION": 0.35, "SHADOW": 0.15})
+            run_b2.compute(bounds={"DISCOVERY": ("2016-09-12", "2022-03-08"), "VALIDATION": ("2022-03-09", "2025-03-12"),
+                                   "SHADOW": ("2025-03-13", "2026-09-11")})
 
 
 class GridSize(unittest.TestCase):
@@ -90,6 +107,38 @@ class WritePolicy(unittest.TestCase):
         for banned in ("run_lane", "StrategyRegistry", "EventLog", "record_trials", "preserve_research_partition",
                        "preserve_research_cohort", "append_jsonl", "write_json", "ResearchTicket"):
             self.assertNotIn(banned, names)
+
+
+class FilesystemPolicy(unittest.TestCase):
+    def test_bytecode_writing_is_disabled_by_the_harness(self):
+        self.assertTrue(sys.dont_write_bytecode)
+
+    def test_snapshot_delta_sees_new_changed_and_removed_objects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "a").write_text("1")
+            before = run_b2.snapshot(root)
+            self.assertEqual(run_b2.delta(before, run_b2.snapshot(root)), [])
+            (root / "b").write_text("2")
+            (root / "sub").mkdir()
+            (root / "a").write_text("changed!")
+            names = {Path(p).name for p in run_b2.delta(before, run_b2.snapshot(root))}
+            self.assertEqual(names, {"a", "b", "sub"})
+
+    def test_missing_result_directory_is_refused_without_creating_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "new_dir" / "r.json"
+            self.assertEqual(run_b2.main(["run_b2.py", str(target)]), 2)
+            self.assertFalse(target.parent.exists())
+
+    def test_compute_creates_no_filesystem_object_before_the_fingerprint_gate(self):
+        before = run_b2.snapshot(ROOT)
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = Path(tmp) / "p.csv"
+            copy.write_bytes(b"x")
+            with self.assertRaises(run_b2.InvalidInput):
+                run_b2.compute(data_path=copy)
+        self.assertEqual(run_b2.delta(before, run_b2.snapshot(ROOT)), [])
 
 
 class Judge(unittest.TestCase):
