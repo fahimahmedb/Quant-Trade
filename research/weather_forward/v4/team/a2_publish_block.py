@@ -27,8 +27,15 @@ def main():
     cid, out = sys.argv[1], sys.argv[2]
     repo = sys.argv[3] if len(sys.argv) > 3 else "fahimahmedb/Quant-Trade"
     body = fetch(repo, cid).replace("\r\n", "\n")
-    declared = list(dict.fromkeys(re.findall(r"`([0-9a-f]{64})`", body)))
     lines = body.split("\n")
+    anywhere = set(re.findall(r"`([0-9a-f]{64})`", body))
+    # SHA annonces : hash en backticks sur une ligne contenant "SHA-256" ou sur la ligne suivante.
+    declared = []
+    for i, l in enumerate(lines):
+        if "SHA-256" in l:
+            for h in re.findall(r"`([0-9a-f]{64})`", l + "\n" + (lines[i + 1] if i + 1 < len(lines) else "")):
+                if h not in declared:
+                    declared.append(h)
     starts = [i for i, l in enumerate(lines) if l.strip() == "```markdown"]
     fences = [i for i, l in enumerate(lines) if l.strip().startswith("```")]
     os.makedirs(out, exist_ok=True)
@@ -37,14 +44,15 @@ def main():
         for j in (f for f in fences if f > s):
             text = "\n".join(lines[s + 1:j]) + "\n"
             sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
-            if sha in declared and sha not in found:
+            if sha in anywhere and sha not in found:
                 found[sha] = text
                 break
     for n, (sha, text) in enumerate(found.items(), 1):
         path = os.path.join(out, f"block_{n}.md")
         open(path, "w", encoding="utf-8", newline="\n").write(text)
         print(f"OK block_{n}.md sha256={sha} octets={len(text.encode('utf-8'))}")
-    missing = [d for d in declared if d not in found]
+    inside = " ".join(found.values())
+    missing = [d for d in declared if d not in found and d not in inside]
     for d in missing:
         print(f"SHA ANNONCE SANS BLOC CORRESPONDANT : {d}")
     sys.exit(1 if missing else 0)

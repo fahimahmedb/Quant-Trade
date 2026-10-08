@@ -21,6 +21,8 @@ BRANCHES = [
     "builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08",
     "astra/weather-v4-a2-lot3-independent-review-2026-10-08",
 ]
+# Branches dont l'absence est normale tant que le travail n'a pas commence.
+EXPECTED_ABSENT = {"astra/weather-v4-a2-lot3-independent-review-2026-10-08"}
 
 
 def git(*args):
@@ -30,7 +32,11 @@ def git(*args):
 
 def main():
     marker = sys.argv[1] if len(sys.argv) > 1 else os.path.join(tempfile.gettempdir(), "a2_team_seen.json")
-    git("fetch", "-q", "origin", *BRANCHES)
+    for b in BRANCHES:
+        rc, _ = git("fetch", "-q", "origin", b)
+        if rc != 0 and b not in EXPECTED_ABSENT:
+            print(f"ECHEC git fetch de {b} : verdict impossible, marqueur non modifie", file=sys.stderr)
+            sys.exit(2)
     try:
         seen = json.load(open(marker, encoding="utf-8"))
     except (OSError, ValueError):
@@ -48,6 +54,9 @@ def main():
         print(f"  {flag:9} {sha[:8]} {b}\n            {subj[:110]}")
     print("\n== File de travail : taches non DONE ==")
     rc, q = git("show", f"origin/{QUEUE_BRANCH}:{QUEUE_PATH}")
+    if rc != 0 or not q:
+        print("ECHEC lecture de la file de travail : verdict impossible, marqueur non modifie", file=sys.stderr)
+        sys.exit(2)
     ready = []
     for line in q.splitlines():
         if line.startswith("| Q") and "| DONE" not in line:
@@ -58,7 +67,7 @@ def main():
                 ready.append(cells[0])
     print("\n== Verdict ==")
     if ready:
-        print("TACHES READY :", ", ".join(ready), "-> a prendre maintenant, ne pas finir le tour.")
+        print("TACHES READY :", ", ".join(ready), "-> lire la colonne agent : ne prendre que les tiennes, ne pas finir le tour.")
     else:
         print("Aucune tache READY. Si une session enfant est en cours, verifier get_session.")
     json.dump(now, open(marker, "w", encoding="utf-8"))
