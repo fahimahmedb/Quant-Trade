@@ -53,5 +53,56 @@ class T(unittest.TestCase):
         self.assertAlmostEqual(a.projected_hours(90000, 5000, 100), (95102) / 5 / 3600)
 
 
+class Stages(unittest.TestCase):
+    def fake(self, pages):
+        it = iter(pages)
+
+        def f(path, params=None):
+            if path == "/historical/markets":
+                body = next(it)
+                import json as j
+                return "u", j.dumps(body).encode(), body
+            if path.endswith("/candlesticks"):
+                import json as j
+                b = {"candlesticks": [{"end_period_ts": 1, "yes_bid": {"close": "0.9"}, "yes_ask": {"close": "0.92"}, "open_interest": "5"}]}
+                return "u", j.dumps(b).encode(), b
+            if path.startswith("/events/"):
+                import json as j
+                b = {"event": {"event_ticker": path.split("/")[-1], "series_ticker": "SER"}}
+                return "u", j.dumps(b).encode(), b
+            if path == "/series/SER":
+                import json as j
+                b = {"series": {"ticker": "SER", "category": "Politics"}}
+                return "u", j.dumps(b).encode(), b
+            if path == "/series/fee_changes":
+                import json as j
+                b = {"series_fee_change_arr": [{"id": "1", "series_ticker": "SER", "fee_type": "quadratic",
+                                                 "fee_multiplier": 1.0, "scheduled_ts": "2025-01-01T00:00:00Z"}]}
+                return "u", j.dumps(b).encode(), b
+            raise AssertionError(path)
+        return f
+
+    def test_full_offline_pipeline(self):
+        import tempfile, json as j
+        pages = [{"markets": [mk(1), mk(2, mtype="scalar")], "cursor": "c1"}, {"markets": [mk(3)], "cursor": ""}]
+        with tempfile.TemporaryDirectory() as t:
+            out, an = os.path.join(t, "o"), os.path.join(t, "a")
+            f = self.fake(pages)
+            counts = a.stage_list(out, fetch=f)
+            self.assertEqual(counts["kept"], 2)
+            self.assertEqual(a.stage_candles(out, fetch=f), 2)
+            self.assertEqual(a.stage_candles(out, fetch=f), 0)        # resumable / idempotent
+            meta = a.stage_meta(out, fetch=f)
+            self.assertEqual(meta["series"], 1)
+            self.assertEqual(a.stage_assemble(out, an), 2)
+            with open(os.path.join(an, "fee_table.json")) as fh:
+                self.assertEqual(j.load(fh)["series"]["SER"][0][2], "quadratic")
+            with open(os.path.join(out, "blinded_manifest.jsonl")) as fh:
+                self.assertNotIn("result", fh.read())
+            # the harness accepts the assembled directory (fail-closed schema check)
+            import run_f2
+            self.assertEqual(len(run_f2.load(an)[0]), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

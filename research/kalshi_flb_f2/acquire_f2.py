@@ -121,14 +121,15 @@ def save_once(path, body):
     return hashlib.sha256(body).hexdigest()
 
 
-def stage_list(out_dir):
+def stage_list(out_dir, fetch=None):
+    fetch = fetch or get_json
     pages, rows_all, cursor, n = [], [], "", 0
     tot = {"input": 0, "no_settlement": 0, "outside_window": 0, "not_binary": 0, "open_lt_24h": 0, "kept": 0}
     while True:
         params = {"limit": 1000, "mve_filter": "exclude"}
         if cursor:
             params["cursor"] = cursor
-        url, body, data = get_json("/historical/markets", params)
+        url, body, data = fetch("/historical/markets", params)
         if data is None or "markets" not in data:
             raise RuntimeError("unexpected historical markets response")
         h = save_once(f"{out_dir}/raw/markets_page_{n:05d}.json", body)
@@ -158,8 +159,97 @@ def stage_list(out_dir):
     return counts
 
 
+def read_manifest_rows(out_dir):
+    with open(f"{out_dir}/blinded_manifest.jsonl") as f:
+        return [json.loads(l) for l in f if l.strip()]
+
+
+def stage_candles(out_dir, fetch=None):
+    fetch = fetch or get_json
+    recs = []
+    for r in read_manifest_rows(out_dir):
+        path = f"{out_dir}/raw/candles/{r['ticker']}.json"
+        if os.path.exists(path):
+            continue  # resumable: already captured (hash recorded in the previous run's manifest)
+        url, body, data = fetch(f"/historical/markets/{r['ticker']}/candlesticks", candle_params(r["close_time"]))
+        if data is None or "candlesticks" not in data:
+            body = b'{"candlesticks": []}'
+            status = "missing_or_404"
+        else:
+            status = "ok"
+        recs.append({"ticker": r["ticker"], "url": url, "sha256": save_once(path, body), "status": status,
+                     "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+        with open(f"{out_dir}/candles_manifest.jsonl", "a") as f:
+            f.write(json.dumps(recs[-1], sort_keys=True) + "\n")
+    return len(recs)
+
+
+def stage_meta(out_dir, fetch=None):
+    fetch = fetch or get_json
+    rows = read_manifest_rows(out_dir)
+    ev_series, cats, log = {}, {}, []
+    for e in sorted({r["event_ticker"] for r in rows}):
+        url, body, data = fetch(f"/events/{e}")
+        if data is None or "event" not in data or not data["event"].get("series_ticker"):
+            ev_series[e] = None
+        else:
+            ev_series[e] = data["event"]["series_ticker"]
+            save_once(f"{out_dir}/raw/events/{e}.json", body)
+    for ser in sorted({v for v in ev_series.values() if v}):
+        url, body, data = fetch(f"/series/{ser}")
+        if data is None or "series" not in data or "category" not in data["series"]:
+            raise RuntimeError(f"series {ser} has no category field; F2 stops and the category rule is re-registered")
+        cats[ser] = data["series"]["category"]
+        save_once(f"{out_dir}/raw/series/{ser}.json", body)
+    url, body, data = fetch("/series/fee_changes", {"show_historical": "true"})
+    if data is None or "series_fee_change_arr" not in data:
+        raise RuntimeError("unexpected fee_changes response")
+    h = save_once(f"{out_dir}/raw/fee_changes.json", body)
+    table = {"default_multiplier": 1.0, "series": {}}
+    for it in data["series_fee_change_arr"]:
+        table["series"].setdefault(it["series_ticker"], []).append([it["scheduled_ts"], it["fee_multiplier"], it["fee_type"]])
+    for v in table["series"].values():
+        v.sort(key=lambda x: x[0])
+    for name, obj in (("event_series.json", ev_series), ("series_category.json", cats), ("fee_table.json", table)):
+        with open(f"{out_dir}/{name}", "x") as f:
+            json.dump(obj, f, sort_keys=True)
+    return {"events": len(ev_series), "series": len(cats), "fee_changes_sha256": h}
+
+
+def stage_assemble(out_dir, analysis_dir):
+    """Join full market objects (incl. `result`) for manifest tickers: the only stage that touches outcomes."""
+    want = {r["ticker"] for r in read_manifest_rows(out_dir)}
+    os.makedirs(f"{analysis_dir}/candles", exist_ok=True)
+    n = 0
+    with open(f"{analysis_dir}/markets.jsonl", "x") as out:
+        for fn in sorted(os.listdir(f"{out_dir}/raw")):
+            if not fn.startswith("markets_page_"):
+                continue
+            with open(f"{out_dir}/raw/{fn}") as f:
+                for m in json.load(f)["markets"]:
+                    if m["ticker"] in want:
+                        out.write(json.dumps(m, sort_keys=True) + "\n")
+                        n += 1
+    for t in want:
+        p = f"{out_dir}/raw/candles/{t}.json"
+        if os.path.exists(p):
+            with open(p, "rb") as src, open(f"{analysis_dir}/candles/{t}.json", "xb") as dst:
+                dst.write(src.read())
+    for name in ("event_series.json", "series_category.json", "fee_table.json"):
+        with open(f"{out_dir}/{name}", "rb") as src, open(f"{analysis_dir}/{name}", "xb") as dst:
+            dst.write(src.read())
+    return n
+
+
 if __name__ == "__main__":
-    if sys.argv[1] == "list":
+    stage = sys.argv[1]
+    if stage == "list":
         print(json.dumps(stage_list(sys.argv[2])))
+    elif stage == "candles":
+        print(stage_candles(sys.argv[2]))
+    elif stage == "meta":
+        print(json.dumps(stage_meta(sys.argv[2])))
+    elif stage == "assemble":
+        print(stage_assemble(sys.argv[2], sys.argv[3]))
     else:
-        raise SystemExit("stage not implemented in this draft: candles/meta/assemble follow once the list stage is reviewed")
+        raise SystemExit("unknown stage")
