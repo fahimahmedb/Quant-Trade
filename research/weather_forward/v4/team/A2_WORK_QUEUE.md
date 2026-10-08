@@ -19,3 +19,19 @@ Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haik
 | Q12 | Lot 4 : activation et opération | Owner | Q9, Q11 | Owner | - | OWNER_GATED |
 | Q13 | Q10 prépare : proposer le domaine fermé de `structural_linkage_status` et le contenu sous garde (projet seul, route D1 future, aucune décision) | classe A | rien | orchestrateur (Codex) | T | DONE : rédigé par Codex, publié par Claude Code, SHA-256 `739e84e7…b670` vérifié, blob `d549cb3829e46a471e6d51a40fdfe3c3a450bf42`, fichier `team/Q13_STRUCTURAL_LINKAGE_DOMAIN_DRAFT_2026-10-08.md` (projet sans effet) |
 | Q14 | Grille de triage adverse du rapport Astra lot 3 (à appliquer dès sa publication : constats, remèdes, écarts) | classe A | rien | orchestrateur (Codex) | T | DONE : rédigé par Codex, publié par Claude Code, SHA-256 `9c75ea24…f757` vérifié, blob `8c0b1f54e31dab6c07bee2fa1d246f7b042d0ce9`, fichier `team/Q14_ASTRA_LOT3_TRIAGE_GRID_2026-10-08.md` |
+
+
+## P2 — tâches du pilote Codex (arbitrage `6050029356`, source `6049998449` bloc 2, SHA-256 `676fe8bd…360a`)
+
+Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). Chemin critique réel : Astra → triage → (correction) → **Q11-O (VM d'Owner)** → lot 4. E §5 (b) contrôles L2-A, (c) rétention/suppression, (f) code chargé constaté sur l'hôte passent par la VM ; Q19-C et Q20-E restent donc bloquées par Q11-O même si Q17-A conclut `PASS`.
+
+| Id | Tâche / agent | Dépend de | Niv. | Critère de fin vérifiable | Statut |
+|---|---|---|---|---|---|
+| Q15 | Builder : kit VM minimal pour une session de terminal Owner bornée (commandes L2-A et §5(f) existantes, blobs à attester, résultats attendus, arrêts fail-closed) ; aucune action VM par l'équipe | Q8 | B | Fichier daté, chaque commande renvoie à une source publiée (blob), aucune commande nouvelle non marquée ; contre-lecture Codex | IN_PROGRESS |
+| Q16 | Codex contre-lit Q15 (Q16-X réduite) | Q15 | T | Une contre-lecture écrite, objections résolues ou consignées | BLOCKED |
+| Q17-A | Triage du rapport Astra : Codex pilote, Builder reproduit | Q9, Q14 | T | Tableau T0–T4 complet, chaque reproduction avec commande et sortie, voie unique choisie | BLOCKED |
+| Q18-B | Builder corrige, Codex teste en adverse | Q17-A si `FAIL` | B/T | Tests ciblés verts, commit+blobs ; nouvelle Astra si une propriété revue change | BLOCKED |
+| Q19-C | Acte délégué lot 4 (Codex) + exécution D2 paper/shadow (Builder) | Q17-A `PASS`, **Q11-O**, B.5 (a) à (j) | T/B | Auteur ≠ ratificateur, `RATIFIE_PAR_DELEGATION`, un essai borné, aucun release/quarantaine/`t0`/réel | BLOCKED |
+| Q20-E | Bilan économique A2 (Codex), recoupement (Builder) | Q19-C | T | Une page ; arrêt explicite si valeur nulle | BLOCKED |
+| Q21 | Codex : état de la recherche d'edge weather hors A2, en lecture seule ; dernière expérience paper/shadow falsifiable sans `t0` | rien | T | `RESULT / LESSON / PRIORITY UPDATE / NEXT ACTION`, références exactes | IN_PROGRESS |
+| Q11-O | Owner : qualification VM L2-A (avec le kit Q15) | terminal Owner | — | Preuve de qualification conforme à l'autorité propre | OWNER_GATED |
