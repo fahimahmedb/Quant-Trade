@@ -121,6 +121,70 @@ class Units(unittest.TestCase):
         self.assertAlmostEqual(r.Z_GATE, 2.128045, places=5)
 
 
+class ReviewFixes(unittest.TestCase):
+    C = CLOSE0 + dt.timedelta(days=1)
+
+    def test_fee_mult_uses_latest_change_not_first_nonquadratic(self):
+        t = {"default_multiplier": 1.0, "series": {"S": [["2025-06-01T00:00:00Z", 1.0, "flat"],
+                                                         ["2025-07-01T00:00:00Z", 1.0, "quadratic"]]}}
+        self.assertEqual(r.fee_mult(t, "S", dt.datetime(2025, 8, 1, tzinfo=dt.timezone.utc)), 1.0)
+        self.assertIsNone(r.fee_mult(t, "S", dt.datetime(2025, 6, 15, tzinfo=dt.timezone.utc)))
+
+    def test_missing_can_close_early_fails_closed(self):
+        m = market(1)
+        del m["can_close_early"]
+        with self.assertRaises(r.FormatError):
+            r.evaluate_market(m, candle(self.C), {}, "x")
+
+    def test_bad_quotes_excluded(self):
+        why, _ = r.evaluate_market(market(1), candle(self.C, bid=0.0, ask=0.0), {}, "x")
+        self.assertEqual(why, "bad_quote")
+        why, _ = r.evaluate_market(market(1), candle(self.C, bid=0.95, ask=0.90), {}, "x")
+        self.assertEqual(why, "bad_quote")
+        why, _ = r.evaluate_market(market(1), candle(self.C, bid=0.5, ask=1.0), {}, "x")
+        self.assertEqual(why, "bad_quote")
+
+    def test_spread_exactly_20c_included(self):
+        why, rec = r.evaluate_market(market(1), candle(self.C, bid=0.35, ask=0.55), {}, "x")
+        self.assertEqual(why, "no_signal")           # in range, but no side >= 0.80
+        why, rec = r.evaluate_market(market(1), candle(self.C, bid=0.80, ask=1.00 - 0.0001), {}, "x")
+        self.assertIsNone(why)                       # exactly 0.1999 spread passes
+        why, _ = r.evaluate_market(market(1), candle(self.C, bid=0.78, ask=0.98), {}, "x")
+        self.assertIsNone(why)                       # exactly 0.20 passes (integer ticks)
+        why, _ = r.evaluate_market(market(1), candle(self.C, bid=0.78, ask=0.9801), {}, "x")
+        self.assertEqual(why, "spread")
+
+    def test_settlement_before_signal_excluded(self):
+        m = market(1, settlement_ts=iso(self.C - dt.timedelta(hours=30)))
+        why, _ = r.evaluate_market(m, candle(self.C), {}, "x")
+        self.assertEqual(why, "settlement_before_signal")
+
+    def test_duplicate_tickers_fail_closed(self):
+        with tempfile.TemporaryDirectory() as t:
+            m = market(1)
+            build(t, [m, dict(m)], {m["ticker"]: [candle(ts_close(m))]})
+            with self.assertRaises(r.FormatError):
+                r.run(t, os.path.join(t, "res", "o.json"))
+
+    def test_longshot_mirror_and_tail_structure(self):
+        why, rec = r.evaluate_market(market(1, result="no"), candle(self.C, bid=0.08, ask=0.10), {}, "x", mode="longshot")
+        self.assertIsNone(why)
+        self.assertEqual(rec["side"], "yes")
+        self.assertAlmostEqual(rec["price"], 0.10)
+        ts_ = r.tail_structure([{"payoff": 1.0, "price": 0.95, "fee": 0.0}, {"payoff": 0.0, "price": 0.95, "fee": 0.0}])
+        self.assertAlmostEqual(ts_["wins_offset_by_one_loss"], 19.0)
+
+    def test_result_has_new_reports(self):
+        with tempfile.TemporaryDirectory() as t:
+            ms = [market(i) for i in range(3)]
+            build(t, ms, {m["ticker"]: [candle(ts_close(m), bid=0.93, ask=0.95)] for m in ms})
+            out = r.run(t, os.path.join(t, "res", "o.json"))
+            for k in ("tail_structure", "fee_share_of_gross", "max_drawdown_cum_pnl_per_contract", "by_month_mean_net_event_level"):
+                self.assertIn(k, out)
+            self.assertIn("mirror_longshot_primary_universe", out["sensitivities"])
+            self.assertFalse(os.path.exists(os.path.join(t, "res", "o.json.tmp")))
+
+
 class EndToEnd(unittest.TestCase):
     def test_pipeline_filters_and_counts(self):
         with tempfile.TemporaryDirectory() as t:

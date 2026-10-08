@@ -57,7 +57,9 @@ class Stages(unittest.TestCase):
     def fake(self, pages):
         it = iter(pages)
 
-        def f(path, params=None):
+        def f(path, params=None, tolerate=False):
+            if path == "/historical/cutoff":
+                return "u", b"{}", {"market_settled_ts": "2026-08-09T00:00:00Z"}
             if path == "/historical/markets":
                 body = next(it)
                 import json as j
@@ -81,6 +83,51 @@ class Stages(unittest.TestCase):
                 return "u", j.dumps(b).encode(), b
             raise AssertionError(path)
         return f
+
+    def test_duplicate_tickers_dropped_and_counted(self):
+        import tempfile
+        pages = [{"markets": [mk(1), mk(1)], "cursor": "c"}, {"markets": [mk(1), mk(2)], "cursor": ""}]
+        with tempfile.TemporaryDirectory() as t:
+            c = a.stage_list(os.path.join(t, "o"), fetch=self.fake(pages))
+            self.assertEqual(c["kept"], 4)
+            self.assertEqual(len(a.read_manifest_rows(os.path.join(t, "o"))), 2)
+
+    def test_cutoff_move_aborts(self):
+        import tempfile, json as j
+        base = self.fake([{"markets": [mk(1)], "cursor": ""}])
+        calls = {"n": 0}
+
+        def f(path, params=None, tolerate=False):
+            if path == "/historical/cutoff":
+                calls["n"] += 1
+                return "u", b"{}", {"market_settled_ts": f"2026-08-0{calls['n']}T00:00:00Z"}
+            return base(path, params)
+        with tempfile.TemporaryDirectory() as t:
+            with self.assertRaises(RuntimeError):
+                a.stage_list(os.path.join(t, "o"), fetch=f)
+
+    def test_candle_resume_validates_and_backfills(self):
+        import tempfile
+        pages = [{"markets": [mk(1), mk(2)], "cursor": ""}]
+        with tempfile.TemporaryDirectory() as t:
+            out = os.path.join(t, "o")
+            f = self.fake(pages)
+            a.stage_list(out, fetch=f)
+            os.makedirs(f"{out}/raw/candles")
+            open(f"{out}/raw/candles/T1.json", "w").write('{"candlestic')   # truncated by a crash
+            self.assertEqual(a.stage_candles(out, fetch=f), 2)              # corrupt file refetched
+            os.remove(f"{out}/candles_manifest.jsonl")
+            self.assertEqual(a.stage_candles(out, fetch=f), 0)              # valid files back-filled, not refetched
+            self.assertTrue(os.path.exists(f"{out}/candles_manifest.jsonl"))
+
+    def test_atomic_save_no_tmp_left(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as t:
+            a.save_once(os.path.join(t, "x", "y.json"), b"{}")
+            self.assertEqual(os.listdir(os.path.join(t, "x")), ["y.json"])
+            with self.assertRaises(FileExistsError):
+                a.save_once(os.path.join(t, "x", "y.json"), b"{}")
+            self.assertEqual(os.listdir(os.path.join(t, "x")), ["y.json"])
 
     def test_full_offline_pipeline(self):
         import tempfile, json as j

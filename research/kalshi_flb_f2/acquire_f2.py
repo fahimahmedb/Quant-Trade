@@ -44,9 +44,11 @@ def _pace():
         time.sleep(t - now)
 
 
-def get_json(path, params=None, tries=5):
-    url = BASE + path + (("?" + urllib.parse.urlencode(params)) if params else "")
-    delay, bad = 2.0, 0
+def get_json(path, params=None, tries=5, tolerate=False):
+    """GET JSON. 401/403 stop the run; repeated 429 stops it; with tolerate=True a persistent
+    other HTTP error returns (url, b'', None) so one bad ticker cannot block the stage."""
+    url = BASE + urllib.parse.quote(path, safe="/") + (("?" + urllib.parse.urlencode(params)) if params else "")
+    delay, n429 = 2.0, 0
     for _ in range(tries):
         _pace()
         req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
@@ -57,17 +59,25 @@ def get_json(path, params=None, tries=5):
         except urllib.error.HTTPError as e:
             if e.code in (401, 403):
                 raise RuntimeError(f"HTTP {e.code} (authentication/permission) for {url}; stop and re-route F2")
-            if e.code == 429:
-                bad += 1
-                if bad >= 3:
-                    raise RuntimeError(f"HTTP 429 repeated for {url}; stopping")
             if e.code == 404:
                 return url, b"", None
+            if e.code == 429:
+                n429 += 1
+                if n429 >= 3:
+                    raise RuntimeError(f"HTTP 429 repeated for {url}; stopping")
+                ra = e.headers.get("Retry-After") if e.headers else None
+                time.sleep(float(ra) if ra and ra.replace(".", "", 1).isdigit() else delay)
+                delay *= 2
+                continue
+            last = e.code
             time.sleep(delay)
             delay *= 2
         except (urllib.error.URLError, TimeoutError):
+            last = "network"
             time.sleep(delay)
             delay *= 2
+    if tolerate:
+        return url, b"", None
     raise RuntimeError(f"giving up on {url}")
 
 
@@ -115,16 +125,27 @@ def candle_params(close_time_iso):
 
 
 def save_once(path, body):
+    """Atomic, no-overwrite write: temp file, fsync, hard link into place."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "xb") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "xb") as f:
         f.write(body)
+        f.flush()
+        os.fsync(f.fileno())
+    try:
+        os.link(tmp, path)
+    finally:
+        os.remove(tmp)
     return hashlib.sha256(body).hexdigest()
 
 
 def stage_list(out_dir, fetch=None):
     fetch = fetch or get_json
+    cutoff0 = (fetch("/historical/cutoff")[2] or {})
+    seen, dups = set(), 0
     pages, rows_all, cursor, n = [], [], "", 0
     tot = {"input": 0, "no_settlement": 0, "outside_window": 0, "not_binary": 0, "open_lt_24h": 0, "kept": 0}
+    # NOTE: not resumable by design. A crash leaves raw/ pages; wipe the output directory and rerun.
     while True:
         params = {"limit": 1000, "mve_filter": "exclude"}
         if cursor:
@@ -136,13 +157,22 @@ def stage_list(out_dir, fetch=None):
         pages.append({"url": url, "sha256": h, "bytes": len(body), "n": len(data["markets"]),
                       "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
         page_rows, c = blind_filter(data["markets"])   # outcome fields never read; page is not retained in memory
-        rows_all.extend(page_rows)
+        for r in page_rows:
+            if r["ticker"] in seen:
+                dups += 1
+            else:
+                seen.add(r["ticker"])
+                rows_all.append(r)
         for k in tot:
             tot[k] += c[k]
         cursor = data.get("cursor") or ""
         n += 1
         if not cursor:
             break
+    cutoff1 = (fetch("/historical/cutoff")[2] or {})
+    if cutoff0 != cutoff1:
+        raise RuntimeError(f"historical cutoff moved during listing: {cutoff0} -> {cutoff1}; wipe the directory and rerun")
+    tot["duplicates_dropped"] = dups
     rows, counts = rows_all, tot
     events = {r["event_ticker"] for r in rows}
     hours = projected_hours(len(rows), len(events), len(events))
@@ -154,7 +184,7 @@ def stage_list(out_dir, fetch=None):
         for r in rows:
             f.write(json.dumps(r, sort_keys=True) + "\n")
     with open(f"{out_dir}/list_manifest.json", "x") as f:
-        json.dump({"pages": pages, "counts": counts, "projected_hours": hours, "subsampled": subsampled,
+        json.dump({"cutoff": cutoff0, "pages": pages, "counts": counts, "projected_hours": hours, "subsampled": subsampled,
                    "kept_after_subsample": len(rows)}, f, indent=1)
     return counts
 
@@ -165,35 +195,61 @@ def read_manifest_rows(out_dir):
 
 
 def stage_candles(out_dir, fetch=None):
+    """Resumable: existing files are validated (JSON parses, has `candlesticks`) and back-filled into
+    the manifest if missing; a corrupt file is removed and refetched. Persistent non-429 errors are
+    recorded as status=error and the stage continues."""
     fetch = fetch or get_json
-    recs = []
+    mpath = f"{out_dir}/candles_manifest.jsonl"
+    recorded = set()
+    if os.path.exists(mpath):
+        with open(mpath) as f:
+            recorded = {json.loads(l)["ticker"] for l in f if l.strip()}
+    fetched = 0
     for r in read_manifest_rows(out_dir):
-        path = f"{out_dir}/raw/candles/{r['ticker']}.json"
+        t = r["ticker"]
+        path = f"{out_dir}/raw/candles/{t}.json"
         if os.path.exists(path):
-            continue  # resumable: already captured (hash recorded in the previous run's manifest)
-        url, body, data = fetch(f"/historical/markets/{r['ticker']}/candlesticks", candle_params(r["close_time"]))
+            with open(path, "rb") as f:
+                body = f.read()
+            try:
+                ok = "candlesticks" in json.loads(body)
+            except ValueError:
+                ok = False
+            if ok:
+                if t not in recorded:
+                    with open(mpath, "a") as f:
+                        f.write(json.dumps({"ticker": t, "sha256": hashlib.sha256(body).hexdigest(), "status": "backfilled"}, sort_keys=True) + "\n")
+                    recorded.add(t)
+                continue
+            os.remove(path)
+        url, body, data = fetch(f"/historical/markets/{t}/candlesticks", candle_params(r["close_time"]), tolerate=True) if fetch is get_json else fetch(f"/historical/markets/{t}/candlesticks", candle_params(r["close_time"]))
         if data is None or "candlesticks" not in data:
-            body = b'{"candlesticks": []}'
-            status = "missing_or_404"
+            body, status = b'{"candlesticks": []}', "error_or_missing"
         else:
             status = "ok"
-        recs.append({"ticker": r["ticker"], "url": url, "sha256": save_once(path, body), "status": status,
-                     "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
-        with open(f"{out_dir}/candles_manifest.jsonl", "a") as f:
-            f.write(json.dumps(recs[-1], sort_keys=True) + "\n")
-    return len(recs)
+        h = save_once(path, body)
+        with open(mpath, "a") as f:
+            f.write(json.dumps({"ticker": t, "url": url, "sha256": h, "status": status,
+                                "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, sort_keys=True) + "\n")
+        recorded.add(t)
+        fetched += 1
+    return fetched
 
 
 def stage_meta(out_dir, fetch=None):
     fetch = fetch or get_json
     rows = read_manifest_rows(out_dir)
-    ev_series, cats, log = {}, {}, []
+    ev_series, cats, overrides = {}, {}, {}
     for e in sorted({r["event_ticker"] for r in rows}):
         url, body, data = fetch(f"/events/{e}")
         if data is None or "event" not in data or not data["event"].get("series_ticker"):
             ev_series[e] = None
         else:
             ev_series[e] = data["event"]["series_ticker"]
+            ev = data["event"]
+            if ev.get("fee_type_override") or ev.get("fee_multiplier_override"):
+                overrides[e] = {"fee_type_override": ev.get("fee_type_override"),
+                                "fee_multiplier_override": ev.get("fee_multiplier_override")}
             save_once(f"{out_dir}/raw/events/{e}.json", body)
     for ser in sorted({v for v in ev_series.values() if v}):
         url, body, data = fetch(f"/series/{ser}")
@@ -210,10 +266,10 @@ def stage_meta(out_dir, fetch=None):
         table["series"].setdefault(it["series_ticker"], []).append([it["scheduled_ts"], it["fee_multiplier"], it["fee_type"]])
     for v in table["series"].values():
         v.sort(key=lambda x: x[0])
-    for name, obj in (("event_series.json", ev_series), ("series_category.json", cats), ("fee_table.json", table)):
-        with open(f"{out_dir}/{name}", "x") as f:
-            json.dump(obj, f, sort_keys=True)
-    return {"events": len(ev_series), "series": len(cats), "fee_changes_sha256": h}
+    for name, obj in (("event_series.json", ev_series), ("series_category.json", cats), ("fee_table.json", table),
+                      ("event_overrides.json", overrides)):
+        save_once(f"{out_dir}/{name}", json.dumps(obj, sort_keys=True).encode())
+    return {"events": len(ev_series), "series": len(cats), "event_overrides": len(overrides), "fee_changes_sha256": h}
 
 
 def stage_assemble(out_dir, analysis_dir):
@@ -235,7 +291,7 @@ def stage_assemble(out_dir, analysis_dir):
         if os.path.exists(p):
             with open(p, "rb") as src, open(f"{analysis_dir}/candles/{t}.json", "xb") as dst:
                 dst.write(src.read())
-    for name in ("event_series.json", "series_category.json", "fee_table.json"):
+    for name in ("event_series.json", "series_category.json", "fee_table.json", "event_overrides.json"):
         with open(f"{out_dir}/{name}", "rb") as src, open(f"{analysis_dir}/{name}", "xb") as dst:
             dst.write(src.read())
     return n
