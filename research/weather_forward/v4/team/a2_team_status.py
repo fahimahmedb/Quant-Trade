@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Etat d'equipe A2 en une commande : file de travail + tetes de branches + changements depuis le dernier passage.
 
-Lecture seule (git fetch + git rev-parse/log). Aucune ecriture dans le depot, aucun reseau hors `git fetch`.
+Aucune ecriture dans le depot. Il fait un `git fetch` (reseau) et ecrit un petit fichier marqueur HORS depot (defaut : $TMPDIR/a2_team_seen.json).
 Usage : python3 research/weather_forward/v4/team/a2_team_status.py [chemin_marqueur]
 Le marqueur memorise les tetes vues au dernier passage (defaut : $TMPDIR/a2_team_seen.json).
 """
