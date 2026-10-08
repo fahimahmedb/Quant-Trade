@@ -62,6 +62,15 @@ def count_messages(comments, cutoff):
     return counts
 
 
+def balance_flag(builder_share):
+    """Signale l'agent qui mene au-dela de 60 % (dans les deux sens) en le nommant."""
+    if builder_share > 60:
+        return "  ** DESEQUILIBRE : le Builder mene, rebalancer (charte 5 ter, seuil 60 %) **"
+    if 100 - builder_share > 60:
+        return "  ** DESEQUILIBRE : l'orchestrateur mene, rebalancer (charte 5 ter, seuil 60 %) **"
+    return ""
+
+
 def balance_line():
     """Part des messages d'equipe AUTHENTIFIES par agent sur 12 h ; une part > 60 % signale le lead a rebalancer (charte 5 ter).
     N'echoue jamais : si la mesure est impossible, le dit."""
@@ -80,7 +89,7 @@ def balance_line():
     if total == 0:
         return "  aucun message sur 12 h"
     share = counts["builder"] * 100 // total
-    flag = "  ** DESEQUILIBRE : le Builder mene, rebalancer (charte 5 ter, seuil 60 %) **" if share > 60 else ""
+    flag = balance_flag(share)
     return f"  builder {counts['builder']} ({share} %) / orchestrateur {counts['orchestrateur']} ({100 - share} %){flag}"
 
 

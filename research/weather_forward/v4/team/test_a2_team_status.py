@@ -36,5 +36,17 @@ class Balance(unittest.TestCase):
                          {"builder": 0, "orchestrateur": 0})
 
 
+class Flag(unittest.TestCase):
+    def test_either_agent_leading_above_60_percent_is_named(self):
+        self.assertIn("le Builder mene", st.balance_flag(61))
+        self.assertIn("l'orchestrateur mene", st.balance_flag(39))
+        self.assertIn("l'orchestrateur mene", st.balance_flag(0))
+        self.assertIn("le Builder mene", st.balance_flag(100))
+
+    def test_balanced_split_has_no_flag(self):
+        for share in (40, 50, 60):
+            self.assertEqual(st.balance_flag(share), "")
+
+
 if __name__ == "__main__":
     unittest.main()
