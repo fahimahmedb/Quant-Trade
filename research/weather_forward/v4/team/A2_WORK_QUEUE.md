@@ -13,7 +13,7 @@ Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haik
 | Q6 | L2-H : candidat trusted root (`trusted_root.py` seul) | idem | Q5 | builder | B | DONE : `73280c3`, blob `9704a844` |
 | Q7 | L2-I : vérifications du candidat (runner sur les 279 anciens tests : 3 écarts attendus ; nouveaux tests ; refus sur root réelle ; positifs sur objets synthétiques) | idem §4 L2-I | Q6 | builder | B | READY |
 | Q8 | L2-J : dossier de preuves | idem | Q7 | builder | B | BLOCKED |
-| Q9 | Lot 3 : revue technique par une Astra neuve (mission écrite, références exactes) | Plan Owner | Q8 | orchestrateur lance | T | BLOCKED |
+| Q9 | Lot 3 : revue technique par une Astra neuve (mission écrite, références exactes) | Plan Owner | Q8 | orchestrateur lance | T | MISSION_PUBLIEE (rédigée par Codex, publiée par Claude Code, commit `69ac45bec50f26413eafc5c8de953fa4f983603e`, blob `f467510423630408f6c14672f46d5863b9c2a562`, SHA-256 vérifié ; références L2-J à remplir après Q8 ; lancement d'Astra BLOCKED jusqu'à Q8) |
 | Q10 | Fermer le domaine de `structural_linkage_status` et le contenu sous garde (Astra §I.1-2), pour une future route D1 | Owner | rien | orchestrateur prépare, Owner décide | T | OWNER_GATED |
 | Q11 | L2-A : qualification de la VM | Décision lot 2 | terminal d'Owner | Owner | - | OWNER_GATED |
 | Q12 | Lot 4 : activation et opération | Owner | Q9, Q11 | Owner | - | OWNER_GATED |
