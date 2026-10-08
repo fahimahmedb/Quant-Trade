@@ -216,7 +216,9 @@ class SymData:
                 return False, None
         qv = [self.spot[d - k]["qv"] for k in range(30)]
         m = median(qv)
-        return m >= MIN_QV, m
+        # Eligibility is the preregistered median gate; low-slippage ranking uses
+        # aggregate trailing-30-day quote volume, as separately preregistered.
+        return m >= MIN_QV, sum(qv)
 
     def _signal(self, d):
         days = range(d - 6, d + 1)
