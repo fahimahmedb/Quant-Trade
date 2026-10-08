@@ -1,3 +1,2 @@
-TARGET_COMMIT=7b03ced6a62938476ae8cd4828a36249f2f8354a
-PARENT=f6d861aefe237537f8e9bff401c5f20089be2f07
-NOTE=This marker is created only after the frozen harness tree was built. Branch head verification follows.
+TARGET_COMMIT_OBJECT=7b03ced6a62938476ae8cd4828a36249f2f8354a
+NOTE=The branch still requires the final fast-forward integration commit carrying the four frozen blobs. This marker will be superseded by final branch-head verification.
