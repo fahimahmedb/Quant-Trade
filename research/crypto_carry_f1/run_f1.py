@@ -455,10 +455,15 @@ def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None, 
     selected = None
     if stage == "STAGE_B":
         # Authenticate the published Stage A result before any Stage B byte is read.
-        if not stage_a_sha256 or sha256_file(stage_a_result) != stage_a_sha256:
+        import hashlib
+        if not stage_a_sha256 or not stage_a_result:
             raise FormatError("Stage A result missing or does not match the published sha256")
-        with open(stage_a_result) as f:
-            sa = json.load(f)
+        with open(stage_a_result, "rb") as f:
+            stage_a_bytes = f.read()
+        if hashlib.sha256(stage_a_bytes).hexdigest() != stage_a_sha256:
+            raise FormatError("Stage A result missing or does not match the published sha256")
+        # Parse the authenticated buffer, never a second read of a mutable path.
+        sa = json.loads(stage_a_bytes)
         if sa.get("stage") != "STAGE_A" or sa.get("harness_sha256") != me:
             raise FormatError("Stage A result produced by a different harness")
         selected = select_theta(sa["cells"])

@@ -1,8 +1,11 @@
 """Decision-changing F1 regressions; generated fixtures only, no network."""
+import hashlib
+import json
 import os
 import tempfile
 import unittest
 from collections import defaultdict
+from contextlib import contextmanager
 from unittest.mock import patch
 
 from research.crypto_carry_f1 import test_run_f1 as fixtures
@@ -121,6 +124,53 @@ class LiquidationExitCosts(unittest.TestCase):
                 self.assertAlmostEqual(diag["components"]["fees"], mult * (entry_cost + exit_cost), places=12)
                 self.assertAlmostEqual(diag["components"]["liquidation_penalty"],
                                        r.LIQ_PEN * notional * r.LIQ_MULT, places=12)
+
+
+class PublishedStageAuthentication(unittest.TestCase):
+    def test_stage_b_uses_the_same_stage_a_bytes_it_authenticated(self):
+        # Simulate a concurrent replacement immediately after the first read:
+        # the published digest belongs to theta 0.05, while the new file would
+        # consistently select 0.20. No sealed ZIP is opened in this fixture.
+        with tempfile.TemporaryDirectory() as root:
+            data = fixtures.fixture(root, 100)
+            fixtures.write_manifest(data, "STAGE_B")
+            stage_a = os.path.join(root, "stage_a.json")
+            payload = {
+                "stage": "STAGE_A", "harness_sha256": r.sha256_file(r.__file__),
+                "selected_theta": 0.05,
+                "cells": {str(th): {"base": {"sharpe_annual": 5.0 if th == 0.05 else 0.0}}
+                          for th in r.THETAS},
+            }
+            published = json.dumps(payload, sort_keys=True).encode()
+            payload["selected_theta"] = 0.20
+            payload["cells"]["0.05"]["base"]["sharpe_annual"] = 0.0
+            payload["cells"]["0.2"]["base"]["sharpe_annual"] = 5.0
+            replacement = json.dumps(payload, sort_keys=True).encode()
+            with open(stage_a, "wb") as stream:
+                stream.write(published)
+            original_open = open
+            stage_a_opens = 0
+
+            @contextmanager
+            def open_stage_a(*args, **kwargs):
+                nonlocal stage_a_opens
+                stage_a_opens += 1
+                with original_open(*args, **kwargs) as stream:
+                    yield stream
+                if stage_a_opens == 1:
+                    with original_open(stage_a, "wb") as stream:
+                        stream.write(replacement)
+
+            def guarded_open(path, *args, **kwargs):
+                if os.fspath(path) == stage_a:
+                    return open_stage_a(path, *args, **kwargs)
+                return original_open(path, *args, **kwargs)
+
+            with patch("builtins.open", side_effect=guarded_open):
+                result = r.run("STAGE_B", data, os.path.join(root, "results", "b.json"),
+                               stage_a, stage_a_sha256=hashlib.sha256(published).hexdigest())
+            self.assertEqual(result["selected_theta"], 0.05)
+            self.assertEqual(stage_a_opens, 1)
 
 
 if __name__ == "__main__":
