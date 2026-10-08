@@ -63,6 +63,15 @@ class Watchdog(unittest.TestCase):
                          c(2, "08:30", "orchestrateur", "builder", "REF A1", demande="aucune")], NOW, False)
         self.assertEqual(a, [])
 
+    def test_an_unrelated_longer_id_or_a_sha_substring_does_not_close_the_wait(self):
+        wait = c(1, "08:00", "builder", "orchestrateur", "ATTENTE[C9]: x avant 2026-10-08T09:00Z")
+        for text in ("a propos de C90", "sha 0ac9f1 et XC9", "C9x", "C9-bis"):
+            a = wd.evaluate([wait, c(2, "08:30", "orchestrateur", "builder", text, demande="aucune")], NOW, False)
+            self.assertEqual(len(a), 1, text)
+        for text in ("CLOS[C9@1]", "voir C9.", "(C9)", "C9, merci"):
+            a = wd.evaluate([wait, c(2, "08:30", "orchestrateur", "builder", text, demande="aucune")], NOW, False)
+            self.assertEqual(a, [], text)
+
     def test_legacy_wait_without_id_closed_by_any_later_message(self):
         a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE: x avant 2026-10-08T09:00Z"),
                          c(2, "08:30", "orchestrateur", "builder", demande="aucune")], NOW, False)
@@ -136,6 +145,10 @@ class Watchdog(unittest.TestCase):
     def test_open_work_detection(self):
         self.assertTrue(wd.open_work_in("| Q1 | x | READY |"))
         self.assertFalse(wd.open_work_in("| Q1 | x | DONE |\n| Q2 | y | OWNER_GATED |\n| Q3 | z | BLOCKED |"))
+        self.assertFalse(wd.open_work_in("| C2 | x | GELÉ (B3, réversible) |\n| Q1 | y | DONE : `abc` |"))
+        self.assertTrue(wd.open_work_in("| C2 | x | GELÉ |\n| B2 | y | READY |"))
+        # un mot de statut dans une autre cellule ne masque pas une tache ouverte
+        self.assertTrue(wd.open_work_in("| Q9 | attend DONE de Q1 | IN_PROGRESS |"))
 
 
 if __name__ == "__main__":

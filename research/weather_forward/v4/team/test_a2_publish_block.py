@@ -42,6 +42,12 @@ class PublishBlock(unittest.TestCase):
         code, files = run(body)
         self.assertEqual((code, files), (1, ["block_1.md"]))
 
+    def test_sha_line_inside_an_unpublished_illustrative_block_is_not_an_announcement(self):
+        a = "# A\ncontenu\n"
+        example = "```markdown\nSHA-256: `" + "ab" * 32 + "`\n```\n"
+        body = f"exemple de format :\n{example}\n```markdown\n{a}```\n\nSHA-256 du bloc : `{sha(a)}`\n"
+        self.assertEqual(run(body), (0, ["block_1.md"]))
+
     def test_digest_inside_block_text_is_content_not_a_declaration(self):
         b = "# B\nautre\n"
         a = f"# A\nSHA-256 de B (document cite) : `{sha(b)}`\n"

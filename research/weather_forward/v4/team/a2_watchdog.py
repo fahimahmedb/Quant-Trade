@@ -109,7 +109,8 @@ def evaluate(comments, now, open_work, closed=frozenset()):
                 continue
             for target in sorted(m["targets"] & AGENTS):
                 later = [x for x in msgs[i + 1:] if x["sender"] == target]
-                answered = any(wid in x["body"] for x in later) if wid else bool(later)
+                token = re.compile(rf"(?<![\w.-]){re.escape(wid)}(?![\w-]|\.\w)") if wid else None
+                answered = any(token.search(x["body"]) for x in later) if wid else bool(later)
                 if not answered:
                     raw.append((f"{target}:{m['id']}:{wid or 'x'}", target,
                                 f"attente de {m['sender']} sans reponse (commentaire {m['id']}, '{objet}', echeance {deadline:%Y-%m-%dT%H:%MZ})"))
@@ -157,9 +158,17 @@ def flatten_pages(data):
 TASK_ROW = re.compile(r"^\|\s*[A-Z]+\d+[\w-]*\s*\|")
 
 
+NOT_OPEN = ("DONE", "OWNER_GATED", "BLOCKED", "IDLE", "GELÉ")
+
+
 def open_work_in(queue_text):
-    return any(TASK_ROW.match(l) and not any(s in l for s in ("| DONE", "OWNER_GATED", "| BLOCKED", "| IDLE"))
-               for l in queue_text.splitlines())
+    """Une tache est ouverte si son statut (derniere cellule) n'est ni termine, ni reserve, ni bloque, ni gele."""
+    for line in queue_text.splitlines():
+        if TASK_ROW.match(line):
+            status = line.strip().strip("|").split("|")[-1].strip()
+            if not status.startswith(NOT_OPEN):
+                return True
+    return False
 
 
 def closed_ids_in(queue_text):

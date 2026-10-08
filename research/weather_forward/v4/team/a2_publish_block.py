@@ -41,6 +41,16 @@ def main():
                 candidates.append((s_, j, sha, text))
                 break
     inside_lines = {i for s_, j, _, _ in candidates for i in range(s_, j + 1)}
+    # Tout autre bloc cloture (illustratif, non publie) est aussi du contenu : ses lignes `SHA-256` ne sont pas des annonces.
+    opener = None
+    for i, l in enumerate(lines):
+        if i in inside_lines or not l.strip().startswith("```"):
+            continue
+        if opener is None:
+            opener = i
+        else:
+            inside_lines.update(range(opener, i + 1))
+            opener = None
     # Passe 2 : annonces = hash en backticks sur une ligne "SHA-256" (ou la suivante) HORS des blocs delimites.
     declared = []
     for i, l in enumerate(lines):
