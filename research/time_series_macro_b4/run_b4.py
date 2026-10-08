@@ -32,9 +32,11 @@ from quant.dataplane.panel import PricePanel
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data/datasets/us_sector_etf_daily.csv"
+META = ROOT / "data/datasets/us_sector_etf_daily.meta.json"
 REGISTRY = ROOT / "var/strategies.json"
 STATE_MD = ROOT / "STATE.md"
 FINGERPRINT = "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1"
+META_SHA256 = "aea802516349cf4d4f4d57e3ded17948441bc0a1e7384f25f254f203aff25814"
 PREREG_SHA256 = "11f77332f9551028dc6b19f91a1fc939513511f0e1c2188d6fdffef83d9c7c5d"
 ERRATUM_SHA256 = "e561a9c684d041b0bb0f66fed914e865726e6fe42dc1d7e4220ab953e074637b"
 DATASET_ID = "us_sector_etf_daily"
@@ -92,7 +94,11 @@ def build_research_panel(path: Path) -> tuple[PricePanel, int]:
 
 
 def trial_count_source(registry: Path = REGISTRY, state_md: Path = STATE_MD) -> str:
-    """Erratum E2: a readable registry must say exactly 36; with no registry, STATE.md's recorded 36; conflict = invalid."""
+    """Erratum E2: a readable registry must say exactly 36; with no registry, STATE.md's recorded 36; any contradiction
+    (registry vs 36, or registry vs STATE.md, or STATE.md vs 36) is invalid. Both sources are always examined when present."""
+    stated = None
+    if state_md.exists():
+        stated = {int(n) for n in re.findall(r"after\s+(\d+)\s+declared expressions", state_md.read_text(encoding="utf-8"), re.I)}
     if registry.exists():
         try:
             payload = json.loads(registry.read_text(encoding="utf-8"))
@@ -102,13 +108,28 @@ def trial_count_source(registry: Path = REGISTRY, state_md: Path = STATE_MD) -> 
             raise InvalidTrialCount(f"registry unreadable or ambiguous: {exc}")
         if count != PRIOR_TRIALS:
             raise InvalidTrialCount(f"registry records {count} expressions on the dataset, pre-registered {PRIOR_TRIALS}")
+        if stated and stated != {PRIOR_TRIALS}:
+            raise InvalidTrialCount(f"registry says {count} but STATE.md records {sorted(stated)}: sources conflict")
         return "REGISTRY"
-    if not state_md.exists():
+    if stated is None:
         raise InvalidTrialCount("no registry and no STATE.md")
-    found = {int(n) for n in re.findall(r"after\s+(\d+)\s+declared expressions", state_md.read_text(encoding="utf-8"), re.I)}
-    if found != {PRIOR_TRIALS}:
-        raise InvalidTrialCount(f"STATE.md records {sorted(found)} declared expressions, pre-registered {PRIOR_TRIALS}")
+    if stated != {PRIOR_TRIALS}:
+        raise InvalidTrialCount(f"STATE.md records {sorted(stated)} declared expressions, pre-registered {PRIOR_TRIALS}")
     return "STATE_MD_NO_REGISTRY"
+
+
+def check_metadata(meta_path: Path = META, data_fingerprint: str = FINGERPRINT) -> None:
+    """Pre-registration section 2 names the metadata file: it must be present, byte-identical and consistent with the CSV."""
+    if not meta_path.exists():
+        raise InvalidInput("dataset metadata file is missing")
+    digest = "sha256:" + hashlib.sha256(meta_path.read_bytes()).hexdigest()
+    if digest != "sha256:" + META_SHA256:
+        raise InvalidInput(f"dataset metadata differs from the expected identity: {digest}")
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    if (meta.get("fingerprint") != data_fingerprint or meta.get("dataset_id") != DATASET_ID
+            or not set(INSTRUMENTS) <= set(meta.get("symbols", [])) or meta.get("first_date") != BOUNDS["DISCOVERY"][0]
+            or not (meta.get("validation") or {}).get("passed")):
+        raise InvalidInput("dataset metadata is inconsistent with the pre-registration")
 
 
 # ------------------------------------------------------------------ evaluation
@@ -280,12 +301,13 @@ def evaluate_family(panel: PricePanel, bounds=BOUNDS) -> dict:
 
 
 def compute(data_path: Path = DATA, fingerprint: str = FINGERPRINT, bounds=BOUNDS, registry: Path = REGISTRY,
-            state_md: Path = STATE_MD) -> dict:
+            state_md: Path = STATE_MD, meta_path: Path = META) -> dict:
     before = file_fingerprint(data_path)  # raw-byte hash; no bar is parsed for it
     if before != fingerprint:
         raise InvalidInput(f"dataset fingerprint {before} != {fingerprint}")
     if dict(bounds) != BOUNDS:
         raise InvalidInput(f"window bounds {dict(bounds)} differ from pre-registered {BOUNDS}")
+    check_metadata(meta_path, fingerprint)
     source = trial_count_source(registry, state_md)
     panel, skipped = build_research_panel(data_path)
     late = [d for d in panel.dates if d >= FIRST_FORBIDDEN_DATE]

@@ -206,6 +206,16 @@ class TrialCount(unittest.TestCase):
                 with self.assertRaises(b4.InvalidTrialCount):
                     b4.trial_count_source(reg, st)
 
+    def test_registry_36_but_conflicting_state_md_is_invalid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            reg, st = self._files(tmp, '{"trials": {"us_sector_etf_daily@x": 36}}', state="After 40 declared expressions the bar rises.")
+            with self.assertRaisesRegex(b4.InvalidTrialCount, "conflict"):
+                b4.trial_count_source(reg, st)
+            reg, st = self._files(tmp, '{"trials": {"us_sector_etf_daily@x": 36}}', state="no relevant sentence")
+            self.assertEqual(b4.trial_count_source(reg, st), "REGISTRY")
+            reg, st = self._files(tmp, '{"trials": {"us_sector_etf_daily@x": 36}}', state=None)
+            self.assertEqual(b4.trial_count_source(reg, st), "REGISTRY")
+
     def test_real_state_md_records_36(self):
         with tempfile.TemporaryDirectory() as tmp:
             self.assertEqual(b4.trial_count_source(Path(tmp) / "none.json", b4.STATE_MD), "STATE_MD_NO_REGISTRY")
@@ -291,6 +301,28 @@ class Gates(unittest.TestCase):
         finally:
             PricePanel.__init__ = original
         self.assertEqual(seen, [])
+
+
+class Metadata(unittest.TestCase):
+    def test_real_metadata_passes(self):
+        b4.check_metadata()
+
+    def test_missing_altered_or_inconsistent_metadata_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "none.json"
+            with self.assertRaisesRegex(b4.InvalidInput, "missing"):
+                b4.check_metadata(missing)
+            altered = Path(tmp) / "m.json"
+            altered.write_bytes(b4.META.read_bytes().replace(b'"rows": 30168', b'"rows": 30169'))
+            with self.assertRaisesRegex(b4.InvalidInput, "differs from the expected identity"):
+                b4.check_metadata(altered)
+        with self.assertRaisesRegex(b4.InvalidInput, "inconsistent"):
+            b4.check_metadata(b4.META, "sha256:" + "0" * 64)
+
+    def test_compute_refuses_before_parsing_when_metadata_is_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(b4.InvalidInput, "missing"):
+                b4.compute(meta_path=Path(tmp) / "none.json")
 
 
 class WritePolicy(unittest.TestCase):
