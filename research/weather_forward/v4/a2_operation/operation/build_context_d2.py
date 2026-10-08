@@ -2,7 +2,7 @@
 """Construit, sans l'executer, le contexte d'operation D2 (avant prise d'effet de E) et les epingles finales.
 
 Entrees : les trois documents geles, les constantes de E (B.1 a B.4) et les blobs du candidat root.
-Sorties : frozen/operation_context_d2_pre_effect_v1.json, frozen/final_pins_d2_v1.json (le contexte est ecrit d'abord, ses blobs entrent dans les epingles).
+Sorties : frozen/operation_context_d2_pre_effect_v1.json, frozen/final_pins_d2_v1.json, frozen/final_pins_d2_v1.tsv (meme contenu, pour les scripts d'hote ; le contexte est ecrit d'abord, ses blobs entrent dans les epingles).
 Aucun appel au harnais, aucune ecriture hors des deux sorties, aucun lancement du script d'operation.
 Regle d'activation (E B.3) : le contexte d'activation (lot 4) ne differe du present que par
 read_authorization.state, de "UNRESOLVED" a "AUTHORIZED"; toute autre difference est un defaut.
@@ -108,6 +108,11 @@ def main():
     with open(pins, "w", encoding="utf-8", newline="\n") as handle:
         handle.write(dump(build_pins(root)))
     print("ecrit", pins)
+    tsv = os.path.join(root, "frozen", "final_pins_d2_v1.tsv")
+    with open(tsv, "w", encoding="utf-8", newline="\n") as handle:
+        for path, blob in sorted(build_pins(root)["sources"].items()):
+            handle.write(f"{blob}\t{path}\n")
+    print("ecrit", tsv)
 
 
 if __name__ == "__main__":
