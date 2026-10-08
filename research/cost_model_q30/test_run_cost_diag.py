@@ -136,6 +136,87 @@ class Capacity(unittest.TestCase):
         self.assertEqual(status["status"], "COST_UNDETERMINED")
 
 
+class ReviewFixes(unittest.TestCase):
+    def test_a_breached_order_is_priced_with_an_uncapped_impact(self):
+        panel, dates = panel_of(["SPY"], volume=10_000.0, price=100.0)
+        rows = make_rows(dates, [{"SPY": 1 / 3}])
+        model = ExecutionModel()
+        adv = model.adv(panel, "SPY", rows[0]["signal_date"])
+        for nav in (3e6, 30e6):
+            participation = (1 / 3) * nav / adv
+            self.assertGreater(participation, 0.05)
+            priced = cd.price_rows(rows, panel, nav, cd.CENTRAL)
+            expected = (1 / 3) * 10.0 * (participation / 0.05) ** 0.5 / 10_000
+            self.assertAlmostEqual(priced["posts"]["impact"][0], expected, places=12)
+            self.assertTrue(priced["breaches"])
+
+    def test_an_untruncated_order_keeps_the_desk_impact(self):
+        panel, dates = panel_of(["SPY"], volume=1e9, price=100.0)
+        rows = make_rows(dates, [{"SPY": 1 / 3}])
+        priced = cd.price_rows(rows, panel, 1e6, cd.CENTRAL)
+        adv = ExecutionModel().adv(panel, "SPY", rows[0]["signal_date"])
+        expected = (1 / 3) * 10.0 * ((1 / 3) * 1e6 / adv / 0.05) ** 0.5 / 10_000
+        self.assertAlmostEqual(priced["posts"]["impact"][0], expected, places=15)
+        self.assertEqual(priced["breaches"], [])
+
+    def test_a_bad_reconciliation_or_identity_forces_undetermined_over_every_other_status(self):
+        clean = {"undetermined": [], "breaches": [], "max_participation": 0.0}
+        central = {"net_return": 0.1, "gross_pnl_arithmetic": 0.2, "post_totals": {"commission": 0.0}}
+        ok = {"a": True}
+        for recon, ident in ((1e-12, 0.0), (float("nan"), 0.0), (float("inf"), 0.0), (0.0, 1e-3), (0.0, float("nan"))):
+            problems = cd.integrity_problems(recon, ident)
+            self.assertTrue(problems, (recon, ident))
+            self.assertEqual(cd.status_for(central, {}, ok, ok, clean, problems)["status"], "COST_UNDETERMINED")
+        self.assertEqual(cd.integrity_problems(9e-13, 1e-10), [])
+
+    def test_the_turnover_identity_holds_for_the_published_row_convention(self):
+        panel, dates = panel_of(["SPY", "TLT"])
+        rows = make_rows(dates, [{"SPY": 1 / 3, "TLT": -1 / 3}, {"SPY": -1 / 3, "TLT": -1 / 3}, {"SPY": 0.0, "TLT": 1 / 3}])
+        priced = cd.price_rows(rows, panel, 1e6, cd.CENTRAL)
+        original = [2 / 3, 2 / 3, 1 / 3 + 2 / 3]
+        self.assertAlmostEqual(sum(priced["turnover"]), sum(original), places=12)
+
+    def test_any_unexpected_exception_is_persisted_as_an_invalid_run(self):
+        import json
+        original = cd.compute
+
+        def boom(*a, **k):
+            raise KeyError("x")
+        cd.compute = boom
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp) / "r.json"
+                self.assertEqual(cd.main(["run_cost_diag.py", str(target)]), 1)
+                doc = json.loads(target.read_text())
+                self.assertEqual(doc["RESULT"], "INVALID_INPUT")
+                self.assertIn("KeyError", doc["problems"][0])
+        finally:
+            cd.compute = original
+
+    def test_the_result_records_provenance_and_post_labels(self):
+        import json
+        original = cd.compute
+        cd.compute = lambda *a, **k: {"x": 1.0}
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp) / "r.json"
+                cd.main(["run_cost_diag.py", str(target)])
+                doc = json.loads(target.read_text())
+        finally:
+            cd.compute = original
+        self.assertEqual(doc["erratum_1_sha256"], cd.ERRATUM_SHA256)
+        self.assertEqual(doc["specification_sha256"], cd.SPEC_SHA256)
+        self.assertEqual(len(doc["harness_sha256"]), 64)
+        self.assertTrue(doc["central_equals_desk_defaults"])
+        self.assertIn("ASSUMED_BORROW_BPS_YEAR", doc["post_labels"].values())
+
+    def test_the_frozen_b4_module_is_executed_from_the_verified_bytes(self):
+        with self.assertRaisesRegex(cd.InvalidInput, "frozen B4 harness"):
+            cd._load_frozen("x", cd.B4_PATH, "0" * 64)
+        module = cd._load_frozen("y", cd.B4_PATH, cd.B4_BLOB_SHA256)
+        self.assertTrue(callable(module.rows_for))
+
+
 class Status(unittest.TestCase):
     CLEAN = {"undetermined": [], "breaches": [], "max_participation": 0.0}
 

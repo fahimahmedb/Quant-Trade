@@ -3,7 +3,8 @@
 
 Specification : research/weather_forward/v4/team/Q30_PATH2_COST_MODEL_SPECIFICATION_2026-10-08.md
                 SHA-256 2d534927a6aa69ec3b7e51f93dc09cd2e2b0b152b75932561b7d959dbfa8bda8
-Erratum 1     : research/weather_forward/v4/team/Q30_PATH2_COST_MODEL_ERRATUM_1_2026-10-08.md (Builder proposal)
+Erratum 1     : research/weather_forward/v4/team/Q30_PATH2_COST_MODEL_ERRATUM_1_2026-10-08.md
+                SHA-256 db4915d46a350d223d1b82a595eb25964daee5d5543cae6a9a345e28234ffed7, ACCEPTED E1-E6 by the orchestrator (PR #22 comment 6061023438)
 Descriptive only: it cannot change the B2/B4 rejections, selects nothing, claims no discovery and modifies no desk stage.
 Costs: the central scenario IS the desk model (`ExecutionModel`, called, not re-implemented); borrow, financing and the
 stress values are LABELLED ASSUMPTIONS (`ASSUMED_NOT_ESTIMATED`), never measurements. A participation above the desk limit is a
@@ -36,20 +37,34 @@ from quant.factory.signals import StrategySpec
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def _load(name: str, relative: str):
-    spec = importlib.util.spec_from_file_location(name, ROOT / relative)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+class InvalidInput(Exception):
+    pass
 
 
 B4_PATH = "research/time_series_macro_b4/run_b4.py"
 B4_BLOB_SHA256 = "30ede2a379d0f72c2349df37ec96854d8fdd129f523777b3589c8c3631a30706"
-b4 = _load("run_b4_frozen", B4_PATH)
+
+
+def _load_frozen(name: str, relative: str, expected_sha256: str):
+    """Hash the exact bytes, refuse on mismatch, and execute THOSE bytes (no hash-then-reread gap)."""
+    source = (ROOT / relative).read_bytes()
+    digest = hashlib.sha256(source).hexdigest()
+    if digest != expected_sha256:
+        raise InvalidInput(f"the frozen B4 harness changed: {digest}")
+    module = importlib.util.module_from_spec(importlib.util.spec_from_loader(name, loader=None))
+    module.__file__ = str(ROOT / relative)
+    exec(compile(source, str(ROOT / relative), "exec"), module.__dict__)
+    return module
+
+
+b4 = _load_frozen("run_b4_frozen", B4_PATH, B4_BLOB_SHA256)
 
 DATA = b4.DATA
 FINGERPRINT = b4.FINGERPRINT
 SPEC_SHA256 = "2d534927a6aa69ec3b7e51f93dc09cd2e2b0b152b75932561b7d959dbfa8bda8"
+ERRATUM_SHA256 = "db4915d46a350d223d1b82a595eb25964daee5d5543cae6a9a345e28234ffed7"
+RECONCILIATION_LIMIT = 1e-12
+IDENTITY_LIMIT = 1e-9
 FIRST_FORBIDDEN_DATE = "2025-03-12"
 LAST_RESEARCH_DATE = "2025-03-11"
 B2_WINDOW = ("2022-03-09", "2025-03-11")
@@ -67,10 +82,6 @@ ROBUSTNESS_SHARE = 0.5
 CENTRAL = {"commission_bps": 0.5, "half_spread_bps": 1.0, "impact_bps_at_5pct": 10.0, "borrow_bps_year": 100.0, "financing_bps_year": 0.0}
 STRESS = {"commission_bps": 1.0, "half_spread_bps": 5.0, "impact_bps_at_5pct": 25.0, "borrow_bps_year": 300.0, "financing_bps_year": 500.0}
 POSTS = ("commission", "spread", "impact", "borrow", "financing")
-
-
-class InvalidInput(Exception):
-    pass
 
 
 # ------------------------------------------------------------------ input gates
@@ -94,6 +105,7 @@ def build_panel(path: Path, symbols) -> tuple[PricePanel, int]:
 
 
 def check_frozen_dependency() -> None:
+    """Re-check at run time (the module was already loaded from verified bytes at import)."""
     digest = hashlib.sha256((ROOT / B4_PATH).read_bytes()).hexdigest()
     if digest != B4_BLOB_SHA256:
         raise InvalidInput(f"the frozen B4 harness changed: {digest}")
@@ -142,7 +154,12 @@ def price_rows(rows: list[dict], panel: PricePanel, nav: float, params: dict, mu
                         out["breaches"].append({"symbol": symbol, "date": row["signal_date"], "participation": delta * nav / adv})
                     c = delta * model.commission_bps / 10_000.0
                     s_ = delta * model.half_spread_bps / 10_000.0
-                    i_ = delta * fill["impact_bps"] / 10_000.0
+                    impact_bps = fill["impact_bps"]
+                    if fill["capacity_truncated"]:
+                        # E3: a breach is not priced with a capped impact. The desk fill priced the TRUNCATED order (participation =
+                        # max_participation); rescale by the same square-root law to the requested participation.
+                        impact_bps *= math.sqrt((delta * nav / adv) / model.max_participation)
+                    i_ = delta * impact_bps / 10_000.0
             short = abs(weight) if weight < 0 else 0.0
             b_, f_ = short * borrow_rate, abs(weight) * financing_rate
             for name, value in zip(POSTS, (c, s_, i_, b_, f_)):
@@ -230,9 +247,21 @@ def b2_criteria(m: dict, market: list[float], net: list[float], active: int) -> 
             "at_least_100_active_observations": active >= 100}
 
 
-def status_for(central: dict, stress: dict, criteria_central: dict, criteria_stress: dict, priced: dict) -> dict:
+def integrity_problems(reconciliation: float, identity: float) -> list:
+    problems = []
+    if not math.isfinite(reconciliation) or reconciliation >= RECONCILIATION_LIMIT:
+        problems.append(f"accounting reconciliation error {reconciliation!r} (limit {RECONCILIATION_LIMIT})")
+    if not math.isfinite(identity) or identity > IDENTITY_LIMIT:
+        problems.append(f"turnover identity divergence {identity!r} versus the published rows (limit {IDENTITY_LIMIT})")
+    return problems
+
+
+def status_for(central: dict, stress: dict, criteria_central: dict, criteria_stress: dict, priced: dict,
+               integrity: list | None = None) -> dict:
     """Single status per target and NAV (specification section 5 plus erratum E3/E5). UNDETERMINED > INFEASIBLE > SENSITIVE > ROBUST."""
     reasons = []
+    if integrity:
+        return {"status": "COST_UNDETERMINED", "reasons": list(integrity)}
     if priced["undetermined"]:
         return {"status": "COST_UNDETERMINED", "reasons": [f"{len(priced['undetermined'])} undetermined cost inputs (ADV)"]}
     if priced["breaches"]:
@@ -267,6 +296,8 @@ def b4_targets(panel3: PricePanel) -> dict:
         rows = [r for r in full if b4.in_window(r, b4.BOUNDS["EVALUATION"])]
         first = full.index(rows[0])
         # Same convention as B4: the first evaluation row inherits the position held on the previous row.
+        for r in rows:
+            r["turnover_original"] = sum(r["turnover"].values())
         out[f"B4_L{L}"] = {"rows": rows, "criteria": "b4", "panel": panel3, "initial": dict(full[first - 1]["weights"]) if first else {}}
     return out
 
@@ -281,7 +312,8 @@ def b2_target(panel12: PricePanel) -> dict:
         symbols = set(r["weights"])
         returns = {s: panel12.adjusted(r["exit_date"], s, "open") / panel12.adjusted(r["entry_date"], s, "open") - 1.0 for s in symbols}
         rows.append({"signal_date": r["signal_date"], "entry_date": r["entry_date"], "exit_date": r["exit_date"],
-                     "weights": dict(r["weights"]), "returns": returns, "positions": r["positions"]})
+                     "weights": dict(r["weights"]), "returns": returns, "positions": r["positions"],
+                     "turnover_original": r["turnover"]})
     market = [panel12.adjusted(r["exit_date"], "SPY", "open") / panel12.adjusted(r["entry_date"], "SPY", "open") - 1.0 for r in rows]
     return {"B2_lane2_selected": {"rows": rows, "criteria": "b2", "panel": panel12, "market": market, "initial": {}}}
 
@@ -303,14 +335,20 @@ def analyse_target(target: dict, nav: float) -> dict:
         grid[str(mult)] = {"net_return": b4.compound(pr["net"]), "net_sharpe": b4.sharpe(pr["net"]),
                            "post_totals": {p: sum(pr["posts"][p]) for p in POSTS}, "breaches": len(pr["breaches"]),
                            "note": "0x is a gross diagnostic, never an admissibility scenario" if mult == 0.0 else ""}
+    identity = abs(sum(central["turnover"]) - sum(r["turnover_original"] for r in rows))
+    recon = max(reconciliation_error(central), reconciliation_error(stress))
+    problems = integrity_problems(recon, identity)
     hist = price_rows(rows, panel, nav, {"commission_bps": 5.0, "half_spread_bps": 0.0, "impact_bps_at_5pct": 0.0,
                                          "borrow_bps_year": 0.0, "financing_bps_year": 0.0}, initial=initial)
     return {"nav": nav, "COST_INPUT_KIND": "ASSUMED_NOT_ESTIMATED", "central": m_c, "stress": m_s,
             "criteria_central": crit_c, "criteria_stress": crit_s,
-            "status": status_for(m_c, m_s, crit_c, crit_s, central),
+            "status": status_for(m_c, m_s, crit_c, crit_s, central, problems),
+            "numbers_complete": not problems and not central["undetermined"],
+            "note_on_numbers": "orders in capacity breach are priced with an UNCAPPED impact (E3); undetermined inputs leave a post uncounted",
+            "turnover_identity_error": identity,
             "capacity_breaches": central["breaches"][:5], "capacity_breach_count": len(central["breaches"]),
             "undetermined": central["undetermined"][:5],
-            "reconciliation_error": max(reconciliation_error(central), reconciliation_error(stress)),
+            "reconciliation_error": recon,
             "break_even": {"half_spread_bps": break_even(rows, panel, nav, "half_spread_bps", initial=initial),
                            "borrow_bps_year": break_even(rows, panel, nav, "borrow_bps_year", initial=initial),
                            "financing_bps_year": break_even(rows, panel, nav, "financing_bps_year", initial=initial)},
@@ -361,7 +399,13 @@ def main(argv: list[str]) -> int:
         return 2
     snap_before = b4.snapshot(ROOT)
     commit = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    result = {"specification_sha256": SPEC_SHA256, "command": " ".join(argv), "git_commit": commit,
+    result = {"specification_sha256": SPEC_SHA256, "erratum_1_sha256": ERRATUM_SHA256,
+              "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "frozen_b4_harness_sha256": B4_BLOB_SHA256,
+              "central_equals_desk_defaults": [CENTRAL["commission_bps"], CENTRAL["half_spread_bps"], CENTRAL["impact_bps_at_5pct"]]
+              == [ExecutionModel().commission_bps, ExecutionModel().half_spread_bps, ExecutionModel().impact_bps_at_full_participation],
+              "post_labels": {"commission": "DESK_DEFAULT_COMMISSION_BPS", "spread": "DESK_DEFAULT_HALF_SPREAD_BPS",
+                              "impact": "DESK_DEFAULT_IMPACT_BPS_AT_5PCT", "borrow": "ASSUMED_BORROW_BPS_YEAR",
+                              "financing": "ASSUMED_FINANCING_BPS_YEAR", "stress_values": "ASSUMED_STRESS_NOT_ESTIMATED"}, "command": " ".join(argv), "git_commit": commit,
               "python": platform.python_version(), "assumptions": {"central": CENTRAL, "stress": STRESS, "nav_grid": NAV_GRID,
                                                                     "multipliers": MULTIPLIERS},
               "limits": ["every spread, impact, borrow and financing value is an ASSUMPTION, not a measurement",
@@ -376,6 +420,9 @@ def main(argv: list[str]) -> int:
         rc = 0
     except InvalidInput as exc:
         result.update({"RESULT": "INVALID_INPUT", "problems": [str(exc)]})
+        rc = 1
+    except Exception as exc:  # fail closed: any unexpected error is persisted as an invalid run, never a traceback with no record
+        result.update({"RESULT": "INVALID_INPUT", "problems": [f"unexpected {type(exc).__name__}: {exc}"]})
         rc = 1
     spurious = b4.delta(snap_before, b4.snapshot(ROOT))
     result["filesystem_delta_before_result_write"] = spurious
