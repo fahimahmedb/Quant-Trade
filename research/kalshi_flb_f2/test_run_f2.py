@@ -39,10 +39,14 @@ def build(tmp, ms, candles, cats=None, fees=None):
         for m in ms:
             f.write(json.dumps(m) + "\n")
     for t, body in candles.items():
-        json.dump({"candlesticks": body}, open(os.path.join(tmp, "candles", t + ".json"), "w"))
-    json.dump({m["event_ticker"]: "S" + m["event_ticker"] for m in ms}, open(os.path.join(tmp, "event_series.json"), "w"))
-    json.dump(cats or {"S" + m["event_ticker"]: "Politics" for m in ms}, open(os.path.join(tmp, "series_category.json"), "w"))
-    json.dump(fees or {"default_multiplier": 1.0, "changes": []}, open(os.path.join(tmp, "fee_table.json"), "w"))
+        with open(os.path.join(tmp, "candles", t + ".json"), "w") as fh:
+            json.dump({"candlesticks": body}, fh)
+    with open(os.path.join(tmp, "event_series.json"), "w") as fh:
+        json.dump({m["event_ticker"]: "S" + m["event_ticker"] for m in ms}, fh)
+    with open(os.path.join(tmp, "series_category.json"), "w") as fh:
+        json.dump(cats or {"S" + m["event_ticker"]: "Politics" for m in ms}, fh)
+    with open(os.path.join(tmp, "fee_table.json"), "w") as fh:
+        json.dump(fees or {"default_multiplier": 1.0, "series": {}}, fh)
 
 
 class Units(unittest.TestCase):
@@ -87,9 +91,15 @@ class Units(unittest.TestCase):
         self.assertGreater(rec["net"], -1e-3)     # unrounded fee barely nonnegative-ish
 
     def test_fee_table_multiplier(self):
-        t = {"default_multiplier": 1.0, "changes": [["2025-08-01T00:00:00Z", 0.5]]}
-        self.assertEqual(r.fee_mult(t, dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc)), 1.0)
-        self.assertEqual(r.fee_mult(t, dt.datetime(2025, 9, 1, tzinfo=dt.timezone.utc)), 0.5)
+        t = {"default_multiplier": 1.0, "series": {"S": [["2025-08-01T00:00:00Z", 0.5, "quadratic"],
+                                                         ["2025-10-01T00:00:00Z", 0.5, "flat"]]}}
+        u = lambda m: dt.datetime(2025, m, 1, tzinfo=dt.timezone.utc)
+        self.assertEqual(r.fee_mult(t, "S", u(7)), 1.0)
+        self.assertEqual(r.fee_mult(t, "S", u(9)), 0.5)
+        self.assertEqual(r.fee_mult(t, "OTHER", u(9)), 1.0)
+        self.assertIsNone(r.fee_mult(t, "S", dt.datetime(2025, 11, 1, tzinfo=dt.timezone.utc)))
+        with self.assertRaises(r.FormatError):
+            r.fee_mult({"default_multiplier": 0.07}, "S", u(9))
 
     def test_cluster_stat_matches_manual(self):
         rows = [("a", 0.1, 0.1), ("a", -0.1, -0.1), ("b", 0.2, 0.2), ("c", 0.0, 0.0)]

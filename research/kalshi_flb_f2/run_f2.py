@@ -56,11 +56,16 @@ def ceil_cent(x):
     return math.ceil(round(x * 100, 9)) / 100
 
 
-def fee_mult(table, when):
+def fee_mult(table, series, when):
+    """Multiplier in force on `when` for `series`; fails closed outside [0.1, 3] or for non-quadratic fee types."""
     m = table.get("default_multiplier", 1.0)
-    for t, v in sorted(table.get("changes", [])):
+    for t, v, ftype in sorted(table.get("series", {}).get(series, []), key=lambda x: x[0]):
         if ts(t) <= when:
-            m = v
+            m, ft = v, ftype
+            if ft != "quadratic":
+                return None
+    if not (0.1 <= m <= 3.0):
+        raise FormatError(f"fee multiplier {m} outside the pre-declared sanity range")
     return m
 
 
@@ -74,7 +79,7 @@ def signal_candle(body, close_time):
     return sel[0] if len(sel) == 1 else None
 
 
-def evaluate_market(m, candle, fees, cat_ok):
+def evaluate_market(m, candle, fees, cat_ok, series=None):
     """Return (reason_excluded | None, record)."""
     close_t, open_t = ts(m["close_time"]), ts(m["open_time"])
     bid, ask = num(candle["yes_bid"]["close"]), num(candle["yes_ask"]["close"])
@@ -92,7 +97,9 @@ def evaluate_market(m, candle, fees, cat_ok):
         return "no_signal", None
     win = (m["result"] == side)
     when = ts(m["settlement_ts"])
-    k = fee_mult(fees, close_t)
+    k = fee_mult(fees, series, close_t)
+    if k is None:
+        return "fee_type_not_quadratic", None
     fee = ceil6(0.07 * p * (1.0 - p) * k)
     fee_s = ceil_cent(0.07 * p * (1.0 - p) * k)
     payoff = 1.0 if win else 0.0
@@ -204,7 +211,7 @@ def run(data_dir, result_path):
         if c is None:
             excl["candle_count_not_one"] += 1
             continue
-        why, rec = evaluate_market(m, c, fees, cat)
+        why, rec = evaluate_market(m, c, fees, cat, series)
         if why:
             excl[why] += 1
             continue
