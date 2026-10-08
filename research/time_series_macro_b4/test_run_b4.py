@@ -251,6 +251,34 @@ class Gates(unittest.TestCase):
         self.assertEqual(sorted(panel.symbols), sorted(b4.INSTRUMENTS))
         self.assertGreater(skipped, 0)
 
+    def test_forbidden_lines_never_reach_the_csv_parser(self):
+        fed, original = [], b4.csv.DictReader
+
+        def spy(lines, *a, **k):
+            lines = list(lines)
+            fed.extend(lines)
+            return original(lines, *a, **k)
+        b4.csv.DictReader = spy
+        try:
+            panel, skipped = b4.build_research_panel(b4.DATA)
+        finally:
+            b4.csv.DictReader = original
+        self.assertGreater(len(fed), 1000)
+        self.assertTrue(fed[0].startswith("date,"))
+        self.assertLess(max(line[:10] for line in fed[1:]), b4.FIRST_FORBIDDEN_DATE)
+        self.assertGreater(skipped, 0)
+        self.assertEqual(len(fed) - 1 + skipped, 30168)
+
+    def test_a_line_without_a_leading_date_is_refused_not_passed_through(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = Path(tmp) / "p.csv"
+            bad.write_text("date,symbol,open,high,low,close,adj_close,volume\n2026-09-14,SPY,1,1,1,1,1,1\n\"2026-09-14\",SPY,1,1,1,1,1,1\n")
+            with self.assertRaisesRegex(b4.InvalidInput, "leading ISO date"):
+                b4.build_research_panel(bad)
+            bad.write_text("symbol,date\n")
+            with self.assertRaisesRegex(b4.InvalidInput, "header"):
+                b4.build_research_panel(bad)
+
     def test_registry_precondition_runs_before_any_bar_is_parsed(self):
         seen, original = [], PricePanel.__init__
         PricePanel.__init__ = lambda self, rows: seen.append(1) or original(self, rows)

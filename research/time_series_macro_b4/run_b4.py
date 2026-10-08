@@ -67,17 +67,28 @@ def file_fingerprint(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+DATE_PREFIX = re.compile(r"^\d{4}-\d{2}-\d{2},")
+
+
 def build_research_panel(path: Path) -> tuple[PricePanel, int]:
-    """Drop every row dated FIRST_FORBIDDEN_DATE or later BEFORE any numeric conversion or PricePanel construction."""
+    """Filter the RAW LINES by their leading ISO date before any CSV field splitting, numeric conversion or
+    PricePanel construction: a line dated FIRST_FORBIDDEN_DATE or later is counted and discarded without being parsed.
+    A kept line that does not start with an ISO date is refused (it could otherwise slip past the filter)."""
     kept, skipped = [], 0
     with path.open(encoding="utf-8", newline="") as handle:
-        for record in csv.DictReader(handle):
-            if record["date"] >= FIRST_FORBIDDEN_DATE:
+        header = handle.readline()
+        if not header.startswith("date,"):
+            raise InvalidInput("unexpected CSV header")
+        kept.append(header)
+        for line in handle:
+            if not DATE_PREFIX.match(line):
+                raise InvalidInput(f"line without a leading ISO date: {line[:30]!r}")
+            if line[:10] >= FIRST_FORBIDDEN_DATE:
                 skipped += 1
                 continue
-            if record["symbol"] in INSTRUMENTS:
-                kept.append(record)
-    return PricePanel(kept), skipped
+            kept.append(line)
+    rows = [r for r in csv.DictReader(kept) if r["symbol"] in INSTRUMENTS]
+    return PricePanel(rows), skipped
 
 
 def trial_count_source(registry: Path = REGISTRY, state_md: Path = STATE_MD) -> str:
@@ -353,7 +364,7 @@ def main(argv: list[str]) -> int:
               "limits": ["adj_close is retroactively restated and not strictly point-in-time; TLT adj_close embeds later distributions, GLD does not",
                          "2022-03-09..2025-03-11 is already spent at dataset level; a positive result is exploratory only",
                          "the 2022 bond shock was known before this pre-registration",
-                         "raw bytes of the CSV were hashed for the fingerprint; no bar from 2025-03-12 onward was parsed or analysed",
+                         "raw bytes of the CSV were hashed for the fingerprint; lines dated 2025-03-12 or later were counted and discarded by their leading ISO date without CSV field splitting, numeric conversion or analysis",
                          "cost envelope is simple (5 bp, 100 bp borrow); not a realistic execution model"]}
     try:
         run1 = compute()
