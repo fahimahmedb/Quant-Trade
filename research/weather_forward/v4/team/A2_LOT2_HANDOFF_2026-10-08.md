@@ -45,3 +45,11 @@ Session Builder précédente (`session_016Mii9xHWUhsB3DEuB88zpz`) : environ 37 $
 |---|---|---|---|---|
 | Claude Code (cette session) | `allowed`, contexte 64 % | 2026-10-08T04:40Z (fenêtre de 5 h) | Sonnet, sous-agents Haiku/Opus | environ 57 $ au total |
 | Codex | `NON_VISIBLE` (réponse de Codex sur la PR #22 : il ne voit pas son quota, ses autres modèles ni comment en choisir un) ; à lire par Owner dans la page d'usage de Codex | inconnue | GPT-5.6 Sol (déclaré par Codex) | inconnu |
+
+## Mise à jour (E ratifiée, candidat construit)
+
+- Owner a ratifié la configuration finale et E (D2) : fichier `owner/OWNER_V4_A2_EXECUTION_AUTHORITY_E_D2_2026-10-08.md`, branche `owner/weather-v4-a2-execution-authority-e-d2-2026-10-08`, **commit E = `6e0320f15d48a924cef9507af5641e47de9fe938`**. E est conditionnelle et sans effet.
+- Q6 faite : candidat root `builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08` @ `73280c3e9d8604b2f2d8e6d2d174aa940389a760` (un seul fichier, `trusted_root.py`, blob `9704a844…`), base `276fd99`. Non chargé, non vérifié.
+- **Prochaine action : Q7 (L2-I)**, à confier à une session Sonnet neuve. Le chargement du candidat n'est autorisé que par L2-I.
+- **En attente d'enregistrement :** Owner a ratifié dans la conversation l'amendement délégation et co-gérance au commit `b38e94e93d7e520281eb7914f3671dd8bcdadac0` ; l'enregistrement dans un fichier Owner a été refusé par le contrôle automatique de la session. Tant qu'il n'est pas consigné (ou posté par Owner en commentaire de la PR #22), la délégation ne s'applique pas.
+- Le commit `1910994` de l'outillage vient d'une autre session que le Builder désigné : à signaler à Astra au lot 3.
