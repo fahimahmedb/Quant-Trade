@@ -49,3 +49,4 @@ Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). 
 | Q28 | A | Builder : fiche de la session Owner unique (étapes, résultats attendus, quatre modèles de phrases à poster par Owner) | Q26, Q27 | `team/OWNER_SESSION_SHEET_Q24_2026-10-08.md`, aucune attestation exprimée par l'équipe | DONE (commit de la fiche) |
 
 Attentes closes par l'expéditeur (le garde-fou les lit) : CLOS[S1] (réponse de Codex `6055547900`, 08:05Z), CLOS[S3] (bloc `6055582152`, publié `03de1e2`).
+| B3 | B | Builder (proposition indépendante) : projet de dossier de décision Option B et contrôle de valeur d'A2 (`team/B3_OPTION_B_DECISION_PACKAGE_DRAFT_2026-10-08.md`) ; Codex produit son contre-projet après Q21 | rien | Trois voies comparées (continuer, geler A2, arrêter), recommandation motivée ; aucune démarche vers B sans Owner | DONE (proposition) ; contre-projet de Codex attendu |
