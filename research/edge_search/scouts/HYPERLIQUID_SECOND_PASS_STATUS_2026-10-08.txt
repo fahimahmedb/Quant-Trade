@@ -1,0 +1,11 @@
+This marker intentionally records that no standalone harness or synthetic test files existed at the time the completed Hyperliquid second-pass findings were persisted.
+
+Canonical findings are in:
+research/edge_search/scouts/CRYPTO_MECHANISM_SCOUT_SOL_2026-10-08.md
+
+HARNESS_BUILT = FALSE
+SYNTHETIC_TESTS = FALSE
+READY_TO_RECORD = FALSE
+READY_TO_EXECUTE = FALSE
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
