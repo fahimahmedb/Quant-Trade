@@ -1,0 +1,21 @@
+{
+  "candidate_commit": "73280c3e9d8604b2f2d8e6d2d174aa940389a760",
+  "execution_authority_sha": "6e0320f15d48a924cef9507af5641e47de9fe938",
+  "mode": "L2_J_FINAL_D2_PRE_EFFECT",
+  "schema": "A2_FINAL_SOURCE_PINS_V1",
+  "sources": {
+    "research/weather_forward/v4/a2_harness/__init__.py": "bf9a2bdba7658454ea10009a28c975024365cfe1",
+    "research/weather_forward/v4/a2_harness/contract.py": "f6f94a4a472e3f6652a1502f6afb5825721364d0",
+    "research/weather_forward/v4/a2_harness/harness.py": "00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4",
+    "research/weather_forward/v4/a2_harness/trusted_root.py": "9704a844bae0ef54637c76dded5bb82d9f4c334f",
+    "research/weather_forward/v4/a2_operation/__init__.py": "7a660047ed0e2f871905f6313e411305ea9b5a0b",
+    "research/weather_forward/v4/a2_operation/common/__init__.py": "af0d1060459ed178c47fdbe76c68442adcd2f7ce",
+    "research/weather_forward/v4/a2_operation/common/a2_unit_profile.sh": "ec58a081cfa1fee0a1dfbe51b9930ab65cd13cac",
+    "research/weather_forward/v4/a2_operation/common/bounded_output.py": "5734e9b175c28f3790caa1fab2682d08f0bd4528",
+    "research/weather_forward/v4/a2_operation/frozen/operation_context_d2_pre_effect_v1.json": "cd0803c6152c34145c87fbc22e0cf3deae1db0c0",
+    "research/weather_forward/v4/a2_operation/identity/__init__.py": "ef09a31771f39da2298c72fa6d64c182e8456959",
+    "research/weather_forward/v4/a2_operation/identity/identity_via_harness.py": "7d37ff60c335307029f0f260be7e920c713023cc",
+    "research/weather_forward/v4/a2_operation/operation/__init__.py": "cae8c76795fe1a5e15e4ed8ada95e7cc188566cb",
+    "research/weather_forward/v4/a2_operation/operation/a2_doc_integration_operation.py": "8999ba9ddea527974b0e18d5094c8ee31e6776c0"
+  }
+}
