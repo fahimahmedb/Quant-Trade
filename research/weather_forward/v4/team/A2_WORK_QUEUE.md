@@ -1,8 +1,6 @@
 # File de travail A2 (mise à jour 2026-10-08)
-
 Statuts : READY, BLOCKED (dépend d'une tâche), OWNER_GATED (décision ou action d'Owner), IN_PROGRESS, DONE.
 Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haiku ou script).
-
 | Id | Tâche | Autorité | Dépend de | Agent | Niv. | Statut |
 |---|---|---|---|---|---|---|
 | Q1 | Consigner les gels L2-C (input) et L2-D (output D2) sur les blobs `f85205f3` et `7651de7e` | Acte Owner `9d0698b` §5, délégation | rien | builder (Codex n'a pas pu publier) | M | DONE : `245f193` |
@@ -19,12 +17,8 @@ Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haik
 | Q12 | Lot 4 : activation et opération | Owner | Q9, Q11 | Owner | - | OWNER_GATED |
 | Q13 | Q10 prépare : proposer le domaine fermé de `structural_linkage_status` et le contenu sous garde (projet seul, route D1 future, aucune décision) | classe A | rien | orchestrateur (Codex) | T | DONE : rédigé par Codex, publié par Claude Code, SHA-256 `739e84e7…b670` vérifié, blob `d549cb3829e46a471e6d51a40fdfe3c3a450bf42`, fichier `team/Q13_STRUCTURAL_LINKAGE_DOMAIN_DRAFT_2026-10-08.md` (projet sans effet) |
 | Q14 | Grille de triage adverse du rapport Astra lot 3 (à appliquer dès sa publication : constats, remèdes, écarts) | classe A | rien | orchestrateur (Codex) | T | DONE : rédigé par Codex, publié par Claude Code, SHA-256 `9c75ea24…f757` vérifié, blob `8c0b1f54e31dab6c07bee2fa1d246f7b042d0ce9`, fichier `team/Q14_ASTRA_LOT3_TRIAGE_GRID_2026-10-08.md` |
-
-
 ## P2 — tâches du pilote Codex (arbitrage `6050029356`, source `6049998449` bloc 2, SHA-256 `676fe8bd…360a`)
-
 Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). Chemin critique réel : Astra → triage → (correction) → **Q11-O (VM d'Owner)** → lot 4. E §5 (b) contrôles L2-A, (c) rétention/suppression, (f) code chargé constaté sur l'hôte passent par la VM ; Q19-C et Q20-E restent donc bloquées par Q11-O même si Q17-A conclut `PASS`.
-
 | Id | Tâche / agent | Dépend de | Niv. | Critère de fin vérifiable | Statut |
 |---|---|---|---|---|---|
 | Q15 | Builder : kit VM minimal pour une session de terminal Owner bornée (commandes L2-A et §5(f) existantes, blobs à attester, résultats attendus, arrêts fail-closed) ; aucune action VM par l'équipe | Q8 | B | Fichier daté, chaque commande renvoie à une source publiée (blob), aucune commande nouvelle non marquée ; contre-lecture Codex | DONE : branche `builder/weather-v4-a2-lot2-vm-kit-2026-10-08`, commit `2b3c42fc4d0e6ea9a7bc6554b4a52dd56a68d3f6`, blob `22b2b1507602594d2e9149d8f41367c652c35e9b` |
@@ -39,10 +33,7 @@ Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). 
 | Q23 | Builder : contexte d'opération D2 final + épingles finales (blob candidat `9704a844…`), sans lancement, test statique d'égalité à E (Astra J-1) | Q9 | B | Fichiers publiés avec blobs, valeurs exactes de E B.3/B.4, test vert, aucune exécution du script d'opération | DONE : branche `builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08`, commit `44bee3b053401111f5e35a06a8bee9df92019188`, contexte blob `cd0803c6152c34145c87fbc22e0cf3deae1db0c0`, épingles blob `ce85d67be96703af9d1b380b8587b87940a66388`, note `ac6035469a96811476fcf88cca7d49de3c55698f` ; 9 tests statiques OK ; script d'opération non lancé |
 | Q24 | Owner (une seule session) : L2-A avec version Python/architecture hôte (J-2, J-4) + exécution des scripts Q22 (E B.5(f)) + exécution de la procédure Q27 (B.5(c)) + trois attestations d'Owner : provenance de `1910994` et des actes (J-5, B.5(e)), mécanisme d'incident (B.5(d)), dispositions A1 §5 (B.5(g)), cf. `team/B5_CONDITIONS_MATRIX_2026-10-08.md` | kit Q15 | — | Constats expurgés publiés ; reconnaissance écrite | OWNER_GATED |
 | Q25 | Revue Astra neuve limitée au delta (J-1, J-2, J-5) | Q23, Q24 | T | Rapport delta, verdict unique | BLOCKED |
-
-
 ## Voies permanentes (règle 14 de la boucle : avance de deux par agent)
-
 | Id | Voie | Tâche / agent | Dépend de | Critère de fin vérifiable | Statut |
 |---|---|---|---|---|---|
 | C1 | C | Builder : vérification de base du dépôt (`unittest discover`, `demo_quant_system.py`, `generate_schemas.py --check`) sur la branche d'équipe, sans modifier le code | rien | Sorties et codes retour consignés, aucune modification de fichier ; tout échec classé « préexistant » ou « nouveau » | DONE : branche d'équipe @ `a1fcf85`, `PYTHONPATH=src python3 -m unittest discover -s tests` 371 tests OK en 46 s (rc 0) ; `scripts/demo_quant_system.py` 35/35 (rc 0) ; `scripts/generate_schemas.py --check` OK (rc 0) ; aucun fichier modifié. Aucun échec, donc rien à classer « préexistant » |
@@ -54,3 +45,4 @@ Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). 
 | C4 | C | Codex : arbitrage du triage Q17-A | rien | Classes T0 à T4 confirmées ou corrigées | READY |
 | Q26 | A | Builder : matrice des conditions B.5 d'E (état, preuve, manque, qui ferme) | rien | Fichier `team/B5_CONDITIONS_MATRIX_2026-10-08.md` : 11 conditions, aucune « fermée » sans preuve publiée | DONE (cette ligne et le commit de la matrice) |
 | Q27 | A | Builder : procédure de vérification de la rétention et de la suppression avant toute garde (E B.5(c)) : aucune n'existe | Q26 | Commandes de lecture seule ou sur répertoire jetable, chacune renvoyant à une source publiée, test synthétique, relue par Codex ; jamais exécutée sur la VM par l'équipe | DONE : branche `builder/weather-v4-a2-lot2-q27-retention-2026-10-08`, commit `7ba9879512f6df2561efe8135702c21cfec12174`, note blob `00dff445d5e63f2c3e5bc6d186d49450bad0a000` ; 4 tests synthétiques OK (+ contrôle négatif) ; **constat** : `/srv/a2out` est un tmpfs non inscrit dans fstab, la rétention de 30 jours n'y est pas démontrable ; décision d'Owner requise (option 1 support volatil accepté, ou option 2 support persistant = nouvel acte) |
+| Q28 | A | Builder : fiche de la session Owner unique (étapes, résultats attendus, quatre modèles de phrases à poster par Owner) | Q26, Q27 | `team/OWNER_SESSION_SHEET_Q24_2026-10-08.md`, aucune attestation exprimée par l'équipe | DONE (commit de la fiche) |
