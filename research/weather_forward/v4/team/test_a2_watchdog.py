@@ -11,60 +11,90 @@ NOW = datetime(2026, 10, 8, 12, 0, tzinfo=timezone.utc)
 
 
 def c(cid, at, sender, target, extra="", demande="faire x"):
-    return {"id": cid, "created_at": f"2026-10-08T{at}:00Z",
+    return {"id": cid, "created_at": f"2026-10-08T{at}:00Z", "user": {"login": "x"},
             "body": f"[A2-TEAM] DE: {sender} → À: {target}\nOBJET: x\nDEMANDE: {demande}\n{extra}"}
 
 
+def owner(cid, at, text):
+    return {"id": cid, "created_at": f"2026-10-08T{at}:00Z", "user": {"login": wd.OWNER_LOGIN}, "body": text}
+
+
+def watchdog(cid, at, text):
+    return {"id": cid, "created_at": f"2026-10-08T{at}:00Z", "user": {"login": wd.OWNER_LOGIN},
+            "body": f"[A2-TEAM] DE: watchdog → À: orchestrateur\nOBJET: {text}"}
+
+
 class Watchdog(unittest.TestCase):
-    def test_overdue_wait_on_codex_pings_codex(self):
-        a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE: arbitrage avant 2026-10-08T09:00Z")], NOW, False)
+    def test_overdue_wait_on_codex_pings_codex_once_with_key(self):
+        a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: arbitrage avant 2026-10-08T09:00Z")], NOW, False)
+        self.assertEqual(len(a), 1)
+        self.assertIn("PING_CODEX", a[0])
+        self.assertIn("[cle=PING:orchestrateur:1:A1]", a[0])
+
+    def test_reminder_not_repeated_then_escalates_once(self):
+        base = [c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z")]
+        pinged = base + [watchdog(2, "09:39", "RAPPEL watchdog PING:orchestrateur:1:A1")]
+        a = wd.evaluate(pinged, NOW, False)
+        self.assertEqual(len(a), 1)
+        self.assertIn("ALERT_OWNER", a[0])
+        alerted = pinged + [watchdog(3, "11:39", "ALERT_OWNER watchdog ALERT:orchestrateur:1:A1")]
+        self.assertEqual(wd.evaluate(alerted, NOW, False), [])
+
+    def test_unrelated_reply_does_not_close_an_id_wait(self):
+        a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z"),
+                         c(2, "08:30", "orchestrateur", "builder", demande="aucune")], NOW, False)
         self.assertEqual(len(a), 1)
         self.assertIn("PING_CODEX", a[0])
 
-    def test_answered_wait_is_closed(self):
+    def test_reply_citing_the_id_closes_the_wait(self):
+        a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z"),
+                         c(2, "08:30", "orchestrateur", "builder", "REF A1", demande="aucune")], NOW, False)
+        self.assertEqual(a, [])
+
+    def test_legacy_wait_without_id_closed_by_any_later_message(self):
         a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE: x avant 2026-10-08T09:00Z"),
                          c(2, "08:30", "orchestrateur", "builder", demande="aucune")], NOW, False)
         self.assertEqual(a, [])
 
     def test_wait_not_yet_due_is_silent(self):
-        a = wd.evaluate([c(1, "11:30", "builder", "orchestrateur", "ATTENTE: x avant 2026-10-08T13:00Z")], NOW, False)
-        self.assertEqual(a, [])
+        self.assertEqual(wd.evaluate([c(1, "11:30", "builder", "orchestrateur", "ATTENTE[A]: x avant 2026-10-08T13:00Z")], NOW, False), [])
 
     def test_overdue_wait_on_builder_wakes_builder(self):
-        a = wd.evaluate([c(1, "08:00", "orchestrateur", "builder", "ATTENTE: contre-lecture avant 2026-10-08T09:00Z")], NOW, False)
+        a = wd.evaluate([c(1, "08:00", "orchestrateur", "builder", "ATTENTE[B]: x avant 2026-10-08T09:00Z")], NOW, False)
         self.assertEqual(len(a), 1)
         self.assertIn("WAKE_BUILDER", a[0])
 
     def test_unanswered_request_without_deadline_after_3h(self):
-        a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur")], NOW, False)
-        self.assertTrue(any("PING_CODEX" in x for x in a))
-        recent = wd.evaluate([c(1, "10:30", "builder", "orchestrateur")], NOW, False)
-        self.assertEqual(recent, [])
-
-    def test_no_duplicate_ping_for_same_agent(self):
-        a = wd.evaluate([c(1, "06:00", "builder", "orchestrateur", "ATTENTE: x avant 2026-10-08T07:00Z"),
-                         c(2, "06:30", "builder", "orchestrateur")], NOW, False)
-        self.assertEqual(len([x for x in a if "PING_CODEX" in x]), len(a) - len([x for x in a if "ALERT" in x]))
-
-    def test_team_silent_with_open_work_alerts_owner(self):
-        a = wd.evaluate([c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")], NOW, True)
-        self.assertTrue(any("ALERT_OWNER" in x for x in a))
-        self.assertFalse(any("ALERT_OWNER" in x for x in wd.evaluate(
-            [c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")], NOW, False)))
+        self.assertTrue(any("PING_CODEX" in x for x in wd.evaluate([c(1, "08:00", "builder", "orchestrateur")], NOW, False)))
+        self.assertEqual(wd.evaluate([c(1, "10:30", "builder", "orchestrateur")], NOW, False), [])
 
     def test_reply_with_no_request_does_not_wake_the_other_side(self):
-        a = wd.evaluate([c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")],
-                        NOW, False)
+        a = wd.evaluate([c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")], NOW, False)
         self.assertFalse(any("WAKE_BUILDER" in x for x in a))
 
+    def test_team_silent_alert_once_per_last_message(self):
+        quiet = [c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")]
+        a = wd.evaluate(quiet, NOW, True)
+        self.assertTrue(any("ALERT:team:2" in x for x in a))
+        self.assertFalse(any("ALERT_OWNER" in x for x in wd.evaluate(quiet, NOW, False)))
+        again = quiet + [watchdog(3, "07:00", "ALERT_OWNER watchdog ALERT:team:2")]
+        self.assertFalse(any("ALERT:team:2" in x for x in wd.evaluate(again, NOW, True)))
+
+    def test_owner_stop_silences_everything_until_resume(self):
+        base = [c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z")]
+        self.assertEqual(wd.evaluate(base + [owner(5, "10:00", "STOP")], NOW, True), [])
+        self.assertTrue(wd.evaluate(base + [owner(5, "10:00", "STOP"), owner(6, "10:30", "REPRISE")], NOW, True))
+        self.assertTrue(wd.evaluate(base + [{"id": 7, "created_at": "2026-10-08T10:00:00Z", "user": {"login": "someone"}, "body": "STOP"}], NOW, True))
+
     def test_non_team_and_malformed_comments_are_ignored(self):
-        junk = [{"id": 1, "created_at": "2026-10-08T01:00:00Z", "body": "Je ratifie"},
-                {"id": 2, "created_at": "2026-10-08T01:00:00Z", "body": "[A2-TEAM] DE: owner → À: builder\nATTENTE: x avant 2026-10-08T02:00Z"}]
+        junk = [{"id": 1, "created_at": "2026-10-08T01:00:00Z", "user": {"login": "x"}, "body": "Je ratifie"},
+                {"id": 2, "created_at": "2026-10-08T01:00:00Z", "user": {"login": "x"},
+                 "body": "[A2-TEAM] DE: owner → À: builder\nATTENTE: x avant 2026-10-08T02:00Z"}]
         self.assertEqual(wd.evaluate(junk, NOW, False), [])
 
     def test_ascii_arrow_and_two_targets(self):
-        body = {"id": 9, "created_at": "2026-10-08T06:00:00Z",
-                "body": "[A2-TEAM] DE: orchestrateur -> A: Owner, builder\nATTENTE: avis avant 2026-10-08T07:00Z"}
+        body = {"id": 9, "created_at": "2026-10-08T06:00:00Z", "user": {"login": "x"},
+                "body": "[A2-TEAM] DE: orchestrateur -> A: Owner, builder\nATTENTE[Z]: avis avant 2026-10-08T07:00Z"}
         a = wd.evaluate([body], NOW, False)
         self.assertEqual(len(a), 1)
         self.assertIn("WAKE_BUILDER", a[0])
