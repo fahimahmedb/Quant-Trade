@@ -1,5 +1,7 @@
 # Fiche de reprise — Weather V4 A2, lot 2 (2026-10-08)
 
+> **Directive permanente d'Owner :** Claude Code et Codex gèrent le projet **à parts égales (50/50)** ; Claude Code n'a aucun rang sur Codex, il propose et Codex peut refuser. Voir l'en-tête de `A2_WORK_QUEUE.md` (commentaire `6055519521`). Cette ligne est la plus oubliée : la relire à chaque reprise.
+
 Lire cette fiche, puis seulement les passages cités. Chemins relatifs à `research/weather_forward/v4/`.
 
 ## État

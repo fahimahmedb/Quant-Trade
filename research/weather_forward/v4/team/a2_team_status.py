@@ -34,6 +34,33 @@ def git_fetch(branch):
     return r.returncode == 0, "couldn't find remote ref" in r.stderr
 
 
+def balance_line():
+    """Part des messages d'equipe par agent sur 12 h ; une part > 60 % signale le lead a rebalancer (charte 5 ter).
+    N'echoue jamais : si la mesure est impossible, le dit."""
+    from datetime import datetime, timedelta, timezone
+    r = subprocess.run(["gh", "api", "repos/fahimahmedb/Quant-Trade/issues/22/comments?per_page=100", "--paginate"],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        return "  non mesure (lecture des commentaires impossible)"
+    try:
+        comments = json.loads(r.stdout.replace("][", ","))
+    except ValueError:
+        return "  non mesure (reponse illisible)"
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=12)
+    counts = {"builder": 0, "orchestrateur": 0}
+    for c in comments:
+        m = re.search(r"\[A2-TEAM\]\s+DE:\s*(\w+)", c.get("body", ""))
+        when = datetime.strptime(c["created_at"][:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+        if m and m.group(1).lower() in counts and when >= cutoff:
+            counts[m.group(1).lower()] += 1
+    total = sum(counts.values())
+    if total == 0:
+        return "  aucun message sur 12 h"
+    share = counts["builder"] * 100 // total
+    flag = "  ** DESEQUILIBRE : le Builder mene, rebalancer (charte 5 ter, seuil 60 %) **" if share > 60 else ""
+    return f"  builder {counts['builder']} ({share} %) / orchestrateur {counts['orchestrateur']} ({100 - share} %){flag}"
+
+
 def main():
     marker = sys.argv[1] if len(sys.argv) > 1 else os.path.join(tempfile.gettempdir(), "a2_team_seen.json")
     rc, _ = git("fetch", "-q", "origin", QUEUE_BRANCH)
@@ -67,6 +94,8 @@ def main():
         _, subj = git("log", "-1", "--format=%an | %s", sha)
         flag = "NOUVEAU" if seen.get(b) != sha else "inchange"
         print(f"  {flag:9} {sha[:8]} {b}\n            {subj[:110]}")
+    print("\n== Equilibre 50/50 (messages [A2-TEAM] des 12 dernieres heures, par agent) ==")
+    print(balance_line())
     print("\n== File de travail : taches non DONE ==")
     ready = []
     for line in q.splitlines():

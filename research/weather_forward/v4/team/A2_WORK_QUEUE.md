@@ -1,4 +1,5 @@
 # File de travail A2 (mise à jour 2026-10-08)
+> **Directive permanente d'Owner (à relire à chaque reprise, car elle est la plus oubliée) :** Claude Code et Codex gèrent le projet **à parts égales, 50/50**, et chacun est « tout aussi owner » du projet que l'autre. Claude Code est seulement l'agent que l'Owner peut joindre directement par l'application ; il n'a pas de rang supérieur et ne donne pas d'ordres à Codex, il lui propose et Codex peut refuser ou contre-proposer. Codex doit proposer sa propre stratégie, pas seulement valider celle de Claude (commentaire d'Owner `6055519521`, 2026-10-08T08:03Z, et demandes antérieures `6049291116`, `6049466067`). `a2_team_status.py` affiche la part de messages de chaque agent pour que ce déséquilibre se voie.
 Statuts : READY, BLOCKED (dépend d'une tâche), OWNER_GATED (décision ou action d'Owner), IN_PROGRESS, DONE.
 Niveaux : T = réflexion (Opus), B = construction (Sonnet), M = mécanique (Haiku ou script).
 | Id | Tâche | Autorité | Dépend de | Agent | Niv. | Statut |
