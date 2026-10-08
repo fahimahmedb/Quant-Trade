@@ -12,7 +12,7 @@ Lecture : E §B.5 exige toutes les conditions (a) à (k). Statuts : `ÉQUIPE` = 
 |---|---|---|---|---|---|
 | (a) | PASS Astra lot 3 sur les snapshots exacts (candidat, outillage, contexte, canal de contrôle, contenu gardé) | rapport `f236ab2b…` : `BLOCKED_INCOMPLETE_EVIDENCE`, aucun défaut du candidat ; contexte et épingles (Q23, `44bee3b`) | revue limitée au delta après (b) et (e) | ASTRA (Q25) | PARTIEL |
 | (b) | contrôles L2-A qualifiés | kit Q15 (`2b3c42fc`), commandes `42d953c1…` | exécution sur la VM, version Python et architecture notées | OWNER-VM (Q24) | OUVERT |
-| (c) | rétention et suppression vérifiées avant toute garde | règle de rétention du manifeste de sortie (30 jours) ; tmpfs de 1 MiB | **aucune procédure de vérification n'existe** (la perte du tmpfs au redémarrage ne démontre pas une purge contrôlée) | ÉQUIPE écrit la procédure (Q27), OWNER-VM l'exécute | OUVERT |
+| (c) | rétention et suppression vérifiées avant toute garde | règle de rétention du manifeste de sortie (30 jours) ; tmpfs de 1 MiB | procédure de suppression écrite (Q27, `7ba98795…`, jamais exécutée sur la VM) ; **la rétention de 30 jours n'est pas démontrable sur le tmpfs volatil de `/srv/a2out`** | OWNER-VM exécute `verify_retention_deletion.sh` ; **OWNER décide** : support volatil accepté (écart consigné) ou support persistant (nouvel acte) | OUVERT |
 | (d) | mécanisme d'incident disponible | vocabulaire fermé de 7 classes et référence `a2-doc-v1-inc-NNN` attribuée par Owner (E B.4) | attestation qu'Owner attribue les références et reçoit le signal (code de sortie, mesures systemd) | OWNER-ATTEST (Q24) | OUVERT |
 | (e) | origine des autorisations et correspondance de session vérifiées | constat Astra J-5 : `1910994`, gels et E enregistrés par des sessions d'agents d'après des messages d'Owner | reconnaissance écrite d'Owner de la provenance et de l'attribution des actes | OWNER-ATTEST (Q24) | OUVERT |
 | (f) | code chargé constaté sur l'hôte contre les blobs approuvés (13 objets) | épingles `final_pins_d2_v1.{json,tsv}` ; scripts de déploiement et d'attestation Q22 (`b8725677`), testés sur répertoires temporaires | exécution sur la VM par Owner | OWNER-VM (Q24) | OUVERT |
@@ -22,8 +22,8 @@ Lecture : E §B.5 exige toutes les conditions (a) à (k). Statuts : `ÉQUIPE` = 
 | (j) | plafonds O §8.3 (60 s, 5 s CPU, 128 Mio sans swap, 1 tâche, 1 Mio d'écriture, 64 Kio de résultat) et visibilité | profil `a2_unit_profile.sh` (blob `ec58a081…`) | qualification réelle des limites (L2-A) | OWNER-VM (L2-A) | OUVERT |
 | (k) | une seule opération, sans retry | le script refuse une cible existante (code 30) ; aucun retry dans le script | engagement d'exécution unique dans la décision d'activation | ÉQUIPE (dans (i)) | PARTIEL |
 
-**Lecture d'ensemble.** Ce que l'équipe peut encore faire seule : la procédure de (c) (Q27), l'acte (i) une fois les autres fermées, et la revue (a) après les preuves d'Owner. Tout le reste demande **une seule session d'Owner** (terminal sur la VM, plus trois attestations : (d), (e), (g)). Aucune condition ne se ferme par présomption.
+**Lecture d'ensemble.** Ce que l'équipe peut encore faire seule : l'acte (i) une fois les autres fermées, et la revue (a) après les preuves d'Owner. Tout le reste demande **une seule session d'Owner** (terminal sur la VM, plus trois attestations : (d), (e), (g)). Aucune condition ne se ferme par présomption.
 
 ```text
-NEXT_SAFE_ACTION = Q27 (procédure de vérification rétention/suppression), puis session Owner unique (Q24) ; E reste sans effet
+NEXT_SAFE_ACTION = session Owner unique (Q24) avec le choix de support de (c) ; E reste sans effet
 ```
