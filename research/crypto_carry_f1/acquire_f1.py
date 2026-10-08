@@ -53,6 +53,7 @@ class RateLimiter:
 
 
 LIMITER = RateLimiter(MAX_RPS)
+LISTING_404 = []
 
 
 def http_get(url, tries=5):
@@ -85,6 +86,16 @@ def list_files(prefix):
         if marker:
             q["marker"] = marker
         status, body = http_get(LIST_BASE + "?" + urllib.parse.urlencode(q))
+        if status == 404:
+            # observed transient S3 404 on a listing that answers 200 on retry: retry, then record as empty
+            for _ in range(3):
+                time.sleep(3.0)
+                status, body = http_get(LIST_BASE + "?" + urllib.parse.urlencode(q))
+                if status != 404:
+                    break
+            if status == 404:
+                LISTING_404.append(prefix)
+                return keys
         if status != 200:
             raise RuntimeError(f"listing returned HTTP {status} for {prefix}")
         root = ET.fromstring(body)
@@ -165,7 +176,7 @@ def main(argv):
     import os
     os.makedirs(out_dir, exist_ok=True)
     with open(f"{out_dir}/listing_{stage}.json", "x") as f:
-        json.dump(listing_log, f)
+        json.dump({"prefixes": listing_log, "persistent_404_prefixes": LISTING_404}, f)
     with open(f"{out_dir}/manifest_{stage}.jsonl", "x") as mf:
         for j in jobs:   # sequential: the first repeated 403/429 raises and stops everything
             mf.write(json.dumps(fetch_one(j, out_dir), sort_keys=True) + "\n")
