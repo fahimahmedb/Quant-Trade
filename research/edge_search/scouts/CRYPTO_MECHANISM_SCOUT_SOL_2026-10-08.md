@@ -73,3 +73,67 @@ Guardrail: literature was used to establish mechanism plausibility and data feas
 
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
+
+---
+
+# SECOND PASS — HYPERLIQUID MEASUREMENT RESOLUTION
+
+Date: 2026-10-08
+Scope: continuation of the existing scout only. **No F1 outcome was read, downloaded, computed, or modified. No candidate return outcome was consumed.**
+
+## Measurement findings persisted from the completed second pass
+
+Hyperliquid's fill representation carries liquidation metadata directly on a fill: the fill type may contain a `liquidation` object with fields including the liquidated user, liquidation mark price and liquidation method. This is materially stronger than inferring a liquidation from price action or funding. A market-wide node run with fill writing enabled (`--write-fills`, with block batching available via `--batch-by-block`) is the relevant capture surface because it preserves the fill record itself. By contrast, the ordinary public `trades` WebSocket is not sufficient by itself for this experiment because it does not provide the liquidation label needed to distinguish forced from voluntary aggressive flow.
+
+The implication is that the **label semantics are deterministic on a captured fill record**: `liquidation != null` is forced-flow; otherwise the fill is not labelled as liquidation. The fill record also contains timestamped execution information sufficient to order fills in replay. This satisfies the core classification requirement at the record level without any future-price inference.
+
+The remaining unresolved issue is not label ambiguity but **market-wide capture completeness and operational replay completeness**. A clean experiment must use the node fill output as the source of truth and continuously capture BTC/ETH fills plus contemporaneous book state. Historical/public archive material may assist validation, but it must not be assumed complete enough to replace a prospective recorder unless archive coverage and gaps are proven separately. Therefore the project may proceed to building and validating the recorder, but must not proceed to the economic execution test yet.
+
+LIQUIDATION_CLASSIFICATION = **DETERMINISTIC_AT_FILL_RECORD_LEVEL** — classify forced fills iff the captured Hyperliquid fill carries a non-null `liquidation` object. Do not infer labels from subsequent prices, funding, or Binance `forceOrder`.
+
+PUBLIC_DATA_VERIFIED = **YES_FOR_SCHEMA_AND_PUBLIC_CAPTURE_PATH; NOT_YET_FOR_END_TO_END_MARKET_WIDE_COMPLETENESS** — public Hyperliquid fill/node surfaces expose the required liquidation metadata; ordinary `trades` WebSocket alone is insufficient.
+
+COMPLETENESS = **PROSPECTIVE_NODE_CAPTURE_REQUIRED / NOT_YET_PROVEN_END_TO_END** — the second pass resolved the semantic label but did not establish that historical archives alone are gap-free or that a not-yet-built local recorder can capture every market-wide fill without interruption. Completeness must be demonstrated by recorder health/gap accounting before economic outcomes are read.
+
+POINT_IN_TIME = **YES_AT_CAPTURE** — the liquidation object is part of the fill record available when the fill is written; classification does not require post-event return information. Event construction must use only fill/L2 records with exchange timestamp `<= t0`.
+
+REPLAYABLE = **YES_CONDITIONALLY** — deterministic replay is possible from an append-only raw log containing the original fill records, exchange timestamps, stable deduplication key(s), sequence/block context when available, and synchronized L2/BBO records. Out-of-order arrival must be normalized by exchange time plus deterministic tie-break, never by future outcomes.
+
+COMPLETE_ENOUGH_FOR_RESEARCH = **CONDITIONALLY_YES_FOR_PROSPECTIVE_CAPTURE** — provided the recorder proves continuous market-wide node-fill capture, explicit gap accounting, and synchronized BTC/ETH book-state capture. Historical archive completeness is not assumed.
+
+## Minimal raw-capture contract to implement next
+
+Universe is exactly `BTC` and `ETH`. Persist raw records before any derived event computation.
+
+Required fill fields: raw payload; exchange/event timestamp; local receipt timestamp; coin; side/direction; price; size; unique fill/trade/hash identifier where exposed; block/sequence context where exposed; liquidation object verbatim; derived boolean `is_liquidation` only as a deterministic mirror of `liquidation != null`.
+
+Required book fields: exchange/event timestamp; local receipt timestamp; coin; best bid price/size; best ask price/size; derived mid `(bid+ask)/2`; full L2 payload if the selected capture surface exposes it. Missing book state is never forward-filled across an event boundary.
+
+Raw-log invariants: append-only; UTC timestamps; no post-hoc mutation; duplicate raw records retained or counted but deduplicated deterministically for analysis; explicit recorder start/stop and gap records; source/version metadata recorded at process start.
+
+FORCED_FLOW_AGGREGATION = signed liquidation notional in one frozen event bucket, `sum(sign * price * size)` over liquidation-labelled BTC/ETH fills only. Multiple forced fills within the same bucket are aggregated, not treated as independent events.
+
+VOLUNTARY_AGGRESSIVE_FLOW_CONTROL = same signed notional construction over non-liquidation aggressive fills, using the same time basis and symbol. A voluntary control must never contain a liquidation-labelled fill.
+
+DETERMINISTIC_REPLAY = sort accepted records by exchange timestamp and then a frozen stable tie-break (block/sequence/id when available; otherwise raw-log ordinal). Deduplicate only exact repeated fill identifiers/payloads under a frozen rule. Derived events are regenerated solely from raw logs and frozen constants.
+
+## Frozen economic test status
+
+TEST_FROZEN = **FALSE**. The second pass resolved measurement semantics but did not finish a defensible outcome-blind choice of the single event threshold, single post-event horizon, matching tolerance, cost constant and final clustered statistic. Those values must be frozen in code/spec **before the recorder's economic sample is opened for return analysis**. No grid search is authorized.
+
+HARNESS_BUILT = **FALSE** — no recorder/parser/harness file was produced before this persistence request; none is invented retroactively here.
+
+SYNTHETIC_TESTS = **FALSE** — no synthetic fixture/test file was produced before this persistence request. Required future fixtures remain: liquidation vs voluntary fill; duplicate events; out-of-order timestamps; missing L2; multiple forced fills; event clustering; leakage after `t0`.
+
+CANDIDATE_1_STATUS = **MEASUREMENT_BLOCKER_RESOLVED_AT_SCHEMA_LEVEL__IMPLEMENTATION_BLOCKED**. Candidate 1 is **not** killed: the critical liquidation label can be deterministic and point-in-time from node fill records. It is also **not yet executable** because prospective completeness, recorder behavior and frozen-test implementation are not yet demonstrated.
+
+READY_TO_RECORD = **FALSE** — recorder does not yet exist and continuity/gap accounting is not tested.
+
+READY_TO_EXECUTE = **FALSE** — no economic sample may be evaluated until the recorder/parser exists, synthetic tests pass, prospective capture completeness is demonstrated, and exactly one event definition/horizon/statistic/cost/dependence rule is frozen.
+
+BLOCKER = **IMPLEMENTATION_AND_COMPLETENESS_PROOF_ONLY** — build the BTC/ETH market-wide node-fill + L2/BBO recorder; prove no silent gaps/duplicate ambiguity; add deterministic replay and the required synthetic tests; then freeze the one-shot economic test before any candidate return outcome is read. The original semantic blocker — whether liquidation can be identified deterministically and point-in-time — is resolved.
+
+NEXT_ACTION = **Build only Candidate 1's minimal prospective recorder/parser/replay harness and synthetic fixtures on this branch; validate capture continuity and then freeze one event rule plus one horizon before reading any economic return. Do not switch to Candidate 2 unless this implementation/completeness proof fails.**
+
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
