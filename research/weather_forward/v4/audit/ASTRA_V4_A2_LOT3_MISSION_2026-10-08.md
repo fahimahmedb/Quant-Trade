@@ -16,7 +16,7 @@ Effectue la revue technique indépendante prévue au lot 3 par la décision lot 
 - outillage L2-B : commit `1910994` ;
 - candidat root : `research/weather_forward/v4/a2_harness/trusted_root.py` au commit `73280c3e9d8604b2f2d8e6d2d174aa940389a760`, objet Git exact `73280c3e9d8604b2f2d8e6d2d174aa940389a760:research/weather_forward/v4/a2_harness/trusted_root.py` ;
 - vérifications L2-I : objets désignés par le dossier L2-J ci-dessous ;
-- dossier de preuves L2-J : `A_REMPLIR_APRES_Q8` (commit, chemin, blob et branche).
+- dossier de preuves L2-J : branche `builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08`, commit `5358c7ac582b46804be0008cffc78a043751d910`, chemin `research/weather_forward/v4/a2_operation/evidence/L2_J_EVIDENCE_DOSSIER_2026-10-08.md`, blob `51c6bf2b3ae324892777439a862e3d0345bcaaf8`.
 
 La revue porte conjointement sur le candidat root, l’outillage et l’intégralité des preuves L2-I/L2-J, au regard de L2-I, L2-J et de l’annexe A de la décision lot 2. Résous et consigne dans ton rapport les blobs Git complets de chaque objet ci-dessus avant toute conclusion ; si un objet, un blob ou une référence L2-J manque ou diverge, conclus `BLOCKED_INCOMPLETE_EVIDENCE`, sans substitution.
 
