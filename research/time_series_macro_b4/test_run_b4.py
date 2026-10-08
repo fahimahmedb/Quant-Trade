@@ -114,6 +114,22 @@ class Mechanics(unittest.TestCase):
         self.assertEqual(set(a["criteria"]), {k for k in a["criteria"]})
         self.assertEqual(len(a["criteria"]), 7)
 
+    def test_family_output_is_json_serialisable_and_main_would_not_crash_on_write(self):
+        import json
+        bounds = {"DISCOVERY": (self.dates[0], self.dates[650]), "EVALUATION": (self.dates[651], self.dates[897])}
+        out = b4.evaluate_family(self.panel, bounds)
+        out.update({"fingerprint_before": "x", "TRIAL_COUNT_SOURCE": "REGISTRY"})
+        text = json.dumps({"RESULT": b4.judge(out, dict(out)), "run": out}, sort_keys=True)
+        self.assertIn("candidate_metrics", text)
+        self.assertEqual(json.loads(text)["run"]["selected_lookback"], out["selected_lookback"])
+
+    def test_the_three_instruments_share_the_same_dates_in_the_real_panel(self):
+        panel, _ = b4.build_research_panel(b4.DATA)
+        per = {n: [d for d in panel.dates if panel.has(d, n)] for n in b4.INSTRUMENTS}
+        self.assertEqual(per["SPY"], per["TLT"])
+        self.assertEqual(per["SPY"], per["GLD"])
+        self.assertEqual(panel.aligned_dates(b4.INSTRUMENTS), panel.dates)
+
     def test_selection_uses_only_the_common_intersection(self):
         rows = b4.rows_for(self.panel, 21)
         bounds = (self.dates[0], self.dates[650])
