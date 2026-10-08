@@ -28,30 +28,37 @@ def main():
     repo = sys.argv[3] if len(sys.argv) > 3 else "fahimahmedb/Quant-Trade"
     body = fetch(repo, cid).replace("\r\n", "\n")
     lines = body.split("\n")
-    # SHA annonces : hash en backticks sur une ligne contenant "SHA-256" ou sur la ligne suivante.
-    declared = []
-    for i, l in enumerate(lines):
-        if "SHA-256" in l:
-            for h in re.findall(r"`([0-9a-f]{64})`", l + "\n" + (lines[i + 1] if i + 1 < len(lines) else "")):
-                if h not in declared:
-                    declared.append(h)
+    anywhere = set(re.findall(r"`([0-9a-f]{64})`", body))
     starts = [i for i, l in enumerate(lines) if l.strip() == "```markdown"]
     fences = [i for i, l in enumerate(lines) if l.strip().startswith("```")]
+    # Passe 1 : delimiter les blocs dont le SHA-256 apparait quelque part ; leurs lignes sont du CONTENU, pas des annonces.
+    candidates = []  # (debut, fin, sha, texte)
+    for s_ in starts:
+        for j in (f for f in fences if f > s_):
+            text = "\n".join(lines[s_ + 1:j]) + "\n"
+            sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+            if sha in anywhere:
+                candidates.append((s_, j, sha, text))
+                break
+    inside_lines = {i for s_, j, _, _ in candidates for i in range(s_, j + 1)}
+    # Passe 2 : annonces = hash en backticks sur une ligne "SHA-256" (ou la suivante) HORS des blocs delimites.
+    declared = []
+    for i, l in enumerate(lines):
+        if "SHA-256" in l and i not in inside_lines:
+            nxt = lines[i + 1] if i + 1 < len(lines) and (i + 1) not in inside_lines else ""
+            for h in re.findall(r"`([0-9a-f]{64})`", l + "\n" + nxt):
+                if h not in declared:
+                    declared.append(h)
     os.makedirs(out, exist_ok=True)
     found = {}
-    for s in starts:
-        for j in (f for f in fences if f > s):
-            text = "\n".join(lines[s + 1:j]) + "\n"
-            sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
-            if sha in declared and sha not in found:
-                found[sha] = text
-                break
+    for _, _, sha, text in candidates:
+        if sha in declared and sha not in found:
+            found[sha] = text
     for n, (sha, text) in enumerate(found.items(), 1):
         path = os.path.join(out, f"block_{n}.md")
         open(path, "w", encoding="utf-8", newline="\n").write(text)
         print(f"OK block_{n}.md sha256={sha} octets={len(text.encode('utf-8'))}")
-    inside = " ".join(found.values())
-    missing = [d for d in declared if d not in found and d not in inside]
+    missing = [d for d in declared if d not in found]
     for d in missing:
         print(f"SHA ANNONCE SANS BLOC CORRESPONDANT : {d}")
     sys.exit(1 if missing else 0)

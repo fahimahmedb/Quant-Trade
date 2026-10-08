@@ -120,8 +120,11 @@ def gh_json(path):
     return json.loads(r.stdout.replace("][", ","))
 
 
+TASK_ROW = re.compile(r"^\|\s*[A-Z]+\d+[\w-]*\s*\|")
+
+
 def open_work_in(queue_text):
-    return any(l.startswith("| Q") and not any(s in l for s in ("| DONE", "OWNER_GATED", "| BLOCKED"))
+    return any(TASK_ROW.match(l) and not any(s in l for s in ("| DONE", "OWNER_GATED", "| BLOCKED", "| IDLE"))
                for l in queue_text.splitlines())
 
 

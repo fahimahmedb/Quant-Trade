@@ -19,12 +19,19 @@ CORE_BRANCHES = [
     "builder/weather-v4-a2-lot2-tooling-2026-10-07",
     "builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08",
 ]
+TASK_ROW = re.compile(r"^\|\s*[A-Z]+\d+[\w-]*\s*\|")
 BRANCH_RE = re.compile(r"`((?:builder|astra|team|owner|blue)/weather-v4-a2-[A-Za-z0-9._-]+)`")
 
 
 def git(*args):
     r = subprocess.run(["git", *args], capture_output=True, text=True)
     return r.returncode, r.stdout.strip()
+
+
+def git_fetch(branch):
+    """(ok, absent) : absent = la branche n'existe pas (normal) ; tout autre echec (reseau, authentification) reste fatal."""
+    r = subprocess.run(["git", "fetch", "-q", "origin", branch], capture_output=True, text=True)
+    return r.returncode == 0, "couldn't find remote ref" in r.stderr
 
 
 def main():
@@ -37,14 +44,12 @@ def main():
     if rc != 0 or not q:
         print("ECHEC lecture de la file de travail : verdict impossible, marqueur non modifie", file=sys.stderr)
         sys.exit(2)
-    # Branches surveillees = noyau + toute branche nommee dans la file. Une branche citee seulement dans des
-    # lignes non DONE peut ne pas exister encore (absence toleree) ; sinon l'echec du fetch est fatal.
-    open_text = "\n".join(l for l in q.splitlines() if l.startswith("| ") and "| DONE" not in l)
-    pending = set(BRANCH_RE.findall(open_text))
+    # Branches surveillees = noyau + toute branche nommee dans la file. L'absence d'une branche (jamais creee, ou supprimee
+    # apres sa tache) n'est pas un echec ; une erreur reseau ou d'authentification l'est (aucun verdict).
     branches = list(dict.fromkeys(CORE_BRANCHES + BRANCH_RE.findall(q)))
     for b in branches:
-        rc, _ = git("fetch", "-q", "origin", b)
-        if rc != 0 and not (b in pending and b not in CORE_BRANCHES):
+        ok, absent = git_fetch(b)
+        if not ok and not absent:
             print(f"ECHEC git fetch de {b} : verdict impossible, marqueur non modifie", file=sys.stderr)
             sys.exit(2)
     try:
@@ -65,7 +70,7 @@ def main():
     print("\n== File de travail : taches non DONE ==")
     ready = []
     for line in q.splitlines():
-        if line.startswith("| Q") and "| DONE" not in line:
+        if TASK_ROW.match(line) and "| DONE" not in line:
             cells = [c.strip() for c in line.strip("|").split("|")]
             status = cells[-1][:90]
             print(f"  {cells[0]:4} {status}")
@@ -75,7 +80,8 @@ def main():
     if ready:
         print("TACHES READY :", ", ".join(ready), "-> lire la colonne agent : ne prendre que les tiennes, ne pas finir le tour.")
     else:
-        print("Aucune tache READY. Si une session enfant est en cours, verifier get_session.")
+        print("Aucune tache READY : IDLE est un etat legitime si aucune tache utile n'est due (regle 14). "
+              "Si une session enfant est en cours, verifier get_session.")
     json.dump(now, open(marker, "w", encoding="utf-8"))
 
 
