@@ -137,8 +137,19 @@ class SymData:
         self.sym = sym
         self.spot, self.perp = raw["spot"], raw["perp"]
         self.sig, self.earn, self.has_fund = build_funding_days(raw["funding"])
+        self._elig, self._sig = {}, {}
 
     def eligible(self, d):
+        if d not in self._elig:
+            self._elig[d] = self._eligible(d)
+        return self._elig[d]
+
+    def signal(self, d):
+        if d not in self._sig:
+            self._sig[d] = self._signal(d)
+        return self._sig[d]
+
+    def _eligible(self, d):
         for k in range(MIN_HIST):
             if (d - k) not in self.spot or (d - k) not in self.perp:
                 return False, None
@@ -146,7 +157,7 @@ class SymData:
         m = median(qv)
         return m >= MIN_QV, m
 
-    def signal(self, d):
+    def _signal(self, d):
         days = range(d - 6, d + 1)
         if any(x not in self.has_fund for x in days):
             return None
@@ -163,6 +174,8 @@ def simulate(syms, theta, cost_mult, d_first, d_last):
     day_nav = {}
     for d in range(d_first, d_last + 1):
         nav_start = nav
+        if pos:
+            exposure_days += 1  # positions held through day d
         # 1. P&L of positions open at the start of day d
         for sym in sorted(pos):
             p, s = pos[sym], syms[sym]
@@ -227,8 +240,6 @@ def simulate(syms, theta, cost_mult, d_first, d_last):
                 c = cost_mult * p["q"] * (s.spot[d]["close"] * (FEE_SPOT + p["slip"]) + s.perp[d]["close"] * (FEE_PERP + p["slip"]))
                 nav -= c
                 fee_total += c
-        if pos:
-            exposure_days += 1
         rets.append(nav / nav_start - 1.0)
         day_nav[d] = nav
     return rets, {"exposure_days": exposure_days, "liquidations": liqs, "fees": fee_total, "final_nav": nav}
