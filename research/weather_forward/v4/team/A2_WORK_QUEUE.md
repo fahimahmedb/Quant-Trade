@@ -27,11 +27,12 @@ Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). 
 
 | Id | Tâche / agent | Dépend de | Niv. | Critère de fin vérifiable | Statut |
 |---|---|---|---|---|---|
-| Q15 | Builder : kit VM minimal pour une session de terminal Owner bornée (commandes L2-A et §5(f) existantes, blobs à attester, résultats attendus, arrêts fail-closed) ; aucune action VM par l'équipe | Q8 | B | Fichier daté, chaque commande renvoie à une source publiée (blob), aucune commande nouvelle non marquée ; contre-lecture Codex | IN_PROGRESS |
-| Q16 | Codex contre-lit Q15 (Q16-X réduite) | Q15 | T | Une contre-lecture écrite, objections résolues ou consignées | BLOCKED |
+| Q15 | Builder : kit VM minimal pour une session de terminal Owner bornée (commandes L2-A et §5(f) existantes, blobs à attester, résultats attendus, arrêts fail-closed) ; aucune action VM par l'équipe | Q8 | B | Fichier daté, chaque commande renvoie à une source publiée (blob), aucune commande nouvelle non marquée ; contre-lecture Codex | DONE : branche `builder/weather-v4-a2-lot2-vm-kit-2026-10-08`, commit `2b3c42fc4d0e6ea9a7bc6554b4a52dd56a68d3f6`, blob `22b2b1507602594d2e9149d8f41367c652c35e9b` |
+| Q16 | Codex contre-lit Q15 (Q16-X réduite) | Q15 | T | Une contre-lecture écrite, objections résolues ou consignées | READY |
 | Q17-A | Triage du rapport Astra : Codex pilote, Builder reproduit | Q9, Q14 | T | Tableau T0–T4 complet, chaque reproduction avec commande et sortie, voie unique choisie | BLOCKED |
 | Q18-B | Builder corrige, Codex teste en adverse | Q17-A si `FAIL` | B/T | Tests ciblés verts, commit+blobs ; nouvelle Astra si une propriété revue change | BLOCKED |
 | Q19-C | Acte délégué lot 4 (Codex) + exécution D2 paper/shadow (Builder) | Q17-A `PASS`, **Q11-O**, B.5 (a) à (j) | T/B | Auteur ≠ ratificateur, `RATIFIE_PAR_DELEGATION`, un essai borné, aucun release/quarantaine/`t0`/réel | BLOCKED |
 | Q20-E | Bilan économique A2 (Codex), recoupement (Builder) | Q19-C | T | Une page ; arrêt explicite si valeur nulle | BLOCKED |
 | Q21 | Codex : état de la recherche d'edge weather hors A2, en lecture seule ; dernière expérience paper/shadow falsifiable sans `t0` | rien | T | `RESULT / LESSON / PRIORITY UPDATE / NEXT ACTION`, références exactes | IN_PROGRESS |
 | Q11-O | Owner : qualification VM L2-A (avec le kit Q15) | terminal Owner | — | Preuve de qualification conforme à l'autorité propre | OWNER_GATED |
+| Q22 | Builder : commandes de déploiement et d'attestation E §5(f) (4 fichiers du harnais dont le candidat, 7 sources d'opération, contexte, profil d'unité) ; aucune n'existe aujourd'hui | Q17-A `PASS` | B | Commandes publiées, chaque blob attendu épinglé, relues par Codex, jamais exécutées par l'équipe | BLOCKED |
