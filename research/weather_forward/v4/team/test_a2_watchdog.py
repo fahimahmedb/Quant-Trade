@@ -46,6 +46,13 @@ class Watchdog(unittest.TestCase):
         self.assertEqual(len(a), 1)
         self.assertIn("PING_CODEX", a[0])
 
+    def test_sender_can_close_a_wait_with_clos_marker_in_the_queue(self):
+        base = [c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z"),
+                c(2, "08:30", "orchestrateur", "builder", demande="aucune")]
+        self.assertEqual(len(wd.evaluate(base, NOW, False)), 1)
+        self.assertEqual(wd.evaluate(base, NOW, False, wd.closed_ids_in("| X | CLOS[A1] reponse 2 |")), [])
+        self.assertEqual(wd.closed_ids_in("CLOS[S1] et CLOS[S3] mais pas CLOSED[S9]"), {"S1", "S3"})
+
     def test_reply_citing_the_id_closes_the_wait(self):
         a = wd.evaluate([c(1, "08:00", "builder", "orchestrateur", "ATTENTE[A1]: x avant 2026-10-08T09:00Z"),
                          c(2, "08:30", "orchestrateur", "builder", "REF A1", demande="aucune")], NOW, False)

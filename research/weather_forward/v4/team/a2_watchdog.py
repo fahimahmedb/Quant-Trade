@@ -10,6 +10,7 @@ Formats (A2_OPERATING_LOOP.md point 11) :
   attente `ATTENTE[id]: <objet> avant AAAA-MM-JJTHH:MMZ`  (UTC). Avec `[id]`, seule une reponse du destinataire qui contient
           cet id clot l'attente ; sans `[id]` (ancien format), tout message ulterieur du destinataire la clot (plus faible).
   Owner   un commentaire d'Owner SANS entete `[A2-TEAM]` dont la premiere ligne est `STOP` arrete le garde-fou ; `REPRISE` le relance.
+Cloture par l'expediteur : `CLOS[id]` dans la file de travail clot une attente dont la reponse n'a pas cite l'id.
 Idempotence sans etat local : chaque ACTION porte une cle ; si un commentaire `RAPPEL watchdog <cle>` existe deja, la relance n'est
 pas reemise et l'attente non satisfaite passe en `ALERT_OWNER` (une seule fois par cle, `ALERT_OWNER watchdog <cle>`).
 """
@@ -74,7 +75,7 @@ def tag_for(agent):
     return "PING_CODEX" if agent == "orchestrateur" else "WAKE_BUILDER"
 
 
-def evaluate(comments, now, open_work):
+def evaluate(comments, now, open_work, closed_ids=frozenset()):
     if owner_stopped(comments):
         return []
     msgs = messages(comments)
@@ -82,7 +83,7 @@ def evaluate(comments, now, open_work):
     raw = []  # (cle, agent_attendu, texte)
     for i, m in enumerate(msgs):
         for wid, objet, deadline in m["waits"]:
-            if now <= deadline:
+            if now <= deadline or (wid and wid in closed_ids):
                 continue
             for target in sorted(m["targets"] & AGENTS):
                 later = [x for x in msgs[i + 1:] if x["sender"] == target]
@@ -128,6 +129,11 @@ def open_work_in(queue_text):
                for l in queue_text.splitlines())
 
 
+def closed_ids_in(queue_text):
+    """Attentes closes par l'expediteur dans la file (`CLOS[id]`) : evite une relance quand la reponse ne cite pas l'id."""
+    return set(re.findall(r"CLOS\[([\w.-]+)\]", queue_text))
+
+
 def main():
     pr = sys.argv[1] if len(sys.argv) > 1 else "22"
     repo = sys.argv[2] if len(sys.argv) > 2 else "fahimahmedb/Quant-Trade"
@@ -141,7 +147,7 @@ def main():
     if owner_stopped(comments):
         print("STOP_OWNER actif : aucune action")
         sys.exit(0)
-    actions = evaluate(comments, datetime.now(timezone.utc), open_work_in(r.stdout))
+    actions = evaluate(comments, datetime.now(timezone.utc), open_work_in(r.stdout), closed_ids_in(r.stdout))
     for a in actions:
         print(a)
     print("OK" if not actions else f"{len(actions)} action(s)")
