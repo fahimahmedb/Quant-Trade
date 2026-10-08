@@ -40,7 +40,7 @@ jobs:
         run: |
           python - <<'PY'
           from __future__ import annotations
-          import hashlib, importlib.util, json, os, time, traceback
+          import hashlib, json, os, sys, time, traceback
           from collections import defaultdict
           from decimal import Decimal
           from pathlib import Path
@@ -51,9 +51,8 @@ jobs:
           OUT = Path("neg_risk_screen_output")
           OUT.mkdir(exist_ok=False)
 
-          spec = importlib.util.spec_from_file_location("nr", MOD_PATH)
-          nr = importlib.util.module_from_spec(spec)
-          spec.loader.exec_module(nr)
+          sys.path.insert(0, str(Path(MOD_PATH).parent))
+          import neg_risk_collector as nr
 
           SNAPSHOTS = 60
           INTERVAL_S = 10.0
@@ -116,7 +115,6 @@ jobs:
           blocker = None
 
           try:
-              # PREFLIGHT: public Gamma endpoint and metadata-only deterministic discovery.
               raw_probe, probe = nr._request("GET", f"{nr.GAMMA}/events?closed=false&order=id&ascending=true&limit=1&offset=0")
               if not isinstance(probe, list):
                   raise nr.DataContractError("Gamma preflight events response is not a list")
@@ -156,7 +154,6 @@ jobs:
               if not selected:
                   blocker = "NO_ELIGIBLE_EXACTLY_3_STANDARD_NEG_RISK_EVENTS"
               else:
-                  # CLOB /books preflight probe on the first deterministically selected event.
                   pre_raw, pre_payload = nr.snapshot_event(selected[0])
                   pre_books = nr.index_books(pre_payload, selected[0].token_ids)
                   extra_book_contract(pre_books)
@@ -220,7 +217,6 @@ jobs:
                               record_base["routes"] = route_objs
                               audit_rows.append(record_base)
                           except nr.DataContractError as ex:
-                              # Schema/contract failures are fatal; timing skew is handled above.
                               data_contract_blocker = True
                               blocker = f"DATA_CONTRACT_ERROR: {ex}"
                               audit_rows.append({"snapshot_n": n, "request_utc": request_utc, "event_id": event.event_id, "valid": False, "fatal_data_contract_error": str(ex)})
@@ -236,7 +232,6 @@ jobs:
               blocker = f"UNEXPECTED_RUNTIME_ERROR: {type(ex).__name__}: {ex}"
               manifest["unexpected_traceback"] = traceback.format_exc()
 
-          # Aggregate strictly from the frozen route evaluations.
           by_route = defaultdict(list)
           exceedance_events = set()
           for row in all_route_rows:
