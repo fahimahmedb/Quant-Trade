@@ -25,8 +25,8 @@ WAIT = re.compile(r"^ATTENTE(?:\[([\w.-]+)\])?:\s*(.+?)\s+avant\s+(\d{4}-\d{2}-\
 ASK = re.compile(r"^DEMANDE:\s*(?!aucune\b)\S", re.M | re.I)
 STOP = re.compile(r"\A\s*STOP\b")
 RESUME = re.compile(r"\A\s*REPRISE\b")
-SILENCE_PING = timedelta(hours=3)
-SILENCE_ALERT = timedelta(hours=6)
+SILENCE_PING = timedelta(minutes=15)
+SILENCE_ALERT = timedelta(hours=1)
 AGENTS = {"builder", "orchestrateur"}
 
 
@@ -96,7 +96,7 @@ def evaluate(comments, now, open_work):
         last_own = max((x["at"] for x in msgs if x["sender"] == agent), default=None)
         if asked and (last_own is None or last_own < asked[-1]["at"]) and now - asked[-1]["at"] > SILENCE_PING:
             raw.append((f"{agent}:{asked[-1]['id']}:silence", agent,
-                        f"{agent} sollicite par {asked[-1]['sender']} (commentaire {asked[-1]['id']}) sans reponse depuis plus de 3 h"))
+                        f"{agent} sollicite par {asked[-1]['sender']} (commentaire {asked[-1]['id']}) sans reponse depuis plus de 15 min"))
     actions, seen = [], set()
     for key, agent, text in raw:
         if key in seen:
@@ -108,7 +108,7 @@ def evaluate(comments, now, open_work):
             actions.append(f"ACTION: ALERT_OWNER [cle=ALERT:{key}] relance deja emise sans effet : {text}")
     newest = max(msgs, key=lambda x: x["at"], default=None)
     if open_work and newest and now - newest["at"] > SILENCE_ALERT and f"ALERT:team:{newest['id']}" not in alerted:
-        actions.append(f"ACTION: ALERT_OWNER [cle=ALERT:team:{newest['id']}] equipe muette depuis plus de 6 h avec du travail ouvert")
+        actions.append(f"ACTION: ALERT_OWNER [cle=ALERT:team:{newest['id']}] equipe muette depuis plus d'1 h avec du travail ouvert")
     return actions
 
 

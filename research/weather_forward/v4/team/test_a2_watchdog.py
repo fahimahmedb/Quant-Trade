@@ -64,20 +64,20 @@ class Watchdog(unittest.TestCase):
         self.assertEqual(len(a), 1)
         self.assertIn("WAKE_BUILDER", a[0])
 
-    def test_unanswered_request_without_deadline_after_3h(self):
-        self.assertTrue(any("PING_CODEX" in x for x in wd.evaluate([c(1, "08:00", "builder", "orchestrateur")], NOW, False)))
-        self.assertEqual(wd.evaluate([c(1, "10:30", "builder", "orchestrateur")], NOW, False), [])
+    def test_unanswered_request_without_deadline_after_15_min(self):
+        self.assertTrue(any("PING_CODEX" in x for x in wd.evaluate([c(1, "11:40", "builder", "orchestrateur")], NOW, False)))
+        self.assertEqual(wd.evaluate([c(1, "11:50", "builder", "orchestrateur")], NOW, False), [])
 
     def test_reply_with_no_request_does_not_wake_the_other_side(self):
-        a = wd.evaluate([c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")], NOW, False)
+        a = wd.evaluate([c(1, "11:00", "builder", "orchestrateur"), c(2, "11:10", "orchestrateur", "builder", demande="aucune")], NOW, False)
         self.assertFalse(any("WAKE_BUILDER" in x for x in a))
 
     def test_team_silent_alert_once_per_last_message(self):
-        quiet = [c(1, "04:00", "builder", "orchestrateur"), c(2, "04:10", "orchestrateur", "builder", demande="aucune")]
+        quiet = [c(1, "10:00", "builder", "orchestrateur"), c(2, "10:10", "orchestrateur", "builder", demande="aucune")]
         a = wd.evaluate(quiet, NOW, True)
         self.assertTrue(any("ALERT:team:2" in x for x in a))
         self.assertFalse(any("ALERT_OWNER" in x for x in wd.evaluate(quiet, NOW, False)))
-        again = quiet + [watchdog(3, "07:00", "ALERT_OWNER watchdog ALERT:team:2")]
+        again = quiet + [watchdog(3, "11:30", "ALERT_OWNER watchdog ALERT:team:2")]
         self.assertFalse(any("ALERT:team:2" in x for x in wd.evaluate(again, NOW, True)))
 
     def test_owner_stop_silences_everything_until_resume(self):
