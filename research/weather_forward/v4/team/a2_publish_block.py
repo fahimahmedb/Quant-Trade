@@ -49,6 +49,8 @@ def main():
             for h in re.findall(r"`([0-9a-f]{64})`", l + "\n" + nxt):
                 if h not in declared:
                     declared.append(h)
+    if os.path.isdir(out) and os.listdir(out):
+        sys.exit(f"STOP : le dossier de sortie {out} n'est pas vide (aucune sortie obsolete ne doit etre republiee)")
     os.makedirs(out, exist_ok=True)
     found = {}
     for _, _, sha, text in candidates:

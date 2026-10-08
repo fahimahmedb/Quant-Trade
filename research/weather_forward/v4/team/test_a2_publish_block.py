@@ -48,6 +48,18 @@ class PublishBlock(unittest.TestCase):
         body = f"```markdown\n{a}```\n\nSHA-256 du bloc : `{sha(a)}`\n"
         self.assertEqual(run(body), (0, ["block_1.md"]))
 
+    def test_populated_output_directory_is_refused(self):
+        a = "# A\ncontenu\n"
+        body = f"```markdown\n{a}```\n\nSHA-256 du bloc : `{sha(a)}`\n"
+        pb.fetch = lambda repo, cid: body
+        out = tempfile.mkdtemp(prefix="a2pb-")
+        (pathlib.Path(out) / "block_2.md").write_text("OBSOLETE\n", encoding="utf-8")
+        pb.sys.argv = ["a2_publish_block.py", "1", out]
+        with self.assertRaises(SystemExit) as cm:
+            pb.main()
+        self.assertIn("pas vide", str(cm.exception))
+        self.assertEqual(sorted(p.name for p in pathlib.Path(out).iterdir()), ["block_2.md"])
+
     def test_wrong_declared_sha_fails(self):
         body = "```markdown\nx\n```\n\nSHA-256 : `" + "0" * 64 + "`\n"
         self.assertEqual(run(body)[0], 1)

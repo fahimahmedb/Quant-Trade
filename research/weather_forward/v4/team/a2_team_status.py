@@ -38,12 +38,13 @@ def balance_line():
     """Part des messages d'equipe par agent sur 12 h ; une part > 60 % signale le lead a rebalancer (charte 5 ter).
     N'echoue jamais : si la mesure est impossible, le dit."""
     from datetime import datetime, timedelta, timezone
-    r = subprocess.run(["gh", "api", "repos/fahimahmedb/Quant-Trade/issues/22/comments?per_page=100", "--paginate"],
+    r = subprocess.run(["gh", "api", "repos/fahimahmedb/Quant-Trade/issues/22/comments?per_page=100", "--paginate", "--slurp"],
                        capture_output=True, text=True)
     if r.returncode != 0:
         return "  non mesure (lecture des commentaires impossible)"
     try:
-        comments = json.loads(r.stdout.replace("][", ","))
+        pages = json.loads(r.stdout)
+        comments = [i for pg in pages for i in pg] if pages and all(isinstance(x, list) for x in pages) else pages
     except ValueError:
         return "  non mesure (reponse illisible)"
     cutoff = datetime.now(timezone.utc) - timedelta(hours=12)
