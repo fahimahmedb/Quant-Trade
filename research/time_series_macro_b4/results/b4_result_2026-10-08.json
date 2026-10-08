@@ -1,0 +1,277 @@
+{
+  "DISCOVERY_CLAIM": false,
+  "INDEPENDENT_VALIDATION_CLAIM": false,
+  "LESSON": "bounded finding, see RESULT and failed_criteria; no discovery claim",
+  "NEXT_ACTION": "separate absence of edge, cost, beta and concentration in the reading",
+  "PRIORITY_UPDATE": "abandon or audit the family; do not recycle the spent window; next needs a causally different family on virgin data or authorised point-in-time data",
+  "REAL_CAPITAL_AUTHORIZED": false,
+  "RESULT": "FAMILY_REJECTED",
+  "SHADOW_BAR_ANALYSED": false,
+  "TRADABLE_STRATEGY": false,
+  "command": "research/time_series_macro_b4/run_b4.py research/time_series_macro_b4/results/b4_result_2026-10-08.json",
+  "costs": {
+    "borrow_bp_annual_tlt_gld_short": 100.0,
+    "stress": [
+      10.0,
+      300.0
+    ],
+    "transaction_bp_per_unit_turnover": 5.0
+  },
+  "erratum_1_sha256": "e561a9c684d041b0bb0f66fed914e865726e6fe42dc1d7e4220ab953e074637b",
+  "filesystem_delta_before_result_write": [],
+  "git_commit": "20d7568ef4ee9935922b89d9055d9ac3677e981c",
+  "limits": [
+    "adj_close is retroactively restated and not strictly point-in-time; TLT adj_close embeds later distributions, GLD does not",
+    "2022-03-09..2025-03-11 is already spent at dataset level; a positive result is exploratory only",
+    "the 2022 bond shock was known before this pre-registration",
+    "raw bytes of the CSV were hashed for the fingerprint; lines dated 2025-03-12 or later were counted and discarded by their leading ISO date without CSV field splitting, numeric conversion or analysis",
+    "cost envelope is simple (5 bp, 100 bp borrow); not a realistic execution model"
+  ],
+  "preregistration_sha256": "11f77332f9551028dc6b19f91a1fc939513511f0e1c2188d6fdffef83d9c7c5d",
+  "problems": [],
+  "python": "3.13.16",
+  "raw_bytes_hashed_for_fingerprint_only": true,
+  "return_code": 0,
+  "run": {
+    "DATASET_LEVEL_TRIAL_COUNT": 40,
+    "TRIAL_COUNT_SOURCE": "STATE_MD_NO_REGISTRY",
+    "T_THRESHOLD": 3.227,
+    "all_criteria_true": false,
+    "candidate_metrics": {
+      "annual_net_sums": {
+        "2022": -0.04213733650307696,
+        "2023": -0.016546138442081724,
+        "2024": 0.12633177763906145,
+        "2025": 0.0096259718849485
+      },
+      "annual_turnover": 10.946808510638299,
+      "arithmetic_net_sum": 0.07727427457885103,
+      "first_signal_date": "2022-03-09",
+      "halves": [
+        -0.08318401715473522,
+        0.16368378580855802
+      ],
+      "instrument_contribution_sum": 0.07727427457885118,
+      "instrument_net_contribution": {
+        "GLD": 0.0057769967855537474,
+        "SPY": 0.06490329123091075,
+        "TLT": 0.006593986562386675
+      },
+      "last_exit_date": "2025-03-11",
+      "max_year_share": 0.9291987994899211,
+      "mean_signed_exposure": 0.0726950354609929,
+      "net_return": 0.06688389380716986,
+      "net_sharpe": 0.28261872867438825,
+      "observations": 752,
+      "positive_annual_total": 0.13595774952400996,
+      "stress_net_return": 0.027531164387435636,
+      "t_statistic": 0.4882132797322369,
+      "total_borrow": 0.010608465608465813,
+      "total_transaction_cost": 0.016333333333333328
+    },
+    "candidate_spy_beta": -0.07091670838294048,
+    "comparators": {
+      "buy_and_hold_by_instrument": {
+        "GLD": 0.43659029225732304,
+        "SPY": 0.383409820569637,
+        "TLT": -0.2530963419999328
+      },
+      "buy_and_hold_equal_weight": 0.18896792360900908,
+      "cash": 0.0,
+      "permanent_one_third_daily_rebalanced": 0.16344299109903093,
+      "spy_open_to_open": 0.3834098205696357
+    },
+    "criteria": {
+      "1_net_return_positive": true,
+      "2_net_sharpe_positive": true,
+      "3_t_statistic_at_least_threshold": false,
+      "4_both_halves_positive": false,
+      "5_stress_net_positive": true,
+      "6_no_year_above_60pct": false,
+      "7_at_least_two_instruments_positive": true
+    },
+    "failed_criteria": [
+      "3_t_statistic_at_least_threshold",
+      "4_both_halves_positive",
+      "6_no_year_above_60pct"
+    ],
+    "fingerprint_after": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "fingerprint_before": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "last_date_read": "2025-03-11",
+    "per_expression": {
+      "126": {
+        "discovery_common_intersection_net_sharpe": 0.21747640549861497,
+        "discovery_own_eligible_period": {
+          "label": "own eligible period; not used for selection",
+          "net_sharpe": 0.23209724431108872,
+          "observations": 1254
+        },
+        "evaluation": {
+          "annual_net_sums": {
+            "2022": 0.019443772321370744,
+            "2023": -0.03288461458496671,
+            "2024": 0.09079887631857819,
+            "2025": 0.005501224781918083
+          },
+          "annual_turnover": 18.54255319148936,
+          "arithmetic_net_sum": 0.08285925883690037,
+          "first_signal_date": "2022-03-09",
+          "halves": [
+            -0.01688479415144506,
+            0.09146223790032182
+          ],
+          "instrument_contribution_sum": 0.08285925883690046,
+          "instrument_net_contribution": {
+            "GLD": 0.06500428934222079,
+            "SPY": 0.0767844227429775,
+            "TLT": -0.05892945324829783
+          },
+          "last_exit_date": "2025-03-11",
+          "max_year_share": 0.784481058341909,
+          "mean_signed_exposure": 0.22340425531914893,
+          "net_return": 0.07303312268929885,
+          "net_sharpe": 0.304898514028259,
+          "observations": 752,
+          "positive_annual_total": 0.11574387342186702,
+          "stress_net_return": 0.02492303355647607,
+          "t_statistic": 0.5267007753428887,
+          "total_borrow": 0.009087301587301744,
+          "total_transaction_cost": 0.02766666666666671
+        },
+        "evaluation_comparison_only_not_for_selection": true
+      },
+      "21": {
+        "discovery_common_intersection_net_sharpe": -0.23385741280764058,
+        "discovery_own_eligible_period": {
+          "label": "own eligible period; not used for selection",
+          "net_sharpe": -0.24956077498776097,
+          "observations": 1359
+        },
+        "evaluation": {
+          "annual_net_sums": {
+            "2022": 0.01665813001486653,
+            "2023": 0.004022145096927474,
+            "2024": -0.10159162938574867,
+            "2025": 0.03649185231525316
+          },
+          "annual_turnover": 45.12765957446808,
+          "arithmetic_net_sum": -0.04441950195870148,
+          "first_signal_date": "2022-03-09",
+          "halves": [
+            -0.09190272834662627,
+            0.0379518836270718
+          ],
+          "instrument_contribution_sum": -0.04441950195870153,
+          "instrument_net_contribution": {
+            "GLD": -0.05837152681548749,
+            "SPY": 0.002732891424906962,
+            "TLT": 0.011219133431879002
+          },
+          "last_exit_date": "2025-03-11",
+          "max_year_share": 0.6382804691292542,
+          "mean_signed_exposure": 0.11923758865248228,
+          "net_return": -0.05743872637077552,
+          "net_sharpe": -0.14969093120952956,
+          "observations": 752,
+          "positive_annual_total": 0.057172127427047165,
+          "stress_net_return": -0.13574902714155335,
+          "t_statistic": -0.25858548304551876,
+          "total_borrow": 0.009682539682539858,
+          "total_transaction_cost": 0.06733333333333329
+        },
+        "evaluation_comparison_only_not_for_selection": true
+      },
+      "252": {
+        "discovery_common_intersection_net_sharpe": 0.3388171308984243,
+        "discovery_own_eligible_period": {
+          "label": "own eligible period; not used for selection",
+          "net_sharpe": 0.3388171308984243,
+          "observations": 1128
+        },
+        "evaluation": {
+          "annual_net_sums": {
+            "2022": -0.04213733650307696,
+            "2023": -0.016546138442081724,
+            "2024": 0.12633177763906145,
+            "2025": 0.0096259718849485
+          },
+          "annual_turnover": 10.946808510638299,
+          "arithmetic_net_sum": 0.07727427457885103,
+          "first_signal_date": "2022-03-09",
+          "halves": [
+            -0.08318401715473522,
+            0.16368378580855802
+          ],
+          "instrument_contribution_sum": 0.07727427457885118,
+          "instrument_net_contribution": {
+            "GLD": 0.0057769967855537474,
+            "SPY": 0.06490329123091075,
+            "TLT": 0.006593986562386675
+          },
+          "last_exit_date": "2025-03-11",
+          "max_year_share": 0.9291987994899211,
+          "mean_signed_exposure": 0.0726950354609929,
+          "net_return": 0.06688389380716986,
+          "net_sharpe": 0.28261872867438825,
+          "observations": 752,
+          "positive_annual_total": 0.13595774952400996,
+          "stress_net_return": 0.027531164387435636,
+          "t_statistic": 0.4882132797322369,
+          "total_borrow": 0.010608465608465813,
+          "total_transaction_cost": 0.016333333333333328
+        },
+        "evaluation_comparison_only_not_for_selection": true
+      },
+      "63": {
+        "discovery_common_intersection_net_sharpe": 0.23232328815045525,
+        "discovery_own_eligible_period": {
+          "label": "own eligible period; not used for selection",
+          "net_sharpe": 0.24252056027973348,
+          "observations": 1317
+        },
+        "evaluation": {
+          "annual_net_sums": {
+            "2022": -0.154132130316442,
+            "2023": 0.03660243712207736,
+            "2024": 0.14299576866811317,
+            "2025": 0.034732147594326766
+          },
+          "annual_turnover": 20.106382978723406,
+          "arithmetic_net_sum": 0.060198223068075304,
+          "first_signal_date": "2022-03-09",
+          "halves": [
+            -0.1239844722645127,
+            0.19612942192561422
+          ],
+          "instrument_contribution_sum": 0.060198223068075186,
+          "instrument_net_contribution": {
+            "GLD": 0.09639458000680728,
+            "SPY": -0.00481217140446167,
+            "TLT": -0.03138418553427043
+          },
+          "last_exit_date": "2025-03-11",
+          "max_year_share": 0.6671746041101935,
+          "mean_signed_exposure": 0.16312056737588654,
+          "net_return": 0.0478279467881102,
+          "net_sharpe": 0.21216418525291744,
+          "observations": 752,
+          "positive_annual_total": 0.21433035338451728,
+          "stress_net_return": -0.002362387632706464,
+          "t_statistic": 0.36650569199673694,
+          "total_borrow": 0.009537037037037208,
+          "total_transaction_cost": 0.030000000000000054
+        },
+        "evaluation_comparison_only_not_for_selection": true
+      }
+    },
+    "reconciliation_error": 1.5265566588595902e-16,
+    "rows_skipped_before_parsing": 4536,
+    "selected_lookback": 252,
+    "selection_scores": {
+      "126": 0.21747640549861497,
+      "21": -0.23385741280764058,
+      "252": 0.3388171308984243,
+      "63": 0.23232328815045525
+    }
+  }
+}
