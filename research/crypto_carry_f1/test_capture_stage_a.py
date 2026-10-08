@@ -54,6 +54,18 @@ class CaptureTests(unittest.TestCase):
         self.assertEqual(self.fetches, [])
         self.assertEqual((self.out / "plan_STAGE_A.json").read_bytes(), plan_bytes)
 
+    def test_unicode_symbol_is_preserved_without_changing_frozen_universe(self):
+        sym = "币安人生USDT"
+        self.candidates.write_bytes((sym + "\n").encode("utf-8"))
+        self.sha = c.digest(self.candidates)
+        def listing(prefix):
+            stem = sym + ("-fundingRate" if "fundingRate" in prefix else "-1d")
+            return [prefix + stem + "-2023-12.zip"]
+        with patch.object(c.transport, "list_files", side_effect=listing), patch.object(c.transport, "fetch_one", side_effect=self.fetch):
+            report = c.capture(self.out, self.candidates, self.sha)
+        self.assertEqual(report["verified"], 3)
+        self.assertTrue(all(job[1] == sym for job in self.fetches))
+
     def test_failure_is_incomplete_and_resume_fetches_only_missing(self):
         calls = 0
         def interrupt(job, out):

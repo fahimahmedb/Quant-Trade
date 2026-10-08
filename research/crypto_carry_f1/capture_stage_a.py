@@ -171,8 +171,8 @@ def capture(out, candidates, candidate_sha, verify_only=False):
     raw = Path(candidates).read_bytes()
     if hashlib.sha256(raw).hexdigest() != candidate_sha:
         raise ValueError("candidate list hash mismatch")
-    symbols = raw.decode("ascii").split()
-    if len(set(symbols)) != len(symbols) or any(not re.fullmatch(r"[A-Z0-9]+USDT", s) for s in symbols):
+    symbols = raw.decode("utf-8").split()
+    if len(set(symbols)) != len(symbols) or any(not s.endswith("USDT") or not s[:-4].isalnum() for s in symbols):
         raise ValueError("malformed candidate universe")
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
