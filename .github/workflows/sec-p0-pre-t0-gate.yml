@@ -63,6 +63,9 @@ jobs:
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
 
+      - name: F1 synthetic research regressions
+        run: python3 -B -m unittest research.crypto_carry_f1.test_run_f1 research.crypto_carry_f1.test_liquidity_ranking_f1 research.crypto_carry_f1.test_decision_integrity_f1 -v
+
       - name: V1 end-to-end regression
         run: python3 scripts/demo_quant_system.py
 
