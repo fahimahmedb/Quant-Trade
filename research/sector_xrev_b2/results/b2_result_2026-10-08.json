@@ -1,0 +1,161 @@
+{
+  "DISCOVERY_CLAIM": false,
+  "LESSON": "The re-execution establishes whether recorded figures reproduce; it claims no discovery.",
+  "NEXT_ACTION": "choose a family outside cross-sectional relative value with a clean window, or improve the cost model",
+  "PRIORITY_UPDATE": "abandon or audit the family; do not recycle the validation window",
+  "REAL_CAPITAL_AUTHORIZED": false,
+  "SHADOW_READ": false,
+  "TRADABLE_STRATEGY": false,
+  "VALIDATION_CLAIM": false,
+  "benchmark": "SPY",
+  "command": "research/sector_xrev_b2/run_b2.py research/sector_xrev_b2/results/b2_result_2026-10-08.json",
+  "cost_bps": 5.0,
+  "filesystem_delta_before_result_write": [],
+  "git_commit": "70aabd66f5c6b62dfedf3e80856021453f1cfa7a",
+  "limits": [
+    "harness re-executes existing code; not an independent reimplementation",
+    "adj_close is retroactively restated and not strictly point-in-time",
+    "cost envelope does not model short-leg borrow cost; no net figure is realistic",
+    "36 existing expressions; this run adds no discovery claim"
+  ],
+  "preregistration_sha256": "5734f3daca021af27268a0af5cab8c4967ba6ceffdce2c4a5d8d8f27e9bbff58",
+  "problems": [],
+  "python": "3.13.16",
+  "raw_bytes_hashed_for_fingerprint_only": true,
+  "result": "NEGATIVE_REPLICATION_CONFIRMED",
+  "return_code": 0,
+  "run": {
+    "family_size": "36 EXISTING + 0 DISCOVERY CLAIMS",
+    "fingerprint_after": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "fingerprint_before": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "lane1": {
+      "best": "xs_momentum_l21_z0.5_h1_b0",
+      "best_discovery_sharpe": -0.014722397166052757,
+      "filtered": true,
+      "gross_positive_net_nonpositive": 10
+    },
+    "lane2": {
+      "best": "xs_momentum_l21_z0.5_h5_b0.05",
+      "best_discovery_sharpe": 0.36251066476733984,
+      "filtered": false,
+      "oos_summary": {
+        "active_observations": 752,
+        "annual_mean_return": -0.017884839405279535,
+        "annual_turnover": 32.85776745678801,
+        "annual_volatility": 0.07939042996832842,
+        "beta_explained_return": -0.02370759625571743,
+        "cost_bps": 5.0,
+        "first_entry_date": "2022-03-10",
+        "first_signal_date": "2022-03-09",
+        "gross_return": -0.013661688308908904,
+        "hit_rate": 0.48404255319148937,
+        "last_exit_date": "2025-03-11",
+        "market_beta": -0.06183356550569004,
+        "market_return_same_window": 0.3834098205696357,
+        "max_drawdown": -0.1325967366789893,
+        "net_return": -0.0608280218431273,
+        "observations": 752,
+        "sharpe_zero_rate": -0.22527701906154704,
+        "t_statistic": -0.38915762179035845,
+        "timeline": "signal at close(t); entry at open(t+1); exit at open(t+2)",
+        "total_costs": 0.04902587525298528
+      },
+      "oos_verdict": {
+        "beta_attribution": {
+          "benchmark": "SPY",
+          "benchmark_return_same_window": 0.3834098205696357,
+          "market_beta": -0.06183356550569004,
+          "residual_return": -0.03712042558740987,
+          "return_explained_by_beta": -0.02370759625571743
+        },
+        "decision": "REJECT_RESEARCH",
+        "expressions_tested_on_dataset": 36,
+        "failed_tests": [
+          "net_profitable_after_modeled_costs",
+          "profitable_in_both_subperiods",
+          "still_profitable_at_2x_costs",
+          "t_statistic_survives_multiple_testing"
+        ],
+        "net_return_at_stress_costs": -0.10575695555187958,
+        "passed": false,
+        "required_t_statistic": 3.1969502291312533,
+        "stress_cost_bps": 10.0,
+        "subperiod_returns": [
+          -0.010239107107562595,
+          -0.0511122586261471
+        ],
+        "t_statistic": -0.38915762179035845,
+        "tests": {
+          "at_least_100_active_observations": true,
+          "market_beta_below_0_15": true,
+          "net_profitable_after_modeled_costs": false,
+          "profitable_in_both_subperiods": false,
+          "still_profitable_at_2x_costs": false,
+          "t_statistic_survives_multiple_testing": false,
+          "top_5_days_below_half_of_gains": true
+        },
+        "top_5_day_share_of_gains": 0.07188715690349279
+      }
+    },
+    "last_date_read": "2025-03-11",
+    "rows_skipped_before_parsing": 4536,
+    "windows": {
+      "DISCOVERY": [
+        "2016-09-12",
+        "2022-03-08"
+      ],
+      "SHADOW": [
+        "2025-03-12",
+        "2026-09-11"
+      ],
+      "VALIDATION": [
+        "2022-03-09",
+        "2025-03-11"
+      ]
+    }
+  },
+  "self_rel_tol": 1e-09,
+  "tolerance": {
+    "lane1_best_discovery_sharpe": [
+      -0.015,
+      0.0005
+    ],
+    "lane2_annual_turnover": [
+      32.9,
+      0.05
+    ],
+    "lane2_benchmark_return": [
+      0.3834,
+      5e-05
+    ],
+    "lane2_discovery_sharpe": [
+      0.363,
+      0.0005
+    ],
+    "lane2_expression": "xs_momentum_l21_z0.5_h5_b0.05",
+    "lane2_market_beta": [
+      -0.062,
+      0.0005
+    ],
+    "lane2_oos_gross_return": [
+      -0.0137,
+      5e-05
+    ],
+    "lane2_oos_net_return": [
+      -0.0608,
+      5e-05
+    ],
+    "lane2_required_t": [
+      3.2,
+      0.005
+    ],
+    "lane2_t_statistic": [
+      -0.39,
+      0.005
+    ],
+    "lane2_total_costs": [
+      0.049,
+      5e-05
+    ]
+  }
+}
