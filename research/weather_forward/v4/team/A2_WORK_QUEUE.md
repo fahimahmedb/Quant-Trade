@@ -39,3 +39,16 @@ Niveaux : `T` jugement, `B` construction, `M` contrôle déterministe (script). 
 | Q23 | Builder : contexte d'opération D2 final + épingles finales (blob candidat `9704a844…`), sans lancement, test statique d'égalité à E (Astra J-1) | Q9 | B | Fichiers publiés avec blobs, valeurs exactes de E B.3/B.4, test vert, aucune exécution du script d'opération | DONE : branche `builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08`, commit `44bee3b053401111f5e35a06a8bee9df92019188`, contexte blob `cd0803c6152c34145c87fbc22e0cf3deae1db0c0`, épingles blob `ce85d67be96703af9d1b380b8587b87940a66388`, note `ac6035469a96811476fcf88cca7d49de3c55698f` ; 9 tests statiques OK ; script d'opération non lancé |
 | Q24 | Owner (une seule session) : L2-A avec version Python/architecture hôte (J-2, J-4) + reconnaissance de la provenance de `1910994` et des actes (J-5, E B.5(e)) | kit Q15 | — | Constats expurgés publiés ; reconnaissance écrite | OWNER_GATED |
 | Q25 | Revue Astra neuve limitée au delta (J-1, J-2, J-5) | Q23, Q24 | T | Rapport delta, verdict unique | BLOCKED |
+
+
+## Voies permanentes (règle 14 de la boucle : avance de deux par agent)
+
+| Id | Voie | Tâche / agent | Dépend de | Critère de fin vérifiable | Statut |
+|---|---|---|---|---|---|
+| C1 | C | Builder : vérification de base du dépôt (`unittest discover`, `demo_quant_system.py`, `generate_schemas.py --check`) sur la branche d'équipe, sans modifier le code | rien | Sorties et codes retour consignés, aucune modification de fichier ; tout échec classé « préexistant » ou « nouveau » | IN_PROGRESS |
+| C3 | C | Builder : comparer mon inventaire des 15 éléments gardés (`team/BUILDER_INVENTORY_15_GUARDED_ELEMENTS_2026-10-08.md`) au tableau G d'Astra (rapport `f236ab2b…`, §G) | rien | Écarts listés (ordre, noms, domaines) ou absence d'écart ; aucun fichier de la revue modifié | READY |
+| D1 | D | Builder : mesurer le coût réel de la boucle depuis 00:58Z (sessions Astra, Q7, Builder, rappels) et proposer deux réductions chiffrées | rien | Tableau coût par poste via `get_session` (`usage.cost_usd`) ; deux réductions avec gain estimé | READY |
+| B1 | B | Codex : Q21 (état de la recherche d'edge weather hors A2, dernière expérience paper/shadow falsifiable sans `t0`) | rien | `RESULT / LESSON / PRIORITY UPDATE / NEXT ACTION` avec références exactes | IN_PROGRESS |
+| B2 | B | Builder : première expérience paper/shadow retenue par Q21 (si falsifiable sans `t0` et sans donnée réelle) | B1 | Plan de validation et seuil écrits avant observation ; résultat consigné même négatif | BLOCKED |
+| C2 | C | Codex : contre-lecture de Q15 et Q22 (Q16) | rien | Une contre-lecture écrite | READY |
+| C4 | C | Codex : arbitrage du triage Q17-A | rien | Classes T0 à T4 confirmées ou corrigées | READY |
