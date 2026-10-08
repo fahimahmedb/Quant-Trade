@@ -175,6 +175,21 @@ def read_manifest(data_dir, names):
     return allowed
 
 
+def require_manifest_files(allowed, read):
+    """A successful capture in the read window cannot silently disappear.
+
+    Check presence before loading any symbol. Out-of-window captures are not
+    opened; load_symbol verifies the hashes of the files it parses.
+    """
+    lo, hi = read
+    for path in sorted(allowed):
+        m0 = file_month_ms(os.path.basename(path))
+        if m0 + 31 * DAY_MS <= lo or m0 >= hi:
+            continue
+        if not os.path.isfile(path):
+            raise FormatError(f"manifest file missing: {path}")
+
+
 def build_funding_days(funding):
     """fund_sig[d] = rows with slot in [D_d, D_d+1); fund_earn[d] = slot in (D_d, D_d+1]."""
     sig, earn = defaultdict(float), defaultdict(float)
@@ -270,7 +285,8 @@ def simulate(syms, theta, cost_mult, d_first, d_last):
                 liq_px = LIQ_MULT * p["ref"]
                 pnl = q * (sp1 - sp0) - q * (liq_px - pp0)
                 pen = LIQ_PEN * q * liq_px
-                ec = cost_mult * q * sp1 * (FEE_SPOT + p["slip"])
+                slip = SLIP_TOP if sym in top20_on(d) else SLIP_REST
+                ec = cost_mult * q * sp1 * (FEE_SPOT + slip)
                 nav += pnl - pen - ec
                 parts["basis"] += pnl
                 parts["liquidation_penalty"] += pen
@@ -418,7 +434,12 @@ def snapshot(data_dir):
     for root, _, files in os.walk(data_dir):
         for fn in sorted(files):
             p = os.path.join(root, fn)
-            snap.append((p, os.path.getsize(p)))
+            st = os.stat(p)
+            # ctime catches an in-place rewrite even if size and mtime are
+            # restored; device/inode identity also catches file replacement.
+            # Reading metadata leaves sealed ZIP contents untouched.
+            snap.append((p, st.st_dev, st.st_ino, st.st_size,
+                         st.st_mtime_ns, st.st_ctime_ns))
     return sorted(snap)
 
 
@@ -445,6 +466,7 @@ def run(stage, data_dir, result_path, stage_a_result=None, manifest_names=None, 
             raise FormatError("Stage A selected_theta inconsistent with its cells")
     names = manifest_names or [f"manifest_{stage}.jsonl"]
     allowed = read_manifest(data_dir, names)
+    require_manifest_files(allowed, cfg["read"])
     syms_list = sorted(os.listdir(os.path.join(data_dir, "funding")))
     syms = {}
     for sym in syms_list:
