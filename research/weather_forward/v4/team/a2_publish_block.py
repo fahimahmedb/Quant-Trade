@@ -28,7 +28,6 @@ def main():
     repo = sys.argv[3] if len(sys.argv) > 3 else "fahimahmedb/Quant-Trade"
     body = fetch(repo, cid).replace("\r\n", "\n")
     lines = body.split("\n")
-    anywhere = set(re.findall(r"`([0-9a-f]{64})`", body))
     # SHA annonces : hash en backticks sur une ligne contenant "SHA-256" ou sur la ligne suivante.
     declared = []
     for i, l in enumerate(lines):
@@ -44,7 +43,7 @@ def main():
         for j in (f for f in fences if f > s):
             text = "\n".join(lines[s + 1:j]) + "\n"
             sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
-            if sha in anywhere and sha not in found:
+            if sha in declared and sha not in found:
                 found[sha] = text
                 break
     for n, (sha, text) in enumerate(found.items(), 1):
