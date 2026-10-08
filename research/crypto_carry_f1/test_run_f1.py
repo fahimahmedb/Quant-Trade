@@ -63,27 +63,42 @@ class TimestampAndFilter(unittest.TestCase):
             p = os.path.join(t, "k.zip")
             lines = kline_rows(D0, D0 + 2) + [f"{late},GARBAGE,GARBAGE,GARBAGE,GARBAGE,1,1,GARBAGE,1,0,0,0"]
             zipped(p, "\n".join(lines))
-            rows = list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], 8))
+            rows = list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], "kline"))
             self.assertEqual(len(rows), 3)
 
     def test_microsecond_timestamps_accepted(self):
         with tempfile.TemporaryDirectory() as t:
             p = os.path.join(t, "k.zip")
             zipped(p, "\n".join(kline_rows(D0, D0 + 1, unit=1000)))
-            rows = list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], 8))
+            rows = list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], "kline"))
             self.assertEqual(int(rows[0][0]), D0 * r.DAY_MS)
 
-    def test_header_row_skipped_and_bad_row_fails(self):
+    def test_header_validated_and_columns_exact(self):
         with tempfile.TemporaryDirectory() as t:
             p = os.path.join(t, "k.zip")
-            zipped(p, "open_time,open,high,low,close,volume,close_time,qv,n,a,b,c\n" + "\n".join(kline_rows(D0, D0)))
-            self.assertEqual(len(list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], 8))), 1)
-            zipped(p + "2", "1,2\n" + "abc,2,3")
+            zipped(p, r.HEADERS["kline"] + "\n" + "\n".join(kline_rows(D0, D0)))
+            self.assertEqual(len(list(r.iter_rows(p, *r.STAGES["STAGE_A"]["read"], "kline"))), 1)
+            zipped(p + "b", "open_time,wrong\n" + "\n".join(kline_rows(D0, D0)))
             with self.assertRaises(r.FormatError):
-                list(r.iter_rows(p + "2", *r.STAGES["STAGE_A"]["read"], 3))
-            zipped(p + "3", "\n".join(kline_rows(D0, D0)[:1]).rsplit(",", 8)[0])
+                list(r.iter_rows(p + "b", *r.STAGES["STAGE_A"]["read"], "kline"))
+            zipped(p + "2", "abc,2,3")
             with self.assertRaises(r.FormatError):
-                list(r.iter_rows(p + "3", *r.STAGES["STAGE_A"]["read"], 8))
+                list(r.iter_rows(p + "2", *r.STAGES["STAGE_A"]["read"], "kline"))
+            short = kline_rows(D0, D0)[0].rsplit(",", 3)[0]
+            zipped(p + "3", short)
+            with self.assertRaises(r.FormatError):
+                list(r.iter_rows(p + "3", *r.STAGES["STAGE_A"]["read"], "kline"))
+            zipped(p + "4", r.HEADERS["funding"] + "\n" + f"{D0 * r.DAY_MS},8,0.0001")
+            self.assertEqual(len(list(r.iter_rows(p + "4", *r.STAGES["STAGE_A"]["read"], "funding"))), 1)
+
+    def test_nan_and_nonpositive_prices_rejected(self):
+        with self.assertRaises(r.FormatError):
+            r.finite_pos("nan")
+        with self.assertRaises(r.FormatError):
+            r.finite_pos("0")
+        with self.assertRaises(r.FormatError):
+            r.finite_pos("-1")
+        self.assertEqual(r.finite_pos("0", allow_zero=True), 0.0)
 
 
 class Funding(unittest.TestCase):
@@ -133,7 +148,7 @@ class Simulation(unittest.TestCase):
         # barred for 30 days: no re-entry before e+3+30
         q = 0.1 * 0.75 / 100.0
         pen = r.LIQ_PEN * q * 125.0
-        self.assertGreaterEqual(diag["fees"], pen)
+        self.assertAlmostEqual(diag["components"]["liquidation_penalty"], pen)
         # held through e+1..e+3 (liquidated on e+3), barred through e+33, re-enters at close of e+34, held e+35..last
         self.assertEqual(diag["exposure_days"], 3 + (n - 1 - (59 + 34)))
 
@@ -143,11 +158,11 @@ class Simulation(unittest.TestCase):
         _, stress = r.simulate(syms, 0.20, 2.0, D0, D0 + 99)
         self.assertLess(stress["final_nav"], base["final_nav"])
 
-    def test_missing_bar_for_open_position_fails_closed(self):
+    def test_missing_bar_for_open_position_forces_exit(self):
         syms = make_syms(100)
         del syms["AAAUSDT"].spot[D0 + 80]
-        with self.assertRaises(r.FormatError):
-            r.simulate(syms, 0.20, 1.0, D0, D0 + 99)
+        _, diag = r.simulate(syms, 0.20, 1.0, D0, D0 + 99)
+        self.assertEqual(diag["forced_exits"], 1)
 
 
 class Stats(unittest.TestCase):
@@ -168,38 +183,144 @@ class Stats(unittest.TestCase):
         self.assertAlmostEqual(r.Z_ONE_SIDED, NormalDist().inv_cdf(1 - 0.05 / 3 / 3), places=6)
 
 
-class EndToEnd(unittest.TestCase):
+def write_manifest(data, stage):
+    import hashlib
+    recs = []
+    for root, _, files in os.walk(data):
+        for fn in files:
+            if fn.endswith(".zip"):
+                ds, sym = os.path.relpath(root, data).split(os.sep)
+                recs.append({"ok": True, "dataset": ds, "symbol": sym, "key": f"x/{ds}/{sym}/{fn}",
+                             "sha256": hashlib.sha256(open(os.path.join(root, fn), "rb").read()).hexdigest()})
+    with open(os.path.join(data, f"manifest_{stage}.jsonl"), "w") as f:
+        for rec in recs:
+            f.write(json.dumps(rec) + "\n")
+
+
+def fixture(t, n, name="a-2020-01.zip", sym="AAAUSDT", funding_extra=None):
+    data = os.path.join(t, "data")
+    zipped(os.path.join(data, "spot1d", sym, name), "\n".join(kline_rows(D0, D0 + n - 1)))
+    zipped(os.path.join(data, "perp1d", sym, name), "\n".join(kline_rows(D0, D0 + n - 1)))
+    zipped(os.path.join(data, "funding", sym, name), "\n".join(funding_rows(D0, D0 + n - 1) + (funding_extra or [])))
+    return data
+
+
+class Patched(unittest.TestCase):
+    def setUp(self):
+        self.old = dict(r.STAGES["STAGE_A"])
+
+    def tearDown(self):
+        r.STAGES["STAGE_A"] = self.old
+
+    def patch(self, n):
+        r.STAGES["STAGE_A"] = {"read": self.old["read"], "stat": (D0 * r.DAY_MS, (D0 + n) * r.DAY_MS)}
+
+
+class EndToEnd(Patched):
     def test_result_written_once_and_late_rows_ignored(self):
         with tempfile.TemporaryDirectory() as t:
             n = 120
-            data = os.path.join(t, "data")
-            zipped(os.path.join(data, "spot1d", "AAAUSDT", "a.zip"), "\n".join(kline_rows(D0, D0 + n - 1)))
-            zipped(os.path.join(data, "perp1d", "AAAUSDT", "a.zip"), "\n".join(kline_rows(D0, D0 + n - 1)))
             late = r._ms(2024, 2, 1)
-            zipped(os.path.join(data, "funding", "AAAUSDT", "a.zip"),
-                   "\n".join(funding_rows(D0, D0 + n - 1) + [f"{late},8,GARBAGE"]))
-            old = dict(r.STAGES["STAGE_A"])
-            r.STAGES["STAGE_A"] = {"read": old["read"], "stat": (D0 * r.DAY_MS, (D0 + n) * r.DAY_MS)}
-            try:
-                res_path = os.path.join(t, "res", "a.json")
-                out = r.run("STAGE_A", data, res_path)
-                self.assertEqual(out["n_symbols"], 1)
-                self.assertIn("selected_theta", out)
-                with self.assertRaises(FileExistsError):
-                    r.run("STAGE_A", data, res_path)
-            finally:
-                r.STAGES["STAGE_A"] = old
+            data = fixture(t, n, funding_extra=[f"{late},8,GARBAGE"])
+            write_manifest(data, "STAGE_A")
+            self.patch(n)
+            res_path = os.path.join(t, "res", "a.json")
+            out = r.run("STAGE_A", data, res_path)
+            self.assertEqual(out["n_symbols"], 1)
+            self.assertIn("selected_theta", out)
+            self.assertIn("daily_returns_base", out["cells"]["0.05"])
+            self.assertEqual(len(out["cells"]["0.05"]["daily_returns_base"]), n)
+            self.assertIn("harness_sha256", out)
+            with self.assertRaises(Exception):
+                r.run("STAGE_A", data, res_path)   # second run cannot overwrite
+            self.assertFalse(os.path.exists(res_path + ".tmp"))
 
     def test_unrecognised_format_leaves_no_result(self):
         with tempfile.TemporaryDirectory() as t:
             data = os.path.join(t, "data")
-            zipped(os.path.join(data, "spot1d", "AAAUSDT", "a.zip"), "1700000000,1,2,3,4,5,6,7,8")
-            zipped(os.path.join(data, "perp1d", "AAAUSDT", "a.zip"), "\n".join(kline_rows(D0, D0)))
-            zipped(os.path.join(data, "funding", "AAAUSDT", "a.zip"), "\n".join(funding_rows(D0, D0)))
+            zipped(os.path.join(data, "spot1d", "AAAUSDT", "a-2020-01.zip"), "1700000000,1,2,3,4,5,6,7,8,9,10,11")
+            zipped(os.path.join(data, "perp1d", "AAAUSDT", "a-2020-01.zip"), "\n".join(kline_rows(D0, D0)))
+            zipped(os.path.join(data, "funding", "AAAUSDT", "a-2020-01.zip"), "\n".join(funding_rows(D0, D0)))
+            write_manifest(data, "STAGE_A")
             res_path = os.path.join(t, "res", "a.json")
             with self.assertRaises(r.FormatError):
                 r.run("STAGE_A", data, res_path)
             self.assertFalse(os.path.exists(res_path))
+
+    def test_file_not_in_manifest_and_checksum_mismatch_fail_closed(self):
+        with tempfile.TemporaryDirectory() as t:
+            data = fixture(t, 100)
+            write_manifest(data, "STAGE_A")
+            zipped(os.path.join(data, "funding", "AAAUSDT", "extra-2020-02.zip"), "x")
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_A", data, os.path.join(t, "res", "a.json"))
+            os.remove(os.path.join(data, "funding", "AAAUSDT", "extra-2020-02.zip"))
+            zipped(os.path.join(data, "funding", "AAAUSDT", "a-2020-01.zip"), "\n".join(funding_rows(D0, D0)))
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_A", data, os.path.join(t, "res", "b.json"))
+
+    def test_out_of_window_file_never_opened(self):
+        with tempfile.TemporaryDirectory() as t:
+            n = 100
+            data = fixture(t, n)
+            bad = os.path.join(data, "funding", "AAAUSDT", "a-2026-05.zip")
+            os.makedirs(os.path.dirname(bad), exist_ok=True)
+            open(bad, "wb").write(b"not a zip")      # Stage B-dated file present in the directory
+            write_manifest(data, "STAGE_A")
+            self.patch(n)
+            out = r.run("STAGE_A", data, os.path.join(t, "res", "a.json"))   # must not raise
+            self.assertEqual(out["n_symbols"], 1)
+
+    def test_stage_b_requires_valid_stage_a_and_marks_ineligible(self):
+        with tempfile.TemporaryDirectory() as t:
+            bad = os.path.join(t, "sa.json")
+            json.dump({"stage": "STAGE_B", "selected_theta": 0.1}, open(bad, "w"))
+            data = fixture(t, 5)
+            write_manifest(data, "STAGE_B")
+            with self.assertRaises(r.FormatError):
+                r.run("STAGE_B", data, os.path.join(t, "res", "b.json"), bad)
+
+
+class Extra(unittest.TestCase):
+    def test_forced_exit_on_delisting(self):
+        n = 120
+        syms = make_syms(n)
+        s = syms["AAAUSDT"]
+        for d in range(D0 + 80, D0 + n):
+            del s.perp[d]
+            del s.spot[d]
+        rets, diag = r.simulate(syms, 0.20, 1.0, D0, D0 + n - 1)
+        self.assertEqual(diag["forced_exits"], 1)
+        self.assertGreater(diag["components"]["fees"], 0)
+        self.assertTrue(all(x == 0.0 for x in rets[81:]))
+
+    def test_no_entry_on_last_day(self):
+        n = 70
+        syms = make_syms(n)
+        rets, diag = r.simulate(syms, 0.20, 1.0, D0, D0 + n - 1)
+        # first eligible decision is day D0+59; the window ends at D0+69 so entry happens and is held
+        rets2, diag2 = r.simulate(syms, 0.20, 1.0, D0, D0 + 59)
+        self.assertEqual(diag2["final_nav"], 1.0)    # eligible on the last day: no entry, no round-trip cost
+        self.assertEqual(diag2["exposure_days"], 0)
+
+    def test_entry_weights_equal_regardless_of_order(self):
+        n = 100
+        from collections import defaultdict
+        syms = {}
+        for name in ("AAAUSDT", "BBBUSDT", "CCCUSDT"):
+            rr = {"funding": defaultdict(list), "spot": {}, "perp": {}}
+            for d in range(D0, D0 + n):
+                rr["spot"][d] = {"high": 100.0, "close": 100.0, "qv": 1e7}
+                rr["perp"][d] = {"high": 100.0, "close": 100.0, "qv": 1e7}
+            for d in range(D0, D0 + n + 1):
+                for h in (0, 8, 16):
+                    rr["funding"][d * r.DAY_MS + h * 3_600_000].append(0.0003)
+            syms[name] = r.SymData(name, rr)
+        e = D0 + 59
+        _, diag = r.simulate(syms, 0.20, 1.0, D0, e + 1)
+        N = 0.1 * 0.75
+        cost = 3 * N * (0.001 + 0.0002 + 0.0005 + 0.0002)
+        self.assertAlmostEqual(diag["final_nav"], 1 - cost + 3 * N * 0.0009 - cost, places=12)
 
 
 if __name__ == "__main__":

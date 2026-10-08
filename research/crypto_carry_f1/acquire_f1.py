@@ -17,7 +17,6 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from concurrent.futures import ThreadPoolExecutor
 
 sys.dont_write_bytecode = True
 
@@ -25,7 +24,7 @@ HOST = "https://data.binance.vision/"
 LIST_BASE = "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision"
 UA = "quant-research-paper-shadow/0.1"
 NS = "{http://s3.amazonaws.com/doc/2006-03-01/}"
-MAX_RPS = 8.0
+MAX_RPS = 5.0
 WINDOWS = {
     # pre-registered windows (inclusive, YYYY-MM)
     "STAGE_A": ("2020-01", "2023-12"),
@@ -86,6 +85,8 @@ def list_files(prefix):
         if marker:
             q["marker"] = marker
         status, body = http_get(LIST_BASE + "?" + urllib.parse.urlencode(q))
+        if status != 200:
+            raise RuntimeError(f"listing returned HTTP {status} for {prefix}")
         root = ET.fromstring(body)
         for c in root.iter(NS + "Contents"):
             keys.append(c.find(NS + "Key").text)
@@ -125,11 +126,17 @@ def fetch_one(job, out_dir):
     got = hashlib.sha256(zbody).hexdigest()
     rec.update({"bytes": len(zbody), "sha256": got, "checksum_sha256": want, "ok": got == want})
     if got == want:
-        path = f"{out_dir}/{ds}/{sym}/{name}"
         import os
+        path = f"{out_dir}/{ds}/{sym}/{name}"
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "xb") as f:
-            f.write(zbody)
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                if hashlib.sha256(f.read()).hexdigest() != got:
+                    raise RuntimeError(f"existing file differs from download: {path}")
+            rec["already_present"] = True
+        else:
+            with open(path, "xb") as f:
+                f.write(zbody)
     return rec
 
 
@@ -159,9 +166,10 @@ def main(argv):
     os.makedirs(out_dir, exist_ok=True)
     with open(f"{out_dir}/listing_{stage}.json", "x") as f:
         json.dump(listing_log, f)
-    with ThreadPoolExecutor(4) as ex, open(f"{out_dir}/manifest_{stage}.jsonl", "x") as mf:
-        for rec in ex.map(lambda j: fetch_one(j, out_dir), jobs):
-            mf.write(json.dumps(rec, sort_keys=True) + "\n")
+    with open(f"{out_dir}/manifest_{stage}.jsonl", "x") as mf:
+        for j in jobs:   # sequential: the first repeated 403/429 raises and stops everything
+            mf.write(json.dumps(fetch_one(j, out_dir), sort_keys=True) + "\n")
+            mf.flush()
     print(f"{stage}: {len(jobs)} jobs")
 
 
