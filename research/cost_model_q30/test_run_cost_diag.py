@@ -54,7 +54,12 @@ class CostArithmetic(unittest.TestCase):
         rows = make_rows(self.dates, [{"SPY": self.third}, {"SPY": -self.third}])
         priced = cd.price_rows(rows, self.panel, 1_000_000.0, {**cd.CENTRAL, "borrow_bps_year": 0.0})
         delta = 2 / 3
-        self.assertAlmostEqual(priced["posts"]["commission"][1], delta * 0.5 / 10_000, places=15)
+        # E1: commission is the DESK's own, on the slippage-adjusted fill price of a SIGNED order (a sale fills below the reference).
+        model = ExecutionModel()
+        reference = self.panel.adjusted(rows[1]["entry_date"], "SPY", "open")
+        fill = model.fill(self.panel, "SPY", -delta * 1_000_000.0 / reference, rows[1]["signal_date"], rows[1]["entry_date"])
+        self.assertAlmostEqual(priced["posts"]["commission"][1], fill["commission"] / 1_000_000.0, places=15)
+        self.assertLess(fill["fill_price"], reference)
         self.assertAlmostEqual(priced["posts"]["spread"][1], delta * 1.0 / 10_000, places=15)
         self.assertAlmostEqual(priced["turnover"][1], delta, places=15)
 
@@ -215,6 +220,48 @@ class ReviewFixes(unittest.TestCase):
             cd._load_frozen("x", cd.B4_PATH, "0" * 64)
         module = cd._load_frozen("y", cd.B4_PATH, cd.B4_BLOB_SHA256)
         self.assertTrue(callable(module.rows_for))
+
+
+class PreRegisteredOutputs(unittest.TestCase):
+    def test_orders_are_audited_with_side_notional_adv_participation_and_shortfall(self):
+        panel, dates = panel_of(["SPY"])
+        rows = make_rows(dates, [{"SPY": 1 / 3}, {"SPY": -1 / 3}])
+        priced = cd.price_rows(rows, panel, 1e6, cd.CENTRAL, record_orders=True)
+        self.assertEqual(len(priced["orders"]), 2)
+        first, second = priced["orders"]
+        self.assertEqual((first[2], second[2]), (1.0, -1.0))
+        self.assertAlmostEqual(second[3], (2 / 3) * 1e6)
+        self.assertGreater(second[4], 0)
+        self.assertAlmostEqual(second[5], second[3] / second[4])
+        self.assertAlmostEqual(second[6], (priced["posts"]["commission"][1] + priced["posts"]["spread"][1] + priced["posts"]["impact"][1]) * 1e6)
+
+    def test_metrics_include_drawdown_monetary_cost_and_cost_per_turnover(self):
+        panel, dates = panel_of(["SPY"])
+        rng = random.Random(5)
+        rows = make_rows(dates, [{"SPY": rng.choice((-1, 1)) / 3} for _ in range(40)], [{"SPY": rng.gauss(0, .01)} for _ in range(40)])
+        priced = cd.price_rows(rows, panel, 1e6, cd.CENTRAL)
+        m = cd.metrics_from(rows, priced, priced)
+        self.assertLessEqual(m["max_drawdown"], 0.0)
+        self.assertAlmostEqual(m["total_cost_fraction_of_nav"], sum(m["post_totals"].values()))
+        self.assertAlmostEqual(m["cost_per_unit_turnover_bps"], m["total_cost_fraction_of_nav"] / m["total_turnover"] * 1e4)
+
+    def test_total_break_even_multiplier_zeroes_the_net_pnl(self):
+        panel, dates = panel_of(["SPY"])
+        rows = make_rows(dates, [{"SPY": 1 / 3}, {"SPY": -1 / 3}] * 10, [{"SPY": 0.002}, {"SPY": -0.002}] * 10)
+        m = cd.break_even_total_multiplier(rows, panel, 1e6)
+        self.assertNotIsInstance(m, dict)
+        self.assertAlmostEqual(sum(cd.price_rows(rows, panel, 1e6, cd.CENTRAL, m)["net"]), 0.0, places=9)
+
+    def test_b4_targets_carry_the_selected_or_comparison_role(self):
+        n = 2700
+        panel, dates = panel_of(list(cd.b4.INSTRUMENTS), n=n, seed=11)
+        shifted = weekdays(n, start=dt.date(2016, 9, 12))
+        rows = [{"date": shifted[dates.index(d)], "symbol": s, **{k: v for k, v in b.items()}} for (d, s), b in panel.bars.items()]
+        targets = cd.b4_targets(PricePanel(rows))
+        roles = {k: v["role"] for k, v in targets.items()}
+        self.assertEqual(roles["B4_L252"], "selected_in_B4")
+        for k in ("B4_L21", "B4_L63", "B4_L126"):
+            self.assertEqual(roles[k], "comparison_only_not_for_selection")
 
 
 class Status(unittest.TestCase):

@@ -30,7 +30,7 @@ from pathlib import Path
 
 from quant.dataplane.panel import PricePanel, Window
 from quant.desk.execution import ExecutionModel
-from quant.factory.evaluate import required_t_statistic, walk_forward
+from quant.factory.evaluate import _max_drawdown, required_t_statistic, walk_forward
 from quant.factory.lanes import COST_BPS, lane_definitions
 from quant.factory.signals import StrategySpec
 
@@ -120,7 +120,7 @@ def model_for(params: dict, multiplier: float = 1.0) -> ExecutionModel:
 
 
 def price_rows(rows: list[dict], panel: PricePanel, nav: float, params: dict, multiplier: float = 1.0,
-               initial: dict | None = None) -> dict:
+               initial: dict | None = None, record_orders: bool = False) -> dict:
     """Per-row, per-instrument cost accounting. `rows` need: signal_date, entry_date, exit_date, weights{sym}, returns{sym}.
     Weight changes are measured against the previous row; `initial` is the position held before the first row (default flat). One absolute weight change feeds ALL posts
     (no second turnover count). Returns series and per-instrument post totals; no compensation between posts."""
@@ -129,7 +129,7 @@ def price_rows(rows: list[dict], panel: PricePanel, nav: float, params: dict, mu
     financing_rate = params["financing_bps_year"] * multiplier / 10_000.0 / TRADING_DAYS
     previous: dict[str, float] = dict(initial or {})
     out = {"gross": [], "net": [], "posts": {p: [] for p in POSTS}, "by_instrument": {}, "breaches": [], "undetermined": [],
-           "turnover": [], "gross_exposure": [], "short_exposure": [], "max_participation": 0.0}
+           "turnover": [], "gross_exposure": [], "short_exposure": [], "max_participation": 0.0, "orders": []}
     for row in rows:
         symbols = set(row["weights"]) | set(previous)
         gross = sum(row["weights"].get(s, 0.0) * row["returns"].get(s, 0.0) for s in symbols)
@@ -146,20 +146,24 @@ def price_rows(rows: list[dict], panel: PricePanel, nav: float, params: dict, mu
                 if not adv > 0:
                     out["undetermined"].append({"symbol": symbol, "date": row["signal_date"], "why": "ADV missing or zero"})
                 else:
-                    # The desk's own fill model computes the impact (no re-implementation); a truncated fill is a capacity REFUSAL here.
-                    fill = model.fill(panel, symbol, delta * nav / panel.adjusted(row["entry_date"], symbol, "open"),
-                                      row["signal_date"], row["entry_date"])
-                    out["max_participation"] = max(out["max_participation"], delta * nav / adv)
+                    # The desk's own fill model prices the order (E1): SIGNED quantity (a sale fills below the reference), its own
+                    # commission on the slippage-adjusted fill price, and its own impact. A truncated fill is a capacity REFUSAL here.
+                    reference = panel.adjusted(row["entry_date"], symbol, "open")
+                    side = 1.0 if weight - previous.get(symbol, 0.0) > 0 else -1.0
+                    requested_quantity = side * delta * nav / reference
+                    fill = model.fill(panel, symbol, requested_quantity, row["signal_date"], row["entry_date"])
+                    participation = delta * nav / adv
+                    out["max_participation"] = max(out["max_participation"], participation)
+                    # Scale to the REQUESTED size when the desk truncated the fill: E3 forbids a capped price for a breach.
+                    scale = abs(requested_quantity) / abs(fill["quantity"]) if fill["capacity_truncated"] else 1.0
+                    impact_bps = fill["impact_bps"] * (math.sqrt(participation / model.max_participation) if fill["capacity_truncated"] else 1.0)
                     if fill["capacity_truncated"]:
-                        out["breaches"].append({"symbol": symbol, "date": row["signal_date"], "participation": delta * nav / adv})
-                    c = delta * model.commission_bps / 10_000.0
+                        out["breaches"].append({"symbol": symbol, "date": row["signal_date"], "participation": participation})
+                    c = fill["commission"] * scale / nav
                     s_ = delta * model.half_spread_bps / 10_000.0
-                    impact_bps = fill["impact_bps"]
-                    if fill["capacity_truncated"]:
-                        # E3: a breach is not priced with a capped impact. The desk fill priced the TRUNCATED order (participation =
-                        # max_participation); rescale by the same square-root law to the requested participation.
-                        impact_bps *= math.sqrt((delta * nav / adv) / model.max_participation)
                     i_ = delta * impact_bps / 10_000.0
+                    if record_orders:
+                        out["orders"].append([row["signal_date"], symbol, side, delta * nav, adv, participation, (c + s_ + i_) * nav])
             short = abs(weight) if weight < 0 else 0.0
             b_, f_ = short * borrow_rate, abs(weight) * financing_rate
             for name, value in zip(POSTS, (c, s_, i_, b_, f_)):
@@ -207,6 +211,25 @@ def break_even(rows, panel, nav, key: str, lo: float = 0.0, hi: float = 10_000.0
     return (lo + hi) / 2
 
 
+def break_even_total_multiplier(rows, panel, nav, lo: float = 0.0, hi: float = 1_000.0, tol: float = 1e-9, initial=None):
+    """Multiplier m applied jointly to the central posts at which the arithmetic net P&L is zero (total break-even)."""
+    def net_sum(m):
+        return sum(price_rows(rows, panel, nav, CENTRAL, m, initial=initial)["net"])
+    f_lo, f_hi = net_sum(lo), net_sum(hi)
+    if f_lo * f_hi > 0:
+        return {"status": "NOT_BRACKETED", "net_at_low": f_lo, "net_at_high": f_hi}
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        f_mid = net_sum(mid)
+        if f_mid == 0 or (hi - lo) / 2 < tol:
+            return mid
+        if f_lo * f_mid < 0:
+            hi = mid
+        else:
+            lo, f_lo = mid, f_mid
+    return (lo + hi) / 2
+
+
 # ------------------------------------------------------------------ metrics and criteria
 def metrics_from(rows: list[dict], priced: dict, stress_priced: dict) -> dict:
     net = priced["net"]
@@ -227,7 +250,11 @@ def metrics_from(rows: list[dict], priced: dict, stress_priced: dict) -> dict:
             "annual_turnover": (sum(priced["turnover"]) / len(net) * TRADING_DAYS) if net else 0.0,
             "mean_gross_exposure": (sum(priced["gross_exposure"]) / len(net)) if net else 0.0,
             "mean_short_exposure": (sum(priced["short_exposure"]) / len(net)) if net else 0.0,
-            "annual_net_sums": years, "max_participation": priced["max_participation"]}
+            "annual_net_sums": years, "max_participation": priced["max_participation"],
+            "max_drawdown": _max_drawdown(net),
+            "total_cost_fraction_of_nav": sum(post_totals.values()),
+            "total_turnover": sum(priced["turnover"]),
+            "cost_per_unit_turnover_bps": (sum(post_totals.values()) / sum(priced["turnover"]) * 10_000.0) if sum(priced["turnover"]) > 0 else None}
 
 
 def b2_criteria(m: dict, market: list[float], net: list[float], active: int) -> dict:
@@ -298,7 +325,7 @@ def b4_targets(panel3: PricePanel) -> dict:
         # Same convention as B4: the first evaluation row inherits the position held on the previous row.
         for r in rows:
             r["turnover_original"] = sum(r["turnover"].values())
-        out[f"B4_L{L}"] = {"rows": rows, "criteria": "b4", "panel": panel3, "initial": dict(full[first - 1]["weights"]) if first else {}}
+        out[f"B4_L{L}"] = {"role": "selected_in_B4" if L == 252 else "comparison_only_not_for_selection", "rows": rows, "criteria": "b4", "panel": panel3, "initial": dict(full[first - 1]["weights"]) if first else {}}
     return out
 
 
@@ -315,12 +342,12 @@ def b2_target(panel12: PricePanel) -> dict:
                      "weights": dict(r["weights"]), "returns": returns, "positions": r["positions"],
                      "turnover_original": r["turnover"]})
     market = [panel12.adjusted(r["exit_date"], "SPY", "open") / panel12.adjusted(r["entry_date"], "SPY", "open") - 1.0 for r in rows]
-    return {"B2_lane2_selected": {"rows": rows, "criteria": "b2", "panel": panel12, "market": market, "initial": {}}}
+    return {"B2_lane2_selected": {"role": "selected_in_B2_lane2", "rows": rows, "criteria": "b2", "panel": panel12, "market": market, "initial": {}}}
 
 
 def analyse_target(target: dict, nav: float) -> dict:
     rows, panel, initial = target["rows"], target["panel"], target.get("initial")
-    central = price_rows(rows, panel, nav, CENTRAL, initial=initial)
+    central = price_rows(rows, panel, nav, CENTRAL, initial=initial, record_orders=True)
     stress = price_rows(rows, panel, nav, STRESS, initial=initial)
     m_c, m_s = metrics_from(rows, central, stress), metrics_from(rows, stress, stress)
     if target["criteria"] == "b4":
@@ -340,7 +367,12 @@ def analyse_target(target: dict, nav: float) -> dict:
     problems = integrity_problems(recon, identity)
     hist = price_rows(rows, panel, nav, {"commission_bps": 5.0, "half_spread_bps": 0.0, "impact_bps_at_5pct": 0.0,
                                          "borrow_bps_year": 0.0, "financing_bps_year": 0.0}, initial=initial)
-    return {"nav": nav, "COST_INPUT_KIND": "ASSUMED_NOT_ESTIMATED", "central": m_c, "stress": m_s,
+    total_cost = m_c["total_cost_fraction_of_nav"]
+    return {"nav": nav, "role": target["role"], "COST_INPUT_KIND": "ASSUMED_NOT_ESTIMATED",
+            "total_cost_currency_units": total_cost * nav,
+            "post_totals_currency_units": {p: v * nav for p, v in m_c["post_totals"].items()},
+            "orders_columns": ["signal_date", "symbol", "side", "notional", "adv20", "participation", "shortfall_currency_units"],
+            "orders": central["orders"], "central": m_c, "stress": m_s,
             "criteria_central": crit_c, "criteria_stress": crit_s,
             "status": status_for(m_c, m_s, crit_c, crit_s, central, problems),
             "numbers_complete": not problems and not central["undetermined"],
@@ -349,7 +381,8 @@ def analyse_target(target: dict, nav: float) -> dict:
             "capacity_breaches": central["breaches"][:5], "capacity_breach_count": len(central["breaches"]),
             "undetermined": central["undetermined"][:5],
             "reconciliation_error": recon,
-            "break_even": {"half_spread_bps": break_even(rows, panel, nav, "half_spread_bps", initial=initial),
+            "break_even": {"total_cost_multiplier": break_even_total_multiplier(rows, panel, nav, initial=initial),
+                           "half_spread_bps": break_even(rows, panel, nav, "half_spread_bps", initial=initial),
                            "borrow_bps_year": break_even(rows, panel, nav, "borrow_bps_year", initial=initial),
                            "financing_bps_year": break_even(rows, panel, nav, "financing_bps_year", initial=initial)},
             "multiplier_grid": grid,
