@@ -69,3 +69,39 @@ Net return per contract: `(payoff − ask − fee) / (ask + fee)`, payoff = 1 if
 ## 8. Known limits (disclosed)
 
 Hourly candles give a close of the signal hour, not the book at an exact instant; last-price effects are avoided by using bid/ask closes, but a close may lag the hour's final quote. Order-book depth is not available, so size and slippage are not modelled. Many contracts in one event or on one day are correlated, which is why clustering is by date. The anomaly is public; decay is expected. A positive result is a screen for shadow follow-up, not authority for the Book.
+
+---
+
+# Revision 1 (supersedes any conflicting text above; written before any market, trade, candle or result record was read)
+
+Source: independent adversarial review (one P0 unless fixed, six P1, nine P2/ambiguities). Power arithmetic re-verified: sd 0.20 → 1,811 clusters for +1.0% and 290 for +2.5% at t = 2.128.
+
+**R1 (P0). Early close.** The API serves only the current `close_time`; a market that closed early has an edited value, so selecting "T−24 h" from it would condition on future information. The **primary universe requires `can_close_early == false`** (equivalently a null `early_close_condition`, field names recorded from the served schema). Early-close-capable markets are reported separately, not gated. `close_time` is used as served.
+
+**R2. Volume filter.** The final `volume_fp` includes post-signal trading and is not used for selection. The primary filter is `open_interest ≥ 1,000` contracts at the signal candle (cumulative contracts bought by the candle's end). The final-volume version (≥ 1,000 contracts) is reported as a sensitivity only.
+
+**R3. Fee.** Primary fee per contract = `ceil_6dp(0.07 × P × (1 − P))` (Kalshi's documented rounding is `ceil_6dp` with an accumulator, so the per-cent ceiling overstates cost). If the series/event fee-change endpoints (`get-series-fee-changes`, `get-event-fee-changes`) show a different multiplier in the window, the multiplier in force on the entry date is used, and the full table is recorded in the manifest before any result is read. **Stress** = `ceil_to_cent(0.07 × P × (1 − P))` per contract (without an extra 0.01); it is expected to remove the 0.98–0.99 buckets and is reported as such.
+
+**R4. Blinded acquisition.** The first acquisition (market list) contains `result`, `volume_fp` and similar fields. The harness stores the raw pages hashed, then writes a **blinded manifest** without `result`, `volume_fp`, `settlement_ts` value fields beyond the window test, and every filter that does not need an outcome is applied to the blinded manifest. `result` is joined only in the analysis stage. The statement "before any outcome is read" means: no selection or filter depends on an outcome.
+
+**R5. Enumeration.** `/historical/markets` has no settlement-time or status filter and its filters are mutually exclusive: the window is applied **client-side** over the whole historical list, with `limit = 1000` and `mve_filter = exclude`. Projected acquisition hours = (number of markets passing the list-only filters + category-resolution requests) ÷ 5 requests/s ÷ 3,600; the 12-hour rule uses that number.
+
+**R6. Category.** Resolved through `GET /events/{event_ticker}` (to `series_ticker`) then `GET /series/{series_ticker}` (`category`, current value). Unresolved categories are excluded and counted.
+
+**R7. Power in the unit of the gate.** The analysis unit is the UTC date cluster (about 457 calendar days at most), not the number of contracts. The report gives the standard error per date cluster and the minimum detectable mean at t = 2.128 and at 80% power. Stated plainly: **a +1.0% net mean is probably undetectable** in this window unless the per-event sd is small; `NOT_CONFIRMED_EXCLUDES_+1.0%` (renamed from REJECTED) requires `se ≲ 0.6%` with mean near 0. Otherwise `INCONCLUSIVE_UNDERPOWERED`. The sd of a one-contract return depends on the price: about 0.47 at ask 0.80, 0.31 at 0.90, 0.20 at 0.95; the earlier assumed sd 0.20 applies only near 0.95.
+
+**R8. Event handling.** Events are equal-weighted. Each event is assigned to the UTC date of its earliest `close_time` among included markets. The t-statistic is the mean over events with date-clustered errors.
+
+**R9. Months.** Months are defined by UTC `close_time` date. The "half of the months positive" criterion becomes **non-gating** (reported), because with about 15 months it acts as a near coin-flip filter; the gate is `t ≥ 2.128`, stress mean > 0 (R3), and at least 250 date clusters. Sensitivities, all non-gating: weekly clusters, Newey-West on the daily series of cluster means, spread ≤ 0.05.
+
+**R10. Crossed book.** The "if both sides qualify, skip" clause is removed (impossible under spread ≤ 0.20).
+
+**R11. Candles.** Request `start_ts = T − 25 h + 1 s`, `end_ts = T − 24 h`, `period_interval = 60`. Exactly one candle is required; zero or more than one → skipped and counted. No forward-fill. The `end_period_ts` is inclusive, so the close is the state at or before T − 24 h (staleness is possible; no look-ahead).
+
+**R12. Exclusions.** Voided/scalar/empty-result markets and markets settled outside the window are counted; their effect is reported as a sensitivity.
+
+**R13. Subsample.** If invoked: keep events whose `sha256(event_ticker.encode("utf-8")).digest()[0] < 0x80`, so strike ladders stay together.
+
+**R14. Economics.** Besides the per-contract mean of ratios, the report gives dollar P&L for one contract per market at the entry price, return per capital-day (lock-up from entry to settlement), and the tail structure (a single 0.95 loss offsets about 19 wins). The test is a screen for shadow follow-up, not a statement of net economic value.
+
+**R15. Sequencing.** The metadata probes (`/exchange/status`, `/historical/cutoff`) preceded the reading of Kalshi's terms; this is recorded. No acquisition occurs before the terms are read and cleared.
