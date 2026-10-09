@@ -1,5 +1,13 @@
 {
   "capture_commit": "0ba4c055dbf7a3c7301383e01aa71b680a4bbddd",
+  "capture_plan_sha256": "4a6671472feb27817d816252a5d5b8302cac4a26ce6c997632ffc5df0e586f6a",
+  "capture_resume_source": {
+    "artifact_id": 11616937050,
+    "artifact_sha256": "71c1d8a7dde06ed47367952b29598c89ef3e39225c1634588c4865d050810ae5",
+    "run_attempt": 1,
+    "reason": "Capture step reached its 300-minute limit; interrupted compressed archives persisted successfully. Prior controller skipped verification, look claim and economic evaluation. Resume the original plan before any B outcome."
+  },
+  "capture_run_attempt": 2,
   "capture_run_id": 37901109334,
   "confirmatory_claim_authorized": false,
   "disposition": "EXECUTE_SINGLE_DOCUMENTED_EVALUATION",

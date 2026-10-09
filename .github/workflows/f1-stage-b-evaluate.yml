@@ -21,7 +21,9 @@ env:
   A_SHA256: 554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03
   HARNESS_SHA256: 5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c
   CAPTURE_RUN_ID: '37901109334'
+  CAPTURE_RUN_ATTEMPT: '2'
   CAPTURE_COMMIT: 0ba4c055dbf7a3c7301383e01aa71b680a4bbddd
+  CAPTURE_PLAN_SHA256: 4a6671472feb27817d816252a5d5b8302cac4a26ce6c997632ffc5df0e586f6a
 
 jobs:
   evaluate:
@@ -55,7 +57,9 @@ jobs:
           assert meta['result_sha256'] == sha and a['selected_theta'] == 0.2
           assert decision['stage_a_result_sha256'] == sha and decision['selected_theta'] == 0.2
           assert decision['capture_run_id'] == int(os.environ['CAPTURE_RUN_ID'])
+          assert decision['capture_run_attempt'] == int(os.environ['CAPTURE_RUN_ATTEMPT'])
           assert decision['capture_commit'] == os.environ['CAPTURE_COMMIT']
+          assert decision['capture_plan_sha256'] == os.environ['CAPTURE_PLAN_SHA256']
           assert decision['disposition'] == 'EXECUTE_SINGLE_DOCUMENTED_EVALUATION'
           assert decision['confirmatory_claim_authorized'] is False
           assert hashlib.sha256((root / 'results/STAGE_A_REPORT_2026-10-09.md').read_bytes()).hexdigest() == decision['stage_a_report_sha256']
@@ -72,7 +76,7 @@ jobs:
           deadline = time.monotonic() + 205 * 60
           while time.monotonic() < deadline:
               run = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
-              assert run['head_sha'] == os.environ['CAPTURE_COMMIT'] and run['run_attempt'] == 1
+              assert run['head_sha'] == os.environ['CAPTURE_COMMIT'] and run['run_attempt'] == int(os.environ['CAPTURE_RUN_ATTEMPT'])
               print(f"Sealed capture {run['id']}: {run['status']} / {run['conclusion']}", flush=True)
               if run['status'] == 'completed':
                   assert run['conclusion'] == 'success', 'capture failed; no outcome read or look claimed'
@@ -92,7 +96,7 @@ jobs:
           from pathlib import Path
           root = Path(os.environ['RUNNER_TEMP'])
           rows = json.loads((root / 'b-artifacts.json').read_bytes())['artifacts']
-          name = f"f1-stage-b-sealed-capture-{os.environ['CAPTURE_RUN_ID']}-1"
+          name = f"f1-stage-b-sealed-capture-{os.environ['CAPTURE_RUN_ID']}-{os.environ['CAPTURE_RUN_ATTEMPT']}"
           found = [a for a in rows if a['name'] == name and not a['expired']]
           assert len(found) == 1, 'exact completed capture artifact missing or ambiguous'
           a = found[0]
@@ -130,12 +134,13 @@ jobs:
                       'capture_stage_a.py': '5d594abe5107551a1f57b2f0e822c77a13f327e65c27360404170377de086687',
                       'run_f1.py': os.environ['HARNESS_SHA256'], 'candidates_2026-10-08.txt': candidates_sha}
           assert provenance['commit'] == os.environ['CAPTURE_COMMIT']
-          assert provenance['run_id'] == os.environ['CAPTURE_RUN_ID'] and provenance['run_attempt'] == '1'
+          assert provenance['run_id'] == os.environ['CAPTURE_RUN_ID'] and provenance['run_attempt'] == os.environ['CAPTURE_RUN_ATTEMPT']
           assert provenance['stage'] == 'STAGE_B' and provenance['source_sha256'] == producer and provenance['rows_parsed'] == 0
           assert capture.digest(root / 'candidates_2026-10-08.txt') == candidates_sha
           assert capture.digest(root / 'run_f1.py') == os.environ['HARNESS_SHA256']
           assert original['stage'] == 'STAGE_B' and original['status'] == 'COMPLETE' and original['rows_parsed'] == 0
           assert original['planned'] == original['verified'] == len(plan['jobs'])
+          assert capture.digest(data / 'plan_STAGE_B.json') == os.environ['CAPTURE_PLAN_SHA256'], 'resumed capture changed the original frozen plan'
           assert plan['window'] == ['2023-11', '2026-09'] and plan['warmup_months'] == ['2023-11', '2023-12']
           report = capture.capture(data, root / 'candidates_2026-10-08.txt', candidates_sha, verify_only=True, stage='STAGE_B')
           assert report['plan_sha256'] == original['plan_sha256']
@@ -143,7 +148,7 @@ jobs:
           for rec in capture.read_manifest(data / 'manifest_STAGE_B.jsonl'):
               assert rec['warmup_only'] == (capture.transport.month_of(rec['key']) in plan['warmup_months'])
           report.update({'artifact_id': artifact['id'], 'artifact_sha256': capture.digest(archive),
-                         'capture_run_id': int(os.environ['CAPTURE_RUN_ID']), 'capture_commit': provenance['commit'],
+                         'capture_run_id': int(os.environ['CAPTURE_RUN_ID']), 'capture_run_attempt': int(os.environ['CAPTURE_RUN_ATTEMPT']), 'capture_commit': provenance['commit'],
                          'capture_source_sha256': producer, 'verification_commit': os.environ['GITHUB_SHA'],
                          'verification_run_id': os.environ['GITHUB_RUN_ID'], 'window': plan['window'],
                          'warmup_months': plan['warmup_months'], 'archives_by_dataset': dict(Counter(ds for ds, _, _ in plan['jobs'])),
@@ -177,6 +182,7 @@ jobs:
                   'harness_sha256': r['harness_sha256'], 'stage_a_result_sha256': os.environ['A_SHA256'],
                   'selected_theta': r['selected_theta'], 'execution_commit': os.environ['GITHUB_SHA'],
                   'execution_run_id': os.environ['GITHUB_RUN_ID'], 'capture_run_id': int(os.environ['CAPTURE_RUN_ID']),
+                  'capture_run_attempt': int(os.environ['CAPTURE_RUN_ATTEMPT']),
                   'execution_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'prior_legacy_stage_b_outcome': 'UNKNOWN',
                   'capture_verification': json.loads(Path(os.environ['VERIFICATION_PATH']).read_bytes()),
                   'exposure_record': json.loads((root / 'verification/stage_a_exposure.json').read_bytes()),

@@ -51,6 +51,25 @@ and as an artifact, including after interrupted publication. No raw dataset
 is put into git. The exact execution decision is in
 `verification/stage_b_execution.json`.
 
+### Recovery after the capture timeout (2026-10-09)
+
+Capture 37901109334 attempt 1 reached the 300-minute acquisition-step limit.
+Its last progress record was 33,100/35,789 archives; the successfully persisted
+partial artifact is 11616937050 (73,560,519 bytes), SHA256
+`71c1d8a7dde06ed47367952b29598c89ef3e39225c1634588c4865d050810ae5`.
+This progress count is not a complete certificate. Controller 37918595118
+aborted while waiting; verification, look reservation and economic execution
+were all skipped. The B look reference was absent before recovery.
+
+Only the failed capture job is rerun, as attempt 2 of the same run and producer
+commit. It restores the existing compressed artifact, checksum-verifies saved
+files and fetches missing keys. The controller now requires attempt 2 at the
+original producer and authenticates the original plan SHA256
+`4a6671472feb27817d816252a5d5b8302cac4a26ce6c997632ffc5df0e586f6a`,
+observed in attempt 1's acquisition log. The old artifact is never accepted as
+complete. This is an R7 infrastructure recovery before any B statistic;
+economic selection, harness, costs and reporting policy remain unchanged.
+
 The outcome also overwrites the existing research checkpoint with its final
 status and next decision. After persistence, the nine-field result delta is
 published to PR #22 with a run/attempt marker to avoid duplicate publication.
