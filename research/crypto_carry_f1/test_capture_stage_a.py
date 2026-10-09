@@ -134,6 +134,46 @@ class CaptureTests(unittest.TestCase):
                 c.capture(self.out, self.candidates, self.sha)
         self.assertFalse((self.out / "plan_STAGE_A.json").exists())
 
+    def test_stage_b_warmup_and_sealed_window_are_captured_without_rows(self):
+        def listing(prefix):
+            stem = "BTCUSDT-fundingRate" if "fundingRate" in prefix else "BTCUSDT-1d"
+            return [prefix + stem + "-" + m + ".zip" for m in
+                    ("2023-10", "2023-11", "2023-12", "2024-01", "2026-09", "2026-10")]
+        with patch.object(c.transport, "list_files", side_effect=listing), patch.object(c.transport, "fetch_one", side_effect=self.fetch):
+            report = c.capture(self.out, self.candidates, self.sha, stage="STAGE_B")
+        self.assertEqual((report["stage"], report["verified"], report["rows_parsed"]), ("STAGE_B", 12, 0))
+        plan = json.loads((self.out / "plan_STAGE_B.json").read_bytes())
+        self.assertEqual(plan["warmup_months"], ["2023-11", "2023-12"])
+        records = c.read_manifest(self.out / "manifest_STAGE_B.jsonl")
+        self.assertEqual(sum(r["warmup_only"] for r in records), 6)
+        self.assertFalse(any("2023-10" in j[2] or "2026-10" in j[2] for j in self.fetches))
+
+    def test_stage_a_verifier_does_not_open_or_relabel_stage_b_capture(self):
+        with patch.object(c.transport, "list_files", side_effect=self.listing), patch.object(c.transport, "fetch_one", side_effect=self.fetch):
+            c.capture(self.out, self.candidates, self.sha, stage="STAGE_B")
+        before = {p.name: p.read_bytes() for p in self.out.glob('*.json*')}
+        with patch.object(c.transport, "list_files", side_effect=AssertionError("wrong-stage network")):
+            with self.assertRaisesRegex(ValueError, "requires the frozen plan"):
+                c.capture(self.out, self.candidates, self.sha, verify_only=True)
+        self.assertEqual({p.name: p.read_bytes() for p in self.out.glob('*.json*')}, before)
+
+    def test_transport_preserves_unicode_keys_and_authenticates_utf8_checksum(self):
+        sym = "币安人生USDT"
+        key = f"data/spot/monthly/klines/{sym}/1d/{sym}-1d-2025-01.zip"
+        sha = hashlib.sha256(self.body).hexdigest()
+        def http(url):
+            self.assertTrue(url.isascii(), "HTTP request targets must be ASCII encoded")
+            decoded = c.transport.urllib.parse.unquote(url.removeprefix(c.transport.HOST))
+            if decoded == key:
+                return 200, self.body
+            self.assertEqual(decoded, key + ".CHECKSUM")
+            return 200, (sha + "  " + key.rsplit('/', 1)[-1]).encode('utf-8')
+        with patch.object(c.transport, "http_get", side_effect=http):
+            rec = c.transport.fetch_one(("spot1d", sym, key), str(self.out))
+        self.assertTrue(rec["ok"])
+        self.assertEqual(rec["key"], key)
+        self.assertEqual((self.out / "spot1d" / sym / key.rsplit('/', 1)[-1]).read_bytes(), self.body)
+
 
 if __name__ == "__main__":
     unittest.main()

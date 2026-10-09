@@ -126,14 +126,15 @@ def parse_checksum(text, expect_name):
 def fetch_one(job, out_dir):
     ds, sym, key = job
     name = key.rsplit("/", 1)[-1]
-    st, zbody = http_get(HOST + key)
-    st2, cbody = http_get(HOST + key + ".CHECKSUM")
+    url = HOST + urllib.parse.quote(key, safe="/")
+    st, zbody = http_get(url)
+    st2, cbody = http_get(url + ".CHECKSUM")
     rec = {"dataset": ds, "symbol": sym, "key": key, "zip_status": st,
            "checksum_status": st2, "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     if st != 200 or st2 != 200:
         rec["ok"] = False
         return rec
-    want = parse_checksum(cbody.decode("ascii"), name)
+    want = parse_checksum(cbody.decode("utf-8"), name)
     got = hashlib.sha256(zbody).hexdigest()
     rec.update({"bytes": len(zbody), "sha256": got, "checksum_sha256": want, "ok": got == want})
     if got == want:
