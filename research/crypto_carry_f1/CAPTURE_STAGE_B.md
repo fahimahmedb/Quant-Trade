@@ -51,6 +51,12 @@ and as an artifact, including after interrupted publication. No raw dataset
 is put into git. The exact execution decision is in
 `verification/stage_b_execution.json`.
 
+The outcome also overwrites the existing research checkpoint with its final
+status and next decision. After persistence, the nine-field result delta is
+published to PR #22 with a run/attempt marker to avoid duplicate publication.
+Existing negative Polymarket scouting and blocked F2 access are retained in
+the checkpoint rather than automatically retested.
+
 The Owner-directed takeover preserves UNKNOWN private predecessor history.
 The result metadata and report authorize no confirmatory claim. The reporting
 policy, published before B is read, rejects an excluded Sharpe-1.5 expression,

@@ -11,6 +11,7 @@ on:
 permissions:
   contents: write
   actions: read
+  issues: write
 
 concurrency:
   group: f1-stage-b-single-documented-evaluation
@@ -161,6 +162,7 @@ jobs:
           set -euo pipefail
           gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref='refs/heads/f1/crypto-carry-001-stage-b-look' -f sha="$GITHUB_SHA" > "$RUNNER_TEMP/stage-b-look-claim.json"
       - name: Execute B once with the authenticated frozen A selection
+        id: execution
         run: |
           set -euo pipefail
           python3 -u -I research/crypto_carry_f1/run_f1.py STAGE_B "$RUNNER_TEMP/f1-stage-b-sealed" research/crypto_carry_f1/results/stage_b_result_2026-10-09.json research/crypto_carry_f1/results/stage_a_result_2026-10-09.json "$A_SHA256"
@@ -175,6 +177,7 @@ jobs:
                   'harness_sha256': r['harness_sha256'], 'stage_a_result_sha256': os.environ['A_SHA256'],
                   'selected_theta': r['selected_theta'], 'execution_commit': os.environ['GITHUB_SHA'],
                   'execution_run_id': os.environ['GITHUB_RUN_ID'], 'capture_run_id': int(os.environ['CAPTURE_RUN_ID']),
+                  'execution_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'prior_legacy_stage_b_outcome': 'UNKNOWN',
                   'capture_verification': json.loads(Path(os.environ['VERIFICATION_PATH']).read_bytes()),
                   'exposure_record': json.loads((root / 'verification/stage_a_exposure.json').read_bytes()),
                   'registered_lineage_status': 'UNVERIFIED_LEGACY_HISTORY', 'confirmatory_claim_authorized': False,
@@ -225,8 +228,22 @@ jobs:
           ]
           with (root / 'results/STAGE_B_REPORT_2026-10-09.md').open('x') as out:
               out.write('\n\n'.join(lines) + '\n')
+          import datetime
+          checkpoint = [
+              '# CHECKPOINT (overwritten at each significant batch)', '',
+              f"STATE ({datetime.datetime.now(datetime.timezone.utc).isoformat()}): Owner-directed continuation without Claude. PRIMARY = FIND_OR_FALSIFY_REAL_EDGE. F1 completed its single documented B evaluation. FAMILY_STATUS = {family}.",
+              'CANONICAL: PR #22 remains unmerged; original coordination source 1e88c6b. No live capital, paid-data purchase or account authorized. Economic harness unchanged at ' + os.environ['HARNESS_SHA256'] + '.',
+              'A: theta 0.20, result SHA256 ' + os.environ['A_SHA256'] + '; report and exact result preserved. Never rerun A.',
+              f"B: capture {os.environ['CAPTURE_RUN_ID']} independently verified, then one look claimed before analysis; result SHA256 {meta['result_sha256']}; source {os.environ['GITHUB_SHA']}, run {os.environ['GITHUB_RUN_ID']}. Exact result/meta/report in research/crypto_carry_f1/results/. Never rerun B or substitute another cell.",
+              'LINEAGE: private predecessor exposure UNKNOWN; no registered confirmatory or live claim authorized. Preserve/reconcile any recovered earlier outcome.',
+              'OTHER LANES: F2 BLOCKED_DATA_PERMISSION per primary-document decision PR #27, e7344cf; no Kalshi outcomes acquired. Existing Polymarket neg-risk scout 2b66b19 has a valid KILL verdict (1,260 executable routes, zero exceedances); do not restart it.',
+              'RESULT/LESSON: see results/STAGE_B_REPORT_2026-10-09.md for the nine required verdict fields and unchanged cost/threshold assumptions.',
+              'NEXT: ' + next_decision + ' Continue research within the available resources and preserve family/selection history; no reset of error budget.',
+          ]
+          Path('research/edge_search/CHECKPOINT.md').write_text('\n\n'.join(checkpoint) + '\n')
           PY
       - name: Persist verification and any outcome, including after interrupted publication
+        id: persist
         if: always()
         run: |
           set -euo pipefail
@@ -235,7 +252,7 @@ jobs:
           git switch -c "$evidence_branch"
           git config user.name 'quant-f1-evidence'
           git config user.email 'quant-f1-evidence@users.noreply.github.com'
-          git add "$VERIFICATION_PATH" research/crypto_carry_f1/results
+          git add "$VERIFICATION_PATH" research/crypto_carry_f1/results research/edge_search/CHECKPOINT.md
           git commit -m 'F1: persist B verification and any single documented outcome'
           git push origin "HEAD:refs/heads/$evidence_branch"
       - name: Preserve verification and derived outcomes
@@ -248,3 +265,33 @@ jobs:
             research/crypto_carry_f1/results/
           if-no-files-found: warn
           retention-days: 90
+      - name: Publish the result delta to the canonical coordination thread
+        if: steps.execution.outcome == 'success' && steps.persist.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          root = Path('research/crypto_carry_f1')
+          meta = json.loads((root / 'results/stage_b_result_2026-10-09.meta.json').read_bytes())
+          assert meta['execution_run_id'] == os.environ['GITHUB_RUN_ID']
+          assert meta['execution_run_attempt'] == os.environ['GITHUB_RUN_ATTEMPT']
+          report = (root / 'results/STAGE_B_REPORT_2026-10-09.md').read_text()
+          keys = ['RESULT', 'EFFECT_SIZE', 'UNCERTAINTY', 'POWER_LIMITATION', 'ECONOMIC_SIGNIFICANCE', 'FAILED_CRITERIA', 'LESSON', 'FAMILY_STATUS', 'NEXT_DECISION']
+          fields = [line for line in report.splitlines() if any(line.startswith(key + ' = ') for key in keys)]
+          assert len(fields) == len(keys) and {line.split(' = ', 1)[0] for line in fields} == set(keys)
+          marker = f"F1_B_RUN:{os.environ['GITHUB_RUN_ID']}:{os.environ['GITHUB_RUN_ATTEMPT']}"
+          branch = f"builder/f1-stage-b-evidence-{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}"
+          url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/blob/{branch}/research/crypto_carry_f1/results/STAGE_B_REPORT_2026-10-09.md"
+          comment = '[A2-TEAM] RESULT — F1 B, single documented evaluation\n\n' + '\n\n'.join(fields)
+          comment += f"\n\nREF = {url}\nResult SHA256 = {meta['result_sha256']}\n<!-- {marker} -->"
+          endpoint = f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/22/comments"
+          pages = subprocess.check_output(['gh', 'api', endpoint, '--paginate', '--jq', '.[].body'], text=True)
+          if marker not in pages:
+              body = Path(os.environ['RUNNER_TEMP']) / 'b-result-comment.json'
+              body.write_text(json.dumps({'body': comment}))
+              subprocess.run(['gh', 'api', '--method', 'POST', endpoint, '--input', str(body)], check=True, stdout=subprocess.DEVNULL)
+          print('Result delta published or already present; raw data remains outside git.')
+          PY
