@@ -1,0 +1,12 @@
+{
+  "bytes": 9798,
+  "derivative_license": "CC BY-NC-SA 4.0; Binance Vision attribution, clause 4.5",
+  "git_blob_sha": "87d04e216f62c86a2c797fbb7637404d6d602687",
+  "last_updated": "2026-08-26",
+  "live_use_authorized": false,
+  "read_utc": "2026-10-09T07:37:06.481843+00:00",
+  "research_clause": "4.1: algorithmic historical backtesting for purely personal non-production research",
+  "sha256": "dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1",
+  "source_url": "https://github.com/binance/binance-public-data/blob/master/TERMS_AND_CONDITIONS.md",
+  "version": "1.0"
+}

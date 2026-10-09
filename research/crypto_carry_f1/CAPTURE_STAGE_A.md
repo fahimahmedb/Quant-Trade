@@ -54,6 +54,14 @@ files before resuming. Unexpected manifest keys abort for investigation.
 establish whether the earlier Claude execution exposed an outcome. If it
 did, preserve that result and its original harness. If unexposed, adopt/pin
 the reviewed PR #23 repair and execute the registered Stage A run once.
+For the Owner-directed takeover on 2026-10-09, the separate PR #25 runner
+can resume from the last published unexposed canonical state while preserving
+`prior_outcome_exposed: null` for the inaccessible private history. Its
+evidence, Owner instruction and first documented discovery scope are recorded
+in `verification/stage_a_exposure.json` and copied into result metadata. This
+does not establish the missing history or authorize a confirmatory claim. A
+subsequently recovered earlier outcome must be preserved and reconciled;
+decision-changing post-outcome repairs invalidate the registered lineage.
 Publish the result, source SHA256 and result SHA256 before the Stage B review
 and run. This workflow intentionally contains no `run_f1.py` invocation.
 

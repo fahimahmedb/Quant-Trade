@@ -1,0 +1,183 @@
+name: F1 Stage A independent capture verification
+
+on:
+  push:
+    branches: ['builder/f1-stage-a-execution-2026-10-09']
+    paths:
+      - '.github/workflows/f1-stage-a-verify.yml'
+      - 'research/crypto_carry_f1/verification/stage_a_exposure.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: f1-stage-a-independent-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERIFICATION_PATH: research/crypto_carry_f1/verification/stage_a_capture-${{ github.run_id }}-${{ github.run_attempt }}.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing synthetic capture regressions
+        run: python3 -B -m unittest research.crypto_carry_f1.test_capture_stage_a
+      - name: Recover the exact completed artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/11590897211/zip" > "$RUNNER_TEMP/stage-a-artifact.zip"
+      - name: Verify artifact and every compressed archive without parsing rows
+        run: |
+          python3 -B - <<'PY'
+          import hashlib, json, os, sys, zipfile
+          from collections import Counter
+          from pathlib import Path
+          sys.path.insert(0, str(Path('research/crypto_carry_f1').resolve()))
+          import capture_stage_a as capture
+          root = Path('research/crypto_carry_f1')
+          artifact = Path(os.environ['RUNNER_TEMP']) / 'stage-a-artifact.zip'
+          artifact_sha = capture.digest(artifact)
+          assert artifact_sha == '9ec40fe2f1aaa57c63c00e1c1830f4fa28c3c98c5ca9ed90934305094b0550d0', 'artifact digest mismatch'
+          data = Path(os.environ['RUNNER_TEMP']) / 'f1-stage-a'
+          data.mkdir()
+          with zipfile.ZipFile(artifact) as bundle:
+              for name in bundle.namelist():
+                  p = Path(name)
+                  assert not p.is_absolute() and '..' not in p.parts, 'unsafe artifact path'
+              bundle.extractall(data)  # Monthly ZIPs remain compressed.
+          original = json.loads((data / 'capture_STAGE_A.json').read_bytes())
+          provenance = json.loads((data / 'provenance.json').read_bytes())
+          plan = json.loads((data / 'plan_STAGE_A.json').read_bytes())
+          candidates_sha = 'f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4'
+          harness_sha = '5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c'
+          assert provenance['commit'] == '7b9054fc7bc3857b509ba1d6ad3112a0e8b83f96'
+          assert provenance['run_id'] == '37856637365'
+          producer = {'acquire_f1.py': '012c09ff7ad0ce651bb211317965fc482b91bca048b2b5d5658d9a17c93c72d0',
+                      'capture_stage_a.py': '9692fd2e45899a93cf56a5961cf2281c0262941ce77abf55cfd606dda5c4bc4f',
+                      'run_f1.py': harness_sha, 'candidates_2026-10-08.txt': candidates_sha}
+          assert provenance['source_sha256'] == producer, 'capture producer source mismatch'
+          # The verifier may gain transport features; these two consumer inputs
+          # determine the economic run and must still match the frozen bytes.
+          assert capture.digest(root / 'candidates_2026-10-08.txt') == candidates_sha
+          assert capture.digest(root / 'run_f1.py') == harness_sha
+          assert original['status'] == 'COMPLETE' and original['planned'] == original['verified'] == 21088
+          assert original['rows_parsed'] == 0
+          report = capture.capture(data, root / 'candidates_2026-10-08.txt', candidates_sha, verify_only=True)
+          assert report['plan_sha256'] == original['plan_sha256']
+          assert report['manifest_sha256'] == original['manifest_sha256']
+          assert report['verified'] == 21088 and not report['missing_keys']
+          report.update({'artifact_id': 11590897211, 'artifact_sha256': artifact_sha,
+                         'capture_run_id': 37856637365, 'capture_source_commit': provenance['commit'],
+                         'capture_source_sha256': producer,
+                         'verification_commit': os.environ['GITHUB_SHA'], 'verification_run_id': os.environ['GITHUB_RUN_ID'],
+                         'harness_sha256': harness_sha,
+                         'archives_by_dataset': dict(Counter(ds for ds, _, _ in plan['jobs'])),
+                         'symbols_with_archives': len({sym for _, sym, _ in plan['jobs']}),
+                         'window': plan['window'], 'economic_outcome_computed': False,
+                         'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0'})
+          out = Path(os.environ['VERIFICATION_PATH'])
+          out.parent.mkdir(exist_ok=True)
+          with out.open('x') as f:
+              json.dump(report, f, sort_keys=True, indent=2)
+              f.write('\n')
+          print(json.dumps(report, sort_keys=True))
+          PY
+      - name: Read documented prior exposure status
+        id: exposure
+        run: |
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          status = json.loads(Path('research/crypto_carry_f1/verification/stage_a_exposure.json').read_bytes())
+          assert status['stage'] == 'STAGE_A'
+          assert status['harness_sha256'] == '5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c'
+          evidence = status.get('evidence')
+          unexposed = status['prior_outcome_exposed'] is False and isinstance(evidence, str) and bool(evidence.strip())
+          takeover = status.get('takeover', {})
+          canonical_resume = (
+              status['prior_outcome_exposed'] is None
+              and status.get('last_documented_unexposed_report') == 'https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6068136072'
+              and takeover.get('policy') == 'OWNER_DIRECTED_CANONICAL_STATE_RESUME'
+              and takeover.get('accessible_prior_outcomes') == 0
+              and isinstance(takeover.get('owner_directive'), str)
+              and bool(takeover['owner_directive'].strip())
+              and isinstance(evidence, str) and bool(evidence.strip())
+          )
+          execute = unexposed or canonical_resume
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"execute={str(execute).lower()}\n")
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              if status['prior_outcome_exposed'] is True:
+                  out.write('Existing Stage A outcome: preserve it and its original harness; analysis skipped.\n')
+              elif canonical_resume:
+                  out.write('Owner-directed discovery resume from the last documented unexposed state. Private legacy history remains UNKNOWN; no confirmatory claim is authorized.\n')
+              else:
+                  out.write('Stage A execution ready. Prior exposure unresolved; analysis skipped.\n' if not unexposed else 'Documented unexposed Stage A: registered execution enabled.\n')
+          PY
+      - name: Claim the documented Stage A look before any price row is opened
+        if: steps.exposure.outputs.execute == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Ref creation is atomic. An existing claim prevents an automatic rerun,
+          # including after a failure between computing and publishing the result.
+          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref='refs/heads/f1/crypto-carry-001-stage-a-look' -f sha="$GITHUB_SHA" > "$RUNNER_TEMP/stage-a-look-claim.json"
+      - name: Execute the documented Stage A once
+        if: steps.exposure.outputs.execute == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p research/crypto_carry_f1/results
+          python3 -u -I research/crypto_carry_f1/run_f1.py STAGE_A "$RUNNER_TEMP/f1-stage-a" research/crypto_carry_f1/results/stage_a_result_2026-10-09.json
+          python3 -B - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          p = Path('research/crypto_carry_f1/results/stage_a_result_2026-10-09.json')
+          r = json.loads(p.read_bytes())
+          assert r['stage'] == 'STAGE_A' and r['harness_sha256'] == '5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c'
+          meta = {'stage': 'STAGE_A', 'role': 'DISCOVERY_ONLY_THETA_SELECTION',
+                  'result_sha256': hashlib.sha256(p.read_bytes()).hexdigest(),
+                  'harness_sha256': r['harness_sha256'], 'execution_commit': os.environ['GITHUB_SHA'],
+                  'execution_run_id': os.environ['GITHUB_RUN_ID'], 'artifact_id': 11590897211,
+                  'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0',
+                  'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                  'primary_terms_sha256': 'dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1',
+                  'live_use_authorized': False,
+                  'exposure_record': json.loads(Path('research/crypto_carry_f1/verification/stage_a_exposure.json').read_bytes()),
+                  'confirmatory_claim_authorized': False}
+          with p.with_suffix('.meta.json').open('x') as out:
+              json.dump(meta, out, sort_keys=True, indent=2)
+              out.write('\n')
+          PY
+      - name: Persist verification and any derived Stage A result
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ ! -f "$VERIFICATION_PATH" ]; then exit 0; fi
+          evidence_branch="builder/f1-stage-a-evidence-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$evidence_branch"
+          git config user.name 'quant-f1-evidence'
+          git config user.email 'quant-f1-evidence@users.noreply.github.com'
+          git add "$VERIFICATION_PATH"
+          if [ -d research/crypto_carry_f1/results ]; then git add research/crypto_carry_f1/results; fi
+          git commit -m 'F1: persist Stage A verification and any registered outcome'
+          git push origin "HEAD:refs/heads/$evidence_branch"
+      - name: Preserve verification metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-stage-a-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ env.VERIFICATION_PATH }}
+            research/crypto_carry_f1/results/
+          if-no-files-found: warn
+          retention-days: 90
