@@ -102,16 +102,29 @@ jobs:
           assert status['harness_sha256'] == '5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c'
           evidence = status.get('evidence')
           unexposed = status['prior_outcome_exposed'] is False and isinstance(evidence, str) and bool(evidence.strip())
+          takeover = status.get('takeover', {})
+          canonical_resume = (
+              status['prior_outcome_exposed'] is None
+              and status.get('last_documented_unexposed_report') == 'https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6068136072'
+              and takeover.get('policy') == 'OWNER_DIRECTED_CANONICAL_STATE_RESUME'
+              and takeover.get('accessible_prior_outcomes') == 0
+              and isinstance(takeover.get('owner_directive'), str)
+              and bool(takeover['owner_directive'].strip())
+              and isinstance(evidence, str) and bool(evidence.strip())
+          )
+          execute = unexposed or canonical_resume
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
-              out.write(f"unexposed={str(unexposed).lower()}\n")
+              out.write(f"execute={str(execute).lower()}\n")
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
               if status['prior_outcome_exposed'] is True:
                   out.write('Existing Stage A outcome: preserve it and its original harness; analysis skipped.\n')
+              elif canonical_resume:
+                  out.write('Owner-directed discovery resume from the last documented unexposed state. Private legacy history remains UNKNOWN; no confirmatory claim is authorized.\n')
               else:
                   out.write('Stage A execution ready. Prior exposure unresolved; analysis skipped.\n' if not unexposed else 'Documented unexposed Stage A: registered execution enabled.\n')
           PY
-      - name: Claim the registered Stage A look before any price row is opened
-        if: steps.exposure.outputs.unexposed == 'true'
+      - name: Claim the documented Stage A look before any price row is opened
+        if: steps.exposure.outputs.execute == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -119,8 +132,8 @@ jobs:
           # Ref creation is atomic. An existing claim prevents an automatic rerun,
           # including after a failure between computing and publishing the result.
           gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref='refs/heads/f1/crypto-carry-001-stage-a-look' -f sha="$GITHUB_SHA" > "$RUNNER_TEMP/stage-a-look-claim.json"
-      - name: Execute the registered Stage A once
-        if: steps.exposure.outputs.unexposed == 'true'
+      - name: Execute the documented Stage A once
+        if: steps.exposure.outputs.execute == 'true'
         run: |
           set -euo pipefail
           mkdir -p research/crypto_carry_f1/results
@@ -138,7 +151,9 @@ jobs:
                   'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0',
                   'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
                   'primary_terms_sha256': 'dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1',
-                  'live_use_authorized': False}
+                  'live_use_authorized': False,
+                  'exposure_record': json.loads(Path('research/crypto_carry_f1/verification/stage_a_exposure.json').read_bytes()),
+                  'confirmatory_claim_authorized': False}
           with p.with_suffix('.meta.json').open('x') as out:
               json.dump(meta, out, sort_keys=True, indent=2)
               out.write('\n')

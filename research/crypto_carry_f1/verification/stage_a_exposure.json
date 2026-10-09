@@ -1,7 +1,16 @@
 {
   "stage": "STAGE_A",
   "prior_outcome_exposed": null,
-  "evidence": null,
+  "evidence": "Last canonical executor report 6068136072 (2026-10-08T20:09:14Z) explicitly states no decompression/statistic and an intact Stage A look. GitHub comments, F1 branches and Actions were checked again on 2026-10-09: no later economic outcome or look reservation is accessible. This does not prove the inaccessible private executor history.",
   "last_documented_unexposed_report": "https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6068136072",
-  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c"
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+  "takeover": {
+    "policy": "OWNER_DIRECTED_CANONICAL_STATE_RESUME",
+    "owner_directive": "Owner chat 2026-10-09: Pourquoi tu ne poursuis pas; Claude on doit faire sans lui pour au moins trois jours. Continue autonomously using the available canonical state.",
+    "accessible_prior_outcomes": 0,
+    "legacy_private_history": "UNKNOWN",
+    "execution_scope": "FIRST_DOCUMENTED_DISCOVERY_RESULT",
+    "confirmatory_claim_authorized": false,
+    "reconciliation_rule": "Preserve any earlier result if subsequently recovered; invalidate registered lineage if prior outcome exposure preceded a decision-changing harness repair. Never rerun a documented outcome or change cells/thresholds after observation."
+  }
 }
