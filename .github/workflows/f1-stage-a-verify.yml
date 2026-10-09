@@ -1,0 +1,101 @@
+name: F1 Stage A independent capture verification
+
+on:
+  push:
+    branches: ['builder/f1-stage-a-execution-2026-10-09']
+    paths: ['.github/workflows/f1-stage-a-verify.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: f1-stage-a-independent-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing synthetic capture regressions
+        run: python3 -B -m unittest research.crypto_carry_f1.test_capture_stage_a
+      - name: Recover the exact completed artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/11590897211/zip" > "$RUNNER_TEMP/stage-a-artifact.zip"
+      - name: Verify artifact and every compressed archive without parsing rows
+        run: |
+          python3 -B - <<'PY'
+          import hashlib, json, os, sys, zipfile
+          from collections import Counter
+          from pathlib import Path
+          sys.path.insert(0, str(Path('research/crypto_carry_f1').resolve()))
+          import capture_stage_a as capture
+          root = Path('research/crypto_carry_f1')
+          artifact = Path(os.environ['RUNNER_TEMP']) / 'stage-a-artifact.zip'
+          artifact_sha = capture.digest(artifact)
+          assert artifact_sha == '9ec40fe2f1aaa57c63c00e1c1830f4fa28c3c98c5ca9ed90934305094b0550d0', 'artifact digest mismatch'
+          data = Path(os.environ['RUNNER_TEMP']) / 'f1-stage-a'
+          data.mkdir()
+          with zipfile.ZipFile(artifact) as bundle:
+              for name in bundle.namelist():
+                  p = Path(name)
+                  assert not p.is_absolute() and '..' not in p.parts, 'unsafe artifact path'
+              bundle.extractall(data)  # Monthly ZIPs remain compressed.
+          original = json.loads((data / 'capture_STAGE_A.json').read_bytes())
+          provenance = json.loads((data / 'provenance.json').read_bytes())
+          plan = json.loads((data / 'plan_STAGE_A.json').read_bytes())
+          candidates_sha = 'f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4'
+          harness_sha = '5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c'
+          assert provenance['commit'] == '7b9054fc7bc3857b509ba1d6ad3112a0e8b83f96'
+          assert provenance['run_id'] == '37856637365'
+          for name, sha in provenance['source_sha256'].items():
+              assert capture.digest(root / name) == sha, f'capture source mismatch: {name}'
+          assert capture.digest(root / 'run_f1.py') == harness_sha
+          assert original['status'] == 'COMPLETE' and original['planned'] == original['verified'] == 21088
+          assert original['rows_parsed'] == 0
+          report = capture.capture(data, root / 'candidates_2026-10-08.txt', candidates_sha, verify_only=True)
+          assert report['plan_sha256'] == original['plan_sha256']
+          assert report['manifest_sha256'] == original['manifest_sha256']
+          assert report['verified'] == 21088 and not report['missing_keys']
+          report.update({'artifact_id': 11590897211, 'artifact_sha256': artifact_sha,
+                         'capture_run_id': 37856637365, 'capture_source_commit': provenance['commit'],
+                         'verification_commit': os.environ['GITHUB_SHA'], 'verification_run_id': os.environ['GITHUB_RUN_ID'],
+                         'harness_sha256': harness_sha,
+                         'archives_by_dataset': dict(Counter(ds for ds, _, _ in plan['jobs'])),
+                         'symbols_with_archives': len({sym for _, sym, _ in plan['jobs']}),
+                         'window': plan['window'], 'economic_outcome_computed': False,
+                         'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0'})
+          out = root / 'verification' / 'stage_a_capture_2026-10-09.json'
+          out.parent.mkdir(exist_ok=True)
+          with out.open('x') as f:
+              json.dump(report, f, sort_keys=True, indent=2)
+              f.write('\n')
+          print(json.dumps(report, sort_keys=True))
+          PY
+      - name: Persist verification metadata only
+        run: |
+          set -euo pipefail
+          evidence_branch="builder/f1-stage-a-evidence-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$evidence_branch"
+          git config user.name 'quant-f1-evidence'
+          git config user.email 'quant-f1-evidence@users.noreply.github.com'
+          git add research/crypto_carry_f1/verification/stage_a_capture_2026-10-09.json
+          git commit -m 'F1: independently verify the complete compressed Stage A capture'
+          git push origin "HEAD:refs/heads/$evidence_branch"
+      - name: Preserve verification metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-stage-a-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: research/crypto_carry_f1/verification/stage_a_capture_2026-10-09.json
+          if-no-files-found: warn
+          retention-days: 90
