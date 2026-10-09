@@ -65,10 +65,21 @@ Only the failed capture job is rerun, as attempt 2 of the same run and producer
 commit. It restores the existing compressed artifact, checksum-verifies saved
 files and fetches missing keys. The controller now requires attempt 2 at the
 original producer and authenticates the original plan SHA256
-`4a6671472feb27817d816252a5d5b8302cac4a26ce6c997632ffc5df0e586f6a`,
-observed in attempt 1's acquisition log. The old artifact is never accepted as
+`f7fbab497e616b28051536231c6fc593a02a87b048d3635ed6d4bc89cb461b85`,
+observed in attempt 1's acquisition step at 07:59:06Z and identically in attempt
+2 at 12:51:17Z. The old artifact is never accepted as
 complete. This is an R7 infrastructure recovery before any B statistic;
 economic selection, harness, costs and reporting policy remain unchanged.
+
+Attempt 2 completed at 13:15Z with all 35,789 archives verified and zero rows
+parsed. Its artifact is 11617831886 (79,227,937 bytes), SHA256
+`f2232343c7d22177a8ff436cee5faf2838fde924b63f148cd08785c2cbe12984`.
+Controller 37933198790 then rejected the initially configured plan reference:
+it had mistakenly been extracted from the synthetic Stage A regression output
+at the start of the job. The corrected reference above comes from the actual
+acquisition step of both attempts. No archive plan changed. The failed
+controller skipped its look claim and calculation; the look ref remains absent.
+This reference-only repair precedes any B outcome and retains full verification.
 
 The outcome also overwrites the existing research checkpoint with its final
 status and next decision. After persistence, the nine-field result delta is

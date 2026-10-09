@@ -1,6 +1,14 @@
 {
   "capture_commit": "0ba4c055dbf7a3c7301383e01aa71b680a4bbddd",
-  "capture_plan_sha256": "4a6671472feb27817d816252a5d5b8302cac4a26ce6c997632ffc5df0e586f6a",
+  "capture_plan_sha256": "f7fbab497e616b28051536231c6fc593a02a87b048d3635ed6d4bc89cb461b85",
+  "capture_plan_evidence": {
+    "attempt_1_job_id": 113723632452,
+    "attempt_1_recorded_utc": "2026-10-09T07:59:06.5952219Z",
+    "attempt_2_job_id": 113827236322,
+    "attempt_2_recorded_utc": "2026-10-09T12:51:17.2570357Z",
+    "planned": 35789,
+    "reason": "Correct the reference extracted from synthetic Stage A tests (4a667147...) to the real Stage B capture-step plan; both acquisition attempts report the same real hash. Controller 37933198790 rejected the wrong reference before B look reservation or calculation."
+  },
   "capture_resume_source": {
     "artifact_id": 11616937050,
     "artifact_sha256": "71c1d8a7dde06ed47367952b29598c89ef3e39225c1634588c4865d050810ae5",
