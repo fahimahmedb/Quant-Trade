@@ -1,0 +1,45 @@
+{
+  "archive_bytes": 53886375,
+  "archives_by_dataset": {
+    "funding": 11560,
+    "perp1d": 12358,
+    "spot1d": 11871
+  },
+  "artifact_id": 11617831886,
+  "artifact_sha256": "f2232343c7d22177a8ff436cee5faf2838fde924b63f148cd08785c2cbe12984",
+  "candidates_sha256": "f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4",
+  "capture_commit": "0ba4c055dbf7a3c7301383e01aa71b680a4bbddd",
+  "capture_run_attempt": 2,
+  "capture_run_id": 37901109334,
+  "capture_source_sha256": {
+    "acquire_f1.py": "e18be76c7f8f09ac2cb6456bfa6e3d7490e35685e4641fcc21bfdca386f699a5",
+    "candidates_2026-10-08.txt": "f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4",
+    "capture_stage_a.py": "5d594abe5107551a1f57b2f0e822c77a13f327e65c27360404170377de086687",
+    "run_f1.py": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c"
+  },
+  "checked_utc": "2026-10-09T23:50:13Z",
+  "economic_outcome_computed": false,
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+  "license": "CC BY-NC-SA 4.0",
+  "manifest_sha256": "950b8286937471fd670c3ef2f6fc901f836be95a69d229658efbd44cedec9ef7",
+  "missing_keys": [],
+  "plan_sha256": "f7fbab497e616b28051536231c6fc593a02a87b048d3635ed6d4bc89cb461b85",
+  "planned": 35789,
+  "rows_parsed": 0,
+  "source": "Binance Vision / Binance Public Data",
+  "stage": "STAGE_B",
+  "stage_a_result_sha256": "554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03",
+  "status": "COMPLETE",
+  "symbols_with_archives": 464,
+  "verification_commit": "2620ba065e790b1c255f43bcd941fc336ad5ef4d",
+  "verification_run_id": "38006324356",
+  "verified": 35789,
+  "warmup_months": [
+    "2023-11",
+    "2023-12"
+  ],
+  "window": [
+    "2023-11",
+    "2026-09"
+  ]
+}
