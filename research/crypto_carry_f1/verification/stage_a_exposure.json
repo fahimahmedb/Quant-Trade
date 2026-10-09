@@ -1,0 +1,7 @@
+{
+  "stage": "STAGE_A",
+  "prior_outcome_exposed": null,
+  "evidence": null,
+  "last_documented_unexposed_report": "https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6068136072",
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c"
+}
