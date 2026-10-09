@@ -32,3 +32,30 @@ Stage B analysis still requires the published Stage A result, authenticated
 result SHA256, matching harness identity and the registered single test. A
 compressed capture is not an economic look. Derived work credits Binance
 Vision / Binance Public Data under CC BY-NC-SA 4.0; raw files stay outside git.
+
+## Autonomous documented evaluation
+
+`F1 Stage B single documented evaluation` waits for existing capture run
+37901109334; it starts no additional Binance acquisition. Before reading a
+monthly ZIP it authenticates the published A result SHA256
+`554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03`,
+theta 0.20, the unchanged harness and the published A review report. It checks
+the completed artifact's GitHub digest, producer source hashes, frozen B plan,
+every archive/checksum, manifest and warm-up flags. An incomplete or failed
+capture aborts before reserving a look.
+
+Only then it atomically claims `f1/crypto-carry-001-stage-b-look` and executes
+the fixed CLI once. An existing claim blocks automatic reruns. Verification,
+any result, attribution and a report survive on a separate evidence branch
+and as an artifact, including after interrupted publication. No raw dataset
+is put into git. The exact execution decision is in
+`verification/stage_b_execution.json`.
+
+The Owner-directed takeover preserves UNKNOWN private predecessor history.
+The result metadata and report authorize no confirmatory claim. The reporting
+policy, published before B is read, rejects an excluded Sharpe-1.5 expression,
+degenerate exposure, or a statistically confirmed expression below the assumed
+cash hurdle. A positive screen above cash remains `INVALID_EXPERIMENT` for
+registered confirmation until legacy lineage is resolved; other failures to
+confirm are `INCONCLUSIVE_UNDERPOWERED`. No alternative cell replaces theta
+0.20, and no threshold or cost assumption changes after observation.
