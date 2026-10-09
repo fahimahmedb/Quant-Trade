@@ -1,7 +1,8 @@
-"""Persist/recover the registered Stage A capture; never decompress or analyse.
+"""Persist/recover registered F1 captures; never decompress or analyse.
 
 python3 -I capture_stage_a.py OUT_DIR CANDIDATES_TXT CANDIDATES_SHA256
 python3 -I capture_stage_a.py OUT_DIR CANDIDATES_TXT CANDIDATES_SHA256 --verify-only
+python3 -I capture_stage_a.py SEALED_DIR CANDIDATES_TXT CANDIDATES_SHA256 --stage STAGE_B
 
 The immutable plan is built from archive names before the first download. A
 complete certificate requires every planned archive to match its public
@@ -42,11 +43,12 @@ def atomic_json(path, value):
     os.replace(tmp, path)
 
 
-def validate_plan(plan, symbols, candidate_sha):
-    lo, hi = transport.WINDOWS[STAGE]
-    if (plan.get("schema") != 1 or plan.get("stage") != STAGE
+def validate_plan(plan, symbols, candidate_sha, stage=STAGE):
+    lo, hi = transport.WINDOWS[stage]
+    warmup = ["2023-11", "2023-12"] if stage == "STAGE_B" else []
+    if (plan.get("schema") != 1 or plan.get("stage") != stage
             or plan.get("window") != [lo, hi] or plan.get("candidates_sha256") != candidate_sha
-            or plan.get("persistent_404_prefixes")):
+            or plan.get("persistent_404_prefixes") or plan.get("warmup_months", []) != warmup):
         raise ValueError("capture plan identity/window/listing failure")
     seen = set()
     counts = {(ds, sym): 0 for sym in symbols for ds in NAMES}
@@ -67,12 +69,12 @@ def validate_plan(plan, symbols, candidate_sha):
         raise ValueError("capture plan listing coverage/count mismatch")
 
 
-def get_plan(out, symbols, candidate_sha):
-    path = out / "plan_STAGE_A.json"
+def get_plan(out, symbols, candidate_sha, stage=STAGE):
+    path = out / f"plan_{stage}.json"
     if path.exists():
         plan = json.loads(path.read_bytes())
     else:
-        lo, hi = transport.WINDOWS[STAGE]
+        lo, hi = transport.WINDOWS[stage]
         jobs, prefixes = [], []
         transport.LISTING_404.clear()
         for i, sym in enumerate(symbols, 1):
@@ -83,10 +85,12 @@ def get_plan(out, symbols, candidate_sha):
                 jobs.extend([ds, sym, k] for k in selected)
             if i % 25 == 0:
                 print(f"names only: {i}/{len(symbols)} symbols listed", flush=True)
-        plan = {"schema": 1, "stage": STAGE, "window": [lo, hi],
+        plan = {"schema": 1, "stage": stage, "window": [lo, hi],
                 "candidates_sha256": candidate_sha, "jobs": jobs, "prefixes": prefixes,
                 "persistent_404_prefixes": list(transport.LISTING_404)}
-        validate_plan(plan, symbols, candidate_sha)
+        if stage == "STAGE_B":
+            plan["warmup_months"] = ["2023-11", "2023-12"]
+        validate_plan(plan, symbols, candidate_sha, stage)
         # Exclusive publication: never overwrite an earlier planned capture.
         tmp = None
         try:
@@ -99,7 +103,7 @@ def get_plan(out, symbols, candidate_sha):
         finally:
             if tmp:
                 os.unlink(tmp)
-    validate_plan(plan, symbols, candidate_sha)
+    validate_plan(plan, symbols, candidate_sha, stage)
     print(f"frozen plan sha256: {digest(path)}", flush=True)
     return plan
 
@@ -153,21 +157,24 @@ def verified_jobs(out, plan, records):
 
 
 def certificate(out, plan, records):
+    stage = plan["stage"]
     verified, nbytes = verified_jobs(out, plan, records)
     missing = sorted(key for _, _, key in plan["jobs"] if key not in verified)
-    manifest = out / "manifest_STAGE_A.jsonl"
-    report = {"stage": STAGE, "status": "COMPLETE" if not missing else "INCOMPLETE",
+    manifest = out / f"manifest_{stage}.jsonl"
+    report = {"stage": stage, "status": "COMPLETE" if not missing else "INCOMPLETE",
               "planned": len(plan["jobs"]), "verified": len(verified), "missing_keys": missing,
               "archive_bytes": nbytes, "rows_parsed": 0,
               "candidates_sha256": plan["candidates_sha256"],
-              "plan_sha256": digest(out / "plan_STAGE_A.json"),
+              "plan_sha256": digest(out / f"plan_{stage}.json"),
               "manifest_sha256": digest(manifest) if manifest.exists() else None,
               "checked_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-    atomic_json(out / "capture_STAGE_A.json", report)
+    atomic_json(out / f"capture_{stage}.json", report)
     return report
 
 
-def capture(out, candidates, candidate_sha, verify_only=False):
+def capture(out, candidates, candidate_sha, verify_only=False, stage=STAGE):
+    if stage not in transport.WINDOWS:
+        raise ValueError("unregistered capture stage")
     raw = Path(candidates).read_bytes()
     if hashlib.sha256(raw).hexdigest() != candidate_sha:
         raise ValueError("candidate list hash mismatch")
@@ -176,13 +183,13 @@ def capture(out, candidates, candidate_sha, verify_only=False):
         raise ValueError("malformed candidate universe")
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    if verify_only and not (out / "plan_STAGE_A.json").exists():
+    if verify_only and not (out / f"plan_{stage}.json").exists():
         raise ValueError("verification requires the frozen plan; no network permitted")
-    plan = get_plan(out, symbols, candidate_sha)
-    manifest = out / "manifest_STAGE_A.jsonl"
+    plan = get_plan(out, symbols, candidate_sha, stage)
+    manifest = out / f"manifest_{stage}.jsonl"
     records = read_manifest(manifest, repair_tail=not verify_only)
     done, _ = verified_jobs(out, plan, records)
-    print(f"{STAGE}: {len(done)}/{len(plan['jobs'])} archives verified before capture", flush=True)
+    print(f"{stage}: {len(done)}/{len(plan['jobs'])} archives verified before capture", flush=True)
     if not verify_only:
         try:
             with open(manifest, "a") as mf:
@@ -190,6 +197,8 @@ def capture(out, candidates, candidate_sha, verify_only=False):
                     if key in done:
                         continue
                     rec = transport.fetch_one((ds, sym, key), str(out))
+                    if stage == "STAGE_B":
+                        rec["warmup_only"] = transport.month_of(key) in plan["warmup_months"]
                     records.append(rec)
                     mf.write(json.dumps(rec, sort_keys=True) + "\n")
                     mf.flush()
@@ -197,7 +206,7 @@ def capture(out, candidates, candidate_sha, verify_only=False):
                     if rec.get("ok"):
                         done.add(key)
                     if len(records) % 100 == 0:
-                        print(f"{STAGE}: {len(done)}/{len(plan['jobs'])} compressed archives captured", flush=True)
+                        print(f"{stage}: {len(done)}/{len(plan['jobs'])} compressed archives captured", flush=True)
         finally:
             report = certificate(out, plan, records)
     else:
@@ -214,5 +223,6 @@ if __name__ == "__main__":
     parser.add_argument("candidates")
     parser.add_argument("candidate_sha256")
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--stage", choices=tuple(transport.WINDOWS), default=STAGE)
     args = parser.parse_args()
-    capture(args.out_dir, args.candidates, args.candidate_sha256, args.verify_only)
+    capture(args.out_dir, args.candidates, args.candidate_sha256, args.verify_only, args.stage)
