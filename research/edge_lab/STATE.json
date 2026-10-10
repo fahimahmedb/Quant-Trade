@@ -1027,7 +1027,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "ca94aa6d2901712650e130baf53011f66603ebb7259bce98c938dae46dbce72d",
+  "integrity": "4b835eb9a41aad706f214ee5336b1e111fafcb9dbb9d5b05ee928cf30a2e4d94",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1044,13 +1044,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "scheduled-automation",
-      "at": "2026-10-10T19:31:23.639103+00:00",
+      "actor": "github-actions-metadata",
+      "at": "2026-10-10T19:33:31.124033+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-10T19:31:23.639103+00:00",
+      "at": "2026-10-10T19:33:31.124033+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -1061,44 +1061,44 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T19:31:23.639054+00:00",
+      "observed_at": "2026-10-10T19:33:31.123992+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T19:31:23.639075+00:00",
+      "observed_at": "2026-10-10T19:33:31.124016+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T19:31:23.639080+00:00",
+      "observed_at": "2026-10-10T19:33:31.124021+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T19:31:23.639088+00:00",
+      "observed_at": "2026-10-10T19:33:31.124025+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T19:31:23.639096+00:00",
+      "observed_at": "2026-10-10T19:33:31.124028+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T19:31:23.811820+00:00",
+  "updated_at": "2026-10-10T19:33:31.131132+00:00",
   "usage": {
-    "cpu_seconds": 0.016429863000000017,
+    "cpu_seconds": 0.01796778700000002,
     "human_seconds": null,
-    "metadata_bytes": 4774,
+    "metadata_bytes": 5208,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 7.349557675995783
+    "wall_seconds": 7.634556142995791
   }
 }
