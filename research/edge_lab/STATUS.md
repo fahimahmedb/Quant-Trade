@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T20:14:26.508965+00:00` ; acteur `github-actions-metadata`.
+Dernier cycle attesté : `2026-10-10T21:31:25.329358+00:00` ; acteur `scheduled-automation`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce co
 
 ## Prochaine décision utile
 
-Construction : Avec des ZIPs générés uniquement en synthétique, qualifier la mémoire/coût du lecteur EURUSD figé sous groupes de même timestamp et doublons : les budgets techniques peuvent-ils être admis sans borne d’entrée ? (`build:eurusd-technical-grid:synthetic-reader-boundary`)
+Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 
 ## Programme et preuves
 
@@ -51,9 +51,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0259 |
-| Durée mesurée des opérations locales | 9.5331 |
-| Octets de payload de métadonnées | 6944 |
+| CPU mesuré des opérations locales | 0.028 |
+| Durée mesurée des opérations locales | 10.4093 |
+| Octets de payload de métadonnées | 7378 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
@@ -66,6 +66,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
 - `build:eurusd-technical-grid:legacy-authority-bridge` : **WAIT** — Read-only exact preflight built/reviewed/tested; full launch remains WAIT. Preserve original refs/gates and all spent history. Next distinct construction question measures synthetic CPU/storage/runtime bounds, without price data, old runtime boot, ref creation or economic launch. ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z, fx-legacy-control-resource-bridge-gap-20261010.
+- `build:eurusd-technical-grid:synthetic-reader-boundary` : **RESEARCHING** — Avec des ZIPs générés uniquement en synthétique, qualifier la mémoire/coût du lecteur EURUSD figé sous groupes de même timestamp et doublons : les budgets techniques peuvent-ils être admis sans borne d’entrée ? ; preuves eurusd-full-calendar-synthetic-capacity-20261010T2012Z.
 - `build:eurusd-technical-grid:synthetic-resource-envelope` : **WAIT** — Synthetic full-calendar engine probe implemented and completed; complete market resource envelope remains WAIT. Next distinct construction question challenges same-timestamp/duplicate group memory and parser/CRC on synthetic ZIPs, with no real archives or result access; no changed freeze or automatic market launch. ; preuves eurusd-full-calendar-synthetic-capacity-20261010T2012Z.
 - `qualify:cfe-vix-term-premium` : **WAIT** — No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history. ; preuves cfe-vx-accessible-catalogue-only-20261010, cfe-vx-rights-and-execution-qualification-open-20261010, cfe-vx-tas-timing-not-a-fill-cached-20261010, cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z, cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z.
 - `qualify:eurusd-technical-grid` : **WAIT** — WAIT scoped to full admission: preserve the original proxy freeze and all history; no price access. Next distinct implementation work must review an exact lab-control/original-reservation adapter and measure complete capture/storage/full-window execution bounds without market outcomes. Do not reopen this qualification hourly, reduce windows, change limits or substitute the generic runner. Process the still-OPEN Hyperliquid host/global-fills question next; ZF stays WAIT without new entitlement evidence. ; preuves histdata-personal-proxy-qualified-cached-20261010, fx-current-host-and-look-preflight-20261010T1657Z, fx-legacy-control-resource-bridge-gap-20261010, fx-runtime-qualification-construction-20261010.
