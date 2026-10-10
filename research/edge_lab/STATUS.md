@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T22:46:11.837539+00:00` ; acteur `scheduled-automation`.
+Dernier cycle attesté : `2026-10-10T23:15:35.952225+00:00` ; acteur `scheduled-automation`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -51,9 +51,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0329 |
-| Durée mesurée des opérations locales | 11.4868 |
-| Octets de payload de métadonnées | 8246 |
+| CPU mesuré des opérations locales | 0.0355 |
+| Durée mesurée des opérations locales | 12.3236 |
+| Octets de payload de métadonnées | 8680 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
