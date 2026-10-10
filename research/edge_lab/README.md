@@ -45,6 +45,8 @@ Le code qualifié s'exécute sans shell ni secrets hérités, sous timeout. Le h
 
 Les primitives `quant.state.write_json` et `ResearchTask` sont réutilisées. Le package historique autonomous_research importe son pipeline à l'import ; l'adaptateur charge uniquement son fichier runtime pour éviter de démarrer des dépendances non qualifiées. Aucun boot du `QuantSystem` ancien. Le journal critique est un état JSON atomique vérifié avec chaîne de hashes ; il ne répare pas silencieusement une ligne de ledger tronquée. Git conserve les versions. État/counters/preuves ne sont pas remis à zéro lors d'une reprise.
 
+Avant une lecture/revue coûteuse, `claim-question IDENTITE --actor ACTEUR` prend la question. Publier ce claim avec CAS avant raisonnement : un second hôte ne répète pas la même revue. `decide` reçoit son `claim_id`. Une lease expirée conserve les sources/coûts et demande rapprochement, sans recommencer aveuglément.
+
 ## Scheduler, coûts et limites actuelles
 
 Scheduler réutilisé : `6ac978ecda1081918fba4d76dee437f4`, « Poursuivre la recherche Quant ». Son ancien prompt FX est remplacé avant activation. À chaque réveil : lire contrôle/état distants, exécuter le petit tick de métadonnées, puis traiter seulement une question économique réellement nouvelle/admissible. Une question résolue revient uniquement sur nouveau fait. Les sources lues sont mises en cache dans STATE avec URL/version/passage/limite. Aucun quota d'essais, cible de rendement ou rythme imposé de backtests.

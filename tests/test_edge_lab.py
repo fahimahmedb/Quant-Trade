@@ -166,6 +166,16 @@ class LabTest(unittest.TestCase):
         self.assertEqual(len(self.lab.snapshot()[0]["events"]), count)
         self.assertEqual(self.lab.snapshot()[0]["looks"], {})
 
+    def test_question_claim_prevents_duplicate_reasoning_and_stale_completion(self):
+        identity = "qualify:eurusd-technical-grid"
+        claim = self.lab.claim_decision(identity, "fixture-host-a")
+        with self.assertRaises(Refused):
+            Lab(self.directory).claim_decision(identity, "fixture-host-b")
+        with self.assertRaisesRegex(Refused, "recorded claim"):
+            self.lab.decide(identity, "WAIT", [self.packet["id"]], "fixture wait", claim_id="wrong")
+        self.lab.decide(identity, "WAIT", [self.packet["id"]], "fixture wait", claim_id=claim)
+        self.assertNotEqual(self.lab.next_decision()[0], identity)
+
     def test_missing_permission_and_paid_access_stop_reservation(self):
         self.protocol["rights"]["permitted"] = False
         self.frozen()

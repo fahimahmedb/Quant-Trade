@@ -104,6 +104,12 @@ class Lab:
                     look = state["looks"][job["metadata"]["look_id"]]
                     look["status"] = "UNKNOWN_OUTCOME"
                     event(state, "LOOK_QUARANTINED", {"job": job["task_id"], "look": look["id"]})
+            for identity, decision in state["decisions"].items():
+                if (decision["status"] == "RESEARCHING"
+                        and (now - timestamp(decision["claimed_at"])).total_seconds() > decision["lease_seconds"]):
+                    decision["status"] = "RECOVERY_NEEDED"
+                    event(state, "QUESTION_LEASE_EXPIRED", {"id": identity,
+                                                           "next": "Reconcile cached sources/partial receipt; no blind repeated review"})
             if enabled_confirmed:
                 state["scheduler"]["enabled_confirmed_at"] = utc_now()
             state["scheduler"]["last_tick"] = {"at": utc_now(), "actor": actor, "status": "IDLE" if not changes else "DECISION_PENDING",
@@ -137,15 +143,34 @@ class Lab:
             self.store.save(state)
         return identity
 
-    def decide(self, identity, verdict, evidence_ids, next_action):
+    def claim_decision(self, identity, actor):
+        """Publish this claim with remote CAS BEFORE expensive external reasoning."""
+        if not actor:
+            raise Refused("Research actor required")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            decision = state["decisions"][identity]
+            if decision["status"] != "OPEN":
+                raise Refused("Question already claimed/resolved; do not duplicate reasoning")
+            claim_id = digest({"id": identity, "actor": actor, "at": utc_now()})
+            decision.update(status="RESEARCHING", claim_id=claim_id, actor=actor,
+                            claimed_at=utc_now(), lease_seconds=600)
+            event(state, "QUESTION_CLAIMED", {"id": identity, "actor": actor, "claim_id": claim_id})
+            self.store.save(state)
+            return claim_id
+
+    def decide(self, identity, verdict, evidence_ids, next_action, claim_id=None):
         if verdict not in ("WAIT", "CLOSED", "QUALIFIED", "REJECTED", "INSUFFICIENT_POWER", "INVALID_SOFTWARE"):
             raise Refused("Decision type must distinguish economic, software and power outcomes")
         with self.store.lock():
             state, control = self.store.read(), self.store.control()
             budget_check(state, control)
             decision = state["decisions"][identity]
-            if decision["status"] != "OPEN":
+            if decision["status"] not in ("OPEN", "RESEARCHING", "RECOVERY_NEEDED"):
                 raise Refused("Resolved question requires a new event, not another review")
+            if decision.get("claim_id") and decision["claim_id"] != claim_id:
+                raise Refused("Only the recorded claim may finish/reconcile this question")
             if not evidence_ids or any(x not in state["evidence"] for x in evidence_ids):
                 raise Refused("Decision requires cached evidence")
             if verdict in ("REJECTED", "INSUFFICIENT_POWER", "INVALID_SOFTWARE") and not any(

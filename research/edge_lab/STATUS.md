@@ -4,8 +4,8 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T16:19:44.123501+00:00` ; acteur `github-actions-metadata`.
-Scheduler activé (confirmation outil) : `NON CONFIRMÉ`.
+Dernier cycle attesté : `2026-10-10T16:25:22.012013+00:00` ; acteur `construction-activation-confirmed`.
+Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
 [Pause/reprise persistante : modifier `paused` dans CONTROL.json](https://github.com/fahimahmedb/Quant-Trade/edit/research/edge-lab-continuous/research/edge_lab/CONTROL.json)
@@ -50,8 +50,8 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0013 |
-| Durée mesurée des opérations locales | 1.8202 |
+| CPU mesuré des opérations locales | 0.0018 |
+| Durée mesurée des opérations locales | 1.8208 |
 | Octets de payload de métadonnées | 868 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
