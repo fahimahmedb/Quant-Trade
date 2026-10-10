@@ -2,7 +2,7 @@
 
 
 
-STATE (2026-10-10 02:18 UTC): OWNER_PAUSED_EXPERIMENTS; LIMITED_DESIGN_COMPLETED. Owner subsequently authorized locating existing volatility/LLM code and constructing an idea around FXStabilizer grid/martingale. One bounded EUR/USD range-grid hypothesis is recorded, not activated. The existing continuation automation remains disabled; no acquisition, backtest or economic look launched. F1 permanently REJECT at ea9d2d0e0e057199bb168249c963acbc88e89de5; COIN-M source gate failed causal timing. No economic edge established.
+STATE (2026-10-10 09:26:43 UTC): TWO_PUBLIC_RESEARCH_AXES_AUTHORIZED; FIRST_TRIAGE_COMPLETED; ECONOMIC_EXPERIMENTS_PAUSED. Owner authorizes one research axis to eliminate already-refuted expressions and another to qualify plausible surviving mechanisms. These axes share one exposure/trial history and at most one economic family. Public-source review/metadata only; no market acquisition, new economic look, test or family activation. Continuation automation remains disabled. F1 remains permanently REJECT at ea9d2d0e0e057199bb168249c963acbc88e89de5; COIN-M failed its causal-timing source gate. No economic edge established.
 
 CANONICAL: PR #22 remains unmerged; original coordination source 1e88c6b. No live capital, paid-data purchase or account authorized. Economic harness unchanged at 5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c.
 
@@ -43,3 +43,84 @@ NEXT ACTION SELECTED: prepare and publish the smallest separate exploratory pric
 OWNER STOP / RESUME STATE (2026-10-10 02:02 UTC): Owner first redirected the unstarted simple trend-volume pilot toward deeper RSI/technical combinations, then asked to stop immediately. The later stop supersedes earlier autonomous-next-action text above. Targeted primary-paper/indicator-definition reading began; it is incomplete and is not an economic test or a selected/frozen RSI rule. No spot outcome ZIP acquired/opened, no preregistration/harness created, no atomic look claimed, no RSI P&L or Sharpe produced. Public-paper bytes and hashes remain outside Git in /workspace/scratch/rsi-research-2026-10-10/ (source_fetches.json); earlier nine-source review and qualified price-volume catalogs remain preserved. Local unpushed branch research/rsi-combinations-review-2026-10-10 started from 15821314ac46e67e3f1161358b07367131f9f7db. Automated continuation 6ac978ecda1081918fba4d76dee437f4 disabled on Owner request; do not re-enable without a new Owner instruction. Next discussion: reconsider the research method before further testing. No result rerun, no historical exposure or counter reset. F1/F2/Polymarket decisions and immutable evidence unchanged.
 
 OWNER LIMITED DESIGN UPDATE (2026-10-10): Latest question authorizes the idea-building/inventory batch completed here, not an automatic economic restart. Existing volatility code, NASDAQ variance-report history and portfolio risk caps authenticated at 8bbeb4e; TradingAgents identified as a TauricResearch fork at be952b8eccb49720509af544c6675233bc1f10d0, with LLM indicator analysis/risk debate, not a ready FX grid located. Static causal defect: old run_etape_c.py passes complete r to garch_path/ewma_path, whose initial variance and EWMA demeaning use future data; effect unmeasured, old results preserved without rerun. Prototype reuse requires a causal repair and FX-specific calibration. One design candidate EURUSD-RANGE-GRID-001: RSI re-entry in a past-defined low-trend regime, finite risk-budgeted grid, lagged volatility spacing/budget, invalidation/stop/time/margin limits. Main candidate plus two prespecified diagnostic comparisons proposed; no parameters, costs, windows, success thresholds or trial budget frozen and no reservations claimed. Three-rung design is a proposal, not optimized settings. Full rationale, limits, nine proposal fields and next decision are in scouts/technical_signals_literature_2026-10-10.md, proposal commit cf9dde72c1180ba3fac59f683adb563f6af49231, blob af000d521ed81c3212484b1dd5618c35b772edba. New exposure: vendor-public EUR Turbo v1.2 2013–2016 summary and first trade sequences read during Q&A; no private source code or Quant reproduction. Preserve this external selection history, Nasdaq/F1/B4 and private UNKNOWN; no clean-period or formal-confirmation claim. No new FX/spot outcomes acquired. LLM remains offline hypothesis/audit support, no paid API run or trade authority. NEXT = discuss the mechanism/method; a resumed experiment would first need admissible chronological EUR/USD bid/ask/costs and a distinct frozen preregistration/reservation. Economic experiments and automation 6ac978ecda1081918fba4d76dee437f4 stay paused. PR #22 unmerged, F1 A/B/harness and all prior gates unchanged.
+
+
+OWNER RESEARCH-METHOD UPDATE (2026-10-10 09:26:43 UTC): two complementary public research axes
+are now authorized. This updates the limited-design routing above without
+restarting economic experiments or the disabled automation. No new actor,
+framework, paid data/API invocation, account, trading or concurrent collection.
+
+AXIS A — ELIMINATION / PRIOR-EVIDENCE AUDIT (first triage completed):
+Keep exact expression, data/window, costs, original gate, result/proof, failure
+reason and the precise evidence needed for a justified reopening. Do not label
+an entire market or family permanently dead from a scoped result.
+
+| Item | Preserved decision and exact scope | Current action |
+| --- | --- | --- |
+| F1 CRYPTO-CARRY-001 | REJECT: frozen theta 0.20, unique A/B and registered target; closure ea9d2d0. Does not reject every smaller carry effect or all crypto. | Exclude the closed expression; never rerun or relax its threshold. |
+| Polymarket neg-risk | Valid KILL, 1,260 executable routes, zero exceedances in the observed scout; proof 2b66b19. Not a proof about every future venue/event. | Exclude that scout; no revival without material new evidence. |
+| COIN-M liquidation snapshot | SOURCE_GATE_FAILED_CAUSAL_TIMING, no economic test. | Source is unusable for the intraday causal pilot until new authoritative clock/publication evidence; the economic mechanism is not falsified. |
+| F2 Kalshi | BLOCKED_DATA_PERMISSION, primary decision e7344cf / PR #27; no acquired outcomes. | Permission blocker, not economic death; no account/API-outcome workaround. |
+| Earlier B4 and NASDAQ volatility work | Known selection/exposure remains spent. NASDAQ variance report is not profit evidence; static causal defect recorded in the grid design audit. | No budget reset or old result rerun; causal audit before any new code reuse. |
+| RSI/grid plus volatility | DESIGN_ONLY / NOT_ACTIVATED; source, parameters, costs and gates unqualified/unfrozen. | Neither survivor nor rejection; assess mechanism and executable data before any look. |
+
+Literature counterexamples are part of Axis A: publication/selection bias,
+cost-erased profits and unstable out-of-sample winners in the already-preserved
+nine-source review. A null result with weak power is recorded as uncertainty
+under its original protocol, not upgraded to a broad impossibility claim.
+
+AXIS B — PLAUSIBLE SURVIVOR SEARCH (source/mechanism work, not a survivor claim):
+For every candidate, ask who pays the expected return, which constraint prevents
+instant arbitrage, when the information becomes available, and whether the
+advantage exceeds attainable fees/spread/slippage/financing and tail/inventory
+risk. Prefer primary out-of-sample/execution evidence, document negative evidence,
+publication vintage, access rights, capacity and exposure history. A paper,
+indicator agreement or simulated Sharpe does not pass the economic gate.
+
+| Reserve | Specific mechanism to establish | Cheapest next qualification, no outcomes |
+| --- | --- | --- |
+| EURUSD-RANGE-GRID-001, current Owner design | Conditional rebound after a temporary excess in an ex-ante low-trend regime. Grid/sizing must add marginal value after costs rather than hide losses. | Qualify chronological EUR/USD bid/ask, grid-fill ordering, spread/fees/swaps, permissions and causal volatility inputs; retain same-entry/no-grid and nonadaptive-grid diagnostics already proposed. No parameter sweep. |
+| Trend plus signed trade volume | Delayed price adjustment or complementary flow information, separately from risk sizing. | Existing spot metadata/rights are qualified; economic/execution expression and timing/cost assumptions remain unregistered. Keep in reserve, no acquisition/look. |
+| Forced-flow/temporary liquidity pressure | Price pressure generated by a constraint, not merely an oscillator extreme. | Obtain causal event availability and executable prices. Failed COIN-M does not repair itself; no rereading its rows or substitution into Hyperliquidation. |
+| Inventory-aware liquidity provision, literature reserve only | Payment for providing executable quotes, challenged by inventory/adverse-selection/fill risk. | First establish whether the intended venue/account can actually provide liquidity and receive the relevant spread net of costs. No new market-making family activated. |
+
+NEW PRIMARY MECHANISM CHECK (web excerpts read, no raw-PDF digest claimed):
+[Avellaneda–Stoikov 2008, High-frequency trading in a limit order book](https://math.nyu.edu/~avellane/HighFrequencyTrading.pdf),
+DOI 10.1080/14697680701381228: introduction, price/order-arrival assumptions,
+inventory-dependent reservation quotes and numerical-simulation setup read.
+The actor posts executable bid/ask quotes and controls inventory; simulations
+assume a Brownian mid-price and specified order arrivals. This is theory/simulation,
+not current EUR/USD net-performance validation. Its spread mechanism cannot
+automatically be assigned to a retail martingale grid merely because both use
+limit orders; access, actual fills and inventory losses need evidence.
+[Guéant–Lehalle–Fernandez-Tapia, arXiv:1105.3115v5](https://arxiv.org/abs/1105.3115v5),
+revised 2012-08-03: primary abstract/metadata only, not full paper. It treats
+liquidity provision with inventory constraints and execution-arrival assumptions.
+Useful for mechanism/risk distinction, not an empirical surviving-edge claim.
+Search-engine crawl/publication-age labels were not used to date either paper.
+
+SHARED ROUTE:
+AXIS A scoped veto/lessons + AXIS B mechanism/access/cost qualification ->
+one selected and distinctly preregistered economic hypothesis -> causal frozen
+manifest/harness/costs/gates and applicable challenge/atomic reservation ->
+one result preserved exactly -> rejection/uncertainty or further validation.
+Public literature/metadata can advance in parallel; a second economic branch
+does not gain a separate statistical budget. No candidate resurrection through
+renaming, period/threshold changes or comparator substitution after results.
+Trades in one grid basket and correlated days/assets do not supply independent N.
+Private predecessor history remains UNKNOWN; no confirmation/live claim.
+
+METHOD-REVIEW NINE FIELDS:
+RESULT = TWO_AXES_ROUTED_AND_FIRST_TRIAGE_RECORDED, no economic result.
+EFFECT_SIZE = NOT_MEASURED.
+UNCERTAINTY = Candidate mechanisms and attainable net execution unvalidated.
+POWER_LIMITATION = No new qualified population; preserve dependence/trial history.
+ECONOMIC_SIGNIFICANCE = Avoid repeating scoped failures; qualify who pays and
+whether a candidate remains attainable after costs and risk.
+FAILED_CRITERIA = No candidate has passed a new executable economic gate.
+LESSON = Economic rejection, source failure, access blocker and uncertainty differ;
+grid/volatility/LLM sophistication is not itself a return mechanism.
+FAMILY_STATUS = NO_NEW_FAMILY_ACTIVATED; economic experiments remain paused.
+NEXT_DECISION = Use Axis A to preserve scoped vetoes, Axis B to qualify the current
+bounded-grid mechanism/data and rank public reserves before any separately
+authorized, frozen economic test. Automated task stays disabled; PR #22 unmerged.
