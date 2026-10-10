@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T16:27:44.167702+00:00` ; acteur `github-actions-metadata`.
+Dernier cycle attesté : `2026-10-10T16:33:19.270478+00:00` ; acteur `github-actions-metadata`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -50,9 +50,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0028 |
-| Durée mesurée des opérations locales | 1.9808 |
-| Octets de payload de métadonnées | 1302 |
+| CPU mesuré des opérations locales | 0.0035 |
+| Durée mesurée des opérations locales | 2.3617 |
+| Octets de payload de métadonnées | 1736 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
