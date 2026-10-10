@@ -1,6 +1,6 @@
 # Checkpoint — construction autorisée
 
-STATUS = AUTOMATION_ENABLED_WAITING_FIRST_SCHEDULED_RECEIPT
+STATUS = BUILT_VERIFIED_SCHEDULER_ENABLED_FIRST_AUTONOMOUS_RECEIPT_UNOBSERVED
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -19,7 +19,7 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Coût : tokens/facture/polling/temps humain NON MESURÉS ; budget total Owner NON FOURNI ; aucun achat.
 - Bornes techniques par job/payload : 120 s / 2 MiB ; aucune quota d'essais ou Sharpe cible.
 - Pause/reprise/CAS/crash/budget/inconnus testés. Un résultat incertain reste consommé, sans relance économique.
-- Première publication : `51200d5197c4db707e42b4154426cff0d8ed45b3` ; heartbeat CI à `1f2acacb5157de40fba7214817eea0a0a553f792`.
+- Première publication : `51200d5197c4db707e42b4154426cff0d8ed45b3` ; garanties supplémentaires à `c6cfd07668dfe47df9ab66b628045eda8c87b84f` et `c8354e8b008ffe2c4127289035362c4d3a236d89`.
 - GitHub Actions réel : https://github.com/fahimahmedb/Quant-Trade/actions/runs/38067198981 — SUCCESS ; tests, métadonnées et publication effectués.
 - Activation confirmée par update puis peek le 2026-10-10 à 16:21 UTC ; même ID et prompt du labo vérifiés.
 - next_run_time de l'outil est null ; ne pas inventer le prochain départ ni confondre enabled et livraison.
@@ -27,6 +27,13 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Premier cycle du labo attesté par CI à 16:20 UTC ; 0 nouveaux looks. Coût du réveil du modèle NON MESURÉ.
 - Qualification ZF via cache R18/R19 : WAIT, paquet/droits/prix exact manquants ; EURUSD prochaine question utile.
 - Claim de question avant raisonnement coûteux : publier via CAS ; question prise/close ne devient pas seconde revue concurrente.
-- Prochaine action : publier la garantie de claim et état activé, vérifier premier reçu horaire quand observable ; sinon conserver cette limite.
+- Dernière CI : https://github.com/fahimahmedb/Quant-Trade/actions/runs/38068124875 — SUCCESS ; 30 tests synthétiques, metadata et publication réelle à `0f993aac29cb2e0bf853541f269d3ad736f64922`.
+- Lancement immédiat via automations_run_now indisponible : HTTP 404 Action not found avant invocation. Aucun départ réussi n'est revendiqué.
+- À 16:34 UTC : peek confirme un seul scheduler enabled et prompt exact ; dernier last_run_time reste 14:19 (ancien périmètre), next_run_time null.
+- Le timer est configuré/activé ; premier worker de recherche horaire non attesté. L'activité vérifiée actuelle est CI/métadonnées, pas un backtest ou agent en boucle prouvé.
+- Qualification runtime FX du host de construction : Python 3.12 + deux SHA256 timezone conformes à freeze ; aucune archive/row ouverte. Ne vaut pas admission des données/collecte.
+- Comptage sorties/chemins ≠ N observations ou M indépendant : aucune hausse mécanique d'un seuil à partir des scénarios de coûts/contrôles logiciels.
+- Défaut GitHub recontrôlé : `09ba64b8bee1419076ec8a30f8d75a916932c2ba`, inchangé. Aucun merge/achat/live.
+- Prochaine action : vérifier premier reçu horaire sans créer de doublon ; prendre via claim/CAS la question EURUSD, exploiter la qualification runtime cached et résoudre capture/ressources/expositions avant tout look.
 - Condition d'arrêt : pause Owner, droit/ressource manquants, budget observé atteint, ambiguïté de réservation ou intégrité.
 - À la reprise : lire ce checkpoint + CONTROL + résumé STATE ; rafraîchir seuls heads pertinents ; exécuter la prochaine question utile.

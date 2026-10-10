@@ -138,6 +138,32 @@
       },
       "previous": "d7036b780482414adcd8d6d74521757cc24f21ed84f5666e4986c8bd1f6c6b6e",
       "sequence": 3
+    },
+    {
+      "at": "2026-10-10T16:40:51.766887+00:00",
+      "hash": "374ba3dbf4bfea1b17d287d33925c33d8b009b22efc582c150fd9faaf844cd75",
+      "kind": "SCHEDULER_VERIFICATION_LIMIT",
+      "payload": {
+        "current_prompt_run_observed": false,
+        "evidence": "update+peek confirmed enabled; CI run 38068124875 completed; no current scheduled-agent receipt observed",
+        "immediate_run_request": "HTTP_404_ACTION_NOT_FOUND",
+        "last_backend_run_time_observed": "2026-10-10T14:19:16.465812+00:00",
+        "scope": "previous_prompt"
+      },
+      "previous": "bf5e197b925726eec508f7513a6b32f91fa1ee8962f42ffb1cb9e300fcbaa24c",
+      "sequence": 4
+    },
+    {
+      "at": "2026-10-10T16:40:51.769905+00:00",
+      "hash": "8f5df9cb1f6993c3284e3dd02f4646d1211e0621416b51a096ea15d7c6c2952a",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "892fa3c4b5a957e072913961e2832da4dd795413e12caff09e17fb65bad623f1",
+        "id": "fx-runtime-qualification-construction-20261010",
+        "kind": "METHOD"
+      },
+      "previous": "374ba3dbf4bfea1b17d287d33925c33d8b009b22efc582c150fd9faaf844cd75",
+      "sequence": 5
     }
   ],
   "evidence": {
@@ -150,6 +176,15 @@
       "provenance": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/EVIDENCE.jsonl#R18",
       "url": "https://databento.com/pricing",
       "version": "page v\u00e9rifi\u00e9e le 2026-10-10 ; cache audit R18"
+    },
+    "fx-runtime-qualification-construction-20261010": {
+      "fact": "Construction host Python 3.12 and both timezone hashes match the immutable upstream freeze. No archive or price row read.",
+      "id": "fx-runtime-qualification-construction-20261010",
+      "kind": "METHOD",
+      "limit": "Software/runtime identity only; not source QA, archive availability, prior-look reconciliation, capture/claim, host continuity or economic evidence. Requalify on another host.",
+      "passage": "runtime python_minor=3.12; runtime_data SHA256 for America/New_York and tzdata.zi",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/freeze.json",
+      "version": "freeze c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2 ; host verification 2026-10-10T16:26Z"
     }
   },
   "families": {
@@ -250,7 +285,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "3690e2bea49749235627a4566ef6410a6ceac50686f4d1005c3cec3607ff39c0",
+  "integrity": "91d5dc58b5c292c41d32acf4e382775f0326d9f209952b9586f650d8e21d08cb",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -258,7 +293,13 @@
   "real_capital_authorized": false,
   "scheduler": {
     "enabled_confirmed_at": "2026-10-10T16:25:22.012005+00:00",
-    "external_run": null,
+    "external_run": {
+      "current_prompt_run_observed": false,
+      "evidence": "update+peek confirmed enabled; CI run 38068124875 completed; no current scheduled-agent receipt observed",
+      "immediate_run_request": "HTTP_404_ACTION_NOT_FOUND",
+      "last_backend_run_time_observed": "2026-10-10T14:19:16.465812+00:00",
+      "scope": "previous_prompt"
+    },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
       "actor": "github-actions-metadata",
@@ -308,7 +349,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T16:33:19.272843+00:00",
+  "updated_at": "2026-10-10T16:40:51.770191+00:00",
   "usage": {
     "cpu_seconds": 0.003469702000000019,
     "human_seconds": null,

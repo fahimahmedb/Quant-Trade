@@ -26,6 +26,8 @@ Qualifier une source ou lire un protocole n'ajoute pas un backtest. Tout résult
 
 Les variantes/chemins effectivement prévus sont chargés conservativement avant la lecture. Leur dépendance reste explicite, sans inventer un M effectif moindre. Un look est unique par protocole, indépendamment du fingerprint/fournisseur. Un crash ou timeout reste consommé/UNKNOWN_OUTCOME, sans retry économique. L'exploration sur données déjà exposées conserve ses charges ; la collecte prospective ne permet pas des looks intermédiaires opportunistes.
 
+`trial_charges` est un compte conservateur de chemins réservés, **pas** un M statistiquement indépendant : exprimer le nombre de mécanismes/variantes, leurs dépendances et la règle de sélection dans le protocole. Les scénarios de coûts joints, contrôles logiciels et sorties de diagnostic ne sont pas autant de tests indépendants imposant un Sharpe plus fort. Le labo ne calcule aucun seuil à partir de ce compteur ; les seuils legacy sont conservés. Une hausse légitime de multiplicité après davantage de sélections ne doit pas être effacée.
+
 ## Exécution et reprise
 
 ```sh
@@ -58,3 +60,5 @@ Le polling de l'automatisation implique un réveil de modèle, même si le trava
 Budget Owner global : NON FOURNI. Achats autorisés : zéro. Les bornes 120 secondes/2 MiB de payload par opération sont techniques, modifiables, pas un budget inventé de recherche. CPU/durée instrumentés couvrent les opérations locales suivies et le runner, pas toute la machine/facture. Tokens, trafic réseau total, temps humain et coût des modèles sont NON MESURÉS. Un plafond tokens renseigné sans compteur provoque arrêt BUDGET_UNMEASURED ; les plafonds connus survivent aux reprises. Les données volumineuses/collectes requièrent une capacité et une enveloppe documentées avant admission.
 
 Tests : `PYTHONPATH=src python -m unittest discover -s tests -p 'test_edge_lab*.py'`. Vérifications synthétiques de concurrence réelle Git/local, reprise, pause, budget, expositions inconnues, freezes et absence de double look. Ce sont des contrôles logiciels, aucun nouveau test économique. Aucun changement de défaut, fusion, suppression ou capital/live.
+
+État vérifié le 10 octobre à 16:34 UTC : scheduler existant activé et prompt exact relu ; CI [38068124875](https://github.com/fahimahmedb/Quant-Trade/actions/runs/38068124875) réussie avec 30 tests, cycle et état publiés. Premier reçu du worker de recherche horaire non observé ; l'API de lancement immédiat renvoie HTTP 404 avant invocation. Activation du timer et liveness du worker restent des preuves différentes. Ce blocage/point de reprise est conservé dans CHECKPOINT/STATE ; aucun second scheduler n'est créé pour le masquer.
