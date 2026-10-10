@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T20:03:40.760001+00:00` ; acteur `github-actions-metadata`.
+Dernier cycle attesté : `2026-10-10T20:07:55.530237+00:00` ; acteur `scheduled-automation`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce co
 
 ## Prochaine décision utile
 
-Construction : Mesurer une enveloppe de ressources du harnais EURUSD figé avec fixtures synthétiques et métadonnées sauvegardées ; peut-on respecter les bornes du labo pour le protocole complet sans modifier ses fenêtres ? (`build:eurusd-technical-grid:synthetic-resource-envelope`)
+Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 
 ## Programme et preuves
 
@@ -51,9 +51,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0213 |
-| Durée mesurée des opérations locales | 8.6136 |
-| Octets de payload de métadonnées | 6076 |
+| CPU mesuré des opérations locales | 0.0229 |
+| Durée mesurée des opérations locales | 9.251 |
+| Octets de payload de métadonnées | 6510 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
@@ -66,6 +66,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
 - `build:eurusd-technical-grid:legacy-authority-bridge` : **WAIT** — Read-only exact preflight built/reviewed/tested; full launch remains WAIT. Preserve original refs/gates and all spent history. Next distinct construction question measures synthetic CPU/storage/runtime bounds, without price data, old runtime boot, ref creation or economic launch. ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z, fx-legacy-control-resource-bridge-gap-20261010.
+- `build:eurusd-technical-grid:synthetic-resource-envelope` : **RESEARCHING** — Mesurer une enveloppe de ressources du harnais EURUSD figé avec fixtures synthétiques et métadonnées sauvegardées ; peut-on respecter les bornes du labo pour le protocole complet sans modifier ses fenêtres ? ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z.
 - `qualify:cfe-vix-term-premium` : **WAIT** — No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history. ; preuves cfe-vx-accessible-catalogue-only-20261010, cfe-vx-rights-and-execution-qualification-open-20261010, cfe-vx-tas-timing-not-a-fill-cached-20261010, cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z, cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z.
 - `qualify:eurusd-technical-grid` : **WAIT** — WAIT scoped to full admission: preserve the original proxy freeze and all history; no price access. Next distinct implementation work must review an exact lab-control/original-reservation adapter and measure complete capture/storage/full-window execution bounds without market outcomes. Do not reopen this qualification hourly, reduce windows, change limits or substitute the generic runner. Process the still-OPEN Hyperliquid host/global-fills question next; ZF stays WAIT without new entitlement evidence. ; preuves histdata-personal-proxy-qualified-cached-20261010, fx-current-host-and-look-preflight-20261010T1657Z, fx-legacy-control-resource-bridge-gap-20261010, fx-runtime-qualification-construction-20261010.
 - `qualify:hyperliquid-forced-flow` : **WAIT** — WAIT for a verifiably pre-existing compliant node/global-fill/local-clock/BBO host with documented zero-paid authorized access, durable resources and original protocol gates. No node installation, paid host, requester-pays archive or trades-only substitute. Current docs/host question is closed until a distinct host/access fact; inspect one different mechanism with genuinely accessible primary data instead, preserving all old exposures and multiplicity. ; preuves hl-global-fills-host-primary-cached-20261010, hl-selected-host-capacity-20261010T1705Z, hl-stale-readiness-marker-contradiction-20261010.
