@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from quant.edge_lab.engine import Lab, initialize
-from quant.edge_lab.resources import probe_eurusd, QUESTION, FROZEN_COMMIT, PREFIX
+from quant.edge_lab.resources import probe_eurusd, probe_reader, QUESTION, READER_QUESTION, FROZEN_COMMIT, PREFIX
 from quant.edge_lab.store import Refused
 
 
@@ -106,6 +106,40 @@ class ResourceBoundaryTests(unittest.TestCase):
         with patch('quant.edge_lab.resources._git', side_effect=AssertionError('No reads permitted')):
             with self.assertRaisesRegex(Refused, 'BUDGET_UNMEASURED'):
                 probe_eurusd(self.lab, '.', self.claim)
+
+    def test_reader_cannot_reuse_the_calendar_probe_claim(self):
+        with patch('quant.edge_lab.resources._git', side_effect=AssertionError('No reads permitted')):
+            with self.assertRaises(Refused):
+                probe_reader(self.lab, '.', self.claim)
+
+    def test_reader_child_failure_is_retained_without_main_call_retry_or_history_change(self):
+        self.lab.decide(QUESTION, 'WAIT', ['resource-fixture'], 'Need parser boundary', claim_id=self.claim)
+        self.lab.build_question(READER_QUESTION, QUESTION, 'Synthetic duplicate/CRC boundary?',
+                                'Admission only', ['resource-fixture'])
+        claim = self.lab.claim_decision(READER_QUESTION, 'synthetic-reader-builder')
+        state, control = self.lab.snapshot()
+        self.blobs['HEAD:research/edge_lab/STATE.json'] = json.dumps(state).encode()
+        key = FROZEN_COMMIT+':'+PREFIX+'freeze.json'
+        freeze = json.loads(self.blobs[key])
+        code = b'raise AssertionError("parent must not invoke run or import main")\n'
+        freeze['files']['run.py'] = hashlib.sha256(code).hexdigest()
+        self.blobs[key] = json.dumps(freeze).encode()
+        self.blobs[FROZEN_COMMIT+':'+PREFIX+'run.py'] = code
+        calls = []
+        def child(argv, **kwargs):
+            calls.append(argv)
+            self.assertEqual(sorted(p.name for p in Path(kwargs['cwd']).iterdir()),
+                             ['engine.py', 'fixture.py', 'run.py', 'safety_kernel.py'])
+            return subprocess.CompletedProcess(argv, -9, b'', b'')
+        with patch('quant.edge_lab.resources._git', side_effect=self.read_git), \
+             patch('quant.edge_lab.resources.FREEZE_SHA256', hashlib.sha256(self.blobs[key]).hexdigest()), \
+             patch('quant.edge_lab.resources.subprocess.run', side_effect=child):
+            report = probe_reader(self.lab, '.', claim)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(report['observation']['status'], 'SYNTHETIC_LIMIT_OR_SOFTWARE_FAILURE')
+        self.assertFalse(report['outcome_access_authorized'])
+        self.assertFalse(report['full_protocol_admitted'])
+        self.assertEqual(self.lab.snapshot(), (state, control))
 
 
 if __name__ == '__main__':

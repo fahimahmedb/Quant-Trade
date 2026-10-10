@@ -42,6 +42,8 @@ def main(argv=None):
     preflight.add_argument("--claim-id", required=True)
     resources = sub.add_parser("synthetic-resources", help="Fixed full-calendar synthetic EURUSD capacity probe")
     resources.add_argument("--claim-id", required=True)
+    reader = sub.add_parser("synthetic-reader", help="Fixed synthetic ZIP duplicate/CRC admission challenge")
+    reader.add_argument("--claim-id", required=True)
     execute = sub.add_parser("execute")
     execute.add_argument("protocol")
     serve = sub.add_parser("serve")
@@ -84,6 +86,10 @@ def main(argv=None):
     elif args.action == "synthetic-resources":
         from quant.edge_lab.resources import probe_eurusd
         print(json.dumps(probe_eurusd(lab, ROOT, args.claim_id), ensure_ascii=False))
+        return
+    elif args.action == "synthetic-reader":
+        from quant.edge_lab.resources import probe_reader
+        print(json.dumps(probe_reader(lab, ROOT, args.claim_id), ensure_ascii=False))
         return
     elif args.action == "serve":
         instance = server(args.state_dir, args.port)

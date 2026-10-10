@@ -97,16 +97,18 @@
       "created_at": "2026-10-10T20:13:29.710667+00:00",
       "decision_use": "D\u00e9cider besoin de borne source/arr\u00eat de ce protocole exact. Pas de ZIP de march\u00e9, d\u2019outcome, de changement du gel/433jours/co\u00fbts ni de look. Un succ\u00e8s sur fixture ne qualifie pas automatiquement les 21 archives r\u00e9elles.",
       "evidence": [
-        "eurusd-full-calendar-synthetic-capacity-20261010T2012Z"
+        "eurusd-synthetic-reader-group-crc-20261010T2136Z"
       ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "Exact parser duplicate-group and CRC fixture completed and preserved. Resource/source/original-launch admission remains WAIT; no new OPEN question justified by cached information. Next: bounded metadata tick, wake only on distinct permitted full-input/group bounds or original reservation/launcher authority evidence. Never repeat the same probe, change frozen parameters/code/window, or auto-launch market.",
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:synthetic-resource-envelope",
       "priority": 2,
       "question": "Avec des ZIPs g\u00e9n\u00e9r\u00e9s uniquement en synth\u00e9tique, qualifier la m\u00e9moire/co\u00fbt du lecteur EURUSD fig\u00e9 sous groupes de m\u00eame timestamp et doublons : les budgets techniques peuvent-ils \u00eatre admis sans borne d\u2019entr\u00e9e ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-10T21:35:37.987220+00:00",
+      "status": "WAIT"
     },
     "build:eurusd-technical-grid:synthetic-resource-envelope": {
       "actor": "scheduled-automation-build-20261010T2008Z",
@@ -643,6 +645,33 @@
       },
       "previous": "a85f20eb3fb41f03efca3e978f36a3817df9bef5e7bed23a70df4819b5e20de4",
       "sequence": 33
+    },
+    {
+      "at": "2026-10-10T21:35:34.553226+00:00",
+      "hash": "62572cb759cd9e96bb7cd75172432afca3cd0a2f4e5179c45d6f7139b203acaf",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "126cbe4e210f6446f07b56fafb3b0237ded2cb6f4c70c569a929bc6c176bd419",
+        "id": "eurusd-synthetic-reader-group-crc-20261010T2136Z",
+        "kind": "METHOD"
+      },
+      "previous": "828af637cff48bb70511418915afba3da429873e07a01c11bcb660d2e152f9c5",
+      "sequence": 34
+    },
+    {
+      "at": "2026-10-10T21:35:37.987235+00:00",
+      "hash": "756de16f0703f862c01b485f965852c729b69b1b4d439fdcae623ec8c724e27c",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "eurusd-synthetic-reader-group-crc-20261010T2136Z"
+        ],
+        "id": "build:eurusd-technical-grid:synthetic-reader-boundary",
+        "next": "Exact parser duplicate-group and CRC fixture completed and preserved. Resource/source/original-launch admission remains WAIT; no new OPEN question justified by cached information. Next: bounded metadata tick, wake only on distinct permitted full-input/group bounds or original reservation/launcher authority evidence. Never repeat the same probe, change frozen parameters/code/window, or auto-launch market.",
+        "verdict": "WAIT"
+      },
+      "previous": "62572cb759cd9e96bb7cd75172432afca3cd0a2f4e5179c45d6f7139b203acaf",
+      "sequence": 35
     }
   ],
   "evidence": {
@@ -1173,6 +1202,128 @@
       "url": "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py",
       "version": "Frozen e42d4924 / freeze c891771d; new read-only inspector SHA256 84aa3960249b7c855086f8e4828bf9e46d49e57f97ca0925821fe0b82c692043; inspected 2026-10-10T20:02:47.882695+00:00"
     },
+    "eurusd-synthetic-reader-group-crc-20261010T2136Z": {
+      "claim_commit": "ccd0ba3e8a07712e2ef1c345a749927b57585897",
+      "claim_id": "27afd56a0117f133908c6597de311e79c3ed68f972b0befdb8fabb8ffc5e41c8",
+      "fact": {
+        "main_and_capture_called": false,
+        "report": {
+          "claim_id": "27afd56a0117f133908c6597de311e79c3ed68f972b0befdb8fabb8ffc5e41c8",
+          "freeze_sha256": "c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2",
+          "frozen_commit": "e42d4924a33efa78bab97939d654424cc1501fb8",
+          "full_protocol_admitted": false,
+          "limitations": [
+            "Synthetic path only, not an upper bound on real quote/event density",
+            "Synthetic active-basket/event density is not a worst-case bound",
+            "21 real archives: sizes, row counts, duplicate group sizes and parser/CRC/capture costs UNKNOWN",
+            "Historical executable fills/costs, original reservation and launcher gates unchanged",
+            "No real prices, performance result, trial charge or legacy main/capture invocation"
+          ],
+          "metadata_body_bytes": 258653,
+          "network_bytes": 0,
+          "observation": {
+            "cpu_seconds": 14.868367186,
+            "duplicate_group": {
+              "compressed_fixture_bytes": 107866,
+              "cpu_seconds": 14.866356104,
+              "duplicates_counted": 999999,
+              "emitted_groups": 1,
+              "fixture": "FIXED_MILLION_IDENTICAL_TIMESTAMP_ROWS_V1",
+              "parsed_rows": 1000000,
+              "peak_rss_bytes": 234905600,
+              "requested_rows": 1000000,
+              "status": "COMPLETED",
+              "uncompressed_fixture_bytes": 37000000,
+              "wall_seconds": 14.868622870002582
+            },
+            "economic_engine_called": false,
+            "peak_rss_bytes": 234905600,
+            "rss_unit": "Linux ru_maxrss KiB converted to bytes",
+            "synthetic_crc": "REJECTED_AS_SOURCE_ERROR",
+            "wall_seconds": 14.869376009999542
+          },
+          "operation_wall_seconds": 15.0323835579984,
+          "outcome_access_authorized": false,
+          "paid_usd": 0,
+          "schema": 1,
+          "scope": "SYNTHETIC_READER_BOUNDARY_NOT_MARKET_LOOK",
+          "tokens": null,
+          "worker_limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 60,
+            "wall_seconds": 90
+          },
+          "worker_sha256": "a1020d406b69dc328f4743da7a4fca0cbc397b2d434b71eee4eac25108d8383e"
+        },
+        "tests": {
+          "cases": 49,
+          "result": "PASS",
+          "scope": "synthetic software only",
+          "suite": "test_edge_lab*.py",
+          "wall_seconds": 2.47
+        },
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "None. This qualifies a resource hazard in the frozen parser, not profitability, historical fills, rights or the 433-day protocol.",
+          "EFFECT_SIZE": {
+            "cpu_seconds": 14.868367186,
+            "duplicate_group": {
+              "compressed_fixture_bytes": 107866,
+              "cpu_seconds": 14.866356104,
+              "duplicates_counted": 999999,
+              "emitted_groups": 1,
+              "fixture": "FIXED_MILLION_IDENTICAL_TIMESTAMP_ROWS_V1",
+              "parsed_rows": 1000000,
+              "peak_rss_bytes": 234905600,
+              "requested_rows": 1000000,
+              "status": "COMPLETED",
+              "uncompressed_fixture_bytes": 37000000,
+              "wall_seconds": 14.868622870002582
+            },
+            "economic_engine_called": false,
+            "peak_rss_bytes": 234905600,
+            "rss_unit": "Linux ru_maxrss KiB converted to bytes",
+            "synthetic_crc": "REJECTED_AS_SOURCE_ERROR",
+            "wall_seconds": 14.869376009999542
+          },
+          "FAILED_CRITERIA": [
+            "MAX_SAME_TIMESTAMP_REAL_GROUP_UNKNOWN",
+            "DECOMPRESSED_INPUT_VOLUME_AND_TOTAL_ROW_COUNT_UNKNOWN",
+            "FULL_21_ARCHIVE_CAPTURE_PARSE_CRC_ENGINE_BOUND_UNKNOWN",
+            "ORIGINAL_RESERVATION_AND_EXACT_LAUNCH_ADAPTER_UNADMITTED"
+          ],
+          "FAMILY_STATUS": "FROZEN_NOT_EXECUTED; SOURCE_AND_RESOURCE_ADMISSION_WAIT; no economic rejection or new look; private/effective M UNKNOWN",
+          "LESSON": "107866 compressed fixture bytes / 37000000 uncompressed bytes retain one million quote objects until the group flushes: peak RSS234905600. seen counts999999 duplicates but group still contains all rows. Do not admit execution from ZIP size or the earlier minute engine fixture; require input/group bounds. CRC corruption is rejected as SourceError on the fixed software case.",
+          "NEXT_DECISION": "No automatic repeat or threshold/window/harness change. Keep this exact launch blocked until distinct permitted primary evidence/input bounds and original reservation/launcher reconciliation exist; a frozen-code optimization would require a distinct authorized preregistration, not substitution.",
+          "POWER_LIMITATION": "Zero market observations or returns accessed. One million generated identical rows and two software cases are neither economic N nor independent M, and do not change trial budgets.",
+          "RESULT": "WAIT_INPUT_GROUP_AND_FULL_RUN_RESOURCE_BOUNDS; fixed synthetic reader/CRC challenges completed",
+          "UNCERTAINTY": "One fixed artificial duplicate group and one fixed CRC case; no evidence about their prevalence in real HistData. Peak RSS of this fixture is not a real-source upper bound; whole capture/parse/economic job volume and time UNKNOWN."
+        },
+        "worker_file_size_limit_bytes": 8388608
+      },
+      "id": "eurusd-synthetic-reader-group-crc-20261010T2136Z",
+      "kind": "METHOD",
+      "limit": "No real price/archive body or outcome; run module imported only for exact ArchiveReader, main/capture/runtime/transport never called. Artificial fixture is not actual sampling, a prevalence estimate, new market look, alpha or economic rejection. Resource metrics scoped to this operation; parent/startup/total-job CPU and traffic/tokens/human totals UNKNOWN. No protocol edited or reserved by this probe.",
+      "observed_cost": {
+        "metadata_body_bytes": 258653,
+        "network_bytes": 0,
+        "operation_wall_seconds": 15.0323835579984,
+        "paid_usd": 0,
+        "scope": "local fixed synthetic reader probe only",
+        "synthetic_uncompressed_bytes": 37000000,
+        "tokens": null,
+        "worker_cpu_seconds": 14.868367186,
+        "worker_wall_seconds": 14.869376009999542
+      },
+      "passage": "ArchiveReader.groups appends every same-time Quote even when row is already in seen; flush occurs only on a later timestamp or final EOF. Fixed synthetic ZIP: 1000000 identical valid schema rows, single2025-01 component fixture; second fixed one-row ZIP with deliberately altered central-directory CRC. Neither replaces the complete manifest or its21archives/433days.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py",
+      "version": {
+        "freeze_sha256": "c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2",
+        "frozen_commit": "e42d4924a33efa78bab97939d654424cc1501fb8",
+        "observed_at": "2026-10-10T21:35:22.414459+00:00",
+        "probe_source_sha256": "914e7b46cec22117bb3fd5bdaf889066f7114885875f46f1f30d917be6152747",
+        "worker_sha256": "a1020d406b69dc328f4743da7a4fca0cbc397b2d434b71eee4eac25108d8383e"
+      }
+    },
     "fx-current-host-and-look-preflight-20261010T1657Z": {
       "fact": "The new host observation confirms immutable runtime identity and no known local/original-ref FX execution. 433 days, three economic expressions, six dependent cost paths and UNKNOWN private exposure are preserved. Thirty-one laboratory synthetic cases passed after repairing only claim display; no economic look, charge, F1 outcome or general QuantSystem boot.",
       "id": "fx-current-host-and-look-preflight-20261010T1657Z",
@@ -1391,7 +1542,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "537fd0f16d7a7cc70b9a6f757dd332ac95b99f2d276c3f450fbfd5ac39a2c98a",
+  "integrity": "01c87a3e00f59c6fb9894ae5ef71dd68f4fd8c78858d2e4285ca4a1295845e7a",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1455,7 +1606,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T21:31:30.574683+00:00",
+  "updated_at": "2026-10-10T21:35:37.988702+00:00",
   "usage": {
     "cpu_seconds": 0.028038164999999955,
     "human_seconds": null,
