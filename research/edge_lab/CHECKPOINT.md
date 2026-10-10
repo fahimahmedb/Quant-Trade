@@ -1,6 +1,6 @@
 # Checkpoint — construction autorisée
 
-STATUS = CFE_VX_ADMISSION_PENDING_NO_ECONOMIC_LOOK
+STATUS = IDLE_SOURCE_ADMISSION_BLOCKED
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -68,3 +68,17 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Opérations source Cboe : ~10.2002s de durée et~0.2132s CPU instrumentés ; payloaddocumentaire mesuré, trafic total/temps humain/tokens NONMESURÉS. Plafonds120s/2MiB respectés par les opérations ; coût payant0 et budgetOwner globalNONFOURNI. Ces compteurs d'opération ne couvrent pas toute la session/facture.
 - NEXT : claim-question `qualify:cfe-vix-term-premium` avec identité de session, puis publicationCAS avant lecture coûteuse. Réutiliser ces quatre sources/hash/passages ; rechercher seulement preuve primaire distincte du paquet complet, droits applicables et horloges/fees/PIT/resource qui peut décider admission ou arrêt. Aucun accès CSV/outcome avant protocole admissible+gel/revue/synthétiques+reserveSTATE publié+RUNNINGCAS.
 - ZF/EURUSD/HL WAIT ne se rouvrent pas à chaque heure. Si aucune preuve utile accessible ne justifie le coût, conserver IDLE/BLOCKED. La réserve CFE n'est pas READY_TO_EXECUTE et ne rend aucun holdout vierge. Le scheduler unique reste inchangé ; pas de board/handoff/contrat additionnel ou modification de production hors du labo.
+
+
+## Admission VX — 2026-10-10 17:35 UTC
+
+- HEAD distant b594f570 lu, CONTROL paused=false ; README blob cbdbe366 inchangé. Checkout isolé exact. Tick réel 17:29:43 UTC, acteur `scheduled-automation`, cinq heads allowlistés, zéro delta, aucun backtest. Ce reçu n'atteste pas une boucle de worker économique.
+- Claim `qualify:cfe-vix-term-premium` publié par CAS à ae67c50c53c92b514845c76df18d6b7de90a6cad contre b594f570 avant nouvelle recherche ; id 12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65, acteur de session scheduled-automation-20261010T1731Z. Sources précédentes réutilisées, pas de probes répétées ZF/EURUSD/HL.
+- Décision CLI = WAIT_SOURCE_ADMISSION, sans résultat économique. Les specs cached distinguent règlement/TAS/fill : cutoff TAS 15:00 Chicago, pas de TAS le jour d'expiration, plage autorisée ±0.50 point et ordres limités. Cette plage n'est ni spread observé ni fill garanti. Règles/horloges historiques et offsets réellement exécutés non établis ; aucun VIX-close ou roll continu substitué.
+- Deux opérations documentaires nouvelles bornées : page frais, services de données, PDF frais ; un ancien chemin rulebook renvoie404, corps non lu. 1,595,229octets de payload, 1.728843551s de durée et0.132590422s CPU mesurés, chacun sous120s/2MiB. Trafic total, temps humain et tokens NON MESURÉS ; budget Owner NON FOURNI, payant0. Coût observable détaillé dans evidence ; pas une mesure de toute la session/facture.
+- PDF primaire effectif13juin2026 : VX Customer1.51USD par côté ; page frais datée10octobre2026 même taux, hors frais réglementaires applicables. Ce ne sont pas les frais complets/historiques d'un broker. Feeds officiels BBO/depth sous licences/tarifs et waivers conditionnels ; aucun entitlement historique zéro-payant documenté. Les tarifs ne prouvent pas l'inexistence d'une autre source permise gratuite.
+- Page services statique : book vide, seules étiquettes Asks/Bids, horodatage vide ; aucun JavaScript, WS ou API dynamique invoqué. Zéro quote/CSV/ZIP/prix/rendement/statistique de performance lu. Catalogue12noms2013 et HEAD d'un fichier déjà sauvegardés ; pas de nouvelle acquisition de ce fichier ni fenêtre choisie. Droits personnels conditionnels conservés, aucune permission commerciale/redistribution déduite.
+- Trois packets METHOD/ACCESS/CONTRADICTION et decide avec claim d'origine enregistrés ; neuf champs de verdict d'admission dans la preuve contradictoire. Famille demeure HYPOTHESIS/ADMISSION_WAIT : full package/PIT clocks/rolls/fills/fees/margins et contrat de décision manquants ; aucun rejet de la prime de risque de volatilité ou alpha établi.
+- CLI next = null : toutes les questions actuelles sont WAIT, aucune nouvelle question OPEN discriminante. STATUS = IDLE_SOURCE_ADMISSION_BLOCKED. Prochaine reprise : petit tick de métadonnées ; réexaminer uniquement sur nouveau fait précis de droits/paquet historique zéro-payant/horloge/coûts/ressources, ou question distincte de raccord d'implémentation. Sans tel delta, rester IDLE/BLOCKED et ne pas répéter la revue ou notifier Owner.
+- Préfixe du ledger et compteurs non décroissants vérifiés ; baseline/expositions/looks/jobs/protocols/trial_charges inchangés. Zéro nouveau look/essai/worker économique ; F1 outcomes fermés, B2+B4=40, KILL valide/invalide séparés, M effectif/privéUNKNOWN conservés, aucun holdout remis à zéro. Pas de H001/runtime général, achat/compte/trading ou autre automatisation.
+- Aucun code modifié dans ce batch : 32tests synthétiques et CI38071395825 SUCCESS du batch précédent restent la validation logicielle pertinente ; pas de rerun de test ou de marché sans changement justifiant.

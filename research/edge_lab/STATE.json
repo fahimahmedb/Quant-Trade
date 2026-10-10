@@ -74,14 +74,19 @@
       "created_at": "2026-10-10T17:18:39.234578+00:00",
       "evidence": [
         "cfe-vx-accessible-catalogue-only-20261010",
-        "cfe-vx-rights-and-execution-qualification-open-20261010"
+        "cfe-vx-rights-and-execution-qualification-open-20261010",
+        "cfe-vx-tas-timing-not-a-fill-cached-20261010",
+        "cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z",
+        "cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z"
       ],
       "family": "cfe-vix-term-premium",
       "lease_seconds": 600,
+      "next_action": "No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history.",
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-10T17:34:26.748941+00:00",
+      "status": "WAIT"
     },
     "qualify:eurusd-technical-grid": {
       "actor": "scheduled-automation-20261010T1654Z",
@@ -381,6 +386,61 @@
       },
       "previous": "698d4f42539e03bcbd65b4ad5fa82e275e0e7f38a8223bed61d6928dad89ec51",
       "sequence": 19
+    },
+    {
+      "at": "2026-10-10T17:34:26.303411+00:00",
+      "hash": "216647a825222280edbbb13769c5d3c2704bbe88cdb616cbda30e464810e4de2",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "0627171ca2a2aa7ca08ae501f8828b9fe9e4bb72dcde1d50412bf8150065ad9d",
+        "id": "cfe-vx-tas-timing-not-a-fill-cached-20261010",
+        "kind": "METHOD"
+      },
+      "previous": "a3b76ad168d5ebb79cb9eee3fd886f93eb69b0a0815e6b97b79da51e25c936ba",
+      "sequence": 20
+    },
+    {
+      "at": "2026-10-10T17:34:26.464274+00:00",
+      "hash": "42c23a49c1d939ab75c729a2ab00fe20739531d05815d376cc8f3a83a7d39931",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "e49a3361532ee995c03a2ceb4b49fba5502ab3d52bdfe32a9e2ebaa24c99e76c",
+        "id": "cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z",
+        "kind": "ACCESS"
+      },
+      "previous": "216647a825222280edbbb13769c5d3c2704bbe88cdb616cbda30e464810e4de2",
+      "sequence": 21
+    },
+    {
+      "at": "2026-10-10T17:34:26.590638+00:00",
+      "hash": "484dc6239c9646426b84e7c9e31b922cb92138afe6ee2a50d05c6ab93e16fd8c",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "2f5051691a737a8334d1319ec6fe7502da8afe754e22d76c18d1df3d4c987743",
+        "id": "cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "42c23a49c1d939ab75c729a2ab00fe20739531d05815d376cc8f3a83a7d39931",
+      "sequence": 22
+    },
+    {
+      "at": "2026-10-10T17:34:26.748956+00:00",
+      "hash": "c9ea1fea2884eca65d56cfd9c2794fddf6ddf95fd60d43a4391408398c963931",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "cfe-vx-accessible-catalogue-only-20261010",
+          "cfe-vx-rights-and-execution-qualification-open-20261010",
+          "cfe-vx-tas-timing-not-a-fill-cached-20261010",
+          "cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z",
+          "cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z"
+        ],
+        "id": "qualify:cfe-vix-term-premium",
+        "next": "No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history.",
+        "verdict": "WAIT"
+      },
+      "previous": "484dc6239c9646426b84e7c9e31b922cb92138afe6ee2a50d05c6ab93e16fd8c",
+      "sequence": 23
     }
   ],
   "evidence": {
@@ -422,6 +482,151 @@
       ],
       "url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/settlement-archive",
       "version": "Primary Cboe pages inspected 2026-10-10; archive SHA256 013a2a14954dd1bf5c07df989dac1af80c74a4eaca16f0372c2df403ad0284b9; specification SHA256 e8ed45c068278ed52bee99c8b5d60112689835b07c0153b0bfa5cfab0e2c1012."
+    },
+    "cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z": {
+      "claim_id": "12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65",
+      "fact": "Current exchange transaction fees are documented, not complete historical execution costs. The official fee page dated Oct 10, 2026 lists the same Customer VX rate and explicitly excludes any applicable CFE Regulatory Fee. The fee PDF is effective June 13, 2026. They are different-version cost metadata, not authenticated fee vintages for a historical strategy. Official market-data services distinguish Top-of-Book and Depth-of-Book real-time feeds with licensing options; no pre-existing authorized zero-paid full historical package is evidenced in this session.",
+      "id": "cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z",
+      "kind": "ACCESS",
+      "limit": "Listed feed charges are neither a purchase nor proof that every permitted historical route must cost money. Waivers/exemptions exist; none was asserted as our entitlement. No broker commissions, historical taxes/regulatory fees, actual spread/latency/TAS offset, financing or margin path authenticated. No account, contact, subscription or quote body/API was accessed.",
+      "observable_cost": {
+        "human_seconds": null,
+        "network_total_bytes": null,
+        "paid_usd": 0,
+        "scope": "Only two bounded documentation fetch operations, not total session cost; headers, proxy traffic and model billing unmeasured.",
+        "source_cpu_seconds": 0.132590422,
+        "source_operations": [
+          {
+            "at_utc": "2026-10-10T17:31:16Z",
+            "cpu_seconds": 0.07075893100000001,
+            "documents": [
+              {
+                "error": "HTTP Error 404: Not Found",
+                "name": "rulebook-index",
+                "url": "https://www.cboe.com/us/futures/regulation/rule_book/"
+              },
+              {
+                "bytes": 630999,
+                "canonical_url": "https://www.cboe.com/us/futures/membership/fee_schedule/",
+                "content_type": "text/html; charset=utf-8",
+                "name": "fees-index",
+                "sha256": "4d544e4da36e0edc1aeb7129285fec594582ca689a37889481eb879e0b3b70cc",
+                "status": 200,
+                "url": "https://www.cboe.com/us/futures/membership/fee_schedule/"
+              }
+            ],
+            "paid_usd": 0,
+            "price_rows_read": 0,
+            "tokens": null,
+            "wall_seconds": 1.0381305310002062
+          },
+          {
+            "at_utc": "2026-10-10T17:31:44Z",
+            "cpu_seconds": 0.061831490999999995,
+            "documents": [
+              {
+                "bytes": 628315,
+                "canonical_url": "https://www.cboe.com/market_data_services/us/futures/",
+                "content_type": "text/html; charset=utf-8",
+                "name": "data-services",
+                "sha256": "6e107d49aec0b1ffaf3764af1919728ce44ef7c18ec59daa9e658d73e71450c9",
+                "status": 200,
+                "suffix": ".html",
+                "url": "https://www.cboe.com/market_data_services/us/futures/"
+              },
+              {
+                "bytes": 335915,
+                "canonical_url": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+                "content_type": "application/pdf",
+                "name": "fee-schedule",
+                "sha256": "4f9b7321ea0354144c95a87983fafc0115cd7f302c92b3d0d14f95df08f8ff66",
+                "status": 200,
+                "suffix": ".pdf",
+                "url": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf"
+              }
+            ],
+            "paid_usd": 0,
+            "price_rows_read": 0,
+            "tokens": null,
+            "wall_seconds": 0.6907130199979292
+          }
+        ],
+        "source_payload_bytes": 1595229,
+        "source_wall_seconds": 1.7288435509981355,
+        "tokens": null
+      },
+      "passage": "Section 1.a: Customer $1.51 Per Contract Side; TPH $1.14 with volume rebate conditions. Section 4: CFE Data $2,000/Direct Source/month. Section 6.A: CFE Top - Futures Non-Professional $1.50/Device/Authorized User/month. Footnote 19 describes a first-six-month fee waiver for Distributors in the retail-broker program and subsequent obligations.",
+      "primary_sources": [
+        {
+          "error": "HTTP Error 404: Not Found",
+          "name": "rulebook-index",
+          "url": "https://www.cboe.com/us/futures/regulation/rule_book/"
+        },
+        {
+          "bytes": 630999,
+          "canonical_url": "https://www.cboe.com/us/futures/membership/fee_schedule/",
+          "content_type": "text/html; charset=utf-8",
+          "name": "fees-index",
+          "sha256": "4d544e4da36e0edc1aeb7129285fec594582ca689a37889481eb879e0b3b70cc",
+          "status": 200,
+          "url": "https://www.cboe.com/us/futures/membership/fee_schedule/"
+        },
+        {
+          "bytes": 628315,
+          "canonical_url": "https://www.cboe.com/market_data_services/us/futures/",
+          "content_type": "text/html; charset=utf-8",
+          "name": "data-services",
+          "sha256": "6e107d49aec0b1ffaf3764af1919728ce44ef7c18ec59daa9e658d73e71450c9",
+          "status": 200,
+          "suffix": ".html",
+          "url": "https://www.cboe.com/market_data_services/us/futures/"
+        },
+        {
+          "bytes": 335915,
+          "canonical_url": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+          "content_type": "application/pdf",
+          "name": "fee-schedule",
+          "sha256": "4f9b7321ea0354144c95a87983fafc0115cd7f302c92b3d0d14f95df08f8ff66",
+          "status": 200,
+          "suffix": ".pdf",
+          "url": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf"
+        }
+      ],
+      "static_document_receipt": {
+        "dynamic_api_called": false,
+        "embedded_book_timestamp_empty": true,
+        "javascript_executed": false,
+        "market_row_values_in_static_tables": 0,
+        "price_rows_acquired": 0,
+        "static_table_labels": [
+          "Asks",
+          "Bids"
+        ],
+        "ws_opened": false
+      },
+      "url": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+      "version": "Effective June 13, 2026; fetched 2026-10-10T17:31:44Z; SHA256 4f9b7321ea0354144c95a87983fafc0115cd7f302c92b3d0d14f95df08f8ff66"
+    },
+    "cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z": {
+      "admission_verdict": {
+        "ECONOMIC_SIGNIFICANCE": "NOT_ESTABLISHED; compensation for jump/tail/margin risk is not independent alpha or guaranteed profitable execution.",
+        "EFFECT_SIZE": "NOT_MEASURED",
+        "FAILED_CRITERIA": "Full admissible historical package and explicit decision contract not evidenced. Not a failed statistical/economic criterion.",
+        "FAMILY_STATUS": "HYPOTHESIS / ADMISSION_WAIT; no runner or economic family active",
+        "LESSON": "Separate settlement references, tradable fills and risk compensation; current exchange fees and a public catalogue cannot stand in for historical after-cost execution.",
+        "NEXT_DECISION": "No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history.",
+        "POWER_LIMITATION": "No observations acquired and no test; twelve catalogue names are not N or independent trials. Private exposures/M effective UNKNOWN.",
+        "RESULT": "WAIT_SOURCE_ADMISSION; no economic result produced",
+        "UNCERTAINTY": "Historical executable quotes/TAS fills, first publication clocks, PIT rolls, complete fee/margin vintages, and package-specific rights unresolved."
+      },
+      "claim_id": "12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65",
+      "fact": "The advertised date range and one HTTP200 CSV HEAD do not prove the complete point-in-time contract/roll/clock/margin/executable-price package. Public settlement catalogue plus current TAS/fee rules cannot authorize an after-cost executable economic claim. A hypothetical personal settlement-only proxy could be studied under an explicitly different, admitted falsifiable contract, but that proxy protocol does not exist here and would not establish capture or independent alpha.",
+      "id": "cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z",
+      "kind": "CONTRADICTION",
+      "limit": "No assertion that all public data are legally unavailable, no economic rejection of volatility risk transfer, no estimate of premium/Sharpe, and no window selected. Terms are scoped personal-use evidence, not automatic denial or commercial permission. No new web probes of closed ZF/FX/HL questions. No CSV/ZIP/API/quote body or public return study read; no private exposure erased.",
+      "passage": "The cached static settlement archive exposes twelve 2013 monthly VX CSV names. The parent catalogue advertises CFE Price and Volume Detail for Select Futures Products from 2013 to Current. Cached terms allow viewing/printing/downloading one copy for personal non-commercial use with notices; other publication/derivative uses require consent subject to stated exceptions.",
+      "url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/settlement-archive",
+      "version": "Cached retrieval 2026-10-10; SHA256 013a2a14954dd1bf5c07df989dac1af80c74a4eaca16f0372c2df403ad0284b9; reconciled under published claim ae67c50c53c92b514845c76df18d6b7de90a6cad"
     },
     "cfe-vx-rights-and-execution-qualification-open-20261010": {
       "documentation_receipts": [
@@ -560,6 +765,16 @@
       "passage": "May view/print/download one copy for personal non-commercial use connected with Cboe products/services, keeping notices. Other copying/storage/publication/distribution and derivative products require consent except stated legal exceptions. Data is furnished without accuracy guarantee.",
       "url": "https://www.cboe.com/terms",
       "version": "Primary terms inspected 2026-10-10; SHA256 53b5f594213c44694d616d7009acebaea0b89b2b34c87302826af85a972564cb."
+    },
+    "cfe-vx-tas-timing-not-a-fill-cached-20261010": {
+      "claim_id": "12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65",
+      "fact": "A daily settlement value is a reference, not an executable bid/ask or guaranteed zero-offset TAS fill. Ex-ante TAS order timing, offset, fill/reject and expiry rules are required. Current specs show multiplier 1000; the allowed offset range is a rule bound, not an observed spread, cost or fill probability. Monthly final settlement uses A.M.-settled SPX options; weekly settlement differs. No VIX-close substitution or continuous-futures look-ahead roll.",
+      "id": "cfe-vx-tas-timing-not-a-fill-cached-20261010",
+      "kind": "METHOD",
+      "limit": "Current metadata only. Does not authenticate historical rule vintages, first publication clocks, actual TAS offsets, executable quotes/queues, broker access or settled P&L. One cached source reused; no new specs fetch, CSV, price or outcome.",
+      "passage": "On a normal Business Day, the trading hours for all types of TAS transactions in VX futures end at 3:00 p.m. Chicago time. TAS transactions in an expiring VX futures contract are not permitted during the Business Day of its final settlement date. The permissible price range for all types of TAS transactions in VX futures is from 0.50 index points below the daily settlement price to 0.50 index points above the daily settlement price. All TAS orders are required to be Day Orders, Immediate or Cancel Orders, or Fill or Kill Orders. TAS Market Orders are not permitted.",
+      "url": "https://www.cboe.com/tradable-products/vix/vix-futures/specifications",
+      "version": "Contract Snapshot as of June 13, 2025; retrieved 2026-10-10; cached HTML SHA256 e8ed45c068278ed52bee99c8b5d60112689835b07c0153b0bfa5cfab0e2c1012"
     },
     "fx-current-host-and-look-preflight-20261010T1657Z": {
       "fact": "The new host observation confirms immutable runtime identity and no known local/original-ref FX execution. 433 days, three economic expressions, six dependent cost paths and UNKNOWN private exposure are preserved. Thirty-one laboratory synthetic cases passed after repairing only claim display; no economic look, charge, F1 outcome or general QuantSystem boot.",
@@ -779,7 +994,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "6cac1625b6afc0e89c6678b759e85948c044434a5cb39cf6f47a84e13b2293dc",
+  "integrity": "bd198af3d4e0180d21875ad1740863a051f4588c4e215a9c011dae4e81baa932",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -843,7 +1058,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T17:29:44.057583+00:00",
+  "updated_at": "2026-10-10T17:34:26.752668+00:00",
   "usage": {
     "cpu_seconds": 0.009581175999999997,
     "human_seconds": null,
