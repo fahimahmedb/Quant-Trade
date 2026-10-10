@@ -1,24 +1,25 @@
 # Mission Owner — audit, recherche, comparaison
 STATUS = AWAITING_OWNER_FEEDBACK
 PHASES_1_TO_4 = COMPLETE_WITH_DISCLOSED_LIMITATIONS
+PHASE_5 = RECOMMENDATIONS_REVISED_V2_AWAITING_FEEDBACK
 DATE = 2026-10-10 UTC
 IMPLEMENTATION_AUTHORIZED = FALSE
 NEW_ECONOMIC_TEST_AUTHORIZED = FALSE
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
-NEXT = recueillir retour Owner; réviser recommandations, budget/modèles/Claude; attendre accord explicite sur version à mettre en œuvre.
+NEXT = discuter révision 2 (objectif risque/alpha, classement conditionnel, ressources/Claude); attendre accord explicite sur version et actions à mettre en œuvre.
 STOP = aucun worker/labo/test/fusion; ni silence, ni horaire, ni contrôle automatique ne vaut accord.
 
 ## Persistance
 - Branche documentaire : docs/owner-edge-audit-2026-10-10.
 - Base : 09ba64b8bee1419076ec8a30f8d75a916932c2ba; branche par défaut inchangée.
 - Premier checkpoint publié : 32c80b10311078bce77c378c60520f3b519b1d08.
-- Livraison finale : HEAD de cette branche; vérifier son SHA distant avant reprise.
+- Livraison initiale : 2fb27d8575dde2ba54b8d3c62171b099d3d096bd. Révision 2 : HEAD documentaire à vérifier avant reprise.
 - Seulement research/mission_audit_2026-10-10/{CHECKPOINT.md,EVIDENCE.jsonl,REPORT.md} modifiés.
 - Commits documentaires [skip ci]; aucune PR ni fusion; aucun changement de production.
 
 ## Références distantes vérifiées
-- Rafraîchissement final 2026-10-10 15:09:56 UTC : heads d'entrée inchangés.
+- Référence audit 15:09:56 UTC ; révision : doc HEAD/PR28/scout macro et pause rafraîchis, inchangés.
 - Défaut blue/master-v2-2026-09-20 : 09ba64b8bee1419076ec8a30f8d75a916932c2ba, dernier commit du 27 septembre.
 - 191 branches initiales;192 après seule branche documentaire. 8 PR ouvertes initialement.
 - #21 : 0f9cb618997173155860afe6941e02cf20833481, proposition deux rails préexistante.
@@ -36,7 +37,7 @@ STOP = aucun worker/labo/test/fusion; ni silence, ni horaire, ni contrôle autom
 
 ## Concurrence et pause
 - Poursuivre la recherche Quant, id 6ac978ecda1081918fba4d76dee437f4 : conflit ancien mandat EURUSD signalé.
-- Pause effectuée vers 14:50 UTC, is_enabled=false relu immédiatement et avant livraison.
+- Pause initiale vers 14:51 UTC ; is_enabled=false et next_run_time=null revérifiés à 15:40 UTC, révision 2.
 - Dernier lancement exposé : 14:19:16 UTC; aucune preuve d'arrêt d'une session déjà lancée.
 - Ne pas réactiver l'ancien prompt; il contient un ancien mandat de test contredit par ce checkpoint.
 - GHA 15:09 UTC : 0 in_progress, 0 queued; pas de worker démarré/annulé par l'audit.
@@ -45,30 +46,30 @@ STOP = aucun worker/labo/test/fusion; ni silence, ni horaire, ni contrôle autom
 - Décision future nécessaire sur portée/droits de cette collecte/évaluation et articulation F2.
 - Hôtes privés/Claude/nœud HL : activité NON MESURÉE; pas inférée de commits.
 
-## Conclusions et recommandations
-- Aucun alpha actuel net transférable établi par les neuf dossiers externes.
-- Causes concurrentes : signal/coûts/puissance; données/droits/horloges; orchestration; ressources; temps prospectif.
-- Gouvernance dominante comme cause : NON ÉTABLI. Contrôles causaux/intégrité ont corrigé des défauts réels.
-- R1 : rapprocher point d'entrée/mémoires/expositions et périmètres; pas de nouveau registre concurrent.
-- R2 : qualifier mécanisme/source/coûts/information utile avant nouveau build.
-- R3 : inférence proportionnée pour futurs protocoles uniquement; préserver seuils/fenêtres figés.
-- R4 : un scheduler réutilisé, état/pause/budget persistants ; panneau sobre après accord.
-- R5 : déterministe d'abord; modèle coûteux sur choix ; Claude contradiction distincte mesurable.
-- Option minimale recommandée;option ambitieuse conditionnelle aux dépendances et accord.
-- Branche future proposée seulement : research/edge-lab-continuous; aucune base adoptée / branche créée.
+## Conclusions et recommandations révisées
+- Retour Owner : optimisation approfondie puis « Continue » ; poursuit la réflexion, aucune autorité de construire/tester.
+- Aucun alpha actuel net transférable établi ; onze dossiers consolidés, avec limites de lecture.
+- Gouvernance dominante comme cause : NON ÉTABLI ; contrôles ont corrigé des défauts réels.
+- Préférence conditionnelle : qualifier paquet ZF en premier ; FX proxy réserve ; HL si hôte/collecte soutenables.
+- ZF prix/droits du paquet NON MESURÉS/non qualifiés ; accès à l'usage confirmé, pas d'achat/compte.
+- Hôte HL : exigences officielles confirmées, ressources privées toujours INCONNUES.
+- E10/E11 contradictoires ; ZF contre-examiné (cash/future CTD/coûts/faible fréquence) ; classement conditionnel.
+- R1 classement économique ; R2 information/données ; R3 portée/benchmark ; R4 continuité minimale ; R5 modèles.
+- Question Owner objectif prime de risque/alpha posée ; pas de réponse à la rédaction, hypothèse large explicite.
+- Branche future research/edge-lab-continuous proposée seulement ; aucune base approuvée ni branche créée.
 
 ## Recherche achevée / limites
 - Vagues : 1 cartographie, 2 sources primaires ciblées, 3 contradictions, 4 transfert, 5 consolidation.
-- E01 réplications, E02 publication, E03 coûts, E04 trend, E05 prédiction, E06 carry, E07 Treasury, E08 Berkshire, E09 M6.
+- E01–E09 audit initial ; E10 technique/persistance/flux ; E11 complexité/contre-preuves/réponse auteurs.
 - Sources/versions/passages/limites et hashes PDF dans EVIDENCE; aucun résultat reproduit.
-- E02 et certaines contre-sources lus au niveau résumé primaire; limites explicites, aucun alpha revendiqué.
-- Expositions publiques B2/B4/negative-risk/F1 disposition/fast rail/littérature conservées; privé UNKNOWN.
+- E02 et certaines contre-sources/réponse KMZ lus au niveau résumé ; versions/limites dans EVIDENCE.
+- Expositions publiques conservées ; nouvelles lectures E10/E11/GKX et catalogue courant ZF ajoutées ; privé UNKNOWN.
 - Fichiers outcomes F1 A/B jamais ouverts; aucun backtest, achat, compte, clé API, déploiement ou sous-agent.
 - Claude indisponible jusqu'au 13 octobre selon Owner ; aucune revue simulée.
 - Budget total non fourni ; tokens/factures/heures humaines NON MESURÉS; durées de jobs ≠ tokens.
 
 ## Reprise exacte
-- Lire ce checkpoint et REPORT; demander/traiter le retour Owner.
+- Lire ce checkpoint et REPORT révision 2 ; traiter retour Owner sans relancer les recherches conclues.
 - Rafraîchir seulement refs/périmètres susceptibles d'avoir changé ; réutiliser EVIDENCE.
 - Cache local : /tmp/quant-audit-cache; clone sans checkout : /workspace/Quant-Trade.
 - Copie livrable : /workspace/quant-mission-docs; caches bruts hors Git.
