@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce co
 
 ## Prochaine décision utile
 
-Vérifier un hôte qualifié et les global fills ; ne pas substituer trades WS. (`qualify:hyperliquid-forced-flow`)
+Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 
 ## Programme et preuves
 
@@ -64,7 +64,8 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
-- `qualify:eurusd-technical-grid` : **RESEARCHING** — Réutiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions. ; preuves .
+- `qualify:eurusd-technical-grid` : **WAIT** — WAIT scoped to full admission: preserve the original proxy freeze and all history; no price access. Next distinct implementation work must review an exact lab-control/original-reservation adapter and measure complete capture/storage/full-window execution bounds without market outcomes. Do not reopen this qualification hourly, reduce windows, change limits or substitute the generic runner. Process the still-OPEN Hyperliquid host/global-fills question next; ZF stays WAIT without new entitlement evidence. ; preuves histdata-personal-proxy-qualified-cached-20261010, fx-current-host-and-look-preflight-20261010T1657Z, fx-legacy-control-resource-bridge-gap-20261010, fx-runtime-qualification-construction-20261010.
+- `qualify:hyperliquid-forced-flow` : **RESEARCHING** — Vérifier un hôte qualifié et les global fills ; ne pas substituer trades WS. ; preuves .
 - `qualify:treasury-auction-zf` : **WAIT** — Qualifier un devis/entitlement du paquet complet sans achat ; examiner la réserve EURUSD et une alternative accessible si ce verrou persiste. ; preuves audit-R18-databento-access-20261010.
 
 Les verdicts économiques importés conservent leur portée. Source inaccessible, manque de puissance et défaut logiciel restent distincts.

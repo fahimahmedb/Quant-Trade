@@ -72,22 +72,33 @@
       "claim_id": "f6a172ad0c927f15d93170d66aaaafd8a223334c20bcbd307f8bc7aca1fc9b42",
       "claimed_at": "2026-10-10T16:55:34.092412+00:00",
       "created_at": "2026-10-10T16:08:25.112725+00:00",
-      "evidence": [],
+      "evidence": [
+        "histdata-personal-proxy-qualified-cached-20261010",
+        "fx-current-host-and-look-preflight-20261010T1657Z",
+        "fx-legacy-control-resource-bridge-gap-20261010",
+        "fx-runtime-qualification-construction-20261010"
+      ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "WAIT scoped to full admission: preserve the original proxy freeze and all history; no price access. Next distinct implementation work must review an exact lab-control/original-reservation adapter and measure complete capture/storage/full-window execution bounds without market outcomes. Do not reopen this qualification hourly, reduce windows, change limits or substitute the generic runner. Process the still-OPEN Hyperliquid host/global-fills question next; ZF stays WAIT without new entitlement evidence.",
       "priority": 2,
       "question": "R\u00e9utiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions.",
       "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-10T17:02:06.038727+00:00",
+      "status": "WAIT"
     },
     "qualify:hyperliquid-forced-flow": {
+      "actor": "scheduled-automation-20261010T1654Z",
+      "claim_id": "cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136",
+      "claimed_at": "2026-10-10T17:04:05.999716+00:00",
       "created_at": "2026-10-10T16:08:25.112764+00:00",
       "evidence": [],
       "family": "hyperliquid-forced-flow",
+      "lease_seconds": 600,
       "priority": 3,
       "question": "V\u00e9rifier un h\u00f4te qualifi\u00e9 et les global fills ; ne pas substituer trades WS.",
       "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "qualify:treasury-auction-zf": {
       "created_at": "2026-10-10T16:08:25.112720+00:00",
@@ -180,6 +191,72 @@
       },
       "previous": "8f5df9cb1f6993c3284e3dd02f4646d1211e0621416b51a096ea15d7c6c2952a",
       "sequence": 6
+    },
+    {
+      "at": "2026-10-10T17:02:05.415752+00:00",
+      "hash": "630ab42b8ee34b8f1f254756b1467c14628b9eaa407bf28deaf550ada74af38e",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "ff32371f061c7c812935cc426ab1d47786ee309f18809b6dc179c5dc9323cf0b",
+        "id": "histdata-personal-proxy-qualified-cached-20261010",
+        "kind": "ACCESS"
+      },
+      "previous": "745ecbfebcbfd8fb91b4b433548dae94500623973ec223a6fe993f1c636511c8",
+      "sequence": 7
+    },
+    {
+      "at": "2026-10-10T17:02:05.621945+00:00",
+      "hash": "60490352cd0b7d4fa50e50660ab96673a15055613e13d5efef7fe4907fe3deea",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "219a7254f190c3ff990d2c82356aac6971d4907fd1a2144486d668dcc35e7b92",
+        "id": "fx-current-host-and-look-preflight-20261010T1657Z",
+        "kind": "METHOD"
+      },
+      "previous": "630ab42b8ee34b8f1f254756b1467c14628b9eaa407bf28deaf550ada74af38e",
+      "sequence": 8
+    },
+    {
+      "at": "2026-10-10T17:02:05.861679+00:00",
+      "hash": "67597c10ea6b70ab604b264b2e426c8ac936e1c9e01ef88066f2c1c1d306dba6",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "b53670a23edd4951d2aef70cbb65cb452860d1e3065f36c2943d4352490f838b",
+        "id": "fx-legacy-control-resource-bridge-gap-20261010",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "60490352cd0b7d4fa50e50660ab96673a15055613e13d5efef7fe4907fe3deea",
+      "sequence": 9
+    },
+    {
+      "at": "2026-10-10T17:02:06.038742+00:00",
+      "hash": "052ba4e782cbb3db1cb152f68368dbf521b92fd4d3b4c0cbf3fa3c247e480be9",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "histdata-personal-proxy-qualified-cached-20261010",
+          "fx-current-host-and-look-preflight-20261010T1657Z",
+          "fx-legacy-control-resource-bridge-gap-20261010",
+          "fx-runtime-qualification-construction-20261010"
+        ],
+        "id": "qualify:eurusd-technical-grid",
+        "next": "WAIT scoped to full admission: preserve the original proxy freeze and all history; no price access. Next distinct implementation work must review an exact lab-control/original-reservation adapter and measure complete capture/storage/full-window execution bounds without market outcomes. Do not reopen this qualification hourly, reduce windows, change limits or substitute the generic runner. Process the still-OPEN Hyperliquid host/global-fills question next; ZF stays WAIT without new entitlement evidence.",
+        "verdict": "WAIT"
+      },
+      "previous": "67597c10ea6b70ab604b264b2e426c8ac936e1c9e01ef88066f2c1c1d306dba6",
+      "sequence": 10
+    },
+    {
+      "at": "2026-10-10T17:04:05.999720+00:00",
+      "hash": "3b8539e38a9bf9aca92300445616e854b6e5f4ad94e7140cede5f69b3fc028b6",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "scheduled-automation-20261010T1654Z",
+        "claim_id": "cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136",
+        "id": "qualify:hyperliquid-forced-flow"
+      },
+      "previous": "052ba4e782cbb3db1cb152f68368dbf521b92fd4d3b4c0cbf3fa3c247e480be9",
+      "sequence": 11
     }
   ],
   "evidence": {
@@ -193,6 +270,36 @@
       "url": "https://databento.com/pricing",
       "version": "page v\u00e9rifi\u00e9e le 2026-10-10 ; cache audit R18"
     },
+    "fx-current-host-and-look-preflight-20261010T1657Z": {
+      "fact": "The new host observation confirms immutable runtime identity and no known local/original-ref FX execution. 433 days, three economic expressions, six dependent cost paths and UNKNOWN private exposure are preserved. Thirty-one laboratory synthetic cases passed after repairing only claim display; no economic look, charge, F1 outcome or general QuantSystem boot.",
+      "id": "fx-current-host-and-look-preflight-20261010T1657Z",
+      "kind": "METHOD",
+      "limit": "Snapshot only: no full source/artefact/log reconciliation, no raw capture identity or coverage QA. Free disk is not a sustained-worker, capture-size or full-harness duration guarantee. Refresh controls/head/locks before any access.",
+      "observable_cost": {
+        "metadata_payload_bytes_total": null,
+        "network_total_bytes": null,
+        "paid_usd": 0,
+        "qualification_cpu_seconds": null,
+        "qualification_tool_wall_seconds": 0.977569314,
+        "tokens": null
+      },
+      "passage": "All frozen files and America/New_York/tzdata.zi match; Python 3.12.14; 31,756,541,952 free disk bytes at snapshot. Local capture/result roots have no files; original unique look ref returns 404. In-progress Actions list empty at snapshot.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/freeze.json",
+      "version": "Freeze c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2; current-host metadata preflight 2026-10-10T16:57Z."
+    },
+    "fx-legacy-control-resource-bridge-gap-20261010": {
+      "fact": "The software freeze and personal proxy intent do not close admission. No reviewed exact adapter currently links lab controls/look/RUNNING publication with the original remote/local reservation and six-path result. No measured complete 21-file transport/storage or full-window runtime envelope under the 120-second operation bound is available. Launching generic freeze/execute or the old runner directly would bypass at least one guard.",
+      "id": "fx-legacy-control-resource-bridge-gap-20261010",
+      "kind": "CONTRADICTION",
+      "limit": "An infrastructure/admission gap, not a rejection of mean reversion or a market. Do not shorten the protected window, tune economic parameters, reserve an uncertain doomed run or change the configured limit to obtain admission. Blind archive capture may be planned separately with measured bounds; price access remains refused.",
+      "passage": "Legacy frozen protocol: use the upstream adapter; do not recreate or alter it. The lab requires fresh authority plus consumed STATE and RUNNING CAS before execution; original runner requires its original ref/local attempt. CONTROL job wall_seconds=120; Owner total budget not provided.",
+      "provenance": [
+        "https://github.com/fahimahmedb/Quant-Trade/blob/a81cff5a74ea057b533868fa073c071a284b74c8/research/edge_lab/CONTROL.json",
+        "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py"
+      ],
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a81cff5a74ea057b533868fa073c071a284b74c8/src/quant/edge_lab/engine.py",
+      "version": "Lab authority a81cff5a74ea057b533868fa073c071a284b74c8; original harness e42d4924a33efa78bab97939d654424cc1501fb8; claim ff616878d17beb58d48b9e72ed91057107c3b27b."
+    },
     "fx-runtime-qualification-construction-20261010": {
       "fact": "Construction host Python 3.12 and both timezone hashes match the immutable upstream freeze. No archive or price row read.",
       "id": "fx-runtime-qualification-construction-20261010",
@@ -201,6 +308,23 @@
       "passage": "runtime python_minor=3.12; runtime_data SHA256 for America/New_York and tzdata.zi",
       "url": "https://github.com/fahimahmedb/Quant-Trade/blob/e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/freeze.json",
       "version": "freeze c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2 ; host verification 2026-10-10T16:26Z"
+    },
+    "histdata-personal-proxy-qualified-cached-20261010": {
+      "cached_primary_sha256": {
+        "faq": "4a6b1ac833aaa2ed0ae94452df0a3a5f663d24bdcbcbee6023d62e1b4508d125",
+        "schema": "9b06ee58c987eac4934ab5da11577be2d824b9828047cde6ee1f2f9979626cc1"
+      },
+      "fact": "Personal exploratory quote-proxy design has documented intent. The immutable intraday design uses assumed central/stress costs and adverse fills, not historical broker fees. No new provider webpage/probe or archive was accessed in this qualification.",
+      "id": "histdata-personal-proxy-qualified-cached-20261010",
+      "kind": "ACCESS",
+      "limit": "Originating broker, original delivery, sampling, tradable size, historical commission/swap and executable fills remain unauthenticated. This admits no real-capital, live, raw redistribution or confirmation claim; Dukascopy/FXCM restrictions are not revisited.",
+      "passage": "Free data for traders/developers backtesting; Generic ASCII DateTime,Bid,Ask,Volume in milliseconds, fixed EST UTC-05 without DST. Provider removes broker-specific volume.",
+      "provenance": [
+        "https://github.com/fahimahmedb/Quant-Trade/blob/6203e58598b97c3fefc31853dd3bc266ce85d52b/research/edge_search/scouts/eurusd_grid_source_qualification_2026-10-10.json",
+        "https://www.histdata.com/f-a-q/data-files-detailed-specification/"
+      ],
+      "url": "https://www.histdata.com/f-a-q/",
+      "version": "Primary pages inspected 2026-10-10; unchanged cache source qualification 6203e58598b97c3fefc31853dd3bc266ce85d52b, SHA256 eba08f8ec6ccd43b1bf9f7f1a4f54c0265e0f5b88d8d1432b8450e1cfed2133f."
     }
   },
   "families": {
@@ -301,7 +425,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "ce07c86c2cbd24418423bd163ee21cfab57a5a32bb1c64d262f99b3e9342c477",
+  "integrity": "b5119eb71dfa08401a778b9533ccc83b0b427c8fbc50d5c62878e4c6c6aaf5b8",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -365,7 +489,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T16:57:39.970663+00:00",
+  "updated_at": "2026-10-10T17:04:06.000281+00:00",
   "usage": {
     "cpu_seconds": 0.005868577999999999,
     "human_seconds": null,
