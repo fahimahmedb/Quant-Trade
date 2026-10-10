@@ -68,16 +68,20 @@
   "created_at": "2026-10-10T16:08:25.112658+00:00",
   "decisions": {
     "qualify:cfe-vix-term-premium": {
+      "actor": "scheduled-automation-20261010T1731Z",
+      "claim_id": "12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65",
+      "claimed_at": "2026-10-10T17:29:44.056530+00:00",
       "created_at": "2026-10-10T17:18:39.234578+00:00",
       "evidence": [
         "cfe-vx-accessible-catalogue-only-20261010",
         "cfe-vx-rights-and-execution-qualification-open-20261010"
       ],
       "family": "cfe-vix-term-premium",
+      "lease_seconds": 600,
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "qualify:eurusd-technical-grid": {
       "actor": "scheduled-automation-20261010T1654Z",
@@ -365,6 +369,18 @@
       },
       "previous": "1eadd6e59fcf6a51196308977b56ac57ad5ec30ff30a4d7e6af53f7f78362da1",
       "sequence": 18
+    },
+    {
+      "at": "2026-10-10T17:29:44.056565+00:00",
+      "hash": "a3b76ad168d5ebb79cb9eee3fd886f93eb69b0a0815e6b97b79da51e25c936ba",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "scheduled-automation-20261010T1731Z",
+        "claim_id": "12dda0982e3c76a570e270dc1e29a9b29caa84b7614b233b88f6139195f60b65",
+        "id": "qualify:cfe-vix-term-premium"
+      },
+      "previous": "698d4f42539e03bcbd65b4ad5fa82e275e0e7f38a8223bed61d6928dad89ec51",
+      "sequence": 19
     }
   ],
   "evidence": {
@@ -763,7 +779,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "ee0294f714eee088686b70de16ce56ddc966122ccc6130e1d8edae078b24cded",
+  "integrity": "6cac1625b6afc0e89c6678b759e85948c044434a5cb39cf6f47a84e13b2293dc",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -780,13 +796,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "github-actions-metadata",
-      "at": "2026-10-10T17:21:34.078741+00:00",
+      "actor": "scheduled-automation",
+      "at": "2026-10-10T17:29:43.579434+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-10T17:21:34.078741+00:00",
+      "at": "2026-10-10T17:29:43.579434+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -797,44 +813,44 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T17:21:34.078700+00:00",
+      "observed_at": "2026-10-10T17:29:43.579396+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T17:21:34.078723+00:00",
+      "observed_at": "2026-10-10T17:29:43.579417+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T17:21:34.078728+00:00",
+      "observed_at": "2026-10-10T17:29:43.579422+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T17:21:34.078732+00:00",
+      "observed_at": "2026-10-10T17:29:43.579426+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T17:21:34.078736+00:00",
+      "observed_at": "2026-10-10T17:29:43.579429+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T17:21:34.084827+00:00",
+  "updated_at": "2026-10-10T17:29:44.057583+00:00",
   "usage": {
-    "cpu_seconds": 0.007166541999999998,
+    "cpu_seconds": 0.009581175999999997,
     "human_seconds": null,
-    "metadata_bytes": 3038,
+    "metadata_bytes": 3472,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 4.003563624999259
+    "wall_seconds": 4.836921585999988
   }
 }
