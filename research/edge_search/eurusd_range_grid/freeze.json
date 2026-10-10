@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "frozen_utc": "2026-10-10T14:29:07.610321+00:00",
+  "proxy_harness_frozen": true,
+  "scope": "EXPLORATORY_QUOTE_PROXY_ONLY; does not grant source QA, economic claim or trading authority",
+  "parameter_parent_commit": "df8ecb32c2a5a84b42f0609c223aefe2f1591c07",
+  "files": {
+    "HARNESS_CHALLENGE.json": "0b14e7ec6b4ffb2b4ece07cb8324c0c068c8c6805aa156da5432677c8767c0fb",
+    "IMPLEMENTATION_NOTES.md": "5db1e0ecef4f347a78541980ba10a9e48bacbf991e573f07ab6cd290b99b41d8",
+    "PREREGISTRATION.md": "d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96",
+    "capture.py": "152f68d7611477f2caefb9a182a5249d80ba417a8f56bd26e25ce3362f3b3f19",
+    "challenge.json": "deb0b0052a9d1396a6a91677d2b7a5a0b54eec4c1c3f37754b3e8b97ea7712b8",
+    "engine.py": "98eec9c75e5da89079f65bc0f9efe68b006945e1bfa2f27fd9e8482afc7d84e5",
+    "manifest.json": "d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b",
+    "result_schema.json": "4835bf1b7fa1927ede4851790527665502858f5d2de7bcf13754f55dc0eecad2",
+    "run.py": "44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3",
+    "safety_kernel.py": "c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65e0c",
+    "test_capture.py": "e77db9ce2287d639bc88b450e6abffeb8670f9eb9c4fdd4d537dbfe20bcdd758",
+    "test_engine.py": "2179122dc15e2c7d9ddfeff2e3081d737ae45b7b7e6a7af91384ede51fa5d6dd",
+    "test_run.py": "dea3c30f334d0f08acf0f6b91fb5546fd1443270a341f9623b35d73621d8c43a",
+    "test_safety_kernel.py": "6cc428d4bad20ac3a3d080e6657df84cbd1278c6e468bf1aee6bfe42afcb2dc2"
+  },
+  "runtime": {
+    "python_minor": "3.12",
+    "local_python": "3.12.14",
+    "economic_dependencies": "Python stdlib only",
+    "timezone": "America/New_York; tzdata 2026b; source EST fixed UTC-05"
+  },
+  "runtime_data": {
+    "/usr/share/zoneinfo/America/New_York": "e9ed07d7bee0c76a9d442d091ef1f01668fee7c4f26014c0a868b19fe6c18a95",
+    "/usr/share/zoneinfo/tzdata.zi": "d5c5a95d9af0dadb52a22bd3dab806462f7b5f95dc5924694256da6fe5366c5c"
+  },
+  "reservation_ref": "refs/heads/looks/eurusd-range-grid-001-exploratory-01",
+  "fixed_output": "/workspace/scratch/eurusd-range-grid-001/result-exploratory-01/result.json",
+  "remote_ci_required_before_capture": true,
+  "capture_and_claim_required_before_price_rows": true,
+  "history": "F1/B4/NASDAQ/literature/vendor2013-2016/schema2012-02-01 exposed/spent; private UNKNOWN; no alpha allocation/reset"
+}
