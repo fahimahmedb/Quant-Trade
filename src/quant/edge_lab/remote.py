@@ -1,5 +1,6 @@
 """GitHub branch authority through ordinary fast-forward Git, never force push."""
 import json
+import hashlib
 import subprocess
 from pathlib import Path
 
@@ -26,10 +27,32 @@ class GitAuthority:
     def snapshot(self):
         self.git("fetch", "--no-tags", "origin", "refs/heads/" + BRANCH)
         sha = self.git("rev-parse", "FETCH_HEAD")
-        state = json.loads(self.git("show", sha + ":" + self.relative + "/STATE.json"))
         control = json.loads(self.git("show", sha + ":" + self.relative + "/CONTROL.json"))
+        if control.get("paused") is True:
+            return {"sha": sha, "branch": BRANCH, "state": None, "control": control, "runner_versions": {}}
+        remaining = control["limits"]["metadata_bytes_per_tick"]
+        def blob(path):
+            nonlocal remaining
+            spec = sha + ":" + path
+            size = int(self.git("cat-file", "-s", spec))
+            if not 0 <= size <= remaining:
+                raise Refused("Execution authority metadata ceiling before body read")
+            response = subprocess.run(["git", "show", spec], cwd=self.repo, capture_output=True, timeout=45)
+            if response.returncode or len(response.stdout) != size:
+                raise Refused("Pinned metadata unavailable")
+            remaining -= size
+            return response.stdout
+        state = json.loads(blob(self.relative + "/STATE.json"))
         verify(state)
-        return {"sha": sha, "branch": BRANCH, "state": state, "control": control}
+        runners = {}
+        from pathlib import PurePosixPath
+        for protocol in state["protocols"].values():
+            path = PurePosixPath(protocol["runner"])
+            if path.is_absolute() or ".." in path.parts or path.suffix != ".py":
+                raise Refused("Invalid frozen runner path")
+            if str(path) not in runners:
+                runners[str(path)] = hashlib.sha256(blob(str(path))).hexdigest()
+        return {"sha": sha, "branch": BRANCH, "state": state, "control": control, "runner_versions": runners}
 
     def claim(self, state, expected_sha):
         """Local parent + server fast-forward rejection supplies the remote CAS."""

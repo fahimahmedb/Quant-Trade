@@ -93,8 +93,8 @@ class Store:
             for key in ("imported", "baseline"):
                 if state[key] != old[key]:
                     raise Refused(f"Imported history is immutable: {key}")
-            for key in ("protocols", "looks", "evidence"):
-                for identity, prior in old[key].items():
+            for key in ("protocols", "looks", "evidence", "admissions"):
+                for identity, prior in old.get(key, {}).items():
                     if identity not in state[key]:
                         raise Refused(f"Cannot delete {key}/{identity}")
                     if key != "looks" and state[key][identity] != prior:

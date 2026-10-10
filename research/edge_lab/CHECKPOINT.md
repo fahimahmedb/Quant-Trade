@@ -1,6 +1,6 @@
 # Checkpoint — construction autorisée
 
-STATUS = IDLE_SOURCE_ADMISSION_BLOCKED
+STATUS = OWNER_AUTHORIZED_SOFTWARE_COMPLETION_IN_PROGRESS
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -130,3 +130,13 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Décision CLI avec claim d’origine = WAIT_INPUT_GROUP_AND_FULL_RUN_RESOURCE_BOUNDS. Le ZIP compact ne borne pas la mémoire : le lecteur garde chaque Quote au même timestamp, doublons compris ; seen déduplique le compteur, pas la liste. Le cas artificiel ne prouve ni fréquence réelle ni échec sur HistData ; tailles/lignes/densité/maxgroupe et coût complet collecte/CRC/parser/moteur des21archives restentUNKNOWN. Gel, coûts/seuils/fenêtres/expressions et réservation originale inchangés.
 - Rapport exact, limites/falsification, neuf champs/leçon conservés via evidence eurusd-synthetic-reader-group-crc-20261010T2136Z puis decide. NEXT=null ; toutes les questions de qualification/construction actuelles sont WAIT, pas de nouvelle information cached qui justifie une répétition ou une autre tâche identique. Prochaine reprise : petit tick ; réveil sur preuve primaire distincte permise de bornes d’entrée/paquet/droits/coûts ou raccord exact aux autorités originales, ou mécanisme distinct et source réellement accessible. Aucune répétition des probes closes, source refusée ou résultat ancien.
 - STATUS=IDLE_SOURCE_ADMISSION_BLOCKED pour ces admissions du labo ; ne signifie pas reconstruction complète de Quant ni rejet d’un marché/mécanisme. Préfixe ledger et compteurs/baselines/expositions préservés : looks/jobs/protocols/trial_charges vides, F1 fermé, B2+B4=40, KILL valide/invalide séparés, M effectif/privéUNKNOWN. Aucun achat/compte/trading, ref hors labo/force/merge/défaut/production, framework/board/contrat/handoff ou autre automatisation.
+
+
+## Achèvement logiciel demandé par Owner — 2026-10-10 23:55 UTC
+
+- Mandat actuel : finir le labo idée → test figé → validation/rejet/attente en autonomie ; rappels désactivés, pas de trading ou nouveaux outcomes. Le socle ne signifie pas reconstruction complète du reste de Quant.
+- Phase1 : admission immuable à sept gates sourcés, bornes complètes d’entrée/ressources, code publié exact avant exécution, contrôle remote lu avant STATE, une seule expérience active ; sorties partielles conservées sous bornes et look jamais rejouable. Résultat avec neuf champs et toutes expressions/coûts → preuve → question claimable → disposition persistante. Positif=validation requise ; source inexploitable≠rejet économique.
+- 55tests synthétiques PASS en3.296s ; tests positifs/négatifs/source et partial-print utilisent uniquement des reçus générés dans des dossiers temporaires. Les compteurs/B2+B4=40/F1 fermé/historique privéUNKNOWN du vrai labo restent inchangés, zéro marché/archive/outcome/look/admission réelle.
+- Claim phase1 f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8 publié à66f25b21e7325980e264549b8878e71cbb0fc47c avant code/revue ; preuve partielle et neuf champs sauvegardés. Décision WAIT de completion : core validé, raccord exact legacy et preuve Git de bout en bout encore à finir.
+- NEXT construction : exact-legacy-adapter, claim c344b16f58e49ad92db08ace3392a53f9d1d90ba1ea4da0cfb4a3608fdab62ff, acteur owner-autonomous-completion-legacy-20261010T2355Z. Ce commit est la barrière CAS avant revue du raccord. Aucun ref original créé ni générique substitué.
+- Les12rappels sont disabled après demande Owner ; scheduler jamais réactivé. Seule session manuelle actuelle autorisée. Coût instrumenté par opération/fixtures seulement ; tokens/total facture/temps humain et budget globalNONFOURNI. Aucune activité promise par les anciens timers.

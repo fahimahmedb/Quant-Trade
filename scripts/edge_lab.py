@@ -35,6 +35,9 @@ def main(argv=None):
     reserve = sub.add_parser("reserve")
     reserve.add_argument("protocol")
     reserve.add_argument("fingerprint")
+    admit = sub.add_parser("admit", help="Evidenced source/software/full-resource admission before a look")
+    admit.add_argument("protocol")
+    admit.add_argument("packet")
     claim = sub.add_parser("claim-question")
     claim.add_argument("identity")
     claim.add_argument("--actor", required=True)
@@ -73,6 +76,8 @@ def main(argv=None):
         lab.build_question(**strict_json(args.packet))
     elif args.action == "reserve":
         lab.reserve(args.protocol, args.fingerprint)
+    elif args.action == "admit":
+        lab.admit(args.protocol, strict_json(args.packet))
     elif args.action == "claim-question":
         print(json.dumps({"claim_id": lab.claim_decision(args.identity, args.actor)}))
     elif args.action == "legacy-preflight":

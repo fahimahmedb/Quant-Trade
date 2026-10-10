@@ -47,17 +47,33 @@ class LabTest(unittest.TestCase):
                                                "inconclusive": "wait information", "invalid": "software evidence only"},
                          "multiplicity_policy": "charge every declared path; effective count UNKNOWN",
                          "runner": "runner.py", "runner_sha256": hashlib.sha256(self.runner.read_bytes()).hexdigest(),
-                         "evidence_ids": [self.packet["id"]]}
+                         "evidence_ids": [self.packet["id"]], "purpose": "SYNTHETIC_SOFTWARE_QA"}
 
     def tearDown(self):
         self.temp.cleanup()
 
-    def frozen(self):
+    def admission_packet(self, fingerprint="fixture-data"):
+        from quant.edge_lab.contracts import GATES
+        p = self.lab.snapshot()[0]["protocols"][self.protocol["id"]]
+        proof = {"protocol_hash": p["hash"], "runner_sha256": p["runner_sha256"],
+                 "data_fingerprint": fingerprint, "paid_usd": 0}
+        for gate in GATES:
+            proof[gate] = {"qualified": True, "scope": "synthetic software only", "evidence_ids": [self.packet["id"]]}
+        proof["software"].update(reviewed=True, synthetic_tests_passed=True, challenge_passed=True)
+        proof["resources"].update(bound_type="FULL_PROTOCOL_UPPER_BOUND", wall_seconds_upper_bound=1,
+            memory_bytes_upper_bound=268435456, disk_bytes_upper_bound=1048576,
+            input_bound_evidence="fixed finite synthetic fixture; no market inputs")
+        return proof
+
+    def frozen(self, fingerprint="fixture-data"):
         self.lab.freeze(self.protocol)
+        if self.protocol["rights"]["permitted"]:
+            self.lab.admit(self.protocol["id"], self.admission_packet(fingerprint))
 
     def authority(self):
         state, control = self.lab.snapshot()
-        return {"state": state, "control": control, "branch": BRANCH, "sha": "a" * 40}
+        return {"state": state, "control": control, "branch": BRANCH, "sha": "a" * 40,
+                "runner_versions": {self.protocol["runner"]: self.protocol["runner_sha256"]}}
 
     def test_boot_tick_and_ci_never_open_market_outcomes(self):
         with patch("subprocess.run", side_effect=AssertionError("no workers at startup")):
@@ -93,7 +109,7 @@ class LabTest(unittest.TestCase):
         self.assertEqual(state["trial_charges"]["fixture-data"], 4)
 
     def test_new_fingerprint_is_not_a_new_clean_look(self):
-        self.frozen()
+        self.frozen("data-v1")
         self.lab.reserve("fixture-p", "data-v1")
         with self.assertRaises(Refused):
             self.lab.reserve("fixture-p", "new-vendor-v2")
@@ -115,7 +131,7 @@ class LabTest(unittest.TestCase):
             self.lab.freeze({**self.protocol, "stage": "PROSPECTIVE"})
         future = datetime.now(timezone.utc) + timedelta(days=1)
         self.protocol.update(stage="PROSPECTIVE", window=[future.isoformat(), (future + timedelta(days=5)).isoformat()])
-        self.frozen()
+        self.frozen("future-fixture")
         self.lab.reserve("fixture-p", "future-fixture")
         authority = self.authority()
         with self.assertRaisesRegex(Refused, "WAIT_OBSERVATIONS"):

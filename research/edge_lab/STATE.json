@@ -67,6 +67,25 @@
   },
   "created_at": "2026-10-10T16:08:25.112658+00:00",
   "decisions": {
+    "build:eurusd-technical-grid:exact-legacy-adapter": {
+      "actor": "owner-autonomous-completion-legacy-20261010T2355Z",
+      "claim_id": "c344b16f58e49ad92db08ace3392a53f9d1d90ba1ea4da0cfb4a3608fdab62ff",
+      "claimed_at": "2026-10-10T23:55:48.052056+00:00",
+      "construction_scope": "52c090e266992d2e6b5267bff1ace7e9d9136776f24bdc336efd55b6dcb9fc1b",
+      "created_at": "2026-10-10T23:55:47.710906+00:00",
+      "decision_use": "D\u00e9cider ach\u00e8vement logiciel / d\u00e9faut \u00e0 r\u00e9parer, sans admission des donn\u00e9es ou march\u00e9. Le g\u00e9n\u00e9rique continue \u00e0 refuser les legacy ; ne lancer que si toutes les autorit\u00e9s exactes et gates qualifi\u00e9s existent. Reconstituer les re\u00e7us sans rejouer d\u2019outcome, rappels d\u00e9sactiv\u00e9s.",
+      "evidence": [
+        "lab-workflow-core-synthetic-20261010T2355Z"
+      ],
+      "family": "eurusd-technical-grid",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "build:eurusd-technical-grid:lab-workflow-completion",
+      "priority": 2,
+      "question": "Construire le raccord logiciel exact au freeze et \u00e0 la r\u00e9servation upstream EURUSD, sans recr\u00e9er le ref ni substituer un protocole ; tester adoption, double autorit\u00e9 et r\u00e9sultat avec fixtures uniquement, puis achever la preuve de bout en bout du labo.",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "RESEARCHING"
+    },
     "build:eurusd-technical-grid:lab-workflow-completion": {
       "actor": "owner-autonomous-completion-20261010T2346Z",
       "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
@@ -75,16 +94,18 @@
       "created_at": "2026-10-10T23:46:18.020405+00:00",
       "decision_use": "Ach\u00e8vement logiciel fond\u00e9 sur l\u2019audit et la demande Owner actuelle ; contr\u00f4le des neuf champs et d\u00e9cisions poursuivre/\u00e9carter/bloqu\u00e9, raccord exact aux r\u00e9servations originales et CAS, sans prix/outcomes r\u00e9els, ref hors labo, changement des protocoles legacy ou r\u00e9activation des rappels. Chaque blocage externe reste distinct d\u2019un d\u00e9faut de construction.",
       "evidence": [
-        "eurusd-legacy-exact-readonly-preflight-20261010T2001Z"
+        "lab-workflow-core-synthetic-20261010T2355Z"
       ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch.",
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:legacy-authority-bridge",
       "priority": 2,
       "question": "Terminer le labo logiciel id\u00e9e/admission/gel/r\u00e9servation/ex\u00e9cution/verdict/reprise et son raccord legacy exact, avec preuves synth\u00e9tiques de bout en bout et gates ferm\u00e9s si donn\u00e9es/ressources/autorit\u00e9s inconnues : peut-il traiter une id\u00e9e admissible sans rejouer ni substituer un protocole ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-10T23:55:47.140654+00:00",
+      "status": "WAIT"
     },
     "build:eurusd-technical-grid:legacy-authority-bridge": {
       "actor": "scheduled-automation-build-20261010T195437Z",
@@ -719,6 +740,61 @@
       },
       "previous": "02aea57f2c4dc384b8b5724bd3c938c21a73613348c6e7eafc714dceac4e9cff",
       "sequence": 37
+    },
+    {
+      "at": "2026-10-10T23:55:46.794597+00:00",
+      "hash": "2bd14a97f42560253d6a5b68e97c7118de39a571ee0575fe4b0ddf45f942246e",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "312b176dab5a93b85de3b8ef77e49a1afb2ced58c48d78791712b4a83272c3cc",
+        "id": "lab-workflow-core-synthetic-20261010T2355Z",
+        "kind": "METHOD"
+      },
+      "previous": "148e61fb9ba10a402bc89b5fc75afd237ec3444ad83c2b9cbb2ba45495ba7a10",
+      "sequence": 38
+    },
+    {
+      "at": "2026-10-10T23:55:47.140668+00:00",
+      "hash": "2c62466c54c7bf5c8670a1e5451edee7e9e5447919b1746a56681375643c46e8",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "lab-workflow-core-synthetic-20261010T2355Z"
+        ],
+        "id": "build:eurusd-technical-grid:lab-workflow-completion",
+        "next": "Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch.",
+        "verdict": "WAIT"
+      },
+      "previous": "2bd14a97f42560253d6a5b68e97c7118de39a571ee0575fe4b0ddf45f942246e",
+      "sequence": 39
+    },
+    {
+      "at": "2026-10-10T23:55:47.710919+00:00",
+      "hash": "6070203386f19f5e1ad1cf4ae462fc12510f393e50dd82a77ba4faaa8a7bbf8a",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "lab-workflow-core-synthetic-20261010T2355Z"
+        ],
+        "family": "eurusd-technical-grid",
+        "id": "build:eurusd-technical-grid:exact-legacy-adapter",
+        "parent": "build:eurusd-technical-grid:lab-workflow-completion",
+        "scope": "52c090e266992d2e6b5267bff1ace7e9d9136776f24bdc336efd55b6dcb9fc1b"
+      },
+      "previous": "2c62466c54c7bf5c8670a1e5451edee7e9e5447919b1746a56681375643c46e8",
+      "sequence": 40
+    },
+    {
+      "at": "2026-10-10T23:55:48.052061+00:00",
+      "hash": "b9362bb1c74e47f3cdde3089b644ac08f4cd3dd2d34d6a95d1d0e048acc35bea",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-completion-legacy-20261010T2355Z",
+        "claim_id": "c344b16f58e49ad92db08ace3392a53f9d1d90ba1ea4da0cfb4a3608fdab62ff",
+        "id": "build:eurusd-technical-grid:exact-legacy-adapter"
+      },
+      "previous": "6070203386f19f5e1ad1cf4ae462fc12510f393e50dd82a77ba4faaa8a7bbf8a",
+      "sequence": 41
     }
   ],
   "evidence": {
@@ -1476,6 +1552,49 @@
       "passage": "Marker says HARNESS_BUILT=FALSE at time second pass was persisted; final marker says awaiting integration. Frozen spec and three implementation/test files exist at the exact current branch head.",
       "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a6961e5fc02785c7c2d797f0e1fca94425150705/research/edge_search/scouts/HYPERLIQUID_SECOND_PASS_STATUS_2026-10-08.txt",
       "version": "All files compared at exact a6961e5fc02785c7c2d797f0e1fca94425150705; no outcomes read."
+    },
+    "lab-workflow-core-synthetic-20261010T2355Z": {
+      "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
+      "fact": {
+        "implemented": [
+          "seven evidenced immutable admission gates",
+          "full-input resource bounds before look",
+          "one active experiment including unquiesced uncertainty",
+          "nine verdict fields and all declared paths",
+          "partial stdout/stderr preserved under hard output/memory/time bounds",
+          "automatic immutable outcome evidence and claimable next decision",
+          "positive validation-required / negative scoped close / unusable source WAIT",
+          "remote control first and published code hash"
+        ],
+        "nine_fields": {
+          "ECONOMIC_SIGNIFICANCE": "No edge or executable return established",
+          "EFFECT_SIZE": "55 synthetic test cases; zero market observations/looks",
+          "FAILED_CRITERIA": [
+            "EXACT_LEGACY_BRIDGE_NOT_YET_IMPLEMENTED",
+            "FINAL_FULL_GIT_WORKFLOW_PROOF_PENDING"
+          ],
+          "FAMILY_STATUS": "Legacy market candidates remain admission WAIT; economic history unchanged",
+          "LESSON": "A finished software lab must close the loop from exact admitted input through immutable receipt and decision, not merely run a timer",
+          "NEXT_DECISION": "Build/test exact legacy adoption/reservation bridge and final Git fixture, then verify completion without enabling reminders",
+          "POWER_LIMITATION": "Software fixtures do not estimate economic power or independent M",
+          "RESULT": "SOFTWARE_CORE_VALIDATED; COMPLETION_PENDING_EXACT_LEGACY_BRIDGE",
+          "UNCERTAINTY": "Legacy execution bridge still missing; no real source admission"
+        },
+        "tests": {
+          "cases": 55,
+          "kind": "synthetic only",
+          "result": "PASS"
+        }
+      },
+      "id": "lab-workflow-core-synthetic-20261010T2355Z",
+      "kind": "METHOD",
+      "limit": "Software proof only; no market archive/outcome, fee/window/threshold change, new counter budget or execution admission. Reminders stay disabled.",
+      "passage": "Core admission/receipt/decision source and fixed synthetic generated receipts; exact remote code/control authority and existing two-Git-clone CAS tests. No market data or economic result.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/src/quant/edge_lab",
+      "version": {
+        "at": "2026-10-10T23:55:41.666200+00:00",
+        "scope": "Owner-authorized software completion phase1"
+      }
     }
   },
   "families": {
@@ -1589,7 +1708,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "97e80f62c745e85b75618d60ad32c003799a317e18505d6198bab7d47d19f1ca",
+  "integrity": "682e986194a545dfce7a95ac86b5201d84b9d8398cb519d7897cd657370afc38",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1653,7 +1772,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T23:46:18.372432+00:00",
+  "updated_at": "2026-10-10T23:55:48.053893+00:00",
   "usage": {
     "cpu_seconds": 0.038109966999999974,
     "human_seconds": null,

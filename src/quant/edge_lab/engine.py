@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .compat import ResearchTask
+from .contracts import admission, outcome, DECISIONS
 from quant.state import utc_now, write_json
 from .seed import BRANCH, initial_control, initial_state
 from .store import Refused, Store, digest, event, strict_json, verify
@@ -176,6 +177,17 @@ class Lab:
             if verdict in ("REJECTED", "INSUFFICIENT_POWER", "INVALID_SOFTWARE") and not any(
                     state["evidence"][x]["kind"] == "OUTCOME" for x in evidence_ids):
                 raise Refused("Missing access/source is not an economic rejection")
+            if decision.get("look_id"):
+                look = state["looks"][decision["look_id"]]
+                result = state["jobs"]["execute:" + look["protocol"]]["metadata"]["result"]
+                if verdict not in DECISIONS[result["kind"]]:
+                    raise Refused("Decision contradicts the preserved outcome; do not promote a failed/source test")
+                family = state["families"][decision["family"]]
+                status = {"NEGATIVE": "REJECTED_CLOSED", "POSITIVE_EXPLORATORY": "VALIDATION_REQUIRED",
+                          "INSUFFICIENT_POWER": "INCONCLUSIVE_WAIT", "INVALID_SOFTWARE": "SOFTWARE_BLOCKED",
+                          "SOURCE_UNUSABLE": "BLOCKED_DATA_ACCESS", "PROSPECTIVE_OBSERVATION": "OBSERVATION_ONLY"}
+                family.update(status=status[result["kind"]], next=next_action,
+                              latest_lesson=result["lesson"], last_result_look=look["id"])
             decision.update(status=verdict, evidence=list(evidence_ids), next_action=next_action, resolved_at=utc_now())
             event(state, "DECISION", {"id": identity, "verdict": verdict, "evidence": evidence_ids, "next": next_action})
             self.store.save(state)
@@ -301,6 +313,23 @@ class Lab:
             self.store.save(state)
             return identity
 
+    def admit(self, protocol_id, packet):
+        """Immutable, evidenced admission separate from freezing and charging a look."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            protocol = state["protocols"][protocol_id]
+            admission(packet, protocol, state, control)
+            admitted = state.setdefault("admissions", {})
+            if protocol_id in admitted:
+                if admitted[protocol_id] != packet:
+                    raise Refused("Admission cannot be rewritten; preserve input/code identity")
+                return protocol_id
+            admitted[protocol_id] = copy.deepcopy(packet)
+            event(state, "PROTOCOL_ADMITTED", {"protocol": protocol_id, "digest": digest(packet)})
+            self.store.save(state)
+        return protocol_id
+
     def reserve(self, protocol_id, data_fingerprint):
         """Charge all paths conservatively; dependent paths are NOT independent N."""
         if not data_fingerprint:
@@ -309,10 +338,20 @@ class Lab:
             state, control = self.store.read(), self.store.control()
             budget_check(state, control)
             protocol = state["protocols"][protocol_id]
+            if protocol["rights"].get("permitted") is not True:
+                raise Refused("BLOCKED_PERMISSION: rights are not qualified")
+            proof = state.get("admissions", {}).get(protocol_id)
+            if not proof or proof["data_fingerprint"] != data_fingerprint:
+                raise Refused("Qualified, exact input admission required before charging a look")
+            admission(proof, protocol, state, control)
             # The protocol is single-use even when files, vendor or fingerprint change.
             look_id = "look:" + protocol_id
             if look_id in state["looks"]:
                 raise Refused("Look already spent/reserved; no opportunistic rerun")
+            if any(x["status"] in ("RESERVED_SPENT", "RUNNING_SPENT") or
+                   (x["status"] == "UNKNOWN_OUTCOME" and not state["jobs"]["execute:" + x["protocol"]]
+                    .get("metadata", {}).get("process_stopped")) for x in state["looks"].values()):
+                raise Refused("One active economic experiment at a time")
             dataset, window = protocol["dataset"], protocol["window"]
             if protocol["stage"] != "EXPLORATION" and any(
                     x["dataset"] == dataset and overlap(window, x["window"]) for x in state["looks"].values()):
@@ -322,6 +361,8 @@ class Lab:
                 raise Refused("BLOCKED_PERMISSION: rights are not qualified")
             if protocol.get("paid_usd", 0) != 0:
                 raise Refused("Paid access is not authorized")
+            if state["families"][protocol["family"]]["status"] == "REJECTED_CLOSED":
+                raise Refused("A rejected expression cannot receive another look")
             charge = len(protocol["expressions"]) * len(protocol["cost_paths"])
             look = {"id": look_id, "protocol": protocol_id, "protocol_hash": protocol["hash"],
                     "dataset": dataset, "window": window, "stage": protocol["stage"],
@@ -347,6 +388,8 @@ class Lab:
         A local state file or a claimed commit SHA is not a remote durability receipt.
         """
         authority = remote_snapshot()
+        if authority["control"].get("paused") is True:
+            raise Refused("PAUSED: remote authority")
         verify(authority["state"])
         look_id = "look:" + protocol_id
         with self.store.lock():
@@ -366,6 +409,14 @@ class Lab:
             protocol = state["protocols"][protocol_id]
             if authority["state"]["protocols"].get(protocol_id) != protocol:
                 raise Refused("Remote protocol mismatch")
+            if authority.get("runner_versions", {}).get(protocol["runner"]) != protocol["runner_sha256"]:
+                raise Refused("Runner code is not published at the exact authority HEAD")
+            proof = state.get("admissions", {}).get(protocol_id)
+            if proof != authority["state"].get("admissions", {}).get(protocol_id):
+                raise Refused("Admission is not durably published")
+            admission(proof or {}, protocol, state, control)
+            if control["limits"]["cpu_seconds_total"] is not None:
+                raise Refused("BUDGET_UNMEASURED: full job/controller CPU accounting unavailable")
             if protocol["stage"] == "PROSPECTIVE" and datetime.now(timezone.utc) < timestamp(protocol["window"][1]):
                 raise Refused("WAIT_OBSERVATIONS: do not inspect partial prospective outcomes")
             root = Path(repository).resolve()
@@ -385,6 +436,7 @@ class Lab:
                 claim_sha = remote_claim(state, authority["sha"])
             except Exception as exc:
                 job.update(status="UNKNOWN_OUTCOME", last_error="REMOTE_CLAIM_FAILED")
+                job["metadata"].update(process_stopped=True, execution_not_started=True)
                 look["status"] = "UNKNOWN_OUTCOME"
                 event(state, "CLAIM_FAILED_NO_EXECUTION", {"look": look_id, "error": type(exc).__name__})
                 self.store.save(state)
@@ -395,26 +447,21 @@ class Lab:
         started = time.monotonic()
         import resource
         child_before = resource.getrusage(resource.RUSAGE_CHILDREN)
+        artifacts = self.store.root / "receipts" / digest(look_id)
+        artifacts.mkdir(parents=True, exist_ok=False)
+        stdout_path, stderr_path = artifacts / "stdout.bin", artifacts / "stderr.bin"
+        output_limit = min(1048576, control["limits"]["metadata_bytes_per_tick"] // 2)
+        def child_limits():
+            resource.setrlimit(resource.RLIMIT_FSIZE, (output_limit, output_limit))
+            memory = proof["resources"]["memory_bytes_upper_bound"]
+            resource.setrlimit(resource.RLIMIT_AS, (memory, memory))
         try:
-            completed = subprocess.run([sys.executable, str(runner), "--protocol", protocol_id, "--look", look_id],
-                                       cwd=root, env=env, capture_output=True, text=True,
-                                       timeout=control["limits"]["job_wall_seconds"], check=True)
-            if len(completed.stdout.encode()) > 1048576:
-                raise Refused("Oversized outcome; keep charged look and inspect diagnostic")
-            result = json.loads(completed.stdout, parse_constant=lambda x: (_ for _ in ()).throw(Refused(x)))
-            if result.get("look_id") != look_id or result.get("kind") not in (
-                    "NEGATIVE", "POSITIVE_EXPLORATORY", "INSUFFICIENT_POWER", "INVALID_SOFTWARE",
-                    "SOURCE_UNUSABLE", "PROSPECTIVE_OBSERVATION", "SOFTWARE_CHECK"):
-                raise Refused("Invalid outcome contract; no automatic proven-alpha label")
-            if result["kind"] != "SOFTWARE_CHECK":
-                required = ("nature", "benchmark", "observations", "uncertainty", "risk_exposures", "capacity",
-                            "lesson", "next_decision", "protocol_hash", "data_fingerprint")
-                if any(not result.get(x) for x in required) or "net_after_costs" not in result:
-                    raise Refused("Economic receipt must state net costs, benchmark, information unit, risk and uncertainty")
-                if result["protocol_hash"] != protocol["hash"] or result["data_fingerprint"] != look["data_fingerprint"]:
-                    raise Refused("Outcome is not bound to its frozen protocol/data")
-                if result["nature"] not in ("EXPLORATORY_BACKTEST", "PROSPECTIVE_OBSERVATION", "SOFTWARE_FAILURE", "SOURCE_FAILURE"):
-                    raise Refused("Do not relabel realized return or risk premium as residual alpha")
+            with stdout_path.open("xb") as out, stderr_path.open("xb") as err:
+                subprocess.run([sys.executable, "-B", str(runner), "--protocol", protocol_id, "--look", look_id],
+                    cwd=root, env=env, stdout=out, stderr=err, preexec_fn=child_limits,
+                    timeout=control["limits"]["job_wall_seconds"], check=True)
+            result = strict_json(stdout_path)
+            outcome(result, protocol, look)
             error = None
         except Exception as exc:
             result, error = None, type(exc).__name__
@@ -423,7 +470,10 @@ class Lab:
             job = state["jobs"]["execute:" + protocol_id]
             state["looks"][look_id]["status"] = "COMPLETED_SPENT" if result else "UNKNOWN_OUTCOME"
             job.update(status="COMPLETED" if result else "UNKNOWN_OUTCOME", last_error=error,
-                       updated_at=utc_now(), metadata={**job["metadata"], "result": result})
+                       updated_at=utc_now(), metadata={**job["metadata"], "result": result, "process_stopped": True,
+                           "artifacts": {"stdout": str(stdout_path), "stderr": str(stderr_path),
+                               "stdout_sha256": __import__("hashlib").sha256(stdout_path.read_bytes()).hexdigest(),
+                               "stderr_sha256": __import__("hashlib").sha256(stderr_path.read_bytes()).hexdigest()}})
             state["usage"]["wall_seconds"] += time.monotonic() - started
             child_after = resource.getrusage(resource.RUSAGE_CHILDREN)
             state["usage"]["cpu_seconds"] += (child_after.ru_utime + child_after.ru_stime
@@ -434,9 +484,15 @@ class Lab:
                 family = state["families"][protocol["family"]]
                 family["next"] = result["next_decision"]
                 family["latest_lesson"] = result["lesson"]
+                packet = {"id": look_id, "kind": "OUTCOME", "look_id": look_id,
+                          "url": "git:" + BRANCH + "/" + protocol["runner"], "version": protocol["hash"],
+                          "passage": "Exact pinned runner receipt, all nine verdict fields and expressions/cost paths",
+                          "fact": result, "limit": result["uncertainty"]}
+                state["evidence"][look_id] = packet
+                event(state, "EVIDENCE_ADDED", {"id": look_id, "digest": digest(packet), "kind": "OUTCOME"})
                 state["decisions"]["result:" + look_id] = {"status": "OPEN", "family": protocol["family"],
                     "priority": family["priority"], "question": result["next_decision"], "reason": "ECONOMIC_RESULT_REQUIRES_DECISION",
-                    "created_at": utc_now(), "evidence": [look_id]}
+                    "created_at": utc_now(), "evidence": [look_id], "look_id": look_id}
             self.store.save(state)
             try:
                 remote_claim(state, claim_sha)
