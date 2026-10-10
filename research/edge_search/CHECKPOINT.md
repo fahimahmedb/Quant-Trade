@@ -2,7 +2,7 @@
 
 
 
-STATE (2026-10-10 10:15:05 UTC): OWNER_RESUMED_AUTONOMOUS_RESEARCH; TWO_PUBLIC_AXES_CONTINUE. Latest Owner Poursuis supersedes earlier pause routing for research and authorizes restoring the existing continuation task with this new scope. FX source qualification and minimal causal volatility initialization completed; no executable FX source or economic edge established. HistData is an accessible conditional bid/ask quote-proxy candidate; Dukascopy automated web-feed rights are unestablished and five FXCM metadata probes return 403 in both HEAD and GET. 28 synthetic causal/restart tests pass; zero new market archives, outcomes, looks or activated economic families. Current sole design candidate EURUSD-RANGE-GRID-001; next is a minimal pre-result exploratory intraday protocol/manifest, with execution limits stated and all applicable gates before any data-result look. No parameter sweep or old-result rerun. Older pause/next-action paragraphs below are history; this STATE and latest batch govern. F1 REJECT closure ea9d2d0 immutable; no real trading, paid access or new account.
+STATE (2026-10-10 10:15:05 UTC): OWNER_RESUMED_AUTONOMOUS_RESEARCH; TWO_PUBLIC_AXES_CONTINUE. Latest Owner Poursuis supersedes earlier pause routing for research. Existing continuation task 6ac978ecda1081918fba4d76dee437f4 was restored with this new scope, is_enabled=true confirmed by readback, prior hourly schedule preserved. FX source qualification and minimal causal volatility initialization completed; no executable FX source or economic edge established. HistData is an accessible conditional bid/ask quote-proxy candidate; Dukascopy automated web-feed rights are unestablished and five FXCM metadata probes return 403 in both HEAD and GET. 28 synthetic causal/restart tests pass; zero new market archives, outcomes, looks or activated economic families. Current sole design candidate EURUSD-RANGE-GRID-001; next is a minimal pre-result exploratory intraday protocol/manifest, with execution limits stated and all applicable gates before any data-result look. No parameter sweep or old-result rerun. Older pause/next-action paragraphs below are history; this STATE and latest batch govern. F1 REJECT closure ea9d2d0 immutable; no real trading, paid access or new account.
 
 CANONICAL: PR #22 remains unmerged; original coordination source 1e88c6b. No live capital, paid-data purchase or account authorized. Economic harness unchanged at 5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c.
 
@@ -175,10 +175,15 @@ budget reset. Do not repeat the completed Dukascopy/FXCM probes or earlier sourc
 review without material new evidence. Axis A keeps scoped vetoes/lessons; Axis B
 can read public mechanisms and metadata, one economic family maximum.
 
-CONTINUATION: existing task 6ac978ecda1081918fba4d76dee437f4 is to resume with a
-replacement prompt using this checkpoint and next action, preserving its prior
-schedule. Re-enable/update via tool after this evidence commit; verify that
-transition and publish the actual task state in PR #22. No duplicate task.
+CONTINUATION: existing task 6ac978ecda1081918fba4d76dee437f4 was re-enabled with a
+replacement prompt using this checkpoint and next action after source/code
+commit 6203e58598b97c3fefc31853dd3bc266ce85d52b. Tool update and readback confirm
+is_enabled=true; prior hourly schedule/Europe-Paris timezone preserved. Connector
+returns no next_run_time, so no exact next execution timestamp is asserted.
+Do not create a duplicate task or repeatedly mutate this unchanged scheduling
+state. Actual transition is published in PR #22. Synthetic CI on code commit
+6203e58 passed in run 38044431076 (pull_request) and 38044428595 (push); no market
+acquisition or economic calculation. Preserve any system CI still running.
 Cached primary metadata stays outside Git in
 /workspace/scratch/fx-source-qualification-2026-10-10/; reuse it. No active Action
 run was observed in in_progress/queued/waiting/pending/requested filters before
