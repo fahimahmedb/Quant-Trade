@@ -1,0 +1,69 @@
+name: Edge lab — isolated checks and metadata
+
+# GitHub schedules run on the default branch. No misleading branch-only cron.
+# The existing Owner automation supplies recurrent wake-ups, not a second loop.
+on:
+  push:
+    branches: [research/edge-lab-continuous]
+    paths:
+      - src/quant/edge_lab/**
+      - scripts/edge_lab.py
+      - tests/test_edge_lab*.py
+      - research/edge_lab/CONTROL.json
+      - .github/workflows/edge-lab.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: edge-lab-isolated-metadata
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    if: github.ref == 'refs/heads/research/edge-lab-continuous'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/edge-lab-continuous
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Statistical accounting, pause, recovery and competing hosts
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -p 'test_edge_lab*.py'
+      - name: Bounded metadata cycle, never an economic test
+        run: python scripts/edge_lab.py tick --actor github-actions-metadata
+      - name: Preserve derived state on this branch only
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current_head=$(git ls-remote origin refs/heads/research/edge-lab-continuous | cut -f1)
+          if [ "$current_head" != "$EXPECTED_HEAD" ]; then
+            echo "Branch advanced: preserve receipt artifact; do not overwrite or rerun outcomes."
+            exit 0
+          fi
+          git config user.name 'Quant Edge Lab'
+          git config user.email 'edge-lab@users.noreply.github.com'
+          git add research/edge_lab/STATE.json research/edge_lab/STATUS.md
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'edge-lab: metadata heartbeat [skip ci]'
+          git push origin HEAD:refs/heads/research/edge-lab-continuous
+      - name: Keep receipt if publication loses a race
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edge-lab-metadata-${{ github.run_id }}
+          path: |
+            research/edge_lab/STATE.json
+            research/edge_lab/STATUS.md
+          retention-days: 7

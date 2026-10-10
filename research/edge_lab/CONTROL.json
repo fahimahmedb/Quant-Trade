@@ -1,0 +1,16 @@
+{
+  "changed_at": "2026-10-10T16:08:25.110022+00:00",
+  "limits": {
+    "cpu_seconds_total": null,
+    "job_wall_seconds": 120,
+    "metadata_bytes_per_tick": 2097152,
+    "paid_usd_total": 0,
+    "tokens_total": null
+  },
+  "live_trading_authorized": false,
+  "notes": "Pas de budget Owner total chiffr\u00e9. 120 s/2 MiB sont des bornes techniques par op\u00e9ration, pas une allocation \u00e9conomique. Tokens NON MESUR\u00c9S. Aucun quota d'exp\u00e9riences ni Sharpe cible.",
+  "pause_reason": null,
+  "paused": false,
+  "real_capital_authorized": false,
+  "schema": 1
+}

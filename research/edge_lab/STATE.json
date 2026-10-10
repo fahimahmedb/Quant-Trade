@@ -1,0 +1,321 @@
+{
+  "baseline": {
+    "crypto-carry-f1": {
+      "declared_trials": null,
+      "effective_trials": null,
+      "history_complete": false,
+      "protected": [
+        [
+          "0001-01-01",
+          "9999-12-31"
+        ]
+      ],
+      "source": "Disposition publique uniquement ; Stage B=1004 jours, pas 457 observations ind\u00e9pendantes par jour.",
+      "spent": []
+    },
+    "daily-etf-panel": {
+      "declared_trials": 40,
+      "effective_trials": null,
+      "history_complete": false,
+      "protected": [
+        [
+          "2025-03-12",
+          "2026-09-12"
+        ]
+      ],
+      "source": "STATE_MD_NO_REGISTRY : B2=36 + B4=4, total=40 ; ne pas additionner 40 une seconde fois",
+      "spent": [
+        [
+          "2016-09-12",
+          "2022-03-09"
+        ],
+        [
+          "2022-03-09",
+          "2025-03-12"
+        ]
+      ]
+    },
+    "eurusd-histdata": {
+      "declared_trials": null,
+      "effective_trials": null,
+      "history_complete": false,
+      "protected": [
+        [
+          "2025-02-01",
+          "2026-10-01"
+        ]
+      ],
+      "source": "Fen\u00eatre r\u00e9serv\u00e9e au protocole gel\u00e9 ; MAIN + NO_ADDS + STATIC_GRID, 6 chemins de co\u00fbts ; priv\u00e9 UNKNOWN.",
+      "spent": []
+    },
+    "prediction-flb": {
+      "declared_trials": null,
+      "effective_trials": null,
+      "history_complete": false,
+      "protected": [],
+      "source": "1260 routes d\u00e9pendantes ; rerun valide KILL ; premier run invalide conserv\u00e9.",
+      "spent": []
+    },
+    "treasury-zf-bbo": {
+      "declared_trials": null,
+      "effective_trials": null,
+      "history_complete": false,
+      "protected": [],
+      "source": "Protocole gel\u00e9 depuis 2015 ; BBO historiques payants manquants.",
+      "spent": []
+    }
+  },
+  "created_at": "2026-10-10T16:08:25.112658+00:00",
+  "decisions": {
+    "qualify:eurusd-technical-grid": {
+      "created_at": "2026-10-10T16:08:25.112725+00:00",
+      "evidence": [],
+      "family": "eurusd-technical-grid",
+      "priority": 2,
+      "question": "R\u00e9utiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions.",
+      "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
+      "status": "OPEN"
+    },
+    "qualify:hyperliquid-forced-flow": {
+      "created_at": "2026-10-10T16:08:25.112764+00:00",
+      "evidence": [],
+      "family": "hyperliquid-forced-flow",
+      "priority": 3,
+      "question": "V\u00e9rifier un h\u00f4te qualifi\u00e9 et les global fills ; ne pas substituer trades WS.",
+      "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
+      "status": "OPEN"
+    },
+    "qualify:treasury-auction-zf": {
+      "created_at": "2026-10-10T16:08:25.112720+00:00",
+      "evidence": [
+        "audit-R18-databento-access-20261010"
+      ],
+      "family": "treasury-auction-zf",
+      "next_action": "Qualifier un devis/entitlement du paquet complet sans achat ; examiner la r\u00e9serve EURUSD et une alternative accessible si ce verrou persiste.",
+      "priority": 1,
+      "question": "Qualifier droits, BBO, rolls PIT et prix du paquet complet ; aucun achat.",
+      "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
+      "resolved_at": "2026-10-10T16:18:18.602907+00:00",
+      "status": "WAIT"
+    }
+  },
+  "events": [
+    {
+      "at": "2026-10-10T16:08:25.112676+00:00",
+      "hash": "49100a4d64a3d83d4ee547993a5a468889384319e43f59963899ef52f055220b",
+      "kind": "OWNER_BUILD_AUTHORIZED",
+      "payload": {
+        "base": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+        "instruction": "Construction autonome du labo ; prot\u00e9ger N et essais ; aucun capital r\u00e9el/live/achat.",
+        "report": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/REPORT.md"
+      },
+      "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sequence": 1
+    },
+    {
+      "at": "2026-10-10T16:18:18.599443+00:00",
+      "hash": "d7036b780482414adcd8d6d74521757cc24f21ed84f5666e4986c8bd1f6c6b6e",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "a895d1c7acad3185a10a57e49ca3e842041e54a4535f2e75ce9ba2de52647500",
+        "id": "audit-R18-databento-access-20261010",
+        "kind": "ACCESS"
+      },
+      "previous": "49100a4d64a3d83d4ee547993a5a468889384319e43f59963899ef52f055220b",
+      "sequence": 2
+    },
+    {
+      "at": "2026-10-10T16:18:18.602932+00:00",
+      "hash": "bf5e197b925726eec508f7513a6b32f91fa1ee8962f42ffb1cb9e300fcbaa24c",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "audit-R18-databento-access-20261010"
+        ],
+        "id": "qualify:treasury-auction-zf",
+        "next": "Qualifier un devis/entitlement du paquet complet sans achat ; examiner la r\u00e9serve EURUSD et une alternative accessible si ce verrou persiste.",
+        "verdict": "WAIT"
+      },
+      "previous": "d7036b780482414adcd8d6d74521757cc24f21ed84f5666e4986c8bd1f6c6b6e",
+      "sequence": 3
+    }
+  ],
+  "evidence": {
+    "audit-R18-databento-access-20261010": {
+      "fact": "ZF historique disponible depuis 2010-06-06 selon catalogue ; prix exact du paquet BBO/rolls et droits applicables NON MESUR\u00c9S/non qualifi\u00e9s. Pas de compte/cr\u00e9dit/API/achat activ\u00e9.",
+      "id": "audit-R18-databento-access-20261010",
+      "kind": "ACCESS",
+      "limit": "Pricing seule ne prouve ni couverture du paquet complet ni entitlement ; pas une preuve \u00e9conomique. Exposition incidentelle R19 reste dans l'audit, fen\u00eatre priv\u00e9e UNKNOWN.",
+      "passage": "CME Usage-based historical, no subscription required; FAQ exact request price and licensing",
+      "provenance": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/EVIDENCE.jsonl#R18",
+      "url": "https://databento.com/pricing",
+      "version": "page v\u00e9rifi\u00e9e le 2026-10-10 ; cache audit R18"
+    }
+  },
+  "families": {
+    "daily-etf-b2-b4": {
+      "dataset": "daily-etf-panel",
+      "label": "B2/B4 ETF daily",
+      "next": "Conserver rejets, 40 essais d\u00e9clar\u00e9s et shadow non lu.",
+      "priority": 99,
+      "ref": "team/weather-v4-a2-coordination-2026-10-08",
+      "sha": "1e88c6b82d682ae6d6d71b0732cb1bdb232cea3a",
+      "status": "REJECTED_CLOSED",
+      "wake": "Aucune r\u00e9ouverture par renommage ou nouveau fournisseur."
+    },
+    "eurusd-technical-grid": {
+      "dataset": "eurusd-histdata",
+      "freeze": "c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2",
+      "label": "EUR/USD \u2014 grille technique sur proxy",
+      "next": "R\u00e9utiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions.",
+      "priority": 2,
+      "ref": "research/technical-signals-literature-2026-10-10",
+      "sha": "e42d4924a33efa78bab97939d654424cc1501fb8",
+      "status": "FROZEN_NOT_EXECUTED",
+      "wake": "Admission document\u00e9e et r\u00e9servation publi\u00e9e ; les 433 jours planifi\u00e9s ne sont pas consomm\u00e9s au d\u00e9marrage."
+    },
+    "f1-crypto-carry": {
+      "dataset": "crypto-carry-f1",
+      "label": "F1 carry crypto",
+      "next": "Conserver la disposition publique ; aucune ouverture des outcomes A/B.",
+      "priority": 99,
+      "ref": "builder/f1-sealed-stage-b-capture-2026-10-09",
+      "sha": "ea9d2d0e0e057199bb168249c963acbc88e89de5",
+      "status": "REJECTED_CLOSED",
+      "wake": "Aucune relance de l'expression gel\u00e9e."
+    },
+    "f2-prediction-access": {
+      "dataset": "prediction-f2",
+      "label": "F2 \u2014 acc\u00e8s prediction",
+      "next": "Attendre une permission explicite ; ce blocage n'est pas un rejet \u00e9conomique.",
+      "priority": 4,
+      "ref": "research/f2-primary-terms-decision-2026-10-09",
+      "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+      "status": "BLOCKED_PERMISSION",
+      "wake": "Droits d'acc\u00e8s v\u00e9rifiables."
+    },
+    "hyperliquid-forced-flow": {
+      "dataset": "hyperliquid-global-fills",
+      "label": "Hyperliquid \u2014 flux forc\u00e9s",
+      "next": "V\u00e9rifier un h\u00f4te qualifi\u00e9 et les global fills ; ne pas substituer trades WS.",
+      "priority": 3,
+      "ref": "sol/scout-crypto-20261008-1847",
+      "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705",
+      "status": "BLOCKED_HOST",
+      "wake": "H\u00f4te et budget de collecte/stockage r\u00e9ellement v\u00e9rifi\u00e9s."
+    },
+    "prediction-negative-risk": {
+      "dataset": "prediction-flb",
+      "label": "Prediction negative-risk",
+      "next": "Conserver KILL du rerun valide, s\u00e9par\u00e9 du premier r\u00e9sultat invalid\u00e9.",
+      "priority": 99,
+      "ref": "sol/scout-prediction-flb-nr",
+      "sha": "2b66b1937257651b3a941bba6d7a1e5e45c01137",
+      "status": "REJECTED_CLOSED",
+      "wake": "Aucune r\u00e9ex\u00e9cution du test rejet\u00e9."
+    },
+    "sec-events": {
+      "dataset": "sec-equities-pit",
+      "label": "Form 4/F3 et 13D distinct",
+      "next": "R\u00e9utiliser census ; qualifier CIK/security PIT et delist prices.",
+      "priority": 5,
+      "ref": "sol/scout-events-f413d",
+      "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24",
+      "status": "BLOCKED_DATA_CHAIN",
+      "wake": "Cha\u00eene prix actions et identit\u00e9s admissible."
+    },
+    "treasury-auction-zf": {
+      "dataset": "treasury-zf-bbo",
+      "label": "Treasury/ZF \u2014 pression d'adjudication",
+      "next": "Qualifier droits, BBO, rolls PIT et prix du paquet complet ; aucun achat.",
+      "priority": 1,
+      "ref": "sol/scout-macro-tauc-gfs",
+      "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be",
+      "status": "BLOCKED_DATA_ACCESS",
+      "wake": "Source primaire couvrant le paquet complet ou acc\u00e8s d\u00e9j\u00e0 autoris\u00e9 v\u00e9rifi\u00e9."
+    }
+  },
+  "imported": {
+    "audit": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/REPORT.md",
+    "base": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+    "instructions_sha": "9b2b956961b434b83a038f0bb92d9bec46c1520c",
+    "memory": [
+      "research/memory.jsonl",
+      "research/opportunity_map.json",
+      "src/quant/learning/store.py"
+    ],
+    "reservations": [
+      "f1/crypto-carry-001-stage-a-look@8d93861edc4e1ff07b6265d4e80e6a429cffd0b7",
+      "f1/crypto-carry-001-stage-b-look@2620ba065e790b1c255f43bcd941fc336ad5ef4d"
+    ],
+    "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
+  },
+  "integrity": "2092fea2368930b69a90c5345849451b9f969ebaf5dc5c33531376c7c84a8700",
+  "jobs": {},
+  "live_trading_authorized": false,
+  "looks": {},
+  "protocols": {},
+  "real_capital_authorized": false,
+  "scheduler": {
+    "enabled_confirmed_at": null,
+    "external_run": null,
+    "id": "6ac978ecda1081918fba4d76dee437f4",
+    "last_tick": {
+      "actor": "construction-qualified-metadata",
+      "at": "2026-10-10T16:08:26.840533+00:00",
+      "new_events": 0,
+      "status": "IDLE"
+    },
+    "metadata_probe": {
+      "at": "2026-10-10T16:08:26.840533+00:00",
+      "payload_bytes": 434,
+      "refs": 5,
+      "status": "COMPLETE"
+    },
+    "mode": "existing_hourly_automation"
+  },
+  "schema": 1,
+  "sources": {
+    "eurusd-technical-grid": {
+      "kind": "BRANCH_HEAD_ONLY",
+      "observed_at": "2026-10-10T16:08:26.840504+00:00",
+      "ref": "research/technical-signals-literature-2026-10-10",
+      "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
+    },
+    "f2-prediction-access": {
+      "kind": "BRANCH_HEAD_ONLY",
+      "observed_at": "2026-10-10T16:08:26.840519+00:00",
+      "ref": "research/f2-primary-terms-decision-2026-10-09",
+      "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
+    },
+    "hyperliquid-forced-flow": {
+      "kind": "BRANCH_HEAD_ONLY",
+      "observed_at": "2026-10-10T16:08:26.840524+00:00",
+      "ref": "sol/scout-crypto-20261008-1847",
+      "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
+    },
+    "sec-events": {
+      "kind": "BRANCH_HEAD_ONLY",
+      "observed_at": "2026-10-10T16:08:26.840527+00:00",
+      "ref": "sol/scout-events-f413d",
+      "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
+    },
+    "treasury-auction-zf": {
+      "kind": "BRANCH_HEAD_ONLY",
+      "observed_at": "2026-10-10T16:08:26.840530+00:00",
+      "ref": "sol/scout-macro-tauc-gfs",
+      "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
+    }
+  },
+  "trial_charges": {},
+  "updated_at": "2026-10-10T16:18:18.603232+00:00",
+  "usage": {
+    "cpu_seconds": 0.0005610189999999959,
+    "human_seconds": null,
+    "metadata_bytes": 434,
+    "network_bytes": null,
+    "paid_usd": 0,
+    "tokens": null,
+    "wall_seconds": 1.5787734810000984
+  }
+}
