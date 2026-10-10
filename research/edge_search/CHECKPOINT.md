@@ -191,3 +191,85 @@ this batch. Preserve any newly active run and never collect concurrently. A
 failed infrastructure calculation is resumable only with proof no outcome was
 printed/saved and atomic reservation respected. Only notify a useful result,
 concrete progress or real external blocker; no unchanged heartbeat.
+
+
+STATE / FX INTRADAY PREREGISTRATION BATCH (2026-10-10):
+Latest routing supersedes earlier NEXT paragraphs, not immutable research history.
+PR22 1e88c6b, PR26 ea9d2d0, PR28 01fcca3 were verified open/draft/unmerged;
+current work resumed from that exact PR28 head, not the default branch. No active
+Actions in in_progress/queued/waiting/pending/requested filters at batch entry;
+no acquisition or economic workflow dispatched. Preserve any subsequently active
+run and no concurrent collection. Owner's note about automatic reminders is not
+a stop instruction; the existing hourly task is unchanged and this latest NEXT
+governs its continuation.
+
+DECISION: freeze one distinct exploratory EURUSD-RANGE-GRID-001 INTRADAY proxy
+protocol, not a claim of broker-capturable mean reversion. Decision artifacts:
+research/edge_search/eurusd_range_grid/{PREREGISTRATION.md,manifest.json,challenge.json}.
+One standard M15 RSI(14) 30/70 re-entry with past ADX(14)<20, one shared opportunity
+per UTC weekday, one finite three-equal-rung grid. A fixed stop/target, max two-hour
+basket, 16:00 UTC cutoff and explicit causal EWMA .94 per M15 state are defined;
+no martingale expansion, parameter search, shifted stop or winner substitution.
+Main plus no-adds and static-grid diagnostics: three expressions, six fixed cost
+paths, never extra independent N. All old trial history/alpha allocations stay
+spent, private UNKNOWN and known public exposure recorded, no virgin-window or
+confirmation/live claim.
+
+MANIFEST: 21 HistData source-local months 2025-01..2026-09, UTC warmup
+2025-01-01T05Z..2025-02-01T00Z, outcomes 2025-02-01T00Z..2026-10-01T00Z,
+433 scheduled weekdays. No October archive. Bounded January month-page HTML only
+adds primary evidence for filename and free POST form; no form submitted, ZIP
+or tick row read. Other filenames are proposed by that pattern, not verified
+coverage. Provider compressed SHA256 remains unauthenticated/null, never invented;
+actual capture must record raw identity before rows and verify supplied checksums.
+Reuse prior metadata caches; no repeated Dukascopy/FXCM probes.
+
+PRE-LOOK CHALLENGE: explicit current-Codex design audit closed for the labelled
+proxy scope, not an independent replication; complete-harness challenge remains
+OPEN. Twenty synthetic safety tests pass: fixed EST vs rollover DST, equal-time
+adverse envelope, latency/expiry, stale/failed stop closes, finite all-rung stress
+budget, adverse delayed add rejection, gross exposure and Wednesday triple swap.
+The existing research CI now runs them with the 28 past-state tests. No market
+fit/look/return generated. safety_kernel.py is intentionally no reader/downloader
+or complete economic runner. Timestamp-length and DST-fixture fixes were purely
+synthetic, before any outcome. Failed cutoff exit stays open until an observable
+adverse close, accrues assumed financing, and fails the intraday risk gate; an
+unresolved final exit fails the source gate with residual exposure preserved.
+Costs, missingness/statistics and fixed rejection/positive-proxy labels are
+explicitly frozen in the preregistration; a positive proxy only earns execution
+validation, never a new survival/confirmation assertion.
+
+GATES / NEXT: build and challenge the smallest complete registered bar/signal/
+causal-state/lifecycle/accounting harness, not further indicators or source
+shopping. Publish/freeze code, dependencies and result schema, prove prefix and
+restart causality plus missing/open-exit/ledger cases. Then check active runs,
+reuse/acquire only manifest archives sequentially within personal use and raw
+identity controls. Before any price row, atomically CREATE unique remote ref
+refs/heads/looks/eurusd-range-grid-001-exploratory-01 and exclusive local attempt/
+result; never update an existing ref or reuse F1 reservations. No look is claimed
+in this batch. A prior printed/saved/partial/source-failed outcome forbids replay;
+only evidenced infrastructure interruption without outcome can resume the same
+reservation. Complete harness gate and actual source QA still open, so no outcome
+acquisition/execution claimed ready. If the registered proxy cannot be implemented
+without a real timing/rights ambiguity, record its precise source blockage and
+select one accessible reserve; do not tune this rule to evade its gate.
+
+BATCH NINE FIELDS:
+RESULT = INTRADAY_PREREGISTRATION_AND_MANIFEST_FROZEN; DESIGN_CHALLENGE_CLOSED; HARNESS_GATE_OPEN; no economic result.
+EFFECT_SIZE = NOT_MEASURED.
+UNCERTAINTY = Conditional rebound and fill/delivery/broker/cost assumptions unvalidated; proxy clock only.
+POWER_LIMITATION = 433 scheduled weekdays/about 20 months; dependence, few baskets and private UNKNOWN; no virgin sample or confirmation claim.
+ECONOMIC_SIGNIFICANCE = Costed bounded-grid rule is falsifiable separately from risk scaling; comparator may invalidate complexity without becoming replacement winner.
+FAILED_CRITERIA = Complete economic harness/dependency freeze/source QA/atomic reservation not yet satisfied; executable source remains unmet.
+LESSON = Model failed exits, every rung cost and known exposure before outcomes; strong variance forecasts are not edge.
+FAMILY_STATUS = ONE_DESIGN_CANDIDATE_NOT_ECONOMICALLY_ACTIVATED; 3 expressions/6 fixed cost paths planned; 0 archives/price rows/results/looks.
+NEXT_DECISION = Build and challenge only the smallest registered FX harness, freeze/publicly hash it, then gate sequential capture and unique exploratory look; preserve any active runs and all old results.
+
+ARTIFACT SHA256:
+PREREGISTRATION.md = d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96
+manifest.json = d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b
+challenge.json = deb0b0052a9d1396a6a91677d2b7a5a0b54eec4c1c3f37754b3e8b97ea7712b8
+safety_kernel.py = c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65e0c
+test_safety_kernel.py = 6cc428d4bad20ac3a3d080e6657df84cbd1278c6e468bf1aee6bfe42afcb2dc2
+
+Publish this useful milestone once in PR22 with marker FX_GRID_INTRADAY_PREREG_2026_10_10 and the immutable commit; PR22 stays nonmerged. No unchanged heartbeat or repeated task mutation. F1 closure ea9d2d0, A/B/harness hashes, COIN-M timing failure, F2 permission block and Polymarket KILL unchanged.

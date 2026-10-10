@@ -7,6 +7,8 @@ on:
     paths:
       - 'src/volatility.py'
       - 'research/edge_search/test_volatility_causal_state.py'
+      - 'research/edge_search/eurusd_range_grid/safety_kernel.py'
+      - 'research/edge_search/eurusd_range_grid/test_safety_kernel.py'
       - '.github/workflows/volatility-causal-state.yml'
   push:
     branches:
@@ -14,6 +16,8 @@ on:
     paths:
       - 'src/volatility.py'
       - 'research/edge_search/test_volatility_causal_state.py'
+      - 'research/edge_search/eurusd_range_grid/safety_kernel.py'
+      - 'research/edge_search/eurusd_range_grid/test_safety_kernel.py'
       - '.github/workflows/volatility-causal-state.yml'
 
 permissions:
@@ -32,3 +36,5 @@ jobs:
         run: python -m pip install numpy==2.3.5 scipy==1.17.0 arch==8.0.0 pytest==9.1.1
       - name: Test causal prefixes and saved-state restart
         run: python -m pytest -q research/edge_search/test_volatility_causal_state.py
+      - name: Challenge FX risk and adverse fills with synthetic quotes
+        run: python -m unittest discover -s research/edge_search/eurusd_range_grid -p 'test_*.py' -v
