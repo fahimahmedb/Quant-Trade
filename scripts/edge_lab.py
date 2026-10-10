@@ -40,6 +40,8 @@ def main(argv=None):
     claim.add_argument("--actor", required=True)
     preflight = sub.add_parser("legacy-preflight", help="Read-only exact EURUSD bundle; no capture/launch")
     preflight.add_argument("--claim-id", required=True)
+    resources = sub.add_parser("synthetic-resources", help="Fixed full-calendar synthetic EURUSD capacity probe")
+    resources.add_argument("--claim-id", required=True)
     execute = sub.add_parser("execute")
     execute.add_argument("protocol")
     serve = sub.add_parser("serve")
@@ -79,6 +81,10 @@ def main(argv=None):
         authority = GitAuthority(ROOT, args.state_dir)
         receipt = lab.execute(args.protocol, ROOT, authority.snapshot, authority.claim)
         print(json.dumps(receipt))
+    elif args.action == "synthetic-resources":
+        from quant.edge_lab.resources import probe_eurusd
+        print(json.dumps(probe_eurusd(lab, ROOT, args.claim_id), ensure_ascii=False))
+        return
     elif args.action == "serve":
         instance = server(args.state_dir, args.port)
         print(f"Local panel: http://127.0.0.1:{instance.server_port}", flush=True)
