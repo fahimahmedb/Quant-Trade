@@ -1,6 +1,6 @@
 # Checkpoint — construction autorisée
 
-STATUS = RESEARCH_DECISION_RECORDED_NO_ECONOMIC_LOOK
+STATUS = CFE_VX_ADMISSION_PENDING_NO_ECONOMIC_LOOK
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -54,3 +54,17 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Aucun nouveau scheduler/board/contrat/handoff. ID 6ac978ecda1081918fba4d76dee437f4 conservé ; activation existante et livraison backend restent distinguées.
 
 - Claim suivant HL préparé via CLI, même acteur, id cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136. Le commit publiant ce checkpoint/STATE est sa barrière CAS avant toute nouvelle lecture HL.
+
+## Qualification HL et réserve distincte — 2026-10-10 17:19 UTC
+
+- Claim HL publié par CAS à dcf186fd680ca9ad8e87f95457368d848ce67568, contre ed8bb0f ; id cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136. Preuves/decide produits localement à 17:08 avec ce claim avant fin de lease ; reçus conservés puis publiés, aucune nouvelle revue HL après lease.
+- `qualify:hyperliquid-forced-flow` = WAIT. Cache primaire node405cc08/auditR18 réutilisé. Host sélectionné : quota2CPU, mémoire8GiB, disque33,770,192,896octets (~32GiB), aucun binaire/processus node. Recommandation primaire16vCPU/128GB/500GB et logs~100GB/jour ; pas d'hôte conforme/continu attesté. Pas de provisionnement/compte/achat/requester-pays ni WS.
+- Global fills/labels de liquidation/local_time + BBO reçu restent requis. Les anciens marqueurs pre-integration FALSE sont historiques ; spec/harnais/tests existent à a6961e5f. Existence des fichiers != admission/activité économique. Aucun substitut tradesWS/COIN-M.
+- Alternative distincte proposée, non testée : `cfe-vix-term-premium`, transfert du risque de volatilité via futuresVX. Hypothèse de compensation des vendeurs par demande de couverture ; ni signe de moyenne établi, ni alpha libre de risque, ni résultat publié employé pour sélectionner. Ce n'est pas une relance de crypto-carry/RSI/grid/negative-risk.
+- Sources primaires Cboe specs/catalogue/terms/archive : quatre HTML bornés HTTP200, 1,694,921octets de payload documentaire au total. Catalogue statique inspecté : douze noms de CSV mensuelsVX2013 seulement ; publicité2013..current ne prouve pas couverture complète. HEAD du seul fichier annoncé CFE_F13_VX.csv :200,13,813octets,text/csv,last-modified2021-05-11 ; zéro corpsCSV/prix lu.
+- Terms primaire : une copie personnelle non commerciale avec notices ; publication/redistribution/produits dérivés hors de cette portée sans consentement. Prix de règlement/TAS ne prouvent pas fillsBBO exécutables. Full history/rollsPIT, horloge première publication, frais/marge/queues/tail capacity restent inconnus. Aucune DataShop/API/clef payante activée. Ne pas utiliser2013 comme fenêtre courte commode ni convertir12noms en N.
+- Deux packets METHOD/CONTRADICTION et une family HYPOTHESIS enregistrés via CLI. Admission prochaine = `qualify:cfe-vix-term-premium` OPEN, sans protocole/runner/réservation. Nouvelle famille crée désormais une seule question d'admission via le CLI existant ; auparavant elle était orpheline de `next`. Régression prouve zéro lancement/charge et impossibilité de rouvrir par duplication. 32tests synthétiques locaux PASS.
+- Tous les compteurs/expositions/ledgers anciens préservés : zéro nouveau look, charge, outcome/retour/Sharpe, protocole ou worker économique. N et M restent distincts, M effectif/privéUNKNOWN, B2+B4=40 inchangé ; F1outcomes fermés, KILLnegative-risk valide conservé séparément de l'invalide. Aucun H001/clock général lancé.
+- Opérations source Cboe : ~10.2002s de durée et~0.2132s CPU instrumentés ; payloaddocumentaire mesuré, trafic total/temps humain/tokens NONMESURÉS. Plafonds120s/2MiB respectés par les opérations ; coût payant0 et budgetOwner globalNONFOURNI. Ces compteurs d'opération ne couvrent pas toute la session/facture.
+- NEXT : claim-question `qualify:cfe-vix-term-premium` avec identité de session, puis publicationCAS avant lecture coûteuse. Réutiliser ces quatre sources/hash/passages ; rechercher seulement preuve primaire distincte du paquet complet, droits applicables et horloges/fees/PIT/resource qui peut décider admission ou arrêt. Aucun accès CSV/outcome avant protocole admissible+gel/revue/synthétiques+reserveSTATE publié+RUNNINGCAS.
+- ZF/EURUSD/HL WAIT ne se rouvrent pas à chaque heure. Si aucune preuve utile accessible ne justifie le coût, conserver IDLE/BLOCKED. La réserve CFE n'est pas READY_TO_EXECUTE et ne rend aucun holdout vierge. Le scheduler unique reste inchangé ; pas de board/handoff/contrat additionnel ou modification de production hors du labo.

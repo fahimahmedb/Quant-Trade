@@ -190,10 +190,17 @@ class Lab:
             mechanism_hash = digest(" ".join(mechanism.lower().split()))
             if any(f.get("mechanism_hash") == mechanism_hash for f in state["families"].values()):
                 raise Refused("Same mechanism: add a variant, do not reset trial history")
+            question_id = "qualify:" + identity
+            if question_id in state["decisions"]:
+                raise Refused("Existing admission question; do not overwrite or reopen it")
             state["families"][identity] = {"label": mechanism, "mechanism_hash": mechanism_hash, "dataset": dataset,
                 "priority": 10, "status": "HYPOTHESIS", "next": "Choisir un test discriminant accessible.",
                 "wake": "Accès/horloge/coûts et protocole admissibles.", "evidence": evidence_ids}
-            event(state, "FAMILY_REGISTERED", {"id": identity, "mechanism_hash": mechanism_hash, "dataset": dataset})
+            state["decisions"][question_id] = {"status": "OPEN", "family": identity, "priority": 10,
+                "question": "Qualifier données/droits/horloge/coûts/ressources avant tout protocole ou look.",
+                "created_at": utc_now(), "evidence": list(evidence_ids), "reason": "NEW_MECHANISM_ADMISSION"}
+            event(state, "FAMILY_REGISTERED", {"id": identity, "mechanism_hash": mechanism_hash,
+                                               "dataset": dataset, "question": question_id})
             self.store.save(state)
 
     def freeze(self, protocol):

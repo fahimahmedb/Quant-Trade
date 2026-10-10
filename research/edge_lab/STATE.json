@@ -67,6 +67,18 @@
   },
   "created_at": "2026-10-10T16:08:25.112658+00:00",
   "decisions": {
+    "qualify:cfe-vix-term-premium": {
+      "created_at": "2026-10-10T17:18:39.234578+00:00",
+      "evidence": [
+        "cfe-vx-accessible-catalogue-only-20261010",
+        "cfe-vx-rights-and-execution-qualification-open-20261010"
+      ],
+      "family": "cfe-vix-term-premium",
+      "priority": 10,
+      "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
+      "reason": "NEW_MECHANISM_ADMISSION",
+      "status": "OPEN"
+    },
     "qualify:eurusd-technical-grid": {
       "actor": "scheduled-automation-20261010T1654Z",
       "claim_id": "f6a172ad0c927f15d93170d66aaaafd8a223334c20bcbd307f8bc7aca1fc9b42",
@@ -92,13 +104,19 @@
       "claim_id": "cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136",
       "claimed_at": "2026-10-10T17:04:05.999716+00:00",
       "created_at": "2026-10-10T16:08:25.112764+00:00",
-      "evidence": [],
+      "evidence": [
+        "hl-global-fills-host-primary-cached-20261010",
+        "hl-selected-host-capacity-20261010T1705Z",
+        "hl-stale-readiness-marker-contradiction-20261010"
+      ],
       "family": "hyperliquid-forced-flow",
       "lease_seconds": 600,
+      "next_action": "WAIT for a verifiably pre-existing compliant node/global-fill/local-clock/BBO host with documented zero-paid authorized access, durable resources and original protocol gates. No node installation, paid host, requester-pays archive or trades-only substitute. Current docs/host question is closed until a distinct host/access fact; inspect one different mechanism with genuinely accessible primary data instead, preserving all old exposures and multiplicity.",
       "priority": 3,
       "question": "V\u00e9rifier un h\u00f4te qualifi\u00e9 et les global fills ; ne pas substituer trades WS.",
       "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-10T17:08:16.261697+00:00",
+      "status": "WAIT"
     },
     "qualify:treasury-auction-zf": {
       "created_at": "2026-10-10T16:08:25.112720+00:00",
@@ -257,6 +275,96 @@
       },
       "previous": "052ba4e782cbb3db1cb152f68368dbf521b92fd4d3b4c0cbf3fa3c247e480be9",
       "sequence": 11
+    },
+    {
+      "at": "2026-10-10T17:08:15.923783+00:00",
+      "hash": "2d11f651530917e88a22e4534ba66ded7ddaddfe8d0f24fe1e042824e9afdefe",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "ea534564932f11b2b6d276d0f051fa8b9a099c556f8308907983c7178ced62b4",
+        "id": "hl-global-fills-host-primary-cached-20261010",
+        "kind": "ACCESS"
+      },
+      "previous": "3b8539e38a9bf9aca92300445616e854b6e5f4ad94e7140cede5f69b3fc028b6",
+      "sequence": 12
+    },
+    {
+      "at": "2026-10-10T17:08:16.036828+00:00",
+      "hash": "49b7de8fdf2a4ce0ee4ae7bac116fb2afea40beaf5f1e27e92aade32742339ca",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "e0d0f734a4f91f9440dad079746eb412a0cb3b84fe5211f0bad75bdeb8e647bc",
+        "id": "hl-selected-host-capacity-20261010T1705Z",
+        "kind": "METHOD"
+      },
+      "previous": "2d11f651530917e88a22e4534ba66ded7ddaddfe8d0f24fe1e042824e9afdefe",
+      "sequence": 13
+    },
+    {
+      "at": "2026-10-10T17:08:16.144354+00:00",
+      "hash": "6b78bafea22699dbb69dd2a76de260d612247bbb9ebb9289299679763cd71e71",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "269593e6c29df26be649ea62cd471650de0dd9b405bd16be42a20a8ac04b51eb",
+        "id": "hl-stale-readiness-marker-contradiction-20261010",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "49b7de8fdf2a4ce0ee4ae7bac116fb2afea40beaf5f1e27e92aade32742339ca",
+      "sequence": 14
+    },
+    {
+      "at": "2026-10-10T17:08:16.261708+00:00",
+      "hash": "80627d20e9bb5605d142e732b3c167018c22ebb6461a87ec8e34435723254160",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "hl-global-fills-host-primary-cached-20261010",
+          "hl-selected-host-capacity-20261010T1705Z",
+          "hl-stale-readiness-marker-contradiction-20261010"
+        ],
+        "id": "qualify:hyperliquid-forced-flow",
+        "next": "WAIT for a verifiably pre-existing compliant node/global-fill/local-clock/BBO host with documented zero-paid authorized access, durable resources and original protocol gates. No node installation, paid host, requester-pays archive or trades-only substitute. Current docs/host question is closed until a distinct host/access fact; inspect one different mechanism with genuinely accessible primary data instead, preserving all old exposures and multiplicity.",
+        "verdict": "WAIT"
+      },
+      "previous": "6b78bafea22699dbb69dd2a76de260d612247bbb9ebb9289299679763cd71e71",
+      "sequence": 15
+    },
+    {
+      "at": "2026-10-10T17:18:38.928821+00:00",
+      "hash": "d5d01b3c36d70719c6a52c2de64b7c93cad43b4e69b6de280705e171fb70d555",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "a811b91c380ac4224756647b303e3d12b37cbdd6d06220229169d1451b678654",
+        "id": "cfe-vx-accessible-catalogue-only-20261010",
+        "kind": "METHOD"
+      },
+      "previous": "80627d20e9bb5605d142e732b3c167018c22ebb6461a87ec8e34435723254160",
+      "sequence": 16
+    },
+    {
+      "at": "2026-10-10T17:18:39.117033+00:00",
+      "hash": "1eadd6e59fcf6a51196308977b56ac57ad5ec30ff30a4d7e6af53f7f78362da1",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "2d5d092024736c92c7be5b0a97e3fca03cac0dac8182ad84e24fd7316e4b4810",
+        "id": "cfe-vx-rights-and-execution-qualification-open-20261010",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "d5d01b3c36d70719c6a52c2de64b7c93cad43b4e69b6de280705e171fb70d555",
+      "sequence": 17
+    },
+    {
+      "at": "2026-10-10T17:18:39.234590+00:00",
+      "hash": "698d4f42539e03bcbd65b4ad5fa82e275e0e7f38a8223bed61d6928dad89ec51",
+      "kind": "FAMILY_REGISTERED",
+      "payload": {
+        "dataset": "cfe-vix-futures-eod",
+        "id": "cfe-vix-term-premium",
+        "mechanism_hash": "c11da151b644210afddfe831baee13126acd0c91933fa35b476777d8ef0e4a4c",
+        "question": "qualify:cfe-vix-term-premium"
+      },
+      "previous": "1eadd6e59fcf6a51196308977b56ac57ad5ec30ff30a4d7e6af53f7f78362da1",
+      "sequence": 18
     }
   ],
   "evidence": {
@@ -269,6 +377,173 @@
       "provenance": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/EVIDENCE.jsonl#R18",
       "url": "https://databento.com/pricing",
       "version": "page v\u00e9rifi\u00e9e le 2026-10-10 ; cache audit R18"
+    },
+    "cfe-vx-accessible-catalogue-only-20261010": {
+      "fact": "A distinct risk-transfer hypothesis is available to qualify: buyers seeking volatility protection could compensate sellers for bearing jump/tail risk. This is a hypothesis, not a documented positive mean or alpha. Official CFE_F13_VX.csv HEAD returns200, text/csv,13813 bytes; zero body/price rows read. Other files, full history/contract rolls and schema remain unverified.",
+      "head_receipt": {
+        "content_length": "13813",
+        "content_type": "text/csv",
+        "cpu_seconds": 0.013923300999999992,
+        "etag": "\"617bb1036373bbdc3a71882dc94d8d6b\"",
+        "http_status": 200,
+        "last_modified": "Tue, 11 May 2021 14:09:31 GMT",
+        "method": "HEAD",
+        "paid_usd": 0,
+        "price_rows_read": 0,
+        "response_body_bytes_read": 0,
+        "tokens": null,
+        "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_F13_VX.csv",
+        "wall_seconds": 0.270346872999653
+      },
+      "id": "cfe-vx-accessible-catalogue-only-20261010",
+      "kind": "METHOD",
+      "limit": "Do not choose 2013 as a short profitable sample or claim twelve filenames are N observations. No returns/public performance/paper results were inspected. Spot VIX index and contract settlement are not authenticated executable entry/exit quotes. Private/history exposure UNKNOWN, original F1/B2/B4/negative-risk trials and protected windows remain unchanged.",
+      "passage": "CFE historical price/volume archive lists twelve 2013 VX monthly contract CSV names. Current catalog advertises price/volume detail from2013 to current and separate custom DataShop products. Specifications distinguish final settlement value and TAS transaction price range.",
+      "primary_urls": [
+        "https://www.cboe.com/tradable-products/vix/vix-futures/specifications",
+        "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/futures",
+        "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_F13_VX.csv"
+      ],
+      "url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/settlement-archive",
+      "version": "Primary Cboe pages inspected 2026-10-10; archive SHA256 013a2a14954dd1bf5c07df989dac1af80c74a4eaca16f0372c2df403ad0284b9; specification SHA256 e8ed45c068278ed52bee99c8b5d60112689835b07c0153b0bfa5cfab0e2c1012."
+    },
+    "cfe-vx-rights-and-execution-qualification-open-20261010": {
+      "documentation_receipts": [
+        {
+          "cpu_seconds": 0.07975642100000001,
+          "economic_looks": 0,
+          "metadata_bytes": 874556,
+          "paid_usd": 0,
+          "records": [
+            {
+              "bytes": 466779,
+              "data_or_rights_links": [
+                "/terms"
+              ],
+              "final_url": "https://www.cboe.com/tradable-products/vix/vix-futures/specifications",
+              "http_status": 200,
+              "inspection_scope": "Specification/catalog/rights metadata only; no dataset CSV/PDF/outcome or public performance result read.",
+              "name": "spec",
+              "primary_specification_excerpts": [
+                "Trading Platform Minimum Price Intervals/Dollar Value Per Tick Trade At Settlement Transactions Crossing",
+                "Your Privacy Choices Do Not Sell or Share My Personal Information"
+              ],
+              "sha256": "e8ed45c068278ed52bee99c8b5d60112689835b07c0153b0bfa5cfab0e2c1012",
+              "url": "https://www.cboe.com/tradable_products/vix/vix_futures/specifications/"
+            },
+            {
+              "bytes": 407777,
+              "data_or_rights_links": [
+                "/markets/us/futures/market-statistics/settlement",
+                "/markets/us/futures/market-statistics/historical-data",
+                "/markets/us/futures/market-statistics/historical-data/settlement-archive",
+                "/us/futures/market_statistics/historical_data/historical-imbalance-reports/",
+                "/markets/us/futures/market-statistics/vix-settlement-series",
+                "/us/futures/market_statistics/volatility_settlement_eoi/",
+                "/markets/us/futures/market-statistics/historical-data/futures",
+                "/markets/us/futures/market-statistics/historical-data/oof",
+                "/terms",
+                "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/cfevoloi.csv",
+                "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/cfe_daily_settlement_window_executed_volume.csv",
+                "/markets/us/futures/market-statistics/historical-data/settlement-archive",
+                "/us/futures/market_statistics/historical_data/margin_archive/"
+              ],
+              "final_url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/futures",
+              "http_status": 200,
+              "inspection_scope": "Specification/catalog/rights metadata only; no dataset CSV/PDF/outcome or public performance result read.",
+              "name": "catalog",
+              "primary_specification_excerpts": [
+                "US Futures Exchange Historical Data | Cboe Markets Data",
+                "Market Statistics Historical Data Overview Error Trade form",
+                "Daily Market Statistics Settlement Prices Historical Data Overview",
+                "Settlement Prices Historical Data Overview Historical Data Archive",
+                "Overview Historical Data Archive Imbalance Reports VIX Settlement Series",
+                "Volatility Settlement EOI Historical Data Futures Options on Futures",
+                "Your Privacy Choices Do Not Sell or Share My Personal Information CFE Daily Volume and Open Interest from 2004 to Current CFE Daily Volume and Open Interest by Product",
+                "CFE Daily Settlement Window Volume Executed Historical Data Archive Click here",
+                "Go beyond the basics Get custom VIX options and futures historical data on-demand at Cboe DataShop Learn More CFE Price and Volume Detail for Select Futures Products from 2013 to Current"
+              ],
+              "sha256": "6093d04cfe2c306d932127043b0d9507168d85095160713296a5df03adf3afb7",
+              "url": "https://www.cboe.com/us/futures/market_statistics/historical_data/"
+            }
+          ],
+          "tokens": null,
+          "wall_seconds": 6.798353792000853
+        },
+        {
+          "cpu_seconds": 0.11948652600000001,
+          "economic_looks": 0,
+          "metadata_bytes": 820365,
+          "paid_usd": 0,
+          "price_rows_read": 0,
+          "records": [
+            {
+              "bytes": 404422,
+              "csv_link_names_only": [],
+              "documentation_excerpts": [
+                "2. Copyrights, Trademarks, Service Marks, And Proprietary Rights The design and functionality of, as well as the materials and content contained in, the Website, including but not limited to documents, designs, logos, graphics, artwork, images, photographs, audio clips, video clips, databases, text, HTML and other material on the Website, including the selection and arrangement thereof, copyrights, trademarks, service marks and tradenames (\"Materials\") are owned, licensed, or controlled by Cboe or the party credited as the owner, licensor, or provider of such Materials. The Materials on the Website are protected by copyrights, trademarks, service marks, and/or other proprietary rights and laws of the United States and other countries. The Website is also protected as a collective work or compilation under United States copyright and other laws. You agree to comply with all applicable copyright and other laws. You agree to comply with any guidelines for linking to the Website that may be posted on the Website. You may view, print and download one copy of the Materials for your persona",
+                "The design and functionality of, as well as the materials and content contained in, the Website, including but not limited to documents, designs, logos, graphics, artwork, images, photographs, audio clips, video clips, databases, text, HTML and other material on the Website, including the selection and arrangement thereof, copyrights, trademarks, service marks and tradenames (\"Materials\") are owned, licensed, or controlled by Cboe or the party credited as the owner, licensor, or provider of such Materials. The Materials on the Website are protected by copyrights, trademarks, service marks, and/or other proprietary rights and laws of the United States and other countries. The Website is also protected as a collective work or compilation under United States copyright and other laws. You agree to comply with all applicable copyright and other laws. You agree to comply with any guidelines for linking to the Website that may be posted on the Website. You may view, print and download one copy of the Materials for your personal non-commercial use in connection with products and services off",
+                "3. Content You Submit to the Website; Conduct In using the Website or any service provided thereon, you may have the opportunity to add, create, upload, submit, distribute, post, share and/or exchange information, data, text, software or other materials on or through the Website, including any electronic e-mail communication (\"User Content\"). In doing so, you expressly grant, and represent and warrant that you have the right to grant, to Cboe a non-exclusive, irrevocable, worldwide, transferable, royalty-free, perpetual license to use, publicly display, publicly perform, reproduce, distribute, sublicense and create derivative works from your User Content in any manner or through any media now known or later developed, without any payment to you. Such license shall include the right in Cboe\u2019s discretion to use the name you submit in connection with such User Content. You further acknowledge and agree that Cboe shall have the right (but not the obligation), in its sole discretion, to pre-screen, edit, refuse, move or remove any User Content posted to the Website at any time and for any"
+              ],
+              "final_url": "https://www.cboe.com/terms",
+              "http_status": 200,
+              "scope": "Rights/contract/catalog metadata only. No CSV/data API/outcome requested.",
+              "sha256": "53b5f594213c44694d616d7009acebaea0b89b2b34c87302826af85a972564cb",
+              "url": "https://www.cboe.com/terms"
+            },
+            {
+              "bytes": 415943,
+              "csv_link_names_only": [
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_F13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_G13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_H13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_J13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_K13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_M13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_N13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_Q13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_U13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_V13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_X13_VX.csv",
+                "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_Z13_VX.csv"
+              ],
+              "documentation_excerpts": [
+                "Cboe Futures Exchange Historical Data Archive | Cboe Markets",
+                "Market Statistics Historical Data Historical Data Archive",
+                "Historical Data Historical Data Archive Overview",
+                "Daily Market Statistics Settlement Prices Historical Data",
+                "Settlement Prices Historical Data Overview",
+                "Overview Historical Data Archive Imbalance Reports",
+                "Imbalance Reports VIX Settlement Series Volatility Settlement EOI",
+                "VIX Settlement Series Volatility Settlement EOI Historical Archive Data",
+                "Volatility Settlement EOI Historical Archive Data CFE data is compiled for the convenience of site visitors and is furnished without responsibility for accuracy and is accepted by the site visitor on the condition that transmission or omissions shall not be made the basis for any claim, demand or cause for action. The information and data was obtained from sources believed to be reliable, but accuracy is not guaranteed."
+              ],
+              "final_url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/settlement-archive",
+              "http_status": 200,
+              "scope": "Rights/contract/catalog metadata only. No CSV/data API/outcome requested.",
+              "sha256": "013a2a14954dd1bf5c07df989dac1af80c74a4eaca16f0372c2df403ad0284b9",
+              "url": "https://www.cboe.com/markets/us/futures/market-statistics/historical-data/settlement-archive"
+            }
+          ],
+          "tokens": null,
+          "wall_seconds": 3.1314664439996704
+        }
+      ],
+      "fact": "Limited personal source intent is documented, not an unrestricted redistribution/commercial/live license. Public links and one successful HEAD are compatible with an accessible exploratory source, but neither prove full contract/PIT-roll history nor historical BBO, first publication clocks, fills, broker/exchange fees, margin/tail capacity or admissible full risk attribution. These can discriminate access/stop before any economic look.",
+      "id": "cfe-vx-rights-and-execution-qualification-open-20261010",
+      "kind": "CONTRADICTION",
+      "limit": "No data CSV/API, account/paid DataShop, raw redistribution or market result accessed. Short-vol profitability would be compensation for risk unless distinguished from appropriate risk/insurance benchmarks; a positive proxy cannot become confirmed alpha. Qualification must preserve the source contradictions and all historical exposures.",
+      "observable_cost": {
+        "documentation_payload_bytes": 1694921,
+        "network_total_bytes": null,
+        "paid_usd": 0,
+        "source_operations_cpu_seconds": 0.213166248,
+        "source_operations_wall_seconds": 10.200167109000176,
+        "tokens": null
+      },
+      "passage": "May view/print/download one copy for personal non-commercial use connected with Cboe products/services, keeping notices. Other copying/storage/publication/distribution and derivative products require consent except stated legal exceptions. Data is furnished without accuracy guarantee.",
+      "url": "https://www.cboe.com/terms",
+      "version": "Primary terms inspected 2026-10-10; SHA256 53b5f594213c44694d616d7009acebaea0b89b2b34c87302826af85a972564cb."
     },
     "fx-current-host-and-look-preflight-20261010T1657Z": {
       "fact": "The new host observation confirms immutable runtime identity and no known local/original-ref FX execution. 433 days, three economic expressions, six dependent cost paths and UNKNOWN private exposure are preserved. Thirty-one laboratory synthetic cases passed after repairing only claim display; no economic look, charge, F1 outcome or general QuantSystem boot.",
@@ -325,9 +600,72 @@
       ],
       "url": "https://www.histdata.com/f-a-q/",
       "version": "Primary pages inspected 2026-10-10; unchanged cache source qualification 6203e58598b97c3fefc31853dd3bc266ce85d52b, SHA256 eba08f8ec6ccd43b1bf9f7f1a4f54c0265e0f5b88d8d1432b8450e1cfed2133f."
+    },
+    "hl-global-fills-host-primary-cached-20261010": {
+      "fact": "The frozen mechanism needs authoritative global fills with liquidation marker and local availability clock, combined with received BBO. Public trades WS does not contain the global liquidation label and is forbidden as its substitute. Requester-pays archives are not an authorized free substitute.",
+      "id": "hl-global-fills-host-primary-cached-20261010",
+      "kind": "ACCESS",
+      "limit": "Guidance is not observed utilization and not proof that any compliant node is installed or running. Historical archives may lack blocks/BBO/publication timing; no requester-pays acquisition/account/permission or liquidity execution claim.",
+      "passage": "Non-validator guidance: 16 vCPU /128 GB RAM/500 GB SSD/Ubuntu24.04; about100GB/day default logs. --write-fills --batch-by-block writes global fills with local_time, block_time, block_number and paired events.",
+      "provenance": "https://github.com/fahimahmedb/Quant-Trade/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/EVIDENCE.jsonl#R18",
+      "url": "https://github.com/hyperliquid-dex/node/blob/405cc08b17a727ee51b0f9128918955a84439915/README.md",
+      "version": "Node README commit 2026-08-10T12:11:33Z, inspected by audit 2026-10-10; R18/FETCH-REV2-hl-node-readme cached, no new web read."
+    },
+    "hl-selected-host-capacity-20261010T1705Z": {
+      "fact": "Selected host has 8 GiB cgroup RAM, quota 2 CPU units, total disk 33,770,192,896 bytes/free31,756,165,120 bytes; no hl-visor/hl-node binaries or node process. No external host/capability/credential was provided or inferred. It is not an admitted 10+UTC-day global-fill recorder.",
+      "host_measurement": {
+        "cgroups": {
+          "/sys/fs/cgroup/cpu.max": "200000 100000",
+          "/sys/fs/cgroup/memory.max": "8589934592"
+        },
+        "disk": {
+          "free_bytes": 31756165120,
+          "total_bytes": 33770192896
+        },
+        "host_scope": "Selected managed execution workspace; no external provisioned host or credential inferred",
+        "kind": "CURRENT_HOST_METADATA_ONLY",
+        "logical_cpu_visible": 3,
+        "node_binaries": {
+          "hl-node": null,
+          "hl-visor": null
+        },
+        "node_process_present": false,
+        "operation_cpu_seconds": 0.0013012619999999975,
+        "operation_wall_seconds": 0.006672573999821907,
+        "paid_usd": 0,
+        "tokens": null
+      },
+      "id": "hl-selected-host-capacity-20261010T1705Z",
+      "kind": "METHOD",
+      "limit": "Scoped to this host snapshot; no claim that all Hyperliquid access or this economic mechanism is dead. Ephemeral session liveness is not durable-node liveness. No outcomes/node/WS collection was started.",
+      "passage": "READY_TO_RECORD_ON_A_COMPLIANT_NODE_HOST / NOT EXECUTED. Cannot substitute only trades WS. Complete global sequential blocks, local availability and received BBO are required.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a6961e5fc02785c7c2d797f0e1fca94425150705/research/edge_search/scouts/hl_liquidation_v1/HL_LIQUIDATION_V1_FROZEN_SPEC_2026-10-08.md",
+      "version": "Fixed scout a6961e5f; measured selected host 2026-10-10T17:05Z."
+    },
+    "hl-stale-readiness-marker-contradiction-20261010": {
+      "fact": "Earlier pre-integration markers are historical; current host blocker must not be misreported as missing harness or classifier. Frozen spec distinguishes built code, compliant-host readiness, gap audit and economic execution.",
+      "id": "hl-stale-readiness-marker-contradiction-20261010",
+      "kind": "CONTRADICTION",
+      "limit": "File existence and prior 11 synthetic-test report do not certify execution, head runtime hashes, current global-fill coverage or host. The original freeze is retained unchanged.",
+      "passage": "Marker says HARNESS_BUILT=FALSE at time second pass was persisted; final marker says awaiting integration. Frozen spec and three implementation/test files exist at the exact current branch head.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a6961e5fc02785c7c2d797f0e1fca94425150705/research/edge_search/scouts/HYPERLIQUID_SECOND_PASS_STATUS_2026-10-08.txt",
+      "version": "All files compared at exact a6961e5fc02785c7c2d797f0e1fca94425150705; no outcomes read."
     }
   },
   "families": {
+    "cfe-vix-term-premium": {
+      "dataset": "cfe-vix-futures-eod",
+      "evidence": [
+        "cfe-vx-accessible-catalogue-only-20261010",
+        "cfe-vx-rights-and-execution-qualification-open-20261010"
+      ],
+      "label": "Volatility insurance risk transfer in CFE VX futures: test whether hedging demand compensates sellers after executable costs, jump/tail/margin risk and an appropriate risk-premium benchmark; no promised alpha.",
+      "mechanism_hash": "c11da151b644210afddfe831baee13126acd0c91933fa35b476777d8ef0e4a4c",
+      "next": "Choisir un test discriminant accessible.",
+      "priority": 10,
+      "status": "HYPOTHESIS",
+      "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
+    },
     "daily-etf-b2-b4": {
       "dataset": "daily-etf-panel",
       "label": "B2/B4 ETF daily",
@@ -425,7 +763,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "b5119eb71dfa08401a778b9533ccc83b0b427c8fbc50d5c62878e4c6c6aaf5b8",
+  "integrity": "f4e95e0d78517c316c3f23b3b92e97aa5c094821c545121dd796db189791f000",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -489,7 +827,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T17:04:06.000281+00:00",
+  "updated_at": "2026-10-10T17:18:39.235356+00:00",
   "usage": {
     "cpu_seconds": 0.005868577999999999,
     "human_seconds": null,
