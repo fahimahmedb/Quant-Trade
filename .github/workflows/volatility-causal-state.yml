@@ -7,8 +7,7 @@ on:
     paths:
       - 'src/volatility.py'
       - 'research/edge_search/test_volatility_causal_state.py'
-      - 'research/edge_search/eurusd_range_grid/safety_kernel.py'
-      - 'research/edge_search/eurusd_range_grid/test_safety_kernel.py'
+      - 'research/edge_search/eurusd_range_grid/*.py'
       - '.github/workflows/volatility-causal-state.yml'
   push:
     branches:
@@ -16,8 +15,7 @@ on:
     paths:
       - 'src/volatility.py'
       - 'research/edge_search/test_volatility_causal_state.py'
-      - 'research/edge_search/eurusd_range_grid/safety_kernel.py'
-      - 'research/edge_search/eurusd_range_grid/test_safety_kernel.py'
+      - 'research/edge_search/eurusd_range_grid/*.py'
       - '.github/workflows/volatility-causal-state.yml'
 
 permissions:

@@ -273,3 +273,83 @@ safety_kernel.py = c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65
 test_safety_kernel.py = 6cc428d4bad20ac3a3d080e6657df84cbd1278c6e468bf1aee6bfe42afcb2dc2
 
 Publish this useful milestone once in PR22 with marker FX_GRID_INTRADAY_PREREG_2026_10_10 and the immutable commit; PR22 stays nonmerged. No unchanged heartbeat or repeated task mutation. F1 closure ea9d2d0, A/B/harness hashes, COIN-M timing failure, F2 permission block and Polymarket KILL unchanged.
+
+
+## 2026-10-10 — Complete intraday FX proxy harness freeze
+
+STATE: Owner continuation remains active. Work head before this batch was
+df8ecb32c2a5a84b42f0609c223aefe2f1591c07 on the explicitly selected
+research/technical-signals-literature-2026-10-10 branch, not the default branch.
+PR22/26/28 remain open draft/nonmerged. EURUSD-RANGE-GRID-001 is the sole design
+candidate; no economic look has been claimed or price archive acquired/opened.
+The prior immutable preregistration, manifest, safety kernel and original design
+challenge are unchanged. Current implementation clarifications are fixed before
+prices in IMPLEMENTATION_NOTES.md; complete code and dependencies are freeze.json.
+
+PROGRESS: streaming M15/Wilder signal/causal volatility, finite order lifecycle,
+six independent cost/ablation books, source/calendar QA, daily/paired uncertainty,
+cost/exposure/financing ledgers and adverse unresolved exits are implemented.
+run.py accepts no strategy/window/cost/output overrides, verifies hashes and the
+original remote claim, opens an exclusive attempt before prices, saves calibration
+before outcome simulation and saves one complete exact-schema result without
+early performance output. A partial result blocks replay. capture.py follows only
+the declared public free HistData forms sequentially, never opens ZIP members,
+stops for active runs/access errors and reuses durable completed capture bytes.
+No broker cost substitution or new source probe was performed.
+
+CHALLENGE: 70 synthetic FX cases and 28 past-volatility-state cases pass locally.
+They test future-quote prefix invariance, saved causal state, same-time envelopes,
+strict clocks/schema/source gaps, adverse pending orders and finite risk, all cost
+ledger identities, weekends/rollovers/failed exits, full six-path/nine-field output,
+tamper/advertised-checksum conflicts, durable capture recovery and exclusive
+result/attempt gates. Current-Codex adversarial self-review is disclosed; no
+independent replication, economic power, real-source qualification or alpha claim.
+Synthetic CI is required before capture; real coverage/source QA remains unknown.
+
+BATCH NINE FIELDS:
+RESULT = HARNESS_FROZEN_SYNTHETIC_CHALLENGE_CLOSED; no market outcome
+EFFECT_SIZE = NOT_MEASURED
+UNCERTAINTY = Synthetic correctness does not authenticate source delivery, historical costs or executable fills; private predecessor UNKNOWN.
+POWER_LIMITATION = Fixed 433 weekdays; maximum three expressions/six cost paths, no confirmatory alpha or independent order N.
+ECONOMIC_SIGNIFICANCE = The exact bounded intraday rule can now be falsified on the labelled quote proxy, including all costs and failed exits. No capturable edge established.
+FAILED_CRITERIA = Remote synthetic CI, blind exact-manifest capture/identity, public capture evidence, prior-outcome reconciliation, atomic remote/local claim and actual source QA remain mandatory before price access.
+LESSON = Causal bar boundaries, adverse pending-order priority, post-cost capital caps and residual losses are part of an economic test; neither model sophistication nor synthetic P&L is alpha.
+FAMILY_STATUS = ONE_DESIGN_CANDIDATE; EURUSD-RANGE-GRID-001; 0 market archives/rows/results/looks in this batch; no old budget reset.
+NEXT_DECISION = Publish frozen bundle, allow automatic synthetic CI to finish and preserve all active runs. Then blind sequential HistData capture; publish hashes and atomically create the unique exploratory reservation before one price pass. Any real source/access failure is scoped, retained and cannot be evaded by tuning.
+
+ARTIFACT SHA256 (complete freeze includes original design artifacts):
+HARNESS_CHALLENGE.json = 0b14e7ec6b4ffb2b4ece07cb8324c0c068c8c6805aa156da5432677c8767c0fb
+IMPLEMENTATION_NOTES.md = 5db1e0ecef4f347a78541980ba10a9e48bacbf991e573f07ab6cd290b99b41d8
+PREREGISTRATION.md = d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96
+capture.py = 152f68d7611477f2caefb9a182a5249d80ba417a8f56bd26e25ce3362f3b3f19
+challenge.json = deb0b0052a9d1396a6a91677d2b7a5a0b54eec4c1c3f37754b3e8b97ea7712b8
+engine.py = 98eec9c75e5da89079f65bc0f9efe68b006945e1bfa2f27fd9e8482afc7d84e5
+manifest.json = d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b
+result_schema.json = 4835bf1b7fa1927ede4851790527665502858f5d2de7bcf13754f55dc0eecad2
+run.py = 44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3
+safety_kernel.py = c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65e0c
+test_capture.py = e77db9ce2287d639bc88b450e6abffeb8670f9eb9c4fdd4d537dbfe20bcdd758
+test_engine.py = 2179122dc15e2c7d9ddfeff2e3081d737ae45b7b7e6a7af91384ede51fa5d6dd
+test_run.py = dea3c30f334d0f08acf0f6b91fb5546fd1443270a341f9623b35d73621d8c43a
+test_safety_kernel.py = 6cc428d4bad20ac3a3d080e6657df84cbd1278c6e468bf1aee6bfe42afcb2dc2
+freeze.json = c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2
+
+NEXT: after public freeze and successful synthetic CI, reconcile all active runs,
+locks and saved capture/outcome stores. Acquire/reuse only these 21 declared
+compressed files sequentially, personal backtesting only, record identities and
+provider-checksum absence. Publish the complete blind capture certificate and
+raw hashes before the unique atomic CREATE of
+refs/heads/looks/eurusd-range-grid-001-exploratory-01 at the frozen source commit;
+never move an existing claim. Save exact creation receipt locally, then run the
+fixed reader/simulation once. Any previous printed/saved/partial/source-failed
+outcome prohibits replay. Infrastructure resume needs published exact no-outcome
+proof plus the original atomic claim; completed archives are never reacquired
+for convenience. If actual access/schema/coverage fails, retain the scoped source
+failure, all partial/residual losses and exposure, then choose one accessible
+reserve; no parameter/window/cost or comparator substitution.
+
+Publish this milestone once in PR22 with marker FX_GRID_HARNESS_FREEZE_2026_10_10,
+immutable code commit and freeze hash. PR22 stays unmerged. The existing hourly
+continuation reads this latest STATE/NEXT; do not create/mutate duplicate reminders.
+F1 exact ea9d2d0 closure/A/B/harness, COIN-M causal timing failure, F2 permission
+block and Polymarket KILL remain intact; no repeats or budget/history reset.
