@@ -38,6 +38,8 @@ def main(argv=None):
     claim = sub.add_parser("claim-question")
     claim.add_argument("identity")
     claim.add_argument("--actor", required=True)
+    preflight = sub.add_parser("legacy-preflight", help="Read-only exact EURUSD bundle; no capture/launch")
+    preflight.add_argument("--claim-id", required=True)
     execute = sub.add_parser("execute")
     execute.add_argument("protocol")
     serve = sub.add_parser("serve")
@@ -69,6 +71,10 @@ def main(argv=None):
         lab.reserve(args.protocol, args.fingerprint)
     elif args.action == "claim-question":
         print(json.dumps({"claim_id": lab.claim_decision(args.identity, args.actor)}))
+    elif args.action == "legacy-preflight":
+        from quant.edge_lab.legacy import inspect_eurusd
+        print(json.dumps(inspect_eurusd(lab, ROOT, args.claim_id), ensure_ascii=False))
+        return
     elif args.action == "execute":
         authority = GitAuthority(ROOT, args.state_dir)
         receipt = lab.execute(args.protocol, ROOT, authority.snapshot, authority.claim)
