@@ -2,7 +2,7 @@
 
 
 
-STATE (2026-10-10 09:26:43 UTC): TWO_PUBLIC_RESEARCH_AXES_AUTHORIZED; FIRST_TRIAGE_COMPLETED; ECONOMIC_EXPERIMENTS_PAUSED. Owner authorizes one research axis to eliminate already-refuted expressions and another to qualify plausible surviving mechanisms. These axes share one exposure/trial history and at most one economic family. Public-source review/metadata only; no market acquisition, new economic look, test or family activation. Continuation automation remains disabled. F1 remains permanently REJECT at ea9d2d0e0e057199bb168249c963acbc88e89de5; COIN-M failed its causal-timing source gate. No economic edge established.
+STATE (2026-10-10 10:15:05 UTC): OWNER_RESUMED_AUTONOMOUS_RESEARCH; TWO_PUBLIC_AXES_CONTINUE. Latest Owner Poursuis supersedes earlier pause routing for research and authorizes restoring the existing continuation task with this new scope. FX source qualification and minimal causal volatility initialization completed; no executable FX source or economic edge established. HistData is an accessible conditional bid/ask quote-proxy candidate; Dukascopy automated web-feed rights are unestablished and five FXCM metadata probes return 403 in both HEAD and GET. 28 synthetic causal/restart tests pass; zero new market archives, outcomes, looks or activated economic families. Current sole design candidate EURUSD-RANGE-GRID-001; next is a minimal pre-result exploratory intraday protocol/manifest, with execution limits stated and all applicable gates before any data-result look. No parameter sweep or old-result rerun. Older pause/next-action paragraphs below are history; this STATE and latest batch govern. F1 REJECT closure ea9d2d0 immutable; no real trading, paid access or new account.
 
 CANONICAL: PR #22 remains unmerged; original coordination source 1e88c6b. No live capital, paid-data purchase or account authorized. Economic harness unchanged at 5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c.
 
@@ -124,3 +124,65 @@ FAMILY_STATUS = NO_NEW_FAMILY_ACTIVATED; economic experiments remain paused.
 NEXT_DECISION = Use Axis A to preserve scoped vetoes, Axis B to qualify the current
 bounded-grid mechanism/data and rank public reserves before any separately
 authorized, frozen economic test. Automated task stays disabled; PR #22 unmerged.
+
+
+OWNER RESUME / FX SOURCE BATCH (RESEARCH RESUMED; 2026-10-10 10:15:05 UTC):
+Proof and all nine source-verdict fields: scouts/eurusd_grid_source_qualification_2026-10-10.json.
+No economic result or new family/look. Owner resumes autonomous two-axis research;
+this latest routing supersedes old stop/design-only scheduling instructions.
+
+Dukascopy: general website terms restrict automated acquisition absent prior
+express consent. No BI5/price feed acquired and separate XML/API permissions are
+not assumed to cover it. FXCM: pinned MarketData 924393dd545fab187527d95ef8b1178284b274b6
+contains a public tick subdirectory despite its root README's email wording;
+five fixed weekly URLs all return 403 on HEAD and range GET headers, zero body
+bytes read. Quotes are indicative Active Trader minimum spreads. Exact linked
+EULA text and historical execution costs remain unqualified; no request/account.
+HistData: personal-backtest purpose and Generic ASCII millisecond bid/ask schema
+are primary-documented, fixed EST UTC-05 without DST (not America/New_York).
+EURUSD year labels 2000..2026; monthly link labels 2025/01..12 and 2026/01..10,
+with current October explicitly partial. Catalogs are not actual continuous
+archive coverage. No ZIP or market rows opened. Broker identity, first delivery,
+sampling/order within equal timestamps, fees/swaps and attained fills are not
+proven. This is a conditional quote proxy, not an authenticated executable edge.
+Official schema examples include illustrative EUR/USD 2012-02-01 quotes; record
+this external exposure along with vendor 2013..2016, Nasdaq/B4/F1/private UNKNOWN.
+
+CAUSAL ENGINE CHANGE: garch_path now permits an explicit initial past variance;
+ewma_path requires explicit mean and variance together. New use can preserve
+past forecasts under future suffix changes and resume exactly from saved state.
+28 synthetic tests pass, no fits or market data. Legacy defaults, old NASDAQ
+script/report and F1 harness/results remain intact; old script is still unsafe
+for a new OOS replay without a separate explicit-state caller. No old forecast
+skill or impact of its original defect re-estimated. Require FX units/horizon,
+closed-past fit parameters/state and real generated reporting in any new pilot.
+
+NEXT ACTION SELECTED: prepare a smallest distinct exploratory INTRADAY quote-proxy
+protocol/manifest using HistData only if it can answer a decision-useful costed
+mean-reversion question. Freeze one entry/finite grid/past-state sizing, actual
+bid/ask side, latency/staleness/equal-time/gap/fill logic, central/stress costs
+(labelled assumptions, never another broker's purported historical fees),
+cutoff/failed-exit financing treatment, maximum risk/margin/basket duration,
+independent-day/basket uncertainty and at most the three counted expressions
+already proposed. Comparators diagnose marginal grid/volatility value; never
+replace the candidate with whichever wins. Positive proxy evidence earns quote/
+execution validation only, no survival/confirmatory/live claim. Before outcome
+acquisition: admissible source/rights, published frozen manifest/preregistration,
+applicable challenge and atomic reservations. No automatic waiver of any gate.
+If an admissible decision-useful protocol cannot be formed, park the untested grid
+with its precise blocker, then select one accessible reserve without a sweep or
+budget reset. Do not repeat the completed Dukascopy/FXCM probes or earlier source
+review without material new evidence. Axis A keeps scoped vetoes/lessons; Axis B
+can read public mechanisms and metadata, one economic family maximum.
+
+CONTINUATION: existing task 6ac978ecda1081918fba4d76dee437f4 is to resume with a
+replacement prompt using this checkpoint and next action, preserving its prior
+schedule. Re-enable/update via tool after this evidence commit; verify that
+transition and publish the actual task state in PR #22. No duplicate task.
+Cached primary metadata stays outside Git in
+/workspace/scratch/fx-source-qualification-2026-10-10/; reuse it. No active Action
+run was observed in in_progress/queued/waiting/pending/requested filters before
+this batch. Preserve any newly active run and never collect concurrently. A
+failed infrastructure calculation is resumable only with proof no outcome was
+printed/saved and atomic reservation respected. Only notify a useful result,
+concrete progress or real external blocker; no unchanged heartbeat.

@@ -50,17 +50,29 @@ def params_dict(res) -> dict:
 # Recursions de variance (1 pas et h pas), parametres fixes
 # ----------------------------------------------------------------------------
 
-def garch_path(r: np.ndarray, p: dict, gjr: bool) -> np.ndarray:
+def garch_path(r: np.ndarray, p: dict, gjr: bool, *,
+               initial_variance: float | None = None) -> np.ndarray:
     """sigma2[t] = variance conditionnelle du rendement r[t] (information t-1).
 
     Retourne un tableau de taille len(r)+1 ; le dernier element est la
     prevision 1 pas hors echantillon.
+
+    Pour une nouvelle evaluation causale, p et initial_variance doivent venir
+    d'informations anterieures a r[0]. La graine explicite permet aussi de
+    reprendre un bloc a partir de la derniere prevision du bloc precedent.
+    Le defaut historique estime la graine sur tout r : conserve pour
+    compatibilite, il ne convient pas a un nouveau walk-forward hors train.
     """
     eps = r - p["mu"]
     omega, alpha, beta = p["omega"], p["alpha[1]"], p["beta[1]"]
     gamma = p.get("gamma[1]", 0.0) if gjr else 0.0
     s2 = np.empty(len(r) + 1)
-    s2[0] = eps.var()  # initialisation ; sans effet asymptotiquement
+    if initial_variance is None:
+        s2[0] = eps.var()  # comportement historique, pas une graine causale OOS
+    else:
+        if not np.isfinite(initial_variance) or initial_variance < 0:
+            raise ValueError("initial_variance must be finite and non-negative")
+        s2[0] = initial_variance
     for t in range(len(r)):
         e2 = eps[t] ** 2
         s2[t + 1] = omega + (alpha + gamma * (eps[t] < 0)) * e2 + beta * s2[t]
@@ -83,10 +95,33 @@ def garch_multistep(s2_next: float, p: dict, gjr: bool, h: int, p_neg: float = 0
     return out
 
 
-def ewma_path(r: np.ndarray, lam: float = 0.94) -> np.ndarray:
-    eps = r - r.mean()
+def ewma_path(r: np.ndarray, lam: float = 0.94, *,
+              mean: float | None = None,
+              initial_variance: float | None = None) -> np.ndarray:
+    """Variance avant chaque rendement, puis prevision apres le dernier.
+
+    Nouvel usage causal : mean et initial_variance sont obligatoirement
+    fournis ensemble, estimes avant r[0]. Aucun recentrage sur le bloc futur.
+    Sans les deux arguments, le comportement historique sur tout r reste
+    disponible ; ce defaut ne convient pas a un nouveau walk-forward OOS.
+    Les unites de variance sont le carre des unites de r, sans annualisation.
+    """
+    if (mean is None) != (initial_variance is None):
+        raise ValueError("mean and initial_variance must be provided together")
+    if mean is None:
+        eps = r - r.mean()
+        seed = eps.var()
+    else:
+        if not np.isfinite(mean):
+            raise ValueError("mean must be finite")
+        if not np.isfinite(initial_variance) or initial_variance < 0:
+            raise ValueError("initial_variance must be finite and non-negative")
+        if not np.isfinite(lam) or not 0 <= lam <= 1:
+            raise ValueError("lam must be finite and between zero and one")
+        eps = r - mean
+        seed = initial_variance
     s2 = np.empty(len(r) + 1)
-    s2[0] = eps.var()
+    s2[0] = seed
     for t in range(len(r)):
         s2[t + 1] = lam * s2[t] + (1 - lam) * eps[t] ** 2
     return s2
