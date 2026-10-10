@@ -68,8 +68,7 @@
       "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fmonthly%2F&delimiter=%2F&max-keys=1000"
     }
   ],
-  "checked_utc": "2026-10-09T23:54:30Z",
-  "decision": "COIN-M liquidationSnapshot catalog exists; BTC/ETH date coverage checked by names only. No new family or economic look activated. Validate feed sampling and executable-price overlap before any preregistered pilot; never substitute this source into the frozen Hyperliquidation specification.",
+  "decision": "SOURCE_GATE_FAILED_CAUSAL_TIMING for the intraday liquidation-rebound pilot. Not an economic REJECT/KILL. Do not activate this pilot or substitute these snapshots into Hyperliquidation.",
   "economic_look_consumed": false,
   "f1_prior_verdict": {
     "never_rerun": true,
@@ -125,6 +124,237 @@
       "symbols": []
     }
   ],
-  "next_action": "Qualify the primary COIN-M liquidation-snapshot documentation: event/publication timestamps, selection/sampling, duplicate identifiers and overlap with executable bid/ask archives for the fixed BTCUSD_PERP and ETHUSD_PERP sample. Register a separate pilot only if these source requirements pass; do not weaken or substitute the frozen Hyperliquidation experiment.",
-  "operation": "names-only catalog; no rows or economic look"
+  "next_action": "Qualify the price-volume reserve, then prepare one distinctly frozen exploratory pilot with explicit execution assumptions, conservative costs, exposure history and atomic reservations before outcome acquisition. COIN-M only reopens on new authoritative archive timestamp/publication evidence.",
+  "operation": "Original names-only catalog followed by bounded header-only qualification; zero market data rows parsed and no economic look.",
+  "catalog_checked_utc": "2026-10-09T23:54:30Z",
+  "checked_utc": "2026-10-10T01:27:02.875577+00:00",
+  "source_qualification": {
+    "qualified_at_utc": "2026-10-10T01:27:02.875577+00:00",
+    "status": "SOURCE_GATE_FAILED_CAUSAL_TIMING_NOT_AN_ECONOMIC_RESULT",
+    "preflight_publication": {
+      "pr": 22,
+      "comment_id": 6092098835,
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6092098835",
+      "fixed_sample": "BTCUSD_PERP and ETHUSD_PERP, 2023-06-25; liquidationSnapshot and bookTicker; first header line only; max 64 MiB compressed per file"
+    },
+    "primary_documents": [
+      {
+        "id": "docs_full",
+        "url": "https://developers.binance.com/en/docs/llms-full.txt",
+        "resolved_url": "https://developers.binance.com/en/docs/llms-full.txt",
+        "status": 200,
+        "bytes": 8262854,
+        "sha256": "05b0d19160422ed34c56f8e06f5732cff4f0758334670324e6c8b5b81f2b97d7",
+        "retrieved_at_utc": "2026-10-10T01:16:11.976104+00:00"
+      },
+      {
+        "id": "vision_readme",
+        "url": "https://raw.githubusercontent.com/binance/binance-public-data/master/README.md",
+        "resolved_url": "https://raw.githubusercontent.com/binance/binance-public-data/master/README.md",
+        "status": 200,
+        "bytes": 5282,
+        "sha256": "2e133d9945a9263a02781369078e72805eff074680f305cd5460016471c6caad",
+        "retrieved_at_utc": "2026-10-10T01:16:12.816241+00:00"
+      },
+      {
+        "id": "vision_terms",
+        "url": "https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md",
+        "resolved_url": "https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md",
+        "status": 200,
+        "bytes": 9798,
+        "sha256": "dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1",
+        "retrieved_at_utc": "2026-10-10T01:16:14.856881+00:00"
+      },
+      {
+        "id": "official_cm_connector",
+        "url": "https://raw.githubusercontent.com/binance/binance-futures-connector-python/a6bfbbf10fe2c1b4eb76fc24ffb82eb94bf9df89/binance/websocket/cm_futures/websocket_client.py",
+        "commit": "a6bfbbf10fe2c1b4eb76fc24ffb82eb94bf9df89",
+        "retrieved_at_utc": "2026-10-10T01:18:47.262333+00:00",
+        "sha256": "e5b3e7f7ee6df68c30c12008ccccaa3532256b815514d39adc4fce0dc227e57d",
+        "bytes": 12268
+      }
+    ],
+    "official_cm_documentation_url": "https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-coin-m-futures/api/ws-streams/~#market-liquidation-order-streams",
+    "official_book_documentation_url": "https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-coin-m-futures/api/ws-streams/~#individual-symbol-book-ticker-streams",
+    "documentation_scope": "Current CM API catalog and pinned official CM connector describe latest one liquidation order per symbol per 1000 ms. They do not authenticate the CSV producer mapping or the first-publication clock of the 2023-2024 files. The 2026-04-14 largest-order changelog is USD-M-specific and is not applied to CM archives.",
+    "provider_guidance": {
+      "url": "https://github.com/binance/binance-public-data/issues/259#issuecomment-6020306220",
+      "comment_id": 6020306220,
+      "author": "btechops",
+      "author_association": "COLLABORATOR",
+      "created_at_utc": "2026-10-06T16:04:24Z",
+      "updated_at_utc": "2026-10-06T16:04:24Z",
+      "body_sha256": "7d44a8496bd51022cb8552de07c435d7139f30fc5003724fad15e26b6ae26794",
+      "paraphrase": "Provider collaborator reports discontinued publication and doubled rows in remaining files; recommends full-row deduplication. This is guidance, not an independently measured duplicate ratio."
+    },
+    "header_inspection": {
+      "preflight_comment": 6092098835,
+      "records": [
+        {
+          "symbol": "BTCUSD_PERP",
+          "kind": "liquidationSnapshot",
+          "date": "2023-06-25",
+          "url": "https://data.binance.vision/data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/BTCUSD_PERP-liquidationSnapshot-2023-06-25.zip",
+          "checksum_url": "https://data.binance.vision/data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/BTCUSD_PERP-liquidationSnapshot-2023-06-25.zip.CHECKSUM",
+          "retrieved_at_utc": "2026-10-10T01:19:34.326283+00:00",
+          "archive_bytes": 1733,
+          "archive_sha256": "2068add7e570b1e17afc71e53e22fee716010f08976643ead345d6c96bfbd60b",
+          "checksum_response_sha256": "47e2e31a95adf72b7a98a9e341c9854b8eadf3968c2089f1f50670008a4a471d",
+          "reused": false,
+          "header_sha256": "0a3588185dd5e173565b35fdd16b58993d9ad45fb28b84d134bacef82c4d122c",
+          "header_names": [
+            "time",
+            "side",
+            "order_type",
+            "time_in_force",
+            "original_quantity",
+            "price",
+            "average_price",
+            "order_status",
+            "last_fill_quantity",
+            "accumulated_fill_quantity"
+          ],
+          "header_valid": true,
+          "data_rows_parsed": 0,
+          "data_values_printed": false,
+          "economic_look_consumed": false
+        },
+        {
+          "symbol": "BTCUSD_PERP",
+          "kind": "bookTicker",
+          "date": "2023-06-25",
+          "url": "https://data.binance.vision/data/futures/cm/daily/bookTicker/BTCUSD_PERP/BTCUSD_PERP-bookTicker-2023-06-25.zip",
+          "checksum_url": "https://data.binance.vision/data/futures/cm/daily/bookTicker/BTCUSD_PERP/BTCUSD_PERP-bookTicker-2023-06-25.zip.CHECKSUM",
+          "retrieved_at_utc": "2026-10-10T01:19:51.228686+00:00",
+          "archive_bytes": 50382987,
+          "archive_sha256": "b71ecf88033ce22cc5890a6c506f7b28674ff132d7b2e90cd6cbd4821b142b04",
+          "checksum_response_sha256": "3d5031e13fda24a5831d1e3ec1cc0402b345a5bcb1316cca59dae1f6d238259d",
+          "reused": false,
+          "header_sha256": "4e38af21abbb3997e5687ebad7d47faa9a106e4dd8cc70789b9bcd34beb1aa33",
+          "header_names": [
+            "update_id",
+            "best_bid_price",
+            "best_bid_qty",
+            "best_ask_price",
+            "best_ask_qty",
+            "transaction_time",
+            "event_time"
+          ],
+          "header_valid": true,
+          "data_rows_parsed": 0,
+          "data_values_printed": false,
+          "economic_look_consumed": false
+        },
+        {
+          "symbol": "ETHUSD_PERP",
+          "kind": "liquidationSnapshot",
+          "date": "2023-06-25",
+          "url": "https://data.binance.vision/data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/ETHUSD_PERP-liquidationSnapshot-2023-06-25.zip",
+          "checksum_url": "https://data.binance.vision/data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/ETHUSD_PERP-liquidationSnapshot-2023-06-25.zip.CHECKSUM",
+          "retrieved_at_utc": "2026-10-10T01:19:52.234023+00:00",
+          "archive_bytes": 1239,
+          "archive_sha256": "0b557c063a80f6a5d28cfb65b9e2608753df496152ceb292028cc5024ce2e06f",
+          "checksum_response_sha256": "747a8f690df4c741779608e744b8b99e16fed87a96bed9d0c5510096ae119321",
+          "reused": false,
+          "header_sha256": "0a3588185dd5e173565b35fdd16b58993d9ad45fb28b84d134bacef82c4d122c",
+          "header_names": [
+            "time",
+            "side",
+            "order_type",
+            "time_in_force",
+            "original_quantity",
+            "price",
+            "average_price",
+            "order_status",
+            "last_fill_quantity",
+            "accumulated_fill_quantity"
+          ],
+          "header_valid": true,
+          "data_rows_parsed": 0,
+          "data_values_printed": false,
+          "economic_look_consumed": false
+        },
+        {
+          "symbol": "ETHUSD_PERP",
+          "kind": "bookTicker",
+          "date": "2023-06-25",
+          "url": "https://data.binance.vision/data/futures/cm/daily/bookTicker/ETHUSD_PERP/ETHUSD_PERP-bookTicker-2023-06-25.zip",
+          "checksum_url": "https://data.binance.vision/data/futures/cm/daily/bookTicker/ETHUSD_PERP/ETHUSD_PERP-bookTicker-2023-06-25.zip.CHECKSUM",
+          "retrieved_at_utc": "2026-10-10T01:20:10.005211+00:00",
+          "archive_bytes": 40632755,
+          "archive_sha256": "c179fb1e78514fb9861b0ed941910b76138de6e33d8b0ee69576c9dba575c53a",
+          "checksum_response_sha256": "ed30caac4d4071b73ce014fde6214e3194620c0f400f67c8cd68444fbaa66911",
+          "reused": false,
+          "header_sha256": "4e38af21abbb3997e5687ebad7d47faa9a106e4dd8cc70789b9bcd34beb1aa33",
+          "header_names": [
+            "update_id",
+            "best_bid_price",
+            "best_bid_qty",
+            "best_ask_price",
+            "best_ask_qty",
+            "transaction_time",
+            "event_time"
+          ],
+          "header_valid": true,
+          "data_rows_parsed": 0,
+          "data_values_printed": false,
+          "economic_look_consumed": false
+        }
+      ]
+    },
+    "raw_archive_cache": "/workspace/scratch/coinm-source-qualification-2026-10-10/schema_sample; outside Git; reuse authenticated compressed blobs after interruption",
+    "executable_quote_catalogs_first_page_only": [
+      {
+        "symbol": "BTCUSD_PERP",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2FbookTicker%2FBTCUSD_PERP%2F&max-keys=1000&list-type=2",
+        "retrieved_at_utc": "2026-10-10T01:18:21.637949+00:00",
+        "sha256": "2267b94303304a6cd60318cd2f9080eaa6685d01b32700fe245bd2c02d9925a6",
+        "truncated": "true",
+        "archive_count_first_page": 500,
+        "first": "data/futures/cm/daily/bookTicker/BTCUSD_PERP/BTCUSD_PERP-bookTicker-2023-05-18.zip",
+        "last": "data/futures/cm/daily/bookTicker/BTCUSD_PERP/BTCUSD_PERP-bookTicker-2024-10-02.zip",
+        "qualification_file_found": true
+      },
+      {
+        "symbol": "ETHUSD_PERP",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2FbookTicker%2FETHUSD_PERP%2F&max-keys=1000&list-type=2",
+        "retrieved_at_utc": "2026-10-10T01:18:22.645899+00:00",
+        "sha256": "c753825ba91177b7d88a36f535120174bd25899872f6d47316d7ecf95c5467a8",
+        "truncated": "true",
+        "archive_count_first_page": 500,
+        "first": "data/futures/cm/daily/bookTicker/ETHUSD_PERP/ETHUSD_PERP-bookTicker-2023-05-18.zip",
+        "last": "data/futures/cm/daily/bookTicker/ETHUSD_PERP/ETHUSD_PERP-bookTicker-2024-09-29.zip",
+        "qualification_file_found": true
+      }
+    ],
+    "gates": {
+      "archive_integrity": "PASS_FOR_FOUR_FIXED_FILES: adjacent CHECKSUMs match compressed SHA256s; not a full-history audit.",
+      "publication_timing": "FAIL: liquidation header has only time; no authenticated mapping to websocket E (event time) or o.T (order trade time), no receive/publication clock. Do not label time as either E or T and do not invent a 1000 ms availability bound.",
+      "sampling_completeness": "LOSSY: latest-one-order/1000ms stream cannot measure full forced-sale flow. This alone need not prohibit every sampled-signal hypothesis, but prohibits a complete-flow interpretation.",
+      "duplicate_identity": "PROVIDER_GUIDANCE_ONLY: no order/event ID in inspected headers. Full-row rule documented; no row count, duplicate ratio or deduplicated outcome calculated.",
+      "executable_price_overlap": "STRUCTURAL_ONLY: same-day bookTicker headers provide bid/ask price/quantity, update_id, event_time and transaction_time. Catalog pages are truncated; no full coverage, continuity, staleness, latency or depth-executable fill validated.",
+      "rights": "PERSONAL_NON_PRODUCTION_RESEARCH_ONLY under current Vision terms; no live or commercial authorization.",
+      "resource_fit": "Four compressed samples acquired sequentially within fixed caps. No economic run or concurrent collection dispatched."
+    },
+    "data_rows_parsed": 0,
+    "economic_look_consumed": false,
+    "family_activated": false,
+    "verdict_fields": {
+      "RESULT": "SOURCE_GATE_FAILED_CAUSAL_TIMING; no economic result.",
+      "EFFECT_SIZE": "NOT_MEASURED; no return, Sharpe or liquidation count computed.",
+      "UNCERTAINTY": "CSV time meaning and first public availability are unauthenticated; provider sampling and duplicate guidance have not been independently measured in rows.",
+      "POWER_LIMITATION": "About sixteen months of catalog names and a lossy stream; file count is not independent events or effective N. No statistical power estimated.",
+      "ECONOMIC_SIGNIFICANCE": "Entering on an unknown signal clock can manufacture an uncapturable rebound; executable BBO schema alone does not repair this.",
+      "FAILED_CRITERIA": "Causal-publication-time gate failed. Complete-flow interpretation unsupported; full quote coverage and duplicate/event identities remain unqualified.",
+      "LESSON": "Qualify causal information and price availability before an event backtest. A catalog is not a tradable signal; preserve negative source decisions.",
+      "FAMILY_STATUS": "NOT_ACTIVATED, descriptive source-review disposition; not a canonical economic experiment verdict. F1 remains REJECT.",
+      "NEXT_DECISION": "Keep COIN-M intraday pilot inactive unless new authoritative timestamp evidence arrives. Qualify price-volume data and freeze one distinct exploratory pilot; no grid or clean-holdout claim."
+    },
+    "dataset_attribution": {
+      "provider": "Binance Vision",
+      "source": "https://data.binance.vision/",
+      "license": "CC BY-NC-SA 4.0",
+      "scope": "Dataset-derived header/catalog information only; no raw market rows redistributed."
+    }
+  }
 }

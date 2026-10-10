@@ -4,7 +4,8 @@ Demande Owner du 2026-10-10 : chercher en parallèle dans les travaux publics de
 indicateurs et combinaisons susceptibles d'améliorer le Sharpe sans épuiser la
 preuve statistique. Statut : **revue de littérature, aucun nouveau test économique**.
 F1 reste REJECT ; ses résultats A/B et son harnais restent figés. La prochaine
-action économique reste la qualification des données de liquidations COIN-M.
+action sélectionnée, après la qualification COIN-M décrite plus bas, est de figer
+un pilote exploratoire prix + volume distinct avant toute acquisition de résultats.
 
 ## Ce que les sources permettent de retenir
 
@@ -93,3 +94,37 @@ corrélés ou augmenter le levier ne garantit aucune amélioration du Sharpe.
 `FAMILY_STATUS = NOT_ACTIVATED — champ descriptif de revue, pas verdict d'expérience ; F1 REJECT inchangé, F2 BLOCKED_DATA_PERMISSION, Polymarket neg-risk KILL.`
 
 `NEXT_DECISION = Continuer la qualification COIN-M prioritaire ; garder prix + volume en première réserve technique. Si un vrai blocage rend COIN-M inutilisable, qualifier les droits, données et exposition passée de cette réserve avant une seule pré-inscription distincte. Aucun backtest de grille.`
+
+## Décision de source après cette revue — 2026-10-10
+
+La qualification COIN-M est terminée : **échec du critère d'horodatage causal**,
+sans test économique ni famille activée. Quatre archives BTC/ETH du 25 juin 2023
+ont passé leurs CHECKSUMs ; seuls les en-têtes CSV ont été interprétés, après le
+[préavis borné](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6092098835).
+Les liquidations ont un seul `time`, de sens non authentifié, alors que les
+cotations ont `event_time` et `transaction_time`. La disponibilité publique du
+signal reste inconnue. Le flux officiel est un snapshot incomplet ; un
+[collaborateur Binance](https://github.com/binance/binance-public-data/issues/259#issuecomment-6020306220)
+signale la fin de publication et conseille une déduplication par ligne entière.
+Aucun taux de doublons, nombre de liquidations ou rendement n'a été calculé.
+La preuve et les neuf champs de cette décision de source sont conservés dans
+[le manifeste COIN-M](binance_cm_liquidation_source_2026-10-09.json).
+
+La réserve prix + volume dispose de catalogues publics complets pour BTCUSDT et
+ETHUSDT spot, en 1d et 1m : 110 archives mensuelles par série, août 2017 à
+septembre 2026. Aucun ZIP spot n'a été téléchargé ou ouvert. Le schéma primaire
+documente le volume de transactions et celui des achats takers ; les timestamps
+spot passent en microsecondes le 1er janvier 2025. Les droits relus autorisent la
+recherche personnelle hors production ; les résultats dérivés doivent créditer
+Binance Vision et conserver CC BY-NC-SA 4.0. Le
+[manifeste technique](technical_signals_sources_2026-10-10.json) conserve ces
+preuves, tailles, limites et l'exposition antérieure.
+
+La prochaine action remplace le `NEXT_DECISION` historique de la revue : figer
+**un seul pilote exploratoire prix + volume**, ses coûts centraux et stress,
+ses entrées retardées et son budget de comparaisons avant les résultats.
+Les bougies minute sont des prix de transactions, pas des bid/ask exécutables.
+Un résultat positif sur ce proxy demande une validation des cotations et du
+timing avant toute conclusion sur un edge capturable. F1/B4 et les périodes
+déjà examinées restent exposés ; l'historique privé UNKNOWN interdit une
+prétention confirmatoire. Aucun compteur remis à zéro, aucune grille.

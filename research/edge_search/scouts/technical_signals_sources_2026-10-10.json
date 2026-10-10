@@ -12,7 +12,6 @@
   "legacy_private_history": "UNKNOWN",
   "confirmatory_claim_authorized": false,
   "live_capital_authorized": false,
-  "priority_unchanged": "Qualify COIN-M liquidationSnapshot timing, sampling and executable-quote overlap before a separate preregistered pilot.",
   "first_technical_reserve": "Trend plus signed-volume information, bounded lagged-volatility exposure, costed executable entries. Not preregistered or activated.",
   "current_dispositions": {
     "F1": "REJECT",
@@ -157,5 +156,140 @@
       "sha256": null,
       "hash_limitation": "Original response bytes not available from the web read. No original-file hash claimed. Direct local fetch returned HTTP 403."
     }
-  ]
+  ],
+  "priority_after_source_qualification": "COIN-M causal-timing source gate failed. Prepare one separate exploratory price-volume pilot after a frozen causal rule, costs, source manifest, exposure disclosure and reservations; no outcome acquisition in this qualification batch.",
+  "price_volume_reserve_qualification": {
+    "qualified_at_utc": "2026-10-10T01:27:02.875577+00:00",
+    "status": "METADATA_AND_RESEARCH_RIGHTS_QUALIFIED_EXECUTION_LIMITED_NOT_PREREGISTERED",
+    "universe_fixed_for_qualification": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ],
+    "venue": "Binance spot, USDT pairs; cash/long-only is the smallest available implementation; no derivative leverage or borrowed short assumed.",
+    "catalogs": [
+      {
+        "symbol": "BTCUSDT",
+        "interval": "1d",
+        "prefix": "data/spot/monthly/klines/BTCUSDT/1d/",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Fspot%2Fmonthly%2Fklines%2FBTCUSDT%2F1d%2F&list-type=2&max-keys=1000",
+        "retrieved_at_utc": "2026-10-10T01:22:02.302205+00:00",
+        "sha256": "eeeb8ce57b42867a8402d0ee09ddb3a6f80c670737944b03ec9932a0deafc59f",
+        "truncated": "false",
+        "archive_count": 110,
+        "first": "data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2017-08.zip",
+        "last": "data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2026-09.zip",
+        "compressed_total_bytes": 237793,
+        "sample_2023_06_found": true
+      },
+      {
+        "symbol": "BTCUSDT",
+        "interval": "1m",
+        "prefix": "data/spot/monthly/klines/BTCUSDT/1m/",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Fspot%2Fmonthly%2Fklines%2FBTCUSDT%2F1m%2F&list-type=2&max-keys=1000",
+        "retrieved_at_utc": "2026-10-10T01:22:02.954706+00:00",
+        "sha256": "1050d7607705ccf4a59440fe9c31d5563d047f5f6cfef17f041ac96cd6f8c0fc",
+        "truncated": "false",
+        "archive_count": 110,
+        "first": "data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2017-08.zip",
+        "last": "data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2026-09.zip",
+        "compressed_total_bytes": 234954793,
+        "sample_2023_06_found": true
+      },
+      {
+        "symbol": "ETHUSDT",
+        "interval": "1d",
+        "prefix": "data/spot/monthly/klines/ETHUSDT/1d/",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Fspot%2Fmonthly%2Fklines%2FETHUSDT%2F1d%2F&list-type=2&max-keys=1000",
+        "retrieved_at_utc": "2026-10-10T01:22:03.689503+00:00",
+        "sha256": "b2498a470fb35ab08227a16e4b0f30167da1bf1c8bb1fea900c50bc7889fdc4b",
+        "truncated": "false",
+        "archive_count": 110,
+        "first": "data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2017-08.zip",
+        "last": "data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2026-09.zip",
+        "compressed_total_bytes": 227278,
+        "sample_2023_06_found": true
+      },
+      {
+        "symbol": "ETHUSDT",
+        "interval": "1m",
+        "prefix": "data/spot/monthly/klines/ETHUSDT/1m/",
+        "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Fspot%2Fmonthly%2Fklines%2FETHUSDT%2F1m%2F&list-type=2&max-keys=1000",
+        "retrieved_at_utc": "2026-10-10T01:22:04.366307+00:00",
+        "sha256": "6950bf4af89016a377d27d4f84beb8a0b4ae1db8c3b1d2532e162fba8ad74a17",
+        "truncated": "false",
+        "archive_count": 110,
+        "first": "data/spot/monthly/klines/ETHUSDT/1m/ETHUSDT-1m-2017-08.zip",
+        "last": "data/spot/monthly/klines/ETHUSDT/1m/ETHUSDT-1m-2026-09.zip",
+        "compressed_total_bytes": 218919419,
+        "sample_2023_06_found": true
+      }
+    ],
+    "catalog_scope": "Four complete names/size catalogs; 110 monthly ZIPs each, 2017-08 through 2026-09. This establishes listed objects, not row completeness or acceptable signal data.",
+    "primary_schema_and_terms": [
+      {
+        "id": "vision_readme",
+        "url": "https://raw.githubusercontent.com/binance/binance-public-data/master/README.md",
+        "resolved_url": "https://raw.githubusercontent.com/binance/binance-public-data/master/README.md",
+        "status": 200,
+        "bytes": 5282,
+        "sha256": "2e133d9945a9263a02781369078e72805eff074680f305cd5460016471c6caad",
+        "retrieved_at_utc": "2026-10-10T01:16:12.816241+00:00"
+      },
+      {
+        "id": "vision_terms",
+        "url": "https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md",
+        "resolved_url": "https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md",
+        "status": 200,
+        "bytes": 9798,
+        "sha256": "dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1",
+        "retrieved_at_utc": "2026-10-10T01:16:14.856881+00:00"
+      }
+    ],
+    "spot_kline_fields_documented": [
+      "open_time",
+      "open",
+      "high",
+      "low",
+      "close",
+      "base_volume",
+      "close_time",
+      "quote_volume",
+      "number_of_trades",
+      "taker_buy_base_volume",
+      "taker_buy_quote_volume",
+      "ignore"
+    ],
+    "signed_volume_interpretation": "Taker buy volume supports aggressor-signed traded-volume imbalance (2*taker_buy_volume-total_volume); it is not an order-book imbalance or full causal investor-demand measure. Exact transformation and lookback must be frozen before data.",
+    "time_units": "Official README: SPOT timestamps before 2025-01-01 are milliseconds; from 2025-01-01 microseconds. Normalize explicitly; no magnitude-based silent repair or same-close decision fill.",
+    "execution_limit": "1m OHLCV are trade prices, not authenticated contemporaneous bid/ask or guaranteed fills. A delayed, conservatively costed price proxy can support an exploratory falsification screen; a positive cannot establish executable alpha without separate quote/latency validation.",
+    "cost_gate": "Freeze fee assumptions, spread/slippage central and stress, turnover charges, cash treatment and exposure caps before acquiring outcomes. No fee tier, rebates, BNB discount, zero-fee promotion or historical spread assumed from catalog metadata.",
+    "rights_scope": "Vision terms v1.0, 2026-08-26, sections 4.1/4.5: personal non-production non-commercial historical research; derived redistribution credits Binance Vision and keeps CC BY-NC-SA 4.0. No live/commercial permission, account or payment sought.",
+    "resources": {
+      "compressed_daily_archive_bytes": 465071,
+      "compressed_minute_archive_bytes": 453874212,
+      "processing_plan": "Stream one archive at a time on existing 2 CPU / 8 GiB environment; reduce minute files to prespecified delayed-entry observations. No RAM-heavy full minute panel or new infrastructure required."
+    },
+    "exposure_history": {
+      "F1": "A and B price periods already exposed. A/B/harness unchanged; do not relabel these years as fresh.",
+      "B4": "Prior macro trend expressions and known selection history stay spent; changing venue/name does not reset equivalent-family history.",
+      "legacy_private_history": "UNKNOWN",
+      "public_literature_selection": "External prior searches and publication bias remain possible; nine-source review creates a prior, not independent validation.",
+      "clean_holdout_claim_authorized": false,
+      "confirmatory_claim_authorized": false,
+      "trial_count_reset": false,
+      "statistical_budget": "Preserve all known trials and atomic reservations; no numerical total inferred while private history is UNKNOWN."
+    },
+    "next_action": "Publish one distinct, immutable exploratory hypothesis and source manifest: one trend-plus-signed-volume expression, lagged bounded volatility, delayed trade-price proxy, central/stress costs, fixed beta/ablation comparisons and stop criteria. Count every decision-bearing comparison before results; no grid. Resolve source-only QA gates before calculating returns.",
+    "spot_market_archives_downloaded": 0,
+    "spot_market_archives_opened": 0,
+    "new_market_data_rows_parsed": 0,
+    "economic_look_consumed": false,
+    "economic_family_activated": false,
+    "dataset_attribution": {
+      "provider": "Binance Vision",
+      "source": "https://data.binance.vision/",
+      "license": "CC BY-NC-SA 4.0",
+      "scope": "Dataset-derived header/catalog information only; no raw market rows redistributed."
+    }
+  }
 }
