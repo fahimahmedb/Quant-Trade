@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T23:15:35.952225+00:00` ; acteur `scheduled-automation`.
+Dernier cycle attesté : `2026-10-10T23:46:13.919615+00:00` ; acteur `owner-autonomous-completion`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -51,9 +51,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0355 |
-| Durée mesurée des opérations locales | 12.3236 |
-| Octets de payload de métadonnées | 8680 |
+| CPU mesuré des opérations locales | 0.0381 |
+| Durée mesurée des opérations locales | 13.1639 |
+| Octets de payload de métadonnées | 9114 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
@@ -65,6 +65,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
+- `build:eurusd-technical-grid:lab-workflow-completion` : **RESEARCHING** — Terminer le labo logiciel idée/admission/gel/réservation/exécution/verdict/reprise et son raccord legacy exact, avec preuves synthétiques de bout en bout et gates fermés si données/ressources/autorités inconnues : peut-il traiter une idée admissible sans rejouer ni substituer un protocole ? ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z.
 - `build:eurusd-technical-grid:legacy-authority-bridge` : **WAIT** — Read-only exact preflight built/reviewed/tested; full launch remains WAIT. Preserve original refs/gates and all spent history. Next distinct construction question measures synthetic CPU/storage/runtime bounds, without price data, old runtime boot, ref creation or economic launch. ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z, fx-legacy-control-resource-bridge-gap-20261010.
 - `build:eurusd-technical-grid:synthetic-reader-boundary` : **WAIT** — Exact parser duplicate-group and CRC fixture completed and preserved. Resource/source/original-launch admission remains WAIT; no new OPEN question justified by cached information. Next: bounded metadata tick, wake only on distinct permitted full-input/group bounds or original reservation/launcher authority evidence. Never repeat the same probe, change frozen parameters/code/window, or auto-launch market. ; preuves eurusd-synthetic-reader-group-crc-20261010T2136Z.
 - `build:eurusd-technical-grid:synthetic-resource-envelope` : **WAIT** — Synthetic full-calendar engine probe implemented and completed; complete market resource envelope remains WAIT. Next distinct construction question challenges same-timestamp/duplicate group memory and parser/CRC on synthetic ZIPs, with no real archives or result access; no changed freeze or automatic market launch. ; preuves eurusd-full-calendar-synthetic-capacity-20261010T2012Z.

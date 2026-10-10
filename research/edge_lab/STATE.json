@@ -67,6 +67,25 @@
   },
   "created_at": "2026-10-10T16:08:25.112658+00:00",
   "decisions": {
+    "build:eurusd-technical-grid:lab-workflow-completion": {
+      "actor": "owner-autonomous-completion-20261010T2346Z",
+      "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
+      "claimed_at": "2026-10-10T23:46:18.370417+00:00",
+      "construction_scope": "3af966465c41802fff012d9c217bb6df20cb0024bd711e11c07982dca63ba34f",
+      "created_at": "2026-10-10T23:46:18.020405+00:00",
+      "decision_use": "Ach\u00e8vement logiciel fond\u00e9 sur l\u2019audit et la demande Owner actuelle ; contr\u00f4le des neuf champs et d\u00e9cisions poursuivre/\u00e9carter/bloqu\u00e9, raccord exact aux r\u00e9servations originales et CAS, sans prix/outcomes r\u00e9els, ref hors labo, changement des protocoles legacy ou r\u00e9activation des rappels. Chaque blocage externe reste distinct d\u2019un d\u00e9faut de construction.",
+      "evidence": [
+        "eurusd-legacy-exact-readonly-preflight-20261010T2001Z"
+      ],
+      "family": "eurusd-technical-grid",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "build:eurusd-technical-grid:legacy-authority-bridge",
+      "priority": 2,
+      "question": "Terminer le labo logiciel id\u00e9e/admission/gel/r\u00e9servation/ex\u00e9cution/verdict/reprise et son raccord legacy exact, avec preuves synth\u00e9tiques de bout en bout et gates ferm\u00e9s si donn\u00e9es/ressources/autorit\u00e9s inconnues : peut-il traiter une id\u00e9e admissible sans rejouer ni substituer un protocole ?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "RESEARCHING"
+    },
     "build:eurusd-technical-grid:legacy-authority-bridge": {
       "actor": "scheduled-automation-build-20261010T195437Z",
       "claim_id": "1304ec43e59c547e3b9714c8bd5b6aea37dc4dab45d0218a76952662a7c67d81",
@@ -672,6 +691,34 @@
       },
       "previous": "62572cb759cd9e96bb7cd75172432afca3cd0a2f4e5179c45d6f7139b203acaf",
       "sequence": 35
+    },
+    {
+      "at": "2026-10-10T23:46:18.020418+00:00",
+      "hash": "02aea57f2c4dc384b8b5724bd3c938c21a73613348c6e7eafc714dceac4e9cff",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "eurusd-legacy-exact-readonly-preflight-20261010T2001Z"
+        ],
+        "family": "eurusd-technical-grid",
+        "id": "build:eurusd-technical-grid:lab-workflow-completion",
+        "parent": "build:eurusd-technical-grid:legacy-authority-bridge",
+        "scope": "3af966465c41802fff012d9c217bb6df20cb0024bd711e11c07982dca63ba34f"
+      },
+      "previous": "756de16f0703f862c01b485f965852c729b69b1b4d439fdcae623ec8c724e27c",
+      "sequence": 36
+    },
+    {
+      "at": "2026-10-10T23:46:18.370426+00:00",
+      "hash": "148e61fb9ba10a402bc89b5fc75afd237ec3444ad83c2b9cbb2ba45495ba7a10",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-completion-20261010T2346Z",
+        "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
+        "id": "build:eurusd-technical-grid:lab-workflow-completion"
+      },
+      "previous": "02aea57f2c4dc384b8b5724bd3c938c21a73613348c6e7eafc714dceac4e9cff",
+      "sequence": 37
     }
   ],
   "evidence": {
@@ -1542,7 +1589,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "98edf6f21cbb69941cf6aa796a1bc862bd1acf628c070000be4b076f5b946bcc",
+  "integrity": "97e80f62c745e85b75618d60ad32c003799a317e18505d6198bab7d47d19f1ca",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1559,13 +1606,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "scheduled-automation",
-      "at": "2026-10-10T23:15:35.952225+00:00",
+      "actor": "owner-autonomous-completion",
+      "at": "2026-10-10T23:46:13.919615+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-10T23:15:35.952225+00:00",
+      "at": "2026-10-10T23:46:13.919615+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -1576,44 +1623,44 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T23:15:35.952154+00:00",
+      "observed_at": "2026-10-10T23:46:13.919449+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T23:15:35.952175+00:00",
+      "observed_at": "2026-10-10T23:46:13.919585+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T23:15:35.952180+00:00",
+      "observed_at": "2026-10-10T23:46:13.919596+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T23:15:35.952214+00:00",
+      "observed_at": "2026-10-10T23:46:13.919604+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T23:15:35.952219+00:00",
+      "observed_at": "2026-10-10T23:46:13.919608+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T23:15:35.964943+00:00",
+  "updated_at": "2026-10-10T23:46:18.372432+00:00",
   "usage": {
-    "cpu_seconds": 0.03554690899999997,
+    "cpu_seconds": 0.038109966999999974,
     "human_seconds": null,
-    "metadata_bytes": 8680,
+    "metadata_bytes": 9114,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 12.323613751020112
+    "wall_seconds": 13.163855086017811
   }
 }
