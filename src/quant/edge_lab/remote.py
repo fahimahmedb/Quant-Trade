@@ -40,10 +40,13 @@ class GitAuthority:
         verify(state)
         from quant.state import write_json
         staged = self.git("diff", "--cached", "--name-only").splitlines()
-        if any(p != self.relative + "/STATE.json" for p in staged):
+        if any(p not in (self.relative + "/STATE.json", self.relative + "/STATUS.md") for p in staged):
             raise Refused("Unrelated staged changes; do not publish them with a reservation")
         write_json(self.directory / "STATE.json", state)
-        self.git("add", "--", self.relative + "/STATE.json")
+        from .dashboard import markdown_state
+        from .store import Store
+        (self.directory / "STATUS.md").write_text(markdown_state(state, Store(self.directory).control()))
+        self.git("add", "--", self.relative + "/STATE.json", self.relative + "/STATUS.md")
         self.git("-c", "user.name=Quant Edge Lab", "-c", "user.email=edge-lab@users.noreply.github.com",
                  "commit", "-m", "edge-lab: durable single-use execution receipt [skip ci]")
         self.git("push", "origin", "HEAD:refs/heads/" + BRANCH)

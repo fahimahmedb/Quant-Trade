@@ -209,6 +209,9 @@ class Lab:
             raise Refused("Invalid half-open window")
         start, end = timestamp(window[0]), timestamp(window[1])
         expressions, paths = protocol["expressions"], protocol["cost_paths"]
+        if any(not isinstance(items, list) or not items or any(not isinstance(x, str) or not x for x in items)
+               for items in (expressions, paths)):
+            raise Refused("Explicit lists of economic expressions and cost paths required")
         if (len(set(expressions)) != len(expressions) or len(set(paths)) != len(paths)
                 or protocol["primary"] not in expressions):
             raise Refused("Duplicate variants or undeclared primary")
@@ -269,7 +272,7 @@ class Lab:
                     x["dataset"] == dataset and overlap(window, x["window"]) for x in state["looks"].values()):
                 raise Refused("This outcome window has already been exposed")
             rights = protocol["rights"]
-            if not rights.get("permitted") or not rights.get("url") or not rights.get("scope"):
+            if rights.get("permitted") is not True or not rights.get("url") or not rights.get("scope"):
                 raise Refused("BLOCKED_PERMISSION: rights are not qualified")
             if protocol.get("paid_usd", 0) != 0:
                 raise Refused("Paid access is not authorized")

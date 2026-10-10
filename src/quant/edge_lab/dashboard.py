@@ -16,8 +16,14 @@ def clean(value):
 def markdown(directory):
     lab = Lab(directory)
     state, control = lab.snapshot()
+    return markdown_state(state, control)
+
+
+def markdown_state(state, control):
+    """Pure projection, also usable while the writer holds the state lock."""
     tick = state["scheduler"]["last_tick"] or {}
-    decision = lab.next_decision()
+    due = [(k, v) for k, v in state["decisions"].items() if v["status"] == "OPEN"]
+    decision = None if control["paused"] else min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)
     lines = ["# Quant — labo de recherche", "",
              "**État : " + ("PAUSED" if control["paused"] else tick.get("status", "NOT_STARTED")) + "**",
              "", "Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.",
