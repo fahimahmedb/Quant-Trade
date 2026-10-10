@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T19:04:35.507905+00:00` ; acteur `scheduled-automation`.
+Dernier cycle attesté : `2026-10-10T19:31:23.639103+00:00` ; acteur `scheduled-automation`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce co
 
 ## Prochaine décision utile
 
-Aucune question ouverte ; attendre une preuve ou un accès nouveau.
+Construction : Construire et revoir le raccord minimal du harnais EURUSD figé aux contrôles frais/CAS du labo et aux réservations originales ; qualifier sa reprise et ses ressources sans ouvrir les prix. (`build:eurusd-technical-grid:legacy-authority-bridge`)
 
 ## Programme et preuves
 
@@ -51,9 +51,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0146 |
-| Durée mesurée des opérations locales | 6.5665 |
-| Octets de payload de métadonnées | 4340 |
+| CPU mesuré des opérations locales | 0.0164 |
+| Durée mesurée des opérations locales | 7.3496 |
+| Octets de payload de métadonnées | 4774 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 

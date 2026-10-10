@@ -33,7 +33,8 @@ def markdown_state(state, control):
              "", f"[Pause/reprise persistante : modifier `paused` dans CONTROL.json]({REPO}/edit/{BRANCH}/research/edge_lab/CONTROL.json)",
              "La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce contrôle ; sa désactivation arrête aussi ses réveils.",
              "", "## Prochaine décision utile", "",
-             (decision[1]["question"] + " (`" + decision[0] + "`)") if decision else "Aucune question ouverte ; attendre une preuve ou un accès nouveau.",
+             (("Construction : " if decision[1].get("reason") == "CONSTRUCTION_ADMISSION" else "")
+              + decision[1]["question"] + " (`" + decision[0] + "`)") if decision else "Aucune question ouverte ; attendre une preuve ou un accès nouveau.",
              "", "## Programme et preuves", "", "| Voie | État | Preuve figée | Prochain travail |", "|---|---|---|---|"]
     for identity, family in sorted(state["families"].items(), key=lambda x: x[1]["priority"]):
         sha = family.get("sha")

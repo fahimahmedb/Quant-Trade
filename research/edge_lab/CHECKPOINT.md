@@ -1,6 +1,6 @@
 # Checkpoint — construction autorisée
 
-STATUS = IDLE_SOURCE_ADMISSION_BLOCKED
+STATUS = CONSTRUCTION_QUESTION_OPEN_ECONOMIC_ADMISSIONS_WAIT
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -82,3 +82,15 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - CLI next = null : toutes les questions actuelles sont WAIT, aucune nouvelle question OPEN discriminante. STATUS = IDLE_SOURCE_ADMISSION_BLOCKED. Prochaine reprise : petit tick de métadonnées ; réexaminer uniquement sur nouveau fait précis de droits/paquet historique zéro-payant/horloge/coûts/ressources, ou question distincte de raccord d'implémentation. Sans tel delta, rester IDLE/BLOCKED et ne pas répéter la revue ou notifier Owner.
 - Préfixe du ledger et compteurs non décroissants vérifiés ; baseline/expositions/looks/jobs/protocols/trial_charges inchangés. Zéro nouveau look/essai/worker économique ; F1 outcomes fermés, B2+B4=40, KILL valide/invalide séparés, M effectif/privéUNKNOWN conservés, aucun holdout remis à zéro. Pas de H001/runtime général, achat/compte/trading ou autre automatisation.
 - Aucun code modifié dans ce batch : 32tests synthétiques et CI38071395825 SUCCESS du batch précédent restent la validation logicielle pertinente ; pas de rerun de test ou de marché sans changement justifiant.
+
+
+## Construction du système — 2026-10-10 19:31 UTC
+
+- La construction du labo reste une composante du projet Quant. Les rappels sont des reprises automatiques ; un blocage de données ne clôt pas les travaux logiciels utiles autorisés par l'Owner. Les admissions économiques WAIT restent conservées, sans nouvelle revue des sources closes.
+- Défaut de continuité corrigé : `next` ne pouvait recevoir de tâche logicielle distincte liée à une admission WAIT. CLI `build-question` ajoute désormais ce travail dans la file existante, même famille et preuves du parent, sans nouveau board/contrat/worker. Identité/périmètre uniques, un seul travail pending par parent, refus de pause/famille rejetée/provenance étrangère. La décision du parent n'est ni réécrite ni réouverte.
+- 37 tests synthétiques locaux PASS en2.403s ; cinq cas nouveaux vérifient le CLI/claim unique, historique économique inchangé, doublons/renommages, provenance et parent actif/famille rejetée/pause. Aucun marché ou test économique appelé. Le nouveau panneau identifie explicitement la prochaine question comme Construction.
+- Tick réel acteur `scheduled-automation` à19:31:23 UTC : cinq heads allowlistés,434octets, zéro delta. Ce tick n'atteste pas un worker économique. Coûts instrumentés du tick conservés dans STATE ; tokens/traffic total/temps humain NON MESURÉS, budget Owner NON FOURNI, dépenses payantes0. La durée du test ne mesure pas toute la session.
+- Nouvelle question OPEN : `build:eurusd-technical-grid:legacy-authority-bridge`, parent `qualify:eurusd-technical-grid` toujours WAIT. Prochaine action : prendre/publier son claim CAS avant lecture coûteuse ; construire/revoir le raccord exact contrôle frais/CAS/reserve/RUNNING et réservations originales, avec fixtures synthétiques et mesure des bornes. Décision attendue admission/WAIT de ce raccord, aucune autorisation d'accès aux prix ou lancement économique par la question.
+- Le raccord EURUSD n'est pas construit ou qualifié par ce batch. Son gel/harness original,433jours, expressions/coûts/fenêtres et réservations restent inchangés ; le générique refuse toujours un substitut legacy. Ressources, droits et capture doivent encore passer les gates avant reserve/execute.
+- Préfixe du ledger/baseline/expositions/compteurs vérifiés : zéro look, charge, outcome, protocole ou worker économique nouveau ; F1 fermé, KILL/invalide séparés, B2+B4=40, M effectif/privéUNKNOWN et périodes exposées préservés. Aucun H001/runtime général, trading/achat/compte, défaut/production ou autre automatisation modifié.
+- NEXT = question de construction ci-dessus. Les anciens NEXT d'attente sont historiques ; ce dernier STATE/NEXT gouverne. L'activité attestée ici est une extension logicielle et une tâche persistante, pas une reconstruction complète de Quant ou un edge établi.

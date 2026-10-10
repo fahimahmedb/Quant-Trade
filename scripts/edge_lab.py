@@ -29,7 +29,7 @@ def main(argv=None):
     for name in ("pause", "resume"):
         command = sub.add_parser(name)
         command.add_argument("--reason", default="Owner instruction")
-    for name in ("evidence", "freeze", "family", "decide"):
+    for name in ("evidence", "freeze", "family", "decide", "build-question"):
         command = sub.add_parser(name)
         command.add_argument("packet", help="Versioned JSON packet; use primary evidence")
     reserve = sub.add_parser("reserve")
@@ -63,6 +63,8 @@ def main(argv=None):
         lab.family(**strict_json(args.packet))
     elif args.action == "decide":
         lab.decide(**strict_json(args.packet))
+    elif args.action == "build-question":
+        lab.build_question(**strict_json(args.packet))
     elif args.action == "reserve":
         lab.reserve(args.protocol, args.fingerprint)
     elif args.action == "claim-question":

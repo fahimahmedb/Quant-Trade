@@ -180,6 +180,45 @@ class Lab:
             event(state, "DECISION", {"id": identity, "verdict": verdict, "evidence": evidence_ids, "next": next_action})
             self.store.save(state)
 
+    def build_question(self, identity, parent_decision, question, decision_use, evidence_ids):
+        """Queue a distinct implementation gate; keep the blocked economic question intact."""
+        if any(not isinstance(value, str) or not value.strip()
+               for value in (identity, parent_decision, question, decision_use)):
+            raise Refused("Build question requires an identity, scope and decision use")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            parent = state["decisions"].get(parent_decision)
+            if not parent or parent["status"] != "WAIT":
+                raise Refused("Build follow-up requires an existing WAIT decision")
+            family_id = parent["family"]
+            family = state["families"][family_id]
+            if family["status"] == "REJECTED_CLOSED":
+                raise Refused("A closed economic family cannot be reopened as construction")
+            if not re.fullmatch(r"build:" + re.escape(family_id) + r":[a-z0-9][a-z0-9-]{0,79}", identity):
+                raise Refused("Build identity must remain in the parent family")
+            if (not isinstance(evidence_ids, list) or not evidence_ids
+                    or any(not isinstance(e, str) or e not in state["evidence"]
+                           or e not in parent["evidence"] for e in evidence_ids)):
+                raise Refused("Build follow-up requires the parent's cached evidence")
+            scope = digest({"parent": parent_decision, "question": " ".join(question.lower().split())})
+            if identity in state["decisions"] or any(
+                    d.get("construction_scope") == scope for d in state["decisions"].values()):
+                raise Refused("Build question/scope already recorded; do not rename or reset it")
+            if any(d.get("parent_decision") == parent_decision
+                   and d["status"] in ("OPEN", "RESEARCHING", "RECOVERY_NEEDED")
+                   for d in state["decisions"].values()):
+                raise Refused("A construction question for this parent is already pending")
+            state["decisions"][identity] = {
+                "status": "OPEN", "family": family_id, "priority": family["priority"],
+                "question": question, "decision_use": decision_use,
+                "parent_decision": parent_decision, "construction_scope": scope,
+                "created_at": utc_now(), "evidence": list(evidence_ids),
+                "reason": "CONSTRUCTION_ADMISSION", "outcome_access_authorized": False}
+            event(state, "BUILD_QUESTION_ADDED", {"id": identity, "parent": parent_decision,
+                  "family": family_id, "scope": scope, "evidence": list(evidence_ids)})
+            self.store.save(state)
+
     def family(self, identity, mechanism, dataset, evidence_ids):
         """A novel mechanism needs provenance; variants keep the same family."""
         with self.store.lock():
