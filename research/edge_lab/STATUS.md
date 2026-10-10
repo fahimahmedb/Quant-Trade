@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-10T16:33:19.270478+00:00` ; acteur `github-actions-metadata`.
+Dernier cycle attesté : `2026-10-10T16:55:25.909143+00:00` ; acteur `scheduled-automation`.
 Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce co
 
 ## Prochaine décision utile
 
-Réutiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions. (`qualify:eurusd-technical-grid`)
+Vérifier un hôte qualifié et les global fills ; ne pas substituer trades WS. (`qualify:hyperliquid-forced-flow`)
 
 ## Programme et preuves
 
@@ -50,9 +50,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0035 |
-| Durée mesurée des opérations locales | 2.3617 |
-| Octets de payload de métadonnées | 1736 |
+| CPU mesuré des opérations locales | 0.0045 |
+| Durée mesurée des opérations locales | 3.2544 |
+| Octets de payload de métadonnées | 2170 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
@@ -64,6 +64,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
+- `qualify:eurusd-technical-grid` : **RESEARCHING** — Réutiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions. ; preuves .
 - `qualify:treasury-auction-zf` : **WAIT** — Qualifier un devis/entitlement du paquet complet sans achat ; examiner la réserve EURUSD et une alternative accessible si ce verrou persiste. ; preuves audit-R18-databento-access-20261010.
 
 Les verdicts économiques importés conservent leur portée. Source inaccessible, manque de puissance et défaut logiciel restent distincts.

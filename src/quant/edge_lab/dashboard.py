@@ -66,7 +66,8 @@ def markdown_state(state, control):
         lines.append("Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.")
     for identity, item in state["decisions"].items():
         if item["status"] != "OPEN":
-            lines.append(f"- `{identity}` : **{item['status']}** — {clean(item['next_action'])} ; preuves {', '.join(item['evidence'])}.")
+            next_action = item.get("next_action", item["question"])
+            lines.append(f"- `{identity}` : **{item['status']}** — {clean(next_action)} ; preuves {', '.join(item['evidence'])}.")
     lines += ["", "Les verdicts économiques importés conservent leur portée. Source inaccessible, manque de puissance et défaut logiciel restent distincts.",
               "", f"[Audit et méthodes externes]({state['imported']['audit']}) · [Fonctionnement et reprise](README.md)", ""]
     return "\n".join(lines)

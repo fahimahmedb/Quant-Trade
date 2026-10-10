@@ -68,13 +68,17 @@
   "created_at": "2026-10-10T16:08:25.112658+00:00",
   "decisions": {
     "qualify:eurusd-technical-grid": {
+      "actor": "scheduled-automation-20261010T1654Z",
+      "claim_id": "f6a172ad0c927f15d93170d66aaaafd8a223334c20bcbd307f8bc7aca1fc9b42",
+      "claimed_at": "2026-10-10T16:55:34.092412+00:00",
       "created_at": "2026-10-10T16:08:25.112725+00:00",
       "evidence": [],
       "family": "eurusd-technical-grid",
+      "lease_seconds": 600,
       "priority": 2,
       "question": "R\u00e9utiliser le gel/harnais ; qualifier proxy, droits et historique d'expositions.",
       "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "qualify:hyperliquid-forced-flow": {
       "created_at": "2026-10-10T16:08:25.112764+00:00",
@@ -164,6 +168,18 @@
       },
       "previous": "374ba3dbf4bfea1b17d287d33925c33d8b009b22efc582c150fd9faaf844cd75",
       "sequence": 5
+    },
+    {
+      "at": "2026-10-10T16:55:34.092417+00:00",
+      "hash": "745ecbfebcbfd8fb91b4b433548dae94500623973ec223a6fe993f1c636511c8",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "scheduled-automation-20261010T1654Z",
+        "claim_id": "f6a172ad0c927f15d93170d66aaaafd8a223334c20bcbd307f8bc7aca1fc9b42",
+        "id": "qualify:eurusd-technical-grid"
+      },
+      "previous": "8f5df9cb1f6993c3284e3dd02f4646d1211e0621416b51a096ea15d7c6c2952a",
+      "sequence": 6
     }
   ],
   "evidence": {
@@ -285,7 +301,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "91d5dc58b5c292c41d32acf4e382775f0326d9f209952b9586f650d8e21d08cb",
+  "integrity": "20bbd8399be1874b6fb72cf3bb976951d3e8ac686effe2c3563d833125845cf1",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -302,13 +318,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "github-actions-metadata",
-      "at": "2026-10-10T16:33:19.270478+00:00",
+      "actor": "scheduled-automation",
+      "at": "2026-10-10T16:55:25.909143+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-10T16:33:19.270478+00:00",
+      "at": "2026-10-10T16:55:25.909143+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -319,44 +335,44 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T16:33:19.270445+00:00",
+      "observed_at": "2026-10-10T16:55:25.909105+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T16:33:19.270463+00:00",
+      "observed_at": "2026-10-10T16:55:25.909126+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T16:33:19.270468+00:00",
+      "observed_at": "2026-10-10T16:55:25.909131+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T16:33:19.270471+00:00",
+      "observed_at": "2026-10-10T16:55:25.909134+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-10T16:33:19.270474+00:00",
+      "observed_at": "2026-10-10T16:55:25.909137+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T16:40:51.770191+00:00",
+  "updated_at": "2026-10-10T16:55:34.092965+00:00",
   "usage": {
-    "cpu_seconds": 0.003469702000000019,
+    "cpu_seconds": 0.004534797000000007,
     "human_seconds": null,
-    "metadata_bytes": 1736,
+    "metadata_bytes": 2170,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 2.361684679999655
+    "wall_seconds": 3.254385996999247
   }
 }
