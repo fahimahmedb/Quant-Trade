@@ -1,25 +1,35 @@
-# Quant — labo de recherche
+# Quant — labo de recherche V3
 
-**État : IDLE**
+**État opérationnel V3 : RECOVERY_NEEDED**
 
-Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
+Le statut opérationnel combine file, lease worker et planificateur ; le dernier tick seul ne pilote plus l'affichage.
 
-Dernier cycle attesté : `2026-10-11T20:09:19.928803+00:00` ; acteur `github-actions-metadata`.
-Worker de recherche programmé : configuration observée `2026-10-11T17:35:42.938259+00:00`. Politique : résultat/progrès utile/blocage externe, sans message de relance.
-L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
+Dernier cycle attesté : `2026-10-11T20:09:59.000252+00:00` ; acteur `github-actions-metadata` ; statut tick `IDLE`.
+Worker de recherche programmé : configuration observée `2026-10-11T17:35:42.938259+00:00`.
+
+## Autonomie observable V3
+
+Preuve : `SINGLE_SCHEDULED_PASS_OBSERVED` ; passages scheduled enregistrés : **1**.
+Dernière session scheduled : `2026-10-11T17:53:21.503214+00:00` ; delivery_verified=`false`.
+Une session scheduled enregistrée prouve un passage ; elle ne prouve pas à elle seule un daemon permanent. La salle doit afficher cette nuance.
+Flux machine de salle : [`LIVE.json`](https://github.com/fahimahmedb/Quant-Trade/blob/research/edge-lab-continuous/research/edge_lab/LIVE.json).
 
 [Pause/reprise persistante : modifier `paused` dans CONTROL.json](https://github.com/fahimahmedb/Quant-Trade/edit/research/edge-lab-continuous/research/edge_lab/CONTROL.json)
-La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.
+La pause empêche tout nouveau travail.
+
+## Travail courant
+
+`build:treasury-auction-zf:okx-l2-access-clock` — **RECOVERY_NEEDED** — claim `deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768` — Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?
 
 ## Prochaine décision utile
 
 Aucune question admissible due maintenant ; prochaine échéance : 2026-10-13T12:45:00+00:00
 
-## File V2
+## File V3
 
 Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 1 ; WAIT : 12.
-Sessions CLI conservées : 3. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
-Investigations documentaires en réserve : 0 ; déjà traitées/prélevées : 1. Pilotage : `RECOVERY_NEEDED`.
+Sessions CLI conservées : 3.
+Investigations documentaires en réserve : 0 ; déjà traitées/prélevées : 1. Pilotage plan : `RECOVERY_NEEDED`.
 
 ## Programme et preuves
 
@@ -63,9 +73,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 2.6499 |
-| Durée mesurée des opérations locales | 28.2909 |
-| Octets de payload de métadonnées | 18228 |
+| CPU mesuré des opérations locales | 2.6558 |
+| Durée mesurée des opérations locales | 28.6877 |
+| Octets de payload de métadonnées | 18662 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
