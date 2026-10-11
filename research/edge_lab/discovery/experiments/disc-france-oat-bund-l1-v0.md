@@ -16,6 +16,6 @@ EXPLORATORY. Pre-declared 2026-10-11T22:23:23.734417+00:00; previous repository 
 - kill_if: complete valid8-event sample and mean gross<=0 or central-net mean<=0; kill exact delayed bearish EDP expression ONLY, not the broader fiscal mechanism. No inference if calendars/units/sampling prove inconsistent.
 - promote_if: complete sample, central-net mean>=3bp, stress-net positive and at least6/8 gross positive. Otherwise PARK mixed/weak. PROMOTE_HIGH forbidden at L1. Even PROMOTE justifies an L2 surprise/benchmark red-team before futures reconstruction.
 - prior_exposures: PRIVATE_UNKNOWN; public French fiscal/ECB narrative and incidental TEC10 quote2026-09-25=4.63percent already exposed; not used to select dates/thresholds. This is one expression,two fixed cost scenarios; effectiveM UNKNOWN. V4.2 design pilot preserved and not silently claimed as executed.
-- RESULT: pending.
-- DECISION: pending.
+- RESULT: declared France daily SDMX key HTTP404; zero rows. Germany not fetched. Economic question remains untested.
+- DECISION: PARK (PARK_DATA).
 - NEXT: one bounded acquisition/calculation after publication; any missing series => PARK without selecting a different window.

@@ -5,14 +5,15 @@
   "created_from_validation_head": "b4d9219a3e4320fd0675c167d202558ed1d18d89",
   "metrics": {
     "discriminating_tests_completed_this_week": 0,
-    "families_touched_this_week": 3,
+    "families_touched_this_week": 4,
     "architecture_share_estimate": null,
-    "last_completed_experiment": "disc-sec-form4-eod-l1-v0",
-    "experiments_with_decision": 2,
-    "data_parks": 2,
+    "last_completed_experiment": "disc-france-oat-bund-l1-v0",
+    "experiments_with_decision": 3,
+    "data_parks": 3,
     "last_completed_economic_test": null,
     "metrics_scope": "V4 Discovery only; acquisition attempt and metadata park do not count as economic tests.",
-    "architecture_share_basis": "No architecture work performed this pass so far; total rolling activity/tokens not measured."
+    "architecture_share_basis": "No architecture work performed this pass so far; total rolling activity/tokens not measured.",
+    "actual_data_test_attempts": 3
   },
   "queue": [
     {
@@ -61,7 +62,7 @@
     {
       "id": "disc-france-oat-bund-l1-v0",
       "family": "france-sovereign-repricing",
-      "status": "RUNNING",
+      "status": "PARK",
       "level": "L1",
       "priority": 3,
       "mechanism": "Fiscal-information surprises may temporarily reprice French sovereign risk relative to Germany.",
@@ -73,9 +74,13 @@
       "promote_if": "Directionally coherent response is large enough to justify FOAT/FGBL, CTD, DV01, roll and cost work.",
       "selected_at": "2026-10-11T22:23:23.734417+00:00",
       "predeclaration": "experiments/disc-france-oat-bund-l1-v0.md",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
-      "cost_scenarios": 2
+      "cost_scenarios": 2,
+      "decision": "PARK",
+      "completed_at": "2026-10-11T22:25:50.501096+00:00",
+      "result": "Declared ECB France key returned404; no yields or returns acquired",
+      "next": "A verified distinct accessible proxy is required; no blind retry of declared key."
     },
     {
       "id": "disc-policy-prospective-l1-v0",
@@ -95,7 +100,7 @@
     {
       "id": "disc-crypto-book-pressure-prospective-l1-v0",
       "family": "bitmex-book-pressure",
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "level": "L1",
       "priority": 5,
       "mechanism": "Persistent directional liquidity demand may make top-of-book imbalance informative over short horizons.",
@@ -104,7 +109,13 @@
       "proxy": "Small prospective public order-book capture on a venue whose public access is permitted; fixed lagged signal, fixed horizon, fixed costs",
       "max_time_minutes": 60,
       "kill_if": "No directional effect net of simple crossing/fee assumptions.",
-      "promote_if": "Effect is large and stable enough to justify deeper PIT/execution validation."
+      "promote_if": "Effect is large and stable enough to justify deeper PIT/execution validation.",
+      "selected_at": "2026-10-11T22:25:50.501096+00:00",
+      "execution_attempts": 0,
+      "expressions": 1,
+      "predeclared_upper_bound_comparators": 1,
+      "cost_scenarios": 2,
+      "predeclaration": "experiments/disc-crypto-book-pressure-prospective-l1-v0.md"
     },
     {
       "id": "disc-zf-auction-pressure-v0",
@@ -145,5 +156,5 @@
     "prediction-negative-risk",
     "smard-fixed-flexibility"
   ],
-  "updated_at": "2026-10-11T22:23:23.734417+00:00"
+  "updated_at": "2026-10-11T22:25:50.501096+00:00"
 }
