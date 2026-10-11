@@ -136,6 +136,45 @@ class Lab:
             event(state, "SCHEDULER_DISABLED_OBSERVED", packet)
             self.store.save(state)
 
+    def scheduler_configured(self, packet):
+        """Record a fresh Owner-authorized backend receipt, never enable via a tick.
+
+        Configuration is not a delivered run, heartbeat or economic worker.
+        This method does not call the scheduler or change its notification settings.
+        """
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            owner = state["evidence"].get(packet.get("owner_evidence_id"), {})
+            receipt = state["evidence"].get(packet.get("backend_evidence_id"), {})
+            observed = receipt.get("scheduler_receipt", {})
+            if (packet.get("id") != state["scheduler"]["id"]
+                    or packet.get("enabled") is not True
+                    or owner.get("owner_request", {}).get("autonomous_research_worker") is not True
+                    or owner.get("owner_request", {}).get("no_reminder_messages") is not True
+                    or owner.get("kind") != "METHOD" or receipt.get("kind") != "METHOD"
+                    or observed.get("id") != packet["id"] or observed.get("is_enabled") is not True
+                    or observed.get("updated_at") != packet.get("observed_at")):
+                raise Refused("Exact existing worker, explicit Owner resumption and fresh enabled backend receipt required")
+            timestamp(packet["observed_at"])
+            if (state["scheduler"].get("disabled_confirmed_at")
+                    and timestamp(packet["observed_at"]) <= timestamp(state["scheduler"]["disabled_confirmed_at"])):
+                raise Refused("Historical configuration cannot override a newer disabled receipt")
+            if (state["scheduler"].get("enabled") is True
+                    and state["scheduler"].get("enabled_evidence") == packet["backend_evidence_id"]
+                    and state["scheduler"].get("owner_resumption_evidence") == packet["owner_evidence_id"]):
+                return
+            state["scheduler"].update(enabled=True, mode="existing_autonomous_research_worker",
+                enabled_confirmed_at=packet["observed_at"], enabled_evidence=packet["backend_evidence_id"],
+                owner_resumption_evidence=packet["owner_evidence_id"],
+                notification_policy="RESULT_PROGRESS_EXTERNAL_BLOCK_ONLY; no reminder prompts",
+                external_run={"current_prompt_run_observed": False,
+                    "last_backend_run_time_observed": observed.get("last_run_time"),
+                    "next_backend_run_time_observed": observed.get("next_run_time"),
+                    "scope": "configuration_only; actual run must produce its own receipt"})
+            event(state, "RESEARCH_WORKER_CONFIGURED_OBSERVED", packet)
+            self.store.save(state)
+
     def evidence(self, packet):
         """Cache versioned source passages; outcome packets must name a charged look."""
         required = ("id", "url", "version", "passage", "fact", "limit", "kind")

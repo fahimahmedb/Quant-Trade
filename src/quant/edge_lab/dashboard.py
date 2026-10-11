@@ -30,7 +30,7 @@ def markdown_state(state, control):
              "", f"Dernier cycle attesté : `{tick.get('at', 'NON OBSERVÉ')}` ; acteur `{tick.get('actor', 'aucun')}`.",
              (f"Rappels désactivés (confirmation outil) : `{state['scheduler'].get('disabled_confirmed_at')}`."
               if state['scheduler'].get('enabled') is False else
-              f"Activation historique observée : `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}` ; état backend courant à qualifier."),
+              f"Worker de recherche programmé : configuration observée `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}`. Politique : résultat/progrès utile/blocage externe, sans message de relance."),
              "L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.",
              "", f"[Pause/reprise persistante : modifier `paused` dans CONTROL.json]({REPO}/edit/{BRANCH}/research/edge_lab/CONTROL.json)",
              "La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.",

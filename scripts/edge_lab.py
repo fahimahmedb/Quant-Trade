@@ -29,7 +29,7 @@ def main(argv=None):
     for name in ("pause", "resume"):
         command = sub.add_parser(name)
         command.add_argument("--reason", default="Owner instruction")
-    for name in ("evidence", "freeze", "family", "decide", "build-question", "scheduler-disabled"):
+    for name in ("evidence", "freeze", "family", "decide", "build-question", "scheduler-disabled", "scheduler-configured"):
         command = sub.add_parser(name)
         command.add_argument("packet", help="Versioned JSON packet; use primary evidence")
     reserve = sub.add_parser("reserve")
@@ -82,6 +82,8 @@ def main(argv=None):
         lab.build_question(**strict_json(args.packet))
     elif args.action == "scheduler-disabled":
         lab.scheduler_disabled(strict_json(args.packet))
+    elif args.action == "scheduler-configured":
+        lab.scheduler_configured(strict_json(args.packet))
     elif args.action == "reserve":
         lab.reserve(args.protocol, args.fingerprint)
     elif args.action == "admit":

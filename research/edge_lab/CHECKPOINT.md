@@ -1,8 +1,22 @@
 # Checkpoint — construction autorisée
 
-STATUS = SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED
+STATUS = RESEARCH_ACTIVE_SOURCE_QUALIFICATION
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
+
+## STATE / NEXT courant — 2026-10-11, macro et worker autonome
+
+- Dernier Owner demande que le labo avance sans lui et ajoute macro France/risque souverain, annonces politiques/sentiment/Trump.14familles conservées,1question OPEN de qualification source, aucun nouveau backtest macro. Fuel=WAIT précis (source de prix déclarés actuelle, contre-factuel/coûts/historique manquants ; économies d’achat distinctes d’alpha financier), pas rejet économique.
+- Source/décision compacte : sources/MACRO_POLITICAL_RESEARCH.json ; passages primaires versionnés dans STATE.evidence et sources/macro-primary-document-receipts-20261011.json. Neuf champs des deux gates conservés. Revue sans compte/clé/achat/prix historiques ; deux claims publiés avant revues. Une seule famille économique active autorisée ; ici aucun worker économique courant.
+- France/OAT-Bund : qualify:france-sovereign-repricing=WAIT, droits index TEC10/revintages/première publication et prix exécutables FOAT/FGBL/CTD/roll/DV01/frais/marge non qualifiés. AFT porte notice restrictive Euronext malgré site officiel ; Eurostat API gratuit mais latest-only sans version passée. TPI2022 donne une contradiction de mécanisme (soutien conditionnel/discrétionnaire), aucune preuve actuelle de défaut/sauvetage/éligibilité française. Ne pas extraire ces séries, confondre spread de taux etP&L ou réouvrir ZF sous nouveau nom.
+- Exposition publique incidente conservée : extrait de recherche affichait TEC10 du25Sep2026=4.63pct ; page/CSV/historique jamais ouverts, aucun rendement/test/direction/paramètre sélectionné. Pas de réservation préalable à cet extrait ; ne pas en fabriquer une, ne jamais proclamer cette observation vierge. Registre explicite dans preuveAFT/dossier,0expression économique évaluée par cet extrait, M effectif/privateUNKNOWN conservés.
+- Politique/sentiment : qualify:policy-announcement-repricing=WAIT pour test historique ; API Federal Register public sans clé, publication officielle peut être tardive ; GDELT tone/corpus/traductions/cap/smoothing ne mesure pas le positionnement des investisseurs. Documentation2017 ne prouve pas couverture2026. Aucun tonechart/news corpus/retour lu. LLM actuel susceptible de mémoire des outcomes, jamais optimisation de sentiments sur historique.
+- NEXT OPEN = build:policy-announcement-repricing:official-source-clock. Claim-question/CAS avant un seul probe de métadonnées officiel borné : vérifier schéma public, amendements, droits/ressources et première réception UTC conservatrice pour observation future, sans prétendre première annonce de Trump. Ne pas accéder prix/outcomes/notes de sentiment empiriques. QUALIFIED éventuel ne vaut ni admission économique ni autorisation de capture marché. WAIT/CLOSED ne reviennent que sur delta probant.
+- Worker unique6ac978ecda1081918fba4d76dee437f4 reconfiguré suite à la nouvelle demande Owner, update+peek confirmentenabledtrue/prompt exact/heure inchangée/EuropeParis. Les11autres rappels restentoff ; aucune nouvelleautomation/site schedule/board. Messages de relance/échos interdits dans prompt ; progrès ordinairesGitHub, Ownerseulement résultat important/vrai blocage externe nouveau. Politique de prompt, pas promesse de mute global (outil sans réglage de mute). Last_run_time observé2026-10-10T23:15:04.081718Z concerne ancien prompt ; next_run_time=null. Activation/configuration ne prouve aucune livraison ni boucle économique : demander un reçu réel de prochaincycle, ne pas animer un worker depuis commit/CI.
+- CLI scheduler-configured enregistre seulement un reçu backend frais + nouvelle autorisation Owner exacte pour ce mêmeID ; tick ne peut pas réactiver une désactivation Owner. Pause/stale/identité/preuve manquante/idempotence et comptage testés.84tests synthétiquesPASS3.828s, aucun vieux résultat recalculé ; famille/freeze/look/baseline/history protégés. Dépenses0, tokens/traffic total/coût humain NONMESURÉS, budgetOwnerNONFOURNI. Controlreal/livefalse etpausedfalse au dernierHEAD.
+- SMARD : unique résultat solaire12→18 REJECT coût100/150 supposé, exact SHA2563dbfb580d5aa69e1fca525af18d69cb2a86ff2354eef2b840c6be15c0b59553e ; ancien03→18 UNKNOWNlogiciel sans prix resteconsommé.2looks/4chemins inchangés,365jours résultat préservé, jamais retune/rerun. F1/KILL/invalide/B2+B4=40/COIN-M/F2/FX/HL immuables, H001exclu, pascapital/live.
+
+Les sections suivantes sont historiques ; ce STATE/NEXT courant gouverne.
 
 ## STATE / NEXT courant — 2026-10-11, premier calcul économique terminé
 

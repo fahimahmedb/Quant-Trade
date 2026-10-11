@@ -2125,6 +2125,44 @@
       },
       "previous": "1f03dec352ae76736f4297ba5041d5ca394495331aed3e705af2937040329c9b",
       "sequence": 109
+    },
+    {
+      "at": "2026-10-11T16:18:04.918654+00:00",
+      "hash": "3244f9db90c64d9a81e85993b765d7a74cb0c817afc4197ce5e2ea82c4de0578",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "95f771174e82b989c9a7228add04dc1f4dfefea2f4de50ede659c1858114cde5",
+        "id": "owner-autonomous-worker-resumption-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "3cbbfc4ec1eeaf0570b464d9162596bee045f7f9296bef236d158111e6805be8",
+      "sequence": 110
+    },
+    {
+      "at": "2026-10-11T16:18:05.054086+00:00",
+      "hash": "02e2f3233f1221ec6a11351dcbf73e435b439025877dc8161381165890e08195",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "058e13fa78c71863ef8af15adaadb50db2a73ed8d2ea2d3774d3d7f5688000a7",
+        "id": "research-worker-backend-enabled-20261011T1616Z",
+        "kind": "METHOD"
+      },
+      "previous": "3244f9db90c64d9a81e85993b765d7a74cb0c817afc4197ce5e2ea82c4de0578",
+      "sequence": 111
+    },
+    {
+      "at": "2026-10-11T16:18:05.179415+00:00",
+      "hash": "27b95f90c2e281a76f5b3f251362430ee4b983ccf7e34d9cc2891e7cfe555e33",
+      "kind": "RESEARCH_WORKER_CONFIGURED_OBSERVED",
+      "payload": {
+        "backend_evidence_id": "research-worker-backend-enabled-20261011T1616Z",
+        "enabled": true,
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "observed_at": "2026-10-11T16:16:28.105116+00:00",
+        "owner_evidence_id": "owner-autonomous-worker-resumption-20261011"
+      },
+      "previous": "02e2f3233f1221ec6a11351dcbf73e435b439025877dc8161381165890e08195",
+      "sequence": 112
     }
   ],
   "evidence": {
@@ -3671,6 +3709,23 @@
         "source": "official API introduction, general introduction"
       }
     },
+    "owner-autonomous-worker-resumption-20261011": {
+      "fact": "Explicit fresh request for autonomous research progression; reuse the one existing worker. No reminder/relance messages, no new automation, paid account, capital or trading authorization.",
+      "id": "owner-autonomous-worker-resumption-20261011",
+      "kind": "METHOD",
+      "limit": "Owner directive enables scheduling work, not a claim that the scheduler delivered a run. Preserve human alert restraint and all scientific gates.",
+      "owner_request": {
+        "autonomous_research_worker": true,
+        "no_reminder_messages": true
+      },
+      "passage": "Avance en autonomie n\u2019attends rien de ma part le labo doit fonctionn\u00e9 sans moi",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "Owner direct conversation",
+        "supersedes": "disabled research-worker wakeups only; personal reminder automations stay off"
+      }
+    },
     "owner-free-source-universe-20261011T1235Z": {
       "cost": {
         "cpu_seconds": 0.129489617,
@@ -3764,6 +3819,29 @@
       "version": {
         "observed_at": "2026-10-11",
         "source": "own preregistration design challenge; no external claim of predictability"
+      }
+    },
+    "research-worker-backend-enabled-20261011T1616Z": {
+      "fact": "Configured unattended research worker with conditional reporting, not a reminder to Owner. Preserve backend last_run_time from older prompt; next_run_time is null. No current new-prompt economic or source worker execution is attested by configuration.",
+      "id": "research-worker-backend-enabled-20261011T1616Z",
+      "kind": "METHOD",
+      "limit": "Notification restraint is a saved prompt policy; the tool exposes no global mute/delivery guarantee. Configuration cannot be reported as a delivered run, active process or continuously operating economic worker.",
+      "passage": "The existing worker is_enabled=true, hourly schedule unchanged, Europe/Paris, replacement prompt verified exactly. Other11automations remain disabled.",
+      "scheduler_receipt": {
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "is_enabled": true,
+        "last_run_time": "2026-10-10T23:15:04.081718+00:00",
+        "next_run_time": null,
+        "prompt_matches": true,
+        "schedule": "BEGIN:VEVENT\nDTSTART:20261009T233048Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "timezone": "Europe/Paris",
+        "updated_at": "2026-10-11T16:16:28.105116+00:00"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11T16:16:28.105116+00:00",
+        "source": "native automations_update then independent automations_peek",
+        "worker_id": "6ac978ecda1081918fba4d76dee437f4"
       }
     },
     "smard-entrypoint-zero-price-forensic-20261011": {
@@ -4121,7 +4199,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "37e5821cbbb2d4e5ac1d769ac4b70703749799b4298ba2530901dbcf5c0f2229",
+  "integrity": "ee5544f545527bfc4607f5e78fd347e4f3b87b9a5867f69ec977c1bf69631566",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4436,14 +4514,14 @@
   "scheduler": {
     "disabled_confirmed_at": "2026-10-11T00:11:00Z",
     "disabled_evidence": "owner-reminders-off-20261011T0011Z",
-    "enabled": false,
-    "enabled_confirmed_at": "2026-10-10T16:25:22.012005+00:00",
+    "enabled": true,
+    "enabled_confirmed_at": "2026-10-11T16:16:28.105116+00:00",
+    "enabled_evidence": "research-worker-backend-enabled-20261011T1616Z",
     "external_run": {
       "current_prompt_run_observed": false,
-      "evidence": "update+peek confirmed enabled; CI run 38068124875 completed; no current scheduled-agent receipt observed",
-      "immediate_run_request": "HTTP_404_ACTION_NOT_FOUND",
-      "last_backend_run_time_observed": "2026-10-10T14:19:16.465812+00:00",
-      "scope": "previous_prompt"
+      "last_backend_run_time_observed": "2026-10-10T23:15:04.081718+00:00",
+      "next_backend_run_time_observed": null,
+      "scope": "configuration_only; actual run must produce its own receipt"
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
@@ -4458,7 +4536,9 @@
       "refs": 5,
       "status": "COMPLETE"
     },
-    "mode": "manual_existing_automation_disabled"
+    "mode": "existing_autonomous_research_worker",
+    "notification_policy": "RESULT_PROGRESS_EXTERNAL_BLOCK_ONLY; no reminder prompts",
+    "owner_resumption_evidence": "owner-autonomous-worker-resumption-20261011"
   },
   "schema": 1,
   "sources": {
@@ -4496,7 +4576,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:11:42.936337+00:00",
+  "updated_at": "2026-10-11T16:18:05.185891+00:00",
   "usage": {
     "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,

@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-11",
+  "owner_request": "Macro France, sovereign/fiscal stress and policy/market sentiment including Trump; autonomous lab without Owner relaunch",
+  "scope": "Financial economic-edge research. Retail-fuel procurement savings parked separately; no equivalence to securities alpha.",
+  "mode": {
+    "economic_family_active": null,
+    "metadata_family_active": "policy-announcement-repricing",
+    "market_backtests_started_this_batch": 0,
+    "new_price_histories_acquired": 0,
+    "live_trading_authorized": false,
+    "real_capital_authorized": false,
+    "paid_usd": 0,
+    "total_owner_budget": "NOT_PROVIDED",
+    "tokens": "NOT_MEASURED"
+  },
+  "families": {
+    "france-sovereign-repricing": {
+      "question": "Do unexpected, first-public fiscal/financing shocks cause a delayed, capturable change in French sovereign risk relative to common euro duration risk?",
+      "mechanism": "Investor benchmark/mandate and financing constraints may cause delayed reallocation; this is a hypothesis, not established inefficient pricing.",
+      "who_pays": "Potential investors/hedgers needing immediate sovereign-risk capacity or constrained rebalancing; unverified, not France’s default as a necessary premise.",
+      "instrument_mapping_design_only": [
+        "Euro-OAT/Euro-Bund futures FOAT/FGBL, duration-neutral using prior CTD/conversion-factor/DV01; not a fixed1:1 pair",
+        "Cash OAT/Bund requires verified repo/borrow and total-return accounting",
+        "CDS is an access/credit/margin/settlement-dependent reserve, not an assumed available retail instrument"
+      ],
+      "profit_channel": "Relative spread widening may lower hedged French bond value; actual profit depends on tradable prices, prior hedge ratio, carry, collateral, liquidity and execution. Sovereign default is not required.",
+      "contradictions": [
+        "Bad fiscal levels may already be fully priced; missing surprise is not alpha",
+        "Fundamental deterioration and unwarranted fragmentation have different ECB TPI treatment; neither unlimited rescue nor inevitable default follows",
+        "Yield-index spread is not futures/total-return P&L; Bund safe-haven and CTD/basis can confound it",
+        "Fiscal improvement, central-bank/political intervention and carry can reverse a short-France idea"
+      ],
+      "controls_before_any_protocol": [
+        "First-public information and expectation measured before the event; final revised debt data forbidden as past input",
+        "Matched executable bid/ask/timezone/receipt timestamps, latency and failed fills for both legs",
+        "Past-only DV01/CTD/roll design, rates/beta/basis/roll attribution",
+        "Broker/exchange/clearing/borrow/funding/margin/collateral/closeout costs and finite loss budget",
+        "Whole fixed event population and clustered event/day uncertainty; no best country, episode, horizon or threshold selected from returns"
+      ],
+      "evidence_ids": [
+        "france-sovereign-source-rights-clock-20261011",
+        "france-sovereign-ecb-contradiction-20261011",
+        "macro-eurostat-vintage-gate-20261011"
+      ],
+      "market_metadata_only": {
+        "url": "https://www.eurex.com/ex-en/markets/int/long-term-interest-rates/fix/government-bonds/Euro-OAT-Futures-137416",
+        "version": "Search catalogue snippet observed2026-10-11; contract/archives not opened",
+        "fact": "Exchange catalogue identifies FOAT/FGBL and deliverable-bond futures; it does not establish historical BBO entitlement or executable costs"
+      },
+      "verdict": {
+        "RESULT": "WAIT: RIGHTS_VINTAGES_EXECUTION_UNQUALIFIED",
+        "EFFECT_SIZE": "NOT_ESTIMATED; no macro economic test",
+        "UNCERTAINTY": "Public official methodology plus approximate publication time, restricted index reuse and latest-only API cannot support a causal, executed historical claim.",
+        "POWER_LIMITATION": "Unknown independent event count; macro regimes/political episodes cluster; one sovereign/president is not a population; private exposure and effectiveM UNKNOWN",
+        "ECONOMIC_SIGNIFICANCE": "No capturable profit established; only a qualification decision",
+        "FAILED_CRITERIA": "WAIT: RIGHTS_VINTAGES_EXECUTION_UNQUALIFIED",
+        "LESSON": "Public information is not necessarily new, point-in-time or executable. A direction/mood is not an edge after costs.",
+        "FAMILY_STATUS": "DESIGN_UNTESTED_SOURCE_GATE; not an economic REJECT",
+        "NEXT_DECISION": "Do not re-query the same index/API. Revisit only with new primary rights/vintage/matched-execution evidence; otherwise preserve exact wait and pursue the distinct policy metadata gate."
+      }
+    },
+    "policy-announcement-repricing": {
+      "question": "Can economically specific public policy surprises predict residual repricing after the lab’s actual information receipt and full executable costs?",
+      "mechanism": "Tariff, sanction, fiscal, monetary, regulatory or policy-reversal news changes expected cashflows or risk premia; residual adjustment after receipt may or may not remain.",
+      "who_pays": "Potential risk-transfer demand and constrained rebalancing by exposed participants; actor name/popularity is not a mechanism.",
+      "event_tags_design_only": [
+        "Policy topic and affected economic exposure",
+        "Announcement/official text/implementation/correction/retraction separated",
+        "Trump is an issuer/actor tag; presidency/person sentiment is not automatic bullish or bearish direction"
+      ],
+      "three_distinct_inputs": [
+        "Economic policy content and surprise versus expectations",
+        "News coverage/tone and corpus/translation/duplicate/selection changes",
+        "Investor positioning/risk appetite, which press tone does not measure"
+      ],
+      "asset_selection": "UNSET. Select one accessible executable economic exposure before outcomes, never the best asset after event returns. No price/asset grid.",
+      "clocks": [
+        "announced_at if authenticated",
+        "official_filed_at if schema-qualified",
+        "document_publication_date is not first public statement",
+        "our_received_at UTC and raw hash gives conservative causal availability, not original-news precedence",
+        "corrections and first-seen versions are immutable"
+      ],
+      "llm_limit": "A current model may remember historical market reactions. Any classification/taxonomy/model must be frozen and evaluated with causal/knowledge-cutoff limits before returns; never optimise a sentiment score on outcomes.",
+      "evidence_ids": [
+        "policy-federal-register-free-api-20261011",
+        "policy-gdelt-sentiment-clock-limits-20261011",
+        "policy-sentiment-model-causality-challenge-20261011"
+      ],
+      "verdict": {
+        "RESULT": "WAIT: HISTORICAL_NEWS_CLOCK_AND_EXECUTION_UNQUALIFIED",
+        "EFFECT_SIZE": "NOT_ESTIMATED; no macro economic test",
+        "UNCERTAINTY": "Public API documentation allows keyless access; legal-publication chronology, first-news clock, GDELT corpus/retention and executable market costs remain unqualified.",
+        "POWER_LIMITATION": "Unknown independent event count; macro regimes/political episodes cluster; one sovereign/president is not a population; private exposure and effectiveM UNKNOWN",
+        "ECONOMIC_SIGNIFICANCE": "No capturable profit established; only a qualification decision",
+        "FAILED_CRITERIA": "WAIT: HISTORICAL_NEWS_CLOCK_AND_EXECUTION_UNQUALIFIED",
+        "LESSON": "Public information is not necessarily new, point-in-time or executable. A direction/mood is not an edge after costs.",
+        "FAMILY_STATUS": "DESIGN_UNTESTED_SOURCE_GATE; not an economic REJECT",
+        "NEXT_DECISION": "OPEN build:policy-announcement-repricing:official-source-clock; one bounded public official metadata/schema/clock probe only, with claim/CAS before work. A qualified metadata receipt gives no economic admission or runner."
+      }
+    }
+  },
+  "public_exposures": [
+    {
+      "dataset": "france-oat-bund-relative-sovereign-risk",
+      "source": "https://www.aft.gouv.fr/fr/tec-10-du-jour",
+      "reported_day": "2026-09-25",
+      "displayed_tec10_percent": 4.63,
+      "how": "unplanned search snippet during source qualification; page/history never opened",
+      "pre_reserved": false,
+      "used_for_parameter_selection": false,
+      "independent_test_count": 0,
+      "remediation": "Preserve the unplanned public quote, do not assert pristine observation/confirmation or manufacture a pre-access reservation. Gate any future design against this and privateUNKNOWN."
+    }
+  ],
+  "sources_reuse": "Versioned primary passages are in STATE.evidence and source receipts; historical/blocked questions do not reopen hourly.",
+  "autonomy": {
+    "existing_worker_id": "6ac978ecda1081918fba4d76dee437f4",
+    "backend_configured": true,
+    "cadence": "Existing hourly condition_watch, Europe/Paris; next_run_time returned null, no next departure promised",
+    "reporting": "No prompt echoes or Owner relaunch reminders; ordinary progress recorded in repo/room, message only material result/new genuine external blocker",
+    "other_reminders_enabled": 0,
+    "new_automation_created": false,
+    "configuration_proves_execution": false
+  }
+}
