@@ -8,6 +8,7 @@ on:
     paths:
       - src/quant/edge_lab/**
       - scripts/edge_lab.py
+      - scripts/edge_lab_legacy_runner.py
       - tests/test_edge_lab*.py
       - research/edge_lab/CONTROL.json
       - .github/workflows/edge-lab.yml
@@ -28,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: research/edge-lab-continuous
+          ref: ${{ github.sha }}
           fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
