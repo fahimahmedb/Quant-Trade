@@ -1839,6 +1839,18 @@
       },
       "previous": "ea1d48baa3dbb217d2a58decf29065bcac1f482dd0424e7ac3e9dcf64957f1d5",
       "sequence": 92
+    },
+    {
+      "at": "2026-10-11T13:39:07.013278+00:00",
+      "hash": "6246948d91313b994d6e7dc92d2e107bd1091131777dedb80988856f0fb51058",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "00d27356c777780a38818185578c23c1bbec579e6a67c7a240f79d6a846aa5e7",
+        "id": "lab-room-runtime-read-repaired-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "d31fff23491d1eaa04be22849df5a74910b53fa4e7ccdf9b38bb4113a8f203cf",
+      "sequence": 93
     }
   ],
   "evidence": {
@@ -2688,6 +2700,35 @@
       "passage": "verify_freeze, verify_claim, main: capture-v1/reservation.json before begin_attempt; immutable six paths and nine-field saved result",
       "url": "git:e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py",
       "version": "44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3"
+    },
+    "lab-room-runtime-read-repaired-20261011": {
+      "fact": {
+        "native_read_after_fix": {
+          "completed_economic_tests": 1,
+          "isError": false,
+          "lab_status": "READY",
+          "open_questions": 1,
+          "reserved_looks": 2,
+          "running_records": 0,
+          "stale": false
+        },
+        "publication": "same owner-private Site; no new board/automation/sharing/purchases; deployment succeeded",
+        "research_synthetic_tests": 79,
+        "role_limit": "READY=open qualification question, not fuel admission or a running economic worker. The room reads saved declarations/proofs/results; does not launch/reconsume looks.",
+        "site_tests": 20
+      },
+      "id": "lab-room-runtime-read-repaired-20261011",
+      "kind": "METHOD",
+      "limit": "Node tests/build/artifact checked and real installedMCP source read succeeded. No browser/iOS visualQA performed for this backend-only correction; previous room assets retained. Source snapshot is dated, not a worker heartbeat or perpetual autonomy claim. No economic recomputation/data access on fresh hypotheses.",
+      "passage": "Hosted tool initially denied caches.default, then rejected redirect:error. Optional cache getter/match/write failures no longer block source; edge-compatible manual redirects reject non-OK sources without following untrusted redirects.",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site",
+      "version": {
+        "deployment": "appgdep_6acb910639bc81918753c823f1f2e0ea",
+        "github_head_observed": "ac73a2881c77dd4ead592ebb9a0441017b7c005a",
+        "native_observed_at": "2026-10-11T13:37:48.449Z",
+        "site_source_commit": "f885678c8fdcbbeac99f3d86f08ed6c8f42c938b",
+        "site_version": "appgprj_6aca43cb86bc81918e067097356a37de~appgver_da979254b254819193b86e20d3511de8"
+      }
     },
     "lab-software-complete-remote-ci-20261011T0025Z": {
       "fact": {
@@ -3683,7 +3724,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "69962a5b184a4e197b628aec36b7fdab8e6db73c9cb0dd08e5c4213ac16cdc88",
+  "integrity": "e0af159da4a2852c0a03b589d7de37b3262342020ceb69a9175f45d87f375de5",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4058,7 +4099,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T13:22:24.389789+00:00",
+  "updated_at": "2026-10-11T13:39:07.021640+00:00",
   "usage": {
     "cpu_seconds": 2.569477422,
     "human_seconds": null,
