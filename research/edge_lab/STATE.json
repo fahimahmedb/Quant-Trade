@@ -552,16 +552,20 @@
       "status": "WAIT"
     },
     "result:look:smard-2025-solar-noon-evening-proxy-v1": {
+      "actor": "owner-smard-result-disposition-20261011T1318Z",
+      "claim_id": "cd2fcaeb2fd55a94c9f16d04fe506792784049b444b60a8b0f871318580418c5",
+      "claimed_at": "2026-10-11T13:18:41.443171+00:00",
       "created_at": "2026-10-11T13:17:22.559505+00:00",
       "evidence": [
         "look:smard-2025-solar-noon-evening-proxy-v1"
       ],
       "family": "smard-fixed-flexibility",
+      "lease_seconds": 600,
       "look_id": "look:smard-2025-solar-noon-evening-proxy-v1",
       "priority": 10,
       "question": "Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun.",
       "reason": "ECONOMIC_RESULT_REQUIRES_DECISION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     }
   },
   "events": [
@@ -1770,6 +1774,18 @@
       },
       "previous": "41d02c735a9aa22f504868a40bc6a21367a8b9509cbe02f9dba394e8294be12d",
       "sequence": 88
+    },
+    {
+      "at": "2026-10-11T13:18:41.443180+00:00",
+      "hash": "f0aa9f1f4a1c01b6e4ba5103c775cf0ff453b40fce0842ac8ff1b10c1044ff54",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-smard-result-disposition-20261011T1318Z",
+        "claim_id": "cd2fcaeb2fd55a94c9f16d04fe506792784049b444b60a8b0f871318580418c5",
+        "id": "result:look:smard-2025-solar-noon-evening-proxy-v1"
+      },
+      "previous": "f9b30ce0d3e5f3ee2a06780b0fb06a8024c2615293de8d009a92a3453d7b1718",
+      "sequence": 89
     }
   ],
   "evidence": {
@@ -3588,7 +3604,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "cd3ec8aa61aa71b606a5626aabb1a88a1ef653f425c9e99d3cc7ad5da1d53614",
+  "integrity": "e7a753778c610e39910115e04f7460c60049daedeed1c3b48e44eb9d394080a5",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -3963,7 +3979,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T13:17:22.563108+00:00",
+  "updated_at": "2026-10-11T13:18:41.447084+00:00",
   "usage": {
     "cpu_seconds": 2.569477422,
     "human_seconds": null,

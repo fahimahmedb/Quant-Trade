@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun. (`result:look:smard-2025-solar-noon-evening-proxy-v1`)
+Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 
 ## Programme et preuves
 
@@ -85,6 +85,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 - `qualify:hyperliquid-forced-flow` : **WAIT** — WAIT for a verifiably pre-existing compliant node/global-fill/local-clock/BBO host with documented zero-paid authorized access, durable resources and original protocol gates. No node installation, paid host, requester-pays archive or trades-only substitute. Current docs/host question is closed until a distinct host/access fact; inspect one different mechanism with genuinely accessible primary data instead, preserving all old exposures and multiplicity. ; preuves hl-global-fills-host-primary-cached-20261010, hl-selected-host-capacity-20261010T1705Z, hl-stale-readiness-marker-contradiction-20261010.
 - `qualify:smard-fixed-flexibility` : **QUALIFIED** — Distinct fixed-policy physical proxy may be designed; only metadata source path qualified, not economic/admission/launch. ; preuves smard-open-data-rights-20261011T1240Z, smard-open-source-clock-bounds-20261011.
 - `qualify:treasury-auction-zf` : **WAIT** — Qualifier un devis/entitlement du paquet complet sans achat ; examiner la réserve EURUSD et une alternative accessible si ce verrou persiste. ; preuves audit-R18-databento-access-20261010.
+- `result:look:smard-2025-solar-noon-evening-proxy-v1` : **RESEARCHING** — Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun. ; preuves look:smard-2025-solar-noon-evening-proxy-v1.
 
 Les verdicts économiques importés conservent leur portée. Source inaccessible, manque de puissance et défaut logiciel restent distincts.
 
