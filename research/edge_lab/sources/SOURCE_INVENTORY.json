@@ -2,9 +2,9 @@
   "schema": 1,
   "observed_at": "2026-10-11T12:35:00Z",
   "owner_scope": "Broad free sources including French open data; direct implementation authorised; no paid/account/live or reminder activation.",
-  "scope": "Non-exhaustive structured source universe; search-identification distinct from document verification, API metadata access, row QA and economic admission.",
-  "outcomes_read": false,
-  "economic_experiments_launched": 0,
+  "scope": "44nonexhaustive source paths, identification/documentation/metadata/source admission distinct. One full2025 physical proxy calculated, exact negative at assumedcosts preserved; no financial alpha/live claim.",
+  "outcomes_read": true,
+  "economic_experiments_launched": 1,
   "historical_exposure": "PRIVATE_UNKNOWN; earlier public exposures not erased; no new provider is pristine.",
   "sources": [
     {
@@ -148,8 +148,10 @@
       "geography": "Allemagne/Europe",
       "coverage": "Énergie/prix day-ahead",
       "primary_url": "https://www.smard.de/en/datennutzung",
-      "qualification": "RIGHTS_DOCS_VERIFIED",
-      "limit": "CC BY4.0 attribution Bundesnetzagentur|SMARD.de; révisions, ordres ex ante et accès physique au marché non acquis."
+      "qualification": "OPEN_RIGHTS_FULL_2025_CAPTURE_QA_VERIFIED",
+      "limit": "CC BY4.0 attribution Bundesnetzagentur|SMARD.de; revised hourly auction averages/15min transition, one year/privatehistoryUNKNOWN; physical plant/orders/tariffs/capacity not authenticated.",
+      "result_scope": "Exact fixed12→18physical policy NEGATIVE under assumed100/150EUR costs; not market/source rejection",
+      "evidence": "results/smard-2025-solar-noon-evening-proxy-v1.json"
     },
     {
       "id": "elexon",
@@ -360,7 +362,7 @@
       "limit": "GOV.UK One Login requis pour API; aucun compte créé; voie FR déjà metadata accessible."
     }
   ],
-  "selected_next": "SMARD fixed energy-flexibility proxy source/resource/clock qualification; not a pivot claiming securities alpha.",
+  "selected_next": "france-fuel-information: metadata admission only; claim before research, no price access",
   "metadata_probe": {
     "wall_seconds": 21.763401711999904,
     "cpu_seconds": 0.129489617,
@@ -370,5 +372,8 @@
     "whole_session_cpu": "NOT_MEASURED",
     "total_network_bytes": "NOT_MEASURED"
   },
-  "bitmex_catalogue": "sources/bitmex_catalogue_20261011.json"
+  "bitmex_catalogue": "sources/bitmex_catalogue_20261011.json",
+  "process_attempts": 2,
+  "completed_economic_tests": 1,
+  "failed_before_prices": 1
 }

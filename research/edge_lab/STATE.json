@@ -501,6 +501,17 @@
       "resolved_at": "2026-10-10T17:02:06.038727+00:00",
       "status": "WAIT"
     },
+    "qualify:france-fuel-information": {
+      "created_at": "2026-10-11T13:22:24.385175+00:00",
+      "evidence": [
+        "france-fuel-information-cached-source-20261011"
+      ],
+      "family": "france-fuel-information",
+      "priority": 10,
+      "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
+      "reason": "NEW_MECHANISM_ADMISSION",
+      "status": "OPEN"
+    },
     "qualify:hyperliquid-forced-flow": {
       "actor": "scheduled-automation-20261010T1654Z",
       "claim_id": "cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136",
@@ -562,10 +573,12 @@
       "family": "smard-fixed-flexibility",
       "lease_seconds": 600,
       "look_id": "look:smard-2025-solar-noon-evening-proxy-v1",
+      "next_action": "Close exact12\u219218solar policy at assumed100EUR all-in cost; no hour/cost/window replacement or recompute. Gross break-even48.90227397260274EUR/inputMWh preserved but not proof of a cheaper executable device. Next distinct mechanism qualification: public French fuel price information, freshness/route/time/volume costs before any price access.",
       "priority": 10,
       "question": "Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun.",
       "reason": "ECONOMIC_RESULT_REQUIRES_DECISION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T13:22:24.119499+00:00",
+      "status": "REJECTED"
     }
   },
   "events": [
@@ -1786,6 +1799,46 @@
       },
       "previous": "f9b30ce0d3e5f3ee2a06780b0fb06a8024c2615293de8d009a92a3453d7b1718",
       "sequence": 89
+    },
+    {
+      "at": "2026-10-11T13:22:24.119512+00:00",
+      "hash": "23c18758b3516969ec84fff50e1958c0d897ca3a48d2d4898723b76ac64f9e0f",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "look:smard-2025-solar-noon-evening-proxy-v1"
+        ],
+        "id": "result:look:smard-2025-solar-noon-evening-proxy-v1",
+        "next": "Close exact12\u219218solar policy at assumed100EUR all-in cost; no hour/cost/window replacement or recompute. Gross break-even48.90227397260274EUR/inputMWh preserved but not proof of a cheaper executable device. Next distinct mechanism qualification: public French fuel price information, freshness/route/time/volume costs before any price access.",
+        "verdict": "REJECTED"
+      },
+      "previous": "f0aa9f1f4a1c01b6e4ba5103c775cf0ff453b40fce0842ac8ff1b10c1044ff54",
+      "sequence": 90
+    },
+    {
+      "at": "2026-10-11T13:22:24.243961+00:00",
+      "hash": "ea1d48baa3dbb217d2a58decf29065bcac1f482dd0424e7ac3e9dcf64957f1d5",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "15c58ffe5aff7a7ff697c779d772d5f32e6bb9d1ae92defa05b4d4182e54cba7",
+        "id": "france-fuel-information-cached-source-20261011",
+        "kind": "ACCESS"
+      },
+      "previous": "23c18758b3516969ec84fff50e1958c0d897ca3a48d2d4898723b76ac64f9e0f",
+      "sequence": 91
+    },
+    {
+      "at": "2026-10-11T13:22:24.385189+00:00",
+      "hash": "d31fff23491d1eaa04be22849df5a74910b53fa4e7ccdf9b38bb4113a8f203cf",
+      "kind": "FAMILY_REGISTERED",
+      "payload": {
+        "dataset": "france-retail-fuel-price-information",
+        "id": "france-fuel-information",
+        "mechanism_hash": "f565d5d58a43999dadcd72bb89c806e71df0723098a30fb0c6e306f9a48de49c",
+        "question": "qualify:france-fuel-information"
+      },
+      "previous": "ea1d48baa3dbb217d2a58decf29065bcac1f482dd0424e7ac3e9dcf64957f1d5",
+      "sequence": 92
     }
   ],
   "evidence": {
@@ -2461,6 +2514,19 @@
         "observed_at": "2026-10-10T21:35:22.414459+00:00",
         "probe_source_sha256": "914e7b46cec22117bb3fd5bdaf889066f7114885875f46f1f30d917be6152747",
         "worker_sha256": "a1020d406b69dc328f4743da7a4fca0cbc397b2d434b71eee4eac25108d8383e"
+      }
+    },
+    "france-fuel-information-cached-source-20261011": {
+      "fact": "An information service may reduce a buyer\u2019s procurement cost if station price saving exceeds driving/fuel/time/stale-quote/unavailable-pump cost. Retail purchase savings, not securities alpha. Existing free official metadata permits qualification without a key.",
+      "id": "france-fuel-information-cached-source-20261011",
+      "kind": "ACCESS",
+      "limit": "No fuel price records/outcomes acquired. Declared price is not authenticated transaction price; route/cost/vehicle/product/query/freshness/selection/counterfactual/exposure/rights must be qualified before any newlook. No automatic collector/paid account or rerun of closed energy/carry/grid.",
+      "passage": "Government fuel prices instant feed: station location, product price/update, availability and opening fields; declared data refreshed10min/portalharvest15min. Metadata rights/format already saved in source metadata receipts.",
+      "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2",
+      "version": {
+        "metadata": "saved same-session schema probe; no newHTTP/recordread",
+        "rights": "Etalab2.0 primary catalogue",
+        "timezone": "Europe/Paris"
       }
     },
     "fx-current-host-and-look-preflight-20261010T1657Z": {
@@ -3535,6 +3601,18 @@
       "status": "BLOCKED_PERMISSION",
       "wake": "Droits d'acc\u00e8s v\u00e9rifiables."
     },
+    "france-fuel-information": {
+      "dataset": "france-retail-fuel-price-information",
+      "evidence": [
+        "france-fuel-information-cached-source-20261011"
+      ],
+      "label": "Public retail fuel price information may save a buyer procurement cost in geographically fragmented pricing. Benefit must exceed fixed quantity vehicle/time/detour/freshness/availability costs. Distinct from physical electricity storage/financial carry/grids; consumer procurement proxy only.",
+      "mechanism_hash": "f565d5d58a43999dadcd72bb89c806e71df0723098a30fb0c6e306f9a48de49c",
+      "next": "Choisir un test discriminant accessible.",
+      "priority": 10,
+      "status": "HYPOTHESIS",
+      "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
+    },
     "hyperliquid-forced-flow": {
       "dataset": "hyperliquid-global-fills",
       "label": "Hyperliquid \u2014 flux forc\u00e9s",
@@ -3571,11 +3649,12 @@
         "smard-open-data-rights-20261011T1240Z"
       ],
       "label": "Time-shift energy supply from a fixed low-demand hour to a fixed high-demand hour: demand pays for flexibility, but efficiency losses, asset cost, fees and dispatch risk may consume the spread. One fixed physical procurement/supply proxy, no perfect-foresight dispatch or parameter search; distinct from financial carry/grid/rejected trials.",
+      "last_result_look": "look:smard-2025-solar-noon-evening-proxy-v1",
       "latest_lesson": "Preserve one fixed solar-timing expression, efficiency loss, both full assumed costs and gross break-even cost. Rejecting this policy does not reject storage, solar flexibility or a market. Never replace hours/costs with a winner.",
       "mechanism_hash": "4881dc88270effca37e27a471412f256c8b6ea9f5fc721c0a76ba7b087fb727e",
-      "next": "Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun.",
+      "next": "Close exact12\u219218solar policy at assumed100EUR all-in cost; no hour/cost/window replacement or recompute. Gross break-even48.90227397260274EUR/inputMWh preserved but not proof of a cheaper executable device. Next distinct mechanism qualification: public French fuel price information, freshness/route/time/volume costs before any price access.",
       "priority": 10,
-      "status": "HYPOTHESIS",
+      "status": "REJECTED_CLOSED",
       "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
     },
     "treasury-auction-zf": {
@@ -3604,7 +3683,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "e7a753778c610e39910115e04f7460c60049daedeed1c3b48e44eb9d394080a5",
+  "integrity": "69962a5b184a4e197b628aec36b7fdab8e6db73c9cb0dd08e5c4213ac16cdc88",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -3979,7 +4058,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T13:18:41.447084+00:00",
+  "updated_at": "2026-10-11T13:22:24.389789+00:00",
   "usage": {
     "cpu_seconds": 2.569477422,
     "human_seconds": null,
