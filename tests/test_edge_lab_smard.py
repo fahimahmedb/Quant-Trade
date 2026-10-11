@@ -145,5 +145,25 @@ class SmardTest(unittest.TestCase):
                 capture_output=True,text=True,timeout=10)
             self.assertEqual(r.returncode,0,r.stderr);self.assertEqual(r.stdout.strip(),'7')
 
+    def test_solar_uses_only_fixed_noon_and_evening_with_complete_losses(self):
+        from quant.edge_lab.smard_solar import calculate as solar
+        from quant.edge_lab.smard import BERLIN
+        q=calendar_quotes();day=datetime(2025,1,1)
+        while day.year==2025:
+            q[int(day.replace(hour=12,tzinfo=BERLIN).timestamp()*1000)]=10
+            q[int(day.replace(hour=3,tzinfo=BERLIN).timestamp()*1000)]=100000
+            day+=timedelta(days=1)
+        kind,paths,effect=solar(q)
+        self.assertEqual(effect['mean_gross_break_even_all_in_cost_eur_per_input_mwh'],6)
+        self.assertEqual(paths['central']['annual_net_eur_per_1mwh_device'],-94*365)
+        self.assertEqual(paths['stress']['max_daily_cash_pnl_drawdown_eur'],-144*365)
+        self.assertEqual(kind,'NEGATIVE')
+
+    def test_solar_entrypoint_actual_process_isolated(self):
+        root=Path(__file__).resolve().parents[1]
+        r=subprocess.run([sys.executable,'-B',str(root/'scripts/smard_solar_flexibility.py'),'--help'],
+            cwd=root,env=runner_environment({},root),capture_output=True,text=True,timeout=10)
+        self.assertEqual(r.returncode,0,r.stderr);self.assertIn('--look',r.stdout)
+
 
 if __name__=='__main__':unittest.main()
