@@ -268,8 +268,8 @@
       "geography": "Crypto spot/derivatives",
       "coverage": "BBO/trades et quote-bucket API",
       "primary_url": "https://docs.bitmex.com/api-explorer/get-quote-bucketed",
-      "qualification": "METADATA_ACCESS_VERIFIED",
-      "limit": "365 fichiers quotes2025=101288280412B compressés; trades=2088624639B. API HEAD200 sans corps; bucket timestamp fin de période/écriture disque, pas réception/fill."
+      "qualification": "RIGHTS_CONTRADICTION_WAIT",
+      "limit": "API security=[] and HEAD200 prove no-key metadata access, not permission for this automated/public-lab extraction. Bucket end-of-period write time is not first-publication or fill guarantee. Full archive quotes2025 require101288280412B compressed. WAIT admission, not economic rejection. No price/ZIP/statistic read; no inference that market is dead. Written narrow permission or primary exception could resolve; do not repeat probes or send any unsolicited request."
     },
     {
       "id": "okx",
@@ -360,7 +360,7 @@
       "limit": "GOV.UK One Login requis pour API; aucun compte créé; voie FR déjà metadata accessible."
     }
   ],
-  "selected_next": "Qualify BitMEX bounded quote-bucket path and published research rights before a distinct book-pressure exploratory protocol; raw101GB archive not admitted and no substitution to F1/COIN-M/HL/legacy FX.",
+  "selected_next": "SMARD fixed energy-flexibility proxy source/resource/clock qualification; not a pivot claiming securities alpha.",
   "metadata_probe": {
     "wall_seconds": 21.763401711999904,
     "cpu_seconds": 0.129489617,
