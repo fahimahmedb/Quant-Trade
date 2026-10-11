@@ -358,6 +358,23 @@
       "resolved_at": "2026-10-10T20:13:05.598871+00:00",
       "status": "WAIT"
     },
+    "build:policy-announcement-repricing:announced-api-return": {
+      "construction_scope": "ea77900d85cc60c095db122a71d2a56be4bb6d7ad97cff1518f7f6f853ea8fb9",
+      "created_at": "2026-10-11T16:30:50.397848+00:00",
+      "decision_use": "Attendre not_before ; un seul probe exact born\u00e9 et z\u00e9ro retry, claimCAS puis conservation de r\u00e9ponse/hashes/horloges. QUALIFIED concerne seulement transport/sch\u00e9ma/horloge de r\u00e9ception conservatrice, jamais premi\u00e8re annonceTrump ou admission \u00e9conomique. Nouvelle fermeture/source refus\u00e9e => WAIT pr\u00e9cis ; ne pas r\u00e9p\u00e9ter chaqueheure.",
+      "evidence": [
+        "policy-federal-register-free-api-20261011",
+        "policy-public-inspection-access-window-20261011"
+      ],
+      "family": "policy-announcement-repricing",
+      "not_before": "2026-10-13T12:45:00+00:00",
+      "outcome_access_authorized": false,
+      "parent_decision": "build:policy-announcement-repricing:official-source-clock",
+      "priority": 10,
+      "question": "Apr\u00e8s le retour annonc\u00e913Oct12:45UTC, un unique probe de m\u00e9tadonn\u00e9es Public Inspection peut-il qualifier sch\u00e9ma/filing/amendements et premi\u00e8re r\u00e9ception UTC future, sans prix/news corpus/retours ?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "OPEN"
+    },
     "build:policy-announcement-repricing:official-source-clock": {
       "actor": "owner-autonomous-20261011T1600Z",
       "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
@@ -367,17 +384,18 @@
       "decision_use": "QUALIFIED seulement pour une horloge de r\u00e9ception prospective et un sch\u00e9ma v\u00e9rifi\u00e9s ; sinon WAIT pr\u00e9cis. Aucun backtest/admission \u00e9conomique/collecteur concurrent. R\u00e9utiliser les passages sauvegard\u00e9s ; un seul probe de m\u00e9tadonn\u00e9es born\u00e9, pas corpus de news ou grille de sentiments.",
       "evidence": [
         "policy-federal-register-free-api-20261011",
-        "policy-gdelt-sentiment-clock-limits-20261011",
-        "policy-sentiment-model-causality-challenge-20261011"
+        "policy-public-inspection-access-window-20261011"
       ],
       "family": "policy-announcement-repricing",
       "lease_seconds": 600,
+      "next_action": "SOURCE_DECLARED_PUBLIC_INSPECTION_CLOSED_UNTIL_2026-10-13T12:45:00Z. HTTP200/228B/no records validates keyless transport only. No filed_at/amendment/current document or first-news clock qualified. Preserve exact metadata, no hourly poll. Queue one distinct bounded schema/clock check after source-announced return, no prices/outcomes. If source still unavailable, retain WAIT instead of collecting concurrently or changing clocks. Not an economic REJECT.",
       "outcome_access_authorized": false,
       "parent_decision": "qualify:policy-announcement-repricing",
       "priority": 10,
       "question": "Peut-on qualifier l\u2019API publique Federal Register comme source d\u2019observation future avec premi\u00e8re r\u00e9ception UTC, sch\u00e9ma document/amendements, droits et ressources born\u00e9es, sans lire de prix ni pr\u00e9tendre capter la premi\u00e8re annonce de Trump ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T16:30:50.263806+00:00",
+      "status": "WAIT"
     },
     "build:smard-fixed-flexibility:bounded-source-runner": {
       "actor": "owner-smard-proxy-build-20261011T1252Z",
@@ -2179,6 +2197,52 @@
       },
       "previous": "27b95f90c2e281a76f5b3f251362430ee4b983ccf7e34d9cc2891e7cfe555e33",
       "sequence": 113
+    },
+    {
+      "at": "2026-10-11T16:30:50.135776+00:00",
+      "hash": "0fe367a3c49b282c19661457c1b9ba3c139ac43198e608fc3490e4511fdebf16",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "a59d8085bccb3117ff3d73582e547513fa664a38bb6a354f5d64c1a5090b73dc",
+        "id": "policy-public-inspection-access-window-20261011",
+        "kind": "ACCESS"
+      },
+      "previous": "bfa8600bbc1006ee57e9294b9708a965b7ff1a6bac3accf3d0d47b647705443c",
+      "sequence": 114
+    },
+    {
+      "at": "2026-10-11T16:30:50.263821+00:00",
+      "hash": "490a5ab95afdb7c43dd2093c6c62714e525e9970052a88624a91a7c4f7c15497",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "policy-federal-register-free-api-20261011",
+          "policy-public-inspection-access-window-20261011"
+        ],
+        "id": "build:policy-announcement-repricing:official-source-clock",
+        "next": "SOURCE_DECLARED_PUBLIC_INSPECTION_CLOSED_UNTIL_2026-10-13T12:45:00Z. HTTP200/228B/no records validates keyless transport only. No filed_at/amendment/current document or first-news clock qualified. Preserve exact metadata, no hourly poll. Queue one distinct bounded schema/clock check after source-announced return, no prices/outcomes. If source still unavailable, retain WAIT instead of collecting concurrently or changing clocks. Not an economic REJECT.",
+        "verdict": "WAIT"
+      },
+      "previous": "0fe367a3c49b282c19661457c1b9ba3c139ac43198e608fc3490e4511fdebf16",
+      "sequence": 115
+    },
+    {
+      "at": "2026-10-11T16:30:50.397861+00:00",
+      "hash": "843e4bdc5116f14fcd33d86aa23872a6d70acacee8fd60653ee7fd4d5317f46d",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "policy-federal-register-free-api-20261011",
+          "policy-public-inspection-access-window-20261011"
+        ],
+        "family": "policy-announcement-repricing",
+        "id": "build:policy-announcement-repricing:announced-api-return",
+        "not_before": "2026-10-13T12:45:00+00:00",
+        "parent": "build:policy-announcement-repricing:official-source-clock",
+        "scope": "ea77900d85cc60c095db122a71d2a56be4bb6d7ad97cff1518f7f6f853ea8fb9"
+      },
+      "previous": "490a5ab95afdb7c43dd2093c6c62714e525e9970052a88624a91a7c4f7c15497",
+      "sequence": 116
     }
   ],
   "evidence": {
@@ -3825,6 +3889,32 @@
         "scope": "published DOC2.0 specification, not verified2026production retention"
       }
     },
+    "policy-public-inspection-access-window-20261011": {
+      "fact": "A real keyless official metadata request succeeded. Current list is source-declared unavailable, not a zero-event universe. Earliest useful next single schema/clock probe is13Oct2026 12:45UTC (America/New_York EDT). The initial source response cannot qualify filed_at, amendment schema, first-public news, retrospective vintages or execution.",
+      "id": "policy-public-inspection-access-window-20261011",
+      "kind": "ACCESS",
+      "limit": "Only228B, one request0retries,0marketrecords/0sentimentvalues/0economiclooks; snapshot/hash/raw retained. Do not poll the known closure hourly or treat publication/filing as earliest Trump news. Announced return is not guaranteed server availability; no API account needed.",
+      "observable_cost": {
+        "cpu_seconds": 0.016661397999999994,
+        "paid_usd": 0,
+        "response_body_bytes": 228,
+        "scope": "one observed source probe, not total session/network/token bill",
+        "wall_seconds": 0.41267955400326173
+      },
+      "passage": "The API returnedHTTP200 withcount0 and its own message: Public Inspection list unavailable after midnightEastern; returnsTuesday13October08:45Eastern. No result records returned.",
+      "source_announced_window": {
+        "not_before": "2026-10-13T12:45:00+00:00",
+        "source_text": "The Public Inspection list is unavailable after 12AM Eastern time and will return on Tuesday, October 13 at 8:45AM Eastern time.",
+        "timezone": "America/New_York"
+      },
+      "url": "https://www.federalregister.gov/api/v1/public-inspection-documents.json?per_page=1&fields%5B%5D=document_number&fields%5B%5D=filed_at&fields%5B%5D=publication_date&fields%5B%5D=type",
+      "version": {
+        "claim_commit": "4697b05532cd5fda3c3c060d609b07b20c5a3b7d",
+        "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
+        "observed_at": "2026-10-11T16:26:10.933758+00:00",
+        "sha256": "d46a3d2d868e3953675bed2036b761fd5409a2004dcc5cb37481801ba52d3b10"
+      }
+    },
     "policy-sentiment-model-causality-challenge-20261011": {
       "fact": "A current LLM may remember historical event outcomes; retrospectively choosing phrases, Trump episodes or best asset/horizon is data leakage/selection. Begin only with official-source metadata availability, no automatic bullish/bearish mapping and no blanket sentiment index.",
       "id": "policy-sentiment-model-causality-challenge-20261011",
@@ -4215,7 +4305,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "b37a8b999475cab903c64320bdd18ac5171d42c7d1e5205c26b36ebb789c7fca",
+  "integrity": "c48de997ff829511f52e30293314d64ba735a72f75868481bf110f21969d07b1",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4592,7 +4682,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:24:37.767389+00:00",
+  "updated_at": "2026-10-11T16:30:50.402365+00:00",
   "usage": {
     "cpu_seconds": 2.5785994789999998,
     "human_seconds": null,

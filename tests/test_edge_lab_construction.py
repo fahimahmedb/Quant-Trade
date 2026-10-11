@@ -6,7 +6,7 @@ import sys
 import tempfile
 import unittest
 
-from quant.edge_lab.engine import initialize, Lab
+from quant.edge_lab.engine import initialize, Lab, question_due
 from quant.edge_lab.store import Refused, verify
 
 
@@ -119,6 +119,38 @@ class ConstructionQuestionTests(unittest.TestCase):
             self.lab.build_question(**{**self.packet, 'identity': 'build:f1-crypto-carry:relaunch',
                 'parent_decision': 'synthetic:closed-family-access'})
         self.assertEqual(self.lab.snapshot()[0], before)
+
+    def test_source_declared_window_is_persisted_and_refuses_early_claim(self):
+        self.lab.build_question(**self.packet, not_before="2099-10-13T08:45:00-04:00")
+        self.assertIsNone(self.lab.next_decision())
+        before = self.lab.snapshot()[0]
+        decision = before['decisions'][self.packet['identity']]
+        self.assertEqual(decision['not_before'], '2099-10-13T12:45:00+00:00')
+        with self.assertRaises(Refused):
+            self.lab.claim_decision(self.packet['identity'], 'early-worker')
+        self.assertEqual(self.lab.snapshot()[0], before)
+        from datetime import datetime, timezone
+        self.assertFalse(question_due(decision, datetime(2099,10,13,12,44,tzinfo=timezone.utc)))
+        self.assertTrue(question_due(decision, datetime(2099,10,13,12,45,tzinfo=timezone.utc)))
+        # Restart cannot clear the boundary or consume a market look.
+        self.assertIsNone(Lab(self.temp.name).next_decision())
+        self.assertEqual(before['looks'], {})
+
+    def test_past_source_window_is_due_without_resetting_parent_or_budget(self):
+        before = self.lab.snapshot()[0]
+        self.lab.build_question(**self.packet, not_before="2000-01-01T00:00:00Z")
+        self.assertEqual(self.lab.next_decision()[0], self.packet['identity'])
+        self.lab.claim_decision(self.packet['identity'], 'due-worker')
+        after = self.lab.snapshot()[0]
+        self.assertEqual(after['decisions'][self.packet['parent_decision']], before['decisions'][self.packet['parent_decision']])
+        self.assertEqual(after['trial_charges'], before['trial_charges'])
+
+    def test_ambiguous_or_malformed_access_window_is_refused_without_mutation(self):
+        before = self.lab.snapshot()[0]
+        for boundary in ['2099-10-13T08:45:00', 'not-a-clock', 12]:
+            with self.assertRaises(Refused):
+                self.lab.build_question(**self.packet, not_before=boundary)
+            self.assertEqual(self.lab.snapshot()[0], before)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from .engine import Lab
+from .engine import Lab, question_due
 from .seed import BRANCH, REPO
 from .store import Refused
 
@@ -22,7 +22,7 @@ def markdown(directory):
 def markdown_state(state, control):
     """Pure projection, also usable while the writer holds the state lock."""
     tick = state["scheduler"]["last_tick"] or {}
-    due = [(k, v) for k, v in state["decisions"].items() if v["status"] == "OPEN"]
+    due = [(k, v) for k, v in state["decisions"].items() if question_due(v)]
     decision = None if control["paused"] else min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)
     lines = ["# Quant — labo de recherche", "",
              "**État : " + ("PAUSED" if control["paused"] else tick.get("status", "NOT_STARTED")) + "**",
@@ -63,6 +63,9 @@ def markdown_state(state, control):
     lines += ["", control["notes"], "", "Aucun achat, capital réel ou trading live autorisé. Coût du polling du modèle et facture totale NON MESURÉS.",
               "Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sans seconde boucle.",
               "", "## Exécutions et apprentissages", ""]
+    for identity, item in state["decisions"].items():
+        if item["status"] == "OPEN" and not question_due(item):
+            lines.append(f"- `{identity}` : reprise programmée après `{item['not_before']}` ; aucun probe anticipé.")
     for job in state["jobs"].values():
         lines.append(f"- `{job['task_id']}` : `{job['status']}` ; look `{job['metadata']['look_id']}`.")
     if not state["jobs"]:

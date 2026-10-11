@@ -26,6 +26,14 @@ def timestamp(value):
     return parsed.astimezone(timezone.utc)
 
 
+def question_due(decision, now=None):
+    """A source-declared future access window cannot be polled or claimed early."""
+    if decision["status"] != "OPEN":
+        return False
+    boundary = decision.get("not_before")
+    return boundary is None or timestamp(boundary) <= (now or datetime.now(timezone.utc))
+
+
 def overlap(left, right):
     def boundary(value):
         return timestamp(value + "T00:00:00Z" if len(value) == 10 else value)
@@ -207,7 +215,7 @@ class Lab:
             state, control = self.store.read(), self.store.control()
             budget_check(state, control)
             decision = state["decisions"][identity]
-            if decision["status"] != "OPEN":
+            if not question_due(decision):
                 raise Refused("Question already claimed/resolved; do not duplicate reasoning")
             claim_id = digest({"id": identity, "actor": actor, "at": utc_now()})
             decision.update(status="RESEARCHING", claim_id=claim_id, actor=actor,
@@ -247,11 +255,18 @@ class Lab:
             event(state, "DECISION", {"id": identity, "verdict": verdict, "evidence": evidence_ids, "next": next_action})
             self.store.save(state)
 
-    def build_question(self, identity, parent_decision, question, decision_use, evidence_ids):
+    def build_question(self, identity, parent_decision, question, decision_use, evidence_ids, not_before=None):
         """Queue a distinct implementation gate; keep the blocked economic question intact."""
         if any(not isinstance(value, str) or not value.strip()
                for value in (identity, parent_decision, question, decision_use)):
             raise Refused("Build question requires an identity, scope and decision use")
+        if not_before is not None:
+            if not isinstance(not_before, str):
+                raise Refused("Source access window requires an explicit timezone")
+            try:
+                not_before = timestamp(not_before).isoformat()
+            except ValueError as exc:
+                raise Refused("Invalid source access window") from exc
         with self.store.lock():
             state, control = self.store.read(), self.store.control()
             budget_check(state, control)
@@ -282,8 +297,11 @@ class Lab:
                 "parent_decision": parent_decision, "construction_scope": scope,
                 "created_at": utc_now(), "evidence": list(evidence_ids),
                 "reason": "CONSTRUCTION_ADMISSION", "outcome_access_authorized": False}
+            if not_before is not None:
+                state["decisions"][identity]["not_before"] = not_before
             event(state, "BUILD_QUESTION_ADDED", {"id": identity, "parent": parent_decision,
-                  "family": family_id, "scope": scope, "evidence": list(evidence_ids)})
+                  "family": family_id, "scope": scope, "evidence": list(evidence_ids),
+                  **({"not_before": not_before} if not_before is not None else {})})
             self.store.save(state)
 
     def family(self, identity, mechanism, dataset, evidence_ids):
@@ -674,5 +692,5 @@ class Lab:
         state, control = self.snapshot()
         if control["paused"]:
             return None
-        due = [(k, v) for k, v in state["decisions"].items() if v["status"] == "OPEN"]
+        due = [(k, v) for k, v in state["decisions"].items() if question_due(v)]
         return min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)
