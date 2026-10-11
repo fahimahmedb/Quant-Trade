@@ -295,6 +295,25 @@
       "resolved_at": "2026-10-11T13:00:42.437222+00:00",
       "status": "QUALIFIED"
     },
+    "build:smard-fixed-flexibility:entrypoint-process-qa": {
+      "actor": "owner-smard-entrypoint-repair-20261011T1305Z",
+      "claim_id": "499cbc9b126ddd0ae8c450a73ed88501661f04fb264614469f8fef54f443f2e0",
+      "claimed_at": "2026-10-11T13:07:29.442868+00:00",
+      "construction_scope": "aabd6c079fac1d75ea5c4082ea4cbfd6cff7b6fa80ef73e803dadb44e06849f9",
+      "created_at": "2026-10-11T13:07:29.430451+00:00",
+      "decision_use": "Admit future process launches; preserve exact failedv1 and its2charges. No market source/review rerun.",
+      "evidence": [
+        "smard-fixed-proxy-software-admission-20261011"
+      ],
+      "family": "smard-fixed-flexibility",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "build:smard-fixed-flexibility:bounded-source-runner",
+      "priority": 10,
+      "question": "Can safe Python path isolation prevent script shadowing in the actual subprocess, without rewriting or reexecuting the consumedv1?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "RESEARCHING"
+    },
     "build:treasury-auction-zf:owner-free-source-universe": {
       "actor": "owner-source-universe-20261011T1226Z",
       "claim_id": "095c69dfe37cc5f0e5869277986e095c23843350f3815764cb4a0fd8a2dcd920",
@@ -1412,6 +1431,46 @@
       },
       "previous": "26760e7b6a88d5b364cb47a80d1ca361b539848759c8a57a5428bcf0d2a54e82",
       "sequence": 73
+    },
+    {
+      "at": "2026-10-11T13:07:29.400926+00:00",
+      "hash": "bdb56ddf67c7725bdac7ce0862ce7a9e5f1d776085c0e442e8d2b3c60cb00a13",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "1c66ced3be697282958d55313bdc2061a0c55b90ca98f367add4c8d3552d43fe",
+        "id": "smard-entrypoint-zero-price-forensic-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "0743128dcf6b9502a148848b50d4f268f1a4760d773a47e1d0c785b7db00f17e",
+      "sequence": 74
+    },
+    {
+      "at": "2026-10-11T13:07:29.430463+00:00",
+      "hash": "60725875274870eb31c511d5afb10affd2844cd266a7f3acb9d7fc50f43160ac",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "family": "smard-fixed-flexibility",
+        "id": "build:smard-fixed-flexibility:entrypoint-process-qa",
+        "parent": "build:smard-fixed-flexibility:bounded-source-runner",
+        "scope": "aabd6c079fac1d75ea5c4082ea4cbfd6cff7b6fa80ef73e803dadb44e06849f9"
+      },
+      "previous": "bdb56ddf67c7725bdac7ce0862ce7a9e5f1d776085c0e442e8d2b3c60cb00a13",
+      "sequence": 75
+    },
+    {
+      "at": "2026-10-11T13:07:29.442874+00:00",
+      "hash": "b886a540285c1b6dd03c569fd92358a0b3fac46ba10e2b17478244007b4ade9a",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-smard-entrypoint-repair-20261011T1305Z",
+        "claim_id": "499cbc9b126ddd0ae8c450a73ed88501661f04fb264614469f8fef54f443f2e0",
+        "id": "build:smard-fixed-flexibility:entrypoint-process-qa"
+      },
+      "previous": "60725875274870eb31c511d5afb10affd2844cd266a7f3acb9d7fc50f43160ac",
+      "sequence": 76
     }
   ],
   "evidence": {
@@ -2381,6 +2440,44 @@
       "url": "automation:6ac978ecda1081918fba4d76dee437f4",
       "version": "connector-peek-2026-10-11T00:11Z"
     },
+    "smard-entrypoint-zero-price-forensic-20261011": {
+      "fact": {
+        "cost": {
+          "cpu_seconds": 0.03768599999999998,
+          "wall_seconds": 0.06639080699915212
+        },
+        "error": "ModuleNotFoundError before price capture",
+        "input_capture_exists": false,
+        "look_status": "UNKNOWN_OUTCOME consumed; process_stopped true",
+        "outcome_computed_or_saved": false,
+        "stderr_bytes": 458,
+        "stdout_bytes": 0,
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "No economic verdict; admissible source not falsified",
+          "EFFECT_SIZE": "NOT_ESTIMABLE_NO_PRICE_READ",
+          "FAILED_CRITERIA": [
+            "Entry script namespace isolation",
+            "Subprocess import-path QA missing in initial suite"
+          ],
+          "FAMILY_STATUS": "SOFTWARE_BLOCKED_NO_ECONOMIC_VERDICT",
+          "LESSON": "Module-level tests do not exercise a runner launched from scripts beside quant.py; safe-path process gate required.",
+          "NEXT_DECISION": "Repair generic process isolation and test actual entry process synthetically; no retry of consumedv1 or change of its code/hash/window/costs.",
+          "POWER_LIMITATION": "N market0;2charged dependent paths retained, private history UNKNOWN",
+          "RESULT": "INVALID_SOFTWARE_ENTRYPOINT_NO_MARKET_RESULT",
+          "UNCERTAINTY": "Exact import traceback/empty stdout/no capture corroborate no price access. Reserved paths remain spent."
+        }
+      },
+      "id": "smard-entrypoint-zero-price-forensic-20261011",
+      "kind": "METHOD",
+      "limit": "This is forensic software evidence, not a fabricated runner result/OUTCOME; no economic result and no uncertainty/consumed counter cleared.",
+      "passage": "Script directory scripts precedes PYTHONPATH; scripts/quant.py shadows src/quant package, then import quant.clock fails before smard module import/capture. No QuantSystem instantiation or old clock boot succeeded.",
+      "url": "git:research/edge-lab-continuous/research/edge_lab/receipts/1a9da9ccf2d5f0574dd7544a4f1e540b198bbdfa0039aa90da8d70edfaccf814/stderr.bin",
+      "version": {
+        "running_commit": "e3331466e4867939884e523b784f1d5f26eb4f55",
+        "stderr_sha256": "af0c4c2c19dd39a0f9107a2fa1b3b49c4425e8ba22f518e116e9165a61f7e327",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
     "smard-fixed-proxy-software-admission-20261011": {
       "fact": {
         "challenge": [
@@ -2600,7 +2697,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "36b2e7acafbcedc47db826ae02a39df55cc151973fa24375a5b4b257b38dab6c",
+  "integrity": "0283ee683e0109c85c1155d2e55fa859c516a8e3d6ed3867c64a6e8f940ab252",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -2820,7 +2917,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 2
   },
-  "updated_at": "2026-10-11T13:03:35.656951+00:00",
+  "updated_at": "2026-10-11T13:07:29.445113+00:00",
   "usage": {
     "cpu_seconds": 0.09247421099999996,
     "human_seconds": null,
