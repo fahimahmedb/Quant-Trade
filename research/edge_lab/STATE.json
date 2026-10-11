@@ -511,10 +511,12 @@
       ],
       "family": "france-fuel-information",
       "lease_seconds": 600,
+      "next_action": "SOURCE_USABLE_FOR_CURRENT_INFORMATION_ONLY; no historical first-availability snapshots, actual pump-price validation, fixed route/vehicle/quantity/nearest-station counterfactual or measured detour/time costs. Do not read price records to select these assumptions. Consumer procurement savings is distinct from tradable financial edge. Park exact source gate and prioritise Owner-requested macro/sovereign and policy-announcement qualification; reopen only with a distinct predeclared decision and missing gate evidence, not hourly reprobes. No economic rejection and no look charged.",
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T16:02:27.223383+00:00",
+      "status": "WAIT"
     },
     "qualify:hyperliquid-forced-flow": {
       "actor": "scheduled-automation-20261010T1654Z",
@@ -1867,6 +1869,21 @@
       },
       "previous": "6246948d91313b994d6e7dc92d2e107bd1091131777dedb80988856f0fb51058",
       "sequence": 94
+    },
+    {
+      "at": "2026-10-11T16:02:27.223397+00:00",
+      "hash": "64e6f2b08e08da30a3c139408d05ce2df6b7efbf55371a82a9b80befaac1d1fb",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "france-fuel-information-cached-source-20261011"
+        ],
+        "id": "qualify:france-fuel-information",
+        "next": "SOURCE_USABLE_FOR_CURRENT_INFORMATION_ONLY; no historical first-availability snapshots, actual pump-price validation, fixed route/vehicle/quantity/nearest-station counterfactual or measured detour/time costs. Do not read price records to select these assumptions. Consumer procurement savings is distinct from tradable financial edge. Park exact source gate and prioritise Owner-requested macro/sovereign and policy-announcement qualification; reopen only with a distinct predeclared decision and missing gate evidence, not hourly reprobes. No economic rejection and no look charged.",
+        "verdict": "WAIT"
+      },
+      "previous": "6c3f495f1020bc760ce2cc5b39edc3dd9d27a36557855055535c5518ab7af622",
+      "sequence": 95
     }
   ],
   "evidence": {
@@ -3740,7 +3757,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "f9ae3d6f26d25eb90d87fcf1d297853f3d1d3ef5180162d3b8633409a46f285c",
+  "integrity": "3a166ccf98c597161f3c8eaa51a2ed004fdd917c933dfba4cb6e1c986db77492",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4115,7 +4132,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:01:09.250672+00:00",
+  "updated_at": "2026-10-11T16:02:27.228190+00:00",
   "usage": {
     "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,
