@@ -75,14 +75,35 @@
       "created_at": "2026-10-10T23:55:47.710906+00:00",
       "decision_use": "D\u00e9cider ach\u00e8vement logiciel / d\u00e9faut \u00e0 r\u00e9parer, sans admission des donn\u00e9es ou march\u00e9. Le g\u00e9n\u00e9rique continue \u00e0 refuser les legacy ; ne lancer que si toutes les autorit\u00e9s exactes et gates qualifi\u00e9s existent. Reconstituer les re\u00e7us sans rejouer d\u2019outcome, rappels d\u00e9sactiv\u00e9s.",
       "evidence": [
-        "lab-workflow-core-synthetic-20261010T2355Z"
+        "lab-exact-legacy-metadata-plan-20261011T0004Z"
       ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome.",
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:lab-workflow-completion",
       "priority": 2,
       "question": "Construire le raccord logiciel exact au freeze et \u00e0 la r\u00e9servation upstream EURUSD, sans recr\u00e9er le ref ni substituer un protocole ; tester adoption, double autorit\u00e9 et r\u00e9sultat avec fixtures uniquement, puis achever la preuve de bout en bout du labo.",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "resolved_at": "2026-10-11T00:03:22.325781+00:00",
+      "status": "WAIT"
+    },
+    "build:eurusd-technical-grid:implement-saved-adapter": {
+      "actor": "owner-software-completion-20261011T0004Z",
+      "claim_id": "c143ce6ded190bb572a8b12a2454f925d2842ba603d57357edd06831042b17f9",
+      "claimed_at": "2026-10-11T00:03:22.347788+00:00",
+      "construction_scope": "274b4701b5acc493418fab39ef442591ac2c00c8415cbd8f45d52a67c6139532",
+      "created_at": "2026-10-11T00:03:22.337039+00:00",
+      "decision_use": "Decide software completeness on tests and code; cached legacy metadata only, no new market/source inquiry and no original reservation creation.",
+      "evidence": [
+        "lab-exact-legacy-metadata-plan-20261011T0004Z"
+      ],
+      "family": "eurusd-technical-grid",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "build:eurusd-technical-grid:exact-legacy-adapter",
+      "priority": 2,
+      "question": "Implement the cached exact adoption/dual-authority bridge and offline generated result mapping; complete saved-receipt reconciliation and a real Git end-to-end synthetic proof.",
       "reason": "CONSTRUCTION_ADMISSION",
       "status": "RESEARCHING"
     },
@@ -795,6 +816,61 @@
       },
       "previous": "6070203386f19f5e1ad1cf4ae462fc12510f393e50dd82a77ba4faaa8a7bbf8a",
       "sequence": 41
+    },
+    {
+      "at": "2026-10-11T00:03:22.314314+00:00",
+      "hash": "d7bbb035945b3206196d6fb387afa8ac562fcbdaa322fdbf39ba280839bf169a",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "0b36db429d4b6c083fdcaed376dc8d7f975488ddbc9fa07e368e11c3d6324d2f",
+        "id": "lab-exact-legacy-metadata-plan-20261011T0004Z",
+        "kind": "METHOD"
+      },
+      "previous": "b9362bb1c74e47f3cdde3089b644ac08f4cd3dd2d34d6a95d1d0e048acc35bea",
+      "sequence": 42
+    },
+    {
+      "at": "2026-10-11T00:03:22.325792+00:00",
+      "hash": "0ca1470fbd8d3736d64505415ad570da1f5aac722051099c92668e400902a970",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "lab-exact-legacy-metadata-plan-20261011T0004Z"
+        ],
+        "id": "build:eurusd-technical-grid:exact-legacy-adapter",
+        "next": "Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome.",
+        "verdict": "WAIT"
+      },
+      "previous": "d7bbb035945b3206196d6fb387afa8ac562fcbdaa322fdbf39ba280839bf169a",
+      "sequence": 43
+    },
+    {
+      "at": "2026-10-11T00:03:22.337050+00:00",
+      "hash": "3f8ccf29eab7c62b5685fdb6cd58b3981016ed79f4f0d5e781cc8b345fab80b9",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "lab-exact-legacy-metadata-plan-20261011T0004Z"
+        ],
+        "family": "eurusd-technical-grid",
+        "id": "build:eurusd-technical-grid:implement-saved-adapter",
+        "parent": "build:eurusd-technical-grid:exact-legacy-adapter",
+        "scope": "274b4701b5acc493418fab39ef442591ac2c00c8415cbd8f45d52a67c6139532"
+      },
+      "previous": "0ca1470fbd8d3736d64505415ad570da1f5aac722051099c92668e400902a970",
+      "sequence": 44
+    },
+    {
+      "at": "2026-10-11T00:03:22.347793+00:00",
+      "hash": "f5abce96cd5563642877c039eb326d304b222667ab1378047931cbcdf69713aa",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-software-completion-20261011T0004Z",
+        "claim_id": "c143ce6ded190bb572a8b12a2454f925d2842ba603d57357edd06831042b17f9",
+        "id": "build:eurusd-technical-grid:implement-saved-adapter"
+      },
+      "previous": "3f8ccf29eab7c62b5685fdb6cd58b3981016ed79f4f0d5e781cc8b345fab80b9",
+      "sequence": 45
     }
   ],
   "evidence": {
@@ -1553,6 +1629,26 @@
       "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a6961e5fc02785c7c2d797f0e1fca94425150705/research/edge_search/scouts/HYPERLIQUID_SECOND_PASS_STATUS_2026-10-08.txt",
       "version": "All files compared at exact a6961e5fc02785c7c2d797f0e1fca94425150705; no outcomes read."
     },
+    "lab-exact-legacy-metadata-plan-20261011T0004Z": {
+      "fact": {
+        "external_gates": [
+          "existing original reservation",
+          "source QA/rights",
+          "full input resource bound"
+        ],
+        "freeze_sha256": "c891771ddc74adeae95b5492f708ad1c3cc07eca92da78ffe5b5346570d71de2",
+        "market_accesses": 0,
+        "original_ref_creation_authorized": false,
+        "plan_receipt": "/workspace/scratch/lab-completion-partial.json",
+        "scope": "metadata-only exact adapter plan, no original run"
+      },
+      "id": "lab-exact-legacy-metadata-plan-20261011T0004Z",
+      "kind": "METHOD",
+      "limit": "Original ref availability not re-probed. No capture or outcome body. Adoption remains conditional and cannot create the original ref.",
+      "passage": "verify_freeze, verify_claim, main: capture-v1/reservation.json before begin_attempt; immutable six paths and nine-field saved result",
+      "url": "git:e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py",
+      "version": "44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3"
+    },
     "lab-workflow-core-synthetic-20261010T2355Z": {
       "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
       "fact": {
@@ -1708,7 +1804,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "554fb0fa25b89931779799e9522619ae77726c3cabf64fae767cde7457fdc7d5",
+  "integrity": "35d2f354563a4cb4010bd3d95d1470abe79cff202b33f0aab18cc870eb066ee2",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1772,7 +1868,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-10T23:57:04.064357+00:00",
+  "updated_at": "2026-10-11T00:03:22.349246+00:00",
   "usage": {
     "cpu_seconds": 0.040348405999999976,
     "human_seconds": null,
