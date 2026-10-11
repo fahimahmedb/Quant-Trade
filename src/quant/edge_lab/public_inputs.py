@@ -8,7 +8,7 @@ from .store import Refused
 def runner_environment(protocol, root, environ=None):
     source = os.environ if environ is None else environ
     env = {"PATH": source.get("PATH", "/usr/bin:/bin"), "PYTHONPATH": str(root / "src"),
-           "TZ": "UTC", "PYTHONNOUSERSITE": "1", "REAL_CAPITAL_AUTHORIZED": "FALSE",
+           "TZ": "UTC", "PYTHONNOUSERSITE": "1", "PYTHONSAFEPATH": "1", "REAL_CAPITAL_AUTHORIZED": "FALSE",
            "LIVE_TRADING_AUTHORIZED": "FALSE"}
     if not protocol.get("public_inputs"):
         return env

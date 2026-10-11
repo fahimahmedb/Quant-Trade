@@ -3,6 +3,8 @@ import copy
 import io
 import json
 import tempfile
+import subprocess
+import sys
 import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -122,6 +124,26 @@ class SmardTest(unittest.TestCase):
         self.assertNotIn('API_KEY',env);self.assertNotIn('GITHUB_TOKEN',env)
         e['HTTPS_PROXY']='http://user:secret@proxy:8080'
         with self.assertRaises(Refused):runner_environment({'public_inputs':{'hosts':['www.smard.de']}},Path('/tmp'),e)
+
+    def test_real_entrypoint_never_imports_adjacent_historic_quant_script(self):
+        root = Path(__file__).resolve().parents[1]
+        env = runner_environment({}, root)
+        child = subprocess.run([sys.executable, '-B', str(root/'scripts/smard_fixed_flexibility.py'), '--help'],
+            cwd=root, env=env, capture_output=True, text=True, timeout=10)
+        self.assertEqual(child.returncode,0,child.stderr)
+        self.assertIn('--protocol',child.stdout)
+        self.assertNotIn('quant.clock',child.stderr)
+
+    def test_generic_isolation_ignores_poisoned_neighbor_before_package_import(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'src/pkg').mkdir(parents=True);(root/'scripts').mkdir()
+            (root/'src/pkg/__init__.py').write_text('value=7\n')
+            (root/'scripts/pkg.py').write_text('raise RuntimeError("old runtime must never boot")\n')
+            (root/'scripts/runner.py').write_text('from pkg import value\nprint(value)\n')
+            env=runner_environment({},root)
+            r=subprocess.run([sys.executable,str(root/'scripts/runner.py')],cwd=root,env=env,
+                capture_output=True,text=True,timeout=10)
+            self.assertEqual(r.returncode,0,r.stderr);self.assertEqual(r.stdout.strip(),'7')
 
 
 if __name__=='__main__':unittest.main()

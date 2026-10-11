@@ -303,14 +303,36 @@
       "created_at": "2026-10-11T13:07:29.430451+00:00",
       "decision_use": "Admit future process launches; preserve exact failedv1 and its2charges. No market source/review rerun.",
       "evidence": [
-        "smard-fixed-proxy-software-admission-20261011"
+        "smard-safe-entrypoint-qa-20261011",
+        "smard-entrypoint-zero-price-forensic-20261011"
       ],
       "family": "smard-fixed-flexibility",
       "lease_seconds": 600,
+      "next_action": "Generic runner process repaired; frozenv1 remains consumed. Qualify one distinct solar timing question without reusing thev1 reservation.",
       "outcome_access_authorized": false,
       "parent_decision": "build:smard-fixed-flexibility:bounded-source-runner",
       "priority": 10,
       "question": "Can safe Python path isolation prevent script shadowing in the actual subprocess, without rewriting or reexecuting the consumedv1?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "resolved_at": "2026-10-11T13:10:44.426860+00:00",
+      "status": "QUALIFIED"
+    },
+    "build:smard-fixed-flexibility:solar-midday-policy": {
+      "actor": "owner-smard-solar-policy-20261011T1310Z",
+      "claim_id": "b841c6d8fb72b240b16bee2d33ce14c3a97079743ae6aa7232e102d4c9714fa8",
+      "claimed_at": "2026-10-11T13:10:44.452848+00:00",
+      "construction_scope": "893f5a7b4d5d7683fe4eac31b302dee12cf2fd7b1529e8de76b7a02cda283a18",
+      "created_at": "2026-10-11T13:10:44.441291+00:00",
+      "decision_use": "One distinct calendar expression in same family, separately charged, not reexecutev1 or compare/select winning Sharpe. Primary costs/efficiency and full2025 calendar unchanged.",
+      "evidence": [
+        "smard-open-source-clock-bounds-20261011"
+      ],
+      "family": "smard-fixed-flexibility",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "qualify:smard-fixed-flexibility",
+      "priority": 10,
+      "question": "Does a single noon-to-evening energy shift cover assumed full asset/dispatch costs? Renewable supply timing motivates12h input; fixed18h output, no choice based on prices.",
       "reason": "CONSTRUCTION_ADMISSION",
       "status": "RESEARCHING"
     },
@@ -1471,6 +1493,62 @@
       },
       "previous": "60725875274870eb31c511d5afb10affd2844cd266a7f3acb9d7fc50f43160ac",
       "sequence": 76
+    },
+    {
+      "at": "2026-10-11T13:10:44.395455+00:00",
+      "hash": "ffb69817c219ef900143736b78ffa01ab4a3665147df759d45daead8e83f5751",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "a4e0dd0f58c4fca713cc388c1288eb74b9cce481b559bbfa3be6b2e34cb18ece",
+        "id": "smard-safe-entrypoint-qa-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "b886a540285c1b6dd03c569fd92358a0b3fac46ba10e2b17478244007b4ade9a",
+      "sequence": 77
+    },
+    {
+      "at": "2026-10-11T13:10:44.426878+00:00",
+      "hash": "de0b7bf0f71a61f36a5afc66972e0f0482c9b45ac70c8a40e7550aa0febaa77a",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "smard-safe-entrypoint-qa-20261011",
+          "smard-entrypoint-zero-price-forensic-20261011"
+        ],
+        "id": "build:smard-fixed-flexibility:entrypoint-process-qa",
+        "next": "Generic runner process repaired; frozenv1 remains consumed. Qualify one distinct solar timing question without reusing thev1 reservation.",
+        "verdict": "QUALIFIED"
+      },
+      "previous": "ffb69817c219ef900143736b78ffa01ab4a3665147df759d45daead8e83f5751",
+      "sequence": 78
+    },
+    {
+      "at": "2026-10-11T13:10:44.441302+00:00",
+      "hash": "13fa57501ea3d6a7305662476ea8ec51e9def863973cf3b24aefa923f3858500",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "smard-open-source-clock-bounds-20261011"
+        ],
+        "family": "smard-fixed-flexibility",
+        "id": "build:smard-fixed-flexibility:solar-midday-policy",
+        "parent": "qualify:smard-fixed-flexibility",
+        "scope": "893f5a7b4d5d7683fe4eac31b302dee12cf2fd7b1529e8de76b7a02cda283a18"
+      },
+      "previous": "de0b7bf0f71a61f36a5afc66972e0f0482c9b45ac70c8a40e7550aa0febaa77a",
+      "sequence": 79
+    },
+    {
+      "at": "2026-10-11T13:10:44.452853+00:00",
+      "hash": "670bb9d3a6542c02435e10089566507a9e3cad14cd22cc50a364c91fcff4bb09",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-smard-solar-policy-20261011T1310Z",
+        "claim_id": "b841c6d8fb72b240b16bee2d33ce14c3a97079743ae6aa7232e102d4c9714fa8",
+        "id": "build:smard-fixed-flexibility:solar-midday-policy"
+      },
+      "previous": "13fa57501ea3d6a7305662476ea8ec51e9def863973cf3b24aefa923f3858500",
+      "sequence": 80
     }
   ],
   "evidence": {
@@ -2560,6 +2638,27 @@
         "headers": "2026-10-11T12:50:09.345816+00:00",
         "observed_at": "2026-10-11T12:50:48.902159+00:00"
       }
+    },
+    "smard-safe-entrypoint-qa-20261011": {
+      "fact": {
+        "consumed_v1": "Never reexecute;2charged paths andUNKNOWN_OUTCOME retained; no input/outcome read",
+        "fixed": "Generic process isolation, no frozen economic code/window/cost/threshold modified",
+        "next_question": "A separately registered solar-midday\u2192evening physical proxy can address renewable supply timing (12\u219218h), not retry the failed03\u219218policy. Its new paths will be charged in the same family/data scope; no fresh history or best-after-result selection.",
+        "tests": [
+          "actual smard entrypoint help with child env",
+          "poison neighbor process test",
+          "existing77synthetic unit/integration/competing-host tests"
+        ]
+      },
+      "id": "smard-safe-entrypoint-qa-20261011",
+      "kind": "METHOD",
+      "limit": "Source timing/real plant/auction fills/grid fees still limit a positive. No market/prices acquired, no independent reviewer simulated.",
+      "passage": "PYTHONSAFEPATH prevents the script directory preceding the package path. Actual script --help passes under exact stripped child environment; a poison neighboring module is never imported.",
+      "url": "git:research/edge-lab-continuous/tests/test_edge_lab_smard.py",
+      "version": {
+        "public_inputs_sha256": "48fdd73d834dc15a57aceca5cbbf3194a3de268b5f9a1a916a4b915ac2a05491",
+        "tests": "77PASS in3.684s"
+      }
     }
   },
   "families": {
@@ -2697,7 +2796,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "0283ee683e0109c85c1155d2e55fa859c516a8e3d6ed3867c64a6e8f940ab252",
+  "integrity": "7aeed2770956c3854e72057651add645516705bc613434fe0892004110a0a918",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -2917,7 +3016,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 2
   },
-  "updated_at": "2026-10-11T13:07:29.445113+00:00",
+  "updated_at": "2026-10-11T13:10:44.455294+00:00",
   "usage": {
     "cpu_seconds": 0.09247421099999996,
     "human_seconds": null,
