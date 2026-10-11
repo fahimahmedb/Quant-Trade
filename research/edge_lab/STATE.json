@@ -358,6 +358,23 @@
       "resolved_at": "2026-10-10T20:13:05.598871+00:00",
       "status": "WAIT"
     },
+    "build:policy-announcement-repricing:official-source-clock": {
+      "construction_scope": "1fcca70a2f9c9739c492ac2440fdaae12cd9320c78fc3b42847de00e97e70e59",
+      "created_at": "2026-10-11T16:11:42.928568+00:00",
+      "decision_use": "QUALIFIED seulement pour une horloge de r\u00e9ception prospective et un sch\u00e9ma v\u00e9rifi\u00e9s ; sinon WAIT pr\u00e9cis. Aucun backtest/admission \u00e9conomique/collecteur concurrent. R\u00e9utiliser les passages sauvegard\u00e9s ; un seul probe de m\u00e9tadonn\u00e9es born\u00e9, pas corpus de news ou grille de sentiments.",
+      "evidence": [
+        "policy-federal-register-free-api-20261011",
+        "policy-gdelt-sentiment-clock-limits-20261011",
+        "policy-sentiment-model-causality-challenge-20261011"
+      ],
+      "family": "policy-announcement-repricing",
+      "outcome_access_authorized": false,
+      "parent_decision": "qualify:policy-announcement-repricing",
+      "priority": 10,
+      "question": "Peut-on qualifier l\u2019API publique Federal Register comme source d\u2019observation future avec premi\u00e8re r\u00e9ception UTC, sch\u00e9ma document/amendements, droits et ressources born\u00e9es, sans lire de prix ni pr\u00e9tendre capter la premi\u00e8re annonce de Trump ?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "OPEN"
+    },
     "build:smard-fixed-flexibility:bounded-source-runner": {
       "actor": "owner-smard-proxy-build-20261011T1252Z",
       "claim_id": "17c6b05147f1e071a02bbd088c4365831fd8316d118b5fb30a3a40f5e1ab2c56",
@@ -562,14 +579,18 @@
       "claimed_at": "2026-10-11T16:07:21.314823+00:00",
       "created_at": "2026-10-11T16:02:57.721060+00:00",
       "evidence": [
-        "owner-macro-political-research-request-20261011"
+        "policy-federal-register-free-api-20261011",
+        "policy-gdelt-sentiment-clock-limits-20261011",
+        "policy-sentiment-model-causality-challenge-20261011"
       ],
       "family": "policy-announcement-repricing",
       "lease_seconds": 600,
+      "next_action": "HISTORICAL_SOURCE_GATE_UNQUALIFIED: official legal text/date is not earliest public news, GDELT tone/selection/retention/first-publication unverified and no matched executable market data/costs. Not an economic rejection. One useful next build gate: public official API metadata only, establish conservative first-reception UTC/source-schema/resource/rights and amendments; no headlines, source dates or model memories may be substituted as past t0. No price/sentiment/backtest look yet. French lane remains WAIT on exact separate rights/vintage/execution gap.",
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T16:11:42.798378+00:00",
+      "status": "WAIT"
     },
     "qualify:smard-fixed-flexibility": {
       "actor": "owner-open-energy-20261011T1240Z",
@@ -2033,6 +2054,77 @@
       },
       "previous": "ae8f6b3c85d273bf7e607dd988cc3cf019ff1316e96bb3716d5d3563fa957df4",
       "sequence": 104
+    },
+    {
+      "at": "2026-10-11T16:11:42.416771+00:00",
+      "hash": "777d7e49448ec22e5c7ab1583103328de7b3d0f4c0eebb60ce64c3fc9b7b9b90",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "0708c8393ab621e703661a87cb658786c843402fd0c3ee597591b2ade25a855f",
+        "id": "policy-federal-register-free-api-20261011",
+        "kind": "ACCESS"
+      },
+      "previous": "a1815f335ff6a80ba393cf10ee0ffe83613ffaeb6a57f65d21b73d52a93987fb",
+      "sequence": 105
+    },
+    {
+      "at": "2026-10-11T16:11:42.548617+00:00",
+      "hash": "c52b05b3e9ef86996577930a8204038737cca8f896f261d3d90efee3caa15f89",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "ec96b73756f615b17b6a949b16d358eca688774089ef0a1d86855374c4c97bcc",
+        "id": "policy-gdelt-sentiment-clock-limits-20261011",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "777d7e49448ec22e5c7ab1583103328de7b3d0f4c0eebb60ce64c3fc9b7b9b90",
+      "sequence": 106
+    },
+    {
+      "at": "2026-10-11T16:11:42.674572+00:00",
+      "hash": "cf13f036a5c527fd7b0c57cfaa333c9100ad606e8a3117be91c5490fdc76c8aa",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "cc44db35181113a5753c572e3f2eb3955da7bebe53f98349256600f4470cdb50",
+        "id": "policy-sentiment-model-causality-challenge-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "c52b05b3e9ef86996577930a8204038737cca8f896f261d3d90efee3caa15f89",
+      "sequence": 107
+    },
+    {
+      "at": "2026-10-11T16:11:42.798391+00:00",
+      "hash": "1f03dec352ae76736f4297ba5041d5ca394495331aed3e705af2937040329c9b",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "policy-federal-register-free-api-20261011",
+          "policy-gdelt-sentiment-clock-limits-20261011",
+          "policy-sentiment-model-causality-challenge-20261011"
+        ],
+        "id": "qualify:policy-announcement-repricing",
+        "next": "HISTORICAL_SOURCE_GATE_UNQUALIFIED: official legal text/date is not earliest public news, GDELT tone/selection/retention/first-publication unverified and no matched executable market data/costs. Not an economic rejection. One useful next build gate: public official API metadata only, establish conservative first-reception UTC/source-schema/resource/rights and amendments; no headlines, source dates or model memories may be substituted as past t0. No price/sentiment/backtest look yet. French lane remains WAIT on exact separate rights/vintage/execution gap.",
+        "verdict": "WAIT"
+      },
+      "previous": "cf13f036a5c527fd7b0c57cfaa333c9100ad606e8a3117be91c5490fdc76c8aa",
+      "sequence": 108
+    },
+    {
+      "at": "2026-10-11T16:11:42.928581+00:00",
+      "hash": "3cbbfc4ec1eeaf0570b464d9162596bee045f7f9296bef236d158111e6805be8",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "policy-federal-register-free-api-20261011",
+          "policy-gdelt-sentiment-clock-limits-20261011",
+          "policy-sentiment-model-causality-challenge-20261011"
+        ],
+        "family": "policy-announcement-repricing",
+        "id": "build:policy-announcement-repricing:official-source-clock",
+        "parent": "qualify:policy-announcement-repricing",
+        "scope": "1fcca70a2f9c9739c492ac2440fdaae12cd9320c78fc3b42847de00e97e70e59"
+      },
+      "previous": "1f03dec352ae76736f4297ba5041d5ca394495331aed3e705af2937040329c9b",
+      "sequence": 109
     }
   ],
   "evidence": {
@@ -3637,6 +3729,43 @@
       "url": "automation:6ac978ecda1081918fba4d76dee437f4",
       "version": "connector-peek-2026-10-11T00:11Z"
     },
+    "policy-federal-register-free-api-20261011": {
+      "fact": "No Owner API account is needed to qualify this metadata source. Document date, public-inspection filing, signature, publication, amendment and our first reception are different clocks; none automatically gives the earliest public Trump statement.",
+      "id": "policy-federal-register-free-api-20261011",
+      "kind": "ACCESS",
+      "limit": "Documentation only; no live API records, documents, prices, return, sentiment score or economic outcome read. Govinfo authentication/rights and actual API schema/clock need separate qualification.",
+      "passage": "Public API endpoints require an HTTP client and no API key. The website XML is informational; official legal editions are linked govinfo PDFs.",
+      "url": "https://www.federalregister.gov/developers/documentation/api/v1",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "Federal Register API primary documentation"
+      }
+    },
+    "policy-gdelt-sentiment-clock-limits-20261011": {
+      "fact": "News tone is editorial coverage, not investors\u2019 expected-return positioning. A capped query-dependent corpus, multilingual repeats, retrospective timestamps, refresh lag and smoothing can create false predictive timing. Historical2017description cannot authenticate today\u2019s coverage or first publication.",
+      "id": "policy-gdelt-sentiment-clock-limits-20261011",
+      "kind": "CONTRADICTION",
+      "limit": "No API/tonechart/articles/underlying publishers extracted. GDELT does not confer underlying publishers\u2019 extraction rights. Recheck only a distinct current-source question, not replay this old documentation. No market reaction or positive performance paper consulted.",
+      "passage": "Document API combines machine-translated news, mean tone/coverage and query-dependent article lists. ArticleList defaults to75/max250; modes differ, and smoothing shifts peaks. Rolling3month wording also coexists with back-to-Jan2017 wording.",
+      "url": "https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/",
+      "version": {
+        "issued": "2017-06-20",
+        "observed_at": "2026-10-11",
+        "scope": "published DOC2.0 specification, not verified2026production retention"
+      }
+    },
+    "policy-sentiment-model-causality-challenge-20261011": {
+      "fact": "A current LLM may remember historical event outcomes; retrospectively choosing phrases, Trump episodes or best asset/horizon is data leakage/selection. Begin only with official-source metadata availability, no automatic bullish/bearish mapping and no blanket sentiment index.",
+      "id": "policy-sentiment-model-causality-challenge-20261011",
+      "kind": "METHOD",
+      "limit": "No event/asset/horizon/threshold/grid selected using returns. Future test requires public-information exposure accounting, matched executable prices, latency/clock, costs/borrow/funding/margin, clustered events/days and a fixed decision contract. Prospective observations and exploratory backtest are distinct.",
+      "passage": "Separate economic policy content, surprise versus past expectations and investor positioning. Freeze taxonomy and causal classifier before market outcomes; archive exact event bytes, corrections, first-receipt UTC and corpus coverage.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "own preregistration design challenge; no external claim of predictability"
+      }
+    },
     "smard-entrypoint-zero-price-forensic-20261011": {
       "fact": {
         "cost": {
@@ -3992,7 +4121,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "a789460f2a5cfd65fd08441d4f2296e13dd535906955e1ffcfe3452a8fbb1257",
+  "integrity": "37e5821cbbb2d4e5ac1d769ac4b70703749799b4298ba2530901dbcf5c0f2229",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4367,7 +4496,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:07:21.321830+00:00",
+  "updated_at": "2026-10-11T16:11:42.936337+00:00",
   "usage": {
     "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,
