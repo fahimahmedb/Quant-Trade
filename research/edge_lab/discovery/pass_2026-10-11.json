@@ -29,7 +29,19 @@
     "audience": "existing owner-private preserved",
     "tests": "32 Node synthetic checks passed; build/embedded-JavaScript/ESM validation passed",
     "visual_qa": "No supported browser; no iOS visual QA claimed",
-    "change": "Same-head Discovery STATE + V3 LIVE fetched after CONTROL within shared byte ceiling; separate counts/cards/last/next/architecture availability. Metadata polling is not a worker heartbeat."
+    "change": "Same-head Discovery STATE + V3 LIVE fetched after CONTROL within shared byte ceiling; separate counts/cards/last/next/architecture availability. Metadata polling is not a worker heartbeat.",
+    "native_readback": {
+      "head": "54412b6108804f02e5d502e37c3ef5ed42f9927c",
+      "observed_at": "2026-10-11T22:33:54.557Z",
+      "stale": false,
+      "discovery_available": true,
+      "discovery_completed_economic_tests": 0,
+      "discovery_running": 0,
+      "discovery_park": 8,
+      "discovery_park_until": 1,
+      "validation_status": "RECOVERY_NEEDED",
+      "scope": "Native existing-room lab_status returned current Discovery metadata and unchanged V3 recovery separately. Includes4previously parked reserve cards plus4new decisions."
+    }
   },
   "safeguards": {
     "v3_state_byte_semantics_unchanged": true,
