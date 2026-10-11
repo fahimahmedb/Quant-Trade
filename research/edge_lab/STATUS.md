@@ -13,13 +13,13 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Aucune question admissible due maintenant ; prochaine échéance : 2026-10-13T12:45:00+00:00
+Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ? — à prendre avec worker-start/CAS.
 
 ## File V2
 
 Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 12.
 Sessions CLI conservées : 2. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
-Investigations documentaires en réserve : 3 ; déjà traitées/prélevées : 0. Pilotage : `BUSY`.
+Investigations documentaires en réserve : 3 ; déjà traitées/prélevées : 0. Pilotage : `READY_TO_QUALIFY`.
 
 ## Programme et preuves
 
