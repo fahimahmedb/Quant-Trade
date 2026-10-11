@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 from quant.edge_lab.engine import Lab, initialize
 from quant.edge_lab.store import Refused
-from quant.edge_lab.worker import queue, start, finish
+from quant.edge_lab.worker import queue, start, recover, finish
 
 
 class Authority:
@@ -90,13 +90,35 @@ class WorkerTests(unittest.TestCase):
             start(self.lab, authority, "second", invocation_id="other")
         self.assertEqual(authority.claims, 1)
 
+    def test_expired_interactive_claim_is_recovered_by_scheduler_without_new_claim(self):
+        authority = Authority(self.lab)
+        receipt = start(self.lab, authority, "synthetic", invocation_id="once")
+        original_claim = receipt["claim_id"]
+        before_looks = copy.deepcopy(self.lab.snapshot()[0]["looks"])
+        with self.lab.store.lock():
+            state = self.lab.store.read()
+            state["decisions"][receipt["next"]["id"]]["claimed_at"] = "2000-01-01T00:00:00+00:00"
+            state["worker_sessions"]["once"]["heartbeat_at"] = "2000-01-01T00:00:00+00:00"
+            self.lab.store.save(state)
+        authority.remote = self.lab.snapshot()[0]
+        handoff = start(self.lab, authority, "scheduled-automation", "scheduled-automation", "wake")
+        self.assertEqual(handoff["status"], "RECOVERY_NEEDED")
+        self.assertEqual(handoff["claim_id"], original_claim)
+        recovered = recover(self.lab, authority, "scheduled-automation", "scheduled-automation", "recover-wake")
+        self.assertEqual(recovered["status"], "RECOVERED")
+        self.assertEqual(recovered["claim_id"], original_claim)
+        self.assertEqual(recovered["session_id"], "once")
+        self.assertEqual(authority.remote["worker_sessions"]["once"]["recovery_count"], 1)
+        self.assertEqual(queue(authority.remote, authority.control)["counts"]["in_progress"], 1)
+        self.assertEqual(self.lab.snapshot()[0]["looks"], before_looks)
+
     def test_finish_requires_original_resolved_claim_and_preserves_finished_receipt(self):
         authority = Authority(self.lab)
         receipt = start(self.lab, authority, "synthetic", invocation_id="once")
         with self.assertRaisesRegex(Refused, "Resolve"):
             finish(self.lab, authority, "once", ["fixture"], "Premature")
         self.lab.decide(receipt["next"]["id"], "WAIT", ["fixture"], "Synthetic inaccessible gate", receipt["claim_id"])
-        authority.remote = self.lab.snapshot()[0]  # synthetic prior decision publication
+        authority.remote = self.lab.snapshot()[0]
         final = finish(self.lab, authority, "once", ["fixture"], "Gate saved; no new outcomes")
         self.assertEqual(final["status"], "COMPLETED")
         self.assertFalse(final["delivery_verified"])
