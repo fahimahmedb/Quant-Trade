@@ -1,7 +1,9 @@
-"""Bounded agent handoff and receipts. This module never calls a model or a backtest.
+"""Bounded agent handoff, recovery and receipts. This module never calls a model or a backtest.
 
 The existing cloud task supplies the reasoning. A published session is evidence
 of an agent's CLI declaration, not platform delivery telemetry or a daemon host.
+V3 may renew an expired reasoning lease on the exact original claim; it never
+creates a second claim, retries an economic look or authorizes outcomes.
 """
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -9,6 +11,23 @@ from uuid import uuid4
 from quant.state import utc_now
 from .engine import budget_check, question_due, timestamp
 from .store import Refused, event
+
+
+def _session_for(state, decision_id, claim_id=None):
+    matches = [s for s in state.get("worker_sessions", {}).values()
+               if s.get("status") == "STARTED" and s.get("question_id") == decision_id
+               and (claim_id is None or s.get("claim_id") == claim_id)]
+    return matches[0] if len(matches) == 1 else None
+
+
+def _activity_at(state, identity, decision):
+    base = timestamp(decision["claimed_at"])
+    session = _session_for(state, identity, decision.get("claim_id"))
+    if session and session.get("heartbeat_at"):
+        beat = timestamp(session["heartbeat_at"])
+        if beat > base:
+            base = beat
+    return base
 
 
 def queue(state, control, now=None):
@@ -19,7 +38,7 @@ def queue(state, control, now=None):
         status = "SOFTWARE_RECONCILED" if reconciliation else decision["status"]
         group = ("ready" if question_due(decision, now) else "scheduled") if status == "OPEN" else {
             "RESEARCHING": "in_progress", "RECOVERY_NEEDED": "recovery", "WAIT": "waiting"}.get(status, "finished")
-        if status == "RESEARCHING" and (now - timestamp(decision["claimed_at"])).total_seconds() >= decision["lease_seconds"]:
+        if status == "RESEARCHING" and (now - _activity_at(state, identity, decision)).total_seconds() >= decision["lease_seconds"]:
             group = "recovery"
         groups[group].append({"id": identity, "family": decision["family"],
             "status": status, "priority": decision.get("priority", 99),
@@ -36,25 +55,38 @@ def queue(state, control, now=None):
             "scope": "Decision queue only; a queue item never admits an outcome or resets a look"}
 
 
-def start(lab, authority, actor, context="interactive", invocation_id=None):
+def _validate_context(remote, context, actor):
     if context not in ("interactive", "scheduled-automation") or not actor or len(actor) > 120:
         raise Refused("Explicit agent actor and execution context required")
+    if context == "scheduled-automation" and (actor != "scheduled-automation" or not remote["scheduler"].get("enabled")):
+        raise Refused("Owner-disabled or mismatched scheduled worker")
+
+
+def start(lab, authority, actor, context="interactive", invocation_id=None):
     # Fresh remote control is read before remote STATE by the authority.
     fresh = authority.snapshot()
     if fresh["control"]["paused"]:
         raise Refused("PAUSED: no new session or metadata access")
     remote = fresh["state"]
+    _validate_context(remote, context, actor)
     budget_check(remote, fresh["control"])
     local, control = lab.snapshot()
     if local != remote or control != fresh["control"]:
         raise Refused("Hydrate the exact remote state before starting an agent session")
-    if context == "scheduled-automation" and (actor != "scheduled-automation" or not remote["scheduler"].get("enabled")):
-        raise Refused("Owner-disabled or mismatched scheduled worker")
     now = datetime.now(timezone.utc)
     sessions = remote.get("worker_sessions", {})
-    if any(s["status"] == "STARTED" for s in sessions.values()):
-        raise Refused("Existing agent session needs completion/recovery; do not start a second worker")
     work = queue(remote, control, now)
+    started = [s for s in sessions.values() if s["status"] == "STARTED"]
+    if started:
+        if work["counts"]["recovery"]:
+            target = work["groups"]["recovery"][0]
+            original = _session_for(remote, target["id"], target.get("claim_id"))
+            if original:
+                return {"status": "RECOVERY_NEEDED", "session_id": original["id"],
+                    "claim_id": original["claim_id"], "next": target, "context": context,
+                    "scope": "Expired original reasoning lease; renew the same claim with worker-recover. No retry or new claim.",
+                    "outcome_access_authorized": False}
+        raise Refused("Existing agent session needs completion/recovery; do not start a second worker")
     if work["counts"]["in_progress"]:
         raise Refused("A question is already in progress; preserve its claim")
     if work["counts"]["recovery"]:
@@ -93,6 +125,54 @@ def start(lab, authority, actor, context="interactive", invocation_id=None):
     return {"session_id": identity, "status": record["status"], "published_commit": published,
         "claim_id": claim_id, "next": pending, "context": context, "planning": planning,
         "scope": record["scope"], "outcome_access_authorized": False}
+
+
+def recover(lab, authority, actor, context="scheduled-automation", invocation_id=None):
+    """Renew one expired reasoning lease on its exact original claim via CAS."""
+    fresh = authority.snapshot()
+    if fresh["control"]["paused"]:
+        raise Refused("PAUSED: preserve the expired session without new access")
+    remote = fresh["state"]
+    _validate_context(remote, context, actor)
+    budget_check(remote, fresh["control"])
+    local, control = lab.snapshot()
+    if local != remote or control != fresh["control"]:
+        raise Refused("Hydrate the exact remote state before recovering an agent session")
+    work = queue(remote, control)
+    if not work["groups"]["recovery"]:
+        raise Refused("No expired reasoning lease is recoverable")
+    target = work["groups"]["recovery"][0]
+    original = _session_for(remote, target["id"], target.get("claim_id"))
+    if not original:
+        raise Refused("Recovery requires the original STARTED session and claim")
+    identity = invocation_id or uuid4().hex
+    if not isinstance(identity, str) or not identity or len(identity) > 160:
+        raise Refused("Invalid recovery invocation id")
+    with lab.store.lock():
+        state = lab.store.read()
+        session = state["worker_sessions"].get(original["id"])
+        decision = state["decisions"].get(target["id"])
+        if (not session or session["status"] != "STARTED" or not decision
+                or decision.get("claim_id") != session.get("claim_id")
+                or decision["status"] not in ("RESEARCHING", "RECOVERY_NEEDED")):
+            raise Refused("Original claim changed while preparing recovery")
+        if session.get("recovery_invocation_id") == identity:
+            raise Refused("Recovery invocation already recorded; never replay it")
+        now = utc_now()
+        session.update(heartbeat_at=now, recovered_at=now, recovery_actor=actor,
+            recovery_context=context, recovery_invocation_id=identity,
+            recovery_count=int(session.get("recovery_count", 0)) + 1)
+        event(state, "AGENT_SESSION_RECOVERED", {"id": session["id"], "question_id": target["id"],
+            "claim_id": session["claim_id"], "actor": actor, "context": context,
+            "recovery_count": session["recovery_count"], "invocation_id": identity})
+        lab.store.save(state)
+    published = authority.claim(state, fresh["sha"])
+    pending = {**target, "status": "RESEARCHING", "claim_id": original["claim_id"]}
+    return {"session_id": original["id"], "status": "RECOVERED", "published_commit": published,
+        "claim_id": original["claim_id"], "next": pending, "context": context,
+        "recovery_count": state["worker_sessions"][original["id"]]["recovery_count"],
+        "scope": "Same original claim renewed after lease expiry; no new claim, outcome access or economic retry.",
+        "outcome_access_authorized": False}
 
 
 def finish(lab, authority, session_id, evidence_ids, summary):
