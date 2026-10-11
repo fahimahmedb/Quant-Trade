@@ -13,13 +13,13 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ? — à prendre avec worker-start/CAS.
+Aucune question admissible due maintenant ; prochaine échéance : 2026-10-13T12:45:00+00:00
 
 ## File V2
 
-Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 12.
-Sessions CLI conservées : 2. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
-Investigations documentaires en réserve : 3 ; déjà traitées/prélevées : 0. Pilotage : `READY_TO_QUALIFY`.
+Prêtes : 0 ; différées : 1 ; en cours : 1 ; récupération : 0 ; WAIT : 12.
+Sessions CLI conservées : 3. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
+Investigations documentaires en réserve : 0 ; déjà traitées/prélevées : 1. Pilotage : `BUSY`.
 
 ## Programme et preuves
 
@@ -91,6 +91,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 - `build:smard-fixed-flexibility:bounded-source-runner` : **QUALIFIED** — Publish pinned code/freeze/admission, then reserve and publish one look atomically before outcome access; execute once with fresh remote controls. Proxy scope only. ; preuves smard-fixed-proxy-software-admission-20261011.
 - `build:smard-fixed-flexibility:entrypoint-process-qa` : **QUALIFIED** — Generic runner process repaired; frozenv1 remains consumed. Qualify one distinct solar timing question without reusing thev1 reservation. ; preuves smard-safe-entrypoint-qa-20261011, smard-entrypoint-zero-price-forensic-20261011.
 - `build:smard-fixed-flexibility:solar-midday-policy` : **QUALIFIED** — Publish exact solar12→18protocol/code/admission; charge2newpaths in originalfamily before capture, RUNNING CAS then execute once. Originalv1 never reexecuted and its2charges retained. ; preuves smard-solar-policy-method-software-20261011.
+- `build:treasury-auction-zf:okx-l2-access-clock` : **RESEARCHING** — Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ? ; preuves owner-free-source-universe-20261011T1235Z.
 - `build:treasury-auction-zf:owner-free-source-universe` : **QUALIFIED** — Qualify BitMEX bounded quote-bucket path and published research rights before a distinct book-pressure exploratory protocol; raw101GB archive not admitted and no substitution to F1/COIN-M/HL/legacy FX. ; preuves owner-free-source-universe-20261011T1235Z.
 - `qualify:bitmex-book-pressure` : **WAIT** — Await exact primary automated-research permission/clock; use genuinely open SMARD source for distinct flexibility mechanism. ; preuves bitmex-automated-research-rights-contradiction-20261011T1240Z.
 - `qualify:cfe-vix-term-premium` : **WAIT** — No economic launch or hourly repeat qualification. Wake only on a distinct exact zero-paid package/rights/clock/PIT/cost/resource fact or a genuinely new implementation admission question. Otherwise cheap allowlisted metadata tick then IDLE/BLOCKED; preserve all spent history. ; preuves cfe-vx-accessible-catalogue-only-20261010, cfe-vx-rights-and-execution-qualification-open-20261010, cfe-vx-tas-timing-not-a-fill-cached-20261010, cfe-vx-current-fees-no-existing-entitlement-20261010T1731Z, cfe-vx-public-settlement-package-insufficient-for-admission-20261010T1734Z.

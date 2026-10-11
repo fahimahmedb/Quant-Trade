@@ -523,6 +523,25 @@
       "resolved_at": "2026-10-11T13:15:26.531745+00:00",
       "status": "QUALIFIED"
     },
+    "build:treasury-auction-zf:okx-l2-access-clock": {
+      "actor": "owner-v2-source-research",
+      "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+      "claimed_at": "2026-10-11T19:48:29.111930+00:00",
+      "construction_scope": "62e0f9c7804961e6b3df34e6a4a07f9a82c18bd10015b807ce21533784d455bf",
+      "created_at": "2026-10-11T19:48:29.084260+00:00",
+      "decision_use": "D\u00e9cider si une source de quotes peut soutenir un futur protocole distinct ; aucune substitution aux tests F1/COIN-M/HL/FX et aucun ZIP/prix ouvert.",
+      "evidence": [
+        "owner-free-source-universe-20261011T1235Z"
+      ],
+      "family": "treasury-auction-zf",
+      "lease_seconds": 600,
+      "outcome_access_authorized": false,
+      "parent_decision": "build:treasury-auction-zf:owner-free-source-universe",
+      "priority": 1,
+      "question": "Les archives L2 OKX offrent-elles un acc\u00e8s sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers document\u00e9es ?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "RESEARCHING"
+    },
     "build:treasury-auction-zf:owner-free-source-universe": {
       "actor": "owner-source-universe-20261011T1226Z",
       "claim_id": "095c69dfe37cc5f0e5869277986e095c23843350f3815764cb4a0fd8a2dcd920",
@@ -2725,6 +2744,58 @@
       },
       "previous": "d09c2a81c41ddd628e6392aab3f170ab248ece82dde01e959dbd744f4836f43d",
       "sequence": 144
+    },
+    {
+      "at": "2026-10-11T19:48:29.084273+00:00",
+      "hash": "d500861355a5ab768ffefa59c53d2e4029fdf149a7af808e89e2a08106ad1ec3",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "owner-free-source-universe-20261011T1235Z"
+        ],
+        "family": "treasury-auction-zf",
+        "id": "build:treasury-auction-zf:okx-l2-access-clock",
+        "parent": "build:treasury-auction-zf:owner-free-source-universe",
+        "scope": "62e0f9c7804961e6b3df34e6a4a07f9a82c18bd10015b807ce21533784d455bf"
+      },
+      "previous": "fb1821b9fc9275cff7f6228af45542c74a221ff859cf02c06e336d3aeb8c87ed",
+      "sequence": 145
+    },
+    {
+      "at": "2026-10-11T19:48:29.111936+00:00",
+      "hash": "e2a44b7690798d328da044791e1831f7a1742bed8dea97c8bdb48d025e9e9a8b",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-v2-source-research",
+        "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+        "id": "build:treasury-auction-zf:okx-l2-access-clock"
+      },
+      "previous": "d500861355a5ab768ffefa59c53d2e4029fdf149a7af808e89e2a08106ad1ec3",
+      "sequence": 146
+    },
+    {
+      "at": "2026-10-11T19:48:29.134524+00:00",
+      "hash": "0a2b4600fce1367fdf4869abe6d3870cfc71ad428dbd68695568d905fb434661",
+      "kind": "AGENT_SESSION_STARTED",
+      "payload": {
+        "actor": "owner-v2-source-research",
+        "authority_parent": "919adc877d5d03c36d9b27403ffbf5fc21f76b9d",
+        "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+        "context": "interactive",
+        "delivery_verified": false,
+        "heartbeat_at": "2026-10-11T19:48:29.134518+00:00",
+        "id": "owner-v2-okx-source-20261011",
+        "idle_reason": null,
+        "lease_seconds": 600,
+        "next_due_at": "2026-10-13T12:45:00+00:00",
+        "planning_option": "okx-l2-access-clock-v1",
+        "question_id": "build:treasury-auction-zf:okx-l2-access-clock",
+        "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+        "started_at": "2026-10-11T19:48:29.134509+00:00",
+        "status": "STARTED"
+      },
+      "previous": "e2a44b7690798d328da044791e1831f7a1742bed8dea97c8bdb48d025e9e9a8b",
+      "sequence": 147
     }
   ],
   "evidence": {
@@ -5092,7 +5163,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "86f7813ee0902801e317c8dde0c26539eb520e2568a7146adba9f005d93a2109",
+  "integrity": "5037fb365759bca97b0c4a1ecc4527c09b52c04a862f7d2bc240e6b4c9c2d87b",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5554,7 +5625,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T19:48:12.322593+00:00",
+  "updated_at": "2026-10-11T19:48:29.138841+00:00",
   "usage": {
     "cpu_seconds": 2.62594872,
     "human_seconds": null,
@@ -5585,6 +5656,23 @@
       "started_at": "2026-10-11T17:38:57.743370+00:00",
       "status": "COMPLETED",
       "summary": "Completed original claimed task from the delivered V2 instruction: synthetic-only prospective fiscal vintage recorder, six causal/storage challenges; zero real source access, no price, no look. France economic/source gate remains WAIT. Next metadata question after13Oct12:45UTC. Backend wake observed; trigger and unattended independence still UNKNOWN."
+    },
+    "owner-v2-okx-source-20261011": {
+      "actor": "owner-v2-source-research",
+      "authority_parent": "919adc877d5d03c36d9b27403ffbf5fc21f76b9d",
+      "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+      "context": "interactive",
+      "delivery_verified": false,
+      "heartbeat_at": "2026-10-11T19:48:29.134518+00:00",
+      "id": "owner-v2-okx-source-20261011",
+      "idle_reason": null,
+      "lease_seconds": 600,
+      "next_due_at": "2026-10-13T12:45:00+00:00",
+      "planning_option": "okx-l2-access-clock-v1",
+      "question_id": "build:treasury-auction-zf:okx-l2-access-clock",
+      "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+      "started_at": "2026-10-11T19:48:29.134509+00:00",
+      "status": "STARTED"
     },
     "owner-v2-repair-20261011": {
       "actor": "owner-v2-repair",
