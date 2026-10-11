@@ -19,7 +19,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state-dir", default=str(ROOT / "research/edge_lab"))
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("init", "status", "next", "render", "queue", "plan"):
+    for name in ("init", "status", "next", "render", "queue", "plan", "live"):
         sub.add_parser(name)
     tick = sub.add_parser("tick")
     tick.add_argument("--actor", default="manual")
@@ -45,6 +45,10 @@ def main(argv=None):
     agent.add_argument("--actor", required=True)
     agent.add_argument("--context", choices=("interactive", "scheduled-automation"), default="interactive")
     agent.add_argument("--invocation-id")
+    recovery = sub.add_parser("worker-recover", help="Renew an expired reasoning lease on the exact original claim")
+    recovery.add_argument("--actor", required=True)
+    recovery.add_argument("--context", choices=("interactive", "scheduled-automation"), default="scheduled-automation")
+    recovery.add_argument("--invocation-id")
     agent_finish = sub.add_parser("worker-finish", help="Publish an evidence-bound session receipt, no retry")
     agent_finish.add_argument("packet")
     preflight = sub.add_parser("legacy-preflight", help="Read-only exact EURUSD bundle; no capture/launch")
@@ -96,6 +100,10 @@ def main(argv=None):
         from quant.edge_lab.planning import project
         print(json.dumps(project(*lab.snapshot()), ensure_ascii=False))
         return
+    elif args.action == "live":
+        from quant.edge_lab.dashboard import live_state
+        print(json.dumps(live_state(*lab.snapshot()), ensure_ascii=False))
+        return
     elif args.action == "scheduler-disabled":
         lab.scheduler_disabled(strict_json(args.packet))
     elif args.action == "scheduler-configured":
@@ -112,11 +120,15 @@ def main(argv=None):
         from quant.edge_lab.worker import queue
         print(json.dumps(queue(*lab.snapshot()), ensure_ascii=False))
         return
-    elif args.action in ("worker-start", "worker-finish"):
-        from quant.edge_lab.worker import start, finish
+    elif args.action in ("worker-start", "worker-recover", "worker-finish"):
+        from quant.edge_lab.worker import start, recover, finish
         authority = GitAuthority(ROOT, args.state_dir)
-        result = (start(lab, authority, args.actor, args.context, args.invocation_id)
-            if args.action == "worker-start" else finish(lab, authority, **strict_json(args.packet)))
+        if args.action == "worker-start":
+            result = start(lab, authority, args.actor, args.context, args.invocation_id)
+        elif args.action == "worker-recover":
+            result = recover(lab, authority, args.actor, args.context, args.invocation_id)
+        else:
+            result = finish(lab, authority, **strict_json(args.packet))
         print(json.dumps(result, ensure_ascii=False))
         return
     elif args.action == "legacy-preflight":
