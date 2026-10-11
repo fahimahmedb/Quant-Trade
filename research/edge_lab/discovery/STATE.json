@@ -13,7 +13,7 @@
     {
       "id": "disc-cfe-vix-term-premium-l1-v0",
       "family": "cfe-vix-term-premium",
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "level": "L1",
       "priority": 1,
       "mechanism": "Volatility hedgers may pay a persistent insurance premium to futures sellers.",
@@ -22,7 +22,13 @@
       "proxy": "Public CFE settlement/EOD contract data with one fixed roll rule and conservative fixed costs",
       "max_time_minutes": 60,
       "kill_if": "No economically meaningful gross effect under a favorable coarse proxy, or sign inconsistent with the mechanism.",
-      "promote_if": "Effect remains materially positive after conservative simple costs and is directionally stable without tuning."
+      "promote_if": "Effect remains materially positive after conservative simple costs and is directionally stable without tuning.",
+      "selected_at": "2026-10-11T22:16:30.575864+00:00",
+      "predeclaration": "experiments/disc-cfe-vix-term-premium-l1-v0.md",
+      "expressions": 1,
+      "cost_scenarios": 2,
+      "prior_exposures": "PRIVATE_UNKNOWN; public short-vol literature; no pristine claim",
+      "execution_attempts": 0
     },
     {
       "id": "disc-sec-form4-eod-l1-v0",
@@ -119,5 +125,6 @@
     "daily-etf-b2-b4",
     "prediction-negative-risk",
     "smard-fixed-flexibility"
-  ]
+  ],
+  "updated_at": "2026-10-11T22:16:30.575864+00:00"
 }
