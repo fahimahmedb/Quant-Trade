@@ -68,7 +68,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 - `execute:smard-2025-fixed-hours-proxy-v1` : `UNKNOWN_OUTCOME` ; look `look:smard-2025-fixed-hours-proxy-v1`.
-- `execute:smard-2025-solar-noon-evening-proxy-v1` : `RESERVED` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
+- `execute:smard-2025-solar-noon-evening-proxy-v1` : `RUNNING` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
 - `build:eurusd-technical-grid:exact-legacy-adapter` : **WAIT** — Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
 - `build:eurusd-technical-grid:implement-saved-adapter` : **QUALIFIED** — Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review. ; preuves lab-complete-loop-synthetic-20261011T0013Z, owner-reminders-off-20261011T0011Z.
 - `build:eurusd-technical-grid:lab-workflow-completion` : **WAIT** — Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch. ; preuves lab-workflow-core-synthetic-20261010T2355Z.
