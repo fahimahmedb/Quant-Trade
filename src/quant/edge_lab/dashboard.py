@@ -1,6 +1,7 @@
-"""Derived Owner view and local pause/resume; this server is not a scheduler."""
+"""Derived Owner view, V3 live telemetry and local pause/resume; this server is not a scheduler."""
 import html
 import json
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -11,6 +12,69 @@ from .store import Refused
 
 def clean(value):
     return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def _session_time(session):
+    return (session.get("finished_at") or session.get("recovered_at") or
+            session.get("heartbeat_at") or session.get("started_at") or "")
+
+
+def live_state(state, control, now=None):
+    """Small machine-readable contract for the room/site; derived, never authority."""
+    now = now or datetime.now(timezone.utc)
+    from .worker import queue
+    from .planning import project
+    work = queue(state, control, now)
+    plan = project(state, control, now)
+    if control["paused"]:
+        operational = "PAUSED"
+    elif work["counts"]["recovery"]:
+        operational = "RECOVERY_NEEDED"
+    elif work["counts"]["in_progress"]:
+        operational = "WORKING"
+    elif work["counts"]["ready"] or plan["status"] == "READY_TO_QUALIFY":
+        operational = "READY"
+    elif work["counts"]["scheduled"]:
+        operational = "WAITING_FOR_DATE"
+    else:
+        operational = "IDLE_NO_ADMISSIBLE_WORK"
+    active = next(iter(work["groups"]["recovery"] or work["groups"]["in_progress"]), None)
+    sessions = list(state.get("worker_sessions", {}).values())
+    completed = [s for s in sessions if s.get("status") == "COMPLETED"]
+    last_completed = max(completed, key=_session_time, default=None)
+    scheduled = [s for s in sessions if s.get("context") == "scheduled-automation"]
+    last_scheduled = max(scheduled, key=_session_time, default=None)
+    passes = len(scheduled)
+    proof = ("MULTIPLE_SCHEDULED_PASSES_OBSERVED" if passes >= 2 else
+             "SINGLE_SCHEDULED_PASS_OBSERVED" if passes == 1 else "NO_SCHEDULED_PASS_OBSERVED")
+    if active:
+        next_action = active.get("next") or active.get("question")
+    elif work["groups"]["ready"]:
+        next_action = work["groups"]["ready"][0].get("next") or work["groups"]["ready"][0].get("question")
+    elif plan.get("next_option"):
+        next_action = plan["next_option"]["question"]
+    else:
+        next_action = None
+    tick = state["scheduler"].get("last_tick") or {}
+    return {"schema": 3, "generated_at": now.isoformat(), "state_updated_at": state.get("updated_at"),
+        "operational_status": operational, "paused": control["paused"],
+        "scheduler": {"enabled": state["scheduler"].get("enabled"), "last_tick_at": tick.get("at"),
+            "last_tick_actor": tick.get("actor"), "last_tick_status": tick.get("status"),
+            "configured_at": state["scheduler"].get("enabled_confirmed_at")},
+        "autonomy": {"proof": proof, "scheduled_passes_recorded": passes,
+            "last_scheduled_session_at": _session_time(last_scheduled) if last_scheduled else None,
+            "last_scheduled_session_id": last_scheduled.get("id") if last_scheduled else None,
+            "delivery_verified": bool(last_scheduled and last_scheduled.get("delivery_verified")),
+            "meaning": "Observed scheduled sessions prove passages, not permanent daemon uptime."},
+        "active_task": ({"id": active["id"], "status": active["status"], "claim_id": active.get("claim_id"),
+            "question": active.get("question"), "next": active.get("next")} if active else None),
+        "last_completed": ({"session_id": last_completed.get("id"), "question_id": last_completed.get("question_id"),
+            "finished_at": last_completed.get("finished_at"), "decision_status": last_completed.get("decision_status")}
+            if last_completed else None),
+        "queue": work["counts"], "planning_status": plan["status"],
+        "research_options_pending": len(plan["pending"]), "research_options_consumed": len(plan["consumed"]),
+        "next_action": next_action, "next_due_at": plan.get("next_due_at"),
+        "real_capital_authorized": False, "live_trading_authorized": False}
 
 
 def markdown(directory):
@@ -26,27 +90,36 @@ def markdown_state(state, control):
     from .planning import project
     work = queue(state, control)
     plan = project(state, control)
+    live = live_state(state, control)
     due = [(k, v) for k, v in state["decisions"].items() if question_due(v)]
     decision = None if control["paused"] else min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)
-    lines = ["# Quant — labo de recherche", "",
-             "**État : " + ("PAUSED" if control["paused"] else tick.get("status", "NOT_STARTED")) + "**",
-             "", "Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.",
-             "", f"Dernier cycle attesté : `{tick.get('at', 'NON OBSERVÉ')}` ; acteur `{tick.get('actor', 'aucun')}`.",
+    active = live["active_task"]
+    lines = ["# Quant — labo de recherche V3", "",
+             "**État opérationnel V3 : " + live["operational_status"] + "**",
+             "", "Le statut opérationnel combine file, lease worker et planificateur ; le dernier tick seul ne pilote plus l'affichage.",
+             "", f"Dernier cycle attesté : `{tick.get('at', 'NON OBSERVÉ')}` ; acteur `{tick.get('actor', 'aucun')}` ; statut tick `{tick.get('status', 'aucun')}`.",
              (f"Rappels désactivés (confirmation outil) : `{state['scheduler'].get('disabled_confirmed_at')}`."
               if state['scheduler'].get('enabled') is False else
-              f"Worker de recherche programmé : configuration observée `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}`. Politique : résultat/progrès utile/blocage externe, sans message de relance."),
-             "L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.",
+              f"Worker de recherche programmé : configuration observée `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}`."),
+             "", "## Autonomie observable V3", "",
+             f"Preuve : `{live['autonomy']['proof']}` ; passages scheduled enregistrés : **{live['autonomy']['scheduled_passes_recorded']}**.",
+             f"Dernière session scheduled : `{live['autonomy']['last_scheduled_session_at'] or 'NON OBSERVÉE'}` ; delivery_verified=`{str(live['autonomy']['delivery_verified']).lower()}`.",
+             "Une session scheduled enregistrée prouve un passage ; elle ne prouve pas à elle seule un daemon permanent. La salle doit afficher cette nuance.",
+             f"Flux machine de salle : [`LIVE.json`]({REPO}/blob/{BRANCH}/research/edge_lab/LIVE.json).",
              "", f"[Pause/reprise persistante : modifier `paused` dans CONTROL.json]({REPO}/edit/{BRANCH}/research/edge_lab/CONTROL.json)",
-             "La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.",
+             "La pause empêche tout nouveau travail.",
+             "", "## Travail courant", "",
+             (f"`{active['id']}` — **{active['status']}** — claim `{active.get('claim_id')}` — {clean(active.get('next') or active.get('question'))}" if active else
+              "Aucun travail actif."),
              "", "## Prochaine décision utile", "",
              (("Construction : " if decision[1].get("reason") == "CONSTRUCTION_ADMISSION" else "")
               + decision[1]["question"] + " (`" + decision[0] + "`)") if decision else
              (plan["next_option"]["question"] + " — à prendre avec worker-start/CAS." if plan["next_option"] else
               "Aucune question admissible due maintenant ; prochaine échéance : " + str(plan["next_due_at"] or "preuve nouvelle requise")),
-             "", "## File V2", "",
+             "", "## File V3", "",
              f"Prêtes : {work['counts']['ready']} ; différées : {work['counts']['scheduled']} ; en cours : {work['counts']['in_progress']} ; récupération : {work['counts']['recovery']} ; WAIT : {work['counts']['waiting']}.",
-             f"Sessions CLI conservées : {len(state.get('worker_sessions', {}))}. Un reçu interactif n’atteste pas une livraison autonome du scheduler.",
-             f"Investigations documentaires en réserve : {len(plan['pending'])} ; déjà traitées/prélevées : {len(plan['consumed'])}. Pilotage : `{plan['status']}`.",
+             f"Sessions CLI conservées : {len(state.get('worker_sessions', {}))}.",
+             f"Investigations documentaires en réserve : {len(plan['pending'])} ; déjà traitées/prélevées : {len(plan['consumed'])}. Pilotage plan : `{plan['status']}`.",
              "", "## Programme et preuves", "", "| Voie | État | Preuve figée | Prochain travail |", "|---|---|---|---|"]
     for identity, family in sorted(state["families"].items(), key=lambda x: x[1]["priority"]):
         sha = family.get("sha")
@@ -90,11 +163,13 @@ def markdown_state(state, control):
 
 
 def render(directory):
-    path = Path(directory) / "STATUS.md"
-    content = markdown(directory)
-    # Derived view; never the authority for pause, jobs or statistical accounting.
-    path.write_text(content)
-    return path
+    root = Path(directory)
+    lab = Lab(directory)
+    state, control = lab.snapshot()
+    status = root / "STATUS.md"
+    status.write_text(markdown_state(state, control))
+    (root / "LIVE.json").write_text(json.dumps(live_state(state, control), ensure_ascii=False, indent=2) + "\n")
+    return status
 
 
 def server(directory, port=8765):
@@ -122,11 +197,13 @@ def server(directory, port=8765):
             if self.path == "/api/state":
                 state, control = lab.snapshot()
                 return self.reply(200, json.dumps({"state": state, "control": control}), "application/json")
+            if self.path == "/api/live":
+                return self.reply(200, json.dumps(live_state(*lab.snapshot()), ensure_ascii=False), "application/json")
             if self.path != "/":
                 return self.reply(404, "Not found")
             page = """<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-            <title>Quant — recherche</title><style>body{font:16px system-ui;max-width:1100px;margin:2em auto;padding:0 1em;background:#101b29;color:#e2eaf4}pre{white-space:pre-wrap;font:14px/1.6 system-ui}button{padding:.7em 1.3em;margin-right:1em;background:#b1dbcf;border:0;border-radius:5px}</style>
-            <h1>Quant — recherche</h1><form action="/control/pause" method="post"><button>Pause persistante</button></form>
+            <title>Quant — recherche V3</title><style>body{font:16px system-ui;max-width:1100px;margin:2em auto;padding:0 1em;background:#101b29;color:#e2eaf4}pre{white-space:pre-wrap;font:14px/1.6 system-ui}button{padding:.7em 1.3em;margin-right:1em;background:#b1dbcf;border:0;border-radius:5px}</style>
+            <h1>Quant — recherche V3</h1><form action="/control/pause" method="post"><button>Pause persistante</button></form>
             <form action="/control/resume" method="post"><button>Reprendre</button></form><p>La vue reflète l'état enregistré. Recharger pour voir le dernier cycle.</p><pre>"""
             self.reply(200, page + html.escape(markdown(directory)) + "</pre></html>")
 
