@@ -1685,6 +1685,35 @@
       },
       "previous": "f975ba6afaa487e32bd0ce980d9336389950d275ab63cb911dc0d933e897021e",
       "sequence": 84
+    },
+    {
+      "at": "2026-10-11T13:17:06.426076+00:00",
+      "hash": "b5016fa23ba90b51e8bc42a4844b24c7f4e4322f8daa5850568ed9ba4cfe1082",
+      "kind": "LOOK_RESERVED_SPENT",
+      "payload": {
+        "charged_paths": 2,
+        "cost_paths": [
+          "central",
+          "stress"
+        ],
+        "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+        "dataset": "smard-de-lu-day-ahead-energy",
+        "expressions": [
+          "solar_noon_18_eff80"
+        ],
+        "id": "look:smard-2025-solar-noon-evening-proxy-v1",
+        "protocol": "smard-2025-solar-noon-evening-proxy-v1",
+        "protocol_hash": "675f65d3259ce594445e80e0b6b170a26ba91cf59cb1ef62d366bdd6ae310cb0",
+        "reserved_at": "2026-10-11T13:17:06.426028+00:00",
+        "stage": "EXPLORATION",
+        "status": "RESERVED_SPENT",
+        "window": [
+          "2024-12-31T23:00:00Z",
+          "2025-12-31T23:00:00Z"
+        ]
+      },
+      "previous": "58ff2c13fbe5b8887da846852112a15252d7f897a0aec3771f2cec7eb3defc2d",
+      "sequence": 85
     }
   ],
   "evidence": {
@@ -2971,7 +3000,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "b21d5e5c552fa8f3a57c3c8ff9e8574d909f3522ac80bb2555e75c958c900aca",
+  "integrity": "53dea4487fb83d838b1390116adf74b0d0a8d35762edcb2b3d9b5c788270bfb9",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -3004,6 +3033,29 @@
       "task_id": "execute:smard-2025-fixed-hours-proxy-v1",
       "updated_at": "2026-10-11T13:03:35.654526+00:00",
       "worker": "pinned_local_runner"
+    },
+    "execute:smard-2025-solar-noon-evening-proxy-v1": {
+      "attempts": 0,
+      "blocked_reason": null,
+      "created_at": "2026-10-11T13:17:06.426047+00:00",
+      "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+      "due_at": null,
+      "lane": "smard-fixed-flexibility",
+      "last_error": null,
+      "lease_seconds": 600,
+      "metadata": {
+        "look_id": "look:smard-2025-solar-noon-evening-proxy-v1",
+        "protocol": "smard-2025-solar-noon-evening-proxy-v1"
+      },
+      "parent": null,
+      "priority": 1,
+      "reason": "Execute exactly one frozen protocol",
+      "required_resources": [],
+      "started_at": null,
+      "status": "RESERVED",
+      "task_id": "execute:smard-2025-solar-noon-evening-proxy-v1",
+      "updated_at": "2026-10-11T13:17:06.426049+00:00",
+      "worker": "pinned_local_runner"
     }
   },
   "live_trading_authorized": false,
@@ -3025,6 +3077,28 @@
       "reserved_at": "2026-10-11T13:03:23.135479+00:00",
       "stage": "EXPLORATION",
       "status": "UNKNOWN_OUTCOME",
+      "window": [
+        "2024-12-31T23:00:00Z",
+        "2025-12-31T23:00:00Z"
+      ]
+    },
+    "look:smard-2025-solar-noon-evening-proxy-v1": {
+      "charged_paths": 2,
+      "cost_paths": [
+        "central",
+        "stress"
+      ],
+      "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+      "dataset": "smard-de-lu-day-ahead-energy",
+      "expressions": [
+        "solar_noon_18_eff80"
+      ],
+      "id": "look:smard-2025-solar-noon-evening-proxy-v1",
+      "protocol": "smard-2025-solar-noon-evening-proxy-v1",
+      "protocol_hash": "675f65d3259ce594445e80e0b6b170a26ba91cf59cb1ef62d366bdd6ae310cb0",
+      "reserved_at": "2026-10-11T13:17:06.426028+00:00",
+      "stage": "EXPLORATION",
+      "status": "RESERVED_SPENT",
       "window": [
         "2024-12-31T23:00:00Z",
         "2025-12-31T23:00:00Z"
@@ -3285,9 +3359,9 @@
     }
   },
   "trial_charges": {
-    "smard-de-lu-day-ahead-energy": 2
+    "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T13:16:28.524479+00:00",
+  "updated_at": "2026-10-11T13:17:06.430343+00:00",
   "usage": {
     "cpu_seconds": 0.09882642199999996,
     "human_seconds": null,

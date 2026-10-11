@@ -33,7 +33,7 @@ Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 
 ## N, essais et fenêtres
 
-Nouveaux looks réservés/consommés par le labo : **1**.
+Nouveaux looks réservés/consommés par le labo : **2**.
 Les jours/instruments/routes corrélés ne sont pas convertis en observations indépendantes.
 M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe cible modifié.
 
@@ -43,7 +43,7 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 | daily-etf-panel | 40 | 0 | UNKNOWN |
 | eurusd-histdata | UNKNOWN | 0 | UNKNOWN |
 | prediction-flb | UNKNOWN | 0 | UNKNOWN |
-| smard-de-lu-day-ahead-energy | UNKNOWN | 2 | UNKNOWN |
+| smard-de-lu-day-ahead-energy | UNKNOWN | 4 | UNKNOWN |
 | treasury-zf-bbo | UNKNOWN | 0 | UNKNOWN |
 
 40 = B2 36 + B4 4 pour le même panel, sans double addition. Les fenêtres protégées et réservations F1 restent fermées.
@@ -68,6 +68,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 - `execute:smard-2025-fixed-hours-proxy-v1` : `UNKNOWN_OUTCOME` ; look `look:smard-2025-fixed-hours-proxy-v1`.
+- `execute:smard-2025-solar-noon-evening-proxy-v1` : `RESERVED` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
 - `build:eurusd-technical-grid:exact-legacy-adapter` : **WAIT** — Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
 - `build:eurusd-technical-grid:implement-saved-adapter` : **QUALIFIED** — Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review. ; preuves lab-complete-loop-synthetic-20261011T0013Z, owner-reminders-off-20261011T0011Z.
 - `build:eurusd-technical-grid:lab-workflow-completion` : **WAIT** — Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch. ; preuves lab-workflow-core-synthetic-20261010T2355Z.
