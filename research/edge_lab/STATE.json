@@ -2482,6 +2482,18 @@
       },
       "previous": "ed4bf1a9313cfd02448b8acf855fb2eb9afa75a15b50f88dab0835ba67ba6f30",
       "sequence": 131
+    },
+    {
+      "at": "2026-10-11T17:56:57.319027+00:00",
+      "hash": "b7caaf81d4f9839b241d1f652dccc7f959278de45de5c1901bba076e80199d58",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "af09bbf9e69adafa1e20445507f1d2d9093871054b9a974fd5f6c50827480143",
+        "id": "edge-lab-v2-room-worker-readback-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "b5efdbc42d1c95ff8cfb1eb25d4dea2e817d24df5b9aafe21188b088480f982d",
+      "sequence": 132
     }
   ],
   "evidence": {
@@ -2841,6 +2853,78 @@
       "passage": "On a normal Business Day, the trading hours for all types of TAS transactions in VX futures end at 3:00 p.m. Chicago time. TAS transactions in an expiring VX futures contract are not permitted during the Business Day of its final settlement date. The permissible price range for all types of TAS transactions in VX futures is from 0.50 index points below the daily settlement price to 0.50 index points above the daily settlement price. All TAS orders are required to be Day Orders, Immediate or Cancel Orders, or Fill or Kill Orders. TAS Market Orders are not permitted.",
       "url": "https://www.cboe.com/tradable-products/vix/vix-futures/specifications",
       "version": "Contract Snapshot as of June 13, 2025; retrieved 2026-10-10; cached HTML SHA256 e8ed45c068278ed52bee99c8b5d60112689835b07c0153b0bfa5cfab0e2c1012"
+    },
+    "edge-lab-v2-room-worker-readback-20261011": {
+      "fact": {
+        "animation_features": [
+          "Room entrance",
+          "Cinematic visit",
+          "Character visitor greetings/blinks/breathing",
+          "Ambient light/dust",
+          "Visible parked task cards",
+          "Transfer packets on newly observed saved events",
+          "Motion pause/reduced-motion and bounded30fps"
+        ],
+        "ci": {
+          "conclusion": "success",
+          "head_sha": "bf8eef1374c30e405a962688801c8652c0809a52",
+          "run_id": 38161433072
+        },
+        "core_code_commit": "bf8eef1374c30e405a962688801c8652c0809a52",
+        "cost": {
+          "new_paid_services_usd": 0,
+          "tokens": "NOT_MEASURED",
+          "total_bill": "NOT_MEASURED",
+          "total_cpu": "NOT_MEASURED"
+        },
+        "frontend_synthetic_cases": 26,
+        "local_synthetic_cases": 104,
+        "native_readback": {
+          "agent_status": "AWAITING_NEXT_PASS",
+          "head": "fc6419d0aa94064f572c975604d144985d1ab17b",
+          "lab_status": "WAITING_DATA",
+          "observed_at": "2026-10-11T17:55:08.874Z",
+          "queue": {
+            "counts": {
+              "in_progress": 0,
+              "ready": 0,
+              "recovery": 0,
+              "scheduled": 1,
+              "waiting": 14
+            },
+            "next": null
+          },
+          "run_observed": true,
+          "session_id": "automation-6ac978ec-20261011T173609Z",
+          "session_status": "COMPLETED",
+          "stale": false,
+          "unattended_independence_verified": false
+        },
+        "software_status": "SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED",
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "Queue/receipts and prospective fiscal storage prototype prepare research; they do not validate a tradable edge or source/execution admission.",
+          "EFFECT_SIZE": "Operational: one original claimed software task completed; ready0/deferred1/WAIT14 in the fresh private room. No economic effect measured.",
+          "FAILED_CRITERIA": "No new economic admission; France data/vintages/rights/clock/quotes/costs still WAIT. Continuous closed-chat model delivery not demonstrated.",
+          "FAMILY_STATUS": "France source gate WAIT; its synthetic recorder construction QUALIFIED. Political metadata gate OPEN deferred13Oct12:45UTC. Prior closed results/UNKNOWNs unchanged.",
+          "LESSON": "A visible queue, recent Git commit, backend scheduling, CLI session and actual economic runner are distinct. Empty ready queue can be a legitimate waiting state.",
+          "NEXT_DECISION": "Only after13Oct12:45UTC, claim/publish then one bounded official metadata probe. Hourly worker remains enabled; IDLE without useful due work, no WAIT re-review/false jobs.",
+          "POWER_LIMITATION": "104 synthetic Python and26 Node checks plus ESM/DOM-contract build are software validation, not independent market N/M.",
+          "RESULT": "V2_SOFTWARE_DEPLOYED; native worker wake and one completed declared automation session saved. No new economic outcome.",
+          "UNCERTAINTY": "Unattended independence and signed delivery NOT VERIFIED; immediate API404 and later native last_run/input both preserved. No supported visual iOS/browser QA."
+        }
+      },
+      "id": "edge-lab-v2-room-worker-readback-20261011",
+      "kind": "METHOD",
+      "limit": "No market/source outcome acquired. Native run observed while this conversation was active; trigger attribution UNKNOWN, no24/7/closed-chat independence claim. iOS/browser visual check unavailable. One existing worker only; all other reminders remain disabled.",
+      "passage": "Owner-private V2 deployment succeeded. Intended native lab_status reads the exact completed session, backend wake and queue; no page refresh or animation is counted as a worker.",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site",
+      "version": {
+        "core_code_commit": "bf8eef1374c30e405a962688801c8652c0809a52",
+        "deployment_id": "appgdep_6acbcd0da9148191ab9b50871003a06d",
+        "observed_at": "2026-10-11T17:55:08.874Z",
+        "site_source_commit": "671ed1cc9093cf0699fe92e00e70cb917afc2f94",
+        "version_id": "appgprj_6aca43cb86bc81918e067097356a37de~appgver_bcd1cbc7f92c8191a075cf52b77b477a"
+      }
     },
     "eurusd-full-calendar-synthetic-capacity-20261010T2012Z": {
       "claim_commit": "dc649ba0e528e22a9908d51dd9ef15f0fb3c2c68",
@@ -4724,7 +4808,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "37e19635f31bfc952846222355a51d6b5a2996b39ff9b345233ec0508ed5a90d",
+  "integrity": "5f983eaa6cb13f32f63cf135e45b76b7c0413940b9880f4c80c6c0ad1e525b99",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5106,7 +5190,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T17:53:21.509715+00:00",
+  "updated_at": "2026-10-11T17:56:57.324382+00:00",
   "usage": {
     "cpu_seconds": 2.59873903,
     "human_seconds": null,
