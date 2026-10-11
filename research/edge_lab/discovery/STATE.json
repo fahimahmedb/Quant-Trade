@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "mode": "DISCOVERY_FIRST",
+  "status": "ACTIVE",
+  "created_from_validation_head": "b4d9219a3e4320fd0675c167d202558ed1d18d89",
+  "metrics": {
+    "discriminating_tests_completed_this_week": 0,
+    "families_touched_this_week": 0,
+    "architecture_share_estimate": 0.0,
+    "last_completed_experiment": null
+  },
+  "queue": [
+    {
+      "id": "disc-cfe-vix-term-premium-l1-v0",
+      "family": "cfe-vix-term-premium",
+      "status": "TEST_NOW",
+      "level": "L1",
+      "priority": 1,
+      "mechanism": "Volatility hedgers may pay a persistent insurance premium to futures sellers.",
+      "who_pays": "Demand for convexity/volatility protection",
+      "question": "Is a coarse fixed-rule VX risk-premium effect economically visible before paying for full executable-history reconstruction?",
+      "proxy": "Public CFE settlement/EOD contract data with one fixed roll rule and conservative fixed costs",
+      "max_time_minutes": 60,
+      "kill_if": "No economically meaningful gross effect under a favorable coarse proxy, or sign inconsistent with the mechanism.",
+      "promote_if": "Effect remains materially positive after conservative simple costs and is directionally stable without tuning."
+    },
+    {
+      "id": "disc-sec-form4-eod-l1-v0",
+      "family": "sec-events",
+      "status": "TEST_NOW",
+      "level": "L1",
+      "priority": 2,
+      "mechanism": "Some insider transactions may contain information not immediately incorporated into price.",
+      "who_pays": "Counterparties slow to incorporate informative insider activity",
+      "question": "Does the already-built Form 4 event population show a gross post-event effect large enough to justify survivorship-safe mapping work?",
+      "proxy": "Existing SEC census + simple public EOD security price proxy; explicit survivorship/delist bias label",
+      "max_time_minutes": 60,
+      "kill_if": "Gross effect is near zero or unstable before expensive data-chain cleanup.",
+      "promote_if": "Effect is economically large and consistent enough that CIK/security PIT, delists and corporate actions are worth reconstructing."
+    },
+    {
+      "id": "disc-france-oat-bund-l1-v0",
+      "family": "france-sovereign-repricing",
+      "status": "TEST_NOW",
+      "level": "L1",
+      "priority": 3,
+      "mechanism": "Fiscal-information surprises may temporarily reprice French sovereign risk relative to Germany.",
+      "who_pays": "Investors adjusting sovereign-risk exposure after fiscal information",
+      "question": "Is there a coarse relative OAT/Bund response around a fixed public event set large enough to justify futures-level reconstruction?",
+      "proxy": "Public daily sovereign-yield/index proxies with predeclared event set and horizon; no claim of executable PnL",
+      "max_time_minutes": 60,
+      "kill_if": "No visible relative response even at coarse daily level.",
+      "promote_if": "Directionally coherent response is large enough to justify FOAT/FGBL, CTD, DV01, roll and cost work."
+    },
+    {
+      "id": "disc-policy-prospective-l1-v0",
+      "family": "policy-announcement-repricing",
+      "status": "PARK_UNTIL",
+      "level": "L1",
+      "priority": 4,
+      "not_before": "2026-10-13T12:45:00+00:00",
+      "mechanism": "Policy announcements may create short-lived repricing when content surprises expectations.",
+      "who_pays": "Participants slower to process or reposition after policy information",
+      "question": "Can a small prospective sample show a repeatable sign/magnitude response without reconstructing historical famous events?",
+      "proxy": "Prospective official-source receipt clock + one predeclared liquid-market proxy/horizon",
+      "max_time_minutes": 60,
+      "kill_if": "No meaningful response in the prospective sample after simple costs.",
+      "promote_if": "Repeated prospective response is large enough to justify historical PIT reconstruction."
+    },
+    {
+      "id": "disc-crypto-book-pressure-prospective-l1-v0",
+      "family": "bitmex-book-pressure",
+      "status": "TEST_NOW",
+      "level": "L1",
+      "priority": 5,
+      "mechanism": "Persistent directional liquidity demand may make top-of-book imbalance informative over short horizons.",
+      "who_pays": "Liquidity takers demanding immediacy",
+      "question": "Can a short prospective, public, bounded order-book capture show an effect large enough to justify historical L2 work?",
+      "proxy": "Small prospective public order-book capture on a venue whose public access is permitted; fixed lagged signal, fixed horizon, fixed costs",
+      "max_time_minutes": 60,
+      "kill_if": "No directional effect net of simple crossing/fee assumptions.",
+      "promote_if": "Effect is large and stable enough to justify deeper PIT/execution validation."
+    },
+    {
+      "id": "disc-zf-auction-pressure-v0",
+      "family": "treasury-auction-zf",
+      "status": "PARK",
+      "level": "L1",
+      "priority": 20,
+      "reason": "Full BBO/roll package currently dominates cost before an effect has been demonstrated; reactivate only if a cheap public proxy is identified."
+    },
+    {
+      "id": "disc-hyperliquid-forced-flow-v0",
+      "family": "hyperliquid-forced-flow",
+      "status": "PARK",
+      "level": "L1",
+      "priority": 21,
+      "reason": "Heavy node/global-fill infrastructure before first signal. Reactivate only with a cheap compliant data route."
+    },
+    {
+      "id": "disc-f2-prediction-v0",
+      "family": "f2-prediction-access",
+      "status": "PARK",
+      "level": "L1",
+      "priority": 22,
+      "reason": "Permission/access blocker; do not consume research cycles until access changes."
+    },
+    {
+      "id": "disc-france-fuel-v0",
+      "family": "france-fuel-information",
+      "status": "PARK",
+      "level": "L1",
+      "priority": 23,
+      "reason": "Potential consumer-procurement rent but secondary to current tradable-alpha objective."
+    }
+  ],
+  "closed_families": [
+    "f1-crypto-carry",
+    "daily-etf-b2-b4",
+    "prediction-negative-risk",
+    "smard-fixed-flexibility"
+  ]
+}
