@@ -1,4 +1,83 @@
 {
+  "admissions": {
+    "smard-2025-fixed-hours-proxy-v1": {
+      "costs": {
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "scope": "100/150EUR all-in paths explicitly assumed and fixed, efficiency0.8; gross break-even cost required; positive proxy only, no tariff authenticity."
+      },
+      "data": {
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "scope": "53strong-ETag HEAD versions and200876B for whole2025 calendar; admission to single-use conditional capture and complete-calendar QA. No row QA or completeness claim before this charged access."
+      },
+      "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+      "paid_usd": 0,
+      "protocol_hash": "4b039fa2ec00964cfc9b3e44c58597aa22d7c533015632a3d29734ec6d50e471",
+      "resources": {
+        "bound_type": "FULL_PROTOCOL_UPPER_BOUND",
+        "disk_bytes_upper_bound": 4194304,
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "input_bound_evidence": "All53HEAD strongETag and Content-Length=200876 total; reader accepts <=250000bytes/<=200rowsperfile, full8760UTC-hour calendar or sourcefailure. Kernel terminates overbounds; no successful runtime inferred from partial fixture.",
+        "memory_bytes_upper_bound": 268435456,
+        "qualified": true,
+        "scope": "Full53file manifest exactbyte versions,250kB acceptedinput,10600row limit,95s capturedeadline/120s processhardstop,256MiBAS/4MiBtotaldisk conservativebound; no partial-window benchmark.",
+        "wall_seconds_upper_bound": 120
+      },
+      "rights": {
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "scope": "Official SMARD CC BY4.0 data reuse with attribution; no account/payment."
+      },
+      "risk": {
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "scope": "One bounded1MWh cycle perday; no physical/execution/capital eligibility claimed. Missing/faulted source invalidates entire proxy."
+      },
+      "runner_sha256": "83aacaa320b7586091ac018a3dffe79cbef39c549f6f6d50124c3544925a2842",
+      "software": {
+        "challenge_passed": true,
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "reviewed": true,
+        "scope": "Own reviewed/pinned implementation;75synthetic tests and distinct causal/version/DST/gaps/proxy-secret challenges; code must be published exact before execute.",
+        "synthetic_tests_passed": true
+      },
+      "timing": {
+        "evidence_ids": [
+          "smard-open-data-rights-20261011T1240Z",
+          "smard-open-source-clock-bounds-20261011",
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "qualified": true,
+        "scope": "Fixed calendar committed before auction; prices never predictors; start-interval CET/CEST and revisions/15min-change limits explicit."
+      }
+    }
+  },
   "baseline": {
     "crypto-carry-f1": {
       "declared_trials": null,
@@ -203,16 +282,18 @@
       "created_at": "2026-10-11T12:51:27.159931+00:00",
       "decision_use": "Admit one scoped exploratory test only if all seven gates hold; otherwise retain source/software block without an economic rejection.",
       "evidence": [
-        "smard-open-source-clock-bounds-20261011"
+        "smard-fixed-proxy-software-admission-20261011"
       ],
       "family": "smard-fixed-flexibility",
       "lease_seconds": 600,
+      "next_action": "Publish pinned code/freeze/admission, then reserve and publish one look atomically before outcome access; execute once with fresh remote controls. Proxy scope only.",
       "outcome_access_authorized": false,
       "parent_decision": "qualify:smard-fixed-flexibility",
       "priority": 10,
       "question": "Can a version-pinned full-2025 calendar-only physical flexibility proxy be implemented within120s, with no perfect foresight, explicit asset costs, complete QA and immutable capture receipts?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T13:00:42.437222+00:00",
+      "status": "QUALIFIED"
     },
     "build:treasury-auction-zf:owner-free-source-universe": {
       "actor": "owner-source-universe-20261011T1226Z",
@@ -1225,6 +1306,56 @@
       },
       "previous": "efb1dbb641299a0fc5252809749455f0f1f4224426e51d175d343a0b15e0c691",
       "sequence": 66
+    },
+    {
+      "at": "2026-10-11T13:00:41.975804+00:00",
+      "hash": "d119ef19c18f065c251693b37fbfd8e4864c1d21e6a25519a87bd41094c6212b",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "8072cf52dcbc35ed0254447540e78f23801a9e368908a00657337c885a1f13ce",
+        "id": "smard-fixed-proxy-software-admission-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "86e1413d070f1c4cd3a1bb19a313f37a17eb0d56850a562ab7e3512f400bb6d4",
+      "sequence": 67
+    },
+    {
+      "at": "2026-10-11T13:00:42.176496+00:00",
+      "hash": "2b60054cbd672dbb5a7c6072249d7a043c5ca830a0b814c91445c56ea493e31f",
+      "kind": "PROTOCOL_FROZEN",
+      "payload": {
+        "hash": "4b039fa2ec00964cfc9b3e44c58597aa22d7c533015632a3d29734ec6d50e471",
+        "id": "smard-2025-fixed-hours-proxy-v1",
+        "stage": "EXPLORATION"
+      },
+      "previous": "d119ef19c18f065c251693b37fbfd8e4864c1d21e6a25519a87bd41094c6212b",
+      "sequence": 68
+    },
+    {
+      "at": "2026-10-11T13:00:42.314693+00:00",
+      "hash": "5dd6729dcd0bd27405678d20d1d4f491fe4b5f56167342af337cf97f4c8aab07",
+      "kind": "PROTOCOL_ADMITTED",
+      "payload": {
+        "digest": "0940d2dc084a7aaed45d6d587a930c0972ffd6fad3dfa55446b4a66e2922b78d",
+        "protocol": "smard-2025-fixed-hours-proxy-v1"
+      },
+      "previous": "2b60054cbd672dbb5a7c6072249d7a043c5ca830a0b814c91445c56ea493e31f",
+      "sequence": 69
+    },
+    {
+      "at": "2026-10-11T13:00:42.437235+00:00",
+      "hash": "bb7471a2a613182c35afdef3be961413dd544d246b55692c28e1d1159a1ca0fd",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "smard-fixed-proxy-software-admission-20261011"
+        ],
+        "id": "build:smard-fixed-flexibility:bounded-source-runner",
+        "next": "Publish pinned code/freeze/admission, then reserve and publish one look atomically before outcome access; execute once with fresh remote controls. Proxy scope only.",
+        "verdict": "QUALIFIED"
+      },
+      "previous": "5dd6729dcd0bd27405678d20d1d4f491fe4b5f56167342af337cf97f4c8aab07",
+      "sequence": 70
     }
   ],
   "evidence": {
@@ -2194,6 +2325,58 @@
       "url": "automation:6ac978ecda1081918fba4d76dee437f4",
       "version": "connector-peek-2026-10-11T00:11Z"
     },
+    "smard-fixed-proxy-software-admission-20261011": {
+      "fact": {
+        "challenge": [
+          "future prices cannot change hours/days",
+          "negative price and loss/asset cost retained",
+          "DST23/25h complete calendar",
+          "null/gaps/nonfinite/revision fail whole source, no dropping",
+          "changed ETag rejected before body",
+          "existing raw inputs forbid reacquisition",
+          "cost comparator cannot replace primary",
+          "secret credentials not inherited"
+        ],
+        "cost_assumptions": "central100EUR,stress150EUR/inputMWh; explicit model not authentic tariffs. Efficiency0.8; NREL ATB2024 representative0.85 for a different 4h asset, not copied fee/asset quote.",
+        "network_publication_preflight": "git push --dry-run exact branch exit0; no ref mutation",
+        "resources": {
+          "accepted_bytes_cap": 250000,
+          "capture_deadline_seconds": 95,
+          "disk_upper_bytes": 4194304,
+          "files": 53,
+          "max_rows": 10600,
+          "memory_rlimit_bytes": 268435456,
+          "termination_if_bound_exceeded": "source failure/uncertain remains spent; no retry or shorter test",
+          "threads": 4,
+          "wall_hard_stop_seconds": 120,
+          "whole_input_headers_bytes": 200876
+        },
+        "software": "Reviewed within this session; all75tests PASS"
+      },
+      "id": "smard-fixed-proxy-software-admission-20261011",
+      "kind": "METHOD",
+      "limit": "No independent human/Claude review; synthetic measurements are not market outcomes. Pinned source path qualified for capture+QA on charged look, not preclaimed row QA. Physical/storage/market membership/real executable order/tariffs remain unqualified; proxy only. One year and private exposure UNKNOWN; no confirmation.",
+      "passage": "Fixed calendar policy committed before auctions; immutable HEAD validators/If-Match; full-calendar missing/null/revision/row bounds; exact raw capture persisted; proxy/CA-only environment. Own code review and distinct synthetic challenges, not Claude or an independent economic review.",
+      "url": "git:research/edge-lab-continuous/tests/test_edge_lab_smard.py",
+      "version": {
+        "code_sha256": {
+          "scripts/smard_fixed_flexibility.py": "83aacaa320b7586091ac018a3dffe79cbef39c549f6f6d50124c3544925a2842",
+          "src/quant/edge_lab/engine.py": "c4e092cb082be569db3098a4a3c47f9f8472560ea9a54b1df97233eadfcf6fcd",
+          "src/quant/edge_lab/public_inputs.py": "985af62682f3bb2ba9208dfeaa5369c7419248f1135a23611d626f7143e5c698",
+          "src/quant/edge_lab/remote.py": "44d723063c7d4659b953d0f0754b67bd3ac3db15f18ec8f6ad8d588800794d7d",
+          "src/quant/edge_lab/smard.py": "a469aff0cc262f28d687e14a240d1588c1218baceaf22612c195fe646e1bd008"
+        },
+        "synthetic_full_calendar": {
+          "cpu_seconds": 0.008614148000000002,
+          "files": 53,
+          "hours_in_2025": 8760,
+          "maxrss_bytes": 20578304,
+          "rows": 8904,
+          "wall_seconds": 0.008618451000074856
+        },
+        "test_suite": "75synthetic tests PASS; no market data"
+      }
+    },
     "smard-open-data-rights-20261011T1240Z": {
       "fact": "Use/store/derive permissible with attribution. Auction price series enables costed study of pre-fixed physical energy shift, not an executable securities signal or confirmed alpha.",
       "id": "smard-open-data-rights-20261011T1240Z",
@@ -2361,11 +2544,106 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "ac0cb1489265c0a1397dad81e8c85f920cb2d8353a6637e2763b1e030d2551c9",
+  "integrity": "83729a62164e71802f4fcda64ff874cc2f8b8dd82c21677fda540ee858fc7600",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
-  "protocols": {},
+  "protocols": {
+    "smard-2025-fixed-hours-proxy-v1": {
+      "benchmark": "Do nothing/no device/no order: incremental PnL0. No winning alternate hours or expressions.",
+      "clock": "UTC epoch milliseconds mark start of each delivery interval; Europe/Berlin CET/CEST policy. Auction outcome prices and revised hourly averages used only as outcomes, never as signals. 15min market from2025-10-01 treated as equal-volume hourly-average proxy, not native executable hourly quote.",
+      "code_sha256": {
+        "src/quant/edge_lab/public_inputs.py": "985af62682f3bb2ba9208dfeaa5369c7419248f1135a23611d626f7143e5c698",
+        "src/quant/edge_lab/smard.py": "a469aff0cc262f28d687e14a240d1588c1218baceaf22612c195fe646e1bd008"
+      },
+      "cost_paths": [
+        "central",
+        "stress"
+      ],
+      "costs": {
+        "central": {
+          "all_in_eur_per_input_mwh": 100,
+          "assumed_components": {
+            "annualized_asset": 50,
+            "auction_execution_imbalance": 10,
+            "degradation_operations": 20,
+            "financing": 5,
+            "grid_taxes_fees": 15
+          }
+        },
+        "efficiency": 0.8,
+        "failed_dispatch": "Not modeled as executable plant; absence of asset/auction fill guarantee prevents any live or survival interpretation. Incomplete source cannot assume successful dispatch or drop a day.",
+        "provenance": "Explicit hypothetical full-cost paths fixed before outcomes; not a quote/entitlement from any broker/storage/grid operator. Report gross break-even cost alongside both net paths.",
+        "stress": {
+          "all_in_eur_per_input_mwh": 150,
+          "assumed_components": {
+            "annualized_asset": 75,
+            "auction_execution_imbalance": 15,
+            "degradation_operations": 30,
+            "financing": 7.5,
+            "grid_taxes_fees": 22.5
+          }
+        }
+      },
+      "dataset": "smard-de-lu-day-ahead-energy",
+      "decision_contract": {
+        "inconclusive": "Otherwise INSUFFICIENT_POWER/model separation, preserve values; no retuning/retry.",
+        "invalid": "Any missing hour/null/nonfinite/conflicting duplicate/version/size/deadline/schema => SOURCE_UNUSABLE; no period shrink/imputation/new dataset; preserve partial inputs, consumed look. Software missing receipt remains uncertain spent.",
+        "negative": "Central daily-mean HAC95upper<0: close exactly this fixed-hours policy at assumed100EUR full cost, not all storage/energy markets. No substitute schedule.",
+        "positive": "Stress daily-mean HAC95lower>0: positive exploratory proxy only; require distinct real asset/quotes/tariff/clock validation, no capital or survival claim."
+      },
+      "design": {
+        "central_all_in_eur": 100,
+        "charge_local_hour": 3,
+        "discharge_local_hour": 18,
+        "input_mwh": 1,
+        "round_trip_efficiency": 0.8,
+        "stress_all_in_eur": 150
+      },
+      "evidence_ids": [
+        "smard-open-data-rights-20261011T1240Z",
+        "smard-open-source-clock-bounds-20261011",
+        "smard-fixed-proxy-software-admission-20261011"
+      ],
+      "expressions": [
+        "calendar_03_18_eff80"
+      ],
+      "family": "smard-fixed-flexibility",
+      "frozen_at": "2026-10-11T13:00:42.176439+00:00",
+      "hash": "4b039fa2ec00964cfc9b3e44c58597aa22d7c533015632a3d29734ec6d50e471",
+      "id": "smard-2025-fixed-hours-proxy-v1",
+      "independent_unit": "Calendar day; 365days, serial dependence/seasonality retained. Descriptive daily mean 95pct HAC Bartlett lag7; not365independent trials.",
+      "input_exposure_window": [
+        "2024-12-29T23:00:00Z",
+        "2026-01-04T23:00:00Z"
+      ],
+      "input_manifest": "research/edge_lab/sources/smard-2025-header-manifest.json",
+      "mechanism": "Fixed physical energy time-shift. Calendar-only before prior-day auction; no price-dependent order or best-hour search. Demand pays for time flexibility; asset/efficiency costs can absorb gross spread.",
+      "multiplicity_policy": "One policy, two joint dependent cost paths charged2 conservatively. Different financial-research exposure history retained; M effective/private historyUNKNOWN; period not called virgin, not confirmatory.53source files include surroundingweek outcomes recorded separately; N observed source hours differs from365day units and2trialpaths. No perfect foresight/grid/Sharpe selection.",
+      "payer": "Hypothetical wholesale electricity buyer at evening hour, not a proven counterparty or securities trader.",
+      "primary": "calendar_03_18_eff80",
+      "public_inputs": {
+        "hosts": [
+          "www.smard.de"
+        ],
+        "max_input_bytes": 250000
+      },
+      "rights": {
+        "permitted": true,
+        "scope": "Open market data CC BY4.0; attribute Bundesnetzagentur | SMARD.de. Does not authorize market orders/plant access.",
+        "url": "https://www.smard.de/en/datennutzung"
+      },
+      "risk": "1MW charging,1MWh input,0.8MWh output, one15h cycle perday. Price/credit/imbalance/failed dispatch risks limit execution claim; no asset purchased/contract/account/real capital. Constant-volume hourly-mean auction counterfactual only.",
+      "runner": "scripts/smard_fixed_flexibility.py",
+      "runner_sha256": "83aacaa320b7586091ac018a3dffe79cbef39c549f6f6d50124c3544925a2842",
+      "scope": "EXPLORATORY_PHYSICAL_COST_PROXY_NOT_FINANCIAL_ALPHA",
+      "stage": "EXPLORATION",
+      "window": [
+        "2024-12-31T23:00:00Z",
+        "2025-12-31T23:00:00Z"
+      ]
+    }
+  },
   "real_capital_authorized": false,
   "scheduler": {
     "disabled_confirmed_at": "2026-10-11T00:11:00Z",
@@ -2428,7 +2706,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-11T12:52:11.493065+00:00",
+  "updated_at": "2026-10-11T13:00:42.439710+00:00",
   "usage": {
     "cpu_seconds": 0.05173946099999997,
     "human_seconds": null,

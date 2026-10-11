@@ -82,7 +82,8 @@ class GitAuthority:
                 continue
             if directory.is_symlink() or self.repo not in directory.resolve().parents:
                 raise Refused("Linked receipt directory cannot be published")
-            for name in ("stdout.bin", "stderr.bin", "receipt.json", "original-stdout.bin", "original-result.json"):
+            for name in ("stdout.bin", "stderr.bin", "receipt.json", "original-stdout.bin", "original-result.json",
+                         "inputs.jsonl", "input-manifest.json"):
                 path = directory / name
                 if path.is_file():
                     if path.is_symlink() or path.resolve().parent != directory.resolve():

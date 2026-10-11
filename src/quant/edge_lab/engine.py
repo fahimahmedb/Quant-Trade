@@ -451,6 +451,8 @@ class Lab:
             import hashlib
             if hashlib.sha256(runner.read_bytes()).hexdigest() != protocol["runner_sha256"]:
                 raise Refused("Runner changed after freeze")
+            from .public_inputs import runner_environment
+            env = runner_environment(protocol, root)
             job.update(status="RUNNING", started_at=utc_now(), lease_seconds=control["limits"]["job_wall_seconds"] + 30)
             look["status"] = "RUNNING_SPENT"
             start_event = event(state, "EXECUTION_STARTED", {"look": look_id, "durable_commit": authority["sha"]})
@@ -467,8 +469,6 @@ class Lab:
                 self.store.save(state)
                 raise Refused("Remote claim rejected: do not execute or retry this look") from exc
         # No secrets inherited, no shell, no old QuantSystem boot. Admission trusts pinned reviewed code.
-        env = {"PATH": os.environ.get("PATH", "/usr/bin:/bin"), "PYTHONPATH": str(root / "src"),
-               "TZ": "UTC", "PYTHONNOUSERSITE": "1", "REAL_CAPITAL_AUTHORIZED": "FALSE", "LIVE_TRADING_AUTHORIZED": "FALSE"}
         started = time.monotonic()
         import resource
         child_before = resource.getrusage(resource.RUSAGE_CHILDREN)

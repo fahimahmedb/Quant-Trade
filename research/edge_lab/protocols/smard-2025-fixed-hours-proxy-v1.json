@@ -1,0 +1,92 @@
+{
+  "id": "smard-2025-fixed-hours-proxy-v1",
+  "family": "smard-fixed-flexibility",
+  "dataset": "smard-de-lu-day-ahead-energy",
+  "stage": "EXPLORATION",
+  "window": [
+    "2024-12-31T23:00:00Z",
+    "2025-12-31T23:00:00Z"
+  ],
+  "expressions": [
+    "calendar_03_18_eff80"
+  ],
+  "cost_paths": [
+    "central",
+    "stress"
+  ],
+  "primary": "calendar_03_18_eff80",
+  "design": {
+    "charge_local_hour": 3,
+    "discharge_local_hour": 18,
+    "input_mwh": 1,
+    "round_trip_efficiency": 0.8,
+    "central_all_in_eur": 100,
+    "stress_all_in_eur": 150
+  },
+  "mechanism": "Fixed physical energy time-shift. Calendar-only before prior-day auction; no price-dependent order or best-hour search. Demand pays for time flexibility; asset/efficiency costs can absorb gross spread.",
+  "payer": "Hypothetical wholesale electricity buyer at evening hour, not a proven counterparty or securities trader.",
+  "clock": "UTC epoch milliseconds mark start of each delivery interval; Europe/Berlin CET/CEST policy. Auction outcome prices and revised hourly averages used only as outcomes, never as signals. 15min market from2025-10-01 treated as equal-volume hourly-average proxy, not native executable hourly quote.",
+  "independent_unit": "Calendar day; 365days, serial dependence/seasonality retained. Descriptive daily mean 95pct HAC Bartlett lag7; not365independent trials.",
+  "benchmark": "Do nothing/no device/no order: incremental PnL0. No winning alternate hours or expressions.",
+  "costs": {
+    "efficiency": 0.8,
+    "central": {
+      "all_in_eur_per_input_mwh": 100,
+      "assumed_components": {
+        "annualized_asset": 50,
+        "degradation_operations": 20,
+        "grid_taxes_fees": 15,
+        "auction_execution_imbalance": 10,
+        "financing": 5
+      }
+    },
+    "stress": {
+      "all_in_eur_per_input_mwh": 150,
+      "assumed_components": {
+        "annualized_asset": 75,
+        "degradation_operations": 30,
+        "grid_taxes_fees": 22.5,
+        "auction_execution_imbalance": 15,
+        "financing": 7.5
+      }
+    },
+    "provenance": "Explicit hypothetical full-cost paths fixed before outcomes; not a quote/entitlement from any broker/storage/grid operator. Report gross break-even cost alongside both net paths.",
+    "failed_dispatch": "Not modeled as executable plant; absence of asset/auction fill guarantee prevents any live or survival interpretation. Incomplete source cannot assume successful dispatch or drop a day."
+  },
+  "risk": "1MW charging,1MWh input,0.8MWh output, one15h cycle perday. Price/credit/imbalance/failed dispatch risks limit execution claim; no asset purchased/contract/account/real capital. Constant-volume hourly-mean auction counterfactual only.",
+  "rights": {
+    "permitted": true,
+    "url": "https://www.smard.de/en/datennutzung",
+    "scope": "Open market data CC BY4.0; attribute Bundesnetzagentur | SMARD.de. Does not authorize market orders/plant access."
+  },
+  "decision_contract": {
+    "positive": "Stress daily-mean HAC95lower>0: positive exploratory proxy only; require distinct real asset/quotes/tariff/clock validation, no capital or survival claim.",
+    "negative": "Central daily-mean HAC95upper<0: close exactly this fixed-hours policy at assumed100EUR full cost, not all storage/energy markets. No substitute schedule.",
+    "inconclusive": "Otherwise INSUFFICIENT_POWER/model separation, preserve values; no retuning/retry.",
+    "invalid": "Any missing hour/null/nonfinite/conflicting duplicate/version/size/deadline/schema => SOURCE_UNUSABLE; no period shrink/imputation/new dataset; preserve partial inputs, consumed look. Software missing receipt remains uncertain spent."
+  },
+  "multiplicity_policy": "One policy, two joint dependent cost paths charged2 conservatively. Different financial-research exposure history retained; M effective/private historyUNKNOWN; period not called virgin, not confirmatory.53source files include surroundingweek outcomes recorded separately; N observed source hours differs from365day units and2trialpaths. No perfect foresight/grid/Sharpe selection.",
+  "runner": "scripts/smard_fixed_flexibility.py",
+  "runner_sha256": "83aacaa320b7586091ac018a3dffe79cbef39c549f6f6d50124c3544925a2842",
+  "code_sha256": {
+    "src/quant/edge_lab/smard.py": "a469aff0cc262f28d687e14a240d1588c1218baceaf22612c195fe646e1bd008",
+    "src/quant/edge_lab/public_inputs.py": "985af62682f3bb2ba9208dfeaa5369c7419248f1135a23611d626f7143e5c698"
+  },
+  "evidence_ids": [
+    "smard-open-data-rights-20261011T1240Z",
+    "smard-open-source-clock-bounds-20261011",
+    "smard-fixed-proxy-software-admission-20261011"
+  ],
+  "input_manifest": "research/edge_lab/sources/smard-2025-header-manifest.json",
+  "public_inputs": {
+    "hosts": [
+      "www.smard.de"
+    ],
+    "max_input_bytes": 250000
+  },
+  "scope": "EXPLORATORY_PHYSICAL_COST_PROXY_NOT_FINANCIAL_ALPHA",
+  "input_exposure_window": [
+    "2024-12-29T23:00:00Z",
+    "2026-01-04T23:00:00Z"
+  ]
+}

@@ -66,6 +66,16 @@ class ConstructionQuestionTests(unittest.TestCase):
                 self.lab.build_question(**packet)
             self.assertEqual(self.lab.snapshot()[0], before)
 
+    def test_qualified_metadata_can_queue_software_gate_without_outcome_authority(self):
+        self.lab.family('new-source', 'synthetic distinct mechanism', 'synthetic-data', ['build-fixture'])
+        self.lab.decide('qualify:new-source', 'QUALIFIED', ['build-fixture'], 'Metadata only')
+        self.lab.build_question('build:new-source:software', 'qualify:new-source',
+            'Does the fixed software admit a safe source capture?', 'Admit or block, no outcome access', ['build-fixture'])
+        state = self.lab.snapshot()[0]
+        self.assertFalse(state['decisions']['build:new-source:software']['outcome_access_authorized'])
+        self.assertEqual(state['looks'], {})
+        self.assertEqual(state['protocols'], {})
+
     def test_only_one_pending_build_per_parent_and_parent_provenance_required(self):
         self.lab.evidence({'id': 'unrelated-fixture', 'kind': 'METHOD',
             'url': 'https://example.invalid/unrelated', 'version': 'synthetic',
