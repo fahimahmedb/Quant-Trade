@@ -359,6 +359,9 @@
       "status": "WAIT"
     },
     "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder": {
+      "actor": "scheduled-automation",
+      "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
+      "claimed_at": "2026-10-11T17:38:57.720259+00:00",
       "construction_scope": "969880b5e3bb5bfe46f5429f1eb97665c6cd83c31d96ed1492bb72105ce67dd4",
       "created_at": "2026-10-11T17:32:42.303875+00:00",
       "decision_use": "Construire et challenger sur fixtures uniquement le stockage causal versionn\u00e9 \u00e0 partir des limites Eurostat d\u00e9j\u00e0 qualifi\u00e9es. Un PASS logiciel peut pr\u00e9parer une admission prospective distincte ; il ne qualifie ni premi\u00e8re publication historique, ni ex\u00e9cution OAT/Bund, ni acc\u00e8s empirique. Fixer p\u00e9rim\u00e8tre/cadence/droits/ressources/exposition avant toute acquisition r\u00e9elle, sinon WAIT pr\u00e9cis. Aucun probe de question d\u00e9j\u00e0 close, corpus, prix, r\u00e9sultats ou ajustement de strat\u00e9gie.",
@@ -366,12 +369,13 @@
         "macro-eurostat-vintage-gate-20261011"
       ],
       "family": "france-sovereign-repricing",
+      "lease_seconds": 600,
       "outcome_access_authorized": false,
       "parent_decision": "qualify:france-sovereign-repricing",
       "priority": 10,
       "question": "Peut-on pr\u00e9parer un enregistrateur de vintages fiscales prospectives, avec r\u00e9ception UTC, hashes et r\u00e9visions, sans reconstituer de faux historiques ni acc\u00e9der aux prix ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "build:policy-announcement-repricing:announced-api-return": {
       "construction_scope": "ea77900d85cc60c095db122a71d2a56be4bb6d7ad97cff1518f7f6f853ea8fb9",
@@ -2336,6 +2340,39 @@
       },
       "previous": "3649f0ba996ae3b1ad67f32b352375c981a6713133e5b9e753b5a60c4d81e7c6",
       "sequence": 122
+    },
+    {
+      "at": "2026-10-11T17:38:57.720264+00:00",
+      "hash": "07f7100927778cd724f006d4ebdcf7f870972102be0c2b9bb26ac8f0d62dfb84",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "scheduled-automation",
+        "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
+        "id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder"
+      },
+      "previous": "7abbf823fc8c028578668a17150d5946179b560efbba31df8fa7f5f70bdcf89a",
+      "sequence": 123
+    },
+    {
+      "at": "2026-10-11T17:38:57.743384+00:00",
+      "hash": "8777df45ce29983f4eba21c590ea7aeb3d225584963664149794db65afbd5d78",
+      "kind": "AGENT_SESSION_STARTED",
+      "payload": {
+        "actor": "scheduled-automation",
+        "authority_parent": "eeaa873f2ab1f5d082cf1f638c7f7193bd486b5f",
+        "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
+        "context": "scheduled-automation",
+        "delivery_verified": false,
+        "heartbeat_at": "2026-10-11T17:38:57.743378+00:00",
+        "id": "automation-6ac978ec-20261011T173609Z",
+        "lease_seconds": 600,
+        "question_id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
+        "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+        "started_at": "2026-10-11T17:38:57.743370+00:00",
+        "status": "STARTED"
+      },
+      "previous": "07f7100927778cd724f006d4ebdcf7f870972102be0c2b9bb26ac8f0d62dfb84",
+      "sequence": 124
     }
   ],
   "evidence": {
@@ -4493,7 +4530,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "7f1174d9b4df8515cb020fdeee0715dbc85624abd467af574ecf7af6b19b9efa",
+  "integrity": "08351481206db1e756e05254b5329cc2c70e610b28af8e2034b699d37f6e4ee9",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4870,7 +4907,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T17:38:55.092649+00:00",
+  "updated_at": "2026-10-11T17:38:57.747402+00:00",
   "usage": {
     "cpu_seconds": 2.595593096,
     "human_seconds": null,
@@ -4879,5 +4916,21 @@
     "paid_usd": 0,
     "tokens": null,
     "wall_seconds": 24.356299964016962
+  },
+  "worker_sessions": {
+    "automation-6ac978ec-20261011T173609Z": {
+      "actor": "scheduled-automation",
+      "authority_parent": "eeaa873f2ab1f5d082cf1f638c7f7193bd486b5f",
+      "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
+      "context": "scheduled-automation",
+      "delivery_verified": false,
+      "heartbeat_at": "2026-10-11T17:38:57.743378+00:00",
+      "id": "automation-6ac978ec-20261011T173609Z",
+      "lease_seconds": 600,
+      "question_id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
+      "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+      "started_at": "2026-10-11T17:38:57.743370+00:00",
+      "status": "STARTED"
+    }
   }
 }
