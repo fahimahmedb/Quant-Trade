@@ -359,6 +359,9 @@
       "status": "WAIT"
     },
     "build:eurusd-technical-grid:worker-research-routing-v2": {
+      "actor": "owner-v2-repair",
+      "claim_id": "8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2",
+      "claimed_at": "2026-10-11T19:34:20.367243+00:00",
       "construction_scope": "53999fceede35decceed9799b940196b03b8806ad36d1f41a6856f71accbc098",
       "created_at": "2026-10-11T19:34:17.021157+00:00",
       "decision_use": "Enable a bounded evidenced next-source selection when the due queue is empty, retain explicit IDLE when exhausted, and show actual passages and scoped barriers. Owner repair authorization is preserved separately.",
@@ -366,12 +369,13 @@
         "lab-complete-loop-synthetic-20261011T0013Z"
       ],
       "family": "eurusd-technical-grid",
+      "lease_seconds": 600,
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:implement-saved-adapter",
       "priority": 2,
       "question": "Repair empty-queue routing from cached, unexamined source candidates, distinguish idle/expired/finished worker receipts and superseded construction blockers, and verify atomic publication with fixtures; no market outcomes or changes to the legacy freeze.",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder": {
       "actor": "scheduled-automation",
@@ -2537,6 +2541,39 @@
       },
       "previous": "7d22a57682c816b6012e69deebc942597ed2ada62e5fd7d44dccf9b40220ee30",
       "sequence": 134
+    },
+    {
+      "at": "2026-10-11T19:34:20.367249+00:00",
+      "hash": "00d578c60f1b18069b89ac1ecdb65010d7ec7b90118af6b38bff08ca389c67da",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-v2-repair",
+        "claim_id": "8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2",
+        "id": "build:eurusd-technical-grid:worker-research-routing-v2"
+      },
+      "previous": "107890d46b25c9c86d85301841ee6b10f728f16af195951464ebdbe551d4c2a1",
+      "sequence": 135
+    },
+    {
+      "at": "2026-10-11T19:34:20.387003+00:00",
+      "hash": "5609d460e321230fb49672c85687fad9c7702cbeecc2065218a470ed6c03936a",
+      "kind": "AGENT_SESSION_STARTED",
+      "payload": {
+        "actor": "owner-v2-repair",
+        "authority_parent": "2143d6ddde1137ec7829155aaad65464e1ee6987",
+        "claim_id": "8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2",
+        "context": "interactive",
+        "delivery_verified": false,
+        "heartbeat_at": "2026-10-11T19:34:20.386997+00:00",
+        "id": "owner-v2-repair-20261011",
+        "lease_seconds": 600,
+        "question_id": "build:eurusd-technical-grid:worker-research-routing-v2",
+        "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+        "started_at": "2026-10-11T19:34:20.386988+00:00",
+        "status": "STARTED"
+      },
+      "previous": "00d578c60f1b18069b89ac1ecdb65010d7ec7b90118af6b38bff08ca389c67da",
+      "sequence": 136
     }
   ],
   "evidence": {
@@ -4860,7 +4897,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "1ee0bc5eaa48d0d9608cf91ee462ff5a3aeccde03b9bf349d3de043deb67f07e",
+  "integrity": "73cab1d61fea4347566df7522c420a0c77736b90456bf6f06026fc829bab4b6c",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5242,7 +5279,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T19:34:17.027559+00:00",
+  "updated_at": "2026-10-11T19:34:20.391214+00:00",
   "usage": {
     "cpu_seconds": 2.613686585,
     "human_seconds": null,
@@ -5273,6 +5310,20 @@
       "started_at": "2026-10-11T17:38:57.743370+00:00",
       "status": "COMPLETED",
       "summary": "Completed original claimed task from the delivered V2 instruction: synthetic-only prospective fiscal vintage recorder, six causal/storage challenges; zero real source access, no price, no look. France economic/source gate remains WAIT. Next metadata question after13Oct12:45UTC. Backend wake observed; trigger and unattended independence still UNKNOWN."
+    },
+    "owner-v2-repair-20261011": {
+      "actor": "owner-v2-repair",
+      "authority_parent": "2143d6ddde1137ec7829155aaad65464e1ee6987",
+      "claim_id": "8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2",
+      "context": "interactive",
+      "delivery_verified": false,
+      "heartbeat_at": "2026-10-11T19:34:20.386997+00:00",
+      "id": "owner-v2-repair-20261011",
+      "lease_seconds": 600,
+      "question_id": "build:eurusd-technical-grid:worker-research-routing-v2",
+      "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+      "started_at": "2026-10-11T19:34:20.386988+00:00",
+      "status": "STARTED"
     }
   }
 }
