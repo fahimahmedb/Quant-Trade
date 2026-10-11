@@ -524,14 +524,18 @@
       "claimed_at": "2026-10-11T16:02:57.857097+00:00",
       "created_at": "2026-10-11T16:02:57.595301+00:00",
       "evidence": [
-        "owner-macro-political-research-request-20261011"
+        "france-sovereign-source-rights-clock-20261011",
+        "france-sovereign-ecb-contradiction-20261011",
+        "macro-eurostat-vintage-gate-20261011"
       ],
       "family": "france-sovereign-repricing",
       "lease_seconds": 600,
+      "next_action": "SOURCE_GATE_BLOCKED_RIGHTS_VINTAGES_EXECUTION. French fiscal stress/OAT-Bund relative repricing is an untested reserve, not a country default forecast or economic rejection. Current government API lacks historical vintages; public TEC10 has informational/index rights restrictions and approximate publication, not FOAT/FGBL executable quotes. Need timestamped surprising releases, authentic matched BBO/CTD/roll/DV01/carry/basis/fees/margin and accessible rights/resources before a distinct freeze/look. No public-history extraction, purchases, broker substitution or retuned ZF. Retain incidental25Sep2026quote exposure. Next qualify timestamped policy announcement/sentiment sources only.",
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T16:07:21.059615+00:00",
+      "status": "WAIT"
     },
     "qualify:hyperliquid-forced-flow": {
       "actor": "scheduled-automation-20261010T1654Z",
@@ -553,15 +557,19 @@
       "status": "WAIT"
     },
     "qualify:policy-announcement-repricing": {
+      "actor": "owner-autonomous-20261011T1600Z",
+      "claim_id": "f53751ae415ff3382f108256c60e49510327dd66ef24df43d85235944ac0b6fb",
+      "claimed_at": "2026-10-11T16:07:21.314823+00:00",
       "created_at": "2026-10-11T16:02:57.721060+00:00",
       "evidence": [
         "owner-macro-political-research-request-20261011"
       ],
       "family": "policy-announcement-repricing",
+      "lease_seconds": 600,
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "qualify:smard-fixed-flexibility": {
       "actor": "owner-open-energy-20261011T1240Z",
@@ -1960,6 +1968,71 @@
       },
       "previous": "1597476fe261397f785ba3fd42afd5448ce87427a8b4ed766338bf9846dab64c",
       "sequence": 99
+    },
+    {
+      "at": "2026-10-11T16:07:20.472944+00:00",
+      "hash": "d0b9d8f8f53dee8bb1e535f450a6080f2452b77c2e4bc25433b9b8203a254364",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "df7541f0226250cadf883bfbc06445d474382e48c84f1f82a2dfa154e4e46fdf",
+        "id": "france-sovereign-source-rights-clock-20261011",
+        "kind": "ACCESS"
+      },
+      "previous": "add9dcf692248cf924a8d66f6636a090babf4a15226572d7e996bfc50db7fa94",
+      "sequence": 100
+    },
+    {
+      "at": "2026-10-11T16:07:20.673355+00:00",
+      "hash": "81b63588c7fc257529e5676ff534879c3b6c82241816f809fc666d1212869cf9",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "89fcc2eb55914fa76383c029f371fa1981bbd9a81d8f35167e75c3ff5ceabe9b",
+        "id": "france-sovereign-ecb-contradiction-20261011",
+        "kind": "CONTRADICTION"
+      },
+      "previous": "d0b9d8f8f53dee8bb1e535f450a6080f2452b77c2e4bc25433b9b8203a254364",
+      "sequence": 101
+    },
+    {
+      "at": "2026-10-11T16:07:20.839962+00:00",
+      "hash": "7a687930c5bcd5648e51fb2ee426a47803f7a84dd38ce0f8b6f248348b0b15a4",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "adce1ba5268f294a79f368d956488b1081ff32048b9866667fad2d1f4e04e2e4",
+        "id": "macro-eurostat-vintage-gate-20261011",
+        "kind": "ACCESS"
+      },
+      "previous": "81b63588c7fc257529e5676ff534879c3b6c82241816f809fc666d1212869cf9",
+      "sequence": 102
+    },
+    {
+      "at": "2026-10-11T16:07:21.059631+00:00",
+      "hash": "ae8f6b3c85d273bf7e607dd988cc3cf019ff1316e96bb3716d5d3563fa957df4",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "france-sovereign-source-rights-clock-20261011",
+          "france-sovereign-ecb-contradiction-20261011",
+          "macro-eurostat-vintage-gate-20261011"
+        ],
+        "id": "qualify:france-sovereign-repricing",
+        "next": "SOURCE_GATE_BLOCKED_RIGHTS_VINTAGES_EXECUTION. French fiscal stress/OAT-Bund relative repricing is an untested reserve, not a country default forecast or economic rejection. Current government API lacks historical vintages; public TEC10 has informational/index rights restrictions and approximate publication, not FOAT/FGBL executable quotes. Need timestamped surprising releases, authentic matched BBO/CTD/roll/DV01/carry/basis/fees/margin and accessible rights/resources before a distinct freeze/look. No public-history extraction, purchases, broker substitution or retuned ZF. Retain incidental25Sep2026quote exposure. Next qualify timestamped policy announcement/sentiment sources only.",
+        "verdict": "WAIT"
+      },
+      "previous": "7a687930c5bcd5648e51fb2ee426a47803f7a84dd38ce0f8b6f248348b0b15a4",
+      "sequence": 103
+    },
+    {
+      "at": "2026-10-11T16:07:21.314830+00:00",
+      "hash": "a1815f335ff6a80ba393cf10ee0ffe83613ffaeb6a57f65d21b73d52a93987fb",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-20261011T1600Z",
+        "claim_id": "f53751ae415ff3382f108256c60e49510327dd66ef24df43d85235944ac0b6fb",
+        "id": "qualify:policy-announcement-repricing"
+      },
+      "previous": "ae8f6b3c85d273bf7e607dd988cc3cf019ff1316e96bb3716d5d3563fa957df4",
+      "sequence": 104
     }
   ],
   "evidence": {
@@ -2648,6 +2721,44 @@
         "metadata": "saved same-session schema probe; no newHTTP/recordread",
         "rights": "Etalab2.0 primary catalogue",
         "timezone": "Europe/Paris"
+      }
+    },
+    "france-sovereign-ecb-contradiction-20261011": {
+      "fact": "Neither guaranteed French default nor unconditional ECB rescue follows from fiscal stress. Relative spread repricing is a plausible risk channel; backstop/discretion/reversal confound one-way bearish rules.",
+      "id": "france-sovereign-ecb-contradiction-20261011",
+      "kind": "CONTRADICTION",
+      "limit": "No eligibility, activation, funding, rating, forecast or tradable probability asserted for11Oct2026. Bad public debt figures may already be priced. This source is a mechanism challenge, not evidence of an edge.",
+      "passage": "ECB TPI targets unwarranted disorderly transmission dynamics under cumulative fiscal and sustainability criteria; activation requires Governing Council judgement; tensions caused by fundamentals can terminate purchases.",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.pr220721~973e6e7273.en.html",
+      "version": {
+        "issued": "2022-07-21",
+        "observed_at": "2026-10-11",
+        "scope": "foundational TPI design, not current activation/France eligibility"
+      }
+    },
+    "france-sovereign-source-rights-clock-20261011": {
+      "fact": "The public official site does not establish open economic-reuse/redistribution rights. TEC10 is a yield index, not executable bid/ask or tradable P&L. Approximate daily publication is not an authenticated first-availability timestamp.",
+      "id": "france-sovereign-source-rights-clock-20261011",
+      "kind": "ACCESS",
+      "limit": "No index history/CSV/API/price page opened. One unplanned search snippet for the TEC10 daily page exposed its reported25Sep2026 quote4.63percent; no strategy/return calculated. Retain this public exposure in scope; it is not a pristine observation or an economic test. Do not use the quote to choose a direction, date, threshold or window.",
+      "passage": "M\u00e9thode : interpolation quotidienne vers une obligation fictive10ans, publication aux environs de15h. Les valeurs sont informatives ; redistribution, sous-licence et usage commercial n\u00e9cessitent autorisation \u00e9crite pr\u00e9alable Euronext.",
+      "public_exposure": {
+        "dataset": "france-oat-bund-relative-sovereign-risk",
+        "displayed_tec10_percent": 4.63,
+        "independent_test_count": 0,
+        "kind": "INCIDENTAL_SEARCH_SNIPPET",
+        "pre_reserved": false,
+        "remediation": "record unplanned exposure, never assert virgin period or fake an earlier reservation; future validation must exclude/acknowledge this exposure and unknown private history",
+        "reported_quote_date": "2026-09-25",
+        "scope": "single publicly shown quote, no history/returns/BBO accessed",
+        "source_url": "https://www.aft.gouv.fr/fr/tec-10-du-jour",
+        "used_for_parameter_selection": false
+      },
+      "url": "https://www.aft.gouv.fr/fr/oat-tec-10",
+      "version": {
+        "observed_at": "2026-10-11",
+        "page": "OAT TEC10 methodology and index-use notice",
+        "source": "AFT primary official HTML"
       }
     },
     "fx-current-host-and-look-preflight-20261010T1657Z": {
@@ -3456,6 +3567,18 @@
       "url": "git:research/edge-lab-continuous/scripts/smard_solar_flexibility.py",
       "version": "675f65d3259ce594445e80e0b6b170a26ba91cf59cb1ef62d366bdd6ae310cb0"
     },
+    "macro-eurostat-vintage-gate-20261011": {
+      "fact": "Accessible current debt/deficit indicators are not a point-in-time surprise series. Use contemporaneous releases/preserved vintages and actual observation times, not final revised levels as past predictors.",
+      "id": "macro-eurostat-vintage-gate-20261011",
+      "kind": "ACCESS",
+      "limit": "No numeric dataset queried, market price read or announcement return computed. CET labels do not resolve summer/time-specific clocks; release time versus dataset refresh versus reception must remain distinct.",
+      "passage": "API provides free programmatic metadata/data. Datasets update11:00 and23:00 CET when newdata exist; database retains latest version without historical-version documentation.",
+      "url": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-introduction",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "official API introduction, general introduction"
+      }
+    },
     "owner-free-source-universe-20261011T1235Z": {
       "cost": {
         "cpu_seconds": 0.129489617,
@@ -3869,7 +3992,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "f708e1bffb032e9d07c338732f0217d96c6cfaaffdfd3a33d6d55156225dffeb",
+  "integrity": "a789460f2a5cfd65fd08441d4f2296e13dd535906955e1ffcfe3452a8fbb1257",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4244,7 +4367,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:02:57.862062+00:00",
+  "updated_at": "2026-10-11T16:07:21.321830+00:00",
   "usage": {
     "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,
