@@ -1,19 +1,19 @@
 # Checkpoint — construction autorisée
 
-STATUS = SOFTWARE_IMPLEMENTED_REMOTE_CI_PENDING
+STATUS = SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
-## STATE / NEXT courant — 2026-10-11 00:14 UTC
+## STATE / NEXT courant — 2026-10-11 00:25 UTC
 
-- Owner : terminer le labo en autonomie, puis rendre compte une fois fini ; tous les rappels désactivés. Backend peek : 12 tâches, 0 enabled, ID Quant existant inchangé. Reçus d’activation plus anciens = historiques.
-- Circuit logiciel complet : admission immuable (7 gates), une famille/expérience active, réservation consommée et publiée puis RUNNING CAS, code publié/pinné, stdout/stderr exacts y compris partiels, résultat avec 9 champs/tous chemins, décision conservatrice et leçon.
-- Raccord EURUSD exact conditionnel : bundle e42d4924 / freeze c891771d… ; aucune substitution/édition du gel, aucun ref original créé. Admission complète + capture blind + ref original existant nécessaires. Aucun run original ou prix réel ouvert.
-- Reconcile reçoit seulement les bytes/hashes sauvegardés de la réservation d’origine, vérifie le RUNNING publié et republie contre le HEAD frais ; aucun rerun, recharge, écrasement ou sortie UNKNOWN remise en queue. Artefacts exacts conservés sur cette branche.
-- Validation locale : 65 tests synthétiques PASS (3.455 s), y compris parcours complet dans Git temporaire réel, résultats positifs/négatifs/source, adoption conditionnelle, publication stdout, crash et CAS. CI phase1 38096753976 SUCCESS à 6ee7cdcd ; preuve CI finale distincte à obtenir.
-- STATE : zéro protocole/admission/look/job économique nouveau ; B2+B4=40, anciennes preuves/expositions et ledger préservés ; privé/M effectif UNKNOWN. F1 A/B fermés, KILL valide nég-risk séparé de l’ancien invalide. Aucun H001, vieux clock/runtime général, trading, achat, compte ou nouvelle automatisation.
-- Coût observable : durée de suite indiquée, opérations instrumentées dans STATE ; payant 0, budget Owner global NON FOURNI, tokens/trafic total/facture/temps humain NON MESURÉS. Ne pas convertir cette suite en N observations ou alpha.
-- NEXT : publier ce code sur research/edge-lab-continuous avec CAS, observer sa CI exacte puis enregistrer le reçu. Ensuite IDLE_SOURCE_ADMISSION_BLOCKED : pas de répétition des sources WAIT, pas de marché sans admission/gel/charge atomique. Rappels restent désactivés.
+- Construction du labo logiciel terminée. Circuit : idée/preuves → admission (7 gates) → protocole figé → réserve atomique consommée/publiée → RUNNING CAS → exécution unique → résultat exact/9 champs/tous chemins → claim/décision et leçon. Positif exploratoire = validation supplémentaire, négatif = rejet précis, source/puissance/issue incertaine = portée conservée et attente.
+- Code publié `9152379a27ab53e0e7c4b21be417440985ee991c`. CI finale pin checkout à `github.sha`, wrapper inclus : `e79528bf6a62a91dd190ffdcbd3ee25d35566063` ; https://github.com/fahimahmedb/Quant-Trade/actions/runs/38098224546 SUCCESS. CI core 38098013824 SUCCESS ; 65 tests locaux synthétiques PASS (dernière suite 3.743 s). Git temporaire réel : réservation/RUNNING/résultat/décision publiés, un seul lancement et stdout exact dans Git.
+- Raccord EURUSD exact conditionnel : bundle e42d4924 / freeze c891771d… ; code/fenêtres/coûts/six chemins/horloges inchangés. Ref original déjà existant et preuve de non-exécution sans outcome imprimé/sauvé (local/logs publics/artefacts distants) nécessaires ; aucun ref original créé, run upstream ou prix/ZIP réel ouvert. La capture, QA/exécution/droits et l’enveloppe complète des 21 mois ne sont pas admises.
+- stdout/stderr/receipts et copie originale exacts conservés sur la même branche. `reconcile` hydrate le HEAD frais, rapproche les hashes et RUNNING d’origine sans exécuter/réserver/recalculer. UNKNOWN déjà consommé reste UNKNOWN, reçu différent refusé, seconde réconciliation sans effet.
+- Owner : tous les rappels désactivés ; peek 12 tâches/0 enabled, ID existant inchangé. STATE scheduler enabled=false et panneau à jour. Les reçus d’activation anciens sont historiques ; aucune réactivation, autre automatisation, board ou handoff créé.
+- Zéro nouveau protocole/admission/look/job/outcome économique. Ledger et compteurs non décroissants, B2+B4=40 sans double addition, privé/M effectif UNKNOWN, F1 A/B fermés et KILL valide nég-risk séparé de l’invalide. Aucun H001, clock/runtime général, capital/live, achat, compte ou changement de défaut/production.
+- Coût : durées de suites et opérations instrumentées distinguées ; dépenses payantes engagées 0, budget total Owner NON FOURNI, tokens/trafic total/temps humain/facture NON MESURÉS. La CI et les fixtures ne sont ni N de marché ni activité économique.
+- NEXT = IDLE_SOURCE_ADMISSION_BLOCKED, `next` null. Pas de source WAIT revisitée sans delta utile, pas de marché sans qualification/gel/revue/challenge/charge publiée. Un fait distinct réellement accessible peut conduire à un nouveau claim, pas à rejouer un résultat. Le labo reste disponible à la demande ; les rappels restent désactivés.
 
 Les sections suivantes conservent l’historique de construction ; ce STATE/NEXT courant gouverne la reprise.
 

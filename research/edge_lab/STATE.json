@@ -927,6 +927,18 @@
       },
       "previous": "569491d749bf481b021256c842f3db903bd97d6c7b00f4be7447d4f7d5f0fd9a",
       "sequence": 49
+    },
+    {
+      "at": "2026-10-11T00:25:36.211153+00:00",
+      "hash": "4444a4d60f59535e0fe8f5dbeff0f79af4db5d86716dbcb5c596e45d9befb3b2",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "27c915b2e79cfec45879e1bdee86d1e499d20a7a9c5e30823d0018f6f5d2be59",
+        "id": "lab-software-complete-remote-ci-20261011T0025Z",
+        "kind": "METHOD"
+      },
+      "previous": "8b6497bda0a80abb29245bd49af506e1bd40125d8ed4382352f746e4ef9dafd5",
+      "sequence": 50
     }
   ],
   "evidence": {
@@ -1739,6 +1751,49 @@
       "url": "git:e42d4924a33efa78bab97939d654424cc1501fb8/research/edge_search/eurusd_range_grid/run.py",
       "version": "44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3"
     },
+    "lab-software-complete-remote-ci-20261011T0025Z": {
+      "fact": {
+        "ci": {
+          "conclusion": "success",
+          "head_sha": "e79528bf6a62a91dd190ffdcbd3ee25d35566063",
+          "run_id": 38098224546,
+          "suite": "python -m unittest discover -s tests -p test_edge_lab*.py"
+        },
+        "ci_pin_commit": "e79528bf6a62a91dd190ffdcbd3ee25d35566063",
+        "core_code_commit": "9152379a27ab53e0e7c4b21be417440985ee991c",
+        "earlier_core_ci": {
+          "conclusion": "success",
+          "head_sha": "9152379a27ab53e0e7c4b21be417440985ee991c",
+          "run_id": 38098013824
+        },
+        "last_local_suite_wall_seconds": 3.743,
+        "local_synthetic_cases": 65,
+        "market_outcomes_accessed": 0,
+        "reminders_enabled": false,
+        "software_status": "SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED",
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "No surviving/capturable edge established; capital/live false",
+          "EFFECT_SIZE": "65 software tests passing; no economic effect estimated",
+          "FAILED_CRITERIA": [
+            "ZF full BBO/rolls/rights/price missing",
+            "EURUSD actual capture/source/execution/full input bounds/original authority not admitted",
+            "HL qualified host/global fills unavailable"
+          ],
+          "FAMILY_STATUS": "Software implemented; economic admission states and historical exact results unchanged",
+          "LESSON": "Admission is separate from software completion; exact negative closes, positive requires validation, uncertainty/source failure waits; no outcomes rerun",
+          "NEXT_DECISION": "IDLE_SOURCE_ADMISSION_BLOCKED, reminders disabled. Only distinct useful accessible evidence can reopen qualification; claim and atomic look rules preserved.",
+          "POWER_LIMITATION": "0 new market observations/looks; private history and effective multiplicity UNKNOWN",
+          "RESULT": "SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED",
+          "UNCERTAINTY": "Synthetic and Git/CI proof only; executable prices/broker costs/source availability still unqualified"
+        }
+      },
+      "id": "lab-software-complete-remote-ci-20261011T0025Z",
+      "kind": "METHOD",
+      "limit": "Completion of software only, no qualified market input/full resource admission or economic alpha. Synthetic examples cannot stand in for a broker/execution test; model cost/tokens and total invoice unmeasured.",
+      "passage": "Workflow completed SUCCESS at exact trigger SHA; checkout now pins github.sha. Tests plus bounded metadata and branch-only receipt publication succeeded. Source runner changes are covered by the existing workflow, no new scheduler.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38098224546",
+      "version": "e79528bf6a62a91dd190ffdcbd3ee25d35566063"
+    },
     "lab-workflow-core-synthetic-20261010T2355Z": {
       "claim_id": "f5f1421e24df1d05f5faf0aedcc2a8de2585663d96ae28e5b4e4c057cf7e1ef8",
       "fact": {
@@ -1909,7 +1964,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "b8dc9f7303d56d4c4be48f73aa25772a867c54a13a1e3154519a7294b83f27cf",
+  "integrity": "8f9957a5ec1ba55d3130b5285de6cd9b1535bbdc5b9a31b80ccb99320d534078",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
@@ -1976,7 +2031,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-11T00:23:03.117119+00:00",
+  "updated_at": "2026-10-11T00:25:36.212973+00:00",
   "usage": {
     "cpu_seconds": 0.046268473999999976,
     "human_seconds": null,
