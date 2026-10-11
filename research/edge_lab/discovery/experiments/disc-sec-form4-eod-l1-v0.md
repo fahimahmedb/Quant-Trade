@@ -1,0 +1,7 @@
+# disc-sec-form4-eod-l1-v0
+
+EXPLORATORY_NOT_EXECUTED. Decision: PARK (PARK_DATA).
+
+Mechanism: disclosure underreaction; who_pays: slow counterparties; why_persist: heterogeneous, sparse, costly-to-map disclosures. Level:L1. Question: does the existing census support a cheap post-filing EOD test? Intended proxy: census+public EOD; known biases: survivorship, delayed prices, issuer identity and look-ahead. Fixed intended expression: qualifying purchase issuer-day, first full session after publication close to20sessions later, minus fixed broad-market benchmark; no event/rule/filter chosen from returns. Cost assumption would require preregistration before any price access; no economic run is authorized by this park artifact. Max60min; data gate stopped well before this. kill_if/promote_if: not evaluated without event population. Prior exposures: code/source metadata only; private UNKNOWN; same F3 mechanism cluster, not a newly invented family.
+
+This is a source-adequacy decision after reading existing repository metadata, **not** a backdated pre-declaration or completed economic test. Current source head contains code but no published census/events file; last run failed and has zero listed artifacts. Exact source facts and nine fields are in the result JSON. No filing corpus/prices acquired, no retry/collector rebuilt. No KILL or promotion is justified. NEXT: France; SEC can return only with an actually retrievable saved population.

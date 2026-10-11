@@ -17,6 +17,8 @@ Label: EXPLORATORY; pre-declared 2026-10-11T22:16:30.575864+00:00; parent 9348a9
 - promote_if: complete sample, central-net mean>=0.25VX points/trade, stress-net mean>0 and both fixed chronological blocks central-net positive. Otherwise PARK mixed/insufficient. PROMOTE_HIGH not allowed with this proxy. Promotion only justifies risk/margin/execution validation.
 - uncertainty: descriptive year-cluster bootstrap of pooled mean (13 year blocks,2000 draws,seed41011,95percent interval); no confirmatory p-value. Wide interval reported, no extra test chosen afterward.
 - prior_exposures: PRIVATE_UNKNOWN; known literature about short-volatility risk premium and famous volatility crashes, no claim of untouched data. Cached catalogue/HEAD only for CFE; earlier F1/B2/B4/SMARD and other closed families untouched. One rule/two fixed cost scenarios, M_effective UNKNOWN;52 trades are not52 independent discoveries.
-- RESULT: pending; no data body or economic outcome accessed for this experiment before publication.
-- DECISION: pending.
-- NEXT: execute exactly once after this declaration is published; preserve partial/error, no automatic retry.
+- RESULT: 36/52 files acquired; request37 (H2022) returned403. No payoff/statistical calculation. Full receipts in the adjacent result JSON.
+- DECISION: PARK (PARK_DATA).
+- NEXT: next Discovery family. Preserve private raw files; no automatic retry or shortened-window result.
+
+V4.2 pilot folder is design-only; this separately published quarterly45→15calendar-day contract is the executed access attempt, not the pilot20-trading-day expression. No silent equivalence is claimed.

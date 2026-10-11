@@ -5,15 +5,20 @@
   "created_from_validation_head": "b4d9219a3e4320fd0675c167d202558ed1d18d89",
   "metrics": {
     "discriminating_tests_completed_this_week": 0,
-    "families_touched_this_week": 0,
-    "architecture_share_estimate": 0.0,
-    "last_completed_experiment": null
+    "families_touched_this_week": 3,
+    "architecture_share_estimate": null,
+    "last_completed_experiment": "disc-sec-form4-eod-l1-v0",
+    "experiments_with_decision": 2,
+    "data_parks": 2,
+    "last_completed_economic_test": null,
+    "metrics_scope": "V4 Discovery only; acquisition attempt and metadata park do not count as economic tests.",
+    "architecture_share_basis": "No architecture work performed this pass so far; total rolling activity/tokens not measured."
   },
   "queue": [
     {
       "id": "disc-cfe-vix-term-premium-l1-v0",
       "family": "cfe-vix-term-premium",
-      "status": "RUNNING",
+      "status": "PARK",
       "level": "L1",
       "priority": 1,
       "mechanism": "Volatility hedgers may pay a persistent insurance premium to futures sellers.",
@@ -28,12 +33,16 @@
       "expressions": 1,
       "cost_scenarios": 2,
       "prior_exposures": "PRIVATE_UNKNOWN; public short-vol literature; no pristine claim",
-      "execution_attempts": 0
+      "execution_attempts": 1,
+      "decision": "PARK",
+      "result": "36 files acquired; H2022 HTTP403; economics not computed",
+      "completed_at": "2026-10-11T22:23:23.734417+00:00",
+      "next": "New complete data route required; reuse saved files; do not repeat failed request."
     },
     {
       "id": "disc-sec-form4-eod-l1-v0",
       "family": "sec-events",
-      "status": "TEST_NOW",
+      "status": "PARK",
       "level": "L1",
       "priority": 2,
       "mechanism": "Some insider transactions may contain information not immediately incorporated into price.",
@@ -42,12 +51,17 @@
       "proxy": "Existing SEC census + simple public EOD security price proxy; explicit survivorship/delist bias label",
       "max_time_minutes": 60,
       "kill_if": "Gross effect is near zero or unstable before expensive data-chain cleanup.",
-      "promote_if": "Effect is economically large and consistent enough that CIK/security PIT, delists and corporate actions are worth reconstructing."
+      "promote_if": "Effect is economically large and consistent enough that CIK/security PIT, delists and corporate actions are worth reconstructing.",
+      "decision": "PARK",
+      "result": "Referenced census code exists; event dataset absent at pinned current source head and latest run artifact list",
+      "completed_at": "2026-10-11T22:23:23.734417+00:00",
+      "execution_attempts": 0,
+      "next": "Locate actual saved census with hashes; do not rebuild in this cycle."
     },
     {
       "id": "disc-france-oat-bund-l1-v0",
       "family": "france-sovereign-repricing",
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "level": "L1",
       "priority": 3,
       "mechanism": "Fiscal-information surprises may temporarily reprice French sovereign risk relative to Germany.",
@@ -56,7 +70,12 @@
       "proxy": "Public daily sovereign-yield/index proxies with predeclared event set and horizon; no claim of executable PnL",
       "max_time_minutes": 60,
       "kill_if": "No visible relative response even at coarse daily level.",
-      "promote_if": "Directionally coherent response is large enough to justify FOAT/FGBL, CTD, DV01, roll and cost work."
+      "promote_if": "Directionally coherent response is large enough to justify FOAT/FGBL, CTD, DV01, roll and cost work.",
+      "selected_at": "2026-10-11T22:23:23.734417+00:00",
+      "predeclaration": "experiments/disc-france-oat-bund-l1-v0.md",
+      "execution_attempts": 0,
+      "expressions": 1,
+      "cost_scenarios": 2
     },
     {
       "id": "disc-policy-prospective-l1-v0",
@@ -126,5 +145,5 @@
     "prediction-negative-risk",
     "smard-fixed-flexibility"
   ],
-  "updated_at": "2026-10-11T22:16:30.575864+00:00"
+  "updated_at": "2026-10-11T22:23:23.734417+00:00"
 }
