@@ -61,6 +61,11 @@ def outcome(result, protocol, look):
         raise Refused("Outcome is not bound to its frozen protocol/data")
     if result["nature"] not in ("EXPLORATORY_BACKTEST", "PROSPECTIVE_OBSERVATION", "SOFTWARE_FAILURE", "SOURCE_FAILURE"):
         raise Refused("Unsupported claim of alpha or live authority")
+    expected_nature = {"NEGATIVE": "EXPLORATORY_BACKTEST", "POSITIVE_EXPLORATORY": "EXPLORATORY_BACKTEST",
+        "INSUFFICIENT_POWER": "EXPLORATORY_BACKTEST", "INVALID_SOFTWARE": "SOFTWARE_FAILURE",
+        "SOURCE_UNUSABLE": "SOURCE_FAILURE", "PROSPECTIVE_OBSERVATION": "PROSPECTIVE_OBSERVATION"}
+    if result["nature"] != expected_nature[kind]:
+        raise Refused("Outcome disposition must agree with its nature")
     if result.get("primary") != protocol["primary"]:
         raise Refused("Declared primary cannot be replaced by a winning comparator")
     expressions = result.get("expression_results", {})

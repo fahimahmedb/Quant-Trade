@@ -1,8 +1,21 @@
 # Checkpoint — construction autorisée
 
-STATUS = OWNER_AUTHORIZED_SOFTWARE_COMPLETION_IN_PROGRESS
+STATUS = SOFTWARE_IMPLEMENTED_REMOTE_CI_PENDING
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
+
+## STATE / NEXT courant — 2026-10-11 00:14 UTC
+
+- Owner : terminer le labo en autonomie, puis rendre compte une fois fini ; tous les rappels désactivés. Backend peek : 12 tâches, 0 enabled, ID Quant existant inchangé. Reçus d’activation plus anciens = historiques.
+- Circuit logiciel complet : admission immuable (7 gates), une famille/expérience active, réservation consommée et publiée puis RUNNING CAS, code publié/pinné, stdout/stderr exacts y compris partiels, résultat avec 9 champs/tous chemins, décision conservatrice et leçon.
+- Raccord EURUSD exact conditionnel : bundle e42d4924 / freeze c891771d… ; aucune substitution/édition du gel, aucun ref original créé. Admission complète + capture blind + ref original existant nécessaires. Aucun run original ou prix réel ouvert.
+- Reconcile reçoit seulement les bytes/hashes sauvegardés de la réservation d’origine, vérifie le RUNNING publié et republie contre le HEAD frais ; aucun rerun, recharge, écrasement ou sortie UNKNOWN remise en queue. Artefacts exacts conservés sur cette branche.
+- Validation locale : 65 tests synthétiques PASS (3.455 s), y compris parcours complet dans Git temporaire réel, résultats positifs/négatifs/source, adoption conditionnelle, publication stdout, crash et CAS. CI phase1 38096753976 SUCCESS à 6ee7cdcd ; preuve CI finale distincte à obtenir.
+- STATE : zéro protocole/admission/look/job économique nouveau ; B2+B4=40, anciennes preuves/expositions et ledger préservés ; privé/M effectif UNKNOWN. F1 A/B fermés, KILL valide nég-risk séparé de l’ancien invalide. Aucun H001, vieux clock/runtime général, trading, achat, compte ou nouvelle automatisation.
+- Coût observable : durée de suite indiquée, opérations instrumentées dans STATE ; payant 0, budget Owner global NON FOURNI, tokens/trafic total/facture/temps humain NON MESURÉS. Ne pas convertir cette suite en N observations ou alpha.
+- NEXT : publier ce code sur research/edge-lab-continuous avec CAS, observer sa CI exacte puis enregistrer le reçu. Ensuite IDLE_SOURCE_ADMISSION_BLOCKED : pas de répétition des sources WAIT, pas de marché sans admission/gel/charge atomique. Rappels restent désactivés.
+
+Les sections suivantes conservent l’historique de construction ; ce STATE/NEXT courant gouverne la reprise.
 
 - Accord Owner : construction autonome sur les recommandations, protection du N ; instruction actuelle remplace l'attente documentaire précédente.
 - Branche indépendante `research/edge-lab-continuous`, base distante vérifiée `09ba64b8bee1419076ec8a30f8d75a916932c2ba`.

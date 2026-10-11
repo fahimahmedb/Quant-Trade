@@ -96,16 +96,19 @@
       "created_at": "2026-10-11T00:03:22.337039+00:00",
       "decision_use": "Decide software completeness on tests and code; cached legacy metadata only, no new market/source inquiry and no original reservation creation.",
       "evidence": [
-        "lab-exact-legacy-metadata-plan-20261011T0004Z"
+        "lab-complete-loop-synthetic-20261011T0013Z",
+        "owner-reminders-off-20261011T0011Z"
       ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review.",
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:exact-legacy-adapter",
       "priority": 2,
       "question": "Implement the cached exact adoption/dual-authority bridge and offline generated result mapping; complete saved-receipt reconciliation and a real Git end-to-end synthetic proof.",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T00:14:22.977119+00:00",
+      "status": "QUALIFIED"
     },
     "build:eurusd-technical-grid:lab-workflow-completion": {
       "actor": "owner-autonomous-completion-20261010T2346Z",
@@ -871,6 +874,59 @@
       },
       "previous": "3f8ccf29eab7c62b5685fdb6cd58b3981016ed79f4f0d5e781cc8b345fab80b9",
       "sequence": 45
+    },
+    {
+      "at": "2026-10-11T00:14:22.936866+00:00",
+      "hash": "b55d591d1757cc1d32d7f4682c99e563bce300b5dd8eb89acc84b195bc42bd69",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "66b71852326a8e0886af8a45772d5abb012d8744f69c2d5720afa46fbd08ff99",
+        "id": "owner-reminders-off-20261011T0011Z",
+        "kind": "ACCESS"
+      },
+      "previous": "f5abce96cd5563642877c039eb326d304b222667ab1378047931cbcdf69713aa",
+      "sequence": 46
+    },
+    {
+      "at": "2026-10-11T00:14:22.952780+00:00",
+      "hash": "244c671834de1bf547744ff770c6453129f875de3dd2030db77f55f611eff952",
+      "kind": "SCHEDULER_DISABLED_OBSERVED",
+      "payload": {
+        "enabled": false,
+        "evidence_id": "owner-reminders-off-20261011T0011Z",
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "observed_at": "2026-10-11T00:11:00Z"
+      },
+      "previous": "b55d591d1757cc1d32d7f4682c99e563bce300b5dd8eb89acc84b195bc42bd69",
+      "sequence": 47
+    },
+    {
+      "at": "2026-10-11T00:14:22.965943+00:00",
+      "hash": "569491d749bf481b021256c842f3db903bd97d6c7b00f4be7447d4f7d5f0fd9a",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "7e2368eaa01d25eb25d43457a884e97813b19b20fe5fc0b7be21d872c53b0bd2",
+        "id": "lab-complete-loop-synthetic-20261011T0013Z",
+        "kind": "METHOD"
+      },
+      "previous": "244c671834de1bf547744ff770c6453129f875de3dd2030db77f55f611eff952",
+      "sequence": 48
+    },
+    {
+      "at": "2026-10-11T00:14:22.977130+00:00",
+      "hash": "8b6497bda0a80abb29245bd49af506e1bd40125d8ed4382352f746e4ef9dafd5",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "lab-complete-loop-synthetic-20261011T0013Z",
+          "owner-reminders-off-20261011T0011Z"
+        ],
+        "id": "build:eurusd-technical-grid:implement-saved-adapter",
+        "next": "Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review.",
+        "verdict": "QUALIFIED"
+      },
+      "previous": "569491d749bf481b021256c842f3db903bd97d6c7b00f4be7447d4f7d5f0fd9a",
+      "sequence": 49
     }
   ],
   "evidence": {
@@ -1629,6 +1685,40 @@
       "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a6961e5fc02785c7c2d797f0e1fca94425150705/research/edge_search/scouts/HYPERLIQUID_SECOND_PASS_STATUS_2026-10-08.txt",
       "version": "All files compared at exact a6961e5fc02785c7c2d797f0e1fca94425150705; no outcomes read."
     },
+    "lab-complete-loop-synthetic-20261011T0013Z": {
+      "fact": {
+        "final_code_ci": "PENDING_PUBLICATION",
+        "market_outcomes_accessed": 0,
+        "phase1_ci": {
+          "conclusion": "success",
+          "head": "6ee7cdcd15a99093c51887270844eb06e42a0f79",
+          "run_id": 38096753976
+        },
+        "real_legacy_main_calls": 0,
+        "scope": "SOFTWARE_ONLY",
+        "synthetic_tests": 65,
+        "test_wall_seconds": 3.455,
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "No economic result or live permission; full-source/resource admission still required",
+          "EFFECT_SIZE": "65 passing software cases; no economic effect estimated",
+          "FAILED_CRITERIA": [
+            "Actual candidates lack qualified source/rights/timing/full resources/original authority"
+          ],
+          "FAMILY_STATUS": "Software loop complete; economic families retain previous admission states",
+          "LESSON": "Positive needs validation, negative closes exact family, source/power waits; spent/partial receipts never rerun",
+          "NEXT_DECISION": "Publish code and verify exact remote CI, then IDLE_SOURCE_ADMISSION_BLOCKED, reminders off",
+          "POWER_LIMITATION": "No market observations acquired; private history/effective M UNKNOWN",
+          "RESULT": "SOFTWARE_IMPLEMENTED_SYNTHETIC_PASS; final remote CI pending",
+          "UNCERTAINTY": "Synthetic only; no real capture, original ref availability or executable edge established"
+        }
+      },
+      "id": "lab-complete-loop-synthetic-20261011T0013Z",
+      "kind": "METHOD",
+      "limit": "No original ref created, market protocol admitted/frozen, look or rejected hypothesis restarted. Final code CI separate.",
+      "passage": "65 synthetic tests PASS in 3.455 s. Real temporary Git: freeze/admit/reserve/RUNNING/result/claim/decision published, one execution, exact stdout retained. Legacy metadata/adoption/ref guards, six paths/nine fields and reconciliation tested on fixtures.",
+      "url": "git:research/edge-lab-continuous/tests/test_edge_lab_remote.py",
+      "version": "software-completion-2026-10-11"
+    },
     "lab-exact-legacy-metadata-plan-20261011T0004Z": {
       "fact": {
         "external_gates": [
@@ -1691,6 +1781,21 @@
         "at": "2026-10-10T23:55:41.666200+00:00",
         "scope": "Owner-authorized software completion phase1"
       }
+    },
+    "owner-reminders-off-20261011T0011Z": {
+      "fact": {
+        "automations_observed": 12,
+        "enabled": false,
+        "enabled_count": 0,
+        "existing_id": "6ac978ecda1081918fba4d76dee437f4",
+        "owner_request": "D\u00e9sactive tous les rappels"
+      },
+      "id": "owner-reminders-off-20261011T0011Z",
+      "kind": "ACCESS",
+      "limit": "Backend status only; no model choice, scheduled delivery or market worker activity claimed.",
+      "passage": "Backend peek: 12 automations, all is_enabled=false; existing Quant automation disabled; last_run_time 2026-10-10T23:15:04.081718+00:00.",
+      "url": "automation:6ac978ecda1081918fba4d76dee437f4",
+      "version": "connector-peek-2026-10-11T00:11Z"
     }
   },
   "families": {
@@ -1804,13 +1909,16 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "35d2f354563a4cb4010bd3d95d1470abe79cff202b33f0aab18cc870eb066ee2",
+  "integrity": "c2d8a2402cc4151818c4bf2a6e0fe73b1443f3d49abfb05e6b563dba10752a16",
   "jobs": {},
   "live_trading_authorized": false,
   "looks": {},
   "protocols": {},
   "real_capital_authorized": false,
   "scheduler": {
+    "disabled_confirmed_at": "2026-10-11T00:11:00Z",
+    "disabled_evidence": "owner-reminders-off-20261011T0011Z",
+    "enabled": false,
     "enabled_confirmed_at": "2026-10-10T16:25:22.012005+00:00",
     "external_run": {
       "current_prompt_run_observed": false,
@@ -1832,7 +1940,7 @@
       "refs": 5,
       "status": "COMPLETE"
     },
-    "mode": "existing_hourly_automation"
+    "mode": "manual_existing_automation_disabled"
   },
   "schema": 1,
   "sources": {
@@ -1868,7 +1976,7 @@
     }
   },
   "trial_charges": {},
-  "updated_at": "2026-10-11T00:03:22.349246+00:00",
+  "updated_at": "2026-10-11T00:14:22.979125+00:00",
   "usage": {
     "cpu_seconds": 0.040348405999999976,
     "human_seconds": null,

@@ -5,11 +5,11 @@
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
 Dernier cycle attesté : `2026-10-10T23:57:04.057363+00:00` ; acteur `github-actions-metadata`.
-Scheduler activé (confirmation outil) : `2026-10-10T16:25:22.012005+00:00`.
+Rappels désactivés (confirmation outil) : `2026-10-11T00:11:00Z`.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
 [Pause/reprise persistante : modifier `paused` dans CONTROL.json](https://github.com/fahimahmedb/Quant-Trade/edit/research/edge-lab-continuous/research/edge_lab/CONTROL.json)
-La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce contrôle ; sa désactivation arrête aussi ses réveils.
+La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.
 
 ## Prochaine décision utile
 
@@ -66,7 +66,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 
 Aucun worker économique exécuté. La qualification et la veille ne sont pas un backtest.
 - `build:eurusd-technical-grid:exact-legacy-adapter` : **WAIT** — Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
-- `build:eurusd-technical-grid:implement-saved-adapter` : **RESEARCHING** — Implement the cached exact adoption/dual-authority bridge and offline generated result mapping; complete saved-receipt reconciliation and a real Git end-to-end synthetic proof. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
+- `build:eurusd-technical-grid:implement-saved-adapter` : **QUALIFIED** — Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review. ; preuves lab-complete-loop-synthetic-20261011T0013Z, owner-reminders-off-20261011T0011Z.
 - `build:eurusd-technical-grid:lab-workflow-completion` : **WAIT** — Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch. ; preuves lab-workflow-core-synthetic-20261010T2355Z.
 - `build:eurusd-technical-grid:legacy-authority-bridge` : **WAIT** — Read-only exact preflight built/reviewed/tested; full launch remains WAIT. Preserve original refs/gates and all spent history. Next distinct construction question measures synthetic CPU/storage/runtime bounds, without price data, old runtime boot, ref creation or economic launch. ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z, fx-legacy-control-resource-bridge-gap-20261010.
 - `build:eurusd-technical-grid:synthetic-reader-boundary` : **WAIT** — Exact parser duplicate-group and CRC fixture completed and preserved. Resource/source/original-launch admission remains WAIT; no new OPEN question justified by cached information. Next: bounded metadata tick, wake only on distinct permitted full-input/group bounds or original reservation/launcher authority evidence. Never repeat the same probe, change frozen parameters/code/window, or auto-launch market. ; preuves eurusd-synthetic-reader-group-crc-20261010T2136Z.

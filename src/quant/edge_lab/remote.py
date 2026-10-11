@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 from .seed import BRANCH
-from .store import Refused, verify
+from .store import Refused, verify, digest, Store
 
 
 class GitAuthority:
@@ -27,9 +27,16 @@ class GitAuthority:
     def snapshot(self):
         self.git("fetch", "--no-tags", "origin", "refs/heads/" + BRANCH)
         sha = self.git("rev-parse", "FETCH_HEAD")
-        control = json.loads(self.git("show", sha + ":" + self.relative + "/CONTROL.json"))
+        control_spec = sha + ":" + self.relative + "/CONTROL.json"
+        if not 0 < int(self.git("cat-file", "-s", control_spec)) <= 2097152:
+            raise Refused("Remote control metadata ceiling before body read")
+        control = json.loads(self.git("show", control_spec))
         if control.get("paused") is True:
             return {"sha": sha, "branch": BRANCH, "state": None, "control": control, "runner_versions": {}}
+        if (control.get("schema") != 1 or control.get("paused") is not False
+                or control.get("real_capital_authorized") is not False
+                or control.get("live_trading_authorized") is not False):
+            raise Refused("Invalid remote controls before state read")
         remaining = control["limits"]["metadata_bytes_per_tick"]
         def blob(path):
             nonlocal remaining
@@ -47,11 +54,12 @@ class GitAuthority:
         runners = {}
         from pathlib import PurePosixPath
         for protocol in state["protocols"].values():
-            path = PurePosixPath(protocol["runner"])
-            if path.is_absolute() or ".." in path.parts or path.suffix != ".py":
-                raise Refused("Invalid frozen runner path")
-            if str(path) not in runners:
-                runners[str(path)] = hashlib.sha256(blob(str(path))).hexdigest()
+            for name in {protocol["runner"], *protocol.get("code_sha256", {})}:
+                path = PurePosixPath(name)
+                if path.is_absolute() or ".." in path.parts or path.suffix != ".py":
+                    raise Refused("Invalid frozen runner path")
+                if str(path) not in runners:
+                    runners[str(path)] = hashlib.sha256(blob(str(path))).hexdigest()
         return {"sha": sha, "branch": BRANCH, "state": state, "control": control, "runner_versions": runners}
 
     def claim(self, state, expected_sha):
@@ -62,14 +70,33 @@ class GitAuthority:
             raise Refused("Checkout is stale; no merge/rebase/rerun of a look")
         verify(state)
         from quant.state import write_json
+        allowed = {self.relative + "/STATE.json", self.relative + "/STATUS.md"}
+        # Retain exact output, including failed/partial bytes, on the same
+        # authorized branch. Only the known receipt directory can be staged.
+        for job in state["jobs"].values():
+            look_id = job.get("metadata", {}).get("look_id")
+            if not look_id or look_id not in state["looks"]:
+                continue
+            directory = self.directory / "receipts" / digest(look_id)
+            if not directory.is_dir():
+                continue
+            if directory.is_symlink() or self.repo not in directory.resolve().parents:
+                raise Refused("Linked receipt directory cannot be published")
+            for name in ("stdout.bin", "stderr.bin", "receipt.json", "original-stdout.bin", "original-result.json"):
+                path = directory / name
+                if path.is_file():
+                    if path.is_symlink() or path.resolve().parent != directory.resolve():
+                        raise Refused("Receipt path escaped publication directory")
+                    if path.stat().st_size > Store(self.directory).control()["limits"]["metadata_bytes_per_tick"]:
+                        raise Refused("Receipt publication size ceiling")
+                    allowed.add(path.relative_to(self.repo).as_posix())
         staged = self.git("diff", "--cached", "--name-only").splitlines()
-        if any(p not in (self.relative + "/STATE.json", self.relative + "/STATUS.md") for p in staged):
+        if any(p not in allowed for p in staged):
             raise Refused("Unrelated staged changes; do not publish them with a reservation")
         write_json(self.directory / "STATE.json", state)
         from .dashboard import markdown_state
-        from .store import Store
         (self.directory / "STATUS.md").write_text(markdown_state(state, Store(self.directory).control()))
-        self.git("add", "--", self.relative + "/STATE.json", self.relative + "/STATUS.md")
+        self.git("add", "--", *sorted(allowed))
         self.git("-c", "user.name=Quant Edge Lab", "-c", "user.email=edge-lab@users.noreply.github.com",
                  "commit", "-m", "edge-lab: durable single-use execution receipt [skip ci]")
         self.git("push", "origin", "HEAD:refs/heads/" + BRANCH)

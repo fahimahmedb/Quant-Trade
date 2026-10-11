@@ -112,6 +112,8 @@ class Lab:
                     event(state, "QUESTION_LEASE_EXPIRED", {"id": identity,
                                                            "next": "Reconcile cached sources/partial receipt; no blind repeated review"})
             if enabled_confirmed:
+                if state["scheduler"].get("enabled") is False:
+                    raise Refused("Owner-disabled scheduler: metadata flag cannot re-enable it")
                 state["scheduler"]["enabled_confirmed_at"] = utc_now()
             state["scheduler"]["last_tick"] = {"at": utc_now(), "actor": actor, "status": "IDLE" if not changes else "DECISION_PENDING",
                                                 "new_events": changes}
@@ -119,6 +121,20 @@ class Lab:
             state["usage"]["wall_seconds"] += time.monotonic() - wall_start
             self.store.save(state)
             return state
+
+    def scheduler_disabled(self, packet):
+        """Record the existing backend receipt; this method never calls an automation."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            if (packet.get("id") != state["scheduler"]["id"] or packet.get("enabled") is not False
+                    or packet.get("evidence_id") not in state["evidence"]):
+                raise Refused("Exact existing disabled automation receipt required")
+            timestamp(packet["observed_at"])
+            state["scheduler"].update(enabled=False, mode="manual_existing_automation_disabled",
+                disabled_confirmed_at=packet["observed_at"], disabled_evidence=packet["evidence_id"])
+            event(state, "SCHEDULER_DISABLED_OBSERVED", packet)
+            self.store.save(state)
 
     def evidence(self, packet):
         """Cache versioned source passages; outcome packets must name a charged look."""
@@ -411,10 +427,19 @@ class Lab:
                 raise Refused("Remote protocol mismatch")
             if authority.get("runner_versions", {}).get(protocol["runner"]) != protocol["runner_sha256"]:
                 raise Refused("Runner code is not published at the exact authority HEAD")
+            for path, expected in protocol.get("code_sha256", {}).items():
+                local = (Path(repository) / path).resolve()
+                if (Path(repository).resolve() not in local.parents or not local.is_file()
+                        or authority.get("runner_versions", {}).get(path) != expected
+                        or __import__("hashlib").sha256(local.read_bytes()).hexdigest() != expected):
+                    raise Refused("Frozen adapter dependency changed or unpublished")
             proof = state.get("admissions", {}).get(protocol_id)
             if proof != authority["state"].get("admissions", {}).get(protocol_id):
                 raise Refused("Admission is not durably published")
             admission(proof or {}, protocol, state, control)
+            if protocol.get("legacy"):
+                from .legacy_adapter import check_inputs, original_authority
+                check_inputs(protocol, proof, original_authority())
             if control["limits"]["cpu_seconds_total"] is not None:
                 raise Refused("BUDGET_UNMEASURED: full job/controller CPU accounting unavailable")
             if protocol["stage"] == "PROSPECTIVE" and datetime.now(timezone.utc) < timestamp(protocol["window"][1]):
@@ -428,7 +453,7 @@ class Lab:
                 raise Refused("Runner changed after freeze")
             job.update(status="RUNNING", started_at=utc_now(), lease_seconds=control["limits"]["job_wall_seconds"] + 30)
             look["status"] = "RUNNING_SPENT"
-            event(state, "EXECUTION_STARTED", {"look": look_id, "durable_commit": authority["sha"]})
+            start_event = event(state, "EXECUTION_STARTED", {"look": look_id, "durable_commit": authority["sha"]})
             self.store.save(state)
             # This happens under the stable local lock. Another host wins or loses
             # against the same remote parent; a loser never reads outcomes.
@@ -448,7 +473,6 @@ class Lab:
         import resource
         child_before = resource.getrusage(resource.RUSAGE_CHILDREN)
         artifacts = self.store.root / "receipts" / digest(look_id)
-        artifacts.mkdir(parents=True, exist_ok=False)
         stdout_path, stderr_path = artifacts / "stdout.bin", artifacts / "stderr.bin"
         output_limit = min(1048576, control["limits"]["metadata_bytes_per_tick"] // 2)
         def child_limits():
@@ -456,43 +480,39 @@ class Lab:
             memory = proof["resources"]["memory_bytes_upper_bound"]
             resource.setrlimit(resource.RLIMIT_AS, (memory, memory))
         try:
+            artifacts.mkdir(parents=True, exist_ok=False)
             with stdout_path.open("xb") as out, stderr_path.open("xb") as err:
                 subprocess.run([sys.executable, "-B", str(runner), "--protocol", protocol_id, "--look", look_id],
                     cwd=root, env=env, stdout=out, stderr=err, preexec_fn=child_limits,
                     timeout=control["limits"]["job_wall_seconds"], check=True)
-            result = strict_json(stdout_path)
-            outcome(result, protocol, look)
             error = None
         except Exception as exc:
-            result, error = None, type(exc).__name__
+            error = type(exc).__name__
+        # A complete printed receipt remains a result even if the process exits
+        # with an error afterwards. Partial/unparseable bytes remain saved too.
+        try:
+            result = strict_json(stdout_path)
+            outcome(result, protocol, look)
+        except Exception as exc:
+            result = None
+            error = error or type(exc).__name__
+        import hashlib
+        artifact_receipt = {"stdout": str(stdout_path), "stderr": str(stderr_path)}
+        for name, path in (("stdout", stdout_path), ("stderr", stderr_path)):
+            artifact_receipt[name + "_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+        child_after = resource.getrusage(resource.RUSAGE_CHILDREN)
+        cost = {"wall_seconds": time.monotonic() - started,
+                "cpu_seconds": child_after.ru_utime + child_after.ru_stime - child_before.ru_utime - child_before.ru_stime}
+        proof_receipt = {"schema": 1, "look_id": look_id, "protocol_hash": protocol["hash"],
+            "data_fingerprint": look["data_fingerprint"], "started_event_hash": start_event["hash"],
+            "running_commit": claim_sha, "process_stopped": True, "error": error,
+            "result_digest": digest(result) if result else None, "artifacts": artifact_receipt, "cost": cost}
+        if artifacts.is_dir() and not (artifacts / "receipt.json").exists():
+            write_json(artifacts / "receipt.json", proof_receipt)
+        artifact_receipt["receipt"] = str(artifacts / "receipt.json")
         with self.store.lock():
             state = self.store.read()
-            job = state["jobs"]["execute:" + protocol_id]
-            state["looks"][look_id]["status"] = "COMPLETED_SPENT" if result else "UNKNOWN_OUTCOME"
-            job.update(status="COMPLETED" if result else "UNKNOWN_OUTCOME", last_error=error,
-                       updated_at=utc_now(), metadata={**job["metadata"], "result": result, "process_stopped": True,
-                           "artifacts": {"stdout": str(stdout_path), "stderr": str(stderr_path),
-                               "stdout_sha256": __import__("hashlib").sha256(stdout_path.read_bytes()).hexdigest(),
-                               "stderr_sha256": __import__("hashlib").sha256(stderr_path.read_bytes()).hexdigest()}})
-            state["usage"]["wall_seconds"] += time.monotonic() - started
-            child_after = resource.getrusage(resource.RUSAGE_CHILDREN)
-            state["usage"]["cpu_seconds"] += (child_after.ru_utime + child_after.ru_stime
-                                              - child_before.ru_utime - child_before.ru_stime)
-            event(state, "EXECUTION_RECEIPT", {"look": look_id, "result": result, "error": error,
-                                               "wall_seconds": time.monotonic() - started})
-            if result and result["kind"] != "SOFTWARE_CHECK":
-                family = state["families"][protocol["family"]]
-                family["next"] = result["next_decision"]
-                family["latest_lesson"] = result["lesson"]
-                packet = {"id": look_id, "kind": "OUTCOME", "look_id": look_id,
-                          "url": "git:" + BRANCH + "/" + protocol["runner"], "version": protocol["hash"],
-                          "passage": "Exact pinned runner receipt, all nine verdict fields and expressions/cost paths",
-                          "fact": result, "limit": result["uncertainty"]}
-                state["evidence"][look_id] = packet
-                event(state, "EVIDENCE_ADDED", {"id": look_id, "digest": digest(packet), "kind": "OUTCOME"})
-                state["decisions"]["result:" + look_id] = {"status": "OPEN", "family": protocol["family"],
-                    "priority": family["priority"], "question": result["next_decision"], "reason": "ECONOMIC_RESULT_REQUIRES_DECISION",
-                    "created_at": utc_now(), "evidence": [look_id], "look_id": look_id}
+            self._record_receipt(state, protocol, look_id, result, error, artifact_receipt, cost)
             self.store.save(state)
             try:
                 remote_claim(state, claim_sha)
@@ -502,6 +522,114 @@ class Lab:
                 return {"look_id": look_id, "result": result, "error": error,
                         "publication": "PENDING_RECONCILIATION", "reason": type(exc).__name__}
         return {"look_id": look_id, "result": result, "error": error}
+
+    def _record_receipt(self, state, protocol, look_id, result, error, artifacts, cost):
+        job = state["jobs"]["execute:" + protocol["id"]]
+        summary = ({k: result[k] for k in ("kind", "lesson", "next_decision") if k in result}
+                   if result else None)
+        if summary:
+            summary["receipt_digest"] = digest(result)
+        if state["looks"][look_id]["status"] != "UNKNOWN_OUTCOME":
+            state["looks"][look_id]["status"] = "COMPLETED_SPENT" if result else "UNKNOWN_OUTCOME"
+        job.update(status="COMPLETED" if result else "UNKNOWN_OUTCOME", last_error=error,
+            updated_at=utc_now(), metadata={**job["metadata"], "result": summary,
+                "process_stopped": True, "artifacts": artifacts})
+        for meter in ("wall_seconds", "cpu_seconds"):
+            state["usage"][meter] += cost[meter]
+        # Full result is kept once in immutable evidence, plus exact raw bytes.
+        event(state, "EXECUTION_RECEIPT", {"look": look_id, "result": summary, "error": error, "cost": cost})
+        if result and result["kind"] != "SOFTWARE_CHECK":
+            family = state["families"][protocol["family"]]
+            family.update(next=result["next_decision"], latest_lesson=result["lesson"])
+            packet = {"id": look_id, "kind": "OUTCOME", "look_id": look_id,
+                "url": "git:" + BRANCH + "/" + protocol["runner"], "version": protocol["hash"],
+                "passage": "Exact pinned receipt, nine verdict fields and all expressions/cost paths",
+                "fact": result, "limit": result["uncertainty"]}
+            state["evidence"][look_id] = packet
+            event(state, "EVIDENCE_ADDED", {"id": look_id, "digest": digest(packet), "kind": "OUTCOME"})
+            state["decisions"]["result:" + look_id] = {"status": "OPEN", "family": protocol["family"],
+                "priority": family["priority"], "question": result["next_decision"],
+                "reason": "ECONOMIC_RESULT_REQUIRES_DECISION", "created_at": utc_now(),
+                "evidence": [look_id], "look_id": look_id}
+
+    def reconcile(self, protocol_id, receipt_directory, remote_snapshot, remote_claim):
+        """Attach saved bytes to the original charged look; never start a process."""
+        authority = remote_snapshot()
+        if authority["control"].get("paused") is True:
+            raise Refused("PAUSED before receipt access")
+        verify(authority["state"])
+        if authority["branch"] != BRANCH or not re.fullmatch("[0-9a-f]{40}", authority["sha"]):
+            raise Refused("Wrong reconciliation authority")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            if state != authority["state"] or control != authority["control"]:
+                raise Refused("Hydrate a fresh exact checkout before reconciling; preserve receipt separately")
+            protocol = state["protocols"][protocol_id]
+            look_id = "look:" + protocol_id
+            look = state["looks"][look_id]
+            if look["status"] not in ("RUNNING_SPENT", "UNKNOWN_OUTCOME", "COMPLETED_SPENT"):
+                raise Refused("No published execution: cannot invent a saved outcome")
+            root = Path(receipt_directory).resolve()
+            for name in ("receipt.json", "stdout.bin", "stderr.bin"):
+                path = root / name
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > control["limits"]["metadata_bytes_per_tick"]:
+                    raise Refused("Missing/unbounded/linked saved receipt")
+            proof = strict_json(root / "receipt.json")
+            if (proof.get("schema") != 1 or proof.get("look_id") != look_id
+                    or proof.get("protocol_hash") != protocol["hash"]
+                    or proof.get("data_fingerprint") != look["data_fingerprint"]
+                    or proof.get("process_stopped") is not True
+                    or not any(e["hash"] == proof.get("started_event_hash") and e["kind"] == "EXECUTION_STARTED"
+                        and e["payload"]["look"] == look_id for e in state["events"])):
+                raise Refused("Saved receipt does not belong to this durably running original look")
+            import hashlib
+            artifacts = {"receipt": str(root / "receipt.json")}
+            for name in ("stdout", "stderr"):
+                path = root / (name + ".bin")
+                sha = hashlib.sha256(path.read_bytes()).hexdigest()
+                if sha != proof["artifacts"].get(name + "_sha256"):
+                    raise Refused("Saved raw bytes changed; preserve contradiction, do not replay")
+                artifacts.update({name: str(path), name + "_sha256": sha})
+            if proof.get("result_digest"):
+                result = strict_json(root / "stdout.bin")
+                outcome(result, protocol, look)
+                if digest(result) != proof["result_digest"]:
+                    raise Refused("Saved result identity changed")
+            else:
+                result = None
+            job = state["jobs"]["execute:" + protocol_id]
+            existing = job.get("metadata", {}).get("artifacts", {})
+            if existing:
+                if existing.get("stdout_sha256") != artifacts["stdout_sha256"]:
+                    raise Refused("A different receipt is already saved; never replace it")
+                return {"look_id": look_id, "publication": "ALREADY_RECORDED", "executed": False}
+            cost = proof.get("cost", {})
+            if any(type(cost.get(k)) not in (int, float) or not 0 <= cost[k] < float("inf") for k in ("wall_seconds", "cpu_seconds")):
+                raise Refused("Missing observable original execution cost")
+            target = self.store.root / "receipts" / digest(look_id)
+            target.mkdir(parents=True, exist_ok=True)
+            if target.is_symlink() or self.store.root not in target.resolve().parents:
+                raise Refused("Reconciliation target escaped state directory")
+            for name in ("stdout.bin", "stderr.bin", "receipt.json", "original-stdout.bin", "original-result.json"):
+                source, destination = root / name, target / name
+                if source.is_file():
+                    if source.is_symlink() or source.stat().st_size > control["limits"]["metadata_bytes_per_tick"]:
+                        raise Refused("Unbounded/linked receipt artifact")
+                    data = source.read_bytes()
+                    if destination.exists():
+                        if destination.read_bytes() != data:
+                            raise Refused("Different retained artifact exists; never overwrite")
+                    else:
+                        with destination.open("xb") as stream:
+                            stream.write(data)
+            for name in ("stdout", "stderr", "receipt"):
+                artifacts[name] = str(target / (name + ".bin" if name != "receipt" else "receipt.json"))
+            self._record_receipt(state, protocol, look_id, result, proof.get("error"), artifacts, cost)
+            event(state, "RECEIPT_RECONCILED_NO_EXECUTION", {"look": look_id, "original_running_commit": proof["running_commit"]})
+            self.store.save(state)
+            remote_claim(state, authority["sha"])
+            return {"look_id": look_id, "publication": "RECONCILED", "executed": False}
 
     def next_decision(self):
         state, control = self.snapshot()

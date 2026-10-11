@@ -28,10 +28,12 @@ def markdown_state(state, control):
              "**État : " + ("PAUSED" if control["paused"] else tick.get("status", "NOT_STARTED")) + "**",
              "", "Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.",
              "", f"Dernier cycle attesté : `{tick.get('at', 'NON OBSERVÉ')}` ; acteur `{tick.get('actor', 'aucun')}`.",
-             f"Scheduler activé (confirmation outil) : `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}`.",
+             (f"Rappels désactivés (confirmation outil) : `{state['scheduler'].get('disabled_confirmed_at')}`."
+              if state['scheduler'].get('enabled') is False else
+              f"Activation historique observée : `{state['scheduler']['enabled_confirmed_at'] or 'NON CONFIRMÉ'}` ; état backend courant à qualifier."),
              "L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.",
              "", f"[Pause/reprise persistante : modifier `paused` dans CONTROL.json]({REPO}/edit/{BRANCH}/research/edge_lab/CONTROL.json)",
-             "La pause empêche tout nouveau travail. Le scheduler reste chargé de lire ce contrôle ; sa désactivation arrête aussi ses réveils.",
+             "La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.",
              "", "## Prochaine décision utile", "",
              (("Construction : " if decision[1].get("reason") == "CONSTRUCTION_ADMISSION" else "")
               + decision[1]["question"] + " (`" + decision[0] + "`)") if decision else "Aucune question ouverte ; attendre une preuve ou un accès nouveau.",

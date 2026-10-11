@@ -29,7 +29,7 @@ def main(argv=None):
     for name in ("pause", "resume"):
         command = sub.add_parser(name)
         command.add_argument("--reason", default="Owner instruction")
-    for name in ("evidence", "freeze", "family", "decide", "build-question"):
+    for name in ("evidence", "freeze", "family", "decide", "build-question", "scheduler-disabled"):
         command = sub.add_parser(name)
         command.add_argument("packet", help="Versioned JSON packet; use primary evidence")
     reserve = sub.add_parser("reserve")
@@ -47,6 +47,12 @@ def main(argv=None):
     resources.add_argument("--claim-id", required=True)
     reader = sub.add_parser("synthetic-reader", help="Fixed synthetic ZIP duplicate/CRC admission challenge")
     reader.add_argument("--claim-id", required=True)
+    for name in ("legacy-plan", "adopt-eurusd"):
+        command = sub.add_parser(name, help="Exact immutable legacy binding; never create original ref")
+        command.add_argument("packet")
+    reconcile = sub.add_parser("reconcile", help="Publish a saved execution receipt without launching/recalculating")
+    reconcile.add_argument("protocol")
+    reconcile.add_argument("receipt_dir")
     execute = sub.add_parser("execute")
     execute.add_argument("protocol")
     serve = sub.add_parser("serve")
@@ -74,6 +80,8 @@ def main(argv=None):
         lab.decide(**strict_json(args.packet))
     elif args.action == "build-question":
         lab.build_question(**strict_json(args.packet))
+    elif args.action == "scheduler-disabled":
+        lab.scheduler_disabled(strict_json(args.packet))
     elif args.action == "reserve":
         lab.reserve(args.protocol, args.fingerprint)
     elif args.action == "admit":
@@ -88,6 +96,16 @@ def main(argv=None):
         authority = GitAuthority(ROOT, args.state_dir)
         receipt = lab.execute(args.protocol, ROOT, authority.snapshot, authority.claim)
         print(json.dumps(receipt))
+    elif args.action in ("legacy-plan", "adopt-eurusd"):
+        from quant.edge_lab.legacy_adapter import plan, adopt
+        packet = strict_json(args.packet)
+        if args.action == "legacy-plan":
+            print(json.dumps(plan(lab, ROOT, packet), ensure_ascii=False))
+            return
+        adopt(lab, ROOT, packet)
+    elif args.action == "reconcile":
+        authority = GitAuthority(ROOT, args.state_dir)
+        print(json.dumps(lab.reconcile(args.protocol, args.receipt_dir, authority.snapshot, authority.claim)))
     elif args.action == "synthetic-resources":
         from quant.edge_lab.resources import probe_eurusd
         print(json.dumps(probe_eurusd(lab, ROOT, args.claim_id), ensure_ascii=False))
