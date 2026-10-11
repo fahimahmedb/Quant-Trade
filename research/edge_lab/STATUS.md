@@ -13,7 +13,7 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Aucune question ouverte ; attendre une preuve ou un accès nouveau.
+Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun. (`result:look:smard-2025-solar-noon-evening-proxy-v1`)
 
 ## Programme et preuves
 
@@ -26,7 +26,7 @@ Aucune question ouverte ; attendre une preuve ou un accès nouveau.
 | Form 4/F3 et 13D distinct | `BLOCKED_DATA_CHAIN` | [afd69b74](https://github.com/fahimahmedb/Quant-Trade/tree/afd69b74c12d02cb9b8f731137ba5c357819ab24) | Réutiliser census ; qualifier CIK/security PIT et delist prices. |
 | Order-book inventory/queue pressure may forecast the next intraday move because liquidity takers execute persistent directional demand; test one deterministic lagged BBO-size signal net of crossing, fees and execution risk. Distinct from rejected carry, liquidations, RSI grid and ETF expressions. | `HYPOTHESIS` | Hypothèse, aucun edge établi | Choisir un test discriminant accessible. |
 | Volatility insurance risk transfer in CFE VX futures: test whether hedging demand compensates sellers after executable costs, jump/tail/margin risk and an appropriate risk-premium benchmark; no promised alpha. | `HYPOTHESIS` | Hypothèse, aucun edge établi | Choisir un test discriminant accessible. |
-| Time-shift energy supply from a fixed low-demand hour to a fixed high-demand hour: demand pays for flexibility, but efficiency losses, asset cost, fees and dispatch risk may consume the spread. One fixed physical procurement/supply proxy, no perfect-foresight dispatch or parameter search; distinct from financial carry/grid/rejected trials. | `HYPOTHESIS` | Hypothèse, aucun edge établi | Choisir un test discriminant accessible. |
+| Time-shift energy supply from a fixed low-demand hour to a fixed high-demand hour: demand pays for flexibility, but efficiency losses, asset cost, fees and dispatch risk may consume the spread. One fixed physical procurement/supply proxy, no perfect-foresight dispatch or parameter search; distinct from financial carry/grid/rejected trials. | `HYPOTHESIS` | Hypothèse, aucun edge établi | Close this exact noon-to-evening100EUR-cost policy; retain gross break-even cost without authorizing a cheaper-cost rerun. |
 | B2/B4 ETF daily | `REJECTED_CLOSED` | [1e88c6b8](https://github.com/fahimahmedb/Quant-Trade/tree/1e88c6b82d682ae6d6d71b0732cb1bdb232cea3a) | Conserver rejets, 40 essais déclarés et shadow non lu. |
 | F1 carry crypto | `REJECTED_CLOSED` | [ea9d2d0e](https://github.com/fahimahmedb/Quant-Trade/tree/ea9d2d0e0e057199bb168249c963acbc88e89de5) | Conserver la disposition publique ; aucune ouverture des outcomes A/B. |
 | Prediction negative-risk | `REJECTED_CLOSED` | [2b66b193](https://github.com/fahimahmedb/Quant-Trade/tree/2b66b1937257651b3a941bba6d7a1e5e45c01137) | Conserver KILL du rerun valide, séparé du premier résultat invalidé. |
@@ -54,8 +54,8 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 0.0988 |
-| Durée mesurée des opérations locales | 15.8415 |
+| CPU mesuré des opérations locales | 2.5695 |
+| Durée mesurée des opérations locales | 21.7778 |
 | Octets de payload de métadonnées | 12586 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
@@ -68,7 +68,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 ## Exécutions et apprentissages
 
 - `execute:smard-2025-fixed-hours-proxy-v1` : `UNKNOWN_OUTCOME` ; look `look:smard-2025-fixed-hours-proxy-v1`.
-- `execute:smard-2025-solar-noon-evening-proxy-v1` : `RUNNING` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
+- `execute:smard-2025-solar-noon-evening-proxy-v1` : `COMPLETED` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
 - `build:eurusd-technical-grid:exact-legacy-adapter` : **WAIT** — Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
 - `build:eurusd-technical-grid:implement-saved-adapter` : **QUALIFIED** — Software complete on synthetic proof. Publish and verify exact-head CI. Market admissions remain blocked, reminders off, no repeated source review. ; preuves lab-complete-loop-synthetic-20261011T0013Z, owner-reminders-off-20261011T0011Z.
 - `build:eurusd-technical-grid:lab-workflow-completion` : **WAIT** — Core workflow software implemented and validated with synthetic receipts. Completion still requires the distinct exact legacy bridge and final real temporary-Git proof; preserve partial receipt, all history and disabled reminders. No actual market launch. ; preuves lab-workflow-core-synthetic-20261010T2355Z.

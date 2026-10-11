@@ -1,0 +1,21 @@
+{
+  "artifacts": {
+    "stderr": "/workspace/Quant-Trade-source-admission-20261011/research/edge_lab/receipts/36da4ff66aac906cc6fd296de97482cc791b8e4d569f0c45620edc9a727f4f49/stderr.bin",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "/workspace/Quant-Trade-source-admission-20261011/research/edge_lab/receipts/36da4ff66aac906cc6fd296de97482cc791b8e4d569f0c45620edc9a727f4f49/stdout.bin",
+    "stdout_sha256": "3dbfb580d5aa69e1fca525af18d69cb2a86ff2354eef2b840c6be15c0b59553e"
+  },
+  "cost": {
+    "cpu_seconds": 2.4706509999999997,
+    "wall_seconds": 5.936294683999222
+  },
+  "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+  "error": null,
+  "look_id": "look:smard-2025-solar-noon-evening-proxy-v1",
+  "process_stopped": true,
+  "protocol_hash": "675f65d3259ce594445e80e0b6b170a26ba91cf59cb1ef62d366bdd6ae310cb0",
+  "result_digest": "04ffeb16c5420d825eeced7a0dc0de6806b264646cd2baa6df5f780a2f82a994",
+  "running_commit": "70fcb7e81abcd23adc1410e285aae48ceb814a7d",
+  "schema": 1,
+  "started_event_hash": "43e4684b8adc50d6432c3436667f404c493efb45c09c11bafc8050f33d5482a4"
+}
