@@ -2454,6 +2454,34 @@
       },
       "previous": "5543ea93c1bb09202658e4dc0f919ad4fc741b2e438f2ab35622fc13e62ff765",
       "sequence": 130
+    },
+    {
+      "at": "2026-10-11T17:53:21.503258+00:00",
+      "hash": "b5efdbc42d1c95ff8cfb1eb25d4dea2e817d24df5b9aafe21188b088480f982d",
+      "kind": "AGENT_SESSION_COMPLETED",
+      "payload": {
+        "actor": "scheduled-automation",
+        "authority_parent": "eeaa873f2ab1f5d082cf1f638c7f7193bd486b5f",
+        "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
+        "context": "scheduled-automation",
+        "decision_status": "QUALIFIED",
+        "delivery_verified": false,
+        "evidence_ids": [
+          "macro-eurostat-vintage-gate-20261011",
+          "fiscal-vintage-software-qa-20261011"
+        ],
+        "finished_at": "2026-10-11T17:53:21.503214+00:00",
+        "heartbeat_at": "2026-10-11T17:38:57.743378+00:00",
+        "id": "automation-6ac978ec-20261011T173609Z",
+        "lease_seconds": 600,
+        "question_id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
+        "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
+        "started_at": "2026-10-11T17:38:57.743370+00:00",
+        "status": "COMPLETED",
+        "summary": "Completed original claimed task from the delivered V2 instruction: synthetic-only prospective fiscal vintage recorder, six causal/storage challenges; zero real source access, no price, no look. France economic/source gate remains WAIT. Next metadata question after13Oct12:45UTC. Backend wake observed; trigger and unattended independence still UNKNOWN."
+      },
+      "previous": "ed4bf1a9313cfd02448b8acf855fb2eb9afa75a15b50f88dab0835ba67ba6f30",
+      "sequence": 131
     }
   ],
   "evidence": {
@@ -4696,7 +4724,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "85002fb4015b06c783eab4efccc88c5cb1d36a49c47f064a8f8e30a44d499605",
+  "integrity": "37e19635f31bfc952846222355a51d6b5a2996b39ff9b345233ec0508ed5a90d",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5078,7 +5106,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T17:52:23.761068+00:00",
+  "updated_at": "2026-10-11T17:53:21.509715+00:00",
   "usage": {
     "cpu_seconds": 2.59873903,
     "human_seconds": null,
@@ -5094,14 +5122,21 @@
       "authority_parent": "eeaa873f2ab1f5d082cf1f638c7f7193bd486b5f",
       "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
       "context": "scheduled-automation",
+      "decision_status": "QUALIFIED",
       "delivery_verified": false,
+      "evidence_ids": [
+        "macro-eurostat-vintage-gate-20261011",
+        "fiscal-vintage-software-qa-20261011"
+      ],
+      "finished_at": "2026-10-11T17:53:21.503214+00:00",
       "heartbeat_at": "2026-10-11T17:38:57.743378+00:00",
       "id": "automation-6ac978ec-20261011T173609Z",
       "lease_seconds": 600,
       "question_id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
       "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry",
       "started_at": "2026-10-11T17:38:57.743370+00:00",
-      "status": "STARTED"
+      "status": "COMPLETED",
+      "summary": "Completed original claimed task from the delivered V2 instruction: synthetic-only prospective fiscal vintage recorder, six causal/storage challenges; zero real source access, no price, no look. France economic/source gate remains WAIT. Next metadata question after13Oct12:45UTC. Backend wake observed; trigger and unattended independence still UNKNOWN."
     }
   }
 }
