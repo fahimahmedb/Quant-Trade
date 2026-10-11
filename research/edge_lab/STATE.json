@@ -1385,6 +1385,17 @@
       },
       "previous": "bb7471a2a613182c35afdef3be961413dd544d246b55692c28e1d1159a1ca0fd",
       "sequence": 71
+    },
+    {
+      "at": "2026-10-11T13:03:33.917825+00:00",
+      "hash": "26760e7b6a88d5b364cb47a80d1ca361b539848759c8a57a5428bcf0d2a54e82",
+      "kind": "EXECUTION_STARTED",
+      "payload": {
+        "durable_commit": "3472f46061675d24ee50f02213b4b61355912e9f",
+        "look": "look:smard-2025-fixed-hours-proxy-v1"
+      },
+      "previous": "279b9df7c3786ed9cc426bc0951a52ed39318d29630f31133122bc12bec05768",
+      "sequence": 72
     }
   ],
   "evidence": {
@@ -2573,7 +2584,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "41c32ac40962414ae9f9c58b002ca7a6cc93f13051b9b6f22b0f869305002646",
+  "integrity": "681baf423c5f51406ab07a569cbcd0dc76afef8a76e70ede9aa5c599a7331af4",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -2583,7 +2594,7 @@
       "due_at": null,
       "lane": "smard-fixed-flexibility",
       "last_error": null,
-      "lease_seconds": 600,
+      "lease_seconds": 150,
       "metadata": {
         "look_id": "look:smard-2025-fixed-hours-proxy-v1",
         "protocol": "smard-2025-fixed-hours-proxy-v1"
@@ -2592,8 +2603,8 @@
       "priority": 1,
       "reason": "Execute exactly one frozen protocol",
       "required_resources": [],
-      "started_at": null,
-      "status": "RESERVED",
+      "started_at": "2026-10-11T13:03:33.917805+00:00",
+      "status": "RUNNING",
       "task_id": "execute:smard-2025-fixed-hours-proxy-v1",
       "updated_at": "2026-10-11T13:03:23.135499+00:00",
       "worker": "pinned_local_runner"
@@ -2617,7 +2628,7 @@
       "protocol_hash": "4b039fa2ec00964cfc9b3e44c58597aa22d7c533015632a3d29734ec6d50e471",
       "reserved_at": "2026-10-11T13:03:23.135479+00:00",
       "stage": "EXPLORATION",
-      "status": "RESERVED_SPENT",
+      "status": "RUNNING_SPENT",
       "window": [
         "2024-12-31T23:00:00Z",
         "2025-12-31T23:00:00Z"
@@ -2784,7 +2795,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 2
   },
-  "updated_at": "2026-10-11T13:03:23.137868+00:00",
+  "updated_at": "2026-10-11T13:03:33.921992+00:00",
   "usage": {
     "cpu_seconds": 0.054788210999999976,
     "human_seconds": null,
