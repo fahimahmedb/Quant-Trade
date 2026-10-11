@@ -502,15 +502,19 @@
       "status": "WAIT"
     },
     "qualify:france-fuel-information": {
+      "actor": "owner-autonomous-20261011T1600Z",
+      "claim_id": "6e05d9ef53d14ac0c10c3b75eed6b927082cb1fbb06c03f2ec95f762dd5093aa",
+      "claimed_at": "2026-10-11T16:01:09.243809+00:00",
       "created_at": "2026-10-11T13:22:24.385175+00:00",
       "evidence": [
         "france-fuel-information-cached-source-20261011"
       ],
       "family": "france-fuel-information",
+      "lease_seconds": 600,
       "priority": 10,
       "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
       "reason": "NEW_MECHANISM_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "qualify:hyperliquid-forced-flow": {
       "actor": "scheduled-automation-20261010T1654Z",
@@ -1851,6 +1855,18 @@
       },
       "previous": "d31fff23491d1eaa04be22849df5a74910b53fa4e7ccdf9b38bb4113a8f203cf",
       "sequence": 93
+    },
+    {
+      "at": "2026-10-11T16:01:09.243814+00:00",
+      "hash": "6c3f495f1020bc760ce2cc5b39edc3dd9d27a36557855055535c5518ab7af622",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-20261011T1600Z",
+        "claim_id": "6e05d9ef53d14ac0c10c3b75eed6b927082cb1fbb06c03f2ec95f762dd5093aa",
+        "id": "qualify:france-fuel-information"
+      },
+      "previous": "6246948d91313b994d6e7dc92d2e107bd1091131777dedb80988856f0fb51058",
+      "sequence": 94
     }
   ],
   "evidence": {
@@ -3724,7 +3740,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "e0af159da4a2852c0a03b589d7de37b3262342020ceb69a9175f45d87f375de5",
+  "integrity": "f9ae3d6f26d25eb90d87fcf1d297853f3d1d3ef5180162d3b8633409a46f285c",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4050,13 +4066,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "github-actions-metadata",
-      "at": "2026-10-11T13:16:28.510741+00:00",
+      "actor": "owner-autonomous-20261011T1600Z",
+      "at": "2026-10-11T16:01:09.094413+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-11T13:16:28.510741+00:00",
+      "at": "2026-10-11T16:01:09.094413+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -4067,31 +4083,31 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T13:16:28.510704+00:00",
+      "observed_at": "2026-10-11T16:01:09.094370+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T13:16:28.510724+00:00",
+      "observed_at": "2026-10-11T16:01:09.094393+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T13:16:28.510729+00:00",
+      "observed_at": "2026-10-11T16:01:09.094397+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T13:16:28.510732+00:00",
+      "observed_at": "2026-10-11T16:01:09.094401+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T13:16:28.510735+00:00",
+      "observed_at": "2026-10-11T16:01:09.094405+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
@@ -4099,14 +4115,14 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T13:39:07.021640+00:00",
+  "updated_at": "2026-10-11T16:01:09.250672+00:00",
   "usage": {
-    "cpu_seconds": 2.569477422,
+    "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,
-    "metadata_bytes": 12586,
+    "metadata_bytes": 13020,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 21.77776527401645
+    "wall_seconds": 22.62969928401569
   }
 }
