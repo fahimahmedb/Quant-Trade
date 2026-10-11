@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "at": "2026-10-11T22:33:39.529536+00:00",
+  "scope": "V4 Discovery pass; metadata-only SEC pre-test park plus3 data-test attempts; not proof of unattended scheduler delivery",
+  "parent_head": "6b9daadaf6a5bf10b3b7356c2740080961add095",
+  "decision_summary": {
+    "PARK": 4,
+    "KILL": 0,
+    "PROMOTE": 0,
+    "economic_tests_completed": 0,
+    "new_partial_dataset": "36 CFE settlement files preserved privately; full declared52contract sample unavailable"
+  },
+  "cost_observed": {
+    "market_data_http_requests": 59,
+    "market_data_payload_bytes": 570575,
+    "paid_usd": 0,
+    "tokens": null,
+    "global_bill": null,
+    "owner_budget": null,
+    "architecture_share": null,
+    "scope": "Excludes GitHub/Sites control traffic; no invented total token/time billing."
+  },
+  "site": {
+    "url": "https://quant-trade-lab.sassylime.chatgpt.site",
+    "source_commit": "53c9e4749f0c19a12c955ab9e8051a4218bdc8cc",
+    "deployment_id": "appgdep_6acc0e13785c8191897886b12a076498",
+    "version_id": "appgprj_6aca43cb86bc81918e067097356a37de~appgver_2ca75629b2588191b62e68d1ab5cfb7e",
+    "deployment_status": "succeeded",
+    "audience": "existing owner-private preserved",
+    "tests": "32 Node synthetic checks passed; build/embedded-JavaScript/ESM validation passed",
+    "visual_qa": "No supported browser; no iOS visual QA claimed",
+    "change": "Same-head Discovery STATE + V3 LIVE fetched after CONTROL within shared byte ceiling; separate counts/cards/last/next/architecture availability. Metadata polling is not a worker heartbeat."
+  },
+  "safeguards": {
+    "v3_state_byte_semantics_unchanged": true,
+    "ledger_prefix_and_counters_non_decreasing": true,
+    "original_book_result_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+    "economic_replay": false,
+    "closed_families_reopened": false,
+    "new_automation": false
+  },
+  "verdict": {
+    "RESULT": "Four PARK dispositions: VX incomplete fullsample, SEC missing census output, France declared key404, BitMEX missing BBO/protocol stop deviation. No completed economic falsification.",
+    "EFFECT_SIZE": "NOT_ESTABLISHED; no financial statistic computed",
+    "UNCERTAINTY": "Data accessibility does not establish execution; neither unavailable key nor malformed response disproves an economic mechanism.",
+    "POWER_LIMITATION": "No valid payoff population.21 HTTPrecords are not21 quotes;36 files are not a completed52contract test.",
+    "ECONOMIC_SIGNIFICANCE": "No edge/no promotion. Concrete new information is source inadequacy plus36 reusable raw files; avoid funding L3 data reconstruction from these outcomes.",
+    "FAILED_CRITERIA": "Each experiment data-adequacy criterion failed; capture early-stop guard also failed, retained rather than replayed.",
+    "LESSON": "Verify one valid source object at metadata/schema stage when possible; do not confuse code with a completed census or HTTP200 with quote fields. Do not retune a declared window around failed archives.",
+    "FAMILY_STATUS": "Exact attempts PARK; old closed families/V3 unchanged. Validation recovery never blocked this pass.",
+    "NEXT_DECISION": "Next pass: one bounded primary catalogue lookup for an actually published free France/Germany relative-yield pair (daily preferred; any new coarser rule needs a new linked declaration). Do not repeat failed ECB key. If no usable route in10min, leave PARK and select a causally distinct cheap replication. Policy source remains not_before2026-10-13T12:45Z. No fourth data-test this pass."
+  }
+}

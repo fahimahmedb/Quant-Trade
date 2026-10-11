@@ -1,19 +1,24 @@
 {
   "schema": 1,
   "mode": "DISCOVERY_FIRST",
-  "status": "ACTIVE",
+  "status": "IDLE_NO_ADMISSIBLE_WORK",
   "created_from_validation_head": "b4d9219a3e4320fd0675c167d202558ed1d18d89",
   "metrics": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4,
     "architecture_share_estimate": null,
-    "last_completed_experiment": "disc-france-oat-bund-l1-v0",
-    "experiments_with_decision": 3,
-    "data_parks": 3,
+    "last_completed_experiment": "disc-crypto-book-pressure-prospective-l1-v0",
+    "experiments_with_decision": 4,
+    "data_parks": 4,
     "last_completed_economic_test": null,
-    "metrics_scope": "V4 Discovery only; acquisition attempt and metadata park do not count as economic tests.",
-    "architecture_share_basis": "No architecture work performed this pass so far; total rolling activity/tokens not measured.",
-    "actual_data_test_attempts": 3
+    "metrics_scope": "V4 only, not a reset of V3/baseline counts. Four dispositions include one pre-test metadata park; none counts as a completed economic falsification.",
+    "architecture_share_basis": "Rolling agent-time/token accounting unavailable. Only one bounded Site display change;32synthetic checks. No numeric90/10 compliance asserted.",
+    "actual_data_test_attempts": 3,
+    "completed_economic_tests": 0,
+    "pretest_metadata_parks": 1,
+    "new_usable_partial_datasets": 1,
+    "calculations_attempted": 1,
+    "expressions_declared_this_pass": 3
   },
   "queue": [
     {
@@ -100,7 +105,7 @@
     {
       "id": "disc-crypto-book-pressure-prospective-l1-v0",
       "family": "bitmex-book-pressure",
-      "status": "RUNNING",
+      "status": "PARK",
       "level": "L1",
       "priority": 5,
       "mechanism": "Persistent directional liquidity demand may make top-of-book imbalance informative over short horizons.",
@@ -111,11 +116,16 @@
       "kill_if": "No directional effect net of simple crossing/fee assumptions.",
       "promote_if": "Effect is large and stable enough to justify deeper PIT/execution validation.",
       "selected_at": "2026-10-11T22:25:50.501096+00:00",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
       "predeclared_upper_bound_comparators": 1,
       "cost_scenarios": 2,
-      "predeclaration": "experiments/disc-crypto-book-pressure-prospective-l1-v0.md"
+      "predeclaration": "experiments/disc-crypto-book-pressure-prospective-l1-v0.md",
+      "decision": "PARK",
+      "completed_at": "2026-10-11T22:28:54.485080+00:00",
+      "result": "21 incomplete response records; zero BBO/valid trades; capture early-stop deviation preserved",
+      "result_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+      "next": "Distinct verified full-BBO source plus corrected synthetic-checked recorder required before a new declared window; no replay."
     },
     {
       "id": "disc-zf-auction-pressure-v0",
@@ -156,5 +166,33 @@
     "prediction-negative-risk",
     "smard-fixed-flexibility"
   ],
-  "updated_at": "2026-10-11T22:25:50.501096+00:00"
+  "updated_at": "2026-10-11T22:31:57.747388+00:00",
+  "next": "Next pass: one bounded primary catalogue lookup for an actually published free France/Germany relative-yield pair (daily preferred; any new coarser rule needs a new linked declaration). Do not repeat failed ECB key. If no usable route in10min, leave PARK and select a causally distinct cheap replication. Policy source remains not_before2026-10-13T12:45Z. No fourth data-test this pass.",
+  "exposure_ledger": [
+    {
+      "experiment_id": "disc-cfe-vix-term-premium-l1-v0",
+      "expression_count": 1,
+      "cost_scenarios": 2,
+      "data_exposure": "36complete settlement CSV bodies,2013–2021 quarterly expiries;37threquest403; no payoff computed",
+      "preregistration": "6bcffa9395016764c854315a4001512b646d3293",
+      "private_history": "UNKNOWN"
+    },
+    {
+      "experiment_id": "disc-france-oat-bund-l1-v0",
+      "expression_count": 1,
+      "cost_scenarios": 2,
+      "data_exposure": "HTTP404,zero yield rows,no payoff",
+      "preregistration": "8e820f454f018a5c7bc7b61bf8002797b4a813d8",
+      "private_history": "UNKNOWN"
+    },
+    {
+      "experiment_id": "disc-crypto-book-pressure-prospective-l1-v0",
+      "expression_count": 1,
+      "cost_scenarios": 2,
+      "upper_bound_comparators": 1,
+      "data_exposure": "21incomplete identical quote records; oneinvalid calculation, zero payoffs; no replay",
+      "preregistration": "6b9daadaf6a5bf10b3b7356c2740080961add095",
+      "private_history": "UNKNOWN"
+    }
+  ]
 }

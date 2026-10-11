@@ -18,8 +18,8 @@ EXPLORATORY, pre-declared 2026-10-11T22:25:50.501096+00:00, head 8e820f454f018a5
 - promote_if: adequate sample, actual central-net mean>=5bp, stress-net positive and both chronological halves positive. Otherwise PARK. PROMOTE_HIGH prohibited with this tiny proxy. Positive gets one prospective nonoverlapping out-of-window L2 replication with fixed horizon before any heavy archive.
 - uncertainty: descriptive range/mean/median, valid counts, duration and number of positive trades; no fabricated significance or Sharpe for dependent100s sample.
 - prior_exposures: PRIVATE_UNKNOWN; cached BitMEX metadata/catalogue only; known literature on imbalance; prior closed carry and other exposure preserved. New venue/sample does not reset historical multiplicity.
-- RESULT: pending.
-- DECISION: pending.
+- RESULT: 21 HTTP200 response records, all identical77bytes; required BBO fields missing. Zero valid trades; no financial statistic. Capture violated the stop-on-first-malformed clause due to empty AssertionError text; details and original result hash in adjacent quality JSON.
+- DECISION: PARK (PARK_DATA / CAPTURE_INVALID). No rerun or mechanism rejection.
 - NEXT: single capture and single calculation; interrupted/partial remains exposed and cannot be retried automatically.
 
 This is the third data-test attempt this pass (VX, France, this capture). SEC was a metadata-only pre-test PARK with zero economic/data-test execution, not a fourth test.

@@ -1,3 +1,23 @@
+# Checkpoint — Discovery V4
+
+STATUS = IDLE_NO_ADMISSIBLE_WORK
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+
+## STATE / NEXT courant — 2026-10-11T22:33:39.529536+00:00, Discovery First
+
+- Trois tentatives de données L1 précédées de commits, plus un PARK SEC avant test. **Zéro test économique terminé**, zéro KILL/promotion ; quatre décisions PARK. Ne pas compter HTTP200, fichiers ou métadonnées comme tests discriminants. Résultats, neuf champs, hashes et coûts : `discovery/experiments/` et `discovery/pass_2026-10-11.json`.
+- VX : pré-déclaration6bcffa9,36 fichiers quarterly2013–2021 acquis et préservés;37e requête H2022=403.52contrats exigés; aucun payoff sur fenêtre raccourcie. Cache privé `/workspace/scratch/discovery-v4-20261011/vix`, reçus/hashes publiés. Pas de réessai automatique.
+- SEC : actuel census head08dcfc3 ne contient pas le fichier d’événements; dernier workflow35416321420 failed et0artefact. Implémentation présente != census disponible. Aucun nouveau crawl/retour; ancien F3 et son cluster conservés.
+- France : pré-déclaration8e820f4; première clé quotidienne ECB déclarée=404,0ligne; aucune substitution ni requête DE. Cela ne prouve pas l’absence générale d’historique public. Expression économique non testée.
+- BitMEX : pré-déclaration6b9daad;21réponses identiques77B contenant seulement timestamp/symbol/pool.0BBO/0trade valide. PARK. Déviation du guard d’arrêt (AssertionError vide) : conserver l’original8845cf3a…ab65 et `.quality.json`; aucun replay. L’ancien recorder est historique/retiré, pas un runner ; une future capture séparément déclarée exige erreur typée, branchement `is not None` et QA synthétique préalable.
+- Trois expressions déclarées,2coûts chacune,1borne favorable supplémentaire crypto; privé/M_effectif UNKNOWN. Les données partielles restent exposées. V3 STATE, ledger, looks2, SMARD4 et F1/B2/B4/negative-risk restent intégralement conservés ; aucune remise à zéro.
+- Salle existante publiée : commit53c9e47, déploiementappgdep_6acc0e13785c8191897886b12a076498 réussi,32tests Node+build PASS. Discovery et V3 séparés; zéro test économique affiché, PARK distinct de KILL, dernière/prochaine expérience, part architecture NON MESURÉE. Pas de prétention QA iOS, agent permanent ou livraison autonome prouvée. Aucun autre worker/automation créé.
+- **NEXT** : au prochain passage, une seule recherche primaire bornée<=10min pour identifier une vraie paire gratuite France/Allemagne publiée (quotidien préféré; règle plus grossière = nouvelle expérience liée avant données). Ne pas répéter la clé404. Sans route réellement utilisable, conserver PARK et sélectionner une réplication causalement distincte. Public Inspection reste13octobre12:45UTC, aucun accès anticipé. Pas de quatrième tentative de données dans ce passage.
+- Coût observable :59requêtes données marché,570575B; achats0. Facture/tokens/temps agent global et ratio architecture NON MESURÉS, aucune conformité90/10 inventée. Aucun nouveau framework, capital/live=false.
+
+Les sections suivantes sont historiques, conservées comme telles. Le STATE/NEXT ci-dessus et les contrats Discovery publiés gouvernent cette reprise; les pilotes V4.2 restent design-only, non substitués aux expériences exécutées.
+
 # Checkpoint — construction autorisée
 
 STATUS = RESEARCH_ACTIVE_SOURCE_QUALIFICATION
