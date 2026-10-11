@@ -359,6 +359,9 @@
       "status": "WAIT"
     },
     "build:policy-announcement-repricing:official-source-clock": {
+      "actor": "owner-autonomous-20261011T1600Z",
+      "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
+      "claimed_at": "2026-10-11T16:24:37.762576+00:00",
       "construction_scope": "1fcca70a2f9c9739c492ac2440fdaae12cd9320c78fc3b42847de00e97e70e59",
       "created_at": "2026-10-11T16:11:42.928568+00:00",
       "decision_use": "QUALIFIED seulement pour une horloge de r\u00e9ception prospective et un sch\u00e9ma v\u00e9rifi\u00e9s ; sinon WAIT pr\u00e9cis. Aucun backtest/admission \u00e9conomique/collecteur concurrent. R\u00e9utiliser les passages sauvegard\u00e9s ; un seul probe de m\u00e9tadonn\u00e9es born\u00e9, pas corpus de news ou grille de sentiments.",
@@ -368,12 +371,13 @@
         "policy-sentiment-model-causality-challenge-20261011"
       ],
       "family": "policy-announcement-repricing",
+      "lease_seconds": 600,
       "outcome_access_authorized": false,
       "parent_decision": "qualify:policy-announcement-repricing",
       "priority": 10,
       "question": "Peut-on qualifier l\u2019API publique Federal Register comme source d\u2019observation future avec premi\u00e8re r\u00e9ception UTC, sch\u00e9ma document/amendements, droits et ressources born\u00e9es, sans lire de prix ni pr\u00e9tendre capter la premi\u00e8re annonce de Trump ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "OPEN"
+      "status": "RESEARCHING"
     },
     "build:smard-fixed-flexibility:bounded-source-runner": {
       "actor": "owner-smard-proxy-build-20261011T1252Z",
@@ -2163,6 +2167,18 @@
       },
       "previous": "02e2f3233f1221ec6a11351dcbf73e435b439025877dc8161381165890e08195",
       "sequence": 112
+    },
+    {
+      "at": "2026-10-11T16:24:37.762581+00:00",
+      "hash": "bfa8600bbc1006ee57e9294b9708a965b7ff1a6bac3accf3d0d47b647705443c",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-20261011T1600Z",
+        "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
+        "id": "build:policy-announcement-repricing:official-source-clock"
+      },
+      "previous": "27b95f90c2e281a76f5b3f251362430ee4b983ccf7e34d9cc2891e7cfe555e33",
+      "sequence": 113
     }
   ],
   "evidence": {
@@ -4199,7 +4215,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "1189d3d92f92d274d070da6c36b1c3575087518734295349a6130e18a5d40140",
+  "integrity": "b37a8b999475cab903c64320bdd18ac5171d42c7d1e5205c26b36ebb789c7fca",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4576,7 +4592,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:21:28.249770+00:00",
+  "updated_at": "2026-10-11T16:24:37.767389+00:00",
   "usage": {
     "cpu_seconds": 2.5785994789999998,
     "human_seconds": null,
