@@ -20,7 +20,6 @@ class GitAuthority:
         result = subprocess.run(["git", *args], cwd=self.repo, text=True, capture_output=True,
                                 timeout=45)
         if result.returncode:
-            # Never emit credentials, proxy settings or arbitrary git diagnostics.
             raise Refused("Git operation failed: " + args[0])
         return result.stdout.strip()
 
@@ -70,9 +69,7 @@ class GitAuthority:
             raise Refused("Checkout is stale; no merge/rebase/rerun of a look")
         verify(state)
         from quant.state import write_json
-        allowed = {self.relative + "/STATE.json", self.relative + "/STATUS.md"}
-        # Retain exact output, including failed/partial bytes, on the same
-        # authorized branch. Only the known receipt directory can be staged.
+        allowed = {self.relative + "/STATE.json", self.relative + "/STATUS.md", self.relative + "/LIVE.json"}
         for job in state["jobs"].values():
             look_id = job.get("metadata", {}).get("look_id")
             if not look_id or look_id not in state["looks"]:
@@ -95,8 +92,10 @@ class GitAuthority:
         if any(p not in allowed for p in staged):
             raise Refused("Unrelated staged changes; do not publish them with a reservation")
         write_json(self.directory / "STATE.json", state)
-        from .dashboard import markdown_state
-        (self.directory / "STATUS.md").write_text(markdown_state(state, Store(self.directory).control()))
+        control = Store(self.directory).control()
+        from .dashboard import markdown_state, live_state
+        (self.directory / "STATUS.md").write_text(markdown_state(state, control))
+        (self.directory / "LIVE.json").write_text(json.dumps(live_state(state, control), ensure_ascii=False, indent=2) + "\n")
         self.git("add", "--", *sorted(allowed))
         self.git("-c", "user.name=Quant Edge Lab", "-c", "user.email=edge-lab@users.noreply.github.com",
                  "commit", "-m", "edge-lab: durable single-use execution receipt [skip ci]")
