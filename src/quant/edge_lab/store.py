@@ -102,6 +102,13 @@ class Store:
                     if key == "looks" and any(state[key][identity].get(k) != v
                                                for k, v in prior.items() if k != "status"):
                         raise Refused("Look identity/scope/charge cannot change")
+            for identity, prior in old.get("worker_sessions", {}).items():
+                current = state.get("worker_sessions", {}).get(identity)
+                if current is None or any(current.get(k) != v for k, v in prior.items()
+                        if k not in ("status", "finished_at", "evidence_ids", "summary", "decision_status")):
+                    raise Refused("Agent session provenance cannot be removed or rewritten")
+                if prior["status"] != "STARTED" and current != prior:
+                    raise Refused("A finished/idle agent session cannot be replayed")
             for scope, count in old["trial_charges"].items():
                 if state["trial_charges"].get(scope, -1) < count:
                     raise Refused("Trial accounting cannot go backwards")

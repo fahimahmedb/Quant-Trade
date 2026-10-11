@@ -19,7 +19,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state-dir", default=str(ROOT / "research/edge_lab"))
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("init", "status", "next", "render"):
+    for name in ("init", "status", "next", "render", "queue"):
         sub.add_parser(name)
     tick = sub.add_parser("tick")
     tick.add_argument("--actor", default="manual")
@@ -41,6 +41,12 @@ def main(argv=None):
     claim = sub.add_parser("claim-question")
     claim.add_argument("identity")
     claim.add_argument("--actor", required=True)
+    agent = sub.add_parser("worker-start", help="Fresh authority + CAS claim; no model/backtest invocation")
+    agent.add_argument("--actor", required=True)
+    agent.add_argument("--context", choices=("interactive", "scheduled-automation"), default="interactive")
+    agent.add_argument("--invocation-id")
+    agent_finish = sub.add_parser("worker-finish", help="Publish an evidence-bound session receipt, no retry")
+    agent_finish.add_argument("packet")
     preflight = sub.add_parser("legacy-preflight", help="Read-only exact EURUSD bundle; no capture/launch")
     preflight.add_argument("--claim-id", required=True)
     resources = sub.add_parser("synthetic-resources", help="Fixed full-calendar synthetic EURUSD capacity probe")
@@ -90,6 +96,17 @@ def main(argv=None):
         lab.admit(args.protocol, strict_json(args.packet))
     elif args.action == "claim-question":
         print(json.dumps({"claim_id": lab.claim_decision(args.identity, args.actor)}))
+    elif args.action == "queue":
+        from quant.edge_lab.worker import queue
+        print(json.dumps(queue(*lab.snapshot()), ensure_ascii=False))
+        return
+    elif args.action in ("worker-start", "worker-finish"):
+        from quant.edge_lab.worker import start, finish
+        authority = GitAuthority(ROOT, args.state_dir)
+        result = (start(lab, authority, args.actor, args.context, args.invocation_id)
+            if args.action == "worker-start" else finish(lab, authority, **strict_json(args.packet)))
+        print(json.dumps(result, ensure_ascii=False))
+        return
     elif args.action == "legacy-preflight":
         from quant.edge_lab.legacy import inspect_eurusd
         print(json.dumps(inspect_eurusd(lab, ROOT, args.claim_id), ensure_ascii=False))

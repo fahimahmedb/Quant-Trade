@@ -85,3 +85,17 @@ L’admission `admit PROTOCOL PACKET` est distincte du gel et doit précéder la
 Les stdout/stderr exacts, reçus et copies des sorties upstream sont conservés dans `research/edge_lab/receipts/` et publiés avec STATE sur la même branche ; le résultat structuré complet est enregistré une fois dans la preuve immutable. Une sortie complète imprimée reste conservée même si le process échoue ensuite. Après rejet du CAS de publication, hydrater un checkout du HEAD frais et utiliser `reconcile PROTOCOL RECEIPT_DIR` sur les fichiers sauvegardés : identité, hashes et événement RUNNING d’origine doivent correspondre. La commande ne lance aucun process, ne réserve aucun nouveau look et garde UNKNOWN consommé s’il a déjà été quarantiné. Un reçu différent est refusé ; une seconde réconciliation est sans effet.
 
 Pour `execute`/publication runtime, utiliser un clone isolé positionné sur la branche locale `research/edge-lab-continuous` au HEAD exact lu ; une branche différente ou un parent stale est refusé. Un checkout detached convient aux lectures/ticks et à la construction, sans lancer de worker économique.
+
+
+## V2 : file et passages de l’agent
+
+`queue` projette les décisions existantes : prêtes, différées, en cours, récupération, WAIT et terminées. Il ne réouvre aucune question ni look. La salle affiche la même file ; une animation ambiante ne prouve pas un travail.
+
+Le worker reste l’unique tâche cloud existante `6ac978ecda1081918fba4d76dee437f4`. GitHub et la salle ne fournissent pas un moteur LLM. Après lecture CONTROL fraîche et publication du tick de métadonnées sur l’état frais :
+
+- `worker-start --actor scheduled-automation --context scheduled-automation` relit l’autorité, prend la prochaine question due et publie la session et le claim par CAS avant de rendre le packet. Aucun raisonnement coûteux si ce CAS perd. Un acteur interactif conserve `--context interactive` ; ne pas le présenter comme une livraison du scheduler.
+- L’agent traite cette seule question utile, conserve preuves/limites/coût/neuf champs lorsque décisionnel, puis `decide` avec le `claim_id`. Publier cette décision contre le HEAD exact avant `worker-finish PACKET`. Le packet contient `session_id`, `evidence_ids` de la décision résolue et `summary` borné.
+- Une session STARTED, un claim expiré ou un résultat partiel se rapproche depuis son reçu/claim original. Aucun démarrage concurrent, répétition de revue ou retry économique. La fin d’une session est conservée et ne peut redevenir STARTED.
+- Aucun travail dû : IDLE normal, sans inventer de tâche, relecture des WAIT ou message de relance. Une preuve de première publication ne naît pas d’une horloge de réception tardive.
+
+Les sessions sont des déclarations CLI publiées, avec lease de 600 s. Elles ne sont ni télémétrie de processus ni reçus signés de livraison du service de modèles. Le runner économique garde ses gates, son gel et reserve/execute d’origine. Cette V2 n’ajoute ni modèle/API payante, daemon persistant, autre scheduler, trading, nouveau look ou période vierge.

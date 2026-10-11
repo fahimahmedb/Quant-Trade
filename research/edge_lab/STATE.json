@@ -358,6 +358,21 @@
       "resolved_at": "2026-10-10T20:13:05.598871+00:00",
       "status": "WAIT"
     },
+    "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder": {
+      "construction_scope": "969880b5e3bb5bfe46f5429f1eb97665c6cd83c31d96ed1492bb72105ce67dd4",
+      "created_at": "2026-10-11T17:32:42.303875+00:00",
+      "decision_use": "Construire et challenger sur fixtures uniquement le stockage causal versionn\u00e9 \u00e0 partir des limites Eurostat d\u00e9j\u00e0 qualifi\u00e9es. Un PASS logiciel peut pr\u00e9parer une admission prospective distincte ; il ne qualifie ni premi\u00e8re publication historique, ni ex\u00e9cution OAT/Bund, ni acc\u00e8s empirique. Fixer p\u00e9rim\u00e8tre/cadence/droits/ressources/exposition avant toute acquisition r\u00e9elle, sinon WAIT pr\u00e9cis. Aucun probe de question d\u00e9j\u00e0 close, corpus, prix, r\u00e9sultats ou ajustement de strat\u00e9gie.",
+      "evidence": [
+        "macro-eurostat-vintage-gate-20261011"
+      ],
+      "family": "france-sovereign-repricing",
+      "outcome_access_authorized": false,
+      "parent_decision": "qualify:france-sovereign-repricing",
+      "priority": 10,
+      "question": "Peut-on pr\u00e9parer un enregistrateur de vintages fiscales prospectives, avec r\u00e9ception UTC, hashes et r\u00e9visions, sans reconstituer de faux historiques ni acc\u00e9der aux prix ?",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "OPEN"
+    },
     "build:policy-announcement-repricing:announced-api-return": {
       "construction_scope": "ea77900d85cc60c095db122a71d2a56be4bb6d7ad97cff1518f7f6f853ea8fb9",
       "created_at": "2026-10-11T16:30:50.397848+00:00",
@@ -2293,6 +2308,34 @@
       },
       "previous": "881bf53de81213c2e6e736f864f52f071cb9fa838a60d8a61fcf4bbd76c1fa62",
       "sequence": 120
+    },
+    {
+      "at": "2026-10-11T17:32:42.150632+00:00",
+      "hash": "3649f0ba996ae3b1ad67f32b352375c981a6713133e5b9e753b5a60c4d81e7c6",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "d5021da0adf2b07d0ae0760301bd2a1e41095894b76c4f151b15f4d11db3a2e1",
+        "id": "owner-v2-agent-queue-animations-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "e20cc9f9ad3ee28103f1a2b88443242d5aca82247051c0d715f362657a14d846",
+      "sequence": 121
+    },
+    {
+      "at": "2026-10-11T17:32:42.303887+00:00",
+      "hash": "7abbf823fc8c028578668a17150d5946179b560efbba31df8fa7f5f70bdcf89a",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "macro-eurostat-vintage-gate-20261011"
+        ],
+        "family": "france-sovereign-repricing",
+        "id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
+        "parent": "qualify:france-sovereign-repricing",
+        "scope": "969880b5e3bb5bfe46f5429f1eb97665c6cd83c31d96ed1492bb72105ce67dd4"
+      },
+      "previous": "3649f0ba996ae3b1ad67f32b352375c981a6713133e5b9e753b5a60c4d81e7c6",
+      "sequence": 122
     }
   ],
   "evidence": {
@@ -3954,6 +3997,26 @@
       "url": "automation:6ac978ecda1081918fba4d76dee437f4",
       "version": "connector-peek-2026-10-11T00:11Z"
     },
+    "owner-v2-agent-queue-animations-20261011": {
+      "fact": {
+        "owner_request": {
+          "autonomous_research_worker": true,
+          "no_reminder_messages": true,
+          "preserve_looks": true,
+          "simple_functions_deep_animations": true
+        }
+      },
+      "id": "owner-v2-agent-queue-animations-20261011",
+      "kind": "METHOD",
+      "limit": "Dialogue Owner autorise cette impl\u00e9mentation ; ce packet ne prouve aucun worker d\u00e9marr\u00e9 ni alpha, aucune nouvelle automation ou d\u00e9pense.",
+      "owner_request": {
+        "autonomous_research_worker": true,
+        "no_reminder_messages": true
+      },
+      "passage": "Owner demande une V2 autonome sans message de relance, fonctionnalit\u00e9s simples mais pouss\u00e9es et animations centrales.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "version": "2026-10-11T17:32:42.058313+00:00"
+    },
     "policy-federal-register-free-api-20261011": {
       "fact": "No Owner API account is needed to qualify this metadata source. Document date, public-inspection filing, signature, publication, amendment and our first reception are different clocks; none automatically gives the earliest public Trump statement.",
       "id": "policy-federal-register-free-api-20261011",
@@ -4430,7 +4493,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "39b28bdbad9de538d179bc5a82f4a62eca44574456a34b8dadce31d3955a544c",
+  "integrity": "9efeee810806128f3e0e42e91f3d5c25f4e5d807282d0ce1f3e1cba1ce86d4fd",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4807,7 +4870,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:46:58.926323+00:00",
+  "updated_at": "2026-10-11T17:32:42.309184+00:00",
   "usage": {
     "cpu_seconds": 2.5818289579999996,
     "human_seconds": null,

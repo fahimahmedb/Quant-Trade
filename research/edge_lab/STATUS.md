@@ -13,7 +13,12 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Aucune question ouverte ; attendre une preuve ou un accès nouveau.
+Construction : Peut-on préparer un enregistrateur de vintages fiscales prospectives, avec réception UTC, hashes et révisions, sans reconstituer de faux historiques ni accéder aux prix ? (`build:france-sovereign-repricing:prospective-fiscal-vintage-recorder`)
+
+## File V2
+
+Prêtes : 1 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 14.
+Sessions CLI conservées : 0. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
 
 ## Programme et preuves
 

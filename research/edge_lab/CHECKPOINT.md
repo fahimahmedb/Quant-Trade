@@ -5,6 +5,20 @@ REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
 
+## STATE / NEXT courant — 2026-10-11, V2 agent / file / salle
+
+Owner demande une V2 autonome et une salle centrée sur des fonctionnalités simples et des animations poussées. V2 : file dérivée des décisions, états prêt/différé/en cours/WAIT/récupération ; `worker-start` publie claim et session par CAS avant tout raisonnement externe, `worker-finish` lie le reçu à la décision et à ses preuves. Un reçu est une déclaration CLI, pas une attestation de livraison signée ni une preuve de daemon permanent. GitHub et la salle n’hébergent pas un LLM.
+
+- NEXT prête : `build:france-sovereign-repricing:prospective-fiscal-vintage-recorder`, construction sur fixtures seulement. Peut préparer une conservation prospective causale des vintages fiscales, pas recréer un historique vierge, authentifier OAT/Bund ou admettre une collecte réelle. Réutiliser la preuve Eurostat du parent, aucun nouvel accès à une question déjà close ni prix/rendement.
+- NEXT différée conservée : `build:policy-announcement-repricing:announced-api-return`, pas avant 13 octobre 12:45 UTC / 14:45 Paris. Aucune requête Public Inspection avant l’échéance ni replay du probe original.
+- Les WAIT restent WAIT et visibles, pas remis en file chaque heure. Claims/session interrompus se rapprochent depuis le reçu partiel. STARTED empêchant un autre worker n’autorise aucun retry ; finaliser le claim d’origine avant worker-finish.
+- Vérification logicielle : 95 tests Python PASS, 26 tests Node PASS et build ESM self-contained PASS. Animation V2 : visite des postes, salut au visiteur, respiration/regards, lumière/particules ambiantes, cartes en attente et transferts seulement sur nouveaux événements sauvegardés. Pause de mouvement/iOS reduced-motion respectées ; browser/iOS visuel non vérifié faute de navigateur supporté.
+- Le worker existant reste `6ac978ecda1081918fba4d76dee437f4`, aucun second scheduler. Le raccord et le départ sont en cours de vérification ; ne pas présumer qu’une configuration/tick/commit prouve une activité de modèle. Finir par conserver le reçu backend exact et la publication de la salle.
+
+Invariants économiques : zéro look acquis par cette V2 ; 2 looks SMARD / 4 chemins inchangés, tous anciens verdicts/UNKNOWN/expositions conservés, F1 A/B clos, un maximum de famille économique active, aucune collecte H001 ou modèle/API payante, REAL/LIVE FALSE. Budget total Owner NON FOURNI ; tokens/facture totale NON MESURÉS. CONTROL frais avant accès.
+
+Les sections suivantes sont historiques ; ce STATE/NEXT gouverne.
+
 ## STATE / NEXT courant — 2026-10-11, macro et reprise après fermeture de source
 
 Deux axes Owner ajoutés : risque budgétaire/souverain français et annonces politiques/sentiment de marché, dont Trump. Les hypothèses, contradictions, coûts/risques manquants et neuf champs des décisions sont dans `sources/MACRO_POLITICAL_RESEARCH.json`. Aucun edge, défaut français ou gain promis. Aucun nouveau backtest macro.
