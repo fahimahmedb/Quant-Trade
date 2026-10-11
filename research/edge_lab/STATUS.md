@@ -4,7 +4,7 @@
 
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
-Dernier cycle attesté : `2026-10-11T18:39:18.411390+00:00` ; acteur `scheduled-automation`.
+Dernier cycle attesté : `2026-10-11T19:34:16.545375+00:00` ; acteur `owner-v2-repair`.
 Worker de recherche programmé : configuration observée `2026-10-11T17:35:42.938259+00:00`. Politique : résultat/progrès utile/blocage externe, sans message de relance.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
@@ -13,11 +13,11 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Aucune question ouverte ; attendre une preuve ou un accès nouveau.
+Construction : Repair empty-queue routing from cached, unexamined source candidates, distinguish idle/expired/finished worker receipts and superseded construction blockers, and verify atomic publication with fixtures; no market outcomes or changes to the legacy freeze. (`build:eurusd-technical-grid:worker-research-routing-v2`)
 
 ## File V2
 
-Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 14.
+Prêtes : 1 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 14.
 Sessions CLI conservées : 1. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
 
 ## Programme et preuves
@@ -62,9 +62,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 2.606 |
-| Durée mesurée des opérations locales | 25.2782 |
-| Octets de payload de métadonnées | 15624 |
+| CPU mesuré des opérations locales | 2.6137 |
+| Durée mesurée des opérations locales | 25.9644 |
+| Octets de payload de métadonnées | 16058 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 

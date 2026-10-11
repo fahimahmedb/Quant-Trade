@@ -358,6 +358,21 @@
       "resolved_at": "2026-10-10T20:13:05.598871+00:00",
       "status": "WAIT"
     },
+    "build:eurusd-technical-grid:worker-research-routing-v2": {
+      "construction_scope": "53999fceede35decceed9799b940196b03b8806ad36d1f41a6856f71accbc098",
+      "created_at": "2026-10-11T19:34:17.021157+00:00",
+      "decision_use": "Enable a bounded evidenced next-source selection when the due queue is empty, retain explicit IDLE when exhausted, and show actual passages and scoped barriers. Owner repair authorization is preserved separately.",
+      "evidence": [
+        "lab-complete-loop-synthetic-20261011T0013Z"
+      ],
+      "family": "eurusd-technical-grid",
+      "outcome_access_authorized": false,
+      "parent_decision": "build:eurusd-technical-grid:implement-saved-adapter",
+      "priority": 2,
+      "question": "Repair empty-queue routing from cached, unexamined source candidates, distinguish idle/expired/finished worker receipts and superseded construction blockers, and verify atomic publication with fixtures; no market outcomes or changes to the legacy freeze.",
+      "reason": "CONSTRUCTION_ADMISSION",
+      "status": "OPEN"
+    },
     "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder": {
       "actor": "scheduled-automation",
       "claim_id": "7bd85d31487f2a7e6914db8b7f1eb116fb713433b00a5bee4ad6c1dee908ae73",
@@ -2494,6 +2509,34 @@
       },
       "previous": "b5efdbc42d1c95ff8cfb1eb25d4dea2e817d24df5b9aafe21188b088480f982d",
       "sequence": 132
+    },
+    {
+      "at": "2026-10-11T19:34:16.865851+00:00",
+      "hash": "7d22a57682c816b6012e69deebc942597ed2ada62e5fd7d44dccf9b40220ee30",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "6a0915ae931a9496283643261dde5f4071e7141a781e66927bca3bf26416d7c8",
+        "id": "owner-v2-pilot-repair-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "b7caaf81d4f9839b241d1f652dccc7f959278de45de5c1901bba076e80199d58",
+      "sequence": 133
+    },
+    {
+      "at": "2026-10-11T19:34:17.021172+00:00",
+      "hash": "107890d46b25c9c86d85301841ee6b10f728f16af195951464ebdbe551d4c2a1",
+      "kind": "BUILD_QUESTION_ADDED",
+      "payload": {
+        "evidence": [
+          "lab-complete-loop-synthetic-20261011T0013Z"
+        ],
+        "family": "eurusd-technical-grid",
+        "id": "build:eurusd-technical-grid:worker-research-routing-v2",
+        "parent": "build:eurusd-technical-grid:implement-saved-adapter",
+        "scope": "53999fceede35decceed9799b940196b03b8806ad36d1f41a6856f71accbc098"
+      },
+      "previous": "7d22a57682c816b6012e69deebc942597ed2ada62e5fd7d44dccf9b40220ee30",
+      "sequence": 134
     }
   ],
   "evidence": {
@@ -4283,6 +4326,15 @@
       "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
       "version": "2026-10-11T17:32:42.058313+00:00"
     },
+    "owner-v2-pilot-repair-20261011": {
+      "fact": "Owner authorizes repairing idle research routing, worker observability and stale construction blockers within the existing single worker/branch. Useful unexamined metadata investigations may be selected; no outcomes, purchases or renamed rejected tests are authorized by this receipt.",
+      "id": "owner-v2-pilot-repair-20261011",
+      "kind": "METHOD",
+      "limit": "Declared conversational authorization, not platform delivery telemetry or economic validation.",
+      "passage": "Trouve des solutions pour tout \u00e7a alors",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "version": "Owner 2026-10-11 after diagnosis at50d8038"
+    },
     "policy-federal-register-free-api-20261011": {
       "fact": "No Owner API account is needed to qualify this metadata source. Document date, public-inspection filing, signature, publication, amendment and our first reception are different clocks; none automatically gives the earliest public Trump statement.",
       "id": "policy-federal-register-free-api-20261011",
@@ -4808,7 +4860,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "3d71608543e81355f2893a973515a9056bce3b4a03e2accdb552640e04cf390c",
+  "integrity": "1ee0bc5eaa48d0d9608cf91ee462ff5a3aeccde03b9bf349d3de043deb67f07e",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5139,13 +5191,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "scheduled-automation",
-      "at": "2026-10-11T18:39:18.411390+00:00",
+      "actor": "owner-v2-repair",
+      "at": "2026-10-11T19:34:16.545375+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-11T18:39:18.411390+00:00",
+      "at": "2026-10-11T19:34:16.545375+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -5158,31 +5210,31 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T18:39:18.411349+00:00",
+      "observed_at": "2026-10-11T19:34:16.545336+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T18:39:18.411370+00:00",
+      "observed_at": "2026-10-11T19:34:16.545355+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T18:39:18.411375+00:00",
+      "observed_at": "2026-10-11T19:34:16.545360+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T18:39:18.411378+00:00",
+      "observed_at": "2026-10-11T19:34:16.545364+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T18:39:18.411382+00:00",
+      "observed_at": "2026-10-11T19:34:16.545368+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
@@ -5190,15 +5242,15 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T18:39:18.444158+00:00",
+  "updated_at": "2026-10-11T19:34:17.027559+00:00",
   "usage": {
-    "cpu_seconds": 2.606015988,
+    "cpu_seconds": 2.613686585,
     "human_seconds": null,
-    "metadata_bytes": 15624,
+    "metadata_bytes": 16058,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 25.278241251022123
+    "wall_seconds": 25.964414464024017
   },
   "worker_sessions": {
     "automation-6ac978ec-20261011T173609Z": {
