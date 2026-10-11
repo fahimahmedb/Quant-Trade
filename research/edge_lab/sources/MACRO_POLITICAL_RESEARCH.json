@@ -97,7 +97,7 @@
         "FAILED_CRITERIA": "WAIT: HISTORICAL_NEWS_CLOCK_AND_EXECUTION_UNQUALIFIED",
         "LESSON": "Public information is not necessarily new, point-in-time or executable. A direction/mood is not an edge after costs.",
         "FAMILY_STATUS": "DESIGN_UNTESTED_SOURCE_GATE; not an economic REJECT",
-        "NEXT_DECISION": "OPEN build:policy-announcement-repricing:official-source-clock; one bounded public official metadata/schema/clock probe only, with claim/CAS before work. A qualified metadata receipt gives no economic admission or runner."
+        "NEXT_DECISION": "Deferred single metadata schema/clock check after source-announced2026-10-13T12:45UTC, with fresh control and claimCAS; skip earlier hourly probes. Original source-clock question WAIT, not an economic reject."
       }
     }
   },
@@ -118,10 +118,25 @@
   "autonomy": {
     "existing_worker_id": "6ac978ecda1081918fba4d76dee437f4",
     "backend_configured": true,
-    "cadence": "Existing hourly condition_watch, Europe/Paris; next_run_time returned null, no next departure promised",
+    "cadence": "Existing hourly condition_watch, Europe/Paris; future DTSTART2026-10-13T14:45:00 Europe/Paris after source-announced closure. next_run_time returned null; actual delivery not yet attested.",
     "reporting": "No prompt echoes or Owner relaunch reminders; ordinary progress recorded in repo/room, message only material result/new genuine external blocker",
     "other_reminders_enabled": 0,
     "new_automation_created": false,
-    "configuration_proves_execution": false
+    "configuration_proves_execution": false,
+    "immediate_request": "HTTP404_ACTION_NOT_FOUND_BEFORE_INVOCATION; no run launched",
+    "current_prompt_run_attested": false
+  },
+  "metadata_source_probe": {
+    "receipt": "sources/federal-register-clock-metadata-20261011.json",
+    "http_status": 200,
+    "body_bytes": 228,
+    "sha256": "d46a3d2d868e3953675bed2036b761fd5409a2004dcc5cb37481801ba52d3b10",
+    "records_returned": 0,
+    "source_announced_not_before": "2026-10-13T12:45:00+00:00",
+    "primary_timezone": "America/New_York",
+    "retries": 0,
+    "new_market_outcomes": 0,
+    "next_question": "build:policy-announcement-repricing:announced-api-return",
+    "scope": "future conservative source-schema/receipt clock only; not first public Trump news or economic admission"
   }
 }

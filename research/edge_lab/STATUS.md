@@ -5,7 +5,7 @@
 Un état IDLE/BLOCKED est normal lorsqu'aucun travail économique n'est admissible.
 
 Dernier cycle attesté : `2026-10-11T16:31:06.753821+00:00` ; acteur `github-actions-metadata`.
-Worker de recherche programmé : configuration observée `2026-10-11T16:16:28.105116+00:00`. Politique : résultat/progrès utile/blocage externe, sans message de relance.
+Worker de recherche programmé : configuration observée `2026-10-11T16:39:08.395131+00:00`. Politique : résultat/progrès utile/blocage externe, sans message de relance.
 L'activité d'un worker économique est attestée par une réservation et un reçu d'exécution, pas un commit récent.
 
 [Pause/reprise persistante : modifier `paused` dans CONTROL.json](https://github.com/fahimahmedb/Quant-Trade/edit/research/edge-lab-continuous/research/edge_lab/CONTROL.json)

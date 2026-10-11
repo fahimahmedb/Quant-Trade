@@ -2243,6 +2243,56 @@
       },
       "previous": "490a5ab95afdb7c43dd2093c6c62714e525e9970052a88624a91a7c4f7c15497",
       "sequence": 116
+    },
+    {
+      "at": "2026-10-11T16:37:46.425657+00:00",
+      "hash": "6f9fa176303d57203c30de31d8447c5ab21107bec653ecf169ecf8f10f688701",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "1056616a3107baaf46ae6e8d5318ecd376b89910bb564962c36e82c69305751f",
+        "id": "research-worker-direct-launch-unavailable-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "843e4bdc5116f14fcd33d86aa23872a6d70acacee8fd60653ee7fd4d5317f46d",
+      "sequence": 117
+    },
+    {
+      "at": "2026-10-11T16:40:55.087914+00:00",
+      "hash": "936644937e04ecb5ba012fa9f4b8afd00832e9b3107c8f7806899991f9b04c78",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "101736c56b4e4657048d33885fd0d46b98d2cc1a49dbd46288873507e13d2394",
+        "id": "research-worker-source-window-schedule-20261011T1639Z",
+        "kind": "METHOD"
+      },
+      "previous": "6f9fa176303d57203c30de31d8447c5ab21107bec653ecf169ecf8f10f688701",
+      "sequence": 118
+    },
+    {
+      "at": "2026-10-11T16:40:55.224313+00:00",
+      "hash": "881bf53de81213c2e6e736f864f52f071cb9fa838a60d8a61fcf4bbd76c1fa62",
+      "kind": "RESEARCH_WORKER_CONFIGURED_OBSERVED",
+      "payload": {
+        "backend_evidence_id": "research-worker-source-window-schedule-20261011T1639Z",
+        "enabled": true,
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "observed_at": "2026-10-11T16:39:08.395131+00:00",
+        "owner_evidence_id": "owner-autonomous-worker-resumption-20261011"
+      },
+      "previous": "936644937e04ecb5ba012fa9f4b8afd00832e9b3107c8f7806899991f9b04c78",
+      "sequence": 119
+    },
+    {
+      "at": "2026-10-11T16:46:58.918423+00:00",
+      "hash": "e20cc9f9ad3ee28103f1a2b88443242d5aca82247051c0d715f362657a14d846",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "aaff47582c1becbc22b9ade2fede1b1929e07ee0d7770671a8f9620d0826ca0f",
+        "id": "macro-room-deferred-runtime-readback-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "881bf53de81213c2e6e736f864f52f071cb9fa838a60d8a61fcf4bbd76c1fa62",
+      "sequence": 120
     }
   ],
   "evidence": {
@@ -3789,6 +3839,46 @@
         "source": "official API introduction, general introduction"
       }
     },
+    "macro-room-deferred-runtime-readback-20261011": {
+      "fact": {
+        "audience": "owner-private unchanged",
+        "observed_counts": {
+          "archived": 4,
+          "completed_economic_tests": 1,
+          "deferred_questions": 1,
+          "events": 116,
+          "evidence": 42,
+          "families": 14,
+          "open_questions": 0,
+          "protocols": 2,
+          "reserved_looks": 2,
+          "running": 0,
+          "running_records": 0
+        },
+        "observed_worker_current_prompt_run": false,
+        "public_room_updated": true,
+        "software_verification": {
+          "lab_synthetic_cases": 87,
+          "lab_tests_wall_seconds": 4.348,
+          "site_build": "PASS ESM/self-contained UI",
+          "site_cases": 22
+        },
+        "source_window": "2026-10-13T12:45:00+00:00"
+      },
+      "id": "macro-room-deferred-runtime-readback-20261011",
+      "kind": "METHOD",
+      "limit": "Readback verifies real metadata/view behavior, not an unattended model run, economic process heartbeat, intraday execution or visual/iOS browser QA. Scheduled worker configuration is distinct; next_run_time still null and immediate invocation404. No new economic test or simulation of Claude.",
+      "passage": "Actual installed native lab_status readback: stale=false, WAITING_DATA,14families,0running,0duequestions,1deferredquestion,2spentlooks,1completed exploratory economic test. France sovereign and policy/sentiment titles are projected from exact saved state.",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site",
+      "version": {
+        "deployment": "appgdep_6acbbc145e1081918a75d2e0c5152d1b",
+        "deployment_status": "succeeded",
+        "github_head": "489623c1f1a7a59964f9ccae9ea42c0995a1ae01",
+        "observed_at": "2026-10-11T16:45:34.063Z",
+        "site_source": "c08cb10ffc28b8367099768a9f9905153c231ec8",
+        "site_version": "appgprj_6aca43cb86bc81918e067097356a37de~appgver_e79ea8083a508191a9ce47ef4ed21229"
+      }
+    },
     "owner-autonomous-worker-resumption-20261011": {
       "fact": "Explicit fresh request for autonomous research progression; reuse the one existing worker. No reminder/relance messages, no new automation, paid account, capital or trading authorization.",
       "id": "owner-autonomous-worker-resumption-20261011",
@@ -3948,6 +4038,41 @@
         "observed_at": "2026-10-11T16:16:28.105116+00:00",
         "source": "native automations_update then independent automations_peek",
         "worker_id": "6ac978ecda1081918fba4d76dee437f4"
+      }
+    },
+    "research-worker-direct-launch-unavailable-20261011": {
+      "fact": "Fresh work continues in Owner session and CI metadata. Immediate launch service unavailable; configured recurrence cannot be reported as a delivered research/economic run. No new scheduler or manual reminder created.",
+      "id": "research-worker-direct-launch-unavailable-20261011",
+      "kind": "METHOD",
+      "limit": "No source/look/result reproduced by this failing infrastructure command. Do not repeat run_now everyhour or fabricate a heartbeat. Verify a real future scheduled receipt/backenddelivery only on a distinct event.",
+      "passage": "Immediate task invocation returnedHTTP404 Action not found before action invocation, no run launched. Existing enabled schedule still confirmed; last backendrun observed is previous10Octprompt and next_run_time isnull.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "native automations_run_now response after fresh worker update+peek",
+        "worker_id": "6ac978ecda1081918fba4d76dee437f4"
+      }
+    },
+    "research-worker-source-window-schedule-20261011T1639Z": {
+      "fact": "No model wake-up/poll is intended before the one useful source window. The state queue independently rejects early claims. The future schedule is saved, not a delivered run; next_run_time returned null and old last_run_time preserved.",
+      "id": "research-worker-source-window-schedule-20261011T1639Z",
+      "kind": "METHOD",
+      "limit": "Do not infer actual delivery from scheduling. Immediate run API404 remains unavailability before invocation; no alternate scheduler, paid host or outcomes retry. Prompt notification policy only, no global mute claim.",
+      "passage": "Existing enabled worker schedule now starts13Oct2026 at14:45 Europe/Paris, after primary source\u2019s declared closure; hourly recurrence thereafter. No new automation and no Owner reminder prompt.",
+      "scheduler_receipt": {
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "is_enabled": true,
+        "last_run_time": "2026-10-10T23:15:04.081718+00:00",
+        "next_run_time": null,
+        "prompt_matches": true,
+        "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261013T144500\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "timezone": "Europe/Paris",
+        "updated_at": "2026-10-11T16:39:08.395131+00:00"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11T16:39:08.395131+00:00",
+        "source": "native automation update; one existing ID, future DTSTART, hourly RRULE"
       }
     },
     "smard-entrypoint-zero-price-forensic-20261011": {
@@ -4305,7 +4430,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "e59a59ccca50982045cd0a6c43d658cc7cb68d765758e35c1c8582bb67e9f779",
+  "integrity": "39b28bdbad9de538d179bc5a82f4a62eca44574456a34b8dadce31d3955a544c",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4621,8 +4746,8 @@
     "disabled_confirmed_at": "2026-10-11T00:11:00Z",
     "disabled_evidence": "owner-reminders-off-20261011T0011Z",
     "enabled": true,
-    "enabled_confirmed_at": "2026-10-11T16:16:28.105116+00:00",
-    "enabled_evidence": "research-worker-backend-enabled-20261011T1616Z",
+    "enabled_confirmed_at": "2026-10-11T16:39:08.395131+00:00",
+    "enabled_evidence": "research-worker-source-window-schedule-20261011T1639Z",
     "external_run": {
       "current_prompt_run_observed": false,
       "last_backend_run_time_observed": "2026-10-10T23:15:04.081718+00:00",
@@ -4682,7 +4807,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:31:06.768192+00:00",
+  "updated_at": "2026-10-11T16:46:58.926323+00:00",
   "usage": {
     "cpu_seconds": 2.5818289579999996,
     "human_seconds": null,
