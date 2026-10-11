@@ -102,10 +102,12 @@ class Store:
                     if key == "looks" and any(state[key][identity].get(k) != v
                                                for k, v in prior.items() if k != "status"):
                         raise Refused("Look identity/scope/charge cannot change")
+            session_mutable = {"status", "finished_at", "evidence_ids", "summary", "decision_status",
+                               "heartbeat_at", "recovered_at", "recovery_actor", "recovery_context",
+                               "recovery_invocation_id", "recovery_count"}
             for identity, prior in old.get("worker_sessions", {}).items():
                 current = state.get("worker_sessions", {}).get(identity)
-                if current is None or any(current.get(k) != v for k, v in prior.items()
-                        if k not in ("status", "finished_at", "evidence_ids", "summary", "decision_status")):
+                if current is None or any(current.get(k) != v for k, v in prior.items() if k not in session_mutable):
                     raise Refused("Agent session provenance cannot be removed or rewritten")
                 if prior["status"] != "STARTED" and current != prior:
                     raise Refused("A finished/idle agent session cannot be replayed")
