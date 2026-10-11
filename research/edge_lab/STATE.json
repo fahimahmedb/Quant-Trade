@@ -518,6 +518,21 @@
       "resolved_at": "2026-10-11T16:02:27.223383+00:00",
       "status": "WAIT"
     },
+    "qualify:france-sovereign-repricing": {
+      "actor": "owner-autonomous-20261011T1600Z",
+      "claim_id": "fc7cea5b9735321149fde95dfdef1b686b5c0aea22910a27a3f2b88321cd1816",
+      "claimed_at": "2026-10-11T16:02:57.857097+00:00",
+      "created_at": "2026-10-11T16:02:57.595301+00:00",
+      "evidence": [
+        "owner-macro-political-research-request-20261011"
+      ],
+      "family": "france-sovereign-repricing",
+      "lease_seconds": 600,
+      "priority": 10,
+      "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
+      "reason": "NEW_MECHANISM_ADMISSION",
+      "status": "RESEARCHING"
+    },
     "qualify:hyperliquid-forced-flow": {
       "actor": "scheduled-automation-20261010T1654Z",
       "claim_id": "cfc62d37cd9005c17537606c7c9f96b61255e8272a1506f76d6b621b29db4136",
@@ -536,6 +551,17 @@
       "reason": "D\u00e9cision \u00e9conomique d'acc\u00e8s \u00e0 partir de l'audit, sans lecture d'outcomes.",
       "resolved_at": "2026-10-10T17:08:16.261697+00:00",
       "status": "WAIT"
+    },
+    "qualify:policy-announcement-repricing": {
+      "created_at": "2026-10-11T16:02:57.721060+00:00",
+      "evidence": [
+        "owner-macro-political-research-request-20261011"
+      ],
+      "family": "policy-announcement-repricing",
+      "priority": 10,
+      "question": "Qualifier donn\u00e9es/droits/horloge/co\u00fbts/ressources avant tout protocole ou look.",
+      "reason": "NEW_MECHANISM_ADMISSION",
+      "status": "OPEN"
     },
     "qualify:smard-fixed-flexibility": {
       "actor": "owner-open-energy-20261011T1240Z",
@@ -1884,6 +1910,56 @@
       },
       "previous": "6c3f495f1020bc760ce2cc5b39edc3dd9d27a36557855055535c5518ab7af622",
       "sequence": 95
+    },
+    {
+      "at": "2026-10-11T16:02:57.471529+00:00",
+      "hash": "5b8b91d48c89930154d3f705287c9bb86ff4faa35a85c72b3cb9a8258a917022",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "30bebfd4fe44586d290511346ecb76d9b69fb9e53af2508a63c339227d0f5cc6",
+        "id": "owner-macro-political-research-request-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "64e6f2b08e08da30a3c139408d05ce2df6b7efbf55371a82a9b80befaac1d1fb",
+      "sequence": 96
+    },
+    {
+      "at": "2026-10-11T16:02:57.595314+00:00",
+      "hash": "38ce5fdb9b32ad8924c9d6e81e04b34725afdef227f51c4769964ba3fba1e968",
+      "kind": "FAMILY_REGISTERED",
+      "payload": {
+        "dataset": "france-oat-bund-relative-sovereign-risk",
+        "id": "france-sovereign-repricing",
+        "mechanism_hash": "fe7f2913e094932779116c45d871a9611ed562de9fc0543c7966050acb8de95c",
+        "question": "qualify:france-sovereign-repricing"
+      },
+      "previous": "5b8b91d48c89930154d3f705287c9bb86ff4faa35a85c72b3cb9a8258a917022",
+      "sequence": 97
+    },
+    {
+      "at": "2026-10-11T16:02:57.721073+00:00",
+      "hash": "1597476fe261397f785ba3fd42afd5448ce87427a8b4ed766338bf9846dab64c",
+      "kind": "FAMILY_REGISTERED",
+      "payload": {
+        "dataset": "timestamped-policy-events-cross-asset",
+        "id": "policy-announcement-repricing",
+        "mechanism_hash": "6ca5e39d4f71559de73f27d99d0bfd5db32664e7be9084eb6a32e61489079583",
+        "question": "qualify:policy-announcement-repricing"
+      },
+      "previous": "38ce5fdb9b32ad8924c9d6e81e04b34725afdef227f51c4769964ba3fba1e968",
+      "sequence": 98
+    },
+    {
+      "at": "2026-10-11T16:02:57.857129+00:00",
+      "hash": "add9dcf692248cf924a8d66f6636a090babf4a15226572d7e996bfc50db7fa94",
+      "kind": "QUESTION_CLAIMED",
+      "payload": {
+        "actor": "owner-autonomous-20261011T1600Z",
+        "claim_id": "fc7cea5b9735321149fde95dfdef1b686b5c0aea22910a27a3f2b88321cd1816",
+        "id": "qualify:france-sovereign-repricing"
+      },
+      "previous": "1597476fe261397f785ba3fd42afd5448ce87427a8b4ed766338bf9846dab64c",
+      "sequence": 99
     }
   ],
   "evidence": {
@@ -3411,6 +3487,18 @@
       },
       "version": "2026-10-11, 44-entry registry + primary API metadata receipts; exact hashes in sources/metadata_receipts_20261011.json"
     },
+    "owner-macro-political-research-request-20261011": {
+      "fact": "Add separate qualification lanes: French relative sovereign repricing and timestamped policy-announcement repricing. Do not infer France default, profit, efficacy or data rights from the mandate. Existing no capital/live/paid limits remain.",
+      "id": "owner-macro-political-research-request-20261011",
+      "kind": "METHOD",
+      "limit": "No source/outcome/test accessed by this mandate packet. Political identity is an event tag, never a hand-tuned winner. Reminders remain disabled; no continuously running worker established.",
+      "passage": "Owner asks to add macroeconomic research, French fiscal/sovereign stress and political/market sentiment including Trump, alongside autonomous lab operation.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "recorded_at": "2026-10-11T16:05:00Z",
+        "source": "Owner direct conversation; mandate provenance, not an external economic claim"
+      }
+    },
     "owner-reminders-off-20261011T0011Z": {
       "fact": {
         "automations_observed": 12,
@@ -3687,6 +3775,18 @@
       "status": "HYPOTHESIS",
       "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
     },
+    "france-sovereign-repricing": {
+      "dataset": "france-oat-bund-relative-sovereign-risk",
+      "evidence": [
+        "owner-macro-political-research-request-20261011"
+      ],
+      "label": "Risque souverain fran\u00e7ais : repricing relatif OAT/Bund apr\u00e8s surprise budg\u00e9taire",
+      "mechanism_hash": "fe7f2913e094932779116c45d871a9611ed562de9fc0543c7966050acb8de95c",
+      "next": "Choisir un test discriminant accessible.",
+      "priority": 10,
+      "status": "HYPOTHESIS",
+      "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
+    },
     "hyperliquid-forced-flow": {
       "dataset": "hyperliquid-global-fills",
       "label": "Hyperliquid \u2014 flux forc\u00e9s",
@@ -3696,6 +3796,18 @@
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705",
       "status": "BLOCKED_HOST",
       "wake": "H\u00f4te et budget de collecte/stockage r\u00e9ellement v\u00e9rifi\u00e9s."
+    },
+    "policy-announcement-repricing": {
+      "dataset": "timestamped-policy-events-cross-asset",
+      "evidence": [
+        "owner-macro-political-research-request-20261011"
+      ],
+      "label": "Annonces politiques : information de politique \u00e9conomique et d\u00e9lai de repricing, Trump inclus",
+      "mechanism_hash": "6ca5e39d4f71559de73f27d99d0bfd5db32664e7be9084eb6a32e61489079583",
+      "next": "Choisir un test discriminant accessible.",
+      "priority": 10,
+      "status": "HYPOTHESIS",
+      "wake": "Acc\u00e8s/horloge/co\u00fbts et protocole admissibles."
     },
     "prediction-negative-risk": {
       "dataset": "prediction-flb",
@@ -3757,7 +3869,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "3a166ccf98c597161f3c8eaa51a2ed004fdd917c933dfba4cb6e1c986db77492",
+  "integrity": "f708e1bffb032e9d07c338732f0217d96c6cfaaffdfd3a33d6d55156225dffeb",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4132,7 +4244,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T16:02:27.228190+00:00",
+  "updated_at": "2026-10-11T16:02:57.862062+00:00",
   "usage": {
     "cpu_seconds": 2.5747740749999997,
     "human_seconds": null,
