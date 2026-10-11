@@ -19,7 +19,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state-dir", default=str(ROOT / "research/edge_lab"))
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("init", "status", "next", "render", "queue"):
+    for name in ("init", "status", "next", "render", "queue", "plan"):
         sub.add_parser(name)
     tick = sub.add_parser("tick")
     tick.add_argument("--actor", default="manual")
@@ -29,7 +29,7 @@ def main(argv=None):
     for name in ("pause", "resume"):
         command = sub.add_parser(name)
         command.add_argument("--reason", default="Owner instruction")
-    for name in ("evidence", "freeze", "family", "decide", "build-question", "scheduler-disabled", "scheduler-configured", "scheduler-run-observed"):
+    for name in ("evidence", "freeze", "family", "decide", "build-question", "scheduler-disabled", "scheduler-configured", "scheduler-run-observed", "research-option", "reconcile-construction"):
         command = sub.add_parser(name)
         command.add_argument("packet", help="Versioned JSON packet; use primary evidence")
     reserve = sub.add_parser("reserve")
@@ -86,6 +86,16 @@ def main(argv=None):
         lab.decide(**strict_json(args.packet))
     elif args.action == "build-question":
         lab.build_question(**strict_json(args.packet))
+    elif args.action == "research-option":
+        from quant.edge_lab.planning import register
+        register(lab, strict_json(args.packet))
+    elif args.action == "reconcile-construction":
+        from quant.edge_lab.planning import reconcile_software
+        reconcile_software(lab, **strict_json(args.packet))
+    elif args.action == "plan":
+        from quant.edge_lab.planning import project
+        print(json.dumps(project(*lab.snapshot()), ensure_ascii=False))
+        return
     elif args.action == "scheduler-disabled":
         lab.scheduler_disabled(strict_json(args.packet))
     elif args.action == "scheduler-configured":

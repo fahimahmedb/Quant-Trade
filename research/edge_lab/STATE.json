@@ -229,6 +229,24 @@
     }
   },
   "created_at": "2026-10-10T16:08:25.112658+00:00",
+  "decision_reconciliations": {
+    "build:eurusd-technical-grid:exact-legacy-adapter": {
+      "completed_by": "build:eurusd-technical-grid:implement-saved-adapter",
+      "evidence_ids": [
+        "lab-complete-loop-synthetic-20261011T0013Z"
+      ],
+      "remaining_question": "qualify:eurusd-technical-grid",
+      "summary": "Construction logicielle achev\u00e9e par le raccord exact et la preuve Git synth\u00e9tique conserv\u00e9s. L\u2019admission \u00e9conomique EURUSD reste en attente des donn\u00e9es, droits, ressources et autorit\u00e9 originale."
+    },
+    "build:eurusd-technical-grid:lab-workflow-completion": {
+      "completed_by": "build:eurusd-technical-grid:implement-saved-adapter",
+      "evidence_ids": [
+        "lab-complete-loop-synthetic-20261011T0013Z"
+      ],
+      "remaining_question": "qualify:eurusd-technical-grid",
+      "summary": "Construction logicielle achev\u00e9e par le raccord exact et la preuve Git synth\u00e9tique conserv\u00e9s. L\u2019admission \u00e9conomique EURUSD reste en attente des donn\u00e9es, droits, ressources et autorit\u00e9 originale."
+    }
+  },
   "decisions": {
     "build:eurusd-technical-grid:exact-legacy-adapter": {
       "actor": "owner-autonomous-completion-legacy-20261010T2355Z",
@@ -366,16 +384,19 @@
       "created_at": "2026-10-11T19:34:17.021157+00:00",
       "decision_use": "Enable a bounded evidenced next-source selection when the due queue is empty, retain explicit IDLE when exhausted, and show actual passages and scoped barriers. Owner repair authorization is preserved separately.",
       "evidence": [
-        "lab-complete-loop-synthetic-20261011T0013Z"
+        "source-planning-software-qa-20261011",
+        "owner-v2-pilot-repair-20261011"
       ],
       "family": "eurusd-technical-grid",
       "lease_seconds": 600,
+      "next_action": "Publish code and decision; complete original session, then worker-start must select/claim the first unused documentary option before primary source access.",
       "outcome_access_authorized": false,
       "parent_decision": "build:eurusd-technical-grid:implement-saved-adapter",
       "priority": 2,
       "question": "Repair empty-queue routing from cached, unexamined source candidates, distinguish idle/expired/finished worker receipts and superseded construction blockers, and verify atomic publication with fixtures; no market outcomes or changes to the legacy freeze.",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T19:47:29.932208+00:00",
+      "status": "QUALIFIED"
     },
     "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder": {
       "actor": "scheduled-automation",
@@ -2574,6 +2595,108 @@
       },
       "previous": "00d578c60f1b18069b89ac1ecdb65010d7ec7b90118af6b38bff08ca389c67da",
       "sequence": 136
+    },
+    {
+      "at": "2026-10-11T19:45:33.287335+00:00",
+      "hash": "b28a93ddccda25b1a71d6faf78942904b1efa8de7e14f5fc1efba80418bac3f0",
+      "kind": "RESEARCH_OPTION_REGISTERED",
+      "payload": {
+        "access": "DOCS_METADATA_ONLY",
+        "id": "okx-l2-access-clock-v1",
+        "question": "build:treasury-auction-zf:okx-l2-access-clock",
+        "source": "okx",
+        "version": "de9745cc7898492b0b7832a6e6b4e6be75789c56cbb296293b6205488f457c2b"
+      },
+      "previous": "5609d460e321230fb49672c85687fad9c7702cbeecc2065218a470ed6c03936a",
+      "sequence": 137
+    },
+    {
+      "at": "2026-10-11T19:45:33.417073+00:00",
+      "hash": "e235b7b17592cadfbbae253441b9e108a30c5982c498ee0d176544c908482a46",
+      "kind": "RESEARCH_OPTION_REGISTERED",
+      "payload": {
+        "access": "DOCS_METADATA_ONLY",
+        "id": "coinbase-prospective-book-v1",
+        "question": "build:treasury-auction-zf:coinbase-prospective-book",
+        "source": "coinbase",
+        "version": "cbcc7af6bded5d95e9e134e740d20f4c3f2528df5ab2a8cb741176465b4f90e8"
+      },
+      "previous": "b28a93ddccda25b1a71d6faf78942904b1efa8de7e14f5fc1efba80418bac3f0",
+      "sequence": 138
+    },
+    {
+      "at": "2026-10-11T19:45:33.538902+00:00",
+      "hash": "c280f361243ea903ff3ec37f90395dd64ace0998559c1973a1344dbf17a6c745",
+      "kind": "RESEARCH_OPTION_REGISTERED",
+      "payload": {
+        "access": "DOCS_METADATA_ONLY",
+        "id": "boamp-publication-revisions-v1",
+        "question": "build:treasury-auction-zf:boamp-publication-revisions",
+        "source": "boamp",
+        "version": "000d74ab99c31f56d8ffe90e2741d0128eab7eed983978ed019e6cca291b3a57"
+      },
+      "previous": "e235b7b17592cadfbbae253441b9e108a30c5982c498ee0d176544c908482a46",
+      "sequence": 139
+    },
+    {
+      "at": "2026-10-11T19:45:33.659797+00:00",
+      "hash": "e8e3a171d258a3fd733e6fcd87467ed00e07c295890aca8ce429f68abcc00d4f",
+      "kind": "CONSTRUCTION_RECONCILED",
+      "payload": {
+        "completed_by": "build:eurusd-technical-grid:implement-saved-adapter",
+        "evidence_ids": [
+          "lab-complete-loop-synthetic-20261011T0013Z"
+        ],
+        "id": "build:eurusd-technical-grid:exact-legacy-adapter",
+        "remaining_question": "qualify:eurusd-technical-grid",
+        "summary": "Construction logicielle achev\u00e9e par le raccord exact et la preuve Git synth\u00e9tique conserv\u00e9s. L\u2019admission \u00e9conomique EURUSD reste en attente des donn\u00e9es, droits, ressources et autorit\u00e9 originale."
+      },
+      "previous": "c280f361243ea903ff3ec37f90395dd64ace0998559c1973a1344dbf17a6c745",
+      "sequence": 140
+    },
+    {
+      "at": "2026-10-11T19:45:33.785887+00:00",
+      "hash": "fa6979e8aa01d00b7fff0341bc5226ba03709a6b021fc09d062c3c3ffbd770ac",
+      "kind": "CONSTRUCTION_RECONCILED",
+      "payload": {
+        "completed_by": "build:eurusd-technical-grid:implement-saved-adapter",
+        "evidence_ids": [
+          "lab-complete-loop-synthetic-20261011T0013Z"
+        ],
+        "id": "build:eurusd-technical-grid:lab-workflow-completion",
+        "remaining_question": "qualify:eurusd-technical-grid",
+        "summary": "Construction logicielle achev\u00e9e par le raccord exact et la preuve Git synth\u00e9tique conserv\u00e9s. L\u2019admission \u00e9conomique EURUSD reste en attente des donn\u00e9es, droits, ressources et autorit\u00e9 originale."
+      },
+      "previous": "e8e3a171d258a3fd733e6fcd87467ed00e07c295890aca8ce429f68abcc00d4f",
+      "sequence": 141
+    },
+    {
+      "at": "2026-10-11T19:47:29.806707+00:00",
+      "hash": "e8f0ae7d6243adf678843db72e85f4bf792f6cb800db0e7529af961feee2b308",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "2b3f73ff51276675f96dee51f2323bdf0e0e625e4078b12f1283e7d97ac58b19",
+        "id": "source-planning-software-qa-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "fa6979e8aa01d00b7fff0341bc5226ba03709a6b021fc09d062c3c3ffbd770ac",
+      "sequence": 142
+    },
+    {
+      "at": "2026-10-11T19:47:29.932220+00:00",
+      "hash": "d09c2a81c41ddd628e6392aab3f170ab248ece82dde01e959dbd744f4836f43d",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "source-planning-software-qa-20261011",
+          "owner-v2-pilot-repair-20261011"
+        ],
+        "id": "build:eurusd-technical-grid:worker-research-routing-v2",
+        "next": "Publish code and decision; complete original session, then worker-start must select/claim the first unused documentary option before primary source access.",
+        "verdict": "QUALIFIED"
+      },
+      "previous": "e8f0ae7d6243adf678843db72e85f4bf792f6cb800db0e7529af961feee2b308",
+      "sequence": 143
     }
   ],
   "evidence": {
@@ -4674,6 +4797,50 @@
         "tests": "79synthetic tests PASS3.850s"
       }
     },
+    "source-planning-software-qa-20261011": {
+      "cost": {
+        "observed_python_suite_wall_seconds": 4.106,
+        "paid_usd": 0,
+        "tokens": "NOT_MEASURED",
+        "total_cpu": "NOT_MEASURED",
+        "whole_session_cost": "NOT_MEASURED"
+      },
+      "fact": {
+        "code_sha256": {
+          "scripts/edge_lab.py": "4102c6610a64ea38bc4ef2e1ca8af54c1254032dc2140c1ccab921042f0ccd56",
+          "src/quant/edge_lab/planning.py": "1bf2805d6855fd87433722a35eadd29529c74700c7b0179b34d5fdc496856593",
+          "src/quant/edge_lab/store.py": "8c0103868b7ce072293992921cf38d3b9e005ff11139e295eac57b00556b3c4d",
+          "src/quant/edge_lab/worker.py": "185cd3017f95dc72e3c4cf00f2e916f5bdef8bf94ecac64e797e79795f31df07"
+        },
+        "continuation": "Same checkout and saved original claim after elapsed lease; no new claim, market result or economic replay.",
+        "economic_outcomes_accessed": 0,
+        "local_synthetic_cases": 112,
+        "original_claim": "8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2",
+        "original_session": "owner-v2-repair-20261011",
+        "room_cases": 31,
+        "software_status": "SOFTWARE_COMPLETE_MARKET_ADMISSIONS_BLOCKED"
+      },
+      "id": "source-planning-software-qa-20261011",
+      "kind": "METHOD",
+      "limit": "Software fixtures and declarations only; original empirical gates remain. Independent scheduled delivery and iOS visuals not established.",
+      "passage": "112 Python tests PASS in4.106s;31 Node tests PASS; ESM/build/browser-JS+DOM checks PASS. CAS loss, exhausted/future queue, non-replay, strict source versions/resource caps and scoped software reconciliation challenged using fixtures.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "verdict": {
+        "ECONOMIC_SIGNIFICANCE": "Reduces idle routing and ambiguity; no claim of alpha or source executability.",
+        "EFFECT_SIZE": "112 synthetic Python cases; 31 room cases. Three cached documentary options and two evidenced construction reconciliations prepared. No economic effect estimated.",
+        "FAILED_CRITERIA": [
+          "Real sources and complete economic packages not yet admitted",
+          "Continuous unattended operation not demonstrated"
+        ],
+        "FAMILY_STATUS": "All economic states/charges retained; software-only repair qualified.",
+        "LESSON": "A finite source reserve can feed the same atomic question queue without replaying WAIT, changing a freeze or pretending a check is research. Software completion can supersede historical construction rows while retaining economic WAIT.",
+        "NEXT_DECISION": "Publish code and decision; complete original session, then worker-start must select/claim the first unused documentary option before primary source access.",
+        "POWER_LIMITATION": "Zero new market/statistical observations. Private exposure and effective M remain UNKNOWN.",
+        "RESULT": "SOFTWARE_PASS_FINITE_SOURCE_ROUTING_AND_HONEST_PASSAGES",
+        "UNCERTAINTY": "No signed unattended delivery or permanent model process; no browser/iOS visual QA. Source admissibility remains to be decided."
+      },
+      "version": "Owner V2 repair, original claim 8144fac4adb9ea57b77260630d62432ab3819eaa268d5dc398c6f6aef9798ef2"
+    },
     "v2-worker-configured-20261011": {
       "fact": {
         "independence_verified": false,
@@ -4897,7 +5064,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "73cab1d61fea4347566df7522c420a0c77736b90456bf6f06026fc829bab4b6c",
+  "integrity": "9383445f8c618ccdfeeda2294deea0bbc9db44eb4bc6018758f1dd2f2d50f79d",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5209,6 +5376,86 @@
     }
   },
   "real_capital_authorized": false,
+  "research_options": {
+    "boamp-publication-revisions-v1": {
+      "bounds": {
+        "max_payload_bytes": 262144,
+        "max_requests": 4,
+        "outcome_access": false,
+        "retries": 0,
+        "timeout_seconds": 15
+      },
+      "decision_use": "D\u00e9cider si les \u00e9v\u00e9nements de commande publique peuvent alimenter une future hypoth\u00e8se fran\u00e7aise ; qualifier la source avant prix/rendements, sans promettre une liaison entreprise-titre.",
+      "evidence_ids": [
+        "owner-free-source-universe-20261011T1235Z"
+      ],
+      "id": "boamp-publication-revisions-v1",
+      "parent_decision": "build:treasury-auction-zf:owner-free-source-universe",
+      "primary_urls": [
+        "https://www.boamp.fr/pages/donnees-ouvertes-et-api/"
+      ],
+      "priority": 3,
+      "question": "Les m\u00e9tadonn\u00e9es BOAMP permettent-elles de conserver publication, corrections et identit\u00e9s sous une licence document\u00e9e ?",
+      "question_id": "build:treasury-auction-zf:boamp-publication-revisions",
+      "registered_at": "2026-10-11T19:45:33.538891+00:00",
+      "source_id": "boamp",
+      "source_version": "000d74ab99c31f56d8ffe90e2741d0128eab7eed983978ed019e6cca291b3a57",
+      "trigger_evidence_id": "owner-v2-pilot-repair-20261011",
+      "unresolved_fact": "Licence exacte du produit, premi\u00e8res publications et avis rectificatifs sans lire les enregistrements \u00e9conomiques."
+    },
+    "coinbase-prospective-book-v1": {
+      "bounds": {
+        "max_payload_bytes": 262144,
+        "max_requests": 4,
+        "outcome_access": false,
+        "retries": 0,
+        "timeout_seconds": 15
+      },
+      "decision_use": "D\u00e9cider si un futur protocole prospectif peut \u00e9viter le manque d\u2019archives ; ne pas pr\u00e9tendre reconstruire un pass\u00e9, qualifier des fills ou lancer une collecte.",
+      "evidence_ids": [
+        "owner-free-source-universe-20261011T1235Z"
+      ],
+      "id": "coinbase-prospective-book-v1",
+      "parent_decision": "build:treasury-auction-zf:owner-free-source-universe",
+      "primary_urls": [
+        "https://docs.cdp.coinbase.com/exchange/websocket-feed/overview"
+      ],
+      "priority": 2,
+      "question": "Le carnet public Coinbase peut-il soutenir une capture prospective born\u00e9e avec droits, s\u00e9quences et premi\u00e8re r\u00e9ception document\u00e9s ?",
+      "question_id": "build:treasury-auction-zf:coinbase-prospective-book",
+      "registered_at": "2026-10-11T19:45:33.417062+00:00",
+      "source_id": "coinbase",
+      "source_version": "cbcc7af6bded5d95e9e134e740d20f4c3f2528df5ab2a8cb741176465b4f90e8",
+      "trigger_evidence_id": "owner-v2-pilot-repair-20261011",
+      "unresolved_fact": "Licence de donn\u00e9es, acc\u00e8s public, s\u00e9quences/reconnexion et co\u00fbts/horloge d\u2019une capture sans compte."
+    },
+    "okx-l2-access-clock-v1": {
+      "bounds": {
+        "max_payload_bytes": 262144,
+        "max_requests": 4,
+        "outcome_access": false,
+        "retries": 0,
+        "timeout_seconds": 15
+      },
+      "decision_use": "D\u00e9cider si une source de quotes peut soutenir un futur protocole distinct ; aucune substitution aux tests F1/COIN-M/HL/FX et aucun ZIP/prix ouvert.",
+      "evidence_ids": [
+        "owner-free-source-universe-20261011T1235Z"
+      ],
+      "id": "okx-l2-access-clock-v1",
+      "parent_decision": "build:treasury-auction-zf:owner-free-source-universe",
+      "primary_urls": [
+        "https://www.okx.com/historical-data"
+      ],
+      "priority": 1,
+      "question": "Les archives L2 OKX offrent-elles un acc\u00e8s sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers document\u00e9es ?",
+      "question_id": "build:treasury-auction-zf:okx-l2-access-clock",
+      "registered_at": "2026-10-11T19:45:33.287323+00:00",
+      "source_id": "okx",
+      "source_version": "de9745cc7898492b0b7832a6e6b4e6be75789c56cbb296293b6205488f457c2b",
+      "trigger_evidence_id": "owner-v2-pilot-repair-20261011",
+      "unresolved_fact": "Droits de r\u00e9utilisation automatique, niveau de compte \u00e9ventuel, publication versus \u00e9v\u00e9nement et borne compl\u00e8te des objets."
+    }
+  },
   "scheduler": {
     "disabled_confirmed_at": "2026-10-11T00:11:00Z",
     "disabled_evidence": "owner-reminders-off-20261011T0011Z",
@@ -5279,7 +5526,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T19:34:20.391214+00:00",
+  "updated_at": "2026-10-11T19:47:29.937104+00:00",
   "usage": {
     "cpu_seconds": 2.613686585,
     "human_seconds": null,

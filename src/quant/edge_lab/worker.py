@@ -15,7 +15,8 @@ def queue(state, control, now=None):
     now = now or datetime.now(timezone.utc)
     groups = {key: [] for key in ("ready", "scheduled", "in_progress", "recovery", "waiting", "finished")}
     for identity, decision in state["decisions"].items():
-        status = decision["status"]
+        reconciliation = state.get("decision_reconciliations", {}).get(identity)
+        status = "SOFTWARE_RECONCILED" if reconciliation else decision["status"]
         group = ("ready" if question_due(decision, now) else "scheduled") if status == "OPEN" else {
             "RESEARCHING": "in_progress", "RECOVERY_NEEDED": "recovery", "WAIT": "waiting"}.get(status, "finished")
         if status == "RESEARCHING" and (now - timestamp(decision["claimed_at"])).total_seconds() >= decision["lease_seconds"]:
@@ -23,6 +24,8 @@ def queue(state, control, now=None):
         groups[group].append({"id": identity, "family": decision["family"],
             "status": status, "priority": decision.get("priority", 99),
             "question": decision.get("question"), "next": decision.get("next_action"),
+            "decision_use": decision.get("decision_use"), "reconciliation": reconciliation,
+            "original_status": decision["status"],
             "not_before": decision.get("not_before"), "claim_id": decision.get("claim_id"),
             "created_at": decision.get("created_at", ""),
             "outcome_access_authorized": False})
@@ -62,6 +65,11 @@ def start(lab, authority, actor, context="interactive", invocation_id=None):
         raise Refused("Invalid invocation id")
     if identity in sessions:
         raise Refused("Agent invocation already recorded; never replay it")
+    from .planning import project, promote
+    planning = project(remote, control, now)
+    if work["next"] is None:
+        planning = promote(lab)
+        work = queue(*lab.snapshot(), now=now)
     pending = work["next"]
     claim_id = lab.claim_decision(pending["id"], actor) if pending else None
     with lab.store.lock():
@@ -71,14 +79,19 @@ def start(lab, authority, actor, context="interactive", invocation_id=None):
             "heartbeat_at": utc_now(), "lease_seconds": 600,
             "authority_parent": fresh["sha"], "question_id": pending["id"] if pending else None,
             "claim_id": claim_id, "delivery_verified": False,
+            "idle_reason": planning["status"] if not pending else None,
+            "next_due_at": planning["next_due_at"],
+            "planning_option": planning["next_option"]["id"] if planning["next_option"] else None,
             "scope": "Published CLI session declaration; not a signed scheduler receipt or process telemetry"}
         state.setdefault("worker_sessions", {})[identity] = record
         event(state, "AGENT_SESSION_STARTED" if pending else "AGENT_SESSION_IDLE", record)
         lab.store.save(state)
     # Losing CAS stops here: the caller receives no work authorization.
     published = authority.claim(state, fresh["sha"])
+    if pending:
+        pending = {**pending, "status": "RESEARCHING", "claim_id": claim_id}
     return {"session_id": identity, "status": record["status"], "published_commit": published,
-        "claim_id": claim_id, "next": pending, "context": context,
+        "claim_id": claim_id, "next": pending, "context": context, "planning": planning,
         "scope": record["scope"], "outcome_access_authorized": False}
 
 

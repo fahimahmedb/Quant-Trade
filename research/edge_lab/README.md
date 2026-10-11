@@ -99,3 +99,12 @@ Le worker reste l’unique tâche cloud existante `6ac978ecda1081918fba4d76dee43
 - Aucun travail dû : IDLE normal, sans inventer de tâche, relecture des WAIT ou message de relance. Une preuve de première publication ne naît pas d’une horloge de réception tardive.
 
 Les sessions sont des déclarations CLI publiées, avec lease de 600 s. Elles ne sont ni télémétrie de processus ni reçus signés de livraison du service de modèles. Le runner économique garde ses gates, son gel et reserve/execute d’origine. Cette V2 n’ajoute ni modèle/API payante, daemon persistant, autre scheduler, trading, nouveau look ou période vierge.
+
+
+## V2 : renouvellement borné et passages sans tâche
+
+Appeler `worker-start` après chaque tick publié, même si `next` est vide. Le CLI sélectionne alors une réserve documentaire justifiée, crée sa question et publie le claim/session dans le même CAS. Le perdant ne reçoit aucun travail. Sans réserve admissible : reçu IDLE avec raison et échéance ; jamais de tâche artificielle. Le prochain réveil reste celui du worker existant, aucun daemon ou modèle payant ajouté.
+
+`research-option PACKET` conserve une option immuable issue du catalogue de sources déjà lu : empreinte de l’entrée, fait non qualifié, décision discriminée, parent/preuves, URLs primaires et plafond requêtes/octets/temps sans retry ni outcomes. Un même couple source/version ou une question déjà examinée ne peut revenir sous un autre nom. `plan` expose les réserves, consommations et échéances sans ouvrir de source. Une nouvelle réserve nécessite une question distincte réellement décisionnelle ; les sources connues bloquées ou familles rejetées ne reviennent pas par le planificateur.
+
+`reconcile-construction PACKET` rapproche une ancienne construction WAIT avec sa preuve descendante QUALIFIED. Le verdict historique reste intact ; la salle retire le doublon des blocages actifs et montre la question économique toujours WAIT. Les reçus de contrôle, sessions IDLE et travaux terminés ont des affichages distincts. Aucune animation ne prouve l’activité d’un processus.

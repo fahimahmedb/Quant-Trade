@@ -13,12 +13,13 @@ La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler son
 
 ## Prochaine décision utile
 
-Aucune question ouverte ; attendre une preuve ou un accès nouveau.
+Aucune question admissible due maintenant ; prochaine échéance : 2026-10-13T12:45:00+00:00
 
 ## File V2
 
-Prêtes : 0 ; différées : 1 ; en cours : 1 ; récupération : 0 ; WAIT : 14.
+Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 0 ; WAIT : 12.
 Sessions CLI conservées : 2. Un reçu interactif n’atteste pas une livraison autonome du scheduler.
+Investigations documentaires en réserve : 3 ; déjà traitées/prélevées : 0. Pilotage : `BUSY`.
 
 ## Programme et preuves
 
@@ -84,7 +85,7 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 - `build:eurusd-technical-grid:legacy-authority-bridge` : **WAIT** — Read-only exact preflight built/reviewed/tested; full launch remains WAIT. Preserve original refs/gates and all spent history. Next distinct construction question measures synthetic CPU/storage/runtime bounds, without price data, old runtime boot, ref creation or economic launch. ; preuves eurusd-legacy-exact-readonly-preflight-20261010T2001Z, fx-legacy-control-resource-bridge-gap-20261010.
 - `build:eurusd-technical-grid:synthetic-reader-boundary` : **WAIT** — Exact parser duplicate-group and CRC fixture completed and preserved. Resource/source/original-launch admission remains WAIT; no new OPEN question justified by cached information. Next: bounded metadata tick, wake only on distinct permitted full-input/group bounds or original reservation/launcher authority evidence. Never repeat the same probe, change frozen parameters/code/window, or auto-launch market. ; preuves eurusd-synthetic-reader-group-crc-20261010T2136Z.
 - `build:eurusd-technical-grid:synthetic-resource-envelope` : **WAIT** — Synthetic full-calendar engine probe implemented and completed; complete market resource envelope remains WAIT. Next distinct construction question challenges same-timestamp/duplicate group memory and parser/CRC on synthetic ZIPs, with no real archives or result access; no changed freeze or automatic market launch. ; preuves eurusd-full-calendar-synthetic-capacity-20261010T2012Z.
-- `build:eurusd-technical-grid:worker-research-routing-v2` : **RESEARCHING** — Repair empty-queue routing from cached, unexamined source candidates, distinguish idle/expired/finished worker receipts and superseded construction blockers, and verify atomic publication with fixtures; no market outcomes or changes to the legacy freeze. ; preuves lab-complete-loop-synthetic-20261011T0013Z.
+- `build:eurusd-technical-grid:worker-research-routing-v2` : **QUALIFIED** — Publish code and decision; complete original session, then worker-start must select/claim the first unused documentary option before primary source access. ; preuves source-planning-software-qa-20261011, owner-v2-pilot-repair-20261011.
 - `build:france-sovereign-repricing:prospective-fiscal-vintage-recorder` : **QUALIFIED** — SYNTHETIC_ONLY_PROTO_READY. Original France source admission stays WAIT. No empirical capture or backtest. Next due question is political source metadata at13Oct12:45UTC, not a retry of the existing probe. Any later fiscal capture needs a distinct data/rights/timing/limits/exposure admission before source values. ; preuves macro-eurostat-vintage-gate-20261011, fiscal-vintage-software-qa-20261011.
 - `build:policy-announcement-repricing:official-source-clock` : **WAIT** — SOURCE_DECLARED_PUBLIC_INSPECTION_CLOSED_UNTIL_2026-10-13T12:45:00Z. HTTP200/228B/no records validates keyless transport only. No filed_at/amendment/current document or first-news clock qualified. Preserve exact metadata, no hourly poll. Queue one distinct bounded schema/clock check after source-announced return, no prices/outcomes. If source still unavailable, retain WAIT instead of collecting concurrently or changing clocks. Not an economic REJECT. ; preuves policy-federal-register-free-api-20261011, policy-public-inspection-access-window-20261011.
 - `build:smard-fixed-flexibility:bounded-source-runner` : **QUALIFIED** — Publish pinned code/freeze/admission, then reserve and publish one look atomically before outcome access; execute once with fresh remote controls. Proxy scope only. ; preuves smard-fixed-proxy-software-admission-20261011.

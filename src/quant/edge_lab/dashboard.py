@@ -23,7 +23,9 @@ def markdown_state(state, control):
     """Pure projection, also usable while the writer holds the state lock."""
     tick = state["scheduler"]["last_tick"] or {}
     from .worker import queue
+    from .planning import project
     work = queue(state, control)
+    plan = project(state, control)
     due = [(k, v) for k, v in state["decisions"].items() if question_due(v)]
     decision = None if control["paused"] else min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)
     lines = ["# Quant — labo de recherche", "",
@@ -38,10 +40,13 @@ def markdown_state(state, control):
              "La pause empêche tout nouveau travail. Le contrôle et l'état du scheduler sont distincts ; désactiver les rappels arrête ses réveils.",
              "", "## Prochaine décision utile", "",
              (("Construction : " if decision[1].get("reason") == "CONSTRUCTION_ADMISSION" else "")
-              + decision[1]["question"] + " (`" + decision[0] + "`)") if decision else "Aucune question ouverte ; attendre une preuve ou un accès nouveau.",
+              + decision[1]["question"] + " (`" + decision[0] + "`)") if decision else
+             (plan["next_option"]["question"] + " — à prendre avec worker-start/CAS." if plan["next_option"] else
+              "Aucune question admissible due maintenant ; prochaine échéance : " + str(plan["next_due_at"] or "preuve nouvelle requise")),
              "", "## File V2", "",
              f"Prêtes : {work['counts']['ready']} ; différées : {work['counts']['scheduled']} ; en cours : {work['counts']['in_progress']} ; récupération : {work['counts']['recovery']} ; WAIT : {work['counts']['waiting']}.",
              f"Sessions CLI conservées : {len(state.get('worker_sessions', {}))}. Un reçu interactif n’atteste pas une livraison autonome du scheduler.",
+             f"Investigations documentaires en réserve : {len(plan['pending'])} ; déjà traitées/prélevées : {len(plan['consumed'])}. Pilotage : `{plan['status']}`.",
              "", "## Programme et preuves", "", "| Voie | État | Preuve figée | Prochain travail |", "|---|---|---|---|"]
     for identity, family in sorted(state["families"].items(), key=lambda x: x[1]["priority"]):
         sha = family.get("sha")
