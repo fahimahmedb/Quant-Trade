@@ -183,6 +183,36 @@ class Lab:
             event(state, "RESEARCH_WORKER_CONFIGURED_OBSERVED", packet)
             self.store.save(state)
 
+    def scheduler_run_observed(self, packet):
+        """Native last-run observation, distinct from signed delivery and independence."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            scheduler = state["scheduler"]
+            saved = state["evidence"].get(scheduler.get("enabled_evidence"), {}).get("scheduler_receipt", {})
+            proof = state["evidence"].get(packet.get("evidence_id"), {})
+            observed = proof.get("scheduler_receipt", {})
+            if (not scheduler.get("enabled") or packet.get("id") != scheduler["id"]
+                    or proof.get("kind") != "METHOD" or observed.get("id") != scheduler["id"]
+                    or not re.fullmatch(r"[0-9a-f]{64}", saved.get("prompt_sha256", ""))
+                    or observed.get("prompt_sha256") != saved["prompt_sha256"]
+                    or not observed.get("last_run_time")):
+                raise Refused("Exact native run receipt and current configured prompt hash required")
+            run_at = timestamp(observed["last_run_time"])
+            if run_at <= timestamp(scheduler["enabled_confirmed_at"]) or run_at > timestamp(packet["observed_at"]):
+                raise Refused("Historical/future last-run does not attest this configuration")
+            if scheduler.get("external_run", {}).get("run_evidence") == packet["evidence_id"]:
+                return
+            scheduler["external_run"] = {"current_prompt_run_observed": True,
+                "last_backend_run_time_observed": observed["last_run_time"],
+                "next_backend_run_time_observed": observed.get("next_run_time"),
+                "observed_at": packet["observed_at"], "run_evidence": packet["evidence_id"],
+                "delivery_signed_verified": False, "unattended_independence_verified": False,
+                "trigger": "UNKNOWN; immediate-launch API error and later backend observation are both retained",
+                "scope": "Provider last-run metadata; session receipts are separate, no 24/7 or process telemetry claim"}
+            event(state, "RESEARCH_WORKER_RUN_OBSERVED", packet)
+            self.store.save(state)
+
     def evidence(self, packet):
         """Cache versioned source passages; outcome packets must name a charged look."""
         required = ("id", "url", "version", "passage", "fact", "limit", "kind")

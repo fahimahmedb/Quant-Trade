@@ -82,3 +82,37 @@ class SchedulerResumptionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class SchedulerRunObservationTests(unittest.TestCase):
+    setUp = SchedulerResumptionTests.setUp
+    def ready_run(self, identity='native-run', run_at='2026-10-11T17:36:09Z', prompt='a'*64):
+        saved = copy.deepcopy(self.backend);saved['id']='backend-v2';saved['scheduler_receipt']['prompt_sha256']='a'*64
+        self.lab.evidence(saved)
+        self.lab.scheduler_configured({**self.packet,'backend_evidence_id':'backend-v2'})
+        native = {**saved,'id':identity,'scheduler_receipt':{**saved['scheduler_receipt'],
+            'last_run_time':run_at,'prompt_sha256':prompt}}
+        self.lab.evidence(native)
+        return {'id':self.worker_id,'evidence_id':identity,'observed_at':'2026-10-11T17:40:00Z'}
+
+    def test_new_native_last_run_observation_is_not_independence_or_an_economic_look(self):
+        packet=self.ready_run();before=self.lab.snapshot()[0]
+        self.lab.scheduler_run_observed(packet);after=self.lab.snapshot()[0]
+        self.assertTrue(after['scheduler']['external_run']['current_prompt_run_observed'])
+        self.assertFalse(after['scheduler']['external_run']['unattended_independence_verified'])
+        self.assertFalse(after['scheduler']['external_run']['delivery_signed_verified'])
+        for k in ('looks','jobs','trial_charges','imported','baseline'):
+            self.assertEqual(before[k],after[k])
+        self.lab.scheduler_run_observed(packet)
+        self.assertEqual(after,self.lab.snapshot()[0])
+
+    def test_old_future_or_different_prompt_cannot_attest_current_worker(self):
+        for i,kwargs in enumerate(({'run_at':'2026-10-10T23:15:04Z'},
+                {'run_at':'2026-10-11T17:41:00Z'}, {'prompt':'b'*64})):
+            packet=self.ready_run(identity='invalid-'+str(i),**kwargs);before=self.lab.snapshot()[0]
+            with self.assertRaises(Refused):self.lab.scheduler_run_observed(packet)
+            self.assertEqual(before,self.lab.snapshot()[0])
+
+    def test_pause_stops_native_run_receipt_without_rewriting_history(self):
+        packet=self.ready_run();self.lab.store.pause(True,'Synthetic pause');before=self.lab.snapshot()[0]
+        with self.assertRaises(Refused):self.lab.scheduler_run_observed(packet)
+        self.assertEqual(before,self.lab.snapshot()[0])

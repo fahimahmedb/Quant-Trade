@@ -366,16 +366,19 @@
       "created_at": "2026-10-11T17:32:42.303875+00:00",
       "decision_use": "Construire et challenger sur fixtures uniquement le stockage causal versionn\u00e9 \u00e0 partir des limites Eurostat d\u00e9j\u00e0 qualifi\u00e9es. Un PASS logiciel peut pr\u00e9parer une admission prospective distincte ; il ne qualifie ni premi\u00e8re publication historique, ni ex\u00e9cution OAT/Bund, ni acc\u00e8s empirique. Fixer p\u00e9rim\u00e8tre/cadence/droits/ressources/exposition avant toute acquisition r\u00e9elle, sinon WAIT pr\u00e9cis. Aucun probe de question d\u00e9j\u00e0 close, corpus, prix, r\u00e9sultats ou ajustement de strat\u00e9gie.",
       "evidence": [
-        "macro-eurostat-vintage-gate-20261011"
+        "macro-eurostat-vintage-gate-20261011",
+        "fiscal-vintage-software-qa-20261011"
       ],
       "family": "france-sovereign-repricing",
       "lease_seconds": 600,
+      "next_action": "SYNTHETIC_ONLY_PROTO_READY. Original France source admission stays WAIT. No empirical capture or backtest. Next due question is political source metadata at13Oct12:45UTC, not a retry of the existing probe. Any later fiscal capture needs a distinct data/rights/timing/limits/exposure admission before source values.",
       "outcome_access_authorized": false,
       "parent_decision": "qualify:france-sovereign-repricing",
       "priority": 10,
       "question": "Peut-on pr\u00e9parer un enregistrateur de vintages fiscales prospectives, avec r\u00e9ception UTC, hashes et r\u00e9visions, sans reconstituer de faux historiques ni acc\u00e9der aux prix ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "resolved_at": "2026-10-11T17:47:45.373845+00:00",
+      "status": "QUALIFIED"
     },
     "build:policy-announcement-repricing:announced-api-return": {
       "construction_scope": "ea77900d85cc60c095db122a71d2a56be4bb6d7ad97cff1518f7f6f853ea8fb9",
@@ -2373,6 +2376,84 @@
       },
       "previous": "07f7100927778cd724f006d4ebdcf7f870972102be0c2b9bb26ac8f0d62dfb84",
       "sequence": 124
+    },
+    {
+      "at": "2026-10-11T17:47:44.707691+00:00",
+      "hash": "586d9a34181e287beea0a80cd508d545398dbbd323c1c8e55d88ef579fed8d1c",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "1a1321f178000fd1dc0811422f2dce2bf0a9439adf15c51a48671cf266902b81",
+        "id": "v2-worker-configured-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "8777df45ce29983f4eba21c590ea7aeb3d225584963664149794db65afbd5d78",
+      "sequence": 125
+    },
+    {
+      "at": "2026-10-11T17:47:44.843245+00:00",
+      "hash": "4a3345f6660b96d1ac4a72a1070b48625d17771ff37d21c00e0a595bf1c09870",
+      "kind": "RESEARCH_WORKER_CONFIGURED_OBSERVED",
+      "payload": {
+        "backend_evidence_id": "v2-worker-configured-20261011",
+        "enabled": true,
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "observed_at": "2026-10-11T17:35:42.938259+00:00",
+        "owner_evidence_id": "owner-v2-agent-queue-animations-20261011"
+      },
+      "previous": "586d9a34181e287beea0a80cd508d545398dbbd323c1c8e55d88ef579fed8d1c",
+      "sequence": 126
+    },
+    {
+      "at": "2026-10-11T17:47:44.967669+00:00",
+      "hash": "26ed60c66c38f49948ed0bc6b8fb00e54eaa025df186dadff2f63149a4f238ef",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "a17e9e9360abf4744778349d5ed3ee836d386abfa18b7a72a9b8e88924a904c5",
+        "id": "v2-worker-native-run-observed-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "4a3345f6660b96d1ac4a72a1070b48625d17771ff37d21c00e0a595bf1c09870",
+      "sequence": 127
+    },
+    {
+      "at": "2026-10-11T17:47:45.110951+00:00",
+      "hash": "20871b597104bf6803ea230f0f567b67362c0537119f2fd8a8d8e571ccd5077f",
+      "kind": "RESEARCH_WORKER_RUN_OBSERVED",
+      "payload": {
+        "evidence_id": "v2-worker-native-run-observed-20261011",
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "observed_at": "2026-10-11T17:47:44.612080+00:00"
+      },
+      "previous": "26ed60c66c38f49948ed0bc6b8fb00e54eaa025df186dadff2f63149a4f238ef",
+      "sequence": 128
+    },
+    {
+      "at": "2026-10-11T17:47:45.240811+00:00",
+      "hash": "5543ea93c1bb09202658e4dc0f919ad4fc741b2e438f2ab35622fc13e62ff765",
+      "kind": "EVIDENCE_ADDED",
+      "payload": {
+        "digest": "75df0d332f9795742997047b9705f959eef1ccc35093795af0275ff1cad2cd1d",
+        "id": "fiscal-vintage-software-qa-20261011",
+        "kind": "METHOD"
+      },
+      "previous": "20871b597104bf6803ea230f0f567b67362c0537119f2fd8a8d8e571ccd5077f",
+      "sequence": 129
+    },
+    {
+      "at": "2026-10-11T17:47:45.373858+00:00",
+      "hash": "ed4bf1a9313cfd02448b8acf855fb2eb9afa75a15b50f88dab0835ba67ba6f30",
+      "kind": "DECISION",
+      "payload": {
+        "evidence": [
+          "macro-eurostat-vintage-gate-20261011",
+          "fiscal-vintage-software-qa-20261011"
+        ],
+        "id": "build:france-sovereign-repricing:prospective-fiscal-vintage-recorder",
+        "next": "SYNTHETIC_ONLY_PROTO_READY. Original France source admission stays WAIT. No empirical capture or backtest. Next due question is political source metadata at13Oct12:45UTC, not a retry of the existing probe. Any later fiscal capture needs a distinct data/rights/timing/limits/exposure admission before source values.",
+        "verdict": "QUALIFIED"
+      },
+      "previous": "5543ea93c1bb09202658e4dc0f919ad4fc741b2e438f2ab35622fc13e62ff765",
+      "sequence": 130
     }
   ],
   "evidence": {
@@ -3049,6 +3130,42 @@
         "probe_source_sha256": "914e7b46cec22117bb3fd5bdaf889066f7114885875f46f1f30d917be6152747",
         "worker_sha256": "a1020d406b69dc328f4743da7a4fca0cbc397b2d434b71eee4eac25108d8383e"
       }
+    },
+    "fiscal-vintage-software-qa-20261011": {
+      "fact": {
+        "code_paths": [
+          "src/quant/edge_lab/fiscal_vintages.py",
+          "tests/test_edge_lab_fiscal_vintages.py"
+        ],
+        "cost": {
+          "cpu_total": "NOT_MEASURED",
+          "new_paid_services_usd": 0,
+          "scope": "Previously observed101-case suite elapsed; not entire session cost",
+          "suite_wall_reported_seconds": 3.808,
+          "tokens": "NOT_MEASURED"
+        },
+        "input_records_real": 0,
+        "look_id": null,
+        "source_requests": 0,
+        "synthetic_cases": 6,
+        "verdict": {
+          "ECONOMIC_SIGNIFICANCE": "Addresses missing prospective vintage provenance, not alpha or historic fiscal surprise reconstruction.",
+          "EFFECT_SIZE": "No economic effect measured; immutable byte receipts and conservative UTC usable-from boundary only.",
+          "FAILED_CRITERIA": "No economic admission: no empirical capture, OAT/Bund fills/costs/clock still missing.",
+          "FAMILY_STATUS": "France mechanism still source-gate WAIT; this construction question is QUALIFIED software-only.",
+          "LESSON": "Store receipt time and exact bytes; a later receipt never restores original publication or an untouched holdout. Byte changes alone do not establish economic revisions.",
+          "NEXT_DECISION": "Political Public Inspection metadata gate after13Oct12:45UTC; real fiscal capture requires separate qualified admission, not this prototype.",
+          "POWER_LIMITATION": "Synthetic tests are software checks, zero market/fiscal observations or investment trials.",
+          "RESULT": "SYNTHETIC_FISCAL_VINTAGE_SOFTWARE_QUALIFIED; empirical capture remains refused.",
+          "UNCERTAINTY": "Release time, economic revision semantics, real data rights/resources, execution and independent scheduler delivery remain unauthenticated."
+        }
+      },
+      "id": "fiscal-vintage-software-qa-20261011",
+      "kind": "METHOD",
+      "limit": "Prototype purpose is SYNTHETIC_SOFTWARE_QA only; no empirical admission, release-time authenticity, coverage, predictive effect or OAT/Bund execution established.",
+      "passage": "Versioned source prototype rejects empirical URLs/unlabelled bodies; bounds payloads, retains UTC receipts/byte hashes, refuses clock regression, corrupted receipts and orphan writes. Six synthetic causal/storage challenges passed; no source HTTP or values acquired.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "version": "2026-10-11T17:47:44.612080+00:00"
     },
     "france-fuel-information-cached-source-20261011": {
       "fact": "An information service may reduce a buyer\u2019s procurement cost if station price saving exceeds driving/fuel/time/stale-quote/unavailable-pump cost. Retail purchase savings, not securities alpha. Existing free official metadata permits qualification without a key.",
@@ -4355,6 +4472,55 @@
         "primary": "ATB2024 primary source excerpt cached in same session; no new request",
         "tests": "79synthetic tests PASS3.850s"
       }
+    },
+    "v2-worker-configured-20261011": {
+      "fact": {
+        "independence_verified": false,
+        "other_automations_enabled": 0
+      },
+      "id": "v2-worker-configured-20261011",
+      "kind": "METHOD",
+      "limit": "Native configuration/run metadata is not signed delivery telemetry or proof of 24/7 independence. No model selection, capital, paid API, new scheduler, source outcome or look.",
+      "passage": "Existing worker backend confirmed enabled, prompt hash matched, new hourly schedule starts 11 October 19:39 Europe/Paris; 11 other reminders off.",
+      "scheduler_receipt": {
+        "default_timezone": "Europe/Paris",
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "is_enabled": true,
+        "last_run_time": "2026-10-10T23:15:04.081718+00:00",
+        "next_run_time": null,
+        "prompt_sha256": "6dbac0c716fa31ba123cde0d7c6f8d8ce7852d9f3e46b2d81a4caf3b1a5f1a2c",
+        "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261011T193900\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "updated_at": "2026-10-11T17:35:42.938259+00:00"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "version": "2026-10-11T17:47:44.612080+00:00"
+    },
+    "v2-worker-native-run-observed-20261011": {
+      "fact": {
+        "immediate_launch_error": {
+          "error": "HTTP error prior to action invocation. HTTPException: 404: Action not found",
+          "error_code": "NOT_FOUND"
+        },
+        "owner_manual_message_required": false,
+        "trigger_attribution": "UNKNOWN. The incoming instruction matches the saved prompt; last_run advanced despite the launch API's 404. Does not prove independent hourly departure.",
+        "unattended_independence_verified": false
+      },
+      "id": "v2-worker-native-run-observed-20261011",
+      "kind": "METHOD",
+      "limit": "Native configuration/run metadata is not signed delivery telemetry or proof of 24/7 independence. No model selection, capital, paid API, new scheduler, source outcome or look.",
+      "passage": "Native peek reports last_run17:36:09 UTC after configuration17:35:42; the saved prompt arrives as a new input while work is active. Immediate request separately returned404 before invocation; both receipts retained, trigger causality UNKNOWN.",
+      "scheduler_receipt": {
+        "default_timezone": "Europe/Paris",
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "is_enabled": true,
+        "last_run_time": "2026-10-11T17:36:09.007701+00:00",
+        "next_run_time": null,
+        "prompt_sha256": "6dbac0c716fa31ba123cde0d7c6f8d8ce7852d9f3e46b2d81a4caf3b1a5f1a2c",
+        "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261011T193900\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "updated_at": "2026-10-11T17:36:31.596426+00:00"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous",
+      "version": "2026-10-11T17:47:44.612080+00:00"
     }
   },
   "families": {
@@ -4530,7 +4696,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "08351481206db1e756e05254b5329cc2c70e610b28af8e2034b699d37f6e4ee9",
+  "integrity": "849cfc2a6d35e697fd7ccf880d4a62375a4e325f8191be3d6aadf51f5b79cab4",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -4846,13 +5012,18 @@
     "disabled_confirmed_at": "2026-10-11T00:11:00Z",
     "disabled_evidence": "owner-reminders-off-20261011T0011Z",
     "enabled": true,
-    "enabled_confirmed_at": "2026-10-11T16:39:08.395131+00:00",
-    "enabled_evidence": "research-worker-source-window-schedule-20261011T1639Z",
+    "enabled_confirmed_at": "2026-10-11T17:35:42.938259+00:00",
+    "enabled_evidence": "v2-worker-configured-20261011",
     "external_run": {
-      "current_prompt_run_observed": false,
-      "last_backend_run_time_observed": "2026-10-10T23:15:04.081718+00:00",
+      "current_prompt_run_observed": true,
+      "delivery_signed_verified": false,
+      "last_backend_run_time_observed": "2026-10-11T17:36:09.007701+00:00",
       "next_backend_run_time_observed": null,
-      "scope": "configuration_only; actual run must produce its own receipt"
+      "observed_at": "2026-10-11T17:47:44.612080+00:00",
+      "run_evidence": "v2-worker-native-run-observed-20261011",
+      "scope": "Provider last-run metadata; session receipts are separate, no 24/7 or process telemetry claim",
+      "trigger": "UNKNOWN; immediate-launch API error and later backend observation are both retained",
+      "unattended_independence_verified": false
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
@@ -4869,7 +5040,7 @@
     },
     "mode": "existing_autonomous_research_worker",
     "notification_policy": "RESULT_PROGRESS_EXTERNAL_BLOCK_ONLY; no reminder prompts",
-    "owner_resumption_evidence": "owner-autonomous-worker-resumption-20261011"
+    "owner_resumption_evidence": "owner-v2-agent-queue-animations-20261011"
   },
   "schema": 1,
   "sources": {
@@ -4907,7 +5078,7 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T17:38:57.747402+00:00",
+  "updated_at": "2026-10-11T17:47:45.379063+00:00",
   "usage": {
     "cpu_seconds": 2.595593096,
     "human_seconds": null,
