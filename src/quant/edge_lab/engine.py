@@ -217,8 +217,8 @@ class Lab:
             state, control = self.store.read(), self.store.control()
             budget_check(state, control)
             parent = state["decisions"].get(parent_decision)
-            if not parent or parent["status"] != "WAIT":
-                raise Refused("Build follow-up requires an existing WAIT decision")
+            if not parent or parent["status"] not in ("WAIT", "QUALIFIED"):
+                raise Refused("Build follow-up requires a resolved WAIT or QUALIFIED decision")
             family_id = parent["family"]
             family = state["families"][family_id]
             if family["status"] == "REJECTED_CLOSED":

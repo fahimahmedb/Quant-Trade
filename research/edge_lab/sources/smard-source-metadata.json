@@ -1,0 +1,66 @@
+{
+  "wall_seconds": 4.516226599999754,
+  "receipts": [
+    {
+      "name": "smard-index-hour",
+      "url": "https://www.smard.de/app/chart_data/4169/DE/index_hour.json",
+      "status": 200,
+      "size": 5896,
+      "sha256": "20d69c8aefbda0d955a5d080adfd933bdb0167e42855d2b9d7d42753ab398e55",
+      "bounded": true,
+      "content_type": "application/json",
+      "schema": [
+        "timestamps"
+      ],
+      "index_count": 420,
+      "index_first_last": [
+        1538344800000,
+        1791756000000
+      ]
+    },
+    {
+      "name": "smard-index-quarter",
+      "url": "https://www.smard.de/app/chart_data/4169/DE/index_quarterhour.json",
+      "status": 200,
+      "size": 5896,
+      "sha256": "20d69c8aefbda0d955a5d080adfd933bdb0167e42855d2b9d7d42753ab398e55",
+      "bounded": true,
+      "content_type": "application/json",
+      "schema": [
+        "timestamps"
+      ],
+      "index_count": 420,
+      "index_first_last": [
+        1538344800000,
+        1791756000000
+      ]
+    },
+    {
+      "name": "smard-download-html",
+      "url": "https://www.smard.de/en/downloadcenter/download-market-data",
+      "status": 200,
+      "size": 25353,
+      "sha256": "133f172d2d1f8d8b70799e2f24c42d0cb8e40d7cdd75deac63040049bb4ac3d2",
+      "bounded": true,
+      "content_type": "text/html;charset=UTF-8",
+      "scripts": [
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_charts-220136-17.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_color-220134-1.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_commons-220138-21.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_css-220140-3.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_csv-220142-3.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_legacy-220144-3.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_urls-220146-5.js",
+        "/resource/themes/bnetza/js/head-217276-2.js",
+        "/resource/themes/bnetza/js/Hyphenopoly_Loader-220736-1.js",
+        "//www.smard.de/resource/themes/bnetza/js/commons-195194-16.js",
+        "//www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/mod_import-217290-4.js",
+        "//www.smard.de/resource/themes/bnetza/js/bnetza-195192-24.js",
+        "//www.smard.de/resource/themes/bnetza/js/vendor-195200-7.js",
+        "//www.smard.de/resource/themes/bnetza/js/legacy-195196-18.js",
+        "//www.smard.de/resource/themes/bnetza/js/apps/market-data-web-component-214216-5.js",
+        "//www.smard.de/resource/themes/bnetza/js/apps/download-center-209416-10.js"
+      ]
+    }
+  ]
+}
