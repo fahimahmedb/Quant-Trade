@@ -540,7 +540,7 @@
       "priority": 1,
       "question": "Les archives L2 OKX offrent-elles un acc\u00e8s sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers document\u00e9es ?",
       "reason": "CONSTRUCTION_ADMISSION",
-      "status": "RESEARCHING"
+      "status": "RECOVERY_NEEDED"
     },
     "build:treasury-auction-zf:owner-free-source-universe": {
       "actor": "owner-source-universe-20261011T1226Z",
@@ -2796,6 +2796,17 @@
       },
       "previous": "e2a44b7690798d328da044791e1831f7a1742bed8dea97c8bdb48d025e9e9a8b",
       "sequence": 147
+    },
+    {
+      "at": "2026-10-11T20:08:16.414631+00:00",
+      "hash": "b4023c64c237fa7b375c1c98ee27198ad16559adf7bfd221e588dda34e207229",
+      "kind": "QUESTION_LEASE_EXPIRED",
+      "payload": {
+        "id": "build:treasury-auction-zf:okx-l2-access-clock",
+        "next": "Reconcile cached sources/partial receipt; no blind repeated review"
+      },
+      "previous": "0a2b4600fce1367fdf4869abe6d3870cfc71ad428dbd68695568d905fb434661",
+      "sequence": 148
     }
   ],
   "evidence": {
@@ -5163,7 +5174,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "e854011037a4e4f168b07988c4fbe94abc18e57f16173bc4c69aded12f792293",
+  "integrity": "c50618580362e59084f325c46309c3641fb4e0e74a27f1c0a269f9f3db9f7a48",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5574,13 +5585,13 @@
     },
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
-      "actor": "scheduled-automation",
-      "at": "2026-10-11T19:50:59.295586+00:00",
+      "actor": "github-actions-metadata",
+      "at": "2026-10-11T20:08:16.414670+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-11T19:50:59.295586+00:00",
+      "at": "2026-10-11T20:08:16.414670+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -5593,31 +5604,31 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T19:50:59.295535+00:00",
+      "observed_at": "2026-10-11T20:08:16.414556+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T19:50:59.295556+00:00",
+      "observed_at": "2026-10-11T20:08:16.414577+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T19:50:59.295561+00:00",
+      "observed_at": "2026-10-11T20:08:16.414583+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T19:50:59.295564+00:00",
+      "observed_at": "2026-10-11T20:08:16.414588+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-11T19:50:59.295567+00:00",
+      "observed_at": "2026-10-11T20:08:16.414592+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
@@ -5625,15 +5636,15 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-11T19:50:59.328157+00:00",
+  "updated_at": "2026-10-11T20:08:16.443059+00:00",
   "usage": {
-    "cpu_seconds": 2.6320896179999997,
+    "cpu_seconds": 2.6379949989999996,
     "human_seconds": null,
-    "metadata_bytes": 16926,
+    "metadata_bytes": 17360,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 27.13327691102574
+    "wall_seconds": 27.53056750202574
   },
   "worker_sessions": {
     "automation-6ac978ec-20261011T173609Z": {
