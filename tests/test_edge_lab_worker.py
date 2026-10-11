@@ -97,6 +97,7 @@ class WorkerTests(unittest.TestCase):
         before_looks = copy.deepcopy(self.lab.snapshot()[0]["looks"])
         with self.lab.store.lock():
             state = self.lab.store.read()
+            state["scheduler"]["enabled"] = True
             state["decisions"][receipt["next"]["id"]]["claimed_at"] = "2000-01-01T00:00:00+00:00"
             state["worker_sessions"]["once"]["heartbeat_at"] = "2000-01-01T00:00:00+00:00"
             self.lab.store.save(state)
