@@ -1,0 +1,50 @@
+{
+  "schema": 3,
+  "generated_at": "2026-10-11T20:11:56.183994+00:00",
+  "state_updated_at": "2026-10-11T20:11:56.163904+00:00",
+  "operational_status": "RECOVERY_NEEDED",
+  "paused": false,
+  "scheduler": {
+    "enabled": true,
+    "last_tick_at": "2026-10-11T20:11:56.135638+00:00",
+    "last_tick_actor": "github-actions-metadata",
+    "last_tick_status": "IDLE",
+    "configured_at": "2026-10-11T17:35:42.938259+00:00"
+  },
+  "autonomy": {
+    "proof": "SINGLE_SCHEDULED_PASS_OBSERVED",
+    "scheduled_passes_recorded": 1,
+    "last_scheduled_session_at": "2026-10-11T17:53:21.503214+00:00",
+    "last_scheduled_session_id": "automation-6ac978ec-20261011T173609Z",
+    "delivery_verified": false,
+    "meaning": "Observed scheduled sessions prove passages, not permanent daemon uptime."
+  },
+  "active_task": {
+    "id": "build:treasury-auction-zf:okx-l2-access-clock",
+    "status": "RECOVERY_NEEDED",
+    "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+    "question": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
+    "next": null
+  },
+  "last_completed": {
+    "session_id": "owner-v2-repair-20261011",
+    "question_id": "build:eurusd-technical-grid:worker-research-routing-v2",
+    "finished_at": "2026-10-11T19:48:12.317626+00:00",
+    "decision_status": "QUALIFIED"
+  },
+  "queue": {
+    "ready": 0,
+    "scheduled": 1,
+    "in_progress": 0,
+    "recovery": 1,
+    "waiting": 12,
+    "finished": 11
+  },
+  "planning_status": "RECOVERY_NEEDED",
+  "research_options_pending": 0,
+  "research_options_consumed": 1,
+  "next_action": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
+  "next_due_at": "2026-10-13T12:45:00+00:00",
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}
