@@ -1,0 +1,374 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-11T12:35:00Z",
+  "owner_scope": "Broad free sources including French open data; direct implementation authorised; no paid/account/live or reminder activation.",
+  "scope": "Non-exhaustive structured source universe; search-identification distinct from document verification, API metadata access, row QA and economic admission.",
+  "outcomes_read": false,
+  "economic_experiments_launched": 0,
+  "historical_exposure": "PRIVATE_UNKNOWN; earlier public exposures not erased; no new provider is pristine.",
+  "sources": [
+    {
+      "id": "data-gouv",
+      "geography": "France",
+      "coverage": "Catalogue multi-domaines",
+      "primary_url": "https://www.data.gouv.fr/dataservices/api-catalogue-des-donnees-ouvertes-data-gouv-fr",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "Lecture API/1 sans clef; droits propres à chaque dataset, catalogue != données exécutables."
+    },
+    {
+      "id": "data-gouv-tabular",
+      "geography": "France",
+      "coverage": "API tabulaire",
+      "primary_url": "https://www.data.gouv.fr/dataservices/search",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Certains CSV indexés seulement; droits et vintages à qualifier par ressource."
+    },
+    {
+      "id": "meteo-france-bulk",
+      "geography": "France",
+      "coverage": "Météo observée historique",
+      "primary_url": "https://guides.data.gouv.fr/guides/reutiliser-des-donnees/prise-en-main-des-donnees-meteorologiques",
+      "qualification": "DOCS_VERIFIED",
+      "limit": "Fichiers ouverts sans compte; API portail requiert compte non créé. Observations corrigées != prévisions PIT."
+    },
+    {
+      "id": "insee-melodi",
+      "geography": "France",
+      "coverage": "Économie/démographie/entreprises",
+      "primary_url": "https://www.insee.fr/fr/information/2410988",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "SDMX/CSV selon produit; dates économiques != publication, révisions et droits par produit."
+    },
+    {
+      "id": "rte-eco2mix",
+      "geography": "France",
+      "coverage": "Charge/production/prévisions",
+      "primary_url": "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/eco2mix-national-cons-def",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "Etalab2; consolidé M+1, définitif A+1; pas signal disponible au temps événement sans vintage."
+    },
+    {
+      "id": "rte-price",
+      "geography": "France",
+      "coverage": "Prix spot électrique",
+      "primary_url": "https://www.rte-france.com/donnees-publications/eco2mix-donnees-temps-reel/donnees-marche",
+      "qualification": "RIGHTS_BLOCKED",
+      "limit": "Consultation seule non commerciale; récupération interdite sans accord EPEX. Ne pas télécharger."
+    },
+    {
+      "id": "rte-imbalance",
+      "geography": "France",
+      "coverage": "Équilibrage électrique",
+      "primary_url": "https://data.rte-france.com",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Horloges/versions et API auth à qualifier; règlement ne garantit pas exécution d’un trader."
+    },
+    {
+      "id": "dgccrf-fuel",
+      "geography": "France",
+      "coverage": "Prix carburant et ruptures",
+      "primary_url": "https://data.economie.gouv.fr/explore/dataset/prix-des-carburants-en-france-flux-instantane-v2/",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "Etalab2, Europe/Paris; flux10min/collecte15min; prix déclarés susceptibles de différer sur place."
+    },
+    {
+      "id": "dvf",
+      "geography": "France",
+      "coverage": "Transactions immobilières",
+      "primary_url": "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "Etalab2; ajouts rétroactifs à tous millésimes; vente passée != prix achetable ni disponibilité passée."
+    },
+    {
+      "id": "boamp",
+      "geography": "France",
+      "coverage": "Appels/offres et attributions",
+      "primary_url": "https://www.boamp.fr/pages/donnees-ouvertes-et-api/",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "Licence ouverte catalogue mais schéma fédéré license=null; identifier version et publication avant liaison aux titres."
+    },
+    {
+      "id": "hubeau",
+      "geography": "France",
+      "coverage": "Hydrologie/eau",
+      "primary_url": "https://hubeau.eaufrance.fr",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Feature de contraintes énergie/agriculture; délais/QA à qualifier, pas une série de rendement."
+    },
+    {
+      "id": "transport",
+      "geography": "France",
+      "coverage": "Transport GTFS et disponibilité",
+      "primary_url": "https://transport.data.gouv.fr",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Licences par réseau, couverture/version et horodatage reçu nécessaires; aucun prix financier."
+    },
+    {
+      "id": "sirene",
+      "geography": "France",
+      "coverage": "Identités entreprises",
+      "primary_url": "https://www.data.gouv.fr/datasets/base-sirene-des-entreprises-et-de-leurs-etablissements-siren-siret",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Bulk accessible selon fiche; rapprochement PIT entreprise/titre non acquis; respecter données personnelles."
+    },
+    {
+      "id": "bodacc",
+      "geography": "France",
+      "coverage": "Événements entreprises",
+      "primary_url": "https://www.bodacc.fr",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Publication légale utile; identités/delists et prix exécutables restent requis."
+    },
+    {
+      "id": "cre-tariffs",
+      "geography": "France",
+      "coverage": "Tarifs électriques contractuels",
+      "primary_url": "https://www.cre.fr/documents/open-data/historique-des-tarifs-reglementes-de-vente-delectricite-pour-les-consommateurs-residentiels.html",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Tarifs depuis2012; économies de flexibilité physique distinctes du trading/alpha, matériel/profil/abonnement requis."
+    },
+    {
+      "id": "ecb",
+      "geography": "Europe",
+      "coverage": "FX/macro/taux",
+      "primary_url": "https://data.ecb.europa.eu/help/api/data",
+      "qualification": "DOCS_ACCESS_VERIFIED",
+      "limit": "API SDMX publique; FX de référence indicatif non bid/ask; révisions et première publication par série."
+    },
+    {
+      "id": "eurostat",
+      "geography": "Europe",
+      "coverage": "Statistiques économiques",
+      "primary_url": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started/sdmx2.1",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Révisions finales sans vintage ne sont pas disponibles en passé; aucun fill financier."
+    },
+    {
+      "id": "smard",
+      "geography": "Allemagne/Europe",
+      "coverage": "Énergie/prix day-ahead",
+      "primary_url": "https://www.smard.de/en/datennutzung",
+      "qualification": "RIGHTS_DOCS_VERIFIED",
+      "limit": "CC BY4.0 attribution Bundesnetzagentur|SMARD.de; révisions, ordres ex ante et accès physique au marché non acquis."
+    },
+    {
+      "id": "elexon",
+      "geography": "Royaume-Uni",
+      "coverage": "Équilibrage/prévisions/versions",
+      "primary_url": "https://developer.data.elexon.co.uk",
+      "qualification": "DOCS_ACCESS_VERIFIED",
+      "limit": "API docs accessibles; licence BMRS à qualifier par produit; cash settlement suppose accès/capacité physique."
+    },
+    {
+      "id": "aemo",
+      "geography": "Australie",
+      "coverage": "Dispatch/prévisions/prix NEM",
+      "primary_url": "https://www.aemo.com.au/privacy-and-legal-notices/copyright-permissions",
+      "qualification": "RIGHTS_DOCS_VERIFIED",
+      "limit": "Permission générale avec attribution AEMO pour son matériel public; NEMWEB distinct des API participants; contraintes batterie/settlement à qualifier."
+    },
+    {
+      "id": "entsoe",
+      "geography": "Europe",
+      "coverage": "Électricité pan-européenne",
+      "primary_url": "https://transparency.entsoe.eu",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "API clé/enregistrement et conditions par source; aucun compte créé; prix ne prouvent pas exécution."
+    },
+    {
+      "id": "nordpool",
+      "geography": "Europe",
+      "coverage": "Prix électricité",
+      "primary_url": "https://www.nordpoolgroup.com/en/services/power-market-data-services/",
+      "qualification": "ACCESS_CONDITIONAL",
+      "limit": "Licences commerciales/tarifs; gratuit pour membres ne donne pas entitlement actuel."
+    },
+    {
+      "id": "worldbank",
+      "geography": "Global",
+      "coverage": "Macro multi-pays",
+      "primary_url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+      "qualification": "DOCS_ACCESS_VERIFIED",
+      "limit": "API sans clef; licence propre aux séries tierces, révisions et lenteur publication."
+    },
+    {
+      "id": "sec",
+      "geography": "États-Unis",
+      "coverage": "EDGAR déclarations/XBRL",
+      "primary_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Public sous fair access; chaîne PIT security/prix/delists bloque encore famille SEC. Pas seconde revue du census."
+    },
+    {
+      "id": "treasury-fiscal",
+      "geography": "États-Unis",
+      "coverage": "Adjudications/flux fiscaux",
+      "primary_url": "https://fiscaldata.treasury.gov/api-documentation/",
+      "qualification": "DOCS_BOUNDED_INCOMPLETE",
+      "limit": "Page arrêtée à250001octets; événement d’adjudication != BBO futures ZF; aucune qualification du paquet complet."
+    },
+    {
+      "id": "fred-alfred",
+      "geography": "États-Unis/global",
+      "coverage": "Macro et vintages",
+      "primary_url": "https://fred.stlouisfed.org/docs/api/api_key.html",
+      "qualification": "ACCOUNT_API_BLOCKED",
+      "limit": "API requiert compte/clef; téléchargements site à qualifier; droits tiers pas automatiquement publics."
+    },
+    {
+      "id": "fed-curves",
+      "geography": "États-Unis",
+      "coverage": "Courbes nominales/TIPS",
+      "primary_url": "https://www.federalreserve.gov/data/nominal-yield-curve.htm",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Courbes estimées off-the-run non prix exécutables; ne remplace pas ZF BBO."
+    },
+    {
+      "id": "eia",
+      "geography": "États-Unis",
+      "coverage": "Énergie bulk/macro",
+      "primary_url": "https://www.eia.gov/opendata/",
+      "qualification": "MANIFEST_ACCESS_VERIFIED",
+      "limit": "Bulk/manifest sans clef; API nécessite clé; fichiers révisés, publication et prix exécutables à qualifier."
+    },
+    {
+      "id": "noaa",
+      "geography": "États-Unis/global",
+      "coverage": "Archives météo/prévisions",
+      "primary_url": "https://www.noaa.gov/information-technology/open-data-dissemination",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Archives cycle/issuance potentiellement causales; taille, délais réels et droits tiers à vérifier."
+    },
+    {
+      "id": "open-meteo",
+      "geography": "Global",
+      "coverage": "Météo/forecast archive",
+      "primary_url": "https://open-meteo.com/en/pricing",
+      "qualification": "ACCESS_CONDITIONAL",
+      "limit": "API gratuite non commerciale; licence données != licence service; reanalysis pas forecast disponible en passé."
+    },
+    {
+      "id": "kraken",
+      "geography": "Crypto multi-paires",
+      "coverage": "Trades/OHLC historiques",
+      "primary_url": "https://support.kraken.com/articles/360047543791-downloadable-historical-market-data-time-and-sales-",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Téléchargements trades != historiques bid/ask; ne promet ni coverage2026 ni fills."
+    },
+    {
+      "id": "binance",
+      "geography": "Crypto multi-paires",
+      "coverage": "Archives klines/trades",
+      "primary_url": "https://github.com/binance/binance-public-data",
+      "qualification": "DOCS_ACCESS_VERIFIED",
+      "limit": "Archives/checksums et timestamps microseconds spot2025; limites quotes/clock/rights; COIN-M gate historique reste fermé."
+    },
+    {
+      "id": "bitmex",
+      "geography": "Crypto spot/derivatives",
+      "coverage": "BBO/trades et quote-bucket API",
+      "primary_url": "https://docs.bitmex.com/api-explorer/get-quote-bucketed",
+      "qualification": "METADATA_ACCESS_VERIFIED",
+      "limit": "365 fichiers quotes2025=101288280412B compressés; trades=2088624639B. API HEAD200 sans corps; bucket timestamp fin de période/écriture disque, pas réception/fill."
+    },
+    {
+      "id": "okx",
+      "geography": "Crypto spot/derivatives",
+      "coverage": "L2 historique public",
+      "primary_url": "https://www.okx.com/historical-data",
+      "qualification": "DOCS_VERIFIED",
+      "limit": "L2 annoncé2023-03; droits, fichier fullinput/bornes, timestamps et publication à qualifier sans ZIP ouvert."
+    },
+    {
+      "id": "bybit",
+      "geography": "Crypto",
+      "coverage": "Orderbook historique",
+      "primary_url": "https://www.bybit.com/derivatives/en/history-data",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Market public != historique personnel; droits/catalogue/hôte à qualifier."
+    },
+    {
+      "id": "coinbase",
+      "geography": "Crypto",
+      "coverage": "Public WS book/trades",
+      "primary_url": "https://docs.cdp.coinbase.com/exchange/websocket-feed/overview",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Prospective seulement tant qu’archives/droits non qualifiés; pas fills propres ni confirmation de quote."
+    },
+    {
+      "id": "databento",
+      "geography": "Futures/actions/options",
+      "coverage": "BBO/definitions PIT",
+      "primary_url": "https://databento.com",
+      "qualification": "PAID_OR_ACCOUNT_BLOCKED",
+      "limit": "Crédits gratuits nécessitent compte non autorisé; aucune dépense ou entitlement complet acquis."
+    },
+    {
+      "id": "nasdaq-directory",
+      "geography": "États-Unis",
+      "coverage": "Annuaire titres",
+      "primary_url": "https://nasdaqtrader.com/trader.aspx?id=symbollookup",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Annuaire current!=PIT/delist/quotes; ne résout pas chaîne complète actions."
+    },
+    {
+      "id": "histdata",
+      "geography": "FX",
+      "coverage": "Ticks bid/ask proxy",
+      "primary_url": "https://www.histdata.com",
+      "qualification": "CACHED_WAIT",
+      "limit": "Qualification antérieure réutilisée, aucune nouvelle probe; gel433jours/21mois original inchangé."
+    },
+    {
+      "id": "dukascopy",
+      "geography": "FX/CFD",
+      "coverage": "BI5 et quotes",
+      "primary_url": "https://www.dukascopy.com/trading-tools/api/documentation",
+      "qualification": "CACHED_RIGHTS_BLOCKED",
+      "limit": "Automatisation sans accord non permise selon cache; aucune nouvelle acquisition/compte."
+    },
+    {
+      "id": "fxcm",
+      "geography": "FX",
+      "coverage": "Quotes ticks indicatives",
+      "primary_url": "https://github.com/FXCM/MarketData",
+      "qualification": "CACHED_ACCESS_BLOCKED",
+      "limit": "Cinq probes403 antérieures conservées; non répétées; aucune couverture exécutable acquise."
+    },
+    {
+      "id": "hyperliquid",
+      "geography": "Crypto",
+      "coverage": "Global fills+BBO",
+      "primary_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/historical-data",
+      "qualification": "CACHED_HOST_BLOCKED",
+      "limit": "Hôte complet/globalfills non admis; requester-pays/account non autorisés; WS trades pas substitut."
+    },
+    {
+      "id": "defi-public-chain",
+      "geography": "Global crypto",
+      "coverage": "Logs/réserves/gas on-chain",
+      "primary_url": "https://ethereum.org/en/developers/docs/apis/json-rpc/",
+      "qualification": "SEARCH_IDENTIFIED",
+      "limit": "Chain publique != RPC archive illimité; execution/block ordering/MEV/gas/token survivorship et endpoints à qualifier."
+    },
+    {
+      "id": "uk-fuel-finder",
+      "geography": "Royaume-Uni",
+      "coverage": "Carburants live",
+      "primary_url": "https://www.gov.uk/guidance/access-the-latest-fuel-prices-and-forecourt-data-via-api-or-email",
+      "qualification": "ACCOUNT_API_BLOCKED",
+      "limit": "GOV.UK One Login requis pour API; aucun compte créé; voie FR déjà metadata accessible."
+    }
+  ],
+  "selected_next": "Qualify BitMEX bounded quote-bucket path and published research rights before a distinct book-pressure exploratory protocol; raw101GB archive not admitted and no substitution to F1/COIN-M/HL/legacy FX.",
+  "metadata_probe": {
+    "wall_seconds": 21.763401711999904,
+    "cpu_seconds": 0.129489617,
+    "metadata_payload_bytes": 1195376,
+    "paid_usd": 0,
+    "tokens": "NOT_MEASURED",
+    "whole_session_cpu": "NOT_MEASURED",
+    "total_network_bytes": "NOT_MEASURED"
+  },
+  "bitmex_catalogue": "sources/bitmex_catalogue_20261011.json"
+}
