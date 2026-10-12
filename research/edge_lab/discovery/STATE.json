@@ -436,6 +436,23 @@
       },
       "previous": "973af9cec8d7988ad7ab53627400388a04396d60b775b7591673aca843aef96d",
       "sequence": 21
+    },
+    {
+      "at": "2026-10-12T21:21:49.978915+00:00",
+      "hash": "fea14553f270a42338962172ffb3a4c8732b1855f2115ae4815d400e7f540241",
+      "kind": "DISCOVERY_PROSPECTIVE_PREDECLARED",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PREDECLARED_BEFORE_FUTURE_T0",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-cef-drip-discounted-issuance",
+        "head_observed": "18dd238db600857a92c02a51359f713a102bd0f6",
+        "proof": "experiments/disc-us-cef-drip-discounted-issuance-prospective-l1-v1.md",
+        "proof_sha256": "4b266b16139ae77d82ab06dc9feb00791a68116c49a65d9c2b8db47f9b0f6153"
+      },
+      "previous": "ab8f9f5ce6ac534860eb733b0b8a7f1b87ac23ffd14452d00bf16d0fcbbaeb5a",
+      "sequence": 22
     }
   ],
   "exposure_ledger": [
@@ -481,7 +498,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "62acae2e354587bd0d5d7f28d496fa77a866883e2f0af43539d868c30b339fc5",
+  "integrity": "8f54bb19888821494fd6f355ef0b89d718f0530ea9203b2bbf4b926044700a9f",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -542,9 +559,15 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-cef-drip-discounted-issuance",
-    "kind": "L1_PREDECLARE",
-    "question": "Freeze one future distribution with exact close/NAV fixing, Q=100, cash comparator and one stress check; no economic claim yet.",
+    "family": "us-retail-liquidity-priority",
+    "kind": "L0_MECHANISM",
+    "prepared_protocol": "experiments/disc-us-cef-drip-discounted-issuance-prospective-l1-v1.md",
+    "prospective_priority": {
+      "no_selected_event": true,
+      "not_before": "2026-10-13T10:00:00Z",
+      "original_five_protocols_first": true
+    },
+    "question": "Can a small retail order access structural queue/price-improvement priority with public attribution and no broker interaction?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1982,5 +2005,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:20:24.648265+00:00"
+  "updated_at": "2026-10-12T21:21:49.978958+00:00"
 }
