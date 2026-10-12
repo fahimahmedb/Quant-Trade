@@ -1,0 +1,17 @@
+{
+  "autonomy_e2e": "BLOCKED",
+  "first_canary": "AUTONOMY_CANARY_20261012_1300_375C8340",
+  "first_broken_transition": "RUN_STARTED_RECEIPT_MISSING",
+  "first_failure_evidence_commit": "c703014f40210ff5add77b63647215a3a14e3692",
+  "narrow_repair": "Arm one fresh second canary on the same scheduled automation, changing only the scheduler instruction/receipt boundary.",
+  "second_canary_prepared": "AUTONOMY_CANARY_20261012_1400_7B91D2E4",
+  "second_verifier_prearmed": true,
+  "scheduler_update_result": "ERROR",
+  "scheduler_update_error": "Unable to complete task request. Try again.",
+  "classification": "EXTERNAL_PLATFORM_BLOCKER",
+  "reason": "The platform accepted the independent second verifier update but rejected both attempts to update the main scheduled automation after the first failed canary. Therefore the required one-fresh-canary retry cannot be safely armed in this run without fabricating proof or bypassing the scheduled system under test.",
+  "source_head_observed": "b93ff746d6b4522a0e3de3e4c9dd847acf5a2a53",
+  "control_blob_sha": "c913ffed759707972d605f9dfb5567a87cf09261",
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}
