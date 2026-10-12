@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T08:21:50.305874+00:00",
+  "generated_at": "2026-10-12T08:23:46.564867+00:00",
   "state_updated_at": "2026-10-12T08:21:31.136080+00:00",
-  "operational_status": "RUNNING",
+  "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -67,172 +67,11 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "RUNNING",
+    "status": "IDLE_NO_ADMISSIBLE_WORK",
     "paused": false,
     "groups": {
       "ready": [],
-      "running": [
-        {
-          "claimed_at": "2026-10-12T08:21:50.293662+00:00",
-          "code_sha256": {
-            "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
-            "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
-            "src/quant/edge_lab/vix.py": "27f7e9f733febb7d75fc1b8633276162390c6cb3059ecf797dd14796e7889c75"
-          },
-          "contract": {
-            "BIAS_DIRECTION": {
-              "amplitude": "Settlement marking and pre-crash historical prefix can favor apparent profitability.",
-              "capacity": "One constant contract, no institutional capacity inference.",
-              "costs": "0.10/0.25 points are sensitivity assumptions, not authenticated historical all-in costs.",
-              "execution": "No BBO, margin path, slippage or market impact; cannot claim implementability.",
-              "survivorship": "All36 known successful quarterly contracts required; coverage-selected prefix excludes2022–25 and is explicitly a new expression.",
-              "timing": "Settlement prices are not guaranteed simultaneous executable fills."
-            },
-            "TEST_CANNOT_SAY": [
-              "KILL_MECHANISM",
-              "PROMOTE_MECHANISM",
-              "PROMOTE_HIGH",
-              "ALPHA",
-              "EDGE_VALIDATED",
-              "LIVE_READY"
-            ],
-            "TEST_CAN_KILL": [
-              "KILL_EXPRESSION"
-            ],
-            "TEST_CAN_SUPPORT": [
-              "PROMOTE_EXPRESSION"
-            ],
-            "adequacy": {
-              "all_or_nothing": true,
-              "failure_verdict": "PARK_DATA",
-              "minimum_contracts": 36,
-              "required_years": [
-                2013,
-                2014,
-                2015,
-                2016,
-                2017,
-                2018,
-                2019,
-                2020,
-                2021
-              ],
-              "requirements": [
-                "exact published36 source hashes and bytes",
-                "positive finite settlements with both endpoints within4 calendar days",
-                "one nonoverlapping position per listed contract",
-                "no sample exclusion/substitution/retry on failure"
-              ]
-            },
-            "alternative_explanation": "Compensation for crash/convexity/liquidity risk; current alpha is not identified.",
-            "claim_ceiling": "PROMOTE_EXPRESSION",
-            "created_at": "2026-10-12T08:18:06.754044+00:00",
-            "design": {
-              "bootstrap_draws": 2000,
-              "bootstrap_seed": 41011,
-              "central_cost_points": 0.1,
-              "endpoint_tolerance_days": 4,
-              "entry_days": 45,
-              "exit_days": 15,
-              "multiplier_usd_per_point": 1000,
-              "stress_cost_points": 0.25
-            },
-            "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
-            "kill_if": "Gross pooledmean <=0 ORstressnet pooledmean <=0: KILL_EXPRESSION only.",
-            "label": "EXPLORATORY",
-            "live_trading_authorized": false,
-            "mechanism": "Volatility hedgers may pay an insurance risk premium to short VX futures; this expression also bears crash risk.",
-            "negative_control": "Not an independent causal negative control: exactly one predefined leave-largest-positive-year-out concentration challenge on a primary positive result.",
-            "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
-            "primary_signature": "Positive fixed-rule short-futures settlement PnL in both fixed chronological blocks; this tests expression persistence, not causal identification.",
-            "prior_exposures": [
-              "PRIVATE_UNKNOWN",
-              "Public short-volatility literature",
-              "v0 source acquisition metadata and known2013–21 coverage; no economics calculated",
-              "IncidentalVX2026 publicquote snippets (VX39/U6, VX40/V6); not used to choose design or claimed virgin",
-              "TEC10 2026-09-25 4.63% incidental publicquote unrelated toVX selection",
-              "v1 accessed H2013,M2013,U2013 bodies and stopped schemaQA; no payoff computed. U2013 firstnotice/header inspectedunderoriginalexposure. No virginclaim."
-            ],
-            "promote_if": "Centralmean >=0.25 points ANDstressmean >0 ANDcentralmean >0 in2013–2018 and2019–2021, then exactlyone passing declared adversary. ElsePARK_ECONOMICS.",
-            "real_capital_authorized": false,
-            "red_team": {
-              "additional_search_allowed": false,
-              "fail_verdict": "PARK_ECONOMICS",
-              "method": "Remove single year with largest central-net year-sum; earliest year breaks ties.",
-              "pass_if": "Remaining32 trades have positive central and stress net means.",
-              "required_before_promotion": true,
-              "trigger": "primary expression passes fixed promotion criteria"
-            },
-            "resource_limits": {
-              "job_wall_seconds": 120,
-              "paid_usd": 0,
-              "per_request_seconds": 15,
-              "per_response_bytes": 262144,
-              "retries": 0,
-              "total_payload_bytes": 2097152
-            },
-            "rights": {
-              "public_output": "Aggregated and derived PnL without raw quoted entry/exit prices.",
-              "raw_use": "Owner private noncommercial research only subject to Cboe terms; no raw data redistribution.",
-              "rights_limit": "No institutional, commercial, live or redistribution rights inferred.",
-              "terms_url": "https://www.cboe.com/terms/"
-            },
-            "source_reader": "Versioned format repair only: accept exactly one known full CFE disclaimer singlecell atfirstCSVrow, followed by<=3blankrows and the required uniqueTradeDate/Settleheader within5rows; keep raw unchanged. Reject unknown/repeatednotice or malformedrecords. Ascending/descending strictlymonotone dates normalizechronologically; duplicates/nonmonotone rejected. No rule/data/window/cost/threshold change.",
-            "timebox_minutes": 60,
-            "uncertainty": "Year-cluster bootstrap9years,2000draws,seed41011,95%descriptive; no independent36-observation claim, Sharpe/CAGR or alpha.",
-            "unchanged_siblings": [
-              "v0 remains PARK_DATA requiring52 contracts",
-              "V4.2 designpilot20-trading-days-to-final-settlement remains unexecuted separate design; no silent protocol replacement",
-              "v1 PARK_DATA source QA before economics; immutable old code/contract/result preserved inGitHub."
-            ],
-            "unit_economics": {
-              "break_even_friction": "Gross mean PnL points is maximum average all-in roundtrip friction; compute once after fixed sample is complete.",
-              "central_roundtrip_cost_points": 0.1,
-              "fees_limit": "June2026 schedule is not historical2013–21 all-in cost proof; no purchase.",
-              "fees_source": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
-              "stress_roundtrip_cost_points": 0.25,
-              "unit": "VX points per one-contract round trip; $1000 per point"
-            },
-            "variant_accounting": {
-              "adversarial_checks": 1,
-              "cost_scenarios": 2,
-              "effective_independent_trials": "UNKNOWN",
-              "mechanism_cluster": "cfe-vix-term-premium",
-              "new_expressions": 1,
-              "parent_software_attempt": "disc-cfe-vix-term-premium-l1-v1"
-            },
-            "version": "4.2",
-            "who_pays": "Investors buying volatility protection.",
-            "why_persist": "Insurance demand and constrained risk-bearing; publication/crowding and risk compensation may explain returns."
-          },
-          "contract_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.contract.json",
-          "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
-          "cost_scenarios": 2,
-          "created_at": "2026-10-12T08:18:06.754044+00:00",
-          "execution_attempts": 1,
-          "expressions": 1,
-          "family": "cfe-vix-term-premium",
-          "id": "disc-cfe-vix-term-premium-l1-v2-reader",
-          "invocation_id": "owner-v42-vix-reader-20261012",
-          "lease_seconds": 3600,
-          "level": "L1",
-          "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
-          "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
-          "max_time_minutes": 60,
-          "mechanism_cluster": "cfe-vix-term-premium",
-          "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
-          "runner": "vix-known-prefix-v1",
-          "selection": {
-            "data_friction": "LOW",
-            "decision_leverage": "HIGH",
-            "discriminating_power": "HIGH",
-            "economic_plausibility": "HIGH",
-            "expected_minutes": 5
-          },
-          "status": "RUNNING",
-          "title": "VX · lecteur CFE réparé · règle45→15jours inchangée"
-        }
-      ],
+      "running": [],
       "recovery": [],
       "parked": [
         {
@@ -623,176 +462,1059 @@
           "status": "PARK_DATA",
           "title": "VX · expression fixe45→15jours · couverture2013–2021",
           "typed_verdict": "PARK_DATA"
+        },
+        {
+          "claimed_at": "2026-10-12T08:21:50.293662+00:00",
+          "code_sha256": {
+            "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
+            "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
+            "src/quant/edge_lab/vix.py": "27f7e9f733febb7d75fc1b8633276162390c6cb3059ecf797dd14796e7889c75"
+          },
+          "completed_at": "2026-10-12T08:23:46.549203+00:00",
+          "contract": {
+            "BIAS_DIRECTION": {
+              "amplitude": "Settlement marking and pre-crash historical prefix can favor apparent profitability.",
+              "capacity": "One constant contract, no institutional capacity inference.",
+              "costs": "0.10/0.25 points are sensitivity assumptions, not authenticated historical all-in costs.",
+              "execution": "No BBO, margin path, slippage or market impact; cannot claim implementability.",
+              "survivorship": "All36 known successful quarterly contracts required; coverage-selected prefix excludes2022–25 and is explicitly a new expression.",
+              "timing": "Settlement prices are not guaranteed simultaneous executable fills."
+            },
+            "TEST_CANNOT_SAY": [
+              "KILL_MECHANISM",
+              "PROMOTE_MECHANISM",
+              "PROMOTE_HIGH",
+              "ALPHA",
+              "EDGE_VALIDATED",
+              "LIVE_READY"
+            ],
+            "TEST_CAN_KILL": [
+              "KILL_EXPRESSION"
+            ],
+            "TEST_CAN_SUPPORT": [
+              "PROMOTE_EXPRESSION"
+            ],
+            "adequacy": {
+              "all_or_nothing": true,
+              "failure_verdict": "PARK_DATA",
+              "minimum_contracts": 36,
+              "required_years": [
+                2013,
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021
+              ],
+              "requirements": [
+                "exact published36 source hashes and bytes",
+                "positive finite settlements with both endpoints within4 calendar days",
+                "one nonoverlapping position per listed contract",
+                "no sample exclusion/substitution/retry on failure"
+              ]
+            },
+            "alternative_explanation": "Compensation for crash/convexity/liquidity risk; current alpha is not identified.",
+            "claim_ceiling": "PROMOTE_EXPRESSION",
+            "created_at": "2026-10-12T08:18:06.754044+00:00",
+            "design": {
+              "bootstrap_draws": 2000,
+              "bootstrap_seed": 41011,
+              "central_cost_points": 0.1,
+              "endpoint_tolerance_days": 4,
+              "entry_days": 45,
+              "exit_days": 15,
+              "multiplier_usd_per_point": 1000,
+              "stress_cost_points": 0.25
+            },
+            "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+            "kill_if": "Gross pooledmean <=0 ORstressnet pooledmean <=0: KILL_EXPRESSION only.",
+            "label": "EXPLORATORY",
+            "live_trading_authorized": false,
+            "mechanism": "Volatility hedgers may pay an insurance risk premium to short VX futures; this expression also bears crash risk.",
+            "negative_control": "Not an independent causal negative control: exactly one predefined leave-largest-positive-year-out concentration challenge on a primary positive result.",
+            "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+            "primary_signature": "Positive fixed-rule short-futures settlement PnL in both fixed chronological blocks; this tests expression persistence, not causal identification.",
+            "prior_exposures": [
+              "PRIVATE_UNKNOWN",
+              "Public short-volatility literature",
+              "v0 source acquisition metadata and known2013–21 coverage; no economics calculated",
+              "IncidentalVX2026 publicquote snippets (VX39/U6, VX40/V6); not used to choose design or claimed virgin",
+              "TEC10 2026-09-25 4.63% incidental publicquote unrelated toVX selection",
+              "v1 accessed H2013,M2013,U2013 bodies and stopped schemaQA; no payoff computed. U2013 firstnotice/header inspectedunderoriginalexposure. No virginclaim."
+            ],
+            "promote_if": "Centralmean >=0.25 points ANDstressmean >0 ANDcentralmean >0 in2013–2018 and2019–2021, then exactlyone passing declared adversary. ElsePARK_ECONOMICS.",
+            "real_capital_authorized": false,
+            "red_team": {
+              "additional_search_allowed": false,
+              "fail_verdict": "PARK_ECONOMICS",
+              "method": "Remove single year with largest central-net year-sum; earliest year breaks ties.",
+              "pass_if": "Remaining32 trades have positive central and stress net means.",
+              "required_before_promotion": true,
+              "trigger": "primary expression passes fixed promotion criteria"
+            },
+            "resource_limits": {
+              "job_wall_seconds": 120,
+              "paid_usd": 0,
+              "per_request_seconds": 15,
+              "per_response_bytes": 262144,
+              "retries": 0,
+              "total_payload_bytes": 2097152
+            },
+            "rights": {
+              "public_output": "Aggregated and derived PnL without raw quoted entry/exit prices.",
+              "raw_use": "Owner private noncommercial research only subject to Cboe terms; no raw data redistribution.",
+              "rights_limit": "No institutional, commercial, live or redistribution rights inferred.",
+              "terms_url": "https://www.cboe.com/terms/"
+            },
+            "source_reader": "Versioned format repair only: accept exactly one known full CFE disclaimer singlecell atfirstCSVrow, followed by<=3blankrows and the required uniqueTradeDate/Settleheader within5rows; keep raw unchanged. Reject unknown/repeatednotice or malformedrecords. Ascending/descending strictlymonotone dates normalizechronologically; duplicates/nonmonotone rejected. No rule/data/window/cost/threshold change.",
+            "timebox_minutes": 60,
+            "uncertainty": "Year-cluster bootstrap9years,2000draws,seed41011,95%descriptive; no independent36-observation claim, Sharpe/CAGR or alpha.",
+            "unchanged_siblings": [
+              "v0 remains PARK_DATA requiring52 contracts",
+              "V4.2 designpilot20-trading-days-to-final-settlement remains unexecuted separate design; no silent protocol replacement",
+              "v1 PARK_DATA source QA before economics; immutable old code/contract/result preserved inGitHub."
+            ],
+            "unit_economics": {
+              "break_even_friction": "Gross mean PnL points is maximum average all-in roundtrip friction; compute once after fixed sample is complete.",
+              "central_roundtrip_cost_points": 0.1,
+              "fees_limit": "June2026 schedule is not historical2013–21 all-in cost proof; no purchase.",
+              "fees_source": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+              "stress_roundtrip_cost_points": 0.25,
+              "unit": "VX points per one-contract round trip; $1000 per point"
+            },
+            "variant_accounting": {
+              "adversarial_checks": 1,
+              "cost_scenarios": 2,
+              "effective_independent_trials": "UNKNOWN",
+              "mechanism_cluster": "cfe-vix-term-premium",
+              "new_expressions": 1,
+              "parent_software_attempt": "disc-cfe-vix-term-premium-l1-v1"
+            },
+            "version": "4.2",
+            "who_pays": "Investors buying volatility protection.",
+            "why_persist": "Insurance demand and constrained risk-bearing; publication/crowding and risk compensation may explain returns."
+          },
+          "contract_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.contract.json",
+          "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
+          "cost_scenarios": 2,
+          "created_at": "2026-10-12T08:18:06.754044+00:00",
+          "decision": "PROMOTE_EXPRESSION",
+          "execution_attempts": 1,
+          "expressions": 1,
+          "family": "cfe-vix-term-premium",
+          "id": "disc-cfe-vix-term-premium-l1-v2-reader",
+          "invocation_id": "owner-v42-vix-reader-20261012",
+          "lease_seconds": 3600,
+          "level": "L1",
+          "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
+          "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
+          "max_time_minutes": 60,
+          "mechanism_cluster": "cfe-vix-term-premium",
+          "next": null,
+          "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+          "result": {
+            "acquisition": {
+              "paid_usd": 0,
+              "payload_bytes": 568958,
+              "raw_cache_private": true,
+              "receipts": [
+                {
+                  "contract": "H2013",
+                  "payload_bytes": 13805,
+                  "reused": true,
+                  "sha256": "fec608165d22c39f327b5fbf9709e3954fc72bce667c7b700469197be79e61fe"
+                },
+                {
+                  "contract": "M2013",
+                  "payload_bytes": 13674,
+                  "reused": true,
+                  "sha256": "731321cfa8c54f5b9f64e76acf33b2d6bc21a2fed4fef365ea6faa44f3de86f5"
+                },
+                {
+                  "contract": "U2013",
+                  "payload_bytes": 13849,
+                  "qualification_repair": {
+                    "cause": "Required CSV date/settlement schema missing or ambiguous",
+                    "from": "disc-cfe-vix-term-premium-l1-v1"
+                  },
+                  "reused": true,
+                  "sha256": "3cd8e7d68e910faa0aff589ff562189fe0913bb0d1d8e43dc3811ff00e7a6a6d"
+                },
+                {
+                  "contract": "Z2013",
+                  "error": null,
+                  "payload_bytes": 14084,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "a3801da2596a86a84f5fa741fc79e6873c6871a4e68e4f087b53e642b04007f8",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_Z13_VX.csv"
+                },
+                {
+                  "contract": "H2014",
+                  "error": null,
+                  "payload_bytes": 15978,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "71324b5a73ba18d4859ceb33da5f83bb3cf9cdaa82be3cd1ec17ed88aa4ce629",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-03-18.csv"
+                },
+                {
+                  "contract": "M2014",
+                  "error": null,
+                  "payload_bytes": 16047,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "67f188b5710a653e22b3c8afd911b25a42bc3ac1be237a38e4de4481e7594549",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-06-18.csv"
+                },
+                {
+                  "contract": "U2014",
+                  "error": null,
+                  "payload_bytes": 15930,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "c7f363c0ba88a335e8d477a997e73f15b12ca34e3aa6ef8a7a5a4da410c42a2a",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-09-17.csv"
+                },
+                {
+                  "contract": "Z2014",
+                  "error": null,
+                  "payload_bytes": 16259,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "22d871cdfbc45dfeee9695ec46ddc5ca4e3218150634fc9ebb4acabdf9801d2c",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-12-17.csv"
+                },
+                {
+                  "contract": "H2015",
+                  "error": null,
+                  "payload_bytes": 16023,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "a6f97e10b12cfd879c1909726e36f78f67308a25b64306ab7cb035336da6b728",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-03-18.csv"
+                },
+                {
+                  "contract": "M2015",
+                  "error": null,
+                  "payload_bytes": 16092,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "dfd038349b2bf5b42201098bfd773154dffc00e95fca40a546460895706ae5b3",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-06-17.csv"
+                },
+                {
+                  "contract": "U2015",
+                  "error": null,
+                  "payload_bytes": 15977,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "8cd9ed89f3b134dcd079d75836c4b484eb7996220327f96ed3fe7eacbfe86f71",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-09-16.csv"
+                },
+                {
+                  "contract": "Z2015",
+                  "error": null,
+                  "payload_bytes": 16231,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "781f9d1b72a9b9ba842c57a3462497db7cfe106a638e6f76ac06fe58c388308a",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-12-16.csv"
+                },
+                {
+                  "contract": "H2016",
+                  "error": null,
+                  "payload_bytes": 15926,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "3cd20339c7a6fef1c0979e90df62a17cae3158344eb2e89c0d499d86c7260745",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-03-16.csv"
+                },
+                {
+                  "contract": "M2016",
+                  "error": null,
+                  "payload_bytes": 15852,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "1101fe08a03e5ede056d1566dc44bf2becd64d385620c04701b827edd1f7a71d",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-06-15.csv"
+                },
+                {
+                  "contract": "U2016",
+                  "error": null,
+                  "payload_bytes": 16302,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "f778fc3e4642c0e992e6ad5582db7ca31bc94a43039c999f40556696a2e937df",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-09-21.csv"
+                },
+                {
+                  "contract": "Z2016",
+                  "error": null,
+                  "payload_bytes": 16599,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "59548c21843d208954c670faa8e7332bf98c7ecff9131ef99faa97844eb17c12",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-12-21.csv"
+                },
+                {
+                  "contract": "H2017",
+                  "error": null,
+                  "payload_bytes": 16321,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "dad65fc550fdb332ec587126650a8035cc267985a6f56ce69931ce4bcbabd977",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-03-22.csv"
+                },
+                {
+                  "contract": "M2017",
+                  "error": null,
+                  "payload_bytes": 15971,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "a510e1faecbcecb1017a6afd7abeffc1703a65d3f8aeeb87749e24c82b677201",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-06-21.csv"
+                },
+                {
+                  "contract": "U2017",
+                  "error": null,
+                  "payload_bytes": 15957,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "75713d9de1021f98b522c38a89acead6346f895df5d0c7c4c8459621e72ac05e",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-09-20.csv"
+                },
+                {
+                  "contract": "Z2017",
+                  "error": null,
+                  "payload_bytes": 16239,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "6ef323577e4ae0cb605abbf681b38d52b35648284c0c51435554ca1c3c6859cb",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-12-20.csv"
+                },
+                {
+                  "contract": "H2018",
+                  "error": null,
+                  "payload_bytes": 16117,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "7c78a94b9f9c7403467f5236093412a798969c4bdc2e72e7ba577942cbf1a38e",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-03-21.csv"
+                },
+                {
+                  "contract": "M2018",
+                  "error": null,
+                  "payload_bytes": 16073,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "6c5ca228bdd8bce9d72703720c77b7ca80462b073829a53a890ff768a46114b1",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-06-20.csv"
+                },
+                {
+                  "contract": "U2018",
+                  "error": null,
+                  "payload_bytes": 16000,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "95e63535525b24056476129ce86927156fa43c2f192be7ce3573becb56306c81",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-09-19.csv"
+                },
+                {
+                  "contract": "Z2018",
+                  "error": null,
+                  "payload_bytes": 16228,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "b95cf1efd7df610ae76a19ff4c816c62e7bd808d147b36d52fc55d06beef7e6b",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-12-19.csv"
+                },
+                {
+                  "contract": "H2019",
+                  "error": null,
+                  "payload_bytes": 15966,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "2f86c6a1d6eed44390b8134bff68e186d2a1ae34469deaea1e594eb97ebe91a6",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-03-19.csv"
+                },
+                {
+                  "contract": "M2019",
+                  "error": null,
+                  "payload_bytes": 16127,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "a0a122738217db57d59481294dd3c2206555d508a1f6f2ea88b7a64324b9162b",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-06-19.csv"
+                },
+                {
+                  "contract": "U2019",
+                  "error": null,
+                  "payload_bytes": 15998,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "8fbdffbd379c70d7c1b754b2ca9ea97d01bb916aea84c6b5f7984379f57cc350",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-09-18.csv"
+                },
+                {
+                  "contract": "Z2019",
+                  "error": null,
+                  "payload_bytes": 16291,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "426d90a4d696bb9592e022b311be766a6c6ac808c71a68f4e66712b4a6ef6f32",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-12-18.csv"
+                },
+                {
+                  "contract": "H2020",
+                  "error": null,
+                  "payload_bytes": 15992,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "b0754a52316241f15d66f41706d3569f20cdfe1703bbd4cd7f87146cf57beb50",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-03-18.csv"
+                },
+                {
+                  "contract": "M2020",
+                  "error": null,
+                  "payload_bytes": 15951,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "5d66bb8cbdd182c0fad4e984fa60ffbde7122388dc218fb91bb10a02faa82d1a",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-06-17.csv"
+                },
+                {
+                  "contract": "U2020",
+                  "error": null,
+                  "payload_bytes": 16535,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "bb0fd4d378b682148f1999323e35227a71a4b8a18e95deba5980267bf3c65cf4",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-09-16.csv"
+                },
+                {
+                  "contract": "Z2020",
+                  "error": null,
+                  "payload_bytes": 15678,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "bbb2ec67e0c3993a1c78ba6f77123c52709ff1c142604042eb70d048a71a99fd",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-12-16.csv"
+                },
+                {
+                  "contract": "H2021",
+                  "error": null,
+                  "payload_bytes": 15494,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "ee3ba3bd455cad5772198f3f04d3d3e7179779319cf74d22fe90b23f40a21ff7",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-03-17.csv"
+                },
+                {
+                  "contract": "M2021",
+                  "error": null,
+                  "payload_bytes": 15551,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "b87dac062797b9da171f294d5cd2bcfd2d1513d6b7816ddbba2c7737347b658c",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-06-16.csv"
+                },
+                {
+                  "contract": "U2021",
+                  "error": null,
+                  "payload_bytes": 15468,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "c73076114fc912535a6f27f2ceb418f7cf32e08e4f536a4e146de8be48ef9526",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-09-15.csv"
+                },
+                {
+                  "contract": "Z2021",
+                  "error": null,
+                  "payload_bytes": 16373,
+                  "qa_passed": true,
+                  "reused": false,
+                  "sha256": "e929a9ce4fbde81983feb0029503af903a3170ee09c7422ff51669ca75de9f6e",
+                  "status": 200,
+                  "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-12-22.csv"
+                }
+              ],
+              "wall_seconds": 18.51230316300007
+            },
+            "adequacy_passed": true,
+            "adversary": {
+              "executed": true,
+              "passed": true,
+              "remaining_mean_net_points": {
+                "central": 0.736359375,
+                "stress": 0.586359375
+              },
+              "remaining_trades": 32,
+              "removed_year": 2018,
+              "test": "remove_highest_central_net_calendar_year"
+            },
+            "claim_ceiling": "PROMOTE_EXPRESSION",
+            "claim_commit": "6f67400c4dd0078b2d219d59d0c7f8ea90e792a1",
+            "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
+            "decision": "PROMOTE_EXPRESSION",
+            "economics_computed": true,
+            "edge_validated": false,
+            "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+            "fixed_block_central_mean_points": {
+              "2013-2018": 0.7479166666666667,
+              "2019-2021": 1.426125
+            },
+            "invocation_id": "owner-v42-vix-reader-20261012",
+            "label": "EXPLORATORY",
+            "limits": {
+              "capital_denominator": "ABSENT",
+              "current_2022_2026": "UNKNOWN",
+              "intratrade_detail": "UNKNOWN",
+              "margin": "UNKNOWN",
+              "risk_premium_attribution": "UNKNOWN",
+              "scope": "2013–2021 costed quarterly settlement expression only",
+              "settlements_are_fills": false
+            },
+            "live_trading_authorized": false,
+            "manifest_sha256": "a99811c72c3ae7b7da8449d2ba34dc13b032b4582b4a7455b4673784732382d4",
+            "observable_cost": {
+              "cpu_seconds": 0.239572254,
+              "network_total_bytes": null,
+              "paid_usd": 0,
+              "raw_payload_bytes": 568958,
+              "tokens": null,
+              "wall_seconds": 18.51264898999989
+            },
+            "observations": {
+              "calendar_year_clusters": 9,
+              "trades": 36
+            },
+            "predeclaration_commit": "b66abfd24ae914425a41b68a3754c17168c52eda",
+            "primary_decision": "PROMOTE_EXPRESSION",
+            "prior_exposures": {
+              "effective_trials": "UNKNOWN",
+              "old_acquired_files": 36,
+              "prior_access_attempt": "KNOWN",
+              "private": "PRIVATE_UNKNOWN"
+            },
+            "real_capital_authorized": false,
+            "red_team": {
+              "executed": true,
+              "passed": true,
+              "remaining_mean_net_points": {
+                "central": 0.736359375,
+                "stress": 0.586359375
+              },
+              "remaining_trades": 32,
+              "removed_year": 2018,
+              "test": "remove_highest_central_net_calendar_year"
+            },
+            "source_manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
+            "summary": {
+              "central": {
+                "endpoint_drawdown_points": -14.7,
+                "endpoint_drawdown_usd": -14700.0,
+                "mean_points": 0.9739861111111111,
+                "mean_usd": 973.9861111111111,
+                "median_points": 1.25,
+                "median_usd": 1250.0,
+                "worst_trade_points": -14.7,
+                "worst_trade_usd": -14700.0,
+                "year_totals_points": {
+                  "2013": -2.15,
+                  "2014": 7.5,
+                  "2015": -9.55,
+                  "2016": 9.5,
+                  "2017": 1.15,
+                  "2018": 11.5,
+                  "2019": 1.2,
+                  "2020": 6.0,
+                  "2021": 9.9135
+                },
+                "year_totals_usd": {
+                  "2013": -2150.0,
+                  "2014": 7500.0,
+                  "2015": -9550.0,
+                  "2016": 9500.0,
+                  "2017": 1150.0,
+                  "2018": 11500.0,
+                  "2019": 1200.0,
+                  "2020": 6000.0,
+                  "2021": 9913.5
+                }
+              },
+              "gross": {
+                "endpoint_drawdown_points": -14.6,
+                "endpoint_drawdown_usd": -14600.0,
+                "mean_points": 1.073986111111111,
+                "mean_usd": 1073.986111111111,
+                "median_points": 1.35,
+                "median_usd": 1350.0,
+                "worst_trade_points": -14.6,
+                "worst_trade_usd": -14600.0,
+                "year_totals_points": {
+                  "2013": -1.75,
+                  "2014": 7.9,
+                  "2015": -9.15,
+                  "2016": 9.9,
+                  "2017": 1.55,
+                  "2018": 11.9,
+                  "2019": 1.6,
+                  "2020": 6.4,
+                  "2021": 10.3135
+                },
+                "year_totals_usd": {
+                  "2013": -1750.0,
+                  "2014": 7900.0,
+                  "2015": -9150.0,
+                  "2016": 9900.0,
+                  "2017": 1550.0,
+                  "2018": 11900.0,
+                  "2019": 1600.0,
+                  "2020": 6400.0,
+                  "2021": 10313.5
+                }
+              },
+              "stress": {
+                "endpoint_drawdown_points": -14.85,
+                "endpoint_drawdown_usd": -14850.0,
+                "mean_points": 0.8239861111111111,
+                "mean_usd": 823.9861111111111,
+                "median_points": 1.1,
+                "median_usd": 1100.0,
+                "worst_trade_points": -14.85,
+                "worst_trade_usd": -14850.0,
+                "year_totals_points": {
+                  "2013": -2.75,
+                  "2014": 6.9,
+                  "2015": -10.15,
+                  "2016": 8.9,
+                  "2017": 0.55,
+                  "2018": 10.9,
+                  "2019": 0.6,
+                  "2020": 5.4,
+                  "2021": 9.3135
+                },
+                "year_totals_usd": {
+                  "2013": -2750.0,
+                  "2014": 6900.0,
+                  "2015": -10150.0,
+                  "2016": 8900.0,
+                  "2017": 550.0,
+                  "2018": 10900.0,
+                  "2019": 600.0,
+                  "2020": 5400.0,
+                  "2021": 9313.5
+                }
+              }
+            },
+            "trades": [
+              {
+                "central_net_points": 1.25,
+                "contract": "H2013",
+                "entry_date": "2013-02-04",
+                "exit_date": "2013-03-05",
+                "gross_points": 1.35,
+                "gross_usd": 1350.0,
+                "stress_net_points": 1.1
+              },
+              {
+                "central_net_points": -1.25,
+                "contract": "M2013",
+                "entry_date": "2013-05-06",
+                "exit_date": "2013-06-04",
+                "gross_points": -1.15,
+                "gross_usd": -1150.0,
+                "stress_net_points": -1.4
+              },
+              {
+                "central_net_points": -2.5,
+                "contract": "U2013",
+                "entry_date": "2013-08-05",
+                "exit_date": "2013-09-03",
+                "gross_points": -2.4,
+                "gross_usd": -2400.0,
+                "stress_net_points": -2.65
+              },
+              {
+                "central_net_points": 0.35,
+                "contract": "Z2013",
+                "entry_date": "2013-11-04",
+                "exit_date": "2013-12-03",
+                "gross_points": 0.45,
+                "gross_usd": 450.0,
+                "stress_net_points": 0.2
+              },
+              {
+                "central_net_points": 1.9,
+                "contract": "H2014",
+                "entry_date": "2014-02-03",
+                "exit_date": "2014-03-03",
+                "gross_points": 2.0,
+                "gross_usd": 2000.0,
+                "stress_net_points": 1.75
+              },
+              {
+                "central_net_points": 2.2,
+                "contract": "M2014",
+                "entry_date": "2014-05-05",
+                "exit_date": "2014-06-03",
+                "gross_points": 2.3,
+                "gross_usd": 2300.0,
+                "stress_net_points": 2.05
+              },
+              {
+                "central_net_points": 1.5,
+                "contract": "U2014",
+                "entry_date": "2014-08-04",
+                "exit_date": "2014-09-02",
+                "gross_points": 1.6,
+                "gross_usd": 1600.0,
+                "stress_net_points": 1.35
+              },
+              {
+                "central_net_points": 1.9,
+                "contract": "Z2014",
+                "entry_date": "2014-11-03",
+                "exit_date": "2014-12-02",
+                "gross_points": 2.0,
+                "gross_usd": 2000.0,
+                "stress_net_points": 1.75
+              },
+              {
+                "central_net_points": 3.75,
+                "contract": "H2015",
+                "entry_date": "2015-02-02",
+                "exit_date": "2015-03-03",
+                "gross_points": 3.85,
+                "gross_usd": 3850.0,
+                "stress_net_points": 3.6
+              },
+              {
+                "central_net_points": 1.0,
+                "contract": "M2015",
+                "entry_date": "2015-05-04",
+                "exit_date": "2015-06-02",
+                "gross_points": 1.1,
+                "gross_usd": 1100.0,
+                "stress_net_points": 0.85
+              },
+              {
+                "central_net_points": -14.7,
+                "contract": "U2015",
+                "entry_date": "2015-08-03",
+                "exit_date": "2015-09-01",
+                "gross_points": -14.6,
+                "gross_usd": -14600.0,
+                "stress_net_points": -14.85
+              },
+              {
+                "central_net_points": 0.4,
+                "contract": "Z2015",
+                "entry_date": "2015-11-02",
+                "exit_date": "2015-12-01",
+                "gross_points": 0.5,
+                "gross_usd": 500.0,
+                "stress_net_points": 0.25
+              },
+              {
+                "central_net_points": 1.7,
+                "contract": "H2016",
+                "entry_date": "2016-02-01",
+                "exit_date": "2016-03-01",
+                "gross_points": 1.8,
+                "gross_usd": 1800.0,
+                "stress_net_points": 1.55
+              },
+              {
+                "central_net_points": 2.8,
+                "contract": "M2016",
+                "entry_date": "2016-05-02",
+                "exit_date": "2016-05-31",
+                "gross_points": 2.9,
+                "gross_usd": 2900.0,
+                "stress_net_points": 2.65
+              },
+              {
+                "central_net_points": 1.65,
+                "contract": "U2016",
+                "entry_date": "2016-08-08",
+                "exit_date": "2016-09-06",
+                "gross_points": 1.75,
+                "gross_usd": 1750.0,
+                "stress_net_points": 1.5
+              },
+              {
+                "central_net_points": 3.35,
+                "contract": "Z2016",
+                "entry_date": "2016-11-07",
+                "exit_date": "2016-12-06",
+                "gross_points": 3.45,
+                "gross_usd": 3450.0,
+                "stress_net_points": 3.2
+              },
+              {
+                "central_net_points": 1.25,
+                "contract": "H2017",
+                "entry_date": "2017-02-06",
+                "exit_date": "2017-03-07",
+                "gross_points": 1.35,
+                "gross_usd": 1350.0,
+                "stress_net_points": 1.1
+              },
+              {
+                "central_net_points": 0.4,
+                "contract": "M2017",
+                "entry_date": "2017-05-08",
+                "exit_date": "2017-06-06",
+                "gross_points": 0.5,
+                "gross_usd": 500.0,
+                "stress_net_points": 0.25
+              },
+              {
+                "central_net_points": -0.7,
+                "contract": "U2017",
+                "entry_date": "2017-08-07",
+                "exit_date": "2017-09-05",
+                "gross_points": -0.6,
+                "gross_usd": -600.0,
+                "stress_net_points": -0.85
+              },
+              {
+                "central_net_points": 0.2,
+                "contract": "Z2017",
+                "entry_date": "2017-11-06",
+                "exit_date": "2017-12-05",
+                "gross_points": 0.3,
+                "gross_usd": 300.0,
+                "stress_net_points": 0.05
+              },
+              {
+                "central_net_points": 9.55,
+                "contract": "H2018",
+                "entry_date": "2018-02-05",
+                "exit_date": "2018-03-06",
+                "gross_points": 9.65,
+                "gross_usd": 9650.0,
+                "stress_net_points": 9.4
+              },
+              {
+                "central_net_points": 2.6,
+                "contract": "M2018",
+                "entry_date": "2018-05-07",
+                "exit_date": "2018-06-05",
+                "gross_points": 2.7,
+                "gross_usd": 2700.0,
+                "stress_net_points": 2.45
+              },
+              {
+                "central_net_points": 0.05,
+                "contract": "U2018",
+                "entry_date": "2018-08-06",
+                "exit_date": "2018-09-04",
+                "gross_points": 0.15,
+                "gross_usd": 150.0,
+                "stress_net_points": -0.1
+              },
+              {
+                "central_net_points": -0.7,
+                "contract": "Z2018",
+                "entry_date": "2018-11-05",
+                "exit_date": "2018-12-04",
+                "gross_points": -0.6,
+                "gross_usd": -600.0,
+                "stress_net_points": -0.85
+              },
+              {
+                "central_net_points": 1.7,
+                "contract": "H2019",
+                "entry_date": "2019-02-04",
+                "exit_date": "2019-03-04",
+                "gross_points": 1.8,
+                "gross_usd": 1800.0,
+                "stress_net_points": 1.55
+              },
+              {
+                "central_net_points": -1.0,
+                "contract": "M2019",
+                "entry_date": "2019-05-06",
+                "exit_date": "2019-06-04",
+                "gross_points": -0.9,
+                "gross_usd": -900.0,
+                "stress_net_points": -1.15
+              },
+              {
+                "central_net_points": 0.6,
+                "contract": "U2019",
+                "entry_date": "2019-08-05",
+                "exit_date": "2019-09-03",
+                "gross_points": 0.7,
+                "gross_usd": 700.0,
+                "stress_net_points": 0.45
+              },
+              {
+                "central_net_points": -0.1,
+                "contract": "Z2019",
+                "entry_date": "2019-11-04",
+                "exit_date": "2019-12-03",
+                "gross_points": 0.0,
+                "gross_usd": 0.0,
+                "stress_net_points": -0.25
+              },
+              {
+                "central_net_points": -11.85,
+                "contract": "H2020",
+                "entry_date": "2020-02-03",
+                "exit_date": "2020-03-03",
+                "gross_points": -11.75,
+                "gross_usd": -11750.0,
+                "stress_net_points": -12.0
+              },
+              {
+                "central_net_points": 6.65,
+                "contract": "M2020",
+                "entry_date": "2020-05-04",
+                "exit_date": "2020-06-02",
+                "gross_points": 6.75,
+                "gross_usd": 6750.0,
+                "stress_net_points": 6.5
+              },
+              {
+                "central_net_points": 0.95,
+                "contract": "U2020",
+                "entry_date": "2020-08-03",
+                "exit_date": "2020-09-01",
+                "gross_points": 1.05,
+                "gross_usd": 1050.0,
+                "stress_net_points": 0.8
+              },
+              {
+                "central_net_points": 10.25,
+                "contract": "Z2020",
+                "entry_date": "2020-11-02",
+                "exit_date": "2020-12-01",
+                "gross_points": 10.35,
+                "gross_usd": 10350.0,
+                "stress_net_points": 10.1
+              },
+              {
+                "central_net_points": 6.1613,
+                "contract": "H2021",
+                "entry_date": "2021-02-01",
+                "exit_date": "2021-03-02",
+                "gross_points": 6.2613,
+                "gross_usd": 6261.3,
+                "stress_net_points": 6.0113
+              },
+              {
+                "central_net_points": 1.8971,
+                "contract": "M2021",
+                "entry_date": "2021-05-03",
+                "exit_date": "2021-06-01",
+                "gross_points": 1.9971,
+                "gross_usd": 1997.1,
+                "stress_net_points": 1.7471
+              },
+              {
+                "central_net_points": 3.9985,
+                "contract": "U2021",
+                "entry_date": "2021-08-02",
+                "exit_date": "2021-08-31",
+                "gross_points": 4.0985,
+                "gross_usd": 4098.5,
+                "stress_net_points": 3.8485
+              },
+              {
+                "central_net_points": -2.1434,
+                "contract": "Z2021",
+                "entry_date": "2021-11-08",
+                "exit_date": "2021-12-07",
+                "gross_points": -2.0434,
+                "gross_usd": -2043.4,
+                "stress_net_points": -2.2934
+              }
+            ],
+            "typed_verdict": "PROMOTE_EXPRESSION",
+            "uncertainty": {
+              "confidence_level": 0.95,
+              "draws": 2000,
+              "gross_mean_points_interval": [
+                -0.010736111111111111,
+                2.103805555555554
+              ],
+              "method": "Descriptive calendar-year-cluster bootstrap",
+              "seed": 41011,
+              "statistical_confirmation": false
+            },
+            "unit_economics": {
+              "break_even_friction_points": 1.073986111111111,
+              "break_even_friction_usd": 1073.986111111111,
+              "central_round_trip_cost_points": 0.1,
+              "central_round_trip_cost_usd": 100,
+              "frequency_per_year": 4,
+              "multiplier_usd_per_point": 1000,
+              "stress_round_trip_cost_points": 0.25,
+              "stress_round_trip_cost_usd": 250
+            }
+          },
+          "result_sha256": "e22b6b9224a03dba683b76c707bf080e84f6ebd6327c90881a1cae0b6539986d",
+          "runner": "vix-known-prefix-v1",
+          "selection": {
+            "data_friction": "LOW",
+            "decision_leverage": "HIGH",
+            "discriminating_power": "HIGH",
+            "economic_plausibility": "HIGH",
+            "expected_minutes": 5
+          },
+          "status": "PROMOTE_EXPRESSION",
+          "title": "VX · lecteur CFE réparé · règle45→15jours inchangée",
+          "typed_verdict": "PROMOTE_EXPRESSION"
         }
       ]
     },
     "counts": {
       "ready": 0,
-      "running": 1,
+      "running": 0,
       "recovery": 0,
       "parked": 9,
-      "finished": 1
+      "finished": 2
     },
-    "active_lease": {
-      "claimed_at": "2026-10-12T08:21:50.293662+00:00",
-      "code_sha256": {
-        "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
-        "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
-        "src/quant/edge_lab/vix.py": "27f7e9f733febb7d75fc1b8633276162390c6cb3059ecf797dd14796e7889c75"
-      },
-      "contract": {
-        "BIAS_DIRECTION": {
-          "amplitude": "Settlement marking and pre-crash historical prefix can favor apparent profitability.",
-          "capacity": "One constant contract, no institutional capacity inference.",
-          "costs": "0.10/0.25 points are sensitivity assumptions, not authenticated historical all-in costs.",
-          "execution": "No BBO, margin path, slippage or market impact; cannot claim implementability.",
-          "survivorship": "All36 known successful quarterly contracts required; coverage-selected prefix excludes2022–25 and is explicitly a new expression.",
-          "timing": "Settlement prices are not guaranteed simultaneous executable fills."
-        },
-        "TEST_CANNOT_SAY": [
-          "KILL_MECHANISM",
-          "PROMOTE_MECHANISM",
-          "PROMOTE_HIGH",
-          "ALPHA",
-          "EDGE_VALIDATED",
-          "LIVE_READY"
-        ],
-        "TEST_CAN_KILL": [
-          "KILL_EXPRESSION"
-        ],
-        "TEST_CAN_SUPPORT": [
-          "PROMOTE_EXPRESSION"
-        ],
-        "adequacy": {
-          "all_or_nothing": true,
-          "failure_verdict": "PARK_DATA",
-          "minimum_contracts": 36,
-          "required_years": [
-            2013,
-            2014,
-            2015,
-            2016,
-            2017,
-            2018,
-            2019,
-            2020,
-            2021
-          ],
-          "requirements": [
-            "exact published36 source hashes and bytes",
-            "positive finite settlements with both endpoints within4 calendar days",
-            "one nonoverlapping position per listed contract",
-            "no sample exclusion/substitution/retry on failure"
-          ]
-        },
-        "alternative_explanation": "Compensation for crash/convexity/liquidity risk; current alpha is not identified.",
-        "claim_ceiling": "PROMOTE_EXPRESSION",
-        "created_at": "2026-10-12T08:18:06.754044+00:00",
-        "design": {
-          "bootstrap_draws": 2000,
-          "bootstrap_seed": 41011,
-          "central_cost_points": 0.1,
-          "endpoint_tolerance_days": 4,
-          "entry_days": 45,
-          "exit_days": 15,
-          "multiplier_usd_per_point": 1000,
-          "stress_cost_points": 0.25
-        },
-        "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
-        "kill_if": "Gross pooledmean <=0 ORstressnet pooledmean <=0: KILL_EXPRESSION only.",
-        "label": "EXPLORATORY",
-        "live_trading_authorized": false,
-        "mechanism": "Volatility hedgers may pay an insurance risk premium to short VX futures; this expression also bears crash risk.",
-        "negative_control": "Not an independent causal negative control: exactly one predefined leave-largest-positive-year-out concentration challenge on a primary positive result.",
-        "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
-        "primary_signature": "Positive fixed-rule short-futures settlement PnL in both fixed chronological blocks; this tests expression persistence, not causal identification.",
-        "prior_exposures": [
-          "PRIVATE_UNKNOWN",
-          "Public short-volatility literature",
-          "v0 source acquisition metadata and known2013–21 coverage; no economics calculated",
-          "IncidentalVX2026 publicquote snippets (VX39/U6, VX40/V6); not used to choose design or claimed virgin",
-          "TEC10 2026-09-25 4.63% incidental publicquote unrelated toVX selection",
-          "v1 accessed H2013,M2013,U2013 bodies and stopped schemaQA; no payoff computed. U2013 firstnotice/header inspectedunderoriginalexposure. No virginclaim."
-        ],
-        "promote_if": "Centralmean >=0.25 points ANDstressmean >0 ANDcentralmean >0 in2013–2018 and2019–2021, then exactlyone passing declared adversary. ElsePARK_ECONOMICS.",
-        "real_capital_authorized": false,
-        "red_team": {
-          "additional_search_allowed": false,
-          "fail_verdict": "PARK_ECONOMICS",
-          "method": "Remove single year with largest central-net year-sum; earliest year breaks ties.",
-          "pass_if": "Remaining32 trades have positive central and stress net means.",
-          "required_before_promotion": true,
-          "trigger": "primary expression passes fixed promotion criteria"
-        },
-        "resource_limits": {
-          "job_wall_seconds": 120,
-          "paid_usd": 0,
-          "per_request_seconds": 15,
-          "per_response_bytes": 262144,
-          "retries": 0,
-          "total_payload_bytes": 2097152
-        },
-        "rights": {
-          "public_output": "Aggregated and derived PnL without raw quoted entry/exit prices.",
-          "raw_use": "Owner private noncommercial research only subject to Cboe terms; no raw data redistribution.",
-          "rights_limit": "No institutional, commercial, live or redistribution rights inferred.",
-          "terms_url": "https://www.cboe.com/terms/"
-        },
-        "source_reader": "Versioned format repair only: accept exactly one known full CFE disclaimer singlecell atfirstCSVrow, followed by<=3blankrows and the required uniqueTradeDate/Settleheader within5rows; keep raw unchanged. Reject unknown/repeatednotice or malformedrecords. Ascending/descending strictlymonotone dates normalizechronologically; duplicates/nonmonotone rejected. No rule/data/window/cost/threshold change.",
-        "timebox_minutes": 60,
-        "uncertainty": "Year-cluster bootstrap9years,2000draws,seed41011,95%descriptive; no independent36-observation claim, Sharpe/CAGR or alpha.",
-        "unchanged_siblings": [
-          "v0 remains PARK_DATA requiring52 contracts",
-          "V4.2 designpilot20-trading-days-to-final-settlement remains unexecuted separate design; no silent protocol replacement",
-          "v1 PARK_DATA source QA before economics; immutable old code/contract/result preserved inGitHub."
-        ],
-        "unit_economics": {
-          "break_even_friction": "Gross mean PnL points is maximum average all-in roundtrip friction; compute once after fixed sample is complete.",
-          "central_roundtrip_cost_points": 0.1,
-          "fees_limit": "June2026 schedule is not historical2013–21 all-in cost proof; no purchase.",
-          "fees_source": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
-          "stress_roundtrip_cost_points": 0.25,
-          "unit": "VX points per one-contract round trip; $1000 per point"
-        },
-        "variant_accounting": {
-          "adversarial_checks": 1,
-          "cost_scenarios": 2,
-          "effective_independent_trials": "UNKNOWN",
-          "mechanism_cluster": "cfe-vix-term-premium",
-          "new_expressions": 1,
-          "parent_software_attempt": "disc-cfe-vix-term-premium-l1-v1"
-        },
-        "version": "4.2",
-        "who_pays": "Investors buying volatility protection.",
-        "why_persist": "Insurance demand and constrained risk-bearing; publication/crowding and risk compensation may explain returns."
-      },
-      "contract_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.contract.json",
-      "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
-      "cost_scenarios": 2,
-      "created_at": "2026-10-12T08:18:06.754044+00:00",
-      "execution_attempts": 1,
-      "expressions": 1,
-      "family": "cfe-vix-term-premium",
-      "id": "disc-cfe-vix-term-premium-l1-v2-reader",
-      "invocation_id": "owner-v42-vix-reader-20261012",
-      "lease_seconds": 3600,
-      "level": "L1",
-      "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
-      "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
-      "max_time_minutes": 60,
-      "mechanism_cluster": "cfe-vix-term-premium",
-      "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
-      "runner": "vix-known-prefix-v1",
-      "selection": {
-        "data_friction": "LOW",
-        "decision_leverage": "HIGH",
-        "discriminating_power": "HIGH",
-        "economic_plausibility": "HIGH",
-        "expected_minutes": 5
-      },
-      "status": "RUNNING",
-      "title": "VX · lecteur CFE réparé · règle45→15jours inchangée"
-    },
+    "active_lease": null,
     "next": null,
     "economic_access_authorized": false,
     "edge_validated": false

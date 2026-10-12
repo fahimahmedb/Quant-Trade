@@ -1,10 +1,10 @@
 # Quant — Discovery V4.2 / Validation V3
 
-Discovery : **RUNNING** ; Validation : **RECOVERY_NEEDED**.
+Discovery : **IDLE_NO_ADMISSIBLE_WORK** ; Validation : **RECOVERY_NEEDED**.
 
 Prochain test : aucun test admissible.
 
-Tests économiques terminés : 0. Les fichiers acquis et contrôles logiciels ne sont pas des résultats économiques.
+Tests économiques terminés : 1. Les fichiers acquis et contrôles logiciels ne sont pas des résultats économiques.
 
 # Quant — labo de recherche V3
 
