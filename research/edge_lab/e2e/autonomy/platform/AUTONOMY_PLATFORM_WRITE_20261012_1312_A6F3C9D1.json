@@ -1,0 +1,9 @@
+{
+  "canary": "AUTONOMY_PLATFORM_WRITE_20261012_1312_A6F3C9D1",
+  "scheduled_runtime": true,
+  "branch": "builder/autonomy-e2e-20261012",
+  "head_before": "7c60316ac5f24ba916c4634e5dbbdb86ceadb264",
+  "github_read_succeeded": true,
+  "github_write_invoked": true,
+  "write_result": "SUCCESS_NO_SHA"
+}
