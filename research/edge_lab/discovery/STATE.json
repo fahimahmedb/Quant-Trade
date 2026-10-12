@@ -368,6 +368,23 @@
       },
       "previous": "08f95afeec3f6f6f87b630a4c0dc3f047737701c482ac9906af4e7e350523097",
       "sequence": 17
+    },
+    {
+      "at": "2026-10-12T21:11:33.311176+00:00",
+      "hash": "af261ce9f941b015238760135860adf8ab262a437dadfe5045a700c1e4bc3753",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "DUPLICATE",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-reverse-forward-forced-cashout",
+        "head_observed": "35795dfbf94e021f1eb751d8903c412a35607c33",
+        "proof": "qualifications/us-reverse-forward-forced-cashout-l0-2026-10-12.json",
+        "proof_sha256": "480fc2fc4f3bb8c61561a4ca189d8532e5e8e5874f40f2a8255ebeedebe5b5c1"
+      },
+      "previous": "4e418f5a1dbbd18c1edca044ccd3572765da7acc63ce6d333bd3b7d1f0ccb6fc",
+      "sequence": 18
     }
   ],
   "exposure_ledger": [
@@ -413,7 +430,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "e34b887031c156f91c7069e38fb54448f56242011d89415d05974a1a57685659",
+  "integrity": "a75ad203c26af99b98b9895185f3f00aae05631e01aec0721f8f2c127c868bab",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -474,9 +491,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-reverse-forward-forced-cashout",
+    "family": "us-merger-statutory-appraisal",
     "kind": "L0_MECHANISM",
-    "question": "Does a going-private reverse-forward split give a post-announcement small holder a fixed cash entitlement distinct from ordinary fractional settlement?",
+    "question": "Do statutory standing thresholds or enforcement costs eliminate a small-holder merger appraisal expression?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1914,5 +1931,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:10:43.267110+00:00"
+  "updated_at": "2026-10-12T21:11:33.311213+00:00"
 }

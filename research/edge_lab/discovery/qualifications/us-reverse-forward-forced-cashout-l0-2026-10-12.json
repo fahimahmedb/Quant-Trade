@@ -1,0 +1,50 @@
+{
+  "CHEAP_DATA_NOW": "SEC SC13E3/proxy terms; post-announcement beneficial-owner eligibility is nominee-specific.",
+  "CHEAP_EXPRESSION": "Single sub-threshold position with fixed cash consideration, requiring explicit eligibility and registration clock.",
+  "ECONOMIC_SIGNIFICANCE": "No new mechanism or independent economic test.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Causal novelty relative to existing fractional settlement family."
+  ],
+  "FAMILY_STATUS": "EXISTING_PROTOCOL_UNCHANGED",
+  "FATAL_PROBLEM": "The payoff still relies on the existing reverse-split fractional-settlement/cash-in-lieu rail; fixed consideration is a formula-class variant, not a new independent chance. Nominee reporting can prevent cashout.",
+  "LESSON": "Fixed cashout consideration changes formula, not the basic threshold/fraction settlement mechanism.",
+  "MECHANISM": "A reverse-forward split cashes out holders below a share threshold at a fixed per-share amount while larger record holdings survive; issuer aims to reduce reporting/recordholder burden.",
+  "NEXT_DECISION": "L0 statutory merger appraisal rights: check small-holder eligibility and enforceability cost before any market data.",
+  "POWER_LIMITATION": "Documentary classification only.",
+  "RESULT": "DUPLICATE",
+  "UNCERTAINTY": "No monetary attractiveness tested.",
+  "WHO_PAYS": "Issuer corporate-action budget in return for reducing recordholder/reporting costs.",
+  "WHY_PERSIST": "Tiny threshold capacity; nominee aggregation, direct-registration timing and cancellation risk.",
+  "classification": "DUPLICATE",
+  "existing_protocol": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+  "exposure": {
+    "completion_snippet_exposed_cik": "768408",
+    "economic_look": false,
+    "market_prices_or_returns": false,
+    "private_history": "UNKNOWN",
+    "search_exposed_ciks": [
+      "768408",
+      "2006986",
+      "948708",
+      "832489",
+      "812796"
+    ]
+  },
+  "linked_family": "corporate-action-fractional-settlement",
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "35795dfbf94e021f1eb751d8903c412a35607c33",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:11:33.309664+00:00",
+  "sources": [
+    {
+      "documentary_fact": "Reverse/forward 1-for-400; below-threshold record holdings receive fixed cash consideration.",
+      "url": "https://www.sec.gov/Archives/edgar/data/768408/000094787126000021/ss5794632_sc13e3.htm"
+    },
+    {
+      "documentary_fact": "Search inadvertently exposed completed transaction and nominee-reporting limitation; calibration only, excluded.",
+      "url": "https://www.sec.gov/Archives/edgar/data/768408/000094787126000143/ss5948989_sc13e3.htm"
+    }
+  ]
+}
