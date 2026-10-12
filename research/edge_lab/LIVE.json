@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T13:25:08.999909+00:00",
+  "generated_at": "2026-10-12T13:25:27.311559+00:00",
   "state_updated_at": "2026-10-12T13:14:50.693417+00:00",
   "operational_status": "WORKING",
   "paused": false,
@@ -1580,8 +1580,8 @@
     "telemetry_overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM"
   },
   "telemetry": {
-    "source_head": "f632ad20295283384d73d125929738ff6c7b9f18",
-    "generated_at": "2026-10-12T13:25:08.999909+00:00",
+    "source_head": "66297d7f81f2601e532372947990486db1adaf3c",
+    "generated_at": "2026-10-12T13:25:27.311559+00:00",
     "overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
