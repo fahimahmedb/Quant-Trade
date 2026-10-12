@@ -36,6 +36,17 @@
       },
       "previous": "40d0357cb198511bceaf51e853bff5441b6797716ec42b29387d5407b8709101",
       "sequence": 2
+    },
+    {
+      "at": "2026-10-12T08:09:05.886961+00:00",
+      "hash": "7b037a03694d61edf147f6e9b4d7369f64994e66b729b48b40dcf59eb40c096c",
+      "kind": "DISCOVERY_CLAIMED",
+      "payload": {
+        "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+        "invocation_id": "owner-v42-vix-v1-20261012"
+      },
+      "previous": "a059d1890279382c7aac5149dcbbcdec2dcaa2895d23876bda6a35576eac3d4b",
+      "sequence": 3
     }
   ],
   "exposure_ledger": [
@@ -63,12 +74,20 @@
       "preregistration": "6b9daadaf6a5bf10b3b7356c2740080961add095",
       "private_history": "UNKNOWN",
       "upper_bound_comparators": 1
+    },
+    {
+      "at": "2026-10-12T08:09:05.886909+00:00",
+      "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
+      "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+      "invocation_id": "owner-v42-vix-v1-20261012",
+      "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
+      "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "51675f04fe389e0bc098aa2502457be88cdf6a355fe39fdba919caeca5a8d95e",
+  "integrity": "15feeb778d08f14cf88ef007459b692a2e0ea97d781a1a42f6ad29e29b2b9f1a",
   "live_trading_authorized": false,
   "metrics": {
-    "actual_data_test_attempts": 3,
+    "actual_data_test_attempts": 4,
     "architecture_share_basis": "Rolling agent-time/token accounting unavailable. Only one bounded Site display change;32synthetic checks. No numeric90/10 compliance asserted.",
     "architecture_share_estimate": null,
     "calculations_attempted": 1,
@@ -93,6 +112,34 @@
     "source_sha": "6543f2299b314cfbcf46bdac8a1ef8b7cb66cd5d"
   },
   "mode": "DISCOVERY_FIRST",
+  "multiplicity": {
+    "execution_attempts_by_experiment": {
+      "disc-cfe-vix-term-premium-l1-v0": 1,
+      "disc-cfe-vix-term-premium-l1-v1": 1,
+      "disc-crypto-book-pressure-prospective-l1-v0": 1,
+      "disc-f2-prediction-v0": 0,
+      "disc-france-fuel-v0": 0,
+      "disc-france-oat-bund-l1-v0": 1,
+      "disc-hyperliquid-forced-flow-v0": 0,
+      "disc-policy-prospective-l1-v0": 0,
+      "disc-sec-form4-eod-l1-v0": 0,
+      "disc-zf-auction-pressure-v0": 0
+    },
+    "execution_attempts_by_mechanism_cluster": {
+      "bitmex-book-pressure": 1,
+      "cfe-vix-term-premium": 2,
+      "f2-prediction-access": 0,
+      "france-fuel-information": 0,
+      "france-sovereign-repricing": 1,
+      "hyperliquid-forced-flow": 0,
+      "policy-announcement-repricing": 0,
+      "sec-events": 0,
+      "treasury-auction-zf": 0
+    },
+    "experiment_count": 10,
+    "independence_claim": "NONE; sibling expressions are not independent discoveries",
+    "mechanism_cluster_count": 9
+  },
   "next": {
     "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
     "reason": "Complete known coverage, fixed expression with scoped inference, no V3 recovery prerequisite."
@@ -255,6 +302,7 @@
       "typed_verdict": "PARK_ECONOMICS"
     },
     {
+      "claimed_at": "2026-10-12T08:09:05.886909+00:00",
       "code_sha256": {
         "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
         "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -386,10 +434,12 @@
       "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
       "cost_scenarios": 2,
       "created_at": "2026-10-12T07:53:48.371521+00:00",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
       "family": "cfe-vix-term-premium",
       "id": "disc-cfe-vix-term-premium-l1-v1",
+      "invocation_id": "owner-v42-vix-v1-20261012",
+      "lease_seconds": 3600,
       "level": "L1",
       "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v1.manifest.json",
       "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
@@ -404,12 +454,12 @@
         "economic_plausibility": "HIGH",
         "expected_minutes": 5
       },
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "title": "VX \u00b7 expression fixe45\u219215jours \u00b7 couverture2013\u20132021"
     }
   ],
   "real_capital_authorized": false,
   "schema": 1,
-  "status": "READY",
-  "updated_at": "2026-10-12T08:04:11.425592+00:00"
+  "status": "RUNNING",
+  "updated_at": "2026-10-12T08:09:05.886909+00:00"
 }

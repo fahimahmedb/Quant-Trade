@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T08:07:51.376516+00:00",
+  "generated_at": "2026-10-12T08:09:05.897062+00:00",
   "state_updated_at": "2026-10-12T08:07:51.362896+00:00",
-  "operational_status": "READY",
+  "operational_status": "RUNNING",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -67,11 +67,13 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "READY",
+    "status": "RUNNING",
     "paused": false,
     "groups": {
-      "ready": [
+      "ready": [],
+      "running": [
         {
+          "claimed_at": "2026-10-12T08:09:05.886909+00:00",
           "code_sha256": {
             "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
             "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -203,10 +205,12 @@
           "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
           "cost_scenarios": 2,
           "created_at": "2026-10-12T07:53:48.371521+00:00",
-          "execution_attempts": 0,
+          "execution_attempts": 1,
           "expressions": 1,
           "family": "cfe-vix-term-premium",
           "id": "disc-cfe-vix-term-premium-l1-v1",
+          "invocation_id": "owner-v42-vix-v1-20261012",
+          "lease_seconds": 3600,
           "level": "L1",
           "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v1.manifest.json",
           "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
@@ -221,11 +225,10 @@
             "economic_plausibility": "HIGH",
             "expected_minutes": 5
           },
-          "status": "TEST_NOW",
+          "status": "RUNNING",
           "title": "VX · expression fixe45→15jours · couverture2013–2021"
         }
       ],
-      "running": [],
       "recovery": [],
       "parked": [
         {
@@ -387,14 +390,14 @@
       "finished": []
     },
     "counts": {
-      "ready": 1,
-      "running": 0,
+      "ready": 0,
+      "running": 1,
       "recovery": 0,
       "parked": 9,
       "finished": 0
     },
-    "active_lease": null,
-    "next": {
+    "active_lease": {
+      "claimed_at": "2026-10-12T08:09:05.886909+00:00",
       "code_sha256": {
         "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
         "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -526,10 +529,12 @@
       "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
       "cost_scenarios": 2,
       "created_at": "2026-10-12T07:53:48.371521+00:00",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
       "family": "cfe-vix-term-premium",
       "id": "disc-cfe-vix-term-premium-l1-v1",
+      "invocation_id": "owner-v42-vix-v1-20261012",
+      "lease_seconds": 3600,
       "level": "L1",
       "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v1.manifest.json",
       "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
@@ -544,9 +549,10 @@
         "economic_plausibility": "HIGH",
         "expected_minutes": 5
       },
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "title": "VX · expression fixe45→15jours · couverture2013–2021"
     },
+    "next": null,
     "economic_access_authorized": false,
     "edge_validated": false
   }
