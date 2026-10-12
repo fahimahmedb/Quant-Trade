@@ -1,0 +1,207 @@
+{
+  "adequacy": {
+    "coverage": 1.0,
+    "missing_endpoints": 0,
+    "observed_events": 722,
+    "qualifying_by_side": {
+      "NEGATIVE_SHOCK": 360,
+      "POSITIVE_SHOCK": 362
+    },
+    "qualifying_events": 722,
+    "requires_coverage_at_least": 0.9,
+    "requires_each_side_at_least": 25,
+    "requires_total_at_least": 80
+  },
+  "attempt": 1,
+  "claim_ceiling": "PROMOTE_EXPRESSION",
+  "claim_commit": "f632ad20295283384d73d125929738ff6c7b9f18",
+  "dataset_proof": {
+    "meta_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "meta_first_date": "2016-09-12",
+    "meta_last_date": "2026-09-11",
+    "meta_rows": 30168,
+    "raw_csv_sha256_observed": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1"
+  },
+  "decision": "KILL_EXPRESSION",
+  "economics_computed": true,
+  "edge_validated": false,
+  "event_population_sha256": "1917a3394656d613447d935c6d8117f32361e8b06a246201cdce7b44963e8bdb",
+  "experiment_id": "disc-sector-relative-shock-reversal-l1-v1",
+  "frozen": {
+    "central_roundtrip_cost": 0.0008,
+    "dataset": "data/datasets/us_sector_etf_daily.csv",
+    "expected_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "negative_residual_threshold": -0.02,
+    "payoff": "next aligned session open-to-close",
+    "positive_residual_threshold": 0.02,
+    "sectors": [
+      "XLB",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLU",
+      "XLV",
+      "XLY"
+    ],
+    "stress_roundtrip_cost": 0.0015
+  },
+  "invocation_id": "owner-manual-20261012-a1",
+  "label": "EXPLORATORY",
+  "limits": {
+    "alpha_validated": false,
+    "capacity": "UNKNOWN",
+    "causal_identification": false,
+    "closed_daily_etf_b2_b4_reopened": false,
+    "daily_bars_are_fills": false,
+    "short_borrow_locate_modelled": false
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "predeclaration_commit": "d959e32bedb2871f963c666743d391f1c7d76d89",
+  "primary": {
+    "best_central_net_return": 0.08282591765081407,
+    "block_event_counts": {
+      "first": 322,
+      "second": 400
+    },
+    "by_symbol": {
+      "XLB": {
+        "events": 11,
+        "mean_central_net": -0.00979016851642072
+      },
+      "XLE": {
+        "events": 316,
+        "mean_central_net": 0.0010398503816338317
+      },
+      "XLF": {
+        "events": 26,
+        "mean_central_net": -0.0003729487568076587
+      },
+      "XLI": {
+        "events": 5,
+        "mean_central_net": -0.00893609569868734
+      },
+      "XLK": {
+        "events": 130,
+        "mean_central_net": -0.00017004722796430877
+      },
+      "XLP": {
+        "events": 38,
+        "mean_central_net": -0.001433213437973223
+      },
+      "XLU": {
+        "events": 115,
+        "mean_central_net": -0.002367805670499484
+      },
+      "XLV": {
+        "events": 31,
+        "mean_central_net": -0.0028006088637904302
+      },
+      "XLY": {
+        "events": 50,
+        "mean_central_net": -0.00016955255526625846
+      }
+    },
+    "central_net_hit_rate": 0.4916897506925208,
+    "mean_central_net_2016_09_12_to_2021_12_31": -9.455853685074197e-05,
+    "mean_central_net_2022_01_01_to_2026_09_11": -0.0006179770882885838,
+    "mean_central_net_by_side": {
+      "NEGATIVE_SHOCK": -0.0003860105218645883,
+      "POSITIVE_SHOCK": -0.00038307982406110677
+    },
+    "mean_central_net_return": -0.00038454111382461555,
+    "mean_signed_gross_return": 0.0004154588861753844,
+    "mean_stress_net_return": -0.0010845411138246158,
+    "median_central_net_return": -0.00036516918994664515,
+    "worst_central_net_return": -0.08855273131448801,
+    "yearly": {
+      "2016": {
+        "events": 13,
+        "mean_central_net": -0.003603066065062805,
+        "sum_central_net": -0.046839858845816464
+      },
+      "2017": {
+        "events": 12,
+        "mean_central_net": 0.0009656884212360519,
+        "sum_central_net": 0.011588261054832624
+      },
+      "2018": {
+        "events": 44,
+        "mean_central_net": -0.0017657256160276966,
+        "sum_central_net": -0.07769192710521865
+      },
+      "2019": {
+        "events": 29,
+        "mean_central_net": -0.0009724181789030607,
+        "sum_central_net": -0.02820012718818876
+      },
+      "2020": {
+        "events": 149,
+        "mean_central_net": -0.0002683342865559336,
+        "sum_central_net": -0.03998180869683411
+      },
+      "2021": {
+        "events": 75,
+        "mean_central_net": 0.0020090348255371528,
+        "sum_central_net": 0.15067761191528645
+      },
+      "2022": {
+        "events": 137,
+        "mean_central_net": -0.0001691603612157439,
+        "sum_central_net": -0.023174969486556916
+      },
+      "2023": {
+        "events": 47,
+        "mean_central_net": -4.039733849286729e-05,
+        "sum_central_net": -0.0018986749091647625
+      },
+      "2024": {
+        "events": 50,
+        "mean_central_net": 0.002254472446264775,
+        "sum_central_net": 0.11272362231323876
+      },
+      "2025": {
+        "events": 59,
+        "mean_central_net": -0.0014846548019386721,
+        "sum_central_net": -0.08759463331438165
+      },
+      "2026": {
+        "events": 107,
+        "mean_central_net": -0.0023107119618557847,
+        "sum_central_net": -0.24724617991856898
+      }
+    }
+  },
+  "real_capital_authorized": false,
+  "red_team": {
+    "executed": false,
+    "passed": false,
+    "reason": "primary kill rule"
+  },
+  "replay_allowed": false,
+  "schema_checks": {
+    "aligned_sessions": 2514,
+    "first_date": "2016-09-12",
+    "last_date": "2026-09-11",
+    "max_abs_raw_sector_close_to_close_return": 0.2014118117647058,
+    "max_abs_raw_sector_close_to_close_where": {
+      "date": "2020-03-09",
+      "raw_close_to_close_return": -0.2014118117647058,
+      "symbol": "XLE"
+    },
+    "rows_by_symbol": {
+      "XLB": 2514,
+      "XLE": 2514,
+      "XLF": 2514,
+      "XLI": 2514,
+      "XLK": 2514,
+      "XLP": 2514,
+      "XLU": 2514,
+      "XLV": 2514,
+      "XLY": 2514
+    }
+  },
+  "typed_verdict": "KILL_EXPRESSION"
+}
