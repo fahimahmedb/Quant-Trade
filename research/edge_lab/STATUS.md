@@ -1,8 +1,8 @@
 # Quant — Discovery V4.2 / Validation V3
 
-Discovery : **IDLE_NO_ADMISSIBLE_WORK** ; Validation : **RECOVERY_NEEDED**.
+Discovery : **READY** ; Validation : **RECOVERY_NEEDED**.
 
-Prochain test : aucun test admissible.
+Prochain test : disc-cfe-vix-term-premium-l1-v2-reader.
 
 Tests économiques terminés : 0. Les fichiers acquis et contrôles logiciels ne sont pas des résultats économiques.
 

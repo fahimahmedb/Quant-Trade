@@ -21,6 +21,11 @@ from decimal import Decimal
 from pathlib import Path
 
 EXPERIMENT = "disc-cfe-vix-term-premium-l1-v1"
+READER_EXPERIMENT = "disc-cfe-vix-term-premium-l1-v2-reader"
+CFE_NOTICE = ("CFE data is compiled for the convenience of site visitors and is furnished without responsibility for accuracy "
+    "and is accepted by the site visitor on the condition that transmission or omissions shall not be made the basis "
+    "for any claim demand or cause for action. The information and data was obtained from sources believed to be "
+    "reliable but accuracy is not guaranteed. Your use of CFE data is subject to the Terms and Conditions of CBOE's Websites.")
 DESIGN = {"entry_days":45, "exit_days":15, "endpoint_tolerance_days":4,
           "central_cost_points":0.10, "stress_cost_points":0.25,
           "multiplier_usd_per_point":1000, "bootstrap_draws":2000, "bootstrap_seed":41011}
@@ -50,8 +55,8 @@ class _JobDeadline(BaseException):
 
 def validate_manifest(manifest, contract):
     files = manifest["files"]
-    if (manifest["experiment_id"] != EXPERIMENT or contract.get("claim_ceiling") != "PROMOTE_EXPRESSION"
-            or contract.get("experiment_id", EXPERIMENT) != EXPERIMENT
+    if (manifest["experiment_id"] not in (EXPERIMENT, READER_EXPERIMENT) or contract.get("claim_ceiling") != "PROMOTE_EXPRESSION"
+            or contract.get("experiment_id", manifest["experiment_id"]) != manifest["experiment_id"]
             or contract.get("design") != DESIGN or len(files) != 36
             or [f["contract"] for f in files] != NAMES):
         raise SourceError("Frozen expression, source order or complete population changed")
@@ -78,8 +83,16 @@ def _verified(f, body):
         raise SourceError("Pinned payload size or SHA256 mismatch")
 
 
-def _endpoints(f, body):
+def _endpoints(f, body, allow_notice=False):
     reader = csv.DictReader(io.StringIO(body.decode("utf-8-sig")), strict=True)
+    if allow_notice and reader.fieldnames == [CFE_NOTICE]:
+        for _ in range(4):  # One exact notice, at most three blank rows, then the header.
+            header = next(reader.reader, None)
+            if header:
+                reader.fieldnames = header
+                break
+        else:
+            raise SourceError("Standard notice lacks header within five-row bound")
     if (not reader.fieldnames or len(reader.fieldnames) != len(set(reader.fieldnames))
             or not {"Trade Date", "Settle"} <= set(reader.fieldnames)):
         raise SourceError("Required CSV date/settlement schema missing or ambiguous")
@@ -115,8 +128,8 @@ def _endpoints(f, body):
     return selected
 
 
-def _park(reason):
-    return {"experiment_id":EXPERIMENT, "label":"EXPLORATORY", "decision":"PARK_DATA",
+def _park(reason, experiment_id=EXPERIMENT):
+    return {"experiment_id":experiment_id, "label":"EXPLORATORY", "decision":"PARK_DATA",
             "typed_verdict":"PARK_DATA", "economics_computed":False, "failed_criteria":[reason],
             "adequacy_passed":False, "red_team":{"executed":False, "passed":False},
             "claim_ceiling":"PROMOTE_EXPRESSION", "prior_exposures":"PRIVATE_UNKNOWN"}
@@ -148,7 +161,7 @@ def calculate(manifest, raw_by_contract, contract):
             _verified(f, raw_by_contract[f["contract"]])
         gross, trades, last_exit = [], [], None
         for f in files:
-            (entry, buy), (exit_, cover) = _endpoints(f, raw_by_contract[f["contract"]])
+            (entry, buy), (exit_, cover) = _endpoints(f, raw_by_contract[f["contract"]], manifest["experiment_id"] == READER_EXPERIMENT)
             if last_exit is not None and entry <= last_exit:
                 raise SourceError("Overlapping constant-contract exposures")
             last_exit = exit_
@@ -183,7 +196,7 @@ def calculate(manifest, raw_by_contract, contract):
             lower = int(index)
             return draws[lower]+(draws[min(lower+1, len(draws)-1)]-draws[lower])*(index-lower)
         interval = [quantile(.025), quantile(.975)]
-        result = {"experiment_id":EXPERIMENT, "label":"EXPLORATORY", "decision":decision,
+        result = {"experiment_id":manifest["experiment_id"], "label":"EXPLORATORY", "decision":decision,
             "typed_verdict":decision, "primary_decision":primary, "economics_computed":True,
             "adequacy_passed":True, "red_team":adversary,
             "claim_ceiling":"PROMOTE_EXPRESSION", "observations":{"trades":36, "calendar_year_clusters":9},
@@ -203,7 +216,7 @@ def calculate(manifest, raw_by_contract, contract):
         json.dumps(result, allow_nan=False)  # Derived USD/totals must also remain finite.
         return result
     except (SourceError, KeyError, TypeError, ValueError, ArithmeticError, csv.Error, UnicodeError) as exc:
-        return _park(str(exc) if isinstance(exc, SourceError) else "Invalid frozen source or input schema")
+        return _park(str(exc) if isinstance(exc, SourceError) else "Invalid frozen source or input schema", manifest.get("experiment_id", EXPERIMENT))
 
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -245,7 +258,7 @@ def _run(manifest, contract, cache_dir):
         directory = Path(cache_dir)
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)
         os.chmod(directory, 0o700)
-        result_path = directory/(EXPERIMENT+".result.json")
+        result_path = directory/(manifest["experiment_id"]+".result.json")
         fingerprint = hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest()
         if result_path.exists():
             saved = json.loads(result_path.read_text())
@@ -260,21 +273,29 @@ def _run(manifest, contract, cache_dir):
             if remaining <= 0:
                 raise SourceError("Whole-job wall ceiling")
             if path.exists():
+                repair = False
                 if intent.exists() or receipt.exists():
                     if not receipt.exists():
                         raise SourceError("Prior intent has no completed receipt; no retry")
                     prior = json.loads(receipt.read_text())
-                    if prior.get("error") is not None or prior.get("status") != 200:
+                    repair = (manifest["experiment_id"] == READER_EXPERIMENT and prior.get("status") == 200
+                        and prior.get("error") == "Required CSV date/settlement schema missing or ambiguous"
+                        and prior.get("sha256") == f["sha256"] and prior.get("payload_bytes") == f["payload_bytes"])
+                    if (prior.get("error") is not None and not repair) or prior.get("status") != 200:
                         raise SourceError("Prior failed receipt cannot be reused; no retry")
                 with path.open("rb") as cached:
                     body = cached.read(MAX_FILE)
                 total += len(body)
                 _verified(f, body)
                 record = {"contract":name, "reused":True, "payload_bytes":len(body), "sha256":f["sha256"]}
+                if repair:
+                    if next(csv.reader(io.StringIO(body.decode("utf-8-sig")), strict=True), None) != [CFE_NOTICE]:
+                        raise SourceError("Prior format failure lacks exact authorized standard notice")
+                    record["qualification_repair"] = {"from":EXPERIMENT, "cause":prior["error"]}
             else:
                 if intent.exists() or receipt.exists():
                     raise SourceError("Prior attempt lacks complete pinned cache; no retry")
-                _private(intent, json.dumps({**f, "experiment_id":EXPERIMENT, "retries":0}).encode())
+                _private(intent, json.dumps({**f, "experiment_id":manifest["experiment_id"], "retries":0}).encode())
                 body, record = b"", {"contract":name, "url":f["url"], "status":None, "reused":False, "error":None}
                 _private(path, b"")
                 job_expired = False
@@ -294,7 +315,7 @@ def _run(manifest, contract, cache_dir):
                                 with path.open("ab") as partial:
                                     partial.write(chunk)
                             _verified(f, body)
-                            _endpoints(f, body)
+                            _endpoints(f, body, manifest["experiment_id"] == READER_EXPERIMENT)
                             record["qa_passed"] = True
                 except _JobDeadline:
                     job_expired = True
@@ -312,7 +333,7 @@ def _run(manifest, contract, cache_dir):
                         total += len(body)
             if total > MAX_TOTAL:
                 raise SourceError("Total byte ceiling")
-            _endpoints(f, body)  # Source QA only; stop before acquiring another bad file.
+            _endpoints(f, body, manifest["experiment_id"] == READER_EXPERIMENT)  # Source QA only.
             raw[name] = body
             if record["reused"]:
                 receipts.append(record)
@@ -322,18 +343,18 @@ def _run(manifest, contract, cache_dir):
         with _budget(remaining):
             result = calculate(manifest, raw, contract)
     except (SourceError, KeyError, TypeError, ValueError, ArithmeticError, csv.Error, UnicodeError, OSError) as exc:
-        result = _park(str(exc) if isinstance(exc, SourceError) else "Frozen source acquisition failed")
+        result = _park(str(exc) if isinstance(exc, SourceError) else "Frozen source acquisition failed", manifest.get("experiment_id", EXPERIMENT))
     result["acquisition"] = {"receipts":receipts, "payload_bytes":total,
                              "paid_usd":0, "wall_seconds":time.monotonic()-started, "raw_cache_private":True}
     if result_path is not None and not result_path.exists():
         result["manifest_sha256"] = fingerprint
         encoded = json.dumps(result, allow_nan=False).encode()
         if len(encoded) > 65536:
-            return _park("Private result exceeds metadata reserve")
+            return _park("Private result exceeds metadata reserve", manifest["experiment_id"])
         try:
             _private(result_path, encoded)
         except OSError:
-            return _park("Private result persistence failed")
+            return _park("Private result persistence failed", manifest["experiment_id"])
     return result
 
 
@@ -343,4 +364,4 @@ def run(manifest, contract, cache_dir):
         with _budget(MAX_JOB, job=True):
             return _run(manifest, contract, cache_dir)
     except (_JobDeadline, SourceError, ValueError, OSError):
-        return _park("Whole-job deadline or local execution environment failure")
+        return _park("Whole-job deadline or local execution environment failure", manifest.get("experiment_id", EXPERIMENT))

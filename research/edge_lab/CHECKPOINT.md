@@ -1,6 +1,6 @@
 # Checkpoint — intégration Discovery V4.2
 
-STATUS = READY_FIRST_ECONOMIC_TEST
+STATUS = READY_VERSIONED_SOURCE_READER_REPAIR
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
@@ -10,7 +10,9 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - Tests locaux162PASS ; Site34testsPASS+buildESM. Contrôle visuel navigateur NON VÉRIFIÉ. Tokens/facture/contexte total NON MESURÉS ; aucun budget Owner chiffré inventé.
 - Même Site privé propriétaire, nouvelle UI préparée ; écriture GitHub non installée dans ce Site, contrôle ouvre réellement CONTROL GitHub. Aucun faux succès pause.
 - Même automatisation6ac978ecda1081918fba4d76dee437f4 temporairement désactivée, outil confirmé ; réactiver le promptV4.2 après résultat/exposition/push. Ne pas créer une autre boucle.
-- NEXT : publier ces contrats/code, CASclaim, puis une seule exécution v1 au cache privé ; publier le résultat exact, déployer mêmeSite et vérifier état natif. CAS perdu/pause => arrêt sans calcul/retry.
+- V1closec4b5dbd :PARK_DATA avantpayoff,0.585swall/0.0336sCPU/41328octets,0USD. U2013 exactavisCFE avantheaderligne2, pas problème de données économiques. V2-reader liépré-déclaré :mêmes36sources/règles/coûts/seuils ; lecteur accepte cet avis exact, aucun nouveau filtre économique. Réutilise3caches pinnés ; échecancien et expositions conservés.165testsPASS/CIinitiale38221684791success.
+- Site1a3ce21 déployé appgdep_6acc963200788191b75d31b99cec6ef8 SUCCESS ; lecture nativefraîcheàHEADc4b5dbd (Discoveryidle/V3recovery), mêmeaudience/URL.
+- NEXT :publierfreezev2/CASclaim, puis seuleexécutionv2 surcacheexistant, enregistrerrésultat typé et réactivermêmeautomatisationV4.2. CAS perdu/pause =>arrêt sanscalcul/retry.
 
 Les sections suivantes sont historiques et conservées.
 

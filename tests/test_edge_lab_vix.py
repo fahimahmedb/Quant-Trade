@@ -398,6 +398,67 @@ class VixTest(unittest.TestCase):
         self.assertEqual(result['decision'],'PARK_DATA')
         self.assertFalse(result['economics_computed'])
 
+    def test_v2_reader_exact_notice_with_at_most_three_blanks_preserves_expression(self):
+        for blanks in (0,3):
+            m, raw = fixture()
+            baseline = vix.calculate(m,raw,CONTRACT)
+            raw['U2013'] = (vix.CFE_NOTICE+'\n'+'\n'*blanks).encode()+raw['U2013']
+            repin(m['files'][2],raw['U2013'])
+            self.assertEqual(vix.calculate(m,raw,CONTRACT)['decision'],'PARK_DATA')
+            m['experiment_id'] = vix.READER_EXPERIMENT
+            contract = {**CONTRACT,'experiment_id':vix.READER_EXPERIMENT}
+            result = vix.calculate(m,raw,contract)
+            self.assertEqual(result['experiment_id'],vix.READER_EXPERIMENT)
+            for key in ('trades','summary','unit_economics','fixed_block_central_mean_points','adversary'):
+                self.assertEqual(result[key],baseline[key])
+
+    def test_v2_unknown_repeated_late_or_after_header_notice_is_not_skipped(self):
+        for prefix in ('Unknown notice\n', vix.CFE_NOTICE+'\n'+vix.CFE_NOTICE+'\n',vix.CFE_NOTICE+'\n'+'\n'*4):
+            m, raw = fixture()
+            m['experiment_id'] = vix.READER_EXPERIMENT
+            raw['U2013'] = prefix.encode()+raw['U2013']
+            repin(m['files'][2],raw['U2013'])
+            result = vix.calculate(m,raw,{**CONTRACT,'experiment_id':vix.READER_EXPERIMENT})
+            self.assertEqual(result['decision'],'PARK_DATA')
+            self.assertFalse(result['economics_computed'])
+        m, raw = fixture()
+        m['experiment_id'] = vix.READER_EXPERIMENT
+        raw['U2013'] += (vix.CFE_NOTICE+'\n').encode()
+        repin(m['files'][2],raw['U2013'])
+        self.assertEqual(vix.calculate(m,raw,CONTRACT)['decision'],'PARK_DATA')
+
+    def test_v2_reuses_only_exact_pinned_format_failure_and_preserves_v1_terminal(self):
+        m, raw = fixture()
+        raw['U2013'] = (vix.CFE_NOTICE+'\n').encode()+raw['U2013']
+        repin(m['files'][2],raw['U2013'])
+        opener = Opener(m,raw)
+        with tempfile.TemporaryDirectory() as tmp, patch.object(vix.urllib.request,'build_opener',return_value=opener):
+            old = vix.run(m,CONTRACT,tmp)
+            self.assertEqual(old['decision'],'PARK_DATA')
+            old_result = (Path(tmp)/(vix.EXPERIMENT+'.result.json')).read_bytes()
+            old_receipt = (Path(tmp)/'U2013.receipt.json').read_bytes()
+            self.assertEqual(len(opener.calls),3)
+            new_manifest = copy.deepcopy(m)
+            new_manifest['experiment_id'] = vix.READER_EXPERIMENT
+            new_contract = {**CONTRACT,'experiment_id':vix.READER_EXPERIMENT}
+            result = vix.run(new_manifest,new_contract,tmp)
+            self.assertEqual(result['decision'],'PROMOTE_EXPRESSION')
+            self.assertEqual(result['experiment_id'],vix.READER_EXPERIMENT)
+            self.assertEqual([c[0] for c in opener.calls],vix.NAMES)
+            self.assertTrue(result['acquisition']['receipts'][2]['qualification_repair'])
+            self.assertEqual((Path(tmp)/'U2013.receipt.json').read_bytes(),old_receipt)
+            self.assertEqual((Path(tmp)/(vix.EXPERIMENT+'.result.json')).read_bytes(),old_result)
+            self.assertEqual(vix.run(m,CONTRACT,tmp),old)
+            self.assertEqual(len(opener.calls),36)
+        for cause in ('TimeoutError','HTTPError','Pinned payload size or SHA256 mismatch'):
+            with tempfile.TemporaryDirectory() as tmp, patch.object(vix.urllib.request,'build_opener') as network:
+                f = m['files'][0]
+                (Path(tmp)/'H2013.csv').write_bytes(raw['H2013'])
+                (Path(tmp)/'H2013.receipt.json').write_text(json.dumps({'status':200,'error':cause,'sha256':f['sha256'],'payload_bytes':f['payload_bytes']}))
+                blocked = vix.run(new_manifest,new_contract,tmp)
+            self.assertEqual(blocked['decision'],'PARK_DATA')
+            network.return_value.open.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()
