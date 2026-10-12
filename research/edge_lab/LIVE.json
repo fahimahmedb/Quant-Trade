@@ -1,12 +1,12 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T21:08:13.554442+00:00",
-  "state_updated_at": "2026-10-12T21:08:13.472522+00:00",
-  "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
+  "generated_at": "2026-10-12T21:10:21.056505+00:00",
+  "state_updated_at": "2026-10-12T21:10:20.958500+00:00",
+  "operational_status": "READY_TO_QUALIFY",
   "paused": false,
   "scheduler": {
     "enabled": true,
-    "last_tick_at": "2026-10-12T21:08:13.449749+00:00",
+    "last_tick_at": "2026-10-12T21:10:20.920182+00:00",
     "last_tick_actor": "github-actions-metadata",
     "last_tick_status": "IDLE",
     "configured_at": "2026-10-11T17:35:42.938259+00:00"
@@ -67,7 +67,7 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "IDLE_NO_ADMISSIBLE_WORK",
+    "status": "READY_TO_QUALIFY",
     "paused": false,
     "groups": {
       "ready": [],
@@ -1516,13 +1516,19 @@
     },
     "active_lease": null,
     "next": null,
-    "next_work": null,
+    "next_work": {
+      "economic_access_authorized": false,
+      "family": "us-cef-periodic-nav-tender",
+      "kind": "LOCATE_SAVED_DATA",
+      "question": "Can issuer NAV history and public daily raw OHLC be documented without economic values? Max 2 primary route checks.",
+      "status": "OPEN"
+    },
     "economic_access_authorized": false,
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "f679ecf8ae1636a310c6db1400c47c9c0ed2d5e9",
-    "generated_at": "2026-10-12T21:08:13.554442+00:00",
+    "source_head": "9774898f35026472417cc54001721844c22caa11",
+    "generated_at": "2026-10-12T21:10:21.056505+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
