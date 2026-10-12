@@ -1,12 +1,12 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T13:36:04.724372+00:00",
-  "state_updated_at": "2026-10-12T13:14:50.693417+00:00",
+  "generated_at": "2026-10-12T19:26:24.348555+00:00",
+  "state_updated_at": "2026-10-12T19:26:24.268566+00:00",
   "operational_status": "READY_TO_QUALIFY",
   "paused": false,
   "scheduler": {
     "enabled": true,
-    "last_tick_at": "2026-10-12T13:14:50.670312+00:00",
+    "last_tick_at": "2026-10-12T19:26:24.246029+00:00",
     "last_tick_actor": "github-actions-metadata",
     "last_tick_status": "IDLE",
     "configured_at": "2026-10-11T17:35:42.938259+00:00"
@@ -1517,25 +1517,37 @@
     "active_lease": null,
     "next": null,
     "next_work": {
-      "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
+      "bounds": {
+        "completion_results": false,
+        "economic_access_authorized": false,
+        "max_minutes": 20,
+        "max_primary_document_metadata_requests": 4,
+        "new_census": false,
+        "price_payloads": false,
+        "retries": 0
+      },
       "constraints": [
-        "No retry offailedH2022 URL",
-        "No replay/re-tuning the completed36-contract expression",
-        "No pristineholdoutclaim or implicit V3admission",
-        "95%descriptivegrossCI includeszero and worsttrade-14.6points",
-        "L2must predeclare independentpurpose,data,capital/risk/friction bounds and onefixedtest before economicaccess"
+        "Use cached primary interpretations and accession 0001493152-25-028828; do not repeat the L0 search.",
+        "Resolve 2026/2006 expiration contradiction against original offer/amendments; date inside document is not availability time.",
+        "One offered-price example only; public search/result snippets remain exposed, PRIVATE_UNKNOWN unchanged.",
+        "No new look until linked fixed declaration and CAS claim; no broker/account/trading action.",
+        "VX, Form4 reuse, TEC10 and daily Treasury access decisions stay parked; policy not_before unchanged."
       ],
-      "family": "cfe-vix-term-premium",
-      "kind": "QUALIFY_L2",
-      "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
-      "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?"
+      "decision_use": "Prepare a linked L1 declaration only if these prerequisites are coherent; otherwise PARK_DATA this implementation without choosing another offer by outcome.",
+      "family": "us-issuer-oddlot-priority",
+      "kind": "LOCATE_SAVED_DATA",
+      "level": "L0_TO_L1_DESIGN",
+      "qualification": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
+      "qualification_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
+      "question": "Can the original Anebulo SC TO-I/offer/amendment documents and public clock, plus one authorized public EOD-price route, support a fixed one-case L1 ceiling without looking at prices or completion outcomes?",
+      "status": "OPEN"
     },
     "economic_access_authorized": false,
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "c373dc1a8751fb61d4483c37e4e249d52dcd6e74",
-    "generated_at": "2026-10-12T13:36:04.724372+00:00",
+    "source_head": "8736c3b816aca9cc82419ce5a14990ade193ca1f",
+    "generated_at": "2026-10-12T19:26:24.348555+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
