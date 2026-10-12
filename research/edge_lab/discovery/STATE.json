@@ -1,4 +1,14 @@
 {
+  "automation": {
+    "configured_at": "2026-10-12T08:35:13.025489+00:00",
+    "current_prompt_run_observed": false,
+    "enabled": true,
+    "id": "6ac978ecda1081918fba4d76dee437f4",
+    "last_backend_run_observed": "2026-10-11T22:13:16.680782+00:00",
+    "next_run_time": null,
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261011T221500\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "unattended_independence_verified": false
+  },
   "closed_families": [
     "f1-crypto-carry",
     "daily-etf-b2-b4",
@@ -131,6 +141,23 @@
       },
       "previous": "cac547f35d6aa5c40cf6840fe1c5dca1771c56d38f1006d3a82fafb7fa32a848",
       "sequence": 9
+    },
+    {
+      "at": "2026-10-12T08:36:49.630211+00:00",
+      "hash": "ec0926d69b9102f73a97e4a25f376973e1752c30a427f17eea70a2263b337320",
+      "kind": "AUTOMATION_CONFIGURATION_CONFIRMED",
+      "payload": {
+        "configured_at": "2026-10-12T08:35:13.025489+00:00",
+        "current_prompt_run_observed": false,
+        "enabled": true,
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "last_backend_run_observed": "2026-10-11T22:13:16.680782+00:00",
+        "next_run_time": null,
+        "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261011T221500\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "unattended_independence_verified": false
+      },
+      "previous": "cb207356393c40aea7813b4cf76d56350284336803f5ee6eaba3cb2157f4048b",
+      "sequence": 10
     }
   ],
   "exposure_ledger": [
@@ -176,7 +203,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "d8d5752b509b9720f9f85e6038a28c24f6ead338e1a61dae6530eb9d734ddf1b",
+  "integrity": "84a5863b018297e1009f699610e6e0c87d372a8983f6e68ecc5d447a359f6004",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
