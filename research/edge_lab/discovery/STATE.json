@@ -487,6 +487,23 @@
       },
       "previous": "fedb153af49a8638240e6e0377bc51d17fb1467c125487bddd7ff34a8375dde3",
       "sequence": 24
+    },
+    {
+      "at": "2026-10-12T21:29:54.754450+00:00",
+      "hash": "b7dcbc6f7120d5df08dc0ac06f4848e0b42ef4b118e9423614b80894f4168190",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-fda-recall-disclosure-diffusion",
+        "head_observed": "155087b32f3e0f1de7704a4692e34fce2bfa0bb3",
+        "proof": "qualifications/us-fda-recall-disclosure-diffusion-l0-2026-10-12.json",
+        "proof_sha256": "58112579371d4f324c97cd5448b2e74eeb0e92af763db8f102a3aff1e4947b0d"
+      },
+      "previous": "8808a7d451b69860fe50f8c3930cba63e689cae9f0dae739f052f5a6cbee74b9",
+      "sequence": 25
     }
   ],
   "exposure_ledger": [
@@ -532,7 +549,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "95b411171c09858a24bb9e5ba462d61620a5ee43344a7c617838f8163078d6b4",
+  "integrity": "a1799277937070182050f1721c8f9409cfd713976007a855a9c8b7c9af6377fd",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -593,9 +610,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-fda-recall-disclosure-diffusion",
+    "family": "russell-deletion-forced-flow",
     "kind": "L0_MECHANISM",
-    "question": "Does openFDA enforcement metadata preserve first-public availability distinct from recall initiation/report dates?",
+    "question": "Can a fixed price-blind small basket from the official preliminary deletion list support one cheap rebalance sell-pressure/rebound test?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2033,5 +2050,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:26:59.793932+00:00"
+  "updated_at": "2026-10-12T21:29:54.754486+00:00"
 }
