@@ -1,0 +1,106 @@
+{
+  "ECONOMIC_SIGNIFICANCE": "None measured; avoid redundant holiday polls.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "No post-T0 metadata candidate"
+  ],
+  "FAMILY_STATUS": "All five protocols unchanged; waiting for genuinely post-T0 filings.",
+  "LESSON": "EDGAR accepts no filings on Columbus Day 2026-10-12; today cannot create an accepted-clock event under these rails.",
+  "NEXT_DECISION": "On 2026-10-13 after EDGAR opens, refresh remote/control/claims then bounded current-feed scan; today triage a CEF periodic NAV-tender mechanism without prices.",
+  "POWER_LIMITATION": "No prospective case; no family inference.",
+  "RESULT": "NO_POST_T0_METADATA_CANDIDATE_OBSERVED",
+  "UNCERTAINTY": "Bounded current feeds, not a census; Atom updated is screening metadata, exact accepted would require the accession detail before eligibility. UTC offsets normalized.",
+  "calendar": {
+    "bytes": 67429,
+    "fact": "Official 2026 holiday table lists Monday October 12; EDGAR will not receive/process/accept filings.",
+    "next_filing_day": "2026-10-13",
+    "sha256": "031cad3dadc356e0fc0d6d8e8872f4e8e4ce39b0c92bf403f7761f887ffcaa8c",
+    "status": 200,
+    "url": "https://www.sec.gov/submit-filings/filer-support-resources/edgar-calendar"
+  },
+  "economic_claim": null,
+  "economic_payload_access": false,
+  "feeds": [
+    {
+      "bytes": 2816,
+      "entry_count": 4,
+      "form_filter": "SC TO-I",
+      "newest_clock": "2026-10-09T16:24:50-04:00",
+      "oldest_clock": "2026-10-08T08:24:31-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:49.694504+00:00",
+      "sha256": "36cbc18705c95d2e857c8a895d9242b1ddada5fdba0f40a4c6897632035a3a9a",
+      "status": 200,
+      "t0_utc": "2026-10-12T20:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=SC+TO-I&count=100&output=atom"
+    },
+    {
+      "bytes": 74724,
+      "entry_count": 100,
+      "form_filter": "8-K",
+      "newest_clock": "2026-10-09T17:30:15-04:00",
+      "oldest_clock": "2026-10-09T16:05:17-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:49.695377+00:00",
+      "sha256": "d7e7d4d8f634df0c182002326e80a1f19db7ef8fb8c386f42fd5cffc30aba437",
+      "status": 200,
+      "t0_utc": "2026-10-12T21:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=8-K&count=100&output=atom"
+    },
+    {
+      "bytes": 15845,
+      "entry_count": 27,
+      "form_filter": "DEF 14A",
+      "newest_clock": "2026-10-09T17:26:13-04:00",
+      "oldest_clock": "2026-10-08T08:16:49-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:49.695859+00:00",
+      "sha256": "ad8dc6790c2d151dbd16bf19b0be522b886f53a0efb0e88579d7720b07abfa9d",
+      "status": 200,
+      "t0_utc": "2026-10-12T21:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=DEF+14A&count=100&output=atom"
+    },
+    {
+      "bytes": 1062,
+      "entry_count": 1,
+      "form_filter": "DEFM14A",
+      "newest_clock": "2026-10-08T16:16:26-04:00",
+      "oldest_clock": "2026-10-08T16:16:26-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:51.371472+00:00",
+      "sha256": "04abe85444637ca6a8bffb343fa16d351647fdd39033d51aa52e5d6952f7b243",
+      "status": 200,
+      "t0_utc": "2026-10-12T21:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=DEFM14A&count=100&output=atom"
+    },
+    {
+      "bytes": 58115,
+      "entry_count": 100,
+      "form_filter": "497",
+      "newest_clock": "2026-10-09T17:24:04-04:00",
+      "oldest_clock": "2026-10-09T14:16:28-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:51.413629+00:00",
+      "sha256": "530edf9b8bf4c500fec97ec9d84005824e0a4ce998fb48360240976534650d93",
+      "status": 200,
+      "t0_utc": "2026-10-12T21:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=497&count=100&output=atom"
+    },
+    {
+      "bytes": 27406,
+      "entry_count": 48,
+      "form_filter": "497K",
+      "newest_clock": "2026-10-09T17:02:07-04:00",
+      "oldest_clock": "2026-10-08T08:00:55-04:00",
+      "post_t0_metadata_candidates": [],
+      "received_at": "2026-10-12T21:05:51.417001+00:00",
+      "sha256": "00de0d3fbd5f6fece57e412ba089b4b8c8ac0d22a0c83fb1ab1d65577e530615",
+      "status": 200,
+      "t0_utc": "2026-10-12T21:00:00+00:00",
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=497K&count=100&output=atom"
+    }
+  ],
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "real_capital_authorized": false
+}
