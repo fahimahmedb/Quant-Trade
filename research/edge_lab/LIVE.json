@@ -1,12 +1,12 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T20:29:09.113360+00:00",
-  "state_updated_at": "2026-10-12T20:29:09.015609+00:00",
+  "generated_at": "2026-10-12T20:30:32.336903+00:00",
+  "state_updated_at": "2026-10-12T20:30:32.246668+00:00",
   "operational_status": "READY_TO_QUALIFY",
   "paused": false,
   "scheduler": {
     "enabled": true,
-    "last_tick_at": "2026-10-12T20:29:08.987314+00:00",
+    "last_tick_at": "2026-10-12T20:30:32.220215+00:00",
     "last_tick_actor": "github-actions-metadata",
     "last_tick_status": "IDLE",
     "configured_at": "2026-10-11T17:35:42.938259+00:00"
@@ -1518,36 +1518,46 @@
     "next": null,
     "next_work": {
       "bounds": {
-        "completion_results": false,
         "economic_access_authorized": false,
-        "max_minutes": 20,
-        "max_primary_document_metadata_requests": 4,
-        "new_census": false,
+        "max_minutes": 15,
+        "max_primary_metadata_requests": 3,
+        "paid_usd": 0,
+        "position_rows": false,
         "price_payloads": false,
         "retries": 0
       },
       "constraints": [
-        "Use cached primary interpretations and accession 0001493152-25-028828; do not repeat the L0 search.",
-        "Resolve 2026/2006 expiration contradiction against original offer/amendments; date inside document is not availability time.",
-        "One offered-price example only; public search/result snippets remain exposed, PRIVATE_UNKNOWN unchanged.",
-        "No new look until linked fixed declaration and CAS claim; no broker/account/trading action.",
-        "VX, Form4 reuse, TEC10 and daily Treasury access decisions stay parked; policy not_before unchanged."
+        "No Anebulo or historically exposed issuer as a fresh case.",
+        "Reuse CFTC/EIA qualification; do not repeat their source probes.",
+        "COT as-of Tuesday is not public Tuesday; historical release dates need proof.",
+        "Cash marker is not futures total return; no spot, ETF or commodity substitution.",
+        "If no distinct route in this bounded follow-up, preserve PARK_DATA and select a different L0.",
+        "Existing frozen protocols, closed families, exposures and private UNKNOWN remain unchanged."
       ],
-      "decision_use": "Prepare a linked L1 declaration only if these prerequisites are coherent; otherwise PARK_DATA this implementation without choosing another offer by outcome.",
-      "family": "us-issuer-oddlot-priority",
+      "decision_use": "Retain PARK_DATA unless a distinct complete enough zero-cost futures route is documented; if qualified, prepare a linked fixed L1 before any price/position access. No new economic execution is authorized.",
+      "family": "wti-producer-hedging-pressure",
       "kind": "LOCATE_SAVED_DATA",
-      "level": "L0_TO_L1_DESIGN",
-      "qualification": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
-      "qualification_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
-      "question": "Can the original Anebulo SC TO-I/offer/amendment documents and public clock, plus one authorized public EOD-price route, support a fixed one-case L1 ceiling without looking at prices or completion outcomes?",
+      "level": "L0",
+      "priority_precondition": {
+        "last_check_at": "2026-10-12T20:21:50.536135Z",
+        "last_check_completeness": "NOT_ASSERTED",
+        "last_check_result": "NO_POST_T0_CANDIDATE_OBSERVED_IN_BOUNDED_FEED",
+        "prospective_t0": "2026-10-12T20:00:00Z",
+        "protocol": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "rule": "Only first chronologically qualifying non-exposed issuer; publish claim/selection evidence before prices; stop unless protocol explicitly permits continuation.",
+        "selected_event": null
+      },
+      "qualification": "qualifications/wti-producer-hedging-pressure-l0-2026-10-12.md",
+      "qualification_sha256": "814284eaf2041f915432528602e713f4e47cca9c37ab3dad157b832f09de7ad9",
+      "question": "FIRST obey the Owner odd-lot prospective protocol check. If no admissible event, can ONE freely accessible WTI futures settlement/contract-calendar route support a fixed futures holding/roll return, instead of an invalid spot-only test?",
       "status": "OPEN"
     },
     "economic_access_authorized": false,
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "6cd371d9ccf6073f6578b693bb9c5023cc9b9a68",
-    "generated_at": "2026-10-12T20:29:09.113360+00:00",
+    "source_head": "1a6c8691ced923260bdaeed3eae981e57d362210",
+    "generated_at": "2026-10-12T20:30:32.336903+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
