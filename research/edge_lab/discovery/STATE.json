@@ -334,6 +334,23 @@
       },
       "previous": "ab553be26dd0f91dd81df33583a8f6cf2965a43810f92b8186aa9343d8545441",
       "sequence": 15
+    },
+    {
+      "at": "2026-10-12T21:10:04.355238+00:00",
+      "hash": "08f95afeec3f6f6f87b630a4c0dc3f047737701c482ac9906af4e7e350523097",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "L1_NOW",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-cef-periodic-nav-tender",
+        "head_observed": "e83c5ee0b889a38b410a2a9ca949c6e9d692e3c6",
+        "proof": "qualifications/us-cef-periodic-nav-tender-l0-2026-10-12.json",
+        "proof_sha256": "81f2e1df83162f3aaba579fb40a1eec29925f907da96b1051b3357dce956bcda"
+      },
+      "previous": "c8231f102b18ac267a5a7b97b1f71d177f6a23cbf61d427b3b40468e5fc1f050",
+      "sequence": 16
     }
   ],
   "exposure_ledger": [
@@ -379,7 +396,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "95d733e0f20c6f89dd96a22f99e567252a86d757e0a8b71a1c07b4695623dacc",
+  "integrity": "c8b2a2bf9fedf2df58588f24cc4e31d1473dc63d9b3b9f1c7fd4f4b69c1a90ee",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -441,13 +458,8 @@
   "next": {
     "economic_access_authorized": false,
     "family": "us-cef-periodic-nav-tender",
-    "kind": "L0_MECHANISM",
-    "prospective_priority": {
-      "not_before": "2026-10-13T10:00:00Z",
-      "proof": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
-      "reason": "Official EDGAR holiday 2026-10-12"
-    },
-    "question": "Can a periodic limited CEF NAV tender provide a distinct conversion route for small secondary-market holders? No price/return access.",
+    "kind": "LOCATE_SAVED_DATA",
+    "question": "Can issuer NAV history and public daily raw OHLC be documented without economic values? Max 2 primary route checks.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1885,5 +1897,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:07:53.792310+00:00"
+  "updated_at": "2026-10-12T21:10:04.355273+00:00"
 }
