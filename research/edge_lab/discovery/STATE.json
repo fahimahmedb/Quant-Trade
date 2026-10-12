@@ -470,6 +470,23 @@
       },
       "previous": "fea14553f270a42338962172ffb3a4c8732b1855f2115ae4815d400e7f540241",
       "sequence": 23
+    },
+    {
+      "at": "2026-10-12T21:26:59.793897+00:00",
+      "hash": "8808a7d451b69860fe50f8c3930cba63e689cae9f0dae739f052f5a6cbee74b9",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-transferable-rights-forced-selling",
+        "head_observed": "e6666eb43cfcdb592c3e4e488ab915421501dd5f",
+        "proof": "qualifications/us-transferable-rights-forced-selling-l0-2026-10-12.json",
+        "proof_sha256": "928504df472232a34d826210c120950e1ead1b55f598f9893a848c01c92860a5"
+      },
+      "previous": "fedb153af49a8638240e6e0377bc51d17fb1467c125487bddd7ff34a8375dde3",
+      "sequence": 24
     }
   ],
   "exposure_ledger": [
@@ -515,7 +532,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "53764feeb5a0e18709a71668dc3bb607bf4bad9a491fd5e819abe0046f464228",
+  "integrity": "95b411171c09858a24bb9e5ba462d61620a5ee43344a7c617838f8163078d6b4",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -576,9 +593,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-transferable-rights-forced-selling",
+    "family": "us-fda-recall-disclosure-diffusion",
     "kind": "L0_MECHANISM",
-    "question": "Do transferable rights allow new buyers to take an expiring entitlement sold by holders unable to exercise, distinct from existing record-holder oversubscription?",
+    "question": "Does openFDA enforcement metadata preserve first-public availability distinct from recall initiation/report dates?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2016,5 +2033,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:23:51.225533+00:00"
+  "updated_at": "2026-10-12T21:26:59.793932+00:00"
 }
