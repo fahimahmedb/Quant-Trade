@@ -318,6 +318,22 @@
       },
       "previous": "1f877cf8a17a272c832a8f0bcc4ec03639108b8178e242ae9ee62905341de0ea",
       "sequence": 14
+    },
+    {
+      "at": "2026-10-12T21:07:53.792272+00:00",
+      "hash": "c8231f102b18ac267a5a7b97b1f71d177f6a23cbf61d427b3b40468e5fc1f050",
+      "kind": "DISCOVERY_PROSPECTIVE_METADATA_CHECK",
+      "payload": {
+        "actor": "codex-continuous",
+        "calendar_closed": true,
+        "decision": "NO_POST_T0_METADATA_CANDIDATE_OBSERVED",
+        "economic_execution": false,
+        "head_observed": "f93474335860f1041c98b635a32897770127cdb5",
+        "proof": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
+        "proof_sha256": "cad7e9d735507ab474d720c8b6b2bb630dbe566d47e2671fb4c15aa08baed96d"
+      },
+      "previous": "ab553be26dd0f91dd81df33583a8f6cf2965a43810f92b8186aa9343d8545441",
+      "sequence": 15
     }
   ],
   "exposure_ledger": [
@@ -363,7 +379,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "212057b9ab655eceadc9e6d2199a8e946e2eb8a6748fccd90d094e64fa3d6d83",
+  "integrity": "95d733e0f20c6f89dd96a22f99e567252a86d757e0a8b71a1c07b4695623dacc",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -423,39 +439,15 @@
     "mechanism_cluster_count": 9
   },
   "next": {
-    "bounds": {
-      "economic_access_authorized": false,
-      "max_minutes": 15,
-      "max_primary_metadata_requests": 3,
-      "paid_usd": 0,
-      "position_rows": false,
-      "price_payloads": false,
-      "retries": 0
+    "economic_access_authorized": false,
+    "family": "us-cef-periodic-nav-tender",
+    "kind": "L0_MECHANISM",
+    "prospective_priority": {
+      "not_before": "2026-10-13T10:00:00Z",
+      "proof": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
+      "reason": "Official EDGAR holiday 2026-10-12"
     },
-    "constraints": [
-      "No Anebulo or historically exposed issuer as a fresh case.",
-      "Reuse CFTC/EIA qualification; do not repeat their source probes.",
-      "COT as-of Tuesday is not public Tuesday; historical release dates need proof.",
-      "Cash marker is not futures total return; no spot, ETF or commodity substitution.",
-      "If no distinct route in this bounded follow-up, preserve PARK_DATA and select a different L0.",
-      "Existing frozen protocols, closed families, exposures and private UNKNOWN remain unchanged."
-    ],
-    "decision_use": "Retain PARK_DATA unless a distinct complete enough zero-cost futures route is documented; if qualified, prepare a linked fixed L1 before any price/position access. No new economic execution is authorized.",
-    "family": "wti-producer-hedging-pressure",
-    "kind": "LOCATE_SAVED_DATA",
-    "level": "L0",
-    "priority_precondition": {
-      "last_check_at": "2026-10-12T20:21:50.536135Z",
-      "last_check_completeness": "NOT_ASSERTED",
-      "last_check_result": "NO_POST_T0_CANDIDATE_OBSERVED_IN_BOUNDED_FEED",
-      "prospective_t0": "2026-10-12T20:00:00Z",
-      "protocol": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
-      "rule": "Only first chronologically qualifying non-exposed issuer; publish claim/selection evidence before prices; stop unless protocol explicitly permits continuation.",
-      "selected_event": null
-    },
-    "qualification": "qualifications/wti-producer-hedging-pressure-l0-2026-10-12.md",
-    "qualification_sha256": "814284eaf2041f915432528602e713f4e47cca9c37ab3dad157b832f09de7ad9",
-    "question": "FIRST obey the Owner odd-lot prospective protocol check. If no admissible event, can ONE freely accessible WTI futures settlement/contract-calendar route support a fixed futures holding/roll return, instead of an invalid spot-only test?",
+    "question": "Can a periodic limited CEF NAV tender provide a distinct conversion route for small secondary-market holders? No price/return access.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1893,5 +1885,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T20:30:12.571072+00:00"
+  "updated_at": "2026-10-12T21:07:53.792310+00:00"
 }
