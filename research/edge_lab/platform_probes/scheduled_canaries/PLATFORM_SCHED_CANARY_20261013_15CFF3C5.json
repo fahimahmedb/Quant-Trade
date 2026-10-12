@@ -1,0 +1,13 @@
+{
+  "canary": "PLATFORM_SCHED_CANARY_20261013_15CFF3C5",
+  "scheduled_runtime": true,
+  "executor": "ChatGPT scheduled automation",
+  "provenance_claim": "WRAPPED_PLATFORM_CANDIDATE",
+  "head_before": "8e990173276065ec41b0d2355571f4b7fc3d3787",
+  "github_read_succeeded": true,
+  "github_write_invoked": true,
+  "action_type": "GITHUB_CREATE_FILE",
+  "effect_proof": "SUCCESS_NO_SHA",
+  "human_intervention_after_arming": false,
+  "notes": "This canary proves scheduled trigger plus a real bounded GitHub effect only. It does not by itself prove live session identity, heartbeat, lease continuity, public streaming, or render ACK."
+}
