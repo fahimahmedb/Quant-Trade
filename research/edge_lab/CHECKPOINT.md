@@ -17,6 +17,8 @@ LIVE_TRADING_AUTHORIZED = FALSE
 - NEXT : qualifier une route récente complète autorisée et benchmark/risque/capital pourL2 ; ne pas rejouer36contrats ni H2022 refusée. Sans fait d’accès nouveau : PARK puis localiser le censusForm4 déjà produit. Aucun passage implicite àV3.
 - Reprise : CONTROL distant puis discovery-status et deltas ; pas de réaudit/relecture entière. Résultat partiel : discovery-reconcile ID authorized-receipt.json, même claim uniquement. Pause/CAS perdu/droits manquants/budget non mesuré avec plafond => arrêt. Aucun achat, capital/live ou Claude simulé.
 
+- Livraison finale confirmée : déploiement appgdep_6acc9c3d6aa48191930397a95e12c212 SUCCESS, source Site a1d0257. Lecture native fraîche au HEAD8f2a829 :1test économique, PROMOTE_EXPRESSION, automatisation enabled=true, nouveau passage non observé. Accès propriétaire privé conservé.
+
 Les sections suivantes sont historiques et conservées.
 
 # Checkpoint — Discovery V4
