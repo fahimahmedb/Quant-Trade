@@ -504,6 +504,70 @@
       },
       "previous": "8808a7d451b69860fe50f8c3930cba63e689cae9f0dae739f052f5a6cbee74b9",
       "sequence": 25
+    },
+    {
+      "at": "2026-10-12T21:31:30.887523+00:00",
+      "hash": "f30eb5a7c800adc2d604e957a6c4eb217241f4c796e86109ad2e699f65f0fae1",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_FALSIFICATION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "cost_observable": {
+          "browser_origin_bytes": null,
+          "document_opens": 3,
+          "global_bill": null,
+          "paid_usd": 0,
+          "search_queries": 2,
+          "tokens": null,
+          "web_tool_calls": 2
+        },
+        "decision": "KILL_EXPRESSION",
+        "decision_basis": "Documented eligibility contradiction; no return or fill estimate",
+        "economic_execution": false,
+        "existing_edgx_decision_preserved": {
+          "decision": "PARK_DATA",
+          "path": "qualifications/us-retail-liquidity-priority-l0-2026-10-12.json",
+          "sha256": "82e70bdbe2596669b23b4a5b71c00db258952f526c555c647e4dcb8321ca9e62"
+        },
+        "expression": "NYSE Retail Taker/Attested classification for orders originated by a trading algorithm solely on retail account ownership",
+        "family": "us-retail-liquidity-priority",
+        "head_observed": "5e8c61b8a01bc7f2ea3c5872487613e00da72a03",
+        "live_trading_authorized": false,
+        "next_snapshot_preserved": {
+          "economic_access_authorized": false,
+          "family": "russell-deletion-forced-flow",
+          "kind": "L0_MECHANISM",
+          "question": "Can a fixed price-blind small basket from the official preliminary deletion list support one cheap rebalance sell-pressure/rebound test?",
+          "status": "OPEN"
+        },
+        "proof": "qualifications/us-nyse-algorithmic-retail-access-l0-2026-10-12.md",
+        "proof_sha256": "a697f717b9f96e827b98d7c8d736c2fa5149dc4f3096c6775f0e6e41bd1a5978",
+        "prospective_check": {
+          "calendar_and_feed_receipt": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
+          "economic_claim": null,
+          "event_selected": null,
+          "new_sec_requests": 0,
+          "next_admission_not_before": "2026-10-13T10:00:00Z",
+          "ordering": "Each protocol T0 and exclusions; earliest EDGAR accepted across A-E then smaller CIK; E ticker tie rule retained",
+          "reused_calendar_and_feed_sha256": "cad7e9d735507ab474d720c8b6b2bb630dbe566d47e2671fb4c15aa08baed96d",
+          "valid_protocol_hashes": {
+            "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+            "disc-us-issuer-oddlot-priority-prospective-l1-v1.md": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+            "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+            "disc-us-reverse-split-round-up-prospective-l1-v2.md": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+            "disc-us-spac-redemption-floor-prospective-l1-v1.md": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42"
+          }
+        },
+        "public_selection_exposure": {
+          "independence_claim": "NONE",
+          "private_history": "UNKNOWN",
+          "scope": "NYSE program/membership rules; Nasdaq FAQ/search snippets, historical program-success claims and marketing/fee material; no quote/fill/NAV/payoff series"
+        },
+        "publication_parent": "4ca424b0fc62a6ba194ebbb3b3eeb899e464916c",
+        "qualification_id": "l0-nyse-algorithm-originated-retail-access-20261012",
+        "real_capital_authorized": false
+      },
+      "previous": "b7dcbc6f7120d5df08dc0ac06f4848e0b42ef4b118e9423614b80894f4168190",
+      "sequence": 26
     }
   ],
   "exposure_ledger": [
@@ -549,7 +613,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "a1799277937070182050f1721c8f9409cfd713976007a855a9c8b7c9af6377fd",
+  "integrity": "d1eca6273c834913e6a662d4fdb0e1283fcdb15d1aaa4b64b6f01ca726b013af",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -2050,5 +2114,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:29:54.754486+00:00"
+  "updated_at": "2026-10-12T21:31:30.886859+00:00"
 }

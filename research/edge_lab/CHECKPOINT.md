@@ -1,3 +1,15 @@
+# Current STATE / NEXT — 2026-10-12, prospective gate reused + one L0 falsifier
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- A–E valid clocks checked; B/C v1 stay invalid. The saved 21:06Z feed/calendar receipt establishes today's EDGAR holiday closure. No repeated SEC poll, selected event, claim, price/NAV/payout payload or new economic look. Original first-event ordering resumes after the existing October 13 10:00Z opening gate; exclusions unchanged.
+- One useful action: KILL_EXPRESSION for algorithm-originated NYSE Retail Taker/Attested access justified merely by retail account ownership. Current primary NYSE documentation excludes that order origin. This is an eligibility falsifier, not a measured return rejection or a claim against legitimate human-originated retail benefits.
+- Proof: [NYSE access decision, source limits and next](discovery/qualifications/us-nyse-algorithmic-retail-access-l0-2026-10-12.md). The concurrently saved EDGX PARK_DATA decision remains unchanged.
+- NEXT: retain the newest Discovery STATE question selected by the concurrent research, with A–E admission taking precedence once due. No additional action in this pass; do not reopen WTI or the rejected NYSE access premise without genuinely new primary evidence.
+- Economic counters, queue/results, prior exposure ledger, closed families and next question preserved; documentary exposure appended to existing hash-chained events. Paid spend 0; tokens/global bill unknown. No infrastructure, dashboard or automation change.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-12, 20:21 UTC prospective scan + one L0
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
