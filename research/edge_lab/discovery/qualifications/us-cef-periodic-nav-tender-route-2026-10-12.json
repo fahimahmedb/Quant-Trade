@@ -1,0 +1,43 @@
+{
+  "ECONOMIC_SIGNIFICANCE": "No computable allocation-aware payoff yet.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Issuer fund-specific NAV/history route unresolved: EVN path redirects to homepage."
+  ],
+  "FAMILY_STATUS": "PARK_DATA",
+  "LESSON": "HTTP 200 plus generic fund homepage is not a dated NAV data route. Do not assume 100% acceptance or replace issuer after prices.",
+  "NEXT_DECISION": "A genuinely documented issuer NAV/history endpoint may reopen data qualification; meanwhile L0 US reverse-forward split forced small-holder cashout.",
+  "POWER_LIMITATION": "Zero economic looks; no mechanism rejection.",
+  "RESULT": "PARK_DATA",
+  "UNCERTAINTY": "HEAD proves reachable pages only; no NAV-history schema, publication time or actual proration result has been qualified.",
+  "economic_payload_read": false,
+  "linked_l0": "qualifications/us-cef-periodic-nav-tender-l0-2026-10-12.json",
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "434ed6b9cfb88e116bc1bbc54bbfec80f63d3b8b",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:10:43.265010+00:00",
+  "request_count": 2,
+  "route_receipts": [
+    {
+      "content_length": null,
+      "content_type": "text/html;charset=utf-8",
+      "final_url": "https://www.eatonvance.com/",
+      "method": "HEAD",
+      "numeric_payload_read": false,
+      "received_at": "2026-10-12T21:10:17.277040+00:00",
+      "status": 200,
+      "url": "https://www.eatonvance.com/evn.php"
+    },
+    {
+      "content_length": null,
+      "content_type": "text/html; charset=UTF-8",
+      "final_url": "https://www.nasdaq.com/market-activity/stocks/evn/historical",
+      "method": "HEAD",
+      "numeric_payload_read": false,
+      "received_at": "2026-10-12T21:10:17.277816+00:00",
+      "status": 200,
+      "url": "https://www.nasdaq.com/market-activity/stocks/evn/historical"
+    }
+  ]
+}

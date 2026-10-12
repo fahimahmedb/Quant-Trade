@@ -351,6 +351,23 @@
       },
       "previous": "c8231f102b18ac267a5a7b97b1f71d177f6a23cbf61d427b3b40468e5fc1f050",
       "sequence": 16
+    },
+    {
+      "at": "2026-10-12T21:10:43.267057+00:00",
+      "hash": "4e418f5a1dbbd18c1edca044ccd3572765da7acc63ce6d333bd3b7d1f0ccb6fc",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-cef-periodic-nav-tender",
+        "head_observed": "434ed6b9cfb88e116bc1bbc54bbfec80f63d3b8b",
+        "proof": "qualifications/us-cef-periodic-nav-tender-route-2026-10-12.json",
+        "proof_sha256": "8682c78f41328aee17fa13f7f46598601de35e287325cbe83e107b690a0ebe1c"
+      },
+      "previous": "08f95afeec3f6f6f87b630a4c0dc3f047737701c482ac9906af4e7e350523097",
+      "sequence": 17
     }
   ],
   "exposure_ledger": [
@@ -396,7 +413,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "c8b2a2bf9fedf2df58588f24cc4e31d1473dc63d9b3b9f1c7fd4f4b69c1a90ee",
+  "integrity": "e34b887031c156f91c7069e38fb54448f56242011d89415d05974a1a57685659",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -457,9 +474,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-cef-periodic-nav-tender",
-    "kind": "LOCATE_SAVED_DATA",
-    "question": "Can issuer NAV history and public daily raw OHLC be documented without economic values? Max 2 primary route checks.",
+    "family": "us-reverse-forward-forced-cashout",
+    "kind": "L0_MECHANISM",
+    "question": "Does a going-private reverse-forward split give a post-announcement small holder a fixed cash entitlement distinct from ordinary fractional settlement?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1897,5 +1914,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:10:04.355273+00:00"
+  "updated_at": "2026-10-12T21:10:43.267110+00:00"
 }
