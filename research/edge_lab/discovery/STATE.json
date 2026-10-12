@@ -402,6 +402,23 @@
       },
       "previous": "af261ce9f941b015238760135860adf8ab262a437dadfe5045a700c1e4bc3753",
       "sequence": 19
+    },
+    {
+      "at": "2026-10-12T21:14:46.231374+00:00",
+      "hash": "973af9cec8d7988ad7ab53627400388a04396d60b775b7591673aca843aef96d",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-exchange-traded-debt-full-call",
+        "head_observed": "05edb8f50d6afbdb954d79c52b07aea8c49e70e7",
+        "proof": "qualifications/us-exchange-traded-debt-full-call-l0-2026-10-12.json",
+        "proof_sha256": "fe842973075728b0503c86eac85b6db84798afcb2758d8fcc86680c933d930c3"
+      },
+      "previous": "1fb9bf7a05b346ea32f15ef301d434610a8ebafe28d2b9830f5ddccce3ee5b33",
+      "sequence": 20
     }
   ],
   "exposure_ledger": [
@@ -447,7 +464,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "25f833372ac5ed09a7005e650af70cabc65d3e07857f5c676c263819f9e9ae77",
+  "integrity": "b2da397296932a36177dd043c2716cc933ba072674fd0da9fd85de0e293f7a87",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -508,9 +525,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-exchange-traded-debt-full-call",
+    "family": "us-cef-drip-discounted-issuance",
     "kind": "L0_MECHANISM",
-    "question": "Can an irrevocable full-call notice create a short small-lot cash-convergence expression with primary clocks and free price route?",
+    "question": "Can a public distribution reinvestment plan issue shares below market to small participants, with a fixed prospective dilution/price-risk test?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1948,5 +1965,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:12:53.098868+00:00"
+  "updated_at": "2026-10-12T21:14:46.231428+00:00"
 }
