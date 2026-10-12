@@ -453,6 +453,23 @@
       },
       "previous": "ab8f9f5ce6ac534860eb733b0b8a7f1b87ac23ffd14452d00bf16d0fcbbaeb5a",
       "sequence": 22
+    },
+    {
+      "at": "2026-10-12T21:23:51.225495+00:00",
+      "hash": "fedb153af49a8638240e6e0377bc51d17fb1467c125487bddd7ff34a8375dde3",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-retail-liquidity-priority",
+        "head_observed": "5e8c61b8a01bc7f2ea3c5872487613e00da72a03",
+        "proof": "qualifications/us-retail-liquidity-priority-l0-2026-10-12.json",
+        "proof_sha256": "82e70bdbe2596669b23b4a5b71c00db258952f526c555c647e4dcb8321ca9e62"
+      },
+      "previous": "fea14553f270a42338962172ffb3a4c8732b1855f2115ae4815d400e7f540241",
+      "sequence": 23
     }
   ],
   "exposure_ledger": [
@@ -498,7 +515,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "8f54bb19888821494fd6f355ef0b89d718f0530ea9203b2bbf4b926044700a9f",
+  "integrity": "53764feeb5a0e18709a71668dc3bb607bf4bad9a491fd5e819abe0046f464228",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -559,15 +576,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-retail-liquidity-priority",
+    "family": "us-transferable-rights-forced-selling",
     "kind": "L0_MECHANISM",
-    "prepared_protocol": "experiments/disc-us-cef-drip-discounted-issuance-prospective-l1-v1.md",
-    "prospective_priority": {
-      "no_selected_event": true,
-      "not_before": "2026-10-13T10:00:00Z",
-      "original_five_protocols_first": true
-    },
-    "question": "Can a small retail order access structural queue/price-improvement priority with public attribution and no broker interaction?",
+    "question": "Do transferable rights allow new buyers to take an expiring entitlement sold by holders unable to exercise, distinct from existing record-holder oversubscription?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2005,5 +2016,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:21:49.978958+00:00"
+  "updated_at": "2026-10-12T21:23:51.225533+00:00"
 }

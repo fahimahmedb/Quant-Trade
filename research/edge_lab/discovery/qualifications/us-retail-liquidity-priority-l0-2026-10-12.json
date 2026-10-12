@@ -1,0 +1,43 @@
+{
+  "CHEAP_DATA_NOW": "Current public EDGX rulebook documents the <=390 equity orders/day monthly-average retail-priority limit and parent/child counting. No public/free fill data qualified with retail flag, queue position and matched ordinary-control orders.",
+  "CHEAP_EXPRESSION": "Fixed eligible low-frequency displayed order at an existing price; compare fill/adverse-selection economics against same-price ordinary priority. Cannot infer fills from daily OHLC or public aggregate BBO.",
+  "ECONOMIC_SIGNIFICANCE": "Queue preference is a plausible low-scale structural rent, but no measurable free-data expression is ready.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Free attributed queue/fill/markout data and proven eligible access."
+  ],
+  "FAMILY_STATUS": "PARK_DATA",
+  "FATAL_PROBLEM": "RMO certification/routing, order-origin rules, queue-level attribution and execution/adverse-selection observations cannot be established from public daily data. No broker interaction or live orders are authorized.",
+  "LESSON": "Do not backtest a private matching flag from aggregate prices, or confuse order-frequency qualification with account access.",
+  "MECHANISM": "EDGX gives qualified Retail Priority Orders structural queue preference over ordinary same-price interest, allowing a genuinely small order source to earn a matching priority unavailable to institutional flow.",
+  "NEXT_DECISION": "New public attributed retail-priority dataset/access documentation required. Next L0 transferable subscription rights forced liquidation; inspect existing rights qualification first.",
+  "POWER_LIMITATION": "No attributed executions or control.",
+  "RESULT": "PARK_DATA",
+  "UNCERTAINTY": "Rulebook advantage exists; broker eligibility and net benefit unknown.",
+  "WHO_PAYS": "Ordinary queued suppliers lose time-priority/fills; liquidity takers pay the spread. Priority alone does not guarantee positive adverse-selection-adjusted PnL.",
+  "WHY_PERSIST": "Exchange defines retail certification and low order-frequency eligibility; brokers/RMOs control the eligible routing path, limiting scale and direct access.",
+  "classification": "PARK_DATA",
+  "exposure": {
+    "economic_look": false,
+    "numerical_fill_or_markout_data": false,
+    "private_history": "UNKNOWN",
+    "scope": "Rulebook/search metadata only; algorithm eligibility not assumed.",
+    "type": "DATA_FEASIBILITY"
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "5e8c61b8a01bc7f2ea3c5872487613e00da72a03",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:23:51.223841+00:00",
+  "sources": [
+    {
+      "fact": "Retail Priority Order requires retail status and <=390 average daily equity orders per calendar month; parent/child and cancel/replace rules matter.",
+      "rules": "11.9 priority interpretations .01-.02 and 11.21 retail definitions",
+      "url": "https://cdn.cboe.com/resources/regulation/rule_book/EDGX_Rulebook.pdf"
+    },
+    {
+      "fact": "Original proposal describes exclusive retail priority and counting orders routed elsewhere; historical documentary context only.",
+      "url": "https://www.sec.gov/comments/sr-cboeedgx-2019-012/srcboeedgx2019012-5705327-185928.pdf"
+    }
+  ]
+}
