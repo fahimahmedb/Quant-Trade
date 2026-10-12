@@ -1,4 +1,4 @@
-name: Edge lab — isolated checks and metadata
+name: Edge lab — isolated checks and live telemetry
 
 # GitHub schedules run on the default branch. No misleading branch-only cron.
 # The existing Owner automation supplies recurrent wake-ups, not a second loop.
@@ -8,11 +8,12 @@ on:
     paths:
       - src/quant/edge_lab/**
       - scripts/edge_lab.py
+      - scripts/edge_lab_live.py
       - scripts/edge_lab_legacy_runner.py
       - tests/test_edge_lab*.py
       - research/edge_lab/CONTROL.json
-      - research/edge_lab/discovery/POLICY.json
-      - research/edge_lab/discovery/experiments/*.contract.json
+      - research/edge_lab/CHECKPOINT.md
+      - research/edge_lab/discovery/**
       - .github/workflows/edge-lab.yml
   workflow_dispatch:
 
@@ -27,7 +28,7 @@ jobs:
   checks:
     if: github.ref == 'refs/heads/research/edge-lab-continuous'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,25 +43,53 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_edge_lab*.py'
       - name: Bounded metadata cycle, never an economic test
         run: python scripts/edge_lab.py tick --actor github-actions-metadata
-      - name: Preserve derived state on this branch only
+      - name: Overlay durable Discovery claim for the room
         env:
-          EXPECTED_HEAD: ${{ github.sha }}
+          EDGE_LAB_SOURCE_HEAD: ${{ github.sha }}
+        run: python scripts/edge_lab_live.py
+      - name: Publish fresh derived telemetry with bounded race recovery
         shell: bash
         run: |
           set -euo pipefail
-          current_head=$(git ls-remote origin refs/heads/research/edge-lab-continuous | cut -f1)
-          if [ "$current_head" != "$EXPECTED_HEAD" ]; then
-            echo "Branch advanced: preserve receipt artifact; do not overwrite or rerun outcomes."
-            exit 0
-          fi
+          branch='research/edge-lab-continuous'
           git config user.name 'Quant Edge Lab'
           git config user.email 'edge-lab@users.noreply.github.com'
-          git add research/edge_lab/STATE.json research/edge_lab/STATUS.md research/edge_lab/LIVE.json
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m 'edge-lab: metadata heartbeat [skip ci]'
-          git push origin HEAD:refs/heads/research/edge-lab-continuous
+
+          for attempt in 1 2 3; do
+            remote_head=$(git ls-remote origin "refs/heads/$branch" | cut -f1)
+            local_head=$(git rev-parse HEAD)
+
+            # If research advanced while this check was running, discard only the
+            # stale derived workspace and regenerate LIVE/STATUS from the newest
+            # authoritative branch head. Never rerun an economic outcome.
+            if [ "$local_head" != "$remote_head" ]; then
+              echo "Research advanced to $remote_head; refresh derived telemetry from latest HEAD (attempt $attempt/3)."
+              git fetch --depth=1 origin "$remote_head"
+              git reset --hard "$remote_head"
+              python scripts/edge_lab.py render >/dev/null
+              EDGE_LAB_SOURCE_HEAD="$remote_head" python scripts/edge_lab_live.py >/dev/null
+              local_head="$remote_head"
+            fi
+
+            git add research/edge_lab/STATE.json research/edge_lab/STATUS.md research/edge_lab/LIVE.json
+            if git diff --cached --quiet; then
+              echo "Derived telemetry already current."
+              exit 0
+            fi
+
+            git commit -m 'edge-lab: live telemetry heartbeat [skip ci]'
+            remote_before_push=$(git ls-remote origin "refs/heads/$branch" | cut -f1)
+            if [ "$remote_before_push" != "$local_head" ]; then
+              echo "Lost publication race to $remote_before_push; retry from fresh HEAD without economic replay."
+              continue
+            fi
+            if git push origin "HEAD:refs/heads/$branch"; then
+              exit 0
+            fi
+          done
+
+          echo 'Could not publish derived telemetry after 3 bounded races.' >&2
+          exit 1
       - name: Keep receipt if publication loses a race
         if: always()
         uses: actions/upload-artifact@v4
