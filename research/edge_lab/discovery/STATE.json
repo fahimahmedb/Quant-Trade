@@ -568,6 +568,23 @@
       },
       "previous": "b7dcbc6f7120d5df08dc0ac06f4848e0b42ef4b118e9423614b80894f4168190",
       "sequence": 26
+    },
+    {
+      "at": "2026-10-12T21:31:51.528452+00:00",
+      "hash": "c3245b506d8838c4b9d55b70decf30acebc420255076fe047e46340075c4e89f",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "L1_NOW",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "russell-deletion-forced-flow",
+        "head_observed": "8c58ea5489cfb35434c88e831ce3858212495326",
+        "proof": "qualifications/russell-deletion-forced-flow-l0-2026-10-12.json",
+        "proof_sha256": "54b46f9c195c6a75a5c7dcc93f052cb2751798aaf57216c1a03ada2822c68e7e"
+      },
+      "previous": "f30eb5a7c800adc2d604e957a6c4eb217241f4c796e86109ad2e699f65f0fae1",
+      "sequence": 27
     }
   ],
   "exposure_ledger": [
@@ -613,7 +630,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "d1eca6273c834913e6a662d4fdb0e1283fcdb15d1aaa4b64b6f01ca726b013af",
+  "integrity": "a6fb6bd153c57c3e62eea255a4daf8f20904e931079e3eb06f44b55ff4e29c38",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -675,8 +692,8 @@
   "next": {
     "economic_access_authorized": false,
     "family": "russell-deletion-forced-flow",
-    "kind": "L0_MECHANISM",
-    "question": "Can a fixed price-blind small basket from the official preliminary deletion list support one cheap rebalance sell-pressure/rebound test?",
+    "kind": "L1_PREDECLARE",
+    "question": "Freeze a single coarse calendar basket before accessing any selected prices; do not interpret dated PDF as archived PIT proof.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2114,5 +2131,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:31:30.886859+00:00"
+  "updated_at": "2026-10-12T21:31:51.528490+00:00"
 }
