@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_1_CODEX_EMITTER",
+  "trace_id": "P1-BUILDER-CODEX-20261012T221118Z",
+  "started_at_utc": "2026-10-12T22:11:18.215678Z",
+  "finished_at_utc": "2026-10-12T22:11:23.229814Z",
+  "executor_environment": "Builder Chat container",
+  "provenance": "UNVERIFIED",
+  "observed_fact": "No codex executable is exposed in the Builder Chat container (command lookup returned no path). Builder Chat itself is not accepted as Codex proof.",
+  "evidence_reference": "environment command lookup: command -v codex -> no path",
+  "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+  "first_broken_transition": "GENUINE_CODEX_RUNTIME_LAUNCH_UNAVAILABLE",
+  "notes": "This does not prove Codex cannot emit on another platform runtime. It only proves the current Builder Chat executor cannot launch a genuine Codex runtime for the required live protocol canary."
+}
