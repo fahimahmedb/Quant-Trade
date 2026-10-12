@@ -1,3 +1,16 @@
+# Current STATE / NEXT — 2026-10-12, productive fallback research
+
+STATE = L0_QUALIFIED_FOR_DESIGN; one documentary action completed, zero new economic executions.
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- Decision: PREPARE_L1 for US issuer odd-lot allocation priority. SEC rules and an issuer-hosted instruction letter support the mechanism, with capacity, beneficial-owner aggregation, broker fees and a date contradiction. No profitability claim.
+- Proof: [L0 decision, sources, exposures and limits](discovery/qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md). Public opportunity/result snippets are recorded as selection exposure; no untouched sample claimed.
+- NEXT: existing LOCATE_SAVED_DATA documentary handoff in Discovery STATE. Resolve the original Anebulo offer/clock and one price-route documentation in <=20 minutes / <=4 requests, no retries, price payloads or completion outcomes. Then freeze one L1 or PARK_DATA. This is preparation, not permission to execute.
+- Existing daily Treasury result is PARK_DATA (economics_computed=false), so it was not resumed. VX L2, SEC census reuse and TEC10 access qualifications are already parked; their old NEXT instructions below are historical. No source retry or new census.
+- Economic counters, prior queue/results and exposure ledger preserved. L0 documentary selection exposure is appended in the existing hash-chained Discovery events. Paid spend 0; tokens/global bill unknown. No scheduler delivery claim or Site change in this pass.
+
+## Earlier checkpoint snapshots — preserved, not the current next action
+
 # Checkpoint — Discovery V4.2 intégrée
 
 STATUS = INTEGRATED_FIRST_ECONOMIC_TEST_COMPLETED

@@ -190,6 +190,59 @@
       },
       "previous": "8bc2ef19f2ca7185271a2240066a6e998c35d4371c389e4603ba0f5be871b7da",
       "sequence": 12
+    },
+    {
+      "at": "2026-10-12T19:25:34.393096+00:00",
+      "hash": "1f877cf8a17a272c832a8f0bcc4ec03639108b8178e242ae9ee62905341de0ea",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "capital_authorized": false,
+        "cost_observable": {
+          "browser_calls": 3,
+          "global_bill": null,
+          "open_requests": 3,
+          "origin_bytes": null,
+          "paid_usd": 0,
+          "search_queries": 2,
+          "tokens": null
+        },
+        "decision": "PREPARE_L1",
+        "economic_execution": false,
+        "live_authorized": false,
+        "next_decision": "Locate fixed original offer/clock and one public price-route documentation before any L1 declaration or price access",
+        "prior_next_resolution": {
+          "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
+          "constraints": [
+            "No retry offailedH2022 URL",
+            "No replay/re-tuning the completed36-contract expression",
+            "No pristineholdoutclaim or implicit V3admission",
+            "95%descriptivegrossCI includeszero and worsttrade-14.6points",
+            "L2must predeclare independentpurpose,data,capital/risk/friction bounds and onefixedtest before economicaccess"
+          ],
+          "decision_reference": "qualifications/cfe-vix-l2-zero-cost-access-2026-10-12.md",
+          "family": "cfe-vix-term-premium",
+          "kind": "QUALIFY_L2",
+          "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+          "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?",
+          "status": "PARK"
+        },
+        "proof": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
+        "proof_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
+        "public_selection_exposure": {
+          "economic_test_outcomes_computed": false,
+          "independence_claim": "NONE",
+          "private_history": "UNKNOWN",
+          "scope": "Regulatory rules, announcement terms, incidental public completion/opportunity snippets; exact scope in proof"
+        },
+        "qualification_id": "l0-us-issuer-oddlot-priority-20261012",
+        "source_version_ids": [
+          "SEC Tender Offer Rules and Schedules update 2026-07-09 / Q101.11 2023-03-17",
+          "Anebulo accession 0001493152-25-028828 / exhibit a1e / 2025-12-22"
+        ]
+      },
+      "previous": "46864b732e68c9e4f530481b0e8d6978d528a8a214c509c7b3ba462285f60e32",
+      "sequence": 13
     }
   ],
   "exposure_ledger": [
@@ -235,7 +288,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "51e08e040c8ec1241d7dffe293c2500b83f579e01348cfde45d7682736b41e18",
+  "integrity": "ab6896536d02d355f3f5af1e15581aa21be263f4693c8695417136514ffe0c56",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -295,18 +348,30 @@
     "mechanism_cluster_count": 9
   },
   "next": {
-    "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
+    "bounds": {
+      "completion_results": false,
+      "economic_access_authorized": false,
+      "max_minutes": 20,
+      "max_primary_document_metadata_requests": 4,
+      "new_census": false,
+      "price_payloads": false,
+      "retries": 0
+    },
     "constraints": [
-      "No retry offailedH2022 URL",
-      "No replay/re-tuning the completed36-contract expression",
-      "No pristineholdoutclaim or implicit V3admission",
-      "95%descriptivegrossCI includeszero and worsttrade-14.6points",
-      "L2must predeclare independentpurpose,data,capital/risk/friction bounds and onefixedtest before economicaccess"
+      "Use cached primary interpretations and accession 0001493152-25-028828; do not repeat the L0 search.",
+      "Resolve 2026/2006 expiration contradiction against original offer/amendments; date inside document is not availability time.",
+      "One offered-price example only; public search/result snippets remain exposed, PRIVATE_UNKNOWN unchanged.",
+      "No new look until linked fixed declaration and CAS claim; no broker/account/trading action.",
+      "VX, Form4 reuse, TEC10 and daily Treasury access decisions stay parked; policy not_before unchanged."
     ],
-    "family": "cfe-vix-term-premium",
-    "kind": "QUALIFY_L2",
-    "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
-    "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?"
+    "decision_use": "Prepare a linked L1 declaration only if these prerequisites are coherent; otherwise PARK_DATA this implementation without choosing another offer by outcome.",
+    "family": "us-issuer-oddlot-priority",
+    "kind": "LOCATE_SAVED_DATA",
+    "level": "L0_TO_L1_DESIGN",
+    "qualification": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
+    "qualification_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
+    "question": "Can the original Anebulo SC TO-I/offer/amendment documents and public clock, plus one authorized public EOD-price route, support a fixed one-case L1 ceiling without looking at prices or completion outcomes?",
+    "status": "OPEN"
   },
   "policy_version": "4.2",
   "queue": [
@@ -1743,5 +1808,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T08:33:07.268480+00:00"
+  "updated_at": "2026-10-12T19:25:34.393064+00:00"
 }
