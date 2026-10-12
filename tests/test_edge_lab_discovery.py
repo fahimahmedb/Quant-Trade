@@ -456,5 +456,31 @@ class DiscoveryWorkerAndCLITests(unittest.TestCase):
         self.assertEqual(args[5], "cli-once")
 
 
+class ReconcileTests(unittest.TestCase):
+    def test_saved_receipt_publishes_once_without_runner_or_new_attempt(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            item = card();item.update(contract_sha256="c"*64,manifest_sha256="d"*64)
+            claimed = discovery.claim(synthetic_state(item), "synthetic-one", "original", NOW)
+            discovery.save(directory, claimed)
+            authority = Authority(claimed)
+            receipt = result(invocation_id="original",claim_commit="b"*40,
+                             contract_sha256="c"*64,source_manifest_sha256="d"*64,economics_computed=False)
+            path = directory / "saved.json";path.write_text(json.dumps(receipt))
+            with patch("quant.edge_lab.vix.run",side_effect=AssertionError("No replay")):
+                status = discovery.reconcile(directory,authority,"synthetic-one",path)
+            self.assertEqual(status["status"],"RECONCILED")
+            self.assertEqual(authority.remote["metrics"]["actual_data_test_attempts"],1)
+            with self.assertRaises(Refused):discovery.reconcile(directory,authority,"synthetic-one",path)
+
+    def test_pause_or_unbound_receipt_cannot_publish(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary);item=card();item.update(contract_sha256="c"*64,manifest_sha256="d"*64)
+            claimed=discovery.claim(synthetic_state(item),"synthetic-one","original",NOW)
+            path=directory/"saved.json";path.write_text(json.dumps(result(invocation_id="wrong")))
+            for authority in [Authority(claimed),Authority(claimed,{"paused":True})]:
+                with self.assertRaises(Refused):discovery.reconcile(directory,authority,"synthetic-one",path)
+                self.assertEqual(authority.claims,[])
+
 if __name__ == "__main__":
     unittest.main()

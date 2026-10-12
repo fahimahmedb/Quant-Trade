@@ -117,6 +117,20 @@
       },
       "previous": "4dea03fac9d98f5bc5334468f0daf6b863015ca5c6375c3e38a6c5b774bbe301",
       "sequence": 8
+    },
+    {
+      "at": "2026-10-12T08:33:07.268490+00:00",
+      "hash": "cb207356393c40aea7813b4cf76d56350284336803f5ee6eaba3cb2157f4048b",
+      "kind": "NEXT_DECISION_SET",
+      "payload": {
+        "completed_expression": "disc-cfe-vix-term-premium-l1-v2-reader",
+        "economic_outcomes_read": false,
+        "kind": "QUALIFY_L2",
+        "no_new_test_authorized_by_this_metadata": true,
+        "risk_compensation_not_alpha": true
+      },
+      "previous": "cac547f35d6aa5c40cf6840fe1c5dca1771c56d38f1006d3a82fafb7fa32a848",
+      "sequence": 9
     }
   ],
   "exposure_ledger": [
@@ -162,7 +176,11 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "2d9270d75ed0e4b97e8a6ec9a5f2703fc51fdaf8d593175d6675170298009312",
+  "integrity": "d8d5752b509b9720f9f85e6038a28c24f6ead338e1a61dae6530eb9d734ddf1b",
+  "legacy_metrics_snapshot": {
+    "discriminating_tests_completed_this_week": 0,
+    "families_touched_this_week": 4
+  },
   "live_trading_authorized": false,
   "metrics": {
     "actual_data_test_attempts": 5,
@@ -171,11 +189,9 @@
     "calculations_attempted": 1,
     "completed_economic_tests": 1,
     "data_parks": 5,
-    "discriminating_tests_completed_this_week": 0,
     "effective_independent_trials": null,
     "experiments_with_decision": 6,
     "expressions_declared_this_pass": 5,
-    "families_touched_this_week": 4,
     "last_completed_economic_test": "disc-cfe-vix-term-premium-l1-v2-reader",
     "last_completed_experiment": "disc-cfe-vix-term-premium-l1-v2-reader",
     "mechanism_clusters": 9,
@@ -220,8 +236,18 @@
     "mechanism_cluster_count": 9
   },
   "next": {
-    "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
-    "reason": "Exact observed CSV format repair before economics; same economic design, source acquisitionreuse notfailedrequestretry."
+    "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
+    "constraints": [
+      "No retry offailedH2022 URL",
+      "No replay/re-tuning the completed36-contract expression",
+      "No pristineholdoutclaim or implicit V3admission",
+      "95%descriptivegrossCI includeszero and worsttrade-14.6points",
+      "L2must predeclare independentpurpose,data,capital/risk/friction bounds and onefixedtest before economicaccess"
+    ],
+    "family": "cfe-vix-term-premium",
+    "kind": "QUALIFY_L2",
+    "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+    "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?"
   },
   "policy_version": "4.2",
   "queue": [
@@ -1658,5 +1684,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "IDLE_NO_ADMISSIBLE_WORK",
-  "updated_at": "2026-10-12T08:23:46.549440+00:00"
+  "updated_at": "2026-10-12T08:33:07.268480+00:00"
 }

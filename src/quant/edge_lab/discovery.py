@@ -302,6 +302,12 @@ def execute(directory, root, authority, experiment_id, cache_dir, invocation_id=
         from .vix import run
         runner = run
     result = runner(pinned[1], contract, Path(cache_dir))
+    result = {**result, "invocation_id": identity, "claim_commit": published,
+              "contract_sha256": card["contract_sha256"],
+              "source_manifest_sha256": card["manifest_sha256"]}
+    # Preserve the authorized result before another remote read or publication.
+    receipt_path = Path(cache_dir) / (experiment_id + ".authorized-receipt.json")
+    write_json(receipt_path, result)
     current = authority.snapshot()
     if current["control"]["paused"]:
         raise Refused("PAUSED: preserve the saved result for explicit reconciliation")
@@ -311,3 +317,21 @@ def execute(directory, root, authority, experiment_id, cache_dir, invocation_id=
     save(directory, finished)
     return {"status": "COMPLETED", "experiment_id": experiment_id, "invocation_id": identity,
             "claim_commit": published, "published_commit": completed_sha, "result": result}
+
+
+def reconcile(directory, authority, experiment_id, receipt_path):
+    """Publish a saved original result only; never acquire, recalculate or retry."""
+    fresh = authority.snapshot()
+    if fresh["control"]["paused"]:
+        raise Refused("PAUSED: preserve the original Discovery result")
+    card = _card(fresh["discovery"], experiment_id)
+    receipt = strict_json(receipt_path)
+    if (receipt.get("contract_sha256") != card.get("contract_sha256")
+            or receipt.get("source_manifest_sha256") != card.get("manifest_sha256")
+            or not receipt.get("claim_commit")):
+        raise Refused("Saved result must bind the original frozen contract/manifest/claim")
+    finished = complete(fresh["discovery"], experiment_id, receipt.get("invocation_id"), receipt)
+    published = authority.claim(finished, fresh["sha"])
+    save(directory, finished)
+    return {"status": "RECONCILED", "experiment_id": experiment_id,
+            "published_commit": published, "economic_execution_repeated": False}

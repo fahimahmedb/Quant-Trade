@@ -19,12 +19,15 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state-dir", default=str(ROOT / "research/edge_lab"))
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("init", "status", "next", "render", "queue", "plan", "live", "discovery-queue"):
+    for name in ("init", "status", "next", "render", "queue", "plan", "live", "discovery-queue", "discovery-status"):
         sub.add_parser(name)
     discovery_execute = sub.add_parser("discovery-execute", help="Publish one frozen Discovery claim before the explicit economic runner")
     discovery_execute.add_argument("identity")
     discovery_execute.add_argument("--cache-dir", required=True)
     discovery_execute.add_argument("--invocation-id")
+    discovery_reconcile = sub.add_parser("discovery-reconcile", help="Publish the original saved result, never repeat a calculation")
+    discovery_reconcile.add_argument("identity")
+    discovery_reconcile.add_argument("receipt")
     tick = sub.add_parser("tick")
     tick.add_argument("--actor", default="manual")
     tick.add_argument("--offline", action="store_true")
@@ -124,19 +127,33 @@ def main(argv=None):
         from quant.edge_lab.worker import queue
         print(json.dumps(queue(*lab.snapshot()), ensure_ascii=False))
         return
-    elif args.action == "discovery-queue":
+    elif args.action in ("discovery-queue", "discovery-status"):
         from quant.edge_lab.discovery import load, project
         discovery = load(Path(args.state_dir) / "discovery")
         if discovery is None:
             raise Refused("Discovery state is missing; preserve Validation state")
-        print(json.dumps(project(discovery, lab.snapshot()[1]), ensure_ascii=False))
+        view = project(discovery, lab.snapshot()[1])
+        if args.action == "discovery-status":
+            last = next((c for c in discovery["queue"] if c["id"] == discovery.get("metrics", {}).get("last_completed_experiment")), {})
+            result = last.get("result") if isinstance(last.get("result"), dict) else {}
+            view = {"status": view["status"], "paused": view["paused"], "counts": view["counts"],
+                    "next_experiment_id": view["next"]["id"] if view["next"] else None,
+                    "next_work": discovery.get("next"), "metrics": discovery.get("metrics"),
+                    "multiplicity": discovery.get("multiplicity"),
+                    "last": {"id": last.get("id"), "verdict": last.get("typed_verdict"),
+                             "economics_computed": result.get("economics_computed"),
+                             "means_points": {k: v.get("mean_points") for k, v in result.get("summary", {}).items() if isinstance(v, dict)}}}
+        print(json.dumps(view, ensure_ascii=False))
         return
-    elif args.action == "discovery-execute":
-        from quant.edge_lab.discovery import execute
+    elif args.action in ("discovery-execute", "discovery-reconcile"):
+        from quant.edge_lab.discovery import execute, reconcile
         from quant.edge_lab.remote import DiscoveryAuthority
         authority = DiscoveryAuthority(ROOT, args.state_dir)
-        result = execute(Path(args.state_dir) / "discovery", ROOT, authority, args.identity,
-                         args.cache_dir, args.invocation_id)
+        if args.action == "discovery-execute":
+            result = execute(Path(args.state_dir) / "discovery", ROOT, authority, args.identity,
+                             args.cache_dir, args.invocation_id)
+        else:
+            result = reconcile(Path(args.state_dir) / "discovery", authority, args.identity, args.receipt)
         print(json.dumps(result, ensure_ascii=False))
         return
     elif args.action in ("worker-start", "worker-recover", "worker-finish"):

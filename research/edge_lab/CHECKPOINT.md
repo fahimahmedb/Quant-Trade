@@ -1,18 +1,21 @@
-# Checkpoint — intégration Discovery V4.2
+# Checkpoint — Discovery V4.2 intégrée
 
-STATUS = READY_VERSIONED_SOURCE_READER_REPAIR
+STATUS = INTEGRATED_FIRST_ECONOMIC_TEST_COMPLETED
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 
-- Source distant vérifiée6543f2299b314cfbcf46bdac8a1ef8b7cb66cd5d. Handoff/pilotes lus ; aucun travail V3 ou résultat négatif réinitialisé.
-- V4.2 branchée au worker, CLI et projection existants ; pas de framework/scheduler/site parallèle. Sélection ordinale et verdicts/droits asymétriques exécutables. V3 recovery ne bloque pas Discovery ; une exécution économique interrompue reste réservée.
-- NouveauVIX v1 lié au v0 :36contrats trimestriels2013–21 selon couverture HTTP200 préexistante, avant payoff ; ancienv0/52contrats restePARK_DATA, pilote20jours distinct. Règle45→15,2coûts,bootstrappar9années et une contradiction de concentration figés. Aucune lecture de données/outcomes avant claim distant.
-- Tests locaux162PASS ; Site34testsPASS+buildESM. Contrôle visuel navigateur NON VÉRIFIÉ. Tokens/facture/contexte total NON MESURÉS ; aucun budget Owner chiffré inventé.
-- Même Site privé propriétaire, nouvelle UI préparée ; écriture GitHub non installée dans ce Site, contrôle ouvre réellement CONTROL GitHub. Aucun faux succès pause.
-- Même automatisation6ac978ecda1081918fba4d76dee437f4 temporairement désactivée, outil confirmé ; réactiver le promptV4.2 après résultat/exposition/push. Ne pas créer une autre boucle.
-- V1closec4b5dbd :PARK_DATA avantpayoff,0.585swall/0.0336sCPU/41328octets,0USD. U2013 exactavisCFE avantheaderligne2, pas problème de données économiques. V2-reader liépré-déclaré :mêmes36sources/règles/coûts/seuils ; lecteur accepte cet avis exact, aucun nouveau filtre économique. Réutilise3caches pinnés ; échecancien et expositions conservés.165testsPASS/CIinitiale38221684791success.
-- Site1a3ce21 déployé appgdep_6acc963200788191b75d31b99cec6ef8 SUCCESS ; lecture nativefraîcheàHEADc4b5dbd (Discoveryidle/V3recovery), mêmeaudience/URL.
-- NEXT :publierfreezev2/CASclaim, puis seuleexécutionv2 surcacheexistant, enregistrerrésultat typé et réactivermêmeautomatisationV4.2. CAS perdu/pause =>arrêt sanscalcul/retry.
+- Branche autorité :`research/edge-lab-continuous`. Intégrationbd940660 ; correctionformatCFEb66abfd2 ; résultat économique534386b4. Head initial6543f229 actualisé. Aucune fusion/default/production de trading.
+- V3conservée stricte :histoires/baselines/imports/protocoles/looks2/essaisSMARD4/ETF40/réservations/F1fermées inchangés ; seuls heartbeatsmétadonnées ajoutés. SonancienclaimOKX resteRECOVERY_NEEDED, jamais considéré inactif d’après un commit. Discoveryindépendante.
+- V4.2adapter minimaldansworker/CLI/projectionsStore/GitAuthority existants. Droits/verdicts typés/adéquation/enveloppe/redteam/contrats immuables ; choix ordinal, pas dequota/Sharpe cible. ClaimCAS avantaccès. Uneleaseéconomique expirée bloqueun nouveaucalcul jusqu’aurapprochement.
+- VIXv0restePARK_DATA/52contrats ; pilote20joursséparé/nonexécuté. Nouveauv1sur36quarts2013–2021 fondés surcouverturepréexistante avantpayoffs :PARK_DATAformat avisCFE,0économie ; closec4b5dbd2. V2-reader lié réutilise3caches, accepteavislégal exact, paramètresinchangés ; essais/sourceexposés conservés, aucunehypothèse économique rejetée rebaptisée.
+- Premiercalcul économiquecomplet :v2-reader36contrats/9années, PROMOTE_EXPRESSION seulement. Meanbrut1.073986points, netcentral0.973986(.10coût), netstress0.823986(.25coût). Meilleurannée2018 retirée :32contrats, central.736359/stress.586359, uniquecontradiction prévuePASS.
+- Piretradebrut-14.6points (~14600USD/contrat), endpointstressdrawdown-14.85points ; ce n’est pas la trajectoireMTM. Bootstrapannuel95%brut[-.010736,2.103806] inclut0, descriptif/pas confirmationstatistique. Risque/marge/capital/intratrade/actualité2022–26/fills/alpha résiduel NON ÉTABLIS. Résultatcompatible avecprime derisque, pas edgevalidé.
+- Contrat/manifest/codehash/claim6f67400c/receipt/résultat en`discovery/experiments/`; rawCFE privésuniquement. V2wall18.513s/CPU.240s/568958payloadbytes,0USD ; tokens/facture/trafficréseau total/contexte/nonmodele humain NON MESURÉS. Aucunbudgettotal Owner inventé.
+- TestsPython167PASS (inclCASdeuxhôtes,pause,resumeaucunrecalcul), CI38221684791/38223053877SUCCESS ; Site34NodePASS, DOMsynthetique+buildESM validés. Le contrôlevisuel navigateur reste NON VÉRIFIÉ.
+- Même Site propriétaire privé URLhttps://quant-trade-lab.sassylime.chatgpt.site ; source30e4019apourdéploiementfinal. Dashboard/cartes/recherche/contrats/droits/courbes3coûts/risques etGitHubSHA ; animationfreinée si pause/stale/motionréduit. AucuneAPIécritureGitHubinstallée dansSite :contrôle ouvreCONTROLGitHub, jamais fauxsuccèspause.
+- Mêmeautomation6ac978ecda1081918fba4d76dee437f4 :promptcompactV4.2 àréactiver aprèspublicationfinale ; cadencehorairepréexistante. Aucune2eboucle. Configurationet livraisondistinctes, aucun daemonprétendu. La supervisionmécaniqueGHA ne lancepas demodèle ni d’économie.
+- NEXT :qualifier UNEroutedonnées récente/risque/exécutionL2 sansrejouer36contratsniH2022refusée ; accèsinutilisable=>PARK_DATApuislocatecensusForm4 existant. Pas d’escaladeV3tantquepackage/protocolepuissance/frais/risquenequalifientpas. Lecturecompacte`discovery-status`, deltasauSHAfrais puisseulementcontratutile ; pas relecturedetoutdépôt.
+- Reprise :CONTROLdistantavantSTATE, mêmeclaim/receipt. `discovery-reconcile ID authorized-receipt.json` publieuniquement lerésultatpréservé, pas relance. Pause/CASperdu/budgetmesurénonobservable/droitsmanquants=>arrêtcorrespondant ; achat/live/capitaltoujoursfalse. Claudeabsentjusqu’au13octobre,pas revue simulée,pas doubleaudit.
 
 Les sections suivantes sont historiques et conservées.
 
