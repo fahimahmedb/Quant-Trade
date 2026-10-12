@@ -74,6 +74,17 @@ def start(lab, authority, actor, context="interactive", invocation_id=None):
     if local != remote or control != fresh["control"]:
         raise Refused("Hydrate the exact remote state before starting an agent session")
     now = datetime.now(timezone.utc)
+    # Discovery is a separate economic lane: a V3 reasoning session or recovery
+    # cannot consume its ready work, nor does this metadata handoff execute it.
+    from .discovery import load as load_discovery, project as project_discovery
+    discovery = load_discovery(lab.store.root / "discovery")
+    if discovery is not None:
+        frontier = project_discovery(discovery, control, now)
+        if frontier["next"] is not None:
+            return {"status": "DISCOVERY_READY", "lane": "DISCOVERY", "next": frontier["next"],
+                    "context": context, "economic_access_authorized": False,
+                    "outcome_access_authorized": False,
+                    "scope": "Run discovery-execute for this frozen experiment; this handoff creates no session or economic claim."}
     sessions = remote.get("worker_sessions", {})
     work = queue(remote, control, now)
     started = [s for s in sessions.values() if s["status"] == "STARTED"]

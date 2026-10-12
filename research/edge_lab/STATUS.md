@@ -1,3 +1,11 @@
+# Quant — Discovery V4.2 / Validation V3
+
+Discovery : **READY** ; Validation : **RECOVERY_NEEDED**.
+
+Prochain test : disc-cfe-vix-term-premium-l1-v1.
+
+Tests économiques terminés : 0. Les fichiers acquis et contrôles logiciels ne sont pas des résultats économiques.
+
 # Quant — labo de recherche V3
 
 **État opérationnel V3 : RECOVERY_NEEDED**

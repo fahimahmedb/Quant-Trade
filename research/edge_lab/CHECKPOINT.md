@@ -1,3 +1,19 @@
+# Checkpoint — intégration Discovery V4.2
+
+STATUS = READY_FIRST_ECONOMIC_TEST
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
+
+- Source distant vérifiée6543f2299b314cfbcf46bdac8a1ef8b7cb66cd5d. Handoff/pilotes lus ; aucun travail V3 ou résultat négatif réinitialisé.
+- V4.2 branchée au worker, CLI et projection existants ; pas de framework/scheduler/site parallèle. Sélection ordinale et verdicts/droits asymétriques exécutables. V3 recovery ne bloque pas Discovery ; une exécution économique interrompue reste réservée.
+- NouveauVIX v1 lié au v0 :36contrats trimestriels2013–21 selon couverture HTTP200 préexistante, avant payoff ; ancienv0/52contrats restePARK_DATA, pilote20jours distinct. Règle45→15,2coûts,bootstrappar9années et une contradiction de concentration figés. Aucune lecture de données/outcomes avant claim distant.
+- Tests locaux162PASS ; Site34testsPASS+buildESM. Contrôle visuel navigateur NON VÉRIFIÉ. Tokens/facture/contexte total NON MESURÉS ; aucun budget Owner chiffré inventé.
+- Même Site privé propriétaire, nouvelle UI préparée ; écriture GitHub non installée dans ce Site, contrôle ouvre réellement CONTROL GitHub. Aucun faux succès pause.
+- Même automatisation6ac978ecda1081918fba4d76dee437f4 temporairement désactivée, outil confirmé ; réactiver le promptV4.2 après résultat/exposition/push. Ne pas créer une autre boucle.
+- NEXT : publier ces contrats/code, CASclaim, puis une seule exécution v1 au cache privé ; publier le résultat exact, déployer mêmeSite et vérifier état natif. CAS perdu/pause => arrêt sans calcul/retry.
+
+Les sections suivantes sont historiques et conservées.
+
 # Checkpoint — Discovery V4
 
 STATUS = IDLE_NO_ADMISSIBLE_WORK

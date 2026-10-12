@@ -11,6 +11,8 @@ on:
       - scripts/edge_lab_legacy_runner.py
       - tests/test_edge_lab*.py
       - research/edge_lab/CONTROL.json
+      - research/edge_lab/discovery/POLICY.json
+      - research/edge_lab/discovery/experiments/*.contract.json
       - .github/workflows/edge-lab.yml
   workflow_dispatch:
 

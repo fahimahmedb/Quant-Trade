@@ -1,46 +1,4 @@
 {
-  "schema": 1,
-  "mode": "DISCOVERY_FIRST",
-  "objective": "Maximize discriminating economic information per unit of time before strict validation.",
-  "hard_invariants": {
-    "real_capital_authorized": false,
-    "live_trading_authorized": false,
-    "hide_post_result_retune": false,
-    "discovery_result_can_validate_edge": false
-  },
-  "timeboxes_minutes": {
-    "L1": 60,
-    "L2": 120
-  },
-  "architecture_policy": {
-    "max_activity_share": 0.10,
-    "allowed_if_blocks_distinct_experiments_gte": 2,
-    "allowed_for_result_integrity_bug": true
-  },
-  "research_policy": {
-    "min_activity_share": 0.90,
-    "max_consecutive_cycles_same_family": 2,
-    "max_consecutive_noninformation_cycles_before_park": 2,
-    "weekly_discriminating_tests_target": 10,
-    "weekly_distinct_families_target": 2,
-    "median_l1_idea_to_verdict_minutes_target": 90
-  },
-  "statuses": [
-    "TEST_NOW",
-    "RUNNING",
-    "KILL",
-    "PROMOTE",
-    "PROMOTE_HIGH",
-    "PARK",
-    "PARK_UNTIL"
-  ],
-  "evidence_levels": {
-    "L0": "causal plausibility",
-    "L1": "cheap coarse falsification",
-    "L2": "cleaner exploratory replication",
-    "L3": "strict scientific validation through existing V3 lane",
-    "L4": "capturability and executable implementation"
-  },
   "allowed_l1_imperfections_if_explicit": [
     "EOD_or_close_proxy",
     "continuous_future_proxy",
@@ -50,6 +8,35 @@
     "small_sample",
     "short_prospective_capture"
   ],
+  "architecture_policy": {
+    "allowed_for_result_integrity_bug": true,
+    "allowed_if_blocks_distinct_experiments_gte": 2,
+    "max_activity_share": 0.1
+  },
+  "budget": "No Owner numerical tokenbudget given. Tokens NON MESUR\u00c9 unless actualcounter. No paid acquisition. Stop on pause/missingrights/budget/unfinishedexecution.",
+  "closed_families_remain_closed": [
+    "f1-crypto-carry",
+    "daily-etf-b2-b4",
+    "prediction-negative-risk",
+    "smard-fixed-flexibility-exact-12-18-costed-expression"
+  ],
+  "evidence_levels": {
+    "L0": "causal plausibility",
+    "L1": "cheap coarse falsification",
+    "L2": "cleaner exploratory replication",
+    "L3": "strict scientific validation through existing V3 lane",
+    "L4": "capturability and executable implementation"
+  },
+  "hard_invariants": {
+    "discovery_result_can_validate_edge": false,
+    "hide_post_result_retune": false,
+    "live_trading_authorized": false,
+    "real_capital_authorized": false
+  },
+  "inference_rights": "Pre-result asymmetric contract, never expanded after outcome",
+  "mode": "DISCOVERY_FIRST",
+  "objective": "Maximize discriminating economic information per unit of time before strict validation.",
+  "positive_l1": "Exactly one predeclared cheap adversarial check before strictvalidation; missingcheck cannot implypassedV3",
   "promotion_contract_required_fields": [
     "mechanism",
     "who_pays",
@@ -61,10 +48,29 @@
     "proposed_frozen_protocol",
     "why_validation_cost_is_now_justified"
   ],
-  "closed_families_remain_closed": [
-    "f1-crypto-carry",
-    "daily-etf-b2-b4",
-    "prediction-negative-risk",
-    "smard-fixed-flexibility-exact-12-18-costed-expression"
-  ]
+  "research_policy": {
+    "park_reactivation": "Distinct verified new fact and versioned expression; no blind retries.",
+    "quotas": null,
+    "selection": "Lexicographic: plausibleeconomics, HIGHdecisionleverage, HIGHdiscrimination, lowerdatafriction, shorterduration; priors/capturability ties. Diversification breaks ties, never forces inadmissible quota.",
+    "target_sharpe": null
+  },
+  "schema": 1,
+  "statuses": [
+    "TEST_NOW",
+    "RUNNING",
+    "PARK_UNTIL",
+    "KILL_EXPRESSION",
+    "KILL_MECHANISM",
+    "PARK_DATA",
+    "PARK_ECONOMICS",
+    "PROMOTE_EXPRESSION",
+    "PROMOTE_MECHANISM",
+    "PROMOTE_HIGH",
+    "INCONCLUSIVE"
+  ],
+  "timeboxes_minutes": {
+    "L1": 60,
+    "L2": 120
+  },
+  "version": "4.2"
 }

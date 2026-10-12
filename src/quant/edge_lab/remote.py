@@ -94,10 +94,73 @@ class GitAuthority:
         write_json(self.directory / "STATE.json", state)
         control = Store(self.directory).control()
         from .dashboard import markdown_state, live_state
-        (self.directory / "STATUS.md").write_text(markdown_state(state, control))
-        (self.directory / "LIVE.json").write_text(json.dumps(live_state(state, control), ensure_ascii=False, indent=2) + "\n")
+        discovery = None
+        if (self.directory / "discovery/STATE.json").exists():
+            from .discovery import load
+            discovery = load(self.directory / "discovery")
+        # V3 execute may hold its Store lock here: never re-enter Lab.snapshot.
+        (self.directory / "STATUS.md").write_text(markdown_state(state, control, discovery))
+        (self.directory / "LIVE.json").write_text(json.dumps(live_state(state, control, discovery=discovery), ensure_ascii=False, indent=2) + "\n")
         self.git("add", "--", *sorted(allowed))
         self.git("-c", "user.name=Quant Edge Lab", "-c", "user.email=edge-lab@users.noreply.github.com",
                  "commit", "-m", "edge-lab: durable single-use execution receipt [skip ci]")
+        self.git("push", "origin", "HEAD:refs/heads/" + BRANCH)
+        return self.git("rev-parse", "HEAD")
+
+
+class DiscoveryAuthority(GitAuthority):
+    """The same branch/control/CAS, with a separate exploratory ledger."""
+
+    def snapshot(self):
+        fresh = super().snapshot()
+        fresh["discovery"] = None
+        fresh["code_versions"] = {}
+        if fresh["control"]["paused"]:
+            return fresh
+        remaining = fresh["control"]["limits"]["metadata_bytes_per_tick"]
+
+        def blob(path):
+            nonlocal remaining
+            spec = fresh["sha"] + ":" + path
+            size = int(self.git("cat-file", "-s", spec))
+            if not 0 < size <= remaining:
+                raise Refused("Discovery metadata ceiling before body read")
+            remaining -= size
+            return self.git("show", spec).encode()
+
+        state = json.loads(blob(self.relative + "/discovery/STATE.json"))
+        verify(state)
+        fresh["discovery"] = state
+        for card in state["queue"]:
+            if card.get("status") != "TEST_NOW":
+                continue
+            for path in card.get("code_sha256", {}):
+                if not path.startswith("src/quant/edge_lab/") or not path.endswith(".py") or ".." in Path(path).parts:
+                    raise Refused("Invalid Discovery runner path")
+                # git() strips trailing newlines; use raw bytes for code identity.
+                spec = fresh["sha"] + ":" + path
+                size = int(self.git("cat-file", "-s", spec))
+                if not 0 < size <= remaining:
+                    raise Refused("Discovery code metadata ceiling")
+                raw = subprocess.run(["git", "show", spec], cwd=self.repo,
+                                     capture_output=True, timeout=45, check=True).stdout
+                remaining -= len(raw)
+                fresh["code_versions"][path] = hashlib.sha256(raw).hexdigest()
+        return fresh
+
+    def claim(self, state, expected_sha):
+        if self.git("branch", "--show-current") != BRANCH or self.git("rev-parse", "HEAD") != expected_sha:
+            raise Refused("Discovery checkout/parent differs from fresh authority")
+        from .discovery import save
+        from .dashboard import render
+        allowed = {self.relative + "/discovery/STATE.json", self.relative + "/STATUS.md", self.relative + "/LIVE.json"}
+        if any(p not in allowed for p in self.git("diff", "--cached", "--name-only").splitlines()):
+            raise Refused("Unrelated staged changes before Discovery CAS")
+        save(self.directory / "discovery", state)
+        render(self.directory)
+        self.git("add", "--", *sorted(allowed))
+        self.git("-c", "user.name=Quant Edge Lab", "-c", "user.email=edge-lab@users.noreply.github.com",
+                 "commit", "-m", "discovery: single-use economic claim/receipt [skip ci]")
+        # A rejected fast-forward never authorizes a read or another calculation.
         self.git("push", "origin", "HEAD:refs/heads/" + BRANCH)
         return self.git("rev-parse", "HEAD")

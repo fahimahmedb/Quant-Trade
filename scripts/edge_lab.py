@@ -19,8 +19,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state-dir", default=str(ROOT / "research/edge_lab"))
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("init", "status", "next", "render", "queue", "plan", "live"):
+    for name in ("init", "status", "next", "render", "queue", "plan", "live", "discovery-queue"):
         sub.add_parser(name)
+    discovery_execute = sub.add_parser("discovery-execute", help="Publish one frozen Discovery claim before the explicit economic runner")
+    discovery_execute.add_argument("identity")
+    discovery_execute.add_argument("--cache-dir", required=True)
+    discovery_execute.add_argument("--invocation-id")
     tick = sub.add_parser("tick")
     tick.add_argument("--actor", default="manual")
     tick.add_argument("--offline", action="store_true")
@@ -119,6 +123,21 @@ def main(argv=None):
     elif args.action == "queue":
         from quant.edge_lab.worker import queue
         print(json.dumps(queue(*lab.snapshot()), ensure_ascii=False))
+        return
+    elif args.action == "discovery-queue":
+        from quant.edge_lab.discovery import load, project
+        discovery = load(Path(args.state_dir) / "discovery")
+        if discovery is None:
+            raise Refused("Discovery state is missing; preserve Validation state")
+        print(json.dumps(project(discovery, lab.snapshot()[1]), ensure_ascii=False))
+        return
+    elif args.action == "discovery-execute":
+        from quant.edge_lab.discovery import execute
+        from quant.edge_lab.remote import DiscoveryAuthority
+        authority = DiscoveryAuthority(ROOT, args.state_dir)
+        result = execute(Path(args.state_dir) / "discovery", ROOT, authority, args.identity,
+                         args.cache_dir, args.invocation_id)
+        print(json.dumps(result, ensure_ascii=False))
         return
     elif args.action in ("worker-start", "worker-recover", "worker-finish"):
         from quant.edge_lab.worker import start, recover, finish

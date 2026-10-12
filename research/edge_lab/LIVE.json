@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-11T20:11:56.183994+00:00",
+  "generated_at": "2026-10-12T08:06:03.003092+00:00",
   "state_updated_at": "2026-10-11T20:11:56.163904+00:00",
-  "operational_status": "RECOVERY_NEEDED",
+  "operational_status": "READY",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -46,5 +46,508 @@
   "next_action": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
   "next_due_at": "2026-10-13T12:45:00+00:00",
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "validation": {
+    "status": "RECOVERY_NEEDED",
+    "counts": {
+      "ready": 0,
+      "scheduled": 1,
+      "in_progress": 0,
+      "recovery": 1,
+      "waiting": 12,
+      "finished": 11
+    },
+    "active_task": {
+      "id": "build:treasury-auction-zf:okx-l2-access-clock",
+      "status": "RECOVERY_NEEDED",
+      "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+      "question": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
+      "next": null
+    }
+  },
+  "discovery": {
+    "lane": "DISCOVERY",
+    "status": "READY",
+    "paused": false,
+    "groups": {
+      "ready": [
+        {
+          "code_sha256": {
+            "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
+            "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
+            "src/quant/edge_lab/vix.py": "1c7507ff0728baf6548b7e7246c79062862742adef0b457715c5ce64cd6fbfa8"
+          },
+          "contract": {
+            "BIAS_DIRECTION": {
+              "amplitude": "Settlement marking and pre-crash historical prefix can favor apparent profitability.",
+              "capacity": "One constant contract, no institutional capacity inference.",
+              "costs": "0.10/0.25 points are sensitivity assumptions, not authenticated historical all-in costs.",
+              "execution": "No BBO, margin path, slippage or market impact; cannot claim implementability.",
+              "survivorship": "All36 known successful quarterly contracts required; coverage-selected prefix excludes2022–25 and is explicitly a new expression.",
+              "timing": "Settlement prices are not guaranteed simultaneous executable fills."
+            },
+            "TEST_CANNOT_SAY": [
+              "KILL_MECHANISM",
+              "PROMOTE_MECHANISM",
+              "PROMOTE_HIGH",
+              "ALPHA",
+              "EDGE_VALIDATED",
+              "LIVE_READY"
+            ],
+            "TEST_CAN_KILL": [
+              "KILL_EXPRESSION"
+            ],
+            "TEST_CAN_SUPPORT": [
+              "PROMOTE_EXPRESSION"
+            ],
+            "adequacy": {
+              "all_or_nothing": true,
+              "failure_verdict": "PARK_DATA",
+              "minimum_contracts": 36,
+              "required_years": [
+                2013,
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021
+              ],
+              "requirements": [
+                "exact published36 source hashes and bytes",
+                "positive finite settlements with both endpoints within4 calendar days",
+                "one nonoverlapping position per listed contract",
+                "no sample exclusion/substitution/retry on failure"
+              ]
+            },
+            "alternative_explanation": "Compensation for crash/convexity/liquidity risk; current alpha is not identified.",
+            "claim_ceiling": "PROMOTE_EXPRESSION",
+            "created_at": "2026-10-12T07:53:48.371521+00:00",
+            "design": {
+              "bootstrap_draws": 2000,
+              "bootstrap_seed": 41011,
+              "central_cost_points": 0.1,
+              "endpoint_tolerance_days": 4,
+              "entry_days": 45,
+              "exit_days": 15,
+              "multiplier_usd_per_point": 1000,
+              "stress_cost_points": 0.25
+            },
+            "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+            "kill_if": "Gross pooledmean <=0 ORstressnet pooledmean <=0: KILL_EXPRESSION only.",
+            "label": "EXPLORATORY",
+            "live_trading_authorized": false,
+            "mechanism": "Volatility hedgers may pay an insurance risk premium to short VX futures; this expression also bears crash risk.",
+            "negative_control": "Not an independent causal negative control: exactly one predefined leave-largest-positive-year-out concentration challenge on a primary positive result.",
+            "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v0",
+            "primary_signature": "Positive fixed-rule short-futures settlement PnL in both fixed chronological blocks; this tests expression persistence, not causal identification.",
+            "prior_exposures": [
+              "PRIVATE_UNKNOWN",
+              "Public short-volatility literature",
+              "v0 source acquisition metadata and known2013–21 coverage; no economics calculated",
+              "IncidentalVX2026 publicquote snippets (VX39/U6, VX40/V6); not used to choose design or claimed virgin",
+              "TEC10 2026-09-25 4.63% incidental publicquote unrelated toVX selection"
+            ],
+            "promote_if": "Centralmean >=0.25 points ANDstressmean >0 ANDcentralmean >0 in2013–2018 and2019–2021, then exactlyone passing declared adversary. ElsePARK_ECONOMICS.",
+            "real_capital_authorized": false,
+            "red_team": {
+              "additional_search_allowed": false,
+              "fail_verdict": "PARK_ECONOMICS",
+              "method": "Remove single year with largest central-net year-sum; earliest year breaks ties.",
+              "pass_if": "Remaining32 trades have positive central and stress net means.",
+              "required_before_promotion": true,
+              "trigger": "primary expression passes fixed promotion criteria"
+            },
+            "resource_limits": {
+              "job_wall_seconds": 120,
+              "paid_usd": 0,
+              "per_request_seconds": 15,
+              "per_response_bytes": 262144,
+              "retries": 0,
+              "total_payload_bytes": 2097152
+            },
+            "rights": {
+              "public_output": "Aggregated and derived PnL without raw quoted entry/exit prices.",
+              "raw_use": "Owner private noncommercial research only subject to Cboe terms; no raw data redistribution.",
+              "rights_limit": "No institutional, commercial, live or redistribution rights inferred.",
+              "terms_url": "https://www.cboe.com/terms/"
+            },
+            "timebox_minutes": 60,
+            "uncertainty": "Year-cluster bootstrap9years,2000draws,seed41011,95%descriptive; no independent36-observation claim, Sharpe/CAGR or alpha.",
+            "unchanged_siblings": [
+              "v0 remains PARK_DATA requiring52 contracts",
+              "V4.2 designpilot20-trading-days-to-final-settlement remains unexecuted separate design; no silent protocol replacement"
+            ],
+            "unit_economics": {
+              "break_even_friction": "Gross mean PnL points is maximum average all-in roundtrip friction; compute once after fixed sample is complete.",
+              "central_roundtrip_cost_points": 0.1,
+              "fees_limit": "June2026 schedule is not historical2013–21 all-in cost proof; no purchase.",
+              "fees_source": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+              "stress_roundtrip_cost_points": 0.25,
+              "unit": "VX points per one-contract round trip; $1000 per point"
+            },
+            "variant_accounting": {
+              "adversarial_checks": 1,
+              "cost_scenarios": 2,
+              "effective_independent_trials": "UNKNOWN",
+              "mechanism_cluster": "cfe-vix-term-premium",
+              "new_expressions": 1
+            },
+            "version": "4.2",
+            "who_pays": "Investors buying volatility protection.",
+            "why_persist": "Insurance demand and constrained risk-bearing; publication/crowding and risk compensation may explain returns."
+          },
+          "contract_path": "experiments/disc-cfe-vix-term-premium-l1-v1.contract.json",
+          "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
+          "cost_scenarios": 2,
+          "created_at": "2026-10-12T07:53:48.371521+00:00",
+          "execution_attempts": 0,
+          "expressions": 1,
+          "family": "cfe-vix-term-premium",
+          "id": "disc-cfe-vix-term-premium-l1-v1",
+          "level": "L1",
+          "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v1.manifest.json",
+          "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
+          "max_time_minutes": 60,
+          "mechanism_cluster": "cfe-vix-term-premium",
+          "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v0",
+          "runner": "vix-known-prefix-v1",
+          "selection": {
+            "data_friction": "LOW",
+            "decision_leverage": "HIGH",
+            "discriminating_power": "HIGH",
+            "economic_plausibility": "HIGH",
+            "expected_minutes": 5
+          },
+          "status": "TEST_NOW",
+          "title": "VX · expression fixe45→15jours · couverture2013–2021"
+        }
+      ],
+      "running": [],
+      "recovery": [],
+      "parked": [
+        {
+          "completed_at": "2026-10-11T22:23:23.734417+00:00",
+          "cost_scenarios": 2,
+          "decision": "PARK",
+          "execution_attempts": 1,
+          "expressions": 1,
+          "family": "cfe-vix-term-premium",
+          "id": "disc-cfe-vix-term-premium-l1-v0",
+          "kill_if": "No economically meaningful gross effect under a favorable coarse proxy, or sign inconsistent with the mechanism.",
+          "level": "L1",
+          "max_time_minutes": 60,
+          "mechanism": "Volatility hedgers may pay a persistent insurance premium to futures sellers.",
+          "mechanism_cluster": "cfe-vix-term-premium",
+          "next": "New complete data route required; reuse saved files; do not repeat failed request.",
+          "predeclaration": "experiments/disc-cfe-vix-term-premium-l1-v0.md",
+          "prior_exposures": "PRIVATE_UNKNOWN; public short-vol literature; no pristine claim",
+          "priority": 1,
+          "promote_if": "Effect remains materially positive after conservative simple costs and is directionally stable without tuning.",
+          "proxy": "Public CFE settlement/EOD contract data with one fixed roll rule and conservative fixed costs",
+          "question": "Is a coarse fixed-rule VX risk-premium effect economically visible before paying for full executable-history reconstruction?",
+          "result": "36 files acquired; H2022 HTTP403; economics not computed",
+          "selected_at": "2026-10-11T22:16:30.575864+00:00",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA",
+          "who_pays": "Demand for convexity/volatility protection"
+        },
+        {
+          "completed_at": "2026-10-11T22:23:23.734417+00:00",
+          "decision": "PARK",
+          "execution_attempts": 0,
+          "family": "sec-events",
+          "id": "disc-sec-form4-eod-l1-v0",
+          "kill_if": "Gross effect is near zero or unstable before expensive data-chain cleanup.",
+          "level": "L1",
+          "max_time_minutes": 60,
+          "mechanism": "Some insider transactions may contain information not immediately incorporated into price.",
+          "mechanism_cluster": "sec-events",
+          "next": "Locate actual saved census with hashes; do not rebuild in this cycle.",
+          "priority": 2,
+          "promote_if": "Effect is economically large and consistent enough that CIK/security PIT, delists and corporate actions are worth reconstructing.",
+          "proxy": "Existing SEC census + simple public EOD security price proxy; explicit survivorship/delist bias label",
+          "question": "Does the already-built Form 4 event population show a gross post-event effect large enough to justify survivorship-safe mapping work?",
+          "result": "Referenced census code exists; event dataset absent at pinned current source head and latest run artifact list",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA",
+          "who_pays": "Counterparties slow to incorporate informative insider activity"
+        },
+        {
+          "completed_at": "2026-10-11T22:25:50.501096+00:00",
+          "cost_scenarios": 2,
+          "decision": "PARK",
+          "execution_attempts": 1,
+          "expressions": 1,
+          "family": "france-sovereign-repricing",
+          "id": "disc-france-oat-bund-l1-v0",
+          "kill_if": "No visible relative response even at coarse daily level.",
+          "level": "L1",
+          "max_time_minutes": 60,
+          "mechanism": "Fiscal-information surprises may temporarily reprice French sovereign risk relative to Germany.",
+          "mechanism_cluster": "france-sovereign-repricing",
+          "next": "A verified distinct accessible proxy is required; no blind retry of declared key.",
+          "predeclaration": "experiments/disc-france-oat-bund-l1-v0.md",
+          "priority": 3,
+          "promote_if": "Directionally coherent response is large enough to justify FOAT/FGBL, CTD, DV01, roll and cost work.",
+          "proxy": "Public daily sovereign-yield/index proxies with predeclared event set and horizon; no claim of executable PnL",
+          "question": "Is there a coarse relative OAT/Bund response around a fixed public event set large enough to justify futures-level reconstruction?",
+          "result": "Declared ECB France key returned404; no yields or returns acquired",
+          "selected_at": "2026-10-11T22:23:23.734417+00:00",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA",
+          "who_pays": "Investors adjusting sovereign-risk exposure after fiscal information"
+        },
+        {
+          "family": "policy-announcement-repricing",
+          "id": "disc-policy-prospective-l1-v0",
+          "kill_if": "No meaningful response in the prospective sample after simple costs.",
+          "level": "L1",
+          "max_time_minutes": 60,
+          "mechanism": "Policy announcements may create short-lived repricing when content surprises expectations.",
+          "mechanism_cluster": "policy-announcement-repricing",
+          "not_before": "2026-10-13T12:45:00+00:00",
+          "priority": 4,
+          "promote_if": "Repeated prospective response is large enough to justify historical PIT reconstruction.",
+          "proxy": "Prospective official-source receipt clock + one predeclared liquid-market proxy/horizon",
+          "question": "Can a small prospective sample show a repeatable sign/magnitude response without reconstructing historical famous events?",
+          "status": "PARK_UNTIL",
+          "who_pays": "Participants slower to process or reposition after policy information"
+        },
+        {
+          "completed_at": "2026-10-11T22:28:54.485080+00:00",
+          "cost_scenarios": 2,
+          "decision": "PARK",
+          "execution_attempts": 1,
+          "expressions": 1,
+          "family": "bitmex-book-pressure",
+          "id": "disc-crypto-book-pressure-prospective-l1-v0",
+          "kill_if": "No directional effect net of simple crossing/fee assumptions.",
+          "level": "L1",
+          "max_time_minutes": 60,
+          "mechanism": "Persistent directional liquidity demand may make top-of-book imbalance informative over short horizons.",
+          "mechanism_cluster": "bitmex-book-pressure",
+          "next": "Distinct verified full-BBO source plus corrected synthetic-checked recorder required before a new declared window; no replay.",
+          "predeclaration": "experiments/disc-crypto-book-pressure-prospective-l1-v0.md",
+          "predeclared_upper_bound_comparators": 1,
+          "priority": 5,
+          "promote_if": "Effect is large and stable enough to justify deeper PIT/execution validation.",
+          "proxy": "Small prospective public order-book capture on a venue whose public access is permitted; fixed lagged signal, fixed horizon, fixed costs",
+          "question": "Can a short prospective, public, bounded order-book capture show an effect large enough to justify historical L2 work?",
+          "result": "21 incomplete response records; zero BBO/valid trades; capture early-stop deviation preserved",
+          "result_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+          "selected_at": "2026-10-11T22:25:50.501096+00:00",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA",
+          "who_pays": "Liquidity takers demanding immediacy"
+        },
+        {
+          "family": "treasury-auction-zf",
+          "id": "disc-zf-auction-pressure-v0",
+          "level": "L1",
+          "mechanism_cluster": "treasury-auction-zf",
+          "priority": 20,
+          "reason": "Full BBO/roll package currently dominates cost before an effect has been demonstrated; reactivate only if a cheap public proxy is identified.",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA"
+        },
+        {
+          "family": "hyperliquid-forced-flow",
+          "id": "disc-hyperliquid-forced-flow-v0",
+          "level": "L1",
+          "mechanism_cluster": "hyperliquid-forced-flow",
+          "priority": 21,
+          "reason": "Heavy node/global-fill infrastructure before first signal. Reactivate only with a cheap compliant data route.",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA"
+        },
+        {
+          "family": "f2-prediction-access",
+          "id": "disc-f2-prediction-v0",
+          "level": "L1",
+          "mechanism_cluster": "f2-prediction-access",
+          "priority": 22,
+          "reason": "Permission/access blocker; do not consume research cycles until access changes.",
+          "status": "PARK",
+          "typed_verdict": "PARK_DATA"
+        },
+        {
+          "family": "france-fuel-information",
+          "id": "disc-france-fuel-v0",
+          "level": "L1",
+          "mechanism_cluster": "france-fuel-information",
+          "priority": 23,
+          "reason": "Potential consumer-procurement rent but secondary to current tradable-alpha objective.",
+          "status": "PARK",
+          "typed_verdict": "PARK_ECONOMICS"
+        }
+      ],
+      "finished": []
+    },
+    "counts": {
+      "ready": 1,
+      "running": 0,
+      "recovery": 0,
+      "parked": 9,
+      "finished": 0
+    },
+    "active_lease": null,
+    "next": {
+      "code_sha256": {
+        "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
+        "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
+        "src/quant/edge_lab/vix.py": "1c7507ff0728baf6548b7e7246c79062862742adef0b457715c5ce64cd6fbfa8"
+      },
+      "contract": {
+        "BIAS_DIRECTION": {
+          "amplitude": "Settlement marking and pre-crash historical prefix can favor apparent profitability.",
+          "capacity": "One constant contract, no institutional capacity inference.",
+          "costs": "0.10/0.25 points are sensitivity assumptions, not authenticated historical all-in costs.",
+          "execution": "No BBO, margin path, slippage or market impact; cannot claim implementability.",
+          "survivorship": "All36 known successful quarterly contracts required; coverage-selected prefix excludes2022–25 and is explicitly a new expression.",
+          "timing": "Settlement prices are not guaranteed simultaneous executable fills."
+        },
+        "TEST_CANNOT_SAY": [
+          "KILL_MECHANISM",
+          "PROMOTE_MECHANISM",
+          "PROMOTE_HIGH",
+          "ALPHA",
+          "EDGE_VALIDATED",
+          "LIVE_READY"
+        ],
+        "TEST_CAN_KILL": [
+          "KILL_EXPRESSION"
+        ],
+        "TEST_CAN_SUPPORT": [
+          "PROMOTE_EXPRESSION"
+        ],
+        "adequacy": {
+          "all_or_nothing": true,
+          "failure_verdict": "PARK_DATA",
+          "minimum_contracts": 36,
+          "required_years": [
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021
+          ],
+          "requirements": [
+            "exact published36 source hashes and bytes",
+            "positive finite settlements with both endpoints within4 calendar days",
+            "one nonoverlapping position per listed contract",
+            "no sample exclusion/substitution/retry on failure"
+          ]
+        },
+        "alternative_explanation": "Compensation for crash/convexity/liquidity risk; current alpha is not identified.",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "created_at": "2026-10-12T07:53:48.371521+00:00",
+        "design": {
+          "bootstrap_draws": 2000,
+          "bootstrap_seed": 41011,
+          "central_cost_points": 0.1,
+          "endpoint_tolerance_days": 4,
+          "entry_days": 45,
+          "exit_days": 15,
+          "multiplier_usd_per_point": 1000,
+          "stress_cost_points": 0.25
+        },
+        "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+        "kill_if": "Gross pooledmean <=0 ORstressnet pooledmean <=0: KILL_EXPRESSION only.",
+        "label": "EXPLORATORY",
+        "live_trading_authorized": false,
+        "mechanism": "Volatility hedgers may pay an insurance risk premium to short VX futures; this expression also bears crash risk.",
+        "negative_control": "Not an independent causal negative control: exactly one predefined leave-largest-positive-year-out concentration challenge on a primary positive result.",
+        "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v0",
+        "primary_signature": "Positive fixed-rule short-futures settlement PnL in both fixed chronological blocks; this tests expression persistence, not causal identification.",
+        "prior_exposures": [
+          "PRIVATE_UNKNOWN",
+          "Public short-volatility literature",
+          "v0 source acquisition metadata and known2013–21 coverage; no economics calculated",
+          "IncidentalVX2026 publicquote snippets (VX39/U6, VX40/V6); not used to choose design or claimed virgin",
+          "TEC10 2026-09-25 4.63% incidental publicquote unrelated toVX selection"
+        ],
+        "promote_if": "Centralmean >=0.25 points ANDstressmean >0 ANDcentralmean >0 in2013–2018 and2019–2021, then exactlyone passing declared adversary. ElsePARK_ECONOMICS.",
+        "real_capital_authorized": false,
+        "red_team": {
+          "additional_search_allowed": false,
+          "fail_verdict": "PARK_ECONOMICS",
+          "method": "Remove single year with largest central-net year-sum; earliest year breaks ties.",
+          "pass_if": "Remaining32 trades have positive central and stress net means.",
+          "required_before_promotion": true,
+          "trigger": "primary expression passes fixed promotion criteria"
+        },
+        "resource_limits": {
+          "job_wall_seconds": 120,
+          "paid_usd": 0,
+          "per_request_seconds": 15,
+          "per_response_bytes": 262144,
+          "retries": 0,
+          "total_payload_bytes": 2097152
+        },
+        "rights": {
+          "public_output": "Aggregated and derived PnL without raw quoted entry/exit prices.",
+          "raw_use": "Owner private noncommercial research only subject to Cboe terms; no raw data redistribution.",
+          "rights_limit": "No institutional, commercial, live or redistribution rights inferred.",
+          "terms_url": "https://www.cboe.com/terms/"
+        },
+        "timebox_minutes": 60,
+        "uncertainty": "Year-cluster bootstrap9years,2000draws,seed41011,95%descriptive; no independent36-observation claim, Sharpe/CAGR or alpha.",
+        "unchanged_siblings": [
+          "v0 remains PARK_DATA requiring52 contracts",
+          "V4.2 designpilot20-trading-days-to-final-settlement remains unexecuted separate design; no silent protocol replacement"
+        ],
+        "unit_economics": {
+          "break_even_friction": "Gross mean PnL points is maximum average all-in roundtrip friction; compute once after fixed sample is complete.",
+          "central_roundtrip_cost_points": 0.1,
+          "fees_limit": "June2026 schedule is not historical2013–21 all-in cost proof; no purchase.",
+          "fees_source": "https://cdn.cboe.com/resources/membership/cfefeeschedule.pdf",
+          "stress_roundtrip_cost_points": 0.25,
+          "unit": "VX points per one-contract round trip; $1000 per point"
+        },
+        "variant_accounting": {
+          "adversarial_checks": 1,
+          "cost_scenarios": 2,
+          "effective_independent_trials": "UNKNOWN",
+          "mechanism_cluster": "cfe-vix-term-premium",
+          "new_expressions": 1
+        },
+        "version": "4.2",
+        "who_pays": "Investors buying volatility protection.",
+        "why_persist": "Insurance demand and constrained risk-bearing; publication/crowding and risk compensation may explain returns."
+      },
+      "contract_path": "experiments/disc-cfe-vix-term-premium-l1-v1.contract.json",
+      "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
+      "cost_scenarios": 2,
+      "created_at": "2026-10-12T07:53:48.371521+00:00",
+      "execution_attempts": 0,
+      "expressions": 1,
+      "family": "cfe-vix-term-premium",
+      "id": "disc-cfe-vix-term-premium-l1-v1",
+      "level": "L1",
+      "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v1.manifest.json",
+      "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
+      "max_time_minutes": 60,
+      "mechanism_cluster": "cfe-vix-term-premium",
+      "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v0",
+      "runner": "vix-known-prefix-v1",
+      "selection": {
+        "data_friction": "LOW",
+        "decision_leverage": "HIGH",
+        "discriminating_power": "HIGH",
+        "economic_plausibility": "HIGH",
+        "expected_minutes": 5
+      },
+      "status": "TEST_NOW",
+      "title": "VX · expression fixe45→15jours · couverture2013–2021"
+    },
+    "economic_access_authorized": false,
+    "edge_validated": false
+  }
 }

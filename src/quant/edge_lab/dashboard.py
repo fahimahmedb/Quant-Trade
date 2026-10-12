@@ -19,7 +19,7 @@ def _session_time(session):
             session.get("heartbeat_at") or session.get("started_at") or "")
 
 
-def live_state(state, control, now=None):
+def live_state(state, control, now=None, discovery=None):
     """Small machine-readable contract for the room/site; derived, never authority."""
     now = now or datetime.now(timezone.utc)
     from .worker import queue
@@ -56,7 +56,7 @@ def live_state(state, control, now=None):
     else:
         next_action = None
     tick = state["scheduler"].get("last_tick") or {}
-    return {"schema": 3, "generated_at": now.isoformat(), "state_updated_at": state.get("updated_at"),
+    value = {"schema": 3, "generated_at": now.isoformat(), "state_updated_at": state.get("updated_at"),
         "operational_status": operational, "paused": control["paused"],
         "scheduler": {"enabled": state["scheduler"].get("enabled"), "last_tick_at": tick.get("at"),
             "last_tick_actor": tick.get("actor"), "last_tick_status": tick.get("status"),
@@ -75,6 +75,13 @@ def live_state(state, control, now=None):
         "research_options_pending": len(plan["pending"]), "research_options_consumed": len(plan["consumed"]),
         "next_action": next_action, "next_due_at": plan.get("next_due_at"),
         "real_capital_authorized": False, "live_trading_authorized": False}
+    value["validation"] = {"status": operational, "counts": work["counts"], "active_task": value["active_task"]}
+    if discovery is not None:
+        from .discovery import project as discovery_project
+        view = discovery_project(discovery, control, now)
+        value["discovery"] = view
+        value["operational_status"] = view["status"]
+    return value
 
 
 def markdown(directory):
@@ -83,7 +90,7 @@ def markdown(directory):
     return markdown_state(state, control)
 
 
-def markdown_state(state, control):
+def markdown_state(state, control, discovery=None):
     """Pure projection, also usable while the writer holds the state lock."""
     tick = state["scheduler"]["last_tick"] or {}
     from .worker import queue
@@ -159,7 +166,18 @@ def markdown_state(state, control):
             lines.append(f"- `{identity}` : **{item['status']}** — {clean(next_action)} ; preuves {', '.join(item['evidence'])}.")
     lines += ["", "Les verdicts économiques importés conservent leur portée. Source inaccessible, manque de puissance et défaut logiciel restent distincts.",
               "", f"[Audit et méthodes externes]({state['imported']['audit']}) · [Fonctionnement et reprise](README.md)", ""]
-    return "\n".join(lines)
+    content = "\n".join(lines)
+    if discovery is not None:
+        from .discovery import project as discovery_project
+        view = discovery_project(discovery, control)
+        pending = view.get("next")
+        content = ("# Quant — Discovery V4.2 / Validation V3\n\n"
+                   + f"Discovery : **{view['status']}** ; Validation : **{live['operational_status']}**.\n\n"
+                   + "Prochain test : " + (pending["id"] if pending else "aucun test admissible") + ".\n\n"
+                   + f"Tests économiques terminés : {discovery.get('metrics', {}).get('completed_economic_tests', 0)}. "
+                   + "Les fichiers acquis et contrôles logiciels ne sont pas des résultats économiques.\n\n"
+                   + content)
+    return content
 
 
 def render(directory):
@@ -167,8 +185,14 @@ def render(directory):
     lab = Lab(directory)
     state, control = lab.snapshot()
     status = root / "STATUS.md"
-    status.write_text(markdown_state(state, control))
-    (root / "LIVE.json").write_text(json.dumps(live_state(state, control), ensure_ascii=False, indent=2) + "\n")
+    discovery = None
+    if (root / "discovery/STATE.json").exists():
+        from .discovery import load
+        discovery = load(root / "discovery")
+    content = markdown_state(state, control, discovery)
+    live = live_state(state, control, discovery=discovery)
+    status.write_text(content)
+    (root / "LIVE.json").write_text(json.dumps(live, ensure_ascii=False, indent=2) + "\n")
     return status
 
 
