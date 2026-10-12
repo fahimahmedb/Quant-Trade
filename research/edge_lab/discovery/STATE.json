@@ -93,6 +93,17 @@
       },
       "previous": "fc12fdb0a1622135d84201f26c387b925349be6029e1de90b88715d5358c5871",
       "sequence": 6
+    },
+    {
+      "at": "2026-10-12T08:21:50.293706+00:00",
+      "hash": "4dea03fac9d98f5bc5334468f0daf6b863015ca5c6375c3e38a6c5b774bbe301",
+      "kind": "DISCOVERY_CLAIMED",
+      "payload": {
+        "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+        "invocation_id": "owner-v42-vix-reader-20261012"
+      },
+      "previous": "21e8606385e9b53703bc84bc92dba776beb73290ccfad431c703a79809d31232",
+      "sequence": 7
     }
   ],
   "exposure_ledger": [
@@ -128,12 +139,20 @@
       "invocation_id": "owner-v42-vix-v1-20261012",
       "manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
       "source_scope": "vix-known-prefix-v1"
+    },
+    {
+      "at": "2026-10-12T08:21:50.293662+00:00",
+      "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
+      "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "invocation_id": "owner-v42-vix-reader-20261012",
+      "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
+      "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "738ab4d5a095c875a51989585cb446d37cc347ab60380dd0d3e095c3f44ed975",
+  "integrity": "3b7cc47a44e44d10e67be1674bed220164773cb20b9997ab69ead51c46226eee",
   "live_trading_authorized": false,
   "metrics": {
-    "actual_data_test_attempts": 4,
+    "actual_data_test_attempts": 5,
     "architecture_share_basis": "Rolling agent-time/token accounting unavailable. Only one bounded Site display change;32synthetic checks. No numeric90/10 compliance asserted.",
     "architecture_share_estimate": null,
     "calculations_attempted": 1,
@@ -162,6 +181,7 @@
     "execution_attempts_by_experiment": {
       "disc-cfe-vix-term-premium-l1-v0": 1,
       "disc-cfe-vix-term-premium-l1-v1": 1,
+      "disc-cfe-vix-term-premium-l1-v2-reader": 1,
       "disc-crypto-book-pressure-prospective-l1-v0": 1,
       "disc-f2-prediction-v0": 0,
       "disc-france-fuel-v0": 0,
@@ -173,7 +193,7 @@
     },
     "execution_attempts_by_mechanism_cluster": {
       "bitmex-book-pressure": 1,
-      "cfe-vix-term-premium": 2,
+      "cfe-vix-term-premium": 3,
       "f2-prediction-access": 0,
       "france-fuel-information": 0,
       "france-sovereign-repricing": 1,
@@ -182,7 +202,7 @@
       "sec-events": 0,
       "treasury-auction-zf": 0
     },
-    "experiment_count": 10,
+    "experiment_count": 11,
     "independence_claim": "NONE; sibling expressions are not independent discoveries",
     "mechanism_cluster_count": 9
   },
@@ -580,6 +600,7 @@
       "typed_verdict": "PARK_DATA"
     },
     {
+      "claimed_at": "2026-10-12T08:21:50.293662+00:00",
       "code_sha256": {
         "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
         "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -715,10 +736,12 @@
       "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
       "cost_scenarios": 2,
       "created_at": "2026-10-12T08:18:06.754044+00:00",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
       "family": "cfe-vix-term-premium",
       "id": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "invocation_id": "owner-v42-vix-reader-20261012",
+      "lease_seconds": 3600,
       "level": "L1",
       "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
       "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
@@ -733,12 +756,12 @@
         "economic_plausibility": "HIGH",
         "expected_minutes": 5
       },
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "title": "VX \u00b7 lecteur CFE r\u00e9par\u00e9 \u00b7 r\u00e8gle45\u219215jours inchang\u00e9e"
     }
   ],
   "real_capital_authorized": false,
   "schema": 1,
-  "status": "READY",
-  "updated_at": "2026-10-12T08:18:06.754044+00:00"
+  "status": "RUNNING",
+  "updated_at": "2026-10-12T08:21:50.293662+00:00"
 }

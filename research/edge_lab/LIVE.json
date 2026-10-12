@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T08:21:31.152525+00:00",
+  "generated_at": "2026-10-12T08:21:50.305874+00:00",
   "state_updated_at": "2026-10-12T08:21:31.136080+00:00",
-  "operational_status": "READY",
+  "operational_status": "RUNNING",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -67,11 +67,13 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "READY",
+    "status": "RUNNING",
     "paused": false,
     "groups": {
-      "ready": [
+      "ready": [],
+      "running": [
         {
+          "claimed_at": "2026-10-12T08:21:50.293662+00:00",
           "code_sha256": {
             "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
             "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -207,10 +209,12 @@
           "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
           "cost_scenarios": 2,
           "created_at": "2026-10-12T08:18:06.754044+00:00",
-          "execution_attempts": 0,
+          "execution_attempts": 1,
           "expressions": 1,
           "family": "cfe-vix-term-premium",
           "id": "disc-cfe-vix-term-premium-l1-v2-reader",
+          "invocation_id": "owner-v42-vix-reader-20261012",
+          "lease_seconds": 3600,
           "level": "L1",
           "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
           "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
@@ -225,11 +229,10 @@
             "economic_plausibility": "HIGH",
             "expected_minutes": 5
           },
-          "status": "TEST_NOW",
+          "status": "RUNNING",
           "title": "VX · lecteur CFE réparé · règle45→15jours inchangée"
         }
       ],
-      "running": [],
       "recovery": [],
       "parked": [
         {
@@ -624,14 +627,14 @@
       ]
     },
     "counts": {
-      "ready": 1,
-      "running": 0,
+      "ready": 0,
+      "running": 1,
       "recovery": 0,
       "parked": 9,
       "finished": 1
     },
-    "active_lease": null,
-    "next": {
+    "active_lease": {
+      "claimed_at": "2026-10-12T08:21:50.293662+00:00",
       "code_sha256": {
         "src/quant/edge_lab/discovery.py": "c5e7de0c0530282b68e8f78330db7190723bafa47423f50a06495ba78ad46ff2",
         "src/quant/edge_lab/remote.py": "ebf4e4a3c51bd39f60c7c89fd9a26085adc67415a2a6e4c57f100bd3cd055cf6",
@@ -767,10 +770,12 @@
       "contract_sha256": "6ceab04d5f8ddbc0c5c1d7e7fa2314ff9ef60015579165b3e3d4fc1b79891d01",
       "cost_scenarios": 2,
       "created_at": "2026-10-12T08:18:06.754044+00:00",
-      "execution_attempts": 0,
+      "execution_attempts": 1,
       "expressions": 1,
       "family": "cfe-vix-term-premium",
       "id": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "invocation_id": "owner-v42-vix-reader-20261012",
+      "lease_seconds": 3600,
       "level": "L1",
       "manifest_path": "experiments/disc-cfe-vix-term-premium-l1-v2-reader.manifest.json",
       "manifest_sha256": "72b15bacbcc166079605037afd9406d91c0f728a07556e6073ca10166f8bca45",
@@ -785,9 +790,10 @@
         "economic_plausibility": "HIGH",
         "expected_minutes": 5
       },
-      "status": "TEST_NOW",
+      "status": "RUNNING",
       "title": "VX · lecteur CFE réparé · règle45→15jours inchangée"
     },
+    "next": null,
     "economic_access_authorized": false,
     "edge_validated": false
   }
