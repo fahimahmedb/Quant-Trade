@@ -12,7 +12,7 @@ Tests économiques terminés : 1. Les fichiers acquis et contrôles logiciels ne
 
 Le statut opérationnel combine file, lease worker et planificateur ; le dernier tick seul ne pilote plus l'affichage.
 
-Dernier cycle attesté : `2026-10-12T21:11:50.775984+00:00` ; acteur `github-actions-metadata` ; statut tick `IDLE`.
+Dernier cycle attesté : `2026-10-12T21:13:10.221148+00:00` ; acteur `github-actions-metadata` ; statut tick `IDLE`.
 Worker de recherche programmé : configuration observée `2026-10-11T17:35:42.938259+00:00`.
 
 ## Autonomie observable V3
@@ -81,9 +81,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 2.8338 |
-| Durée mesurée des opérations locales | 38.3096 |
-| Octets de payload de métadonnées | 32116 |
+| CPU mesuré des opérations locales | 2.8443 |
+| Durée mesurée des opérations locales | 38.5502 |
+| Octets de payload de métadonnées | 32550 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
