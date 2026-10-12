@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_4_TRANSIENT_STATE_LEASES",
+  "trace_id": "P4-PLATFORM-BOUNDARY-20261012T221600Z",
+  "started_at_utc": "2026-10-12T22:16:00Z",
+  "finished_at_utc": "2026-10-12T22:16:00Z",
+  "executor_environment": "Builder Chat",
+  "provenance": "UNVERIFIED",
+  "observed_fact": "The deterministic contract harness proves the required state-machine invariants, but Builder Chat has no demonstrated transient Site store, persistent backend process, restart control, live stream cursor, or lease-bearing worker connection on the actual Site platform. Therefore the same canaries cannot yet be executed against the production platform primitive.",
+  "evidence_reference": "P4-LOCAL-HARNESS-20261012T221132Z; harness/protocol_model.py; harness/test_protocol_model.py",
+  "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+  "first_broken_transition": "ACTUAL_PLATFORM_TRANSIENT_STATE_PRIMITIVE_UNAVAILABLE",
+  "notes": "The local 11/11 result is preparatory proof, not a platform PASS. GitHub was not used as a heartbeat or transient event store."
+}
