@@ -1,3 +1,16 @@
+# Current STATE / NEXT — 2026-10-12, 20:21 UTC prospective scan + one L0
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- Odd-lot prospective v1 exists and T0 20:00Z passed. One SEC metadata feed at 20:21:50Z showed four entries, latest October 9; no post-T0 candidate observed. This bounded snapshot is not a completeness guarantee. No selection, claim, price payload or economic look. Exposed issuers, including Anebulo, remain ineligible.
+- One other research action completed: WTI producer hedging-pressure L0. Official CFTC data route is accessible without key; EIA spot workbook HEAD succeeds. Decision PARK_DATA for a spot-only futures-premium implementation: cash changes omit forward discount/roll/basis, and publication/rights limits remain. No economic rejection or alpha claim.
+- Proof and source receipts: [WTI L0 + mandatory prospective check](discovery/qualifications/wti-producer-hedging-pressure-l0-2026-10-12.md).
+- NEXT: first check the FIRST chronologically qualifying new odd-lot event under its unchanged frozen protocol. If none is admissible, qualify one distinct free WTI futures settlement/calendar route in <=15 minutes / <=3 primary metadata requests, no retries or price payloads; absent such a route, keep PARK_DATA and move to another L0. Reuse CFTC/EIA evidence.
+- Historical Anebulo calibration is already closed by its own proof; the older lookup below is superseded. Other concurrent frozen protocols and all prior outcomes remain unchanged. The refresh of GitHub publication parent did not repeat any source probe or calculation.
+- Original economic counters, queue and exposure ledger preserved; new documentary exposure is in the hash-chained event. Spend 0 USD; tokens/global bill unknown. No runtime, dashboard or automation changes.
+
+## Earlier snapshots — preserved, not current next instructions
+
 # Current STATE / NEXT — 2026-10-12, productive fallback research
 
 STATE = L0_QUALIFIED_FOR_DESIGN; one documentary action completed, zero new economic executions.

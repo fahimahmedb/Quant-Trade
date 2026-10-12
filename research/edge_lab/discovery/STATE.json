@@ -243,6 +243,81 @@
       },
       "previous": "46864b732e68c9e4f530481b0e8d6978d528a8a214c509c7b3ba462285f60e32",
       "sequence": 13
+    },
+    {
+      "at": "2026-10-12T20:30:12.571113+00:00",
+      "hash": "ab553be26dd0f91dd81df33583a8f6cf2965a43810f92b8186aa9343d8545441",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "cost_observable": {
+          "browser_origin_bytes": null,
+          "direct_http_requests": 4,
+          "direct_http_response_body_bytes": 5054,
+          "global_bill": null,
+          "paid_usd": 0,
+          "tokens": null,
+          "web_tool_calls": 3
+        },
+        "decision": "PARK_DATA",
+        "decision_scope": "Spot-only implementation of futures hedging-premium hypothesis; no economic rejection",
+        "economic_execution": false,
+        "head_observed": "29f4ee22f72bbe11f0539c80cae868b6de5a384b",
+        "live_trading_authorized": false,
+        "next_decision": "Odd-lot prospective check first; otherwise one bounded distinct futures-route metadata qualification",
+        "prior_next_resolution": {
+          "bounds": {
+            "completion_results": false,
+            "economic_access_authorized": false,
+            "max_minutes": 20,
+            "max_primary_document_metadata_requests": 4,
+            "new_census": false,
+            "price_payloads": false,
+            "retries": 0
+          },
+          "constraints": [
+            "Use cached primary interpretations and accession 0001493152-25-028828; do not repeat the L0 search.",
+            "Resolve 2026/2006 expiration contradiction against original offer/amendments; date inside document is not availability time.",
+            "One offered-price example only; public search/result snippets remain exposed, PRIVATE_UNKNOWN unchanged.",
+            "No new look until linked fixed declaration and CAS claim; no broker/account/trading action.",
+            "VX, Form4 reuse, TEC10 and daily Treasury access decisions stay parked; policy not_before unchanged."
+          ],
+          "decision_use": "Prepare a linked L1 declaration only if these prerequisites are coherent; otherwise PARK_DATA this implementation without choosing another offer by outcome.",
+          "family": "us-issuer-oddlot-priority",
+          "kind": "LOCATE_SAVED_DATA",
+          "level": "L0_TO_L1_DESIGN",
+          "qualification": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
+          "qualification_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
+          "question": "Can the original Anebulo SC TO-I/offer/amendment documents and public clock, plus one authorized public EOD-price route, support a fixed one-case L1 ceiling without looking at prices or completion outcomes?",
+          "resolution": "Historical Anebulo calibration already closed; prospective v1 excludes exposed issuers.",
+          "resolution_reference": "qualifications/us-issuer-oddlot-priority-anebulo-calibration-2026-10-12.md",
+          "status": "COMPLETED"
+        },
+        "proof": "qualifications/wti-producer-hedging-pressure-l0-2026-10-12.md",
+        "proof_sha256": "814284eaf2041f915432528602e713f4e47cca9c37ab3dad157b832f09de7ad9",
+        "prospective_check": {
+          "last_check_at": "2026-10-12T20:21:50.536135Z",
+          "last_check_completeness": "NOT_ASSERTED",
+          "last_check_result": "NO_POST_T0_CANDIDATE_OBSERVED_IN_BOUNDED_FEED",
+          "prospective_t0": "2026-10-12T20:00:00Z",
+          "protocol": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+          "rule": "Only first chronologically qualifying non-exposed issuer; publish claim/selection evidence before prices; stop unless protocol explicitly permits continuation.",
+          "selected_event": null
+        },
+        "public_selection_exposure": {
+          "independence_claim": "NONE",
+          "market_price_payloads_read": false,
+          "private_history": "UNKNOWN",
+          "returns_computed": false,
+          "scope": "CFTC classification/release documentation and illustrative non-WTI positions; EIA definitions and licensing; dataset catalog and HEAD metadata only",
+          "wti_position_rows_read": false
+        },
+        "publication_parent": "06bee90a0d5822f710cad7c8140a6722f512f6cc",
+        "qualification_id": "l0-wti-producer-hedging-pressure-20261012",
+        "real_capital_authorized": false
+      },
+      "previous": "1f877cf8a17a272c832a8f0bcc4ec03639108b8178e242ae9ee62905341de0ea",
+      "sequence": 14
     }
   ],
   "exposure_ledger": [
@@ -288,7 +363,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "ab6896536d02d355f3f5af1e15581aa21be263f4693c8695417136514ffe0c56",
+  "integrity": "212057b9ab655eceadc9e6d2199a8e946e2eb8a6748fccd90d094e64fa3d6d83",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -349,28 +424,38 @@
   },
   "next": {
     "bounds": {
-      "completion_results": false,
       "economic_access_authorized": false,
-      "max_minutes": 20,
-      "max_primary_document_metadata_requests": 4,
-      "new_census": false,
+      "max_minutes": 15,
+      "max_primary_metadata_requests": 3,
+      "paid_usd": 0,
+      "position_rows": false,
       "price_payloads": false,
       "retries": 0
     },
     "constraints": [
-      "Use cached primary interpretations and accession 0001493152-25-028828; do not repeat the L0 search.",
-      "Resolve 2026/2006 expiration contradiction against original offer/amendments; date inside document is not availability time.",
-      "One offered-price example only; public search/result snippets remain exposed, PRIVATE_UNKNOWN unchanged.",
-      "No new look until linked fixed declaration and CAS claim; no broker/account/trading action.",
-      "VX, Form4 reuse, TEC10 and daily Treasury access decisions stay parked; policy not_before unchanged."
+      "No Anebulo or historically exposed issuer as a fresh case.",
+      "Reuse CFTC/EIA qualification; do not repeat their source probes.",
+      "COT as-of Tuesday is not public Tuesday; historical release dates need proof.",
+      "Cash marker is not futures total return; no spot, ETF or commodity substitution.",
+      "If no distinct route in this bounded follow-up, preserve PARK_DATA and select a different L0.",
+      "Existing frozen protocols, closed families, exposures and private UNKNOWN remain unchanged."
     ],
-    "decision_use": "Prepare a linked L1 declaration only if these prerequisites are coherent; otherwise PARK_DATA this implementation without choosing another offer by outcome.",
-    "family": "us-issuer-oddlot-priority",
+    "decision_use": "Retain PARK_DATA unless a distinct complete enough zero-cost futures route is documented; if qualified, prepare a linked fixed L1 before any price/position access. No new economic execution is authorized.",
+    "family": "wti-producer-hedging-pressure",
     "kind": "LOCATE_SAVED_DATA",
-    "level": "L0_TO_L1_DESIGN",
-    "qualification": "qualifications/us-issuer-oddlot-priority-l0-2026-10-12.md",
-    "qualification_sha256": "3e35b2cf772067120ee5f1b2dca9e71884641a25b72b93ea51c72584c673af98",
-    "question": "Can the original Anebulo SC TO-I/offer/amendment documents and public clock, plus one authorized public EOD-price route, support a fixed one-case L1 ceiling without looking at prices or completion outcomes?",
+    "level": "L0",
+    "priority_precondition": {
+      "last_check_at": "2026-10-12T20:21:50.536135Z",
+      "last_check_completeness": "NOT_ASSERTED",
+      "last_check_result": "NO_POST_T0_CANDIDATE_OBSERVED_IN_BOUNDED_FEED",
+      "prospective_t0": "2026-10-12T20:00:00Z",
+      "protocol": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+      "rule": "Only first chronologically qualifying non-exposed issuer; publish claim/selection evidence before prices; stop unless protocol explicitly permits continuation.",
+      "selected_event": null
+    },
+    "qualification": "qualifications/wti-producer-hedging-pressure-l0-2026-10-12.md",
+    "qualification_sha256": "814284eaf2041f915432528602e713f4e47cca9c37ab3dad157b832f09de7ad9",
+    "question": "FIRST obey the Owner odd-lot prospective protocol check. If no admissible event, can ONE freely accessible WTI futures settlement/contract-calendar route support a fixed futures holding/roll return, instead of an invalid spot-only test?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1808,5 +1893,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T19:25:34.393064+00:00"
+  "updated_at": "2026-10-12T20:30:12.571072+00:00"
 }
