@@ -1,13 +1,14 @@
 {
   "automation": {
-    "configured_at": "2026-10-12T08:35:13.025489+00:00",
+    "configured_at": "2026-10-12T09:07:33.724489+00:00",
     "current_prompt_run_observed": false,
+    "delivery_status": "NOT_OBSERVED",
     "enabled": true,
+    "first_current_pass_planned_at": "2026-10-12T09:09:33Z",
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_backend_run_observed": "2026-10-11T22:13:16.680782+00:00",
-    "next_run_time": null,
-    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261011T221500\nRRULE:FREQ=HOURLY\nEND:VEVENT",
-    "unattended_independence_verified": false
+    "schedule": "BEGIN:VEVENT\nDTSTART:20261012T090933Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "trigger_tool_status": "NOT_FOUND_404"
   },
   "closed_families": [
     "f1-crypto-carry",
@@ -171,6 +172,24 @@
       },
       "previous": "ec0926d69b9102f73a97e4a25f376973e1752c30a427f17eea70a2263b337320",
       "sequence": 11
+    },
+    {
+      "at": "2026-10-12T09:17:09.828301+00:00",
+      "hash": "46864b732e68c9e4f530481b0e8d6978d528a8a214c509c7b3ba462285f60e32",
+      "kind": "AUTOMATION_DELIVERY_NOT_VERIFIED",
+      "payload": {
+        "configured_at": "2026-10-12T09:07:33.724489+00:00",
+        "current_prompt_run_observed": false,
+        "delivery_status": "NOT_OBSERVED",
+        "enabled": true,
+        "first_current_pass_planned_at": "2026-10-12T09:09:33Z",
+        "id": "6ac978ecda1081918fba4d76dee437f4",
+        "last_backend_run_observed": "2026-10-11T22:13:16.680782+00:00",
+        "schedule": "BEGIN:VEVENT\nDTSTART:20261012T090933Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+        "trigger_tool_status": "NOT_FOUND_404"
+      },
+      "previous": "8bc2ef19f2ca7185271a2240066a6e998c35d4371c389e4603ba0f5be871b7da",
+      "sequence": 12
     }
   ],
   "exposure_ledger": [
@@ -216,7 +235,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "b96aab8671094b9eae5cd2f85ff9451508c5de5d1cf6089877544045a11b83d2",
+  "integrity": "51e08e040c8ec1241d7dffe293c2500b83f579e01348cfde45d7682736b41e18",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4

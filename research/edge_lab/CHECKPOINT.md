@@ -21,6 +21,9 @@ LIVE_TRADING_AUTHORIZED = FALSE
 
 - Correctif Owner mobile : file principale Discovery V4.2, récupération V3 séparée ; worker-start transmet également la qualification L2 entre les tests. Aucun faux STARTED ni reset N.168tests Python/35Node PASS ; prochain travail documentaire prêt, passage du scheduler encore à vérifier.
 
+- Production mobile corrigée : source f8c80aa, déploiement appgdep_6acca3c5abe08191b7fd6b5face9e830 SUCCESS ; navigateur390×780 sans erreur JS ni débordement horizontal. File et salle V4.2 :1test économique, qualificationL2 prête. Smoke réel worker-start=DISCOVERY_RESEARCH_READY auHEAD4e82057 ; V3ne bloque plus cette transition.
+- Même scheduler reprogrammé à2026-10-12T09:09:33Z puis horaire (outil confirmé). Aucun nouveau passage backend observé ; déclenchement immédiat404 Actionnotfound AVANT invocation. Configuration ne vaut pas livraison. Pas de daemon ni nouvelle boucle prétendus. Nouvelle économie non lancée et aucun N/essai/fenêtre modifié par ce correctif.
+
 Les sections suivantes sont historiques et conservées.
 
 # Checkpoint — Discovery V4
