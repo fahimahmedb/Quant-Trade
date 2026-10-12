@@ -1,0 +1,43 @@
+{
+  "CHEAP_DATA_NOW": "Official DGCL section 262 and SEC merger documents are free; a small holder cannot cheaply guarantee an economically viable court proceeding.",
+  "CHEAP_EXPRESSION": "One hypothetical standalone small-holder appraisal election, subject to all standing/notice/holding rules. No price or litigation-outcome comparison.",
+  "ECONOMIC_SIGNIFICANCE": "No cheap autonomous standalone small-account expression demonstrated.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Cheap enforceable small-holder route independent of other petitioners/counsel."
+  ],
+  "FAMILY_STATUS": "PARK_ECONOMICS_STANDALONE_SMALL_HOLDER",
+  "FATAL_PROBLEM": "For exchange-listed shares the court dismisses unless total eligible shares exceed 1%, total merger consideration exceeds $1m, or a listed short-form exception applies. Thresholds are collective, not individual: piggybacking may exist but is not an independently enforceable small-account route. Legal/funding costs and adverse fair-value risk dominate a cheap standalone experiment.",
+  "LESSON": "Read standing thresholds as collective; statutory interest alone does not establish a capturable rent.",
+  "MECHANISM": "A qualifying merger dissenter can seek judicial fair value plus statutory interest instead of accepting merger consideration.",
+  "NEXT_DECISION": "L0 exchange-listed baby-bond full-call notices: verify fixed redemption entitlement and public exact clock without prices.",
+  "POWER_LIMITATION": "Legal filter only; no economic sample.",
+  "RESULT": "PARK_ECONOMICS",
+  "UNCERTAINTY": "Aggregation, contingent-fee counsel and exception cases are not ruled out; no blanket rejection of appraisal.",
+  "WHO_PAYS": "Surviving entity if court-awarded fair value/interest exceeds the contractual merger payment.",
+  "WHY_PERSIST": "Procedural burden, litigation cost, delayed capital return, uncertain valuation and collective-standing thresholds.",
+  "classification": "PARK_ECONOMICS",
+  "documentary_facts": [
+    "DGCL 262(g): listed-share de minimis threshold >1% or >$1m collectively, with sections 253/267 exception.",
+    "DGCL 262(h): default interest 5% above discount rate, subject to statute/court; interest is not riskless alpha.",
+    "DGCL 262(e): petition clock generally 120 days."
+  ],
+  "exposure": {
+    "court_award_or_market_payoff_inspected": false,
+    "economic_look": false,
+    "private_history": "UNKNOWN",
+    "type": "IDEA_GENERATED + DATA_FEASIBILITY"
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "d5aa747b09275c366a5e0206a2208f89fe28a4df",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:12:53.097252+00:00",
+  "source": {
+    "accessed_at": "2026-10-12T21:11:51.898628+00:00",
+    "bytes": 222379,
+    "sha256": "8131fc01dc1671e8d5bb805488b88fbbc920b55e54cb5e1dc24f27d5fae65712",
+    "status": 200,
+    "url": "https://delcode.delaware.gov/title8/c001/sc09/index.html"
+  }
+}

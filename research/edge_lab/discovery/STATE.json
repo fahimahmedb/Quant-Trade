@@ -385,6 +385,23 @@
       },
       "previous": "4e418f5a1dbbd18c1edca044ccd3572765da7acc63ce6d333bd3b7d1f0ccb6fc",
       "sequence": 18
+    },
+    {
+      "at": "2026-10-12T21:12:53.098830+00:00",
+      "hash": "1fb9bf7a05b346ea32f15ef301d434610a8ebafe28d2b9830f5ddccce3ee5b33",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "PARK_ECONOMICS",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-merger-statutory-appraisal",
+        "head_observed": "d5aa747b09275c366a5e0206a2208f89fe28a4df",
+        "proof": "qualifications/us-merger-statutory-appraisal-l0-2026-10-12.json",
+        "proof_sha256": "947af40c0ec4df99f75dae4e6017f427854a3c931932c023a4f6f3b5d08edc47"
+      },
+      "previous": "af261ce9f941b015238760135860adf8ab262a437dadfe5045a700c1e4bc3753",
+      "sequence": 19
     }
   ],
   "exposure_ledger": [
@@ -430,7 +447,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "a75ad203c26af99b98b9895185f3f00aae05631e01aec0721f8f2c127c868bab",
+  "integrity": "25f833372ac5ed09a7005e650af70cabc65d3e07857f5c676c263819f9e9ae77",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -491,9 +508,9 @@
   },
   "next": {
     "economic_access_authorized": false,
-    "family": "us-merger-statutory-appraisal",
+    "family": "us-exchange-traded-debt-full-call",
     "kind": "L0_MECHANISM",
-    "question": "Do statutory standing thresholds or enforcement costs eliminate a small-holder merger appraisal expression?",
+    "question": "Can an irrevocable full-call notice create a short small-lot cash-convergence expression with primary clocks and free price route?",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1931,5 +1948,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:11:33.311213+00:00"
+  "updated_at": "2026-10-12T21:12:53.098868+00:00"
 }
