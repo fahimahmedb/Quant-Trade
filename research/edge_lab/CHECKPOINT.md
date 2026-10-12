@@ -19,6 +19,8 @@ LIVE_TRADING_AUTHORIZED = FALSE
 
 - Livraison finale confirmée : déploiement appgdep_6acc9c3d6aa48191930397a95e12c212 SUCCESS, source Site a1d0257. Lecture native fraîche au HEAD8f2a829 :1test économique, PROMOTE_EXPRESSION, automatisation enabled=true, nouveau passage non observé. Accès propriétaire privé conservé.
 
+- Correctif Owner mobile : file principale Discovery V4.2, récupération V3 séparée ; worker-start transmet également la qualification L2 entre les tests. Aucun faux STARTED ni reset N.168tests Python/35Node PASS ; prochain travail documentaire prêt, passage du scheduler encore à vérifier.
+
 Les sections suivantes sont historiques et conservées.
 
 # Checkpoint — Discovery V4

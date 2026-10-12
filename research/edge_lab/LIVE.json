@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T08:36:49.645151+00:00",
+  "generated_at": "2026-10-12T09:02:22.417944+00:00",
   "state_updated_at": "2026-10-12T08:34:07.181795+00:00",
-  "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
+  "operational_status": "READY_TO_QUALIFY",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -67,7 +67,7 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "IDLE_NO_ADMISSIBLE_WORK",
+    "status": "READY_TO_QUALIFY",
     "paused": false,
     "groups": {
       "ready": [],
@@ -1516,6 +1516,20 @@
     },
     "active_lease": null,
     "next": null,
+    "next_work": {
+      "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
+      "constraints": [
+        "No retry offailedH2022 URL",
+        "No replay/re-tuning the completed36-contract expression",
+        "No pristineholdoutclaim or implicit V3admission",
+        "95%descriptivegrossCI includeszero and worsttrade-14.6points",
+        "L2must predeclare independentpurpose,data,capital/risk/friction bounds and onefixedtest before economicaccess"
+      ],
+      "family": "cfe-vix-term-premium",
+      "kind": "QUALIFY_L2",
+      "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?"
+    },
     "economic_access_authorized": false,
     "edge_validated": false
   }

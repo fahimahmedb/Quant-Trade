@@ -422,6 +422,26 @@ class DiscoveryWorkerAndCLITests(unittest.TestCase):
                 self.assertEqual(authority.claims, [])
                 self.assertEqual(self.lab.snapshot(), before)
 
+    def test_documentary_l2_work_and_idle_never_fall_back_to_v3_recovery(self):
+        for pending in (True, False):
+            with self.subTest(pending=pending):
+                state=discovery.load(self.discovery_directory)
+                if state["queue"][0]["status"]=="TEST_NOW":
+                    state=discovery.complete(discovery.claim(state,"synthetic-one","done",NOW),"synthetic-one","done",result(),NOW)
+                state.pop("next",None)
+                if pending:
+                    state["next"]={"kind":"QUALIFY_L2","question":"Fixed metadata question"}
+                discovery.save(self.discovery_directory,state)
+                v3,control=self.lab.snapshot()
+                v3["worker_sessions"]={"old":{"id":"old","status":"STARTED","context":"interactive"}}
+                with self.lab.store.lock():self.lab.store.save(v3)
+                v3,control=self.lab.snapshot();authority=Authority(state,control,v3=v3)
+                receipt=start(self.lab,authority,"synthetic-worker")
+                self.assertEqual(receipt["lane"],"DISCOVERY")
+                self.assertEqual(receipt["status"],"DISCOVERY_RESEARCH_READY" if pending else "IDLE_NO_ADMISSIBLE_WORK")
+                self.assertFalse(receipt["outcome_access_authorized"])
+                self.assertEqual(authority.claims,[])
+
     def cli(self):
         script = Path(__file__).resolve().parents[1] / "scripts/edge_lab.py"
         spec = importlib.util.spec_from_file_location("synthetic_edge_lab_cli", script)

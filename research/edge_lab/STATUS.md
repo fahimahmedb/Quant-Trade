@@ -1,6 +1,6 @@
 # Quant — Discovery V4.2 / Validation V3
 
-Discovery : **IDLE_NO_ADMISSIBLE_WORK** ; Validation : **RECOVERY_NEEDED**.
+Discovery : **READY_TO_QUALIFY** ; Validation : **RECOVERY_NEEDED**.
 
 Prochain test : aucun test admissible.
 

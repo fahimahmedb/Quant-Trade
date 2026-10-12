@@ -85,6 +85,13 @@ def start(lab, authority, actor, context="interactive", invocation_id=None):
                     "context": context, "economic_access_authorized": False,
                     "outcome_access_authorized": False,
                     "scope": "Run discovery-execute for this frozen experiment; this handoff creates no session or economic claim."}
+        # Discovery remains the primary lane between economic tests, too.
+        # A documentary handoff is not an economic reservation or active process.
+        return {"status": "DISCOVERY_RESEARCH_READY" if frontier.get("next_work") else frontier["status"],
+                "lane": "DISCOVERY", "next": frontier.get("next_work"), "context": context,
+                "authority_parent": fresh["sha"], "economic_access_authorized": False,
+                "outcome_access_authorized": False,
+                "scope": "Documents/metadata qualification only. V3 recovery is independent; price/outcome access still requires a frozen Discovery economic CAS claim."}
     sessions = remote.get("worker_sessions", {})
     work = queue(remote, control, now)
     started = [s for s in sessions.values() if s["status"] == "STARTED"]

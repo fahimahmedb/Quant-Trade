@@ -158,6 +158,19 @@
       },
       "previous": "cb207356393c40aea7813b4cf76d56350284336803f5ee6eaba3cb2157f4048b",
       "sequence": 10
+    },
+    {
+      "at": "2026-10-12T09:01:17.607956+00:00",
+      "hash": "8bc2ef19f2ca7185271a2240066a6e998c35d4371c389e4603ba0f5be871b7da",
+      "kind": "DISCOVERY_INTERTEST_HANDOFF_REPAIRED",
+      "payload": {
+        "economic_access_authorized": false,
+        "next_kind": "QUALIFY_L2",
+        "software_tests": 168,
+        "v3_recovery_can_block_documentary_l2": false
+      },
+      "previous": "ec0926d69b9102f73a97e4a25f376973e1752c30a427f17eea70a2263b337320",
+      "sequence": 11
     }
   ],
   "exposure_ledger": [
@@ -203,7 +216,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "84a5863b018297e1009f699610e6e0c87d372a8983f6e68ecc5d447a359f6004",
+  "integrity": "b96aab8671094b9eae5cd2f85ff9451508c5de5d1cf6089877544045a11b83d2",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1710,6 +1723,6 @@
   ],
   "real_capital_authorized": false,
   "schema": 1,
-  "status": "IDLE_NO_ADMISSIBLE_WORK",
+  "status": "READY_TO_QUALIFY",
   "updated_at": "2026-10-12T08:33:07.268480+00:00"
 }

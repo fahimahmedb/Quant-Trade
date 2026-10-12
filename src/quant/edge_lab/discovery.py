@@ -166,10 +166,17 @@ def project(state, control, now=None):
     groups["ready"].sort(key=rank)
     unfinished = groups["running"] or groups["recovery"]
     paused = control["paused"]
-    status = "PAUSED" if paused else "RUNNING" if active else "RECOVERY_REQUIRED" if unfinished else "READY" if groups["ready"] else "IDLE_NO_ADMISSIBLE_WORK"
+    candidate = state.get("next")
+    qualification = (copy.deepcopy(candidate) if isinstance(candidate, dict)
+        and candidate.get("kind") in ("QUALIFY_L2", "LOCATE_SAVED_DATA")
+        and candidate.get("status", "OPEN") == "OPEN" and candidate.get("question")
+        and (not candidate.get("not_before") or timestamp(candidate["not_before"]) <= now)
+        and not paused and not unfinished else None)
+    status = "PAUSED" if paused else "RUNNING" if active else "RECOVERY_REQUIRED" if unfinished else "READY" if groups["ready"] else "READY_TO_QUALIFY" if qualification else "IDLE_NO_ADMISSIBLE_WORK"
     return {"lane": "DISCOVERY", "status": status, "paused": paused, "groups": groups,
             "counts": {k: len(v) for k, v in groups.items()}, "active_lease": active[0] if active else None,
             "next": groups["ready"][0] if groups["ready"] and not paused and not unfinished else None,
+            "next_work": qualification,
             "economic_access_authorized": False, "edge_validated": False}
 
 
