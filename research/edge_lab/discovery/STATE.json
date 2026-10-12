@@ -419,6 +419,23 @@
       },
       "previous": "1fb9bf7a05b346ea32f15ef301d434610a8ebafe28d2b9830f5ddccce3ee5b33",
       "sequence": 20
+    },
+    {
+      "at": "2026-10-12T21:20:24.648231+00:00",
+      "hash": "ab8f9f5ce6ac534860eb733b0b8a7f1b87ac23ffd14452d00bf16d0fcbbaeb5a",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_QUALIFICATION",
+      "payload": {
+        "actor": "codex-continuous",
+        "decision": "L1_NOW",
+        "economic_execution": false,
+        "exposure_type": "DATA_FEASIBILITY",
+        "family": "us-cef-drip-discounted-issuance",
+        "head_observed": "135c39b4ccd0ff824fb3ca1b22cd25dced392f2a",
+        "proof": "qualifications/us-cef-drip-discounted-issuance-l0-route-2026-10-12.json",
+        "proof_sha256": "636fd436ec37281f9c6162b7b9c26da4774fb1213f1a94fb9db84768c6808384"
+      },
+      "previous": "973af9cec8d7988ad7ab53627400388a04396d60b775b7591673aca843aef96d",
+      "sequence": 21
     }
   ],
   "exposure_ledger": [
@@ -464,7 +481,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "b2da397296932a36177dd043c2716cc933ba072674fd0da9fd85de0e293f7a87",
+  "integrity": "62acae2e354587bd0d5d7f28d496fa77a866883e2f0af43539d868c30b339fc5",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -526,8 +543,8 @@
   "next": {
     "economic_access_authorized": false,
     "family": "us-cef-drip-discounted-issuance",
-    "kind": "L0_MECHANISM",
-    "question": "Can a public distribution reinvestment plan issue shares below market to small participants, with a fixed prospective dilution/price-risk test?",
+    "kind": "L1_PREDECLARE",
+    "question": "Freeze one future distribution with exact close/NAV fixing, Q=100, cash comparator and one stress check; no economic claim yet.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -1965,5 +1982,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-12T21:14:46.231428+00:00"
+  "updated_at": "2026-10-12T21:20:24.648265+00:00"
 }
