@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-12T13:14:50.776703+00:00",
+  "generated_at": "2026-10-12T13:17:53.943816+00:00",
   "state_updated_at": "2026-10-12T13:14:50.693417+00:00",
-  "operational_status": "WORKING",
+  "operational_status": "READY_TO_QUALIFY",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -20,17 +20,11 @@
     "meaning": "Observed scheduled sessions prove passages, not permanent daemon uptime."
   },
   "active_task": {
-    "id": "disc-binance-extreme-funding-reversal-l1-v1",
-    "status": "CLAIMED",
-    "claim_id": "owner-manual-20261012-a1",
-    "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
-    "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
-    "claimed_at": "2026-10-12T13:13:00+00:00",
-    "source_scope": [
-      "Binance USD-M Futures GET /fapi/v1/fundingRate",
-      "Binance USD-M Futures GET /fapi/v1/klines interval=5m"
-    ],
-    "authority": "durable-claim-receipt"
+    "id": "build:treasury-auction-zf:okx-l2-access-clock",
+    "status": "RECOVERY_NEEDED",
+    "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
+    "question": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
+    "next": null
   },
   "last_completed": {
     "session_id": "owner-v2-repair-20261011",
@@ -49,7 +43,7 @@
   "planning_status": "RECOVERY_NEEDED",
   "research_options_pending": 0,
   "research_options_consumed": 1,
-  "next_action": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
+  "next_action": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
   "next_due_at": "2026-10-13T12:45:00+00:00",
   "real_capital_authorized": false,
   "live_trading_authorized": false,
@@ -73,25 +67,11 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "WORKING",
+    "status": "READY_TO_QUALIFY",
     "paused": false,
     "groups": {
       "ready": [],
-      "running": [
-        {
-          "id": "disc-binance-extreme-funding-reversal-l1-v1",
-          "status": "CLAIMED",
-          "claim_id": "owner-manual-20261012-a1",
-          "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
-          "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
-          "claimed_at": "2026-10-12T13:13:00+00:00",
-          "source_scope": [
-            "Binance USD-M Futures GET /fapi/v1/fundingRate",
-            "Binance USD-M Futures GET /fapi/v1/klines interval=5m"
-          ],
-          "authority": "durable-claim-receipt"
-        }
-      ],
+      "running": [],
       "recovery": [],
       "parked": [
         {
@@ -1529,24 +1509,12 @@
     },
     "counts": {
       "ready": 0,
-      "running": 1,
+      "running": 0,
       "recovery": 0,
       "parked": 9,
       "finished": 2
     },
-    "active_lease": {
-      "id": "disc-binance-extreme-funding-reversal-l1-v1",
-      "status": "CLAIMED",
-      "claim_id": "owner-manual-20261012-a1",
-      "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
-      "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
-      "claimed_at": "2026-10-12T13:13:00+00:00",
-      "source_scope": [
-        "Binance USD-M Futures GET /fapi/v1/fundingRate",
-        "Binance USD-M Futures GET /fapi/v1/klines interval=5m"
-      ],
-      "authority": "durable-claim-receipt"
-    },
+    "active_lease": null,
     "next": null,
     "next_work": {
       "alternative": "If no distinct verified access fact, PARK this L2 data dependency and locate the already-saved Form4 census rather than rebuild/reprobe failedsources.",
@@ -1563,26 +1531,12 @@
       "question": "Is a distinct authorized recent complete settlement/execution/risk-benchmark package accessible at zero paid cost, sufficient to distinguish volatility risk compensation from residual alpha?"
     },
     "economic_access_authorized": false,
-    "edge_validated": false,
-    "active_external_claim": {
-      "id": "disc-binance-extreme-funding-reversal-l1-v1",
-      "status": "CLAIMED",
-      "claim_id": "owner-manual-20261012-a1",
-      "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
-      "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
-      "claimed_at": "2026-10-12T13:13:00+00:00",
-      "source_scope": [
-        "Binance USD-M Futures GET /fapi/v1/fundingRate",
-        "Binance USD-M Futures GET /fapi/v1/klines interval=5m"
-      ],
-      "authority": "durable-claim-receipt"
-    },
-    "telemetry_overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM"
+    "edge_validated": false
   },
   "telemetry": {
-    "source_head": "38e3d97cefc90cc99397ea4bb40db71806bc62b9",
-    "generated_at": "2026-10-12T13:14:50.776703+00:00",
-    "overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM",
+    "source_head": "7279fea766607ca358feb4a612cbd99cba21a93e",
+    "generated_at": "2026-10-12T13:17:53.943816+00:00",
+    "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
   }
