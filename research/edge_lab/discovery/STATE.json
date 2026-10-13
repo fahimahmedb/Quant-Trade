@@ -775,6 +775,102 @@
       },
       "previous": "184e5559ecaa9e7f158ec91d1331e84e0220aad7f8dae4287089cbb9cfd303e2",
       "sequence": 29
+    },
+    {
+      "at": "2026-10-13T03:28:34.668131+00:00",
+      "hash": "b7c6a715dbbad5244e4f96f9942e96f812797c8aad9d6b357f76bd48907dc2ba",
+      "kind": "DISCOVERY_L0_DOCUMENTARY_SOURCE_QUALIFICATION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "closed_question": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "completed_at": "2026-10-13T03:28:34.664293+00:00",
+          "decision": "PARK_DATA",
+          "economic_access_authorized": false,
+          "family": "hurricane-forecast-insurance-repricing",
+          "hypothesis": "Updates to forecast physical risk may create inventory/attention pressure in exposed insurer equities; immediate efficient pricing and compensation for catastrophe risk are competing explanations. No edge presumed.",
+          "kind": "L0_MECHANISM",
+          "primary_documentation_targets": [
+            "https://www.nhc.noaa.gov/aboutnhcprod.shtml",
+            "https://www.nhc.noaa.gov/archive/"
+          ],
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying accepted timestamp, then smaller CIK, unchanged exclusions and protocol-specific ties",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "qualification_status": "UNQUALIFIED_DOCUMENTARY_TARGETS_NOT_FETCHED_THIS_PASS",
+          "question": "Qualify whether official NHC issued-at advisory archives, rather than ex-post best-track landfalls, can define a price-blind insurance-risk news event. Identify a public insurer-exposure mapping and an authorized free price route at metadata level before L1; otherwise PARK_DATA. Do not read historical storm values, selected prices, insured losses or investment outcomes in L0.",
+          "result_reference": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+          "status": "PARK"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "exposure": {
+          "economic_look": false,
+          "effective_independent_trials": "UNKNOWN",
+          "new_variants_executed": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Generic NWS product/API documentation, no historical storm values, selected issuers, prices, insurance losses or investment results",
+          "type": "IDEA_AND_PUBLIC_DOCUMENTATION"
+        },
+        "family": "hurricane-forecast-insurance-repricing",
+        "head_observed": "48669fda1faf7e05dc6b2e2377fa01e0b6513184",
+        "new_fact": "Primary NWS docs permit free API data use but only document seven-day alerts retention; historical NHC replacement is not established.",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "do_not_repeat": [
+            "NHC aboutnhcprod.shtml 403",
+            "NHC archive index 403",
+            "Yahoo failed terms requests",
+            "CME/DataMine retrieval",
+            "cached NWS API documentation absent version delta"
+          ],
+          "economic_access_authorized": false,
+          "family": "hurricane-forecast-insurance-repricing",
+          "kind": "L0_MECHANISM",
+          "new_fact": "NWS API primary documentation explicitly permits free open-data use and documents an alerts endpoint, but retention is seven days, so only separately declared prospective capture is potentially feasible. API payload/access/clock not yet tested.",
+          "parent_decision": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted timestamp across A-E, then smaller CIK, original exclusions/ties unchanged",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "question": "Prospective feasibility only: reuse qualified NWS API documentation, then decide whether publicly dated insurer coverage/reinsurance descriptions establish a signed exposure class BEFORE any alert, and whether a distinct free authorized equity-price route is documented. Read product/coverage/access documentation only, not insurer losses, historical alerts, selected prices or payout outcomes. If either dependency cannot be qualified in this bounded follow-up, PARK this family without another source cycle. No collector or L1 until a new frozen declaration.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "error_bodies_read": 0,
+          "global_bill": null,
+          "new_market_requests": 0,
+          "origin_total_network_bytes": null,
+          "paid_usd": 0,
+          "primary_document_requests": 3,
+          "request_wall_seconds_sum": 1.5137700180057436,
+          "successful_document_payload_bytes": 48970,
+          "tokens": null,
+          "weather_api_payload_requests": 0
+        },
+        "proof": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+        "proof_sha256": "a6e00d8eb5c997b091f34537f19d2a3720aa8954dcccb1531bb438a3259da321",
+        "scope": "Retrospective NHC-advisory insurance-repricing expression; source dependency only, not an economic rejection"
+      },
+      "previous": "8430836aa79ec1dfe605673c480cd3196a8519aaf0f56977633cb7fdadf3d709",
+      "sequence": 30
     }
   ],
   "exposure_ledger": [
@@ -820,7 +916,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "aac2abdb0fc89e60e5160944e7523ad099e77a78568555f038f92e5582a130c2",
+  "integrity": "e292dd9cf01832c235757dcdc47c96e094df67b38844bb2c545ecfd880be02ad",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -886,21 +982,24 @@
       "max_primary_document_requests": 3,
       "retries": 0
     },
+    "do_not_repeat": [
+      "NHC aboutnhcprod.shtml 403",
+      "NHC archive index 403",
+      "Yahoo failed terms requests",
+      "CME/DataMine retrieval",
+      "cached NWS API documentation absent version delta"
+    ],
     "economic_access_authorized": false,
     "family": "hurricane-forecast-insurance-repricing",
-    "hypothesis": "Updates to forecast physical risk may create inventory/attention pressure in exposed insurer equities; immediate efficient pricing and compensation for catastrophe risk are competing explanations. No edge presumed.",
     "kind": "L0_MECHANISM",
-    "primary_documentation_targets": [
-      "https://www.nhc.noaa.gov/aboutnhcprod.shtml",
-      "https://www.nhc.noaa.gov/archive/"
-    ],
+    "new_fact": "NWS API primary documentation explicitly permits free open-data use and documents an alerts endpoint, but retention is seven days, so only separately declared prospective capture is potentially feasible. API payload/access/clock not yet tested.",
+    "parent_decision": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
     "prospective_priority": {
       "not_before": "2026-10-13T10:00:00Z",
-      "ordering": "earliest qualifying accepted timestamp, then smaller CIK, unchanged exclusions and protocol-specific ties",
+      "ordering": "earliest qualifying EDGAR accepted timestamp across A-E, then smaller CIK, original exclusions/ties unchanged",
       "protocols": "A/B-v2/C-v2/D/E"
     },
-    "qualification_status": "UNQUALIFIED_DOCUMENTARY_TARGETS_NOT_FETCHED_THIS_PASS",
-    "question": "Qualify whether official NHC issued-at advisory archives, rather than ex-post best-track landfalls, can define a price-blind insurance-risk news event. Identify a public insurer-exposure mapping and an authorized free price route at metadata level before L1; otherwise PARK_DATA. Do not read historical storm values, selected prices, insured losses or investment outcomes in L0.",
+    "question": "Prospective feasibility only: reuse qualified NWS API documentation, then decide whether publicly dated insurer coverage/reinsurance descriptions establish a signed exposure class BEFORE any alert, and whether a distinct free authorized equity-price route is documented. Read product/coverage/access documentation only, not insurer losses, historical alerts, selected prices or payout outcomes. If either dependency cannot be qualified in this bounded follow-up, PARK this family without another source cycle. No collector or L1 until a new frozen declaration.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2338,5 +2437,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T02:20:25.269723+00:00"
+  "updated_at": "2026-10-13T03:28:34.664293+00:00"
 }

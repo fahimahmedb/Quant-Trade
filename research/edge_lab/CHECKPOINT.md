@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, weather-source L0 decision
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- One useful action: [historical hurricane/insurance route PARK_DATA + new primary source fact](discovery/qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json). Two NHC documentation/archive requests returned403, no retry. The distinct official NWS API documentation returned200 and explicitly describes free open-data use, but /alerts retention is seven days. This is no replacement for historical issued-at NHC forecasts. No event, stock, storm values, price/loss/payoff, claim or economic look.
+- NEXT: one bounded prospective-feasibility question, reusing the NWS document. Qualify pre-alert insurer exposure/reinsurance classification and a free authorized quote route from documentation, <=15 minutes / <=3 requests / no outcomes. If either fails, park this family without another source cycle. A new L1 declaration is required before any capture; no collector/framework now.
+- A–E first chronological SEC admission keeps priority at/after October 13 10:00Z. This pre-opening pass reuses the saved holiday/feed evidence; all valid hashes and exclusions unchanged. B/C v1 invalid clocks stay invalid.
+- Source-document SHA256 `687c534041623c0a488718dcd3613eda3935b840939cb57f8690a91058a6fcf4`; decision SHA256 `a6e00d8eb5c997b091f34537f19d2a3720aa8954dcccb1531bb438a3259da321`. Three document requests, 48970 successful body bytes, USD0. Tokens/global bill/network total unknown. Prior economic counters, queue, multiplicity and ledger preserved; documentary exposure appended to existing hash-chained events.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Russell preflight PARK_DATA
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
