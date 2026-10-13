@@ -18,6 +18,13 @@ Consequences recorded for the project:
 
 ## F2 — Kalshi
 
+**Primary-document update, 2026-10-09:** the official page's linked Developer
+Agreement v1.1 and Data Terms of Use are now read and byte-hashed. F2 remains
+`BLOCKED_DATA_PERMISSION`: API membership/own-trading restrictions and website
+software/data-use restrictions do not clear the current research acquisition.
+This supersedes the unread-terms status and proceed-or-wait options below.
+See `research/kalshi_flb_f2/TERMS_DECISION_2026-10-09.md` and its JSON evidence.
+
 - `docs.kalshi.com/getting_started/historical_data.md`: the page states no authentication requirement, no earliest date, no rate limits, no data-use terms; historical cutoffs advance over time and pagination is cursor-based.
 - `kalshi.com/regulatory/rulebook`: HTTP 429 at fetch time; terms **not read**.
 - Metadata probes on 2026-10-08 (generic User-Agent, no credential, no personal data): `GET https://api.elections.kalshi.com/trade-api/v2/exchange/status` returned HTTP 200; `GET .../trade-api/v2/historical/cutoff` returned HTTP 200 with `market_settled_ts` = `2026-08-09T00:00:00Z`, `trades_created_ts` = `2026-08-09T00:00:00Z`. So the historical endpoints answered without authentication for these two calls; markets settled after the cutoff are served by the live endpoints. No market, trade or outcome record was read.
