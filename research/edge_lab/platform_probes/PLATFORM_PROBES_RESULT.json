@@ -1,15 +1,15 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "mission": "PLATFORM_REALITY_PROBES_ONLY",
   "repository": "fahimahmedb/Quant-Trade",
   "source_branch": "research/edge-lab-continuous",
   "builder_chat_source_head": "c0b873781c3926b97aa7c47459952d888e3fca8d",
   "builder_chat_branch": "builder/live-lab-platform-probes-20261013",
-  "builder_chat_final_head": null,
-  "builder_chat_final_head_resolution": "Resolve the remote branch ref after this canonical result is committed; the exact final SHA is returned in the Builder handoff because a commit cannot truthfully contain its own SHA before it exists.",
+  "builder_chat_final_head": "d446508bc71432bd854e1663fe04a2e352b4cedc",
+  "builder_chat_final_head_resolution": "Verified mandatory Work starting remote branch HEAD.",
   "builder_chat_maximum_reached": true,
   "spec_ready_for_platform_probes": true,
-  "spec_ready_for_one_shot_build": "UNKNOWN_PENDING_WORK_PROBES",
+  "spec_ready_for_one_shot_build": false,
   "public_site": "https://quant-trade-lab.sassylime.chatgpt.site",
   "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
   "slug": "quant-trade-lab",
@@ -20,9 +20,9 @@
   "probe_status": {
     "PROBE_1_CODEX_EMITTER": "BLOCKED_BY_CURRENT_ENVIRONMENT",
     "PROBE_2_SCHEDULED_WORKER": "BLOCKED_BY_CURRENT_ENVIRONMENT",
-    "PROBE_3_PUBLIC_STREAM": "BLOCKED_BY_CURRENT_ENVIRONMENT",
-    "PROBE_4_TRANSIENT_STATE_LEASES": "BLOCKED_BY_CURRENT_ENVIRONMENT",
-    "PROBE_5_OWNER_AUTH": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_3_PUBLIC_STREAM": "FAIL",
+    "PROBE_4_TRANSIENT_STATE_LEASES": "FAIL",
+    "PROBE_5_OWNER_AUTH": "FAIL",
     "PROBE_6_PUBLIC_RENDER_CANARY": "NOT_RUN"
   },
   "completed_probes": [],
@@ -32,16 +32,18 @@
     "PROBE_2: durable canary reread proven; result commit parent equals canary head_before",
     "PROBE_2: SHORT_RUN_PROVEN=true; LONG_SESSION_LEASE_PROOF=false",
     "PROBE_4: deterministic contract harness executed; 11/11 invariant canaries passed",
-    "PROBE_4: identity spoof rejection, generation/sequence ordering, dedupe, expiry, restart and snapshot-without-stream semantics proven locally"
+    "PROBE_4: identity spoof rejection, generation/sequence ordering, dedupe, expiry, restart and snapshot-without-stream semantics proven locally",
+    "PROBE_1: actual Codex executable/version and benign launch attempts observed; authenticated session/action events not observed",
+    "PROBE_3: public audience control-plane state and successful current deployment verified",
+    "PROBE_3: cloud browser root rendering and observer SSE/reload reconnection verified",
+    "PROBE_3: native backend request logs verify /health 200 and observer SSE duration; no worker ingress",
+    "PROBE_5: control-plane Owner role and bounded public/frontend-source scan"
   ],
   "environment_blocked_probes": [
     "PROBE_1_CODEX_EMITTER",
-    "PROBE_2_SCHEDULED_WORKER",
-    "PROBE_3_PUBLIC_STREAM",
-    "PROBE_4_TRANSIENT_STATE_LEASES",
-    "PROBE_5_OWNER_AUTH"
+    "PROBE_2_SCHEDULED_WORKER"
   ],
-  "last_proven_fact": "A real one-shot ChatGPT scheduled automation produced a bounded durable GitHub canary whose recorded head_before equals the parent of the resulting commit; separately, the local transient-state contract harness passed 11/11 deterministic invariants. Neither fact proves a production live worker stream.",
+  "last_proven_fact": "Current Site version 12 is public-configured and successfully deployed, with genuine observer SSE backed by GitHub snapshot polling, no current worker ingress, no live lease/event store, and no Owner mutation route. Codex CLI is present but bounded canaries never produced authenticated execution events. Historical scheduler short-run and model-only harness proofs are preserved.",
   "last_real_trace_id": "P2-SCHEDULED-CANARY-20261012T221243Z",
   "scheduled_worker": {
     "automation_id": "6acd5b34dec8819187d5fa4bc79e6133",
@@ -54,7 +56,10 @@
     "short_run_proven": true,
     "long_session_lease_proof": false,
     "economic_guard_scope": "POLICY_ONLY",
-    "economic_actions": "UNSUPPORTED"
+    "economic_actions": "UNSUPPORTED",
+    "provenance_level": "WRAPPED_PLATFORM",
+    "work_live_protocol_proof": false,
+    "rerun_by_work": false
   },
   "local_protocol_harness": {
     "status": "PROVEN_PREPARATORY_ONLY",
@@ -64,6 +69,172 @@
     "production_platform_proof": false
   },
   "capability_matrix": [
+    {
+      "worker_type": "genuine_codex_cli",
+      "runtime": "codex-cli 0.158.0, explicitly launched benign runtime canaries",
+      "provenance_level": "UNVERIFIED",
+      "provenance_scope": "Live worker protocol remains unproven.",
+      "identity_binding_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P1-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "runtime_installation_identity_proof": "PASS_EXECUTABLE_VERSION_ONLY",
+      "runtime_launch_attempted": true
+    },
+    {
+      "worker_type": "chatgpt_scheduled_automation",
+      "runtime": "platform_scheduled_automation",
+      "provenance_level": "WRAPPED_PLATFORM",
+      "provenance_scope": "WRAPPED_PLATFORM only for existing scheduler-to-bounded-GitHub-effect; live event origin/session binding remains unverified.",
+      "identity_binding_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": "P2-SCHEDULED-CANARY-20261012T221243Z",
+      "last_inspection_trace_id": "P2-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "short_run_proven": true,
+      "automation_identity": "PASS_CANARY_ID_AND_PEEK_ONLY"
+    },
+    {
+      "worker_type": "chatgpt_work_interactive",
+      "runtime": "Current Work task; environment-reported Codex thread metadata",
+      "provenance_level": "UNVERIFIED",
+      "provenance_scope": "Live worker protocol remains unproven.",
+      "identity_binding_proof": "NOT_TESTED",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P1-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "environment_reported_thread_id": "01a1336c-2ced-74ff-a9f1-6de85ca00051",
+      "documentary_tool_actions": "PASS_BOUNDED_PLATFORM_READ_RECEIPTS_AND_EVIDENCE_PERSISTENCE_ONLY"
+    },
+    {
+      "worker_type": "site_observer_sse_not_research_worker",
+      "runtime": "Current published Cloudflare Worker version 12",
+      "provenance_level": "DIRECT",
+      "provenance_scope": "DIRECT observer connection events only. Not worker events; GitHub snapshots are DERIVED.",
+      "identity_binding_proof": "FAIL",
+      "session_start": "FAIL",
+      "heartbeat": "FAIL",
+      "action_started": "FAIL",
+      "progress": "FAIL",
+      "action_completed_effect_proof": "FAIL",
+      "handoff": "FAIL",
+      "result": "FAIL",
+      "blocked": "FAIL",
+      "economic_look": "FAIL",
+      "session_end": "FAIL",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "NONE",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P3-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "observer_heartbeat": "PASS_CONNECTION_LIVENESS_ONLY",
+      "observer_sse": "PASS"
+    },
+    {
+      "worker_type": "github_derived_live_telemetry_not_live_worker",
+      "runtime": "Repository-derived display projected by published Site",
+      "provenance_level": "DERIVED",
+      "provenance_scope": "Forbidden as real-time worker animation support; no genuine worker event trace.",
+      "identity_binding_proof": "FAIL",
+      "session_start": "FAIL",
+      "heartbeat": "FAIL",
+      "action_started": "FAIL",
+      "progress": "FAIL",
+      "action_completed_effect_proof": "FAIL",
+      "handoff": "FAIL",
+      "result": "FAIL",
+      "blocked": "FAIL",
+      "economic_look": "FAIL",
+      "session_end": "FAIL",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "NONE",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P3-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null
+    }
+  ],
+  "work_handoff_required": false,
+  "exact_next_action_for_work": "STOP. Current authorized platform probes maximum reached. Owner reviews factual Capability Matrix and decides whether to authorize same-project probe infrastructure/architecture changes and restore a usable genuine runtime session. No final product implementation is authorized.",
+  "work_required_capability": [
+    "cloud browser",
+    "Site platform controls",
+    "real Codex runtime",
+    "persistent process",
+    "authentication interaction",
+    "public network verification",
+    "render lifecycle / frame-level acknowledgement inspection"
+  ],
+  "files_to_read_first": [
+    "research/edge_lab/platform_probes/PLATFORM_PROBES_RESULT.json",
+    "research/edge_lab/platform_probes/PLATFORM_PROBES_REPORT.md",
+    "research/edge_lab/platform_probes/traces/probe-01-20261012T221118Z.json",
+    "research/edge_lab/platform_probes/traces/probe-02-20261012T221243Z.json",
+    "research/edge_lab/platform_probes/traces/probe-03-20261012T221118Z.json",
+    "research/edge_lab/platform_probes/traces/probe-04-20261012T221132Z.json",
+    "research/edge_lab/platform_probes/traces/probe-04-platform-20261012T221600Z.json",
+    "research/edge_lab/platform_probes/traces/probe-05-20261012T221500Z.json",
+    "research/edge_lab/platform_probes/traces/probe-06-20261012T221500Z.json",
+    "research/edge_lab/platform_probes/harness/protocol_model.py",
+    "research/edge_lab/platform_probes/harness/test_protocol_model.py",
+    "research/edge_lab/platform_probes/scheduled_canaries/PLATFORM_SCHED_CANARY_20261013_15CFF3C5.json"
+  ],
+  "uncommitted_work": "NONE",
+  "builder_chat_capability_matrix_at_start": [
     {
       "worker_type": "genuine_codex_runtime",
       "runtime": "unavailable_in_builder_chat",
@@ -126,30 +297,109 @@
       "last_real_trace_id": null
     }
   ],
-  "work_handoff_required": true,
-  "exact_next_action_for_work": "Open Work on the exact final remote HEAD of builder/live-lab-platform-probes-20261013; read the canonical result/report/traces/harness/canary first; then use a genuine Codex runtime plus Site platform controls/cloud browser to execute the missing live session/emitter, public non-GitHub stream, actual transient-state/restart, secure Owner-auth, and render-frame ACK probes. Preserve every Builder proof and do not restart from source or replace missing capabilities with another host/GitHub polling/simulation. Run Probe 6 only after its prerequisites are genuinely proven.",
-  "work_required_capability": [
-    "cloud browser",
-    "Site platform controls",
-    "real Codex runtime",
-    "persistent process",
-    "authentication interaction",
-    "public network verification",
-    "render lifecycle / frame-level acknowledgement inspection"
+  "builder_chat_probe_status_at_start": {
+    "PROBE_1_CODEX_EMITTER": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_2_SCHEDULED_WORKER": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_3_PUBLIC_STREAM": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_4_TRANSIENT_STATE_LEASES": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_5_OWNER_AUTH": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+    "PROBE_6_PUBLIC_RENDER_CANARY": "NOT_RUN"
+  },
+  "work_start_head": "d446508bc71432bd854e1663fe04a2e352b4cedc",
+  "work_final_head": null,
+  "work_final_head_resolution": "Resolve the commit containing this updated canonical result after atomic branch publication; exact final SHA is returned in Work final output. The commit cannot contain its own yet-uncreated SHA.",
+  "work_branch": "builder/live-lab-platform-probes-20261013",
+  "work_maximum_reached": true,
+  "work_recorded_at_utc": "2026-10-13T04:13:50.348Z",
+  "build_authorized": false,
+  "final_live_lab_build_authorized": false,
+  "three_d_build_authorized": false,
+  "ui_redesign_authorized": false,
+  "scientific_state_modified": false,
+  "failed_current_deployment_probes": [
+    "PROBE_3_PUBLIC_STREAM",
+    "PROBE_4_TRANSIENT_STATE_LEASES",
+    "PROBE_5_OWNER_AUTH"
   ],
-  "files_to_read_first": [
-    "research/edge_lab/platform_probes/PLATFORM_PROBES_RESULT.json",
-    "research/edge_lab/platform_probes/PLATFORM_PROBES_REPORT.md",
-    "research/edge_lab/platform_probes/traces/probe-01-20261012T221118Z.json",
-    "research/edge_lab/platform_probes/traces/probe-02-20261012T221243Z.json",
-    "research/edge_lab/platform_probes/traces/probe-03-20261012T221118Z.json",
-    "research/edge_lab/platform_probes/traces/probe-04-20261012T221132Z.json",
-    "research/edge_lab/platform_probes/traces/probe-04-platform-20261012T221600Z.json",
-    "research/edge_lab/platform_probes/traces/probe-05-20261012T221500Z.json",
-    "research/edge_lab/platform_probes/traces/probe-06-20261012T221500Z.json",
-    "research/edge_lab/platform_probes/harness/protocol_model.py",
-    "research/edge_lab/platform_probes/harness/test_protocol_model.py",
-    "research/edge_lab/platform_probes/scheduled_canaries/PLATFORM_SCHED_CANARY_20261013_15CFF3C5.json"
+  "work_last_inspection_trace_id": "P6-WORK-PLATFORM-20261013T041000Z",
+  "non_pass_details": [
+    {
+      "probe_id": "PROBE_1_CODEX_EMITTER",
+      "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "first_broken_transition": "AUTHENTICATED_CODEX_EXECUTION_SESSION_NOT_OBSERVED",
+      "observed_fact": "Genuine Codex CLI 0.158.0 exists and was invoked twice for a benign printf canary. Local login status reports ChatGPT, but startup logged a 401 on featured-plugin retrieval (could not parse authentication token). Neither attempt emitted a JSONL thread/session/action/completion event. First attempt was interrupted (130); second, with the unrelated cua_repl MCP disabled only for that invocation, reached its 60-second timeout (124). No printf effect was observed. This does not prove that the model endpoint itself rejected auth; the exact startup cause remains unresolved.",
+      "evidence_reference": [
+        "traces/work-probe-01-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "A successfully authenticated genuine Codex execution with demonstrable launcher/session binding and authorized non-GitHub event path carrying generation, lease, ordered action/effect/end events; heartbeat renewal where execution duration permits."
+    },
+    {
+      "probe_id": "PROBE_2_SCHEDULED_WORKER",
+      "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "first_broken_transition": "SCHEDULED_EXECUTION_TO_AUTHENTICATED_LIVE_SESSION_LEASE_NOT_EXPOSED",
+      "observed_fact": "Existing scheduler-to-bounded-GitHub-effect proof is preserved. Work peek confirms the exact canary automation is disabled and last_run_time is 2026-10-12T22:12:43.047567+00:00. The exposed automation controls carry configuration/task/conversation metadata, not a launch-bound live execution session, generation, lease or action-event interface. The published Site exposes only read-only MCP tools. No second run was armed because there is no authenticated event-ingress target to test the missing live protocol.",
+      "evidence_reference": [
+        "traces/work-probe-02-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "An authorized platform launcher or scheduled-runtime emitter tying a real unattended run to its exact worker/session/generation/lease and real action boundaries, plus an authenticated non-GitHub ingress. Task or conversation id alone is insufficient."
+    },
+    {
+      "probe_id": "PROBE_3_PUBLIC_STREAM",
+      "verdict": "FAIL",
+      "first_broken_transition": "REAL_EMITTER_TO_NON_GITHUB_AUTHENTICATED_EVENT_INGRESS_ABSENT",
+      "observed_fact": "Native Sites returns public access, Owner control-plane role, succeeded production version 12 and source e3076b9e711ac32c1298ce372dac959939cdc23e. Cloud Browser loads the exact root and reports Flux SSE with five-second observer signals; reload reconnects. Native Worker logs show GET / and GET /health 200 and canceled /api/live requests including wallTimeMs=182151. The deployed server streams connected, observer-connection heartbeat and GitHub-derived snapshots; it has no worker ingress. Therefore an SSE transport exists but the mandatory non-GitHub worker path fails in the current application.",
+      "evidence_reference": [
+        "traces/work-probe-03-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "Within the same authorized Sites project, an actual authenticated worker event ingress/store and public egress preserving origin and event/cursor semantics. Existing observer SSE may be reusable but does not supply ingress or worker identity. No architecture change is authorized by this failure."
+    },
+    {
+      "probe_id": "PROBE_4_TRANSIENT_STATE_LEASES",
+      "verdict": "FAIL",
+      "first_broken_transition": "CURRENT_DEPLOYMENT_HAS_NO_LIVE_SESSION_LEASE_EVENT_STORE",
+      "observed_fact": "Live database overview returns bindings=[] and tables=[] with no omissions. Hosting manifest has d1=null and r2=null. The current Worker ignores env/ctx, uses per-isolate cached/pending variables and caches.default for GitHub snapshots, and exposes no session_generation, lease_id, event_id, cursor replay or restart reconciliation primitive. No real-platform A-H canary target exists. Existing 11/11 local harness remains MODEL proof only.",
+      "evidence_reference": [
+        "traces/work-probe-04-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "An actual platform-backed session/lease/event primitive with atomic generation/ordering/dedupe, cursor/snapshot, expiry and controlled restart reconciliation; then run A-H against it. D1 availability in documentation is not deployed lease proof."
+    },
+    {
+      "probe_id": "PROBE_5_OWNER_AUTH",
+      "verdict": "FAIL",
+      "first_broken_transition": "CURRENT_DEPLOYMENT_HAS_NO_SERVER_AUTHORIZED_OWNER_MUTATION",
+      "observed_fact": "Sites control plane recognizes the caller as Owner and platform documentation describes dispatch-injected signed-in visitor identity. The deployed application only checks presence of oai-authenticated-user-id for read-only MCP tools/call; no Owner mapping or HTTP mutation route exists. /api/control is referenced in dormant frontend code, while the Worker has no handler and controls.can_write=false. No authenticated Owner mutation, replay protection or orchestrator ACK can be exercised. Source/common-pattern frontend scan identified no static Owner credential, but this is a bounded audit, not a full security certification.",
+      "evidence_reference": [
+        "traces/work-probe-05-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "Native visitor identity used by a real server-side Owner-authorized benign mutation with Origin/CSRF as applicable, expiry/revocation, replay idempotency and actual backend ACK; no credential in public client code. Implementing this requires separate Owner architecture/build authorization."
+    },
+    {
+      "probe_id": "PROBE_6_PUBLIC_RENDER_CANARY",
+      "verdict": "NOT_RUN",
+      "first_broken_transition": "PREREQUISITE_REAL_EMITTER_INGRESS_LEASE_AUTH_AND_RENDER_ACK_NOT_PROVEN",
+      "observed_fact": "The benign public rendered-frame canary was not run. A genuine worker-to-authenticated-ingress path, live session/lease store, Owner mutation and post-render VISIBLE_ACK are not present/proven. The current public inline bundle has no VISIBLE_ACK, render_state_hash, last applied live event id, lease id or session generation. No DISPLAY_ONLY signal was used as worker/render-latency proof.",
+      "evidence_reference": [
+        "traces/work-probe-06-20261013T041000Z.json"
+      ],
+      "minimum_platform_requirement": "All earlier mandatory primitives plus canonical frontend application of real events and verified post-render/frame ACK with event id/state hash. Measure local-clock stages separately; never infer rendered ACK from network receipt."
+    }
   ],
-  "uncommitted_work": "NONE"
+  "platform_architecture_facts": {
+    "actual_site_backend": "Cloudflare Worker ESM, deployed version 12, same project/URL, source e3076b9e711ac32c1298ce372dac959939cdc23e. Current application is read-only.",
+    "actual_event_transport": "Genuine public-client SSE /api/live; connected + observer heartbeat + GitHub-derived snapshots/source-error. No live worker ingress/store, WebSocket handler or event-store long poll in current source.",
+    "actual_transient_state_primitive": "Current deployment: in-isolate snapshot cache/pending and Cloudflare caches.default; D1 bindings absent, R2 null; not a lease/event store. Sites documentation supports provisioning D1/R2 but no semantic canary was run.",
+    "actual_authentication_primitive": "Sites control plane reports Owner; public dispatch supports anonymous access configuration and documented signed-in Site visitor identity. Current app only requires signed-in-user presence for read-only MCP calls. No Owner mutation, Origin/CSRF/replay policy or backend ACK implemented.",
+    "actual_codex_emitter": "Genuine Codex CLI installed and invoked; no authenticated session/action JSONL event observed, initialization auth warning and bounded timeout. Work itself not relabeled as Codex live-emitter proof.",
+    "actual_scheduled_worker_emitter": "Historical unattended bounded GitHub effect proven. Automation configuration/conversation metadata exposed; launch-bound live worker identity/generation/lease emitter not exposed or demonstrated.",
+    "actual_render_ack": "Current bundle has no verified post-render/frame VISIBLE_ACK/event-id/state-hash path. Public page rendering is observed but Probe 6 remains NOT_RUN."
+  },
+  "unresolved_platform_facts": [
+    "Cause/remedy for genuine CLI startup not reaching execution; featured-plugin auth 401 is observed but model execution endpoint status is untested.",
+    "Authorized platform linkage of Codex/Work and unattended scheduled execution to a unique authenticated live session/generation/lease; not proved by task/conversation/thread IDs.",
+    "Whether approved server changes on this same Site can provide the required authenticated ingress, shared state atomicity, ordering, replay and restart semantics; documentation is not empirical PASS.",
+    "Anonymous vs signed-in identity of the successful cloud browser request was not inspected; public access policy is confirmed, exact anonymous live-protocol acceptance is untested.",
+    "End-to-end authenticated Owner mutation, Origin/CSRF, replay, expiry/revocation and orchestrator ACK remain untested because no mutation exists.",
+    "Transport maximum lifetime, resume/cache behavior for a real worker-event transport, and post-render ACK latency remain untested."
+  ],
+  "historical_builder_work_handoff_required": true
 }

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_4_TRANSIENT_STATE_LEASES",
+  "trace_id": "P4-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "FAIL",
+  "verdict_scope": "CURRENT_DEPLOYED_APPLICATION_NOT_GENERIC_PLATFORM_IMPOSSIBILITY",
+  "first_broken_transition": "CURRENT_DEPLOYMENT_HAS_NO_LIVE_SESSION_LEASE_EVENT_STORE",
+  "observed_fact": "Live database overview returns bindings=[] and tables=[] with no omissions. Hosting manifest has d1=null and r2=null. The current Worker ignores env/ctx, uses per-isolate cached/pending variables and caches.default for GitHub snapshots, and exposes no session_generation, lease_id, event_id, cursor replay or restart reconciliation primitive. No real-platform A-H canary target exists. Existing 11/11 local harness remains MODEL proof only.",
+  "evidence_reference": [
+    "traces/work-probe-04-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "An actual platform-backed session/lease/event primitive with atomic generation/ordering/dedupe, cursor/snapshot, expiry and controlled restart reconciliation; then run A-H against it. D1 availability in documentation is not deployed lease proof.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "database_receipt": {
+    "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+    "bindings": [],
+    "selected_binding_name": null,
+    "tables": [],
+    "model_projection": {
+      "truncated": false,
+      "omitted_project_id": false,
+      "omitted_selected_binding": false,
+      "omitted_bindings": 0,
+      "omitted_tables": 0
+    }
+  },
+  "real_canaries": {
+    "A_fresh_lease_heartbeat_active": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "B_expiry_stale": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "C_previous_generation_rejected": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "D_event_id_dedupe": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "E_old_sequence_no_regression": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "F_restart_invalidates_lease": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "G_snapshot_without_stream_not_active": "NOT_RUN_NO_ACTUAL_PRIMITIVE",
+    "H_snapshot_stream_ready_valid_lease_active": "NOT_RUN_NO_ACTUAL_PRIMITIVE"
+  },
+  "preparatory_harness": {
+    "tests_passed": 11,
+    "tests_total": 11,
+    "rerun_by_work": false,
+    "production_platform_proof": false
+  }
+}

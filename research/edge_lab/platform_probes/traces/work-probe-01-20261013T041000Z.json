@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_1_CODEX_EMITTER",
+  "trace_id": "P1-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+  "verdict_scope": "CURRENT_WORK_EXECUTION_ENVIRONMENT",
+  "first_broken_transition": "AUTHENTICATED_CODEX_EXECUTION_SESSION_NOT_OBSERVED",
+  "observed_fact": "Genuine Codex CLI 0.158.0 exists and was invoked twice for a benign printf canary. Local login status reports ChatGPT, but startup logged a 401 on featured-plugin retrieval (could not parse authentication token). Neither attempt emitted a JSONL thread/session/action/completion event. First attempt was interrupted (130); second, with the unrelated cua_repl MCP disabled only for that invocation, reached its 60-second timeout (124). No printf effect was observed. This does not prove that the model endpoint itself rejected auth; the exact startup cause remains unresolved.",
+  "evidence_reference": [
+    "traces/work-probe-01-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "A successfully authenticated genuine Codex execution with demonstrable launcher/session binding and authorized non-GitHub event path carrying generation, lease, ordered action/effect/end events; heartbeat renewal where execution duration permits.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "runtime": {
+    "version": "codex-cli 0.158.0",
+    "path": "/opt/codex/versions/0.158.0/bin/codex",
+    "loginStatus": "Logged in using ChatGPT (local status only; not authenticated execution proof)"
+  },
+  "attempts": [
+    {
+      "started_at_utc": "2026-10-13T04:04:00.338427Z",
+      "command": "codex exec --json --ephemeral --skip-git-repo-check --sandbox read-only; isolated benign printf",
+      "exit_code": 130,
+      "jsonl_execution_events_observed": 0
+    },
+    {
+      "started_at_utc": "2026-10-13T04:07:08.169145Z",
+      "command": "same benign canary; -c mcp_servers.cua_repl.enabled=false; timeout 60s",
+      "exit_code": 124,
+      "jsonl_execution_events_observed": 0
+    }
+  ],
+  "startup_error": {
+    "endpoint": "https://chatgpt.com/backend-api/plugins/featured?platform=codex",
+    "http_status": 401,
+    "bounded_message": "Could not parse your authentication token. Please try signing in again."
+  },
+  "execution_receipt_scope": "CLI version/login-status/startup tool outputs are documentary receipts, not successful SEARCH or ACTION_COMPLETED live protocol."
+}

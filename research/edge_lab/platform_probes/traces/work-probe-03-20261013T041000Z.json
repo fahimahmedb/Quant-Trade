@@ -1,0 +1,246 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_3_PUBLIC_STREAM",
+  "trace_id": "P3-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "FAIL",
+  "verdict_scope": "CURRENT_DEPLOYED_APPLICATION_NOT_GENERIC_PLATFORM_IMPOSSIBILITY",
+  "first_broken_transition": "REAL_EMITTER_TO_NON_GITHUB_AUTHENTICATED_EVENT_INGRESS_ABSENT",
+  "observed_fact": "Native Sites returns public access, Owner control-plane role, succeeded production version 12 and source e3076b9e711ac32c1298ce372dac959939cdc23e. Cloud Browser loads the exact root and reports Flux SSE with five-second observer signals; reload reconnects. Native Worker logs show GET / and GET /health 200 and canceled /api/live requests including wallTimeMs=182151. The deployed server streams connected, observer-connection heartbeat and GitHub-derived snapshots; it has no worker ingress. Therefore an SSE transport exists but the mandatory non-GitHub worker path fails in the current application.",
+  "evidence_reference": [
+    "traces/work-probe-03-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "Within the same authorized Sites project, an actual authenticated worker event ingress/store and public egress preserving origin and event/cursor semantics. Existing observer SSE may be reusable but does not supply ingress or worker identity. No architecture change is authorized by this failure.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "site": {
+    "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+    "role": "owner",
+    "access_mode": "public",
+    "revision": 2,
+    "source_head": "e3076b9e711ac32c1298ce372dac959939cdc23e",
+    "version": 12,
+    "deployment_id": "appgdep_6accd5dc916881918ccf995b153e52d4",
+    "status": "succeeded",
+    "env_set_revision": 0
+  },
+  "source_receipt": {
+    "checkout_opened": true,
+    "head": "e3076b9e711ac32c1298ce372dac959939cdc23e",
+    "uncommitted_source_changes": "",
+    "files": {
+      ".openai/hosting.json": {
+        "sha256": "f2696b5bd4ff95973100594730a33333c736221ab739a324c610273d07fb09d8",
+        "bytes": 126
+      },
+      "worker/server.mjs": {
+        "sha256": "dd48fadece777c92c3273907a330f410380e6345b887f72bee746c49359b23e7",
+        "bytes": 40439
+      },
+      "worker/index.js": {
+        "sha256": "30f5bde8f922eb75b5cda1dbe0e1894062a83f27a454950620ed6f862fa403ce",
+        "bytes": 832756
+      },
+      "ui/app.js": {
+        "sha256": "f73c52d60f667bcf1d8b7e48adc69610d56fe6968bb9aeef7093167157728580",
+        "bytes": 91003
+      },
+      "ui/room.js": {
+        "sha256": "d92aea22c001a65170e6033f789f8e543b80fab140781f6e33b0b69ab2f6076a",
+        "bytes": 36630
+      },
+      "frontend_common_credential_pattern_counts": {
+        "github_pat": 0,
+        "github_classic": 0,
+        "openai_key": 0,
+        "literal_bearer": 0
+      },
+      "site_source_status": "",
+      "site_source_head": "e3076b9e711ac32c1298ce372dac959939cdc23e"
+    }
+  },
+  "browser": {
+    "root_loaded": true,
+    "first_observed_connected_signal_utc": "04:04:54",
+    "reload_connected_signal_utc": "04:06:06",
+    "observer_heartbeat_seconds": 5,
+    "source_interval_seconds": 20,
+    "worker_heartbeat": "Non disponible",
+    "health_navigation_error": "net::ERR_BLOCKED_BY_CLIENT"
+  },
+  "production_request_receipts": [
+    {
+      "timestamp": 1791864436983,
+      "request_id": "94f95af282b862849cfba4acf4311883",
+      "ray_id": "a49b79f77c797976",
+      "trigger": "GET /health",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/health",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 0,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864371864,
+      "request_id": "3c5d937720c5faaee963639f1ab4da97",
+      "ray_id": "a49b7863fb87dcfc",
+      "trigger": "GET /",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 1,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864368722,
+      "request_id": "c04089fbe0a544d87de284c7b82a9ecc",
+      "ray_id": "a49b7794d96fe746",
+      "trigger": "GET /api/live",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/api/live",
+      "outcome": "canceled",
+      "wallTimeMs": 33030,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864341103,
+      "request_id": "b3fdc6c430288fe9b799a6539a1cb586",
+      "ray_id": "a49b779d0ecf7976",
+      "trigger": "GET /",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 3,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864340582,
+      "request_id": "43282ebd52bcf9754ce10d54ca265609",
+      "ray_id": "a49b7331cecc7976",
+      "trigger": "GET /api/live",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/api/live",
+      "outcome": "canceled",
+      "wallTimeMs": 182151,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864338550,
+      "request_id": "07c9b499c6b0959cbb31e5a17c3df6da",
+      "ray_id": "a49b77939930e746",
+      "trigger": "GET /",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 2,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864333348,
+      "request_id": "d92f30c38ac0ffddb69a9b517e38c654",
+      "ray_id": "a49b76b7dca52a59",
+      "trigger": "GET /api/live",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/api/live",
+      "outcome": "canceled",
+      "wallTimeMs": 31505,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864303118,
+      "request_id": "6e5132a1ee8d30d0832af89603c0e872",
+      "ray_id": "a49b76b61c052a59",
+      "trigger": "GET /",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 2,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864295376,
+      "request_id": "5cbba534656a3b104ae21c2c91e440a7",
+      "ray_id": "a49b74537d35ca0d",
+      "trigger": "GET /api/live",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/api/live",
+      "outcome": "canceled",
+      "wallTimeMs": 94895,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    },
+    {
+      "timestamp": 1791864205094,
+      "request_id": "dcfcc89a9c8ad16717635c7651251547",
+      "ray_id": "a49b7450faf7ca0d",
+      "trigger": "GET /",
+      "method": "GET",
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "status": 200,
+      "outcome": "ok",
+      "wallTimeMs": 1,
+      "scriptVersion": {
+        "id": "8e799e04-bce3-4661-8fb6-e7764346441d"
+      }
+    }
+  ],
+  "transport": {
+    "SSE": "PASS_OBSERVER_TRANSPORT_ONLY",
+    "streaming_HTTP": "PASS_SSE_SCOPE",
+    "WebSocket": "NOT_EXPOSED_BY_CURRENT_APPLICATION",
+    "event_store_long_poll": "NOT_EXPOSED_BY_CURRENT_APPLICATION",
+    "ingress": "FAIL_NO_WORKER_INGRESS",
+    "egress": "CONNECTED_HEARTBEAT_GITHUB_SNAPSHOT_SOURCE_ERROR",
+    "heartbeat_kind": "observer-connection",
+    "public_read_configuration": "public",
+    "anonymous_request_identity": "NOT_TESTED_NO_IDENTITY_HEADERS_OR_COOKIES_INSPECTED",
+    "response_cache_semantics_from_published_source": "SSE no-store, no-transform; x-accel-buffering=no. Snapshot edge cache max-age 20s or fallback 90s.",
+    "reconnection": "Cloud Browser reload regained observer SSE; event resume cursor unavailable (no SSE id, Last-Event-ID handling, or replay store).",
+    "connection_lifetime": "Native platform request log wallTimeMs=182151 for canceled SSE request; observed duration only, not a platform maximum/lifetime guarantee.",
+    "client_discrepancy": "Managed terminal /health and /api/live received HTTP 403; one bounded /health response was Cloudflare error code 1010. Cloud Browser root succeeded; /health top-level navigation reported ERR_BLOCKED_BY_CLIENT, while native Worker logs show /health 200. These are client/path observations, not proof that the Site is down.",
+    "production_latency_measurement": "NOT_RUN"
+  },
+  "published_source_line_references": {
+    "worker/server.mjs": [
+      "1-18: GitHub sources, refresh and per-isolate cache",
+      "811-881: actual SSE implementation",
+      "959-1107: exhaustive HTTP route dispatch"
+    ],
+    "ui/app.js": [
+      "1460-1510: EventSource /api/live observer client"
+    ],
+    ".openai/hosting.json": [
+      "d1=null; r2=null; capabilities=mcp"
+    ]
+  }
+}

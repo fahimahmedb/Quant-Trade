@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_5_OWNER_AUTH",
+  "trace_id": "P5-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "FAIL",
+  "verdict_scope": "CURRENT_DEPLOYED_APPLICATION_NOT_GENERIC_PLATFORM_IMPOSSIBILITY",
+  "first_broken_transition": "CURRENT_DEPLOYMENT_HAS_NO_SERVER_AUTHORIZED_OWNER_MUTATION",
+  "observed_fact": "Sites control plane recognizes the caller as Owner and platform documentation describes dispatch-injected signed-in visitor identity. The deployed application only checks presence of oai-authenticated-user-id for read-only MCP tools/call; no Owner mapping or HTTP mutation route exists. /api/control is referenced in dormant frontend code, while the Worker has no handler and controls.can_write=false. No authenticated Owner mutation, replay protection or orchestrator ACK can be exercised. Source/common-pattern frontend scan identified no static Owner credential, but this is a bounded audit, not a full security certification.",
+  "evidence_reference": [
+    "traces/work-probe-05-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "Native visitor identity used by a real server-side Owner-authorized benign mutation with Origin/CSRF as applicable, expiry/revocation, replay idempotency and actual backend ACK; no credential in public client code. Implementing this requires separate Owner architecture/build authorization.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "identity_primitive": {
+    "control_plane_owner_role": "PASS_METADATA_ONLY",
+    "public_visitor_dispatch_identity": "DOCUMENTED_NOT_EMPIRICALLY_MUTATION_TESTED",
+    "server_only_owner_authorization": "ABSENT_IN_CURRENT_APPLICATION",
+    "source_check": "Signed-in-user presence gates read-only tools/call; it is not an Owner check."
+  },
+  "required_tests": {
+    "authenticated_owner_mutation": "NOT_TESTED_WRITER_ABSENT",
+    "anonymous_mutation": "NOT_TESTED_WRITER_ABSENT",
+    "expired_or_revoked_session": "NOT_TESTED",
+    "cross_origin_mutation": "NOT_TESTED_WRITER_ABSENT",
+    "replay_same_command_id_nonce": "NOT_TESTED_WRITER_ABSENT",
+    "frontend_inspection": "BOUNDED_SCAN_NO_STATIC_OWNER_CREDENTIAL_IDENTIFIED",
+    "backend_orchestrator_ack": "NOT_TESTED_WRITER_ABSENT"
+  },
+  "frontend_scan": {
+    "source_counts": {
+      "github_pat": 0,
+      "github_classic": 0,
+      "openai_key": 0,
+      "literal_bearer": 0
+    },
+    "public_inline_script_chars": 671236,
+    "script_count": 1,
+    "external_scripts": [],
+    "terms_absent": [
+      "session_generation",
+      "lease_id",
+      "event_id",
+      "STREAM_READY",
+      "VISIBLE_ACK",
+      "render_state_hash",
+      "command_id",
+      "csrf"
+    ],
+    "limitation": "Zero common-secret-pattern hits does not certify absence of every possible encoded/dynamic secret. No custom authentication was created."
+  },
+  "documentation_reference": "Sites references/identity-and-secrets.md: stable Site visitor ID and sign-in; service bypass does not supply visitor identity. Documentation is capability guidance, not empirical security PASS."
+}

@@ -1,3 +1,257 @@
+# Work continuation — factual Capability Matrix
+
+WORK_START_HEAD = `d446508bc71432bd854e1663fe04a2e352b4cedc`
+
+Branch = `builder/live-lab-platform-probes-20261013`. Remote start HEAD was checked before evidence reads and matched exactly. All twelve mandated files were read in their specified order. Root AGENTS.md was inspected; the explicit Owner platform-only scope takes precedence over its historical scientific-state read/work instructions. No local model test was rerun, no prior canary was recreated, and all old trace/harness/canary files are retained unchanged.
+
+WORK_MAXIMUM_REACHED = YES
+
+SPEC_READY_FOR_PLATFORM_PROBES = YES
+
+SPEC_READY_FOR_ONE_SHOT_BUILD = NO
+
+All build, redesign, real-capital, live-trading and paid-service permissions remain absent. These results describe the current deployment and this Work environment, not a proof of generic platform impossibility.
+
+| Probe | Verdict | First broken transition | Work evidence |
+|---|---|---|---|
+| PROBE_1_CODEX_EMITTER | BLOCKED_BY_CURRENT_ENVIRONMENT | AUTHENTICATED_CODEX_EXECUTION_SESSION_NOT_OBSERVED | [P1-WORK-PLATFORM-20261013T041000Z](traces/work-probe-01-20261013T041000Z.json) |
+| PROBE_2_SCHEDULED_WORKER | BLOCKED_BY_CURRENT_ENVIRONMENT | SCHEDULED_EXECUTION_TO_AUTHENTICATED_LIVE_SESSION_LEASE_NOT_EXPOSED | [P2-WORK-PLATFORM-20261013T041000Z](traces/work-probe-02-20261013T041000Z.json) |
+| PROBE_3_PUBLIC_STREAM | FAIL | REAL_EMITTER_TO_NON_GITHUB_AUTHENTICATED_EVENT_INGRESS_ABSENT | [P3-WORK-PLATFORM-20261013T041000Z](traces/work-probe-03-20261013T041000Z.json) |
+| PROBE_4_TRANSIENT_STATE_LEASES | FAIL | CURRENT_DEPLOYMENT_HAS_NO_LIVE_SESSION_LEASE_EVENT_STORE | [P4-WORK-PLATFORM-20261013T041000Z](traces/work-probe-04-20261013T041000Z.json) |
+| PROBE_5_OWNER_AUTH | FAIL | CURRENT_DEPLOYMENT_HAS_NO_SERVER_AUTHORIZED_OWNER_MUTATION | [P5-WORK-PLATFORM-20261013T041000Z](traces/work-probe-05-20261013T041000Z.json) |
+| PROBE_6_PUBLIC_RENDER_CANARY | NOT_RUN | PREREQUISITE_REAL_EMITTER_INGRESS_LEASE_AUTH_AND_RENDER_ACK_NOT_PROVEN | [P6-WORK-PLATFORM-20261013T041000Z](traces/work-probe-06-20261013T041000Z.json) |
+
+## New empirical findings
+
+### Probe 1
+
+Genuine Codex CLI 0.158.0 exists and was invoked twice for a benign printf canary. Local login status reports ChatGPT, but startup logged a 401 on featured-plugin retrieval (could not parse authentication token). Neither attempt emitted a JSONL thread/session/action/completion event. First attempt was interrupted (130); second, with the unrelated cua_repl MCP disabled only for that invocation, reached its 60-second timeout (124). No printf effect was observed. This does not prove that the model endpoint itself rejected auth; the exact startup cause remains unresolved.
+
+Minimum platform requirement: A successfully authenticated genuine Codex execution with demonstrable launcher/session binding and authorized non-GitHub event path carrying generation, lease, ordered action/effect/end events; heartbeat renewal where execution duration permits.
+
+Trace: [traces/work-probe-01-20261013T041000Z.json](traces/work-probe-01-20261013T041000Z.json).
+
+### Probe 2
+
+Existing scheduler-to-bounded-GitHub-effect proof is preserved. Work peek confirms the exact canary automation is disabled and last_run_time is 2026-10-12T22:12:43.047567+00:00. The exposed automation controls carry configuration/task/conversation metadata, not a launch-bound live execution session, generation, lease or action-event interface. The published Site exposes only read-only MCP tools. No second run was armed because there is no authenticated event-ingress target to test the missing live protocol.
+
+Minimum platform requirement: An authorized platform launcher or scheduled-runtime emitter tying a real unattended run to its exact worker/session/generation/lease and real action boundaries, plus an authenticated non-GitHub ingress. Task or conversation id alone is insufficient.
+
+Trace: [traces/work-probe-02-20261013T041000Z.json](traces/work-probe-02-20261013T041000Z.json).
+
+### Probe 3
+
+Native Sites returns public access, Owner control-plane role, succeeded production version 12 and source e3076b9e711ac32c1298ce372dac959939cdc23e. Cloud Browser loads the exact root and reports Flux SSE with five-second observer signals; reload reconnects. Native Worker logs show GET / and GET /health 200 and canceled /api/live requests including wallTimeMs=182151. The deployed server streams connected, observer-connection heartbeat and GitHub-derived snapshots; it has no worker ingress. Therefore an SSE transport exists but the mandatory non-GitHub worker path fails in the current application.
+
+Minimum platform requirement: Within the same authorized Sites project, an actual authenticated worker event ingress/store and public egress preserving origin and event/cursor semantics. Existing observer SSE may be reusable but does not supply ingress or worker identity. No architecture change is authorized by this failure.
+
+Trace: [traces/work-probe-03-20261013T041000Z.json](traces/work-probe-03-20261013T041000Z.json).
+
+### Probe 4
+
+Live database overview returns bindings=[] and tables=[] with no omissions. Hosting manifest has d1=null and r2=null. The current Worker ignores env/ctx, uses per-isolate cached/pending variables and caches.default for GitHub snapshots, and exposes no session_generation, lease_id, event_id, cursor replay or restart reconciliation primitive. No real-platform A-H canary target exists. Existing 11/11 local harness remains MODEL proof only.
+
+Minimum platform requirement: An actual platform-backed session/lease/event primitive with atomic generation/ordering/dedupe, cursor/snapshot, expiry and controlled restart reconciliation; then run A-H against it. D1 availability in documentation is not deployed lease proof.
+
+Trace: [traces/work-probe-04-20261013T041000Z.json](traces/work-probe-04-20261013T041000Z.json).
+
+### Probe 5
+
+Sites control plane recognizes the caller as Owner and platform documentation describes dispatch-injected signed-in visitor identity. The deployed application only checks presence of oai-authenticated-user-id for read-only MCP tools/call; no Owner mapping or HTTP mutation route exists. /api/control is referenced in dormant frontend code, while the Worker has no handler and controls.can_write=false. No authenticated Owner mutation, replay protection or orchestrator ACK can be exercised. Source/common-pattern frontend scan identified no static Owner credential, but this is a bounded audit, not a full security certification.
+
+Minimum platform requirement: Native visitor identity used by a real server-side Owner-authorized benign mutation with Origin/CSRF as applicable, expiry/revocation, replay idempotency and actual backend ACK; no credential in public client code. Implementing this requires separate Owner architecture/build authorization.
+
+Trace: [traces/work-probe-05-20261013T041000Z.json](traces/work-probe-05-20261013T041000Z.json).
+
+### Probe 6
+
+The benign public rendered-frame canary was not run. A genuine worker-to-authenticated-ingress path, live session/lease store, Owner mutation and post-render VISIBLE_ACK are not present/proven. The current public inline bundle has no VISIBLE_ACK, render_state_hash, last applied live event id, lease id or session generation. No DISPLAY_ONLY signal was used as worker/render-latency proof.
+
+Minimum platform requirement: All earlier mandatory primitives plus canonical frontend application of real events and verified post-render/frame ACK with event id/state hash. Measure local-clock stages separately; never infer rendered ACK from network receipt.
+
+Trace: [traces/work-probe-06-20261013T041000Z.json](traces/work-probe-06-20261013T041000Z.json).
+
+
+## Actual platform architecture
+
+- **actual_site_backend**: Cloudflare Worker ESM, deployed version 12, same project/URL, source e3076b9e711ac32c1298ce372dac959939cdc23e. Current application is read-only.
+- **actual_event_transport**: Genuine public-client SSE /api/live; connected + observer heartbeat + GitHub-derived snapshots/source-error. No live worker ingress/store, WebSocket handler or event-store long poll in current source.
+- **actual_transient_state_primitive**: Current deployment: in-isolate snapshot cache/pending and Cloudflare caches.default; D1 bindings absent, R2 null; not a lease/event store. Sites documentation supports provisioning D1/R2 but no semantic canary was run.
+- **actual_authentication_primitive**: Sites control plane reports Owner; public dispatch supports anonymous access configuration and documented signed-in Site visitor identity. Current app only requires signed-in-user presence for read-only MCP calls. No Owner mutation, Origin/CSRF/replay policy or backend ACK implemented.
+- **actual_codex_emitter**: Genuine Codex CLI installed and invoked; no authenticated session/action JSONL event observed, initialization auth warning and bounded timeout. Work itself not relabeled as Codex live-emitter proof.
+- **actual_scheduled_worker_emitter**: Historical unattended bounded GitHub effect proven. Automation configuration/conversation metadata exposed; launch-bound live worker identity/generation/lease emitter not exposed or demonstrated.
+- **actual_render_ack**: Current bundle has no verified post-render/frame VISIBLE_ACK/event-id/state-hash path. Public page rendering is observed but Probe 6 remains NOT_RUN.
+
+The source checkout was opened through the native Sites credential/helper flow and is clean at `e3076b9e711ac32c1298ce372dac959939cdc23e`, matching native production version 12's source. The Site source and deployment were not edited, republished or moved. Credentials stayed in session memory/stdin. Native request logs are retrospective transport evidence only, never worker provenance. Observer SSE request wall time 182151 ms is an observed request duration, not a transport lifetime guarantee or economic-worker lease.
+
+## Complete live-worker capability matrix
+
+Values below refer strictly to live worker protocol events. Documentary results, CLI installation, connection heartbeats, rendered display and durable GitHub receipts are separately scoped and do not upgrade those values. `UNVERIFIED` and `DERIVED` cannot authorize real worker animation.
+
+### genuine_codex_cli
+
+```text
+WORKER_TYPE = genuine_codex_cli
+RUNTIME = codex-cli 0.158.0, explicitly launched benign runtime canaries
+PROVENANCE_LEVEL = UNVERIFIED
+IDENTITY_BINDING_PROOF = BLOCKED_BY_CURRENT_ENVIRONMENT
+SESSION_START = BLOCKED_BY_CURRENT_ENVIRONMENT
+HEARTBEAT = BLOCKED_BY_CURRENT_ENVIRONMENT
+ACTION_STARTED = BLOCKED_BY_CURRENT_ENVIRONMENT
+PROGRESS = NOT_TESTED
+ACTION_COMPLETED_EFFECT_PROOF = BLOCKED_BY_CURRENT_ENVIRONMENT
+HANDOFF = NOT_TESTED
+RESULT = NOT_TESTED
+BLOCKED = NOT_TESTED
+ECONOMIC_LOOK = NOT_TESTED
+SESSION_END = BLOCKED_BY_CURRENT_ENVIRONMENT
+ECONOMIC_ACTIONS = UNSUPPORTED
+ECONOMIC_GUARD_SCOPE = POLICY_ONLY
+LONG_SESSION_LEASE_PROOF = FALSE
+LAST_REAL_TRACE_ID = NONE
+LAST_INSPECTION_TRACE_ID = P1-WORK-PLATFORM-20261013T041000Z
+```
+
+Scope: Live worker protocol remains unproven.
+
+### chatgpt_scheduled_automation
+
+```text
+WORKER_TYPE = chatgpt_scheduled_automation
+RUNTIME = platform_scheduled_automation
+PROVENANCE_LEVEL = WRAPPED_PLATFORM
+IDENTITY_BINDING_PROOF = BLOCKED_BY_CURRENT_ENVIRONMENT
+SESSION_START = BLOCKED_BY_CURRENT_ENVIRONMENT
+HEARTBEAT = BLOCKED_BY_CURRENT_ENVIRONMENT
+ACTION_STARTED = BLOCKED_BY_CURRENT_ENVIRONMENT
+PROGRESS = NOT_TESTED
+ACTION_COMPLETED_EFFECT_PROOF = BLOCKED_BY_CURRENT_ENVIRONMENT
+HANDOFF = NOT_TESTED
+RESULT = NOT_TESTED
+BLOCKED = NOT_TESTED
+ECONOMIC_LOOK = NOT_TESTED
+SESSION_END = BLOCKED_BY_CURRENT_ENVIRONMENT
+ECONOMIC_ACTIONS = UNSUPPORTED
+ECONOMIC_GUARD_SCOPE = POLICY_ONLY
+LONG_SESSION_LEASE_PROOF = FALSE
+LAST_REAL_TRACE_ID = P2-SCHEDULED-CANARY-20261012T221243Z
+LAST_INSPECTION_TRACE_ID = P2-WORK-PLATFORM-20261013T041000Z
+```
+
+Scope: WRAPPED_PLATFORM only for existing scheduler-to-bounded-GitHub-effect; live event origin/session binding remains unverified.
+
+### chatgpt_work_interactive
+
+```text
+WORKER_TYPE = chatgpt_work_interactive
+RUNTIME = Current Work task; environment-reported Codex thread metadata
+PROVENANCE_LEVEL = UNVERIFIED
+IDENTITY_BINDING_PROOF = NOT_TESTED
+SESSION_START = BLOCKED_BY_CURRENT_ENVIRONMENT
+HEARTBEAT = BLOCKED_BY_CURRENT_ENVIRONMENT
+ACTION_STARTED = BLOCKED_BY_CURRENT_ENVIRONMENT
+PROGRESS = NOT_TESTED
+ACTION_COMPLETED_EFFECT_PROOF = BLOCKED_BY_CURRENT_ENVIRONMENT
+HANDOFF = NOT_TESTED
+RESULT = NOT_TESTED
+BLOCKED = NOT_TESTED
+ECONOMIC_LOOK = NOT_TESTED
+SESSION_END = BLOCKED_BY_CURRENT_ENVIRONMENT
+ECONOMIC_ACTIONS = UNSUPPORTED
+ECONOMIC_GUARD_SCOPE = POLICY_ONLY
+LONG_SESSION_LEASE_PROOF = FALSE
+LAST_REAL_TRACE_ID = NONE
+LAST_INSPECTION_TRACE_ID = P1-WORK-PLATFORM-20261013T041000Z
+```
+
+Scope: Live worker protocol remains unproven.
+
+### site_observer_sse_not_research_worker
+
+```text
+WORKER_TYPE = site_observer_sse_not_research_worker
+RUNTIME = Current published Cloudflare Worker version 12
+PROVENANCE_LEVEL = DIRECT
+IDENTITY_BINDING_PROOF = FAIL
+SESSION_START = FAIL
+HEARTBEAT = FAIL
+ACTION_STARTED = FAIL
+PROGRESS = FAIL
+ACTION_COMPLETED_EFFECT_PROOF = FAIL
+HANDOFF = FAIL
+RESULT = FAIL
+BLOCKED = FAIL
+ECONOMIC_LOOK = FAIL
+SESSION_END = FAIL
+ECONOMIC_ACTIONS = UNSUPPORTED
+ECONOMIC_GUARD_SCOPE = NONE
+LONG_SESSION_LEASE_PROOF = FALSE
+LAST_REAL_TRACE_ID = NONE
+LAST_INSPECTION_TRACE_ID = P3-WORK-PLATFORM-20261013T041000Z
+```
+
+Scope: DIRECT observer connection events only. Not worker events; GitHub snapshots are DERIVED.
+
+### github_derived_live_telemetry_not_live_worker
+
+```text
+WORKER_TYPE = github_derived_live_telemetry_not_live_worker
+RUNTIME = Repository-derived display projected by published Site
+PROVENANCE_LEVEL = DERIVED
+IDENTITY_BINDING_PROOF = FAIL
+SESSION_START = FAIL
+HEARTBEAT = FAIL
+ACTION_STARTED = FAIL
+PROGRESS = FAIL
+ACTION_COMPLETED_EFFECT_PROOF = FAIL
+HANDOFF = FAIL
+RESULT = FAIL
+BLOCKED = FAIL
+ECONOMIC_LOOK = FAIL
+SESSION_END = FAIL
+ECONOMIC_ACTIONS = UNSUPPORTED
+ECONOMIC_GUARD_SCOPE = NONE
+LONG_SESSION_LEASE_PROOF = FALSE
+LAST_REAL_TRACE_ID = NONE
+LAST_INSPECTION_TRACE_ID = P3-WORK-PLATFORM-20261013T041000Z
+```
+
+Scope: Forbidden as real-time worker animation support; no genuine worker event trace.
+
+
+No system-enforced Economic Look guard was demonstrated. Work/Codex/scheduler are POLICY_ONLY; the observer/derived display provides no economic enforcement. No outcome exposure or real economic experiment was used by these probes.
+
+## Unresolved platform facts
+
+- Cause/remedy for genuine CLI startup not reaching execution; featured-plugin auth 401 is observed but model execution endpoint status is untested.
+- Authorized platform linkage of Codex/Work and unattended scheduled execution to a unique authenticated live session/generation/lease; not proved by task/conversation/thread IDs.
+- Whether approved server changes on this same Site can provide the required authenticated ingress, shared state atomicity, ordering, replay and restart semantics; documentation is not empirical PASS.
+- Anonymous vs signed-in identity of the successful cloud browser request was not inspected; public access policy is confirmed, exact anonymous live-protocol acceptance is untested.
+- End-to-end authenticated Owner mutation, Origin/CSRF, replay, expiry/revocation and orchestrator ACK remain untested because no mutation exists.
+- Transport maximum lifetime, resume/cache behavior for a real worker-event transport, and post-render ACK latency remain untested.
+
+## Completion / verification contract
+
+Only the canonical report/result and six new Work traces under `research/edge_lab/platform_probes/` are changed. Publication uses one GitHub commit with parent equal to the verified starting HEAD, then a non-force branch update guarded by expected_sha. Final remote HEAD and changed-path scope must be reread independently after publication. The canonical result cannot contain its own not-yet-created commit SHA; resolve the commit containing this result from the remote branch and the Work final response.
+
+SCIENTIFIC_STATE_MODIFIED = FALSE
+
+REAL_CAPITAL_AUTHORIZED = FALSE
+
+LIVE_TRADING_AUTHORIZED = FALSE
+
+PAID_USD_AUTHORIZED = 0
+
+UNCOMMITTED_WORK = NONE
+
+Stop after this matrix. No Site changes, prototype live store, weak auth, event-bus workaround, 3D/product work or additional canary is authorized. The remaining implementation and platform-access decisions belong to the Owner after reviewing these facts.
+
+---
+
+# Preserved Builder handoff at mandatory start HEAD
+
+The following historical report is preserved verbatim. Its Builder-time verdicts are not the current Work verdicts above.
+
 # QUANT-TRADE — LIVE RESEARCH LAB — PLATFORM REALITY PROBES
 
 ## Builder Chat handoff report
