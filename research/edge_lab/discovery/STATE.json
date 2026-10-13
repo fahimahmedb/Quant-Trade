@@ -1621,6 +1621,77 @@
       },
       "previous": "803978fbd5fbcc305dd002c6d8a6d68829d36a836d95294cb4efa118cfc5a15d",
       "sequence": 40
+    },
+    {
+      "at": "2026-10-13T23:23:26.823796+00:00",
+      "hash": "95e7b6fd0fb70618a12e78b23adea10739c8f4296c7bd5a9ff7c3e8f64b56b81",
+      "kind": "DISCOVERY_PROSPECTIVE_XPONENTIAL_CONDITIONAL_RIGHTS_QUALIFIED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "8-K CURRENT_DOCUMENT_NOT_ELIGIBLE; 8-A12B BODY_UNREAD",
+          "scope": "Both exact SEC clocks and the 8-K operative rights terms",
+          "status": "COMPLETED"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Xponential two indices and full 8-K rights summary read, including contractual exercise/par/dividend/liquidation-preference terms and conditional valuation formulas. Those are documentary exposures, not selected market quotes, NAV or realized liquidation/payoff payloads. No payoff calculated. Issuer/document history remains exposed; raw documents private, bounded legal excerpts published. The separate 8-A12B and exhibits remain unread.",
+          "type": "PRIMARY_SEC_METADATA_AND_CONDITIONAL_CORPORATE_RIGHTS"
+        },
+        "head_observed": "0735dd7e546c648bea889d21341553f763ef832d",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "Xponential 8-K accepted 07:11:32 Eastern is reviewed: shareholder protection rights with conditional exercise and anti-dilution/fractional clauses, not an A-E fixed entitlement event. The 8-A12B accepted 07:15:51 Eastern index is complete; its separate body remains unread. Earlier partial/unread possibilities and bounded feed coverage remain unresolved. No first eligible event established.",
+          "question": "Finish the separate Xponential 8-A12B legal registration at https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm, reusing its saved exact accepted clock and the completed 8-K review. Determine whether it merely registers the same conditional rights or supplies a genuinely different eligible event; no automatic equivalence. Read operative terms only, no selected prices/NAV/distribution/payoff payloads. If no admissible event is established, select one causally distinct L0 or non-outcome L1 preparation from accessible primary data; retain all unresolved admission limits and previous closures, no price look or historical issuer substitution.",
+          "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+          "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "partial_documents": 0,
+          "primary_requests": 3,
+          "received_body_bytes": 75244,
+          "request_wall_seconds_sum": 1.0756495959940366,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no first eligible event established",
+        "proof": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+        "proof_sha256": "566f498e673dc9542aa7c93afcc9ba76883b63dcee8cb9cb649d9b96cd41ee4c"
+      },
+      "previous": "edaa352efa1b31fd2ca9d2f78b63a272e72710ca9432f979b45565f826d2e278",
+      "sequence": 41
     }
   ],
   "exposure_ledger": [
@@ -1666,7 +1737,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "c5a56dbffe571a11bdb612238be64df82d4a012ab6f76365eceb812948d0d8cd",
+  "integrity": "97a189c7c28f309ef7b01670fddd7b8f0f9a25aca60677646ebfdb71062342f3",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1743,10 +1814,10 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "The Invesco 497 and now independently reviewed 497K are management supplements, not liquidation notices. MiniMed 8-K accepted 06:00:51 Eastern reports four routine annual-meeting votes, not an A-E event. Their documentary admission reviews are completed. Xponential notices, earlier unread/partial possibilities and overall chronology/coverage remain unresolved; no first eligible event has been established.",
-    "question": "Qualify the cached Xponential Fitness 8-K (CIK 1802156, accession 0001193125-26-419697, feed 07:11:32 Eastern) and decision-relevant 8-A12B (0001193125-26-419698, feed 07:15:51 Eastern) using exact accepted metadata and operative corporate-rights terms only. Is this an admissible fixed prospective A-E event or a different corporate-rights registration? No market-price/NAV/distribution/payoff payload; do not infer eligibility from a keyword or filing type. Earlier unresolved possibilities still prevent a later economic selection.",
-    "resume_rule": "Reuse all saved receipts; do not re-fetch Invesco 497/497K bodies or indices, MiniMed index/body, AmpliTech consumed graphic/index, Co-Diagnostics agreement or earlier consumed documents. Respect original exclusions and exact accepted-time ordering across A-E; do not treat bounded coverage or a partial source as universal absence.",
-    "reuse_reference": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
+    "pending": "Xponential 8-K accepted 07:11:32 Eastern is reviewed: shareholder protection rights with conditional exercise and anti-dilution/fractional clauses, not an A-E fixed entitlement event. The 8-A12B accepted 07:15:51 Eastern index is complete; its separate body remains unread. Earlier partial/unread possibilities and bounded feed coverage remain unresolved. No first eligible event established.",
+    "question": "Finish the separate Xponential 8-A12B legal registration at https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm, reusing its saved exact accepted clock and the completed 8-K review. Determine whether it merely registers the same conditional rights or supplies a genuinely different eligible event; no automatic equivalence. Read operative terms only, no selected prices/NAV/distribution/payoff payloads. If no admissible event is established, select one causally distinct L0 or non-outcome L1 preparation from accessible primary data; retain all unresolved admission limits and previous closures, no price look or historical issuer substitution.",
+    "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+    "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -3185,5 +3256,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T20:20:56.530238+00:00"
+  "updated_at": "2026-10-13T23:23:26.815874+00:00"
 }

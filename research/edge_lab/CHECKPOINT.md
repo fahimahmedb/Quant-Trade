@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Xponential conditional rights qualified
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Admission evidence](discovery/qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json): Xponential 8-K accepted 07:11:32 Eastern describes a defensive stockholder Rights Agreement. Exercise depends on acquiring-person/distribution events; its fractional, liquidation and redemption clauses are conditional, not a fixed A–E entitlement. This 8-K is ineligible. The separate 8-A12B index accepted 07:15:51 Eastern is verified; its body remains unread.
+- No first eligible event, economic claim, market-price/NAV/realized-payoff request or calculation. Three complete primary responses, 75244 bytes, zero retries, USD 0. Contractual monetary terms are retained as documentary exposure; no quoted market values or profits inferred. Tokens/global bill unmeasured. Earlier incomplete sources and coverage remain unresolved.
+- NEXT: finish only the small 8-A12B legal registration using the exact saved URL and cached clocks, then choose one distinct L0/non-outcome preparation if no event is admissible. <=3 requests / <=15 minutes / <=512 KiB each / zero retries. No refetch of Xponential indices/8-K, no replay of earlier sources, no selected outcome access or issuer substitution. Existing closures and parked dependencies unchanged.
+- Proof SHA256 `566f498e673dc9542aa7c93afcc9ba76883b63dcee8cb9cb649d9b96cd41ee4c`. The 8-K subquestion is COMPLETED; 8-A12B content is next. Previous queue/results, counters, multiplicity, exposure ledger and event prefix preserved; raw documents private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Invesco 497K and MiniMed admission resolved
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
