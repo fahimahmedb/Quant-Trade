@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, prospective clock exclusions + lockup design parked
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- One other useful action: [lockup non-outcome design decision and mandatory A–E screen](discovery/qualifications/prospective-admission-and-lockup-design-2026-10-13.json). Lockup L1 = PARK_DATA before a declaration/look: cached SEC/FINRA sources do not establish the required admissible price route, independent first-news/operative clocks or short-borrow economics. This is not an economic rejection. Reopen only on a genuinely new qualifying source fact, not a repeat audit.
+- A–E: no event admitted; coverage/eligibility remain unresolved, not a finding that no event exists. SEC filed date is not accepted time: CytoMed/NuvOx October13 filings were accepted October9, before T0. Eshallgo reports a consolidation effective on passage at its October9 Eastern meeting, failing a fresh postacceptance entry. Ohmyhome text is a general constitutional provision. Fusion Fuel body exceeded its bound and was not retried. No selected prices, NAV, payout, claim or economic test.
+- NEXT: reuse the saved metadata/receipts to resolve the oldest remaining candidates across all five protocols, exact accepted timestamps/exclusions/eligibility before any claim. Three primary document requests maximum, <=15 minutes, zero retries, <=512KiB per document. No later issuer chosen while an earlier possibility remains unresolved. Mutable pagination/keyword search are not completeness proofs. B/C v1 stay invalid; all valid protocol hashes are preserved.
+- Proof SHA256 `a714307a8896ba936a52a4dc1bd7b6a5bc90da7a7b09d7f355aff871d20b1461`. Ten primary requests for admission screening (seven metadata, three terms), including one bounded partial body; zero new lockup-source requests. Paid USD0, tokens/global bill unmeasured. All prior queue/results, economic metrics, multiplicity and exposure-ledger prefixes unchanged; new documentary exposures recorded in the existing event chain.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, lockup clock qualified for design
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
