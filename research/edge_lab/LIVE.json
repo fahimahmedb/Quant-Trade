@@ -1,12 +1,12 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-13T12:28:43.093092+00:00",
-  "state_updated_at": "2026-10-13T12:28:43.000577+00:00",
+  "generated_at": "2026-10-13T13:27:55.728463+00:00",
+  "state_updated_at": "2026-10-13T13:27:55.631438+00:00",
   "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
   "paused": false,
   "scheduler": {
     "enabled": true,
-    "last_tick_at": "2026-10-13T12:28:42.973734+00:00",
+    "last_tick_at": "2026-10-13T13:27:55.601700+00:00",
     "last_tick_actor": "github-actions-metadata",
     "last_tick_status": "IDLE",
     "configured_at": "2026-10-11T17:35:42.938259+00:00"
@@ -33,8 +33,8 @@
     "decision_status": "QUALIFIED"
   },
   "queue": {
-    "ready": 0,
-    "scheduled": 1,
+    "ready": 1,
+    "scheduled": 0,
     "in_progress": 0,
     "recovery": 1,
     "waiting": 12,
@@ -44,14 +44,14 @@
   "research_options_pending": 0,
   "research_options_consumed": 1,
   "next_action": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
-  "next_due_at": "2026-10-13T12:45:00+00:00",
+  "next_due_at": null,
   "real_capital_authorized": false,
   "live_trading_authorized": false,
   "validation": {
     "status": "RECOVERY_NEEDED",
     "counts": {
-      "ready": 0,
-      "scheduled": 1,
+      "ready": 1,
+      "scheduled": 0,
       "in_progress": 0,
       "recovery": 1,
       "waiting": 12,
@@ -160,7 +160,8 @@
           "proxy": "Prospective official-source receipt clock + one predeclared liquid-market proxy/horizon",
           "question": "Can a small prospective sample show a repeatable sign/magnitude response without reconstructing historical famous events?",
           "status": "PARK_UNTIL",
-          "who_pays": "Participants slower to process or reposition after policy information"
+          "who_pays": "Participants slower to process or reposition after policy information",
+          "blocked_reason": "A frozen V4.2 contract is required"
         },
         {
           "completed_at": "2026-10-11T22:28:54.485080+00:00",
@@ -1521,8 +1522,8 @@
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "ea92cc261bba725f76a5b13fe234ebbd6c5a96f3",
-    "generated_at": "2026-10-13T12:28:43.093092+00:00",
+    "source_head": "244c1e19a4ced9ef70d7e9ebf602582260e87d9a",
+    "generated_at": "2026-10-13T13:27:55.728463+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"

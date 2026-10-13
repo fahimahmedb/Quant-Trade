@@ -12,7 +12,7 @@ Tests économiques terminés : 1. Les fichiers acquis et contrôles logiciels ne
 
 Le statut opérationnel combine file, lease worker et planificateur ; le dernier tick seul ne pilote plus l'affichage.
 
-Dernier cycle attesté : `2026-10-13T12:28:42.973734+00:00` ; acteur `github-actions-metadata` ; statut tick `IDLE`.
+Dernier cycle attesté : `2026-10-13T13:27:55.601700+00:00` ; acteur `github-actions-metadata` ; statut tick `IDLE`.
 Worker de recherche programmé : configuration observée `2026-10-11T17:35:42.938259+00:00`.
 
 ## Autonomie observable V3
@@ -31,11 +31,11 @@ La pause empêche tout nouveau travail.
 
 ## Prochaine décision utile
 
-Aucune question admissible due maintenant ; prochaine échéance : 2026-10-13T12:45:00+00:00
+Construction : Après le retour annoncé13Oct12:45UTC, un unique probe de métadonnées Public Inspection peut-il qualifier schéma/filing/amendements et première réception UTC future, sans prix/news corpus/retours ? (`build:policy-announcement-repricing:announced-api-return`)
 
 ## File V3
 
-Prêtes : 0 ; différées : 1 ; en cours : 0 ; récupération : 1 ; WAIT : 12.
+Prêtes : 1 ; différées : 0 ; en cours : 0 ; récupération : 1 ; WAIT : 12.
 Sessions CLI conservées : 3.
 Investigations documentaires en réserve : 0 ; déjà traitées/prélevées : 1. Pilotage plan : `RECOVERY_NEEDED`.
 
@@ -81,9 +81,9 @@ M effectif et expositions privées : UNKNOWN. Aucun seuil historique ni Sharpe c
 |---|---|
 | Dépenses autorisées/engagées USD | 0 |
 | Tokens | NON MESURÉ |
-| CPU mesuré des opérations locales | 2.899 |
-| Durée mesurée des opérations locales | 42.1448 |
-| Octets de payload de métadonnées | 36890 |
+| CPU mesuré des opérations locales | 2.9049 |
+| Durée mesurée des opérations locales | 42.4806 |
+| Octets de payload de métadonnées | 37324 |
 | Trafic réseau total | NON MESURÉ |
 | Temps humain | NON MESURÉ |
 
@@ -94,7 +94,6 @@ Claude : pas de revue simulée ; contradiction ciblée après disponibilité, sa
 
 ## Exécutions et apprentissages
 
-- `build:policy-announcement-repricing:announced-api-return` : reprise programmée après `2026-10-13T12:45:00+00:00` ; aucun probe anticipé.
 - `execute:smard-2025-fixed-hours-proxy-v1` : `UNKNOWN_OUTCOME` ; look `look:smard-2025-fixed-hours-proxy-v1`.
 - `execute:smard-2025-solar-noon-evening-proxy-v1` : `COMPLETED` ; look `look:smard-2025-solar-noon-evening-proxy-v1`.
 - `build:eurusd-technical-grid:exact-legacy-adapter` : **WAIT** — Implement saved exact adapter plan and receipt reconciliation with synthetic fixtures; no new source review/outcome. ; preuves lab-exact-legacy-metadata-plan-20261011T0004Z.
