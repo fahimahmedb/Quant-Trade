@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Fusion/bioAffinity document scope
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Three-request admission decision](discovery/qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json): Fusion exact accepted06:05:29Eastern verified; a distinct small6-K cover identifies interim/pro-forma reporting and prior restatement notices. The oversized EX99.1 was not retried and its unread content is not declared cleared. bioAffinity current PRER14A concerns warrants, issuances and authorized-capital reduction; historical post-split quantities do not establish a fresh fixed B/C split. No event admitted.
+- Admission remains unresolved, not a finding that no event exists. No price/NAV/distribution request, claim, calculation or economic verdict. All original clocks/exclusions and invalid B/C-v1 declarations preserved; prior document exposures remain spent as documentary selection.
+- NEXT: reuse cached metadata to qualify AmpliTech DEF14A0001493152-26-046670(feed06:05:44Eastern) and any decision-relevant amendment, then remaining earlier possible A–E notices. Three primary requests / <=15min / <=512KiB each / zero retries. Do not reread consumed Fusion/bioAffinity or earlier cleared sources; IX completion body stays unopened. No later event selection before earlier possibilities and required eligibility are resolved. Existing parked financing-flow/lockup/WTI dependencies unchanged.
+- Proof SHA256 `23f988e9ea3b957cd4a655597645186ce21f267f2bbca0f57be88cd5ec050fb9`. Three requests, 344217 body bytes, USD0; tokens/global bill unmeasured. Prior queue/results, counters, multiplicity, exposure ledger and event prefix unchanged; documentary evidence appended. Raw filings remain private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, conditional financing flow L0
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

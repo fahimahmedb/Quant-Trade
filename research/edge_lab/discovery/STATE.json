@@ -1273,6 +1273,72 @@
       },
       "previous": "a810db037cdf71d42dea5376e2608e8c6fc2a7e0fd9cf495e6a6b3a6b66e18d5",
       "sequence": 35
+    },
+    {
+      "at": "2026-10-13T16:28:49.889090+00:00",
+      "hash": "6b415ecac245ac01cf30a3aad9f320162b0994f0da1a5e520a521262182af251",
+      "kind": "DISCOVERY_PROSPECTIVE_DOCUMENT_SCOPE_PROGRESS",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_subtask": "Three-request scope/eligibility batch using an unconsumed Fusion index/cover and bioAffinity proxy",
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Fusion index and full6-K cover, bioAffinity full preliminary proxy, including public historical financing/legal terms. No selected stock-price/NAV/distribution/fractional-payment endpoint, no return join or arithmetic test. These documents/issuers remain documentary-exposed and cannot be relabelled unseen. No new L0 is fabricated from an unresolved candidate scan.",
+          "type": "PRIMARY_CORPORATE_ELIGIBILITY_DOCUMENTS"
+        },
+        "head_observed": "b034f998091f716aeff96da95246f8d2fc561e32",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "No first qualifying A-E event established. Fusion exact accepted06:05:29Eastern now verified, but current cover is financial-report context and does not prove operative split terms; uninspected annex cannot be inferred clear or retried. bioAffinity current proposal fails to supply fixed R/entitlement/fraction terms. AmpliTech and remaining proxy/6-K/8-K/497 candidates remain unresolved. IX completion body stays unopened. These are bounded source findings, not exhaustive absence of an event.",
+          "question": "Continue earliest A-E eligibility using cached identities. Fusion current6-K cover and bioAffinity PRER14A do not establish a fresh B/C event. Do not reread them or the oversized Fusion financial annex. Next resolve AmpliTech DEF14A0001493152-26-046670(feed06:05:44Eastern) and, where decision-relevant, its later DEFA14A0001493152-26-046687; then remaining earlier possible notices across A-E. No later event is selected while earlier possibilities or coverage are unresolved. Exact accepted timestamp, original exclusions and every frozen eligibility condition before a price/NAV/payoff CAS claim.",
+          "resume_rule": "Reuse prior metadata and all consumed documentary evidence; no repeats of Mitesco/Adagio, IX/SS indexes/note, Fusion index/cover/oversized annex or bioAffinity current proxy. New small operative primary notice requires distinct evidence and original prospective rules. First qualifying accepted timestamp across A-E, then CIK and protocol ties; no automatic readmission of exposed issuers.",
+          "reuse_reference": "qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "body_bytes": 344217,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_requests": 3,
+          "request_wall_seconds_sum": 1.269575566999265,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no first event established",
+        "proof": "qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json",
+        "proof_sha256": "23f988e9ea3b957cd4a655597645186ce21f267f2bbca0f57be88cd5ec050fb9"
+      },
+      "previous": "4c18ffa99906ad6b502ac066da6d6140f132f523175d4c4ae824381a7e6541a1",
+      "sequence": 36
     }
   ],
   "exposure_ledger": [
@@ -1318,7 +1384,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "6c5b7278cff259429b00dd0fc1bfeff6af4fd3e8f863ad76eaf271a4a2ba4b44",
+  "integrity": "7a9ea1d1fc8e31bde999f383c1a72d6b2718c1f73b2bbeec58ab35af814a0b5a",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1395,10 +1461,10 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "No first event has been established. IX current8-K is not admitted; any qualification must come from an identified operative pre-event proxy/notice that satisfies original timing/exclusion rules, not its vote/redemption results. Other cached candidates and global coverage remain unresolved, including Fusion Fuel for which the consumed oversized body cannot be retried. Reuse original cached feed/search URLs and discriminate documentary notices without a new SEC census.",
-    "question": "Continue the first qualifying A-E event from cached metadata without rereading consumed sources. SS Innovations EX4.1 keyword hit is a conditional lender-protection clause, not a fixed reverse-split announcement. IX index describes a vote-report8-K with October7 period, not evidence of an open post-T0 redemption opportunity; leave its completion/payoff body unopened. Resolve remaining earlier potential notices across A-E before any later event selection. Claim exact eligibility/accepted identity via CAS before any selected market/NAV/payoff payload.",
-    "resume_rule": "No repeat of consumed Mitesco/Adagio, IX/SS indexes or SS EX4.1. Recorded legal terms/issuers remain exposed. First qualifying accepted timestamp across A-E, then CIK and frozen protocol ties. No later substitution while an earlier possibility remains unresolved.",
-    "reuse_reference": "qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json",
+    "pending": "No first qualifying A-E event established. Fusion exact accepted06:05:29Eastern now verified, but current cover is financial-report context and does not prove operative split terms; uninspected annex cannot be inferred clear or retried. bioAffinity current proposal fails to supply fixed R/entitlement/fraction terms. AmpliTech and remaining proxy/6-K/8-K/497 candidates remain unresolved. IX completion body stays unopened. These are bounded source findings, not exhaustive absence of an event.",
+    "question": "Continue earliest A-E eligibility using cached identities. Fusion current6-K cover and bioAffinity PRER14A do not establish a fresh B/C event. Do not reread them or the oversized Fusion financial annex. Next resolve AmpliTech DEF14A0001493152-26-046670(feed06:05:44Eastern) and, where decision-relevant, its later DEFA14A0001493152-26-046687; then remaining earlier possible notices across A-E. No later event is selected while earlier possibilities or coverage are unresolved. Exact accepted timestamp, original exclusions and every frozen eligibility condition before a price/NAV/payoff CAS claim.",
+    "resume_rule": "Reuse prior metadata and all consumed documentary evidence; no repeats of Mitesco/Adagio, IX/SS indexes/note, Fusion index/cover/oversized annex or bioAffinity current proxy. New small operative primary notice requires distinct evidence and original prospective rules. First qualifying accepted timestamp across A-E, then CIK and protocol ties; no automatic readmission of exposed issuers.",
+    "reuse_reference": "qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -2837,5 +2903,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T13:26:57.594511+00:00"
+  "updated_at": "2026-10-13T16:28:49.879369+00:00"
 }
