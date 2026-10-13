@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, conditional split terms and source bound
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Three-request admission evidence](discovery/qualifications/prospective-admission-codiagnostics-amplitech-bound-2026-10-13.json): Co-Diagnostics EX10.1 loan agreement calls for Board-discretionary reverse-split ranges up to1:750 and future approval; it does not fix an operative B/C case. AmpliTech supplementary index accepted06:15:19Eastern verified; graphic stopped at524288bytes without JPEG end marker, not decoded/retried. Its unread content stays unresolved.
+- No first qualifying A–E event established, no price/NAV/distribution, claim or economic test. Current17:26Z A feed reused without another poll. Existing exclusions/clocks and documentary exposures preserved; a partial source is not evidence that no event exists.
+- NEXT: qualify cached Invesco Counselor Series Trust497/497K legal vehicle/event types and any explicit liquidation dates from metadata/terms only; no NAV/performance/distribution payload. <=3 primary requests / <=15min / <=512KiB each / zero retries. Preserve unresolved earlier possibilities; no later economic selection until original chronological/eligibility gates pass. Do not re-fetch consumed AmpliTech graphic or Co-Diagnostics agreement. Parked dependencies unchanged.
+- Proof SHA256 `b12253ec2758db00c78c65054d49256d70b2a2d0d2f9366d54af5887e384b044`. Three requests, 857977 received body bytes including the partial image, USD0; tokens/global bill unmeasured. Prior queue/results, counters, multiplicity, exposure ledger and event prefix unchanged. Raw sources private; partial hash explicitly scoped to received bytes.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, routine proxy and fresh tender metadata
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
