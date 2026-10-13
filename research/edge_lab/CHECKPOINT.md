@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Invesco management supplement qualified
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Admission decision and primary receipts](discovery/qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json): exact SEC accepted clocks established for Invesco 497 (07:00:17 Eastern) and 497K (07:00:40 Eastern). The complete 497 updates the management team and removes one portfolio manager. It does not announce a liquidation or either required date; this document is ineligible for E. The separate 497K body remains unread, not presumed equivalent.
+- No first qualifying A–E event, claim or economic test. Three primary requests, 31026 bytes, zero retries, USD 0. No price/NAV/distribution/payoff access. Tokens/global bill unmeasured; documentary exposure retained. This is not an economic rejection or proof of universal absence.
+- NEXT: read only the small 497K legal supplement at the exact URL in Discovery next; reuse its index, no refetch. If cleared, qualify earlier MiniMed metadata/operative legal terms within remaining bounds. <=3 requests / <=15 minutes / <=512 KiB each / zero retries. Earlier unresolved notices and coverage still prevent later economic selection. No price access or substitution; all parked dependencies unchanged.
+- Proof SHA256 `bb792840554b536f2bad1d8827645b3d10fbf5e78248c1375636244c40a98564`. Prior queue/results, counters, multiplicity, exposure ledger and event prefix unchanged. The 497 review is COMPLETED; the independent 497K review is next. No re-fetch of consumed AmpliTech, Co-Diagnostics or Invesco documents; raw sources private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, conditional split terms and source bound
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

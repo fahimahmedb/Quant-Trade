@@ -1,0 +1,239 @@
+{
+  "recorded_at": "2026-10-13T19:21:23.867695+00:00",
+  "head_observed": "5ab7f1249751e50394c0fdee428ac338ce5cbcdc",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One bounded documentary admission action. The reviewed 497 is not an eligible liquidation notice; the separate 497K body and parent first-event admission remain unresolved. No return-based rejection of an issuer or mechanism.",
+  "completed_question": {
+    "status": "COMPLETED",
+    "scope": "Exact SEC clocks/series identity of the two cached Invesco filings and full legal event type of the 497 supplement",
+    "decision": "497 CURRENT_DOCUMENT_NOT_ELIGIBLE; 497K DOCUMENT_TYPE_NOT_YET_ESTABLISHED"
+  },
+  "RESULT": "INVESCO_497_PORTFOLIO_MANAGEMENT_UPDATE_NOT_LIQUIDATION; TWO_EXACT_ACCEPTED_CLOCKS_VERIFIED; NO_EVENT_ADMITTED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "497K has its own unread document. A common series, six share classes and similar file names do not establish exchange-listing status or prove document equivalence. Other earlier possible events and complete chronological coverage remain unresolved.",
+  "POWER_LIMITATION": "Two filing indices and one complete legal supplement. Zero economic cases, price/NAV/distribution observations or statistical tests.",
+  "ECONOMIC_SIGNIFICANCE": "The frozen ETF termination mechanism requires an actual liquidation announcement and two fixed dates. A manager departure provides neither a last exchange trading date nor a later liquidation/distribution date, so this 497 cannot justify buying an apparent NAV discount.",
+  "FAILED_CRITERIA": [
+    {
+      "cik": "1112996",
+      "accession": "0001193125-26-419673",
+      "document": "d107481d497.htm",
+      "failure": "Complete supplement replaces the portfolio-manager table, describes the management team and removes David Lukkes. No new ETF liquidation announcement, final trading date or liquidation/distribution date. Not eligible for E."
+    }
+  ],
+  "LESSON": "Form 497/497K and a fund name identify a document class, not a termination event. Read the operative legal terms and retain independent uncertainty for a neighboring unread filing; do not consume prices to triage it.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E first-event admission still unresolved; no economic family activated, killed or promoted. Parked dependencies unchanged.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "Invesco 497 accession 0001193125-26-419673 is a completed review: a portfolio-manager replacement/removal supplement, not a liquidation announcement. Its separate 497K accession 0001193125-26-419674 body is not read. Both exact accepted timestamps and common series/class identity are established from SEC indices. Earlier AmpliTech partial supplement, other possible notices and chronological coverage remain unresolved. No first eligible A-E event established.",
+    "question": "Read only the legal supplement at https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm (index already cached: 497K, accepted 2026-10-13 07:00:40 Eastern). Establish whether it also concerns portfolio management or actually announces an eligible listed-ETF liquidation. Do not assume equivalence with the already-read 497. Do not read NAV/performance/distribution payloads or follow numeric data links. If cleared, use remaining bounds for the earlier unresolved MiniMed 8-K metadata (CIK 2062583, feed 06:00:51 Eastern) and operative eligibility terms, not market or payoff payloads. No later event selection until original ordering and all eligibility gates are established.",
+    "resume_rule": "Reuse the three new receipts and all historical metadata. Do not re-fetch either Invesco index or the 497 management supplement. Do not re-fetch the consumed AmpliTech graphic or Co-Diagnostics loan agreement. Similar accession/series/name is not proof that the unread 497K has identical content. No amendment or historically exposed issuer substituted for a fresh case.",
+    "reuse_reference": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1112996/000119312526419673/0001193125-26-419673-index.htm",
+      "observed_at": "2026-10-13T19:19:20.580202+00:00",
+      "scope": "SEC filing index metadata only; no document/NAV/market-price/performance/distribution payload",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 9628,
+      "sha256": "fd3b1b2c73de7a5997d9d5d5ebe5218c047aec142acf00d80b8f3a10150b4986",
+      "complete": true,
+      "document_links": [
+        "/Archives/edgar/data/1112996/000119312526419673/d107481d497.htm",
+        "/Archives/edgar/data/1112996/000119312526419673/0001193125-26-419673.txt"
+      ],
+      "wall_seconds": 0.22526066499995068,
+      "metadata_excerpt": " Latest Filings Filings search tools Filing Detail SEC Home » Company Search » Current Page Form 497 - Definitive materials: SEC Accession No. 0001193125-26-419673 Filing Date 2026-10-13 Accepted 2026-10-13 07:00:17 Documents 1 Effectiveness Date 2026-10-13 Document Format Files Seq Description Document Type Size 1 497 d107481d497.htm 497 11550 Complete submission text file 0001193125-26-419673.txt 13688 Series and Classes/Contracts Information: Existing Status Name Ticker Symbol CIK 0001112996 Series S000064615 Invesco Senior Floating Rate Fund Class/Contract C000209157 Class R6 Class/Contract C000209158 Class R5 Class/Contract C000209159 Class Y Class/Contract C000209160 Class R Class/Contract C000209161 Class A Class/Contract C000209162 Class C Mailing Address 11 GREENWAY PLAZA SUITE 1000 HOUSTON TX 77046 Business Address 11 GREENWAY PLAZA SUITE 1000 HOUSTON TX 77046 713-626-1919 AIM COUNSELOR SERIES TRUST (INVESCO COUNSELOR SERIES TRUST) (Filer) CIK : 0001112996 (see all company filings) EIN. : 000000000 | State of Incorp.: DE | Fiscal Year End: 0831 Type: 497 | Act: 33 | File No.: 333-36074 | Film No.: 261454562"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/0001193125-26-419674-index.htm",
+      "observed_at": "2026-10-13T19:19:20.592261+00:00",
+      "scope": "SEC filing index metadata only; no document/NAV/market-price/performance/distribution payload",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 9730,
+      "sha256": "b46bacf5f7d56c36e5e9397fc569bccff6b6af75f1adab922749801258e8a392",
+      "complete": true,
+      "document_links": [
+        "/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm",
+        "/Archives/edgar/data/1112996/000119312526419674/0001193125-26-419674.txt"
+      ],
+      "wall_seconds": 0.24829992599552497,
+      "metadata_excerpt": " Latest Filings Filings search tools Filing Detail SEC Home » Company Search » Current Page Form 497K - Summary Prospectus for certain open-end management investment companies filed pursuant to Securities Act Rule 497(K): SEC Accession No. 0001193125-26-419674 Filing Date 2026-10-13 Accepted 2026-10-13 07:00:40 Documents 1 Effectiveness Date 2026-10-13 Document Format Files Seq Description Document Type Size 1 497K d107481d497k.htm 497K 11554 Complete submission text file 0001193125-26-419674.txt 13694 Series and Classes/Contracts Information: Existing Status Name Ticker Symbol CIK 0001112996 Series S000064615 Invesco Senior Floating Rate Fund Class/Contract C000209157 Class R6 Class/Contract C000209158 Class R5 Class/Contract C000209159 Class Y Class/Contract C000209160 Class R Class/Contract C000209161 Class A Class/Contract C000209162 Class C Mailing Address 11 GREENWAY PLAZA SUITE 1000 HOUSTON TX 77046 Business Address 11 GREENWAY PLAZA SUITE 1000 HOUSTON TX 77046 713-626-1919 AIM COUNSELOR SERIES TRUST (INVESCO COUNSELOR SERIES TRUST) (Filer) CIK : 0001112996 (see all company filings) EIN. : 000000000 | State of Incorp.: DE | Fiscal Year End: 0831 Type: 497K | Act: 33 | File No.: 333-36074 | Film No.: 261454565"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1112996/000119312526419673/d107481d497.htm",
+      "observed_at": "2026-10-13T19:19:39.057009+00:00",
+      "scope": "497 legal supplement, vehicle/event qualification only; not a selected numeric market/NAV/distribution endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 11668,
+      "sha256": "896b3af6befae7fcc946a9ce03a6ef816932e50bcc9e7acc048932e0a11184b3",
+      "complete": true,
+      "document_header": "497 1 d107481d497.htm 497 497 SUPPLEMENT DATED OCTOBER 13, 2026 TO THE CURRENT SUMMARY AND STATUTORY PROSPECTUSES AND STATEMENT OF ADDITIONAL INFORMATION FOR: Invesco Senior Floating Rate Fund (the “Fund”) This supplement amends the Summary Prospectus, Statutory Prospectus, and Statement of Additional Information (“SAI”) of the above referenced Fund and is in addition to any other supplement(s). You should read this supplement in conjunction with",
+      "legal_excerpts": [
+        "e appearing under the heading “ Management of the Fund ” in the Summary and Statutory Prospectuses: Portfolio Managers Title Length of Service on the Fund Thomas Ewald Portfolio Manager 2020 Philip Yarrow, CFA Portfolio Manager 2020 2.The following information replaces in its entirety the information appearing under the heading “ Fund Management – Portfolio Managers ” in the Statutory Prospectus: Investment management decisions for the Fund are made by the investment management team at Invesco Senior Secured. Th",
+        "ary and Statutory Prospectuses: Portfolio Managers Title Length of Service on the Fund Thomas Ewald Portfolio Manager 2020 Philip Yarrow, CFA Portfolio Manager 2020 2.The following information replaces in its entirety the information appearing under the heading “ Fund Management – Portfolio Managers ” in the Statutory Prospectus: Investment management decisions for the Fund are made by the investment management team at Invesco Senior Secured. The following individuals are jointly and primarily responsible for th",
+        "EMENT OF ADDITIONAL INFORMATION FOR: Invesco Senior Floating Rate Fund (the “Fund”) This supplement amends the Summary Prospectus, Statutory Prospectus, and Statement of Additional Information (“SAI”) of the above referenced Fund and is in addition to any other supplement(s). You should read this supplement in conjunction with the Summary Prospectus, Statutory Prospectus, and SAI and retain it for future reference. 1. The following information replaces in its entirety the table appearing under the he",
+        "497 1 d107481d497.htm 497 497 SUPPLEMENT DATED OCTOBER 13, 2026 TO THE CURRENT SUMMARY AND STATUTORY PROSPECTUSES AND STATEMENT OF ADDITIONAL INFORMATION FOR: Invesco Senior Floating Rate Fund (the “Fund”) This supplement amends the Summary Prospectus, Statutory Prospectus, and Statement of Additional Information (“SAI”) of the above referenced Fund and is in addition to any other supplement(s). You should read this supplement in conjun",
+        "ES AND STATEMENT OF ADDITIONAL INFORMATION FOR: Invesco Senior Floating Rate Fund (the “Fund”) This supplement amends the Summary Prospectus, Statutory Prospectus, and Statement of Additional Information (“SAI”) of the above referenced Fund and is in addition to any other supplement(s). You should read this supplement in conjunction with the Summary Prospectus, Statutory Prospectus, and SAI and retain it for future reference. 1. The following information replaces in its entirety the table appearing under ",
+        "David Lukkes will no longer serve as a Portfolio Manager of the Fund. All references to Mr. Lukkes in the Summary and Statutory Prospectuses and SAI are hereby removed."
+      ],
+      "keyword_counts": {
+        "liquidat": 0,
+        "last trading": 0,
+        "terminate": 0,
+        "dissol": 0,
+        "expense": 0,
+        "portfolio manager": 9,
+        "amend": 1,
+        "supplement": 4
+      },
+      "wall_seconds": 0.31201825398602523
+    }
+  ],
+  "ordering": {
+    "registrant_cik": "1112996",
+    "series_id": "S000064615",
+    "series_name": "Invesco Senior Floating Rate Fund",
+    "share_classes_observed": [
+      "R6",
+      "R5",
+      "Y",
+      "R",
+      "A",
+      "C"
+    ],
+    "events": [
+      {
+        "accession": "0001193125-26-419673",
+        "form": "497",
+        "accepted_eastern": "2026-10-13 07:00:17",
+        "accepted_utc": "2026-10-13T11:00:17Z",
+        "document_qualification": "INELIGIBLE_CURRENT_SUPPLEMENT"
+      },
+      {
+        "accession": "0001193125-26-419674",
+        "form": "497K",
+        "accepted_eastern": "2026-10-13 07:00:40",
+        "accepted_utc": "2026-10-13T11:00:40Z",
+        "document_qualification": "BODY_UNREAD"
+      }
+    ],
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-codiagnostics-amplitech-bound-2026-10-13.json",
+    "sha256": "b12253ec2758db00c78c65054d49256d70b2a2d0d2f9366d54af5887e384b044",
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "latest_A_feed_reused": "2026-10-13T17:26Z receipt in prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json; not refreshed in this bounded batch; not proof of current universal absence"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_statuses_preserved": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "legacy_unknown_not_resolved_or_replayed": true,
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_SEC_METADATA_AND_FUND_MANAGEMENT_TERMS",
+    "scope": "CIK 1112996 / series S000064615: two SEC indices and complete 497 management supplement. The registrant, fund and document now remain documentary-exposed; do not call them unseen. No market-price, NAV, liquidation distribution or payoff endpoint accessed. Raw sources cached privately; only metadata and bounded legal excerpts published. 497K body remains unread.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes": 31026,
+    "request_wall_seconds_sum": 0.7855788449815009,
+    "partial_documents": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

@@ -1472,6 +1472,77 @@
       },
       "previous": "8bb5c32dc7d6796461589e7170391f9a16185ca44369c53a08e89f3146f1ee11",
       "sequence": 38
+    },
+    {
+      "at": "2026-10-13T19:21:23.877816+00:00",
+      "hash": "803978fbd5fbcc305dd002c6d8a6d68829d36a836d95294cb4efa118cfc5a15d",
+      "kind": "DISCOVERY_PROSPECTIVE_INVESCO_MANAGEMENT_SUPPLEMENT_QUALIFIED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_subtask": {
+          "decision": "497 CURRENT_DOCUMENT_NOT_ELIGIBLE; 497K DOCUMENT_TYPE_NOT_YET_ESTABLISHED",
+          "scope": "Exact SEC clocks/series identity of the two cached Invesco filings and full legal event type of the 497 supplement",
+          "status": "COMPLETED"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "CIK 1112996 / series S000064615: two SEC indices and complete 497 management supplement. The registrant, fund and document now remain documentary-exposed; do not call them unseen. No market-price, NAV, liquidation distribution or payoff endpoint accessed. Raw sources cached privately; only metadata and bounded legal excerpts published. 497K body remains unread.",
+          "type": "PRIMARY_SEC_METADATA_AND_FUND_MANAGEMENT_TERMS"
+        },
+        "head_observed": "5ab7f1249751e50394c0fdee428ac338ce5cbcdc",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "Invesco 497 accession 0001193125-26-419673 is a completed review: a portfolio-manager replacement/removal supplement, not a liquidation announcement. Its separate 497K accession 0001193125-26-419674 body is not read. Both exact accepted timestamps and common series/class identity are established from SEC indices. Earlier AmpliTech partial supplement, other possible notices and chronological coverage remain unresolved. No first eligible A-E event established.",
+          "question": "Read only the legal supplement at https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm (index already cached: 497K, accepted 2026-10-13 07:00:40 Eastern). Establish whether it also concerns portfolio management or actually announces an eligible listed-ETF liquidation. Do not assume equivalence with the already-read 497. Do not read NAV/performance/distribution payloads or follow numeric data links. If cleared, use remaining bounds for the earlier unresolved MiniMed 8-K metadata (CIK 2062583, feed 06:00:51 Eastern) and operative eligibility terms, not market or payoff payloads. No later event selection until original ordering and all eligibility gates are established.",
+          "resume_rule": "Reuse the three new receipts and all historical metadata. Do not re-fetch either Invesco index or the 497 management supplement. Do not re-fetch the consumed AmpliTech graphic or Co-Diagnostics loan agreement. Similar accession/series/name is not proof that the unread 497K has identical content. No amendment or historically exposed issuer substituted for a fresh case.",
+          "reuse_reference": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "partial_documents": 0,
+          "primary_requests": 3,
+          "received_body_bytes": 31026,
+          "request_wall_seconds_sum": 0.7855788449815009,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no first eligible event established",
+        "proof": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
+        "proof_sha256": "bb792840554b536f2bad1d8827645b3d10fbf5e78248c1375636244c40a98564"
+      },
+      "previous": "0d31c7a8894f38eb1f6728172e6a115a7fc4b251ee148081aa569c903aa61713",
+      "sequence": 39
     }
   ],
   "exposure_ledger": [
@@ -1517,7 +1588,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "84d3de3e2045d68238c2dc8d771bc90343671cac571ca7a86caf342549c0ac7d",
+  "integrity": "7d04da6551aeca20eef3f763434e37737e51a0364e0c4bcba0e4d07c4bbc25c5",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1594,10 +1665,10 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "No first A-E event established. Co-Diagnostics current loan agreement offers only Board-discretionary ranges and prospective approval, not fixed operative B/C terms. AmpliTech DEFA14A accepted06:15:19Eastern verified; its graphic reached524288-byte bound and lacks JPEG end marker. Supplement remains unresolved; no retry or conclusion about unread content. Cached497/497K candidates and other earlier possibilities/coverage remain unresolved. Current17:26Z A feed has only post-T0 amendments, not fresh commencements.",
-    "question": "Qualify the legal event/type of the cached Invesco Counselor Series Trust497/497K candidates (CIK1112996, accessions0001193125-26-419673 and0001193125-26-419674, feed07:00:17/07:00:40Eastern), from index metadata and event/vehicle-type terms only. Is there a new listed-ETF liquidation notice with both required dates, or only an ordinary fund prospectus? Do not read NAV/performance/distribution payloads before a valid claim. No fund/event substitution. Earlier unresolved possibilities continue to prevent any later economic selection.",
-    "resume_rule": "Reuse existing receipts. Do not re-fetch the AmpliTech graphic/index or Co-Diagnostics current loan agreement, or previously consumed documents. Do not repair an incomplete source by assuming its contents. Metadata/type-only work may continue, but any economic selection still requires earliest accepted ordering across A-E, original exclusions and exact protocol gates.",
-    "reuse_reference": "qualifications/prospective-admission-codiagnostics-amplitech-bound-2026-10-13.json",
+    "pending": "Invesco 497 accession 0001193125-26-419673 is a completed review: a portfolio-manager replacement/removal supplement, not a liquidation announcement. Its separate 497K accession 0001193125-26-419674 body is not read. Both exact accepted timestamps and common series/class identity are established from SEC indices. Earlier AmpliTech partial supplement, other possible notices and chronological coverage remain unresolved. No first eligible A-E event established.",
+    "question": "Read only the legal supplement at https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm (index already cached: 497K, accepted 2026-10-13 07:00:40 Eastern). Establish whether it also concerns portfolio management or actually announces an eligible listed-ETF liquidation. Do not assume equivalence with the already-read 497. Do not read NAV/performance/distribution payloads or follow numeric data links. If cleared, use remaining bounds for the earlier unresolved MiniMed 8-K metadata (CIK 2062583, feed 06:00:51 Eastern) and operative eligibility terms, not market or payoff payloads. No later event selection until original ordering and all eligibility gates are established.",
+    "resume_rule": "Reuse the three new receipts and all historical metadata. Do not re-fetch either Invesco index or the 497 management supplement. Do not re-fetch the consumed AmpliTech graphic or Co-Diagnostics loan agreement. Similar accession/series/name is not proof that the unread 497K has identical content. No amendment or historically exposed issuer substituted for a fresh case.",
+    "reuse_reference": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -3036,5 +3107,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T18:20:39.739217+00:00"
+  "updated_at": "2026-10-13T19:21:23.867695+00:00"
 }
