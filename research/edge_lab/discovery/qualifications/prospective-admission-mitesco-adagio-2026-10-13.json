@@ -1,0 +1,210 @@
+{
+  "recorded_at": "2026-10-13T12:27:51.717819+00:00",
+  "head_observed": "18356cb1329a522071530577f4beda7ccc0d27b6",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "decision_scope": "No first event admitted yet. Two specific filings are ineligible before economic access; the A-E families remain untested, not economically rejected. One bounded admission subtask completed; no assertion that no qualifying event exists.",
+  "economic_verdict": null,
+  "RESULT": "EXCLUDE_MITESCO_0001185185-26-004692_AND_ADAGIO_0001140361-26-039339_FROM_CURRENT_B_C_ADMISSION; first-event selection remains unresolved.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Remaining earlier possibilities and scan completeness are unresolved. Mitesco accepted time comes from its index. Adagio06:02:46 Eastern remains feed metadata only; an exact accepted-index read was unnecessary for this unconditional eligibility failure and was not made. No new global SEC feed/census or price request.",
+  "POWER_LIMITATION": "Three primary documentary requests and two filing-level eligibility decisions; zero prospective cases or estimated economic effects.",
+  "ECONOMIC_SIGNIFICANCE": "A keyword hit is not an investable fractional-settlement entitlement. Missing eligible exchange listing or fixed ratio/operative time prevents the frozen Q/entry/payout rules from defining a case. No profitability conclusion follows.",
+  "FAILED_CRITERIA": [
+    {
+      "issuer": "Mitesco Inc.",
+      "cik": "0000802257",
+      "accession": "0001185185-26-004692",
+      "criteria": [
+        "B-v2 incorporated universe1",
+        "C-v2 incorporated universe1"
+      ],
+      "reason": "8-K cover explicitly reports no Section12(b) securities and N/A exchange listing; the required Nasdaq/NYSE/NYSE American listing is not present in the primary filing. No unsupported claim about a specific OTC venue."
+    },
+    {
+      "issuer": "Adagio Medical Holdings Inc.",
+      "cik": "0002006986",
+      "accession": "0001140361-26-039339",
+      "criteria": [
+        "B-v2 incorporated universe2/5",
+        "C-v2 incorporated universe2/3/4"
+      ],
+      "reason": "The proposal authorizes a discretionary1:10..1:500 range; it does not fix R or an operative date. Board may decline to execute. It describes cash-in-lieu, not round-up. Do not choose a ratio or assume meeting date is split date."
+    }
+  ],
+  "LESSON": "Resolve the listing and operative-terms gates before paying for exact price/payout joins. A prospective proposal, a range and a model example do not become an event by choosing their most convenient interpretation.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E remain prospective and untested here; admission PARK_DATA until chronological qualification is complete; no economic kill/promotion.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources"
+    },
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "Earlier unqualified 8-K/6-K/proxy candidates, including IX Acquisition (feed06:03:17 Eastern), and SS Innovations (06:05:14), plus remaining 497/497K and other candidates, still prevent a first-event claim. Filings may describe completed actions; inspect documentary identities/terms without treating a completion/payoff as a fresh event. The bounded scan is not exhaustive. Fusion Fuel same oversized body is not retried; a genuinely distinct small primary notice would be needed.",
+    "question": "Continue the first chronological A-E admission from cached October13 feed/search evidence. Mitesco accession0001185185-26-004692 is excluded by its no-12(b)-listing cover; Adagio accession0001140361-26-039339 is excluded by unfixed ratio/operative clock (and cash rather than round-up). Do not reread these same documents. Resolve the earliest still-possible events across all protocols before any later claim; verify exact accepted timestamps and all frozen criteria. No market-price/NAV/cash-basis/distribution payload before published CAS claim.",
+    "reuse_reference": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN",
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "resume_rule": "Reuse this receipt plus prior metadata; maintain first qualifying accepted-time/CIK ordering across A-E. Mere metadata or proposal exposure is recorded and never claimed unseen; any later operative notice requires the original exclusion/freshness rules, not automatic readmission."
+  },
+  "reuse": {
+    "prior_proof": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "prior_proof_sha256": "a714307a8896ba936a52a4dc1bd7b6a5bc90da7a7b09d7f355aff871d20b1461",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_clock_invalid": true,
+    "incorporation_note": "Only original terms incorporated by valid v2 were read; v1 T0 was not used."
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/802257/000118518526004692/0001185185-26-004692-index.htm",
+      "observed_at": "2026-10-13T12:24:09.425072+00:00",
+      "scope": "accepted clock and document identity only",
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 10766,
+      "sha256": "6405efbb1ed42c6f395faffe5eeecd869183a5caa0b3b1cd09e4311028a4fe99",
+      "complete": true,
+      "accepted_excerpt": "Accepted 2026-10-13 06:01:10 Documents 14 Period of Report 2026-1",
+      "documents": [
+        "/cgi-bin/viewer?action=view&cik=802257&accession_number=0001185185-26-004692&xbrl_type=f",
+        "/ix?doc=/Archives/edgar/data/802257/000118518526004692/miti8k101226.htm",
+        "/Archives/edgar/data/802257/000118518526004692/mitiex10-1.htm",
+        "/Archives/edgar/data/802257/000118518526004692/mitiex10-2.htm",
+        "/Archives/edgar/data/802257/000118518526004692/mitiex10-3.htm",
+        "/Archives/edgar/data/802257/000118518526004692/0001185185-26-004692.txt",
+        "/Archives/edgar/data/802257/000118518526004692/miti-20261005.xsd",
+        "/Archives/edgar/data/802257/000118518526004692/miti-20261005_lab.xml",
+        "/Archives/edgar/data/802257/000118518526004692/miti-20261005_pre.xml",
+        "/Archives/edgar/data/802257/000118518526004692/miti8k101226_htm.xml"
+      ],
+      "wall_seconds": 0.3545644670011825
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/802257/000118518526004692/miti8k101226.htm",
+      "observed_at": "2026-10-13T12:24:46.960087+00:00",
+      "scope": "Primary corporate filing eligibility only, no separate market/NAV/payoff endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 35904,
+      "sha256": "df6b3d9b3d2323fa72951454860b436cd89f7f7eaa36114ace7229197e32a046",
+      "declared_length": "35904",
+      "complete": true,
+      "eligibility_excerpts": [
+        "Securities registered pursuant to Section 12(b) of the Act: None.",
+        "Title of each class / Trading Symbol(s) / Name of each exchange on which registered: N/A / N/A / N/A."
+      ],
+      "wall_seconds": 0.195648094995704
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/2006986/000114036126039339/ny20082992x2_def14a.htm",
+      "observed_at": "2026-10-13T12:24:46.876828+00:00",
+      "scope": "Primary corporate filing eligibility only, no separate market/NAV/payoff endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 268212,
+      "sha256": "975d78991382c30379cad512a2248aedbf7945189521f13a7258ca308dcfbc85",
+      "declared_length": null,
+      "complete": true,
+      "eligibility_excerpts": [
+        "A reverse stock split ... at a ratio in the range of 1-for-10 to 1-for-500, inclusive, with such ratio to be determined by the Company’s Board of Directors in its sole discretion.",
+        "The Board may also elect not to execute any Reverse Stock Split.",
+        "The proposed Reverse Stock Split would become effective ... on the date of filing ... or such later date as is chosen by the Board and set forth in the Certificate of Amendment.",
+        "No fractional shares of common stock will be issued ... instead ... cash in lieu of the fractional share."
+      ],
+      "wall_seconds": 0.6075016129980213
+    }
+  ],
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_nonterminal_at_head": [],
+    "new_claim": null,
+    "new_economic_look": false
+  },
+  "exposure": {
+    "type": "PRIMARY_CORPORATE_ELIGIBILITY_DOCUMENTS",
+    "documents": [
+      "Mitesco filing index and 8-K cover/body",
+      "Adagio DEF14A proposal"
+    ],
+    "scope": "Full primary legal documents acquired privately for eligibility, including public corporate/illustrative terms and generic listing discussion. No dedicated selected market-price, NAV, liquidation distribution, cash-basis or realized payoff request; no arithmetic test or event-return join. Future work must preserve these documentary exposures rather than describe the issuers/documents as unseen.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_document_requests": 3,
+    "retries": 0,
+    "body_bytes": 314882,
+    "request_wall_seconds_sum": 1.1577141749949078,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "limits_observed": {
+    "max_document_body_bytes": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20,
+    "max_primary_requests": 3,
+    "max_agent_minutes": 15
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Mitesco and Adagio admission exclusions
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Three-request documentary admission batch](discovery/qualifications/prospective-admission-mitesco-adagio-2026-10-13.json): Mitesco8-K explicitly lists no Section12(b) security/exchange; Adagio DEF14A leaves ratio1:10..1:500 and timing to Board discretion, permits no execution, and specifies cash instead of round-up. Neither current filing qualifies for the frozen B/C cases. These are eligibility exclusions, not economic rejections.
+- First qualifying event across A–E remains unresolved: do not infer no event exists, choose a later issuer, or open a price/NAV/payout look. No new claim or economic execution. Preserve existing metadata coverage limits, prior clock exclusions, all historical exposures and invalid B/C-v1 clocks.
+- NEXT: reuse this proof and the previous saved feed/search receipts to resolve the oldest remaining A–E possibilities, including earlier proxy/8-K/6-K notices, IX Acquisition and SS Innovations, without reading completion/payoff payloads as fresh events. Exact accepted timestamp and every frozen eligibility condition before CAS claim; three primary requests / <=15min / <=512KiB each / zero retries. No re-fetch of Mitesco/Adagio current documents or Fusion Fuel oversized body. Lockup/WTI dependencies remain parked absent distinct evidence.
+- Proof SHA256 `ec8c0201844cc21b56183a3744cdef9c0b396bd8bedf51a705183556ff822d5b`. Three requests, 314882 body bytes, USD0; tokens/global bill unmeasured. Prior queue/results, economic metrics, multiplicity, exposure ledger and event prefix preserved. New documentary exposure appended to the existing event chain; raw filings stay private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, prospective clock exclusions + lockup design parked
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

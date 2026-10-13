@@ -1135,6 +1135,76 @@
       },
       "previous": "ba343e9c4855828101f8d7314b8da1519ecf4a9d6c8c5d26f3370e023ec70a2d",
       "sequence": 33
+    },
+    {
+      "at": "2026-10-13T12:27:51.726798+00:00",
+      "hash": "a810db037cdf71d42dea5376e2608e8c6fc2a7e0fd9cf495e6a6b3a6b66e18d5",
+      "kind": "DISCOVERY_PROSPECTIVE_ELIGIBILITY_PROGRESS",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_subtask": "Three-request documentary admission batch: Mitesco/Adagio current filing exclusions",
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "documents": [
+            "Mitesco filing index and 8-K cover/body",
+            "Adagio DEF14A proposal"
+          ],
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Full primary legal documents acquired privately for eligibility, including public corporate/illustrative terms and generic listing discussion. No dedicated selected market-price, NAV, liquidation distribution, cash-basis or realized payoff request; no arithmetic test or event-return join. Future work must preserve these documentary exposures rather than describe the issuers/documents as unseen.",
+          "type": "PRIMARY_CORPORATE_ELIGIBILITY_DOCUMENTS"
+        },
+        "head_observed": "18356cb1329a522071530577f4beda7ccc0d27b6",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources"
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "Earlier unqualified 8-K/6-K/proxy candidates, including IX Acquisition (feed06:03:17 Eastern), and SS Innovations (06:05:14), plus remaining 497/497K and other candidates, still prevent a first-event claim. Filings may describe completed actions; inspect documentary identities/terms without treating a completion/payoff as a fresh event. The bounded scan is not exhaustive. Fusion Fuel same oversized body is not retried; a genuinely distinct small primary notice would be needed.",
+          "question": "Continue the first chronological A-E admission from cached October13 feed/search evidence. Mitesco accession0001185185-26-004692 is excluded by its no-12(b)-listing cover; Adagio accession0001140361-26-039339 is excluded by unfixed ratio/operative clock (and cash rather than round-up). Do not reread these same documents. Resolve the earliest still-possible events across all protocols before any later claim; verify exact accepted timestamps and all frozen criteria. No market-price/NAV/cash-basis/distribution payload before published CAS claim.",
+          "resume_rule": "Reuse this receipt plus prior metadata; maintain first qualifying accepted-time/CIK ordering across A-E. Mere metadata or proposal exposure is recorded and never claimed unseen; any later operative notice requires the original exclusion/freshness rules, not automatic readmission.",
+          "reuse_reference": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "body_bytes": 314882,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 3,
+          "request_wall_seconds_sum": 1.1577141749949078,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_question_remaining": "OPEN; no qualifying event selected",
+        "proof": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
+        "proof_sha256": "ec8c0201844cc21b56183a3744cdef9c0b396bd8bedf51a705183556ff822d5b",
+        "scope": "No first event admitted yet. Two specific filings are ineligible before economic access; the A-E families remain untested, not economically rejected. One bounded admission subtask completed; no assertion that no qualifying event exists."
+      },
+      "previous": "cbe3d735738d7c0173e358ecf9e66dc29b1985f8f98bb81d7ee5a8b6efb1a445",
+      "sequence": 34
     }
   ],
   "exposure_ledger": [
@@ -1180,7 +1250,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "0c61b2ae5384eb3bf930001c83fdf398362b12c95d1390968aa1be283f1e4779",
+  "integrity": "4b3f19a194e27b1e1cbb3b07638c4832c6757ef48d4e4bc671fddec648b32e31",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1252,12 +1322,14 @@
       "WTI": "PARK_DATA; no CME/DataMine re-probe",
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources"
     },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "EFTS keyword and mutable current-feed pages do not establish exhaustive A-E coverage. Mitesco, Adagio, SS Innovations and Fusion Fuel precede later unresolved reverse-split matches; other proxy/497/6-K/8-K candidates must be checked without assuming their names or forms prove ineligibility. No claim until earlier possibilities are resolved. Fusion Fuel partial body exceeded cap: do not re-fetch this same payload; only an independently identified smaller primary notice could resolve it.",
-    "question": "Resolve the oldest still-unqualified October13 SEC event candidates from the saved metadata before considering a later event. Establish exact accepted clocks, issuer exclusions and every frozen eligibility condition. No event is yet selected. Across all five protocols choose only the earliest qualifying accepted timestamp, then CIK and protocol-specific ties; never use keyword rank or filed date. Persist a valid CAS claim before any selected market-price/NAV/cash-basis/distribution payload.",
-    "reuse_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "pending": "Earlier unqualified 8-K/6-K/proxy candidates, including IX Acquisition (feed06:03:17 Eastern), and SS Innovations (06:05:14), plus remaining 497/497K and other candidates, still prevent a first-event claim. Filings may describe completed actions; inspect documentary identities/terms without treating a completion/payoff as a fresh event. The bounded scan is not exhaustive. Fusion Fuel same oversized body is not retried; a genuinely distinct small primary notice would be needed.",
+    "question": "Continue the first chronological A-E admission from cached October13 feed/search evidence. Mitesco accession0001185185-26-004692 is excluded by its no-12(b)-listing cover; Adagio accession0001140361-26-039339 is excluded by unfixed ratio/operative clock (and cash rather than round-up). Do not reread these same documents. Resolve the earliest still-possible events across all protocols before any later claim; verify exact accepted timestamps and all frozen criteria. No market-price/NAV/cash-basis/distribution payload before published CAS claim.",
+    "resume_rule": "Reuse this receipt plus prior metadata; maintain first qualifying accepted-time/CIK ordering across A-E. Mere metadata or proposal exposure is recorded and never claimed unseen; any later operative notice requires the original exclusion/freshness rules, not automatic readmission.",
+    "reuse_reference": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -2696,5 +2768,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T11:37:28.249110+00:00"
+  "updated_at": "2026-10-13T12:27:51.717819+00:00"
 }
