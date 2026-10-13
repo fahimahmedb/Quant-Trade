@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Russell preflight PARK_DATA
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- Exactly one action: completed the frozen Russell L1 access/software preflight. [Decision and evidence](discovery/qualifications/russell-deletion-calendar-preflight-2026-10-13.json). Two primary Yahoo terms URLs returned tool fetch errors, leaving permission unresolved; existing Discovery execute accepts only its VX runner. PARK_DATA before selected prices, no economic rejection, bypass or replacement provider. Frozen declaration unchanged.
+- NEXT: one bounded L0 on hurricane-forecast insurance repricing: qualify issued-at official NHC archives versus hindsight best-track data, insurer exposure mapping and a free authorized price route, metadata only. These are unqualified targets, not evidence of accessibility or profitability. <=15 minutes / <=3 primary document requests / zero retries; otherwise park. No second action in this pass.
+- A–E first-event admission remains priority after October 13 10:00Z. At this pre-opening pass use cached holiday/feed evidence; zero repeat SEC probes, no event/claim/prices/NAV/payout. Valid protocol hashes and exclusions unchanged; B/C v1 clocks remain invalid.
+- Proof SHA256 `473d91da83796b12558298bc5ca343e4e8a645870aeba20c3cb07c9a227c6787`. No outcome look or calculation. Previous queue/counters/multiplicity/ledger intact; documentary decision appended to hash-chained events. Paid USD0; tokens, origin bytes and global bill unmeasured. No Owner action required to keep pursuing other mechanisms.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Russell L1 frozen before prices
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

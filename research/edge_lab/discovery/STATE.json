@@ -699,6 +699,82 @@
       },
       "previous": "c3245b506d8838c4b9d55b70decf30acebc420255076fe047e46340075c4e89f",
       "sequence": 28
+    },
+    {
+      "at": "2026-10-13T02:20:25.270177+00:00",
+      "hash": "8430836aa79ec1dfe605673c480cd3196a8519aaf0f56977633cb7fdadf3d709",
+      "kind": "DISCOVERY_L1_PREFLIGHT_PARK",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "closed_question": {
+          "completed_at": "2026-10-13T02:20:25.269723+00:00",
+          "decision": "PARK_DATA",
+          "declaration_sha256": "b4171af5cb4060a68f9e91b333f26834311d7d950bfce9cb37067a472ada13d8",
+          "economic_access_authorized": false,
+          "experiment_id": "disc-russell-deletion-calendar-basket-l1-v1",
+          "family": "russell-deletion-forced-flow",
+          "kind": "L1_EXECUTION_PREFLIGHT",
+          "proof": "experiments/disc-russell-deletion-calendar-basket-l1-v1.md",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; own exclusions/ties remain",
+            "protocols": "A/B-v2/C-v2/D/E unchanged"
+          },
+          "question": "Reuse the frozen declaration. Resolve sole Yahoo route rights from cached or <=3 primary documentary requests; verify existing-runtime support in <=15 minutes without prices or framework. If not admissible, PARK_DATA. A-E admission takes priority after October 13 10:00Z.",
+          "result_reference": "qualifications/russell-deletion-calendar-preflight-2026-10-13.json",
+          "status": "PARK"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "declaration_sha256": "b4171af5cb4060a68f9e91b333f26834311d7d950bfce9cb37067a472ada13d8",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "experiment_id": "disc-russell-deletion-calendar-basket-l1-v1",
+        "family": "russell-deletion-forced-flow",
+        "head_observed": "7c2f71ab5cb959d66907c7fadcfeaa5a3a1da565",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "economic_access_authorized": false,
+          "family": "hurricane-forecast-insurance-repricing",
+          "hypothesis": "Updates to forecast physical risk may create inventory/attention pressure in exposed insurer equities; immediate efficient pricing and compensation for catastrophe risk are competing explanations. No edge presumed.",
+          "kind": "L0_MECHANISM",
+          "primary_documentation_targets": [
+            "https://www.nhc.noaa.gov/aboutnhcprod.shtml",
+            "https://www.nhc.noaa.gov/archive/"
+          ],
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying accepted timestamp, then smaller CIK, unchanged exclusions and protocol-specific ties",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "qualification_status": "UNQUALIFIED_DOCUMENTARY_TARGETS_NOT_FETCHED_THIS_PASS",
+          "question": "Qualify whether official NHC issued-at advisory archives, rather than ex-post best-track landfalls, can define a price-blind insurance-risk news event. Identify a public insurer-exposure mapping and an authorized free price route at metadata level before L1; otherwise PARK_DATA. Do not read historical storm values, selected prices, insured losses or investment outcomes in L0.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "browser_tool_calls": 1,
+          "document_bodies_obtained": 0,
+          "economic_executions": 0,
+          "global_bill": null,
+          "new_market_requests": 0,
+          "origin_bytes": null,
+          "origin_request_count_including_internal_redirects": null,
+          "paid_usd": 0,
+          "requested_primary_document_urls": 2,
+          "tokens": null
+        },
+        "proof": "qualifications/russell-deletion-calendar-preflight-2026-10-13.json",
+        "proof_sha256": "473d91da83796b12558298bc5ca343e4e8a645870aeba20c3cb07c9a227c6787",
+        "scope": "Documentary preflight park, not economic rejection or new outcome attempt"
+      },
+      "previous": "184e5559ecaa9e7f158ec91d1331e84e0220aad7f8dae4287089cbb9cfd303e2",
+      "sequence": 29
     }
   ],
   "exposure_ledger": [
@@ -744,7 +820,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "58a56128e4619d7792be9d4f224df7f38793ff22a48cdafd4b841dd91d6c21c9",
+  "integrity": "aac2abdb0fc89e60e5160944e7523ad099e77a78568555f038f92e5582a130c2",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -804,18 +880,27 @@
     "mechanism_cluster_count": 9
   },
   "next": {
-    "declaration_sha256": "b4171af5cb4060a68f9e91b333f26834311d7d950bfce9cb37067a472ada13d8",
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_primary_document_requests": 3,
+      "retries": 0
+    },
     "economic_access_authorized": false,
-    "experiment_id": "disc-russell-deletion-calendar-basket-l1-v1",
-    "family": "russell-deletion-forced-flow",
-    "kind": "L1_EXECUTION_PREFLIGHT",
-    "proof": "experiments/disc-russell-deletion-calendar-basket-l1-v1.md",
+    "family": "hurricane-forecast-insurance-repricing",
+    "hypothesis": "Updates to forecast physical risk may create inventory/attention pressure in exposed insurer equities; immediate efficient pricing and compensation for catastrophe risk are competing explanations. No edge presumed.",
+    "kind": "L0_MECHANISM",
+    "primary_documentation_targets": [
+      "https://www.nhc.noaa.gov/aboutnhcprod.shtml",
+      "https://www.nhc.noaa.gov/archive/"
+    ],
     "prospective_priority": {
       "not_before": "2026-10-13T10:00:00Z",
-      "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; own exclusions/ties remain",
-      "protocols": "A/B-v2/C-v2/D/E unchanged"
+      "ordering": "earliest qualifying accepted timestamp, then smaller CIK, unchanged exclusions and protocol-specific ties",
+      "protocols": "A/B-v2/C-v2/D/E"
     },
-    "question": "Reuse the frozen declaration. Resolve sole Yahoo route rights from cached or <=3 primary documentary requests; verify existing-runtime support in <=15 minutes without prices or framework. If not admissible, PARK_DATA. A-E admission takes priority after October 13 10:00Z.",
+    "qualification_status": "UNQUALIFIED_DOCUMENTARY_TARGETS_NOT_FETCHED_THIS_PASS",
+    "question": "Qualify whether official NHC issued-at advisory archives, rather than ex-post best-track landfalls, can define a price-blind insurance-risk news event. Identify a public insurer-exposure mapping and an authorized free price route at metadata level before L1; otherwise PARK_DATA. Do not read historical storm values, selected prices, insured losses or investment outcomes in L0.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2253,5 +2338,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T01:25:15.419753+00:00"
+  "updated_at": "2026-10-13T02:20:25.269723+00:00"
 }
