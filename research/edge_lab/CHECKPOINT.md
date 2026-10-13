@@ -1,3 +1,15 @@
+# Current STATE / NEXT — 2026-10-13, Russell L1 frozen before prices
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- One useful action: completed Russell L1_PREDECLARE. [Frozen experiment](discovery/experiments/disc-russell-deletion-calendar-basket-l1-v1.md) uses the original eight preliminary-list names, June 26 to July 6 closes, USD100/name, 100/200 bps costs, fixed IWM comparator and one conditional best-name-removal adversary. No selected prices, result, claim or new economic look. PREPARE_L1 is not promotion.
+- A–E valid-file hashes unchanged; B/C v1 remain invalid. Pre-opening pass reuses saved SEC holiday/feed evidence, without repeat polling or event selection. Admission resumes after October 13 10:00Z using original accepted-time/CIK ordering and exclusions.
+- NEXT: sole-route permission/software preflight <=15 minutes / <=3 primary documentary requests / zero retries, reusing cached evidence. A–E admission takes priority when due. No price access before admissibility and a fresh-control CAS claim. Unsupported/forbidden/unresolved route => PARK_DATA; no framework or substitution.
+- Declaration SHA256 `b4171af5cb4060a68f9e91b333f26834311d7d950bfce9cb37067a472ada13d8`. All-or-nothing basket; missing names/actions never cause survivor filtering. One event cluster, effective multiplicity/private history UNKNOWN, no alpha inference.
+- Prior claims have saved results; no replay. Existing queue, counters, multiplicity and exposure ledger preserved; preparation/exposures appended to hash-chained events. Spend USD0; tokens/global bill unmeasured.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-12, prospective gate reused + one L0 falsifier
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
