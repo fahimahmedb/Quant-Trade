@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, Invesco 497K and MiniMed admission resolved
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Completed documentary reviews](discovery/qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json): Invesco 497K is now independently read and confirms the same management update as the cached 497, with no liquidation dates. MiniMed 8-K accepted 06:00:51 Eastern reports October 9 director, auditor and say-on-pay votes; no A–E entitlement. Both current documents are ineligible, not economically rejected families.
+- No first qualifying A–E event, claim or economic test. Earlier unread/partial possibilities and overall chronological coverage remain unresolved. Three primary requests, 56414 bytes, zero retries, USD 0; no market-price/NAV/distribution/payoff access. Corporate vote information is retained as documentary exposure. Tokens/global bill unmeasured.
+- NEXT: qualify the cached Xponential 8-K and decision-relevant 8-A12B, exact accepted timestamps and operative rights only, within <=3 requests / <=15 minutes / <=512 KiB each / zero retries. No selected prices or later event substitution while earlier ordering remains unresolved. Reuse all prior receipts; no repeats of Invesco, MiniMed or previously consumed sources. Parked dependencies unchanged.
+- Proof SHA256 `d574ee62d9aa354db94a7f7aba826bf6638cbd79cc647074e809312cda36bbca`. Both subquestions COMPLETED; the next documentary question is explicit. Prior queue/results, counters, multiplicity, exposure ledger and event prefix preserved; raw documents private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Invesco management supplement qualified
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

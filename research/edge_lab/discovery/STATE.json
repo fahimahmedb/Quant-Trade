@@ -1543,6 +1543,84 @@
       },
       "previous": "0d31c7a8894f38eb1f6728172e6a115a7fc4b251ee148081aa569c903aa61713",
       "sequence": 39
+    },
+    {
+      "at": "2026-10-13T20:20:56.538937+00:00",
+      "hash": "edaa352efa1b31fd2ca9d2f78b63a272e72710ca9432f979b45565f826d2e278",
+      "kind": "DISCOVERY_PROSPECTIVE_INVESCO_MINIMED_DOCUMENTS_CLEARED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_questions": [
+          {
+            "accession": "0001193125-26-419674",
+            "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE_FOR_E: manager changes, not liquidation",
+            "status": "COMPLETED"
+          },
+          {
+            "accession": "0001104659-26-115141",
+            "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE_FOR_A_E: annual-meeting director/auditor/say-on-pay votes, not a frozen entitlement event",
+            "status": "COMPLETED"
+          }
+        ],
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Full Invesco 497K management supplement and MiniMed index/8-K annual-meeting vote report read. Vote counts/legal approval statements are corporate documentary exposure, not prices, investment returns or distribution/payoff amounts. All issuer/document exposures remain recorded; nothing is declared virgin. Raw documents private; bounded legal excerpts and receipts published.",
+          "type": "PRIMARY_SEC_METADATA_AND_CORPORATE_TERMS"
+        },
+        "head_observed": "9ab5db1607b7d63b4365c73ad8a5a6fa47d5c147",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "The Invesco 497 and now independently reviewed 497K are management supplements, not liquidation notices. MiniMed 8-K accepted 06:00:51 Eastern reports four routine annual-meeting votes, not an A-E event. Their documentary admission reviews are completed. Xponential notices, earlier unread/partial possibilities and overall chronology/coverage remain unresolved; no first eligible event has been established.",
+          "question": "Qualify the cached Xponential Fitness 8-K (CIK 1802156, accession 0001193125-26-419697, feed 07:11:32 Eastern) and decision-relevant 8-A12B (0001193125-26-419698, feed 07:15:51 Eastern) using exact accepted metadata and operative corporate-rights terms only. Is this an admissible fixed prospective A-E event or a different corporate-rights registration? No market-price/NAV/distribution/payoff payload; do not infer eligibility from a keyword or filing type. Earlier unresolved possibilities still prevent a later economic selection.",
+          "resume_rule": "Reuse all saved receipts; do not re-fetch Invesco 497/497K bodies or indices, MiniMed index/body, AmpliTech consumed graphic/index, Co-Diagnostics agreement or earlier consumed documents. Respect original exclusions and exact accepted-time ordering across A-E; do not treat bounded coverage or a partial source as universal absence.",
+          "reuse_reference": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "partial_documents": 0,
+          "primary_requests": 3,
+          "received_body_bytes": 56414,
+          "request_wall_seconds_sum": 0.8357173569966108,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no first eligible event established",
+        "proof": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
+        "proof_sha256": "d574ee62d9aa354db94a7f7aba826bf6638cbd79cc647074e809312cda36bbca"
+      },
+      "previous": "803978fbd5fbcc305dd002c6d8a6d68829d36a836d95294cb4efa118cfc5a15d",
+      "sequence": 40
     }
   ],
   "exposure_ledger": [
@@ -1588,7 +1666,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "7d04da6551aeca20eef3f763434e37737e51a0364e0c4bcba0e4d07c4bbc25c5",
+  "integrity": "c5a56dbffe571a11bdb612238be64df82d4a012ab6f76365eceb812948d0d8cd",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1665,10 +1743,10 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "Invesco 497 accession 0001193125-26-419673 is a completed review: a portfolio-manager replacement/removal supplement, not a liquidation announcement. Its separate 497K accession 0001193125-26-419674 body is not read. Both exact accepted timestamps and common series/class identity are established from SEC indices. Earlier AmpliTech partial supplement, other possible notices and chronological coverage remain unresolved. No first eligible A-E event established.",
-    "question": "Read only the legal supplement at https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm (index already cached: 497K, accepted 2026-10-13 07:00:40 Eastern). Establish whether it also concerns portfolio management or actually announces an eligible listed-ETF liquidation. Do not assume equivalence with the already-read 497. Do not read NAV/performance/distribution payloads or follow numeric data links. If cleared, use remaining bounds for the earlier unresolved MiniMed 8-K metadata (CIK 2062583, feed 06:00:51 Eastern) and operative eligibility terms, not market or payoff payloads. No later event selection until original ordering and all eligibility gates are established.",
-    "resume_rule": "Reuse the three new receipts and all historical metadata. Do not re-fetch either Invesco index or the 497 management supplement. Do not re-fetch the consumed AmpliTech graphic or Co-Diagnostics loan agreement. Similar accession/series/name is not proof that the unread 497K has identical content. No amendment or historically exposed issuer substituted for a fresh case.",
-    "reuse_reference": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
+    "pending": "The Invesco 497 and now independently reviewed 497K are management supplements, not liquidation notices. MiniMed 8-K accepted 06:00:51 Eastern reports four routine annual-meeting votes, not an A-E event. Their documentary admission reviews are completed. Xponential notices, earlier unread/partial possibilities and overall chronology/coverage remain unresolved; no first eligible event has been established.",
+    "question": "Qualify the cached Xponential Fitness 8-K (CIK 1802156, accession 0001193125-26-419697, feed 07:11:32 Eastern) and decision-relevant 8-A12B (0001193125-26-419698, feed 07:15:51 Eastern) using exact accepted metadata and operative corporate-rights terms only. Is this an admissible fixed prospective A-E event or a different corporate-rights registration? No market-price/NAV/distribution/payoff payload; do not infer eligibility from a keyword or filing type. Earlier unresolved possibilities still prevent a later economic selection.",
+    "resume_rule": "Reuse all saved receipts; do not re-fetch Invesco 497/497K bodies or indices, MiniMed index/body, AmpliTech consumed graphic/index, Co-Diagnostics agreement or earlier consumed documents. Respect original exclusions and exact accepted-time ordering across A-E; do not treat bounded coverage or a partial source as universal absence.",
+    "reuse_reference": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -3107,5 +3185,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T19:21:23.867695+00:00"
+  "updated_at": "2026-10-13T20:20:56.530238+00:00"
 }
