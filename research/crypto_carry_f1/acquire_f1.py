@@ -72,7 +72,7 @@ def http_get(url, tries=5):
                     raise RuntimeError(f"HTTP {e.code} repeated for {url}; stopping")
             time.sleep(delay)
             delay *= 2
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, OSError, __import__('http.client').client.HTTPException):
             time.sleep(delay)
             delay *= 2
     raise RuntimeError(f"giving up on {url}")
