@@ -960,6 +960,89 @@
       },
       "previous": "b7c6a715dbbad5244e4f96f9942e96f812797c8aad9d6b357f76bd48907dc2ba",
       "sequence": 31
+    },
+    {
+      "at": "2026-10-13T05:25:58.416489+00:00",
+      "hash": "ba343e9c4855828101f8d7314b8da1519ecf4a9d6c8c5d26f3370e023ec70a2d",
+      "kind": "DISCOVERY_L0_LOCKUP_CLOCK_QUALIFICATION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "closed_question": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "causal_hypothesis": "Previously restricted owners may demand liquidity when contractual restrictions expire; buyers bear inventory/adverse-selection risk. Unlock alone does not establish selling or underpricing. This differs from mandated index deletion but may share a liquidity-supply cluster; no independence claim.",
+          "completed_at": "2026-10-13T05:25:58.412354+00:00",
+          "decision": "PREPARE_L1",
+          "economic_access_authorized": false,
+          "family": "us-ipo-lockup-expiry-supply",
+          "kind": "L0_MECHANISM",
+          "primary_source_scope": "SEC investor education on IPO lockups and issuer descriptions of release clauses, documentary only. Targets not yet fetched/qualified.",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; exclusions and protocol-specific ties unchanged",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "question": "Qualify from primary SEC/issuer documentation whether a prospective IPO lockup expiry can supply an unambiguous pre-event eligibility clock despite early-release/waiver/earnings conditions. Distinguish permission to sell from actual compulsory selling; without a defensible liquidity-payer mechanism and usable public clock, PARK before L1. Do not fetch issuer prices, sales outcomes, famous-event returns or SEC census.",
+          "result_reference": "qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json",
+          "status": "COMPLETED"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PREPARE_L1",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Generic SEC lockup education and FINRA rules; qualitative public anticipation hypothesis, no named issuer sample or prices/sales outcomes",
+          "type": "IDEA_AND_DOCUMENTARY_QUALIFICATION"
+        },
+        "family": "us-ipo-lockup-expiry-supply",
+        "head_observed": "0bd32cef7037a4f49f5229ac35c54cf5b168d5a5",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "economic_access_authorized": false,
+          "family": "us-ipo-lockup-expiry-supply",
+          "kind": "L1_PREDECLARE",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted across A-E, then smaller CIK; original exclusions and protocol-specific ties unchanged",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "question": "Prepare, without issuer prices or outcomes, the smallest notice-defined prospective L1 for an explicitly dated unconditional officer/director lockup release/waiver. Do not use IPO+180, infer a sale, or treat EDGAR acceptance as first public news. Freeze scope, independent notice/operative clocks, quantity/costs, fixed horizon, adequacy, benchmark and one adversary only if an admissible market-data route and discriminating question can be stated; otherwise PARK_DATA/PARK_ECONOMICS. A-E admission keeps priority. No newly admitted issuer or collector in this preparation task.",
+          "reuse_only": "Use the saved SEC/FINRA sources; no repeat lookup absent a version delta. No issuer examples chosen by past performance or actual sales.",
+          "scope_guard": "Rule5131(d)(2) covers officer/director restrictions and exceptions; .03 permits issuer/member notices or qualifying secondary registration disclosure. Normal expirations and all shareholders are not assumed covered.",
+          "source_proof": "qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "global_bill": null,
+          "market_payload_requests": 0,
+          "paid_usd": 0,
+          "primary_document_requests": 3,
+          "request_wall_seconds_sum": 1.6217688240067218,
+          "successful_document_payload_bytes": 202553,
+          "tokens": null,
+          "total_network_bytes": null
+        },
+        "proof": "qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json",
+        "proof_sha256": "1a0176661d17cfd17285e904634602160a22e1036938ae4930edb6ee71ad1143"
+      },
+      "previous": "bf305b1d4fd79b2c3804e390ff79c6c94ca616ed65d16cdfb27076db54a7aca1",
+      "sequence": 32
     }
   ],
   "exposure_ledger": [
@@ -1005,7 +1088,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "cb12870ab2282ffe6265d0fefe534d171c16713deef2355e70dce8de91b110d0",
+  "integrity": "ac1bca3cf2fbca39e2fb674ca788968bd4f523ab2312b1512e478cbae64e8b40",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1071,17 +1154,18 @@
       "max_primary_document_requests": 3,
       "retries": 0
     },
-    "causal_hypothesis": "Previously restricted owners may demand liquidity when contractual restrictions expire; buyers bear inventory/adverse-selection risk. Unlock alone does not establish selling or underpricing. This differs from mandated index deletion but may share a liquidity-supply cluster; no independence claim.",
     "economic_access_authorized": false,
     "family": "us-ipo-lockup-expiry-supply",
-    "kind": "L0_MECHANISM",
-    "primary_source_scope": "SEC investor education on IPO lockups and issuer descriptions of release clauses, documentary only. Targets not yet fetched/qualified.",
+    "kind": "L1_PREDECLARE",
     "prospective_priority": {
       "not_before": "2026-10-13T10:00:00Z",
-      "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; exclusions and protocol-specific ties unchanged",
+      "ordering": "earliest qualifying EDGAR accepted across A-E, then smaller CIK; original exclusions and protocol-specific ties unchanged",
       "protocols": "A/B-v2/C-v2/D/E"
     },
-    "question": "Qualify from primary SEC/issuer documentation whether a prospective IPO lockup expiry can supply an unambiguous pre-event eligibility clock despite early-release/waiver/earnings conditions. Distinguish permission to sell from actual compulsory selling; without a defensible liquidity-payer mechanism and usable public clock, PARK before L1. Do not fetch issuer prices, sales outcomes, famous-event returns or SEC census.",
+    "question": "Prepare, without issuer prices or outcomes, the smallest notice-defined prospective L1 for an explicitly dated unconditional officer/director lockup release/waiver. Do not use IPO+180, infer a sale, or treat EDGAR acceptance as first public news. Freeze scope, independent notice/operative clocks, quantity/costs, fixed horizon, adequacy, benchmark and one adversary only if an admissible market-data route and discriminating question can be stated; otherwise PARK_DATA/PARK_ECONOMICS. A-E admission keeps priority. No newly admitted issuer or collector in this preparation task.",
+    "reuse_only": "Use the saved SEC/FINRA sources; no repeat lookup absent a version delta. No issuer examples chosen by past performance or actual sales.",
+    "scope_guard": "Rule5131(d)(2) covers officer/director restrictions and exceptions; .03 permits issuer/member notices or qualifying secondary registration disclosure. Normal expirations and all shareholders are not assumed covered.",
+    "source_proof": "qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2519,5 +2603,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T04:23:26.132886+00:00"
+  "updated_at": "2026-10-13T05:25:58.412354+00:00"
 }

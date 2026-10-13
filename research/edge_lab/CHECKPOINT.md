@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, lockup clock qualified for design
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- One useful action: [SEC/FINRA lockup-clock qualification](discovery/qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json). Contract terms vary; IPO+180 is not a universal clock. Rule5131(d)(2)/.03 provides a scoped public release/waiver notice route, with exceptions. Permission to sell is not forced selling. PREPARE_L1 is documentary only, not PROMOTE or an economic verdict.
+- NEXT: bounded non-outcome design for an explicitly dated unconditional notice-defined release, with scope/clocks/costs/window/adequacy/benchmark/adversary frozen only if an admissible route and useful question can be stated; otherwise park. Reuse sources, no issuer prices, sales outcomes, census, collector or automatic date substitution. <=15 minutes / <=3 document requests / zero retries.
+- A–E chronological admission retains priority after October13 10:00Z. This pre-opening pass reuses the saved holiday/calendar evidence; no new event feed request or selection. All valid hashes/exclusions unchanged; B/C v1 remain invalid. No economic claim/look.
+- Decision SHA256 `1a0176661d17cfd17285e904634602160a22e1036938ae4930edb6ee71ad1143`. Three document requests, 202553 body bytes, USD0; tokens/global bill/network total unmeasured. Prior queue/counters/multiplicity/ledger intact; public qualitative exposure recorded. The third linked notice was irrelevant to lockup timing and is not used as support.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, hurricane/insurer path parked
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
