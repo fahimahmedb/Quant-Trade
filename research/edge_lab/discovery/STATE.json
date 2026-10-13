@@ -1339,6 +1339,72 @@
       },
       "previous": "4c18ffa99906ad6b502ac066da6d6140f132f523175d4c4ae824381a7e6541a1",
       "sequence": 36
+    },
+    {
+      "at": "2026-10-13T17:29:22.487341+00:00",
+      "hash": "8bb5c32dc7d6796461589e7170391f9a16185ca44369c53a08e89f3146f1ee11",
+      "kind": "DISCOVERY_PROSPECTIVE_PROXY_AND_COMMENCEMENT_CHECK",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_subtask": "AmpliTech current proxy qualification and fresh form-specific commencement metadata check",
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "AmpliTech index and full annual proxy, plus public metadata for6 tender filings including two new amendments. Routine governance/compensation/legal text is documentary exposure, not an economic sample. No amendment body, selected market price, NAV, distribution or payoff endpoint; no return join. Documents/issuers are not unseen for future selection.",
+          "type": "PRIMARY_CORPORATE_DOCUMENT_AND_FRESH_METADATA"
+        },
+        "head_observed": "7c0fc3d28de8d060f21f8870dc4ecaae56e0c0f0",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "No first qualifying event established. The17:26Z form-filtered SEC feed returned two post-T0 SC TO-I/A amendments (Medtronic/Beacon) but no post-T0 exact SC TO-I commencement. Do not open their result/amendment bodies or use amendment clocks as fresh commencements. Feed is bounded, not an exhaustive index guarantee. B/C/D/E coverage/earlier possibilities and unread relevant amendments remain unresolved; no later substitution.",
+          "question": "Continue remaining earliest A-E documentary candidates from cached metadata, without rereading consumed sources. Current AmpliTech DEF14A is routine director/auditor business and not an operative A-E case. Its later DEFA14A remains unread: qualify only if it could add relevant operative terms. Co-Diagnostics EX10.1 keyword match (CIK1692415, accession0001493152-26-046676, feed06:10:19Eastern) and the cached497/497K candidates remain possible scope checks. First accepted-time eligibility across A-E must be established before a later selection/price claim.",
+          "resume_rule": "Reuse all saved accepted clocks, proposal/source-scope decisions and fresh form-specific feed. No immediate repeat poll without a real temporal/new-filing delta; no repeat of consumed AmpliTech index/DEF14A or other saved sources. Any newly observed commencement must pass original issuer exclusions and frozen protocol. Preserve documentary exposures and all economic history.",
+          "reuse_reference": "qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "body_bytes": 455953,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_requests": 3,
+          "request_wall_seconds_sum": 1.2846243469975889,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no first qualifying event established",
+        "proof": "qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json",
+        "proof_sha256": "e2488f10c8158cacb16d330c0882fbd5779bb8df0aae68cdf0c39070b965335c"
+      },
+      "previous": "6b415ecac245ac01cf30a3aad9f320162b0994f0da1a5e520a521262182af251",
+      "sequence": 37
     }
   ],
   "exposure_ledger": [
@@ -1384,7 +1450,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "7a9ea1d1fc8e31bde999f383c1a72d6b2718c1f73b2bbeec58ab35af814a0b5a",
+  "integrity": "5dc979bfe1694682fb5719621d64faa35e39373d1b32f63ae39a4457d4a44d59",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1461,10 +1527,10 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "No first qualifying A-E event established. Fusion exact accepted06:05:29Eastern now verified, but current cover is financial-report context and does not prove operative split terms; uninspected annex cannot be inferred clear or retried. bioAffinity current proposal fails to supply fixed R/entitlement/fraction terms. AmpliTech and remaining proxy/6-K/8-K/497 candidates remain unresolved. IX completion body stays unopened. These are bounded source findings, not exhaustive absence of an event.",
-    "question": "Continue earliest A-E eligibility using cached identities. Fusion current6-K cover and bioAffinity PRER14A do not establish a fresh B/C event. Do not reread them or the oversized Fusion financial annex. Next resolve AmpliTech DEF14A0001493152-26-046670(feed06:05:44Eastern) and, where decision-relevant, its later DEFA14A0001493152-26-046687; then remaining earlier possible notices across A-E. No later event is selected while earlier possibilities or coverage are unresolved. Exact accepted timestamp, original exclusions and every frozen eligibility condition before a price/NAV/payoff CAS claim.",
-    "resume_rule": "Reuse prior metadata and all consumed documentary evidence; no repeats of Mitesco/Adagio, IX/SS indexes/note, Fusion index/cover/oversized annex or bioAffinity current proxy. New small operative primary notice requires distinct evidence and original prospective rules. First qualifying accepted timestamp across A-E, then CIK and protocol ties; no automatic readmission of exposed issuers.",
-    "reuse_reference": "qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json",
+    "pending": "No first qualifying event established. The17:26Z form-filtered SEC feed returned two post-T0 SC TO-I/A amendments (Medtronic/Beacon) but no post-T0 exact SC TO-I commencement. Do not open their result/amendment bodies or use amendment clocks as fresh commencements. Feed is bounded, not an exhaustive index guarantee. B/C/D/E coverage/earlier possibilities and unread relevant amendments remain unresolved; no later substitution.",
+    "question": "Continue remaining earliest A-E documentary candidates from cached metadata, without rereading consumed sources. Current AmpliTech DEF14A is routine director/auditor business and not an operative A-E case. Its later DEFA14A remains unread: qualify only if it could add relevant operative terms. Co-Diagnostics EX10.1 keyword match (CIK1692415, accession0001493152-26-046676, feed06:10:19Eastern) and the cached497/497K candidates remain possible scope checks. First accepted-time eligibility across A-E must be established before a later selection/price claim.",
+    "resume_rule": "Reuse all saved accepted clocks, proposal/source-scope decisions and fresh form-specific feed. No immediate repeat poll without a real temporal/new-filing delta; no repeat of consumed AmpliTech index/DEF14A or other saved sources. Any newly observed commencement must pass original issuer exclusions and frozen protocol. Preserve documentary exposures and all economic history.",
+    "reuse_reference": "qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -2903,5 +2969,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T16:28:49.879369+00:00"
+  "updated_at": "2026-10-13T17:29:22.479536+00:00"
 }

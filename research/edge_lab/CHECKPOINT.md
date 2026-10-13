@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, routine proxy and fresh tender metadata
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Three-request admission evidence](discovery/qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json): AmpliTech current DEF14A, exact accepted06:05:44Eastern, covers director election and auditor ratification; no A–E entitlement reconstructed. Its later DEFA14A remains unread. The fresh17:26Z SEC form-filtered snapshot contains two new SC TO-I/A amendments, but no post-T0 exact SC TO-I commencement. Amendment bodies/results remain unopened; no amendment substituted for the frozen commencement clock.
+- First qualifying A–E event and overall coverage remain unresolved. No price/NAV/distribution, claim or economic execution. B/C-v1 clocks invalid; all valid files, historic exclusions and exposures unchanged. The bounded snapshot is not a proof of universal absence.
+- NEXT: reuse saved metadata to resolve remaining earliest possible notices (decision-relevant AmpliTech amendment, Co-Diagnostics EX10.1 and cached497/497K candidates); <=3 primary requests / <=15min / <=512KiB each / zero retries. No repeats of consumed documents or immediate repeat tender feed without a real new-filing/time delta. No later economic event selection until earlier eligibility and ordering are established. Parked dependencies unchanged.
+- Proof SHA256 `e2488f10c8158cacb16d330c0882fbd5779bb8df0aae68cdf0c39070b965335c`. Three requests, 455953 body bytes, USD0; tokens/global bill unmeasured. Prior queue/results, counters, multiplicity, exposure ledger and event prefix preserved; new documentary exposures appended. Raw filings private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Fusion/bioAffinity document scope
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

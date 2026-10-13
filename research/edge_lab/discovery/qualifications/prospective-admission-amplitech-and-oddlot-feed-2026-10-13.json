@@ -1,0 +1,318 @@
+{
+  "recorded_at": "2026-10-13T17:29:22.479536+00:00",
+  "head_observed": "7c0fc3d28de8d060f21f8870dc4ecaae56e0c0f0",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One three-request admission batch, not an economic rejection. Current AmpliTech proxy supplies no frozen A-E entitlement; two new amendment metadata entries are not new commencement events. The first eligible A-E case remains unresolved; this is not proof that none exists.",
+  "RESULT": "AMPlITECH_CURRENT_DEF14A_NOT_ADMITTED; ZERO_POST_T0_EXACT_SC_TO_I_COMMENCEMENTS_OBSERVED_IN_BOUNDED_FILTERED_FEED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Only current AmpliTech DEF14A body/index reviewed; its later DEFA14A not inspected or globally cleared. The filtered current-feed snapshot is not an exhaustive historical-index or instantaneous-publication guarantee. Other A-E candidates remain unresolved.",
+  "POWER_LIMITATION": "No economic cases, prices, NAVs, distributions or return statistics. Documentary exclusions cannot assess profitability.",
+  "ECONOMIC_SIGNIFICANCE": "Election/auditor voting does not establish a fixed-price issuer tender, fractional settlement or SPAC cash-redemption right. An amended tender filing after T0 cannot replace the frozen commencement clock; treating it as a fresh opportunity risks selecting a completed or already-exposed offer.",
+  "FAILED_CRITERIA": [
+    "AmpliTech current proxy has ordinary director/auditor agenda, no reconstructed fixed split/odd-lot/SPAC redemption entitlement.",
+    "Post-T0 Medtronic and Beacon metadata are SC TO-I/A amendments; protocolA requires the qualifying commencement SC TO-I clock and still-open offer. No amendment contents or prices were fetched.",
+    "Global A-E chronology/eligibility coverage remains unresolved, so no first-event claim is admissible."
+  ],
+  "LESSON": "A form-prefix filter also returns amendments. Classify exact form and event origin before opening a body; do not turn routine proxy business or a final/amended tender timestamp into an economic event.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E prospective admission unresolved; no family economically killed, promoted or newly activated. Existing parked dependencies unchanged.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "No first qualifying event established. The17:26Z form-filtered SEC feed returned two post-T0 SC TO-I/A amendments (Medtronic/Beacon) but no post-T0 exact SC TO-I commencement. Do not open their result/amendment bodies or use amendment clocks as fresh commencements. Feed is bounded, not an exhaustive index guarantee. B/C/D/E coverage/earlier possibilities and unread relevant amendments remain unresolved; no later substitution.",
+    "question": "Continue remaining earliest A-E documentary candidates from cached metadata, without rereading consumed sources. Current AmpliTech DEF14A is routine director/auditor business and not an operative A-E case. Its later DEFA14A remains unread: qualify only if it could add relevant operative terms. Co-Diagnostics EX10.1 keyword match (CIK1692415, accession0001493152-26-046676, feed06:10:19Eastern) and the cached497/497K candidates remain possible scope checks. First accepted-time eligibility across A-E must be established before a later selection/price claim.",
+    "resume_rule": "Reuse all saved accepted clocks, proposal/source-scope decisions and fresh form-specific feed. No immediate repeat poll without a real temporal/new-filing delta; no repeat of consumed AmpliTech index/DEF14A or other saved sources. Any newly observed commencement must pass original issuer exclusions and frozen protocol. Preserve documentary exposures and all economic history.",
+    "reuse_reference": "qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1518461/000149315226046670/0001493152-26-046670-index.htm",
+      "observed_at": "2026-10-13T17:25:16.188882+00:00",
+      "scope": "SEC index metadata only; no filing body, price or payoff",
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 11259,
+      "sha256": "2a7474717e103cfcb4239a2bf5d2f5ca7ffd368dae3ec6b527a6d5517b23b706",
+      "complete": true,
+      "metadata_excerpt": "Filing Date 2026-10-13 Accepted 2026-10-13 06:05:44 Documents 22 Period of Report 2026-10-13 Interactive Data ",
+      "documents": [
+        "/ix?doc=/Archives/edgar/data/1518461/000149315226046670/formdef14a.htm",
+        "/Archives/edgar/data/1518461/000149315226046670/0001493152-26-046670.txt",
+        "/Archives/edgar/data/1518461/000149315226046670/ampg-20251231.xsd",
+        "/Archives/edgar/data/1518461/000149315226046670/ampg-20251231_def.xml",
+        "/Archives/edgar/data/1518461/000149315226046670/ampg-20251231_lab.xml",
+        "/Archives/edgar/data/1518461/000149315226046670/ampg-20251231_pre.xml",
+        "/Archives/edgar/data/1518461/000149315226046670/formdef14a_htm.xml"
+      ],
+      "wall_seconds": 0.342158807994565,
+      "image_links_omitted": 5
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1518461/000149315226046670/formdef14a.htm",
+      "observed_at": "2026-10-13T17:26:07.514527+00:00",
+      "scope": "Proxy purpose/eligibility; no market/NAV/payoff endpoint",
+      "max_body_bytes": 524288,
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 440741,
+      "sha256": "1910b7bfbbe9ecfbb32281d114e78265581f856ffd4be4906e7bd940781fecc8",
+      "complete": true,
+      "content_length": null,
+      "excerpts": [
+        "To elect five directors ...",
+        "To ratify the appointment of Sadler, Gibb & Associates, LLC, as our independent registered public accounting firm for our fiscal year ending December31,2026.",
+        "Our Board of Directors has fixed the close of business on October9,2026, as the record date for the Annual Meeting."
+      ],
+      "wall_seconds": 0.3391231069981586
+    },
+    {
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=SC%20TO-I&owner=include&count=100&output=atom",
+      "observed_at": "2026-10-13T17:26:07.500185+00:00",
+      "scope": "Fresh primary form-filtered metadata since prior general snapshot; no filing body, price, NAV or payoff",
+      "max_body_bytes": 524288,
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 3953,
+      "sha256": "5e319c7b0c22b3167cb852963cbb51a3caede747650d9a02a1f055d203d3999a",
+      "complete": true,
+      "entries": [
+        {
+          "title": "SC TO-I/A - Medtronic plc (0001613103) (Subject)",
+          "updated": "2026-10-13T08:18:41-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001628280-26-065599",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026065599/0001628280-26-065599-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I/A"
+            }
+          ]
+        },
+        {
+          "title": "SC TO-I/A - BEACON TOPCO, INC. (0002094256) (Subject)",
+          "updated": "2026-10-13T08:00:48-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001104659-26-115284",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/2094256/000110465926115284/0001104659-26-115284-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I/A"
+            }
+          ]
+        },
+        {
+          "title": "SC TO-I - Onex Direct Lending BDC Fund (0001860424) (Subject)",
+          "updated": "2026-10-09T16:24:50-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001193125-26-419144",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/1860424/000119312526419144/0001193125-26-419144-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I"
+            }
+          ]
+        },
+        {
+          "title": "SC TO-I/A - Virtus Dividend, Interest & Premium Strategy Fund (0001260563) (Subject)",
+          "updated": "2026-10-08T14:53:25-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001193125-26-417835",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/1260563/000119312526417835/0001193125-26-417835-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I/A"
+            }
+          ]
+        },
+        {
+          "title": "SC TO-I/A - Hamilton Lane Private Assets Fund (0001803491) (Subject)",
+          "updated": "2026-10-08T13:09:12-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001213900-26-107854",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/1803491/000121390026107854/0001213900-26-107854-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I/A"
+            }
+          ]
+        },
+        {
+          "title": "SC TO-I/A - Medtronic plc (0001613103) (Subject)",
+          "updated": "2026-10-08T08:24:31-04:00",
+          "id": "urn:tag:sec.gov,2008:accession-number=0001628280-26-065406",
+          "links": [
+            {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026065406/0001628280-26-065406-index.htm"
+            }
+          ],
+          "category": [
+            {
+              "scheme": "https://www.sec.gov/",
+              "label": "form type",
+              "term": "SC TO-I/A"
+            }
+          ]
+        }
+      ],
+      "entry_count": 6,
+      "wall_seconds": 0.6033424320048653
+    }
+  ],
+  "admission": {
+    "amplitech": {
+      "cik": "1518461",
+      "accession": "0001493152-26-046670",
+      "accepted_eastern": "2026-10-13 06:05:44",
+      "accepted_utc": "2026-10-13T10:05:44Z",
+      "decision": "CURRENT_PROXY_NOT_ADMITTED; no inference about unread later amendment"
+    },
+    "oddlot_feed": {
+      "observed_at": "2026-10-13T17:26:07.500185+00:00",
+      "entry_count": 6,
+      "post_t0_amendments": 2,
+      "post_t0_exact_commencements": 0,
+      "oldest_entry": "2026-10-08T08:24:31-04:00",
+      "source_limits": "Bounded getcurrent snapshot, exact form discrimination, not full census; updated field is not substituted for accepted index timestamp for admission."
+    },
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "prior_proof": "qualifications/prospective-admission-fusion-bioaffinity-2026-10-13.json",
+    "sha256": "23f988e9ea3b957cd4a655597645186ce21f267f2bbca0f57be88cd5ec050fb9",
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "fresh_feed_reason": "Earlier general SEC feed was observed11:24-11:25Z. This distinct form-filtered snapshot at17:26Z captures a later live filing interval, without rerunning any economic look."
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_nonterminal_at_head": [],
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_CORPORATE_DOCUMENT_AND_FRESH_METADATA",
+    "scope": "AmpliTech index and full annual proxy, plus public metadata for6 tender filings including two new amendments. Routine governance/compensation/legal text is documentary exposure, not an economic sample. No amendment body, selected market price, NAV, distribution or payoff endpoint; no return join. Documents/issuers are not unseen for future selection.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "body_bytes": 455953,
+    "request_wall_seconds_sum": 1.2846243469975889,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "previous_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}
