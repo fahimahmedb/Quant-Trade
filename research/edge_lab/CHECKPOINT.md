@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, hurricane/insurer path parked
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- One useful action: [prospective insurer-feasibility decision](discovery/qualifications/hurricane-insurer-prospective-feasibility-2026-10-13.json). PARK_DATA: consulted product documentation does not establish a signed net geographic/reinsurance exposure; Alpha Vantage documents free limited key access but not the exact admissible endpoint/terms needed. No registration, selected quotes, insurer losses or weather values. The historical and prospective hurricane paths now stop absent a distinct new fact. This is no economic rejection.
+- NEXT: one distinct L0 on IPO-lockup expiry supply, primary SEC/issuer documents only, <=15 minutes / <=3 requests / zero retries. Establish a release clock and distinguish optional liquidity demand from compulsory selling; no famous returns, prices or new SEC census. Possible shared liquidity cluster remains acknowledged.
+- A–E chronological admission takes priority after October13 10:00Z. Current pre-opening pass reuses cached holiday/feed evidence; valid hashes, exclusions and B/C v1 invalidity unchanged. No economic claim/look.
+- Decision SHA256 `21fd6c361e4a773fad69ff323d73f86353b3aa36638d2ce9e1acc6a4a1753dcf`. Three primary requests, 116258 successful body bytes, USD0; tokens/global bill/network total unmeasured. Queue, economic counters, multiplicity and ledger preserved; documentary exposure appended to existing hash-chained events. No Owner action required.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, weather-source L0 decision
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

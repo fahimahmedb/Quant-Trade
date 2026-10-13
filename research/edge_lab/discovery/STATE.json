@@ -871,6 +871,95 @@
       },
       "previous": "8430836aa79ec1dfe605673c480cd3196a8519aaf0f56977633cb7fdadf3d709",
       "sequence": 30
+    },
+    {
+      "at": "2026-10-13T04:23:26.139527+00:00",
+      "hash": "bf305b1d4fd79b2c3804e390ff79c6c94ca616ed65d16cdfb27076db54a7aca1",
+      "kind": "DISCOVERY_L0_PROSPECTIVE_FEASIBILITY_PARK",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "closed_question": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "completed_at": "2026-10-13T04:23:26.132886+00:00",
+          "decision": "PARK_DATA",
+          "do_not_repeat": [
+            "NHC aboutnhcprod.shtml 403",
+            "NHC archive index 403",
+            "Yahoo failed terms requests",
+            "CME/DataMine retrieval",
+            "cached NWS API documentation absent version delta"
+          ],
+          "economic_access_authorized": false,
+          "family": "hurricane-forecast-insurance-repricing",
+          "kind": "L0_MECHANISM",
+          "new_fact": "NWS API primary documentation explicitly permits free open-data use and documents an alerts endpoint, but retention is seven days, so only separately declared prospective capture is potentially feasible. API payload/access/clock not yet tested.",
+          "parent_decision": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted timestamp across A-E, then smaller CIK, original exclusions/ties unchanged",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "question": "Prospective feasibility only: reuse qualified NWS API documentation, then decide whether publicly dated insurer coverage/reinsurance descriptions establish a signed exposure class BEFORE any alert, and whether a distinct free authorized equity-price route is documented. Read product/coverage/access documentation only, not insurer losses, historical alerts, selected prices or payout outcomes. If either dependency cannot be qualified in this bounded follow-up, PARK this family without another source cycle. No collector or L1 until a new frozen declaration.",
+          "result_reference": "qualifications/hurricane-insurer-prospective-feasibility-2026-10-13.json",
+          "status": "PARK"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_names": "Universal Property & Casualty operating-insurer brand and its public marketing; no A-E event selected or issuer CIK admitted",
+          "private_history": "UNKNOWN",
+          "scope": "Insurer products and provider access FAQ only; no investment results",
+          "type": "DOCUMENTARY_SELECTION"
+        },
+        "family": "hurricane-forecast-insurance-repricing",
+        "head_observed": "cf71fc28742e0f28f1418db340370438b88abcd2",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_primary_document_requests": 3,
+            "retries": 0
+          },
+          "causal_hypothesis": "Previously restricted owners may demand liquidity when contractual restrictions expire; buyers bear inventory/adverse-selection risk. Unlock alone does not establish selling or underpricing. This differs from mandated index deletion but may share a liquidity-supply cluster; no independence claim.",
+          "economic_access_authorized": false,
+          "family": "us-ipo-lockup-expiry-supply",
+          "kind": "L0_MECHANISM",
+          "primary_source_scope": "SEC investor education on IPO lockups and issuer descriptions of release clauses, documentary only. Targets not yet fetched/qualified.",
+          "prospective_priority": {
+            "not_before": "2026-10-13T10:00:00Z",
+            "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; exclusions and protocol-specific ties unchanged",
+            "protocols": "A/B-v2/C-v2/D/E"
+          },
+          "question": "Qualify from primary SEC/issuer documentation whether a prospective IPO lockup expiry can supply an unambiguous pre-event eligibility clock despite early-release/waiver/earnings conditions. Distinguish permission to sell from actual compulsory selling; without a defensible liquidity-payer mechanism and usable public clock, PARK before L1. Do not fetch issuer prices, sales outcomes, famous-event returns or SEC census.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "error_bodies_read": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "price_or_weather_payload_requests": 0,
+          "primary_document_requests": 3,
+          "request_wall_seconds_sum": 1.7910904099990148,
+          "successful_document_payload_bytes": 116258,
+          "tokens": null,
+          "total_network_bytes": null
+        },
+        "proof": "qualifications/hurricane-insurer-prospective-feasibility-2026-10-13.json",
+        "proof_sha256": "21fd6c361e4a773fad69ff323d73f86353b3aa36638d2ce9e1acc6a4a1753dcf"
+      },
+      "previous": "b7c6a715dbbad5244e4f96f9942e96f812797c8aad9d6b357f76bd48907dc2ba",
+      "sequence": 31
     }
   ],
   "exposure_ledger": [
@@ -916,7 +1005,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "e292dd9cf01832c235757dcdc47c96e094df67b38844bb2c545ecfd880be02ad",
+  "integrity": "cb12870ab2282ffe6265d0fefe534d171c16713deef2355e70dce8de91b110d0",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -982,24 +1071,17 @@
       "max_primary_document_requests": 3,
       "retries": 0
     },
-    "do_not_repeat": [
-      "NHC aboutnhcprod.shtml 403",
-      "NHC archive index 403",
-      "Yahoo failed terms requests",
-      "CME/DataMine retrieval",
-      "cached NWS API documentation absent version delta"
-    ],
+    "causal_hypothesis": "Previously restricted owners may demand liquidity when contractual restrictions expire; buyers bear inventory/adverse-selection risk. Unlock alone does not establish selling or underpricing. This differs from mandated index deletion but may share a liquidity-supply cluster; no independence claim.",
     "economic_access_authorized": false,
-    "family": "hurricane-forecast-insurance-repricing",
+    "family": "us-ipo-lockup-expiry-supply",
     "kind": "L0_MECHANISM",
-    "new_fact": "NWS API primary documentation explicitly permits free open-data use and documents an alerts endpoint, but retention is seven days, so only separately declared prospective capture is potentially feasible. API payload/access/clock not yet tested.",
-    "parent_decision": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+    "primary_source_scope": "SEC investor education on IPO lockups and issuer descriptions of release clauses, documentary only. Targets not yet fetched/qualified.",
     "prospective_priority": {
       "not_before": "2026-10-13T10:00:00Z",
-      "ordering": "earliest qualifying EDGAR accepted timestamp across A-E, then smaller CIK, original exclusions/ties unchanged",
+      "ordering": "earliest qualifying EDGAR accepted, then smaller CIK; exclusions and protocol-specific ties unchanged",
       "protocols": "A/B-v2/C-v2/D/E"
     },
-    "question": "Prospective feasibility only: reuse qualified NWS API documentation, then decide whether publicly dated insurer coverage/reinsurance descriptions establish a signed exposure class BEFORE any alert, and whether a distinct free authorized equity-price route is documented. Read product/coverage/access documentation only, not insurer losses, historical alerts, selected prices or payout outcomes. If either dependency cannot be qualified in this bounded follow-up, PARK this family without another source cycle. No collector or L1 until a new frozen declaration.",
+    "question": "Qualify from primary SEC/issuer documentation whether a prospective IPO lockup expiry can supply an unambiguous pre-event eligibility clock despite early-release/waiver/earnings conditions. Distinguish permission to sell from actual compulsory selling; without a defensible liquidity-payer mechanism and usable public clock, PARK before L1. Do not fetch issuer prices, sales outcomes, famous-event returns or SEC census.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -2437,5 +2519,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T03:28:34.664293+00:00"
+  "updated_at": "2026-10-13T04:23:26.132886+00:00"
 }
