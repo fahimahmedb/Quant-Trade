@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-13, conditional financing flow L0
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Admission evidence + one new L0](discovery/qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json): SS Innovations EX4.1 reverse-split keyword is a conditional clause in a secured convertible note, not an operative B/C split event. IX Acquisition index has accepted06:03:17Eastern, October7 report period and vote/other-events items; its completion/payoff body stays unopened, and no open redemption right is inferred. A–E first-event selection and coverage remain unresolved.
+- One other useful action, reusing the new note without another request: variable-conversion financing-supply L0 = PARK_DATA. Ordinary redemptions depend on lender notice and cash/shares choice; a separate limited-redemption route has price-contingent triggers and conditional share delivery. No actual exercise/issuance/sale clock is established. A fixed monthly forced-sale shortcut is unsupported; the lender95% conversion-price term is not a retail shareholder return. No prices, trigger evaluation, test or economic rejection.
+- NEXT: continue oldest remaining A–E documentary candidates using cached identities and exclusions, <=3 primary requests / <=15min / <=512KiB each / zero retries. No re-fetch of consumed indexes/note or prior Mitesco/Adagio/Fusion Fuel payloads. A price/NAV/payout claim requires original accepted-time ordering and all eligibility; no later substitution while earlier possibilities are unresolved. Financing-flow, lockup and WTI dependencies stay parked absent distinct evidence.
+- Proof SHA256 `8ec7bf635792a5c01992ee1fdaea529020d7e7b65d1ab3479ce0ffc08bd18e74`. Three requests, 123111 body bytes, USD0; zero extra L0 requests. Tokens/global bill unmeasured. No economic look or claim; prior queue/results, metrics, multiplicity, exposure ledger and event prefix preserved. New documentary selection/exposure saved; raw documents private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Mitesco and Adagio admission exclusions
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

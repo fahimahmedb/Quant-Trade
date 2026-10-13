@@ -1205,6 +1205,74 @@
       },
       "previous": "cbe3d735738d7c0173e358ecf9e66dc29b1985f8f98bb81d7ee5a8b6efb1a445",
       "sequence": 34
+    },
+    {
+      "at": "2026-10-13T13:26:57.604521+00:00",
+      "hash": "4c18ffa99906ad6b502ac066da6d6140f132f523175d4c4ae824381a7e6541a1",
+      "kind": "DISCOVERY_CONVERTIBLE_FLOW_L0_AND_ADMISSION",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_subtask": "Three-request admission batch and one distinct L0 contract-to-flow feasibility decision reusing its source",
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "IX index metadata; SS index and full EX4.1 legal note, including contractual financing terms. SS is documentary calibration for this new L0, never an unseen prospective validation case. No selected market/NAV/distribution or realized-payout payload, no event-return join. Note contractual redemption amounts are terms, not observed cash/price outcomes.",
+          "type": "PRIMARY_DOCUMENTARY_TERMS_AND_L0_MECHANISM_SELECTION"
+        },
+        "family": "us-variable-conversion-financing-supply",
+        "head_observed": "b521b986f32b4f16680bfdcc2ff0f34d79ec95bf",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending": "No first event has been established. IX current8-K is not admitted; any qualification must come from an identified operative pre-event proxy/notice that satisfies original timing/exclusion rules, not its vote/redemption results. Other cached candidates and global coverage remain unresolved, including Fusion Fuel for which the consumed oversized body cannot be retried. Reuse original cached feed/search URLs and discriminate documentary notices without a new SEC census.",
+          "question": "Continue the first qualifying A-E event from cached metadata without rereading consumed sources. SS Innovations EX4.1 keyword hit is a conditional lender-protection clause, not a fixed reverse-split announcement. IX index describes a vote-report8-K with October7 period, not evidence of an open post-T0 redemption opportunity; leave its completion/payoff body unopened. Resolve remaining earlier potential notices across A-E before any later event selection. Claim exact eligibility/accepted identity via CAS before any selected market/NAV/payoff payload.",
+          "resume_rule": "No repeat of consumed Mitesco/Adagio, IX/SS indexes or SS EX4.1. Recorded legal terms/issuers remain exposed. First qualifying accepted timestamp across A-E, then CIK and frozen protocol ties. No later substitution while an earlier possibility remains unresolved.",
+          "reuse_reference": "qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json",
+          "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "body_bytes": 123111,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "extra_network_requests_for_L0": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_requests": 3,
+          "request_wall_seconds_sum": 5.730628056990099,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "parent_admission_remaining": "OPEN; no event selected",
+        "proof": "qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json",
+        "proof_sha256": "8ec7bf635792a5c01992ee1fdaea529020d7e7b65d1ab3479ce0ffc08bd18e74"
+      },
+      "previous": "a810db037cdf71d42dea5376e2608e8c6fc2a7e0fd9cf495e6a6b3a6b66e18d5",
+      "sequence": 35
     }
   ],
   "exposure_ledger": [
@@ -1250,7 +1318,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "4b3f19a194e27b1e1cbb3b07638c4832c6757ef48d4e4bc671fddec648b32e31",
+  "integrity": "6c5b7278cff259429b00dd0fc1bfeff6af4fd3e8f863ad76eaf271a4a2ba4b44",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1320,16 +1388,17 @@
     },
     "closed_dependencies": {
       "WTI": "PARK_DATA; no CME/DataMine re-probe",
-      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources"
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
     "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "Earlier unqualified 8-K/6-K/proxy candidates, including IX Acquisition (feed06:03:17 Eastern), and SS Innovations (06:05:14), plus remaining 497/497K and other candidates, still prevent a first-event claim. Filings may describe completed actions; inspect documentary identities/terms without treating a completion/payoff as a fresh event. The bounded scan is not exhaustive. Fusion Fuel same oversized body is not retried; a genuinely distinct small primary notice would be needed.",
-    "question": "Continue the first chronological A-E admission from cached October13 feed/search evidence. Mitesco accession0001185185-26-004692 is excluded by its no-12(b)-listing cover; Adagio accession0001140361-26-039339 is excluded by unfixed ratio/operative clock (and cash rather than round-up). Do not reread these same documents. Resolve the earliest still-possible events across all protocols before any later claim; verify exact accepted timestamps and all frozen criteria. No market-price/NAV/cash-basis/distribution payload before published CAS claim.",
-    "resume_rule": "Reuse this receipt plus prior metadata; maintain first qualifying accepted-time/CIK ordering across A-E. Mere metadata or proposal exposure is recorded and never claimed unseen; any later operative notice requires the original exclusion/freshness rules, not automatic readmission.",
-    "reuse_reference": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
+    "pending": "No first event has been established. IX current8-K is not admitted; any qualification must come from an identified operative pre-event proxy/notice that satisfies original timing/exclusion rules, not its vote/redemption results. Other cached candidates and global coverage remain unresolved, including Fusion Fuel for which the consumed oversized body cannot be retried. Reuse original cached feed/search URLs and discriminate documentary notices without a new SEC census.",
+    "question": "Continue the first qualifying A-E event from cached metadata without rereading consumed sources. SS Innovations EX4.1 keyword hit is a conditional lender-protection clause, not a fixed reverse-split announcement. IX index describes a vote-report8-K with October7 period, not evidence of an open post-T0 redemption opportunity; leave its completion/payoff body unopened. Resolve remaining earlier potential notices across A-E before any later event selection. Claim exact eligibility/accepted identity via CAS before any selected market/NAV/payoff payload.",
+    "resume_rule": "No repeat of consumed Mitesco/Adagio, IX/SS indexes or SS EX4.1. Recorded legal terms/issuers remain exposed. First qualifying accepted timestamp across A-E, then CIK and frozen protocol ties. No later substitution while an earlier possibility remains unresolved.",
+    "reuse_reference": "qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json",
     "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
     "status": "OPEN"
   },
@@ -2768,5 +2837,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T12:27:51.717819+00:00"
+  "updated_at": "2026-10-13T13:26:57.594511+00:00"
 }
