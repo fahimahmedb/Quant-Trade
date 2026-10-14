@@ -45,3 +45,8 @@ Document one narrowly defined event class with primary-source timestamps, an exp
 - No paid data/services.
 - No market-direction conclusion from political preference or narrative.
 - No economic look merely to choose the most attractive variant.
+
+
+## L0 disposition — 2026-10-14
+
+Consumed once. `PARK_DATA` for the customs-implementation notice / first-public-clock subquestion within existing `policy-announcement-repricing`. [Evidence and next](../discovery/qualifications/trump-policy-customs-clock-l0-2026-10-14.json). CBP documentation returned HTTP403; no body, retry, bypass or economic outcome. Cached Federal Register/GDELT clock limits remain: a technical notice or legal effective date is not automatically new information. No direction, independent family or test inferred from politician identity. Reopen only on genuinely new authorized source/clock evidence, not this narrative under another name.
