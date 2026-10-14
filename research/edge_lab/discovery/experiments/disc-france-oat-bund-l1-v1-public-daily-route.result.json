@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "experiment_id": "disc-france-oat-bund-l1-v1-public-daily-route",
+  "typed_verdict": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_eligible": false,
+  "economic_look_opened": false,
+  "completed_at_date": "2026-10-14",
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "first_broken_transition": "FROZEN_FRANCE_HISTORICAL_SOURCE_REQUIRES_ACCOUNT_API_KEY",
+  "observed_fact": "The frozen Banque de France Webstat France-10Y series exists and is publicly catalogued, but the official historical-observation API requires an API key obtained after account registration/authentication. The frozen Deutsche Bundesbank Germany-10Y series remains publicly downloadable. Under the current zero-paid/no-account research path, the eight-event 2022-2025 paired sample cannot be acquired through the declared France route.",
+  "source_status": {
+    "france": {
+      "series": "FM.D.FR.EUR.FR2.BB.FRMOYTEC10.HSTA",
+      "catalogue_exists": true,
+      "historical_api_authentication_required": true,
+      "account_registration_required_for_api_key": true,
+      "event_window_observations_accessed": false
+    },
+    "germany": {
+      "series": "BBSSY.D.REN.EUR.A630.000000WT1010.A",
+      "public_download_route_exists": true,
+      "event_window_observations_accessed": false
+    }
+  },
+  "exposure_accounting": {
+    "selected_2022_2025_event_window_yields_accessed": false,
+    "spread_changes_computed": false,
+    "signal_future_return_or_pnl_accessed": false,
+    "economic_look_count_increment": 0,
+    "incidental_current_2026_france_headline_values_seen_during_source_qualification": true,
+    "note": "Current 2026 headline values were outside the frozen 2022-2025 event sample and were not used to alter the contract. No pristine-current-value claim is made."
+  },
+  "decision_reason": "The linked L1 explicitly froze the Banque de France Webstat route and forbade silent source substitution. Because that exact historical route requires authenticated API access not available in the current research environment, adequacy fails before any economic outcome access. Therefore PARK_DATA is mandatory and no directional/economic inference is admissible.",
+  "next_action": "Do not substitute another France yield series, change the eight EDP dates, alter the five-common-observation horizon, or inspect event-window outcomes. Reopen only if the exact frozen Banque de France route becomes accessible under an explicitly authorized account/API-key path without changing the economic protocol; otherwise move to a causally distinct candidate.",
+  "inference_ceiling": [
+    "No conclusion on French sovereign repricing",
+    "No conclusion on the broader France-crisis thesis",
+    "No alpha or edge claim",
+    "No FOAT/FGBL executability claim",
+    "No live or real-capital authorization"
+  ]
+}
