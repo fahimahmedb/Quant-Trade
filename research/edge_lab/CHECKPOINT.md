@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, Liquidia admission closed; remote follow-up reused
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Admission decision and evidence](discovery/qualifications/prospective-admission-liquidia-2026-10-14.json): Liquidia8-K accession0001104659-26-115672 accepted2026-10-13 21:49:11Eastern describes litigation settlements/financing, not an eligible A-E shareholder entitlement. Primary review COMPLETED/INELIGIBLE; no event claim or market-price/NAV/payoff test. Exhibits not fetched. Preliminary corporate cash/sales figures and legal payment terms in the primary disclosure were exposed and are explicitly retained; do not describe this document/issuer as pristine.
+- NEXT: reuse14 saved pending SEC candidate-form records, beginning Valaris DEFM14A index by provisional feed order. Verify accepted clock first, then only a bounded safe legal description if needed. Earlier unresolved chronology remains; no later favorable substitution, complete-census claim, retries of partial documents or new price look. <=3 documents / <=15 minutes / <=512 KiB each / zero retries.
+- Remote delta: savings-bond legal follow-up already exists and reports contractual month-granularity qualified with economic magnitude UNTESTED. Its earlier OPEN legal task is now COMPLETED by reference, not re-probed. Deferred next is separate linked L1 preparation only, after higher-priority prospectives, carrying prior unreserved rate exposure and posting/holding/penalty/tax/benchmark constraints. Other new experiment artifacts preserved; no replay or authority inferred.
+- Proof SHA256 `03e992179ac97401c4d01e7db2b98a56edec5a9ea7db750ceda2c91b35bf6b49`. Two complete primary responses, 63813 bytes; zero retries/USD0, no economic calculation. Ledger prefix, counters, queue, multiplicity and all prior exposures retained. A-E/VX protocol hashes and VX register unchanged; VX NOT_DUE before2026-10-15T00:00Z; legacy UNKNOWN remains spent. Raw documents private; tokens/global bill unmeasured.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, new SEC documents; News Corp cover resolved
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

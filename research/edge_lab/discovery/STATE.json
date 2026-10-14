@@ -3100,6 +3100,196 @@
       },
       "previous": "e4074e1601875f43634194efc1a1cfb0e4b8cea8f17ba27efb35d69ae43d1af9",
       "sequence": 51
+    },
+    {
+      "at": "2026-10-14T14:24:05.286401+00:00",
+      "hash": "f6f710530b338c439926f6a918fa266c966c721c3f7e88bad0cf0f5587d68323",
+      "kind": "DISCOVERY_PROSPECTIVE_LIQUIDIA_LEGAL_DESCRIPTION_CLOSED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "Litigation settlements and related financing arrangements, not a new eligible shareholder entitlement under A-E.",
+          "id": "sec:0001104659-26-115672:primary-description",
+          "status": "COMPLETED"
+        },
+        "decision": "LIQUIDIA_PRIMARY_DESCRIPTION_INELIGIBLE_A_E",
+        "economic_execution": false,
+        "exposure": {
+          "claim_id": null,
+          "consumed": true,
+          "contractual_terms_seen": "UTC net175.0m plus145.4m installment payments; Sandoz21.75m, Henderson19.05m, PBM19.45m; cash covenant15m->45m; historical litigation funding10m. These are disclosed legal obligations/contractual interests, not a listed-shareholder odd-lot/fraction/SPAC/ETF payoff.",
+          "effective_independent_trials": "UNKNOWN",
+          "id": "liquidia-primary-disclosure-20261014-0001104659-26-115672",
+          "incidental_financial_information": {
+            "Q3_preliminary_unaudited_YUTREPIA_net_product_sales_usd_million": 222.7,
+            "as_of": "2026-09-30",
+            "cash_and_cash_equivalents_usd_million": 396.1,
+            "limitation": "Issuer preliminary/unaudited disclosure, not verified realized investor payoff; not used for return inference or event selection."
+          },
+          "new_reserved_looks": 0,
+          "new_return_or_strategy_tests": 0,
+          "observed_at": "2026-10-14T14:21:48.070703+00:00",
+          "pre_reserved": false,
+          "prior_rate_panel_exposure_preserved": true,
+          "private_history": "UNKNOWN",
+          "scope": "Full primary disclosure including litigation settlement terms, financing covenants and preliminary financial information; not a prospective A-E entitlement payoff. Issuer/document cannot later be treated as unseen. No price/NAV request, event-return join, economic computation or retroactive reservation.",
+          "seed_consumptions_this_pass": 0,
+          "source_sha256": "f618b46c22ef4415f390a8df7ce938138f53cb209f1fbd032933303eb0a7a9ad",
+          "type": "SEC_PRIMARY_LEGAL_AND_INCIDENTAL_CORPORATE_FUNDAMENTALS"
+        },
+        "head_observed": "e04a1f6aa8e51e5e4e3ac535291af4680e7a4aac",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+            "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+            "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+            "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "deferred_documentary": {
+            "completed_dependency": {
+              "instruction": "Do not repeat already published legal follow-up.",
+              "reference": "qualifications/us-savings-bond-calendar-legal-followup-2026-10-14.json",
+              "reported_decision": "L1_NOW; economic magnitude untested",
+              "sha256": "0e4ff46fd18f931fa88c825f013b97cb7ba464ba74751a81423d6c587119a475",
+              "status": "COMPLETED"
+            },
+            "economic_access_authorized": false,
+            "family": "us-savings-bond-accrual-calendar",
+            "kind": "LINKED_L1_PREDECLARATION_ONLY",
+            "prior_exposure_reference": {
+              "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+              "must_not_be_treated_as_pristine": true,
+              "pre_reserved": false,
+              "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+            },
+            "question": "Only after higher-priority prospective work, prepare a separate linked paper-only L1 declaration carrying original unreserved rate exposure, posting uncertainty, fixed holding/penalty/tax/benchmark rules and invalidation; no new rate or benchmark access in preparation.",
+            "status": "OPEN"
+          },
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "passive_VX_priority": {
+            "prospective_T0": "2026-10-15T00:00:00Z",
+            "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+            "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+            "status": "NOT_DUE_BEFORE_T0"
+          },
+          "pending_source_reference": {
+            "count_pending": 14,
+            "field": "candidate_form_records",
+            "proof": "qualifications/prospective-admission-liquidia-2026-10-14.json"
+          },
+          "primary_document_candidates": [
+            "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm"
+          ],
+          "prospective_A_E_priority": {
+            "bounds": {
+              "economic_payloads": 0,
+              "max_agent_minutes": 15,
+              "max_bytes_per_document": 524288,
+              "max_primary_document_requests": 3,
+              "max_total_document_bytes": 1572864,
+              "retries": 0
+            },
+            "closed_dependencies": {
+              "WTI": "PARK_DATA; no CME/DataMine re-probe",
+              "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+              "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+            },
+            "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+            "economic_access_authorized": false,
+            "family": "A/B-v2/C-v2/D/E",
+            "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+            "latest_metadata_snapshot": {
+              "candidate_form_records": 16,
+              "coverage_complete_since_T0": false,
+              "entries": 100,
+              "new_entries_vs_prior": 76,
+              "newest_updated": "2026-10-14T06:14:36-04:00",
+              "observed_at": "2026-10-14T10:16:37.932636+00:00",
+              "oldest_updated": "2026-10-13T21:25:11-04:00",
+              "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
+            },
+            "pending": "Fourteen saved candidate-form records remain pending, beginning Valaris by provisional feed order. Liquidia primary description closed; earlier coverage gaps remain. No FIRST qualifying event established.",
+            "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+            "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+            "reuse_reference": "qualifications/prospective-admission-liquidia-2026-10-14.json",
+            "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+            "status": "OPEN"
+          },
+          "question": "Reuse saved SEC metadata; next provisional record is Valaris DEFM14A accession0001140361-26-039488. Verify its exact accepted clock at the index first. Only a bounded primary legal description safe from selected price/NAV/distribution/payoff access may follow; do not fetch merger consideration/completion exhibits by default. Earlier unresolved sources and incomplete global chronology remain constraints; feed updated timestamps do not establish FIRST eligibility. No event claim/selection or later favorable issuer substitution.",
+          "resume_rule": "Liquidia primary description is closed INELIGIBLE_A_E; no repeat or exhibit expansion. Preserve earlier incomplete Fusion/AmpliTech and unopened IX chronology. No feed refetch or full SEC census. Savings legal follow-up has ALREADY been completed in a newly observed remote artifact: reuse it, never repeat its requests. Only a separate linked, non-outcome L1 preparation may follow when no higher-priority admissible prospective work exists, carrying all previous exposures.",
+          "reuse_reference": "qualifications/prospective-admission-liquidia-2026-10-14.json",
+          "seed_history": [
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+              "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+              "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+              "seed_id": "market_sentiment_dislocation_l0",
+              "source_followup": {
+                "decision": "PARK_DATA",
+                "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+                "repeat_allowed_without_new_fact": false,
+                "status": "PARK"
+              }
+            },
+            {
+              "L0_verdict": "DUPLICATE",
+              "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+              "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+              "same_candidate_id": "france-sovereign-repricing",
+              "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+              "seed_id": "france_fiscal_political_stress_l0"
+            },
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+              "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+              "same_candidate_id": "policy-announcement-repricing",
+              "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+              "seed_id": "trump_policy_event_transmission_l0"
+            }
+          ],
+          "spent_exposure_reference": {
+            "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+            "must_not_be_treated_as_pristine": true,
+            "pre_reserved": false,
+            "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+          },
+          "status": "OPEN",
+          "unconsumed_seeds": []
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_calculations": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 2,
+          "received_body_bytes": 63813,
+          "request_wall_seconds_sum": 0.528419942012988,
+          "retries": 0,
+          "selected_market_payload_requests": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "proof": "qualifications/prospective-admission-liquidia-2026-10-14.json",
+        "proof_sha256": "03e992179ac97401c4d01e7db2b98a56edec5a9ea7db750ceda2c91b35bf6b49"
+      },
+      "previous": "7eeae12324d37a4e389051dbfd8a3cecb99ba741eb1c951e65d2a441383526ee",
+      "sequence": 52
     }
   ],
   "exposure_ledger": [
@@ -3145,7 +3335,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "4d4dc811f7cdc67d568d3582030ab067f6ffdbb3a7dfef2e3a866e34b47c189c",
+  "integrity": "0c976a7325d8b36c3e401cf8a487b6ae6a69a2411432fb2beaa9a449b9555cc1",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -3224,114 +3414,24 @@
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
     "deferred_documentary": {
-      "bounds": {
-        "economic_payloads": 0,
-        "max_agent_minutes": 15,
-        "max_bytes_per_document": 524288,
-        "max_primary_document_requests": 3,
-        "max_total_document_bytes": 1572864,
-        "retries": 0
-      },
-      "closed_dependencies": {
-        "WTI": "PARK_DATA; no CME/DataMine re-probe",
-        "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
-        "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
-        "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
-        "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
-        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
-        "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
-        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      "completed_dependency": {
+        "instruction": "Do not repeat already published legal follow-up.",
+        "reference": "qualifications/us-savings-bond-calendar-legal-followup-2026-10-14.json",
+        "reported_decision": "L1_NOW; economic magnitude untested",
+        "sha256": "0e4ff46fd18f931fa88c825f013b97cb7ba464ba74751a81423d6c587119a475",
+        "status": "COMPLETED"
       },
       "economic_access_authorized": false,
       "family": "us-savings-bond-accrual-calendar",
-      "kind": "L0_SOURCE_FEASIBILITY",
-      "passive_VX_priority": {
-        "prospective_T0": "2026-10-15T00:00:00Z",
-        "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
-        "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
-        "status": "NOT_DUE_BEFORE_T0"
-      },
-      "primary_document_candidates": [
-        "https://www.treasurydirect.gov/laws-and-regulations/savings-bond-regulations/"
-      ],
-      "prospective_A_E_priority": {
-        "bounds": {
-          "economic_payloads": 0,
-          "max_agent_minutes": 15,
-          "max_bytes_per_document": 524288,
-          "max_primary_document_requests": 3,
-          "max_total_document_bytes": 1572864,
-          "retries": 0
-        },
-        "closed_dependencies": {
-          "WTI": "PARK_DATA; no CME/DataMine re-probe",
-          "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
-          "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
-        },
-        "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
-        "economic_access_authorized": false,
-        "family": "A/B-v2/C-v2/D/E",
-        "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-        "latest_metadata_snapshot": {
-          "candidate_forms_observed": 0,
-          "coverage_complete_since_T0": false,
-          "entries": 100,
-          "new_entries_vs_prior": 24,
-          "newest_updated": "2026-10-13T21:52:38-04:00",
-          "observed_at": "2026-10-14T06:21:57.661754+00:00",
-          "oldest_updated": "2026-10-13T20:03:19-04:00",
-          "sha256": "ad5c480525ca8e0ed8780b2dd899af70695b670c5cecf7dcbaa3d5bb725983df"
-        },
-        "pending": "One new bounded feed snapshot adds 24 entries (forms 4/3/144 only) versus the saved snapshot and contains no A-E candidate form. Earlier incomplete sources and chronology remain unresolved; no event selected and no universal absence claim.",
-        "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
-        "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-        "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
-        "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
-        "status": "OPEN"
-      },
-      "question": "One bounded documentary-only continuation to resolve issuer issue-date/monthly-accrual and redemption-calendar semantics from the already-linked savings-bond regulations page and its exact applicable legal text. Do not refetch buying/cashing pages, current-rate panels or calculators. Determine whether a calendar timing benefit is a real contractual feature after a one-year minimum hold and last-three-month penalty, and identify eligibility/benchmark/tax limitations without using numerical current/historical rates or calculating a payoff. If these semantics cannot be qualified, keep PARK_DATA and stop this candidate. If qualified, next action can only be a separate linked design that carries the recorded May-October2026 public-rate exposure; no automatic economic look.",
-      "resume_rule": "A-E new admissible event evidence and mechanically due VX retain priority. All three named seeds remain consumed with original scoped dispositions. No actual account, cash, purchase or redemption authority. No economic access without a separate predeclaration and original CAS ordering; never backdate a claim for the rate-panel exposure.",
-      "reuse_reference": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
-      "seed_history": [
-        {
-          "L0_verdict": "PARK_DATA",
-          "consumed_at": "2026-10-14T03:29:10.443560+00:00",
-          "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
-          "same_candidate_id": "market-sentiment-cftc-cad-positioning",
-          "seed_id": "market_sentiment_dislocation_l0",
-          "source_followup": {
-            "decision": "PARK_DATA",
-            "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
-            "repeat_allowed_without_new_fact": false,
-            "status": "PARK"
-          }
-        },
-        {
-          "L0_verdict": "DUPLICATE",
-          "consumed_at": "2026-10-14T06:24:36.220297+00:00",
-          "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
-          "same_candidate_id": "france-sovereign-repricing",
-          "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
-          "seed_id": "france_fiscal_political_stress_l0"
-        },
-        {
-          "L0_verdict": "PARK_DATA",
-          "consumed_at": "2026-10-14T08:29:37.783349+00:00",
-          "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
-          "same_candidate_id": "policy-announcement-repricing",
-          "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
-          "seed_id": "trump_policy_event_transmission_l0"
-        }
-      ],
-      "source_status": "Exact link observed in acquired issuer pages; regulations page not accessed yet. No assumption that it resolves the question.",
-      "spent_exposure_reference": {
+      "kind": "LINKED_L1_PREDECLARATION_ONLY",
+      "prior_exposure_reference": {
         "id": "unplanned-treasurydirect-current-rate-panel-20261014",
         "must_not_be_treated_as_pristine": true,
         "pre_reserved": false,
         "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
       },
-      "status": "OPEN",
-      "unconsumed_seeds": []
+      "question": "Only after higher-priority prospective work, prepare a separate linked paper-only L1 declaration carrying original unreserved rate exposure, posting uncertainty, fixed holding/penalty/tax/benchmark rules and invalidation; no new rate or benchmark access in preparation.",
+      "status": "OPEN"
     },
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
@@ -3343,12 +3443,12 @@
       "status": "NOT_DUE_BEFORE_T0"
     },
     "pending_source_reference": {
-      "count_pending": 15,
-      "field": "fresh_SEC_metadata.candidate_form_records",
-      "proof": "qualifications/prospective-admission-news-corp-2026-10-14.json"
+      "count_pending": 14,
+      "field": "candidate_form_records",
+      "proof": "qualifications/prospective-admission-liquidia-2026-10-14.json"
     },
     "primary_document_candidates": [
-      "https://www.sec.gov/Archives/edgar/data/1819576/000110465926115672/0001104659-26-115672-index.htm"
+      "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm"
     ],
     "prospective_A_E_priority": {
       "bounds": {
@@ -3378,16 +3478,16 @@
         "oldest_updated": "2026-10-13T21:25:11-04:00",
         "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
       },
-      "pending": "News Corp8-K primary cover reviewed and ineligible. Fifteen other candidate-form records from this new slice remain unqualified, beginning Liquidia by provisional feed ordering. Earlier unresolved sources/coverage remain prior constraints. No first admissible event or universal absence established.",
+      "pending": "Fourteen saved candidate-form records remain pending, beginning Valaris by provisional feed order. Liquidia primary description closed; earlier coverage gaps remain. No FIRST qualifying event established.",
       "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
       "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-      "reuse_reference": "qualifications/prospective-admission-news-corp-2026-10-14.json",
+      "reuse_reference": "qualifications/prospective-admission-liquidia-2026-10-14.json",
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "Use the saved feed and pending list without re-fetching it. Verify exact SEC accepted metadata for Liquidia accession0001104659-26-115672, then read only the smallest primary legal description needed for A-E eligibility if it can be bounded without selected price/NAV/payoff payloads. Continue earlier unresolved ordering first where a genuinely new admissible source resolves it; do not skip to a favorable later issuer. Feed timestamps are provisional, not selection authority. Retain all15 pending records including DEFM14A forms. No prices, exhibits containing buyback/merger payouts, claim or later-event substitution until original eligibility/order/exclusions hold.",
-    "resume_rule": "News Corp primary cover is closed for this event; do not fetch its repurchase exhibits, retry older incomplete documents or reconstruct a full SEC census. One economic look maximum. If no event becomes admissible, resume the ONE deferred savings-bond legal follow-up using cached cashing/buying rules and explicit spent rate exposure; it was not attempted in this pass and must not be marked completed.",
-    "reuse_reference": "qualifications/prospective-admission-news-corp-2026-10-14.json",
+    "question": "Reuse saved SEC metadata; next provisional record is Valaris DEFM14A accession0001140361-26-039488. Verify its exact accepted clock at the index first. Only a bounded primary legal description safe from selected price/NAV/distribution/payoff access may follow; do not fetch merger consideration/completion exhibits by default. Earlier unresolved sources and incomplete global chronology remain constraints; feed updated timestamps do not establish FIRST eligibility. No event claim/selection or later favorable issuer substitution.",
+    "resume_rule": "Liquidia primary description is closed INELIGIBLE_A_E; no repeat or exhibit expansion. Preserve earlier incomplete Fusion/AmpliTech and unopened IX chronology. No feed refetch or full SEC census. Savings legal follow-up has ALREADY been completed in a newly observed remote artifact: reuse it, never repeat its requests. Only a separate linked, non-outcome L1 preparation may follow when no higher-priority admissible prospective work exists, carrying all previous exposures.",
+    "reuse_reference": "qualifications/prospective-admission-liquidia-2026-10-14.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
@@ -4863,5 +4963,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-14T10:20:28.138284+00:00"
+  "updated_at": "2026-10-14T14:24:05.274084+00:00"
 }
