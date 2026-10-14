@@ -5174,7 +5174,7 @@
     ],
     "separate_collector": ".github/workflows/data-feeds.yml \u2014 H001 exclu de ce labo"
   },
-  "integrity": "1ac6382b64c7aa3ea3e03464f41bc746e0d9054cfb12ab1b1de77dde6eb090d4",
+  "integrity": "b266c8e3f4ac78992737fa13cf26733b1e109e8e340f54b8d5133a0ec7a44c25",
   "jobs": {
     "execute:smard-2025-fixed-hours-proxy-v1": {
       "attempts": 0,
@@ -5586,12 +5586,12 @@
     "id": "6ac978ecda1081918fba4d76dee437f4",
     "last_tick": {
       "actor": "github-actions-metadata",
-      "at": "2026-10-14T11:10:13.636320+00:00",
+      "at": "2026-10-14T11:19:02.470075+00:00",
       "new_events": 0,
       "status": "IDLE"
     },
     "metadata_probe": {
-      "at": "2026-10-14T11:10:13.636320+00:00",
+      "at": "2026-10-14T11:19:02.470075+00:00",
       "payload_bytes": 434,
       "refs": 5,
       "status": "COMPLETE"
@@ -5604,31 +5604,31 @@
   "sources": {
     "eurusd-technical-grid": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-14T11:10:13.636286+00:00",
+      "observed_at": "2026-10-14T11:19:02.470026+00:00",
       "ref": "research/technical-signals-literature-2026-10-10",
       "sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
     },
     "f2-prediction-access": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-14T11:10:13.636308+00:00",
+      "observed_at": "2026-10-14T11:19:02.470054+00:00",
       "ref": "research/f2-primary-terms-decision-2026-10-09",
       "sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
     },
     "hyperliquid-forced-flow": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-14T11:10:13.636312+00:00",
+      "observed_at": "2026-10-14T11:19:02.470060+00:00",
       "ref": "sol/scout-crypto-20261008-1847",
       "sha": "a6961e5fc02785c7c2d797f0e1fca94425150705"
     },
     "sec-events": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-14T11:10:13.636314+00:00",
+      "observed_at": "2026-10-14T11:19:02.470064+00:00",
       "ref": "sol/scout-events-f413d",
       "sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24"
     },
     "treasury-auction-zf": {
       "kind": "BRANCH_HEAD_ONLY",
-      "observed_at": "2026-10-14T11:10:13.636316+00:00",
+      "observed_at": "2026-10-14T11:19:02.470068+00:00",
       "ref": "sol/scout-macro-tauc-gfs",
       "sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be"
     }
@@ -5636,15 +5636,15 @@
   "trial_charges": {
     "smard-de-lu-day-ahead-energy": 4
   },
-  "updated_at": "2026-10-14T11:10:13.653174+00:00",
+  "updated_at": "2026-10-14T11:19:02.498118+00:00",
   "usage": {
-    "cpu_seconds": 3.0297147619999976,
+    "cpu_seconds": 3.0357324049999974,
     "human_seconds": null,
-    "metadata_bytes": 46438,
+    "metadata_bytes": 46872,
     "network_bytes": null,
     "paid_usd": 0,
     "tokens": null,
-    "wall_seconds": 49.132644674025904
+    "wall_seconds": 49.583243495025904
   },
   "worker_sessions": {
     "automation-6ac978ec-20261011T173609Z": {
