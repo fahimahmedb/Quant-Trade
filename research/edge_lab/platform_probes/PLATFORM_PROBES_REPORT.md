@@ -1,3 +1,13 @@
+# Checkpoint — actual worker ingress/store/stream receipt and honest lease failure
+
+Site version 15 deployed probe-only changes, preserving existing frontend bytes. Authenticated heartbeat `WORK-NATIVE-45a4621e5cad-1` is independently durable in native D1 at cursor 9 and in a post-render ACK. The anonymous public probe page displayed it. The next ACTION_STARTED was rejected 409 after lease expiry during sequential HTTP reads. The subprocess action never started. This is useful failure evidence, not an action/Codex/E2E PASS.
+
+Trace: [work-continuation-first-worker-event-20261014.json](traces/work-continuation-first-worker-event-20261014.json).
+
+Continuation: instrument request timing and use an explicitly declared heartbeat profile consistent with lease=max(6 seconds,3×heartbeat), or fix request scheduling. Preserve this failure; do not weaken auth, fake clocks or upgrade missing runtime proof.
+
+---
+
 # 2026-10-14 continuation — native construction now authorized
 
 Mandatory Quant branch HEAD verified: `0b3c180536937cc63b94fa0dedf8252405f56ef8`.
