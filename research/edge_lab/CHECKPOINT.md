@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, one sentiment seed triaged
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [One seed L0 verdict](discovery/qualifications/market-sentiment-cot-clock-l0-2026-10-14.json): `market_sentiment_dislocation_l0` consumed once as `market-sentiment-cftc-cad-positioning`, PARK_DATA before outcomes. CFTC confirms Tuesday positions normally published Friday 15:30 Eastern. This disconfirms treating Tuesday holdings as contemporaneously public. Exact TFF/CAD classification/vintages and an admissible daily FX proxy remain unqualified; no direction or alpha inferred. France/Trump seeds remain IDEA_GENERATED.
+- NEXT: one bounded source follow-up on the newly located Bank of Canada API YAML plus primary CFTC TFF/release-revision documentation, no observations/examples executed. Resolve exact series, publication and rate semantics, or keep PARK_DATA and move to the previously proposed protocol-service scout. No new label, seed re-consumption or variant search. <=3 requests / <=15 minutes / <=512 KiB each / zero retries; reuse current documents.
+- A–E gates/chronology remain intact and unresolved where prior metadata is incomplete. No new SEC probe or event claim. VX passive OOS is NOT_DUE: current time precedes 2026-10-15T00:00:00Z. Frozen protocol/register hashed unchanged; no historic VX/L2 replay, early payoff or backfill. Service later only at the original mechanically due exit and with no unresolved look.
+- Proof SHA256 `cbfc0f58f27a09ded948c71a0f5945881528a079a8726328719481c41f72572c`. Three primary responses, 55718 bytes, zero retries/USD 0; no position/rate/payoff payload. Tokens/global bill unmeasured. Previous economic counts, queue, multiplicity, exposure ledger and event prefix preserved; seed disposition linked once. Raw documentation private; no framework or automation change.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, spin-off feasibility parked
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
