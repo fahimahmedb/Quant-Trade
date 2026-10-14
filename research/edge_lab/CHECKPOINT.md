@@ -1,3 +1,15 @@
+# Current STATE / NEXT — 2026-10-14, savings-bond constraints and incidental rate exposure
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [L0 decision and exposure receipt](discovery/qualifications/us-savings-bond-calendar-l0-2026-10-14.json): `us-savings-bond-accrual-calendar` PARK_DATA. Official pages establish minimum one-year ownership, last-three-month interest loss before five years, eligibility/ownership and retail purchase limits. Exact issue/accrual/calendar feature remains unqualified; no payoff or benchmark calculation.
+- IMPORTANT: the general buying page unexpectedly displayed EE/I headline rates and the I fixed component for May–October2026. This is ONE spent, unreserved public economic-data exposure, explicitly appended to the event ledger with exact scope/hash/values. No retroactive claim or pristine-period assertion; no subsequent rate request, calculator, rule/date selection or return test. Original reserved-test counters remain unchanged, but exposure is not erased or described as zero.
+- NEXT: one bounded documentation-only follow-up on the already-linked savings-bond regulations page and applicable legal text to resolve issue/accrual/redemption timing without rates. No refetch of buying/cashing pages or current-rate panels. If unresolved, stop candidate in PARK_DATA; if resolved, only a later linked declaration carrying this exposure can be prepared. <=3 documents / <=15 minutes / <=512 KiB each / zero retries. No account, cash or live action.
+- A–E chronology/exclusions and unresolved source limits intact; VX OOS NOT_DUE before2026-10-15T00:00:00Z, no early payoff/backfill; legacy UNKNOWN stays consumed. All three seeds retain prior dispositions.
+- Proof SHA256 `fc940d763b69ebe829231175ad8d483cade29954cf7fb1d3eab0c27d5035bf95`. Three document requests (one404, two200), 66517 successful body bytes, no retries/USD0. Raw pages private; contractual panel values only retained in exposure evidence. Tokens/global bill unmeasured. Prior ledger prefix, queue, metrics/multiplicity, reserved-look ledger and frozen protocols/register preserved.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, Trump-policy seed source question parked
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
