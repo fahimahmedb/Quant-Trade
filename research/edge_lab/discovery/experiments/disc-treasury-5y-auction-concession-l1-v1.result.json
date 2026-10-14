@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "experiment_id": "disc-treasury-5y-auction-concession-l1-v1",
+  "contract_commit": "d82b293ff721c0abdd8751703f465df1b8c147f1",
+  "completed_at_utc": "2026-10-14T11:12:00Z",
+  "typed_verdict": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_eligible": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "first_broken_transition": "FROZEN_POPULATION_SOURCE_ADEQUACY_NOT_PROVEN",
+  "reason": "The frozen contract requires the U.S. Treasury Fiscal Data auctions_query route to mechanically establish exactly 24 eligible regular nominal 5-Year Note auctions in 2024-2025. In this execution environment the official Fiscal Data API endpoint could not be read. TreasuryDirect press releases independently support a provisional monthly date list, but the contract forbids silently replacing the frozen population source. Therefore no economic verdict is admissible.",
+  "source_attempts": {
+    "fiscaldata_api": {
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query",
+      "status": "INACCESSIBLE_IN_CURRENT_ENVIRONMENT",
+      "replacement_allowed": false
+    },
+    "treasury_daily_par_yield_curve": {
+      "2024": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2024&type=daily_treasury_yield_curve",
+      "2025": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2025&type=daily_treasury_yield_curve",
+      "status": "ACCESSIBLE"
+    },
+    "treasurydirect_press_releases": {
+      "status": "ACCESSIBLE_PROVISIONAL_POPULATION_CHECK_ONLY",
+      "note": "Used to verify that the manually assembled dates correspond to 5-Year Note auction announcements/results, including the April 23 2025 auction. This cannot substitute for the contract-required Fiscal Data population proof."
+    }
+  },
+  "exposure_accounting": {
+    "market_proxy_outcomes_accessed_after_predeclaration": true,
+    "population_route_failure_recognized_before_admissible_verdict": true,
+    "future_pristine_claim_for_same_2024_2025_daily_proxy": false,
+    "economic_look_closed": true,
+    "notes": "Daily official 5Y par-yield entry/next-observation pairs were accessed after the contract was frozen. Because population adequacy failed on the frozen source route, the derived diagnostics below are quarantined and must never be promoted as the L1 result. They are persisted only to account for outcome exposure and prevent a false future pristine-data claim."
+  },
+  "provisional_population_dates_not_contract_admissible": [
+    "2024-01-24", "2024-02-26", "2024-03-26", "2024-04-24", "2024-05-28", "2024-06-26",
+    "2024-07-24", "2024-08-28", "2024-09-25", "2024-10-28", "2024-11-26", "2024-12-24",
+    "2025-01-27", "2025-02-25", "2025-03-26", "2025-04-23", "2025-05-28", "2025-06-25",
+    "2025-07-28", "2025-08-27", "2025-09-24", "2025-10-27", "2025-11-25", "2025-12-23"
+  ],
+  "quarantined_daily_proxy_rows": [
+    {"auction_date":"2024-01-24","exit_date":"2024-01-25","entry_5y_pct":4.06,"exit_5y_pct":4.01,"gross_bp":5},
+    {"auction_date":"2024-02-26","exit_date":"2024-02-27","entry_5y_pct":4.29,"exit_5y_pct":4.32,"gross_bp":-3},
+    {"auction_date":"2024-03-26","exit_date":"2024-03-27","entry_5y_pct":4.22,"exit_5y_pct":4.18,"gross_bp":4},
+    {"auction_date":"2024-04-24","exit_date":"2024-04-25","entry_5y_pct":4.64,"exit_5y_pct":4.70,"gross_bp":-6},
+    {"auction_date":"2024-05-28","exit_date":"2024-05-29","entry_5y_pct":4.56,"exit_5y_pct":4.63,"gross_bp":-7},
+    {"auction_date":"2024-06-26","exit_date":"2024-06-27","entry_5y_pct":4.32,"exit_5y_pct":4.29,"gross_bp":3},
+    {"auction_date":"2024-07-24","exit_date":"2024-07-25","entry_5y_pct":4.12,"exit_5y_pct":4.13,"gross_bp":-1},
+    {"auction_date":"2024-08-28","exit_date":"2024-08-29","entry_5y_pct":3.63,"exit_5y_pct":3.66,"gross_bp":-3},
+    {"auction_date":"2024-09-25","exit_date":"2024-09-26","entry_5y_pct":3.52,"exit_5y_pct":3.55,"gross_bp":-3},
+    {"auction_date":"2024-10-28","exit_date":"2024-10-29","entry_5y_pct":4.11,"exit_5y_pct":4.11,"gross_bp":0},
+    {"auction_date":"2024-11-26","exit_date":"2024-11-27","entry_5y_pct":4.17,"exit_5y_pct":4.11,"gross_bp":6},
+    {"auction_date":"2024-12-24","exit_date":"2024-12-26","entry_5y_pct":4.43,"exit_5y_pct":4.42,"gross_bp":1},
+    {"auction_date":"2025-01-27","exit_date":"2025-01-28","entry_5y_pct":4.32,"exit_5y_pct":4.33,"gross_bp":-1},
+    {"auction_date":"2025-02-25","exit_date":"2025-02-26","entry_5y_pct":4.12,"exit_5y_pct":4.06,"gross_bp":6},
+    {"auction_date":"2025-03-26","exit_date":"2025-03-27","entry_5y_pct":4.08,"exit_5y_pct":4.09,"gross_bp":-1},
+    {"auction_date":"2025-04-23","exit_date":"2025-04-24","entry_5y_pct":4.00,"exit_5y_pct":3.91,"gross_bp":9},
+    {"auction_date":"2025-05-28","exit_date":"2025-05-29","entry_5y_pct":4.05,"exit_5y_pct":4.00,"gross_bp":5},
+    {"auction_date":"2025-06-25","exit_date":"2025-06-26","entry_5y_pct":3.83,"exit_5y_pct":3.79,"gross_bp":4},
+    {"auction_date":"2025-07-28","exit_date":"2025-07-29","entry_5y_pct":3.96,"exit_5y_pct":3.90,"gross_bp":6},
+    {"auction_date":"2025-08-27","exit_date":"2025-08-28","entry_5y_pct":3.69,"exit_5y_pct":3.69,"gross_bp":0},
+    {"auction_date":"2025-09-24","exit_date":"2025-09-25","entry_5y_pct":3.70,"exit_5y_pct":3.75,"gross_bp":-5},
+    {"auction_date":"2025-10-27","exit_date":"2025-10-28","entry_5y_pct":3.61,"exit_5y_pct":3.60,"gross_bp":1},
+    {"auction_date":"2025-11-25","exit_date":"2025-11-26","entry_5y_pct":3.55,"exit_5y_pct":3.56,"gross_bp":-1},
+    {"auction_date":"2025-12-23","exit_date":"2025-12-24","entry_5y_pct":3.72,"exit_5y_pct":3.70,"gross_bp":2}
+  ],
+  "quarantined_diagnostics_not_decision_eligible": {
+    "n": 24,
+    "gross_mean_bp": 0.875,
+    "gross_median_bp": 0.5,
+    "worst_gross_bp": -7,
+    "positive_count": 12,
+    "year_2024_total_bp": -4,
+    "year_2025_total_bp": 25,
+    "central_net_mean_bp_if_1bp_hurdle_applied": -0.125,
+    "stress_net_mean_bp_if_2bp_hurdle_applied": -1.125,
+    "break_even_hurdle_bp": 0.875,
+    "descriptive_two_year_block_bootstrap": {
+      "draws": 2000,
+      "seed": 41013,
+      "p2_5_mean_bp": -0.3333333333333333,
+      "p97_5_mean_bp": 2.0833333333333335
+    },
+    "counterfactual_frozen_rule_note": "If the population had been admissibly proven by the frozen Fiscal Data route, the central-net mean would have failed the contract's promotion condition and met its KILL condition. Because the population adequacy prerequisite was not proven, this is exposure accounting only, not a typed economic verdict."
+  },
+  "adversarial_check": {
+    "run": false,
+    "reason": "Primary result is not decision-eligible and cannot qualify for PROMOTE_EXPRESSION."
+  },
+  "next_action": "Do not retune this 2024-2025 daily proxy, change horizon, or substitute another population source. The exact L1 is PARK_DATA. Reopen this exact test only if the originally frozen Fiscal Data auctions_query route becomes directly accessible and can mechanically prove the fixed population without changing any economic parameter; all daily proxy outcomes are already exposed and must remain tagged non-pristine. Otherwise move to a causally distinct candidate/documentary task.",
+  "inference_ceiling": [
+    "No claim of auction alpha",
+    "No claim of executable ZF PnL",
+    "No edge validation",
+    "No live readiness",
+    "No real capital authority"
+  ]
+}
