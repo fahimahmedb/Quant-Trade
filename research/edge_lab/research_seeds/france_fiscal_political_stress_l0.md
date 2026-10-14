@@ -84,3 +84,8 @@ Consume this seed when the normal loop reaches the state where it would otherwis
 `REAL_CAPITAL_AUTHORIZED = FALSE`
 `LIVE_TRADING_AUTHORIZED = FALSE`
 `paid_usd_total = 0`
+
+
+## L0 disposition — 2026-10-14
+
+Consumed once. `DUPLICATE` for the readily identified debt-content → France/Germany sovereign-repricing surface, already covered by `france-sovereign-repricing` and `disc-france-oat-bund-debt-release-l1-v1`. [Cached evidence, disconfirmation and next](../discovery/qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json). The original TEC10 expression remains `PARK_DATA` before outcomes; no new declaration, substitution or look. Broader French bank/equity/credit surfaces remain untested and unqualified, not rejected. Reopen only on a genuinely new causal/data/timestamp fact, not this narrative under another name. Prior INSEE and incidental TEC public exposures remain recorded.

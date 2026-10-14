@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, France seed overlap resolved
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [One-seed L0 decision](discovery/qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json): France fiscal/political seed consumed once as DUPLICATE for the existing debt-content → France/Germany sovereign-repricing surface. Exact TEC10 declaration stays PARK_DATA before outcomes; no silent proxy substitution. Official content direction is not an expectations surprise; cached ECB TPI counterevidence and global/safe-haven confounds retained. Other French asset surfaces remain untested, not rejected. No fresh France source or economic test.
+- A–E priority metadata at 2026-10-14T06:21:57.661754+00:00: 100 entries spanning 2026-10-13T20:03:19-04:00..2026-10-13T21:52:38-04:00, 24 new versus saved snapshot, only forms 4/3/144 among additions; no A–E candidate form. Earlier chronology and partial documents remain unresolved; no universal absence claim, event selection or price access. VX OOS still NOT_DUE before 2026-10-15T00:00:00Z; legacy UNKNOWN remains spent.
+- NEXT: one documentary triage of the remaining Trump-policy seed against the existing policy family and cached first-public-clock/GDELT/Public Inspection evidence. No re-probe merely because an old not_before elapsed. Politician identity is not a new mechanism; DUPLICATE/PARK if no new qualified fact. <=3 document requests / <=15 minutes / <=512 KiB each / zero retries, zero outcomes. Prospectives retain priority; no new infrastructure.
+- Proof SHA256 `442695410ac304bdfd7b5da3892d87851310cc0b8e00f588406ad5c7989a757f`. One primary metadata response, 56215 bytes, zero retries/USD 0; cached France evidence reused. Previously frozen INSEE values and prior incidental TEC quote remain exposed, never virgin. Tokens/global bill unmeasured. Ledger prefix, queue, metrics, multiplicity/exposure history and protocols/register preserved; raw metadata private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, liquidation-service L0 qualified and parked
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

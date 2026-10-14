@@ -2349,6 +2349,151 @@
       },
       "previous": "64f0fe4637c94480394d6db5a73963179d2ca9dff7269eb37dcb0169d4ac3b77",
       "sequence": 46
+    },
+    {
+      "at": "2026-10-14T06:24:36.231732+00:00",
+      "hash": "f1e12e90ccebd70df901599cb73b473beb41e460c3e39216284761868773e8e9",
+      "kind": "DISCOVERY_FRANCE_SEED_DUPLICATE_SCOPED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "Consume once as duplicate of the existing sovereign debt-content surface; preserve TEC PARK_DATA and broader untested mechanisms.",
+          "id": "france_fiscal_political_stress_l0:triage",
+          "status": "COMPLETED"
+        },
+        "decision": "DUPLICATE",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Previously frozen INSEE release values/classes and the existing incidental TEC quote embedded in saved source evidence were seen again during reuse. These remain prior public exposures; no virgin-period claim. No new France/rate/price/NAV/payoff payload or event-return join. Current SEC filing titles/timestamps/forms only; no bodies.",
+          "seed_consumptions_this_pass": 1,
+          "type": "CACHED_DOCUMENTARY_REVIEW_AND_FRESH_SEC_METADATA"
+        },
+        "head_observed": "ef7b0c8cbd79ebd35e00d86b31998989429ff7f9",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "cached_evidence_ids": [
+            "policy-federal-register-free-api-20261011",
+            "policy-gdelt-sentiment-clock-limits-20261011",
+            "policy-public-inspection-access-window-20261011",
+            "policy-sentiment-model-causality-challenge-20261011"
+          ],
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+            "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+            "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "economic_access_authorized": false,
+          "exposure_class": "IDEA_GENERATED",
+          "family": "trump_policy_event_transmission_l0",
+          "kind": "ONE_SEED_DOCUMENTARY_L0",
+          "passive_VX_priority": {
+            "prospective_T0": "2026-10-15T00:00:00Z",
+            "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+            "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+            "status": "NOT_DUE_BEFORE_T0"
+          },
+          "prospective_A_E_priority": {
+            "bounds": {
+              "economic_payloads": 0,
+              "max_agent_minutes": 15,
+              "max_bytes_per_document": 524288,
+              "max_primary_document_requests": 3,
+              "max_total_document_bytes": 1572864,
+              "retries": 0
+            },
+            "closed_dependencies": {
+              "WTI": "PARK_DATA; no CME/DataMine re-probe",
+              "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+              "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+            },
+            "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+            "economic_access_authorized": false,
+            "family": "A/B-v2/C-v2/D/E",
+            "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+            "latest_metadata_snapshot": {
+              "candidate_forms_observed": 0,
+              "coverage_complete_since_T0": false,
+              "entries": 100,
+              "new_entries_vs_prior": 24,
+              "newest_updated": "2026-10-13T21:52:38-04:00",
+              "observed_at": "2026-10-14T06:21:57.661754+00:00",
+              "oldest_updated": "2026-10-13T20:03:19-04:00",
+              "sha256": "ad5c480525ca8e0ed8780b2dd899af70695b670c5cecf7dcbaa3d5bb725983df"
+            },
+            "pending": "One new bounded feed snapshot adds 24 entries (forms 4/3/144 only) versus the saved snapshot and contains no A-E candidate form. Earlier incomplete sources and chronology remain unresolved; no event selected and no universal absence claim.",
+            "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+            "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+            "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+            "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+            "status": "OPEN"
+          },
+          "question": "Triage the existing Trump-policy seed once against the already saved policy-announcement family, Federal Register/Public Inspection timing receipts and GDELT limits. Choose at most one genuinely distinct policy-transmission mechanism only if a new primary source fact can change a decision. Earliest public announcement, legal effective date and later Register publication are not interchangeable. Politician identity alone is no signal or new family. Seek preannouncement/anticipation, reversals and global/sector confounds without reading price responses. If merely duplicate, record DUPLICATE; if no usable event clock/data route, PARK_DATA. No replay of an already attempted date-gated probe just because its old not_before has passed.",
+          "resume_rule": "First service genuinely admissible A-E evidence or mechanically due VX under original protocols. Documentary work only while any economic look is unresolved. At most one seed consumed; no renamed closed family. This next seed is not consumed yet; reuse evidence and respect exact release windows, zero-retry receipts and existing recovery state. No outcome acquisition or new framework.",
+          "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+          "seed_history": [
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+              "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+              "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+              "seed_id": "market_sentiment_dislocation_l0",
+              "source_followup": {
+                "decision": "PARK_DATA",
+                "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+                "repeat_allowed_without_new_fact": false,
+                "status": "PARK"
+              }
+            },
+            {
+              "L0_verdict": "DUPLICATE",
+              "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+              "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+              "same_candidate_id": "france-sovereign-repricing",
+              "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+              "seed_id": "france_fiscal_political_stress_l0"
+            }
+          ],
+          "seed_path": "research/edge_lab/research_seeds/trump_policy_event_transmission_l0.md",
+          "status": "OPEN",
+          "unconsumed_seeds": [
+            "trump_policy_event_transmission_l0"
+          ]
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "fresh_france_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 1,
+          "received_body_bytes": 56215,
+          "request_wall_seconds_sum": 0.5335838669998338,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "proof": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "proof_sha256": "442695410ac304bdfd7b5da3892d87851310cc0b8e00f588406ad5c7989a757f"
+      },
+      "previous": "572ba49ce4f527f4c16d7b0d9674b43db2e907833d682d416a586ae01766cd9a",
+      "sequence": 47
     }
   ],
   "exposure_ledger": [
@@ -2394,7 +2539,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "2657386deecbef8586beb2bd81390baa54958f77a4a1b0323a7f570b452b5f45",
+  "integrity": "d1bada64083be7021f343191e460dfb24a1e5f9bdb5559c1f966393154bb948a",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -2462,8 +2607,15 @@
       "max_total_document_bytes": 1572864,
       "retries": 0
     },
+    "cached_evidence_ids": [
+      "policy-federal-register-free-api-20261011",
+      "policy-gdelt-sentiment-clock-limits-20261011",
+      "policy-public-inspection-access-window-20261011",
+      "policy-sentiment-model-causality-challenge-20261011"
+    ],
     "closed_dependencies": {
       "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
       "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
       "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
@@ -2471,9 +2623,8 @@
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
     "economic_access_authorized": false,
-    "existing_france_reference": "qualifications/france-oat-bund-l1-rights-block-2026-10-12.md",
     "exposure_class": "IDEA_GENERATED",
-    "family": "france_fiscal_political_stress_l0",
+    "family": "trump_policy_event_transmission_l0",
     "kind": "ONE_SEED_DOCUMENTARY_L0",
     "passive_VX_priority": {
       "prospective_T0": "2026-10-15T00:00:00Z",
@@ -2501,23 +2652,24 @@
       "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
       "latest_metadata_snapshot": {
         "candidate_forms_observed": 0,
-        "coverage_complete_since_previous": false,
+        "coverage_complete_since_T0": false,
         "entries": 100,
-        "newest_updated": "2026-10-13T21:21:48-04:00",
-        "observed_at": "2026-10-14T01:24:10.705182+00:00",
-        "oldest_updated": "2026-10-13T19:59:19-04:00",
-        "sha256": "1e7af164790bf7d3f50852766e881051601c0dcad9be2373d41a9401660d6a64"
+        "new_entries_vs_prior": 24,
+        "newest_updated": "2026-10-13T21:52:38-04:00",
+        "observed_at": "2026-10-14T06:21:57.661754+00:00",
+        "oldest_updated": "2026-10-13T20:03:19-04:00",
+        "sha256": "ad5c480525ca8e0ed8780b2dd899af70695b670c5cecf7dcbaa3d5bb725983df"
       },
-      "pending": "Fresh bounded 100-entry snapshot contains forms 4/144/13D/13D-A/3 only, no candidate A-E form. It does not fill the earlier time gap. No qualifying event established; earlier source/coverage uncertainty preserved. No event/issuer selected.",
+      "pending": "One new bounded feed snapshot adds 24 entries (forms 4/3/144 only) versus the saved snapshot and contains no A-E candidate form. Earlier incomplete sources and chronology remain unresolved; no event selected and no universal absence claim.",
       "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
       "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-      "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
+      "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "Triage the existing France fiscal/political seed once, starting with the saved France/TEC rights-block and fiscal/policy work to detect overlap. Choose at most one genuinely distinct event-to-relative-market transmission question only if cached primary evidence supports a new decision. Do not resume TEC10 outcomes, silently substitute a proxy, rebuild prior fiscal work or choose famous events. Seek symmetric good/bad surprises, first-public-clock disconfirmation and global/ECB-factor alternatives. If materially duplicate or no accessible route, record DUPLICATE/PARK_DATA rather than rebranding. Documentary L0 only; no event values, rates/prices, NAV or outcome joins.",
-    "resume_rule": "First service any genuinely newly admissible A-E documentary event or mechanically due VX OOS under its original ordering/claim. Existing unresolved economic looks permit only documentary work. At most one seed consumed, no closed-family rename or revival. France is selected for a future L0, not consumed or promoted in this pass; sentiment source follow-up stays closed.",
-    "reuse_reference": "qualifications/permissionless-liquidation-service-l0-2026-10-14.json",
+    "question": "Triage the existing Trump-policy seed once against the already saved policy-announcement family, Federal Register/Public Inspection timing receipts and GDELT limits. Choose at most one genuinely distinct policy-transmission mechanism only if a new primary source fact can change a decision. Earliest public announcement, legal effective date and later Register publication are not interchangeable. Politician identity alone is no signal or new family. Seek preannouncement/anticipation, reversals and global/sector confounds without reading price responses. If merely duplicate, record DUPLICATE; if no usable event clock/data route, PARK_DATA. No replay of an already attempted date-gated probe just because its old not_before has passed.",
+    "resume_rule": "First service genuinely admissible A-E evidence or mechanically due VX under original protocols. Documentary work only while any economic look is unresolved. At most one seed consumed; no renamed closed family. This next seed is not consumed yet; reuse evidence and respect exact release windows, zero-retry receipts and existing recovery state. No outcome acquisition or new framework.",
+    "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
@@ -2531,12 +2683,19 @@
           "repeat_allowed_without_new_fact": false,
           "status": "PARK"
         }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
       }
     ],
-    "seed_path": "research/edge_lab/research_seeds/france_fiscal_political_stress_l0.md",
+    "seed_path": "research/edge_lab/research_seeds/trump_policy_event_transmission_l0.md",
     "status": "OPEN",
     "unconsumed_seeds": [
-      "france_fiscal_political_stress_l0",
       "trump_policy_event_transmission_l0"
     ]
   },
@@ -3975,5 +4134,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-14T05:22:06.479237+00:00"
+  "updated_at": "2026-10-14T06:24:36.220297+00:00"
 }
