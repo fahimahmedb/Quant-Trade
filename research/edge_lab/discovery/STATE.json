@@ -1692,6 +1692,101 @@
       },
       "previous": "edaa352efa1b31fd2ca9d2f78b63a272e72710ca9432f979b45565f826d2e278",
       "sequence": 41
+    },
+    {
+      "at": "2026-10-14T00:29:35.155899+00:00",
+      "hash": "1c3bda3811d9b14953fdeba18efba2d92b16583b1bb9d7642e85a472f7d24c0b",
+      "kind": "DISCOVERY_XPONENTIAL_CLOSED_AND_SPINOFF_L0_SOURCED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "accession": "0001193125-26-419698",
+          "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE; explicitly same conditional stockholder rights as reviewed 8-K",
+          "status": "COMPLETED"
+        },
+        "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "economic_verdict": null,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_documentary_candidates": 1,
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "Full Xponential 8-A12B; full SEC SLB4 including historical corporate examples and full FINRA 5330 legal text. All are documentary/selection exposure. No historical example is a fresh economic case; no issuer event/price set selected, acquired or joined. Whole-source hashes and private cached text preserve scope. Shared forced-flow factor and UNKNOWN private/effective-trial history retained.",
+          "type": "PRIMARY_CORPORATE_TERMS_AND_ONE_L0_SELECTION"
+        },
+        "head_observed": "e2bf01f433673e98136cfff6d08311f4fdd41492",
+        "new_documentary_candidate": "us-spinoff-mandate-disposal",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "economic_access_authorized": false,
+          "family": "us-spinoff-mandate-disposal",
+          "kind": "L0_NON_OUTCOME_DESIGN",
+          "prospective_A_E_priority": {
+            "bounds": {
+              "economic_payloads": 0,
+              "max_agent_minutes": 15,
+              "max_bytes_per_document": 524288,
+              "max_primary_document_requests": 3,
+              "max_total_document_bytes": 1572864,
+              "retries": 0
+            },
+            "closed_dependencies": {
+              "WTI": "PARK_DATA; no CME/DataMine re-probe",
+              "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+              "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+            },
+            "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+            "economic_access_authorized": false,
+            "family": "A/B-v2/C-v2/D/E",
+            "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+            "pending": "Xponential 8-A12B now explicitly registers Series B Preferred Stock Purchase Rights and incorporates the reviewed 8-K. Both current document checks COMPLETED and ineligible for A-E. Earlier partial/unread possibilities and chronological coverage remain unresolved; no universal absence or earliest eligible event claim.",
+            "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+            "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+            "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+            "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+            "status": "OPEN"
+          },
+          "question": "Prepare one bounded prospective spin-off design only if a useful cheap falsification can be stated: qualify a free primary exchange/issuer route that separates distribution/ex-date, when-issued trading and first regular-way session, plus a permitted daily child-price and benchmark route without numeric payloads. Public SEC spin-off disclosures alone do not establish a forced-sale flow or an executable price. Freeze no event, horizon, costs or threshold until this design is complete and publish any future declaration before admission/outcomes. If the two data/clock routes cannot be established within one bounded cycle, PARK_DATA this candidate; no historical famous-spin-off sample or repeated source audit.",
+          "reuse_reference": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+          "safety": "One economic look at a time; documentary design only while admission and price routes are unresolved. Existing CLOSED/UNKNOWN histories and B/C v1 clock invalidity remain intact; no rebranding of Russell deletion or IPO-lockup tests.",
+          "source_reuse": "Reuse the cached SEC SLB4 and FINRA 5330 receipts. Do not refetch them. FINRA 5330(e)(1) expressly excludes exchange-governed orders; use the actual chosen venue for any execution rule. SEC 1997 staff text is background, not current universal permission or a historical dataset.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "partial_documents": 0,
+          "primary_requests": 3,
+          "received_body_bytes": 137915,
+          "request_wall_seconds_sum": 1.926573336997535,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "proof": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+        "proof_sha256": "683609d645038b25d313d5fa40103f605955448240134d4c05155eec68c44e1f"
+      },
+      "previous": "95e7b6fd0fb70618a12e78b23adea10739c8f4296c7bd5a9ff7c3e8f64b56b81",
+      "sequence": 42
     }
   ],
   "exposure_ledger": [
@@ -1737,7 +1832,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "97a189c7c28f309ef7b01670fddd7b8f0f9a25aca60677646ebfdb71062342f3",
+  "integrity": "3ad0f4989185f9c15829a174482a0705139a8b4b8dc72948804560b00450f29c",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -1810,15 +1905,38 @@
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
-    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
     "economic_access_authorized": false,
-    "family": "A/B-v2/C-v2/D/E",
-    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-    "pending": "Xponential 8-K accepted 07:11:32 Eastern is reviewed: shareholder protection rights with conditional exercise and anti-dilution/fractional clauses, not an A-E fixed entitlement event. The 8-A12B accepted 07:15:51 Eastern index is complete; its separate body remains unread. Earlier partial/unread possibilities and bounded feed coverage remain unresolved. No first eligible event established.",
-    "question": "Finish the separate Xponential 8-A12B legal registration at https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm, reusing its saved exact accepted clock and the completed 8-K review. Determine whether it merely registers the same conditional rights or supplies a genuinely different eligible event; no automatic equivalence. Read operative terms only, no selected prices/NAV/distribution/payoff payloads. If no admissible event is established, select one causally distinct L0 or non-outcome L1 preparation from accessible primary data; retain all unresolved admission limits and previous closures, no price look or historical issuer substitution.",
-    "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-    "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
-    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "family": "us-spinoff-mandate-disposal",
+    "kind": "L0_NON_OUTCOME_DESIGN",
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "pending": "Xponential 8-A12B now explicitly registers Series B Preferred Stock Purchase Rights and incorporates the reviewed 8-K. Both current document checks COMPLETED and ineligible for A-E. Earlier partial/unread possibilities and chronological coverage remain unresolved; no universal absence or earliest eligible event claim.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "question": "Prepare one bounded prospective spin-off design only if a useful cheap falsification can be stated: qualify a free primary exchange/issuer route that separates distribution/ex-date, when-issued trading and first regular-way session, plus a permitted daily child-price and benchmark route without numeric payloads. Public SEC spin-off disclosures alone do not establish a forced-sale flow or an executable price. Freeze no event, horizon, costs or threshold until this design is complete and publish any future declaration before admission/outcomes. If the two data/clock routes cannot be established within one bounded cycle, PARK_DATA this candidate; no historical famous-spin-off sample or repeated source audit.",
+    "reuse_reference": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+    "safety": "One economic look at a time; documentary design only while admission and price routes are unresolved. Existing CLOSED/UNKNOWN histories and B/C v1 clock invalidity remain intact; no rebranding of Russell deletion or IPO-lockup tests.",
+    "source_reuse": "Reuse the cached SEC SLB4 and FINRA 5330 receipts. Do not refetch them. FINRA 5330(e)(1) expressly excludes exchange-governed orders; use the actual chosen venue for any execution rule. SEC 1997 staff text is background, not current universal permission or a historical dataset.",
     "status": "OPEN"
   },
   "policy_version": "4.2",
@@ -3256,5 +3374,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-13T23:23:26.815874+00:00"
+  "updated_at": "2026-10-14T00:29:35.142001+00:00"
 }

@@ -1,0 +1,280 @@
+{
+  "recorded_at": "2026-10-14T00:29:35.142001+00:00",
+  "head_observed": "e2bf01f433673e98136cfff6d08311f4fdd41492",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "ADMISSION_COMPLETION_AND_ONE_DISTINCT_L0",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "completed_question": {
+    "status": "COMPLETED",
+    "accession": "0001193125-26-419698",
+    "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE; explicitly same conditional stockholder rights as reviewed 8-K"
+  },
+  "RESULT": "XPONENTIAL_8A_RIGHTS_REGISTRATION_CLOSED; ONE_SPINOFF_L0_SOURCE_PATH_IDENTIFIED; NO_ECONOMIC_EVENT_OR_TEST.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Parent/child distribution disclosure is documented; actual constrained selling, first regular-way clock and an admissible price/benchmark dataset are not. A-E chronology/coverage still unresolved.",
+  "POWER_LIMITATION": "Three complete primary documents, including two generic legal sources. Zero selected spin-off events or economic observations; no return, profit or statistical computation.",
+  "ECONOMIC_SIGNIFICANCE": "The sources discriminate distribution mechanics from an automatic gain: recipients keep proportional interests, and selling pressure requires separate evidence. Only a child price-pressure expression after fully specified trading/benchmark clocks could justify a test.",
+  "FAILED_CRITERIA": [
+    "Xponential is a conditional rights registration, not a fixed A-E event.",
+    "New spin-off L0 lacks qualified first-regular-way and numeric price/benchmark routes; no experiment may execute yet."
+  ],
+  "LESSON": "A generic corporate-action keyword screen yields legal false positives. A useful next research question should identify who might actually sell, preserve corporate-action adjustments, and qualify the event clock before any price look.",
+  "FAMILY_STATUS": "A-E gates intact. One distinct documentary spin-off candidate selected for non-outcome design; no economic family activated, rejected, promoted or added to trial counts.",
+  "NEXT_DECISION": {
+    "kind": "L0_NON_OUTCOME_DESIGN",
+    "status": "OPEN",
+    "family": "us-spinoff-mandate-disposal",
+    "economic_access_authorized": false,
+    "reuse_reference": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+    "question": "Prepare one bounded prospective spin-off design only if a useful cheap falsification can be stated: qualify a free primary exchange/issuer route that separates distribution/ex-date, when-issued trading and first regular-way session, plus a permitted daily child-price and benchmark route without numeric payloads. Public SEC spin-off disclosures alone do not establish a forced-sale flow or an executable price. Freeze no event, horizon, costs or threshold until this design is complete and publish any future declaration before admission/outcomes. If the two data/clock routes cannot be established within one bounded cycle, PARK_DATA this candidate; no historical famous-spin-off sample or repeated source audit.",
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "source_reuse": "Reuse the cached SEC SLB4 and FINRA 5330 receipts. Do not refetch them. FINRA 5330(e)(1) expressly excludes exchange-governed orders; use the actual chosen venue for any execution rule. SEC 1997 staff text is background, not current universal permission or a historical dataset.",
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "pending": "Xponential 8-A12B now explicitly registers Series B Preferred Stock Purchase Rights and incorporates the reviewed 8-K. Both current document checks COMPLETED and ineligible for A-E. Earlier partial/unread possibilities and chronological coverage remain unresolved; no universal absence or earliest eligible event claim.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "safety": "One economic look at a time; documentary design only while admission and price routes are unresolved. Existing CLOSED/UNKNOWN histories and B/C v1 clock invalidity remain intact; no rebranding of Russell deletion or IPO-lockup tests."
+  },
+  "l0": {
+    "id": "us-spinoff-mandate-disposal",
+    "stage": "L0_DOCUMENTARY_DESIGN",
+    "status": "PREPARE_L1_NOT_AUTHORIZED_TO_EXECUTE",
+    "decision": "PARK_DATA until one bounded design qualification resolves required routes",
+    "mechanism": "A pro-rata distribution places child-company shares into the accounts of parent holders irrespective of their demand for the child. Holders whose mandates, size limits or operational preferences exclude the child may sell early; a buyer supplying liquidity could earn a later normalization if price pressure exceeds costs and fundamental risk.",
+    "who_pays": "Hypothesized selling recipients demanding prompt liquidity or complying with investment restrictions. The sources do not establish actual forced sales or an unconditional wealth transfer.",
+    "why_persist": "Potentially small, irregular distributions, portfolio mandates and limited liquidity/capacity. These are hypotheses, not empirical findings.",
+    "causal_distinction": "The trigger is creation/distribution of a new separately traded equity to existing parent holders. Russell deletion concerns removal from an index and IPO lockup is release of insider transfer restrictions; neither is replayed. Shared small-cap/forced-flow dependence remains acknowledged; no independent-family claim.",
+    "accessible_public_data_fact": "SEC primary bulletin describes an information-statement/Exchange Act registration route and disclosure of distribution ratios/fraction treatment. Existing EDGAR access supports documentary feasibility. No issuer census, actual event set or price history has been acquired; usable event/market dataset is NOT established.",
+    "clock_requirements": "First public notice/accepted clock, effective distribution/ex-date, when-issued versus regular-way first session, and any amendments must be distinguishable from primary notices before selection.",
+    "economics_and_risk": "No assumed free wealth from distributed shares; SEC explains same proportionate economic ownership under pro-rata distribution. Parent price adjustments and conditional rights cannot be booked as returns. Future long-only child analysis needs raw/adjusted price reconciliation, a predeclared benchmark, delisting/merger treatment, spread/slippage, fees, holding-cost and sector/fundamental-risk limits; no numbers tuned or tested here.",
+    "contradictions_and_limits": [
+      "SEC SLB4 is 1997 staff guidance, not binding Commission rule or universal current disclosure permission; reporting/non-reporting/foreign cases differ.",
+      "A mandatory share distribution does not mandate a market sale; no ownership/actual-flow evidence was read.",
+      "FINRA 5330 illustrates scoped order adjustment mechanics, but paragraph (e)(1) excludes orders governed by national-exchange rules. It neither proves a child-price adjustment formula nor current executable fills on NYSE/Nasdaq.",
+      "Historical bulletin examples, any selection from public literature and private history remain exposed/UNKNOWN, not virgin holdouts."
+    ],
+    "decision_discriminated": "Spend at most one subsequent bounded cycle qualifying a prospective clock and public price/benchmark route; publish no L1 execution authority absent that feasibility. If infeasible, park before outcomes. If feasible, formulate a single cheap test whose null can falsify post-distribution price-pressure expression; no variant grid."
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm",
+      "observed_at": "2026-10-14T00:25:52.591304+00:00",
+      "scope": "8-A12B legal registration terms, vehicle/event qualification only; not a selected numeric market/NAV/distribution endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 18320,
+      "sha256": "efa0383bfb5d4854294367d427f4612e988d85731e6f5c0f1c18e1f25b7d183f",
+      "complete": true,
+      "document_header": "8-A12B 1 d162834d8a12b.htm 8-A12B 8-A12B UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-A FOR REGISTRATION OF CERTAIN CLASSES OF SECURITIES PURSUANT TO SECTION 12(b) OR 12(g) OF THE SECURITIES EXCHANGE ACT OF 1934 XPONENTIAL FITNESS, INC. (Exact name of registrant as specified in its charter) Delaware 84-4395129 (State of incorporation or organization) (I.R.S. Employer Identification No.) 17877 Von Karman Ave., Sui",
+      "legal_excerpts": [
+        "Series B Preferred Stock Purchase Rights — New York Stock Exchange",
+        "The description of the Rights is incorporated herein by reference to the description set forth under Items 1.01, 3.03 and 5.03 of the Company’s Current Report on Form 8-K filed on October 13, 2026 and is qualified in its entirety by reference to the full text of the Rights Agreement."
+      ],
+      "keyword_counts": {
+        "incorporated": 2,
+        "rights to": 0,
+        "purchase": 5,
+        "Item 1": 1,
+        "Item 2": 1,
+        "October": 7,
+        "reverse stock split": 0,
+        "liquidat": 0
+      },
+      "wall_seconds": 0.34941096500551794
+    },
+    {
+      "url": "https://www.sec.gov/interps/legal/slbcf4.txt",
+      "observed_at": "2026-10-14T00:27:15.339761+00:00",
+      "scope": "L0 generic legal/disclosure or order-adjustment rules only; no selected issuer or economic data",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/interps/legal/slbcf4.txt",
+      "body_bytes": 24732,
+      "sha256": "20cad297c11bd7c1e363b317dacc0b797005ffb4d269a591cc9bbedce1063564",
+      "complete": true,
+      "content_type": "text/plain",
+      "excerpts": [
+        "The statements in this legal bulletin represent the views of the staff of the Division of Corporation Finance. This bulletin is not a rule, regulation or statement of the Securities and Exchange Commission.",
+        "When the spin-off is pro rata, the parent shareholders have the same proportionate interest in the parent and the subsidiary both before and after the spin-off.",
+        "If the subsidiary is a non-reporting company, the parent provides adequate information if, by the date it spins-off the securities: * it gives its shareholders an information statement that describes the spin-off and the subsidiary and that substantially complies with Regulation 14A or Regulation 14C under the Exchange Act; and * the subsidiary registers the spun-off securities under the Exchange Act.",
+        "the parent gives its shareholders information about the ratio it used to compute the number of shares distributed for each share held, how it will treat fractional shares, and the spin-off’s expected tax consequences [reporting-subsidiary discussion]"
+      ],
+      "wall_seconds": 0.6875061649916461,
+      "source_version": "SEC Division of Corporation Finance Staff Legal Bulletin No. 4 (CF), September 16, 1997; staff view, expressly not a Commission rule or regulation; version retrieved at observed_at"
+    },
+    {
+      "url": "https://www.finra.org/rules-guidance/rulebooks/finra-rules/5330",
+      "observed_at": "2026-10-14T00:27:15.316869+00:00",
+      "scope": "L0 generic legal/disclosure or order-adjustment rules only; no selected issuer or economic data",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.finra.org/rules-guidance/rulebooks/finra-rules/5330",
+      "body_bytes": 94863,
+      "sha256": "4fda0d243f97e81b67e3c0007075495afc29a2439765d1408b2ce29c21370c7f",
+      "complete": true,
+      "content_type": "text/html; charset=UTF-8",
+      "excerpts": [
+        "(a) A member holding an open order from a customer or another broker-dealer shall, prior to executing or permitting the order to be executed, reduce, increase, or adjust the price and/or number of shares of such order by an amount equal to the dividend, payment, or distribution on the day that the security is quoted ex-dividend, ex-rights, ex-distribution, or ex-interest [scoped rule, with exceptions].",
+        "(d) The term \"open order\" means an order to buy or an open stop order to sell, including but not limited to \"good til cancelled,\" \"limit\" or \"stop limit\" orders which remain in effect for a definite or indefinite period until executed, cancelled or expired [normalized punctuation].",
+        "(e) The provisions of paragraph (a) of this Rule shall not apply to: (1) orders governed by the rules of a registered national securities exchange; (2) open stop orders to buy; (3) open sell orders; or (4) orders for the purchase or sale of securities where the issuer of the securities has not reported a dividend, payment, or distribution pursuant to SEA Rule 10b-17."
+      ],
+      "wall_seconds": 0.8896562070003711,
+      "source_version": "FINRA Rule 5330 current web text retrieved at observed_at; page amendment history includes April 19, 2010; no universal exchange execution rule inferred"
+    }
+  ],
+  "ordering": {
+    "Xponential_8A_accepted_utc": "2026-10-13T11:15:51Z",
+    "timestamp_source": "previous immutable SEC index receipt; not refetched",
+    "A_E_admission": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "pending": "Xponential 8-A12B now explicitly registers Series B Preferred Stock Purchase Rights and incorporates the reviewed 8-K. Both current document checks COMPLETED and ineligible for A-E. Earlier partial/unread possibilities and chronological coverage remain unresolved; no universal absence or earliest eligible event claim.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+    "sha256": "566f498e673dc9542aa7c93afcc9ba76883b63dcee8cb9cb649d9b96cd41ee4c",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "latest_A_feed_reused": "2026-10-13T17:26Z snapshot, not refreshed; not current absence proof"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_statuses_preserved": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "legacy_unknown_not_resolved_or_replayed": true,
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_CORPORATE_TERMS_AND_ONE_L0_SELECTION",
+    "scope": "Full Xponential 8-A12B; full SEC SLB4 including historical corporate examples and full FINRA 5330 legal text. All are documentary/selection exposure. No historical example is a fresh economic case; no issuer event/price set selected, acquired or joined. Whole-source hashes and private cached text preserve scope. Shared forced-flow factor and UNKNOWN private/effective-trial history retained.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "new_documentary_candidates": 1,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes": 137915,
+    "request_wall_seconds_sum": 1.926573336997535,
+    "partial_documents": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

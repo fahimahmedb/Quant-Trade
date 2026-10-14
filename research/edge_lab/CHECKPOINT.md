@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, Xponential closed; one spin-off L0 sourced
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Decision, evidence and next](discovery/qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json): Xponential 8-A12B explicitly registers Series B Preferred Stock Purchase Rights and incorporates the reviewed 8-K. Both documentary checks are COMPLETED and ineligible for A–E. No first prospective event selected; earlier partial sources and chronological coverage remain unresolved, not a universal absence claim.
+- One other useful action: `us-spinoff-mandate-disposal` L0. SEC SLB4 documents pro-rata distributions and an information-statement/registration route; FINRA 5330 documents scoped order adjustments. Neither establishes forced selling or profit. The SEC bulletin is 1997 staff guidance; FINRA paragraph (e)(1) excludes exchange-governed orders. Shared forced-flow dependence and historical examples are exposed, not independent confirmation.
+- NEXT: one bounded non-outcome design cycle to qualify the distribution/when-issued/first regular-way clock and an admissible free child-price/benchmark route; use actual venue rules. If infeasible, PARK_DATA. No L1 declaration/claim/outcomes yet. A–E chronological admission retains priority for a genuinely new eligible fact; all clocks/exclusions remain unchanged. <=3 requests / <=15 minutes / <=512 KiB each / zero retries. Reuse these sources; no re-audit or framework.
+- Proof SHA256 `683609d645038b25d313d5fa40103f605955448240134d4c05155eec68c44e1f`. Three complete sources, 137915 bytes, USD 0, zero retries; no selected market/NAV/payoff payloads. Tokens/global bill unmeasured. Existing queue, economic counts, multiplicity, exposure ledger and event prefix unchanged; documentary exposure appended; raw sources private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-13, Xponential conditional rights qualified
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
