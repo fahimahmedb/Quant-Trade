@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, liquidation-service L0 qualified and parked
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [L0 decision and primary evidence](discovery/qualifications/permissionless-liquidation-service-l0-2026-10-14.json): `permissionless-collateral-auction-liquidator` = PARK_DATA. Current Sky documentation specifies configurable liquidation/reset service payments through Vow/Vat, distinct from a bidder's collateral spread. Either payment component may be zero; gas, reward eligibility and front-running can erase the gross compensation. No economic benefit measured. Public RPC schema does not qualify a free historical host or current deployment/parameters.
+- This source question is PARK/closed; resume only with genuinely new access/deployment evidence, no repeat documents, bot or collector. NEXT: triage the existing France fiscal/political seed once against saved France/TEC rights-block and fiscal/policy work before any fresh source. Record DUPLICATE/PARK if the candidate merely renames prior work; no silent TEC substitute or famous-event selection. Documentary L0 only, <=3 primary document requests / <=15 minutes / <=512 KiB each / zero retries. France remains IDEA_GENERATED, not consumed this pass; sentiment remains parked.
+- A–E original ordering/exclusions and unresolved coverage remain intact; no new event claim. VX passive OOS remains NOT_DUE before 2026-10-15T00:00:00Z, no historic/backfill/early payoff. Legacy UNKNOWN stays consumed. No selected chain logs, receipts, oracle/market prices or payoff acquired; static examples are documentary exposure only.
+- Proof SHA256 `47a9bef205e1643b68aa86af704c73c004e23c3f7944666f97693de374a43ab0`. Three document acquisitions, 296998 final-response bytes, zero retries/USD 0; legacy Maker route redirected to Sky root, redirect overhead not measured. Tokens/global bill unmeasured. Ledger prefix, queue, metrics, multiplicity/exposure history and frozen protocols/register preserved. Raw documentation private; no architecture change.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, CFTC/FX qualification closed
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
