@@ -404,8 +404,8 @@
   "historical_builder_work_handoff_required": true,
   "continuation_20261014": {
     "mandatory_start_head": "0b3c180536937cc63b94fa0dedf8252405f56ef8",
-    "last_checkpoint": "REAL_AUTHENTICATED_HEARTBEAT_STORE_STREAM_ACK_AND_LEASE_EXPIRY_FAILURE",
-    "last_trace": "research/edge_lab/platform_probes/traces/work-continuation-first-worker-event-20261014.json",
+    "last_checkpoint": "DECLARED_HEARTBEAT_PROFILE_PREDEPLOY",
+    "last_trace": "research/edge_lab/platform_probes/traces/work-continuation-heartbeat-profile-checkpoint-20261014.json",
     "owner_authentication_pending": true,
     "native_db_binding_and_schema_proven": true,
     "final_capability_status": {
@@ -422,6 +422,13 @@
     "final_product_build_authorized": false,
     "paid_usd_total": 0,
     "site_version": 15,
-    "site_source_head": "83d9126c69ebd44cf74605df4ff69b274732527d"
-  }
+    "site_source_head": "83d9126c69ebd44cf74605df4ff69b274732527d",
+    "pending_profile": {
+      "heartbeat_interval_ms": 10000,
+      "lease_duration_ms": 30000,
+      "rule": "lease=max(6000ms,3*heartbeat_interval_ms)",
+      "scope": "Explicit probe profile; not reinterpretation of prior 2s/6s failed run"
+    }
+  },
+  "probe_status_scope": "Historical 2026-10-13 mission; current authorized native-construction statuses are in continuation_20261014.final_capability_status."
 }

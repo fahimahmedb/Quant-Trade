@@ -1,3 +1,11 @@
+# Checkpoint — native driver and explicit heartbeat profile repair
+
+The native event/ACK proof and the 6-second lease failure are already pushed. This checkpoint saves the actual native driver, a bounded source patch and the new immutable migration before deployment. The new probe declares heartbeat 10s and lease 30s, using the same max(6s,3 intervals) rule as the contract. Four changed-probe local tests pass; native semantics still require empirical verification. No auth controls or scientific parameters are weakened.
+
+Trace: [work-continuation-heartbeat-profile-checkpoint-20261014.json](traces/work-continuation-heartbeat-profile-checkpoint-20261014.json).
+
+---
+
 # Checkpoint — actual worker ingress/store/stream receipt and honest lease failure
 
 Site version 15 deployed probe-only changes, preserving existing frontend bytes. Authenticated heartbeat `WORK-NATIVE-45a4621e5cad-1` is independently durable in native D1 at cursor 9 and in a post-render ACK. The anonymous public probe page displayed it. The next ACTION_STARTED was rejected 409 after lease expiry during sequential HTTP reads. The subprocess action never started. This is useful failure evidence, not an action/Codex/E2E PASS.
