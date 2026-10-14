@@ -1,0 +1,40 @@
+diff --git a/worker/platform-probe.mjs b/worker/platform-probe.mjs
+index f866bbb..aeb9ea3 100644
+--- a/worker/platform-probe.mjs
++++ b/worker/platform-probe.mjs
+@@ -1,6 +1,6 @@
+ // Isolated operational probe. No research authority, GitHub access or scientific state.
+ const ROOT='/__platform_probe';
+-const BUILD='same-project-probe-20261014-v4';
++const BUILD='same-project-probe-20261014-v5';
+ const ID=/^[A-Za-z0-9:_-]{1,120}$/;
+ const TYPES=['HEARTBEAT','ACTION_STARTED','ACTION_COMPLETED','SESSION_ENDED'];
+ const j=(x,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'}});
+@@ -65,7 +65,7 @@ export async function platformProbe(r,env,ctx){
+    if(b.type==='ACTION_COMPLETED'&&(!b.effect_proof||!/^[a-f0-9]{64}$/.test(b.effect_proof.stdout_sha256??'')||!Number.isInteger(b.effect_proof.exit_code)))return j({error:'effect_proof_required'},400);
+    const now=Date.now();
+    let res;try{res=await sql(db,`INSERT INTO probe_events (event_id,trace_id,worker_id,session_id,generation,lease_id,sequence,type,received_at,payload,fingerprint) SELECT ?,?,?,?,?,?,?,?,?,?,? FROM probe_sessions WHERE worker_id=? AND session_id=? AND generation=? AND lease_id=? AND ended=0 AND expires_at>? AND last_sequence<? AND runtime_epoch=? RETURNING cursor`,b.event_id,b.trace_id,b.worker_id,b.session_id,b.session_generation,b.lease_id,b.sequence,b.type,now,JSON.stringify(b),fingerprint,b.worker_id,b.session_id,b.session_generation,b.lease_id,now,b.sequence,epoch).first();}catch(error){const dupe=await sql(db,'SELECT cursor,fingerprint FROM probe_events WHERE event_id=?',b.event_id).first();if(dupe)return dupe.fingerprint===fingerprint?j({status:'DUPLICATE_IGNORED',cursor:dupe.cursor,event_id:b.event_id}):j({error:'event_identity_collision'},409);throw error;}
+-   if(!res)return j({error:'stale_lease_generation_or_sequence'},409);
++   if(!res){const current=await sql(db,'SELECT * FROM probe_sessions WHERE worker_id=?',b.worker_id).first();const reason=!current?'unknown_session':current.generation!==b.session_generation?'old_generation':current.session_id!==b.session_id||current.lease_id!==b.lease_id?'binding_mismatch':current.runtime_epoch!==epoch?'runtime_epoch_changed':current.ended?'session_ended':current.expires_at<=now?'lease_expired':current.last_sequence>=b.sequence?'old_sequence':'state_changed';return j({error:reason,server_received_at:now,lease_expires_at:current?.expires_at??null,last_sequence:current?.last_sequence??null,current_generation:current?.generation??null,runtime_epoch:epoch},409);}
+    return j({status:'APPLIED',event_id:b.event_id,cursor:res.cursor,server_received_at:now});
+  }
+  return j({error:'not_found'},404);
+@@ -79,13 +79,14 @@ function stream(r,db,epoch){const enc=new TextEncoder();let timer,closed=false,b
+  await poll();if(!closed)timer=setInterval(poll,500);
+  },cancel(){closed=true;clearInterval(timer);}});return new Response(s,{headers:{'content-type':'text/event-stream','cache-control':'no-cache, no-store','x-content-type-options':'nosniff'}});
+ }
+-const PROBE_PAGE=`<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quant · Platform probe only</title><style>body{font:16px system-ui;margin:2rem;max-width:48rem}pre{white-space:pre-wrap}button,a{margin:.5rem}#indicator{padding:1rem;border:2px solid #888}</style><h1>Platform probe — no research authority</h1><p>Minimal diagnostic, no scientific actions.</p><a href="/signin-with-chatgpt?return_to=/__platform_probe" target="_top">Sign in with ChatGPT</a><a href="/signout-with-chatgpt?return_to=/__platform_probe" target="_top">Sign out</a><button id="toggle">Owner probe toggle</button><div id="indicator">Awaiting real worker event</div><pre id="identity"></pre><pre id="status"></pre><script>
++const PROBE_PAGE=`<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quant · Platform probe only</title><style>body{font:16px system-ui;margin:2rem;max-width:48rem}pre{white-space:pre-wrap}button,a{margin:.5rem}#indicator{padding:1rem;border:2px solid #888}</style><h1>Platform probe — no research authority</h1><p>Minimal diagnostic, no scientific actions.</p><a href="/signin-with-chatgpt?return_to=/__platform_probe" target="_top">Sign in with ChatGPT</a><a href="/signout-with-chatgpt?return_to=/__platform_probe" target="_top">Sign out</a><button id="toggle">Owner probe toggle</button><div id="indicator">Awaiting real worker event</div><div id="lease-status">UNCONFIRMED</div><pre id="identity"></pre><pre id="status"></pre><script>
+ const root='/__platform_probe';const indicator=document.getElementById('indicator');const status=document.getElementById('status');window.__probe={received:[],acks:[],ready:false,canonical:null,operational:'UNCONFIRMED'};
++function leaseDisplay(){document.getElementById('lease-status').textContent=(window.__probe.ready?'STREAM_READY':'UNCONFIRMED')+' · '+window.__probe.operational;}
+ fetch(root+'/whoami').then(r=>r.json()).then(x=>document.getElementById('identity').textContent=JSON.stringify(x,null,2));
+ document.getElementById('toggle').onclick=async()=>{const cr=await fetch(root+'/owner-challenge');const challenge=await cr.json();if(!cr.ok){status.textContent=JSON.stringify(challenge);return;}const r=await fetch(root+'/owner-toggle',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({command_id:crypto.randomUUID(),nonce:challenge.nonce})});status.textContent=JSON.stringify(await r.json(),null,2);};
+-const source=new EventSource(root+'/stream');source.addEventListener('STREAM_READY',()=>{window.__probe.ready=true;});source.onerror=()=>{window.__probe.ready=false;window.__probe.operational='UNCONFIRMED';};
+-source.addEventListener('snapshot',e=>{window.__probe.canonical=JSON.parse(e.data);window.__probe.operational='UNCONFIRMED';});
+-source.addEventListener('lease_state',e=>{const s=JSON.parse(e.data);window.__probe.canonical=s;window.__probe.operational=window.__probe.ready&&s.sessions.some(x=>!x.ended&&x.runtime_epoch===s.runtime_epoch&&x.expires_at>s.server_at)?'ACTIVE':s.sessions.some(x=>x.expires_at<=s.server_at)?'STALE':'UNCONFIRMED';});
++const source=new EventSource(root+'/stream');source.addEventListener('STREAM_READY',()=>{window.__probe.ready=true;leaseDisplay();});source.onerror=()=>{window.__probe.ready=false;window.__probe.operational='UNCONFIRMED';leaseDisplay();};
++source.addEventListener('snapshot',e=>{window.__probe.canonical=JSON.parse(e.data);window.__probe.operational='UNCONFIRMED';leaseDisplay();});
++source.addEventListener('lease_state',e=>{const s=JSON.parse(e.data);window.__probe.canonical=s;window.__probe.operational=window.__probe.ready&&s.sessions.some(x=>!x.ended&&x.runtime_epoch===s.runtime_epoch&&x.expires_at>s.server_at)?'ACTIVE':s.sessions.some(x=>x.expires_at<=s.server_at)?'STALE':'UNCONFIRMED';leaseDisplay();});
+ source.addEventListener('worker_event',async e=>{const b=JSON.parse(e.data),received=performance.now();window.__probe.received.push(b);indicator.textContent=b.type+' · '+b.event_id;indicator.dataset.eventId=b.event_id;
+ await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+ if(document.visibilityState!=='visible'||indicator.dataset.eventId!==b.event_id||!indicator.getClientRects().length)return;

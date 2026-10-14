@@ -81,7 +81,52 @@ def event(s, sequence, kind, event_id=None, **extra):
 
 try:
     mode = cfg.get('mode', 'semantics')
-    if mode == 'restart_check':
+    if mode == 'keep_restart_lease':
+        s = new_session()
+        print('NATIVE_RESTART_BINDING=' + json.dumps(s),flush=True)
+        sequence = 0
+        deadline = time.monotonic()+180
+        while time.monotonic()<deadline:
+            sequence += 1
+            status,b = call('/event',event(s,sequence,'HEARTBEAT',trace+'-restart-'+str(sequence)))
+            if status==409:
+                check('old_lease_rejected_after_actual_redeployment',409,status,b)
+                log['restart_rejection']=b
+                log['previous_lease_still_unexpired_at_rejection']=b.get('lease_expires_at',0)>b.get('server_received_at',0)
+                status,snap=call('/snapshot',auth=False)
+                own=next(x for x in snap['sessions'] if x['worker_id']==cfg['worker_id'])
+                log['restart_lease_status']=own['lease_status']
+                log['restart_previous_lease_not_active']=own['lease_status']=='STALE_RESTART'
+                break
+            check('real_driver_lease_renewed_during_deployment',200,status,b)
+            time.sleep(2)
+        else:
+            raise RuntimeError('No deployment epoch transition observed within bounded canary')
+    elif mode == 'negative_render_ack_from_native_delivery':
+        item=cfg['delivery']
+        packet={'trace_id':item['trace_id'],'last_applied_event_id':item['event_id'],'delivery_token':item['token'],'render_state_hash':hashlib.sha256((item['event_id']+'|'+item['type']).encode()).hexdigest(),'frame_cycles':0,'visibility':'visible','render_after_receive_ms':0}
+        status,b=call('/ack',packet,auth=False,origin=ROOT.split('/__platform_probe')[0])
+        check('ACK_before_render_rejected',400,status,b)
+        log['delivery_receipt_source']='Native D1 probe_deliveries read; scoped ACK token, not Owner credential'
+        log['delivery_token_persisted']=False
+    elif mode == 'negative_render_ack':
+        req=urllib.request.Request(ROOT+'/stream?cursor=12',headers={'OAI-Sites-Authorization':'Bearer '+cfg['bypass']})
+        with urllib.request.urlopen(req,timeout=15) as response:
+            kind=None
+            for raw in response:
+                line=raw.decode().strip()
+                if line.startswith('event:'):kind=line[6:].strip()
+                if line.startswith('data:') and kind=='worker_event':
+                    item=json.loads(line[5:])
+                    if item['event_id']=='WORK-NATIVE-3d58036b905a-4':break
+            else:raise RuntimeError('Target completion event not delivered')
+        packet={'trace_id':item['trace_id'],'last_applied_event_id':item['event_id'],'delivery_token':item['delivery_token'],'render_state_hash':hashlib.sha256((item['event_id']+'|'+item['type']).encode()).hexdigest(),'frame_cycles':0,'visibility':'visible','render_after_receive_ms':0}
+        status,b=call('/ack',packet,auth=False,origin=ROOT.split('/__platform_probe')[0])
+        check('ACK_before_render_rejected',400,status,b)
+        log['replay_cursor_requested']=12
+        log['replayed_cursor_received']=item['cursor']
+        log['delivery_token_persisted']=False
+    elif mode == 'restart_check':
         old = cfg['old_session']
         status, b = call('/event', event(old, 999, 'HEARTBEAT', trace + '-old-epoch'))
         check('old_lease_after_actual_redeployment_rejected', 409, status, b)

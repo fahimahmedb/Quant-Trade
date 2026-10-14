@@ -1,0 +1,357 @@
+{
+  "trace_id": "WORK-NATIVE-RESTART-RENDER-GATES-20261014",
+  "observed_at_utc": "2026-10-14T10:40:55.440Z",
+  "restart": {
+    "trace_id": "WORK-NATIVE-b42624c4d5b1",
+    "source": "exec session 51390 NATIVE_PROBE_RESULT",
+    "session_id": "4a9cc636-4343-45c3-8163-8edd62a1dab0",
+    "session_generation": 6,
+    "lease_id": "fa7d93a4-a516-437c-9182-f1d42dbc0209",
+    "last_applied_sequence": 20,
+    "last_applied_cursor": 35,
+    "last_heartbeat_server_received_at": 1791974195804,
+    "rejection": {
+      "status": 409,
+      "error": "runtime_epoch_changed",
+      "server_received_at": 1791974204252,
+      "lease_expires_at": 1791974225804,
+      "runtime_epoch": "probe-epoch-20261014-b"
+    },
+    "previous_lease_still_unexpired_at_rejection": true,
+    "snapshot_lease_status": "STALE_RESTART",
+    "previous_lease_not_active": true,
+    "scope": "CONTROLLED_NATIVE_DEPLOYMENT_RESTART_ONLY",
+    "deployment_id": "appgdep_6acf5b32246c81918414b18075e99efb",
+    "deployment_status": "succeeded",
+    "environment_revision": 4,
+    "source_commit": "d0495b992a2f114b1577a4ea861c3c214ca4d290"
+  },
+  "fresh_post_restart_session": {
+    "trace_id": "WORK-NATIVE-b1487df8e922",
+    "worker_type": "benign_python_subprocess",
+    "provenance": "WRAPPED",
+    "scope": "PLATFORM_PROBE_ONLY",
+    "checks": [
+      {
+        "name": "native_session_creation",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "server_received_at": 1791974338789
+        }
+      },
+      {
+        "name": "fresh_lease_before_redeployment",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-b1487df8e922-1",
+          "cursor": 36,
+          "server_received_at": 1791974344974
+        }
+      }
+    ],
+    "request_timings": [
+      {
+        "path": "/session",
+        "status": 200,
+        "round_trip_ms": 6257.639063999932
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 6181.948145999968
+      }
+    ],
+    "launcher_pid": 2,
+    "session_bindings": [
+      {
+        "worker_id": "work-benign-process-20261014",
+        "session_id": "61831511-2aa9-4a74-a455-b99a52a74ba9",
+        "native_session_id": "93eff4be-db06-4444-bef4-bf375e04d177",
+        "generation": 7,
+        "lease_id": "20400187-2b78-453b-86df-b9408584ea7f",
+        "runtime_epoch": "probe-epoch-20261014-b"
+      }
+    ],
+    "restart_session": {
+      "worker_id": "work-benign-process-20261014",
+      "session_id": "61831511-2aa9-4a74-a455-b99a52a74ba9",
+      "native_session_id": "93eff4be-db06-4444-bef4-bf375e04d177",
+      "generation": 7,
+      "lease_id": "20400187-2b78-453b-86df-b9408584ea7f",
+      "expires_at": 1791974368789,
+      "last_sequence": 0,
+      "ended": 0,
+      "last_event_id": null,
+      "runtime_epoch": "probe-epoch-20261014-b",
+      "lease_duration_ms": 30000,
+      "session_generation": 7,
+      "heartbeat_interval_ms": 10000,
+      "server_received_at": 1791974338789
+    }
+  },
+  "stream_ready_valid_lease": {
+    "trace_id": "WORK-NATIVE-b1487df8e922",
+    "event_id": "WORK-NATIVE-b1487df8e922-1",
+    "public_browser_dom": {
+      "lease": "STREAM_READY · ACTIVE",
+      "indicator": "HEARTBEAT · WORK-NATIVE-b1487df8e922-1",
+      "post_render_ack": "POST_RENDER_ACK_RECORDED",
+      "server_to_render_ack_ms": 1928
+    },
+    "source": "Cloud browser read-only DOM after v17; native server cursor36 receipt",
+    "scope": "Lease activity, no unsupported Codex work animation"
+  },
+  "negative_render_ack": {
+    "trace_id": "WORK-NATIVE-135d8066a07c",
+    "worker_type": "benign_python_subprocess",
+    "provenance": "WRAPPED",
+    "scope": "PLATFORM_PROBE_ONLY",
+    "checks": [
+      {
+        "name": "ACK_before_render_rejected",
+        "status": 400,
+        "expected": 400,
+        "pass": true,
+        "receipt": {
+          "error": "render_evidence_mismatch"
+        }
+      }
+    ],
+    "request_timings": [
+      {
+        "path": "/ack",
+        "status": 400,
+        "round_trip_ms": 5419.933986999922
+      }
+    ],
+    "delivery_receipt_source": "Native D1 probe_deliveries read; scoped ACK token, not Owner credential",
+    "delivery_token_persisted": false
+  },
+  "earlier_terminal_stream_attempt": {
+    "trace_id": "WORK-NATIVE-a666ad2823e7",
+    "status": "NOT_TESTED",
+    "failure": "urllib SSE receive timed out before target delivery; not a platform stream failure. Public cloud-browser stream was independently proven.",
+    "checks": []
+  },
+  "lease_canaries": {
+    "A": "PASS fresh authenticated lease + HB",
+    "B": "PASS native expiry snapshot STALE and renewed HB409",
+    "C": "PASS previous generation409",
+    "D": "PASS same event_id single cursor",
+    "E": "PASS old sequence409",
+    "F": "PASS old still-valid lease409 runtime_epoch_changed and STALE_RESTART after actual native deploy",
+    "G": "PASS native snapshot stream_ready=false and operational UNCONFIRMED_UNTIL_STREAM_READY",
+    "H": "PASS public DOM STREAM_READY + ACTIVE with valid lease"
+  },
+  "final_capability_status": {
+    "CODEX_AUTHENTICATED_RUNTIME": "BLOCKED",
+    "SAME_PROJECT_WORKER_INGRESS": "PASS",
+    "SAME_PROJECT_TRANSIENT_STORE": "PASS",
+    "SAME_PROJECT_LEASE_PROTOCOL": "PASS",
+    "SAME_PROJECT_PUBLIC_WORKER_STREAM": "PASS",
+    "SAME_PROJECT_OWNER_AUTH_MUTATION": "BLOCKED",
+    "VERIFIED_RENDER_ACK": "PASS",
+    "PUBLIC_E2E_LIVE_CANARY": "NOT_RUN"
+  },
+  "non_pass_details": {
+    "CODEX_AUTHENTICATED_RUNTIME": {
+      "FIRST_BROKEN_TRANSITION": "Owner authentication → genuine Codex execution session",
+      "OBSERVED_FACT": "Codex CLI 0.159.2 retry emitted no execution JSONL; device-auth challenge was available. Requested secure Google login reached Account recovery. No successful authenticated Codex execution observed.",
+      "EVIDENCE_REFERENCE": "research/edge_lab/platform_probes/traces/work-continuation-native-discovery-20261014.json",
+      "MINIMUM_MISSING_PLATFORM_PRIMITIVE": "Owner completes secure native/device login, then a successful authenticated genuine Codex runtime tied to its execution session. User interaction pending; not a platform-impossibility verdict."
+    },
+    "SAME_PROJECT_OWNER_AUTH_MUTATION": {
+      "FIRST_BROKEN_TRANSITION": "Signed-in native Owner visitor → server-authorized mutation",
+      "OBSERVED_FACT": "Anonymous mutation 401 and unauthorized Origin 403 are real. Native Owner visitor remains unsigned-in; configured Owner binding and positive ACK, expired/revoked session and authenticated replay tests therefore remain unproven.",
+      "EVIDENCE_REFERENCE": "research/edge_lab/platform_probes/traces/work-continuation-native-restart-render-gates-20261014.json",
+      "MINIMUM_MISSING_PLATFORM_PRIMITIVE": "Owner completes native Site login; bind hashed native Owner identity, then run accepted mutation, expiry/revocation and authenticated replay canaries. Existing native identity/authorization construction has not been declared impossible."
+    },
+    "PUBLIC_E2E_LIVE_CANARY": {
+      "FIRST_BROKEN_TRANSITION": "Required authenticated Codex and Owner mutation prerequisites → full canary",
+      "OBSERVED_FACT": "Actual WRAPPED benign Python action traversed native D1/public SSE/render ACK; the mission's Codex/Owner prerequisites have not all passed.",
+      "EVIDENCE_REFERENCE": "research/edge_lab/platform_probes/traces/work-continuation-native-action-stream-frame-20261014.json",
+      "MINIMUM_MISSING_PLATFORM_PRIMITIVE": "Complete authenticated Codex and Owner mutation proofs before full gated E2E."
+    }
+  },
+  "capability_matrix": [
+    {
+      "worker_type": "genuine_codex_cli",
+      "runtime": "codex-cli 0.159.2, real benign execution retried; authentication interaction pending",
+      "provenance_level": "UNVERIFIED",
+      "provenance_scope": "Live worker protocol remains unproven.",
+      "identity_binding_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P1-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "runtime_installation_identity_proof": "PASS_EXECUTABLE_VERSION_ONLY",
+      "runtime_launch_attempted": true
+    },
+    {
+      "worker_type": "chatgpt_scheduled_automation",
+      "runtime": "platform_scheduled_automation",
+      "provenance_level": "WRAPPED_PLATFORM",
+      "provenance_scope": "WRAPPED_PLATFORM only for existing scheduler-to-bounded-GitHub-effect; live event origin/session binding remains unverified.",
+      "identity_binding_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": "P2-SCHEDULED-CANARY-20261012T221243Z",
+      "last_inspection_trace_id": "P2-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "short_run_proven": true,
+      "automation_identity": "PASS_CANARY_ID_AND_PEEK_ONLY"
+    },
+    {
+      "worker_type": "chatgpt_work_interactive",
+      "runtime": "Current Work task; environment-reported Codex thread metadata",
+      "provenance_level": "UNVERIFIED",
+      "provenance_scope": "Live worker protocol remains unproven.",
+      "identity_binding_proof": "NOT_TESTED",
+      "session_start": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "heartbeat": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "action_started": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "blocked": "NOT_TESTED",
+      "economic_look": "NOT_TESTED",
+      "session_end": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P1-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "environment_reported_thread_id": "01a1336c-2ced-74ff-a9f1-6de85ca00051",
+      "documentary_tool_actions": "PASS_BOUNDED_PLATFORM_READ_RECEIPTS_AND_EVIDENCE_PERSISTENCE_ONLY"
+    },
+    {
+      "worker_type": "site_observer_sse_not_research_worker",
+      "runtime": "Current published Cloudflare Worker version 12",
+      "provenance_level": "DIRECT",
+      "provenance_scope": "DIRECT observer connection events only. Not worker events; GitHub snapshots are DERIVED.",
+      "identity_binding_proof": "FAIL",
+      "session_start": "FAIL",
+      "heartbeat": "FAIL",
+      "action_started": "FAIL",
+      "progress": "FAIL",
+      "action_completed_effect_proof": "FAIL",
+      "handoff": "FAIL",
+      "result": "FAIL",
+      "blocked": "FAIL",
+      "economic_look": "FAIL",
+      "session_end": "FAIL",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "NONE",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P3-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null,
+      "observer_heartbeat": "PASS_CONNECTION_LIVENESS_ONLY",
+      "observer_sse": "PASS"
+    },
+    {
+      "worker_type": "github_derived_live_telemetry_not_live_worker",
+      "runtime": "Repository-derived display projected by published Site",
+      "provenance_level": "DERIVED",
+      "provenance_scope": "Forbidden as real-time worker animation support; no genuine worker event trace.",
+      "identity_binding_proof": "FAIL",
+      "session_start": "FAIL",
+      "heartbeat": "FAIL",
+      "action_started": "FAIL",
+      "progress": "FAIL",
+      "action_completed_effect_proof": "FAIL",
+      "handoff": "FAIL",
+      "result": "FAIL",
+      "blocked": "FAIL",
+      "economic_look": "FAIL",
+      "session_end": "FAIL",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "NONE",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": null,
+      "last_inspection_trace_id": "P3-WORK-PLATFORM-20261013T041000Z",
+      "worker_id": null,
+      "session_id": null,
+      "session_generation": null,
+      "lease_id": null
+    },
+    {
+      "worker_type": "benign_python_subprocess",
+      "runtime": "Actual Python subprocess under native_probe_driver.py, Site Worker v17 + native D1 DB",
+      "provenance_level": "WRAPPED",
+      "identity_binding_proof": "PASS authenticated configured worker_id + server-issued session_id/generation/lease; bounded launcher/process effect receipts; not Codex identity",
+      "worker_id": "work-benign-process-20261014",
+      "session_start": "PASS",
+      "heartbeat": "PASS",
+      "action_started": "PASS",
+      "progress": "NOT_TESTED",
+      "action_completed_effect_proof": "PASS",
+      "handoff": "NOT_TESTED",
+      "result": "NOT_TESTED_EXPLICIT_RESULT_EVENT",
+      "blocked": "NOT_TESTED_EXPLICIT_BLOCKED_EVENT",
+      "economic_look": "UNSUPPORTED",
+      "session_end": "PASS",
+      "economic_actions": "UNSUPPORTED",
+      "economic_guard_scope": "POLICY_ONLY",
+      "long_session_lease_proof": false,
+      "last_real_trace_id": "WORK-NATIVE-3d58036b905a",
+      "restart_trace_id": "WORK-NATIVE-b42624c4d5b1",
+      "restart_scope": "Controlled actual native redeployment with declared epoch; spontaneous invisible isolate restart not tested"
+    }
+  ],
+  "limitations": [
+    "Only controlled native redeployment restart tested; no spontaneous isolate lifecycle claim.",
+    "Render lifecycle/frame evidence, not trusted hardware-pixel attestation.",
+    "Negative ACK probe uses native D1-issued scoped delivery token and frame_cycles0; token not retained.",
+    "No Codex or scheduled-worker live identity substitution.",
+    "Owner login required; no weak custom authentication introduced."
+  ],
+  "main_product_frontend_sha256": "784b11fabd68f8e9cb40e4a80860a1af5ed54124636dfdb4d0db77717eecdba9",
+  "scientific_state_modified": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "final_build_authorized": false
+}

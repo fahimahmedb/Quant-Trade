@@ -1,3 +1,46 @@
+# Current continuation checkpoint — native restart and render gates
+
+Mandatory continuation start: `0b3c180536937cc63b94fa0dedf8252405f56ef8`. This section supersedes historical deployment verdicts below; old traces remain immutable.
+
+Same Site project and URL, native Worker v17 / D1 DB. Actual redeployment rejected the previous still-unexpired lease with `409 runtime_epoch_changed`, then snapshot returned `STALE_RESTART`. A new authenticated generation produced public DOM `STREAM_READY · ACTIVE`. An ACK with zero rendered frames was rejected `400 render_evidence_mismatch`. A–H lease canaries pass within controlled native deployment scope; spontaneous unobservable isolate restarts remain untested.
+
+[New evidence](traces/work-continuation-native-restart-render-gates-20261014.json). [Native probe-only source patch](traces/native-probe-v17-diagnostics.patch). [Earlier genuine action + rendered frame](traces/work-continuation-native-action-stream-frame-20261014.json).
+
+| Current capability | Status |
+|---|---|
+| CODEX_AUTHENTICATED_RUNTIME | BLOCKED |
+| SAME_PROJECT_WORKER_INGRESS | PASS |
+| SAME_PROJECT_TRANSIENT_STORE | PASS |
+| SAME_PROJECT_LEASE_PROTOCOL | PASS |
+| SAME_PROJECT_PUBLIC_WORKER_STREAM | PASS |
+| SAME_PROJECT_OWNER_AUTH_MUTATION | BLOCKED |
+| VERIFIED_RENDER_ACK | PASS |
+| PUBLIC_E2E_LIVE_CANARY | NOT_RUN |
+
+SPEC_READY_FOR_ONE_SHOT_BUILD = NO. WORK_MAXIMUM_REACHED = NO: Owner-dependent proofs remain pending. Final Live Lab build remains unauthorized.
+
+## Remaining required Owner interaction
+
+Genuine Codex CLI was retried, but no authenticated execution receipt was obtained. A device login challenge exists; secure Google sign-in reached Account recovery and was not completed automatically. Owner must complete native/device sign-in; no credentials or codes are retained. Site's public probe is anonymous, so a positive server-side Owner mutation, revoked/expired identity and authenticated replay checks remain pending. Control-plane Owner role alone is not visitor auth. Native identity support exists; no claim of platform impossibility is made.
+
+Full gated E2E = NOT_RUN until Codex and Owner proofs pass. The successful benign Python WRAPPED worker path is genuine evidence for native ingress/store/SSE/render, and cannot substitute for Codex identity.
+
+## Current runtime capability matrix
+
+| Runtime | Provenance / identity | Session start | Heartbeat | Action started | Progress | Completion + effect | Handoff | Result | Blocked | Economic Look | Session end |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Genuine Codex 0.159.2 | UNVERIFIED live identity; Owner login pending | BLOCKED | BLOCKED | BLOCKED | NOT_TESTED | BLOCKED | NOT_TESTED | NOT_TESTED | NOT_TESTED | UNSUPPORTED | BLOCKED |
+| Scheduled ChatGPT | WRAPPED_PLATFORM bounded GitHub effect only; live session unproven | BLOCKED | BLOCKED | BLOCKED | NOT_TESTED | BLOCKED live protocol | NOT_TESTED | NOT_TESTED | NOT_TESTED | UNSUPPORTED | BLOCKED |
+| Benign Python subprocess | WRAPPED; authenticated worker + issued session/generation/lease | PASS | PASS | PASS | NOT_TESTED | PASS stdout/command hash + exit0 | NOT_TESTED | NOT_TESTED explicit event | NOT_TESTED explicit event | UNSUPPORTED | PASS |
+| Work interactive | UNVERIFIED live worker binding; documentary receipts only | BLOCKED | BLOCKED | BLOCKED | NOT_TESTED | BLOCKED | NOT_TESTED | NOT_TESTED | NOT_TESTED | UNSUPPORTED | BLOCKED |
+| Existing GitHub-derived observer | DERIVED worker projection, forbidden as live-worker evidence | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL | UNSUPPORTED | FAIL |
+
+All actual worker runtime economic guards remain POLICY_ONLY; economic actions UNSUPPORTED. Long-session lease proof remains FALSE. Python last actual action trace: `WORK-NATIVE-3d58036b905a`; controlled deployment lease trace: `WORK-NATIVE-b42624c4d5b1`. Exact bindings and ordered receipts are in the linked immutable traces. Existing observer SSE stays separate; no GitHub participates in the native live path.
+
+Platform facts: native Cloudflare Worker server routes; authenticated worker ingress; D1 atomic session/event/lease tables; public SSE with cursors/reconnection; native signed-in visitor identity available but Owner positive not yet proven; actual benign WRAPPED Python emitter; Codex and scheduled live emitter unproven; two requestAnimationFrame lifecycle ACK plus actual screenshot, backend rejects zero-frame ACK. Main product frontend bytes preserved. SCIENTIFIC_STATE_MODIFIED=FALSE, REAL_CAPITAL_AUTHORIZED=FALSE, LIVE_TRADING_AUTHORIZED=FALSE, paid_usd_total=0.
+
+---
+
 # Checkpoint — actual benign action → native store → public stream → rendered frame
 
 Actual Python subprocess completed (exit 0, stdout hash recorded), with real heartbeat, completion effect proof and clean close. Native tests demonstrate generation rejection, same-cursor duplicate suppression, old sequence rejection and expiry. The anonymous public client displayed the new events and emitted ACK only after two requestAnimationFrame callbacks. Frame evidence and independent native D1 ACK receipts are committed. No GitHub participates in the live path.
