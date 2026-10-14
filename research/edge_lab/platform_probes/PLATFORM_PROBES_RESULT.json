@@ -404,31 +404,32 @@
   "historical_builder_work_handoff_required": true,
   "continuation_20261014": {
     "mandatory_start_head": "0b3c180536937cc63b94fa0dedf8252405f56ef8",
-    "last_checkpoint": "DECLARED_HEARTBEAT_PROFILE_PREDEPLOY",
-    "last_trace": "research/edge_lab/platform_probes/traces/work-continuation-heartbeat-profile-checkpoint-20261014.json",
+    "last_checkpoint": "NATIVE_ACTION_EFFECT_PUBLIC_STREAM_POST_RENDER_ACK",
+    "last_trace": "research/edge_lab/platform_probes/traces/work-continuation-native-action-stream-frame-20261014.json",
     "owner_authentication_pending": true,
     "native_db_binding_and_schema_proven": true,
     "final_capability_status": {
       "CODEX_AUTHENTICATED_RUNTIME": "BLOCKED",
-      "SAME_PROJECT_WORKER_INGRESS": "BLOCKED",
+      "SAME_PROJECT_WORKER_INGRESS": "PASS",
       "SAME_PROJECT_TRANSIENT_STORE": "PASS",
       "SAME_PROJECT_LEASE_PROTOCOL": "BLOCKED",
-      "SAME_PROJECT_PUBLIC_WORKER_STREAM": "BLOCKED",
+      "SAME_PROJECT_PUBLIC_WORKER_STREAM": "PASS",
       "SAME_PROJECT_OWNER_AUTH_MUTATION": "BLOCKED",
-      "VERIFIED_RENDER_ACK": "NOT_RUN",
+      "VERIFIED_RENDER_ACK": "PASS",
       "PUBLIC_E2E_LIVE_CANARY": "NOT_RUN"
     },
     "minimum_probe_infrastructure_authorized": true,
     "final_product_build_authorized": false,
     "paid_usd_total": 0,
-    "site_version": 15,
-    "site_source_head": "83d9126c69ebd44cf74605df4ff69b274732527d",
+    "site_version": 16,
+    "site_source_head": "0d3d13f48222f3b0f445dd9cdf97ca1796751bf0",
     "pending_profile": {
       "heartbeat_interval_ms": 10000,
       "lease_duration_ms": 30000,
       "rule": "lease=max(6000ms,3*heartbeat_interval_ms)",
       "scope": "Explicit probe profile; not reinterpretation of prior 2s/6s failed run"
-    }
+    },
+    "capability_scope": "PASS values for native ingress/store/stream/render are supported by WRAPPED benign Python command worker; no Codex identity substitution."
   },
   "probe_status_scope": "Historical 2026-10-13 mission; current authorized native-construction statuses are in continuation_20261014.final_capability_status."
 }

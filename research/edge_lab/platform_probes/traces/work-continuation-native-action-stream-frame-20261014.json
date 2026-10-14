@@ -1,0 +1,423 @@
+{
+  "trace_id": "WORK-NATIVE-ACTION-STREAM-FRAME-20261014",
+  "recorded_at_utc": "2026-10-14T10:32:17.045Z",
+  "site_version": 16,
+  "site_source_head": "0d3d13f48222f3b0f445dd9cdf97ca1796751bf0",
+  "deployment_id": "appgdep_6acf5911b6ec8191b1ee02f817eae37b",
+  "declared_profile": {
+    "heartbeat_interval_ms": 10000,
+    "lease_duration_ms": 30000,
+    "rule": "max(6s,3 heartbeat intervals)"
+  },
+  "native_execution": {
+    "trace_id": "WORK-NATIVE-3d58036b905a",
+    "worker_type": "benign_python_subprocess",
+    "provenance": "WRAPPED",
+    "scope": "PLATFORM_PROBE_ONLY",
+    "checks": [
+      {
+        "name": "anonymous_worker_ingress_rejected",
+        "status": 401,
+        "expected": 401,
+        "pass": true,
+        "receipt": {
+          "error": "worker_authentication_required"
+        }
+      },
+      {
+        "name": "cross_origin_worker_ingress_rejected",
+        "status": 403,
+        "expected": 403,
+        "pass": true,
+        "receipt": {
+          "error": "origin_rejected"
+        }
+      },
+      {
+        "name": "anonymous_owner_mutation_rejected",
+        "status": 401,
+        "expected": 401,
+        "pass": true,
+        "receipt": {
+          "error": "authentication_required"
+        }
+      },
+      {
+        "name": "cross_origin_owner_mutation_rejected",
+        "status": 403,
+        "expected": 403,
+        "pass": true,
+        "receipt": {
+          "error": "origin_rejected"
+        }
+      },
+      {
+        "name": "native_session_creation",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "server_received_at": 1791973741506
+        }
+      },
+      {
+        "name": "A_fresh_lease_heartbeat",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-1",
+          "cursor": 10,
+          "server_received_at": 1791973746985
+        }
+      },
+      {
+        "name": "genuine_action_start_dispatched_before_launch",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-2",
+          "cursor": 11,
+          "server_received_at": 1791973757705
+        }
+      },
+      {
+        "name": "actual_running_subprocess_heartbeat",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-3",
+          "cursor": 12,
+          "server_received_at": 1791973765205
+        }
+      },
+      {
+        "name": "actual_action_completion_with_effect_proof",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-4",
+          "cursor": 13,
+          "server_received_at": 1791973770985
+        }
+      },
+      {
+        "name": "D_duplicate_event_one_transition",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "DUPLICATE_IGNORED",
+          "cursor": 13,
+          "event_id": "WORK-NATIVE-3d58036b905a-4"
+        }
+      },
+      {
+        "name": "E_old_sequence_no_regression",
+        "status": 409,
+        "expected": 409,
+        "pass": true,
+        "receipt": {
+          "error": "stale_lease_generation_or_sequence"
+        }
+      },
+      {
+        "name": "worker_binding_spoof_rejected",
+        "status": 403,
+        "expected": 403,
+        "pass": true,
+        "receipt": {
+          "error": "worker_binding_rejected"
+        }
+      },
+      {
+        "name": "real_action_session_clean_close",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-action-session-close",
+          "cursor": 14,
+          "server_received_at": 1791973792364
+        }
+      },
+      {
+        "name": "native_session_creation",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "server_received_at": 1791973797731
+        }
+      },
+      {
+        "name": "native_session_creation",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "server_received_at": 1791973803435
+        }
+      },
+      {
+        "name": "C_old_generation_rejected",
+        "status": 409,
+        "expected": 409,
+        "pass": true,
+        "receipt": {
+          "error": "stale_lease_generation_or_sequence"
+        }
+      },
+      {
+        "name": "clean_new_session_close",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "status": "APPLIED",
+          "event_id": "WORK-NATIVE-3d58036b905a-new-close",
+          "cursor": 15,
+          "server_received_at": 1791973814801
+        }
+      },
+      {
+        "name": "native_session_creation",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "receipt": {
+          "server_received_at": 1791973819699
+        }
+      },
+      {
+        "name": "B_expired_lease_cannot_revive",
+        "status": 409,
+        "expected": 409,
+        "pass": true,
+        "receipt": {
+          "error": "stale_lease_generation_or_sequence"
+        }
+      }
+    ],
+    "request_timings": [
+      {
+        "path": "/session",
+        "status": 401,
+        "round_trip_ms": 5487.058275999971
+      },
+      {
+        "path": "/session",
+        "status": 403,
+        "round_trip_ms": 5389.090584999963
+      },
+      {
+        "path": "/owner-toggle",
+        "status": 401,
+        "round_trip_ms": 5318.336733000024
+      },
+      {
+        "path": "/owner-toggle",
+        "status": 403,
+        "round_trip_ms": 5142.986643999961
+      },
+      {
+        "path": "/session",
+        "status": 200,
+        "round_trip_ms": 7015.1602509999975
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5481.339823999974
+      },
+      {
+        "path": "/snapshot",
+        "status": 200,
+        "round_trip_ms": 5290.64539400008
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5430.264996000005
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 6198.246753000035
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5263.75065600007
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5384.3886979999525
+      },
+      {
+        "path": "/event",
+        "status": 409,
+        "round_trip_ms": 5360.659276000092
+      },
+      {
+        "path": "/event",
+        "status": 403,
+        "round_trip_ms": 5528.587388999995
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5105.872514999987
+      },
+      {
+        "path": "/session",
+        "status": 200,
+        "round_trip_ms": 5360.556482999982
+      },
+      {
+        "path": "/session",
+        "status": 200,
+        "round_trip_ms": 5720.789141000068
+      },
+      {
+        "path": "/event",
+        "status": 409,
+        "round_trip_ms": 5871.217813000044
+      },
+      {
+        "path": "/event",
+        "status": 200,
+        "round_trip_ms": 5488.106221000066
+      },
+      {
+        "path": "/session",
+        "status": 200,
+        "round_trip_ms": 4931.147704000068
+      },
+      {
+        "path": "/snapshot",
+        "status": 200,
+        "round_trip_ms": 5406.425400999979
+      },
+      {
+        "path": "/event",
+        "status": 409,
+        "round_trip_ms": 4411.954542999865
+      }
+    ],
+    "launcher_pid": 2,
+    "session_bindings": [
+      {
+        "worker_id": "work-benign-process-20261014",
+        "session_id": "47e4d4da-fa94-4395-9d53-a9f969c79298",
+        "native_session_id": "24ea544a-71dd-4db3-9cf0-741066f29a1c",
+        "generation": 2,
+        "lease_id": "7a07a297-8a66-464b-90a4-e1c7512cbcde",
+        "runtime_epoch": "probe-epoch-20261014-a"
+      },
+      {
+        "worker_id": "work-benign-process-20261014",
+        "session_id": "7c69878a-9ae2-4d0e-8f19-57f98613b098",
+        "native_session_id": "9cce26e2-5d86-4a09-abdc-4159fe441ad7",
+        "generation": 3,
+        "lease_id": "fd33597b-03c2-4c95-8e7e-ae440f6f92fc",
+        "runtime_epoch": "probe-epoch-20261014-a"
+      },
+      {
+        "worker_id": "work-benign-process-20261014",
+        "session_id": "8b835d99-8f5d-4a71-b24d-281a32a3bbef",
+        "native_session_id": "8c069cbc-43bd-4888-a357-19722d6f8ec7",
+        "generation": 4,
+        "lease_id": "8a798e20-622f-4e2f-918f-80cd1851b28c",
+        "runtime_epoch": "probe-epoch-20261014-a"
+      },
+      {
+        "worker_id": "work-benign-process-20261014",
+        "session_id": "ff0935d3-5a30-4a23-9e03-2be1546f0b03",
+        "native_session_id": "3b0f098c-627b-4e2a-a8e4-b8f4533e39c9",
+        "generation": 5,
+        "lease_id": "40381c7a-c998-4762-b015-909f174fefd5",
+        "runtime_epoch": "probe-epoch-20261014-a"
+      }
+    ],
+    "fresh_lease_status": "FRESH",
+    "snapshot_stream_ready": false,
+    "actual_subprocess_receipt": {
+      "pid": 6,
+      "stdout_sha256": "3452d66f181d0bfaa48b4430d408b411c48b2ce2617dc719e7403dd470dba085",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "command_sha256": "34170bbb8737471bd4934a2d81fb8e667466e5cb669d9b047bd8dc1959929a9e",
+      "duration_ms_same_launcher_clock": 8013.602944000013
+    },
+    "ACTION_TO_EMIT_DISPATCH_ms_same_launcher_clock": 0.032920000080594036,
+    "last_applied_event_id": "WORK-NATIVE-3d58036b905a-4",
+    "server_received_at": 1791973770985,
+    "dedupe_same_cursor": true,
+    "B_expired_lease_status": "STALE"
+  },
+  "post_render_ack_receipts": [
+    {
+      "event_id": "WORK-NATIVE-3d58036b905a-4",
+      "trace_id": "WORK-NATIVE-3d58036b905a",
+      "render_state_hash": "76bd3972842ef4c614f70d8abaf17a96f963d5b620e0b0ea191ddafc77ef8143",
+      "frame_cycles": 2,
+      "render_after_receive_ms": 1014.1999999999534,
+      "received_at": 1791973772324,
+      "server_latency_ms": 1339
+    },
+    {
+      "event_id": "WORK-NATIVE-3d58036b905a-2",
+      "trace_id": "WORK-NATIVE-3d58036b905a",
+      "render_state_hash": "ae205d6c05d7f62f144d1d53693d604e50f315d68be5fc21e17c2654b5615e99",
+      "frame_cycles": 2,
+      "render_after_receive_ms": 1003.6000000000931,
+      "received_at": 1791973759871,
+      "server_latency_ms": 2166
+    },
+    {
+      "event_id": "WORK-NATIVE-3d58036b905a-action-session-close",
+      "trace_id": "WORK-NATIVE-3d58036b905a",
+      "render_state_hash": "c62a84a6caf0848a6c793112042bf9354378da06abf3f9f09ef9708ec7633ce0",
+      "frame_cycles": 2,
+      "render_after_receive_ms": 15.899999999906868,
+      "received_at": 1791973793075,
+      "server_latency_ms": 711
+    }
+  ],
+  "frame": {
+    "path": "traces/worker-probe-frame-20261014.jpg",
+    "sha256": "8a5ecd03435a84be876f78a1f45d1c23e9f5974f16b74b6757394da46b9790c2",
+    "event_id": "WORK-NATIVE-3d58036b905a-action-session-close",
+    "visible_text": "SESSION_ENDED · WORK-NATIVE-3d58036b905a-action-session-close",
+    "visibility": "visible"
+  },
+  "scope": "WRAPPED actual Python subprocess, not Codex/scheduled-ChatGPT identity. Action receipt, native D1 ingress, public anonymous SSE and actual rendered frame verified. Full Codex+Owner E2E remains gated.",
+  "lease_tests": {
+    "A": "PASS_NATIVE_FRESH_LEASE_HEARTBEAT",
+    "B": "PASS_NATIVE_EXPIRY_AND_RENEWAL_REJECTION",
+    "C": "PASS_NATIVE_PREVIOUS_GENERATION_REJECTION",
+    "D": "PASS_NATIVE_SAME_CURSOR_DEDUPE",
+    "E": "PASS_NATIVE_OLD_SEQUENCE_REJECTION",
+    "F": "NOT_RUN",
+    "G": "PASS_SNAPSHOT_STREAM_READY_FALSE",
+    "H": "NOT_TESTED_SEPARATELY"
+  },
+  "measurements": {
+    "ACTION_TO_EMIT_DISPATCH": 0.032920000080594036,
+    "SERVER_RECEIVED": 1791973770985,
+    "SERVER_RECEIVED_TO_VERIFIED_RENDER_ACK_ms": 1339,
+    "clock_scope": "dispatch delta uses launcher monotonic clock; server latency uses server wall clock only; no cross-machine monotonic comparison"
+  },
+  "paid_usd_total": 0,
+  "scientific_state_modified": false
+}

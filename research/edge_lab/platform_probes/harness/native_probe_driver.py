@@ -24,7 +24,7 @@ termios.tcsetattr(0, termios.TCSANOW, tty)
 ROOT = 'https://quant-trade-lab.sassylime.chatgpt.site/__platform_probe'
 trace = 'WORK-NATIVE-' + uuid.uuid4().hex[:12]
 log = {'trace_id': trace, 'worker_type': 'benign_python_subprocess',
-       'provenance': 'WRAPPED', 'scope': 'PLATFORM_PROBE_ONLY', 'checks': []}
+       'provenance': 'WRAPPED', 'scope': 'PLATFORM_PROBE_ONLY', 'checks': [], 'request_timings': []}
 
 def call(path, payload=None, auth=True, origin=None):
     headers = {'OAI-Sites-Authorization': 'Bearer ' + cfg['bypass']}
@@ -36,11 +36,15 @@ def call(path, payload=None, auth=True, origin=None):
     if data is not None:
         headers['Content-Type'] = 'application/json'
     req = urllib.request.Request(ROOT + path, data=data, headers=headers)
+    started = time.monotonic()
     try:
         r = urllib.request.urlopen(req, timeout=12)
-        return r.status, json.loads(r.read(100000))
+        body = json.loads(r.read(100000))
+        log['request_timings'].append({'path':path,'status':r.status,'round_trip_ms':(time.monotonic()-started)*1000})
+        return r.status, body
     except urllib.error.HTTPError as e:
         raw = e.read(100000)
+        log['request_timings'].append({'path':path,'status':e.code,'round_trip_ms':(time.monotonic()-started)*1000})
         try:
             return e.code, json.loads(raw)
         except ValueError:
@@ -59,6 +63,8 @@ def check(name, expected, status, body):
 
 def new_session():
     native = str(uuid.uuid4())
+    import os
+    log['launcher_pid'] = os.getpid()
     status, s = call('/session', {'worker_id': cfg['worker_id'],
                                 'native_session_id': native, 'trace_id': trace})
     check('native_session_creation', 200, status, s)
@@ -150,8 +156,11 @@ try:
         status, b = call('/event', {**event(s, sequence+1, 'HEARTBEAT', trace+'-spoof'),
                                    'worker_id':'unauthorized-worker'})
         check('worker_binding_spoof_rejected', 403, status, b)
+        status, b = call('/event', event(s, sequence+1, 'SESSION_ENDED', trace+'-action-session-close'))
+        check('real_action_session_clean_close',200,status,b)
+        old_generation = new_session()
         newer = new_session()
-        status, b = call('/event', event(s, sequence+1, 'HEARTBEAT', trace+'-old-generation'))
+        status, b = call('/event', event(old_generation, 1, 'HEARTBEAT', trace+'-old-generation'))
         check('C_old_generation_rejected', 409, status, b)
         status, b = call('/event', event(newer, 1, 'SESSION_ENDED', trace+'-new-close'))
         check('clean_new_session_close', 200, status, b)

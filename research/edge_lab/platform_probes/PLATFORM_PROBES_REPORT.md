@@ -1,3 +1,13 @@
+# Checkpoint — actual benign action → native store → public stream → rendered frame
+
+Actual Python subprocess completed (exit 0, stdout hash recorded), with real heartbeat, completion effect proof and clean close. Native tests demonstrate generation rejection, same-cursor duplicate suppression, old sequence rejection and expiry. The anonymous public client displayed the new events and emitted ACK only after two requestAnimationFrame callbacks. Frame evidence and independent native D1 ACK receipts are committed. No GitHub participates in the live path.
+
+Trace: [work-continuation-native-action-stream-frame-20261014.json](traces/work-continuation-native-action-stream-frame-20261014.json). [Actual frame](traces/worker-probe-frame-20261014.jpg).
+
+Scope: this proves a WRAPPED benign command worker. It does not prove Codex or scheduled ChatGPT identity, Owner-positive mutation, uncontrolled isolate restart, or the gated full E2E. Controlled actual redeployment/restart and ACK-before-frame rejection are next.
+
+---
+
 # Checkpoint — native driver and explicit heartbeat profile repair
 
 The native event/ACK proof and the 6-second lease failure are already pushed. This checkpoint saves the actual native driver, a bounded source patch and the new immutable migration before deployment. The new probe declares heartbeat 10s and lease 30s, using the same max(6s,3 intervals) rule as the contract. Four changed-probe local tests pass; native semantics still require empirical verification. No auth controls or scientific parameters are weakened.
