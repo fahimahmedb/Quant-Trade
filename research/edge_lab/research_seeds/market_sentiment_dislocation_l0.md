@@ -50,3 +50,5 @@ Choose one public sentiment family with point-in-time timestamps and minimal rev
 ## L0 disposition — 2026-10-14
 
 Consumed once as `market-sentiment-cftc-cad-positioning`; verdict `PARK_DATA`, exposure `DATA_FEASIBILITY`, no economic look. [Primary evidence and next source question](../discovery/qualifications/market-sentiment-cot-clock-l0-2026-10-14.json). COT position date is Tuesday; normal publication Friday 15:30 Eastern. Exact TFF/CAD classification, as-published history and usable daily FX semantics remain unqualified. No directional conclusion. Do not consume this narrative again under another name; only the explicitly recorded new primary-source gaps may be resolved. France and Trump seeds were inspected but not consumed.
+
+Bounded source follow-up closed: [evidence](../discovery/qualifications/market-sentiment-cot-access-followup-2026-10-14.json), `PARK_DATA`. Official backlog/holiday notices refute fixed-Friday availability; exact TFF/CAD vintages and permitted daily FX proxy remain unqualified. No second seed consumption or economic look. Do not repeat this review without genuinely new primary evidence.

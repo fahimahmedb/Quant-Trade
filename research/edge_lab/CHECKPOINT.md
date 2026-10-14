@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, CFTC/FX qualification closed
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Source-gap decision and primary evidence](discovery/qualifications/market-sentiment-cot-access-followup-2026-10-14.json): `market-sentiment-cftc-cad-positioning` remains PARK_DATA after its one bounded follow-up. CFTC documents backlog/holiday delays; Bank of Canada API schema warns availability may lag publication. Fixed-Friday or date-only joins cannot establish availability. Legacy commercial/noncommercial notes do not qualify the proposed TFF leveraged-fund field. Exact CAD vintages, FX reuse/rate semantics and benchmark remain unresolved. No positions, market prices or economic outcome requested.
+- The source question is PARK/closed; seed remains consumed once. No relabel/retry of this narrative or these documents absent genuinely new usable evidence. France/Trump remain IDEA_GENERATED. NEXT: the previously deferred permissionless collateral-auction service L0, primary contract and public-log-access documentation only, <=3 requests / <=15 minutes / <=512 KiB each / zero retries. No log/transaction/oracle/payoff request, collector, paid RPC or account. No new architecture.
+- A–E original event ordering/exclusions and unresolved chronology remain unchanged; no new event selected. VX passive OOS remains NOT_DUE before 2026-10-15T00:00:00Z, no historic/backfill/early payoff. No economic claim opened; prior UNKNOWN outcomes stay spent.
+- Proof SHA256 `bd5b4237c3638e29e02478ea4b34f589599c58e129db1dd3bd4a25117168495c`. Three complete responses, 228807 bytes, USD 0/zero retries. Complete YAML recovered locally after a missing Content-Type extractor warning. Tokens/global bill unmeasured. Existing ledger prefix, queue, metrics, multiplicity and exposure history preserved; frozen protocols/register unchanged. Raw documentation private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, one sentiment seed triaged
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

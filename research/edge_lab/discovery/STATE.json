@@ -2084,6 +2084,139 @@
       },
       "previous": "42c1b205513131d6da99ab3dd20df8fdc611da184d6559fa828c55b88a7907af",
       "sequence": 44
+    },
+    {
+      "at": "2026-10-14T04:22:46.309221+00:00",
+      "hash": "64f0fe4637c94480394d6db5a73963179d2ca9dff7269eb37dcb0169d4ac3b77",
+      "kind": "DISCOVERY_SENTIMENT_COT_SOURCE_FOLLOWUP_CLOSED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "Close the single permitted documentary follow-up; no L1 or additional same-source cycle authorized absent new evidence.",
+          "id": "market-sentiment-cftc-cad-positioning:source-feasibility",
+          "status": "PARK"
+        },
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "economic_look_charged": false,
+        "exposure": {
+          "effective_independent_trials": "UNKNOWN",
+          "new_economic_looks": 0,
+          "new_expression_executions": 0,
+          "private_history": "UNKNOWN",
+          "scope": "API schema prose/route metadata and CFTC classification/publication/correction notices; static schema examples acquired but neither executed nor numeric values analyzed. No selected position data, market-price/NAV/distribution/payoff payload or outcome join.",
+          "seed_consumptions_this_pass": 0,
+          "type": "DOCUMENTARY_SOURCE_FEASIBILITY"
+        },
+        "head_observed": "2c92bb6c0dfc50d2d2a99b0e0ff39b41b7f1f4e7",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "causal_distinction": "Protocol-level payment/auction economics for liquidation service, not carry, a post-liquidation market-return signal, order-book pressure, or the rejected prediction-market expression. Shared crypto/liquidation risk is acknowledged; no claim of an independent trial or qualified source until documents are read.",
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "economic_access_authorized": false,
+          "family": "permissionless-collateral-auction-liquidator",
+          "kind": "L0_DOCUMENTARY_SCOUT",
+          "passive_VX_priority": {
+            "prospective_T0": "2026-10-15T00:00:00Z",
+            "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+            "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+            "status": "NOT_DUE_BEFORE_T0"
+          },
+          "primary_document_candidates": [
+            "https://docs.makerdao.com/smart-contract-modules/dog-and-clipper-detailed-documentation",
+            "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+          ],
+          "prospective_A_E_priority": {
+            "bounds": {
+              "economic_payloads": 0,
+              "max_agent_minutes": 15,
+              "max_bytes_per_document": 524288,
+              "max_primary_document_requests": 3,
+              "max_total_document_bytes": 1572864,
+              "retries": 0
+            },
+            "closed_dependencies": {
+              "WTI": "PARK_DATA; no CME/DataMine re-probe",
+              "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+              "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+            },
+            "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+            "economic_access_authorized": false,
+            "family": "A/B-v2/C-v2/D/E",
+            "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+            "latest_metadata_snapshot": {
+              "candidate_forms_observed": 0,
+              "coverage_complete_since_previous": false,
+              "entries": 100,
+              "newest_updated": "2026-10-13T21:21:48-04:00",
+              "observed_at": "2026-10-14T01:24:10.705182+00:00",
+              "oldest_updated": "2026-10-13T19:59:19-04:00",
+              "sha256": "1e7af164790bf7d3f50852766e881051601c0dcad9be2373d41a9401660d6a64"
+            },
+            "pending": "Fresh bounded 100-entry snapshot contains forms 4/144/13D/13D-A/3 only, no candidate A-E form. It does not fill the earlier time gap. No qualifying event established; earlier source/coverage uncertainty preserved. No event/issuer selected.",
+            "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+            "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+            "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
+            "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+            "status": "OPEN"
+          },
+          "question": "Execute the already-deferred ONE documentary L0 on permissionless collateral-auction liquidation-service compensation using the two primary documentation candidates already saved. Determine who funds compensation, contract-version applicability, gas/competition/inventory risks and whether a public no-account/no-paid historical event route could support one cheap upper-bound falsification. No auction logs, oracle values, selected transaction receipts, price/payoff data, bot or collector. Park if no usable permitted route is established; do not build infrastructure.",
+          "resume_rule": "A-E admission and mechanically due VX OOS retain priority, and any unresolved economic look permits documentary work only. Reuse cached sources. The sentiment seed is consumed once and its bounded follow-up is now closed; no new label/review. France and Trump remain IDEA_GENERATED; this is continuation of an existing deferred scout, not new seed consumption.",
+          "reuse_reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "seed_history": [
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+              "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+              "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+              "seed_id": "market_sentiment_dislocation_l0",
+              "source_followup": {
+                "decision": "PARK_DATA",
+                "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+                "repeat_allowed_without_new_fact": false,
+                "status": "PARK"
+              }
+            }
+          ],
+          "source_status": "PROPOSED_DOCUMENTARY_SCOUT_ONLY; neither page accessed or evidence asserted in this pass",
+          "status": "OPEN",
+          "unconsumed_seeds": [
+            "france_fiscal_political_stress_l0",
+            "trump_policy_event_transmission_l0"
+          ]
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_executions": 0,
+          "economic_payload_requests": 0,
+          "global_bill": null,
+          "local_recovery": "Complete YAML was already saved before text extractor encountered a missing Content-Type. Parsed cached bytes locally; no HTTP retry.",
+          "paid_usd": 0,
+          "primary_requests": 3,
+          "received_body_bytes": 228807,
+          "request_wall_seconds_sum": 1.102099071998964,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "proof": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+        "proof_sha256": "bd5b4237c3638e29e02478ea4b34f589599c58e129db1dd3bd4a25117168495c"
+      },
+      "previous": "1669a45e0be0a1f5230cd1fb5704d8ec85dff3b7cb2edb062b58d57b0cc074cd",
+      "sequence": 45
     }
   ],
   "exposure_ledger": [
@@ -2129,7 +2262,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "b335e653c5150fad776afbedea1629a2039c1161b3a05c204f74277d05c9c691",
+  "integrity": "e34f5051e926ccf5a9553060514f97cf1586d0fb353f52036f0c155a29507072",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -2197,84 +2330,27 @@
       "max_total_document_bytes": 1572864,
       "retries": 0
     },
+    "causal_distinction": "Protocol-level payment/auction economics for liquidation service, not carry, a post-liquidation market-return signal, order-book pressure, or the rejected prediction-market expression. Shared crypto/liquidation risk is acknowledged; no claim of an independent trial or qualified source until documents are read.",
     "closed_dependencies": {
       "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
       "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
-    "deferred_existing_scout": {
-      "bounds": {
-        "economic_payloads": 0,
-        "max_agent_minutes": 15,
-        "max_bytes_per_document": 524288,
-        "max_primary_document_requests": 3,
-        "max_total_document_bytes": 1572864,
-        "retries": 0
-      },
-      "causal_distinction": "Protocol-level payment/auction economics for liquidation service, not carry, a post-liquidation market-return signal, order-book pressure, or the rejected prediction-market expression. Shared crypto/liquidation risk is acknowledged; no claim of an independent trial or qualified source until documents are read.",
-      "closed_dependencies": {
-        "WTI": "PARK_DATA; no CME/DataMine re-probe",
-        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
-        "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
-        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
-      },
-      "economic_access_authorized": false,
-      "family": "permissionless-collateral-auction-liquidator",
-      "kind": "L0_DOCUMENTARY_SCOUT",
-      "primary_document_candidates": [
-        "https://docs.makerdao.com/smart-contract-modules/dog-and-clipper-detailed-documentation",
-        "https://ethereum.org/en/developers/docs/apis/json-rpc/"
-      ],
-      "prospective_A_E_priority": {
-        "bounds": {
-          "economic_payloads": 0,
-          "max_agent_minutes": 15,
-          "max_bytes_per_document": 524288,
-          "max_primary_document_requests": 3,
-          "max_total_document_bytes": 1572864,
-          "retries": 0
-        },
-        "closed_dependencies": {
-          "WTI": "PARK_DATA; no CME/DataMine re-probe",
-          "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
-          "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
-        },
-        "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
-        "economic_access_authorized": false,
-        "family": "A/B-v2/C-v2/D/E",
-        "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
-        "latest_metadata_snapshot": {
-          "candidate_forms_observed": 0,
-          "coverage_complete_since_previous": false,
-          "entries": 100,
-          "newest_updated": "2026-10-13T21:21:48-04:00",
-          "observed_at": "2026-10-14T01:24:10.705182+00:00",
-          "oldest_updated": "2026-10-13T19:59:19-04:00",
-          "sha256": "1e7af164790bf7d3f50852766e881051601c0dcad9be2373d41a9401660d6a64"
-        },
-        "pending": "Fresh bounded 100-entry snapshot contains forms 4/144/13D/13D-A/3 only, no candidate A-E form. It does not fill the earlier time gap. No qualifying event established; earlier source/coverage uncertainty preserved. No event/issuer selected.",
-        "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
-        "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-        "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
-        "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
-        "status": "OPEN"
-      },
-      "question": "Qualify ONE causally distinct protocol-service mechanism: compensation/discounts to participants clearing an on-chain collateral auction. Consult only primary Maker/Sky liquidation contract documentation and public Ethereum log-access documentation, no price/oracle values, auction results, selected transaction receipts or logs before a new declaration/claim. Determine who funds compensation, what collateral/credit/inventory and gas/competition risks remain, and whether public event history could support a cheap upper-bound falsification under zero paid services. If no usable permitted data route is established, park; do not build a collector.",
-      "resume_rule": "Do not reopen the parked spin-off design or re-probe paid Nasdaq/free-unqualified Yahoo/Alpha Vantage routes without a distinct new source fact. A-E admission retains priority for admissible new primary metadata; preserve all historical exposures and original ordering. No event outcomes, accounts, paid RPC, bots, framework or real-capital action.",
-      "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
-      "source_status": "PROPOSED_DOCUMENTARY_SCOUT_ONLY; neither page accessed or evidence asserted in this pass",
-      "status": "OPEN"
-    },
     "economic_access_authorized": false,
-    "family": "market-sentiment-cftc-cad-positioning",
-    "kind": "L0_SOURCE_FEASIBILITY",
+    "family": "permissionless-collateral-auction-liquidator",
+    "kind": "L0_DOCUMENTARY_SCOUT",
     "passive_VX_priority": {
       "prospective_T0": "2026-10-15T00:00:00Z",
       "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
       "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
       "status": "NOT_DUE_BEFORE_T0"
     },
+    "primary_document_candidates": [
+      "https://docs.makerdao.com/smart-contract-modules/dog-and-clipper-detailed-documentation",
+      "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+    ],
     "prospective_A_E_priority": {
       "bounds": {
         "economic_payloads": 0,
@@ -2309,24 +2385,30 @@
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "One bounded continuation using newly located primary documentation: inspect Bank of Canada https://www.bankofcanada.ca/valet/static/swagger/api-en.yml without executing observation examples, and the official CFTC TFF category/release-revision documentation. Determine whether the exact Canadian-dollar leveraged-fund futures-only series, actual publication availability and a permitted free USDCAD daily proxy/benchmark can be specified. Inspect documentation only, no position values, selected rates, live observations, logs or outcome join. If these gates stay unresolved after this continuation, keep PARK_DATA and move to the deferred protocol-service scout; no repeated narrative search, new sentiment label or parameter variants.",
-    "resume_rule": "Reuse current COT overview, Valet UI and initializer; no refetch. A-E admission and mechanically due VX OOS retain priority. This seed has been consumed once; no positive/negative direction is established, no L1 authority, no return-window choices. Other two seeds remain IDEA_GENERATED.",
-    "reuse_reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+    "question": "Execute the already-deferred ONE documentary L0 on permissionless collateral-auction liquidation-service compensation using the two primary documentation candidates already saved. Determine who funds compensation, contract-version applicability, gas/competition/inventory risks and whether a public no-account/no-paid historical event route could support one cheap upper-bound falsification. No auction logs, oracle values, selected transaction receipts, price/payoff data, bot or collector. Park if no usable permitted route is established; do not build infrastructure.",
+    "resume_rule": "A-E admission and mechanically due VX OOS retain priority, and any unresolved economic look permits documentary work only. Reuse cached sources. The sentiment seed is consumed once and its bounded follow-up is now closed; no new label/review. France and Trump remain IDEA_GENERATED; this is continuation of an existing deferred scout, not new seed consumption.",
+    "reuse_reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
         "consumed_at": "2026-10-14T03:29:10.443560+00:00",
         "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
         "same_candidate_id": "market-sentiment-cftc-cad-positioning",
-        "seed_id": "market_sentiment_dislocation_l0"
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
       }
     ],
+    "source_status": "PROPOSED_DOCUMENTARY_SCOUT_ONLY; neither page accessed or evidence asserted in this pass",
     "status": "OPEN",
     "unconsumed_seeds": [
       "france_fiscal_political_stress_l0",
       "trump_policy_event_transmission_l0"
-    ],
-    "why_next_is_new_information": "The primary Swagger initializer reveals an exact previously unread schema URL; generic COT overview establishes the Tuesday/Friday mismatch but leaves TFF definitions and revision semantics unqualified. This is a source gap to resolve once, not a re-consumption of the seed."
+    ]
   },
   "policy_version": "4.2",
   "queue": [
@@ -3763,5 +3845,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-14T03:29:10.443560+00:00"
+  "updated_at": "2026-10-14T04:22:46.302251+00:00"
 }
