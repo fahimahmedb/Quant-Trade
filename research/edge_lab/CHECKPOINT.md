@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, spin-off feasibility parked
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Decision and primary access evidence](discovery/qualifications/spinoff-clock-price-feasibility-2026-10-14.json): one bounded spin-off design cycle finished with PARK_DATA before declaration/outcomes. Nasdaq Daily List offers corporate-action history but requires secured subscription access, ordering documents and prior approval. No first regular-way/when-issued distinction or free child-price/benchmark route qualified. Cached Yahoo/Alpha Vantage limits reused, not re-probed. This is no economic rejection and does not prove all issuer routes inaccessible.
+- Fresh SEC metadata snapshot at 2026-10-14T01:24:10.705182+00:00: 100 entries, 19:59:19–21:21:48 Eastern on October 13, only forms 4/144/13D/13D-A/3. No A–E candidate form observed in this slice; the gap since the prior feed and earlier partial sources remain unresolved. No event selected or claim opened.
+- NEXT: one documentary L0 on permissionless collateral-auction liquidation-service compensation, primary contract/log-access documentation only. Proposed pages are not yet read or qualified. This differs from carry and post-liquidation market returns; shared crypto risks remain. No oracle/price/auction/log outcome payload, bot, account or paid service. A–E ordering retains priority for genuinely admissible new evidence. <=3 requests / <=15 minutes / <=512 KiB each / zero retries.
+- Proof SHA256 `b2245da8374dd049c0bfca3edc46deda63be068c9d6d13fd81b7246ca37c9f70`. Three responses (158297 bytes), including one HTTP200 retired-page response and its distinct official product link; zero retries/USD 0. No selected market/economic data; tokens/global bill unmeasured. Spin-off question PARK; next explicit. Previous economic counters, queue, multiplicity, exposure ledger and event prefix preserved; raw pages/feed private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, Xponential closed; one spin-off L0 sourced
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
