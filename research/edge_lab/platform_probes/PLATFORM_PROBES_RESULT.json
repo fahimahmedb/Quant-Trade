@@ -209,7 +209,7 @@
     }
   ],
   "work_handoff_required": false,
-  "exact_next_action_for_work": "STOP. Current authorized platform probes maximum reached. Owner reviews factual Capability Matrix and decides whether to authorize same-project probe infrastructure/architecture changes and restore a usable genuine runtime session. No final product implementation is authorized.",
+  "exact_next_action_for_work": "Continue testing existing same-project native D1 probe; complete Owner Codex login via secure interaction, repair only demonstrated probe defects, preserve research isolation.",
   "work_required_capability": [
     "cloud browser",
     "Site platform controls",
@@ -309,7 +309,7 @@
   "work_final_head": null,
   "work_final_head_resolution": "Resolve the commit containing this updated canonical result after atomic branch publication; exact final SHA is returned in Work final output. The commit cannot contain its own yet-uncreated SHA.",
   "work_branch": "builder/live-lab-platform-probes-20261013",
-  "work_maximum_reached": true,
+  "work_maximum_reached": false,
   "work_recorded_at_utc": "2026-10-13T04:13:50.348Z",
   "build_authorized": false,
   "final_live_lab_build_authorized": false,
@@ -401,5 +401,25 @@
     "End-to-end authenticated Owner mutation, Origin/CSRF, replay, expiry/revocation and orchestrator ACK remain untested because no mutation exists.",
     "Transport maximum lifetime, resume/cache behavior for a real worker-event transport, and post-render ACK latency remain untested."
   ],
-  "historical_builder_work_handoff_required": true
+  "historical_builder_work_handoff_required": true,
+  "continuation_20261014": {
+    "mandatory_start_head": "0b3c180536937cc63b94fa0dedf8252405f56ef8",
+    "last_checkpoint": "NATIVE_DB_AND_EXISTING_PROBE_DISCOVERY",
+    "last_trace": "research/edge_lab/platform_probes/traces/work-continuation-native-discovery-20261014.json",
+    "owner_authentication_pending": true,
+    "native_db_binding_and_schema_proven": true,
+    "final_capability_status": {
+      "CODEX_AUTHENTICATED_RUNTIME": "BLOCKED",
+      "SAME_PROJECT_WORKER_INGRESS": "BLOCKED",
+      "SAME_PROJECT_TRANSIENT_STORE": "BLOCKED",
+      "SAME_PROJECT_LEASE_PROTOCOL": "BLOCKED",
+      "SAME_PROJECT_PUBLIC_WORKER_STREAM": "BLOCKED",
+      "SAME_PROJECT_OWNER_AUTH_MUTATION": "BLOCKED",
+      "VERIFIED_RENDER_ACK": "NOT_RUN",
+      "PUBLIC_E2E_LIVE_CANARY": "NOT_RUN"
+    },
+    "minimum_probe_infrastructure_authorized": true,
+    "final_product_build_authorized": false,
+    "paid_usd_total": 0
+  }
 }

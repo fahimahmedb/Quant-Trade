@@ -1,3 +1,15 @@
+# 2026-10-14 continuation — native construction now authorized
+
+Mandatory Quant branch HEAD verified: `0b3c180536937cc63b94fa0dedf8252405f56ef8`.
+
+New native result: Site version 14 (`fdf8c50797a3198793920d9d50c4ebcfa5f06ed6`) already includes an isolated probe and a deployed D1 binding DB with five probe-only tables. The source advanced independently; it will be reused rather than replacing the existing application. Source existence and DB schema do not prove full live protocol semantics.
+
+Trace: [work-continuation-native-discovery-20261014.json](traces/work-continuation-native-discovery-20261014.json).
+
+Codex 0.159.2 was retried; no execution JSONL event appeared before timeout. Device authorization produces a real login challenge; Owner secure login interaction is required and will be requested. No code/token is retained in evidence. Work maximum is not reached; mission continues. Final Live Lab/3D/UI work remains unauthorized.
+
+---
+
 # Work continuation — factual Capability Matrix
 
 WORK_START_HEAD = `d446508bc71432bd854e1663fe04a2e352b4cedc`
