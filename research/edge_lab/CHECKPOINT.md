@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-14, new SEC documents; News Corp cover resolved
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Prospective admission evidence](discovery/qualifications/prospective-admission-news-corp-2026-10-14.json): fresh100-entry feed at 2026-10-14T10:16:37.932636+00:00, 76 newly observed entries versus cached snapshot and16 candidate-form records including two DEFM14A. News Corp8-K accepted2026-10-13 21:29:43Eastern is routine disclosure under an existing repurchase program. Its primary description is ineligible for A-E; ASX buyback exhibits remain unread. No event selected/claimed, no price/NAV/payoff acquired.
+- NEXT: reuse the saved15 pending records, starting with Liquidia index/accepted timestamp and smallest necessary legal description, while preserving earlier unresolved chronology and original exclusions. Do not treat feed updated times or an overlapping100-entry window as complete acceptance order. No later favorable issuer substitution, full SEC census, or retries of old partial sources. <=3 documents / <=15 minutes / <=512 KiB each / zero retries.
+- The savings-bond legal follow-up is explicitly deferred, not attempted this pass; its unreserved May–October2026 rate-panel exposure remains consumed. Resume that exact documentary question only when prospective admission leaves no admissible work; no rate/price/calculator repeat or retroactive claim. All seed dispositions unchanged. VX passive OOS NOT_DUE before2026-10-15T00:00:00Z; legacy UNKNOWN stays spent.
+- Proof SHA256 `3ec509b24c4b0d24353d2b06264d2afa4c9f07e80fe2fa2c94633263596cc061`. Three complete primary responses, 100968 bytes, zero retries/USD0. Tokens/global bill unmeasured. Ledger prefix, counters, queue, multiplicity/exposures and frozen protocols/register preserved. Raw documents private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, savings-bond constraints and incidental rate exposure
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
