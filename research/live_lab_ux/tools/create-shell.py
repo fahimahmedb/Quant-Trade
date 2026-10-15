@@ -8,7 +8,7 @@ shell='''<!doctype html>
  <div class="signature" aria-hidden="true"><i>Q</i><span>QUANT<span>RESEARCH OBSERVATORY</span></span></div>
  <nav class="camera-controls" aria-label="Explore laboratory"><button data-zoom-out aria-label="Zoom out">−</button><button data-camera-reset aria-label="Return to architectural view">⌂</button><button data-zoom-in aria-label="Zoom in">+</button></nav>
  <p class="explore-hint">Drag to explore <span>·</span> Select an agent to approach</p>
- REPLAY_CONTROLS
+REPLAY_CONTROLS
  <aside class="agent-context" data-agent-context hidden aria-live="polite"><button class="close-context" data-detail-close aria-label="Return to laboratory">×</button><small data-context-state></small><h1 data-context-role></h1><p data-context-task></p><button class="text-button" data-open-details>View factual details <span>↗</span></button></aside>
  <div hidden><div data-world-agents></div><span data-role-count></span><div data-result-wall></div></div>
 </main>

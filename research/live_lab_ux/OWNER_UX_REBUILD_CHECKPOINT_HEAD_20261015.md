@@ -1,17 +1,22 @@
-# OWNER UX REBUILD — CURRENT HEAD
+# OWNER UX REBUILD — INTEGRATED REVIEW CHECKPOINT
 
-Branch: `builder/live-lab-owner-ux-rebuild-20261015`
-Checkpoint visual source HEAD before this pointer file: `84dee4d05b12ebffcd8dd6eb9b14e80bea683665`
+Branch: `builder/live-lab-owner-ux-rebuild-20261015`.
+Mandatory owner starting HEAD: `d37c50b145ca7a97628e01078999b2a2b6e43841`.
+Pushed implementation/capture-source HEAD: `b29b65b03d1f8519abe8c056a16d8131e7995048`.
+The subsequent packaging commit contains the review captures/fallback assets and handoff. Resolve its exact HEAD with `git rev-parse HEAD` or the final handoff message; no self-referential commit SHA is invented.
 
 Read first:
-- `research/live_lab_ux/OWNER_UX_REBUILD_CHECKPOINT_20261015.md`
-- `research/live_lab_ux/owner_rebuild_preview/preview.html`
-- `research/live_lab_ux/owner_rebuild_preview/preview.css`
-- `research/live_lab_ux/owner_rebuild_preview/preview.js`
+1. `docs/VISUAL_REVIEW.md`
+2. `review/index.html` and `review/capture-manifest.json`
+3. `docs/INTEGRATION_CHECKPOINT.md`
+4. `docs/CANONICAL_UX_CONSTITUTION.md`
+5. Original `OWNER_UX_REBUILD_CHECKPOINT_20261015.md` and unchanged `owner_rebuild_preview/` for source provenance.
 
-Owner calibration:
-- UX3: `UX3-LUEKkkChgA`
-- UX4: `UX4-DkkiQkhZhkA`
+UX3: `UX3-LUEKkkChgA` · UX4: `UX4-DkkiQkhZhkA`.
 
-Next executor: Codex.
-Do not restart UX discovery. Integrate the pushed visual prototype into the real Live Lab while preserving native SSE/reducer truth semantics. Production replacement remains unauthorized until Owner visual review of five integrated captures.
+40 isolated tests PASS. Implementation Live Lab CI SUCCESS. Global SEC gate has an unrelated existing STATE.md proof-inventory freshness failure. Browser verification is recorded in the review artifacts.
+
+Native event architecture preserved. No production replacement, Site deployment, trading authorization or paid activity. The next action is Owner visual review of integrated A–E captures, not publication.
+
+PRODUCTION_REPLACEMENT_AUTHORIZED = FALSE
+VISUAL_REVIEW_REQUIRED = TRUE

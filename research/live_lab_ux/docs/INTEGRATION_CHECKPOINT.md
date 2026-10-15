@@ -23,3 +23,13 @@ Owner rejected first integrated image as too bland. Revised camera toward the ca
 Added same-world illustrated fallback with CPU projection of the exact adult geometry, optional factual details after settled camera focus, ambient occlusion and restrained optical bloom. Idle renderer sleeps; static geometry is batched. The browser review harness exercises live.html through a browser-only EventSource mock; Economic Look remains an explicit normalized reducer fixture because the native protocol does not support that event.
 
 A new regression proves an empty snapshot must freeze omitted workers even after another worker starts later. The sole reducer change freezes existing animation flags before applying a snapshot. Native adapters/SSE/ingress/store remain unchanged. 40 Node tests PASS. Final integrated screenshots and forced-fallback/browser checks are in progress.
+
+## Review package
+
+Five fresh integrated A–E captures and one forced-fallback capture are packaged under `review/`, together with capture provenance and browser QA results. 40 Node tests and 9 browser checks PASS. Live Lab CI on `b29b65b` is SUCCESS. The unrelated global SEC freshness check remains red (STATE.md Python test count 371 vs generated 539). iPhone Safari/device performance remains unverified; portrait was Chromium emulation. Illustrated focus magnification is bounded to retain backdrop clarity.
+
+The first bland render is not the review candidate. Owner approval has not been inferred from test results. No production Site mutation/deployment or live-ingress canary was performed.
+
+STOP_AT = OWNER_VISUAL_REVIEW
+PRODUCTION_REPLACEMENT_AUTHORIZED = FALSE
+VISUAL_REVIEW_REQUIRED = TRUE

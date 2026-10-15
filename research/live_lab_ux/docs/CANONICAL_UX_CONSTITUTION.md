@@ -27,8 +27,8 @@ North Star: **Un diorama architectural vivant dans lequel le vrai travail du Res
 
 Preserve native worker event → ingress → store → SSE → LiveEventAdapter → canonical mapper → reducer → factual state → animation authority. No GitHub polling. No fabricated activity.
 
-REAL_CAPITAL_AUTHORIZED = FALSE  
-LIVE_TRADING_AUTHORIZED = FALSE  
+REAL_CAPITAL_AUTHORIZED = FALSE
+LIVE_TRADING_AUTHORIZED = FALSE
 paid_usd_total = 0
 
 Rebuild in isolation. Mandatory same-direction illustrated/2.5D fallback. Capture A: empty connected idle; B: one worker active; C: selected worker/camera focus; D: Economic Look; E: iPhone portrait. Synthetic review events must be visibly marked as synthetic and never enter live transport/store.
