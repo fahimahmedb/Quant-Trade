@@ -4,6 +4,7 @@ import unittest
 from research.research_os.expansion.source_qualification import (
     build_producer_test_readiness,
     qualify_producer_test_readiness,
+    qualify_source_route,
 )
 
 
@@ -75,6 +76,22 @@ def _event_detail():
             "status": "UNKNOWN",
             "values": {},
         },
+    }
+
+
+def _source_route():
+    return {
+        "route_id": "producer-readiness-fixture",
+        "source_class": "PRIMARY_PUBLIC",
+        "transport": "OFFLINE_CAPTURE",
+        "locator": "https://example.test/document",
+        "permission_state": "PUBLIC",
+        "pit_mode": "PUBLICATION_TIME",
+        "revision_policy": "PIN_CAPTURE_HASH",
+        "survivorship_policy": "PRESERVE_ALL_CAPTURED_VERSIONS",
+        "timezone": "UTC",
+        "availability_start": "2026-10-15T00:00:00Z",
+        "contains_outcome": False,
     }
 
 
@@ -211,6 +228,35 @@ class ProducerEconomicReadinessTests(unittest.TestCase):
         self.assertEqual(qualified["status"], "BLOCK")
         self.assertIn("OUTCOME_ACCESS_NOT_ALLOWED", qualified["blockers"])
         self.assertIn("ECONOMIC_RESULT_NOT_ALLOWED", qualified["blockers"])
+
+
+class ProducerSourceQualificationTests(unittest.TestCase):
+    def test_outcome_free_public_route_qualifies(self):
+        qualified = qualify_source_route(
+            _source_route(), freeze_time="2026-10-16T00:00:00Z"
+        )
+        self.assertEqual(qualified["status"], "PASS")
+        self.assertTrue(qualified["point_in_time_qualified"])
+        self.assertFalse(qualified["outcome_accessed"])
+
+    def test_outcome_bearing_route_is_fail_closed(self):
+        route = _source_route()
+        route["contains_outcome"] = True
+        qualified = qualify_source_route(
+            route, freeze_time="2026-10-16T00:00:00Z"
+        )
+        self.assertEqual(qualified["status"], "BLOCK")
+        self.assertIn("UNAUTHORIZED_OUTCOME_BEARING_ROUTE", qualified["blockers"])
+
+    def test_route_not_available_at_freeze_is_fail_closed(self):
+        route = _source_route()
+        route["availability_start"] = "2026-10-17T00:00:00Z"
+        qualified = qualify_source_route(
+            route, freeze_time="2026-10-16T00:00:00Z"
+        )
+        self.assertEqual(qualified["status"], "BLOCK")
+        self.assertIn("ROUTE_NOT_AVAILABLE_AT_FREEZE", qualified["blockers"])
+        self.assertFalse(qualified["point_in_time_qualified"])
 
 
 if __name__ == "__main__":
