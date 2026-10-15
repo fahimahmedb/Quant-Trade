@@ -1,0 +1,20 @@
+{
+  "receipt_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-g1",
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "worker_id":"independent_challenge",
+  "lease_generation":1,
+  "lineage":{"hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001","generation_id":"G1"},
+  "stages_executed":["independent_validation","cross_examination","red_team","claim_restriction"],
+  "artifacts":[
+    "research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-validation.json",
+    "research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-cross-examination.json",
+    "research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-red-team.json",
+    "research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001.json"
+  ],
+  "result":"PASS_BOUNDED_BUSINESS_MECHANISM_WITH_BLOCK_CLAIM_LEVEL",
+  "integration_handoff_created":false,
+  "frozen_generation_mutated":false,
+  "outcome_or_return_data_accessed":false,
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false},
+  "completed_at":"2026-10-15T13:46:00Z"
+}
