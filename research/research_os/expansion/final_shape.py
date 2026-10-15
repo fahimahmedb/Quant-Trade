@@ -17,32 +17,8 @@ def _hash(value: Any) -> str:
 
 
 def assess_implementability(engine_output: Dict[str, Any], meta: Dict[str, Any]) -> Dict[str, Any]:
-    blockers: List[str] = []
-    if not meta.get("source_available", False):
-        blockers.append("SOURCE_UNAVAILABLE")
-    if not meta.get("pit_feasible", False):
-        blockers.append("PIT_NOT_QUALIFIED")
-    if not meta.get("expression_feasible", False):
-        blockers.append("EXPRESSION_NOT_QUALIFIED")
-    if not meta.get("cost_model_feasible", False):
-        blockers.append("COST_MODEL_NOT_QUALIFIED")
-    if meta.get("capacity_observable") is False:
-        blockers.append("CAPACITY_NOT_OBSERVABLE")
-
-    status = "PASS" if not blockers else "PARK_IMPLEMENTABILITY"
-    return {
-        "hypothesis_id": engine_output["candidate"]["hypothesis_id"],
-        "status": status,
-        "source_available": bool(meta.get("source_available", False)),
-        "pit_feasible": bool(meta.get("pit_feasible", False)),
-        "expression_feasible": bool(meta.get("expression_feasible", False)),
-        "cost_model_feasible": bool(meta.get("cost_model_feasible", False)),
-        "capacity_observable": meta.get("capacity_observable", "UNKNOWN"),
-        "operational_complexity": meta.get("operational_complexity", "UNKNOWN"),
-        "blockers": blockers,
-        "mechanism_rewritten": False,
-        "research_decision_rewritten": False,
-    }
+    from .implementability_depth import assess_implementability_depth
+    return assess_implementability_depth(engine_output, meta)
 
 
 def freeze_experiment_envelope(
