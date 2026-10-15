@@ -5,6 +5,8 @@ from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 from research.research_os.engines.builtin import ENGINE_REGISTRY
+from research.research_os.engines.protocol import EngineContext, EngineContractError
+from research.research_os.tests.test_work_build_depth import execution_plan
 from research.research_os.expansion.experiment_runner import DryRunExperimentRunner
 from research.research_os.expansion.canonical_spine import run_canonical_spine
 from research.research_os.simulations.primary_documentary_build import documentary_case, run_primary_documentary_build, PRIMARY_SOURCES
@@ -58,6 +60,21 @@ class PrimaryDocumentaryIntegrationTests(unittest.TestCase):
             recovered = runner.execute(report['fact_transform_plan'], inputs, Path(directory))
             self.assertEqual(recovered['execution_receipt_hash'], report['fact_transform_execution']['execution_receipt_hash'])
             self.assertFalse(recovered['outcome_accessed'])
+
+    def test_outcomes_or_mismatched_references_cannot_hide_in_source_wrappers(self):
+        for key in PRIMARY_SOURCES:
+            for field, value in [('realized_return', '0.10'), ('source_ref', 'https://other.example/')]:
+                with self.subTest(engine=key, field=field):
+                    source = documentary_case(BASE, key)[0]
+                    source[field] = value
+                    with self.assertRaises(EngineContractError):
+                        ENGINE_REGISTRY[key].run(source, EngineContext('WRAPPER', synthetic_only=False))
+                    inputs = [{'engine_key':key, 'source':source}]
+                    runner, plan = execution_plan(inputs)
+                    with TemporaryDirectory() as directory:
+                        with self.assertRaises(EngineContractError):
+                            runner.execute(plan, inputs, Path(directory))
+                        self.assertFalse(list(Path(directory).glob('*.completed.json')))
 
     def test_actual_flow_legacy_duplicate_stops_before_generation_or_runner(self):
         _, _, configuration, task = documentary_case(BASE, 'institutional_flow')

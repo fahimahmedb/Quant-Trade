@@ -169,7 +169,13 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
 
 
 def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hypothesis_id: str) -> Dict[str, Any]:
+    required_source = {"source_ref", "freeze_time", "documentary_packet"}
+    allowed_source = required_source | ({"hypothesis_id"} if engine.family == "EDGE_ARCHAEOLOGY" else set())
+    if required_source - source.keys() or source.keys() - allowed_source:
+        raise EngineContractError('only declared documentary source fields are admissible')
     packet = source["documentary_packet"]
+    if source['source_ref'] != packet.get('source_ref'):
+        raise EngineContractError('source wrapper differs from documentary packet')
     if context.synthetic_only != (packet.get('evidence_class') == 'SYNTHETIC'):
         raise EngineContractError('source evidence class does not match the execution context')
     freeze = source["freeze_time"]
