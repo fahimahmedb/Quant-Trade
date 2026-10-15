@@ -1,0 +1,34 @@
+{
+  "receipt_id": "AUTONOMY-CANARY-001-g1",
+  "task_id": "AUTONOMY-CANARY-001",
+  "worker_id": "chatgpt-quant-research-worker",
+  "session_id": "AUTONOMY-CANARY-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T11:41:42Z",
+  "completed_at": "2026-10-15T11:44:00Z",
+  "input_head": "c4287593b4839a4ba90867267908c9736585b2c0",
+  "output_commit": null,
+  "status": "COMPLETE",
+  "summary": "Infrastructure-only canary completed. Fresh branch state and all seven required Research OS contracts were read successfully; the existing native Live Lab mapper accepts the required native worker-event identity and event types. No economic experiment, prospective observation, real-capital use, live trading, hypothesis creation, follow-up task creation, or canonical economic verdict modification was performed.",
+  "artifacts": [
+    "research/research_os/events/AUTONOMY-CANARY-001/001-action-started.json",
+    "research/research_os/events/AUTONOMY-CANARY-001/002-action-completed.json",
+    "research/research_os/receipts/AUTONOMY-CANARY-001/AUTONOMY-CANARY-001-g1.json"
+  ],
+  "evidence_refs": [
+    "research/research_os/contracts/research-task.schema.json",
+    "research/research_os/contracts/worker-event.schema.json",
+    "research/research_os/contracts/worker-receipt.schema.json",
+    "research/research_os/contracts/hypothesis.schema.json",
+    "research/research_os/contracts/experiment-result.schema.json",
+    "research/research_os/contracts/evidence-assessment.schema.json",
+    "research/research_os/contracts/economic-identity.schema.json",
+    "research/live_lab_ux/adapters/platform-native.js"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
