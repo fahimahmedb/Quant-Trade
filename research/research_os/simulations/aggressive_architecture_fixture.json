@@ -16,11 +16,111 @@
     }
   },
   "implementability": {
-    "SYN-QUANT-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "MEDIUM"},
-    "SYN-FUND-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "LOW"},
-    "SYN-EVENT-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "MEDIUM"},
-    "SYN-FLOW-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": false, "capacity_observable": false, "operational_complexity": "HIGH"},
-    "SYN-ARCH-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "HIGH"}
+    "SYN-QUANT-001": {
+      "source_available": true,
+      "pit_feasible": true,
+      "expression_feasible": true,
+      "cost_model_feasible": true,
+      "capacity_observable": true,
+      "operational_complexity": "MEDIUM",
+      "economic_expression": {
+        "universe": "synthetic point-in-time eligible equity universe",
+        "direction_exposure_semantics": "normalized long/short exposure from the declared liquidity-reversal signal",
+        "entry_clock": "first eligible open strictly after signal information is available",
+        "exit_clock": "next declared eligible open",
+        "eligibility": "security belongs to the frozen point-in-time universe and has all required signal inputs",
+        "position_expression": "one normalized unit per eligible side; no sizing or optimization",
+        "cost_model_requirements": "fees, spread, slippage and financing assumptions declared before test",
+        "capacity_requirements": "observable point-in-time liquidity proxy sufficient to reject unobservable capacity",
+        "data_requirements": "point-in-time universe, signal inputs and execution clocks",
+        "execution_assumptions": "declared open-clock proxy only; no live order semantics",
+        "falsification_relevant_implementation_conditions": "reject if PIT membership, signal clock, execution clock, costs or capacity cannot be reconstructed"
+      }
+    },
+    "SYN-FUND-001": {
+      "source_available": true,
+      "pit_feasible": true,
+      "expression_feasible": true,
+      "cost_model_feasible": true,
+      "capacity_observable": true,
+      "operational_complexity": "LOW",
+      "economic_expression": {
+        "instrument": "synthetic issuer equity",
+        "direction_exposure_semantics": "normalized long exposure only when the declared margin-normalization condition is eligible",
+        "entry_clock": "first eligible open after the qualifying source is available",
+        "horizon": "declared fixed synthetic evaluation horizon",
+        "eligibility": "issuer/source pair satisfies the frozen documentary and point-in-time requirements",
+        "position_expression": "one normalized unit; no sizing or optimization",
+        "cost_model_requirements": "fees, spread and slippage assumptions declared before test",
+        "capacity_requirements": "observable liquidity proxy required before test",
+        "data_requirements": "point-in-time source availability, issuer identity and execution clock",
+        "execution_assumptions": "declared clock proxy only; no live order semantics",
+        "falsification_relevant_implementation_conditions": "reject if source availability, issuer identity, clock, costs or capacity cannot be reconstructed"
+      }
+    },
+    "SYN-EVENT-001": {
+      "source_available": true,
+      "pit_feasible": true,
+      "expression_feasible": true,
+      "cost_model_feasible": true,
+      "capacity_observable": true,
+      "operational_complexity": "MEDIUM",
+      "economic_expression": {
+        "universe": "synthetic event-eligible equity universe",
+        "direction_exposure_semantics": "normalized directional exposure determined only by the frozen guidance-revision rule",
+        "entry_clock": "first eligible open after the event publication clock",
+        "horizon": "declared fixed synthetic post-event horizon",
+        "eligibility": "event timestamp and issuer are point-in-time reconstructable and satisfy the frozen event rule",
+        "position_expression": "one normalized unit; no sizing or optimization",
+        "cost_model_requirements": "fees, spread and event slippage assumptions declared before test",
+        "capacity_requirements": "observable event-window liquidity proxy required before test",
+        "data_requirements": "publication clock, issuer mapping, eligibility and execution clocks",
+        "execution_assumptions": "declared post-publication clock proxy only; no live order semantics",
+        "falsification_relevant_implementation_conditions": "reject if publication ordering, eligibility, clock, costs or capacity cannot be reconstructed"
+      }
+    },
+    "SYN-FLOW-001": {
+      "source_available": true,
+      "pit_feasible": true,
+      "expression_feasible": true,
+      "cost_model_feasible": false,
+      "capacity_observable": false,
+      "operational_complexity": "HIGH",
+      "economic_expression": {
+        "universe": "synthetic rebalance-eligible equity universe",
+        "direction_exposure_semantics": "normalized exposure opposite the declared forced-flow pressure when eligible",
+        "entry_clock": "declared rebalance execution clock after all rule inputs are available",
+        "exit_clock": "next declared eligible session clock",
+        "eligibility": "instrument is covered by the frozen rebalance rule and point-in-time membership",
+        "position_expression": "one normalized unit; no sizing or optimization",
+        "cost_model_requirements": "rebalance-window spread, slippage, fees and financing must be qualified before test",
+        "capacity_requirements": "observable rebalance-window capacity is mandatory before test",
+        "data_requirements": "point-in-time rule inputs, membership, clocks and liquidity inputs",
+        "execution_assumptions": "declared rebalance clock proxy only; no live order semantics",
+        "falsification_relevant_implementation_conditions": "reject unless costs and rebalance-window capacity are independently observable and qualified"
+      }
+    },
+    "SYN-ARCH-001": {
+      "source_available": true,
+      "pit_feasible": true,
+      "expression_feasible": true,
+      "cost_model_feasible": true,
+      "capacity_observable": true,
+      "operational_complexity": "HIGH",
+      "economic_expression": {
+        "universe": "synthetic explicitly unspent niche universe from the frozen negative-knowledge map",
+        "direction_exposure_semantics": "one normalized directional exposure defined by the niche contract",
+        "entry_clock": "first declared eligible clock after niche eligibility is known",
+        "horizon": "mechanism-dependent horizon frozen before any later economic test",
+        "eligibility": "niche is explicitly unspent and satisfies the frozen distinctness conditions",
+        "position_expression": "one normalized unit; no sizing or optimization",
+        "cost_model_requirements": "all relevant fees, spread, slippage and financing assumptions declared before test",
+        "capacity_requirements": "observable capacity proxy required before test",
+        "data_requirements": "frozen negative-knowledge map, eligibility state and execution clocks",
+        "execution_assumptions": "declared clock proxy only; no live order semantics",
+        "falsification_relevant_implementation_conditions": "reject if the niche is spent, non-distinct, non-PIT, or lacks clock, cost or capacity observability"
+      }
+    }
   },
   "experiments": {
     "SYN-QUANT-001": {"dataset_provenance": {"dataset": "SYN-Q", "pit": true}, "cost_model_version": "cost-sim-v1", "code_version": "quant-v1", "declared_metrics": ["effect", "stability"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true},
