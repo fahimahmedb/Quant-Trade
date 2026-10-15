@@ -1,12 +1,12 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-15T13:56:12.971859+00:00",
-  "state_updated_at": "2026-10-15T13:56:12.904742+00:00",
+  "generated_at": "2026-10-15T13:57:05.917533+00:00",
+  "state_updated_at": "2026-10-15T13:57:05.816639+00:00",
   "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
   "paused": false,
   "scheduler": {
     "enabled": true,
-    "last_tick_at": "2026-10-15T13:56:12.885177+00:00",
+    "last_tick_at": "2026-10-15T13:57:05.789089+00:00",
     "last_tick_actor": "github-actions-metadata",
     "last_tick_status": "IDLE",
     "configured_at": "2026-10-11T17:35:42.938259+00:00"
@@ -1522,8 +1522,8 @@
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "e2e406b4b7ee5a0c3f38fb2c76e23089c2c3efb2",
-    "generated_at": "2026-10-15T13:56:12.971859+00:00",
+    "source_head": "ca18d6791e3b4e86288e25e40b50553b781b5041",
+    "generated_at": "2026-10-15T13:57:05.917533+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
