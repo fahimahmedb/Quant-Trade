@@ -2,9 +2,9 @@
   "schema_version": "work-build-continuation.v1",
   "repository": "fahimahmedb/Quant-Trade",
   "branch": "builder/research-os-aggressive-architecture-20261015",
-  "code_candidate_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+  "code_candidate_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
   "qualified_code_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
-  "qualification_status": "AWAITING_EXACT_HEAD_GENERAL_CI",
+  "qualification_status": "AWAITING_EXACT_HEAD_CI",
   "lease": {
     "generation": 0,
     "owner": null,
@@ -206,7 +206,7 @@
     {
       "id": "DEPTH-EVENT-DOSSIER-002",
       "lot": "B01",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "priority": 90,
       "depends_on": [],
       "scope": "Strengthen the existing Event/Documents dossier using admitted primary captures. Bind event identity, eligibility, comparative basis, confounders and disconfirmation. Documented distribution change must not become a claim of new information, consensus surprise, diffusion or market response without admissible support.",
@@ -214,6 +214,81 @@
         "Existing event interface and stable source-clock basis preserved.",
         "Contradictory issuer/period/unit/revision and unsupported novelty premises rejected.",
         "Existing canonical consumers preserve missing implementability, cost and capacity blockers."
+      ],
+      "execution_phase": "IMPLEMENTED_AWAITING_EXACT_HEAD_CI",
+      "implementation_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "local_validation": {
+        "research_os_python": 130,
+        "result": "PASS"
+      },
+      "artifacts": [
+        "research/research_os/architecture/work_receipts/DEPTH_EVENT_DOSSIER_002_20261015.json"
+      ],
+      "ci": [
+        {
+          "id": 38804087477,
+          "name": "SEC P0 pre-t0 gate",
+          "status": "in_progress",
+          "conclusion": null,
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087477"
+        },
+        {
+          "id": 38804087426,
+          "name": "Research OS wave4 acquisition firewall CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087426"
+        },
+        {
+          "id": 38804087613,
+          "name": "Research OS aggressive final gate",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087613"
+        },
+        {
+          "id": 38804087452,
+          "name": "Research OS wave2 hardening CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087452"
+        },
+        {
+          "id": 38804087408,
+          "name": "Research OS aggressive architecture CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087408"
+        },
+        {
+          "id": 38804087402,
+          "name": "Research OS canonical spine CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087402"
+        },
+        {
+          "id": 38804087515,
+          "name": "Research OS wave3 engine depth CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087515"
+        },
+        {
+          "id": 38804087393,
+          "name": "Research OS canonical depth CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+          "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087393"
+        }
       ]
     },
     {
@@ -288,82 +363,81 @@
   "live_trading_authorized": false,
   "ci": [
     {
-      "id": 38803294634,
+      "id": 38804087477,
       "name": "SEC P0 pre-t0 gate",
       "status": "in_progress",
       "conclusion": null,
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294634"
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087477"
     },
     {
-      "id": 38803294658,
-      "name": "Research OS wave2 hardening CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294658"
-    },
-    {
-      "id": 38803294833,
-      "name": "Research OS canonical spine CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294833"
-    },
-    {
-      "id": 38803294684,
+      "id": 38804087426,
       "name": "Research OS wave4 acquisition firewall CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294684"
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087426"
     },
     {
-      "id": 38803294740,
-      "name": "Research OS wave3 engine depth CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294740"
-    },
-    {
-      "id": 38803294810,
-      "name": "Research OS aggressive architecture CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294810"
-    },
-    {
-      "id": 38803294574,
+      "id": 38804087613,
       "name": "Research OS aggressive final gate",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294574"
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087613"
     },
     {
-      "id": 38803294593,
+      "id": 38804087452,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087452"
+    },
+    {
+      "id": 38804087408,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087408"
+    },
+    {
+      "id": 38804087402,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087402"
+    },
+    {
+      "id": 38804087515,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087515"
+    },
+    {
+      "id": 38804087393,
       "name": "Research OS canonical depth CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294593"
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087393"
     }
   ],
-  "qualification_next_action": "Inspect SEC P0 run 38803294634 on 83f39cd479f6106952af0febd156e9ee6f6c10dc. If pending, keep Fundamental IN_PROGRESS and continue independent DEPTH-EVENT-DOSSIER-002; never cancel useful CI or redo completed lots. If green, persist exact qualification. Read NEXT_CODEX_DEPTH_PROMPT_20261015.md for full handoff.",
+  "qualification_next_action": "Inspect exact-head CI for a22ca035cfe13b6bf5411407b979151529dd041e; continue DEPTH-QUANT-FLOW-RULE-002 within authorized offline build scope.",
   "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified.",
   "validation": {
     "research_os_python": {
-      "count": 127,
+      "count": 130,
       "result": "PASS",
-      "code_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc"
+      "code_sha": "a22ca035cfe13b6bf5411407b979151529dd041e"
     },
     "general_python_utc": {
-      "result": "CI_IN_PROGRESS",
-      "code_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "run_id": 38803294634
+      "result": "CI_PENDING",
+      "code_sha": "a22ca035cfe13b6bf5411407b979151529dd041e"
     },
     "diff_whitespace": "PASS",
     "six_canonical_contract_files_unchanged": true
