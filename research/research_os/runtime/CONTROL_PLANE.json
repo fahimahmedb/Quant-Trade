@@ -1,0 +1,42 @@
+{
+  "mode": "PREPROD_SIMULATION_ONLY",
+  "source_of_truth": "GITHUB_DURABLE_STATE",
+  "worker_memory_authority": "NONE",
+  "task_selection": {
+    "strategy": "HIGHEST_PRIORITY_ADMISSIBLE_READY",
+    "max_tasks_per_wake": 1,
+    "invent_work_when_empty": false,
+    "follow_up_task_creation_authorized": false
+  },
+  "claim_protocol": {
+    "optimistic_lock": "CURRENT_BLOB_SHA",
+    "lease_generation_required": true,
+    "stale_claim_rejected": true,
+    "worker_reconstructs_context_each_wake": true
+  },
+  "routing": [
+    {"task_type":"LEGACY_RECOVERY","capability":"legacy_recovery"},
+    {"task_type":"QUANT_MECHANISM","capability":"quant_mechanisms"},
+    {"task_type":"FUNDAMENTAL_RESEARCH","capability":"fundamental"},
+    {"task_type":"EVENT_DOCUMENT","capability":"event_document"},
+    {"task_type":"INSTITUTIONAL_FLOW","capability":"institutional_flows"},
+    {"task_type":"VALIDATION","capability":"validator"},
+    {"task_type":"RED_TEAM","capability":"red_team"},
+    {"task_type":"PORTFOLIO_MAP","capability":"portfolio_map"}
+  ],
+  "handoff_rules": [
+    {"from":"quant_mechanisms","to":"validator","requires":"FROZEN_HYPOTHESIS"},
+    {"from":"fundamental","to":"validator","requires":"FROZEN_HYPOTHESIS"},
+    {"from":"event_document","to":"validator","requires":"FROZEN_HYPOTHESIS"},
+    {"from":"institutional_flows","to":"validator","requires":"FROZEN_HYPOTHESIS"},
+    {"from":"validator","to":"red_team","requires":"EVIDENCE_ASSESSMENT"},
+    {"from":"red_team","to":"portfolio_map","requires":"NO_BLOCKER_OR_OWNER_ACCEPTED_EXCEPTION"}
+  ],
+  "global_authority": {
+    "production_worker_launch_authorized": false,
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}
