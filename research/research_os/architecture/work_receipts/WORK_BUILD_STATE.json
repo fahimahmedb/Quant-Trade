@@ -2,9 +2,9 @@
   "schema_version": "work-build-continuation.v1",
   "repository": "fahimahmedb/Quant-Trade",
   "branch": "builder/research-os-aggressive-architecture-20261015",
-  "code_candidate_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+  "code_candidate_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
   "qualified_code_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-  "qualification_status": "QUALIFIED_FOR_BUILD_REVIEW",
+  "qualification_status": "AWAITING_EXACT_HEAD_GENERAL_CI",
   "lease": {
     "generation": 0,
     "owner": null,
@@ -24,61 +24,86 @@
     "B04: receipt-based validation, candidate/protocol binding, negative rights and explicit producer separation",
     "B05: structural multi-candidate comparisons; UNKNOWN preserved, identity provenance",
     "B06: persistent Forward snapshots, hash verification, generation aliases and forged-authority rejection",
-    "B07: synthetic and documentary build replay through canonical spine; no live ingress emission"
+    "B07: synthetic and documentary build replay through canonical spine; no live ingress emission",
+    "BUILD-EVENT-PRIMARY-001: qualified two captured Apple Q2 declared-distribution announcements; year-over-year fact comparison, no consensus surprise or market-outcome claim",
+    "BUILD-FLOW-PRIMARY-001: qualified captured SEC T+1 staff FAQ as nonbinding constraint explanation; actor and rule scope explicit, no eligible quantity or directional flow inferred",
+    "BUILD-DOCUMENTARY-CHALLENGE-001: actual producer reconstruction, source-route/input/protocol binding, critical falsification checks and source-wrapper hidden-field rejection",
+    "BUILD-PORTFOLIO-DOCUMENTARY-001: three actual documentary lineages with shared issuer/thesis tags visible and missing exposures/novelty UNKNOWN",
+    "B03/B07: actual three-source factual batch execution, immutable completion and interruption recovery; all canonical economics remain BLOCK/NOT_READY"
   ],
   "tasks": [
     {
       "id": "BUILD-EVENT-PRIMARY-001",
       "lot": "B01",
-      "status": "READY",
+      "status": "COMPLETE",
       "priority": 100,
       "depends_on": [],
       "scope": "Qualify one primary public event/announcement provider behind EventDocumentEngine. Capture numeric/document provenance, period/unit and actual availability; add event-specific disconfirmation and negative tests. Preserve the distinction between accounting/event facts, consensus surprise and market outcomes. Do not present a current capture as historical PIT.",
       "inputs": [
         "research/research_os/sources/apple_dividend_announcements_capture.json"
       ],
-      "input_status": "CAPTURED_NOT_YET_ADMITTED"
+      "input_status": "ADMITTED_AS_CAPTURED_DOCUMENTARY_FACTS",
+      "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "completion_scope": "Bounded offline documentary build; not scientific edge validation or production readiness",
+      "artifacts": [
+        "research/research_os/sources/apple_dividend_announcements.json"
+      ]
     },
     {
       "id": "BUILD-FLOW-PRIMARY-001",
       "lot": "B02",
-      "status": "READY",
+      "status": "COMPLETE",
       "priority": 90,
       "depends_on": [],
-      "scope": "Qualify one official public rule/constraint input behind existing Quant/Institutional Flow or Archaeology interfaces. Identify forced actor, eligible instrument/universe, horizon and falsification. Legacy-screen before downstream work. Do not acquire prices/payoffs or retest closed families."
+      "scope": "Qualify one official public rule/constraint input behind existing Quant/Institutional Flow or Archaeology interfaces. Identify forced actor, eligible instrument/universe, horizon and falsification. Legacy-screen before downstream work. Do not acquire prices/payoffs or retest closed families.",
+      "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "completion_scope": "Bounded offline documentary build; not scientific edge validation or production readiness",
+      "artifacts": [
+        "research/research_os/sources/sec_t1_staff_faq.json"
+      ],
+      "limitations": [
+        "Staff explanation is not the binding rule text; current legal and individual-transaction applicability remain unqualified.",
+        "No numerical eligible universe, actual funding pressure, constrained share or directional flow admitted."
+      ]
     },
     {
       "id": "BUILD-DOCUMENTARY-CHALLENGE-001",
       "lot": "B04",
-      "status": "READY",
+      "status": "COMPLETE",
       "priority": 80,
       "depends_on": [
         "BUILD-EVENT-PRIMARY-001",
         "BUILD-FLOW-PRIMARY-001"
       ],
-      "scope": "Harden the existing Validator/Red Team against the actual documentary artifacts produced by preceding build tasks: inconsistent clocks, periods, units, revisions, provenance, missing disconfirmation, self-validation and claim inflation. Builder tests are not independent scientific validation."
+      "scope": "Harden the existing Validator/Red Team against the actual documentary artifacts produced by preceding build tasks: inconsistent clocks, periods, units, revisions, provenance, missing disconfirmation, self-validation and claim inflation. Builder tests are not independent scientific validation.",
+      "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "completion_scope": "Bounded offline documentary build; not scientific edge validation or production readiness"
     },
     {
       "id": "BUILD-PORTFOLIO-DOCUMENTARY-001",
       "lot": "B05",
-      "status": "READY",
+      "status": "COMPLETE",
       "priority": 70,
       "depends_on": [
         "BUILD-EVENT-PRIMARY-001",
         "BUILD-FLOW-PRIMARY-001"
       ],
-      "scope": "Feed multiple actual documentary candidates into the existing economic identity/structural portfolio path with truthful source attribution and UNKNOWN for estimates not available. Preserve blockers. No empirical correlation, return acquisition, sizing, allocation or orders."
+      "scope": "Feed multiple actual documentary candidates into the existing economic identity/structural portfolio path with truthful source attribution and UNKNOWN for estimates not available. Preserve blockers. No empirical correlation, return acquisition, sizing, allocation or orders.",
+      "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "completion_scope": "Bounded offline documentary build; not scientific edge validation or production readiness"
     },
     {
       "id": "BUILD-QUALIFICATION-002",
       "lot": "B08",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "priority": 60,
       "depends_on": [
         "BUILD-DOCUMENTARY-CHALLENGE-001",
         "BUILD-PORTFOLIO-DOCUMENTARY-001"
       ],
-      "scope": "Integrate completed admissible depth behind existing canonical stages, verify exact-head CI and replay/recovery, persist limitations and a reviewable candidate. Do not merge or activate production."
+      "scope": "Integrate completed admissible depth behind existing canonical stages, verify exact-head CI and replay/recovery, persist limitations and a reviewable candidate. Do not merge or activate production.",
+      "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "remaining": "Wait for terminal SEC P0 gate 38787222141 on the implementation SHA; then persist qualification receipt."
     },
     {
       "id": "PROSPECTIVE-DECAY-ACTIVATION",
@@ -116,80 +141,83 @@
   "live_trading_authorized": false,
   "ci": [
     {
-      "id": 38781853010,
-      "name": "Research OS aggressive architecture CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781853010"
-    },
-    {
-      "id": 38781852929,
-      "name": "Research OS wave3 engine depth CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852929"
-    },
-    {
-      "id": 38781852904,
-      "name": "Research OS canonical spine CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852904"
-    },
-    {
-      "id": 38781852956,
-      "name": "Research OS wave2 hardening CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852956"
-    },
-    {
-      "id": 38781853099,
+      "id": 38787222123,
       "name": "Research OS wave4 acquisition firewall CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781853099"
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222123"
     },
     {
-      "id": 38781852900,
-      "name": "Research OS aggressive final gate",
+      "id": 38787222170,
+      "name": "Research OS wave3 engine depth CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852900"
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222170"
     },
     {
-      "id": 38781852937,
+      "id": 38787222141,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
+    },
+    {
+      "id": 38787222105,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222105"
+    },
+    {
+      "id": 38787222614,
       "name": "Research OS canonical depth CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852937"
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222614"
     },
     {
-      "id": 38781852893,
-      "name": "SEC P0 pre-t0 gate",
+      "id": 38787222429,
+      "name": "Research OS aggressive architecture CI",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852893"
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222429"
+    },
+    {
+      "id": 38787222257,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222257"
+    },
+    {
+      "id": 38787222173,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222173"
     }
   ],
-  "qualification_next_action": "Continue BUILD-EVENT-PRIMARY-001 in an active Work run, or arm the prepared relay after an additional scheduled-task slot is available. No production merge or activation is authorized.",
+  "qualification_next_action": "Resume only BUILD-QUALIFICATION-002: inspect run 38787222141 on df6b77041a8513d568274dabfadb0438eccc1021. Do not rerun completed documentary lots. No new production or economic authority.",
   "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified.",
   "validation": {
     "research_os_python": {
-      "count": 107,
-      "result": "PASS"
+      "count": 123,
+      "result": "PASS",
+      "code_sha": "df6b77041a8513d568274dabfadb0438eccc1021"
     },
     "general_python_utc": {
       "count": 539,
-      "result": "PASS"
+      "result": "PASS",
+      "code_sha": "cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d",
+      "note": "Final source-wrapper guard is covered by Research OS tests; exact final-head general CI pending."
     },
     "research_os_node": {
       "count": 11,
@@ -197,9 +225,13 @@
     },
     "auxiliary_json_schema": {
       "result": "PASS",
-      "both_modes_and_relabel_negatives": true
+      "actual_documentary_adapters": 3,
+      "relabel_negatives": true
     },
-    "six_canonical_contract_files_unchanged": true
+    "six_canonical_contract_files_unchanged": true,
+    "generated_schema_drift": "PASS",
+    "diff_whitespace": "PASS"
   },
-  "review_compare_url": "https://github.com/fahimahmedb/Quant-Trade/compare/62bf644531bc38cb62cc8f5d35b392e9f7649d5f...971bd339f56c9683bd362fa85c38f17177de48f5"
+  "review_compare_url": "https://github.com/fahimahmedb/Quant-Trade/compare/52d87985aa50e47cb8d1911573cb587d93964443...df6b77041a8513d568274dabfadb0438eccc1021",
+  "previous_qualified_code_sha": "971bd339f56c9683bd362fa85c38f17177de48f5"
 }

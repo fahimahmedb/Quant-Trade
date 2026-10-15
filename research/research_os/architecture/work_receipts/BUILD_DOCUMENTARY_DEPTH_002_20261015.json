@@ -1,0 +1,146 @@
+{
+  "lot_id": "BUILD-DOCUMENTARY-DEPTH-002",
+  "status": "IN_PROGRESS_FINAL_CI",
+  "observed_head_before": "52d87985aa50e47cb8d1911573cb587d93964443",
+  "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+  "remote_head_verified": "df6b77041a8513d568274dabfadb0438eccc1021",
+  "implementation_commits": {
+    "event": "ecd613c3f160f014952638e466f8d886f22ee85b",
+    "flow_challenge_portfolio": "cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d",
+    "source_wrapper_guard_and_final_proof": "df6b77041a8513d568274dabfadb0438eccc1021"
+  },
+  "scope": "Offline captured-primary Event/Flow source admission, deterministic documentary challenge and structural portfolio comparison behind existing engines and canonical stages.",
+  "artifacts": {
+    "final_build_proof": "PRIMARY_DOCUMENTARY_BUILD_FINAL_20261015.json",
+    "historical_build_proof": {
+      "path": "PRIMARY_DOCUMENTARY_BUILD_20261015.json",
+      "implementation_sha": "cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d"
+    }
+  },
+  "evidence_class": [
+    "DOCUMENTARY",
+    "EXECUTED_FACTUAL_DRY_RUN"
+  ],
+  "executed_results": {
+    "canonical_lineages": 3,
+    "canonical_replay": "IDENTICAL",
+    "canonical_economic_transforms": "NOT_EXECUTED_IMPLEMENTABILITY_BLOCKED",
+    "canonical_forward_readiness": [
+      "NOT_READY",
+      "NOT_READY",
+      "NOT_READY"
+    ],
+    "standalone_fact_batch": "EXECUTED_DRY_RUN",
+    "standalone_fact_replay": "IDENTICAL",
+    "interruption_recovery": "PASS",
+    "legacy_before_downstream": "PASS",
+    "economic_result": "NOT_OBSERVED"
+  },
+  "validation": {
+    "research_os_python": {
+      "count": 123,
+      "result": "PASS",
+      "code_sha": "df6b77041a8513d568274dabfadb0438eccc1021"
+    },
+    "general_python_utc": {
+      "count": 539,
+      "result": "PASS",
+      "code_sha": "cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d",
+      "note": "Final source-wrapper guard is covered by Research OS tests; exact final-head general CI pending."
+    },
+    "research_os_node": {
+      "count": 11,
+      "result": "PASS"
+    },
+    "auxiliary_json_schema": {
+      "result": "PASS",
+      "actual_documentary_adapters": 3,
+      "relabel_negatives": true
+    },
+    "six_canonical_contract_files_unchanged": true,
+    "generated_schema_drift": "PASS",
+    "diff_whitespace": "PASS"
+  },
+  "ci": [
+    {
+      "id": 38787222123,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222123"
+    },
+    {
+      "id": 38787222170,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222170"
+    },
+    {
+      "id": 38787222141,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
+    },
+    {
+      "id": 38787222105,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222105"
+    },
+    {
+      "id": 38787222614,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222614"
+    },
+    {
+      "id": 38787222429,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222429"
+    },
+    {
+      "id": 38787222257,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222257"
+    },
+    {
+      "id": 38787222173,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222173"
+    }
+  ],
+  "limitations": [
+    "Current captures do not establish historical point-in-time availability.",
+    "Raw digests and public-source receipts are not publisher signatures.",
+    "SEC staff FAQ is explanatory and nonbinding; individual transaction applicability is unqualified.",
+    "Declared distributions are year-over-year announcements, not consecutive payments or consensus surprise.",
+    "Shared AAPL issuer and equity-beta thesis tags do not establish empirical exposure or return correlation.",
+    "No eligible flow population, actual funding pressure, payer, tradable horizon, costs or capacity qualified.",
+    "Builder regression tests and deterministic validators are not independent scientific validation."
+  ],
+  "blocker": "Exact implementation-head SEC P0 CI not yet terminal; all seven Research OS gates green.",
+  "exact_reopen_condition": "Successful terminal run 38787222141, or diagnose its concrete failing step without reopening unrelated completed lots.",
+  "next_admissible_lot": "BUILD-QUALIFICATION-002",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}
