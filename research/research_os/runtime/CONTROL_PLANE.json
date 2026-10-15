@@ -13,6 +13,26 @@
     "invent_work_when_empty": false,
     "follow_up_task_creation_authorized_only_when_current_task_explicitly_allows": true
   },
+  "queue_replenishment": {
+    "authorized": true,
+    "steward_lane": "integrator_portfolio",
+    "steward_capability": "control_integrator",
+    "trigger": "NO_READY_OR_CLAIMED_TASKS_GLOBAL",
+    "frontier_file": "research/research_os/runtime/RESEARCH_FRONTIER.json",
+    "deriver": "research.research_os.queue_replenisher",
+    "max_new_tasks_per_wake": 1,
+    "producer_execution_same_refill_wake": false,
+    "recursive_refill_same_wake": false,
+    "derivation_key_required": true,
+    "duplicate_derivation_forbidden": true,
+    "legacy_screen_required_before_candidate_freeze": true,
+    "free_form_task_invention_forbidden": true,
+    "frontier_exhaustion_behavior": "IDLE_AND_REQUIRE_OWNER_FRONTIER_REFRESH",
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
   "claim_protocol": {
     "optimistic_lock": "CURRENT_BLOB_SHA",
     "lease_generation_required": true,
@@ -42,7 +62,8 @@
     "discovery_lane_may_not_validate_own_hypothesis": true,
     "challenge_lane_may_not_generate_or_repair_signal": true,
     "integrator_lane_may_not_override_red_team_blocker": true,
-    "same_worker_may_execute_multiple_stages_only_within_same_lane_and_lineage": true
+    "same_worker_may_execute_multiple_stages_only_within_same_lane_and_lineage": true,
+    "queue_steward_may_derive_but_not_execute_producer_task_same_wake": true
   },
   "global_authority": {
     "production_worker_launch_authorized": true,
