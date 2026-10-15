@@ -12,7 +12,10 @@
   },
   "automation": {
     "id": null,
-    "status": "NOT_ARMED"
+    "status": "BLOCKED_PLAN_LIMIT",
+    "error_code": "too_many_active_automations",
+    "current_count": 5,
+    "plan_limit": 5
   },
   "completed_this_execution": [
     "B01: primary Fundamental capture and factual-transform admission; Event primary adapter still pending",
@@ -173,5 +176,6 @@
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852937"
     }
   ],
-  "qualification_next_action": "Check SEC P0 pre-t0 gate run 38781852893 on code candidate 971bd339f56c9683bd362fa85c38f17177de48f5; do not substitute an older run."
+  "qualification_next_action": "Check SEC P0 pre-t0 gate run 38781852893 on code candidate 971bd339f56c9683bd362fa85c38f17177de48f5; do not substitute an older run.",
+  "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified."
 }
