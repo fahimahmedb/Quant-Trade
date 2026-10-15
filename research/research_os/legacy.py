@@ -1,0 +1,99 @@
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional
+
+
+TOKEN_RE = re.compile(r"[a-z0-9]+")
+
+
+def _tokens(*values: Iterable[str]) -> set[str]:
+    out: set[str] = set()
+    for value in values:
+        if value is None:
+            continue
+        if isinstance(value, (list, tuple, set)):
+            for item in value:
+                out.update(TOKEN_RE.findall(str(item).lower()))
+        else:
+            out.update(TOKEN_RE.findall(str(value).lower()))
+    return {t for t in out if len(t) >= 3}
+
+
+class LegacyKnowledgeBase:
+    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+        self.manifest = manifest
+        self.ledger = ledger or {"records": []}
+        self.records = list(self.ledger.get("records") or [])
+        self.by_id: Dict[str, Dict[str, Any]] = {}
+        for record in self.records:
+            for key in ("HYPOTHESIS_ID", "LEGACY_ID_IF_ANY"):
+                value = record.get(key)
+                if isinstance(value, str) and value and value != "UNKNOWN":
+                    self.by_id[value] = record
+
+    @classmethod
+    def load(cls, base: Path, imported_ledger_path: Optional[Path] = None) -> "LegacyKnowledgeBase":
+        manifest = json.loads((base / "legacy" / "source_manifest.json").read_text())
+        ledger = None
+        candidate = imported_ledger_path or (base / "legacy" / "LEGACY_RESEARCH_LEDGER.imported.json")
+        if candidate.exists():
+            ledger = json.loads(candidate.read_text())
+            if ledger.get("schema_version") != manifest["schema_version"]:
+                raise ValueError("legacy ledger schema version mismatch")
+            if ledger.get("governance", {}).get("historical_result_immutability") is not True:
+                raise ValueError("legacy ledger missing historical result immutability")
+        return cls(manifest, ledger)
+
+    def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
+        cid = candidate.get("hypothesis_id")
+        if cid in self.by_id:
+            record = self.by_id[cid]
+            return {
+                "status": "BLOCK_EXACT_LEGACY_DUPLICATE",
+                "matched_hypothesis_id": record.get("HYPOTHESIS_ID"),
+                "historical_result": record.get("RESULT", "UNKNOWN"),
+                "historical_decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
+                "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+            }
+
+        c_tokens = _tokens(candidate.get("mechanism", ""), candidate.get("economic_tags", []))
+        matches: List[Dict[str, Any]] = []
+        for record in self.records:
+            r_tokens = _tokens(
+                record.get("MECHANISM", ""),
+                record.get("TITLE", ""),
+                record.get("RESEARCH_FAMILY_ID", ""),
+            )
+            if not c_tokens or not r_tokens:
+                continue
+            overlap = len(c_tokens & r_tokens) / len(c_tokens | r_tokens)
+            if overlap >= 0.30:
+                matches.append({
+                    "hypothesis_id": record.get("HYPOTHESIS_ID"),
+                    "research_family_id": record.get("RESEARCH_FAMILY_ID"),
+                    "overlap": round(overlap, 4),
+                    "historical_result": record.get("RESULT", "UNKNOWN"),
+                    "decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
+                    "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                })
+        matches.sort(key=lambda x: x["overlap"], reverse=True)
+        return {
+            "status": "REVIEW_LEGACY_OVERLAP" if matches else "NO_EXACT_LEGACY_CONFLICT",
+            "matches": matches[:5],
+        }
+
+    def summary(self) -> Dict[str, Any]:
+        return {
+            "source_commit": self.manifest["source_commit"],
+            "ledger_blob_sha": self.manifest["ledger_blob_sha"],
+            "reconciliation_status": self.manifest["reconciliation_status"],
+            "historical_research_items_found": self.manifest["historical_research_items_found"],
+            "known_duplicate_or_variant_items": self.manifest["known_duplicate_or_variant_items"],
+            "prospective_validated": self.manifest["prospective_validated"],
+            "global_effective_trials": self.manifest["global_effective_trials"],
+            "loaded_record_count": len(self.records),
+            "read_only": True,
+        }
