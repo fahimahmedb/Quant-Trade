@@ -1,0 +1,20 @@
+{
+  "source_branch": "research/legacy-economic-reconciliation-20261015",
+  "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+  "ledger_path": "LEGACY_RESEARCH_LEDGER.json",
+  "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+  "schema_version": "legacy-research-ledger-v1",
+  "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+  "historical_research_items_found": 33,
+  "known_duplicate_or_variant_items": 17,
+  "prospective_validated": 0,
+  "global_effective_trials": "UNKNOWN",
+  "promoted_but_not_validated": ["CFE_VIX_EXPRESSION"],
+  "primary_unrecovered_results": ["BOX-OFFICE-REPLAY", "MLB-SOCCER-WEATHER-REPLICATION"],
+  "governance": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "historical_result_immutability": true
+  },
+  "import_policy": "READ_ONLY_PINNED_SOURCE"
+}
