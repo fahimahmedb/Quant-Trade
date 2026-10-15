@@ -15,12 +15,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Materialize pinned reconciled legacy ledger read-only
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json').read_text())
+          assert d['schema_version']=='legacy-research-ledger-v1'
+          assert d['governance']['historical_result_immutability'] is True
+          assert d['governance']['REAL_CAPITAL_AUTHORIZED'] is False
+          assert d['governance']['LIVE_TRADING_AUTHORIZED'] is False
+          print(f"LEGACY_LEDGER=PINNED records={len(d['records'])}")
+          PY
       - name: Run multi-engine pipeline
         run: python -m research.research_os.engines.pipeline
       - name: Run Python architecture tests
@@ -36,6 +56,11 @@ jobs:
           d=json.loads(p.read_text())
           assert d['status']=='PASS'
           assert d['synthetic_only'] is True
+          assert d['legacy']['summary']['source_commit']=='183ad65ff260b903a16548ce37948f54d47a9ec8'
+          assert d['legacy']['summary']['loaded_record_count'] > 0
+          assert d['legacy']['summary']['read_only'] is True
+          assert d['learning_telemetry']['effective_trials_status']=='UNKNOWN'
+          assert d['decay']['status']=='INACTIVE_BY_AUTHORITY'
           assert d['authorities']=={
             'real_capital': False,
             'live_trading': False,
