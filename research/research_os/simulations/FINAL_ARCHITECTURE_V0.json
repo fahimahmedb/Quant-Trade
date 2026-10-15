@@ -1,0 +1,33 @@
+{
+  "simulation_id": "FINAL_ARCHITECTURE_V0",
+  "mode": "SYNTHETIC_PREPROD",
+  "purpose": "Exercise final-shape research flow without real market outcomes, prospective observation, or capital authority.",
+  "synthetic_candidate": {
+    "hypothesis_generation_id": "SIM-HYP-001-G1",
+    "asset": "SYNTHETIC-ASSET",
+    "mechanism": "Synthetic margin-surprise mechanism for pipeline validation only",
+    "claim": "Synthetic candidate exists only to test system contracts",
+    "economic_data_real": false
+  },
+  "stages": [
+    {"seq":1,"capability":"fundamental","action":"CREATE_CANDIDATE_THESIS","expected_output":"candidate hypothesis"},
+    {"seq":2,"capability":"event_document","action":"ATTACH_SYNTHETIC_EVENT_CONTEXT","expected_output":"document evidence map"},
+    {"seq":3,"capability":"validator","action":"ASSESS_SYNTHETIC_EVIDENCE","expected_output":"evidence assessment"},
+    {"seq":4,"capability":"red_team","action":"CHECK_CLAIM_AND_MULTIPLICITY","expected_output":"ACCEPT or negative block"},
+    {"seq":5,"capability":"portfolio_map","action":"MAP_SYNTHETIC_ECONOMIC_OVERLAP","expected_output":"marginal portfolio value assessment"},
+    {"seq":6,"capability":"validator","action":"WRITE_SYNTHETIC_DECISION_RECORD","expected_output":"PARK"}
+  ],
+  "expected_terminal_state": {
+    "decision": "PARK",
+    "reason": "Synthetic fixture proves orchestration contracts only; no economic evidence exists.",
+    "capital_authority": "NONE"
+  },
+  "assertions": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "production_workers_launched": false,
+    "real_market_outcomes_consumed": false
+  }
+}
