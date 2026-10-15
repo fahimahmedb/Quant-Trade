@@ -139,6 +139,184 @@ def qualify_producer_test_readiness(readiness: Dict[str, Any]) -> Dict[str, Any]
     }
 
 
+def build_producer_test_readiness(
+    output: Dict[str, Any],
+    dossier_detail: Dict[str, Any],
+    *,
+    legacy_screen: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Project an existing producer candidate into a bounded economic-test spec.
+
+    This is intentionally non-mutating and outcome-free. It does not make a blocked
+    dossier pass; it exposes which documentary facts are usable and which exact
+    expression/data/cost-capacity inputs remain required before an authorized test.
+    """
+    family = output.get("engine_family")
+    if family not in {"INSTITUTIONAL_FLOW", "EVENT_DOCUMENT", "QUANT_MECHANISM"}:
+        raise ValueError("producer test-readiness is limited to prioritized engine families")
+    candidate = output.get("candidate")
+    if not isinstance(candidate, dict):
+        raise ValueError("candidate required")
+    if output.get("outcome_accessed") not in (None, False):
+        raise ValueError("outcome-bearing producer output not allowed")
+    if output.get("economic_result") not in (None, "NOT_OBSERVED"):
+        raise ValueError("economic result not allowed")
+
+    def rec(status: str, value: Any, support: List[str] | None = None) -> Dict[str, Any]:
+        return {"status": status, "value": deepcopy(value), "support": list(support or [])}
+
+    common = {
+        "engine_family": family,
+        "mechanism": rec("SUPPORTED", candidate.get("mechanism"), ["candidate.mechanism"]),
+        "falsification": rec(
+            "SUPPORTED",
+            candidate.get("falsification_scope"),
+            ["candidate.falsification_scope"],
+        ),
+        "legacy_screen": deepcopy(legacy_screen) if legacy_screen is not None else {
+            "status": "NOT_APPLICABLE_EXISTING_BOUND_CANDIDATE",
+            "new_claim": False,
+            "future_claim_extension": "LEGACY_SCREEN_REQUIRED_BEFORE_NEW_CLAIM",
+        },
+        "outcome_accessed": False,
+        "economic_result": "NOT_OBSERVED",
+    }
+
+    if family == "INSTITUTIONAL_FLOW":
+        actor = dossier_detail.get("forced_actor", {})
+        rule = dossier_detail.get("constraint_rule", {})
+        clock = dossier_detail.get("implementation_clock", {})
+        universe = dossier_detail.get("affected_universe", {})
+        common.update({
+            "universe": rec(
+                "PARTIAL" if universe.get("status") in {"PARTIAL", "SUPPORTED"} else "UNKNOWN",
+                deepcopy(universe.get("values") or {"eligible_scope": "UNKNOWN"}),
+                ["dossier.affected_universe"] if universe.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "clock": rec(
+                "PARTIAL" if clock.get("status") in {"PARTIAL", "SUPPORTED"} else "UNKNOWN",
+                deepcopy(clock.get("values") or {"economic_clock": "UNKNOWN"}),
+                ["dossier.implementation_clock"] if clock.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "expression_requirements": rec("REQUIRED", [
+                "eligible security/transaction identifier bound to the rule scope",
+                "economically justified direction; do not derive direction from T+1 alone",
+                "entry/exit clock and executable instrument",
+            ]),
+            "data_requirements": rec("REQUIRED", [
+                "point-in-time transaction/security eligibility evidence",
+                "binding/constrained actor evidence beyond the rule text",
+                "quantity/funding-pressure evidence if a flow-magnitude claim is proposed",
+                "current-rule/exemption check at protocol freeze",
+            ]),
+            "cost_capacity_requirements": rec("REQUIRED", [
+                "fees/spread/slippage and financing/borrow where applicable",
+                "eligible quantity and participation/capacity bound",
+                "market-impact assumptions declared before outcome access",
+            ]),
+            "unsupported_economic_claims": {
+                "payer": "UNKNOWN",
+                "quantity_mechanism": "UNKNOWN",
+                "directional_mechanism": "UNKNOWN",
+                "empirical_return": "NOT_OBSERVED",
+                "capacity_estimate": "NOT_ESTIMATED",
+            },
+            "documentary_support": {
+                "actor": deepcopy(actor),
+                "rule": deepcopy(rule),
+            },
+        })
+    elif family == "EVENT_DOCUMENT":
+        identity = dossier_detail.get("event_identity", {})
+        clock = dossier_detail.get("document_clock", {})
+        eligibility = dossier_detail.get("eligibility_rule", {})
+        common.update({
+            "universe": rec(
+                "PARTIAL" if identity.get("status") in {"PARTIAL", "SUPPORTED"} else "UNKNOWN",
+                {
+                    "event_identity": deepcopy(identity.get("values") or {}),
+                    "holder_record_ex_date_eligibility": deepcopy(eligibility.get("values") or "UNKNOWN"),
+                },
+                ["dossier.event_identity"] if identity.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "clock": rec(
+                "PARTIAL" if clock.get("status") in {"PARTIAL", "SUPPORTED"} else "UNKNOWN",
+                {
+                    "information_availability": deepcopy(clock.get("values") or "UNKNOWN"),
+                    "tradable_event_clock": "UNKNOWN" if eligibility.get("status") != "SUPPORTED" else deepcopy(eligibility.get("values")),
+                },
+                ["dossier.document_clock"] if clock.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "expression_requirements": rec("REQUIRED", [
+                "security identifier and executable venue/instrument",
+                "record/ex-date or other holder eligibility when the expression depends on entitlement",
+                "predeclared entry/exit clock; announcement capture time is not a trading horizon",
+            ]),
+            "data_requirements": rec("REQUIRED", [
+                "point-in-time event availability",
+                "official holder/record/ex-date data when eligibility matters",
+                "point-in-time consensus only if a surprise thesis is proposed",
+                "concurrent-news/confounder controls declared before outcome access",
+            ]),
+            "cost_capacity_requirements": rec("REQUIRED", [
+                "fees/spread/slippage and borrow/financing where applicable",
+                "liquidity/participation limit and capacity declaration",
+            ]),
+            "unsupported_economic_claims": {
+                "novelty": "UNKNOWN",
+                "consensus": "UNKNOWN",
+                "surprise": "UNKNOWN",
+                "market_response": "NOT_OBSERVED",
+                "empirical_return": "NOT_OBSERVED",
+                "capacity_estimate": "NOT_ESTIMATED",
+            },
+            "documentary_support": {
+                "event_identity": deepcopy(identity),
+                "eligibility": deepcopy(eligibility),
+            },
+        })
+    else:
+        universe = dossier_detail.get("universe_definition", {})
+        expression = dossier_detail.get("expression", {})
+        common.update({
+            "universe": rec(
+                "SUPPORTED" if universe.get("status") == "SUPPORTED" else "PARTIAL"
+                if universe.get("status") == "PARTIAL" else "UNKNOWN",
+                deepcopy(universe.get("values") or "UNKNOWN"),
+                ["dossier.universe_definition"] if universe.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "clock": rec("UNKNOWN", "UNKNOWN"),
+            "expression_requirements": rec(
+                "PARTIAL" if expression.get("status") in {"PARTIAL", "SUPPORTED"} else "REQUIRED",
+                deepcopy(expression.get("values") or ["executable expression", "entry/exit clock"]),
+                ["dossier.expression"] if expression.get("status") in {"PARTIAL", "SUPPORTED"} else [],
+            ),
+            "data_requirements": rec("REQUIRED", [
+                "point-in-time mechanism inputs",
+                "universe membership and clock semantics",
+                "reproducible source snapshots",
+            ]),
+            "cost_capacity_requirements": rec("REQUIRED", [
+                "cost model declaration",
+                "capacity declaration",
+            ]),
+            "unsupported_economic_claims": {
+                "empirical_return": "NOT_OBSERVED",
+                "capacity_estimate": "NOT_ESTIMATED",
+            },
+        })
+
+    qualification = qualify_producer_test_readiness(common)
+    return {
+        "readiness_version": "producer-test-readiness.v1",
+        "hypothesis_id": candidate.get("hypothesis_id"),
+        "specification": common,
+        "qualification": qualification,
+        "outcome_accessed": False,
+        "economic_result": "NOT_OBSERVED",
+    }
+
+
 def qualify_source_route(route: Dict[str, Any], *, freeze_time: str) -> Dict[str, Any]:
     blockers: List[str] = []
     required = {
