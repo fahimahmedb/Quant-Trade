@@ -1,0 +1,52 @@
+{
+  "hypothesis_id": "FUND-ASML-CAPACITY-PRICING-001",
+  "generation": 1,
+  "lineage_task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
+  "status": "FROZEN_FOR_INDEPENDENT_VALIDATION",
+  "frozen_at": "2026-10-15T19:14:00Z",
+  "issuer": "ASML Holding N.V.",
+  "thesis": "ASML's currently planned leading-edge lithography supply being below indicated 2027-2028 customer demand, combined with productivity-upgrade demand in its installed base, creates a two-channel fundamental mechanism: scarce new-system capacity can support pricing/mix and backlog conversion visibility while installed-base upgrades monetize customer wafer-capacity needs. If capacity can be expanded without disproportionate ramp costs or cancellations, medium-term earnings durability may be stronger than a generic semiconductor-equipment cycle would imply.",
+  "causal_chain": [
+    "Leading-edge logic/DRAM customers increase medium-term capacity plans.",
+    "ASML's planned 2027-2028 supply is below stated customer demand.",
+    "Scarcity plus negotiated pricing/mix supports system economics, subject to conversion and cost discipline.",
+    "Installed-base productivity upgrades provide a second monetization channel for wafer-capacity demand.",
+    "Combined channels may improve medium-term revenue and margin durability."
+  ],
+  "test_contract": {
+    "purpose": "Independent documentary validation only; no economic outcome test is authorized.",
+    "required_checks": [
+      "Re-run Legacy duplication screen against the pinned ledger and any newer durable negative-knowledge map.",
+      "Verify the 2027-2028 supply-demand statement and capacity-expansion baseline from primary ASML materials.",
+      "Distinguish customer interest, bookings/backlog and cancellable/non-cancellable commitments.",
+      "Assess whether pricing/mix and installed-base upgrades are structurally linked to the supply constraint rather than quarterly timing.",
+      "Stress export-control, customer-concentration, supplier-capacity, ramp-cost and AI-capex-reversal confounders.",
+      "Restrict or reject the claim if it reduces to generic AI-capex continuation or lacks incremental causal content."
+    ],
+    "falsification": [
+      "Material order cancellations/push-outs or capex reductions break backlog conversion visibility.",
+      "Capacity ramp materially dilutes normalized gross margin or cannot be executed through suppliers.",
+      "Installed-base upgrade demand materially weakens.",
+      "Export controls block economically meaningful backlog conversion.",
+      "The thesis is duplicative of Legacy or cannot be distinguished from generic AI-demand exposure."
+    ],
+    "forbidden": [
+      "price-return inspection",
+      "backtesting",
+      "outcome-driven parameter selection",
+      "prospective observation",
+      "capital allocation",
+      "order generation",
+      "live trading"
+    ]
+  },
+  "source_cutoff": "2026-10-15T19:13:00Z",
+  "source_artifact": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/research-and-disconfirmation.json",
+  "legacy_screen_artifact": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/legacy-screen.json",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}
