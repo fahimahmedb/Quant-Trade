@@ -20,20 +20,30 @@ class MultiEnginePipelineTests(unittest.TestCase):
         self.assertEqual(self.result["status"], "PASS")
         self.assertTrue(self.result["synthetic_only"])
 
-    def test_control_plane_is_preprod_and_complete(self):
+    def test_control_plane_is_production_workflow_and_economic_authority_stays_closed(self):
         c = self.result["control_plane"]
         self.assertEqual(c["status"], "PASS")
-        self.assertEqual(set(c["capabilities"]), {
-            "legacy_recovery",
-            "quant_mechanisms",
-            "fundamental",
-            "event_document",
-            "institutional_flows",
-            "validator",
-            "red_team",
-            "portfolio_map",
+        self.assertEqual(c["mode"], "PRODUCTION_RESEARCH_WORKERS")
+        self.assertEqual(c["workflow_model"], "ONE_LINEAGE_MULTI_STAGE")
+        expected_capabilities = {
+            "legacy_recovery", "data_provenance", "trial_accounting", "source_qualification",
+            "quant_mechanisms", "fundamental", "event_document", "institutional_flows",
+            "validator", "red_team", "economic_identity", "portfolio_map",
+            "shadow_readiness", "learning_telemetry", "control_integrator",
+        }
+        self.assertTrue(expected_capabilities.issubset(set(c["capabilities"])))
+        self.assertEqual(set(c["lanes"]), {
+            "market_discovery", "fundamental_events", "evidence_data",
+            "independent_challenge", "integrator_portfolio",
         })
-        self.assertTrue(all(value is False for value in c["global_authority"].values()))
+        self.assertTrue(c["global_authority"]["production_worker_launch_authorized"])
+        for key in (
+            "economic_experiment_authorized",
+            "prospective_observation_authorized",
+            "real_capital_authorized",
+            "live_trading_authorized",
+        ):
+            self.assertFalse(c["global_authority"][key])
 
     def test_all_initial_engines_present(self):
         families = {e["engine_family"] for e in self.result["engines"]}
