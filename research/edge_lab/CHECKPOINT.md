@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-15, AITX admission closed; tax-clientele L0 parked
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Decision, counterargument and sources](discovery/qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json): AITX8-K accepted2026-10-14 06:01:26Eastern has N/A Section12(b) class/exchange fields and describes a commercial order. Primary review COMPLETED/INELIGIBLE for A-E; no invented Nasdaq/NYSE eligibility or exhibit expansion. No event selected. Ten cached records remain unreviewed, next Calamos ETF Trust497; Valaris and earlier chronology gaps remain.
+- One new documentary L0: individual municipal-bond market-discount tax-clientele hypothesis, PARK_DATA. The official USCode request returned HTTP200 but a Page Not Found/temporary-site notice, not law. No statutory formula/version, free security/trade route, tax-adjusted values or economic advantage qualified. Public metadata availability must not be confused with a usable economic dataset. Tax compensation, liquidity/call/credit risk and investor-specific basis could erase the entire apparent premium; no tax-status assumption about Owner.
+- NEXT: continue cached Calamos497 admission with exact accepted time and legal eligibility before any price/NAV/distribution. Do not repeat AITX, the USCode soft404 or closed source questions. Reopening the L0 requires genuinely distinct authoritative legal/version and accessible permitted data evidence; no renamed narrative. All three seeds were inspected and remain consumed; no additional seed consumption.
+- Proof SHA256 `917a358743c19d99973ff66d306f7d063201302c04b6743d943f1b9a25cb7ba0`. Three complete HTTP bodies, 33976 bytes (one soft404); zero retries/USD0, no economic calculation/selected economic payload. One documentary mechanism considered is recorded, not counted as an executed or independent trial. Prior ledger/counters/queue/multiplicity/exposures preserved; A-E/VX hashes/register unchanged. VX exit not due, zero VX requests; legacy UNKNOWN remains spent. Raw documents private; tokens/global bill unmeasured.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-15, Nomura retrospective report excluded from prospective admission
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

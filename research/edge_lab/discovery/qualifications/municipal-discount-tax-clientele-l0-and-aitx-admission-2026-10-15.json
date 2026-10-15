@@ -1,0 +1,423 @@
+{
+  "recorded_at": "2026-10-15T09:24:05.396697+00:00",
+  "head_observed": "e9a361c85573cc10fff115218368461369b2e180",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "DOCUMENTARY_L0_WITH_PROSPECTIVE_PRIORITY_CHECK",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "completed_question": {
+    "id": "us-municipal-market-discount-tax-clientele:initial-l0",
+    "status": "PARK",
+    "decision": "New causal hypothesis triaged; substantive law and usable price/security data not qualified. Stop before any economic look."
+  },
+  "RESULT": "AITX_ADMISSION_CLOSED; ONE_DISTINCT_TAX_CLIENTELE_L0_PARKED_WITHOUT_OUTCOMES.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Tax mechanism is a hypothesis, not a verified statutory finding; requested page contains no law. Availability of other official sources remains unknown. Earlier SEC chronology remains incomplete.",
+  "POWER_LIMITATION": "No tax-adjusted values, economic sample, investor tax-status observations or empirical test; one failed legal route cannot establish global inaccessibility.",
+  "ECONOMIC_SIGNIFICANCE": "Distinguishes a potentially segmented-tax market from free profit: even an observed discount can be fair compensation for tax liability and trading risks. Source evidence must make that distinction calculable before a look is justified.",
+  "FAILED_CRITERIA": [
+    "AITX primary12(b) exchange/class fields N/A and commercial order disclosure, no frozen qualifying A-E entitlement.",
+    "Substantive primary tax rule/version not obtained; HTTP200 is a soft404.",
+    "Free permitted security/cashflow/basis/trade data and point-in-time clocks unqualified.",
+    "No after-tax cost/credit/call/liquidity comparison exists; cannot promote on gross discount narrative."
+  ],
+  "LESSON": "Verify document content rather than HTTP status. Keep a tax-clientele hypothesis distinct from a claim of mispricing, and never assume an investor can retain a gross premium created by their own tax liability.",
+  "FAMILY_STATUS": "Tax-clientele candidate L0 PARK_DATA/unverified, not economically rejected. A-E frozen; AITX review complete/ineligible, ten saved records pending plus earlier gaps. Savings/WTI and other closed dependencies unchanged.",
+  "NEXT_DECISION": {
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "status": "OPEN",
+    "question": "Reuse saved SEC metadata; next unreviewed record Calamos ETF Trust497 accession0001104659-26-115676. Verify accepted clock first, then only bounded operative legal notice to determine whether E has a newly announced listed-ETF liquidation and fixed trading/liquidation dates. No selected price/NAV/distribution/payoff payload. Earlier unresolved chronology and original exclusions still bar claiming FIRST without proof.",
+    "primary_document_candidates": [
+      "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm"
+    ],
+    "pending_source_reference": {
+      "proof": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+      "field": "candidate_form_records",
+      "count_pending": 10,
+      "count_parked_unqualified": 1,
+      "unqualified_total_in_saved_slice": 11
+    },
+    "resume_rule": "AITX cover review is closed. Do not fetch the commercial-order exhibit or widen Nasdaq/NYSE eligibility to include unqualified issuers. No repeat of completed/partial source reviews, Nomura/ASML reports, savings calculator pages or the USCode soft404. Preserve original A-E order/exclusions and one-look rule; no economic claim until valid admission.",
+    "economic_access_authorized": false,
+    "last_documentary_L0": {
+      "id": "us-municipal-market-discount-tax-clientele",
+      "status": "PARK_DATA",
+      "reference": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+      "seed_consumed": false,
+      "economic_look": false,
+      "next_decision": "Do not execute or repeat the failed route. Future bounded qualification requires a genuinely distinct authoritative law/data fact; frozen prospective admission retains priority."
+    }
+  },
+  "L0": {
+    "id": "us-municipal-market-discount-tax-clientele",
+    "status": "PARK_DATA",
+    "hypothesis_status": "IDEA_GENERATED; TAX_MECHANISM_NOT_PRIMARY_VERIFIED_IN_THIS_PASS",
+    "MECHANISM": "Hypothesis only: purchase-price-dependent tax treatment of market discount on nominally tax-exempt municipal bonds could segment taxable and differently taxed buyers, producing a relative price wedge near a statutory threshold. No threshold formula or operative tax rule is asserted from the failed source.",
+    "WHO_PAYS": "Hypothesized taxable sellers requiring compensation for future tax liability or liquidity; potential counterparty differently taxed buyers. Neither investor tax status nor an actual transfer/rent is observed. Treasury is not assumed to pay an arbitrage subsidy.",
+    "WHY_PERSIST": "Hypothesized tax heterogeneity, thin trading, security-specific basis/OID and call/credit features, spread and capacity costs. Institutional investors could already arbitrage any excess after compensation.",
+    "CHEAP_DATA_NOW": "No economic dataset qualified. Official USCode endpoint returned a complete error page, not law. Public primary legal text and MSRB municipal security/trade documentation are candidate routes only; exact free data access, permissions and timestamps are UNQUALIFIED. No selected transactions or prices requested.",
+    "CHEAP_EXPRESSION": "Only if a later source gate succeeds: one predeclared matched issue/cashflow comparison of tax-adjusted values around a verified legal threshold, with fixed cost/credit/call/duration treatment and no ex-post search for a favorable threshold/year/security. No universe, holding period, numerical formula or experiment is frozen here.",
+    "FATAL_PROBLEM": "An apparent yield premium may entirely compensate a real tax liability plus credit, call and illiquidity risk. Different purchase prices create endogenous tax basis; raw prices near a threshold are not causal identification. No benefit is demonstrated for Owner tax status or for taxable investors after tax.",
+    "DISCONFIRMATION": [
+      "No legal rule was actually obtained; the hypothesis cannot pass L0 on remembered tax law.",
+      "Even if the tax mechanism is real, after-tax cashflows may remove the entire apparent premium before transaction costs.",
+      "Trade prints alone do not reveal investor tax basis/status, bid/ask or executable capacity; current issuer metadata may not be point-in-time."
+    ],
+    "DISTINCTNESS": "Purchase-tax-basis/clientele mechanism in individual municipal bonds; not the savings-bond posting calendar, sovereign auction timing, ETF strategies or issuer fractional/tender entitlements. No closed family reopened and no independent trial claimed.",
+    "WHY_NOT_L1_NOW": "Exact primary rule/version, clean cashflow/basis metadata and an admissible free transaction route are all absent.",
+    "REENTRY_CONDITION": "A genuinely distinct primary legal document/version and evidence of accessible permitted security/trade metadata, with a bounded decision question, are required. Do not repeat this broken endpoint or relabel this idea."
+  },
+  "candidate_form_records": [
+    {
+      "issuer_and_form": "8-K - NEWS CORP (0001564708) (Filer)",
+      "cik": "0001564708",
+      "accession": "0001564708-26-000221",
+      "feed_updated": "2026-10-13T21:29:43-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1564708/000156470826000221/0001564708-26-000221-index.htm",
+      "accepted_at_verified": "2026-10-13T21:29:43-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14"
+    },
+    {
+      "issuer_and_form": "8-K - Liquidia Corp (0001819576) (Filer)",
+      "cik": "0001819576",
+      "accession": "0001104659-26-115672",
+      "feed_updated": "2026-10-13T21:49:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1819576/000110465926115672/0001104659-26-115672-index.htm",
+      "accepted_at_verified": "2026-10-13T21:49:11-04:00",
+      "status": "REVIEWED_PRIMARY_DESCRIPTION_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "period_of_report": "2026-10-08"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Valaris Ltd (0000314808) (Filer)",
+      "cik": "0000314808",
+      "accession": "0001140361-26-039488",
+      "feed_updated": "2026-10-14T06:01:02-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:02-04:00",
+      "status": "PARK_DOCUMENT_SCOPE_NOT_REVIEWED",
+      "filing_date": "2026-10-14",
+      "reason": "Advertised primary4807604bytes exceeds524288byte cap; body not fetched. Qualification unresolved, not ineligible."
+    },
+    {
+      "issuer_and_form": "6-K - ASML HOLDING NV (0000937966) (Filer)",
+      "cik": "0000937966",
+      "accession": "0001628280-26-065813",
+      "feed_updated": "2026-10-14T06:01:18-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026065813/0001628280-26-065813-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:18-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_NO_A_E_ENTITLEMENT_ESTABLISHED",
+      "filing_date": "2026-10-14",
+      "period_of_report": "2026-09-27",
+      "reason": "Quarterly results cover, no qualifying entitlement described. Exhibits unread; no universal admission/absence claim."
+    },
+    {
+      "issuer_and_form": "6-K - NOMURA HOLDINGS INC (0001163653) (Filer)",
+      "cik": "0001163653",
+      "accession": "0001193125-26-420929",
+      "feed_updated": "2026-10-14T06:01:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:20-04:00",
+      "status": "REVIEWED_PRIMARY_INLINE_REPORT_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "reason": "Retrospective September buyback/disposition report under January authorization, not a newly open eligible A-E entitlement."
+    },
+    {
+      "issuer_and_form": "8-K - Artificial Intelligence Technology Solutions Inc. (0001498148) (Filer)",
+      "cik": "0001498148",
+      "accession": "0001062993-26-005318",
+      "feed_updated": "2026-10-14T06:01:26-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:26-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "reason": "Section12(b) exchange/class fields N/A; operating-company commercial order announcement, no eligible frozen entitlement."
+    },
+    {
+      "issuer_and_form": "497 - Calamos ETF Trust (0001579881) (Filer)",
+      "cik": "0001579881",
+      "accession": "0001104659-26-115676",
+      "feed_updated": "2026-10-14T06:01:39-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK TELECOM CO LTD (0001015650) (Filer)",
+      "cik": "0001015650",
+      "accession": "0001193125-26-420931",
+      "feed_updated": "2026-10-14T06:01:47-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/0001193125-26-420931-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - FortuneX Acquisition Corp (0002121703) (Filer)",
+      "cik": "0002121703",
+      "accession": "0001829126-26-011104",
+      "feed_updated": "2026-10-14T06:01:53-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/0001829126-26-011104-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - HDFC BANK LTD (0001144967) (Filer)",
+      "cik": "0001144967",
+      "accession": "0001193125-26-420933",
+      "feed_updated": "2026-10-14T06:02:14-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933/0001193125-26-420933-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK hynix Inc. (0002120882) (Filer)",
+      "cik": "0002120882",
+      "accession": "0001193125-26-420934",
+      "feed_updated": "2026-10-14T06:02:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2120882/000119312526420934/0001193125-26-420934-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Evotec SE (0001412558) (Filer)",
+      "cik": "0001412558",
+      "accession": "0001104659-26-115678",
+      "feed_updated": "2026-10-14T06:02:29-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1412558/000110465926115678/0001104659-26-115678-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Banco Santander, S.A. (0000891478) (Filer)",
+      "cik": "0000891478",
+      "accession": "0000950103-26-015545",
+      "feed_updated": "2026-10-14T06:02:36-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/891478/000095010326015545/0000950103-26-015545-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Pharming Group N.V. (0001828316) (Filer)",
+      "cik": "0001828316",
+      "accession": "0001828316-26-000045",
+      "feed_updated": "2026-10-14T06:03:16-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1828316/000182831626000045/0001828316-26-000045-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Transocean Ltd. (0001451505) (Filer)",
+      "cik": "0001451505",
+      "accession": "0001104659-26-115680",
+      "feed_updated": "2026-10-14T06:03:31-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/0001104659-26-115680-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - Verastem, Inc. (0001526119) (Filer)",
+      "cik": "0001526119",
+      "accession": "0001104659-26-115687",
+      "feed_updated": "2026-10-14T06:08:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1526119/000110465926115687/0001104659-26-115687-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    }
+  ],
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm",
+      "observed_at": "2026-10-15T09:18:40.291717+00:00",
+      "scope": "SEC prospective admission metadata and primary legal description only; no selected market-price/NAV/payoff payload, claims or economic calculations",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm",
+      "body_bytes": 11004,
+      "sha256": "bf8bc8ce4f818677e734244d3e7f22b26e1d4f0030f13f3f7fc67985e7f38000",
+      "complete": true,
+      "content_type": "text/html; charset=UTF-8",
+      "wall_seconds": 0.2921307520009577,
+      "passages": [
+        "Accepted2026-10-14 06:01:26; Filing Date2026-10-14; Artificial Intelligence Technology Solutions Inc., CIK0001498148.",
+        "Items8.01 and9.01; primary8-K and Exhibit99.1."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/form8k.htm",
+      "observed_at": "2026-10-15T09:18:53.136769+00:00",
+      "scope": "SEC prospective admission metadata and primary legal description only; no selected market-price/NAV/payoff payload, claims or economic calculations",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/form8k.htm",
+      "body_bytes": 17180,
+      "sha256": "436a06bc896800429b352241789b0ee088afa2191872994a37b258ba4fbcfef2",
+      "complete": true,
+      "content_type": "text/html",
+      "wall_seconds": 0.5342767979891505,
+      "passages": [
+        "Securities registered pursuant to Section12(b): Title of each class N/A; Trading Symbols N/A; Name of each exchange N/A.",
+        "Item8.01: press release titled AITX's RAD Adds Another Municipal Customer with Seven ROSA Unit Order."
+      ],
+      "limits": "Complete primary8-K read. Commercial order headline/unit count exposed, not a market-price/payoff observation. Exhibit99.1 not fetched. No inference about unlisted-market trading profitability."
+    },
+    {
+      "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-subtitleA-chapter1-subchapterP-partV-subpartB&num=0&edition=prelim",
+      "observed_at": "2026-10-15T09:20:23.489708+00:00",
+      "scope": "US market-discount L0 statutory mechanism and disconfirmation only; no transaction, price, yield, return, tax-account or economic calculation",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-subtitleA-chapter1-subchapterP-partV-subpartB&num=0&edition=prelim",
+      "body_bytes": 5792,
+      "sha256": "bd35cf93375a24c953eb73c37bd621a2ac1c5d29ebd366d10a7964e97e4b494a",
+      "complete": true,
+      "content_type": "text/html",
+      "wall_seconds": 0.357965443021385,
+      "document_status": "SOFT_404_NO_STATUTORY_TEXT",
+      "passages": [
+        "Page Not Found - US Code Home.",
+        "The uscode.house.gov website is currently operating in a temporary format. While the United States Code remains available from its authoritative source, some website features and functionality are temporarily unavailable.",
+        "The United States Code Online is current through Public Law119-120 (October7,2026).",
+        "The page you requested could not be found. It may have been moved, renamed, or removed, or the link you followed may be out of date."
+      ],
+      "limits": "HTTP200 proves the error page was accessible, not the requested law. No substantive sections1276/1278, tax rule, historical effective version, pricing dataset or use rights established. No retry/alternate lookup this action. It does not prove all official legal routes unavailable."
+    }
+  ],
+  "reuse": {
+    "prior_proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
+    "prior_sha256": "afb933d61c0f01287c9fd44615cfc38194105344eb3998d12595203c96009096",
+    "saved_feed_sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157",
+    "feed_refetched": false,
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "VX_protocol_and_register_unchanged": {
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.md": "56fd0be311eb4672136008cdb2b6655afe5ac1d3b9db5bfdef9c7f23a7d72a15",
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json": "316aa2bf3ed1fbe29e515d8888e2324ec9eeeed9113b646eda4e7db26018f768"
+    },
+    "seed_inventory_inspected": [
+      "france_fiscal_political_stress_l0.md",
+      "trump_policy_event_transmission_l0.md",
+      "market_sentiment_dislocation_l0.md"
+    ],
+    "seed_history_preserved": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+        "seed_id": "trump_policy_event_transmission_l0"
+      }
+    ],
+    "method_reference": "research/edge_lab/EDGE_DISCOVERY_METHOD.md",
+    "existing_overlap_search": "Targeted municipal/market-discount/1278 text search of qualifications, DiscoverySTATE and source inventory found no same candidate. Existing appraisal de-minimis is a different legal mechanism; no repo-wide reset or completeness claim."
+  },
+  "priority_check": {
+    "active_discovery_running": [],
+    "legacy_UNKNOWN_remains_consumed": true,
+    "no_admissible_fresh_event_established": true,
+    "universal_absence_claimed": false,
+    "VX": "Not due under saved necessary earliest-exit bound2026-11-06; zero VX requests.",
+    "fallback_L0_count": 1,
+    "seed_consumption_count": 0
+  },
+  "exposure": {
+    "type": "SEC_LEGAL_COVER_AND_L0_SOURCE_FEASIBILITY",
+    "scope": "AITX primary commercial announcement headline includes seven ROSA units; exchange/class metadata read. USCode soft404 only; no substantive tax text, market-price/NAV/payoff, yield, tax-basis sample or calculator outcome. All earlier incidental economic disclosures remain consumed.",
+    "new_reserved_looks": 0,
+    "new_return_or_strategy_tests": 0,
+    "new_documentary_mechanisms_considered": 1,
+    "new_frozen_expressions": 0,
+    "seed_consumptions": 0,
+    "effective_independent_M": "UNKNOWN",
+    "private_history": "UNKNOWN",
+    "prior_exposures_preserved": true
+  },
+  "observable_cost": {
+    "primary_document_requests": 3,
+    "received_body_bytes": 33976,
+    "request_wall_seconds_sum": 1.1843729930114932,
+    "retries": 0,
+    "selected_economic_payload_requests": 0,
+    "economic_calculations": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null
+  },
+  "bounds": {
+    "economic_payloads": 0,
+    "max_agent_minutes": 15,
+    "max_bytes_per_document": 524288,
+    "max_primary_document_requests": 3,
+    "max_total_document_bytes": 1572864,
+    "retries": 0
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "VX_register_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false,
+    "account_created": false,
+    "economic_claim_created": false
+  }
+}

@@ -3771,6 +3771,75 @@
       },
       "previous": "7230f8b536392549f267b9250d70aa5d0c71e64d0d28848b550abb1b3f300cf0",
       "sequence": 55
+    },
+    {
+      "at": "2026-10-15T09:24:05.408425+00:00",
+      "hash": "7893476cd541f00160e011fb6436b4c64d55ae6dcad9654479931f35907aa9b4",
+      "kind": "DISCOVERY_MUNICIPAL_DISCOUNT_TAX_CLIENTELE_L0_PARKED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "New causal hypothesis triaged; substantive law and usable price/security data not qualified. Stop before any economic look.",
+          "id": "us-municipal-market-discount-tax-clientele:initial-l0",
+          "status": "PARK"
+        },
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure": {
+          "effective_independent_M": "UNKNOWN",
+          "new_documentary_mechanisms_considered": 1,
+          "new_frozen_expressions": 0,
+          "new_reserved_looks": 0,
+          "new_return_or_strategy_tests": 0,
+          "prior_exposures_preserved": true,
+          "private_history": "UNKNOWN",
+          "scope": "AITX primary commercial announcement headline includes seven ROSA units; exchange/class metadata read. USCode soft404 only; no substantive tax text, market-price/NAV/payoff, yield, tax-basis sample or calculator outcome. All earlier incidental economic disclosures remain consumed.",
+          "seed_consumptions": 0,
+          "type": "SEC_LEGAL_COVER_AND_L0_SOURCE_FEASIBILITY"
+        },
+        "head_observed": "e9a361c85573cc10fff115218368461369b2e180",
+        "next": {
+          "economic_access_authorized": false,
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "last_documentary_L0": {
+            "economic_look": false,
+            "id": "us-municipal-market-discount-tax-clientele",
+            "next_decision": "Do not execute or repeat the failed route. Future bounded qualification requires a genuinely distinct authoritative law/data fact; frozen prospective admission retains priority.",
+            "reference": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+            "seed_consumed": false,
+            "status": "PARK_DATA"
+          },
+          "pending_source_reference": {
+            "count_parked_unqualified": 1,
+            "count_pending": 10,
+            "field": "candidate_form_records",
+            "proof": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+            "unqualified_total_in_saved_slice": 11
+          },
+          "primary_document_candidates": [
+            "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm"
+          ],
+          "question": "Reuse saved SEC metadata; next unreviewed record Calamos ETF Trust497 accession0001104659-26-115676. Verify accepted clock first, then only bounded operative legal notice to determine whether E has a newly announced listed-ETF liquidation and fixed trading/liquidation dates. No selected price/NAV/distribution/payoff payload. Earlier unresolved chronology and original exclusions still bar claiming FIRST without proof.",
+          "resume_rule": "AITX cover review is closed. Do not fetch the commercial-order exhibit or widen Nasdaq/NYSE eligibility to include unqualified issuers. No repeat of completed/partial source reviews, Nomura/ASML reports, savings calculator pages or the USCode soft404. Preserve original A-E order/exclusions and one-look rule; no economic claim until valid admission.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_calculations": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 3,
+          "received_body_bytes": 33976,
+          "request_wall_seconds_sum": 1.1843729930114932,
+          "retries": 0,
+          "selected_economic_payload_requests": 0,
+          "tokens": null
+        },
+        "proof": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+        "proof_sha256": "917a358743c19d99973ff66d306f7d063201302c04b6743d943f1b9a25cb7ba0"
+      },
+      "previous": "1b25b999bcbc9786ba929108e238f10a8171df189eddd2fcc72ad60a7d93f4af",
+      "sequence": 56
     }
   ],
   "exposure_ledger": [
@@ -3816,7 +3885,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "03aef4e34760f9ac256925c7c5b02f31b08510ba012b5bba1c3db1efa548a7d1",
+  "integrity": "2bca283988121bace7f14f25e491e25af19301b282ef95a65ab6ea0e089225fa",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -3891,6 +3960,7 @@
       "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
       "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-municipal-market-discount-tax-clientele": "L0 PARK_DATA: hypothesized tax-clientele wedge; primary law request returned soft404 and no security/transaction dataset qualified. No economic verdict, tax rule assumed verified, or repeat of broken endpoint. New primary legal/version and actual free access evidence needed.",
       "us-savings-bond-accrual-calendar": "PARK_DATA for current book-entry L1 design: official public calculator explicitly unsuitable for accurate electronic values; account route not authorized. No repeated documentation/calculator probes; exact re-entry condition in deferred_documentary.",
       "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
@@ -3919,6 +3989,14 @@
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
     "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "last_documentary_L0": {
+      "economic_look": false,
+      "id": "us-municipal-market-discount-tax-clientele",
+      "next_decision": "Do not execute or repeat the failed route. Future bounded qualification requires a genuinely distinct authoritative law/data fact; frozen prospective admission retains priority.",
+      "reference": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+      "seed_consumed": false,
+      "status": "PARK_DATA"
+    },
     "passive_VX_priority": {
       "earliest_possible_exit_lower_bound_utc": "2026-11-06T00:00:00+00:00",
       "lower_bound_note": "Necessary lower bound only, not an identified contract/official settlement calendar. An eligible actual entry >=T0 and30-day target separation with\u00b14-day endpoints imply an exit at least22days later. No calendar or price request; actual quarterly due date must still follow frozen official-calendar rules.",
@@ -3929,13 +4007,13 @@
     },
     "pending_source_reference": {
       "count_parked_unqualified": 1,
-      "count_pending": 11,
+      "count_pending": 10,
       "field": "candidate_form_records",
-      "proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
-      "unqualified_total_in_saved_slice": 12
+      "proof": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
+      "unqualified_total_in_saved_slice": 11
     },
     "primary_document_candidates": [
-      "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm"
+      "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm"
     ],
     "prospective_A_E_priority": {
       "bounds": {
@@ -3965,16 +4043,16 @@
         "oldest_updated": "2026-10-13T21:25:11-04:00",
         "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
       },
-      "pending": "Eleven unreviewed saved records, beginning Artificial Intelligence Technology Solutions by provisional feed time, plus Valaris source park and earlier chronology gaps. Nomura inline primary report completed/ineligible for A-E. No universal absence or FIRST admissible event established.",
+      "pending": "Ten unreviewed saved records, next Calamos497 by provisional feed time, plus Valaris source park and earlier chronology gaps. AITX primary review completed/ineligible. No FIRST eligible event or complete absence established.",
       "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
       "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-      "reuse_reference": "qualifications/prospective-admission-nomura-2026-10-15.json",
+      "reuse_reference": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "Reuse the saved SEC metadata; next unreviewed record Artificial Intelligence Technology Solutions8-K accession0001062993-26-005318. Verify exact accepted clock and primary legal/exchange eligibility using only bounded source access. Earlier unresolved Valaris/Fusion/AmpliTech/IX chronology remains prior constraint. No FIRST-event selection, price/NAV/payoff request or favorable later issuer substitution without original ordering/eligibility/claim gates.",
-    "resume_rule": "Nomura September buyback report is closed for A-E admission; do not refetch it or use its historical less-than-a-full-unit share disposition as a new prospective case. Inline actual monetary disclosures are consumed, not pristine. No repeat of ASML/NewsCorp/Liquidia covers, partial older sources or parked savings calculator/legal pages. All frozen exclusions and one-look invariant remain.",
-    "reuse_reference": "qualifications/prospective-admission-nomura-2026-10-15.json",
+    "question": "Reuse saved SEC metadata; next unreviewed record Calamos ETF Trust497 accession0001104659-26-115676. Verify accepted clock first, then only bounded operative legal notice to determine whether E has a newly announced listed-ETF liquidation and fixed trading/liquidation dates. No selected price/NAV/distribution/payoff payload. Earlier unresolved chronology and original exclusions still bar claiming FIRST without proof.",
+    "resume_rule": "AITX cover review is closed. Do not fetch the commercial-order exhibit or widen Nasdaq/NYSE eligibility to include unqualified issuers. No repeat of completed/partial source reviews, Nomura/ASML reports, savings calculator pages or the USCode soft404. Preserve original A-E order/exclusions and one-look rule; no economic claim until valid admission.",
+    "reuse_reference": "qualifications/municipal-discount-tax-clientele-l0-and-aitx-admission-2026-10-15.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
@@ -5450,5 +5528,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-15T08:26:11.938486+00:00"
+  "updated_at": "2026-10-15T09:24:05.396697+00:00"
 }
