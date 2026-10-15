@@ -1,0 +1,39 @@
+{
+  "task_id":"VALIDATE-EVENT-STAPLED-CVR-PRV-001",
+  "candidate_id":"EVENT-STAPLED-CVR-PRV-001",
+  "generation":1,
+  "lane":"independent_challenge",
+  "assessment_type":"INDEPENDENT_DOCUMENTARY_VALIDATION_AND_RED_TEAM",
+  "outcome_access":"FORBIDDEN_NOT_ACCESSED",
+  "stages":["independent_validation","cross_examination","red_team","claim_restriction"],
+  "evidence_assessment":{
+    "primary_document_verified":true,
+    "verified_facts":["Atossa's 2026-10-08 CVR agreement was publicly filed 2026-10-09.","One CVR is attached to each eligible common share; while attached it transfers only with the share, has no separate CUSIP and no separate trading market.","The right is contingent on the first qualifying FDA priority review voucher; holders collectively receive 25% of net monetization proceeds subject to a USD 50m aggregate cap.","Detachment is discretionary; detached rights may never obtain a trading market.","At filing, no qualifying voucher had been awarded and no marketing application for the referenced program had been submitted."],
+    "event_clock":"PASS_FOR_THIS_ISSUER: SEC filing timestamp and later first-public primary documents can define state transitions point-in-time.",
+    "legacy_distinctness":"PASS_BOUNDED: independent repository search found no pre-existing stapled-CVR candidate; the mechanism is causally distinct from the due-bill large-distribution candidate.",
+    "population_generalizability":"FAIL_CURRENTLY_UNPROVEN: independent search established the Atossa instance but did not establish a defensible multi-event population of US-listed continuing common equity with initially non-tradable stapled CVRs under comparable contracts.",
+    "contract_comparability":"BLOCKED_PENDING_POPULATION: issuer-specific discretion over detachment, qualifying program, monetization, dilution before detachment, payment constraints and outside date can dominate any cross-event state definition.",
+    "implementability":"DOCUMENTARY_ONLY; instrument identity is auditable while attached, but no economic/transaction-cost conclusion is authorized."
+  },
+  "cross_examination":{
+    "strongest_surviving_claim":"The Atossa common share temporarily bundles operating equity with a legally attached contingent contractual claim whose state is auditable from primary documents.",
+    "claims_not_supported":["that stapled-CVR state transitions form a repeatable event class","that any transition creates a valuation dislocation","that the contingent right is economically material","that a tradable edge exists"],
+    "active_invalidation":"The frozen hypothesis itself requires a defensible multi-event population before outcome access. That requirement is not presently met; therefore the mechanism cannot advance to economic test design without violating its own falsification scope."
+  },
+  "red_team":{
+    "BLOCK_DATA":true,
+    "BLOCK_LEAKAGE":false,
+    "BLOCK_MULTIPLICITY":false,
+    "BLOCK_COST_MODEL":false,
+    "BLOCK_CAPACITY":false,
+    "BLOCK_PORTFOLIO_DUPLICATION":false,
+    "BLOCK_CLAIM_LEVEL":true,
+    "ACCEPT":false,
+    "reason":"Primary-document validity of the single Atossa case is not enough to establish the required comparable event population. Advancing to outcomes now would convert an issuer-specific curiosity into an economic look before the frozen population criterion is satisfied."
+  },
+  "decision":"PARK_DATA_POPULATION_BLOCK",
+  "claim_restriction":"Retain only the documentary statement that EVENT-STAPLED-CVR-PRV-001 is a real, auditable issuer-specific bundled-claim structure. Do not claim a repeatable mechanism, valuation effect or edge. Reopen only after a pre-outcome, primary-document inventory establishes a defensible multi-event population and ex-ante comparable state taxonomy.",
+  "integration_handoff_created":false,
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false},
+  "assessed_at":"2026-10-15T18:38:00Z"
+}
