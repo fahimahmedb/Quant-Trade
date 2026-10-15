@@ -2,7 +2,7 @@
   "task_id": "PROD-LEGACY-001",
   "task_type": "LEGACY_RECOVERY",
   "required_capability": "legacy_recovery",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 95,
   "inputs": {
     "legacy_source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
@@ -34,5 +34,11 @@
   "lease": {"generation":1,"owner":"evidence_data","claimed_at":"2026-10-15T15:21:26+02:00","expires_at":"2026-10-15T16:16:26+02:00"},
   "created_at": "2026-10-15T14:25:00+02:00",
   "updated_at": "2026-10-15T15:21:26+02:00",
-  "completion": null
+  "completion": {
+    "result":"RECOVERY_EXHAUSTED_WITHIN_AUTHORIZED_REPOSITORY_SURFACES_RESULT_REMAINS_UNKNOWN",
+    "artifacts":["research/research_os/artifacts/PROD-LEGACY-001/recovery-result.json"],
+    "receipt":"research/research_os/receipts/PROD-LEGACY-001/PROD-LEGACY-001-g1.json",
+    "events":["research/research_os/events/PROD-LEGACY-001/001-action-started.json","research/research_os/events/PROD-LEGACY-001/002-action-completed.json"],
+    "historical_result_immutability_preserved":true
+  }
 }
