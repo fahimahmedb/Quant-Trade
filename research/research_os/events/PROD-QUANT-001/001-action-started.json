@@ -1,0 +1,15 @@
+{
+  "event_id": "PROD-QUANT-001-g1-e1",
+  "session_id": "PROD-QUANT-001-g1",
+  "worker_id": "chatgpt-interactive-quant-mechanisms-worker",
+  "action_id": "PROD-QUANT-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:49:18Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Quant mechanism research",
+    "detail": "Screening SEC Form 144 proposed-sale disclosures as a public supply-overhang mechanism after Legacy duplicate checks; no return or future-outcome access authorized."
+  }
+}
