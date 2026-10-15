@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_EVENT_EXPOSURE_QUARANTINE",
+  "protocol": "disc-us-reverse-split-round-up-prospective-l1-v2",
+  "protocol_t0": "2026-10-12T21:00:00Z",
+  "candidate": {
+    "issuer": "Armlogi Holding Corp.",
+    "ticker": "BTOC",
+    "cik": "0001972529",
+    "form": "8-K",
+    "accession": "0001213900-26-108468",
+    "accepted": "2026-10-09T16:05:00-04:00",
+    "split_ratio": "1-for-16",
+    "post_split_trading_date": "2026-10-15"
+  },
+  "decision": "INELIGIBLE_PRE_T0_EVENT",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "primary_facts": [
+    "The October 9 SEC 8-K states that BTOC begins post-split Nasdaq trading on October 15, 2026.",
+    "No fractional shares are issued; fractions are rounded up to the next whole post-split share.",
+    "For beneficial holders through a brokerage firm, the company states its intent to round fractional shares at the participant level.",
+    "Cash is not paid for fractional shares."
+  ],
+  "source": "https://www.sec.gov/Archives/edgar/data/1972529/000121390026108468/ea0308207-8k_armlogi.htm",
+  "decision_reason": "This is unusually close to the v2 round-up mechanism, including participant-level brokerage language, but its SEC acceptance on October 9 occurred before the repaired v2 T0 of October 12 21:00Z. The protocol explicitly excludes all event/document exposure before the new T0. The fact that split-adjusted trading starts October 15 does not reset the event clock.",
+  "contamination_guard": "Search results displayed third-party pre-split/current BTOC price snippets while locating the filing. Those prices are contaminated and must never be used to backfill this pre-T0 event or calibrate a future protocol. No protocol economic calculation was performed.",
+  "ordering_effect": "Armlogi is permanently excluded from the fresh v2 round-up sample. It can remain documentary evidence that participant-level round-up language exists, but it cannot count as a prospective case or an implementation survivor.",
+  "next_action": "Continue chronological post-T0 admission for a genuinely new operative reverse-split filing. Before price access require accepted time after T0, fixed ratio, explicit round-up treatment, effective/entitlement timing allowing a post-event purchase, and no disclosed aggregation/record-holder restriction that facially defeats Q=1.",
+  "inference_ceiling": [
+    "No Armlogi payoff",
+    "No round-up family evidence",
+    "No alpha/edge claim",
+    "No live or real-capital authorization"
+  ]
+}
