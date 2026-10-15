@@ -26,68 +26,68 @@
   ],
   "ci": [
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294634",
       "id": 38803294634,
       "name": "SEC P0 pre-t0 gate",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294634"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294658",
       "id": 38803294658,
       "name": "Research OS wave2 hardening CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294658"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294833",
       "id": 38803294833,
       "name": "Research OS canonical spine CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294833"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294684",
       "id": 38803294684,
       "name": "Research OS wave4 acquisition firewall CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294684"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294740",
       "id": 38803294740,
       "name": "Research OS wave3 engine depth CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294740"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294810",
       "id": 38803294810,
       "name": "Research OS aggressive architecture CI",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294810"
+      "status": "completed"
     },
     {
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294574",
       "id": 38803294574,
       "name": "Research OS aggressive final gate",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294574"
+      "status": "completed"
     },
     {
-      "id": 38803294593,
-      "name": "Research OS canonical depth CI",
-      "status": "completed",
       "conclusion": "success",
       "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294593"
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294593",
+      "id": 38803294593,
+      "name": "Research OS canonical depth CI",
+      "status": "completed"
     }
   ],
   "evidence_class": "CAPTURED_DOCUMENTARY_FACTS_WITH_EXPLICIT_DOSSIER_GAPS",
@@ -104,5 +104,7 @@
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "qualified_at": "2026-10-15T21:00:51.422716+00:00",
+  "qualification_scope": "Bounded offline documentary engine-depth increment; engineering review qualification only. Internal depth remains PARTIAL."
 }

@@ -123,3 +123,25 @@ This file is a durable continuation protocol, not a scheduler, daemon or proof o
 Within an active Work execution, continue admissible lots without routine Owner prompts. If the session ends or the platform interrupts it, resume from GitHub receipts on the next execution.
 The existing five scheduled research workflows remain separate; this file does not repurpose or add a scheduled research worker.
 An optional, separate Build Plane relay is armed only when WORK_BUILD_STATE.json records its actual automation ID. Its status is not a guarantee of continuous execution; each scheduled pass must leave a real checkpoint or an exact blocker. Claim the build-state blob with optimistic locking, increment lease generation, set an expiry and renew before meaningful edits. Release the lease at handoff. Never edit a live lease owned by another run.
+
+## Completed bounded depth increment — 2026-10-15
+
+Implementation `64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491` is QUALIFIED_FOR_BUILD_REVIEW with eight exact-head
+successful gates. The five DEPTH roadmap lots above are COMPLETE at their bounded
+engineering scope; their individual implementation SHAs and CI remain in state
+and receipts. 142 Research OS tests and 11 Node tests pass; process replay and
+interruption recovery are proved. Fundamental SEC P0 38803294634 succeeded on
+83f39cd; final SEC P0 38805247628 succeeded on the new implementation.
+
+Event dossier source binding, official 2025 CFR rule/conditional-scope depth,
+and canonical Validator/Red Team/Economic Identity/Portfolio consumption are now
+implemented. The initial gap table above is historical; current remaining depth
+is in WORK_BUILD_STATE.json: valuation/balance-sheet/expectations, Event
+eligibility/novelty/diffusion, actual constraint pressure and current legal
+applicability, wider Quant/Archaeology sources, empirical exposures and outcomes.
+All three documentary candidates remain BLOCK / NOT_READY. No additional READY
+lot remains in this finite authorized batch. Select any future bounded depth
+from actual evidence gaps behind the existing interfaces; do not replay this work.
+
+INTERNAL_DEPTH remains PARTIAL; all four authority flags remain FALSE. No
+production integration, deployment, scientific promotion or automation change.
