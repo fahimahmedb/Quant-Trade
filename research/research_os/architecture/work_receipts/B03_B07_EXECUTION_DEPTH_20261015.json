@@ -1,0 +1,118 @@
+{
+  "lot_ids": [
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07"
+  ],
+  "status": "IN_PROGRESS",
+  "observed_head_before": "91254ad77479ce0afbab61f2618248ba47098893",
+  "implementation_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+  "remote_head_verified": true,
+  "evidence_class": "EXECUTED_DRY_RUN_WITH_SYNTHETIC_INPUTS",
+  "completed_capabilities": [
+    "Actual deterministic accounting transforms with code/input/environment bindings",
+    "PREPARED -> COMPLETED checkpoint crash recovery",
+    "Immutable generation pin and canonical replay persistence",
+    "Validator consumes execution receipts and rejects plan-only readiness, mutation and self-validation",
+    "Portfolio retains unknown exposures as UNKNOWN and preserves identity hashes",
+    "Forward save/load verifies payload hash, rejects forged authority and generation aliases"
+  ],
+  "validation": {
+    "python_research_os": {
+      "tests": 103,
+      "result": "PASS"
+    },
+    "node_research_os": {
+      "tests": 11,
+      "result": "PASS"
+    }
+  },
+  "ci": [
+    {
+      "id": 38757097348,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097348"
+    },
+    {
+      "id": 38757097141,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097141"
+    },
+    {
+      "id": 38757097155,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097155"
+    },
+    {
+      "id": 38757097137,
+      "name": "Research OS persistent final-shape CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097137"
+    },
+    {
+      "id": 38757097169,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097169"
+    },
+    {
+      "id": 38757097269,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097269"
+    },
+    {
+      "id": 38757097102,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097102"
+    },
+    {
+      "id": 38757097084,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097084"
+    },
+    {
+      "id": 38757097099,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1a3dd6a0501f0829b168a80aa5d9fa0dc8fdc544",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38757097099"
+    }
+  ],
+  "limitations": [
+    "B05: empirical correlations and marginal alpha are not estimated.",
+    "B06: prospective ingestion and active decay remain unauthorized; no empirical decay state is claimed.",
+    "B07: strengthened path proof is synthetic replay, not evidence of live worker ingress.",
+    "The separate SEC gate failed on stale STATE.md proof inventory (371 versus 539 discovered); mechanical repair follows without changing economic state."
+  ],
+  "exact_reopen_condition": "Retain existing scientific authority flags; qualify each real provider before source-specific use. Active prospective/decay requires separate authority and future evidence.",
+  "next_admissible_lot": "B01_PRIMARY_DOCUMENT_ADMISSION_AND_B08_QUALIFICATION",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

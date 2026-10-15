@@ -4,6 +4,9 @@ from copy import deepcopy
 from typing import Any, Dict, Iterable, List
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
+import hashlib
+import re
+from urllib.parse import urlparse
 
 from research.research_os.scientific_store import sha256_json
 from research.research_os.engines.protocol import EngineContractError, build_candidate
@@ -28,18 +31,72 @@ def _clock(value: str) -> datetime:
 def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: str) -> Dict[str, Any]:
     """Qualify an outcome-free structured input, not a live source connector.
 
-    The stable engine contract still requires synthetic_only=True. Real captured
-    documents need a separately reviewed adapter-contract migration, not relabeling.
+    Documentary mode is limited to captured primary accounting data with numeric
+    cell provenance. It does not authorize market outcomes or a source network.
     """
     required = {"evidence_class", "source_ref", "issuer_id", "published_at", "available_at",
                 "revision_status", "period", "unit", "facts", "content_hash"}
-    optional = {"actor", "constraint", "instrument", "horizon"}
+    constraint_fields = {"actor", "constraint", "instrument", "horizon"}
+    optional = constraint_fields | {"capture"}
     blockers = []
     if required - packet.keys() or packet.keys() - required - optional:
         blockers.append("DOCUMENT_FIELDS_INVALID")
-    if packet.get("evidence_class") != "SYNTHETIC" or not str(packet.get("source_ref", "")).startswith("synthetic://"):
+    documentary = packet.get('evidence_class') == 'DOCUMENTARY'
+    if not documentary and (packet.get("evidence_class") != "SYNTHETIC" or not str(packet.get("source_ref", "")).startswith("synthetic://")):
         blockers.append("DOCUMENT_CLASS_OUTSIDE_STABLE_ENGINE_CONTRACT")
-    if packet.get("revision_status") != "ORIGINAL_AS_PUBLISHED":
+    if documentary:
+        capture = packet.get('capture') or {}
+        try:
+            capture_fields = {'source_url','retrieved_at','publication_clock_basis','raw_sha256','representation',
+                              'extractor','period','unit','text','text_sha256','fact_spans'}
+            if set(capture) != capture_fields:
+                raise ValueError('capture fields invalid')
+            if family != 'FUNDAMENTAL':
+                raise ValueError('only the Fundamental documentary adapter is qualified')
+            locator = urlparse(packet['source_ref'])
+            if locator.scheme != 'https' or locator.hostname != 'www.apple.com' or not locator.path.startswith('/newsroom/pdfs/'):
+                raise ValueError('primary provider not qualified')
+            if capture['representation'] != 'NUMERIC_CELLS' or capture['source_url'] != packet['source_ref']:
+                raise ValueError('capture representation invalid')
+            if not re.fullmatch('[0-9a-f]{64}', capture['raw_sha256']):
+                raise ValueError('raw PDF digest missing')
+            if capture['period'] != packet['period'] or capture['unit'] != packet['unit']:
+                raise ValueError('capture period/unit mismatch')
+            if capture['period'] != 'FY2025_TWELVE_MONTHS_ENDED_2025-09-27' or capture['unit'] != 'USD_millions':
+                raise ValueError('provider basis not qualified')
+            if capture['publication_clock_basis'] != 'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT':
+                raise ValueError('publication clock basis not qualified')
+            if capture['extractor'] != 'apple-statement-cells.v1/pdftotext-layout':
+                raise ValueError('extractor not qualified')
+            lines = capture['text'].splitlines()
+            if len(lines) != 4 or {line.split('=')[0] for line in lines} != DOCUMENT_FACTS[family] or any(
+                    not re.fullmatch(r'[a-z_]+=-?\d+(?:\.\d+)?', line) for line in lines):
+                raise ValueError('only declared numeric accounting cells are admissible')
+            if capture['text_sha256'] != hashlib.sha256(capture['text'].encode()).hexdigest():
+                raise ValueError('numeric capture hash mismatch')
+            if set(capture['fact_spans']) != DOCUMENT_FACTS[family]:
+                raise ValueError('numeric capture spans missing')
+            for key, span in capture['fact_spans'].items():
+                if set(span) != {'start','end','page','column','normalization'} or span['column'] != 'FY2025_TWELVE_MONTHS':
+                    raise ValueError('capture column not qualified')
+                if span['page'] != (1 if key in {'revenue','operating_income'} else 3):
+                    raise ValueError('capture statement page not qualified')
+                if type(span['start']) is not int or type(span['end']) is not int or not 0 <= span['start'] < span['end'] <= len(capture['text']):
+                    raise ValueError('invalid numeric capture span')
+                literal = capture['text'][span['start']:span['end']].replace(',', '')
+                value = Decimal(literal)
+                if span.get('normalization') == 'OUTFLOW_MAGNITUDE':
+                    value = abs(value)
+                elif span.get('normalization') != 'AS_REPORTED':
+                    raise ValueError('unknown numeric normalization')
+                if value != Decimal(str(packet['facts'][key])):
+                    raise ValueError('fact not bound to captured numeric cell')
+            if not _clock(capture['retrieved_at']) <= _clock(packet['available_at']):
+                raise ValueError('capture occurred after claimed availability')
+        except (KeyError, ValueError, TypeError, AttributeError, InvalidOperation):
+            blockers.append('DOCUMENT_CAPTURE_NOT_QUALIFIED')
+    expected_revision = 'CAPTURED_VERSION_AS_OF_RETRIEVAL' if documentary else 'ORIGINAL_AS_PUBLISHED'
+    if packet.get("revision_status") != expected_revision:
         blockers.append("DOCUMENT_REVISION_NOT_QUALIFIED")
     for field in ("issuer_id", "period", "unit"):
         if not isinstance(packet.get(field), str) or not packet[field].strip() or packet[field] == "UNKNOWN":
@@ -73,17 +130,19 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
                     raise ValueError("invalid eligible population")
                 if packet.get("unit") != "units":
                     raise ValueError("population units must be units")
-                if any(not isinstance(packet.get(k), str) or not packet[k].strip() for k in optional):
+                if any(not isinstance(packet.get(k), str) or not packet[k].strip() for k in constraint_fields):
                     raise ValueError("missing constraint identity")
         except (InvalidOperation, ValueError):
             blockers.append("DOCUMENT_FACT_VALUES_INVALID")
     return {"status": "BLOCK" if blockers else "PASS", "blockers": sorted(set(blockers)),
-            "source_hash": packet.get("content_hash"), "evidence_class": "SYNTHETIC",
+            "source_hash": packet.get("content_hash"), "evidence_class": packet.get('evidence_class'),
             "outcome_accessed": False}
 
 
 def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hypothesis_id: str) -> Dict[str, Any]:
     packet = source["documentary_packet"]
+    if context.synthetic_only != (packet.get('evidence_class') == 'SYNTHETIC'):
+        raise EngineContractError('source evidence class does not match the execution context')
     freeze = source["freeze_time"]
     qualification = qualify_document_packet(packet, engine.family, freeze)
     if qualification["status"] != "PASS":
@@ -114,16 +173,19 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = f"{issuer} {period}: declared constrained share={share} of {facts['eligible_quantity']} units."
         disconfirm = "Reject if the actor is not constrained, the universe is ineligible, or the legacy family has already spent this scope."
         tags, horizon = ["forced_flow", "liquidity", "constraint"], packet["horizon"]
+    if not context.synthetic_only:
+        hypothesis_id = 'DOC-FUND-' + packet['content_hash'][:16]
+    evidence = {
+        "packet": deepcopy(packet), "freeze_time": freeze, "measurements": measurements,
+        "claim_source_hash": packet["content_hash"], "economic_result": "NOT_OBSERVED",
+    }
     output = build_candidate(
         engine_id=engine.engine_id, engine_family=engine.family, hypothesis_id=hypothesis_id,
         mechanism=mechanism, claim=claim, falsification_scope=disconfirm,
         decision_map={"premise_survives": "EXPLORE", "premise_fails": "KILL_GENERATION"},
         economic_tags=tags, source_refs=[packet["source_ref"]], horizon=horizon, context=context,
+        documentary_evidence=evidence,
     )
-    output["candidate"]["documentary_evidence"] = {
-        "packet": deepcopy(packet), "freeze_time": freeze, "measurements": measurements,
-        "claim_source_hash": packet["content_hash"], "economic_result": "NOT_OBSERVED",
-    }
     return output
 
 

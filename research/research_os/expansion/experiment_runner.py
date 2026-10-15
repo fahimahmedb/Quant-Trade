@@ -91,17 +91,20 @@ class DryRunExperimentRunner:
         paths = [Path(__file__), root / 'expansion/engine_dossiers_v1.py',
                  root / 'engines/builtin.py', root / 'engines/protocol.py',
                  root / 'expansion/archaeology.py', root / 'expansion/persistent_state.py',
+                 root / 'expansion/source_adapters_v1.py',
                  root / 'scientific_store.py']
         return sha256_json({str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
 
     @staticmethod
     def execution_environment_hash() -> str:
         import decimal
-        return sha256_json({"python": sys.version, "decimal_precision": decimal.getcontext().prec,
-                            "decimal_rounding": decimal.getcontext().rounding})
+        context = decimal.getcontext()
+        return sha256_json({"python": sys.version, "decimal_context": {
+            key:getattr(context, key) for key in ('prec','rounding','Emin','Emax','capitals','clamp')},
+            "decimal_traps": {signal.__name__:enabled for signal, enabled in context.traps.items()}})
 
     def execute(self, plan: Dict[str, Any], inputs: List[Dict[str, Any]], checkpoint_dir: Path) -> Dict[str, Any]:
-        """Execute only pinned synthetic documentary transforms; never a backtest.
+        """Execute only pinned documentary fact transforms; never a backtest.
 
         PREPARED survives interruption before COMPLETED. Replay recomputes the
         transform and must match the immutable completed result byte-for-byte.
@@ -130,11 +133,13 @@ class DryRunExperimentRunner:
             if set(item) != {'engine_key', 'source'} or 'documentary_packet' not in item['source']:
                 raise ValueError('execution requires structured documentary inputs')
             engine = EdgeArchaeologyEngine() if item['engine_key'] == 'archaeology' else ENGINE_REGISTRY[item['engine_key']]
-            output = engine.run(item['source'], EngineContext('DOCUMENTARY_FACTS_V1'))
+            synthetic = item['source']['documentary_packet'].get('evidence_class') == 'SYNTHETIC'
+            output = engine.run(item['source'], EngineContext('DOCUMENTARY_FACTS_V1', synthetic_only=synthetic))
             records.append(output)
+        evidence_classes = {r['candidate']['documentary_evidence']['packet']['evidence_class'] for r in records}
         result = {"experiment_id": plan['experiment_id'], "execution_plan_hash": key,
                   "input_hash": binding['input_hash'], "state": "EXECUTED_DRY_RUN",
-                  "records": records, "evidence_class": "SYNTHETIC",
+                  "records": records, "evidence_class": next(iter(evidence_classes)) if len(evidence_classes) == 1 else 'MIXED',
                   "outcome_accessed": False, "economic_result": "NOT_OBSERVED"}
         result['execution_receipt_hash'] = sha256_json(result)
         write_immutable_json(Path(checkpoint_dir) / f'{key}.completed.json', result)

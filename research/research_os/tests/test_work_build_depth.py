@@ -17,6 +17,7 @@ from research.research_os.expansion.forward_v2 import ForwardRegistryV2, build_f
 from research.research_os.expansion.portfolio_v2 import portfolio_diagnostics_v2
 from research.research_os.expansion.validation_v2 import validator_diagnostics_v2
 from research.research_os.engines.decay import decay_monitor
+from research.research_os.engines.protocol import validate_engine_output
 
 BASE = Path(__file__).resolve().parents[1]
 
@@ -291,6 +292,56 @@ class ForwardAndPortfolioTests(unittest.TestCase):
         self.assertEqual(result['observations_consumed'], 0)
         with self.assertRaises(RuntimeError):
             decay_monitor({'prospective_observation_authorized':True,'registrations':[{'observation_started':True}]})
+
+
+class PrimaryDocumentAdmissionTests(unittest.TestCase):
+    def source(self):
+        return json.loads((BASE / 'sources/apple_fy2025_statement_cells.json').read_text())
+
+    def test_actual_primary_capture_is_documentary_and_computes_accounting_only(self):
+        source = self.source()
+        output = ENGINE_REGISTRY['fundamental'].run(source, EngineContext('PRIMARY-ADMISSION', synthetic_only=False))
+        validate_engine_output(output)
+        self.assertFalse(output['synthetic_only'])
+        self.assertTrue(output['candidate']['hypothesis_id'].startswith('DOC-FUND-'))
+        self.assertEqual(output['candidate']['documentary_evidence']['measurements']['free_cash_flow'], '98767')
+        self.assertEqual(output['candidate']['documentary_evidence']['packet']['unit'], 'USD_millions')
+        self.assertEqual(output['candidate']['observation_authorization'], 'NOT_AUTHORIZED')
+        self.assertEqual(source['documentary_packet']['published_at'], source['documentary_packet']['capture']['retrieved_at'])
+        with self.assertRaises(EngineContractError):
+            ENGINE_REGISTRY['fundamental'].run(source, EngineContext('DO-NOT-RELABEL'))
+
+    def test_primary_capture_tamper_fact_period_units_clock_and_hidden_outcomes_rejected(self):
+        mutations = [
+            lambda p: p['facts'].update(revenue='1'),
+            lambda p: p['capture'].update(text_sha256='0'*64),
+            lambda p: p.update(period='FY2024'),
+            lambda p: p.update(unit='USD'),
+            lambda p: p['capture'].update(retrieved_at='2099-01-01T00:00:00Z'),
+            lambda p: p['capture'].update(realized_return=0.1),
+            lambda p: p['capture']['fact_spans']['revenue'].update(column='QUARTER'),
+        ]
+        for i, mutate in enumerate(mutations):
+            with self.subTest(mutation=i):
+                source = self.source()
+                mutate(source['documentary_packet'])
+                repin(source)
+                with self.assertRaises(EngineContractError):
+                    ENGINE_REGISTRY['fundamental'].run(source, EngineContext('PRIMARY', synthetic_only=False))
+
+    def test_documentary_runner_preserves_real_evidence_class_on_replay(self):
+        inputs = [{'engine_key':'fundamental', 'source':self.source()}]
+        runner, plan = execution_plan(inputs)
+        # This freezes an accounting-transform protocol, not an economic test.
+        plan['plan']['protocol_hash'] = sha256_json({'transform':'DOCUMENTARY_FACTS_V1', 'input_hash':sha256_json(inputs)})
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+        with TemporaryDirectory() as directory:
+            result = runner.execute(plan, inputs, Path(directory))
+            self.assertEqual(result, runner.execute(plan, inputs, Path(directory)))
+        self.assertEqual(result['evidence_class'], 'DOCUMENTARY')
+        self.assertFalse(result['records'][0]['synthetic_only'])
+        self.assertFalse(result['outcome_accessed'])
+        self.assertEqual(result['economic_result'], 'NOT_OBSERVED')
 
 
 if __name__ == '__main__':

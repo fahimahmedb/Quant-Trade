@@ -1,0 +1,173 @@
+{
+  "scope": "Published accounting arithmetic only; not an economic experiment",
+  "protocol": {
+    "transform": "DOCUMENTARY_FACTS_V1",
+    "input_hash": "8179267813ba6276804db9d6d56891dde321b4c485708c4d35a0189b556be971",
+    "economic_experiment_authorized": false
+  },
+  "plan": {
+    "experiment_id": "ACCOUNTING-TRANSFORM-AAPL-FY2025",
+    "status": "READY_FOR_REPRODUCIBLE_DRY_RUN",
+    "blockers": [],
+    "runner_version": "dry-run-experiment-runner.v1",
+    "execution_plan_hash": "e5395e36f6c32ce9ccac165abbdf00585816c50077fb55ee0dff60e66dfe9575",
+    "plan": {
+      "runner_version": "dry-run-experiment-runner.v1",
+      "experiment_id": "ACCOUNTING-TRANSFORM-AAPL-FY2025",
+      "protocol_hash": "69b3d6bd9b830d4d05bbfcded28b15406979eacd2cb039d2dd9f55fdda530879",
+      "dataset_manifest_hash": "8179267813ba6276804db9d6d56891dde321b4c485708c4d35a0189b556be971",
+      "code_hash": "5aa9cee94f0f0790234e206c0946472cbbf3565dbd396bf1bc24bd122dd50b18",
+      "environment_hash": "02c35501392060ded8b9e542957830bf2137de641bfa3983a19267d0f7f6bff7",
+      "seed": 0,
+      "source_route_hashes": [
+        "5f4df6415194f19ef5d9dda7cd410c8078039f92b6af03a776f8100cd2536fcd"
+      ],
+      "declared_metrics": [
+        "DOCUMENTARY_FACTS_V1"
+      ],
+      "execution_mode": "DRY_RUN_NO_OUTCOME"
+    },
+    "outcome_access_authorized": false,
+    "outcome_accessed": false,
+    "economic_result": "NOT_OBSERVED",
+    "side_effects_authorized": false,
+    "reproducible_inputs_frozen": true
+  },
+  "source_qualification": {
+    "route_id": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c",
+    "status": "PASS",
+    "blockers": [],
+    "route_hash": "5f4df6415194f19ef5d9dda7cd410c8078039f92b6af03a776f8100cd2536fcd",
+    "freeze_time": "2026-10-15T17:43:15.050564+00:00",
+    "point_in_time_qualified": true,
+    "outcome_accessed": false,
+    "canonical_route": {
+      "route_id": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c",
+      "source_class": "PRIMARY_PUBLIC",
+      "transport": "manual-https-capture",
+      "locator": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+      "permission_state": "PUBLIC",
+      "pit_mode": "VERSIONED_SNAPSHOT",
+      "event_time_field": null,
+      "publication_time_field": null,
+      "revision_policy": "PINNED_CAPTURE_ONLY",
+      "survivorship_policy": "SINGLE_ISSUER_NOT_A_RESEARCH_UNIVERSE",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T17:43:15.050564+00:00",
+      "contains_outcome": false,
+      "content_scope": "DESIGN_METADATA_ONLY"
+    }
+  },
+  "executed_dry_run": {
+    "experiment_id": "ACCOUNTING-TRANSFORM-AAPL-FY2025",
+    "execution_plan_hash": "e5395e36f6c32ce9ccac165abbdf00585816c50077fb55ee0dff60e66dfe9575",
+    "input_hash": "8179267813ba6276804db9d6d56891dde321b4c485708c4d35a0189b556be971",
+    "state": "EXECUTED_DRY_RUN",
+    "records": [
+      {
+        "engine_id": "engine.fundamental.v0",
+        "engine_family": "FUNDAMENTAL",
+        "synthetic_only": false,
+        "source_refs": [
+          "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf"
+        ],
+        "candidate": {
+          "hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+          "generation_id": "G1",
+          "mechanism": "Cash generation and operating profitability may support a valuation thesis; market pricing remains untested.",
+          "claim": "AAPL FY2025_TWELVE_MONTHS_ENDED_2025-09-27: operating margin=0.3197079976259188150739737746; free cash flow=98767 USD_millions.",
+          "falsification_scope": "Withdraw the profitability premise if an admissible same-basis statement shows nonpositive margin or free cash flow.",
+          "decision_map": {
+            "premise_survives": "EXPLORE",
+            "premise_fails": "KILL_GENERATION"
+          },
+          "economic_tags": [
+            "cash_flow",
+            "equity_beta",
+            "quality"
+          ],
+          "horizon": "2q",
+          "research_decision": "EXPLORE",
+          "evidence_timing": "UNDETERMINED",
+          "observation_authorization": "NOT_AUTHORIZED",
+          "documentary_evidence": {
+            "packet": {
+              "evidence_class": "DOCUMENTARY",
+              "source_ref": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+              "issuer_id": "AAPL",
+              "published_at": "2026-10-15T17:43:15.050564+00:00",
+              "available_at": "2026-10-15T17:43:15.050564+00:00",
+              "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+              "period": "FY2025_TWELVE_MONTHS_ENDED_2025-09-27",
+              "unit": "USD_millions",
+              "facts": {
+                "revenue": "416161",
+                "operating_income": "133050",
+                "operating_cash_flow": "111482",
+                "capital_expenditure": "12715"
+              },
+              "capture": {
+                "source_url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+                "retrieved_at": "2026-10-15T17:43:15.050564+00:00",
+                "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+                "raw_sha256": "43e7f0730b3cce0fc37301a2f43c29712bbde6ab299d97c6df345fd0c754508a",
+                "representation": "NUMERIC_CELLS",
+                "extractor": "apple-statement-cells.v1/pdftotext-layout",
+                "period": "FY2025_TWELVE_MONTHS_ENDED_2025-09-27",
+                "unit": "USD_millions",
+                "text": "revenue=416161\noperating_income=133050\noperating_cash_flow=111482\ncapital_expenditure=-12715\n",
+                "text_sha256": "3061ccdba1ae74c22fe40bac4001228d8356f48c1a3b5a9973369a85966e7fda",
+                "fact_spans": {
+                  "revenue": {
+                    "start": 8,
+                    "end": 14,
+                    "page": 1,
+                    "column": "FY2025_TWELVE_MONTHS",
+                    "normalization": "AS_REPORTED"
+                  },
+                  "operating_income": {
+                    "start": 32,
+                    "end": 38,
+                    "page": 1,
+                    "column": "FY2025_TWELVE_MONTHS",
+                    "normalization": "AS_REPORTED"
+                  },
+                  "operating_cash_flow": {
+                    "start": 59,
+                    "end": 65,
+                    "page": 3,
+                    "column": "FY2025_TWELVE_MONTHS",
+                    "normalization": "AS_REPORTED"
+                  },
+                  "capital_expenditure": {
+                    "start": 86,
+                    "end": 92,
+                    "page": 3,
+                    "column": "FY2025_TWELVE_MONTHS",
+                    "normalization": "OUTFLOW_MAGNITUDE"
+                  }
+                }
+              },
+              "content_hash": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c"
+            },
+            "freeze_time": "2026-10-15T17:43:15.050564+00:00",
+            "measurements": {
+              "operating_margin": "0.3197079976259188150739737746",
+              "free_cash_flow": "98767"
+            },
+            "claim_source_hash": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c",
+            "economic_result": "NOT_OBSERVED"
+          }
+        }
+      }
+    ],
+    "evidence_class": "DOCUMENTARY",
+    "outcome_accessed": false,
+    "economic_result": "NOT_OBSERVED",
+    "execution_receipt_hash": "cacbcce59656873de890e26a9191f595e0b0af5e6408de4229c31dd8a6c4dcf0"
+  },
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

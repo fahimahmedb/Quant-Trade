@@ -125,7 +125,7 @@ def validator_diagnostics_v2(
             source = {'documentary_packet': evidence['packet'], 'freeze_time': evidence['freeze_time']}
             rebuilt = documentary_candidate(
                 SimpleNamespace(engine_id=engine_output['engine_id'], family=engine_output['engine_family']),
-                source, EngineContext('VALIDATOR-DOCUMENTARY'), candidate['hypothesis_id'],
+                source, EngineContext('VALIDATOR-DOCUMENTARY', synthetic_only=engine_output['synthetic_only']), candidate['hypothesis_id'],
             )
             bound = rebuilt == engine_output
         except (ValueError, KeyError, TypeError):
