@@ -1,0 +1,15 @@
+{
+  "event_id": "AUTONOMY-CANARY-001-g1-e1",
+  "session_id": "AUTONOMY-CANARY-001-g1",
+  "worker_id": "chatgpt-quant-research-worker",
+  "action_id": "AUTONOMY-CANARY-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T11:41:42Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Autonomous loop infrastructure canary",
+    "detail": "Verifying required Research OS contracts and durable worker protocol artifacts only."
+  }
+}
