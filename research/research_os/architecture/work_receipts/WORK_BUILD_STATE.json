@@ -30,7 +30,7 @@
     "BUILD-DOCUMENTARY-CHALLENGE-001: actual producer reconstruction, source-route/input/protocol binding, critical falsification checks and source-wrapper hidden-field rejection",
     "BUILD-PORTFOLIO-DOCUMENTARY-001: three actual documentary lineages with shared issuer/thesis tags visible and missing exposures/novelty UNKNOWN",
     "B03/B07: actual three-source factual batch execution, immutable completion and interruption recovery; all canonical economics remain BLOCK/NOT_READY",
-    "BUILD-QUALIFICATION-002: all eight exact-head gates succeeded on df6b77041a8513d568274dabfadb0438eccc1021; finite continuation build queue complete, prospective task remains BLOCKED_AUTHORITY"
+    "BUILD-QUALIFICATION-002: eight exact-head gates succeeded on df6b77041a8513d568274dabfadb0438eccc1021; initial documentary batch complete. Follow-up internal-depth tasks are tracked separately in the current roadmap."
   ],
   "tasks": [
     {
@@ -114,6 +114,77 @@
       "depends_on": [],
       "scope": "Prospective observation and empirical decay remain inactive.",
       "exact_reopen_condition": "A separately authorized exact prospective contract, then admissible future observations. This build task cannot grant that authority."
+    },
+    {
+      "id": "DEPTH-FUNDAMENTAL-DOSSIER-002",
+      "lot": "B01",
+      "status": "READY",
+      "priority": 100,
+      "depends_on": [],
+      "scope": "Strengthen the existing Fundamental dossier behind its current interface. Bind claimed statement/cash-flow/balance-sheet/valuation/catalyst premises to qualified documentary facts where evidence exists; report missing support explicitly. Mere nonempty dossier fields or arithmetic facts must not qualify unsupported economic premises.",
+      "acceptance": [
+        "Source/period/unit/availability bound for each supported factual premise.",
+        "Unqualified premises stay UNKNOWN/BLOCK, without placeholder PASS.",
+        "Meaningful positive, contradictory/missing-evidence and immutable-candidate/replay checks. No prices, outcomes or economic test."
+      ]
+    },
+    {
+      "id": "DEPTH-EVENT-DOSSIER-002",
+      "lot": "B01",
+      "status": "READY",
+      "priority": 90,
+      "depends_on": [],
+      "scope": "Strengthen the existing Event/Documents dossier using admitted primary captures. Bind event identity, eligibility, comparative basis, confounders and disconfirmation. Documented distribution change must not become a claim of new information, consensus surprise, diffusion or market response without admissible support.",
+      "acceptance": [
+        "Existing event interface and stable source-clock basis preserved.",
+        "Contradictory issuer/period/unit/revision and unsupported novelty premises rejected.",
+        "Existing canonical consumers preserve missing implementability, cost and capacity blockers."
+      ]
+    },
+    {
+      "id": "DEPTH-QUANT-FLOW-RULE-002",
+      "lot": "B02",
+      "status": "READY",
+      "priority": 80,
+      "depends_on": [],
+      "scope": "Deepen the existing Quant/Institutional Flow mechanism and dossier path with one official operative constraint source and a bounded actor/instrument eligibility scope. Preserve the SEC staff FAQ as explanatory evidence only. Legacy-screen before downstream work; do not reopen spent research or infer forced flow from a settlement deadline.",
+      "acceptance": [
+        "Operative rule/source provenance, capture availability, actor, eligible scope, horizon and falsification explicit.",
+        "Unknown actual quantity, pressure, payer and tradable expression remain unqualified.",
+        "Legacy-before-downstream and exception/ineligible-scope negative cases."
+      ]
+    },
+    {
+      "id": "DEPTH-DOSSIER-CHALLENGE-PORTFOLIO-003",
+      "lot": "B04/B05",
+      "status": "READY",
+      "priority": 70,
+      "depends_on": [
+        "DEPTH-FUNDAMENTAL-DOSSIER-002",
+        "DEPTH-EVENT-DOSSIER-002",
+        "DEPTH-QUANT-FLOW-RULE-002"
+      ],
+      "scope": "Feed the strengthened real documentary dossiers to existing Validator/Red Team and Economic Identity/Portfolio diagnostics. Challenge dossier sufficiency and trace claimed identity fields to their supporting evidence. Keep unknown empirical exposures, correlation and marginal contribution unestimated.",
+      "acceptance": [
+        "Unsupported claims and missing disconfirmation preserve negative rights.",
+        "Candidate and generation immutable; truthful source/identity provenance.",
+        "No fabricated scientific independence, empirical covariance, sizing, capital allocation or orders."
+      ]
+    },
+    {
+      "id": "DEPTH-QUALIFICATION-003",
+      "lot": "B08",
+      "status": "READY",
+      "priority": 60,
+      "depends_on": [
+        "DEPTH-DOSSIER-CHALLENGE-PORTFOLIO-003"
+      ],
+      "scope": "Integrate only the completed internal-depth increment behind the existing canonical stages. Verify meaningful replay/recovery and exact implementation-head CI, persist its receipt and update known gaps. Qualification of a batch is not completion of all final depth.",
+      "acceptance": [
+        "Existing spine and six common contracts unchanged.",
+        "Actual validation commands and exact SHA/run/conclusion recorded.",
+        "Remaining depth and candidate-level blockers retained; no production merge or activation."
+      ]
     }
   ],
   "allowed_actions": [
@@ -206,7 +277,7 @@
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
     }
   ],
-  "qualification_next_action": "No admissible nonterminal item remains in this finite build queue. Preserve the review candidate and candidate-level blockers. Further source/implementability depth or independent scientific review is not production activation; prospective observation remains separately blocked by authority.",
+  "qualification_next_action": "Resume DEPTH-FUNDAMENTAL-DOSSIER-002 at current remote HEAD. Existing df6b770 implementation remains qualified; initial documentary task receipts remain COMPLETE. Broader internal-depth mission is PARTIAL and has READY offline follow-ups. Do not restart at 6130d6c or introduce top-level architecture.",
   "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified.",
   "validation": {
     "research_os_python": {
@@ -234,5 +305,20 @@
     "diff_whitespace": "PASS"
   },
   "review_compare_url": "https://github.com/fahimahmedb/Quant-Trade/compare/52d87985aa50e47cb8d1911573cb587d93964443...df6b77041a8513d568274dabfadb0438eccc1021",
-  "previous_qualified_code_sha": "971bd339f56c9683bd362fa85c38f17177de48f5"
+  "previous_qualified_code_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+  "current_mandate": "Thicken existing Research OS internals behind frozen interfaces. No new top-level architecture. No Blue/Astra agent assignment in the current mission.",
+  "canonical_shape_status": "PROVEN_IN_BOUNDED_SLICE",
+  "internal_depth_status": "PARTIAL",
+  "initial_documentary_batch_status": "COMPLETE_BOUNDED_SCOPE",
+  "roadmap_checkpoint": {
+    "id": "DEPTH-ROADMAP-CHECKPOINT-20261015",
+    "observed_head_before": "5e6c32f65c29971b83c9196f2f751eb3af18225a",
+    "qualified_implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+    "original_depth_checkpoint": "6130d6c4f97f76346760a5309ecc1efd32119eb6",
+    "metadata_only": true,
+    "recorded_at": "2026-10-15T20:29:12.300962+00:00",
+    "roadmap_path": "research/research_os/architecture/WORK_CONTINUOUS_BUILD_WORKFLOW_20261015.md",
+    "historical_completed_receipts_preserved": true,
+    "final_internal_depth_complete": false
+  }
 }

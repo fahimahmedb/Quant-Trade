@@ -54,12 +54,15 @@ rewritten as evidence for a newer commit.
 
 ## Resume and authority
 
-The finite continuation queue is complete. Event, Flow, challenge, portfolio and
-qualification tasks have durable COMPLETE receipts; prospective activation remains
-BLOCKED_AUTHORITY. Do not repeat completed lots on resumption. Further source and
-implementability depth, scientific review and production integration remain
-distinct work with their own evidence and authority requirements. No additional
-build framework was introduced.
+The initial documentary batch is complete. Its Event, Flow, challenge, portfolio
+and qualification tasks retain their COMPLETE receipts. This does not complete
+the internal-depth mission. The depth-roadmap checkpoint in
+WORK_CONTINUOUS_BUILD_WORKFLOW_20261015.md and READY follow-up tasks in
+work_receipts/WORK_BUILD_STATE.json now identify the remaining bounded work,
+starting with DEPTH-FUNDAMENTAL-DOSSIER-002. Prospective activation remains
+BLOCKED_AUTHORITY. Resume at current remote HEAD without repeating completed lots.
+The current mission does not assign Blue/Astra agents. No additional build
+framework or top-level architecture was introduced.
 
 All four scientific/capital/live authority flags remain FALSE. All three actual
 canonical candidates remain BLOCK / NOT_READY. Source availability is bounded by

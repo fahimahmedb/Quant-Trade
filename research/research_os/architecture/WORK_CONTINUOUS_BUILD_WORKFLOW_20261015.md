@@ -9,7 +9,7 @@ Owner instruction: prepare a workflow and chain authorized build tasks without r
 This is the Build Plane, not the research runtime. Follow AGENTS.md, the North Star and FINAL_SHAPE_CLOSURE_CHECKPOINT_20261015.md, with the Owner's current Research OS mission as scope.
 NO_NEW_TOP_LEVEL_ARCHITECTURE = TRUE.
 Keep HypothesisContract, ResearchTask, ExperimentResult, EvidenceAssessment, CandidateEconomicIdentity and WorkerEvent stable; WorkerReceipt remains their execution companion.
-Do not change the production research branch, its five schedules, Live Lab deployment or unrelated Blue/Legacy work.
+Do not change the production research branch, its five schedules, Live Lab deployment or unrelated project work. Preserve historical Legacy evidence.
 ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE.
 PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE.
 REAL_CAPITAL_AUTHORIZED = FALSE.
@@ -31,6 +31,54 @@ Do not append a new framework when the existing interface can carry the work.
 When a patch changes evidence that a prior gate relied on, rerun that gate.
 Use existing CI definitions where possible; never cancel an active useful run merely to refresh status.
 If the connector cannot trigger a required gate, record CI_NOT_RUN and the missing action; never substitute an old green run.
+
+## Depth roadmap checkpoint — 2026-10-15
+
+Checkpoint ID: `DEPTH-ROADMAP-CHECKPOINT-20261015`.
+Observed remote HEAD before this documentation update: `5e6c32f65c29971b83c9196f2f751eb3af18225a`.
+Last qualified implementation: `df6b77041a8513d568274dabfadb0438eccc1021`.
+Original canonical-depth checkpoint: `6130d6c4f97f76346760a5309ecc1efd32119eb6`.
+
+**CANONICAL_SHAPE: PROVEN_IN_BOUNDED_SLICE. INTERNAL_DEPTH: PARTIAL.**
+The first documentary continuation batch is complete. Completion of that finite
+batch did not complete the engine-depth mission. Resume from the new READY tasks
+in WORK_BUILD_STATE.json; do not replay completed lots as new work or reset HEAD
+to 6130d6c.
+
+Current mandate: thicken existing Research OS components behind frozen interfaces.
+The current mission has no Blue/Astra agent assignment or prerequisite. Validator
+and Red Team are system functions whose separation and negative rights remain
+required. Their module names do not imply that another agent has been launched.
+
+| Existing component | Proven at the qualified implementation | Depth still missing / next acceptance |
+| --- | --- | --- |
+| Canonical spine + six shared contracts | Legacy-first ordering, immutable candidates, deterministic replay, blocked candidates remain blocked | Keep the ordering and contracts stable while adding internal depth |
+| Fundamental | Captured Apple annual statement cells; same-basis operating-margin and cash-flow arithmetic | Bind the existing structured dossier to admissible facts; qualify coverage for cash-flow/balance-sheet/valuation/catalyst premises where evidence exists; expose missing support explicitly rather than accepting generic filled slots |
+| Event/Documents | Two primary Apple Q2 distribution announcements; year-over-year comparison with captured availability | Bind event identity, eligibility, document changes, confounders and disconfirmation to the existing dossier; distinguish documented change from unmeasured novelty, consensus surprise and diffusion |
+| Quant/Mechanisms + Institutional Flows | Data-conditioned synthetic mechanisms; captured SEC staff T+1 explanation for Flow; Legacy gate | Qualify an official operative rule and a bounded eligible actor/instrument scope; preserve unknown eligible quantity, pressure and trading horizon when unmeasured; do not treat the FAQ as binding law |
+| Edge Archaeology | Synthetic data-conditioned coverage and historical duplicate hard-stop | Primary mechanism/source depth remains partial; preserve closed families and spent windows |
+| Experiment Runner | Pinned fact-transform execution, immutable completion, replay and interruption recovery | Carry strengthened documentary dossiers through the existing runner; economic experiments remain outside current authority |
+| Validator + Red Team | Registered-producer reconstruction; source/input/protocol/receipt binding; adverse controls | Challenge new dossier sufficiency, unsupported economic premises and missing disconfirmation; engineering checks are not independent scientific validation |
+| Economic Identity + Portfolio | Three documentary candidates; common issuer/thesis tags visible; UNKNOWN preserved | Consume strengthened dossiers with field-level support for claimed economic identities; missing empirical exposures/correlation/marginal contribution remain unestimated |
+| Forward + Decay | Immutable registration/reload and unauthorized-ingestion rejection | Prospective ingestion and empirical decay remain BLOCKED_AUTHORITY; this does not block authorized offline engine-depth work |
+| Build qualification | 123 Research OS tests, 539 general tests, 11 Node tests; eight successful CI runs on df6b770 | Qualify each future implementation SHA separately; do not attribute those runs to this metadata commit |
+
+This checkpoint maps the known gaps in the inspected existing modules. It is not
+a completed audit of every target capability and supplies no percentage of final
+completion, production-readiness claim or new economic authority.
+
+Next bounded sequence:
+
+1. `DEPTH-FUNDAMENTAL-DOSSIER-002`: real-source dossier support and explicit missing evidence.
+2. `DEPTH-EVENT-DOSSIER-002`: event-specific dossier support and claim limits.
+3. `DEPTH-QUANT-FLOW-RULE-002`: operative constraint/applicability depth after Legacy screening.
+4. `DEPTH-DOSSIER-CHALLENGE-PORTFOLIO-003`: challenge and compare the strengthened outputs through existing consumers.
+5. `DEPTH-QUALIFICATION-003`: replay, recovery, exact implementation-head CI and durable receipt for the new increment.
+
+Items 1–3 are independently admissible offline build work; priority selects
+Fundamental first. Items 4–5 consume their completed evidence. This is a roadmap,
+not proof that these tasks have executed or that a background worker is running.
+All four economic/prospective/capital/live authority flags remain FALSE.
 
 ## Ordered backlog
 This table defines acceptance; current progress, dependencies and remaining READY tasks are recorded in architecture/work_receipts/WORK_BUILD_STATE.json. Do not infer completion from this table.
