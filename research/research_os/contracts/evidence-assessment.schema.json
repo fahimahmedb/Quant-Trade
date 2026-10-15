@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/EvidenceAssessment",
+  "title":"EvidenceAssessment",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["hypothesis_generation","mechanism","data_integrity","statistical","economic","prospective","operational_readiness","decision","reason","authority"],
+  "properties":{
+    "hypothesis_generation":{"type":"string","minLength":1},
+    "mechanism":{"type":"string"},
+    "data_integrity":{"type":"string"},
+    "statistical":{"type":"string"},
+    "economic":{"type":"string"},
+    "prospective":{"type":"string"},
+    "operational_readiness":{"type":"string"},
+    "decision":{"enum":["KILL","PARK","EXPLORE","PROMOTE","NO_OPPORTUNITY","UNKNOWN"]},
+    "reason":{"type":"string","minLength":1},
+    "scope_of_falsification":{"type":["string","null"]},
+    "authority":{"type":"string","minLength":1}
+  }
+}
