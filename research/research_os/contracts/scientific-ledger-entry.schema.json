@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ScientificLedgerEntry",
+  "type": "object",
+  "required": ["ledger_entry_id","hypothesis_generation_id","lifecycle","research_decision","refs","updated_at"],
+  "properties": {
+    "ledger_entry_id": {"type":"string","minLength":1},
+    "hypothesis_generation_id": {"type":"string","minLength":1},
+    "lifecycle": {"enum":["IDEA","PREREGISTERED","TESTED","VALIDATED","PROSPECTIVE","DECAYED","TERMINAL"]},
+    "research_decision": {"enum":["KILL","PARK","EXPLORE","PROMOTE","NO_OPPORTUNITY","UNKNOWN"]},
+    "refs": {
+      "type":"object",
+      "required":["hypothesis"],
+      "properties": {
+        "hypothesis":{"type":"string"},
+        "trial_ledger":{"type":["string","null"]},
+        "experiment_results":{"type":"array","items":{"type":"string"}},
+        "evidence_assessments":{"type":"array","items":{"type":"string"}},
+        "decision_records":{"type":"array","items":{"type":"string"}},
+        "prospective_contracts":{"type":"array","items":{"type":"string"}},
+        "economic_identity":{"type":["string","null"]},
+        "portfolio_map_entry":{"type":["string","null"]},
+        "negative_knowledge":{"type":"array","items":{"type":"string"}}
+      },
+      "additionalProperties": false
+    },
+    "open_blockers": {"type":"array","items":{"type":"string"}},
+    "updated_at": {"type":"string","minLength":1}
+  },
+  "additionalProperties": false
+}
