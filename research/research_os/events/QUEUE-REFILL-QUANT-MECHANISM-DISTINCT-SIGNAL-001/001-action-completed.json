@@ -1,0 +1,18 @@
+{
+  "event_id": "QUEUE-REFILL-QUANT-MECHANISM-DISTINCT-SIGNAL-001-e1",
+  "session_id": "QUEUE-REFILL-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
+  "worker_id": "integrator-portfolio-queue-steward",
+  "action_id": "queue-refill:quant-mechanism-distinct-signal:001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T22:47:17Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Deterministic empty-queue refill",
+    "detail": "Global queue was verified terminal-only; exactly one QUANT_RESEARCH producer task was derived from RESEARCH_FRONTIER.json. No producer research, economic outcome access, prospective observation, capital or trading occurred in the refill wake.",
+    "frontier_id": "QUANT_MECHANISM_DISTINCT_SIGNAL",
+    "derivation_key": "3b3d1bf0c4eddc5a9881a1fbcd9f0fd613a68f684c8beaece7872b7328974e19",
+    "derived_task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001"
+  }
+}
