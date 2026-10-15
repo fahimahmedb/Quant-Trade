@@ -1,0 +1,81 @@
+{
+  "recorded_at": "2026-10-15T10:55:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_pass": "a96d22c978177a57ee44432d619f8a1c5a92bd4a",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_verdict": null,
+  "result": "HDFC_PRIMARY_DIRECTORY_VERIFIED_BUT_BODY_SOURCE_GAP; SK_HYNIX_PRIMARY_LEGAL_CONTENT_INELIGIBLE_A_E; EVOTEC_PRIMARY_LEGAL_CONTENT_INELIGIBLE_A_E_WITH_UNPLANNED_FINANCIAL_DISCLOSURE_EXPOSURE; NO_EVENT_SELECTED.",
+  "hdfc_bank_6k": {
+    "issuer": "HDFC BANK LTD",
+    "form": "6-K",
+    "accession": "0001193125-26-420933",
+    "cached_feed_updated": "2026-10-14T06:02:14-04:00",
+    "sec_directory": "https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933",
+    "directory_observation": {
+      "main_document": "d154910d6k.htm",
+      "main_document_bytes": 8464,
+      "exhibit": "d154910dex99.htm",
+      "exhibit_bytes": 8063,
+      "directory_last_modified": "2026-10-14 06:02:14"
+    },
+    "accepted_at_verified": null,
+    "status": "PARK_DOCUMENTARY_SOURCE_GAP",
+    "reason": "The SEC directory and exact filing files are verified, but the primary 6-K body was not readable through the current retrieval path. No legal-content inference is made from a secondary listing or an older HDFC filing. Do not classify A-E eligibility or ineligibility until the exact Oct-14 accession body is read through a distinct valid primary route."
+  },
+  "sk_hynix_6k": {
+    "issuer": "SK hynix Inc.",
+    "form": "6-K",
+    "accession": "0001193125-26-420934",
+    "cached_feed_updated": "2026-10-14T06:02:20-04:00",
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/2120882/000119312526420934/d413172d6k.htm",
+    "status": "PRIMARY_LEGAL_CONTENT_REVIEWED_INELIGIBLE_A_E",
+    "reason": "The primary 6-K only schedules the 2026 Q3 earnings conference call for October 28, 2026, including webcast/material availability. It describes no issuer tender or odd-lot priority, reverse-split fractional entitlement, SPAC public-shareholder cash redemption, or ETF liquidation.",
+    "accepted_at_verified": null,
+    "clock_note": "A secondary EDGAR mirror reports SEC acceptance at 2026-10-14 06:02 AM EDT, but the exact SEC accepted header was not independently recovered in this pass; therefore do not upgrade chronology from cached feed time alone."
+  },
+  "evotec_6k": {
+    "issuer": "Evotec SE",
+    "form": "6-K",
+    "accession": "0001104659-26-115678",
+    "cached_feed_updated": "2026-10-14T06:02:29-04:00",
+    "status": "PRIMARY_LEGAL_CONTENT_REVIEWED_INELIGIBLE_A_E_CLOCK_SECONDARY_ONLY",
+    "reason": "The filing reports an October 13 ad-hoc announcement of preliminary nine-month 2026 results and reaffirmed full-year guidance. It describes no issuer tender/odd-lot priority, reverse-split fractional entitlement, SPAC public-shareholder cash redemption, or ETF liquidation.",
+    "accepted_at_verified": null,
+    "clock_note": "A secondary EDGAR mirror reports SEC acceptance on 2026-10-14 at 06:02 AM EDT. Exact SEC index-header acceptance was not independently recovered in this pass.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "The public filing/search result exposed preliminary revenue, adjusted EBITDA and guidance figures. Those values are consumed public economic disclosure only. No return/PnL, selected market-price payload, event-study outcome, benchmark comparison or strategy payoff was computed. The disclosure must not later be described as pristine or unexposed."
+    }
+  },
+  "ordering_and_integrity": {
+    "first_event_selected": false,
+    "first_event_claim_allowed": false,
+    "reason": "Valaris remains PARK_DOCUMENT_SCOPE_NOT_REVIEWED; Calamos remains PARK_DOCUMENTARY_SOURCE_GAP; HDFC is now also PARK_DOCUMENTARY_SOURCE_GAP; earlier Fusion/AmpliTech/IX chronology gaps remain. Later legal ineligibility reviews do not repair these earlier ordering gaps.",
+    "selected_market_price_payloads": 0,
+    "nav_payloads": 0,
+    "distribution_or_redemption_payoff_payloads": 0,
+    "economic_calculations": 0,
+    "new_return_or_strategy_tests": 0
+  },
+  "next_decision": {
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "status": "OPEN",
+    "question": "Continue only with the next saved unreviewed candidate after Evotec using the cached ordering and primary legal content. Verify exact SEC accepted metadata where possible. Do not request prices, NAV, distributions, redemption payoffs or other selected economic outcomes. Preserve Valaris, Calamos, HDFC and earlier chronology/source gaps as blockers to FIRST-event selection. If the cached list cannot be safely recovered, stop rather than inventing the next issuer.",
+    "economic_access_authorized": false
+  },
+  "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933",
+    "https://www.sec.gov/Archives/edgar/data/2120882/000119312526420934/d413172d6k.htm",
+    "https://www.stocktitan.net/sec-filings/SKHY/6-k-sk-hynix-inc-current-report-foreign-issuer-6004b611bfce.html",
+    "https://www.stocktitan.net/sec-filings/EVOTF/6-k-evotec-se-current-report-foreign-issuer-85d09e06295b.html"
+  ]
+}
