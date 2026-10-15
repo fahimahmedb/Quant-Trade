@@ -5,70 +5,28 @@
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
   "live_trading_authorized": false,
+  "workflow_lanes": [
+    {"lane_id":"market_discovery","capabilities":["quant_mechanisms","institutional_flows"]},
+    {"lane_id":"fundamental_events","capabilities":["fundamental","event_document"]},
+    {"lane_id":"evidence_data","capabilities":["legacy_recovery","data_provenance","trial_accounting","source_qualification"]},
+    {"lane_id":"independent_challenge","capabilities":["validator","red_team"]},
+    {"lane_id":"integrator_portfolio","capabilities":["portfolio_map","economic_identity","shadow_readiness","learning_telemetry","control_integrator"]}
+  ],
   "capabilities": [
-    {
-      "capability_id": "legacy_recovery",
-      "role": "Legacy / Recovery",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["historical inventory","provenance","gap completion recommendation"],
-      "forbidden": ["new economic look","sample extension","verdict rewrite"]
-    },
-    {
-      "capability_id": "quant_mechanisms",
-      "role": "Quant / Mechanisms",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["candidate hypothesis","mechanism description","test contract"],
-      "forbidden": ["real outcome inspection","capital action"]
-    },
-    {
-      "capability_id": "fundamental",
-      "role": "Fundamental",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["candidate thesis","valuation logic","catalyst","falsification scope"],
-      "forbidden": ["capital action","prospective observation without authority"]
-    },
-    {
-      "capability_id": "event_document",
-      "role": "Event / Document",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["event hypothesis","document evidence map","timing requirements"],
-      "forbidden": ["capital action","unfrozen forward claim"]
-    },
-    {
-      "capability_id": "institutional_flows",
-      "role": "Flows / Institutional Constraints",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["mechanism candidate","institutional constraint map","implementability questions"],
-      "forbidden": ["capital action","new outcome look"]
-    },
-    {
-      "capability_id": "validator",
-      "role": "Independent Validator",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["evidence assessment","replication recommendation","claim-level restriction"],
-      "forbidden": ["repair signal until profitable","capital action"]
-    },
-    {
-      "capability_id": "red_team",
-      "role": "Red Team",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["BLOCK_DATA","BLOCK_LEAKAGE","BLOCK_MULTIPLICITY","BLOCK_COST_MODEL","BLOCK_CAPACITY","BLOCK_PORTFOLIO_DUPLICATION","BLOCK_CLAIM_LEVEL","ACCEPT"],
-      "forbidden": ["strategy optimization","capital action"]
-    },
-    {
-      "capability_id": "portfolio_map",
-      "role": "Portfolio Map",
-      "simulation_enabled": true,
-      "production_enabled": true,
-      "allowed_outputs": ["economic identity overlap","factor overlap","marginal portfolio value assessment"],
-      "forbidden": ["position sizing","order generation","capital allocation"]
-    }
+    {"capability_id":"legacy_recovery","role":"Legacy / Recovery","production_enabled":true,"allowed_outputs":["historical inventory","provenance","gap completion recommendation"],"forbidden":["new economic look","sample extension","verdict rewrite"]},
+    {"capability_id":"data_provenance","role":"Data Provenance","production_enabled":true,"allowed_outputs":["PIT/source qualification","timestamp and revision audit","data lineage"],"forbidden":["economic outcome inspection","verdict rewrite"]},
+    {"capability_id":"trial_accounting","role":"Trial Accounting","production_enabled":true,"allowed_outputs":["observed attempt accounting","effective-trial status","family accounting gaps"],"forbidden":["invent effective trials","economic outcome inspection"]},
+    {"capability_id":"source_qualification","role":"Source Qualification","production_enabled":true,"allowed_outputs":["source gate","accessibility and licensing status","reopen condition"],"forbidden":["silent source substitution","economic outcome inspection"]},
+    {"capability_id":"quant_mechanisms","role":"Quant / Mechanisms","production_enabled":true,"allowed_outputs":["candidate hypothesis","mechanism description","test contract"],"forbidden":["real outcome inspection","capital action"]},
+    {"capability_id":"institutional_flows","role":"Flows / Institutional Constraints","production_enabled":true,"allowed_outputs":["mechanism candidate","institutional constraint map","implementability questions"],"forbidden":["capital action","new outcome look"]},
+    {"capability_id":"fundamental","role":"Fundamental","production_enabled":true,"allowed_outputs":["candidate thesis","valuation logic","catalyst","falsification scope"],"forbidden":["capital action","prospective observation without authority"]},
+    {"capability_id":"event_document","role":"Event / Document","production_enabled":true,"allowed_outputs":["event hypothesis","document evidence map","timing requirements"],"forbidden":["capital action","unfrozen forward claim"]},
+    {"capability_id":"validator","role":"Independent Validator","production_enabled":true,"allowed_outputs":["evidence assessment","replication recommendation","claim-level restriction"],"forbidden":["repair signal until profitable","capital action","hypothesis generation"]},
+    {"capability_id":"red_team","role":"Red Team","production_enabled":true,"allowed_outputs":["BLOCK_DATA","BLOCK_LEAKAGE","BLOCK_MULTIPLICITY","BLOCK_COST_MODEL","BLOCK_CAPACITY","BLOCK_PORTFOLIO_DUPLICATION","BLOCK_CLAIM_LEVEL","ACCEPT"],"forbidden":["strategy optimization","capital action","hypothesis generation"]},
+    {"capability_id":"economic_identity","role":"Economic Identity","production_enabled":true,"allowed_outputs":["payer/mechanism map","factor exposure map","overlap flags"],"forbidden":["capital allocation","position sizing"]},
+    {"capability_id":"portfolio_map","role":"Portfolio Map","production_enabled":true,"allowed_outputs":["economic identity overlap","factor overlap","marginal portfolio value assessment"],"forbidden":["position sizing","order generation","capital allocation"]},
+    {"capability_id":"shadow_readiness","role":"Shadow Readiness","production_enabled":true,"allowed_outputs":["prospective eligibility assessment","draft shadow contract","authority blocker"],"forbidden":["start prospective observation without authority","capital action"]},
+    {"capability_id":"learning_telemetry","role":"Learning Telemetry","production_enabled":true,"allowed_outputs":["research process telemetry","attempt/gap metrics","duplicate detection metrics"],"forbidden":["mechanical alpha allocation","invent effective trials"]},
+    {"capability_id":"control_integrator","role":"Control Integrator","production_enabled":true,"allowed_outputs":["queue reconciliation","handoff integrity","deadlock detection"],"forbidden":["economic verdict override","capital action"]}
   ]
 }
