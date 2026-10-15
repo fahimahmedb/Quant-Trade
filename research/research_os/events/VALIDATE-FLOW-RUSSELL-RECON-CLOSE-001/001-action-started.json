@@ -1,0 +1,12 @@
+{
+  "event_id":"VALIDATE-FLOW-RUSSELL-RECON-CLOSE-001-g1-e1",
+  "session_id":"VALIDATE-FLOW-RUSSELL-RECON-CLOSE-001-g1",
+  "worker_id":"chatgpt-independent-challenge",
+  "action_id":"VALIDATE-FLOW-RUSSELL-RECON-CLOSE-001",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-15T22:36:00Z",
+  "accepted_at":null,
+  "payload":{"label":"Russell reconstitution benchmark-flow validation","detail":"Independently checking the frozen G1 documentary mechanism, point-in-time data feasibility, auction implementation, capacity, crowding and leakage without outcome access.","queue_state":"WORKING"}
+}
