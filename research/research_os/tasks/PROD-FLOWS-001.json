@@ -1,0 +1,36 @@
+{
+  "task_id": "PROD-FLOWS-001",
+  "task_type": "INSTITUTIONAL_FLOW",
+  "required_capability": "institutional_flows",
+  "status": "READY",
+  "priority": 90,
+  "inputs": {
+    "legacy_gate_required": true,
+    "objective": "Identify one public, causally explicit forced-flow or institutional-constraint mechanism that is distinct from legacy work, freeze the mechanism and implementability questions, and do not inspect returns."
+  },
+  "allowed_actions": [
+    "read fresh Legacy ledger and duplication map",
+    "use public rules, market-structure documents, index methodologies, auction/settlement/regulatory documents or primary institutional sources",
+    "persist one CandidateHypothesis with payer, mechanism, trigger, capacity intuition, implementability questions and falsification scope",
+    "create exactly one READY VALIDATION task for that candidate after successful persistence"
+  ],
+  "forbidden_actions": [
+    "inspect historical or future returns for the candidate",
+    "backtest",
+    "optimize implementation against outcomes",
+    "capital action",
+    "live trading"
+  ],
+  "success_condition": "One non-duplicate frozen institutional-flow candidate is persisted with a downstream VALIDATION task, or a durable NO_CANDIDATE result is persisted.",
+  "authority": {
+    "scope": "INSTITUTIONAL_FLOW_HYPOTHESIS_GENERATION_AND_FREEZE_ONLY",
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "lease": {"generation":0,"owner":null,"claimed_at":null,"expires_at":null},
+  "created_at": "2026-10-15T14:25:00+02:00",
+  "updated_at": null,
+  "completion": null
+}
