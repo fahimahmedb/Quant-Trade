@@ -2,7 +2,7 @@
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
   "task_type": "FUNDAMENTAL_RESEARCH",
   "required_capability": "fundamental",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 70,
   "inputs": {
     "objective": "Find exactly one causally distinct fundamental thesis from admissible public company information, screen Legacy before freeze, include active disconfirmation and falsification, and freeze at most one CandidateHypothesis without outcome-driven tuning.",
@@ -43,7 +43,14 @@
     "expires_at": "2026-10-15T20:04:30Z"
   },
   "created_at": "2026-10-15T18:49:01Z",
-  "updated_at": "2026-10-15T19:09:30Z",
+  "updated_at": "2026-10-15T19:15:20Z",
+  "result": {
+    "hypothesis_id": "FUND-ASML-CAPACITY-PRICING-001",
+    "hypothesis_path": "research/research_os/hypotheses/FUND-ASML-CAPACITY-PRICING-001.json",
+    "validation_handoff_task_id": "VALIDATE-FUND-ASML-CAPACITY-PRICING-001",
+    "receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001-g1.json",
+    "terminal_event": "research/research_os/events/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/002-action-completed-g1.json"
+  },
   "derivation": {
     "type": "EMPTY_QUEUE_FRONTIER_REFILL",
     "frontier_id": "FUNDAMENTAL_DISTINCT_THESIS",
